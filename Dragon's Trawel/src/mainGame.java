@@ -100,12 +100,14 @@ public class mainGame {
 			//extra.println("1 Patreon");
 			extra.println("1 Discord");
 			//extra.println("3 Kickstarter");
-			extra.println("2 back");
+			extra.println("2 Github");
+			extra.println("3 back");
 			switch(extra.inInt(2)) {
 			//case 3: openWebpage("https://www.patreon.com/realDragon");break;
 			case 1: openWebpage("https://discord.gg/jsyqu7X");break;
 			//case 4: openWebpage("https://www.kickstarter.com/projects/738083082/trawel?ref=ea8wbq");break;
-			case 2: return;
+			case 2: openWebpage("https://github.com/realDragon11/Trawel-Text");
+			case 3: return;
 			}
 		}
 	}
