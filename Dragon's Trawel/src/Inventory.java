@@ -311,12 +311,21 @@ public class Inventory implements java.io.Serializable{
 	
 	public void graphicalDisplay(int side) {//TODO: add them in the right layer order, or set their depth 
 		Networking.sendStrong("ClearInv|"+side+"|");
-		Networking.sendStrong("AddInv|"+side+"|" +race.name +"|"+race.baseMap+"|"+raceMap+"|");
+		Networking.sendStrong("AddInv|"+side+"|" +race.name +"|"+race.baseMap+"|"+raceMap+"|1|");
 		for (Armor a: armorSlots) {
-			Networking.sendStrong("AddInv|"+side+"|" +a.getBaseName() +"|iron|"+a.getMaterial()+"|");
+			String str = "AddInv|"+side+"|" +a.getBaseName() +"|iron|"+a.getMaterial()+"|";
+			switch (a.getArmorType()) {
+			case 0:str+= "-6|"; //head
+			case 1:str+= "-5|"; //arms
+			case 2:str+= "-3|"; //chest
+			case 3:str+= "-2|"; //legs
+			case 4:str+= "-1|"; //feet
+			}
+			
+			Networking.sendStrong(str);
 		}
 		
-		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName() +"|iron|"+hand.getMaterial()+"|");
+		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName() +"|iron|"+hand.getMaterial()+"|-4");
 	}
 	
 
