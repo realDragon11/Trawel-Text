@@ -9,7 +9,7 @@ public class MaterialFactory {
 	public MaterialFactory() {
 		Material misc = new Material();
 		misc.name = "cloth";
-		misc.thingType = "light";
+		misc.typeList.add("light");
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 2;
@@ -32,7 +32,7 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "leather";
-		misc.thingType = "light";
+		misc.typeList.add("light");
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 5;
@@ -55,7 +55,9 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "iron";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 20;
@@ -76,9 +78,10 @@ public class MaterialFactory {
 		misc.freezeVul = 2;
 		matList.add(misc);
 		
+		/*
 		misc = new Material();
 		misc.name = "chainmail";
-		misc.thingType = "light";
+		misc.typeList.add("light");
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 25;
@@ -98,10 +101,15 @@ public class MaterialFactory {
 		misc.shockVul = 1.5;
 		misc.freezeVul = 2;
 		matList.add(misc);
+		*/
+		
 		
 		misc = new Material();
 		misc.name = "steel";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 25;
@@ -124,7 +132,11 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "silver";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 25;
@@ -147,7 +159,11 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "gold";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 50;
@@ -170,7 +186,7 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "silk";
-		misc.thingType = "light";
+		misc.typeList.add("light");
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 2;
@@ -193,7 +209,11 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "platinum";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 55;
@@ -216,7 +236,11 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "mythril";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 15;
@@ -239,7 +263,13 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "adamantine";
-		misc.thingType = "both";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("light");
+		misc.typeList.add("light");
+		misc.typeList.add("light");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 1;
@@ -262,7 +292,11 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "sunsunsteel";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = false;
 		misc.weapon = true;
 		misc.weight = 25;
@@ -285,7 +319,7 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "ectoplasm";
-		misc.thingType = "light";
+		misc.typeList.add("light");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 2;
@@ -308,7 +342,11 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "moonsilver";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 25;
@@ -331,7 +369,11 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "wood";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 4;
@@ -354,7 +396,11 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "solar gold";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 100;

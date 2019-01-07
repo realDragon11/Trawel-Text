@@ -27,6 +27,7 @@ public class Armor extends Item {
 	private Material mat;
 	private double burnMod, freezeMod, shockMod;
 	private double burned;
+	private String matType;//ie heavy, light, chainmail
 	
 	//constructors
 	
@@ -61,9 +62,14 @@ public class Armor extends Item {
 	material = mat.name;
 	level = newLevel;
 	
+	sharpResist = 1;
+	bluntResist = 1;
+	pierceResist = 1;
+	
 	//what names make sense for the given material?
 	//if (material == "leather" || material == "silk" || material == "chainmail" || material == "cloth" || (material == "adamantine" && ((int)Math.random()*2) == 0)) {
-	if (mat.thingType.equals("light") || (Math.random() > .5 && mat.thingType.equals("both"))) {
+	this.matType = extra.randList(mat.typeList);
+	if (matType.equals("light")){
 		switch (armorType) {//adamantine can be either
 			case 0: baseName = (String)extra.choose("hood"); weight = 2; baseResist = 1; cost = 1;break;
 			case 1: baseName = (String)extra.choose("gloves","gloves","gloves","fingerless gloves"); weight = 2; baseResist = 1; cost = 1;break;
@@ -72,6 +78,7 @@ public class Armor extends Item {
 			case 4: baseName = (String)extra.choose("boots","slippers","shoes"); weight = 4; baseResist = 2; cost = 2;break;
 		}
 	}else {
+		if (matType.equals("heavy")) {
 		switch (armorType) {
 			case 0: baseName = (String)extra.choose("helmet","helm","cap","hat","mask"); weight = 2; baseResist = 1; cost = 1;break;
 			case 1: baseName = (String)extra.choose("bracers","gauntlets"); weight = 2; baseResist = 1; cost = 1;break;
@@ -79,13 +86,29 @@ public class Armor extends Item {
 			case 3: baseName = (String)extra.choose("greaves"); weight = 6; baseResist = 3; cost = 3;break;
 			case 4: baseName = (String)extra.choose("boots","shoes","high boots","low boots"); weight = 4; baseResist = 2; cost = 2;break;
 		}
+		}else {
+			if (matType.equals("chainmail")) {
+				
+				switch (armorType) {
+				case 0: baseName = (String)extra.choose("mail hood"); weight = 2; baseResist = 1; cost = 1;break;
+				case 1: baseName = (String)extra.choose("mail gloves"); weight = 2; baseResist = 1; cost = 1;break;
+				case 2: baseName = (String)extra.choose("mail shirt"); weight = 10; baseResist = 4; cost = 3;break;
+				case 3: baseName = (String)extra.choose("mail greaves"); weight = 6; baseResist = 3; cost = 3;break;
+				case 4: baseName = (String)extra.choose("mail boots"); weight = 4; baseResist = 2; cost = 2;break;
+			}
+				weight*=2;
+				sharpResist*=1.5;
+				pierceResist*=.5;
+				
+			}
+		}
 	}
 	
 		baseEnchant = mat.baseEnchant;
 		baseResist *= mat.baseResist;
-		sharpResist = mat.sharpResist;
-		bluntResist = mat.bluntResist;
-		pierceResist = mat.pierceResist;
+		sharpResist *= mat.sharpResist;
+		bluntResist *= mat.bluntResist;
+		pierceResist *= mat.pierceResist;
 		burnMod = mat.fireVul;
 		shockMod = mat.shockVul;
 		freezeMod = mat.freezeVul;
