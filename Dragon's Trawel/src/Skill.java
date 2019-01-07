@@ -17,6 +17,7 @@ public enum Skill implements java.io.Serializable{
 		ARMORSPEED("Glancing Blow","Attack sooner after your armor blocks an attack.",Type.FIGHTER,5),
 		
 		BERSERKER("Berserker","Remove examine from possible attacks you can make.",Type.FIGHTER,6),
+		DSTRIKE("Decisive Strike","Instantly kill anyone you damage by more than 80% in one blow.",Type.FIGHTER,6),
 		//LAST_STAND("Last Stand","When reduced to 0 hp or lower, stay alive at 1 hp.",Type.FIGHTER,3),
 		
 		
