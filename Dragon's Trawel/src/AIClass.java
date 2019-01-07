@@ -169,6 +169,7 @@ public class AIClass {
 			}
 		}
 		if (smarts < 0) {
+			Networking.charUpdate();
 			if (Player.hasSkill(Skill.LOOTER)) {
 				stash.addGold(10);
 				extra.println("You take the extra coins they had stored away in their " + extra.choose("spleen","appendix","imagination","lower left thigh","no-no place","closed eyes") + ". +10 gold");
