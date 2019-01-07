@@ -182,6 +182,10 @@ public class mainGame {
 				extra.println("Our first fighter is " + first_man.getName()  + ". " +extra.choose("They hail from the","They come from the","They are from the","The place they call home is the") + " " + first_man.whereFrom() + ".");
 				extra.println("Our second fighter is " + second_man.getName()  + ". " +extra.choose("They hail from the","They come from the","They are from the","The place they call home is the") + " " + second_man.whereFrom() + ".");
 				extra.println();
+				if (first_man.isPlayer()) {
+					first_man.getBag().graphicalDisplay(-1);
+					second_man.getBag().graphicalDisplay(1);
+				}
 				new Combat(first_man,second_man, w);//////
 				if (first_man.getHp() <= 0) {
 					holdPerson = second_man;
@@ -217,6 +221,9 @@ public class mainGame {
 					if (Player.player.wins == 1000) {
 						Player.player.addTitle("master duelist");
 					}
+					}
+					if (first_man.isPlayer()) {
+						Networking.clearSide(1);
 					}
 				return first_man;
 		}

@@ -313,7 +313,7 @@ public class Inventory implements java.io.Serializable{
 		Networking.sendStrong("ClearInv|"+side+"|");
 		Networking.sendStrong("AddInv|"+side+"|" +race.name +"|"+race.baseMap+"|"+raceMap+"|1|");
 		for (Armor a: armorSlots) {
-			String str = "AddInv|"+side+"|" +a.getBaseName() +"|iron|"+a.getMaterial()+"|";
+			String str = "AddInv|"+side+"|" +a.getBaseName().replace(' ','_') +"|iron|"+a.getMaterial().replace(' ','_')+"|";
 			switch (a.getArmorType()) {
 			case 0:str+= "-6|"; //head
 			case 1:str+= "-5|"; //arms
@@ -325,7 +325,7 @@ public class Inventory implements java.io.Serializable{
 			Networking.sendStrong(str);
 		}
 		
-		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName() +"|iron|"+hand.getMaterial()+"|-4");
+		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMaterial().replace(' ','_')+"|-4");
 	}
 	
 

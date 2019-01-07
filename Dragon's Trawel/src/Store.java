@@ -121,6 +121,7 @@ public class Store extends Feature implements java.io.Serializable{
 	}
 	
 	public void storeFront() {
+		Networking.charUpdate();
 		extra.println("You have " + Player.bag.getGold() + " gold.");
 		int j = 1;
 		extra.println(j + " examine all");j++;

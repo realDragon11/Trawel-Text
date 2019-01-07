@@ -12,6 +12,7 @@ public class Appraiser extends Feature {
 	
 	@Override
 	public void go() {
+		Networking.sendStrong("Discord|imagesmall|icon|Appraiser|");
 		int in = 0;
 		while (in != 7) {
 		extra.println("1 head");

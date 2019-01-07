@@ -100,4 +100,14 @@ public class Networking {
 		int out = (blue << 16) | (green << 8) | (red << 0);
 		Networking.send("Color|" + out +"|");
 	}
+
+	public static void clearSides() {
+		Networking.sendStrong("ClearInv|1|");
+		Networking.sendStrong("ClearInv|-1|");
+		
+	}
+
+	public static void clearSide(int i) {
+		Networking.sendStrong("ClearInv|"+i+"|");
+	}
 }
