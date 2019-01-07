@@ -80,11 +80,11 @@ public class Armor extends Item {
 	}else {
 		if (matType.equals("heavy")) {
 		switch (armorType) {
-			case 0: baseName = (String)extra.choose("helmet","helm","cap","hat","mask"); weight = 2; baseResist = 1; cost = 1;break;
-			case 1: baseName = (String)extra.choose("bracers","gauntlets"); weight = 2; baseResist = 1; cost = 1;break;
-			case 2: baseName = (String)extra.choose("chestplate","breastplate","cuirass"); weight = 10; baseResist = 4; cost = 3;break;
-			case 3: baseName = (String)extra.choose("greaves"); weight = 6; baseResist = 3; cost = 3;break;
-			case 4: baseName = (String)extra.choose("boots","shoes","high boots","low boots"); weight = 4; baseResist = 2; cost = 2;break;
+			case 0: baseName = (String)extra.choose("plackan helm"); weight = 2; baseResist = 1; cost = 1;break;//"helmet",,"cap","hat","mask"
+			case 1: baseName = (String)extra.choose("plackan gauntlets"); weight = 2; baseResist = 1; cost = 1;break;//"bracers",
+			case 2: baseName = (String)extra.choose("placan chestplate"); weight = 10; baseResist = 4; cost = 3;break;//,"breastplate","cuirass"
+			case 3: baseName = (String)extra.choose("placan greaves"); weight = 6; baseResist = 3; cost = 3;break;
+			case 4: baseName = (String)extra.choose("plackan boots"); weight = 4; baseResist = 2; cost = 2;break;//,"shoes","high boots","low boots"
 		}
 		}else {
 			if (matType.equals("chainmail")) {
