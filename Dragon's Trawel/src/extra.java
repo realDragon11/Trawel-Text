@@ -325,7 +325,7 @@ public class extra {
 		
 		
 		public static void specialPrint(int[] in,String...strs) {
-			int j = 0;
+			int j = 0;//TODO: fix trailing spaces
 			while (j < in.length) {
 				while(!strs[j].isEmpty() && in[j] > 0) {
 					print(strs[j].substring(0, 1));
@@ -336,7 +336,7 @@ public class extra {
 					
 					in[j] -=1;
 				}
-				if (in[j] > 0) {
+				if (in[j] > 0 && j < in.length-1) {
 					while (in[j] > 0) {
 						if (strs[j].length() > 1){
 							strs[j] = strs[j].substring(1,strs[j].length());}else {
