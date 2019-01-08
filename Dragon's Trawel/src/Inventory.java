@@ -315,11 +315,11 @@ public class Inventory implements java.io.Serializable{
 		for (Armor a: armorSlots) {
 			String str = "AddInv|"+side+"|" +a.getBaseName().replace(' ','_') +"|"+a.getBaseMap()+"|"+a.getMaterial().replace(' ','_')+"|";
 			switch (a.getArmorType()) {
-			case 0:str+= "-6|"; //head
-			case 1:str+= "-5|"; //arms
-			case 2:str+= "-3|"; //chest
-			case 3:str+= "-2|"; //legs
-			case 4:str+= "-1|"; //feet
+			case 0:str+= "-6|";break; //head
+			case 1:str+= "-5|";break; //arms
+			case 2:str+= "-3|";break; //chest
+			case 3:str+= "-2|";break; //legs
+			case 4:str+= "-1|";break; //feet
 			}
 			
 			Networking.sendStrong(str);
