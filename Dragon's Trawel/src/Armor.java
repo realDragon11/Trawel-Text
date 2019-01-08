@@ -100,6 +100,18 @@ public class Armor extends Item {
 				sharpResist*=1.5;
 				pierceResist*=.5;
 				
+			}else {
+				if (matType.equals("crystal")) {
+					
+					switch (armorType) {
+					case 0: baseName = (String)extra.choose("tevaran helmet"); weight = 2; baseResist = 1; cost = 1;break;
+					case 1: baseName = (String)extra.choose("tevaran bracers"); weight = 2; baseResist = 1; cost = 1;break;
+					case 2: baseName = (String)extra.choose("tevaran breastplate"); weight = 10; baseResist = 4; cost = 3;break;
+					case 3: baseName = (String)extra.choose("tevaran pants"); weight = 6; baseResist = 3; cost = 3;break;
+					case 4: baseName = (String)extra.choose("tevaran boots"); weight = 4; baseResist = 2; cost = 2;break;
+				}
+					cost*=1.5;
+				}
 			}
 		}
 	}
