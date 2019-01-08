@@ -71,11 +71,11 @@ public class Armor extends Item {
 	this.matType = extra.randList(mat.typeList);
 	if (matType.equals("light")){
 		switch (armorType) {//adamantine can be either
-			case 0: baseName = (String)extra.choose("hood"); weight = 2; baseResist = 1; cost = 1;break;
-			case 1: baseName = (String)extra.choose("gloves","gloves","gloves","fingerless gloves"); weight = 2; baseResist = 1; cost = 1;break;
-			case 2: baseName = (String)extra.choose("tunic","shirt","toga"); weight = 10; baseResist = 4; cost = 3;break;
-			case 3: baseName = (String)extra.choose("leggings","pants"); weight = 6; baseResist = 3; cost = 3;break;
-			case 4: baseName = (String)extra.choose("boots","slippers","shoes"); weight = 4; baseResist = 2; cost = 2;break;
+			case 0: baseName = (String)extra.choose("homan hat"); weight = 2; baseResist = 1; cost = 1;break;//"hood"
+			case 1: baseName = (String)extra.choose("homan gloves"); weight = 2; baseResist = 1; cost = 1;break;//,"gloves","gloves","fingerless gloves"
+			case 2: baseName = (String)extra.choose("homan tunic"); weight = 10; baseResist = 4; cost = 3;break;//"shirt","toga"
+			case 3: baseName = (String)extra.choose("homan pants"); weight = 6; baseResist = 3; cost = 3;break;//"leggings",
+			case 4: baseName = (String)extra.choose("homan boots"); weight = 4; baseResist = 2; cost = 2;break;//,"slippers","shoes"
 		}
 	}else {
 		if (matType.equals("heavy")) {
