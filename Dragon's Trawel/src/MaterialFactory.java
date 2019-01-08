@@ -514,6 +514,29 @@ public class MaterialFactory {
 		misc.freezeVul = 0;
 		matList.add(misc);
 		
+		misc = new Material();
+		misc.name = "nevermelt ice";
+		misc.typeList.add("crystal");
+		misc.armor = true;
+		misc.weapon = false;
+		misc.weight = 10;
+		misc.cost = 50;
+		misc.baseEnchant = 1;
+		misc.baseResist = 8;
+		misc.sharpResist = 1;
+		misc.bluntResist = 1;
+		misc.pierceResist = 1;
+		misc.dexMod = .8;
+		misc.sharpMult = 1;
+		misc.bluntMult = 1;
+		misc.pierceMult = 1;
+		misc.tier = 3;
+		misc.rarity = .2;
+		misc.fireVul = 0;
+		misc.shockVul = .5;
+		misc.freezeVul = 2;
+		matList.add(misc);
+		
 		
 		
 	}
