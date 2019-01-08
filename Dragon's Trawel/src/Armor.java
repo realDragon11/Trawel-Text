@@ -28,6 +28,7 @@ public class Armor extends Item {
 	private double burnMod, freezeMod, shockMod;
 	private double burned;
 	private String matType;//ie heavy, light, chainmail
+	private String baseMap;
 	
 	//constructors
 	
@@ -66,6 +67,8 @@ public class Armor extends Item {
 	bluntResist = 1;
 	pierceResist = 1;
 	
+	baseMap = "iron";
+	
 	//what names make sense for the given material?
 	//if (material == "leather" || material == "silk" || material == "chainmail" || material == "cloth" || (material == "adamantine" && ((int)Math.random()*2) == 0)) {
 	this.matType = extra.randList(mat.typeList);
@@ -79,11 +82,12 @@ public class Armor extends Item {
 		}
 	}else {
 		if (matType.equals("heavy")) {
+			baseMap = "iron";
 		switch (armorType) {
 			case 0: baseName = (String)extra.choose("plackan helm"); weight = 2; baseResist = 1; cost = 1;break;//"helmet",,"cap","hat","mask"
 			case 1: baseName = (String)extra.choose("plackan gauntlets"); weight = 2; baseResist = 1; cost = 1;break;//"bracers",
-			case 2: baseName = (String)extra.choose("placan chestplate"); weight = 10; baseResist = 4; cost = 3;break;//,"breastplate","cuirass"
-			case 3: baseName = (String)extra.choose("placan greaves"); weight = 6; baseResist = 3; cost = 3;break;
+			case 2: baseName = (String)extra.choose("plackan chestplate"); weight = 10; baseResist = 4; cost = 3;break;//,"breastplate","cuirass"
+			case 3: baseName = (String)extra.choose("plackan greaves"); weight = 6; baseResist = 3; cost = 3;break;
 			case 4: baseName = (String)extra.choose("plackan boots"); weight = 4; baseResist = 2; cost = 2;break;//,"shoes","high boots","low boots"
 		}
 		}else {
@@ -223,7 +227,6 @@ public class Armor extends Item {
 	
 	
 	
-	
 	/**
 	 * Get the weight of the item
 	 * @return weight (int)
@@ -333,6 +336,10 @@ public class Armor extends Item {
 
 	public String getMaterial() {
 		return material;
+	}
+
+	public String getBaseMap() {
+		return baseMap;
 	}
 	
 }

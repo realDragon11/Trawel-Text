@@ -17,8 +17,9 @@ public class RaceFactory {
 		misc.tradeMod = 1.2;
 		misc.rarity = 3;
 		misc.insultList.add("Your skin is as thin as your brain!");
-		misc.baseMap = "nada";
-		misc.raceMaps.add("nuthin");
+		misc.baseMap = "human";
+		misc.raceMaps.add("whuman");
+		misc.raceMaps.add("bhuman");
 		raceList.add(misc);
 		
 		misc = new Race();

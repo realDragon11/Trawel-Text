@@ -571,4 +571,14 @@ public class MaterialFactory {
 		}while(totalRarity > 0);
 		return mat;
 	}
+
+	public static Material getMat(String string) {
+		for (Material m: matList) {
+			if (m.name.equals(string)) {
+				return m;
+			}
+		}
+		
+		return null;
+	}
 }
