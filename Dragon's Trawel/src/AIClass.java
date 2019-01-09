@@ -40,12 +40,10 @@ public class AIClass {
 	 */
 	public static Attack chooseAttack(Stance theStance, int smarts, Combat com, Person attacker, Person defender) {
 		if (attacker.isPlayer()) {
-			int i = 3;
 			int j = 1;
 			ArrayList<Attack> attacks = theStance.giveList();
 			if (attacker.hasSkill(Skill.ELEMENTAL_MAGE)) {
-				i++;
-				
+				attacks.add(new Attack(Skill.ELEMENTAL_MAGE,attacker.getMageLevel()));
 			}
 			extra.println("     name\thit\tdelay\tsharp\tblunt\tpierce");
 			for(Attack a: attacks) {
@@ -54,7 +52,7 @@ public class AIClass {
 				j++;
 			}
 			
-			return attacks.get(extra.inInt(i));
+			return attacks.get(extra.inInt(attacks.size()));
 		}
 		if (smarts == 0){return randomAttack(theStance);}
 		return attackTest(theStance,smarts,com, attacker, defender);

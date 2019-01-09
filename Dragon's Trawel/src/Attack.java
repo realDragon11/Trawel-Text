@@ -14,6 +14,8 @@ public class Attack implements java.io.Serializable{
 	private String desc, name;
 	private Target target;
 	public Person defender;//only used for mass battles
+	private boolean isMagic;
+	private String magicDesc;
 	//constructor
 	/**
 	 * Creates an attack with the following attributes:
@@ -44,6 +46,34 @@ public class Attack implements java.io.Serializable{
 		this.desc = desc;
 		this.name = name;
 		this.target = target;
+	}
+	
+	public Attack(Skill skill, int mageLevel) {
+		//name
+		//magicDesc;
+		sharp = 0;//fire
+		blunt = 0;//shock
+		pierce = 0;//ice
+		double pow = Math.log(extra.hrandom()*mageLevel);
+		if (skill == Skill.ELEMENTAL_MAGE) {
+			speed = 100;
+			switch (extra.randRange(1,3)) {
+			case 1: 
+				sharp = (int)((pow*.2)*100);
+				magicDesc = sharp +"% fire";
+				;break;
+			case 2:
+				blunt = (int)(extra.hrandom()*mageLevel*5);
+				magicDesc = blunt + " shock";
+				;break;
+			case 3: 
+				pierce = (int)((pow*.5)*100);
+				magicDesc = pierce +"% freeze";
+				;break;
+			}
+			desc = "`X casts "+name+" at `Y!";
+			
+		}
 	}
 	
 	//instance methods
@@ -120,6 +150,7 @@ public class Attack implements java.io.Serializable{
 			extra.println(name + "\t" + extra.format(hitMod) + "\t" + speed + "\t" + sharp + "\t" + blunt + "\t" + pierce);
 		}
 		if (style == 1) {
+			if (!isMagic) {
 			int[] in = new int[6];
 			in[0] = 8+12;
 			in[1] = 7;
@@ -128,8 +159,13 @@ public class Attack implements java.io.Serializable{
 			in[4] = 10;
 			in[5] = 6+4;
 			extra.specialPrint(in,name ,extra.format(hitMod) , extra.format((speed))  , extra.format(sharp)  , extra.format(blunt)  ,  extra.format(pierce));
+			}else {
+				int[] in = new int[2];
+				in[0] = 20;
+				in[1] = 7+9+9+10+10;
+				extra.specialPrint(in, name,magicDesc);
+			}
 		}
-		
 	}
 	
 	public Attack impair() {
@@ -144,6 +180,10 @@ public class Attack implements java.io.Serializable{
 	
 	public int getSlot() {
 		return target.slot;
+	}
+
+	public boolean isMagic() {
+		return isMagic;
 	}
 
 }

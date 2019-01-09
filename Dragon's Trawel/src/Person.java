@@ -422,6 +422,10 @@ public class Person implements java.io.Serializable{
 		extra.println("Blunt: " + blunt + "/" +bluntm);
 		extra.println("Pierce: " + pierce + "/" +piercem);
 	}
+
+	public int getMageLevel() {
+		return mageLevel;
+	}
 	
 	
 }
