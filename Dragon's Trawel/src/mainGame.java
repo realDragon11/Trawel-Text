@@ -30,7 +30,16 @@ public class mainGame {
 	//script variables
 	
 	
-	
+	Person p = new Person(1);
+	Inventory bag = p.getBag();
+	extra.disablePrintSubtle();
+	bag.swapArmorSlot(new Armor(1, 0, MaterialFactory.getMat("gold")),0);
+	bag.swapArmorSlot(new Armor(1, 1, MaterialFactory.getMat("gold")),1);
+	bag.swapArmorSlot(new Armor(1, 2, MaterialFactory.getMat("iron")),2);
+	bag.swapArmorSlot(new Armor(1, 3, MaterialFactory.getMat("gold")),3);
+	bag.swapArmorSlot(new Armor(1, 4, MaterialFactory.getMat("gold")),4);
+	bag.graphicalDisplay(-1);
+	extra.enablePrintSubtle();
 	extra.changePrint(false);
 	Networking.sendStrong("Discord|desc|Main Menu|");
 	extra.println("1 Adventures (single player).");
@@ -222,7 +231,7 @@ public class mainGame {
 						Player.player.addTitle("master duelist");
 					}
 					}
-					if (first_man.isPlayer()) {
+					if (first_man.isPlayer() || second_man.isPlayer()) {
 						Networking.clearSide(1);
 					}
 				return first_man;

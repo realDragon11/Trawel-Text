@@ -313,19 +313,19 @@ public class Inventory implements java.io.Serializable{
 		Networking.sendStrong("ClearInv|"+side+"|");
 		Networking.sendStrong("AddInv|"+side+"|" +race.name +"|"+race.baseMap+"|"+raceMap+"|1|");
 		for (Armor a: armorSlots) {
-			String str = "AddInv|"+side+"|" +a.getBaseName().replace(' ','_') +"|iron|"+a.getMaterial().replace(' ','_')+"|";
+			String str = "AddInv|"+side+"|" +a.getBaseName().replace(' ','_') +"|"+a.getBaseMap()+"|"+a.getMat().palIndex+"|";
 			switch (a.getArmorType()) {
-			case 0:str+= "-6|"; //head
-			case 1:str+= "-5|"; //arms
-			case 2:str+= "-3|"; //chest
-			case 3:str+= "-2|"; //legs
-			case 4:str+= "-1|"; //feet
+			case 0:str+= "-6|";break; //head
+			case 1:str+= "-5|";break; //arms
+			case 2:str+= "-3|";break; //chest
+			case 3:str+= "-2|";break; //legs
+			case 4:str+= "-1|";break; //feet
 			}
 			
 			Networking.sendStrong(str);
 		}
 		
-		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMaterial().replace(' ','_')+"|-4");
+		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+"|-4");
 	}
 	
 

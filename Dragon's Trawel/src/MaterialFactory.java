@@ -9,7 +9,7 @@ public class MaterialFactory {
 	public MaterialFactory() {
 		Material misc = new Material();
 		misc.name = "cloth";
-		misc.thingType = "light";
+		misc.typeList.add("light");
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 2;
@@ -28,11 +28,12 @@ public class MaterialFactory {
 		misc.fireVul = 2;
 		misc.shockVul = .2;
 		misc.freezeVul = .2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
 		misc.name = "leather";
-		misc.thingType = "light";
+		misc.typeList.add("light");
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 5;
@@ -51,11 +52,14 @@ public class MaterialFactory {
 		misc.fireVul = 1.1;
 		misc.shockVul = .1;
 		misc.freezeVul = .1;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
 		misc.name = "iron";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 20;
@@ -74,11 +78,13 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.5;
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
+		/*
 		misc = new Material();
 		misc.name = "chainmail";
-		misc.thingType = "light";
+		misc.typeList.add("light");
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 25;
@@ -98,10 +104,15 @@ public class MaterialFactory {
 		misc.shockVul = 1.5;
 		misc.freezeVul = 2;
 		matList.add(misc);
+		*/
+		
 		
 		misc = new Material();
 		misc.name = "steel";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 25;
@@ -120,11 +131,16 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.5;
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
 		misc.name = "silver";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 25;
@@ -143,11 +159,16 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.8;
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
 		misc.name = "gold";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 50;
@@ -166,11 +187,12 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 2;
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
 		misc.name = "silk";
-		misc.thingType = "light";
+		misc.typeList.add("light");
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 2;
@@ -189,11 +211,16 @@ public class MaterialFactory {
 		misc.fireVul = 2;
 		misc.shockVul = .6;
 		misc.freezeVul = .6;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
 		misc.name = "platinum";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 55;
@@ -212,11 +239,16 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.6;//??
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
 		misc.name = "mythril";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 15;
@@ -235,11 +267,18 @@ public class MaterialFactory {
 		misc.fireVul = .6;
 		misc.shockVul = 1;
 		misc.freezeVul = 1.5;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
 		misc.name = "adamantine";
-		misc.thingType = "both";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("light");
+		misc.typeList.add("light");
+		misc.typeList.add("light");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 1;
@@ -258,11 +297,16 @@ public class MaterialFactory {
 		misc.fireVul = .5;
 		misc.shockVul = 0;
 		misc.freezeVul = 0;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
 		misc.name = "sunsunsteel";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = false;
 		misc.weapon = true;
 		misc.weight = 25;
@@ -281,11 +325,12 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.5;
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
 		misc.name = "ectoplasm";
-		misc.thingType = "light";
+		misc.typeList.add("light");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 2;
@@ -304,11 +349,16 @@ public class MaterialFactory {
 		misc.fireVul = 2;
 		misc.shockVul = 1;
 		misc.freezeVul = 1;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
 		misc.name = "moonsilver";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 25;
@@ -327,11 +377,16 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.8;
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
 		misc.name = "wood";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 4;
@@ -350,11 +405,16 @@ public class MaterialFactory {
 		misc.fireVul = 2;
 		misc.shockVul = 0;
 		misc.freezeVul = .5;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
 		misc.name = "solar gold";
-		misc.thingType = "heavy";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 100;
@@ -373,6 +433,128 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 2;
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
+		matList.add(misc);
+		
+		
+		misc = new Material();
+		misc.name = "diamond";
+		misc.typeList.add("crystal");
+		misc.armor = true;
+		misc.weapon = false;
+		misc.weight = 10;
+		misc.cost = 100;
+		misc.baseEnchant = 1.5;
+		misc.baseResist = 6;
+		misc.sharpResist = 4;
+		misc.bluntResist = .1;
+		misc.pierceResist = 4;
+		misc.dexMod = .8;
+		misc.sharpMult = 1;
+		misc.bluntMult = 1;
+		misc.pierceMult = 1;
+		misc.tier = 4;
+		misc.rarity = .05;
+		misc.fireVul = 0;
+		misc.shockVul = .5;
+		misc.freezeVul = .5;
+		misc.palIndex = 0;
+		matList.add(misc);
+		
+		misc = new Material();//yeah these crystal stats will be totally inaccurate
+		misc.name = "emerald";
+		misc.typeList.add("crystal");
+		misc.armor = true;
+		misc.weapon = false;
+		misc.weight = 10;
+		misc.cost = 60;
+		misc.baseEnchant = 1.5;
+		misc.baseResist = 6;
+		misc.sharpResist = 2;
+		misc.bluntResist = .5;
+		misc.pierceResist = 2;
+		misc.dexMod = .8;
+		misc.sharpMult = 1;
+		misc.bluntMult = 1;
+		misc.pierceMult = 1;
+		misc.tier = 4;
+		misc.rarity = .1;
+		misc.fireVul = .5;
+		misc.shockVul = 0;
+		misc.freezeVul = .5;
+		misc.palIndex = 0;
+		matList.add(misc);
+		
+		misc = new Material();
+		misc.name = "ruby";
+		misc.typeList.add("crystal");
+		misc.armor = true;
+		misc.weapon = false;
+		misc.weight = 10;
+		misc.cost = 60;
+		misc.baseEnchant = 2;
+		misc.baseResist = 6;
+		misc.sharpResist = 2;
+		misc.bluntResist = .1;
+		misc.pierceResist = 2;
+		misc.dexMod = .8;
+		misc.sharpMult = 1;
+		misc.bluntMult = 1;
+		misc.pierceMult = 1;
+		misc.tier = 4;
+		misc.rarity = .1;
+		misc.fireVul = 0;
+		misc.shockVul = .7;
+		misc.freezeVul = .3;
+		misc.palIndex = 0;
+		matList.add(misc);
+		
+		misc = new Material();
+		misc.name = "sapphire";
+		misc.typeList.add("crystal");
+		misc.armor = true;
+		misc.weapon = false;
+		misc.weight = 10;
+		misc.cost = 60;
+		misc.baseEnchant = 1;
+		misc.baseResist = 6;
+		misc.sharpResist = 2;
+		misc.bluntResist = .3;
+		misc.pierceResist = 2;
+		misc.dexMod = .8;
+		misc.sharpMult = 1;
+		misc.bluntMult = 1;
+		misc.pierceMult = 1;
+		misc.tier = 4;
+		misc.rarity = .1;
+		misc.fireVul = .5;
+		misc.shockVul = .5;
+		misc.freezeVul = 0;
+		misc.palIndex = 0;
+		matList.add(misc);
+		
+		misc = new Material();
+		misc.name = "nevermelt ice";
+		misc.typeList.add("crystal");
+		misc.armor = true;
+		misc.weapon = false;
+		misc.weight = 10;
+		misc.cost = 50;
+		misc.baseEnchant = 1;
+		misc.baseResist = 8;
+		misc.sharpResist = 1;
+		misc.bluntResist = 1;
+		misc.pierceResist = 1;
+		misc.dexMod = .8;
+		misc.sharpMult = 1;
+		misc.bluntMult = 1;
+		misc.pierceMult = 1;
+		misc.tier = 3;
+		misc.rarity = .2;
+		misc.fireVul = 0;
+		misc.shockVul = .5;
+		misc.freezeVul = 2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		
@@ -408,5 +590,15 @@ public class MaterialFactory {
 				
 		}while(totalRarity > 0);
 		return mat;
+	}
+
+	public static Material getMat(String string) {
+		for (Material m: matList) {
+			if (m.name.equals(string)) {
+				return m;
+			}
+		}
+		
+		return null;
 	}
 }

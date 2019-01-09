@@ -350,4 +350,8 @@ public class Weapon extends Item {
 	public void addKill() {
 		this.kills++;
 	}
+
+	public Material getMat() {
+		return mat;
+	}
 }

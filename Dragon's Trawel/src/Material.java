@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 /**
  * A flyweight class
@@ -5,11 +6,13 @@
  * 5/29/2018
  */
 public class Material implements java.io.Serializable{
-	public String name, thingType;
+	public String name;
 	public double baseResist, baseEnchant, sharpResist, bluntResist, pierceResist, weight, cost, dexMod;
 	public double rarity, tier, sharpMult, bluntMult, pierceMult;
 	public Boolean armor, weapon;
 	public double fireVul, shockVul, freezeVul;//vulernability
+	public ArrayList<String> typeList = new ArrayList<String>();
+	public int palIndex;
 
 	/**
 	Material(String name,String clothType,
