@@ -310,6 +310,7 @@ public class Combat {
 		}else {
 			//the attack is a magic spell
 			handleMagicSpell(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender);
+			song.addAttackHit(attacker,defender);
 		}
 		
 			extra.println("");
