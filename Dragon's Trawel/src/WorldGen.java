@@ -104,11 +104,11 @@ public class WorldGen {
 		
 		
 		Town arona = new Town("arona",100,pocket,new Point(1,1));
-		s = new Store(2,7);
-		arona.addFeature(s);
+		//s = new Store(2,7);
+		//arona.addFeature(s);
 		addConnection(revan,arona,"teleport","the polka-dot ritual");
 		arona.setHasTeleporters(true);
-		arona.addFeature(new Blacksmith(0,s));
+		//arona.addFeature(new Blacksmith(0,s));
 		arona.addFeature(new Champion(100));
 		
 		Island teran = new Island("teran",w);
