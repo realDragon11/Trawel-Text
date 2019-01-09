@@ -24,7 +24,7 @@ public class Person implements java.io.Serializable{
 	private String firstName,title;
 
 	private int skillPoints;
-	private int fighterLevel= 0,traderLevel = 0,explorerLevel = 0;
+	private int fighterLevel= 0,traderLevel = 0,explorerLevel = 0, mageLevel = 0;
 	private ArrayList<Skill> skills = new ArrayList<Skill>();
 	//private boolean isPlayer;
 	
@@ -187,9 +187,10 @@ public class Person implements java.io.Serializable{
 		extra.println("1 fighter");
 		extra.println("2 trader");
 		extra.println("3 explorer");
+		extra.println("4 mage");
 		extra.println("4 exit");
 		ArrayList<Skill> list = new ArrayList<Skill>();
-		switch(extra.inInt(4)) {
+		switch(extra.inInt(5)) {
 		case 1: 
 			extra.println("Fighter Class Level: " + fighterLevel);
 			for (Skill s: Skill.values()) {
@@ -201,12 +202,18 @@ public class Person implements java.io.Serializable{
 			if (s.getLevel() == traderLevel+1 && s.getType() == Skill.Type.TRADER) {
 				list.add(s);
 			}};break;
-		case 3: extra.println("Explorer Class Level: " + traderLevel); 
+		case 3: extra.println("Explorer Class Level: " + explorerLevel); 
 		for (Skill s: Skill.values()) {
 		if (s.getLevel() == explorerLevel+1 && s.getType() == Skill.Type.EXPLORER) {
 			list.add(s);
 		}};break;
-		case 4: return;
+		
+		case 4: extra.println("Maeg Class Level: " + mageLevel); 
+		for (Skill s: Skill.values()) {
+		if (s.getLevel() == mageLevel+1 && s.getType() == Skill.Type.MAGE) {
+			list.add(s);
+		}};break;
+		case 5: return;
 		}
 		extra.println("Pick a skill to buy:");
 		int i = 1;
@@ -229,6 +236,7 @@ public class Person implements java.io.Serializable{
 				case FIGHTER: fighterLevel++;break;
 				case TRADER: traderLevel++;break;
 				case EXPLORER: explorerLevel++;break;
+				case MAGE: mageLevel++;break;
 				}
 				switch (s) {
 				case INHERIT:this.bag.addGold(500);break;

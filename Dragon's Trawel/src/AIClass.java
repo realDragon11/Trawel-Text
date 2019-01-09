@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * @author Brian Malone
  * 2/8/2018
@@ -38,8 +40,21 @@ public class AIClass {
 	 */
 	public static Attack chooseAttack(Stance theStance, int smarts, Combat com, Person attacker, Person defender) {
 		if (attacker.isPlayer()) {
-			theStance.display(1);
-			return theStance.getAttack();
+			int i = 3;
+			int j = 1;
+			ArrayList<Attack> attacks = theStance.giveList();
+			if (attacker.hasSkill(Skill.ELEMENTAL_MAGE)) {
+				i++;
+				
+			}
+			extra.println("     name\thit\tdelay\tsharp\tblunt\tpierce");
+			for(Attack a: attacks) {
+				extra.print(j + "    ");
+				a.display(0);
+				j++;
+			}
+			
+			return attacks.get(extra.inInt(i));
 		}
 		if (smarts == 0){return randomAttack(theStance);}
 		return attackTest(theStance,smarts,com, attacker, defender);
