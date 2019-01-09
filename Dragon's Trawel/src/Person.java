@@ -188,7 +188,7 @@ public class Person implements java.io.Serializable{
 		extra.println("2 trader");
 		extra.println("3 explorer");
 		extra.println("4 mage");
-		extra.println("4 exit");
+		extra.println("5 exit");
 		ArrayList<Skill> list = new ArrayList<Skill>();
 		switch(extra.inInt(5)) {
 		case 1: 

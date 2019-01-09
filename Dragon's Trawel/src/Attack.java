@@ -14,7 +14,7 @@ public class Attack implements java.io.Serializable{
 	private String desc, name;
 	private Target target;
 	public Person defender;//only used for mass battles
-	private boolean isMagic;
+	private boolean isMagic = false;
 	private String magicDesc;
 	//constructor
 	/**
@@ -51,6 +51,7 @@ public class Attack implements java.io.Serializable{
 	public Attack(Skill skill, int mageLevel) {
 		//name
 		//magicDesc;
+		isMagic = true;
 		sharp = 0;//fire
 		blunt = 0;//shock
 		pierce = 0;//ice
@@ -59,14 +60,17 @@ public class Attack implements java.io.Serializable{
 			speed = 100;
 			switch (extra.randRange(1,3)) {
 			case 1: 
+				name = extra.choose("sear","flame blast","searing shot","fireball");
 				sharp = (int)((pow*.2)*100);
 				magicDesc = sharp +"% fire";
 				;break;
 			case 2:
+				name = extra.choose("shock","zap");
 				blunt = (int)(extra.hrandom()*mageLevel*5);
 				magicDesc = blunt + " shock";
 				;break;
 			case 3: 
+				extra.choose("cone of cold","freeze","permafrost");
 				pierce = (int)((pow*.5)*100);
 				magicDesc = pierce +"% freeze";
 				;break;

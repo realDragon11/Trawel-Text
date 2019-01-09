@@ -267,7 +267,7 @@ public class Combat {
 			}
 		}
 		
-		
+		if (!attacker.getNextAttack().isMagic()) {
 		int damageDone = this.handleAttack(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender);
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender,damageDone);
 		if (damageDone > 0) {
@@ -297,6 +297,10 @@ public class Combat {
 					}
 					}
 				}
+		}
+		}else {
+			//the attack is a magic spell
+			handleMagicSpell(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender);
 		}
 		
 			extra.println("");
@@ -338,6 +342,16 @@ public class Combat {
 			extra.println(defender.getHp()+"/" + defender.getMaxHp() );
 		}
 	}
+	private void handleMagicSpell(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
+		def.burn(def.getFire(att.getSlot())*(att.getSharp()/100),att.getSlot());
+		
+		defender.advanceTime(-((att.getPierce()/100)*defender.getTime()*def.getFreeze(att.getSlot())));
+		
+		defender.takeDamage((int)((att.getBlunt())*def.getShock(att.getSlot())));
+		
+	}
+
+
 	private void setAttack(Person manOne, Person manTwo) {
 		manOne.setAttack(AIClass.chooseAttack(manOne.getStance().part(manOne),manOne.getIntellect(),this,manOne,manTwo));
 		

@@ -52,7 +52,7 @@ public class AIClass {
 				j++;
 			}
 			
-			return attacks.get(extra.inInt(attacks.size()));
+			return attacks.get(extra.inInt(attacks.size()-1));
 		}
 		if (smarts == 0){return randomAttack(theStance);}
 		return attackTest(theStance,smarts,com, attacker, defender);
