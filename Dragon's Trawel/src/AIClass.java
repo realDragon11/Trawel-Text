@@ -48,11 +48,11 @@ public class AIClass {
 			extra.println("     name\thit\tdelay\tsharp\tblunt\tpierce");
 			for(Attack a: attacks) {
 				extra.print(j + "    ");
-				a.display(0);
+				a.display(1);
 				j++;
 			}
 			
-			return attacks.get(extra.inInt(attacks.size()-1));
+			return attacks.get(extra.inInt(attacks.size())-1);
 		}
 		if (smarts == 0){return randomAttack(theStance);}
 		return attackTest(theStance,smarts,com, attacker, defender);
