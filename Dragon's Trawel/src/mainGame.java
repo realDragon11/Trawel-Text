@@ -231,7 +231,7 @@ public class mainGame {
 						Player.player.addTitle("master duelist");
 					}
 					}
-					if (first_man.isPlayer()) {
+					if (first_man.isPlayer() || second_man.isPlayer()) {
 						Networking.clearSide(1);
 					}
 				return first_man;
