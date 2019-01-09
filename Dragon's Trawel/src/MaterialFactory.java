@@ -161,7 +161,7 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 2;
 		misc.freezeVul = 2;
-		misc.palIndex = 0;
+		misc.palIndex = 1;
 		matList.add(misc);
 		
 		misc = new Material();

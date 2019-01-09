@@ -74,7 +74,7 @@ public class Attack implements java.io.Serializable{
 				magicDesc = blunt + " shock";
 				;break;
 			case 3: 
-				name = extra.choose("cone of cold","freeze","permafrost");
+				name = extra.choose("cone of cold","freeze","permafrost","ray of frost");
 				pierce = (int)((pow)*100);
 				magicDesc = pierce +"% freeze";
 				;break;
