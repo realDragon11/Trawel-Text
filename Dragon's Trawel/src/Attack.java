@@ -79,7 +79,7 @@ public class Attack implements java.io.Serializable{
 				magicDesc = pierce +"% freeze";
 				;break;
 			}
-			desc = "`X casts "+name+" at `Y!";
+			desc = "X` casts "+name+" at Y`!";
 			
 		}
 		if (skill == Skill.DEATH_MAGE) {
@@ -90,7 +90,7 @@ public class Attack implements java.io.Serializable{
 			name = extra.choose("wither","halt","impair");
 			sharp = (int)((pow*.5)*100);
 			magicDesc = sharp + "% impairment";
-			desc = "`X casts "+name+" at `Y!";
+			desc = "X` casts "+name+" at Y`!";
 			break;
 			case 2:
 				name = extra.choose("harm","damage");
