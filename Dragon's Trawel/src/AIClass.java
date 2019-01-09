@@ -45,7 +45,7 @@ public class AIClass {
 			if (attacker.hasSkill(Skill.ELEMENTAL_MAGE)) {
 				attacks.add(new Attack(Skill.ELEMENTAL_MAGE,attacker.getMageLevel()));
 			}
-			extra.println("     name\thit\tdelay\tsharp\tblunt\tpierce");
+			extra.println("     name                hit    delay    sharp    blunt     pierce");
 			for(Attack a: attacks) {
 				extra.print(j + "    ");
 				a.display(1);

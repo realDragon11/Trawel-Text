@@ -51,13 +51,15 @@ public class Attack implements java.io.Serializable{
 	public Attack(Skill skill, int mageLevel) {
 		//name
 		//magicDesc;
+		hitMod = 1;
 		isMagic = true;
 		sharp = 0;//fire
 		blunt = 0;//shock
 		pierce = 0;//ice
-		double pow = Math.log(extra.hrandom()*mageLevel);
+		double pow = extra.hrandom()*Math.log(mageLevel);
 		if (skill == Skill.ELEMENTAL_MAGE) {
 			speed = 100;
+			target = TargetFactory.noTarget;
 			switch (extra.randRange(1,3)) {
 			case 1: 
 				name = extra.choose("sear","flame blast","searing shot","fireball");
