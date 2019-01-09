@@ -12,6 +12,7 @@ public class Material implements java.io.Serializable{
 	public Boolean armor, weapon;
 	public double fireVul, shockVul, freezeVul;//vulernability
 	public ArrayList<String> typeList = new ArrayList<String>();
+	public int palIndex;
 
 	/**
 	Material(String name,String clothType,

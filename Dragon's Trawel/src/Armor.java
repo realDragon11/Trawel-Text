@@ -92,7 +92,7 @@ public class Armor extends Item {
 		}
 		}else {
 			if (matType.equals("chainmail")) {
-				
+				baseMap = "iron";
 				switch (armorType) {
 				case 0: baseName = (String)extra.choose("mail hood"); weight = 2; baseResist = 1; cost = 1;break;
 				case 1: baseName = (String)extra.choose("mail gloves"); weight = 2; baseResist = 1; cost = 1;break;
@@ -340,6 +340,10 @@ public class Armor extends Item {
 
 	public String getBaseMap() {
 		return baseMap;
+	}
+
+	public Material getMat() {
+		return mat;
 	}
 	
 }

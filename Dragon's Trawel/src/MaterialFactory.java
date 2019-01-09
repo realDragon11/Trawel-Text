@@ -28,6 +28,7 @@ public class MaterialFactory {
 		misc.fireVul = 2;
 		misc.shockVul = .2;
 		misc.freezeVul = .2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
@@ -51,6 +52,7 @@ public class MaterialFactory {
 		misc.fireVul = 1.1;
 		misc.shockVul = .1;
 		misc.freezeVul = .1;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
@@ -76,6 +78,7 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.5;
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		/*
@@ -128,6 +131,7 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.5;
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
@@ -155,6 +159,7 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.8;
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
@@ -182,6 +187,7 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 2;
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
@@ -205,6 +211,7 @@ public class MaterialFactory {
 		misc.fireVul = 2;
 		misc.shockVul = .6;
 		misc.freezeVul = .6;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
@@ -232,6 +239,7 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.6;//??
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
@@ -259,6 +267,7 @@ public class MaterialFactory {
 		misc.fireVul = .6;
 		misc.shockVul = 1;
 		misc.freezeVul = 1.5;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
@@ -288,6 +297,7 @@ public class MaterialFactory {
 		misc.fireVul = .5;
 		misc.shockVul = 0;
 		misc.freezeVul = 0;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
@@ -315,6 +325,7 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.5;
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
@@ -338,6 +349,7 @@ public class MaterialFactory {
 		misc.fireVul = 2;
 		misc.shockVul = 1;
 		misc.freezeVul = 1;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
@@ -365,6 +377,7 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.8;
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
@@ -392,6 +405,7 @@ public class MaterialFactory {
 		misc.fireVul = 2;
 		misc.shockVul = 0;
 		misc.freezeVul = .5;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
@@ -419,6 +433,7 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 2;
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		
@@ -443,6 +458,7 @@ public class MaterialFactory {
 		misc.fireVul = 0;
 		misc.shockVul = .5;
 		misc.freezeVul = .5;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();//yeah these crystal stats will be totally inaccurate
@@ -466,6 +482,7 @@ public class MaterialFactory {
 		misc.fireVul = .5;
 		misc.shockVul = 0;
 		misc.freezeVul = .5;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
@@ -489,6 +506,7 @@ public class MaterialFactory {
 		misc.fireVul = 0;
 		misc.shockVul = .7;
 		misc.freezeVul = .3;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
@@ -512,6 +530,7 @@ public class MaterialFactory {
 		misc.fireVul = .5;
 		misc.shockVul = .5;
 		misc.freezeVul = 0;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		misc = new Material();
@@ -535,6 +554,7 @@ public class MaterialFactory {
 		misc.fireVul = 0;
 		misc.shockVul = .5;
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
 		matList.add(misc);
 		
 		

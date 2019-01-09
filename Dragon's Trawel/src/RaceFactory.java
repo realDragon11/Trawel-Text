@@ -18,8 +18,8 @@ public class RaceFactory {
 		misc.rarity = 3;
 		misc.insultList.add("Your skin is as thin as your brain!");
 		misc.baseMap = "human";
-		misc.raceMaps.add("whuman");
-		misc.raceMaps.add("bhuman");
+		misc.raceMaps.add("1");
+		misc.raceMaps.add("2");
 		raceList.add(misc);
 		
 		misc = new Race();
