@@ -60,7 +60,7 @@ public class Attack implements java.io.Serializable{
 		this.skill = skill;
 		double pow = extra.hrandom()*Math.log(mageLevel);
 		if (skill == Skill.ELEMENTAL_MAGE) {
-			speed = 100;
+			speed = 100+extra.randRange(0,20)-10;
 			target = TargetFactory.noTarget;
 			switch (extra.randRange(1,3)) {
 			case 1: 
@@ -83,7 +83,7 @@ public class Attack implements java.io.Serializable{
 			
 		}
 		if (skill == Skill.DEATH_MAGE) {
-			speed = 100;
+			speed = 60+extra.randRange(0,20)-10;
 			target = TargetFactory.noTarget;
 			switch (extra.randRange(1, 2)) {
 			case 1:
