@@ -70,7 +70,6 @@ public class Armor extends Item {
 	baseMap = "iron";
 	
 	//what names make sense for the given material?
-	//if (material == "leather" || material == "silk" || material == "chainmail" || material == "cloth" || (material == "adamantine" && ((int)Math.random()*2) == 0)) {
 	this.matType = extra.randList(mat.typeList);
 	if (matType.equals("light")){
 		switch (armorType) {//adamantine can be either

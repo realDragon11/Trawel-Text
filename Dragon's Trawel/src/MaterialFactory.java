@@ -81,32 +81,6 @@ public class MaterialFactory {
 		misc.palIndex = 0;
 		matList.add(misc);
 		
-		/*
-		misc = new Material();
-		misc.name = "chainmail";
-		misc.typeList.add("light");
-		misc.armor = true;
-		misc.weapon = false;
-		misc.weight = 25;
-		misc.cost = 35;
-		misc.baseEnchant = .1;
-		misc.baseResist = 8;
-		misc.sharpResist = 2;
-		misc.bluntResist = 1;
-		misc.pierceResist = .3;
-		misc.dexMod = .95;
-		misc.sharpMult = 0;
-		misc.bluntMult = 0;
-		misc.pierceMult = 0;
-		misc.tier = 2;
-		misc.rarity = .8*5;
-		misc.fireVul = .8;
-		misc.shockVul = 1.5;
-		misc.freezeVul = 2;
-		matList.add(misc);
-		*/
-		
-		
 		misc = new Material();
 		misc.name = "steel";
 		misc.typeList.add("heavy");
