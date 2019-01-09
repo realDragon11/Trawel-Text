@@ -16,6 +16,7 @@ public class Attack implements java.io.Serializable{
 	public Person defender;//only used for mass battles
 	private boolean isMagic = false;
 	private String magicDesc;
+	private Skill skill;
 	//constructor
 	/**
 	 * Creates an attack with the following attributes:
@@ -56,6 +57,7 @@ public class Attack implements java.io.Serializable{
 		sharp = 0;//fire
 		blunt = 0;//shock
 		pierce = 0;//ice
+		this.skill = skill;
 		double pow = extra.hrandom()*Math.log(mageLevel);
 		if (skill == Skill.ELEMENTAL_MAGE) {
 			speed = 100;
@@ -73,12 +75,29 @@ public class Attack implements java.io.Serializable{
 				;break;
 			case 3: 
 				name = extra.choose("cone of cold","freeze","permafrost");
-				pierce = (int)((pow*.5)*100);
+				pierce = (int)((pow)*100);
 				magicDesc = pierce +"% freeze";
 				;break;
 			}
 			desc = "`X casts "+name+" at `Y!";
 			
+		}
+		if (skill == Skill.DEATH_MAGE) {
+			speed = 100;
+			target = TargetFactory.noTarget;
+			switch (extra.randRange(1, 2)) {
+			case 1:
+			name = extra.choose("wither","halt","impair");
+			sharp = (int)((pow*.5)*100);
+			magicDesc = sharp + "% impairment";
+			desc = "`X casts "+name+" at `Y!";
+			break;
+			case 2:
+				name = extra.choose("harm","damage");
+				blunt = (int)(extra.hrandom()*mageLevel*3);
+				magicDesc = blunt + " damage";
+				;break;
+			}
 		}
 	}
 	
@@ -184,12 +203,21 @@ public class Attack implements java.io.Serializable{
 		}
 	}
 	
+	public Attack wither(double percent) {
+	percent = 1-percent;
+	return new Attack(name,hitMod*percent,speed*percent,sharp*percent,blunt*percent,pierce*percent,desc,target);	
+	}
+	
 	public int getSlot() {
 		return target.slot;
 	}
 
 	public boolean isMagic() {
 		return isMagic;
+	}
+	
+	public Skill getSkill() {
+		return skill;
 	}
 
 }

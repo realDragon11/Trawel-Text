@@ -177,6 +177,15 @@ public class Combat {
 			}
 			setAttack(quickest,otherperson);
 			quickest.getNextAttack().defender = otherperson;
+			if (quickest.hasSkill(Skill.LIFE_MAGE)) {
+				for (ArrayList<Person> list: people) {
+					if (list.contains(quickest)) {
+						for (Person p: list) {
+							if (p.getHp() < p.getMaxHp()) {p.addHp(1);}
+						}
+					}
+				}
+			}
 			
 		}
 		
@@ -343,12 +352,18 @@ public class Combat {
 		}
 	}
 	private void handleMagicSpell(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
+		if  (att.getSkill() == Skill.ELEMENTAL_MAGE) {
 		def.burn(def.getFire(att.getSlot())*(att.getSharp()/100),att.getSlot());
 		
 		defender.advanceTime(-((att.getPierce()/100)*defender.getTime()*def.getFreeze(att.getSlot())));
 		
 		defender.takeDamage((int)((att.getBlunt())*def.getShock(att.getSlot())));
-		
+		}
+		if  (att.getSkill() == Skill.DEATH_MAGE) {
+			defender.getNextAttack().wither(att.getSharp()/100);
+			if (!defender.hasSkill(Skill.LIFE_MAGE)) {
+			defender.takeDamage((int)((att.getBlunt())));}
+			}
 	}
 
 

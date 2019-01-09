@@ -45,8 +45,11 @@ public enum Skill implements java.io.Serializable{
 		
 		
 		MAGE_TRAINING("Mage Training","Unlock your inner magic potential.",Type.MAGE,1),
-
+		LIFE_MAGE("Life Mage","Unlock healing magic spells.",Type.MAGE,1),//good for out of combat
+		
 		ELEMENTAL_MAGE("Elemental Mage","Unlock elemental magic spells.",Type.MAGE,2),
+		DEATH_MAGE("Death Mage","Unlock necromantic magic spells.",Type.MAGE,2),
+		
 		
 		ENDSKILL("","",Type.FIGHTER,0);
 	    private String name,desc;
