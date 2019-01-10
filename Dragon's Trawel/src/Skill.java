@@ -56,7 +56,7 @@ public enum Skill implements java.io.Serializable{
 		PARRY("Parry","Gives you a parrying dagger.",true,Type.DEFENDER,1),
 		SHIELD("Shield","Gives you a shield.",true,Type.DEFENDER,1),
 		
-		GOOFFENSIVE("Go on the offensive","Allows you to attack with your defensive item.",false,Type.DEFENDER,2),//false for now
+		GOOFFENSIVE("Go on the offensive","Allows you to attack with your defensive item.",true,Type.DEFENDER,2),//false for now
 		
 		
 		ENDSKILL("","",false,Type.FIGHTER,0);
