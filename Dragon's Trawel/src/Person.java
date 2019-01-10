@@ -185,6 +185,8 @@ public class Person implements java.io.Serializable{
 			this.setSkillPoints(this.getSkillPoints() + 1);
 			if (this.isPlayer()) {
 				playerLevelUp();
+			}else {
+				this.AILevelUp();
 			}
 			return true;
 		}
@@ -252,23 +254,8 @@ public class Person implements java.io.Serializable{
 			
 			if (in == i) {
 				if (skillPoints > 0) {
-				skills.add(s);
 				extra.println("You spend a skillpoint to gain the "+s.getName() + " skill!");
-				skillPoints--;
-				switch (s.getType()) {
-				case FIGHTER: fighterLevel++;break;
-				case TRADER: traderLevel++;break;
-				case EXPLORER: explorerLevel++;break;
-				case MAGE: mageLevel++;break;
-				case DEFENDER: defenderLevel++;break;
-				}
-				switch (s) {
-				case INHERIT:this.bag.addGold(500);break;
-				case EXPANDER:Store.INVENTORY_SIZE++;;break;
-				case SKILLPLUS: skillPoints+=2;
-				case MAGE_TRAINING: magePow+=3;
-				default: break;
-				}
+				skillAdd(s);
 				}else {
 					extra.println("You don't have any skillpoints!");
 				}
@@ -277,6 +264,66 @@ public class Person implements java.io.Serializable{
 			i++;
 		}
 		playerLevelUp();
+	}
+	
+	private void skillAdd(Skill s) {
+		skills.add(s);
+		skillPoints--;
+		switch (s.getType()) {
+		case FIGHTER: fighterLevel++;break;
+		case TRADER: traderLevel++;break;
+		case EXPLORER: explorerLevel++;break;
+		case MAGE: mageLevel++;break;
+		case DEFENDER: defenderLevel++;break;
+		}
+		switch (s) {
+		case INHERIT:this.bag.addGold(500);break;
+		case EXPANDER:Store.INVENTORY_SIZE++;break;
+		case SKILLPLUS: skillPoints+=2;
+		case MAGE_TRAINING: magePow+=3;
+		default: break;
+		}
+	}
+	
+	public void AILevelUp() {
+		if (skillPoints > 0) {
+			ArrayList<Skill> list = new ArrayList<Skill>();
+			
+			for (Skill s: Skill.values()) {
+				switch (s.getType()) {
+				case DEFENDER:
+					if (s.getLevel() != defenderLevel+1) {
+						continue;
+					}
+					break;
+				case EXPLORER:
+					if (s.getLevel() != explorerLevel+1) {
+						continue;
+					}
+					break;
+				case FIGHTER:
+					if (s.getLevel() != fighterLevel+1) {
+						continue;
+					}
+					break;
+				case MAGE:
+					if (s.getLevel() != mageLevel+1) {
+						continue;
+					}
+					break;
+				case TRADER:
+					if (s.getLevel() != traderLevel+1) {
+						continue;
+					}
+					break;
+				}
+				list.add(s);
+			}
+			
+			skillAdd(extra.randList(list));
+			
+			AILevelUp();//recursive hack
+		}
 	}
 		
 	
