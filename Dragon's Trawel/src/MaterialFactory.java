@@ -149,9 +149,9 @@ public class MaterialFactory {
 		misc.bluntResist = 1;
 		misc.pierceResist = 1;
 		misc.dexMod = .9;
-		misc.sharpMult = 1.3;
-		misc.bluntMult = 1.1;
-		misc.pierceMult = 1.3;
+		misc.sharpMult = 1.15;
+		misc.bluntMult = 1.3;
+		misc.pierceMult = 1.15;
 		misc.tier = 3;
 		misc.rarity = 2.5;
 		misc.fireVul = .8;
