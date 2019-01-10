@@ -332,10 +332,11 @@ public class Person implements java.io.Serializable{
 				}
 				list.add(s);
 			}
-			
+			if (list.size() > 0) {
 			skillAdd(extra.randList(list));
 			
 			AILevelUp();//recursive hack
+			}
 		}
 	}
 		
@@ -529,6 +530,10 @@ public class Person implements java.io.Serializable{
 
 	public int getDefenderLevel() {
 		return defenderLevel;
+	}
+
+	public int getFighterLevel() {
+		return fighterLevel;
 	}
 	
 	

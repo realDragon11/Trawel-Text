@@ -18,6 +18,8 @@ public enum Skill implements java.io.Serializable{
 		
 		BERSERKER("Berserker","Remove examine from possible attacks you can make.",true,Type.FIGHTER,6),
 		DSTRIKE("Decisive Strike","Instantly kill anyone you damage by more than 80% in one blow.",true,Type.FIGHTER,6),
+		
+		KUNG_FU("Hand to Hand","Gain martial arts attacks.",true,Type.FIGHTER,7),
 		//LAST_STAND("Last Stand","When reduced to 0 hp or lower, stay alive at 1 hp.",Type.FIGHTER,3),
 		
 		

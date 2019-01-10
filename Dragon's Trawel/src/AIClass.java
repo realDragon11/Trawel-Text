@@ -58,18 +58,25 @@ public class AIClass {
 				Material mat = attacker.getBag().getHand().getMat();
 				if (attacker.hasSkill(Skill.SHIELD)){
 					switch (extra.randRange(1, 2)) {
-					case 1: attacks.add(new Attack("bash",1,100.0,0*mat.sharpMult*attacker.getDefenderLevel(),10*mat.bluntMult*attacker.getDefenderLevel(),0*mat.pierceMult*attacker.getDefenderLevel(),"X` bashes Y` with the their shield!").impair());
-					case 2: attacks.add(new Attack("smash",.9,90.0,0*mat.sharpMult*attacker.getDefenderLevel(),12*mat.bluntMult*attacker.getDefenderLevel(),0*mat.pierceMult*attacker.getDefenderLevel(),"X` smashes Y` with the their shield!").impair());
+					case 1: attacks.add(new Attack("bash",1,100.0,0*mat.sharpMult*attacker.getDefenderLevel(),10*mat.bluntMult*attacker.getDefenderLevel(),0*mat.pierceMult*attacker.getDefenderLevel(),"X` bashes Y` with the their shield!").impair());break;
+					case 2: attacks.add(new Attack("smash",.9,90.0,0*mat.sharpMult*attacker.getDefenderLevel(),12*mat.bluntMult*attacker.getDefenderLevel(),0*mat.pierceMult*attacker.getDefenderLevel(),"X` smashes Y` with the their shield!").impair());break;
 					}
 				}else {
 					if (attacker.hasSkill(Skill.PARRY)){
 						switch (extra.randRange(1, 3)) {
-						case 1: attacks.add(new Attack("slice",1,90.0,10*mat.sharpMult*attacker.getDefenderLevel(),0*mat.bluntMult*attacker.getDefenderLevel(),0*mat.pierceMult*attacker.getDefenderLevel(),"X` slices Y` with the their parrying dagger!").impair());
-						case 2: attacks.add(new Attack("dice",.8,70.0,8*mat.sharpMult*attacker.getDefenderLevel(),0*mat.bluntMult*attacker.getDefenderLevel(),0*mat.pierceMult*attacker.getDefenderLevel(),"X` dices Y` with the their parrying dagger!").impair());
-						case 3: attacks.add(new Attack("stab",1.1,90.0,0*mat.sharpMult*attacker.getDefenderLevel(),0*mat.bluntMult*attacker.getDefenderLevel(),8*mat.pierceMult*attacker.getDefenderLevel(),"X` slices Y` with the their parrying dagger!").impair());
+						case 1: attacks.add(new Attack("slice",1,90.0,10*mat.sharpMult*attacker.getDefenderLevel(),0*mat.bluntMult*attacker.getDefenderLevel(),0*mat.pierceMult*attacker.getDefenderLevel(),"X` slices Y` with the their parrying dagger!").impair());break;
+						case 2: attacks.add(new Attack("dice",.8,70.0,8*mat.sharpMult*attacker.getDefenderLevel(),0*mat.bluntMult*attacker.getDefenderLevel(),0*mat.pierceMult*attacker.getDefenderLevel(),"X` dices Y` with the their parrying dagger!").impair());break;
+						case 3: attacks.add(new Attack("stab",1.1,90.0,0*mat.sharpMult*attacker.getDefenderLevel(),0*mat.bluntMult*attacker.getDefenderLevel(),8*mat.pierceMult*attacker.getDefenderLevel(),"X` stabs at Y` with the their parrying dagger!").impair());break;
 						}
 					}
 				}
+			}
+			if (attacker.hasSkill(Skill.KUNG_FU)) {
+			switch (extra.randRange(1,3)) {
+			case 1: attacks.add(new Attack("kick",1,100.0,0*attacker.getFighterLevel(),10*attacker.getFighterLevel(),0*attacker.getDefenderLevel(),"X` kicks Y` with the their feet!").impair());break;
+			case 2: attacks.add(new Attack("punch",.9,90.0,0*attacker.getFighterLevel(),12*attacker.getFighterLevel(),0*attacker.getDefenderLevel(),"X` punches Y` with the their fist!").impair());break;
+			case 3: attacks.add(new Attack("bite",.8,120.0,0*attacker.getFighterLevel(),4*attacker.getFighterLevel(),5*attacker.getDefenderLevel(),"X` bites Y` with the their teeth!").impair());break;
+			}
 			}
 			if (attacker.isPlayer()) {
 			extra.println("     name                hit    delay    sharp    blunt     pierce");
