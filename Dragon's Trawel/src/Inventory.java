@@ -491,9 +491,9 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	
-	public void resetArmor() {
+	public void resetArmor(int i) {
 		for (Armor a: armorSlots) {
-			a.resetArmor();
+			a.resetArmor(i);
 		}
 	}
 

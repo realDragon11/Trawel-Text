@@ -119,11 +119,14 @@ public class Person implements java.io.Serializable{
 				hp+=level*5;
 			}	
 		}
+		if (this.hasSkill(Skill.LIFE_MAGE)) {
+			hp+=this.getMageLevel();
+		}
 		hp+=skillPoints;
 		tempMaxHp = hp;
 		speedFill = -1;
 		isAttacking = false;
-		bag.resetArmor();
+		bag.resetArmor(this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0);
 		Boolean print = extra.getPrint();
 		extra.changePrint(true);
 		AIClass.checkYoSelf(this);

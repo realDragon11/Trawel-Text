@@ -188,10 +188,10 @@ public class Armor extends Item {
 		return pierceResist;
 	}
 	
-	public void resetArmor() {
-		sharpActive = sharpResist*baseResist;
-		pierceActive = pierceResist*baseResist;
-		bluntActive = bluntResist*baseResist;
+	public void resetArmor(int i) {
+		sharpActive = sharpResist*baseResist+i;
+		pierceActive = pierceResist*baseResist+i;
+		bluntActive = bluntResist*baseResist+i;
 		burned = 1;
 	}
 	
