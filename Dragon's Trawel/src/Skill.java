@@ -22,6 +22,8 @@ public enum Skill implements java.io.Serializable{
 		KUNG_FU("Hand to Hand","Gain martial arts attacks.",true,Type.FIGHTER,7),
 		//LAST_STAND("Last Stand","When reduced to 0 hp or lower, stay alive at 1 hp.",Type.FIGHTER,3),
 		
+		IOFF_TRAINING("Offensive Training","Hone your combat skills.",true,Type.FIGHTER,8),
+		
 		
 		
 		
@@ -55,12 +57,16 @@ public enum Skill implements java.io.Serializable{
 		ARMOR_MAGE("Armor Mage","Unlock armor repairing magic spells.",false,Type.MAGE,2),
 		ILLUSION_MAGE("Illusion Mage","Unlocks the befuddle spell.",false,Type.MAGE,2),
 		
+		IMAG_TRAINING("Mage Training","Hone your magic skills.",true,Type.MAGE,3),
+		
 		
 		PARRY("Parry","Gives you a parrying dagger.",true,Type.DEFENDER,1),
 		SHIELD("Shield","Gives you a shield.",true,Type.DEFENDER,1),
 		
 		GOOFFENSIVE("Go on the offensive","Allows you to attack with your defensive item.",true,Type.DEFENDER,2),
 		DEFENSIVE_TRAINING("Stay on the defensive","Unlocks your defensive potential.",true,Type.DEFENDER,2),
+		
+		IDEF_TRAINING("Defensive Training","Hone your defensive skills.",true,Type.DEFENDER,3),
 		
 		ENDSKILL("","",false,Type.FIGHTER,0);
 	    private String name,desc;
