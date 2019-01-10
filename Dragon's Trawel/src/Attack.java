@@ -86,7 +86,7 @@ public class Attack implements java.io.Serializable{
 		if (skill == Skill.DEATH_MAGE) {
 			speed = 60+extra.randRange(0,20)-10;
 			target = TargetFactory.randTarget();
-			desc = "X` casts "+name+" at Y`!";
+			
 			switch (extra.randRange(1, 2)) {
 			case 1:
 			name = extra.choose("wither","halt","impair");
@@ -100,6 +100,7 @@ public class Attack implements java.io.Serializable{
 				magicDesc = blunt + " damage";
 				;break;
 			}
+			desc = "X` casts "+name+" at Y`!";
 		}
 		
 		if (skill == Skill.ARMOR_MAGE) {

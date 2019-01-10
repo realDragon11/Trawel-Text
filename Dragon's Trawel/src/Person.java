@@ -43,6 +43,7 @@ public class Person implements java.io.Serializable{
 	if (extra.chanceIn(1,5)) {
 		racist = true;
 	}
+	this.magePow = bag.getRace().magicPower;
 	}
 	
 	//instance methods
