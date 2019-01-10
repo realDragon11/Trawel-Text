@@ -366,6 +366,9 @@ public class Combat {
 			if (!defender.hasSkill(Skill.LIFE_MAGE)) {
 			defender.takeDamage((int)((att.getBlunt())));}
 			}
+		if(att.getSkill() == Skill.ARMOR_MAGE) {
+			off.restoreArmor(((double)att.getSharp())/100);
+		}
 	}
 
 

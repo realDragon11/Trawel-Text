@@ -367,6 +367,10 @@ public class extra {
 			return list.get(randRange(0,list.size()-1));
 			
 		}
+
+		public static double clamp(double d, double i, double j) {
+			return Math.min(j, Math.max(d, i));
+		}
 		
 }
 

@@ -49,6 +49,7 @@ public enum Skill implements java.io.Serializable{
 		
 		ELEMENTAL_MAGE("Elemental Mage","Unlock elemental magic spells.",Type.MAGE,2),
 		DEATH_MAGE("Death Mage","Unlock necromantic magic spells.",Type.MAGE,2),
+		ARMOR_MAGE("Armor Mage","Unlock armor repairing magic spells.",Type.MAGE,2),
 		
 		
 		ENDSKILL("","",Type.FIGHTER,0);

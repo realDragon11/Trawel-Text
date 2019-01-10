@@ -538,4 +538,11 @@ public class Inventory implements java.io.Serializable{
 		return null;
 	}
 
+	public void restoreArmor(double d) {
+		for (Armor a: armorSlots) {
+			a.restoreArmor(d);
+		}
+		
+	}
+
 }

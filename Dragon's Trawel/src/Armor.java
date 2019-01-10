@@ -344,5 +344,10 @@ public class Armor extends Item {
 	public Material getMat() {
 		return mat;
 	}
+
+	public void restoreArmor(double d) {
+		burned+=d;
+		burned = extra.clamp(burned,0,1);
+	}
 	
 }
