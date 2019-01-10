@@ -58,6 +58,7 @@ public class Attack implements java.io.Serializable{
 		blunt = 0;//shock
 		pierce = 0;//ice
 		this.skill = skill;
+		desc = "ERROR";
 		double pow = extra.hrandom()*Math.log(mageLevel);
 		if (skill == Skill.ELEMENTAL_MAGE) {
 			speed = 100+extra.randRange(0,20)-10;
@@ -85,12 +86,13 @@ public class Attack implements java.io.Serializable{
 		if (skill == Skill.DEATH_MAGE) {
 			speed = 60+extra.randRange(0,20)-10;
 			target = TargetFactory.randTarget();
+			desc = "X` casts "+name+" at Y`!";
 			switch (extra.randRange(1, 2)) {
 			case 1:
 			name = extra.choose("wither","halt","impair");
 			sharp = (int)((pow*.5)*100);
 			magicDesc = sharp + "% impairment";
-			desc = "X` casts "+name+" at Y`!";
+			
 			break;
 			case 2:
 				name = extra.choose("harm","damage");
