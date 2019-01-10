@@ -52,8 +52,9 @@ public enum Skill implements java.io.Serializable{
 		ARMOR_MAGE("Armor Mage","Unlock armor repairing magic spells.",Type.MAGE,2),
 		
 		PARRY("Parry","Gives you a parrying dagger.",Type.DEFENDER,1),
+		SHIELD("Shield","Gives you a shield.",Type.DEFENDER,1),
 		
-		SHIELD("Shield","Replaces your parrying dagger with a shield.",Type.DEFENDER,2),
+		GOOFFENSIVE("Go on the offensive","Allows you to attack with your defensive item.",Type.DEFENDER,2),
 		
 		
 		ENDSKILL("","",Type.FIGHTER,0);

@@ -464,6 +464,10 @@ public class Person implements java.io.Serializable{
 			this.setSkillPoints(this.getSkillPoints() + 1);
 		}
 	}
+
+	public int getDefenderLevel() {
+		return defenderLevel;
+	}
 	
 	
 }
