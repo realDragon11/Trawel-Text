@@ -325,7 +325,7 @@ public class Inventory implements java.io.Serializable{
 			Networking.sendStrong(str);
 		}
 		if (p.hasSkill(Skill.SHIELD)) {
-			Networking.sendStrong("AddInv|"+side+"|shield|iron|"+hand.getMat().palIndex+"|-4|");
+			Networking.sendStrong("AddInv|"+side+"|shield|iron|"+hand.getMat().palIndex+"|-7|");
 		}else {
 		if (p.hasSkill(Skill.PARRY)) {
 			Networking.sendStrong("AddInv|"+side+"|parry|iron|"+hand.getMat().palIndex+"|-4|");
