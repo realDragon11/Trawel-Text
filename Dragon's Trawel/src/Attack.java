@@ -111,6 +111,13 @@ public class Attack implements java.io.Serializable{
 			sharp = (int)((pow*.4)*100);
 			magicDesc = sharp + "% repair";
 		}
+		if (skill == Skill.ILLUSION_MAGE) {
+			speed = 60+extra.randRange(0,20)-10;
+			target = TargetFactory.randTarget();
+			name = extra.choose("befuddle","confuse");
+			desc = "X` casts "+name+"!";
+			magicDesc = "";
+		}
 	}
 	
 	//instance methods

@@ -51,6 +51,9 @@ public class AIClass {
 			if (attacker.hasSkill(Skill.ARMOR_MAGE)) {
 				attacks.add(new Attack(Skill.ARMOR_MAGE,attacker.getMageLevel()));
 			}
+			if (attacker.hasSkill(Skill.ILLUSION_MAGE)) {
+				attacks.add(new Attack(Skill.ILLUSION_MAGE,attacker.getMageLevel()));
+			}
 			if (attacker.hasSkill(Skill.GOOFFENSIVE)) {
 				Material mat = attacker.getBag().getHand().getMat();
 				if (attacker.hasSkill(Skill.SHIELD)){

@@ -11,6 +11,7 @@ public class Combat {
 	private Person defender;
 	public ArrayList<Person> survivors;
 	public ArrayList<Person> killed;
+	private boolean newTarget = false;
 	//constructor
 	/**
 	 * Holds a fight to the death, between two people.
@@ -134,6 +135,7 @@ public class Combat {
 			
 			Person defender = quickest.getNextAttack().defender;
 			boolean wasAlive = defender.isAlive();
+			newTarget = false;
 			handleTurn(quickest,defender,song);
 			if (!defender.isAlive() && wasAlive) {
 				extra.println("They die!");
@@ -145,6 +147,23 @@ public class Combat {
 					if (list.contains(defender)) {
 						list.remove(defender);
 						break;
+					}
+				}
+			}else {
+				if (newTarget) {
+					//the defender has been befuddled
+					Person otherperson = null;
+					while (otherperson == null) {
+						int rand = extra.randRange(0,size-1);
+						ArrayList<Person> otherpeople = people[rand];
+						if ((otherpeople.contains(defender) && extra.chanceIn(3,quickest.getMageLevel()+3)) || otherpeople.size() == 0) {
+							continue;
+						}
+						otherperson = extra.randList(otherpeople);
+						if (otherperson == defender) {
+							continue;
+						}
+						defender.getNextAttack().defender = otherperson;
 					}
 				}
 			}
@@ -368,6 +387,9 @@ public class Combat {
 			}
 		if(att.getSkill() == Skill.ARMOR_MAGE) {
 			off.restoreArmor(((double)att.getSharp())/100);
+		}
+		if(att.getSkill() == Skill.ILLUSION_MAGE) {
+			newTarget = true;
 		}
 	}
 
