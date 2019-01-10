@@ -276,7 +276,7 @@ public class Inventory implements java.io.Serializable{
 	
 	}
 	
-	public void graphicalDisplay(int side, Person p) {//TODO: add them in the right layer order, or set their depth 
+	public void graphicalDisplay(int side, Person p) { 
 		Networking.sendStrong("ClearInv|"+side+"|");
 		Networking.sendStrong("AddInv|"+side+"|" +race.name +"|"+race.baseMap+"|"+raceMap+"|1|");
 		for (Armor a: armorSlots) {

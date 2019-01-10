@@ -61,9 +61,9 @@ public class AIClass {
 				}else {
 					if (attacker.hasSkill(Skill.PARRY)){
 						switch (extra.randRange(1, 3)) {
-						case 1: attacks.add(new Attack("slice",1,100.0,10*mat.sharpMult*attacker.getDefenderLevel(),0*mat.bluntMult*attacker.getDefenderLevel(),0*mat.pierceMult*attacker.getDefenderLevel(),"X` slices Y` with the their parrying dagger!").impair());
+						case 1: attacks.add(new Attack("slice",1,90.0,10*mat.sharpMult*attacker.getDefenderLevel(),0*mat.bluntMult*attacker.getDefenderLevel(),0*mat.pierceMult*attacker.getDefenderLevel(),"X` slices Y` with the their parrying dagger!").impair());
 						case 2: attacks.add(new Attack("dice",.8,70.0,8*mat.sharpMult*attacker.getDefenderLevel(),0*mat.bluntMult*attacker.getDefenderLevel(),0*mat.pierceMult*attacker.getDefenderLevel(),"X` dices Y` with the their parrying dagger!").impair());
-						case 3: attacks.add(new Attack("stab",1.1,100.0,0*mat.sharpMult*attacker.getDefenderLevel(),0*mat.bluntMult*attacker.getDefenderLevel(),8*mat.pierceMult*attacker.getDefenderLevel(),"X` slices Y` with the their parrying dagger!").impair());
+						case 3: attacks.add(new Attack("stab",1.1,90.0,0*mat.sharpMult*attacker.getDefenderLevel(),0*mat.bluntMult*attacker.getDefenderLevel(),8*mat.pierceMult*attacker.getDefenderLevel(),"X` slices Y` with the their parrying dagger!").impair());
 						}
 					}
 				}

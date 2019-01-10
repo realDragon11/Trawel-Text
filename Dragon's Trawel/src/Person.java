@@ -135,7 +135,7 @@ public class Person implements java.io.Serializable{
 			p+=8*defenderLevel;
 		}else {
 			if (this.hasSkill(Skill.PARRY)) {
-				s+=6*defenderLevel;
+				s+=12*(defenderLevel);//want to make skill matter more but don't want to exponent it
 			}
 		}
 		bag.resetArmor(s,b,p);
