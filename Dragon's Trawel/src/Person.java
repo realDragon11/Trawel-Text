@@ -290,6 +290,9 @@ public class Person implements java.io.Serializable{
 			ArrayList<Skill> list = new ArrayList<Skill>();
 			
 			for (Skill s: Skill.values()) {
+				if (!s.getAITake()) {
+					continue;
+				}
 				switch (s.getType()) {
 				case DEFENDER:
 					if (s.getLevel() != defenderLevel+1) {
