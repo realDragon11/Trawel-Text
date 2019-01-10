@@ -188,10 +188,10 @@ public class Armor extends Item {
 		return pierceResist;
 	}
 	
-	public void resetArmor() {
-		sharpActive = sharpResist*baseResist;
-		pierceActive = pierceResist*baseResist;
-		bluntActive = bluntResist*baseResist;
+	public void resetArmor(int s, int b, int p) {
+		sharpActive = sharpResist*baseResist+s;
+		pierceActive = pierceResist*baseResist+b;
+		bluntActive = bluntResist*baseResist+p;
 		burned = 1;
 	}
 	
@@ -343,6 +343,11 @@ public class Armor extends Item {
 
 	public Material getMat() {
 		return mat;
+	}
+
+	public void restoreArmor(double d) {
+		burned+=d;
+		burned = extra.clamp(burned,0,1);
 	}
 	
 }

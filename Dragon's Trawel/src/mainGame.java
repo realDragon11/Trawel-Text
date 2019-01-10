@@ -40,8 +40,8 @@ public class mainGame {
 	bag.swapArmorSlot(new Armor(1, 3, MaterialFactory.getMat("iron")),3);
 	bag.swapArmorSlot(new Armor(1, 4, MaterialFactory.getMat("iron")),4);
 	*/
-	bag.graphicalDisplay(-1);
-	bag.graphicalDisplay(1);
+	bag.graphicalDisplay(-1,p);
+	bag.graphicalDisplay(1,p);
 	//extra.enablePrintSubtle();
 	extra.changePrint(false);
 	Networking.sendStrong("Discord|desc|Main Menu|");
@@ -141,7 +141,7 @@ public class mainGame {
 		new TauntsFactory();
 		new BookFactory();
 		story = new StoryNone();
-		extra.println("Dragon's Trawel 4.1");
+		extra.println("Dragon's Trawel v0.4.1");
 		extra.println(
 				" ___________  ___  _    _ _____ _     \r\n" + 
 				"|_   _| ___ \\/ _ \\| |  | |  ___| |    \r\n" + 
@@ -198,8 +198,8 @@ public class mainGame {
 				extra.println("Our second fighter is " + second_man.getName()  + ". " +extra.choose("They hail from the","They come from the","They are from the","The place they call home is the") + " " + second_man.whereFrom() + ".");
 				extra.println();
 				if (first_man.isPlayer()) {
-					first_man.getBag().graphicalDisplay(-1);
-					second_man.getBag().graphicalDisplay(1);
+					first_man.getBag().graphicalDisplay(-1,first_man);
+					second_man.getBag().graphicalDisplay(1,second_man);
 				}
 				new Combat(first_man,second_man, w);//////
 				if (first_man.getHp() <= 0) {
@@ -339,8 +339,8 @@ public class mainGame {
 			Person manOne, manTwo;
 			Player player;
 			while (true) {
-				 manOne = new Person(starting_level);
-				 manTwo = new Person(starting_level);
+				 manOne = new Person(starting_level,false);
+				 manTwo = new Person(starting_level,false);
 				 extra.changePrint(!printIt);
 				 manOne = CombatTwo(manOne,manTwo);
 				 extra.changePrint(false);
@@ -369,9 +369,9 @@ public class mainGame {
 			story = new StoryDeathWalker();
 			Person manOne, manTwo;
 			Player player;
-				 manOne = new Person(starting_level);
+				 manOne = new Person(starting_level,false);
 				 Person manThree = manOne;
-				 manTwo = new Person(starting_level);
+				 manTwo = new Person(starting_level,false);
 				 extra.changePrint(true);
 				 manOne = CombatTwo(manOne,manTwo);
 				 if (manOne == manThree) {

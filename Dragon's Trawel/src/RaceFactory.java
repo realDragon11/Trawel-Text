@@ -20,6 +20,7 @@ public class RaceFactory {
 		misc.baseMap = "human";
 		misc.raceMaps.add("1");
 		misc.raceMaps.add("2");
+		misc.magicPower = 1;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -36,6 +37,7 @@ public class RaceFactory {
 		misc.insultList.add("They say 'as dumb as an orc' for a reason!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
+		misc.magicPower = 0;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -53,6 +55,7 @@ public class RaceFactory {
 		misc.insultList.add("What do you want, lizard?");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
+		misc.magicPower = 1;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -70,6 +73,7 @@ public class RaceFactory {
 		misc.insultList.add("What are you going to do, stab me with your ears?");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
+		misc.magicPower = 2;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -89,6 +93,7 @@ public class RaceFactory {
 		misc.insultList.add("What are you going to do, stab me with your ears?");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
+		misc.magicPower = 1;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -106,6 +111,7 @@ public class RaceFactory {
 		misc.insultList.add("Howl somewhere else, dog!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
+		misc.magicPower = 0;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -122,6 +128,7 @@ public class RaceFactory {
 		misc.insultList.add("I'll rip that shell right off!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
+		misc.magicPower = 1;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -141,6 +148,7 @@ public class RaceFactory {
 		misc.insultList.add("You'd make a nice rug, cat.");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
+		misc.magicPower = 0;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -157,6 +165,7 @@ public class RaceFactory {
 		misc.insultList.add("Clean up after your trail!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
+		misc.magicPower = 1;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -173,6 +182,7 @@ public class RaceFactory {
 		misc.insultList.add("Look out, your hearts hanging out!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
+		misc.magicPower = 2;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -189,6 +199,7 @@ public class RaceFactory {
 		misc.insultList.add("Rattle your bones somewhere else!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
+		misc.magicPower = 0;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -205,6 +216,7 @@ public class RaceFactory {
 		misc.insultList.add("Oh good, I needed a firestarter!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
+		misc.magicPower = 2;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -221,6 +233,7 @@ public class RaceFactory {
 		misc.insultList.add("You won't be reclaiming this!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
+		misc.magicPower = 1;
 		raceList.add(misc);
 	}
 	

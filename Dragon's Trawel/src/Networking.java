@@ -87,7 +87,7 @@ public class Networking {
 	}
 
 	public static void charUpdate() {
-		Player.bag.graphicalDisplay(-1);
+		Player.bag.graphicalDisplay(-1,Player.player.getPerson());
 		//Networking.sendStrong("Discord|imagelarge|"+Player.bag.getRace().name+"|" + Player.player.getPerson().getName() + " level "+ Player.player.getPerson().getLevel() +"|/");//replace icon with player.player.race later
 		Networking.sendStrong("Discord|imagelarge|icon|" + Player.player.getPerson().getName() + " level "+ Player.player.getPerson().getLevel() +"|");//replace icon with player.player.race later
 	}

@@ -24,12 +24,13 @@ public class Person implements java.io.Serializable{
 	private String firstName,title;
 
 	private int skillPoints;
-	private int fighterLevel= 0,traderLevel = 0,explorerLevel = 0, mageLevel = 0, magePow = 0;
+	private int fighterLevel= 0,traderLevel = 0,explorerLevel = 0, mageLevel = 0, magePow = 0, defenderLevel = 0;
 	private ArrayList<Skill> skills = new ArrayList<Skill>();
+	private boolean noAILevel;
 	//private boolean isPlayer;
 	
 	//Constructor
-	public Person(int level) {
+	public Person(int level, boolean aiLevel) {
 	maxHp = 40*level;//doesn't get all the hp it would naturally get
 	hp = maxHp;
 	intellect = level;
@@ -43,6 +44,15 @@ public class Person implements java.io.Serializable{
 	if (extra.chanceIn(1,5)) {
 		racist = true;
 	}
+	this.magePow = bag.getRace().magicPower;
+	if (aiLevel) {
+		this.AILevelUp();
+	}
+	this.noAILevel = !aiLevel;
+	}
+	
+	public Person(int level) {
+		this(level,true);
 	}
 	
 	//instance methods
@@ -118,11 +128,26 @@ public class Person implements java.io.Serializable{
 				hp+=level*5;
 			}	
 		}
+		if (this.hasSkill(Skill.LIFE_MAGE)) {
+			hp+=this.getMageLevel();
+		}
 		hp+=skillPoints;
 		tempMaxHp = hp;
 		speedFill = -1;
 		isAttacking = false;
-		bag.resetArmor();
+		int s = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
+		int b = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
+		int p = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
+		if (this.hasSkill(Skill.SHIELD)) {
+			s+=8*defenderLevel;
+			b+=8*defenderLevel;
+			p+=8*defenderLevel;
+		}else {
+			if (this.hasSkill(Skill.PARRY)) {
+				s+=12*(defenderLevel);//want to make skill matter more but don't want to exponent it
+			}
+		}
+		bag.resetArmor(s,b,p);
 		Boolean print = extra.getPrint();
 		extra.changePrint(true);
 		AIClass.checkYoSelf(this);
@@ -169,6 +194,9 @@ public class Person implements java.io.Serializable{
 			this.setSkillPoints(this.getSkillPoints() + 1);
 			if (this.isPlayer()) {
 				playerLevelUp();
+			}else {
+				if (!noAILevel) {
+				this.AILevelUp();}
 			}
 			return true;
 		}
@@ -188,9 +216,10 @@ public class Person implements java.io.Serializable{
 		extra.println("2 trader");
 		extra.println("3 explorer");
 		extra.println("4 mage");
-		extra.println("5 exit");
+		extra.println("5 defender");
+		extra.println("6 exit");
 		ArrayList<Skill> list = new ArrayList<Skill>();
-		switch(extra.inInt(5)) {
+		switch(extra.inInt(6)) {
 		case 1: 
 			extra.println("Fighter Class Level: " + fighterLevel);
 			for (Skill s: Skill.values()) {
@@ -208,12 +237,18 @@ public class Person implements java.io.Serializable{
 			list.add(s);
 		}};break;
 		
-		case 4: extra.println("Maeg Class Level: " + mageLevel); 
+		case 4: extra.println("Mage Class Level: " + mageLevel); 
 		for (Skill s: Skill.values()) {
 		if (s.getLevel() == mageLevel+1 && s.getType() == Skill.Type.MAGE) {
 			list.add(s);
 		}};break;
-		case 5: return;
+		
+		case 5: extra.println("Defender Class Level: " + defenderLevel); 
+		for (Skill s: Skill.values()) {
+		if (s.getLevel() == defenderLevel+1 && s.getType() == Skill.Type.DEFENDER) {
+			list.add(s);
+		}};break;
+		case 6: return;
 		}
 		extra.println("Pick a skill to buy:");
 		int i = 1;
@@ -229,22 +264,8 @@ public class Person implements java.io.Serializable{
 			
 			if (in == i) {
 				if (skillPoints > 0) {
-				skills.add(s);
 				extra.println("You spend a skillpoint to gain the "+s.getName() + " skill!");
-				skillPoints--;
-				switch (s.getType()) {
-				case FIGHTER: fighterLevel++;break;
-				case TRADER: traderLevel++;break;
-				case EXPLORER: explorerLevel++;break;
-				case MAGE: mageLevel++;break;
-				}
-				switch (s) {
-				case INHERIT:this.bag.addGold(500);break;
-				case EXPANDER:Store.INVENTORY_SIZE++;;break;
-				case SKILLPLUS: skillPoints+=2;
-				case MAGE_TRAINING: magePow+=3;
-				default: break;
-				}
+				skillAdd(s);
 				}else {
 					extra.println("You don't have any skillpoints!");
 				}
@@ -253,6 +274,70 @@ public class Person implements java.io.Serializable{
 			i++;
 		}
 		playerLevelUp();
+	}
+	
+	private void skillAdd(Skill s) {
+		skills.add(s);
+		skillPoints--;
+		switch (s.getType()) {
+		case FIGHTER: fighterLevel++;break;
+		case TRADER: traderLevel++;break;
+		case EXPLORER: explorerLevel++;break;
+		case MAGE: mageLevel++;break;
+		case DEFENDER: defenderLevel++;break;
+		}
+		switch (s) {
+		case INHERIT:this.bag.addGold(500);break;
+		case EXPANDER:Store.INVENTORY_SIZE++;break;
+		case SKILLPLUS: skillPoints+=2;
+		case MAGE_TRAINING: magePow+=3;
+		default: break;
+		}
+	}
+	
+	public void AILevelUp() {
+		if (skillPoints > 0) {
+			ArrayList<Skill> list = new ArrayList<Skill>();
+			
+			for (Skill s: Skill.values()) {
+				if (!s.getAITake()) {
+					continue;
+				}
+				switch (s.getType()) {
+				case DEFENDER:
+					if (s.getLevel() != defenderLevel+1) {
+						continue;
+					}
+					break;
+				case EXPLORER:
+					if (s.getLevel() != explorerLevel+1) {
+						continue;
+					}
+					break;
+				case FIGHTER:
+					if (s.getLevel() != fighterLevel+1) {
+						continue;
+					}
+					break;
+				case MAGE:
+					if (s.getLevel() != mageLevel+1) {
+						continue;
+					}
+					break;
+				case TRADER:
+					if (s.getLevel() != traderLevel+1) {
+						continue;
+					}
+					break;
+				}
+				list.add(s);
+			}
+			if (list.size() > 0) {
+			skillAdd(extra.randList(list));
+			
+			AILevelUp();//recursive hack
+			}
+		}
 	}
 		
 	
@@ -293,8 +378,8 @@ public class Person implements java.io.Serializable{
 		extra.println("They have " + xp + "/" + level*level + " xp toward level " + (level+1) + ".");
 		extra.println("Their inventory includes " + bag.nameInventory());
 		if (beer > 0 || skills.contains(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
-		
-		
+		if (hasSkill(Skill.PARRY)) {extra.println("They have a parrying dagger.");}
+		if (hasSkill(Skill.SHIELD)) {extra.println("They have a shield.");}
 	}
 	
 	/**
@@ -345,6 +430,8 @@ public class Person implements java.io.Serializable{
 		extra.println("This is " + this.getName() +". They are a level " + this.getLevel() +" " + this.getBag().getRace().name+".");
 		extra.println("Their inventory includes: \n " + bag.nameInventory()); 
 		if (beer > 0 || skills.contains(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
+		if (hasSkill(Skill.PARRY)) {extra.println("They have a parrying dagger.");}
+		if (hasSkill(Skill.SHIELD)) {extra.println("They have a shield.");}
 	}
 	
 	public void addBeer() {
@@ -439,6 +526,14 @@ public class Person implements java.io.Serializable{
 			addXpSilent(0);//recursive level easy trick
 			this.setSkillPoints(this.getSkillPoints() + 1);
 		}
+	}
+
+	public int getDefenderLevel() {
+		return defenderLevel;
+	}
+
+	public int getFighterLevel() {
+		return fighterLevel;
 	}
 	
 	

@@ -8,6 +8,7 @@ public class Race extends Item implements java.io.Serializable{
 	public ArrayList<String> swears = new ArrayList<String>();
 	public ArrayList<String> raceMaps = new ArrayList<String>();
 	public String baseMap;
+	public int magicPower;
 	
 	
 	

@@ -81,6 +81,85 @@ public class MaterialFactory {
 		misc.palIndex = 0;
 		matList.add(misc);
 		
+		misc = new Material();//TODO: beta numbers
+		misc.name = "tin";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
+		misc.armor = true;
+		misc.weapon = true;
+		misc.weight = 20;
+		misc.cost = 15;
+		misc.baseEnchant = .3;
+		misc.baseResist = 4;
+		misc.sharpResist = 1;
+		misc.bluntResist = 1;
+		misc.pierceResist = 1;
+		misc.dexMod = .9;
+		misc.sharpMult = 1;
+		misc.bluntMult = 1;
+		misc.pierceMult = 1;
+		misc.tier = 1;
+		misc.rarity = 2.5;
+		misc.fireVul = .8;
+		misc.shockVul = 1.5;
+		misc.freezeVul = 2;
+		misc.palIndex = 0;
+		matList.add(misc);
+		
+		misc = new Material();//TODO: beta numbers
+		misc.name = "copper";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
+		misc.armor = true;
+		misc.weapon = true;
+		misc.weight = 20;
+		misc.cost = 15;
+		misc.baseEnchant = .3;
+		misc.baseResist = 4;
+		misc.sharpResist = 1;
+		misc.bluntResist = 1;
+		misc.pierceResist = 1;
+		misc.dexMod = .9;
+		misc.sharpMult = 1;
+		misc.bluntMult = 1;
+		misc.pierceMult = 1;
+		misc.tier = 1;
+		misc.rarity = 2.5;
+		misc.fireVul = .8;
+		misc.shockVul = 1.5;
+		misc.freezeVul = 2;
+		misc.palIndex = 0;
+		matList.add(misc);
+		
+		misc = new Material();//TODO: beta numbers
+		misc.name = "bronze";
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("heavy");
+		misc.typeList.add("chainmail");
+		misc.armor = true;
+		misc.weapon = true;
+		misc.weight = 30;
+		misc.cost = 40;
+		misc.baseEnchant = 0;
+		misc.baseResist = 9;
+		misc.sharpResist = 1;
+		misc.bluntResist = 1;
+		misc.pierceResist = 1;
+		misc.dexMod = .9;
+		misc.sharpMult = 1.15;
+		misc.bluntMult = 1.3;
+		misc.pierceMult = 1.15;
+		misc.tier = 3;
+		misc.rarity = 2.5;
+		misc.fireVul = .8;
+		misc.shockVul = 1.5;
+		misc.freezeVul = 2;
+		misc.palIndex = 0;
+		matList.add(misc);
+		
 		misc = new Material();
 		misc.name = "steel";
 		misc.typeList.add("heavy");
