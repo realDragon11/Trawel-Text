@@ -109,6 +109,9 @@ public class AIClass {
 				damray[i]+=100*extra.zeroOut((double)com.handleAttack(attacks.get(i),defender.getBag(),attacker.getBag(),0.05,attacker,defender));}else {
 					if (attacks.get(i).getSkill() == Skill.DEATH_MAGE) {
 						damray[i]+=100*extra.zeroOut(attacks.get(i).getBlunt());
+						if (defender.hasSkill(Skill.LIFE_MAGE)) {
+							damray[i] = 0;
+						}
 					}
 				}
 				j++;
