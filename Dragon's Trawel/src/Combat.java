@@ -107,8 +107,8 @@ public class Combat {
 			}
 			if (p.isPlayer()) {
 				otherperson.displayStatsShort();
-				p.getBag().graphicalDisplay(-1);
-				otherperson.getBag().graphicalDisplay(-1);
+				p.getBag().graphicalDisplay(-1,p);
+				otherperson.getBag().graphicalDisplay(-1,otherperson);
 			}
 			setAttack(p,otherperson);
 			p.getNextAttack().defender = otherperson;
@@ -172,8 +172,8 @@ public class Combat {
 			}
 			if (quickest.isPlayer()) {
 				otherperson.displayStatsShort();
-				quickest.getBag().graphicalDisplay(-1);
-				otherperson.getBag().graphicalDisplay(-1);
+				quickest.getBag().graphicalDisplay(-1,quickest);
+				otherperson.getBag().graphicalDisplay(-1,otherperson);
 			}
 			setAttack(quickest,otherperson);
 			quickest.getNextAttack().defender = otherperson;

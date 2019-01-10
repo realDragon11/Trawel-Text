@@ -309,7 +309,7 @@ public class Inventory implements java.io.Serializable{
 	
 	}
 	
-	public void graphicalDisplay(int side) {//TODO: add them in the right layer order, or set their depth 
+	public void graphicalDisplay(int side, Person p) {//TODO: add them in the right layer order, or set their depth 
 		Networking.sendStrong("ClearInv|"+side+"|");
 		Networking.sendStrong("AddInv|"+side+"|" +race.name +"|"+race.baseMap+"|"+raceMap+"|1|");
 		for (Armor a: armorSlots) {
@@ -324,8 +324,14 @@ public class Inventory implements java.io.Serializable{
 			
 			Networking.sendStrong(str);
 		}
+		if (p.hasSkill(Skill.SHIELD)) {
+			Networking.sendStrong("AddInv|"+side+"|shield|iron|"+hand.getMat().palIndex+"|-4|");
+		}else {
+		if (p.hasSkill(Skill.PARRY)) {
+			Networking.sendStrong("AddInv|"+side+"|parry|iron|"+hand.getMat().palIndex+"|-4|");
+		}}
 		
-		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+"|-4|");
+		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+"|2|");
 	}
 	
 

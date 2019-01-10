@@ -40,8 +40,8 @@ public class mainGame {
 	bag.swapArmorSlot(new Armor(1, 3, MaterialFactory.getMat("iron")),3);
 	bag.swapArmorSlot(new Armor(1, 4, MaterialFactory.getMat("iron")),4);
 	*/
-	bag.graphicalDisplay(-1);
-	bag.graphicalDisplay(1);
+	bag.graphicalDisplay(-1,p);
+	bag.graphicalDisplay(1,p);
 	//extra.enablePrintSubtle();
 	extra.changePrint(false);
 	Networking.sendStrong("Discord|desc|Main Menu|");
@@ -198,8 +198,8 @@ public class mainGame {
 				extra.println("Our second fighter is " + second_man.getName()  + ". " +extra.choose("They hail from the","They come from the","They are from the","The place they call home is the") + " " + second_man.whereFrom() + ".");
 				extra.println();
 				if (first_man.isPlayer()) {
-					first_man.getBag().graphicalDisplay(-1);
-					second_man.getBag().graphicalDisplay(1);
+					first_man.getBag().graphicalDisplay(-1,first_man);
+					second_man.getBag().graphicalDisplay(1,second_man);
 				}
 				new Combat(first_man,second_man, w);//////
 				if (first_man.getHp() <= 0) {
