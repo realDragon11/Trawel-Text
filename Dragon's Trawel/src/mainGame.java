@@ -330,6 +330,9 @@ public class mainGame {
 				
 				Player.player.getLocation().atTown();
 				double time = Player.popTime();
+				if (Player.hasSkill(Skill.MONEY_MAGE)) {
+					Player.bag.addGold((int) (Player.player.getPerson().getMageLevel()*time));
+				}
 				WorldGen.plane.passTime(time);
 			}
 			extra.println("You do not wake up.");
