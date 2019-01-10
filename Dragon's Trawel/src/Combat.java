@@ -353,6 +353,7 @@ public class Combat {
 		}
 	}
 	private void handleMagicSpell(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
+		extra.println(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
 		if  (att.getSkill() == Skill.ELEMENTAL_MAGE) {
 		def.burn(def.getFire(att.getSlot())*(att.getSharp()/100),att.getSlot());
 		

@@ -427,6 +427,19 @@ public class Person implements java.io.Serializable{
 	public int getMageLevel() {
 		return mageLevel+magePow;
 	}
+
+	public void addXpSilent(int x) {
+		xp += x;
+		if (xp >= level*level) {
+			xp-=level*level;
+			level++;
+			if (isPlayer() == false) {
+			intellect++;}
+			maxHp+=50;
+			addXpSilent(0);//recursive level easy trick
+			this.setSkillPoints(this.getSkillPoints() + 1);
+		}
+	}
 	
 	
 }
