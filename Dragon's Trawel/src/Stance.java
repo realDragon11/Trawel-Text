@@ -116,4 +116,8 @@ public class Stance implements java.io.Serializable{
 		return a;
 	}
 	
+	public ArrayList<Attack> giveList(){
+		return attacks;
+	}
+	
 }

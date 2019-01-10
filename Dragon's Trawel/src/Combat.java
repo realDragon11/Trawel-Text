@@ -177,6 +177,15 @@ public class Combat {
 			}
 			setAttack(quickest,otherperson);
 			quickest.getNextAttack().defender = otherperson;
+			if (quickest.hasSkill(Skill.LIFE_MAGE)) {
+				for (ArrayList<Person> list: people) {
+					if (list.contains(quickest)) {
+						for (Person p: list) {
+							if (p.getHp() < p.getMaxHp()) {p.addHp(1);}
+						}
+					}
+				}
+			}
 			
 		}
 		
@@ -267,7 +276,7 @@ public class Combat {
 			}
 		}
 		
-		
+		if (!attacker.getNextAttack().isMagic()) {
 		int damageDone = this.handleAttack(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender);
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender,damageDone);
 		if (damageDone > 0) {
@@ -297,6 +306,11 @@ public class Combat {
 					}
 					}
 				}
+		}
+		}else {
+			//the attack is a magic spell
+			handleMagicSpell(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender);
+			song.addAttackHit(attacker,defender);
 		}
 		
 			extra.println("");
@@ -338,6 +352,23 @@ public class Combat {
 			extra.println(defender.getHp()+"/" + defender.getMaxHp() );
 		}
 	}
+	private void handleMagicSpell(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
+		extra.println(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
+		if  (att.getSkill() == Skill.ELEMENTAL_MAGE) {
+		def.burn(def.getFire(att.getSlot())*(att.getSharp()/100),att.getSlot());
+		
+		defender.advanceTime(-((att.getPierce()/100)*defender.getTime()*def.getFreeze(att.getSlot())));
+		
+		defender.takeDamage((int)((att.getBlunt())*def.getShock(att.getSlot())));
+		}
+		if  (att.getSkill() == Skill.DEATH_MAGE) {
+			defender.getNextAttack().wither(att.getSharp()/100);
+			if (!defender.hasSkill(Skill.LIFE_MAGE)) {
+			defender.takeDamage((int)((att.getBlunt())));}
+			}
+	}
+
+
 	private void setAttack(Person manOne, Person manTwo) {
 		manOne.setAttack(AIClass.chooseAttack(manOne.getStance().part(manOne),manOne.getIntellect(),this,manOne,manTwo));
 		

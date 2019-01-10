@@ -325,7 +325,7 @@ public class Inventory implements java.io.Serializable{
 			Networking.sendStrong(str);
 		}
 		
-		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+"|-4");
+		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+"|-4|");
 	}
 	
 

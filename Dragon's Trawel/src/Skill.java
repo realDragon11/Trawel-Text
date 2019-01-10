@@ -41,7 +41,14 @@ public enum Skill implements java.io.Serializable{
 		
 		SHOPSENSE("Shop Sense","Tell if towns have at least one shop.",Type.EXPLORER,3),
 		ARENASENSE("Arena Sense","Tell if towns have at least one arena.",Type.EXPLORER,3),
-
+		
+		
+		
+		MAGE_TRAINING("Mage Training","Unlock your inner magic potential.",Type.MAGE,1),
+		LIFE_MAGE("Life Mage","Unlock healing magic spells.",Type.MAGE,1),//good for out of combat
+		
+		ELEMENTAL_MAGE("Elemental Mage","Unlock elemental magic spells.",Type.MAGE,2),
+		DEATH_MAGE("Death Mage","Unlock necromantic magic spells.",Type.MAGE,2),
 		
 		
 		ENDSKILL("","",Type.FIGHTER,0);
@@ -49,7 +56,7 @@ public enum Skill implements java.io.Serializable{
 	    private Type type;
 	    private int level;
 	    public enum Type{
-	    	TRADER, EXPLORER, FIGHTER;
+	    	TRADER, EXPLORER, FIGHTER, MAGE;
 	    }
 		Skill(String name,String desc,Type t, int lvl){
 			this.name = name;

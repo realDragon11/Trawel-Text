@@ -32,14 +32,17 @@ public class mainGame {
 	
 	Person p = new Person(1);
 	Inventory bag = p.getBag();
+	/*
 	extra.disablePrintSubtle();
-	bag.swapArmorSlot(new Armor(1, 0, MaterialFactory.getMat("gold")),0);
-	bag.swapArmorSlot(new Armor(1, 1, MaterialFactory.getMat("gold")),1);
+	bag.swapArmorSlot(new Armor(1, 0, MaterialFactory.getMat("iron")),0);
+	bag.swapArmorSlot(new Armor(1, 1, MaterialFactory.getMat("iron")),1);
 	bag.swapArmorSlot(new Armor(1, 2, MaterialFactory.getMat("iron")),2);
-	bag.swapArmorSlot(new Armor(1, 3, MaterialFactory.getMat("gold")),3);
-	bag.swapArmorSlot(new Armor(1, 4, MaterialFactory.getMat("gold")),4);
+	bag.swapArmorSlot(new Armor(1, 3, MaterialFactory.getMat("iron")),3);
+	bag.swapArmorSlot(new Armor(1, 4, MaterialFactory.getMat("iron")),4);
+	*/
 	bag.graphicalDisplay(-1);
-	extra.enablePrintSubtle();
+	bag.graphicalDisplay(1);
+	//extra.enablePrintSubtle();
 	extra.changePrint(false);
 	Networking.sendStrong("Discord|desc|Main Menu|");
 	extra.println("1 Adventures (single player).");
@@ -52,6 +55,7 @@ public class mainGame {
 	extra.linebreak();
 	switch(extra.inInt(8)){
 	case 1:
+		Networking.clearSides();
 		gameTypes();
 		return;     
 	case 2:
@@ -78,7 +82,7 @@ public class mainGame {
 		return;
 	
 	case 7: System.exit(0);break;
-	case 3: WorldGen.load(); adventureBody(); break;
+	case 3: Networking.clearSides(); WorldGen.load(); adventureBody(); break;
 	case 6: extra.println("Port?"); Networking.connect(extra.inInt(65535)); Networking.send("Visual|MainMenu|");return;
 	case 4: links();break;
 	case 5: credits();break;
@@ -93,14 +97,16 @@ public class mainGame {
 		
 	}
 
-
+	
 	private void gameTypes() {
 		extra.println("Choose an adventure:");
 		extra.println("1 The DeathWalker");
-		extra.println("2 DeathWalker Sandbox");
-		switch(extra.inInt(2)) {
+		extra.println("2 Eoanan Sandbox");
+		extra.println("3 Eoanan Wizard Mode");
+		switch(extra.inInt(3)) {
 		case 1: adventure1();break;
 		case 2: adventure2();break;
+		case 3: adventure3();break;
 			}
 	}
 	
@@ -303,6 +309,18 @@ public class mainGame {
 			player.setLocation(world.getStartTown());
 			WorldGen.plane.setPlayer(player);
 			player.getPerson().playerLevelUp();
+			Player.toggleTutorial();
+			adventureBody();
+		}
+		
+		public void adventure3(){
+			World world = new World(10,20,"eoano");
+			WorldGen.eoano(world);
+			Player player = randPerson(false,true);
+			player.setLocation(world.getStartTown());
+			WorldGen.plane.setPlayer(player);
+			//player.getPerson().playerLevelUp();
+			player.getPerson().addXpSilent(9999);
 			Player.toggleTutorial();
 			adventureBody();
 		}
