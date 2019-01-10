@@ -24,7 +24,7 @@ public class Person implements java.io.Serializable{
 	private String firstName,title;
 
 	private int skillPoints;
-	private int fighterLevel= 0,traderLevel = 0,explorerLevel = 0, mageLevel = 0, magePow = 0, defenderLevel = 0;
+	private int fighterLevel= 0,traderLevel = 0,explorerLevel = 0, mageLevel = 0, magePow = 0, defenderLevel = 0, defPow = 0;
 	private ArrayList<Skill> skills = new ArrayList<Skill>();
 	private boolean noAILevel;
 	//private boolean isPlayer;
@@ -45,6 +45,7 @@ public class Person implements java.io.Serializable{
 		racist = true;
 	}
 	this.magePow = bag.getRace().magicPower;
+	this.defPow = bag.getRace().defPower;
 	if (aiLevel) {
 		this.AILevelUp();
 	}
@@ -291,6 +292,7 @@ public class Person implements java.io.Serializable{
 		case EXPANDER:Store.INVENTORY_SIZE++;break;
 		case SKILLPLUS: skillPoints+=2;
 		case MAGE_TRAINING: magePow+=3;
+		case DEFENSIVE_TRAINING: defPow+=3;
 		default: break;
 		}
 	}
@@ -529,7 +531,7 @@ public class Person implements java.io.Serializable{
 	}
 
 	public int getDefenderLevel() {
-		return defenderLevel;
+		return defenderLevel+defPow;
 	}
 
 	public int getFighterLevel() {
