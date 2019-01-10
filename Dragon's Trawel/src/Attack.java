@@ -187,10 +187,11 @@ public class Attack implements java.io.Serializable{
 			in[5] = 6+4;
 			extra.specialPrint(in,name ,extra.format(hitMod) , extra.format((speed))  , extra.format(sharp)  , extra.format(blunt)  ,  extra.format(pierce));
 			}else {
-				int[] in = new int[2];
-				in[0] = 20;
-				in[1] = 7+9+9+10+10;
-				extra.specialPrint(in, name,magicDesc);
+				int[] in = new int[3];
+				in[0] = 20+7;
+				in[1] = 9;
+				in[2] = 9+10+10;
+				extra.specialPrint(in, name,extra.format(speed),magicDesc);
 			}
 		}
 	}
