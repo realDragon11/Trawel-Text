@@ -339,8 +339,8 @@ public class mainGame {
 			Person manOne, manTwo;
 			Player player;
 			while (true) {
-				 manOne = new Person(starting_level);
-				 manTwo = new Person(starting_level);
+				 manOne = new Person(starting_level,false);
+				 manTwo = new Person(starting_level,false);
 				 extra.changePrint(!printIt);
 				 manOne = CombatTwo(manOne,manTwo);
 				 extra.changePrint(false);
@@ -369,9 +369,9 @@ public class mainGame {
 			story = new StoryDeathWalker();
 			Person manOne, manTwo;
 			Player player;
-				 manOne = new Person(starting_level);
+				 manOne = new Person(starting_level,false);
 				 Person manThree = manOne;
-				 manTwo = new Person(starting_level);
+				 manTwo = new Person(starting_level,false);
 				 extra.changePrint(true);
 				 manOne = CombatTwo(manOne,manTwo);
 				 if (manOne == manThree) {

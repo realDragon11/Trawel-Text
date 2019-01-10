@@ -26,10 +26,11 @@ public class Person implements java.io.Serializable{
 	private int skillPoints;
 	private int fighterLevel= 0,traderLevel = 0,explorerLevel = 0, mageLevel = 0, magePow = 0, defenderLevel = 0;
 	private ArrayList<Skill> skills = new ArrayList<Skill>();
+	private boolean noAILevel;
 	//private boolean isPlayer;
 	
 	//Constructor
-	public Person(int level) {
+	public Person(int level, boolean aiLevel) {
 	maxHp = 40*level;//doesn't get all the hp it would naturally get
 	hp = maxHp;
 	intellect = level;
@@ -44,6 +45,14 @@ public class Person implements java.io.Serializable{
 		racist = true;
 	}
 	this.magePow = bag.getRace().magicPower;
+	if (aiLevel) {
+		this.AILevelUp();
+	}
+	this.noAILevel = !aiLevel;
+	}
+	
+	public Person(int level) {
+		this(level,true);
 	}
 	
 	//instance methods
@@ -186,7 +195,8 @@ public class Person implements java.io.Serializable{
 			if (this.isPlayer()) {
 				playerLevelUp();
 			}else {
-				this.AILevelUp();
+				if (!noAILevel) {
+				this.AILevelUp();}
 			}
 			return true;
 		}
