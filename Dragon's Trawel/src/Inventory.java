@@ -225,23 +225,6 @@ public class Inventory implements java.io.Serializable{
 		return tempStr + " and a " + hand.getName() + "\n as well as " + gold + " " + extra.choose("gold","gold pieces","pieces of gold") +".";//There are way to many plurals to account for
 	}
 	
-	/*
-	 public String nameInventory() {
-		String tempStr = "a";
-		String sendStr = "Visual2|Inventory|";
-		int i = 0;
-		while (i < 5) {
-			tempStr += " "+ armorSlots[i].getName() + ",\n";
-			sendStr+=armorSlots[i].getBaseName()+"|";
-			sendStr+=armorSlots[i].getMaterial()+"|";
-			i++;
-		}
-		sendStr+=hand.getBaseName()+"|";
-		sendStr+=hand.getMaterial()+"|";
-		Networking.send(sendStr);
-		return tempStr + " and a " + hand.getName() + "\n as well as " + gold + " " + extra.choose("gold","gold pieces","pieces of gold") +".";//There are way to many plurals to account for
-	}
-	 */
 	
 	/**
 	 * Swaps out a new weapon.
@@ -279,22 +262,6 @@ public class Inventory implements java.io.Serializable{
 		this.gold += gold;
 	}
 
-	/*
-	public void display(int i) {
-		String sendStr = "Visual|Inventory|";
-		for (Armor a: armorSlots) {
-			a.display(1);
-			sendStr+=a.getBaseName()+"|";
-			sendStr+=a.getMaterial()+"|";
-		}
-		hand.display(1);
-		sendStr+=hand.getBaseName()+"|";
-		sendStr+=hand.getMaterial()+"|";
-		hand.getMartialStance().display(1);
-	
-	extra.println( gold + " " + extra.choose("gold","gold pieces","pieces of gold") +".");
-	Networking.sendStrong(sendStr);
-	}*/
 	
 	public void display(int i) {
 		

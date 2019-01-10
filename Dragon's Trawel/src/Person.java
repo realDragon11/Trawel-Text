@@ -130,12 +130,12 @@ public class Person implements java.io.Serializable{
 		int b = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
 		int p = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
 		if (this.hasSkill(Skill.SHIELD)) {
-			s+=7*level;
-			b+=7*level;
-			p+=7*level;
+			s+=8*defenderLevel;
+			b+=8*defenderLevel;
+			p+=8*defenderLevel;
 		}else {
 			if (this.hasSkill(Skill.PARRY)) {
-				s+=5*level;
+				s+=6*defenderLevel;
 			}
 		}
 		bag.resetArmor(s,b,p);
