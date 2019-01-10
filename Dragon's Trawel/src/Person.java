@@ -367,8 +367,8 @@ public class Person implements java.io.Serializable{
 		extra.println("They have " + xp + "/" + level*level + " xp toward level " + (level+1) + ".");
 		extra.println("Their inventory includes " + bag.nameInventory());
 		if (beer > 0 || skills.contains(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
-		
-		
+		if (hasSkill(Skill.PARRY)) {extra.println("They have a parrying dagger.");}
+		if (hasSkill(Skill.SHIELD)) {extra.println("They have a shield.");}
 	}
 	
 	/**
@@ -419,6 +419,8 @@ public class Person implements java.io.Serializable{
 		extra.println("This is " + this.getName() +". They are a level " + this.getLevel() +" " + this.getBag().getRace().name+".");
 		extra.println("Their inventory includes: \n " + bag.nameInventory()); 
 		if (beer > 0 || skills.contains(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
+		if (hasSkill(Skill.PARRY)) {extra.println("They have a parrying dagger.");}
+		if (hasSkill(Skill.SHIELD)) {extra.println("They have a shield.");}
 	}
 	
 	public void addBeer() {
