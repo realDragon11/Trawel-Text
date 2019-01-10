@@ -39,7 +39,7 @@ public class AIClass {
 	 * @return an attack (Attack)
 	 */
 	public static Attack chooseAttack(Stance theStance, int smarts, Combat com, Person attacker, Person defender) {
-		if (attacker.isPlayer()) {
+		
 			int j = 1;
 			ArrayList<Attack> attacks = theStance.giveList();
 			if (attacker.hasSkill(Skill.ELEMENTAL_MAGE)) {
@@ -71,6 +71,7 @@ public class AIClass {
 					}
 				}
 			}
+			if (attacker.isPlayer()) {
 			extra.println("     name                hit    delay    sharp    blunt     pierce");
 			for(Attack a: attacks) {
 				extra.print(j + "    ");
@@ -80,23 +81,22 @@ public class AIClass {
 			
 			return attacks.get(extra.inInt(attacks.size())-1);
 		}
-		if (smarts == 0){return randomAttack(theStance);}
-		return attackTest(theStance,smarts,com, attacker, defender);
+		return attackTest(attacks,smarts,com, attacker, defender);
 	}
 	
 	/**
 	 * Has the ai simulate a couple attacks, and choose which one is best.
 	 * Basically simulates choosing each of the different attacks, and deciding which will deal the most damage.
 	 * It accounts for enemy armor and weapon material, but not the potential for the enemy to kill them before they do a slower attack.
-	 * @param theStance (Stance)
+	 * @param attacks (Stance)
 	 * @param rounds (int)
 	 * @param com (Combat) - the combat this is taking place in (so we can access the handleattack method)
 	 * @param attacker (Person) - the person who is doing the attack
 	 * @param defender (Person) - the person who is defending from the attack
 	 * @return the chosen attack (Attack)
 	 */
-	public static Attack attackTest(Stance theStance,int rounds, Combat com, Person attacker, Person defender) {
-		int size = theStance.getAttackCount();
+	public static Attack attackTest(ArrayList<Attack> attacks,int rounds, Combat com, Person attacker, Person defender) {
+		int size = attacks.size();
 		int i = size-1;
 		int j = 0;
 		double[] damray = new double[size];
@@ -105,10 +105,15 @@ public class AIClass {
 		while (i >= 0) {
 			j = 0;
 			do {
-				damray[i]+=100*extra.zeroOut((double)com.handleAttack(theStance.getAttack(i),defender.getBag(),attacker.getBag(),0.05,attacker,defender));
+				if (!attacks.get(i).isMagic()) {
+				damray[i]+=100*extra.zeroOut((double)com.handleAttack(attacks.get(i),defender.getBag(),attacker.getBag(),0.05,attacker,defender));}else {
+					if (attacks.get(i).getSkill() == Skill.DEATH_MAGE) {
+						damray[i]+=100*extra.zeroOut(attacks.get(i).getBlunt());
+					}
+				}
 				j++;
 			}while (j < rounds);
-			damray[i]/= ((double)rounds*theStance.getAttack(i).getSpeed());
+			damray[i]/= ((double)rounds*attacks.get(i).getSpeed());
 			i--;
 		}
 		extra.enablePrintSubtle();
@@ -125,9 +130,9 @@ public class AIClass {
 		}
 		
 		
-		if (highestValue <=0) {return randomAttack(theStance);}//if they're all zero, just return a random one
+		if (highestValue <=0) {return extra.randList(attacks);}//if they're all zero, just return a random one
 		//extra.println("Chose: " + theStance.getAttack(i).getName() + " " + damray[i]);//debug
-		return theStance.getAttack(i);
+		return attacks.get(i);
 	}
 	
 	/**
