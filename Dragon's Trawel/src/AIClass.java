@@ -48,6 +48,9 @@ public class AIClass {
 			if (attacker.hasSkill(Skill.DEATH_MAGE)) {
 				attacks.add(new Attack(Skill.DEATH_MAGE,attacker.getMageLevel()));
 			}
+			if (attacker.hasSkill(Skill.ARMOR_MAGE)) {
+				attacks.add(new Attack(Skill.ARMOR_MAGE,attacker.getMageLevel()));
+			}
 			extra.println("     name                hit    delay    sharp    blunt     pierce");
 			for(Attack a: attacks) {
 				extra.print(j + "    ");

@@ -105,8 +105,8 @@ public class Attack implements java.io.Serializable{
 		if (skill == Skill.ARMOR_MAGE) {
 			speed = 60+extra.randRange(0,20)-10;
 			target = TargetFactory.randTarget();
-			desc = "X` casts "+name+"!";
 			name = extra.choose("repair","armorweave");
+			desc = "X` casts "+name+"!";
 			sharp = (int)((pow*.4)*100);
 			magicDesc = sharp + "% repair";
 		}
