@@ -39,7 +39,28 @@ public abstract class Item implements java.io.Serializable{
 		return "legendary";
 	}
 	
+	public static String getModiferName(int inlevel) {
+		switch (inlevel) {
+		case 0: return "broken";
+		case 1: return "crude";
+		case 2: return "shoddy";
+		case 3: return "poor";
+		case 4: return "fair";
+		case 5: return "okay";
+		case 6: return "good";
+		case 7: return "great";
+		case 8: return "heroic";
+		case 9: return "amazing";
+		case 10: return "masterwork";
+		}
+		return "legendary";
+	}
+	
 	public abstract String getType();
 	
 	public abstract void levelUp();
+	
+	public int getLevel() {
+		return level;
+	}
 }
