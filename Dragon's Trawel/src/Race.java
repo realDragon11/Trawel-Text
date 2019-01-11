@@ -42,4 +42,6 @@ public class Race extends Item implements java.io.Serializable{
 		return extra.randList(raceMaps);
 	}
 	
+	public void levelUp() {}
+	
 }

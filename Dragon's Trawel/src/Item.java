@@ -40,4 +40,6 @@ public abstract class Item implements java.io.Serializable{
 	}
 	
 	public abstract String getType();
+	
+	public abstract void levelUp();
 }
