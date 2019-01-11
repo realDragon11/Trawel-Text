@@ -213,11 +213,11 @@ public class Attack implements java.io.Serializable{
 		}
 	}
 	
-	public Attack impair() {
+	public Attack impair(int handLevel) {
 		Target t = TargetFactory.randTarget();
 		Style s = StyleFactory.randStyle();
 		if (name != "examine") {
-		return new Attack(s.name + name + " " + t.name, hitMod*t.hit*s.hit,  (s.speed*speed)+extra.randRange(0,20)-10,  s.damage*t.sharp*sharp*extra.hrandom(),  s.damage*t.blunt*blunt*extra.hrandom(),  s.damage*t.pierce*pierce*extra.hrandom(),  desc,t);
+		return new Attack(s.name + name + " " + t.name, hitMod*t.hit*s.hit,  (s.speed*speed)+extra.randRange(0,20)-10,  handLevel*s.damage*t.sharp*sharp*extra.hrandom(),  handLevel*s.damage*t.blunt*blunt*extra.hrandom(),  handLevel*s.damage*t.pierce*pierce*extra.hrandom(),  desc,t);
 		}else {
 			return this;
 		}

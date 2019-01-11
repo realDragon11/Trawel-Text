@@ -360,4 +360,8 @@ public class Weapon extends Item {
 	public void levelUp() {
 		level++;
 	}
+
+	public int getLevel() {
+		return level;
+	}
 }
