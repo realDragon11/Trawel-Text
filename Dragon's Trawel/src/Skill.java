@@ -7,22 +7,16 @@ public enum Skill implements java.io.Serializable{
 		BEER_LOVER("Beer Lover","Endless beer. Never have to go to a tavern again.",true,Type.FIGHTER,2),
 		HPSENSE("Health Sense","Discern how much hp the defender has after each attack.",false,Type.FIGHTER,2),
 		
-		SPEEDDODGE("Speed Dodge","Attack sooner after you dodge.",true,Type.FIGHTER,3),
-		ARMORHEART("Armor Heart","Gain some hp every time your armor blocks an attack.",true,Type.FIGHTER,3),
+		COUNTER("Counter","Attack slightly sooner after you are attacked.",true,Type.FIGHTER,3),
+		BLITZ("Blitz","Attack slightly quicker.",true,Type.FIGHTER,3),
 		
-		COUNTER("Counter","Attack slightly sooner after you are attacked.",true,Type.FIGHTER,4),
-		BLITZ("Blitz","Attack slightly quicker.",true,Type.FIGHTER,4),
+		BERSERKER("Berserker","Remove examine from possible attacks you can make.",true,Type.FIGHTER,4),
+		DSTRIKE("Decisive Strike","Instantly kill anyone you damage by more than 80% in one blow.",true,Type.FIGHTER,4),
 		
-		DODGEREF("Refreshing Dodge","Gain some hp every time you dodge.",true,Type.FIGHTER,5),
-		ARMORSPEED("Glancing Blow","Attack sooner after your armor blocks an attack.",true,Type.FIGHTER,5),
-		
-		BERSERKER("Berserker","Remove examine from possible attacks you can make.",true,Type.FIGHTER,6),
-		DSTRIKE("Decisive Strike","Instantly kill anyone you damage by more than 80% in one blow.",true,Type.FIGHTER,6),
-		
-		KUNG_FU("Hand to Hand","Gain martial arts attacks.",true,Type.FIGHTER,7),
+		KUNG_FU("Hand to Hand","Gain martial arts attacks.",true,Type.FIGHTER,5),
 		//LAST_STAND("Last Stand","When reduced to 0 hp or lower, stay alive at 1 hp.",Type.FIGHTER,3),
 		
-		IOFF_TRAINING("Offensive Training","Hone your combat skills.",true,Type.FIGHTER,8),
+		IOFF_TRAINING("Offensive Training","Hone your combat skills.",true,Type.FIGHTER,6),
 		
 		
 		
@@ -63,10 +57,16 @@ public enum Skill implements java.io.Serializable{
 		PARRY("Parry","Gives you a parrying dagger.",true,Type.DEFENDER,1),
 		SHIELD("Shield","Gives you a shield.",true,Type.DEFENDER,1),
 		
-		GOOFFENSIVE("Go on the offensive","Allows you to attack with your defensive item.",true,Type.DEFENDER,2),
-		DEFENSIVE_TRAINING("Stay on the defensive","Unlocks your defensive potential.",true,Type.DEFENDER,2),
+		SPEEDDODGE("Speed Dodge","Attack sooner after you dodge.",true,Type.DEFENDER,2),
+		ARMORHEART("Armor Heart","Gain some hp every time your armor blocks an attack.",true,Type.DEFENDER,2),
 		
-		IDEF_TRAINING("Defensive Training","Hone your defensive skills.",true,Type.DEFENDER,3),
+		DODGEREF("Refreshing Dodge","Gain some hp every time you dodge.",true,Type.DEFENDER,3),
+		ARMORSPEED("Glancing Blow","Attack sooner after your armor blocks an attack.",true,Type.DEFENDER,3),
+		
+		GOOFFENSIVE("Go on the offensive","Allows you to attack with your defensive item.",true,Type.DEFENDER,4),
+		DEFENSIVE_TRAINING("Stay on the defensive","Unlocks your defensive potential.",true,Type.DEFENDER,4),
+		
+		IDEF_TRAINING("Defensive Training","Hone your defensive skills.",true,Type.DEFENDER,5),
 		
 		ENDSKILL("","",false,Type.FIGHTER,0);
 	    private String name,desc;
