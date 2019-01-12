@@ -248,6 +248,24 @@ public class RaceFactory {
 		misc.magicPower = 1;
 		misc.defPower = 1;
 		raceList.add(misc);
+		
+		misc = new Race();
+		misc.name = "mermaid";
+		misc.namePlural = "mermaids";
+		misc.swears.add("fish");
+		misc.aimMod = 1;
+		misc.damMod = 1;
+		misc.dodgeMod = 1.2;
+		misc.hpMod = 1;
+		misc.speedMod = 1.01;
+		misc.tradeMod = .9;
+		misc.rarity = .7;
+		misc.insultList.add("Go, swim away!");
+		misc.baseMap = "nada";
+		misc.raceMaps.add("nuthin");
+		misc.magicPower = 1;
+		misc.defPower = 1;
+		raceList.add(misc);
 	}
 	
 	public static Race randRace() {

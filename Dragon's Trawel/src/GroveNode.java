@@ -704,6 +704,7 @@ public class GroveNode implements java.io.Serializable{
 				if (AIClass.compareItem(Player.bag.getHand(),(Item)storage1,-1,false)) {
 					;
 					Services.sellItem(Player.bag.swapWeapon((Weapon)storage1),Player.bag,false);
+					Networking.charUpdate();
 				}else {
 					Services.sellItem((Weapon)storage1,Player.bag,false);
 				}
