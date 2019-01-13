@@ -96,7 +96,7 @@ public class Armor extends Item {
 				case 0: baseName = (String)extra.choose("mail hood"); weight = 2; baseResist = 1; cost = 1;break;
 				case 1: baseName = (String)extra.choose("mail gloves"); weight = 2; baseResist = 1; cost = 1;break;
 				case 2: baseName = (String)extra.choose("mail shirt"); weight = 10; baseResist = 4; cost = 3;break;
-				case 3: baseName = (String)extra.choose("mail greaves"); weight = 6; baseResist = 3; cost = 3;break;
+				case 3: baseName = (String)extra.choose("mail pants"); weight = 6; baseResist = 3; cost = 3;break;
 				case 4: baseName = (String)extra.choose("mail boots"); weight = 4; baseResist = 2; cost = 2;break;
 			}
 				weight*=2;

@@ -217,8 +217,8 @@ public class AIClass {
 			String depth = null;
 			switch (i) {
 			case 0:depth= "-6|";break; //head
-			case 1:depth= "-5|";break; //arms
-			case 2:depth= "-3|";break; //chest
+			case 1:depth= "-3|";break; //arms
+			case 2:depth= "-5|";break; //chest
 			case 3:depth= "-2|";break; //legs
 			case 4:depth= "-1|";break; //feet
 			}

@@ -283,8 +283,8 @@ public class Inventory implements java.io.Serializable{
 			String str = "AddInv|"+side+"|" +a.getBaseName().replace(' ','_') +"|"+a.getBaseMap()+"|"+a.getMat().palIndex+"|";
 			switch (a.getArmorType()) {
 			case 0:str+= "-6|";break; //head
-			case 1:str+= "-5|";break; //arms
-			case 2:str+= "-3|";break; //chest
+			case 1:str+= "-3|";break; //arms
+			case 2:str+= "-5|";break; //chest
 			case 3:str+= "-2|";break; //legs
 			case 4:str+= "-1|";break; //feet
 			}
