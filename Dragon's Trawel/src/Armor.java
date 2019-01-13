@@ -128,11 +128,11 @@ public class Armor extends Item {
 		shockMod = mat.shockVul;
 		freezeMod = mat.freezeVul;
 		weight *= mat.weight;
-		cost = (int) mat.cost;
+		cost *= mat.cost;
 		dexMod *= mat.dexMod;
 		//level scaling
-		cost *= level;
-		baseResist *= level;
+		//cost *= level;
+		//baseResist *= level;
 		
 		effectiveCost = cost;
 		//add an enchantment and mark it down if the enchantment is greater than a random value form 0 to <1.0
@@ -189,9 +189,9 @@ public class Armor extends Item {
 	}
 	
 	public void resetArmor(int s, int b, int p) {
-		sharpActive = sharpResist*baseResist+s;
-		pierceActive = pierceResist*baseResist+b;
-		bluntActive = bluntResist*baseResist+p;
+		sharpActive = sharpResist*baseResist*level+s;
+		pierceActive = pierceResist*baseResist*level+b;
+		bluntActive = bluntResist*baseResist*level+p;
 		burned = 1;
 	}
 	
@@ -239,7 +239,7 @@ public class Armor extends Item {
 	 * @return cost (int)
 	 */
 	public int getCost() {
-		return effectiveCost;
+		return effectiveCost*level;
 	}
 	
 	/**
@@ -247,7 +247,7 @@ public class Armor extends Item {
 	 * @return base cost (int)
 	 */
 	public int getBaseCost() {
-		return cost;
+		return cost*level;
 	}
 	
 	/**
@@ -310,7 +310,7 @@ public class Armor extends Item {
 	public void display(int style) {
 		switch (style) {
 		case 1:
-			extra.println(this.getName() + " sbp:" + extra.format(this.baseResist*this.getSharpResist()) + " " + extra.format(this.baseResist*this.getBluntResist()) + " " + extra.format(this.baseResist*this.getPierceResist())
+			extra.println(this.getName() + " sbp:" + extra.format(this.baseResist*this.getSharpResist()*level) + " " + extra.format(this.baseResist*this.getBluntResist()*level) + " " + extra.format(this.baseResist*this.getPierceResist()*level)
 			 + " value: " + this.getCost());
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
@@ -318,7 +318,7 @@ public class Armor extends Item {
 			;break;
 			
 		case 2:
-			extra.println(this.getName() + " sbp:" + extra.format(this.baseResist*this.getSharpResist()) + " " + extra.format(this.baseResist*this.getBluntResist()) + " " + extra.format(this.baseResist*this.getPierceResist())
+			extra.println(this.getName() + " sbp:" + extra.format(this.baseResist*this.getSharpResist()*level) + " " + extra.format(this.baseResist*this.getBluntResist()*level) + " " + extra.format(this.baseResist*this.getPierceResist()*level)
 			+ " dex: "+ this.getDexMod() + " flame: "+ this.getFireMod() + " shock: "+ this.getShockMod() + " frost: "+ this.getFreezeMod() + " value: " + this.getCost());
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
@@ -348,6 +348,10 @@ public class Armor extends Item {
 	public void restoreArmor(double d) {
 		burned+=d;
 		burned = extra.clamp(burned,0,1);
+	}
+	
+	public void levelUp() {
+		level++;
 	}
 	
 }

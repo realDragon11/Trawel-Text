@@ -56,10 +56,12 @@ public class Weapon extends Item {
 		weapName = (String)extra.choose("longsword","broadsword","mace","spear","axe","rapier","dagger",extra.choose("claymore","lance","shovel"));
 		kills = 0;
 		//level scaling
+		/*
 		sharpMult*=level;
-		bluntMult*=level;
+		bluntMult*=level;//TODO: reincoperate
 		pierceMult*=level;
-		cost*=level;
+		*/
+		//cost*=level;
 		
 		switch (weapName) {
 		case "longsword":
@@ -212,7 +214,7 @@ public class Weapon extends Item {
 	 * @return cost (int)
 	 */
 	public int getCost() {
-		return effectiveCost;
+		return effectiveCost*level;
 	}
 	
 	/**
@@ -220,7 +222,7 @@ public class Weapon extends Item {
 	 * @return base cost (int)
 	 */
 	public int getBaseCost() {
-		return cost;
+		return cost*level;
 	}
 	
 	/**
@@ -291,7 +293,7 @@ public class Weapon extends Item {
 		//does not account for aiming, since that is *very* opponent dependent
 		while (i < size) {
 			holdAttack = this.getMartialStance().getAttack(i);
-			damage = (holdAttack.getHitmod()*100*(holdAttack.getBlunt()+holdAttack.getPierce()+holdAttack.getSharp()))/holdAttack.getSpeed();
+			damage = (holdAttack.getHitmod()*100*(holdAttack.getBlunt()+holdAttack.getPierce()+holdAttack.getSharp()))/holdAttack.getSpeed()*level;
 			if (damage > high) {
 				high = damage;
 			}
@@ -354,4 +356,10 @@ public class Weapon extends Item {
 	public Material getMat() {
 		return mat;
 	}
+	
+	public void levelUp() {
+		level++;
+	}
+
+	
 }

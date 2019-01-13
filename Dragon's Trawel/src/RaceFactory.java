@@ -21,6 +21,7 @@ public class RaceFactory {
 		misc.raceMaps.add("1");
 		misc.raceMaps.add("2");
 		misc.magicPower = 1;
+		misc.defPower = 2;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -38,6 +39,7 @@ public class RaceFactory {
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 0;
+		misc.defPower = 2;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -56,6 +58,7 @@ public class RaceFactory {
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 1;
+		misc.defPower = 1;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -74,6 +77,7 @@ public class RaceFactory {
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 2;
+		misc.defPower = 0;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -94,6 +98,7 @@ public class RaceFactory {
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 1;
+		misc.defPower = 0;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -112,6 +117,7 @@ public class RaceFactory {
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 0;
+		misc.defPower = 1;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -129,6 +135,7 @@ public class RaceFactory {
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 1;
+		misc.defPower = 3;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -149,6 +156,7 @@ public class RaceFactory {
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 0;
+		misc.defPower = 1;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -165,7 +173,8 @@ public class RaceFactory {
 		misc.insultList.add("Clean up after your trail!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
-		misc.magicPower = 1;
+		misc.magicPower = 2;
+		misc.defPower = 1;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -183,6 +192,7 @@ public class RaceFactory {
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 2;
+		misc.defPower = 0;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -200,6 +210,7 @@ public class RaceFactory {
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 0;
+		misc.defPower = 0;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -217,6 +228,7 @@ public class RaceFactory {
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 2;
+		misc.defPower = 0;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -234,6 +246,25 @@ public class RaceFactory {
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 1;
+		misc.defPower = 1;
+		raceList.add(misc);
+		
+		misc = new Race();
+		misc.name = "mermaid";
+		misc.namePlural = "mermaids";
+		misc.swears.add("fish");
+		misc.aimMod = 1;
+		misc.damMod = 1;
+		misc.dodgeMod = 1.2;
+		misc.hpMod = 1;
+		misc.speedMod = 1.01;
+		misc.tradeMod = .9;
+		misc.rarity = .7;
+		misc.insultList.add("Go, swim away!");
+		misc.baseMap = "nada";
+		misc.raceMaps.add("nuthin");
+		misc.magicPower = 1;
+		misc.defPower = 1;
 		raceList.add(misc);
 	}
 	
