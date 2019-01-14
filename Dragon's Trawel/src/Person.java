@@ -27,6 +27,7 @@ public class Person implements java.io.Serializable{
 	private int fighterLevel= 0,traderLevel = 0,explorerLevel = 0, mageLevel = 0, magePow = 0, defenderLevel = 0, defPow = 0, fightPow = 0;
 	private ArrayList<Skill> skills = new ArrayList<Skill>();
 	private boolean noAILevel;
+	private ArrayList<Effect> effects;
 	//private boolean isPlayer;
 	
 	//Constructor
@@ -50,6 +51,7 @@ public class Person implements java.io.Serializable{
 		this.AILevelUp();
 	}
 	this.noAILevel = !aiLevel;
+	effects = new ArrayList<Effect>();
 	}
 	
 	public Person(int level) {
@@ -541,5 +543,27 @@ public class Person implements java.io.Serializable{
 		return fighterLevel+fightPow;
 	}
 	
+	public void removeEffectAll(Effect e) {
+		while (effects.contains(e)) {
+			effects.remove(e);
+		}
+	}
 	
+	public void addEffect(Effect e) {
+		effects.add(e);
+	}
+	
+	public void cureEffects() {
+		effects.clear();//will need to be more complex if there ever are negative effects
+	}
+	
+	public int effectsSize() {
+		return effects.size(); 
+	}
+	
+	public void displayEffects() {
+		for (Effect e: effects) {
+			extra.println(e.name() + ": "+ e.getDesc());
+		}
+	}
 }
