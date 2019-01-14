@@ -234,6 +234,7 @@ public class MineNode implements java.io.Serializable{
 				extra.println("You die!");
 				mainGame.die("You rise from the altar!");
 				extra.println("The cultists praise you as the second coming of flagjaij!");
+				Player.player.getPerson().addEffect(Effect.CURSE);
 				Player.addSkill(Skill.BLOODTHIRSTY);
 				Player.addSkill(Skill.BEER_BELLY);
 				hasSkills = true;
