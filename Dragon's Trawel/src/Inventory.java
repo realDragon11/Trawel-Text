@@ -285,8 +285,8 @@ public class Inventory implements java.io.Serializable{
 			case 0:str+= "-6|";break; //head
 			case 1:str+= "-3|";break; //arms
 			case 2:str+= "-5|";break; //chest
-			case 3:str+= "-2|";break; //legs
-			case 4:str+= "-1|";break; //feet
+			case 3:str+= "-1|";break; //legs
+			case 4:str+= "-2|";break; //feet
 			}
 			
 			Networking.sendStrong(str);

@@ -219,8 +219,8 @@ public class AIClass {
 			case 0:depth= "-6|";break; //head
 			case 1:depth= "-3|";break; //arms
 			case 2:depth= "-5|";break; //chest
-			case 3:depth= "-2|";break; //legs
-			case 4:depth= "-1|";break; //feet
+			case 3:depth= "-1|";break; //legs
+			case 4:depth= "-2|";break; //feet
 			}
 			Networking.send("RemoveInv|1|" + depth);
 			}
