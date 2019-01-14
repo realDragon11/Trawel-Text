@@ -171,21 +171,21 @@ public class Armor extends Item {
 	 * @return the sharpResist (double)
 	 */
 	public double getSharpResist() {
-		return sharpResist*level*baseResist;
+		return sharpResist*level;
 	}
 
 	/**
 	 * @return the bluntResist (double)
 	 */
 	public double getBluntResist() {
-		return bluntResist*level*baseResist;
+		return bluntResist*level;
 	}
 
 	/**
 	 * @return the pierceResist (double)
 	 */
 	public double getPierceResist() {
-		return pierceResist*level*baseResist;
+		return pierceResist*level;
 	}
 	
 	public void resetArmor(int s, int b, int p) {
