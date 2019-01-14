@@ -69,6 +69,7 @@ public class WorldGen {
 		lokan.addFeature(new Store(3));
 		lokan.addFeature(new Oracle("lokan oracle",3));
 		lokan.addFeature(new Appraiser("lokan appraiser"));
+		lokan.addFeature(new Doctor("Shaman",lokan));
 		lokan.addTravel();
 		lokan.addTravel();
 		
@@ -131,6 +132,7 @@ public class WorldGen {
 		denok.addFeature(new Forest("the white forest",4));
 		denok.addFeature(new Grove("the white grove",denok));
 		denok.addFeature(new Mine("denok mine",denok));
+		denok.addFeature(new Doctor("Shaman",denok));
 		denok.addTravel();
 		
 		Town erin = new Town("erin",5,teran,new Point(10,4));

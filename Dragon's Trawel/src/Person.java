@@ -134,6 +134,9 @@ public class Person implements java.io.Serializable{
 		if (this.hasSkill(Skill.LIFE_MAGE)) {
 			hp+=this.getMageLevel();
 		}
+		if (this.hasEffect(Effect.CURSE)) {
+			hp-=10;
+		}
 		hp+=skillPoints;
 		tempMaxHp = hp;
 		speedFill = -1;
@@ -157,6 +160,8 @@ public class Person implements java.io.Serializable{
 		extra.changePrint(print);
 	}
 	
+
+
 	/**
 	 * Take damage. Return true if this caused a death.
 	 * @param dam (int)
@@ -565,5 +570,18 @@ public class Person implements java.io.Serializable{
 		for (Effect e: effects) {
 			extra.println(e.name() + ": "+ e.getDesc());
 		}
+	}
+	
+	public void addEffectUnique(Effect e) {
+		if (!effects.contains(e)) {
+			effects.add(e);
+		}
+	}
+	
+	public void addEffectStacking(Effect e) {
+		effects.add(e);
+	}
+	private boolean hasEffect(Effect e) {
+		return effects.contains(e);
 	}
 }

@@ -745,5 +745,50 @@ public class GroveNode implements java.io.Serializable{
 		}
 	}
 	
+	private void shaman() {
+		if (state == 1) {
+			randomLists.deadPerson();
+			return;
+		}
+		Person equal = (Person)storage1;
+		boolean bool = true;
+		while (bool) {
+			Networking.sendColor(Color.RED);
+		extra.println("1 attack");
+		extra.println("2 chat");
+		extra.println("3 leave");
+		switch (extra.inInt(3)) {
+		case 1: name = "angry " +name ; interactString = "ERROR";
+			storage1 = storage2;
+			forceGo = true;
+			idNum = 3;
+			bool = false;
+		;break;
+		case 2:
+			boolean bool2 = true;
+			while (bool2) {
+			extra.println("They say that they are a shaman.");
+			int cost = level*50;
+			extra.println("Buy cleansing ("+cost + " gold)");
+			extra.println("3 return");
+			
+			switch (extra.inInt(3)) {
+			case 1: if (Player.bag.getGold() < cost) {
+					extra.println("Not enough gold!");
+					break;
+				}
+			Player.bag.addGold(-cost);
+			Player.player.getPerson().cureEffects();
+			extra.println("You feel better.");
+			
+			break;
+			case 2: Oracle.tip("shaman");break;
+			case 3: bool2 = false;break;
+			}
+			};break;
+		case 3:bool = false;break;
+		}
+		}
+	}
 
 }
