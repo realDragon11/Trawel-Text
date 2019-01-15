@@ -554,9 +554,6 @@ public class Person implements java.io.Serializable{
 		}
 	}
 	
-	public void addEffect(Effect e) {
-		effects.add(e);
-	}
 	
 	public void cureEffects() {
 		effects.clear();//will need to be more complex if there ever are negative effects
@@ -567,24 +564,38 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public void displayEffects() {
-		for (Effect e: effects) {
-			extra.println(e.name() + ": "+ e.getDesc());
-		}
 		if (effects.isEmpty()) {
 			extra.println("You're perfectly healthy.");
 		}
-	}
-	
-	public void addEffectUnique(Effect e) {
-		if (!effects.contains(e)) {
-			effects.add(e);
+		for (Effect e: effects) {
+			extra.println(e.name() + ": "+ e.getDesc());
 		}
 	}
 	
-	public void addEffectStacking(Effect e) {
-		effects.add(e);
+	
+	public void addEffect(Effect e) {
+		if (e.stacks()) {
+			effects.add(e);
+		}else {
+			if (!effects.contains(e)) {
+				effects.add(e);
+			}
+		}
 	}
+	
 	private boolean hasEffect(Effect e) {
 		return effects.contains(e);
+	}
+	
+	public void clearBattleEffects() {
+		ArrayList<Effect> removeList = new ArrayList<Effect>();
+		for (Effect e: effects) {
+			if (!e.lasts()) {
+				removeList.add(e);
+			}
+		}
+		for (Effect e: removeList) {
+			this.removeEffectAll(e);
+		}
 	}
 }

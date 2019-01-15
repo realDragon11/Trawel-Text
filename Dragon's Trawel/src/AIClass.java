@@ -244,6 +244,7 @@ public class AIClass {
 			}
 		}
 		stash.setGold(stash.getGold()+loot.getGold());
+		loot.setGold(0);
 	}
 	
 	/**

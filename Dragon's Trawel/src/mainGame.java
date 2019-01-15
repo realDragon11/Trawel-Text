@@ -225,6 +225,8 @@ public class mainGame {
 					if (first_man.isPlayer() || second_man.isPlayer()) {
 						Networking.clearSide(1);
 					}
+					first_man.clearBattleEffects();
+					second_man.clearBattleEffects();
 				return first_man;
 		}
 		
@@ -260,6 +262,7 @@ public class mainGame {
 			battle.survivors.sort(levelSorter);
 			
 			for (Person surv: battle.survivors){
+				surv.clearBattleEffects();
 				surv.addXp(Math.min(surv.getLevel(),battle.killed.get(0).getLevel()));
 				for (Person kill: battle.killed) {
 					if (kill.isPlayer()) {continue;}else {
@@ -269,6 +272,7 @@ public class mainGame {
 			
 			int gold = 0;
 			for (Person kill: battle.killed) {
+				kill.clearBattleEffects();
 				if (kill.isPlayer()) {continue;}
 				gold += kill.getBag().getGold();
 				for (int i = 0;i<5;i++) {
