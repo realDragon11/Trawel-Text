@@ -108,7 +108,7 @@ public class Combat {
 			}
 			if (p.isPlayer()) {
 				otherperson.displayStatsShort();
-				p.getBag().graphicalDisplay(-1,p);
+				p.getBag().graphicalDisplay(1,p);
 				otherperson.getBag().graphicalDisplay(-1,otherperson);
 			}
 			setAttack(p,otherperson);
