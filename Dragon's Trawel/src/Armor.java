@@ -310,7 +310,7 @@ public class Armor extends Item {
 	public void display(int style) {
 		switch (style) {
 		case 1:
-			extra.println(this.getName() + " sbp:" + extra.format(this.baseResist*this.getSharpResist()*level) + " " + extra.format(this.baseResist*this.getBluntResist()*level) + " " + extra.format(this.baseResist*this.getPierceResist()*level)
+			extra.println(this.getName() + " sbp:" + extra.format(this.baseResist*this.getSharpResist()) + " " + extra.format(this.baseResist*this.getBluntResist()) + " " + extra.format(this.baseResist*this.getPierceResist())
 			 + " value: " + this.getCost());
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
@@ -318,7 +318,7 @@ public class Armor extends Item {
 			;break;
 			
 		case 2:
-			extra.println(this.getName() + " sbp:" + extra.format(this.baseResist*this.getSharpResist()*level) + " " + extra.format(this.baseResist*this.getBluntResist()*level) + " " + extra.format(this.baseResist*this.getPierceResist()*level)
+			extra.println(this.getName() + " sbp:" + extra.format(this.baseResist*this.getSharpResist()) + " " + extra.format(this.baseResist*this.getBluntResist()) + " " + extra.format(this.baseResist*this.getPierceResist())
 			+ " dex: "+ this.getDexMod() + " flame: "+ this.getFireMod() + " shock: "+ this.getShockMod() + " frost: "+ this.getFreezeMod() + " value: " + this.getCost());
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
