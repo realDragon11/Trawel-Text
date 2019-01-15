@@ -13,6 +13,7 @@ public enum Skill implements java.io.Serializable{
 		
 		BERSERKER("Berserker","Remove examine from possible attacks you can make.",true,Type.FIGHTER,4),
 		DSTRIKE("Decisive Strike","Instantly kill anyone you damage by more than 80% in one blow.",true,Type.FIGHTER,4),
+		SPUNCH("Sucker Punch","Your attacks slow down your foe.",true,Type.FIGHTER,4),
 		
 		KUNG_FU("Hand to Hand","Gain martial arts attacks.",true,Type.FIGHTER,5),
 		//LAST_STAND("Last Stand","When reduced to 0 hp or lower, stay alive at 1 hp.",Type.FIGHTER,3),
@@ -53,7 +54,7 @@ public enum Skill implements java.io.Serializable{
 		ILLUSION_MAGE("Illusion Mage","Unlocks the befuddle spell.",false,Type.MAGE,2),
 		
 		MAGE_POWER("Power Within","Replace one of your attacks with a spell and unlock your magic power.",false,Type.MAGE,3),//works with ai, bad choice tho
-		
+		MAGE_FRUGAL("Power Without","Decrease your magic power but increase your offensive and defensive skills.",true,Type.MAGE,3),
 		
 		IMAG_TRAINING("Mage Training","Hone your magic skills.",true,Type.MAGE,4),
 		

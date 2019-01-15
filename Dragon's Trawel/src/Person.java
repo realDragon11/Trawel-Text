@@ -304,6 +304,7 @@ public class Person implements java.io.Serializable{
 		case IOFF_TRAINING: fightPow+=1; fighterLevel--;break;
 		case IMAG_TRAINING: magePow+=1; mageLevel--;break;
 		case MAGE_POWER: magePow+=3;break;
+		case MAGE_FRUGAL: magePow-=2; fightPow+=2; defPow+=2;break;
 		default: break;
 		}
 	}
