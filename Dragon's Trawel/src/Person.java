@@ -570,6 +570,9 @@ public class Person implements java.io.Serializable{
 		for (Effect e: effects) {
 			extra.println(e.name() + ": "+ e.getDesc());
 		}
+		if (effects.isEmpty()) {
+			extra.println("You're perfectly healthy.");
+		}
 	}
 	
 	public void addEffectUnique(Effect e) {

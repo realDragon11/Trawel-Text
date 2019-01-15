@@ -12,7 +12,7 @@ public class Doctor extends Feature {
 	@Override
 	public void go() {
 		int dcost = town.getTier()*5;
-		int cost = town.getTier()*Player.player.getPerson().effectsSize()*30;
+		int cost = 50*town.getTier()+(town.getTier()*Player.player.getPerson().effectsSize()*30);
 		extra.println("gold: " +Player.bag.getGold());
 		extra.println("1 diagnois (" + dcost+" gold)");
 		extra.println("2 cure (" + cost+" gold)");
