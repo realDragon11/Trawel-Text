@@ -145,12 +145,12 @@ public class Person implements java.io.Serializable{
 		int b = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
 		int p = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
 		if (this.hasSkill(Skill.SHIELD)) {
-			s+=8*defenderLevel;
-			b+=8*defenderLevel;
-			p+=8*defenderLevel;
+			s+=1*defenderLevel;
+			b+=1*defenderLevel;
+			p+=1*defenderLevel;
 		}else {
 			if (this.hasSkill(Skill.PARRY)) {
-				s+=12*(defenderLevel);//want to make skill matter more but don't want to exponent it
+				s+=2*(defenderLevel);//want to make skill matter more but don't want to exponent it
 			}
 		}
 		bag.resetArmor(s,b,p);
