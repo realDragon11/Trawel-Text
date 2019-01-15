@@ -87,7 +87,7 @@ public class Attack implements java.io.Serializable{
 			speed = 60+extra.randRange(0,20)-10;
 			target = TargetFactory.randTarget();
 			
-			switch (extra.randRange(1, 2)) {
+			switch (extra.randRange(1,3)) {
 			case 1:
 			name = extra.choose("wither","halt","impair");
 			sharp = (int)((pow*.5)*100);
@@ -99,12 +99,17 @@ public class Attack implements java.io.Serializable{
 				blunt = (int)(extra.hrandom()*mageLevel*3);
 				magicDesc = blunt + " damage";
 				;break;
+			case 3:
+				name = extra.choose("harm","damage");
+				pierce = (int)(extra.hrandom()*mageLevel);
+				magicDesc = pierce + " skill damage";
+				;break;
 			}
 			desc = "X` casts "+name+" at Y`!";
 		}
 		
 		if (skill == Skill.ARMOR_MAGE) {
-			speed = 60+extra.randRange(0,20)-10;
+			speed = 50+extra.randRange(0,20)-10;
 			target = TargetFactory.randTarget();
 			name = extra.choose("repair","armorweave");
 			desc = "X` casts "+name+"!";

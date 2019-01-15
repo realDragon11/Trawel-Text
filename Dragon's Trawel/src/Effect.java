@@ -1,7 +1,8 @@
 
 public enum Effect implements java.io.Serializable {
 	
-	CURSE("Cursed","Start battles with less hp.",true,false);
+	CURSE("Cursed","Start battles with less hp.",true,false),
+	BURNOUT("Burnout","Decreased skill.",false,true);
 	
 	private String name,desc;
 	private boolean lasts, stacks;

@@ -303,6 +303,7 @@ public class Person implements java.io.Serializable{
 		case IDEF_TRAINING: defPow+=1; defenderLevel--;break;
 		case IOFF_TRAINING: fightPow+=1; fighterLevel--;break;
 		case IMAG_TRAINING: magePow+=1; mageLevel--;break;
+		case MAGE_POWER: magePow+=3;break;
 		default: break;
 		}
 	}
@@ -524,7 +525,7 @@ public class Person implements java.io.Serializable{
 	}
 
 	public int getMageLevel() {
-		return mageLevel+magePow;
+		return extra.zeroOut(mageLevel+magePow-burnouts());
 	}
 
 	public void addXpSilent(int x) {
@@ -541,11 +542,11 @@ public class Person implements java.io.Serializable{
 	}
 
 	public int getDefenderLevel() {
-		return defenderLevel+defPow;
+		return extra.zeroOut(defenderLevel+defPow-burnouts());
 	}
 
 	public int getFighterLevel() {
-		return fighterLevel+fightPow;
+		return extra.zeroOut(fighterLevel+fightPow-burnouts());
 	}
 	
 	public void removeEffectAll(Effect e) {
@@ -597,5 +598,15 @@ public class Person implements java.io.Serializable{
 		for (Effect e: removeList) {
 			this.removeEffectAll(e);
 		}
+	}
+	
+	private int burnouts() {
+		int i = 0;
+		for (Effect e: effects) {
+			if (e.equals(Effect.BURNOUT)) {
+				i++;
+			}
+		}
+		return i;
 	}
 }

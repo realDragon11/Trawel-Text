@@ -6,6 +6,7 @@ public enum Skill implements java.io.Serializable{
 	    
 		BEER_LOVER("Beer Lover","Endless beer. Never have to go to a tavern again.",true,Type.FIGHTER,2),
 		HPSENSE("Health Sense","Discern how much hp the defender has after each attack.",false,Type.FIGHTER,2),
+		KILLHEAL("Vampire","Gain a moderate amount of hp on a kill.",true,Type.FIGHTER,2),
 		
 		COUNTER("Counter","Attack slightly sooner after you are attacked.",true,Type.FIGHTER,3),
 		BLITZ("Blitz","Attack slightly quicker.",true,Type.FIGHTER,3),
@@ -51,7 +52,10 @@ public enum Skill implements java.io.Serializable{
 		ARMOR_MAGE("Armor Mage","Unlock armor repairing magic spells.",false,Type.MAGE,2),
 		ILLUSION_MAGE("Illusion Mage","Unlocks the befuddle spell.",false,Type.MAGE,2),
 		
-		IMAG_TRAINING("Mage Training","Hone your magic skills.",true,Type.MAGE,3),
+		MAGE_POWER("Power Within","Replace one of your attacks with a spell and unlock your magic power.",false,Type.MAGE,3),//works with ai, bad choice tho
+		
+		
+		IMAG_TRAINING("Mage Training","Hone your magic skills.",true,Type.MAGE,4),
 		
 		
 		PARRY("Parry","Gives you a parrying dagger.",true,Type.DEFENDER,1),

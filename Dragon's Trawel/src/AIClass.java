@@ -42,6 +42,13 @@ public class AIClass {
 		
 			int j = 1;
 			ArrayList<Attack> attacks = theStance.giveList();
+			
+			int times = 1;
+			if (attacker.hasSkill(Skill.MAGE_POWER)) {
+				times++;
+				attacks.remove(0);
+			}
+			while (times > 0) {
 			if (attacker.hasSkill(Skill.ELEMENTAL_MAGE)) {
 				attacks.add(new Attack(Skill.ELEMENTAL_MAGE,attacker.getMageLevel()));
 			}
@@ -54,6 +61,9 @@ public class AIClass {
 			if (attacker.hasSkill(Skill.ILLUSION_MAGE)) {
 				attacks.add(new Attack(Skill.ILLUSION_MAGE,attacker.getMageLevel()));
 			}
+			times--;}
+			
+			
 			if (attacker.hasSkill(Skill.GOOFFENSIVE)) {
 				Material mat = attacker.getBag().getHand().getMat();
 				if (attacker.hasSkill(Skill.SHIELD)){

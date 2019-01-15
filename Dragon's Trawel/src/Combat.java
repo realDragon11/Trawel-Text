@@ -50,7 +50,7 @@ public class Combat {
 				defender = manOne;
 			}
 			if (attacker.hasSkill(Skill.BLITZ)) {
-				attacker.advanceTime(1);
+				attacker.advanceTime(3);
 			}
 			defender.advanceTime(attacker.getTime());
 			
@@ -125,7 +125,7 @@ public class Combat {
 				}
 			}
 			if (quickest.hasSkill(Skill.BLITZ)) {
-				lowestDelay--;
+				lowestDelay-=3;
 			}
 			
 			
@@ -140,6 +140,9 @@ public class Combat {
 			if (!defender.isAlive() && wasAlive) {
 				extra.println("They die!");
 				quickest.getBag().getHand().addKill();
+				if (quickest.hasSkill(Skill.KILLHEAL)){
+					quickest.addHp(5*quickest.getLevel());
+				}
 				song.addKill(quickest,defender);
 				totalList.remove(defender);
 				killList.add(defender);
@@ -280,7 +283,7 @@ public class Combat {
 	 */
 	public void handleTurn(Person attacker, Person defender, BardSong song) {
 		if (defender.hasSkill(Skill.COUNTER)) {
-			defender.advanceTime(1);
+			defender.advanceTime(2);
 		}
 		if (extra.chanceIn(1,4)) {
 			if (extra.chanceIn(1,3)) {
@@ -384,6 +387,11 @@ public class Combat {
 			defender.getNextAttack().wither(att.getSharp()/100);
 			if (!defender.hasSkill(Skill.LIFE_MAGE)) {
 			defender.takeDamage((int)((att.getBlunt())));}
+			int i = 0;
+			while (i < att.getPierce()) {
+				defender.addEffect(Effect.BURNOUT);
+				i++;
+			}
 			}
 		if(att.getSkill() == Skill.ARMOR_MAGE) {
 			off.restoreArmor(((double)att.getSharp())/100);
