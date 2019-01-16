@@ -38,7 +38,7 @@ public class WorldGen {
 		addConnection(homa,tevar,"road","red road");
 		addConnection(tevar,unun,"road","blue road");
 		tevar.addFeature(new Forest("the black forest",2));
-		tevar.addFeature(new Mine("tevar mine",tevar));
+		tevar.addFeature(new Mine("tevar mine",tevar,null));
 		
 		
 		Town hemo = new Town("hemo",2,rona,new Point(5,7));
@@ -131,7 +131,7 @@ public class WorldGen {
 		denok.addFeature(new Store(5,5));
 		denok.addFeature(new Forest("the white forest",4));
 		denok.addFeature(new Grove("the white grove",denok));
-		denok.addFeature(new Mine("denok mine",denok));
+		denok.addFeature(new Mine("denok mine",denok,null));
 		denok.addFeature(new Doctor("Shaman",denok));
 		denok.addTravel();
 		
