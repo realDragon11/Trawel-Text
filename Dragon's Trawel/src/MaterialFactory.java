@@ -514,7 +514,7 @@ public class MaterialFactory {
 		misc.palIndex = 0;
 		matList.add(misc);
 		
-		misc = new Material();//yeah these crystal stats will be totally inaccurate
+		misc = new Material();//yeah these crystal stats will be totally inaccurate TODO
 		misc.name = "emerald";
 		misc.typeList.add("crystal");
 		misc.armor = true;
@@ -607,6 +607,54 @@ public class MaterialFactory {
 		misc.fireVul = 0;
 		misc.shockVul = .5;
 		misc.freezeVul = 2;
+		misc.palIndex = 0;
+		matList.add(misc);
+		
+		misc = new Material();
+		misc.name = "topaz";
+		misc.typeList.add("crystal");
+		misc.armor = true;
+		misc.weapon = false;
+		misc.weight = 10;
+		misc.cost = 60;
+		misc.baseEnchant = 2;
+		misc.baseResist = 6;
+		misc.sharpResist = 2;
+		misc.bluntResist = .1;
+		misc.pierceResist = 2;
+		misc.dexMod = .8;
+		misc.sharpMult = 1;
+		misc.bluntMult = 1;
+		misc.pierceMult = 1;
+		misc.tier = 4;
+		misc.rarity = .1;
+		misc.fireVul = 0;
+		misc.shockVul = .7;
+		misc.freezeVul = .3;
+		misc.palIndex = 0;
+		matList.add(misc);
+		
+		misc = new Material();
+		misc.name = "amethyst";
+		misc.typeList.add("crystal");
+		misc.armor = true;
+		misc.weapon = false;
+		misc.weight = 10;
+		misc.cost = 60;
+		misc.baseEnchant = 1;
+		misc.baseResist = 6;
+		misc.sharpResist = 2;
+		misc.bluntResist = .3;
+		misc.pierceResist = 2;
+		misc.dexMod = .8;
+		misc.sharpMult = 1;
+		misc.bluntMult = 1;
+		misc.pierceMult = 1;
+		misc.tier = 4;
+		misc.rarity = .1;
+		misc.fireVul = .5;
+		misc.shockVul = .5;
+		misc.freezeVul = 0;
 		misc.palIndex = 0;
 		matList.add(misc);
 		
