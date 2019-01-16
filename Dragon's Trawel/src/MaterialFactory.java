@@ -659,7 +659,6 @@ public class MaterialFactory {
 		matList.add(misc);
 		
 		
-		
 	}
 	
 	public static Material randMat(Boolean armor, Boolean weapon) {
