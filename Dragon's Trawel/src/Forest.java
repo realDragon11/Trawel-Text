@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.time.LocalDateTime;
 import java.time.Month;
 
@@ -14,6 +15,7 @@ public class Forest extends Feature implements java.io.Serializable{
 		explores = 0;
 		exhaust = 0;
 		tutorialText = "Explore forests to progress in level.";
+		color = Color.RED;
 	}
 	
 	@Override
