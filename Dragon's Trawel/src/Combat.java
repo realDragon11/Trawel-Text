@@ -288,6 +288,9 @@ public class Combat {
 		if (attacker.hasSkill(Skill.SPUNCH)) {
 			defender.advanceTime(-2);
 		}
+		if (attacker.hasSkill(Skill.CURSE_MAGE)) {
+			defender.addEffect(Effect.CURSE);
+		}
 		if (extra.chanceIn(1,4)) {
 			if (extra.chanceIn(1,3)) {
 					extra.println(attacker.getName() + " "+extra.choose("shouts","screams","boasts")+ " \"" + attacker.getTaunts().getBoast()+"\"");		

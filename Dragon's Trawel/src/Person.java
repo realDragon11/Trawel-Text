@@ -135,7 +135,7 @@ public class Person implements java.io.Serializable{
 			hp+=this.getMageLevel();
 		}
 		if (this.hasEffect(Effect.CURSE)) {
-			hp-=10;
+			hp-=10*level;
 		}
 		hp+=skillPoints;
 		tempMaxHp = hp;

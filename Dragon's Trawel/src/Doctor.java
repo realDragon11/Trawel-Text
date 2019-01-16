@@ -14,7 +14,7 @@ public class Doctor extends Feature {
 		int dcost = town.getTier()*5;
 		int cost = 50*town.getTier()+(town.getTier()*Player.player.getPerson().effectsSize()*30);
 		extra.println("gold: " +Player.bag.getGold());
-		extra.println("1 diagnois (" + dcost+" gold)");
+		extra.println("1 diagnosis (" + dcost+" gold)");
 		extra.println("2 cure (" + cost+" gold)");
 		extra.println("3 exit");
 		switch (extra.inInt(3)) {

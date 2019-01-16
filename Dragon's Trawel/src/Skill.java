@@ -47,7 +47,8 @@ public enum Skill implements java.io.Serializable{
 		
 		MAGE_TRAINING("Mage Training","Unlock your inner magic potential.",true,Type.MAGE,1),
 		LIFE_MAGE("Life Mage","Unlock healing magic spells.",true,Type.MAGE,1),//good for out of combat
-		MONEY_MAGE("Money Mage","Generate money slowly.",true,Type.MAGE,1),//good for out of combat
+		MONEY_MAGE("Money Mage","Generate money slowly.",false,Type.MAGE,1),//good for out of combat
+		CURSE_MAGE("Witch","Your attacks curse the opponent.",true,Type.MAGE,1),
 		
 		ELEMENTAL_MAGE("Elemental Mage","Unlock elemental magic spells.",false,Type.MAGE,2),
 		DEATH_MAGE("Death Mage","Unlock necromantic magic spells.",true,Type.MAGE,2),
