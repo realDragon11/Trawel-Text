@@ -88,6 +88,9 @@ public class AIClass {
 			case 3: attacks.add(new Attack("bite",.8,120.0,1,4,5,"X` bites Y` with the their teeth!").impair(attacker.getFighterLevel()));break;
 			}
 			}
+			if (attacker.hasSkill(Skill.WAIT)) {
+				attacks.add(new Attack("wait",0,20.0,0,10,0,"X` waits for a better chance!"));
+			}
 			if (attacker.isPlayer()) {
 			extra.println("     name                hit    delay    sharp    blunt     pierce");
 			for(Attack a: attacks) {

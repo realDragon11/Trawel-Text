@@ -16,6 +16,7 @@ public enum Skill implements java.io.Serializable{
 		SPUNCH("Sucker Punch","Your attacks slow down your foe.",true,Type.FIGHTER,4),
 		
 		KUNG_FU("Hand to Hand","Gain martial arts attacks.",true,Type.FIGHTER,5),
+		WAIT("Wait","Allows you to wait for a better opportunity.",false,Type.FIGHTER,5),
 		//LAST_STAND("Last Stand","When reduced to 0 hp or lower, stay alive at 1 hp.",Type.FIGHTER,3),
 		
 		IOFF_TRAINING("Offensive Training","Hone your combat skills.",true,Type.FIGHTER,6),
