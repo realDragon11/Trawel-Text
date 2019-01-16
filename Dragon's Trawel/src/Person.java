@@ -610,4 +610,11 @@ public class Person implements java.io.Serializable{
 		}
 		return i;
 	}
+
+	public void displaySkills() {
+		for (Skill s: skills) {
+			s.display();
+		}
+		
+	}
 }

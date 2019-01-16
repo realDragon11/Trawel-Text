@@ -5,7 +5,7 @@ public enum Skill implements java.io.Serializable{
 	    BLOODTHIRSTY("Bloodthirsty","Gain some hp each time you attack!",true,Type.FIGHTER,1),
 	    
 		BEER_LOVER("Beer Lover","Endless beer. Never have to go to a tavern again.",true,Type.FIGHTER,2),
-		HPSENSE("Health Sense","Discern how much hp the defender has after each attack.",false,Type.FIGHTER,2),
+		HPSENSE("Health Sense","Discern how much hp the defender has after each attack. Improves examine as well.",false,Type.FIGHTER,2),
 		KILLHEAL("Vampire","Gain a moderate amount of hp on a kill.",true,Type.FIGHTER,2),
 		
 		COUNTER("Counter","Attack slightly sooner after you are attacked.",true,Type.FIGHTER,3),
@@ -96,4 +96,8 @@ public enum Skill implements java.io.Serializable{
 		public Type getType() {return type;}
 		public int getLevel() {return level;}
 		public boolean getAITake() {return AITake;}
+
+		public void display() {
+			extra.println(name + ": " + desc);
+		}
 }

@@ -239,6 +239,8 @@ public class Combat {
 			defender.displayStats();
 			defender.displayArmor();
 			defender.displayHp();
+			if (attacker.hasSkill(Skill.HPSENSE)) {
+			defender.displaySkills();}
 			extra.print(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
 			return -2;
 		}
