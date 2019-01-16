@@ -8,7 +8,7 @@ public class Arena extends Feature{
 	private ArrayList<Person> winners;
 	private Person rematcher;
 	
-	public Arena(String name,int tier,int rounds, double interval, double timeLeft,int timesDone) {
+	public Arena(String name,int tier,int rounds, double interval, double timeLeft,int timesDone, SuperPerson owner) {
 		this.name = name;
 		this.tier = tier;
 		this.rounds = rounds;
@@ -18,6 +18,11 @@ public class Arena extends Feature{
 		winners = new ArrayList<Person>();
 		tutorialText = "Arenas are a great place to get started.";
 		color = Color.RED;
+		this.owner = owner;
+	}
+	
+	public Arena(String name,int tier,int rounds, double interval, double timeLeft,int timesDone) {
+		this(name,tier,rounds,interval,timeLeft,timesDone,null);
 	}
 	
 	public String getName() {
@@ -29,6 +34,11 @@ public class Arena extends Feature{
 	}
 
 	public void go() {
+		if (owner == Player.player && moneyEarned > 0) {
+			extra.println("You take the " + moneyEarned + " in profits.");
+			Player.bag.addGold(moneyEarned);
+			moneyEarned = 0;
+		}
 		Networking.sendStrong("Discord|imagesmall|icon|Arena|");
 		getRematch();
 		extra.println("1 Participate in the " +  this.getTitle() + " tournament in " + extra.format(this.getTimeLeft()) + " hours.");
@@ -165,6 +175,7 @@ public class Arena extends Feature{
 	}
 
 	public void passTime(double time) {
+		moneyEarned +=tier*2*time;
 		while (time > 0) {
 		if (time < timeLeft) {
 			timeLeft-=time;
