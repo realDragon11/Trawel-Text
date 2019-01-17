@@ -384,7 +384,7 @@ public class MaterialFactory {
 		misc = new Material();
 		misc.name = "ectoplasm";
 		misc.typeList.add("light");
-		misc.armor = true;
+		misc.armor = false;
 		misc.weapon = true;
 		misc.weight = 2;
 		misc.cost = 40;
