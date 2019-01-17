@@ -18,6 +18,7 @@ public class RaceFactory {
 		misc.rarity = 3;
 		misc.insultList.add("Your skin is as thin as your brain!");
 		misc.baseMap = "human";
+		misc.raceMaps.add("0");
 		misc.raceMaps.add("1");
 		misc.raceMaps.add("2");
 		misc.magicPower = 1;
@@ -153,8 +154,11 @@ public class RaceFactory {
 		misc.insultList.add("Stay away, I don't want fleas!");
 		misc.insultList.add("Go meow somewhere else!");
 		misc.insultList.add("You'd make a nice rug, cat.");
-		misc.baseMap = "nada";
-		misc.raceMaps.add("nuthin");
+		misc.baseMap = "cat";
+		misc.raceMaps.add("0");
+		misc.raceMaps.add("2");
+		misc.raceMaps.add("3");
+		misc.raceMaps.add("4");
 		misc.magicPower = 0;
 		misc.defPower = 1;
 		raceList.add(misc);
