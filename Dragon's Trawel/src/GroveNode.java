@@ -60,6 +60,7 @@ public class GroveNode implements java.io.Serializable{
 		case 8: name = "fallen tree"; interactString = "examine fallen tree";break;
 		case 9: name = "dryad"; interactString = "approach the " + name;
 		storage1 = new Person(level);
+		storage2 = 0;
 		break;
 		case 10: name = "fallen tree";interactString = "examine fallen tree";break;
 		case 11: name = "mushroom";interactString = "approach mushroom";break;
@@ -72,7 +73,7 @@ public class GroveNode implements java.io.Serializable{
 		case 16: storage1 = new Weapon(level); name = ((Weapon)storage1).getBaseName() + " in a rock"; interactString = "pull on " +((Weapon)storage1).getBaseName(); break;
 		case 17: storage1 = new Person(level); ((Person)storage1).setRacism(false);
 		name = ((Person)storage1).getBag().getRace().name; interactString = "approach " + name;break;
-		}
+		}//TODO: add lumberjacks and tending to tree
 		if (size < 2) {
 			return;
 		}
@@ -341,6 +342,17 @@ public class GroveNode implements java.io.Serializable{
 		switch (in) {
 			case 1: extra.println("They wish you well.") ;break;
 			case 2: extra.println("They start describing their tree in intricate detail before finishing.");
+			if (storage2 instanceof Integer) {
+			if ((int)storage2 > 3) {
+				extra.println("They ask if you would like your own tree.");
+				if (extra.yesNo()) {
+					extra.println("They say to find a spot where a lumberjack has chopped down a tree and plant one there.");
+					storage2 = null;
+				}
+			}else {
+				storage2 = (int)storage2+1;
+			}
+			}
 			extra.println("They seem very passionate about it.");break;
 			case 3: extra.println("\"We are in " + parent.getName() + ". I don't venture away from my tree.\"");break;
 		}
