@@ -13,6 +13,7 @@ public class Material implements java.io.Serializable{
 	public double fireVul, shockVul, freezeVul;//vulernability
 	public ArrayList<String> typeList = new ArrayList<String>();
 	public int palIndex;
+	public String soundType;
 
 	/**
 	Material(String name,String clothType,

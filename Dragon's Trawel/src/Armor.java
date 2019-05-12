@@ -353,5 +353,9 @@ public class Armor extends Item {
 	public void levelUp() {
 		level++;
 	}
+
+	public String getSoundType() {
+		return mat.soundType;
+	}
 	
 }

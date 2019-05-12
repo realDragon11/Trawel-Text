@@ -518,4 +518,8 @@ public class Inventory implements java.io.Serializable{
 		
 	}
 
+	public String getSoundType(int slot) {
+		return armorSlots[slot].getSoundType();
+	}
+
 }
