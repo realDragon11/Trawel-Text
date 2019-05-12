@@ -273,7 +273,9 @@ public class mainGame {
 			int gold = 0;
 			for (Person kill: battle.killed) {
 				kill.clearBattleEffects();
-				if (kill.isPlayer()) {continue;}
+				if (kill.isPlayer()) {
+					Networking.clearSide(1);
+					continue;}
 				gold += kill.getBag().getGold();
 				for (int i = 0;i<5;i++) {
 					gold +=kill.getBag().getArmorSlot(i).getCost();
@@ -284,6 +286,9 @@ public class mainGame {
 			
 			for (Person surv: battle.survivors){
 				surv.getBag().addGold(gold/battle.survivors.size());
+				if (surv.isPlayer()) {
+					Networking.clearSide(1);
+				}
 			}
 			
 			return battle.survivors;
