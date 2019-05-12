@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.ArrayList;
 /**
  * A combat holds some of the more battle-focused commands.
@@ -317,6 +318,9 @@ public class Combat {
 		}else {
 			if (damageDone == -1) {
 				song.addAttackMiss(attacker,defender);
+				if (!extra.printMode) {
+					Networking.sendColor(Color.YELLOW);
+				}
 					extra.print((String)extra.choose(" They miss!"," The attack is dodged!"," It's a miss!"," It goes wide!"," It's not even close!"));
 					if (defender.hasSkill(Skill.SPEEDDODGE)) {
 						defender.advanceTime(10);
@@ -327,6 +331,9 @@ public class Combat {
 				}else {
 					if (damageDone == 0) {
 						song.addAttackArmor(attacker,defender);
+						if (!extra.printMode) {
+							Networking.sendColor(Color.BLUE);
+						}
 					extra.print(" "+(String)extra.choose("But it is ineffective...","The armor deflects the blow!","However, the attack fails to deal damage through the armor."));
 					if (defender.hasSkill(Skill.ARMORHEART)) {
 						defender.addHp(attacker.getLevel());
@@ -334,6 +341,10 @@ public class Combat {
 					if (defender.hasSkill(Skill.ARMORSPEED)) {
 						defender.advanceTime(10);
 					}
+					}else {
+						if (!extra.printMode) {
+							Networking.sendColor(Color.RED);
+						}
 					}
 				}
 		}
