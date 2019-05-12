@@ -312,8 +312,14 @@ public class Combat {
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender,damageDone);
 		if (damageDone > 0) {
 			song.addAttackHit(attacker,defender);
+			if (!extra.printMode) {
+				Networking.sendColor(Color.ORANGE);
+			}
 			if (defender.takeDamage(damageDone)) {
 				//extra.print(" " + choose("Striking them down!"," They are struck down."));
+				if (!extra.printMode) {
+					Networking.sendColor(Color.RED);
+				}
 			}
 		}else {
 			if (damageDone == -1) {
@@ -342,9 +348,7 @@ public class Combat {
 						defender.advanceTime(10);
 					}
 					}else {
-						if (!extra.printMode) {
-							Networking.sendColor(Color.RED);
-						}
+						
 					}
 				}
 		}
