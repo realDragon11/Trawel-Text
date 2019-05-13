@@ -385,6 +385,7 @@ public class GroveNode implements java.io.Serializable{
 		switch (in) {
 		default: case 1: extra.println("You decide to leave it alone.");break;
 		case 2:
+			name = "plant spot";
 			extra.println("You eat the mushroom...");
 			state = 1;
 			switch(extra.randRange(1,3)) {
@@ -407,6 +408,7 @@ public class GroveNode implements java.io.Serializable{
 			;break;
 		case 3:
 			state = 1;
+			name = "plant spot";
 			extra.println("You pick up the mushroom to sell it.");
 			if (Math.random() > .8) {
 			Networking.sendColor(Color.RED);
@@ -427,6 +429,7 @@ public class GroveNode implements java.io.Serializable{
 				Player.bag.addGold(gold);
 			};break;
 		case 4:
+			name = "plant spot";
 			state = 1;
 			extra.println("You crush the mushroom under your heel.");
 			Networking.sendColor(Color.RED);
@@ -523,6 +526,7 @@ public class GroveNode implements java.io.Serializable{
 			default: case 3: extra.println("You decide to leave it alone.");break;
 			case 1:
 				state = 2;
+				name = "plant spot";
 				extra.println("You eat the moss...");
 				switch(extra.randRange(1,4)) {
 				case 1: extra.println("The moss is delicous!");break;
@@ -543,6 +547,7 @@ public class GroveNode implements java.io.Serializable{
 				;break;
 			case 2:
 				state = 2;
+				name = "plant spot";
 				extra.println("You pick up the moss to sell it.");
 				if (Math.random() > .8) {
 					Networking.sendColor(Color.RED);

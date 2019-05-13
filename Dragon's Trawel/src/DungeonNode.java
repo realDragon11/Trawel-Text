@@ -200,6 +200,7 @@ public class DungeonNode implements java.io.Serializable{
 			interactString = "approach bodies";
 			storage1 = null;
 			state = 1;
+			name = "dead "+name;
 			return false;}else {
 				storage1 = survivors;
 				return true;
