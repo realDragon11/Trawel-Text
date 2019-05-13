@@ -357,5 +357,8 @@ public class Armor extends Item {
 	public String getSoundType() {
 		return mat.soundType;
 	}
+	public String getMatType() {
+		return this.matType;
+	}
 	
 }
