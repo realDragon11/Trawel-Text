@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
 public class Book implements java.io.Serializable {
-
 	public String name, author;
 	public ArrayList<String> text = new ArrayList<String>();
 	public void display() {

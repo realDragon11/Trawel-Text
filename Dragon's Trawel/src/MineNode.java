@@ -13,8 +13,10 @@ public class MineNode implements java.io.Serializable{
 	private Object storage1, storage2;
 	private ArrayList<MineNode> connects;
 	private boolean forceGo;
+	private Mine parent;
 	
-	public MineNode(int size, int tier) {
+	public MineNode(int size, int tier,Mine p) {
+		parent = p;
 		state = 0;
 		idNum = extra.randRange(1,EVENT_NUMBER);
 		if (extra.chanceIn(1, 5)) {
@@ -59,12 +61,12 @@ public class MineNode implements java.io.Serializable{
 		while (i < split) {
 			int sizeRemove = extra.randRange(0,sizeLeft-1);
 			sizeLeft-=sizeRemove;
-			MineNode n = new MineNode(sizeRemove,level);
+			MineNode n = new MineNode(sizeRemove,level,parent);
 			connects.add(n);
 			n.getConnects().add(this);
 			i++;
 		}
-		MineNode n = new MineNode(sizeLeft,level);
+		MineNode n = new MineNode(sizeLeft,level,parent);
 		connects.add(n);
 		n.getConnects().add(this);
 	}
@@ -76,8 +78,11 @@ public class MineNode implements java.io.Serializable{
 		case 3: goldVein1();break;
 		case 4: mugger1(); if (state == 0) {return true;};break;
 		case 5: if (forceGo == true) {
+			if (parent.getOwner() == Player.player) {
+				extra.println("You unlock and then relock the door.");
+			}else {
 			extra.println("You bash open the door.");
-			 name = "broken door";forceGo = false;
+			 name = "broken door";forceGo = false;}
 		}else {
 			extra.println("The door is broken.");
 		};break;
@@ -234,6 +239,7 @@ public class MineNode implements java.io.Serializable{
 				extra.println("You die!");
 				mainGame.die("You rise from the altar!");
 				extra.println("The cultists praise you as the second coming of flagjaij!");
+				Player.player.getPerson().addEffect(Effect.CURSE);
 				Player.addSkill(Skill.BLOODTHIRSTY);
 				Player.addSkill(Skill.BEER_BELLY);
 				hasSkills = true;

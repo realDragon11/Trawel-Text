@@ -42,6 +42,13 @@ public class AIClass {
 		
 			int j = 1;
 			ArrayList<Attack> attacks = theStance.giveList();
+			
+			int times = 1;
+			if (attacker.hasSkill(Skill.MAGE_POWER)) {
+				times++;
+				attacks.remove(0);
+			}
+			while (times > 0) {
 			if (attacker.hasSkill(Skill.ELEMENTAL_MAGE)) {
 				attacks.add(new Attack(Skill.ELEMENTAL_MAGE,attacker.getMageLevel()));
 			}
@@ -54,29 +61,35 @@ public class AIClass {
 			if (attacker.hasSkill(Skill.ILLUSION_MAGE)) {
 				attacks.add(new Attack(Skill.ILLUSION_MAGE,attacker.getMageLevel()));
 			}
+			times--;}
+			
+			
 			if (attacker.hasSkill(Skill.GOOFFENSIVE)) {
 				Material mat = attacker.getBag().getHand().getMat();
 				if (attacker.hasSkill(Skill.SHIELD)){
 					switch (extra.randRange(1, 2)) {
-					case 1: attacks.add(new Attack("bash",1,100.0,0*mat.sharpMult,10*mat.bluntMult,0,"X` bashes Y` with the their shield!").impair(attacker.getDefenderLevel()));break;
-					case 2: attacks.add(new Attack("smash",.9,90.0,0*mat.sharpMult,12*mat.bluntMult,0,"X` smashes Y` with the their shield!").impair(attacker.getDefenderLevel()));break;
+					case 1: attacks.add(new Attack("bash",1,100.0,0*mat.sharpMult,10*mat.bluntMult,0,"X` bashes Y` with the their shield!",1,"blunt").impair(attacker.getDefenderLevel()));break;
+					case 2: attacks.add(new Attack("smash",.9,90.0,0*mat.sharpMult,12*mat.bluntMult,0,"X` smashes Y` with the their shield!",1,"blunt").impair(attacker.getDefenderLevel()));break;
 					}
 				}else {
 					if (attacker.hasSkill(Skill.PARRY)){
 						switch (extra.randRange(1, 3)) {
-						case 1: attacks.add(new Attack("slice",1,90.0,10*mat.sharpMult,0*mat.bluntMult,0*mat.pierceMult,"X` slices Y` with the their parrying dagger!").impair(attacker.getDefenderLevel()));break;
-						case 2: attacks.add(new Attack("dice",.8,70.0,8*mat.sharpMult,0*mat.bluntMult,0*mat.pierceMult,"X` dices Y` with the their parrying dagger!").impair(attacker.getDefenderLevel()));break;
-						case 3: attacks.add(new Attack("stab",1.1,90.0,0*mat.sharpMult,0*mat.bluntMult,8*mat.pierceMult,"X` stabs at Y` with the their parrying dagger!").impair(attacker.getDefenderLevel()));break;
+						case 1: attacks.add(new Attack("slice",1,90.0,10*mat.sharpMult,0*mat.bluntMult,0*mat.pierceMult,"X` slices Y` with the their parrying dagger!",0,"sharp").impair(attacker.getDefenderLevel()));break;
+						case 2: attacks.add(new Attack("dice",.8,70.0,8*mat.sharpMult,0*mat.bluntMult,0*mat.pierceMult,"X` dices Y` with the their parrying dagger!",0,"sharp").impair(attacker.getDefenderLevel()));break;
+						case 3: attacks.add(new Attack("stab",1.1,90.0,0*mat.sharpMult,0*mat.bluntMult,8*mat.pierceMult,"X` stabs at Y` with the their parrying dagger!",0,"pierce").impair(attacker.getDefenderLevel()));break;
 						}
 					}
 				}
 			}
 			if (attacker.hasSkill(Skill.KUNG_FU)) {
 			switch (extra.randRange(1,3)) {
-			case 1: attacks.add(new Attack("kick",1,100.0,0,10,0,"X` kicks Y` with the their feet!").impair(attacker.getFighterLevel()));break;
-			case 2: attacks.add(new Attack("punch",.9,90.0,0,12,0,"X` punches Y` with the their fist!").impair(attacker.getFighterLevel()));break;
-			case 3: attacks.add(new Attack("bite",.8,120.0,1,4,5,"X` bites Y` with the their teeth!").impair(attacker.getFighterLevel()));break;
+			case 1: attacks.add(new Attack("kick",1,100.0,0,10,0,"X` kicks Y` with the their feet!",1,"blunt").impair(attacker.getFighterLevel()));break;
+			case 2: attacks.add(new Attack("punch",.9,90.0,0,12,0,"X` punches Y` with the their fist!",0,"blunt").impair(attacker.getFighterLevel()));break;
+			case 3: attacks.add(new Attack("bite",.8,120.0,1,4,5,"X` bites Y` with the their teeth!",1,"bite").impair(attacker.getFighterLevel()));break;
 			}
+			}
+			if (attacker.hasSkill(Skill.WAIT)) {
+				attacks.add(new Attack("wait",0,20.0,0,10,0,"X` waits for a better chance!",-1,"wait"));
 			}
 			if (attacker.isPlayer()) {
 			extra.println("     name                hit    delay    sharp    blunt     pierce");
@@ -217,10 +230,10 @@ public class AIClass {
 			String depth = null;
 			switch (i) {
 			case 0:depth= "-6|";break; //head
-			case 1:depth= "-5|";break; //arms
-			case 2:depth= "-3|";break; //chest
-			case 3:depth= "-2|";break; //legs
-			case 4:depth= "-1|";break; //feet
+			case 1:depth= "-3|";break; //arms
+			case 2:depth= "-5|";break; //chest
+			case 3:depth= "-1|";break; //legs
+			case 4:depth= "-2|";break; //feet
 			}
 			Networking.send("RemoveInv|1|" + depth);
 			}
@@ -244,6 +257,7 @@ public class AIClass {
 			}
 		}
 		stash.setGold(stash.getGold()+loot.getGold());
+		loot.setGold(0);
 	}
 	
 	/**

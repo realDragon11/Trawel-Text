@@ -80,9 +80,9 @@ public class Lot extends Feature {
 			constructTime-=time;
 		if (construct != null && constructTime <= 0) {
 			switch (construct) {
-			case "inn": town.enqueneAdd(new Inn("your inn (" + town.getName() + ")",tier,town));break;
-			case "arena":town.enqueneAdd(new Arena("your arena (" + town.getName() + ")",tier,1,24,200,1));break;
-			case "mine": town.enqueneAdd(new Mine("your mine (" + town.getName() + ")",town));break;
+			case "inn": town.enqueneAdd(new Inn("your inn (" + town.getName() + ")",tier,town,Player.player));break;
+			case "arena":town.enqueneAdd(new Arena("your arena (" + town.getName() + ")",tier,1,24,200,1,Player.player));break;
+			case "mine": town.enqueneAdd(new Mine("your mine (" + town.getName() + ")",town,Player.player));break;
 			}
 			town.enqueneRemove(this);
 			

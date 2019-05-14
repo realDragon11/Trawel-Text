@@ -5,15 +5,18 @@ public enum Skill implements java.io.Serializable{
 	    BLOODTHIRSTY("Bloodthirsty","Gain some hp each time you attack!",true,Type.FIGHTER,1),
 	    
 		BEER_LOVER("Beer Lover","Endless beer. Never have to go to a tavern again.",true,Type.FIGHTER,2),
-		HPSENSE("Health Sense","Discern how much hp the defender has after each attack.",false,Type.FIGHTER,2),
+		HPSENSE("Health Sense","Discern how much hp the defender has after each attack. Improves examine as well.",false,Type.FIGHTER,2),
+		KILLHEAL("Vampire","Gain a moderate amount of hp on a kill.",true,Type.FIGHTER,2),
 		
 		COUNTER("Counter","Attack slightly sooner after you are attacked.",true,Type.FIGHTER,3),
 		BLITZ("Blitz","Attack slightly quicker.",true,Type.FIGHTER,3),
 		
 		BERSERKER("Berserker","Remove examine from possible attacks you can make.",true,Type.FIGHTER,4),
 		DSTRIKE("Decisive Strike","Instantly kill anyone you damage by more than 80% in one blow.",true,Type.FIGHTER,4),
+		SPUNCH("Sucker Punch","Your attacks slow down your foe.",true,Type.FIGHTER,4),
 		
 		KUNG_FU("Hand to Hand","Gain martial arts attacks.",true,Type.FIGHTER,5),
+		WAIT("Wait","Allows you to wait for a better opportunity.",false,Type.FIGHTER,5),
 		//LAST_STAND("Last Stand","When reduced to 0 hp or lower, stay alive at 1 hp.",Type.FIGHTER,3),
 		
 		IOFF_TRAINING("Offensive Training","Hone your combat skills.",true,Type.FIGHTER,6),
@@ -44,14 +47,18 @@ public enum Skill implements java.io.Serializable{
 		
 		MAGE_TRAINING("Mage Training","Unlock your inner magic potential.",true,Type.MAGE,1),
 		LIFE_MAGE("Life Mage","Unlock healing magic spells.",true,Type.MAGE,1),//good for out of combat
-		MONEY_MAGE("Money Mage","Generate money slowly.",true,Type.MAGE,1),//good for out of combat
+		MONEY_MAGE("Money Mage","Generate money slowly.",false,Type.MAGE,1),//good for out of combat
+		CURSE_MAGE("Witch","Your attacks curse the opponent.",true,Type.MAGE,1),
 		
 		ELEMENTAL_MAGE("Elemental Mage","Unlock elemental magic spells.",false,Type.MAGE,2),
 		DEATH_MAGE("Death Mage","Unlock necromantic magic spells.",true,Type.MAGE,2),
 		ARMOR_MAGE("Armor Mage","Unlock armor repairing magic spells.",false,Type.MAGE,2),
 		ILLUSION_MAGE("Illusion Mage","Unlocks the befuddle spell.",false,Type.MAGE,2),
 		
-		IMAG_TRAINING("Mage Training","Hone your magic skills.",true,Type.MAGE,3),
+		MAGE_POWER("Power Within","Replace one of your attacks with a spell and unlock your magic power.",false,Type.MAGE,3),//works with ai, bad choice tho
+		MAGE_FRUGAL("Power Without","Decrease your magic power but increase your offensive and defensive skills.",true,Type.MAGE,3),
+		
+		IMAG_TRAINING("Mage Training","Hone your magic skills.",true,Type.MAGE,4),
 		
 		
 		PARRY("Parry","Gives you a parrying dagger.",true,Type.DEFENDER,1),
@@ -89,4 +96,8 @@ public enum Skill implements java.io.Serializable{
 		public Type getType() {return type;}
 		public int getLevel() {return level;}
 		public boolean getAITake() {return AITake;}
+
+		public void display() {
+			extra.println(name + ": " + desc);
+		}
 }

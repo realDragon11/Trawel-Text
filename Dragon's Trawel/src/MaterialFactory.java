@@ -29,6 +29,7 @@ public class MaterialFactory {
 		misc.shockVul = .2;
 		misc.freezeVul = .2;
 		misc.palIndex = 0;
+		misc.soundType = "padding";
 		matList.add(misc);
 		
 		misc = new Material();
@@ -53,6 +54,7 @@ public class MaterialFactory {
 		misc.shockVul = .1;
 		misc.freezeVul = .1;
 		misc.palIndex = 0;
+		misc.soundType = "padding";
 		matList.add(misc);
 		
 		misc = new Material();
@@ -79,6 +81,7 @@ public class MaterialFactory {
 		misc.shockVul = 1.5;
 		misc.freezeVul = 2;
 		misc.palIndex = 0;
+		misc.soundType = "metal";
 		matList.add(misc);
 		
 		misc = new Material();//TODO: beta numbers
@@ -104,7 +107,8 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.5;
 		misc.freezeVul = 2;
-		misc.palIndex = 0;
+		misc.palIndex = 1;
+		misc.soundType = "metal";
 		matList.add(misc);
 		
 		misc = new Material();//TODO: beta numbers
@@ -130,7 +134,8 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.5;
 		misc.freezeVul = 2;
-		misc.palIndex = 0;
+		misc.palIndex = 2;
+		misc.soundType = "metal";
 		matList.add(misc);
 		
 		misc = new Material();//TODO: beta numbers
@@ -157,7 +162,8 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.5;
 		misc.freezeVul = 2;
-		misc.palIndex = 0;
+		misc.palIndex = 3;
+		misc.soundType = "metal";
 		matList.add(misc);
 		
 		misc = new Material();
@@ -184,7 +190,8 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.5;
 		misc.freezeVul = 2;
-		misc.palIndex = 0;
+		misc.palIndex = 4;
+		misc.soundType = "metal";
 		matList.add(misc);
 		
 		misc = new Material();
@@ -212,7 +219,8 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.8;
 		misc.freezeVul = 2;
-		misc.palIndex = 0;
+		misc.palIndex = 5;
+		misc.soundType = "metal";
 		matList.add(misc);
 		
 		misc = new Material();
@@ -240,7 +248,8 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 2;
 		misc.freezeVul = 2;
-		misc.palIndex = 1;
+		misc.palIndex = 6;
+		misc.soundType = "metal";
 		matList.add(misc);
 		
 		misc = new Material();
@@ -265,6 +274,7 @@ public class MaterialFactory {
 		misc.shockVul = .6;
 		misc.freezeVul = .6;
 		misc.palIndex = 0;
+		misc.soundType = "metal";
 		matList.add(misc);
 		
 		misc = new Material();
@@ -292,7 +302,8 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.6;//??
 		misc.freezeVul = 2;
-		misc.palIndex = 0;
+		misc.palIndex = 7;
+		misc.soundType = "metal";
 		matList.add(misc);
 		
 		misc = new Material();
@@ -320,7 +331,8 @@ public class MaterialFactory {
 		misc.fireVul = .6;
 		misc.shockVul = 1;
 		misc.freezeVul = 1.5;
-		misc.palIndex = 0;
+		misc.palIndex = 9;
+		misc.soundType = "metal";
 		matList.add(misc);
 		
 		misc = new Material();
@@ -350,7 +362,8 @@ public class MaterialFactory {
 		misc.fireVul = .5;
 		misc.shockVul = 0;
 		misc.freezeVul = 0;
-		misc.palIndex = 0;
+		misc.palIndex = 10;
+		misc.soundType = "metal";
 		matList.add(misc);
 		
 		misc = new Material();
@@ -378,13 +391,14 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.5;
 		misc.freezeVul = 2;
-		misc.palIndex = 0;
+		misc.palIndex = 11;
+		misc.soundType = "metal";
 		matList.add(misc);
 		
 		misc = new Material();
 		misc.name = "ectoplasm";
 		misc.typeList.add("light");
-		misc.armor = true;
+		misc.armor = false;
 		misc.weapon = true;
 		misc.weight = 2;
 		misc.cost = 40;
@@ -403,6 +417,7 @@ public class MaterialFactory {
 		misc.shockVul = 1;
 		misc.freezeVul = 1;
 		misc.palIndex = 0;
+		misc.soundType = "ecto";
 		matList.add(misc);
 		
 		misc = new Material();
@@ -430,7 +445,8 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 1.8;
 		misc.freezeVul = 2;
-		misc.palIndex = 0;
+		misc.palIndex = 13;
+		misc.soundType = "metal";
 		matList.add(misc);
 		
 		misc = new Material();
@@ -458,7 +474,8 @@ public class MaterialFactory {
 		misc.fireVul = 2;
 		misc.shockVul = 0;
 		misc.freezeVul = .5;
-		misc.palIndex = 0;
+		misc.palIndex = 8;
+		misc.soundType = "wood";
 		matList.add(misc);
 		
 		misc = new Material();
@@ -486,7 +503,8 @@ public class MaterialFactory {
 		misc.fireVul = .8;
 		misc.shockVul = 2;
 		misc.freezeVul = 2;
-		misc.palIndex = 0;
+		misc.palIndex = 12;
+		misc.soundType = "metal";
 		matList.add(misc);
 		
 		
@@ -512,9 +530,10 @@ public class MaterialFactory {
 		misc.shockVul = .5;
 		misc.freezeVul = .5;
 		misc.palIndex = 0;
+		misc.soundType = "crystal";
 		matList.add(misc);
 		
-		misc = new Material();//yeah these crystal stats will be totally inaccurate
+		misc = new Material();//yeah these crystal stats will be totally inaccurate TODO
 		misc.name = "emerald";
 		misc.typeList.add("crystal");
 		misc.armor = true;
@@ -536,6 +555,7 @@ public class MaterialFactory {
 		misc.shockVul = 0;
 		misc.freezeVul = .5;
 		misc.palIndex = 0;
+		misc.soundType = "crystal";
 		matList.add(misc);
 		
 		misc = new Material();
@@ -560,6 +580,7 @@ public class MaterialFactory {
 		misc.shockVul = .7;
 		misc.freezeVul = .3;
 		misc.palIndex = 0;
+		misc.soundType = "crystal";
 		matList.add(misc);
 		
 		misc = new Material();
@@ -584,6 +605,7 @@ public class MaterialFactory {
 		misc.shockVul = .5;
 		misc.freezeVul = 0;
 		misc.palIndex = 0;
+		misc.soundType = "crystal";
 		matList.add(misc);
 		
 		misc = new Material();
@@ -608,8 +630,58 @@ public class MaterialFactory {
 		misc.shockVul = .5;
 		misc.freezeVul = 2;
 		misc.palIndex = 0;
+		misc.soundType = "crystal";
 		matList.add(misc);
 		
+		misc = new Material();
+		misc.name = "topaz";
+		misc.typeList.add("crystal");
+		misc.armor = true;
+		misc.weapon = false;
+		misc.weight = 10;
+		misc.cost = 60;
+		misc.baseEnchant = 2;
+		misc.baseResist = 6;
+		misc.sharpResist = 2;
+		misc.bluntResist = .1;
+		misc.pierceResist = 2;
+		misc.dexMod = .8;
+		misc.sharpMult = 1;
+		misc.bluntMult = 1;
+		misc.pierceMult = 1;
+		misc.tier = 4;
+		misc.rarity = .1;
+		misc.fireVul = 0;
+		misc.shockVul = .7;
+		misc.freezeVul = .3;
+		misc.palIndex = 0;
+		misc.soundType = "crystal";
+		matList.add(misc);
+		
+		misc = new Material();
+		misc.name = "amethyst";
+		misc.typeList.add("crystal");
+		misc.armor = true;
+		misc.weapon = false;
+		misc.weight = 10;
+		misc.cost = 60;
+		misc.baseEnchant = 1;
+		misc.baseResist = 6;
+		misc.sharpResist = 2;
+		misc.bluntResist = .3;
+		misc.pierceResist = 2;
+		misc.dexMod = .8;
+		misc.sharpMult = 1;
+		misc.bluntMult = 1;
+		misc.pierceMult = 1;
+		misc.tier = 4;
+		misc.rarity = .1;
+		misc.fireVul = .5;
+		misc.shockVul = .5;
+		misc.freezeVul = 0;
+		misc.palIndex = 0;
+		misc.soundType = "crystal";
+		matList.add(misc);
 		
 		
 	}

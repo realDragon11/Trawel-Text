@@ -17,6 +17,8 @@ public class Attack implements java.io.Serializable{
 	private boolean isMagic = false;
 	private String magicDesc;
 	private Skill skill;
+	private int soundStrength;
+	private String soundType;
 	//constructor
 	/**
 	 * Creates an attack with the following attributes:
@@ -28,7 +30,7 @@ public class Attack implements java.io.Serializable{
 	 * @param pierce - (double) the piercing damage [converted to int for you]
 	 * @param desc - (String) what is printed when it is used (use X = attacker, Y = defender, Z = weapon name)
 	 */
-	public Attack(String name, double hitmod, double speed, double sharp, double blunt, double pierce, String desc) {
+	public Attack(String name, double hitmod, double speed, double sharp, double blunt, double pierce, String desc,int sstr, String stype) {
 		this.hitMod = hitmod;
 		this.speed = speed;
 		this.sharp = (int)sharp;
@@ -36,9 +38,11 @@ public class Attack implements java.io.Serializable{
 		this.pierce = (int)pierce;
 		this.desc = desc;
 		this.name = name;
+		this.soundStrength = sstr;
+		this.soundType = stype;
 	}
 	
-	public Attack(String name, double hitmod, double speed, double sharp, double blunt, double pierce, String desc, Target target) {
+	public Attack(String name, double hitmod, double speed, double sharp, double blunt, double pierce, String desc,int sstr,String stype, Target target) {
 		this.hitMod = hitmod;
 		this.speed = speed;
 		this.sharp = (int)sharp;
@@ -46,6 +50,8 @@ public class Attack implements java.io.Serializable{
 		this.pierce = (int)pierce;
 		this.desc = desc;
 		this.name = name;
+		this.soundStrength = sstr;
+		this.soundType = stype;
 		this.target = target;
 	}
 	
@@ -59,6 +65,7 @@ public class Attack implements java.io.Serializable{
 		pierce = 0;//ice
 		this.skill = skill;
 		desc = "ERROR";
+		soundStrength = -1;
 		double pow = extra.hrandom()*Math.log(mageLevel);
 		if (skill == Skill.ELEMENTAL_MAGE) {
 			speed = 100+extra.randRange(0,20)-10;
@@ -68,16 +75,19 @@ public class Attack implements java.io.Serializable{
 				name = extra.choose("sear","flame blast","searing shot","fireball");
 				sharp = (int)((pow*.2)*100);
 				magicDesc = sharp +"% fire";
+				soundType = "fire";
 				;break;
 			case 2:
 				name = extra.choose("shock","zap");
 				blunt = (int)(extra.hrandom()*mageLevel*5);
 				magicDesc = blunt + " shock";
+				soundType = "shock";
 				;break;
 			case 3: 
 				name = extra.choose("cone of cold","freeze","permafrost","ray of frost");
 				pierce = (int)((pow)*100);
 				magicDesc = pierce +"% freeze";
+				soundType = "freeze";
 				;break;
 			}
 			desc = "X` casts "+name+" at Y`!";
@@ -86,8 +96,8 @@ public class Attack implements java.io.Serializable{
 		if (skill == Skill.DEATH_MAGE) {
 			speed = 60+extra.randRange(0,20)-10;
 			target = TargetFactory.randTarget();
-			
-			switch (extra.randRange(1, 2)) {
+			soundType = "wither";
+			switch (extra.randRange(1,3)) {
 			case 1:
 			name = extra.choose("wither","halt","impair");
 			sharp = (int)((pow*.5)*100);
@@ -99,17 +109,23 @@ public class Attack implements java.io.Serializable{
 				blunt = (int)(extra.hrandom()*mageLevel*3);
 				magicDesc = blunt + " damage";
 				;break;
+			case 3:
+				name = extra.choose("harm","damage");
+				pierce = (int)(extra.hrandom()*mageLevel);
+				magicDesc = pierce + " skill damage";
+				;break;
 			}
 			desc = "X` casts "+name+" at Y`!";
 		}
 		
 		if (skill == Skill.ARMOR_MAGE) {
-			speed = 60+extra.randRange(0,20)-10;
+			speed = 50+extra.randRange(0,20)-10;
 			target = TargetFactory.randTarget();
 			name = extra.choose("repair","armorweave");
 			desc = "X` casts "+name+"!";
 			sharp = (int)((pow*.4)*100);
 			magicDesc = sharp + "% repair";
+			soundType = "armor";
 		}
 		if (skill == Skill.ILLUSION_MAGE) {
 			speed = 60+extra.randRange(0,20)-10;
@@ -117,6 +133,7 @@ public class Attack implements java.io.Serializable{
 			name = extra.choose("befuddle","confuse");
 			desc = "X` casts "+name+"!";
 			magicDesc = "";
+			soundType = "confuse";
 		}
 	}
 	
@@ -217,7 +234,7 @@ public class Attack implements java.io.Serializable{
 		Target t = TargetFactory.randTarget();
 		Style s = StyleFactory.randStyle();
 		if (name != "examine") {
-		return new Attack(s.name + name + " " + t.name, hitMod*t.hit*s.hit,  (s.speed*speed)+extra.randRange(0,20)-10,  handLevel*s.damage*t.sharp*sharp*extra.hrandom(),  handLevel*s.damage*t.blunt*blunt*extra.hrandom(),  handLevel*s.damage*t.pierce*pierce*extra.hrandom(),  desc,t);
+		return new Attack(s.name + name + " " + t.name, hitMod*t.hit*s.hit,  (s.speed*speed)+extra.randRange(0,20)-10,  handLevel*s.damage*t.sharp*sharp*extra.hrandom(),  handLevel*s.damage*t.blunt*blunt*extra.hrandom(),  handLevel*s.damage*t.pierce*pierce*extra.hrandom(),  desc,soundStrength,soundType,t);
 		}else {
 			return this;
 		}
@@ -225,7 +242,7 @@ public class Attack implements java.io.Serializable{
 	
 	public Attack wither(double percent) {
 	percent = 1-percent;
-	return new Attack(name,hitMod*percent,speed*percent,sharp*percent,blunt*percent,pierce*percent,desc,target);	
+	return new Attack(name,hitMod*percent,speed*percent,sharp*percent,blunt*percent,pierce*percent,desc,soundStrength,soundType,target);	
 	}
 	
 	public int getSlot() {
@@ -238,6 +255,14 @@ public class Attack implements java.io.Serializable{
 	
 	public Skill getSkill() {
 		return skill;
+	}
+
+	public int getSoundIntensity() {
+		return soundStrength;
+	}
+
+	public String getSoundType() {
+		return soundType;
 	}
 
 }

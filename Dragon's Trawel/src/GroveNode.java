@@ -60,6 +60,7 @@ public class GroveNode implements java.io.Serializable{
 		case 8: name = "fallen tree"; interactString = "examine fallen tree";break;
 		case 9: name = "dryad"; interactString = "approach the " + name;
 		storage1 = new Person(level);
+		storage2 = 0;
 		break;
 		case 10: name = "fallen tree";interactString = "examine fallen tree";break;
 		case 11: name = "mushroom";interactString = "approach mushroom";break;
@@ -72,7 +73,7 @@ public class GroveNode implements java.io.Serializable{
 		case 16: storage1 = new Weapon(level); name = ((Weapon)storage1).getBaseName() + " in a rock"; interactString = "pull on " +((Weapon)storage1).getBaseName(); break;
 		case 17: storage1 = new Person(level); ((Person)storage1).setRacism(false);
 		name = ((Person)storage1).getBag().getRace().name; interactString = "approach " + name;break;
-		}
+		}//TODO: add lumberjacks and tending to tree
 		if (size < 2) {
 			return;
 		}
@@ -341,6 +342,17 @@ public class GroveNode implements java.io.Serializable{
 		switch (in) {
 			case 1: extra.println("They wish you well.") ;break;
 			case 2: extra.println("They start describing their tree in intricate detail before finishing.");
+			if (storage2 instanceof Integer) {
+			if ((int)storage2 > 3) {
+				extra.println("They ask if you would like your own tree.");
+				if (extra.yesNo()) {
+					extra.println("They say to find a spot where a lumberjack has chopped down a tree and plant one there.");
+					storage2 = null;
+				}
+			}else {
+				storage2 = (int)storage2+1;
+			}
+			}
 			extra.println("They seem very passionate about it.");break;
 			case 3: extra.println("\"We are in " + parent.getName() + ". I don't venture away from my tree.\"");break;
 		}
@@ -373,6 +385,7 @@ public class GroveNode implements java.io.Serializable{
 		switch (in) {
 		default: case 1: extra.println("You decide to leave it alone.");break;
 		case 2:
+			name = "plant spot";
 			extra.println("You eat the mushroom...");
 			state = 1;
 			switch(extra.randRange(1,3)) {
@@ -395,6 +408,7 @@ public class GroveNode implements java.io.Serializable{
 			;break;
 		case 3:
 			state = 1;
+			name = "plant spot";
 			extra.println("You pick up the mushroom to sell it.");
 			if (Math.random() > .8) {
 			Networking.sendColor(Color.RED);
@@ -415,6 +429,7 @@ public class GroveNode implements java.io.Serializable{
 				Player.bag.addGold(gold);
 			};break;
 		case 4:
+			name = "plant spot";
 			state = 1;
 			extra.println("You crush the mushroom under your heel.");
 			Networking.sendColor(Color.RED);
@@ -511,6 +526,7 @@ public class GroveNode implements java.io.Serializable{
 			default: case 3: extra.println("You decide to leave it alone.");break;
 			case 1:
 				state = 2;
+				name = "plant spot";
 				extra.println("You eat the moss...");
 				switch(extra.randRange(1,4)) {
 				case 1: extra.println("The moss is delicous!");break;
@@ -531,6 +547,7 @@ public class GroveNode implements java.io.Serializable{
 				;break;
 			case 2:
 				state = 2;
+				name = "plant spot";
 				extra.println("You pick up the moss to sell it.");
 				if (Math.random() > .8) {
 					Networking.sendColor(Color.RED);
@@ -745,5 +762,50 @@ public class GroveNode implements java.io.Serializable{
 		}
 	}
 	
+	private void shaman() {
+		if (state == 1) {
+			randomLists.deadPerson();
+			return;
+		}
+		Person equal = (Person)storage1;
+		boolean bool = true;
+		while (bool) {
+			Networking.sendColor(Color.RED);
+		extra.println("1 attack");
+		extra.println("2 chat");
+		extra.println("3 leave");
+		switch (extra.inInt(3)) {
+		case 1: name = "angry " +name ; interactString = "ERROR";
+			storage1 = storage2;
+			forceGo = true;
+			idNum = 3;
+			bool = false;
+		;break;
+		case 2:
+			boolean bool2 = true;
+			while (bool2) {
+			extra.println("They say that they are a shaman.");
+			int cost = level*50;
+			extra.println("Buy cleansing ("+cost + " gold)");
+			extra.println("3 return");
+			
+			switch (extra.inInt(3)) {
+			case 1: if (Player.bag.getGold() < cost) {
+					extra.println("Not enough gold!");
+					break;
+				}
+			Player.bag.addGold(-cost);
+			Player.player.getPerson().cureEffects();
+			extra.println("You feel better.");
+			
+			break;
+			case 2: Oracle.tip("shaman");break;
+			case 3: bool2 = false;break;
+			}
+			};break;
+		case 3:bool = false;break;
+		}
+		}
+	}
 
 }

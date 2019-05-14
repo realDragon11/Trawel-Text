@@ -27,6 +27,7 @@ public class Person implements java.io.Serializable{
 	private int fighterLevel= 0,traderLevel = 0,explorerLevel = 0, mageLevel = 0, magePow = 0, defenderLevel = 0, defPow = 0, fightPow = 0;
 	private ArrayList<Skill> skills = new ArrayList<Skill>();
 	private boolean noAILevel;
+	private ArrayList<Effect> effects;
 	//private boolean isPlayer;
 	
 	//Constructor
@@ -50,6 +51,7 @@ public class Person implements java.io.Serializable{
 		this.AILevelUp();
 	}
 	this.noAILevel = !aiLevel;
+	effects = new ArrayList<Effect>();
 	}
 	
 	public Person(int level) {
@@ -132,6 +134,9 @@ public class Person implements java.io.Serializable{
 		if (this.hasSkill(Skill.LIFE_MAGE)) {
 			hp+=this.getMageLevel();
 		}
+		if (this.hasEffect(Effect.CURSE)) {
+			hp-=10*level;
+		}
 		hp+=skillPoints;
 		tempMaxHp = hp;
 		speedFill = -1;
@@ -140,12 +145,12 @@ public class Person implements java.io.Serializable{
 		int b = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
 		int p = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
 		if (this.hasSkill(Skill.SHIELD)) {
-			s+=8*defenderLevel;
-			b+=8*defenderLevel;
-			p+=8*defenderLevel;
+			s+=1*defenderLevel;
+			b+=1*defenderLevel;
+			p+=1*defenderLevel;
 		}else {
 			if (this.hasSkill(Skill.PARRY)) {
-				s+=12*(defenderLevel);//want to make skill matter more but don't want to exponent it
+				s+=2*(defenderLevel);//want to make skill matter more but don't want to exponent it
 			}
 		}
 		bag.resetArmor(s,b,p);
@@ -155,6 +160,8 @@ public class Person implements java.io.Serializable{
 		extra.changePrint(print);
 	}
 	
+
+
 	/**
 	 * Take damage. Return true if this caused a death.
 	 * @param dam (int)
@@ -296,6 +303,8 @@ public class Person implements java.io.Serializable{
 		case IDEF_TRAINING: defPow+=1; defenderLevel--;break;
 		case IOFF_TRAINING: fightPow+=1; fighterLevel--;break;
 		case IMAG_TRAINING: magePow+=1; mageLevel--;break;
+		case MAGE_POWER: magePow+=3;break;
+		case MAGE_FRUGAL: magePow-=2; fightPow+=2; defPow+=2;break;
 		default: break;
 		}
 	}
@@ -517,7 +526,7 @@ public class Person implements java.io.Serializable{
 	}
 
 	public int getMageLevel() {
-		return mageLevel+magePow;
+		return extra.zeroOut(mageLevel+magePow-burnouts());
 	}
 
 	public void addXpSilent(int x) {
@@ -534,12 +543,78 @@ public class Person implements java.io.Serializable{
 	}
 
 	public int getDefenderLevel() {
-		return defenderLevel+defPow;
+		return extra.zeroOut(defenderLevel+defPow-burnouts());
 	}
 
 	public int getFighterLevel() {
-		return fighterLevel+fightPow;
+		return extra.zeroOut(fighterLevel+fightPow-burnouts());
+	}
+	
+	public void removeEffectAll(Effect e) {
+		while (effects.contains(e)) {
+			effects.remove(e);
+		}
 	}
 	
 	
+	public void cureEffects() {
+		effects.clear();//will need to be more complex if there ever are negative effects
+	}
+	
+	public int effectsSize() {
+		return effects.size(); 
+	}
+	
+	public void displayEffects() {
+		if (effects.isEmpty()) {
+			extra.println("You're perfectly healthy.");
+		}
+		for (Effect e: effects) {
+			extra.println(e.name() + ": "+ e.getDesc());
+		}
+	}
+	
+	
+	public void addEffect(Effect e) {
+		if (e.stacks()) {
+			effects.add(e);
+		}else {
+			if (!effects.contains(e)) {
+				effects.add(e);
+			}
+		}
+	}
+	
+	private boolean hasEffect(Effect e) {
+		return effects.contains(e);
+	}
+	
+	public void clearBattleEffects() {
+		ArrayList<Effect> removeList = new ArrayList<Effect>();
+		for (Effect e: effects) {
+			if (!e.lasts()) {
+				removeList.add(e);
+			}
+		}
+		for (Effect e: removeList) {
+			this.removeEffectAll(e);
+		}
+	}
+	
+	private int burnouts() {
+		int i = 0;
+		for (Effect e: effects) {
+			if (e.equals(Effect.BURNOUT)) {
+				i++;
+			}
+		}
+		return i;
+	}
+
+	public void displaySkills() {
+		for (Skill s: skills) {
+			s.display();
+		}
+		
+	}
 }

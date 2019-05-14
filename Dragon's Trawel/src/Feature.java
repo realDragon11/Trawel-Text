@@ -8,6 +8,7 @@ public abstract class Feature implements java.io.Serializable{
 	protected String tutorialText = null;
 	protected Color color = Color.WHITE;
 	protected Town town;
+	protected int moneyEarned;
 	public abstract void go();
 
 	public abstract void passTime(double time);

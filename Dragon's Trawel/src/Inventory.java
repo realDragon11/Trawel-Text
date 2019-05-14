@@ -278,15 +278,15 @@ public class Inventory implements java.io.Serializable{
 	
 	public void graphicalDisplay(int side, Person p) { 
 		Networking.sendStrong("ClearInv|"+side+"|");
-		Networking.sendStrong("AddInv|"+side+"|" +race.name +"|"+race.baseMap+"|"+raceMap+"|1|");
+		Networking.sendStrong("AddInv|"+side+"|" +race.name.replace("-","_") +"|"+race.baseMap+"|"+raceMap+"|1|");
 		for (Armor a: armorSlots) {
 			String str = "AddInv|"+side+"|" +a.getBaseName().replace(' ','_') +"|"+a.getBaseMap()+"|"+a.getMat().palIndex+"|";
 			switch (a.getArmorType()) {
 			case 0:str+= "-6|";break; //head
-			case 1:str+= "-5|";break; //arms
-			case 2:str+= "-3|";break; //chest
-			case 3:str+= "-2|";break; //legs
-			case 4:str+= "-1|";break; //feet
+			case 1:str+= "-3|";break; //arms
+			case 2:str+= "-5|";break; //chest
+			case 3:str+= "-1|";break; //legs
+			case 4:str+= "-2|";break; //feet
 			}
 			
 			Networking.sendStrong(str);
@@ -516,6 +516,14 @@ public class Inventory implements java.io.Serializable{
 			a.restoreArmor(d);
 		}
 		
+	}
+
+	public String getSoundType(int slot) {
+		if (armorSlots[slot].getMatType() != "chainmail") {
+		return armorSlots[slot].getSoundType();
+		}else {
+			return "chain";
+		}
 	}
 
 }

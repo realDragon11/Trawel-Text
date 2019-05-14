@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.ArrayList;
 /**
  * A combat holds some of the more battle-focused commands.
@@ -50,7 +51,7 @@ public class Combat {
 				defender = manOne;
 			}
 			if (attacker.hasSkill(Skill.BLITZ)) {
-				attacker.advanceTime(1);
+				attacker.advanceTime(3);
 			}
 			defender.advanceTime(attacker.getTime());
 			
@@ -109,7 +110,7 @@ public class Combat {
 			if (p.isPlayer()) {
 				otherperson.displayStatsShort();
 				p.getBag().graphicalDisplay(-1,p);
-				otherperson.getBag().graphicalDisplay(-1,otherperson);
+				otherperson.getBag().graphicalDisplay(1,otherperson);
 			}
 			setAttack(p,otherperson);
 			p.getNextAttack().defender = otherperson;
@@ -125,7 +126,7 @@ public class Combat {
 				}
 			}
 			if (quickest.hasSkill(Skill.BLITZ)) {
-				lowestDelay--;
+				lowestDelay-=3;
 			}
 			
 			
@@ -140,6 +141,9 @@ public class Combat {
 			if (!defender.isAlive() && wasAlive) {
 				extra.println("They die!");
 				quickest.getBag().getHand().addKill();
+				if (quickest.hasSkill(Skill.KILLHEAL)){
+					quickest.addHp(5*quickest.getLevel());
+				}
 				song.addKill(quickest,defender);
 				totalList.remove(defender);
 				killList.add(defender);
@@ -192,7 +196,7 @@ public class Combat {
 			if (quickest.isPlayer()) {
 				otherperson.displayStatsShort();
 				quickest.getBag().graphicalDisplay(-1,quickest);
-				otherperson.getBag().graphicalDisplay(-1,otherperson);
+				otherperson.getBag().graphicalDisplay(1,otherperson);
 			}
 			setAttack(quickest,otherperson);
 			quickest.getNextAttack().defender = otherperson;
@@ -236,6 +240,8 @@ public class Combat {
 			defender.displayStats();
 			defender.displayArmor();
 			defender.displayHp();
+			if (attacker.hasSkill(Skill.HPSENSE)) {
+			defender.displaySkills();}
 			extra.print(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
 			return -2;
 		}
@@ -248,6 +254,7 @@ public class Combat {
 			return -1;//do a dodge
 		}
 		//return the damage-armor, with each type evaluated individually
+		Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getSoundIntensity() + "|" +att.getSoundType()+"|");
 		return (int)((extra.zeroOut((att.getSharp()*damMod)-(def.getSharp(att.getSlot())*armMod))*Math.random())+extra.zeroOut((att.getBlunt()*damMod)-(def.getBlunt(att.getSlot())*armMod)*Math.random())+extra.zeroOut((att.getPierce()*damMod)-(def.getPierce(att.getSlot())*armMod)*Math.random()));
 		
 	}
@@ -280,7 +287,13 @@ public class Combat {
 	 */
 	public void handleTurn(Person attacker, Person defender, BardSong song) {
 		if (defender.hasSkill(Skill.COUNTER)) {
-			defender.advanceTime(1);
+			defender.advanceTime(2);
+		}
+		if (attacker.hasSkill(Skill.SPUNCH)) {
+			defender.advanceTime(-2);
+		}
+		if (attacker.hasSkill(Skill.CURSE_MAGE)) {
+			defender.addEffect(Effect.CURSE);
 		}
 		if (extra.chanceIn(1,4)) {
 			if (extra.chanceIn(1,3)) {
@@ -300,12 +313,21 @@ public class Combat {
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender,damageDone);
 		if (damageDone > 0) {
 			song.addAttackHit(attacker,defender);
+			if (!extra.printMode) {
+				Networking.sendColor(Color.ORANGE);
+			}
 			if (defender.takeDamage(damageDone)) {
 				//extra.print(" " + choose("Striking them down!"," They are struck down."));
+				if (!extra.printMode) {
+					Networking.sendColor(Color.RED);
+				}
 			}
 		}else {
 			if (damageDone == -1) {
 				song.addAttackMiss(attacker,defender);
+				if (!extra.printMode) {
+					Networking.sendColor(Color.YELLOW);
+				}
 					extra.print((String)extra.choose(" They miss!"," The attack is dodged!"," It's a miss!"," It goes wide!"," It's not even close!"));
 					if (defender.hasSkill(Skill.SPEEDDODGE)) {
 						defender.advanceTime(10);
@@ -316,6 +338,9 @@ public class Combat {
 				}else {
 					if (damageDone == 0) {
 						song.addAttackArmor(attacker,defender);
+						if (!extra.printMode) {
+							Networking.sendColor(Color.BLUE);
+						}
 					extra.print(" "+(String)extra.choose("But it is ineffective...","The armor deflects the blow!","However, the attack fails to deal damage through the armor."));
 					if (defender.hasSkill(Skill.ARMORHEART)) {
 						defender.addHp(attacker.getLevel());
@@ -323,6 +348,8 @@ public class Combat {
 					if (defender.hasSkill(Skill.ARMORSPEED)) {
 						defender.advanceTime(10);
 					}
+					}else {
+						
 					}
 				}
 		}
@@ -384,6 +411,11 @@ public class Combat {
 			defender.getNextAttack().wither(att.getSharp()/100);
 			if (!defender.hasSkill(Skill.LIFE_MAGE)) {
 			defender.takeDamage((int)((att.getBlunt())));}
+			int i = 0;
+			while (i < att.getPierce()) {
+				defender.addEffect(Effect.BURNOUT);
+				i++;
+			}
 			}
 		if(att.getSkill() == Skill.ARMOR_MAGE) {
 			off.restoreArmor(((double)att.getSharp())/100);

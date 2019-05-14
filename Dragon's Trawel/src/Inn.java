@@ -11,10 +11,11 @@ public class Inn extends Feature implements java.io.Serializable{
 	private String residentName;
 	private int nextReset;
 	private boolean playerwatch;
+
 	
 	private final static int RES_COUNT = 8;
 	
-	public Inn(String n, int t,Town twn) {
+	public Inn(String n, int t,Town twn, SuperPerson owner) {
 		name = n;
 		tier = t;
 		town = twn;
@@ -24,10 +25,16 @@ public class Inn extends Feature implements java.io.Serializable{
 		playerwatch = false;
 		tutorialText = "Inns are a great place to buy beer and have various residents.";
 		color = Color.YELLOW;
+		this.owner = owner;
 	}
 	
 	@Override
 	public void go() {
+		if (owner == Player.player && moneyEarned > 0) {
+			extra.println("You take the " + moneyEarned + " in profits.");
+			Player.bag.addGold(moneyEarned);
+			moneyEarned = 0;
+		}
 		mainGame.story.inn();
 		Networking.sendStrong("Discord|imagesmall|icon|Inn|");
 		while (true) {
@@ -61,6 +68,7 @@ public class Inn extends Feature implements java.io.Serializable{
 	@Override
 	public void passTime(double time) {
 		timePassed += time;
+		moneyEarned +=tier*5*time;
 		if (timePassed > nextReset) {
 			timePassed = 0;
 			occupantDuel();
@@ -149,6 +157,7 @@ public class Inn extends Feature implements java.io.Serializable{
 			extra.println("Pay "+tier+" gold for a beer?");
 			if (extra.yesNo()) {
 				Player.player.getPerson().addBeer();
+				moneyEarned +=tier;
 			}
 			}else {
 				extra.println("You can't afford that!");

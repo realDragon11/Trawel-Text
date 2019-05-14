@@ -104,6 +104,14 @@ public class Oracle extends Feature implements java.io.Serializable{ //extends f
 		
 		fileInput.close();
 		
+fileInput = new Scanner (getClass().getResourceAsStream("/resource/shamanTips.txt"));
+		
+		while (fileInput.hasNextLine()) {
+			tips.add(new Tip(fileInput.nextLine(),"shaman"));
+		}
+		
+		fileInput.close();
+		
 		
 	}
 	

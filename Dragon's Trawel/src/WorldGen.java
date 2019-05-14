@@ -26,7 +26,7 @@ public class WorldGen {
 		Town unun = new Town("unun",2,rona,new Point(5,4));
 		unun.setHasPort(true);
 		addConnection(homa,unun,"road","barrier way");
-		unun.addFeature(new Inn("unun inn",2,unun));
+		unun.addFeature(new Inn("unun inn",2,unun,null));
 		unun.addTravel();
 		unun.addTravel();
 		unun.addTravel();
@@ -38,7 +38,7 @@ public class WorldGen {
 		addConnection(homa,tevar,"road","red road");
 		addConnection(tevar,unun,"road","blue road");
 		tevar.addFeature(new Forest("the black forest",2));
-		tevar.addFeature(new Mine("tevar mine",tevar));
+		tevar.addFeature(new Mine("tevar mine",tevar,null));
 		
 		
 		Town hemo = new Town("hemo",2,rona,new Point(5,7));
@@ -56,7 +56,7 @@ public class WorldGen {
 		tanak.addFeature(new Arena("tanak colosseum",4,6,24*3,24*20,1));
 		tanak.addFeature(new Store(4,6));
 		tanak.setHasTeleporters(true);
-		tanak.addFeature(new Inn("tanak inn",5,tanak));
+		tanak.addFeature(new Inn("tanak inn",5,tanak,null));
 		tanak.addTravel();
 		tanak.addTravel();
 		tanak.addFeature(new Champion(10));
@@ -69,6 +69,7 @@ public class WorldGen {
 		lokan.addFeature(new Store(3));
 		lokan.addFeature(new Oracle("lokan oracle",3));
 		lokan.addFeature(new Appraiser("lokan appraiser"));
+		lokan.addFeature(new Doctor("Shaman",lokan));
 		lokan.addTravel();
 		lokan.addTravel();
 		
@@ -85,7 +86,7 @@ public class WorldGen {
 		alhax.setHasPort(true);
 		alhax.addFeature(new Arena("yenona arena",2,5,24*7,3,37));
 		addConnection(alhax,unun,"ship","yellow passageway");
-		alhax.addFeature(new Inn("alhax bar",2,alhax));
+		alhax.addFeature(new Inn("alhax bar",2,alhax,null));
 		alhax.addFeature(new Store(2,4));
 		alhax.addFeature(new Store(2,5));
 		//alhax.addFeature(new Store(2,6));
@@ -130,7 +131,8 @@ public class WorldGen {
 		denok.addFeature(new Store(5,5));
 		denok.addFeature(new Forest("the white forest",4));
 		denok.addFeature(new Grove("the white grove",denok));
-		denok.addFeature(new Mine("denok mine",denok));
+		denok.addFeature(new Mine("denok mine",denok,null));
+		denok.addFeature(new Doctor("Shaman",denok));
 		denok.addTravel();
 		
 		Town erin = new Town("erin",5,teran,new Point(10,4));
@@ -138,7 +140,7 @@ public class WorldGen {
 		addConnection(erin,denok,"road","orange road");
 		erin.addFeature(new Arena("erin colosseum (daily bout)",5,1,24,12,39));
 		erin.addFeature(new Store(5,1));
-		erin.addFeature(new Inn("erin inn",5,erin));
+		erin.addFeature(new Inn("erin inn",5,erin,null));
 		erin.addFeature(new Library("erin library",erin));
 		erin.addFeature(new Mountain("the white mountain",5));
 		erin.addFeature(new Appraiser("erin appraiser"));
@@ -172,7 +174,7 @@ public class WorldGen {
 		repa.addTravel();
 		repa.addTravel();
 		repa.addTravel();
-		repa.addFeature(new Inn("repa inn",8,erin));
+		repa.addFeature(new Inn("repa inn",8,erin,null));
 		addConnection(repa,greap(),"teleport","world teleport (eonao-greap)");
 		
 		
@@ -205,7 +207,7 @@ public class WorldGen {
 		unika.addFeature(new Grove("unika forest",unika));
 		unika.addFeature(new Champion(10));
 		unika.addTravel();
-		unika.addFeature(new Inn("unika inn",10,unika));
+		unika.addFeature(new Inn("unika inn",10,unika,null));
 		
 		Town peana = new Town("peana",10, apen, new Point(2,7));
 		addConnection(holik,peana,"road","blue road");

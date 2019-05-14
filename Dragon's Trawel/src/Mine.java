@@ -5,13 +5,14 @@ public class Mine extends Feature {
 	private Town town;
 	private int size;
 	private MineNode start;
-	public Mine(String name,Town t) {
+	public Mine(String name,Town t, SuperPerson owner) {
 		this.name = name;
 		town = t;
 		size = 50;//t.getTier()*10;
 		tutorialText = "Mines have minerals for you to make profit off of.";
 		generate();
 		color = Color.RED;
+		this.owner = owner;
 	}
 	@Override
 	public void go() {
@@ -25,7 +26,9 @@ public class Mine extends Feature {
 	}
 	
 	public void generate() {
-		start = new MineNode(size,town.getTier());
+		start = new MineNode(size,town.getTier(),this);
 	}
+	
+
 
 }

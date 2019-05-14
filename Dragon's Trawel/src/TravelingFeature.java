@@ -43,7 +43,7 @@ public class TravelingFeature extends Feature implements java.io.Serializable{
 				feature.name = "traveling "+ feature.name;
 				feature.town = town;
 				break;
-		case 5: feature = new Inn("celebration",curTier,town);break;
+		case 5: feature = new Inn("celebration",curTier,town,null);break;
 		}
 		if (hasSomething) {
 		name = feature.name;}
