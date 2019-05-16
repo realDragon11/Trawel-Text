@@ -32,6 +32,7 @@ public class MaterialFactory {
 		misc.soundType = "padding";
 		matList.add(misc);
 		
+		/*TODO readd leather
 		misc = new Material();
 		misc.name = "leather";
 		misc.typeList.add("light");
@@ -56,7 +57,7 @@ public class MaterialFactory {
 		misc.palIndex = 0;
 		misc.soundType = "padding";
 		matList.add(misc);
-		
+		*/
 		misc = new Material();
 		misc.name = "iron";
 		misc.typeList.add("heavy");
@@ -273,7 +274,7 @@ public class MaterialFactory {
 		misc.fireVul = 2;
 		misc.shockVul = .6;
 		misc.freezeVul = .6;
-		misc.palIndex = 0;
+		misc.palIndex = 1;
 		misc.soundType = "metal";
 		matList.add(misc);
 		
@@ -554,7 +555,7 @@ public class MaterialFactory {
 		misc.fireVul = .5;
 		misc.shockVul = 0;
 		misc.freezeVul = .5;
-		misc.palIndex = 0;
+		misc.palIndex = 1;
 		misc.soundType = "crystal";
 		matList.add(misc);
 		
@@ -579,7 +580,7 @@ public class MaterialFactory {
 		misc.fireVul = 0;
 		misc.shockVul = .7;
 		misc.freezeVul = .3;
-		misc.palIndex = 0;
+		misc.palIndex = 2;
 		misc.soundType = "crystal";
 		matList.add(misc);
 		
@@ -604,7 +605,7 @@ public class MaterialFactory {
 		misc.fireVul = .5;
 		misc.shockVul = .5;
 		misc.freezeVul = 0;
-		misc.palIndex = 0;
+		misc.palIndex = 3;
 		misc.soundType = "crystal";
 		matList.add(misc);
 		
@@ -629,7 +630,7 @@ public class MaterialFactory {
 		misc.fireVul = 0;
 		misc.shockVul = .5;
 		misc.freezeVul = 2;
-		misc.palIndex = 0;
+		misc.palIndex = 4;
 		misc.soundType = "crystal";
 		matList.add(misc);
 		
@@ -654,7 +655,7 @@ public class MaterialFactory {
 		misc.fireVul = 0;
 		misc.shockVul = .7;
 		misc.freezeVul = .3;
-		misc.palIndex = 0;
+		misc.palIndex = 5;
 		misc.soundType = "crystal";
 		matList.add(misc);
 		
@@ -679,7 +680,7 @@ public class MaterialFactory {
 		misc.fireVul = .5;
 		misc.shockVul = .5;
 		misc.freezeVul = 0;
-		misc.palIndex = 0;
+		misc.palIndex = 6;
 		misc.soundType = "crystal";
 		matList.add(misc);
 		

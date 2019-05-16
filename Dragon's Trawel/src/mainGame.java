@@ -78,7 +78,7 @@ public class mainGame {
 	private void credits() {
 		extra.println("Made by Brian Malone");
 		extra.println("Book writer: Tibo Smolders");
-		extra.println("With thanks to the /r/GameMaker discord");
+		extra.println("With thanks to the GameMaker discord");
 		
 	}
 
@@ -88,13 +88,32 @@ public class mainGame {
 		extra.println("1 The DeathWalker");
 		extra.println("2 Eoanan Sandbox");
 		extra.println("3 Eoanan Wizard Mode");
-		switch(extra.inInt(3)) {
+		extra.println("4 model mode");
+		switch(extra.inInt(4)) {
 		case 1: adventure1();break;
 		case 2: adventure2();break;
 		case 3: adventure3();break;
+		case 4: modelMode();break;
 			}
 	}
 	
+	private void modelMode() {
+		Person manOne;
+		Player player;
+			 manOne = new Person(starting_level,false);
+			 player = new Player(manOne);
+			 player.bag.swapArmorSlot(new Armor(1,0,MaterialFactory.getMat("emerald")),0);
+			 player.bag.swapArmorSlot(new Armor(1,1,MaterialFactory.getMat("emerald")),1);
+			 player.bag.swapArmorSlot(new Armor(1,2,MaterialFactory.getMat("emerald")),2);
+			 player.bag.swapArmorSlot(new Armor(1,3,MaterialFactory.getMat("emerald")),3);
+			 player.bag.swapArmorSlot(new Armor(1,4,MaterialFactory.getMat("emerald")),4);
+			 manOne.setPlayer();
+			 Networking.sendStrong("Discord|desc|Character Select|");
+			 Networking.charUpdate();
+		
+	}
+
+
 	private void links() {
 		while (true) {
 			//extra.println("1 Patreon");

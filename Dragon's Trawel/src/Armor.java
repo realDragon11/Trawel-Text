@@ -72,6 +72,7 @@ public class Armor extends Item {
 	//what names make sense for the given material?
 	this.matType = extra.randList(mat.typeList);
 	if (matType.equals("light")){
+		baseMap = "cloth";
 		switch (armorType) {//adamantine can be either
 			case 0: baseName = (String)extra.choose("homan hat"); weight = 2; baseResist = 1; cost = 1;break;//"hood"
 			case 1: baseName = (String)extra.choose("homan gloves"); weight = 2; baseResist = 1; cost = 1;break;//,"gloves","gloves","fingerless gloves"
@@ -105,7 +106,7 @@ public class Armor extends Item {
 				
 			}else {
 				if (matType.equals("crystal")) {
-					
+					baseMap = "crystal";
 					switch (armorType) {
 					case 0: baseName = (String)extra.choose("tevaran helmet"); weight = 2; baseResist = 1; cost = 1;break;
 					case 1: baseName = (String)extra.choose("tevaran bracers"); weight = 2; baseResist = 1; cost = 1;break;
