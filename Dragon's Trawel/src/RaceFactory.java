@@ -340,10 +340,21 @@ public class RaceFactory {
 		return mat;
 	}
 	
+	public static Race getRace(String string) {
+		for (Race m: raceList) {
+			if (m.name.equals(string)) {
+				return m;
+			}
+		}
+		
+		return null;
+	}
+	
 	public static Person makeWolf(int level) {
 		extra.printMode = true;
 		Person w = new Person(level,true, Race.RaceType.BEAST);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"wolf teeth"));
+		w.getBag().swapRace(RaceFactory.getRace("wolf"));
 		extra.printMode = false;
 		return w;
 	}
