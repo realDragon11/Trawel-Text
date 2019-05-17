@@ -341,8 +341,10 @@ public class RaceFactory {
 	}
 	
 	public static Person makeWolf(int level) {
+		extra.printMode = true;
 		Person w = new Person(level,true, Race.RaceType.BEAST);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"wolf teeth"));
+		extra.printMode = false;
 		return w;
 	}
 }

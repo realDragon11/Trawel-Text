@@ -31,7 +31,7 @@ public class Inventory implements java.io.Serializable{
 		armorSlots[3] = new Armor(level,3);
 		armorSlots[4] = new Armor(level,4);
 		hand = new Weapon(level);}
-		if (type == Race.RaceType.HUMANOID) {
+		if (type == Race.RaceType.BEAST) {
 			armorSlots[0] = new Armor(level,0,MaterialFactory.getMat("flesh"));
 			armorSlots[1] = new Armor(level,1,MaterialFactory.getMat("flesh"));
 			armorSlots[2] = new Armor(level,2,MaterialFactory.getMat("flesh"));
