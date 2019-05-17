@@ -70,7 +70,7 @@ public class Store extends Feature implements java.io.Serializable{
 		}
 		if (type == 7) {
 			for (int j = 0;j < 5;j++) {
-				items.add(RaceFactory.randRace());
+				items.add(RaceFactory.randRace(Race.RaceType.HUMANOID));
 			}
 		}
 	}

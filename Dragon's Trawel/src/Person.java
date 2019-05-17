@@ -398,10 +398,12 @@ public class Person implements java.io.Serializable{
 		extra.println("They have " + extra.format(bag.getDodge()) + "x dodging, " + extra.format(bag.getBluntResist()) + " blunt resistance, " +
 		extra.format(bag.getSharpResist()) + " sharp resistance, and "+ extra.format(bag.getPierceResist()) + " pierce resistance.");
 		extra.println("They have " + xp + "/" + level*level + " xp toward level " + (level+1) + ".");
+		
+		if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 		extra.println("Their inventory includes " + bag.nameInventory());
 		if (beer > 0 || skills.contains(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
 		if (hasSkill(Skill.PARRY)) {extra.println("They have a parrying dagger.");}
-		if (hasSkill(Skill.SHIELD)) {extra.println("They have a shield.");}
+		if (hasSkill(Skill.SHIELD)) {extra.println("They have a shield.");}}
 	}
 	
 	/**
@@ -450,10 +452,11 @@ public class Person implements java.io.Serializable{
 
 	public void displayStatsShort() {
 		extra.println("This is " + this.getName() +". They are a level " + this.getLevel() +" " + this.getBag().getRace().name+".");
+		if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 		extra.println("Their inventory includes: \n " + bag.nameInventory()); 
 		if (beer > 0 || skills.contains(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
 		if (hasSkill(Skill.PARRY)) {extra.println("They have a parrying dagger.");}
-		if (hasSkill(Skill.SHIELD)) {extra.println("They have a shield.");}
+		if (hasSkill(Skill.SHIELD)) {extra.println("They have a shield.");}}
 	}
 	
 	public void addBeer() {

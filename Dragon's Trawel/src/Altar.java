@@ -56,9 +56,5 @@ public class Altar extends Feature{
 		extra.println("You examine the altar. It's of a "+Player.player.animalName()+".");
 	}
 	
-	private void transmute() {
-		Player.bag.setRace(RaceFactory.randRace());
-		extra.println("You turn into a " + Player.bag.getRace().name +"!");
-	}
 
 }
