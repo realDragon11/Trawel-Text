@@ -271,13 +271,17 @@ public class Person implements java.io.Serializable{
 		for (Skill s: list) {
 			
 			if (in == i) {
+				extra.println("Buy the " + s.getName() + " skill?");
+				extra.println(s.getDesc());
+				extra.println(s.getLongDesc());
+				if (extra.yesNo()) {
 				if (skillPoints > 0) {
 				extra.println("You spend a skillpoint to gain the "+s.getName() + " skill!");
 				skillAdd(s);
 				}else {
 					extra.println("You don't have any skillpoints!");
 				}
-			}
+			}}
 			
 			i++;
 		}
