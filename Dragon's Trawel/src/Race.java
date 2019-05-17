@@ -9,8 +9,11 @@ public class Race extends Item implements java.io.Serializable{
 	public ArrayList<String> raceMaps = new ArrayList<String>();
 	public String baseMap;
 	public int magicPower, defPower;
+	public Enum<RaceType> racialType;
 	
-	
+	public enum RaceType{
+		HUMANOID, BEAST;
+	}
 	
 	@Override
 	public EnchantConstant getEnchant() {

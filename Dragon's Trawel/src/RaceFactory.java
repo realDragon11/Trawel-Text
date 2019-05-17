@@ -23,6 +23,7 @@ public class RaceFactory {
 		misc.raceMaps.add("2");
 		misc.magicPower = 1;
 		misc.defPower = 2;
+		misc.racialType = Race.RaceType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -41,6 +42,7 @@ public class RaceFactory {
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 0;
 		misc.defPower = 2;
+		misc.racialType = Race.RaceType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -60,6 +62,7 @@ public class RaceFactory {
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 1;
 		misc.defPower = 1;
+		misc.racialType = Race.RaceType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -79,6 +82,7 @@ public class RaceFactory {
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 2;
 		misc.defPower = 0;
+		misc.racialType = Race.RaceType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -100,6 +104,7 @@ public class RaceFactory {
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 1;
 		misc.defPower = 0;
+		misc.racialType = Race.RaceType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -119,6 +124,7 @@ public class RaceFactory {
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 0;
 		misc.defPower = 1;
+		misc.racialType = Race.RaceType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -137,6 +143,7 @@ public class RaceFactory {
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 1;
 		misc.defPower = 3;
+		misc.racialType = Race.RaceType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -161,6 +168,7 @@ public class RaceFactory {
 		misc.raceMaps.add("4");
 		misc.magicPower = 0;
 		misc.defPower = 1;
+		misc.racialType = Race.RaceType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -179,6 +187,7 @@ public class RaceFactory {
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 2;
 		misc.defPower = 1;
+		misc.racialType = Race.RaceType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -197,6 +206,7 @@ public class RaceFactory {
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 2;
 		misc.defPower = 0;
+		misc.racialType = Race.RaceType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -215,6 +225,7 @@ public class RaceFactory {
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 0;
 		misc.defPower = 0;
+		misc.racialType = Race.RaceType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -233,6 +244,7 @@ public class RaceFactory {
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 2;
 		misc.defPower = 0;
+		misc.racialType = Race.RaceType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -251,6 +263,7 @@ public class RaceFactory {
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 1;
 		misc.defPower = 1;
+		misc.racialType = Race.RaceType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -269,6 +282,30 @@ public class RaceFactory {
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 1;
 		misc.defPower = 1;
+		misc.racialType = Race.RaceType.HUMANOID;
+		raceList.add(misc);
+		
+		
+		
+		//////beasts
+		misc = new Race();
+		misc.name = "wolf";
+		misc.namePlural = "wolves";
+		misc.swears.add("dog");
+		misc.aimMod = 1.1;
+		misc.damMod = .9;
+		misc.dodgeMod = 1.3;
+		misc.hpMod = .9;
+		misc.speedMod = 1.2;
+		misc.tradeMod = 1;
+		misc.rarity = 0;
+		misc.insultList.add("Die, you mutt!");
+		misc.insultList.add("Die, dog!");
+		misc.baseMap = "nada";
+		misc.raceMaps.add("nuthin");
+		misc.magicPower = 0;
+		misc.defPower = 0;
+		misc.racialType = Race.RaceType.BEAST;
 		raceList.add(misc);
 	}
 	
