@@ -197,7 +197,8 @@ public class Person implements java.io.Serializable{
 			if (isPlayer() == false) {
 			intellect++;}
 			maxHp+=50;
-			extra.println("\"" + brag.getBoast() + "\" " + getName() + " " + extra.choose("declares","boasts","states firmly")+ ".");
+			if (this.getBag().getRace().racialType != Race.RaceType.BEAST) {
+			extra.println("\"" + brag.getBoast() + "\" " + getName() + " " + extra.choose("declares","boasts","states firmly")+ ".");}
 			addXp(0);//recursive level easy trick
 			this.setSkillPoints(this.getSkillPoints() + 1);
 			if (this.isPlayer()) {
