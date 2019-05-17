@@ -5,7 +5,7 @@ public class GroveNode implements java.io.Serializable{
 	//potentail problem: all this code is in a highly duplicated node
 
 	private String name;
-	private static final int EVENT_NUMBER = 17;
+	private static final int EVENT_NUMBER = 18;
 	private int state;
 	private String interactString;
 	private int idNum;
@@ -73,7 +73,17 @@ public class GroveNode implements java.io.Serializable{
 		case 16: storage1 = new Weapon(level); name = ((Weapon)storage1).getBaseName() + " in a rock"; interactString = "pull on " +((Weapon)storage1).getBaseName(); break;
 		case 17: storage1 = new Person(level); ((Person)storage1).setRacism(false);
 		name = ((Person)storage1).getBag().getRace().name; interactString = "approach " + name;break;
-		}//TODO: add lumberjacks and tending to tree
+		case 18: ArrayList<Person> list = new ArrayList<Person>();
+		for (int i = 0;i < extra.randRange(2,4);i++) {
+		list.add(RaceFactory.makeWolf(extra.zeroOut(level-3)+1));}
+		name = "pack of wolves";
+		interactString = "ERROR";
+		storage1 = list;
+		forceGo = true;
+		state = 0;
+		;break;
+		}
+		//TODO: add lumberjacks and tending to tree
 		if (size < 2) {
 			return;
 		}
@@ -112,6 +122,7 @@ public class GroveNode implements java.io.Serializable{
 		case 15: rich1();break;
 		case 16: weapStone();break;
 		case 17: equal1();break;
+		case 18: return packOfWolves();
 		}
 		return false;
 	}
@@ -806,6 +817,31 @@ public class GroveNode implements java.io.Serializable{
 		case 3:bool = false;break;
 		}
 		}
+	}
+	
+	private boolean packOfWolves() {
+		if (state == 0) {
+			Networking.sendColor(Color.RED);
+			extra.println("The pack descends upon you!");
+			ArrayList<Person> list = (ArrayList<Person>)storage1;
+			ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
+			
+			if (survivors.contains(Player.player.getPerson())) {
+			forceGo = false;
+			interactString = "approach wolf corpses";
+			storage1 = null;
+			state = 1;
+			name = "dead "+name;
+			return false;}else {
+				storage1 = survivors;
+				return true;
+			}
+		}else {
+			extra.println("There are a few wolf corpses here.");
+			return false;
+		}
+		
+		
 	}
 
 }

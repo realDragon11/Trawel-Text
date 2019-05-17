@@ -339,4 +339,10 @@ public class RaceFactory {
 		}while(totalRarity > 0);
 		return mat;
 	}
+	
+	public static Person makeWolf(int level) {
+		Person w = new Person(level,true, Race.RaceType.BEAST);
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"wolf teeth"));
+		return w;
+	}
 }
