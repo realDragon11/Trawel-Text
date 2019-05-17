@@ -685,6 +685,56 @@ public class MaterialFactory {
 		matList.add(misc);
 		
 		
+		//beast materials
+		misc = new Material();
+		misc.name = "flesh";
+		misc.typeList.add("light");
+		misc.armor = true;
+		misc.weapon = false;
+		misc.weight = 20;
+		misc.cost = 30;
+		misc.baseEnchant = 0;
+		misc.baseResist = 6;
+		misc.sharpResist = 1;
+		misc.bluntResist = 1;
+		misc.pierceResist = 1;
+		misc.dexMod = 1.2;
+		misc.sharpMult = 1;
+		misc.bluntMult = 1;
+		misc.pierceMult = 1;
+		misc.tier = 1;
+		misc.rarity = 0;
+		misc.fireVul = 1;
+		misc.shockVul = 1;
+		misc.freezeVul = 1;
+		misc.palIndex = 0;
+		misc.soundType = "flesh";
+		matList.add(misc);
+		
+		misc = new Material();
+		misc.name = "bone";
+		misc.typeList.add("light");
+		misc.armor = true;
+		misc.weapon = true;
+		misc.weight = 20;
+		misc.cost = 30;
+		misc.baseEnchant = 0;
+		misc.baseResist = 10;
+		misc.sharpResist = 1;
+		misc.bluntResist = 1;
+		misc.pierceResist = 1;
+		misc.dexMod = 1.2;
+		misc.sharpMult = 1;
+		misc.bluntMult = 1;
+		misc.pierceMult = 1;
+		misc.tier = 1;
+		misc.rarity = 0;
+		misc.fireVul = 1;
+		misc.shockVul = 1;
+		misc.freezeVul = 1;
+		misc.palIndex = 0;
+		misc.soundType = "bone";
+		matList.add(misc);
 	}
 	
 	public static Material randMat(Boolean armor, Boolean weapon) {

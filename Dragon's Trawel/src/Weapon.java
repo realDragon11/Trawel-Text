@@ -40,10 +40,10 @@ public class Weapon extends Item {
 	 * Standard weapon constructor. Makes a weapon of level level
 	 * @param newLevel (int)
 	 */
-	public Weapon(int newLevel) {
+	public Weapon(int newLevel, Material materia, String weaponName) {
 		
 		//material = (String)bpmFunctions.choose("iron",bpmFunctions.choose("steel","silver",bpmFunctions.choose("gold","platinum",bpmFunctions.choose("adamantine","mithril"))));
-		mat = MaterialFactory.randMat(false,true);
+		mat = materia;
 		material = mat.name;
 		level = newLevel;
 		baseEnchant = mat.baseEnchant;
@@ -53,7 +53,7 @@ public class Weapon extends Item {
 		weight *= mat.weight;
 		cost = (int) mat.cost;
 		//choosing the type of weapon
-		weapName = (String)extra.choose("longsword","broadsword","mace","spear","axe","rapier","dagger",extra.choose("claymore","lance","shovel"));
+		weapName = weaponName;
 		kills = 0;
 		//level scaling
 		/*
@@ -168,6 +168,10 @@ public class Weapon extends Item {
 			effectiveCost=(int)extra.zeroOut(cost * enchantHit.getGoldMult());
 		}
 		}
+	}
+	
+	public Weapon(int newLevel) {
+		this(newLevel,MaterialFactory.randMat(false,true),(String)extra.choose("longsword","broadsword","mace","spear","axe","rapier","dagger",extra.choose("claymore","lance","shovel")));
 	}
 
 	//instance methods
