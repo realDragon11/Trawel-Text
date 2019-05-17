@@ -1,3 +1,5 @@
+
+
 /**
  * 
  * @author Brian Malone
@@ -21,17 +23,18 @@ public class Inventory implements java.io.Serializable{
 	 * Create a new inventory, populated with items of level level.
 	 * @param level (int)
 	 */
-	public Inventory(int level) {
+	public Inventory(int level, Race.RaceType type) {
 		armorSlots[0] = new Armor(level,0);
 		armorSlots[1] = new Armor(level,1);
 		armorSlots[2] = new Armor(level,2);
 		armorSlots[3] = new Armor(level,3);
 		armorSlots[4] = new Armor(level,4);
 		hand = new Weapon(level);
-		race = RaceFactory.randRace();
+		race = RaceFactory.randRace(type);
 		raceMap = race.randomRaceMap();
 	}
 	
+
 	//instance
 	/**
 	 * Get a pointer to an armor in slot slot.

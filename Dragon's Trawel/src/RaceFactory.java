@@ -298,7 +298,7 @@ public class RaceFactory {
 		misc.hpMod = .9;
 		misc.speedMod = 1.2;
 		misc.tradeMod = 1;
-		misc.rarity = 0;
+		misc.rarity = 1;
 		misc.insultList.add("Die, you mutt!");
 		misc.insultList.add("Die, dog!");
 		misc.baseMap = "nada";
@@ -309,11 +309,12 @@ public class RaceFactory {
 		raceList.add(misc);
 	}
 	
-	public static Race randRace() {
+	public static Race randRace(Race.RaceType type) {
 		ArrayList<Race> copyList = new ArrayList<Race>();
 		ArrayList<Race> copyList2 = new ArrayList<Race>();
 		for (Race mat: raceList){
-			copyList.add(mat);
+			if (type == mat.racialType) {
+			copyList.add(mat);}
 		}
 		double totalRarity = 0;
 		Race mat;

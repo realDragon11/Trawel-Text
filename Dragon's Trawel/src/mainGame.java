@@ -100,7 +100,7 @@ public class mainGame {
 	private void modelMode() {
 		Person manOne;
 		Player player;
-			 manOne = new Person(starting_level,false);
+			 manOne = new Person(starting_level,false,Race.RaceType.HUMANOID);
 			 player = new Player(manOne);
 			 player.bag.swapArmorSlot(new Armor(1,0,MaterialFactory.getMat("emerald")),0);
 			 player.bag.swapArmorSlot(new Armor(1,1,MaterialFactory.getMat("emerald")),1);
@@ -355,8 +355,8 @@ public class mainGame {
 			Person manOne, manTwo;
 			Player player;
 			while (true) {
-				 manOne = new Person(starting_level,false);
-				 manTwo = new Person(starting_level,false);
+				 manOne = new Person(starting_level,false,Race.RaceType.HUMANOID);
+				 manTwo = new Person(starting_level,false,Race.RaceType.HUMANOID);
 				 extra.changePrint(!printIt);
 				 manOne = CombatTwo(manOne,manTwo);
 				 extra.changePrint(false);
@@ -385,9 +385,9 @@ public class mainGame {
 			story = new StoryDeathWalker();
 			Person manOne, manTwo;
 			Player player;
-				 manOne = new Person(starting_level,false);
+				 manOne = new Person(starting_level,false,Race.RaceType.HUMANOID);
 				 Person manThree = manOne;
-				 manTwo = new Person(starting_level,false);
+				 manTwo = new Person(starting_level,false,Race.RaceType.HUMANOID);
 				 extra.changePrint(true);
 				 manOne = CombatTwo(manOne,manTwo);
 				 if (manOne == manThree) {

@@ -31,15 +31,18 @@ public class Person implements java.io.Serializable{
 	//private boolean isPlayer;
 	
 	//Constructor
-	public Person(int level, boolean aiLevel) {
+	public Person(int level, boolean aiLevel, Race.RaceType raceType) {
 	maxHp = 40*level;//doesn't get all the hp it would naturally get
 	hp = maxHp;
 	intellect = level;
-	bag = new Inventory(level);
+	
+	bag = new Inventory(level,raceType);
 	firstName = randomLists.randomFirstName();
 	title = randomLists.randomLastName();
-	brag = new Taunts(bag.getRace());
 	placeOfBirth = extra.capFirst((String)extra.choose(randomLists.randomElement(),randomLists.randomColor()))+ " " +extra.choose("Kingdom","Kingdom","Colony","Domain","Realm");
+	
+	brag = new Taunts(bag.getRace());
+	
 	this.level = level;
 	skillPoints = level-1;
 	if (extra.chanceIn(1,5)) {
@@ -55,7 +58,7 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public Person(int level) {
-		this(level,true);
+		this(level,true,Race.RaceType.HUMANOID);
 	}
 	
 	//instance methods
