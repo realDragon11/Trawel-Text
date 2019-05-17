@@ -85,7 +85,7 @@ public class mainGame {
 	
 	private void gameTypes() {
 		extra.println("Choose an adventure:");
-		extra.println("1 The DeathWalker");
+		extra.println("1 The DeathStrider");
 		extra.println("2 Eoanan Sandbox");
 		extra.println("3 Eoanan Wizard Mode");
 		extra.println("4 model mode");
@@ -214,7 +214,7 @@ public class mainGame {
 				//if (first_man.isPlayer()) {//now this combat only works with the player
 				//extra.println("");
 				
-				if (!second_man.isPlayer()) {
+				if (!second_man.isPlayer() && first_man.getBag().getRace().racialType == Race.RaceType.HUMANOID && second_man.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 					extra.println(first_man.getName() +" goes to loot " + second_man.getName() +".");
 				AIClass.loot(second_man.getBag(),first_man.getBag(),first_man.getIntellect(),true);}
 				
@@ -284,7 +284,7 @@ public class mainGame {
 				surv.clearBattleEffects();
 				surv.addXp(Math.min(surv.getLevel(),battle.killed.get(0).getLevel()));
 				for (Person kill: battle.killed) {
-					if (kill.isPlayer()) {continue;}else {
+					if (kill.isPlayer() || surv.getBag().getRace().racialType != Race.RaceType.HUMANOID || kill.getBag().getRace().racialType != Race.RaceType.HUMANOID) {continue;}else {
 					AIClass.loot(kill.getBag(),surv.getBag(),surv.getIntellect(),false);}
 				}
 			}
