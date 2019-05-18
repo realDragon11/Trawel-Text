@@ -11,6 +11,7 @@ public class Altar extends Feature{
 	@Override
 	public void go() {
 		Networking.sendStrong("Discord|imagesmall|icon|Altar|");
+		mainGame.story.altar();
 		while (true) {
 		extra.println("1 examine the altar");
 		extra.println("2 stand on the altar");

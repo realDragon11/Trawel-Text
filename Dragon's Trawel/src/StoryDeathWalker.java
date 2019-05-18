@@ -92,15 +92,27 @@ public class StoryDeathWalker extends Story{
 		case "gotoinn3": 
 			extra.println("As you enter the main room, there is a commotion outside.");
 			extra.println("Some people carry a person, frothing at the mouth, into the inn.");
-			extra.println("\"Bring me to the touched one! Let me know the one who cannot die! Tell him to seek the oracles, to find the fallen log of fate, and complete their quest!\"");
+			extra.println("\"Bring me to the touched one! Let me know the one who cannot die! Tell him to seek the oracles, to complete the travel to revan!\"");
 			extra.println("They suddenly grip their head, and scream, before blood pours out of their eyes.");
 			extra.println("1 watch them die");
-			step = "mainQuest";
-			Player.player.animalQuest = 0;
+			step = "gotorevan1";
 			extra.inInt(1);
 			;break;
 		default: break;
 		}
 		
 	}
+	
+	public void altar() {
+		switch(step) {
+		case "gotorevan1": 
+			extra.println("You hear a voice within your head.");
+			extra.println("\"Greetings " +Player.player.getPerson().getName()+", and welcome... to our sanctuary.\"");
+			extra.println("\"You have been chosen- not for your skill, but for your loss.\"");
+			step = "potato";
+		;break;
+		}
+		
+	}
+	
 }
