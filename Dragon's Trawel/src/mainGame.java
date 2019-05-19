@@ -294,6 +294,7 @@ public class mainGame {
 				kill.clearBattleEffects();
 				if (kill.isPlayer()) {
 					Networking.clearSide(1);
+					die();
 					continue;}
 				gold += kill.getBag().getGold();
 				for (int i = 0;i<5;i++) {
