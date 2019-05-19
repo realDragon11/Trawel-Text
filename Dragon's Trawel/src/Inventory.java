@@ -22,8 +22,9 @@ public class Inventory implements java.io.Serializable{
 	/**
 	 * Create a new inventory, populated with items of level level.
 	 * @param level (int)
+	 * @param matType 
 	 */
-	public Inventory(int level, Race.RaceType type) {
+	public Inventory(int level, Race.RaceType type, Material matType) {
 		if (type == Race.RaceType.HUMANOID) {
 		armorSlots[0] = new Armor(level,0);
 		armorSlots[1] = new Armor(level,1);
@@ -32,11 +33,11 @@ public class Inventory implements java.io.Serializable{
 		armorSlots[4] = new Armor(level,4);
 		hand = new Weapon(level);}
 		if (type == Race.RaceType.BEAST) {
-			armorSlots[0] = new Armor(level,0,MaterialFactory.getMat("flesh"));
-			armorSlots[1] = new Armor(level,1,MaterialFactory.getMat("flesh"));
-			armorSlots[2] = new Armor(level,2,MaterialFactory.getMat("flesh"));
-			armorSlots[3] = new Armor(level,3,MaterialFactory.getMat("flesh"));
-			armorSlots[4] = new Armor(level,4,MaterialFactory.getMat("flesh"));
+			armorSlots[0] = new Armor(level,0,matType);
+			armorSlots[1] = new Armor(level,1,matType);
+			armorSlots[2] = new Armor(level,2,matType);
+			armorSlots[3] = new Armor(level,3,matType);
+			armorSlots[4] = new Armor(level,4,matType);
 			hand = new Weapon(level);}
 		race = RaceFactory.randRace(type);
 		raceMap = race.randomRaceMap();

@@ -31,12 +31,12 @@ public class Person implements java.io.Serializable{
 	//private boolean isPlayer;
 	
 	//Constructor
-	public Person(int level, boolean aiLevel, Race.RaceType raceType) {
+	public Person(int level, boolean aiLevel, Race.RaceType raceType, Material matType) {
 	maxHp = 40*level;//doesn't get all the hp it would naturally get
 	hp = maxHp;
 	intellect = level;
 	
-	bag = new Inventory(level,raceType);
+	bag = new Inventory(level,raceType,matType);
 	firstName = randomLists.randomFirstName();
 	title = randomLists.randomLastName();
 	placeOfBirth = extra.capFirst((String)extra.choose(randomLists.randomElement(),randomLists.randomColor()))+ " " +extra.choose("Kingdom","Kingdom","Colony","Domain","Realm");
@@ -58,7 +58,7 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public Person(int level) {
-		this(level,true,Race.RaceType.HUMANOID);
+		this(level,true,Race.RaceType.HUMANOID,null);
 	}
 	
 	//instance methods

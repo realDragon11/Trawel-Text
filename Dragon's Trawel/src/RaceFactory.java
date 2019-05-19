@@ -352,7 +352,7 @@ public class RaceFactory {
 	
 	public static Person makeWolf(int level) {
 		extra.printMode = true;
-		Person w = new Person(level,true, Race.RaceType.BEAST);
+		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"));
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
 		w.getBag().swapRace(RaceFactory.getRace("wolf"));
 		extra.printMode = false;
@@ -361,7 +361,7 @@ public class RaceFactory {
 
 	public static Object makeMimic(int level) {
 		extra.printMode = true;
-		Person w = new Person(level,true, Race.RaceType.BEAST);
+		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("wood"));
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
 		w.getBag().swapRace(RaceFactory.getRace("mimic"));
 		extra.printMode = false;
