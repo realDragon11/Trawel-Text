@@ -146,7 +146,7 @@ public class Weapon extends Item {
 		martialStance.addAttack(new Attack("pole",.6,120.0,0*sharpMult,10*bluntMult,0*pierceMult,"X` hits Y` with the pole of their Z`!",0,"blunt"));
 		martialStance.addAttack(new Attack("smack",1,100.0,2*sharpMult,25*bluntMult,0*pierceMult,"X` smacks Y` with the side of their Z`!",1,"blunt"));
 		;break;
-		case "wolf teeth":
+		case "generic teeth":
 			cost *= 1;
 			weight *=3;	
 			martialStance.addAttack(new Attack("bite",1,100.0,5*sharpMult,0*bluntMult,35*pierceMult,"X` bites at Y` with their teeth!",2,"pierce"));

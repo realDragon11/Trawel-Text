@@ -5,7 +5,7 @@ public class DungeonNode implements java.io.Serializable{
 	//potentail problem: all this code is in a highly duplicated node
 
 	private String name;
-	private static final int EVENT_NUMBER =4;
+	private static final int EVENT_NUMBER =6;
 	private int state;
 	private String interactString;
 	private int idNum;
@@ -59,7 +59,9 @@ public class DungeonNode implements java.io.Serializable{
 		forceGo = true;
 		state = 0;
 		break;
-		
+		case 6: storage1 = extra.choose("chest"); name = (String) storage1; interactString = "open "+name;
+		storage2 = RaceFactory.makeMimic(level);
+		break;
 		}
 		if (size < 2) {
 			return;
@@ -92,6 +94,7 @@ public class DungeonNode implements java.io.Serializable{
 		};break;
 		case 4: extra.println("You traverse the ladder.");break;
 		case 5: return gateGuards();
+		case 6: mimic(); if (state == 0) {return true;};break;
 		}
 		return false;
 	}
@@ -211,6 +214,23 @@ public class DungeonNode implements java.io.Serializable{
 			return false;
 		}
 		
+		
+	}
+	
+	private void mimic() {
+		if (state == 0) {
+			Networking.sendColor(Color.RED);
+			extra.println("They attack you!");
+			Person p = (Person)storage2;
+				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
+				if (winner != p) {
+					state = 1;
+					storage1 = null;
+					name = "dead mimic";
+					interactString = "examine body";
+					forceGo = false;
+				}
+		}else {randomLists.deadPerson();}
 		
 	}
 	
