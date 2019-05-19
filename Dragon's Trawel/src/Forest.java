@@ -173,8 +173,10 @@ public class Forest extends Feature implements java.io.Serializable{
 	private void mugger1() {
 		extra.println("You see someone being robbed! Help?");
 		Boolean help = extra.yesNo();
+		Person robber = new Person(tier);
+		robber.getBag().graphicalDisplay(1, robber);
 		if (help) {
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(), new Person(tier));
+		Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);
 	
 		if (winner == Player.player.getPerson()) {
 			int gold = (int) (Math.random()*130*tier);
@@ -217,6 +219,8 @@ public class Forest extends Feature implements java.io.Serializable{
 	}
 	
 	private void dryad() {
+		Person robber = new Person(tier);
+		robber.getBag().graphicalDisplay(1, robber);
 		while (true) {
 		extra.println("You come across a dryad tending to a tree.");
 		extra.println("1 Leave");
@@ -225,7 +229,7 @@ public class Forest extends Feature implements java.io.Serializable{
 		extra.println("3 Chat with them");
 		switch (extra.inInt(3)) {
 		default: case 1: extra.println("You leave the dryad alone");return;
-		case 2: extra.println("You attack the dryad!");mainGame.CombatTwo(Player.player.getPerson(), new Person(tier));return;
+		case 2: extra.println("You attack the dryad!");mainGame.CombatTwo(Player.player.getPerson(), robber);return;
 		case 3: extra.println("The dryad turns and answers your greeting.");
 		while (true) {
 		extra.println("What would you like to ask about?");
@@ -277,6 +281,8 @@ public class Forest extends Feature implements java.io.Serializable{
 	}
 	
 	private void oldFighter() {
+		Person robber = new Person(tier+2);
+		robber.getBag().graphicalDisplay(1, robber);
 		while (true) {
 		extra.println("You come across an old fighter, resting on a log.");
 		extra.println("1 Leave");
@@ -285,7 +291,7 @@ public class Forest extends Feature implements java.io.Serializable{
 		extra.println("3 Chat with them");
 		switch (extra.inInt(3)) {
 		default: case 1: extra.println("You leave the fighter alone");return;
-		case 2: extra.println("You attack the fighter!");mainGame.CombatTwo(Player.player.getPerson(), new Person(tier+2));return;
+		case 2: extra.println("You attack the fighter!");mainGame.CombatTwo(Player.player.getPerson(), robber);return;
 		case 3: extra.println("The old fighter turns and answers your greeting.");
 		while (true) {
 		extra.println("What would you like to ask about?");
@@ -348,7 +354,7 @@ public class Forest extends Feature implements java.io.Serializable{
 	}
 	
 	private void lumerbjackDryad() {
-		if (extra.chanceIn(1,2) ) {
+		//if (extra.chanceIn(1,2) ) {
 			LocalDateTime t = LocalDateTime.now();
 			if (t.getMonth() == Month.DECEMBER && t.getDayOfMonth() > 14 && t.getDayOfMonth() < 25 ) {
 				Networking.sendColor(Color.RED);
@@ -357,14 +363,15 @@ public class Forest extends Feature implements java.io.Serializable{
 				Networking.sendColor(Color.RED);
 				extra.println("A lumberjack is chopping down a tree! Attack them?");
 			}
-		}else {
+		/*}else {
 			
-		}
+		}*/
+			Person robber = new Person(tier);
+			robber.getBag().graphicalDisplay(1, robber);
 		
-		
-		
+			Networking.sendColor(Color.RED);
 		if (extra.yesNo()) {
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(), new Person(tier));
+		Person winner = mainGame.CombatTwo(Player.player.getPerson(),robber);
 		if (winner == Player.player.getPerson()) {
 			dryadQuest++;
 			if (dryadQuest == 4) {

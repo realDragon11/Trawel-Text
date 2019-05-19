@@ -50,7 +50,9 @@ public class MineNode implements java.io.Serializable{
 		case 6: interactString = "examine crystals"; storage1 = randomLists.randomColor(); name = "weird " + (String)storage1 + " crystals";break;
 		case 7: name = "minecart"; interactString = "examine minecart";break;
 		case 8: name = "ladder"; interactString = "traverse ladder"; forceGo = true; break;
-		case 9: name = "cultists"; interactString = "approach cultists";break;
+		case 9: name = "cultists"; interactString = "approach cultists";
+		storage1 = new Person(level);
+		break;
 		}
 		if (size < 2) {
 			return;
@@ -157,6 +159,7 @@ public class MineNode implements java.io.Serializable{
 	private void duelist() {
 		if (state == 0) {
 			Person p = (Person)storage1;
+			p.getBag().graphicalDisplay(1, p);
 			Networking.sendColor(Color.RED);
 			extra.println("Challenge "+ p.getName() + "?");
 			if (extra.yesNo()){
@@ -212,6 +215,8 @@ public class MineNode implements java.io.Serializable{
 	
 	/* for Ryou Misaki (nico)*/
 	private void cultists1() {
+		Person p = (Person)storage1;
+		p.getBag().graphicalDisplay(1, p);
 		int inInt = 2;
 		do {
 		inInt = 2;
@@ -247,7 +252,7 @@ public class MineNode implements java.io.Serializable{
 			};break;
 			
 		case 2:name = "angry cultist"; interactString = "ERROR";
-		storage1 = new Person(level);
+		
 		forceGo = true;
 		idNum = 4;break;
 	

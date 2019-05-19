@@ -140,9 +140,11 @@ public class Mountain extends Feature implements java.io.Serializable{
 	private void mugger1() {
 		Networking.sendColor(Color.RED);
 		extra.println("You see someone being robbed! Help?");
+		Person robber = new Person(tier);
+		robber.getBag().graphicalDisplay(1, robber);
 		Boolean help = extra.yesNo();
 		if (help) {
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(), new Person(tier));
+		Person winner = mainGame.CombatTwo(Player.player.getPerson(),robber);
 	
 		if (winner == Player.player.getPerson()) {
 			int gold = (int) (Math.random()*130*tier);
@@ -161,10 +163,12 @@ public class Mountain extends Feature implements java.io.Serializable{
 	private void mugger3() {
 		
 		extra.println("You see a toll road keeper. Challenge them for their gold?");
+		Person robber = new Person(tier);
+		robber.getBag().graphicalDisplay(1, robber);
 		Networking.sendColor(Color.RED);
 		Boolean help = extra.yesNo();
 		if (help) {
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(), new Person(tier));
+		Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);
 	
 		if (winner == Player.player.getPerson()) {
 			int gold = (int) (Math.random()*150*tier);
@@ -181,10 +185,12 @@ public class Mountain extends Feature implements java.io.Serializable{
 	
 	private void wanderingDuelist() {
 		extra.println("A duelist approaches and challenges you to a duel. Accept?");
+		Person robber = new Person(tier+1);
+		robber.getBag().graphicalDisplay(1, robber);
 		Networking.sendColor(Color.RED);
 		Boolean help = extra.yesNo();
 		if (help) {
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(), new Person(tier+1));
+		Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);
 	
 		if (winner == Player.player.getPerson()) {
 			extra.println("You have won the duel!");
@@ -197,6 +203,8 @@ public class Mountain extends Feature implements java.io.Serializable{
 	}
 	
 	private void oldFighter() {
+		Person robber = new Person(tier+2);
+		robber.getBag().graphicalDisplay(1, robber);
 		while (true) {
 		extra.println("You come across an old fighter, resting on a rock.");
 		extra.println("1 Leave");
@@ -205,7 +213,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 		extra.println("3 Chat with them");
 		switch (extra.inInt(3)) {
 		default: case 1: extra.println("You leave the fighter alone");return;
-		case 2: extra.println("You attack the fighter!");mainGame.CombatTwo(Player.player.getPerson(), new Person(tier+2));return;
+		case 2: extra.println("You attack the fighter!");mainGame.CombatTwo(Player.player.getPerson(), robber);return;
 		case 3: extra.println("The old fighter turns and answers your greeting.");
 		while (true) {
 		extra.println("What would you like to ask about?");
