@@ -56,7 +56,7 @@ public class BardSong implements java.io.Serializable {
 						if (hpRatio > .1) {
 							add(p.getName() + " looked close to death.");
 						}else {
-							add(p.getName() + " looked like they're dying.");
+							add(p.getName() + " looked like they were dying.");
 						}
 					}
 				}

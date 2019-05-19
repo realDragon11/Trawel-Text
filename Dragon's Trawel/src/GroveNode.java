@@ -124,6 +124,7 @@ public class GroveNode implements java.io.Serializable{
 		case 17: equal1();break;
 		case 18: return packOfWolves();
 		}
+		Networking.clearSide(1);
 		return false;
 	}
 
@@ -193,6 +194,7 @@ public class GroveNode implements java.io.Serializable{
 	private void duelist() {
 		if (state == 0) {
 			Person p = (Person)storage1;
+			p.getBag().graphicalDisplay(1, p);
 			Networking.sendColor(Color.RED);
 			extra.println("Challenge "+ p.getName() + "?");
 			if (extra.yesNo()){
@@ -261,6 +263,7 @@ public class GroveNode implements java.io.Serializable{
 		if (state == 0) {
 		while (true) {
 			Person p = (Person)storage1;
+			p.getBag().graphicalDisplay(1, p);
 		extra.println("You come across an " + name + ", resting on a log.");
 		extra.println("1 Leave");
 		Networking.sendColor(Color.RED);
@@ -327,6 +330,7 @@ public class GroveNode implements java.io.Serializable{
 		if (state == 0) {
 		while (true) {
 			Person p = (Person)storage1;
+			p.getBag().graphicalDisplay(1, p);
 		extra.println("You come across a dryad tending to a tree.");
 		extra.println("1 Leave");
 		Networking.sendColor(Color.RED);
@@ -626,6 +630,7 @@ public class GroveNode implements java.io.Serializable{
 		boolean bool = true;
 		while (bool) {
 			Networking.sendColor(Color.RED);
+			((Person)storage2).getBag().graphicalDisplay(1, (Person)storage2);
 		extra.println("1 attack");
 		extra.println("2 chat");
 		extra.println("3 leave");
@@ -661,6 +666,7 @@ public class GroveNode implements java.io.Serializable{
 	private void rich1() {
 		Person rich = (Person)storage1;
 		Person bodyguard = (Person)storage2;
+		rich.getBag().graphicalDisplay(1,rich);
 		if (state == 0) {
 		boolean bool = true;
 		while (bool) {
@@ -750,6 +756,7 @@ public class GroveNode implements java.io.Serializable{
 			return;
 		}
 		Person equal = (Person)storage1;
+		equal.getBag().graphicalDisplay(1, equal);
 		boolean bool = true;
 		while (bool) {
 			Networking.sendColor(Color.RED);
@@ -779,6 +786,7 @@ public class GroveNode implements java.io.Serializable{
 			return;
 		}
 		Person equal = (Person)storage1;
+		equal.getBag().graphicalDisplay(1,equal);
 		boolean bool = true;
 		while (bool) {
 			Networking.sendColor(Color.RED);
