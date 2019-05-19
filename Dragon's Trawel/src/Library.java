@@ -9,6 +9,7 @@ public class Library extends Feature {
 		start();
 		name = _name;
 		town = _town;
+		tutorialText = "Libraries hold knowledge from all worlds.";
 	}
 
 	@Override

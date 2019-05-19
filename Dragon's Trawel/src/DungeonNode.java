@@ -45,7 +45,7 @@ public class DungeonNode implements java.io.Serializable{
 	
 	private void generate(int size) {
 		switch (idNum) {
-		case 1: storage1 = extra.choose("chest","chest","chest","urn"); name = (String) storage1; interactString = "open "+name;break;
+		case 1: storage1 = extra.choose("chest","chest","chest","urn"); name = (String) storage1; interactString = "open "+name; storage2 = RaceFactory.makeMimic(1);break;
 		case 2: name = extra.choose("dungeon guard","gatekeeper","dungeon guard"); interactString = "ERROR"; forceGo = true;
 		storage1 = new Person(level);break;
 		case 3: name = extra.choose("locked door","barricaded door","padlocked door"); interactString = "examine broken door";forceGo = true;break;
@@ -162,13 +162,19 @@ public class DungeonNode implements java.io.Serializable{
 	
 	private void chest() {
 		if (state == 0) {
+			Person p = (Person)storage2;
+			p.getBag().graphicalDisplay(1,p);
+			extra.println("Really open the " + name + "?");
+			if (extra.yesNo()) {
 			int gold = extra.randRange(100,200)*level;
 			Player.bag.addGold(gold);
 			extra.println("You open the " +storage1 + " and find " + gold + " gold.");
 					state = 1;
 					name = "empty " + storage1;
 					interactString = "examine empty " + storage1;
-			
+			}else {
+				extra.println("You decide not to open it.");
+			}
 			}else {extra.println("The "+storage1+" has already been opened.");}
 		
 	}
@@ -219,9 +225,12 @@ public class DungeonNode implements java.io.Serializable{
 	
 	private void mimic() {
 		if (state == 0) {
-			Networking.sendColor(Color.RED);
-			extra.println("They attack you!");
 			Person p = (Person)storage2;
+			p.getBag().graphicalDisplay(1,p);
+			extra.println("Really open the " + name + "?");
+		if (extra.yesNo()) {
+			Networking.sendColor(Color.RED);
+			extra.println("The mimic attacks you!");
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
 					state = 1;
@@ -230,6 +239,7 @@ public class DungeonNode implements java.io.Serializable{
 					interactString = "examine body";
 					forceGo = false;
 				}
+		}else {extra.println("You decide not to open it.");}
 		}else {randomLists.deadPerson();}
 		
 	}
