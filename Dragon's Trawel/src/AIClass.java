@@ -89,7 +89,7 @@ public class AIClass {
 			}
 			}
 			if (attacker.hasSkill(Skill.WAIT)) {
-				attacks.add(new Attack("wait",0,20.0,0,10,0,"X` waits for a better chance!",-1,"wait"));
+				attacks.add(new Attack("wait",0,20.0,0,0,0,"X` waits for a better chance!",-1,"wait"));
 			}
 			if (attacker.isPlayer()) {
 			extra.println("     name                hit    delay    sharp    blunt     pierce");
@@ -98,7 +98,6 @@ public class AIClass {
 				a.display(1);
 				j++;
 			}
-			
 			return attacks.get(extra.inInt(attacks.size())-1);
 		}
 		return attackTest(attacks,smarts,com, attacker, defender);

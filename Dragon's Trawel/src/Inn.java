@@ -125,7 +125,7 @@ public class Inn extends Feature implements java.io.Serializable{
 	}
 	
 	private void goAgent(Agent agent) {
-			
+		Networking.sendColor(Color.RED);
 		extra.println("1 fight");
 		extra.println("2 chat");
 		extra.println("3 leave");
@@ -177,6 +177,7 @@ public class Inn extends Feature implements java.io.Serializable{
 			extra.println("1 tell them goodbye");
 			extra.println("2 ask for a tip");
 			extra.println("3 this inn");
+			Networking.sendColor(Color.RED);
 			extra.println("4 a duel");
 			int in = extra.inInt(4);
 			switch (in) {
@@ -205,6 +206,7 @@ public class Inn extends Feature implements java.io.Serializable{
 	
 	private void barFight() {
 		extra.println("There is no resident, but there is room for a barfight... start one?");
+		Networking.sendColor(Color.RED);
 		if (extra.yesNo()) {
 			Person winner = mainGame.CombatTwo(Player.player.getPerson(),new Person(tier));
 			if (winner.isPlayer()) {
