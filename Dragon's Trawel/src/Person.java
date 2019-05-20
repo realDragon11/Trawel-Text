@@ -32,6 +32,9 @@ public class Person implements java.io.Serializable{
 	
 	//Constructor
 	public Person(int level, boolean aiLevel, Race.RaceType raceType, Material matType) {
+	if (level < 1) {
+		extra.println("non-fatal (until you run into the level zero person) exception: level is zero on someone");
+	}
 	maxHp = 40*level;//doesn't get all the hp it would naturally get
 	hp = maxHp;
 	intellect = level;

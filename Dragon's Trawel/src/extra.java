@@ -223,7 +223,7 @@ public class extra {
 					int temp = input.read();
 					input.close();
 					extra.linebreak();
-					if((in < 1 || in > max)) {
+					if((temp < 1 || temp > max)) {
 						extra.println("You've encountered a disk error. Please re-enter your input");
 						extra.println("1 ");
 						extra.println("2 ");
@@ -234,6 +234,7 @@ public class extra {
 						extra.println("7 ");
 						extra.println("8 ");
 						extra.println("9 ");
+						throw new Exception("blah");
 					}
 					return temp;
 				} catch (Exception e) {	}
