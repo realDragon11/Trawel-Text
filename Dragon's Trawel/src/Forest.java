@@ -68,6 +68,7 @@ public class Forest extends Feature implements java.io.Serializable{
 			Player.addTime(.5);
 		}
 		if (in == 2) {return;}
+		Networking.clearSide(1);
 		go();
 	}
 

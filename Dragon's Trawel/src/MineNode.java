@@ -94,6 +94,7 @@ public class MineNode implements java.io.Serializable{
 		case 9: cultists1();break;
 		
 		}
+		Networking.clearSide(1);
 		return false;
 	}
 
