@@ -99,9 +99,6 @@ public class AIClass {
 				j++;
 			}
 			int numb = extra.inInt(attacks.size())-1;
-			if (numb < 0){
-				extra.println("How could this happen to me?");
-			}
 			return attacks.get(numb);
 		}
 		return attackTest(attacks,smarts,com, attacker, defender);
