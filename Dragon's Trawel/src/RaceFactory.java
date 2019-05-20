@@ -307,6 +307,25 @@ public class RaceFactory {
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
 		raceList.add(misc);
+		
+		misc = new Race();
+		misc.name = "mimic";
+		misc.namePlural = "mimics";
+		misc.swears.add("box");
+		misc.aimMod = 1;
+		misc.damMod = 1;
+		misc.dodgeMod = .6;
+		misc.hpMod = 1.6;
+		misc.speedMod = 1;
+		misc.tradeMod = 1;
+		misc.rarity = 1;
+		misc.insultList.add("Die, box!");
+		misc.baseMap = "nada";
+		misc.raceMaps.add("nuthin");
+		misc.magicPower = 0;
+		misc.defPower = 0;
+		misc.racialType = Race.RaceType.BEAST;
+		raceList.add(misc);
 	}
 	
 	public static Race randRace(Race.RaceType type) {
