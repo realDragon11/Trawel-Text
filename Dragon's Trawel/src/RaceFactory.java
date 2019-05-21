@@ -420,6 +420,7 @@ public class RaceFactory {
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
 		w.getBag().swapArmorSlot(new Armor(level,0,MaterialFactory.getMat("flesh")),0);
 		w.getBag().swapRace(RaceFactory.getRace("hiding mimic"));
+		w.addSkill(Skill.MIMIC_CHEST);
 		extra.printMode = false;
 		return w;
 	}
