@@ -192,6 +192,7 @@ public class WorldGen {
 		holik.addTravel();
 		holik.addTravel();
 		holik.addTravel();
+		w.setStartTown(holik);
 		
 		Town yonuen = new Town("yonuen", 9, apen, new Point(4,3));
 		addConnection(holik,yonuen,"road","bliz road");

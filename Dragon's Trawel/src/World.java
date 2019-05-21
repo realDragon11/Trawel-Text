@@ -106,7 +106,8 @@ public class World implements java.io.Serializable{
 			}
 		if (list.size() > 0) {
 		return list.get((int)(list.size()*Math.random()));}else {
-			return getRandom(level-1);
+			if (level > 0) {
+			return getRandom(level-1);}else {return startTown;}
 		}
 	}
 
