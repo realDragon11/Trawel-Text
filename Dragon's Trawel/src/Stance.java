@@ -93,12 +93,12 @@ public class Stance implements java.io.Serializable{
 		}
 	}
 
-	public Stance part(Person p) {
-		return new Stance(this.randAtts(p));
+	public Stance part(Person p, Person defender) {
+		return new Stance(this.randAtts(p,defender));
 	}
 	
 
-	private ArrayList<Attack> randAtts(Person p) {
+	private ArrayList<Attack> randAtts(Person p, Person defender) {
 		ArrayList<Attack> a = new ArrayList<Attack>();
 		while (a.size() < 3) {
 			int i = extra.randRange(0,attacks.size()-1);
@@ -110,7 +110,7 @@ public class Stance implements java.io.Serializable{
 				break;
 				}
 			}
-			if (doIt){a.add(newAttack.impair(p.getBag().getHand().getLevel(), p.getBag().getRace().targetType));
+			if (doIt){a.add(newAttack.impair(p.getBag().getHand().getLevel(), defender.getBag().getRace().targetType));
 			}
 		}
 		return a;
