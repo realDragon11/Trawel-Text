@@ -115,7 +115,7 @@ public class TargetFactory {
 		t.blunt = 1.2;
 		t.pierce = .9;
 		t.rarity = 1;
-		t.slot = 0;
+		t.slot = 1;
 		t.type = TargetType.MIMIC;
 		targetList.add(t);
 		
@@ -139,7 +139,7 @@ public class TargetFactory {
 		t.blunt = 1.2;
 		t.pierce = .9;
 		t.rarity = 1;
-		t.slot = 0;
+		t.slot = 1;
 		t.type = TargetType.OPEN_MIMIC;
 		targetList.add(t);
 		
