@@ -75,13 +75,15 @@ public enum Skill implements java.io.Serializable{
 		
 		IDEF_TRAINING("Defensive Training","Hone your defensive skills.",true,Type.DEFENDER,5,""),
 		
+		MIMIC_CHEST("False Appearance: Chest","",false,Type.FEATURE,0,""),
+		
 		ENDSKILL("","",false,Type.FIGHTER,0,"");
 	    private String name,desc, longDesc;
 	    private Type type;
 	    private int level;
 	    private boolean AITake;
 	    public enum Type{
-	    	TRADER, EXPLORER, FIGHTER, MAGE, DEFENDER;
+	    	TRADER, EXPLORER, FIGHTER, MAGE, DEFENDER, FEATURE;
 	    }
 		Skill(String name,String desc,boolean AITake, Type t, int lvl, String longDesc){
 			this.name = name;

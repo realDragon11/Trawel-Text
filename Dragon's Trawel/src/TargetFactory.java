@@ -107,6 +107,7 @@ public class TargetFactory {
 		noTarget = t;
 		
 		
+		//mimic
 		t = new Target();
 		t.name = "lid";
 		t.hit = 1;
@@ -126,23 +127,47 @@ public class TargetFactory {
 		t.pierce = .9;
 		t.rarity = 2;
 		t.slot = 2;
+		t.type = TargetType.OPEN_MIMIC;
+		targetList.add(t);
+		
+		
+		//open mimic
+		t = new Target();
+		t.name = "lid";
+		t.hit = 1;
+		t.sharp = .9;
+		t.blunt = 1.2;
+		t.pierce = .9;
+		t.rarity = 1;
+		t.slot = 0;
+		t.type = TargetType.OPEN_MIMIC;
+		targetList.add(t);
+		
+		t = new Target();
+		t.name = "body";
+		t.hit = 1.2;
+		t.sharp = .9;
+		t.blunt = 1.2;
+		t.pierce = .9;
+		t.rarity = 2;
+		t.slot = 2;
 		t.type = TargetType.MIMIC;
 		targetList.add(t);
 		
 		t = new Target();
 		t.name = "eye";
-		t.hit = .5;
+		t.hit = .9;
 		t.sharp = 2;
 		t.blunt = 2;
 		t.pierce = 2;
 		t.rarity = 1;
 		t.slot = 0;
-		t.type = TargetType.MIMIC;
+		t.type = TargetType.OPEN_MIMIC;
 		targetList.add(t);
 	}
 	
 	public enum TargetType{
-		HUMANOID, MIMIC, NONE;
+		HUMANOID, MIMIC, OPEN_MIMIC, NONE;
 	}
 	
 	public static Target randTarget(TargetType targetType) {

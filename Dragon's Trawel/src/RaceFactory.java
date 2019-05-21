@@ -324,8 +324,28 @@ public class RaceFactory {
 		raceList.add(misc);
 		
 		misc = new Race();
-		misc.name = "mimic";
-		misc.namePlural = "mimics";
+		misc.name = "open mimic";
+		misc.namePlural = "open mimics";
+		misc.swears.add("box");
+		misc.aimMod = 1.2;
+		misc.damMod = 1;
+		misc.dodgeMod = .8;
+		misc.hpMod = 1.6;
+		misc.speedMod = 1;
+		misc.tradeMod = 1;
+		misc.rarity = 1;
+		misc.insultList.add("Die, box!");
+		misc.baseMap = "nada";
+		misc.raceMaps.add("nuthin");
+		misc.magicPower = 0;
+		misc.defPower = 0;
+		misc.racialType = Race.RaceType.BEAST;
+		misc.targetType = TargetFactory.TargetType.OPEN_MIMIC;
+		raceList.add(misc);
+		
+		misc = new Race();
+		misc.name = "hiding mimic";
+		misc.namePlural = "hiding mimics";
 		misc.swears.add("box");
 		misc.aimMod = 1;
 		misc.damMod = 1;
@@ -398,7 +418,8 @@ public class RaceFactory {
 		extra.printMode = true;
 		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("wood"));
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
-		w.getBag().swapRace(RaceFactory.getRace("mimic"));
+		w.getBag().swapArmorSlot(new Armor(level,0,MaterialFactory.getMat("flesh")),0);
+		w.getBag().swapRace(RaceFactory.getRace("hiding mimic"));
 		extra.printMode = false;
 		return w;
 	}

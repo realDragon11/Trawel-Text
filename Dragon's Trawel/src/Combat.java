@@ -397,6 +397,11 @@ public class Combat {
 		if (attacker.hasSkill(Skill.HPSENSE) || defender.hasSkill(Skill.HPSENSE)) {
 			extra.println(defender.getHp()+"/" + defender.getMaxHp() );
 		}
+		if (defender.hasSkill(Skill.MIMIC_CHEST)) {
+			if (extra.chanceIn(1,2)){
+				defender.getBag().swapRace(RaceFactory.getRace(extra.choose("hiding mimic","open mimic")));
+			}
+		}
 	}
 	private void handleMagicSpell(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
 		extra.println(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
