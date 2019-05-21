@@ -381,8 +381,8 @@ public class extra {
 			
 		}
 
-		public static double clamp(double d, double i, double j) {
-			return Math.min(j, Math.max(d, i));
+		public static double clamp(double d, double min, double max) {
+			return Math.min(max, Math.max(d, min));
 		}
 		
 }

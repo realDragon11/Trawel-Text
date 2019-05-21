@@ -34,6 +34,9 @@ public class EnchantConstant extends Enchant {
 		//first component of enchantment
 		magnitudeOne = Math.random()*powMod;
 		magnitudeTwo = Math.random()*powMod;
+		
+		magnitudeOne = extra.clamp(magnitudeOne,1,4);
+		magnitudeTwo = extra.clamp(magnitudeTwo,1,4);
 		if (extra.chanceIn(3,5)) {//3/5 chance of only getting one enchantment
 			if (extra.chanceIn(1,2)) {
 			magnitudeTwo = 0;}else {
