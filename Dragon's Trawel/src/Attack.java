@@ -55,7 +55,7 @@ public class Attack implements java.io.Serializable{
 		this.target = target;
 	}
 	
-	public Attack(Skill skill, int mageLevel) {
+	public Attack(Skill skill, int mageLevel, TargetFactory.TargetType targetType) {
 		//name
 		//magicDesc;
 		hitMod = 1;
@@ -69,7 +69,7 @@ public class Attack implements java.io.Serializable{
 		double pow = extra.hrandom()*Math.log(mageLevel);
 		if (skill == Skill.ELEMENTAL_MAGE) {
 			speed = 100+extra.randRange(0,20)-10;
-			target = TargetFactory.randTarget();
+			target = TargetFactory.randTarget(targetType);
 			switch (extra.randRange(1,3)) {
 			case 1: 
 				name = extra.choose("sear","flame blast","searing shot","fireball");
@@ -95,7 +95,7 @@ public class Attack implements java.io.Serializable{
 		}
 		if (skill == Skill.DEATH_MAGE) {
 			speed = 60+extra.randRange(0,20)-10;
-			target = TargetFactory.randTarget();
+			target = TargetFactory.randTarget(targetType);
 			soundType = "wither";
 			switch (extra.randRange(1,3)) {
 			case 1:
@@ -120,7 +120,7 @@ public class Attack implements java.io.Serializable{
 		
 		if (skill == Skill.ARMOR_MAGE) {
 			speed = 50+extra.randRange(0,20)-10;
-			target = TargetFactory.randTarget();
+			target = TargetFactory.randTarget(targetType);
 			name = extra.choose("repair","armorweave");
 			desc = "X` casts "+name+"!";
 			sharp = (int)((pow*.4)*100);
@@ -129,7 +129,7 @@ public class Attack implements java.io.Serializable{
 		}
 		if (skill == Skill.ILLUSION_MAGE) {
 			speed = 60+extra.randRange(0,20)-10;
-			target = TargetFactory.randTarget();
+			target = TargetFactory.randTarget(targetType);
 			name = extra.choose("befuddle","confuse");
 			desc = "X` casts "+name+"!";
 			magicDesc = "";
@@ -230,8 +230,8 @@ public class Attack implements java.io.Serializable{
 		}
 	}
 	
-	public Attack impair(int handLevel) {
-		Target t = TargetFactory.randTarget();
+	public Attack impair(int handLevel, TargetFactory.TargetType targetType) {
+		Target t = TargetFactory.randTarget(targetType);
 		Style s = StyleFactory.randStyle();
 		if (name != "examine") {
 		return new Attack(s.name + name + " " + t.name, hitMod*t.hit*s.hit,  (s.speed*speed)+extra.randRange(0,20)-10,  handLevel*s.damage*t.sharp*sharp*extra.hrandom(),  handLevel*s.damage*t.blunt*blunt*extra.hrandom(),  handLevel*s.damage*t.pierce*pierce*extra.hrandom(),  desc,soundStrength,soundType,t);

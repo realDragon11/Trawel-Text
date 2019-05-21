@@ -50,16 +50,16 @@ public class AIClass {
 			}
 			while (times > 0) {
 			if (attacker.hasSkill(Skill.ELEMENTAL_MAGE)) {
-				attacks.add(new Attack(Skill.ELEMENTAL_MAGE,attacker.getMageLevel()));
+				attacks.add(new Attack(Skill.ELEMENTAL_MAGE,attacker.getMageLevel(), defender.getBag().getRace().targetType));
 			}
 			if (attacker.hasSkill(Skill.DEATH_MAGE)) {
-				attacks.add(new Attack(Skill.DEATH_MAGE,attacker.getMageLevel()));
+				attacks.add(new Attack(Skill.DEATH_MAGE,attacker.getMageLevel(), defender.getBag().getRace().targetType));
 			}
 			if (attacker.hasSkill(Skill.ARMOR_MAGE)) {
-				attacks.add(new Attack(Skill.ARMOR_MAGE,attacker.getMageLevel()));
+				attacks.add(new Attack(Skill.ARMOR_MAGE,attacker.getMageLevel(), defender.getBag().getRace().targetType));
 			}
 			if (attacker.hasSkill(Skill.ILLUSION_MAGE)) {
-				attacks.add(new Attack(Skill.ILLUSION_MAGE,attacker.getMageLevel()));
+				attacks.add(new Attack(Skill.ILLUSION_MAGE,attacker.getMageLevel(), defender.getBag().getRace().targetType));
 			}
 			times--;}
 			
@@ -68,24 +68,24 @@ public class AIClass {
 				Material mat = attacker.getBag().getHand().getMat();
 				if (attacker.hasSkill(Skill.SHIELD)){
 					switch (extra.randRange(1, 2)) {
-					case 1: attacks.add(new Attack("bash",1,100.0,0*mat.sharpMult,10*mat.bluntMult,0,"X` bashes Y` with the their shield!",1,"blunt").impair(attacker.getDefenderLevel()));break;
-					case 2: attacks.add(new Attack("smash",.9,90.0,0*mat.sharpMult,12*mat.bluntMult,0,"X` smashes Y` with the their shield!",1,"blunt").impair(attacker.getDefenderLevel()));break;
+					case 1: attacks.add(new Attack("bash",1,100.0,0*mat.sharpMult,10*mat.bluntMult,0,"X` bashes Y` with the their shield!",1,"blunt").impair(attacker.getDefenderLevel(), defender.getBag().getRace().targetType));break;
+					case 2: attacks.add(new Attack("smash",.9,90.0,0*mat.sharpMult,12*mat.bluntMult,0,"X` smashes Y` with the their shield!",1,"blunt").impair(attacker.getDefenderLevel(), defender.getBag().getRace().targetType));break;
 					}
 				}else {
 					if (attacker.hasSkill(Skill.PARRY)){
 						switch (extra.randRange(1, 3)) {
-						case 1: attacks.add(new Attack("slice",1,90.0,10*mat.sharpMult,0*mat.bluntMult,0*mat.pierceMult,"X` slices Y` with the their parrying dagger!",0,"sharp").impair(attacker.getDefenderLevel()));break;
-						case 2: attacks.add(new Attack("dice",.8,70.0,8*mat.sharpMult,0*mat.bluntMult,0*mat.pierceMult,"X` dices Y` with the their parrying dagger!",0,"sharp").impair(attacker.getDefenderLevel()));break;
-						case 3: attacks.add(new Attack("stab",1.1,90.0,0*mat.sharpMult,0*mat.bluntMult,8*mat.pierceMult,"X` stabs at Y` with the their parrying dagger!",0,"pierce").impair(attacker.getDefenderLevel()));break;
+						case 1: attacks.add(new Attack("slice",1,90.0,10*mat.sharpMult,0*mat.bluntMult,0*mat.pierceMult,"X` slices Y` with the their parrying dagger!",0,"sharp").impair(attacker.getDefenderLevel(), defender.getBag().getRace().targetType));break;
+						case 2: attacks.add(new Attack("dice",.8,70.0,8*mat.sharpMult,0*mat.bluntMult,0*mat.pierceMult,"X` dices Y` with the their parrying dagger!",0,"sharp").impair(attacker.getDefenderLevel(), defender.getBag().getRace().targetType));break;
+						case 3: attacks.add(new Attack("stab",1.1,90.0,0*mat.sharpMult,0*mat.bluntMult,8*mat.pierceMult,"X` stabs at Y` with the their parrying dagger!",0,"pierce").impair(attacker.getDefenderLevel(), defender.getBag().getRace().targetType));break;
 						}
 					}
 				}
 			}
 			if (attacker.hasSkill(Skill.KUNG_FU)) {
 			switch (extra.randRange(1,3)) {
-			case 1: attacks.add(new Attack("kick",1,100.0,0,10,0,"X` kicks Y` with the their feet!",1,"blunt").impair(attacker.getFighterLevel()));break;
-			case 2: attacks.add(new Attack("punch",.9,90.0,0,12,0,"X` punches Y` with the their fist!",0,"blunt").impair(attacker.getFighterLevel()));break;
-			case 3: attacks.add(new Attack("bite",.8,120.0,1,4,5,"X` bites Y` with the their teeth!",1,"bite").impair(attacker.getFighterLevel()));break;
+			case 1: attacks.add(new Attack("kick",1,100.0,0,10,0,"X` kicks Y` with the their feet!",1,"blunt").impair(attacker.getFighterLevel(), defender.getBag().getRace().targetType));break;
+			case 2: attacks.add(new Attack("punch",.9,90.0,0,12,0,"X` punches Y` with the their fist!",0,"blunt").impair(attacker.getFighterLevel(), defender.getBag().getRace().targetType));break;
+			case 3: attacks.add(new Attack("bite",.8,120.0,1,4,5,"X` bites Y` with the their teeth!",1,"bite").impair(attacker.getFighterLevel(), defender.getBag().getRace().targetType));break;
 			}
 			}
 			if (attacker.hasSkill(Skill.WAIT)) {

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+
 public class Race extends Item implements java.io.Serializable{
 	//only extends item so I can have my secret hidden race store
 	public String name, namePlural;
@@ -10,6 +11,7 @@ public class Race extends Item implements java.io.Serializable{
 	public String baseMap;
 	public int magicPower, defPower;
 	public Enum<RaceType> racialType;
+	public TargetFactory.TargetType targetType;
 	
 	public enum RaceType{
 		HUMANOID, BEAST;

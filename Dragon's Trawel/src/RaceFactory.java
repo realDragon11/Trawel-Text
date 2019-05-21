@@ -24,6 +24,7 @@ public class RaceFactory {
 		misc.magicPower = 1;
 		misc.defPower = 2;
 		misc.racialType = Race.RaceType.HUMANOID;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -43,6 +44,7 @@ public class RaceFactory {
 		misc.magicPower = 0;
 		misc.defPower = 2;
 		misc.racialType = Race.RaceType.HUMANOID;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -63,6 +65,7 @@ public class RaceFactory {
 		misc.magicPower = 1;
 		misc.defPower = 1;
 		misc.racialType = Race.RaceType.HUMANOID;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -83,6 +86,7 @@ public class RaceFactory {
 		misc.magicPower = 2;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.HUMANOID;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -105,6 +109,7 @@ public class RaceFactory {
 		misc.magicPower = 1;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.HUMANOID;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -125,6 +130,7 @@ public class RaceFactory {
 		misc.magicPower = 0;
 		misc.defPower = 1;
 		misc.racialType = Race.RaceType.HUMANOID;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -144,6 +150,7 @@ public class RaceFactory {
 		misc.magicPower = 1;
 		misc.defPower = 3;
 		misc.racialType = Race.RaceType.HUMANOID;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -169,6 +176,7 @@ public class RaceFactory {
 		misc.magicPower = 0;
 		misc.defPower = 1;
 		misc.racialType = Race.RaceType.HUMANOID;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -188,6 +196,7 @@ public class RaceFactory {
 		misc.magicPower = 2;
 		misc.defPower = 1;
 		misc.racialType = Race.RaceType.HUMANOID;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -207,6 +216,7 @@ public class RaceFactory {
 		misc.magicPower = 2;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.HUMANOID;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -226,6 +236,7 @@ public class RaceFactory {
 		misc.magicPower = 0;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.HUMANOID;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -245,6 +256,7 @@ public class RaceFactory {
 		misc.magicPower = 2;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.HUMANOID;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -264,6 +276,7 @@ public class RaceFactory {
 		misc.magicPower = 1;
 		misc.defPower = 1;
 		misc.racialType = Race.RaceType.HUMANOID;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -283,6 +296,7 @@ public class RaceFactory {
 		misc.magicPower = 1;
 		misc.defPower = 1;
 		misc.racialType = Race.RaceType.HUMANOID;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		raceList.add(misc);
 		
 		
@@ -306,6 +320,7 @@ public class RaceFactory {
 		misc.magicPower = 0;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -325,6 +340,7 @@ public class RaceFactory {
 		misc.magicPower = 0;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
+		misc.targetType = TargetFactory.TargetType.MIMIC;
 		raceList.add(misc);
 	}
 	

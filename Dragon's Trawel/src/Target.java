@@ -5,4 +5,5 @@ public class Target implements java.io.Serializable{
 	public double blunt, sharp, pierce;
 	public double hit, rarity;
 	public int slot;
+	public TargetFactory.TargetType type;
 }
