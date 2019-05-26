@@ -315,8 +315,8 @@ public class RaceFactory {
 		misc.rarity = 1;
 		misc.insultList.add("Die, you mutt!");
 		misc.insultList.add("Die, dog!");
-		misc.baseMap = "nada";
-		misc.raceMaps.add("nuthin");
+		misc.baseMap = "wolf";
+		misc.raceMaps.add("0");
 		misc.magicPower = 0;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;

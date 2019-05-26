@@ -105,8 +105,11 @@ public class Stance implements java.io.Serializable{
 			boolean doIt = true;
 			Attack newAttack = attacks.get(i);
 			for (Attack att: a) {
-				if ((att.getName().equals(newAttack.getName()) || p.hasSkill(Skill.BERSERKER)) && newAttack.getName().contains("examine")) {
+				if ((att.getName().equals(newAttack.getName()) || p.hasSkill(Skill.BERSERKER)) && newAttack.getName().equals("examine")) {
 				doIt = false;
+				if (p.hasSkill(Skill.BERSERKER)){
+					extra.println("it worked");
+				}
 				break;
 				}
 			}
