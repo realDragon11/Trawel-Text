@@ -317,6 +317,10 @@ public class RaceFactory {
 		misc.insultList.add("Die, dog!");
 		misc.baseMap = "wolf";
 		misc.raceMaps.add("0");
+		misc.raceMaps.add("1");
+		misc.raceMaps.add("2");
+		misc.raceMaps.add("3");
+		misc.raceMaps.add("4");
 		misc.magicPower = 0;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
