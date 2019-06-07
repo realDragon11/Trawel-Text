@@ -14,25 +14,17 @@ public class Networking {
 	 public static Socket socket;
 	 private static boolean connected = false;
 	
-	public static void connect(int port) {
-		try {
-	    socket = new Socket("127.0.0.1", port);
-	    out = new PrintWriter(socket.getOutputStream(), true);
-	    
-	    in = //new Scanner(new BufferedReader(
-	       // new InputStreamReader(
-	        		socket.getInputStream();
-	        		//)));
-	    
-	    extra.println("Connected!");
-	    connected = true;
-	    return;
-		}catch(Exception e) {
-			extra.println("Connection failed.");
-			//e.printStackTrace();
+	 public static void connect(int port) {
+		    try (Socket sock = new Socket("127.0.0.1", port)) {
+		        in = sock.getInputStream();
+		        out = new PrintWriter(sock.getOutputStream(), true);
+		        socket = sock;
+		        extra.println("Connected!");
+		        connected = true;
+		    } catch(Exception e) {
+		        extra.println("Connection failed.");
+		    }
 		}
-		return;
-	}
 	
 	public static void autoConnect() {
 		boolean doit = true;
