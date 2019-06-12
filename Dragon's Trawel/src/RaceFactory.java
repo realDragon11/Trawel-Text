@@ -339,7 +339,7 @@ public class RaceFactory {
 		misc.tradeMod = 1;
 		misc.rarity = 1;
 		misc.insultList.add("Die, box!");
-		misc.baseMap = "nada";
+		misc.baseMap = "mimic";
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 0;
 		misc.defPower = 0;
@@ -359,7 +359,7 @@ public class RaceFactory {
 		misc.tradeMod = 1;
 		misc.rarity = 1;
 		misc.insultList.add("Die, box!");
-		misc.baseMap = "nada";
+		misc.baseMap = "chest";
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 0;
 		misc.defPower = 0;
