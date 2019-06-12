@@ -155,7 +155,7 @@ public class TargetFactory {
 		targetList.add(t);
 		
 		t = new Target();
-		t.name = "eye";
+		t.name = "tongue";
 		t.hit = .9;
 		t.sharp = 2;
 		t.blunt = 2;
