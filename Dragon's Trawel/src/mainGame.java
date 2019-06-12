@@ -100,13 +100,14 @@ public class mainGame {
 	private void modelMode() {
 		Person manOne;
 		Player player;
-			 manOne = new Person(starting_level,false,Race.RaceType.HUMANOID,null);
+			 manOne = RaceFactory.makeMimic(2);//new Person(starting_level,false,Race.RaceType.HUMANOID,null);
 			 player = new Player(manOne);
+			 /*
 			 player.bag.swapArmorSlot(new Armor(1,0,MaterialFactory.getMat("emerald")),0);
 			 player.bag.swapArmorSlot(new Armor(1,1,MaterialFactory.getMat("emerald")),1);
 			 player.bag.swapArmorSlot(new Armor(1,2,MaterialFactory.getMat("emerald")),2);
 			 player.bag.swapArmorSlot(new Armor(1,3,MaterialFactory.getMat("emerald")),3);
-			 player.bag.swapArmorSlot(new Armor(1,4,MaterialFactory.getMat("emerald")),4);
+			 player.bag.swapArmorSlot(new Armor(1,4,MaterialFactory.getMat("emerald")),4);*/
 			 manOne.setPlayer();
 			 Networking.sendStrong("Discord|desc|Character Select|");
 			 Networking.charUpdate();

@@ -45,7 +45,7 @@ public class DungeonNode implements java.io.Serializable{
 	
 	private void generate(int size) {
 		switch (idNum) {
-		case 1: storage1 = extra.choose("chest","chest","chest","urn"); name = (String) storage1; interactString = "open "+name; storage2 = RaceFactory.makeMimic(1);break;
+		case 1: storage1 = extra.choose("chest","chest","chest"); name = (String) storage1; interactString = "open "+name; storage2 = RaceFactory.makeMimic(1);break;
 		case 2: name = extra.choose("dungeon guard","gatekeeper","dungeon guard"); interactString = "ERROR"; forceGo = true;
 		storage1 = new Person(level);break;
 		case 3: name = extra.choose("locked door","barricaded door","padlocked door"); interactString = "examine broken door";forceGo = true;break;

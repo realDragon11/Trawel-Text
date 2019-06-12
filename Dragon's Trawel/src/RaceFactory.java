@@ -291,7 +291,7 @@ public class RaceFactory {
 		misc.tradeMod = .9;
 		misc.rarity = .7;
 		misc.insultList.add("Go, swim away!");
-		misc.baseMap = "nada";
+		misc.baseMap = "mermaid";
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 1;
 		misc.defPower = 1;
@@ -328,7 +328,7 @@ public class RaceFactory {
 		raceList.add(misc);
 		
 		misc = new Race();
-		misc.name = "open mimic";
+		misc.name = "open-mimic";
 		misc.namePlural = "open mimics";
 		misc.swears.add("box");
 		misc.aimMod = 1.2;
@@ -340,7 +340,11 @@ public class RaceFactory {
 		misc.rarity = 1;
 		misc.insultList.add("Die, box!");
 		misc.baseMap = "mimic";
-		misc.raceMaps.add("nuthin");
+		misc.raceMaps.add("0");
+		misc.raceMaps.add("1");
+		misc.raceMaps.add("2");
+		misc.raceMaps.add("3");
+		misc.raceMaps.add("4");
 		misc.magicPower = 0;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
@@ -348,7 +352,7 @@ public class RaceFactory {
 		raceList.add(misc);
 		
 		misc = new Race();
-		misc.name = "hiding mimic";
+		misc.name = "hiding-mimic";
 		misc.namePlural = "hiding mimics";
 		misc.swears.add("box");
 		misc.aimMod = 1;
@@ -360,7 +364,11 @@ public class RaceFactory {
 		misc.rarity = 1;
 		misc.insultList.add("Die, box!");
 		misc.baseMap = "chest";
-		misc.raceMaps.add("nuthin");
+		misc.raceMaps.add("0");
+		misc.raceMaps.add("1");
+		misc.raceMaps.add("2");
+		misc.raceMaps.add("3");
+		misc.raceMaps.add("4");
 		misc.magicPower = 0;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
@@ -418,12 +426,12 @@ public class RaceFactory {
 		return w;
 	}
 
-	public static Object makeMimic(int level) {
+	public static Person makeMimic(int level) {
 		extra.printMode = true;
 		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("wood"));
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
 		w.getBag().swapArmorSlot(new Armor(level,0,MaterialFactory.getMat("flesh")),0);
-		w.getBag().swapRace(RaceFactory.getRace("hiding mimic"));
+		w.getBag().swapRace(RaceFactory.getRace("hiding-mimic"));
 		w.addSkill(Skill.MIMIC_CHEST);
 		extra.printMode = false;
 		return w;

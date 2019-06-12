@@ -399,7 +399,7 @@ public class Combat {
 		}
 		if (defender.hasSkill(Skill.MIMIC_CHEST)) {
 			if (extra.chanceIn(1,2)){
-				defender.getBag().swapRace(RaceFactory.getRace(extra.choose("hiding mimic","open mimic")));
+				defender.getBag().swapRace(RaceFactory.getRace(extra.choose("hiding-mimic","open-mimic")));
 			}
 		}
 	}
