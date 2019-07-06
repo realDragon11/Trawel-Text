@@ -178,7 +178,7 @@ public class WorldGen {
 		addConnection(repa,greap(),"teleport","world teleport (eonao-greap)");
 		
 		
-		townFinal(w);
+		//townFinal(w);
 	
 	}
 	
@@ -215,6 +215,14 @@ public class WorldGen {
 		addConnection(unika,peana,"road","green road");
 		peana.addFeature(new Arena("peana arena",10,1,24,12,135));
 		peana.addFeature(new Appraiser("peana appraiser"));
+		
+		Town inka = new Town("inka",10, apen, new Point(4,7));
+		addConnection(unika,inka,"road","youn road");
+		addConnection(inka,peana,"road","era road");
+		inka.addFeature(new Mine("left mine", inka, null));
+		inka.addFeature(new Mine("right mine", inka, null));
+		inka.addTravel();
+		inka.addTravel();
 		
 		
 		
