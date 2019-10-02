@@ -53,6 +53,7 @@ public class Champion  extends TravelingFeature{
 	
 	@Override
 	public void go() {
+		Networking.setArea("champ");
 		Networking.sendStrong("Discord|imagesmall|icon|Champion|");
 		Networking.sendColor(Color.RED);
 		extra.println("Challenge " + person.getName() + "?");

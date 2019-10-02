@@ -15,6 +15,7 @@ public class Dungeon extends Feature {
 	}
 	@Override
 	public void go() {
+		Networking.setArea("dungeon");
 		Networking.sendStrong("Discord|imagesmall|icon|Dungeon|");
 		start.go();
 	}

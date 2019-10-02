@@ -243,10 +243,12 @@ public class mainGame {
 					}
 					}
 					if (first_man.isPlayer() || second_man.isPlayer()) {
+						Networking.setBattle(Networking.BattleType.NONE);
 						Networking.clearSide(1);
 					}
 					first_man.clearBattleEffects();
 					second_man.clearBattleEffects();
+					
 				return first_man;
 		}
 		
@@ -257,6 +259,7 @@ public class mainGame {
 		 * @return
 		 */
 		public static Person CombatTwo(Person first_man,Person second_man) {
+			Networking.setBattle(Networking.BattleType.NORMAL);
 			return CombatTwo( first_man, second_man,Player.world);
 		}
 		

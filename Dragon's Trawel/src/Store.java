@@ -175,6 +175,7 @@ public class Store extends Feature implements java.io.Serializable{
 	}
 	
 	public void go() {
+		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|icon|Store|");
 		this.storeFront();
 	}

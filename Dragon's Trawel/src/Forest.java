@@ -20,6 +20,7 @@ public class Forest extends Feature implements java.io.Serializable{
 	
 	@Override
 	public void go() {
+		Networking.setArea("forest");
 		Networking.sendStrong("Discord|imagesmall|icon|Forest|");
 		// TODO add a ton of events that can happen in forests
 		extra.println("1 explore");

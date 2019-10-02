@@ -30,6 +30,7 @@ public class Inn extends Feature implements java.io.Serializable{
 	
 	@Override
 	public void go() {
+		Networking.setArea("inn");
 		if (owner == Player.player && moneyEarned > 0) {
 			extra.println("You take the " + moneyEarned + " in profits.");
 			Player.bag.addGold(moneyEarned);

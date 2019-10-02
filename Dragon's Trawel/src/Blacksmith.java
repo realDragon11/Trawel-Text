@@ -21,6 +21,7 @@ public class Blacksmith extends Feature {
 	
 	@Override
 	public void go() {
+		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|icon|Blacksmith|");
 		extra.println("You have " + Player.bag.getGold() + " gold.");
 		extra.println("1 forge item for store (" + tier*100 + " gold)");

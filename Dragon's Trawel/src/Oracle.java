@@ -161,6 +161,7 @@ fileInput = new Scanner (getClass().getResourceAsStream("/resource/shamanTips.tx
 
 	@Override
 	public void go() {
+		Networking.setArea("shop");
 		//TODO types of oracles
 		//differnt oracles are for different quests
 		Networking.sendStrong("Discord|imagesmall|icon|Oracle|");

@@ -14,6 +14,7 @@ public class Lot extends Feature {
 
 	@Override
 	public void go() {
+		Networking.setArea("shop");
 		if (construct == null) {
 		int inncost = tier*600;
 		int arenacost = tier *400;

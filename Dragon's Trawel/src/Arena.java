@@ -34,6 +34,7 @@ public class Arena extends Feature{
 	}
 
 	public void go() {
+		Networking.setArea("arena");
 		if (owner == Player.player && moneyEarned > 0) {
 			extra.println("You take the " + moneyEarned + " in profits.");
 			Player.bag.addGold(moneyEarned);

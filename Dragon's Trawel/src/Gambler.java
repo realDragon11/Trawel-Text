@@ -12,6 +12,7 @@ public class Gambler extends Feature implements java.io.Serializable{
 	
 	@Override
 	public void go() {
+		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|icon|Gambler|");
 		extra.println("1 play " +type);
 		extra.println("2 leave");
