@@ -14,7 +14,7 @@ public class Networking {
 	 public static Socket socket;
 	 private static boolean connected = false;
 	 private static BattleType inBattle = BattleType.NONE;
-	 private static String songType;
+	 private static String songType = "main";
 	 
 	 public enum BattleType{
 		 NONE, NORMAL, BOSS;

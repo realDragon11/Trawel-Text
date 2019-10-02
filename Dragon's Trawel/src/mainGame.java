@@ -205,6 +205,7 @@ public class mainGame {
 				if (first_man.isPlayer()) {
 					first_man.getBag().graphicalDisplay(-1,first_man);
 					second_man.getBag().graphicalDisplay(1,second_man);
+					Networking.setBattle(Networking.BattleType.NORMAL);
 				}
 				new Combat(first_man,second_man, w);//////
 				if (first_man.getHp() <= 0) {
@@ -259,7 +260,6 @@ public class mainGame {
 		 * @return
 		 */
 		public static Person CombatTwo(Person first_man,Person second_man) {
-			Networking.setBattle(Networking.BattleType.NORMAL);
 			return CombatTwo( first_man, second_man,Player.world);
 		}
 		
@@ -297,6 +297,7 @@ public class mainGame {
 			for (Person kill: battle.killed) {
 				kill.clearBattleEffects();
 				if (kill.isPlayer()) {
+					Networking.setBattle(Networking.BattleType.NONE);
 					Networking.clearSide(1);
 					die();
 					continue;}
@@ -311,6 +312,7 @@ public class mainGame {
 			for (Person surv: battle.survivors){
 				surv.getBag().addGold(gold/battle.survivors.size());
 				if (surv.isPlayer()) {
+					Networking.setBattle(Networking.BattleType.NONE);
 					Networking.clearSide(1);
 				}
 			}

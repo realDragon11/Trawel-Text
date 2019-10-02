@@ -96,6 +96,9 @@ public class Combat {
 		
 		for (ArrayList<Person> peoples: people) {
 			for (Person p: peoples) {
+				if (p.isPlayer()) {
+					Networking.setBattle(Networking.BattleType.NORMAL);
+				}
 				p.battleSetup();
 				totalList.add(p);
 			Person otherperson = null;
