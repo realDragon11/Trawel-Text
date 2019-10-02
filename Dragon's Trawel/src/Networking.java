@@ -13,6 +13,12 @@ public class Networking {
 	 public static InputStream in;
 	 public static Socket socket;
 	 private static boolean connected = false;
+	 private static BattleType inBattle = BattleType.NONE;
+	 private static String songType;
+	 
+	 public enum BattleType{
+		 NONE, NORMAL, BOSS;
+	 }
 	
 	 public static void connect(int port) {
 			try {
@@ -109,5 +115,25 @@ public class Networking {
 
 	public static void clearSide(int i) {
 		Networking.sendStrong("ClearInv|"+i+"|");
+	}
+	
+	public static void setBattle(BattleType battle) {
+		if (inBattle != battle) {
+			inBattle = battle;
+			if (battle == BattleType.BOSS) {
+				Networking.sendStrong("PlaySong|"+ songType +"_boss|");
+			}else {
+			Networking.sendStrong("PlaySong|" + songType + (battle == BattleType.NORMAL ? "_fight" : "_explore")  + "|");}
+		}
+	}
+	
+	public static void setArea(String area) {
+		if (!songType.equals(area)) {
+			songType = area;
+			if (inBattle == BattleType.BOSS) {
+				Networking.sendStrong("PlaySong|"+ songType +"_boss|");
+			}else {
+			Networking.sendStrong("PlaySong|" + songType + (inBattle == BattleType.NORMAL ? "_fight" : "_explore")  + "|");}
+		}
 	}
 }
