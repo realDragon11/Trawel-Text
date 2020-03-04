@@ -23,6 +23,8 @@ public class Combat {
 		if (Player.getTutorial()) {
 			extra.println("Welcome to a battle! You can turn the tutorial off in the 'you' menu.");
 			extra.println("Choose your attack below: higher is better, except in the case of delay!");
+			extra.println("Delay is how long an action takes- it determines turn order and skipping.");
+			extra.println("For example, two 30 delay actions would go through before one 100 delay action.");
 			extra.println("sbp stands for sharp blunt pierce- the three damage types.");
 			extra.println("Hp is restored at the start of every battle.");
 		}
