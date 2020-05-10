@@ -79,7 +79,7 @@ public class mainGame {
 		extra.println("Made by Brian Malone");
 		extra.println("Book writer: Tibo Smolders");
 		extra.println("With thanks to the GameMaker discord");
-		
+		extra.println("Achievement icons can be found on game-icons.net");
 	}
 
 	
