@@ -23,6 +23,9 @@ public class MineNode implements java.io.Serializable{
 			idNum = 3;//gold7
 			
 		}
+		if (idNum == 3) {
+			p.addVein();
+		}
 		level = tier;
 		if (extra.chanceIn(1,10)) {
 			level++;
@@ -193,7 +196,7 @@ public class MineNode implements java.io.Serializable{
 					state = 1;
 					name = "empty vein";
 					interactString = "examine empty vein";
-			
+			parent.removeVein();
 			}else {extra.println("The "+storage1+" has already been mined.");}
 		
 	}

@@ -219,6 +219,10 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public void playerLevelUp() {
+		if (level == 5) {
+		Networking.sendStrong("Achievement|level5|");}
+		if (level == 10) {
+		Networking.sendStrong("Achievement|level10|");}
 		if (Player.getTutorial()) {
 			extra.println("This is the skill menu.");
 			if (skillPoints == 0) {

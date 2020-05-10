@@ -5,6 +5,7 @@ public class Mine extends Feature {
 	private Town town;
 	private int size;
 	private MineNode start;
+	private int veinsLeft = 0;
 	public Mine(String name,Town t, SuperPerson owner) {
 		this.name = name;
 		town = t;
@@ -28,6 +29,16 @@ public class Mine extends Feature {
 	
 	public void generate() {
 		start = new MineNode(size,town.getTier(),this);
+	}
+	
+	public void addVein() {
+		veinsLeft++;
+	}
+	public void removeVein() {
+		veinsLeft--;
+		if (veinsLeft == 0) {
+			Networking.sendStrong("Achievement|miner1|");
+		}
 	}
 	
 
