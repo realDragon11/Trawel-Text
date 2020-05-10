@@ -49,7 +49,7 @@ public class MineNode implements java.io.Serializable{
 		case 3: storage1 = extra.choose("silver","gold","platinum","iron","copper"); name = storage1+" vein"; interactString = "mine "+storage1;break;
 		case 4: name = extra.choose("mugger","robber","thug","bandit","marauder","outlaw","desperado","cutthroat"); interactString = "ERROR"; forceGo = true;
 		storage1 = new Person(level);break;
-		case 5: name = extra.choose("locked door","barricaded door","padlocked door"); interactString = "examine broken door";forceGo = true;break;
+		case 5: name = extra.choose("locked door","barricaded door","padlocked door"); interactString = "unlock door";forceGo = true;break;
 		case 6: interactString = "examine crystals"; storage1 = randomLists.randomColor(); name = "weird " + (String)storage1 + " crystals";break;
 		case 7: name = "minecart"; interactString = "examine minecart";break;
 		case 8: name = "ladder"; interactString = "traverse ladder"; forceGo = true; break;
@@ -87,6 +87,7 @@ public class MineNode implements java.io.Serializable{
 				extra.println("You unlock and then relock the door.");
 			}else {
 			extra.println("You bash open the door.");
+			interactString = "examine broken door";
 			 name = "broken door";forceGo = false;}
 		}else {
 			extra.println("The door is broken.");
