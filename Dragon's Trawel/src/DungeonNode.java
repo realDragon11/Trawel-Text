@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class DungeonNode implements java.io.Serializable{
 	//potentail problem: all this code is in a highly duplicated node
@@ -259,19 +260,25 @@ public class DungeonNode implements java.io.Serializable{
 		
 	}
 
+	public void reverseConnections() {
+		Collections.reverse(connects);
+	}
 
 
 
+	/*
 	public void addBacks() {
+		backed++;
 		if (connects.size() > 0) {
 			for (DungeonNode d: connects) {
-				if (this.isStair || backed == 0) {
+				if ((this.isStair)
+				if (backed == 0) {
 				d.connects.add(this);
 				d.addBacks();}
 			}
 		}
 		
-	}
+	}*/
 	
 
 }

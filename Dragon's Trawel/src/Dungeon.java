@@ -16,9 +16,10 @@ public class Dungeon extends Feature {
 		town = t;
 		size = 50;//t.getTier()*10;
 		tutorialText = "Explore dungeons to find treasure.";
+		shape = s;
 		generate();
 		color = Color.RED;
-		shape = s;
+		
 	}
 	@Override
 	public void go() {
@@ -43,31 +44,49 @@ public class Dungeon extends Feature {
 			start = new DungeonNode(size,town.getTier(),town,this,true);
 			stair = start;
 			DungeonNode lastNode,lastNode2;
+			//List<DungeonNode> lastFloorOnboarding;
+			//List<DungeonNode> thisFloorOnboarding;
 			while (curSize < size) {
 				lastNode = stair;
+				//thisFloorOnboarding = new ArrayList<DungeonNode>();
 				curFloor = new ArrayList<DungeonNode>();
 				for (int i = 0;i <2; i++) {
 					lastNode2 = new DungeonNode(size,stair.getLevel()+1,town,this,true);
 					lastNode.getConnects().add(lastNode2);
 					lastNode = lastNode2;
 					curFloor.add(lastNode);
+					if (i == 0) {
+						stair.getConnects().add(lastNode);
+					}
 				}
+				//thisFloorOnboarding.add(lastNode);
 				stair2 = new DungeonNode(size,stair.getLevel()+1,town,this,true);
+				stair2.getConnects().add(lastNode);
 				lastNode.getConnects().add(stair2);
+				lastNode = stair;
 				for (int i = 0;i <2; i++) {
 					lastNode2 = new DungeonNode(size,stair.getLevel()+1,town,this,true);
 					lastNode.getConnects().add(lastNode2);
 					lastNode = lastNode2;
 					curFloor.add(lastNode);
+					if (i == 0) {
+						stair.getConnects().add(lastNode);
+					}
 				}
+				//thisFloorOnboarding.add(lastNode);
+				stair2.getConnects().add(lastNode);
 				lastNode.getConnects().add(stair2);
-				
-				
+				floors.add(curFloor);
+				curSize +=curFloor.size();
+				//lastFloorOnboarding = thisFloorOnboarding;
+				//reverse order of stair connects
+				stair.reverseConnections();
+				//move onto next floor
 				stair = stair2;
 			}
 			
 			//add back connections
-			start.addBacks();
+			//start.addBacks();
 			break;
 		}
 	}
