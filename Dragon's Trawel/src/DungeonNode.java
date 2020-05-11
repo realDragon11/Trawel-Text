@@ -16,8 +16,8 @@ public class DungeonNode implements java.io.Serializable{
 	private boolean forceGo;
 	private Town town;
 	private Dungeon parent;
-	private int backed = 0;
 	public boolean isStair = false;
+	public boolean isSummit = false;
 	
 	public DungeonNode(int size, int tier, Town t,Dungeon p,boolean stair) {
 		state = 0;
@@ -116,6 +116,9 @@ public class DungeonNode implements java.io.Serializable{
 	}
 
 	public void go() {
+		if (isSummit) {
+			Networking.sendStrong("Achievement|tower1|");
+		}
 		Player.addTime(.1);
 		int i = 1;
 		if (forceGo) {

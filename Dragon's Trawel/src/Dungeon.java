@@ -91,6 +91,7 @@ public class Dungeon extends Feature {
 				//move onto next floor
 				stair = curStair;
 			}
+			stair.isSummit = true;
 			
 			//add back connections
 			//start.addBacks();
