@@ -13,6 +13,7 @@ public class Player extends SuperPerson{
 	private String animalName;
 	private int rpts;//reincarnatepoints
 	private boolean tutorial;
+	public int merchantLevel;
 	
 	public Player(Person p) {
 		person = p;

@@ -77,6 +77,9 @@ public class Store extends Feature implements java.io.Serializable{
 	
 	private void serviceItem(int index) {
 		Item buyItem = items.get(index);
+		if (!canSee(buyItem)) {
+			return;
+		}
 		String itemType = buyItem.getType();
 		Inventory bag = Player.player.getPerson().getBag();
 		Item sellItem = null;
@@ -120,6 +123,13 @@ public class Store extends Feature implements java.io.Serializable{
 		items.add(i);
 	}
 	
+	public static boolean canSee(Item i) {
+		if (Player.player.merchantLevel >= i.level || Player.player.getPerson().getLevel() > i.level) {
+			return true;}else {
+				return false;
+			}
+	}
+	
 	public void storeFront() {
 		Networking.charUpdate();
 		extra.println("You have " + Player.bag.getGold() + " gold.");
@@ -127,7 +137,10 @@ public class Store extends Feature implements java.io.Serializable{
 		extra.println(j + " examine all");j++;
 		for (Item i: items) {
 			extra.print(j + " ");
-			i.display(1);
+			if (canSee(i)) {
+			i.display(1);}else {
+				extra.println("They refuse to show you this item.");
+			}
 			j++;
 		}
 		if (Player.hasSkill(Skill.RESTOCK)) {
