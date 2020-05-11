@@ -2,17 +2,17 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class DungeonNode implements java.io.Serializable{
+public class DungeonNode extends NodeConnector implements java.io.Serializable{
 	//potentail problem: all this code is in a highly duplicated node
 
-	private String name;
+
 	private static final int EVENT_NUMBER =5;
 	private int state;
 	private String interactString;
 	private int idNum;
-	private int level;
+	
 	private Object storage1, storage2;
-	private ArrayList<DungeonNode> connects;
+	
 	private boolean forceGo;
 	private Town town;
 	private Dungeon parent;
@@ -45,7 +45,7 @@ public class DungeonNode implements java.io.Serializable{
 			isStair = true;
 		}
 		
-		setConnects(new ArrayList<DungeonNode>());
+		setConnects(new ArrayList<NodeConnector>());
 		forceGo = false;
 		town = t;
 		generate(size);
@@ -115,6 +115,7 @@ public class DungeonNode implements java.io.Serializable{
 		return false;
 	}
 
+	@Override
 	public void go() {
 		if (isSummit) {
 			Networking.sendStrong("Achievement|tower1|");
@@ -129,10 +130,10 @@ public class DungeonNode implements java.io.Serializable{
 		}
 		extra.println(name);
 		extra.println(i+ " " + interactString);i++;
-		for (DungeonNode n: connects) {
+		for (NodeConnector n: connects) {
 			extra.println(i + " " + n.getName());
 			if (Player.hasSkill(Skill.TIERSENSE)) {
-				extra.println("Tier: " + n.level);
+				extra.println("Tier: " + n.getLevel());
 			}
 			if (Player.hasSkill(Skill.TOWNSENSE)) {
 				extra.println("Connections: " + n.connects.size());
@@ -145,7 +146,7 @@ public class DungeonNode implements java.io.Serializable{
 		if (in == j) {
 			interact();
 		}j++;
-		for (DungeonNode n: connects) {
+		for (NodeConnector n: connects) {
 			if (in == j) {
 				n.go();
 				return;
@@ -159,23 +160,9 @@ public class DungeonNode implements java.io.Serializable{
 	}
 
 
-	public String getName() {
-		return name;
-	}
-
-
-	public void setName(String name) {
-		this.name = name;
-	}
 	
-	public ArrayList<DungeonNode> getConnects() {
-		return connects;
-	}
-
-
-	private void setConnects(ArrayList<DungeonNode> connects) {
-		this.connects = connects;
-	}
+	
+	
 	
 
 	
