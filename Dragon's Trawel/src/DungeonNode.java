@@ -14,9 +14,14 @@ public class DungeonNode implements java.io.Serializable{
 	private ArrayList<DungeonNode> connects;
 	private boolean forceGo;
 	private Town town;
+	private Dungeon parent;
+	private int backed = 0;
+	public boolean isStair = false;
 	
-	public DungeonNode(int size, int tier, Town t) {
+	public DungeonNode(int size, int tier, Town t,Dungeon p,boolean stair) {
 		state = 0;
+		parent = p;
+		
 		idNum = extra.randRange(1,EVENT_NUMBER);
 		if (extra.chanceIn(1,2)) {
 			idNum = 2;//dungeon guard
@@ -30,9 +35,15 @@ public class DungeonNode implements java.io.Serializable{
 			
 		}
 		level = tier;
+		if (p.getShape() != Dungeon.Shape.TOWER) {
 		if (extra.chanceIn(1,10)) {
 			level++;
+		}}
+		if (stair) {
+			idNum = -1;
+			isStair = true;
 		}
+		
 		setConnects(new ArrayList<DungeonNode>());
 		forceGo = false;
 		town = t;
@@ -45,6 +56,7 @@ public class DungeonNode implements java.io.Serializable{
 	
 	private void generate(int size) {
 		switch (idNum) {
+		case -1:name = extra.choose("stairs"); interactString = "traverse stairs";forceGo = true;break;
 		case 1: storage1 = extra.choose("chest","chest","chest"); name = (String) storage1; interactString = "open "+name; storage2 = RaceFactory.makeMimic(1);break;
 		case 2: name = extra.choose("dungeon guard","gatekeeper","dungeon guard"); interactString = "ERROR"; forceGo = true;
 		storage1 = new Person(level);break;
@@ -63,7 +75,7 @@ public class DungeonNode implements java.io.Serializable{
 		storage2 = RaceFactory.makeMimic(level);
 		break;
 		}
-		if (size < 2) {
+		if (size < 2 || parent.getShape() != Dungeon.Shape.STANDARD) {
 			return;
 		}
 		int split = extra.randRange(1,Math.min(size,3));
@@ -72,12 +84,12 @@ public class DungeonNode implements java.io.Serializable{
 		while (i < split) {
 			int sizeRemove = extra.randRange(0,sizeLeft-1);
 			sizeLeft-=sizeRemove;
-			DungeonNode n = new DungeonNode(sizeRemove,level,town);
+			DungeonNode n = new DungeonNode(sizeRemove,level,town,parent,false);
 			connects.add(n);
 			n.getConnects().add(this);
 			i++;
 		}
-		DungeonNode n = new DungeonNode(sizeLeft,level,town);
+		DungeonNode n = new DungeonNode(sizeLeft,level,town,parent,false);
 		connects.add(n);
 		n.getConnects().add(this);
 	}
@@ -241,6 +253,20 @@ public class DungeonNode implements java.io.Serializable{
 				}
 		}else {extra.println("You decide not to open it.");}
 		}else {randomLists.deadPerson();}
+		
+	}
+
+
+
+
+	public void addBacks() {
+		if (connects.size() > 0) {
+			for (DungeonNode d: connects) {
+				if (this.isStair || backed == 0) {
+				d.connects.add(this);
+				d.addBacks();}
+			}
+		}
 		
 	}
 	
