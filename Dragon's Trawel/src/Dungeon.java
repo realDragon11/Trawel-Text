@@ -60,15 +60,14 @@ public class Dungeon extends Feature {
 				//thisFloorOnboarding = new ArrayList<DungeonNode>();
 				levelUp++;
 				curStair = new DungeonNode(size,stair.getLevel()+(levelUp == 3 ? 1 : 0),town,this,true);
-				curStair.floor = floor;
-				floor++;
+				
 				curFloor = new ArrayList<DungeonNode>();
 				for (int i = 0;i <2; i++) {
 					lastNode2 = new DungeonNode(size,stair.getLevel()+(levelUp == 3 ? 1 : 0),town,this,false);
 					lastNode2.floor = floor;
 					lastNode.getConnects().add(lastNode2);
 					lastNode2.getConnects().add(lastNode);
-					if (lastNode.isStair) {lastNode.reverseConnections();}
+					lastNode.reverseConnections();
 					lastNode = lastNode2;
 					curFloor.add(lastNode);
 					/*if (i == 0) {
@@ -87,7 +86,7 @@ public class Dungeon extends Feature {
 					lastNode2.floor = floor;
 					lastNode.getConnects().add(lastNode2);
 					lastNode2.getConnects().add(lastNode);
-					if (lastNode.isStair) {lastNode.reverseConnections();}
+					lastNode.reverseConnections();
 					lastNode = lastNode2;
 					curFloor.add(lastNode);
 					/*if (i == 0) {
@@ -105,6 +104,8 @@ public class Dungeon extends Feature {
 				//lastFloorOnboarding = thisFloorOnboarding;
 				//reverse order of stair connects
 				stair.reverseConnections();
+				floor++;
+				curStair.floor = floor;
 				//move onto next floor
 				stair = curStair;
 				if (levelUp == 3) {
