@@ -106,9 +106,9 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 		}else {
 			extra.println("The door is broken.");
 		};break;
-		case 4: extra.println("You traverse the ladder.");break;
-		case 5: return gateGuards();
-		case 6: mimic(); if (state == 0) {return true;};break;
+		//case 4: extra.println("You traverse the ladder.");break;
+		case 4: return gateGuards();
+		case 5: mimic(); if (state == 0) {return true;};break;
 		}
 		return false;
 	}

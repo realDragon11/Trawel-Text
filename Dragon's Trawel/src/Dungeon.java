@@ -59,6 +59,8 @@ public class Dungeon extends Feature {
 				for (int i = 0;i <2; i++) {
 					lastNode2 = new DungeonNode(size,stair.getLevel()+(levelUp == 3 ? 1 : 0),town,this,false);
 					lastNode.getConnects().add(lastNode2);
+					lastNode2.getConnects().add(lastNode);
+					lastNode.reverseConnections();
 					lastNode = lastNode2;
 					curFloor.add(lastNode);
 					/*if (i == 0) {
@@ -74,8 +76,9 @@ public class Dungeon extends Feature {
 				lastNode = stair;
 				for (int i = 0;i <2; i++) {
 					lastNode2 = new DungeonNode(size,stair.getLevel()+(levelUp == 3 ? 1 : 0),town,this,false);
-					
 					lastNode.getConnects().add(lastNode2);
+					lastNode2.getConnects().add(lastNode);
+					lastNode.reverseConnections();
 					lastNode = lastNode2;
 					curFloor.add(lastNode);
 					/*if (i == 0) {

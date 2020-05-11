@@ -13,6 +13,7 @@ public class BossNode extends NodeConnector implements Serializable {
 		switch (type) {
 		case 0:
 			name = "The Fatespinner (Boss)";
+			interactString = "challenge The Fatespinner";
 			people = new ArrayList<Person>();
 			people.add(RaceFactory.makeMimic(extra.zeroOut(tier-3)+1));
 			people.add(RaceFactory.makeMimic(extra.zeroOut(tier-3)+1));
@@ -34,7 +35,8 @@ public class BossNode extends NodeConnector implements Serializable {
 			interactString = "approach the fatespinner's corpse";
 			people = null;
 			state = 1;
-			name = "dead "+name;
+			name = name + "'s corpse";
+			Networking.sendStrong("Achievement|boss1|");
 			return false;}else {
 				people = survivors;
 				return true;
