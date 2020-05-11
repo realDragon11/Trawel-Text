@@ -11,6 +11,8 @@ public abstract class NodeConnector implements Serializable {
 	protected String interactString = "ERROR";
 	protected boolean forceGo = false;
 	public boolean isSummit;
+	public int floor = 0;
+	public boolean isStair = false;
 	
 	public ArrayList<NodeConnector> getConnects() {
 		return connects;
@@ -50,7 +52,15 @@ public abstract class NodeConnector implements Serializable {
 		extra.println(name);
 		extra.println(i+ " " + interactString);i++;
 		for (NodeConnector n: connects) {
-			extra.println(i + " " + n.getName());
+			extra.print(i + " " + n.getName());
+			if (n.isStair) {
+				if (this.floor > n.floor) {
+					extra.print(" down");
+				}else {
+					extra.print(" up");
+				}
+			}
+			extra.println();
 			if (Player.hasSkill(Skill.TIERSENSE)) {
 				extra.println("Tier: " + n.getLevel());
 			}

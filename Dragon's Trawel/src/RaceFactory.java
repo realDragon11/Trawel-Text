@@ -324,7 +324,7 @@ public class RaceFactory {
 		misc.magicPower = 0;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
-		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;///QUAD do later TODO:
 		raceList.add(misc);
 		
 		misc = new Race();

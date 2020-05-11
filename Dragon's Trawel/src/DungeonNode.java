@@ -14,7 +14,8 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 	
 	private Town town;
 	private Dungeon parent;
-	public boolean isStair = false;
+	
+	
 	
 	public DungeonNode(int size, int tier, Town t,Dungeon p,boolean stair) {
 		state = 0;
