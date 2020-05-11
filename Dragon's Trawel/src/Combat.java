@@ -420,6 +420,9 @@ public class Combat {
 		}
 	}
 	private void inflictWound(Person attacker2, Person defender2) {
+		if (defender2.hasSkill(Skill.TA_NAILS) && extra.randRange(1,10) == 1) {
+			extra.print(" They shrug off the blow!");
+		}else {
 		defender2.inflictWound(attacker2.getNextAttack().getWound());
 		extra.print(" " +attacker2.getNextAttack().getWound().active);
 		switch (attacker2.getNextAttack().getWound()) {
@@ -428,7 +431,7 @@ public class Combat {
 			break;
 		case SLICE: case DICE:
 			attacker2.advanceTime(10);
-		}
+		}}
 	}
 
 

@@ -670,6 +670,9 @@ public class Person implements java.io.Serializable{
 		case DISARMED:
 			this.addEffect(Effect.DISARMED);
 			break;
+		case TRIPPED:
+			this.advanceTime(-20);
+			break;
 		}
 		
 	}

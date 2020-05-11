@@ -73,7 +73,9 @@ public enum Skill implements java.io.Serializable{
 		GOOFFENSIVE("Go on the offensive","Allows you to attack with your defensive item.",true,Type.DEFENDER,4,""),
 		DEFENSIVE_TRAINING("Stay on the defensive","Unlocks your defensive potential.",true,Type.DEFENDER,4,""),
 		
-		IDEF_TRAINING("Defensive Training","Hone your defensive skills.",true,Type.DEFENDER,5,""),
+		TA_NAILS("Tough as Nails","Grants a 10% chance to ignore wound effects.",true,Type.DEFENDER,5,""),
+		
+		IDEF_TRAINING("Defensive Training","Hone your defensive skills.",true,Type.DEFENDER,6,""),
 		
 		MIMIC_CHEST("False Appearance: Chest","",false,Type.FEATURE,0,""),
 		
