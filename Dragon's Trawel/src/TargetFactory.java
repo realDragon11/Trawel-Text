@@ -35,6 +35,7 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.DICE);
 		t.slashWounds.add(Attack.Wound.MAJOR_BLEED);
 		t.pierceWounds.add(Attack.Wound.MAJOR_BLEED);
+		t.bluntWounds.add(Attack.Wound.WINDED);
 		targetList.add(t);
 		
 		t = new Target();
@@ -82,6 +83,7 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.HAMSTRUNG);
 		t.slashWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
+		t.bluntWounds.add(Attack.Wound.WINDED);//TODO temp
 		targetList.add(t);
 		
 		t = new Target();
@@ -111,6 +113,7 @@ public class TargetFactory {
 		t.type = TargetType.HUMANOID;
 		t.slashWounds.add(Attack.Wound.MAJOR_BLEED);
 		t.pierceWounds.add(Attack.Wound.MAJOR_BLEED);
+		t.bluntWounds.add(Attack.Wound.WINDED);
 		targetList.add(t);
 		
 		t = new Target();
@@ -126,6 +129,7 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.DICE);
 		t.slashWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
+		t.bluntWounds.add(Attack.Wound.WINDED);
 		targetList.add(t);
 		
 		

@@ -242,7 +242,8 @@ public class Attack implements java.io.Serializable{
 				extra.specialPrint(in, name,extra.format(speed),magicDesc);
 			}
 		}
-		extra.println(this.wound.name + " - " + this.wound.desc);
+		if (wound != null) {
+		extra.println(this.wound.name + " - " + this.wound.desc);}
 	}
 	
 	public Attack impair(int handLevel, TargetFactory.TargetType targetType) {
@@ -291,11 +292,11 @@ public class Attack implements java.io.Serializable{
 		DIZZY("Dizzy","Decreases their next attack's to-hit.","They look dizzy!"),
 		SLICE("Slice","Your next attack will happen sooner","They are sliced!"),
 		DICE("Dice","Your next attack will happen sooner","They are diced!"),
-		//done line
 		WINDED("Winded","Greatly delays the next attack","The wind is knocked out of them!"),
 		BLEED("Bleed","Causes them to take damage every attack they make.","They bleed..."),
 		DISARMED("Disarm","Removes one attack choice","Their attack is put off-kilter!"),
 		MAJOR_BLEED("Cut Artery","Causes them to take major damage every attack they make.","An artery is cut!"),;
+		//done line
 		public String name, desc, active;
 		Wound(String iName,String iDesc,String activeDesc){
 			name = iName;

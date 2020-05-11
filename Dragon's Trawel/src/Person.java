@@ -667,7 +667,18 @@ public class Person implements java.io.Serializable{
 		case BLEED:
 			this.addEffect(Effect.BLEED);
 			break;
+		case DISARMED:
+			this.addEffect(Effect.DISARMED);
+			break;
 		}
 		
+	}
+
+	public int attacksThisAttack() {
+		if (this.hasEffect(Effect.DISARMED)) {
+			this.removeEffectAll(Effect.DISARMED);
+			return 2;
+		}
+		return 3;
 	}
 }

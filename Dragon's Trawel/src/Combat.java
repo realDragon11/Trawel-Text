@@ -427,7 +427,7 @@ public class Combat {
 			newTarget = true;
 			break;
 		case SLICE: case DICE:
-			attacker.advanceTime(10);
+			attacker2.advanceTime(10);
 		}
 	}
 
