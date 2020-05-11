@@ -83,7 +83,7 @@ public class Person implements java.io.Serializable{
 	 */
 	public void setAttack(Attack newAttack){
 		attackNext = newAttack;
-		speedFill = attackNext.getSpeed()/bag.getSpeed();
+		speedFill += attackNext.getSpeed()/bag.getSpeed();//TODO: make sure making this += doesn't fuck anything up
 		isAttacking = true;
 	}
 	
@@ -126,6 +126,7 @@ public class Person implements java.io.Serializable{
 	 * Clear the person for a new battle.
 	 */
 	public void battleSetup() {
+		speedFill = 0;
 		hp = (int) (maxHp*bag.getHealth());
 		if (takeBeer()) {
 			if (Player.player.getPerson() == this) {
@@ -651,8 +652,11 @@ public class Person implements java.io.Serializable{
 			this.attackNext.blind(.5);
 			break;
 		case HAMSTRUNG:
+			//TODO
 			break;
-		
+		case DIZZY:
+			this.attackNext.blind(.75);
+			break;		
 		}
 		
 	}

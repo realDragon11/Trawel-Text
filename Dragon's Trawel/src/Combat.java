@@ -160,7 +160,7 @@ public class Combat {
 				}
 			}else {
 				if (newTarget) {
-					//the defender has been befuddled
+					//the defender has been befuddled or confused
 					Person otherperson = null;
 					while (otherperson == null) {
 						int rand = extra.randRange(0,size-1);
@@ -415,8 +415,12 @@ public class Combat {
 	private void inflictWound(Person attacker2, Person defender2) {
 		defender2.inflictWound(attacker2.getNextAttack().getWound());
 		extra.print(" " +attacker2.getNextAttack().getWound().active);
-		if (attacker2.getNextAttack().getWound() == Attack.Wound.CONFUSED) {
+		switch (attacker2.getNextAttack().getWound()) {
+		case CONFUSED:
 			newTarget = true;
+			break;
+		case SLICE: case DICE:
+			attacker.advanceTime(10);
 		}
 	}
 
