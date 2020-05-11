@@ -51,6 +51,9 @@ public class DungeonNode implements java.io.Serializable{
 		
 	}
 	
+	public int getLevel() {
+		return level;
+	}
 	
 	
 	
