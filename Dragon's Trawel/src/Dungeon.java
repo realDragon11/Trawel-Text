@@ -133,9 +133,11 @@ public class Dungeon extends Feature {
 
 						@Override
 						public int compare(NodeConnector a0, NodeConnector a1) {
-							return (int) Math.signum(a1.floor-a0.floor);
+							return (int) Math.signum(a0.floor-a1.floor);//TODO
 						}});
+					f.reverseConnections();
 				}
+				
 			}
 			
 			//add back connections
