@@ -40,7 +40,7 @@ public class Dungeon extends Feature {
 			int curSize = 1;
 			List<List<DungeonNode>> floors = new ArrayList<List<DungeonNode>>();
 			List<DungeonNode> curFloor;
-			DungeonNode stair, stair2;
+			DungeonNode stair, curStair;
 			start = new DungeonNode(size,town.getTier(),town,this,true);
 			stair = start;
 			DungeonNode lastNode,lastNode2;
@@ -49,40 +49,47 @@ public class Dungeon extends Feature {
 			while (curSize < size) {
 				lastNode = stair;
 				//thisFloorOnboarding = new ArrayList<DungeonNode>();
+				curStair = new DungeonNode(size,stair.getLevel()+1,town,this,true);
 				curFloor = new ArrayList<DungeonNode>();
 				for (int i = 0;i <2; i++) {
-					lastNode2 = new DungeonNode(size,stair.getLevel()+1,town,this,true);
+					lastNode2 = new DungeonNode(size,stair.getLevel()+1,town,this,false);
 					lastNode.getConnects().add(lastNode2);
 					lastNode = lastNode2;
 					curFloor.add(lastNode);
-					if (i == 0) {
+					/*if (i == 0) {
 						stair.getConnects().add(lastNode);
+					}*/
+					if (i == 1) {
+						lastNode.getConnects().add(curStair);
 					}
 				}
 				//thisFloorOnboarding.add(lastNode);
-				stair2 = new DungeonNode(size,stair.getLevel()+1,town,this,true);
-				stair2.getConnects().add(lastNode);
-				lastNode.getConnects().add(stair2);
+				curStair.getConnects().add(lastNode);
+				
 				lastNode = stair;
 				for (int i = 0;i <2; i++) {
-					lastNode2 = new DungeonNode(size,stair.getLevel()+1,town,this,true);
+					lastNode2 = new DungeonNode(size,stair.getLevel()+1,town,this,false);
+					
 					lastNode.getConnects().add(lastNode2);
 					lastNode = lastNode2;
 					curFloor.add(lastNode);
-					if (i == 0) {
+					/*if (i == 0) {
 						stair.getConnects().add(lastNode);
+					}*/
+					if (i == 1) {
+						lastNode.getConnects().add(curStair);
 					}
+					
 				}
 				//thisFloorOnboarding.add(lastNode);
-				stair2.getConnects().add(lastNode);
-				lastNode.getConnects().add(stair2);
+				curStair.getConnects().add(lastNode);
 				floors.add(curFloor);
 				curSize +=curFloor.size();
 				//lastFloorOnboarding = thisFloorOnboarding;
 				//reverse order of stair connects
 				stair.reverseConnections();
 				//move onto next floor
-				stair = stair2;
+				stair = curStair;
 			}
 			
 			//add back connections

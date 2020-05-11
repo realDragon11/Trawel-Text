@@ -6,7 +6,7 @@ public class DungeonNode implements java.io.Serializable{
 	//potentail problem: all this code is in a highly duplicated node
 
 	private String name;
-	private static final int EVENT_NUMBER =6;
+	private static final int EVENT_NUMBER =5;
 	private int state;
 	private String interactString;
 	private int idNum;
@@ -60,13 +60,13 @@ public class DungeonNode implements java.io.Serializable{
 	
 	private void generate(int size) {
 		switch (idNum) {
-		case -1:name = extra.choose("stairs"); interactString = "traverse stairs";forceGo = true;break;
+		case -1:name = extra.choose("stairs","ladder"); interactString = "traverse "+name;forceGo = true;break;
 		case 1: storage1 = extra.choose("chest","chest","chest"); name = (String) storage1; interactString = "open "+name; storage2 = RaceFactory.makeMimic(1);break;
 		case 2: name = extra.choose("dungeon guard","gatekeeper","dungeon guard"); interactString = "ERROR"; forceGo = true;
 		storage1 = new Person(level);break;
 		case 3: name = extra.choose("locked door","barricaded door","padlocked door"); interactString = "examine broken door";forceGo = true;break;
-		case 4: name = "ladder"; interactString = "traverse ladder"; forceGo = true; break;
-		case 5: ArrayList<Person> list = new ArrayList<Person>();
+		//case 4: name = "ladder"; interactString = "traverse ladder"; forceGo = true; break;
+		case 4: ArrayList<Person> list = new ArrayList<Person>();
 		list.add(new Person(extra.zeroOut(level-3)+1));
 		list.add(new Person(extra.zeroOut(level-3)+1));
 		name = "gate guards";
@@ -75,7 +75,7 @@ public class DungeonNode implements java.io.Serializable{
 		forceGo = true;
 		state = 0;
 		break;
-		case 6: storage1 = extra.choose("chest"); name = (String) storage1; interactString = "open "+name;
+		case 5: storage1 = extra.choose("chest"); name = (String) storage1; interactString = "open "+name;
 		storage2 = RaceFactory.makeMimic(level);
 		break;
 		}
