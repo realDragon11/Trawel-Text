@@ -285,12 +285,17 @@ public class Attack implements java.io.Serializable{
 	}
 	
 	public enum Wound{
-		HAMSTRUNG("Hamstrung","Delays the attack after the opponent's next.","Their leg is hamstrung!"), 
+		HAMSTRUNG("Hamstrung","Delays the next attacks.","Their leg is hamstrung!"), 
 		BLINDED("Blinded","The next attack will probably miss.","Blood falls into their eyes!"),
 		CONFUSED("Confused","Forces the opponent to retarget.","They look confused!"), 
 		DIZZY("Dizzy","Decreases their next attack's to-hit.","They look dizzy!"),
 		SLICE("Slice","Your next attack will happen sooner","They are sliced!"),
-		DICE("Dice","Your next attack will happen sooner","They are diced!"),;
+		DICE("Dice","Your next attack will happen sooner","They are diced!"),
+		//done line
+		WINDED("Winded","Greatly delays the next attack","The wind is knocked out of them!"),
+		BLEED("Bleed","Causes them to take damage every attack they make.","They bleed..."),
+		DISARMED("Disarm","Removes one attack choice","Their attack is put off-kilter!"),
+		MAJOR_BLEED("Cut Artery","Causes them to take major damage every attack they make.","An artery is cut!"),;
 		public String name, desc, active;
 		Wound(String iName,String iDesc,String activeDesc){
 			name = iName;

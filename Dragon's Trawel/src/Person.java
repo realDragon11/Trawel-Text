@@ -605,7 +605,8 @@ public class Person implements java.io.Serializable{
 		}
 	}
 	
-	private boolean hasEffect(Effect e) {
+	//made public 5/11/2020
+	public boolean hasEffect(Effect e) {
 		return effects.contains(e);
 	}
 	
@@ -652,11 +653,20 @@ public class Person implements java.io.Serializable{
 			this.attackNext.blind(.5);
 			break;
 		case HAMSTRUNG:
-			//TODO
+			this.advanceTime(-8);
 			break;
 		case DIZZY:
 			this.attackNext.blind(.75);
-			break;		
+			break;	
+		case WINDED:
+			this.advanceTime(-16);
+			break;
+		case MAJOR_BLEED:
+			this.addEffect(Effect.MAJOR_BLEED);
+			//major bleed stuff
+		case BLEED:
+			this.addEffect(Effect.BLEED);
+			break;
 		}
 		
 	}

@@ -411,6 +411,13 @@ public class Combat {
 				defender.getBag().graphicalDisplay(1,defender);
 			}
 		}
+		//TODO: bleedout death quotes
+		if (attacker.hasEffect(Effect.BLEED)) {
+			attacker.takeDamage(1);
+		}
+		if (attacker.hasEffect(Effect.MAJOR_BLEED)) {
+			attacker.takeDamage(2);
+		}
 	}
 	private void inflictWound(Person attacker2, Person defender2) {
 		defender2.inflictWound(attacker2.getNextAttack().getWound());
