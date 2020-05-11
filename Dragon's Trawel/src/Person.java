@@ -673,6 +673,10 @@ public class Person implements java.io.Serializable{
 		case TRIPPED:
 			this.advanceTime(-20);
 			break;
+		case KO:
+			this.takeDamage(5*level);
+			this.addEffect(Effect.RECOVERING);
+			break;
 		}
 		
 	}
@@ -683,5 +687,10 @@ public class Person implements java.io.Serializable{
 			return 2;
 		}
 		return 3;
+	}
+
+	public void removeEffect(Effect e) {
+		effects.remove(e);
+		
 	}
 }

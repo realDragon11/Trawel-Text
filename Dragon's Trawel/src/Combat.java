@@ -291,6 +291,10 @@ public class Combat {
 	 * @return damagedone
 	 */
 	public void handleTurn(Person attacker, Person defender, BardSong song) {
+		if (attacker.hasEffect(Effect.RECOVERING)) {
+			attacker.removeEffect(Effect.RECOVERING);
+			attacker.addHp(attacker.getLevel()*5);
+		}
 		if (defender.hasSkill(Skill.COUNTER)) {
 			defender.advanceTime(2);
 		}
@@ -420,7 +424,7 @@ public class Combat {
 		}
 	}
 	private void inflictWound(Person attacker2, Person defender2) {
-		if (defender2.hasSkill(Skill.TA_NAILS) && extra.randRange(1,10) == 1) {
+		if (defender2.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1) {
 			extra.print(" They shrug off the blow!");
 		}else {
 		defender2.inflictWound(attacker2.getNextAttack().getWound());

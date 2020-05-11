@@ -55,6 +55,9 @@ public class Attack implements java.io.Serializable{
 		this.soundType = stype;
 		this.target = target;
 		//add a wound effect
+		if (extra.randRange(1,10) == 1) {
+			this.wound = Attack.Wound.GRAZE;
+		}else {
 		double counter = Math.random() * (sharp + blunt + pierce);
 		counter-=sharp;
 		if (counter<=0) {
@@ -66,6 +69,7 @@ public class Attack implements java.io.Serializable{
 			}else {
 				this.wound = extra.randList(target.pierceWounds);
 			}
+		}
 		}
 	}
 	
@@ -296,7 +300,9 @@ public class Attack implements java.io.Serializable{
 		BLEED("Bleed","Causes them to take damage every attack they make.","They bleed..."),
 		DISARMED("Disarm","Removes one attack choice","Their attack is put off-kilter!"),
 		MAJOR_BLEED("Cut Artery","Causes them to take major damage every attack they make.","An artery is cut!"),
-		TRIPPED("Tripped","Greatly delays the next attack","They are tripped!"),;
+		TRIPPED("Tripped","Greatly delays the next attack","They are tripped!"),
+		GRAZE("Grazed","No effect.","The blow's a graze..."),
+		KO("Knockout","Deals temporary damage.","It's a knockout!"),;
 		//done line
 		public String name, desc, active;
 		Wound(String iName,String iDesc,String activeDesc){

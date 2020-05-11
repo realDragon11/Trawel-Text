@@ -6,7 +6,8 @@ public enum Effect implements java.io.Serializable {
 	
 	BLEED("Bleeding","Take damage over time.",false,false),
 	MAJOR_BLEED("Bleeding even more","Take damage over time.",false,false),
-	DISARMED("Disamred","Have less attack options.",false,false);
+	DISARMED("Disamred","Have less attack options.",false,false),
+	RECOVERING("Recovering","Will regain HP soon.",false,false);
 	
 	private String name,desc;
 	private boolean lasts, stacks;
