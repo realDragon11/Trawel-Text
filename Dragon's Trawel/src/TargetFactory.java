@@ -15,7 +15,9 @@ public class TargetFactory {
 		t.rarity = .6;
 		t.slot = 0;
 		t.type = TargetType.HUMANOID;
+		t.slashWounds.add(Attack.Wound.CONFUSED);
 		t.slashWounds.add(Attack.Wound.BLINDED);
+		t.pierceWounds.add(Attack.Wound.BLINDED);
 		targetList.add(t);
 		
 		t = new Target();
@@ -71,6 +73,9 @@ public class TargetFactory {
 		t.rarity = .1;
 		t.slot = 0;
 		t.type = TargetType.HUMANOID;
+		t.slashWounds.add(Attack.Wound.BLINDED);
+		t.pierceWounds.add(Attack.Wound.BLINDED);
+		t.bluntWounds.add(Attack.Wound.BLINDED);
 		targetList.add(t);
 		
 		t = new Target();

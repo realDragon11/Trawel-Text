@@ -415,6 +415,9 @@ public class Combat {
 	private void inflictWound(Person attacker2, Person defender2) {
 		defender2.inflictWound(attacker2.getNextAttack().getWound());
 		extra.print(" " +attacker2.getNextAttack().getWound().active);
+		if (attacker2.getNextAttack().getWound() == Attack.Wound.CONFUSED) {
+			newTarget = true;
+		}
 	}
 
 

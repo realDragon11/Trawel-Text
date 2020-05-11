@@ -242,6 +242,7 @@ public class Attack implements java.io.Serializable{
 				extra.specialPrint(in, name,extra.format(speed),magicDesc);
 			}
 		}
+		extra.println(this.wound.name + " - " + this.wound.desc);
 	}
 	
 	public Attack impair(int handLevel, TargetFactory.TargetType targetType) {
@@ -285,7 +286,8 @@ public class Attack implements java.io.Serializable{
 	
 	public enum Wound{
 		HAMSTRUNG("Hamstrung","Delays the attack after the opponent's next.","Their leg is hamstrung!"), 
-		BLINDED("Blinded","The next attack will probably miss.","Blood falls into their eyes!");
+		BLINDED("Blinded","The next attack will probably miss.","Blood falls into their eyes!"),
+		CONFUSED("Confused","Forces the opponent to retarget.","They look dizzy!"), ;
 		public String name, desc, active;
 		Wound(String iName,String iDesc,String activeDesc){
 			name = iName;
