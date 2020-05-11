@@ -19,6 +19,7 @@ public class Attack implements java.io.Serializable{
 	private Skill skill;
 	private int soundStrength;
 	private String soundType;
+	private Wound wound;
 	//constructor
 	/**
 	 * Creates an attack with the following attributes:
@@ -53,6 +54,19 @@ public class Attack implements java.io.Serializable{
 		this.soundStrength = sstr;
 		this.soundType = stype;
 		this.target = target;
+		//add a wound effect
+		double counter = Math.random() * (sharp + blunt + pierce);
+		counter-=sharp;
+		if (counter<=0) {
+			this.wound = extra.randList(target.slashWounds);
+		}else {
+			counter-=blunt;
+			if (counter<=0) {
+				this.wound = extra.randList(target.bluntWounds);
+			}else {
+				this.wound = extra.randList(target.pierceWounds);
+			}
+		}
 	}
 	
 	public Attack(Skill skill, int mageLevel, TargetFactory.TargetType targetType) {
@@ -263,6 +277,26 @@ public class Attack implements java.io.Serializable{
 
 	public String getSoundType() {
 		return soundType;
+	}
+
+	public Wound getWound() {
+		return wound;
+	}
+	
+	public enum Wound{
+		HAMSTRUNG("Hamstrung","Delays the attack after the opponent's next.","Their leg is hamstrung!"), 
+		BLINDED("Blinded","The next attack will probably miss.","Blood falls into their eyes!");
+		public String name, desc, active;
+		Wound(String iName,String iDesc,String activeDesc){
+			name = iName;
+			desc = iDesc;
+			active = activeDesc;
+		}
+	}
+
+	public void blind(double d) {
+		hitMod*=.5;
+		
 	}
 
 }

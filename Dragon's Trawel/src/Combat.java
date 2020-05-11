@@ -317,6 +317,8 @@ public class Combat {
 		int damageDone = this.handleAttack(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender);
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender,damageDone);
 		if (damageDone > 0) {
+			//Wound effects
+			inflictWound(attacker,defender);
 			song.addAttackHit(attacker,defender);
 			if (!extra.printMode) {
 				Networking.sendColor(Color.ORANGE);
@@ -410,6 +412,12 @@ public class Combat {
 			}
 		}
 	}
+	private void inflictWound(Person attacker2, Person defender2) {
+		defender2.inflictWound(attacker2.getNextAttack().getWound());
+		extra.print(" " +attacker2.getNextAttack().getWound().active);
+	}
+
+
 	private void handleMagicSpell(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
 		extra.println(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
 		if  (att.getSkill() == Skill.ELEMENTAL_MAGE) {

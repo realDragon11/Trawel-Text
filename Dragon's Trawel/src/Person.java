@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+
 /**
  * 
  * @author Brian Malone
@@ -642,5 +643,17 @@ public class Person implements java.io.Serializable{
 
 	public void setTitle(String s) {
 		title = s;
+	}
+
+	public void inflictWound(Attack.Wound wound) {
+		switch (wound) {
+		case BLINDED:
+			this.attackNext.blind(.5);
+			break;
+		case HAMSTRUNG:
+			break;
+		
+		}
+		
 	}
 }

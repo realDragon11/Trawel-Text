@@ -5,6 +5,7 @@ public class TargetFactory {
 	public static ArrayList<Target> targetList = new ArrayList<Target>();
 	public static Target noTarget;
 	public TargetFactory() {
+		
 		Target t = new Target();
 		t.name = "head";
 		t.hit = .8;
@@ -14,6 +15,7 @@ public class TargetFactory {
 		t.rarity = .6;
 		t.slot = 0;
 		t.type = TargetType.HUMANOID;
+		t.slashWounds.add(Attack.Wound.BLINDED);
 		targetList.add(t);
 		
 		t = new Target();
