@@ -8,16 +8,13 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 
 	private static final int EVENT_NUMBER =5;
 	private int state;
-	private String interactString;
 	private int idNum;
 	
 	private Object storage1, storage2;
 	
-	private boolean forceGo;
 	private Town town;
 	private Dungeon parent;
 	public boolean isStair = false;
-	public boolean isSummit = false;
 	
 	public DungeonNode(int size, int tier, Town t,Dungeon p,boolean stair) {
 		state = 0;
@@ -98,7 +95,8 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 		n.getConnects().add(this);
 	}
 	
-	private boolean interact() {
+	@Override
+	protected boolean interact() {
 		switch(idNum) {
 		case 1: chest();break;
 		case 2: mugger1(); if (state == 0) {return true;};break;
@@ -113,57 +111,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 		case 6: mimic(); if (state == 0) {return true;};break;
 		}
 		return false;
-	}
-
-	@Override
-	public void go() {
-		if (isSummit) {
-			Networking.sendStrong("Achievement|tower1|");
-		}
-		Player.addTime(.1);
-		int i = 1;
-		if (forceGo) {
-			if (interact()) {
-				return;
-			}
-
-		}
-		extra.println(name);
-		extra.println(i+ " " + interactString);i++;
-		for (NodeConnector n: connects) {
-			extra.println(i + " " + n.getName());
-			if (Player.hasSkill(Skill.TIERSENSE)) {
-				extra.println("Tier: " + n.getLevel());
-			}
-			if (Player.hasSkill(Skill.TOWNSENSE)) {
-				extra.println("Connections: " + n.connects.size());
-			}
-			i++;
-			}
-		extra.println(i + " exit dungeon");i++;
-		int j = 1;
-		int in = extra.inInt(i-1);
-		if (in == j) {
-			interact();
-		}j++;
-		for (NodeConnector n: connects) {
-			if (in == j) {
-				n.go();
-				return;
-			}
-			j++;
-			}
-		if (in == j) {
-			return;
-		}
-		go();
 	}
-
-
-	
-	
-	
-	
 
 	
 	private void chest() {

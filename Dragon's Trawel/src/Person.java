@@ -639,4 +639,8 @@ public class Person implements java.io.Serializable{
 	public void addSkill(Skill skill) {
 		skills.add(skill);
 	}
+
+	public void setTitle(String s) {
+		title = s;
+	}
 }

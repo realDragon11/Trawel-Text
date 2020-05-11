@@ -11,7 +11,8 @@ public class Dungeon extends Feature {
 		STANDARD, TOWER;
 	}
 	private Shape shape;
-	public Dungeon(String name,Town t,Shape s) {
+	private int boss;
+	public Dungeon(String name,Town t,Shape s,int bossType) {
 		this.name = name;
 		town = t;
 		size = 50;//t.getTier()*10;
@@ -19,6 +20,7 @@ public class Dungeon extends Feature {
 		shape = s;
 		generate();
 		color = Color.RED;
+		boss = bossType;
 		
 	}
 	@Override
@@ -43,16 +45,19 @@ public class Dungeon extends Feature {
 			DungeonNode stair, curStair;
 			start = new DungeonNode(size,town.getTier(),town,this,true);
 			stair = start;
+			int levelUp = 0;
 			DungeonNode lastNode,lastNode2;
 			//List<DungeonNode> lastFloorOnboarding;
 			//List<DungeonNode> thisFloorOnboarding;
 			while (curSize < size) {
 				lastNode = stair;
+				
 				//thisFloorOnboarding = new ArrayList<DungeonNode>();
-				curStair = new DungeonNode(size,stair.getLevel()+1,town,this,true);
+				levelUp++;
+				curStair = new DungeonNode(size,stair.getLevel()+(levelUp == 3 ? 1 : 0),town,this,true);
 				curFloor = new ArrayList<DungeonNode>();
 				for (int i = 0;i <2; i++) {
-					lastNode2 = new DungeonNode(size,stair.getLevel()+1,town,this,false);
+					lastNode2 = new DungeonNode(size,stair.getLevel()+(levelUp == 3 ? 1 : 0),town,this,false);
 					lastNode.getConnects().add(lastNode2);
 					lastNode = lastNode2;
 					curFloor.add(lastNode);
@@ -68,7 +73,7 @@ public class Dungeon extends Feature {
 				
 				lastNode = stair;
 				for (int i = 0;i <2; i++) {
-					lastNode2 = new DungeonNode(size,stair.getLevel()+1,town,this,false);
+					lastNode2 = new DungeonNode(size,stair.getLevel()+(levelUp == 3 ? 1 : 0),town,this,false);
 					
 					lastNode.getConnects().add(lastNode2);
 					lastNode = lastNode2;
@@ -90,8 +95,16 @@ public class Dungeon extends Feature {
 				stair.reverseConnections();
 				//move onto next floor
 				stair = curStair;
+				if (levelUp == 3) {
+					levelUp = 0;
+				}
 			}
 			stair.isSummit = true;
+			BossNode b =new BossNode(stair.getLevel(),boss);
+			b.getConnects().add(b);
+			stair.reverseConnections();
+			stair.getConnects().add(b);
+			stair.reverseConnections();
 			
 			//add back connections
 			//start.addBacks();

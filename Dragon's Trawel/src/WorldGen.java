@@ -30,7 +30,7 @@ public class WorldGen {
 		unun.addTravel();
 		unun.addTravel();
 		unun.addTravel();
-		unun.addFeature(new Dungeon("tower of fame",unun,Dungeon.Shape.TOWER));
+		unun.addFeature(new Dungeon("tower of fame",unun,Dungeon.Shape.TOWER,0));
 		
 		Town tevar = new Town("tevar",2,rona,new Point(4,5));
 		tevar.addFeature(new Store(2));
@@ -119,7 +119,7 @@ public class WorldGen {
 		addConnection(alhax,yena,"ship","blue sea");
 		//yena.addFeature(new Gambler("cup master","cups",1000));
 		//yena.addFeature(new Well("trinity well"));
-		yena.addFeature(new Dungeon("Dungeon of Fate", yena,Dungeon.Shape.STANDARD));
+		yena.addFeature(new Dungeon("Dungeon of Fate", yena,Dungeon.Shape.STANDARD,-1));
 		yena.addTravel();
 		yena.addTravel();
 		yena.addTravel();
@@ -156,7 +156,7 @@ public class WorldGen {
 		placka.addTravel();
 		placka.addTravel();
 		placka.addFeature(new Champion(6));
-		placka.addFeature(new Dungeon("The Dungeon of Woe",placka,Dungeon.Shape.STANDARD));
+		placka.addFeature(new Dungeon("The Dungeon of Woe",placka,Dungeon.Shape.STANDARD,-1));
 		
 		Town tunka = new Town("tunka",7,teran,new Point(12,5));
 		addConnection(erin,tunka,"road","left-over road");
