@@ -63,7 +63,7 @@ public class Mine extends Feature {
 	public void removeVein() {
 		veinsLeft--;
 		if (veinsLeft == 0 && shape.equals(Shape.STANDARD)) {
-			Networking.sendStrong("Achievement|miner1|");
+			Networking.sendStrong("Achievement|mine1|");
 		}
 	}
 	public Shape getShape() {

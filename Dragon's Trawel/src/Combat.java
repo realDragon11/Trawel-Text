@@ -322,7 +322,7 @@ public class Combat {
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender,damageDone);
 		if (damageDone > 0) {
 			//Wound effects
-			inflictWound(attacker,defender);
+			inflictWound(attacker,defender,damageDone);
 			song.addAttackHit(attacker,defender);
 			if (!extra.printMode) {
 				Networking.sendColor(Color.ORANGE);
@@ -423,7 +423,7 @@ public class Combat {
 			attacker.takeDamage(2);
 		}
 	}
-	private void inflictWound(Person attacker2, Person defender2) {
+	private void inflictWound(Person attacker2, Person defender2, int damage) {
 		if (defender2.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1) {
 			extra.print(" They shrug off the blow!");
 		}else {
@@ -435,6 +435,9 @@ public class Combat {
 			break;
 		case SLICE: case DICE:
 			attacker2.advanceTime(10);
+			break;
+		case HACK: case TAT:
+			defender.takeDamage(damage/10);
 		}}
 	}
 

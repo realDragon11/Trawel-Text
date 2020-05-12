@@ -307,6 +307,8 @@ public class Attack implements java.io.Serializable{
 		TRIPPED("Tripped","Greatly delays the next attack","They are tripped!"),
 		GRAZE("Grazed","No effect.","The blow's a graze..."),
 		KO("Knockout","Deals temporary damage.","It's a knockout!"),
+		HACK("Hack","Deals bonus damage.","It's a wicked hack!"),
+		TAT("Punctured","Deals bonus damage.","The blow goes right through them!"),
 		ERROR("Error","error","ERROR"),;
 		//done line
 		public String name, desc, active;

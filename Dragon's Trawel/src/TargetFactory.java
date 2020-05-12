@@ -53,6 +53,8 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		t.bluntWounds.add(Attack.Wound.WINDED);
+		t.slashWounds.add(Attack.Wound.HACK);
+		t.pierceWounds.add(Attack.Wound.TAT);
 		targetList.add(t);
 		
 		t = new Target();
@@ -132,6 +134,8 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		t.bluntWounds.add(Attack.Wound.WINDED);
+		t.slashWounds.add(Attack.Wound.HACK);
+		t.pierceWounds.add(Attack.Wound.TAT);
 		targetList.add(t);
 		
 		
@@ -275,6 +279,8 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		t.bluntWounds.add(Attack.Wound.WINDED);
+		t.slashWounds.add(Attack.Wound.HACK);
+		t.pierceWounds.add(Attack.Wound.TAT);
 		targetList.add(t);
 		
 		t = new Target();
@@ -354,6 +360,8 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		t.bluntWounds.add(Attack.Wound.WINDED);
+		t.slashWounds.add(Attack.Wound.HACK);
+		t.pierceWounds.add(Attack.Wound.TAT);
 		targetList.add(t);
 	}
 	
