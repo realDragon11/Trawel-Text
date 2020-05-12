@@ -677,6 +677,9 @@ public class Person implements java.io.Serializable{
 			this.takeDamage(5*level);
 			this.addEffect(Effect.RECOVERING);
 			break;
+		case I_BLEED:
+			this.addEffect(Effect.I_BLEED);
+			break;
 		}
 		
 	}

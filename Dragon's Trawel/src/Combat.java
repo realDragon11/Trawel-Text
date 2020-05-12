@@ -438,6 +438,10 @@ public class Combat {
 			break;
 		case HACK: case TAT:
 			defender.takeDamage(damage/10);
+			break;
+		case CRUSHED:
+			defender.takeDamage((int)attacker2.getNextAttack().getTotalDam()/10);
+			break;
 		}}
 	}
 

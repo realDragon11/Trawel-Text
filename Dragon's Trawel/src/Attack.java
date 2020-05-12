@@ -309,6 +309,8 @@ public class Attack implements java.io.Serializable{
 		KO("Knockout","Deals temporary damage.","It's a knockout!"),
 		HACK("Hack","Deals bonus damage.","It's a wicked hack!"),
 		TAT("Punctured","Deals bonus damage.","The blow goes right through them!"),
+		I_BLEED("Internal Bleeding","Causes them to take damage every attack they make.","Their insides get crushed."),
+		CRUSHED("Crushed","Deals bonus damage through armor.","They are crushed!"),
 		ERROR("Error","error","ERROR"),;
 		//done line
 		public String name, desc, active;
@@ -322,6 +324,10 @@ public class Attack implements java.io.Serializable{
 	public void blind(double d) {
 		hitMod*=d;
 		
+	}
+
+	public double getTotalDam() {
+		return this.getSharp()+this.getBlunt()+this.getPierce();
 	}
 
 }
