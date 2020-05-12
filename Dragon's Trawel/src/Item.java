@@ -21,7 +21,7 @@ public abstract class Item implements java.io.Serializable{
 	 */
 	public abstract int getCost();
 	public abstract void display(int style);
-	
+	public abstract void display(int style,float markup);
 	public String getModiferName() {
 		switch (level) {
 		case 0: return "broken";

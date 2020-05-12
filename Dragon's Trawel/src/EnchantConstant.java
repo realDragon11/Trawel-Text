@@ -46,13 +46,13 @@ public class EnchantConstant extends Enchant {
 		if (magnitudeOne > 0){
 		switch ((int)(Math.random()*10)) {
 			case 0: beforeName = (String)extra.choose("speedy","quick","fast","hasty","brisk");
-			speedMod+=.2*magnitudeOne;
-			goldMult +=.2*magnitudeOne;
+			speedMod+=.1*magnitudeOne;
+			goldMult +=.1*magnitudeOne;
 			goldMod +=magnitudeOne*20;
 			break;
 			case 1: beforeName = (String)extra.choose("slow","sluggish","lackadaisical","lethargic","reluctant");
-			speedMod-=.2*magnitudeOne;
-			goldMult -=.2*magnitudeOne;
+			speedMod-=.1*magnitudeOne;
+			goldMult -=.1*magnitudeOne;
 			goldMod -=magnitudeOne*20;
 			break;
 			case 2: beforeName = (String)extra.choose("healthy","bolstering","hearty","tough","robust","stalwart");

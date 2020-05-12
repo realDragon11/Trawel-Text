@@ -308,11 +308,11 @@ public class Armor extends Item {
 	}
 
 	@Override
-	public void display(int style) {
+	public void display(int style,float markup) {
 		switch (style) {
 		case 1:
 			extra.println(this.getName() + " sbp:" + extra.format(this.baseResist*this.getSharpResist()) + " " + extra.format(this.baseResist*this.getBluntResist()) + " " + extra.format(this.baseResist*this.getPierceResist())
-			 + " value: " + this.getCost());
+			 + " value: " + (int)(this.getCost()*markup));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
@@ -320,13 +320,17 @@ public class Armor extends Item {
 			
 		case 2:
 			extra.println(this.getName() + " sbp:" + extra.format(this.baseResist*this.getSharpResist()) + " " + extra.format(this.baseResist*this.getBluntResist()) + " " + extra.format(this.baseResist*this.getPierceResist())
-			+ " dex: "+ this.getDexMod() + " flame: "+ this.getFireMod() + " shock: "+ this.getShockMod() + " frost: "+ this.getFreezeMod() + " value: " + this.getCost());
+			+ " dex: "+ this.getDexMod() + " flame: "+ this.getFireMod() + " shock: "+ this.getShockMod() + " frost: "+ this.getFreezeMod() + " value: " + (int)(this.getCost()*markup));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
 			;break;
 		}
 		
+	}
+	@Override
+	public void display(int style) {
+		this.display(style, 1);
 	}
 	
 	@Override

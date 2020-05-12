@@ -28,8 +28,12 @@ public class Race extends Item implements java.io.Serializable{
 		return 0;
 	}
 	@Override
-	public void display(int style) {
+	public void display(int style, float markup) {
 		extra.println(name);
+	}
+	@Override
+	public void display(int style) {
+		this.display(style, 1);
 	}
 	@Override
 	public String getType() {

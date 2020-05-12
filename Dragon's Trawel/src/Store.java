@@ -8,6 +8,7 @@ public class Store extends Feature implements java.io.Serializable{
 	private int time;
 	private int tier;
 	private int buys;
+	private float markup = 1.5f;
 	
 	public static int INVENTORY_SIZE = 5;
 
@@ -95,8 +96,8 @@ public class Store extends Feature implements java.io.Serializable{
 			sellItem = bag.getRace();
 		}
 		int sellGold = extra.zeroOut(sellItem.getCost());//the gold the item you are exchanging it for is worth
-		
-		if (buyItem.getCost() > (bag.getGold()+sellGold)) {
+		int buyGold = (int)(buyItem.getCost()*markup);
+		if (buyGold > (bag.getGold()+sellGold)) {
 			extra.println("You can't afford this item!");
 			return;
 		}
@@ -114,8 +115,8 @@ public class Store extends Feature implements java.io.Serializable{
 		if (itemType.contains("race")) {
 			arraySwap(bag.swapRace((Race)buyItem),buyItem);
 		}
-		bag.setGold(bag.getGold()+sellGold-buyItem.getCost());
-		extra.println("You complete the trade. "+ (sellGold-buyItem.getCost()) + " gold.");
+		bag.setGold(bag.getGold()+sellGold-buyGold);
+		extra.println("You complete the trade. "+ (sellGold-buyGold) + " gold.");
 	}
 	
 	private void arraySwap(Item i,Item i2) {
@@ -138,7 +139,7 @@ public class Store extends Feature implements java.io.Serializable{
 		for (Item i: items) {
 			extra.print(j + " ");
 			if (canSee(i)) {
-			i.display(1);}else {
+			i.display(1,markup);}else {
 				extra.println("They refuse to show you this item.");
 			}
 			j++;

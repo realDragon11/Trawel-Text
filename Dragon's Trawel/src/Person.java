@@ -663,7 +663,7 @@ public class Person implements java.io.Serializable{
 			break;
 		case MAJOR_BLEED:
 			this.addEffect(Effect.MAJOR_BLEED);
-			//major bleed stuff
+			//major bleed stuff, lack of break is on purpose
 		case BLEED:
 			this.addEffect(Effect.BLEED);
 			break;

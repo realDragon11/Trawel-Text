@@ -314,11 +314,11 @@ public class Weapon extends Item {
 	}
 
 	@Override
-	public void display(int style) {
+	public void display(int style,float markup) {
 		switch (style) {
 		case 1:
 			extra.println(this.getName()
-			+ " hd: " + extra.format(this.highestDamage()) + " value: " + this.getCost());
+			+ " hd: " + extra.format(this.highestDamage()) + " value: " + (int)(this.getCost()*markup));
 			if (this.IsEnchantedConstant()) {
 				this.getEnchant().display(1);
 			}
@@ -328,7 +328,7 @@ public class Weapon extends Item {
 			;break;
 		case 2:
 			extra.println(this.getName()
-			+ " hd: " + extra.format(this.highestDamage()) + " value: " + this.getCost() + " kills: " +this.getKills());
+			+ " hd: " + extra.format(this.highestDamage()) + " value: " + (int)(this.getCost()*markup) + " kills: " +this.getKills());
 			if (this.IsEnchantedConstant()) {
 				this.getEnchant().display(2);
 			}
@@ -338,6 +338,12 @@ public class Weapon extends Item {
 			;break;
 		}
 	}
+	@Override
+	public void display(int style) {
+		this.display(style, 1);
+	}
+	
+
 
 	@Override
 	public String getType() {
