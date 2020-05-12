@@ -15,10 +15,10 @@ public class Mine extends Feature {
 		town = t;
 		size = 50;//t.getTier()*10;
 		tutorialText = "Mines have minerals for you to make profit off of.";
-		generate();
 		color = Color.RED;
 		this.owner = owner;
 		shape = s;
+		generate();
 	}
 	@Override
 	public void go() {
@@ -47,6 +47,7 @@ public class Mine extends Feature {
 				newNode.getConnects().add(lastNode);
 				lastNode.reverseConnections();
 			}
+			lastNode.isSummit = true;
 			BossNode b = new BossNode(town.getTier()+5,1);
 			lastNode.getConnects().add(b);
 			b.getConnects().add(lastNode);
