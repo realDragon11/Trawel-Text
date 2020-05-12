@@ -416,6 +416,9 @@ public class Combat {
 			}
 		}
 		//TODO: bleedout death quotes
+		if (attacker.hasEffect(Effect.I_BLEED)) {
+			attacker.takeDamage(1);
+		}
 		if (attacker.hasEffect(Effect.BLEED)) {
 			attacker.takeDamage(1);
 		}
@@ -437,10 +440,10 @@ public class Combat {
 			attacker2.advanceTime(10);
 			break;
 		case HACK: case TAT:
-			defender.takeDamage(damage/10);
+			defender2.takeDamage(damage/10);
 			break;
 		case CRUSHED:
-			defender.takeDamage((int)attacker2.getNextAttack().getTotalDam()/10);
+			defender2.takeDamage((int)attacker2.getNextAttack().getTotalDam()/10);
 			break;
 		}}
 	}

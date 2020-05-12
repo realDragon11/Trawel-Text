@@ -42,7 +42,7 @@ public class mainGame {
 	case 1:
 		Networking.clearSides();
 		gameTypes();
-		return;     
+		return;
 	case 2:
 		extra.println("Thanks for playing Trawel! Here's a few tips about learning how to play:");
 		extra.println("Stylized like the old days, you must enter all input through a command line.");
@@ -80,6 +80,7 @@ public class mainGame {
 		extra.println("Book writer: Tibo Smolders");
 		extra.println("With thanks to the GameMaker discord");
 		extra.println("Achievement icons can be found on game-icons.net");
+		extra.println("Music by manicInsomniac");
 	}
 
 	
@@ -117,15 +118,11 @@ public class mainGame {
 
 	private void links() {
 		while (true) {
-			//extra.println("1 Patreon");
 			extra.println("1 Discord");
-			//extra.println("3 Kickstarter");
 			extra.println("2 Github");
 			extra.println("3 back");
 			switch(extra.inInt(2)) {
-			//case 3: openWebpage("https://www.patreon.com/realDragon");break;
 			case 1: openWebpage("https://discord.gg/jsyqu7X");break;
-			//case 4: openWebpage("https://www.kickstarter.com/projects/738083082/trawel?ref=ea8wbq");break;
 			case 2: openWebpage("https://github.com/realDragon11/Trawel-Text");
 			case 3: return;
 			}
@@ -146,7 +143,7 @@ public class mainGame {
 		new TauntsFactory();
 		new BookFactory();
 		story = new StoryNone();
-		extra.println("Dragon's Trawel v0.4.4");
+		extra.println("Dragon's Trawel v0.5.0");
 		extra.println(
 				" ___________  ___  _    _ _____ _     \r\n" + 
 				"|_   _| ___ \\/ _ \\| |  | |  ___| |    \r\n" + 
@@ -180,7 +177,7 @@ public class mainGame {
 		
 		while (true) { new mainGame();}
 		}catch(Exception e) {
-			extra.println("Trawel has encountered an exception. Please report to realDragon.");
+			extra.println("Trawel has encountered an exception. Please report to realDragon. More details can be found on the command prompt.");
 			e.printStackTrace();
 		}
 		main(args);
