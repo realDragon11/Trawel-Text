@@ -6,7 +6,11 @@ public class Mine extends Feature {
 	private int size;
 	private MineNode start;
 	private int veinsLeft = 0;
-	public Mine(String name,Town t, SuperPerson owner) {
+	public enum Shape{
+		STANDARD, HELL;
+	}
+	private Shape shape;
+	public Mine(String name,Town t, SuperPerson owner,Shape s) {
 		this.name = name;
 		town = t;
 		size = 50;//t.getTier()*10;
@@ -14,6 +18,7 @@ public class Mine extends Feature {
 		generate();
 		color = Color.RED;
 		this.owner = owner;
+		shape = s;
 	}
 	@Override
 	public void go() {
@@ -28,7 +33,26 @@ public class Mine extends Feature {
 	}
 	
 	public void generate() {
-		start = new MineNode(size,town.getTier(),this);
+		switch (shape) {
+		case STANDARD:
+			start = new MineNode(size,town.getTier(),this);
+			break;
+		case HELL:
+			start = new MineNode(size,town.getTier(),this);
+			MineNode lastNode = start;
+			MineNode newNode;
+			for (int i = 0;i < 50;i++) {
+				newNode = new MineNode(size,town.getTier()+(i/10),this);
+				lastNode.getConnects().add(newNode);
+				newNode.getConnects().add(lastNode);
+				lastNode.reverseConnections();
+			}
+			BossNode b = new BossNode(town.getTier()+5,1);
+			lastNode.getConnects().add(b);
+			b.getConnects().add(lastNode);
+			lastNode.reverseConnections();
+			break;
+		}
 	}
 	
 	public void addVein() {
@@ -36,9 +60,12 @@ public class Mine extends Feature {
 	}
 	public void removeVein() {
 		veinsLeft--;
-		if (veinsLeft == 0) {
+		if (veinsLeft == 0 && shape.equals(Shape.STANDARD)) {
 			Networking.sendStrong("Achievement|miner1|");
 		}
+	}
+	public Shape getShape() {
+		return shape;
 	}
 	
 

@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public abstract class NodeConnector implements Serializable {
 
@@ -35,13 +36,23 @@ public abstract class NodeConnector implements Serializable {
 	public int getLevel() {
 		return level;
 	}
+	
+	protected abstract String shapeName();
 
 
 	public void go() {
 		if (isSummit) {
+			switch(this.shapeName()) {
+			case "TOWER":
 			Networking.sendStrong("Achievement|tower1|");
+			break;
+			case "HELL":
+				Networking.sendStrong("Achievement|mine2|");
+				break;
+			}
 		}
 		Player.addTime(.1);
+		
 		int i = 1;
 		if (forceGo) {
 			if (interact()) {
@@ -90,4 +101,8 @@ public abstract class NodeConnector implements Serializable {
 
 
 	protected abstract boolean interact();
+	
+	public void reverseConnections() {
+		Collections.reverse(connects);
+	}
 }

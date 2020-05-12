@@ -10,6 +10,7 @@ public class BossNode extends NodeConnector implements Serializable {
 		type = t;
 		setConnects(new ArrayList<NodeConnector>());
 		level = tier;
+		Person p;
 		switch (type) {
 		case 0:
 			name = "The Fatespinner (Boss)";
@@ -17,8 +18,16 @@ public class BossNode extends NodeConnector implements Serializable {
 			people = new ArrayList<Person>();
 			people.add(RaceFactory.makeMimic(extra.zeroOut(tier-3)+1));
 			people.add(RaceFactory.makeMimic(extra.zeroOut(tier-3)+1));
-			Person p = new Person(tier);
+			p = new Person(tier);
 			p.setTitle("The Fatespinner");
+			people.add(p);
+		break;
+		case 1:
+			name = "The Hell Baron (Boss)";
+			interactString = "challenge The Hell Baron";
+			people = new ArrayList<Person>();
+			p = new Person(tier);
+			p.setTitle("The Baron of Hell");
 			people.add(p);
 		break;
 		}
@@ -48,13 +57,43 @@ public class BossNode extends NodeConnector implements Serializable {
 		
 		
 	}
+	
+	private boolean hellbaron() {
+		if (state == 0) {
+			Networking.sendColor(Color.RED);
+			extra.println("You challenge the hell baron!");
+			ArrayList<Person> list = people;
+			Person winner = mainGame.CombatTwo(Player.player.getPerson(),list.get(0));
+			if (winner == Player.player.getPerson()) {
+			forceGo = false;
+			interactString = "approach the hell baron's corpse";
+			people = null;
+			state = 1;
+			name = name + "'s corpse";
+			Networking.sendStrong("Achievement|boss2|");
+			return false;}else {
+				return true;
+			}
+		}else {
+			extra.println("Here lies the body of the hell baron...");
+			return false;
+		}
+		
+		
+	}
 
 	@Override
 	protected boolean interact() {
 		switch (type) {
 		case 0: return fatespinner();
+		case 1: return hellbaron();
 		}
 		throw new RuntimeException("Invalid boss");
+	}
+
+	@Override
+	protected String shapeName() {
+		return "NOPE";
 	}
 
 }

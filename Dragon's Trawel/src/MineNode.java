@@ -1,17 +1,16 @@
 import java.awt.Color;
 import java.util.ArrayList;
 
-public class MineNode implements java.io.Serializable{
+public class MineNode extends NodeConnector implements java.io.Serializable{
 	//potentail problem: all this code is in a highly duplicated node
 
-	private String name;
+	//private String name;
 	private static final int EVENT_NUMBER = 9;
 	private int state;
-	private String interactString;
+	//private String interactString;
 	private int idNum;
-	private int level;
+	//private int level;
 	private Object storage1, storage2;
-	private ArrayList<MineNode> connects;
 	private boolean forceGo;
 	private Mine parent;
 	
@@ -27,10 +26,8 @@ public class MineNode implements java.io.Serializable{
 			p.addVein();
 		}
 		level = tier;
-		if (extra.chanceIn(1,10)) {
-			level++;
-		}
-		setConnects(new ArrayList<MineNode>());
+		
+		setConnects(new ArrayList<NodeConnector>());
 		forceGo = false;
 		generate(size);
 		
@@ -57,8 +54,11 @@ public class MineNode implements java.io.Serializable{
 		storage1 = new Person(level);
 		break;
 		}
-		if (size < 2) {
+		if (size < 2 || parent.getShape().equals(Mine.Shape.HELL)) {
 			return;
+		}
+		if (extra.chanceIn(1,10)) {
+			level++;
 		}
 		int split = extra.randRange(1,Math.min(size,3));
 		int i = 1;
@@ -75,8 +75,8 @@ public class MineNode implements java.io.Serializable{
 		connects.add(n);
 		n.getConnects().add(this);
 	}
-	
-	private boolean interact() {
+	@Override
+	protected boolean interact() {
 		switch(idNum) {
 		case 1: duelist();break;
 		case 2: extra.println("You wash yourself in the "+name+".");break;
@@ -102,7 +102,7 @@ public class MineNode implements java.io.Serializable{
 		return false;
 	}
 
-	public void go() {
+	/*public void go() {
 		Player.addTime(.1);
 		int i = 1;
 		if (forceGo) {
@@ -160,6 +160,7 @@ public class MineNode implements java.io.Serializable{
 	private void setConnects(ArrayList<MineNode> connects) {
 		this.connects = connects;
 	}
+	*/
 	
 	private void duelist() {
 		if (state == 0) {
@@ -266,6 +267,11 @@ public class MineNode implements java.io.Serializable{
 		}
 		}while(inInt == 1);
 		
+	}
+	
+	@Override
+	protected String shapeName() {
+		return parent.getShape().name();
 	}
 	
 	

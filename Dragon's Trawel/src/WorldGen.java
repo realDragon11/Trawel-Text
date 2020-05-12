@@ -38,7 +38,7 @@ public class WorldGen {
 		addConnection(homa,tevar,"road","red road");
 		addConnection(tevar,unun,"road","blue road");
 		tevar.addFeature(new Forest("the black forest",2));
-		tevar.addFeature(new Mine("tevar mine",tevar,null));
+		tevar.addFeature(new Mine("tevar mine",tevar,null,Mine.Shape.STANDARD));
 		
 		
 		Town hemo = new Town("hemo",2,rona,new Point(5,7));
@@ -131,7 +131,7 @@ public class WorldGen {
 		denok.addFeature(new Store(5,5));
 		denok.addFeature(new Forest("the white forest",4));
 		denok.addFeature(new Grove("the white grove",denok));
-		denok.addFeature(new Mine("denok mine",denok,null));
+		denok.addFeature(new Mine("denok mine",denok,null,Mine.Shape.STANDARD));
 		denok.addFeature(new Doctor("Shaman",denok));
 		denok.addTravel();
 		
@@ -215,12 +215,13 @@ public class WorldGen {
 		addConnection(unika,peana,"road","green road");
 		peana.addFeature(new Arena("peana arena",10,1,24,12,135));
 		peana.addFeature(new Appraiser("peana appraiser"));
+		peana.addFeature(new Mine("staircase to hell", peana, null,Mine.Shape.HELL));
 		
 		Town inka = new Town("inka",10, apen, new Point(4,7));
 		addConnection(unika,inka,"road","youn road");
 		addConnection(inka,peana,"road","era road");
-		inka.addFeature(new Mine("left mine", inka, null));
-		inka.addFeature(new Mine("right mine", inka, null));
+		inka.addFeature(new Mine("left mine", inka, null,Mine.Shape.STANDARD));
+		inka.addFeature(new Mine("right mine", inka, null,Mine.Shape.STANDARD));
 		inka.addTravel();
 		inka.addTravel();
 		

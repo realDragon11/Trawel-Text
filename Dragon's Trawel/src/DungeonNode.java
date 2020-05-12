@@ -199,8 +199,11 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 		
 	}
 
-	public void reverseConnections() {
-		Collections.reverse(connects);
+	
+
+	@Override
+	protected String shapeName() {
+		return parent.getShape().name();
 	}
 
 
