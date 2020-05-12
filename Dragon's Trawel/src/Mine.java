@@ -46,6 +46,7 @@ public class Mine extends Feature {
 				lastNode.getConnects().add(newNode);
 				newNode.getConnects().add(lastNode);
 				lastNode.reverseConnections();
+				lastNode = newNode;
 			}
 			lastNode.isSummit = true;
 			BossNode b = new BossNode(town.getTier()+5,1);

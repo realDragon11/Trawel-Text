@@ -210,7 +210,7 @@ public class RaceFactory {
 		misc.speedMod = 1;
 		misc.tradeMod = 1.2;
 		misc.rarity = .2;
-		misc.insultList.add("Look out, your hearts hanging out!");
+		misc.insultList.add("Look out, your heart's hanging out!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 2;

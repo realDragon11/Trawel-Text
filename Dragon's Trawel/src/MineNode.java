@@ -11,7 +11,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 	private int idNum;
 	//private int level;
 	private Object storage1, storage2;
-	private boolean forceGo;
+	//private boolean forceGo;
 	private Mine parent;
 	
 	public MineNode(int size, int tier,Mine p) {
