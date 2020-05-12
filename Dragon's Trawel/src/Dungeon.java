@@ -121,7 +121,7 @@ public class Dungeon extends Feature {
 			}
 			stair.isSummit = true;
 			BossNode b =new BossNode(stair.getLevel(),boss);
-			b.getConnects().add(b);
+			b.getConnects().add(stair);
 			b.floor = floor +=10;
 			stair.reverseConnections();
 			stair.getConnects().add(b);

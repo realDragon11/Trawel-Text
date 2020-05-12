@@ -55,6 +55,8 @@ public class Attack implements java.io.Serializable{
 		this.soundType = stype;
 		this.target = target;
 		//add a wound effect
+		//TODO: see if examine needs fixing
+		try {
 		if (extra.randRange(1,10) == 1) {
 			this.wound = Attack.Wound.GRAZE;
 		}else {
@@ -70,6 +72,8 @@ public class Attack implements java.io.Serializable{
 				this.wound = extra.randList(target.pierceWounds);
 			}
 		}
+		}}catch (RuntimeException e) {
+			this.wound = Wound.ERROR;
 		}
 	}
 	
@@ -302,7 +306,8 @@ public class Attack implements java.io.Serializable{
 		MAJOR_BLEED("Cut Artery","Causes them to take major damage every attack they make.","An artery is cut!"),
 		TRIPPED("Tripped","Greatly delays the next attack","They are tripped!"),
 		GRAZE("Grazed","No effect.","The blow's a graze..."),
-		KO("Knockout","Deals temporary damage.","It's a knockout!"),;
+		KO("Knockout","Deals temporary damage.","It's a knockout!"),
+		ERROR("Error","error","ERROR"),;
 		//done line
 		public String name, desc, active;
 		Wound(String iName,String iDesc,String activeDesc){
