@@ -78,7 +78,7 @@ public class randomLists {
 	}
 
 	public static String randomWarrior() {
-		return extra.choose("fighter","duelist","warrior");
+		return extra.choose("fighter","duelist","warrior","gladiator","scrapper","mercenary","brusier");
 	}
 
 	public static String randomMuggerName() {

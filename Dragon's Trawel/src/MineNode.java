@@ -39,12 +39,12 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 	private void generate(int size) {
 		switch (idNum) {
 		case 0: name = ""; interactString = "";break;
-		case 1: name = extra.choose("fighter","duelist","warrior"); interactString = "challenge " + name;
+		case 1: name = randomLists.randomWarrior(); interactString = "challenge " + name;
 		storage1 = new Person(level);
 		break;
 		case 2: name = extra.choose("river","pond","lake","stream"); interactString = "wash yourself";break;
 		case 3: storage1 = extra.choose("silver","gold","platinum","iron","copper"); name = storage1+" vein"; interactString = "mine "+storage1;break;
-		case 4: name = extra.choose("mugger","robber","thug","bandit","marauder","outlaw","desperado","cutthroat"); interactString = "ERROR"; forceGo = true;
+		case 4: name = randomLists.randomMuggerName(); interactString = "ERROR"; forceGo = true;
 		storage1 = new Person(level);break;
 		case 5: name = extra.choose("locked door","barricaded door","padlocked door"); interactString = "unlock door";forceGo = true;break;
 		case 6: interactString = "examine crystals"; storage1 = randomLists.randomColor(); name = "weird " + (String)storage1 + " crystals";break;
