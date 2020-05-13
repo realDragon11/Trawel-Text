@@ -77,6 +77,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 		storage2 = RaceFactory.makeMimic(level);
 		break;
 		case 6:
+			forceGo = true;
 			storage1 =  RaceFactory.makeStatue(level); name = ((Person)storage1).getBag().getRace().name + " statue";
 			interactString = "ERROR";
 			break;
