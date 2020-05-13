@@ -140,7 +140,7 @@ public class Town implements java.io.Serializable{
 		int i = 1;
 		extra.println("You are in " + extra.capFirst(name) + ".");
 		Networking.sendStrong("Discord|desc|Adventuring in " + name +"|");
-		Networking.sendStrong("Discord|imagesmall|towen|Town|");
+		Networking.sendStrong("Discord|imagesmall|town|Town|");
 		Networking.setArea("main");
 		Networking.charUpdate();
 		if (this.hasTeleporters()) {
