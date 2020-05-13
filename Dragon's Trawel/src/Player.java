@@ -14,6 +14,7 @@ public class Player extends SuperPerson{
 	private int rpts;//reincarnatepoints
 	private boolean tutorial;
 	public int merchantLevel;
+	public Town lastTown = null;
 	
 	public Player(Person p) {
 		person = p;

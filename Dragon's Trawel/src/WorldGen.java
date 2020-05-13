@@ -21,6 +21,22 @@ public class WorldGen {
 		homa.addTravel();
 		homa.addFeature(new Champion(4));
 		w.setStartTown(homa);
+		homa.setGoPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("You return to homa, the birthplace of your new self.");
+			}
+			
+		});
+		homa.setFirstPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("You enter the town of homa, a sober expression on your face. It's time to start your life aenw.");
+			}
+			
+		});
 		
 		
 		Town unun = new Town("unun",2,rona,new Point(5,4));
@@ -60,6 +76,24 @@ public class WorldGen {
 		tanak.addTravel();
 		tanak.addTravel();
 		tanak.addFeature(new Champion(10));
+		tanak.setGoPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("You look up at the city of the sky once more, and make your way to the teleport station.");
+				
+			}
+			
+		});
+		tanak.setFirstPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("The city of the sky stands before you- a floating island looming over the terrain. Below lies a teleport station to arrive at the otherwise inaccessible location.");
+				
+			}
+			
+		});
 		
 		Town lokan = new Town("lokan",3,rona,new Point(5,10));
 		lokan.setHasPort(true);

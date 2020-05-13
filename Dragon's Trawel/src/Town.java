@@ -20,6 +20,8 @@ public class Town implements java.io.Serializable{
 	private ArrayList<Connection> connects;
 	private ArrayList<Feature> features, removeList, addList;
 	private ArrayList<SuperPerson> occupants;
+	private PrintEvent goPrinter, newPrinter;
+	private boolean hasBeen;
 	
 	public Town() {
 		connects = new ArrayList<Connection>();
@@ -44,6 +46,13 @@ public class Town implements java.io.Serializable{
 			i++;
 		}
 		island.addTown(this);
+	}
+	
+	public void setGoPrinter(PrintEvent e) {
+		goPrinter = e;
+	}
+	public void setFirstPrinter(PrintEvent e) {
+		newPrinter = e;
 	}
 	
 	public void addPerson() {
@@ -138,6 +147,16 @@ public class Town implements java.io.Serializable{
 		Player.world = island.getWorld();
 		Player.player.world2 = island.getWorld();
 		int i = 1;
+		if (Player.player.lastTown != this) {
+			if (!hasBeen && newPrinter != null) {
+				newPrinter.print();
+			}else {
+				if (goPrinter != null) {
+					goPrinter.print();}
+			}
+		}
+		hasBeen = true;
+		Player.player.lastTown = this;
 		extra.println("You are in " + extra.capFirst(name) + ".");
 		Networking.sendStrong("Discord|desc|Adventuring in " + name +"|");
 		Networking.sendStrong("Discord|imagesmall|town|Town|");
