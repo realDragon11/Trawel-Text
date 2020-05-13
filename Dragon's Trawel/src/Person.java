@@ -211,7 +211,9 @@ public class Person implements java.io.Serializable{
 			level++;
 			//extra.println(level + " " + xp + " " + x);
 			if (isPlayer() == false) {
-			intellect++;}
+			intellect++;}else {
+				Networking.sendStrong("Leaderboard|Highest Level" + level+ "|");
+			}
 			maxHp+=50;
 			if (this.getBag().getRace().racialType != Race.RaceType.BEAST) {
 			extra.println("\"" + brag.getBoast() + "\" " + getName() + " " + extra.choose("declares","boasts","states firmly")+ ".");}
