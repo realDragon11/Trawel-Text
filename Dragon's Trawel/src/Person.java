@@ -29,10 +29,16 @@ public class Person implements java.io.Serializable{
 	private ArrayList<Skill> skills = new ArrayList<Skill>();
 	private boolean noAILevel;
 	private ArrayList<Effect> effects;
+	private RaceFlag rFlag;
+	
+	public enum RaceFlag {
+		NONE, CRACKS;
+	}
 	//private boolean isPlayer;
 	
 	//Constructor
-	public Person(int level, boolean aiLevel, Race.RaceType raceType, Material matType) {
+	public Person(int level, boolean aiLevel, Race.RaceType raceType, Material matType,RaceFlag raceFlag) {
+	rFlag = raceFlag;
 	if (level < 1) {
 		extra.println("non-fatal (until you run into the level zero person) exception: level is zero on someone");
 	}
@@ -62,12 +68,14 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public Person(int level) {
-		this(level,true,Race.RaceType.HUMANOID,null);
+		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE);
 	}
 	
 	//instance methods
 	
-
+	public RaceFlag getRaceFlag() {
+		return rFlag;
+	}
 	
 	/**
 	 * Returns the references to the inventory associated with this person.

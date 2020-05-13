@@ -290,7 +290,8 @@ public class Inventory implements java.io.Serializable{
 	
 	public void graphicalDisplay(int side, Person p) { 
 		Networking.sendStrong("ClearInv|"+side+"|");
-		Networking.sendStrong("AddInv|"+side+"|" +race.name.replace("-","_") +"|"+race.baseMap+"|"+raceMap+"|1|");
+		Networking.sendStrong("RaceFlag|"+side+"|"+p.getRaceFlag().name()+"|");
+		Networking.sendStrong("RaceInv|"+side+"|" +race.name.replace("-","_") +"|"+race.baseMap+"|"+raceMap+"|"+p.getRaceFlag().name()+"|1|");
 		if (race.racialType == Race.RaceType.HUMANOID) {
 		for (Armor a: armorSlots) {
 			String str = "AddInv|"+side+"|" +a.getBaseName().replace(' ','_') +"|"+a.getBaseMap()+"|"+a.getMat().palIndex+"|";

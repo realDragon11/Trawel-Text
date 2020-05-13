@@ -359,8 +359,8 @@ public class mainGame {
 			Person manOne, manTwo;
 			Player player;
 			while (true) {
-				 manOne = new Person(starting_level,false,Race.RaceType.HUMANOID,null);
-				 manTwo = new Person(starting_level,false,Race.RaceType.HUMANOID,null);
+				 manOne = new Person(starting_level,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NORMAL);
+				 manTwo = new Person(starting_level,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NORMAL);
 				 extra.changePrint(!printIt);
 				 manOne = CombatTwo(manOne,manTwo);
 				 extra.changePrint(false);
@@ -389,9 +389,9 @@ public class mainGame {
 			story = new StoryDeathWalker();
 			Person manOne, manTwo;
 			Player player;
-				 manOne = new Person(starting_level,false,Race.RaceType.HUMANOID,null);
+				 manOne = new Person(starting_level,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NORMAL);
 				 Person manThree = manOne;
-				 manTwo = new Person(starting_level,false,Race.RaceType.HUMANOID,null);
+				 manTwo = new Person(starting_level,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NORMAL);
 				 extra.changePrint(true);
 				 manOne = CombatTwo(manOne,manTwo);
 				 if (manOne == manThree) {

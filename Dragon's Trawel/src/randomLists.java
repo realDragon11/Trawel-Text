@@ -57,7 +57,7 @@ public class randomLists {
 	}
 	
 	public static String randomPlant() {
-		return extra.choose("apple","tomato","potato","squash","bean","olive","pumpkin","coconut");
+		return extra.choose("apple","tomato","potato","squash","bean","olive","pumpkin","coconut","eggcorn");
 	}
 	
 	public static String randomLivingThing() {
