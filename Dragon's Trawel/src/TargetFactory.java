@@ -372,10 +372,98 @@ public class TargetFactory {
 		t.pierceWounds.add(Attack.Wound.TAT);
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		targetList.add(t);
+		
+		
+		//statue
+		
+		
+		t = new Target();
+		t.name = "head";
+		t.hit = .8;
+		t.sharp = .5;
+		t.blunt = 2;
+		t.pierce = .75;
+		t.rarity = .6;
+		t.slot = 0;
+		t.type = TargetType.STATUE;
+		t.bluntWounds.add(Attack.Wound.GRAZE);
+		t.slashWounds.add(Attack.Wound.GRAZE);
+		t.pierceWounds.add(Attack.Wound.GRAZE);
+		t.bluntWounds.add(Attack.Wound.CRUSHED);
+		t.slashWounds.add(Attack.Wound.CRUSHED);
+		t.pierceWounds.add(Attack.Wound.CRUSHED);
+		targetList.add(t);
+		
+		t = new Target();
+		t.name = "neck";
+		t.hit = .5;
+		t.sharp = 1;
+		t.blunt = 1;
+		t.pierce = 1;
+		t.rarity = .4;
+		t.slot = 0;
+		t.type = TargetType.STATUE;
+		t.bluntWounds.add(Attack.Wound.GRAZE);
+		t.slashWounds.add(Attack.Wound.GRAZE);
+		t.pierceWounds.add(Attack.Wound.GRAZE);
+		t.bluntWounds.add(Attack.Wound.CRUSHED);
+		t.slashWounds.add(Attack.Wound.CRUSHED);
+		t.pierceWounds.add(Attack.Wound.CRUSHED);
+		targetList.add(t);
+		
+		t = new Target();
+		t.name = "chest";
+		t.hit = 1.3;
+		t.sharp = 1;
+		t.blunt = 1;
+		t.pierce = 1;
+		t.rarity = 1.5;
+		t.slot = 2;
+		t.type = TargetType.STATUE;
+		t.bluntWounds.add(Attack.Wound.GRAZE);
+		t.slashWounds.add(Attack.Wound.GRAZE);
+		t.pierceWounds.add(Attack.Wound.GRAZE);
+		t.bluntWounds.add(Attack.Wound.CRUSHED);
+		t.slashWounds.add(Attack.Wound.CRUSHED);
+		t.pierceWounds.add(Attack.Wound.CRUSHED);
+		targetList.add(t);
+		
+		t = new Target();
+		t.name = "arm";
+		t.hit = 1;
+		t.sharp = 1;
+		t.blunt = .6;
+		t.pierce = .5;
+		t.rarity = 1;
+		t.slot = 1;
+		t.type = TargetType.STATUE;
+		t.bluntWounds.add(Attack.Wound.GRAZE);
+		t.slashWounds.add(Attack.Wound.GRAZE);
+		t.pierceWounds.add(Attack.Wound.GRAZE);
+		t.bluntWounds.add(Attack.Wound.CRUSHED);
+		t.slashWounds.add(Attack.Wound.CRUSHED);
+		t.pierceWounds.add(Attack.Wound.CRUSHED);
+		targetList.add(t);
+		
+		t = new Target();
+		t.name = "leg";
+		t.hit = 1;
+		t.sharp = 1.1;
+		t.blunt = .8;
+		t.pierce = .8;
+		t.rarity = 1;
+		t.slot = 3;
+		t.type = TargetType.STATUE;
+		t.bluntWounds.add(Attack.Wound.GRAZE);
+		t.slashWounds.add(Attack.Wound.GRAZE);
+		t.pierceWounds.add(Attack.Wound.GRAZE);
+		t.bluntWounds.add(Attack.Wound.CRUSHED);
+		t.slashWounds.add(Attack.Wound.CRUSHED);
+		t.pierceWounds.add(Attack.Wound.CRUSHED);
 	}
 	
 	public enum TargetType{
-		HUMANOID, MIMIC, OPEN_MIMIC, NONE,QUAD;
+		HUMANOID, MIMIC, OPEN_MIMIC, NONE,QUAD, STATUE;
 	}
 	
 	public static Target randTarget(TargetType targetType) {

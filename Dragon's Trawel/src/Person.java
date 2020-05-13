@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 
-
 /**
  * 
  * @author Brian Malone
@@ -30,6 +29,8 @@ public class Person implements java.io.Serializable{
 	private boolean noAILevel;
 	private ArrayList<Effect> effects;
 	private RaceFlag rFlag;
+
+	public TargetFactory.TargetType targetOverride = null;
 	
 	public enum RaceFlag {
 		NONE, CRACKS;

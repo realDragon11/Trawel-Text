@@ -440,8 +440,9 @@ public class RaceFactory {
 	public static Person makeStatue(int level) {
 		extra.printMode = true;
 		Person w = new Person(level,true, Race.RaceType.HUMANOID,MaterialFactory.getMat("flesh"),Person.RaceFlag.CRACKS);
-		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
+		//w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
 		extra.printMode = false;
+		w.targetOverride = TargetFactory.TargetType.STATUE;
 		return w;
 	}
 }
