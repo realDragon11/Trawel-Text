@@ -6,7 +6,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 	//potentail problem: all this code is in a highly duplicated node
 
 
-	private static final int EVENT_NUMBER =6;
+	private static final int EVENT_NUMBER =7;
 	private int state;
 	private int idNum;
 	
@@ -77,9 +77,11 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 		storage2 = RaceFactory.makeMimic(level);
 		break;
 		case 6:
-			forceGo = true;
+			if (extra.chanceIn(1, 3)) {
+			forceGo = true;}
+		case 7:
 			storage1 =  RaceFactory.makeStatue(level); name = ((Person)storage1).getBag().getRace().name + " statue";
-			interactString = "ERROR";
+			interactString = "loot statue";
 			break;
 		}
 		if (size < 2 || parent.getShape() != Dungeon.Shape.STANDARD) {
@@ -116,6 +118,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 		case 4: return gateGuards();
 		case 5: mimic(); if (state == 0) {return true;};break;
 		case 6: statue(); if (state == 0) {return true;};break;
+		case 7: statueLoot();break;
 		}
 		return false;
 	}
@@ -225,6 +228,23 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 					interactString = "examine statue corpse";
 					forceGo = false;
 				}
+		}else {randomLists.deadPerson();}
+		
+	}
+	
+	private void statueLoot() {
+		if (state == 0) {
+			Networking.sendColor(Color.RED);
+			extra.println("You loot the statue...");
+			Person p = (Person)storage1;
+			p.getBag().graphicalDisplay(1,p);
+			AIClass.loot(p.getBag(),Player.bag,Player.player.getPerson().getIntellect(),true);
+					state = 1;
+					storage1 = null;
+					name = "looted statue";
+					interactString = "loot statue";
+					forceGo = false;
+				
 		}else {randomLists.deadPerson();}
 		
 	}
