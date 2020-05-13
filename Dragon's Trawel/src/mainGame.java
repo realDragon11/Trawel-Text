@@ -45,7 +45,7 @@ public class mainGame {
 		return;
 	case 2:
 		extra.println("Thanks for playing Trawel! Here's a few tips about learning how to play:");
-		extra.println("Stylized like the old days, you must enter all input through a command line.");
+		extra.println("Stylized like the old days, you may enter all input through a command line.");
 		extra.println("As you start your adventure, be on the lookout for better gear than you currently have.");
 		extra.println("There are three primary attack and defense types, sharp, blunt, and pierce.");
 		extra.println("Sharp is edged. Swords are good at it, and chainmail is good at defending from it.");

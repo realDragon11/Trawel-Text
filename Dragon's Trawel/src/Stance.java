@@ -100,7 +100,8 @@ public class Stance implements java.io.Serializable{
 
 	private ArrayList<Attack> randAtts(Person p, Person defender) {
 		ArrayList<Attack> a = new ArrayList<Attack>();
-		while (a.size() < p.attacksThisAttack()) {
+		int atts = p.attacksThisAttack();
+		while (a.size() < atts) {
 			int i = extra.randRange(0,attacks.size()-1);
 			boolean doIt = true;
 			Attack newAttack = attacks.get(i);
