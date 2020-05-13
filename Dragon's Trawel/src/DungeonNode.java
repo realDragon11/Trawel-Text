@@ -6,7 +6,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 	//potentail problem: all this code is in a highly duplicated node
 
 
-	private static final int EVENT_NUMBER =5;
+	private static final int EVENT_NUMBER =6;
 	private int state;
 	private int idNum;
 	
@@ -76,6 +76,10 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 		case 5: storage1 = extra.choose("chest"); name = (String) storage1; interactString = "open "+name;
 		storage2 = RaceFactory.makeMimic(level);
 		break;
+		case 6:
+			storage1 =  RaceFactory.makeStatue(level); name = ((Person)storage1).getBag().getRace().name + " statue";
+			interactString = "ERROR";
+			break;
 		}
 		if (size < 2 || parent.getShape() != Dungeon.Shape.STANDARD) {
 			return;
@@ -110,6 +114,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 		//case 4: extra.println("You traverse the ladder.");break;
 		case 4: return gateGuards();
 		case 5: mimic(); if (state == 0) {return true;};break;
+		case 6: statue(); if (state == 0) {return true;};break;
 		}
 		return false;
 	}
@@ -204,6 +209,23 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 	@Override
 	protected String shapeName() {
 		return parent.getShape().name();
+	}
+	
+	private void statue() {
+		if (state == 0) {
+			Networking.sendColor(Color.RED);
+			extra.println("The state springs to life and attacks you!");
+			Person p = (Person)storage1;
+				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
+				if (winner != p) {
+					state = 1;
+					storage1 = null;
+					name = "dead "+name + "statue";
+					interactString = "examine statue corpse";
+					forceGo = false;
+				}
+		}else {randomLists.deadPerson();}
+		
 	}
 
 

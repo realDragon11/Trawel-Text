@@ -436,4 +436,12 @@ public class RaceFactory {
 		extra.printMode = false;
 		return w;
 	}
+	
+	public static Person makeStatue(int level) {
+		extra.printMode = true;
+		Person w = new Person(level,true, Race.RaceType.HUMANOID,MaterialFactory.getMat("flesh"),Person.RaceFlag.CRACKS);
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
+		extra.printMode = false;
+		return w;
+	}
 }
