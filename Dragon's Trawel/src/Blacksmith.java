@@ -22,7 +22,7 @@ public class Blacksmith extends Feature {
 	@Override
 	public void go() {
 		Networking.setArea("shop");
-		Networking.sendStrong("Discord|imagesmall|icon|Blacksmith|");
+		Networking.sendStrong("Discord|imagesmall|blacksmith|Blacksmith|");
 		extra.println("You have " + Player.bag.getGold() + " gold.");
 		extra.println("1 forge item for store (" + tier*100 + " gold)");
 		extra.println("2 improve item up to " + Item.getModiferName(tier) +" quality");

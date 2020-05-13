@@ -17,7 +17,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 	@Override
 	public void go() {
 		Networking.setArea("mountain");
-		Networking.sendStrong("Discord|imagesmall|icon|Mountain|");
+		Networking.sendStrong("Discord|imagesmall|mountain|Mountain|");
 		extra.println("1 explore");
 		extra.println("2 exit");
 		int in =  extra.inInt(2);

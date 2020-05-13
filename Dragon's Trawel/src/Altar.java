@@ -10,7 +10,7 @@ public class Altar extends Feature{
 	}
 	@Override
 	public void go() {
-		Networking.sendStrong("Discord|imagesmall|icon|Altar|");
+		Networking.sendStrong("Discord|imagesmall|altar|Altar|");
 		Networking.setArea("mountain");
 		mainGame.story.altar();
 		while (true) {

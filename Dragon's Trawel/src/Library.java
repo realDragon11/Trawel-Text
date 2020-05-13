@@ -15,6 +15,7 @@ public class Library extends Feature {
 	@Override
 	public void go() {
 		Networking.setArea("shop");
+		Networking.sendStrong("Discord|imagesmall|library|Library|");
 		int i = 1;
 		for (Book b: books) {
 			extra.println(i +" " + b.name + " by " + b.author);

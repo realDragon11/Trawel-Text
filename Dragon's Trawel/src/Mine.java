@@ -23,7 +23,7 @@ public class Mine extends Feature {
 	@Override
 	public void go() {
 		Networking.setArea("mine");
-		Networking.sendStrong("Discord|imagesmall|icon|Mine|");
+		Networking.sendStrong("Discord|imagesmall|mine|Mine|");
 		start.go();
 	}
 

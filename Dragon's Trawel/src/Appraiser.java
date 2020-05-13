@@ -11,7 +11,7 @@ public class Appraiser extends Feature {
 	
 	@Override
 	public void go() {
-		Networking.sendStrong("Discord|imagesmall|icon|Appraiser|");
+		Networking.sendStrong("Discord|imagesmall|appraiser|Appraiser|");
 		Networking.setArea("shop");
 		int in = 0;
 		while (in != 7) {

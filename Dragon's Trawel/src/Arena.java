@@ -40,7 +40,7 @@ public class Arena extends Feature{
 			Player.bag.addGold(moneyEarned);
 			moneyEarned = 0;
 		}
-		Networking.sendStrong("Discord|imagesmall|icon|Arena|");
+		Networking.sendStrong("Discord|imagesmall|arena|Arena|");
 		getRematch();
 		extra.println("1 Participate in the " +  this.getTitle() + " tournament in " + extra.format(this.getTimeLeft()) + " hours.");
 		if (rematcher != null) {

@@ -12,6 +12,7 @@ public class Doctor extends Feature {
 	@Override
 	public void go() {
 		Networking.setArea("shop");
+		Networking.sendStrong("Discord|imagesmall|doctor|Doctor|");
 		int dcost = town.getTier()*5;
 		int cost = 50*town.getTier()+(town.getTier()*Player.player.getPerson().effectsSize()*30);
 		extra.println("gold: " +Player.bag.getGold());

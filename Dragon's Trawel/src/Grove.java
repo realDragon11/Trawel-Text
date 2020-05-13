@@ -16,7 +16,7 @@ public class Grove extends Feature {
 	@Override
 	public void go() {
 		Networking.setArea("forest");
-		Networking.sendStrong("Discord|imagesmall|icon|Grove|");
+		Networking.sendStrong("Discord|imagesmall|grove|Grove|");
 		start.go();
 	}
 

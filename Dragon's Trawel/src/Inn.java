@@ -37,7 +37,7 @@ public class Inn extends Feature implements java.io.Serializable{
 			moneyEarned = 0;
 		}
 		mainGame.story.inn();
-		Networking.sendStrong("Discord|imagesmall|icon|Inn|");
+		Networking.sendStrong("Discord|imagesmall|inn|Inn|");
 		while (true) {
 		getResidentName();
 		extra.println("1 leave");

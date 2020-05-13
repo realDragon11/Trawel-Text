@@ -15,6 +15,7 @@ public class Lot extends Feature {
 	@Override
 	public void go() {
 		Networking.setArea("shop");
+		Networking.sendStrong("Discord|imagesmall|lot|Lot|");
 		if (construct == null) {
 		int inncost = tier*600;
 		int arenacost = tier *400;
