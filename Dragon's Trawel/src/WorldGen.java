@@ -136,6 +136,24 @@ public class WorldGen {
 		revan.setHasTeleporters(true);
 		revan.addFeature(new Altar());
 		addConnection(revan,tanak,"teleport","the red ritual");
+		tanak.setGoPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("You return to the altar town.");
+				
+			}
+			
+		});
+		tanak.setFirstPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("The town of revan is clustered around a great altar, made to glorify it's nature.");
+				
+			}
+			
+		});
 		
 		
 		Town arona = new Town("arona",100,pocket,new Point(1,1));
