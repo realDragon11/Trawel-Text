@@ -45,16 +45,16 @@ public class GroveNode implements java.io.Serializable{
 	private void generate(int size) {
 		switch (idNum) {
 		case 0: name = ""; interactString = "";break;
-		case 1: name = extra.choose("fighter","duelist","warrior"); interactString = "challenge " + name;
+		case 1: name = randomLists.randomWarrior(); interactString = "challenge " + name;
 		storage1 = new Person(level);
 		break;
 		case 2: name = extra.choose("river","pond","lake","stream","brook"); interactString = "wash yourself";break;
-		case 3: name = extra.choose("mugger","robber","thug","bandit","marauder","outlaw","desperado","cutthroat"); interactString = "ERROR"; forceGo = true;
+		case 3: name = randomLists.randomMuggerName(); interactString = "ERROR"; forceGo = true;
 		storage1 = new Person(level);break;
-		case 4: name = "rotting body"; interactString = "loot corpse";break;
+		case 4: name = extra.choose("rotting","decaying") + " " + extra.choose("corpse","body"); interactString = "loot corpse";break;
 		case 5: name = "fairy circle"; interactString = "examine circle";break;
 		case 6: name = "fairy circle"; interactString = "examine circle";break;
-		case 7: name = "old " + extra.choose("fighter","duelist"); interactString = "approach " + name;
+		case 7: name = "old " + randomLists.randomWarrior(); interactString = "approach " + name;
 		storage1 = new Person(level+2);
 		break;
 		case 8: name = "fallen tree"; interactString = "examine fallen tree";break;
@@ -63,7 +63,7 @@ public class GroveNode implements java.io.Serializable{
 		storage2 = 0;
 		break;
 		case 10: name = "fallen tree";interactString = "examine fallen tree";break;
-		case 11: name = "mushroom";interactString = "approach mushroom";break;
+		case 11: name = randomLists.randomColor() + " mushroom";interactString = "approach mushroom";break;
 		case 12: name = "moss"; interactString = "approach moss"; state = extra.randRange(0,1);break;
 		case 13: name = "grey hole";interactString = "approach hole";break;
 		case 14:storage2 = new Person(level); ((Person)storage2).setRacism(true); storage1 = ((Person)storage2).getBag().getRace(); name = ((Race)storage1).name; interactString = "approach " + name; ;break;

@@ -76,4 +76,12 @@ public class randomLists {
 	public static String powerAdjective() {
 		return (String)extra.choose("",extra.choose("undoubtable","impossible","endless","incredible","soaring","infinite","amazing","implausible","miraculous","astonishing","astounding","awesome","extraordinary","wondrous","bewildering","supernatural","great","considerable","extreme","abundant","prodigious") + " ");
 	}
+
+	public static String randomWarrior() {
+		return extra.choose("fighter","duelist","warrior");
+	}
+
+	public static String randomMuggerName() {
+		return extra.choose("mugger","robber","thug","bandit","marauder","outlaw","desperado","cutthroat");
+	}
 }
