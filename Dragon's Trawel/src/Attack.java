@@ -98,18 +98,21 @@ public class Attack implements java.io.Serializable{
 				sharp = (int)((pow*.2)*100);
 				magicDesc = sharp +"% fire";
 				soundType = "fire";
+				this.wound = extra.randList(TargetFactory.fireWounds)
 				;break;
 			case 2:
 				name = extra.choose("shock","zap");
 				blunt = (int)(extra.hrandom()*mageLevel*5);
 				magicDesc = blunt + " shock";
 				soundType = "shock";
+				this.wound = extra.randList(TargetFactory.shockWounds);
 				;break;
 			case 3: 
 				name = extra.choose("cone of cold","freeze","permafrost","ray of frost");
 				pierce = (int)((pow)*100);
 				magicDesc = pierce +"% freeze";
 				soundType = "freeze";
+				this.wound = extra.randList(TargetFactory.freezeWounds);
 				;break;
 			}
 			desc = "X` casts "+name+" at Y`!";
@@ -302,7 +305,7 @@ public class Attack implements java.io.Serializable{
 		DICE("Dice","Your next attack will happen sooner","They are diced!"),
 		WINDED("Winded","Greatly delays the next attack","The wind is knocked out of them!"),
 		BLEED("Bleed","Causes them to take damage every attack they make.","They bleed..."),
-		DISARMED("Disarm","Removes one attack choice","Their attack is put off-kilter!"),
+		DISARMED("Disarm","Removes one attack choice.","Their attack is put off-kilter!"),
 		MAJOR_BLEED("Cut Artery","Causes them to take major damage every attack they make.","An artery is cut!"),
 		TRIPPED("Tripped","Greatly delays the next attack","They are tripped!"),
 		GRAZE("Grazed","No effect.","The blow's a graze..."),
@@ -311,7 +314,12 @@ public class Attack implements java.io.Serializable{
 		TAT("Punctured","Deals bonus damage.","The blow goes right through them!"),
 		I_BLEED("Internal Bleeding","Causes them to take damage every attack they make.","Their insides get crushed."),
 		CRUSHED("Crushed","Deals bonus damage through armor.","They are crushed!"),
-		ERROR("Error","error","ERROR"),;
+		ERROR("Error","error","ERROR"),
+		SCALDED("Scalded","Deals bonus damage through armor.","They are scalded by the flames!"),
+		SCREAMING("Screaming","Removes one attack choice.","They scream!"),
+		FROSTED("Scalded","Decreases their next attack's to-hit.","They are frozen over..."),
+		FROSTBITE("Frostbite","Deals bonus damage through armor.","Their flesh is frozen!"),
+		;
 		//done line
 		public String name, desc, active;
 		Wound(String iName,String iDesc,String activeDesc){

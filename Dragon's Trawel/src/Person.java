@@ -213,7 +213,7 @@ public class Person implements java.io.Serializable{
 			//extra.println(level + " " + xp + " " + x);
 			if (isPlayer() == false) {
 			intellect++;}else {
-				Networking.sendStrong("Leaderboard|Highest Level" + level+ "|");
+				Networking.sendStrong("Leaderboard|Highest Level|" + level+ "|");
 			}
 			maxHp+=50;
 			if (this.getBag().getRace().racialType != Race.RaceType.BEAST) {
@@ -666,7 +666,7 @@ public class Person implements java.io.Serializable{
 		case HAMSTRUNG:
 			this.advanceTime(-8);
 			break;
-		case DIZZY:
+		case DIZZY: case FROSTED:
 			this.attackNext.blind(.75);
 			break;	
 		case WINDED:
@@ -678,7 +678,7 @@ public class Person implements java.io.Serializable{
 		case BLEED:
 			this.addEffect(Effect.BLEED);
 			break;
-		case DISARMED:
+		case DISARMED: case SCREAMING:
 			this.addEffect(Effect.DISARMED);
 			break;
 		case TRIPPED:

@@ -445,6 +445,9 @@ public class Combat {
 		case CRUSHED:
 			defender2.takeDamage((int)attacker2.getNextAttack().getTotalDam()/10);
 			break;
+		case SCALDED: case FROSTBITE:
+			defender2.takeDamage(attacker2.getMageLevel());
+			break;
 		}}
 	}
 
@@ -452,6 +455,7 @@ public class Combat {
 	private void handleMagicSpell(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
 		extra.println(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
 		if  (att.getSkill() == Skill.ELEMENTAL_MAGE) {
+			defender.inflictWound(att.getWound());
 		def.burn(def.getFire(att.getSlot())*(att.getSharp()/100),att.getSlot());
 		
 		defender.advanceTime(-((att.getPierce()/100)*defender.getTime()*def.getFreeze(att.getSlot())));

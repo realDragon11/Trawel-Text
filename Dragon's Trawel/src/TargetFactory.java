@@ -4,7 +4,19 @@ public class TargetFactory {
 
 	public static ArrayList<Target> targetList = new ArrayList<Target>();
 	public static Target noTarget;
+	public static ArrayList<Attack.Wound> fireWounds = new ArrayList<Attack.Wound>();
+	public static ArrayList<Attack.Wound> shockWounds = new ArrayList<Attack.Wound>();
+	public static ArrayList<Attack.Wound> freezeWounds = new ArrayList<Attack.Wound>();
 	public TargetFactory() {
+		
+		
+		fireWounds.add(Attack.Wound.SCALDED);
+		fireWounds.add(Attack.Wound.SCREAMING);
+		
+		shockWounds.add(Attack.Wound.SCREAMING);
+		
+		freezeWounds.add(Attack.Wound.FROSTED);
+		freezeWounds.add(Attack.Wound.FROSTBITE);
 		
 		Target t = new Target();
 		t.name = "head";
