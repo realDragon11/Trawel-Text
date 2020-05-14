@@ -20,6 +20,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 	public DungeonNode(int size, int tier, Town t,Dungeon p,boolean stair) {
 		state = 0;
 		parent = p;
+		parentName = "dungeon";
 		
 		idNum = extra.randRange(1,EVENT_NUMBER);
 		if (extra.chanceIn(1,2)) {

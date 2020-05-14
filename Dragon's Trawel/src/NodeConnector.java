@@ -14,6 +14,7 @@ public abstract class NodeConnector implements Serializable {
 	public boolean isSummit;
 	public int floor = 0;
 	public boolean isStair = false;
+	public String parentName;
 	
 	public ArrayList<NodeConnector> getConnects() {
 		return connects;
@@ -80,7 +81,7 @@ public abstract class NodeConnector implements Serializable {
 			}
 			i++;
 			}
-		extra.println(i + " exit dungeon");i++;
+		extra.println(i + " exit " + parentName);i++;
 		int j = 1;
 		int in = extra.inInt(i-1);
 		if (in == j) {

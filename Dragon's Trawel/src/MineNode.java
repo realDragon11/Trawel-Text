@@ -17,6 +17,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 	public MineNode(int size, int tier,Mine p) {
 		parent = p;
 		state = 0;
+		parentName = "mine";
 		idNum = extra.randRange(1,EVENT_NUMBER);
 		if (extra.chanceIn(1, 5)) {
 			idNum = 3;//gold7
