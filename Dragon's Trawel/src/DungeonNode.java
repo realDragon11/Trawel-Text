@@ -140,6 +140,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 				extra.println("You decide not to open it.");
 			}
 			}else {extra.println("The "+storage1+" has already been opened.");}
+		Networking.clearSide(1);
 		
 	}
 	
@@ -246,7 +247,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 					forceGo = false;
 				
 		}else {extra.println("You already looted this statue!");}
-		
+		Networking.clearSide(1);
 	}
 
 
