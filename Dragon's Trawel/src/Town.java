@@ -285,7 +285,17 @@ public class Town implements java.io.Serializable{
 		
 		switch (extra.inInt(9)) {
 		case 1:Player.player.getPerson().displayStats();break;
-		case 2:Player.player.getPerson().getBag().display(1);break;
+		case 2:
+			extra.println("1 View in More Depth");
+			extra.println("2 Drawbanes");
+			extra.println("3 back");
+			switch (extra.inInt(3)){
+				case 1: Player.player.getPerson().getBag().display(1);break;
+				case 2: Player.player.getPerson().getBag().discardDrawBanes();break;
+			}
+			
+			
+			break;
 		case 3:Player.player.displayTitles();break;
 		case 4:Player.showMap1();break;
 		case 5: Player.player.getPerson().playerLevelUp();break;
@@ -490,6 +500,8 @@ public class Town implements java.io.Serializable{
 	
 	public void wander() {
 		if (mainGame.bumpEnabled == true) {
+			Networking.setArea("forest");
+			Networking.sendStrong("Discord|imagesmall|grove|Grove|");
 			Bumper.go(tier);
 		}
 	}

@@ -422,6 +422,9 @@ public class RaceFactory {
 		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
 		w.getBag().swapRace(RaceFactory.getRace("wolf"));
+		if (extra.chanceIn(1,5)) {
+			w.getBag().getDrawBanes().add(DrawBane.MEAT);
+		}
 		extra.printMode = false;
 		return w;
 	}
@@ -441,6 +444,9 @@ public class RaceFactory {
 		extra.printMode = true;
 		Person w = new Person(level,true, Race.RaceType.HUMANOID,MaterialFactory.getMat("flesh"),Person.RaceFlag.CRACKS);
 		//w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
+		if (extra.chanceIn(1,2)) {
+			w.getBag().getDrawBanes().add(DrawBane.CEON_STONE);
+		}
 		extra.printMode = false;
 		w.targetOverride = TargetFactory.TargetType.STATUE;
 		return w;
