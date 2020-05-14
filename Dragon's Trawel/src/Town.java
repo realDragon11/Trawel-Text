@@ -322,8 +322,12 @@ public class Town implements java.io.Serializable{
 			if (i == j) {
 			//extra.print(i + " ");
 			Town t = c.otherTown(this);
+			extra.println("You start to travel to " + t.getName());
+			if (extra.chanceIn(1,20)) {
+				wander();
+			}
 			Player.addTime(c.getTime());
-			extra.println("You travel to " + t.getName());
+			extra.println("You arrive in " + t.getName());
 			Player.player.setLocation(t);
 			return;}
 			i++;
@@ -486,9 +490,7 @@ public class Town implements java.io.Serializable{
 	
 	public void wander() {
 		if (mainGame.bumpEnabled == true) {
-			
-		}else {
-			extra.println("Nothing happens.");
+			Bumper.go();
 		}
 	}
 }
