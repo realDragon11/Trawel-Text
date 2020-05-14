@@ -226,7 +226,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 				if (winner != p) {
 					state = 1;
 					storage1 = null;
-					name = "dead "+name + "statue";
+					name = "destroyed "+name;
 					interactString = "examine statue corpse";
 					forceGo = false;
 				}

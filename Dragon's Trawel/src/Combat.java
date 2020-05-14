@@ -453,6 +453,7 @@ public class Combat {
 
 
 	private void handleMagicSpell(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
+		Networking.sendColor(Color.ORANGE);
 		extra.println(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
 		if  (att.getSkill() == Skill.ELEMENTAL_MAGE) {
 			defender.inflictWound(att.getWound());
