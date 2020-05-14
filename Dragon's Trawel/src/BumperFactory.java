@@ -28,6 +28,7 @@ public class BumperFactory {
 				
 			}};
 		b.responses.add(new Response(DrawBane.MEAT,5));
+		b.responses.add(new Response(DrawBane.NOTHING,2));
 		bumperList.add(b);
 		
 		 b = new Bumper() {
@@ -41,8 +42,8 @@ public class BumperFactory {
 					mainGame.CombatTwo(Player.player.getPerson(),p);
 					
 				}};
-			b.responses.add(new Response(DrawBane.MEAT,6));
-			b.responses.add(new Response(DrawBane.CEON_STONE,1));
+			b.responses.add(new Response(DrawBane.MEAT,3));
+			b.responses.add(new Response(DrawBane.CEON_STONE,3));
 			bumperList.add(b);
 	}
 }

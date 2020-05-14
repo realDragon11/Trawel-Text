@@ -475,7 +475,7 @@ public class TargetFactory {
 	}
 	
 	public enum TargetType{
-		HUMANOID, MIMIC, OPEN_MIMIC, NONE,QUAD, STATUE;
+		HUMANOID, MIMIC, OPEN_MIMIC, NONE,QUAD, STATUE, S_REAVER, C_REAVER;
 	}
 	
 	public static Target randTarget(TargetType targetType) {

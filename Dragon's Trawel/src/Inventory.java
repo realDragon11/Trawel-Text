@@ -558,9 +558,12 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	public void displayDrawBanes() {
+		while (dbs.size() < 3) {
+			dbs.add(DrawBane.NOTHING);
+		}
 		int i = 1;
 		for (DrawBane b: dbs) {
-			extra.println(i + b.getName() + ": " + b.getFlavor());
+			extra.println(i + " " + b.getName() + ": " + b.getFlavor());
 			i++;
 		}
 		

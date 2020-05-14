@@ -123,6 +123,7 @@ public class Dungeon extends Feature {
 			BossNode b =new BossNode(stair.getLevel(),boss);
 			b.getConnects().add(stair);
 			b.floor = floor +=10;
+			b.parentName = "dungeon";
 			stair.reverseConnections();
 			stair.getConnects().add(b);
 			stair.reverseConnections();

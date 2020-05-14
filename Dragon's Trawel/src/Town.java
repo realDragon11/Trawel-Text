@@ -322,7 +322,7 @@ public class Town implements java.io.Serializable{
 			c.display(1,this);
 			i++;}
 		}
-		extra.println(i + "wander around");
+		extra.println(i + " wander around");
 		i++;
 		extra.println(i + " exit");i++;
 		int j = extra.inInt(i-1);
@@ -343,8 +343,9 @@ public class Town implements java.io.Serializable{
 			i++;
 			}
 		}
-		if (i == j-1) {
+		if (i == j) {
 			wander();
+			return;
 		}
 		i++;
 		if (i == j) {

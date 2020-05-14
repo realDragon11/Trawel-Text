@@ -374,6 +374,47 @@ public class RaceFactory {
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.MIMIC;
 		raceList.add(misc);
+		
+		
+		misc = new Race();
+		misc.name = "standing-reaver";
+		misc.namePlural = "standing reavers";
+		misc.swears.add("box");
+		misc.aimMod = 1;
+		misc.damMod = 1;
+		misc.dodgeMod = .8;
+		misc.hpMod = 1.2;
+		misc.speedMod = 1.1;
+		misc.tradeMod = 1;
+		misc.rarity = 1;
+		misc.insultList.add("Die, box!");
+		misc.baseMap = "";
+		misc.raceMaps.add("0");
+		misc.magicPower = 0;
+		misc.defPower = 0;
+		misc.racialType = Race.RaceType.BEAST;
+		misc.targetType = TargetFactory.TargetType.S_REAVER;
+		raceList.add(misc);
+		
+		misc = new Race();
+		misc.name = "crouching-reaver";
+		misc.namePlural = "crouching reavers";
+		misc.swears.add("box");
+		misc.aimMod = 1.3;
+		misc.damMod = 1.1;
+		misc.dodgeMod = .5;
+		misc.hpMod = 1.2;
+		misc.speedMod = 1;
+		misc.tradeMod = 1;
+		misc.rarity = 1;
+		misc.insultList.add("Die, box!");
+		misc.baseMap = "";
+		misc.raceMaps.add("0");
+		misc.magicPower = 0;
+		misc.defPower = 0;
+		misc.racialType = Race.RaceType.BEAST;
+		misc.targetType = TargetFactory.TargetType.C_REAVER;
+		raceList.add(misc);
 	}
 	
 	public static Race randRace(Race.RaceType type) {
@@ -457,7 +498,7 @@ public class RaceFactory {
 		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"standing reaver"));
 		w.backupWeapon = new Weapon(level,MaterialFactory.getMat("bone"),"crouching reaver");
-		w.getBag().swapRace(RaceFactory.getRace("standing reaver"));
+		w.getBag().swapRace(RaceFactory.getRace("standing-reaver"));
 		w.addSkill(Skill.FELL_REAVER);
 		extra.printMode = false;
 		return w;

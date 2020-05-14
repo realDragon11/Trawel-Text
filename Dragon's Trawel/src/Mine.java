@@ -52,6 +52,7 @@ public class Mine extends Feature {
 			BossNode b = new BossNode(town.getTier()+5,1);
 			lastNode.getConnects().add(b);
 			b.getConnects().add(lastNode);
+			b.parentName = "hell";
 			lastNode.reverseConnections();
 			break;
 		}
