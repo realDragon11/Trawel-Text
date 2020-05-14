@@ -503,4 +503,12 @@ public class RaceFactory {
 		extra.printMode = false;
 		return w;
 	}
+
+	public static Person getShaman(int level) {
+		extra.printMode = true;
+		Person w = new Person(level);
+		w.getBag().getDrawBanes().add(DrawBane.PROTECTIVE_WARD);
+		extra.printMode = false;
+		return w;
+	}
 }

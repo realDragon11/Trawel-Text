@@ -5,7 +5,8 @@ public enum DrawBane {
 	SILVER("silver","A shiny metal."),
 	MEAT("meat","A cut of meat."),
 	CEON_STONE("eon stone","A cracked stone with infinite choices."),
-	NOTHING("nothing","A void.");
+	NOTHING("nothing","A void."),
+	PROTECTIVE_WARD("protective ward","Used to repel monsters.");
 	private String name, flavorText;
 	DrawBane(String name, String flavorText) {
 		this.name = name;

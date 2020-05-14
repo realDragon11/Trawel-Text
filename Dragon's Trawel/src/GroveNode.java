@@ -5,7 +5,7 @@ public class GroveNode implements java.io.Serializable{
 	//potentail problem: all this code is in a highly duplicated node
 
 	private String name;
-	private static final int EVENT_NUMBER = 18;
+	private static final int EVENT_NUMBER = 19;
 	private int state;
 	private String interactString;
 	private int idNum;
@@ -82,6 +82,10 @@ public class GroveNode implements java.io.Serializable{
 		forceGo = true;
 		state = 0;
 		;break;
+		case 19:
+		name = extra.choose("shaman"); interactString = "approach the shaman"; forceGo = false;
+		storage1 = RaceFactory.getShaman(level);
+		storage2 = storage1;break;
 		}
 		//TODO: add lumberjacks and tending to tree
 		if (size < 2) {
@@ -123,6 +127,7 @@ public class GroveNode implements java.io.Serializable{
 		case 16: weapStone();break;
 		case 17: equal1();break;
 		case 18: return packOfWolves();
+		case 19: shaman();break;
 		}
 		Networking.clearSide(1);
 		return false;

@@ -333,8 +333,8 @@ public class Town implements java.io.Serializable{
 			//extra.print(i + " ");
 			Town t = c.otherTown(this);
 			extra.println("You start to travel to " + t.getName());
-			if (extra.chanceIn(1,20)) {
-				wander();
+			if (extra.chanceIn(2,3+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
+				wander(20);
 			}
 			Player.addTime(c.getTime());
 			extra.println("You arrive in " + t.getName());
@@ -344,7 +344,9 @@ public class Town implements java.io.Serializable{
 			}
 		}
 		if (i == j) {
-			wander();
+			if (wander(2)) {
+				extra.println("Nothing interesting happens.");
+			}
 			return;
 		}
 		i++;
@@ -499,11 +501,12 @@ public class Town implements java.io.Serializable{
 		this.addList.add(f);
 	}
 	
-	public void wander() {
+	public boolean wander(double threshold) {
 		if (mainGame.bumpEnabled == true) {
 			Networking.setArea("forest");
 			Networking.sendStrong("Discord|imagesmall|grove|Grove|");
-			Bumper.go(tier);
+			return Bumper.go(threshold,tier);
 		}
+		return false;
 	}
 }
