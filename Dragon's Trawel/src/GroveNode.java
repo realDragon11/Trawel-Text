@@ -810,7 +810,8 @@ public class GroveNode implements java.io.Serializable{
 			while (bool2) {
 			extra.println("They say that they are a shaman.");
 			int cost = level*50;
-			extra.println("Buy cleansing ("+cost + " gold)");
+			extra.println("1 Buy cleansing ("+cost + " gold)");
+			extra.println("2 chat");
 			extra.println("3 return");
 			
 			switch (extra.inInt(3)) {

@@ -594,11 +594,16 @@ public class Inventory implements java.io.Serializable{
 			}
 			break;
 		}
+		
+		while (dbs.size() < 3) {
+			dbs.add(DrawBane.NOTHING);
+		}
 		for (DrawBane db: dbs) {
 			if (db.equals(d)) {
 				i++;
 			}
 		}
+		//TODO: make ai nothings different
 		return i;
 		
 	}
