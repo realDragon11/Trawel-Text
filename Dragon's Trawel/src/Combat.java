@@ -65,6 +65,24 @@ public class Combat {
 		}
 		while(manOne.isAlive() && manTwo.isAlive());
 		
+		if (manOne.isAlive()) {
+			if (manTwo.isAlive()) {
+				//no
+			}else {
+				attacker = manOne;
+				defender = manTwo;
+			}
+		}else {
+			if (manTwo.isAlive()) {
+				attacker = manTwo;
+				defender = manOne;
+			}else {
+				//both dead, manOne wins be default
+				attacker = manOne;
+				defender = manTwo;
+			}
+		}
+		
 		extra.println(extra.choose("The dust settles...","The body drops to the floor.","Death has come.","The battle is over."));
 		extra.println(defender.getName() + extra.choose(" lies dead..."," walks the earth no more..."," has been slain."));
 		song.addKill(attacker,defender);

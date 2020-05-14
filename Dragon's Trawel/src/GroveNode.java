@@ -51,7 +51,7 @@ public class GroveNode implements java.io.Serializable{
 		case 2: name = extra.choose("river","pond","lake","stream","brook"); interactString = "wash yourself";break;
 		case 3: name = randomLists.randomMuggerName(); interactString = "ERROR"; forceGo = true;
 		storage1 = new Person(level);break;
-		case 4: name = extra.choose("rotting","decaying") + " " + (extra.chanceIn(1, 3) ? RaceFactory.randRace(Race.RaceType.HUMANOID).name : "") + extra.choose("corpse","body"); interactString = "loot corpse";break;
+		case 4: name = extra.choose("rotting","decaying") + " " +RaceFactory.randRace(Race.RaceType.HUMANOID).name +" " + extra.choose("corpse","body"); interactString = "loot corpse";break;
 		case 5: name = "fairy circle"; interactString = "examine circle";break;
 		case 6: name = "fairy circle"; interactString = "examine circle";break;
 		case 7: name = "old " + randomLists.randomWarrior(); interactString = "approach " + name;
