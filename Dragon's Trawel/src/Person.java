@@ -32,6 +32,8 @@ public class Person implements java.io.Serializable{
 
 	public TargetFactory.TargetType targetOverride = null;
 	
+	public Weapon backupWeapon = null;
+	
 	public enum RaceFlag {
 		NONE, CRACKS;
 	}

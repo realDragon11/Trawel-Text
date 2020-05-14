@@ -433,6 +433,18 @@ public class Combat {
 				defender.getBag().graphicalDisplay(1,defender);
 			}
 		}
+		if (defender.hasSkill(Skill.FELL_REAVER)) {
+			defender.backupWeapon = defender.getBag().swapWeapon(defender.backupWeapon);
+			switch (defender.getBag().getRace().name) {
+			case "standing reaver":
+				defender.getBag().swapRace(RaceFactory.getRace("crouched reaver"));
+				
+				break;
+			case "crouched reaver":
+				defender.getBag().swapRace(RaceFactory.getRace("standing reaver"));
+				break;
+			}
+		}
 		//TODO: bleedout death quotes
 		if (attacker.hasEffect(Effect.I_BLEED)) {
 			attacker.takeDamage(1);

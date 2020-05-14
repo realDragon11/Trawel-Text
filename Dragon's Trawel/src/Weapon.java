@@ -153,6 +153,21 @@ public class Weapon extends Item {
 			martialStance.addAttack(new Attack("tear",1.4,140.0,20*sharpMult,0*bluntMult,20*pierceMult,"X` tears into Y`'s flesh with their teeth!",1,"pierce"));
 			martialStance.addAttack(new Attack("rip",.6,120.0,30*sharpMult,0*bluntMult,30*pierceMult,"X` rips up Y`'s flesh with their teeth!",0,"pierce"));
 			;break;
+		case "standing reaver":
+			cost *= 1;
+			weight *=3;	
+			martialStance.addAttack(new Attack("kick",1,100.0,1*sharpMult,35*bluntMult,0*pierceMult,"X` kicks at Y`!",2,"blunt"));
+			martialStance.addAttack(new Attack("kick",1,100.0,1*sharpMult,35*bluntMult,0*pierceMult,"X` kicks at Y`!",2,"blunt"));
+			martialStance.addAttack(new Attack("kick",1,100.0,1*sharpMult,35*bluntMult,0*pierceMult,"X` kicks at Y`!",2,"blunt"));
+			;break;
+		case "crouching reaver":
+			cost *= 1;
+			weight *=3;	
+			martialStance.addAttack(new Attack("kick",1,100.0,1*sharpMult,35*bluntMult,0*pierceMult,"X` kicks at Y`!",2,"blunt"));
+			martialStance.addAttack(new Attack("bite",1,100.0,5*sharpMult,0*bluntMult,35*pierceMult,"X` bites at Y` with their teeth!",2,"pierce"));
+			martialStance.addAttack(new Attack("tear",1.4,140.0,20*sharpMult,0*bluntMult,20*pierceMult,"X` tears into Y`'s flesh with their claws!",1,"pierce"));
+			martialStance.addAttack(new Attack("rip",.6,120.0,30*sharpMult,0*bluntMult,30*pierceMult,"X` rips up Y`'s flesh with their claws!",0,"pierce"));
+			;break;
 		/*
 		case "wand":
 		cost *= 2;

@@ -451,4 +451,15 @@ public class RaceFactory {
 		w.targetOverride = TargetFactory.TargetType.STATUE;
 		return w;
 	}
+	
+	public static Person makeFellReaver(int level) {
+		extra.printMode = true;
+		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE);
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"standing reaver"));
+		w.backupWeapon = new Weapon(level,MaterialFactory.getMat("bone"),"crouching reaver");
+		w.getBag().swapRace(RaceFactory.getRace("standing reaver"));
+		w.addSkill(Skill.FELL_REAVER);
+		extra.printMode = false;
+		return w;
+	}
 }

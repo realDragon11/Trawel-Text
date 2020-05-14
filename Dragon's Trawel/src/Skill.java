@@ -78,6 +78,7 @@ public enum Skill implements java.io.Serializable{
 		IDEF_TRAINING("Defensive Training","Hone your defensive skills.",true,Type.DEFENDER,6,""),
 		
 		MIMIC_CHEST("False Appearance: Chest","",false,Type.FEATURE,0,""),
+		FELL_REAVER("Astounding Height","",false,Type.FEATURE,0,""),
 		
 		ENDSKILL("","",false,Type.FIGHTER,0,"");
 	    private String name,desc, longDesc;
