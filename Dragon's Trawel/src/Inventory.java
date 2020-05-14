@@ -1,4 +1,4 @@
-
+import java.util.ArrayList;
 
 /**
  * 
@@ -17,6 +17,7 @@ public class Inventory implements java.io.Serializable{
 	private Weapon hand;
 	private Race race;
 	private String raceMap;
+	private ArrayList<DrawBane> dbs = new ArrayList<DrawBane>();
 	
 	//constructors
 	/**
@@ -538,6 +539,65 @@ public class Inventory implements java.io.Serializable{
 		}else {
 			return "chain";
 		}
+	}
+	
+	public ArrayList<DrawBane> getDrawBanes() {
+		return dbs;
+	}
+	
+	public void addNewDrawBane(DrawBane d) {
+		extra.println("You found - " + d.getName() + ": " + d.getFlavor());
+		this.displayDrawBanes();
+		extra.println("4 discard.");
+		int in = extra.inInt(4);
+		if (in == 4) {
+			return;
+		}
+		dbs.remove(in-1);
+		dbs.add(d);
+	}
+	
+	public void displayDrawBanes() {
+		int i = 1;
+		for (DrawBane b: dbs) {
+			extra.println(i + b.getName() + ": " + b.getFlavor());
+			i++;
+		}
+		
+	}
+	
+	public void discardDrawBanes() {
+		this.displayDrawBanes();
+		extra.println("4 keep");
+		int in = extra.inInt(4);
+		if (in == 4) {
+			return;
+		}
+		dbs.remove(in-1);
+	}
+
+
+	public int calculateDrawBaneFor(DrawBane d) {
+		int i = 0;
+		switch (d) {
+		case SILVER:
+			for (Armor a: armorSlots) {
+				if (a.getMaterial().equals("silver")) {
+					i++;
+				}
+			}
+			if (hand.getMaterial().equals("silver")) {
+				i++;
+			}
+			break;
+		}
+		for (DrawBane db: dbs) {
+			if (db.equals(d)) {
+				i++;
+			}
+		}
+		return i;
+		
 	}
 
 }
