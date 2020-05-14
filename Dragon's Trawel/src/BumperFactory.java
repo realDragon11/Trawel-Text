@@ -28,7 +28,7 @@ public class BumperFactory {
 				
 			}};
 		b.responses.add(new Response(DrawBane.MEAT,5));
-		b.responses.add(new Response(DrawBane.NOTHING,2));
+		b.responses.add(new Response(DrawBane.NOTHING,.5));
 		bumperList.add(b);
 		
 		 b = new Bumper() {

@@ -218,7 +218,13 @@ public class mainGame {
 				
 				if (!second_man.isPlayer() && first_man.getBag().getRace().racialType == Race.RaceType.HUMANOID && second_man.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 					extra.println(first_man.getName() +" goes to loot " + second_man.getName() +".");
-				AIClass.loot(second_man.getBag(),first_man.getBag(),first_man.getIntellect(),true);}
+				AIClass.loot(second_man.getBag(),first_man.getBag(),first_man.getIntellect(),true);}else {
+					if (first_man.isPlayer()) {
+						for (DrawBane db: second_man.getBag().getDrawBanes()) {
+							first_man.getBag().addNewDrawBane(db);
+						}
+					}
+				}
 				
 				first_man.addXp(second_man.getLevel());
 				
@@ -288,7 +294,13 @@ public class mainGame {
 				surv.clearBattleEffects();
 				surv.addXp(Math.min(surv.getLevel(),battle.killed.get(0).getLevel()));
 				for (Person kill: battle.killed) {
-					if (kill.isPlayer() || surv.getBag().getRace().racialType != Race.RaceType.HUMANOID || kill.getBag().getRace().racialType != Race.RaceType.HUMANOID) {continue;}else {
+					if (kill.isPlayer() || surv.getBag().getRace().racialType != Race.RaceType.HUMANOID || kill.getBag().getRace().racialType != Race.RaceType.HUMANOID) {
+						if (surv.isPlayer()) {
+							for (DrawBane db: kill.getBag().getDrawBanes()) {
+								surv.getBag().addNewDrawBane(db);
+							}
+						}
+						continue;}else {
 					AIClass.loot(kill.getBag(),surv.getBag(),surv.getIntellect(),false);}
 				}
 			}

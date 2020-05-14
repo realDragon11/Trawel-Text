@@ -344,7 +344,7 @@ public class Town implements java.io.Serializable{
 			}
 		}
 		if (i == j) {
-			if (wander(.5)) {
+			if (!wander(.5)) {
 				extra.println("Nothing interesting happens.");
 			}
 			return;
