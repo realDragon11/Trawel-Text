@@ -387,7 +387,7 @@ public class RaceFactory {
 		misc.speedMod = 1.1;
 		misc.tradeMod = 1;
 		misc.rarity = 1;
-		misc.insultList.add("Die, box!");
+		misc.insultList.add("Die, you scum!");
 		misc.baseMap = "";
 		misc.raceMaps.add("0");
 		misc.magicPower = 0;
@@ -407,7 +407,7 @@ public class RaceFactory {
 		misc.speedMod = 1;
 		misc.tradeMod = 1;
 		misc.rarity = 1;
-		misc.insultList.add("Die, box!");
+		misc.insultList.add("Die, you scum!");
 		misc.baseMap = "";
 		misc.raceMaps.add("0");
 		misc.magicPower = 0;
