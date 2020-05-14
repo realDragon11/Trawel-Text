@@ -415,6 +415,26 @@ public class RaceFactory {
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.C_REAVER;
 		raceList.add(misc);
+		
+		misc = new Race();
+		misc.name = "hiding-mimic";
+		misc.namePlural = "hiding mimics";
+		misc.swears.add("box");
+		misc.aimMod = 1;
+		misc.damMod = .9;
+		misc.dodgeMod = .4;
+		misc.hpMod = 2;
+		misc.speedMod = .9;
+		misc.tradeMod = 1;
+		misc.rarity = 1;
+		misc.insultList.add("Die, tree!");
+		misc.baseMap = "ent";
+		misc.raceMaps.add("0");
+		misc.magicPower = 0;
+		misc.defPower = 0;
+		misc.racialType = Race.RaceType.BEAST;
+		misc.targetType = TargetFactory.TargetType.STATUE;
+		raceList.add(misc);
 	}
 	
 	public static Race randRace(Race.RaceType type) {
@@ -508,6 +528,15 @@ public class RaceFactory {
 		extra.printMode = true;
 		Person w = new Person(level);
 		w.getBag().getDrawBanes().add(DrawBane.PROTECTIVE_WARD);
+		extra.printMode = false;
+		return w;
+	}
+	public static Person makeEnt(int level) {
+		extra.printMode = true;
+		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("wood"),Person.RaceFlag.NONE);
+		//w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
+		w.getBag().getDrawBanes().add(DrawBane.ENT_CORE);
+		w.getBag().swapRace(RaceFactory.getRace("ent"));
 		extra.printMode = false;
 		return w;
 	}

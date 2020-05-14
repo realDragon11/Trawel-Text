@@ -370,6 +370,8 @@ public class Forest extends Feature implements java.io.Serializable{
 		}*/
 			Person robber = new Person(tier);
 			robber.getBag().graphicalDisplay(1, robber);
+			if (extra.chanceIn(1, 3)) {
+			robber.getBag().getDrawBanes().add(DrawBane.ENT_CORE);}
 		
 			Networking.sendColor(Color.RED);
 		if (extra.yesNo()) {

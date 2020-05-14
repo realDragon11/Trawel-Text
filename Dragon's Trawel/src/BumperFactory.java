@@ -31,19 +31,32 @@ public class BumperFactory {
 		b.responses.add(new Response(DrawBane.NOTHING,.5));
 		bumperList.add(b);
 		
-		 b = new Bumper() {
+	 b = new Bumper() {
+			
+			@Override
+			public void activate(int level) {
+				Person p = RaceFactory.makeFellReaver(level);
 				
-				@Override
-				public void activate(int level) {
-					Person p = RaceFactory.makeFellReaver(level);
-					
-					Networking.sendColor(Color.RED);
-					extra.println("A fell reaver appears!");
-					mainGame.CombatTwo(Player.player.getPerson(),p);
-					
-				}};
-			b.responses.add(new Response(DrawBane.MEAT,3));
-			b.responses.add(new Response(DrawBane.CEON_STONE,3));
-			bumperList.add(b);
+				Networking.sendColor(Color.RED);
+				extra.println("A fell reaver appears!");
+				mainGame.CombatTwo(Player.player.getPerson(),p);
+				
+			}};
+		b.responses.add(new Response(DrawBane.MEAT,3));
+		b.responses.add(new Response(DrawBane.CEON_STONE,3));
+		bumperList.add(b);
+	 b = new Bumper() {
+			
+			@Override
+			public void activate(int level) {
+				Person p = RaceFactory.makeEnt(level);
+				
+				Networking.sendColor(Color.RED);
+				extra.println("An ent appears!");
+				mainGame.CombatTwo(Player.player.getPerson(),p);
+				
+			}};
+		b.responses.add(new Response(DrawBane.ENT_CORE,5));
+		bumperList.add(b);
 	}
 }
