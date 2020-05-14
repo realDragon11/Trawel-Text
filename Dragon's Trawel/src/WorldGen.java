@@ -47,6 +47,22 @@ public class WorldGen {
 		unun.addTravel();
 		unun.addTravel();
 		unun.addFeature(new Dungeon("tower of fate",unun,Dungeon.Shape.TOWER,0));
+		unun.setGoPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("You return to unun, and the tower of fate.");
+			}
+			
+		});
+		unun.setFirstPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("The port city of unun is dominated by a large tower- the tower of fate. It's an ancient dungeon home to the fatespinner. Below, on the ground, a prominent inn stands.");
+			}
+			
+		});
 		
 		Town tevar = new Town("tevar",2,rona,new Point(4,5));
 		tevar.addFeature(new Store(2));
@@ -55,6 +71,22 @@ public class WorldGen {
 		addConnection(tevar,unun,"road","blue road");
 		tevar.addFeature(new Forest("the black forest",2));
 		tevar.addFeature(new Mine("tevar mine",tevar,null,Mine.Shape.STANDARD));
+		tevar.setGoPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("You return to the mining town of tevar.");
+			}
+			
+		});
+		tevar.setFirstPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("Tevar has the most important mine on this island.");
+			}
+			
+		});
 		
 		
 		Town hemo = new Town("hemo",2,rona,new Point(5,7));
@@ -196,6 +228,24 @@ public class WorldGen {
 		erin.addFeature(new Library("erin library",erin));
 		erin.addFeature(new Mountain("the white mountain",5));
 		erin.addFeature(new Appraiser("erin appraiser"));
+		erin.setGoPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("You return to erin.");
+				
+			}
+			
+		});
+		erin.setFirstPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("Erin has the largest library in the world, and scholars from all over gather in it to debate the newest theories.");
+				
+			}
+			
+		});
 		
 		
 		Town placka = new Town("placka",6,teran,new Point(13,3));
