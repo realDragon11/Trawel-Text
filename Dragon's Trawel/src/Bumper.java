@@ -58,6 +58,21 @@ public abstract class Bumper {
 				}};
 			b.responses.add(new Response(DrawBane.MEAT,5));
 			bumperList.add(b);
+			
+			 b = new Bumper() {
+					
+					@Override
+					public void activate(int level) {
+						Person p = RaceFactory.makeFellReaver(level);
+						
+						Networking.sendColor(Color.RED);
+						extra.println("A fell reaver appears!");
+						mainGame.CombatTwo(Player.player.getPerson(),p);
+						
+					}};
+				b.responses.add(new Response(DrawBane.MEAT,6));
+				b.responses.add(new Response(DrawBane.CEON_STONE,1));
+				bumperList.add(b);
 		}
 	}
 
