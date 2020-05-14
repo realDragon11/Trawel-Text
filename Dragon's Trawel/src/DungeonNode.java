@@ -245,7 +245,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 					interactString = "loot statue";
 					forceGo = false;
 				
-		}else {randomLists.deadPerson();}
+		}else {extra.println("You already looted this statue!");}
 		
 	}
 

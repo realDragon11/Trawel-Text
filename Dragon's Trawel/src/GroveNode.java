@@ -316,7 +316,7 @@ public class GroveNode implements java.io.Serializable{
 				if (Math.random() < .3) {
 					extra.println("They scamper off...");
 				}else {
-					int gold = (int) (Math.random()*50*level);
+					int gold = (int) (extra.hrandom()*50*level);
 					extra.println("They give you a reward of " + gold + " gold in thanks for saving them.");
 					Player.bag.addGold(gold);
 				}
