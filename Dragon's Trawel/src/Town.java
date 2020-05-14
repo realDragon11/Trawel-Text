@@ -312,6 +312,8 @@ public class Town implements java.io.Serializable{
 			c.display(1,this);
 			i++;}
 		}
+		extra.println(i + "wander around");
+		i++;
 		extra.println(i + " exit");i++;
 		int j = extra.inInt(i-1);
 		i = 1;
@@ -327,6 +329,10 @@ public class Town implements java.io.Serializable{
 			i++;
 			}
 		}
+		if (i == j-1) {
+			wander();
+		}
+		i++;
 		if (i == j) {
 			return;//exit to town
 		}
@@ -476,5 +482,13 @@ public class Town implements java.io.Serializable{
 	}
 	public void enqueneAdd(Feature f) {
 		this.addList.add(f);
+	}
+	
+	public void wander() {
+		if (mainGame.bumpEnabled == true) {
+			
+		}else {
+			extra.println("Nothing happens.");
+		}
 	}
 }
