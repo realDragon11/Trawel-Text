@@ -490,7 +490,7 @@ public class Town implements java.io.Serializable{
 	
 	public void wander() {
 		if (mainGame.bumpEnabled == true) {
-			Bumper.go();
+			Bumper.go(tier);
 		}
 	}
 }

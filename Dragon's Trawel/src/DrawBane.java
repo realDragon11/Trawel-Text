@@ -2,7 +2,8 @@
 public enum DrawBane {
 	TEST("test","test"),
 	GARLIC("garlic","Used to repel vampires."),
-	SILVER("silver","A shiny metal.");;
+	SILVER("silver","A shiny metal."),
+	MEAT("meat","A cut of meat.");
 	private String name, flavorText;
 	DrawBane(String name, String flavorText) {
 		this.name = name;

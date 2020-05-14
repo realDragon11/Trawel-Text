@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.ArrayList;
 
 public abstract class Bumper {
@@ -15,7 +16,7 @@ public abstract class Bumper {
 		}
 	}
 
-	public static void go() {
+	public static void go(int level) {
 		//TODO: calculate which enemy to fight
 		double highest = -999;
 		double d;
@@ -27,7 +28,7 @@ public abstract class Bumper {
 				highestB = b;
 			}
 		}
-		highestB.activate();
+		highestB.activate(level);
 	}
 	
 	public double calculate(Inventory i) {
@@ -38,10 +39,26 @@ public abstract class Bumper {
 		return total;
 	}
 	
-	public abstract void activate();
+	public abstract void activate(int level);
 	
 	public class BumperFactory {
-		
+		public BumperFactory(){
+			Bumper b = new Bumper() {
+	
+				@Override
+				public void activate(int level) {
+					ArrayList<Person> list = new ArrayList<Person>();
+					for (int i = 0;i < extra.randRange(2,4);i++) {
+						list.add(RaceFactory.makeWolf(extra.zeroOut(level-3)+1));}
+					
+					Networking.sendColor(Color.RED);
+					extra.println("A pack of wolves descend upon you!");
+					ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
+					
+				}};
+			b.responses.add(new Response(DrawBane.MEAT,5));
+			bumperList.add(b);
+		}
 	}
 
 }
