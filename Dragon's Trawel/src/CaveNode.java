@@ -55,6 +55,7 @@ public class CaveNode extends NodeConnector implements java.io.Serializable{
 		case -1:name = extra.choose("cave entrance"); interactString = "traverse "+name;forceGo = true;break;
 		case 1: name = extra.choose("bear"); interactString = "ERROR"; forceGo = true;
 		storage1 = RaceFactory.makeBear(level);break;
+		case 2: storage1 = extra.choose("silver","gold","platinum","iron","copper"); name = storage1+" vein"; interactString = "mine "+storage1;break;
 		}
 		if (size < 2 || parent.getShape() != Grove.Shape.STANDARD) {
 			return;
@@ -79,26 +80,11 @@ public class CaveNode extends NodeConnector implements java.io.Serializable{
 	protected boolean interact() {
 		switch(idNum) {
 		case 1: bear1(); if (state == 0) {return true;};break;
+		case 2: goldVein1();break;
 		}
 		return false;
 	}
 	
-	private void mugger1() {
-		if (state == 0) {
-			Networking.sendColor(Color.RED);
-			extra.println("They attack you!");
-			Person p = (Person)storage1;
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-				if (winner != p) {
-					state = 1;
-					storage1 = null;
-					name = "dead "+name;
-					interactString = "examine body";
-					forceGo = false;
-				}
-		}else {randomLists.deadPerson();}
-		
-	}
 	
 	private void bear1() {
 		if (state == 0) {
@@ -116,31 +102,25 @@ public class CaveNode extends NodeConnector implements java.io.Serializable{
 		}else {extra.println("The bear's corpse lays here.");}
 		
 	}
+
 	
-	private boolean gateGuards() {
+	private void goldVein1() {
 		if (state == 0) {
-			Networking.sendColor(Color.RED);
-			extra.println("They attack you!");
-			ArrayList<Person> list = (ArrayList<Person>)storage1;
-			ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
-			
-			
-			if (survivors.contains(Player.player.getPerson())) {
-			forceGo = false;
-			interactString = "approach bodies";
-			storage1 = null;
-			state = 1;
-			name = "dead "+name;
-			return false;}else {
-				storage1 = survivors;
-				return true;
+			int mult1 = 0, mult2 = 0;
+			switch (storage1.toString()) {
+			case "gold": mult1 = 100; mult2 = 200;break;
+			case "silver": mult1 = 75; mult2 = 150;break;
+			case "platinum": mult1 = 150; mult2 = 300;break;
+			case "iron": mult1 = 50; mult2 = 100;break;
+			case "copper": mult1 = 25; mult2 = 50;break;
 			}
-		}else {
-			randomLists.deadPerson();
-			randomLists.deadPerson();
-			return false;
-		}
-		
+			int gold = extra.randRange(mult1,mult2)*level;
+			Player.bag.addGold(gold);
+			extra.println("You mine the vein for "+storage1+" worth "+ gold + " gold.");
+					state = 1;
+					name = "empty vein";
+					interactString = "examine empty vein";
+			}else {extra.println("The "+storage1+" has already been mined.");}
 		
 	}
 

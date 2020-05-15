@@ -8,7 +8,8 @@ public enum DrawBane {
 	NOTHING("nothing","A void.",0,0),
 	PROTECTIVE_WARD("protective ward","Used to repel monsters.",200,4),
 	ENT_CORE("ent core","The core of an ent tree.",50,2),
-	BLOOD("blood","A vial of blood.",40,.1),;
+	BLOOD("blood","A vial of blood.",40,.1),
+	REPEL("beast repellant","Repels wolves and bears.",100,1),;
 	private String name, flavorText;
 	private int value;
 	private double mVal;
