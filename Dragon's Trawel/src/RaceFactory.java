@@ -379,7 +379,7 @@ public class RaceFactory {
 		misc = new Race();
 		misc.name = "standing-reaver";
 		misc.namePlural = "standing reavers";
-		misc.swears.add("box");
+		misc.swears.add("scum");
 		misc.aimMod = 1;
 		misc.damMod = 1;
 		misc.dodgeMod = .8;
@@ -399,7 +399,7 @@ public class RaceFactory {
 		misc = new Race();
 		misc.name = "crouching-reaver";
 		misc.namePlural = "crouching reavers";
-		misc.swears.add("box");
+		misc.swears.add("scum");
 		misc.aimMod = 1.3;
 		misc.damMod = 1.1;
 		misc.dodgeMod = .5;
@@ -417,9 +417,9 @@ public class RaceFactory {
 		raceList.add(misc);
 		
 		misc = new Race();
-		misc.name = "hiding-mimic";
-		misc.namePlural = "hiding mimics";
-		misc.swears.add("box");
+		misc.name = "ent";
+		misc.namePlural = "ent";
+		misc.swears.add("tree");
 		misc.aimMod = 1;
 		misc.damMod = .9;
 		misc.dodgeMod = .4;
@@ -435,6 +435,28 @@ public class RaceFactory {
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.STATUE;
 		raceList.add(misc);
+		
+		misc = new Race();
+		misc.name = "bear";
+		misc.namePlural = "bears";
+		misc.swears.add("beast");
+		misc.aimMod = 1;
+		misc.damMod = 1;
+		misc.dodgeMod = .6;
+		misc.hpMod = 2;
+		misc.speedMod = .7;
+		misc.tradeMod = 1;
+		misc.rarity = 1;
+		misc.insultList.add("Die, you bear!");
+		misc.insultList.add("Die, bear!");
+		misc.baseMap = "bear";
+		misc.raceMaps.add("0");
+		misc.magicPower = 0;
+		misc.defPower = 0;
+		misc.racialType = Race.RaceType.BEAST;
+		misc.targetType = TargetFactory.TargetType.QUAD;
+		raceList.add(misc);
+		
 	}
 	
 	public static Race randRace(Race.RaceType type) {
@@ -517,7 +539,7 @@ public class RaceFactory {
 		extra.printMode = true;
 		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"standing reaver"));
-		w.backupWeapon = new Weapon(level,MaterialFactory.getMat("bone"),"crouching reaver");
+		w.backupWeapon = new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth and claws");
 		w.getBag().swapRace(RaceFactory.getRace("standing-reaver"));
 		w.addSkill(Skill.FELL_REAVER);
 		extra.printMode = false;
@@ -549,6 +571,16 @@ public class RaceFactory {
 		}
 		extra.printMode = false;
 		w.targetOverride = TargetFactory.TargetType.UNDEAD_H;
+		return w;
+	}
+	
+	public static Person makeBear(int level) {
+		extra.printMode = true;
+		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE);
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth and claws"));
+		w.getBag().swapRace(RaceFactory.getRace("bear"));
+		w.getBag().getDrawBanes().add(DrawBane.MEAT);
+		extra.printMode = false;
 		return w;
 	}
 }

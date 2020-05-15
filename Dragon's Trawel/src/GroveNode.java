@@ -1,18 +1,18 @@
 import java.awt.Color;
 import java.util.ArrayList;
 
-public class GroveNode implements java.io.Serializable{
+public class GroveNode extends NodeConnector implements java.io.Serializable{
 	//potentail problem: all this code is in a highly duplicated node
 
-	private String name;
+	//private String name;
 	private static final int EVENT_NUMBER = 19;
 	private int state;
-	private String interactString;
+	//private String interactString;
 	private int idNum;
-	private int level;
+	//private int level;
 	private Object storage1, storage2;
 	private ArrayList<GroveNode> connects;
-	private boolean forceGo;
+	//private boolean forceGo;
 	public Grove parent;
 	
 	public GroveNode(int size, int tier,Grove p ) {
@@ -35,9 +35,10 @@ public class GroveNode implements java.io.Serializable{
 		if (extra.chanceIn(1,10)) {
 			level++;
 		}
-		setConnects(new ArrayList<GroveNode>());
+		setConnects(new ArrayList<NodeConnector>());
 		forceGo = false;
 		generate(size);
+		parentName = p.getName();
 		
 	}
 	
@@ -107,7 +108,7 @@ public class GroveNode implements java.io.Serializable{
 		n.getConnects().add(this);
 	}
 	
-	private boolean interact() {
+	protected boolean interact() {
 		switch(idNum) {
 		case 1: duelist();break;
 		case 2: extra.println("You wash yourself in the "+name+".");break;
@@ -134,7 +135,7 @@ public class GroveNode implements java.io.Serializable{
 	}
 
 
-
+/*
 	public void go() {
 		Player.addTime(.1);
 		int i = 1;
@@ -177,7 +178,7 @@ public class GroveNode implements java.io.Serializable{
 		go();
 	}
 
-
+	
 	public String getName() {
 		return name;
 	}
@@ -194,7 +195,7 @@ public class GroveNode implements java.io.Serializable{
 
 	private void setConnects(ArrayList<GroveNode> connects) {
 		this.connects = connects;
-	}
+	}*/
 	
 	private void duelist() {
 		if (state == 0) {
@@ -857,5 +858,12 @@ public class GroveNode implements java.io.Serializable{
 		
 		
 	}
+
+
+	@Override
+	protected String shapeName() {
+		return "STANDARD";
+	}
+
 
 }

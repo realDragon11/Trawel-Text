@@ -31,33 +31,33 @@ public class BumperFactory {
 		b.responses.add(new Response(DrawBane.NOTHING,.5));
 		bumperList.add(b);
 		
-	 b = new Bumper() {
-			
-			@Override
-			public void activate(int level) {
-				Person p = RaceFactory.makeFellReaver(level);
+		 b = new Bumper() {
 				
-				Networking.sendColor(Color.RED);
-				extra.println("A fell reaver appears!");
-				mainGame.CombatTwo(Player.player.getPerson(),p);
+				@Override
+				public void activate(int level) {
+					Person p = RaceFactory.makeFellReaver(level);
+					
+					Networking.sendColor(Color.RED);
+					extra.println("A fell reaver appears!");
+					mainGame.CombatTwo(Player.player.getPerson(),p);
+					
+				}};
+			b.responses.add(new Response(DrawBane.MEAT,3));
+			b.responses.add(new Response(DrawBane.CEON_STONE,3));
+			bumperList.add(b);
+		 b = new Bumper() {
 				
-			}};
-		b.responses.add(new Response(DrawBane.MEAT,3));
-		b.responses.add(new Response(DrawBane.CEON_STONE,3));
-		bumperList.add(b);
-	 b = new Bumper() {
-			
-			@Override
-			public void activate(int level) {
-				Person p = RaceFactory.makeEnt(level);
-				
-				Networking.sendColor(Color.RED);
-				extra.println("An ent appears!");
-				mainGame.CombatTwo(Player.player.getPerson(),p);
-				
-			}};
-		b.responses.add(new Response(DrawBane.ENT_CORE,5));
-		bumperList.add(b);
+				@Override
+				public void activate(int level) {
+					Person p = RaceFactory.makeEnt(level);
+					
+					Networking.sendColor(Color.RED);
+					extra.println("An ent appears!");
+					mainGame.CombatTwo(Player.player.getPerson(),p);
+					
+				}};
+			b.responses.add(new Response(DrawBane.ENT_CORE,5));
+			bumperList.add(b);
 		 b = new Bumper() {
 				
 				@Override
@@ -71,6 +71,21 @@ public class BumperFactory {
 				}};
 			b.responses.add(new Response(DrawBane.BLOOD,4));
 			b.responses.add(new Response(DrawBane.GARLIC,-8));
+			b.responses.add(new Response(DrawBane.SILVER,-.5));
 			bumperList.add(b);
+		 b = new Bumper() {
+				
+				@Override
+				public void activate(int level) {
+					Person p = new Person(level);
+					
+					Networking.sendColor(Color.RED);
+					extra.println("A thief charges you!");
+					mainGame.CombatTwo(Player.player.getPerson(),p);
+					
+				}};
+			b.responses.add(new Response(DrawBane.SILVER,1));
+			bumperList.add(b);
+		
 	}
 }
