@@ -117,7 +117,7 @@ public class Weapon extends Item {
 		cost *= .7;
 		weight *=1;
 		martialStance.addAttack(new Attack("slash",1,60.0,20*sharpMult,2*bluntMult,0*pierceMult,"X` slashes at Y` with their Z`!",0,"sharp"));
-		martialStance.addAttack(new Attack("stab",1.1,60.0,1*sharpMult,1*bluntMult,10*pierceMult,"X` stabs at Y` with their Z`!",0,"pierce"));	
+		martialStance.addAttack(new Attack("stab",1.1,60.0,1*sharpMult,1*bluntMult,12*pierceMult,"X` stabs at Y` with their Z`!",0,"pierce"));	
 		martialStance.addAttack(new Attack("thrust",.4,60.0,1*sharpMult,2*bluntMult,20*pierceMult,"X` thrusts at Y` with their Z`!",1,"pierce"));
 		martialStance.addAttack(new Attack("slap",.8,80.0,0*sharpMult,4*bluntMult,0*pierceMult,"X` slaps Y` with the side of their Z`!",0,"blunt"));
 		;break;
