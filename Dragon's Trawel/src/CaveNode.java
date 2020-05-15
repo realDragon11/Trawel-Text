@@ -81,6 +81,7 @@ public class CaveNode extends NodeConnector implements java.io.Serializable{
 	@Override
 	protected boolean interact() {
 		switch(idNum) {
+		case -1: Networking.sendStrong("Achievement|cave1|"); break;
 		case 1: bear1(); if (state == 0) {return true;};break;
 		case 2: goldVein1();break;
 		case 3: bat1(); if (state == 0) {return true;};break;
@@ -109,6 +110,7 @@ public class CaveNode extends NodeConnector implements java.io.Serializable{
 	
 	private void goldVein1() {
 		if (state == 0) {
+			Networking.sendStrong("Achievement|ore1|");
 			int mult1 = 0, mult2 = 0;
 			switch (storage1.toString()) {
 			case "gold": mult1 = 100; mult2 = 200;break;

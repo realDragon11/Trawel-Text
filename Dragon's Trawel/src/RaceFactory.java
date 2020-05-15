@@ -613,6 +613,9 @@ public class RaceFactory {
 		if (extra.chanceIn(1,7)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
+		if (extra.chanceIn(1,2)) {
+			w.getBag().getDrawBanes().add(DrawBane.BAT_WING);
+		}
 		extra.printMode = false;
 		return w;
 	}

@@ -185,6 +185,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 	
 	private void goldVein1() {
 		if (state == 0) {
+			Networking.sendStrong("Achievement|ore1|");
 			int mult1 = 0, mult2 = 0;
 			switch (storage1.toString()) {
 			case "gold": mult1 = 100; mult2 = 200;break;
