@@ -210,7 +210,7 @@ public class WorldGen {
 			public void print() {
 				extra.println("Alhaxian merchant ships surround the port when you arrive.");
 				if (Player.player.merchantLevel > 5) {
-					extra.println("They make way as you approach, due to your reputation.");
+					extra.println("A few are flying your colors.");
 				}
 			}
 			
@@ -296,16 +296,6 @@ public class WorldGen {
 		yena.addTravel();
 		yena.addTravel();
 		yena.addFeature(new Champion(4));
-		
-		yena.setFirstPrinter(new PrintEvent(){
-
-			@Override
-			public void print() {
-				extra.println("You set foot on the island of teran for the first time in your life, entering the town of yena.");
-				
-			}
-			
-		});
 		
 		Town denok = new Town("denok",4,teran,new Point(12,1));
 		addConnection(denok,yena,"road","apple road");
@@ -393,15 +383,6 @@ public class WorldGen {
 		holik.addTravel();
 		holik.addTravel();
 		w.setStartTown(holik);
-		holik.setFirstPrinter(new PrintEvent(){
-
-			@Override
-			public void print() {
-				extra.println("Breathing the air in another world feels strange- something is off.");
-				
-			}
-			
-		});
 		
 		Town yonuen = new Town("yonuen", 9, apen, new Point(4,3));
 		addConnection(holik,yonuen,"road","bliz road");

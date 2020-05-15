@@ -95,6 +95,7 @@ public class Store extends Feature implements java.io.Serializable{
 				DrawBane sellItem = bag.discardDrawBanes();
 				if (sellItem != null) {
 					bag.addGold(sellItem.getValue());
+					dbs.remove(index);
 				}
 				
 				return;
