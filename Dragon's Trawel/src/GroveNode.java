@@ -5,7 +5,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 	//potentail problem: all this code is in a highly duplicated node
 
 	//private String name;
-	private static final int EVENT_NUMBER = 19;
+	private static final int EVENT_NUMBER = 20;
 	private int state;
 	//private String interactString;
 	private int idNum;
@@ -89,6 +89,14 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		name = extra.choose("shaman"); interactString = "approach the shaman"; forceGo = false;
 		storage1 = RaceFactory.getShaman(level);
 		storage2 = storage1;break;
+		case 20:
+			name = extra.choose("collector");
+			interactString = "appraoch the " + name;
+			forceGo = false;
+			storage1 = new Person(level);
+			((Person)storage1).getBag().getDrawBanes().add(Store.randomDB());
+			((Person)storage1).getBag().getDrawBanes().add(Store.randomDB());
+			break;
 		}
 		//TODO: add lumberjacks and tending to tree
 		if (size < 2) {
@@ -136,6 +144,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		case 17: equal1();break;
 		case 18: return packOfWolves();
 		case 19: shaman();break;
+		case 20: collector();break;
 		}
 		Networking.clearSide(1);
 		return false;
@@ -219,7 +228,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 					interactString = "examine body";
 				}
 			}
-		}else {extra.println("They are dead. You killed them.");}
+		}else {randomLists.deadPerson();}
 		
 	}
 
@@ -862,7 +871,24 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			extra.println("There are a few wolf corpses here.");
 			return false;
 		}
-		
+	}
+	
+	private void collector() {
+		if (state == 0) {
+			Person p = (Person)storage1;
+			p.getBag().graphicalDisplay(1, p);
+			Networking.sendColor(Color.RED);
+			extra.println("Challenge "+ p.getName() + "?");
+			if (extra.yesNo()){
+				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
+				if (winner != p) {
+					state = 1;
+					storage1 = null;
+					name = "dead "+name;
+					interactString = "examine body";
+				}
+			}
+		}else {randomLists.deadPerson();}
 		
 	}
 
