@@ -10,7 +10,7 @@ public class Race extends Item implements java.io.Serializable{
 	public ArrayList<String> raceMaps = new ArrayList<String>();
 	public String baseMap;
 	public int magicPower, defPower;
-	public Enum<RaceType> racialType;
+	public RaceType racialType;
 	public TargetFactory.TargetType targetType;
 	
 	public enum RaceType{

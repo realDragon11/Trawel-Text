@@ -377,7 +377,12 @@ public class Person implements java.io.Serializable{
 				list.add(s);
 			}
 			if (list.size() > 0) {
-			skillAdd(extra.randList(list));
+				Skill s;
+				do {
+				s = extra.randList(list);
+				}while(s.equals(Skill.KUNG_FU) && this.getBag().getRace().racialType != Race.RaceType.HUMANOID);
+			skillAdd(s);
+			
 			
 			AILevelUp();//recursive hack
 			}
