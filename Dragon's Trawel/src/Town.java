@@ -333,8 +333,8 @@ public class Town implements java.io.Serializable{
 			//extra.print(i + " ");
 			Town t = c.otherTown(this);
 			extra.println("You start to travel to " + t.getName());
-			if (extra.chanceIn(2,3+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
-				wander(5);
+			if (extra.chanceIn(4,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
+				wander(3);
 			}
 			Player.addTime(c.getTime());
 			extra.println("You arrive in " + t.getName());

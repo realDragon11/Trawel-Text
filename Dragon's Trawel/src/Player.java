@@ -92,6 +92,7 @@ public class Player extends SuperPerson{
 		return list;
 	}
 	public void addMPoints(double mValue) {
+		merchantPoints+=mValue;
 		if (merchantPoints >= merchantLevel*merchantLevel) {
 			merchantPoints-=merchantLevel*merchantLevel;
 			merchantLevel++;
