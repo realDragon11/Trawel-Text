@@ -45,7 +45,7 @@ public class WorldGen {
 		unun.addFeature(new Inn("unun inn",2,unun,null));
 		unun.addTravel();
 		unun.addTravel();
-		unun.addTravel();
+		unun.addFeature(new MerchantGuild("unun merchant guild"));
 		unun.addFeature(new Dungeon("tower of fate",unun,Dungeon.Shape.TOWER,0));
 		unun.setGoPrinter(new PrintEvent(){
 

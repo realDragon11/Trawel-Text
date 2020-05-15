@@ -1,19 +1,21 @@
 
 public enum DrawBane {
-	TEST("test","test",0),
-	GARLIC("garlic","Used to repel vampires.",20),
-	SILVER("silver","A shiny metal.",100),
-	MEAT("meat","A cut of meat.",20),
-	CEON_STONE("eon stone","A cracked stone with infinite choices.",100),
-	NOTHING("nothing","A void.",0),
-	PROTECTIVE_WARD("protective ward","Used to repel monsters.",200),
-	ENT_CORE("ent core","The core of an ent tree.",50);
+	TEST("test","test",0,0),
+	GARLIC("garlic","Used to repel vampires.",20,.3),
+	SILVER("silver","A shiny metal.",100,2),
+	MEAT("meat","A cut of meat.",20,.5),
+	CEON_STONE("eon stone","A cracked stone with infinite choices.",100,3),
+	NOTHING("nothing","A void.",0,0),
+	PROTECTIVE_WARD("protective ward","Used to repel monsters.",200,4),
+	ENT_CORE("ent core","The core of an ent tree.",50,2);
 	private String name, flavorText;
 	private int value;
-	DrawBane(String name, String flavorText,int val) {
+	private double mVal;
+	DrawBane(String name, String flavorText,int val, double mVal) {
 		this.name = name;
 		this.flavorText = flavorText;
 		this.value = val;
+		this.mVal = mVal;
 	}
 	
 	public String getName() {
@@ -26,6 +28,9 @@ public enum DrawBane {
 	
 	public int getValue() {
 		return value;
+	}
+	public double getMValue() {
+		return mVal;
 	}
 	
 	

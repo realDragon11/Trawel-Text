@@ -13,8 +13,9 @@ public class Player extends SuperPerson{
 	private String animalName;
 	private int rpts;//reincarnatepoints
 	private boolean tutorial;
-	public int merchantLevel;
+	public int merchantLevel = 1;
 	public Town lastTown = null;
+	private double merchantPoints = 0;
 	
 	public Player(Person p) {
 		person = p;
@@ -89,5 +90,13 @@ public class Player extends SuperPerson{
 		ArrayList<Person> list = new ArrayList<Person>();
 		list.add(Player.player.getPerson());
 		return list;
+	}
+	public void addMPoints(double mValue) {
+		if (merchantPoints >= merchantLevel*merchantLevel) {
+			merchantPoints-=merchantLevel*merchantLevel;
+			merchantLevel++;
+			addMPoints(0);
+			}
+		
 	}
 }
