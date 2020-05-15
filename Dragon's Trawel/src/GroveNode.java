@@ -11,7 +11,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 	private int idNum;
 	//private int level;
 	private Object storage1, storage2;
-	private ArrayList<GroveNode> connects;
+	//private ArrayList<GroveNode> connects;
 	//private boolean forceGo;
 	public Grove parent;
 	
@@ -103,9 +103,14 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			n.getConnects().add(this);
 			i++;
 		}
+		if (extra.chanceIn(1, 20)) {
+			CaveNode n = new CaveNode(sizeLeft,level,parent,true);
+			connects.add(n);
+			n.getConnects().add(this);
+		}else {
 		GroveNode n = new GroveNode(sizeLeft,level,parent);
 		connects.add(n);
-		n.getConnects().add(this);
+		n.getConnects().add(this);}
 	}
 	
 	protected boolean interact() {

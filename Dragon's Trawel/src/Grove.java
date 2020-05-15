@@ -28,5 +28,12 @@ public class Grove extends Feature {
 	public void generate() {
 		start = new GroveNode(size,town.getTier(),this);
 	}
+	public Shape getShape() {
+		return Shape.STANDARD;
+	}
+	
+	public enum Shape{
+		STANDARD;
+	}
 
 }
