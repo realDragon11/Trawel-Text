@@ -226,13 +226,14 @@ public class WorldGen {
 		});
 		
 		
-		Town arona = new Town("arona",100,pocket,new Point(1,1));
+		Town arona = new Town("arona",10,pocket,new Point(1,1));
 		//s = new Store(2,7);
 		//arona.addFeature(s);
 		addConnection(revan,arona,"teleport","the polka-dot ritual");
 		arona.setHasTeleporters(true);
 		//arona.addFeature(new Blacksmith(0,s));
-		arona.addFeature(new Champion(100));
+		arona.addFeature(new Champion(10));
+		arona.addFeature(new Store(4,8));
 		
 		Island teran = new Island("teran",w);
 		Town yena = new Town("yena",4,teran,new Point(8,2));
@@ -355,6 +356,7 @@ public class WorldGen {
 		addConnection(unika,peana,"road","green road");
 		peana.addFeature(new Arena("peana arena",10,1,24,12,135));
 		peana.addFeature(new Appraiser("peana appraiser"));
+		peana.addFeature(new Store(10,8));
 		peana.addFeature(new Mine("staircase to hell", peana, null,Mine.Shape.HELL));
 		
 		Town inka = new Town("inka",10, apen, new Point(4,7));
