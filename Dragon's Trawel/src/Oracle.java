@@ -122,6 +122,7 @@ fileInput = new Scanner (getClass().getResourceAsStream("/resource/shamanTips.tx
 			Player.bag.addGold(-level*10);
 			tip("");
 			visits++;
+			Networking.sendStrong("Achievement|oracle1|");
 			if (visits == 5) {
 				Player.player.addTitle(this.getName() + " vistor");
 			}
@@ -144,6 +145,7 @@ fileInput = new Scanner (getClass().getResourceAsStream("/resource/shamanTips.tx
 			Player.bag.addGold(-level*100);
 			tip("utter");
 			visits++;
+			Networking.sendStrong("Achievement|oracle1|");
 			if (visits == 5) {
 				Player.player.addTitle(this.getName() + " vistor");
 			}

@@ -99,6 +99,15 @@ public class WorldGen {
 		hemo.addFeature(new Blacksmith(1,s));
 		hemo.addFeature(new Champion(1,4,hemo));
 		
+		hemo.setGoPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("Hemo's forest looms ahead.");
+			}
+			
+		});
+		
 		Town tanak = new Town("tanak",5,rona,new Point(4,9));
 		addConnection(hemo,tanak,"road","windy pass");
 		tanak.addFeature(new Arena("tanak colosseum",4,6,24*3,24*20,1));
@@ -195,6 +204,27 @@ public class WorldGen {
 		alhax.addFeature(new Store(2,5));
 		//alhax.addFeature(new Store(2,6));
 		
+		alhax.setGoPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("Alhaxian merchant ships surround the port when you arrive.");
+				if (Player.player.merchantLevel > 5) {
+					extra.println("They make way as you approach, due to your reputation.");
+				}
+			}
+			
+		});
+		alhax.setFirstPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("The port city of alhax links the three islands of the world together. It's island, apa, is home to many shops and stores.");
+				
+			}
+			
+		});
+		
 		Town revan = new Town("revan",3,apa,new Point(3,1));
 		revan.setHasPort(true);
 		addConnection(revan,alhax,"ship","green passageway");
@@ -206,7 +236,7 @@ public class WorldGen {
 		revan.setHasTeleporters(true);
 		revan.addFeature(new Altar());
 		addConnection(revan,tanak,"teleport","the red ritual");
-		tanak.setGoPrinter(new PrintEvent(){
+		revan.setGoPrinter(new PrintEvent(){
 
 			@Override
 			public void print() {
@@ -215,7 +245,7 @@ public class WorldGen {
 			}
 			
 		});
-		tanak.setFirstPrinter(new PrintEvent(){
+		revan.setFirstPrinter(new PrintEvent(){
 
 			@Override
 			public void print() {
@@ -235,6 +265,25 @@ public class WorldGen {
 		arona.addFeature(new Champion(10));
 		arona.addFeature(new Store(4,8));
 		
+		arona.setGoPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("You return to pocket dimension.");
+				
+			}
+			
+		});
+		arona.setFirstPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("You've enter the town of arona, held in a wizard's pocket dimension.");
+				
+			}
+			
+		});
+		
 		Island teran = new Island("teran",w);
 		Town yena = new Town("yena",4,teran,new Point(8,2));
 		yena.setHasPort(true);
@@ -247,6 +296,16 @@ public class WorldGen {
 		yena.addTravel();
 		yena.addTravel();
 		yena.addFeature(new Champion(4));
+		
+		yena.setFirstPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("You set foot on the island of teran for the first time in your life, entering the town of yena.");
+				
+			}
+			
+		});
 		
 		Town denok = new Town("denok",4,teran,new Point(12,1));
 		addConnection(denok,yena,"road","apple road");
@@ -271,7 +330,7 @@ public class WorldGen {
 
 			@Override
 			public void print() {
-				extra.println("You return to erin.");
+				extra.println("You return to erin, the library town.");
 				
 			}
 			
@@ -334,6 +393,15 @@ public class WorldGen {
 		holik.addTravel();
 		holik.addTravel();
 		w.setStartTown(holik);
+		holik.setFirstPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("Breathing the air in another world feels strange- something is off.");
+				
+			}
+			
+		});
 		
 		Town yonuen = new Town("yonuen", 9, apen, new Point(4,3));
 		addConnection(holik,yonuen,"road","bliz road");
