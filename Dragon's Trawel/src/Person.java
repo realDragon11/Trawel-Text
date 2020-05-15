@@ -35,7 +35,7 @@ public class Person implements java.io.Serializable{
 	public Weapon backupWeapon = null;
 	
 	public enum RaceFlag {
-		NONE, CRACKS;
+		NONE, CRACKS, UNDEAD;
 	}
 	//private boolean isPlayer;
 	

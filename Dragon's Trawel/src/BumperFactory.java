@@ -62,7 +62,7 @@ public class BumperFactory {
 				
 				@Override
 				public void activate(int level) {
-					Person p = new Person(level);//TODO make actually a vampire
+					Person p = RaceFactory.makeVampire(level);
 					
 					Networking.sendColor(Color.RED);
 					extra.println("A vampire jumps from the shadows!");

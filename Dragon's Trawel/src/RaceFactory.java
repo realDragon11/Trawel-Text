@@ -540,4 +540,15 @@ public class RaceFactory {
 		extra.printMode = false;
 		return w;
 	}
+	
+	public static Person makeVampire(int level) {
+		extra.printMode = true;
+		Person w = new Person(level,true, Race.RaceType.HUMANOID,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE);
+		if (extra.chanceIn(1,20)) {
+			w.getBag().getDrawBanes().add(DrawBane.BLOOD);
+		}
+		extra.printMode = false;
+		w.targetOverride = TargetFactory.TargetType.UNDEAD_H;
+		return w;
+	}
 }
