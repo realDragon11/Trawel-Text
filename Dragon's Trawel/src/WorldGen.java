@@ -139,12 +139,50 @@ public class WorldGen {
 		lokan.addTravel();
 		lokan.addTravel();
 		
+		lokan.setGoPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("The oracle in lokan awaits.");
+				
+			}
+			
+		});
+		lokan.setFirstPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("The lokan oracle is famed throughout the land for their accuracy- if you pay them well.");
+				
+			}
+			
+		});
+		
 		Town haka = new Town("haka",3,rona,new Point(1,10));
 		addConnection(lokan,haka,"road","diamond way");
 		addConnection(tanak,haka,"road","circle road");
 		haka.addFeature(new Arena("haka colosseum (daily bout)",3,1,24,12,74));
 		haka.addFeature(new Arena("haka colosseum (weekly tourny)",3,4,24*7,24*7,30));
 		haka.addFeature(new Mountain("haka mountain",3));
+		
+		haka.setGoPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("The mountain looms over you.");
+				
+			}
+			
+		});
+		haka.setFirstPrinter(new PrintEvent(){
+
+			@Override
+			public void print() {
+				extra.println("A giant mountain looms over the haka colosseum- the largest on this island.");
+				
+			}
+			
+		});
 		
 		
 		Island apa = new Island("apa",w);
