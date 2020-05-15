@@ -273,7 +273,7 @@ public class Combat {
 			extra.print(att.attackStringer(attacker.getName(),defender.getName() + "'s corpse",off.getHand().getName()));	
 		}
 		double damMod = off.getDam();
-		if ((def.getDodge()/(att.getHitmod()*off.getAim()))*Math.random() > 1.0){
+		if (((def.getDodge()*defender.getTornCalc())/(att.getHitmod()*off.getAim()))*Math.random() > 1.0){
 			return -1;//do a dodge
 		}
 		//return the damage-armor, with each type evaluated individually

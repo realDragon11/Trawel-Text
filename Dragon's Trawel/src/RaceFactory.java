@@ -457,6 +457,27 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.QUAD;
 		raceList.add(misc);
 		
+		misc = new Race();
+		misc.name = "bat";
+		misc.namePlural = "bats";
+		misc.swears.add("bat");
+		misc.aimMod = 1;
+		misc.damMod = .8;
+		misc.dodgeMod = 1.4;
+		misc.hpMod = .8;
+		misc.speedMod = 1.1;
+		misc.tradeMod = 1;
+		misc.rarity = 1;
+		misc.insultList.add("Die, you bat!");
+		misc.insultList.add("Die, bat!");
+		misc.baseMap = "bat";
+		misc.raceMaps.add("0");
+		misc.magicPower = 0;
+		misc.defPower = 0;
+		misc.racialType = Race.RaceType.BEAST;
+		misc.targetType = TargetFactory.TargetType.FLY;
+		raceList.add(misc);
+		
 	}
 	
 	public static Race randRace(Race.RaceType type) {
@@ -580,6 +601,18 @@ public class RaceFactory {
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth and claws"));
 		w.getBag().swapRace(RaceFactory.getRace("bear"));
 		w.getBag().getDrawBanes().add(DrawBane.MEAT);
+		extra.printMode = false;
+		return w;
+	}
+	
+	public static Person makeBat(int level) {
+		extra.printMode = true;
+		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE);
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
+		w.getBag().swapRace(RaceFactory.getRace("bat"));
+		if (extra.chanceIn(1,7)) {
+			w.getBag().getDrawBanes().add(DrawBane.MEAT);
+		}
 		extra.printMode = false;
 		return w;
 	}

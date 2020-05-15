@@ -714,4 +714,18 @@ public class Person implements java.io.Serializable{
 		effects.remove(e);
 		
 	}
+
+	public double getTornCalc() {
+		double starter = 1;
+		int count = 0;
+		for (Effect e: effects) {
+			if (e.equals(Effect.TORN)) {
+				count++;
+			}
+		}
+		for (int i = 0; i < count;i++) {
+			starter*=.9;
+		}
+		return starter;
+	}
 }

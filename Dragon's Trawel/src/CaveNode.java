@@ -56,6 +56,8 @@ public class CaveNode extends NodeConnector implements java.io.Serializable{
 		case 1: name = extra.choose("bear"); interactString = "ERROR"; forceGo = true;
 		storage1 = RaceFactory.makeBear(level);break;
 		case 2: storage1 = extra.choose("silver","gold","platinum","iron","copper"); name = storage1+" vein"; interactString = "mine "+storage1;break;
+		case 3: name = extra.choose("bat"); interactString = "ERROR"; forceGo = true;
+		storage1 = RaceFactory.makeBat(level);break;
 		}
 		if (size < 2 || parent.getShape() != Grove.Shape.STANDARD) {
 			return;
@@ -81,6 +83,7 @@ public class CaveNode extends NodeConnector implements java.io.Serializable{
 		switch(idNum) {
 		case 1: bear1(); if (state == 0) {return true;};break;
 		case 2: goldVein1();break;
+		case 3: bat1(); if (state == 0) {return true;};break;
 		}
 		return false;
 	}
@@ -121,6 +124,23 @@ public class CaveNode extends NodeConnector implements java.io.Serializable{
 					name = "empty vein";
 					interactString = "examine empty vein";
 			}else {extra.println("The "+storage1+" has already been mined.");}
+		
+	}
+	
+	private void bat1() {
+		if (state == 0) {
+			Networking.sendColor(Color.RED);
+			extra.println("The bat attacks you!");
+			Person p = (Person)storage1;
+				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
+				if (winner != p) {
+					state = 1;
+					storage1 = null;
+					name = "dead "+name;
+					interactString = "examine body";
+					forceGo = false;
+				}
+		}else {extra.println("The bat corpse lies here.");}
 		
 	}
 

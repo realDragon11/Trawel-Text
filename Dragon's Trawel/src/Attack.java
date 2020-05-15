@@ -319,6 +319,7 @@ public class Attack implements java.io.Serializable{
 		SCREAMING("Screaming","Removes one attack choice.","They scream!"),
 		FROSTED("Scalded","Decreases their next attack's to-hit.","They are frozen over..."),
 		FROSTBITE("Frostbite","Deals bonus damage through armor.","Their flesh is frozen!"),
+		TEAR("Tear","Decreases dodge, stacking.","Their wing is torn!"),
 		;
 		//done line
 		public String name, desc, active;

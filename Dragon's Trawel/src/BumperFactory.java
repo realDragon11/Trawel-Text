@@ -102,6 +102,21 @@ public class BumperFactory {
 			b.responses.add(new Response(DrawBane.NOTHING,.5));
 			b.responses.add(new Response(DrawBane.REPEL,-8));
 			bumperList.add(b);
+			b = new Bumper() {
+
+				@Override
+				public void activate(int level) {
+					Person p = RaceFactory.makeBat(level);
+					
+					Networking.sendColor(Color.RED);
+					extra.println("A bat attacks you!");
+					mainGame.CombatTwo(Player.player.getPerson(),p);
+					
+				}};
+			b.responses.add(new Response(DrawBane.MEAT,3));
+			b.responses.add(new Response(DrawBane.NOTHING,.5));
+			b.responses.add(new Response(DrawBane.REPEL,-8));
+			bumperList.add(b);
 			
 		
 	}
