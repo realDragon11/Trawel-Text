@@ -545,16 +545,16 @@ public class Inventory implements java.io.Serializable{
 		return dbs;
 	}
 	
-	public void addNewDrawBane(DrawBane d) {
+	public DrawBane addNewDrawBane(DrawBane d) {
 		extra.println("You found - " + d.getName() + ": " + d.getFlavor());
 		this.displayDrawBanes();
 		extra.println("4 discard.");
 		int in = extra.inInt(4);
 		if (in == 4) {
-			return;
+			return null;
 		}
-		dbs.remove(in-1);
 		dbs.add(d);
+		return dbs.remove(in-1);
 	}
 	
 	public void displayDrawBanes() {
@@ -569,14 +569,14 @@ public class Inventory implements java.io.Serializable{
 		
 	}
 	
-	public void discardDrawBanes() {
+	public DrawBane discardDrawBanes() {
 		this.displayDrawBanes();
 		extra.println("4 keep");
 		int in = extra.inInt(4);
 		if (in == 4) {
-			return;
+			return null;
 		}
-		dbs.remove(in-1);
+		return dbs.remove(in-1);
 	}
 
 
