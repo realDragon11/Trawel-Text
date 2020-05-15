@@ -58,5 +58,19 @@ public class BumperFactory {
 			}};
 		b.responses.add(new Response(DrawBane.ENT_CORE,5));
 		bumperList.add(b);
+		 b = new Bumper() {
+				
+				@Override
+				public void activate(int level) {
+					Person p = new Person(level);//TODO make actually a vampire
+					
+					Networking.sendColor(Color.RED);
+					extra.println("A vampire jumps from the shadows!");
+					mainGame.CombatTwo(Player.player.getPerson(),p);
+					
+				}};
+			b.responses.add(new Response(DrawBane.BLOOD,4));
+			b.responses.add(new Response(DrawBane.GARLIC,-8));
+			bumperList.add(b);
 	}
 }
