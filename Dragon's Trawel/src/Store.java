@@ -77,6 +77,7 @@ public class Store extends Feature implements java.io.Serializable{
 			}
 		}
 		if (type == 8) {
+			dbs = new ArrayList<DrawBane>();
 			for (int j = 0;j < 5;j++) {
 				dbs.add(randomDB());
 			}
@@ -173,7 +174,7 @@ public class Store extends Feature implements java.io.Serializable{
 		extra.println(j + " examine all");j++;
 		if (type == 8) {
 			for (DrawBane i: dbs) {
-				extra.println(j + " " + i.name() + " - " + i.getFlavor() + " cost: " + (i.getValue()*tier));
+				extra.println(j + " " + i.getName() + " - " + i.getFlavor() + " cost: " + (i.getValue()*tier));
 				j++;
 			}
 		}else {
@@ -217,9 +218,10 @@ public class Store extends Feature implements java.io.Serializable{
 					storeFront();//bad way of staying in it, but easy to code
 					return;
 				}
+				j++;
 			}
 				
-				j++;	
+					
 		}else {
 		for (Item it: items) {
 			if (i == j) {

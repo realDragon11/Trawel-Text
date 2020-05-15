@@ -4,11 +4,13 @@ public class MerchantGuild extends Feature {
 
 	public MerchantGuild(String name){
 		this.name = name;
-		tutorialText = "Merchant quests will make stores willing to sell items higher than your level.";
+		tutorialText = "Merchant quests will make stores willing to sell items higher than your level. (current reputation: " + Player.player.merchantLevel+ ")";
 		color = Color.PINK;
 	}
 	@Override
 	public void go() {
+		Networking.setArea("shop");
+		Networking.sendStrong("Discord|imagesmall|store|Merchant Guild|");
 		DrawBane b = null;
 		do {
 		extra.println("The merchants are willing to take supplies to increase your reputation.");
