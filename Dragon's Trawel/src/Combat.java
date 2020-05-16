@@ -345,6 +345,12 @@ public class Combat {
 			if (!extra.printMode) {
 				Networking.sendColor(Color.ORANGE);
 			}
+			if (defender.isPlayer()) {
+				int splashes =(damageDone*100)/defender.getMaxHp();
+				if (splashes > 0) {
+					Networking.sendStrong("Bloodstain|" + splashes + "|");
+				}
+			}
 			if (defender.takeDamage(damageDone)) {
 				//extra.print(" " + choose("Striking them down!"," They are struck down."));
 				if (!extra.printMode) {

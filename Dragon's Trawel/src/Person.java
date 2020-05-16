@@ -378,9 +378,11 @@ public class Person implements java.io.Serializable{
 			}
 			if (list.size() > 0) {
 				Skill s;
+				int i = 0;
 				do {
+					i++;
 				s = extra.randList(list);
-				}while(s.equals(Skill.KUNG_FU) && this.getBag().getRace().racialType != Race.RaceType.HUMANOID);
+				}while((s.equals(Skill.KUNG_FU) && this.getBag().getRace().racialType != Race.RaceType.HUMANOID) && i < 99);
 			skillAdd(s);
 			
 			

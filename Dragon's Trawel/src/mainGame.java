@@ -146,7 +146,7 @@ public class mainGame {
 		new BookFactory();
 		new BumperFactory();
 		story = new StoryNone();
-		extra.println("Dragon's Trawel v0.5.2");
+		extra.println("Dragon's Trawel v0.5.3");
 		extra.println(
 				" ___________  ___  _    _ _____ _     \r\n" + 
 				"|_   _| ___ \\/ _ \\| |  | |  ___| |    \r\n" + 
@@ -441,6 +441,7 @@ public class mainGame {
 			}
 		}
 		public static void die(String deathMessage) {
+			Networking.sendStrong("StatUp|deaths|1|");
 			story.onDeath();
 			extra.println(deathMessage);
 			story.onDeathPart2();
