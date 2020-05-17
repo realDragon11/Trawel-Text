@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class Networking {
 
@@ -134,6 +135,15 @@ public class Networking {
 				Networking.sendStrong("PlaySong|"+ songType +"_boss|");
 			}else {
 			Networking.sendStrong("PlaySong|" + songType + (inBattle == BattleType.NORMAL ? "_fight" : "_explore")  + "|");}
+		}
+	}
+	
+	public static void waitIfConnected(long d) {
+		if (connected) {
+			try {
+				TimeUnit.MILLISECONDS.sleep(d);
+			} catch (InterruptedException e) {
+			}
 		}
 	}
 }

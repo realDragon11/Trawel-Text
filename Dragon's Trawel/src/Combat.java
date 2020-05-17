@@ -36,7 +36,7 @@ public class Combat {
 		attacker = manOne;
 		defender = manTwo;
 		
-		
+		boolean playerIsInBattle = attacker.isPlayer() || defender.isPlayer();
 		attacker = manTwo;
 		defender = manOne;
 		setAttack(manTwo,manOne);
@@ -57,7 +57,7 @@ public class Combat {
 			}
 			defender.advanceTime(attacker.getTime());
 			
-			handleTurn( attacker,  defender,  song);
+			handleTurn( attacker,  defender,  song,playerIsInBattle);
 			
 			
 			if (manOne.isAlive() && manTwo.isAlive()) {
@@ -113,11 +113,12 @@ public class Combat {
 		BardSong song = w.startBardSong();
 		ArrayList<Person> totalList = new ArrayList<Person>();
 		ArrayList<Person> killList = new ArrayList<Person>();
-		
+		boolean playerIsInBattle = false;
 		for (ArrayList<Person> peoples: people) {
 			for (Person p: peoples) {
 				if (p.isPlayer()) {
 					Networking.setBattle(Networking.BattleType.NORMAL);
+					playerIsInBattle = true;
 				}
 				p.battleSetup();
 				totalList.add(p);
@@ -160,7 +161,7 @@ public class Combat {
 			Person defender = quickest.getNextAttack().defender;
 			boolean wasAlive = defender.isAlive();
 			newTarget = false;
-			handleTurn(quickest,defender,song);
+			handleTurn(quickest,defender,song,playerIsInBattle);
 			if (!defender.isAlive() && wasAlive) {
 				extra.println("They die!");
 				quickest.getBag().getHand().addKill();
@@ -308,7 +309,7 @@ public class Combat {
 	 * @param defender
 	 * @return damagedone
 	 */
-	public void handleTurn(Person attacker, Person defender, BardSong song) {
+	public void handleTurn(Person attacker, Person defender, BardSong song,boolean canWait) {
 		if (attacker.hasEffect(Effect.RECOVERING)) {
 			attacker.removeEffect(Effect.RECOVERING);
 			attacker.addHp(attacker.getLevel()*5);
@@ -344,13 +345,14 @@ public class Combat {
 			song.addAttackHit(attacker,defender);
 			if (!extra.printMode) {
 				Networking.sendColor(Color.ORANGE);
-			}
-			if (defender.isPlayer()) {
-				int splashes =(damageDone*100)/defender.getMaxHp();
-				if (splashes > 0) {
-					Networking.sendStrong("Bloodstain|" + splashes + "|");
+				if (defender.isPlayer()) {
+					int splashes =(damageDone*100)/defender.getMaxHp();
+					if (splashes > 0) {
+						Networking.sendStrong("Bloodstain|" + splashes + "|");
+					}
 				}
 			}
+			
 			if (defender.takeDamage(damageDone)) {
 				//extra.print(" " + choose("Striking them down!"," They are struck down."));
 				if (!extra.printMode) {
@@ -362,6 +364,7 @@ public class Combat {
 				song.addAttackMiss(attacker,defender);
 				if (!extra.printMode) {
 					Networking.sendColor(Color.YELLOW);
+					Networking.sendStrong("PlayMiss|" + "todo" + "|");
 				}
 					extra.print((String)extra.choose(" They miss!"," The attack is dodged!"," It's a miss!"," It goes wide!"," It's not even close!"));
 					if (defender.hasSkill(Skill.SPEEDDODGE)) {
@@ -460,6 +463,12 @@ public class Combat {
 		}
 		if (attacker.hasEffect(Effect.MAJOR_BLEED)) {
 			attacker.takeDamage(2);
+		}
+		if (canWait && !attacker.isPlayer()) {
+			if (defender.isPlayer()) {
+				Networking.waitIfConnected(500L);
+			}else {
+			Networking.waitIfConnected(300L);}
 		}
 	}
 	private void inflictWound(Person attacker2, Person defender2, int damage) {
