@@ -593,7 +593,16 @@ public class Inventory implements java.io.Serializable{
 				i++;
 			}
 			break;
+		case BLOOD:
+			int sub = 0;
+			for (Armor a: armorSlots) {
+				sub+= a.getBloodCount();
+			}
+			sub+= hand.getBloodCount();
+			i+=sub/16;
+			break;
 		}
+		
 		
 		while (dbs.size() < 3) {
 			dbs.add(DrawBane.NOTHING);
