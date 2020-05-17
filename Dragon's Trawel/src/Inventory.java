@@ -576,7 +576,21 @@ public class Inventory implements java.io.Serializable{
 		if (in == 4) {
 			return null;
 		}
+		if (dbs.get(in-1) == DrawBane.CLEANER) {
+			this.washAll();
+		}
 		return dbs.remove(in-1);
+	}
+
+
+	public void washAll() {
+		for (Armor a: this.getArmor()) {
+			a.wash();
+		}
+		this.getHand().wash();
+		if (Player.bag == this) {
+			this.graphicalDisplay(-1,Player.player.getPerson());
+		}
 	}
 
 

@@ -5,6 +5,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 	private int tier;
 	private int explores;
 	private int exhaust;
+	private int time;
 	
 	public Mountain(String name, int tier) {
 		this.tier = tier;
@@ -19,7 +20,8 @@ public class Mountain extends Feature implements java.io.Serializable{
 		Networking.setArea("mountain");
 		Networking.sendStrong("Discord|imagesmall|mountain|Mountain|");
 		extra.println("1 explore");
-		extra.println("2 exit");
+		extra.println("2 visit hot springs");
+		extra.println("3 exit");
 		int in =  extra.inInt(2);
 		if (in == 1) {
 			explores++;
@@ -53,7 +55,11 @@ public class Mountain extends Feature implements java.io.Serializable{
 			}
 			Player.addTime(.5);
 		}
-		if (in == 2) {return;}
+		if (in == 2) {
+			Player.player.getPerson().washAll();
+			Player.bag.graphicalDisplay(-1,Player.player.getPerson());
+		}
+		if (in == 3) {return;}
 		Networking.clearSide(1);
 		go();
 	}
@@ -63,7 +69,20 @@ public class Mountain extends Feature implements java.io.Serializable{
 		if (exhaust > 0) {
 			exhaust--;
 		}
+		
+		this.time += time;
+		if (this.time > 12+(Math.random()*30)) {
+			cleanTown();
+			this.time = 0;
+		}
 
+	}
+	
+	private void cleanTown() {
+		for (SuperPerson peep: town.getOccupants()) {
+			Agent a = (Agent)peep;
+			a.getPerson().washAll();
+		}
 	}
 	
 	private void rockSlide() {

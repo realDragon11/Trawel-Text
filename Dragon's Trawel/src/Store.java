@@ -85,7 +85,7 @@ public class Store extends Feature implements java.io.Serializable{
 	}
 	
 	public static DrawBane randomDB() {
-		return extra.choose(DrawBane.MEAT,DrawBane.GARLIC,DrawBane.BLOOD,DrawBane.REPEL,extra.choose(DrawBane.PROTECTIVE_WARD,DrawBane.SILVER));
+		return extra.choose(DrawBane.MEAT,DrawBane.GARLIC,DrawBane.BLOOD,DrawBane.REPEL,DrawBane.CLEANER,extra.choose(DrawBane.PROTECTIVE_WARD,DrawBane.SILVER));
 	}
 	
 	private void serviceItem(int index) {
