@@ -78,7 +78,7 @@ public class StoryDeathWalker extends Story{
 			extra.println("After some time, you hear the name of the town drop.");
 			extra.println("1 listen in");
 			extra.inInt(1);
-			extra.println("\"Hear some kid... " + killed.getName() + " I think there name was? Was killed a while ago in Oblask.\"");
+			extra.println("\"Hear some kid... " + killed.getName() + " I think their name was? Was killed a while ago in Oblask.\"");
 			extra.println("\"Oh really, sad to hear. Not uncommon though. Lots of death these days.\"");
 			extra.println("\"Well, apparently, they were killed by their own teacher!\"");
 			extra.println("\"That's a shame. I guess you can't trust anybody these days.\"");
