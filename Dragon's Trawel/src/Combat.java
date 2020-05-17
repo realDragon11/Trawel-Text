@@ -221,6 +221,9 @@ public class Combat {
 				otherperson.displayStatsShort();
 				quickest.getBag().graphicalDisplay(-1,quickest);
 				otherperson.getBag().graphicalDisplay(1,otherperson);
+			}else {
+				if (playerIsInBattle) {
+				quickest.getBag().graphicalDisplay(1,quickest);}
 			}
 			setAttack(quickest,otherperson);
 			quickest.getNextAttack().defender = otherperson;
