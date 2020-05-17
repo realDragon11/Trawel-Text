@@ -131,9 +131,14 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 			p.getBag().graphicalDisplay(1,p);
 			extra.println("Really open the " + name + "?");
 			if (extra.yesNo()) {
-			int gold = extra.randRange(100,200)*level;
-			Player.bag.addGold(gold);
-			extra.println("You open the " +storage1 + " and find " + gold + " gold.");
+				if (extra.chanceIn(1, 10)) {
+					Player.player.emeralds++;
+					extra.println("You open the " +storage1 + " and find an emerald!.");
+				}else {
+					int gold = extra.randRange(100,200)*level;
+					Player.bag.addGold(gold);
+					extra.println("You open the " +storage1 + " and find " + gold + " gold.");
+				}
 					state = 1;
 					name = "empty " + storage1;
 					interactString = "examine empty " + storage1;

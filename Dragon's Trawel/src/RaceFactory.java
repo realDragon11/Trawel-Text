@@ -540,6 +540,9 @@ public class RaceFactory {
 		w.getBag().swapArmorSlot(new Armor(level,0,MaterialFactory.getMat("flesh")),0);
 		w.getBag().swapRace(RaceFactory.getRace("hiding-mimic"));
 		w.addSkill(Skill.MIMIC_CHEST);
+		if (extra.chanceIn(1,5)) {
+			w.getBag().getDrawBanes().add(DrawBane.MIMIC_GUTS);
+		}
 		extra.printMode = false;
 		return w;
 	}

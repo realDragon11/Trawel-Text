@@ -16,6 +16,7 @@ public class Player extends SuperPerson{
 	public int merchantLevel = 1;
 	public Town lastTown = null;
 	private double merchantPoints = 0;
+	public int emeralds = 0;
 	
 	public Player(Person p) {
 		person = p;

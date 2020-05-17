@@ -290,7 +290,9 @@ public class Town implements java.io.Serializable{
 			extra.println("2 Drawbanes");
 			extra.println("3 back");
 			switch (extra.inInt(3)){
-				case 1: Player.player.getPerson().getBag().display(1);break;
+				case 1: Player.player.getPerson().getBag().display(1);
+				extra.println("You have " + Player.player.emeralds + " emeralds.");
+				;break;
 				case 2: Player.player.getPerson().getBag().discardDrawBanes();break;
 			}
 			

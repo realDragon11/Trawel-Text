@@ -21,7 +21,9 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 		idNum = extra.randRange(1,EVENT_NUMBER);
 		if (extra.chanceIn(1, 5)) {
 			idNum = 3;//gold7
-			
+		}
+		if (extra.chanceIn(1, 30)) {
+			idNum = -1;//emeralds
 		}
 		if (idNum == 3) {
 			p.addVein();
@@ -39,6 +41,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 	
 	private void generate(int size) {
 		switch (idNum) {
+		case -1: name = "emerald cluster"; interactString = "mine emeralds";break;
 		case 0: name = ""; interactString = "";break;
 		case 1: name = randomLists.randomWarrior(); interactString = "challenge " + name;
 		storage1 = new Person(level);
@@ -79,6 +82,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 	@Override
 	protected boolean interact() {
 		switch(idNum) {
+		case -1: emeralds1();break;
 		case 1: duelist();break;
 		case 2: extra.println("You wash yourself in the "+name+".");break;
 		case 3: goldVein1();break;
@@ -182,6 +186,17 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 		
 	}
 
+	private void emeralds1() {
+		if (state == 0) {
+			Networking.sendStrong("Achievement|ore1|");
+			Player.player.emeralds++;
+			extra.println("You mine the vein for "+storage1+" and claim an emerald!");
+					state = 1;
+					name = "empty vein";
+					interactString = "examine empty vein";
+			parent.removeVein();
+			}else {extra.println("The "+storage1+" has already been mined.");}
+	}
 	
 	private void goldVein1() {
 		if (state == 0) {

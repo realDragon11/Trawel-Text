@@ -10,7 +10,8 @@ public enum DrawBane {
 	ENT_CORE("ent core","The core of an ent tree.",50,2),
 	BLOOD("blood","A vial of blood.",40,.1),
 	REPEL("beast repellant","Repels wolves and bears.",100,1),
-	BAT_WING("bat wing","A witch's reagent.",10,.4),;
+	BAT_WING("bat wing","A witch's reagent.",10,.4),
+	MIMIC_GUTS("mimic guts","A witch's reagent.",50,.75),;
 	private String name, flavorText;
 	private int value;
 	private double mVal;

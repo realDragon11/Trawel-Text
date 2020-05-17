@@ -113,7 +113,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			n.getConnects().add(this);
 			i++;
 		}
-		if (extra.chanceIn(1, 20)) {
+		if (extra.chanceIn(1, 20) && sizeLeft < 4) {
 			CaveNode n = new CaveNode(sizeLeft,level,parent,true);
 			connects.add(n);
 			n.getConnects().add(this);
