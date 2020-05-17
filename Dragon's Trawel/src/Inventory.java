@@ -537,7 +537,7 @@ public class Inventory implements java.io.Serializable{
 		if (armorSlots[slot].getMatType() != "chainmail") {
 		return armorSlots[slot].getSoundType();
 		}else {
-			return "chain";
+			return "mail";
 		}
 	}
 	

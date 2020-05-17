@@ -29,7 +29,7 @@ public class MaterialFactory {
 		misc.shockVul = .2;
 		misc.freezeVul = .2;
 		misc.palIndex = 0;
-		misc.soundType = "padding";
+		misc.soundType = "flesh";
 		matList.add(misc);
 		
 		/*TODO readd leather
@@ -275,7 +275,7 @@ public class MaterialFactory {
 		misc.shockVul = .6;
 		misc.freezeVul = .6;
 		misc.palIndex = 1;
-		misc.soundType = "metal";
+		misc.soundType = "flesh";
 		matList.add(misc);
 		
 		misc = new Material();

@@ -91,7 +91,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		storage2 = storage1;break;
 		case 20:
 			name = extra.choose("collector");
-			interactString = "appraoch the " + name;
+			interactString = "approach the " + name;
 			forceGo = false;
 			storage1 = new Person(level);
 			((Person)storage1).getBag().getDrawBanes().add(Store.randomDB());
