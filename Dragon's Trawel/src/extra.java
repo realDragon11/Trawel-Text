@@ -147,15 +147,19 @@ public class extra {
 				extra.println("9 no");
 				Networking.sendStrong("Entry|yesno|");
 				if (Networking.connected() && mainGame.GUIInput) {
-					while(true) {
+					//while(true) {
 						int ini = Networking.nextInt();
 						while(ini != 1 && ini != 9) {
 							extra.println("Please type 1 or 9.");
+							extra.println("1 yes");
+							extra.println("9 no");
 							ini=  Networking.nextInt();
 							if (ini == -99) {
 								throw new RuntimeException("invalid input stream error");
 							}
+							
 						}
+						return ini == 1;
 						/*
 						try {
 							String str2 = System.getenv("APPDATA")+"\\Local\\Trawel\\buff.txt";
@@ -185,11 +189,11 @@ public class extra {
 							// TODO Auto-generated catch block
 							//e.printStackTrace();
 						}*/
-					}
+					//}
 					
 					}else {
 				str = mainGame.scanner.next();
-					}
+					
 				extra.linebreak();
 				str = str.toLowerCase();
 				//extra.println(str);
@@ -201,6 +205,7 @@ public class extra {
 				}
 				extra.println("Yes or No?");
 				}
+			}
 		}
 		public static int randRange(int i, int j) {
 			return (int)(Math.random()*(j+1-i))+i;

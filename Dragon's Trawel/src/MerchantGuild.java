@@ -26,6 +26,7 @@ public class MerchantGuild extends Feature {
 				extra.println("You have no emeralds to donate.");
 			}
 			go();
+			break;
 		case 1: do {
 		extra.println("The merchants are willing to take supplies to increase your reputation. (current reputation: " + Player.player.merchantLevel+ ")");
 		b = Player.bag.discardDrawBanes();
