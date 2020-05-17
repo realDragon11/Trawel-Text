@@ -64,11 +64,12 @@ public class Stance implements java.io.Serializable{
 				j++;
 			}
 			}else {
-			extra.println("     name\thit\tdelay\tsharp\tblunt\tpierce");
+			//extra.println("     name\thit\tdelay\tsharp\tblunt\tpierce");
+			extra.println("     name                hit    delay    sharp    blunt     pierce");
 			int j = 1;
 			for(Attack i: attacks) {
-				extra.print(j + "    ");
-				i.display(0);
+				extra.print("-    ");
+				i.display(1);
 				j++;
 			}
 			}

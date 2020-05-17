@@ -299,7 +299,10 @@ public class Town implements java.io.Serializable{
 			
 			break;
 		case 3:Player.player.displayTitles();break;
-		case 4:Player.showMap1();break;
+		case 4:
+			extra.println("This feature no longer works. It will be eventually fixed.");
+			//Player.showMap1();
+			break;
 		case 5: Player.player.getPerson().playerLevelUp();break;
 		case 6: 
 			extra.println("Really quit? Your progress will not be saved.");

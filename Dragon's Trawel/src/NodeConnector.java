@@ -85,7 +85,9 @@ public abstract class NodeConnector implements Serializable {
 		int j = 1;
 		int in = extra.inInt(i-1);
 		if (in == j) {
-			interact();
+			if (interact()) {
+				return;
+			}
 		}j++;
 		for (NodeConnector n: connects) {
 			if (in == j) {
