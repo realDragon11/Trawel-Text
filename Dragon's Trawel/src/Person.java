@@ -730,4 +730,34 @@ public class Person implements java.io.Serializable{
 		}
 		return starter;
 	}
+	
+	public int bloodSeed = extra.randRange(0,2000);
+	private int bloodCount = 0;
+	
+	public void wash() {
+		bloodSeed = extra.randRange(0,2000);
+		bloodCount = 0;
+	}
+	
+	public void washAll() {
+		this.wash();
+		for (Armor a: bag.getArmor()) {
+			a.wash();
+		}
+		bag.getHand().wash();
+		if (this.isPlayer()) {
+			this.bag.graphicalDisplay(-1,this);
+		}
+	}
+	
+	public int getBloodCount() {
+		return bloodCount;
+	}
+	
+	public void addBlood(int i) {
+		bloodCount+=i;
+		if (bloodCount > 16) {
+			bloodCount = 16;
+		}
+	}
 }

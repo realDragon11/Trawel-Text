@@ -8,6 +8,8 @@
 public abstract class Item implements java.io.Serializable{
 	
 	protected int level;
+	public int bloodSeed = extra.randRange(0,2000);
+	private int bloodCount = 0;
 
 	//abstracted instance methods
 	/**
@@ -62,5 +64,21 @@ public abstract class Item implements java.io.Serializable{
 	
 	public int getLevel() {
 		return level;
+	}
+	
+	public void wash() {
+		bloodSeed = extra.randRange(0,2000);
+		bloodCount = 0;
+	}
+	
+	public int getBloodCount() {
+		return bloodCount;
+	}
+	
+	public void addBlood(int i) {
+		bloodCount+=i;
+		if (bloodCount > 16) {
+			bloodCount = 16;
+		}
 	}
 }

@@ -84,7 +84,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 		switch(idNum) {
 		case -1: emeralds1();break;
 		case 1: duelist();break;
-		case 2: extra.println("You wash yourself in the "+name+".");break;
+		case 2: extra.println("You wash yourself in the "+name+".");Player.player.getPerson().washAll();break;
 		case 3: goldVein1();break;
 		case 4: mugger1(); if (state == 0) {return true;};break;
 		case 5: if (forceGo == true) {

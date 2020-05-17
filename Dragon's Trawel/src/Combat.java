@@ -58,7 +58,10 @@ public class Combat {
 			defender.advanceTime(attacker.getTime());
 			
 			handleTurn( attacker,  defender,  song,playerIsInBattle);
-			
+			if (playerIsInBattle) {
+				manTwo.getBag().graphicalDisplay(1,manTwo);
+				Player.player.getPerson().getBag().graphicalDisplay(-1,Player.player.getPerson());
+				}
 			
 			if (manOne.isAlive() && manTwo.isAlive()) {
 			setAttack(attacker,defender);}
@@ -223,7 +226,9 @@ public class Combat {
 				otherperson.getBag().graphicalDisplay(1,otherperson);
 			}else {
 				if (playerIsInBattle) {
-				quickest.getBag().graphicalDisplay(1,quickest);}
+				quickest.getBag().graphicalDisplay(1,quickest);
+				Player.player.getPerson().getBag().graphicalDisplay(-1,Player.player.getPerson());
+				}
 			}
 			setAttack(quickest,otherperson);
 			quickest.getNextAttack().defender = otherperson;
@@ -343,6 +348,22 @@ public class Combat {
 		int damageDone = this.handleAttack(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender);
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender,damageDone);
 		if (damageDone > 0) {
+			//blood
+			if (defender.getBag().getRace().emitsBlood == true && ( defender.targetOverride != TargetFactory.TargetType.STATUE || defender.targetOverride != TargetFactory.TargetType.UNDEAD_H ))
+			if (damageDone > .05*defender.getMaxHp()) {
+				attacker.getBag().getHand().addBlood(1);
+				defender.getBag().getArmorSlot(attacker.getNextAttack().getSlot()).addBlood(1);
+				if (damageDone > .2*defender.getMaxHp()) {
+					attacker.getBag().getHand().addBlood(1);
+					defender.getBag().getArmorSlot(attacker.getNextAttack().getSlot()).addBlood(1);
+					defender.addBlood(1);
+				}
+				if (damageDone > .4*defender.getMaxHp()) {
+					attacker.getBag().getHand().addBlood(1);
+					defender.getBag().getArmorSlot(attacker.getNextAttack().getSlot()).addBlood(1);
+					defender.addBlood(1);
+				}
+			}
 			//Wound effects
 			inflictWound(attacker,defender,damageDone);
 			song.addAttackHit(attacker,defender);

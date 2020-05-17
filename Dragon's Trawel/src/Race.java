@@ -12,6 +12,7 @@ public class Race extends Item implements java.io.Serializable{
 	public int magicPower, defPower;
 	public RaceType racialType;
 	public TargetFactory.TargetType targetType;
+	public boolean emitsBlood;
 	
 	public enum RaceType{
 		HUMANOID, BEAST;

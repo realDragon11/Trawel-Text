@@ -126,7 +126,9 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 	protected boolean interact() {
 		switch(idNum) {
 		case 1: duelist();break;
-		case 2: extra.println("You wash yourself in the "+name+".");break;
+		case 2: extra.println("You wash yourself in the "+name+".");
+		Player.player.getPerson().washAll();
+		;break;
 		case 3: mugger1(); if (state == 0) {return true;};break;
 		case 4: findEquip();break;
 		case 5: fairyCircle1();break;

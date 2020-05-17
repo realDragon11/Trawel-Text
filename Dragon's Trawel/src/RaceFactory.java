@@ -87,6 +87,7 @@ public class RaceFactory {
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.HUMANOID;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -110,6 +111,7 @@ public class RaceFactory {
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.HUMANOID;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -131,6 +133,7 @@ public class RaceFactory {
 		misc.defPower = 1;
 		misc.racialType = Race.RaceType.HUMANOID;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -151,6 +154,7 @@ public class RaceFactory {
 		misc.defPower = 3;
 		misc.racialType = Race.RaceType.HUMANOID;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -177,6 +181,7 @@ public class RaceFactory {
 		misc.defPower = 1;
 		misc.racialType = Race.RaceType.HUMANOID;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -197,6 +202,7 @@ public class RaceFactory {
 		misc.defPower = 1;
 		misc.racialType = Race.RaceType.HUMANOID;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -217,6 +223,7 @@ public class RaceFactory {
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.HUMANOID;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -237,6 +244,7 @@ public class RaceFactory {
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.HUMANOID;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -257,6 +265,7 @@ public class RaceFactory {
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.HUMANOID;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -277,6 +286,7 @@ public class RaceFactory {
 		misc.defPower = 1;
 		misc.racialType = Race.RaceType.HUMANOID;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -297,6 +307,7 @@ public class RaceFactory {
 		misc.defPower = 1;
 		misc.racialType = Race.RaceType.HUMANOID;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		
@@ -325,6 +336,7 @@ public class RaceFactory {
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.QUAD;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -349,6 +361,7 @@ public class RaceFactory {
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.OPEN_MIMIC;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -373,6 +386,7 @@ public class RaceFactory {
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.MIMIC;
+		misc.emitsBlood = false;
 		raceList.add(misc);
 		
 		
@@ -394,6 +408,7 @@ public class RaceFactory {
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.S_REAVER;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -414,6 +429,7 @@ public class RaceFactory {
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.C_REAVER;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -434,6 +450,7 @@ public class RaceFactory {
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.STATUE;
+		misc.emitsBlood = false;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -455,6 +472,7 @@ public class RaceFactory {
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.QUAD;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -476,6 +494,7 @@ public class RaceFactory {
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.FLY;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 	}

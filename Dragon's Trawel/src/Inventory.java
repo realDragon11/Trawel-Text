@@ -292,10 +292,10 @@ public class Inventory implements java.io.Serializable{
 	public void graphicalDisplay(int side, Person p) { 
 		Networking.sendStrong("ClearInv|"+side+"|");
 		Networking.sendStrong("RaceFlag|"+side+"|"+p.getRaceFlag().name()+"|");
-		Networking.sendStrong("RaceInv|"+side+"|" +race.name.replace("-","_") +"|"+race.baseMap+"|"+raceMap+"|"+p.getRaceFlag().name()+"|1|");
+		Networking.sendStrong("RaceInv|"+side+"|" +race.name.replace("-","_") +"|"+race.baseMap+"|"+raceMap+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|1|");
 		if (race.racialType == Race.RaceType.HUMANOID) {
 		for (Armor a: armorSlots) {
-			String str = "AddInv|"+side+"|" +a.getBaseName().replace(' ','_') +"|"+a.getBaseMap()+"|"+a.getMat().palIndex+"|";
+			String str = "AddInv|"+side+"|" +a.getBaseName().replace(' ','_') +"|"+a.getBaseMap()+"|"+a.getMat().palIndex+"|"+a.bloodSeed + "|" + a.getBloodCount() + "|";
 			switch (a.getArmorType()) {
 			case 0:str+= "-6|";break; //head
 			case 1:str+= "-3|";break; //arms
@@ -307,13 +307,13 @@ public class Inventory implements java.io.Serializable{
 			Networking.sendStrong(str);
 		}
 		if (p.hasSkill(Skill.SHIELD)) {
-			Networking.sendStrong("AddInv|"+side+"|shield|iron|"+hand.getMat().palIndex+"|-7|");
+			Networking.sendStrong("AddInv|"+side+"|shield|iron|"+hand.getMat().palIndex+"|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|-7|");
 		}else {
 		if (p.hasSkill(Skill.PARRY)) {
-			Networking.sendStrong("AddInv|"+side+"|parry|iron|"+hand.getMat().palIndex+"|-4|");
+			Networking.sendStrong("AddInv|"+side+"|parry|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount()+"|-4|");
 		}}
 		
-		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+"|2|");}
+		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|2|");}
 	}
 	
 
