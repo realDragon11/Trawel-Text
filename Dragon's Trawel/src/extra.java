@@ -148,7 +148,15 @@ public class extra {
 				Networking.sendStrong("Entry|yesno|");
 				if (Networking.connected() && mainGame.GUIInput) {
 					while(true) {
-						
+						int ini = Networking.nextInt();
+						while(ini != 1 && ini != 9) {
+							extra.println("Please type 1 or 9.");
+							ini=  Networking.nextInt();
+							if (ini == -99) {
+								throw new RuntimeException("invalid input stream error");
+							}
+						}
+						/*
 						try {
 							String str2 = System.getenv("APPDATA")+"\\Local\\Trawel\\buff.txt";
 							str2 = str2.replace("Roaming\\","");
@@ -176,7 +184,7 @@ public class extra {
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							//e.printStackTrace();
-						}
+						}*/
 					}
 					
 					}else {
@@ -203,7 +211,16 @@ public class extra {
 			int in =0;
 			Networking.sendStrong("Entry|Activate|" + max + "|");
 			if (Networking.connected() && mainGame.GUIInput) {
-			while(true) {
+				int ini=  Networking.nextInt();
+				while(ini < 1 || ini > max) {
+					extra.println("Please type a number from 1 to " + max + ".");
+					ini=  Networking.nextInt();
+					if (ini == -99) {
+						throw new RuntimeException("invalid input stream error");
+					}
+				}
+				return ini;
+				/*while(true) {
 				
 				try {
 					String str2 = System.getenv("APPDATA")+"\\Local\\Trawel\\buff.txt";
@@ -261,7 +278,9 @@ public class extra {
 					//e.printStackTrace();
 				}
 				
-			}
+				
+				
+			}*/
 			
 			
 			}else {

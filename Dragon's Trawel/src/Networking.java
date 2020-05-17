@@ -26,10 +26,7 @@ public class Networking {
 		    socket = new Socket("127.0.0.1", port);
 		    out = new PrintWriter(socket.getOutputStream(), true);
 
-		    in = //new Scanner(new BufferedReader(
-		       // new InputStreamReader(
-		        		socket.getInputStream();
-		        		//)));
+		    in = socket.getInputStream();
 
 		    extra.println("Connected!");
 		    connected = true;
@@ -85,7 +82,7 @@ public class Networking {
 			//(int)(Byte.toUnsignedInt(in.nextByte()));
 			//return in.nextInt();
 		}catch(Exception e) {
-			return -1;
+			return -99;
 		}
 	}
 	

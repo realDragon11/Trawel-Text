@@ -22,7 +22,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 		extra.println("1 explore");
 		extra.println("2 visit hot springs");
 		extra.println("3 exit");
-		int in =  extra.inInt(2);
+		int in =  extra.inInt(3);
 		if (in == 1) {
 			explores++;
 			exhaust++;
