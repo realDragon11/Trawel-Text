@@ -25,6 +25,7 @@ public class RaceFactory {
 		misc.defPower = 2;
 		misc.racialType = Race.RaceType.HUMANOID;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -45,6 +46,7 @@ public class RaceFactory {
 		misc.defPower = 2;
 		misc.racialType = Race.RaceType.HUMANOID;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -66,6 +68,7 @@ public class RaceFactory {
 		misc.defPower = 1;
 		misc.racialType = Race.RaceType.HUMANOID;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.emitsBlood = true;
 		raceList.add(misc);
 		
 		misc = new Race();

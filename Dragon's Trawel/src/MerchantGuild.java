@@ -17,15 +17,16 @@ public class MerchantGuild extends Feature {
 		extra.println("2 Donate emerald. (You have " + Player.player.emeralds + ")");
 		extra.println("3 leave");
 		switch (extra.inInt(3)) {
-		case 1:
+		case 2:
 			if (Player.player.emeralds > 0) {
 			Player.player.addMPoints(10);
 			extra.println("You donate an emerald.");
+			Player.player.emeralds--;
 			}else {
 				extra.println("You have no emeralds to donate.");
 			}
 			go();
-		case 2: do {
+		case 1: do {
 		extra.println("The merchants are willing to take supplies to increase your reputation. (current reputation: " + Player.player.merchantLevel+ ")");
 		b = Player.bag.discardDrawBanes();
 		if (b != null) {

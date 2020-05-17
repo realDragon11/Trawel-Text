@@ -190,12 +190,12 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 		if (state == 0) {
 			Networking.sendStrong("Achievement|ore1|");
 			Player.player.emeralds++;
-			extra.println("You mine the vein for "+storage1+" and claim an emerald!");
+			extra.println("You mine the vein for and claim an emerald!");
 					state = 1;
 					name = "empty vein";
 					interactString = "examine empty vein";
 			parent.removeVein();
-			}else {extra.println("The "+storage1+" has already been mined.");}
+			}else {extra.println("The emeralds have already been mined.");}
 	}
 	
 	private void goldVein1() {

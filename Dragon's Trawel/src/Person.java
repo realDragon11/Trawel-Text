@@ -732,7 +732,7 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public int bloodSeed = extra.randRange(0,2000);
-	private int bloodCount = 0;
+	private float bloodCount = 0;
 	
 	public void wash() {
 		bloodSeed = extra.randRange(0,2000);
@@ -751,10 +751,10 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public int getBloodCount() {
-		return bloodCount;
+		return (int)bloodCount;
 	}
 	
-	public void addBlood(int i) {
+	public void addBlood(float i) {
 		bloodCount+=i;
 		if (bloodCount > 16) {
 			bloodCount = 16;

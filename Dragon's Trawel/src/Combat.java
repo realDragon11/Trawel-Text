@@ -349,20 +349,31 @@ public class Combat {
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender,damageDone);
 		if (damageDone > 0) {
 			//blood
-			if (defender.getBag().getRace().emitsBlood == true && ( defender.targetOverride != TargetFactory.TargetType.STATUE || defender.targetOverride != TargetFactory.TargetType.UNDEAD_H ))
-			if (damageDone > .05*defender.getMaxHp()) {
-				attacker.getBag().getHand().addBlood(1);
+			if (defender.getBag().getRace().emitsBlood == true && ( defender.targetOverride != TargetFactory.TargetType.STATUE || defender.targetOverride != TargetFactory.TargetType.UNDEAD_H )) {
+				float percent = damageDone/(float)defender.getMaxHp();
+				attacker.getBag().getHand().addBlood(percent*10);
+				defender.getBag().getArmorSlot(attacker.getNextAttack().getSlot()).addBlood(percent*5);
+				defender.addBlood(percent*2.5f);
+				if (damageDone > .05*defender.getMaxHp()) {
+					for (Armor a: defender.getBag().getArmor()) {
+						a.addBlood(percent);
+					}
+				}
+				/*if (damageDone > .05*defender.getMaxHp()) {
+				
+				
+				attacker.getBag().getHand().addBlood(.5f);
 				defender.getBag().getArmorSlot(attacker.getNextAttack().getSlot()).addBlood(1);
 				if (damageDone > .2*defender.getMaxHp()) {
-					attacker.getBag().getHand().addBlood(1);
-					defender.getBag().getArmorSlot(attacker.getNextAttack().getSlot()).addBlood(1);
+					attacker.getBag().getHand().addBlood(.5f);
+					defender.getBag().getArmorSlot(attacker.getNextAttack().getSlot()).addBlood(.5f);
 					defender.addBlood(1);
 				}
 				if (damageDone > .4*defender.getMaxHp()) {
-					attacker.getBag().getHand().addBlood(1);
+					attacker.getBag().getHand().addBlood(.5f);
 					defender.getBag().getArmorSlot(attacker.getNextAttack().getSlot()).addBlood(1);
 					defender.addBlood(1);
-				}
+				}*/
 			}
 			//Wound effects
 			inflictWound(attacker,defender,damageDone);
