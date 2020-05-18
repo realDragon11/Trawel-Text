@@ -92,10 +92,10 @@ public class Store extends Feature implements java.io.Serializable{
 		Inventory bag = Player.player.getPerson().getBag();
 		if (type == 8) {
 			if (index == -1) {
-				DrawBane sellItem = bag.discardDrawBanes();
+				DrawBane sellItem = bag.discardDrawBanes(true);
 				if (sellItem != null) {
 					bag.addGold(sellItem.getValue());
-					dbs.remove(index);
+					//dbs.remove(index);
 				}
 				
 				return;

@@ -146,7 +146,7 @@ public class mainGame {
 		new BookFactory();
 		new BumperFactory();
 		story = new StoryNone();
-		extra.println("Dragon's Trawel v0.5.3");
+		extra.println("Dragon's Trawel v0.5.4");
 		extra.println(
 				" ___________  ___  _    _ _____ _     \r\n" + 
 				"|_   _| ___ \\/ _ \\| |  | |  ___| |    \r\n" + 

@@ -569,14 +569,14 @@ public class Inventory implements java.io.Serializable{
 		
 	}
 	
-	public DrawBane discardDrawBanes() {
+	public DrawBane discardDrawBanes(boolean selling) {
 		this.displayDrawBanes();
 		extra.println("4 keep");
 		int in = extra.inInt(4);
 		if (in == 4) {
 			return null;
 		}
-		if (dbs.get(in-1) == DrawBane.CLEANER) {
+		if (dbs.get(in-1) == DrawBane.CLEANER && !selling) {
 			this.washAll();
 		}
 		return dbs.remove(in-1);

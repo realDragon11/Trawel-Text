@@ -29,7 +29,7 @@ public class MerchantGuild extends Feature {
 			break;
 		case 1: do {
 		extra.println("The merchants are willing to take supplies to increase your reputation. (current reputation: " + Player.player.merchantLevel+ ")");
-		b = Player.bag.discardDrawBanes();
+		b = Player.bag.discardDrawBanes(true);
 		if (b != null) {
 		Player.player.addMPoints(b.getMValue());
 		}

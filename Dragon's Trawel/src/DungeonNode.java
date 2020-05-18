@@ -133,7 +133,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 			if (extra.yesNo()) {
 				if (extra.chanceIn(1, 10)) {
 					Player.player.emeralds++;
-					extra.println("You open the " +storage1 + " and find an emerald!.");
+					extra.println("You open the " +storage1 + " and find an emerald!");
 				}else {
 					int gold = extra.randRange(100,200)*level;
 					Player.bag.addGold(gold);

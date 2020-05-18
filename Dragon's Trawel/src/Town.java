@@ -293,7 +293,7 @@ public class Town implements java.io.Serializable{
 				case 1: Player.player.getPerson().getBag().display(1);
 				extra.println("You have " + Player.player.emeralds + " emeralds.");
 				;break;
-				case 2: Player.player.getPerson().getBag().discardDrawBanes();break;
+				case 2: Player.player.getPerson().getBag().discardDrawBanes(false);break;
 			}
 			
 			
