@@ -87,26 +87,26 @@ public class Combat {
 		}
 		
 		extra.println(extra.choose("The dust settles...","The body drops to the floor.","Death has come.","The battle is over."));
-		extra.println(defender.getName() + extra.choose(" lies dead..."," walks the earth no more..."," has been slain."));
-		song.addKill(attacker,defender);
-		attacker.getBag().getHand().addKill();
-		if (extra.chanceIn(1,2) || attacker.getLevel() < defender.getLevel()) {
-			attacker.getTaunts().addTaunt("It was I who " + extra.choose("slew","slaughtered","struck down","killed") + " " + defender.getName()+ "!");
+		extra.println(manTwo.getName() + extra.choose(" lies dead..."," walks the earth no more..."," has been slain."));
+		song.addKill(manOne, manTwo);
+		manOne.getBag().getHand().addKill();
+		if (extra.chanceIn(1,2) || manOne.getLevel() < manTwo.getLevel()) {
+			manOne.getTaunts().addTaunt("It was I who " + extra.choose("slew","slaughtered","struck down","killed") + " " + manTwo.getName()+ "!");
 		}
 		if (extra.chanceIn(1,2)) {
-			attacker.getTaunts().addTaunt(defender.getTaunts().getTaunt());
+			manOne.getTaunts().addTaunt(manTwo.getTaunts().getTaunt());
 		}
 		if (extra.chanceIn(1,2)) {
-			attacker.getTaunts().addBoast(defender.getTaunts().getBoast());
+			manOne.getTaunts().addBoast(manTwo.getTaunts().getBoast());
 		}
 		//if (extra.chanceIn(1,2) || attacker.getLevel() < defender.getLevel()) {
 			//attacker.getTaunts().addBoast("It was I who " + extra.choose("slew","slaughtered","struck down","killed") + " " + defender.getName()+ "!");
 		//}//t'was I who struck down X who slew Y who slew Z!
 		if (extra.chanceIn(1,3)) {
-			attacker.getTaunts().removeTaunt();
+			manOne.getTaunts().removeTaunt();
 		}
 		if (extra.chanceIn(1,4)) {
-			attacker.getTaunts().removeBoast();
+			manOne.getTaunts().removeBoast();
 		}
 	}
 	
