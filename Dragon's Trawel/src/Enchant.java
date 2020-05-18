@@ -10,5 +10,7 @@ public abstract class Enchant implements java.io.Serializable{
 	public abstract String getEnchantType();
 
 	public abstract void display(int i);
+	
+	public int enchantstyle = 0;
 
 }

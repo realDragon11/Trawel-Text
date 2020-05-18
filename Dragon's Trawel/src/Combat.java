@@ -349,7 +349,7 @@ public class Combat {
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender,damageDone);
 		if (damageDone > 0) {
 			//blood
-			if (defender.getBag().getRace().emitsBlood == true && ( defender.targetOverride != TargetFactory.TargetType.STATUE || defender.targetOverride != TargetFactory.TargetType.UNDEAD_H )) {
+			if (defender.getBag().getRace().emitsBlood == true && ( defender.targetOverride != TargetFactory.TargetType.STATUE && defender.targetOverride != TargetFactory.TargetType.UNDEAD_H )) {
 				float percent = damageDone/(float)defender.getMaxHp();
 				attacker.getBag().getHand().addBlood(percent*5);
 				defender.getBag().getArmorSlot(attacker.getNextAttack().getSlot()).addBlood(percent*2.5f);

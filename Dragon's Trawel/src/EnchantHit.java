@@ -15,12 +15,15 @@ public class EnchantHit extends Enchant {
 		switch (extra.randRange(1,3)) {
 		case 1: fireMod = Math.random()*powMod/2;
 		name = extra.choose("fire","flame","burning","blazing","heat","charring","the inferno","combustion","conflagration","embers","pyres","scorching","searing","ignition","kindling","flames");
+		enchantstyle = 3;
 		break;
 		case 2: shockMod = Math.random()*powMod/2;
 		name = extra.choose("shock","lightning","shocking","sparks","thundering","zapping");
+		enchantstyle = 2;
 		break;
 		case 3: freezeMod = Math.random()*powMod/2;
 		name = extra.choose("freeze","frost","chilling","rime","freezing","hoarfrost","ice");
+		enchantstyle = 1;
 		break;
 		}
 		goldMult = 1+(freezeMod+shockMod+fireMod)/2;
