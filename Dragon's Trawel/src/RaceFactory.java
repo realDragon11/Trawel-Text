@@ -545,7 +545,7 @@ public class RaceFactory {
 	
 	public static Person makeWolf(int level) {
 		extra.printMode = true;
-		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE);
+		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
 		w.getBag().swapRace(RaceFactory.getRace("wolf"));
 		if (extra.chanceIn(1,5)) {
@@ -557,7 +557,7 @@ public class RaceFactory {
 
 	public static Person makeMimic(int level) {
 		extra.printMode = true;
-		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("wood"),Person.RaceFlag.NONE);
+		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("wood"),Person.RaceFlag.NONE,false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
 		w.getBag().swapArmorSlot(new Armor(level,0,MaterialFactory.getMat("flesh")),0);
 		w.getBag().swapRace(RaceFactory.getRace("hiding-mimic"));
@@ -571,7 +571,7 @@ public class RaceFactory {
 	
 	public static Person makeStatue(int level) {
 		extra.printMode = true;
-		Person w = new Person(level,true, Race.RaceType.HUMANOID,MaterialFactory.getMat("flesh"),Person.RaceFlag.CRACKS);
+		Person w = new Person(level,true, Race.RaceType.HUMANOID,MaterialFactory.getMat("flesh"),Person.RaceFlag.CRACKS,false);
 		//w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
 		if (extra.chanceIn(1,2)) {
 			w.getBag().getDrawBanes().add(DrawBane.CEON_STONE);
@@ -583,7 +583,7 @@ public class RaceFactory {
 	
 	public static Person makeFellReaver(int level) {
 		extra.printMode = true;
-		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE);
+		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"standing reaver"));
 		w.backupWeapon = new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth and claws");
 		w.getBag().swapRace(RaceFactory.getRace("standing-reaver"));
@@ -601,7 +601,7 @@ public class RaceFactory {
 	}
 	public static Person makeEnt(int level) {
 		extra.printMode = true;
-		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("wood"),Person.RaceFlag.NONE);
+		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("wood"),Person.RaceFlag.NONE,false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"branches"));
 		w.getBag().getDrawBanes().add(DrawBane.ENT_CORE);
 		w.getBag().swapRace(RaceFactory.getRace("ent"));
@@ -611,7 +611,8 @@ public class RaceFactory {
 	
 	public static Person makeVampire(int level) {
 		extra.printMode = true;
-		Person w = new Person(level,true, Race.RaceType.HUMANOID,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE);
+		Person w = new Person(level,true, Race.RaceType.HUMANOID,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
+		w.setScar(biteFor(w.getBag().getRace()));
 		if (extra.chanceIn(1,20)) {
 			w.getBag().getDrawBanes().add(DrawBane.BLOOD);
 		}
@@ -622,7 +623,7 @@ public class RaceFactory {
 	
 	public static Person makeBear(int level) {
 		extra.printMode = true;
-		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE);
+		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth and claws"));
 		w.getBag().swapRace(RaceFactory.getRace("bear"));
 		w.getBag().getDrawBanes().add(DrawBane.MEAT);
@@ -632,7 +633,7 @@ public class RaceFactory {
 	
 	public static Person makeBat(int level) {
 		extra.printMode = true;
-		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE);
+		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
 		w.getBag().swapRace(RaceFactory.getRace("bat"));
 		if (extra.chanceIn(1,7)) {
@@ -643,5 +644,24 @@ public class RaceFactory {
 		}
 		extra.printMode = false;
 		return w;
+	}
+
+	public static String scarFor(Race race) {
+		switch (race.name) {
+		case "human":
+			if (extra.chanceIn(1, 3)) {
+				return extra.choose("hscar_1","H_wound1","H_wound2","H_wound3","H_wound4","H_wound5","H_wound6","H_wound7","H_wound8","H_wound9","H_wound10","H_wound11");
+			}
+			break;
+		}
+		return "";
+	}
+	
+	public static String biteFor(Race race) {
+		switch (race.name) {
+		case "human":
+				return extra.choose("H_vampbite1","H_vampbite2","H_vampbite3","H_vampbite4","H_vampbite5");
+		}
+		return "";
 	}
 }

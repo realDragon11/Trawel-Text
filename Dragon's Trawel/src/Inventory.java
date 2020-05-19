@@ -294,6 +294,9 @@ public class Inventory implements java.io.Serializable{
 		Networking.sendStrong("ClearInv|"+side+"|");
 		Networking.sendStrong("RaceFlag|"+side+"|"+p.getRaceFlag().name()+"|");
 		Networking.sendStrong("RaceInv|"+side+"|" +race.name.replace("-","_") +"|"+race.baseMap+"|"+raceMap+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|1|");
+		if (!p.getScar().equals("")) {
+			Networking.sendStrong("AddInv|"+side+"|" + p.getScar() +"|iron|0|" + p.bloodSeed + "|" + p.getBloodCount()+"|0|");
+		}
 		if (race.racialType == Race.RaceType.HUMANOID) {
 		for (Armor a: armorSlots) {
 			String str = "AddInv|"+side+"|" +a.getBaseName().replace(' ','_') +"|"+a.getBaseMap()+"|"+a.getMat().palIndex+"|"+a.bloodSeed + "|" + a.getBloodCount() + "|" +(a.getEnchant() != null ? a.getEnchant().enchantstyle :0 )+"|";
@@ -658,6 +661,7 @@ public class Inventory implements java.io.Serializable{
 
 	public void addSeed(Seed e) {
 		seeds.add(e);
+		extra.println("You got the " + e.toString().toLowerCase() + " seed!");
 		while (seeds.size() > 6) {
 			extra.println("You have too many seeds. Choose one to remove!");
 			getSeed();

@@ -34,13 +34,15 @@ public class Person implements java.io.Serializable{
 	
 	public Weapon backupWeapon = null;
 	
+	private String scar = "";
+	
 	public enum RaceFlag {
 		NONE, CRACKS, UNDEAD;
 	}
 	//private boolean isPlayer;
 	
 	//Constructor
-	public Person(int level, boolean aiLevel, Race.RaceType raceType, Material matType,RaceFlag raceFlag) {
+	public Person(int level, boolean aiLevel, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar) {
 	rFlag = raceFlag;
 	if (level < 1) {
 		extra.println("non-fatal (until you run into the level zero person) exception: level is zero on someone");
@@ -49,6 +51,7 @@ public class Person implements java.io.Serializable{
 	hp = maxHp;
 	intellect = level;
 	
+	
 	bag = new Inventory(level,raceType,matType);
 	firstName = randomLists.randomFirstName();
 	title = randomLists.randomLastName();
@@ -56,6 +59,9 @@ public class Person implements java.io.Serializable{
 	
 	brag = new Taunts(bag.getRace());
 	
+	if (giveScar) {
+	this.scar = RaceFactory.scarFor(bag.getRace());
+	}
 	this.level = level;
 	skillPoints = level-1;
 	if (extra.chanceIn(1,5)) {
@@ -75,7 +81,7 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public Person(int level) {
-		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE);
+		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
 	}
 	
 	//instance methods
@@ -764,4 +770,13 @@ public class Person implements java.io.Serializable{
 			bloodCount = 16;
 		}
 	}
+
+	public String getScar() {
+		return scar;
+	}
+
+	public void setScar(String b) {
+		scar = b;
+	}
+
 }
