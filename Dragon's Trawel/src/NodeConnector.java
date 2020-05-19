@@ -15,6 +15,7 @@ public abstract class NodeConnector implements Serializable {
 	public int floor = 0;
 	public boolean isStair = false;
 	public String parentName;
+	public boolean passing = false;
 	
 	public ArrayList<NodeConnector> getConnects() {
 		return connects;
@@ -108,4 +109,7 @@ public abstract class NodeConnector implements Serializable {
 	public void reverseConnections() {
 		Collections.reverse(connects);
 	}
+	
+	public abstract void passTime(double d);
+	public abstract void timeFinish();
 }

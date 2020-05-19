@@ -96,4 +96,16 @@ public class BossNode extends NodeConnector implements Serializable {
 		return "NOPE";
 	}
 
+	@Override
+	public void passTime(double d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void timeFinish() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

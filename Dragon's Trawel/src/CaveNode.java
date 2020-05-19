@@ -153,6 +153,18 @@ public class CaveNode extends NodeConnector implements java.io.Serializable{
 		return parent.getShape().name();
 	}
 
+	@Override
+	public void passTime(double d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void timeFinish() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 	/*

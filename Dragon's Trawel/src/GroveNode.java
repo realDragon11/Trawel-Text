@@ -125,6 +125,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 	
 	protected boolean interact() {
 		switch(idNum) {
+		case -1: plantSpot();break;
 		case 1: duelist();break;
 		case 2: extra.println("You wash yourself in the "+name+".");
 		Player.player.getPerson().washAll();
@@ -150,6 +151,10 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		}
 		Networking.clearSide(1);
 		return false;
+	}
+	
+	public void plantSpot() {
+		((PlantSpot)storage1).go();
 	}
 
 
@@ -425,7 +430,10 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		default: case 1: extra.println("You decide to leave it alone.");break;
 		case 2:
 			name = "plant spot";
+			interactString = "approach plant spot";
+			idNum = -1;
 			extra.println("You eat the mushroom...");
+			storage1 = new PlantSpot();
 			state = 1;
 			switch(extra.randRange(1,3)) {
 			case 1: extra.println("The mushroom is delicous!");break;
@@ -448,6 +456,9 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		case 3:
 			state = 1;
 			name = "plant spot";
+			interactString = "approach plant spot";
+			idNum = -1;
+			storage1 = new PlantSpot();
 			extra.println("You pick up the mushroom to sell it.");
 			if (Math.random() > .8) {
 			Networking.sendColor(Color.RED);
@@ -566,6 +577,9 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			case 1:
 				state = 2;
 				name = "plant spot";
+				interactString = "approach plant spot";
+				idNum = -1;
+				storage1 = new PlantSpot();
 				extra.println("You eat the moss...");
 				switch(extra.randRange(1,4)) {
 				case 1: extra.println("The moss is delicous!");break;
@@ -587,6 +601,9 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			case 2:
 				state = 2;
 				name = "plant spot";
+				interactString = "approach plant spot";
+				idNum = -1;
+				storage1 = new PlantSpot();
 				extra.println("You pick up the moss to sell it.");
 				if (Math.random() > .8) {
 					Networking.sendColor(Color.RED);
@@ -898,6 +915,32 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 	@Override
 	protected String shapeName() {
 		return "STANDARD";
+	}
+
+
+	@Override
+	public void passTime(double d) {
+		passing = true;
+		for (NodeConnector n: connects) {
+			if (!n.passing) {
+				n.passTime(d);
+			}
+		}
+		if (idNum == -1) {
+			((PlantSpot)storage1).passTime(d);
+		}
+	}
+
+
+	@Override
+	public void timeFinish() {
+		passing = false;
+		for (NodeConnector n: connects) {
+			if (n.passing) {
+				n.timeFinish();
+			}
+		}
+		
 	}
 
 

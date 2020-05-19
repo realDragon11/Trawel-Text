@@ -18,6 +18,7 @@ public class Inventory implements java.io.Serializable{
 	private Race race;
 	private String raceMap;
 	private ArrayList<DrawBane> dbs = new ArrayList<DrawBane>();
+	private ArrayList<Seed> seeds = new ArrayList<Seed>();
 	
 	//constructors
 	/**
@@ -628,6 +629,36 @@ public class Inventory implements java.io.Serializable{
 		}
 		//TODO: make ai nothings different
 		return i;
+		
+	}
+
+
+	public Seed getSeed() {
+		this.displaySeeds();
+		extra.println(seeds.size() + " keep");
+		int in = extra.inInt(seeds.size()+1);
+		if (in == seeds.size()+1) {
+			return null;
+		}
+		return seeds.remove(in-1);
+		
+	}
+
+
+	public void displaySeeds() {
+		for (int i = 0; i < seeds.size(); i++) {
+			extra.println((i+1) + " " + seeds.get(i));
+		}
+		
+	}
+
+
+	public void addSeed(Seed e) {
+		seeds.add(e);
+		while (seeds.size() > 6) {
+			extra.println("You have too many seeds. Choose one to remove!");
+			getSeed();
+		}
 		
 	}
 

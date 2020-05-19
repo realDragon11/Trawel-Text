@@ -22,7 +22,8 @@ public class Grove extends Feature {
 
 	@Override
 	public void passTime(double time) {
-		// TODO Auto-generated method stub
+		start.passTime(time);
+		start.timeFinish();
 	}
 	
 	public void generate() {

@@ -256,6 +256,18 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 		Networking.clearSide(1);
 	}
 
+	@Override
+	public void passTime(double d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void timeFinish() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 	/*

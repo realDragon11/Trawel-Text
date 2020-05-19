@@ -290,6 +290,24 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 	protected String shapeName() {
 		return parent.getShape().name();
 	}
+
+
+
+
+	@Override
+	public void passTime(double d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void timeFinish() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 

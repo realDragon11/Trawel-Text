@@ -247,7 +247,7 @@ public class RaceFactory {
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.HUMANOID;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
-		misc.emitsBlood = true;
+		misc.emitsBlood = false;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -268,7 +268,7 @@ public class RaceFactory {
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.HUMANOID;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
-		misc.emitsBlood = true;
+		misc.emitsBlood = false;
 		raceList.add(misc);
 		
 		misc = new Race();
