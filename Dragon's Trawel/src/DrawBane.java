@@ -12,7 +12,9 @@ public enum DrawBane {
 	REPEL("beast repellant","Repels wolves and bears.",100,1),
 	BAT_WING("bat wing","A witch's reagent.",10,.4),
 	MIMIC_GUTS("mimic guts","A witch's reagent.",50,.75),
-	CLEANER("cloth","Discard to clean blood off of your equipment.",5,0),;
+	CLEANER("cloth","Discard to clean blood off of your equipment.",5,0),
+	APPLE("apple","Used to increase potion thickness.",20,.3),
+	WOOD("wood","A good building resource.",30,.3);
 	private String name, flavorText;
 	private int value;
 	private double mVal;

@@ -104,7 +104,7 @@ public class Person implements java.io.Serializable{
 	 */
 	public void setAttack(Attack newAttack){
 		attackNext = newAttack;
-		speedFill += attackNext.getSpeed()/bag.getSpeed();//TODO: make sure making this += doesn't fuck anything up
+		speedFill += attackNext.getSpeed()/(bag.getSpeed() + (this.hasEffect(Effect.HASTE) ? 0.1 : 0 ));//TODO: make sure making this += doesn't fuck anything up
 		isAttacking = true;
 	}
 	
@@ -158,6 +158,7 @@ public class Person implements java.io.Serializable{
 			}
 			hp+=level*5;
 		}
+		
 		if (hasSkill(Skill.BEER_BELLY)) {
 			if (takeBeer()) {
 				hp+=level*5;
@@ -168,6 +169,9 @@ public class Person implements java.io.Serializable{
 		}
 		if (this.hasEffect(Effect.CURSE)) {
 			hp-=10*level;
+		}
+		if (this.hasEffect(Effect.HEARTY)) {
+			hp+=3*level;
 		}
 		hp+=skillPoints;
 		tempMaxHp = hp;

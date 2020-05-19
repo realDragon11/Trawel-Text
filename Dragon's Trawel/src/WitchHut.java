@@ -41,11 +41,17 @@ public class WitchHut extends Feature{
 			case 2:
 				extra.println("You finish brewing your potion, and put it in your flask... time to test it out!");
 				int batWings = (int) dbs.stream().filter(d -> d.equals(DrawBane.BAT_WING)).count();
+				int apples = (int) dbs.stream().filter(d -> d.equals(DrawBane.APPLE)).count();
+				int meats = (int) dbs.stream().filter(d -> d.equals(DrawBane.MEAT)).count();
+				int food = meats + apples;
+				if (food >= 3) {
+					Player.player.setFlask(new Potion(Effect.HEARTY,food));
+				}
 				if (batWings > 0) {
-					Player.player.setFlask(new Potion(Effect.HASTE,batWings));
+					Player.player.setFlask(new Potion(Effect.HASTE,batWings+apples));
 					return;
 				}
-				Player.player.setFlask(new Potion(Effect.CURSE,1));
+				Player.player.setFlask(new Potion(Effect.CURSE,1+apples));
 				return;
 			case 3: return;
 			}

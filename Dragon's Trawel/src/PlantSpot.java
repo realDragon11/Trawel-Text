@@ -25,9 +25,18 @@ public class PlantSpot {
 	
 	private void take() {
 		switch (contains) {
-		case "garlic": Player.bag.addNewDrawBane(DrawBane.GARLIC);break;
+		case "garlic": 
+			Player.bag.addNewDrawBane(DrawBane.GARLIC);
+			Player.bag.addSeed(Seed.GARLIC);
+			break;
+		case "apple tree": 
+			Player.bag.addNewDrawBane(DrawBane.APPLE);
+			Player.bag.addNewDrawBane(DrawBane.APPLE);
+			Player.bag.addNewDrawBane(DrawBane.WOOD);
+			Player.bag.addSeed(Seed.APPLE);
+		break;
 		case "garlic seed": Player.bag.addSeed(Seed.GARLIC);break;
-		case "apple seed": Player.bag.addSeed(Seed.GARLIC);break;
+		case "apple seed": Player.bag.addSeed(Seed.APPLE);break;
 		default: case "":extra.println("ERROR");break;
 		}
 		contains = "";
@@ -49,6 +58,7 @@ public class PlantSpot {
 		timer +=t;
 		switch (contains) {
 		case "garlic seeds": if (timer > 57) { contains = "garlic";timer = 0;}break;
+		case "apple seeds": if (timer > 323) { contains = "apple tree";timer = 0;}break;
 		}
 	}
 }

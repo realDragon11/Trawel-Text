@@ -3,6 +3,6 @@ public enum Seed {
 	GARLIC,APPLE;
 	
 	public static Seed randSeed() {
-		return extra.choose(GARLIC);
+		return extra.choose(GARLIC,APPLE);
 	}
 }
