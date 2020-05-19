@@ -36,7 +36,10 @@ public class PlantSpot {
 
 	private void plant() {
 		timer = 0;
-		contains = Player.bag.getSeed().toString().toLowerCase() + " seed";
+		Seed s = Player.bag.getSeed();
+		if (s != null) {
+		contains = s.toString().toLowerCase() + " seed";
+		}
 		if (contains == null) {
 			contains = "";
 		}

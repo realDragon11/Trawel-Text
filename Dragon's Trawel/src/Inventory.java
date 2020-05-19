@@ -634,6 +634,9 @@ public class Inventory implements java.io.Serializable{
 
 
 	public Seed getSeed() {
+		if (seeds.size() == 0) {
+			return null;
+		}
 		this.displaySeeds();
 		extra.println(seeds.size() + " keep");
 		int in = extra.inInt(seeds.size()+1);
