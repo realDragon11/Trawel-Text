@@ -17,9 +17,11 @@ public class Player extends SuperPerson{
 	public Town lastTown = null;
 	private double merchantPoints = 0;
 	public int emeralds = 0;
+	private Potion flask;
 	
 	public Player(Person p) {
 		person = p;
+		flask = null;
 		isAlive = true;
 		player = this;
 		bag = p.getBag();
@@ -100,6 +102,25 @@ public class Player extends SuperPerson{
 			addMPoints(0);
 			}
 		
+	}
+	
+	public void doSip() {
+		if (flask != null) {
+			extra.println("Take a sip of your potion? ("+flask.sips+" left)");
+			if (extra.yesNo()) {
+				flask.sip(person);
+				if (flask.sips <=0) {
+					flask = null;
+				}
+			}
+		}
+	}
+	public Potion getFlask() {
+		return flask;
+	}
+	
+	public void setFlask(Potion p) {
+		flask = p;
 	}
 	
 	

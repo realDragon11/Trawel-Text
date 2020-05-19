@@ -147,6 +147,9 @@ public class Person implements java.io.Serializable{
 	 * Clear the person for a new battle.
 	 */
 	public void battleSetup() {
+		if (this.isPlayer()) {
+			Player.player.doSip();
+		}
 		speedFill = 0;
 		hp = (int) (maxHp*bag.getHealth());
 		if (takeBeer()) {

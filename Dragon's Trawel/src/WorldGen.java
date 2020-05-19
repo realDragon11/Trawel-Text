@@ -98,6 +98,7 @@ public class WorldGen {
 		hemo.addFeature(new Grove("the black forest",hemo));
 		hemo.addFeature(new Blacksmith(1,s));
 		hemo.addFeature(new Champion(1,4,hemo));
+		hemo.addFeature(new WitchHut());
 		
 		hemo.setGoPrinter(new PrintEvent(){
 

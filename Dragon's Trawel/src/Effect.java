@@ -9,7 +9,8 @@ public enum Effect implements java.io.Serializable {
 	DISARMED("Disamred","Have less attack options.",false,false),
 	RECOVERING("Recovering","Will regain HP soon.",false,false),
 	I_BLEED("Bleeding Inside","Take damage over time.",false,false),
-	TORN("Torn","Decreased dodging.",false,true);
+	TORN("Torn","Decreased dodging.",false,true), 
+	HASTE("Haste","Slightly increased speed",false,false);
 	
 	private String name,desc;
 	private boolean lasts, stacks;

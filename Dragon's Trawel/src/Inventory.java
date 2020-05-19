@@ -293,7 +293,7 @@ public class Inventory implements java.io.Serializable{
 	public void graphicalDisplay(int side, Person p) { 
 		Networking.sendStrong("ClearInv|"+side+"|");
 		Networking.sendStrong("RaceFlag|"+side+"|"+p.getRaceFlag().name()+"|");
-		Networking.sendStrong("RaceInv|"+side+"|" +race.name.replace("-","_") +"|"+race.baseMap+"|"+raceMap+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|1|");
+		Networking.sendStrong("RaceInv|"+side+"|" +race.name.replace("-","_") +"|"+race.baseMap+"|"+raceMap+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|0|1|");
 		if (!p.getScar().equals("")) {
 			Networking.sendStrong("AddInv|"+side+"|" + p.getScar() +"|iron|0|" + p.bloodSeed + "|" + p.getBloodCount()+"|0|");
 		}
