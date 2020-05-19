@@ -356,7 +356,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 	}
 	
 	private void dryad() {
-		if (state == 0) {
+		if (state == 0 || state == -1) {
 		while (true) {
 			Person p = (Person)storage1;
 			p.getBag().graphicalDisplay(1, p);
@@ -398,7 +398,13 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			}
 			}
 			extra.println("They seem very passionate about it.");break;
-			case 3: extra.println("\"We are in " + parent.getName() + ". I don't venture away from my tree.\"");break;
+			case 3: extra.println("\"We are in " + parent.getName() + ". I don't venture away from my tree.\"");
+			if (state == 0) {extra.println("\"Would you like a seed to help grow the forest?\"");
+			if (extra.yesNo()) {
+				state = -1;
+				Player.bag.addSeed(Seed.randSeed());
+			}
+			};break;
 		}
 		if (in == 1) {
 			break;
