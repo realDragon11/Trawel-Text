@@ -4,6 +4,7 @@ public class EnchantHit extends Enchant {
 	private double fireMod,freezeMod,shockMod;
 	private String name;
 	private double goldMult;
+	private boolean isKeen;
 	
 	public EnchantHit(double powMod) {
 		//must constrain all enchantments from 0 to 1
@@ -12,6 +13,11 @@ public class EnchantHit extends Enchant {
 		fireMod = 0;
 		freezeMod = 0;
 		shockMod = 0;
+		if (extra.chanceIn(1, 3)) {
+			isKeen = true;
+			enchantstyle = 0;
+			name = extra.choose("keen","honed","whetted");
+		}else {
 		switch (extra.randRange(1,3)) {
 		case 1: fireMod = Math.random()*powMod/2;
 		name = extra.choose("fire","flame","burning","blazing","heat","charring","the inferno","combustion","conflagration","embers","pyres","scorching","searing","ignition","kindling","flames");
@@ -25,8 +31,8 @@ public class EnchantHit extends Enchant {
 		name = extra.choose("freeze","frost","chilling","rime","freezing","hoarfrost","ice");
 		enchantstyle = 1;
 		break;
-		}
-		goldMult = 1+(freezeMod+shockMod+fireMod)/2;
+		}}
+		goldMult = 1+(freezeMod+shockMod+fireMod+(isKeen ? .3 : 0))/2;
 	}
 	
 	@Override
@@ -68,11 +74,18 @@ public class EnchantHit extends Enchant {
 	}
 	
 	public String getName() {
+		if (isKeen) {
+			return name + " ";
+		}
 		return " of " + name;
 	}
 	
 	public double getGoldMult(){
 		return goldMult;
+	}
+	
+	public boolean isKeen() {
+		return isKeen;
 	}
 	
 

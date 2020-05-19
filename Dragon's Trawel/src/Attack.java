@@ -20,6 +20,7 @@ public class Attack implements java.io.Serializable{
 	private int soundStrength;
 	private String soundType;
 	private Wound wound;
+	private Weapon weapon;
 	//constructor
 	/**
 	 * Creates an attack with the following attributes:
@@ -43,7 +44,7 @@ public class Attack implements java.io.Serializable{
 		this.soundType = stype;
 	}
 	
-	public Attack(String name, double hitmod, double speed, double sharp, double blunt, double pierce, String desc,int sstr,String stype, Target target) {
+	public Attack(String name, double hitmod, double speed, double sharp, double blunt, double pierce, String desc,int sstr,String stype, Target target, Weapon weap) {
 		this.hitMod = hitmod;
 		this.speed = speed;
 		this.sharp = (int)sharp;
@@ -54,10 +55,11 @@ public class Attack implements java.io.Serializable{
 		this.soundStrength = sstr;
 		this.soundType = stype;
 		this.target = target;
+		this.weapon = weap;
 		//add a wound effect
 		//TODO: see if examine needs fixing
 		try {
-		if (extra.randRange(1,10) == 1) {
+		if (extra.randRange(1,10) == 1 && (weapon == null || !weapon.isKeen())) {
 			this.wound = Attack.Wound.GRAZE;
 		}else {
 		double counter = Math.random() * (sharp + blunt + pierce);
@@ -257,11 +259,11 @@ public class Attack implements java.io.Serializable{
 		extra.println(this.wound.name + " - " + this.wound.desc);}
 	}
 	
-	public Attack impair(int handLevel, TargetFactory.TargetType targetType) {
+	public Attack impair(int handLevel, TargetFactory.TargetType targetType,Weapon weap) {
 		Target t = TargetFactory.randTarget(targetType);
 		Style s = StyleFactory.randStyle();
 		if (!name.contains("examine")) {
-		return new Attack(s.name + name + " " + t.name, hitMod*t.hit*s.hit,  (s.speed*speed)+extra.randRange(0,20)-10,  handLevel*s.damage*t.sharp*sharp*extra.hrandom(),  handLevel*s.damage*t.blunt*blunt*extra.hrandom(),  handLevel*s.damage*t.pierce*pierce*extra.hrandom(),  desc,soundStrength,soundType,t);
+		return new Attack(s.name + name + " " + t.name, hitMod*t.hit*s.hit,  (s.speed*speed)+extra.randRange(0,20)-10,  handLevel*s.damage*t.sharp*sharp*extra.hrandom(),  handLevel*s.damage*t.blunt*blunt*extra.hrandom(),  handLevel*s.damage*t.pierce*pierce*extra.hrandom(),  desc,soundStrength,soundType,t,weap);
 		}else {
 			return this;
 		}
@@ -269,7 +271,7 @@ public class Attack implements java.io.Serializable{
 	
 	public Attack wither(double percent) {
 	percent = 1-percent;
-	return new Attack(name,hitMod*percent,speed*percent,sharp*percent,blunt*percent,pierce*percent,desc,soundStrength,soundType,target);	
+	return new Attack(name,hitMod*percent,speed*percent,sharp*percent,blunt*percent,pierce*percent,desc,soundStrength,soundType,target, weapon);	
 	}
 	
 	public int getSlot() {

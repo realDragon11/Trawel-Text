@@ -399,6 +399,13 @@ public class Weapon extends Item {
 	public void levelUp() {
 		level++;
 	}
+	
+	public boolean isKeen() {
+		if (this.isEnchantedHit()) {
+			return this.enchantHit.isKeen();
+		}
+		return false;
+	}
 
 	
 }
