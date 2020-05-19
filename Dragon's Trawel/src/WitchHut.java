@@ -39,6 +39,11 @@ public class WitchHut extends Feature{
 					dbs.add(inter);
 				}break;
 			case 2:
+				if (dbs.size() == 0) {
+					extra.println("There's nothing in the pot!");
+					return;
+				}
+				Networking.sendStrong("Achievement|brew1|");
 				extra.println("You finish brewing your potion, and put it in your flask... time to test it out!");
 				int batWings = (int) dbs.stream().filter(d -> d.equals(DrawBane.BAT_WING)).count();
 				int apples = (int) dbs.stream().filter(d -> d.equals(DrawBane.APPLE)).count();

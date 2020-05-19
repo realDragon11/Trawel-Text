@@ -109,6 +109,7 @@ public class Player extends SuperPerson{
 			extra.println("Take a sip of your potion? ("+flask.sips+" left)");
 			if (extra.yesNo()) {
 				flask.sip(person);
+				Networking.sendStrong("Achievement|potion1|");
 				if (flask.sips <=0) {
 					flask = null;
 				}
