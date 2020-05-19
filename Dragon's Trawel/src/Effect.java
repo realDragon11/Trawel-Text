@@ -11,7 +11,8 @@ public enum Effect implements java.io.Serializable {
 	I_BLEED("Bleeding Inside","Take damage over time.",false,false),
 	TORN("Torn","Decreased dodging.",false,true), 
 	HASTE("Haste","Slightly increased speed.",false,false), 
-	HEARTY("Hearty","Slightly increased health.",false,false), ;
+	HEARTY("Hearty","Slightly increased health.",false,false), 
+	R_AIM("Reactive Aim","Taking damage increases aim slightly.",false,false), ;
 	
 	private String name,desc;
 	private boolean lasts, stacks;

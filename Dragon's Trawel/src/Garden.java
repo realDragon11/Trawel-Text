@@ -17,7 +17,7 @@ public class Garden extends Feature {
 	@Override
 	public void go() {
 		Networking.setArea("shop");
-		Networking.sendStrong("Discord|imagesmall|lot|Lot|");
+		Networking.sendStrong("Discord|imagesmall|garden|Garden|");
 		while (true) {
 			for (int i = 0; i < plants.size();i++) {
 				extra.println((i+1) + " garden section containing " + plants.get(0).contains);

@@ -11,15 +11,14 @@ public class WitchHut extends Feature{
 	}
 	@Override
 	public void go() {
-		Networking.sendStrong("Discord|imagesmall|store|Witch Hut|");
+		Networking.sendStrong("Discord|imagesmall|hut|Witch Hut|");
 		Networking.setArea("store");
-		mainGame.story.altar();
 		while (true) {
 		extra.println("1 brew a potion");
-		extra.println("4 leave");
+		extra.println("2 leave");
 		switch (extra.inInt(2)) {
 		case 1: brew();break;
-		case 4: return;
+		case 2: return;
 		}
 		}
 	}
@@ -46,11 +45,17 @@ public class WitchHut extends Feature{
 				Networking.sendStrong("Achievement|brew1|");
 				extra.println("You finish brewing your potion, and put it in your flask... time to test it out!");
 				int batWings = (int) dbs.stream().filter(d -> d.equals(DrawBane.BAT_WING)).count();
+				int mGuts = (int) dbs.stream().filter(d -> d.equals(DrawBane.MIMIC_GUTS)).count();
 				int apples = (int) dbs.stream().filter(d -> d.equals(DrawBane.APPLE)).count();
 				int meats = (int) dbs.stream().filter(d -> d.equals(DrawBane.MEAT)).count();
 				int food = meats + apples;
+				if (mGuts > 0 && batWings >0) {
+					Player.player.setFlask(new Potion(Effect.R_AIM,batWings+mGuts+apples));
+					return;
+				}
 				if (food >= 3) {
 					Player.player.setFlask(new Potion(Effect.HEARTY,food));
+					return;
 				}
 				if (batWings > 0) {
 					Player.player.setFlask(new Potion(Effect.HASTE,batWings+apples));
