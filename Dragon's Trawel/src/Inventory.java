@@ -650,7 +650,7 @@ public class Inventory implements java.io.Serializable{
 
 	public void displaySeeds() {
 		for (int i = 0; i < seeds.size(); i++) {
-			extra.println((i+1) + " " + seeds.get(i));
+			extra.println((i+1) + " " + seeds.get(i).toString().toLowerCase() + " seed");
 		}
 		
 	}

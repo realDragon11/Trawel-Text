@@ -68,6 +68,10 @@ public class Person implements java.io.Serializable{
 	}
 	this.noAILevel = !aiLevel;
 	effects = new ArrayList<Effect>();
+	Boolean print = extra.getPrint();
+	extra.changePrint(true);
+	AIClass.checkYoSelf(this);
+	extra.changePrint(print);
 	}
 	
 	public Person(int level) {

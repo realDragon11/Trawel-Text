@@ -26,8 +26,8 @@ public class PlantSpot {
 	private void take() {
 		switch (contains) {
 		case "garlic": Player.bag.addNewDrawBane(DrawBane.GARLIC);break;
-		case "garlic seeds": Player.bag.addSeed(Seed.GARLIC);break;
-		case "apple seeds": Player.bag.addSeed(Seed.GARLIC);break;
+		case "garlic seed": Player.bag.addSeed(Seed.GARLIC);break;
+		case "apple seed": Player.bag.addSeed(Seed.GARLIC);break;
 		default: case "":extra.println("ERROR");break;
 		}
 		contains = "";

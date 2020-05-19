@@ -229,7 +229,12 @@ public class Weapon extends Item {
 		if (IsEnchantedConstant){
 		return (getModiferName() + " " +enchant.getBeforeName() + material + " " +  weapName + enchant.getAfterName());}
 		if (this.isEnchantedHit()){
+			if (isKeen()) {
+				return (getModiferName() + " " + enchantHit.getName() + material  + " " + weapName);
+			}else {
 			return (getModiferName() +" "+ material + " " +  weapName + enchantHit.getName());}
+			
+		}
 			return (getModiferName() + " " + material  + " " + weapName);
 	}
 	
