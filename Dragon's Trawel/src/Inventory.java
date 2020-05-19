@@ -619,6 +619,8 @@ public class Inventory implements java.io.Serializable{
 			sub+= hand.getBloodCount();
 			i+=sub/16;
 			break;
+		case NOTHING:
+			return 3;
 		}
 		
 		

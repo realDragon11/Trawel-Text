@@ -26,12 +26,11 @@ public class WitchHut extends Feature{
 	private void brew() {
 		ArrayList<DrawBane> dbs = new ArrayList<DrawBane>();
 		extra.println(Player.player.getFlask() != null ? "You already have a potion, brewing one will replace it." : "Time to get brewing!");
-		int in = extra.inInt(2);
 		extra.println("1 put in a drawbane");
 		extra.println("2 finish");
 		extra.println("3 back/discard");
 		while (true) {
-			switch (in) {
+			switch (extra.inInt(3)) {
 			case 1: 
 				DrawBane inter = Player.bag.discardDrawBanes(true);
 				if (inter != null && !inter.equals(DrawBane.NOTHING)) {

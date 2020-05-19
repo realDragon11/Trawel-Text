@@ -20,7 +20,7 @@ public class Garden extends Feature {
 		Networking.sendStrong("Discord|imagesmall|garden|Garden|");
 		while (true) {
 			for (int i = 0; i < plants.size();i++) {
-				extra.println((i+1) + " garden section containing " + plants.get(0).contains);
+				extra.println((i+1) + " garden section containing " + plants.get(i).contains);
 			}
 			
 			int in = extra.inInt(plants.size());
