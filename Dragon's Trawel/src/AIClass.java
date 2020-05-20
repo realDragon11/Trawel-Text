@@ -297,7 +297,7 @@ public class AIClass {
 		if (smarts < 2) {
 			return (toReplace.getCost()>hasItem.getCost());
 			}
-		if (((Weapon) hasItem).highestDamage() > ((Weapon) toReplace).highestDamage()){
+		if (((Weapon) hasItem).highestDamage().average > ((Weapon) toReplace).highestDamage().average){
 			return true;	
 			}
 		return false;
@@ -362,7 +362,7 @@ public class AIClass {
 			Weapon hasWeap = (Weapon)hasItem;
 			Weapon toWeap = (Weapon)toReplace;
 			Networking.sendColor(Color.PINK);
-			extra.println("Difference: hd: " + extra.format2((toWeap.highestDamage()-hasWeap.highestDamage())) + " cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));
+			extra.println("Difference: hd/ad: " + extra.format2((toWeap.highestDamage().highest-hasWeap.highestDamage().highest)) + "/" + (toWeap.highestDamage().average-hasWeap.highestDamage().average) + " cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));
 			if (((Weapon)hasItem).getEnchantHit() != null || ((Weapon)toReplace).getEnchantHit()!= null) {
 				displayEnchantDiff(((Weapon)hasItem).getEnchantHit(),((Weapon)toReplace).getEnchantHit());
 			}

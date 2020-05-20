@@ -34,6 +34,7 @@ public class Weapon extends Item {
 	private int kills;
 	
 	private Material mat;
+	private DamTuple dam;
 	
 	//constructors
 	/**
@@ -62,6 +63,7 @@ public class Weapon extends Item {
 		pierceMult*=level;
 		*/
 		//cost*=level;
+		
 		
 		switch (weapName) {
 		case "longsword":
@@ -322,9 +324,13 @@ public class Weapon extends Item {
 	 * Returns the damage/time (ie dps) of the most powerfull attack the weapon has
 	 * @return highest damage (int)
 	 */
-	public double highestDamage() {
+	public DamTuple highestDamage() {
+		if (dam != null) {
+			return dam;
+		}
 		double high = 0;
 		double damage = 0;
+		double average = 0;
 		int size = this.getMartialStance().getAttackCount();
 		int i = 0;
 		Attack holdAttack;
@@ -332,12 +338,24 @@ public class Weapon extends Item {
 		while (i < size) {
 			holdAttack = this.getMartialStance().getAttack(i);
 			damage = (holdAttack.getHitmod()*100*(holdAttack.getBlunt()+holdAttack.getPierce()+holdAttack.getSharp()))/holdAttack.getSpeed()*level;
+			average +=damage/size;
 			if (damage > high) {
 				high = damage;
 			}
 			i++;
 		}
-		return (damage);
+		dam = new DamTuple(high,average);
+		return dam;
+	}
+	
+	public class DamTuple{
+		
+		public double highest;
+		public double average;
+		public DamTuple(double h, double a) {
+			highest = h;
+			average = a;
+		}
 	}
 
 	@Override
@@ -345,7 +363,7 @@ public class Weapon extends Item {
 		switch (style) {
 		case 1:
 			extra.println(this.getName()
-			+ " hd: " + extra.format(this.highestDamage()) + " value: " + (int)(this.getCost()*markup));
+			+ " hd: " + extra.format(this.highestDamage().highest) + "/" + this.highestDamage().average+" value: " + (int)(this.getCost()*markup));
 			if (this.IsEnchantedConstant()) {
 				this.getEnchant().display(1);
 			}
@@ -355,7 +373,7 @@ public class Weapon extends Item {
 			;break;
 		case 2:
 			extra.println(this.getName()
-			+ " hd: " + extra.format(this.highestDamage()) + " value: " + (int)(this.getCost()*markup) + " kills: " +this.getKills());
+			+ " hd: " + extra.format(this.highestDamage().highest) + "/" + this.highestDamage().average+" value: " + (int)(this.getCost()*markup) + " kills: " +this.getKills());
 			if (this.IsEnchantedConstant()) {
 				this.getEnchant().display(2);
 			}
