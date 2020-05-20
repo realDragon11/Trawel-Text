@@ -7,6 +7,7 @@ public class Garden extends Feature {
 	private ArrayList<PlantSpot> plants = new ArrayList<PlantSpot>();
 	public Garden(Town town) {
 		this.town = town;
+		this.tier = town.getTier();
 		tier = town.getTier();
 		name = "garden";
 		tutorialText = "Gardens can grow plants.";
@@ -34,6 +35,7 @@ public class Garden extends Feature {
 
 	@Override
 	public void passTime(double time) {
+		time *= (1.0+(tier/100.0));
 		for (PlantSpot p: plants) {
 			p.passTime(time);
 		}

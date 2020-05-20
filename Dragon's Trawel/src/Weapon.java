@@ -421,6 +421,7 @@ public class Weapon extends Item {
 	
 	public void levelUp() {
 		level++;
+		dam = null;
 	}
 	
 	public boolean isKeen() {
