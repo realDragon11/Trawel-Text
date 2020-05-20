@@ -503,6 +503,11 @@ public class Combat {
 		if (attacker.hasEffect(Effect.MAJOR_BLEED)) {
 			attacker.takeDamage(2);
 		}
+		if (attacker.hasEffect(Effect.BEES) && extra.chanceIn(1,5)) {
+			extra.println("The bees sting!");
+			attacker.takeDamage(1);
+			
+		}
 		if (canWait && !attacker.isPlayer()) {
 			if (defender.isPlayer()) {
 				Networking.waitIfConnected(500L);

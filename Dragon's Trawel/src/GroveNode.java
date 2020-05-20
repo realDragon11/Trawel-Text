@@ -5,7 +5,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 	//potentail problem: all this code is in a highly duplicated node
 
 	//private String name;
-	private static final int EVENT_NUMBER = 20;
+	private static final int EVENT_NUMBER = 21;
 	private int state;
 	//private String interactString;
 	private int idNum;
@@ -97,6 +97,11 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			((Person)storage1).getBag().getDrawBanes().add(Store.randomDB());
 			((Person)storage1).getBag().getDrawBanes().add(Store.randomDB());
 			break;
+		case 21:
+			name = "bee hive";
+			interactString = "destroy hive";
+			forceGo = false;
+			break;
 		}
 		//TODO: add lumberjacks and tending to tree
 		if (size < 2) {
@@ -148,11 +153,15 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		case 18: return packOfWolves();
 		case 19: shaman();break;
 		case 20: collector();break;
+		case 21: beeHive();break;
 		}
 		Networking.clearSide(1);
 		return false;
 	}
 	
+
+
+
 	public void plantSpot() {
 		((PlantSpot)storage1).go();
 	}
@@ -914,6 +923,18 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 				}
 			}
 		}else {randomLists.deadPerson();}
+		
+	}
+	
+	private void beeHive() {
+		name = "plant spot";
+		interactString = "approach plant spot";
+		idNum = -1;
+		storage1 = new PlantSpot();
+		extra.println("You destroy the hive, angering the bees!");
+		Player.bag.addNewDrawBane(DrawBane.HONEY);
+		Player.bag.addNewDrawBane(DrawBane.WAX);
+		Player.bag.addSeed(Seed.BEE);
 		
 	}
 

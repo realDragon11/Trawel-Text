@@ -12,7 +12,8 @@ public enum Effect implements java.io.Serializable {
 	TORN("Torn","Decreased dodging.",false,true), 
 	HASTE("Haste","Slightly increased speed.",false,false), 
 	HEARTY("Hearty","Slightly increased health.",false,false), 
-	R_AIM("Reactive Aim","Taking damage increases aim slightly.",false,false), ;
+	R_AIM("Reactive Aim","Taking damage increases aim slightly.",false,false),
+	BEES("BEEEES","Bees sting you occasionally.",true,false),;
 	
 	private String name,desc;
 	private boolean lasts, stacks;

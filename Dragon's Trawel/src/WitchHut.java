@@ -48,9 +48,14 @@ public class WitchHut extends Feature{
 				int apples = (int) dbs.stream().filter(d -> d.equals(DrawBane.APPLE)).count();
 				int meats = (int) dbs.stream().filter(d -> d.equals(DrawBane.MEAT)).count();
 				int garlics = (int) dbs.stream().filter(d -> d.equals(DrawBane.GARLIC)).count();
+				int woods = (int) dbs.stream().filter(d -> d.equals(DrawBane.WOOD)).count();
 				int food = meats + apples + garlics;
+				int filler = apples + woods;
+				if (extra.chanceIn(woods, 10)) {
+					Player.player.setFlask(new Potion(Effect.CURSE,1+filler));
+				}
 				if (mGuts > 0 && batWings >0) {
-					Player.player.setFlask(new Potion(Effect.R_AIM,batWings+mGuts+apples));
+					Player.player.setFlask(new Potion(Effect.R_AIM,batWings+mGuts+filler));
 					return;
 				}
 				if (food >= 3) {
@@ -58,10 +63,10 @@ public class WitchHut extends Feature{
 					return;
 				}
 				if (batWings > 0) {
-					Player.player.setFlask(new Potion(Effect.HASTE,batWings+apples));
+					Player.player.setFlask(new Potion(Effect.HASTE,batWings+filler));
 					return;
 				}
-				Player.player.setFlask(new Potion(Effect.CURSE,1+apples));
+				Player.player.setFlask(new Potion(Effect.CURSE,1+filler));
 				return;
 			case 3: return;
 			}
