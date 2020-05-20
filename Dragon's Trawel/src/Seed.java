@@ -1,6 +1,6 @@
 
 public enum Seed {
-	GARLIC("garlic seed"),APPLE("apple seed"),BEE("bee larva");
+	GARLIC("garlic seed"),APPLE("apple seed"),BEE("bee larva"),ENT("ent sapling");
 	
 	private String name;
 	Seed(String n){

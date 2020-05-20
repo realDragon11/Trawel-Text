@@ -397,9 +397,14 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			case 2: extra.println("They start describing their tree in intricate detail before finishing.");
 			if (storage2 instanceof Integer) {
 			if ((int)storage2 > 3) {
+				if (extra.chanceIn(1, 3)) {
 				extra.println("They ask if you would like your own tree.");
 				if (extra.yesNo()) {
 					extra.println("They say to find a spot where a lumberjack has chopped down a tree and plant one there.");
+					storage2 = null;
+					Player.bag.addSeed(Seed.ENT);
+				}
+				}else {
 					storage2 = null;
 				}
 			}else {
@@ -448,7 +453,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			interactString = "approach plant spot";
 			idNum = -1;
 			extra.println("You eat the mushroom...");
-			storage1 = new PlantSpot();
+			storage1 = new PlantSpot(level);
 			state = 1;
 			switch(extra.randRange(1,3)) {
 			case 1: extra.println("The mushroom is delicous!");break;
@@ -473,7 +478,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			name = "plant spot";
 			interactString = "approach plant spot";
 			idNum = -1;
-			storage1 = new PlantSpot();
+			storage1 = new PlantSpot(level);
 			extra.println("You pick up the mushroom to sell it.");
 			if (Math.random() > .8) {
 			Networking.sendColor(Color.RED);
@@ -594,7 +599,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 				name = "plant spot";
 				interactString = "approach plant spot";
 				idNum = -1;
-				storage1 = new PlantSpot();
+				storage1 = new PlantSpot(level);
 				extra.println("You eat the moss...");
 				switch(extra.randRange(1,4)) {
 				case 1: extra.println("The moss is delicous!");break;
@@ -618,7 +623,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 				name = "plant spot";
 				interactString = "approach plant spot";
 				idNum = -1;
-				storage1 = new PlantSpot();
+				storage1 = new PlantSpot(level);
 				extra.println("You pick up the moss to sell it.");
 				if (Math.random() > .8) {
 					Networking.sendColor(Color.RED);
@@ -930,7 +935,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		name = "plant spot";
 		interactString = "approach plant spot";
 		idNum = -1;
-		storage1 = new PlantSpot();
+		storage1 = new PlantSpot(level);
 		extra.println("You destroy the hive, angering the bees!");
 		Player.bag.addNewDrawBane(DrawBane.HONEY);
 		Player.bag.addNewDrawBane(DrawBane.WAX);

@@ -3,6 +3,10 @@ public class PlantSpot {
 
 	public String contains = "";
 	public double timer = 0;
+	public int level;
+	public PlantSpot(int tier) {
+		level = tier;
+	}
 	public void go() {
 		boolean breakit = false;
 		while (!breakit) {
@@ -43,6 +47,10 @@ public class PlantSpot {
 			Player.bag.addSeed(Seed.BEE);
 		break;
 		case "bee larva": Player.bag.addSeed(Seed.BEE);break;
+		case "ent": 
+			mainGame.CombatTwo(Player.player.getPerson(),RaceFactory.makeEnt(level));
+		break;
+		case "ent sapling": Player.bag.addSeed(Seed.ENT);break;
 		default: case "":extra.println("ERROR");break;
 		}
 		contains = "";
@@ -68,6 +76,7 @@ public class PlantSpot {
 		case "garlic seeds": if (timer > 57) { contains = "garlic";timer = 0;}break;
 		case "apple seeds": if (timer > 323) { contains = "apple tree";timer = 0;}break;
 		case "bee larva": if (timer > 98) { contains = "bee hive";timer = 0;}break;
+		case "ent sapling": if (timer > 630) { contains = "ent";timer = 0;}break;
 		}
 	}
 }

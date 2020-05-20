@@ -12,7 +12,7 @@ public class Garden extends Feature {
 		name = "garden";
 		tutorialText = "Gardens can grow plants.";
 		for (int i = 0; i < 4;i++) {
-		plants.add(new PlantSpot());}
+		plants.add(new PlantSpot(tier));}
 	}
 
 	@Override
