@@ -362,7 +362,7 @@ public class AIClass {
 			Weapon hasWeap = (Weapon)hasItem;
 			Weapon toWeap = (Weapon)toReplace;
 			Networking.sendColor(Color.PINK);
-			extra.println("Difference: hd/ad: " + extra.format2((toWeap.highestDamage().highest-hasWeap.highestDamage().highest)) + "/" + (toWeap.highestDamage().average-hasWeap.highestDamage().average) + " cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));
+			extra.println("Difference: hd/ad: " + extra.format2((toWeap.highestDamage().highest-hasWeap.highestDamage().highest)) + "/" + extra.format2(toWeap.highestDamage().average-hasWeap.highestDamage().average) + " cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));
 			if (((Weapon)hasItem).getEnchantHit() != null || ((Weapon)toReplace).getEnchantHit()!= null) {
 				displayEnchantDiff(((Weapon)hasItem).getEnchantHit(),((Weapon)toReplace).getEnchantHit());
 			}

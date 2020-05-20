@@ -304,7 +304,7 @@ public class Weapon extends Item {
 	 * Returns the average damage of all the weapon's attacks. Factors in speed and damage, but not aiming.
 	 * @return - average (int)
 	 */
-	public double averageDamage() {
+	/*public double averageDamage() {
 		double average = 0;
 		int size = this.getMartialStance().getAttackCount();
 		int i = 0;
@@ -318,7 +318,7 @@ public class Weapon extends Item {
 		
 		
 		return (int)(average/size);
-	}
+	}*/
 	
 	/**
 	 * Returns the damage/time (ie dps) of the most powerfull attack the weapon has
@@ -363,7 +363,7 @@ public class Weapon extends Item {
 		switch (style) {
 		case 1:
 			extra.println(this.getName()
-			+ " hd: " + extra.format(this.highestDamage().highest) + "/" + this.highestDamage().average+" value: " + (int)(this.getCost()*markup));
+			+ " hd: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+" value: " + (int)(this.getCost()*markup));
 			if (this.IsEnchantedConstant()) {
 				this.getEnchant().display(1);
 			}
@@ -373,7 +373,7 @@ public class Weapon extends Item {
 			;break;
 		case 2:
 			extra.println(this.getName()
-			+ " hd: " + extra.format(this.highestDamage().highest) + "/" + this.highestDamage().average+" value: " + (int)(this.getCost()*markup) + " kills: " +this.getKills());
+			+ " hd: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+" value: " + (int)(this.getCost()*markup) + " kills: " +this.getKills());
 			if (this.IsEnchantedConstant()) {
 				this.getEnchant().display(2);
 			}
