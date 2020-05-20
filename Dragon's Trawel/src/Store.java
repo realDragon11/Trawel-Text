@@ -109,6 +109,7 @@ public class Store extends Feature implements java.io.Serializable{
 					if (sellItem != null) {
 						bag.addGold(sellItem.getValue()-buyGold);
 					}
+					dbs.remove(index);
 				}
 			}else {
 				extra.println("You cannot afford this item.");

@@ -291,7 +291,6 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	public void graphicalDisplay(int side, Person p) { 
-		Networking.sendStrong("ClearInv|"+side+"|");
 		Networking.sendStrong("RaceFlag|"+side+"|"+p.getRaceFlag().name()+"|");
 		Networking.sendStrong("RaceInv|"+side+"|" +race.name.replace("-","_") +"|"+race.baseMap+"|"+raceMap+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|1|");
 		if (!p.getScar().equals("")) {
@@ -318,6 +317,7 @@ public class Inventory implements java.io.Serializable{
 		}}
 		
 		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|2|");}
+		Networking.sendStrong("ClearInv|"+side+"|");
 	}
 	
 
@@ -643,7 +643,7 @@ public class Inventory implements java.io.Serializable{
 			return null;
 		}
 		this.displaySeeds();
-		extra.println(seeds.size() + " keep");
+		extra.println(seeds.size()+1 + " keep");
 		int in = extra.inInt(seeds.size()+1);
 		if (in == seeds.size()+1) {
 			return null;
