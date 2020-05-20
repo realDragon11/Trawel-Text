@@ -22,7 +22,7 @@ public class Garden extends Feature {
 			for (int i = 0; i < plants.size();i++) {
 				extra.println((i+1) + " garden section containing " + plants.get(i).contains);
 			}
-			extra.println(plants.size() + " exit");
+			extra.println(plants.size()+1 + " exit");
 			int in = extra.inInt(plants.size());
 			if (in <= plants.size()) {
 				plants.get(in-1).go();
@@ -34,7 +34,9 @@ public class Garden extends Feature {
 
 	@Override
 	public void passTime(double time) {
-		
+		for (PlantSpot p: plants) {
+			p.passTime(time);
+		}
 	}
 
 }

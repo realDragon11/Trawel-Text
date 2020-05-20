@@ -49,7 +49,8 @@ public class WitchHut extends Feature{
 				int meats = (int) dbs.stream().filter(d -> d.equals(DrawBane.MEAT)).count();
 				int garlics = (int) dbs.stream().filter(d -> d.equals(DrawBane.GARLIC)).count();
 				int woods = (int) dbs.stream().filter(d -> d.equals(DrawBane.WOOD)).count();
-				int food = meats + apples + garlics;
+				int honeys = (int) dbs.stream().filter(d -> d.equals(DrawBane.HONEY)).count();
+				int food = meats + apples + garlics + honeys;
 				int filler = apples + woods;
 				if (extra.chanceIn(woods, 10)) {
 					Player.player.setFlask(new Potion(Effect.CURSE,1+filler));
