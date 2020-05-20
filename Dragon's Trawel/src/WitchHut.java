@@ -26,10 +26,10 @@ public class WitchHut extends Feature{
 	private void brew() {
 		ArrayList<DrawBane> dbs = new ArrayList<DrawBane>();
 		extra.println(Player.player.getFlask() != null ? "You already have a potion, brewing one will replace it." : "Time to get brewing!");
-		extra.println("1 put in a drawbane");
-		extra.println("2 finish");
-		extra.println("3 back/discard");
 		while (true) {
+			extra.println("1 put in a drawbane");
+			extra.println("2 finish");
+			extra.println("3 back/discard");
 			switch (extra.inInt(3)) {
 			case 1: 
 				DrawBane inter = Player.bag.discardDrawBanes(true);
@@ -47,7 +47,8 @@ public class WitchHut extends Feature{
 				int mGuts = (int) dbs.stream().filter(d -> d.equals(DrawBane.MIMIC_GUTS)).count();
 				int apples = (int) dbs.stream().filter(d -> d.equals(DrawBane.APPLE)).count();
 				int meats = (int) dbs.stream().filter(d -> d.equals(DrawBane.MEAT)).count();
-				int food = meats + apples;
+				int garlics = (int) dbs.stream().filter(d -> d.equals(DrawBane.GARLIC)).count();
+				int food = meats + apples + garlics;
 				if (mGuts > 0 && batWings >0) {
 					Player.player.setFlask(new Potion(Effect.R_AIM,batWings+mGuts+apples));
 					return;

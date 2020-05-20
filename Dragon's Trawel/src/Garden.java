@@ -22,9 +22,9 @@ public class Garden extends Feature {
 			for (int i = 0; i < plants.size();i++) {
 				extra.println((i+1) + " garden section containing " + plants.get(i).contains);
 			}
-			
+			extra.println(plants.size() + " exit");
 			int in = extra.inInt(plants.size());
-			if (in < plants.size()) {
+			if (in <= plants.size()) {
 				plants.get(in-1).go();
 			}else {
 				break;

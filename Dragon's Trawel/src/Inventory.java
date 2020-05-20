@@ -655,7 +655,7 @@ public class Inventory implements java.io.Serializable{
 
 	public void displaySeeds() {
 		for (int i = 0; i < seeds.size(); i++) {
-			extra.println((i+1) + " " + seeds.get(i).toString().toLowerCase() + " seed");
+			extra.println((i+1) + " " + seeds.get(i).toString().toLowerCase());
 		}
 		
 	}
@@ -663,7 +663,7 @@ public class Inventory implements java.io.Serializable{
 
 	public void addSeed(Seed e) {
 		seeds.add(e);
-		extra.println("You got the " + e.toString().toLowerCase() + " seed!");
+		extra.println("You got the " + e.toString().toLowerCase() + "!");
 		while (seeds.size() > 6) {
 			extra.println("You have too many seeds. Choose one to remove!");
 			getSeed();

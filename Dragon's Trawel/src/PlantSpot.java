@@ -37,6 +37,12 @@ public class PlantSpot {
 		break;
 		case "garlic seed": Player.bag.addSeed(Seed.GARLIC);break;
 		case "apple seed": Player.bag.addSeed(Seed.APPLE);break;
+		case "bee hive": 
+			Player.bag.addNewDrawBane(DrawBane.HONEY);
+			Player.bag.addNewDrawBane(DrawBane.WAX);
+			Player.bag.addSeed(Seed.BEE);
+		break;
+		case "bee larva": Player.bag.addSeed(Seed.BEE);break;
 		default: case "":extra.println("ERROR");break;
 		}
 		contains = "";
@@ -47,7 +53,9 @@ public class PlantSpot {
 		timer = 0;
 		Seed s = Player.bag.getSeed();
 		if (s != null) {
-		contains = s.toString().toLowerCase() + " seed";
+		contains = s.toString().toLowerCase();
+		}else {
+			contains = "";
 		}
 		if (contains == null) {
 			contains = "";
@@ -59,6 +67,7 @@ public class PlantSpot {
 		switch (contains) {
 		case "garlic seeds": if (timer > 57) { contains = "garlic";timer = 0;}break;
 		case "apple seeds": if (timer > 323) { contains = "apple tree";timer = 0;}break;
+		case "bee larva": if (timer > 98) { contains = "bee hive";timer = 0;}break;
 		}
 	}
 }

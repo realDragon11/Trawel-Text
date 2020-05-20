@@ -100,6 +100,7 @@ public class BumperFactory {
 				}};
 			b.responses.add(new Response(DrawBane.MEAT,4));
 			b.responses.add(new Response(DrawBane.NOTHING,.5));
+			b.responses.add(new Response(DrawBane.HONEY,.7));
 			b.responses.add(new Response(DrawBane.REPEL,-8));
 			bumperList.add(b);
 			b = new Bumper() {

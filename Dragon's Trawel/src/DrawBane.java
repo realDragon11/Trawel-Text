@@ -14,7 +14,9 @@ public enum DrawBane {
 	MIMIC_GUTS("mimic guts","A witch's reagent.",50,.75),
 	CLEANER("cloth","Discard to clean blood off of your equipment.",5,0),
 	APPLE("apple","Used to increase potion thickness.",20,.3),
-	WOOD("wood","A good building resource.",30,.3);
+	WOOD("wood","A good building resource.",30,.3),
+	HONEY("honey","A witch's reagent.",40,.5),
+	WAX("wax","A witch's reagent.",40,.5);
 	private String name, flavorText;
 	private int value;
 	private double mVal;
