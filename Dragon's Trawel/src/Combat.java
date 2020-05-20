@@ -508,6 +508,12 @@ public class Combat {
 			attacker.takeDamage(1);
 			
 		}
+		if (defender.getHp() <= 0) {
+			Networking.send("PlayDelay|sound_fallover1|35|");
+		}
+		if (attacker.getHp() <= 0) {
+			Networking.send("PlayDelay|sound_fallover1|35|");
+		}
 		if (canWait && !attacker.isPlayer()) {
 			if (defender.isPlayer()) {
 				Networking.waitIfConnected(500L);

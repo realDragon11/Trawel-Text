@@ -41,7 +41,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 					return;
 				}
 			}
-			switch (extra.randRange(1,10)) {
+			switch (extra.randRange(1,11)) {
 			case 1: rockSlide() ;break;
 			case 2: ropeBridge() ;break;
 			case 3: goldGoat() ;break;
@@ -52,6 +52,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 			case 8: oldFighter();break;
 			case 9: goldRock();break;
 			case 10: findEquip();break;
+			case 11: vampireHunter();break;
 			}
 			Player.addTime(.5);
 		}
@@ -287,6 +288,27 @@ public class Mountain extends Feature implements java.io.Serializable{
 	private void findEquip() {
 		extra.println("You find a rotting body... With their equipment intact!");
 		AIClass.loot(new Person(tier).getBag(),Player.bag,Player.player.getPerson().getIntellect(),true);
+	}
+	
+	private void vampireHunter() {
+		extra.println("A vampire hunter is walking around. Mug them?");
+		Person robber = new Person(tier);
+		robber.getBag().getDrawBanes().add(DrawBane.SILVER);
+		robber.getBag().getDrawBanes().add(DrawBane.GARLIC);
+		robber.getBag().graphicalDisplay(1, robber);
+		Networking.sendColor(Color.RED);
+		Boolean help = extra.yesNo();
+		if (help) {
+		Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);
+	
+		if (winner == Player.player.getPerson()) {
+			extra.println("You killed them.");
+		}else {
+			extra.println("They mutter something about vampire attacks.");
+		}
+		}else {
+			extra.println("You walk away. They warn you to be safe from vampire attacks.");
+		}
 	}
 	
 	private void dryMountain() {

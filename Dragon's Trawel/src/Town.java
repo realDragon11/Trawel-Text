@@ -411,6 +411,7 @@ public class Town implements java.io.Serializable{
 			Town t = c.otherTown(this);
 			Player.addTime(c.getTime());
 			extra.println("You teleport to " + t.getName());
+			Networking.sendStrong("PlayDelay|sound_teleport|1|");
 			Player.player.setLocation(t);
 			return;}i++;
 			}
