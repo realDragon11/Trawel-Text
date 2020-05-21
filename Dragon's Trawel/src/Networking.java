@@ -143,4 +143,14 @@ public class Networking {
 			}
 		}
 	}
+
+	public static void unConnect() {
+		try {
+			in.close();
+		} catch (IOException e) {
+		}
+		out.close();
+		connected = false;
+		
+	}
 }

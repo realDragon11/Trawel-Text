@@ -154,7 +154,8 @@ public class extra {
 							extra.println("1 yes");
 							extra.println("9 no");
 							ini=  Networking.nextInt();
-							if (ini == -99) {
+							if (ini == -99 || ini == -1) {
+								Networking.unConnect();
 								throw new RuntimeException("invalid input stream error");
 							}
 							
@@ -220,7 +221,8 @@ public class extra {
 				while(ini < 1 || ini > max) {
 					extra.println("Please type a number from 1 to " + max + ".");
 					ini=  Networking.nextInt();
-					if (ini == -99) {
+					if (ini == -99 || ini == -1) {
+						Networking.unConnect();
 						throw new RuntimeException("invalid input stream error");
 					}
 				}

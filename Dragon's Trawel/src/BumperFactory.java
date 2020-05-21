@@ -19,7 +19,7 @@ public class BumperFactory {
 			@Override
 			public void activate(int level) {
 				ArrayList<Person> list = new ArrayList<Person>();
-				for (int i = 0;i < extra.randRange(2,4);i++) {
+				for (int i = 0;i < extra.randRange(1,3);i++) {
 					list.add(RaceFactory.makeWolf(extra.zeroOut(level-3)+1));}
 				
 				Networking.sendColor(Color.RED);

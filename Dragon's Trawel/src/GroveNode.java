@@ -19,7 +19,9 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		state = 0;
 		parent = p;
 		idNum = extra.randRange(1,EVENT_NUMBER);
-		
+		if (idNum == 18 && tier <= 3) {//wolves
+			idNum = extra.randRange(1,EVENT_NUMBER);
+		}
 		//DEBUG
 		//idNum = (int)extra.choose(14,15);
 		
@@ -77,7 +79,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		case 17: storage1 = new Person(level); ((Person)storage1).setRacism(false);
 		name = ((Person)storage1).getBag().getRace().name; interactString = "approach " + name;break;
 		case 18: ArrayList<Person> list = new ArrayList<Person>();
-		for (int i = 0;i < extra.randRange(2,4);i++) {
+		for (int i = 0;i < extra.randRange(2,3);i++) {
 		list.add(RaceFactory.makeWolf(extra.zeroOut(level-3)+1));}
 		name = "pack of wolves";
 		interactString = "ERROR";
