@@ -61,7 +61,7 @@ public class Forest extends Feature implements java.io.Serializable{
 			case 12: case 13: this.treeOnPerson();break;
 			case 14: case 15: this.oldFighter();break;
 			case 16: this.fairyCircle1();break;
-			case 17: case 21: if (fairyCircle2()) {return;};break;
+			case 17: case 21: //if (fairyCircle2()) {return;};break;
 			case 18: this.fairyCircle3();break;
 			case 19: findEquip();break;
 			case 20: abandonedHut();break;

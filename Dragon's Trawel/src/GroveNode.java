@@ -290,8 +290,23 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 	private boolean fairyCircle2() {
 		extra.println("You find a fairy circle of mushrooms. Step in it?");
 		if (extra.yesNo()) {
-			extra.println("You step in it. You find yourself jerked nowhere. Your surroundings change...");
-			Player.player.setLocation(Player.world.getRandom(Player.player.getPerson().getLevel()));
+			extra.println("Some fairies appear, and ask you what fate you desire.");
+			extra.println("1 a power fantasy");
+			extra.println("2 a challenge");
+			extra.println("3 your normal fate");
+			switch (extra.inInt(3)) {
+			case 1:
+				extra.println("You find yourself jerked nowhere. Your surroundings change...");
+				Player.player.setLocation(Player.world.getRandom(Player.player.getPerson().getLevel()-2));
+				break;
+			case 2:
+				extra.println("You find yourself jerked nowhere. Your surroundings change...");
+				Player.player.setLocation(Player.world.getRandom(Player.player.getPerson().getLevel()));
+				break;
+			case 3:
+				extra.println("The fairies frown and disappear.");
+				return false;
+			}
 			return true;
 		}else {
 			extra.println("You stay away from the circle.");
