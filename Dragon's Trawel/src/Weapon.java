@@ -177,6 +177,13 @@ public class Weapon extends Item {
 			martialStance.addAttack(new Attack("rake",1.1,110.0,20*sharpMult,10*bluntMult,0*pierceMult,"X` rakes Y`!",1,"sharp"));
 			martialStance.addAttack(new Attack("bash",1,120.0,0*sharpMult,35*bluntMult,35*pierceMult,"X` bashes Y` with their branches!",1,"blunt"));
 			;break;
+		case "generic fists":
+			cost *= 1;
+			weight *=1;
+			martialStance.addAttack(new Attack("bash",1.5,150.0,0*sharpMult,35*bluntMult,0*pierceMult,"X` bashes Y` with their fists!",1,"blunt"));
+			martialStance.addAttack(new Attack("smash",1,100.0,0*sharpMult,30*bluntMult,0*pierceMult,"X` smashes Y` with their fists!",1,"blunt"));
+			martialStance.addAttack(new Attack("power punch",.5,180.0,0*sharpMult,80*bluntMult,0*pierceMult,"X` lifts their fists over their head, and then brings them down on Y`!",2,"blunt"));
+			;break;
 		/*
 		case "wand":
 		cost *= 2;

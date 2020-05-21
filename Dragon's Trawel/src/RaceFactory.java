@@ -500,6 +500,27 @@ public class RaceFactory {
 		misc.emitsBlood = true;
 		raceList.add(misc);
 		
+		misc = new Race();
+		misc.name = "flesh-golem";
+		misc.namePlural = "flesh-golems";
+		misc.swears.add("meatsack");
+		misc.aimMod = .9;
+		misc.damMod = 1.1;
+		misc.dodgeMod = .6;
+		misc.hpMod = 1.4;
+		misc.speedMod = .9;
+		misc.tradeMod = .9;
+		misc.rarity = 1;
+		misc.insultList.add("Die, meatsack!");
+		misc.baseMap = "flesh_golem";
+		misc.raceMaps.add("0");;
+		misc.magicPower = 0;
+		misc.defPower = 1;
+		misc.racialType = Race.RaceType.BEAST;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.emitsBlood = true;
+		raceList.add(misc);
+		
 	}
 	
 	public static Race randRace(Race.RaceType type) {
@@ -649,10 +670,11 @@ public class RaceFactory {
 	public static Person getFleshGolem(int level) {
 		extra.printMode = true;
 		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
-		w.setScar(biteFor(w.getBag().getRace()));
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("flesh"),"generic fists"));
+		w.getBag().swapRace(RaceFactory.getRace("flesh-golem"));
 		w.getBag().getDrawBanes().add(DrawBane.BEATING_HEART);
 		extra.printMode = false;
-		w.targetOverride = TargetFactory.TargetType.HUMANOID;
+		//w.targetOverride = TargetFactory.TargetType.HUMANOID;
 		return w;
 	}
 
