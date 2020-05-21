@@ -99,7 +99,9 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 		};break;
 		case 6: extra.println("You examine the " + ((String)storage1)+ " crystals. They are very pretty.");break;
 		case 7: extra.println("You examine the iron minecart. It is on the tracks that travel throughout the mine.");break;
-		case 8: extra.println("You traverse the ladder.");break;
+		case 8: extra.println("You traverse the ladder.");
+		Networking.sendStrong("PlayDelay|sound_footsteps|1|");
+		break;
 		case 9: cultists1();break;
 		
 		}

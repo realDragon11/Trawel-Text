@@ -107,6 +107,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 	@Override
 	protected boolean interact() {
 		switch(idNum) {
+		case -1: Networking.sendStrong("PlayDelay|sound_footsteps|1|"); break;
 		case 1: chest();break;
 		case 2: mugger1(); if (state == 0) {return true;};break;
 		case 3: if (forceGo == true) {
