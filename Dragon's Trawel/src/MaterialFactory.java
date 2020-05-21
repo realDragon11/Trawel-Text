@@ -461,7 +461,7 @@ public class MaterialFactory {
 		misc.weapon = true;
 		misc.weight = 4;
 		misc.cost = 3;
-		misc.baseEnchant = .9;
+		misc.baseEnchant = 0;
 		misc.baseResist = 2;
 		misc.sharpResist = 1;
 		misc.bluntResist = 1.5;

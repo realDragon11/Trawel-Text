@@ -670,7 +670,7 @@ public class RaceFactory {
 	public static Person makeEnt(int level) {
 		extra.printMode = true;
 		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("wood"),Person.RaceFlag.NONE,false);
-		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"branches"));
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("wood"),"branches"));
 		w.getBag().getDrawBanes().add(DrawBane.ENT_CORE);
 		w.getBag().swapRace(RaceFactory.getRace("ent"));
 		extra.printMode = false;
