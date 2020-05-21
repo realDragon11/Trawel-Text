@@ -74,11 +74,16 @@ public class Combat {
 			}else {
 				attacker = manOne;
 				defender = manTwo;
+				//attacker = manOne;
+				//defender = manTwo;
+				
 			}
 		}else {
 			if (manTwo.isAlive()) {
 				attacker = manTwo;
 				defender = manOne;
+				manOne = attacker;
+				manTwo = defender;
 			}else {
 				//both dead, manOne wins be default
 				attacker = manOne;
