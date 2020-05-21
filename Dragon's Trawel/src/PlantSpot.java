@@ -51,6 +51,11 @@ public class PlantSpot {
 			mainGame.CombatTwo(Player.player.getPerson(),RaceFactory.makeEnt(level));
 		break;
 		case "ent sapling": Player.bag.addSeed(Seed.ENT);break;
+		case "pumpkin": 
+			Player.bag.addNewDrawBane(DrawBane.PUMPKIN);
+			Player.bag.addSeed(Seed.PUMPKIN);
+		break;
+		case "pumpkin seed": Player.bag.addSeed(Seed.PUMPKIN);break;
 		default: case "":extra.println("ERROR");break;
 		}
 		contains = "";
@@ -73,10 +78,11 @@ public class PlantSpot {
 	public void passTime(double t) {
 		timer +=t;
 		switch (contains) {
-		case "garlic seeds": if (timer > 57) { contains = "garlic";timer = 0;}break;
-		case "apple seeds": if (timer > 323) { contains = "apple tree";timer = 0;}break;
+		case "garlic seed": if (timer > 57) { contains = "garlic";timer = 0;}break;
+		case "apple seed": if (timer > 323) { contains = "apple tree";timer = 0;}break;
 		case "bee larva": if (timer > 98) { contains = "bee hive";timer = 0;}break;
 		case "ent sapling": if (timer > 630) { contains = "ent";timer = 0;}break;
+		case "pumpkin seed": if (timer > 60) { contains = "pumpkin";timer = 0;}break;
 		}
 	}
 }

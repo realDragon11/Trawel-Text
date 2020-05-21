@@ -16,7 +16,8 @@ public enum DrawBane {
 	APPLE("apple","Used to increase potion thickness.",20,.3),
 	WOOD("wood","A good building resource.",30,.3),
 	HONEY("honey","A witch's reagent.",40,.5),
-	WAX("wax","A witch's reagent.",40,.5);
+	WAX("wax","A witch's reagent.",40,.5),
+	PUMPKIN("pumpkin","A hearty meal.",30,.6);
 	private String name, flavorText;
 	private int value;
 	private double mVal;
