@@ -17,7 +17,8 @@ public enum DrawBane {
 	WOOD("wood","A good building resource.",30,.3),
 	HONEY("honey","A witch's reagent.",40,.5),
 	WAX("wax","A witch's reagent.",40,.5),
-	PUMPKIN("pumpkin","A hearty meal.",30,.6);
+	PUMPKIN("pumpkin","A hearty meal.",30,.6), 
+	BEATING_HEART("beating heart","Is it... still alive?!",100,1);
 	private String name, flavorText;
 	private int value;
 	private double mVal;

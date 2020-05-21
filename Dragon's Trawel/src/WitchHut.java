@@ -2,12 +2,13 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public class WitchHut extends Feature{
-
+	public Town town;
 	
-	public WitchHut() {
+	public WitchHut(Town t) {
 		name = "witch hut";
 		tutorialText = "A place to brew potions.";
 		color = Color.pink;
+		town = t;
 	}
 	@Override
 	public void go() {
@@ -51,8 +52,13 @@ public class WitchHut extends Feature{
 				int woods = (int) dbs.stream().filter(d -> d.equals(DrawBane.WOOD)).count();
 				int honeys = (int) dbs.stream().filter(d -> d.equals(DrawBane.HONEY)).count();
 				int pumpkins = (int) dbs.stream().filter(d -> d.equals(DrawBane.PUMPKIN)).count();
+				int ents = (int) dbs.stream().filter(d -> d.equals(DrawBane.ENT_CORE)).count();
 				int food = meats + apples + garlics + honeys + pumpkins + pumpkins;
 				int filler = apples + woods;
+				
+				if (ents > 0 && meats > 1) {
+					mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getFleshGolem(town.getTier()));
+				}
 				if (extra.chanceIn(woods, 10)) {
 					Player.player.setFlask(new Potion(Effect.CURSE,1+filler));
 				}
@@ -61,7 +67,7 @@ public class WitchHut extends Feature{
 					return;
 				}
 				if (food >= 3) {
-					Player.player.setFlask(new Potion(Effect.HEARTY,food));
+					Player.player.setFlask(new Potion(Effect.HEARTY,food+filler));
 					return;
 				}
 				if (batWings > 0) {

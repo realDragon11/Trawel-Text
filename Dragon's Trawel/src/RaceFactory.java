@@ -645,6 +645,16 @@ public class RaceFactory {
 		extra.printMode = false;
 		return w;
 	}
+	
+	public static Person getFleshGolem(int level) {
+		extra.printMode = true;
+		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
+		w.setScar(biteFor(w.getBag().getRace()));
+		w.getBag().getDrawBanes().add(DrawBane.BEATING_HEART);
+		extra.printMode = false;
+		w.targetOverride = TargetFactory.TargetType.HUMANOID;
+		return w;
+	}
 
 	public static String scarFor(Race race) {
 		switch (race.name) {
@@ -664,4 +674,6 @@ public class RaceFactory {
 		}
 		return "";
 	}
+
+	
 }
