@@ -12,9 +12,9 @@ public class SoundBox {
 		case FEMALE_BASIC:
 			switch (t) {
 			case GRUNT:
-				return extra.choose("");
+				return "sound_fgrunt"+ extra.randRange(1, 15);
 			case SWING:
-				return extra.choose("");
+				return "sound_hiya"+ extra.randRange(1, 5);
 			default:
 				return null;
 			

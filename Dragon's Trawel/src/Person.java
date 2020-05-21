@@ -36,6 +36,8 @@ public class Person implements java.io.Serializable{
 	
 	private String scar = "";
 	
+	private float pitch = 0;
+	
 	public enum RaceFlag {
 		NONE, CRACKS, UNDEAD;
 	}
@@ -784,6 +786,12 @@ public class Person implements java.io.Serializable{
 
 	public void setScar(String b) {
 		scar = b;
+	}
+	
+	public float getPitch() {
+		if (pitch < this.getBag().getRace().minPitch || pitch > this.getBag().getRace().maxPitch) {
+		pitch = extra.randRange((int)this.getBag().getRace().minPitch*1000,(int)this.getBag().getRace().maxPitch*1000)/1000.0f;}
+		return pitch;
 	}
 
 }

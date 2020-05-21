@@ -278,7 +278,7 @@ public class Combat {
 			return -2;
 		}
 		if (extra.chanceIn(1, 5)) {
-			Networking.send("PlayDelay|"+SoundBox.getSound(off.getRace().voice,SoundBox.Type.SWING) + "|1|");
+			Networking.send("PlayDelay|"+SoundBox.getSound(off.getRace().voice,SoundBox.Type.SWING) + "|0|" +attacker.getPitch() +"|");
 		}
 		if (defender.isAlive()) {
 		extra.print(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));}else {
@@ -353,7 +353,7 @@ public class Combat {
 		if (damageDone > 0) {
 			float percent = damageDone/(float)defender.getMaxHp();
 			if (extra.chanceIn((int)(percent*100) + (defender.getHp() <= 0 ? 10 : 0), 120)) {
-				Networking.send("PlayDelay|"+SoundBox.getSound(defender.getBag().getRace().voice,SoundBox.Type.GRUNT) + "|1|");
+				Networking.send("PlayDelay|"+SoundBox.getSound(defender.getBag().getRace().voice,SoundBox.Type.GRUNT) + "|4|"+ defender.getPitch()+"|");
 			}
 			//blood
 			
