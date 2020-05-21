@@ -277,6 +277,9 @@ public class Combat {
 			extra.print(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
 			return -2;
 		}
+		if (extra.chanceIn(1, 5)) {
+			Networking.send("PlayDelay|"+SoundBox.getSound(off.getRace().voice,SoundBox.Type.SWING) + "|1|");
+		}
 		if (defender.isAlive()) {
 		extra.print(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));}else {
 			extra.print(att.attackStringer(attacker.getName(),defender.getName() + "'s corpse",off.getHand().getName()));	
@@ -348,8 +351,12 @@ public class Combat {
 		int damageDone = this.handleAttack(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender);
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender,damageDone);
 		if (damageDone > 0) {
-			//blood
 			float percent = damageDone/(float)defender.getMaxHp();
+			if (extra.chanceIn((int)(percent*100) + (defender.getHp() <= 0 ? 10 : 0), 120)) {
+				Networking.send("PlayDelay|"+SoundBox.getSound(defender.getBag().getRace().voice,SoundBox.Type.GRUNT) + "|1|");
+			}
+			//blood
+			
 			if (defender.getBag().getRace().emitsBlood == true && ( defender.targetOverride != TargetFactory.TargetType.STATUE && defender.targetOverride != TargetFactory.TargetType.UNDEAD_H )) {
 				
 				attacker.getBag().getHand().addBlood(percent*5);
