@@ -55,8 +55,11 @@ public class WitchHut extends Feature{
 				int honeys = (int) dbs.stream().filter(d -> d.equals(DrawBane.HONEY)).count();
 				int pumpkins = (int) dbs.stream().filter(d -> d.equals(DrawBane.PUMPKIN)).count();
 				int ents = (int) dbs.stream().filter(d -> d.equals(DrawBane.ENT_CORE)).count();
-				int food = meats + apples + garlics + honeys + pumpkins + pumpkins;
-				int filler = apples + woods;
+				int waxs = (int) dbs.stream().filter(d -> d.equals(DrawBane.WAX)).count();
+				int eggcorns = (int) dbs.stream().filter(d -> d.equals(DrawBane.EGGCORN)).count();
+				int truffles = (int) dbs.stream().filter(d -> d.equals(DrawBane.TRUFFLE)).count();
+				int food = meats + apples + garlics + honeys + pumpkins + pumpkins + eggcorns+truffles;
+				int filler = apples + woods + waxs;
 				
 				if (ents > 0 && meats > 1) {
 					mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getFleshGolem(town.getTier()));

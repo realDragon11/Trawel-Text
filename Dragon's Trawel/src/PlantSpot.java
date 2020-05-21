@@ -56,6 +56,15 @@ public class PlantSpot {
 			Player.bag.addSeed(Seed.PUMPKIN);
 		break;
 		case "pumpkin seed": Player.bag.addSeed(Seed.PUMPKIN);break;
+		case "eggcorn": 
+			Player.bag.addNewDrawBane(DrawBane.EGGCORN);
+			Player.bag.addSeed(Seed.EGGCORN);
+		break;
+		case "eggcorn seed": Player.bag.addSeed(Seed.EGGCORN);break;
+		case "truffle": 
+			Player.bag.addNewDrawBane(DrawBane.TRUFFLE);
+		break;
+		case "truffle spores":;break;
 		default: case "":extra.println("ERROR");break;
 		}
 		contains = "";
@@ -83,6 +92,8 @@ public class PlantSpot {
 		case "bee larva": if (timer > 98) { contains = "bee hive";timer = 0;}break;
 		case "ent sapling": if (timer > 630) { contains = "ent";timer = 0;}break;
 		case "pumpkin seed": if (timer > 60) { contains = "pumpkin";timer = 0;}break;
+		case "eggcorn seed": if (timer > 33) { contains = "eggcorn";timer = 0;}break;
+		case "truffle spores": if (timer > 60) { contains = "truffle";timer = 0;}break;
 		}
 	}
 }
