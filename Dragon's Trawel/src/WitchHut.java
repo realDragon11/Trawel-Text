@@ -36,12 +36,14 @@ public class WitchHut extends Feature{
 				DrawBane inter = Player.bag.discardDrawBanes(true);
 				if (inter != null && !inter.equals(DrawBane.NOTHING)) {
 					dbs.add(inter);
+					Networking.sendStrong("PlayDelay|sound_potionmake"+extra.randRange(1,2)+"|1|");
 				}break;
 			case 2:
 				if (dbs.size() == 0) {
 					extra.println("There's nothing in the pot!");
 					return;
 				}
+				Networking.sendStrong("PlayDelay|sound_potiondone|1|");
 				Networking.sendStrong("Achievement|brew1|");
 				extra.println("You finish brewing your potion, and put it in your flask... time to test it out!");
 				int batWings = (int) dbs.stream().filter(d -> d.equals(DrawBane.BAT_WING)).count();

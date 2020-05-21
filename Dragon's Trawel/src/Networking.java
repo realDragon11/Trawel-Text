@@ -128,6 +128,10 @@ public class Networking {
 	public static void setArea(String area) {
 		if (!songType.equals(area)) {
 			songType = area;
+			if (area.equals("port")) {
+				Networking.sendStrong("PlaySong|sound_port|");
+				return;
+			}
 			if (inBattle == BattleType.BOSS) {
 				Networking.sendStrong("PlaySong|"+ songType +"_boss|");
 			}else {

@@ -364,6 +364,7 @@ public class Town implements java.io.Serializable{
 
 	private void goPort() {
 		int i = 1;
+		Networking.setArea("port");
 		for (Connection c: connects) {
 			if (c.getType().equals("ship")){
 			extra.print(i + " ");

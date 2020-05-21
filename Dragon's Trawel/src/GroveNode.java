@@ -297,10 +297,12 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			switch (extra.inInt(3)) {
 			case 1:
 				extra.println("You find yourself jerked nowhere. Your surroundings change...");
+				Networking.sendStrong("PlayDelay|sound_teleport|1|");
 				Player.player.setLocation(Player.world.getRandom(Player.player.getPerson().getLevel()-2));
 				break;
 			case 2:
 				extra.println("You find yourself jerked nowhere. Your surroundings change...");
+				Networking.sendStrong("PlayDelay|sound_teleport|1|");
 				Player.player.setLocation(Player.world.getRandom(Player.player.getPerson().getLevel()));
 				break;
 			case 3:

@@ -14,6 +14,9 @@ public class Race extends Item implements java.io.Serializable{
 	public TargetFactory.TargetType targetType;
 	public boolean emitsBlood;
 	
+	public SoundBox.Voice voice = SoundBox.Voice.NONE;
+	public float minPitch = 1, maxPitch = 1;
+	
 	public enum RaceType{
 		HUMANOID, BEAST;
 	}
