@@ -234,6 +234,7 @@ public class Person implements java.io.Serializable{
 			//extra.println(level + " " + xp + " " + x);
 			if (isPlayer() == false) {
 			intellect++;}else {
+				Networking.send("PlayDelayPitch|sound_magelevel|1|");
 				Networking.sendStrong("Leaderboard|Highest Level|" + level+ "|");
 			}
 			maxHp+=50;

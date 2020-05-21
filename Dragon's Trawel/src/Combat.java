@@ -560,10 +560,17 @@ public class Combat {
 		if  (att.getSkill() == Skill.ELEMENTAL_MAGE) {
 			defender.inflictWound(att.getWound());
 		def.burn(def.getFire(att.getSlot())*(att.getSharp()/100),att.getSlot());
-		
+		if (att.getSharp() > 0) {
+			Networking.send("PlayDelay|sound_fireball|1|");
+		}
 		defender.advanceTime(-((att.getPierce()/100)*defender.getTime()*def.getFreeze(att.getSlot())));
-		
+		if (att.getPierce() > 0) {
+			Networking.send("PlayDelay|sound_freeze|1|");
+		}
 		defender.takeDamage((int)((att.getBlunt())*def.getShock(att.getSlot())));
+		if (att.getBlunt() > 0) {
+			Networking.send("PlayDelay|sound_thunder|1|");
+		}
 		}
 		if  (att.getSkill() == Skill.DEATH_MAGE) {
 			defender.getNextAttack().wither(att.getSharp()/100);
@@ -579,6 +586,7 @@ public class Combat {
 			off.restoreArmor(((double)att.getSharp())/100);
 		}
 		if(att.getSkill() == Skill.ILLUSION_MAGE) {
+			Networking.send("PlayDelay|sound_befuddle|1|");
 			newTarget = true;
 		}
 	}

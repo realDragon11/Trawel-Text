@@ -48,6 +48,7 @@ public class PlantSpot {
 		break;
 		case "bee larva": Player.bag.addSeed(Seed.BEE);break;
 		case "ent": 
+			Networking.send("PlayDelay|sound_entmake|1|");
 			mainGame.CombatTwo(Player.player.getPerson(),RaceFactory.makeEnt(level));
 		break;
 		case "ent sapling": Player.bag.addSeed(Seed.ENT);break;

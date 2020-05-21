@@ -314,7 +314,13 @@ public class Town implements java.io.Serializable{
 		case 9: return;
 		case 7:
 			extra.println("Really save?");
-			if (extra.yesNo()) {WorldGen.save();} break;
+			Networking.sendColor(Color.RED);
+			extra.println("SAVES ARE NOT COMPATIBLE ACROSS VERSIONS");
+			if (extra.yesNo()) {
+				extra.println("Saving... (this will take a while)");
+				WorldGen.save();
+				
+			} break;
 		case 8: Player.toggleTutorial();break;
 		}
 		this.you();

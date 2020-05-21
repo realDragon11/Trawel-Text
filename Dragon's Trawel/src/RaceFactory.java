@@ -382,6 +382,7 @@ public class RaceFactory {
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.QUAD;
 		misc.emitsBlood = true;
+		misc.voice = SoundBox.Voice.WOLF;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -496,6 +497,7 @@ public class RaceFactory {
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.STATUE;
 		misc.emitsBlood = false;
+		misc.voice = SoundBox.Voice.ENT;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -518,6 +520,7 @@ public class RaceFactory {
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.QUAD;
 		misc.emitsBlood = true;
+		misc.voice = SoundBox.Voice.BEAR;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -540,6 +543,7 @@ public class RaceFactory {
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.FLY;
 		misc.emitsBlood = true;
+		misc.voice = SoundBox.Voice.BAT;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -561,6 +565,7 @@ public class RaceFactory {
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
+		misc.voice = SoundBox.Voice.F_GOLEM;
 		raceList.add(misc);
 		
 	}
