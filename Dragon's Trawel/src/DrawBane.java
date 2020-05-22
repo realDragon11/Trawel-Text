@@ -20,7 +20,7 @@ public enum DrawBane {
 	PUMPKIN("pumpkin","A hearty meal.",30,.6), 
 	BEATING_HEART("beating heart","Is it... still alive?!",100,1), 
 	EGGCORN("eggcorn","What is this plant?",50,.5),
-	TRUFFLE("truffle","A deliciously.",200,2), 
+	TRUFFLE("truffle","A rare food.",200,2), 
 	GOLD("gold chunk","A shiny metal.",300,4);
 	private String name, flavorText;
 	private int value;

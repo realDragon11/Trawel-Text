@@ -1,5 +1,5 @@
 
-public class SoundBox implements java.io.Serializable {
+public class SoundBox {
 	
 	public enum Voice{
 		FEMALE_BASIC, BEAR, WOLF, F_GOLEM, ENT, NONE, BAT;
