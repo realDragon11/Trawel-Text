@@ -86,6 +86,7 @@ public class BumperFactory {
 					
 				}};
 			b.responses.add(new Response(DrawBane.SILVER,1));
+			b.responses.add(new Response(DrawBane.GOLD,2));
 			bumperList.add(b);
 			b = new Bumper() {
 

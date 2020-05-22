@@ -58,14 +58,28 @@ public class WitchHut extends Feature{
 				int waxs = (int) dbs.stream().filter(d -> d.equals(DrawBane.WAX)).count();
 				int eggcorns = (int) dbs.stream().filter(d -> d.equals(DrawBane.EGGCORN)).count();
 				int truffles = (int) dbs.stream().filter(d -> d.equals(DrawBane.TRUFFLE)).count();
+				int eons = (int) dbs.stream().filter(d -> d.equals(DrawBane.CEON_STONE)).count();
+				int silvers = (int) dbs.stream().filter(d -> d.equals(DrawBane.SILVER)).count();
 				int food = meats + apples + garlics + honeys + pumpkins + pumpkins + eggcorns+truffles;
 				int filler = apples + woods + waxs;
 				
 				if (ents > 0 && meats > 1) {
 					mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getFleshGolem(town.getTier()));
+					return;
+				}
+				if (eons > 0 && silvers > 0) {
+					for (int i = 0; i < silvers;i++) {
+						Player.bag.addNewDrawBane(DrawBane.GOLD);
+					}
+					return;
+				}
+				if (eons > 0 && woods > 1) {
+					Player.bag.addNewDrawBane(DrawBane.ENT_CORE);
+					return;
 				}
 				if (extra.chanceIn(woods, 10)) {
 					Player.player.setFlask(new Potion(Effect.CURSE,1+filler));
+					return;
 				}
 				if (mGuts > 0 && batWings >0) {
 					Player.player.setFlask(new Potion(Effect.R_AIM,batWings+mGuts+filler));
