@@ -5,7 +5,7 @@ public enum DrawBane {
 	SILVER("silver","A shiny metal.",100,2),
 	MEAT("meat","A cut of meat.",20,.5),
 	CEON_STONE("eon stone","A cracked stone with infinite choices.",100,3),
-	NOTHING("nothing","A void.",0,0),
+	NOTHING("nothing","Empty slot.",0,0),
 	PROTECTIVE_WARD("protective ward","Used to repel monsters.",200,4),
 	ENT_CORE("ent core","The core of an ent tree.",50,2),
 	BLOOD("blood","A vial of blood.",40,.1),
