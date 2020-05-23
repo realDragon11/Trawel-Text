@@ -58,6 +58,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 		}
 		if (in == 2) {
 			Player.player.getPerson().washAll();
+			extra.println("You wash the blood off of your armor.");
 			Player.bag.graphicalDisplay(-1,Player.player.getPerson());
 		}
 		if (in == 3) {return;}

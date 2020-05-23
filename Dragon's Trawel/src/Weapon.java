@@ -355,7 +355,7 @@ public class Weapon extends Item {
 		return dam;
 	}
 	
-	public class DamTuple{
+	public class DamTuple implements java.io.Serializable{
 		
 		public double highest;
 		public double average;
