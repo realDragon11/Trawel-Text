@@ -387,6 +387,9 @@ public class Town implements java.io.Serializable{
 			Town t = c.otherTown(this);
 			Player.addTime(c.getTime());
 			extra.println("You travel to " + t.getName());
+			if (extra.chanceIn(4,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
+				wanderShip(3);
+			}
 			Player.player.setLocation(t);
 			return;
 			}i++;
@@ -400,6 +403,7 @@ public class Town implements java.io.Serializable{
 		
 	}
 
+	
 	private void goTeleporters() {
 		int i = 1;
 		for (Connection c: connects) {
@@ -518,7 +522,15 @@ public class Town implements java.io.Serializable{
 		if (mainGame.bumpEnabled == true) {
 			Networking.setArea("forest");
 			Networking.sendStrong("Discord|imagesmall|grove|Grove|");
-			return Bumper.go(threshold,tier);
+			return Bumper.go(threshold,tier,0);
+		}
+		return false;
+	}
+	
+	private boolean wanderShip(double d) {
+		if (mainGame.bumpEnabled == true) {
+			Networking.setArea("port");
+			return Bumper.go(d,tier,1);
 		}
 		return false;
 	}

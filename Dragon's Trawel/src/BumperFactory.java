@@ -13,6 +13,7 @@ public class BumperFactory {
 		}
 	}
 	public static ArrayList<Bumper> bumperList = new ArrayList<Bumper>();
+	public static ArrayList<Bumper> shipList = new ArrayList<Bumper>();
 	public BumperFactory(){
 		Bumper b = new Bumper() {
 
@@ -119,6 +120,24 @@ public class BumperFactory {
 			b.responses.add(new Response(DrawBane.NOTHING,.5));
 			b.responses.add(new Response(DrawBane.REPEL,-8));
 			bumperList.add(b);
+			
+			
+			//ships
+			
+			b = new Bumper() {
+				
+				@Override
+				public void activate(int level) {
+					Person p = new Person(level);
+					
+					Networking.sendColor(Color.RED);
+					extra.println("A pirate challenges you for your booty!");
+					mainGame.CombatTwo(Player.player.getPerson(),p);
+					
+				}};
+			b.responses.add(new Response(DrawBane.SILVER,1));
+			b.responses.add(new Response(DrawBane.GOLD,2));
+			shipList.add(b);
 			
 		
 	}

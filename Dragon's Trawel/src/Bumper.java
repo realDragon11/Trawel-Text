@@ -7,12 +7,19 @@ public abstract class Bumper {
 	
 	
 
-	public static boolean go(double threshold, int level) {
+	public static boolean go(double threshold, int level, int i) {
 		//TODO: calculate which enemy to fight
 		double highest = -999;
 		double d = 0;
 		Bumper highestB = null;
-		for (Bumper b: BumperFactory.bumperList) {
+		ArrayList<Bumper> bumps;
+		switch (i) {
+		default: bumps = BumperFactory.bumperList;
+		break;
+		case 1: bumps= BumperFactory.shipList;
+		break;
+		}
+		for (Bumper b: bumps) {
 			d = b.calculate(Player.player.getPerson().getBag())*extra.hrandom();
 			if (d > highest) {
 				highest = d;
