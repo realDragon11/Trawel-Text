@@ -522,7 +522,21 @@ public class Town implements java.io.Serializable{
 		if (mainGame.bumpEnabled == true) {
 			Networking.setArea("forest");
 			Networking.sendStrong("Discord|imagesmall|grove|Grove|");
-			return Bumper.go(threshold,tier,0);
+			boolean went = Bumper.go(threshold,tier,0);
+			
+			if (!went && extra.chanceIn(2,3)) {
+				Person p = this.island.getWorld().getDeathCheater(tier);
+				if (p != null) {
+					went = true;
+					Networking.sendColor(Color.red);
+					extra.println(p.getName() + " is back!");
+					Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
+					if (winner != p) {
+						this.island.getWorld().removeDeathCheater(p);
+					}
+				}
+			}
+			return went;
 		}
 		return false;
 	}

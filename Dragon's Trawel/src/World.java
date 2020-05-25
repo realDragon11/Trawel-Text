@@ -9,12 +9,14 @@ public class World implements java.io.Serializable{
 	private String name;
 
 	private ArrayList<BardSong> bardSongs;
+	private ArrayList<Person> deathCheaters;
 		
 	public World(int x, int y, String _name) {
 		xSize = x;
 		ySize = y;
 		islands = new ArrayList<Island>();
 		bardSongs = new ArrayList<BardSong>();
+		deathCheaters = new ArrayList<Person>();
 		name = _name;
 	}
 	
@@ -129,6 +131,24 @@ public class World implements java.io.Serializable{
 		return b;
 	}
 	
+	public void addDeathCheater(Person p) {
+		deathCheaters.add(p);
+	}
+	
+	public void removeDeathCheater(Person p) {
+		deathCheaters.remove(p);
+	}
+	
+	public Person getDeathCheater(int level) {
+		ArrayList<Person> list = new ArrayList<Person>();
+		deathCheaters.stream().filter(p -> p.getLevel() == level).forEach(list::add);
+		if (list.size() == 0) {
+			return null;
+		}
+		return extra.randList(list);
+		
+		
+	}
 	
 
 }

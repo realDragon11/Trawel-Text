@@ -611,6 +611,16 @@ public class Inventory implements java.io.Serializable{
 				i++;
 			}
 			break;
+		case GOLD:
+			for (Armor a: armorSlots) {
+				if (a.getMaterial().equals("gold")) {
+					i++;
+				}
+			}
+			if (hand.getMaterial().equals("gold")) {
+				i++;
+			}
+			break;
 		case BLOOD:
 			int sub = 0;
 			for (Armor a: armorSlots) {

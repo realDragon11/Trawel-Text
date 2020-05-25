@@ -13,7 +13,7 @@ import java.util.Scanner;
  * calls all the other classes, and holds the defining gameplay types and inputs.
  */
 public class mainGame {
-	public static final boolean bumpEnabled = true;//a boolean for an update
+	public static final boolean bumpEnabled = false;//a boolean for an update
 
 	//instance variables
 	public static Scanner scanner = new Scanner(System.in);
@@ -229,6 +229,7 @@ public class mainGame {
 				first_man.addXp(second_man.getLevel());
 				
 				if (second_man.isPlayer()) {
+					first_man.addPlayerKill();
 					Player.addXp(extra.zeroOut((int) (first_man.getLevel()*Math.floor((first_man.getMaxHp()-first_man.getHp())/(first_man.getMaxHp())))));
 					die();
 				}
@@ -247,6 +248,10 @@ public class mainGame {
 					}
 					if (Player.player.wins == 1000) {
 						Player.player.addTitle("master duelist");
+					}
+					second_man.addDeath();
+					if (extra.chanceIn(second_man.getPlayerKills(), 5*(second_man.getDeaths()))) {
+						w.addDeathCheater(second_man);//dupes don't happen since in this case the dupe is instantly removed in the wander code
 					}
 					}
 					if (first_man.isPlayer() || second_man.isPlayer()) {
