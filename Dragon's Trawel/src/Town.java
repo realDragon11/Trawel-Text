@@ -157,7 +157,7 @@ public class Town implements java.io.Serializable{
 		}
 		hasBeen = true;
 		Player.player.lastTown = this;
-		extra.println("You are in " + extra.capFirst(name) + ".");
+		extra.println("You are in " + extra.capFirst(name) + ", on the " +island.getWorld().getCalender().dateName() + ".");
 		Networking.sendStrong("Discord|desc|Adventuring in " + name +"|");
 		Networking.sendStrong("Discord|imagesmall|town|Town|");
 		Networking.setArea("main");
@@ -524,7 +524,7 @@ public class Town implements java.io.Serializable{
 			Networking.sendStrong("Discord|imagesmall|grove|Grove|");
 			boolean went = Bumper.go(threshold,tier,0);
 			
-			if (!went && extra.chanceIn(2,3)) {
+			if (!went && extra.chanceIn(1,3)) {
 				Person p = this.island.getWorld().getDeathCheater(tier);
 				if (p != null) {
 					went = true;

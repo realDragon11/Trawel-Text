@@ -10,6 +10,7 @@ public class World implements java.io.Serializable{
 
 	private ArrayList<BardSong> bardSongs;
 	private ArrayList<Person> deathCheaters;
+	private Calender calender = new Calender();
 		
 	public World(int x, int y, String _name) {
 		xSize = x;
@@ -57,6 +58,7 @@ public class World implements java.io.Serializable{
 	}
 
 	public void passTime(double time) {
+		calender.passTime(time);
 		for(Island i: islands) {
 			i.passTime(time);
 		}
@@ -148,6 +150,10 @@ public class World implements java.io.Serializable{
 		return extra.randList(list);
 		
 		
+	}
+
+	public Calender getCalender() {
+		return calender;
 	}
 	
 
