@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class Chase {
@@ -9,8 +10,8 @@ public class Chase {
 	public double cMom = 0, tMom = 0;//momentum
 	
 	public ArrayList<Obstacle> oQueue = new ArrayList<Obstacle>();
-	public Chase(Person chaser, Person target) {
-		this.chaser = chaser;
+	public Chase(Person target) {
+		this.chaser = Player.player.getPerson();
 		this.target = target;
 	}
 	
@@ -33,9 +34,16 @@ public class Chase {
 		if (timer >= 10) {
 			return target;
 		}
-			
-		
+		Networking.sendColor(Color.RED);
+		extra.println("You have caught up to " + target.getName() +"!");
 		return mainGame.CombatTwo(chaser,target);
+	}
+
+	public void tMomMod(double d) {
+		tMom = extra.clamp(tMom+d,0,1);
+	}
+	public void cMomMod(double d) {
+		cMom = extra.clamp(cMom+d,0,1);
 	}
 	
 	
