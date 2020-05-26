@@ -959,6 +959,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		Player.bag.addNewDrawBane(DrawBane.HONEY);
 		Player.bag.addNewDrawBane(DrawBane.WAX);
 		Player.bag.addSeed(Seed.BEE);
+		Player.player.getPerson().addEffect(Effect.BEES);
 		
 	}
 
