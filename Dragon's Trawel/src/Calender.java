@@ -91,7 +91,7 @@ public class Calender implements Serializable {
 	
 	public String dateName() {
 		String str;
-		switch (getDay()/4) {
+		switch (getDay()/7) {
 		case 0:
 			str= "1st ";break;
 		case 1:
@@ -105,7 +105,7 @@ public class Calender implements Serializable {
 		}
 		str+=getDayOfWeekName()+" of ";
 		str+=getMonthName() +" in the year of our oppressor, ";
-		str+=getYear();
+		str+=((int)getYear()) + "RC";
 		return str;
 	}
 

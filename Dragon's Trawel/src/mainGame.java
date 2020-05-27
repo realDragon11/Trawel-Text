@@ -123,7 +123,7 @@ public class mainGame {
 			extra.println("1 Discord");
 			extra.println("2 Github");
 			extra.println("3 back");
-			switch(extra.inInt(2)) {
+			switch(extra.inInt(3)) {
 			case 1: openWebpage("https://discord.gg/jsyqu7X");break;
 			case 2: openWebpage("https://github.com/realDragon11/Trawel-Text");
 			case 3: return;

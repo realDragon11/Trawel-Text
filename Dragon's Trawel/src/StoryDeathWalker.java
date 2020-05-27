@@ -81,8 +81,8 @@ public class StoryDeathWalker extends Story{
 			extra.println("\"Hear some kid... " + killed.getName() + " I think their name was? Was killed a while ago in Oblask.\"");
 			extra.println("\"Oh really, sad to hear. Not uncommon though. Lots of death these days.\"");
 			extra.println("\"Well, apparently, they were killed by their own teacher!\"");
-			extra.println("\"That's a shame. I guess you can't trust anybody these days.\"");
-			extra.println("\"What was the teacher's name?\"");
+			extra.println("\"That's a shame. I guess you can't trust anybody these days.");
+			extra.println("What was the teacher's name?\"");
 			extra.println("\""+Player.player.getPerson().getName()+".\"");
 			extra.println("Maybe you should come back later...");
 			extra.println("1 leave");
