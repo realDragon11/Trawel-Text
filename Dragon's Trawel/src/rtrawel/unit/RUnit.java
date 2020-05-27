@@ -1,5 +1,7 @@
 package rtrawel.unit;
 
+import java.util.ArrayList;
+
 import rtrawel.battle.Battle;
 
 public abstract class RUnit {
@@ -7,6 +9,7 @@ public abstract class RUnit {
 	protected int hp, mp, ten;
 	protected double warmUp, coolDown, upComing;
 	protected Action a;
+	protected ArrayList<RaceType> raceTypes = new ArrayList<RaceType>();
 	
 	public Battle curBattle;
 
@@ -110,5 +113,14 @@ public abstract class RUnit {
 		mp = this.getMaxMana();
 		ten = 0;
 		buffMap.clear();
+	}
+	
+	public boolean getRaceType(RaceType r) {
+			return raceTypes.contains(r);
+	}
+	
+	
+	public enum RaceType{
+		PLAYER, MONSTER, FISH, ETC;
 	}
 }
