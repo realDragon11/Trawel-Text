@@ -7,6 +7,11 @@ public interface Action {
 	
 	public double getWeight();
 	
+	/**
+	 * do I have enough mana/tension?
+	 * @param caster
+	 * @return
+	 */
 	public boolean canCast(RUnit caster);
 	
 	public TargetType getTargetType();

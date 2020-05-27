@@ -3,6 +3,7 @@ package rtrawel.unit;
 import java.util.ArrayList;
 
 import rtrawel.battle.Battle;
+import trawel.extra;
 
 public abstract class RUnit {
 	
@@ -62,10 +63,10 @@ public abstract class RUnit {
 	protected abstract int getEquipResilence();
 	protected abstract int getBaseResilence();
 	
-	public int takeDamage(DamageType t, int dam) {
-		int d = (int)(dam*getDamageMultFor(t));
-		hp-=d;
-		return d;
+	public void takeDamage(int dam) {
+		//int d = (int)(dam*getDamageMultFor(t));
+		hp = (int) extra.clamp(hp-dam,0,this.getMaxHp());
+		//return d;
 	}
 	public double getDamageMultFor(DamageType t) {
 		return dmm.getMult(t)*getEquipDamMultMap().getMult(t);

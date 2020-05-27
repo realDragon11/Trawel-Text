@@ -2,6 +2,8 @@ package rtrawel.unit;
 
 import java.util.List;
 
+import rtrawel.items.Item;
+
 public interface MonsterData {
 	public int getStrength();
 	public int getKnowledge();
@@ -17,5 +19,18 @@ public interface MonsterData {
 	public String getDesc();
 	public DamMultMap getDamMultMap();
 	
+	public int getXp();
+	public int getGold();
+	
+	public Item getDrop();
+	public double getDropChance();
+	public Item getRareDrop();
+	public double getRareDropChance();
+	
+	public int getKillsTilKnown();
+	public int getKillsTilVeryKnown();
+	
 	//TODO Sprites
+	
+	public SpriteData getSpriteData();
 }
