@@ -33,7 +33,7 @@ public class WorldGen {
 
 			@Override
 			public void print() {
-				extra.println("You enter the town of homa, a sober expression on your face. It's time to start your life aenw.");
+				extra.println("You enter the town of homa, a sober expression on your face. It's time to start your life anew.");
 			}
 			
 		});

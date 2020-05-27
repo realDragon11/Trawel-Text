@@ -70,7 +70,10 @@ public class mainGame {
 	
 	case 7: System.exit(0);break;
 	case 3: Networking.clearSides(); WorldGen.load(); adventureBody(); break;
-	case 6: extra.println("Port?"); Networking.connect(extra.inInt(65535)); Networking.send("Visual|MainMenu|");return;
+	case 6: extra.println("Really connect? This will clear your current connection!");
+		if (extra.yesNo()) {
+		extra.println("Port?"); Networking.connect(extra.inInt(65535)); Networking.send("Visual|MainMenu|");}
+		return;
 	case 4: links();break;
 	case 5: credits();break;
 	}
