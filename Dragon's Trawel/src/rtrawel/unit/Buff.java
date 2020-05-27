@@ -5,6 +5,7 @@ public class Buff {
 	public double timeLeft;
 	public BuffType type;
 	public double mag;
+	public boolean isDebuff;
 	
 	
 	public enum BuffType{

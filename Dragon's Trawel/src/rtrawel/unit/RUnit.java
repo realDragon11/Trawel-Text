@@ -1,10 +1,14 @@
 package rtrawel.unit;
 
+import rtrawel.battle.Battle;
+
 public abstract class RUnit {
 	
 	protected int hp, mp, ten;
 	protected double warmUp, coolDown, upComing;
 	protected Action a;
+	
+	public Battle curBattle;
 
 	protected BuffMap buffMap = new BuffMap();
 	protected DamMultMap dmm = new DamMultMap();
@@ -60,8 +64,10 @@ public abstract class RUnit {
 		return d;
 	}
 	public double getDamageMultFor(DamageType t) {
-		return dmm.getMult(t);
+		return dmm.getMult(t)*getEquipDamMultMap().getMult(t);
 	}
+	
+	protected abstract DamMultMap getEquipDamMultMap();
 	
 	public void advanceTime(double d) {
 		buffMap.advanceTime(d);
@@ -85,12 +91,24 @@ public abstract class RUnit {
 				}else {
 					d-=coolDown;
 					coolDown =0;
+					decide();
 				}
 			}
 		}
 	}
 	
+	/**
+	 * decide what action to take
+	 */
+	public abstract void decide();
 	public double timeTilNext() {
 		return Math.max(warmUp, coolDown);
+	}
+	
+	public void refresh() {
+		hp = this.getMaxHp();
+		mp = this.getMaxMana();
+		ten = 0;
+		buffMap.clear();
 	}
 }

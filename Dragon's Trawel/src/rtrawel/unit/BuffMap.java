@@ -31,4 +31,8 @@ public class BuffMap {
 		}
 		return (int)mod;
 	}
+
+	public void clear() {
+		buffs.clear();
+	}
 }
