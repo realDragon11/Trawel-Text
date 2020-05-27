@@ -7,6 +7,7 @@ public class RMonster extends RUnit {
 	
 	public RMonster(String name) {
 		this.name = name;
+		this.dmm = MonsterFactory.getMonsterByName(name).getDamMultMap();
 	}
 	public String getName() {
 		return name;
@@ -19,8 +20,7 @@ public class RMonster extends RUnit {
 
 	@Override
 	protected int getBaseStrength() {
-		// TODO Auto-generated method stub
-		return 0;
+		return  MonsterFactory.getMonsterByName(name).getStrength();
 	}
 
 	@Override
@@ -30,26 +30,22 @@ public class RMonster extends RUnit {
 
 	@Override
 	protected int getBaseKnowledge() {
-		// TODO Auto-generated method stub
-		return 0;
+		return  MonsterFactory.getMonsterByName(name).getKnowledge();
 	}
 
 	@Override
 	public int getMaxHp() {
-		// TODO Auto-generated method stub
-		return 0;
+		return  MonsterFactory.getMonsterByName(name).getMaxHp();
 	}
 
 	@Override
 	public int getMaxMana() {
-		// TODO Auto-generated method stub
-		return 0;
+		return  MonsterFactory.getMonsterByName(name).getMaxMana();
 	}
 
 	@Override
 	public int getMaxTension() {
-		// TODO Auto-generated method stub
-		return 0;
+		return  MonsterFactory.getMonsterByName(name).getMaxTension();
 	}
 
 	@Override

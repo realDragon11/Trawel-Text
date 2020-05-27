@@ -1,5 +1,7 @@
 package rtrawel.unit;
 
+import java.util.List;
+
 public interface MonsterData {
 	public int getStrength();
 	public int getKnowledge();
@@ -10,4 +12,10 @@ public interface MonsterData {
 	public int getAgility();
 	public int getDexterity();
 	public int getResilence();
+	public List<Action> getActions();
+	public String getName();
+	public String getDesc();
+	public DamMultMap getDamMultMap();
+	
+	//TODO Sprites
 }

@@ -10,6 +10,7 @@ public abstract class RUnit {
 	protected double warmUp, coolDown, upComing;
 	protected Action a;
 	protected ArrayList<RaceType> raceTypes = new ArrayList<RaceType>();
+	protected TargetGroup savedTarget;
 	
 	public Battle curBattle;
 
@@ -84,7 +85,7 @@ public abstract class RUnit {
 					warmUp =0;
 					coolDown = upComing;
 					upComing = 0;
-					a.go();
+					a.go(this,savedTarget);
 				}
 			}
 			if (coolDown > 0) {
