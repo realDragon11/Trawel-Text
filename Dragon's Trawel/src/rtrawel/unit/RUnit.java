@@ -1,12 +1,13 @@
-package rtrawel;
+package rtrawel.unit;
 
-import rtrawel.Buff.BuffType;
+import rtrawel.unit.Buff.BuffType;
 
 public abstract class RUnit {
 	
 	protected int hp, mp, ten;
 
-	private BuffMap buffMap = new BuffMap();
+	protected BuffMap buffMap = new BuffMap();
+	protected DamMultMap dmm = new DamMultMap();
 	
 	public int getStrength() {
 		return (int) (((this.getBaseStrength()+this.getEquipStrength())*buffMap.getTotalBuffMult(Buff.BuffType.STR_MULT))+buffMap.getTotalBuffMod(Buff.BuffType.STR_MOD));
@@ -43,12 +44,12 @@ public abstract class RUnit {
 	protected abstract int getEquipAgility();
 	protected abstract int getBaseAgility();
 	public int getDexterity(){
-		return (int) (((this.getBaseDexterity()+this.getEquipDexterity())*buffMap.getTotalBuffMult(Buff.BuffType.AGI_MULT))+buffMap.getTotalBuffMod(Buff.BuffType.AGI_MOD));
+		return (int) (((this.getBaseDexterity()+this.getEquipDexterity())*buffMap.getTotalBuffMult(Buff.BuffType.DEX_MULT))+buffMap.getTotalBuffMod(Buff.BuffType.DEX_MOD));
 	}
 	protected abstract int getEquipDexterity();
 	protected abstract int getBaseDexterity();
 	public int getResilence(){
-		return (int) (((this.getBaseResilence()+this.getEquipResilence())*buffMap.getTotalBuffMult(Buff.BuffType.AGI_MULT))+buffMap.getTotalBuffMod(Buff.BuffType.AGI_MOD));
+		return (int) (((this.getBaseResilence()+this.getEquipResilence())*buffMap.getTotalBuffMult(Buff.BuffType.RES_MULT))+buffMap.getTotalBuffMod(Buff.BuffType.RES_MOD));
 	}
 	protected abstract int getEquipResilence();
 	protected abstract int getBaseResilence();
@@ -59,6 +60,6 @@ public abstract class RUnit {
 		return d;
 	}
 	public double getDamageMultFor(DamageType t) {
-		return 1;//TODO
+		return dmm.getMult(t);
 	}
 }

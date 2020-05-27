@@ -1,8 +1,8 @@
-package rtrawel;
+package rtrawel.unit;
 
 import java.util.ArrayList;
 
-import rtrawel.Buff.BuffType;
+import rtrawel.unit.Buff.BuffType;
 
 public class BuffMap {
 
