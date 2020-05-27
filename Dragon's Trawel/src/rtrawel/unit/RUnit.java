@@ -1,10 +1,10 @@
 package rtrawel.unit;
 
-import rtrawel.unit.Buff.BuffType;
-
 public abstract class RUnit {
 	
 	protected int hp, mp, ten;
+	protected double warmUp, coolDown, upComing;
+	protected Action a;
 
 	protected BuffMap buffMap = new BuffMap();
 	protected DamMultMap dmm = new DamMultMap();
@@ -61,5 +61,36 @@ public abstract class RUnit {
 	}
 	public double getDamageMultFor(DamageType t) {
 		return dmm.getMult(t);
+	}
+	
+	public void advanceTime(double d) {
+		buffMap.advanceTime(d);
+		while (d > 0) {
+			if (warmUp >0) {
+				if (warmUp > d) {
+					warmUp-=d;
+					d = 0;
+				}else {
+					d-=warmUp;
+					warmUp =0;
+					coolDown = upComing;
+					upComing = 0;
+					a.go();
+				}
+			}
+			if (coolDown > 0) {
+				if (coolDown > d) {
+					coolDown-=d;
+					d = 0;
+				}else {
+					d-=coolDown;
+					coolDown =0;
+				}
+			}
+		}
+	}
+	
+	public double timeTilNext() {
+		return Math.max(warmUp, coolDown);
 	}
 }
