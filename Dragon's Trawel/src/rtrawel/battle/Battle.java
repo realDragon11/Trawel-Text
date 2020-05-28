@@ -1,6 +1,7 @@
 package rtrawel.battle;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import rtrawel.unit.RMonster;
@@ -8,11 +9,19 @@ import rtrawel.unit.RUnit;
 
 public class Battle {
 
+	public static Comparator<RUnit> comp = new Comparator<RUnit>(){
+
+		@Override
+		public int compare(RUnit arg0, RUnit arg1) {
+			return (int) Math.signum(arg1.timeTilNext()-arg0.timeTilNext());
+		}};
+	
 	public List<RUnit> party = new ArrayList<RUnit>();
 	public List<RUnit> foes = new ArrayList<RUnit>();
 	public List<RUnit> global = new ArrayList<RUnit>();
 	public List<RUnit> foesDown = new ArrayList<RUnit>();
 	public List<RUnit> partyDown = new ArrayList<RUnit>();
+	public List<RUnit> killList = new ArrayList<RUnit>();
 	public Battle(List<RUnit> party, List<RUnit> foes) {
 		this.party.addAll(party);
 		this.foes.addAll(foes);
@@ -27,7 +36,26 @@ public class Battle {
 			r.decide();
 		}
 		while (party.size() > 0 && foes.size() > 0) {
+			global.sort(comp);
+			double d = global.get(0).timeTilNext();
+			for (RUnit r: global) {
+				if (r.getHp() > 0) {
+				r.advanceTime(d);}else {
+					kill(r);
+				}
+			}
 			
+			for (RUnit r: killList) {
+				global.remove(r);
+				if (party.contains(r)) {
+					party.remove(r);
+					partyDown.add(r);
+				}else {
+					foes.remove(r);
+					foesDown.add(r);
+				}
+			}
+			killList.clear();
 		}
 		
 		if (party.size() > 0) {
@@ -48,6 +76,12 @@ public class Battle {
 		totalxp/=Party.party.list.size();
 		for (RUnit p: Party.party.list) {
 			p.EarnXp(totalxp);
+		}
+	}
+	
+	public void kill(RUnit r) {
+		if (!killList.contains(r)) {
+			killList.add(r);
 		}
 	}
 }

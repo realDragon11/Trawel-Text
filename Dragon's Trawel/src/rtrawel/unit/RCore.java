@@ -12,9 +12,7 @@ public class RCore {
 	}
 	
 	public static boolean doesHit(RUnit attacker, RUnit defender, double baseHitMult) {
-		
-		
-		return true;
+		return (1.1*(attacker.getAgility()+10))/(1.35*(attacker.getAgility()+10)) > Math.random();
 	}
 	
 	public static int dealDamage(RUnit defender, int attackStat, int damage, List<DamageType> types ) {
