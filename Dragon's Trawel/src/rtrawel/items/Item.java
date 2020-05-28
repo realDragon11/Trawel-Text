@@ -9,4 +9,6 @@ public interface Item {
 	public enum ItemType{
 		WEAPON, CONSUMABLE, NONE, ARMOR;
 	}
+	
+	public int cost();
 }

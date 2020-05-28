@@ -63,6 +63,11 @@ public class WeaponFactory {
 			@Override
 			public double critMult() {
 				return 1.5;
+			}
+
+			@Override
+			public int cost() {
+				return 20;
 			}});
 		
 		data.put("wolf pup teeth",new Weapon() {
@@ -118,6 +123,11 @@ public class WeaponFactory {
 			@Override
 			public double critMult() {
 				return 1.5;
+			}
+
+			@Override
+			public int cost() {
+				return 0;
 			}});
 	}
 	
