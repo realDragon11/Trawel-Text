@@ -3,6 +3,7 @@ package rtrawel.unit;
 import java.util.List;
 
 import rtrawel.items.WeaponFactory;
+import rtrawel.unit.RUnit.FightingStance;
 
 public class RCore {
 
@@ -11,8 +12,17 @@ public class RCore {
 		return (100+attackStat)/(100+defendStat);
 	}
 	
-	public static boolean doesHit(RUnit attacker, RUnit defender, double baseHitMult) {
-		return (1.1*(attacker.getAgility()+10))/(1.35*(attacker.getAgility()+10)) > Math.random();
+	public static boolean doesHit(RUnit attacker, RUnit defender, double baseHitMult,boolean ranged) {
+		if (Math.random() < defender.shieldBlockChance()) {
+			return false;
+		}
+		double evadeMult = 1.35;
+		switch (defender.getStance()) {
+		case OFFENSIVE: evadeMult -= .1;break;
+		case DEFENSIVE: evadeMult += .1;break;
+		}
+		double hitMult = 1.1 + (attacker.getStance().equals(FightingStance.DEFENSIVE) && !ranged ? -.1 : 0);
+		return (hitMult*(attacker.getAgility()+10))/(evadeMult*(attacker.getAgility()+10)) > Math.random();
 	}
 	
 	public static int dealDamage(RUnit defender, int attackStat, double damage, List<DamageType> types ) {
@@ -36,9 +46,9 @@ public class RCore {
 	 * @param list
 	 * @return
 	 */
-	public static int doAttack(RUnit attacker, RUnit defender, int attackStat, double baseHitMult, double d, List<DamageType> list ) {
-		if (doesHit(attacker,defender,baseHitMult)) {
-			return dealDamage(defender,attackStat,d,list);
+	public static int doAttack(RUnit attacker, RUnit defender, int attackStat, double baseHitMult, double d, boolean ranged, List<DamageType> list ) {
+		if (doesHit(attacker,defender,baseHitMult, ranged)) {
+			return dealDamage(defender,attackStat,d * (!ranged && attacker.getStance().equals(RUnit.FightingStance.OFFENSIVE) && !ranged ? 1.1 : 1),list);
 		}else {
 			return -1;
 		}

@@ -35,5 +35,6 @@ public interface MonsterData {
 	//TODO Sprites
 	
 	public SpriteData getSpriteData();
+	public double shieldBlockChance();
 	
 }

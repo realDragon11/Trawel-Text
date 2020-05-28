@@ -32,7 +32,17 @@ public abstract class Weapon implements Item {
 	
 	
 	public enum WeaponType{
-		SWORD, SHIELD, SPEAR, KNIFE, BOW, CROSSBOW, AXE, HAMMER, SLING, BOOMERANG;
+		SWORD, SHIELD, SPEAR, KNIFE, BOW, CROSSBOW, AXE, HAMMER, SLING, BOOMERANG, WAND, STAFF;
+	}
+	
+	public boolean isRanged() {
+		switch (getWeaponType()) {
+		case SWORD: case SHIELD: case SPEAR: case KNIFE: case AXE: case HAMMER: case WAND: case STAFF:
+			return false;
+		case BOW: case CROSSBOW: case SLING: case BOOMERANG:
+			return true;
+		}
+		throw new RuntimeException("invalid weapon type");
 	}
 
 }

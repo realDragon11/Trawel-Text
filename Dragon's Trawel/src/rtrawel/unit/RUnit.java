@@ -19,6 +19,8 @@ public abstract class RUnit {
 	protected BuffMap buffMap = new BuffMap();
 	protected DamMultMap dmm = new DamMultMap();
 	
+	private FightingStance fStance;
+	
 	public int getStrength() {
 		return (int) (((this.getBaseStrength()+this.getEquipStrength())*buffMap.getTotalBuffMult(Buff.BuffType.STR_MULT))+buffMap.getTotalBuffMod(Buff.BuffType.STR_MOD));
 	}
@@ -116,6 +118,7 @@ public abstract class RUnit {
 		mp = this.getMaxMana();
 		ten = 0;
 		buffMap.clear();
+		fStance = FightingStance.BALANCED;
 	}
 	
 	public boolean getRaceType(RaceType r) {
@@ -131,4 +134,14 @@ public abstract class RUnit {
 	public abstract Weapon getWeapon();
 	
 	public void EarnXp(int totalxp) {}
+	
+	public abstract double shieldBlockChance();
+	
+	public FightingStance getStance() {
+		return fStance;
+	}
+	
+	public enum FightingStance{
+		BALANCED, DEFENSIVE, OFFENSIVE;
+	}
 }

@@ -118,5 +118,9 @@ public class RMonster extends RUnit {
 	public int getGoldWorth() {
 		return  MonsterFactory.getMonsterByName(name).getGold();
 	}
+	@Override
+	public double shieldBlockChance() {
+		 return MonsterFactory.getMonsterByName(name).shieldBlockChance();
+	}
 
 }
