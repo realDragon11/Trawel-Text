@@ -15,6 +15,12 @@ public abstract class Armor implements Item {
 		HEAD,TORSO,HANDS,PANTS,FEET,ASSEC;
 	}
 	
+	public abstract ArmorClass getArmorClass();
+	
+	public enum ArmorClass{
+		NONE, LIGHT, MEDIUM, HEAVY;;
+	}
+	
 	public abstract String getName();
 	public abstract String getDesc();
 	
