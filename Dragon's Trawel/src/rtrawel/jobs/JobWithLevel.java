@@ -23,19 +23,19 @@ public class JobWithLevel {
 			break;
 		case 2:
 			if (xp >= 35) {
-				xp-=15;
+				xp-=35;
 				level++;
 			}
 			break;
 		case 3:
 			if (xp >= 65) {
-				xp-=15;
+				xp-=65;
 				level++;
 			}
 			break;
 		case 4:
 			if (xp >= 112) {
-				xp-=15;
+				xp-=112;
 				level++;
 			}
 			break;
