@@ -169,6 +169,7 @@ public class RPlayer extends RUnit {
 		int in;
 		boolean valid;
 		RUnit picked;
+		TargetGroup t;
 		while (keepGoing) {
 			extra.println(this.getName());
 			extra.println("1 basic attack");
@@ -196,6 +197,61 @@ public class RPlayer extends RUnit {
 					}
 				}
 			}
+			break;
+		case 2: 
+			for (int i = 0;i < abs.size();i++) {
+				extra.println((i+1) + " " +abs.get(i).getName());
+			}
+			extra.println((abs.size()+1 )+" back");
+			in = extra.inInt(abs.size()+1);
+			if (in == abs.size()+1) {
+				break;
+			}
+			Action ab = abs.get(in-1);
+			if (!ab.canCast(this)) {
+				extra.println("You can't cast that right now.");
+				continue;
+			}
+			if (ab.getTargetType().equals(Action.TargetType.FOE)) {
+				if (ab.getTargetGrouping().equals(Action.TargetGrouping.ALL)) {
+					t = new TargetGroup();
+					t.targets.addAll(curBattle.foes);
+					decideOn(ab,t);
+				}else {
+					if (ab.getTargetGrouping().equals(Action.TargetGrouping.GROUP)) {
+						
+						for (int i = 0;i < curBattle.foeGroups.size();i++) {
+							t = new TargetGroup();
+							for (RUnit u: curBattle.foeGroups.get(i)) {
+								t.targets.add(u);
+							}
+							extra.println((i+1) + " " + t.toString());
+						}
+						t = new TargetGroup();
+						extra.inInt(curBattle.foeGroups.size());
+						t.targets.addAll(curBattle.foeGroups.get(in-1));
+						decideOn(ab,t);
+						keepGoing = false;
+					}else {
+						valid = false;
+						while (!valid) {
+							in = extra.inInt(99);
+							for (RUnit r: curBattle.foes) {
+								if (((RMonster)r).getMonsterNumber() == in) {
+									decideOn(ab,new TargetGroup(r));
+									valid = true;
+									keepGoing = false;
+									break;
+								}
+							}
+						}
+					}
+				}
+				
+			}else {
+				
+			}
+			
 			break;
 		
 		}
