@@ -3,6 +3,7 @@ package rtrawel.unit;
 import java.util.ArrayList;
 
 import rtrawel.battle.Battle;
+import rtrawel.items.Weapon;
 import trawel.extra;
 
 public abstract class RUnit {
@@ -125,4 +126,7 @@ public abstract class RUnit {
 	public enum RaceType{
 		PLAYER, MONSTER, FISH, ETC;
 	}
+
+
+	public abstract Weapon getWeapon();
 }

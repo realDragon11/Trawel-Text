@@ -3,6 +3,8 @@ package rtrawel.unit;
 import java.util.Arrays;
 import java.util.List;
 
+import rtrawel.items.WeaponFactory;
+
 public class RCore {
 
 	
@@ -43,6 +45,13 @@ public class RCore {
 		}else {
 			return -1;
 		}
+	}
+	
+	
+	public static void init() {
+		ActionFactory.init();
+		WeaponFactory.init();
+		MonsterFactory.init();
 	}
 	
 	

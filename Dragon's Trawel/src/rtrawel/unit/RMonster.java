@@ -1,5 +1,8 @@
 package rtrawel.unit;
 
+import rtrawel.items.Weapon;
+import rtrawel.items.WeaponFactory;
+
 public class RMonster extends RUnit {
 	
 	private String name;
@@ -96,6 +99,10 @@ public class RMonster extends RUnit {
 	@Override
 	public void decide() {
 		
+	}
+	@Override
+	public Weapon getWeapon() {
+		return WeaponFactory.getWeaponByName(MonsterFactory.getMonsterByName(name).getWeapon());
 	}
 
 }

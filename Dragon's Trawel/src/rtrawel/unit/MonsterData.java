@@ -30,7 +30,10 @@ public interface MonsterData {
 	public int getKillsTilKnown();
 	public int getKillsTilVeryKnown();
 	
+	public String getWeapon();
+	
 	//TODO Sprites
 	
 	public SpriteData getSpriteData();
+	
 }

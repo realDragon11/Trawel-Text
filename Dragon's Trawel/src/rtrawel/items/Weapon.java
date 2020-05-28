@@ -3,6 +3,7 @@ package rtrawel.items;
 import java.util.List;
 
 import rtrawel.unit.DamageType;
+import rtrawel.unit.RUnit;
 
 public abstract class Weapon implements Item {
 
@@ -12,6 +13,8 @@ public abstract class Weapon implements Item {
 	}
 	
 	public abstract OnHit getOnHit();
+	
+	public abstract int damageBonuses(RUnit defender);
 	
 	public abstract List<DamageType> getDamageTypes();
 
