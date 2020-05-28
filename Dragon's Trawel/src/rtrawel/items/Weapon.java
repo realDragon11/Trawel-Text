@@ -12,6 +12,8 @@ public abstract class Weapon implements Item {
 		return Item.ItemType.WEAPON;
 	}
 	
+	public abstract WeaponType getWeaponType();
+	
 	public abstract OnHit getOnHit();
 	
 	public abstract int damageBonuses(RUnit defender);
@@ -21,5 +23,16 @@ public abstract class Weapon implements Item {
 	public abstract double getBaseHit();
 
 	public abstract int getDamage();
+	
+	public abstract String getName();
+	public abstract String getDesc();
+	
+	public abstract double critChance();
+	public abstract double critMult();
+	
+	
+	public enum WeaponType{
+		SWORD, SHIELD, SPEAR, KNIFE, BOW, CROSSBOW, AXE, HAMMER, SLING, BOOMERANG;
+	}
 
 }

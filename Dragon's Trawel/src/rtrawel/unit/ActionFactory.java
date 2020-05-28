@@ -13,8 +13,8 @@ public class ActionFactory {
 			public void go(RUnit caster, TargetGroup target) {
 				Weapon w = caster.getWeapon();
 				for (RUnit u: target.targets) {
-					if (RCore.doAttack(caster, u,caster.getStrength(),w.getBaseHit(),w.getDamage()+w.damageBonuses(u),w.getDamageTypes()) > -1) {
-						w.getOnHit().go(caster,u);
+					if (RCore.doAttack(caster, u,caster.getStrength(),w.getBaseHit(), (w.getDamage()+w.damageBonuses(u)* ( RCore.doesHit(caster,u,w.critChance())? w.critMult() : 1)),w.getDamageTypes()) > -1) {
+						w.getOnHit().go(caster,u);//note: not all abilities should be able to crit
 					}
 					
 				}
@@ -48,6 +48,16 @@ public class ActionFactory {
 			@Override
 			public double coolDown() {
 				return 50;
+			}
+
+			@Override
+			public String getName() {
+				return "attack";
+			}
+
+			@Override
+			public String getDesc() {
+				return "the bread and butter of any physical attacker";
 			}});
 	}
 	

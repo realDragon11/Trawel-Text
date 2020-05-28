@@ -21,6 +21,9 @@ public interface Action {
 	
 	public TargetGrouping getTargetGrouping();
 	
+	public String getName();
+	public String getDesc();
+	
 	
 	public enum TargetType{
 		FOE, FRIEND, HURT_FRIEND;

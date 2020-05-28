@@ -15,7 +15,7 @@ public class RCore {
 		return (1.1*(attacker.getAgility()+10))/(1.35*(attacker.getAgility()+10)) > Math.random();
 	}
 	
-	public static int dealDamage(RUnit defender, int attackStat, int damage, List<DamageType> types ) {
+	public static int dealDamage(RUnit defender, int attackStat, double damage, List<DamageType> types ) {
 		double mult = calcDamageMod(attackStat, defender.getResilence());
 		for (DamageType t: types) {
 			mult*= defender.getDamageMultFor(t);
@@ -32,13 +32,13 @@ public class RCore {
 	 * @param defender
 	 * @param attackStat
 	 * @param baseHitMult
-	 * @param damage
+	 * @param d
 	 * @param list
 	 * @return
 	 */
-	public static int doAttack(RUnit attacker, RUnit defender, int attackStat, double baseHitMult, int damage, List<DamageType> list ) {
+	public static int doAttack(RUnit attacker, RUnit defender, int attackStat, double baseHitMult, double d, List<DamageType> list ) {
 		if (doesHit(attacker,defender,baseHitMult)) {
-			return dealDamage(defender,attackStat,damage,list);
+			return dealDamage(defender,attackStat,d,list);
 		}else {
 			return -1;
 		}
