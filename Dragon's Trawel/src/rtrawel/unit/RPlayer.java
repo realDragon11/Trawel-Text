@@ -314,4 +314,16 @@ public class RPlayer extends RUnit {
 		}
 	}
 
+	public void addAbility(Action action) {
+		abs.add(action);
+	}
+	public void addSpell(Action action) {
+		spells.add(action);
+	}
+	
+	public void addBuff(Buff b) {
+		buffMap.buffs.add(b);
+	}
+
+
 }

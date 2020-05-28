@@ -2,6 +2,7 @@ package rtrawel.jobs;
 
 import java.util.HashMap;
 
+import rtrawel.unit.ActionFactory;
 import rtrawel.unit.RPlayer;
 
 public class PathFactory {
@@ -62,6 +63,26 @@ public class PathFactory {
 			public void apply(RPlayer player, int points, boolean jobActive) {
 				// TODO Auto-generated method stub
 				
+			}});
+		
+		data.put("sword",new Path() {
+
+			@Override
+			public String name() {
+				return "sword";
+			}
+
+			@Override
+			public String jobName() {
+				return "";
+			}
+
+			@Override
+			public void apply(RPlayer player, int points, boolean jobActive) {
+				// TODO Auto-generated method stub
+				if (points > 0) {
+					player.addAbility(ActionFactory.getActionByName("cleave"));
+				}
 			}});
 	}
 }
