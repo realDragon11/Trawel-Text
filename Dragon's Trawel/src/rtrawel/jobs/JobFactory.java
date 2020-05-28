@@ -92,7 +92,7 @@ public class JobFactory {
 				list.add(WeaponType.SHIELD);
 				list.add(WeaponType.SPEAR);
 				list.add(WeaponType.SWORD);
-				return null;
+				return list;
 			}
 
 			@Override
@@ -100,7 +100,7 @@ public class JobFactory {
 				List<ArmorClass> list = new ArrayList<ArmorClass>();
 				list.add(ArmorClass.HEAVY);
 				list.add(ArmorClass.MEDIUM);
-				return null;
+				return list;
 			}});
 	}
 }

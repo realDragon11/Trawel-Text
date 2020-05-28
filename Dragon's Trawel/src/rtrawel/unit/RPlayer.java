@@ -35,6 +35,7 @@ public class RPlayer extends RUnit {
 		//TODO;
 		progression.jobs.add(new JobWithLevel("warrior",1));
 		weap = WeaponFactory.getWeaponByName("copper sword");
+		inventory.add(WeaponFactory.getWeaponByName("lumber axe"));
 		fStance = FightingStance.BALANCED;
 		cleanAbs();
 	}
@@ -231,6 +232,7 @@ public class RPlayer extends RUnit {
 			}else {
 				if (it.getItemType().equals(ItemType.WEAPON)) {
 					if (JobFactory.getJobByName(currentJob).weaponTypes().contains(((Weapon)it).getWeaponType())){
+						extra.println("You swap out your " + weap.getName() + " for your " + it.getName() + ".");
 						inventory.add(this.getWeapon());
 						inventory.remove(it);
 						this.weap = (Weapon)it;
