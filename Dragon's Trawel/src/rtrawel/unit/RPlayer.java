@@ -7,6 +7,7 @@ import rtrawel.items.Armor;
 import rtrawel.items.Weapon;
 import rtrawel.items.WeaponFactory;
 import rtrawel.jobs.JobFactory;
+import rtrawel.jobs.JobWithLevel;
 import rtrawel.jobs.PathWithLevel;
 import rtrawel.jobs.Progression;
 import rtrawel.unit.RUnit.FightingStance;
@@ -21,7 +22,6 @@ public class RPlayer extends RUnit {
 	private Armor head, torso, arms, feet, assec1, assec2;
 	
 	private List<Action> abs = new ArrayList<Action>();
-	private List<Action> spells = new ArrayList<Action>();
 	private Progression progression = new Progression();
 	private String currentJob;
 	
@@ -29,6 +29,7 @@ public class RPlayer extends RUnit {
 		name = n;
 		currentJob = job;
 		//TODO;
+		progression.jobs.add(new JobWithLevel("warrior",1));
 		weap = WeaponFactory.getWeaponByName("copper sword");
 		fStance = FightingStance.BALANCED;
 		cleanAbs();
@@ -173,11 +174,10 @@ public class RPlayer extends RUnit {
 		while (keepGoing) {
 			extra.println(this.getName() + " HP: " + this.getHp() + "/" + this.getMaxHp() + " MP: " + this.getMana() + "/" + this.getMaxMana() + " Tsn: " + this.getTension() + "/" + this.getMaxTension());
 			extra.println("1 basic attack");
-			extra.println("2 abilities");
-			extra.println("3 spells");
-			extra.println("4 items");
-			extra.println("5 change stance");
-		switch (extra.inInt(5)) {
+			extra.println("2 abilities and spells");
+			extra.println("3 items");
+			extra.println("4 change stance");
+		switch (extra.inInt(4)) {
 		case 1:
 			for (RUnit r: curBattle.foes) {
 				extra.println(r.getName());
@@ -307,7 +307,6 @@ public class RPlayer extends RUnit {
 	
 	public void cleanAbs() {
 		abs.clear();
-		spells.clear();
 		buffMap.clear();
 		for (PathWithLevel pwl: progression.paths) {
 			pwl.path.apply(this, pwl.level,pwl.path.jobName().equals(currentJob));
@@ -316,9 +315,6 @@ public class RPlayer extends RUnit {
 
 	public void addAbility(Action action) {
 		abs.add(action);
-	}
-	public void addSpell(Action action) {
-		spells.add(action);
 	}
 	
 	public void addBuff(Buff b) {
