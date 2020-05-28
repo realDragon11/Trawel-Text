@@ -205,7 +205,7 @@ public class RPlayer extends RUnit {
 			extra.println((abs.size()+1 )+" back");
 			in = extra.inInt(abs.size()+1);
 			if (in == abs.size()+1) {
-				break;
+				continue;
 			}
 			Action ab = abs.get(in-1);
 			if (!ab.canCast(this)) {
@@ -217,6 +217,8 @@ public class RPlayer extends RUnit {
 					t = new TargetGroup();
 					t.targets.addAll(curBattle.foes);
 					decideOn(ab,t);
+					keepGoing = false;
+					break;
 				}else {
 					if (ab.getTargetGrouping().equals(Action.TargetGrouping.GROUP)) {
 						
@@ -232,6 +234,7 @@ public class RPlayer extends RUnit {
 						t.targets.addAll(curBattle.foeGroups.get(in-1));
 						decideOn(ab,t);
 						keepGoing = false;
+						break;
 					}else {
 						valid = false;
 						while (!valid) {
@@ -249,9 +252,22 @@ public class RPlayer extends RUnit {
 				}
 				
 			}else {
-				
+				if (ab.getTargetGrouping().equals(Action.TargetGrouping.SINGLE)) {
+					for (int i = 0;i<curBattle.party.size();i++) {//TODO battle rezes?
+						extra.println((1+i) + " "+curBattle.party.get(i).getName());
+					}
+					in = extra.inInt(curBattle.party.size());
+					decideOn(ab,new TargetGroup(curBattle.party.get(in-1)));
+					keepGoing = false;
+					break;
+				}else {
+					t = new TargetGroup();
+					t.targets.addAll(curBattle.party);
+					decideOn(ab,t);
+					keepGoing = false;
+				}
 			}
-			
+			//keepGoing = false;//TODO
 			break;
 		
 		}
