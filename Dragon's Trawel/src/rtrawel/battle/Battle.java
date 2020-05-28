@@ -22,11 +22,15 @@ public class Battle {
 	public List<RUnit> foesDown = new ArrayList<RUnit>();
 	public List<RUnit> partyDown = new ArrayList<RUnit>();
 	public List<RUnit> killList = new ArrayList<RUnit>();
-	public Battle(List<RUnit> party, List<RUnit> foes) {
+	public List<List<RUnit>> foeGroups = new ArrayList<List<RUnit>>();//this is the only one that's unsafe
+	public Battle(List<RUnit> party, List<List<RUnit>> foes) {
 		this.party.addAll(party);
-		this.foes.addAll(foes);
+		foeGroups = foes;
+		for (List<RUnit> f: foes) {
+		this.foes.addAll(f);
+		}
 		global.addAll(party);
-		global.addAll(foes);
+		global.addAll(this.foes);
 	}
 	
 	
@@ -51,6 +55,11 @@ public class Battle {
 					party.remove(r);
 					partyDown.add(r);
 				}else {
+					for (List<RUnit> f: foeGroups) {
+						if (f.remove(r)) {
+							break;
+						}
+						}
 					foes.remove(r);
 					foesDown.add(r);
 				}

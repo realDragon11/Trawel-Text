@@ -188,6 +188,7 @@ public class RPlayer extends RUnit {
 					if (((RMonster)r).getMonsterNumber() == in) {
 						decideOn(ActionFactory.getActionByName("attack"),new TargetGroup(r));
 						valid = true;
+						keepGoing = false;
 						break;
 					}
 				}
@@ -203,6 +204,7 @@ public class RPlayer extends RUnit {
 		this.a = a;
 		warmUp = a.warmUp();
 		upComing = a.coolDown();
+		savedTarget = g;
 	}
 
 	@Override

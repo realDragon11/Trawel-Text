@@ -22,7 +22,7 @@ public class RMonster extends RUnit {
 		return name;
 	}
 	public String getName() {
-		return getBaseName() + monsterNumber;
+		return getBaseName() +" " + monsterNumber;
 	}
 	
 	public int getMonsterNumber() {
@@ -116,6 +116,31 @@ public class RMonster extends RUnit {
 		a = extra.randList(list);
 		warmUp = a.warmUp();
 		upComing = a.coolDown();
+		TargetGroup t;
+		switch (a.getTargetType()) {
+		case FOE:
+			if (a.getTargetGrouping().equals(Action.TargetGrouping.SINGLE)) {
+			savedTarget = new TargetGroup(extra.randList(curBattle.party));}else {
+				t =  new TargetGroup();
+				t.targets.addAll(curBattle.party);
+				savedTarget = t;
+			}
+			break;
+		case FRIEND:
+		case HURT_FRIEND://TODO make smarter
+			if (a.getTargetGrouping().equals(Action.TargetGrouping.SINGLE)) {
+				savedTarget = new TargetGroup(extra.randList(curBattle.foes));}else{
+					if (a.getTargetGrouping().equals(Action.TargetGrouping.GROUP)) {
+						t =  new TargetGroup();
+						t.targets.addAll(extra.randList(curBattle.foeGroups));
+						savedTarget = t;}else{
+							t =  new TargetGroup();
+							t.targets.addAll(curBattle.foes);
+							savedTarget = t;
+						}
+				}
+			break;
+		}
 	}
 	@Override
 	public Weapon getWeapon() {
