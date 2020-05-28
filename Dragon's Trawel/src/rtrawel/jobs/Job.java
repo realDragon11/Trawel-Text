@@ -14,7 +14,7 @@ public abstract class Job {
 	public abstract String getPath3();
 	
 	public abstract int getHpAtLevel(int level);
-	public abstract int getMPAtLevel(int level);
+	public abstract int getMpAtLevel(int level);
 	public abstract int getTenAtLevel(int level);
 	public abstract int getStrAtLevel(int level);
 	public abstract int getDexAtLevel(int level);

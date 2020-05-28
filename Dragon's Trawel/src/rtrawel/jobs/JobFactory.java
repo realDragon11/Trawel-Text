@@ -45,7 +45,7 @@ public class JobFactory {
 			}
 
 			@Override
-			public int getMPAtLevel(int level) {
+			public int getMpAtLevel(int level) {
 				return RCore.levelLynchPin(level, 4, 7, 14, 999, 999, 999, 999, 999);
 			}
 

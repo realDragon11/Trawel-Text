@@ -30,6 +30,8 @@ public abstract class Weapon implements Item {
 	public abstract double critChance();
 	public abstract double critMult();
 	
+	public abstract double blockChance();
+	
 	
 	public enum WeaponType{
 		SWORD, SHIELD, SPEAR, KNIFE, BOW, CROSSBOW, AXE, HAMMER, SLING, BOOMERANG, WAND, STAFF, MONSTER_MELEE;

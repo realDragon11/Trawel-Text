@@ -68,6 +68,11 @@ public class WeaponFactory {
 			@Override
 			public int cost() {
 				return 20;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0;
 			}});
 		
 		data.put("wolf pup teeth",new Weapon() {
@@ -127,6 +132,11 @@ public class WeaponFactory {
 
 			@Override
 			public int cost() {
+				return 0;
+			}
+
+			@Override
+			public double blockChance() {
 				return 0;
 			}});
 	}

@@ -6,6 +6,7 @@ import java.util.List;
 import rtrawel.items.Armor;
 import rtrawel.items.Weapon;
 import rtrawel.items.WeaponFactory;
+import rtrawel.jobs.JobFactory;
 import rtrawel.jobs.PathWithLevel;
 import rtrawel.jobs.Progression;
 import rtrawel.unit.RUnit.FightingStance;
@@ -61,8 +62,7 @@ public class RPlayer extends RUnit {
 
 	@Override
 	protected int getBaseStrength() {
-		// TODO Auto-generated method stub
-		return 0;
+		return JobFactory.getJobByName(currentJob).getStrAtLevel(progression.jobLevel(currentJob));
 	}
 
 	@Override
@@ -76,26 +76,22 @@ public class RPlayer extends RUnit {
 
 	@Override
 	protected int getBaseKnowledge() {
-		// TODO Auto-generated method stub
-		return 0;
+		return JobFactory.getJobByName(currentJob).getKnoAtLevel(progression.jobLevel(currentJob));
 	}
 
 	@Override
 	public int getMaxHp() {
-		// TODO Auto-generated method stub
-		return 20;
+		return JobFactory.getJobByName(currentJob).getHpAtLevel(progression.jobLevel(currentJob));
 	}
 
 	@Override
 	public int getMaxMana() {
-		// TODO Auto-generated method stub
-		return 20;
+		return JobFactory.getJobByName(currentJob).getMpAtLevel(progression.jobLevel(currentJob));
 	}
 
 	@Override
 	public int getMaxTension() {
-		// TODO Auto-generated method stub
-		return 20;
+		return JobFactory.getJobByName(currentJob).getTenAtLevel(progression.jobLevel(currentJob));
 	}
 
 	@Override
@@ -109,8 +105,7 @@ public class RPlayer extends RUnit {
 
 	@Override
 	protected int getBaseSpeed() {
-		// TODO Auto-generated method stub
-		return 0;
+		return JobFactory.getJobByName(currentJob).getSpdAtLevel(progression.jobLevel(currentJob));
 	}
 
 	@Override
@@ -124,8 +119,7 @@ public class RPlayer extends RUnit {
 
 	@Override
 	protected int getBaseAgility() {
-		// TODO Auto-generated method stub
-		return 0;
+		return JobFactory.getJobByName(currentJob).getAgiAtLevel(progression.jobLevel(currentJob));
 	}
 
 	@Override
@@ -139,8 +133,7 @@ public class RPlayer extends RUnit {
 
 	@Override
 	protected int getBaseDexterity() {
-		// TODO Auto-generated method stub
-		return 0;
+		return JobFactory.getJobByName(currentJob).getDexAtLevel(progression.jobLevel(currentJob));
 	}
 
 	@Override
@@ -154,8 +147,7 @@ public class RPlayer extends RUnit {
 
 	@Override
 	protected int getBaseResilence() {
-		// TODO Auto-generated method stub
-		return 0;
+		return JobFactory.getJobByName(currentJob).getResAtLevel(progression.jobLevel(currentJob));
 	}
 
 	@Override
@@ -225,8 +217,10 @@ public class RPlayer extends RUnit {
 
 	@Override
 	public double shieldBlockChance() {
-		// TODO Auto-generated method stub
-		return 0;
+		if (shield == null) {
+			return weap.blockChance();
+		}
+		return weap.blockChance() + shield.blockChance();
 	}
 
 	@Override
