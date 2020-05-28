@@ -11,4 +11,7 @@ public interface Item {
 	}
 	
 	public int cost();
+	
+	public abstract String getName();
+	public abstract String getDesc();
 }

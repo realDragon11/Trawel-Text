@@ -21,8 +21,7 @@ public abstract class Armor implements Item {
 		NONE, LIGHT, MEDIUM, HEAVY;;
 	}
 	
-	public abstract String getName();
-	public abstract String getDesc();
+	
 	
 	public int getStrengthMod() {
 		return 0;

@@ -24,9 +24,6 @@ public abstract class Weapon implements Item {
 
 	public abstract int getDamage();
 	
-	public abstract String getName();
-	public abstract String getDesc();
-	
 	public abstract double critChance();
 	public abstract double critMult();
 	

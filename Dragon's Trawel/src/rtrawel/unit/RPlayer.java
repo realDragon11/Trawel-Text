@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rtrawel.items.Armor;
+import rtrawel.items.Consumable;
+import rtrawel.items.Item;
 import rtrawel.items.Weapon;
 import rtrawel.items.WeaponFactory;
+import rtrawel.items.Item.ItemType;
 import rtrawel.jobs.JobFactory;
 import rtrawel.jobs.JobWithLevel;
 import rtrawel.jobs.PathWithLevel;
@@ -24,6 +27,7 @@ public class RPlayer extends RUnit {
 	private List<Action> abs = new ArrayList<Action>();
 	private Progression progression = new Progression();
 	private String currentJob;
+	public List<Item> inventory = new ArrayList<Item>();
 	
 	public RPlayer(String n, String job) {
 		name = n;
@@ -210,75 +214,102 @@ public class RPlayer extends RUnit {
 			if (in == abs.size()+1) {
 				continue;
 			}
-			Action ab = abs.get(in-1);
-			if (!ab.canCast(this)) {
-				extra.println("You can't cast that right now.");
+			keepGoing = chooseAbTarget(abs.get(in-1));
+			break;
+		case 3:
+			for (int i = 0;i < inventory.size();i++) {
+				extra.println((i+1) + " " +inventory.get(i).getName());//make sure only valid things can go into inventory later: TODO:
+			}
+			extra.println((inventory.size()+1 )+" back");
+			in = extra.inInt(inventory.size()+1);
+			if (in == inventory.size()+1) {
 				continue;
 			}
-			if (ab.getTargetType().equals(Action.TargetType.FOE)) {
-				if (ab.getTargetGrouping().equals(Action.TargetGrouping.ALL)) {
-					t = new TargetGroup();
-					t.targets.addAll(curBattle.foes);
-					decideOn(ab,t);
-					keepGoing = false;
-					break;
-				}else {
-					if (ab.getTargetGrouping().equals(Action.TargetGrouping.GROUP)) {
-						
-						for (int i = 0;i < curBattle.foeGroups.size();i++) {
-							t = new TargetGroup();
-							for (RUnit u: curBattle.foeGroups.get(i)) {
-								t.targets.add(u);
-							}
-							extra.println((i+1) + " " + t.toString());
-						}
-						t = new TargetGroup();
-						in = extra.inInt(curBattle.foeGroups.size());
-						t.targets.addAll(curBattle.foeGroups.get(in-1));
-						decideOn(ab,t);
-						keepGoing = false;
-						break;
-					}else {
-						for (RUnit r: curBattle.foes) {
-							extra.println(r.getName());
-						}
-						valid = false;
-						while (!valid) {
-							in = extra.inInt(99);
-							for (RUnit r: curBattle.foes) {
-								if (((RMonster)r).getMonsterNumber() == in) {
-									decideOn(ab,new TargetGroup(r));
-									valid = true;
-									keepGoing = false;
-									break;
-								}
-							}
-						}
-					}
-				}
-				
+			Item it = inventory.get(in-1);
+			if (it.getItemType().equals(ItemType.CONSUMABLE)) {
+				keepGoing = chooseAbTarget(((Consumable)it).getAction());
 			}else {
-				if (ab.getTargetGrouping().equals(Action.TargetGrouping.SINGLE)) {
-					for (int i = 0;i<curBattle.party.size();i++) {//TODO battle rezes?
-						extra.println((1+i) + " "+curBattle.party.get(i).getName());
+				if (it.getItemType().equals(ItemType.WEAPON)) {
+					if (JobFactory.getJobByName(currentJob).weaponTypes().contains(((Weapon)it).getWeaponType())){
+						inventory.add(this.getWeapon());
+						inventory.remove(it);
+						this.weap = (Weapon)it;
 					}
-					in = extra.inInt(curBattle.party.size());
-					decideOn(ab,new TargetGroup(curBattle.party.get(in-1)));
-					keepGoing = false;
-					break;
 				}else {
-					t = new TargetGroup();
-					t.targets.addAll(curBattle.party);
-					decideOn(ab,t);
-					keepGoing = false;
+					
 				}
 			}
-			//keepGoing = false;//TODO SPells
+			
 			break;
-		
 		}
 		}
 
+	}
+	
+	private boolean chooseAbTarget(Action ab) {
+		int in;
+		boolean valid;
+		RUnit picked;
+		TargetGroup t;
+		if (!ab.canCast(this)) {
+			extra.println("You can't cast that right now.");
+			return true;
+		}
+		if (ab.getTargetType().equals(Action.TargetType.FOE)) {
+			if (ab.getTargetGrouping().equals(Action.TargetGrouping.ALL)) {
+				t = new TargetGroup();
+				t.targets.addAll(curBattle.foes);
+				decideOn(ab,t);
+				return false;
+			}else {
+				if (ab.getTargetGrouping().equals(Action.TargetGrouping.GROUP)) {
+					
+					for (int i = 0;i < curBattle.foeGroups.size();i++) {
+						t = new TargetGroup();
+						for (RUnit u: curBattle.foeGroups.get(i)) {
+							t.targets.add(u);
+						}
+						extra.println((i+1) + " " + t.toString());
+					}
+					t = new TargetGroup();
+					in = extra.inInt(curBattle.foeGroups.size());
+					t.targets.addAll(curBattle.foeGroups.get(in-1));
+					decideOn(ab,t);
+					return false;
+				}else {
+					for (RUnit r: curBattle.foes) {
+						extra.println(r.getName());
+					}
+					valid = false;
+					while (!valid) {
+						in = extra.inInt(99);
+						for (RUnit r: curBattle.foes) {
+							if (((RMonster)r).getMonsterNumber() == in) {
+								decideOn(ab,new TargetGroup(r));
+								valid = true;
+								return false;
+							}
+						}
+					}
+				}
+			}
+			
+		}else {
+			if (ab.getTargetGrouping().equals(Action.TargetGrouping.SINGLE)) {
+				for (int i = 0;i<curBattle.party.size();i++) {//TODO battle rezes?
+					extra.println((1+i) + " "+curBattle.party.get(i).getName());
+				}
+				in = extra.inInt(curBattle.party.size());
+				decideOn(ab,new TargetGroup(curBattle.party.get(in-1)));
+				return false;
+			}else {
+				t = new TargetGroup();
+				t.targets.addAll(curBattle.party);
+				decideOn(ab,t);
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	private void decideOn(Action a,TargetGroup g) {
