@@ -1,10 +1,12 @@
 package rtrawel.jobs;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import rtrawel.items.Armor.ArmorClass;
 import rtrawel.items.Weapon.WeaponType;
+import rtrawel.unit.RCore;
 import rtrawel.unit.RPlayer;
 
 public class JobFactory {
@@ -19,92 +21,86 @@ public class JobFactory {
 
 			@Override
 			public String getName() {
-				// TODO Auto-generated method stub
-				return null;
+				return "warrior";
 			}
 
 			@Override
 			public String getPath1() {
-				// TODO Auto-generated method stub
-				return null;
+				return "courage";
 			}
 
 			@Override
 			public String getPath2() {
-				// TODO Auto-generated method stub
-				return null;
+				return "honor";
 			}
 
 			@Override
 			public String getPath3() {
-				// TODO Auto-generated method stub
-				return null;
+				return "valor";
 			}
 
 			@Override
 			public int getHpAtLevel(int level) {
-				// TODO Auto-generated method stub
-				return 0;
+				return RCore.levelLynchPin(level, 25, 50, 100, 999, 999, 999, 999, 999);
 			}
 
 			@Override
 			public int getMPAtLevel(int level) {
-				// TODO Auto-generated method stub
-				return 0;
+				return RCore.levelLynchPin(level, 4, 7, 14, 999, 999, 999, 999, 999);
 			}
 
 			@Override
 			public int getTenAtLevel(int level) {
-				// TODO Auto-generated method stub
-				return 0;
+				return RCore.levelLynchPin(level, 10, 20,30, 999, 999, 999, 999, 999);
 			}
 
 			@Override
 			public int getStrAtLevel(int level) {
-				// TODO Auto-generated method stub
-				return 0;
+				return RCore.levelLynchPin(level, 20, 35, 75, 999, 999, 999, 999, 999);
 			}
 
 			@Override
 			public int getDexAtLevel(int level) {
-				// TODO Auto-generated method stub
-				return 0;
+				return RCore.levelLynchPin(level, 4, 7, 14, 999, 999, 999, 999, 999);
 			}
 
 			@Override
 			public int getAgiAtLevel(int level) {
-				// TODO Auto-generated method stub
-				return 0;
+				return RCore.levelLynchPin(level, 4, 7, 14, 999, 999, 999, 999, 999);
 			}
 
 			@Override
 			public int getSpdAtLevel(int level) {
-				// TODO Auto-generated method stub
-				return 0;
+				return RCore.levelLynchPin(level, 4, 7, 14, 999, 999, 999, 999, 999);
 			}
 
 			@Override
 			public int getKnoAtLevel(int level) {
-				// TODO Auto-generated method stub
-				return 0;
+				return RCore.levelLynchPin(level, 0, 0, 0, 0, 0, 0, 0, 0);
 			}
 
 			@Override
 			public int getResAtLevel(int level) {
-				// TODO Auto-generated method stub
-				return 0;
+				return RCore.levelLynchPin(level, 20, 35, 75, 999, 999, 999, 999, 999);
 			}
 
 			@Override
 			public List<WeaponType> weaponTypes() {
-				// TODO Auto-generated method stub
+				List<WeaponType> list = new ArrayList<WeaponType>();
+				list.add(WeaponType.AXE);
+				list.add(WeaponType.HAMMER);
+				list.add(WeaponType.SHIELD);
+				list.add(WeaponType.SPEAR);
+				list.add(WeaponType.SWORD);
 				return null;
 			}
 
 			@Override
 			public List<ArmorClass> armorClasses() {
-				// TODO Auto-generated method stub
+				List<ArmorClass> list = new ArrayList<ArmorClass>();
+				list.add(ArmorClass.HEAVY);
+				list.add(ArmorClass.MEDIUM);
 				return null;
-			}})
+			}});
 	}
 }
