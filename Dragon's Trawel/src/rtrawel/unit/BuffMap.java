@@ -1,15 +1,25 @@
 package rtrawel.unit;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import rtrawel.unit.Buff.BuffType;
 
 public class BuffMap {
 
-	public ArrayList<Buff> buffs = new ArrayList<Buff>();
+	public List<Buff> buffs = new ArrayList<Buff>();
 	
 	public void advanceTime(double time) {
-		
+		List<Buff> removeList = new ArrayList<Buff>();
+		for (Buff b: buffs) {
+			if (!b.passive) {
+				b.timeLeft-=time;
+				if (b.timeLeft <=0) {
+					removeList.add(b);
+				}
+			}
+		}
+		buffs.removeAll(removeList);//works because buffs aren't equal unless the pointer is the same
 	}
 
 	public double getTotalBuffMult(BuffType m) {

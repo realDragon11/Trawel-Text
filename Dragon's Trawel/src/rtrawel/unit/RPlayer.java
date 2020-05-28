@@ -172,6 +172,7 @@ public class RPlayer extends RUnit {
 		boolean valid;
 		RUnit picked;
 		while (keepGoing) {
+			extra.println(this.getName());
 			extra.println("1 basic attack");
 			extra.println("2 abilities");
 			extra.println("3 spells");
@@ -230,6 +231,12 @@ public class RPlayer extends RUnit {
 	@Override
 	public String getBaseName() {
 		return name;
+	}
+	
+	public void cleanAbs() {
+		abs.clear();
+		spells.clear();
+		for ()
 	}
 
 }

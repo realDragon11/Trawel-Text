@@ -24,7 +24,7 @@ public class MonsterFactory {
 
 			@Override
 			public int getMaxHp() {
-				return 12;
+				return 9;
 			}
 
 			@Override
