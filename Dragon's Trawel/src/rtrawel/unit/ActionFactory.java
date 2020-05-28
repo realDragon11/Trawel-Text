@@ -2,6 +2,8 @@ package rtrawel.unit;
 
 import java.util.HashMap;
 
+import rtrawel.items.Weapon;
+
 public class ActionFactory {
 	private static HashMap<String,Action> data = new HashMap<String, Action>();
 	public static void init() {
@@ -9,7 +11,11 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				caster.getWeapon();
+				Weapon w = caster.getWeapon();
+				for (RUnit u: target.targets) {
+					RCore.doAttack(caster, u,caster.getStrength(),w.getBaseHit(),w.getDamage()+w.damageBonuses(u),w.getDamageTypes());
+					
+				}
 			}
 
 			@Override

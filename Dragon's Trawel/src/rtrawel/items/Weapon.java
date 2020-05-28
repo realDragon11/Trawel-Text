@@ -18,4 +18,8 @@ public abstract class Weapon implements Item {
 	
 	public abstract List<DamageType> getDamageTypes();
 
+	public abstract double getBaseHit();
+
+	public abstract int getDamage();
+
 }

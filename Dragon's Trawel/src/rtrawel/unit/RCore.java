@@ -1,6 +1,5 @@
 package rtrawel.unit;
 
-import java.util.Arrays;
 import java.util.List;
 
 import rtrawel.items.WeaponFactory;
@@ -36,12 +35,12 @@ public class RCore {
 	 * @param attackStat
 	 * @param baseHitMult
 	 * @param damage
-	 * @param types
+	 * @param list
 	 * @return
 	 */
-	public static int doAttack(RUnit attacker, RUnit defender, int attackStat, double baseHitMult, int damage, DamageType... types ) {
+	public static int doAttack(RUnit attacker, RUnit defender, int attackStat, double baseHitMult, int damage, List<DamageType> list ) {
 		if (doesHit(attacker,defender,baseHitMult)) {
-			return dealDamage(defender,attackStat,damage,Arrays.asList(types));
+			return dealDamage(defender,attackStat,damage,list);
 		}else {
 			return -1;
 		}
