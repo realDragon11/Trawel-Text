@@ -64,6 +64,61 @@ public class WeaponFactory {
 			public double critMult() {
 				return 1.5;
 			}});
+		
+		data.put("wolf pup teeth",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.MONSTER_MELEE;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.SHARP);
+				list.add(DamageType.PIERCE);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return 1;
+			}
+
+			@Override
+			public int getDamage() {
+				return 3;
+			}
+
+			@Override
+			public String getName() {
+				return "wolf pup teeth";
+			}
+
+			@Override
+			public String getDesc() {
+				return "";
+			}
+
+			@Override
+			public double critChance() {
+				return .05;
+			}
+
+			@Override
+			public double critMult() {
+				return 1.5;
+			}});
 	}
 	
 	
