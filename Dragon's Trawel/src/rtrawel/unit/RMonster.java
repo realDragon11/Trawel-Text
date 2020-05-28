@@ -55,8 +55,7 @@ public class RMonster extends RUnit {
 
 	@Override
 	protected int getBaseSpeed() {
-		// TODO Auto-generated method stub
-		return 0;
+		return  MonsterFactory.getMonsterByName(name).getSpeed();
 	}
 
 	@Override
@@ -66,8 +65,7 @@ public class RMonster extends RUnit {
 
 	@Override
 	protected int getBaseAgility() {
-		// TODO Auto-generated method stub
-		return 0;
+		return  MonsterFactory.getMonsterByName(name).getAgility();
 	}
 
 	@Override
@@ -77,8 +75,7 @@ public class RMonster extends RUnit {
 
 	@Override
 	protected int getBaseDexterity() {
-		// TODO Auto-generated method stub
-		return 0;
+		return  MonsterFactory.getMonsterByName(name).getDexterity();
 	}
 
 	@Override
@@ -88,8 +85,7 @@ public class RMonster extends RUnit {
 
 	@Override
 	protected int getBaseResilence() {
-		// TODO Auto-generated method stub
-		return 0;
+		return  MonsterFactory.getMonsterByName(name).getResilence();
 	}
 
 	@Override
