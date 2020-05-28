@@ -104,5 +104,12 @@ public class RMonster extends RUnit {
 	public Weapon getWeapon() {
 		return WeaponFactory.getWeaponByName(MonsterFactory.getMonsterByName(name).getWeapon());
 	}
+	
+	public int getXpWorth() {
+		return  MonsterFactory.getMonsterByName(name).getXp();
+	}
+	public int getGoldWorth() {
+		return  MonsterFactory.getMonsterByName(name).getGold();
+	}
 
 }

@@ -129,4 +129,6 @@ public abstract class RUnit {
 
 
 	public abstract Weapon getWeapon();
+	
+	public void EarnXp(int totalxp) {}
 }

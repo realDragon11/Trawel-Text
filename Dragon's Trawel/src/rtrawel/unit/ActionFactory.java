@@ -13,7 +13,9 @@ public class ActionFactory {
 			public void go(RUnit caster, TargetGroup target) {
 				Weapon w = caster.getWeapon();
 				for (RUnit u: target.targets) {
-					RCore.doAttack(caster, u,caster.getStrength(),w.getBaseHit(),w.getDamage()+w.damageBonuses(u),w.getDamageTypes());
+					if (RCore.doAttack(caster, u,caster.getStrength(),w.getBaseHit(),w.getDamage()+w.damageBonuses(u),w.getDamageTypes()) > -1) {
+						w.getOnHit().go(caster,u);
+					}
 					
 				}
 			}
