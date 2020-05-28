@@ -36,4 +36,14 @@ public class Progression {
 			}
 		}
 	}
+	public void addJobXp(String j, int totalxp) {
+		for (JobWithLevel k: jobs) {
+			if (k.jobName.equals(j)) {
+				k.addXp(totalxp);
+				return;
+			}
+		}
+		throw new RuntimeException("leveling a class you don't have!");
+		
+	}
 }

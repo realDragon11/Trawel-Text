@@ -166,6 +166,9 @@ public class RPlayer extends RUnit {
 
 	@Override
 	public void decide() {
+		if (curBattle.foes.size() == 0) {
+			return;
+		}
 		boolean keepGoing = true;
 		int in;
 		boolean valid;
@@ -200,7 +203,7 @@ public class RPlayer extends RUnit {
 			break;
 		case 2: 
 			for (int i = 0;i < abs.size();i++) {
-				extra.println((i+1) + " " +abs.get(i).getName());
+				extra.println((i+1) + " " +abs.get(i).getName() + (abs.get(i).canCast(this) ? "" : " (locked)"));
 			}
 			extra.println((abs.size()+1 )+" back");
 			in = extra.inInt(abs.size()+1);
@@ -230,12 +233,15 @@ public class RPlayer extends RUnit {
 							extra.println((i+1) + " " + t.toString());
 						}
 						t = new TargetGroup();
-						extra.inInt(curBattle.foeGroups.size());
+						in = extra.inInt(curBattle.foeGroups.size());
 						t.targets.addAll(curBattle.foeGroups.get(in-1));
 						decideOn(ab,t);
 						keepGoing = false;
 						break;
 					}else {
+						for (RUnit r: curBattle.foes) {
+							extra.println(r.getName());
+						}
 						valid = false;
 						while (!valid) {
 							in = extra.inInt(99);
@@ -305,7 +311,7 @@ public class RPlayer extends RUnit {
 		return name;
 	}
 	
-	public void cleanAbs() {
+	public void cleanAbs() {//needs to be called on level up and equipment swap
 		abs.clear();
 		buffMap.clear();
 		for (PathWithLevel pwl: progression.paths) {
@@ -324,6 +330,10 @@ public class RPlayer extends RUnit {
 	public void debugAddPathPoints(String string, int i) {
 		progression.addPathPoints(string,i);
 		
+	}
+	@Override
+	public void earnXp(int totalxp) {
+		progression.addJobXp(this.currentJob,totalxp);
 	}
 
 

@@ -2,6 +2,7 @@ package rtrawel.jobs;
 
 import java.util.HashMap;
 
+import rtrawel.items.Weapon.WeaponType;
 import rtrawel.unit.ActionFactory;
 import rtrawel.unit.RPlayer;
 
@@ -80,7 +81,13 @@ public class PathFactory {
 			@Override
 			public void apply(RPlayer player, int points, boolean jobActive) {
 				// TODO Auto-generated method stub
+				if (!player.getWeapon().getWeaponType().equals(WeaponType.SWORD)) {
+					return;
+				}
 				if (points > 0) {
+					player.addAbility(ActionFactory.getActionByName("sword thrust"));
+				}
+				if (points > 2) {
 					player.addAbility(ActionFactory.getActionByName("cleave"));
 				}
 			}});

@@ -112,6 +112,9 @@ public class RMonster extends RUnit {
 
 	@Override
 	public void decide() {
+		if (curBattle.party.size() == 0) {
+			return;
+		}
 		List<Action> list = MonsterFactory.getMonsterByName(name).getActions();
 		list.stream().filter(p -> !p.canCast(this)).forEach(list::remove);
 		a = extra.randList(list);

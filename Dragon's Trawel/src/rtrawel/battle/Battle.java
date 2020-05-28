@@ -84,7 +84,7 @@ public class Battle {
 		}
 		totalxp/=Party.party.list.size();
 		for (RUnit p: Party.party.list) {
-			p.EarnXp(totalxp);
+			p.earnXp(totalxp);
 		}
 	}
 	

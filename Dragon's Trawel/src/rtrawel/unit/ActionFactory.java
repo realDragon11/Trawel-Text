@@ -70,13 +70,13 @@ public class ActionFactory {
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
 				extra.println(caster.getName() + " cleaves " + target.toString());
-				caster.drainMp(2);
+				caster.drainMp(4);
 				Weapon w = caster.getWeapon();
 				List<DamageType> dList = new ArrayList<DamageType>();
 				dList.add(DamageType.SHARP);
 				for (RUnit u: target.targets) {
 					
-					if (RCore.doAttack(caster, u,caster.getStrength(),w.getBaseHit(), (w.getDamage()+w.damageBonuses(u)),false,dList) > -1) {
+					if (RCore.doAttack(caster, u,caster.getStrength(),w.getBaseHit()*.9, (w.getDamage()+w.damageBonuses(u)),false,dList) > -1) {
 						w.getOnHit().go(caster,u);//can't crit
 					}
 					
@@ -93,7 +93,7 @@ public class ActionFactory {
 				if (!caster.getWeapon().getWeaponType().equals(WeaponType.SWORD)) {
 					return false;
 				}
-				return caster.getMana() >= 2;
+				return caster.getMana() >= 4;
 			}
 
 			@Override
@@ -124,6 +124,62 @@ public class ActionFactory {
 			@Override
 			public String getDesc() {
 				return "2mp: cleave a group of enemies with your sword";
+			}});
+		
+		data.put("sword thrust",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " thrust their sword at " + target.toString());
+				Weapon w = caster.getWeapon();
+				List<DamageType> dList = new ArrayList<DamageType>();
+				dList.add(DamageType.PIERCE);
+				for (RUnit u: target.targets) {
+					if (RCore.doAttack(caster, u,(int)(caster.getStrength()*.9),w.getBaseHit()*.9, (w.getDamage()+w.damageBonuses(u)* ( RCore.doesHit(caster,u,w.critChance(),w.isRanged())? w.critMult() : 1)),w.isRanged(),dList) > -1) {
+						w.getOnHit().go(caster,u);//note: not all abilities should be able to crit
+					}
+					
+				}
+			}
+
+			@Override
+			public double getWeight() {
+				return 1;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				return caster.getWeapon().getWeaponType().equals(WeaponType.SWORD);
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.FOE;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.SINGLE;
+			}
+
+			@Override
+			public double warmUp() {
+				return 40;
+			}
+
+			@Override
+			public double coolDown() {
+				return 50;
+			}
+
+			@Override
+			public String getName() {
+				return "sword thrust";
+			}
+
+			@Override
+			public String getDesc() {
+				return "Deals piercing damage.";
 			}});
 	}
 	

@@ -133,7 +133,7 @@ public abstract class RUnit {
 
 	public abstract Weapon getWeapon();
 	
-	public void EarnXp(int totalxp) {}
+	public void earnXp(int totalxp) {}
 	
 	public abstract double shieldBlockChance();
 	
