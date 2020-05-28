@@ -6,11 +6,13 @@ import java.util.List;
 
 import rtrawel.items.Item;
 import rtrawel.items.WeaponFactory;
+import rtrawel.unit.RUnit.RaceType;
 
 public class MonsterFactory {
 	private static HashMap<String,MonsterData> data = new HashMap<String, MonsterData>();
 	public static void init(){
 		data.put("wolf pup",new MonsterData() {
+			
 
 			@Override
 			public int getStrength() {
@@ -135,6 +137,11 @@ public class MonsterFactory {
 			@Override
 			public double shieldBlockChance() {
 				return 0;
+			}
+
+			@Override
+			public void initer(RMonster r) {
+				r.addRaceType(RaceType.BEAST);
 			}});
 	}
 	

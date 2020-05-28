@@ -37,4 +37,6 @@ public interface MonsterData {
 	public SpriteData getSpriteData();
 	public double shieldBlockChance();
 	
+	public void initer(RMonster r);
+	
 }

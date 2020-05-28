@@ -127,7 +127,7 @@ public abstract class RUnit {
 	
 	
 	public enum RaceType{
-		PLAYER, MONSTER, FISH, ETC;
+		PLAYER, MONSTER, FISH, ETC, BEAST, MACHINE, PLANT;
 	}
 
 
@@ -152,5 +152,9 @@ public abstract class RUnit {
 	public void drainMp(int i) {
 		mp = (int)extra.clamp(mp-i,0,this.getMaxMana());
 		
+	}
+	
+	public void addRaceType(RaceType r) {
+		raceTypes.add(r);
 	}
 }
