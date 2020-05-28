@@ -72,6 +72,17 @@ public class RCore {
 		JobFactory.init();
 	}
 	
+	public int levelLynchPin(int level, int level1, int level5, int level10, int level15, int level25, int level40, int level60, int level80, int level99) {
+		if (level >=80) {
+			return intLerp(level80,level99,level,80,90);
+		}
+	}
+	
+	private int intLerp(int one, int two, int level, int minLevel, int maxLevel) {
+		double d = ((double)(level-minLevel))/(maxLevel-minLevel);
+		return (int)((1 - d) * one + d * two);
+	}
+	
 	
 	
 }
