@@ -11,12 +11,18 @@ public class RMonster extends RUnit {
 	private String name;
 	private static DamMultMap emptyDM = new DamMultMap();
 	
-	public RMonster(String name) {
+	private int monsterNumber;
+	
+	public RMonster(String name,int mn) {
 		this.name = name;
 		this.dmm = MonsterFactory.getMonsterByName(name).getDamMultMap();
+		monsterNumber = mn;
+	}
+	public String getBaseName() {
+		return name;
 	}
 	public String getName() {
-		return name;
+		return getBaseName() + monsterNumber;
 	}
 
 	@Override

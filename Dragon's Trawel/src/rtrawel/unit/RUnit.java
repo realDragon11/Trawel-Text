@@ -144,4 +144,9 @@ public abstract class RUnit {
 	public enum FightingStance{
 		BALANCED, DEFENSIVE, OFFENSIVE;
 	}
+
+
+	public abstract String getName();
+	
+	public abstract String getBaseName();
 }

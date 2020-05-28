@@ -4,6 +4,7 @@ import java.util.List;
 
 import rtrawel.items.WeaponFactory;
 import rtrawel.unit.RUnit.FightingStance;
+import trawel.extra;
 
 public class RCore {
 
@@ -48,8 +49,11 @@ public class RCore {
 	 */
 	public static int doAttack(RUnit attacker, RUnit defender, int attackStat, double baseHitMult, double d, boolean ranged, List<DamageType> list ) {
 		if (doesHit(attacker,defender,baseHitMult, ranged)) {
-			return dealDamage(defender,attackStat,d * (!ranged && attacker.getStance().equals(RUnit.FightingStance.OFFENSIVE) && !ranged ? 1.1 : 1),list);
+			int dam = dealDamage(defender,attackStat,d * (!ranged && attacker.getStance().equals(RUnit.FightingStance.OFFENSIVE) && !ranged ? 1.1 : 1),list);
+			extra.println("It deals " + dam +" to "+ defender.getName() +"!");
+			return dam;
 		}else {
+			extra.println("It's a miss!");
 			return -1;
 		}
 	}

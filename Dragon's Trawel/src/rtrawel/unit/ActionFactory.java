@@ -3,6 +3,7 @@ package rtrawel.unit;
 import java.util.HashMap;
 
 import rtrawel.items.Weapon;
+import trawel.extra;
 
 public class ActionFactory {
 	private static HashMap<String,Action> data = new HashMap<String, Action>();
@@ -11,9 +12,10 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " basic attacks " + target.toString());
 				Weapon w = caster.getWeapon();
 				for (RUnit u: target.targets) {
-					if (RCore.doAttack(caster, u,caster.getStrength(),w.getBaseHit(), (w.getDamage()+w.damageBonuses(u)* ( RCore.doesHit(caster,u,w.critChance())? w.critMult() : 1)),w.getDamageTypes()) > -1) {
+					if (RCore.doAttack(caster, u,caster.getStrength(),w.getBaseHit(), (w.getDamage()+w.damageBonuses(u)* ( RCore.doesHit(caster,u,w.critChance(),w.isRanged())? w.critMult() : 1)),w.isRanged(),w.getDamageTypes()) > -1) {
 						w.getOnHit().go(caster,u);//note: not all abilities should be able to crit
 					}
 					
