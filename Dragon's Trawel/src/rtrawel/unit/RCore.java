@@ -2,7 +2,10 @@ package rtrawel.unit;
 
 import java.util.List;
 
+import rtrawel.items.ArmorFactory;
 import rtrawel.items.WeaponFactory;
+import rtrawel.jobs.JobFactory;
+import rtrawel.jobs.PathFactory;
 import rtrawel.unit.RUnit.FightingStance;
 import trawel.extra;
 
@@ -63,6 +66,10 @@ public class RCore {
 		ActionFactory.init();
 		WeaponFactory.init();
 		MonsterFactory.init();
+		ArmorFactory.init();
+		WeaponFactory.init();
+		PathFactory.init();
+		JobFactory.init();
 	}
 	
 	
