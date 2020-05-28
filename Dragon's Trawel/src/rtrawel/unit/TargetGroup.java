@@ -1,5 +1,8 @@
 package rtrawel.unit;
 
-public interface TargetGroup {
+import java.util.List;
 
+public class TargetGroup {
+
+	public List<RUnit> targets;
 }
