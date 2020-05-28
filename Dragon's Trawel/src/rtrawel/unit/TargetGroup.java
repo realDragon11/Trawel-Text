@@ -1,10 +1,11 @@
 package rtrawel.unit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TargetGroup {
 
-	public List<RUnit> targets;
+	public List<RUnit> targets = new ArrayList<RUnit>();
 	
 	@Override
 	public String toString() {
@@ -13,5 +14,13 @@ public class TargetGroup {
 			str+= r.getName()+", ";
 		}
 		return str;
+	}
+	
+	public TargetGroup() {
+		
+	}
+	
+	public TargetGroup(RUnit i) {
+		targets.add(i);
 	}
 }

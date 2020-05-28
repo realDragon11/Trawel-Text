@@ -24,6 +24,10 @@ public class RMonster extends RUnit {
 	public String getName() {
 		return getBaseName() + monsterNumber;
 	}
+	
+	public int getMonsterNumber() {
+		return monsterNumber;
+	}
 
 	@Override
 	protected int getEquipStrength() {

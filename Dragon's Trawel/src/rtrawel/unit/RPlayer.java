@@ -5,17 +5,24 @@ import java.util.List;
 
 import rtrawel.items.Armor;
 import rtrawel.items.Weapon;
+import rtrawel.items.WeaponFactory;
+import trawel.extra;
 
 public class RPlayer extends RUnit {
 
 	private String name;
 	
-	private Weapon weap;
+	private Weapon weap, shield;
 	
 	private Armor head, torso, arms, feet, assec1, assec2;
 	
+	private List<Action> abs = new ArrayList<Action>();
+	private List<Action> spells = new ArrayList<Action>();
+	
 	public RPlayer(String n) {
 		name = n;
+		//TODO;
+		weap = WeaponFactory.getWeaponByName("copper sword");
 	}
 	
 	public List<Armor> listOfArmor(){
@@ -158,8 +165,44 @@ public class RPlayer extends RUnit {
 
 	@Override
 	public void decide() {
-		// TODO Auto-generated method stub
+		boolean keepGoing = true;
+		int in;
+		boolean valid;
+		RUnit picked;
+		while (keepGoing) {
+			extra.println("1 basic attack");
+			extra.println("2 abilities");
+			extra.println("3 spells");
+		switch (extra.inInt(3)) {
+		case 1:
+			for (RUnit r: curBattle.foes) {
+				extra.println(r.getName());
+			}
+			valid = false;
+			while (!valid) {
+				in = extra.inInt(99);
+				if (in == 99) {
+					break;
+				}
+				for (RUnit r: curBattle.foes) {
+					if (((RMonster)r).getMonsterNumber() == in) {
+						decideOn(ActionFactory.getActionByName("attack"),new TargetGroup(r));
+						valid = true;
+						break;
+					}
+				}
+			}
+			break;
+		
+		}
+		}
 
+	}
+	
+	private void decideOn(Action a,TargetGroup g) {
+		this.a = a;
+		warmUp = a.warmUp();
+		upComing = a.coolDown();
 	}
 
 	@Override
