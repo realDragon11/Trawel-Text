@@ -17,6 +17,8 @@ public class TestRunner {
 		RCore.init();
 		
 		Party.party.list.add(new RPlayer("jess","warrior"));
+		((RPlayer)Party.party.list.get(0)).debugAddPathPoints("sword",10);
+		((RPlayer)Party.party.list.get(0)).cleanAbs();
 		Party.party.list.get(0).refresh();
 		List<List<RUnit>> foeFoeList = new ArrayList<List<RUnit>>();
 		List<RUnit> foeList = new ArrayList<RUnit>();

@@ -6,7 +6,7 @@ public class PathWithLevel {
 	public int level;
 	
 	public PathWithLevel(Path n, int l) {
-		n = n;
+		path = n;
 		level = l;
 	}
 }

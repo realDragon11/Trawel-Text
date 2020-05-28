@@ -171,7 +171,7 @@ public class RPlayer extends RUnit {
 		RUnit picked;
 		TargetGroup t;
 		while (keepGoing) {
-			extra.println(this.getName());
+			extra.println(this.getName() + " HP: " + this.getHp() + "/" + this.getMaxHp() + " MP: " + this.getMana() + "/" + this.getMaxMana() + " Tsn: " + this.getTension() + "/" + this.getMaxTension());
 			extra.println("1 basic attack");
 			extra.println("2 abilities");
 			extra.println("3 spells");
@@ -267,7 +267,7 @@ public class RPlayer extends RUnit {
 					keepGoing = false;
 				}
 			}
-			//keepGoing = false;//TODO
+			//keepGoing = false;//TODO SPells
 			break;
 		
 		}
@@ -323,6 +323,11 @@ public class RPlayer extends RUnit {
 	
 	public void addBuff(Buff b) {
 		buffMap.buffs.add(b);
+	}
+
+	public void debugAddPathPoints(String string, int i) {
+		progression.addPathPoints(string,i);
+		
 	}
 
 

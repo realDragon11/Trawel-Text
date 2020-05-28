@@ -14,6 +14,26 @@ public class Progression {
 				return k.level;
 			}
 		}
-		return 0;
+		return -1;
+	}
+	public int pathLevel(String p) {
+		for (PathWithLevel k: paths) {
+			if (k.path.name().equals(p)){
+				return k.level;
+			}
+		}
+		return -1;
+	}
+	
+	public void addPathPoints(String p, int points) {
+		if (pathLevel(p) == -1) {
+			paths.add(new PathWithLevel(PathFactory.getPathByName(p), points));
+		}else {
+			for (PathWithLevel k: paths) {
+				if (k.path.name().equals(p)){
+					k.level+=points;
+				}
+			}
+		}
 	}
 }

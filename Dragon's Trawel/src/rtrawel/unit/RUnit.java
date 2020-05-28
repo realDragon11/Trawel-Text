@@ -149,4 +149,8 @@ public abstract class RUnit {
 	public abstract String getName();
 	
 	public abstract String getBaseName();
+	public void drainMp(int i) {
+		mp = (int)extra.clamp(mp-i,0,this.getMaxMana());
+		
+	}
 }

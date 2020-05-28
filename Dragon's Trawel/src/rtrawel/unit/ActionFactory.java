@@ -70,6 +70,7 @@ public class ActionFactory {
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
 				extra.println(caster.getName() + " cleaves " + target.toString());
+				caster.drainMp(2);
 				Weapon w = caster.getWeapon();
 				List<DamageType> dList = new ArrayList<DamageType>();
 				dList.add(DamageType.SHARP);
