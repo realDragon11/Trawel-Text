@@ -81,6 +81,7 @@ public class Battle {
 		for (RUnit r: foes) {
 			Party.party.gold+=((RMonster)r).getGoldWorth();
 			totalxp += ((RMonster)r).getXpWorth();
+			((RMonster)r).loot();
 		}
 		totalxp/=Party.party.list.size();
 		for (RUnit p: Party.party.list) {

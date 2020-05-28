@@ -243,6 +243,18 @@ public class RPlayer extends RUnit {
 			}
 			
 			break;
+		case 4:
+			extra.println("Current Stance: " + fStance.name().toLowerCase());
+			extra.println("1 offensive");
+			extra.println("2 balanced");
+			extra.println("3 defensive");
+			extra.println("4 back");
+			switch (extra.inInt(4)) {
+			case 1: this.fStance = FightingStance.OFFENSIVE; keepGoing = false;break;
+			case 2: this.fStance = FightingStance.BALANCED; keepGoing = false;break;
+			case 3: this.fStance = FightingStance.DEFENSIVE; keepGoing = false;break;
+			}
+			
 		}
 		}
 

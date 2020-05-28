@@ -2,6 +2,7 @@ package rtrawel.unit;
 
 import java.util.List;
 
+import rtrawel.battle.Party;
 import rtrawel.items.Weapon;
 import rtrawel.items.WeaponFactory;
 import trawel.extra;
@@ -164,6 +165,15 @@ public class RMonster extends RUnit {
 	@Override
 	public double shieldBlockChance() {
 		 return MonsterFactory.getMonsterByName(name).shieldBlockChance();
+	}
+	public void loot() {
+		if (Math.random() < MonsterFactory.getMonsterByName(name).getDropChance()) {
+			Party.party.addItem(MonsterFactory.getMonsterByName(name).getDrop().getName(),1);
+		}
+		if (Math.random() < MonsterFactory.getMonsterByName(name).getRareDropChance()) {
+			Party.party.addItem(MonsterFactory.getMonsterByName(name).getRareDrop().getName(),1);
+		}
+		
 	}
 
 }
