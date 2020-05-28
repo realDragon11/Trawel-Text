@@ -143,7 +143,141 @@ public class MonsterFactory {
 			public void initer(RMonster r) {
 				r.addRaceType(RaceType.BEAST);
 			}});
+		
+		data.put("fearless fella",new MonsterData() {
+			
+
+			@Override
+			public int getStrength() {
+				return 8;
+			}
+
+			@Override
+			public int getKnowledge() {
+				return 0;
+			}
+
+			@Override
+			public int getMaxHp() {
+				return 14;
+			}
+
+			@Override
+			public int getMaxMana() {
+				return 0;
+			}
+
+			@Override
+			public int getMaxTension() {
+				return 0;
+			}
+
+			@Override
+			public int getSpeed() {
+				return 2;
+			}
+
+			@Override
+			public int getAgility() {
+				return 0;
+			}
+
+			@Override
+			public int getDexterity() {
+				return 0;
+			}
+
+			@Override
+			public int getResilence() {
+				return 4;
+			}
+
+			@Override
+			public List<Action> getActions() {
+				List<Action> list = new ArrayList<Action>();
+				list.add(ActionFactory.getActionByName("attack"));
+				return list;
+			}
+
+			@Override
+			public String getName() {
+				return "fearless fella";
+			}
+
+			@Override
+			public String getDesc() {
+				return "Look out, he's got a knife!.";
+			}
+
+			@Override
+			public DamMultMap getDamMultMap() {
+				DamMultMap map = new DamMultMap();
+				return map;
+			}
+
+			@Override
+			public int getXp() {
+				return 4;
+			}
+
+			@Override
+			public int getGold() {
+				return 4;
+			}
+
+			@Override
+			public Item getDrop() {
+				return null;
+			}
+
+			@Override
+			public double getDropChance() {
+				return 0;
+			}
+
+			@Override
+			public Item getRareDrop() {
+				return WeaponFactory.getWeaponByName("simple stabber");
+			}
+
+			@Override
+			public double getRareDropChance() {
+				return 0.1;
+			}
+
+			@Override
+			public int getKillsTilKnown() {
+				return 4;
+			}
+
+			@Override
+			public int getKillsTilVeryKnown() {
+				return 8;
+			}
+
+			@Override
+			public String getWeapon() {
+				return "fella knife";
+			}
+
+			@Override
+			public SpriteData getSpriteData() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public double shieldBlockChance() {
+				return 0;
+			}
+
+			@Override
+			public void initer(RMonster r) {
+				r.addRaceType(RaceType.HUMANOID);
+			}});
 	}
+	
+	
 	
 	
 	public static MonsterData getMonsterByName(String str) {

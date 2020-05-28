@@ -127,7 +127,7 @@ public abstract class RUnit {
 	
 	
 	public enum RaceType{
-		PLAYER, MONSTER, FISH, ETC, BEAST, MACHINE, PLANT;
+		PLAYER, MONSTER, FISH, ETC, BEAST, MACHINE, PLANT, HUMANOID;
 	}
 
 
@@ -156,5 +156,9 @@ public abstract class RUnit {
 	
 	public void addRaceType(RaceType r) {
 		raceTypes.add(r);
+	}
+	public void heal(int i, int dexterity) {
+		double d = (i * (100.0+dexterity))/(100.0);
+		hp = (int)extra.clamp(hp+d,0,this.getMaxHp());
 	}
 }

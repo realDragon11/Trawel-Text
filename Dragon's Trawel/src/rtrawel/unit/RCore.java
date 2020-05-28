@@ -3,6 +3,7 @@ package rtrawel.unit;
 import java.util.List;
 
 import rtrawel.items.ArmorFactory;
+import rtrawel.items.ConsumableFactory;
 import rtrawel.items.WeaponFactory;
 import rtrawel.jobs.JobFactory;
 import rtrawel.jobs.PathFactory;
@@ -65,8 +66,9 @@ public class RCore {
 	public static void init() {
 		ActionFactory.init();
 		WeaponFactory.init();
-		MonsterFactory.init();
+		ConsumableFactory.init();
 		ArmorFactory.init();
+		MonsterFactory.init();
 		WeaponFactory.init();
 		PathFactory.init();
 		JobFactory.init();

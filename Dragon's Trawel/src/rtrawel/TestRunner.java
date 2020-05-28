@@ -23,9 +23,18 @@ public class TestRunner {
 		List<List<RUnit>> foeFoeList = new ArrayList<List<RUnit>>();
 		List<RUnit> foeList = new ArrayList<RUnit>();
 		foeFoeList.add(foeList);
+		int totalCounter = 1;
 		for (int i = 0; i < 2; i++) {
-		foeList.add(new RMonster("wolf pup", i+1));
+		foeList.add(new RMonster("wolf pup", totalCounter));
 		foeList.get(i).refresh();
+		totalCounter++;
+		}
+		foeList = new ArrayList<RUnit>();
+		foeFoeList.add(foeList);
+		for (int i = 0; i < 1; i++) {
+		foeList.add(new RMonster("fearless fella", totalCounter));
+		foeList.get(i).refresh();
+		totalCounter++;
 		}
 		Battle b = new Battle(Party.party.list,foeFoeList);
 		b.go();

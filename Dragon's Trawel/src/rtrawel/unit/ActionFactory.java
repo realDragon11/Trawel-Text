@@ -181,6 +181,57 @@ public class ActionFactory {
 			public String getDesc() {
 				return "Deals piercing damage.";
 			}});
+		
+		data.put("medicine heal",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " heals " + target.toString() + " with medicine!");
+				Weapon w = caster.getWeapon();
+				for (RUnit u: target.targets) {
+					u.heal(6,caster.getDexterity());
+				}
+			}
+
+			@Override
+			public double getWeight() {
+				return 2;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.HURT_FRIEND;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.SINGLE;
+			}
+
+			@Override
+			public double warmUp() {
+				return 80;
+			}
+
+			@Override
+			public double coolDown() {
+				return 5;
+			}
+
+			@Override
+			public String getName() {
+				return "medicine heal";
+			}
+
+			@Override
+			public String getDesc() {
+				return "a quick patch me up with a herb";
+			}});
 	}
 	
 	

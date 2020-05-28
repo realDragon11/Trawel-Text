@@ -5,6 +5,7 @@ import java.util.List;
 
 import rtrawel.items.Armor;
 import rtrawel.items.Consumable;
+import rtrawel.items.ConsumableFactory;
 import rtrawel.items.Item;
 import rtrawel.items.Weapon;
 import rtrawel.items.WeaponFactory;
@@ -36,6 +37,7 @@ public class RPlayer extends RUnit {
 		progression.jobs.add(new JobWithLevel("warrior",1));
 		weap = WeaponFactory.getWeaponByName("copper sword");
 		inventory.add(WeaponFactory.getWeaponByName("lumber axe"));
+		inventory.add(ConsumableFactory.getConsumableByName("medicine herb"));
 		fStance = FightingStance.BALANCED;
 		cleanAbs();
 	}

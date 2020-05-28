@@ -76,71 +76,6 @@ public class WeaponFactory {
 				return 0;
 			}});
 		
-		data.put("wolf pup teeth",new Weapon() {
-
-			@Override
-			public WeaponType getWeaponType() {
-				return WeaponType.MONSTER_MELEE;
-			}
-
-			@Override
-			public OnHit getOnHit() {
-				return OnHit.empty;
-			}
-
-			@Override
-			public int damageBonuses(RUnit defender) {
-				return 0;
-			}
-
-			@Override
-			public List<DamageType> getDamageTypes() {
-				List<DamageType> list = new ArrayList<DamageType>();
-				list.add(DamageType.SHARP);
-				list.add(DamageType.PIERCE);
-				return list;
-			}
-
-			@Override
-			public double getBaseHit() {
-				return 1;
-			}
-
-			@Override
-			public int getDamage() {
-				return 3;
-			}
-
-			@Override
-			public String getName() {
-				return "wolf pup teeth";
-			}
-
-			@Override
-			public String getDesc() {
-				return "";
-			}
-
-			@Override
-			public double critChance() {
-				return .05;
-			}
-
-			@Override
-			public double critMult() {
-				return 1.5;
-			}
-
-			@Override
-			public int cost() {
-				return 0;
-			}
-
-			@Override
-			public double blockChance() {
-				return 0;
-			}});
-		
 		data.put("lumber axe",new Weapon() {
 
 			@Override
@@ -205,6 +140,70 @@ public class WeaponFactory {
 				return 0;
 			}});
 		
+		data.put("simple stabber",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.KNIFE;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.SHARP);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return 1;
+			}
+
+			@Override
+			public int getDamage() {
+				return 3;
+			}
+
+			@Override
+			public String getName() {
+				return "simple stabber";
+			}
+
+			@Override
+			public String getDesc() {
+				return "Not the best knife out there, but it'll have to do.";
+			}
+
+			@Override
+			public double critChance() {
+				return .15;
+			}
+
+			@Override
+			public double critMult() {
+				return 4;
+			}
+
+			@Override
+			public int cost() {
+				return 10;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0;
+			}});
+		
 		data.put("wolf pup teeth",new Weapon() {
 
 			@Override
@@ -258,6 +257,70 @@ public class WeaponFactory {
 			@Override
 			public double critMult() {
 				return 1.5;
+			}
+
+			@Override
+			public int cost() {
+				return 0;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0;
+			}});
+		
+		data.put("fella knife",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.MONSTER_MELEE;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.PIERCE);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return 1;
+			}
+
+			@Override
+			public int getDamage() {
+				return 5;
+			}
+
+			@Override
+			public String getName() {
+				return "fella knife";
+			}
+
+			@Override
+			public String getDesc() {
+				return "";
+			}
+
+			@Override
+			public double critChance() {
+				return .1;
+			}
+
+			@Override
+			public double critMult() {
+				return 1.25;
 			}
 
 			@Override
