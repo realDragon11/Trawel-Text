@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class extra {
@@ -404,6 +405,11 @@ public class extra {
 		}
 
 		public static <E> E randList(ArrayList<E> list) {
+			return list.get(randRange(0,list.size()-1));
+			
+		}
+		
+		public static <E> E randList(List<E> list) {
 			return list.get(randRange(0,list.size()-1));
 			
 		}

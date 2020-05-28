@@ -2,6 +2,7 @@ package rtrawel.unit;
 
 import rtrawel.items.Weapon;
 import rtrawel.items.WeaponFactory;
+import trawel.extra;
 
 public class RMonster extends RUnit {
 	
@@ -98,7 +99,9 @@ public class RMonster extends RUnit {
 
 	@Override
 	public void decide() {
-		
+		a = extra.randList(MonsterFactory.getMonsterByName(name).getActions());
+		warmUp = a.warmUp();
+		upComing = a.coolDown();
 	}
 	@Override
 	public Weapon getWeapon() {

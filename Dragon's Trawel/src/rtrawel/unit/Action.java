@@ -7,6 +7,9 @@ public interface Action {
 	
 	public double getWeight();
 	
+	public double warmUp();
+	public double coolDown();
+	
 	/**
 	 * do I have enough mana/tension?
 	 * @param caster

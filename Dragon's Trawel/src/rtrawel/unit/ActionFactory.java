@@ -38,6 +38,16 @@ public class ActionFactory {
 			@Override
 			public TargetGrouping getTargetGrouping() {
 				return TargetGrouping.SINGLE;
+			}
+
+			@Override
+			public double warmUp() {
+				return 50;
+			}
+
+			@Override
+			public double coolDown() {
+				return 50;
 			}});
 	}
 	
