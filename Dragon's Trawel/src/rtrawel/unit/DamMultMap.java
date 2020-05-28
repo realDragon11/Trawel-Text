@@ -1,6 +1,9 @@
 package rtrawel.unit;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class DamMultMap {
 	//NOTE: do not serialize, must be reconstructed
@@ -18,5 +21,19 @@ public class DamMultMap {
 			throw new RuntimeException("damagemult already in map");
 		}
 		hm.put(key, value);
+	}
+	
+	public void insertOrAdd(DamageType key,Double value) {
+		if (hm.containsKey(key)) {
+			hm.put(key, value*hm.remove(key));
+			return;
+		}
+		hm.put(key, value);
+	}
+	
+	public List<DamageType> getKeys(){
+		List<DamageType> list =  new ArrayList<DamageType>();
+		hm.keySet().stream().forEach(list::add);
+	 return list;
 	}
 }

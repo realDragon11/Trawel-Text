@@ -145,8 +145,15 @@ public class RPlayer extends RUnit {
 
 	@Override
 	protected DamMultMap getEquipDamMultMap() {
-		// TODO Auto-generated method stub
-		return null;
+		//TODO: this REALLY needs to be cached
+		DamMultMap totalMap = new DamMultMap();
+		for (Armor a: listOfArmor()) {
+			DamMultMap tempMap = a.getDMM();
+			for (DamageType t: tempMap.getKeys()) {
+				totalMap.insertOrAdd(t,tempMap.getMult(t));
+			}
+		}
+		return totalMap;
 	}
 
 	@Override
