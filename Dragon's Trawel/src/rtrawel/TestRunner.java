@@ -16,7 +16,7 @@ public class TestRunner {
 	public static void main(String[] args) {
 		RCore.init();
 		
-		Party.party.list.add(new RPlayer("jess"));
+		Party.party.list.add(new RPlayer("jess","warrior"));
 		Party.party.list.get(0).refresh();
 		List<List<RUnit>> foeFoeList = new ArrayList<List<RUnit>>();
 		List<RUnit> foeList = new ArrayList<RUnit>();

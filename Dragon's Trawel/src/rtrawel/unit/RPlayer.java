@@ -6,6 +6,8 @@ import java.util.List;
 import rtrawel.items.Armor;
 import rtrawel.items.Weapon;
 import rtrawel.items.WeaponFactory;
+import rtrawel.jobs.PathWithLevel;
+import rtrawel.jobs.Progression;
 import rtrawel.unit.RUnit.FightingStance;
 import trawel.extra;
 
@@ -19,12 +21,16 @@ public class RPlayer extends RUnit {
 	
 	private List<Action> abs = new ArrayList<Action>();
 	private List<Action> spells = new ArrayList<Action>();
+	private Progression progression = new Progression();
+	private String currentJob;
 	
-	public RPlayer(String n) {
+	public RPlayer(String n, String job) {
 		name = n;
+		currentJob = job;
 		//TODO;
 		weap = WeaponFactory.getWeaponByName("copper sword");
 		fStance = FightingStance.BALANCED;
+		cleanAbs();
 	}
 	
 	public List<Armor> listOfArmor(){
@@ -236,7 +242,10 @@ public class RPlayer extends RUnit {
 	public void cleanAbs() {
 		abs.clear();
 		spells.clear();
-		for ()
+		buffMap.clear();
+		for (PathWithLevel pwl: progression.paths) {
+			pwl.path.apply(this, pwl.level,pwl.path.jobName().equals(currentJob));
+		}
 	}
 
 }
