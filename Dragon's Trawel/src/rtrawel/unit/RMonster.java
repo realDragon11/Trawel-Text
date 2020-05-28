@@ -17,6 +17,7 @@ public class RMonster extends RUnit {
 		this.name = name;
 		this.dmm = MonsterFactory.getMonsterByName(name).getDamMultMap();
 		monsterNumber = mn;
+		fStance = FightingStance.BALANCED;
 	}
 	public String getBaseName() {
 		return name;

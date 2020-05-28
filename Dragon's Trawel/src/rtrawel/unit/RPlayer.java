@@ -6,6 +6,7 @@ import java.util.List;
 import rtrawel.items.Armor;
 import rtrawel.items.Weapon;
 import rtrawel.items.WeaponFactory;
+import rtrawel.unit.RUnit.FightingStance;
 import trawel.extra;
 
 public class RPlayer extends RUnit {
@@ -23,6 +24,7 @@ public class RPlayer extends RUnit {
 		name = n;
 		//TODO;
 		weap = WeaponFactory.getWeaponByName("copper sword");
+		fStance = FightingStance.BALANCED;
 	}
 	
 	public List<Armor> listOfArmor(){
@@ -173,7 +175,9 @@ public class RPlayer extends RUnit {
 			extra.println("1 basic attack");
 			extra.println("2 abilities");
 			extra.println("3 spells");
-		switch (extra.inInt(3)) {
+			extra.println("4 items");
+			extra.println("5 change stance");
+		switch (extra.inInt(5)) {
 		case 1:
 			for (RUnit r: curBattle.foes) {
 				extra.println(r.getName());

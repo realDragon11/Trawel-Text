@@ -19,7 +19,7 @@ public abstract class RUnit {
 	protected BuffMap buffMap = new BuffMap();
 	protected DamMultMap dmm = new DamMultMap();
 	
-	private FightingStance fStance;
+	protected FightingStance fStance;
 	
 	public int getStrength() {
 		return (int) (((this.getBaseStrength()+this.getEquipStrength())*buffMap.getTotalBuffMult(Buff.BuffType.STR_MULT))+buffMap.getTotalBuffMod(Buff.BuffType.STR_MOD));
