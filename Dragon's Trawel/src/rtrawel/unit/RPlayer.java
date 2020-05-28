@@ -255,6 +255,10 @@ public class RPlayer extends RUnit {
 			extra.println("You can't cast that right now.");
 			return true;
 		}
+		if (ab.getTargetType().equals(Action.TargetType.SELF_ONLY)) {
+			decideOn(ab,new TargetGroup(this));
+			return false;
+		}
 		if (ab.getTargetType().equals(Action.TargetType.FOE)) {
 			if (ab.getTargetGrouping().equals(Action.TargetGrouping.ALL)) {
 				t = new TargetGroup();

@@ -145,6 +145,9 @@ public class RMonster extends RUnit {
 						}
 				}
 			break;
+		case SELF_ONLY:
+			savedTarget = new TargetGroup(this);
+			break;
 		}
 	}
 	@Override

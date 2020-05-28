@@ -26,7 +26,7 @@ public interface Action {
 	
 	
 	public enum TargetType{
-		FOE, FRIEND, HURT_FRIEND;
+		FOE, FRIEND, HURT_FRIEND, SELF_ONLY;
 	}
 	
 	public enum TargetGrouping{
