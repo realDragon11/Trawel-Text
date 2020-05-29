@@ -13,6 +13,7 @@ import rtrawel.items.WeaponFactory;
 import rtrawel.items.Item.ItemType;
 import rtrawel.jobs.JobFactory;
 import rtrawel.jobs.JobWithLevel;
+import rtrawel.jobs.PathFactory;
 import rtrawel.jobs.PathWithLevel;
 import rtrawel.jobs.Progression;
 import rtrawel.unit.RUnit.FightingStance;
@@ -385,7 +386,7 @@ public class RPlayer extends RUnit {
 		abs.clear();
 		buffMap.buffs.clear();
 		for (PathWithLevel pwl: progression.paths) {
-			pwl.path.apply(this, pwl.level,pwl.path.jobName().equals(currentJob));//TODO make active weapons active
+			PathFactory.getPathByName(pwl.path).apply(this, pwl.level,pwl.path.equals(currentJob));//TODO make active weapons active
 		}
 	}
 

@@ -18,15 +18,22 @@ public class TestRunner {
 	public static void main(String[] args) {
 		RCore.init();
 		
-		Party.party.list.add(new RPlayer("jess","warrior"));
-		((RPlayer)Party.party.list.get(0)).debugAddPathPoints("sword",10);
-		((RPlayer)Party.party.list.get(0)).cleanAbs();
-		Party.party.list.get(0).refresh();
+		extra.println("Start new game?");
+		if (extra.yesNo()) {
+			Party.party.list.add(new RPlayer("jess","warrior"));
+			((RPlayer)Party.party.list.get(0)).debugAddPathPoints("sword",10);
+			((RPlayer)Party.party.list.get(0)).cleanAbs();
+			Party.party.list.get(0).refresh();
+			
+			Party.party.curVillage = VillageFactory.init();
+			RCore.save();
+		}
 		
-		Party.party.curVillage = VillageFactory.init();
 		
 		while (true) {
 			//load
+			VillageFactory.init();//TODO save village data/event flags
+			RCore.load();
 			while (true) {
 				Party.party.curVillage.go();
 				if (Party.party.allDead()) {

@@ -160,7 +160,7 @@ public class RCore {
 	public static void load() {
 		FileInputStream fos;
 		try {
-			fos = new FileInputStream("trawel.save");
+			fos = new FileInputStream("rtrawel.save");
 			 ObjectInputStream oos = new ObjectInputStream(fos);
 			 SaveData sd = (SaveData) oos.readObject();
 			 Party.party = sd.getParty();

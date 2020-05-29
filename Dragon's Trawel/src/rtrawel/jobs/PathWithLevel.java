@@ -2,10 +2,10 @@ package rtrawel.jobs;
 
 public class PathWithLevel implements java.io.Serializable{
 
-	public Path path;
+	public String path;
 	public int level;
 	
-	public PathWithLevel(Path n, int l) {
+	public PathWithLevel(String n, int l) {
 		path = n;
 		level = l;
 	}
