@@ -6,6 +6,8 @@ import java.util.List;
 
 import rtrawel.unit.RMonster;
 import rtrawel.unit.RUnit;
+import rtrawel.unit.TargetGroup;
+import trawel.extra;
 
 public class Battle {
 
@@ -35,7 +37,13 @@ public class Battle {
 	
 	
 	public boolean go() {
+		TargetGroup bt = new TargetGroup();
+		for (RUnit f: foes) {
+			bt.targets.add(f);
+		}
+		extra.println("A battle begins! [" + bt.toString() + "]");
 		for (RUnit r: global) {
+			r.cleanUp();
 			r.curBattle = this;
 			r.decide();
 		}
@@ -67,6 +75,7 @@ public class Battle {
 			killList.clear();
 		}
 		assessKills();
+		Party.party.cleanUp();
 		if (party.size() > 0) {
 			loot();
 			return true;
@@ -95,6 +104,7 @@ public class Battle {
 	}
 	
 	public void kill(RUnit r) {
+		extra.println(r.getName() + " dies!");
 		r.alive = false;
 		if (!killList.contains(r)) {
 			killList.add(r);

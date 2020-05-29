@@ -32,6 +32,7 @@ public class Menu implements Content {
 	private void doInv() {
 		int in2 = 0;
 		while (in2 != 1) {
+			extra.println("gold: " + Party.party.gold);
 			extra.println("1 back");
 			extra.println("2 bag");
 			extra.println("3 assign items");

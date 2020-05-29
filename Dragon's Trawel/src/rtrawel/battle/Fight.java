@@ -25,7 +25,7 @@ public class Fight {
 			}
 			li.add(list);
 		}
-		Battle b = new Battle(Party.party.list,li);
+		Battle b = new Battle(Party.party.getAlive(),li);
 		return b.go();
 	}
 	

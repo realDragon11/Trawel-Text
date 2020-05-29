@@ -57,6 +57,7 @@ public class RCore {
 		if (doesHit(attacker,defender,baseHitMult, ranged)) {
 			int dam = dealDamage(defender,attackStat,d * (!ranged && attacker.getStance().equals(RUnit.FightingStance.OFFENSIVE) && !ranged ? 1.1 : 1),list);
 			extra.println("It deals " + dam +" to "+ defender.getName() +"!");
+			attacker.increaseTen(dam/10);
 			return dam;
 		}else {
 			extra.println("It's a miss!");

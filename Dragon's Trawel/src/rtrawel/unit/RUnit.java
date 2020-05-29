@@ -19,7 +19,7 @@ public abstract class RUnit {
 	protected BuffMap buffMap = new BuffMap();
 	protected DamMultMap dmm = new DamMultMap();
 	
-	protected FightingStance fStance;
+	protected FightingStance fStance = FightingStance.BALANCED;
 	
 	public boolean alive = true;
 	
@@ -70,8 +70,13 @@ public abstract class RUnit {
 	
 	public void takeDamage(int dam) {
 		//int d = (int)(dam*getDamageMultFor(t));
+		this.increaseTen(dam/5);
 		hp = (int) extra.clamp(hp-dam,0,this.getMaxHp());
 		//return d;
+	}
+	
+	public void increaseTen(int v) {
+		ten = (int) extra.clamp(ten+v,0,this.getMaxTension());
 	}
 	public double getDamageMultFor(DamageType t) {
 		return dmm.getMult(t)*getEquipDamMultMap().getMult(t);
@@ -120,11 +125,11 @@ public abstract class RUnit {
 		mp = this.getMaxMana();
 		ten = 0;
 		buffMap.clear();
-		fStance = FightingStance.BALANCED;
 	}
 	
 	public void cleanUp() {
 		buffMap.clear();
+		ten = 0;
 	}
 	
 	public boolean getRaceType(RaceType r) {

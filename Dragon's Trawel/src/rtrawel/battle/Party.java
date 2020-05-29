@@ -116,4 +116,17 @@ public class Party {
 		}
 		return false;
 	}
+
+	public void cleanUp() {
+		for (RUnit r: this.list) {
+			r.cleanUp();
+		}
+		
+	}
+
+	public List<RUnit> getAlive() {
+		List<RUnit> alive = new ArrayList<RUnit>();
+		list.stream().filter(p -> p.isAlive()).forEach(alive::add);
+		return alive;
+	}
 }
