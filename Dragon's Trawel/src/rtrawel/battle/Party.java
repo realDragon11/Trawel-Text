@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import rtrawel.unit.RUnit;
+import rtrawel.village.Village;
 
 public class Party {
 
@@ -16,6 +17,8 @@ public class Party {
 	public int gold = 0;
 	public Map<String,Integer> items = new HashMap<String,Integer>();
 	public Map<String,Integer> killCounter = new HashMap<String,Integer>();
+
+	public Village curVillage;
 	
 	public void addItem(String str,int num) {
 		if (items.containsKey(str)) {
