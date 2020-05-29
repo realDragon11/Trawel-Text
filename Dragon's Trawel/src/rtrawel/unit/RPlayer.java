@@ -238,6 +238,7 @@ public class RPlayer extends RUnit {
 						inventory.add(this.getWeapon());
 						inventory.remove(it);
 						this.weap = (Weapon)it;
+						this.cleanAbs();
 					}
 				}else {
 					

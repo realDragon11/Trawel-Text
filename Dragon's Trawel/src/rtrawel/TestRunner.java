@@ -20,6 +20,13 @@ public class TestRunner {
 		((RPlayer)Party.party.list.get(0)).debugAddPathPoints("sword",10);
 		((RPlayer)Party.party.list.get(0)).cleanAbs();
 		Party.party.list.get(0).refresh();
+		
+		
+		
+		while (true) {
+			Party.party.curVillage.go();
+		}
+		/*
 		List<List<RUnit>> foeFoeList = new ArrayList<List<RUnit>>();
 		List<RUnit> foeList = new ArrayList<RUnit>();
 		foeFoeList.add(foeList);
@@ -39,6 +46,7 @@ public class TestRunner {
 		Battle b = new Battle(Party.party.list,foeFoeList);
 		b.go();
 		extra.println("Battle over!");
+		*/
 	}
 
 }

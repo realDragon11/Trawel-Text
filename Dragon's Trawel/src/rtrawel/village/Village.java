@@ -15,7 +15,8 @@ public class Village {
 	/**
 	 * adds the non-unique menu
 	 */
-	public Village() {
+	public Village(String name) {
+		this.name = name;
 		conts.add(menu);
 	}
 
