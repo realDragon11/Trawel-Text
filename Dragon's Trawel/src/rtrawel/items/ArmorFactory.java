@@ -14,4 +14,7 @@ public class ArmorFactory {
 		}
 		return data.get(str);
 	}
+	public static Armor getArmorByName(String str, boolean b) {
+		return data.get(str);
+	}
 }

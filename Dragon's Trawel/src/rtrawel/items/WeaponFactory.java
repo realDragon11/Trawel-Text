@@ -341,4 +341,9 @@ public class WeaponFactory {
 		}
 		return data.get(str);
 	}
+
+
+	public static Weapon getWeaponByName(String str, boolean permitsNull) {
+		return data.get(str);
+	}
 }

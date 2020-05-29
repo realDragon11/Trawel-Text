@@ -128,6 +128,19 @@ public class RCore {
 		
 		throw new RuntimeException("Item not found.");
 	}
+	public static Item getItemByName(String str, boolean b) {
+		try {
+			return WeaponFactory.getWeaponByName(str);
+		}catch(Exception e) {}
+		try {
+			return ArmorFactory.getArmorByName(str);
+		}catch(Exception e) {}
+		try {
+			return ConsumableFactory.getConsumableByName(str);
+		}catch(Exception e) {}
+		
+		return null;
+	}
 
 	public static void save() {
 		   FileOutputStream fos;

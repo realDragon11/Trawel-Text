@@ -39,4 +39,8 @@ public class ConsumableFactory {
 		}
 		return data.get(str);
 	}
+	
+	public static Consumable getConsumableByName(String str, boolean b) {
+		return data.get(str);
+	}
 }

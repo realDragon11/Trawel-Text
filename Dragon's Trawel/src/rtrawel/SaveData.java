@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rtrawel.battle.Party;
+import rtrawel.items.ArmorFactory;
+import rtrawel.items.Item;
+import rtrawel.items.WeaponFactory;
+import rtrawel.unit.RCore;
 import rtrawel.unit.RPlayer;
 import rtrawel.unit.RUnit;
 import rtrawel.village.Village;
@@ -38,7 +42,11 @@ public class SaveData implements Serializable {
 		p.curVillage = v;
 		p.gold = gold;
 		for (PersonSave ps: people) {
-			p.list.add(new RPlayer(ps.name,ps.currentJob, ps.progression, ps.weap, ps.shield, ps.head, ps.torso,ps.arms, ps.pants, ps.feet, ps.assec1,ps.assec2,ps.inventory));
+			List<Item> inv = new ArrayList<Item>();
+			for (String str: ps.inventory) {
+				inv.add(RCore.getItemByName(str));
+			}
+			p.list.add(new RPlayer(ps.name,ps.currentJob, ps.progression, WeaponFactory.getWeaponByName(ps.weap,true), WeaponFactory.getWeaponByName(ps.shield,true),ArmorFactory.getArmorByName(ps.head,true), ArmorFactory.getArmorByName(ps.torso,true),ArmorFactory.getArmorByName(ps.arms,true), ArmorFactory.getArmorByName(ps.pants,true), ArmorFactory.getArmorByName(ps.feet,true), ArmorFactory.getArmorByName(ps.assec1,true),ArmorFactory.getArmorByName(ps.assec2,true),inv));
 		}
 		return p;
 	}
