@@ -10,6 +10,7 @@ import rtrawel.unit.RMonster;
 import rtrawel.unit.RPlayer;
 import rtrawel.unit.RUnit;
 import rtrawel.village.Village;
+import rtrawel.village.VillageFactory;
 import trawel.extra;
 
 public class TestRunner {
@@ -22,7 +23,7 @@ public class TestRunner {
 		((RPlayer)Party.party.list.get(0)).cleanAbs();
 		Party.party.list.get(0).refresh();
 		
-		Party.party.curVillage = new Village("homa");
+		Party.party.curVillage = VillageFactory.init();
 		
 		while (true) {
 			Party.party.curVillage.go();

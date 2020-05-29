@@ -11,6 +11,8 @@ public class Connection {
 		fight = f;
 		village1 = v1;
 		village2 = v2;
+		v1.addRoad(this);
+		v2.addRoad(this);
 	}
 	
 	public Village go(Village curVillage) {

@@ -11,6 +11,7 @@ public class Village {
 	public List<Content> conts = new ArrayList<Content>();
 	public String name = "";
 	public static Menu menu = new Menu();
+	public Roads r;
 	
 	/**
 	 * adds the non-unique menu
@@ -18,6 +19,8 @@ public class Village {
 	public Village(String name) {
 		this.name = name;
 		conts.add(menu);
+		r = new Roads();
+		conts.add(r);
 	}
 
 	public void doRandomBattle() {
@@ -40,5 +43,9 @@ public class Village {
 			i++;
 		}
 		return false;
+	}
+	
+	public void addRoad(Connection e) {
+		r.connects.add(e);
 	}
 }
