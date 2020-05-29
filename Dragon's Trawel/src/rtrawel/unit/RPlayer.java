@@ -366,7 +366,7 @@ public class RPlayer extends RUnit {
 		abs.clear();
 		buffMap.clear();
 		for (PathWithLevel pwl: progression.paths) {
-			pwl.path.apply(this, pwl.level,pwl.path.jobName().equals(currentJob));
+			pwl.path.apply(this, pwl.level,pwl.path.jobName().equals(currentJob));//TODO make active weapons active
 		}
 	}
 

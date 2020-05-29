@@ -242,7 +242,7 @@ public class MonsterFactory {
 
 			@Override
 			public double getRareDropChance() {
-				return 0.1;
+				return (1.0/64.0);
 			}
 
 			@Override
