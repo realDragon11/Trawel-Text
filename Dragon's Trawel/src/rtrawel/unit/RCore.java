@@ -2,6 +2,7 @@ package rtrawel.unit;
 
 import java.util.List;
 
+import rtrawel.battle.FightFactory;
 import rtrawel.items.ArmorFactory;
 import rtrawel.items.ConsumableFactory;
 import rtrawel.items.Item;
@@ -73,6 +74,7 @@ public class RCore {
 		WeaponFactory.init();
 		PathFactory.init();
 		JobFactory.init();
+		FightFactory.init();
 	}
 	
 	public static int levelLynchPin(int level, int level1, int level5, int level15, int level25, int level40, int level60, int level80, int level99) {

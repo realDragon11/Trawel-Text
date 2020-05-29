@@ -11,18 +11,28 @@ public class Fight {
  * used for storing fights
  */
 	
-	List<List<RUnit>> foes = new ArrayList<List<RUnit>>();
+	List<List<String>> foes = new ArrayList<List<String>>();
 	public int counter = 1;
 	public boolean go() {
-		Battle b = new Battle(Party.party.list,foes);
+		counter = 1;
+		List<List<RUnit>> li = new ArrayList<List<RUnit>>();
+		for (List<String> l: foes) {
+			List<RUnit> list = new ArrayList<RUnit>();
+			for (String s: l) {
+				list.add(new RMonster(s,counter));
+			}
+			li.add(list);
+		}
+		Battle b = new Battle(Party.party.list,li);
+		counter++;
 		return b.go();
 	}
 	
 	
 	public void addFoes(String name, int amount) {
-		List<RUnit> l = new ArrayList<RUnit>();
+		List<String> l = new ArrayList<String>();
 		for (int i = 0;i < amount;i++) {
-			l.add(new RMonster(name, counter++));
+			l.add(name);
 		}
 		foes.add(l);
 	}

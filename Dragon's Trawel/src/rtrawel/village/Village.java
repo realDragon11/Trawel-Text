@@ -3,6 +3,7 @@ package rtrawel.village;
 import java.util.ArrayList;
 import java.util.List;
 
+import rtrawel.battle.Fight;
 import rtrawel.battle.Party;
 import trawel.extra;
 
@@ -12,6 +13,8 @@ public class Village {
 	public String name = "";
 	public static Menu menu = new Menu();
 	public Roads r;
+	
+	public List<Fight> spawns = new ArrayList<Fight>();
 	
 	/**
 	 * adds the non-unique menu
@@ -24,8 +27,11 @@ public class Village {
 	}
 
 	public void doRandomBattle() {
-		// TODO Auto-generated method stub
-		
+		extra.randList(spawns).go();
+	}
+	
+	public void addFight(Fight f) {
+		spawns.add(f);
 	}
 	
 	public boolean go() {
