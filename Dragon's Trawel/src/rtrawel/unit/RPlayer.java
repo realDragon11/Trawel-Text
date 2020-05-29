@@ -3,6 +3,7 @@ package rtrawel.unit;
 import java.util.ArrayList;
 import java.util.List;
 
+import rtrawel.battle.Party;
 import rtrawel.items.Armor;
 import rtrawel.items.Consumable;
 import rtrawel.items.ConsumableFactory;
@@ -394,6 +395,28 @@ public class RPlayer extends RUnit {
 
 	public void setWeapon(Weapon item) {
 		this.weap = item;
+	}
+
+	public boolean assignItems() {
+		int i;
+		for (i = 0;i < inventory.size();i++) {
+			extra.println((i + 1) + " " + inventory.get(i).getName());
+		}
+		i++;//extra i++
+		if (inventory.size() < 3) {
+			extra.println((i++) + " empty slot");
+		}
+		extra.println((i) + " back");
+		int in = extra.inInt(i);
+		if (in <= inventory.size()) {
+			Party.party.addItem(inventory.get(i-1).getName(),1);
+			Item item = Party.party.getPersonItem();
+			if (item != null) {
+				inventory.add(item);
+			}
+		}
+		
+		return false;
 	}
 
 

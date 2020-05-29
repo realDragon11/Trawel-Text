@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import rtrawel.items.Item;
+import rtrawel.items.Item.ItemType;
+import rtrawel.unit.RCore;
 import rtrawel.unit.RUnit;
 import rtrawel.village.Village;
 import trawel.extra;
@@ -62,11 +65,46 @@ public class Party {
 		
 		return str;
 	}
+	
+	public String popItem(Item item) {
+		String str = item.getName();
+		int count = items.get(str);
+		if (count == 1) {
+			items.remove(str);
+		}else {
+			items.replace(str,count-1);
+		}
+		
+		return str;
+	}
+
 
 	public RUnit getUnit() {
 		for (int i = 0;i < list.size();i++) {
 			extra.println( (i +1) + " " + list.get(i).getName());
 		}
 		return list.get(extra.inInt(list.size()));
+	}
+
+	public Item getPersonItem() {
+		refreshItemKeys();
+		List<Item> canTake = new ArrayList<Item>();
+		for (String str: itemKeys) {
+			Item it = RCore.getItemByName(str);
+			if (it.getItemType().equals(ItemType.CONSUMABLE) || it.getItemType().equals(ItemType.WEAPON)) {
+				canTake.add(it);
+			}
+		}
+		int i;
+		for (i = 0; i < canTake.size();i++) {
+			extra.println((i + 1) + " " + canTake.get(i).getName());
+		}
+		i++;//extra i++;
+		extra.println(i + " nothing");
+		int in = extra.inInt(i);
+		if (in == i) {
+		return null;
+		}
+		return canTake.get(i-1);
 	}
 }

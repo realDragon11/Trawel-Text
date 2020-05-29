@@ -39,11 +39,21 @@ public class Menu implements Content {
 			switch (in2) {
 			case 2:
 				doBag();
+				break;
+			case 3:
+				assignItems();
+				break;
 			}
 		}
 	}
 	
 	
+	private void assignItems() {
+		extra.println("Assign items for who?");
+		RPlayer wielder = (RPlayer)Party.party.getUnit();
+		while (wielder.assignItems());
+	}
+
 	private void doBag() {
 		if (Party.party.itemKeys.size() == 0) {
 			extra.println("Your bag is empty!");
