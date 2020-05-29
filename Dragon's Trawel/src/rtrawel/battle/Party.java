@@ -7,6 +7,7 @@ import java.util.Map;
 
 import rtrawel.unit.RUnit;
 import rtrawel.village.Village;
+import trawel.extra;
 
 public class Party {
 
@@ -17,6 +18,7 @@ public class Party {
 	public int gold = 0;
 	public Map<String,Integer> items = new HashMap<String,Integer>();
 	public Map<String,Integer> killCounter = new HashMap<String,Integer>();
+	private List<String> itemKeys = new ArrayList<String>();
 
 	public Village curVillage;
 	
@@ -34,5 +36,28 @@ public class Party {
 		}else {
 			killCounter.put(str,num);
 			}
+	}
+	
+	public void refreshItemKeys() {
+		itemKeys.clear();
+		items.keySet().stream().forEach(itemKeys::add);
+	}
+
+	public void displayItems() {
+		for (int i = 0;i < itemKeys.size();i++) {
+			extra.println((i+1)+ " " + itemKeys.get(i) + ": " + items.get(itemKeys.get(i)));
+		}
+	}
+	
+	public String popItem(int i) {
+		String str = itemKeys.get(i);
+		int count = items.get(str);
+		if (count == 1) {
+			items.remove(str);
+		}else {
+			items.replace(str,count-1);
+		}
+		
+		return str;
 	}
 }
