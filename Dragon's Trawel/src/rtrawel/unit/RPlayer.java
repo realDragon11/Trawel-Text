@@ -22,24 +22,41 @@ public class RPlayer extends RUnit {
 
 	private String name;
 	
-	private Weapon weap, shield;
+	public Weapon weap, shield;
 	
-	private Armor head, torso, arms, feet, assec1, assec2;
+	public Armor head, torso, arms, pants, feet, assec1, assec2;
 	
 	private List<Action> abs = new ArrayList<Action>();
-	private Progression progression = new Progression();
-	private String currentJob;
+	public Progression progression = new Progression();
+	public String currentJob;
 	public List<Item> inventory = new ArrayList<Item>();
 	
 	public RPlayer(String n, String job) {
 		name = n;
 		currentJob = job;
 		//TODO;
-		progression.jobs.add(new JobWithLevel("warrior",1));
+		//progression.jobs.add(new JobWithLevel("warrior",1));
 		weap = WeaponFactory.getWeaponByName("copper sword");
-		inventory.add(WeaponFactory.getWeaponByName("lumber axe"));
-		inventory.add(ConsumableFactory.getConsumableByName("medicine herb"));
+		//inventory.add(WeaponFactory.getWeaponByName("lumber axe"));
+		//inventory.add(ConsumableFactory.getConsumableByName("medicine herb"));
 		fStance = FightingStance.BALANCED;
+		cleanAbs();
+	}
+	
+	public RPlayer(String n, String job, Progression p, Weapon weapon, Weapon shield,Armor head, Armor torso, Armor arms,Armor pants, Armor feet, Armor a1, Armor a2,List<Item> inventory) {
+		name = n;
+		currentJob = job;
+		weap = weapon;
+		this.shield = shield;
+		this.head = head;
+		this.torso = torso;
+		this.arms = arms;
+		this.pants = pants;
+		this.feet = feet;
+		this.assec1 = a1;
+		this.assec2 = a2;
+		this.inventory = inventory;
+		progression = p;
 		cleanAbs();
 	}
 	
@@ -51,6 +68,8 @@ public class RPlayer extends RUnit {
 			list.add(torso);}
 		if (arms != null) {
 			list.add(arms);}
+		if (pants != null) {
+			list.add(pants);}
 		if (feet != null) {
 			list.add(feet);}
 		if (assec1 != null) {

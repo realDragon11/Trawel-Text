@@ -27,7 +27,7 @@ public class Party {
 
 	public Village curVillage;
 
-	private List<String> killKeys = new ArrayList<String>();
+	public List<String> killKeys = new ArrayList<String>();
 	
 	public void addItem(String str,int num) {
 		if (items.containsKey(str)) {
