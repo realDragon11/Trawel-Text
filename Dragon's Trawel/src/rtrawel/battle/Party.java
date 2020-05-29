@@ -129,4 +129,10 @@ public class Party {
 		list.stream().filter(p -> p.isAlive()).forEach(alive::add);
 		return alive;
 	}
+	
+	public List<RUnit> getDead() {
+		List<RUnit> alive = new ArrayList<RUnit>();
+		list.stream().filter(p -> !p.isAlive()).forEach(alive::add);
+		return alive;
+	}
 }

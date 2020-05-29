@@ -118,6 +118,11 @@ public class RCore {
 		
 		throw new RuntimeException("Item not found.");
 	}
+
+	public static void save() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	
