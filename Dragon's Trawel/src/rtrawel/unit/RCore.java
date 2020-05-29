@@ -1,8 +1,16 @@
 package rtrawel.unit;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 
+import rtrawel.SaveData;
 import rtrawel.battle.FightFactory;
+import rtrawel.battle.Party;
 import rtrawel.items.ArmorFactory;
 import rtrawel.items.ConsumableFactory;
 import rtrawel.items.Item;
@@ -10,6 +18,8 @@ import rtrawel.items.WeaponFactory;
 import rtrawel.jobs.JobFactory;
 import rtrawel.jobs.PathFactory;
 import rtrawel.unit.RUnit.FightingStance;
+import trawel.Plane;
+import trawel.Player;
 import trawel.extra;
 
 public class RCore {
@@ -120,9 +130,69 @@ public class RCore {
 	}
 
 	public static void save() {
-		// TODO Auto-generated method stub
+		   FileOutputStream fos;
+			try {
+				fos = new FileOutputStream("rtrawel.save");
+				 ObjectOutputStream oos = new ObjectOutputStream(fos);
+				 oos.writeObject(new SaveData());
+			     oos.close();
+			     fos.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
+	
+	public static void load() {
+		FileInputStream fos;
+		try {
+			fos = new FileInputStream("trawel.save");
+			 ObjectInputStream oos = new ObjectInputStream(fos);
+			 SaveData sd = (SaveData) oos.readObject();
+			 Party.party = sd.getParty();
+			 oos.close();
+			 fos.close();
+		} catch (ClassNotFoundException | IOException e) {
+			extra.println("Invalid load. Either no save file was found or it was outdated.");
+		}
+	}
+	
+	/*
+	 * public static void save() {
+		   FileOutputStream fos;
+		try {
+			fos = new FileOutputStream("trawel.save");//Player.player.getPerson().getName()
+			 ObjectOutputStream oos = new ObjectOutputStream(fos);
+			 oos.writeObject(plane);
+		     oos.close();
+		     fos.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void load() {
+		FileInputStream fos;
+		try {
+			fos = new FileInputStream("trawel.save");
+			 ObjectInputStream oos = new ObjectInputStream(fos);
+			 plane = (Plane) oos.readObject();
+			 Player.player = plane.getPlayer();
+			 //World worlda = world;
+			 Player.bag = Player.player.getPerson().getBag();
+			 Player.passTime = 0;
+			 Player.world = Player.player.world2;
+			 oos.close();
+			 fos.close();
+		} catch (ClassNotFoundException | IOException e) {
+			extra.println("Invalid load. Either no save file was found or it was outdated.");
+		}
 		
 	}
+	 */
 	
 	
 	

@@ -26,6 +26,8 @@ public class Party {
 	public List<String> itemKeys = new ArrayList<String>();
 
 	public Village curVillage;
+
+	private List<String> killKeys = new ArrayList<String>();
 	
 	public void addItem(String str,int num) {
 		if (items.containsKey(str)) {
@@ -134,5 +136,10 @@ public class Party {
 		List<RUnit> alive = new ArrayList<RUnit>();
 		list.stream().filter(p -> !p.isAlive()).forEach(alive::add);
 		return alive;
+	}
+	
+	public void refreshKillKeys() {
+		killKeys.clear();
+		killCounter.keySet().stream().forEach(killKeys::add);
 	}
 }

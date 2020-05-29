@@ -1,6 +1,6 @@
 package rtrawel.jobs;
 
-public class PathWithLevel {
+public class PathWithLevel implements java.io.Serializable{
 
 	public Path path;
 	public int level;

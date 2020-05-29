@@ -1,6 +1,6 @@
 package rtrawel.jobs;
 
-public class JobWithLevel {
+public class JobWithLevel implements java.io.Serializable {
 
 	public String jobName;
 	public int level;
