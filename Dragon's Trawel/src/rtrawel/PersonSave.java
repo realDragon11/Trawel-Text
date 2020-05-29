@@ -20,10 +20,13 @@ public class PersonSave implements Serializable {
 	public Progression progression;
 	public String currentJob;
 	public List<String> inventory = new ArrayList<String>();
+	public int hp, mana;
 	
 	public PersonSave(RPlayer r) {
 		this.weap = r.weap.getName();
 		this.name = r.getName();
+		this.hp = r.getHp();
+		this.mana = r.getMana();
 		if (r.shield != null) {
 		this.shield = r.shield.getName();}
 		if (r.head != null) {

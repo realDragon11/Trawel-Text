@@ -44,7 +44,7 @@ public class RPlayer extends RUnit {
 		cleanAbs();
 	}
 	
-	public RPlayer(String n, String job, Progression p, Weapon weapon, Weapon shield,Armor head, Armor torso, Armor arms,Armor pants, Armor feet, Armor a1, Armor a2,List<Item> inventory) {
+	public RPlayer(String n, String job, Progression p, Weapon weapon, Weapon shield,Armor head, Armor torso, Armor arms,Armor pants, Armor feet, Armor a1, Armor a2,List<Item> inventory, int hp, int mana) {
 		name = n;
 		currentJob = job;
 		weap = weapon;
@@ -58,6 +58,8 @@ public class RPlayer extends RUnit {
 		this.assec2 = a2;
 		this.inventory = inventory;
 		progression = p;
+		this.mp = mana;
+		this.hp = hp;
 		cleanAbs();
 	}
 	

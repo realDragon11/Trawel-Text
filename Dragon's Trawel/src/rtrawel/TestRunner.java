@@ -5,6 +5,7 @@ import java.util.List;
 
 import rtrawel.battle.Battle;
 import rtrawel.battle.Party;
+import rtrawel.jobs.JobWithLevel;
 import rtrawel.unit.RCore;
 import rtrawel.unit.RMonster;
 import rtrawel.unit.RPlayer;
@@ -22,6 +23,7 @@ public class TestRunner {
 		if (extra.yesNo()) {
 			Party.party.list.add(new RPlayer("jess","warrior"));
 			((RPlayer)Party.party.list.get(0)).debugAddPathPoints("sword",10);
+			((RPlayer)Party.party.list.get(0)).progression.jobs.add(new JobWithLevel("warrior",1));
 			((RPlayer)Party.party.list.get(0)).cleanAbs();
 			Party.party.list.get(0).refresh();
 			

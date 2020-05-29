@@ -46,7 +46,7 @@ public class SaveData implements Serializable {
 			for (String str: ps.inventory) {
 				inv.add(RCore.getItemByName(str));
 			}
-			p.list.add(new RPlayer(ps.name,ps.currentJob, ps.progression, WeaponFactory.getWeaponByName(ps.weap,true), WeaponFactory.getWeaponByName(ps.shield,true),ArmorFactory.getArmorByName(ps.head,true), ArmorFactory.getArmorByName(ps.torso,true),ArmorFactory.getArmorByName(ps.arms,true), ArmorFactory.getArmorByName(ps.pants,true), ArmorFactory.getArmorByName(ps.feet,true), ArmorFactory.getArmorByName(ps.assec1,true),ArmorFactory.getArmorByName(ps.assec2,true),inv));
+			p.list.add(new RPlayer(ps.name,ps.currentJob, ps.progression, WeaponFactory.getWeaponByName(ps.weap,true), WeaponFactory.getWeaponByName(ps.shield,true),ArmorFactory.getArmorByName(ps.head,true), ArmorFactory.getArmorByName(ps.torso,true),ArmorFactory.getArmorByName(ps.arms,true), ArmorFactory.getArmorByName(ps.pants,true), ArmorFactory.getArmorByName(ps.feet,true), ArmorFactory.getArmorByName(ps.assec1,true),ArmorFactory.getArmorByName(ps.assec2,true),inv,ps.hp,ps.mana));
 		}
 		return p;
 	}
