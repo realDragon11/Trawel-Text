@@ -388,5 +388,13 @@ public class RPlayer extends RUnit {
 		progression.addJobXp(this.currentJob,totalxp);
 	}
 
+	public String getJob() {
+		return this.currentJob;
+	}
+
+	public void setWeapon(Weapon item) {
+		this.weap = item;
+	}
+
 
 }

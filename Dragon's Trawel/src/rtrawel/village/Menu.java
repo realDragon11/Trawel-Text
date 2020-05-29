@@ -1,9 +1,14 @@
 package rtrawel.village;
 
 import rtrawel.battle.Party;
+import rtrawel.items.Consumable;
 import rtrawel.items.Item;
+import rtrawel.items.Weapon;
+import rtrawel.jobs.JobFactory;
 import rtrawel.unit.RCore;
+import rtrawel.unit.RPlayer;
 import rtrawel.unit.RUnit;
+import rtrawel.unit.TargetGroup;
 import trawel.extra;
 
 public class Menu implements Content {
@@ -67,12 +72,21 @@ public class Menu implements Content {
 			RUnit one = Party.party.getUnit();
 			extra.println("Who wants to get the item applied to them?");
 			RUnit two = Party.party.getUnit();
-			
+			((Consumable)item).getAction().go(one,new TargetGroup(two));
 			break;
 		case NONE:
 			extra.println("This item is material-only.");
+			Party.party.addItem(item.getName(),1);
 			break;
 		case WEAPON:
+			extra.println("Who wants to equip this weapon?");
+			RPlayer wielder = (RPlayer)Party.party.getUnit();
+			if (JobFactory.getJobByName(wielder.getJob()).weaponTypes().contains(((Weapon)item).getWeaponType())) {
+				extra.println("You swap out your " + wielder.getWeapon().getName() + " for your " + item.getName() + ".");
+				Party.party.addItem(wielder.getWeapon().getName(),1);
+				wielder.setWeapon((Weapon)item);
+				wielder.cleanAbs();
+			}
 			break;
 		
 		}
