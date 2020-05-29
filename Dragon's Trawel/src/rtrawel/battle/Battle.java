@@ -95,6 +95,7 @@ public class Battle {
 	}
 	
 	public void kill(RUnit r) {
+		r.alive = false;
 		if (!killList.contains(r)) {
 			killList.add(r);
 		}

@@ -21,6 +21,8 @@ public abstract class RUnit {
 	
 	protected FightingStance fStance;
 	
+	public boolean alive = true;
+	
 	public int getStrength() {
 		return (int) (((this.getBaseStrength()+this.getEquipStrength())*buffMap.getTotalBuffMult(Buff.BuffType.STR_MULT))+buffMap.getTotalBuffMod(Buff.BuffType.STR_MOD));
 	}
@@ -164,5 +166,8 @@ public abstract class RUnit {
 	public void heal(int i, int dexterity) {
 		double d = (i * (100.0+dexterity))/(100.0);
 		hp = (int)extra.clamp(hp+d,0,this.getMaxHp());
+	}
+	public boolean isAlive() {
+		return alive;
 	}
 }

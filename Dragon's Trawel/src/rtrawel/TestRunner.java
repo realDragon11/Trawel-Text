@@ -26,7 +26,13 @@ public class TestRunner {
 		Party.party.curVillage = VillageFactory.init();
 		
 		while (true) {
-			Party.party.curVillage.go();
+			//load
+			while (true) {
+				Party.party.curVillage.go();
+				if (Party.party.allDead()) {
+					break;
+				}
+			}
 		}
 		/*
 		List<List<RUnit>> foeFoeList = new ArrayList<List<RUnit>>();

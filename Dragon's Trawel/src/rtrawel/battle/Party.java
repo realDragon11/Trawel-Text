@@ -107,4 +107,13 @@ public class Party {
 		}
 		return canTake.get(in-1);
 	}
+
+	public boolean allDead() {
+		for (RUnit r: list) {
+			if (r.isAlive()) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
