@@ -12,7 +12,7 @@ public class ConsumableFactory {
 
 			@Override
 			public int cost() {
-				return 10;
+				return 12;
 			}
 
 			@Override
@@ -22,7 +22,7 @@ public class ConsumableFactory {
 
 			@Override
 			public String getDesc() {
-				return "A small but important herb that heals small ailments.";
+				return "A small but important herb that heals scratches.";
 			}
 
 			@Override

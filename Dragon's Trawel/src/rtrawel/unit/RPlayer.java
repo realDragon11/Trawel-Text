@@ -180,8 +180,6 @@ public class RPlayer extends RUnit {
 		boolean keepGoing = true;
 		int in;
 		boolean valid;
-		RUnit picked;
-		TargetGroup t;
 		while (keepGoing) {
 			extra.println(this.getName() + " HP: " + this.getHp() + "/" + this.getMaxHp() + " MP: " + this.getMana() + "/" + this.getMaxMana() + " Tsn: " + this.getTension() + "/" + this.getMaxTension());
 			extra.println("1 basic attack");
@@ -258,6 +256,7 @@ public class RPlayer extends RUnit {
 			case 2: this.fStance = FightingStance.BALANCED; keepGoing = false;break;
 			case 3: this.fStance = FightingStance.DEFENSIVE; keepGoing = false;break;
 			}
+			break;
 			
 		}
 		}
@@ -267,7 +266,6 @@ public class RPlayer extends RUnit {
 	private boolean chooseAbTarget(Action ab) {
 		int in;
 		boolean valid;
-		RUnit picked;
 		TargetGroup t;
 		if (!ab.canCast(this)) {
 			extra.println("You can't cast that right now.");

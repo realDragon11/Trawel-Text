@@ -187,9 +187,8 @@ public class ActionFactory {
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
 				extra.println(caster.getName() + " heals " + target.toString() + " with medicine!");
-				Weapon w = caster.getWeapon();
 				for (RUnit u: target.targets) {
-					u.heal(6,caster.getDexterity());
+					u.heal(12,caster.getDexterity());
 				}
 			}
 
