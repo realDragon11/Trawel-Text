@@ -83,7 +83,7 @@ public class Party {
 		for (int i = 0;i < list.size();i++) {
 			extra.println( (i +1) + " " + list.get(i).getName());
 		}
-		return list.get(extra.inInt(list.size()));
+		return list.get(extra.inInt(list.size())-1);
 	}
 
 	public Item getPersonItem() {
@@ -105,6 +105,6 @@ public class Party {
 		if (in == i) {
 		return null;
 		}
-		return canTake.get(i-1);
+		return canTake.get(in-1);
 	}
 }

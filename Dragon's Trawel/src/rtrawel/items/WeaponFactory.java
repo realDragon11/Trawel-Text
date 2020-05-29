@@ -336,6 +336,9 @@ public class WeaponFactory {
 	
 	
 	public static Weapon getWeaponByName(String str) {
+		if (!data.containsKey(str)) {
+			throw new RuntimeException("key not found");
+		}
 		return data.get(str);
 	}
 }

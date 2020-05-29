@@ -9,6 +9,9 @@ public class ArmorFactory {
 	}
 	
 	public static Armor getArmorByName(String str) {
+		if (!data.containsKey(str)) {
+			throw new RuntimeException("key not found");
+		}
 		return data.get(str);
 	}
 }

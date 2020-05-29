@@ -408,12 +408,15 @@ public class RPlayer extends RUnit {
 		}
 		extra.println((i) + " back");
 		int in = extra.inInt(i);
-		if (in <= inventory.size()) {
-			Party.party.addItem(inventory.get(i-1).getName(),1);
+		if (in <= inventory.size()+1) {
+			if (in <= inventory.size()) {
+			Party.party.addItem(inventory.get(in-1).getName(),1);
+			inventory.remove(in-1);}
 			Item item = Party.party.getPersonItem();
 			if (item != null) {
 				inventory.add(item);
 			}
+			return true;
 		}
 		
 		return false;

@@ -34,6 +34,9 @@ public class ConsumableFactory {
 	}
 	
 	public static Consumable getConsumableByName(String str) {
+		if (!data.containsKey(str)) {
+			throw new RuntimeException("key not found");
+		}
 		return data.get(str);
 	}
 }
