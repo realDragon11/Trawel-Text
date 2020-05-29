@@ -18,7 +18,9 @@ public class Party {
 	public int gold = 0;
 	public Map<String,Integer> items = new HashMap<String,Integer>();
 	public Map<String,Integer> killCounter = new HashMap<String,Integer>();
-	private List<String> itemKeys = new ArrayList<String>();
+	
+	
+	public List<String> itemKeys = new ArrayList<String>();
 
 	public Village curVillage;
 	
@@ -59,5 +61,12 @@ public class Party {
 		}
 		
 		return str;
+	}
+
+	public RUnit getUnit() {
+		for (int i = 0;i < list.size();i++) {
+			extra.println( (i +1) + " " + list.get(i).getName());
+		}
+		return list.get(extra.inInt(list.size()));
 	}
 }

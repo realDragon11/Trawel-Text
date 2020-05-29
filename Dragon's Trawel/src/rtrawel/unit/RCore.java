@@ -4,6 +4,7 @@ import java.util.List;
 
 import rtrawel.items.ArmorFactory;
 import rtrawel.items.ConsumableFactory;
+import rtrawel.items.Item;
 import rtrawel.items.WeaponFactory;
 import rtrawel.jobs.JobFactory;
 import rtrawel.jobs.PathFactory;
@@ -99,6 +100,20 @@ public class RCore {
 	private static int intLerp(int one, int two, int level, int minLevel, int maxLevel) {
 		double d = ((double)(level-minLevel))/(maxLevel-minLevel);
 		return (int)((1 - d) * one + d * two);
+	}
+
+	public static Item getItemByName(String str) {
+		try {
+			return WeaponFactory.getWeaponByName(str);
+		}catch(Exception e) {}
+		try {
+			return ArmorFactory.getArmorByName(str);
+		}catch(Exception e) {}
+		try {
+			return ConsumableFactory.getConsumableByName(str);
+		}catch(Exception e) {}
+		
+		throw new RuntimeException("Item not found.");
 	}
 	
 	
