@@ -43,6 +43,6 @@ public class BuffMap {
 	}
 
 	public void clear() {
-		buffs.clear();
+		buffs.stream().filter(p -> !p.passive).forEach(buffs::remove);
 	}
 }

@@ -121,6 +121,10 @@ public abstract class RUnit {
 		fStance = FightingStance.BALANCED;
 	}
 	
+	public void cleanUp() {
+		buffMap.clear();
+	}
+	
 	public boolean getRaceType(RaceType r) {
 			return raceTypes.contains(r);
 	}

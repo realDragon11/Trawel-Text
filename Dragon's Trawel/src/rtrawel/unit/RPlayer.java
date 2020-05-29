@@ -364,7 +364,7 @@ public class RPlayer extends RUnit {
 	
 	public void cleanAbs() {//needs to be called on level up and equipment swap
 		abs.clear();
-		buffMap.clear();
+		buffMap.buffs.clear();
 		for (PathWithLevel pwl: progression.paths) {
 			pwl.path.apply(this, pwl.level,pwl.path.jobName().equals(currentJob));//TODO make active weapons active
 		}

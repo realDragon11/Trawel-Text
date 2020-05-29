@@ -19,12 +19,13 @@ public class Fight {
 		for (List<String> l: foes) {
 			List<RUnit> list = new ArrayList<RUnit>();
 			for (String s: l) {
-				list.add(new RMonster(s,counter));
+				RMonster r = new RMonster(s,counter++);
+				r.refresh();
+				list.add(r);
 			}
 			li.add(list);
 		}
 		Battle b = new Battle(Party.party.list,li);
-		counter++;
 		return b.go();
 	}
 	
