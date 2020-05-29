@@ -66,7 +66,7 @@ public class Battle {
 			}
 			killList.clear();
 		}
-		
+		assessKills();
 		if (party.size() > 0) {
 			loot();
 			return true;
@@ -78,7 +78,7 @@ public class Battle {
 	
 	private void loot() {
 		int totalxp = 0;
-		for (RUnit r: foes) {
+		for (RUnit r: foesDown) {
 			Party.party.gold+=((RMonster)r).getGoldWorth();
 			totalxp += ((RMonster)r).getXpWorth();
 			((RMonster)r).loot();
@@ -86,6 +86,11 @@ public class Battle {
 		totalxp/=Party.party.list.size();
 		for (RUnit p: Party.party.list) {
 			p.earnXp(totalxp);
+		}
+	}
+	private void assessKills() {
+		for (RUnit r: foesDown) {
+			Party.party.addKill(r.getBaseName(),1);
 		}
 	}
 	

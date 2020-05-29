@@ -15,12 +15,21 @@ public class Party {
 	
 	public int gold = 0;
 	public Map<String,Integer> items = new HashMap<String,Integer>();
+	public Map<String,Integer> killCounter = new HashMap<String,Integer>();
 	
 	public void addItem(String str,int num) {
 		if (items.containsKey(str)) {
 			items.replace(str,items.get(str) + num);
 		}else {
 			items.put(str,num);
-		}
+			}
+	}
+	
+	public void addKill(String str,int num) {
+		if (killCounter.containsKey(str)) {
+			killCounter.replace(str,killCounter.get(str) + num);
+		}else {
+			killCounter.put(str,num);
+			}
 	}
 }
