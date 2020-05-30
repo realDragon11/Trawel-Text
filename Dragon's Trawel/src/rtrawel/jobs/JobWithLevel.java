@@ -17,6 +17,7 @@ public class JobWithLevel implements java.io.Serializable {
 
 	public void addXp(int totalxp, RPlayer r) {
 		//TODO add path points
+		xp +=totalxp;
 		switch (level) {
 		case 1://https://gamefaqs.gamespot.com/ds/937281-dragon-quest-ix-sentinels-of-the-starry-skies/faqs/57795
 			if (xp >= 15) {
@@ -60,15 +61,16 @@ public class JobWithLevel implements java.io.Serializable {
 		Job j = JobFactory.getJobByName(jobName);
 		while (p > 0) {
 			extra.println("You have " + p +" points to allocate.");
-			extra.println("1 " + j.getPath1() + r.progression.pathLevel(j.getPath1()));
-			extra.println("2 " + j.getPath2() + r.progression.pathLevel(j.getPath2()));
-			extra.println("3 " + j.getPath3() + r.progression.pathLevel(j.getPath3()));
+			extra.println("1 " + j.getPath1() + ": "+ r.progression.pathLevel(j.getPath1()));
+			extra.println("2 " + j.getPath2() + ": "+ r.progression.pathLevel(j.getPath2()));
+			extra.println("3 " + j.getPath3() + ": "+ r.progression.pathLevel(j.getPath3()));
 			int aLeft;
 			int in;
 			switch (extra.inInt(3)) {
 			case 1:
 				aLeft = 100-r.progression.pathLevel(j.getPath1());
 				if (aLeft > 0) {
+					extra.println("Allocate how many?");
 					in = extra.inInt(Math.min(aLeft,p));
 					r.progression.addPathPoints(j.getPath1(), in,r);
 					p-=in;
@@ -77,6 +79,7 @@ public class JobWithLevel implements java.io.Serializable {
 			case 2:
 				aLeft = 100-r.progression.pathLevel(j.getPath2());
 				if (aLeft > 0) {
+					extra.println("Allocate how many?");
 					in = extra.inInt(Math.min(aLeft,p));
 					r.progression.addPathPoints(j.getPath2(), in,r);
 					p-=in;
@@ -85,6 +88,7 @@ public class JobWithLevel implements java.io.Serializable {
 			case 3:
 				aLeft = 100-r.progression.pathLevel(j.getPath3());
 				if (aLeft > 0) {
+					extra.println("Allocate how many?");
 					in = extra.inInt(Math.min(aLeft,p));
 					r.progression.addPathPoints(j.getPath3(), in,r);
 					p-=in;

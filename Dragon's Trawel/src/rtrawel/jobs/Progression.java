@@ -24,7 +24,7 @@ public class Progression implements java.io.Serializable{
 				return k.level;
 			}
 		}
-		return -1;
+		return 0;
 	}
 	
 	public void addPathPoints(String p, int points,RPlayer r) {

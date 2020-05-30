@@ -446,6 +446,7 @@ public class RPlayer extends RUnit {
 	public void addWeaponPoints(int points) {
 		List<WeaponType> list = JobFactory.getJobByName(currentJob).weaponTypes();
 		while (points > 0) {
+			extra.println("You have " + points + " weapon points left.");
 			for (int i = 0;i < list.size();i++) {
 				extra.println((i+1)+ " " + list.get(0).toString().toLowerCase());
 			}
@@ -453,8 +454,10 @@ public class RPlayer extends RUnit {
 			WeaponType wt = list.get(in-1);
 			PathWithLevel p = progression.getPathByName(wt.toString().toLowerCase(),this);
 			int aLeft = 100-p.level;
+			extra.println("Allocate how many?");
 			int take = Math.min(points, aLeft);
 			progression.addPathPoints(wt.toString().toLowerCase(),extra.inInt(take), this);
+			points-=take;
 			
 		}
 		
