@@ -24,7 +24,9 @@ public class Church implements Content {
 					for (int i = 0;i < size;i++) {
 						extra.println(rs.get(i).getName());
 					}
-					rs.get(extra.inInt(size)-1).alive = true;
+					RUnit r = rs.get(extra.inInt(size)-1);
+					r.heal(1,0);
+					r.alive = true;
 				}
 				break;
 			case 2:

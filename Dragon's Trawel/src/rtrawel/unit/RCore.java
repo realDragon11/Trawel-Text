@@ -143,6 +143,7 @@ public class RCore {
 	}
 
 	public static void save() {
+		extra.println("saving...");
 		   FileOutputStream fos;
 			try {
 				fos = new FileOutputStream("rtrawel.save");
@@ -150,6 +151,7 @@ public class RCore {
 				 oos.writeObject(new SaveData());
 			     oos.close();
 			     fos.close();
+			     extra.println("saved!");
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -158,6 +160,7 @@ public class RCore {
 	}
 	
 	public static void load() {
+		extra.println("loading...");
 		FileInputStream fos;
 		try {
 			fos = new FileInputStream("rtrawel.save");
@@ -166,6 +169,7 @@ public class RCore {
 			 Party.party = sd.getParty();
 			 oos.close();
 			 fos.close();
+			 extra.println("loaded!");
 		} catch (ClassNotFoundException | IOException e) {
 			extra.println("Invalid load. Either no save file was found or it was outdated.");
 		}

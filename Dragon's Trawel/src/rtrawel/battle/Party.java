@@ -113,10 +113,10 @@ public class Party {
 	public boolean allDead() {
 		for (RUnit r: list) {
 			if (r.isAlive()) {
-				return true;
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 
 	public void cleanUp() {
