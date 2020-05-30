@@ -33,7 +33,7 @@ public class VillageFactory {
 		villages.add(unun);
 		unun.conts.add(new Church());
 		unun.conts.add(new Inn(10));
-		new Connection(homa,unun,null);
+		new Connection(homa,unun,FightFactory.getFightByName("homa_unun_boss"),"homa_unun_boss");
 		return villages.get(0);
 	}
 }

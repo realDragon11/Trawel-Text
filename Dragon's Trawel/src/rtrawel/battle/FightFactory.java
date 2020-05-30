@@ -14,6 +14,10 @@ public class FightFactory {
 		f.addFoes("fearless fella",1);
 		f.addFoes("wolf pup",2);
 		data.put("homa_fella1",f);
+		
+		f = new Fight();
+		f.addFoes("fearless fella",3);;
+		data.put("homa_unun_boss",f);
 	}
 	
 	public static Fight getFightByName(String str) {
