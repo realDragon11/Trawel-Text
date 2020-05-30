@@ -68,14 +68,14 @@ public class Menu implements Content {
 		while (true) {
 			Item i = null;
 			extra.println("1 back");
-			extra.println("2 helm (" + p.head == null ? "nothing" : p.head.getName()+")" );
-			extra.println("3 torso (" + p.torso == null ? "nothing" : p.torso.getName()+")" );
-			extra.println("4 arms (" + p.arms == null ? "nothing" : p.arms.getName()+")" );
-			extra.println("5 pants (" + p.pants == null ? "nothing" : p.head.getName()+")" );
-			extra.println("6 feet (" + p.feet == null ? "nothing" : p.feet.getName()+")" );
-			extra.println("7 asc1 (" + p.assec1 == null ? "nothing" : p.assec1.getName()+")" );
-			extra.println("8 asc2 (" + p.assec2 == null ? "nothing" : p.assec2.getName()+")" );
-			extra.println("9 shield (" + p.shield == null ? "nothing" : p.shield.getName()+")" );
+			extra.println("2 helm (" + (p.head == null ? "nothing" : p.head.getName())+")" );
+			extra.println("3 torso (" + (p.torso == null ? "nothing" : p.torso.getName())+")" );
+			extra.println("4 arms (" + (p.arms == null ? "nothing" : p.arms.getName())+")" );
+			extra.println("5 pants (" + (p.pants == null ? "nothing" : p.head.getName())+")" );
+			extra.println("6 feet (" + (p.feet == null ? "nothing" : p.feet.getName())+")" );
+			extra.println("7 asc1 (" + (p.assec1 == null ? "nothing" : p.assec1.getName())+")" );
+			extra.println("8 asc2 (" + (p.assec2 == null ? "nothing" : p.assec2.getName())+")" );
+			extra.println("9 shield (" + (p.shield == null ? "nothing" : p.shield.getName())+")" );
 			int in = extra.inInt(8)-1;
 			if (in==0) {
 				return;
@@ -128,6 +128,8 @@ public class Menu implements Content {
 				if (item != null) {
 				Party.party.addItem(item.getName(),1);
 				}
+			}else {
+				Party.party.addItem(item.getName(),1);
 			}
 			break;
 		case CONSUMABLE:
@@ -158,6 +160,8 @@ public class Menu implements Content {
 				wielder.setWeapon((Weapon)item);
 				}
 				wielder.cleanAbs();
+			}else {
+				Party.party.addItem(item.getName(),1);
 			}
 			break;
 		
