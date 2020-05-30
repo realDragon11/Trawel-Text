@@ -38,7 +38,7 @@ public class RPlayer extends RUnit {
 		currentJob = job;
 		//TODO;
 		//progression.jobs.add(new JobWithLevel("warrior",1));
-		weap = WeaponFactory.getWeaponByName("copper sword");
+		//weap = WeaponFactory.getWeaponByName("copper sword");
 		//inventory.add(WeaponFactory.getWeaponByName("lumber axe"));
 		//inventory.add(ConsumableFactory.getConsumableByName("medicine herb"));
 		fStance = FightingStance.BALANCED;
@@ -86,7 +86,7 @@ public class RPlayer extends RUnit {
 	@Override
 	protected int getEquipStrength() {
 		int total = 0;
-		for (Armor a: listOfArmor()) {
+		for (Item a: this.getItems()) {
 			total+=a.getStrengthMod();
 		}
 		return total;
@@ -100,7 +100,7 @@ public class RPlayer extends RUnit {
 	@Override
 	protected int getEquipKnowledge() {
 		int total = 0;
-		for (Armor a: listOfArmor()) {
+		for (Item a: this.getItems()) {
 			total+=a.getKnowledgeMod();
 		}
 		return total;
@@ -129,7 +129,7 @@ public class RPlayer extends RUnit {
 	@Override
 	protected int getEquipSpeed() {
 		int total = 0;
-		for (Armor a: listOfArmor()) {
+		for (Item a: this.getItems()) {
 			total+=a.getSpeedMod();
 		}
 		return total;
@@ -143,7 +143,7 @@ public class RPlayer extends RUnit {
 	@Override
 	protected int getEquipAgility() {
 		int total = 0;
-		for (Armor a: listOfArmor()) {
+		for (Item a: this.getItems()) {
 			total+=a.getAgilityMod();
 		}
 		return total;
@@ -157,7 +157,7 @@ public class RPlayer extends RUnit {
 	@Override
 	protected int getEquipDexterity() {
 		int total = 0;
-		for (Armor a: listOfArmor()) {
+		for (Item a: this.getItems()) {
 			total+=a.getDexterityMod();
 		}
 		return total;
@@ -171,7 +171,7 @@ public class RPlayer extends RUnit {
 	@Override
 	protected int getEquipResilence() {
 		int total = 0;
-		for (Armor a: listOfArmor()) {
+		for (Item a: this.getItems()) {
 			total+=a.getResilenceMod();
 		}
 		return total;

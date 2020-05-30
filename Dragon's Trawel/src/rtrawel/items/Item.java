@@ -1,18 +1,36 @@
 package rtrawel.items;
 
-public interface Item {
+public abstract class Item {
 
 	
-	public ItemType getItemType();
+	public abstract ItemType getItemType();
 	
 	
 	public enum ItemType{
 		WEAPON, CONSUMABLE, NONE, ARMOR;
 	}
 	
-	public int cost();
+	public abstract int cost();
 	
 	public abstract String getName();
 	public abstract String getDesc();
 	public abstract String display();
+	public int getStrengthMod() {
+		return 0;
+	}
+	public int getKnowledgeMod() {
+		return 0;
+	}
+	public int getSpeedMod() {
+		return 0;
+	}
+	public int getAgilityMod() {
+		return 0;
+	}
+	public int getDexterityMod() {
+		return 0;
+	}
+	public int getResilenceMod() {
+		return 0;
+	}
 }

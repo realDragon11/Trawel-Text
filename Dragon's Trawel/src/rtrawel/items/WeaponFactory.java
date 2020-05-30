@@ -265,7 +265,13 @@ public class WeaponFactory {
 			@Override
 			public double blockChance() {
 				return 0.05;
-			}});
+			}
+		
+			@Override
+			public int getResilenceMod() {
+				return 3;
+			}
+		});
 		
 		data.put("carpenter hammer",new Weapon() {
 

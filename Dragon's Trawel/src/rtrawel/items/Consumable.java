@@ -2,7 +2,7 @@ package rtrawel.items;
 
 import rtrawel.unit.Action;
 
-public abstract class Consumable implements Item {
+public abstract class Consumable extends Item {
 
 	@Override
 	public ItemType getItemType() {

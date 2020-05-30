@@ -5,7 +5,7 @@ import java.util.List;
 import rtrawel.unit.DamageType;
 import rtrawel.unit.RUnit;
 
-public abstract class Weapon implements Item {
+public abstract class Weapon extends Item {
 
 	@Override
 	public ItemType getItemType() {
@@ -50,5 +50,7 @@ public abstract class Weapon implements Item {
 		str+= (int)(this.getBaseHit()*100) + "% hit " + this.getDamage() + " dam.";
 		return str;
 	}
+	
+	
 
 }

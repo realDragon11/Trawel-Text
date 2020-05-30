@@ -2,7 +2,7 @@ package rtrawel.items;
 
 import rtrawel.unit.DamMultMap;
 
-public abstract class Armor implements Item {
+public abstract class Armor extends Item {
 
 	@Override
 	public ItemType getItemType() {
@@ -21,24 +21,6 @@ public abstract class Armor implements Item {
 		NONE, LIGHT, MEDIUM, HEAVY;;
 	}
 	
-	
-	
-	public int getStrengthMod() {
-		return 0;
-	}
-	public int getKnowledgeMod() {
-		return 0;
-	}
-	public int getSpeedMod() {
-		return 0;
-	}
-	public int getAgilityMod() {
-		return 0;
-	}
-	public int getDexterityMod() {
-		return 0;
-	}
-	public abstract int getResilenceMod();
 
 	public abstract DamMultMap getDMM();
 }
