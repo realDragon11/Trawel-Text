@@ -5,6 +5,7 @@ import rtrawel.items.Armor;
 import rtrawel.items.Consumable;
 import rtrawel.items.Item;
 import rtrawel.items.Weapon;
+import rtrawel.items.Weapon.WeaponType;
 import rtrawel.jobs.JobFactory;
 import rtrawel.unit.RCore;
 import rtrawel.unit.RPlayer;
@@ -85,6 +86,7 @@ public class Menu implements Content {
 			}else {
 			i = p.swapArmor(in);
 			}
+			p.cleanAbs();
 			if (i != null) {
 				Party.party.addItem(i.getName(),1);
 			}
@@ -142,10 +144,18 @@ public class Menu implements Content {
 			extra.println("Who wants to equip this weapon?");
 			RPlayer wielder = (RPlayer)Party.party.getUnit();
 			if (JobFactory.getJobByName(wielder.getJob()).weaponTypes().contains(((Weapon)item).getWeaponType())) {
-				//TODO shields
+				if (((Weapon)item).getWeaponType().equals(WeaponType.SHIELD)) {
+					if (wielder.shield == null) {
+						extra.println("You wield the " + item.getName() + ".");
+					}else {
+					extra.println("You swap out your " + wielder.getWeapon().getName() + " for your " + item.getName() + ".");
+					Party.party.addItem(wielder.shield.getName(),1);}
+					wielder.shield = (Weapon)item;
+				}else {
 				extra.println("You swap out your " + wielder.getWeapon().getName() + " for your " + item.getName() + ".");
 				Party.party.addItem(wielder.getWeapon().getName(),1);
 				wielder.setWeapon((Weapon)item);
+				}
 				wielder.cleanAbs();
 			}
 			break;

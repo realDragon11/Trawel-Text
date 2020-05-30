@@ -203,6 +203,71 @@ public class WeaponFactory {
 			public double blockChance() {
 				return 0;
 			}});
+		data.put("pot lid",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.SHIELD;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.BLUNT);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return 1;
+			}
+
+			@Override
+			public int getDamage() {
+				return 3;
+			}
+
+			@Override
+			public String getName() {
+				return "pot lid";
+			}
+
+			@Override
+			public String getDesc() {
+				return "The lid of a pot. 5% block chance.";
+			}
+
+			@Override
+			public double critChance() {
+				return 0;
+			}
+
+			@Override
+			public double critMult() {
+				return 1;
+			}
+
+			@Override
+			public int cost() {
+				return 10;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0.05;
+			}});
+		
+		//TODO foes
 		
 		data.put("wolf pup teeth",new Weapon() {
 

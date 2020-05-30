@@ -175,4 +175,8 @@ public abstract class RUnit {
 	public boolean isAlive() {
 		return alive;
 	}
+	public void addBuff(Buff b) {
+		buffMap.buffs.add(b);
+		
+	}
 }

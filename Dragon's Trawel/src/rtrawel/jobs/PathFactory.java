@@ -18,7 +18,7 @@ public class PathFactory {
 
 			@Override
 			public String name() {
-				return "honor";
+				return "honor";//offense
 			}
 
 			@Override
@@ -44,7 +44,7 @@ public class PathFactory {
 
 			@Override
 			public String name() {
-				return "courage";
+				return "courage";//protection
 			}
 
 			@Override

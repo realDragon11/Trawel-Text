@@ -17,6 +17,7 @@ public class VillageFactory {
 		Shop s = new Shop();
 		s.items.add("copper sword");
 		s.items.add("lumber axe");
+		s.items.add("pot lid");
 		s.items.add("medicine herb");
 		homa.conts.add(s);
 		homa.addFight(FightFactory.getFightByName("homa_pup1"));

@@ -31,6 +31,7 @@ public class RCore {
 	
 	public static boolean doesHit(RUnit attacker, RUnit defender, double baseHitMult,boolean ranged) {
 		if (Math.random() < defender.shieldBlockChance()) {
+			extra.println("It's blocked!");
 			return false;
 		}
 		double evadeMult = 1.35;

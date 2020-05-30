@@ -209,7 +209,8 @@ public class RPlayer extends RUnit {
 			extra.println("2 abilities and spells");
 			extra.println("3 items");
 			extra.println("4 change stance");
-		switch (extra.inInt(4)) {
+			extra.println("5 defend");
+		switch (extra.inInt(5)) {
 		case 1:
 			for (RUnit r: curBattle.foes) {
 				extra.println(r.getName());
@@ -280,7 +281,11 @@ public class RPlayer extends RUnit {
 			case 3: this.fStance = FightingStance.DEFENSIVE; keepGoing = false;break;
 			}
 			break;
-			
+		case 5:
+			decideOn(ActionFactory.getActionByName("defend"),new TargetGroup(this));
+			valid = true;
+			keepGoing = false;
+			break;
 		}
 		}
 

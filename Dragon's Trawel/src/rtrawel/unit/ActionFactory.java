@@ -231,6 +231,60 @@ public class ActionFactory {
 			public String getDesc() {
 				return "a quick patch me up with a herb";
 			}});
+		
+		data.put("defend",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " defends!");
+				Buff b = new Buff();
+				b.isDebuff = false;
+				b.mag = 1.3;
+				b.passive = false;
+				b.timeLeft = 100;
+				b.type = Buff.BuffType.RES_MULT;
+				caster.addBuff(b);
+			}
+
+			@Override
+			public double getWeight() {
+				return 2;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.SELF_ONLY;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.SINGLE;
+			}
+
+			@Override
+			public double warmUp() {
+				return 10;
+			}
+
+			@Override
+			public double coolDown() {
+				return 90;
+			}
+
+			@Override
+			public String getName() {
+				return "block";
+			}
+
+			@Override
+			public String getDesc() {
+				return "defend";
+			}});
 	}
 	
 	
