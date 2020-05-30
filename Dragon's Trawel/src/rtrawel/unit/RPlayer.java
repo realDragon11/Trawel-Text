@@ -9,6 +9,7 @@ import rtrawel.items.Consumable;
 import rtrawel.items.ConsumableFactory;
 import rtrawel.items.Item;
 import rtrawel.items.Weapon;
+import rtrawel.items.Weapon.WeaponType;
 import rtrawel.items.WeaponFactory;
 import rtrawel.items.Item.ItemType;
 import rtrawel.jobs.JobFactory;
@@ -440,6 +441,23 @@ public class RPlayer extends RUnit {
 		}
 		
 		return false;
+	}
+
+	public void addWeaponPoints(int points) {
+		List<WeaponType> list = JobFactory.getJobByName(currentJob).weaponTypes();
+		while (points > 0) {
+			for (int i = 0;i < list.size();i++) {
+				extra.println((i+1)+ " " + list.get(0).toString().toLowerCase());
+			}
+			int in = extra.inInt(list.size());
+			WeaponType wt = list.get(in-1);
+			PathWithLevel p = progression.getPathByName(wt.toString().toLowerCase(),this);
+			int aLeft = 100-p.level;
+			int take = Math.min(points, aLeft);
+			progression.addPathPoints(wt.toString().toLowerCase(),extra.inInt(take), this);
+			
+		}
+		
 	}
 
 

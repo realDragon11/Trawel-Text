@@ -33,8 +33,9 @@ public class PathFactory {
 			}
 
 			@Override
-			public void applyOnce(RPlayer player, int points, int formerPoints) {
-				// TODO Auto-generated method stub
+			public void applyOnce(RPlayer player, int points, int formerPoints) { 
+				if (points > 4 && formerPoints <= 4 ) {
+				player.addWeaponPoints(4);}
 				
 			}
 
