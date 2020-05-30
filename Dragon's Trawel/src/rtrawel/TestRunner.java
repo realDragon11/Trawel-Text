@@ -24,7 +24,7 @@ public class TestRunner {
 			Party.party.list.add(new RPlayer("jess","warrior"));
 			((RPlayer)Party.party.list.get(0)).progression.jobs.add(new JobWithLevel("warrior",1));
 			((RPlayer)Party.party.list.get(0)).cleanAbs();
-			Party.party.list.get(0).earnXp(999999);
+			//Party.party.list.get(0).earnXp(999999);
 			Party.party.list.get(0).refresh();
 			
 			Party.party.curVillage = VillageFactory.init();

@@ -14,6 +14,11 @@ public class VillageFactory {
 		villages.add(homa);
 		homa.conts.add(new Church());
 		homa.conts.add(new Inn(5));
+		Shop s = new Shop();
+		s.items.add("copper sword");
+		s.items.add("lumber axe");
+		s.items.add("medicine herb");
+		homa.conts.add(s);
 		homa.addFight(FightFactory.getFightByName("homa_pup1"));
 		homa.addFight(FightFactory.getFightByName("homa_fella1"));
 		Village unun = new Village("unun");

@@ -46,7 +46,7 @@ public abstract class Weapon implements Item {
 	
 	@Override
 	public String display() {
-		String str = this.getName() + "(" +this.getWeaponType().toString().toLowerCase()+ ")" + this.getDesc() +"\n";
+		String str = this.getName() + "(" +this.getWeaponType().toString().toLowerCase()+ ") " + this.getDesc() +"\n";
 		str+= (int)(this.getBaseHit()*100) + "% hit " + this.getDamage() + " dam.";
 		return str;
 	}
