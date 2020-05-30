@@ -1,6 +1,7 @@
 package rtrawel.village;
 
 import rtrawel.battle.Party;
+import rtrawel.items.Armor;
 import rtrawel.items.Consumable;
 import rtrawel.items.Item;
 import rtrawel.items.Weapon;
@@ -23,6 +24,7 @@ public class Menu implements Content {
 			switch (in) {
 			case 2:
 				doInv();
+				break;
 			}
 		}
 		// TODO
@@ -36,7 +38,8 @@ public class Menu implements Content {
 			extra.println("1 back");
 			extra.println("2 bag");
 			extra.println("3 assign items");
-			in2 = extra.inInt(3);
+			extra.println("4 de-equip");
+			in2 = extra.inInt(4);
 			switch (in2) {
 			case 2:
 				doBag();
@@ -44,11 +47,32 @@ public class Menu implements Content {
 			case 3:
 				assignItems();
 				break;
+			case 4: deEquip();break;
 			}
 		}
 	}
 	
 	
+	private void deEquip() {
+		extra.println("Who to de-equip?");
+		RPlayer p = (RPlayer)Party.party.getUnit();
+		while (true) {
+			Item i = null;
+			extra.println("1 back");
+			extra.println("2 helm (" + p.head == null ? "nothing" : p.head.getName()+")" );
+			extra.println("3 torso (" + p.torso == null ? "nothing" : p.torso.getName()+")" );
+			extra.println("4 arms (" + p.arms == null ? "nothing" : p.arms.getName()+")" );
+			extra.println("5 pants (" + p.pants == null ? "nothing" : p.head.getName()+")" );
+			extra.println("6 feet (" + p.feet == null ? "nothing" : p.feet.getName()+")" );
+			extra.println("7 asc1 (" + p.assec1 == null ? "nothing" : p.assec1.getName()+")" );
+			extra.println("8 asc2 (" + p.assec2 == null ? "nothing" : p.assec2.getName()+")" );
+			i = p.swapArmor(extra.inInt(8)-1);
+			if (i != null) {
+				Party.party.addItem(i.getName(),1);
+			}
+		}
+	}
+
 	private void assignItems() {
 		extra.println("Assign items for who?");
 		RPlayer wielder = (RPlayer)Party.party.getUnit();
@@ -76,7 +100,14 @@ public class Menu implements Content {
 		Item item = RCore.getItemByName(str);
 		switch (item.getItemType()) {
 		case ARMOR:
-			//TODO
+			extra.println("Who wants to equip this armor?");
+			RPlayer armer = (RPlayer)Party.party.getUnit();
+			if (JobFactory.getJobByName(armer.getJob()).armorClasses().contains(((Armor)item).getArmorClass())) {
+				item = armer.swapArmor((Armor)item);
+				if (item != null) {
+				Party.party.addItem(item.getName(),1);
+				}
+			}
 			break;
 		case CONSUMABLE:
 			extra.println("Who wants to apply the item?");

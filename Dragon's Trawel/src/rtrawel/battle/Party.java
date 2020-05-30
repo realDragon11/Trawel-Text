@@ -52,7 +52,7 @@ public class Party {
 
 	public void displayItems() {
 		for (int i = 0;i < itemKeys.size();i++) {
-			extra.println((i+1)+ " " + itemKeys.get(i) + ": " + items.get(itemKeys.get(i)));
+			extra.println((i+1)+ " " + itemKeys.get(i) + ": " + items.get(itemKeys.get(i) + "\n" + RCore.getItemByName(itemKeys.get(i)).display()));
 		}
 	}
 	

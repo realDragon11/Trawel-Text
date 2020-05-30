@@ -463,5 +463,78 @@ public class RPlayer extends RUnit {
 		
 	}
 
+	public Armor swapArmor(Armor item) {
+		Armor hold = null;
+		switch (item.getArmorType()) {
+		case ASSEC:
+			extra.println("slot one or slot two?");
+			if (extra.inInt(2) == 1) {
+				hold = this.assec1;
+				this.assec1 = item;
+			}else {
+				hold = this.assec2;
+				this.assec2 = item;
+			}
+			break;
+		case FEET:
+			hold = this.feet;
+			this.feet = item;
+			break;
+		case HANDS:
+			hold = this.arms;
+			this.arms = item;
+			break;
+		case HEAD:
+			hold = this.head;
+			this.head = item;
+			break;
+		case PANTS:
+			hold = this.pants;
+			this.pants = item;
+			break;
+		case TORSO:
+			hold = this.torso;
+			this.torso = item;
+			break;
+		}
+		return hold;
+	}
+	
+	public Armor swapArmor(int i) {
+		Armor hold = null;
+		Armor item = null;
+		switch (i) {
+		case 7:
+			hold = this.assec2;
+			this.assec2 = item;
+			break;
+		case 6:
+			hold = this.assec1;
+			this.assec1 = item;
+			break;
+		case 5:
+			hold = this.feet;
+			this.feet = item;
+			break;
+		case 3:
+			hold = this.arms;
+			this.arms = item;
+			break;
+		case 1:
+			hold = this.head;
+			this.head = item;
+			break;
+		case 4:
+			hold = this.pants;
+			this.pants = item;
+			break;
+		case 2:
+			hold = this.torso;
+			this.torso = item;
+			break;
+		}
+		return hold;
+	}
+
 
 }
