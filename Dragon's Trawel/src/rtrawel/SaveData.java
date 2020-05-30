@@ -26,20 +26,14 @@ public class SaveData implements Serializable {
 	private List<String> kills = new ArrayList<String>();
 	private List<Integer> killCounts = new ArrayList<Integer>();
 	
-	private String curVillage;
+	public String curVillage;
 	private int gold;
 	private List<PersonSave> people = new ArrayList<PersonSave>();
+	private EventFlag ev;
 
 	public Party getParty() {
 		Party p = new Party();
-		Village v = null;
-		for (Village vs: VillageFactory.villages) {
-			if (vs.name.equals(curVillage)) {
-				v = vs;
-				break;
-			}
-		}
-		p.curVillage = v;
+		EventFlag.eventFlag = ev;
 		p.gold = gold;
 		for (PersonSave ps: people) {
 			List<Item> inv = new ArrayList<Item>();
@@ -50,9 +44,11 @@ public class SaveData implements Serializable {
 		}
 		return p;
 	}
+
 	
 	
 	public SaveData() {
+		ev = EventFlag.eventFlag;
 		gold = Party.party.gold;
 		curVillage = Party.party.curVillage.name;
 		Party.party.refreshItemKeys();

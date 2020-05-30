@@ -41,8 +41,16 @@ public class TestRunner {
 		
 		while (true) {
 			//load
+			String str = RCore.load();
 			VillageFactory.init();//TODO save village data/event flags
-			RCore.load();
+			Village v = null;
+			for (Village vs: VillageFactory.villages) {
+				if (vs.name.equals(str)) {
+					v = vs;
+					break;
+				}
+			}
+			Party.party.curVillage = v;
 			while (true) {
 				Party.party.curVillage.go();
 				if (Party.party.allDead()) {

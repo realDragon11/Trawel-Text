@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
+import rtrawel.EventFlag;
 import rtrawel.SaveData;
 import rtrawel.battle.FightFactory;
 import rtrawel.battle.Party;
@@ -79,6 +80,7 @@ public class RCore {
 	
 	
 	public static void init() {
+		EventFlag.init();
 		ActionFactory.init();
 		WeaponFactory.init();
 		ConsumableFactory.init();
@@ -167,7 +169,7 @@ public class RCore {
 			}
 	}
 	
-	public static void load() {
+	public static String load() {
 		extra.println("loading...");
 		FileInputStream fos;
 		try {
@@ -178,8 +180,10 @@ public class RCore {
 			 oos.close();
 			 fos.close();
 			 extra.println("loaded!");
+			 return sd.curVillage;
 		} catch (ClassNotFoundException | IOException e) {
 			extra.println("Invalid load. Either no save file was found or it was outdated.");
+			return null;
 		}
 	}
 	
