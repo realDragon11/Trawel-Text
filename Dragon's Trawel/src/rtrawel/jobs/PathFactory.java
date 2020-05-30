@@ -30,7 +30,15 @@ public class PathFactory {
 			public void apply(RPlayer player, int points, boolean jobActive) {
 				// TODO Auto-generated method stub
 				
-			}});
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			});
 		data.put("courage",new Path() {
 
 			@Override
@@ -47,7 +55,15 @@ public class PathFactory {
 			public void apply(RPlayer player, int points, boolean jobActive) {
 				// TODO Auto-generated method stub
 				
-			}});
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			});
 		data.put("valor",new Path() {
 
 			@Override
@@ -64,7 +80,15 @@ public class PathFactory {
 			public void apply(RPlayer player, int points, boolean jobActive) {
 				// TODO Auto-generated method stub
 				
-			}});
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			});
 		
 		data.put("sword",new Path() {
 
@@ -90,6 +114,11 @@ public class PathFactory {
 				if (points > 2) {
 					player.addAbility(ActionFactory.getActionByName("cleave"));
 				}
-			}});
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {}
+
+			});
 	}
 }

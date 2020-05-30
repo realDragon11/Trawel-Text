@@ -242,7 +242,7 @@ public class RPlayer extends RUnit {
 			break;
 		case 3:
 			for (int i = 0;i < inventory.size();i++) {
-				extra.println((i+1) + " " +inventory.get(i).getName());//make sure only valid things can go into inventory later: TODO:
+				extra.println((i+1) + " " +inventory.get(i).getName());//make sure only valid things can go into inventory later
 			}
 			extra.println((inventory.size()+1 )+" back");
 			in = extra.inInt(inventory.size()+1);
@@ -401,12 +401,12 @@ public class RPlayer extends RUnit {
 	}
 
 	public void debugAddPathPoints(String string, int i) {
-		progression.addPathPoints(string,i);
+		progression.addPathPoints(string,i,this);
 		
 	}
 	@Override
 	public void earnXp(int totalxp) {
-		progression.addJobXp(this.currentJob,totalxp);
+		progression.addJobXp(this.currentJob,totalxp,this);
 	}
 
 	public String getJob() {
