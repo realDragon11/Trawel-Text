@@ -267,6 +267,70 @@ public class WeaponFactory {
 				return 0.05;
 			}});
 		
+		data.put("carpenter hammer",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.HAMMER;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.BLUNT);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return .6;
+			}
+
+			@Override
+			public int getDamage() {
+				return 9;
+			}
+
+			@Override
+			public String getName() {
+				return "carpenter hammer";
+			}
+
+			@Override
+			public String getDesc() {
+				return "A small hammer that's more than likely to miss.";
+			}
+
+			@Override
+			public double critChance() {
+				return .05;
+			}
+
+			@Override
+			public double critMult() {
+				return 2;
+			}
+
+			@Override
+			public int cost() {
+				return 20;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0;
+			}});
+		
 		//TODO foes
 		
 		data.put("wolf pup teeth",new Weapon() {

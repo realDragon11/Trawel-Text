@@ -29,17 +29,21 @@ public class PathFactory {
 
 			@Override
 			public void apply(RPlayer player, int points, boolean jobActive) {
-				// TODO Auto-generated method stub
+				if (points > 0) {
+					Buff b = new Buff();
+					b.isDebuff = false;
+					b.mag = points/6;
+					b.passive = true;
+					b.timeLeft = 1;
+					b.type = Buff.BuffType.STR_MOD;
+				}
 				
 			}
 
 			@Override
 			public void applyOnce(RPlayer player, int points, int formerPoints) { 
-				if (points > 4 && formerPoints <= 4 ) {
-				player.addWeaponPoints(4);}
-				
-				if (points > 10 && formerPoints <= 10 ) {
-					player.addWeaponPoints(5);}
+				if (points-formerPoints > 0) {
+				player.addWeaponPoints(points-formerPoints);}
 				
 			}
 
@@ -102,6 +106,86 @@ public class PathFactory {
 
 			});
 		
+		data.put("hunting",new Path() {
+
+			@Override
+			public String name() {
+				return "hunting";
+			}
+
+			@Override
+			public String jobName() {
+				return "ranger";
+			}
+
+			@Override
+			public void apply(RPlayer player, int points, boolean jobActive) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {
+				if (points-formerPoints > 0) {
+					player.addWeaponPoints(points-formerPoints);}
+				
+			}});
+		data.put("gathering",new Path() {
+
+			@Override
+			public String name() {
+				return "gathering";
+			}
+
+			@Override
+			public String jobName() {
+				return "ranger";
+			}
+
+			@Override
+			public void apply(RPlayer player, int points, boolean jobActive) {
+				if (points > 0) {
+					Buff b = new Buff();
+					b.isDebuff = false;
+					b.mag = points/4;
+					b.passive = true;
+					b.timeLeft = 1;
+					b.type = Buff.BuffType.DEX_MOD;
+				}
+				
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {
+				// TODO Auto-generated method stub
+				
+			}});
+		data.put("surveying",new Path() {
+
+			@Override
+			public String name() {
+				return "surveying";
+			}
+
+			@Override
+			public String jobName() {
+				return "ranger";
+			}
+
+			@Override
+			public void apply(RPlayer player, int points, boolean jobActive) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {
+				// TODO Auto-generated method stub
+				
+			}});
+		
+		
+		//TODO: WEAPON PATHS:
 		data.put("sword",new Path() {
 
 			@Override
@@ -129,6 +213,32 @@ public class PathFactory {
 				
 				if (points > 4) {
 					player.addAbility(ActionFactory.getActionByName("sword dance"));
+				}
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {}
+
+			});
+		data.put("hammer",new Path() {
+
+			@Override
+			public String name() {
+				return "hammer";
+			}
+
+			@Override
+			public String jobName() {
+				return "";
+			}
+
+			@Override
+			public void apply(RPlayer player, int points, boolean jobActive) {
+				if (!player.getWeapon().getWeaponType().equals(WeaponType.HAMMER)) {
+					return;
+				}
+				if (points > 20) {
+					player.addAbility(ActionFactory.getActionByName("hammer stun"));
 				}
 			}
 

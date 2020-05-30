@@ -182,4 +182,15 @@ public abstract class RUnit {
 	public void drainTen(int i) {
 		ten = (int)extra.clamp(ten-i,0,this.getMaxTension());
 	}
+	
+	public boolean knockStun(double stunChance, int knockAmount) {
+		if (Math.random() < stunChance*this.dmm.getMult(DamageType.STUN)) {
+			coolDown = knockAmount;
+			extra.println(this.getName() + " is stunned!");
+			warmUp = 0;
+			return true;
+		}else {
+			return false;
+		}
+	}
 }

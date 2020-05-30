@@ -343,6 +343,65 @@ public class ActionFactory {
 			public String getDesc() {
 				return "4 tsn: Increase your agility for a long duration.";
 			}});
+		
+		data.put("hammer stun",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " hammer stuns " + target.toString());
+				caster.drainMp(10);
+				Weapon w = caster.getWeapon();
+				for (RUnit u: target.targets) {
+					if (RCore.doAttack(caster, u,caster.getStrength(),w.getBaseHit(), (w.getDamage()+w.damageBonuses(u)* ( RCore.doesHit(caster,u,w.critChance(),w.isRanged())? w.critMult() : 1)),w.isRanged(),w.getDamageTypes()) > -1) {
+						w.getOnHit().go(caster,u);//note: not all abilities should be able to crit
+						u.knockStun(.6,30);
+					}
+					
+				}
+			}
+
+			@Override
+			public double getWeight() {
+				return 4;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				if (caster.getMana() < 10) {
+					return false;
+				}
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.FOE;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.SINGLE;
+			}
+
+			@Override
+			public double warmUp() {
+				return 70;
+			}
+
+			@Override
+			public double coolDown() {
+				return 40;
+			}
+
+			@Override
+			public String getName() {
+				return "hammer stun";
+			}
+
+			@Override
+			public String getDesc() {
+				return "10mp: has a chance to stun the target out of their action";
+			}});
 	}
 	
 	
