@@ -14,4 +14,5 @@ public interface Item {
 	
 	public abstract String getName();
 	public abstract String getDesc();
+	public abstract String display();
 }

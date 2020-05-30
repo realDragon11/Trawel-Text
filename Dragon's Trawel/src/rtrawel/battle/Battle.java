@@ -87,12 +87,15 @@ public class Battle {
 	
 	private void loot() {
 		int totalxp = 0;
+		int totalg = 0 ;
 		for (RUnit r: foesDown) {
-			Party.party.gold+=((RMonster)r).getGoldWorth();
+			totalg+=((RMonster)r).getGoldWorth();
 			totalxp += ((RMonster)r).getXpWorth();
 			((RMonster)r).loot();
 		}
+		extra.println("You got " + totalxp + " xp and " + totalg + " gold!");
 		totalxp/=Party.party.list.size();
+		Party.party.gold += totalg; 
 		for (RUnit p: Party.party.list) {
 			p.earnXp(totalxp);
 		}

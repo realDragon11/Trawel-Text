@@ -22,7 +22,7 @@ public class ConsumableFactory {
 
 			@Override
 			public String getDesc() {
-				return "A small but important herb that heals scratches.";
+				return "A small but important herb that heals around 12 hp.";
 			}
 
 			@Override

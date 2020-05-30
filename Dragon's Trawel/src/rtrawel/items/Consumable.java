@@ -11,5 +11,9 @@ public abstract class Consumable implements Item {
 
 
 	public abstract Action getAction();
+	@Override
+	public String display() {
+		return this.getName() + this.getDesc();
+	}
 
 }

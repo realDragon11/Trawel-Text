@@ -168,9 +168,11 @@ public class RMonster extends RUnit {
 	}
 	public void loot() {
 		if (Math.random() < MonsterFactory.getMonsterByName(name).getDropChance()) {
+			extra.println(this.getName() + " dropped a " +MonsterFactory.getMonsterByName(name).getDrop().getName() + "!");
 			Party.party.addItem(MonsterFactory.getMonsterByName(name).getDrop().getName(),1);
 		}
 		if (Math.random() < MonsterFactory.getMonsterByName(name).getRareDropChance()) {
+			extra.println(this.getName() + " dropped a " +MonsterFactory.getMonsterByName(name).getRareDrop().getName() + "!");
 			Party.party.addItem(MonsterFactory.getMonsterByName(name).getRareDrop().getName(),1);
 		}
 		
