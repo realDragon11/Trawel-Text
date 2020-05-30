@@ -39,7 +39,8 @@ public class Menu implements Content {
 			extra.println("2 bag");
 			extra.println("3 assign items");
 			extra.println("4 de-equip");
-			in2 = extra.inInt(4);
+			extra.println("5 view all");
+			in2 = extra.inInt(5);
 			switch (in2) {
 			case 2:
 				doBag();
@@ -48,11 +49,18 @@ public class Menu implements Content {
 				assignItems();
 				break;
 			case 4: deEquip();break;
+			case 5: viewAll();break;
 			}
 		}
 	}
 	
 	
+	private void viewAll() {
+		for (RUnit r: Party.party.list) {
+			((RPlayer)r).display();
+		}
+	}
+
 	private void deEquip() {
 		extra.println("Who to de-equip?");
 		RPlayer p = (RPlayer)Party.party.getUnit();
@@ -66,7 +74,17 @@ public class Menu implements Content {
 			extra.println("6 feet (" + p.feet == null ? "nothing" : p.feet.getName()+")" );
 			extra.println("7 asc1 (" + p.assec1 == null ? "nothing" : p.assec1.getName()+")" );
 			extra.println("8 asc2 (" + p.assec2 == null ? "nothing" : p.assec2.getName()+")" );
-			i = p.swapArmor(extra.inInt(8)-1);
+			extra.println("9 shield (" + p.shield == null ? "nothing" : p.shield.getName()+")" );
+			int in = extra.inInt(8)-1;
+			if (in==0) {
+				return;
+			}
+			if (in == 9) {
+				i = p.shield;
+				p.shield = null;
+			}else {
+			i = p.swapArmor(in);
+			}
 			if (i != null) {
 				Party.party.addItem(i.getName(),1);
 			}
@@ -124,6 +142,7 @@ public class Menu implements Content {
 			extra.println("Who wants to equip this weapon?");
 			RPlayer wielder = (RPlayer)Party.party.getUnit();
 			if (JobFactory.getJobByName(wielder.getJob()).weaponTypes().contains(((Weapon)item).getWeaponType())) {
+				//TODO shields
 				extra.println("You swap out your " + wielder.getWeapon().getName() + " for your " + item.getName() + ".");
 				Party.party.addItem(wielder.getWeapon().getName(),1);
 				wielder.setWeapon((Weapon)item);

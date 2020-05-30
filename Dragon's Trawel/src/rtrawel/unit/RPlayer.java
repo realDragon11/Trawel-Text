@@ -536,5 +536,32 @@ public class RPlayer extends RUnit {
 		return hold;
 	}
 
+	public void display() {
+		for (Item i: this.getItems()) {
+			i.display();
+		}
+		this.displayStats();
+	}
+
+	public void displayStats() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public List<Item> getItems() {
+		List<Item> list = new ArrayList<Item>();
+		list.addAll(this.listOfArmor());
+		if (weap != null) {
+			list.add(weap);
+		}
+		if (shield != null) {
+			list.add(shield);
+		}
+		
+		return list;
+		
+		
+	}
+
 
 }
