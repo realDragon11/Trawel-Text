@@ -18,8 +18,8 @@ public class JobWithLevel implements java.io.Serializable {
 	public void addXp(int totalxp, RPlayer r) {
 		//TODO 
 		xp +=totalxp;
-		if (xp > Math.pow(15,1.5*level)) {
-			xp-=Math.pow(15,1.5*level);
+		if (xp > 15*Math.pow(1.5,level)) {
+			xp-=15*Math.pow(1.5,level);
 			addLevel(r);
 		}
 		/*
