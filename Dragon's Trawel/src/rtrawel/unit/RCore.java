@@ -128,6 +128,9 @@ public class RCore {
 		try {
 			return ConsumableFactory.getConsumableByName(str);
 		}catch(Exception e) {}
+		try {
+			return MaterialFactory.getMaterialByName(str);
+		}catch(Exception e) {}
 		
 		throw new RuntimeException("Item not found.");
 	}

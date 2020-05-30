@@ -17,7 +17,7 @@ public class MonsterFactory {
 
 			@Override
 			public int getStrength() {
-				return 3;
+				return 7;
 			}
 
 			@Override
@@ -149,7 +149,7 @@ public class MonsterFactory {
 
 			@Override
 			public int getStrength() {
-				return 8;
+				return 12;
 			}
 
 			@Override

@@ -42,7 +42,7 @@ public class Shop implements Content{
 				return;
 			}
 			Item it = RCore.getItemByName(Party.party.itemKeys.get(in-2));
-			int canSell = Party.party.items.get(Party.party.itemKeys.get(in-1));
+			int canSell = Party.party.items.get(Party.party.itemKeys.get(in-2));
 			extra.println("Sell how many?");
 			in = extra.inInt(canSell);
 			Party.party.gold+=it.cost()*in/2;
