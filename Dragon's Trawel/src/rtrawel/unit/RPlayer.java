@@ -568,5 +568,9 @@ public class RPlayer extends RUnit {
 		
 	}
 
+	public double lootChance() {
+		return buffMap.getTotalBuffMult(Buff.BuffType.LOOT_CHANCE);
+	}
+
 
 }

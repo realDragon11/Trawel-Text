@@ -8,6 +8,7 @@ import java.util.Map;
 import rtrawel.items.Item;
 import rtrawel.items.Item.ItemType;
 import rtrawel.unit.RCore;
+import rtrawel.unit.RPlayer;
 import rtrawel.unit.RUnit;
 import rtrawel.village.Village;
 import trawel.extra;
@@ -141,5 +142,13 @@ public class Party {
 	public void refreshKillKeys() {
 		killKeys.clear();
 		killCounter.keySet().stream().forEach(killKeys::add);
+	}
+
+	public double lootChance() {
+		double total = 1;
+		for (RUnit r: list) {
+			total *= ((RPlayer)r).lootChance();
+		}
+		return 0;
 	}
 }

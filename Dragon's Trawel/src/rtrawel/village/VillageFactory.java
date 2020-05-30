@@ -27,6 +27,7 @@ public class VillageFactory {
 		homa.conts.add(s);
 		homa.addFight(FightFactory.getFightByName("homa_pup1"));
 		homa.addFight(FightFactory.getFightByName("homa_fella1"));
+		homa.addLoot("pot lid",.05);
 		Village unun = new Village("unun");
 		villages.add(unun);
 		unun.conts.add(new Church());

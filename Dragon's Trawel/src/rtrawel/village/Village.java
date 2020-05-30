@@ -14,6 +14,9 @@ public class Village {
 	public static Menu menu = new Menu();
 	public Roads r;
 	
+	private List<String> lootData = new ArrayList<String>();
+	private List<Double> lootChance = new ArrayList<Double>();
+	
 	public List<Fight> spawns = new ArrayList<Fight>();
 	
 	/**
@@ -28,6 +31,7 @@ public class Village {
 
 	public void doRandomBattle() {
 		extra.randList(spawns).go();
+		loot(Party.party.lootChance());
 	}
 	
 	public void addFight(Fight f) {
@@ -53,5 +57,20 @@ public class Village {
 	
 	public void addRoad(Connection e) {
 		r.connects.add(e);
+	}
+	
+	public void loot(double chance) {
+		for (int i = 0; i < lootData.size();i++) {
+			if (Math.random() < lootChance.get(i)*chance) {
+				extra.println("You looted the " + lootData.get(i));
+				Party.party.addItem(lootData.get(i),1);
+				return;
+			}
+		}
+	}
+
+	public void addLoot(String string, double d) {
+		lootData.add(string);
+		lootChance.add(d);
 	}
 }

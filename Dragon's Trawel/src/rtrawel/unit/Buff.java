@@ -15,6 +15,7 @@ public class Buff {
 		SPD_MULT,SPD_MOD,
 		AGI_MULT,AGI_MOD,
 		DEX_MULT,DEX_MOD,
-		RES_MULT,RES_MOD;
+		RES_MULT,RES_MOD,
+		LOOT_CHANCE;
 	}
 }
