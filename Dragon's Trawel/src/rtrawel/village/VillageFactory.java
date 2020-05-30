@@ -19,6 +19,10 @@ public class VillageFactory {
 		s.items.add("lumber axe");
 		s.items.add("pot lid");
 		s.items.add("carpenter hammer");
+		s.items.add("cloth hood");
+		s.items.add("cloth shirt");
+		s.items.add("leather hood");
+		s.items.add("leather shirt");
 		s.items.add("medicine herb");
 		homa.conts.add(s);
 		homa.addFight(FightFactory.getFightByName("homa_pup1"));

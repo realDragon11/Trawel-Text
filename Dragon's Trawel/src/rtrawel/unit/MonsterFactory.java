@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import rtrawel.items.ArmorFactory;
 import rtrawel.items.Item;
 import rtrawel.items.WeaponFactory;
 import rtrawel.unit.RUnit.RaceType;
@@ -93,7 +94,7 @@ public class MonsterFactory {
 			}
 
 			@Override
-			public Item getDrop() {
+			public String getDrop() {
 				return null;
 			}
 
@@ -103,7 +104,7 @@ public class MonsterFactory {
 			}
 
 			@Override
-			public Item getRareDrop() {
+			public String getRareDrop() {
 				return null;
 			}
 
@@ -226,18 +227,18 @@ public class MonsterFactory {
 			}
 
 			@Override
-			public Item getDrop() {
-				return null;
+			public String getDrop() {
+				return "leather hood";
 			}
 
 			@Override
 			public double getDropChance() {
-				return 0;
+				return (1.0/32.0);
 			}
 
 			@Override
-			public Item getRareDrop() {
-				return WeaponFactory.getWeaponByName("simple stabber");
+			public String getRareDrop() {
+				return "simple stabber";
 			}
 
 			@Override

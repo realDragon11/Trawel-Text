@@ -22,9 +22,9 @@ public interface MonsterData {
 	public int getXp();
 	public int getGold();
 	
-	public Item getDrop();
+	public String getDrop();
 	public double getDropChance();
-	public Item getRareDrop();
+	public String getRareDrop();
 	public double getRareDropChance();
 	
 	public int getKillsTilKnown();

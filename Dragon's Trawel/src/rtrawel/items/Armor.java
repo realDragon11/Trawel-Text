@@ -23,4 +23,23 @@ public abstract class Armor extends Item {
 	
 
 	public abstract DamMultMap getDMM();
+	
+	@Override
+	public String display() {
+		String str = this.getName() + "(" +this.getArmorClass().toString().toLowerCase()+ ", " +this.getArmorType().toString().toLowerCase()+ ") " + this.getDesc() +"\n";
+		str+= this.getResilenceMod() + "res ";
+		if (this.getKnowledgeMod() > 0) {
+			str+= this.getKnowledgeMod() + "kno ";
+		}
+		if (this.getSpeedMod() > 0) {
+			str+= this.getSpeedMod() + "spd ";
+		}
+		if (this.getAgilityMod() > 0) {
+			str+= this.getAgilityMod() + "agi ";
+		}
+		if (this.getDexterityMod() > 0) {
+			str+= this.getDexterityMod() + "dex ";
+		}
+		return str;
+	}
 }
