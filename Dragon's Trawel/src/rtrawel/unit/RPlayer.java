@@ -543,7 +543,7 @@ public class RPlayer extends RUnit {
 
 	public void display() {
 		for (Item i: this.getItems()) {
-			i.display();
+			extra.println(i.display());
 		}
 		this.displayStats();
 	}

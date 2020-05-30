@@ -115,6 +115,10 @@ public class PathFactory {
 				if (points > 2) {
 					player.addAbility(ActionFactory.getActionByName("cleave"));
 				}
+				
+				if (points > 4) {
+					player.addAbility(ActionFactory.getActionByName("sword dance"));
+				}
 			}
 
 			@Override

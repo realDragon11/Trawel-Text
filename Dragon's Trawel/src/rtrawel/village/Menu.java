@@ -100,6 +100,7 @@ public class Menu implements Content {
 	}
 
 	private void doBag() {
+		Party.party.refreshItemKeys();
 		if (Party.party.itemKeys.size() == 0) {
 			extra.println("Your bag is empty!");
 			return;

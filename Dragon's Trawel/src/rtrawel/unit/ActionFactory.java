@@ -285,6 +285,64 @@ public class ActionFactory {
 			public String getDesc() {
 				return "defend";
 			}});
+		
+		data.put("sword dance",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " dances with their sword!");
+				caster.drainTen(4);
+				Buff b = new Buff();
+				b.isDebuff = false;
+				b.mag = 1.4;
+				b.passive = false;
+				b.timeLeft = 400;
+				b.type = Buff.BuffType.AGI_MULT;
+				caster.addBuff(b);
+			}
+
+			@Override
+			public double getWeight() {
+				return 2;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				if (caster.getTension() < 4) {
+					return false;
+				}
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.SELF_ONLY;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.SINGLE;
+			}
+
+			@Override
+			public double warmUp() {
+				return 60;
+			}
+
+			@Override
+			public double coolDown() {
+				return 60;
+			}
+
+			@Override
+			public String getName() {
+				return "sword dance";
+			}
+
+			@Override
+			public String getDesc() {
+				return "4 tsn: Increase your agility for a long duration.";
+			}});
 	}
 	
 	

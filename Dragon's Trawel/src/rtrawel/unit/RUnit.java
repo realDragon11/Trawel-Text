@@ -179,4 +179,7 @@ public abstract class RUnit {
 		buffMap.buffs.add(b);
 		
 	}
+	public void drainTen(int i) {
+		ten = (int)extra.clamp(ten-i,0,this.getMaxTension());
+	}
 }
