@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import rtrawel.items.Weapon.WeaponType;
 import rtrawel.unit.ActionFactory;
+import rtrawel.unit.Buff;
 import rtrawel.unit.RPlayer;
 
 public class PathFactory {
@@ -37,6 +38,9 @@ public class PathFactory {
 				if (points > 4 && formerPoints <= 4 ) {
 				player.addWeaponPoints(4);}
 				
+				if (points > 10 && formerPoints <= 10 ) {
+					player.addWeaponPoints(5);}
+				
 			}
 
 			});
@@ -54,7 +58,14 @@ public class PathFactory {
 
 			@Override
 			public void apply(RPlayer player, int points, boolean jobActive) {
-				// TODO Auto-generated method stub
+				if (points > 0) {
+					Buff b = new Buff();
+					b.isDebuff = false;
+					b.mag = points/3;
+					b.passive = true;
+					b.timeLeft = 1;
+					b.type = Buff.BuffType.RES_MOD;
+				}
 				
 			}
 

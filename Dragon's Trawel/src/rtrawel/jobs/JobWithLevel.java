@@ -16,8 +16,13 @@ public class JobWithLevel implements java.io.Serializable {
 	}
 
 	public void addXp(int totalxp, RPlayer r) {
-		//TODO add path points
+		//TODO 
 		xp +=totalxp;
+		if (xp > Math.pow(15,1.5*level)) {
+			xp-=Math.pow(15,1.5*level);
+			addLevel(r);
+		}
+		/*
 		switch (level) {
 		case 1://https://gamefaqs.gamespot.com/ds/937281-dragon-quest-ix-sentinels-of-the-starry-skies/faqs/57795
 			if (xp >= 15) {
@@ -53,10 +58,74 @@ public class JobWithLevel implements java.io.Serializable {
 				addXp(0,r);
 			}
 			break;
-		}
+		case 5:
+			if (xp >= 185) {
+				xp-=185;
+				level++;
+				addPathPoints(3,r);
+				r.cleanAbs();
+				addXp(0,r);
+			}
+			break;
+		case 6:
+			if (xp >= 312) {
+				xp-=312;
+				level++;
+				r.cleanAbs();
+				addXp(0,r);
+			}
+			break;
+		case 7:
+			if (xp >= 500) {
+				xp-=500;
+				level++;
+				addPathPoints(3,r);
+				r.cleanAbs();
+				addXp(0,r);
+			}
+			break;
+		case 8:
+			if (xp >= 790) {
+				xp-=790;
+				level++;
+				addPathPoints(3,r);
+				r.cleanAbs();
+				addXp(0,r);
+			}
+			break;
+		}*/
 		
 	}
 	
+	private void addLevel(RPlayer r) {
+		level++;
+		extra.println(r.getName() + " levels up!");
+		if (level < 5) {//(3*2)+(30*3)+(30*2)+(35) + 9
+			addPathPoints(2,r);
+		}else {
+			if (level < 35) {
+				addPathPoints(3,r);
+			}else {
+				if (level < 65) {
+					addPathPoints(2,r);
+				}else {
+					if (level < 99) {
+						addPathPoints(1,r);
+					}else {
+						addPathPoints(9,r);
+					}
+				}
+			}
+		}
+		/*switch (level) {
+		case 5: case 6: case 8: case 9: case 11: case 12: case 47: case 48: addPathPoints(3,r); break;
+		case 14: case 15: case 17: case 18: case 20: case 21: case 44: case 45: addPathPoints(4,r); break;
+		}*/
+		
+		r.cleanAbs();
+		
+	}
+
 	public void addPathPoints(int p, RPlayer r) {
 		Job j = JobFactory.getJobByName(jobName);
 		while (p > 0) {
