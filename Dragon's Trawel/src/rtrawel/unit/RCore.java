@@ -14,6 +14,7 @@ import rtrawel.battle.Party;
 import rtrawel.items.ArmorFactory;
 import rtrawel.items.ConsumableFactory;
 import rtrawel.items.Item;
+import rtrawel.items.MaterialFactory;
 import rtrawel.items.WeaponFactory;
 import rtrawel.jobs.JobFactory;
 import rtrawel.jobs.PathFactory;
@@ -81,6 +82,7 @@ public class RCore {
 		ActionFactory.init();
 		WeaponFactory.init();
 		ConsumableFactory.init();
+		MaterialFactory.init();
 		ArmorFactory.init();
 		MonsterFactory.init();
 		WeaponFactory.init();
@@ -139,7 +141,9 @@ public class RCore {
 		try {
 			return ConsumableFactory.getConsumableByName(str);
 		}catch(Exception e) {}
-		
+		try {
+			return MaterialFactory.getMaterialByName(str);
+		}catch(Exception e) {}
 		return null;
 	}
 

@@ -95,23 +95,22 @@ public class MonsterFactory {
 
 			@Override
 			public String getDrop() {
-				return null;
+				return "canine's canine";
 			}
 
 			@Override
 			public double getDropChance() {
-				return 0;
+				return 1.0/32.0;
 			}
 
 			@Override
 			public String getRareDrop() {
-				return null;
+				return "wolf pelt";
 			}
 
 			@Override
 			public double getRareDropChance() {
-				// TODO Auto-generated method stub
-				return 0;
+				return 1.0/64.0;
 			}
 
 			@Override
