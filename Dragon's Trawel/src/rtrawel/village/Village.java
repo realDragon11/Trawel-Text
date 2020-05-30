@@ -31,7 +31,8 @@ public class Village {
 
 	public void doRandomBattle() {
 		extra.randList(spawns).go();
-		loot(Party.party.lootChance());
+		if (!Party.party.allDead()) {
+		loot(Party.party.lootChance());}
 	}
 	
 	public void addFight(Fight f) {
