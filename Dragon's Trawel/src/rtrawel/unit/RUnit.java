@@ -107,9 +107,15 @@ public abstract class RUnit {
 				}else {
 					d-=coolDown;
 					coolDown =0;
-					decide();
+					//decide();
 				}
 			}
+		}
+	}
+	
+	public void decideNOW() {
+		if (warmUp == 0 && coolDown == 0) {
+			decide();
 		}
 	}
 	

@@ -78,6 +78,10 @@ public class Battle {
 				}
 			}
 			killList.clear();
+			for (RUnit r: global) {
+				r.decideNOW();
+			}
+			
 		}
 		Party.party.cleanUp();
 		if (party.size() > 0) {
