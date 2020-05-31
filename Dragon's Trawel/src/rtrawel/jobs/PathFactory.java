@@ -103,7 +103,7 @@ public class PathFactory {
 			public void apply(RPlayer player, int points, boolean jobActive) {
 				// TODO Auto-generated method stub
 				if (jobActive) {
-					if (points > 10) {
+					if (jobActive && points > 10) {
 						player.addAbility(ActionFactory.getActionByName("body slam"));
 					}
 				}
@@ -224,9 +224,10 @@ public class PathFactory {
 						b.passive = true;
 						b.timeLeft = 1;
 						b.type = Buff.BuffType.KNO_MOD;
-						player.addAbility(ActionFactory.getActionByName("mend"));
+						if (jobActive) {
+						player.addAbility(ActionFactory.getActionByName("mend"));}
 					}
-					if (points > 4) {
+					if (jobActive && points > 4) {
 						player.addAbility(ActionFactory.getActionByName("battle heal"));
 					}
 					
@@ -334,6 +335,8 @@ public class PathFactory {
 						b.passive = true;
 						b.timeLeft = 1;
 						b.type = Buff.BuffType.STR_MOD;
+						if (jobActive) {
+						player.addAbility(ActionFactory.getActionByName("smite"));}
 					}
 					
 				}
@@ -360,7 +363,7 @@ public class PathFactory {
 
 				@Override
 				public void apply(RPlayer player, int points, boolean jobActive) {
-					if (points > 0) {
+					if (jobActive && points > 0) {
 						player.addAbility(ActionFactory.getActionByName("battle heal"));
 					}
 				}
@@ -414,6 +417,12 @@ public class PathFactory {
 				if (!player.getWeapon().getWeaponType().equals(WeaponType.SWORD)) {
 					return;
 				}
+				Buff b = new Buff();
+				b.isDebuff = false;
+				b.mag = points/5;
+				b.passive = true;
+				b.timeLeft = 1;
+				b.type = Buff.BuffType.STR_MOD;
 				if (points > 0) {
 					player.addAbility(ActionFactory.getActionByName("sword thrust"));
 				}
@@ -447,6 +456,12 @@ public class PathFactory {
 				if (!player.getWeapon().getWeaponType().equals(WeaponType.HAMMER)) {
 					return;
 				}
+				Buff b = new Buff();
+				b.isDebuff = false;
+				b.mag = points/5;
+				b.passive = true;
+				b.timeLeft = 1;
+				b.type = Buff.BuffType.STR_MOD;
 				if (points > 20) {
 					player.addAbility(ActionFactory.getActionByName("hammer stun"));
 				}
@@ -473,6 +488,12 @@ public class PathFactory {
 				if (!player.getWeapon().getWeaponType().equals(WeaponType.SPEAR)) {
 					return;
 				}
+				Buff b = new Buff();
+				b.isDebuff = false;
+				b.mag = points/5;
+				b.passive = true;
+				b.timeLeft = 1;
+				b.type = Buff.BuffType.STR_MOD;
 				if (points > 1) {
 					player.addAbility(ActionFactory.getActionByName("sudden spear"));
 				}
@@ -504,8 +525,113 @@ public class PathFactory {
 				if (!player.getWeapon().getWeaponType().equals(WeaponType.KNIFE)) {
 					return;
 				}
+				Buff b = new Buff();
+				b.isDebuff = false;
+				b.mag = points/4;
+				b.passive = true;
+				b.timeLeft = 1;
+				b.type = Buff.BuffType.AGI_MOD;
 				if (points > 1) {
 					player.addAbility(ActionFactory.getActionByName("backlash"));
+				}
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {}
+
+			});
+		
+		data.put("boomerang",new Path() {
+
+			@Override
+			public String name() {
+				return "boomerang";
+			}
+
+			@Override
+			public String jobName() {
+				return "";
+			}
+
+			@Override
+			public void apply(RPlayer player, int points, boolean jobActive) {
+				if (!player.getWeapon().getWeaponType().equals(WeaponType.BOOMERANG)) {
+					return;
+				}
+				Buff b = new Buff();
+				b.isDebuff = false;
+				b.mag = points/5;
+				b.passive = true;
+				b.timeLeft = 1;
+				b.type = Buff.BuffType.AGI_MOD;
+				if (points > 0) {
+					player.addAbility(ActionFactory.getActionByName("ranga"));
+				}
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {}
+
+			});
+		
+		data.put("crossbow",new Path() {
+
+			@Override
+			public String name() {
+				return "crossbow";
+			}
+
+			@Override
+			public String jobName() {
+				return "";
+			}
+
+			@Override
+			public void apply(RPlayer player, int points, boolean jobActive) {
+				if (!player.getWeapon().getWeaponType().equals(WeaponType.CROSSBOW)) {
+					return;
+				}
+				Buff b = new Buff();
+				b.isDebuff = false;
+				b.mag = points/5;
+				b.passive = true;
+				b.timeLeft = 1;
+				b.type = Buff.BuffType.STR_MOD;
+				if (points > 39) {
+					player.addAbility(ActionFactory.getActionByName("dead bolt"));
+				}
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {}
+
+			});
+		
+		data.put("sling",new Path() {
+
+			@Override
+			public String name() {
+				return "sling";
+			}
+
+			@Override
+			public String jobName() {
+				return "";
+			}
+
+			@Override
+			public void apply(RPlayer player, int points, boolean jobActive) {
+				if (!player.getWeapon().getWeaponType().equals(WeaponType.SLING)) {
+					return;
+				}
+				Buff b = new Buff();
+				b.isDebuff = false;
+				b.mag = points/4;
+				b.passive = true;
+				b.timeLeft = 1;
+				b.type = Buff.BuffType.AGI_MOD;
+				if (points > 9) {
+					player.addAbility(ActionFactory.getActionByName("stunning sling"));
 				}
 			}
 

@@ -991,6 +991,247 @@ public class ActionFactory {
 			public String getDesc() {
 				return "1mp: mostly misses but is certain to crit if it connects";
 			}});
+		
+		data.put("smite",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " suddenly spears " + target.toString());
+				Weapon w = caster.getWeapon();
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.HOLY);
+				list.add(DamageType.MAGIC);
+				caster.drainMp(3);
+				for (RUnit u: target.targets) {
+					if (RCore.doAttack(caster, u,caster.getStrength(),w.getBaseHit(), (1.2*w.getDamage()+w.damageBonuses(u)* ( RCore.doesHit(caster,u,w.critChance(),w.isRanged())? w.critMult() : 1)),w.isRanged(),list) > -1) {
+						w.getOnHit().go(caster,u);//note: not all abilities should be able to crit
+					}
+					
+				}
+			}
+
+			@Override
+			public double getWeight() {
+				return 3;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				if (caster.mp < 3) {
+					return false;
+				}
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.FOE;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.SINGLE;
+			}
+
+			@Override
+			public double warmUp() {
+				return 50;
+			}
+
+			@Override
+			public double coolDown() {
+				return 50;
+			}
+
+			@Override
+			public String getName() {
+				return "smite";
+			}
+
+			@Override
+			public String getDesc() {
+				return "A zealous smite that deals extra holy damage..";
+			}});
+		
+		data.put("cleave",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " throws their boomerang at " + target.toString());
+				Weapon w = caster.getWeapon();
+				for (RUnit u: target.targets) {
+					if (RCore.doAttack(caster, u,(int) (.9*caster.getStrength()),w.getBaseHit(), (.9*w.getDamage()+w.damageBonuses(u)* ( RCore.doesHit(caster,u,w.critChance(),w.isRanged())? w.critMult() : 1)),w.isRanged(),w.getDamageTypes()) > -1) {
+						w.getOnHit().go(caster,u);//note: not all abilities should be able to crit
+					}
+					
+				}
+			}
+
+			@Override
+			public double getWeight() {
+				return 2;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				if (!caster.getWeapon().getWeaponType().equals(WeaponType.BOOMERANG)) {
+					return false;
+				}
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.FOE;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.GROUP;
+			}
+
+			@Override
+			public double warmUp() {
+				return 50;
+			}
+
+			@Override
+			public double coolDown() {
+				return 80;
+			}
+
+			@Override
+			public String getName() {
+				return "ranga";
+			}
+
+			@Override
+			public String getDesc() {
+				return "Throws the boomerang through a group of foes.";
+			}});
+		
+		data.put("dead bolt",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " fires a bolt perfectly at " + target.toString());
+				Weapon w = caster.getWeapon();
+				caster.drainMp(10);
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.PIERCE);
+				for (RUnit u: target.targets) {
+					if (RCore.doAttack(caster, u,(int) (caster.getStrength()),w.getBaseHit()*1000.0, (1.5*w.getDamage()+w.damageBonuses(u)* ( RCore.doesHit(caster,u,w.critChance(),w.isRanged())? w.critMult() : 1)),w.isRanged(),list) > -1) {
+						w.getOnHit().go(caster,u);//note: not all abilities should be able to crit
+					}
+					
+				}
+			}
+
+			@Override
+			public double getWeight() {
+				return 2;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				if (!caster.getWeapon().getWeaponType().equals(WeaponType.CROSSBOW)) {
+					return false;
+				}
+				if (caster.getMana() < 10) {
+					return false;
+				}
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.FOE;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.SINGLE;
+			}
+
+			@Override
+			public double warmUp() {
+				return 100;
+			}
+
+			@Override
+			public double coolDown() {
+				return 20;
+			}
+
+			@Override
+			public String getName() {
+				return "dead bolt";
+			}
+
+			@Override
+			public String getDesc() {
+				return "10mp: A narrow needle that nearly never misses.";
+			}});
+		
+		data.put("stunning sling",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " hammer stuns " + target.toString());
+				caster.drainMp(3);
+				Weapon w = caster.getWeapon();
+				for (RUnit u: target.targets) {
+					if (RCore.doAttack(caster, u,caster.getStrength(),w.getBaseHit(), 0,w.isRanged(),w.getDamageTypes()) > -1) {
+						w.getOnHit().go(caster,u);//note: not all abilities should be able to crit
+						u.knockStun(.9,10);
+					}
+					
+				}
+			}
+
+			@Override
+			public double getWeight() {
+				return 4;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				if (caster.getMana() < 3) {
+					return false;
+				}
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.FOE;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.SINGLE;
+			}
+
+			@Override
+			public double warmUp() {
+				return 70;
+			}
+
+			@Override
+			public double coolDown() {
+				return 40;
+			}
+
+			@Override
+			public String getName() {
+				return "stunning sling";
+			}
+
+			@Override
+			public String getDesc() {
+				return "3mp: has a high chance to stun the target out of their action, but deals no damage";
+			}});
+		
 	}
 	
 	
