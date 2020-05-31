@@ -1053,7 +1053,7 @@ public class ActionFactory {
 				return "A zealous smite that deals extra holy damage..";
 			}});
 		
-		data.put("cleave",new Action(){
+		data.put("ranga",new Action(){
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {

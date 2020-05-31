@@ -164,4 +164,12 @@ public class Party {
 			return 0;
 			}
 	}
+	
+	public void displayQuick() {
+		String str = "";
+		for (RUnit r: list) {
+			str += r.getName() + " " + r.getHp() + "/" + r.getMaxHp() + " " + r.getMana() + "/" + r.getMaxMana() + ",";
+		}
+		extra.println(str);
+	}
 }

@@ -33,7 +33,7 @@ public class RCore {
 	
 	public static boolean doesHit(RUnit attacker, RUnit defender, double baseHitMult,boolean ranged) {
 		if (Math.random() < defender.shieldBlockChance()) {
-			extra.println("It's blocked!");
+			extra.println(defender.getName() + " blocks!");
 			return false;
 		}
 		double evadeMult = 1.35;
@@ -77,7 +77,7 @@ public class RCore {
 			attacker.increaseTen(dam/10);
 			return dam;
 		}else {
-			extra.println("It's a miss!");
+			extra.println("It misses "  + defender.getName()+ "!");
 			return -1;
 		}
 	}

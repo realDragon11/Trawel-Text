@@ -26,6 +26,7 @@ public class Menu implements Content {
 	public boolean go() {
 		int in = 0;
 		while (in != 1) {
+			Party.party.displayQuick();
 			extra.println("1 back");
 			extra.println("2 inventory");
 			extra.println("3 beast-iary");
@@ -47,10 +48,11 @@ public class Menu implements Content {
 		extra.println("Who wants to do an action?");
 		RPlayer p = (RPlayer)Party.party.getUnit();
 		while (true) {
+			Party.party.displayQuick();
 			extra.println("1 back");
 			List<Action> doable = p.getOOCAbs();
 			for (int i = 0; i < doable.size();i++) {
-				extra.println((i+2) + " " + doable.get(i) + (doable.get(i).canCast(p) ? "" : " (locked)" ));
+				extra.println((i+2) + " " + doable.get(i).getName() + ": " + doable.get(i).getDesc() + (doable.get(i).canCast(p) ? "" : " (locked)" ));
 			}
 			int in = extra.inInt( doable.size()+1);
 			if (in == 1) {

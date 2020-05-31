@@ -103,7 +103,7 @@ public class PathFactory {
 			public void apply(RPlayer player, int points, boolean jobActive) {
 				// TODO Auto-generated method stub
 				if (jobActive) {
-					if (jobActive && points > 10) {
+					if (points > 10) {
 						player.addAbility(ActionFactory.getActionByName("body slam"));
 					}
 				}
@@ -413,7 +413,6 @@ public class PathFactory {
 
 			@Override
 			public void apply(RPlayer player, int points, boolean jobActive) {
-				// TODO Auto-generated method stub
 				if (!player.getWeapon().getWeaponType().equals(WeaponType.SWORD)) {
 					return;
 				}

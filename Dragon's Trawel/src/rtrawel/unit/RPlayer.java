@@ -209,6 +209,7 @@ public class RPlayer extends RUnit {
 		if (!curBattle.stillFight()) {
 			return;
 		}
+		Party.party.displayQuick();
 		boolean keepGoing = true;
 		int in;
 		boolean valid;
@@ -403,7 +404,7 @@ public class RPlayer extends RUnit {
 		abs.clear();
 		buffMap.buffs.clear();
 		for (PathWithLevel pwl: progression.paths) {
-			PathFactory.getPathByName(pwl.path).apply(this, pwl.level,pwl.path.equals(currentJob));//TODO make active weapons active
+			PathFactory.getPathByName(pwl.path).apply(this, pwl.level,PathFactory.getPathByName(pwl.path).jobName().equals(currentJob));//TODO make active weapons active
 		}
 	}
 
@@ -586,12 +587,11 @@ public class RPlayer extends RUnit {
 
 	public List<Action> getOOCAbs() {
 		List<Action> list = new ArrayList<Action>();
-		abs.stream().filter(a -> a.getTargetType().equals(TargetType.HURT_FRIEND) || a.getTargetType().equals(TargetType.OOC)).forEach(list::add);
+		abs.stream().filter(a -> (a.getTargetType().equals(TargetType.HURT_FRIEND) || a.getTargetType().equals(TargetType.OOC))).forEach(list::add);
 		return list;
 	}
 
 	public TargetGroup decideOOCTargets(Action ab) {
-		int in;
 		if (ab.getTargetType().equals(Action.TargetType.SELF_ONLY)) {
 			return new TargetGroup(this);
 		}
@@ -599,6 +599,7 @@ public class RPlayer extends RUnit {
 			
 		}else {
 			if (ab.getTargetGrouping().equals(Action.TargetGrouping.SINGLE)) {
+				extra.println("On who?");
 				return new TargetGroup(Party.party.getUnit());
 			}else {
 				TargetGroup t = new TargetGroup();
