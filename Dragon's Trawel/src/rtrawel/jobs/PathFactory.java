@@ -162,7 +162,7 @@ public class PathFactory {
 
 			@Override
 			public void applyOnce(RPlayer player, int points, int formerPoints) {
-				// TODO Auto-generated method stub
+				
 				
 			}});
 		data.put("surveying",new Path() {
@@ -192,10 +192,178 @@ public class PathFactory {
 
 			@Override
 			public void applyOnce(RPlayer player, int points, int formerPoints) {
-				// TODO Auto-generated method stub
+				// 
 				
 			}});
 		
+			data.put("piety",new Path() {
+
+				@Override
+				public String name() {
+					return "piety";//offense with weapons
+				}
+
+				@Override
+				public String jobName() {
+					return "priest";
+				}
+
+				@Override
+				public void apply(RPlayer player, int points, boolean jobActive) {
+					if (points > 0) {
+						Buff b = new Buff();
+						b.isDebuff = false;
+						b.mag = points/6;
+						b.passive = true;
+						b.timeLeft = 1;
+						b.type = Buff.BuffType.KNO_MOD;
+					}
+					
+				}
+
+				@Override
+				public void applyOnce(RPlayer player, int points, int formerPoints) { 
+					if (points-formerPoints > 0) {
+					player.addWeaponPoints(points-formerPoints);}
+					
+				}
+
+				});
+			data.put("damnation",new Path() {
+
+				@Override
+				public String name() {
+					return "damnation";//protection
+				}
+
+				@Override
+				public String jobName() {
+					return "priest";
+				}
+
+				@Override
+				public void apply(RPlayer player, int points, boolean jobActive) {
+					
+				}
+
+				@Override
+				public void applyOnce(RPlayer player, int points, int formerPoints) {
+					
+				}
+
+				});
+			data.put("faith",new Path() {
+
+				@Override
+				public String name() {
+					return "faith";//miscs
+				}
+
+				@Override
+				public String jobName() {
+					return "priest";
+				}
+
+				@Override
+				public void apply(RPlayer player, int points, boolean jobActive) {
+					
+				}
+
+				@Override
+				public void applyOnce(RPlayer player, int points, int formerPoints) {
+					if (points-formerPoints > 0) {
+						int cum = 0;
+						for (int i = formerPoints+1; i <= points;i++) {
+							if (i%5 == 0) {
+								cum++;
+							}
+						}
+					if (cum > 0) {
+					player.addWeaponPoints(cum);}
+					}
+				}
+
+				});
+			
+			data.put("judgement",new Path() {
+
+				@Override
+				public String name() {
+					return "judgement";//offense
+				}
+
+				@Override
+				public String jobName() {
+					return "cleric";
+				}
+
+				@Override
+				public void apply(RPlayer player, int points, boolean jobActive) {
+					if (points > 0) {
+						Buff b = new Buff();
+						b.isDebuff = false;
+						b.mag = points/10;
+						b.passive = true;
+						b.timeLeft = 1;
+						b.type = Buff.BuffType.STR_MOD;
+					}
+					
+				}
+
+				@Override
+				public void applyOnce(RPlayer player, int points, int formerPoints) { 
+					if (points-formerPoints > 0) {
+					player.addWeaponPoints(points-formerPoints);}
+					
+				}
+
+				});
+			data.put("absolution",new Path() {
+
+				@Override
+				public String name() {
+					return "absolution";//protection + healing
+				}
+
+				@Override
+				public String jobName() {
+					return "cleric";
+				}
+
+				@Override
+				public void apply(RPlayer player, int points, boolean jobActive) {
+					
+				}
+
+				@Override
+				public void applyOnce(RPlayer player, int points, int formerPoints) {
+					
+				}
+
+				});
+			data.put("deliverance",new Path() {
+
+				@Override
+				public String name() {
+					return "deliverance";//miscs
+				}
+
+				@Override
+				public String jobName() {
+					return "cleric";
+				}
+
+				@Override
+				public void apply(RPlayer player, int points, boolean jobActive) {
+					
+				}
+
+				@Override
+				public void applyOnce(RPlayer player, int points, int formerPoints) {
+					
+				}
+
+				});
 		
 		//TODO: WEAPON PATHS:
 		data.put("sword",new Path() {

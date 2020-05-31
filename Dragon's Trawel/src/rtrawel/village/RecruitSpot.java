@@ -35,9 +35,9 @@ public class RecruitSpot implements Content{
 	public boolean go() {
 		extra.println("What class do you want " + pname + " to be?");
 		for (int i = 0; i < paths.size();i++) {
-			extra.println((i+1) + paths.get(i));
+			extra.println((i+1) +" " + paths.get(i));
 		}
-		RPlayer p = new RPlayer(pname,paths.get(extra.inInt(paths.size())));
+		RPlayer p = new RPlayer(pname,paths.get(extra.inInt(paths.size()-1)));
 		village.conts.remove(this);
 		EventFlag.eventFlag.setEF(evF, 1);
 		return false;
