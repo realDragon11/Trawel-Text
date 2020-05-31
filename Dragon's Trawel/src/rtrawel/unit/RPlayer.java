@@ -542,15 +542,18 @@ public class RPlayer extends RUnit {
 	}
 
 	public void display() {
+		this.displayStats();
 		for (Item i: this.getItems()) {
 			extra.println(i.display());
 		}
-		this.displayStats();
+		
 	}
 
 	public void displayStats() {
 		// TODO Auto-generated method stub
-		
+		extra.println(this.getName() + ": level "+this.progression.jobLevel(currentJob) + " " + currentJob);
+		extra.println("HP: " + this.getHp() + "/" + this.getMaxHp() + " MP: " + this.getMana() + "/" + this.getMaxMana() + " Tsn: " + this.getTension() + "/" + this.getMaxTension());
+		extra.println("Str: " + this.getStrength() +" Agi: " +this.getAgility() + " Kno: " +this.getKnowledge() + " Res: " + this.getResilence() + " Dex: " + this.getDexterity() + " Spd: " + this.getSpeed());
 	}
 
 	public List<Item> getItems() {

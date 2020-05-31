@@ -177,7 +177,7 @@ public class PathFactory {
 				if (points > 0) {
 					Buff b = new Buff();
 					b.isDebuff = false;
-					b.mag = jobActive ? (points/300.0) : (points/600.0);
+					b.mag = 1+ (jobActive ? (points/300.0) : (points/600.0));
 					b.passive = true;
 					b.timeLeft = 1;
 					b.type = Buff.BuffType.LOOT_CHANCE;

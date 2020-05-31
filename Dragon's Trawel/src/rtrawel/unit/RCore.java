@@ -28,7 +28,7 @@ public class RCore {
 
 	
 	public static double calcDamageMod(double attackStat,double defendStat) {
-		return (100+attackStat)/(100+defendStat);
+		return (100+attackStat)/(extra.zeroOut(80+defendStat)+20);
 	}
 	
 	public static boolean doesHit(RUnit attacker, RUnit defender, double baseHitMult,boolean ranged) {
@@ -42,7 +42,7 @@ public class RCore {
 		case DEFENSIVE: evadeMult += .1;break;
 		}
 		double hitMult = 1.1 + (attacker.getStance().equals(FightingStance.DEFENSIVE) && !ranged ? -.1 : 0);
-		return (hitMult*(attacker.getAgility()+10))/(evadeMult*(attacker.getAgility()+10)) > Math.random();
+		return (hitMult*(attacker.getAgility()+100))/(evadeMult*(extra.zeroOut(attacker.getAgility()+80)+20)) > Math.random();
 	}
 	
 	public static int dealDamage(RUnit defender, int attackStat, double damage, List<DamageType> types ) {
