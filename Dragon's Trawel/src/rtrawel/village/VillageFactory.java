@@ -41,6 +41,9 @@ public class VillageFactory {
 		villages.add(unun);
 		unun.conts.add(new Church());
 		unun.conts.add(new Inn(10));
+		if (EventFlag.eventFlag.getEF("unun_recruit_1") == 0) {
+			unun.conts.add(new RecruitSpot("recruit andrea","andrea", unun,"unun_recruit_1", "cleric","priest"));
+		}
 		new Connection(homa,unun,null,"homa_unun_boss");
 		Village homa_pit = new Village("homan well");
 		homa_pit.addFight(FightFactory.getFightByName("well_lurker1"));

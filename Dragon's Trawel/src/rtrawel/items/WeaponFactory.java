@@ -466,6 +466,70 @@ public class WeaponFactory {
 				return 0;
 			}});
 		
+		data.put("small sling",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.SLING;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.BLUNT);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return 1;
+			}
+
+			@Override
+			public int getDamage() {
+				return 3;
+			}
+
+			@Override
+			public String getName() {
+				return "small sling";
+			}
+
+			@Override
+			public String getDesc() {
+				return "A small rock tosser.";
+			}
+
+			@Override
+			public double critChance() {
+				return .05;
+			}
+
+			@Override
+			public double critMult() {
+				return 6;
+			}
+
+			@Override
+			public int cost() {
+				return 5;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0;
+			}});
+		
 		
 		//TODO foes
 		

@@ -211,4 +211,8 @@ public abstract class RUnit {
 		buffMap.addUniqueBuff(b);
 		
 	}
+	public void setStance(FightingStance s) {
+		fStance = s;
+		
+	}
 }

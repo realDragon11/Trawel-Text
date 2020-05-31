@@ -1,5 +1,6 @@
 package rtrawel.jobs;
 
+import rtrawel.TestRunner;
 import rtrawel.unit.RPlayer;
 import trawel.extra;
 
@@ -17,7 +18,7 @@ public class JobWithLevel implements java.io.Serializable {
 
 	public void addXp(int totalxp, RPlayer r) {
 		xp +=totalxp;
-		if (xp > 15*Math.pow(1.15,level)) {
+		if (level < TestRunner.level_cap && xp > 15*Math.pow(1.15,level)) {
 			xp-=15*Math.pow(1.15,level);
 			addLevel(r);
 		}

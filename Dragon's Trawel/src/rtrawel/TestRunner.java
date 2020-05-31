@@ -16,6 +16,8 @@ import rtrawel.village.VillageFactory;
 import trawel.extra;
 
 public class TestRunner {
+	
+	public static final int level_cap = 15;
 
 	public static void main(String[] args) {
 		RCore.init();
@@ -23,12 +25,9 @@ public class TestRunner {
 		extra.println("Start new game?");
 		if (extra.yesNo()) {
 			Party.party.list.add(new RPlayer("jess","warrior"));
-			((RPlayer)Party.party.list.get(0)).progression.jobs.add(new JobWithLevel("warrior",1));
-			((RPlayer)Party.party.list.get(0)).setWeapon(WeaponFactory.getWeaponByName("copper sword"));
 			((RPlayer)Party.party.list.get(0)).cleanAbs();
 			Party.party.list.add(new RPlayer("trish","ranger"));
-			((RPlayer)Party.party.list.get(1)).progression.jobs.add(new JobWithLevel("ranger",1));
-			((RPlayer)Party.party.list.get(1)).setWeapon(WeaponFactory.getWeaponByName("simple stabber"));
+			Party.party.list.get(1).setStance(RUnit.FightingStance.DEFENSIVE);
 			((RPlayer)Party.party.list.get(1)).cleanAbs();
 			//Party.party.list.get(0).earnXp(999999);
 			Party.party.list.get(0).refresh();

@@ -41,7 +41,7 @@ public class JobFactory {
 
 			@Override
 			public int getHpAtLevel(int level) {
-				return RCore.levelLynchPin(level, 25, 50, 100, 999, 999, 999, 999, 999);
+				return RCore.levelLynchPin(level, 25, 50, 110, 999, 999, 999, 999, 999);
 			}
 
 			@Override
@@ -186,6 +186,176 @@ public class JobFactory {
 				List<ArmorClass> list = new ArrayList<ArmorClass>();
 				list.add(ArmorClass.LIGHT);
 				list.add(ArmorClass.MEDIUM);
+				return list;
+			}});
+		
+		data.put("cleric",new Job() {
+
+			@Override
+			public String getName() {
+				return "cleric";
+			}
+
+			@Override
+			public String getPath1() {
+				return "judgement";
+			}
+
+			@Override
+			public String getPath2() {
+				return "absolution";
+			}
+
+			@Override
+			public String getPath3() {
+				return "deliverance";
+			}
+
+			@Override
+			public int getHpAtLevel(int level) {
+				return RCore.levelLynchPin(level, 22, 45, 95, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getMpAtLevel(int level) {
+				return RCore.levelLynchPin(level, 6, 14, 30, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getTenAtLevel(int level) {
+				return RCore.levelLynchPin(level, 3, 6,10, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getStrAtLevel(int level) {
+				return RCore.levelLynchPin(level, 12, 22,42, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getDexAtLevel(int level) {
+				return RCore.levelLynchPin(level, 4, 7, 14, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getAgiAtLevel(int level) {
+				return RCore.levelLynchPin(level, 3, 5, 12, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getSpdAtLevel(int level) {
+				return RCore.levelLynchPin(level, 2, 3, 7, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getKnoAtLevel(int level) {
+				return RCore.levelLynchPin(level, 6, 12,20, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getResAtLevel(int level) {
+				return RCore.levelLynchPin(level, 19, 33, 70, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public List<WeaponType> weaponTypes() {
+				List<WeaponType> list = new ArrayList<WeaponType>();
+				list.add(WeaponType.HAMMER);
+				list.add(WeaponType.STAFF);
+				list.add(WeaponType.SLING);
+				list.add(WeaponType.SHIELD);
+				return list;
+			}
+
+			@Override
+			public List<ArmorClass> armorClasses() {
+				List<ArmorClass> list = new ArrayList<ArmorClass>();
+				list.add(ArmorClass.HEAVY);
+				list.add(ArmorClass.MEDIUM);
+				return list;
+			}});
+		
+		data.put("priest",new Job() {
+
+			@Override
+			public String getName() {
+				return "priest";
+			}
+
+			@Override
+			public String getPath1() {
+				return "piety";
+			}
+
+			@Override
+			public String getPath2() {
+				return "damnation";
+			}
+
+			@Override
+			public String getPath3() {
+				return "faith";
+			}
+
+			@Override
+			public int getHpAtLevel(int level) {
+				return RCore.levelLynchPin(level, 14, 25, 50, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getMpAtLevel(int level) {
+				return RCore.levelLynchPin(level, 15, 28, 60, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getTenAtLevel(int level) {
+				return RCore.levelLynchPin(level, 0, 0,0, 0, 0,0,0, 0);
+			}
+
+			@Override
+			public int getStrAtLevel(int level) {
+				return RCore.levelLynchPin(level, 4, 7,12, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getDexAtLevel(int level) {
+				return RCore.levelLynchPin(level, 16,37,65, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getAgiAtLevel(int level) {
+				return RCore.levelLynchPin(level, 11,32,55, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getSpdAtLevel(int level) {
+				return RCore.levelLynchPin(level, 12,18,25, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getKnoAtLevel(int level) {
+				return RCore.levelLynchPin(level, 18,30 ,60, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getResAtLevel(int level) {
+				return RCore.levelLynchPin(level, 2, 6, 12, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public List<WeaponType> weaponTypes() {
+				List<WeaponType> list = new ArrayList<WeaponType>();
+				list.add(WeaponType.WAND);
+				list.add(WeaponType.STAFF);
+				list.add(WeaponType.KNIFE);
+				list.add(WeaponType.SLING);
+				return list;
+			}
+
+			@Override
+			public List<ArmorClass> armorClasses() {
+				List<ArmorClass> list = new ArrayList<ArmorClass>();
+				list.add(ArmorClass.LIGHT);
+				list.add(ArmorClass.NONE);
 				return list;
 			}});
 	}

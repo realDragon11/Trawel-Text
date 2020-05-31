@@ -70,7 +70,7 @@ public class ActionFactory {
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
 				extra.println(caster.getName() + " cleaves " + target.toString());
-				caster.drainMp(4);
+				caster.drainMp(3);
 				Weapon w = caster.getWeapon();
 				List<DamageType> dList = new ArrayList<DamageType>();
 				dList.add(DamageType.SHARP);
@@ -93,7 +93,7 @@ public class ActionFactory {
 				if (!caster.getWeapon().getWeaponType().equals(WeaponType.SWORD)) {
 					return false;
 				}
-				return caster.getMana() >= 4;
+				return caster.getMana() >= 3;
 			}
 
 			@Override
@@ -711,6 +711,119 @@ public class ActionFactory {
 			@Override
 			public String getDesc() {
 				return "attack with raw brawn";
+			}});
+		
+		data.put("sudden spear",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " suddenly spears " + target.toString());
+				Weapon w = caster.getWeapon();
+				for (RUnit u: target.targets) {
+					if (RCore.doAttack(caster, u,caster.getStrength(),w.getBaseHit(), (w.getDamage()+w.damageBonuses(u)* ( RCore.doesHit(caster,u,w.critChance(),w.isRanged())? w.critMult() : 1)),w.isRanged(),w.getDamageTypes()) > -1) {
+						w.getOnHit().go(caster,u);//note: not all abilities should be able to crit
+					}
+					
+				}
+			}
+
+			@Override
+			public double getWeight() {
+				return 3;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.FOE;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.SINGLE;
+			}
+
+			@Override
+			public double warmUp() {
+				return 30;
+			}
+
+			@Override
+			public double coolDown() {
+				return 90;
+			}
+
+			@Override
+			public String getName() {
+				return "sudden spear";
+			}
+
+			@Override
+			public String getDesc() {
+				return "A special attack that attacks quickly but has a large cooldown.";
+			}});
+		
+		data.put("triple thrust",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " uses triple thrust!");
+				Weapon w = caster.getWeapon();
+				caster.drainMp(4);
+				for (int i = 0; i < 3;i++) {
+					RUnit u = extra.randList(target.targets);
+					if (RCore.doAttack(caster, u,(int) (caster.getStrength()*.9),w.getBaseHit(), (w.getDamage()+w.damageBonuses(u)* ( RCore.doesHit(caster,u,w.critChance(),w.isRanged())? w.critMult() : 1)),w.isRanged(),w.getDamageTypes()) > -1) {
+						w.getOnHit().go(caster,u);//note: not all abilities should be able to crit
+					}
+					
+				}
+			}
+
+			@Override
+			public double getWeight() {
+				return 3;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				if (caster.getMana() < 4) {
+					return false;
+				}
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.FOE;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.ALL;
+			}
+
+			@Override
+			public double warmUp() {
+				return 60;
+			}
+
+			@Override
+			public double coolDown() {
+				return 60;
+			}
+
+			@Override
+			public String getName() {
+				return "triple thrust";
+			}
+
+			@Override
+			public String getDesc() {
+				return "5mp: attack three times at random targets.";
 			}});
 	}
 	

@@ -36,12 +36,20 @@ public class RPlayer extends RUnit {
 	public RPlayer(String n, String job) {
 		name = n;
 		currentJob = job;
-		//TODO;
+		progression.jobs.add(new JobWithLevel(job,1));
+		//;
 		//progression.jobs.add(new JobWithLevel("warrior",1));
 		//weap = WeaponFactory.getWeaponByName("copper sword");
 		//inventory.add(WeaponFactory.getWeaponByName("lumber axe"));
 		//inventory.add(ConsumableFactory.getConsumableByName("medicine herb"));
 		fStance = FightingStance.BALANCED;
+		switch (job) {
+		case "warrior": weap = WeaponFactory.getWeaponByName("copper sword");break;
+		case "ranger": weap = WeaponFactory.getWeaponByName("small sling");break;
+		case "cleric": weap = WeaponFactory.getWeaponByName("carpenter hammer");break;
+		case "priest": weap = WeaponFactory.getWeaponByName("simple stabber");break;
+		default: throw new RuntimeException("default weapon for class not found");
+		}
 		cleanAbs();
 	}
 	
@@ -233,7 +241,7 @@ public class RPlayer extends RUnit {
 			break;
 		case 2: 
 			for (int i = 0;i < abs.size();i++) {
-				extra.println((i+1) + " " +abs.get(i).getName() + (abs.get(i).canCast(this) ? "" : " (locked)"));
+				extra.println((i+1) + " " +abs.get(i).getName()  + ": " + abs.get(i).getDesc() + (abs.get(i).canCast(this) ? "" : " (locked)"));
 			}
 			extra.println((abs.size()+1 )+" back");
 			in = extra.inInt(abs.size()+1);
@@ -244,7 +252,7 @@ public class RPlayer extends RUnit {
 			break;
 		case 3:
 			for (int i = 0;i < inventory.size();i++) {
-				extra.println((i+1) + " " +inventory.get(i).getName());//make sure only valid things can go into inventory later
+				extra.println((i+1) + " " +inventory.get(i).getName() + ": " + inventory.get(i).getDesc());//make sure only valid things can go into inventory later
 			}
 			extra.println((inventory.size()+1 )+" back");
 			in = extra.inInt(inventory.size()+1);

@@ -258,5 +258,35 @@ public class PathFactory {
 			public void applyOnce(RPlayer player, int points, int formerPoints) {}
 
 			});
+		data.put("spear",new Path() {
+
+			@Override
+			public String name() {
+				return "spear";
+			}
+
+			@Override
+			public String jobName() {
+				return "";
+			}
+
+			@Override
+			public void apply(RPlayer player, int points, boolean jobActive) {
+				if (!player.getWeapon().getWeaponType().equals(WeaponType.SPEAR)) {
+					return;
+				}
+				if (points > 1) {
+					player.addAbility(ActionFactory.getActionByName("sudden spear"));
+				}
+				
+				if (points > 9) {
+					player.addAbility(ActionFactory.getActionByName("triple thrust"));
+				}
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {}
+
+			});
 	}
 }
