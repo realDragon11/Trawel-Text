@@ -42,7 +42,11 @@ public class RCore {
 		case DEFENSIVE: evadeMult += .1;break;
 		}
 		double hitMult = 1.1 + (attacker.getStance().equals(FightingStance.DEFENSIVE) && !ranged ? -.1 : 0);
-		return (hitMult*(attacker.getAgility()+100))/(evadeMult*(extra.zeroOut(attacker.getAgility()+80)+20)) > Math.random();
+		double hitChance = (hitMult*(attacker.getAgility()+100))/(evadeMult*(extra.zeroOut(attacker.getAgility()+80)+20));
+		if (hitChance < .9) {
+		return hitChance > Math.random();}else {
+			return lerp(.9,1,hitChance/3) > Math.random();
+		}
 	}
 	
 	public static int dealDamage(RUnit defender, int attackStat, double damage, List<DamageType> types ) {
@@ -118,6 +122,10 @@ public class RCore {
 	private static int intLerp(int one, int two, int level, int minLevel, int maxLevel) {
 		double d = ((double)(level-minLevel))/(maxLevel-minLevel);
 		return (int)((1 - d) * one + d * two);
+	}
+	
+	public static int lerp(double one, double two, double amount) {
+		return (int)((1 - amount) * one + amount * two);
 	}
 
 	public static Item getItemByName(String str) {

@@ -338,6 +338,135 @@ public class WeaponFactory {
 				return 0;
 			}});
 		
+		data.put("pointy stick",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.SPEAR;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.PIERCE);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return 0.95;
+			}
+
+			@Override
+			public int getDamage() {
+				return 5;
+			}
+
+			@Override
+			public String getName() {
+				return "pointy stick";
+			}
+
+			@Override
+			public String getDesc() {
+				return "Barely a weapon.";
+			}
+
+			@Override
+			public double critChance() {
+				return .07;
+			}
+
+			@Override
+			public double critMult() {
+				return 2;
+			}
+
+			@Override
+			public int cost() {
+				return 5;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0;
+			}});
+		
+		data.put("fishing spear",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.SPEAR;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return defender.getRaceType(RaceType.FISH) ? 5 : 0 ;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.PIERCE);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return 0.95;
+			}
+
+			@Override
+			public int getDamage() {
+				return 6;
+			}
+
+			@Override
+			public String getName() {
+				return "fishing spear";
+			}
+
+			@Override
+			public String getDesc() {
+				return "Deals extra damage against fish.";
+			}
+
+			@Override
+			public double critChance() {
+				return .07;
+			}
+
+			@Override
+			public double critMult() {
+				return 2;
+			}
+
+			@Override
+			public int cost() {
+				return 30;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0;
+			}});
+		
+		
 		//TODO foes
 		
 		data.put("wolf pup teeth",new Weapon() {

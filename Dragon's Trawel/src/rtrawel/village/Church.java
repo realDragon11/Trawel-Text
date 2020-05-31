@@ -22,7 +22,7 @@ public class Church implements Content {
 				if (size > 0) {
 					extra.println("Res who?");
 					for (int i = 0;i < size;i++) {
-						extra.println(rs.get(i).getName());
+						extra.println((i+1) + rs.get(i).getName());
 					}
 					RUnit r = rs.get(extra.inInt(size)-1);
 					r.heal(1,0);

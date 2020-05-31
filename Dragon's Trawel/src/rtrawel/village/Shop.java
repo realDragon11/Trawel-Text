@@ -11,6 +11,12 @@ import trawel.extra;
 public class Shop implements Content{
 	
 	public List<String> items = new ArrayList<String>();
+	
+	private String name;
+	
+	public Shop(String s) {
+		name = s;
+	}
 
 	@Override
 	public boolean go() {
@@ -83,7 +89,7 @@ public class Shop implements Content{
 
 	@Override
 	public String name() {
-		return "shop";
+		return name;
 	}
 
 }

@@ -458,7 +458,7 @@ public class ActionFactory {
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
 				extra.println(caster.getName() + " sprays ink on " + target.toString());
-				caster.drainTen(4);
+				//caster.drainTen(4);
 				for (RUnit u: target.targets) {
 					if (RCore.doesHit(caster,u,.7, true)) {
 						Buff b = new Buff();
@@ -485,14 +485,14 @@ public class ActionFactory {
 
 			@Override
 			public double getWeight() {
-				return 4;
+				return 4568;
 			}
 
 			@Override
 			public boolean canCast(RUnit caster) {
-				if (caster.getTension() < 4) {
-					return false;
-				}
+				//if (caster.getTension() < 4) {
+				//	return false;
+				//}
 				return true;
 			}
 

@@ -15,11 +15,13 @@ public class VillageFactory {
 		villages.add(homa);
 		homa.conts.add(new Church());
 		homa.conts.add(new Inn(5));
-		Shop s = new Shop();
+		Shop s = new Shop("item shop");
 		s.items.add("copper sword");
 		s.items.add("lumber axe");
-		s.items.add("pot lid");
 		s.items.add("carpenter hammer");
+		s.items.add("pointy stick");
+		s.items.add("fishing spear");
+		s.items.add("pot lid");
 		s.items.add("cloth hood");
 		s.items.add("cloth shirt");
 		s.items.add("leather hood");
