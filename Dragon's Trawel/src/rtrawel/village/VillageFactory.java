@@ -42,7 +42,7 @@ public class VillageFactory {
 		new Connection(homa,unun,null,"homa_unun_boss");
 		Village homa_pit = new Village("homan well");
 		if (EventFlag.eventFlag.getEF("homa_unun_boss") == 0) {
-		homa_pit.conts.add(new BossContent("ralph the squid",FightFactory.getFightByName("homa_unun_boss"),homa_pit));}
+		homa_pit.conts.add(new BossContent("ralph the squid",FightFactory.getFightByName("homa_unun_boss"),homa_pit,2));}
 		new Connection(homa,homa_pit,null,null);
 		return villages.get(0);
 	}

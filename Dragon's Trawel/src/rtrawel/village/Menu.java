@@ -25,7 +25,7 @@ public class Menu implements Content {
 		while (in != 1) {
 			extra.println("1 back");
 			extra.println("2 inventory");
-			extra.println("2 beast-iary");
+			extra.println("3 beast-iary");
 			in = extra.inInt(3);
 			switch (in) {
 			case 2:
@@ -63,6 +63,8 @@ public class Menu implements Content {
 							extra.println("Common Drop: " + r.getDrop() + " Rare Drop: " + r.getRareDrop());
 							}
 					}
+				}else {
+					extra.println("You don't know anything about this beast yet.");
 				}
 			}catch (Exception e) {
 				extra.println("Beast not found.");

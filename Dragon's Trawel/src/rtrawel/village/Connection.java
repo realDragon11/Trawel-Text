@@ -28,11 +28,13 @@ public class Connection {
 			if (evF != null && EventFlag.eventFlag.getEF(evF) == 0) {
 				return curVillage;
 			}
+			curVillage.wanderCombo = 0;
 			return (curVillage == village1 ? village2 : village1);
 		}
 		if (fight.go()) {
 			fight = null;
 			EventFlag.eventFlag.setEF(evF,1);
+			curVillage.wanderCombo = 0;
 			return (curVillage == village1 ? village2 : village1);
 		}
 		return curVillage;

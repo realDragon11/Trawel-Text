@@ -18,6 +18,7 @@ public class Village {
 	private List<Double> lootChance = new ArrayList<Double>();
 	
 	public List<Fight> spawns = new ArrayList<Fight>();
+	public int wanderCombo = 0;
 	
 	/**
 	 * adds the non-unique menu
@@ -32,6 +33,7 @@ public class Village {
 	public void doRandomBattle() {
 		extra.randList(spawns).go();
 		if (!Party.party.allDead()) {
+			wanderCombo++;
 		loot(Party.party.lootChance());}
 	}
 	
