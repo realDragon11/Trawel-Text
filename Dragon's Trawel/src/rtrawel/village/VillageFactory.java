@@ -41,6 +41,9 @@ public class VillageFactory {
 		unun.conts.add(new Inn(10));
 		new Connection(homa,unun,null,"homa_unun_boss");
 		Village homa_pit = new Village("homan well");
+		homa_pit.addFight(FightFactory.getFightByName("well_lurker1"));
+		homa_pit.addFight(FightFactory.getFightByName("well_lurker2"));
+		homa_pit.addFight(FightFactory.getFightByName("well_root1"));
 		if (EventFlag.eventFlag.getEF("homa_unun_boss") == 0) {
 		homa_pit.conts.add(new BossContent("ralph the squid",FightFactory.getFightByName("homa_unun_boss"),homa_pit,2));}
 		new Connection(homa,homa_pit,null,null);

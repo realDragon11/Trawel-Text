@@ -32,7 +32,7 @@ public class BossContent implements Content{
 
 	@Override
 	public String name() {
-		return name + ((village.wanderCombo < wanders) ? village.wanderCombo +"/"+ wanders + " explores" : "") ;
+		return name + ((village.wanderCombo < wanders) ?  " " + village.wanderCombo +"/"+ wanders + " explores" : "") ;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import rtrawel.unit.Buff;
 import rtrawel.unit.DamageType;
 import rtrawel.unit.RUnit;
 import rtrawel.unit.RUnit.RaceType;
@@ -520,6 +521,148 @@ public class WeaponFactory {
 			@Override
 			public double critMult() {
 				return 1;
+			}
+
+			@Override
+			public int cost() {
+				return 0;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0;
+			}});
+		
+		data.put("well lurker teeth",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.MONSTER_MELEE;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.SHARP);
+				list.add(DamageType.PIERCE);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return .95;
+			}
+
+			@Override
+			public int getDamage() {
+				return 5;
+			}
+
+			@Override
+			public String getName() {
+				return "well lurker teeth";
+			}
+
+			@Override
+			public String getDesc() {
+				return "";
+			}
+
+			@Override
+			public double critChance() {
+				return .05;
+			}
+
+			@Override
+			public double critMult() {
+				return 1.25;
+			}
+
+			@Override
+			public int cost() {
+				return 0;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0;
+			}
+		
+			@Override
+			public OnHit getOnHit() {
+				return new OnHit() {
+
+					@Override
+					public void go(RUnit caster, RUnit u) {
+						Buff b = new Buff();
+						b.isDebuff = true;
+						b.mag = .9;
+						b.passive = false;
+						b.timeLeft = 100;
+						b.type = Buff.BuffType.RES_MULT;
+						u.addBuff(b);
+					}};
+			}
+	});
+		
+		data.put("giant squid teeth",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.MONSTER_MELEE;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.SHARP);
+				list.add(DamageType.PIERCE);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return 1;
+			}
+
+			@Override
+			public int getDamage() {
+				return 10;
+			}
+
+			@Override
+			public String getName() {
+				return "giant squid teeth";
+			}
+
+			@Override
+			public String getDesc() {
+				return "";
+			}
+
+			@Override
+			public double critChance() {
+				return 0.1;
+			}
+
+			@Override
+			public double critMult() {
+				return 1.10;
 			}
 
 			@Override

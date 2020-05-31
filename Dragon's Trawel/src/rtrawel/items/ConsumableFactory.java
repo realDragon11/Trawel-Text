@@ -79,6 +79,30 @@ public class ConsumableFactory {
 			}
 			
 		});
+		
+		data.put("ink sac",new Consumable() {
+
+			@Override
+			public int cost() {
+				return 30;
+			}
+
+			@Override
+			public String getName() {
+				return "ink sac";
+			}
+
+			@Override
+			public String getDesc() {
+				return "Sprays a cloud of agility-reducing ink.";
+			}
+
+			@Override
+			public Action getAction() {
+				return ActionFactory.getActionByName("ink spray");
+			}
+			
+		});
 	}
 	
 	public static Consumable getConsumableByName(String str) {

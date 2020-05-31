@@ -643,7 +643,7 @@ public class MonsterFactory {
 
 			@Override
 			public double getRareDropChance() {
-				return (1.0/64.0);
+				return (1.0/128.0);
 			}
 
 			@Override
@@ -675,6 +675,271 @@ public class MonsterFactory {
 			@Override
 			public void initer(RMonster r) {
 				r.addRaceType(RaceType.PLANT);
+			}});
+		
+		data.put("well lurker",new MonsterData() {
+			
+
+			@Override
+			public int getStrength() {
+				return 16;
+			}
+
+			@Override
+			public int getKnowledge() {
+				return 0;
+			}
+
+			@Override
+			public int getMaxHp() {
+				return 16;
+			}
+
+			@Override
+			public int getMaxMana() {
+				return 0;
+			}
+
+			@Override
+			public int getMaxTension() {
+				return 0;
+			}
+
+			@Override
+			public int getSpeed() {
+				return 4;
+			}
+
+			@Override
+			public int getAgility() {
+				return 5;
+			}
+
+			@Override
+			public int getDexterity() {
+				return 0;
+			}
+
+			@Override
+			public int getResilence() {
+				return 6;
+			}
+
+			@Override
+			public List<Action> getActions() {
+				List<Action> list = new ArrayList<Action>();
+				list.add(ActionFactory.getActionByName("attack"));
+				return list;
+			}
+
+			@Override
+			public String getName() {
+				return "well lurker";
+			}
+
+			@Override
+			public String getDesc() {
+				return "Beware their defense lowering bite.";
+			}
+
+			@Override
+			public DamMultMap getDamMultMap() {
+				DamMultMap map = new DamMultMap();
+				return map;
+			}
+
+			@Override
+			public int getXp() {
+				return 7;
+			}
+
+			@Override
+			public int getGold() {
+				return 5;
+			}
+
+			@Override
+			public String getDrop() {
+				return "leather hood";
+			}
+
+			@Override
+			public double getDropChance() {
+				return (1.0/16.0);
+			}
+
+			@Override
+			public String getRareDrop() {
+				return "leather shirt";
+			}
+
+			@Override
+			public double getRareDropChance() {
+				return (1.0/32.0);
+			}
+
+			@Override
+			public int getKillsTilKnown() {
+				return 4;
+			}
+
+			@Override
+			public int getKillsTilVeryKnown() {
+				return 8;
+			}
+
+			@Override
+			public String getWeapon() {
+				return "well lurker teeth";
+			}
+
+			@Override
+			public SpriteData getSpriteData() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public double shieldBlockChance() {
+				return 0;
+			}
+
+			@Override
+			public void initer(RMonster r) {
+				r.addRaceType(RaceType.HUMANOID);
+				r.addRaceType(RaceType.FISH);
+			}});
+		
+		data.put("giant squid",new MonsterData() {
+			
+
+			@Override
+			public int getStrength() {
+				return 32;
+			}
+
+			@Override
+			public int getKnowledge() {
+				return 0;
+			}
+
+			@Override
+			public int getMaxHp() {
+				return 40;
+			}
+
+			@Override
+			public int getMaxMana() {
+				return 0;
+			}
+
+			@Override
+			public int getMaxTension() {
+				return 30;
+			}
+
+			@Override
+			public int getSpeed() {
+				return 10;
+			}
+
+			@Override
+			public int getAgility() {
+				return 15;
+			}
+
+			@Override
+			public int getDexterity() {
+				return 0;
+			}
+
+			@Override
+			public int getResilence() {
+				return 15;
+			}
+
+			@Override
+			public List<Action> getActions() {
+				List<Action> list = new ArrayList<Action>();
+				list.add(ActionFactory.getActionByName("attack"));
+				return list;
+			}
+
+			@Override
+			public String getName() {
+				return "giant squid";
+			}
+
+			@Override
+			public String getDesc() {
+				return "Their ink spray is annoying, to say the least.";
+			}
+
+			@Override
+			public DamMultMap getDamMultMap() {
+				DamMultMap map = new DamMultMap();
+				return map;
+			}
+
+			@Override
+			public int getXp() {
+				return 30;
+			}
+
+			@Override
+			public int getGold() {
+				return 20;
+			}
+
+			@Override
+			public String getDrop() {
+				return "ink sac";
+			}
+
+			@Override
+			public double getDropChance() {
+				return (1.0/32.0);
+			}
+
+			@Override
+			public String getRareDrop() {
+				return "ink sac";
+			}
+
+			@Override
+			public double getRareDropChance() {
+				return (1.0/32.0);
+			}
+
+			@Override
+			public int getKillsTilKnown() {
+				return 4;
+			}
+
+			@Override
+			public int getKillsTilVeryKnown() {
+				return 8;
+			}
+
+			@Override
+			public String getWeapon() {
+				return "giant squid teeth";
+			}
+
+			@Override
+			public SpriteData getSpriteData() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public double shieldBlockChance() {
+				return 0;
+			}
+
+			@Override
+			public void initer(RMonster r) {
+				r.addRaceType(RaceType.FISH);
 			}});
 	}
 	

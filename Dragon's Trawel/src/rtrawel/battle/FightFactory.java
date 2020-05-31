@@ -35,6 +35,17 @@ public class FightFactory {
 		data.put("homa_root1",f);
 		
 		f = new Fight();
+		f.addFoes("living root",6);
+		data.put("well_root1",f);
+		f = new Fight();
+		f.addFoes("well lurker",3);
+		data.put("well_lurker1",f);
+		f = new Fight();
+		f.addFoes("well lurker",1);
+		f.addFoes("living root",3);
+		data.put("well_lurker2",f);
+		
+		f = new Fight();
 		f.addFoes("fearless fella",3);
 		f.addFlag("homa_unun_boss");
 		data.put("homa_unun_boss",f);
