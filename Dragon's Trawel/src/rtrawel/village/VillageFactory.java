@@ -44,6 +44,9 @@ public class VillageFactory {
 		homa_pit.addFight(FightFactory.getFightByName("well_lurker1"));
 		homa_pit.addFight(FightFactory.getFightByName("well_lurker2"));
 		homa_pit.addFight(FightFactory.getFightByName("well_root1"));
+		homa.addLoot("lucky coin",.05);
+		homa.addLoot("band of brilliance",.05);
+		homa.addLoot("pot lid",.2);
 		if (EventFlag.eventFlag.getEF("homa_unun_boss") == 0) {
 		homa_pit.conts.add(new BossContent("ralph the squid",FightFactory.getFightByName("homa_unun_boss"),homa_pit,2));}
 		new Connection(homa,homa_pit,null,null);

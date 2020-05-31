@@ -28,7 +28,14 @@ public class Progression implements java.io.Serializable{
 	}
 	
 	public void addPathPoints(String p, int points,RPlayer r) {
-		if (pathLevel(p) == 0) {
+		PathWithLevel path = null;
+		for (PathWithLevel pa: paths) {
+			if (pa.path.equals(p)) {
+				path = pa;
+				break;
+			}
+		}
+		if (path == null) {
 			paths.add(new PathWithLevel(p, points,r));
 		}else {
 			for (PathWithLevel k: paths) {

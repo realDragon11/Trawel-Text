@@ -239,6 +239,91 @@ public class ArmorFactory {
 			public String getDesc() {
 				return "a simple cover than insures against sharp damage";
 			}});
+		
+		data.put("band of brilliance",new Armor() {
+
+			@Override
+			public ArmorType getArmorType() {
+				return ArmorType.ASSEC;
+			}
+
+			@Override
+			public ArmorClass getArmorClass() {
+				return ArmorClass.NONE;
+			}
+
+			@Override
+			public DamMultMap getDMM() {
+				DamMultMap map = new DamMultMap();
+				return map;
+			}
+
+			@Override
+			public int cost() {
+				return 30;
+			}
+
+			@Override
+			public String getName() {
+				return "band of brilliance";
+			}
+			
+			@Override
+			public int getResilenceMod() {
+				return 0;
+			}
+			@Override
+			public int getKnowledgeMod() {
+				return 5;
+			}
+
+			@Override
+			public String getDesc() {
+				return "A ring that increases your knowledge.";
+			}});
+		
+		data.put("lucky coin",new Armor() {
+
+			@Override
+			public ArmorType getArmorType() {
+				return ArmorType.ASSEC;
+			}
+
+			@Override
+			public ArmorClass getArmorClass() {
+				return ArmorClass.NONE;
+			}
+
+			@Override
+			public DamMultMap getDMM() {
+				DamMultMap map = new DamMultMap();
+				map.insertOrAdd(DamageType.STUN,.75);
+				return map;
+			}
+
+			@Override
+			public int cost() {
+				return 30;
+			}
+
+			@Override
+			public String getName() {
+				return "lucky coin";
+			}
+			
+			@Override
+			public int getResilenceMod() {
+				return 0;
+			}
+			@Override
+			public int getAgilityMod() {
+				return 5;
+			}
+
+			@Override
+			public String getDesc() {
+				return "Said to increase your agility as well as insure against stuns.";
+			}});
 	}
 	
 	public static Armor getArmorByName(String str) {

@@ -197,7 +197,7 @@ public class RPlayer extends RUnit {
 
 	@Override
 	public void decide() {
-		if (curBattle.foes.size() == 0) {
+		if (!curBattle.stillFight()) {
 			return;
 		}
 		boolean keepGoing = true;

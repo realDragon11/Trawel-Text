@@ -162,6 +162,7 @@ public class extra {
 							}
 							
 						}
+						extra.linebreak();
 						return ini == 1;
 						/*
 						try {
@@ -228,6 +229,7 @@ public class extra {
 						throw new RuntimeException("invalid input stream error");
 					}
 				}
+				extra.linebreak();
 				return ini;
 				/*while(true) {
 				

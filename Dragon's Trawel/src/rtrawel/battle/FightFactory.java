@@ -46,7 +46,7 @@ public class FightFactory {
 		data.put("well_lurker2",f);
 		
 		f = new Fight();
-		f.addFoes("fearless fella",3);
+		f.addFoes("giant squid",1);
 		f.addFlag("homa_unun_boss");
 		data.put("homa_unun_boss",f);
 	}

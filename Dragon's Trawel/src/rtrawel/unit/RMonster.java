@@ -115,7 +115,7 @@ public class RMonster extends RUnit {
 
 	@Override
 	public void decide() {
-		if (curBattle.party.size() == 0) {
+		if (!curBattle.stillFight()) {
 			return;
 		}
 		List<Action> list = MonsterFactory.getMonsterByName(name).getActions();

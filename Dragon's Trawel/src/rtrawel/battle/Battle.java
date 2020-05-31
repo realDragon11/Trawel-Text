@@ -113,4 +113,23 @@ public class Battle {
 			killList.add(r);
 		}
 	}
+	
+	public boolean stillFight() {
+		boolean playersAlive = false;
+		for (RUnit r: party) {
+			if (r.getHp() > 0 && r.alive) {
+				playersAlive = true;
+				break;
+			}
+		}
+		boolean foesAlive = false;
+		for (RUnit r: foes) {
+			if (r.getHp() > 0 && r.alive) {
+				foesAlive = true;
+				break;
+			}
+		}
+		
+		return playersAlive && foesAlive;
+	}
 }

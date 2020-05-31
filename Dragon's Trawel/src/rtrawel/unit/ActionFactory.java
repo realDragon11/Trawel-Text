@@ -467,15 +467,17 @@ public class ActionFactory {
 						b.passive = false;
 						b.timeLeft = 400;
 						b.type = Buff.BuffType.AGI_MULT;
-						u.addBuff(b);
+						b.source = " blind mult";
+						u.addBuffUq(b);
 						
 						b = new Buff();
 						b.isDebuff = true;
-						b.mag = -10;
+						b.mag = -20;
 						b.passive = false;
 						b.timeLeft = 400;
 						b.type = Buff.BuffType.AGI_MOD;
-						u.addBuff(b);
+						b.source = " blind mod";
+						u.addBuffUq(b);
 					}
 					
 				}
@@ -606,7 +608,7 @@ public class ActionFactory {
 						b.passive = false;
 						b.timeLeft = 500;
 						b.source = "root of resilence mod";
-						b.type = Buff.BuffType.STR_MULT;
+						b.type = Buff.BuffType.STR_MOD;
 						u.addBuffUq(b);
 				}
 			}
