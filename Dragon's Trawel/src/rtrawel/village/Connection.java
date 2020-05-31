@@ -25,6 +25,9 @@ public class Connection {
 	
 	public Village go(Village curVillage) {
 		if (fight == null) {
+			if (evF != null && EventFlag.eventFlag.getEF(evF) == 0) {
+				return curVillage;
+			}
 			return (curVillage == village1 ? village2 : village1);
 		}
 		if (fight.go()) {
@@ -39,6 +42,10 @@ public class Connection {
 		String bname = (curVillage == village1 ? village2.name : village1.name);
 		if (fight != null) {
 			bname += " (boss blocked)";
+		}else {
+			if (evF != null && EventFlag.eventFlag.getEF(evF) == 0) {
+				bname += "(locked)";
+			}
 		}
 		return bname;
 	}

@@ -33,7 +33,10 @@ public class VillageFactory {
 		villages.add(unun);
 		unun.conts.add(new Church());
 		unun.conts.add(new Inn(10));
-		new Connection(homa,unun,FightFactory.getFightByName("homa_unun_boss"),"homa_unun_boss");
+		new Connection(homa,unun,null,"homa_unun_boss");
+		Village homa_pit = new Village("homan pit");
+		homa_pit.conts.add(new BossContent("ralph the squid",FightFactory.getFightByName("homa_unun_boss"),homa_pit));
+		new Connection(homa,homa_pit,null,null);
 		return villages.get(0);
 	}
 }

@@ -3,6 +3,7 @@ package rtrawel.battle;
 import java.util.ArrayList;
 import java.util.List;
 
+import rtrawel.EventFlag;
 import rtrawel.unit.RMonster;
 import rtrawel.unit.RUnit;
 
@@ -12,6 +13,7 @@ public class Fight {
  */
 	
 	List<List<String>> foes = new ArrayList<List<String>>();
+	public String flag;
 	public int counter = 1;
 	public boolean go() {
 		counter = 1;
@@ -26,7 +28,13 @@ public class Fight {
 			li.add(list);
 		}
 		Battle b = new Battle(Party.party.getAlive(),li);
-		return b.go();
+		if (b.go()) {
+			if (flag != null) {
+				EventFlag.eventFlag.setEF(flag,1);
+			}
+			return true;
+		}
+		return false;
 	}
 	
 	
@@ -36,5 +44,11 @@ public class Fight {
 			l.add(name);
 		}
 		foes.add(l);
+	}
+
+
+	public void addFlag(String string) {
+		flag = string;
+		
 	}
 }

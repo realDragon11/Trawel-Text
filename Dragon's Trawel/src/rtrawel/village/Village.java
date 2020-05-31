@@ -46,12 +46,11 @@ public class Village {
 			i++;
 		}
 		int in = extra.inInt(i-1);
-		i = 1;
-		for (Content c: conts) {
-			if (in == i) {
-				return c.go();
+		//i = 1;
+		for (i = 0; i< conts.size();i++) {
+			if (in == i+1) {
+				return conts.get(i).go();
 			}
-			i++;
 		}
 		return false;
 	}

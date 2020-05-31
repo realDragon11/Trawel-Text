@@ -8,15 +8,16 @@ public class FightFactory {
 	private static HashMap<String,Fight> data = new HashMap<String, Fight>();
 	public static void init() {
 		Fight f = new Fight();
-		f.addFoes("wolf pup",4);
+		f.addFoes("wolf pup",3);
 		data.put("homa_pup1",f);
 		f = new Fight();
 		f.addFoes("fearless fella",1);
-		f.addFoes("wolf pup",2);
+		f.addFoes("wolf pup",1);
 		data.put("homa_fella1",f);
 		
 		f = new Fight();
-		f.addFoes("fearless fella",3);;
+		f.addFoes("fearless fella",3);
+		f.addFlag("homa_unun_boss");
 		data.put("homa_unun_boss",f);
 	}
 	
