@@ -28,7 +28,7 @@ public class Progression implements java.io.Serializable{
 	}
 	
 	public void addPathPoints(String p, int points,RPlayer r) {
-		if (pathLevel(p) == -1) {
+		if (pathLevel(p) == 0) {
 			paths.add(new PathWithLevel(p, points,r));
 		}else {
 			for (PathWithLevel k: paths) {
@@ -50,7 +50,7 @@ public class Progression implements java.io.Serializable{
 		
 	}
 	public PathWithLevel getPathByName(String str,RPlayer r) {
-		if (pathLevel(str) == -1) {
+		if (pathLevel(str) == 0) {
 			PathWithLevel p =  new PathWithLevel(str, 0,r);
 			paths.add(p);
 			return p;

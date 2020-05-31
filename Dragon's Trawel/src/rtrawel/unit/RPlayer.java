@@ -453,7 +453,7 @@ public class RPlayer extends RUnit {
 		while (points > 0) {
 			extra.println("You have " + points + " weapon points left.");
 			for (int i = 0;i < list.size();i++) {
-				extra.println((i+1)+ " " + list.get(0).toString().toLowerCase());
+				extra.println((i+1)+ " " + list.get(i).toString().toLowerCase());
 			}
 			int in = extra.inInt(list.size());
 			WeaponType wt = list.get(in-1);
