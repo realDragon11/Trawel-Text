@@ -14,6 +14,9 @@ public class FightFactory {
 		f.addFoes("fearless fella",1);
 		f.addFoes("wolf pup",1);
 		data.put("homa_fella1",f);
+		f = new Fight();
+		f.addFoes("dendroid",2);
+		data.put("homa_ent1",f);
 		
 		f = new Fight();
 		f.addFoes("fearless fella",3);

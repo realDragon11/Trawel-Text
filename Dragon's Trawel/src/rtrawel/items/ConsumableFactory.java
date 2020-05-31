@@ -31,6 +31,30 @@ public class ConsumableFactory {
 			}
 			
 		});
+		
+		data.put("basic tincture",new Consumable() {
+
+			@Override
+			public int cost() {
+				return 40;
+			}
+
+			@Override
+			public String getName() {
+				return "basic tincture";
+			}
+
+			@Override
+			public String getDesc() {
+				return "A basic tincture that heals around 30 hp.";
+			}
+
+			@Override
+			public Action getAction() {
+				return ActionFactory.getActionByName("basic tincture heal");
+			}
+			
+		});
 	}
 	
 	public static Consumable getConsumableByName(String str) {

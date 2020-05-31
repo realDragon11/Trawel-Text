@@ -232,6 +232,56 @@ public class ActionFactory {
 				return "a quick patch me up with a herb";
 			}});
 		
+		data.put("basic tincture heal",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " heals " + target.toString() + " with medicine!");
+				for (RUnit u: target.targets) {
+					u.heal(30,caster.getDexterity());
+				}
+			}
+
+			@Override
+			public double getWeight() {
+				return 3;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.HURT_FRIEND;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.SINGLE;
+			}
+
+			@Override
+			public double warmUp() {
+				return 70;
+			}
+
+			@Override
+			public double coolDown() {
+				return 10;
+			}
+
+			@Override
+			public String getName() {
+				return "basic tincture heal";
+			}
+
+			@Override
+			public String getDesc() {
+				return "a quick patch me up with a tincture";
+			}});
+		
 		data.put("defend",new Action(){
 
 			@Override
@@ -239,7 +289,7 @@ public class ActionFactory {
 				extra.println(caster.getName() + " defends!");
 				Buff b = new Buff();
 				b.isDebuff = false;
-				b.mag = 1.3;
+				b.mag = 1.5;
 				b.passive = false;
 				b.timeLeft = 100;
 				b.type = Buff.BuffType.RES_MULT;
@@ -401,6 +451,77 @@ public class ActionFactory {
 			@Override
 			public String getDesc() {
 				return "10mp: has a chance to stun the target out of their action";
+			}});
+		
+		data.put("ink spray",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " sprays ink on " + target.toString());
+				caster.drainTen(4);
+				for (RUnit u: target.targets) {
+					if (RCore.doesHit(caster,u,.7, true)) {
+						Buff b = new Buff();
+						b.isDebuff = true;
+						b.mag = .5;
+						b.passive = false;
+						b.timeLeft = 400;
+						b.type = Buff.BuffType.AGI_MULT;
+						u.addBuff(b);
+						
+						b = new Buff();
+						b.isDebuff = true;
+						b.mag = -10;
+						b.passive = false;
+						b.timeLeft = 400;
+						b.type = Buff.BuffType.AGI_MOD;
+						u.addBuff(b);
+					}
+					
+				}
+			}
+
+			@Override
+			public double getWeight() {
+				return 4;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				if (caster.getTension() < 4) {
+					return false;
+				}
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.FOE;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.GROUP;
+			}
+
+			@Override
+			public double warmUp() {
+				return 40;
+			}
+
+			@Override
+			public double coolDown() {
+				return 70;
+			}
+
+			@Override
+			public String getName() {
+				return "ink spray";
+			}
+
+			@Override
+			public String getDesc() {
+				return "sprays ink all over the targets, lowering their agility";
 			}});
 	}
 	

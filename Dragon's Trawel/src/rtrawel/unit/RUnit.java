@@ -1,6 +1,7 @@
 package rtrawel.unit;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import rtrawel.battle.Battle;
 import rtrawel.items.Weapon;
@@ -11,7 +12,7 @@ public abstract class RUnit {
 	protected int hp, mp, ten;
 	protected double warmUp, coolDown, upComing;
 	protected Action a;
-	protected ArrayList<RaceType> raceTypes = new ArrayList<RaceType>();
+	protected List<RaceType> raceTypes = new ArrayList<RaceType>();
 	protected TargetGroup savedTarget;
 	
 	public Battle curBattle;
@@ -170,7 +171,9 @@ public abstract class RUnit {
 	}
 	public void heal(int i, int dexterity) {
 		double d = (i * (100.0+dexterity))/(100.0);
+		int oldhp = hp;
 		hp = (int)extra.clamp(hp+d,0,this.getMaxHp());
+		extra.println(hp-oldhp + " healed.");
 	}
 	public boolean isAlive() {
 		return alive;
@@ -192,5 +195,16 @@ public abstract class RUnit {
 		}else {
 			return false;
 		}
+	}
+	
+	public void cure(Buff.BuffType bt) {
+		List<Buff> rList = new ArrayList<Buff>();
+		for (int i = 0; i < buffMap.buffs.size(); i++) {
+			Buff b = buffMap.buffs.get(i);
+			if (b.isDebuff && !b.passive && b.type == bt) {
+				rList.add(b);
+			}
+		}
+		buffMap.buffs.removeAll(rList);
 	}
 }
