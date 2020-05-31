@@ -224,6 +224,10 @@ public class PathFactory {
 						b.passive = true;
 						b.timeLeft = 1;
 						b.type = Buff.BuffType.KNO_MOD;
+						player.addAbility(ActionFactory.getActionByName("mend"));
+					}
+					if (points > 4) {
+						player.addAbility(ActionFactory.getActionByName("battle heal"));
 					}
 					
 				}
@@ -348,7 +352,9 @@ public class PathFactory {
 
 				@Override
 				public void apply(RPlayer player, int points, boolean jobActive) {
-					
+					if (points > 0) {
+						player.addAbility(ActionFactory.getActionByName("battle heal"));
+					}
 				}
 
 				@Override

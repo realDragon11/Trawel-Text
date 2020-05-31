@@ -1,5 +1,7 @@
 package rtrawel.village;
 
+import java.util.List;
+
 import rtrawel.battle.Party;
 import rtrawel.items.Armor;
 import rtrawel.items.Consumable;
@@ -7,6 +9,7 @@ import rtrawel.items.Item;
 import rtrawel.items.Weapon;
 import rtrawel.items.Weapon.WeaponType;
 import rtrawel.jobs.JobFactory;
+import rtrawel.unit.Action;
 import rtrawel.unit.MonsterData;
 import rtrawel.unit.MonsterFactory;
 import rtrawel.unit.RCore;
@@ -26,16 +29,37 @@ public class Menu implements Content {
 			extra.println("1 back");
 			extra.println("2 inventory");
 			extra.println("3 beast-iary");
-			in = extra.inInt(3);
+			extra.println("4 use abilities and spells");
+			in = extra.inInt(4);
 			switch (in) {
 			case 2:
 				doInv();
 				break;
 			case 3: beast();break;
+			case 4: spells();break;
 			}
 		}
 		// TODO
 		return false;
+	}
+
+	private void spells() {
+		extra.println("Who wants to do an action?");
+		RPlayer p = (RPlayer)Party.party.getUnit();
+		while (true) {
+			extra.println("1 back");
+			List<Action> doable = p.getOOCAbs();
+			for (int i = 0; i < doable.size();i++) {
+				extra.println((i+2) + " " + doable.get(i) + (doable.get(i).canCast(p) ? "" : " (locked)" ));
+			}
+			int in = extra.inInt( doable.size()+1);
+			if (in == 1) {
+				return;
+			}
+			doable.get(in-2).go(p,p.decideOOCTargets(doable.get(in-2)));;
+			
+		}
+		
 	}
 
 	private void beast() {

@@ -17,6 +17,7 @@ import rtrawel.jobs.JobWithLevel;
 import rtrawel.jobs.PathFactory;
 import rtrawel.jobs.PathWithLevel;
 import rtrawel.jobs.Progression;
+import rtrawel.unit.Action.TargetType;
 import rtrawel.unit.RUnit.FightingStance;
 import trawel.extra;
 
@@ -581,6 +582,31 @@ public class RPlayer extends RUnit {
 
 	public double lootChance() {
 		return buffMap.getTotalBuffMult(Buff.BuffType.LOOT_CHANCE);
+	}
+
+	public List<Action> getOOCAbs() {
+		List<Action> list = new ArrayList<Action>();
+		abs.stream().filter(a -> a.getTargetType().equals(TargetType.HURT_FRIEND) || a.getTargetType().equals(TargetType.OOC)).forEach(list::add);
+		return list;
+	}
+
+	public TargetGroup decideOOCTargets(Action ab) {
+		int in;
+		if (ab.getTargetType().equals(Action.TargetType.SELF_ONLY)) {
+			return new TargetGroup(this);
+		}
+		if (ab.getTargetType().equals(Action.TargetType.FOE)) {
+			
+		}else {
+			if (ab.getTargetGrouping().equals(Action.TargetGrouping.SINGLE)) {
+				return new TargetGroup(Party.party.getUnit());
+			}else {
+				TargetGroup t = new TargetGroup();
+				t.targets.addAll(Party.party.list);
+				return t;
+			}
+		}
+		return null;
 	}
 
 

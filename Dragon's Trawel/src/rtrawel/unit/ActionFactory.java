@@ -825,6 +825,114 @@ public class ActionFactory {
 			public String getDesc() {
 				return "5mp: attack three times at random targets.";
 			}});
+		
+		data.put("mend",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " mends " + target.toString() + " with magic!");
+				caster.drainMp(2);
+				for (RUnit u: target.targets) {
+					u.heal(10,caster.getKnowledge());
+				}
+			}
+
+			@Override
+			public double getWeight() {
+				return 2;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				if (caster.getMana() <2) {
+					return false;
+				}
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.HURT_FRIEND;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.SINGLE;
+			}
+
+			@Override
+			public double warmUp() {
+				return 200;
+			}
+
+			@Override
+			public double coolDown() {
+				return 5;
+			}
+
+			@Override
+			public String getName() {
+				return "mend";
+			}
+
+			@Override
+			public String getDesc() {
+				return "2mp: A slow but efficient healing spell";
+			}});
+		
+		data.put("battle heal",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " heals " + target.toString() + " quickly with magic!");
+				caster.drainMp(6);
+				for (RUnit u: target.targets) {
+					u.heal(12,caster.getKnowledge());
+				}
+			}
+
+			@Override
+			public double getWeight() {
+				return 2;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				if (caster.getMana() <6) {
+					return false;
+				}
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.HURT_FRIEND;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.SINGLE;
+			}
+
+			@Override
+			public double warmUp() {
+				return 50;
+			}
+
+			@Override
+			public double coolDown() {
+				return 5;
+			}
+
+			@Override
+			public String getName() {
+				return "battle heal";
+			}
+
+			@Override
+			public String getDesc() {
+				return "6mp: A very quick healing spell.";
+			}});
 	}
 	
 	
