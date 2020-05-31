@@ -467,8 +467,8 @@ public class RPlayer extends RUnit {
 			WeaponType wt = list.get(in-1);
 			PathWithLevel p = progression.getPathByName(wt.toString().toLowerCase(),this);
 			int aLeft = 100-p.level;
-			extra.println("Allocate how many?");
-			int take = Math.min(points, aLeft);
+			extra.println("Allocate how many? (Weapons can go over 100.)");
+			int take = points;
 			progression.addPathPoints(wt.toString().toLowerCase(),extra.inInt(take), this);
 			points-=take;
 			

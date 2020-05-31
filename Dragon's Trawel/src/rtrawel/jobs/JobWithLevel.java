@@ -139,8 +139,9 @@ public class JobWithLevel implements java.io.Serializable {
 			case 1:
 				aLeft = 100-r.progression.pathLevel(j.getPath1());
 				if (aLeft > 0) {
-					extra.println("Allocate how many?");
-					in = extra.inInt(Math.min(aLeft,p));
+					int take = Math.min(aLeft,p);
+					extra.println("Allocate how many? (max "+ take+")");
+					in = extra.inInt(take);
 					r.progression.addPathPoints(j.getPath1(), in,r);
 					p-=in;
 				}
@@ -148,8 +149,9 @@ public class JobWithLevel implements java.io.Serializable {
 			case 2:
 				aLeft = 100-r.progression.pathLevel(j.getPath2());
 				if (aLeft > 0) {
-					extra.println("Allocate how many?");
-					in = extra.inInt(Math.min(aLeft,p));
+					int take = Math.min(aLeft,p);
+					extra.println("Allocate how many? (max "+ take+")");
+					in = extra.inInt(take);
 					r.progression.addPathPoints(j.getPath2(), in,r);
 					p-=in;
 				}
@@ -157,8 +159,9 @@ public class JobWithLevel implements java.io.Serializable {
 			case 3:
 				aLeft = 100-r.progression.pathLevel(j.getPath3());
 				if (aLeft > 0) {
-					extra.println("Allocate how many?");
-					in = extra.inInt(Math.min(aLeft,p));
+					int take = Math.min(aLeft,p);
+					extra.println("Allocate how many? (max "+ take+")");
+					in = extra.inInt(take);
 					r.progression.addPathPoints(j.getPath3(), in,r);
 					p-=in;
 				}

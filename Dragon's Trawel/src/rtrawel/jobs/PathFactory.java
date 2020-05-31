@@ -43,7 +43,14 @@ public class PathFactory {
 			@Override
 			public void applyOnce(RPlayer player, int points, int formerPoints) { 
 				if (points-formerPoints > 0) {
-				player.addWeaponPoints(points-formerPoints);}
+					int cum = 0;
+					for (int i = formerPoints+1; i <= points;i++) {
+						if (i%2 == 0) {
+							cum++;
+						}
+					}
+				player.addWeaponPoints(points-formerPoints+cum);
+				}
 				
 			}
 
@@ -248,7 +255,16 @@ public class PathFactory {
 
 				@Override
 				public void applyOnce(RPlayer player, int points, int formerPoints) {
-					
+					if (points-formerPoints > 0) {
+						int cum = 0;
+						for (int i = formerPoints+1; i <= points;i++) {
+							if (i%5 == 0) {
+								cum++;
+							}
+						}
+					if (cum > 0) {
+					player.addWeaponPoints(cum);}
+					}
 				}
 
 				});
@@ -274,7 +290,7 @@ public class PathFactory {
 					if (points-formerPoints > 0) {
 						int cum = 0;
 						for (int i = formerPoints+1; i <= points;i++) {
-							if (i%5 == 0) {
+							if (i%4 == 0) {
 								cum++;
 							}
 						}
