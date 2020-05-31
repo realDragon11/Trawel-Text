@@ -245,7 +245,7 @@ public class WeaponFactory {
 
 			@Override
 			public String getDesc() {
-				return "The lid of a pot. 5% block chance.";
+				return "The lid of a pot. 2.5% block chance.";
 			}
 
 			@Override
@@ -265,7 +265,7 @@ public class WeaponFactory {
 
 			@Override
 			public double blockChance() {
-				return 0.05;
+				return 0.025;
 			}
 		
 			@Override
@@ -528,6 +528,135 @@ public class WeaponFactory {
 			@Override
 			public double blockChance() {
 				return 0;
+			}});
+		
+		data.put("basic bow",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.BOW;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.PIERCE);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return 1;
+			}
+
+			@Override
+			public int getDamage() {
+				return 6;
+			}
+
+			@Override
+			public String getName() {
+				return "basic bow";
+			}
+
+			@Override
+			public String getDesc() {
+				return "A bow that's not too special.";
+			}
+
+			@Override
+			public double critChance() {
+				return .05;
+			}
+
+			@Override
+			public double critMult() {
+				return 2;
+			}
+
+			@Override
+			public int cost() {
+				return 20;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0;
+			}});
+		
+		data.put("copper broadsword",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.SWORD;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.SHARP);
+				list.add(DamageType.BLUNT);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return 1;
+			}
+
+			@Override
+			public int getDamage() {
+				return 8;
+			}
+
+			@Override
+			public String getName() {
+				return "copper broadsword";
+			}
+
+			@Override
+			public String getDesc() {
+				return "A sword that's not ownly fine for fierce fighting, but for blocking as well!";
+			}
+
+			@Override
+			public double critChance() {
+				return .05;
+			}
+
+			@Override
+			public double critMult() {
+				return 1.5;
+			}
+
+			@Override
+			public int cost() {
+				return 50;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0.01;
 			}});
 		
 		

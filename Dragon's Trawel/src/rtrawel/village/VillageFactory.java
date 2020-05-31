@@ -21,6 +21,8 @@ public class VillageFactory {
 		s.items.add("carpenter hammer");
 		s.items.add("pointy stick");
 		s.items.add("fishing spear");
+		s.items.add("small sling");
+		s.items.add("basic bow");
 		s.items.add("pot lid");
 		s.items.add("cloth hood");
 		s.items.add("cloth shirt");
@@ -44,6 +46,10 @@ public class VillageFactory {
 		if (EventFlag.eventFlag.getEF("unun_recruit_1") == 0) {
 			unun.conts.add(new RecruitSpot("recruit andrea","andrea", unun,"unun_recruit_1", "cleric","priest"));
 		}
+		s = new Shop("weapon shop");
+		s.items.add("copper broadsword");
+		unun.conts.add(s);
+		
 		new Connection(homa,unun,null,"homa_unun_boss");
 		Village homa_pit = new Village("homan well");
 		homa_pit.addFight(FightFactory.getFightByName("well_lurker1"));

@@ -166,9 +166,9 @@ public class Party {
 	}
 	
 	public void displayQuick() {
-		String str = "";
+		String str = "Party: ";
 		for (RUnit r: list) {
-			str += r.getName() + " " + r.getHp() + "/" + r.getMaxHp() + " " + r.getMana() + "/" + r.getMaxMana() + ",";
+			str += r.getName() + " " + r.getHp() + "/" + r.getMaxHp() + "h " + r.getMana() + "/" + r.getMaxMana() + "m,";
 		}
 		extra.println(str);
 	}
