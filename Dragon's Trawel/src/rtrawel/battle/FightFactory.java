@@ -17,6 +17,9 @@ public class FightFactory {
 		f = new Fight();
 		f.addFoes("dendroid",2);
 		data.put("homa_ent1",f);
+		f = new Fight();
+		f.addFoes("feral fungus",2);
+		data.put("homa_fungus1",f);
 		
 		f = new Fight();
 		f.addFoes("fearless fella",3);

@@ -523,6 +523,69 @@ public class ActionFactory {
 			public String getDesc() {
 				return "sprays ink all over the targets, lowering their agility";
 			}});
+		
+		data.put("enfeebling spores",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " uses their enfeebling spores on " + target.toString());
+				caster.drainMp(2);
+				for (RUnit u: target.targets) {
+					if (RCore.doesHit(caster,u,.6, true)) {
+						Buff b = new Buff();
+						b.isDebuff = true;
+						b.mag = .8;
+						b.passive = false;
+						b.timeLeft = 300;
+						b.type = Buff.BuffType.STR_MULT;
+						u.addBuff(b);
+					}
+					
+				}
+			}
+
+			@Override
+			public double getWeight() {
+				return 3;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				if (caster.getMana() < 2) {
+					return false;
+				}
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.FOE;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.GROUP;
+			}
+
+			@Override
+			public double warmUp() {
+				return 80;
+			}
+
+			@Override
+			public double coolDown() {
+				return 10;
+			}
+
+			@Override
+			public String getName() {
+				return "enfeebling spores";
+			}
+
+			@Override
+			public String getDesc() {
+				return "Lowers the strength of a group.";
+			}});
 	}
 	
 	

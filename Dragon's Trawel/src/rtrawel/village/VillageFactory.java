@@ -29,6 +29,7 @@ public class VillageFactory {
 		homa.addFight(FightFactory.getFightByName("homa_pup1"));
 		homa.addFight(FightFactory.getFightByName("homa_fella1"));
 		homa.addFight(FightFactory.getFightByName("homa_ent1"));
+		homa.addFight(FightFactory.getFightByName("homa_fungus1"));
 		homa.addLoot("medicine herb",.05);
 		homa.addLoot("pot lid",.1);
 		Village unun = new Village("unun");
