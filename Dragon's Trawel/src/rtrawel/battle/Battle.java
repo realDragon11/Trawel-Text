@@ -49,7 +49,12 @@ public class Battle {
 		}
 		while (party.size() > 0 && foes.size() > 0) {
 			global.sort(comp);
-			double d = global.get(0).timeTilNext();
+			double d = 999.0;
+			for (RUnit r: global) {
+				if (d > r.timeTilNext()) {
+					d = r.timeTilNext();
+				}
+			}
 			for (RUnit r: global) {
 				if (r.getHp() > 0) {
 				r.advanceTime(d);}else {
