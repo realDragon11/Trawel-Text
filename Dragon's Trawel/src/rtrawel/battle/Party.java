@@ -128,6 +128,11 @@ public class Party {
 	}
 
 	public List<RUnit> getAlive() {
+		for (RUnit r: list) {
+			if (r.getHp() <= 0) {
+				r.alive = false;
+			}
+		}
 		List<RUnit> alive = new ArrayList<RUnit>();
 		list.stream().filter(p -> p.isAlive()).forEach(alive::add);
 		return alive;

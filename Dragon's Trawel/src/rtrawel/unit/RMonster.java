@@ -1,5 +1,6 @@
 package rtrawel.unit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rtrawel.battle.Party;
@@ -118,7 +119,9 @@ public class RMonster extends RUnit {
 			return;
 		}
 		List<Action> list = MonsterFactory.getMonsterByName(name).getActions();
-		list.stream().filter(p -> !p.canCast(this)).forEach(list::remove);
+		List<Action> rList = new ArrayList<Action>();
+		list.stream().filter(p -> !p.canCast(this)).forEach(rList::add);
+		list.removeAll(rList);
 		a = extra.randList(list);
 		warmUp = a.warmUp();
 		upComing = a.coolDown();
