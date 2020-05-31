@@ -22,6 +22,19 @@ public class FightFactory {
 		data.put("homa_fungus1",f);
 		
 		f = new Fight();
+		f.addFoes("feral fungus",1);
+		f.addFoes("living root",2);
+		data.put("homa_fungus2",f);
+		
+		f = new Fight();
+		f.addFoes("dendroid",1);
+		f.addFoes("living root",2);
+		data.put("homa_ent2",f);
+		f = new Fight();
+		f.addFoes("living root",4);
+		data.put("homa_root1",f);
+		
+		f = new Fight();
 		f.addFoes("fearless fella",3);
 		f.addFlag("homa_unun_boss");
 		data.put("homa_unun_boss",f);

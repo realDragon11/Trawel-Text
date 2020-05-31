@@ -207,4 +207,8 @@ public abstract class RUnit {
 		}
 		buffMap.buffs.removeAll(rList);
 	}
+	public void addBuffUq(Buff b) {
+		buffMap.addUniqueBuff(b);
+		
+	}
 }

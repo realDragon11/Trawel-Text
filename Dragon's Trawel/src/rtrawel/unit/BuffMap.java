@@ -47,4 +47,14 @@ public class BuffMap {
 		buffs.stream().filter(p -> !p.passive).forEach(rList::add);
 		buffs.removeAll(rList);
 	}
+	
+	public void addUniqueBuff(Buff b) {
+		for (Buff bf: buffs) {
+			if (bf.source != null && bf.source == b.source) {
+				bf.timeLeft = Math.max(bf.timeLeft, b.timeLeft);
+				return;
+			}
+		}
+		buffs.add(b);
+	}
 }

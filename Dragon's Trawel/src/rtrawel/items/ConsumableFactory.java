@@ -55,6 +55,30 @@ public class ConsumableFactory {
 			}
 			
 		});
+		
+		data.put("root of resilence",new Consumable() {
+
+			@Override
+			public int cost() {
+				return 60;
+			}
+
+			@Override
+			public String getName() {
+				return "root of resilence";
+			}
+
+			@Override
+			public String getDesc() {
+				return "A special root that increases your resilence.";
+			}
+
+			@Override
+			public Action getAction() {
+				return ActionFactory.getActionByName("root of resilence");
+			}
+			
+		});
 	}
 	
 	public static Consumable getConsumableByName(String str) {

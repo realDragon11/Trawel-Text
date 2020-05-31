@@ -586,6 +586,70 @@ public class ActionFactory {
 			public String getDesc() {
 				return "Lowers the strength of a group.";
 			}});
+		data.put("root of resilence",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " takes the root!");
+				for (RUnit u: target.targets) {
+						Buff b = new Buff();
+						b.isDebuff = false;
+						b.mag = 1.05;
+						b.passive = false;
+						b.timeLeft = 500;
+						b.source = "root of resilence mult";
+						b.type = Buff.BuffType.STR_MULT;
+						u.addBuffUq(b);
+						b = new Buff();
+						b.isDebuff = false;
+						b.mag = 20;
+						b.passive = false;
+						b.timeLeft = 500;
+						b.source = "root of resilence mod";
+						b.type = Buff.BuffType.STR_MULT;
+						u.addBuffUq(b);
+				}
+			}
+
+			@Override
+			public double getWeight() {
+				return 4;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.FOE;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.GROUP;
+			}
+
+			@Override
+			public double warmUp() {
+				return 40;
+			}
+
+			@Override
+			public double coolDown() {
+				return 5;
+			}
+
+			@Override
+			public String getName() {
+				return "root of resilence";
+			}
+
+			@Override
+			public String getDesc() {
+				return "Increases resilence for a long duration.";
+			}});
 	}
 	
 	

@@ -7,6 +7,7 @@ public class Buff {
 	public double mag;
 	public boolean isDebuff;
 	public boolean passive;
+	public String source;
 	
 	
 	public enum BuffType{
