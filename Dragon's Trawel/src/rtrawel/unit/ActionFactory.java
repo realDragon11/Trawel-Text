@@ -933,6 +933,64 @@ public class ActionFactory {
 			public String getDesc() {
 				return "6mp: A very quick healing spell.";
 			}});
+		
+		data.put("backlash",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " backlashes " + target.toString());
+				Weapon w = caster.getWeapon();
+				caster.drainMp(1);
+				for (RUnit u: target.targets) {
+					if (RCore.doAttack(caster, u,caster.getStrength(),w.getBaseHit() * 0.5, (w.getDamage()+w.damageBonuses(u)* w.critMult()),w.isRanged(),w.getDamageTypes()) > -1) {
+						w.getOnHit().go(caster,u);//note: not all abilities should be able to crit
+					}
+					
+				}
+			}
+
+			@Override
+			public double getWeight() {
+				return 4;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				if (caster.getMana() < 1) {
+					return false;
+				}
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.FOE;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.SINGLE;
+			}
+
+			@Override
+			public double warmUp() {
+				return 40;
+			}
+
+			@Override
+			public double coolDown() {
+				return 50;
+			}
+
+			@Override
+			public String getName() {
+				return "backlash";
+			}
+
+			@Override
+			public String getDesc() {
+				return "1mp: mostly misses but is certain to crit if it connects";
+			}});
 	}
 	
 	

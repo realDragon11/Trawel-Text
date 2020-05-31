@@ -235,7 +235,15 @@ public class PathFactory {
 				@Override
 				public void applyOnce(RPlayer player, int points, int formerPoints) { 
 					if (points-formerPoints > 0) {
-					player.addWeaponPoints(points-formerPoints);}
+						int cum = 0;
+						for (int i = formerPoints+1; i <= points;i++) {
+							if (i%4 == 0) {
+								cum++;
+							}
+						}
+					if (cum > 0) {
+					player.addWeaponPoints(cum);}
+					}
 					
 				}
 
@@ -471,6 +479,33 @@ public class PathFactory {
 				
 				if (points > 9) {
 					player.addAbility(ActionFactory.getActionByName("triple thrust"));
+				}
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {}
+
+			});
+		
+		data.put("knife",new Path() {
+
+			@Override
+			public String name() {
+				return "knife";
+			}
+
+			@Override
+			public String jobName() {
+				return "";
+			}
+
+			@Override
+			public void apply(RPlayer player, int points, boolean jobActive) {
+				if (!player.getWeapon().getWeaponType().equals(WeaponType.KNIFE)) {
+					return;
+				}
+				if (points > 1) {
+					player.addAbility(ActionFactory.getActionByName("backlash"));
 				}
 			}
 

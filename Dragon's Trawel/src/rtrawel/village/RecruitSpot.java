@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import rtrawel.EventFlag;
+import rtrawel.battle.Party;
 import rtrawel.unit.RPlayer;
 import trawel.extra;
 
@@ -37,9 +38,11 @@ public class RecruitSpot implements Content{
 		for (int i = 0; i < paths.size();i++) {
 			extra.println((i+1) +" " + paths.get(i));
 		}
-		RPlayer p = new RPlayer(pname,paths.get(extra.inInt(paths.size()-1)));
+		RPlayer p = new RPlayer(pname,paths.get(extra.inInt(paths.size())-1));
 		village.conts.remove(this);
 		EventFlag.eventFlag.setEF(evF, 1);
+		Party.party.list.add(p);
+		p.refresh();
 		return false;
 		
 	}

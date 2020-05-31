@@ -74,9 +74,9 @@ public class Battle {
 			}
 			killList.clear();
 		}
-		assessKills();
 		Party.party.cleanUp();
 		if (party.size() > 0) {
+			assessKills();
 			loot();
 			return true;
 		}else {
