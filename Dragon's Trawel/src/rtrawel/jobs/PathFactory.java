@@ -19,7 +19,7 @@ public class PathFactory {
 
 			@Override
 			public String name() {
-				return "honor";//offense
+				return "honor";//offense with weapons
 			}
 
 			@Override
@@ -84,7 +84,7 @@ public class PathFactory {
 
 			@Override
 			public String name() {
-				return "valor";
+				return "valor";//miscs
 			}
 
 			@Override
@@ -95,6 +95,11 @@ public class PathFactory {
 			@Override
 			public void apply(RPlayer player, int points, boolean jobActive) {
 				// TODO Auto-generated method stub
+				if (jobActive) {
+					if (points > 10) {
+						player.addAbility(ActionFactory.getActionByName("body slam"));
+					}
+				}
 				
 			}
 

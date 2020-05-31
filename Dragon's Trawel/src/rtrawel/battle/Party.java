@@ -156,4 +156,12 @@ public class Party {
 		}
 		return 0;
 	}
+
+	public int getKillCount(String str) {
+		if (killCounter.containsKey(str)) {
+			return killCounter.get(str);
+		}else {
+			return 0;
+			}
+	}
 }

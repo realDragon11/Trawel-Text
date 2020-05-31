@@ -650,6 +650,66 @@ public class ActionFactory {
 			public String getDesc() {
 				return "Increases resilence for a long duration.";
 			}});
+		
+		data.put("body slam",new Action(){
+
+			@Override
+			public void go(RUnit caster, TargetGroup target) {
+				extra.println(caster.getName() + " body slams " + target.toString());
+				Weapon w = caster.getWeapon();
+				caster.drainTen(8);
+				List<DamageType> types = new ArrayList<DamageType>();
+				types.add(DamageType.BLUNT);
+				for (RUnit u: target.targets) {
+					if (RCore.doAttack(caster, u,caster.getStrength()*2,1, 10,false,types) > -1) {
+					//no on hits
+					}
+					
+				}
+			}
+
+			@Override
+			public double getWeight() {
+				return 4;
+			}
+
+			@Override
+			public boolean canCast(RUnit caster) {
+				if (caster.getTension() < 8) {
+					return false;
+				}
+				return true;
+			}
+
+			@Override
+			public TargetType getTargetType() {
+				return TargetType.FOE;
+			}
+
+			@Override
+			public TargetGrouping getTargetGrouping() {
+				return TargetGrouping.SINGLE;
+			}
+
+			@Override
+			public double warmUp() {
+				return 50;
+			}
+
+			@Override
+			public double coolDown() {
+				return 50;
+			}
+
+			@Override
+			public String getName() {
+				return "body slam";
+			}
+
+			@Override
+			public String getDesc() {
+				return "attack with raw brawn";
+			}});
 	}
 	
 	

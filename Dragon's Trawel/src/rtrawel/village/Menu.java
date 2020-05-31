@@ -7,9 +7,13 @@ import rtrawel.items.Item;
 import rtrawel.items.Weapon;
 import rtrawel.items.Weapon.WeaponType;
 import rtrawel.jobs.JobFactory;
+import rtrawel.unit.MonsterData;
+import rtrawel.unit.MonsterFactory;
 import rtrawel.unit.RCore;
+import rtrawel.unit.RMonster;
 import rtrawel.unit.RPlayer;
 import rtrawel.unit.RUnit;
+import rtrawel.unit.RUnit.RaceType;
 import rtrawel.unit.TargetGroup;
 import trawel.extra;
 
@@ -21,15 +25,50 @@ public class Menu implements Content {
 		while (in != 1) {
 			extra.println("1 back");
 			extra.println("2 inventory");
-			in = extra.inInt(2);
+			extra.println("2 beast-iary");
+			in = extra.inInt(3);
 			switch (in) {
 			case 2:
 				doInv();
 				break;
+			case 3: beast();break;
 			}
 		}
 		// TODO
 		return false;
+	}
+
+	private void beast() {
+		while (true) {
+			extra.println("Type in the name of the monster you want to examine, or 'back' to leave.");
+			String str = extra.inString();
+			if (str.equals("back")) {
+				return;
+			}
+			try {
+				MonsterData r = MonsterFactory.getMonsterByName(str);
+				if (r == null) {
+					extra.println("Beast not found.");
+					continue;
+				}
+				if (Party.party.getKillCount(str) > 0) {
+					extra.println(str + " Hp: " + r.getMaxHp());
+					if (Party.party.getKillCount(str) >= r.getKillsTilKnown()) {
+						String sub = "";
+						for (RaceType rt: new RMonster(str,0).getRaceTypes()) {
+							sub+= rt.toString().toLowerCase() + ", ";
+						}
+						extra.println(r.getDesc() + " types: " + sub);
+						if (Party.party.getKillCount(str) >= r.getKillsTilVeryKnown()) {
+							extra.println("Common Drop: " + r.getDrop() + " Rare Drop: " + r.getRareDrop());
+							}
+					}
+				}
+			}catch (Exception e) {
+				extra.println("Beast not found.");
+			}
+		}
+		
 	}
 
 	private void doInv() {

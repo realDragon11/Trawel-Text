@@ -180,5 +180,8 @@ public class RMonster extends RUnit {
 		}
 		
 	}
+	public List<RaceType> getRaceTypes() {
+		return this.raceTypes;
+	}
 
 }
