@@ -639,5 +639,173 @@ public class PathFactory {
 			public void applyOnce(RPlayer player, int points, int formerPoints) {}
 
 			});
+		
+		data.put("shield",new Path() {
+
+			@Override
+			public String name() {
+				return "shield";
+			}
+
+			@Override
+			public String jobName() {
+				return "";
+			}
+
+			@Override
+			public void apply(RPlayer player, int points, boolean jobActive) {
+				if (!(player.getWeapon().getWeaponType().equals(WeaponType.SHIELD) || player.shield != null)) {
+					return;
+				}
+				Buff b = new Buff();
+				b.isDebuff = false;
+				b.mag = points/5;
+				b.passive = true;
+				b.timeLeft = 1;
+				b.type = Buff.BuffType.RES_MOD;
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {}
+
+			});
+		
+		data.put("bow",new Path() {
+
+			@Override
+			public String name() {
+				return "bow";
+			}
+
+			@Override
+			public String jobName() {
+				return "";
+			}
+
+			@Override
+			public void apply(RPlayer player, int points, boolean jobActive) {
+				if (!player.getWeapon().getWeaponType().equals(WeaponType.BOW)) {
+					return;
+				}
+				Buff b = new Buff();
+				b.isDebuff = false;
+				b.mag = points/7;
+				b.passive = true;
+				b.timeLeft = 1;
+				b.type = Buff.BuffType.STR_MOD;
+				b = new Buff();
+				b.isDebuff = false;
+				b.mag = points/7;
+				b.passive = true;
+				b.timeLeft = 1;
+				b.type = Buff.BuffType.AGI_MOD;
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {}
+
+			});
+		
+		data.put("staff",new Path() {
+
+			@Override
+			public String name() {
+				return "staff";
+			}
+
+			@Override
+			public String jobName() {
+				return "";
+			}
+
+			@Override
+			public void apply(RPlayer player, int points, boolean jobActive) {
+				if (!player.getWeapon().getWeaponType().equals(WeaponType.STAFF)) {
+					return;
+				}
+				Buff b = new Buff();
+				b.isDebuff = false;
+				b.mag = points/10;
+				b.passive = true;
+				b.timeLeft = 1;
+				b.type = Buff.BuffType.STR_MOD;
+				b = new Buff();
+				b.isDebuff = false;
+				b.mag = points/10;
+				b.passive = true;
+				b.timeLeft = 1;
+				b.type = Buff.BuffType.AGI_MOD;
+				b = new Buff();
+				b.isDebuff = false;
+				b.mag = points/10;
+				b.passive = true;
+				b.timeLeft = 1;
+				b.type = Buff.BuffType.KNO_MOD;
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {}
+
+			});
+		
+		data.put("axe",new Path() {
+
+			@Override
+			public String name() {
+				return "axe";
+			}
+
+			@Override
+			public String jobName() {
+				return "";
+			}
+
+			@Override
+			public void apply(RPlayer player, int points, boolean jobActive) {
+				if (!player.getWeapon().getWeaponType().equals(WeaponType.AXE)) {
+					return;
+				}
+				Buff b = new Buff();
+				b.isDebuff = false;
+				b.mag = points/4;
+				b.passive = true;
+				b.timeLeft = 1;
+				b.type = Buff.BuffType.STR_MOD;
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {}
+
+			});
+		
+		data.put("wand",new Path() {
+
+			@Override
+			public String name() {
+				return "wand";
+			}
+
+			@Override
+			public String jobName() {
+				return "";
+			}
+
+			@Override
+			public void apply(RPlayer player, int points, boolean jobActive) {
+				if (!player.getWeapon().getWeaponType().equals(WeaponType.WAND)) {
+					return;
+				}
+				Buff b = new Buff();
+				b.isDebuff = false;
+				b.mag = points/4;
+				b.passive = true;
+				b.timeLeft = 1;
+				b.type = Buff.BuffType.KNO_MOD;
+			}
+
+			@Override
+			public void applyOnce(RPlayer player, int points, int formerPoints) {}
+
+			});
 	}
 }
