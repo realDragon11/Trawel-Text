@@ -43,12 +43,15 @@ public class ReJober implements Content {
 			}else {
 				extra.println("To switch jobs, you must have an approriate weapon. Choose a weapon from your inventory: ");
 				for (WeaponType t: j.weaponTypes()) {
-					extra.print(t.toString().toLowerCase());
+					extra.print(t.toString().toLowerCase() + ", ");
 				}
 				extra.println();
 				extra.println();//space
 				Party.party.refreshItemKeys();
 				Party.party.displayItems();
+				if (Party.party.itemKeys.size() == 0){
+					continue;
+				}
 				int in2 = extra.inInt(Party.party.itemKeys.size());
 				Item i = RCore.getItemByName(Party.party.itemKeys.get(in2-1));
 				if (i.getItemType().equals(ItemType.WEAPON)) {
@@ -64,10 +67,12 @@ public class ReJober implements Content {
 				}
 			}
 			p.currentJob = str;
-			if (p.progression.jobLevel(str) == 0) {
+			if (p.progression.jobLevel(str) < 1) {
 			p.progression.addJob(str);
 			}
 			p.deEquipUnfitting();
+			extra.println(p.getName() + " is now a " + str + "!");
+			p.cleanAbs();
 		}
 	}
 

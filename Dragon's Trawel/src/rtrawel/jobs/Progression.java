@@ -7,6 +7,10 @@ import rtrawel.unit.RPlayer;
 
 public class Progression implements java.io.Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6802721524723727348L;
 	public List<PathWithLevel> paths = new ArrayList<PathWithLevel>();
 	public List<JobWithLevel> jobs = new ArrayList<JobWithLevel>();
 	

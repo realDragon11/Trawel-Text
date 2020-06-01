@@ -191,7 +191,8 @@ public class RCore {
 			 fos.close();
 			 extra.println("loaded!");
 			 return sd.curVillage;
-		} catch (ClassNotFoundException | IOException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
 			extra.println("Invalid load. Either no save file was found or it was outdated.");
 			return null;
 		}
