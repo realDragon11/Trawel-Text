@@ -238,7 +238,7 @@ public class PathFactory {
 					if (points-formerPoints > 0) {
 						int cum = 0;
 						for (int i = formerPoints+1; i <= points;i++) {
-							if (i%4 == 0) {
+							if (i%5 == 0) {
 								cum++;
 							}
 						}
@@ -303,7 +303,7 @@ public class PathFactory {
 					if (points-formerPoints > 0) {
 						int cum = 0;
 						for (int i = formerPoints+1; i <= points;i++) {
-							if (i%4 == 0) {
+							if (i%5 == 0) {
 								cum++;
 							}
 						}
@@ -393,6 +393,136 @@ public class PathFactory {
 
 				@Override
 				public void applyOnce(RPlayer player, int points, int formerPoints) {
+					
+				}
+
+				});
+			
+			data.put("flame",new Path() {
+
+				@Override
+				public String name() {
+					return "flame";//offense with weapons
+				}
+
+				@Override
+				public String jobName() {
+					return "elementalist";
+				}
+
+				@Override
+				public void apply(RPlayer player, int points, boolean jobActive) {
+					if (points > 0) {
+						Buff b = new Buff();
+						b.isDebuff = false;
+						b.mag = points/5;
+						b.passive = true;
+						b.timeLeft = 1;
+						b.type = Buff.BuffType.KNO_MOD;
+						if (jobActive) {
+						player.addAbility(ActionFactory.getActionByName("fireball"));}
+					}
+					
+				}
+
+				@Override
+				public void applyOnce(RPlayer player, int points, int formerPoints) { 
+					if (points-formerPoints > 0) {
+						int cum = 0;
+						for (int i = formerPoints+1; i <= points;i++) {
+							if (i%7 == 0) {
+								cum++;
+							}
+						}
+					if (cum > 0) {
+					player.addWeaponPoints(cum);}
+					}
+					
+				}
+
+				});
+			data.put("frost",new Path() {
+
+				@Override
+				public String name() {
+					return "frost";//offense with weapons
+				}
+
+				@Override
+				public String jobName() {
+					return "elementalist";
+				}
+
+				@Override
+				public void apply(RPlayer player, int points, boolean jobActive) {
+					if (points > 0) {
+						Buff b = new Buff();
+						b.isDebuff = false;
+						b.mag = points/5;
+						b.passive = true;
+						b.timeLeft = 1;
+						b.type = Buff.BuffType.KNO_MOD;
+						if (jobActive) {
+						player.addAbility(ActionFactory.getActionByName("ice arrow"));}
+					}
+					
+				}
+
+				@Override
+				public void applyOnce(RPlayer player, int points, int formerPoints) { 
+					if (points-formerPoints > 0) {
+						int cum = 0;
+						for (int i = formerPoints+1; i <= points;i++) {
+							if (i%7 == 0) {
+								cum++;
+							}
+						}
+					if (cum > 0) {
+					player.addWeaponPoints(cum);}
+					}
+					
+				}
+
+				});
+			data.put("thunder",new Path() {
+
+				@Override
+				public String name() {
+					return "thunder";//offense with weapons
+				}
+
+				@Override
+				public String jobName() {
+					return "elementalist";
+				}
+
+				@Override
+				public void apply(RPlayer player, int points, boolean jobActive) {
+					if (points > 0) {
+						Buff b = new Buff();
+						b.isDebuff = false;
+						b.mag = points/5;
+						b.passive = true;
+						b.timeLeft = 1;
+						b.type = Buff.BuffType.KNO_MOD;
+						if (jobActive) {
+						player.addAbility(ActionFactory.getActionByName("electric amp"));}
+					}
+					
+				}
+
+				@Override
+				public void applyOnce(RPlayer player, int points, int formerPoints) { 
+					if (points-formerPoints > 0) {
+						int cum = 0;
+						for (int i = formerPoints+1; i <= points;i++) {
+							if (i%7 == 0) {
+								cum++;
+							}
+						}
+					if (cum > 0) {
+					player.addWeaponPoints(cum);}
+					}
 					
 				}
 

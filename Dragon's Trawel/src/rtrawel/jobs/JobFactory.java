@@ -358,5 +358,90 @@ public class JobFactory {
 				list.add(ArmorClass.NONE);
 				return list;
 			}});
+		
+		data.put("elementalist",new Job() {
+
+			@Override
+			public String getName() {
+				return "elementalist";
+			}
+
+			@Override
+			public String getPath1() {
+				return "flame";
+			}
+
+			@Override
+			public String getPath2() {
+				return "frost";
+			}
+
+			@Override
+			public String getPath3() {
+				return "thunder";
+			}
+
+			@Override
+			public int getHpAtLevel(int level) {
+				return RCore.levelLynchPin(level, 15, 27, 55, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getMpAtLevel(int level) {
+				return RCore.levelLynchPin(level, 15, 28, 60, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getTenAtLevel(int level) {
+				return RCore.levelLynchPin(level, 0, 0,0, 0, 0,0,0, 0);
+			}
+
+			@Override
+			public int getStrAtLevel(int level) {
+				return RCore.levelLynchPin(level, 4, 7,12, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getDexAtLevel(int level) {
+				return RCore.levelLynchPin(level, 16,37,65, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getAgiAtLevel(int level) {
+				return RCore.levelLynchPin(level, 11,32,55, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getSpdAtLevel(int level) {
+				return RCore.levelLynchPin(level, 12,18,25, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getKnoAtLevel(int level) {
+				return RCore.levelLynchPin(level, 18,30 ,60, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public int getResAtLevel(int level) {
+				return RCore.levelLynchPin(level, 4, 8, 16, 999, 999, 999, 999, 999);
+			}
+
+			@Override
+			public List<WeaponType> weaponTypes() {
+				List<WeaponType> list = new ArrayList<WeaponType>();
+				list.add(WeaponType.WAND);
+				list.add(WeaponType.STAFF);
+				list.add(WeaponType.KNIFE);
+				list.add(WeaponType.SLING);
+				return list;
+			}
+
+			@Override
+			public List<ArmorClass> armorClasses() {
+				List<ArmorClass> list = new ArrayList<ArmorClass>();
+				list.add(ArmorClass.LIGHT);
+				list.add(ArmorClass.NONE);
+				return list;
+			}});
 	}
 }

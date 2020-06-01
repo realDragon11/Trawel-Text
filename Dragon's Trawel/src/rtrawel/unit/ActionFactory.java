@@ -625,12 +625,12 @@ public class ActionFactory {
 
 			@Override
 			public TargetType getTargetType() {
-				return TargetType.FOE;
+				return TargetType.SELF_ONLY;
 			}
 
 			@Override
 			public TargetGrouping getTargetGrouping() {
-				return TargetGrouping.GROUP;
+				return TargetGrouping.SINGLE;
 			}
 
 			@Override
@@ -1358,7 +1358,7 @@ public class ActionFactory {
 
 				@Override
 				public void go(RUnit caster, TargetGroup target) {
-					extra.println(caster.getName() + " shots a fire arrow at " + target.toString());
+					extra.println(caster.getName() + " shoots an ice arrow at " + target.toString());
 					caster.drainMp(3);
 					Weapon w = caster.getWeapon();
 					List<DamageType> list = new ArrayList<DamageType>();
@@ -1411,7 +1411,135 @@ public class ActionFactory {
 
 				@Override
 				public String getDesc() {
-					return "2mp: Shoots an unerringly accurate icy arrow at a single target.";
+					return "3mp: Unleashes an unerringly accurate icy arrow at a single target.";
+				}});
+			
+			data.put("electric amp",new Action(){
+
+				@Override
+				public void go(RUnit caster, TargetGroup target) {
+					caster.drainMp(3);
+					extra.println(caster.getName() + " amps " +target.toString()+  " up!");
+					for (RUnit u: target.targets) {
+							Buff b = new Buff();
+							b.isDebuff = false;
+							b.mag = 1.25;
+							b.passive = false;
+							b.timeLeft = 100;
+							b.source = "eamp mult";
+							b.type = Buff.BuffType.STR_MULT;
+							u.addBuffUq(b);
+							b = new Buff();
+							b.isDebuff = false;
+							b.mag = 15;
+							b.passive = false;
+							b.timeLeft = 100;
+							b.source = "eamp mod";
+							b.type = Buff.BuffType.STR_MOD;
+							u.addBuffUq(b);
+					}
+				}
+
+				@Override
+				public double getWeight() {
+					return 4;
+				}
+
+				@Override
+				public boolean canCast(RUnit caster) {
+					if (caster.getMana() < 3) {
+						return false;
+					}
+					return true;
+				}
+
+				@Override
+				public TargetType getTargetType() {
+					return TargetType.FRIEND;
+				}
+
+				@Override
+				public TargetGrouping getTargetGrouping() {
+					return TargetGrouping.SINGLE;
+				}
+
+				@Override
+				public double warmUp() {
+					return 40;
+				}
+
+				@Override
+				public double coolDown() {
+					return 20;
+				}
+
+				@Override
+				public String getName() {
+					return "electric amp";
+				}
+
+				@Override
+				public String getDesc() {
+					return "3mp: Electrifies the target's strength for a short duration.";
+				}});
+			
+			data.put("fireball",new Action(){
+
+				@Override
+				public void go(RUnit caster, TargetGroup target) {
+					extra.println(caster.getName() + " fireballs " + target.toString());
+					caster.drainMp(7);
+					Weapon w = caster.getWeapon();
+					List<DamageType> list = new ArrayList<DamageType>();
+					list.add(DamageType.FIRE);
+					for (RUnit u: target.targets) {
+						if (RCore.doAttack(caster, u,caster.getKnowledge(),1,10* (RCore.doesHit(caster,u,.05,true)? 1.5 : 1),true,list) > -1) {
+						}
+						
+					}
+				}
+
+				@Override
+				public double getWeight() {
+					return 4;
+				}
+
+				@Override
+				public boolean canCast(RUnit caster) {
+					if (caster.getMana() < 7) {
+						return false;
+					}
+					return true;
+				}
+
+				@Override
+				public TargetType getTargetType() {
+					return TargetType.FOE;
+				}
+
+				@Override
+				public TargetGrouping getTargetGrouping() {
+					return TargetGrouping.ALL;
+				}
+
+				@Override
+				public double warmUp() {
+					return 90;
+				}
+
+				@Override
+				public double coolDown() {
+					return 30;
+				}
+
+				@Override
+				public String getName() {
+					return "fireball";
+				}
+
+				@Override
+				public String getDesc() {
+					return "7mp: Flames out the field, dealing fire damage to a all foes.";
 				}});
 		
 	}

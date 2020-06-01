@@ -50,6 +50,9 @@ public class VillageFactory {
 		if (EventFlag.eventFlag.getEF("unun_recruit_1") == 0) {
 			unun.conts.add(new RecruitSpot("recruit andrea","andrea", unun,"unun_recruit_1", "cleric","priest"));
 		}
+		if (EventFlag.eventFlag.getEF("unun_recruit_2") == 0) {
+			unun.conts.add(new RecruitSpot("recruit brittney","brit", unun,"unun_recruit_2", "elementalist"));
+		}
 		s = new Shop("weapon shop");
 		s.items.add("copper broadsword");
 		s.items.add("iron sword");
