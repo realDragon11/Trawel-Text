@@ -27,7 +27,7 @@ public class MaterialFactory {
 			
 		});
 		
-		data.put("wolf pelt",new MaterialItem() {
+		data.put("leather pelt",new MaterialItem() {
 
 			@Override
 			public int cost() {
@@ -36,7 +36,7 @@ public class MaterialFactory {
 
 			@Override
 			public String getName() {
-				return "wolf pelt";
+				return "leather pelt";
 			}
 
 			@Override
@@ -58,6 +58,23 @@ public class MaterialFactory {
 			@Override
 			public String getName() {
 				return "much 'o mushroom";
+			}
+
+			@Override
+			public String getDesc() {
+				return "todo";
+			}});
+		
+		data.put("iron chunk",new MaterialItem() {
+
+			@Override
+			public int cost() {
+				return 30;
+			}
+
+			@Override
+			public String getName() {
+				return "iron chunk";
 			}
 
 			@Override

@@ -20,6 +20,7 @@ import rtrawel.items.WeaponFactory;
 import rtrawel.jobs.JobFactory;
 import rtrawel.jobs.PathFactory;
 import rtrawel.unit.RUnit.FightingStance;
+import rtrawel.village.RecipeFactory;
 import trawel.Plane;
 import trawel.Player;
 import trawel.extra;
@@ -95,6 +96,7 @@ public class RCore {
 		PathFactory.init();
 		JobFactory.init();
 		FightFactory.init();
+		RecipeFactory.init();
 	}
 	
 	public static int levelLynchPin(int level, int level1, int level5, int level15, int level25, int level40, int level60, int level80, int level99) {

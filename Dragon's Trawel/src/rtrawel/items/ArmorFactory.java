@@ -367,6 +367,44 @@ public class ArmorFactory {
 			public String getDesc() {
 				return "A headband that reduces magical damage by a large degree.";
 			}});
+		
+		data.put("iron bracers",new Armor() {
+
+			@Override
+			public ArmorType getArmorType() {
+				return ArmorType.HANDS;
+			}
+
+			@Override
+			public ArmorClass getArmorClass() {
+				return ArmorClass.HEAVY;
+			}
+
+			@Override
+			public DamMultMap getDMM() {
+				DamMultMap map = new DamMultMap();
+				return map;
+			}
+
+			@Override
+			public int cost() {
+				return 40;
+			}
+
+			@Override
+			public String getName() {
+				return "iron bracers";
+			}
+			
+			@Override
+			public int getResilenceMod() {
+				return 8;
+			}
+
+			@Override
+			public String getDesc() {
+				return "An armor for the arms.";
+			}});
 	}
 	
 	public static Armor getArmorByName(String str) {

@@ -69,7 +69,7 @@ public class WeaponFactory {
 
 			@Override
 			public int cost() {
-				return 20;
+				return 30;
 			}
 
 			@Override
@@ -651,7 +651,7 @@ public class WeaponFactory {
 
 			@Override
 			public int cost() {
-				return 50;
+				return 80;
 			}
 
 			@Override
@@ -798,6 +798,70 @@ public class WeaponFactory {
 				return 5;
 			}
 		});
+		
+		data.put("iron sword",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.SWORD;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.SHARP);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return 1;
+			}
+
+			@Override
+			public int getDamage() {
+				return 10;
+			}
+
+			@Override
+			public String getName() {
+				return "iron sword";
+			}
+
+			@Override
+			public String getDesc() {
+				return "A decent sword made of iron.";
+			}
+
+			@Override
+			public double critChance() {
+				return .05;
+			}
+
+			@Override
+			public double critMult() {
+				return 1.5;
+			}
+
+			@Override
+			public int cost() {
+				return 140;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0;
+			}});
 		
 		
 		//TODO foes
@@ -1322,6 +1386,134 @@ public class WeaponFactory {
 			@Override
 			public int cost() {
 				return 40;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0;
+			}});
+		
+		data.put("armor sword",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.MONSTER_MELEE;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.SHARP);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return 1;
+			}
+
+			@Override
+			public int getDamage() {
+				return 7;
+			}
+
+			@Override
+			public String getName() {
+				return "armor sword";
+			}
+
+			@Override
+			public String getDesc() {
+				return "";
+			}
+
+			@Override
+			public double critChance() {
+				return .05;
+			}
+
+			@Override
+			public double critMult() {
+				return 1.5;
+			}
+
+			@Override
+			public int cost() {
+				return 0;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0;
+			}});
+		
+		data.put("iron golem punch",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.MONSTER_MELEE;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.SHARP);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return .8;
+			}
+
+			@Override
+			public int getDamage() {
+				return 10;
+			}
+
+			@Override
+			public String getName() {
+				return "iron golem punch";
+			}
+
+			@Override
+			public String getDesc() {
+				return "";
+			}
+
+			@Override
+			public double critChance() {
+				return .05;
+			}
+
+			@Override
+			public double critMult() {
+				return 1.25;
+			}
+
+			@Override
+			public int cost() {
+				return 0;
 			}
 
 			@Override

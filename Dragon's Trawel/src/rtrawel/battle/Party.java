@@ -46,6 +46,14 @@ public class Party {
 			}
 	}
 	
+	public int getItemCount(String str) {
+		if (items.containsKey(str)) {
+			return items.get(str);
+		}else {
+			return 0;
+			}
+	}
+	
 	public void refreshItemKeys() {
 		itemKeys.clear();
 		items.keySet().stream().forEach(itemKeys::add);

@@ -25,6 +25,16 @@ public class RecipeFactory {
 		r.outputs.add("mushroom masher");
 		RecipeHolder h = new RecipeHolder();
 		h.list.add(r);
+		r = new Recipe();
+		r.addInput("pot lid", 1);
+		r.addInput("leather pelt",1);
+		r.outputs.add("leather shield");
+		h.list.add(r);
+		r = new Recipe();
+		r.addInput("iron chunk", 2);
+		r.addInput("copper sword",1);
+		r.outputs.add("iron sword");
+		h.list.add(r);
 		data2.put("hemo",h);
 	}
 }

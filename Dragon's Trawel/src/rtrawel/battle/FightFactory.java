@@ -50,6 +50,14 @@ public class FightFactory {
 		data.put("well_lurker2",f);
 		
 		f = new Fight();
+		f.addFoes("animated armor",3);
+		data.put("unun_armor1",f);
+		f = new Fight();
+		f.addFoes("iron golem",1);
+		f.addFoes("animated armor",1);
+		data.put("unun_golem1",f);
+		
+		f = new Fight();
 		f.addFoes("giant squid",1);
 		f.addFlag("homa_unun_boss");
 		data.put("homa_unun_boss",f);

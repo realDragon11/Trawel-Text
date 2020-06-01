@@ -51,7 +51,7 @@ public class WitchHut implements Content {
 
 	private void make(Recipe recipe) {
 		for (int i = 0; i < recipe.inputs.size();i++) {
-			if (Party.party.items.get(recipe.inputs.get(i)) < recipe.inputCount.get(i)){
+			if (Party.party.getItemCount(recipe.inputs.get(i)) < recipe.inputCount.get(i)){
 				extra.println("Not enough " + recipe.inputs.get(i));
 				return;
 			}
@@ -59,8 +59,8 @@ public class WitchHut implements Content {
 		for (int i = 0; i < recipe.inputs.size();i++) {
 			Party.party.addItem(recipe.inputs.get(i),-recipe.inputCount.get(i));
 		}
-		for (String o: recipe.outputs)
-		Party.party.addItem(o,1);
+		for (String o: recipe.outputs) {
+		Party.party.addItem(o,1);}
 	}
 
 	@Override

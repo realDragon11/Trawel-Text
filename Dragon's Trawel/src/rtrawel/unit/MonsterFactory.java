@@ -1077,6 +1077,274 @@ public class MonsterFactory {
 			public void initer(RMonster r) {
 				r.addRaceType(RaceType.PLANT);
 			}});
+		
+		data.put("animated armor",new MonsterData() {
+			
+
+			@Override
+			public int getStrength() {
+				return 30;
+			}
+
+			@Override
+			public int getKnowledge() {
+				return 0;
+			}
+
+			@Override
+			public int getMaxHp() {
+				return 16;
+			}
+
+			@Override
+			public int getMaxMana() {
+				return 0;
+			}
+
+			@Override
+			public int getMaxTension() {
+				return 0;
+			}
+
+			@Override
+			public int getSpeed() {
+				return -20;
+			}
+
+			@Override
+			public int getAgility() {
+				return -10;
+			}
+
+			@Override
+			public int getDexterity() {
+				return 0;
+			}
+
+			@Override
+			public int getResilence() {
+				return 100;
+			}
+
+			@Override
+			public List<Action> getActions() {
+				List<Action> list = new ArrayList<Action>();
+				list.add(ActionFactory.getActionByName("attack"));
+				list.add(ActionFactory.getActionByName("defend"));
+				return list;
+			}
+
+			@Override
+			public String getName() {
+				return "animated armor";
+			}
+
+			@Override
+			public String getDesc() {
+				return "A nasty animated armor that's resilient to a manner of things, but is disrupted by a dash of magic.";
+			}
+
+			@Override
+			public DamMultMap getDamMultMap() {
+				DamMultMap map = new DamMultMap();
+				map.insertOrAdd(DamageType.MAGIC,1.5);
+				return map;
+			}
+
+			@Override
+			public int getXp() {
+				return 12;
+			}
+
+			@Override
+			public int getGold() {
+				return 8;
+			}
+
+			@Override
+			public String getDrop() {
+				return "iron chunk";
+			}
+
+			@Override
+			public double getDropChance() {
+				return (1.0/16.0);
+			}
+
+			@Override
+			public String getRareDrop() {
+				return "iron bracers";
+			}
+
+			@Override
+			public double getRareDropChance() {
+				return (1.0/64.0);
+			}
+
+			@Override
+			public int getKillsTilKnown() {
+				return 3;
+			}
+
+			@Override
+			public int getKillsTilVeryKnown() {
+				return 6;
+			}
+
+			@Override
+			public String getWeapon() {
+				return "armor sword";
+			}
+
+			@Override
+			public SpriteData getSpriteData() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public double shieldBlockChance() {
+				return 0;
+			}
+
+			@Override
+			public void initer(RMonster r) {
+				r.addRaceType(RaceType.MATERIAL);
+				r.addRaceType(RaceType.ANIMATED);
+			}});
+		
+		data.put("iron golem",new MonsterData() {
+			
+
+			@Override
+			public int getStrength() {
+				return 50;
+			}
+
+			@Override
+			public int getKnowledge() {
+				return 0;
+			}
+
+			@Override
+			public int getMaxHp() {
+				return 24;
+			}
+
+			@Override
+			public int getMaxMana() {
+				return 0;
+			}
+
+			@Override
+			public int getMaxTension() {
+				return 5;
+			}
+
+			@Override
+			public int getSpeed() {
+				return -20;
+			}
+
+			@Override
+			public int getAgility() {
+				return -30;
+			}
+
+			@Override
+			public int getDexterity() {
+				return 0;
+			}
+
+			@Override
+			public int getResilence() {
+				return 50;
+			}
+
+			@Override
+			public List<Action> getActions() {
+				List<Action> list = new ArrayList<Action>();
+				list.add(ActionFactory.getActionByName("attack"));
+				return list;
+			}
+
+			@Override
+			public String getName() {
+				return "iron golem";
+			}
+
+			@Override
+			public String getDesc() {
+				return "Strong but not steel, silent as a sniper, this golem greatly swings.";
+			}
+
+			@Override
+			public DamMultMap getDamMultMap() {
+				DamMultMap map = new DamMultMap();
+				return map;
+			}
+
+			@Override
+			public int getXp() {
+				return 20;
+			}
+
+			@Override
+			public int getGold() {
+				return 12;
+			}
+
+			@Override
+			public String getDrop() {
+				return "iron chunk";
+			}
+
+			@Override
+			public double getDropChance() {
+				return (1.0/8.0);
+			}
+
+			@Override
+			public String getRareDrop() {
+				return "iron chunk";
+			}
+
+			@Override
+			public double getRareDropChance() {
+				return (1.0/32.0);
+			}
+
+			@Override
+			public int getKillsTilKnown() {
+				return 3;
+			}
+
+			@Override
+			public int getKillsTilVeryKnown() {
+				return 6;
+			}
+
+			@Override
+			public String getWeapon() {
+				return "iron golem punch";
+			}
+
+			@Override
+			public SpriteData getSpriteData() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public double shieldBlockChance() {
+				return 0;
+			}
+
+			@Override
+			public void initer(RMonster r) {
+				r.addRaceType(RaceType.MATERIAL);
+				r.addRaceType(RaceType.ANIMATED);
+			}});
 	}
 	
 	

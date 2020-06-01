@@ -11,7 +11,7 @@ public class VillageFactory {
 	public static List<Village> villages = new ArrayList<Village>();
 	
 	public static Village init() {
-		Village homa = new Village("homa");
+		Village homa = new Village("homa");//plants
 		villages.add(homa);
 		homa.conts.add(new Church());
 		homa.conts.add(new Inn(5));
@@ -41,8 +41,10 @@ public class VillageFactory {
 		homa.addLoot("medicine herb",.05);
 		homa.addLoot("pot lid",.1);
 		homa.addLoot("much 'o mushroom",.2);
-		Village unun = new Village("unun");
+		Village unun = new Village("unun");//animated metals
 		villages.add(unun);
+		unun.addFight(FightFactory.getFightByName("unun_armor1"));
+		unun.addFight(FightFactory.getFightByName("unun_golem1"));
 		unun.conts.add(new Church());
 		unun.conts.add(new Inn(10));
 		if (EventFlag.eventFlag.getEF("unun_recruit_1") == 0) {
@@ -50,6 +52,7 @@ public class VillageFactory {
 		}
 		s = new Shop("weapon shop");
 		s.items.add("copper broadsword");
+		s.items.add("iron sword");
 		s.items.add("wooden wand");
 		s.items.add("leather shield");
 		s.items.add("studded leather shield");
@@ -68,7 +71,8 @@ public class VillageFactory {
 		unun.conts.add(s);
 		
 		new Connection(homa,unun,null,"homa_unun_boss");
-		Village homa_pit = new Village("homan well");
+		Village homa_pit = new Village("homan well");//fish
+		villages.add(homa_pit);
 		homa_pit.addFight(FightFactory.getFightByName("well_lurker1"));
 		homa_pit.addFight(FightFactory.getFightByName("well_lurker2"));
 		homa_pit.addFight(FightFactory.getFightByName("well_root1"));
@@ -79,10 +83,11 @@ public class VillageFactory {
 		homa_pit.conts.add(new BossContent("ralph the squid",FightFactory.getFightByName("homa_unun_boss"),homa_pit,2));}
 		new Connection(homa,homa_pit,null,null);
 		
-		Village hemo = new Village("hemo");
+		Village hemo = new Village("hemo");//witches
 		hemo.conts.add(new Church());
 		hemo.conts.add(new Inn(7));
-		hemo.conts.add(new WitchHut("hemo"));
+		hemo.conts.add(new WitchHut("hemo_recipes"));
+		villages.add(hemo);
 		new Connection(unun,hemo,null,null);
 		
 		return villages.get(0);

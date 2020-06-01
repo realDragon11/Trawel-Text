@@ -70,7 +70,7 @@ public class ActionFactory {
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
 				extra.println(caster.getName() + " cleaves " + target.toString());
-				caster.drainMp(3);
+				caster.drainMp(2);
 				Weapon w = caster.getWeapon();
 				List<DamageType> dList = new ArrayList<DamageType>();
 				dList.add(DamageType.SHARP);
@@ -1352,6 +1352,66 @@ public class ActionFactory {
 				@Override
 				public String getDesc() {
 					return "Increases your strength for a short duration.";
+				}});
+			
+			data.put("ice arrow",new Action(){
+
+				@Override
+				public void go(RUnit caster, TargetGroup target) {
+					extra.println(caster.getName() + " shots a fire arrow at " + target.toString());
+					caster.drainMp(3);
+					Weapon w = caster.getWeapon();
+					List<DamageType> list = new ArrayList<DamageType>();
+					list.add(DamageType.FREEZE);
+					list.add(DamageType.PIERCE);
+					for (RUnit u: target.targets) {
+						if (RCore.doAttack(caster, u,caster.getKnowledge(),2,8* (RCore.doesHit(caster,u,.05,true)? 1.5 : 1),true,list) > -1) {
+						}
+						
+					}
+				}
+
+				@Override
+				public double getWeight() {
+					return 4;
+				}
+
+				@Override
+				public boolean canCast(RUnit caster) {
+					if (caster.getMana() < 3) {
+						return false;
+					}
+					return true;
+				}
+
+				@Override
+				public TargetType getTargetType() {
+					return TargetType.FOE;
+				}
+
+				@Override
+				public TargetGrouping getTargetGrouping() {
+					return TargetGrouping.SINGLE;
+				}
+
+				@Override
+				public double warmUp() {
+					return 80;
+				}
+
+				@Override
+				public double coolDown() {
+					return 10;
+				}
+
+				@Override
+				public String getName() {
+					return "ice arrow";
+				}
+
+				@Override
+				public String getDesc() {
+					return "2mp: Shoots an unerringly accurate icy arrow at a single target.";
 				}});
 		
 	}
