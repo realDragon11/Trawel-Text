@@ -600,7 +600,7 @@ public class ActionFactory {
 						b.passive = false;
 						b.timeLeft = 500;
 						b.source = "root of resilence mult";
-						b.type = Buff.BuffType.STR_MULT;
+						b.type = Buff.BuffType.RES_MULT;
 						u.addBuffUq(b);
 						b = new Buff();
 						b.isDebuff = false;
@@ -608,7 +608,7 @@ public class ActionFactory {
 						b.passive = false;
 						b.timeLeft = 500;
 						b.source = "root of resilence mod";
-						b.type = Buff.BuffType.STR_MOD;
+						b.type = Buff.BuffType.RES_MOD;
 						u.addBuffUq(b);
 				}
 			}
@@ -1243,7 +1243,7 @@ public class ActionFactory {
 						if (Math.random() < chanceTo*u.getDamageMultFor(DamageType.MAGIC)) {
 							int manaDrain = Math.min(u.getMana(),w.getDamage()/2);
 							u.drainMp(manaDrain);
-							caster.restoreMana(manaDrain);
+							caster.restoreMana(manaDrain/2);
 						}
 						
 					}
@@ -1287,6 +1287,71 @@ public class ActionFactory {
 				@Override
 				public String getDesc() {
 					return "drains mp";
+				}});
+			
+			data.put("rile up",new Action(){
+
+				@Override
+				public void go(RUnit caster, TargetGroup target) {
+					extra.println(caster.getName() + " gets all riled up!");
+					for (RUnit u: target.targets) {
+							Buff b = new Buff();
+							b.isDebuff = false;
+							b.mag = 1.2;
+							b.passive = false;
+							b.timeLeft = 70;
+							b.source = "rile up mult";
+							b.type = Buff.BuffType.STR_MULT;
+							u.addBuffUq(b);
+							b = new Buff();
+							b.isDebuff = false;
+							b.mag = 20;
+							b.passive = false;
+							b.timeLeft = 70;
+							b.source = "rile up mod";
+							b.type = Buff.BuffType.STR_MOD;
+							u.addBuffUq(b);
+					}
+				}
+
+				@Override
+				public double getWeight() {
+					return 4;
+				}
+
+				@Override
+				public boolean canCast(RUnit caster) {
+					return true;
+				}
+
+				@Override
+				public TargetType getTargetType() {
+					return TargetType.SELF_ONLY;
+				}
+
+				@Override
+				public TargetGrouping getTargetGrouping() {
+					return TargetGrouping.SINGLE;
+				}
+
+				@Override
+				public double warmUp() {
+					return 30;
+				}
+
+				@Override
+				public double coolDown() {
+					return 5;
+				}
+
+				@Override
+				public String getName() {
+					return "rile up";
+				}
+
+				@Override
+				public String getDesc() {
+					return "Increases your strength for a short duration.";
 				}});
 		
 	}

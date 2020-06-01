@@ -44,7 +44,26 @@ public class MaterialFactory {
 				return "todo";
 			}
 			
+			
+			
 		});
+		
+		data.put("much 'o mushroom",new MaterialItem() {
+
+			@Override
+			public int cost() {
+				return 10;
+			}
+
+			@Override
+			public String getName() {
+				return "much 'o mushroom";
+			}
+
+			@Override
+			public String getDesc() {
+				return "todo";
+			}});
 	}
 	
 	public static MaterialItem getMaterialByName(String str) {

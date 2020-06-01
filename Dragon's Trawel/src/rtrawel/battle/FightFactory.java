@@ -35,6 +35,10 @@ public class FightFactory {
 		data.put("homa_root1",f);
 		
 		f = new Fight();
+		f.addFoes("shroom soldier",1);
+		data.put("homa_shroom1",f);
+		
+		f = new Fight();
 		f.addFoes("living root",6);
 		data.put("well_root1",f);
 		f = new Fight();

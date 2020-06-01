@@ -1200,6 +1200,134 @@ public class WeaponFactory {
 			public double blockChance() {
 				return 0;
 			}});
+		
+		data.put("pole",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.STAFF;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.BLUNT);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return 1.2;
+			}
+
+			@Override
+			public int getDamage() {
+				return 5;
+			}
+
+			@Override
+			public String getName() {
+				return "pole";
+			}
+
+			@Override
+			public String getDesc() {
+				return "The start of many weapons.";
+			}
+
+			@Override
+			public double critChance() {
+				return .05;
+			}
+
+			@Override
+			public double critMult() {
+				return 1.5;
+			}
+
+			@Override
+			public int cost() {
+				return 10;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0;
+			}});
+		
+		data.put("mushroom masher",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.HAMMER;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.BLUNT);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return .8;
+			}
+
+			@Override
+			public int getDamage() {
+				return 10;
+			}
+
+			@Override
+			public String getName() {
+				return "mushroom masher";
+			}
+
+			@Override
+			public String getDesc() {
+				return "Two mushrooms... on a stick! What could go wrong?";
+			}
+
+			@Override
+			public double critChance() {
+				return .05;
+			}
+
+			@Override
+			public double critMult() {
+				return 2;
+			}
+
+			@Override
+			public int cost() {
+				return 40;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0;
+			}});
 	}
 	
 	

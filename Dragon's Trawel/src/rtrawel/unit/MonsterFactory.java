@@ -543,6 +543,8 @@ public class MonsterFactory {
 				r.addRaceType(RaceType.PLANT);
 			}});
 		
+		
+		
 		data.put("living root",new MonsterData() {
 			
 
@@ -940,6 +942,140 @@ public class MonsterFactory {
 			@Override
 			public void initer(RMonster r) {
 				r.addRaceType(RaceType.FISH);
+			}});
+		
+		data.put("shroom soldier",new MonsterData() {
+			
+
+			@Override
+			public int getStrength() {
+				return 50;
+			}
+
+			@Override
+			public int getKnowledge() {
+				return 0;
+			}
+
+			@Override
+			public int getMaxHp() {
+				return 18;
+			}
+
+			@Override
+			public int getMaxMana() {
+				return 0;
+			}
+
+			@Override
+			public int getMaxTension() {
+				return 5;
+			}
+
+			@Override
+			public int getSpeed() {
+				return 10;
+			}
+
+			@Override
+			public int getAgility() {
+				return 7;
+			}
+
+			@Override
+			public int getDexterity() {
+				return 0;
+			}
+
+			@Override
+			public int getResilence() {
+				return 12;
+			}
+
+			@Override
+			public List<Action> getActions() {
+				List<Action> list = new ArrayList<Action>();
+				list.add(ActionFactory.getActionByName("attack"));
+				list.add(ActionFactory.getActionByName("rile up"));
+				return list;
+			}
+
+			@Override
+			public String getName() {
+				return "shroom soldier";
+			}
+
+			@Override
+			public String getDesc() {
+				return "A large leader of plants.";
+			}
+
+			@Override
+			public DamMultMap getDamMultMap() {
+				DamMultMap map = new DamMultMap();
+				map.insertOrAdd(DamageType.FIRE,1.5);
+				return map;
+			}
+
+			@Override
+			public int getXp() {
+				return 10;
+			}
+
+			@Override
+			public int getGold() {
+				return 5;
+			}
+
+			@Override
+			public String getDrop() {
+				return "medicine herb";
+			}
+
+			@Override
+			public double getDropChance() {
+				return (1.0/8.0);
+			}
+
+			@Override
+			public String getRareDrop() {
+				return "much 'o mushroom";
+			}
+
+			@Override
+			public double getRareDropChance() {
+				return (1.0/32.0);
+			}
+
+			@Override
+			public int getKillsTilKnown() {
+				return 3;
+			}
+
+			@Override
+			public int getKillsTilVeryKnown() {
+				return 6;
+			}
+
+			@Override
+			public String getWeapon() {
+				return "dendroid branch";
+			}
+
+			@Override
+			public SpriteData getSpriteData() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public double shieldBlockChance() {
+				return 0;
+			}
+
+			@Override
+			public void initer(RMonster r) {
+				r.addRaceType(RaceType.PLANT);
 			}});
 	}
 	

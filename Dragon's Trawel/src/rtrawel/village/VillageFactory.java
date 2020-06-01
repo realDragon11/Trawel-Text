@@ -37,8 +37,10 @@ public class VillageFactory {
 		homa.addFight(FightFactory.getFightByName("homa_ent2"));
 		homa.addFight(FightFactory.getFightByName("homa_fungus2"));
 		homa.addFight(FightFactory.getFightByName("homa_root1"));
+		homa.addFight(FightFactory.getFightByName("homa_shroom1"));
 		homa.addLoot("medicine herb",.05);
 		homa.addLoot("pot lid",.1);
+		homa.addLoot("much 'o mushroom",.2);
 		Village unun = new Village("unun");
 		villages.add(unun);
 		unun.conts.add(new Church());
@@ -76,6 +78,13 @@ public class VillageFactory {
 		if (EventFlag.eventFlag.getEF("homa_unun_boss") == 0) {
 		homa_pit.conts.add(new BossContent("ralph the squid",FightFactory.getFightByName("homa_unun_boss"),homa_pit,2));}
 		new Connection(homa,homa_pit,null,null);
+		
+		Village hemo = new Village("hemo");
+		hemo.conts.add(new Church());
+		hemo.conts.add(new Inn(7));
+		hemo.conts.add(new WitchHut("hemo"));
+		new Connection(unun,hemo,null,null);
+		
 		return villages.get(0);
 	}
 }
