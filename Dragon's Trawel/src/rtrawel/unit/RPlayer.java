@@ -5,6 +5,7 @@ import java.util.List;
 
 import rtrawel.battle.Party;
 import rtrawel.items.Armor;
+import rtrawel.items.Armor.ArmorClass;
 import rtrawel.items.Consumable;
 import rtrawel.items.ConsumableFactory;
 import rtrawel.items.Item;
@@ -12,6 +13,7 @@ import rtrawel.items.Weapon;
 import rtrawel.items.Weapon.WeaponType;
 import rtrawel.items.WeaponFactory;
 import rtrawel.items.Item.ItemType;
+import rtrawel.jobs.Job;
 import rtrawel.jobs.JobFactory;
 import rtrawel.jobs.JobWithLevel;
 import rtrawel.jobs.PathFactory;
@@ -49,6 +51,7 @@ public class RPlayer extends RUnit {
 		case "ranger": weap = WeaponFactory.getWeaponByName("small sling");break;
 		case "cleric": weap = WeaponFactory.getWeaponByName("carpenter hammer");break;
 		case "priest": weap = WeaponFactory.getWeaponByName("simple stabber");break;
+		case "elementalist": weap = WeaponFactory.getWeaponByName("wooden wand");break;
 		default: throw new RuntimeException("default weapon for class not found");
 		}
 		cleanAbs();
@@ -471,7 +474,8 @@ public class RPlayer extends RUnit {
 			int aLeft = 100-p.level;
 			extra.println("Allocate how many? (Weapons can go over 100.)");
 			int take = points;
-			progression.addPathPoints(wt.toString().toLowerCase(),extra.inInt(take), this);
+			take = extra.inInt(take);
+			progression.addPathPoints(wt.toString().toLowerCase(),take, this);
 			points-=take;
 			
 		}
@@ -608,6 +612,39 @@ public class RPlayer extends RUnit {
 			}
 		}
 		return null;
+	}
+
+	public void deEquipUnfitting() {
+		Job j = JobFactory.getJobByName(currentJob);
+		List<ArmorClass> jcs = new ArrayList<ArmorClass>();
+		if (head != null && !jcs.contains(head.getArmorClass())) {
+			Party.party.addItem(head.getName(),1);
+			head = null;
+		}
+		if (torso != null && !jcs.contains(torso.getArmorClass())) {
+			Party.party.addItem(torso.getName(),1);
+			torso = null;
+		}
+		if (arms != null && !jcs.contains(arms.getArmorClass())) {
+			Party.party.addItem(arms.getName(),1);
+			arms = null;
+		}
+		if (pants != null && !jcs.contains(pants.getArmorClass())) {
+			Party.party.addItem(pants.getName(),1);
+			pants = null;
+		}
+		if (feet != null && !jcs.contains(feet.getArmorClass())) {
+			Party.party.addItem(feet.getName(),1);
+			feet = null;
+		}
+		if (assec1 != null && !jcs.contains(assec1.getArmorClass())) {
+			Party.party.addItem(assec1.getName(),1);
+			assec1 = null;
+		}
+		if (assec2 != null && !jcs.contains(assec2.getArmorClass())) {
+			Party.party.addItem(assec2.getName(),1);
+			assec2 = null;
+		}
 	}
 
 

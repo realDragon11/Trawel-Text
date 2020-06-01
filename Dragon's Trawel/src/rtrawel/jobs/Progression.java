@@ -18,6 +18,10 @@ public class Progression implements java.io.Serializable{
 		}
 		return -1;
 	}
+	
+	public void addJob(String str) {
+		jobs.add(new JobWithLevel(str,1));
+	}
 	public int pathLevel(String p) {
 		for (PathWithLevel k: paths) {
 			if (k.path.equals(p)){

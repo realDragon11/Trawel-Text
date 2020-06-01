@@ -403,7 +403,7 @@ public class JobFactory {
 
 			@Override
 			public int getDexAtLevel(int level) {
-				return RCore.levelLynchPin(level, 16,37,65, 999, 999, 999, 999, 999);
+				return RCore.levelLynchPin(level, 12,18,35, 999, 999, 999, 999, 999);
 			}
 
 			@Override

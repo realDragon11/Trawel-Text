@@ -1364,6 +1364,7 @@ public class ActionFactory {
 					List<DamageType> list = new ArrayList<DamageType>();
 					list.add(DamageType.FREEZE);
 					list.add(DamageType.PIERCE);
+					list.add(DamageType.MAGIC);
 					for (RUnit u: target.targets) {
 						if (RCore.doAttack(caster, u,caster.getKnowledge(),2,8* (RCore.doesHit(caster,u,.05,true)? 1.5 : 1),true,list) > -1) {
 						}
@@ -1492,6 +1493,7 @@ public class ActionFactory {
 					Weapon w = caster.getWeapon();
 					List<DamageType> list = new ArrayList<DamageType>();
 					list.add(DamageType.FIRE);
+					list.add(DamageType.MAGIC);
 					for (RUnit u: target.targets) {
 						if (RCore.doAttack(caster, u,caster.getKnowledge(),1,10* (RCore.doesHit(caster,u,.05,true)? 1.5 : 1),true,list) > -1) {
 						}

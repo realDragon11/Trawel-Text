@@ -93,6 +93,13 @@ public class VillageFactory {
 		villages.add(hemo);
 		new Connection(unun,hemo,null,null);
 		
+		Village revan = new Village("revan");//???
+		revan.conts.add(new Church());
+		revan.conts.add(new Inn(10));
+		revan.conts.add(new ReJober());
+		villages.add(revan);
+		new Connection(unun,revan,null,null);
+		
 		return villages.get(0);
 	}
 }
