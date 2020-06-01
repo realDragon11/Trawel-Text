@@ -800,6 +800,9 @@ public class PathFactory {
 				b.passive = true;
 				b.timeLeft = 1;
 				b.type = Buff.BuffType.KNO_MOD;
+				if (points > 0) {
+					player.addAbility(ActionFactory.getActionByName("wand drain"));
+				}
 			}
 
 			@Override

@@ -43,6 +43,7 @@ public class Village {
 	
 	public boolean go() {
 		int i = 1;
+		extra.println(name);
 		for (Content c: conts) {
 			extra.println(i + " " + c.name());
 			i++;

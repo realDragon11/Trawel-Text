@@ -595,7 +595,7 @@ public class MonsterFactory {
 			public List<Action> getActions() {
 				List<Action> list = new ArrayList<Action>();
 				list.add(ActionFactory.getActionByName("attack"));
-				list.add(ActionFactory.getActionByName("root of resilence"));
+				list.add(ActionFactory.getActionByName("root of resilience"));
 				return list;
 			}
 

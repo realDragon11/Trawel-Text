@@ -93,7 +93,7 @@ public class ActionFactory {
 				if (!caster.getWeapon().getWeaponType().equals(WeaponType.SWORD)) {
 					return false;
 				}
-				return caster.getMana() >= 3;
+				return caster.getMana() >= 2;
 			}
 
 			@Override
@@ -588,7 +588,7 @@ public class ActionFactory {
 			public String getDesc() {
 				return "Lowers the strength of a group.";
 			}});
-		data.put("root of resilence",new Action(){
+		data.put("root of resilience",new Action(){
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
@@ -1231,6 +1231,63 @@ public class ActionFactory {
 			public String getDesc() {
 				return "3mp: has a high chance to stun the target out of their action, but deals no damage";
 			}});
+		
+			data.put("wand drain",new Action(){
+
+				@Override
+				public void go(RUnit caster, TargetGroup target) {
+					extra.println(caster.getName() + " drains the mana out of " + target.toString());
+					Weapon w = caster.getWeapon();
+					double chanceTo = ((100.0 + caster.getKnowledge())/100.0);
+					for (RUnit u: target.targets) {
+						if (Math.random() < chanceTo*u.getDamageMultFor(DamageType.MAGIC)) {
+							int manaDrain = Math.min(u.getMana(),w.getDamage()/2);
+							u.drainMp(manaDrain);
+							caster.restoreMana(manaDrain);
+						}
+						
+					}
+				}
+
+				@Override
+				public double getWeight() {
+					return 4;
+				}
+
+				@Override
+				public boolean canCast(RUnit caster) {
+					return true;
+				}
+
+				@Override
+				public TargetType getTargetType() {
+					return TargetType.FOE;
+				}
+
+				@Override
+				public TargetGrouping getTargetGrouping() {
+					return TargetGrouping.SINGLE;
+				}
+
+				@Override
+				public double warmUp() {
+					return 50;
+				}
+
+				@Override
+				public double coolDown() {
+					return 50;
+				}
+
+				@Override
+				public String getName() {
+					return "wand drain";
+				}
+
+				@Override
+				public String getDesc() {
+					return "drains mp";
+				}});
 		
 	}
 	

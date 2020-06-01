@@ -48,6 +48,21 @@ public class VillageFactory {
 		}
 		s = new Shop("weapon shop");
 		s.items.add("copper broadsword");
+		s.items.add("wooden wand");
+		s.items.add("leather shield");
+		s.items.add("studded leather shield");
+		unun.conts.add(s);
+		
+		s = new Shop("item shop");
+		s.items.add("medicine herb");
+		s.items.add("basic tincture");
+		s.items.add("root of resilience");
+		unun.conts.add(s);
+		
+		s = new Shop("armor shop");
+		s.items.add("antimagic circlet");
+		s.items.add("mail shirt");
+		s.items.add("mail hood");
 		unun.conts.add(s);
 		
 		new Connection(homa,unun,null,"homa_unun_boss");

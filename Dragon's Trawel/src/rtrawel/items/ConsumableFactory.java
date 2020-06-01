@@ -56,7 +56,7 @@ public class ConsumableFactory {
 			
 		});
 		
-		data.put("root of resilence",new Consumable() {
+		data.put("root of resilience",new Consumable() {
 
 			@Override
 			public int cost() {
@@ -65,7 +65,7 @@ public class ConsumableFactory {
 
 			@Override
 			public String getName() {
-				return "root of resilence";
+				return "root of resilience";
 			}
 
 			@Override
@@ -75,7 +75,7 @@ public class ConsumableFactory {
 
 			@Override
 			public Action getAction() {
-				return ActionFactory.getActionByName("root of resilence");
+				return ActionFactory.getActionByName("root of resilience");
 			}
 			
 		});

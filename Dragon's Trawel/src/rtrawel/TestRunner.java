@@ -7,6 +7,8 @@ import rtrawel.battle.Battle;
 import rtrawel.battle.Party;
 import rtrawel.items.WeaponFactory;
 import rtrawel.jobs.JobWithLevel;
+import rtrawel.story.MainStory;
+import rtrawel.story.Story;
 import rtrawel.unit.RCore;
 import rtrawel.unit.RMonster;
 import rtrawel.unit.RPlayer;
@@ -19,6 +21,7 @@ public class TestRunner {
 	
 	public static final int level_cap = 15;
 
+	public static Story story = new MainStory();
 	public static void main(String[] args) {
 		RCore.init();
 		
@@ -33,8 +36,10 @@ public class TestRunner {
 			Party.party.list.get(0).refresh();
 			Party.party.list.get(1).refresh();
 			
+			
 			Party.party.curVillage = VillageFactory.init();
 			RCore.save();
+			EventFlag.eventFlag.setEF("new_game",1);
 		}
 		
 		

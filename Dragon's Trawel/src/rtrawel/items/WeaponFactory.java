@@ -636,7 +636,7 @@ public class WeaponFactory {
 
 			@Override
 			public String getDesc() {
-				return "A sword that's not ownly fine for fierce fighting, but for blocking as well!";
+				return "A sword that's not only fine for fierce fighting, but for blocking as well!";
 			}
 
 			@Override
@@ -658,6 +658,146 @@ public class WeaponFactory {
 			public double blockChance() {
 				return 0.01;
 			}});
+		
+		data.put("studded leather shield",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.SHIELD;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.BLUNT);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return 1;
+			}
+
+			@Override
+			public int getDamage() {
+				return 5;
+			}
+
+			@Override
+			public String getName() {
+				return "studded leather shield";
+			}
+
+			@Override
+			public String getDesc() {
+				return "A metal and leather shield. 3.5% block chance.";
+			}
+
+			@Override
+			public double critChance() {
+				return 0;
+			}
+
+			@Override
+			public double critMult() {
+				return 1;
+			}
+
+			@Override
+			public int cost() {
+				return 100;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0.035;
+			}
+		
+			@Override
+			public int getResilenceMod() {
+				return 7;
+			}
+		});
+		
+		data.put("leather shield",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.SHIELD;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.BLUNT);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return 1;
+			}
+
+			@Override
+			public int getDamage() {
+				return 5;
+			}
+
+			@Override
+			public String getName() {
+				return "leather shield";
+			}
+
+			@Override
+			public String getDesc() {
+				return "A wood and leather shield. 3% block chance.";
+			}
+
+			@Override
+			public double critChance() {
+				return 0;
+			}
+
+			@Override
+			public double critMult() {
+				return 1;
+			}
+
+			@Override
+			public int cost() {
+				return 70;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0.03;
+			}
+		
+			@Override
+			public int getResilenceMod() {
+				return 5;
+			}
+		});
 		
 		
 		//TODO foes
@@ -990,6 +1130,70 @@ public class WeaponFactory {
 			@Override
 			public int cost() {
 				return 0;
+			}
+
+			@Override
+			public double blockChance() {
+				return 0;
+			}});
+		
+		data.put("wooden wand",new Weapon() {
+
+			@Override
+			public WeaponType getWeaponType() {
+				return WeaponType.WAND;
+			}
+
+			@Override
+			public OnHit getOnHit() {
+				return OnHit.empty;
+			}
+
+			@Override
+			public int damageBonuses(RUnit defender) {
+				return 0;
+			}
+
+			@Override
+			public List<DamageType> getDamageTypes() {
+				List<DamageType> list = new ArrayList<DamageType>();
+				list.add(DamageType.BLUNT);
+				return list;
+			}
+
+			@Override
+			public double getBaseHit() {
+				return 1;
+			}
+
+			@Override
+			public int getDamage() {
+				return 4;
+			}
+
+			@Override
+			public String getName() {
+				return "wooden wand";
+			}
+
+			@Override
+			public String getDesc() {
+				return "A small wooden wand.";
+			}
+
+			@Override
+			public double critChance() {
+				return 0;
+			}
+
+			@Override
+			public double critMult() {
+				return 1;
+			}
+
+			@Override
+			public int cost() {
+				return 50;
 			}
 
 			@Override

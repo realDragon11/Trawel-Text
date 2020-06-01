@@ -291,7 +291,7 @@ public class ArmorFactory {
 
 			@Override
 			public ArmorClass getArmorClass() {
-				return ArmorClass.NONE;
+				return ArmorClass.LIGHT;
 			}
 
 			@Override
@@ -323,6 +323,49 @@ public class ArmorFactory {
 			@Override
 			public String getDesc() {
 				return "Said to increase your agility as well as insure against stuns.";
+			}});
+		
+		data.put("antimagic circlet",new Armor() {
+
+			@Override
+			public ArmorType getArmorType() {
+				return ArmorType.ASSEC;
+			}
+
+			@Override
+			public ArmorClass getArmorClass() {
+				return ArmorClass.NONE;
+			}
+
+			@Override
+			public DamMultMap getDMM() {
+				DamMultMap map = new DamMultMap();
+				map.insert(DamageType.MAGIC,.75);
+				return map;
+			}
+
+			@Override
+			public int cost() {
+				return 150;
+			}
+
+			@Override
+			public String getName() {
+				return "antimagic circlet";
+			}
+			
+			@Override
+			public int getResilenceMod() {
+				return 0;
+			}
+			@Override
+			public int getKnowledgeMod() {
+				return 2;
+			}
+
+			@Override
+			public String getDesc() {
+				return "A headband that reduces magical damage by a large degree.";
 			}});
 	}
 	

@@ -145,7 +145,7 @@ public abstract class RUnit {
 	
 	
 	public enum RaceType{
-		PLAYER, MONSTER, FISH, ETC, BEAST, MACHINE, PLANT, HUMANOID;
+		PLAYER, MONSTER, FISH, ETC, BEAST, MACHINE, PLANT, HUMANOID, OOZE;
 	}
 
 
@@ -219,6 +219,12 @@ public abstract class RUnit {
 	}
 	public void setStance(FightingStance s) {
 		fStance = s;
+		
+	}
+	public void restoreMana(int manaDrain) {
+		int oldhp = hp;
+		hp = (int)extra.clamp(hp+manaDrain,0,this.getMaxHp());
+		extra.println(hp-oldhp + " mp restored.");
 		
 	}
 }
