@@ -93,11 +93,13 @@ public class mainGame {
 	private void gameTypes() {
 		extra.println("Choose an adventure:");
 		extra.println("1 The DeathStrider");
+		extra.println("2 rTrawel (experimental jrpg)");
 		//extra.println("2 Eoanan Sandbox");
 		//extra.println("3 Eoanan Wizard Mode");
 		//extra.println("4 model mode");
-		switch(extra.inInt(1)) {
+		switch(extra.inInt(2)) {
 		case 1: adventure1();break;
+		case 2:extra.println("This gamemode can only be played in the command prompt."); rtrawel.TestRunner.run();break;
 		//case 2: adventure2();break;
 		//case 3: adventure3();break;
 		//case 4: modelMode();break;

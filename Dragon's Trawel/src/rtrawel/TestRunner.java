@@ -23,6 +23,9 @@ public class TestRunner {
 
 	public static Story story = new MainStory();
 	public static void main(String[] args) {
+		run();
+	}
+	public static void run() {
 		RCore.init();
 		
 		extra.println("Start new game?");

@@ -92,6 +92,8 @@ public class VillageFactory {
 		hemo.conts.add(new Inn(7));
 		hemo.conts.add(new WitchHut("hemo_recipes"));
 		villages.add(hemo);
+		hemo.addFight(FightFactory.getFightByName("hemo_witch1"));
+		hemo.addFight(FightFactory.getFightByName("hemo_witch2"));
 		new Connection(unun,hemo,null,null);
 		
 		Village revan = new Village("revan");//???

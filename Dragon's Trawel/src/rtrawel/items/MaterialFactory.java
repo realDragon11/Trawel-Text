@@ -81,6 +81,23 @@ public class MaterialFactory {
 			public String getDesc() {
 				return "todo";
 			}});
+		
+		data.put("essence of witchery",new MaterialItem() {
+
+			@Override
+			public int cost() {
+				return 30;
+			}
+
+			@Override
+			public String getName() {
+				return "essence of witchery";
+			}
+
+			@Override
+			public String getDesc() {
+				return "todo";
+			}});
 	}
 	
 	public static MaterialItem getMaterialByName(String str) {

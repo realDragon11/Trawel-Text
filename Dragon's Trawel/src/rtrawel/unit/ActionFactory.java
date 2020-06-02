@@ -1604,6 +1604,64 @@ public class ActionFactory {
 				public String getDesc() {
 					return "5mp: Fills the field with fierce thunder, damaging all foes and possibly stunning them out of their actions.";
 				}});
+			
+			data.put("whine",new Action(){
+
+				@Override
+				public void go(RUnit caster, TargetGroup target) {
+					extra.println(caster.getName() + " whines at " + target.toString());
+					caster.drainMp(2);
+					for (RUnit u: target.targets) {
+						if (RCore.doesHit(caster,u,.8, true)){
+							u.drainMp(2);
+						}
+						
+					}
+				}
+
+				@Override
+				public double getWeight() {
+					return 4;
+				}
+
+				@Override
+				public boolean canCast(RUnit caster) {
+					if (caster.getMana() < 2) {
+						return false;
+					}
+					return true;
+				}
+
+				@Override
+				public TargetType getTargetType() {
+					return TargetType.FOE;
+				}
+
+				@Override
+				public TargetGrouping getTargetGrouping() {
+					return TargetGrouping.ALL;
+				}
+
+				@Override
+				public double warmUp() {
+					return 60;
+				}
+
+				@Override
+				public double coolDown() {
+					return 20;
+				}
+
+				@Override
+				public String getName() {
+					return "whine";
+				}
+
+				@Override
+				public String getDesc() {
+					return "2mp: destroys the targets' mana.";
+				}});
+		
 		
 	}
 	

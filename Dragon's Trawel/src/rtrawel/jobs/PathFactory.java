@@ -261,11 +261,13 @@ public class PathFactory {
 						b.timeLeft = 1;
 						b.type = Buff.BuffType.KNO_MOD;
 						if (jobActive) {
-						player.addAbility(ActionFactory.getActionByName("mend"));}
+						player.addAbility(ActionFactory.getActionByName("mend"));
+						if (points > 4) {
+							player.addAbility(ActionFactory.getActionByName("battle heal"));
+						}
+						}
 					}
-					if (jobActive && points > 4) {
-						player.addAbility(ActionFactory.getActionByName("battle heal"));
-					}
+					
 					
 				}
 
@@ -289,7 +291,7 @@ public class PathFactory {
 
 				@Override
 				public String name() {
-					return "damnation";//protection
+					return "damnation";//offense
 				}
 
 				@Override

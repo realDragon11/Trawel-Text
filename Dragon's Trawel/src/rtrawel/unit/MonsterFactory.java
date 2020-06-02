@@ -1478,6 +1478,273 @@ public class MonsterFactory {
 				r.addRaceType(RaceType.MATERIAL);
 				r.addRaceType(RaceType.ANIMATED);
 			}});
+		
+		data.put("whining witch",new MonsterData() {
+			
+
+			@Override
+			public int getStrength() {
+				return 0;
+			}
+
+			@Override
+			public int getKnowledge() {
+				return 50;
+			}
+
+			@Override
+			public int getMaxHp() {
+				return 12;
+			}
+
+			@Override
+			public int getMaxMana() {
+				return 12;
+			}
+
+			@Override
+			public int getMaxTension() {
+				return 0;
+			}
+
+			@Override
+			public int getSpeed() {
+				return 10;
+			}
+
+			@Override
+			public int getAgility() {
+				return 20;
+			}
+
+			@Override
+			public int getDexterity() {
+				return 30;
+			}
+
+			@Override
+			public int getResilence() {
+				return 10;
+			}
+
+			@Override
+			public List<Action> getActions() {
+				List<Action> list = new ArrayList<Action>();
+				list.add(ActionFactory.getActionByName("whine"));
+				list.add(ActionFactory.getActionByName("ice arrow"));
+				list.add(ActionFactory.getActionByName("medicine heal"));
+				return list;
+			}
+
+			@Override
+			public String getName() {
+				return "whining witch";
+			}
+
+			@Override
+			public String getDesc() {
+				return "Beware their mana-draining whine!";
+			}
+
+			@Override
+			public DamMultMap getDamMultMap() {
+				DamMultMap map = new DamMultMap();
+				return map;
+			}
+
+			@Override
+			public int getXp() {
+				return 18;
+			}
+
+			@Override
+			public int getGold() {
+				return 10;
+			}
+
+			@Override
+			public String getDrop() {
+				return "wooden wand";
+			}
+
+			@Override
+			public double getDropChance() {
+				return (1.0/16.0);
+			}
+
+			@Override
+			public String getRareDrop() {
+				return "essence of witchery";
+			}
+
+			@Override
+			public double getRareDropChance() {
+				return (1.0/64.0);
+			}
+
+			@Override
+			public int getKillsTilKnown() {
+				return 3;
+			}
+
+			@Override
+			public int getKillsTilVeryKnown() {
+				return 6;
+			}
+
+			@Override
+			public String getWeapon() {
+				return "wooden wand";
+			}
+
+			@Override
+			public SpriteData getSpriteData() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public double shieldBlockChance() {
+				return 0;
+			}
+
+			@Override
+			public void initer(RMonster r) {
+				r.addRaceType(RaceType.HUMANOID);
+			}});
+		
+		data.put("animated broom",new MonsterData() {
+			
+
+			@Override
+			public int getStrength() {
+				return 20;
+			}
+
+			@Override
+			public int getKnowledge() {
+				return 0;
+			}
+
+			@Override
+			public int getMaxHp() {
+				return 6;
+			}
+
+			@Override
+			public int getMaxMana() {
+				return 2;
+			}
+
+			@Override
+			public int getMaxTension() {
+				return 0;
+			}
+
+			@Override
+			public int getSpeed() {
+				return 100;
+			}
+
+			@Override
+			public int getAgility() {
+				return 50;
+			}
+
+			@Override
+			public int getDexterity() {
+				return 0;
+			}
+
+			@Override
+			public int getResilence() {
+				return 40;
+			}
+
+			@Override
+			public List<Action> getActions() {
+				List<Action> list = new ArrayList<Action>();
+				list.add(ActionFactory.getActionByName("attack"));
+				return list;
+			}
+
+			@Override
+			public String getName() {
+				return "animated broom";
+			}
+
+			@Override
+			public String getDesc() {
+				return "An animated attacker, brought forth from a broom. De-animate it with magic!";
+			}
+
+			@Override
+			public DamMultMap getDamMultMap() {
+				DamMultMap map = new DamMultMap();
+				map.insert(DamageType.MAGIC,1.5);
+				return map;
+			}
+
+			@Override
+			public int getXp() {
+				return 5;
+			}
+
+			@Override
+			public int getGold() {
+				return 2;
+			}
+
+			@Override
+			public String getDrop() {
+				return "pole";
+			}
+
+			@Override
+			public double getDropChance() {
+				return (1.0/32.0);
+			}
+
+			@Override
+			public String getRareDrop() {
+				return "essence of witchery";
+			}
+
+			@Override
+			public double getRareDropChance() {
+				return (1.0/256.0);
+			}
+
+			@Override
+			public int getKillsTilKnown() {
+				return 5;
+			}
+
+			@Override
+			public int getKillsTilVeryKnown() {
+				return 10;
+			}
+
+			@Override
+			public String getWeapon() {
+				return "wooden wand";
+			}
+
+			@Override
+			public SpriteData getSpriteData() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public double shieldBlockChance() {
+				return 0;
+			}
+
+			@Override
+			public void initer(RMonster r) {
+				r.addRaceType(RaceType.ANIMATED);
+			}});
 	}
 	
 	
