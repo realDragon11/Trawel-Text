@@ -1543,6 +1543,67 @@ public class ActionFactory {
 				public String getDesc() {
 					return "7mp: Flames out the field, dealing fire damage to a all foes.";
 				}});
+			
+			data.put("thunder",new Action(){
+
+				@Override
+				public void go(RUnit caster, TargetGroup target) {
+					extra.println(caster.getName() + " casts thunder on " + target.toString());
+					caster.drainMp(5);
+					Weapon w = caster.getWeapon();
+					List<DamageType> list = new ArrayList<DamageType>();
+					list.add(DamageType.SHOCK);
+					list.add(DamageType.MAGIC);
+					for (RUnit u: target.targets) {
+						if (RCore.doAttack(caster, u,caster.getKnowledge(),1,4* (RCore.doesHit(caster,u,.05,true)? 1.5 : 1),true,list) > -1) {
+							u.knockStun(.05,10);
+						}
+						
+					}
+				}
+
+				@Override
+				public double getWeight() {
+					return 4;
+				}
+
+				@Override
+				public boolean canCast(RUnit caster) {
+					if (caster.getMana() < 5) {
+						return false;
+					}
+					return true;
+				}
+
+				@Override
+				public TargetType getTargetType() {
+					return TargetType.FOE;
+				}
+
+				@Override
+				public TargetGrouping getTargetGrouping() {
+					return TargetGrouping.ALL;
+				}
+
+				@Override
+				public double warmUp() {
+					return 110;
+				}
+
+				@Override
+				public double coolDown() {
+					return 40;
+				}
+
+				@Override
+				public String getName() {
+					return "thunder";
+				}
+
+				@Override
+				public String getDesc() {
+					return "5mp: Fills the field with fierce thunder, damaging all foes and possibly stunning them out of their actions.";
+				}});
 		
 	}
 	

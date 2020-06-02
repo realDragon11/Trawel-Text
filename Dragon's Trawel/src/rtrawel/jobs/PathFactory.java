@@ -82,7 +82,16 @@ public class PathFactory {
 
 			@Override
 			public void applyOnce(RPlayer player, int points, int formerPoints) {
-				// TODO Auto-generated method stub
+				if (points-formerPoints > 0) {
+					int cum = 0;
+					for (int i = formerPoints+1; i <= points;i++) {
+						if (i%5 == 0) {
+							cum++;
+						}
+					}
+				if (cum > 0) {
+				player.addWeaponPoints(cum);}
+				}
 				
 			}
 
@@ -112,7 +121,16 @@ public class PathFactory {
 
 			@Override
 			public void applyOnce(RPlayer player, int points, int formerPoints) {
-				// TODO Auto-generated method stub
+				if (points-formerPoints > 0) {
+					int cum = 0;
+					for (int i = formerPoints+1; i <= points;i++) {
+						if (i%2 == 0) {
+							cum++;
+						}
+					}
+				if (cum > 0) {
+				player.addWeaponPoints(cum);}
+				}
 				
 			}
 
@@ -169,7 +187,16 @@ public class PathFactory {
 
 			@Override
 			public void applyOnce(RPlayer player, int points, int formerPoints) {
-				
+				if (points-formerPoints > 0) {
+					int cum = 0;
+					for (int i = formerPoints+1; i <= points;i++) {
+						if (i%7 == 0) {
+							cum++;
+						}
+					}
+				if (cum > 0) {
+				player.addWeaponPoints(cum);}
+				}
 				
 			}});
 		data.put("surveying",new Path() {
@@ -199,7 +226,16 @@ public class PathFactory {
 
 			@Override
 			public void applyOnce(RPlayer player, int points, int formerPoints) {
-				// 
+				if (points-formerPoints > 0) {
+					int cum = 0;
+					for (int i = formerPoints+1; i <= points;i++) {
+						if (i%7 == 0) {
+							cum++;
+						}
+					}
+				if (cum > 0) {
+				player.addWeaponPoints(cum);}
+				}
 				
 			}});
 		
@@ -393,7 +429,16 @@ public class PathFactory {
 
 				@Override
 				public void applyOnce(RPlayer player, int points, int formerPoints) {
-					
+					if (points-formerPoints > 0) {
+						int cum = 0;
+						for (int i = formerPoints+1; i <= points;i++) {
+							if (i%5 == 0) {
+								cum++;
+							}
+						}
+					if (cum > 0) {
+					player.addWeaponPoints(cum);}
+					}
 				}
 
 				});
@@ -463,7 +508,10 @@ public class PathFactory {
 						b.timeLeft = 1;
 						b.type = Buff.BuffType.KNO_MOD;
 						if (jobActive) {
-						player.addAbility(ActionFactory.getActionByName("ice arrow"));}
+						player.addAbility(ActionFactory.getActionByName("ice arrow"));
+						
+						
+						}
 					}
 					
 				}
@@ -506,7 +554,11 @@ public class PathFactory {
 						b.timeLeft = 1;
 						b.type = Buff.BuffType.KNO_MOD;
 						if (jobActive) {
-						player.addAbility(ActionFactory.getActionByName("electric amp"));}
+						player.addAbility(ActionFactory.getActionByName("electric amp"));
+						if (points > 9) {
+							player.addAbility(ActionFactory.getActionByName("thunder"));
+						}
+						}
 					}
 					
 				}

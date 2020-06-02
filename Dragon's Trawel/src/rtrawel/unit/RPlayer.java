@@ -645,6 +645,11 @@ public class RPlayer extends RUnit {
 			Party.party.addItem(assec2.getName(),1);
 			assec2 = null;
 		}
+		
+		if (shield != null && !j.weaponTypes().contains(WeaponType.SHIELD)) {
+			Party.party.addItem(shield.getName(),1);
+			shield = null;
+		}
 	}
 
 

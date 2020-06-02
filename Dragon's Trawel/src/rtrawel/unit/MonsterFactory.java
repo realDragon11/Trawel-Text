@@ -1098,7 +1098,7 @@ public class MonsterFactory {
 
 			@Override
 			public int getMaxMana() {
-				return 0;
+				return 2;
 			}
 
 			@Override
@@ -1327,6 +1327,139 @@ public class MonsterFactory {
 			@Override
 			public String getWeapon() {
 				return "iron golem punch";
+			}
+
+			@Override
+			public SpriteData getSpriteData() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public double shieldBlockChance() {
+				return 0;
+			}
+
+			@Override
+			public void initer(RMonster r) {
+				r.addRaceType(RaceType.MATERIAL);
+				r.addRaceType(RaceType.ANIMATED);
+			}});
+		
+		data.put("metal minion",new MonsterData() {
+			
+
+			@Override
+			public int getStrength() {
+				return 20;
+			}
+
+			@Override
+			public int getKnowledge() {
+				return 0;
+			}
+
+			@Override
+			public int getMaxHp() {
+				return 10;
+			}
+
+			@Override
+			public int getMaxMana() {
+				return 0;
+			}
+
+			@Override
+			public int getMaxTension() {
+				return 0;
+			}
+
+			@Override
+			public int getSpeed() {
+				return 5;
+			}
+
+			@Override
+			public int getAgility() {
+				return 2;
+			}
+
+			@Override
+			public int getDexterity() {
+				return 0;
+			}
+
+			@Override
+			public int getResilence() {
+				return 40;
+			}
+
+			@Override
+			public List<Action> getActions() {
+				List<Action> list = new ArrayList<Action>();
+				list.add(ActionFactory.getActionByName("attack"));
+				return list;
+			}
+
+			@Override
+			public String getName() {
+				return "metal minion";
+			}
+
+			@Override
+			public String getDesc() {
+				return "A metalic minion that mindfully wields a spear.";
+			}
+
+			@Override
+			public DamMultMap getDamMultMap() {
+				DamMultMap map = new DamMultMap();
+				return map;
+			}
+
+			@Override
+			public int getXp() {
+				return 8;
+			}
+
+			@Override
+			public int getGold() {
+				return 4;
+			}
+
+			@Override
+			public String getDrop() {
+				return "iron chunk";
+			}
+
+			@Override
+			public double getDropChance() {
+				return (1.0/32.0);
+			}
+
+			@Override
+			public String getRareDrop() {
+				return "iron chunk";
+			}
+
+			@Override
+			public double getRareDropChance() {
+				return (1.0/64.0);
+			}
+
+			@Override
+			public int getKillsTilKnown() {
+				return 3;
+			}
+
+			@Override
+			public int getKillsTilVeryKnown() {
+				return 6;
+			}
+
+			@Override
+			public String getWeapon() {
+				return "mm spear";
 			}
 
 			@Override

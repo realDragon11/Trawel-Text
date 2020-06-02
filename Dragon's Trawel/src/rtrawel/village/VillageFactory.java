@@ -45,6 +45,7 @@ public class VillageFactory {
 		villages.add(unun);
 		unun.addFight(FightFactory.getFightByName("unun_armor1"));
 		unun.addFight(FightFactory.getFightByName("unun_golem1"));
+		unun.addFight(FightFactory.getFightByName("unun_golem2"));
 		unun.conts.add(new Church());
 		unun.conts.add(new Inn(10));
 		if (EventFlag.eventFlag.getEF("unun_recruit_1") == 0) {

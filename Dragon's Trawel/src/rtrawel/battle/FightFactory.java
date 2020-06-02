@@ -56,6 +56,9 @@ public class FightFactory {
 		f.addFoes("iron golem",1);
 		f.addFoes("animated armor",1);
 		data.put("unun_golem1",f);
+		f.addFoes("iron golem",1);
+		f.addFoes("metal minion",3);
+		data.put("unun_golem2",f);
 		
 		f = new Fight();
 		f.addFoes("giant squid",1);

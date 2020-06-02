@@ -13,14 +13,26 @@ public class Roads implements Content {
 	@Override
 	public boolean go() {
 		int i = 1;
+		extra.println(i++ + " back");
+		extra.println(i++ + " wander around");
 		for (Connection c: connects) {
 			extra.println(i + " " + c.name(Party.party.curVillage));
 			i++;
 		}
-		extra.println(i++ + " wander around");
-		extra.println(i + " back");
+		
+		
 		int in = extra.inInt(i);
 		i = 1;
+		if (in == i) {
+			return true;
+		}
+		i++;
+		if (in == i) {
+			Party.party.curVillage.doRandomBattle();
+			return false;
+		}
+		
+		i++;
 		for (Connection c: connects) {
 			if (in == i) {
 				Party.party.curVillage = c.go(Party.party.curVillage);
@@ -28,14 +40,8 @@ public class Roads implements Content {
 			}
 			i++;
 		}
-		if (in == i) {
-			Party.party.curVillage.doRandomBattle();
-			return false;
-		}
-		i++;
-		if (in == i) {
-			return true;
-		}
+
+		
 		return false;
 	}
 
