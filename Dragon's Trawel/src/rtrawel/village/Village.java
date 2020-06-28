@@ -31,6 +31,10 @@ public class Village {
 	}
 
 	public void doRandomBattle() {
+		if (spawns.size() == 0) {
+			extra.println("There are no monsters here.");
+			return;
+		}
 		extra.randList(spawns).go();
 		if (!Party.party.allDead()) {
 			wanderCombo++;

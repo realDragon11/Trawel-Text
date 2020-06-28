@@ -103,6 +103,10 @@ public class VillageFactory {
 		villages.add(revan);
 		new Connection(unun,revan,null,null);
 		
+		Village towerFate = new Village("tower of fate");//???
+		villages.add(towerFate);
+		new Connection(unun,towerFate,FightFactory.getFightByName("stone_runedoor"),"tower_of_fate_entry");
+		
 		return villages.get(0);
 	}
 }

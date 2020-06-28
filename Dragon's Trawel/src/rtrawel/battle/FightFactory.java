@@ -56,14 +56,16 @@ public class FightFactory {
 		f.addFoes("iron golem",1);
 		f.addFoes("animated armor",1);
 		data.put("unun_golem1",f);
+		f = new Fight();
 		f.addFoes("iron golem",1);
 		f.addFoes("metal minion",3);
 		data.put("unun_golem2",f);
 		
+		f = new Fight();
 		f.addFoes("whining witch",1);
 		f.addFoes("animated broom",4);
 		data.put("hemo_witch1",f);
-		
+		f = new Fight();
 		f.addFoes("whining witch",2);
 		f.addFoes("animated broom",1);
 		data.put("hemo_witch2",f);
@@ -72,6 +74,10 @@ public class FightFactory {
 		f.addFoes("giant squid",1);
 		f.addFlag("homa_unun_boss");
 		data.put("homa_unun_boss",f);
+		
+		f = new Fight();
+		f.addFoes("stone rune door",1);
+		data.put("stone_runedoor",f);
 	}
 	
 	public static Fight getFightByName(String str) {

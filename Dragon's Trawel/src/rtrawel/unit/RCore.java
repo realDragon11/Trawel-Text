@@ -20,6 +20,7 @@ import rtrawel.items.WeaponFactory;
 import rtrawel.jobs.JobFactory;
 import rtrawel.jobs.PathFactory;
 import rtrawel.unit.RUnit.FightingStance;
+import rtrawel.unit.RUnit.RaceType;
 import rtrawel.village.RecipeFactory;
 import trawel.Plane;
 import trawel.Player;
@@ -43,7 +44,11 @@ public class RCore {
 		case DEFENSIVE: evadeMult += .1;break;
 		}
 		double hitMult = 1.1 + (attacker.getStance().equals(FightingStance.DEFENSIVE) && !ranged ? -.1 : 0);
-		double hitChance = (hitMult*(attacker.getAgility()+100))/(evadeMult*(extra.zeroOut(attacker.getAgility()+80)+20));
+		double agi = attacker.getAgility();
+		if (attacker.getRaceType(RaceType.KNO_AS_TOHIT)) {
+			agi = attacker.getKnowledge();
+		}
+		double hitChance = (hitMult*(agi+100))/(evadeMult*(extra.zeroOut(defender.getAgility()+80)+20));
 		if (hitChance < .9) {
 		return hitChance > Math.random();}else {
 			return lerp(.9,1,hitChance/3) > Math.random();

@@ -1745,6 +1745,142 @@ public class MonsterFactory {
 			public void initer(RMonster r) {
 				r.addRaceType(RaceType.ANIMATED);
 			}});
+		
+		data.put("stone rune door",new MonsterData() {
+			
+
+			@Override
+			public int getStrength() {
+				return 0;
+			}
+
+			@Override
+			public int getKnowledge() {
+				return 100;
+			}
+
+			@Override
+			public int getMaxHp() {
+				return 50;
+			}
+
+			@Override
+			public int getMaxMana() {
+				return 9999;//will crash the game if it runs out
+			}
+
+			@Override
+			public int getMaxTension() {
+				return 0;
+			}
+
+			@Override
+			public int getSpeed() {
+				return 0;
+			}
+
+			@Override
+			public int getAgility() {
+				return 0;
+			}
+
+			@Override
+			public int getDexterity() {
+				return 0;
+			}
+
+			@Override
+			public int getResilence() {
+				return 200;
+			}
+
+			@Override
+			public List<Action> getActions() {
+				List<Action> list = new ArrayList<Action>();
+				list.add(ActionFactory.getActionByName("thunder"));
+				list.add(ActionFactory.getActionByName("fireball"));
+				list.add(ActionFactory.getActionByName("ice arrow"));
+				return list;
+			}
+
+			@Override
+			public String getName() {
+				return "stone rune door";
+			}
+
+			@Override
+			public String getDesc() {
+				return "...";
+			}
+
+			@Override
+			public DamMultMap getDamMultMap() {
+				DamMultMap map = new DamMultMap();
+				return map;
+			}
+
+			@Override
+			public int getXp() {
+				return 100;
+			}
+
+			@Override
+			public int getGold() {
+				return 50;
+			}
+
+			@Override
+			public String getDrop() {
+				return "iron chunk";//TODO
+			}
+
+			@Override
+			public double getDropChance() {
+				return (1.0/32.0);//TODO
+			}
+
+			@Override
+			public String getRareDrop() {
+				return "iron chunk";//TODO
+			}
+
+			@Override
+			public double getRareDropChance() {
+				return (1.0/64.0);
+			}
+
+			@Override
+			public int getKillsTilKnown() {
+				return 1;
+			}
+
+			@Override
+			public int getKillsTilVeryKnown() {
+				return 1;
+			}
+
+			@Override
+			public String getWeapon() {
+				return "door";
+			}
+
+			@Override
+			public SpriteData getSpriteData() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public double shieldBlockChance() {
+				return 0;
+			}
+
+			@Override
+			public void initer(RMonster r) {
+				r.addRaceType(RaceType.MATERIAL);
+				r.addRaceType(RaceType.DOOR);
+				r.addRaceType(RaceType.KNO_AS_TOHIT);
+			}});
 	}
 	
 	
