@@ -2,6 +2,8 @@ package trawel;
 import java.awt.Color;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
 
 import trawel.Feature.QRType;
 
@@ -30,55 +32,81 @@ public class Forest extends Feature implements java.io.Serializable{
 	public void go() {
 		Networking.setArea("forest");
 		Networking.sendStrong("Discord|imagesmall|forest|Forest|");
-		// TODO add a ton of events that can happen in forests
-		extra.println("1 explore");
-		extra.println("2 exit");
-		int in =  extra.inInt(2);
-		if (in == 1) {
-			exhaust++;
-			explores++;
-			if (explores == 10) {
-				Player.player.addTitle(this.getName() + " wanderer");
+		List<MenuItem> mList = new ArrayList<MenuItem>();
+		mList.add(new MenuItem() {
+
+			@Override
+			public String title() {
+				return "explore";
 			}
-			if (explores == 50) {
-				Player.player.addTitle(this.getName() + " explorer");
+
+			@Override
+			public boolean go() {
+				explore();
+				return false;
 			}
-			if (explores == 100) {
-				Player.player.addTitle(this.getName() + " guide");
-			}
-			if (Player.player.animalQuest == 0 && Math.random() > .8) {
-				fallenTree(); go();return;
-			}
-			if (dryadQuest > 0 && dryadQuest < 5 && Math.random() > .5) {
-				lumerbjackDryad(); go();return;
-			}
-			if (exhaust > 10) {
-				if (!extra.chanceIn(1,(int)(exhaust/3))) {
-					dryForest();
-					return;
-				}
-			}
-			switch (extra.randRange(1,21)) {
-			case 1: goldStream();break;
-			case 2: case 3: case 4: funkyMushroom();break;
-			case 5: case 6:  mugger1();break;
-			case 7: if (Math.random() > .5){
-				fallenTree();}else {hangedMan();}break;
-			case 8: case 9: mugger2();break;
-			case 10: case 11: dryad();break;
-			case 12: case 13: this.treeOnPerson();break;
-			case 14: case 15: this.oldFighter();break;
-			case 16: this.fairyCircle1();break;
-			case 17: case 21: //if (fairyCircle2()) {return;};break;
-			case 18: this.fairyCircle3();break;
-			case 19: findEquip();break;
-			case 20: abandonedHut();break;
-			}
-			Player.addTime(.5);
+		});
+		for (QuestR qr: qrList) {
+			mList.add(new QRMenuItem(qr));
 		}
-		if (in == 2) {return;}
+		mList.add(new MenuItem() {
+
+			@Override
+			public String title() {
+				return "exit";
+			}
+
+			@Override
+			public boolean go() {
+				return true;
+			}
+		});
+		
+		while (!extra.menuGo(mList));
+	}
+	
+	public void explore() {
+		exhaust++;
+		explores++;
+		if (explores == 10) {
+			Player.player.addTitle(this.getName() + " wanderer");
+		}
+		if (explores == 50) {
+			Player.player.addTitle(this.getName() + " explorer");
+		}
+		if (explores == 100) {
+			Player.player.addTitle(this.getName() + " guide");
+		}
+		if (Player.player.animalQuest == 0 && Math.random() > .8) {
+			fallenTree(); go();return;
+		}
+		if (dryadQuest > 0 && dryadQuest < 5 && Math.random() > .5) {
+			lumerbjackDryad(); go();return;
+		}
+		if (exhaust > 10) {
+			if (!extra.chanceIn(1,(int)(exhaust/3))) {
+				dryForest();
+				return;
+			}
+		}
+		switch (extra.randRange(1,21)) {
+		case 1: goldStream();break;
+		case 2: case 3: case 4: funkyMushroom();break;
+		case 5: case 6:  mugger1();break;
+		case 7: if (Math.random() > .5){
+			fallenTree();}else {hangedMan();}break;
+		case 8: case 9: mugger2();break;
+		case 10: case 11: dryad();break;
+		case 12: case 13: this.treeOnPerson();break;
+		case 14: case 15: this.oldFighter();break;
+		case 16: this.fairyCircle1();break;
+		case 17: case 21: //if (fairyCircle2()) {return;};break;
+		case 18: this.fairyCircle3();break;
+		case 19: findEquip();break;
+		case 20: abandonedHut();break;
+		}
+		Player.addTime(.5);
 		Networking.clearSide(1);
-		go();
 	}
 
 

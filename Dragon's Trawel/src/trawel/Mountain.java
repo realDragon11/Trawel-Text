@@ -1,5 +1,7 @@
 package trawel;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 import trawel.Feature.QRType;
 
@@ -27,51 +29,51 @@ public class Mountain extends Feature implements java.io.Serializable{
 	public void go() {
 		Networking.setArea("mountain");
 		Networking.sendStrong("Discord|imagesmall|mountain|Mountain|");
-		extra.println("1 explore");
-		extra.println("2 visit hot springs");
-		extra.println("3 exit");
-		int in =  extra.inInt(3);
-		if (in == 1) {
-			explores++;
-			exhaust++;
-			if (explores == 10) {
-				Player.player.addTitle(this.getName() + " wanderer");
+		List<MenuItem> mList = new ArrayList<MenuItem>();
+		mList.add(new MenuItem() {
+
+			@Override
+			public String title() {
+				return "explore";
 			}
-			if (explores == 50) {
-				Player.player.addTitle(this.getName() + " explorer");
+
+			@Override
+			public boolean go() {
+				explore();
+				return false;
 			}
-			if (explores == 100) {
-				Player.player.addTitle(this.getName() + " guide");
-			}
-			if (exhaust > 10) {
-				if (!extra.chanceIn(1,(int)(exhaust/3))) {
-					dryMountain();
-					return;
-				}
-			}
-			switch (extra.randRange(1,11)) {
-			case 1: rockSlide() ;break;
-			case 2: ropeBridge() ;break;
-			case 3: goldGoat() ;break;
-			case 4: mugger1();break;
-			case 5: mugger2();break;
-			case 6: mugger3();break;
-			case 7: wanderingDuelist();break;
-			case 8: oldFighter();break;
-			case 9: goldRock();break;
-			case 10: findEquip();break;
-			case 11: vampireHunter();break;
-			}
-			Player.addTime(.5);
+		});
+		for (QuestR qr: qrList) {
+			mList.add(new QRMenuItem(qr));
 		}
-		if (in == 2) {
-			Player.player.getPerson().washAll();
-			extra.println("You wash the blood off of your armor.");
-			Player.bag.graphicalDisplay(-1,Player.player.getPerson());
-		}
-		if (in == 3) {return;}
-		Networking.clearSide(1);
-		go();
+		mList.add(new MenuItem() {
+
+			@Override
+			public String title() {
+				return "visit hot springs";
+			}
+
+			@Override
+			public boolean go() {
+				Player.player.getPerson().washAll();
+				extra.println("You wash the blood off of your armor.");
+				Player.bag.graphicalDisplay(-1,Player.player.getPerson());
+				return false;
+			}
+		});
+		mList.add(new MenuItem() {
+
+			@Override
+			public String title() {
+				return "exit";
+			}
+
+			@Override
+			public boolean go() {
+				return true;
+			}
+		});
+			
 	}
 
 	@Override
@@ -93,6 +95,41 @@ public class Mountain extends Feature implements java.io.Serializable{
 			Agent a = (Agent)peep;
 			a.getPerson().washAll();
 		}
+	}
+	
+	public void explore(){
+		explores++;
+		exhaust++;
+		if (explores == 10) {
+			Player.player.addTitle(this.getName() + " wanderer");
+		}
+		if (explores == 50) {
+			Player.player.addTitle(this.getName() + " explorer");
+		}
+		if (explores == 100) {
+			Player.player.addTitle(this.getName() + " guide");
+		}
+		if (exhaust > 10) {
+			if (!extra.chanceIn(1,(int)(exhaust/3))) {
+				dryMountain();
+				return;
+			}
+		}
+		switch (extra.randRange(1,11)) {
+		case 1: rockSlide() ;break;
+		case 2: ropeBridge() ;break;
+		case 3: goldGoat() ;break;
+		case 4: mugger1();break;
+		case 5: mugger2();break;
+		case 6: mugger3();break;
+		case 7: wanderingDuelist();break;
+		case 8: oldFighter();break;
+		case 9: goldRock();break;
+		case 10: findEquip();break;
+		case 11: vampireHunter();break;
+		}
+		Player.addTime(.5);
+		Networking.clearSide(1);
 	}
 	
 	private void rockSlide() {

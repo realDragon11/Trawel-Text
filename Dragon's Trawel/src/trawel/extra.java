@@ -424,8 +424,9 @@ public class extra {
 			int v = 1;
 			for (MenuItem m: mList) {
 				extra.println(v + " " + m.title());
+				v++;
 			}
-			return mList.get(extra.inInt(v)).go();
+			return mList.get(extra.inInt(v)-1).go();
 		}
 		
 }
