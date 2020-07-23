@@ -1,12 +1,19 @@
 package trawel;
 import java.awt.Color;
 
+import trawel.Feature.QRType;
+
 public class Mountain extends Feature implements java.io.Serializable{
 
 	private int tier;
 	private int explores;
 	private int exhaust;
 	private int time;
+	
+	@Override
+	public QRType getQRType() {
+		return QRType.MOUNTAIN;
+	}
 	
 	public Mountain(String name, int tier) {
 		this.tier = tier;

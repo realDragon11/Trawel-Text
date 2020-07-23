@@ -1,6 +1,8 @@
 package trawel;
 import java.awt.Color;
 
+import trawel.Feature.QRType;
+
 //sells booze which increases temp hp for a few fights,
 //has a resident which changes with time
 public class Inn extends Feature implements java.io.Serializable{
@@ -15,6 +17,11 @@ public class Inn extends Feature implements java.io.Serializable{
 
 	
 	private final static int RES_COUNT = 8;
+
+	@Override
+	public QRType getQRType() {
+		return QRType.INN;
+	}
 	
 	public Inn(String n, int t,Town twn, SuperPerson owner) {
 		name = n;
@@ -45,9 +52,10 @@ public class Inn extends Feature implements java.io.Serializable{
 		extra.println("2 beer ("+tier+"gp)");
 		extra.println("3 "+residentName);
 		extra.println("4 bard");
-		int size = 4;
+		extra.println("5 backroom");
+		int size = 5;
 		if (town.getOccupants().size() >=2){
-		extra.println("5 watch duel (" + extra.format(nextReset-timePassed+1) + " hours)");
+		extra.println("6 watch duel (" + extra.format(nextReset-timePassed+1) + " hours)");
 		size++;}
 		
 		switch(extra.inInt(size)) {
@@ -55,13 +63,19 @@ public class Inn extends Feature implements java.io.Serializable{
 		case 2: buyBeer();break;
 		case 3: goResident();break;
 		case 4: bard();break;
-		case 5: this.playerwatch = true; occupantDuel(); Player.addTime((nextReset-timePassed+1));
+		case 5: backroom();break;
+		case 6: this.playerwatch = true; occupantDuel(); Player.addTime((nextReset-timePassed+1));
 		;return;
 		}
 		}
 	}
 
 	
+
+	private void backroom() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	private void bard() {
 		town.getIsland().getWorld().getRandSong().printSong();

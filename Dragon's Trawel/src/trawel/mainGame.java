@@ -14,7 +14,7 @@ import java.util.Scanner;
  * calls all the other classes, and holds the defining gameplay types and inputs.
  */
 public class mainGame {
-	public static final boolean bumpEnabled = false;//a boolean for an update
+	public static final boolean bumpEnabled = true;//a boolean for an update
 
 	//instance variables
 	public static Scanner scanner = new Scanner(System.in);

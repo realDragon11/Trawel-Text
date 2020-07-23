@@ -3,12 +3,19 @@ import java.awt.Color;
 import java.time.LocalDateTime;
 import java.time.Month;
 
+import trawel.Feature.QRType;
+
 public class Forest extends Feature implements java.io.Serializable{
 
 	private int tier;
 	private int explores;
 	private int dryadQuest;
 	private int exhaust;
+	
+	@Override
+	public QRType getQRType() {
+		return QRType.FOREST;
+	}
 	
 	public Forest(String name, int tier) {
 		this.tier = tier;
