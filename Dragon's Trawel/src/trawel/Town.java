@@ -549,4 +549,30 @@ public class Town implements java.io.Serializable{
 		}
 		return false;
 	}
+	
+	public ArrayList<Feature> getQuestLocationsInRange(int i){
+		ArrayList<Town> tList = new ArrayList<Town>();
+		tList.add(this);
+		for (int v = 0; v < i;v++) {
+			for (Town t: tList) {
+				for (Connection c: t.getConnects()) {
+					for (Town f: c.getTowns()) {
+						if (!tList.contains(f)) {
+							tList.add(f);
+						}
+					}
+				}
+			}
+			
+		}
+		ArrayList<Feature> retList = new ArrayList<Feature>();
+		for (Town t: tList) {
+			for (Feature f: t.getFeatures()){
+				if (f.getQRType() != Feature.QRType.NONE) {
+					retList.add(f);
+				}
+			}
+		}
+		return retList;
+	}
 }
