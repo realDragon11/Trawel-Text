@@ -419,6 +419,14 @@ public class extra {
 		public static double clamp(double d, double min, double max) {
 			return Math.min(max, Math.max(d, min));
 		}
+
+		public static boolean menuGo(List<MenuItem> mList) {
+			int v = 1;
+			for (MenuItem m: mList) {
+				extra.println(v + " " + m.title());
+			}
+			return mList.get(extra.inInt(v)).go();
+		}
 		
 }
 

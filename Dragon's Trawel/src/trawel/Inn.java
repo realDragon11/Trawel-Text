@@ -1,5 +1,7 @@
 package trawel;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 import trawel.Feature.QRType;
 
@@ -73,7 +75,21 @@ public class Inn extends Feature implements java.io.Serializable{
 	
 
 	private void backroom() {
-		// TODO Auto-generated method stub
+		List<MenuItem> mList = new ArrayList<MenuItem>();
+		mList.add(new MenuItem() {
+
+			@Override
+			public String title() {
+				return "back";
+			}
+
+			@Override
+			public boolean go() {
+				return true;
+			}
+		});
+		
+		while (!extra.menuGo(mList));
 		
 	}
 
