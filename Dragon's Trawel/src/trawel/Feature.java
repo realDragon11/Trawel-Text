@@ -14,7 +14,8 @@ public abstract class Feature implements java.io.Serializable{
 	protected ArrayList<QuestR> qrList = new ArrayList<QuestR>();
 	protected ArrayList<QuestR> qrRemoveList = new ArrayList<QuestR>(); 
 	public abstract void go();
-
+	public void init() {
+	}
 	public abstract void passTime(double time);
 	
 	public String getName() {

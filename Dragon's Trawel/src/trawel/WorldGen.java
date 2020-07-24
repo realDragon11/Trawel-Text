@@ -370,7 +370,9 @@ public class WorldGen {
 		addConnection(repa,greap(),"teleport","world teleport (eonao-greap)");
 		
 		
-		//townFinal(w);
+		for (World wor: plane.worlds()) {
+			townFinal(wor);
+		}
 	
 	}
 	
@@ -418,17 +420,14 @@ public class WorldGen {
 		inka.addTravel();
 		inka.addTravel();
 		
-		
-		
 		return holik;
 	}
 	
 	private static void townFinal(World w) {
 		for (Island i: w.getislands()) {
 			for (Town t: i.getTowns()) {
-				int open = t.openSlots();
-				for (int j = 0;j < open;j++) {
-					//t.addFeature(new TravelingFeature(t.getTier(),t));
+				for (Feature f: t.getFeatures()) {
+					f.init();
 				}
 			}
 		}

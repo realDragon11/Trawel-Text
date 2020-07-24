@@ -40,13 +40,18 @@ public class Inn extends Feature implements java.io.Serializable{
 		tutorialText = "Inns are a great place to buy beer and have various residents.";
 		color = Color.YELLOW;
 		this.owner = owner;
+		
+	}
+	
+	@Override
+	public void init() {
 		try {
-		while (sideQuests.size() < 3) {
-			generateSideQuest();
-		}
-		}catch (Exception e) {
-			canQuest = false;
-		}
+			while (sideQuests.size() < 3) {
+				generateSideQuest();
+			}
+			}catch (Exception e) {
+				canQuest = false;
+			}
 	}
 	
 	private void generateSideQuest() {

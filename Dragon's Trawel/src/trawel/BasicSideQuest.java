@@ -30,7 +30,7 @@ public class BasicSideQuest implements Quest{
 		BasicSideQuest q = new BasicSideQuest();
 		switch (extra.randRange(1,1)) {
 		case 1: //fetch quest
-			q.giverName = randomLists.randomFirstName() + randomLists.randomLastName();
+			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
 			q.targetName = extra.choose("totem","heirloom","keepsake","letter","key");
 			q.giver = new QuestR() {
 
