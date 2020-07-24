@@ -198,7 +198,7 @@ public class Player extends SuperPerson{
 				}
 			});
 			while (!extra.menuGo(mList));
-			return false;
+			return true;
 		}
 		
 	}

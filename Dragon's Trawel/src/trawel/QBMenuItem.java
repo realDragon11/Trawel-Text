@@ -25,7 +25,7 @@ public class QBMenuItem implements MenuItem {
 			q.take();
 			i.sideQuests.remove(q);
 		}
-		return false;
+		return true;
 	}
 
 }

@@ -73,6 +73,8 @@ public class Mountain extends Feature implements java.io.Serializable{
 				return true;
 			}
 		});
+		
+		while (!extra.menuGo(mList));
 			
 	}
 
