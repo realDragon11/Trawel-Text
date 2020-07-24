@@ -12,4 +12,6 @@ public interface Quest extends Serializable {
 	
 	public void complete();
 	
+	public void take();
+	
 }

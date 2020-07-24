@@ -1,5 +1,6 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player extends SuperPerson{
 	private Person person;
@@ -19,6 +20,8 @@ public class Player extends SuperPerson{
 	private double merchantPoints = 0;
 	public int emeralds = 0;
 	private Potion flask;
+	
+	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
 	
 	public Player(Person p) {
 		person = p;
@@ -125,6 +128,79 @@ public class Player extends SuperPerson{
 	public void setFlask(Potion p) {
 		flask = p;
 	}
+	public void showQuests() {
+		List<MenuItem> mList = new ArrayList<MenuItem>();
+		
+		for (Quest q: sideQuests) {
+			mList.add(new ExamineQuest(q));
+		}
+		mList.add(new MenuItem() {
+
+			@Override
+			public String title() {
+				return "back";
+			}
+
+			@Override
+			public boolean go() {
+				return true;
+			}
+		});
+		
+		while (!extra.menuGo(mList));
+		
+	}
 	
+	public class AbandonQuest implements MenuItem {
+		Quest quest;
+		public AbandonQuest(Quest q) {
+			quest = q;
+		}
+		@Override
+		public String title() {
+			return "Abandon";
+		}
+
+		@Override
+		public boolean go() {
+			quest.fail();
+			sideQuests.remove(quest);
+			return true;
+		}
+		
+	}
+	public class ExamineQuest implements MenuItem {
+		Quest quest;
+		public ExamineQuest(Quest q) {
+			quest = q;
+		}
+		@Override
+		public String title() {
+			return quest.name();
+		}
+
+		@Override
+		public boolean go() {
+			extra.println(quest.name() + ":");
+			extra.println(quest.desc());
+			List<MenuItem> mList = new ArrayList<MenuItem>();
+			mList.add(new AbandonQuest(quest));
+			mList.add(new MenuItem() {
+
+				@Override
+				public String title() {
+					return "back";
+				}
+
+				@Override
+				public boolean go() {
+					return true;
+				}
+			});
+			while (!extra.menuGo(mList));
+			return false;
+		}
+		
+	}
 	
 }

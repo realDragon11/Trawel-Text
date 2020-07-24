@@ -28,8 +28,10 @@ public class BasicSideQuest implements Quest{
 	
 	public static BasicSideQuest getRandomSideQuest(Town loc,Inn inn) {
 		BasicSideQuest q = new BasicSideQuest();
-		switch (extra.randRange(1,2)) {
+		switch (extra.randRange(1,1)) {
 		case 1: //fetch quest
+			q.giverName = randomLists.randomFirstName() + randomLists.randomLastName();
+			q.targetName = extra.choose("totem","heirloom","keepsake","letter","key");
 			q.giver = new QuestR() {
 
 				@Override
@@ -58,6 +60,7 @@ public class BasicSideQuest implements Quest{
 				public boolean go() {
 					extra.println("You claim the " + q.targetName);
 					q.giver.locationF.addQR(q.giver);
+					q.desc = "Return the " + q.targetName;
 					this.cleanup();
 					return false;
 				}
@@ -66,9 +69,9 @@ public class BasicSideQuest implements Quest{
 			q.target.locationF = extra.randList(loc.getQuestLocationsInRange(3));
 			q.target.locationT = loc;
 			q.target.overQuest = q;
-			q.target.locationF.addQR(q.target);
+			//q.target.locationF.addQR(q.target);
 			q.name = q.giverName + "'s " + q.targetName;
-			q.desc = "Fetch " + q.targetName + " from " + q.target.locationF.getName() + " in " + q.target.locationT.getName();
+			q.desc = "Fetch " + q.targetName + " from " + q.target.locationF.getName() + " in " + q.target.locationT.getName() + " for " + q.giverName;
 			break;
 		case 2: //kill quest
 			
@@ -87,6 +90,12 @@ public class BasicSideQuest implements Quest{
 	@Override
 	public String desc() {
 		return desc;
+	}
+
+	@Override
+	public void take() {
+		target.locationF.addQR(target);
+		
 	}
 }
 

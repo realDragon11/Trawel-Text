@@ -274,7 +274,7 @@ public class Town implements java.io.Serializable{
 		extra.println("1 Stats");
 		extra.println("2 Inventory");
 		extra.println("3 Titles");
-		extra.println("4 Map");
+		extra.println("4 Quests");
 		extra.println("5 Skills");
 		extra.println("6 Main Menu");
 		extra.println("7 Save"
@@ -301,8 +301,7 @@ public class Town implements java.io.Serializable{
 			break;
 		case 3:Player.player.displayTitles();break;
 		case 4:
-			extra.println("This feature no longer works. It will be eventually fixed.");
-			//Player.showMap1();
+			Player.player.showQuests();
 			break;
 		case 5: Player.player.getPerson().playerLevelUp();break;
 		case 6: 
@@ -552,18 +551,20 @@ public class Town implements java.io.Serializable{
 	
 	public ArrayList<Feature> getQuestLocationsInRange(int i){
 		ArrayList<Town> tList = new ArrayList<Town>();
+		ArrayList<Town> addList = new ArrayList<Town>();
 		tList.add(this);
 		for (int v = 0; v < i;v++) {
 			for (Town t: tList) {
 				for (Connection c: t.getConnects()) {
 					for (Town f: c.getTowns()) {
-						if (!tList.contains(f)) {
-							tList.add(f);
+						if (!tList.contains(f) && !addList.contains(f)) {
+							addList.add(f);
 						}
 					}
 				}
 			}
-			
+			tList.addAll(addList);
+			addList.clear();
 		}
 		ArrayList<Feature> retList = new ArrayList<Feature>();
 		for (Town t: tList) {

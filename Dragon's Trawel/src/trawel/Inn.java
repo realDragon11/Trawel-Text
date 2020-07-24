@@ -16,6 +16,10 @@ public class Inn extends Feature implements java.io.Serializable{
 	private String residentName;
 	private int nextReset;
 	private boolean playerwatch;
+	
+	private boolean canQuest = true;
+	
+	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
 
 	
 	private final static int RES_COUNT = 8;
@@ -36,8 +40,22 @@ public class Inn extends Feature implements java.io.Serializable{
 		tutorialText = "Inns are a great place to buy beer and have various residents.";
 		color = Color.YELLOW;
 		this.owner = owner;
+		try {
+		while (sideQuests.size() < 3) {
+			generateSideQuest();
+		}
+		}catch (Exception e) {
+			canQuest = false;
+		}
 	}
 	
+	private void generateSideQuest() {
+		if (sideQuests.size() >= 3) {
+			sideQuests.remove(extra.randList(sideQuests));
+		}
+		sideQuests.add(BasicSideQuest.getRandomSideQuest(this.getTown(),this));
+	}
+
 	@Override
 	public void go() {
 		Networking.setArea("inn");
@@ -77,7 +95,9 @@ public class Inn extends Feature implements java.io.Serializable{
 	private void backroom() {
 		List<MenuItem> mList = new ArrayList<MenuItem>();
 		
-		//TODO: questboard
+		for (Quest q: sideQuests) {
+			mList.add(new QBMenuItem(q,this));
+		}
 		for (QuestR qr: qrList) {
 			mList.add(new QRMenuItem(qr));
 		}
@@ -111,6 +131,7 @@ public class Inn extends Feature implements java.io.Serializable{
 			occupantDuel();
 			resident = extra.randRange(1,RES_COUNT);
 			nextReset = extra.randRange(4,30);
+			if (canQuest) {this.generateSideQuest();}
 		}
 		
 	}
