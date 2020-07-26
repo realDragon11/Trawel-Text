@@ -20,10 +20,12 @@ public class BasicSideQuest implements Quest{
 	
 	public void fail() {
 		cleanup();
+		Player.player.sideQuests.remove(this);
 	}
 	
 	public void complete() {
 		cleanup();
+		Player.player.sideQuests.remove(this);
 	}
 	
 	public static BasicSideQuest getRandomSideQuest(Town loc,Inn inn) {
@@ -44,7 +46,7 @@ public class BasicSideQuest implements Quest{
 					Player.player.getPerson().addXp(1);
 					Player.bag.addGold(20);
 					q.complete();
-					return true;
+					return false;
 				}};
 				q.giver.locationF = inn;
 				q.giver.locationT = loc;
@@ -60,9 +62,9 @@ public class BasicSideQuest implements Quest{
 				public boolean go() {
 					extra.println("You claim the " + q.targetName);
 					q.giver.locationF.addQR(q.giver);
-					q.desc = "Return the " + q.targetName + " to ";
+					q.desc = "Return the " + q.targetName + " to " + q.giverName;
 					this.cleanup();
-					return true;
+					return false;
 				}
 				
 			};

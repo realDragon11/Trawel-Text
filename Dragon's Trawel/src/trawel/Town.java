@@ -556,6 +556,9 @@ public class Town implements java.io.Serializable{
 		for (int v = 0; v < i;v++) {
 			for (Town t: tList) {
 				for (Connection c: t.getConnects()) {
+					if (c.getType().equals("teleport")) {
+						continue;
+					}
 					for (Town f: c.getTowns()) {
 						if (!tList.contains(f) && !addList.contains(f)) {
 							addList.add(f);

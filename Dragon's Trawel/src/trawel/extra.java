@@ -430,6 +430,11 @@ public class extra {
 			}
 			while (!mList.get(extra.inInt(v)-1).go()) {
 				mList = mGen.gen();
+				v = 1;
+				for (MenuItem m: mList) {
+					extra.println(v + " " + m.title());
+					v++;
+				}
 			}
 		}
 		

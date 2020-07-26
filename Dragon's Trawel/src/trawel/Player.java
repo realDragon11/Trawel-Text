@@ -129,25 +129,31 @@ public class Player extends SuperPerson{
 		flask = p;
 	}
 	public void showQuests() {
-		List<MenuItem> mList = new ArrayList<MenuItem>();
 		
-		for (Quest q: sideQuests) {
-			mList.add(new ExamineQuest(q));
-		}
-		mList.add(new MenuItem() {
+		
+		extra.menuGo(new MenuGenerator() {
 
 			@Override
-			public String title() {
-				return "back";
-			}
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				
+				for (Quest q: sideQuests) {
+					mList.add(new ExamineQuest(q));
+				}
+				mList.add(new MenuItem() {
 
-			@Override
-			public boolean go() {
-				return true;
-			}
-		});
-		
-		while (!extra.menuGo(mList));
+					@Override
+					public String title() {
+						return "back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}
+				});
+				return mList;
+			}});
 		
 	}
 	
@@ -183,22 +189,30 @@ public class Player extends SuperPerson{
 		public boolean go() {
 			extra.println(quest.name() + ":");
 			extra.println(quest.desc());
-			List<MenuItem> mList = new ArrayList<MenuItem>();
-			mList.add(new AbandonQuest(quest));
-			mList.add(new MenuItem() {
+			
+			extra.menuGo(new MenuGenerator() {
 
 				@Override
-				public String title() {
-					return "back";
-				}
+				public List<MenuItem> gen() {
+					List<MenuItem> mList = new ArrayList<MenuItem>();
+					mList.add(new AbandonQuest(quest));
+					mList.add(new MenuItem() {
 
-				@Override
-				public boolean go() {
-					return true;
+						@Override
+						public String title() {
+							return "back";
+						}
+
+						@Override
+						public boolean go() {
+							return true;
+						}
+					});
+					return mList;
 				}
+				
 			});
-			while (!extra.menuGo(mList));
-			return true;
+			return false;
 		}
 		
 	}
