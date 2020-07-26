@@ -420,13 +420,17 @@ public class extra {
 			return Math.min(max, Math.max(d, min));
 		}
 
-		public static boolean menuGo(List<MenuItem> mList) {
+		public static void menuGo(MenuGenerator mGen) {
+			List<MenuItem> mList = new ArrayList<MenuItem>();
+			mList = mGen.gen();
 			int v = 1;
 			for (MenuItem m: mList) {
 				extra.println(v + " " + m.title());
 				v++;
 			}
-			return mList.get(extra.inInt(v)-1).go();
+			while (!mList.get(extra.inInt(v)-1).go()) {
+				mList = mGen.gen();
+			}
 		}
 		
 }

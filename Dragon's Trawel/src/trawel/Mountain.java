@@ -29,52 +29,59 @@ public class Mountain extends Feature implements java.io.Serializable{
 	public void go() {
 		Networking.setArea("mountain");
 		Networking.sendStrong("Discord|imagesmall|mountain|Mountain|");
-		List<MenuItem> mList = new ArrayList<MenuItem>();
-		mList.add(new MenuItem() {
+		MenuGenerator mGen = new MenuGenerator() {
 
 			@Override
-			public String title() {
-				return "explore";
-			}
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuItem() {
 
-			@Override
-			public boolean go() {
-				explore();
-				return false;
-			}
-		});
-		for (QuestR qr: qrList) {
-			mList.add(new QRMenuItem(qr));
-		}
-		mList.add(new MenuItem() {
+					@Override
+					public String title() {
+						return "explore";
+					}
 
-			@Override
-			public String title() {
-				return "visit hot springs";
-			}
+					@Override
+					public boolean go() {
+						explore();
+						return false;
+					}
+				});
+				for (QuestR qr: qrList) {
+					mList.add(new QRMenuItem(qr));
+				}
+				mList.add(new MenuItem() {
 
-			@Override
-			public boolean go() {
-				Player.player.getPerson().washAll();
-				extra.println("You wash the blood off of your armor.");
-				Player.bag.graphicalDisplay(-1,Player.player.getPerson());
-				return false;
-			}
-		});
-		mList.add(new MenuItem() {
+					@Override
+					public String title() {
+						return "visit hot springs";
+					}
 
-			@Override
-			public String title() {
-				return "exit";
-			}
+					@Override
+					public boolean go() {
+						Player.player.getPerson().washAll();
+						extra.println("You wash the blood off of your armor.");
+						Player.bag.graphicalDisplay(-1,Player.player.getPerson());
+						return false;
+					}
+				});
+				mList.add(new MenuItem() {
 
-			@Override
-			public boolean go() {
-				return true;
-			}
-		});
+					@Override
+					public String title() {
+						return "exit";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}
+				});
+				return mList;
+			}};
 		
-		while (!extra.menuGo(mList));
+		
+		extra.menuGo(mGen);
 			
 	}
 
