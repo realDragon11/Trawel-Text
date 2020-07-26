@@ -32,37 +32,44 @@ public class Forest extends Feature implements java.io.Serializable{
 	public void go() {
 		Networking.setArea("forest");
 		Networking.sendStrong("Discord|imagesmall|forest|Forest|");
-		List<MenuItem> mList = new ArrayList<MenuItem>();
-		mList.add(new MenuItem() {
-
-			@Override
-			public String title() {
-				return "explore";
-			}
-
-			@Override
-			public boolean go() {
-				explore();
-				return false;
-			}
-		});
-		for (QuestR qr: qrList) {
-			mList.add(new QRMenuItem(qr));
-		}
-		mList.add(new MenuItem() {
-
-			@Override
-			public String title() {
-				return "exit";
-			}
-
-			@Override
-			public boolean go() {
-				return true;
-			}
-		});
 		
-		while (!extra.menuGo(mList));
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuItem() {
+
+					@Override
+					public String title() {
+						return "explore";
+					}
+
+					@Override
+					public boolean go() {
+						explore();
+						return false;
+					}
+				});
+				for (QuestR qr: qrList) {
+					mList.add(new QRMenuItem(qr));
+				}
+				mList.add(new MenuItem() {
+
+					@Override
+					public String title() {
+						return "exit";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}
+				});
+				return mList;
+			}
+			
+		});
 	}
 	
 	public void explore() {

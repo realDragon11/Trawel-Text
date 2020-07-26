@@ -98,28 +98,33 @@ public class Inn extends Feature implements java.io.Serializable{
 	
 
 	private void backroom() {
-		List<MenuItem> mList = new ArrayList<MenuItem>();
-		
-		for (Quest q: sideQuests) {
-			mList.add(new QBMenuItem(q,this));
-		}
-		for (QuestR qr: qrList) {
-			mList.add(new QRMenuItem(qr));
-		}
-		mList.add(new MenuItem() {
+		Inn inn = this;
+		extra.menuGo(new MenuGenerator() {
 
 			@Override
-			public String title() {
-				return "back";
-			}
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				
+				for (Quest q: sideQuests) {
+					mList.add(new QBMenuItem(q,inn));
+				}
+				for (QuestR qr: qrList) {
+					mList.add(new QRMenuItem(qr));
+				}
+				mList.add(new MenuItem() {
 
-			@Override
-			public boolean go() {
-				return true;
-			}
-		});
-		
-		while (!extra.menuGo(mList));
+					@Override
+					public String title() {
+						return "back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}
+				});
+				return mList;
+			}});
 		
 	}
 
