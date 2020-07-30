@@ -244,7 +244,7 @@ public class Person implements java.io.Serializable{
 			maxHp+=50;
 			if (this.getBag().getRace().racialType != Race.RaceType.BEAST) {
 			//extra.println("\"" + brag.getBoast() + "\" " + getName() + " " + extra.choose("declares","boasts","states firmly")+ ".");}
-				BarkManager.getBoast(personType,((double)this.getHp())/this.getMaxHp(), false);
+				BarkManager.getBoast(this, false);
 			}
 			addXp(0);//recursive level easy trick
 			this.setSkillPoints(this.getSkillPoints() + 1);

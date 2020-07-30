@@ -6,41 +6,48 @@ import java.util.List;
 public class BarkManager {
 
 	
-	public static String getTaunt(String pers,double hpPercent) {
-		switch (pers) {
+	public static String getTaunt(Person p) {
+		double hpPercent = ((double)p.getHp())/p.getMaxHp();
+		switch (p.getPersonType()) {
 		case "cowardly":
 			if (hpPercent > .4) {
-				return genericTaunt();
+				return genericTaunt(p);
 			}else {
-				return cowardTaunt();
+				return cowardTaunt(p);
 			}
 			
 		}
 		return "";
 	}
 	
-	public static String getBoast(String pers,double hpPercent, boolean opposed) {
-		switch (pers) {
+	public static String getBoast(Person p, boolean opposed) {
+		double hpPercent = ((double)p.getHp())/p.getMaxHp();
+		switch (p.getPersonType()) {
 		case "cowardly":
 			if (hpPercent > .4) {
-				return genericTaunt();
+				return genericBoast(p,opposed);
 			}else {
-				return cowardTaunt();
+				return cowardTaunt(p);
 			}
 			
 		}
 		return "";
 	}
 
-	private static String cowardTaunt() {
+	private static String genericBoast(Person p, boolean opposed) {
+		List<String> list = new ArrayList<String>();
+		return extra.randList(list);
+	}
+
+	private static String cowardTaunt(Person p) {
 		List<String> tauntList = new ArrayList<String>();
-		tauntList.add("Please! I don't want to die!");
-		tauntList.add("Oh gods I'm going to die!");
-		tauntList.add("AAAAAAAAA!");
+		tauntList.add("\"Please! I don't want to die!\" " + p.getName() + " whimpers.");
+		tauntList.add(p.getName() + " shouts \"Oh gods I'm going to die!\"");
+		tauntList.add("\"AAAAAAAAA!\" " + p.getName() + " screams in terror.\"");
 		return extra.randList(tauntList);
 	}
 
-	private static String genericTaunt() {
+	private static String genericTaunt(Person p) {
 		List<String> tauntList = new ArrayList<String>();
 		tauntList.add("Your best is my worst!");
 		tauntList.add("You'll be dead soon!");
@@ -76,6 +83,6 @@ public class BarkManager {
 		tauntList.add("You won't win!");
 		tauntList.add("End yourself before I end you!");
 		tauntList.add("Maybe the next fighter will prove a challenge!");
-		return extra.randList(tauntList);
+		return p.getName() + " " + extra.choose("screams","shouts","taunts")+  " \""+ extra.randList(tauntList) + "\"";
 	}
 }
