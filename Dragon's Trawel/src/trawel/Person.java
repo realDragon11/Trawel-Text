@@ -17,7 +17,8 @@ public class Person implements java.io.Serializable{
 	private double speedFill = 0;
 	private boolean isAttacking;
 	private int hp, intellect, maxHp, tempMaxHp;
-	private Taunts brag;
+	//private Taunts brag;
+	private String personType = extra.choose("cowardly","fearless");
 	private String placeOfBirth;
 	private int beer;
 	private boolean racist;
@@ -62,7 +63,7 @@ public class Person implements java.io.Serializable{
 	title = randomLists.randomLastName();
 	placeOfBirth = extra.capFirst((String)extra.choose(randomLists.randomElement(),randomLists.randomColor()))+ " " +extra.choose("Kingdom","Kingdom","Colony","Domain","Realm");
 	
-	brag = new Taunts(bag.getRace());
+	//brag = new Taunts(bag.getRace());
 	
 	if (giveScar) {
 	this.scar = RaceFactory.scarFor(bag.getRace());
@@ -242,7 +243,9 @@ public class Person implements java.io.Serializable{
 			}
 			maxHp+=50;
 			if (this.getBag().getRace().racialType != Race.RaceType.BEAST) {
-			extra.println("\"" + brag.getBoast() + "\" " + getName() + " " + extra.choose("declares","boasts","states firmly")+ ".");}
+			//extra.println("\"" + brag.getBoast() + "\" " + getName() + " " + extra.choose("declares","boasts","states firmly")+ ".");}
+				BarkManager.getBoast(personType,((double)this.getHp())/this.getMaxHp(), false);
+			}
 			addXp(0);//recursive level easy trick
 			this.setSkillPoints(this.getSkillPoints() + 1);
 			if (this.isPlayer()) {
@@ -462,8 +465,12 @@ public class Person implements java.io.Serializable{
 	 * Returns the reference to the Taunts instance this person uses.
 	 * @return (Taunts)
 	 */
-	public Taunts getTaunts() {
-		return brag;
+	//public Taunts getTaunts() {
+		//return brag;
+	//}
+	
+	public String getPersonType() {
+		return personType;
 	}
 	
 	/**

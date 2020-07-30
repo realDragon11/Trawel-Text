@@ -96,6 +96,7 @@ public class Combat {
 		extra.println(manTwo.getName() + extra.choose(" lies dead..."," walks the earth no more..."," has been slain."));
 		song.addKill(manOne, manTwo);
 		manOne.getBag().getHand().addKill();
+		/*
 		if (extra.chanceIn(1,2) || manOne.getLevel() < manTwo.getLevel()) {
 			manOne.getTaunts().addTaunt("It was I who " + extra.choose("slew","slaughtered","struck down","killed") + " " + manTwo.getName()+ "!");
 		}
@@ -114,6 +115,7 @@ public class Combat {
 		if (extra.chanceIn(1,4)) {
 			manOne.getTaunts().removeBoast();
 		}
+		*/
 	}
 	
 	
@@ -342,13 +344,13 @@ public class Combat {
 		}
 		if (attacker.getBag().getRace().racialType != Race.RaceType.BEAST && extra.chanceIn(1,4)) {
 			if (extra.chanceIn(1,3)) {
-					extra.println(attacker.getName() + " "+extra.choose("shouts","screams","boasts")+ " \"" + attacker.getTaunts().getBoast()+"\"");		
+					BarkManager.getBoast(attacker.getPersonType(),((double)attacker.getHp())/attacker.getMaxHp(),true);//extra.println(attacker.getName() + " "+extra.choose("shouts","screams","boasts")+ " \"" + attacker.getTaunts().getBoast()+"\"");		
 			}else {
 				if (attacker.isRacist() && !attacker.getBag().getRace().equals(defender.getBag().getRace()) && extra.chanceIn(1,3)) 
 				{
 					extra.println(attacker.getName() + " "+extra.choose("shouts","screams","taunts")+ " \"" +defender.getBag().getRace().randomInsult()+"\"");
 				}else {
-					extra.println(attacker.getName() + " "+extra.choose("shouts","screams","taunts")+ " \"" + attacker.getTaunts().getTaunt()+"\"");
+					BarkManager.getTaunt(attacker.getPersonType(),((double)attacker.getHp())/attacker.getMaxHp());//extra.println(attacker.getName() + " "+extra.choose("shouts","screams","taunts")+ " \"" + attacker.getTaunts().getTaunt()+"\"");
 					}				
 			}
 		}

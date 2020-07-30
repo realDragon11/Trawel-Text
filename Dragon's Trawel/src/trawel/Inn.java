@@ -204,15 +204,20 @@ public class Inn extends Feature implements java.io.Serializable{
 			return;}else {break;}
 		case 2:
 			if (extra.chanceIn(1,2)) {
-				extra.println("You "+extra.choose("boast")+ " \"" + Player.player.getPerson().getTaunts().getBoast()+"\"");		
+				BarkManager.getBoast(Player.player.getPerson().getPersonType(), 1, true);
+				//extra.println("You "+extra.choose("boast")+ " \"" + Player.player.getPerson().getTaunts().getBoast()+"\"");		
 		}else {
-				extra.println("You "+extra.choose("taunt")+ " \"" + Player.player.getPerson().getTaunts().getTaunt()+"\"");				
+			BarkManager.getTaunt(Player.player.getPerson().getPersonType(), 1);
+				//extra.println("You "+extra.choose("taunt")+ " \"" + Player.player.getPerson().getTaunts().getTaunt()+"\"");				
 		}
 			if (extra.chanceIn(1,2)) {
-				extra.println(agent.getPerson().getName() + " "+extra.choose("boasts")+ " \"" + agent.getPerson().getTaunts().getBoast()+"\"");		
+				BarkManager.getBoast(agent.getPerson().getPersonType(), 1, true);//extra.println(agent.getPerson().getName() + " "+extra.choose("boasts")+ " \"" + agent.getPerson().getTaunts().getBoast()+"\"");		
 		}else {
-				extra.println(agent.getPerson().getName() + " "+extra.choose("taunts")+ " \"" + agent.getPerson().getTaunts().getTaunt()+"\"");				
-		} ;break;
+			BarkManager.getTaunt(agent.getPerson().getPersonType(), 1);
+				//extra.println(agent.getPerson().getName() + " "+extra.choose("taunts")+ " \"" + agent.getPerson().getTaunts().getTaunt()+"\"");				
+		} 
+			
+			;break;
 		}
 			
 			goAgent(agent);
