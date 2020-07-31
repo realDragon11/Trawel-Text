@@ -6,38 +6,71 @@ import java.util.List;
 public class BarkManager {
 
 	
-	public static String getTaunt(Person p) {
+	public static void getTaunt(Person p) {
 		double hpPercent = ((double)p.getHp())/p.getMaxHp();
 		switch (p.getPersonType()) {
 		case "cowardly":
 			if (hpPercent > .4) {
-				return genericTaunt(p);
+				extra.println(genericTaunt(p));
 			}else {
-				return cowardTaunt(p);
+				extra.println(cowardTaunt(p));
 			}
-			
+			break;
+		case "fearless":
+			if (hpPercent > .3) {
+				extra.println(genericTaunt(p));
+			}else {
+				if (extra.randRange(1,2) == 1) {
+				extra.println(resolveTaunt(p));
+				}else {
+					extra.println(genericTaunt(p));
+				}
+			}
+			break;
 		}
-		return "";
+		
 	}
 	
-	public static String getBoast(Person p, boolean opposed) {
+	public static void getBoast(Person p, boolean opposed) {
 		double hpPercent = ((double)p.getHp())/p.getMaxHp();
 		switch (p.getPersonType()) {
 		case "cowardly":
 			if (hpPercent > .4) {
-				return genericBoast(p,opposed);
+				extra.println(genericBoast(p,opposed));
 			}else {
-				return cowardTaunt(p);
+				return;
 			}
+			break;
+		case "fearless":
+			extra.println(genericBoast(p,opposed));
+			break;
 			
 		}
-		return "";
 	}
 
 	private static String genericBoast(Person p, boolean opposed) {
 		List<String> list = new ArrayList<String>();
-		return extra.randList(list);
+		list.add("This is almost too easy!");
+		list.add("I am the " +extra.choose("most powerful","strongest","mightiest","most amazing","greatest") +" "+extra.choose("warrior","fighter","combatant")+" in all the " + extra.choose("continent","kingdom","land","world","universe") +"!");
+		list.add("I am the " +extra.choose("most powerful","strongest","mightiest","most amazing","greatest") +" "+extra.choose("warrior","fighter","combatant")+" in all the " + extra.choose("continent","kingdom","land","world","universe") +"!");
+		list.add("I have slain many "+extra.choose("fearsome","dangerous","worthy")+" opponents!");
+		list.add("Look out world, I'm coming!");
+		list.add("All this equipment means that I'm the best!");
+		list.add("I'm getting stronger everyday!");
+		list.add("I am death!");
+		list.add("I am become death!");
+		list.add("I am the reaper of souls!");
+		list.add("How many men, have fallen before me!");
+		return p.getName() + " " + extra.choose("screams","shouts","boasts")+  " \""+ extra.randList(list) +"\"";
 	}
+	
+	private static String resolveTaunt(Person p) {
+		List<String> list = new ArrayList<String>();
+		list.add("Death draws near... but I am unafraid!");
+		list.add("Can you kill me, or will you fall, like the others?");
+		return p.getName() + " " + extra.choose("screams","shouts","taunts")+  " \""+ extra.randList(list) + "\"";
+	}
+
 
 	private static String cowardTaunt(Person p) {
 		List<String> tauntList = new ArrayList<String>();
