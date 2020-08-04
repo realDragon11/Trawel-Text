@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.earts.EArt;
+import trawel.earts.EArtBox;
 
 public class Player extends SuperPerson{
 	private Person person;
@@ -25,6 +26,7 @@ public class Player extends SuperPerson{
 	
 	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
 	public List<EArt> eArts = new ArrayList<EArt>();
+	public EArtBox eaBox = new EArtBox();
 	
 	public Player(Person p) {
 		person = p;
