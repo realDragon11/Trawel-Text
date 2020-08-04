@@ -7,7 +7,7 @@ package trawel;
  * @author realb
  *
  */
-public class QRMenuItem implements MenuItem {
+public class QRMenuItem extends MenuSelect {
 
 	public QuestR qr;
 	public QRMenuItem(QuestR qr) {

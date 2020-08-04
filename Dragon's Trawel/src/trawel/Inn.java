@@ -102,8 +102,8 @@ public class Inn extends Feature implements java.io.Serializable{
 		extra.menuGo(new MenuGenerator() {
 
 			@Override
-			public List<MenuItem> gen() {
-				List<MenuItem> mList = new ArrayList<MenuItem>();
+			public List<MenuSelect> gen() {
+				List<MenuSelect> mList = new ArrayList<MenuSelect>();
 				
 				for (Quest q: sideQuests) {
 					mList.add(new QBMenuItem(q,inn));
@@ -111,7 +111,7 @@ public class Inn extends Feature implements java.io.Serializable{
 				for (QuestR qr: qrList) {
 					mList.add(new QRMenuItem(qr));
 				}
-				mList.add(new MenuItem() {
+				mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {

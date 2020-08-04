@@ -421,19 +421,25 @@ public class extra {
 		}
 
 		public static void menuGo(MenuGenerator mGen) {
-			List<MenuItem> mList = new ArrayList<MenuItem>();
+			List<MenuSelect> mList = new ArrayList<MenuSelect>();
 			mList = mGen.gen();
 			int v = 1;
-			for (MenuItem m: mList) {
+			for (MenuSelect m: mList) {
+				if (m.canClick()) {
 				extra.println(v + " " + m.title());
-				v++;
+				v++;}else {
+					extra.println(m.title());
+				}
 			}
 			while (!mList.get(extra.inInt(v)-1).go()) {
 				mList = mGen.gen();
 				v = 1;
-				for (MenuItem m: mList) {
-					extra.println(v + " " + m.title());
-					v++;
+				for (MenuSelect m: mList) {
+					if (m.canClick()) {
+						extra.println(v + " " + m.title());
+						v++;}else {
+							extra.println(m.title());
+						}
 				}
 			}
 		}

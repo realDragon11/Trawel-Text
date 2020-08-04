@@ -1,5 +1,6 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -271,6 +272,17 @@ public class Person implements java.io.Serializable{
 			}
 		}
 		extra.println("You have " + skillPoints + " skillpoint"+ (skillPoints == 1 ? "" : "s") +".");
+		Person p = this;
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuSelect> gen() {
+				List<MenuSelect> list = new ArrayList<MenuSelect>();
+				return list;
+			}
+			
+		});
+		/*
 		extra.println("Pick a class to examine:");
 		extra.println("1 fighter");
 		extra.println("2 trader");
@@ -336,7 +348,7 @@ public class Person implements java.io.Serializable{
 			}}
 			
 			i++;
-		}
+		}*/
 		playerLevelUp();
 	}
 	

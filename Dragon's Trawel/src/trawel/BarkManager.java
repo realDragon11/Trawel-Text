@@ -68,6 +68,7 @@ public class BarkManager {
 		List<String> list = new ArrayList<String>();
 		list.add("Death draws near... but I am unafraid!");
 		list.add("Can you kill me, or will you fall, like the others?");
+		list.add("I greet death with courage!" + extra.choose(""," Can you say the same?"));
 		return p.getName() + " " + extra.choose("screams","shouts","taunts")+  " \""+ extra.randList(list) + "\"";
 	}
 

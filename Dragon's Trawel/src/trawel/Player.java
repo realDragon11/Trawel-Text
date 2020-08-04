@@ -134,13 +134,13 @@ public class Player extends SuperPerson{
 		extra.menuGo(new MenuGenerator() {
 
 			@Override
-			public List<MenuItem> gen() {
-				List<MenuItem> mList = new ArrayList<MenuItem>();
+			public List<MenuSelect> gen() {
+				List<MenuSelect> mList = new ArrayList<MenuSelect>();
 				
 				for (Quest q: sideQuests) {
 					mList.add(new ExamineQuest(q));
 				}
-				mList.add(new MenuItem() {
+				mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {
@@ -157,7 +157,7 @@ public class Player extends SuperPerson{
 		
 	}
 	
-	public class AbandonQuest implements MenuItem {
+	public class AbandonQuest extends MenuSelect {
 		Quest quest;
 		public AbandonQuest(Quest q) {
 			quest = q;
@@ -175,7 +175,7 @@ public class Player extends SuperPerson{
 		}
 		
 	}
-	public class ExamineQuest implements MenuItem {
+	public class ExamineQuest extends MenuSelect {
 		Quest quest;
 		public ExamineQuest(Quest q) {
 			quest = q;
@@ -193,10 +193,10 @@ public class Player extends SuperPerson{
 			extra.menuGo(new MenuGenerator() {
 
 				@Override
-				public List<MenuItem> gen() {
-					List<MenuItem> mList = new ArrayList<MenuItem>();
+				public List<MenuSelect> gen() {
+					List<MenuSelect> mList = new ArrayList<MenuSelect>();
 					mList.add(new AbandonQuest(quest));
-					mList.add(new MenuItem() {
+					mList.add(new MenuSelect() {
 
 						@Override
 						public String title() {

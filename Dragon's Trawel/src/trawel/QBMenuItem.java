@@ -1,6 +1,6 @@
 package trawel;
 
-public class QBMenuItem implements MenuItem {
+public class QBMenuItem extends MenuSelect {
 
 	public Quest q;
 	public Inn i;

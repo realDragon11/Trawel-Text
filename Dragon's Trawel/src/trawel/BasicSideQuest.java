@@ -112,9 +112,9 @@ public class BasicSideQuest implements Quest{
 					extra.menuGo(new MenuGenerator() {
 
 						@Override
-						public List<MenuItem> gen() {
-							List<MenuItem> mList = new ArrayList<MenuItem>();
-							mList.add(new MenuItem() {
+						public List<MenuSelect> gen() {
+							List<MenuSelect> mList = new ArrayList<MenuSelect>();
+							mList.add(new MenuSelect() {
 
 								@Override
 								public String title() {
