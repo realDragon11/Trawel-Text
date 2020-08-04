@@ -2,6 +2,8 @@ package trawel;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.earts.EArt;
+
 public class Player extends SuperPerson{
 	private Person person;
 	private Boolean isAlive;
@@ -22,6 +24,7 @@ public class Player extends SuperPerson{
 	private Potion flask;
 	
 	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
+	public List<EArt> eArts = new ArrayList<EArt>();
 	
 	public Player(Person p) {
 		person = p;

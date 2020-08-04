@@ -1,6 +1,6 @@
 package trawel.earts;
 
-public enum EArt {
+public enum EArt implements java.io.Serializable{
 
 	ARCANIST("Arcanist","A combat magic class focused on swapping out spell slots.", EAType.MAGIC);
 	

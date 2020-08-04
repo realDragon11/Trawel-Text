@@ -2,6 +2,9 @@ package trawel;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.earts.EArt;
+import trawel.earts.EArtSkillMenu;
+
 /**
  * 
  * @author Brian Malone
@@ -283,6 +286,22 @@ public class Person implements java.io.Serializable{
 					@Override
 					public String title() {
 						return "You have " + p.skillPoints + " skillpoint"+ (p.skillPoints == 1 ? "" : "s") +".";
+					}});
+				
+				for (EArt e: Player.player.eArts) {
+					list.add(EArtSkillMenu.construct(e));
+				}
+				
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
 					}});
 				return list;
 			}
