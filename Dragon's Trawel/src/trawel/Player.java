@@ -221,5 +221,16 @@ public class Player extends SuperPerson{
 		}
 		
 	}
+	public void addEArt(EArt earta) {
+		this.eArts.add(earta);
+		switch (earta) {
+		case ARCANIST:
+			break;
+		case EXECUTIONER:
+			break;
+		
+		}
+		
+	}
 	
 }

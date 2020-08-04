@@ -1,10 +1,14 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.List;
+
+import trawel.earts.EArt;
 
 public class Library extends Feature {
 
 	private ArrayList<Book> books = new ArrayList<Book>();
 	private Town town;
+	private boolean hasStudiedArcane = false;
 	
 	public Library(String _name, Town _town) {
 		start();
@@ -17,24 +21,73 @@ public class Library extends Feature {
 	public void go() {
 		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|library|Library|");
-		int i = 1;
-		for (Book b: books) {
-			extra.println(i +" " + b.name + " by " + b.author);
-			i++;
-		}
-		extra.println(i + " leave");
-		int in = extra.inInt(i);
-		i = 1;
-		for (Book b: books) {
-			if (in == i) {
-				b.display();
-			}
-			i++;
-		}
-		if (in == i) {
-			return;
-		}
-		go();
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuSelect(){
+
+					@Override
+					public String title() {
+						return "read books";
+					}
+
+					@Override
+					public boolean go() {
+						while (true) {
+						int i = 1;
+						for (Book b: books) {
+							extra.println(i +" " + b.name + " by " + b.author);
+							i++;
+						}
+						extra.println(i + " back");
+						int in = extra.inInt(i);
+						i = 1;
+						for (Book b: books) {
+							if (in == i) {
+								b.display();
+							}
+							i++;
+						}
+						if (in == i) {
+							return false;
+						}}
+					}
+					
+				});
+				if (!hasStudiedArcane && Player.player.eArts.contains(EArt.ARCANIST)) {
+					list.add(new MenuSelect(){
+
+						@Override
+						public String title() {
+							return "study arcane lore";
+						}
+
+						@Override
+						public boolean go() {
+							hasStudiedArcane = true;
+							Player.player.eaBox.aSpellPower +=.2;
+							return false;
+						}
+						
+					});
+				}
+				list.add(new MenuSelect(){
+
+					@Override
+					public String title() {
+						return "leave";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}
+					
+				});
+				return list;
+			}});
 	}
 
 	private void start() {

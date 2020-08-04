@@ -348,7 +348,7 @@ public class Person implements java.io.Serializable{
 																@Override
 																public boolean go() {
 																	EArt earta = EArt.valueOf(nameT.toUpperCase());
-																	Player.player.eArts.add(earta);
+																	Player.player.addEArt(earta);
 																	return true;
 																}
 																

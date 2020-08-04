@@ -8,6 +8,7 @@ import trawel.MenuItem;
 import trawel.MenuLine;
 import trawel.MenuSelect;
 import trawel.Player;
+import trawel.Skill;
 import trawel.extra;
 
 public abstract class EArtSkillMenu extends MenuSelect{
@@ -87,7 +88,8 @@ public abstract class EArtSkillMenu extends MenuSelect{
 											}});
 										return false;
 									}});
-								if (Player.player.eaBox.aSpells.size() > 1) {
+							}
+							if (Player.player.eaBox.aSpells.size() > 1) {
 								list.add(new MenuSelect() {
 
 									@Override
@@ -139,6 +141,54 @@ public abstract class EArtSkillMenu extends MenuSelect{
 									}});
 								
 								}
+							
+							
+							return list;
+						}
+						
+					});
+					return false;
+				}
+				
+			};
+		case EXECUTIONER:
+			return new EArtSkillMenu(ea) {
+
+				@Override
+				public String title() {
+					return "Executioner";
+				}
+
+				@Override
+				public boolean go() {
+					extra.menuGo(new MenuGenerator() {
+						@Override
+						public List<MenuItem> gen() {
+							List<MenuItem> list = new ArrayList<MenuItem>();
+							list.add(new MenuLine() {
+
+								@Override
+								public String title() {
+									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
+								}});
+							if (Player.player.getPerson().getSkillPoints() > 0) {
+								if (Player.player.eaBox.exeTrainLevel == 0) {
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "basic training";
+									}
+
+									@Override
+									public boolean go() {
+										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().addSkill(Skill.BLOODTHIRSTY);
+										Player.player.getPerson().addSkill(Skill.DSTRIKE);
+										Player.player.getPerson().addSkill(Skill.KILLHEAL);
+										return false;
+									}});
+							}
 							}
 							
 							return list;

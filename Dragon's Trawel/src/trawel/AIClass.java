@@ -41,6 +41,10 @@ public class AIClass {
 			return (new Attack(Skill.ELEMENTAL_MAGE,(int)Math.round(Player.player.eaBox.aSpellPower), d.getBag().getRace().targetType));
 		case DEATH_BURST:
 			return (new Attack(Skill.DEATH_MAGE,(int)Math.round(Player.player.eaBox.aSpellPower), d.getBag().getRace().targetType));
+		case ARMOR_UP:
+			return (new Attack(Skill.ARMOR_MAGE,(int)Math.round(Player.player.eaBox.aSpellPower), d.getBag().getRace().targetType));
+		case BEFUDDLE:
+			return (new Attack(Skill.ILLUSION_MAGE,(int)Math.round(Player.player.eaBox.aSpellPower), d.getBag().getRace().targetType));
 		}
 		throw new RuntimeException("ASpell not defined.");
 	}

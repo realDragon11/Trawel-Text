@@ -10,4 +10,5 @@ public class EArtBox implements Serializable {
 	public double aSpellPower = 1;
 	
 	public ASpell aSpell1, aSpell2;
+	public int exeTrainLevel = 0;
 }
