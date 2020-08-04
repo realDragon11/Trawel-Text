@@ -322,12 +322,7 @@ public class Person implements java.io.Serializable{
 									}
 									for (EArt ear: EArt.values()) {
 										if (!Player.player.eArts.contains(ear)) {
-											list2.add(new MenuSelect() {
-
-												@Override
-												public String title() {
-													return ear.name;
-												}
+											list2.add(new MenuSelectTitled(ear.name) {
 
 												@Override
 												public boolean go() {
@@ -340,9 +335,38 @@ public class Person implements java.io.Serializable{
 
 																@Override
 																public String title() {
-																	
-																	return null;
+																	EArt earta = EArt.valueOf(nameT.toUpperCase());
+																	return earta.name + ": " + earta.desc;
 																}});
+															list3.add(new MenuSelect() {
+
+																@Override
+																public String title() {
+																	return "accept";
+																}
+
+																@Override
+																public boolean go() {
+																	EArt earta = EArt.valueOf(nameT.toUpperCase());
+																	Player.player.eArts.add(earta);
+																	return true;
+																}
+																
+															});
+															
+															list3.add(new MenuSelect() {
+
+																@Override
+																public String title() {
+																	return "back";
+																}
+
+																@Override
+																public boolean go() {
+																	return true;
+																}
+																
+															});
 															
 															return list3;
 														}});
@@ -350,6 +374,17 @@ public class Person implements java.io.Serializable{
 												}});
 										}
 									}
+									list2.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "back";
+										}
+
+										@Override
+										public boolean go() {
+											return true;
+										}});
 									return list2;
 								}});
 							return true;
