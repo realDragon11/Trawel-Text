@@ -271,13 +271,19 @@ public class Person implements java.io.Serializable{
 				extra.println("You don't have any skillpoints, and should probably exit this menu.");
 			}
 		}
-		extra.println("You have " + skillPoints + " skillpoint"+ (skillPoints == 1 ? "" : "s") +".");
+		extra.println();
 		Person p = this;
 		extra.menuGo(new MenuGenerator() {
 
 			@Override
-			public List<MenuSelect> gen() {
-				List<MenuSelect> list = new ArrayList<MenuSelect>();
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return "You have " + p.skillPoints + " skillpoint"+ (p.skillPoints == 1 ? "" : "s") +".";
+					}});
 				return list;
 			}
 			

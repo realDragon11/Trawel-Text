@@ -9,4 +9,6 @@ public interface MenuItem {
 	 * @return whether to go back or not
 	 */
 	public boolean go();
+
+	public boolean canClick();
 }

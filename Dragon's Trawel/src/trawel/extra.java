@@ -421,10 +421,10 @@ public class extra {
 		}
 
 		public static void menuGo(MenuGenerator mGen) {
-			List<MenuSelect> mList = new ArrayList<MenuSelect>();
+			List<MenuItem> mList = new ArrayList<MenuItem>();
 			mList = mGen.gen();
 			int v = 1;
-			for (MenuSelect m: mList) {
+			for (MenuItem m: mList) {
 				if (m.canClick()) {
 				extra.println(v + " " + m.title());
 				v++;}else {
@@ -434,7 +434,7 @@ public class extra {
 			while (!mList.get(extra.inInt(v)-1).go()) {
 				mList = mGen.gen();
 				v = 1;
-				for (MenuSelect m: mList) {
+				for (MenuItem m: mList) {
 					if (m.canClick()) {
 						extra.println(v + " " + m.title());
 						v++;}else {

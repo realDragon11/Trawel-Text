@@ -5,5 +5,5 @@ import java.util.List;
 public interface MenuGenerator {
 
 	
-	public List<MenuSelect> gen();
+	public List<MenuItem> gen();
 }
