@@ -45,7 +45,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 									public boolean go() {
 										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
 										Player.player.eaBox.aSpellPower+=1;
-										return true;
+										return false;
 									}});
 								list.add(new MenuSelect() {
 
@@ -56,10 +56,83 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public boolean go() {
-										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
-										Player.player.eaBox.aSpellPower+=1;
-										return true;
+										extra.menuGo(new MenuGenerator() {
+
+											@Override
+											public List<MenuItem> gen() {
+												List<MenuItem> list2 = new ArrayList<MenuItem>();
+												for (ASpell s: ASpell.values()) {
+													if (!Player.player.eaBox.aSpells.contains(s)) {
+														list2.add(new ASpellLearner(s));
+													}
+												}
+												list2.add(new MenuSelect() {
+
+													@Override
+													public String title() {
+														return "back";
+													}
+
+													@Override
+													public boolean go() {
+														return true;
+													}});
+												return list2;
+											}});
+										return false;
 									}});
+								if (Player.player.eaBox.aSpells.size() > 1) {
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "swap first spell";
+									}
+
+									@Override
+									public boolean go() {
+										
+											extra.menuGo(new MenuGenerator() {
+												
+												@Override
+												public List<MenuItem> gen() {
+													List<MenuItem> list2 = new ArrayList<MenuItem>();
+													for (ASpell a: Player.player.eaBox.aSpells) {
+														list2.add(new ASpellChooser(a,1));
+													}
+													
+													return list2;
+												}});
+										
+										return false;
+									}});
+								
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "swap second spell";
+									}
+
+									@Override
+									public boolean go() {
+										
+											extra.menuGo(new MenuGenerator() {
+												
+												@Override
+												public List<MenuItem> gen() {
+													List<MenuItem> list2 = new ArrayList<MenuItem>();
+													for (ASpell a: Player.player.eaBox.aSpells) {
+														list2.add(new ASpellChooser(a,2));
+													}
+													
+													return list2;
+												}});
+										
+										return false;
+									}});
+								
+								}
 							}
 							
 							return list;
