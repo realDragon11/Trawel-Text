@@ -2,6 +2,8 @@ package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import trawel.earts.ASpell;
+
 /**
  * @author Brian Malone
  * 2/8/2018
@@ -33,6 +35,16 @@ public class AIClass {
 		return chooseAttack(theStance, 0, null, null, null);
 	}
 	
+	public static Attack eArtASpell(ASpell a, Person d) {
+		switch (a) {
+		case ELEMENTAL_BURST:
+			return (new Attack(Skill.ELEMENTAL_MAGE,(int)Math.round(Player.player.eaBox.aSpellPower), d.getBag().getRace().targetType));
+		case DEATH_BURST:
+			return (new Attack(Skill.DEATH_MAGE,(int)Math.round(Player.player.eaBox.aSpellPower), d.getBag().getRace().targetType));
+		}
+		throw new RuntimeException("ASpell not defined.");
+	}
+	
 	/**
 	 * Choose which attack in a stance to use. Supply with an intellect level for varying levels of 
 	 * smarts
@@ -45,6 +57,7 @@ public class AIClass {
 			int j = 1;
 			ArrayList<Attack> attacks = theStance.giveList();
 			
+			if (!attacker.isPlayer()) {
 			int times = 1;
 			if (attacker.hasSkill(Skill.MAGE_POWER)) {
 				times++;
@@ -63,7 +76,15 @@ public class AIClass {
 			if (attacker.hasSkill(Skill.ILLUSION_MAGE)) {
 				attacks.add(new Attack(Skill.ILLUSION_MAGE,attacker.getMageLevel(), defender.getBag().getRace().targetType));
 			}
-			times--;}
+			times--;}}else {
+				if (Player.player.eaBox.aSpell1 != null) {
+					attacks.add(eArtASpell(Player.player.eaBox.aSpell1,defender));
+				}
+				if (Player.player.eaBox.aSpell2 != null) {
+					attacks.add(eArtASpell(Player.player.eaBox.aSpell2,defender));
+				}
+				
+			}
 			
 			
 			if (attacker.hasSkill(Skill.GOOFFENSIVE)) {

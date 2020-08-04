@@ -5,6 +5,7 @@ import java.util.List;
 
 import trawel.MenuGenerator;
 import trawel.MenuItem;
+import trawel.MenuLine;
 import trawel.MenuSelect;
 import trawel.Player;
 import trawel.extra;
@@ -29,10 +30,15 @@ public abstract class EArtSkillMenu extends MenuSelect{
 				@Override
 				public boolean go() {
 					extra.menuGo(new MenuGenerator() {
-
 						@Override
 						public List<MenuItem> gen() {
 							List<MenuItem> list = new ArrayList<MenuItem>();
+							list.add(new MenuLine() {
+
+								@Override
+								public String title() {
+									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
+								}});
 							if (Player.player.getPerson().getSkillPoints() > 0) {
 								list.add(new MenuSelect() {
 
