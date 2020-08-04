@@ -179,7 +179,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 							list.add(new MenuLine() {
 								@Override
 								public String title() {
-									return "You have " + Player.player.eaBox.getExeExe() + " Execute Power and " + Player.player.eaBox.exeTrainLevel + " training level.";
+									return "You have " +  extra.format2(Player.player.eaBox.getExeExe()) + " Execute Power and " +  extra.format2(Player.player.eaBox.exeTrainLevel) + " training level.";
 								}});
 							if (Player.player.getPerson().getSkillPoints() > 0) {
 								if (Player.player.eaBox.exeTrainLevel == 0) {
@@ -197,6 +197,74 @@ public abstract class EArtSkillMenu extends MenuSelect{
 										Player.player.getPerson().addSkill(Skill.DSTRIKE);
 										Player.player.getPerson().addSkill(Skill.KILLHEAL);
 										Player.player.eaBox.exeTrainLevel = 1;
+										return false;
+									}});
+							}
+							}
+							
+							return list;
+						}
+						
+					});
+					return false;
+				}
+				
+			};
+		case BERSERKER:
+			return new EArtSkillMenu(ea) {
+
+				@Override
+				public String title() {
+					return "Berserker";
+				}
+
+				@Override
+				public boolean go() {
+					extra.menuGo(new MenuGenerator() {
+						@Override
+						public List<MenuItem> gen() {
+							List<MenuItem> list = new ArrayList<MenuItem>();
+							list.add(new MenuLine() {
+
+								@Override
+								public String title() {
+									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
+								}});
+							list.add(new MenuLine() {
+								@Override
+								public String title() {
+									return "You have " + extra.format2(Player.player.eaBox.berTrainLevel) + " training level.";
+								}});
+							if (Player.player.getPerson().getSkillPoints() > 0) {
+								if (Player.player.eaBox.berTrainLevel == 0) {
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "basic training";
+									}
+
+									@Override
+									public boolean go() {
+										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().addSkill(Skill.BLOODTHIRSTY);
+										Player.player.getPerson().addSkill(Skill.BLITZ);
+										Player.player.getPerson().addSkill(Skill.BERSERKER);
+										Player.player.eaBox.berTrainLevel = 1;
+										return false;
+									}});
+							}else {
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "hand-to-hand training";
+									}
+
+									@Override
+									public boolean go() {
+										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.eaBox.berTrainLevel += 1.1;
 										return false;
 									}});
 							}
