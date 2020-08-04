@@ -956,4 +956,11 @@ public class Person implements java.io.Serializable{
 		deaths++;
 	}
 
+	public void addKillStuff() {
+		if (this.isPlayer()) {
+			Player.player.eaBox.exeKillLevel += .3;
+		}
+		
+	}
+
 }

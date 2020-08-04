@@ -96,6 +96,7 @@ public class Combat {
 		extra.println(manTwo.getName() + extra.choose(" lies dead..."," walks the earth no more..."," has been slain."));
 		song.addKill(manOne, manTwo);
 		manOne.getBag().getHand().addKill();
+		manOne.addKillStuff();
 		/*
 		if (extra.chanceIn(1,2) || manOne.getLevel() < manTwo.getLevel()) {
 			manOne.getTaunts().addTaunt("It was I who " + extra.choose("slew","slaughtered","struck down","killed") + " " + manTwo.getName()+ "!");
@@ -180,6 +181,7 @@ public class Combat {
 					quickest.addHp(5*quickest.getLevel());
 				}
 				song.addKill(quickest,defender);
+				quickest.addKillStuff();
 				totalList.remove(defender);
 				killList.add(defender);
 				for (ArrayList<Person> list: people) {
