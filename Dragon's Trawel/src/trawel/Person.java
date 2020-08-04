@@ -291,6 +291,70 @@ public class Person implements java.io.Serializable{
 				for (EArt e: Player.player.eArts) {
 					list.add(EArtSkillMenu.construct(e));
 				}
+				if (Player.player.eArts.size() < 2) {
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Select a new EArt";
+						}
+
+						@Override
+						public boolean go() {
+							extra.menuGo(new MenuGenerator() {
+
+								@Override
+								public List<MenuItem> gen() {
+									List<MenuItem> list2 = new ArrayList<MenuItem>();
+									if (Player.player.eArts.size() >= 2) {
+										list2.add(new MenuSelect() {
+
+											@Override
+											public String title() {
+												return "back";
+											}
+
+											@Override
+											public boolean go() {
+												return true;
+											}});
+										return list2;
+									}
+									for (EArt ear: EArt.values()) {
+										if (!Player.player.eArts.contains(ear)) {
+											list2.add(new MenuSelect() {
+
+												@Override
+												public String title() {
+													return ear.name;
+												}
+
+												@Override
+												public boolean go() {
+													extra.menuGo(new MenuGenerator() {
+
+														@Override
+														public List<MenuItem> gen() {
+															List<MenuItem> list3 = new ArrayList<MenuItem>();
+															list3.add(new MenuLine(){
+
+																@Override
+																public String title() {
+																	
+																	return null;
+																}});
+															
+															return list3;
+														}});
+													return false;
+												}});
+										}
+									}
+									return list2;
+								}});
+							return true;
+						}});
+				}
 				
 				list.add(new MenuSelect() {
 
