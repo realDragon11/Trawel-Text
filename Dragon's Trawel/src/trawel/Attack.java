@@ -163,6 +163,16 @@ public class Attack implements java.io.Serializable{
 			magicDesc = "";
 			soundType = "confuse";
 		}
+		if (skill == Skill.EXECUTE_ATTACK) {
+			speed = 100+extra.randRange(0,20)-10;
+			target = TargetFactory.randTarget(targetType);
+			name = "execute";
+			desc = "X` attempts to "+name+" Y`!";
+			magicDesc = "";
+			soundType = "sharp";
+			sharp = Math.min(12,4+mageLevel);//% threshold to kill
+			blunt = (int)(extra.hrandom()*mageLevel*2);
+		}
 	}
 	
 	//instance methods

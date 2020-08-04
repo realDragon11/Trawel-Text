@@ -81,6 +81,8 @@ public enum Skill implements java.io.Serializable{
 		MIMIC_CHEST("False Appearance: Chest","",false,Type.FEATURE,0,""),
 		FELL_REAVER("Astounding Height","",false,Type.FEATURE,0,""),
 		
+		EXECUTE_ATTACK("EXEATTACK","Internal",false,Type.FEATURE,0,""),
+		
 		ENDSKILL("","",false,Type.FIGHTER,0,"");
 	    private String name,desc, longDesc;
 	    private Type type;

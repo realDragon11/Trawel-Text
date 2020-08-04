@@ -40,6 +40,11 @@ public abstract class EArtSkillMenu extends MenuSelect{
 								public String title() {
 									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
 								}});
+							list.add(new MenuLine() {
+								@Override
+								public String title() {
+									return "You have " + Player.player.eaBox.aSpellPower + " Arcane Spell Power.";
+								}});
 							if (Player.player.getPerson().getSkillPoints() > 0) {
 								list.add(new MenuSelect() {
 
@@ -171,6 +176,11 @@ public abstract class EArtSkillMenu extends MenuSelect{
 								public String title() {
 									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
 								}});
+							list.add(new MenuLine() {
+								@Override
+								public String title() {
+									return "You have " + Player.player.eaBox.getExeExe() + " Execute Power and " + Player.player.eaBox.exeTrainLevel + " training level.";
+								}});
 							if (Player.player.getPerson().getSkillPoints() > 0) {
 								if (Player.player.eaBox.exeTrainLevel == 0) {
 								list.add(new MenuSelect() {
@@ -186,6 +196,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 										Player.player.getPerson().addSkill(Skill.BLOODTHIRSTY);
 										Player.player.getPerson().addSkill(Skill.DSTRIKE);
 										Player.player.getPerson().addSkill(Skill.KILLHEAL);
+										Player.player.eaBox.exeTrainLevel = 1;
 										return false;
 									}});
 							}

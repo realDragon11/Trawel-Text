@@ -80,17 +80,7 @@ public class AIClass {
 			if (attacker.hasSkill(Skill.ILLUSION_MAGE)) {
 				attacks.add(new Attack(Skill.ILLUSION_MAGE,attacker.getMageLevel(), defender.getBag().getRace().targetType));
 			}
-			times--;}}else {
-				if (Player.player.eaBox.aSpell1 != null) {
-					attacks.add(eArtASpell(Player.player.eaBox.aSpell1,defender));
-				}
-				if (Player.player.eaBox.aSpell2 != null) {
-					attacks.add(eArtASpell(Player.player.eaBox.aSpell2,defender));
-				}
-				
-			}
-			
-			
+			times--;}
 			if (attacker.hasSkill(Skill.GOOFFENSIVE)) {
 				Material mat = attacker.getBag().getHand().getMat();
 				if (attacker.hasSkill(Skill.SHIELD)){
@@ -118,6 +108,21 @@ public class AIClass {
 			if (attacker.hasSkill(Skill.WAIT)) {
 				attacks.add(new Attack("wait",0,20.0,0,0,0,"X` waits for a better chance!",-1,"wait"));
 			}
+			}else {
+				if (Player.player.eaBox.aSpell1 != null) {
+					attacks.add(eArtASpell(Player.player.eaBox.aSpell1,defender));
+				}
+				if (Player.player.eaBox.aSpell2 != null) {
+					attacks.add(eArtASpell(Player.player.eaBox.aSpell2,defender));
+				}
+				if (Player.player.eaBox.exeTrainLevel > 0) {
+					attacks.add(new Attack(Skill.EXECUTE_ATTACK,Player.player.eaBox.getExeExe(), defender.getBag().getRace().targetType));
+				}
+				
+			}
+			
+			
+			
 			if (attacker.isPlayer()) {
 			extra.println("     name                hit    delay    sharp    blunt     pierce");
 			for(Attack a: attacks) {

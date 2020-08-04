@@ -597,6 +597,12 @@ public class Combat {
 			Networking.send("PlayDelay|sound_befuddle|1|");
 			newTarget = true;
 		}
+		if (att.getSkill() == Skill.EXECUTE_ATTACK) {
+			double percent = ((double)extra.zeroOut(defender.getHp()-att.getBlunt()))/((double)defender.getMaxHp());
+			if (percent < att.getSharp()/100.0) {
+				defender.takeDamage(defender.getMaxHp()*2);
+			}
+		}
 	}
 
 
