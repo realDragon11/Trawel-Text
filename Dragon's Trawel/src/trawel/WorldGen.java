@@ -381,7 +381,7 @@ public class WorldGen {
 		Island apen = new Island("apen",w);
 		plane.addWorld(w);
 		Town holik = new Town("holik", 9, apen, new Point(2,3));
-		holik.hasTeleporters();
+		holik.setHasTeleporters(true);;
 		holik.addFeature(new Oracle("holik oracle",9));
 		holik.addTravel();
 		holik.addTravel();

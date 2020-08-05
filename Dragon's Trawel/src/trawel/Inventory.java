@@ -20,6 +20,7 @@ public class Inventory implements java.io.Serializable{
 	private String raceMap;
 	private ArrayList<DrawBane> dbs = new ArrayList<DrawBane>();
 	private ArrayList<Seed> seeds = new ArrayList<Seed>();
+	public int dbMax = 3;
 	
 	//constructors
 	/**
@@ -553,9 +554,9 @@ public class Inventory implements java.io.Serializable{
 	public DrawBane addNewDrawBane(DrawBane d) {
 		extra.println("You found - " + d.getName() + ": " + d.getFlavor());
 		this.displayDrawBanes();
-		extra.println("4 discard.");
-		int in = extra.inInt(4);
-		if (in == 4) {
+		extra.println((dbMax+ 1) +" discard.");
+		int in = extra.inInt((dbMax+ 1));
+		if (in == (dbMax+ 1)) {
 			return null;
 		}
 		dbs.add(d);
@@ -563,7 +564,7 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	public void displayDrawBanes() {
-		while (dbs.size() < 3) {
+		while (dbs.size() < dbMax) {
 			dbs.add(DrawBane.NOTHING);
 		}
 		int i = 1;
@@ -576,9 +577,9 @@ public class Inventory implements java.io.Serializable{
 	
 	public DrawBane discardDrawBanes(boolean selling) {
 		this.displayDrawBanes();
-		extra.println("4 keep");
-		int in = extra.inInt(4);
-		if (in == 4) {
+		extra.println((dbMax+ 1)+" keep");
+		int in = extra.inInt((dbMax+ 1) );
+		if (in == (dbMax+ 1) ) {
 			return null;
 		}
 		if (dbs.get(in-1) == DrawBane.CLEANER && !selling) {
@@ -628,14 +629,14 @@ public class Inventory implements java.io.Serializable{
 				sub+= a.getBloodCount();
 			}
 			sub+= hand.getBloodCount();
-			i+=sub/16;
+			i+=sub/24;
 			break;
 		case NOTHING:
 			return 3;
 		}
 		
 		
-		while (dbs.size() < 3) {
+		while (dbs.size() < (dbMax+ 1) ) {
 			dbs.add(DrawBane.NOTHING);
 		}
 		for (DrawBane db: dbs) {

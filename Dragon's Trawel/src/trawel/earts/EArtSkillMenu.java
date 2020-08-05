@@ -43,7 +43,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 							list.add(new MenuLine() {
 								@Override
 								public String title() {
-									return "You have " + Player.player.eaBox.aSpellPower + " Arcane Spell Power.";
+									return "You have " + extra.format(Player.player.eaBox.aSpellPower) + " Arcane Spell Power.";
 								}});
 							if (Player.player.getPerson().getSkillPoints() > 0) {
 								list.add(new MenuSelect() {
@@ -94,7 +94,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 										return false;
 									}});
 							}
-							if (Player.player.eaBox.aSpells.size() > 1) {
+							if (Player.player.eaBox.aSpells.size() > 0) {
 								list.add(new MenuSelect() {
 
 									@Override
@@ -189,7 +189,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 							list.add(new MenuLine() {
 								@Override
 								public String title() {
-									return "You have " +  extra.format2(Player.player.eaBox.getExeExe()) + " Execute Power and " +  extra.format2(Player.player.eaBox.exeTrainLevel) + " training level.";
+									return "You have " +  extra.format(Player.player.eaBox.getExeExe()) + " Execute Power and " + Player.player.eaBox.exeTrainLevel + " training level.";
 								}});
 							if (Player.player.getPerson().getSkillPoints() > 0) {
 								if (Player.player.eaBox.exeTrainLevel == 0) {
@@ -253,7 +253,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 							list.add(new MenuLine() {
 								@Override
 								public String title() {
-									return "You have " + extra.format2(Player.player.eaBox.berTrainLevel) + " training level.";
+									return "You have " + extra.format(Player.player.eaBox.berTrainLevel) + " training level.";
 								}});
 							if (Player.player.getPerson().getSkillPoints() > 0) {
 								if (Player.player.eaBox.berTrainLevel == 0) {
@@ -288,6 +288,87 @@ public abstract class EArtSkillMenu extends MenuSelect{
 										return false;
 									}});
 							}
+								
+							}
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return "back";
+								}
+
+								@Override
+								public boolean go() {
+									return true;
+								}});
+							return list;
+						}
+						
+					});
+					return false;
+				}
+				
+			};
+		case HUNTER:
+			return new EArtSkillMenu(ea) {
+
+				@Override
+				public String title() {
+					return "Hunter";
+				}
+
+				@Override
+				public boolean go() {
+					extra.menuGo(new MenuGenerator() {
+						@Override
+						public List<MenuItem> gen() {
+							List<MenuItem> list = new ArrayList<MenuItem>();
+							list.add(new MenuLine() {
+
+								@Override
+								public String title() {
+									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
+								}});
+							list.add(new MenuLine() {
+								@Override
+								public String title() {
+									return "You have " + Player.player.eaBox.huntTrainLevel + " training level.";
+								}});
+							if (Player.player.getPerson().getSkillPoints() > 0) {
+								if (Player.player.eaBox.huntTrainLevel == 0) {
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "basic training";
+									}
+
+									@Override
+									public boolean go() {
+										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.bag.dbMax++;
+										Player.player.eaBox.huntTrainLevel = 1;
+										return false;
+									}});
+							}else {
+								if (Player.player.eaBox.huntTrainLevel == 1) {
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "novice training";
+									}
+
+									@Override
+									public boolean go() {
+										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.bag.dbMax++;
+										Player.player.eaBox.huntTrainLevel = 2;
+										return false;
+									}});
+								}
+							}
+								
 							}
 							list.add(new MenuSelect() {
 
