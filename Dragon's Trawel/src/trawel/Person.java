@@ -473,7 +473,7 @@ public class Person implements java.io.Serializable{
 			
 			i++;
 		}*/
-		playerLevelUp();
+		//playerLevelUp();
 	}
 	
 	private void skillAdd(Skill s) {

@@ -431,8 +431,14 @@ public class extra {
 					extra.println(m.title());
 				}
 			}
-			while (!mList.get(extra.inInt(v)-1).go()) {
+			while (true) {
+				List<MenuItem> subList = new ArrayList<MenuItem>();
+				mList.stream().filter(m -> m.canClick() == true).forEach(subList::add);
+				boolean ret = subList.get(extra.inInt(v)-1).go();
 				mList = mGen.gen();
+				if (ret) {
+					return;
+				}
 				v = 1;
 				for (MenuItem m: mList) {
 					if (m.canClick()) {

@@ -147,7 +147,17 @@ public abstract class EArtSkillMenu extends MenuSelect{
 								
 								}
 							
-							
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return "back";
+								}
+
+								@Override
+								public boolean go() {
+									return true;
+								}});
 							return list;
 						}
 						
@@ -201,7 +211,17 @@ public abstract class EArtSkillMenu extends MenuSelect{
 									}});
 							}
 							}
-							
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return "back";
+								}
+
+								@Override
+								public boolean go() {
+									return true;
+								}});
 							return list;
 						}
 						
@@ -269,7 +289,17 @@ public abstract class EArtSkillMenu extends MenuSelect{
 									}});
 							}
 							}
-							
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return "back";
+								}
+
+								@Override
+								public boolean go() {
+									return true;
+								}});
 							return list;
 						}
 						
