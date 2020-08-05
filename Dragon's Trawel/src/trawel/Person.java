@@ -871,11 +871,15 @@ public class Person implements java.io.Serializable{
 	}
 
 	public int attacksThisAttack() {
+		int i = 3;
+		if (this.hasSkill(Skill.BONUSATTACK_BERSERKER)) {
+			i++;
+		}
 		if (this.hasEffect(Effect.DISARMED)) {
 			this.removeEffectAll(Effect.DISARMED);
-			return 2;
+			i--;
 		}
-		return 3;
+		return Math.max(1,i);
 	}
 
 	public void removeEffect(Effect e) {

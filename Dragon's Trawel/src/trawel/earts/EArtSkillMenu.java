@@ -270,6 +270,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 										Player.player.getPerson().addSkill(Skill.BLOODTHIRSTY);
 										Player.player.getPerson().addSkill(Skill.BLITZ);
 										Player.player.getPerson().addSkill(Skill.BERSERKER);
+										Player.player.getPerson().addSkill(Skill.BONUSATTACK_BERSERKER);
 										Player.player.eaBox.berTrainLevel = 1;
 										return false;
 									}});
@@ -440,7 +441,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public String title() {
-										return "novice training";
+										return "kung-fu training";
 									}
 
 									@Override
