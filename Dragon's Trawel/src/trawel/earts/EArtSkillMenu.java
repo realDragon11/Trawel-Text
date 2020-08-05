@@ -284,7 +284,10 @@ public abstract class EArtSkillMenu extends MenuSelect{
 									@Override
 									public boolean go() {
 										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
-										Player.player.eaBox.berTrainLevel += 1.1;
+										Player.player.eaBox.berTrainLevel += 1;
+										if (Player.player.eaBox.berTrainLevel%5 == 0) {
+											Player.player.eaBox.berTrainLevel += 1;
+										}
 										return false;
 									}});
 							}
@@ -364,6 +367,89 @@ public abstract class EArtSkillMenu extends MenuSelect{
 										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
 										Player.bag.dbMax++;
 										Player.player.eaBox.huntTrainLevel = 2;
+										return false;
+									}});
+								}
+							}
+								
+							}
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return "back";
+								}
+
+								@Override
+								public boolean go() {
+									return true;
+								}});
+							return list;
+						}
+						
+					});
+					return false;
+				}
+				
+			};
+		case DRUNK:
+			return new EArtSkillMenu(ea) {
+
+				@Override
+				public String title() {
+					return "Drunk";
+				}
+
+				@Override
+				public boolean go() {
+					extra.menuGo(new MenuGenerator() {
+						@Override
+						public List<MenuItem> gen() {
+							List<MenuItem> list = new ArrayList<MenuItem>();
+							list.add(new MenuLine() {
+
+								@Override
+								public String title() {
+									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
+								}});
+							list.add(new MenuLine() {
+								@Override
+								public String title() {
+									return "You have " + Player.player.eaBox.drunkTrainLevel + " training level.";
+								}});
+							if (Player.player.getPerson().getSkillPoints() > 0) {
+								if (Player.player.eaBox.drunkTrainLevel == 0) {
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "basic training";
+									}
+
+									@Override
+									public boolean go() {
+										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().addSkill(Skill.BEER_BELLY);
+										Player.player.getPerson().addSkill(Skill.BEER_LOVER);
+										Player.player.eaBox.drunkTrainLevel = 1;
+										return false;
+									}});
+							}else {
+								if (Player.player.eaBox.drunkTrainLevel > 0) {
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "novice training";
+									}
+
+									@Override
+									public boolean go() {
+										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.eaBox.drunkTrainLevel += 1;
+										if (Player.player.eaBox.drunkTrainLevel%5 == 0) {
+											Player.player.eaBox.drunkTrainLevel += 1;
+										}
 										return false;
 									}});
 								}

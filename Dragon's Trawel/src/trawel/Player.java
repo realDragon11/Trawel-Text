@@ -27,6 +27,7 @@ public class Player extends SuperPerson{
 	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
 	public List<EArt> eArts = new ArrayList<EArt>();
 	public EArtBox eaBox = new EArtBox();
+	public boolean hasCult = false;
 	
 	public Player(Person p) {
 		person = p;

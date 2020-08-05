@@ -245,10 +245,8 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 		p.getBag().graphicalDisplay(1, p);
 		int inInt = 2;
 		do {
-		inInt = 2;
-		boolean hasSkills = false;
-		if (Player.hasSkill(Skill.BLOODTHIRSTY) || Player.hasSkill(Skill.BEER_BELLY)){
-		if (Player.hasSkill(Skill.BLOODTHIRSTY) && Player.hasSkill(Skill.BEER_BELLY)) {
+		boolean hasSkills = Player.player.hasCult;
+		if (hasSkills) {
 			extra.println("The cultists welcome you and ask you how you are doing.");
 			extra.println("1 chat");
 			hasSkills = true;
@@ -260,8 +258,6 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 		extra.println("2 attack");	
 		extra.println("3 leave");
 		inInt = extra.inInt(3);
-		}
-	
 		switch (inInt) {
 		case 1: 
 			if (hasSkills) {
@@ -271,8 +267,8 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 				mainGame.die("You rise from the altar!");
 				extra.println("The cultists praise you as the second coming of flagjaij!");
 				Player.player.getPerson().addEffect(Effect.CURSE);
-				Player.addSkill(Skill.BLOODTHIRSTY);
-				Player.addSkill(Skill.BEER_BELLY);
+				Player.player.getPerson().setSkillPoints(Player.player.getPerson().getSkillPoints()+1);
+				Player.player.hasCult = true;
 				hasSkills = true;
 				Networking.sendStrong("Achievement|cult1|");
 			};break;

@@ -183,7 +183,7 @@ public class Person implements java.io.Serializable{
 		if (this.hasEffect(Effect.HEARTY)) {
 			hp+=3*level;
 		}
-		hp+=skillPoints;
+		hp+=skillPoints*3;
 		tempMaxHp = hp;
 		speedFill = -1;
 		isAttacking = false;
