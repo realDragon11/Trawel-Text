@@ -82,6 +82,7 @@ public enum Skill implements java.io.Serializable{
 		FELL_REAVER("Astounding Height","",false,Type.FEATURE,0,""),
 		
 		EXECUTE_ATTACK("EXEATTACK","Internal",false,Type.FEATURE,0,""),
+		DRUNK_DRINK("DRUNKDRINK","Internal",false,Type.FEATURE,0,""),
 		
 		ENDSKILL("","",false,Type.FIGHTER,0,"");
 	    private String name,desc, longDesc;

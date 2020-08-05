@@ -131,6 +131,7 @@ public class AIClass {
 					case 2: attacks.add(new Attack("punch",.9,90.0,0,12,0,"X` punches Y` with the their fist!",0,"blunt").impair(Player.player.eaBox.drunkTrainLevel, defender.getBag().getRace().targetType,null));break;
 					case 3: attacks.add(new Attack("bite",.8,120.0,1,4,5,"X` bites Y` with the their teeth!",1,"bite").impair(Player.player.eaBox.drunkTrainLevel, defender.getBag().getRace().targetType,null));break;
 					}
+					attacks.add(new Attack(Skill.DRUNK_DRINK,Player.player.eaBox.drunkTrainLevel, defender.getBag().getRace().targetType));
 				}
 				
 			}

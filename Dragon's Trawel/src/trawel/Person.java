@@ -963,4 +963,8 @@ public class Person implements java.io.Serializable{
 		
 	}
 
+	public boolean hasBeer() {
+		return beer > 0;
+	}
+
 }

@@ -605,6 +605,14 @@ public class Combat {
 				defender.takeDamage(defender.getMaxHp()*2);
 			}
 		}
+		if(att.getSkill() == Skill.DRUNK_DRINK) {
+			if (attacker.hasBeer()) {
+			attacker.addHp(Player.player.eaBox.drunkTrainLevel);
+			attacker.addEffect(extra.choose(Effect.HASTE,Effect.R_AIM));
+			}else {
+				extra.println("But they are out of beer!");
+			}
+		}
 	}
 
 

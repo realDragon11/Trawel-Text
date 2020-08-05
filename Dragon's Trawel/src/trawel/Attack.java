@@ -173,6 +173,13 @@ public class Attack implements java.io.Serializable{
 			sharp = Math.min(12,4+mageLevel);//% threshold to kill
 			blunt = (int)(extra.hrandom()*mageLevel*2);
 		}
+		if (skill == Skill.DRUNK_DRINK) {
+			speed = 120+extra.randRange(0,40)-20;
+			target = TargetFactory.randTarget(targetType);
+			name = "drink";
+			desc = "X` drinks from a flagon!";
+			magicDesc = "+" + mageLevel + " hp";
+		}
 	}
 	
 	//instance methods
