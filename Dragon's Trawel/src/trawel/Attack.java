@@ -172,6 +172,7 @@ public class Attack implements java.io.Serializable{
 			soundType = "sharp";
 			sharp = Math.min(12,4+mageLevel);//% threshold to kill
 			blunt = (int)(extra.hrandom()*mageLevel*2);
+			wound = Wound.EXE_WOUND;
 		}
 		if (skill == Skill.DRUNK_DRINK) {
 			speed = 120+extra.randRange(0,40)-20;
@@ -179,6 +180,14 @@ public class Attack implements java.io.Serializable{
 			name = "drink";
 			desc = "X` drinks from a flagon!";
 			magicDesc = "+" + mageLevel + " hp";
+			wound = Wound.DRINK;
+		}
+		if (skill == Skill.MARK_ATTACK) {
+			speed = 80+extra.randRange(0,40)-20;
+			target = TargetFactory.randTarget(targetType);
+			name = "mark";
+			desc = "X` marks Y`!";
+			magicDesc = "";
 		}
 	}
 	
@@ -337,9 +346,11 @@ public class Attack implements java.io.Serializable{
 		ERROR("Error","error","ERROR"),
 		SCALDED("Scalded","Deals bonus damage through armor.","They are scalded by the flames!"),
 		SCREAMING("Screaming","Removes one attack choice.","They scream!"),
-		FROSTED("Scalded","Decreases their next attack's to-hit.","They are frozen over..."),
+		FROSTED("Frosted","Decreases their next attack's to-hit.","They are frozen over..."),
 		FROSTBITE("Frostbite","Deals bonus damage through armor.","Their flesh is frozen!"),
-		TEAR("Tear","Decreases dodge, stacking.","Their wing is torn!"),
+		TEAR("Tear","Decreases dodge, stacking.","Their wing is torn!"), 
+		EXE_WOUND("Execute","Kills low health targets.",""),
+		DRINK("Drink","Heals and provides a random potion effect.",""),
 		;
 		//done line
 		public String name, desc, active;

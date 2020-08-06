@@ -50,7 +50,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public String title() {
-										return "increase power";
+										return "increase power (1sp)";
 									}
 
 									@Override
@@ -63,7 +63,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public String title() {
-										return "learn new spell";
+										return "learn new spell (1sp)";
 									}
 
 									@Override
@@ -197,7 +197,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public String title() {
-										return "basic training";
+										return "basic training (1sp)";
 									}
 
 									@Override
@@ -261,7 +261,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public String title() {
-										return "basic training";
+										return "basic training (1sp)";
 									}
 
 									@Override
@@ -279,7 +279,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public String title() {
-										return "hand-to-hand training";
+										return "hand-to-hand training (1sp)";
 									}
 
 									@Override
@@ -344,7 +344,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public String title() {
-										return "basic training";
+										return "basic training (1sp)";
 									}
 
 									@Override
@@ -360,7 +360,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public String title() {
-										return "novice training";
+										return "novice training (1sp)";
 									}
 
 									@Override
@@ -424,7 +424,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public String title() {
-										return "basic training";
+										return "basic training (1sp)";
 									}
 
 									@Override
@@ -441,7 +441,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public String title() {
-										return "kung-fu training";
+										return "kung-fu training (1sp)";
 									}
 
 									@Override

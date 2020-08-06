@@ -84,6 +84,7 @@ public enum Skill implements java.io.Serializable{
 		EXECUTE_ATTACK("EXEATTACK","Internal",false,Type.FEATURE,0,""),
 		DRUNK_DRINK("DRUNKDRINK","Internal",false,Type.FEATURE,0,""),
 		BONUSATTACK_BERSERKER("BABER","Internal",false,Type.FEATURE,0,""),
+		MARK_ATTACK("Mark","Internal",false,Type.FEATURE,0,""),
 		ENDSKILL("","",false,Type.FIGHTER,0,""), ;
 	    private String name,desc, longDesc;
 	    private Type type;

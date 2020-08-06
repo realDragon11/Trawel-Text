@@ -223,6 +223,14 @@ public class Combat {
 			
 			Person otherperson = null;
 			while (otherperson == null) {
+				if (quickest.isPlayer() && Player.player.eaBox.markTarget != null) {
+					if (totalList.contains(Player.player.eaBox.markTarget)) {
+						otherperson = Player.player.eaBox.markTarget;
+						break;
+					}else {
+						Player.player.eaBox.markTarget = null;
+					}
+				}
 				int rand = extra.randRange(0,size-1);
 				ArrayList<Person> otherpeople = people[rand];
 				if (otherpeople.contains(quickest) || otherpeople.size() == 0) {
@@ -612,6 +620,9 @@ public class Combat {
 			}else {
 				extra.println("But they are out of beer!");
 			}
+		}
+		if (att.getSkill() == Skill.MARK_ATTACK) {
+			Player.player.eaBox.markTarget = defender;
 		}
 	}
 

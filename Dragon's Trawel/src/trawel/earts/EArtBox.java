@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.Person;
+
 public class EArtBox implements Serializable {
 
 	public List<ASpell> aSpells = new ArrayList<ASpell>();
@@ -15,6 +17,7 @@ public class EArtBox implements Serializable {
 	public int berTrainLevel = 0;
 	public int huntTrainLevel = 0;
 	public int drunkTrainLevel;
+	public Person markTarget = null;
 	public int getExeExe() {
 		int lvl = 1;
 		int amount = Math.round(exeKillLevel);

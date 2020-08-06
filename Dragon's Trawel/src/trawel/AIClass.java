@@ -136,6 +136,11 @@ public class AIClass {
 					attacks.add(new Attack(Skill.DRUNK_DRINK,Player.player.eaBox.drunkTrainLevel, defender.getBag().getRace().targetType));
 				}
 				
+				if (Player.player.eaBox.huntTrainLevel > 0) {
+					attacks.add(new Attack("wait",0,20.0,0,0,0,"X` waits for a better chance!",-1,"wait"));
+					attacks.add(new Attack(Skill.MARK_ATTACK,Player.player.eaBox.huntTrainLevel, defender.getBag().getRace().targetType));
+				}
+				
 			}
 			
 			
