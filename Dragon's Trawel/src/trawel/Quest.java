@@ -14,4 +14,6 @@ public interface Quest extends Serializable {
 	
 	public void take();
 	
+	public void questTrigger(String trigger, int num);
+	
 }

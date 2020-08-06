@@ -233,5 +233,11 @@ public class Player extends SuperPerson{
 		}
 		
 	}
+	public void questTrigger(String string, int count) {
+		for (Quest q: sideQuests) {
+			q.questTrigger(string,count);
+		}
+		
+	}
 	
 }

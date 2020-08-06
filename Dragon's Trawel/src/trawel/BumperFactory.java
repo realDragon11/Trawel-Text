@@ -21,13 +21,16 @@ public class BumperFactory {
 			@Override
 			public void activate(int level) {
 				ArrayList<Person> list = new ArrayList<Person>();
-				for (int i = 0;i < extra.randRange(1,3);i++) {
+				int count = extra.randRange(1,3);
+				for (int i = 0;i < count;i++) {
 					list.add(RaceFactory.makeWolf(extra.zeroOut(level-3)+1));}
 				
 				Networking.sendColor(Color.RED);
 				extra.println("A pack of wolves descend upon you!");
 				ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
-				
+				if (survivors.contains(Player.player.getPerson())) {
+					Player.player.questTrigger("wolf",count);
+				}
 			}};
 		b.responses.add(new Response(DrawBane.MEAT,5));
 		b.responses.add(new Response(DrawBane.NOTHING,.5));
@@ -69,7 +72,9 @@ public class BumperFactory {
 					
 					Networking.sendColor(Color.RED);
 					extra.println("A vampire jumps from the shadows!");
-					mainGame.CombatTwo(Player.player.getPerson(),p);
+					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+							Player.player.questTrigger("vampire",1);
+					}
 					
 				}};
 			b.responses.add(new Response(DrawBane.BLOOD,4));
@@ -98,7 +103,9 @@ public class BumperFactory {
 					
 					Networking.sendColor(Color.RED);
 					extra.println("A bear attacks you!");
-					mainGame.CombatTwo(Player.player.getPerson(),p);
+					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+						Player.player.questTrigger("bear",1);
+				}
 					
 				}};
 			b.responses.add(new Response(DrawBane.MEAT,4));

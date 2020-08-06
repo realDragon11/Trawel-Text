@@ -11,6 +11,8 @@ public class BasicSideQuest implements Quest{
 	public String targetName;
 	public Person targetPerson;
 	public int tier;
+	public int count;
+	public String trigger;
 	
 	public String name, desc;
 	
@@ -35,7 +37,7 @@ public class BasicSideQuest implements Quest{
 	
 	public static BasicSideQuest getRandomSideQuest(Town loc,Inn inn) {
 		BasicSideQuest q = new BasicSideQuest();
-		switch (extra.randRange(1,2)) {
+		switch (extra.randRange(1,3)) {
 		case 1: //fetch quest
 			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
 			q.targetName = extra.choose("totem","heirloom","keepsake","letter","key");
@@ -148,6 +150,46 @@ public class BasicSideQuest implements Quest{
 			q.name = "Kill " + q.targetName + " for " + q.giverName ;
 			q.desc = "Kill " + q.targetName + " at " + q.target.locationF.getName() + " in " + q.target.locationT.getName() + " for " + q.giverName;
 			break;
+		case 3: //cleanse quest
+			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
+			q.giver = new QuestR() {
+
+				@Override
+				public String getName() {
+					return q.giverName;
+				}
+
+				@Override
+				public boolean go() {
+					Player.player.getPerson().addXp(1);
+					Player.bag.addGold(40);
+					q.complete();
+					return false;
+				}};
+				q.giver.locationF = inn;
+				q.giver.locationT = loc;
+				q.giver.overQuest = q;
+				switch (extra.randRange(1,2)) {
+				case 1:
+					q.targetName = "bears";
+					q.trigger = "bear";
+					q.count = 3;
+					break;
+				case 2:
+					q.targetName = "vampires";
+					q.trigger = "vampire";
+					q.count = 3;
+					break;
+				case 3:
+					q.targetName = "wolves";
+					q.trigger = "wolf";
+					q.count = 6;
+					break;
+				}
+			//q.target.locationF.addQR(q.target);
+				q.name = "Kill " + q.targetName + " for " + q.giverName ;
+				q.desc = "Kill " + q.count + " more " + q.targetName + " on the roads for " + q.giverName;
+			break;
 		
 		}
 		return q;
@@ -167,6 +209,23 @@ public class BasicSideQuest implements Quest{
 	public void take() {
 		target.locationF.addQR(target);
 		announceUpdate();
+	}
+
+	@Override
+	public void questTrigger(String trigger, int num) {
+		if (this.trigger != null) {
+			if (this.trigger.equals(trigger)) {
+				count-=num;
+				if (count <=0) {
+					giver.locationF.addQR(giver);
+					desc = "Return to " + giverName + " at " + giver.locationF.getName() + " in " + giver.locationT.getName();
+					this.announceUpdate();
+				}else {
+					desc = "Kill " + count + " more " + targetName + " on the roads for " + giverName;
+				}
+			}
+		}
+		
 	}
 }
 
