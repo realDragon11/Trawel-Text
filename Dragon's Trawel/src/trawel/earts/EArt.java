@@ -6,7 +6,8 @@ public enum EArt implements java.io.Serializable{
 	EXECUTIONER("Executioner","A martial class based around dealing the final blow. Complete kill quests to increase in power.", EAType.MARTIAL),
 	BERSERKER("Berserker","A martial class that cannot examine, and instead strikes lightning-quick. Also adept at hand-to-hand.", EAType.MARTIAL),
 	HUNTER("Hunter","A utility class that can carry more drawbanes.", EAType.OTHER),
-	DRUNK("Drunk","A martial class that has more health and can use kung-fu.", EAType.MARTIAL);
+	DRUNK("Drunk","A martial class that has more health and can use kung-fu.", EAType.MARTIAL),
+	WITCH("Witch","A utility class that is adept with curses, alchemy, and healing magic.", EAType.MARTIAL);
 	
 	public String name, desc;
 	public EAType type;

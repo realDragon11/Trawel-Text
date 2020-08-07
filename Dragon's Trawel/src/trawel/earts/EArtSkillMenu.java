@@ -476,6 +476,90 @@ public abstract class EArtSkillMenu extends MenuSelect{
 				}
 				
 			};
+		case WITCH:
+			return new EArtSkillMenu(ea) {
+
+				@Override
+				public String title() {
+					return "Witch";
+				}
+
+				@Override
+				public boolean go() {
+					extra.menuGo(new MenuGenerator() {
+						@Override
+						public List<MenuItem> gen() {
+							List<MenuItem> list = new ArrayList<MenuItem>();
+							list.add(new MenuLine() {
+
+								@Override
+								public String title() {
+									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
+								}});
+							list.add(new MenuLine() {
+								@Override
+								public String title() {
+									return "You have " + Player.player.eaBox.drunkTrainLevel + " training level.";
+								}});
+							if (Player.player.getPerson().getSkillPoints() > 0) {
+								if (Player.player.eaBox.witchTrainLevel == 0) {
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "basic training (1sp)";
+									}
+
+									@Override
+									public boolean go() {
+										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().addSkill(Skill.CURSE_MAGE);
+										Player.player.getPerson().addSkill(Skill.LIFE_MAGE);
+										Player.player.getPerson().addSkill(Skill.MONEY_MAGE);
+										Player.player.eaBox.witchTrainLevel = 1;
+										return false;
+									}});
+							}else {
+								if (Player.player.eaBox.witchTrainLevel > 0) {
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "witch training (1sp)";
+									}
+
+									@Override
+									public boolean go() {
+										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.eaBox.witchTrainLevel += 1;
+										if (Player.player.eaBox.witchTrainLevel%5 == 0) {
+											Player.player.eaBox.witchTrainLevel += 1;
+										}
+										return false;
+									}});
+								}
+							}
+								
+							}
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return "back";
+								}
+
+								@Override
+								public boolean go() {
+									return true;
+								}});
+							return list;
+						}
+						
+					});
+					return false;
+				}
+				
+			};
 		}
 		throw new RuntimeException("EArt not found to construct");
 	}

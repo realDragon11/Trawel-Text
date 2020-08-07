@@ -63,7 +63,9 @@ public class WitchHut extends Feature{
 				int silvers = (int) dbs.stream().filter(d -> d.equals(DrawBane.SILVER)).count();
 				int food = meats + apples + garlics + honeys + pumpkins + pumpkins + eggcorns+truffles;
 				int filler = apples + woods + waxs;
-				
+				if (Player.player.eaBox.witchTrainLevel > 2) {
+					filler+=Player.player.eaBox.witchTrainLevel/3;
+				}
 				if (ents > 0 && meats > 1) {
 					mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getFleshGolem(town.getTier()));
 					return;
