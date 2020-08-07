@@ -2,6 +2,7 @@ package trawel;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.earts.EAType;
 import trawel.earts.EArt;
 import trawel.earts.EArtSkillMenu;
 
@@ -296,98 +297,37 @@ public class Person implements java.io.Serializable{
 
 						@Override
 						public String title() {
-							return "Select a new EArt";
+							return "Select a new EArt (Martial)";
 						}
 
 						@Override
 						public boolean go() {
-							extra.menuGo(new MenuGenerator() {
+							eaSubMenu(EAType.MARTIAL);
+							return false;
+						}});
+					list.add(new MenuSelect() {
 
-								@Override
-								public List<MenuItem> gen() {
-									List<MenuItem> list2 = new ArrayList<MenuItem>();
-									if (Player.player.eArts.size() >= 2) {
-										list2.add(new MenuSelect() {
+						@Override
+						public String title() {
+							return "Select a new EArt (Magic)";
+						}
 
-											@Override
-											public String title() {
-												return "back";
-											}
+						@Override
+						public boolean go() {
+							eaSubMenu(EAType.MAGIC);
+							return false;
+						}});
+					list.add(new MenuSelect() {
 
-											@Override
-											public boolean go() {
-												return true;
-											}});
-										return list2;
-									}
-									for (EArt ear: EArt.values()) {
-										if (!Player.player.eArts.contains(ear)) {
-											list2.add(new MenuSelectTitled(ear.name) {
+						@Override
+						public String title() {
+							return "Select a new EArt (Other)";
+						}
 
-												@Override
-												public boolean go() {
-													extra.menuGo(new MenuGenerator() {
-
-														@Override
-														public List<MenuItem> gen() {
-															List<MenuItem> list3 = new ArrayList<MenuItem>();
-															list3.add(new MenuLine(){
-
-																@Override
-																public String title() {
-																	EArt earta = EArt.valueOf(nameT.toUpperCase());
-																	return earta.name + ": " + earta.desc;
-																}});
-															list3.add(new MenuSelect() {
-
-																@Override
-																public String title() {
-																	return "accept";
-																}
-
-																@Override
-																public boolean go() {
-																	EArt earta = EArt.valueOf(nameT.toUpperCase());
-																	Player.player.addEArt(earta);
-																	return true;
-																}
-																
-															});
-															
-															list3.add(new MenuSelect() {
-
-																@Override
-																public String title() {
-																	return "back";
-																}
-
-																@Override
-																public boolean go() {
-																	return true;
-																}
-																
-															});
-															
-															return list3;
-														}});
-													return false;
-												}});
-										}
-									}
-									list2.add(new MenuSelect() {
-
-										@Override
-										public String title() {
-											return "back";
-										}
-
-										@Override
-										public boolean go() {
-											return true;
-										}});
-									return list2;
-								}});
-							return true;
+						@Override
+						public boolean go() {
+							eaSubMenu(EAType.OTHER);
+							return false;
 						}});
 				}
 				
@@ -551,6 +491,95 @@ public class Person implements java.io.Serializable{
 			AILevelUp();//recursive hack
 			}
 		}
+	}
+	
+	private void eaSubMenu(EAType eat) {
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list2 = new ArrayList<MenuItem>();
+				if (Player.player.eArts.size() >= 2) {
+					list2.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "back";
+						}
+
+						@Override
+						public boolean go() {
+							return true;
+						}});
+					return list2;
+				}
+				for (EArt ear: EArt.values()) {
+					if (!Player.player.eArts.contains(ear) && ear.type.equals(eat)) {
+						list2.add(new MenuSelectTitled(ear.name) {
+
+							@Override
+							public boolean go() {
+								extra.menuGo(new MenuGenerator() {
+
+									@Override
+									public List<MenuItem> gen() {
+										List<MenuItem> list3 = new ArrayList<MenuItem>();
+										list3.add(new MenuLine(){
+
+											@Override
+											public String title() {
+												EArt earta = EArt.valueOf(nameT.toUpperCase());
+												return earta.name + ": " + earta.desc;
+											}});
+										list3.add(new MenuSelect() {
+
+											@Override
+											public String title() {
+												return "accept";
+											}
+
+											@Override
+											public boolean go() {
+												EArt earta = EArt.valueOf(nameT.toUpperCase());
+												Player.player.addEArt(earta);
+												return true;
+											}
+											
+										});
+										
+										list3.add(new MenuSelect() {
+
+											@Override
+											public String title() {
+												return "back";
+											}
+
+											@Override
+											public boolean go() {
+												return true;
+											}
+											
+										});
+										
+										return list3;
+									}});
+								return false;
+							}});
+					}
+				}
+				list2.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}});
+				return list2;
+			}});
 	}
 		
 	
@@ -969,6 +998,10 @@ public class Person implements java.io.Serializable{
 
 	public boolean hasBeer() {
 		return beer > 0;
+	}
+
+	public void consumeBeer() {
+		beer--;
 	}
 
 }

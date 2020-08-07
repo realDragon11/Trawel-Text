@@ -617,6 +617,7 @@ public class Combat {
 			if (attacker.hasBeer()) {
 			attacker.addHp(Player.player.eaBox.drunkTrainLevel);
 			attacker.addEffect(extra.choose(Effect.HASTE,Effect.R_AIM));
+			attacker.consumeBeer();
 			}else {
 				extra.println("But they are out of beer!");
 			}
