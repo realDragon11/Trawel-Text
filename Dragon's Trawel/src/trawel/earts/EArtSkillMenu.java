@@ -367,6 +367,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 									public boolean go() {
 										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
 										Player.bag.dbMax++;
+										Player.player.getPerson().addSkill(Skill.HPSENSE);
 										Player.player.eaBox.huntTrainLevel = 2;
 										return false;
 									}});
@@ -499,7 +500,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 							list.add(new MenuLine() {
 								@Override
 								public String title() {
-									return "You have " + Player.player.eaBox.drunkTrainLevel + " training level.";
+									return "You have " + Player.player.eaBox.witchTrainLevel + " training level.";
 								}});
 							if (Player.player.getPerson().getSkillPoints() > 0) {
 								if (Player.player.eaBox.witchTrainLevel == 0) {
@@ -534,6 +535,88 @@ public abstract class EArtSkillMenu extends MenuSelect{
 										Player.player.eaBox.witchTrainLevel += 1;
 										if (Player.player.eaBox.witchTrainLevel%5 == 0) {
 											Player.player.eaBox.witchTrainLevel += 1;
+										}
+										return false;
+									}});
+								}
+							}
+								
+							}
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return "back";
+								}
+
+								@Override
+								public boolean go() {
+									return true;
+								}});
+							return list;
+						}
+						
+					});
+					return false;
+				}
+				
+			};
+		case BLOODMAGE:
+			return new EArtSkillMenu(ea) {
+
+				@Override
+				public String title() {
+					return "Witch";
+				}
+
+				@Override
+				public boolean go() {
+					extra.menuGo(new MenuGenerator() {
+						@Override
+						public List<MenuItem> gen() {
+							List<MenuItem> list = new ArrayList<MenuItem>();
+							list.add(new MenuLine() {
+
+								@Override
+								public String title() {
+									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
+								}});
+							list.add(new MenuLine() {
+								@Override
+								public String title() {
+									return "You have " + Player.player.eaBox.bloodTrainLevel + " training level.";
+								}});
+							if (Player.player.getPerson().getSkillPoints() > 0) {
+								if (Player.player.eaBox.bloodTrainLevel == 0) {
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "basic training (1sp)";
+									}
+
+									@Override
+									public boolean go() {
+										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().addSkill(Skill.BLOODTHIRSTY);
+										Player.player.eaBox.bloodTrainLevel = 1;
+										return false;
+									}});
+							}else {
+								if (Player.player.eaBox.bloodTrainLevel > 0) {
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "witch training (1sp)";
+									}
+
+									@Override
+									public boolean go() {
+										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.eaBox.bloodTrainLevel += 1;
+										if (Player.player.eaBox.bloodTrainLevel%5 == 0) {
+											Player.player.eaBox.bloodTrainLevel += 1;
 										}
 										return false;
 									}});

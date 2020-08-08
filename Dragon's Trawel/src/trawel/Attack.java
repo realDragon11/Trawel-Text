@@ -189,6 +189,22 @@ public class Attack implements java.io.Serializable{
 			desc = "X` marks Y`!";
 			magicDesc = "";
 		}
+		
+		if (skill == Skill.BLOOD_SURGE) {
+			speed = 100+extra.randRange(0,40)-20;
+			target = TargetFactory.randTarget(targetType);
+			name = "blood surge";
+			desc = "X` regenerates!";
+			magicDesc = "";
+		}
+		
+		if (skill == Skill.BLOOD_HARVEST) {
+			speed = 140+extra.randRange(0,40)-20;
+			target = TargetFactory.randTarget(targetType);
+			name = "blood harvest";
+			desc = "X` harvests Y`!";
+			magicDesc = "";
+		}
 	}
 	
 	//instance methods

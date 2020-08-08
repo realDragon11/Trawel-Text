@@ -19,6 +19,7 @@ public class EArtBox implements Serializable {
 	public int drunkTrainLevel;
 	public Person markTarget = null;
 	public int witchTrainLevel;
+	public int bloodTrainLevel;
 	public int getExeExe() {
 		int lvl = 1;
 		int amount = Math.round(exeKillLevel);

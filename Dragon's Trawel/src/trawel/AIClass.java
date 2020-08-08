@@ -140,6 +140,11 @@ public class AIClass {
 					attacks.add(new Attack("wait",0,20.0,0,0,0,"X` waits for a better chance!",-1,"wait"));
 					attacks.add(new Attack(Skill.MARK_ATTACK,Player.player.eaBox.huntTrainLevel, defender.getBag().getRace().targetType));
 				}
+				if (Player.player.eaBox.bloodTrainLevel > 0) {
+					attacks.add(new Attack(Skill.BLOOD_SURGE,Player.player.eaBox.bloodTrainLevel, defender.getBag().getRace().targetType));
+					attacks.add(new Attack(Skill.BLOOD_HARVEST,Player.player.eaBox.bloodTrainLevel, defender.getBag().getRace().targetType));
+				}
+				
 				
 			}
 			
