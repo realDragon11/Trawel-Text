@@ -566,7 +566,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 				@Override
 				public String title() {
-					return "Witch";
+					return "Bloodmage";
 				}
 
 				@Override
@@ -608,7 +608,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public String title() {
-										return "witch training (1sp)";
+										return "bloodmage training (1sp)";
 									}
 
 									@Override
@@ -623,6 +623,122 @@ public abstract class EArtSkillMenu extends MenuSelect{
 								}
 							}
 								
+							}
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return "back";
+								}
+
+								@Override
+								public boolean go() {
+									return true;
+								}});
+							return list;
+						}
+						
+					});
+					return false;
+				}
+				
+			};
+		case DEFENDER:
+			return new EArtSkillMenu(ea) {
+
+				@Override
+				public String title() {
+					return "Defender";
+				}
+
+				@Override
+				public boolean go() {
+					extra.menuGo(new MenuGenerator() {
+						@Override
+						public List<MenuItem> gen() {
+							List<MenuItem> list = new ArrayList<MenuItem>();
+							list.add(new MenuLine() {
+
+								@Override
+								public String title() {
+									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
+								}});
+							list.add(new MenuLine() {
+								@Override
+								public String title() {
+									return "You have " + Player.player.eaBox.defTrainLevel + " training level.";
+								}});
+							if (Player.player.getPerson().getSkillPoints() > 0) {
+								if (Player.player.eaBox.defTrainLevel == 0) {
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "basic training (1sp)";
+									}
+
+									@Override
+									public boolean go() {
+										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().addSkill(Skill.ARMORHEART);
+										Player.player.getPerson().addSkill(Skill.TA_NAILS);
+										Player.player.getPerson().addSkill(Skill.COUNTER);
+										Player.player.eaBox.defTrainLevel = 1;
+										return false;
+									}});
+							}else {
+								if (Player.player.eaBox.defTrainLevel > 0) {
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "defender training (1sp)";
+									}
+
+									@Override
+									public boolean go() {
+										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.eaBox.defTrainLevel += 1;
+										if (Player.player.eaBox.defTrainLevel%5 == 0) {
+											Player.player.eaBox.defTrainLevel += 1;
+										}
+										return false;
+									}});
+								}
+							}
+								if (!Player.player.getPerson().hasSkill(Skill.PARRY) && !Player.player.getPerson().hasSkill(Skill.SHIELD)) {
+									list.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "buy a shield (1sp)";
+										}
+
+										@Override
+										public boolean go() {
+											Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+											Player.player.eaBox.defTrainLevel += 1;
+											Player.player.getPerson().addSkill(Skill.SHIELD);
+											Player.player.getPerson().addSkill(Skill.ARMORSPEED);
+											return false;
+										}});
+									list.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "buy a dagger (1sp)";
+										}
+
+										@Override
+										public boolean go() {
+											Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+											Player.player.eaBox.defTrainLevel += 1;
+											Player.player.getPerson().addSkill(Skill.PARRY);
+											Player.player.getPerson().addSkill(Skill.SPEEDDODGE);
+											
+											return false;
+										}});
+								}
 							}
 							list.add(new MenuSelect() {
 

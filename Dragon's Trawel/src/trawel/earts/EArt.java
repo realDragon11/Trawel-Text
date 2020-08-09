@@ -8,7 +8,8 @@ public enum EArt implements java.io.Serializable{
 	HUNTER("Hunter","A utility class that can carry more drawbanes.", EAType.OTHER),
 	DRUNK("Drunk","A martial class that has more health and can use kung-fu.", EAType.MARTIAL),
 	WITCH("Witch","A utility class that is adept with curses, alchemy, and healing magic.", EAType.MAGIC),
-	BLOODMAGE("Bloodmage","A magic class that uses blood.", EAType.MAGIC);
+	BLOODMAGE("Bloodmage","A magic class that uses blood.", EAType.MAGIC),
+	DEFENDER("Defender","A martial class with a shield or dagger.", EAType.MARTIAL);
 	
 	public String name, desc;
 	public EAType type;

@@ -389,7 +389,7 @@ public class Forest extends Feature implements java.io.Serializable{
 			}
 			}else {
 				extra.println("You feel the forest reward you! A sack of gold appears at your feet!");
-				int gold = (int) (tier*(50*Math.random()));
+				int gold = (int) (tier*(extra.randRange(30,50)));
 				extra.println("You pick up " + gold + " gold!");
 				Player.bag.addGold(gold);
 			}
