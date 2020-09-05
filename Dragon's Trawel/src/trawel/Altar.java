@@ -17,17 +17,17 @@ public class Altar extends Feature{
 		while (true) {
 		extra.println("1 examine the altar");
 		extra.println("2 stand on the altar");
-		extra.println("3 reincarnate (Restart character with skillpoints)");
-		extra.println("4 leave");
-		switch (extra.inInt(4)) {
+		//extra.println("3 reincarnate (Restart character with skillpoints)");
+		extra.println("3 leave");
+		switch (extra.inInt(3)) {
 		case 1: examine();break;
 		case 2:swaQuest() //main quest stuff
 			;break;
 		//case 3: transmute();break;
-		case 3: 
-			Networking.sendColor(Color.RED);
-			extra.println("Really reincarnate? You will lose your items and gold.");if (extra.yesNo()) {Player.player.reincarnate();}break;
-		case 4: return;
+		//case 3: 
+			//Networking.sendColor(Color.RED);
+			//extra.println("Really reincarnate? You will lose your items and gold.");if (extra.yesNo()) {Player.player.reincarnate();}break;
+		case 3: return;
 		}
 		}
 	}

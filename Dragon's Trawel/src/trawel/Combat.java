@@ -628,12 +628,12 @@ public class Combat {
 		
 		if (att.getSkill() == Skill.BLOOD_SURGE) {
 			attacker.addHp(Player.player.eaBox.bloodTrainLevel*(attacker.getBloodCount()/16));
-			attacker.getBag().washAll();
+			attacker.washAll();
 		}
 		
 		if (att.getSkill() == Skill.BLOOD_HARVEST) {
-			defender.takeDamage(Player.player.eaBox.bloodTrainLevel*(defender.getBloodCount()/10));
-			defender.getBag().washAll();
+			defender.takeDamage(Player.player.eaBox.bloodTrainLevel*((defender.getBloodCount()/10)));
+			defender.washAll();
 		}
 	}
 

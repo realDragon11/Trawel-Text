@@ -191,6 +191,18 @@ public class Person implements java.io.Serializable{
 		int s = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
 		int b = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
 		int p = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
+		if (this.isPlayer()) {
+			int defLvl = Player.player.eaBox.defTrainLevel;
+			if (this.hasSkill(Skill.SHIELD)) {
+				s+=1*defLvl;
+				b+=1*defLvl;
+				p+=1*defLvl;
+			}else {
+				if (this.hasSkill(Skill.PARRY)) {
+					s+=2*(defLvl);//want to make skill matter more but don't want to exponent it
+				}
+			}
+		}else {
 		if (this.hasSkill(Skill.SHIELD)) {
 			s+=1*defenderLevel;
 			b+=1*defenderLevel;
@@ -199,7 +211,7 @@ public class Person implements java.io.Serializable{
 			if (this.hasSkill(Skill.PARRY)) {
 				s+=2*(defenderLevel);//want to make skill matter more but don't want to exponent it
 			}
-		}
+		}}
 		bag.resetArmor(s,b,p);
 		Boolean print = extra.getPrint();
 		extra.changePrint(true);
