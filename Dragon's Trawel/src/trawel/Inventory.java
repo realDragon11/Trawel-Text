@@ -641,10 +641,15 @@ public class Inventory implements java.io.Serializable{
 				sub+= a.getBloodCount();
 			}
 			sub+= hand.getBloodCount();
-			i+=sub/24;
+			i+=sub/20;
 			break;
 		case NOTHING:
 			return 3;
+		case UNDERLEVELED:
+			if (owner.getLevel() < 5) {
+				return 5-owner.getLevel();
+			}
+			return 0;
 		}
 		
 		

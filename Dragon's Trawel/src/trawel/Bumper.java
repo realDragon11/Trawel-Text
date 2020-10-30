@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public abstract class Bumper {
 	
 	public ArrayList<BumperFactory.Response> responses = new ArrayList<BumperFactory.Response>();
-	
+	public int minAreaLevel = 0;
 	
 
 	public static boolean go(double threshold, int level, int i) {
@@ -21,6 +21,9 @@ public abstract class Bumper {
 		break;
 		}
 		for (Bumper b: bumps) {
+			if (level < b.minAreaLevel) {
+				continue;
+			}
 			d = b.calculate(Player.player.getPerson().getBag())*extra.hrandom();
 			if (d > highest) {
 				highest = d;

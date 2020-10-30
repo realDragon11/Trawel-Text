@@ -35,6 +35,7 @@ public class BumperFactory {
 		b.responses.add(new Response(DrawBane.MEAT,5));
 		b.responses.add(new Response(DrawBane.NOTHING,.5));
 		b.responses.add(new Response(DrawBane.REPEL,-8));
+		b.minAreaLevel = 3;
 		bumperList.add(b);
 		
 		 b = new Bumper() {
@@ -51,6 +52,7 @@ public class BumperFactory {
 			b.responses.add(new Response(DrawBane.MEAT,3));
 			b.responses.add(new Response(DrawBane.CEON_STONE,3));
 			bumperList.add(b);
+			b.minAreaLevel = 5;
 		 b = new Bumper() {
 				
 				@Override
@@ -77,9 +79,10 @@ public class BumperFactory {
 					}
 					
 				}};
-			b.responses.add(new Response(DrawBane.BLOOD,4));
+			b.responses.add(new Response(DrawBane.BLOOD,3));
 			b.responses.add(new Response(DrawBane.GARLIC,-8));
 			b.responses.add(new Response(DrawBane.SILVER,-.5));
+			b.minAreaLevel = 4;
 			bumperList.add(b);
 		 b = new Bumper() {
 				
@@ -136,13 +139,14 @@ public class BumperFactory {
 					Person p = RaceFactory.makeUnicorn(level);
 					
 					Networking.sendColor(Color.RED);
-					extra.println("A unicorn accosts you for holding the virgin captive !");
+					extra.println("A unicorn accosts you for holding the virgin captive!");
 					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
 							Player.player.questTrigger("unicorn",1);
 					}
 					
 				}};
 			b.responses.add(new Response(DrawBane.VIRGIN,10));
+			b.minAreaLevel = 7;
 			bumperList.add(b);
 			
 			b = new Bumper() {
@@ -164,6 +168,7 @@ public class BumperFactory {
 			b.responses.add(new Response(DrawBane.MEAT,1.25));
 			b.responses.add(new Response(DrawBane.SILVER,1.25));
 			b.responses.add(new Response(DrawBane.GOLD,1.25));
+			b.responses.add(new Response(DrawBane.REPEL,-1));
 			bumperList.add(b);
 			
 			//ships

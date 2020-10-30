@@ -24,7 +24,8 @@ public enum DrawBane {
 	TRUFFLE("truffle","A rare food.",200,2), 
 	GOLD("gold chunk","A shiny metal.",300,4),
 	UNICORN_HORN("unicorn horn","An impressive magic horn.",250,3),
-	VIRGIN("virgin","You have them tied up.",1000,.5);
+	VIRGIN("virgin","You have them tied up.",1000,.5),
+	UNDERLEVELED("nothing","Empty slot.",0,0);
 	private String name, flavorText;
 	private int value;
 	private double mVal;
