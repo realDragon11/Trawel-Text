@@ -326,7 +326,7 @@ public class Forest extends Feature implements java.io.Serializable{
 	}
 	
 	private void oldFighter() {
-		Person robber = new Person(tier+2);
+		Person robber = RaceFactory.makeOld(tier+2);
 		robber.getBag().graphicalDisplay(1, robber);
 		while (true) {
 		extra.println("You come across an old fighter, resting on a log.");

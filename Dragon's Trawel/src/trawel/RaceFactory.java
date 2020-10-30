@@ -670,6 +670,12 @@ public class RaceFactory {
 		return null;
 	}
 	
+	public static Person makeOld(int level) {
+		Person p = new Person(level);
+		p.personType = "grizzled";
+		return p;
+	}
+	
 	public static Person makeWolf(int level) {
 		extra.printMode = true;
 		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);

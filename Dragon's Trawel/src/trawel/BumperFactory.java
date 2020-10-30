@@ -146,7 +146,7 @@ public class BumperFactory {
 					
 				}};
 			b.responses.add(new Response(DrawBane.VIRGIN,10));
-			b.minAreaLevel = 7;
+			b.minAreaLevel = 8;
 			bumperList.add(b);
 			
 			b = new Bumper() {
@@ -169,6 +169,7 @@ public class BumperFactory {
 			b.responses.add(new Response(DrawBane.SILVER,1.25));
 			b.responses.add(new Response(DrawBane.GOLD,1.25));
 			b.responses.add(new Response(DrawBane.REPEL,-1));
+			b.minAreaLevel = 5;
 			bumperList.add(b);
 			
 			//ships

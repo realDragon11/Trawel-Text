@@ -27,6 +27,17 @@ public class BarkManager {
 				}
 			}
 			break;
+		case "grizzled":
+			if (hpPercent > .3) {
+				extra.println(genericTaunt(p));
+			}else {
+				if (extra.randRange(1,2) == 1) {
+				extra.println(grizzleTaunt(p));
+				}else {
+					extra.println(genericTaunt(p));
+				}
+			}
+			break;
 		}
 		
 	}
@@ -41,7 +52,7 @@ public class BarkManager {
 				return;
 			}
 			break;
-		case "fearless":
+		case "fearless": case "grizzled":
 			extra.println(genericBoast(p,opposed));
 			break;
 			
@@ -69,6 +80,14 @@ public class BarkManager {
 		list.add("Death draws near... but I am unafraid!");
 		list.add("Can you kill me, or will you fall, like the others?");
 		list.add("I greet death with courage!" + extra.choose(""," Can you say the same?"));
+		return p.getName() + " " + extra.choose("screams","shouts","taunts")+  " \""+ extra.randList(list) + "\"";
+	}
+	
+	private static String grizzleTaunt(Person p) {
+		List<String> list = new ArrayList<String>();
+		list.add("You are not the first... but you will not be the last!");
+		list.add("Can you kill me, or will you fall, like the others?");
+		list.add("Is it finally time?");
 		return p.getName() + " " + extra.choose("screams","shouts","taunts")+  " \""+ extra.randList(list) + "\"";
 	}
 

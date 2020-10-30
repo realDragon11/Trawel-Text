@@ -257,7 +257,7 @@ public class Inn extends Feature implements java.io.Serializable{
 				case 1: extra.println("They wish you well.") ;break;
 				case 2: Oracle.tip("old");;break;
 				case 3: extra.println("\"We are in " + this.getName() + ". It is pleasant here.\"");break;
-				case 4: extra.println("You challenge the fighter!");mainGame.CombatTwo(Player.player.getPerson(), new Person(tier+2));return;
+				case 4: extra.println("You challenge the fighter!");mainGame.CombatTwo(Player.player.getPerson(),RaceFactory.makeOld(tier+2));return;
 			}
 			if (in == 1) {
 				break;

@@ -59,7 +59,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		case 5: name = "fairy circle"; interactString = "examine circle";break;
 		case 6: name = "fairy circle"; interactString = "examine circle";break;
 		case 7: name = "old " + randomLists.randomWarrior(); interactString = "approach " + name;
-		storage1 = new Person(level+2);
+		storage1 = RaceFactory.makeOld(level + 2);
 		if (extra.chanceIn(1, 4)) {
 		((Person)storage1).getBag().getDrawBanes().add(DrawBane.REPEL);}
 		break;

@@ -23,7 +23,7 @@ public class Person implements java.io.Serializable{
 	private boolean isAttacking;
 	private int hp, intellect, maxHp, tempMaxHp;
 	//private Taunts brag;
-	private String personType = extra.choose("cowardly","fearless");
+	public String personType = extra.choose("cowardly","fearless");
 	private String placeOfBirth;
 	private int beer;
 	private boolean racist;
