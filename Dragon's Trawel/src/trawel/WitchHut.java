@@ -51,6 +51,7 @@ public class WitchHut extends Feature{
 				int mGuts = (int) dbs.stream().filter(d -> d.equals(DrawBane.MIMIC_GUTS)).count();
 				int apples = (int) dbs.stream().filter(d -> d.equals(DrawBane.APPLE)).count();
 				int meats = (int) dbs.stream().filter(d -> d.equals(DrawBane.MEAT)).count();
+				meats += (int) dbs.stream().filter(d -> d.equals(DrawBane.VIRGIN)).count()*2;
 				int garlics = (int) dbs.stream().filter(d -> d.equals(DrawBane.GARLIC)).count();
 				int woods = (int) dbs.stream().filter(d -> d.equals(DrawBane.WOOD)).count();
 				int honeys = (int) dbs.stream().filter(d -> d.equals(DrawBane.HONEY)).count();
@@ -63,6 +64,7 @@ public class WitchHut extends Feature{
 				int silvers = (int) dbs.stream().filter(d -> d.equals(DrawBane.SILVER)).count();
 				int food = meats + apples + garlics + honeys + pumpkins + pumpkins + eggcorns+truffles;
 				int filler = apples + woods + waxs;
+				
 				if (Player.player.eaBox.witchTrainLevel > 2) {
 					filler+=Player.player.eaBox.witchTrainLevel/3;
 				}

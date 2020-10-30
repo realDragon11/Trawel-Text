@@ -142,7 +142,11 @@ public class BasicSideQuest implements Quest{
 				}
 				
 			};
-			q.target.locationF = extra.randList(loc.getQuestLocationsInRange(3));
+			int i = 3; 
+			while (q.target.locationF == null) {
+			q.target.locationF = extra.randList(loc.getQuestLocationsInRange(i));
+			i++;
+			}
 			q.target.locationT = q.target.locationF.town;
 			q.targetPerson = new Person(q.target.locationT.getTier());
 			q.targetName = q.targetPerson.getName();
