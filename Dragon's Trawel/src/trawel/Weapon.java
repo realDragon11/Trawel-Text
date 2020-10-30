@@ -185,6 +185,14 @@ public class Weapon extends Item {
 			martialStance.addAttack(new Attack("smash",1,100.0,0*sharpMult,30*bluntMult,0*pierceMult,"X` smashes Y` with their fists!",1,"blunt"));
 			martialStance.addAttack(new Attack("power punch",.5,180.0,0*sharpMult,80*bluntMult,0*pierceMult,"X` lifts their fists over their head, and then brings them down on Y`!",2,"blunt"));
 			;break;
+		case "unicorn horn":
+			cost *= 3;
+			weight *=3;	
+			martialStance.addAttack(new Attack("skewer",0.5,150.0,1*sharpMult,5*bluntMult,35*pierceMult,"X` skewers Y` with their horn!",1,"pierce"));	
+			martialStance.addAttack(new Attack("thrust",.3,100.0,1*sharpMult,5*bluntMult,20*pierceMult,"X` thrusts at Y` with their horn!",1,"pierce"));
+			martialStance.addAttack(new Attack("smack",1,100.0,0*sharpMult,15*bluntMult,0*pierceMult,"X` smacks Y` with the side of their horn!",0,"blunt"));
+			martialStance.addAttack(new Attack("charge",1.4,300.0,1*sharpMult,20*bluntMult,80*pierceMult,"X` charges forward with their horn!",2,"pierce"));
+			;break;
 		/*
 		case "wand":
 		cost *= 2;

@@ -22,7 +22,9 @@ public enum DrawBane {
 	BEATING_HEART("beating heart","Is it... still alive?!",100,1), 
 	EGGCORN("eggcorn","What is this plant?",50,.5),
 	TRUFFLE("truffle","A rare food.",200,2), 
-	GOLD("gold chunk","A shiny metal.",300,4);
+	GOLD("gold chunk","A shiny metal.",300,4),
+	UNICORN_HORN("unicorn horn","An impressive magic horn.",250,3),
+	VIRGIN("virgin","You have them tied up.",1000,.5);
 	private String name, flavorText;
 	private int value;
 	private double mVal;

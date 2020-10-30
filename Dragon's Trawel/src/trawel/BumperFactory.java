@@ -129,6 +129,21 @@ public class BumperFactory {
 			b.responses.add(new Response(DrawBane.REPEL,-8));
 			bumperList.add(b);
 			
+			b = new Bumper() {
+				
+				@Override
+				public void activate(int level) {
+					Person p = RaceFactory.makeUnicorn(level);
+					
+					Networking.sendColor(Color.RED);
+					extra.println("A unicorn accosts you for holding the virgin captive !");
+					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+							Player.player.questTrigger("unicorn",1);
+					}
+					
+				}};
+			b.responses.add(new Response(DrawBane.VIRGIN,10));
+			bumperList.add(b);
 			
 			//ships
 			
