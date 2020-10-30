@@ -133,7 +133,7 @@ public class Inventory implements java.io.Serializable{
 			}
 		}else {
 			//light armor
-			retMod*= Math.pow(armorSlots[i].getDexMod(),Math.log10(10+(owner.lightArmorLevel)));
+			retMod*= Math.pow(armorSlots[i].getDexMod(),Math.log10(10+(owner.lightArmorLevel*2.5f)));
 		}
 		
 		i++;

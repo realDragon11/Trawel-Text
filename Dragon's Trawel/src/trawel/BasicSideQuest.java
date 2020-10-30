@@ -169,7 +169,7 @@ public class BasicSideQuest implements Quest{
 				q.giver.locationF = inn;
 				q.giver.locationT = loc;
 				q.giver.overQuest = q;
-				switch (extra.randRange(1,2)) {
+				switch (extra.randRange(1,4)) {
 				case 1:
 					q.targetName = "bears";
 					q.trigger = "bear";
@@ -184,6 +184,11 @@ public class BasicSideQuest implements Quest{
 					q.targetName = "wolves";
 					q.trigger = "wolf";
 					q.count = 6;
+					break;
+				case 4:
+					q.targetName = "harpies";
+					q.trigger = "harpy";
+					q.count = 4;
 					break;
 				}
 			//q.target.locationF.addQR(q.target);

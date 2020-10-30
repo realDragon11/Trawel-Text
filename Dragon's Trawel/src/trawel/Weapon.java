@@ -193,6 +193,13 @@ public class Weapon extends Item {
 			martialStance.addAttack(new Attack("smack",1,100.0,0*sharpMult,15*bluntMult,0*pierceMult,"X` smacks Y` with the side of their horn!",0,"blunt"));
 			martialStance.addAttack(new Attack("charge",1.4,300.0,1*sharpMult,20*bluntMult,80*pierceMult,"X` charges forward with their horn!",2,"pierce"));
 			;break;
+		case "generic talons":
+			cost *= 1;
+			weight *=3;	
+			martialStance.addAttack(new Attack("grip",1,100.0,5*sharpMult,0*bluntMult,35*pierceMult,"X` grips Y` with their talons!",2,"pierce"));
+			martialStance.addAttack(new Attack("tear",1.4,140.0,20*sharpMult,0*bluntMult,20*pierceMult,"X` tears into Y`'s flesh with their talons!",1,"pierce"));
+			martialStance.addAttack(new Attack("rip",.6,120.0,30*sharpMult,0*bluntMult,30*pierceMult,"X` rips up Y`'s flesh with their talons!",0,"pierce"));
+			;break;
 		/*
 		case "wand":
 		cost *= 2;

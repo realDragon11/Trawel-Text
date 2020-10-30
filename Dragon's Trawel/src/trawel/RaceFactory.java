@@ -537,7 +537,7 @@ public class RaceFactory {
 		misc.aimMod = 1;
 		misc.damMod = .8;
 		misc.dodgeMod = 1.4;
-		misc.hpMod = .8;
+		misc.hpMod = .7;
 		misc.speedMod = 1.1;
 		misc.tradeMod = 1;
 		misc.rarity = 1;
@@ -599,6 +599,30 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.QUAD;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.WOLF;
+		misc.minPitch = .975f;
+		misc.maxPitch = 1.025f;
+		raceList.add(misc);
+		
+		misc = new Race();
+		misc.name = "harpy";
+		misc.namePlural = "harpies";
+		misc.swears.add("harpy");
+		misc.aimMod = 1;
+		misc.damMod = 1.1;
+		misc.dodgeMod = 1.25;
+		misc.hpMod = .9;
+		misc.speedMod = 1;
+		misc.tradeMod = 1;
+		misc.rarity = 1;
+		misc.insultList.add("Die, you feathery fiend!");
+		misc.baseMap = "harpy";
+		misc.raceMaps.add("0");
+		misc.magicPower = 0;
+		misc.defPower = 0;
+		misc.racialType = Race.RaceType.BEAST;
+		misc.targetType = TargetFactory.TargetType.FLY;
+		misc.emitsBlood = true;
+		misc.voice = SoundBox.Voice.BAT;
 		misc.minPitch = .975f;
 		misc.maxPitch = 1.025f;
 		raceList.add(misc);
@@ -767,6 +791,24 @@ public class RaceFactory {
 		w.getBag().swapRace(RaceFactory.getRace("unicorn"));
 		if (extra.chanceIn(1,5)) {
 			w.getBag().getDrawBanes().add(DrawBane.UNICORN_HORN);
+		}
+		extra.printMode = false;
+		return w;
+	}
+	
+	public static Person makeHarpy(int level) {
+		extra.printMode = true;
+		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic talons"));
+		w.getBag().swapRace(RaceFactory.getRace("harpy"));
+		if (extra.chanceIn(1,6)) {
+			w.getBag().getDrawBanes().add(DrawBane.MEAT);
+		}
+		if (extra.chanceIn(1,50)) {
+			w.getBag().getDrawBanes().add(DrawBane.GOLD);
+		}
+		if (extra.chanceIn(1,20)) {
+			w.getBag().getDrawBanes().add(DrawBane.SILVER);
 		}
 		extra.printMode = false;
 		return w;

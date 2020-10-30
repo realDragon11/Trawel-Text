@@ -145,6 +145,27 @@ public class BumperFactory {
 			b.responses.add(new Response(DrawBane.VIRGIN,10));
 			bumperList.add(b);
 			
+			b = new Bumper() {
+				
+				@Override
+				public void activate(int level) {
+					ArrayList<Person> list = new ArrayList<Person>();
+					int count = extra.randRange(1,3);
+					for (int i = 0;i < count;i++) {
+						list.add(RaceFactory.makeHarpy(extra.zeroOut(level-3)+1));}
+					Networking.sendColor(Color.RED);
+					extra.println("A flock of harpies attack!");
+					ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
+					if (survivors.contains(Player.player.getPerson())) {
+						Player.player.questTrigger("harpy",count);
+					}
+					
+				}};
+			b.responses.add(new Response(DrawBane.MEAT,1.25));
+			b.responses.add(new Response(DrawBane.SILVER,1.25));
+			b.responses.add(new Response(DrawBane.GOLD,1.25));
+			bumperList.add(b);
+			
 			//ships
 			
 			b = new Bumper() {
