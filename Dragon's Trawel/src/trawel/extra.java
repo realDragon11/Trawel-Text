@@ -420,7 +420,7 @@ public class extra {
 			return Math.min(max, Math.max(d, min));
 		}
 
-		public static void menuGo(MenuGenerator mGen) {
+		public static int menuGo(MenuGenerator mGen) {
 			List<MenuItem> mList = new ArrayList<MenuItem>();
 			mList = mGen.gen();
 			int v = 1;
@@ -434,10 +434,11 @@ public class extra {
 			while (true) {
 				List<MenuItem> subList = new ArrayList<MenuItem>();
 				mList.stream().filter(m -> m.canClick() == true).forEach(subList::add);
-				boolean ret = subList.get(extra.inInt(v)-1).go();
+				int val = extra.inInt(v)-1;
+				boolean ret = subList.get(val).go();
 				mList = mGen.gen();
 				if (ret) {
-					return;
+					return val;
 				}
 				v = 1;
 				for (MenuItem m: mList) {
@@ -448,6 +449,11 @@ public class extra {
 						}
 				}
 			}
+		}
+		
+		public static float lerp(float a, float b, float f) 
+		{
+		    return (a * (1.0f - f)) + (b * f);
 		}
 		
 }

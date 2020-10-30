@@ -32,6 +32,7 @@ public class Person implements java.io.Serializable{
 
 	private int skillPoints;
 	private int fighterLevel= 0,traderLevel = 0,explorerLevel = 0, mageLevel = 0, magePow = 0, defenderLevel = 0, defPow = 0, fightPow = 0;
+	public int lightArmorLevel = 0, heavyArmorLevel = 0;
 	private ArrayList<Skill> skills = new ArrayList<Skill>();
 	private boolean noAILevel;
 	private ArrayList<Effect> effects;
@@ -64,6 +65,7 @@ public class Person implements java.io.Serializable{
 	
 	
 	bag = new Inventory(level,raceType,matType);
+	bag.owner = this;
 	firstName = randomLists.randomFirstName();
 	title = randomLists.randomLastName();
 	placeOfBirth = extra.capFirst((String)extra.choose(randomLists.randomElement(),randomLists.randomColor()))+ " " +extra.choose("Kingdom","Kingdom","Colony","Domain","Realm");
@@ -342,6 +344,18 @@ public class Person implements java.io.Serializable{
 							return false;
 						}});
 				}
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Conventional Skills";
+					}
+
+					@Override
+					public boolean go() {
+						csSubMenu();
+						return false;
+					}});
 				
 				list.add(new MenuSelect() {
 
@@ -591,6 +605,95 @@ public class Person implements java.io.Serializable{
 						return true;
 					}});
 				return list2;
+			}});
+	}
+	private void csSubMenu() {
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Armor Skills";
+					}
+
+					@Override
+					public boolean go() {
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> list2 = new ArrayList<MenuItem>();
+								list2.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
+									}});
+								list2.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Light Armor: " + Player.player.getPerson().lightArmorLevel;
+									}
+
+									@Override
+									public boolean go() {
+										extra.println("Light Armor skill will help you with armor pieces that already grant a benefit to dodge. It costs 1 skillpoint per level. Buy?");
+										if (extra.yesNo()) {
+										if (Player.player.getPerson().getSkillPoints() > 0) {
+											Player.player.getPerson().setSkillPoints(Player.player.getPerson().getSkillPoints()-1);
+											Player.player.getPerson().lightArmorLevel++;
+										}}
+										return true;
+									}});
+								list2.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Heavy Armor: " + Player.player.getPerson().heavyArmorLevel;
+									}
+
+									@Override
+									public boolean go() {
+										extra.println("Heavy Armor skill will help negate the dodge penalty of armors. It costs 1 skillpoint per level. Buy?");
+										if (extra.yesNo()) {
+										if (Player.player.getPerson().getSkillPoints() > 0) {
+											Player.player.getPerson().setSkillPoints(Player.player.getPerson().getSkillPoints()-1);
+											Player.player.getPerson().heavyArmorLevel++;
+										}}
+										return true;
+									}});
+								list2.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "back";
+									}
+
+									@Override
+									public boolean go() {
+										return true;
+									}});
+								return list;
+							}});
+						return true;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}});
+				return list;
 			}});
 	}
 		

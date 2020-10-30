@@ -21,6 +21,7 @@ public class Inventory implements java.io.Serializable{
 	private ArrayList<DrawBane> dbs = new ArrayList<DrawBane>();
 	private ArrayList<Seed> seeds = new ArrayList<Seed>();
 	public int dbMax = 3;
+	public Person owner;
 	
 	//constructors
 	/**
@@ -123,7 +124,18 @@ public class Inventory implements java.io.Serializable{
 		while (i < 5) {
 			if (armorSlots[i].isEnchanted()) {
 			retMod *= armorSlots[i].getEnchant().getDodgeMod();}
-		retMod *= armorSlots[i].getDexMod();
+		if (armorSlots[i].getDexMod() < 1.0) {
+			//heavy armor
+			if (owner.heavyArmorLevel > 20.0) {
+				//do nothing, negate heavy armor penalty
+			}else {
+				retMod *= extra.lerp((float)armorSlots[i].getDexMod(),1,owner.heavyArmorLevel/20.0f);
+			}
+		}else {
+			//light armor
+			retMod*= Math.log10(10+(owner.lightArmorLevel*armorSlots[i].getDexMod()));
+		}
+		
 		i++;
 		}
 		if (hand.IsEnchantedConstant()) {
