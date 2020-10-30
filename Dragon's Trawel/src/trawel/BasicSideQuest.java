@@ -207,7 +207,8 @@ public class BasicSideQuest implements Quest{
 
 	@Override
 	public void take() {
-		target.locationF.addQR(target);
+		if (target != null) {
+		target.locationF.addQR(target);}
 		announceUpdate();
 	}
 
