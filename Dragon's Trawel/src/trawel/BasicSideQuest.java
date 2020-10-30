@@ -18,7 +18,8 @@ public class BasicSideQuest implements Quest{
 	
 	public void cleanup() {
 		giver.cleanup();
-		target.cleanup();
+		if (target != null) {
+		target.cleanup();}
 	}
 	
 	public void fail() {

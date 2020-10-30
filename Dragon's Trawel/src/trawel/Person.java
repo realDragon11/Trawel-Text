@@ -648,7 +648,7 @@ public class Person implements java.io.Serializable{
 											Player.player.getPerson().setSkillPoints(Player.player.getPerson().getSkillPoints()-1);
 											Player.player.getPerson().lightArmorLevel++;
 										}}
-										return true;
+										return false;
 									}});
 								list2.add(new MenuSelect() {
 
@@ -665,7 +665,7 @@ public class Person implements java.io.Serializable{
 											Player.player.getPerson().setSkillPoints(Player.player.getPerson().getSkillPoints()-1);
 											Player.player.getPerson().heavyArmorLevel++;
 										}}
-										return true;
+										return false;
 									}});
 								list2.add(new MenuSelect() {
 
@@ -678,9 +678,9 @@ public class Person implements java.io.Serializable{
 									public boolean go() {
 										return true;
 									}});
-								return list;
+								return list2;
 							}});
-						return true;
+						return false;
 					}});
 				list.add(new MenuSelect() {
 

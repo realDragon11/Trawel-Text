@@ -566,9 +566,9 @@ public class Inventory implements java.io.Serializable{
 	public DrawBane addNewDrawBane(DrawBane d) {
 		extra.println("You found - " + d.getName() + ": " + d.getFlavor());
 		this.displayDrawBanes();
-		extra.println((dbMax+ 1) +" discard.");
-		int in = extra.inInt((dbMax+ 1));
-		if (in == (dbMax+ 1)) {
+		extra.println((dbMax+ 2) +" discard.");
+		int in = extra.inInt((dbMax+ 2));
+		if (in == (dbMax+ 2)) {
 			return null;
 		}
 		dbs.add(d);
@@ -589,9 +589,9 @@ public class Inventory implements java.io.Serializable{
 	
 	public DrawBane discardDrawBanes(boolean selling) {
 		this.displayDrawBanes();
-		extra.println((dbMax+ 1)+" keep");
-		int in = extra.inInt((dbMax+ 1) );
-		if (in == (dbMax+ 1) ) {
+		extra.println((dbMax+ 2)+" keep");
+		int in = extra.inInt((dbMax+ 2) );
+		if (in == (dbMax+ 2) ) {
 			return null;
 		}
 		if (dbs.get(in-1) == DrawBane.CLEANER && !selling) {
