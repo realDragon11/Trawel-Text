@@ -23,6 +23,8 @@ public class Player extends SuperPerson{
 	private double merchantPoints = 0;
 	public int emeralds = 0;
 	private Potion flask;
+	public float forceRelation = 0.0f;
+	public int forceRewardCount = 0;
 	
 	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
 	public List<EArt> eArts = new ArrayList<EArt>();

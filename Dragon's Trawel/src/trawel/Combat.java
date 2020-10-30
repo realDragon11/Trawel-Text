@@ -56,6 +56,9 @@ public class Combat {
 			if (attacker.hasSkill(Skill.BLITZ)) {
 				attacker.advanceTime(3);
 			}
+			if (attacker.hasSkill(Skill.SKY_BLESSING_1)) {
+				attacker.advanceTime(1);
+			}
 			defender.advanceTime(attacker.getTime());
 			
 			handleTurn( attacker,  defender,  song,playerIsInBattle);
