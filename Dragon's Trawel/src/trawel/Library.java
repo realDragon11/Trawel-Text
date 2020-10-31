@@ -90,6 +90,7 @@ public class Library extends Feature {
 								}
 								dbs.remove(i);
 							}
+							extra.println(Player.player.knowledgeFragments + "/"+Player.player.fragmentReq + " to next knowledge level.");
 							return false;
 						}
 						

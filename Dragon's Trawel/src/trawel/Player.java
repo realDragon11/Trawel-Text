@@ -25,6 +25,7 @@ public class Player extends SuperPerson{
 	private Potion flask;
 	public float forceRelation = 0.0f;
 	public int forceRewardCount = 0;
+	public int merchantBookPrice = 1000;
 	
 	public int knowledgeFragments = 0, fragmentReq = 10;
 	
@@ -249,6 +250,7 @@ public class Player extends SuperPerson{
 			knowledgeFragments-=fragmentReq;
 			Player.player.getPerson().setSkillPoints(Player.player.getPerson().getSkillPoints()+1);
 			fragmentReq+=2;
+			extra.println("+1 skillpoint!");
 		}
 		
 		
