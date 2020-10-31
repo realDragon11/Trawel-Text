@@ -400,14 +400,16 @@ public class Town implements java.io.Serializable{
 				ArrayList<Person> survivors = mainGame.HugeBattle(Player.world,foeList,allyList);
 				boolean pass = false;
 				for (Person p: oallyList) {
-					if (allyList.contains(p)) {
+					if (survivors.contains(p)) {
 						pass = true;
 						break;
 					}
 				}
 				if (pass) {
+					survivors.remove(Player.player.getPerson());
+					helpers.addAll(survivors);
 					extra.println("You take back the docks. +"+(100*tier)+" gp");
-					Player.player.bag.addGold(100*tier);
+					Player.bag.addGold(100*tier);
 				}else {
 					extra.println("The docks are overrun.");
 				}

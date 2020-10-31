@@ -35,7 +35,11 @@ public abstract class EArtSkillMenu extends MenuSelect{
 						public List<MenuItem> gen() {
 							List<MenuItem> list = new ArrayList<MenuItem>();
 							list.add(new MenuLine() {
-
+								@Override
+								public String title() {
+									return "A combat magic class focused on swapping out spell slots. Study arcane lore at libraries.";
+								}});
+							list.add(new MenuLine() {
 								@Override
 								public String title() {
 									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
@@ -181,6 +185,11 @@ public abstract class EArtSkillMenu extends MenuSelect{
 						public List<MenuItem> gen() {
 							List<MenuItem> list = new ArrayList<MenuItem>();
 							list.add(new MenuLine() {
+								@Override
+								public String title() {
+									return "A martial class based around dealing the final blow. Complete kill quests to increase in power.";
+								}});
+							list.add(new MenuLine() {
 
 								@Override
 								public String title() {
@@ -244,6 +253,11 @@ public abstract class EArtSkillMenu extends MenuSelect{
 						@Override
 						public List<MenuItem> gen() {
 							List<MenuItem> list = new ArrayList<MenuItem>();
+							list.add(new MenuLine() {
+								@Override
+								public String title() {
+									return "A martial class that cannot examine, and instead strikes lightning-quick. Also adept at hand-to-hand.";
+								}});
 							list.add(new MenuLine() {
 
 								@Override
@@ -328,6 +342,11 @@ public abstract class EArtSkillMenu extends MenuSelect{
 						public List<MenuItem> gen() {
 							List<MenuItem> list = new ArrayList<MenuItem>();
 							list.add(new MenuLine() {
+								@Override
+								public String title() {
+									return "A utility class that can carry more drawbanes.";
+								}});
+							list.add(new MenuLine() {
 
 								@Override
 								public String title() {
@@ -408,6 +427,11 @@ public abstract class EArtSkillMenu extends MenuSelect{
 						@Override
 						public List<MenuItem> gen() {
 							List<MenuItem> list = new ArrayList<MenuItem>();
+							list.add(new MenuLine() {
+								@Override
+								public String title() {
+									return "A martial class that has more health and can use kung-fu.";
+								}});
 							list.add(new MenuLine() {
 
 								@Override
@@ -508,6 +532,11 @@ public abstract class EArtSkillMenu extends MenuSelect{
 						public List<MenuItem> gen() {
 							List<MenuItem> list = new ArrayList<MenuItem>();
 							list.add(new MenuLine() {
+								@Override
+								public String title() {
+									return "A utility class that is adept with curses, alchemy, and healing magic.";
+								}});
+							list.add(new MenuLine() {
 
 								@Override
 								public String title() {
@@ -592,6 +621,11 @@ public abstract class EArtSkillMenu extends MenuSelect{
 						public List<MenuItem> gen() {
 							List<MenuItem> list = new ArrayList<MenuItem>();
 							list.add(new MenuLine() {
+								@Override
+								public String title() {
+									return "A magic class that uses blood.";
+								}});
+							list.add(new MenuLine() {
 
 								@Override
 								public String title() {
@@ -673,6 +707,11 @@ public abstract class EArtSkillMenu extends MenuSelect{
 						@Override
 						public List<MenuItem> gen() {
 							List<MenuItem> list = new ArrayList<MenuItem>();
+							list.add(new MenuLine() {
+								@Override
+								public String title() {
+									return "A martial class with a shield or dagger.";
+								}});
 							list.add(new MenuLine() {
 
 								@Override

@@ -189,6 +189,20 @@ public class BumperFactory {
 			b.responses.add(new Response(DrawBane.GOLD,2));
 			shipList.add(b);
 			
+			b = new Bumper() {
+				
+				@Override
+				public void activate(int level) {
+					Person p = RaceFactory.makeDrudgerStock(level);
+					
+					Networking.sendColor(Color.RED);
+					extra.println("A drudger attacks your ship!");
+					mainGame.CombatTwo(Player.player.getPerson(),p);
+					
+				}};
+			b.responses.add(new Response(DrawBane.MEAT,3));
+			shipList.add(b);
+			
 		
 	}
 }
