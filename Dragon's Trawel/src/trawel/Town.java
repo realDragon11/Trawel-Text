@@ -2,6 +2,7 @@ package trawel;
 import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -23,6 +24,7 @@ public class Town implements java.io.Serializable{
 	private ArrayList<SuperPerson> occupants;
 	private PrintEvent goPrinter, newPrinter;
 	private boolean hasBeen;
+	private List<Person> helpers = new ArrayList<Person>();
 	
 	public Town() {
 		connects = new ArrayList<Connection>();
@@ -369,7 +371,8 @@ public class Town implements java.io.Serializable{
 	}
 
 	private void goPort() {
-		int i = 1;
+		extra.println("1 protect the port");
+		int i = 2;
 		Networking.setArea("port");
 		for (Connection c: connects) {
 			if (c.getType().equals("ship")){
@@ -379,7 +382,41 @@ public class Town implements java.io.Serializable{
 		}
 		extra.println(i + " exit");i++;
 		int j = extra.inInt(i-1);
-		i = 1;
+		if (j == 1) {
+			if (Player.player.getPerson().getLevel() >= tier) {
+				extra.println("You help defend the port against the drudger onslaught.");
+				int eSize = extra.randRange(2,3);
+				ArrayList<Person> oallyList = new ArrayList<Person>();
+				ArrayList<Person> allyList = new ArrayList<Person>();
+				ArrayList<Person> foeList = new ArrayList<Person>();
+				for (int o = 0;o < eSize;o++) {
+					oallyList.add(popHelper());
+					allyList.add(popHelper());
+					foeList.add(RaceFactory.makeDrudgerStock(tier-1));
+				}
+				oallyList.add(Player.player.getPerson());
+				allyList.add(Player.player.getPerson());
+				foeList.add(RaceFactory.makeDrudgerTitan(tier));
+				ArrayList<Person> survivors = mainGame.HugeBattle(Player.world,foeList,allyList);
+				boolean pass = false;
+				for (Person p: oallyList) {
+					if (allyList.contains(p)) {
+						pass = true;
+						break;
+					}
+				}
+				if (pass) {
+					extra.println("You take back the docks. +"+(100*tier)+" gp");
+					Player.player.bag.addGold(100*tier);
+				}else {
+					extra.println("The docks are overrun.");
+				}
+				Player.addTime(5);
+			}else {
+				extra.println("They size you up and then turn you away.");
+			}
+		}
+		i = 2;
 		for (Connection c: connects) {
 			if (c.getType().equals("ship")){//ships are free for now
 			if (i == j) {
@@ -404,6 +441,12 @@ public class Town implements java.io.Serializable{
 	}
 
 	
+	private Person popHelper() {
+		if (helpers.size() > 0) {
+		return helpers.remove(0);
+		}
+		return new Person(tier-1);
+	}
 	private void goTeleporters() {
 		int i = 1;
 		for (Connection c: connects) {

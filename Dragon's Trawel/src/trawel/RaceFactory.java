@@ -627,6 +627,54 @@ public class RaceFactory {
 		misc.maxPitch = 1.025f;
 		raceList.add(misc);
 		
+		misc = new Race();
+		misc.name = "drudger-stock";
+		misc.namePlural = "stock-drudgers";
+		misc.swears.add("drowner");
+		misc.aimMod = 1;
+		misc.damMod = 1;
+		misc.dodgeMod = 1;
+		misc.hpMod = 1;
+		misc.speedMod = 1;
+		misc.tradeMod = .5;
+		misc.rarity = 1;
+		misc.insultList.add("Drudger!");
+		misc.baseMap = "flesh_golem";
+		misc.raceMaps.add("0");;
+		misc.magicPower = 0;
+		misc.defPower = 0;
+		misc.racialType = Race.RaceType.BEAST;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.emitsBlood = true;
+		misc.voice = SoundBox.Voice.F_GOLEM;
+		misc.minPitch = .975f;
+		misc.maxPitch = 1.025f;
+		raceList.add(misc);
+		
+		misc = new Race();
+		misc.name = "drudger-titan";
+		misc.namePlural = "titan-drudgers";
+		misc.swears.add("drowner");
+		misc.aimMod = 1;
+		misc.damMod = 1.2;
+		misc.dodgeMod = .4;
+		misc.hpMod = 2;
+		misc.speedMod = .5;
+		misc.tradeMod = .5;
+		misc.rarity = 1;
+		misc.insultList.add("Drudger!");
+		misc.baseMap = "flesh_golem";
+		misc.raceMaps.add("0");;
+		misc.magicPower = 0;
+		misc.defPower = 0;
+		misc.racialType = Race.RaceType.BEAST;
+		misc.targetType = TargetFactory.TargetType.HUMANOID;
+		misc.emitsBlood = true;
+		misc.voice = SoundBox.Voice.F_GOLEM;
+		misc.minPitch = .975f;
+		misc.maxPitch = 1.025f;
+		raceList.add(misc);
+		
 	}
 	
 	public static Race randRace(Race.RaceType type) {
@@ -818,6 +866,30 @@ public class RaceFactory {
 		}
 		if (extra.chanceIn(1,20)) {
 			w.getBag().getDrawBanes().add(DrawBane.SILVER);
+		}
+		extra.printMode = false;
+		return w;
+	}
+	
+	public static Person makeDrudgerStock(int level) {
+		extra.printMode = true;
+		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("iron"),"fishing spear"));
+		w.getBag().swapRace(RaceFactory.getRace("drudger-stock"));
+		if (extra.chanceIn(1,6)) {
+			w.getBag().getDrawBanes().add(DrawBane.MEAT);
+		}
+		extra.printMode = false;
+		return w;
+	}
+	public static Person makeDrudgerTitan(int level) {
+		extra.printMode = true;
+		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("iron"),"anchor"));
+		w.getBag().swapRace(RaceFactory.getRace("drudger-titan"));
+		w.getBag().getDrawBanes().add(DrawBane.MEAT);
+		if (extra.chanceIn(1,2)) {
+			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
 		extra.printMode = false;
 		return w;

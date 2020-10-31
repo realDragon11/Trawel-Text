@@ -135,6 +135,10 @@ public class Weapon extends Item {
 			cost *= 1;
 			weight *=3;	
 			;break;
+		case "fishing spear":
+			cost *= 1;
+			weight *=1;
+			;break;
 		}
 		//random chance, partially based on enchantment power, to enchant the weapon
 		effectiveCost = cost;

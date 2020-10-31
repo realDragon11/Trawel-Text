@@ -153,7 +153,7 @@ public class mainGame {
 		new BumperFactory();
 		new WeaponAttackFactory();
 		story = new StoryNone();
-		extra.println("Dragon's Trawel v0.5.5");
+		extra.println("Dragon's Trawel v0.6.0");
 		extra.println(
 				" ___________  ___  _    _ _____ _     \r\n" + 
 				"|_   _| ___ \\/ _ \\| |  | |  ___| |    \r\n" + 

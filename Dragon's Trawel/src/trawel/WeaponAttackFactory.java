@@ -110,6 +110,18 @@ public class WeaponAttackFactory {
 		martialStance.addAttack(new Attack("tear",1.4,140.0,20,0,20,"X` tears into Y`'s flesh with their talons!",1,"pierce"));
 		martialStance.addAttack(new Attack("rip",.6,120.0,30,0,30,"X` rips up Y`'s flesh with their talons!",0,"pierce"));
 		stanceMap.put("generic talons", martialStance);
+		
+		martialStance = new Stance();
+		martialStance.addAttack(new Attack("skewer",1,100.0,1,2,45,"X` skewers Y` with their rusty fishing spear!",1,"pierce"));	
+		martialStance.addAttack(new Attack("thrust",.3,50.0,1,2,30,"X` thrusts at Y` with their rusty fishing spear!",2,"pierce"));
+		martialStance.addAttack(new Attack("pole",.6,110.0,0,8,0,"X` hits Y` with the pole of their rusty fishing spear!",1,"blunt"));
+		stanceMap.put("fishing spear", martialStance);
+		
+		martialStance = new Stance();
+		martialStance.addAttack(new Attack("slam",.1,300.0,0,15,0,"X` hits Y` with their rusty anchor!",0,"blunt"));
+		martialStance.addAttack(new Attack("slap",1.3,200.0,0,30,0,"X` slaps Y` with the side of their rusty anchor!",1,"blunt"));
+		martialStance.addAttack(new Attack("power",.4,400.0,100,50,0,"X` lifts their rusty anchor over their head, and then brings it down on Y`!",2,"sharp"));
+		stanceMap.put("anchor", martialStance);
 	}
 	
 	public static Stance getStance(String str) {
