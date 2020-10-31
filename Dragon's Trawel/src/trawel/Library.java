@@ -84,7 +84,7 @@ public class Library extends Feature {
 						@Override
 						public boolean go() {
 							List<DrawBane> dbs = Player.bag.getDrawBanes();
-							for (int i = dbs.size();i >= 0;i--) {
+							for (int i = dbs.size()-1;i >= 0;i--) {
 								if (dbs.get(i).equals(DrawBane.KNOW_FRAG)) {
 									Player.player.addKnowFrag();
 								}

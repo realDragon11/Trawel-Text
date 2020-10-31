@@ -20,7 +20,7 @@ public class MerchantGuild extends Feature {
 		extra.println("2 Donate emerald. (You have " + Player.player.emeralds + ")");
 		extra.println("3 buy shipments with gold");
 		extra.println("4 leave");
-		switch (extra.inInt(3)) {
+		switch (extra.inInt(4)) {
 		case 2:
 			if (Player.player.emeralds > 0) {
 			Player.player.addMPoints(10);
