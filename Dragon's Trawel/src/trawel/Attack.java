@@ -306,7 +306,15 @@ public class Attack implements java.io.Serializable{
 		Target t = TargetFactory.randTarget(targetType);
 		Style s = StyleFactory.randStyle();
 		if (!name.contains("examine")) {
-		return new Attack(s.name + name + " " + t.name, hitMod*t.hit*s.hit,  (s.speed*speed)+extra.randRange(0,20)-10,  handLevel*s.damage*t.sharp*sharp*extra.hrandom()*weap.getMat().sharpMult,  handLevel*s.damage*t.blunt*blunt*extra.hrandom()*weap.getMat().bluntMult,  handLevel*s.damage*t.pierce*pierce*extra.hrandom()*weap.getMat().pierceMult,  desc,soundStrength,soundType,t,weap);
+			double sMult = 1;
+			double bMult = 1;
+			double pMult = 1;
+			if (weap != null) {
+				sMult = weap.getMat().sharpMult;
+				bMult = weap.getMat().bluntMult;
+				pMult = weap.getMat().pierceMult;
+			}
+		return new Attack(s.name + name + " " + t.name, hitMod*t.hit*s.hit,  (s.speed*speed)+extra.randRange(0,20)-10,  handLevel*s.damage*t.sharp*sharp*extra.hrandom()*sMult,  handLevel*s.damage*t.blunt*blunt*extra.hrandom()*bMult,  handLevel*s.damage*t.pierce*pierce*extra.hrandom()*pMult,  desc,soundStrength,soundType,t,weap);
 		}else {
 			return this;
 		}
@@ -382,8 +390,16 @@ public class Attack implements java.io.Serializable{
 		
 	}
 
-	public double getTotalDam() {
-		return this.getSharp()+this.getBlunt()+this.getPierce();
+	public double getTotalDam(Weapon weap) {
+		double sMult = 1;
+		double bMult = 1;
+		double pMult = 1;
+		if (weap != null) {
+			sMult = weap.getMat().sharpMult;
+			bMult = weap.getMat().bluntMult;
+			pMult = weap.getMat().pierceMult;
+		}
+		return (this.getSharp()*sMult)+(this.getBlunt()*bMult)+(this.getPierce()*pMult);
 	}
 
 }

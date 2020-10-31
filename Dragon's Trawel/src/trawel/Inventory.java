@@ -330,7 +330,13 @@ public class Inventory implements java.io.Serializable{
 			Networking.sendStrong("AddInv|"+side+"|parry|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount()+ "|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+ "|-4|");
 		}}
 		
-		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|2|");}
+		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|2|");
+		}else {
+			if (p.getBag().getRace().equals("wolf")) {
+				Networking.sendStrong("AddInv|"+side+"|" +"wolf_teeth" +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-9|");
+				
+			}
+		}
 		Networking.sendStrong("ClearInv|"+side+"|");
 	}
 	

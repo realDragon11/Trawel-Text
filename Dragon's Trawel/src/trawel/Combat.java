@@ -566,7 +566,7 @@ public class Combat {
 			defender2.takeDamage(damage/10);
 			break;
 		case CRUSHED:
-			defender2.takeDamage((int)attacker2.getNextAttack().getTotalDam()/10);
+			defender2.takeDamage((int)attacker2.getNextAttack().getTotalDam(attacker2.getBag().getHand())/10);
 			break;
 		case SCALDED: case FROSTBITE:
 			defender2.takeDamage(attacker2.getMageLevel());

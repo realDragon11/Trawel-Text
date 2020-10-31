@@ -93,7 +93,7 @@ public class Inn extends Feature implements java.io.Serializable{
 
 					@Override
 					public String title() {
-						return residentName;
+						return getResidentName();
 					}
 
 					@Override
@@ -275,7 +275,7 @@ public class Inn extends Feature implements java.io.Serializable{
 		}
 	}
 	
-	private void getResidentName() {
+	private String getResidentName() {
 		residentName = "resident: ";
 		switch(resident) {
 		case 1: residentName += "A group of old fighters";break;
@@ -289,6 +289,7 @@ public class Inn extends Feature implements java.io.Serializable{
 			
 			;break;
 		}
+		return residentName;
 		
 	}
 	
