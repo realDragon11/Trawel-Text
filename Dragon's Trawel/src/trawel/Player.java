@@ -26,6 +26,8 @@ public class Player extends SuperPerson{
 	public float forceRelation = 0.0f;
 	public int forceRewardCount = 0;
 	
+	public int knowledgeFragments = 0, fragmentReq = 10;
+	
 	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
 	public List<EArt> eArts = new ArrayList<EArt>();
 	public EArtBox eaBox = new EArtBox();
@@ -239,6 +241,16 @@ public class Player extends SuperPerson{
 		for (Quest q: sideQuests) {
 			q.questTrigger(string,count);
 		}
+		
+	}
+	
+	public void addKnowFrag() {
+		if (++this.knowledgeFragments >= this.fragmentReq) {
+			knowledgeFragments-=fragmentReq;
+			Player.player.getPerson().setSkillPoints(Player.player.getPerson().getSkillPoints()+1);
+			fragmentReq+=2;
+		}
+		
 		
 	}
 	

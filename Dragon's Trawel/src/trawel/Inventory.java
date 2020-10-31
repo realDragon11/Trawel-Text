@@ -332,7 +332,7 @@ public class Inventory implements java.io.Serializable{
 		
 		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|2|");
 		}else {
-			if (p.getBag().getRace().equals("wolf")) {
+			if (p.getBag().getRace().name.equals("wolf")) {
 				Networking.sendStrong("AddInv|"+side+"|" +"wolf_teeth" +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-9|");
 				
 			}
@@ -703,6 +703,12 @@ public class Inventory implements java.io.Serializable{
 			extra.println("You have too many seeds. Choose one to remove!");
 			getSeed();
 		}
+		
+	}
+
+
+	public void removeDrawBanes() {
+		this.dbs.clear();
 		
 	}
 

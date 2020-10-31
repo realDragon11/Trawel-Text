@@ -673,6 +673,9 @@ public class RaceFactory {
 	public static Person makeOld(int level) {
 		Person p = new Person(level);
 		p.personType = "grizzled";
+		if (extra.chanceIn(1,5)) {
+			p.getBag().getDrawBanes().add(DrawBane.KNOW_FRAG);
+		}
 		return p;
 	}
 	

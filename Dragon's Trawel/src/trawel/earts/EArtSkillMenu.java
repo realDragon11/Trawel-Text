@@ -442,7 +442,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public String title() {
-										return "kung-fu training (1sp)";
+										return "kung-fu training (1sp) [+martial arts damage]";
 									}
 
 									@Override
@@ -454,6 +454,22 @@ public abstract class EArtSkillMenu extends MenuSelect{
 										}
 										return false;
 									}});
+								}
+								if (!Player.player.getPerson().hasEnduranceTraining) {
+									list.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "advanced endurance training (1sp) [x2 effectiveness of endurance training]";
+										}
+
+										@Override
+										public boolean go() {
+											Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+											Player.player.getPerson().hasEnduranceTraining = true;
+											Player.player.getPerson().edrLevel++;
+											return false;
+										}});
 								}
 							}
 								

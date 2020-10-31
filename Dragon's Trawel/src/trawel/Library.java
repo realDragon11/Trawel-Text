@@ -73,6 +73,28 @@ public class Library extends Feature {
 						
 					});
 				}
+				if (Player.bag.getDrawBanes().contains(DrawBane.KNOW_FRAG)) {
+					list.add(new MenuSelect(){
+
+						@Override
+						public String title() {
+							return "turn in knowledge fragments";
+						}
+
+						@Override
+						public boolean go() {
+							List<DrawBane> dbs = Player.bag.getDrawBanes();
+							for (int i = dbs.size();i >= 0;i--) {
+								if (dbs.get(i).equals(DrawBane.KNOW_FRAG)) {
+									Player.player.addKnowFrag();
+								}
+								dbs.remove(i);
+							}
+							return false;
+						}
+						
+					});
+				}
 				list.add(new MenuSelect(){
 
 					@Override

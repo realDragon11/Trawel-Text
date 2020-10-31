@@ -32,7 +32,10 @@ public class Person implements java.io.Serializable{
 
 	private int skillPoints;
 	private int fighterLevel= 0,traderLevel = 0,explorerLevel = 0, mageLevel = 0, magePow = 0, defenderLevel = 0, defPow = 0, fightPow = 0;
-	public int lightArmorLevel = 0, heavyArmorLevel = 0;
+	
+	public int lightArmorLevel = 0, heavyArmorLevel = 0, edrLevel = 0;
+	public boolean hasEnduranceTraining = false;
+	
 	private ArrayList<Skill> skills = new ArrayList<Skill>();
 	private boolean noAILevel;
 	private ArrayList<Effect> effects;
@@ -186,6 +189,7 @@ public class Person implements java.io.Serializable{
 		if (this.hasEffect(Effect.HEARTY)) {
 			hp+=3*level;
 		}
+		hp+=(edrLevel*6)*( hasEnduranceTraining ? 2 :1);
 		hp+=skillPoints*3;
 		tempMaxHp = hp;
 		speedFill = -1;
@@ -664,6 +668,58 @@ public class Person implements java.io.Serializable{
 										if (Player.player.getPerson().getSkillPoints() > 0) {
 											Player.player.getPerson().setSkillPoints(Player.player.getPerson().getSkillPoints()-1);
 											Player.player.getPerson().heavyArmorLevel++;
+										}}
+										return false;
+									}});
+								list2.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "back";
+									}
+
+									@Override
+									public boolean go() {
+										return true;
+									}});
+								return list2;
+							}});
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "defense skills";
+					}
+
+					@Override
+					public boolean go() {
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> list2 = new ArrayList<MenuItem>();
+								list2.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
+									}});
+								list2.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Endurance: " + Player.player.getPerson().edrLevel;
+									}
+
+									@Override
+									public boolean go() {
+										extra.println("Endurance grants you more hp than you get having the skillpoint unspent. It costs 1 skillpoint per level. Buy?");
+										if (extra.yesNo()) {
+										if (Player.player.getPerson().getSkillPoints() > 0) {
+											Player.player.getPerson().setSkillPoints(Player.player.getPerson().getSkillPoints()-1);
+											Player.player.getPerson().edrLevel++;
 										}}
 										return false;
 									}});
