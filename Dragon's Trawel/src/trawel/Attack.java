@@ -306,7 +306,7 @@ public class Attack implements java.io.Serializable{
 		Target t = TargetFactory.randTarget(targetType);
 		Style s = StyleFactory.randStyle();
 		if (!name.contains("examine")) {
-		return new Attack(s.name + name + " " + t.name, hitMod*t.hit*s.hit,  (s.speed*speed)+extra.randRange(0,20)-10,  handLevel*s.damage*t.sharp*sharp*extra.hrandom(),  handLevel*s.damage*t.blunt*blunt*extra.hrandom(),  handLevel*s.damage*t.pierce*pierce*extra.hrandom(),  desc,soundStrength,soundType,t,weap);
+		return new Attack(s.name + name + " " + t.name, hitMod*t.hit*s.hit,  (s.speed*speed)+extra.randRange(0,20)-10,  handLevel*s.damage*t.sharp*sharp*extra.hrandom()*weap.getMat().sharpMult,  handLevel*s.damage*t.blunt*blunt*extra.hrandom()*weap.getMat().bluntMult,  handLevel*s.damage*t.pierce*pierce*extra.hrandom()*weap.getMat().pierceMult,  desc,soundStrength,soundType,t,weap);
 		}else {
 			return this;
 		}

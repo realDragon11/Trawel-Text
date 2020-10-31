@@ -151,6 +151,7 @@ public class mainGame {
 		new TauntsFactory();
 		new BookFactory();
 		new BumperFactory();
+		new WeaponAttackFactory();
 		story = new StoryNone();
 		extra.println("Dragon's Trawel v0.5.5");
 		extra.println(

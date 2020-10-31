@@ -19,7 +19,7 @@ public class Weapon extends Item {
 	private boolean IsEnchantedConstant = false;
 	private EnchantHit enchantHit;
 	//private boolean IsEnchantedHit = false;//likely unused
-	private Stance martialStance = new Stance(); //what attacks the weapon can use
+	//private Stance martialStance = new Stance(); //what attacks the weapon can use
 	
 	//the multipiers of what material is good at dealing what types of damage
 	private double sharpMult;
@@ -70,146 +70,71 @@ public class Weapon extends Item {
 		case "longsword":
 		cost *= 1;
 		weight *=2;
-		martialStance.addAttack(new Attack("slash",1.5,100.0,40*sharpMult,5*bluntMult,0*pierceMult,"X` slashes at Y` with their Z`!",1,"sharp"));
-		martialStance.addAttack(new Attack("stab",1.0,90.0,1*sharpMult,2*bluntMult,20*pierceMult,"X` stabs at Y` with their Z`!",1,"pierce"));	
-		martialStance.addAttack(new Attack("thrust",.4,60.0,1*sharpMult,4*bluntMult,20*pierceMult,"X` thrusts at Y` with their Z`!",2,"pierce"));
-		martialStance.addAttack(new Attack("pommel",1,110.0,0*sharpMult,12*bluntMult,0*pierceMult,"X` hits Y` with the pommel of their Z`!",0,"blunt"));
-		martialStance.addAttack(new Attack("slap",1.1,100.0,0*sharpMult,10*bluntMult,0*pierceMult,"X` slaps Y` with the side of their Z`!",1,"blunt"));
 		;break;
 		case "broadsword":
 		cost *= 2;
 		weight *=3;
-		martialStance.addAttack(new Attack("slash",1.3,110.0,35*sharpMult,8*bluntMult,0*pierceMult,"X` slashes at Y` with their Z`!",1,"sharp"));
-		martialStance.addAttack(new Attack("stab",1.0,110.0,2*sharpMult,3*bluntMult,10*pierceMult,"X` stabs at Y` with their Z`!",1,"pierce"));	
-		martialStance.addAttack(new Attack("pommel",1,110.0,0*sharpMult,12*bluntMult,0*pierceMult,"X` hits Y` with the pommel of their Z`!",0,"blunt"));
-		martialStance.addAttack(new Attack("slap",1.2,120.0,0*sharpMult,15*bluntMult,0*pierceMult,"X` slaps Y` with the side of their Z`!",1,"blunt"));
-		martialStance.addAttack(new Attack("power",.5,180.0,50*sharpMult,20*bluntMult,0*pierceMult,"X` lifts their Z` over their head, and then brings it down on Y`!",2,"sharp"));
 		;break;
 		case "mace":
 		cost *= 2;
 		weight *=3;
-		martialStance.addAttack(new Attack("bash",1.5,150.0,0*sharpMult,35*bluntMult,1*pierceMult,"X` bashes Y` with their Z`!",1,"blunt"));
-		martialStance.addAttack(new Attack("smash",1,100.0,0*sharpMult,30*bluntMult,1*pierceMult,"X` smashes Y` with their Z`!",1,"blunt"));
-		martialStance.addAttack(new Attack("power",.5,180.0,1*sharpMult,80*bluntMult,5*pierceMult,"X` lifts their Z` over their head, and then brings it down on Y`!",2,"blunt"));
 		;break;
 		case "spear":
 		cost *= 1;
 		weight *=2;
-		martialStance.addAttack(new Attack("skewer",1.1,120.0,1*sharpMult,2*bluntMult,50*pierceMult,"X` skewers Y` with their Z`!",1,"pierce"));	
-		martialStance.addAttack(new Attack("thrust",.4,60.0,1*sharpMult,2*bluntMult,30*pierceMult,"X` thrusts at Y` with their Z`!",2,"pierce"));
-		martialStance.addAttack(new Attack("pole",.6,120.0,0*sharpMult,10*bluntMult,0*pierceMult,"X` hits Y` with the pole of their Z`!",1,"blunt"));
-		martialStance.addAttack(new Attack("smack",1,100.0,1*sharpMult,8*bluntMult,0*pierceMult,"X` smacks Y` with the side of their Z`!",0,"blunt"));
 		;break;
 		case "axe":
 		cost *= 1;
 		weight *=2;
-		martialStance.addAttack(new Attack("hack",.9,90.0,20*sharpMult,20*bluntMult,0*pierceMult,"X` hacks at Y` with their Z`!",1,"sharp"));	
-		martialStance.addAttack(new Attack("slap",.8,100.0,0*sharpMult,30*bluntMult,0*pierceMult,"X` slaps Y` with the side of their Z`!",1,"blunt"));
-		martialStance.addAttack(new Attack("heft",1,120.0,0*sharpMult,10*bluntMult,0*pierceMult,"X` hits Y` with the heft of their Z`!",0,"blunt"));
 		;break;
 		case "rapier":
 		cost *= 2;
 		weight *=3;//I think rapiers were heavy? The blunt damage doesn't really reflect this though.
-		martialStance.addAttack(new Attack("slash",1.3,80.0,30*sharpMult,1*bluntMult,0*pierceMult,"X` slashes at Y` with their Z`!",1,"sharp"));
-		martialStance.addAttack(new Attack("slice",.9,50.0,20*sharpMult,0*bluntMult,0*pierceMult,"X` slices up Y` with their Z`!",0,"sharp"));
-		martialStance.addAttack(new Attack("stab",1.2,80.0,5*sharpMult,0*bluntMult,35*pierceMult,"X` stabs at Y` with their Z`!",1,"pierce"));	
-		martialStance.addAttack(new Attack("thrust",.6,50.0,10*sharpMult,0*bluntMult,30*pierceMult,"X` thrusts at Y` with their Z`!",2,"pierce"));
-		martialStance.addAttack(new Attack("pommel",1,110.0,0*sharpMult,10*bluntMult,0*pierceMult,"X` hits Y` with the pommel of their Z`!",1,"blunt"));
 		;break;
 		case "dagger":
 		cost *= .7;
 		weight *=1;
-		martialStance.addAttack(new Attack("slash",1,60.0,20*sharpMult,2*bluntMult,0*pierceMult,"X` slashes at Y` with their Z`!",0,"sharp"));
-		martialStance.addAttack(new Attack("stab",1.1,60.0,1*sharpMult,1*bluntMult,12*pierceMult,"X` stabs at Y` with their Z`!",0,"pierce"));	
-		martialStance.addAttack(new Attack("thrust",.4,60.0,1*sharpMult,2*bluntMult,20*pierceMult,"X` thrusts at Y` with their Z`!",1,"pierce"));
-		martialStance.addAttack(new Attack("slap",.8,80.0,0*sharpMult,4*bluntMult,0*pierceMult,"X` slaps Y` with the side of their Z`!",0,"blunt"));
 		;break;
 		case "claymore":
 		cost *= 3;
 		weight *=5;
-		martialStance.addAttack(new Attack("slash",1.4,200.0,60*sharpMult,20*bluntMult,0*pierceMult,"X` slashes at Y` with their Z`!",1,"sharp"));
-		martialStance.addAttack(new Attack("stab",0.4,300.0,30*sharpMult,10*bluntMult,3*pierceMult,"X` stabs at Y` with their Z`!",1,"pierce"));	
-		martialStance.addAttack(new Attack("pommel",.1,300.0,0*sharpMult,15*bluntMult,0*pierceMult,"X` hits Y` with the pommel of their Z`!",0,"blunt"));
-		martialStance.addAttack(new Attack("slap",1.3,200.0,0*sharpMult,30*bluntMult,0*pierceMult,"X` slaps Y` with the side of their Z`!",1,"blunt"));
-		martialStance.addAttack(new Attack("power",.4,400.0,100*sharpMult,50*bluntMult,0*pierceMult,"X` lifts their Z` over their head, and then brings it down on Y`!",2,"sharp"));
 		;break;
 		case "lance":
 		cost *= 2;
 		weight *=3;
-		martialStance.addAttack(new Attack("skewer",0.5,150.0,1*sharpMult,5*bluntMult,35*pierceMult,"X` skewers Y` with their Z`!",1,"pierce"));	
-		martialStance.addAttack(new Attack("thrust",.3,100.0,1*sharpMult,5*bluntMult,20*pierceMult,"X` thrusts at Y` with their Z`!",1,"pierce"));
-		martialStance.addAttack(new Attack("smack",1,100.0,0*sharpMult,15*bluntMult,0*pierceMult,"X` smacks Y` with the side of their Z`!",0,"blunt"));
-		martialStance.addAttack(new Attack("charge",1.4,300.0,1*sharpMult,20*bluntMult,80*pierceMult,"X` charges forward with their Z`!",2,"pierce"));
 		;break;
 		case "shovel":
 		cost *= .8;
 		weight *=2;	
-		martialStance.addAttack(new Attack("thrust",.4,60.0,2*sharpMult,30*bluntMult,3*pierceMult,"X` thrusts at Y` with their Z`!",2,"blunt"));
-		martialStance.addAttack(new Attack("slap",1.2,100.0,0*sharpMult,20*bluntMult,0*pierceMult,"X` slaps Y` with the side of their Z`!",1,"blunt"));
-		martialStance.addAttack(new Attack("pole",.6,120.0,0*sharpMult,10*bluntMult,0*pierceMult,"X` hits Y` with the pole of their Z`!",0,"blunt"));
-		martialStance.addAttack(new Attack("smack",1,100.0,2*sharpMult,25*bluntMult,0*pierceMult,"X` smacks Y` with the side of their Z`!",1,"blunt"));
 		;break;
 		case "generic teeth":
 			cost *= 1;
 			weight *=3;	
-			martialStance.addAttack(new Attack("bite",1,100.0,5*sharpMult,0*bluntMult,35*pierceMult,"X` bites at Y` with their teeth!",2,"pierce"));
-			martialStance.addAttack(new Attack("tear",1.4,140.0,20*sharpMult,0*bluntMult,20*pierceMult,"X` tears into Y`'s flesh with their teeth!",1,"pierce"));
-			martialStance.addAttack(new Attack("rip",.6,120.0,30*sharpMult,0*bluntMult,30*pierceMult,"X` rips up Y`'s flesh with their teeth!",0,"pierce"));
 			;break;
 		case "standing reaver":
 			cost *= 1;
 			weight *=3;	
-			martialStance.addAttack(new Attack("kick",1,100.0,1*sharpMult,35*bluntMult,0*pierceMult,"X` kicks at Y`!",2,"blunt"));
-			martialStance.addAttack(new Attack("kick",1,100.0,1*sharpMult,35*bluntMult,0*pierceMult,"X` kicks at Y`!",2,"blunt"));
-			martialStance.addAttack(new Attack("kick",1,100.0,1*sharpMult,35*bluntMult,0*pierceMult,"X` kicks at Y`!",2,"blunt"));
 			;break;
 		case "generic teeth and claws":
 			cost *= 1;
 			weight *=3;	
-			martialStance.addAttack(new Attack("bite",1,100.0,5*sharpMult,0*bluntMult,35*pierceMult,"X` bites at Y` with their teeth!",2,"pierce"));
-			martialStance.addAttack(new Attack("tear",1.4,140.0,20*sharpMult,0*bluntMult,20*pierceMult,"X` tears into Y`'s flesh with their claws!",1,"pierce"));
-			martialStance.addAttack(new Attack("rip",.6,120.0,30*sharpMult,0*bluntMult,30*pierceMult,"X` rips up Y`'s flesh with their claws!",0,"pierce"));
 			;break;
 		case "branches":
 			cost *= 1;
 			weight *=3;	
-			martialStance.addAttack(new Attack("rake",1.1,110.0,20*sharpMult,10*bluntMult,0*pierceMult,"X` rakes Y`!",1,"sharp"));
-			martialStance.addAttack(new Attack("bash",1,120.0,0*sharpMult,35*bluntMult,35*pierceMult,"X` bashes Y` with their branches!",1,"blunt"));
-			martialStance.addAttack(new Attack("rake",1.1,110.0,20*sharpMult,10*bluntMult,0*pierceMult,"X` rakes Y`!",1,"sharp"));
-			martialStance.addAttack(new Attack("bash",1,120.0,0*sharpMult,35*bluntMult,35*pierceMult,"X` bashes Y` with their branches!",1,"blunt"));
 			;break;
 		case "generic fists":
 			cost *= 1;
 			weight *=1;
-			martialStance.addAttack(new Attack("bash",1.5,150.0,0*sharpMult,35*bluntMult,0*pierceMult,"X` bashes Y` with their fists!",1,"blunt"));
-			martialStance.addAttack(new Attack("smash",1,100.0,0*sharpMult,30*bluntMult,0*pierceMult,"X` smashes Y` with their fists!",1,"blunt"));
-			martialStance.addAttack(new Attack("power punch",.5,180.0,0*sharpMult,80*bluntMult,0*pierceMult,"X` lifts their fists over their head, and then brings them down on Y`!",2,"blunt"));
 			;break;
 		case "unicorn horn":
 			cost *= 3;
 			weight *=3;	
-			martialStance.addAttack(new Attack("skewer",0.5,150.0,1*sharpMult,5*bluntMult,35*pierceMult,"X` skewers Y` with their horn!",1,"pierce"));	
-			martialStance.addAttack(new Attack("thrust",.3,100.0,1*sharpMult,5*bluntMult,20*pierceMult,"X` thrusts at Y` with their horn!",1,"pierce"));
-			martialStance.addAttack(new Attack("smack",1,100.0,0*sharpMult,15*bluntMult,0*pierceMult,"X` smacks Y` with the side of their horn!",0,"blunt"));
-			martialStance.addAttack(new Attack("charge",1.4,300.0,1*sharpMult,20*bluntMult,80*pierceMult,"X` charges forward with their horn!",2,"pierce"));
 			;break;
 		case "generic talons":
 			cost *= 1;
 			weight *=3;	
-			martialStance.addAttack(new Attack("grip",1,100.0,5*sharpMult,0*bluntMult,35*pierceMult,"X` grips Y` with their talons!",2,"pierce"));
-			martialStance.addAttack(new Attack("tear",1.4,140.0,20*sharpMult,0*bluntMult,20*pierceMult,"X` tears into Y`'s flesh with their talons!",1,"pierce"));
-			martialStance.addAttack(new Attack("rip",.6,120.0,30*sharpMult,0*bluntMult,30*pierceMult,"X` rips up Y`'s flesh with their talons!",0,"pierce"));
 			;break;
-		/*
-		case "wand":
-		cost *= 2;
-		weight *=1;
-		martialStance.addAttack(new Attack("magic missle",2,120.0,10*sharpMult,20*bluntMult,0*pierceMult,"X` points at Y` with their Z`! They cast magic missle!"));
-		martialStance.addAttack(new Attack("icicles",1.0,100.0,5*sharpMult,0*bluntMult,20*pierceMult,"X` points at Y` with their Z`! They cast icicles!"));	
-		martialStance.addAttack(new Attack("fireball",1.5,150.0,0*sharpMult,40*bluntMult,0*pierceMult,"X` points at Y` with their Z`! They cast fireball!"));
-		martialStance.addAttack(new Attack("curse",3,150.0,10*sharpMult,10*bluntMult,10*pierceMult,"X` points at Y` with their Z`! They cast curse!"))
-		;break;
-		*/
 		}
 		//random chance, partially based on enchantment power, to enchant the weapon
 		effectiveCost = cost;
@@ -243,7 +168,7 @@ public class Weapon extends Item {
 	 * @return the martialStance (Stance)
 	 */
 	public Stance getMartialStance() {
-		return martialStance;
+		return WeaponAttackFactory.getStance(this.getBaseName());
 	}
 	
 	/**
