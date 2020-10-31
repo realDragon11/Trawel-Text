@@ -183,7 +183,7 @@ public class BasicSideQuest implements Quest{
 				case 2:
 					q.targetName = "vampires";
 					q.trigger = "vampire";
-					q.count = 3;
+					q.count = 2;
 					break;
 				case 3:
 					q.targetName = "wolves";

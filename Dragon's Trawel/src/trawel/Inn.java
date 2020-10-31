@@ -71,6 +71,106 @@ public class Inn extends Feature implements java.io.Serializable{
 		}
 		mainGame.story.inn();
 		Networking.sendStrong("Discord|imagesmall|inn|Inn|");
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "beer ("+tier+"gp)";
+					}
+
+					@Override
+					public boolean go() {
+						buyBeer();
+						return false;
+					}
+				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return residentName;
+					}
+
+					@Override
+					public boolean go() {
+						goResident();
+						return false;
+					}
+				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "bard";
+					}
+
+					@Override
+					public boolean go() {
+						bard();
+						return false;
+					}
+				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "backroom";
+					}
+
+					@Override
+					public boolean go() {
+						backroom();
+						return false;
+					}
+				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "bathe (" +(tier*2)+" gp)";
+					}
+
+					@Override
+					public boolean go() {
+						bathe();
+						return false;
+					}
+				});
+				if (town.getOccupants().size() >=2){
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "watch duel (" + extra.format(nextReset-timePassed+1) + " hours)";
+					}
+
+					@Override
+					public boolean go() {
+						playerwatch = true; occupantDuel(); Player.addTime((nextReset-timePassed+1));
+						return false;
+					}
+				});
+				}
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "leave";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}
+				});
+				return mList;
+			}});
+		/*
 		while (true) {
 		getResidentName();
 		extra.println("1 leave");
@@ -92,7 +192,7 @@ public class Inn extends Feature implements java.io.Serializable{
 		case 6: this.playerwatch = true; occupantDuel(); Player.addTime((nextReset-timePassed+1));
 		;return;
 		}
-		}
+		}*/
 	}
 
 	
@@ -225,12 +325,13 @@ public class Inn extends Feature implements java.io.Serializable{
 	}
 
 	private void buyBeer() {
-		resident = 4;
+		//resident = 4;//???????
 		if (Player.bag.getGold() >= tier) {
 			extra.println("Pay "+tier+" gold for a beer?");
 			if (extra.yesNo()) {
 				Player.player.getPerson().addBeer();
 				moneyEarned +=tier;
+				Player.bag.addGold(-tier);
 			}
 			}else {
 				extra.println("You can't afford that!");
@@ -308,6 +409,19 @@ public class Inn extends Feature implements java.io.Serializable{
 
 	public void setTown(Town town) {
 		this.town = town;
+	}
+	
+	private void bathe() {
+		//resident = 4;//???
+		if (Player.bag.getGold() >= (tier*2)) {
+			extra.println("Pay "+(tier*2)+" gold for a bath?");
+			if (extra.yesNo()) {
+				Player.player.getPerson().washAll();
+				Player.bag.addGold(-(tier*2));
+			}
+			}else {
+				extra.println("You can't afford that!");
+			}
 	}
 
 }

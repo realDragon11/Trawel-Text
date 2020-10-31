@@ -94,7 +94,7 @@ public class StoryDeathWalker extends Story{
 		case "gotoinn3": 
 			extra.println("As you enter the main room, there is a commotion outside.");
 			extra.println("Some people carry a person, frothing at the mouth, into the inn.");
-			extra.println("\"Bring me to the touched one! Let me know the one who cannot die! Tell him to seek the oracles, to complete the travel to revan!\"");
+			extra.println("\"Bring me to the touched one! Let me know the one who cannot die! Tell him to seek the oracles, to complete the journey to revan!\"");
 			extra.println("They suddenly grip their head, and scream, before blood pours out of their eyes.");
 			extra.println("1 watch them die");
 			step = "gotorevan1";
