@@ -83,6 +83,27 @@ public class MerchantGuild extends Feature {
 
 					@Override
 					public String title() {
+						return "buy a shipment of cheap beer ("+(100*(town.getTier()))+" gp)";
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.bag.getGold() < Player.player.merchantBookPrice) {
+							extra.println("You can't afford that many beers!");
+							return false;
+						}
+						extra.println("Beer increases your hp in battle, one use per beer- buy 100 of them?");
+						if (extra.yesNo()) {
+							Player.bag.addGold(-(100*(town.getTier())));
+							Player.player.getPerson().addBeer(100);
+						}
+						return false;
+					}
+				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
 						return "exit";
 					}
 

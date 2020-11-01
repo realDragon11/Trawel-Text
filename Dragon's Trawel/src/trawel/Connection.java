@@ -34,7 +34,7 @@ public class Connection implements java.io.Serializable{
 
 	public void display(int style,Town town1) {
 		Town ot = otherTown(town1);
-		extra.println(getName() + " to " + ot.getName());
+		extra.println(getName() + " to " + ot.getName() + "[Level: "+ot.getTier()+"]");
 		if (Player.hasSkill(Skill.TOWNSENSE)) {
 			extra.println(ot.getName() + " has " + ot.getConnects().size() + " connections.");
 		}

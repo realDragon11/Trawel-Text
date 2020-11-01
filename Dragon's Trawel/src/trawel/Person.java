@@ -857,6 +857,9 @@ public class Person implements java.io.Serializable{
 	public void addBeer() {
 		beer++;
 	}
+	public void addBeer(int i) {
+		beer+=i;
+	}
 	
 	public boolean takeBeer() {
 		if (beer > 0 || skills.contains(Skill.BEER_LOVER)) {
