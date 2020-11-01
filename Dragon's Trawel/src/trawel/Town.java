@@ -25,6 +25,7 @@ public class Town implements java.io.Serializable{
 	private PrintEvent goPrinter, newPrinter;
 	private boolean hasBeen;
 	private List<Person> helpers = new ArrayList<Person>();
+	private double defenseTimer = 0;
 	
 	public Town() {
 		connects = new ArrayList<Connection>();
@@ -383,6 +384,9 @@ public class Town implements java.io.Serializable{
 		extra.println(i + " exit");i++;
 		int j = extra.inInt(i-1);
 		if (j == 1) {
+			if (defenseTimer > 0) {
+				extra.println("The port can't be defended right now.");
+			}else {
 			if (Player.player.getPerson().getLevel() >= tier) {
 				extra.println("You help defend the port against the drudger onslaught.");
 				int eSize = extra.randRange(2,3);
@@ -410,12 +414,15 @@ public class Town implements java.io.Serializable{
 					helpers.addAll(survivors);
 					extra.println("You take back the docks. +"+(100*tier)+" gp");
 					Player.bag.addGold(100*tier);
+					defenseTimer = 30;
 				}else {
+					defenseTimer = 3;
 					extra.println("The docks are overrun.");
 				}
 				Player.addTime(5);
 			}else {
 				extra.println("They size you up and then turn you away.");
+			}
 			}
 		}
 		i = 2;
@@ -492,6 +499,10 @@ public class Town implements java.io.Serializable{
 
 	public void passTime(double time) {
 		timePassed+=time;
+		defenseTimer-=time;
+		if (defenseTimer < 0) {
+			defenseTimer = 0;
+		}
 		if (timePassed >= extra.randRange(100,1000)){
 			timePassed = 0;
 			this.addPerson();

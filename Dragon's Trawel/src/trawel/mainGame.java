@@ -460,7 +460,7 @@ public class mainGame {
 		}
 		
 		public static void die() {
-			die(extra.choose("You rise from death...","You return to life.","You walk again!","You rise from the grave!","Death releases it's hold on you."));
+			die(extra.choose("You rise from death...","You return to life.","You walk again!","You rise from the grave!","Death releases its hold on you."));
 		}
 
 
