@@ -219,6 +219,9 @@ public class Person implements java.io.Serializable{
 			}
 		}}
 		bag.resetArmor(s,b,p);
+		if (this.hasEffect(Effect.B_MARY)) {
+			this.addEffect(Effect.BLEED);
+		}
 		Boolean print = extra.getPrint();
 		extra.changePrint(true);
 		AIClass.checkYoSelf(this);

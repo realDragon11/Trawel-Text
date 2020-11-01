@@ -142,6 +142,11 @@ public class Inventory implements java.io.Serializable{
 			retMod *= hand.getEnchant().getDodgeMod();
 		}
 		retMod*=race.dodgeMod;
+		
+		if (owner.hasEffect(Effect.BEE_SHROUD)) {
+			retMod*=1.1;
+		}
+		
 		return extra.zeroOut(retMod);
 	}
 	

@@ -62,7 +62,9 @@ public class WitchHut extends Feature{
 				int truffles = (int) dbs.stream().filter(d -> d.equals(DrawBane.TRUFFLE)).count();
 				int eons = (int) dbs.stream().filter(d -> d.equals(DrawBane.CEON_STONE)).count();
 				int silvers = (int) dbs.stream().filter(d -> d.equals(DrawBane.SILVER)).count();
-				int food = meats + apples + garlics + honeys + pumpkins + pumpkins + eggcorns+truffles;
+				int bloods = (int) dbs.stream().filter(d -> d.equals(DrawBane.BLOOD)).count();
+				int virgins = (int) dbs.stream().filter(d -> d.equals(DrawBane.VIRGIN)).count();
+				int food = meats + apples + garlics + honeys + pumpkins + pumpkins + eggcorns+truffles + (virgins*2);
 				int filler = apples + woods + waxs;
 				
 				if (Player.player.eaBox.witchTrainLevel > 2) {
@@ -70,6 +72,10 @@ public class WitchHut extends Feature{
 				}
 				if (ents > 0 && meats > 1) {
 					mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getFleshGolem(town.getTier()));
+					return;
+				}
+				if (bloods > 0 && virgins > 0) {
+					Player.player.setFlask(new Potion(Effect.B_MARY,bloods+virgins+filler));
 					return;
 				}
 				if (eons > 0 && silvers > 0) {
@@ -84,6 +90,10 @@ public class WitchHut extends Feature{
 				}
 				if (extra.chanceIn(woods, 10)) {
 					Player.player.setFlask(new Potion(Effect.CURSE,1+filler));
+					return;
+				}
+				if (waxs > 0 && honeys > 0) {
+					Player.player.setFlask(new Potion(Effect.BEE_SHROUD,honeys+filler));
 					return;
 				}
 				if (mGuts > 0 && batWings >0) {

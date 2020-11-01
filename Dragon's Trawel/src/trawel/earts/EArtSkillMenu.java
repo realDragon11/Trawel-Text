@@ -60,7 +60,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 									@Override
 									public boolean go() {
 										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
-										Player.player.eaBox.aSpellPower+=1;
+										Player.player.eaBox.aSpellPower+=1.1;
 										return false;
 									}});
 								list.add(new MenuSelect() {
@@ -492,6 +492,21 @@ public abstract class EArtSkillMenu extends MenuSelect{
 											Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
 											Player.player.getPerson().hasEnduranceTraining = true;
 											Player.player.getPerson().edrLevel++;
+											return false;
+										}});
+								}
+								if (!Player.player.getPerson().hasSkill(Skill.SPUNCH)) {
+									list.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "sucker punch (1sp) [increase delay on hit]";
+										}
+
+										@Override
+										public boolean go() {
+											Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+											Player.player.getPerson().addSkill(Skill.SPUNCH);
 											return false;
 										}});
 								}

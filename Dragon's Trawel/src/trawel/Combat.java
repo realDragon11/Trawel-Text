@@ -440,6 +440,10 @@ public class Combat {
 							defender.addHp(attacker.getLevel());
 						}
 					}
+					if (defender.hasEffect(Effect.BEE_SHROUD)) {
+						extra.println("The bees sting back!");
+						attacker.takeDamage(1);
+					}
 				}else {
 					if (damageDone == 0) {
 						song.addAttackArmor(attacker,defender);
@@ -522,14 +526,19 @@ public class Combat {
 			}
 		}
 		//TODO: bleedout death quotes
+		boolean bMary = (defender.hasEffect(Effect.B_MARY));
 		if (attacker.hasEffect(Effect.I_BLEED)) {
 			attacker.takeDamage(1);
+			if (bMary) {defender.addHp(1);}
+			
 		}
 		if (attacker.hasEffect(Effect.BLEED)) {
 			attacker.takeDamage(1);
+			if (bMary) {defender.addHp(1);}
 		}
 		if (attacker.hasEffect(Effect.MAJOR_BLEED)) {
 			attacker.takeDamage(2);
+			if (bMary) {defender.addHp(2);}
 		}
 		if (attacker.hasEffect(Effect.BEES) && extra.chanceIn(1,5)) {
 			extra.println("The bees sting!");
@@ -619,7 +628,7 @@ public class Combat {
 		if(att.getSkill() == Skill.DRUNK_DRINK) {
 			if (attacker.hasBeer()) {
 			attacker.addHp(Player.player.eaBox.drunkTrainLevel);
-			attacker.addEffect(extra.choose(Effect.HASTE,Effect.R_AIM));
+			attacker.addEffect(extra.choose(Effect.HASTE,Effect.R_AIM,Effect.BEE_SHROUD));
 			attacker.consumeBeer();
 			}else {
 				extra.println("But they are out of beer!");
