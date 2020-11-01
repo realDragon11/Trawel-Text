@@ -414,9 +414,9 @@ public class Town implements java.io.Serializable{
 					helpers.addAll(survivors);
 					extra.println("You take back the docks. +"+(100*tier)+" gp");
 					Player.bag.addGold(100*tier);
-					defenseTimer = 30;
-				}else {
 					defenseTimer = 3;
+				}else {
+					defenseTimer = 1;
 					extra.println("The docks are overrun.");
 				}
 				Player.addTime(5);
