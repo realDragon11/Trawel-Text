@@ -34,7 +34,7 @@ public class Connection implements java.io.Serializable{
 
 	public void display(int style,Town town1) {
 		Town ot = otherTown(town1);
-		extra.println(getName() + " to " + ot.getName() + "[Level: "+ot.getTier()+"]");
+		extra.println(getName() + " to " + ot.getName() + " [Level: "+ot.getTier()+"] ("+dir(town1,ot)+")");
 		if (Player.hasSkill(Skill.TOWNSENSE)) {
 			extra.println(ot.getName() + " has " + ot.getConnects().size() + " connections.");
 		}
@@ -73,6 +73,38 @@ public class Connection implements java.io.Serializable{
 			}
 		}
 	}
+	private String dir(Town t1, Town t2) {
+		int angle = (int) Math.atan2((t1.getLocation().x*t2.getLocation().y)-(t1.getLocation().y*t2.getLocation().x),(t1.getLocation().x*t2.getLocation().x)+(t1.getLocation().y*t2.getLocation().y));
+		if (angle <0) {
+			angle +=360;
+		}
+		if (angle < 22 || angle >= (360-22)) {
+			return "E";
+		}
+		if (angle >= 22  && angle < 45+22) {
+			return "NE";
+		}
+		if (angle >= 45+22  && angle < 90+22) {
+			return "N";
+		}
+		if (angle >= 90+22  && angle < 180-22) {
+			return "NW";
+		}
+		if (angle >= 180-22  && angle < 180+22) {
+			return "W";
+		}
+		if (angle >= 180+22  && angle < 270-22) {
+			return "SW";
+		}
+		if (angle >= 270-22  && angle < 270+22) {
+			return "S";
+		}
+		if (angle >= 270+22  && angle < 360-22) {
+			return "SE";
+		}
+		return "error";
+	}
+
 	public Town otherTown(Town town1) {
 		ArrayList<Town> towns2 = (ArrayList<Town>) towns.clone();
 		towns2.remove(town1);

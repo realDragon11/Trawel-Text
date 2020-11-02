@@ -249,6 +249,7 @@ public class Forest extends Feature implements java.io.Serializable{
 	}
 	
 	private void mugger2() {
+		Networking.sendColor(Color.RED);
 		extra.println("You see a mugger charge at you! Prepare for battle!");
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(), new Person(tier));
 		if (winner == Player.player.getPerson()) {
