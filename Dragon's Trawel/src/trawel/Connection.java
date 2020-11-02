@@ -74,10 +74,12 @@ public class Connection implements java.io.Serializable{
 		}
 	}
 	private String dir(Town t1, Town t2) {
-		int angle = (int) Math.atan2((t1.getLocation().x*t2.getLocation().y)-(t1.getLocation().y*t2.getLocation().x),(t1.getLocation().x*t2.getLocation().x)+(t1.getLocation().y*t2.getLocation().y));
-		if (angle <0) {
+		//vectors: int angle = (int) Math.atan2((t1.getLocation().x*t2.getLocation().y)-(t1.getLocation().y*t2.getLocation().x),(t1.getLocation().x*t2.getLocation().x)+(t1.getLocation().y*t2.getLocation().y));
+		int angle = (int) Math.toDegrees(Math.atan2(t2.getLocation().x-t1.getLocation().x,t2.getLocation().y-t1.getLocation().y))-90;
+		while(angle <0) {
 			angle +=360;
 		}
+		extra.println(angle +" x:" +(t2.getLocation().x-t1.getLocation().x) + " y:" +(t2.getLocation().y-t1.getLocation().y));
 		if (angle < 22 || angle >= (360-22)) {
 			return "E";
 		}
