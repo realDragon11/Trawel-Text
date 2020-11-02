@@ -27,7 +27,7 @@ public class Player extends SuperPerson{
 	public int forceRewardCount = 0;
 	public int merchantBookPrice = 1000;
 	
-	public int knowledgeFragments = 0, fragmentReq = 10;
+	public int knowledgeFragments = 0, fragmentReq = 5;
 	
 	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
 	public List<EArt> eArts = new ArrayList<EArt>();

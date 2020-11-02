@@ -52,6 +52,7 @@ public class Store extends Feature implements java.io.Serializable{
 		case 6: name = extra.choose("general","flea","convenience","trading","super");break;
 		case 7: name = extra.choose("race","species");
 		case 8: name = extra.choose("drawbane","lure");
+		case 9: name = extra.choose("witch","potion");
 		}
 		name += " " + extra.choose("store","market","shop","post","boutique","emporium","outlet","center","mart","stand");
 		if (type < 5) {
@@ -83,15 +84,25 @@ public class Store extends Feature implements java.io.Serializable{
 				dbs.add(randomDB());
 			}
 		}
+		if (type == 9) {
+			dbs = new ArrayList<DrawBane>();
+			for (int j = 0;j < 5;j++) {
+				dbs.add(randomPI());
+			}
+		}
 	}
 	
 	public static DrawBane randomDB() {
-		return extra.choose(DrawBane.MEAT,DrawBane.GARLIC,DrawBane.BLOOD,DrawBane.REPEL,DrawBane.CLEANER,extra.choose(DrawBane.PROTECTIVE_WARD,DrawBane.SILVER));
+		return extra.choose(DrawBane.MEAT,DrawBane.GARLIC,DrawBane.BLOOD,DrawBane.REPEL,DrawBane.CLEANER,extra.choose(DrawBane.PROTECTIVE_WARD,DrawBane.SILVER,extra.choose(DrawBane.SILVER,DrawBane.GOLD,DrawBane.VIRGIN)));
+	}
+	
+	public static DrawBane randomPI() {
+		return extra.choose(DrawBane.MEAT,DrawBane.BAT_WING,DrawBane.APPLE,DrawBane.CEON_STONE,DrawBane.MIMIC_GUTS,DrawBane.BLOOD);
 	}
 	
 	private void serviceItem(int index) {
 		Inventory bag = Player.player.getPerson().getBag();
-		if (type == 8) {
+		if (type == 8 || type == 9) {
 			if (index == -1) {
 				DrawBane sellItem = bag.discardDrawBanes(true);
 				if (sellItem != null) {
@@ -214,7 +225,7 @@ public class Store extends Feature implements java.io.Serializable{
 		}
 		
 		j++;
-		if (type == 8) {
+		if (type == 8 || type == 9) {
 			for (DrawBane it: dbs) {
 				if (i == j) {
 					serviceItem(i-2);
@@ -315,6 +326,12 @@ public class Store extends Feature implements java.io.Serializable{
 			dbs.add(randomDB());
 			return;
 		}
+		if (type == 9) {
+			if (dbs.size() >= INVENTORY_SIZE) {
+				dbs.remove((int)(Math.random()*dbs.size()));}
+			dbs.add(randomPI());
+			return;
+		}
 		if (items.size() >= INVENTORY_SIZE) {
 			items.remove((int)(Math.random()*items.size()));}
 			if (type < 5) {
@@ -331,7 +348,7 @@ public class Store extends Feature implements java.io.Serializable{
 				}
 	}
 	private void goShopping() {
-		if (type == 8) {
+		if (type == 8 || type == 9) {
 			return;
 		}
 		for (SuperPerson peep: town.getOccupants()) {

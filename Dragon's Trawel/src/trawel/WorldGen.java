@@ -420,6 +420,12 @@ public class WorldGen {
 		inka.addTravel();
 		inka.addTravel();
 		
+		Town pipa = new Town("inka",11, apen, new Point(4,7));
+		addConnection(inka,pipa,"road","mystery road");
+		inka.addFeature(new WitchHut(pipa));
+		inka.addFeature(new Store(11,9));
+		pipa.addFeature(new Grove("witch forest",pipa));
+		
 		return holik;
 	}
 	
