@@ -436,10 +436,11 @@ public class extra {
 				mList.stream().filter(m -> m.canClick() == true).forEach(subList::add);
 				int val = extra.inInt(v)-1;
 				boolean ret = subList.get(val).go();
-				mList = mGen.gen();
+				//mList = mGen.gen();
 				if (ret) {
 					return val;
 				}
+				mList = mGen.gen();
 				v = 1;
 				for (MenuItem m: mList) {
 					if (m.canClick()) {

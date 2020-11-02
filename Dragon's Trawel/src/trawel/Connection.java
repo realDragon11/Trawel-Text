@@ -79,7 +79,7 @@ public class Connection implements java.io.Serializable{
 		while(angle <0) {
 			angle +=360;
 		}
-		extra.println(angle +" x:" +(t2.getLocation().x-t1.getLocation().x) + " y:" +(t2.getLocation().y-t1.getLocation().y));
+		//extra.println(angle +" x:" +(t2.getLocation().x-t1.getLocation().x) + " y:" +(t2.getLocation().y-t1.getLocation().y));
 		if (angle < 22 || angle >= (360-22)) {
 			return "E";
 		}
