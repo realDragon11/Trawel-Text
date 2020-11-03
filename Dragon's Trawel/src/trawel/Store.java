@@ -50,9 +50,9 @@ public class Store extends Feature implements java.io.Serializable{
 		case 4: name = extra.choose("boot","footwear","cobbler","feet protection");break;
 		case 5: name = extra.choose("weapon","arms","armament","war");break;
 		case 6: name = extra.choose("general","flea","convenience","trading","super");break;
-		case 7: name = extra.choose("race","species");
-		case 8: name = extra.choose("drawbane","lure");
-		case 9: name = extra.choose("witch","potion");
+		case 7: name = extra.choose("race","species");break;
+		case 8: name = extra.choose("drawbane","lure");break;
+		case 9: name = extra.choose("witch","potion");break;
 		}
 		name += " " + extra.choose("store","market","shop","post","boutique","emporium","outlet","center","mart","stand");
 		if (type < 5) {

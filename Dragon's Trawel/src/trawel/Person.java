@@ -693,7 +693,7 @@ public class Person implements java.io.Serializable{
 
 					@Override
 					public String title() {
-						return "defense skills";
+						return "Defense Skills";
 					}
 
 					@Override
@@ -726,6 +726,60 @@ public class Person implements java.io.Serializable{
 										}}
 										return false;
 									}});
+								list2.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "back";
+									}
+
+									@Override
+									public boolean go() {
+										return true;
+									}});
+								return list2;
+							}});
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Utility Skills";
+					}
+
+					@Override
+					public boolean go() {
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> list2 = new ArrayList<MenuItem>();
+								list2.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
+									}});
+								if (!Player.player.getPerson().hasSkill(Skill.EXPANDER)) {
+								list2.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Shopping lvl 1";
+									}
+
+									@Override
+									public boolean go() {
+										extra.println("Adds +1 item in each store maximum. Buy?");
+										if (extra.yesNo()) {
+										if (Player.player.getPerson().getSkillPoints() > 0) {
+											Player.player.getPerson().setSkillPoints(Player.player.getPerson().getSkillPoints()-1);
+											Player.player.getPerson().addSkill(Skill.EXPANDER);
+										}}
+										return false;
+									}});
+								}
 								list2.add(new MenuSelect() {
 
 									@Override
