@@ -495,8 +495,17 @@ public class WorldGen {
 	}
 
 	public static void pathToUnun() {
-		
-		
+		try {
+		List<Connection> connects = WorldGen.aStarTown();
+		Town curTown = Player.player.getLocation();
+		int i = 0;
+		while (curTown != lynchPin) {
+			extra.println(curTown.getName() + "->" + connects.get(i).otherTown(curTown).getName() + " (" + connects.get(i).getType() + ": " +connects.get(i).getName()+")");
+			curTown = connects.get(i).otherTown(curTown);
+			i++;
+		}}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public class PathTown {
