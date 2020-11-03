@@ -13,7 +13,7 @@ public class Champion  extends TravelingFeature{
 		hasSomething = true;
 		person = new Person(level);
 		this.name = person.getName() + " (Level " + person.getLevel()+")" ;
-		tutorialText = "You should probably hold off on fighting champions until you're their level.";
+		tutorialText = "You should probably hold off on fighting champions until you're their level- explore the world and come back later.";
 		timeElapsed=0;
 		color = Color.RED;
 	}

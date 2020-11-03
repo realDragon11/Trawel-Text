@@ -275,7 +275,7 @@ public class Town implements java.io.Serializable{
 	}
 	private void you() {
 		extra.println("1 Stats");
-		extra.println("2 Inventory");
+		extra.println("2 Inventory + Compass");
 		extra.println("3 Titles");
 		extra.println("4 Quests");
 		extra.println("5 Skills");
@@ -292,12 +292,14 @@ public class Town implements java.io.Serializable{
 		case 2:
 			extra.println("1 View in More Depth");
 			extra.println("2 Drawbanes");
-			extra.println("3 back");
-			switch (extra.inInt(3)){
+			extra.println("3 Path to Unun");
+			extra.println("4 Back");
+			switch (extra.inInt(4)){
 				case 1: Player.player.getPerson().getBag().display(1);
 				extra.println("You have " + Player.player.emeralds + " emeralds.");
 				;break;
 				case 2: Player.player.getPerson().getBag().discardDrawBanes(false);break;
+				case 3: WorldGen.pathToUnun();break;
 			}
 			
 			

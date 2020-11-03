@@ -1,11 +1,15 @@
 package trawel;
 import java.awt.Point;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class WorldGen {
 
 	
 	public static Plane plane;
+	public static Town lynchPin;
 
 	public static void eoano(World w) {
 		plane = new Plane();
@@ -41,6 +45,7 @@ public class WorldGen {
 		
 		
 		Town unun = new Town("unun",2,rona,new Point(5,4));
+		lynchPin = unun;
 		unun.setHasPort(true);
 		addConnection(homa,unun,"road","barrier way");
 		unun.addFeature(new Inn("unun inn",2,unun,null));
@@ -487,5 +492,128 @@ public class WorldGen {
 			extra.println("Invalid load. Either no save file was found or it was outdated.");
 		}
 		
+	}
+
+	public static void pathToUnun() {
+		
+		
+	}
+	
+	public class PathTown {
+		public Town t;
+		public int gScore = Integer.MAX_VALUE;
+		public int fScore = Integer.MAX_VALUE;
+		public PathTown cameFrom = null;
+		public PathTown(Town town) {
+			t = town;
+		}
+	}
+	public static List<Connection> aStarTown() {
+		List<Town> towns = plane.getTowns();
+		WorldGen wg = new WorldGen();
+		List<PathTown> nodeList = new ArrayList<PathTown>();
+		PathTown start = null;
+		for (Town t: towns) {
+			nodeList.add(wg.new PathTown(t));
+			if (t.equals(Player.player.getLocation())) {
+				start = nodeList.get(nodeList.size()-1);
+			}
+		}
+		
+		List<PathTown> openSet = new ArrayList<PathTown>();
+		List<PathTown> closedSet = new ArrayList<PathTown>();
+		openSet.add(start);
+		openSet.get(0).gScore = 0;
+		
+		openSet.get(0).fScore = heuristic_cost_estimate(openSet.get(0));
+		
+		//AISpaceNode[][] cameFrom = new AISpaceNode[g.getWidth()][g.getHeight()]; 
+		//cameFrom[openSet.get(0).x][openSet.get(0).y] = null;
+		
+		
+		while (openSet.size() > 0) {
+			int currentIndex = getLowest(openSet);
+			PathTown current = openSet.get(currentIndex);
+			if (current.t.equals(lynchPin)) {
+				return reconstruct_path(current.cameFrom, current,nodeList);
+			}
+			openSet.remove(currentIndex);
+			closedSet.add(current);
+			for (Connection c: current.t.getConnects()) {
+				PathTown otherTown = null;
+				Town ot = c.otherTown(current.t);
+				for (PathTown t: nodeList) {
+					if (t.t.equals(ot)) {
+						otherTown = t;
+						break;
+					}
+				}
+				explore(current,otherTown, c,nodeList, openSet, closedSet);
+			}
+		}
+		//we couldn't find a path
+		return null;
+	
+	}
+	
+	private static List<Connection> reconstruct_path(PathTown cameFrom, PathTown current, List<PathTown> nodeList) {
+		List<Connection> cList = new ArrayList<Connection>();
+		/*
+		for (Connection c: lynchPin.getConnects()) {
+			if (c.otherTown(lynchPin).equals(cameFrom.t)){
+				cList.add(c);
+				break;
+			}
+		}*/
+		
+		while(current.cameFrom != null) {
+			//add a trail of tiles from the end to the start
+			for (Connection c: current.t.getConnects()) {
+				if (c.otherTown(current.t).equals(cameFrom.t)) {
+					current = cameFrom;
+					cameFrom = current.cameFrom;
+					cList.add(c);
+					break;
+				}
+			}
+		}
+		
+		Collections.reverse(cList);//reverse them
+		return cList;
+	}
+
+
+	private static int getLowest(List<PathTown> list) {
+		int lowestValue = Integer.MAX_VALUE;
+		PathTown bestIndex = null;
+		for(PathTown t: list) {
+			if (t.fScore < lowestValue) {
+				bestIndex = t;
+				lowestValue = t.fScore;
+			}
+		}
+		return list.indexOf(bestIndex);
+	} 
+	
+	private static void explore(PathTown current, PathTown otherTown,Connection c, List<PathTown> nodeList,List<PathTown> openSet,List<PathTown> closedSet) {
+		if (closedSet.contains(otherTown)) {
+			return;//already explored
+		}
+		if (!openSet.contains(otherTown)) {
+			openSet.add(otherTown);
+		}
+		int potential_gScore = current.gScore + 1;
+		
+		if (potential_gScore > otherTown.gScore) {
+			return;//going through the last node is not a better choice for this node- it already has a better path attached.
+		}
+		otherTown.cameFrom = current;
+		otherTown.gScore = potential_gScore;
+        otherTown.fScore = potential_gScore + heuristic_cost_estimate(otherTown);
+	}
+	
+	private static int heuristic_cost_estimate(PathTown cur) {
+		
+		return Math.abs((cur.t.getLocation().x-lynchPin.getLocation().x)) + Math.abs((cur.t.getLocation().y-lynchPin.getLocation().y));
 	}
 }

@@ -1,5 +1,6 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Plane implements java.io.Serializable{
 	private ArrayList<World> worlds = new ArrayList<World>();
@@ -25,5 +26,16 @@ public class Plane implements java.io.Serializable{
 		
 		w.passTime(time);	
 		}
+	}
+
+	public List<Town> getTowns() {
+		List<Town> list = new ArrayList<Town>();
+		for(World w: worlds) {
+			for(Island i: w.getislands()) {
+				list.addAll(i.getTowns());
+			}
+		}
+		
+		return list;
 	}
 }
