@@ -27,7 +27,7 @@ public class Town implements java.io.Serializable{
 	private List<Person> helpers = new ArrayList<Person>();
 	private double defenseTimer = 0;
 	private boolean isFort = false;
-	private List<FortQuals> fQuals;
+	private List<FortQual> fQuals;
 	private Town leaveTown;
 	
 	public Town() {
@@ -55,7 +55,7 @@ public class Town implements java.io.Serializable{
 		island.addTown(this);
 	}
 	
-	public Town(String name, int tier, Island island, Point location,List<FortQuals> fQuals, Town lTown) {
+	public Town(String name, int tier, Island island, Point location,List<FortQual> fQuals, Town lTown) {
 		this();
 		this.isFort = true;
 		this.name = name;
