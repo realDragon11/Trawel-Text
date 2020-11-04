@@ -26,6 +26,9 @@ public class Town implements java.io.Serializable{
 	private boolean hasBeen;
 	private List<Person> helpers = new ArrayList<Person>();
 	private double defenseTimer = 0;
+	private boolean isFort = false;
+	private List<FortQuals> fQuals;
+	private Town leaveTown;
 	
 	public Town() {
 		connects = new ArrayList<Connection>();
@@ -49,6 +52,19 @@ public class Town implements java.io.Serializable{
 			addPerson();
 			i++;
 		}
+		island.addTown(this);
+	}
+	
+	public Town(String name, int tier, Island island, Point location,List<FortQuals> fQuals, Town lTown) {
+		this();
+		this.isFort = true;
+		this.name = name;
+		this.tier = tier;
+		this.island = island;
+		this.location = location;
+		this.fQuals = fQuals;
+		this.leaveTown = lTown;
+		timePassed = 0;
 		island.addTown(this);
 	}
 	
@@ -166,6 +182,10 @@ public class Town implements java.io.Serializable{
 		Networking.sendStrong("Discord|imagesmall|town|Town|");
 		Networking.setArea("main");
 		Networking.charUpdate();
+		if (isFort) {
+			doFort();
+			return;
+		}
 		if (this.hasTeleporters()) {
 			Networking.sendColor(Color.GREEN);
 			extra.println(i + " Teleport Shop.");
@@ -255,6 +275,63 @@ public class Town implements java.io.Serializable{
 		
 	}
 
+	private void doFort() {
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "leave";
+					}
+
+					@Override
+					public boolean go() {
+						extra.println("You return to " + leaveTown.getName());
+						Player.player.setLocation(leaveTown);
+						return true;
+					}
+				});
+				int i = 0;
+				for (Feature f: features) {
+					mList.add(new MenuSelectNumber() {
+
+						@Override
+						public String title() {
+							return features.get(number).getName();
+						}
+
+						@Override
+						public boolean go() {
+							features.get(number).go();
+							return false;
+						}
+					});
+					((MenuSelectNumber)mList.get(mList.size()-1)).number = i;
+					i++;
+				}
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "you";
+					}
+
+					@Override
+					public boolean go() {
+						you();
+						return false;
+					}
+				});
+				return mList;
+			}
+			
+		});
+		
+	}
 	private void buyLot() {
 		if (Player.getTutorial()) {
 			extra.println("You can build building on lots you own, extending the facilities of the town.");	
