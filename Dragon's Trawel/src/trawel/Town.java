@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.fort.FortQual;
+import trawel.fort.FortFeature;
 
 /**
  * 
@@ -715,5 +716,16 @@ public class Town implements java.io.Serializable{
 			}
 		}
 		return retList;
+	}
+	
+	public int fortSizeLeft() {
+		if (!isFort) {
+			return 0;
+		}
+		int i = 6;
+		for (Feature f: features) {
+			i-=((FortFeature)f).getSize();
+		}
+		return i;
 	}
 }
