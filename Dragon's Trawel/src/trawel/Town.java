@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.fort.FortQual;
+
 /**
  * 
  * @author Brian Malone 

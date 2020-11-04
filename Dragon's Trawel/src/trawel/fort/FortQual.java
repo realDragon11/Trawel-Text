@@ -1,4 +1,4 @@
-package trawel;
+package trawel.fort;
 
 public enum FortQual {
 
