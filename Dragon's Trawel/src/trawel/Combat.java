@@ -1,8 +1,11 @@
 package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 
 import trawel.fort.FortHall;
+import trawel.fort.LSkill;
+import trawel.fort.SubSkill;
 /**
  * A combat holds some of the more battle-focused commands.
  * @author Brian Malone
@@ -124,6 +127,50 @@ public class Combat {
 		*/
 	}
 	
+	public class SkillCon {
+		public LSkill lSkill;
+		public float timer, timeTo;
+		public SkillCon(LSkill l, int timer, int reset) {
+			lSkill = l;
+			this.timer = timer;
+			timeTo = reset;
+		}
+	}
+	
+	public void handleSkillCons(List<SkillCon> cons, ArrayList<Person> totalList,double timePassed) {
+		for (SkillCon sk: cons) {
+			sk.timer-=timePassed;
+			if (sk.timer <=0) {
+				switch (sk.lSkill.skill) {
+				case DEATH:
+					for (Person p: totalList) {
+						if (!p.hasSkill(Skill.PLAYERSIDE)) {
+							p.getNextAttack().wither(Math.min(20,sk.lSkill.value)/100.0);
+							p.takeDamage(1);
+						}
+					}
+					break;
+				case ELEMENTAL:
+					for (Person p: totalList) {
+						if (!p.hasSkill(Skill.PLAYERSIDE)) {
+							p.takeDamage(Math.min(20,sk.lSkill.value));
+							p.getBag().burn(Math.min(20,sk.lSkill.value/2)/100.0, extra.randRange(0, 4));
+						}
+					}
+					break;
+				case SCRYING:
+					for (Person p: totalList) {
+						if (p.hasSkill(Skill.PLAYERSIDE)) {
+							//TODO
+						}
+					}
+					break;
+				}
+			}
+			sk.timer = Math.max(1,sk.timeTo-extra.randRange(0,Math.min(10,sk.lSkill.value)));//intentionally not perfect times
+		}
+	}
+	
 	public Combat(World w,ArrayList<Person>... people) {
 		this(w,null, people);
 	}
@@ -133,6 +180,17 @@ public class Combat {
 		ArrayList<Person> totalList = new ArrayList<Person>();
 		ArrayList<Person> killList = new ArrayList<Person>();
 		boolean playerIsInBattle = false;
+		List<SkillCon> cons = new ArrayList<SkillCon>();
+		if (hall != null) {
+			int temp = hall.getSkillCount(SubSkill.DEATH);
+			if (temp > 0) {
+				cons.add(new SkillCon(new LSkill(SubSkill.DEATH,temp),50,50));
+			}
+			temp = hall.getSkillCount(SubSkill.ELEMENTAL);
+			if (temp > 0) {
+				cons.add(new SkillCon(new LSkill(SubSkill.DEATH,temp),100,100));
+			}
+		}
 		for (ArrayList<Person> peoples: people) {
 			for (Person p: peoples) {
 				if (p.isPlayer()) {
@@ -176,6 +234,8 @@ public class Combat {
 			for (Person p: totalList) {
 				p.advanceTime(lowestDelay);
 			}
+			
+			this.handleSkillCons(cons, totalList, lowestDelay);
 			
 			Person defender = quickest.getNextAttack().defender;
 			boolean wasAlive = defender.isAlive();
