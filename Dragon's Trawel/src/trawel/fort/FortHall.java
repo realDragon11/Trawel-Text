@@ -1,5 +1,7 @@
 package trawel.fort;
 
+import trawel.Feature;
+
 /**
  * 
  * @author dragon
@@ -31,6 +33,21 @@ public class FortHall extends FortFeature {
 
 	@Override
 	public void passTime(double time) {
+	}
+	
+	public int getSkillCount(SubSkill s) {
+		int i = 0;
+		for (Feature f: town.getFeatures()) {
+			FortFeature ff = (FortFeature)f;
+			i+=ff.laborer.getSkillCount(s);
+		}
+		return i;
+	}
+	
+	public int getWatchScore() {
+		int i = 0;
+		
+		return i;
 	}
 
 }

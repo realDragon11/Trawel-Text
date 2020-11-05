@@ -7,14 +7,22 @@ import java.util.List;
 import trawel.MenuGenerator;
 import trawel.MenuItem;
 import trawel.MenuSelect;
+import trawel.MenuSelectNumber;
 import trawel.QRMenuItem;
 import trawel.QuestR;
 import trawel.extra;
+import trawel.fort.SubSkill.Active;
+import trawel.fort.SubSkill.Type;
 
 public class WizardTower extends FortFeature {
 
 	
 	public int tier;
+	
+	public SubSkill downTimeSkill;
+	public SubSkill battleSkill;
+	
+	public List<SubSkill> pickList = new ArrayList<SubSkill>();
 	
 	public WizardTower(int tier) {
 		this.tier = tier;
@@ -41,7 +49,6 @@ public class WizardTower extends FortFeature {
 
 	@Override
 	public void go() {
-		// TODO Auto-generated method stub
 		extra.menuGo(new MenuGenerator() {
 
 			@Override
@@ -59,14 +66,11 @@ public class WizardTower extends FortFeature {
 						return true;
 					}
 				});
-				for (QuestR qr: qrList) {
-					mList.add(new QRMenuItem(qr));
-				}
 				mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "improve skills";
+						return "skills";
 					}
 
 					@Override
@@ -104,26 +108,174 @@ public class WizardTower extends FortFeature {
 						return true;
 					}
 				});
-				for (QuestR qr: qrList) {
-					mList.add(new QRMenuItem(qr));
-				}
+				if (downTimeSkill != null) {
 				mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "improve scrying";
+						return "Improve "+downTimeSkill.name+" [" + findLSkill(downTimeSkill) + "]";
 					}
 
 					@Override
 					public boolean go() {
-						improveSkill(SubSkill.SCRYING,1.25f);
+						improveSkill(downTimeSkill,downTimeSkill.costMult);
 						return false;
 					}
-				});
+				});}else {
+					mList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Pick downtime skill";
+						}
+
+						@Override
+						public boolean go() {
+							pickDownTime();
+							return false;
+						}
+					});
+				}
+				if (battleSkill != null) {
+					mList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Improve "+battleSkill.name+" [" + findLSkill(battleSkill) + "]";
+						}
+
+						@Override
+						public boolean go() {
+							improveSkill(battleSkill,battleSkill.costMult);
+							return false;
+						}
+					});}else {
+						mList.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Pick battle skill";
+							}
+
+							@Override
+							public boolean go() {
+								pickBattle();
+								return false;
+							}
+						});
+					}
 				return mList;
 			}
 			
 		});
 	}
+	
+	public void pickDownTime(){
+		extra.menuGo(new MenuGenerator() {
+		@Override
+		public List<MenuItem> gen() {
+			List<MenuItem> mList = new ArrayList<MenuItem>();
+			mList.add(new MenuSelect() {
+
+				@Override
+				public String title() {
+					return "leave";
+				}
+
+				@Override
+				public boolean go() {
+					return true;
+				}
+			});
+			if (downTimeSkill != null) {
+				return mList;
+			}
+			pickList.clear();
+			for (SubSkill s: SubSkill.values()) {
+				if (s.act.equals(Active.DOWNTIME) && s.type.equals(Type.WIZARD)) {
+					pickList.add(s);
+				}
+			}
+			for (int i = 0;i < pickList.size();i++) {
+				mList.add(new MenuSelectNumber() {
+
+					@Override
+					public String title() {
+						return pickList.get(number).name;
+					}
+
+					@Override
+					public boolean go() {
+						extra.println(pickList.get(number).name + ": " + pickList.get(number).desc + " Buy?");
+						if (extra.yesNo()){
+							downTimeSkill.equals(pickList.get(number));
+							pickList.clear();
+							return true;
+						}
+						return false;
+					}
+				});
+				((MenuSelectNumber)(mList.get(mList.size()))).number = i;
+			}
+			
+			return mList;
+		}
+		
+	});
+	}
+	public void pickBattle(){
+		extra.menuGo(new MenuGenerator() {
+		@Override
+		public List<MenuItem> gen() {
+			List<MenuItem> mList = new ArrayList<MenuItem>();
+			mList.add(new MenuSelect() {
+
+				@Override
+				public String title() {
+					return "leave";
+				}
+
+				@Override
+				public boolean go() {
+					return true;
+				}
+			});
+			if (downTimeSkill != null) {
+				return mList;
+			}
+			pickList.clear();
+			for (SubSkill s: SubSkill.values()) {
+				if (s.act.equals(Active.BATTLE) && s.type.equals(Type.WIZARD)) {
+					pickList.add(s);
+				}
+			}
+			for (int i = 0;i < pickList.size();i++) {
+				mList.add(new MenuSelectNumber() {
+
+					@Override
+					public String title() {
+						return pickList.get(number).name;
+					}
+
+					@Override
+					public boolean go() {
+						extra.println(pickList.get(number).name + ": " + pickList.get(number).desc + " Buy?");
+						if (extra.yesNo()){
+							battleSkill.equals(pickList.get(number));
+							pickList.clear();
+							return true;
+						}
+						return false;
+					}
+				});
+				((MenuSelectNumber)(mList.get(mList.size()))).number = i;
+			}
+			
+			return mList;
+		}
+		
+	});
+	}
+	
 
 }
