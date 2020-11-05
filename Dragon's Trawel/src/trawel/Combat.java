@@ -1,6 +1,8 @@
 package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
+
+import trawel.fort.FortHall;
 /**
  * A combat holds some of the more battle-focused commands.
  * @author Brian Malone
@@ -122,8 +124,10 @@ public class Combat {
 		*/
 	}
 	
-	
 	public Combat(World w,ArrayList<Person>... people) {
+		this(w,null, people);
+	}
+	public Combat(World w, FortHall hall,ArrayList<Person>[] people) {
 		int size = people.length;
 		BardSong song = w.startBardSong();
 		ArrayList<Person> totalList = new ArrayList<Person>();

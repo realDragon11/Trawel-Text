@@ -88,6 +88,7 @@ public enum Skill implements java.io.Serializable{
 		BLOOD_SURGE("BS","Internal",false,Type.FEATURE,0,""),
 		BLOOD_HARVEST("BH","Internal",false,Type.FEATURE,0,""),
 		SKY_BLESSING_1("Sky Blessing I","Internal",false,Type.FEATURE,0,""),
+		PLAYERSIDE("PSIDE","Internal",false,Type.FEATURE,0,""),
 		ENDSKILL("","",false,Type.FIGHTER,0,""),;
 	    private String name,desc, longDesc;
 	    private Type type;

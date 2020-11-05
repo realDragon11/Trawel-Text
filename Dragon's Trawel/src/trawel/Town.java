@@ -6,6 +6,7 @@ import java.util.List;
 
 import trawel.fort.FortQual;
 import trawel.fort.FortFeature;
+import trawel.fort.FortHall;
 
 /**
  * 
@@ -68,6 +69,7 @@ public class Town implements java.io.Serializable{
 		this.fQuals = fQuals;
 		this.leaveTown = lTown;
 		timePassed = 0;
+		features.add(new FortHall(tier,this));
 		island.addTown(this);
 	}
 	

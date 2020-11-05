@@ -1,6 +1,13 @@
 package trawel.fort;
 
+import java.util.ArrayList;
+
+import trawel.Combat;
 import trawel.Feature;
+import trawel.Person;
+import trawel.Skill;
+import trawel.Town;
+import trawel.mainGame;
 
 /**
  * 
@@ -9,6 +16,12 @@ import trawel.Feature;
  * The most important fort feature. Holds extra data and the build menu.
  */
 public class FortHall extends FortFeature {
+
+	public int level;
+	public FortHall(int tier, Town town) {
+		this.town = town;
+		this.level = tier;
+	}
 
 	@Override
 	public int getSize() {
@@ -48,6 +61,20 @@ public class FortHall extends FortFeature {
 		int i = 0;
 		
 		return i;
+	}
+	
+	public void Fight(ArrayList<Person>... people) {
+		Combat c = new Combat(this.town.getIsland().getWorld(),this,people);
+		if (c.survivors.get(0).hasSkill(Skill.PLAYERSIDE)) {
+			
+		}else {
+			
+		}
+	}
+
+	private ArrayList<Person>[] getAllies() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
