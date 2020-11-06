@@ -186,7 +186,7 @@ public class Store extends Feature implements java.io.Serializable{
 		extra.println("You have " + Player.bag.getGold() + " gold.");
 		int j = 1;
 		extra.println(j + " examine all");j++;
-		if (type == 8) {
+		if (type == 8 || type == 9) {
 			for (DrawBane i: dbs) {
 				extra.println(j + " " + i.getName() + " - " + i.getFlavor() + " cost: " + (i.getValue()*tier));
 				j++;
@@ -212,7 +212,7 @@ public class Store extends Feature implements java.io.Serializable{
 		int i = extra.inInt(j);
 		j = 1;
 		if (i == j) {//examine all
-			if (type == 8) {
+			if (type == 8 || type == 9) {
 				for (int k = 0;k < dbs.size();k++) {
 					serviceItem(k);
 				}
@@ -262,7 +262,7 @@ public class Store extends Feature implements java.io.Serializable{
 	
 
 	private void restock() {
-		if (this.type == 8) {
+		if (this.type == 8 || type == 9) {
 			for (int i = items.size()-1;i >= 0;i--) {
 				dbs.remove(i);
 			}
