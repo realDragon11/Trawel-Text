@@ -28,12 +28,12 @@ public class TownFlavorFactory {
 
 			@Override
 			public void activate(int level) {
-				// TODO Auto-generated method stub
+				extra.println("A group of adventurers is gathered on the fringes of the town, planning their next expedition.");
 				
 			}
 			
 		};
-		b.responses.add(new Response(TownTag.ADVENTURE,1));
+		b.responses.add(new Response(TownTag.ADVENTURE,3));
 		bumperList.add(b);
 		
 	}

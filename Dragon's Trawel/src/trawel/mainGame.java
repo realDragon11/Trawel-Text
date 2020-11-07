@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+
+import trawel.townevents.TownFlavorFactory;
 /**
  * 
  * @author Brian Malone
@@ -152,6 +154,7 @@ public class mainGame {
 		new BookFactory();
 		new BumperFactory();
 		new WeaponAttackFactory();
+		new TownFlavorFactory();
 		story = new StoryNone();
 		extra.println("Dragon's Trawel v0.6.0");
 		extra.println(

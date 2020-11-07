@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.fort.FortQual;
+import trawel.townevents.TownFlavorFactory;
 import trawel.townevents.TownTag;
 import trawel.fort.FortFeature;
 import trawel.fort.FortHall;
@@ -192,6 +193,11 @@ public class Town implements java.io.Serializable{
 		if (isFort) {
 			doFort();
 			return;
+		}
+		if (Player.player.townEventTimer <=0 && extra.chanceIn(1,3)) {
+			if (TownFlavorFactory.go(.5,this.getTier(),this)) {
+			Player.player.townEventTimer = extra.randRange(20,24*7);
+			}
 		}
 		if (this.hasTeleporters()) {
 			Networking.sendColor(Color.GREEN);
