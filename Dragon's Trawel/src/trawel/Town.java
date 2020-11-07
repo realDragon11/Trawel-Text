@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.fort.FortQual;
+import trawel.townevents.TownTag;
 import trawel.fort.FortFeature;
 import trawel.fort.FortHall;
 
@@ -32,6 +33,7 @@ public class Town implements java.io.Serializable{
 	private double defenseTimer = 0;
 	private boolean isFort = false;
 	private List<FortQual> fQuals;
+	public List<TownTag> tTags = new ArrayList<TownTag>();
 	private Town leaveTown;
 	
 	public Town() {

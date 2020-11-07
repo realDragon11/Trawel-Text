@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import trawel.townevents.TownTag;
+
 public class WorldGen {
 
 	
@@ -26,6 +28,7 @@ public class WorldGen {
 		homa.addTravel();
 		homa.addFeature(new Champion(4));
 		w.setStartTown(homa);
+		homa.tTags.add(TownTag.SMALL_TOWN);
 		homa.setGoPrinter(new PrintEvent(){
 
 			@Override
@@ -53,6 +56,9 @@ public class WorldGen {
 		unun.addTravel();
 		unun.addFeature(new MerchantGuild("unun merchant guild"));
 		unun.addFeature(new Dungeon("tower of fate",unun,Dungeon.Shape.TOWER,0));
+		unun.tTags.add(TownTag.CITY);
+		unun.tTags.add(TownTag.ADVENTURE);
+		unun.tTags.add(TownTag.MERCHANT);
 		unun.setGoPrinter(new PrintEvent(){
 
 			@Override
@@ -105,7 +111,8 @@ public class WorldGen {
 		hemo.addFeature(new Blacksmith(1,s));
 		hemo.addFeature(new Champion(1,4,hemo));
 		hemo.addFeature(new WitchHut(hemo));
-		
+		hemo.tTags.add(TownTag.DRUDIC);
+		hemo.tTags.add(TownTag.ALCHEMY);
 		hemo.setGoPrinter(new PrintEvent(){
 
 			@Override
@@ -124,6 +131,7 @@ public class WorldGen {
 		tanak.addTravel();
 		tanak.addTravel();
 		tanak.addFeature(new Champion(10));
+		tanak.tTags.add(TownTag.CITY);
 		tanak.setGoPrinter(new PrintEvent(){
 
 			@Override
@@ -154,7 +162,7 @@ public class WorldGen {
 		lokan.addFeature(new Doctor("Shaman",lokan));
 		lokan.addTravel();
 		lokan.addTravel();
-		
+		lokan.tTags.add(TownTag.MYSTIC);
 		lokan.setGoPrinter(new PrintEvent(){
 
 			@Override
@@ -210,7 +218,7 @@ public class WorldGen {
 		alhax.addFeature(new Store(2,4));
 		alhax.addFeature(new Store(2,5));
 		//alhax.addFeature(new Store(2,6));
-		
+		alhax.tTags.add(TownTag.MERCHANT);
 		alhax.setGoPrinter(new PrintEvent(){
 
 			@Override
@@ -243,6 +251,7 @@ public class WorldGen {
 		revan.setHasTeleporters(true);
 		revan.addFeature(new Altar());
 		addConnection(revan,tanak,"teleport","the red ritual");
+		revan.tTags.add(TownTag.MERCHANT);
 		revan.setGoPrinter(new PrintEvent(){
 
 			@Override
@@ -303,6 +312,7 @@ public class WorldGen {
 		yena.addTravel();
 		yena.addTravel();
 		yena.addFeature(new Champion(4));
+		yena.tTags.add(TownTag.ADVENTURE);
 		
 		Town denok = new Town("denok",4,teran,new Point(12,1));
 		addConnection(denok,yena,"road","apple road");
@@ -313,6 +323,7 @@ public class WorldGen {
 		denok.addFeature(new Mine("denok mine",denok,null,Mine.Shape.STANDARD));
 		denok.addFeature(new Doctor("Shaman",denok));
 		denok.addTravel();
+		denok.tTags.add(TownTag.DRUDIC);
 		
 		Town erin = new Town("erin",5,teran,new Point(10,4));
 		addConnection(erin,yena,"road","pear road");
@@ -323,6 +334,7 @@ public class WorldGen {
 		erin.addFeature(new Library("erin library",erin));
 		erin.addFeature(new Mountain("the white mountain",5));
 		erin.addFeature(new Appraiser("erin appraiser"));
+		erin.tTags.add(TownTag.ARCANE);
 		erin.setGoPrinter(new PrintEvent(){
 
 			@Override
@@ -354,6 +366,7 @@ public class WorldGen {
 		placka.addTravel();
 		placka.addFeature(new Champion(6));
 		placka.addFeature(new Dungeon("The Dungeon of Woe",placka,Dungeon.Shape.STANDARD,-1));
+		placka.tTags.add(TownTag.ADVENTURE);
 		
 		Town tunka = new Town("tunka",7,teran,new Point(12,5));
 		addConnection(erin,tunka,"road","left-over road");
@@ -392,6 +405,7 @@ public class WorldGen {
 		holik.addTravel();
 		holik.addTravel();
 		w.setStartTown(holik);
+		holik.tTags.add(TownTag.MYSTIC);
 		
 		Town yonuen = new Town("yonuen", 9, apen, new Point(4,3));
 		addConnection(holik,yonuen,"road","bliz road");
@@ -400,6 +414,7 @@ public class WorldGen {
 		yonuen.addFeature(new Library("yonuen library",yonuen));
 		yonuen.addTravel();
 		yonuen.addTravel();
+		yonuen.tTags.add(TownTag.ARCANE);
 		
 		Town unika = new Town("unika",10, apen, new Point(3,5));
 		addConnection(holik,unika,"road","ren road");
@@ -424,12 +439,14 @@ public class WorldGen {
 		inka.addFeature(new Mine("right mine", inka, null,Mine.Shape.STANDARD));
 		inka.addTravel();
 		inka.addTravel();
+		inka.tTags.add(TownTag.CITY);
 		
 		Town pipa = new Town("inka",11, apen, new Point(4,7));
 		addConnection(inka,pipa,"road","mystery road");
 		inka.addFeature(new WitchHut(pipa));
 		inka.addFeature(new Store(11,9));
 		pipa.addFeature(new Grove("witch forest",pipa));
+		pipa.tTags.add(TownTag.ALCHEMY);
 		
 		return holik;
 	}
