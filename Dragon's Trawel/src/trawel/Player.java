@@ -34,6 +34,8 @@ public class Player extends SuperPerson{
 	public EArtBox eaBox = new EArtBox();
 	public boolean hasCult = false;
 	
+	public double townEventTimer = 10;
+	
 	public Player(Person p) {
 		person = p;
 		flask = null;
