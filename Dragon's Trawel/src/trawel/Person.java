@@ -286,6 +286,7 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public void playerLevelUp() {
+		mainGame.story.levelUp(level);
 		if (level == 5) {
 		Networking.sendStrong("Achievement|level5|");}
 		if (level == 10) {

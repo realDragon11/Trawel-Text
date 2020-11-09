@@ -6,4 +6,5 @@ public class Story {
 	public void onDeathPart2(){}
 	public void inn(){}
 	public void altar() {}
+	public void levelUp(int level){}
 }

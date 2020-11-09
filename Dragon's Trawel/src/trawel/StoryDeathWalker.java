@@ -116,5 +116,16 @@ public class StoryDeathWalker extends Story{
 		}
 		
 	}
+	@Override
+	public void levelUp(int level) {
+		switch(level) {
+		case 3:
+			extra.println("You think back to your student. You taught them everything you could, and it still wasn't enough. You've learned much more in the past few days... maybe enough to survive.");
+			break;
+		case 4:
+			extra.println("You weren't always a teacher at heart- for a time, you were something else. But you were drawn in by the local Lord's offer.");
+			break;
+		}
+	}
 	
 }

@@ -57,7 +57,8 @@ public class TownFlavorFactory {
 		return true;}
 		return false;
 	}
-	public abstract class TownFlavor {
+				
+		public abstract class TownFlavor {
 		
 		public ArrayList<Response> responses = new ArrayList<Response>();
 		
