@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import trawel.fort.FortHall;
+import trawel.fort.FortQual;
 import trawel.townevents.TownTag;
 
 public class WorldGen {
@@ -207,6 +209,9 @@ public class WorldGen {
 			}
 			
 		});
+		List<FortQual> fqualist = new ArrayList<FortQual>();
+		Town fortMerida = new Town("fort merida",4, rona, new Point(1,11),fqualist, haka);
+		addConnection(fortMerida,haka,"road","pass to the fort");
 		
 		
 		Island apa = new Island("apa",w);
@@ -285,7 +290,7 @@ public class WorldGen {
 
 			@Override
 			public void print() {
-				extra.println("You return to pocket dimension.");
+				extra.println("You return to the pocket dimension.");
 				
 			}
 			

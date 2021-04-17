@@ -25,15 +25,26 @@ public class TownFlavorFactory {
 	}
 	public TownFlavorFactory(){
 		TownFlavor b = new TownFlavor() {
-
 			@Override
 			public void activate(int level) {
 				extra.println("A group of adventurers is gathered on the fringes of the town, planning their next expedition.");
-				
 			}
-			
 		};
 		b.responses.add(new Response(TownTag.ADVENTURE,3));
+		b = new TownFlavor() {
+			@Override
+			public void activate(int level) {
+				extra.println("Three small children are playing tag on a rural stret inside the town.");
+			}
+		};
+		b.responses.add(new Response(TownTag.SMALL_TOWN,2));
+		b = new TownFlavor() {
+			@Override
+			public void activate(int level) {
+				extra.println("A merchant is ordering laborers to move crates in an alleyway.");
+			}
+		};
+		b.responses.add(new Response(TownTag.MERCHANT,3));
 		bumperList.add(b);
 		
 	}
