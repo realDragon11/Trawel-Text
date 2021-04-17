@@ -837,6 +837,10 @@ public class Person implements java.io.Serializable{
 		return firstName + " " + title;
 	}
 	
+	public void setFirstName(String str) {
+		firstName = str;
+	}
+	
 	/**
 	 * Display this person's stats.
 	 */

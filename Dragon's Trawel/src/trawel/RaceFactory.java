@@ -736,6 +736,8 @@ public class RaceFactory {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
 		extra.printMode = false;
+		w.setFirstName(randomLists.randomWolfName());
+		w.setTitle("");
 		return w;
 	}
 
@@ -790,6 +792,8 @@ public class RaceFactory {
 		w.getBag().getDrawBanes().add(DrawBane.ENT_CORE);
 		w.getBag().swapRace(RaceFactory.getRace("ent"));
 		extra.printMode = false;
+		w.setFirstName(randomLists.randomEntName());
+		w.setTitle("");
 		return w;
 	}
 	
@@ -812,6 +816,8 @@ public class RaceFactory {
 		w.getBag().swapRace(RaceFactory.getRace("bear"));
 		w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		extra.printMode = false;
+		w.setFirstName(randomLists.randomBearName());
+		w.setTitle("");
 		return w;
 	}
 	
@@ -827,6 +833,8 @@ public class RaceFactory {
 			w.getBag().getDrawBanes().add(DrawBane.BAT_WING);
 		}
 		extra.printMode = false;
+		w.setFirstName(randomLists.randomBatName());
+		w.setTitle("");
 		return w;
 	}
 	
@@ -850,6 +858,7 @@ public class RaceFactory {
 			w.getBag().getDrawBanes().add(DrawBane.UNICORN_HORN);
 		}
 		extra.printMode = false;
+		w.setTitle("");
 		return w;
 	}
 	
@@ -868,6 +877,7 @@ public class RaceFactory {
 			w.getBag().getDrawBanes().add(DrawBane.SILVER);
 		}
 		extra.printMode = false;
+		w.setTitle("");
 		return w;
 	}
 	
@@ -880,6 +890,7 @@ public class RaceFactory {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
 		extra.printMode = false;
+		w.setTitle("");
 		return w;
 	}
 	public static Person makeDrudgerTitan(int level) {
@@ -892,6 +903,7 @@ public class RaceFactory {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
 		extra.printMode = false;
+		w.setTitle("");
 		return w;
 	}
 
