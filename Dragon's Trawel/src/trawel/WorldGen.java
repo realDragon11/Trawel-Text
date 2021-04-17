@@ -7,6 +7,7 @@ import java.util.List;
 
 import trawel.fort.FortHall;
 import trawel.fort.FortQual;
+import trawel.fort.WizardTower;
 import trawel.townevents.TownTag;
 
 public class WorldGen {
@@ -211,6 +212,7 @@ public class WorldGen {
 		});
 		List<FortQual> fqualist = new ArrayList<FortQual>();
 		Town fortMerida = new Town("fort merida",4, rona, new Point(1,11),fqualist, haka);
+		fortMerida.addFeature(new WizardTower(4));
 		addConnection(fortMerida,haka,"road","pass to the fort");
 		
 		

@@ -30,7 +30,7 @@ public abstract class FortFeature extends Feature {
 	}
 	public int findLSkill(SubSkill skill) {
 		for (int i = 0;i < laborer.lSkills.size();i++) {
-			if (laborer.lSkills.get(i).equals(skill)) {
+			if (laborer.lSkills.get(i).skill.equals(skill)) {
 				return i;
 			}
 		}

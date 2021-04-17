@@ -5,12 +5,19 @@ import java.util.List;
 
 import trawel.Combat;
 import trawel.Feature;
+import trawel.MenuGenerator;
+import trawel.MenuItem;
+import trawel.MenuLine;
+import trawel.MenuSelect;
+import trawel.MenuSelectNumber;
 import trawel.Person;
 import trawel.Player;
 import trawel.Skill;
 import trawel.Town;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.fort.SubSkill.Active;
+import trawel.fort.SubSkill.Type;
 
 /**
  * 
@@ -44,8 +51,6 @@ public class FortHall extends FortFeature {
 
 	@Override
 	public void go() {
-		// TODO Auto-generated method stub
-
 		if (this.getOwner() != Player.player) {
 			int cost = this.level*5000;
 			extra.println("Buy this for fort for "+cost+" gold? (You have " + Player.bag.getGold()+")");
@@ -58,11 +63,57 @@ public class FortHall extends FortFeature {
 						f.setOwner(Player.player);
 					}
 					this.town.visited=3;
+					while (allies.size() < 5) {
+						allies.add(new Person(level));
+					}
 				}
 			}
 		}
 		if (this.getOwner() == Player.player) {
 			
+			extra.menuGo(new MenuGenerator() {
+				@Override
+				public List<MenuItem> gen() {
+					List<MenuItem> mList = new ArrayList<MenuItem>();
+					mList.add(new MenuLine() {
+
+						@Override
+						public String title() {
+							return "You have " + allies.size() + " soldiers here.";
+						}});
+					mList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "leave";
+						}
+
+						@Override
+						public boolean go() {
+							return true;
+						}
+					});
+					mList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "buy a soldier ("+getSoldierCost()+")";
+						}
+
+						@Override
+						public boolean go() {
+							if (Player.bag.getGold() >= getSoldierCost()) {
+								Player.bag.addGold(-getSoldierCost());
+								allies.add(new Person(level));
+							}else {
+								extra.println("You can't afford another soldier.");
+							}
+							return false;
+						}
+					});
+					return mList;
+				}
+			});
 		}
 	}
 
@@ -107,6 +158,10 @@ public class FortHall extends FortFeature {
 			}
 		}
 		return allies;
+	}
+	
+	public int getSoldierCost() {
+		return 50*level*Math.max(allies.size(),5);
 	}
 
 }
