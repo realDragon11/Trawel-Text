@@ -9,6 +9,7 @@ import trawel.Person;
 import trawel.Player;
 import trawel.Skill;
 import trawel.Town;
+import trawel.extra;
 import trawel.mainGame;
 
 /**
@@ -45,6 +46,24 @@ public class FortHall extends FortFeature {
 	public void go() {
 		// TODO Auto-generated method stub
 
+		if (this.getOwner() != Player.player) {
+			int cost = this.level*5000;
+			extra.println("Buy this for fort for "+cost+" gold? (You have " + Player.bag.getGold()+")");
+			if (extra.yesNo()) {
+				if (Player.bag.getGold() < cost) {
+					extra.println("You can't afford to buy this fort.");
+				}else {
+					Player.bag.addGold(-cost);
+					for (Feature f: this.town.getFeatures()) {
+						f.setOwner(Player.player);
+					}
+					this.town.visited=3;
+				}
+			}
+		}
+		if (this.getOwner() == Player.player) {
+			
+		}
 	}
 
 	@Override

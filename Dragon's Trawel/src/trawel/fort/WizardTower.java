@@ -8,6 +8,7 @@ import trawel.MenuGenerator;
 import trawel.MenuItem;
 import trawel.MenuSelect;
 import trawel.MenuSelectNumber;
+import trawel.Player;
 import trawel.QRMenuItem;
 import trawel.QuestR;
 import trawel.extra;
@@ -49,6 +50,10 @@ public class WizardTower extends FortFeature {
 
 	@Override
 	public void go() {
+		if (this.getOwner() != Player.player.player) {
+			extra.println("You do not own this fort.");
+			return;
+		}
 		extra.menuGo(new MenuGenerator() {
 
 			@Override

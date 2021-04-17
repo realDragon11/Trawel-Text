@@ -357,7 +357,7 @@ public class Town implements java.io.Serializable{
 	}
 	private void buyLot() {
 		if (Player.getTutorial()) {
-			extra.println("You can build building on lots you own, extending the facilities of the town.");	
+			extra.println("You can build buildings on lots you own, extending the facilities of the town.");	
 		}
 		int cost = this.getTier()*250;
 		extra.println("Buy a lot? "+ cost + " gold. You have " +Player.bag.getGold() + " gold.");
