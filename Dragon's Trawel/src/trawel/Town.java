@@ -36,6 +36,7 @@ public class Town implements java.io.Serializable{
 	private List<FortQual> fQuals;
 	public List<TownTag> tTags = new ArrayList<TownTag>();
 	private Town leaveTown;
+	public int visited = 0;
 	
 	public Town() {
 		connects = new ArrayList<Connection>();
@@ -185,6 +186,15 @@ public class Town implements java.io.Serializable{
 		}
 		hasBeen = true;
 		Player.player.lastTown = this;
+		switch (visited) {
+		case 0: Networking.sendColor(Color.ORANGE);break;
+		case 1: Networking.sendColor(Color.YELLOW);break;
+		case 2: Networking.sendColor(Color.BLUE);break;
+		case 3: Networking.sendColor(Color.GREEN);break;
+		}
+		if (visited < 2) {
+			visited = 2;
+		}
 		extra.println("You are in " + extra.capFirst(name) + ", on the " +island.getWorld().getCalender().dateName() + ".");
 		Networking.sendStrong("Discord|desc|Adventuring in " + name +"|");
 		Networking.sendStrong("Discord|imagesmall|town|Town|");
@@ -355,6 +365,7 @@ public class Town implements java.io.Serializable{
 			if (Player.bag.getGold()> cost) {
 				Player.bag.addGold(-cost);
 			extra.println("You buy a lot.");
+			visited = 3;
 			Networking.sendStrong("Achievement|buy_lot|");
 			this.addFeature(new Lot(this));}else {
 				extra.println("Not enough gold.");

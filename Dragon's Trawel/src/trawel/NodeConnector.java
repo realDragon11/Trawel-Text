@@ -1,4 +1,5 @@
 package trawel;
+import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +18,7 @@ public abstract class NodeConnector implements Serializable {
 	public boolean isStair = false;
 	public String parentName;
 	public boolean passing = false;
+	public int visited = 0;
 	
 	public ArrayList<NodeConnector> getConnects() {
 		return connects;
@@ -58,14 +60,30 @@ public abstract class NodeConnector implements Serializable {
 		
 		int i = 1;
 		if (forceGo) {
+			visited = 3;
 			if (interact()) {
 				return;
 			}
 
 		}
+		switch (visited) {
+		case 0: Networking.sendColor(Color.ORANGE);break;
+		case 1: Networking.sendColor(Color.YELLOW);break;
+		case 2: Networking.sendColor(Color.BLUE);break;
+		case 3: Networking.sendColor(Color.GREEN);break;
+		}
+		if (visited < 2) {
+			visited = 2;
+		}
 		extra.println(name);
 		extra.println(i+ " " + interactString);i++;
 		for (NodeConnector n: connects) {
+			switch (n.visited) {
+			case 0: Networking.sendColor(Color.ORANGE); n.visited = 1;break;
+			case 1: Networking.sendColor(Color.YELLOW);break;
+			case 2: Networking.sendColor(Color.BLUE);break;
+			case 3: Networking.sendColor(Color.GREEN);break;
+			}
 			extra.print(i + " " + n.getName());
 			if (n.isStair) {
 				if (this.floor > n.floor) {
@@ -87,6 +105,7 @@ public abstract class NodeConnector implements Serializable {
 		int j = 1;
 		int in = extra.inInt(i-1);
 		if (in == j) {
+			visited = 3;
 			if (interact()) {
 				return;
 			}
