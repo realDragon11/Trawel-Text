@@ -834,6 +834,9 @@ public class Person implements java.io.Serializable{
 	 * @return String - full name
 	 */
 	public String getName() {
+		if (title == "") {
+			return firstName;
+		}
 		return firstName + " " + title;
 	}
 	
