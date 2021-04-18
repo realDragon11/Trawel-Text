@@ -273,10 +273,15 @@ public class Armor extends Item {
 			effectiveCost=(int) extra.zeroOut(cost * enchantment.getGoldMult()+enchantment.getGoldMod());
 			return pastEnchant != enchantment;
 		}else {
-			isEnchanted = true;
+			
 			enchantment = new EnchantConstant(level*baseEnchant);
-			effectiveCost=(int) extra.zeroOut(cost * enchantment.getGoldMult()+enchantment.getGoldMod());
-			return true;
+			if (cost * enchantment.getGoldMult()+enchantment.getGoldMod() > 0) {
+				isEnchanted = true;
+				effectiveCost=(int) extra.zeroOut(cost * enchantment.getGoldMult()+enchantment.getGoldMod());
+				return true;
+			}else {
+				return false;
+			}
 		}
 	}
 
@@ -365,6 +370,11 @@ public class Armor extends Item {
 	}
 	public String getMatType() {
 		return this.matType;
+	}
+
+	public void deEnchant() {
+		enchantment = null;
+		isEnchanted = false;
 	}
 	
 }

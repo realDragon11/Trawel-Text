@@ -1,5 +1,5 @@
 package trawel.fort;
 
 public enum LaborType {
-	BLACKSMITH, WIZARD;
+	BLACKSMITH, WIZARD,CHIEF,BUILDER;
 }

@@ -382,6 +382,12 @@ public class Weapon extends Item {
 		}
 		return false;
 	}
+	
+	public void deEnchant() {
+		enchant = null;
+		IsEnchantedConstant = false;
+		enchantHit = null;
+	}
 
 	
 }

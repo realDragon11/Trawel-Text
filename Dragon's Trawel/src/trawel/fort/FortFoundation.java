@@ -18,6 +18,7 @@ public class FortFoundation extends FortFeature {
 	
 	public FortFoundation(int size) {
 		this.size = size;
+		laborer = new Laborer(LaborType.BUILDER);
 		switch (size) {
 		case 1: name = "Small Foundation";break;
 		case 2: name = "Medium Foundation";break;

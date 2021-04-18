@@ -716,5 +716,12 @@ public class Inventory implements java.io.Serializable{
 		this.dbs.clear();
 		
 	}
+	
+	public void deEnchant() {
+		for (Armor a: armorSlots) {
+			a.deEnchant();
+		}
+		hand.deEnchant();
+	}
 
 }
