@@ -3,7 +3,9 @@ package trawel.fort;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Laborer {
+import trawel.randomLists;
+
+public class Laborer {
 
 	public String name;
 	public LaborType type;
@@ -16,5 +18,10 @@ public abstract class Laborer {
 		}
 		return 0;
 		
+	}
+	
+	public Laborer(LaborType type) {
+		name = randomLists.randomFirstName();
+		this.type = type;
 	}
 }

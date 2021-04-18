@@ -26,7 +26,8 @@ public enum DrawBane {
 	UNICORN_HORN("unicorn horn","An impressive magic horn.",250,3),
 	VIRGIN("virgin","You have them tied up.",1000,.5),
 	UNDERLEVELED("nothing","Empty slot.",0,0),
-	KNOW_FRAG("knowledge fragment","Bring this to a library to gain skillpoints.",100,1);
+	KNOW_FRAG("knowledge fragment","Bring this to a library to gain skillpoints.",100,1),
+	LIVING_FLAME("living flame","A living flame, for a forge.",250,3);
 	
 	private String name, flavorText;
 	private int value;
@@ -54,10 +55,8 @@ public enum DrawBane {
 	}
 	
 	public static DrawBane forCollector() {
-		return extra.choose(REPEL,CEON_STONE,PROTECTIVE_WARD,SILVER,extra.choose(UNICORN_HORN,GOLD,VIRGIN,KNOW_FRAG));
+		return extra.choose(REPEL,CEON_STONE,LIVING_FLAME,PROTECTIVE_WARD,SILVER,extra.choose(UNICORN_HORN,GOLD,VIRGIN,KNOW_FRAG));
 	}
-	
-	
 	
 	
 }

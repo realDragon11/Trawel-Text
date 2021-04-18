@@ -15,7 +15,7 @@ import trawel.extra;
 import trawel.fort.SubSkill.Active;
 import trawel.fort.SubSkill.Type;
 
-public class WizardTower extends FortFeature {
+public class Forge extends FortFeature {
 
 	
 	public int tier;
@@ -25,16 +25,16 @@ public class WizardTower extends FortFeature {
 	
 	public List<SubSkill> pickList = new ArrayList<SubSkill>();
 	
-	public WizardTower(int tier) {
+	public Forge(int tier) {
 		this.tier = tier;
-		this.name = "Wizard Tower";
+		this.name = "Blacksmith";
 		tutorialText = "";
 		color = Color.PINK;
-		laborer = new Laborer(LaborType.WIZARD);
+		laborer = new Laborer(LaborType.BLACKSMITH);
 	}
 	@Override
 	public int getSize() {
-		return 3;
+		return 2;
 	}
 
 	@Override
@@ -142,6 +142,7 @@ public class WizardTower extends FortFeature {
 						}
 					});
 				}
+				/*
 				if (battleSkill != null) {
 					mList.add(new MenuSelect() {
 
@@ -169,7 +170,7 @@ public class WizardTower extends FortFeature {
 								return false;
 							}
 						});
-					}
+					}*/
 				return mList;
 			}
 			
@@ -198,7 +199,7 @@ public class WizardTower extends FortFeature {
 			}
 			pickList.clear();
 			for (SubSkill s: SubSkill.values()) {
-				if (s.act.equals(Active.DOWNTIME) && s.type.equals(Type.WIZARD)) {
+				if (s.act.equals(Active.DOWNTIME) && s.type.equals(Type.BLACKSMITH)) {
 					pickList.add(s);
 				}
 			}

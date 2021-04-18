@@ -3,8 +3,10 @@ package trawel.fort;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.AIClass;
 import trawel.Combat;
 import trawel.Feature;
+import trawel.Inventory;
 import trawel.MenuGenerator;
 import trawel.MenuItem;
 import trawel.MenuLine;
@@ -12,6 +14,7 @@ import trawel.MenuSelect;
 import trawel.MenuSelectNumber;
 import trawel.Person;
 import trawel.Player;
+import trawel.Race;
 import trawel.Skill;
 import trawel.Town;
 import trawel.extra;
@@ -29,6 +32,8 @@ public class FortHall extends FortFeature {
 
 	public int level;
 	public ArrayList<Person> allies = new ArrayList<Person>();
+	
+	public double forgeTimer = 24.0*7;
 	public FortHall(int tier, Town town) {
 		this.name = "Fort Hall";
 		this.town = town;
@@ -99,7 +104,7 @@ public class FortHall extends FortFeature {
 
 						@Override
 						public String title() {
-							return "buy a soldier ("+getSoldierCost()+")";
+							return "Buy a soldier ("+getSoldierCost()+")";
 						}
 
 						@Override
@@ -114,15 +119,125 @@ public class FortHall extends FortFeature {
 						}
 					});
 					}
+					if (town.fortSizeLeft() > 0) {
+						mList.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Construction Menu";
+							}
+
+							@Override
+							public boolean go() {
+								constructionFoundations();
+								return false;
+							}
+						});
+						}
 					return mList;
 				}
 			});
 		}
 	}
+	
+	public void constructionFoundations() {
+		extra.menuGo(new MenuGenerator() {
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return "You have " + town.fortSizeLeft() + " more space.";
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}
+				});
+				if (town.fortSizeLeft() > 2) {
+					mList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Build a Large Foundation ("+(level*1000)+")";
+						}
+
+						@Override
+						public boolean go() {
+							if (Player.bag.getGold() >= (level*1000)) {
+								Player.bag.addGold(-(level*1000));
+								town.enqueneAdd(new FortFoundation(3));
+							}else {
+								extra.println("You can't afford a new large foundation.");
+							}
+							return false;
+						}
+					});
+					}
+				if (town.fortSizeLeft() > 1) {
+					mList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Build a Medium Foundation ("+(level*500)+")";
+						}
+
+						@Override
+						public boolean go() {
+							if (Player.bag.getGold() >= (level*500)) {
+								Player.bag.addGold(-(level*500));
+								town.enqueneAdd(new FortFoundation(2));
+							}else {
+								extra.println("You can't afford a new medium foundation.");
+							}
+							return false;
+						}
+					});
+					}
+				if (town.fortSizeLeft() > 2) {
+					mList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Build a Small Foundation ("+(level*250)+")";
+						}
+
+						@Override
+						public boolean go() {
+							if (Player.bag.getGold() >= (level*250)) {
+								Player.bag.addGold(-(level*250));
+								town.enqueneAdd(new FortFoundation(1));
+							}else {
+								extra.println("You can't afford a new small foundation.");
+							}
+							return false;
+						}
+					});
+					}
+				return mList;
+			}
+		});
+	}
 
 	@Override
 	public void passTime(double time) {
-		
+		forgeTimer -= (time* (double)getSkillCount(SubSkill.SMITHING))/10.0;
+		if (forgeTimer <=0) {
+			forgeTimer = 24.0*7;
+			Inventory inv = new Inventory(level, Race.RaceType.HUMANOID, null);
+			for (Person p: allies) {
+				AIClass.loot(p.getBag(), inv,level, false);
+			}
+		}
 	}
 	
 	public int getSkillCount(SubSkill s) {
