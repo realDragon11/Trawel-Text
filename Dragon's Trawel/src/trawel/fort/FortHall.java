@@ -37,6 +37,8 @@ public class FortHall extends FortFeature {
 	public double fightTimer = 24.0*14;
 	public double enchantTimer = 24.0*7;
 	
+	public int goldBank = 0;
+	
 	public FortHall(int tier, Town town) {
 		this.name = "Fort Hall";
 		this.town = town;
@@ -134,6 +136,22 @@ public class FortHall extends FortFeature {
 							@Override
 							public boolean go() {
 								constructionFoundations();
+								return false;
+							}
+						});
+						}
+					if (goldBank > 0) {
+						mList.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Collect Gold ("+goldBank+")";
+							}
+
+							@Override
+							public boolean go() {
+								Player.bag.addGold(goldBank);
+								goldBank = 0;
 								return false;
 							}
 						});
@@ -287,8 +305,11 @@ public class FortHall extends FortFeature {
 		if (c.survivors.get(0).hasSkill(Skill.PLAYERSIDE)) {
 			c.survivors.remove(Player.player.getPerson());
 			allies.addAll(c.survivors);
+			for (Person p: c.killed) {
+				this.goldBank +=p.getBag().getWorth();
+			}
 		}else {
-			
+			this.goldBank = 0;
 		}
 	}
 

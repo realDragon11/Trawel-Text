@@ -724,4 +724,9 @@ public class Inventory implements java.io.Serializable{
 		hand.deEnchant();
 	}
 
+
+	public int getWorth() {
+		return armorSlots[0].getCost()+armorSlots[1].getCost()+armorSlots[2].getCost()+armorSlots[3].getCost()+armorSlots[4].getCost()+hand.getCost()+this.getGold();
+	}
+
 }
