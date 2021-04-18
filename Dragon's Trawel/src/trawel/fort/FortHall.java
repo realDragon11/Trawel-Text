@@ -30,6 +30,7 @@ public class FortHall extends FortFeature {
 	public int level;
 	public ArrayList<Person> allies = new ArrayList<Person>();
 	public FortHall(int tier, Town town) {
+		this.name = "Fort Hall";
 		this.town = town;
 		this.level = tier;
 	}
@@ -52,7 +53,7 @@ public class FortHall extends FortFeature {
 	@Override
 	public void go() {
 		if (this.getOwner() != Player.player) {
-			int cost = this.level*5000;
+			int cost = this.level*2500;
 			extra.println("Buy this for fort for "+cost+" gold? (You have " + Player.bag.getGold()+")");
 			if (extra.yesNo()) {
 				if (Player.bag.getGold() < cost) {
@@ -93,6 +94,7 @@ public class FortHall extends FortFeature {
 							return true;
 						}
 					});
+					if (allies.size() < 10) {
 					mList.add(new MenuSelect() {
 
 						@Override
@@ -111,6 +113,7 @@ public class FortHall extends FortFeature {
 							return false;
 						}
 					});
+					}
 					return mList;
 				}
 			});

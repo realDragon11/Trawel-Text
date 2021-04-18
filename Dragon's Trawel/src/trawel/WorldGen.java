@@ -213,7 +213,7 @@ public class WorldGen {
 		List<FortQual> fqualist = new ArrayList<FortQual>();
 		Town fortMerida = new Town("fort merida",4, rona, new Point(1,11),fqualist, haka);
 		fortMerida.addFeature(new WizardTower(4));
-		addConnection(fortMerida,haka,"road","pass to the fort");
+		addConnection(fortMerida,haka,"road","mountain pass");
 		
 		
 		Island apa = new Island("apa",w);

@@ -27,6 +27,7 @@ public enum DrawBane {
 	VIRGIN("virgin","You have them tied up.",1000,.5),
 	UNDERLEVELED("nothing","Empty slot.",0,0),
 	KNOW_FRAG("knowledge fragment","Bring this to a library to gain skillpoints.",100,1);
+	
 	private String name, flavorText;
 	private int value;
 	private double mVal;
@@ -50,6 +51,10 @@ public enum DrawBane {
 	}
 	public double getMValue() {
 		return mVal;
+	}
+	
+	public static DrawBane forCollector() {
+		return extra.choose(REPEL,CEON_STONE,PROTECTIVE_WARD,SILVER,extra.choose(UNICORN_HORN,GOLD,VIRGIN,KNOW_FRAG));
 	}
 	
 	
