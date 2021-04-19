@@ -1,6 +1,8 @@
 package trawel;
 import java.util.ArrayList;
 
+import trawel.Person.AIJob;
+
 public class MaterialFactory {
 	public static ArrayList<Material> matList = new ArrayList<Material>();
 	
@@ -777,5 +779,36 @@ public class MaterialFactory {
 		}
 		
 		return null;
+	}
+
+	public static Material randMatByType(String[] matType) {
+		ArrayList<Material> copyList = new ArrayList<Material>();
+		ArrayList<Material> copyList2 = new ArrayList<Material>();
+		for (Material mat: matList){
+			if (mat.typeList.contains(matType)) {
+			copyList.add(mat);}
+		}
+		double totalRarity = 0;
+		Material mat;
+		do {
+			int i = (int) Math.floor((Math.random()*copyList.size()));
+			mat = copyList.get(i);
+			copyList2.add(mat);
+			totalRarity += mat.rarity;
+			copyList.remove(i);
+		}while(!copyList.isEmpty());
+		totalRarity*=Math.random();
+		do {
+			mat = copyList2.get(0);
+			if (totalRarity > mat.rarity) {
+				totalRarity-=mat.rarity;
+				copyList2.remove(0);
+			}else {
+				totalRarity = 0;
+			} 
+				
+				
+		}while(totalRarity > 0);
+		return mat;
 	}
 }

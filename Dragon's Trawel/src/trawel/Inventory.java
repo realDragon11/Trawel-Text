@@ -29,13 +29,13 @@ public class Inventory implements java.io.Serializable{
 	 * @param level (int)
 	 * @param matType 
 	 */
-	public Inventory(int level, Race.RaceType type, Material matType) {
+	public Inventory(int level, Race.RaceType type, Material matType,Person.AIJob job) {
 		if (type == Race.RaceType.HUMANOID) {
-		armorSlots[0] = new Armor(level,0);
-		armorSlots[1] = new Armor(level,1);
-		armorSlots[2] = new Armor(level,2);
-		armorSlots[3] = new Armor(level,3);
-		armorSlots[4] = new Armor(level,4);
+		armorSlots[0] = new Armor(level,0,job);
+		armorSlots[1] = new Armor(level,1,job);
+		armorSlots[2] = new Armor(level,2,job);
+		armorSlots[3] = new Armor(level,3,job);
+		armorSlots[4] = new Armor(level,4,job);
 		hand = new Weapon(level);}
 		if (type == Race.RaceType.BEAST) {
 			armorSlots[0] = new Armor(level,0,matType);

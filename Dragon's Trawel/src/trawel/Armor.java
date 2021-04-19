@@ -1,4 +1,8 @@
 package trawel;
+
+import java.util.Arrays;
+import java.util.HashSet;
+
 /***
  * An extension of Item, an armor has varying stats that can effect a person, and possibly and enchantment.
  * Different materials and different slots effect the attributes of items, as well as the level of the item.
@@ -38,7 +42,7 @@ public class Armor extends Item {
 	 * @param newLevel (int)
 	 */
 	public Armor(int newLevel) {
-		this(newLevel,(int)(Math.random()*5),MaterialFactory.randMat(true,false));
+		this(newLevel,(int)(Math.random()*5),MaterialFactory.randMat(true,false),null);
 	}
 	
 	/**
@@ -46,8 +50,8 @@ public class Armor extends Item {
 	 * @param newLevel (int)
 	 * @param slot (int)
 	 */
-	public Armor(int newLevel,int slot) {
-		this(newLevel,slot,MaterialFactory.randMat(true,false));		
+	public Armor(int newLevel,int slot,Person.AIJob job) {
+		this(newLevel,slot,MaterialFactory.randMatByType(job.matType),job.matType);		
 	}
 	
 	/**
@@ -57,7 +61,7 @@ public class Armor extends Item {
 	 * @param slot (int)
 	 * @param mat (String)
 	 */
-	public Armor(int newLevel, int slot,Material mati) {
+	public Armor(int newLevel, int slot,Material mati,String[] amatType) {
 	//initialize	
 	armorType = slot;//type is equal to the array armor slot
 	mat = mati;
@@ -71,7 +75,16 @@ public class Armor extends Item {
 	baseMap = "iron";
 	
 	//what names make sense for the given material?
-	this.matType = extra.randList(mat.typeList);
+	if (amatType == null) {
+		this.matType = extra.randList(mat.typeList);
+	}else {
+	    HashSet<String> set = new HashSet<>();
+	    set.addAll(Arrays.asList(amatType));
+	    set.retainAll(mat.typeList);
+	    String[] strs = (String[])set.toArray();
+	    this.matType = strs[extra.randRange(0,strs.length-1)];
+	}
+	
 	if (matType.equals("light")){
 		baseMap = "cloth";
 		switch (armorType) {//adamantine can be either

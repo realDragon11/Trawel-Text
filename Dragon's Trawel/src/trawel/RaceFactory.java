@@ -247,7 +247,7 @@ public class RaceFactory {
 		misc.speedMod = 1;
 		misc.tradeMod = 1.2;
 		misc.rarity = .2;
-		misc.insultList.add("Look out, your heart's hanging out!");
+		misc.insultList.add("Look, your heart's hanging out!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("nuthin");
 		misc.magicPower = 2;
@@ -748,7 +748,7 @@ public class RaceFactory {
 		w.getBag().swapArmorSlot(new Armor(level,0,MaterialFactory.getMat("flesh")),0);
 		w.getBag().swapRace(RaceFactory.getRace("hiding-mimic"));
 		w.addSkill(Skill.MIMIC_CHEST);
-		if (extra.chanceIn(1,5)) {
+		if (extra.chanceIn(1,3)) {
 			w.getBag().getDrawBanes().add(DrawBane.MIMIC_GUTS);
 		}
 		extra.printMode = false;
@@ -854,7 +854,7 @@ public class RaceFactory {
 		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"unicorn horn"));
 		w.getBag().swapRace(RaceFactory.getRace("unicorn"));
-		if (extra.chanceIn(1,5)) {
+		if (extra.chanceIn(1,3)) {
 			w.getBag().getDrawBanes().add(DrawBane.UNICORN_HORN);
 		}
 		extra.printMode = false;
@@ -890,6 +890,7 @@ public class RaceFactory {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
 		extra.printMode = false;
+		w.setFirstName(randomLists.randomWaterName());
 		w.setTitle("");
 		return w;
 	}
@@ -903,6 +904,7 @@ public class RaceFactory {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
 		extra.printMode = false;
+		w.setFirstName(randomLists.randomWaterName());
 		w.setTitle("");
 		return w;
 	}

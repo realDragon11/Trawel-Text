@@ -51,53 +51,73 @@ public class Person implements java.io.Serializable{
 	
 	private int pKills = 0, deaths = 0;
 	
+	private AIJob job;
+	
 	public enum RaceFlag {
 		NONE, CRACKS, UNDEAD;
 	}
 	//private boolean isPlayer;
 	
 	//Constructor
-	public Person(int level, boolean aiLevel, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar) {
-	rFlag = raceFlag;
-	if (level < 1) {
-		extra.println("non-fatal (until you run into the level zero person) exception: level is zero on someone");
-	}
-	maxHp = 40*level;//doesn't get all the hp it would naturally get
-	hp = maxHp;
-	intellect = level;
-	
-	
-	bag = new Inventory(level,raceType,matType);
-	bag.owner = this;
-	firstName = randomLists.randomFirstName();
-	title = randomLists.randomLastName();
-	placeOfBirth = extra.capFirst((String)extra.choose(randomLists.randomElement(),randomLists.randomColor()))+ " " +extra.choose("Kingdom","Kingdom","Colony","Domain","Realm");
-	
-	//brag = new Taunts(bag.getRace());
-	
-	if (giveScar) {
-	this.scar = RaceFactory.scarFor(bag.getRace());
-	}
-	this.level = level;
-	skillPoints = level-1;
-	if (extra.chanceIn(1,5)) {
-		racist = true;
-	}
-	this.magePow = bag.getRace().magicPower;
-	this.defPow = bag.getRace().defPower;
-	if (aiLevel) {
-		this.AILevelUp();
-	}
-	this.noAILevel = !aiLevel;
-	effects = new ArrayList<Effect>();
-	Boolean print = extra.getPrint();
-	extra.changePrint(true);
-	AIClass.checkYoSelf(this);
-	extra.changePrint(print);
+	public Person(int level, boolean aiLevel, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar,AIJob job) {
+		this.job = job;
+		rFlag = raceFlag;
+		if (level < 1) {
+			extra.println("non-fatal (until you run into the level zero person) exception: level is zero on someone");
+		}
+		maxHp = 40*level;//doesn't get all the hp it would naturally get
+		hp = maxHp;
+		intellect = level;
+		
+		
+		bag = new Inventory(level,raceType,matType,job);
+		bag.owner = this;
+		firstName = randomLists.randomFirstName();
+		title = randomLists.randomLastName();
+		placeOfBirth = extra.capFirst((String)extra.choose(randomLists.randomElement(),randomLists.randomColor()))+ " " +extra.choose("Kingdom","Kingdom","Colony","Domain","Realm");
+		
+		//brag = new Taunts(bag.getRace());
+		
+		if (giveScar) {
+		this.scar = RaceFactory.scarFor(bag.getRace());
+		}
+		this.level = level;
+		skillPoints = level-1;
+		if (extra.chanceIn(1,5)) {
+			racist = true;
+		}
+		this.magePow = bag.getRace().magicPower;
+		this.defPow = bag.getRace().defPower;
+		if (aiLevel) {
+			this.AILevelUp();
+		}
+		this.noAILevel = !aiLevel;
+		effects = new ArrayList<Effect>();
+		Boolean print = extra.getPrint();
+		extra.changePrint(true);
+		AIClass.checkYoSelf(this);
+		extra.changePrint(print);
 	}
 	
 	public Person(int level) {
 		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
+	}
+	
+	public Person(int level, boolean aiLevel, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar) {
+		this(level,aiLevel,raceType,matType,raceFlag,giveScar,null);
+	}
+	
+	public Person(int level,AIJob job) {
+		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
+	}
+	
+	public enum AIJob{
+		KNIGHT(new String[] {"heavy","chainmail"});
+		
+		public String[] matType;
+		AIJob(String[] matType) {
+			this.matType = matType;
+		}
 	}
 	
 	//instance methods
