@@ -422,8 +422,10 @@ public class mainGame {
 			Person manOne, manTwo;
 			Player player;
 				 manOne = new Person(starting_level,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
+				 manOne.hTask = HostileTask.DUEL;
 				 Person manThree = manOne;
 				 manTwo = new Person(starting_level,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
+				 manTwo.hTask = HostileTask.DUEL;
 				 extra.changePrint(true);
 				 manOne = CombatTwo(manOne,manTwo);
 				 if (manOne == manThree) {

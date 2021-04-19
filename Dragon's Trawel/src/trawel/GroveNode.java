@@ -67,19 +67,19 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		break;
 		case 8: name = "fallen tree"; interactString = "examine fallen tree";break;
 		case 9: name = "dryad"; interactString = "approach the " + name;
-		storage1 = new Person(level);
+		storage1 = RaceFactory.getDryad(level);
 		storage2 = 0;
 		break;
 		case 10: name = "fallen tree";interactString = "examine fallen tree";break;
 		case 11: name = randomLists.randomColor() + " mushroom";interactString = "approach mushroom";break;
 		case 12: name = "moss"; interactString = "approach moss"; state = extra.randRange(0,1);break;
 		case 13: name = "grey hole";interactString = "approach hole";break;
-		case 14:storage2 = new Person(level); ((Person)storage2).setRacism(true); storage1 = ((Person)storage2).getBag().getRace(); name = ((Race)storage1).name; interactString = "approach " + name; ;break;
-		case 15: storage1 = new Person(level); storage2 = new Person(level+1);
+		case 14:storage2 = RaceFactory.getRacist(level); ((Person)storage2).setRacism(true); storage1 = ((Person)storage2).getBag().getRace(); name = ((Race)storage1).name; interactString = "approach " + name; ;break;
+		case 15: storage1 = RaceFactory.getRich(level); storage2 = RaceFactory.getRich(level+1);
 		name = ((Person)storage1).getBag().getRace().name; interactString = "approach " + name; 
 		((Person)storage1).getBag().addGold(level*300);break;
 		case 16: storage1 = new Weapon(level); name = ((Weapon)storage1).getBaseName() + " in a rock"; interactString = "pull on " +((Weapon)storage1).getBaseName(); break;
-		case 17: storage1 = new Person(level); ((Person)storage1).setRacism(false);
+		case 17: storage1 = RaceFactory.getPeace(level); ((Person)storage1).setRacism(false);
 		name = ((Person)storage1).getBag().getRace().name; interactString = "approach " + name;break;
 		case 18: ArrayList<Person> list = new ArrayList<Person>();
 		for (int i = 0;i < extra.randRange(2,3);i++) {
@@ -98,9 +98,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			name = extra.choose("collector");
 			interactString = "approach the " + name;
 			forceGo = false;
-			storage1 = new Person(level);
-			((Person)storage1).getBag().getDrawBanes().add(DrawBane.forCollector());
-			((Person)storage1).getBag().getDrawBanes().add(DrawBane.forCollector());
+			storage1 = RaceFactory.makeCollector(level);
 			break;
 		case 21:
 			name = "bee hive";

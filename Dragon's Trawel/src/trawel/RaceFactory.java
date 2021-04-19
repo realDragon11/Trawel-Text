@@ -1005,6 +1005,37 @@ public class RaceFactory {
 		extra.printMode = false;
 		return w;
 	}
+	public static Person getRich(int level) {
+		extra.printMode = true;
+		Person w = new Person(level);
+		w.hTask = HostileTask.RICH;
+		w.facRep.addFactionRep(Faction.MERCHANT,10*level,0);
+		extra.printMode = false;
+		return w;
+	}
+	public static Person makeCollector(int level) {
+		extra.printMode = true;
+		Person w = new Person(level);
+		w.hTask = HostileTask.DUEL;
+		w.facRep.addFactionRep(Faction.MERCHANT,5*level,0);
+		w.getBag().getDrawBanes().add(DrawBane.forCollector());
+		w.getBag().getDrawBanes().add(DrawBane.forCollector());
+		extra.printMode = false;
+		return w;
+	}
+	public static Person getCultist(int level) {
+		extra.printMode = true;
+		Person w = new Person(level);
+		w.hTask = HostileTask.GUARD_DUNGEON;
+		if (extra.chanceIn(1, 3)) {
+			w.getBag().getDrawBanes().add(DrawBane.BLOOD);
+		}
+		if (extra.chanceIn(1, 3)) {
+			w.getBag().getDrawBanes().add(DrawBane.BLOOD);
+		}
+		extra.printMode = false;
+		return w;
+	}
 
 	public static String scarFor(Race race) {
 		switch (race.name) {
@@ -1025,5 +1056,6 @@ public class RaceFactory {
 		return "";
 	}
 
+	
 	
 }
