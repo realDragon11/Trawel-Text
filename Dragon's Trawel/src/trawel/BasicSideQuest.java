@@ -3,6 +3,8 @@ package trawel;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.factions.Faction;
+
 public class BasicSideQuest implements Quest{
 
 	public QuestR giver, target;
@@ -84,7 +86,8 @@ public class BasicSideQuest implements Quest{
 			q.name = q.giverName + "'s " + q.targetName;
 			q.desc = "Fetch " + q.targetName + " from " + q.target.locationF.getName() + " in " + q.target.locationT.getName() + " for " + q.giverName;
 			break;
-		case 2: //kill quest
+		case 2: //kill quest (murder/hero variants)
+			boolean murder = extra.choose(false,true);
 			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
 			q.giver = new QuestR() {
 
@@ -148,12 +151,21 @@ public class BasicSideQuest implements Quest{
 			i++;
 			}
 			q.target.locationT = q.target.locationF.town;
-			q.targetPerson = new Person(q.target.locationT.getTier());//TODO
+			if (murder == true) {
+				q.targetPerson = RaceFactory.getPeace(q.target.locationT.getTier());
+			}else {
+				q.targetPerson = RaceFactory.getMugger(q.target.locationT.getTier());
+			}
 			q.targetName = q.targetPerson.getName();
 			q.target.overQuest = q;
 			//q.target.locationF.addQR(q.target);
-			q.name = "Kill " + q.targetName + " for " + q.giverName ;
-			q.desc = "Kill " + q.targetName + " at " + q.target.locationF.getName() + " in " + q.target.locationT.getName() + " for " + q.giverName;
+			if (murder == true) {
+				q.name = "Murder " + q.targetName + " for " + q.giverName;
+				q.desc = "Murder " + q.targetName + " at " + q.target.locationF.getName() + " in " + q.target.locationT.getName() + " for " + q.giverName;
+			}else {
+				q.name = "Execute " + q.targetName + " for " + q.giverName;
+				q.desc = "Execute " + q.targetName + " at " + q.target.locationF.getName() + " in " + q.target.locationT.getName() + " for " + q.giverName;
+			}
 			break;
 		case 3: //cleanse quest
 			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
@@ -168,6 +180,8 @@ public class BasicSideQuest implements Quest{
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
 					Player.bag.addGold(40);
+					Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,2,0);
+					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
 					q.complete();
 					return false;
 				}};

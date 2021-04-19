@@ -191,7 +191,7 @@ public class Forest extends Feature implements java.io.Serializable{
 			case 2: extra.println("\"Hey, I wanted that!\"");break;
 			case 3: extra.println("\"You dirty plant-thief!\"");break;
 			}
-			Person winner = mainGame.CombatTwo(Player.player.getPerson(), new Person(tier));
+			Person winner = mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getDryad(tier));
 			if (winner == Player.player.getPerson()) {
 				int gold = (int) (Math.random()*150*tier);
 				extra.println("You sell the mushroom for " + gold + " gold.");
@@ -211,7 +211,7 @@ public class Forest extends Feature implements java.io.Serializable{
 			case 2: extra.println("\"Hey, I wanted that!\"");break;
 			case 3: extra.println("\"You dirty plant-crusher!\"");break;
 			}
-			mainGame.CombatTwo(Player.player.getPerson(), new Person(tier));break;
+			mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getDryad(tier));break;
 		}
 		
 	}
