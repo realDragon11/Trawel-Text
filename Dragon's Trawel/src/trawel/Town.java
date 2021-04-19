@@ -204,7 +204,7 @@ public class Town implements java.io.Serializable{
 			doFort();
 			return;
 		}
-		if (Player.player.townEventTimer <=0 && extra.chanceIn(1,3)) {
+		if (Player.player.townEventTimer <=0 && extra.chanceIn(2,3)) {
 			if (TownFlavorFactory.go(.5,this.getTier(),this)) {
 			Player.player.townEventTimer = extra.randRange(20,24*7);
 			}

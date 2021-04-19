@@ -175,6 +175,7 @@ public class mainGame {
 		new Networking();
 		for (String a: args) {
 			if (a.toLowerCase().equals("autoconnect")){
+				extra.println("Please wait for the graphical to load...");
 				Networking.autoConnect();
 			}
 			if (a.toLowerCase().equals("noguiinput")){

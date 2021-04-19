@@ -101,7 +101,7 @@ public class FBox {
 
 	public void display() {
 		for (FSub s: factions) {
-			extra.print(s.name + ": " + (s.forFac - s.againstFac) + ",");
+			extra.print(s.name.name + ": " + (int)(s.forFac - s.againstFac) + ",");
 		}
 		extra.println();
 		
