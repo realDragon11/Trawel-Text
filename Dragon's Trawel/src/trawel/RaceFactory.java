@@ -1036,6 +1036,40 @@ public class RaceFactory {
 		extra.printMode = false;
 		return w;
 	}
+	
+	public static Person getGraverobber(int level) {
+		extra.printMode = true;
+		Person w = new Person(level,AIJob.GRAVER);
+		w.facRep.addFactionRep(Faction.ROGUE,extra.randRange(10,20)*level, 0);
+		w.facRep.addFactionRep(Faction.HEROIC,0, 10*level);
+		w.hTask = HostileTask.MUG;
+		if (extra.chanceIn(1,50)) {
+			w.getBag().getDrawBanes().add(DrawBane.GOLD);
+		}
+		if (extra.chanceIn(1,25)) {
+			w.getBag().getDrawBanes().add(DrawBane.SILVER);
+		}
+		if (extra.chanceIn(1,4)) {
+			w.getBag().getDrawBanes().add(DrawBane.GRAVE_DIRT);
+		}
+		extra.printMode = false;
+		return w;
+	}
+	
+	public static Person getGravedigger(int level) {
+		extra.printMode = true;
+		Person w = new Person(level,AIJob.GRAVER);
+		w.hTask = HostileTask.PEACE;
+		w.getBag().getDrawBanes().add(DrawBane.GRAVE_DIRT);
+		if (extra.chanceIn(1,4)) {
+			w.getBag().getDrawBanes().add(DrawBane.GARLIC);
+		}
+		if (extra.chanceIn(1,8)) {
+			w.getBag().getDrawBanes().add(DrawBane.PROTECTIVE_WARD);
+		}
+		extra.printMode = false;
+		return w;
+	}
 
 	public static String scarFor(Race race) {
 		switch (race.name) {

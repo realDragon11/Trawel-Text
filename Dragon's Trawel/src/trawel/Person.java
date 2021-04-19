@@ -123,7 +123,8 @@ public class Person implements java.io.Serializable{
 	public enum AIJob{
 		KNIGHT(new String[] {"heavy","chainmail"},new String[] {"longsword","mace","axe","lance"}),
 		ROGUE(new String[] {"light"},new String[] {"rapier","dagger"}), 
-		LUMBERJACK(new String[] {"light"},new String[] {"axe"});
+		LUMBERJACK(new String[] {"light"},new String[] {"axe"}), 
+		GRAVER(new String[] {"light"},new String[] {"shovel"});
 		
 		public String[] amatType, weapType;
 		AIJob(String[] amatType, String[] weapType) {

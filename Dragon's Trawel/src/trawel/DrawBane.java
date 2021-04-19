@@ -27,7 +27,8 @@ public enum DrawBane {
 	VIRGIN("virgin","You have them tied up.",1000,.5),
 	UNDERLEVELED("nothing","Empty slot.",0,0),
 	KNOW_FRAG("knowledge fragment","Bring this to a library to gain skillpoints.",100,1),
-	LIVING_FLAME("living flame","A living flame, for a forge.",250,3);
+	LIVING_FLAME("living flame","A living flame, for a forge.",250,3), 
+	GRAVE_DIRT("grave dirt","A witch's reagent.",20,.25);
 	
 	private String name, flavorText;
 	private int value;
