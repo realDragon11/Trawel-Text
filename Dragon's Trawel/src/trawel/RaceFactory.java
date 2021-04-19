@@ -1,6 +1,11 @@
 package trawel;
 import java.util.ArrayList;
 
+import trawel.Person.AIJob;
+import trawel.factions.Faction;
+import trawel.factions.HostileTask;
+
+@SuppressWarnings("deprecation")
 public class RaceFactory {
 	public static Race misc = new Race();
 	public static ArrayList<Race> raceList = new ArrayList<Race>();
@@ -721,6 +726,7 @@ public class RaceFactory {
 	public static Person makeOld(int level) {
 		Person p = new Person(level);
 		p.personType = "grizzled";
+		p.hTask = HostileTask.DUEL;
 		if (extra.chanceIn(1,5)) {
 			p.getBag().getDrawBanes().add(DrawBane.KNOW_FRAG);
 		}
@@ -738,6 +744,7 @@ public class RaceFactory {
 		extra.printMode = false;
 		w.setFirstName(randomLists.randomWolfName());
 		w.setTitle("");
+		w.hTask = HostileTask.ANIMAL;
 		return w;
 	}
 
@@ -752,6 +759,7 @@ public class RaceFactory {
 			w.getBag().getDrawBanes().add(DrawBane.MIMIC_GUTS);
 		}
 		extra.printMode = false;
+		w.hTask = HostileTask.MONSTER;
 		return w;
 	}
 	
@@ -764,6 +772,7 @@ public class RaceFactory {
 		}
 		extra.printMode = false;
 		w.targetOverride = TargetFactory.TargetType.STATUE;
+		w.hTask = HostileTask.GUARD_DUNGEON;
 		return w;
 	}
 	
@@ -775,6 +784,7 @@ public class RaceFactory {
 		w.getBag().swapRace(RaceFactory.getRace("standing-reaver"));
 		w.addSkill(Skill.FELL_REAVER);
 		extra.printMode = false;
+		w.hTask = HostileTask.MONSTER;
 		return w;
 	}
 
@@ -783,6 +793,7 @@ public class RaceFactory {
 		Person w = new Person(level);
 		w.getBag().getDrawBanes().add(DrawBane.PROTECTIVE_WARD);
 		extra.printMode = false;
+		w.hTask = HostileTask.DUEL;
 		return w;
 	}
 	public static Person makeEnt(int level) {
@@ -794,6 +805,7 @@ public class RaceFactory {
 		extra.printMode = false;
 		w.setFirstName(randomLists.randomEntName());
 		w.setTitle("");
+		w.hTask = HostileTask.ANIMAL;
 		return w;
 	}
 	
@@ -806,6 +818,7 @@ public class RaceFactory {
 		}
 		extra.printMode = false;
 		w.targetOverride = TargetFactory.TargetType.UNDEAD_H;
+		w.hTask = HostileTask.MONSTER;
 		return w;
 	}
 	
@@ -818,6 +831,7 @@ public class RaceFactory {
 		extra.printMode = false;
 		w.setFirstName(randomLists.randomBearName());
 		w.setTitle("");
+		w.hTask = HostileTask.ANIMAL;
 		return w;
 	}
 	
@@ -835,6 +849,7 @@ public class RaceFactory {
 		extra.printMode = false;
 		w.setFirstName(randomLists.randomBatName());
 		w.setTitle("");
+		w.hTask = HostileTask.ANIMAL;
 		return w;
 	}
 	
@@ -846,6 +861,7 @@ public class RaceFactory {
 		w.getBag().getDrawBanes().add(DrawBane.BEATING_HEART);
 		extra.printMode = false;
 		//w.targetOverride = TargetFactory.TargetType.HUMANOID;
+		w.hTask = HostileTask.MONSTER;
 		return w;
 	}
 	
@@ -859,6 +875,7 @@ public class RaceFactory {
 		}
 		extra.printMode = false;
 		w.setTitle("");
+		w.hTask = HostileTask.ANIMAL;
 		return w;
 	}
 	
@@ -878,6 +895,7 @@ public class RaceFactory {
 		}
 		extra.printMode = false;
 		w.setTitle("");
+		w.hTask = HostileTask.MONSTER;
 		return w;
 	}
 	
@@ -892,6 +910,7 @@ public class RaceFactory {
 		extra.printMode = false;
 		w.setFirstName(randomLists.randomWaterName());
 		w.setTitle("");
+		w.hTask = HostileTask.MONSTER;
 		return w;
 	}
 	public static Person makeDrudgerTitan(int level) {
@@ -906,6 +925,27 @@ public class RaceFactory {
 		extra.printMode = false;
 		w.setFirstName(randomLists.randomWaterName());
 		w.setTitle("");
+		w.hTask = HostileTask.MONSTER;
+		return w;
+	}
+	
+	public static Person getMugger(int level) {
+		extra.printMode = true;
+		Person w;
+		if (extra.chanceIn(1,4)) {
+			w = new Person(level,AIJob.ROGUE);
+		}else {
+			w = new Person(level);
+		}
+		w.facRep.addFactionRep(Faction.ROGUE,extra.randRange(10,20)*level, 0);
+		w.hTask = HostileTask.MUG;
+		if (extra.chanceIn(1,100)) {
+			w.getBag().getDrawBanes().add(DrawBane.GOLD);
+		}
+		if (extra.chanceIn(1,50)) {
+			w.getBag().getDrawBanes().add(DrawBane.SILVER);
+		}
+		extra.printMode = false;
 		return w;
 	}
 
