@@ -377,7 +377,7 @@ public class Town implements java.io.Serializable{
 	private void you() {
 		extra.println("1 Stats");
 		extra.println("2 Inventory + Compass");
-		extra.println("3 Titles");
+		extra.println("3 Titles and Faction Rep");
 		extra.println("4 Quests");
 		extra.println("5 Skills");
 		extra.println("6 Main Menu");
@@ -405,7 +405,9 @@ public class Town implements java.io.Serializable{
 			
 			
 			break;
-		case 3:Player.player.displayTitles();break;
+		case 3:Player.player.displayTitles();
+		Player.player.getPerson().facRep.display();
+		break;
 		case 4:
 			Player.player.showQuests();
 			break;

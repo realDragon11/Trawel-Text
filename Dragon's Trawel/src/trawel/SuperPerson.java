@@ -14,9 +14,11 @@ public abstract class SuperPerson implements java.io.Serializable{
 		if (titleList.isEmpty()) {extra.println("They have no titles.");}else {
 		extra.println("They have the following titles:");
 		for (String str: titleList) {
-			extra.println(str);
+			extra.print(str+",");
 		}
+		extra.println();
 		}
+		
 	}
 	
 	public Town getLocation() {

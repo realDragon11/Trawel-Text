@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
+import trawel.factions.HostileTask;
 import trawel.townevents.TownFlavorFactory;
 /**
  * 
@@ -262,6 +263,7 @@ public class mainGame {
 					second_man.addDeath();
 					if (extra.chanceIn(second_man.getPlayerKills(), 5*(second_man.getDeaths()))) {
 						w.addDeathCheater(second_man);//dupes don't happen since in this case the dupe is instantly removed in the wander code
+						second_man.hTask = HostileTask.REVENGE;
 					}
 					}
 					if (first_man.isPlayer() || second_man.isPlayer()) {
