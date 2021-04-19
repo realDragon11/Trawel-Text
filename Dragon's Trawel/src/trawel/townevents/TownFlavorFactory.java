@@ -27,7 +27,20 @@ public class TownFlavorFactory {
 		TownFlavor b = new TownFlavor() {
 			@Override
 			public void activate(int level) {
-				extra.println("A group of adventurers is gathered on the fringes of the town, planning their next expedition.");
+				switch (extra.randRange(1,4)) {
+				case 1:
+					extra.println("A group of adventurers is gathered on the fringes of the town, planning their next expedition.");
+					break;
+				case 2:
+					extra.println("Two mercenaries walk through town, looking for a place to unload their goods from their last adventure.");
+					break;
+				case 3:
+					extra.println("A few of the town guard are talking with some adventurers, sharing stories back and forth.");
+					break;
+				case 4:
+					extra.println("Some drunk adventurers are partying in the street.");
+					break;
+				}
 			}
 		};
 		b.responses.add(new Response(TownTag.ADVENTURE,3));
@@ -41,10 +54,35 @@ public class TownFlavorFactory {
 		b = new TownFlavor() {
 			@Override
 			public void activate(int level) {
-				extra.println("A merchant is ordering laborers to move crates in an alleyway.");
+				switch (extra.randRange(1,3)) {
+				case 1:
+					extra.println("A merchant is ordering laborers to move crates in an alleyway.");
+					break;
+				case 2:
+					extra.println("A caravan of merchants has arrived in town, and are unloading their goods.");
+					break;
+				case 3:
+					extra.println("Some town guards are overseeing a trade dispute.");
+					break;
+				}
 			}
 		};
 		b.responses.add(new Response(TownTag.MERCHANT,3));
+		bumperList.add(b);
+		b = new TownFlavor() {
+			@Override
+			public void activate(int level) {
+				switch (extra.randRange(1,2)) {
+				case 1:
+					extra.println("A town guard turns their eye as a thief robs a merchant in blind daylight.");
+					break;
+				case 2:
+					extra.println("The town guards are eyeing you with hungry looks, aimed at your coin purse.");
+					break;
+				}
+			}
+		};
+		b.responses.add(new Response(TownTag.LAWLESS,3));
 		bumperList.add(b);
 		
 	}
