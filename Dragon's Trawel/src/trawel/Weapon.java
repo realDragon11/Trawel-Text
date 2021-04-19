@@ -156,6 +156,9 @@ public class Weapon extends Item {
 	public Weapon(int newLevel) {
 		this(newLevel,MaterialFactory.randMat(false,true),(String)extra.choose("longsword","broadsword","mace","spear","axe","rapier","dagger",extra.choose("claymore","lance","shovel")));
 	}
+	public Weapon(int newLevel, String weaponName) {
+		this(newLevel,MaterialFactory.randMat(false,true),weaponName);
+	}
 
 	//instance methods
 	

@@ -51,7 +51,14 @@ public class Armor extends Item {
 	 * @param slot (int)
 	 */
 	public Armor(int newLevel,int slot,Person.AIJob job) {
-		this(newLevel,slot,MaterialFactory.randMatByType(job.matType),job.matType);		
+		this(newLevel,slot,MaterialFactory.randMatByType(job.amatType),job.amatType);		
+	}
+	
+	public Armor(int newLevel, int slot,Material mati) {
+		this(newLevel,slot,mati,null);
+	}
+	public Armor(int newLevel, int slot) {
+		this(newLevel,slot,MaterialFactory.randMat(true,false),null);
 	}
 	
 	/**

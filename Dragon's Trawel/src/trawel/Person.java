@@ -109,14 +109,17 @@ public class Person implements java.io.Serializable{
 	
 	public Person(int level,AIJob job) {
 		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
+		this.job = job;
 	}
 	
 	public enum AIJob{
-		KNIGHT(new String[] {"heavy","chainmail"});
+		KNIGHT(new String[] {"heavy","chainmail"},new String[] {"longsword","mace","axe","lance"}),
+		ROGUE(new String[] {"light"},new String[] {"rapier","dagger"});
 		
-		public String[] matType;
-		AIJob(String[] matType) {
-			this.matType = matType;
+		public String[] amatType, weapType;
+		AIJob(String[] amatType, String[] weapType) {
+			this.amatType = amatType;
+			this.weapType = weapType;
 		}
 	}
 	

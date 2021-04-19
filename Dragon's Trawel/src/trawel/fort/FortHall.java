@@ -255,7 +255,7 @@ public class FortHall extends FortFeature {
 		forgeTimer -= (time* (double)getSkillCount(SubSkill.SMITHING))/10.0;
 		if (forgeTimer <=0) {
 			forgeTimer = 24.0*7;
-			Inventory inv = new Inventory(level, Race.RaceType.HUMANOID, null);
+			Inventory inv = new Inventory(level, Race.RaceType.HUMANOID, null, null);
 			inv.deEnchant();
 			for (Person p: allies) {
 				AIClass.loot(p.getBag(), inv,level, false);
