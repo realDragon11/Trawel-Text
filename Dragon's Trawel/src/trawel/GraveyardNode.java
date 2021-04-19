@@ -45,14 +45,25 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 	private void generate(int size) {
 		switch (idNum) {
 		case -1:name = extra.choose("stairs","ladder"); interactString = "traverse "+name;forceGo = true;break;
-		case 1: name = "Gravedigger"; storage1 =  RaceFactory.getGravedigger(level); interactString = "Mug Gravedigger";break;
-		case 2: name = "Graverobber"; interactString = "ERROR"; forceGo = true;
-		storage1 = RaceFactory.getGraverobber(level);break;
-		case 6:
-			if (extra.chanceIn(1, 3)) {
-			forceGo = true;}
-		case 7:
-			storage1 =  RaceFactory.makeStatue(level); name = ((Person)storage1).getBag().getRace().name + " statue";
+		case 1: name = "Shadowy Figure"; storage1 =  RaceFactory.getGravedigger(level); interactString = "Approach Shadowy Figure";break;
+		case 2: name = "Shadowy Figure"; interactString = "Approach Shadowy Figure";storage1 = RaceFactory.getGraverobber(level);break;
+		
+		case 3: ArrayList<Person> list = new ArrayList<Person>();
+			for (int i = 0;i < extra.randRange(3,4);i++) {
+			list.add(RaceFactory.makeBat(extra.zeroOut(level-4)+1));}
+			name = "bats";
+			interactString = "ERROR";
+			storage1 = list;
+			forceGo = true;
+			state = 0;
+		;break;
+		case 4: name = "Shadowy Figure"; interactString = "Approach Shadowy Figure";storage1 = RaceFactory.makeVampire(level);break;
+		case 5:
+			name = "Shadowy Figure"; interactString = "Approach Shadowy Figure";
+			storage1 = RaceFactory.makeCollector(level);
+			break;
+		case 6: case 7:
+			storage1 =  RaceFactory.makeStatue(level); name = "Shadowy Figure";
 			interactString = "loot statue";
 			break;
 		}
@@ -81,25 +92,57 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 		case -1: Networking.sendStrong("PlayDelay|sound_footsteps|1|"); break;
 		case 1:graveDigger(); break;
 		case 2: mugger1(); if (state == 0) {return true;};break;
+		case 3: return packOfBats();
+		case 4: vampire1(); if (state == 0) {return true;};break;
+		case 5:	collector();break;
 		case 6: statue(); if (state == 0) {return true;};break;
 		case 7: statueLoot();break;
+		
 		}
 		return false;
+	}
+	
+	private boolean packOfBats() {
+		if (state == 0) {
+			Networking.sendColor(Color.RED);
+			extra.println("The bats descend upon you!");
+			ArrayList<Person> list = (ArrayList<Person>)storage1;
+			ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
+			
+			if (survivors.contains(Player.player.getPerson())) {
+			forceGo = false;
+			interactString = "approach bat corpses";
+			storage1 = null;
+			state = 1;
+			name = "dead "+name;
+			return false;}else {
+				storage1 = survivors;
+				return true;
+			}
+		}else {
+			extra.println("There are a few bat corpses here.");
+			return false;
+		}
 	}
 
 	
 	private void graveDigger() {
+		extra.println("Approach the "+ name+"?");
+		if (!extra.yesNo()) {
+			return;
+		}
 		if (state == 0) {
 		while (true) {
 			Person p = (Person)storage1;
 			p.getBag().graphicalDisplay(1, p);
-		extra.println("You come across a weary " + name + ", warding against undead during a break.");
+		extra.println("You come across a weary gravedigger, warding against undead during a break.");
+		name = "Gravedigger";
 		extra.println("1 Leave");
 		Networking.sendColor(Color.RED);
 		extra.println("2 Mug them");
 		extra.println("3 Chat with them");
 		switch (extra.inInt(3)) {
-		default: case 1: extra.println("You leave the " + name + " alone");return;
+		default: case 1: extra.println("You leave the gravedigger alone.");return;
 		case 2: extra.println("You attack the "+name+"!");
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 		if (winner != p) {
@@ -129,9 +172,36 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 	}}else {randomLists.deadPerson();}}
 	
 	private void mugger1() {
+		extra.println("Approach the "+ name+"?");
+		if (!extra.yesNo()) {
+			return;
+		}
 		if (state == 0) {
 			Networking.sendColor(Color.RED);
-			extra.println("They attack you!");
+			extra.println("The graverobber attacks you!");
+			name = "Graverobber";
+			Person p = (Person)storage1;
+				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
+				if (winner != p) {
+					state = 1;
+					storage1 = null;
+					name = "dead "+name;
+					interactString = "examine body";
+					forceGo = false;
+				}
+		}else {randomLists.deadPerson();}
+		
+	}
+	
+	private void vampire1() {
+		extra.println("Approach the "+ name+"?");
+		if (!extra.yesNo()) {
+			return;
+		}
+		if (state == 0) {
+			Networking.sendColor(Color.RED);
+			extra.println("The vampire attacks you!");
+			name = "Vampire";
 			Person p = (Person)storage1;
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
@@ -151,9 +221,15 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 	}
 	
 	private void statue() {
+		extra.println("Approach the "+ name+"?");
+		if (!extra.yesNo()) {
+			return;
+		}
 		if (state == 0) {
+			name = ((Person)storage1).getBag().getRace().name + " statue";
 			Networking.sendColor(Color.RED);
-			extra.println("The state springs to life and attacks you!");
+			extra.println("The statue springs to life and attacks you!");
+			name = "Living Statue";
 			Person p = (Person)storage1;
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
@@ -168,6 +244,10 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 	}
 	
 	private void statueLoot() {
+		extra.println("Approach the "+ name+"?");
+		if (!extra.yesNo()) {
+			return;
+		}
 		if (state == 0) {
 			Networking.sendColor(Color.RED);
 			extra.println("You loot the statue...");
@@ -182,6 +262,30 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 				
 		}else {extra.println("You already looted this statue!");}
 		Networking.clearSide(1);
+	}
+	
+	private void collector() {
+		extra.println("Approach the "+ name+"?");
+		if (!extra.yesNo()) {
+			return;
+		}
+		if (state == 0) {
+			Person p = (Person)storage1;
+			name = p.getName();
+			p.getBag().graphicalDisplay(1, p);
+			Networking.sendColor(Color.RED);
+			extra.println("Challenge "+ p.getName() + "?");
+			if (extra.yesNo()){
+				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
+				if (winner != p) {
+					state = 1;
+					storage1 = null;
+					name = "dead "+name;
+					interactString = "examine body";
+				}
+			}
+		}else {randomLists.deadPerson();}
+		
 	}
 
 	@Override

@@ -227,7 +227,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 	private void statue() {
 		if (state == 0) {
 			Networking.sendColor(Color.RED);
-			extra.println("The state springs to life and attacks you!");
+			extra.println("The statue springs to life and attacks you!");
 			Person p = (Person)storage1;
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {

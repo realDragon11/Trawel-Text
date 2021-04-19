@@ -105,4 +105,8 @@ public class randomLists {
 	public static String randomMuggerName() {
 		return extra.choose("mugger","robber","thug","bandit","marauder","outlaw","desperado","cutthroat");
 	}
+	
+	public static String randomCollectorName() {
+		return extra.choose("the collector","the keeper","the finder");
+	}
 }

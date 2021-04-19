@@ -379,6 +379,7 @@ public class WorldGen {
 		addConnection(erin,tunka,"road","left-over road");
 		addConnection(placka,tunka,"road","diamond road");
 		tunka.addFeature(new Arena("tunka arena",7,1,50,17,21));
+		tunka.addFeature(new Graveyard("tunka graveyard", tunka));
 		tunka.addFeature(new Store(7,6));
 		tunka.addTravel();
 		tunka.addTravel();

@@ -1021,6 +1021,7 @@ public class RaceFactory {
 		w.getBag().getDrawBanes().add(DrawBane.forCollector());
 		w.getBag().getDrawBanes().add(DrawBane.forCollector());
 		extra.printMode = false;
+		w.setTitle(randomLists.randomCollectorName());
 		return w;
 	}
 	public static Person getCultist(int level) {
