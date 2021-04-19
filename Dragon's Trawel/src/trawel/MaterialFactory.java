@@ -781,7 +781,7 @@ public class MaterialFactory {
 		return null;
 	}
 
-	public static Material randMatByType(String[] matType) {
+	public static Material randMatByType(String matType) {
 		ArrayList<Material> copyList = new ArrayList<Material>();
 		ArrayList<Material> copyList2 = new ArrayList<Material>();
 		for (Material mat: matList){

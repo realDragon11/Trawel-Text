@@ -28,6 +28,7 @@ public class WorldGen {
 		homa.addFeature(new Arena("basena arena",1,1,24,1,476));
 		//homa.addFeature(new Well("tiny well"));
 		homa.addFeature(new Grove("homa forest",homa));
+		//homa.addFeature(new Graveyard("testing graveyard",homa));
 		homa.addTravel();
 		homa.addFeature(new Champion(4));
 		w.setStartTown(homa);

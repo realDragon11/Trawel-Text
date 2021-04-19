@@ -50,9 +50,9 @@ public class Armor extends Item {
 	 * @param newLevel (int)
 	 * @param slot (int)
 	 */
-	public Armor(int newLevel,int slot,Person.AIJob job) {
-		this(newLevel,slot,MaterialFactory.randMatByType(job.amatType),job.amatType);		
-	}
+	/*public Armor(int newLevel,int slot,String matType) {
+		this(newLevel,slot,MaterialFactory.randMatByType(matType),job.amatType);		
+	}*/
 	
 	public Armor(int newLevel, int slot,Material mati) {
 		this(newLevel,slot,mati,null);
@@ -68,7 +68,7 @@ public class Armor extends Item {
 	 * @param slot (int)
 	 * @param mat (String)
 	 */
-	public Armor(int newLevel, int slot,Material mati,String[] amatType) {
+	public Armor(int newLevel, int slot,Material mati,String amatType) {
 	//initialize	
 	armorType = slot;//type is equal to the array armor slot
 	mat = mati;
@@ -85,11 +85,14 @@ public class Armor extends Item {
 	if (amatType == null) {
 		this.matType = extra.randList(mat.typeList);
 	}else {
+		this.matType = amatType;
+		/*
 	    HashSet<String> set = new HashSet<>();
 	    set.addAll(Arrays.asList(amatType));
 	    set.retainAll(mat.typeList);
 	    String[] strs = (String[])set.toArray();
 	    this.matType = strs[extra.randRange(0,strs.length-1)];
+		*/
 	}
 	
 	if (matType.equals("light")){

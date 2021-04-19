@@ -32,11 +32,16 @@ public class Inventory implements java.io.Serializable{
 	public Inventory(int level, Race.RaceType type, Material matType,Person.AIJob job) {
 		if (type == Race.RaceType.HUMANOID) {
 			if (job != null) {
-				armorSlots[0] = new Armor(level,0,job);
-				armorSlots[1] = new Armor(level,1,job);
-				armorSlots[2] = new Armor(level,2,job);
-				armorSlots[3] = new Armor(level,3,job);
-				armorSlots[4] = new Armor(level,4,job);
+				String matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
+				armorSlots[0] = new Armor(level,0,MaterialFactory.randMatByType(matType2),matType2);
+				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
+				armorSlots[1] = new Armor(level,1,MaterialFactory.randMatByType(matType2),matType2);
+				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
+				armorSlots[2] = new Armor(level,2,MaterialFactory.randMatByType(matType2),matType2);
+				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
+				armorSlots[3] = new Armor(level,3,MaterialFactory.randMatByType(matType2),matType2);
+				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
+				armorSlots[4] = new Armor(level,4,MaterialFactory.randMatByType(matType2),matType2);
 				hand = new Weapon(level,job.weapType[extra.randRange(0,job.weapType.length-1)]);
 			}else {
 				armorSlots[0] = new Armor(level,0);

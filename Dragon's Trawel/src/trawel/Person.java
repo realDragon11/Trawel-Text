@@ -116,8 +116,8 @@ public class Person implements java.io.Serializable{
 	
 	@Deprecated
 	public Person(int level,AIJob job) {
-		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
-		this.job = job;
+		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true,job);
+
 	}
 	
 	public enum AIJob{

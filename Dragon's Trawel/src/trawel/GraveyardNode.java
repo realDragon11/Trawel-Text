@@ -64,7 +64,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 			break;
 		case 6: case 7:
 			storage1 =  RaceFactory.makeStatue(level); name = "Shadowy Figure";
-			interactString = "loot statue";
+			interactString = "Approach Shadowy Figure";
 			break;
 		}
 		if (size < 2) {
@@ -136,7 +136,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 			Person p = (Person)storage1;
 			p.getBag().graphicalDisplay(1, p);
 		extra.println("You come across a weary gravedigger, warding against undead during a break.");
-		name = "Gravedigger";
+		name = "Gravedigger";interactString = "Approach the "+name;
 		extra.println("1 Leave");
 		Networking.sendColor(Color.RED);
 		extra.println("2 Mug them");
@@ -180,6 +180,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 			Networking.sendColor(Color.RED);
 			extra.println("The graverobber attacks you!");
 			name = "Graverobber";
+			interactString = "Approach the "+name;
 			Person p = (Person)storage1;
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
@@ -202,6 +203,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 			Networking.sendColor(Color.RED);
 			extra.println("The vampire attacks you!");
 			name = "Vampire";
+			interactString = "Approach the "+name;
 			Person p = (Person)storage1;
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
@@ -230,6 +232,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 			Networking.sendColor(Color.RED);
 			extra.println("The statue springs to life and attacks you!");
 			name = "Living Statue";
+			interactString = "Approach the "+name;
 			Person p = (Person)storage1;
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
@@ -257,7 +260,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 					state = 1;
 					storage1 = null;
 					name = "looted statue";
-					interactString = "loot statue";
+					interactString = "examine statue";
 					forceGo = false;
 				
 		}else {extra.println("You already looted this statue!");}
@@ -272,6 +275,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 		if (state == 0) {
 			Person p = (Person)storage1;
 			name = p.getName();
+			interactString = "Approach "+ name;
 			p.getBag().graphicalDisplay(1, p);
 			Networking.sendColor(Color.RED);
 			extra.println("Challenge "+ p.getName() + "?");
