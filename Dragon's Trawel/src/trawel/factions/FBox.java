@@ -78,6 +78,18 @@ public class FBox {
 		case RICH:
 			manOne.facRep.addFactionRep(Faction.MERCHANT,0,manTwo.getLevel()/5.0f);
 			break;
+		case BOSS:
+			manOne.facRep.addFactionRep(Faction.HUNTER,manTwo.getLevel()/10.0f,0);
+			manOne.facRep.addFactionRep(Faction.HEROIC,manTwo.getLevel(),0);
+			break;
+		case GUARD_DUNGEON:
+			manOne.facRep.addFactionRep(Faction.HEROIC,manTwo.getLevel()/15.0f,0);
+			break;
+		case LUMBER:
+			manOne.facRep.addFactionRep(Faction.FOREST,manTwo.getLevel()/5.0f,0);
+			break;
+		case REVENGE:
+			break;
 		}
 		
 	}

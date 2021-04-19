@@ -148,7 +148,7 @@ public class BasicSideQuest implements Quest{
 			i++;
 			}
 			q.target.locationT = q.target.locationF.town;
-			q.targetPerson = new Person(q.target.locationT.getTier());
+			q.targetPerson = new Person(q.target.locationT.getTier());//TODO
 			q.targetName = q.targetPerson.getName();
 			q.target.overQuest = q;
 			//q.target.locationF.addQR(q.target);

@@ -15,6 +15,7 @@ import trawel.MenuSelectNumber;
 import trawel.Person;
 import trawel.Player;
 import trawel.Race;
+import trawel.RaceFactory;
 import trawel.Skill;
 import trawel.Town;
 import trawel.extra;
@@ -76,7 +77,7 @@ public class FortHall extends FortFeature {
 					}
 					this.town.visited=3;
 					while (allies.size() < 5) {
-						allies.add(new Person(level));
+						allies.add(RaceFactory.getDueler(level));
 					}
 				}
 			}
@@ -117,7 +118,7 @@ public class FortHall extends FortFeature {
 						public boolean go() {
 							if (Player.bag.getGold() >= getSoldierCost()) {
 								Player.bag.addGold(-getSoldierCost());
-								allies.add(new Person(level));
+								allies.add(RaceFactory.getDueler(level));
 							}else {
 								extra.println("You can't afford another soldier.");
 							}
@@ -268,7 +269,7 @@ public class FortHall extends FortFeature {
 		}
 		if (owner != Player.player) {
 			while (allies.size() < 5) {
-				allies.add(new Person(level));
+				allies.add(RaceFactory.getDueler(level));
 			}
 		}
 		fightTimer -= (time);

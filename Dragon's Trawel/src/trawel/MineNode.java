@@ -45,7 +45,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 		case -1: name = "emerald cluster"; interactString = "mine emeralds";break;
 		case 0: name = ""; interactString = "";break;
 		case 1: name = randomLists.randomWarrior(); interactString = "challenge " + name;
-		storage1 = new Person(level);
+		storage1 = RaceFactory.getDueler(level);
 		break;
 		case 2: name = extra.choose("river","pond","lake","stream"); interactString = "wash yourself";break;
 		case 3: storage1 = extra.choose("silver","gold","platinum","iron","copper"); name = storage1+" vein"; interactString = "mine "+storage1;break;

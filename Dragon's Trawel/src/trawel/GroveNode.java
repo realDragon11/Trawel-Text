@@ -2,6 +2,8 @@ package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import trawel.factions.Faction;
+
 public class GroveNode extends NodeConnector implements java.io.Serializable{
 	//potentail problem: all this code is in a highly duplicated node
 
@@ -50,11 +52,11 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		switch (idNum) {
 		case 0: name = ""; interactString = "";break;
 		case 1: name = randomLists.randomWarrior(); interactString = "challenge " + name;
-		storage1 = new Person(level);
+		storage1 = RaceFactory.getDueler(level);
 		break;
 		case 2: name = extra.choose("river","pond","lake","stream","brook"); interactString = "wash yourself";break;
 		case 3: name = randomLists.randomMuggerName(); interactString = "ERROR"; forceGo = true;
-		storage1 = new Person(level,Person.AIJob.ROGUE);break;
+		storage1 = RaceFactory.getMugger(level);break;
 		case 4: name = extra.choose("rotting","decaying") + " " +RaceFactory.randRace(Race.RaceType.HUMANOID).name +" " + extra.choose("corpse","body"); interactString = "loot corpse";break;
 		case 5: name = "fairy circle"; interactString = "examine circle";break;
 		case 6: name = "fairy circle"; interactString = "examine circle";break;
@@ -369,13 +371,14 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			if (Math.random() > .9) {
 				Networking.sendColor(Color.RED);
 				extra.println("Suddenly, they attack you!");
-				mainGame.CombatTwo(Player.player.getPerson(), new Person(level));
+				mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getMugger(level));
 			}else {
 				if (Math.random() < .3) {
 					extra.println("They scamper off...");
 				}else {
 					int gold = (int) (extra.hrandom()*50*level);
 					extra.println("They give you a reward of " + gold + " gold in thanks for saving them.");
+					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
 					Player.bag.addGold(gold);
 				}
 			}
@@ -537,7 +540,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 	
 	private Person mushHelpRobber() {
 		name = extra.choose("mugger","robber","thug","bandit","marauder","outlaw","desperado","cutthroat"); interactString = "ERROR";
-		storage1 = new Person(level);
+		storage1 = RaceFactory.getMugger(level);
 		switch (extra.randRange(0, 1)) {
 		case 0: extra.println("\"Hey, I wanted that!\"");break;
 		case 1: extra.println("\"You dirty plant-thief!\"");break;
@@ -558,7 +561,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 	}
 	private Person mushHelpDryad() {
 		extra.println("\"You dare violate the forest?!\"");
-		storage1 = new Person(level);
+		storage1 = RaceFactory.getDryad(level);
 		Person p = (Person)storage1;
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 		idNum = 9;
@@ -578,7 +581,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 	
 	private void mossHelpRobber() {
 		name = extra.choose("mugger","robber","thug","bandit","marauder","outlaw","desperado","cutthroat"); interactString = "ERROR";
-		storage1 = new Person(level);
+		storage1 = RaceFactory.getMugger(level);
 		switch (extra.randRange(0, 1)) {
 		case 0: extra.println("\"Hey, I wanted that!\"");break;
 		case 1: extra.println("\"You dirty plant-thief!\"");break;

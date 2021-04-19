@@ -63,12 +63,12 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 		case -1:name = extra.choose("stairs","ladder"); interactString = "traverse "+name;forceGo = true;break;
 		case 1: storage1 = extra.choose("chest","chest","chest"); name = (String) storage1; interactString = "open "+name; storage2 = RaceFactory.makeMimic(1);break;
 		case 2: name = extra.choose("dungeon guard","gatekeeper","dungeon guard"); interactString = "ERROR"; forceGo = true;
-		storage1 = new Person(level);break;
+		storage1 = RaceFactory.getDGuard(level);break;
 		case 3: name = extra.choose("locked door","barricaded door","padlocked door"); interactString = "examine broken door";forceGo = true;break;
 		//case 4: name = "ladder"; interactString = "traverse ladder"; forceGo = true; break;
 		case 4: ArrayList<Person> list = new ArrayList<Person>();
-		list.add(new Person(extra.zeroOut(level-3)+1));
-		list.add(new Person(extra.zeroOut(level-3)+1));
+		list.add(RaceFactory.getDGuard(extra.zeroOut(level-3)+1));
+		list.add(RaceFactory.getDGuard(extra.zeroOut(level-3)+1));
 		name = "gate guards";
 		interactString = "ERROR";
 		storage1 = list;

@@ -83,6 +83,7 @@ public class Player extends SuperPerson{
 	public String animalName() {
 		return animalName;
 	}
+	/*
 	public void reincarnate() {
 		rpts += this.person.getLevel()-1;
 		person = new Person(1);
@@ -90,7 +91,7 @@ public class Player extends SuperPerson{
 		Player.bag = person.getBag();
 		person.setPlayer(); 
 		
-	}
+	}*/
 	public static void addSkill(Skill skill) {
 		if (!Player.hasSkill(skill)) {
 		player.getPerson().getSkills().add(skill);

@@ -186,7 +186,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 			if (Math.random() > .5) {
 				Networking.sendColor(Color.RED);
 				extra.println("A fighter runs up and calls you a thief before launching into battle!");
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(), new Person(tier));
+				Person winner = mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getMugger(tier));
 				if (winner == Player.player.getPerson()) {
 					int gold = (int) (tier*(30*Math.random()));
 					extra.println("You pick up " + gold + " gold!");
@@ -207,7 +207,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 	private void mugger2() {
 		Networking.sendColor(Color.RED);
 		extra.println("You see a mugger charge at you! Prepare for battle!");
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(), new Person(tier));
+		Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
 		if (winner == Player.player.getPerson()) {
 		}else {
 			extra.println("They take some of your gold!");
@@ -218,7 +218,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 	private void mugger1() {
 		Networking.sendColor(Color.RED);
 		extra.println("You see someone being robbed! Help?");
-		Person robber = new Person(tier);
+		Person robber =  RaceFactory.getMugger(tier);
 		robber.getBag().graphicalDisplay(1, robber);
 		Boolean help = extra.yesNo();
 		if (help) {
@@ -240,8 +240,8 @@ public class Mountain extends Feature implements java.io.Serializable{
 	
 	private void mugger3() {
 		
-		extra.println("You see a toll road keeper. Challenge them for their gold?");
-		Person robber = new Person(tier);
+		extra.println("You see a toll road keeper. Mug them for their gold?");
+		Person robber = RaceFactory.getPeace(tier);
 		robber.getBag().graphicalDisplay(1, robber);
 		Networking.sendColor(Color.RED);
 		Boolean help = extra.yesNo();
@@ -263,7 +263,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 	
 	private void wanderingDuelist() {
 		extra.println("A duelist approaches and challenges you to a duel. Accept?");
-		Person robber = new Person(tier+1);
+		Person robber = RaceFactory.getDueler(tier+1);
 		robber.getBag().graphicalDisplay(1, robber);
 		Networking.sendColor(Color.RED);
 		Boolean help = extra.yesNo();
@@ -319,7 +319,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 			if (Math.random() > .5) {
 				Networking.sendColor(Color.RED);
 				extra.println("A fighter runs up and calls you a thief before launching into battle!");
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(), new Person(tier));
+				Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
 				if (winner == Player.player.getPerson()) {
 					int gold = (int) (tier*(100*Math.random()));
 					extra.println("You pick up " + gold + " gold!");
@@ -347,7 +347,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 	
 	private void vampireHunter() {
 		extra.println("A vampire hunter is walking around. Mug them?");
-		Person robber = new Person(tier);
+		Person robber = RaceFactory.getPeace(tier);
 		robber.getBag().getDrawBanes().add(DrawBane.SILVER);
 		robber.getBag().getDrawBanes().add(DrawBane.GARLIC);
 		robber.getBag().graphicalDisplay(1, robber);

@@ -962,6 +962,7 @@ public class RaceFactory {
 		extra.printMode = true;
 		Person w = new Person(level);
 		w.hTask = HostileTask.RACIST;
+		w.setRacism(true);
 		extra.printMode = false;
 		return w;
 	}
@@ -985,6 +986,22 @@ public class RaceFactory {
 		Person w = new Person(level);
 		w.hTask = HostileTask.ANIMAL;
 		w.facRep.addFactionRep(Faction.FOREST, level*15,0);
+		extra.printMode = false;
+		return w;
+	}
+	public static Person getDGuard(int level) {
+		extra.printMode = true;
+		Person w = new Person(level);
+		w.hTask = HostileTask.GUARD_DUNGEON;
+		extra.printMode = false;
+		return w;
+	}
+	
+	public static Person getLumberjack(int level) {
+		extra.printMode = true;
+		Person w = new Person(level,AIJob.LUMBERJACK);
+		w.hTask = HostileTask.LUMBER;
+		w.facRep.addFactionRep(Faction.FOREST,0,100);
 		extra.printMode = false;
 		return w;
 	}

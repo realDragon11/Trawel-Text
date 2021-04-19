@@ -557,7 +557,7 @@ public class Town implements java.io.Serializable{
 		if (helpers.size() > 0) {
 		return helpers.remove(0);
 		}
-		return new Person(tier-1);
+		return RaceFactory.getDueler(tier-1);
 	}
 	private void goTeleporters() {
 		int i = 1;

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.Feature.QRType;
+import trawel.factions.Faction;
 
 public class Forest extends Feature implements java.io.Serializable{
 
@@ -132,7 +133,7 @@ public class Forest extends Feature implements java.io.Serializable{
 		if (result) {
 			if (Math.random() > .5) {
 				extra.println("A fighter runs up and calls you a thief before launching into battle!");
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(), new Person(tier));
+				Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
 				if (winner == Player.player.getPerson()) {
 					int gold = (int) (tier*(30*Math.random()));
 					extra.println("You pick up " + gold + " gold!");
@@ -176,7 +177,7 @@ public class Forest extends Feature implements java.io.Serializable{
 			case 1: extra.println("\"You dare violate the forest?!\"");break;
 			case 2: extra.println("\"Hey, I wanted that!\"");break;
 			case 3: extra.println("\"You dirty plant-thief!\"");break;}
-			mainGame.CombatTwo(Player.player.getPerson(), new Person(tier));
+			mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getDryad(tier));
 			}
 			
 			;break;
@@ -218,7 +219,7 @@ public class Forest extends Feature implements java.io.Serializable{
 	private void mugger1() {
 		extra.println("You see someone being robbed! Help?");
 		Boolean help = extra.yesNo();
-		Person robber = new Person(tier);
+		Person robber = RaceFactory.getMugger(tier);
 		robber.getBag().graphicalDisplay(1, robber);
 		if (help) {
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);
@@ -251,7 +252,7 @@ public class Forest extends Feature implements java.io.Serializable{
 	private void mugger2() {
 		Networking.sendColor(Color.RED);
 		extra.println("You see a mugger charge at you! Prepare for battle!");
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(), new Person(tier));
+		Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
 		if (winner == Player.player.getPerson()) {
 		}else {
 			extra.println("They take some of your gold!");
@@ -303,13 +304,14 @@ public class Forest extends Feature implements java.io.Serializable{
 			if (Math.random() > .9) {
 				Networking.sendColor(Color.RED);
 				extra.println("Suddenly, they attack you!");
-				mainGame.CombatTwo(Player.player.getPerson(), new Person(tier));
+				mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getMugger(tier));
 			}else {
 				if (Math.random() < .3) {
 					extra.println("They scamper off...");
 				}else {
 					int gold = (int) (Math.random()*50*tier);
 					extra.println("They give you a reward of " + gold + " gold in thanks for saving them.");
+					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
 					Player.bag.addGold(gold);
 				}
 			}
@@ -412,7 +414,7 @@ public class Forest extends Feature implements java.io.Serializable{
 		/*}else {
 			
 		}*/
-			Person robber = new Person(tier);
+			Person robber = RaceFactory.getLumberjack(tier);
 			robber.getBag().graphicalDisplay(1, robber);
 			if (extra.chanceIn(1, 3)) {
 			robber.getBag().getDrawBanes().add(DrawBane.ENT_CORE);}
