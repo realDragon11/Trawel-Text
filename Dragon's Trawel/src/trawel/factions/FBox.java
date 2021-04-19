@@ -55,6 +55,7 @@ public class FBox {
 		case ANIMAL:
 			manOne.facRep.addFactionRep(Faction.HUNTER,manTwo.getLevel()/25.0f,0);
 			manOne.facRep.addFactionRep(Faction.MERCHANT,manTwo.getLevel()/40.0f,0);
+			manOne.facRep.addFactionRep(Faction.FOREST,0,manTwo.getLevel()/25.0f);
 			break;
 		case DUEL:
 			manOne.facRep.addFactionRep(Faction.DUEL,manTwo.getLevel()/10.0f,0);
@@ -63,6 +64,7 @@ public class FBox {
 			manOne.facRep.addFactionRep(Faction.HUNTER,manTwo.getLevel()/10.0f,0);
 			manOne.facRep.addFactionRep(Faction.HEROIC,manTwo.getLevel()/10.0f,0);
 			manOne.facRep.addFactionRep(Faction.MERCHANT,manTwo.getLevel()/40.0f,0);
+			manOne.facRep.addFactionRep(Faction.FOREST,manTwo.getLevel()/25.0f,0);
 			break;
 		case MUG:
 			manOne.facRep.addFactionRep(Faction.MERCHANT,manTwo.getLevel()/10.0f,0);

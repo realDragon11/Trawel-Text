@@ -938,6 +938,7 @@ public class RaceFactory {
 			w = new Person(level);
 		}
 		w.facRep.addFactionRep(Faction.ROGUE,extra.randRange(10,20)*level, 0);
+		w.facRep.addFactionRep(Faction.HEROIC,0, 10*level);
 		w.hTask = HostileTask.MUG;
 		if (extra.chanceIn(1,100)) {
 			w.getBag().getDrawBanes().add(DrawBane.GOLD);
@@ -945,6 +946,45 @@ public class RaceFactory {
 		if (extra.chanceIn(1,50)) {
 			w.getBag().getDrawBanes().add(DrawBane.SILVER);
 		}
+		extra.printMode = false;
+		return w;
+	}
+	public static Person getDueler(int level) {
+		extra.printMode = true;
+		Person w = new Person(level);
+		w.facRep.addFactionRep(Faction.DUEL,extra.randRange(10,20)*level, 0);
+		w.hTask = HostileTask.DUEL;
+		extra.printMode = false;
+		return w;
+	}
+	
+	public static Person getRacist(int level) {
+		extra.printMode = true;
+		Person w = new Person(level);
+		w.hTask = HostileTask.RACIST;
+		extra.printMode = false;
+		return w;
+	}
+	public static Person getPeace(int level) {
+		extra.printMode = true;
+		Person w = new Person(level);
+		w.hTask = HostileTask.PEACE;
+		extra.printMode = false;
+		return w;
+	}
+	public static Person getBoss(int level) {
+		extra.printMode = true;
+		Person w = new Person(level);
+		w.hTask = HostileTask.BOSS;
+		extra.printMode = false;
+		return w;
+	}
+	
+	public static Person getDryad(int level) {
+		extra.printMode = true;
+		Person w = new Person(level);
+		w.hTask = HostileTask.ANIMAL;
+		w.facRep.addFactionRep(Faction.FOREST, level*15,0);
 		extra.printMode = false;
 		return w;
 	}

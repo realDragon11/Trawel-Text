@@ -88,7 +88,7 @@ public class BumperFactory {
 				
 				@Override
 				public void activate(int level) {
-					Person p = new Person(level);
+					Person p = RaceFactory.getMugger(level);
 					
 					Networking.sendColor(Color.RED);
 					extra.println("A thief charges you!");
@@ -178,7 +178,7 @@ public class BumperFactory {
 				
 				@Override
 				public void activate(int level) {
-					Person p = new Person(level);
+					Person p = RaceFactory.getMugger(level);
 					
 					Networking.sendColor(Color.RED);
 					extra.println("A pirate challenges you for your booty!");

@@ -265,7 +265,7 @@ public class Forest extends Feature implements java.io.Serializable{
 	}
 	
 	private void dryad() {
-		Person robber = new Person(tier);
+		Person robber = RaceFactory.getDryad(tier);
 		robber.getBag().graphicalDisplay(1, robber);
 		while (true) {
 		extra.println("You come across a dryad tending to a tree.");

@@ -85,7 +85,7 @@ public class Town implements java.io.Serializable{
 	}
 	
 	public void addPerson() {
-		Agent o = new Agent(new Person(tier));
+		Agent o = new Agent(RaceFactory.getDueler(this.getTier()));
 		occupants.add(o);
 		o.setLocation(this);
 	}

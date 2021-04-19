@@ -11,7 +11,7 @@ public class Champion  extends TravelingFeature{
 	public Champion(int level){
 		super(level);
 		hasSomething = true;
-		person = new Person(level);
+		person = RaceFactory.getDueler(level);
 		this.name = person.getName() + " (Level " + person.getLevel()+")" ;
 		tutorialText = "You should probably hold off on fighting champions until you're their level- explore the world and come back later.";
 		timeElapsed=0;
@@ -27,7 +27,7 @@ public class Champion  extends TravelingFeature{
 		color = Color.RED;
 		ArrayList<Person> people = new ArrayList<Person>();
 		while(people.size() < battleSize) {
-			people.add(new Person(level));
+			people.add(RaceFactory.getDueler(level));
 		}
 		extra.disablePrintSubtle();
 		while (people.size() > 1) {

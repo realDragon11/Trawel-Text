@@ -386,7 +386,7 @@ public class Inn extends Feature implements java.io.Serializable{
 		extra.println("There is no resident, but there is room for a barfight... start one?");
 		Networking.sendColor(Color.RED);
 		if (extra.yesNo()) {
-			Person winner = mainGame.CombatTwo(Player.player.getPerson(),new Person(tier));
+			Person winner = mainGame.CombatTwo(Player.player.getPerson(),RaceFactory.getDueler(this.tier));
 			if (winner.isPlayer()) {
 				wins++;
 				if (Player.player.animalQuest == 3) {

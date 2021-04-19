@@ -100,7 +100,7 @@ public class Arena extends Feature{
 	public void doTournyPlayer() {
 		for (int i = 1;i <= rounds;i++) {
 			extra.println("It's round " + i + "...");
-			Person fighter = new Person(tier);
+			Person fighter = RaceFactory.getDueler(tier);
 			fighter.addXp(notFact(i));
 			Person winner = mainGame.CombatTwo(Player.player.getPerson(),fighter);
 			if (winner == Player.player.getPerson()) {
