@@ -54,7 +54,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		break;
 		case 2: name = extra.choose("river","pond","lake","stream","brook"); interactString = "wash yourself";break;
 		case 3: name = randomLists.randomMuggerName(); interactString = "ERROR"; forceGo = true;
-		storage1 = new Person(level);break;
+		storage1 = new Person(level,Person.AIJob.ROGUE);break;
 		case 4: name = extra.choose("rotting","decaying") + " " +RaceFactory.randRace(Race.RaceType.HUMANOID).name +" " + extra.choose("corpse","body"); interactString = "loot corpse";break;
 		case 5: name = "fairy circle"; interactString = "examine circle";break;
 		case 6: name = "fairy circle"; interactString = "examine circle";break;

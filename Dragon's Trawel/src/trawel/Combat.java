@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.factions.FBox;
 import trawel.fort.FortHall;
 import trawel.fort.LSkill;
 import trawel.fort.SubSkill;
@@ -105,26 +106,7 @@ public class Combat {
 		song.addKill(manOne, manTwo);
 		manOne.getBag().getHand().addKill();
 		manOne.addKillStuff();
-		/*
-		if (extra.chanceIn(1,2) || manOne.getLevel() < manTwo.getLevel()) {
-			manOne.getTaunts().addTaunt("It was I who " + extra.choose("slew","slaughtered","struck down","killed") + " " + manTwo.getName()+ "!");
-		}
-		if (extra.chanceIn(1,2)) {
-			manOne.getTaunts().addTaunt(manTwo.getTaunts().getTaunt());
-		}
-		if (extra.chanceIn(1,2)) {
-			manOne.getTaunts().addBoast(manTwo.getTaunts().getBoast());
-		}
-		//if (extra.chanceIn(1,2) || attacker.getLevel() < defender.getLevel()) {
-			//attacker.getTaunts().addBoast("It was I who " + extra.choose("slew","slaughtered","struck down","killed") + " " + defender.getName()+ "!");
-		//}//t'was I who struck down X who slew Y who slew Z!
-		if (extra.chanceIn(1,3)) {
-			manOne.getTaunts().removeTaunt();
-		}
-		if (extra.chanceIn(1,4)) {
-			manOne.getTaunts().removeBoast();
-		}
-		*/
+		FBox.repCalc(manOne,manTwo);
 	}
 	
 	public class SkillCon {

@@ -50,7 +50,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 		case 2: name = extra.choose("river","pond","lake","stream"); interactString = "wash yourself";break;
 		case 3: storage1 = extra.choose("silver","gold","platinum","iron","copper"); name = storage1+" vein"; interactString = "mine "+storage1;break;
 		case 4: name = randomLists.randomMuggerName(); interactString = "ERROR"; forceGo = true;
-		storage1 = new Person(level);break;
+		storage1 = new Person(level,Person.AIJob.ROGUE);break;
 		case 5: name = extra.choose("locked door","barricaded door","padlocked door"); interactString = "unlock door";forceGo = true;break;
 		case 6: interactString = "examine crystals"; storage1 = randomLists.randomColor(); name = "weird " + (String)storage1 + " crystals";break;
 		case 7: name = "minecart"; interactString = "examine minecart";break;

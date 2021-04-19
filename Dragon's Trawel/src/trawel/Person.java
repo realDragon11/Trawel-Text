@@ -5,6 +5,8 @@ import java.util.List;
 import trawel.earts.EAType;
 import trawel.earts.EArt;
 import trawel.earts.EArtSkillMenu;
+import trawel.factions.FBox;
+import trawel.factions.HostileTask;
 
 /**
  * 
@@ -53,6 +55,10 @@ public class Person implements java.io.Serializable{
 	
 	private AIJob job;
 	
+	public FBox facRep = new FBox();
+	
+	public HostileTask hTask;
+	
 	public enum RaceFlag {
 		NONE, CRACKS, UNDEAD;
 	}
@@ -99,6 +105,7 @@ public class Person implements java.io.Serializable{
 		extra.changePrint(print);
 	}
 	
+	@Deprecated
 	public Person(int level) {
 		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
 	}
@@ -107,6 +114,7 @@ public class Person implements java.io.Serializable{
 		this(level,aiLevel,raceType,matType,raceFlag,giveScar,null);
 	}
 	
+	@Deprecated
 	public Person(int level,AIJob job) {
 		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
 		this.job = job;
