@@ -128,7 +128,7 @@ public class Oracle extends Feature implements java.io.Serializable{ //extends f
 		if (Player.bag.getGold() >= level*1) {
 		extra.println("Pay "+ level*1 +" gold for an utterance?");
 		if (extra.yesNo()) {
-			Player.bag.addGold(-level*10);
+			Player.bag.addGold(-level*1);
 			tip("");
 			visits++;
 			Networking.sendStrong("Achievement|oracle1|");

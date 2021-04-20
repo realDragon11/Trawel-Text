@@ -281,7 +281,7 @@ public class FortHall extends FortFeature {
 				people.add(RaceFactory.getMugger(level));
 			}
 			
-			Fight(people);
+			Fight(this.getAllies(),people);
 		}
 	}
 	

@@ -55,6 +55,7 @@ public class BasicSideQuest implements Quest{
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
 					Player.bag.addGold(20);
+					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,.1f, 0);
 					q.complete();
 					return false;
 				}};
