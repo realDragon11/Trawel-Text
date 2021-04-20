@@ -297,6 +297,7 @@ public class FortHall extends FortFeature {
 	public int getWatchScore() {
 		int i = 0;
 		i+=getSkillCount(SubSkill.SCRYING)*3;
+		i+=getSkillCount(SubSkill.WATCH);
 		return i;
 	}
 	

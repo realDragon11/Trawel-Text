@@ -88,6 +88,25 @@ public class FortFoundation extends FortFeature {
 								return true;
 							}
 							break;
+						case TELESCOPE:
+							switch (size) {
+							case 1:
+								buildCode = 3;
+								name = "Small Watchtower in progress";
+								timeLeft = 24.0*1;
+								return true;
+							case 2:
+								buildCode = 4;
+								name = "Watchtower in progress";
+								timeLeft = 24.0*3;
+								return true;
+							case 3:
+								buildCode = 5;
+								name = "Large Watchtower in progress";
+								timeLeft = 24.0*6;
+								return true;
+							}
+							break;
 						}
 						Player.bag.addNewDrawBane(db);
 						extra.println("You can't build a building with this drawbane and foundation size.");
@@ -114,6 +133,15 @@ public class FortFoundation extends FortFeature {
 					break;
 				case 2:
 					town.enqueneAdd(new Forge(town.getTier()));
+					break;
+				case 3:
+					town.enqueneAdd(new Watchtower(town.getTier(),1));
+					break;
+				case 4:
+					town.enqueneAdd(new Watchtower(town.getTier(),2));
+					break;
+				case 5:
+					town.enqueneAdd(new Watchtower(town.getTier(),3));
 					break;
 				}
 				town.enqueneRemove(this);

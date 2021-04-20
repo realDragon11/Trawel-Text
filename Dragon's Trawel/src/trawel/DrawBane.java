@@ -28,7 +28,8 @@ public enum DrawBane {
 	UNDERLEVELED("nothing","Empty slot.",0,0),
 	KNOW_FRAG("knowledge fragment","Bring this to a library to gain skillpoints.",100,1),
 	LIVING_FLAME("living flame","A living flame, for a forge.",250,3), 
-	GRAVE_DIRT("grave dirt","A witch's reagent.",20,.25);
+	GRAVE_DIRT("grave dirt","A witch's reagent.",20,.25),
+	TELESCOPE("telescope","A large telescope.",200,2);
 	
 	private String name, flavorText;
 	private int value;
@@ -56,7 +57,7 @@ public enum DrawBane {
 	}
 	
 	public static DrawBane forCollector() {
-		return extra.choose(REPEL,CEON_STONE,LIVING_FLAME,PROTECTIVE_WARD,SILVER,extra.choose(UNICORN_HORN,GOLD,VIRGIN,KNOW_FRAG));
+		return extra.choose(REPEL,CEON_STONE,LIVING_FLAME,TELESCOPE,PROTECTIVE_WARD,SILVER,extra.choose(UNICORN_HORN,GOLD,VIRGIN,KNOW_FRAG));
 	}
 	
 	

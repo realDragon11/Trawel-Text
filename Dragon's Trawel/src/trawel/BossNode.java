@@ -21,6 +21,7 @@ public class BossNode extends NodeConnector implements Serializable {
 			people.add(RaceFactory.makeMimic(extra.zeroOut(tier-3)+1));
 			p = RaceFactory.getBoss(tier);
 			p.setTitle("The Fatespinner");
+			p.getBag().addNewDrawBane(DrawBane.TELESCOPE);
 			people.add(p);
 		break;
 		case 1:
@@ -29,6 +30,7 @@ public class BossNode extends NodeConnector implements Serializable {
 			people = new ArrayList<Person>();
 			p = RaceFactory.getBoss(tier);
 			p.setTitle("The Baron of Hell");
+			p.getBag().addNewDrawBane(DrawBane.LIVING_FLAME);
 			people.add(p);
 		break;
 		}
