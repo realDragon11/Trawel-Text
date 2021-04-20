@@ -5,7 +5,7 @@ import java.util.List;
 
 import trawel.randomLists;
 
-public class Laborer {
+public class Laborer implements java.io.Serializable{
 
 	public String name;
 	public LaborType type;

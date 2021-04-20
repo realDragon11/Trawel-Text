@@ -7,12 +7,12 @@ import trawel.Person;
 import trawel.Player;
 import trawel.extra;
 
-public class FBox {
+public class FBox implements java.io.Serializable{
 
 	
 	private List<FSub> factions = new ArrayList<FSub>();
 	
-	public class FSub{
+	public class FSub implements java.io.Serializable{
 		public Faction name;
 		public float forFac;
 		public float againstFac;

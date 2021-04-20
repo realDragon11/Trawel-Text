@@ -1,6 +1,6 @@
 package trawel.factions;
 
-public enum HostileTask {
+public enum HostileTask implements java.io.Serializable{
 	MUG,
 	PEACE,
 	RACIST,

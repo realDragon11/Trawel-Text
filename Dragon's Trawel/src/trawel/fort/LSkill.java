@@ -1,6 +1,6 @@
 package trawel.fort;
 
-public class LSkill {
+public class LSkill implements java.io.Serializable{
 
 	public SubSkill skill;
 	public int value;

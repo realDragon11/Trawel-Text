@@ -16,8 +16,8 @@ public class Graveyard extends Feature {
 	}
 	@Override
 	public void go() {
-		Networking.setArea("forest");
-		Networking.sendStrong("Discord|imagesmall|grove|Grove|");
+		Networking.setArea("dungeon");
+		Networking.sendStrong("Discord|imagesmall|dungeon|Dungeon|");
 		start.go();
 	}
 
