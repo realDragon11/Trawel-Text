@@ -318,6 +318,7 @@ public class FortHall extends FortFeature {
 	}
 	
 	public void Fight(ArrayList<Person>... people) {
+		extra.disablePrintSubtle();
 		Combat c = new Combat(this.town.getIsland().getWorld(),this,people);
 		allies.clear();
 		if (c.survivors.get(0).hasSkill(Skill.PLAYERSIDE)) {
@@ -329,6 +330,7 @@ public class FortHall extends FortFeature {
 		}else {
 			this.goldBank = 0;
 		}
+		extra.enablePrintSubtle();
 	}
 
 	private ArrayList<Person> getAllies() {

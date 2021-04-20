@@ -337,6 +337,7 @@ public class AIClass {
 				if (smarts < 0) {
 					extra.print("Autosold the ");
 					toReplace.display(1);
+					Networking.waitIfConnected(100L);
 				}
 				return false;
 			}
