@@ -9,6 +9,8 @@ import trawel.Inventory;
 import trawel.Player;
 import trawel.Town;
 import trawel.extra;
+import trawel.factions.FBox.FSub;
+import trawel.factions.Faction;
 
 
 public class TownFlavorFactory {
@@ -83,6 +85,51 @@ public class TownFlavorFactory {
 			}
 		};
 		b.responses.add(new Response(TownTag.LAWLESS,3));
+		bumperList.add(b);
+		b = new TownFlavor() {
+			@Override
+			public void activate(int level) {
+				FSub sub =Player.player.getPerson().facRep.getFacRep(Faction.HEROIC);
+				if (sub == null) {
+					extra.println("Some adventurers eye you before deciding you're not worth their time.");
+					return;
+				}
+				int total = (int) (sub.forFac-sub.againstFac);
+				if (total > level*2) {
+					extra.println("Some adventurers ask for your autograph.");
+					return;
+				}
+				if (total > 0) {
+					extra.println("Some adventurers chat with your about heroic deeds.");
+					return;
+				}
+				extra.println("Some adventurers eye you warily.");
+			}
+		};
+		b.responses.add(new Response(TownTag.ADVENTURE,2));
+		bumperList.add(b);
+		
+		b = new TownFlavor() {
+			@Override
+			public void activate(int level) {
+				FSub sub =Player.player.getPerson().facRep.getFacRep(Faction.MERCHANT);
+				if (sub == null) {
+					extra.println("Some merchants eye you before deciding you're not worth their time.");
+					return;
+				}
+				int total = (int) (sub.forFac-sub.againstFac);
+				if (total > level*2) {
+					extra.println("Some merchants salute you.");
+					return;
+				}
+				if (total > 0) {
+					extra.println("Some merchants look at you before carrying on their business.");
+					return;
+				}
+				extra.println("Some merchants eye you warily.");
+			}
+		};
+		b.responses.add(new Response(TownTag.MERCHANT,2));
 		bumperList.add(b);
 		
 	}

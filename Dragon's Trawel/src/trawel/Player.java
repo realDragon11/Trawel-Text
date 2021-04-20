@@ -60,6 +60,7 @@ public class Player extends SuperPerson{
 	public static double popTime() {
 		double temp = passTime;
 		passTime = 0;
+		Player.player.townEventTimer-=temp;//TODO: couldn't find elsewhere???
 		return temp;
 	}
 	public static void addTime(double addTime) {
