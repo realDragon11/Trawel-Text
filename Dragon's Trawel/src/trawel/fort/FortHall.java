@@ -61,6 +61,22 @@ public class FortHall extends FortFeature {
 	public int getOffenseRating() {
 		return 0;
 	}
+	
+	public int getTotalDefenceRating() {
+		int sum = 0;
+		for (Feature f: town.getFeatures()) {
+			sum += ((FortFeature)f).getDefenceRating();
+		}
+		return sum;
+	}
+
+	public int getTotalOffenseRating() {
+		int sum = 0;
+		for (Feature f: town.getFeatures()) {
+			sum += ((FortFeature)f).getOffenseRating();
+		}
+		return sum;
+	}
 
 	@Override
 	public void go() {

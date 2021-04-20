@@ -143,10 +143,17 @@ public class Combat {
 				case SCRYING:
 					for (Person p: totalList) {
 						if (p.hasSkill(Skill.PLAYERSIDE)) {
-							//TODO
+							p.advanceTime(sk.lSkill.value/10.0f);
 						}
 					}
 					break;
+				case DEFENSE:
+					for (Person p: totalList) {
+						if (!p.hasSkill(Skill.PLAYERSIDE)) {
+							p.advanceTime(-sk.lSkill.value);
+						}
+					}
+					break; 
 				}
 			}
 			sk.timer = Math.max(1,sk.timeTo-extra.randRange(0,Math.min(10,sk.lSkill.value)));//intentionally not perfect times
@@ -171,6 +178,14 @@ public class Combat {
 			temp = hall.getSkillCount(SubSkill.ELEMENTAL);
 			if (temp > 0) {
 				cons.add(new SkillCon(new LSkill(SubSkill.DEATH,temp),100,100));
+			}
+			temp = hall.getTotalDefenceRating();
+			if (temp > 0) {
+				cons.add(new SkillCon(new LSkill(SubSkill.DEFENSE,temp),1,9999999));
+			}
+			temp = hall.getSkillCount(SubSkill.SCRYING);
+			if (temp > 0) {
+				cons.add(new SkillCon(new LSkill(SubSkill.SCRYING,temp),100,500));
 			}
 		}
 		for (ArrayList<Person> peoples: people) {
