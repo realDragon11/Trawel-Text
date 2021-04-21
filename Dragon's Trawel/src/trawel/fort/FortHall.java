@@ -39,6 +39,7 @@ public class FortHall extends FortFeature {
 	public double enchantTimer = 24.0*7;
 	
 	public int goldBank = 0;
+	public double offenseTimer = 24.0;
 	
 	public FortHall(int tier, Town town) {
 		this.name = "Fort Hall";
@@ -269,6 +270,12 @@ public class FortHall extends FortFeature {
 
 	@Override
 	public void passTime(double time) {
+		forgeTimer -= (time);
+		while (offenseTimer <= 0) {
+			offenseTimer += 12.0;
+			goldBank+=this.getTotalOffenseRating()*this.level;
+		}
+		
 		forgeTimer -= (time* (double)getSkillCount(SubSkill.SMITHING))/10.0;
 		if (forgeTimer <=0) {
 			forgeTimer = 24.0*7;
@@ -299,6 +306,7 @@ public class FortHall extends FortFeature {
 			
 			Fight(this.getAllies(),people);
 		}
+		
 	}
 	
 	public int getSkillCount(SubSkill s) {

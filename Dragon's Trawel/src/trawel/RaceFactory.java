@@ -50,7 +50,7 @@ public class RaceFactory {
 		misc.rarity = 1;
 		misc.insultList.add("They say 'as dumb as an orc' for a reason!");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("nuthin");
+		misc.raceMaps.add("-1");
 		misc.magicPower = 0;
 		misc.defPower = 2;
 		misc.racialType = Race.RaceType.HUMANOID;
@@ -75,7 +75,7 @@ public class RaceFactory {
 		misc.rarity = 1;
 		misc.insultList.add("What do you want, lizard?");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("nuthin");
+		misc.raceMaps.add("-1");
 		misc.magicPower = 1;
 		misc.defPower = 1;
 		misc.racialType = Race.RaceType.HUMANOID;
@@ -100,7 +100,7 @@ public class RaceFactory {
 		misc.insultList.add("Have you heard of the 'high' elves?");
 		misc.insultList.add("What are you going to do, stab me with your ears?");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("nuthin");
+		misc.raceMaps.add("-1");
 		misc.magicPower = 2;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.HUMANOID;
@@ -127,7 +127,7 @@ public class RaceFactory {
 		misc.insultList.add("Go, hug a tree!");
 		misc.insultList.add("What are you going to do, stab me with your ears?");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("nuthin");
+		misc.raceMaps.add("-1");
 		misc.magicPower = 1;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.HUMANOID;
@@ -152,7 +152,7 @@ public class RaceFactory {
 		misc.insultList.add("Go fetch, dog!");
 		misc.insultList.add("Howl somewhere else, dog!");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("nuthin");
+		misc.raceMaps.add("-1");
 		misc.magicPower = 0;
 		misc.defPower = 1;
 		misc.racialType = Race.RaceType.HUMANOID;
@@ -176,7 +176,7 @@ public class RaceFactory {
 		misc.rarity = .25;
 		misc.insultList.add("I'll rip that shell right off!");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("nuthin");
+		misc.raceMaps.add("-1");
 		misc.magicPower = 1;
 		misc.defPower = 3;
 		misc.racialType = Race.RaceType.HUMANOID;
@@ -230,7 +230,7 @@ public class RaceFactory {
 		misc.rarity = .2;
 		misc.insultList.add("Clean up after your trail!");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("nuthin");
+		misc.raceMaps.add("-1");
 		misc.magicPower = 2;
 		misc.defPower = 1;
 		misc.racialType = Race.RaceType.HUMANOID;
@@ -254,7 +254,7 @@ public class RaceFactory {
 		misc.rarity = .2;
 		misc.insultList.add("Look, your heart's hanging out!");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("nuthin");
+		misc.raceMaps.add("-1");
 		misc.magicPower = 2;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.HUMANOID;
@@ -278,7 +278,7 @@ public class RaceFactory {
 		misc.rarity = .2;
 		misc.insultList.add("Rattle your bones somewhere else!");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("nuthin");
+		misc.raceMaps.add("-1");
 		misc.magicPower = 0;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.HUMANOID;
@@ -302,7 +302,7 @@ public class RaceFactory {
 		misc.rarity = .2;
 		misc.insultList.add("Oh good, I needed a firestarter!");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("nuthin");
+		misc.raceMaps.add("-1");
 		misc.magicPower = 2;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.HUMANOID;
@@ -326,7 +326,7 @@ public class RaceFactory {
 		misc.rarity = .2;
 		misc.insultList.add("You won't be reclaiming this!");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("nuthin");
+		misc.raceMaps.add("-1");
 		misc.magicPower = 1;
 		misc.defPower = 1;
 		misc.racialType = Race.RaceType.HUMANOID;
@@ -350,7 +350,7 @@ public class RaceFactory {
 		misc.rarity = .7;
 		misc.insultList.add("Go, swim away!");
 		misc.baseMap = "mermaid";
-		misc.raceMaps.add("nuthin");
+		misc.raceMaps.add("-1");
 		misc.magicPower = 1;
 		misc.defPower = 1;
 		misc.racialType = Race.RaceType.HUMANOID;

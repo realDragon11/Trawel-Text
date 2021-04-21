@@ -336,7 +336,7 @@ public class extra {
 		
 		private static void detectInputString(String str) {
 			if (str.length() > 1) {
-				if (str.charAt(1) == " ".charAt(0)) {
+				if (Character.isDigit(str.charAt(0)) && str.charAt(1) == " ".charAt(0)) {
 					Networking.send("Input|" + str.charAt(0) +"|"+str+"|");
 				}
 				}

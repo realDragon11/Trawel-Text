@@ -95,7 +95,7 @@ public class mainGame {
 	
 	private void gameTypes() {
 		extra.println("Choose an adventure:");
-		extra.println("1 The DeathStrider");
+		extra.println("1 The DeathStrider (recommended)");
 		extra.println("2 rTrawel (experimental jrpg)");
 		//extra.println("2 Eoanan Sandbox");
 		//extra.println("3 Eoanan Wizard Mode");
