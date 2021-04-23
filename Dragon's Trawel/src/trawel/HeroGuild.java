@@ -9,7 +9,7 @@ import trawel.factions.Faction;
 
 public class HeroGuild extends Feature {
 	
-	public static float spentOnKno = 0f;
+	public static float hSpentOnKno = 0f;
 
 	public HeroGuild(String name){
 		this.name = name;
@@ -45,7 +45,7 @@ public class HeroGuild extends Feature {
 					public boolean go() {
 						while (true) {
 						//FSub spent = Player.player.factionSpent.getFacRep(Faction.HEROIC);
-						float spentf = spentOnKno;
+						float spentf = Player.player.hSpentOnKno;
 						/*if (spent == null) {
 							spentf = 0;
 						}else {
@@ -56,7 +56,7 @@ public class HeroGuild extends Feature {
 						extra.println("By a knowledge fragment? cost: " +extra.format2(cost) + "/"+extra.format2(spenda));
 						if (extra.yesNo()) {
 							if (cost <= spenda) {
-								spentOnKno += cost;
+								Player.player.hSpentOnKno += cost;
 								Player.player.factionSpent.addFactionRep(Faction.HEROIC,cost,0);
 								Player.bag.addNewDrawBane(DrawBane.KNOW_FRAG);
 							}
@@ -92,7 +92,7 @@ public class HeroGuild extends Feature {
 						return false;
 					}
 				});
-				mList.add(new MenuSelect() {
+				/*mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {
@@ -116,7 +116,7 @@ public class HeroGuild extends Feature {
 						}
 						return false;
 					}
-				});
+				});*/
 				mList.add(new MenuSelect() {
 
 					@Override

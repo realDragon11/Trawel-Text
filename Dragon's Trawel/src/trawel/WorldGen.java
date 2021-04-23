@@ -382,7 +382,7 @@ public class WorldGen {
 		tunka.addFeature(new Arena("tunka arena",7,1,50,17,21));
 		tunka.addFeature(new Graveyard("tunka graveyard", tunka));
 		tunka.addFeature(new Store(7,6));
-		tunka.addTravel();
+		tunka.addFeature(new RogueGuild("tunka rogue's guild"));
 		tunka.addTravel();
 		
 		Town repa = new Town("repa",8,teran,new Point(14,6));

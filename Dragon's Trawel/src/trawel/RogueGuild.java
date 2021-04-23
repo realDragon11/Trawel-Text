@@ -9,7 +9,7 @@ import trawel.factions.Faction;
 
 public class RogueGuild extends Feature {
 	
-	public static int launderCredits = 0;
+	
 
 	public RogueGuild(String name){
 		this.name = name;
@@ -150,7 +150,7 @@ public class RogueGuild extends Feature {
 
 					@Override
 					public String title() {
-						return "credits: " + RogueGuild.launderCredits;
+						return "credits: " + Player.player.launderCredits;
 					}
 				});
 				mList.add(new MenuSelect() {
@@ -168,7 +168,7 @@ public class RogueGuild extends Feature {
 						if (extra.yesNo()) {
 							if (cost <= Player.bag.getGold()) {
 								Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
-								launderCredits++;
+								Player.player.launderCredits++;
 							}
 						}else {
 							break;
@@ -193,7 +193,7 @@ public class RogueGuild extends Feature {
 						if (extra.yesNo()) {
 							if (cost <= spenda) {
 								Player.player.factionSpent.addFactionRep(Faction.ROGUE,cost,0);
-								launderCredits++;
+								Player.player.launderCredits++;
 							}
 						}else {
 							break;
@@ -241,7 +241,7 @@ public class RogueGuild extends Feature {
 
 					@Override
 					public String title() {
-						return "current emeralds and credits: " + Player.player.emeralds + " " + RogueGuild.launderCredits;
+						return "current emeralds and credits: " + Player.player.emeralds + " " + Player.player.launderCredits;
 					}
 				});
 				mList.add(new MenuSelect() {
@@ -253,9 +253,9 @@ public class RogueGuild extends Feature {
 
 					@Override
 					public boolean go() {
-						if (Player.player.emeralds > 0 && RogueGuild.launderCredits > 0) {
+						if (Player.player.emeralds > 0 && Player.player.launderCredits > 0) {
 							Player.player.emeralds--;
-							RogueGuild.launderCredits--;
+							Player.player.launderCredits--;
 							Player.player.rubies++;
 						}
 						return false;
@@ -270,9 +270,9 @@ public class RogueGuild extends Feature {
 
 					@Override
 					public boolean go() {
-						if (Player.player.emeralds > 0 && RogueGuild.launderCredits > 0) {
+						if (Player.player.emeralds > 0 && Player.player.launderCredits > 0) {
 							Player.player.emeralds--;
-							RogueGuild.launderCredits--;
+							Player.player.launderCredits--;
 							Player.player.sapphires++;
 						}
 						return false;
@@ -290,6 +290,7 @@ public class RogueGuild extends Feature {
 						if (Player.player.emeralds > 0) {
 							Player.player.emeralds--;
 							Player.bag.addGold(750);
+							Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
 						}
 						return false;
 					}
@@ -320,7 +321,7 @@ public class RogueGuild extends Feature {
 
 					@Override
 					public String title() {
-						return "current rubies and credits: " + Player.player.rubies + " " + RogueGuild.launderCredits;
+						return "current rubies and credits: " + Player.player.rubies + " " + Player.player.launderCredits;
 					}
 				});
 				mList.add(new MenuSelect() {
@@ -332,9 +333,9 @@ public class RogueGuild extends Feature {
 
 					@Override
 					public boolean go() {
-						if (Player.player.rubies > 0 && RogueGuild.launderCredits > 0) {
+						if (Player.player.rubies > 0 && Player.player.launderCredits > 0) {
 							Player.player.rubies--;
-							RogueGuild.launderCredits--;
+							Player.player.launderCredits--;
 							Player.player.emeralds++;
 						}
 						return false;
@@ -349,9 +350,9 @@ public class RogueGuild extends Feature {
 
 					@Override
 					public boolean go() {
-						if (Player.player.rubies > 0 && RogueGuild.launderCredits > 0) {
+						if (Player.player.rubies > 0 && Player.player.launderCredits > 0) {
 							Player.player.rubies--;
-							RogueGuild.launderCredits--;
+							Player.player.launderCredits--;
 							Player.player.sapphires++;
 						}
 						return false;
@@ -369,6 +370,7 @@ public class RogueGuild extends Feature {
 						if (Player.player.rubies > 0) {
 							Player.player.rubies--;
 							Player.bag.addGold(750);
+							Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
 						}
 						return false;
 					}
@@ -398,7 +400,7 @@ public class RogueGuild extends Feature {
 
 					@Override
 					public String title() {
-						return "current sapphires and credits: " + Player.player.sapphires + " " + RogueGuild.launderCredits;
+						return "current sapphires and credits: " + Player.player.sapphires + " " + Player.player.launderCredits;
 					}
 				});
 				mList.add(new MenuSelect() {
@@ -410,9 +412,9 @@ public class RogueGuild extends Feature {
 
 					@Override
 					public boolean go() {
-						if (Player.player.sapphires > 0 && RogueGuild.launderCredits > 0) {
+						if (Player.player.sapphires > 0 && Player.player.launderCredits > 0) {
 							Player.player.sapphires--;
-							RogueGuild.launderCredits--;
+							Player.player.launderCredits--;
 							Player.player.emeralds++;
 						}
 						return false;
@@ -427,9 +429,9 @@ public class RogueGuild extends Feature {
 
 					@Override
 					public boolean go() {
-						if (Player.player.sapphires > 0 && RogueGuild.launderCredits > 0) {
+						if (Player.player.sapphires > 0 && Player.player.launderCredits > 0) {
 							Player.player.sapphires--;
-							RogueGuild.launderCredits--;
+							Player.player.launderCredits--;
 							Player.player.rubies++;
 						}
 						return false;
@@ -447,6 +449,7 @@ public class RogueGuild extends Feature {
 						if (Player.player.sapphires > 0) {
 							Player.player.sapphires--;
 							Player.bag.addGold(750);
+							Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
 						}
 						return false;
 					}
