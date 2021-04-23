@@ -715,14 +715,9 @@ public class Combat {
 
 
 	private void setAttack(Person manOne, Person manTwo) {
-		//try {
-		manOne.setAttack(AIClass.chooseAttack(manOne.getStance().part(manOne, manTwo),manOne.getIntellect(),this,manOne,manTwo));}
-		/*catch (java.lang.ArrayIndexOutOfBoundsException e){
-	
-			int i = 0;
-			i++;
-			
-		}
+		manOne.setAttack(AIClass.chooseAttack(manOne.getStance().part(manOne, manTwo),manOne.getIntellect(),this,manOne,manTwo));
+		manOne.getNextAttack().blind(1 + manOne.getNextAttack().getSpeed()/1000.0);
 		
-	}*/
+	}
+		
 }

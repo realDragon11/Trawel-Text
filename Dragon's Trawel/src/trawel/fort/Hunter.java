@@ -51,12 +51,12 @@ public class Hunter extends FortFeature {
 
 	@Override
 	public int getDefenceRating() {
-		return size;
+		return (size/2);
 	}
 
 	@Override
 	public int getOffenseRating() {
-		return 6*size;
+		return 4*size;
 	}
 
 	@Override
