@@ -1,6 +1,6 @@
 package trawel;
 
-public class PlantSpot {
+public class PlantSpot implements java.io.Serializable{
 
 	public String contains = "";
 	public double timer = 0;
