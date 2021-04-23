@@ -18,7 +18,7 @@ public class HeroGuild extends Feature {
 	public void go() {
 		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|store|Hero's Guild|");
-		FSub sub = Player.player.getPerson().facRep.getFacRep(Faction.HEROIC);
+		
 		extra.menuGo(new MenuGenerator() {
 
 			@Override
@@ -28,7 +28,8 @@ public class HeroGuild extends Feature {
 
 					@Override
 					public String title() {
-						return "current reputation: " + sub == null ? "Unknown" : ""+(sub.forFac-sub.againstFac);
+						FSub sub = Player.player.getPerson().facRep.getFacRep(Faction.HEROIC);
+						return "current reputation: " + (sub == null ? "Unknown" : ""+extra.format2(sub.forFac-sub.againstFac));
 					}
 				});
 				mList.add(new MenuSelect() {
@@ -49,10 +50,10 @@ public class HeroGuild extends Feature {
 							spentf = spent.forFac;
 						}
 						float spenda = FBox.getSpendableFor(Player.player.getPerson().facRep.getFacRep(Faction.HEROIC));
-						float cost = (float)Math.pow(((spentf/10f)+1)*10,1.2f);
-						extra.println("By a knowledge fragment? cost: " +cost + "/"+spenda);
+						float cost = (float)Math.pow(((spentf/50f)+1)*10,1.1f);
+						extra.println("By a knowledge fragment? cost: " +extra.format2(cost) + "/"+extra.format2(spenda));
 						if (extra.yesNo()) {
-							if (cost >= spenda) {
+							if (cost <= spenda) {
 								Player.player.factionSpent.addFactionRep(Faction.HEROIC,cost,0);
 								Player.bag.addNewDrawBane(DrawBane.KNOW_FRAG);
 							}
