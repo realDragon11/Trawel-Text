@@ -1,6 +1,6 @@
 package trawel;
 
-public class Potion {
+public class Potion implements java.io.Serializable{
 
 	public int sips;
 	public Effect effect;

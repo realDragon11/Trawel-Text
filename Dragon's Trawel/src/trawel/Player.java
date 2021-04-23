@@ -4,6 +4,7 @@ import java.util.List;
 
 import trawel.earts.EArt;
 import trawel.earts.EArtBox;
+import trawel.factions.FBox;
 
 public class Player extends SuperPerson{
 	private Person person;
@@ -35,6 +36,8 @@ public class Player extends SuperPerson{
 	public boolean hasCult = false;
 	
 	public double townEventTimer = 10;
+	
+	public FBox factionSpent = new FBox();
 	
 	public Player(Person p) {
 		person = p;

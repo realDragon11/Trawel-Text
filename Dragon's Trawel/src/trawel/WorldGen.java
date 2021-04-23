@@ -318,7 +318,7 @@ public class WorldGen {
 		yena.addFeature(new Dungeon("Dungeon of Fame", yena,Dungeon.Shape.STANDARD,-1));
 		yena.addTravel();
 		yena.addTravel();
-		yena.addTravel();
+		yena.addFeature(new HeroGuild("yena hero's guild"));
 		yena.addFeature(new Champion(4));
 		yena.tTags.add(TownTag.ADVENTURE);
 		

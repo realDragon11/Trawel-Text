@@ -104,6 +104,15 @@ public class FBox implements java.io.Serializable{
 			extra.print(s.name.name + ": " + (int)(s.forFac - s.againstFac) + ",");
 		}
 		extra.println();
-		
+	}
+	
+	public static float getSpendableFor(FSub sub) {
+		if (sub == null) {return 0f;}
+		float total = sub.forFac-sub.againstFac;
+		FSub sub2 = Player.player.factionSpent.getFacRep(sub.name);
+		if (sub2 == null) {
+			return total;
+		}
+		return total-sub2.forFac;
 	}
 }
