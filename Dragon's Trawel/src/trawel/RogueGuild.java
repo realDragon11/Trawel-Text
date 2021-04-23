@@ -169,6 +169,7 @@ public class RogueGuild extends Feature {
 							if (cost <= Player.bag.getGold()) {
 								Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
 								Player.player.launderCredits++;
+								Player.bag.addGold(-cost);
 							}
 						}else {
 							break;
@@ -212,6 +213,30 @@ public class RogueGuild extends Feature {
 					@Override
 					public boolean go() {
 						launderE();
+						return false;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "launder rubies";
+					}
+
+					@Override
+					public boolean go() {
+						launderR();
+						return false;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "launder sapphires";
+					}
+
+					@Override
+					public boolean go() {
+						launderS();
 						return false;
 					}});
 				mList.add(new MenuSelect() {
