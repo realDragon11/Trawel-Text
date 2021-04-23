@@ -44,7 +44,7 @@ public class HeroGuild extends Feature {
 					@Override
 					public boolean go() {
 						while (true) {
-						FSub spent = Player.player.factionSpent.getFacRep(Faction.HEROIC);
+						//FSub spent = Player.player.factionSpent.getFacRep(Faction.HEROIC);
 						float spentf = spentOnKno;
 						/*if (spent == null) {
 							spentf = 0;
