@@ -318,7 +318,7 @@ public class Weapon extends Item {
 		switch (style) {
 		case 1:
 			extra.println(this.getName()
-			+ " hd: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+" value: " + (int)(this.getCost()*markup));
+			+ " hd/ad: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+" value: " + (int)(this.getCost()*markup));
 			if (this.IsEnchantedConstant()) {
 				this.getEnchant().display(1);
 			}
@@ -328,7 +328,7 @@ public class Weapon extends Item {
 			;break;
 		case 2:
 			extra.println(this.getName()
-			+ " hd: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+" value: " + (int)(this.getCost()*markup) + " kills: " +this.getKills());
+			+ " hd/ad: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+" value: " + (int)(this.getCost()*markup) + " kills: " +this.getKills());
 			if (this.IsEnchantedConstant()) {
 				this.getEnchant().display(2);
 			}

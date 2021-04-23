@@ -215,7 +215,7 @@ public class FortHall extends FortFeature {
 						public boolean go() {
 							if (Player.bag.getGold() >= (level*1000)) {
 								Player.bag.addGold(-(level*1000));
-								town.enqueneAdd(new FortFoundation(3));
+								town.addFeature(new FortFoundation(3));
 							}else {
 								extra.println("You can't afford a new large foundation.");
 							}
@@ -235,7 +235,7 @@ public class FortHall extends FortFeature {
 						public boolean go() {
 							if (Player.bag.getGold() >= (level*500)) {
 								Player.bag.addGold(-(level*500));
-								town.enqueneAdd(new FortFoundation(2));
+								town.addFeature(new FortFoundation(2));
 							}else {
 								extra.println("You can't afford a new medium foundation.");
 							}
@@ -255,7 +255,7 @@ public class FortHall extends FortFeature {
 						public boolean go() {
 							if (Player.bag.getGold() >= (level*250)) {
 								Player.bag.addGold(-(level*250));
-								town.enqueneAdd(new FortFoundation(1));
+								town.addFeature(new FortFoundation(1));
 							}else {
 								extra.println("You can't afford a new small foundation.");
 							}
