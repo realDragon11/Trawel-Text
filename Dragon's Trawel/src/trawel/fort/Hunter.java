@@ -15,7 +15,7 @@ import trawel.extra;
 import trawel.fort.SubSkill.Active;
 import trawel.fort.SubSkill.Type;
 
-public class Watchtower extends FortFeature {
+public class Hunter extends FortFeature {
 
 	
 	public int tier;
@@ -26,19 +26,18 @@ public class Watchtower extends FortFeature {
 	
 	public List<SubSkill> pickList = new ArrayList<SubSkill>();
 	
-	public Watchtower(int tier,int size) {
+	public Hunter(int tier,int size) {
 		this.tier = tier;
 		this.size = size;
 		laborer = new Laborer(LaborType.WATCH);
 		switch (size) {
-		case 1: this.name = "Small Watchtower";
-		laborer.lSkills.add(new LSkill(SubSkill.WATCH,2));
+		case 1: this.name = "Small Hunter's Den";
 		break;
-		case 3: this.name = "Large Watchtower";
-		laborer.lSkills.add(new LSkill(SubSkill.WATCH,12));break;
+		case 3: this.name = "Large Hunter's Den";
+		laborer.lSkills.add(new LSkill(SubSkill.WATCH,3));break;
 		case 2:
-			laborer.lSkills.add(new LSkill(SubSkill.WATCH,5));
-		default: this.name = "Watchtower";break;
+			laborer.lSkills.add(new LSkill(SubSkill.WATCH,1));
+		default: this.name = "Hunter's Den";break;
 		
 		}
 		tutorialText = "";
@@ -52,12 +51,12 @@ public class Watchtower extends FortFeature {
 
 	@Override
 	public int getDefenceRating() {
-		return 5*size;
+		return size;
 	}
 
 	@Override
 	public int getOffenseRating() {
-		return size;
+		return 6*size;
 	}
 
 	@Override
@@ -66,7 +65,7 @@ public class Watchtower extends FortFeature {
 			extra.println("You do not own this fort.");
 			return;
 		}
-		extra.println("The watch is on vigil.");
+		extra.println("The hunter's are out hunting.");
 		
 	}
 

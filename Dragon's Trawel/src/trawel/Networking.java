@@ -17,6 +17,7 @@ public class Networking {
 	 private static boolean connected = false;
 	 private static BattleType inBattle = BattleType.NONE;
 	 private static String songType = "main";
+	public static boolean autoconnectSilence = false;
 	 
 	 public enum BattleType{
 		 NONE, NORMAL, BOSS;
@@ -40,6 +41,7 @@ public class Networking {
 			}
 	
 	public static void autoConnect() {
+		autoconnectSilence = true;
 		boolean doit = true;
 		int value= 6510;
 		extra.println("Connecting...");

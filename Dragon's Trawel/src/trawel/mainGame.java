@@ -157,7 +157,7 @@ public class mainGame {
 		new WeaponAttackFactory();
 		new TownFlavorFactory();
 		story = new StoryNone();
-		extra.println("Dragon's Trawel v0.6.0");
+		extra.println("Dragon's Trawel v0.6.1");
 		extra.println(
 				" ___________  ___  _    _ _____ _     \r\n" + 
 				"|_   _| ___ \\/ _ \\| |  | |  ___| |    \r\n" + 
@@ -195,7 +195,7 @@ public class mainGame {
 			extra.println("Trawel has encountered an exception. Please report to realDragon. More details can be found on the command prompt.");
 			e.printStackTrace();
 		}
-		main(args);
+		//main(args);
 		
 	}
 	

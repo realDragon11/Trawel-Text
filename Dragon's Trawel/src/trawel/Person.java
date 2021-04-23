@@ -219,7 +219,7 @@ public class Person implements java.io.Serializable{
 		if (this.hasEffect(Effect.CURSE)) {
 			hp-=10*level;
 		}
-		if (this.hasEffect(Effect.HEARTY)) {
+		if (this.hasEffect(Effect.HEARTY) || this.hasEffect(Effect.FORGED)) {
 			hp+=3*level;
 		}
 		hp+=(edrLevel*6)*( hasEnduranceTraining ? 2 :1);

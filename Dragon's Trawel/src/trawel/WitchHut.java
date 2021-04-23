@@ -65,6 +65,7 @@ public class WitchHut extends Feature{
 				int bloods = (int) dbs.stream().filter(d -> d.equals(DrawBane.BLOOD)).count();
 				int virgins = (int) dbs.stream().filter(d -> d.equals(DrawBane.VIRGIN)).count();
 				int food = meats + apples + garlics + honeys + pumpkins + pumpkins + eggcorns+truffles + (virgins*2);
+				int lflames =  (int) dbs.stream().filter(d -> d.equals(DrawBane.LIVING_FLAME)).count();
 				int filler = apples + woods + waxs;
 				
 				if (Player.player.eaBox.witchTrainLevel > 2) {
@@ -99,6 +100,9 @@ public class WitchHut extends Feature{
 				if (mGuts > 0 && batWings >0) {
 					Player.player.setFlask(new Potion(Effect.R_AIM,batWings+mGuts+filler));
 					return;
+				}
+				if (lflames > 0 && food >=1) {
+					Player.player.setFlask(new Potion(Effect.FORGED,lflames+food+filler));
 				}
 				if (food >= 3) {
 					Player.player.setFlask(new Potion(Effect.HEARTY,food+filler));

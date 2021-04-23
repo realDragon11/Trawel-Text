@@ -107,6 +107,25 @@ public class FortFoundation extends FortFeature {
 								return true;
 							}
 							break;
+						case MEAT:
+							switch (size) {
+							case 1:
+								buildCode = 6;
+								name = "Small Hunter's Den in progress";
+								timeLeft = 24.0*1;
+								return true;
+							case 2:
+								buildCode = 7;
+								name = "Hunter's Den in progress";
+								timeLeft = 24.0*3;
+								return true;
+							case 3:
+								buildCode = 8;
+								name = "Large Hunter's Den in progress";
+								timeLeft = 24.0*6;
+								return true;
+							}
+							break;
 						}
 						Player.bag.addNewDrawBane(db);
 						extra.println("You can't build a building with this drawbane and foundation size.");
@@ -142,6 +161,15 @@ public class FortFoundation extends FortFeature {
 					break;
 				case 5:
 					town.enqueneAdd(new Watchtower(town.getTier(),3));
+					break;
+				case 6:
+					town.enqueneAdd(new Hunter(town.getTier(),1));
+					break;
+				case 7:
+					town.enqueneAdd(new Hunter(town.getTier(),2));
+					break;
+				case 8:
+					town.enqueneAdd(new Hunter(town.getTier(),3));
 					break;
 				}
 				town.enqueneRemove(this);

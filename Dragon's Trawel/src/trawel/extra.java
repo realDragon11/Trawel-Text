@@ -148,7 +148,7 @@ public class extra {
 				extra.println("1 yes");
 				extra.println("9 no");
 				Networking.sendStrong("Entry|yesno|");
-				if (Networking.connected() && mainGame.GUIInput) {
+				if ((Networking.connected() && mainGame.GUIInput)  || Networking.autoconnectSilence) {
 					//while(true) {
 						int ini = Networking.nextInt();
 						while(ini != 1 && ini != 9) {
@@ -208,6 +208,7 @@ public class extra {
 					return false;
 				}
 				extra.println("Yes or No?");
+						
 				}
 			}
 		}
@@ -219,7 +220,7 @@ public class extra {
 			String str;
 			int in =0;
 			Networking.sendStrong("Entry|Activate|" + max + "|");
-			if (Networking.connected() && mainGame.GUIInput) {
+			if ((Networking.connected() && mainGame.GUIInput) || Networking.autoconnectSilence) {
 				int ini=  Networking.nextInt();
 				while(ini < 1 || ini > max) {
 					extra.println("Please type a number from 1 to " + max + ".");
@@ -295,6 +296,7 @@ public class extra {
 			
 			
 			}else {
+				
 			do{
 			str = extra.inString(); 
 			try {

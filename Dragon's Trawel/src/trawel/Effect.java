@@ -16,7 +16,8 @@ public enum Effect implements java.io.Serializable {
 	R_AIM("Reactive Aim","Taking damage increases aim slightly.",false,false),
 	BEES("BEEEES","Bees sting you occasionally.",true,false),
 	BEE_SHROUD("Bee Shroud","Higher evasion. When you dodge an attack, sting the opponent.",false,false),
-	B_MARY("Bloody Mary","Start the battle bleeding- whenever someone attacks you, their bleeding heals you.",false,false),;
+	B_MARY("Bloody Mary","Start the battle bleeding- whenever someone attacks you, their bleeding heals you.",false,false),
+	FORGED("Forged","Increased health and armor regen.",false,false), ;
 	
 	private String name,desc;
 	private boolean lasts, stacks;
