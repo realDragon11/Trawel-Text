@@ -22,7 +22,7 @@ public class Player extends SuperPerson{
 	public int merchantLevel = 1;
 	public Town lastTown = null;
 	private double merchantPoints = 0;
-	public int emeralds = 0;
+	public int emeralds = 0, rubies = 0, sapphires = 0;
 	private Potion flask;
 	public float forceRelation = 0.0f;
 	public int forceRewardCount = 0;
