@@ -42,6 +42,8 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 	
 	private void generate(int size) {
 		switch (idNum) {
+		case -3: name = "sapphire cluster"; interactString = "mine sapphires";break;
+		case -2: name = "ruby cluster"; interactString = "mine rubies";break;
 		case -1: name = "emerald cluster"; interactString = "mine emeralds";break;
 		case 0: name = ""; interactString = "";break;
 		case 1: name = randomLists.randomWarrior(); interactString = "challenge " + name;
@@ -83,6 +85,8 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 	@Override
 	protected boolean interact() {
 		switch(idNum) {
+		case -3: saph1();break;
+		case -2: rubies1();break;
 		case -1: emeralds1();break;
 		case 1: duelist();break;
 		case 2: extra.println("You wash yourself in the "+name+".");Player.player.getPerson().washAll();break;
@@ -193,12 +197,36 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 		if (state == 0) {
 			Networking.sendStrong("Achievement|ore1|");
 			Player.player.emeralds++;
-			extra.println("You mine the vein for and claim an emerald!");
+			extra.println("You mine the vein and claim an emerald!");
 					state = 1;
 					name = "empty vein";
 					interactString = "examine empty vein";
 			parent.removeVein();
 			}else {extra.println("The emeralds have already been mined.");}
+	}
+	
+	private void rubies1() {
+		if (state == 0) {
+			Networking.sendStrong("Achievement|ore1|");
+			Player.player.rubies++;
+			extra.println("You mine the vein and claim a ruby!");
+					state = 1;
+					name = "empty vein";
+					interactString = "examine empty vein";
+			parent.removeVein();
+			}else {extra.println("The rubies have already been mined.");}
+	}
+	
+	private void saph1() {
+		if (state == 0) {
+			Networking.sendStrong("Achievement|ore1|");
+			Player.player.sapphires++;
+			extra.println("You mine the vein and claim a sapphire!");
+					state = 1;
+					name = "empty vein";
+					interactString = "examine empty vein";
+			parent.removeVein();
+			}else {extra.println("The sapphires have already been mined.");}
 	}
 	
 	private void goldVein1() {

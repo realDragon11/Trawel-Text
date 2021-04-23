@@ -61,7 +61,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 	private void generate(int size) {
 		switch (idNum) {
 		case -1:name = extra.choose("stairs","ladder"); interactString = "traverse "+name;forceGo = true;break;
-		case 1: storage1 = extra.choose("chest","chest","chest"); name = (String) storage1; interactString = "open "+name; storage2 = RaceFactory.makeMimic(1);break;
+		case 1: storage1 = extra.choose("old","vibrant","simple","") + " chest"; name = (String) storage1; interactString = "open "+name; storage2 = RaceFactory.makeMimic(1);break;
 		case 2: name = extra.choose("dungeon guard","gatekeeper","dungeon guard"); interactString = "ERROR"; forceGo = true;
 		storage1 = RaceFactory.getDGuard(level);break;
 		case 3: name = extra.choose("locked door","barricaded door","padlocked door"); interactString = "examine broken door";forceGo = true;break;
@@ -75,7 +75,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 		forceGo = true;
 		state = 0;
 		break;
-		case 5: storage1 = extra.choose("chest"); name = (String) storage1; interactString = "open "+name;
+		case 5: storage1 = extra.choose("old","vibrant","simple","") + " chest"; name = (String) storage1; interactString = "open "+name;
 		storage2 = RaceFactory.makeMimic(level);
 		break;
 		case 6:
@@ -137,9 +137,19 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 					Player.player.emeralds++;
 					extra.println("You open the " +storage1 + " and find an emerald!");
 				}else {
-					int gold = extra.randRange(100,200)*level;
-					Player.bag.addGold(gold);
-					extra.println("You open the " +storage1 + " and find " + gold + " gold.");
+					if (extra.chanceIn(1, 10)) {
+						Player.player.rubies++;
+						extra.println("You open the " +storage1 + " and find a ruby!");
+					}else {
+						if (extra.chanceIn(1, 10)) {
+							Player.player.sapphires++;
+							extra.println("You open the " +storage1 + " and find a sapphire!");
+						}else {
+							int gold = extra.randRange(100,200)*level;
+							Player.bag.addGold(gold);
+							extra.println("You open the " +storage1 + " and find " + gold + " gold.");
+						}
+					}
 				}
 					state = 1;
 					name = "empty " + storage1;

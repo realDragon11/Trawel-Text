@@ -211,14 +211,14 @@ public class RogueGuild extends Feature {
 
 					@Override
 					public boolean go() {
-						
+						launderE();
 						return false;
 					}});
 				mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "leave";
+						return "back";
 					}
 
 					@Override
@@ -232,8 +232,239 @@ public class RogueGuild extends Feature {
 	}
 	
 	public void launderE() {
-		
-		
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return "current emeralds and credits: " + Player.player.emeralds + " " + RogueGuild.launderCredits;
+					}
+				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "launder a ruby";
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.player.emeralds > 0 && RogueGuild.launderCredits > 0) {
+							Player.player.emeralds--;
+							RogueGuild.launderCredits--;
+							Player.player.rubies++;
+						}
+						return false;
+					}
+				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "launder a sapphire";
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.player.emeralds > 0 && RogueGuild.launderCredits > 0) {
+							Player.player.emeralds--;
+							RogueGuild.launderCredits--;
+							Player.player.sapphires++;
+						}
+						return false;
+					}
+				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "quickly sell an emerald (750 gold)";
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.player.emeralds > 0) {
+							Player.player.emeralds--;
+							Player.bag.addGold(750);
+						}
+						return false;
+					}
+				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}
+				});
+				return mList;
+			}});
+	}
+	
+	public void launderR() {
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return "current rubies and credits: " + Player.player.rubies + " " + RogueGuild.launderCredits;
+					}
+				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "launder an emerald";
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.player.rubies > 0 && RogueGuild.launderCredits > 0) {
+							Player.player.rubies--;
+							RogueGuild.launderCredits--;
+							Player.player.emeralds++;
+						}
+						return false;
+					}
+				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "launder a sapphire";
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.player.rubies > 0 && RogueGuild.launderCredits > 0) {
+							Player.player.rubies--;
+							RogueGuild.launderCredits--;
+							Player.player.sapphires++;
+						}
+						return false;
+					}
+				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "quickly sell a ruby (750 gold)";
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.player.rubies > 0) {
+							Player.player.rubies--;
+							Player.bag.addGold(750);
+						}
+						return false;
+					}
+				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}
+				});
+				return mList;
+			}});
+	}
+	public void launderS() {
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return "current sapphires and credits: " + Player.player.sapphires + " " + RogueGuild.launderCredits;
+					}
+				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "launder an emerald";
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.player.sapphires > 0 && RogueGuild.launderCredits > 0) {
+							Player.player.sapphires--;
+							RogueGuild.launderCredits--;
+							Player.player.emeralds++;
+						}
+						return false;
+					}
+				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "launder a ruby";
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.player.sapphires > 0 && RogueGuild.launderCredits > 0) {
+							Player.player.sapphires--;
+							RogueGuild.launderCredits--;
+							Player.player.rubies++;
+						}
+						return false;
+					}
+				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "quickly sell a sapphire (750 gold)";
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.player.sapphires > 0) {
+							Player.player.sapphires--;
+							Player.bag.addGold(750);
+						}
+						return false;
+					}
+				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}
+				});
+				return mList;
+			}});
 	}
 
 }
