@@ -221,7 +221,7 @@ public class WizardTower extends FortFeature {
 						return false;
 					}
 				});
-				((MenuSelectNumber)(mList.get(mList.size()))).number = i;
+				((MenuSelectNumber)(mList.get(mList.size()-1))).number = i;
 			}
 			
 			return mList;
@@ -274,7 +274,7 @@ public class WizardTower extends FortFeature {
 						return false;
 					}
 				});
-				((MenuSelectNumber)(mList.get(mList.size()))).number = i;
+				((MenuSelectNumber)(mList.get(mList.size()-1))).number = i;
 			}
 			
 			return mList;

@@ -222,7 +222,7 @@ public class Forge extends FortFeature {
 						return false;
 					}
 				});
-				((MenuSelectNumber)(mList.get(mList.size()))).number = i;
+				((MenuSelectNumber)(mList.get(mList.size()-1))).number = i;
 			}
 			
 			return mList;
@@ -252,7 +252,7 @@ public class Forge extends FortFeature {
 			}
 			pickList.clear();
 			for (SubSkill s: SubSkill.values()) {
-				if (s.act.equals(Active.BATTLE) && s.type.equals(Type.WIZARD)) {
+				if (s.act.equals(Active.BATTLE) && s.type.equals(Type.BLACKSMITH)) {
 					pickList.add(s);
 				}
 			}
@@ -275,7 +275,7 @@ public class Forge extends FortFeature {
 						return false;
 					}
 				});
-				((MenuSelectNumber)(mList.get(mList.size()))).number = i;
+				((MenuSelectNumber)(mList.get(mList.size()-1))).number = i;
 			}
 			
 			return mList;
