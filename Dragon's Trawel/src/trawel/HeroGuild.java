@@ -53,7 +53,7 @@ public class HeroGuild extends Feature {
 						}*/
 						float spenda = FBox.getSpendableFor(Player.player.getPerson().facRep.getFacRep(Faction.HEROIC));
 						float cost = (float)Math.pow(((spentf/50f)+1)*10,1.1f);
-						extra.println("By a knowledge fragment? cost: " +extra.format2(cost) + "/"+extra.format2(spenda));
+						extra.println("Buy a knowledge fragment? cost: " +extra.format2(cost) + "/"+extra.format2(spenda));
 						if (extra.yesNo()) {
 							if (cost <= spenda) {
 								Player.player.hSpentOnKno += cost;
@@ -104,7 +104,7 @@ public class HeroGuild extends Feature {
 						while (true) {
 						int cost = 5;
 						float spenda = FBox.getSpendableFor(Player.player.getPerson().facRep.getFacRep(Faction.HEROIC));
-						extra.println("Donatet a ruby? You have " + Player.player.rubies);
+						extra.println("Donate a ruby? You have " + Player.player.rubies);
 						if (extra.yesNo()) {
 							if (Player.player.rubies > 0) {
 								Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,cost,0);

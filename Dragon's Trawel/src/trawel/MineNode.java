@@ -24,7 +24,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 			idNum = 3;//gold7
 		}
 		if (extra.chanceIn(1, 30)) {
-			idNum = -1;//emeralds
+			idNum = extra.choose(-1,-2,-3);//emeralds
 		}
 		if (idNum == 3) {
 			p.addVein();
