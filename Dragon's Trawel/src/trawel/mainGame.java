@@ -191,11 +191,14 @@ public class mainGame {
 		}*/
 		
 		while (true) { new mainGame();}
-		}catch(Exception e) {
+		}//catch (Exception )
+		catch(Exception e) {
 			extra.println("Trawel has encountered an exception. Please report to realDragon. More details can be found on the command prompt.");
 			e.printStackTrace();
+			if (!e.getMessage().equals("invalid input stream error") && !e.getMessage().equals("No line found")) {
+			main(args);}
 		}
-		//main(args);
+		//
 		
 	}
 	
