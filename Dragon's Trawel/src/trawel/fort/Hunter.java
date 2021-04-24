@@ -65,7 +65,7 @@ public class Hunter extends FortFeature {
 			extra.println("You do not own this fort.");
 			return;
 		}
-		extra.println("The hunter's are out hunting.");
+		extra.println("The hunters are out hunting.");
 		
 	}
 

@@ -246,7 +246,7 @@ public class WizardTower extends FortFeature {
 					return true;
 				}
 			});
-			if (downTimeSkill != null) {
+			if (battleSkill != null) {
 				return mList;
 			}
 			pickList.clear();
