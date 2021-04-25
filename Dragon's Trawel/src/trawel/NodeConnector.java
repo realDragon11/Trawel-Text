@@ -20,6 +20,8 @@ public abstract class NodeConnector implements Serializable {
 	public boolean passing = false;
 	public int visited = 0;
 	
+	public static NodeConnector lastNode = null;
+	
 	public ArrayList<NodeConnector> getConnects() {
 		return connects;
 	}
@@ -92,6 +94,9 @@ public abstract class NodeConnector implements Serializable {
 					extra.print(" up");
 				}
 			}
+			if (n.equals(lastNode)) {
+				extra.print(" (back) ");
+			}
 			extra.println();
 			if (Player.hasSkill(Skill.TIERSENSE)) {
 				extra.println("Tier: " + n.getLevel());
@@ -112,6 +117,7 @@ public abstract class NodeConnector implements Serializable {
 		}j++;
 		for (NodeConnector n: connects) {
 			if (in == j) {
+				lastNode = this;
 				n.go();
 				return;
 			}
