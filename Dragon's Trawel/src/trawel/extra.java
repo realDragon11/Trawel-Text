@@ -462,39 +462,30 @@ public class extra {
 			List<MenuItem> mList = new ArrayList<MenuItem>();
 			mList = mGen.gen();
 			int v = 1;
-			while(v < mList.size()) {
+			mGen.page = 0;
+			while (v < 8 && v < mList.size()) {
 				MenuItem m = mList.get(v);
 				if (m.canClick()) {
 				extra.println(v + " " + m.title());
-				v++;
-				if (v%7==0) {
-					if (v==mList.size()-1) {
-					}else {
-						
-					mList.add(v+1, new MenuSelect() {
-
-						@Override
-						public String title() {
-							return "next page";
-						}
-
-						@Override
-						public boolean go() {
-							mGen.page++;
-							return false;
-						}});
-					
-					}
-				}
-				}else {
+				v++;}else {
 					extra.println(m.title());
 				}
 			}
+			
+			extra.println(v + " next page");
+			v++;
+			extra.println(v + " last page");
+			v++;
 			while (true) {
 				List<MenuItem> subList = new ArrayList<MenuItem>();
-				mList.stream().filter(m -> m.canClick() == true).forEach(subList::add);
-				int val = extra.inInt(Math.min((v%9)+2,9))-1;
-				boolean ret = subList.get(val+(page*9)).go();
+				for (int i = mGen.page*9; i < (mGen.page+1)*9 && i < mList.size() && (i%(((mGen.page+1)*7)-(mGen.page*9)) != 0 ^ i%9 == 0);i++) {
+					if (mList.get(i).canClick() == true) {
+						subList.add(mList.get(i));	
+					}
+				}
+				
+				int val = extra.inInt(subList.size())-1;
+				boolean ret = subList.get(val).go();
 				if (ret) {
 					return val;
 				}
@@ -508,6 +499,8 @@ public class extra {
 						}
 				}
 			}
+		//int val = extra.inInt(Math.min((v%9)+2,9))-1;
+		//boolean ret = subList.get(val+(mGen.page*9)).go();
 		}
 		
 		public static float lerp(float a, float b, float f) 
