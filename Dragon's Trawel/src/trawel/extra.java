@@ -458,7 +458,7 @@ public class extra {
 			}
 		}
 		
-		public static int menuGoPaged(MenuGenerator mGen) {
+		public static int menuGoPaged(MenuGeneratorPaged mGen) {
 			List<MenuItem> mList = new ArrayList<MenuItem>();
 			mList = mGen.gen();
 			int v = 1;
@@ -483,7 +483,34 @@ public class extra {
 						subList.add(mList.get(i));	
 					}
 				}
-				
+				if (mGen.page != mGen.maxPage) {
+					subList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "next page";
+						}
+
+						@Override
+						public boolean go() {
+							mGen.page++;
+							return false;
+						}});
+				}
+				if (mGen.page != 0) {
+					subList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "last page";
+						}
+
+						@Override
+						public boolean go() {
+							mGen.page--;
+							return false;
+						}});
+				}
 				int val = extra.inInt(subList.size())-1;
 				boolean ret = subList.get(val).go();
 				if (ret) {
