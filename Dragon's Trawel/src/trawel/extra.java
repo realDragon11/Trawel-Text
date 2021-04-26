@@ -515,14 +515,7 @@ public class extra {
 					return val;
 				}
 				mList = mGen.gen();
-				v = 1;
-				for (MenuItem m: mList) {
-					if (m.canClick()) {
-						extra.println(v + " " + m.title());
-						v++;}else {
-							extra.println(m.title());
-						}
-				}
+
 			}
 		//int val = extra.inInt(Math.min((v%9)+2,9))-1;
 		//boolean ret = subList.get(val+(mGen.page*9)).go();
