@@ -461,26 +461,20 @@ public class extra {
 		public static int menuGoPaged(MenuGeneratorPaged mGen) {
 			List<MenuItem> mList = new ArrayList<MenuItem>();
 			mList = mGen.gen();
-			int v = 1;
-			mGen.page = 0;
-			while (v < 8 && v < mList.size()) {
-				MenuItem m = mList.get(v);
-				if (m.canClick()) {
-				extra.println(v + " " + m.title());
-				v++;}else {
-					extra.println(m.title());
-				}
-			}
 			
-			extra.println(v + " next page");
-			v++;
-			extra.println(v + " last page");
-			v++;
+			mGen.page = 0;
 			while (true) {
+				int v = 1;
 				List<MenuItem> subList = new ArrayList<MenuItem>();
-				for (int i = mGen.page*9; i < (mGen.page+1)*9 && i < mList.size() && (i%(((mGen.page+1)*7)-(mGen.page*9)) != 0 ^ i%9 == 0);i++) {
+				for (int i = mGen.page*9; i < (mGen.page+1)*9 && i < mList.size() && (i%(((mGen.page+1)*7)-(mGen.page*9)) != 0 ^ i%9 == 0);) {
+					
 					if (mList.get(i).canClick() == true) {
-						subList.add(mList.get(i));	
+						subList.add(mList.get(i));
+						extra.println(v + " " +mList.get(i).title());
+						i++;
+						v++;
+					}else {
+						extra.println(mList.get(i).title());
 					}
 				}
 				if (mGen.page != mGen.maxPage) {
@@ -496,6 +490,8 @@ public class extra {
 							mGen.page++;
 							return false;
 						}});
+					extra.println(v + " " + subList.get(subList.size()-1));
+					v++;
 				}
 				if (mGen.page != 0) {
 					subList.add(new MenuSelect() {
@@ -510,6 +506,8 @@ public class extra {
 							mGen.page--;
 							return false;
 						}});
+					extra.println(v + " " + subList.get(subList.size()-1));
+					v++;
 				}
 				int val = extra.inInt(subList.size())-1;
 				boolean ret = subList.get(val).go();
