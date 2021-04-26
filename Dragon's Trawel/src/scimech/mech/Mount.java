@@ -9,6 +9,7 @@ public abstract class Mount implements TurnSubscriber{
 
 	protected int slots, heat = 0;
 	protected List<Fixture> fixtures = new ArrayList<Fixture>();
+	public Mech currentMech;
 	
 	@Override
 	public void activate(Target t, TurnSubscriber ts) {
@@ -20,7 +21,8 @@ public abstract class Mount implements TurnSubscriber{
 	}
 	
 	public void takeHeat(int amount) {
-		
+		heat+=amount;
+		currentMech.takeHeat(amount);
 	}
 	
 	public void roundStart() {
@@ -30,6 +32,8 @@ public abstract class Mount implements TurnSubscriber{
 			}else {
 				f.heatCheck(heat);
 			}
+			f.roundStart();
 		}
+		heat /=2;
 	}
 }

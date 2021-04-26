@@ -2,8 +2,10 @@ package trawel;
 
 import java.util.List;
 
-public interface MenuGenerator {
+public abstract class MenuGenerator {
 
 	
-	public List<MenuItem> gen();
+	public abstract List<MenuItem> gen();
+	
+	public int page = 0;//unfortunately had to make it a class for this
 }

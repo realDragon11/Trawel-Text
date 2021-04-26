@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 
@@ -442,6 +443,58 @@ public class extra {
 				int val = extra.inInt(v)-1;
 				boolean ret = subList.get(val).go();
 				//mList = mGen.gen();
+				if (ret) {
+					return val;
+				}
+				mList = mGen.gen();
+				v = 1;
+				for (MenuItem m: mList) {
+					if (m.canClick()) {
+						extra.println(v + " " + m.title());
+						v++;}else {
+							extra.println(m.title());
+						}
+				}
+			}
+		}
+		
+		public static int menuGoPaged(MenuGenerator mGen) {
+			List<MenuItem> mList = new ArrayList<MenuItem>();
+			mList = mGen.gen();
+			int v = 1;
+			while(v < mList.size()) {
+				MenuItem m = mList.get(v);
+				if (m.canClick()) {
+				extra.println(v + " " + m.title());
+				v++;
+				if (v%7==0) {
+					if (v==mList.size()-1) {
+					}else {
+						
+					mList.add(v+1, new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "next page";
+						}
+
+						@Override
+						public boolean go() {
+							mGen.page++;
+							return false;
+						}});
+					
+					}
+				}
+				}else {
+					extra.println(m.title());
+				}
+			}
+			while (true) {
+				List<MenuItem> subList = new ArrayList<MenuItem>();
+				mList.stream().filter(m -> m.canClick() == true).forEach(subList::add);
+				int val = extra.inInt(Math.min((v%9)+2,9))-1;
+				boolean ret = subList.get(val+(page*9)).go();
 				if (ret) {
 					return val;
 				}
