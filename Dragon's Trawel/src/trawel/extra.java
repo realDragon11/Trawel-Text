@@ -421,6 +421,9 @@ public class extra {
 		public static double clamp(double d, double min, double max) {
 			return Math.min(max, Math.max(d, min));
 		}
+		public static int clamp(int d, int min, int max) {
+			return Math.min(max, Math.max(d, min));
+		}
 
 		public static int menuGo(MenuGenerator mGen) {
 			List<MenuItem> mList = new ArrayList<MenuItem>();
