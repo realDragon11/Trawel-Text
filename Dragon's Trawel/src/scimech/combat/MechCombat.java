@@ -44,6 +44,7 @@ public class MechCombat {
 				}});
 			while (turnOrder.size() > 0) {
 				activeMech().activate(null,null);
+				turnOrder.remove(0);
 			}
 		}
 	}

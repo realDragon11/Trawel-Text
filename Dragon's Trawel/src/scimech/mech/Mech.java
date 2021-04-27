@@ -304,7 +304,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 	}
 	
 	public boolean checkFire() {
-		return hp > 0;
+		return hp <= 0;
 	}
 	
 	@Override
