@@ -1,5 +1,11 @@
 package scimech.mech;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import trawel.MenuGenerator;
+import trawel.MenuItem;
+import trawel.MenuLine;
 import trawel.MenuSelect;
 import trawel.extra;
 
@@ -23,13 +29,20 @@ public abstract class Fixture implements TurnSubscriber{
 		damage = extra.clamp(damage+toTake, 0, 100);
 	}
 	
+	public float rating() {
+		int total = ((100-damage)/100);
+		if (damage < 80 && overclocked) {
+			total += 0.2f;
+		}
+		return total;
+	}
 	
 	public class MenuFixture extends MenuSelect {//can be extended further
 
 		public Fixture fix;
 		@Override
 		public String title() {
-			String damString = "";
+			String damString = null;
 			if (damage > 30) {
 				if (damage > 60) {
 					if (damage > 90) {
@@ -41,17 +54,87 @@ public abstract class Fixture implements TurnSubscriber{
 					damString = "scratched";
 				}
 			}
-			return fix.getName() + ": " + (fix.powered ? "on" : "off") + (fix.overclocked ? "OVERCLOCKED" : "") + " " + damString;
+			return fix.getName() + ": " + (fix.powered ? "on" : "off") + (fix.overclocked ? "OVERCLOCKED" : "") + (damString == null ? "" : " " + damString);
 		}
 
 		@Override
 		public boolean go() {
-			// TODO Auto-generated method stub
+			fix.examine();
 			return false;
 		}}
-
-
-	public abstract String getName();
 	
+	public void examine() {
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						String damString = "";
+						if (damage > 30) {
+							if (damage > 60) {
+								if (damage > 90) {
+									damString = "destroyed";
+								}else {
+									damString = "damaged";
+								}
+							}else {
+								damString = "scratched";
+							}
+						}
+						return getName() + ": " + (powered ? "on" : "off") + (overclocked ? "OVERCLOCKED" : "") + (damString == null ? "" : " " + damString);
+					}
+				});
+				
+				mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return getDescription();
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "toggle power: " + getEnergyDraw();
+					}
+
+					@Override
+					public boolean go() {
+						powered = !powered;
+						return false;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "toggle overclock";
+					}
+
+					@Override
+					public boolean go() {
+						overclocked = !overclocked;
+						return false;
+					}});
+				return mList;
+			}});
+		
+	}
+	public abstract String getName();
 	public abstract int getEnergyDraw();
+	public abstract String getDescription();
 }

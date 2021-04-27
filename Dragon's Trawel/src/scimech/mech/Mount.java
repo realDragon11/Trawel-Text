@@ -89,4 +89,36 @@ public abstract class Mount implements TurnSubscriber{
 			}});
 		
 	}
+	public abstract String getName();
+	
+	public class MenuMount extends MenuSelect {//can be extended further
+
+		@Override
+		public String title() {
+			int damageSum = 0;
+			for (Fixture f: fixtures) {
+				damageSum += f.damage;
+			}
+			damageSum/=fixtures.size();
+			String damString = null;
+			if (damageSum > 30) {
+				if (damageSum > 60) {
+					if (damageSum > 90) {
+						damString = "destroyed";
+					}else {
+						damString = "damaged";
+					}
+				}else {
+					damString = "scratched";
+				}
+			}
+			return "heat: "  + heat + " draw: " + getEnergyDraw() + (damString == null ? "" : " " + damString);
+		}
+		
+
+		@Override
+		public boolean go() {
+			examine();
+			return false;
+		}}
 }
