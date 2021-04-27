@@ -6,6 +6,7 @@ import java.util.List;
 import scimech.combat.MechCombat;
 import scimech.combat.Target;
 import scimech.mech.Fixture.MenuFixture;
+import scimech.mech.Mech.MenuMechTarget;
 import trawel.MenuGenerator;
 import trawel.MenuGeneratorPaged;
 import trawel.MenuItem;
@@ -120,7 +121,10 @@ public abstract class Mount implements TurnSubscriber, Target{
 	public boolean targeting() {
 		List<Mech> enemies = MechCombat.enemies(this.currentMech);
 		fired = true;
-		
+		for (Mech e: enemies) {
+			MenuMechTarget mm = e.new MenuMechTarget();
+			mm.owner = e;
+		}
 		MechCombat.mc.t = null;
 		return fired;//TODO: Method stubby wubby
 	}

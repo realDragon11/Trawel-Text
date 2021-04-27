@@ -169,6 +169,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 	
 	public class MenuMechTarget extends MenuSelect {//can be extended further
 
+		protected Mech owner;
 		@Override
 		public String title() {
 			return callsign + " ("+getName()+") " + "/"+pilot.getName() + " hp: " + hp + "/" + getMaxHP();
@@ -177,8 +178,49 @@ public abstract class Mech implements TurnSubscriber, Target{
 
 		@Override
 		public boolean go() {
-			return targetMenu();
+			return targetMenu(this);
 		}}
 	
-	public 
+	public boolean targetMenu(MenuMechTarget menuMechTarget) {
+		extra.menuGoPaged(new MenuGeneratorPaged() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return "targeting: " +menuMechTarget.title();
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "cancel";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "target mech";
+					}
+
+					@Override
+					public boolean go() {
+						MechCombat.mc.t = ;
+						return true;
+					}});
+				return mList;
+			}});
+		if (MechCombat.mc.t != null) {
+			return true;
+		}
+		return false;
+	}
 }
