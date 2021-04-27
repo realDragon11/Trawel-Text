@@ -11,6 +11,12 @@ public interface Target{
 	public TakeDamage takeDamage();
 	
 	public enum TargetType{
-		MECH, MOUNT, DUMMY;
+		MECH, MOUNT;
 	}
+	
+	public boolean isDummy();
+	
+	public Dummy constructDummy();
+	
+	public void takeHPDamage(int i);
 }

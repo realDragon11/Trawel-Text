@@ -6,6 +6,8 @@ public class Dummy implements Target {
 	public TargetType targetType;
 	
 	public TakeDamage takeDamage;
+	
+	public int hp = 0;
 
 	@Override
 	public boolean checkFire() {
@@ -25,6 +27,21 @@ public class Dummy implements Target {
 	@Override
 	public TakeDamage takeDamage() {
 		return takeDamage;
+	}
+
+	@Override
+	public boolean isDummy() {
+		return true;
+	}
+
+	@Override
+	public Dummy constructDummy() {
+		return this;
+	}
+
+	@Override
+	public void takeHPDamage(int i) {
+		hp-=i;
 	}
 
 }

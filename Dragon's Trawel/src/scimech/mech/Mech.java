@@ -3,6 +3,7 @@ package scimech.mech;
 import java.util.ArrayList;
 import java.util.List;
 
+import scimech.combat.Dummy;
 import scimech.combat.MechCombat;
 import scimech.combat.Target;
 import scimech.mech.Fixture.MenuFixture;
@@ -246,4 +247,23 @@ public abstract class Mech implements TurnSubscriber, Target{
 	public int dodgeValue() {
 		return baseDodge();
 	} 
+	
+	@Override
+	public boolean isDummy() {
+		return false;
+	}
+	
+	@Override
+	public Dummy constructDummy() {
+		Dummy d = new Dummy();
+		d.dodgeValue = this.dodgeValue();
+		d.takeDamage = this.takeDamage();
+		d.targetType = this.targetType();
+		return d;
+	}
+	
+	@Override
+	public void takeHPDamage(int i) {
+		hp-=i;
+	}
 }
