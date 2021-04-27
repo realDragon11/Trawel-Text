@@ -471,7 +471,7 @@ public class extra {
 				mList.add(new MenuLine() {//dummy node
 					@Override
 					public String title() {
-						return null;
+						return "end of pages";
 					}});
 				while (j < mList.size()) {
 					
@@ -510,7 +510,7 @@ public class extra {
 						mGen.maxPage++;
 						
 					}else {
-						if (j > 14 && (count%9 == 0 || j == mList.size()-1)) {
+						if (count > 10 && (count%9 == 0 || j == mList.size()-1)) {
 							mList.add(j,new MenuLine() {
 
 								@Override
@@ -545,10 +545,10 @@ public class extra {
 										return false;
 									}});
 								count++; j++;
-								int start = mList.indexOf(mGen.lists.get(mGen.maxPage-1).get(mGen.lists.get(mGen.maxPage-1).size()-1));
+								int start = 1+mList.indexOf(mGen.lists.get(mGen.maxPage-1).get(mGen.lists.get(mGen.maxPage-1).size()-1));
 								mGen.lists.add(new ArrayList<MenuItem>());
 								
-								for (int k = start;k <= j;k++) {
+								for (int k = start;k < j;k++) {
 									mGen.lists.get(mGen.maxPage).add(mList.get(k));
 								}
 								mGen.maxPage++;
@@ -563,16 +563,15 @@ public class extra {
 				if (mGen.header != null) {
 					extra.println(mGen.header.title());
 				}
-				mList.remove(mList.size()-1);;
 				int v = 1;
 				List<MenuItem> subList = new ArrayList<MenuItem>();
 				for (int i = 0;i < mGen.lists.get(mGen.page).size();i++)
-					if (mList.get(i).canClick() == true) {
-						subList.add(mList.get(i));
-						extra.println(v + " " +mList.get(i).title());
+					if (mGen.lists.get(mGen.page).get(i).canClick() == true) {
+						subList.add(mGen.lists.get(mGen.page).get(i));
+						extra.println(v + " " +mGen.lists.get(mGen.page).get(i).title());
 						v++;
 					}else {
-						extra.println(mList.get(i).title());
+						extra.println(mGen.lists.get(mGen.page).get(i).title());
 					}
 				int val = extra.inInt(subList.size())-1;
 				boolean ret = subList.get(val).go();
