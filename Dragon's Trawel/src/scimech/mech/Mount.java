@@ -362,8 +362,22 @@ public abstract class Mount implements TurnSubscriber, Target{
 			}};
 	}
 
-	public void takeSystemDamage(int totalSDam) {
-		// TODO Auto-generated method stub
+	public void takeSystemDamage(int dam) {
+		int[] arr = new int[fixtures.size()];//TODO: should probably include slot size into it so they don't flood their mounts with shitty fixtures
+		for (int i = 0; i < arr.length;i++) {
+			arr[i] = 0;
+		}
+		for (int i = 0; i < dam;i++) {
+			int v = extra.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
+			if (extra.chanceIn(2,3) && fixtures.get(v).damage == 100) {
+				i--;
+			}else {
+				arr[v]++;
+			}
+		}
+		for (int i = 0; i < arr.length;i++) {
+			fixtures.get(i).takeDamage(arr[i]);
+		}
 		
 	}
 

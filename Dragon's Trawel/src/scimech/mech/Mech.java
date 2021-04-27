@@ -305,7 +305,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 				
 			}};
 	}
-	public void takeSystemDamage(int totalSDam) {
+	public void takeSystemDamage(int dam) {
 		// TODO Auto-generated method stub
 		
 	}
