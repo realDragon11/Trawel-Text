@@ -465,9 +465,7 @@ public class extra {
 			mGen.page = 0;
 			mGen.maxPage = 99;
 			while (true) {
-				if (mGen.header != null) {
-					extra.println(mGen.header.title());
-				}
+				
 				int j = 0;
 				int count = 0;
 				mList.add(new MenuLine() {//dummy node
@@ -476,14 +474,23 @@ public class extra {
 						return null;
 					}});
 				while (j < mList.size()) {
-					j++;
+					
 					if (mList.get(j).canClick() == true) {
 						count++;
+						j++;
 					}else {
+						j++;
 						continue;
 					}
 					if (count == 8 && mList.size()-1 > 8) {
-						mList.add(8,new MenuSelect() {
+						mList.add(j,new MenuLine() {
+
+							@Override
+							public String title() {
+								return mGen.page + "/" + mGen.maxPage;
+							}});
+						j++;
+						mList.add(j,new MenuSelect() {
 
 							@Override
 							public String title() {
@@ -496,16 +503,22 @@ public class extra {
 								return false;
 							}});
 						count++; j++;
+						mGen.lists.add(new ArrayList<MenuItem>());
+						for (int k = 0;k < j;k++) {
+							mGen.lists.get(0).add(mList.get(k));
+						}
 						mGen.maxPage++;
-						mList.add(new MenuLine() {
-
-							@Override
-							public String title() {
-								return mGen.page + "/" + mGen.maxPage;
-							}});
+						
 					}else {
 						if (j > 14 && (count%9 == 0 || j == mList.size()-1)) {
-							mList.add(new MenuSelect() {
+							mList.add(j,new MenuLine() {
+
+								@Override
+								public String title() {
+									return mGen.page + "/" + mGen.maxPage;
+								}});
+							j++;
+							mList.add(j,new MenuSelect() {
 
 								@Override
 								public String title() {
@@ -519,7 +532,7 @@ public class extra {
 								}});
 							count++; j++;
 							if (mList.size() > j-1) {
-								mList.add(new MenuSelect() {
+								mList.add(j,new MenuSelect() {
 
 									@Override
 									public String title() {
@@ -532,6 +545,11 @@ public class extra {
 										return false;
 									}});
 								count++; j++;
+								int start = mList.indexOf(mGen.lists.get(mGen.lists.size()-1));
+								mGen.lists.add(new ArrayList<MenuItem>());
+								for (int k = start;k < j;k++) {
+									mGen.lists.get(mGen.lists.size()-1).add(mList.get(k));
+								}
 								mGen.maxPage++;
 							}
 						}
@@ -539,18 +557,21 @@ public class extra {
 					}
 					
 				}
+				if (mGen.header != null) {
+					extra.println(mGen.header.title());
+				}
 				mList.remove(mList.size()-1);;
 				int v = 1;
 				List<MenuItem> subList = new ArrayList<MenuItem>();
 				for (int i = mGen.page*9; i < (mGen.page+1)*9 && i < mList.size();) {
 					
-					if (mList.get(v).canClick() == true) {
+					if (mList.get(i).canClick() == true) {
 						subList.add(mList.get(i));
-						extra.println(i + " " +mList.get(i).title());
+						extra.println(v + " " +mList.get(i).title());
 						i++;
 						v++;
 					}else {
-						extra.println(mList.get(v).title());
+						extra.println(mList.get(i).title());
 					}
 				}
 				int val = extra.inInt(subList.size())-1;

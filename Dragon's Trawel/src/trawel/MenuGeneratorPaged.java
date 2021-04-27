@@ -1,5 +1,6 @@
 package trawel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class MenuGeneratorPaged {
@@ -11,4 +12,6 @@ public abstract class MenuGeneratorPaged {
 	public int maxPage = 0;
 	
 	public MenuLine header;
+	
+	public List<ArrayList<MenuItem>> lists = new ArrayList<ArrayList<MenuItem>>();
 }
