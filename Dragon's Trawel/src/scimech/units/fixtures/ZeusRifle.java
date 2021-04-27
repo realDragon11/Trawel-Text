@@ -14,7 +14,7 @@ public class ZeusRifle extends Fixture{
 
 	@Override
 	public void activate(Target t, TurnSubscriber ts) {
-		int acc = (int) (20*rating());
+		int acc = (int) (18*rating());
 		int hits = 0;
 		for (int i = 0; i < 10;i++) {
 			double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc);

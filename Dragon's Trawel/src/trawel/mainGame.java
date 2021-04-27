@@ -139,7 +139,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "classic debug mechs";
+						return "debug mechs (70x2 complexity)";
 					}
 
 					@Override
@@ -151,7 +151,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "three musketeers";
+						return "three musketeers (80x3 complexity)";
 					}
 
 					@Override
@@ -164,7 +164,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "pirate squad";
+						return "pirate squad (80x3 complexity)";
 					}
 
 					@Override
@@ -176,7 +176,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "science squad";
+						return "science squad (120x3 complexity)";
 					}
 
 					@Override
