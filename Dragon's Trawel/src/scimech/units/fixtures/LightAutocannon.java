@@ -19,16 +19,16 @@ public class LightAutocannon extends Fixture{
 			double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc);
 			if (hit  >=0) {
 				t.takeDamage().take(DamageTypes.KINETIC,DamageMods.NORMAL,4, t);
-				if (!t.isDummy()) {
-					if (extra.chanceIn(2,3)) {
-						currentMount.takeHeat(1);
-					}
+			}
+			if (!t.isDummy()) {
+				if (extra.chanceIn(2,3)) {
+					currentMount.takeHeat(1);
 				}
 			}
 			acc-=extra.randRange(2, 5);
 		}
 		if (!t.isDummy()) {
-			extra.print("The Light Autocannon attacks! " + hits + " hits!");
+			extra.print("The Light Autocannon attacks! " + hits + " hits! ");
 		}
 		
 	}

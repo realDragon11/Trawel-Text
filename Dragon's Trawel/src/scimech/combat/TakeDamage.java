@@ -4,5 +4,5 @@ public interface TakeDamage {
 
 	public void take(DamageTypes type, DamageMods mods, int value,Target damaged);
 	
-	public void suffer(DamageEffect de,Target damaged);
+	public void suffer(DamageEffect de,double amount,Target damaged);
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import scimech.mech.Fixture;
 import scimech.mech.Mech;
 import scimech.mech.Mount;
+import trawel.extra;
 
 public class MechCombat {
 
@@ -43,6 +44,7 @@ public class MechCombat {
 					return o1.getSpeed()-o2.getSpeed();
 				}});
 			while (turnOrder.size() > 0) {
+				extra.println(activeMech().callsign + " goes!");
 				activeMech().activate(null,null);
 				turnOrder.remove(0);
 			}

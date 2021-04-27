@@ -563,7 +563,7 @@ public class extra {
 					
 				}
 				
-				if (count < 8) {
+				if (mGen.maxPage == 0) {
 					mGen.lists.add(new ArrayList<MenuItem>());
 					for (int k = 0;k < j;k++) {
 						mGen.lists.get(0).add(mList.get(k));

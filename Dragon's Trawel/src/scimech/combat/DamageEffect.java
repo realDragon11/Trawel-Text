@@ -1,5 +1,6 @@
 package scimech.combat;
 
-public abstract class DamageEffect {
+public enum DamageEffect {
 
+	BURN;
 }

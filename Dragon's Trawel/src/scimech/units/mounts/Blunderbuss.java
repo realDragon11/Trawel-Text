@@ -11,6 +11,8 @@ public class Blunderbuss extends Mount {
 	public ResistMap resistMap() {
 		ResistMap map = new ResistMap();
 		map.isSub = false;
+		map.put(DamageMods.AP,1.2f,1f);
+		map.put(DamageMods.HOLLOW,0.8f,1f);
 		map.subMaps.add(currentMech.resistMap());
 		return map;
 	}

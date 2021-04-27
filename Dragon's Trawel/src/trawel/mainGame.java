@@ -109,7 +109,7 @@ public class mainGame {
 				extra.println("Choose your mechs");
 				List<Mech> mechs = mechsForSide(true);
 				extra.println("Choose their mechs");
-				mechs.addAll(mechsForSide(true));
+				mechs.addAll(mechsForSide(false));
 				
 				MechCombat mc = new MechCombat(mechs);
 				mc.go();

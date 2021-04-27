@@ -1,0 +1,84 @@
+package scimech.units.fixtures;
+
+import scimech.combat.AimType;
+import scimech.combat.DamageMods;
+import scimech.combat.DamageTypes;
+import scimech.combat.MechCombat;
+import scimech.combat.Target;
+import scimech.combat.Target.TargetType;
+import scimech.mech.Fixture;
+import scimech.mech.Mech;
+import scimech.mech.Mount;
+import scimech.mech.TurnSubscriber;
+import trawel.extra;
+
+public class HotLaser extends Fixture {
+
+	@Override
+	public void activate(Target t, TurnSubscriber ts) {
+		int acc = (int) (30*rating());
+		double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc);
+		if (!t.isDummy()) {
+			extra.print("The Hot Laser " + ( hit >= 0 ? "hits!" : "misses!") + " ");
+		}
+		if (hit  >=0) {
+			t.takeDamage().take(DamageTypes.BURN,DamageMods.HOLLOW,(int) (20*rating()), t);
+			if (!t.isDummy()) {
+				if (t.targetType() == TargetType.MECH) {
+					Mech m = (Mech)t;
+					m.takeHeat(4);
+				}else {
+					if (t.targetType() == TargetType.MOUNT) {
+						Mount m = (Mount)t;
+						m.takeHeat(2);
+					}
+				}
+			}
+		}
+		if (!t.isDummy()) {
+			currentMount.takeHeat(2);
+		}
+
+	}
+
+	@Override
+	public void roundStart() {
+
+	}
+
+	@Override
+	public int heatCap() {
+		return 10;
+	}
+
+	@Override
+	public String getName() {
+		return "Hot Laser";
+	}
+
+	@Override
+	public int getEnergyDraw() {
+		return 6;
+	}
+
+	@Override
+	public String getDescription() {
+		return "Deals hollow burn damage and heat.";
+	}
+
+	@Override
+	public int getComplexity() {
+		return 10;
+	}
+
+	@Override
+	public int getWeight() {
+		return 3;
+	}
+
+	@Override
+	public int getSlots() {
+		return 3;
+	}
+
+}

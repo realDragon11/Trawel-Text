@@ -19,11 +19,11 @@ public class APCannon extends Fixture {
 				extra.print("The AP Cannon " + ( hit >= 0 ? "hits!" : "misses!") + " ");
 			}
 			if (hit  >=0) {
-				t.takeDamage().take(DamageTypes.KINETIC,DamageMods.AP,40, t);
-				if (!t.isDummy()) {
-					currentMount.takeHeat(2);
-				}
-		}
+				t.takeDamage().take(DamageTypes.KINETIC,DamageMods.AP,40, t);	
+			}
+			if (!t.isDummy()) {
+				currentMount.takeHeat(2);
+			}
 
 	}
 

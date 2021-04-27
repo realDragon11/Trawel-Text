@@ -52,6 +52,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 		if (!t.isDummy()) {
 			extra.println();
 			extra.println(t.targetName() + " takes " + (before-t.getHP())  + " damage!");
+			currentMech.energy-=this.getEnergyDraw();//TODO: did I forget to add this?
 		}
 	}
 	
@@ -368,9 +369,16 @@ public abstract class Mount implements TurnSubscriber, Target{
 			}
 
 			@Override
-			public void suffer(DamageEffect de, Target damaged) {
-				// TODO Auto-generated method stub
-				
+			public void suffer(DamageEffect de,double amount, Target damaged) {
+				switch (de) {
+				case BURN:
+					if (!damaged.isDummy()) {
+						Mount mech = (Mount)damaged;
+						mech.takeHeat((int)amount);
+					}
+					break;
+
+				}
 			}};
 	}
 
@@ -402,6 +410,20 @@ public abstract class Mount implements TurnSubscriber, Target{
 		}
 		fixtures.add(f);
 		f.currentMount = this;
+		return true;
+	}
+
+	public boolean aiFire() {
+		if (this.fired == true) {
+			return false;
+		}
+		if (currentMech.energy < this.getEnergyDraw()) {
+			return false;//TODO: make the ai willing to turn off systems
+		}
+		
+		List<Mech> targets = MechCombat.enemies(this.currentMech);
+		this.activate(extra.randList(targets), currentMech);
+		fired = true;
 		return true;
 	}
 

@@ -6,8 +6,10 @@ import scimech.mech.Mech;
 import scimech.mech.Mount;
 import scimech.people.Pilot;
 import scimech.units.fixtures.APCannon;
+import scimech.units.fixtures.HotLaser;
 import scimech.units.fixtures.LightAutocannon;
 import scimech.units.mounts.Blunderbuss;
+import scimech.units.systems.FusionReactor;
 import scimech.units.systems.MiniReactor;
 import scimech.units.systems.Plating;
 import trawel.extra;
@@ -17,8 +19,8 @@ public class DebugMech extends Mech {
 	
 	public DebugMech(boolean side) {
 		playerControlled = side;
-		complexityCap = 30;
-		weightCap = 40;
+		complexityCap = 70;
+		weightCap = 60;
 		
 		callsign = randomLists.randomElement();
 		pilot = new Pilot();
@@ -30,11 +32,16 @@ public class DebugMech extends Mech {
 		m.addFixture(new LightAutocannon());
 		
 		
-		
 		m = new Blunderbuss();
 		this.addMount(m);
 		m.addFixture(new APCannon());
 		
+		m = new Blunderbuss();
+		this.addMount(m);
+		m.addFixture(new HotLaser());
+		m.addFixture(new HotLaser());
+		
+		this.addSystem(new FusionReactor());
 		for (int i = 0; i < 4;i++) {
 			this.addSystem(new MiniReactor());
 		}

@@ -93,7 +93,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 
 						@Override
 						public String title() {
-							return callsign + " ("+getName()+") " + "/"+pilot.getName() +" HP: " + hp +" Energy: " + energy + " Heat: " + heat;
+							return callsign + " ("+getName()+") " + "/"+pilot.getName() +" HP: " + hp + "/" + getMaxHP() +" Energy: " + energy + " Heat: " + heat+ "/" + heatCap();
 						}});
 					mList.add(new MenuSelect() {
 
@@ -119,6 +119,18 @@ public abstract class Mech implements TurnSubscriber, Target{
 							systemsSelect();
 							return false;
 						}});
+					mList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "statistics";
+						}
+
+						@Override
+						public boolean go() {
+							statistics();
+							return false;
+						}});
 					
 					mList.add(new MenuSelect() {
 
@@ -134,7 +146,18 @@ public abstract class Mech implements TurnSubscriber, Target{
 					return mList;
 				}});
 		}else {
-			
+			while (energy > 0) {
+				boolean activated = false;
+				for (int i = 0; i < 5;i++) {
+					if (mounts.get(extra.randRange(0,mounts.size()-1)).aiFire()) {
+						activated = true;
+						break;
+					}
+				}
+				if (activated == false) {
+					energy--;
+				}
+			}
 		}
 	}
 	
@@ -143,6 +166,14 @@ public abstract class Mech implements TurnSubscriber, Target{
 
 			@Override
 			public List<MenuItem> gen() {
+				this.header = new MenuLine() {
+
+					@Override
+					public String title() {
+						return "Energy: " + energy + " heat: " + heat + "/" + heatCap();
+					}
+					
+				};
 				List<MenuItem> mList = new ArrayList<MenuItem>();
 				mList.add(new MenuSelect() {
 
@@ -284,7 +315,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 						MechCombat.mc.t = menuMechTarget.owner;
 						return true;
 					}});
-				ms.number = MechCombat.averageDamage(menuMechTarget.owner,mount,4);
+				ms.number = MechCombat.averageDamage(menuMechTarget.owner,mount,8);
 				mList.add(ms);
 				for (Mount m: menuMechTarget.owner.mounts) {
 					if (m.checkFire()) {
@@ -292,7 +323,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 					}
 					MenuMountTarget mmt = m.new MenuMountTarget();
 					mmt.owner = m;
-					mmt.damage = MechCombat.averageDamage(m,mount,3);
+					mmt.damage = MechCombat.averageDamage(m,mount,6);
 					mList.add(mmt);
 				}
 				return mList;
@@ -354,8 +385,16 @@ public abstract class Mech implements TurnSubscriber, Target{
 			}
 
 			@Override
-			public void suffer(DamageEffect de, Target damaged) {
-				// TODO Auto-generated method stub
+			public void suffer(DamageEffect de,double amount, Target damaged) {
+				switch (de) {
+				case BURN:
+					if (!damaged.isDummy()) {
+						Mech mech = (Mech)damaged;
+						mech.takeHeat((int)amount);
+					}
+					break;
+
+				}
 				
 			}};
 	}
@@ -426,5 +465,12 @@ public abstract class Mech implements TurnSubscriber, Target{
 	public void addSystem(Systems s) {
 		this.systems.add(s);
 		s.currentMech = this;
+	}
+	
+	public void statistics() {
+		extra.println(callsign + " ("+getName()+") " + "/"+pilot.getName() +" HP: " + hp + "/" + getMaxHP() +" Energy: " + energy + " Heat: " + heat+ "/" + heatCap());
+		extra.println("Weight: " + this.totalWeight() + "/" + this.weightCap + " Complexity: "+ this.totalComplexity() + "/" +this.complexityCap);
+		extra.println("Mounts: " + this.mounts.size() + " Systems: " + this.systems.size());
+		extra.println("Speed: " + this.getSpeed() + " Dodge: " + this.dodgeValue());
 	}
 }
