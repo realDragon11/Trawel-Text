@@ -137,4 +137,7 @@ public abstract class Fixture implements TurnSubscriber{
 	public abstract String getName();
 	public abstract int getEnergyDraw();
 	public abstract String getDescription();
+	public abstract int getComplexity();
+	public abstract int getWeight();
+	public abstract int getSlots();
 }

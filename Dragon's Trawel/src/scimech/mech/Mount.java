@@ -14,7 +14,7 @@ import trawel.extra;
 
 public abstract class Mount implements TurnSubscriber{
 
-	protected int slots, heat = 0;
+	protected int heat = 0;
 	protected List<Fixture> fixtures = new ArrayList<Fixture>();
 	public Mech currentMech;
 	public boolean fired = false;
@@ -180,4 +180,34 @@ public abstract class Mount implements TurnSubscriber{
 			examine();
 			return false;
 		}}
+	
+	public abstract int baseWeight();
+	
+	public int getWeight() {
+		int total = baseWeight();
+		for (Fixture f: fixtures) {
+			total += f.getWeight();
+		}
+		return total;
+	}
+	
+	public abstract int baseComplexity();
+	
+	public int getComplexity() {
+		int total = baseComplexity();
+		for (Fixture f: fixtures) {
+			total += f.getComplexity();
+		}
+		return total;
+	}
+	
+	public abstract int baseSlots();
+	
+	public int usedSlots() {
+		int total = 0;
+		for (Fixture f: fixtures) {
+			total += f.getSlots();
+		}
+		return total;
+	}
 }
