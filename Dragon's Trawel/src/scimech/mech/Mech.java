@@ -14,6 +14,7 @@ import scimech.combat.Target;
 import scimech.mech.Fixture.MenuFixture;
 import scimech.mech.Mount.MenuMount;
 import scimech.mech.Mount.MenuMountTarget;
+import scimech.mech.Systems.MenuSystem;
 import scimech.people.Pilot;
 import trawel.MenuGenerator;
 import trawel.MenuGeneratorPaged;
@@ -175,7 +176,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 					public boolean go() {
 						return true;
 					}});
-				for (System s: systems) {
+				for (Systems s: systems) {
 					MenuSystem ms = s.new MenuSystem();
 					mList.add(ms);
 				}

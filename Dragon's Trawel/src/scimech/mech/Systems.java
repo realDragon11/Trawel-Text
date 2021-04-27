@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import scimech.combat.ResistMap;
+import scimech.combat.Target;
 import trawel.MenuGenerator;
 import trawel.MenuItem;
 import trawel.MenuLine;
@@ -14,7 +15,8 @@ public abstract class Systems implements TurnSubscriber{
 
 	public abstract int getComplexity();
 	
-	protected boolean powered = false;
+	protected boolean powered = true;
+	protected boolean passive = false;
 	
 	public int activated = 0;
 	
@@ -32,11 +34,23 @@ public abstract class Systems implements TurnSubscriber{
 		return total;
 	}
 	
+	public Systems me() {
+		return this;
+	}
+	
+	public boolean isPassive() {
+		return passive;
+	}
 	public abstract ResistMap resistMap();
 	
 	@Override
 	public void roundStart() {
 		activated = 0;
+		if (passive && powered) {
+			if (this.getEnergyDraw() <= 0 || currentMech.energy >= this.getEnergyDraw()) {
+				this.activate(currentMech,this);
+			}
+		}
 	}
 	
 	public class MenuSystem extends MenuSelect {//can be extended further
@@ -121,6 +135,20 @@ public abstract class Systems implements TurnSubscriber{
 						powered = !powered;
 						return false;
 					}});
+				if (activated == 0 && (getEnergyDraw() <= 0 || currentMech.energy >= getEnergyDraw())) {
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "burst power: " + getEnergyDraw();
+					}
+
+					@Override
+					public boolean go() {
+						activate(currentMech,me());
+						return false;
+					}});
+				}
 				return mList;
 			}});
 	}
@@ -130,5 +158,14 @@ public abstract class Systems implements TurnSubscriber{
 	public abstract String getName();
 	public abstract String getDescription();
 	public abstract int getEnergyDraw();
+	
+	@Override
+	public void activate(Target t, TurnSubscriber ts) {
+		currentMech.energy -= this.getEnergyDraw();
+		activated++;
+		this.activateInternal(t, ts);
+	}
+
+	protected abstract void activateInternal(Target t, TurnSubscriber ts);
 
 }
