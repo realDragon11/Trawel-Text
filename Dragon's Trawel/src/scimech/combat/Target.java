@@ -1,6 +1,6 @@
 package scimech.combat;
 
-public interface Target {
+public interface Target{
 
 	public boolean checkFire();
 	
@@ -8,7 +8,9 @@ public interface Target {
 
 	public TargetType targetType();
 	
+	public TakeDamage takeDamage();
+	
 	public enum TargetType{
-		MECH, MOUNT;
+		MECH, MOUNT, DUMMY;
 	}
 }

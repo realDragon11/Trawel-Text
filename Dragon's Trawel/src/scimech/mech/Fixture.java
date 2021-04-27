@@ -147,7 +147,5 @@ public abstract class Fixture implements TurnSubscriber{
 	public abstract int getWeight();
 	public abstract int getSlots();
 	public abstract int accValue();
-	
-	public abstract void fireAt(Target t);
-	public abstract int estimateDamage(Target t);
+	//activate is abstract
 }
