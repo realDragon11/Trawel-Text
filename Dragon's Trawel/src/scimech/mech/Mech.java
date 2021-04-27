@@ -95,6 +95,15 @@ public abstract class Mech implements TurnSubscriber, Target{
 				@Override
 				public List<MenuItem> gen() {
 					List<MenuItem> mList = new ArrayList<MenuItem>();
+					int em = averageEMP();
+					if (em > 4) {
+						mList.add(new MenuLine() {
+
+							@Override
+							public String title() {
+								return "EMP: " + ((em/5)*5) + "%";
+							}});
+					}
 					mList.add(new MenuLine() {
 
 						@Override
@@ -520,5 +529,17 @@ public abstract class Mech implements TurnSubscriber, Target{
 	}
 	public void clearHeat(int heat) {
 		this.heat = Math.max(0,this.heat-heat); 
+	}
+	
+	public int averageEMP() {
+		int damageSum = 0;
+		for (Mount m: mounts) {
+			damageSum += m.averageEMP();
+		}
+		for (Systems s: systems) {
+			damageSum += s.empDamage;
+		}
+		damageSum/=(mounts.size()+systems.size());
+		return damageSum;
 	}
 }

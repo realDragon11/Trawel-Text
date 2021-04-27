@@ -72,6 +72,14 @@ public class CoolantRod extends Systems {
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> mList = new ArrayList<MenuItem>();
+				if (empDamage > 10) {
+					mList.add(new MenuLine() {
+
+						@Override
+						public String title() {
+							return "EMP: " + (empDamage/10)*10;
+						}});
+				}
 				mList.add(new MenuLine() {
 
 					@Override

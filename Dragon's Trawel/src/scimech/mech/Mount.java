@@ -303,6 +303,15 @@ public abstract class Mount implements TurnSubscriber, Target{
 		}
 	}
 	
+	public int averageEMP() {
+		int damageSum = 0;
+		for (Fixture f: fixtures) {
+			damageSum += f.empDamage;
+		}
+		damageSum/=fixtures.size();
+		return damageSum;
+	}
+	
 	public abstract int baseWeight();
 	
 	public int getWeight() {

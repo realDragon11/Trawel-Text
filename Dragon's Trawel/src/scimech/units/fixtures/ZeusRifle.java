@@ -1,6 +1,7 @@
 package scimech.units.fixtures;
 
 import scimech.combat.AimType;
+import scimech.combat.DamageEffect;
 import scimech.combat.DamageMods;
 import scimech.combat.DamageTypes;
 import scimech.combat.MechCombat;
@@ -19,6 +20,7 @@ public class ZeusRifle extends Fixture{
 			double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc);
 			if (hit  >=0) {
 				t.takeDamage().take(DamageTypes.SHOCK,DamageMods.NORMAL,5, t);
+				t.takeDamage().suffer(DamageEffect.EMP,3*rating(), t);
 				hits++;
 			}
 			
