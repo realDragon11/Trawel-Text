@@ -229,10 +229,32 @@ public abstract class Mount implements TurnSubscriber, Target{
 		}
 	}
 	
-	public class MenuMountTarget extends MenuMount{
+	public class MenuMountTarget extends MenuSelect{
 		
 		protected Mount owner;
 		protected int damage;
+		
+		@Override
+		public String title() {
+			int damageSum = 0;
+			for (Fixture f: fixtures) {
+				damageSum += f.damage;
+			}
+			damageSum/=fixtures.size();
+			String damString = null;
+			if (damageSum > 30) {
+				if (damageSum > 60) {
+					if (damageSum > 90) {
+						damString = "destroyed";
+					}else {
+						damString = "damaged";
+					}
+				}else {
+					damString = "scratched";
+				}
+			}
+			return "heat: "  + heat + " draw: " + getEnergyDraw() + (damString == null ? "" : " " + damString) + " " + damage;
+		}
 		
 		@Override
 		public boolean go() {
@@ -304,6 +326,11 @@ public abstract class Mount implements TurnSubscriber, Target{
 	@Override
 	public void takeHPDamage(int i) {
 		currentMech.takeHPDamage(i);
+	}
+	
+	@Override
+	public String targetName() {
+		return currentMech.callsign + " " + this.getName();
 	}
 
 }

@@ -271,4 +271,9 @@ public abstract class Mech implements TurnSubscriber, Target{
 	public void takeHPDamage(int i) {
 		hp-=i;
 	}
+	
+	@Override
+	public String targetName() {
+		return callsign + " hull";
+	}
 }

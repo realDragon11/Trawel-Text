@@ -44,4 +44,9 @@ public class Dummy implements Target {
 		hp-=i;
 	}
 
+	@Override
+	public String targetName() {
+		return null;
+	}
+
 }

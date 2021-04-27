@@ -19,4 +19,6 @@ public interface Target{
 	public Dummy constructDummy();
 	
 	public void takeHPDamage(int i);
+	
+	public String targetName();
 }
