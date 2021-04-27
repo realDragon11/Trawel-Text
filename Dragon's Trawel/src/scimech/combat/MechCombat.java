@@ -81,8 +81,32 @@ public class MechCombat {
 		return turnOrder.get(0);
 	}
 	
-	public float computeHit(Target t,AimType at,Fixture attacker) {
-		int acc = attacker.accValue();
-		int dodge = (int) (at.getMultFor(t.targetType())*t.dodgeValue());
+	public double computeHit(Target t,AimType at, int attackValue) {
+		int acc = (int) (at.getMultFor(t.targetType())*attackValue);
+		int dodge = (int) (t.dodgeValue());
+		double accRoll = acc*Math.random();
+		double dodgeRoll = dodge*Math.random();
+		//HitDodge hd = new HitDodge(accRoll-dodgeRoll,);
+		return accRoll-dodgeRoll;
 	}
+	
+	/*
+	public class HitDodge {
+		private float diff;
+		private float magn;
+		
+		public HitDodge(float diff, float magn){
+			this.diff = diff;
+			this.magn = magn;
+		}
+
+		public float getDiff() {
+			return diff;
+		}
+
+		public float getMagn() {
+			return magn;
+		}
+		
+	}*/
 }

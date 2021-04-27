@@ -3,6 +3,7 @@ package scimech.mech;
 import java.util.ArrayList;
 import java.util.List;
 
+import scimech.combat.Target;
 import trawel.MenuGenerator;
 import trawel.MenuItem;
 import trawel.MenuLine;
@@ -146,4 +147,7 @@ public abstract class Fixture implements TurnSubscriber{
 	public abstract int getWeight();
 	public abstract int getSlots();
 	public abstract int accValue();
+	
+	public abstract void fireAt(Target t);
+	public abstract int estimateDamage(Target t);
 }
