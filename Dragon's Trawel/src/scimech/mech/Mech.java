@@ -264,6 +264,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 		d.dodgeValue = this.dodgeValue();
 		d.takeDamage = this.takeDamage();
 		d.targetType = this.targetType();
+		d.resistMap = this.resistMap();
 		return d;
 	}
 	

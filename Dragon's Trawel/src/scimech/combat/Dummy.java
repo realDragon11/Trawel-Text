@@ -6,6 +6,7 @@ public class Dummy implements Target {
 	public TargetType targetType;
 	
 	public TakeDamage takeDamage;
+	public ResistMap resistMap;
 	
 	public int hp = 0;
 
@@ -47,6 +48,11 @@ public class Dummy implements Target {
 	@Override
 	public String targetName() {
 		return null;
+	}
+
+	@Override
+	public ResistMap resistMap() {
+		return resistMap;
 	}
 
 }

@@ -21,4 +21,6 @@ public interface Target{
 	public void takeHPDamage(int i);
 	
 	public String targetName();
+	
+	public ResistMap resistMap();
 }

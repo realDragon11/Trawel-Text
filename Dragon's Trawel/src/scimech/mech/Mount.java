@@ -3,8 +3,12 @@ package scimech.mech;
 import java.util.ArrayList;
 import java.util.List;
 
+import scimech.combat.DamageEffect;
+import scimech.combat.DamageMods;
+import scimech.combat.DamageTypes;
 import scimech.combat.Dummy;
 import scimech.combat.MechCombat;
+import scimech.combat.TakeDamage;
 import scimech.combat.Target;
 import scimech.combat.Target.TargetType;
 import scimech.mech.Fixture.MenuFixture;
@@ -320,6 +324,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 		d.dodgeValue = this.dodgeValue();
 		d.takeDamage = this.takeDamage();
 		d.targetType = this.targetType();
+		d.resistMap = this.resistMap();
 		return d;
 	}
 	
@@ -331,6 +336,26 @@ public abstract class Mount implements TurnSubscriber, Target{
 	@Override
 	public String targetName() {
 		return currentMech.callsign + " " + this.getName();
+	}
+	
+	@Override
+	public TakeDamage takeDamage() {
+		return new TakeDamage() {
+
+			@Override
+			public void take(DamageTypes type, DamageMods mods, int value, Target damaged) {
+				if (!damaged.isDummy()) {
+					Mount m  = (Mount)damaged;
+					
+				}
+			}
+
+			@Override
+			public void suffer(DamageEffect de, Target damaged) {
+				// TODO Auto-generated method stub
+				
+			}};
+		
 	}
 
 }
