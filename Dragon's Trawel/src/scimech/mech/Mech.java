@@ -178,6 +178,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 					}});
 				for (Systems s: systems) {
 					MenuSystem ms = s.new MenuSystem();
+					ms.sys =s;
 					mList.add(ms);
 				}
 				return mList;
@@ -412,5 +413,14 @@ public abstract class Mech implements TurnSubscriber, Target{
 			}
 		}
 		return map;
+	}
+	
+	public void addMount(Mount m) {
+		this.mounts.add(m);
+		m.currentMech = this;
+	}
+	public void addSystem(Systems s) {
+		this.systems.add(s);
+		s.currentMech = this;
 	}
 }

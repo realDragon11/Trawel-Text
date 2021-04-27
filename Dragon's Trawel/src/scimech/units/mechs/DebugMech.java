@@ -24,23 +24,23 @@ public class DebugMech extends Mech {
 		pilot = new Pilot();
 		
 		Mount m = new Blunderbuss();
+		this.addMount(m);
 		m.addFixture(new LightAutocannon());
 		m.addFixture(new LightAutocannon());
 		m.addFixture(new LightAutocannon());
 		
-		this.mounts.add(m);
+		
 		
 		m = new Blunderbuss();
+		this.addMount(m);
 		m.addFixture(new APCannon());
-			
-		this.mounts.add(m);
 		
 		for (int i = 0; i < 4;i++) {
-			this.systems.add(new MiniReactor());
+			this.addSystem(new MiniReactor());
 		}
 		
 		for (int i = 0; i < 2;i++) {
-			this.systems.add(new Plating());
+			this.addSystem(new Plating());
 		}
 		
 		hp = this.getMaxHP();

@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import scimech.combat.MechCombat;
 import scimech.mech.Mech;
+import scimech.units.mechs.DebugMech;
 import trawel.factions.HostileTask;
 import trawel.townevents.TownFlavorFactory;
 /**

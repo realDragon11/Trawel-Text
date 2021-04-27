@@ -390,6 +390,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 			return false;
 		}
 		fixtures.add(f);
+		f.currentMount = this;
 		return true;
 	}
 

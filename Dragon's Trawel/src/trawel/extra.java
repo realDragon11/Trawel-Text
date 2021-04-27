@@ -562,6 +562,14 @@ public class extra {
 					}
 					
 				}
+				
+				if (count < 8) {
+					mGen.lists.add(new ArrayList<MenuItem>());
+					for (int k = 0;k < j;k++) {
+						mGen.lists.get(0).add(mList.get(k));
+					}
+				}
+				
 				if (start == j-1) {
 					mGen.maxPage--;
 					mGen.lists.get(mGen.maxPage).remove(mGen.lists.get(mGen.maxPage).size()-1);
