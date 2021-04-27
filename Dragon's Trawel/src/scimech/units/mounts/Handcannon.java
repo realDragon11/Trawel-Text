@@ -44,7 +44,7 @@ public class Handcannon extends Mount {
 	
 	@Override
 	public void bonusEffect(Target t, int damage) {
-		if (damage > 5) {
+		if (damage > 2) {
 			int before = t.getHP();
 			t.takeDamage().take(DamageTypes.KINETIC, DamageMods.AP,3,t);
 			extra.println("Handcannon: " + (before-t.getHP()) + " bonus damage!");

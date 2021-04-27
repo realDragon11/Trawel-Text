@@ -92,6 +92,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 				f.heatCheck(heat);
 			}
 			f.roundStart();
+			f.empDecay();
 		}
 		heat /=2;
 	}
@@ -398,6 +399,9 @@ public abstract class Mount implements TurnSubscriber, Target{
 						mech.takeHeat((int)amount);
 					}
 					break;
+				case EMP:
+					takeEMPDamage((int)amount);
+					break;
 
 				}
 			}};
@@ -418,6 +422,21 @@ public abstract class Mount implements TurnSubscriber, Target{
 		}
 		for (int i = 0; i < arr.length;i++) {
 			fixtures.get(i).takeDamage(arr[i]);
+		}
+		
+	}
+	
+	public void takeEMPDamage(int dam) {
+		int[] arr = new int[fixtures.size()];//TODO: should probably include slot size into it so they don't flood their mounts with shitty fixtures
+		for (int i = 0; i < arr.length;i++) {
+			arr[i] = 0;
+		}
+		for (int i = 0; i < dam;i++) {
+			int v = extra.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
+			arr[v]++;
+		}
+		for (int i = 0; i < arr.length;i++) {
+			fixtures.get(i).takeEMPDamage(arr[i]);
 		}
 		
 	}

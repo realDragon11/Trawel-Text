@@ -65,6 +65,7 @@ public class CoolantRod extends Systems {
 		return 3;
 	}
 	
+	@Override
 	public void examine() {
 		extra.menuGo(new MenuGenerator() {
 

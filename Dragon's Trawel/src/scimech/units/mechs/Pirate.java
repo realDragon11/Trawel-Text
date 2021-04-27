@@ -14,6 +14,7 @@ import scimech.units.mounts.Foil;
 import scimech.units.mounts.Handcannon;
 import scimech.units.systems.CoolantRod;
 import scimech.units.systems.FusionReactor;
+import scimech.units.systems.Plating;
 import scimech.units.systems.Ramjet;
 import trawel.randomLists;
 
@@ -44,12 +45,16 @@ public class Pirate extends Mech {
 		
 		this.addSystem(new FusionReactor());
 		this.addSystem(new FusionReactor());
-		this.addSystem(new FusionReactor());
 		
+		this.addSystem(new Ramjet());
 		this.addSystem(new Ramjet());
 		
 		this.addSystem(new CoolantRod());
 		this.addSystem(new CoolantRod());
+		
+		for (int i = 0; i < 9;i++) {
+			this.addSystem(new Plating());
+		}
 		
 		hp = this.getMaxHP();
 	}

@@ -16,7 +16,7 @@ public abstract class Fixture implements TurnSubscriber{
 
 	public boolean powered = true;
 	public boolean overclocked = false;
-	protected int damage = 0;//max 100
+	protected int damage = 0, empDamage = 0;//max 100
 	public Mount currentMount;
 	public void heatCheck(int heat) {
 		if (heat > heatCap()) {
@@ -31,8 +31,15 @@ public abstract class Fixture implements TurnSubscriber{
 		damage = extra.clamp(damage+toTake, 0, 100);
 	}
 	
+	public void takeEMPDamage(int toTake) {
+		empDamage = extra.clamp(empDamage+toTake, 0, 100);
+	}
+	public void empDecay() {
+		empDamage/=2;
+	}
+	
 	public float rating() {
-		float total = ((100f-damage)/100f);
+		float total = ((100f-Math.max(100,damage+empDamage))/100f);
 		if (damage < 80 && overclocked) {
 			total += 0.2f;
 		}

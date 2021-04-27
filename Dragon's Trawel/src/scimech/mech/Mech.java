@@ -30,7 +30,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 	protected int heat = 0;//for debug
 	public int energy = 0;
 	protected int hp;
-	protected int speed;
+	protected float speed;
 	protected int complexityCap;
 	protected int weightCap;
 	protected int dodgeBonus;
@@ -58,7 +58,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 		return TargetType.MECH;
 	}
 	public int getSpeed() {
-		return baseSpeed()+speed;
+		return baseSpeed()+(int)speed;
 	}
 	public void refreshForBattle() {
 		//speed = extra.randRange(0,10);
@@ -402,6 +402,9 @@ public abstract class Mech implements TurnSubscriber, Target{
 						mech.takeHeat((int)amount);
 					}
 					break;
+				case EMP:
+					takeEMPDamage((int)amount);
+					break;
 
 				}
 				
@@ -444,6 +447,35 @@ public abstract class Mech implements TurnSubscriber, Target{
 		}
 		
 	}
+	
+	public void takeEMPDamage(int dam) {
+		int mDam = extra.randRange(0,dam);
+		int sDam = dam-mDam;
+		int[] arr = new int[mounts.size()];
+		for (int i = 0; i < arr.length;i++) {
+			arr[i] = 0;
+		}
+		for (int i = 0; i < mDam;i++) {
+			int v = extra.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
+			arr[v]++;
+		}
+		for (int i = 0; i < arr.length;i++) {
+			mounts.get(i).takeEMPDamage(arr[i]);
+		}
+		arr = new int[systems.size()];//TODO: should probably include slot size into it so they don't flood their mounts with shitty fixtures
+		for (int i = 0; i < arr.length;i++) {
+			arr[i] = 0;
+		}
+		for (int i = 0; i < sDam;i++) {
+			int v = extra.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
+				arr[v]++;
+		}
+		for (int i = 0; i < arr.length;i++) {
+			systems.get(i).takeEMPDamage(arr[i]);
+		}
+		
+	}
+	
 	public float rating() {
 		int cap = heatCap();
 		if (heat < cap) {
@@ -482,7 +514,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 		extra.println("Mounts: " + this.mounts.size() + " Systems: " + this.systems.size());
 		extra.println("Speed: " + this.getSpeed() + " Dodge: " + this.dodgeValue());
 	}
-	public void addSpeed(int i) {
+	public void addSpeed(float i) {
 		speed +=i;
 		
 	}

@@ -22,12 +22,21 @@ public abstract class Systems implements TurnSubscriber{
 	public int uses = 0;
 	public int activated = 0;
 	
-	protected int damage = 0;//max 100
+	protected int damage = 0, empDamage = 0;//max 100
 	public Mech currentMech;
 	
 	public void takeDamage(int toTake) {
 		damage = extra.clamp(damage+toTake, 0, 100);
 	}
+	
+	public void takeEMPDamage(int toTake) {
+		empDamage = extra.clamp(empDamage+toTake, 0, 100);
+	}
+	
+	public void empDecay() {
+		empDamage/=2;
+	}
+	
 	
 	public float rating() {
 		float total = ((100f-damage)/100f)*currentMech.rating();
@@ -51,6 +60,7 @@ public abstract class Systems implements TurnSubscriber{
 				this.activate(currentMech,this);
 			}
 		}
+		this.empDecay();
 	}
 	
 	public class MenuSystem extends MenuSelect {//can be extended further

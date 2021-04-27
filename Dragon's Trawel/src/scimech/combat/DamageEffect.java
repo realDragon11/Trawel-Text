@@ -2,5 +2,5 @@ package scimech.combat;
 
 public enum DamageEffect {
 
-	BURN;
+	BURN, EMP;
 }

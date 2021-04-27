@@ -1,13 +1,25 @@
 package scimech.units.systems;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import scimech.combat.DamageMods;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
+import trawel.MenuGenerator;
+import trawel.MenuItem;
+import trawel.MenuLine;
+import trawel.MenuSelect;
 import trawel.extra;
 
 public class Plating extends Systems {
+	
+	public Plating() {
+		this.passive = true;
+		this.powered = true;
+	}
 
 	@Override
 	public int getComplexity() {
@@ -38,7 +50,7 @@ public class Plating extends Systems {
 
 	@Override
 	public String getDescription() {
-		return "provides protection without an energy cost";
+		return "Provides protection without an energy cost, but slightly impairs your speed.";
 	}
 
 	@Override
@@ -48,8 +60,7 @@ public class Plating extends Systems {
 
 	@Override
 	protected void activateInternal(Target t, TurnSubscriber ts) {
-		// NONE
-
+		currentMech.addSpeed(-0.5f);
 	}
 
 	@Override
@@ -57,4 +68,52 @@ public class Plating extends Systems {
 		return 3;
 	}
 
+	@Override
+	public void examine() {//cannot turn off
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						String damString = "";
+						if (damage > 30) {
+							if (damage > 60) {
+								if (damage > 90) {
+									damString = "destroyed";
+								}else {
+									damString = "damaged";
+								}
+							}else {
+								damString = "scratched";
+							}
+						}
+						return getName() + ": " + (damString == null ? "" : " " + damString) +getTitleAdditions();
+					}
+				});
+				
+				mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return getDescription();
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}});
+				return mList;
+			}});
+	}
+	
 }
