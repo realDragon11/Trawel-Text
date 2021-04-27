@@ -7,6 +7,7 @@ import scimech.combat.MechCombat;
 import scimech.combat.Target;
 import scimech.mech.Fixture.MenuFixture;
 import scimech.mech.Mount.MenuMount;
+import scimech.mech.Mount.MenuMountTarget;
 import scimech.people.Pilot;
 import trawel.MenuGenerator;
 import trawel.MenuGeneratorPaged;
@@ -213,9 +214,14 @@ public abstract class Mech implements TurnSubscriber, Target{
 
 					@Override
 					public boolean go() {
-						MechCombat.mc.t = ;
+						MechCombat.mc.t = menuMechTarget.owner;
 						return true;
 					}});
+				for (Mount m: menuMechTarget.owner.mounts) {
+					MenuMountTarget mmt = m.new MenuMountTarget();
+					mmt.owner = m;
+					mList.add(mmt);
+				}
 				return mList;
 			}});
 		if (MechCombat.mc.t != null) {

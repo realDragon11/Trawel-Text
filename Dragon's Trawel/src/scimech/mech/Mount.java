@@ -120,10 +120,35 @@ public abstract class Mount implements TurnSubscriber, Target{
 	public abstract String getName();
 	public boolean targeting() {
 		List<Mech> enemies = MechCombat.enemies(this.currentMech);
-		fired = true;
-		for (Mech e: enemies) {
-			MenuMechTarget mm = e.new MenuMechTarget();
-			mm.owner = e;
+		
+		extra.menuGoPaged(new MenuGeneratorPaged() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "cancel";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}});
+				for (Mech e: enemies) {
+					MenuMechTarget mm = e.new MenuMechTarget();
+					mm.owner = e;
+					mList.add(mm);
+				}
+				return mList;
+			}});
+		
+		
+		if (MechCombat.mc.t != null) {
+			fired = true;
+			this.activate(MechCombat.mc.t,null);
 		}
 		MechCombat.mc.t = null;
 		return fired;//TODO: Method stubby wubby
@@ -190,7 +215,19 @@ public abstract class Mount implements TurnSubscriber, Target{
 		public boolean go() {
 			examine();
 			return false;
-		}}
+		}
+	}
+	
+	public class MenuMountTarget extends MenuMount{
+		
+		protected Mount owner;
+		
+		@Override
+		public boolean go() {
+			MechCombat.mc.t = owner;
+			return true;
+		}
+	}
 	
 	public abstract int baseWeight();
 	
