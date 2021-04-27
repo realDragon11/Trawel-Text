@@ -10,6 +10,7 @@ import java.util.Scanner;
 import scimech.combat.MechCombat;
 import scimech.mech.Mech;
 import scimech.units.mechs.DebugMech;
+import scimech.units.mechs.Musketeer;
 import trawel.factions.HostileTask;
 import trawel.townevents.TownFlavorFactory;
 /**
@@ -142,6 +143,18 @@ public class mainGame {
 						curMechs = debugMechs(side);
 						return true;
 					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "three musketeers";
+					}
+
+					@Override
+					public boolean go() {
+						curMechs = threeMusketeers(side);
+						return true;
+					}});
 				return mList;
 			}});
 		
@@ -152,6 +165,14 @@ public class mainGame {
 		List<Mech> mechs = new ArrayList<Mech>();
 		mechs.add(new DebugMech(side));
 		mechs.add(new DebugMech(side));
+		return mechs;
+	}
+	
+	private List<Mech> threeMusketeers(boolean side){
+		List<Mech> mechs = new ArrayList<Mech>();
+		mechs.add(new Musketeer(side));
+		mechs.add(new Musketeer(side));
+		mechs.add(new Musketeer(side));
 		return mechs;
 	}
 	

@@ -27,8 +27,13 @@ import trawel.extra;
 public abstract class Mech implements TurnSubscriber, Target{
 
 	public boolean playerControlled = false;
-	protected int heat = 0, energy = 0, hp, speed, 
-			complexityCap, weightCap;//for debug
+	protected int heat = 0;//for debug
+	public int energy = 0;
+	protected int hp;
+	protected int speed;
+	protected int complexityCap;
+	protected int weightCap;
+	protected int dodgeBonus;
 	protected List<Mount> mounts = new ArrayList<Mount>();
 	protected List<Systems> systems = new ArrayList<Systems>();
 	protected Pilot pilot;
@@ -56,9 +61,9 @@ public abstract class Mech implements TurnSubscriber, Target{
 		return baseSpeed()+speed;
 	}
 	public void refreshForBattle() {
-		speed = extra.randRange(0,10);
+		//speed = extra.randRange(0,10);
 		heat = 0;
-		energy = 0;
+		//energy = 0;
 	}
 	
 	public void fullRepair() {
@@ -71,6 +76,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 	
 	public void roundStart() {
 		energy = 0;
+		dodgeBonus = 0;
 		speed = extra.randRange(0,10);
 		for (Systems ss: systems) {
 			ss.roundStart();
@@ -340,8 +346,11 @@ public abstract class Mech implements TurnSubscriber, Target{
 	
 	@Override
 	public int dodgeValue() {
-		return baseDodge();
-	} 
+		return baseDodge()+dodgeBonus;
+	}
+	public int addDodgeBonus(int bonus) {
+		return dodgeBonus+=bonus;
+	}
 	
 	@Override
 	public boolean isDummy() {
@@ -472,5 +481,12 @@ public abstract class Mech implements TurnSubscriber, Target{
 		extra.println("Weight: " + this.totalWeight() + "/" + this.weightCap + " Complexity: "+ this.totalComplexity() + "/" +this.complexityCap);
 		extra.println("Mounts: " + this.mounts.size() + " Systems: " + this.systems.size());
 		extra.println("Speed: " + this.getSpeed() + " Dodge: " + this.dodgeValue());
+	}
+	public void addSpeed(int i) {
+		speed +=i;
+		
+	}
+	public void clearHeat(int heat) {
+		this.heat = Math.max(0,this.heat-heat); 
 	}
 }

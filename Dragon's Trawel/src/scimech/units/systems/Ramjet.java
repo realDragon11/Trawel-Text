@@ -1,21 +1,20 @@
 package scimech.units.systems;
 
-import scimech.combat.DamageEffect;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
 
-public class FusionReactor extends Systems {
+public class Ramjet extends Systems {
 
-	public FusionReactor() {
+	public Ramjet() {
 		passive = true;
 		powered = true;
 	}
 	
 	@Override
 	public int getComplexity() {
-		return 10;
+		return 4;
 	}
 
 	@Override
@@ -25,35 +24,34 @@ public class FusionReactor extends Systems {
 
 	@Override
 	public String getTitleAdditions() {
-		float r = rating();
-		int pow = Math.round(10*r);
-		return (pow > 0) ? " " + pow : " offline";
+		return "";
 	}
 
 	@Override
 	public String getName() {
-		return "fusion reactor";
+		return "Ramjet";
 	}
 
 	@Override
 	public String getDescription() {
-		return "Produces up to 10 energy and 3 heat.";
+		return "Produces up to 3 dodge and 4 speed. Also produces 2 heat.";
 	}
 
 	@Override
 	public int getEnergyDraw() {
-		return (int) (-10*rating());
+		return 3;
 	}
 
 	@Override
 	protected void activateInternal(Target t, TurnSubscriber ts) {
-		//t.takeDamage().suffer(DamageEffect.BURN,3,t);
-		currentMech.takeHeat(3);
+		currentMech.addDodgeBonus((int)(3*rating()));
+		currentMech.addSpeed((int)(4*rating()));
+		currentMech.takeHeat(2);
 	}
 
 	@Override
 	public int getWeight() {
-		return 5;
+		return 4;
 	}
 
 }

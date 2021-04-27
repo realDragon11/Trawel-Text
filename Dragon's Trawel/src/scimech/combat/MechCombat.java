@@ -42,7 +42,7 @@ public class MechCombat {
 
 				@Override
 				public int compare(Mech o1, Mech o2) {
-					return o1.getSpeed()-o2.getSpeed();
+					return o2.getSpeed()-o1.getSpeed();
 				}});
 			while (turnOrder.size() > 0) {
 				extra.println(activeMech().callsign + " goes!");

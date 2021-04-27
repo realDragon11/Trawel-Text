@@ -17,7 +17,9 @@ public abstract class Systems implements TurnSubscriber{
 	
 	protected boolean powered = true;
 	protected boolean passive = false;
+	protected boolean oneUse = false;
 	
+	public int uses = 0;
 	public int activated = 0;
 	
 	protected int damage = 0;//max 100

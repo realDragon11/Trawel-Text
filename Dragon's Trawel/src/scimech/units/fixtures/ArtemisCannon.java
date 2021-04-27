@@ -9,22 +9,21 @@ import scimech.mech.Fixture;
 import scimech.mech.TurnSubscriber;
 import trawel.extra;
 
-public class APCannon extends Fixture {
+public class ArtemisCannon extends Fixture {
 
 	@Override
 	public void activate(Target t, TurnSubscriber ts) {
-		int acc = (int) (12*rating());
-			double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc);
-			if (!t.isDummy()) {
-				extra.print("The AP Cannon " + ( hit >= 0 ? "hits!" : "misses!") + " ");
-			}
-			if (hit  >=0) {
-				t.takeDamage().take(DamageTypes.KINETIC,DamageMods.AP,40, t);	
-			}
-			if (!t.isDummy()) {
-				currentMount.takeHeat(3);
-			}
-
+		int acc = (int) (40*rating());
+		double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc);
+		if (!t.isDummy()) {
+			extra.print("The Artemis Cannon " + ( hit >= 0 ? "hits!" : "misses!") + " ");
+		}
+		if (hit  >=0) {
+			t.takeDamage().take(DamageTypes.KINETIC,DamageMods.NORMAL,10+((int)hit/2), t);	
+		}
+		if (!t.isDummy()) {
+			currentMount.takeHeat(3);
+		}
 	}
 
 	@Override
@@ -34,37 +33,37 @@ public class APCannon extends Fixture {
 
 	@Override
 	public int heatCap() {
-		return 20;
+		return 8;
 	}
 
 	@Override
 	public String getName() {
-		return "AP Cannon";
+		return "Artemis Cannon";
 	}
 
 	@Override
 	public int getEnergyDraw() {
-		return 4;
+		return 6;
 	}
 
 	@Override
 	public String getDescription() {
-		return "Deals a heavy amount of AP kinetic damage.";
+		return "A normal kinetic weapon that deals more damage to targets that fail to dodge properly.";
 	}
 
 	@Override
 	public int getComplexity() {
-		return 5;
+		return 8;
 	}
 
 	@Override
 	public int getWeight() {
-		return 10;
+		return 3;
 	}
 
 	@Override
 	public int getSlots() {
-		return 6;
+		return 3;
 	}
 
 }
