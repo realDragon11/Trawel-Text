@@ -5,6 +5,7 @@ import java.util.List;
 
 import scimech.combat.Target;
 import scimech.mech.Fixture.MenuFixture;
+import trawel.MenuGenerator;
 import trawel.MenuGeneratorPaged;
 import trawel.MenuItem;
 import trawel.MenuLine;
@@ -16,6 +17,7 @@ public abstract class Mount implements TurnSubscriber{
 	protected int slots, heat = 0;
 	protected List<Fixture> fixtures = new ArrayList<Fixture>();
 	public Mech currentMech;
+	public boolean fired = false;
 	
 	@Override
 	public void activate(Target t, TurnSubscriber ts) {
@@ -58,6 +60,65 @@ public abstract class Mount implements TurnSubscriber{
 	}
 	
 	public void examine() {
+		extra.menuGo(new MenuGenerator(){
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+					mList.add( new MenuLine() {
+					@Override
+					public String title() {
+						return "heat: "  + heat + " draw: " + getEnergyDraw();
+					}});
+				
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}});
+				if (fired == false) {
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "activate";
+					}
+
+					@Override
+					public boolean go() {
+						return targeting();
+					}});
+				}
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "manage fixtures";
+					}
+
+					@Override
+					public boolean go() {
+						manageFixtures();
+						return true;
+					}});
+				
+				return mList;
+			}});
+		
+	}
+	public abstract String getName();
+	public boolean targeting() {
+		fired = true;
+		return fired;//TODO: Method stubby wubby
+	}
+	
+	public void manageFixtures() {
 		extra.menuGoPaged(new MenuGeneratorPaged(){
 
 			@Override
@@ -87,9 +148,7 @@ public abstract class Mount implements TurnSubscriber{
 				}
 				return mList;
 			}});
-		
 	}
-	public abstract String getName();
 	
 	public class MenuMount extends MenuSelect {//can be extended further
 
