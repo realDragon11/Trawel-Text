@@ -11,6 +11,7 @@ import scimech.combat.MechCombat;
 import scimech.mech.Mech;
 import scimech.units.mechs.DebugMech;
 import scimech.units.mechs.Musketeer;
+import scimech.units.mechs.Swashbuckler;
 import trawel.factions.HostileTask;
 import trawel.townevents.TownFlavorFactory;
 /**
@@ -155,6 +156,19 @@ public class mainGame {
 						curMechs = threeMusketeers(side);
 						return true;
 					}});
+				
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "pirate squad";
+					}
+
+					@Override
+					public boolean go() {
+						curMechs = pirateSquad(side);
+						return true;
+					}});
 				return mList;
 			}});
 		
@@ -173,6 +187,14 @@ public class mainGame {
 		mechs.add(new Musketeer(side));
 		mechs.add(new Musketeer(side));
 		mechs.add(new Musketeer(side));
+		return mechs;
+	}
+	
+	private List<Mech> pirateSquad(boolean side){
+		List<Mech> mechs = new ArrayList<Mech>();
+		mechs.add(new Swashbuckler(side));
+		mechs.add(new Swashbuckler(side));
+		mechs.add(new Swashbuckler(side));
 		return mechs;
 	}
 	

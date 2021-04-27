@@ -127,7 +127,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 					public boolean go() {
 						return true;
 					}});
-				if (fired == false) {
+				if (fired == false && getEnergyDraw() <= currentMech.energy) {
 				mList.add(new MenuSelect() {
 
 					@Override
