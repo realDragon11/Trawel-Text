@@ -542,48 +542,16 @@ public class extra {
 				mList.remove(mList.size()-1);;
 				int v = 1;
 				List<MenuItem> subList = new ArrayList<MenuItem>();
-				for (int i = mGen.page*9; i < (mGen.page+1)*9 && i < mList.size() && (i%(((mGen.page+1)*7)-(mGen.page*9)) != 0 ^ (i%9 == 0));) {
+				for (int i = mGen.page*9; i < (mGen.page+1)*9 && i < mList.size();) {
 					
-					if (mList.get(i).canClick() == true) {
+					if (mList.get(v).canClick() == true) {
 						subList.add(mList.get(i));
-						extra.println(v + " " +mList.get(i).title());
+						extra.println(i + " " +mList.get(i).title());
 						i++;
 						v++;
 					}else {
-						extra.println(mList.get(i).title());
+						extra.println(mList.get(v).title());
 					}
-				}
-				if (mGen.page != mGen.maxPage) {
-					subList.add(new MenuSelect() {
-
-						@Override
-						public String title() {
-							return "next page";
-						}
-
-						@Override
-						public boolean go() {
-							mGen.page++;
-							return false;
-						}});
-					extra.println(v + " " + subList.get(subList.size()-1));
-					v++;
-				}
-				if (mGen.page != 0) {
-					subList.add(new MenuSelect() {
-
-						@Override
-						public String title() {
-							return "last page";
-						}
-
-						@Override
-						public boolean go() {
-							mGen.page--;
-							return false;
-						}});
-					extra.println(v + " " + subList.get(subList.size()-1).title());
-					v++;
 				}
 				int val = extra.inInt(subList.size())-1;
 				boolean ret = subList.get(val).go();
