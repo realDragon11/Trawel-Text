@@ -83,7 +83,7 @@ public class DebugMech extends Mech {
 		map.put(DamageMods.AP, .7f, 1.3f);
 		map.put(DamageMods.NORMAL,1f,1f);
 		map.put(DamageMods.HOLLOW,1.5f, 1f);
-		return null;
+		return map;
 	}
 
 }

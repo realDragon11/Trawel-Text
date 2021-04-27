@@ -55,4 +55,9 @@ public class Dummy implements Target {
 		return resistMap;
 	}
 
+	@Override
+	public int getHP() {
+		return hp;
+	}
+
 }

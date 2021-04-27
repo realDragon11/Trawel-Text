@@ -45,6 +45,10 @@ public abstract class Mech implements TurnSubscriber, Target{
 		return baseHeatCap();
 	}
 	
+	public int getHP() {
+		return hp;
+	}
+	
 	public TargetType targetType() {
 		return TargetType.MECH;
 	}
@@ -89,7 +93,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 
 						@Override
 						public String title() {
-							return "HP: " + hp +" Energy: " + energy + " Heat: " + heat;
+							return callsign + " ("+getName()+") " + "/"+pilot.getName() +" HP: " + hp +" Energy: " + energy + " Heat: " + heat;
 						}});
 					mList.add(new MenuSelect() {
 

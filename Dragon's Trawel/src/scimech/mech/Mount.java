@@ -34,7 +34,13 @@ public abstract class Mount implements TurnSubscriber, Target{
 	}
 	
 	@Override
+	public int getHP() {
+		return currentMech.getHP();
+	}
+	
+	@Override
 	public void activate(Target t, TurnSubscriber ts) {
+		int before = t.getHP();
 		for (Fixture f: fixtures) {
 			if (f.powered) {
 				f.activate(t,this);
@@ -42,6 +48,9 @@ public abstract class Mount implements TurnSubscriber, Target{
 			if (t.checkFire()) {
 				MechCombat.mc.activeMechs.remove(t);
 			}
+		}
+		if (!t.isDummy()) {
+			extra.println(t.targetName() + " takes " + (t.getHP()-before)  + " damage!");
 		}
 	}
 	
@@ -52,6 +61,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 	}
 	
 	public void roundStart() {
+		fired = false;
 		for (Fixture f: fixtures) {
 			if (f.overclocked) {
 				f.heatCheck(heat*2);
@@ -135,7 +145,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 	public abstract String getName();
 	public boolean targeting() {
 		List<Mech> enemies = MechCombat.enemies(this.currentMech);
-		fired =  false;
+		//fired =  false;
 		Mount fixed = this;
 		extra.menuGoPaged(new MenuGeneratorPaged() {
 
@@ -224,7 +234,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 					damString = "scratched";
 				}
 			}
-			return "heat: "  + heat + " draw: " + getEnergyDraw() + (damString == null ? "" : " " + damString);
+			return getName() + " heat: "  + heat + " draw: " + getEnergyDraw() + (damString == null ? "" : " " + damString) + " " + (fired ? "used" :(getEnergyDraw()>currentMech.energy ?"":"ready"));
 		}
 		
 
@@ -259,7 +269,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 					damString = "scratched";
 				}
 			}
-			return "heat: "  + heat + " draw: " + getEnergyDraw() + (damString == null ? "" : " " + damString) + " " + damage;
+			return getName() + " heat: "  + heat + " draw: " + getEnergyDraw() + (damString == null ? "" : " " + damString) + " " + damage;
 		}
 		
 		@Override
@@ -386,7 +396,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 		if (f.getSlots() > (baseSlots()-usedSlots())) {
 			return false;
 		}
-		if (f.getComplexity() > currentMech.totalComplexity()-currentMech.hardComplexityCap()) {
+		if (f.getComplexity() > currentMech.hardComplexityCap()-currentMech.totalComplexity()) {
 			return false;
 		}
 		fixtures.add(f);

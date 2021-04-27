@@ -23,4 +23,6 @@ public interface Target{
 	public String targetName();
 	
 	public ResistMap resistMap();
+
+	public int getHP();
 }
