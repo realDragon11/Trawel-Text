@@ -15,6 +15,7 @@ import trawel.MenuGeneratorPaged;
 import trawel.MenuItem;
 import trawel.MenuLine;
 import trawel.MenuSelect;
+import trawel.MenuSelectNumber;
 import trawel.extra;
 
 public abstract class Mech implements TurnSubscriber, Target{
@@ -177,6 +178,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 	public class MenuMechTarget extends MenuSelect {//can be extended further
 
 		protected Mech owner;
+		protected Mount firing;
 		@Override
 		public String title() {
 			return callsign + " ("+getName()+") " + "/"+pilot.getName() + " hp: " + hp + "/" + getMaxHP();
@@ -185,10 +187,10 @@ public abstract class Mech implements TurnSubscriber, Target{
 
 		@Override
 		public boolean go() {
-			return targetMenu(this);
+			return targetMenu(this,firing);
 		}}
 	
-	public boolean targetMenu(MenuMechTarget menuMechTarget) {
+	public boolean targetMenu(MenuMechTarget menuMechTarget, Mount mount) {
 		extra.menuGoPaged(new MenuGeneratorPaged() {
 
 			@Override
@@ -211,11 +213,11 @@ public abstract class Mech implements TurnSubscriber, Target{
 					public boolean go() {
 						return true;
 					}});
-				mList.add(new MenuSelect() {
+				MenuSelectNumber ms = (new MenuSelectNumber() {
 
 					@Override
 					public String title() {
-						return "target mech";
+						return "target mech " + number;
 					}
 
 					@Override
@@ -223,12 +225,15 @@ public abstract class Mech implements TurnSubscriber, Target{
 						MechCombat.mc.t = menuMechTarget.owner;
 						return true;
 					}});
+				ms.number = MechCombat.averageDamage(menuMechTarget.owner,mount,4);
+				mList.add(ms);
 				for (Mount m: menuMechTarget.owner.mounts) {
 					if (m.checkFire()) {
 						continue;
 					}
 					MenuMountTarget mmt = m.new MenuMountTarget();
 					mmt.owner = m;
+					mmt.damage = MechCombat.averageDamage(m,mount,3);
 					mList.add(mmt);
 				}
 				return mList;

@@ -147,5 +147,5 @@ public abstract class Fixture implements TurnSubscriber{
 	public abstract int getWeight();
 	public abstract int getSlots();
 	public abstract int accValue();
-	//activate is abstract
+	//activate is abstract, remember to check to see if it's a dummy before applying heat to yourself
 }

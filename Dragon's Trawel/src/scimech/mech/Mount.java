@@ -130,6 +130,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 	public boolean targeting() {
 		List<Mech> enemies = MechCombat.enemies(this.currentMech);
 		fired =  false;
+		Mount fixed = this;
 		extra.menuGoPaged(new MenuGeneratorPaged() {
 
 			@Override
@@ -149,6 +150,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 				for (Mech e: enemies) {
 					MenuMechTarget mm = e.new MenuMechTarget();
 					mm.owner = e;
+					mm.firing = fixed;
 					mList.add(mm);
 				}
 				return mList;
@@ -230,6 +232,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 	public class MenuMountTarget extends MenuMount{
 		
 		protected Mount owner;
+		protected int damage;
 		
 		@Override
 		public boolean go() {

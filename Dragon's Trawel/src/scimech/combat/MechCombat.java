@@ -7,6 +7,7 @@ import java.util.List;
 
 import scimech.mech.Fixture;
 import scimech.mech.Mech;
+import scimech.mech.Mount;
 
 public class MechCombat {
 
@@ -88,6 +89,17 @@ public class MechCombat {
 		double dodgeRoll = dodge*Math.random();
 		//HitDodge hd = new HitDodge(accRoll-dodgeRoll,);
 		return accRoll-dodgeRoll;
+	}
+
+	public static int averageDamage(Target t, Mount firing,int displayAcc) {
+		int total = 0;
+		for (int i = 0; i < displayAcc;i++) {
+			Dummy d = t.constructDummy();
+			firing.activate(d,null);
+			total-=d.hp;
+		}
+		total/=displayAcc;
+		return total;
 	}
 	
 	/*
