@@ -467,4 +467,8 @@ public abstract class Mount implements TurnSubscriber, Target{
 		return true;
 	}
 
+	public void clearHeat(int heat) {
+		this.heat = Math.max(0,this.heat-heat); 
+	}
+
 }
