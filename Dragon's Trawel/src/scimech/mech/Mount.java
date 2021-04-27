@@ -8,6 +8,7 @@ import scimech.combat.DamageMods;
 import scimech.combat.DamageTypes;
 import scimech.combat.Dummy;
 import scimech.combat.MechCombat;
+import scimech.combat.ResistMap;
 import scimech.combat.TakeDamage;
 import scimech.combat.Target;
 import scimech.combat.Target.TargetType;
@@ -344,10 +345,14 @@ public abstract class Mount implements TurnSubscriber, Target{
 
 			@Override
 			public void take(DamageTypes type, DamageMods mods, int value, Target damaged) {
+				ResistMap map = damaged.resistMap();
+				int totalDam = (int) (value*map.calcMult(type, mods).hpDamageMult);
+				int totalSDam = (int) (value*map.calcMult(type, mods).systemDamageMult);
 				if (!damaged.isDummy()) {
 					Mount m  = (Mount)damaged;
-					
+					m.takeSystemDamage(totalSDam);
 				}
+				damaged.takeHPDamage(totalDam);
 			}
 
 			@Override
@@ -355,6 +360,10 @@ public abstract class Mount implements TurnSubscriber, Target{
 				// TODO Auto-generated method stub
 				
 			}};
+	}
+
+	public void takeSystemDamage(int totalSDam) {
+		// TODO Auto-generated method stub
 		
 	}
 
