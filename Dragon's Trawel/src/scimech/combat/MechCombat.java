@@ -12,6 +12,7 @@ import trawel.extra;
 
 public class MechCombat {
 
+	public static final float SYSTEM_DAM_MULT = 1.75f;
 	public static MechCombat mc;
 	int round = 0;
 	public List<Mech> turnOrder = new ArrayList<Mech>();

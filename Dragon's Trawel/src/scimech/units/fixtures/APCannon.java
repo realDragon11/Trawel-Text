@@ -49,7 +49,7 @@ public class APCannon extends Fixture {
 
 	@Override
 	public String getDescription() {
-		return "TODO";
+		return "Deals a heavy amount of AP kinetic damage.";
 	}
 
 	@Override

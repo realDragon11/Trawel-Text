@@ -19,6 +19,7 @@ public class LightAutocannon extends Fixture{
 			double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc);
 			if (hit  >=0) {
 				t.takeDamage().take(DamageTypes.KINETIC,DamageMods.NORMAL,4, t);
+				hits++;
 			}
 			if (!t.isDummy()) {
 				if (extra.chanceIn(2,3)) {
@@ -55,7 +56,7 @@ public class LightAutocannon extends Fixture{
 
 	@Override
 	public String getDescription() {
-		return "";
+		return "An accurate full-auto weapon that shoots 3 times.";
 	}
 
 	@Override

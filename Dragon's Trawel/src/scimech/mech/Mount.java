@@ -45,9 +45,22 @@ public abstract class Mount implements TurnSubscriber, Target{
 			if (f.powered) {
 				f.activate(t,this);
 			}
-			if (t.checkFire()) {
-				MechCombat.mc.activeMechs.remove(t);
+			if (!t.isDummy()) {
+				Mech m = null;
+				switch (t.targetType()) {
+				case MECH:
+					m = (Mech)t;
+					break;
+				case MOUNT:
+					m = ((Mount)t).currentMech;
+					break;
+				}
+				if (m.checkFire()) {
+					MechCombat.mc.activeMechs.remove(t);
+					extra.println(m.callsign + " is taken out!");
+				}
 			}
+
 		}
 		if (!t.isDummy()) {
 			extra.println();
@@ -360,7 +373,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 			public void take(DamageTypes type, DamageMods mods, int value, Target damaged) {
 				ResistMap map = damaged.resistMap();
 				int totalDam = (int) (value*map.calcMult(type, mods).hpDamageMult);
-				int totalSDam = (int) (value*map.calcMult(type, mods).systemDamageMult);
+				int totalSDam = (int) (value*map.calcMult(type, mods).systemDamageMult*MechCombat.SYSTEM_DAM_MULT);
 				if (!damaged.isDummy()) {
 					Mount m  = (Mount)damaged;
 					m.takeSystemDamage(totalSDam);

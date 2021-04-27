@@ -376,7 +376,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 			public void take(DamageTypes type, DamageMods mods, int value, Target damaged) {
 				ResistMap map = damaged.resistMap();
 				int totalDam = (int) (value*map.calcMult(type, mods).hpDamageMult);
-				int totalSDam = (int) (value*map.calcMult(type, mods).systemDamageMult);
+				int totalSDam = (int) (value*map.calcMult(type, mods).systemDamageMult*MechCombat.SYSTEM_DAM_MULT);
 				if (!damaged.isDummy()) {
 					Mech m  = (Mech)damaged;
 					m.takeSystemDamage(totalSDam);
