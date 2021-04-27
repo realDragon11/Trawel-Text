@@ -3,6 +3,7 @@ package scimech.mech;
 import java.util.ArrayList;
 import java.util.List;
 
+import scimech.combat.MechCombat;
 import scimech.combat.Target;
 import scimech.mech.Fixture.MenuFixture;
 import trawel.MenuGenerator;
@@ -12,7 +13,7 @@ import trawel.MenuLine;
 import trawel.MenuSelect;
 import trawel.extra;
 
-public abstract class Mount implements TurnSubscriber{
+public abstract class Mount implements TurnSubscriber, Target{
 
 	protected int heat = 0;
 	protected List<Fixture> fixtures = new ArrayList<Fixture>();
@@ -55,7 +56,9 @@ public abstract class Mount implements TurnSubscriber{
 	public int getEnergyDraw() {
 		int total = 0;
 		for (Fixture f: fixtures) {
-			total += f.getEnergyDraw();
+			if (f.powered == true) {
+				total += f.getEnergyDraw() *(f.overclocked ? 1.4f : 1);
+			}
 		}
 		return total;
 	}
@@ -115,7 +118,10 @@ public abstract class Mount implements TurnSubscriber{
 	}
 	public abstract String getName();
 	public boolean targeting() {
+		List<Mech> enemies = MechCombat.enemies(this.currentMech);
 		fired = true;
+		
+		MechCombat.mc.t = null;
 		return fired;//TODO: Method stubby wubby
 	}
 	

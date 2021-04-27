@@ -3,9 +3,11 @@ package scimech.mech;
 import java.util.ArrayList;
 import java.util.List;
 
+import scimech.combat.MechCombat;
 import scimech.combat.Target;
 import scimech.mech.Fixture.MenuFixture;
 import scimech.mech.Mount.MenuMount;
+import scimech.people.Pilot;
 import trawel.MenuGenerator;
 import trawel.MenuGeneratorPaged;
 import trawel.MenuItem;
@@ -20,10 +22,13 @@ public abstract class Mech implements TurnSubscriber, Target{
 			complexityCap = 30;//for debug
 	protected List<Mount> mounts = new ArrayList<Mount>();
 	protected List<Systems> systems = new ArrayList<Systems>();
+	protected Pilot pilot;
+	public String callsign;
 	
 	public abstract int baseHP();
 	public abstract int baseSpeed();
 	public abstract int baseComplexity();
+	public abstract String getName();
 	
 	public int getSpeed() {
 		return baseSpeed()+speed;
@@ -157,4 +162,23 @@ public abstract class Mech implements TurnSubscriber, Target{
 	public int hardComplexityCap() {
 		return complexityCap+20;
 	}
+	
+	public int getMaxHP() {
+		return baseHP();//TODO
+	}
+	
+	public class MenuMechTarget extends MenuSelect {//can be extended further
+
+		@Override
+		public String title() {
+			return callsign + " ("+getName()+") " + "/"+pilot.getName() + " hp: " + hp + "/" + getMaxHP();
+		}
+		
+
+		@Override
+		public boolean go() {
+			return targetMenu();
+		}}
+	
+	public 
 }

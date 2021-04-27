@@ -9,12 +9,15 @@ import scimech.mech.Mech;
 
 public class MechCombat {
 
+	public static MechCombat mc;
 	int round = 0;
 	public List<Mech> turnOrder = new ArrayList<Mech>();
 	public List<Mech> totalMechs;
 	public List<Mech> activeMechs = new ArrayList<Mech>();
+	public Target t;
 	
 	public MechCombat(Mech...mechs) {
+		mc = null;
 		totalMechs = Arrays.asList(mechs);
 		activeMechs.addAll(totalMechs);
 		for (Mech m: totalMechs) {
@@ -30,6 +33,7 @@ public class MechCombat {
 					return o1.getSpeed()-o2.getSpeed();
 				}});
 		}
+		mc = this;
 	}
 
 	private boolean twoSided() {
@@ -50,5 +54,19 @@ public class MechCombat {
 			count++;
 		}
 		return false;
+	}
+
+	public static List<Mech> enemies(Mech currentMech) {
+		List<Mech> list = new ArrayList<Mech>();
+		for (Mech m :mc.activeMechs) {
+			if (m.playerControlled != currentMech.playerControlled) {
+				list.add(m);
+			}
+		}
+		return list;
+	}
+	
+	public Mech activeMech() {
+		return turnOrder.get(0);
 	}
 }
