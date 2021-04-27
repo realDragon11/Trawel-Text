@@ -105,17 +105,54 @@ public class mainGame {
 		case 1: adventure1();break;
 		case 2:extra.println("This gamemode can only be played in the command prompt."); rtrawel.TestRunner.run();break;
 		case 3:
-			List<Mech> mechs = new ArrayList<Mech>();
-			mechs.add(new DebugMech(true));
-			mechs.add(new DebugMech(true));
-			mechs.add(new DebugMech(false));
-			mechs.add(new DebugMech(false));
-			new MechCombat(mechs).go();;
-			break;
+			while (true) {
+				extra.println("Choose your mechs");
+				List<Mech> mechs = mechsForSide(true);
+				extra.println("Choose their mechs");
+				mechs.addAll(mechsForSide(true));
+				
+				MechCombat mc = new MechCombat(mechs);
+				mc.go();
+				
+				extra.println(mc.activeMechs.get(0).playerControlled == true ? "You win!" : "You lose!");
+			}
 		//case 2: adventure2();break;
 		//case 3: adventure3();break;
 		//case 4: modelMode();break;
 			}
+	}
+	
+	private static List<Mech> curMechs;
+	
+	private List<Mech> mechsForSide(boolean side){
+		extra.menuGoPaged(new MenuGeneratorPaged(){
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "classic debug mechs";
+					}
+
+					@Override
+					public boolean go() {
+						curMechs = debugMechs(side);
+						return true;
+					}});
+				return mList;
+			}});
+		
+		return curMechs;
+	}
+	
+	private List<Mech> debugMechs(boolean side){
+		List<Mech> mechs = new ArrayList<Mech>();
+		mechs.add(new DebugMech(side));
+		mechs.add(new DebugMech(side));
+		return mechs;
 	}
 	
 	private void modelMode() {

@@ -14,16 +14,21 @@ public class LightAutocannon extends Fixture{
 	@Override
 	public void activate(Target t, TurnSubscriber ts) {
 		int acc = (int) (20*rating());
+		int hits = 0;
 		for (int i = 0; i < 3;i++) {
 			double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc);
-			extra.print("The Light Autocannon " + ( hit >= 0 ? "hits!" : "misses!") + " ");
 			if (hit  >=0) {
 				t.takeDamage().take(DamageTypes.KINETIC,DamageMods.NORMAL,4, t);
 				if (!t.isDummy()) {
-					currentMount.takeHeat(1);
+					if (extra.chanceIn(2,3)) {
+						currentMount.takeHeat(1);
+					}
 				}
 			}
 			acc-=extra.randRange(2, 5);
+		}
+		if (!t.isDummy()) {
+			extra.print("The Light Autocannon attacks! " + hits + " hits!");
 		}
 		
 	}

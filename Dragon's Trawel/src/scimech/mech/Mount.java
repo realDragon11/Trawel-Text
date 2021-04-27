@@ -270,7 +270,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 					damString = "scratched";
 				}
 			}
-			return getName() + " heat: "  + heat + " draw: " + getEnergyDraw() + (damString == null ? "" : " " + damString) + " " + damage;
+			return getName() + " heat: "  + heat + " draw: " + getEnergyDraw() + (damString == null ? "" : " " + damString) + " est dam:" + damage;
 		}
 		
 		@Override

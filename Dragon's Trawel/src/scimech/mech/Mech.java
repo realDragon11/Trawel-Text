@@ -276,7 +276,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 
 					@Override
 					public String title() {
-						return "target mech " + number;
+						return "target hull est dam: " + number;
 					}
 
 					@Override
