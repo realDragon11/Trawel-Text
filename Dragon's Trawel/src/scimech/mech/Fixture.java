@@ -39,7 +39,7 @@ public abstract class Fixture implements TurnSubscriber{
 	}
 	
 	public float rating() {
-		float total = ((100f-Math.max(100,damage+empDamage))/100f);
+		float total = ((100f-Math.min(100,damage+empDamage))/100f);
 		if (damage < 80 && overclocked) {
 			total += 0.2f;
 		}

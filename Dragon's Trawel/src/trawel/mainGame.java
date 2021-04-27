@@ -10,6 +10,7 @@ import java.util.Scanner;
 import scimech.combat.MechCombat;
 import scimech.mech.Mech;
 import scimech.units.mechs.DebugMech;
+import scimech.units.mechs.Dynamo;
 import scimech.units.mechs.Musketeer;
 import scimech.units.mechs.Packrat;
 import scimech.units.mechs.Pirate;
@@ -171,6 +172,18 @@ public class mainGame {
 						curMechs = pirateSquad(side);
 						return true;
 					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "science squad";
+					}
+
+					@Override
+					public boolean go() {
+						curMechs = scienceSquad(side);
+						return true;
+					}});
 				return mList;
 			}});
 		
@@ -197,6 +210,14 @@ public class mainGame {
 		mechs.add(new Swashbuckler(side));
 		mechs.add(new Packrat(side));
 		mechs.add(new Pirate(side));
+		return mechs;
+	}
+	
+	private List<Mech> scienceSquad(boolean side){
+		List<Mech> mechs = new ArrayList<Mech>();
+		mechs.add(new Dynamo(side));
+		mechs.add(new Dynamo(side));
+		mechs.add(new Dynamo(side));
 		return mechs;
 	}
 	

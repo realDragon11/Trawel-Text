@@ -39,7 +39,7 @@ public abstract class Systems implements TurnSubscriber{
 	
 	
 	public float rating() {
-		float total = ((100f-damage)/100f)*currentMech.rating();
+		float total = ((100f-Math.min(damage+empDamage,100))/100f)*currentMech.rating();
 		return total;
 	}
 	

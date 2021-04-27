@@ -45,7 +45,7 @@ public class ArcThrower extends Fixture {
 
 	@Override
 	public String getName() {
-		return "Hot Laser";
+		return "Arc Thrower";
 	}
 
 	@Override

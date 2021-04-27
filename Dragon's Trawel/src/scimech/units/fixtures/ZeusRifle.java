@@ -9,27 +9,24 @@ import scimech.mech.Fixture;
 import scimech.mech.TurnSubscriber;
 import trawel.extra;
 
-public class LightAutocannon extends Fixture{
+public class ZeusRifle extends Fixture{
 
 	@Override
 	public void activate(Target t, TurnSubscriber ts) {
 		int acc = (int) (20*rating());
 		int hits = 0;
-		for (int i = 0; i < 3;i++) {
+		for (int i = 0; i < 10;i++) {
 			double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc);
 			if (hit  >=0) {
-				t.takeDamage().take(DamageTypes.KINETIC,DamageMods.NORMAL,4, t);
+				t.takeDamage().take(DamageTypes.SHOCK,DamageMods.NORMAL,5, t);
 				hits++;
 			}
-			if (!t.isDummy()) {
-				if (extra.chanceIn(2,3)) {
-					currentMount.takeHeat(1);
-				}
-			}
-			acc-=extra.randRange(1, 3);
+			
+			acc=Math.max(acc-extra.randRange(2,4),1);
 		}
 		if (!t.isDummy()) {
-			extra.print("The Light Autocannon attacks! " + hits + " hits! ");
+			currentMount.takeHeat(8);
+			extra.print("The Zeus Rifle attacks! " + hits + " hits! ");
 		}
 		
 	}
@@ -41,37 +38,37 @@ public class LightAutocannon extends Fixture{
 
 	@Override
 	public int heatCap() {
-		return 12;
+		return 16;
 	}
 
 	@Override
 	public String getName() {
-		return "Light Autocannon";
+		return "Zeus Rifle";
 	}
 
 	@Override
 	public int getEnergyDraw() {
-		return 2;
+		return 10;
 	}
 
 	@Override
 	public String getDescription() {
-		return "An accurate full-auto weapon that shoots 3 times.";
+		return "A ballistic shock weapon that loses it's accuracy over it's 10 shots.";
 	}
 
 	@Override
 	public int getComplexity() {
-		return 4;
+		return 12;
 	}
 
 	@Override
 	public int getWeight() {
-		return 2;
+		return 4;
 	}
 
 	@Override
 	public int getSlots() {
-		return 2;
+		return 8;
 	}
 
 }
