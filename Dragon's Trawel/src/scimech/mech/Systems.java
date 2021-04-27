@@ -23,8 +23,6 @@ public abstract class Systems implements TurnSubscriber{
 	protected int damage = 0;//max 100
 	public Mech currentMech;
 	
-	public abstract int heatCap();
-	
 	public void takeDamage(int toTake) {
 		damage = extra.clamp(damage+toTake, 0, 100);
 	}
