@@ -38,7 +38,11 @@ public abstract class Mech implements TurnSubscriber, Target{
 	public abstract int baseComplexity();
 	public abstract String getName();
 	public abstract int baseDodge();
+	public abstract int baseHeatCap();
 	
+	public int heatCap() {
+		return baseHeatCap();
+	}
 	
 	public TargetType targetType() {
 		return TargetType.MECH;
@@ -324,5 +328,27 @@ public abstract class Mech implements TurnSubscriber, Target{
 			mounts.get(i).takeSystemDamage(arr[i]);
 		}
 		
+	}
+	public float rating() {
+		int cap = heatCap();
+		if (heat < cap) {
+			return 1;
+		}
+		return Math.max(extra.lerp(1,0,(heat-cap)/(cap)),.1f);
+	}
+	
+	
+	public abstract ResistMap internalResistMap();
+	
+	@Override
+	public ResistMap resistMap() {
+		ResistMap map = internalResistMap();
+		for (Systems s: systems) {
+			ResistMap sMap = s.resistMap();
+			if (sMap != null) {
+				map.subMaps.add(sMap);
+			}
+		}
+		return map;
 	}
 }
