@@ -63,7 +63,7 @@ public abstract class Fixture implements TurnSubscriber{
 					damString = "scratched";
 				}
 			}
-			return fix.getName() + ": " + (fix.powered ? "on" : "off") + (fix.overclocked ? "OVERCLOCKED" : "") + (damString == null ? "" : " " + damString)+(fix.empDamage > 10 ? "EMP: " +(fix.empDamage/10)*10 : "") + fix.getTitleAdditions();
+			return fix.getName() + ": " + (fix.powered ? "on" : "off") + (fix.overclocked ? "OVERCLOCKED" : "") + (damString == null ? "" : " " + damString)+(fix.empDamage > 10 ? " EMP: " +(fix.empDamage/10)*10 : "") + fix.getTitleAdditions();
 		}
 
 		@Override

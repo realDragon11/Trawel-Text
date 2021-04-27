@@ -26,9 +26,10 @@ public class ArcThrower extends Fixture {
 				hits++;
 				t.takeDamage().suffer(DamageEffect.EMP,40*rating(), t);
 			}
-			currentMount.takeHeat(1);
+			
 			}
 		if (!t.isDummy()) {
+			currentMount.takeHeat(5);
 			extra.print("The Arc Thrower attacks! " + hits + " hits! ");
 		}
 

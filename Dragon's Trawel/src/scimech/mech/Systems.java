@@ -80,7 +80,7 @@ public abstract class Systems implements TurnSubscriber{
 					damString = "scratched";
 				}
 			}
-			return sys.getName() + ": " + (sys.powered ? "on" : "off") + (damString == null ? "" : " " + damString) +(sys.empDamage > 10 ? "EMP: " +(sys.empDamage/10)*10 : "") +  sys.getTitleAdditions();
+			return sys.getName() + ": " + (sys.powered ? "on" : "off") + (damString == null ? "" : " " + damString) +(sys.empDamage > 10 ? " EMP: " +(sys.empDamage/10)*10 : "") +  sys.getTitleAdditions();
 		}
 
 		@Override

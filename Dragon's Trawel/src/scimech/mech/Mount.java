@@ -119,6 +119,15 @@ public abstract class Mount implements TurnSubscriber, Target{
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> mList = new ArrayList<MenuItem>();
+					int em = averageEMP();
+					if (em > 9) {
+						mList.add(new MenuLine() {
+	
+							@Override
+							public String title() {
+								return "EMP: " + ((em/10)*10) + "%";
+							}});
+					}
 					mList.add( new MenuLine() {
 					@Override
 					public String title() {
