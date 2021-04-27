@@ -5,6 +5,7 @@ import java.util.List;
 
 import scimech.combat.MechCombat;
 import scimech.combat.Target;
+import scimech.combat.Target.TargetType;
 import scimech.mech.Fixture.MenuFixture;
 import scimech.mech.Mech.MenuMechTarget;
 import trawel.MenuGenerator;
@@ -20,6 +21,10 @@ public abstract class Mount implements TurnSubscriber, Target{
 	protected List<Fixture> fixtures = new ArrayList<Fixture>();
 	public Mech currentMech;
 	public boolean fired = false;
+	
+	public TargetType targetType() {
+		return TargetType.MOUNT;
+	}
 	
 	@Override
 	public void activate(Target t, TurnSubscriber ts) {
@@ -269,5 +274,12 @@ public abstract class Mount implements TurnSubscriber, Target{
 		}
 		damageSum/=fixtures.size();
 		return damageSum > 98;
+	}
+	
+	public abstract float dodgeMult();
+	
+	@Override
+	public int dodgeValue() {
+		return (int) (currentMech.dodgeValue()*dodgeMult());
 	}
 }

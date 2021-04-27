@@ -145,4 +145,5 @@ public abstract class Fixture implements TurnSubscriber{
 	public abstract int getComplexity();
 	public abstract int getWeight();
 	public abstract int getSlots();
+	public abstract int accValue();
 }

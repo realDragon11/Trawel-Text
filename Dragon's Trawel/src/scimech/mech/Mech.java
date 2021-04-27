@@ -30,7 +30,12 @@ public abstract class Mech implements TurnSubscriber, Target{
 	public abstract int baseSpeed();
 	public abstract int baseComplexity();
 	public abstract String getName();
+	public abstract int baseDodge();
 	
+	
+	public TargetType targetType() {
+		return TargetType.MECH;
+	}
 	public int getSpeed() {
 		return baseSpeed()+speed;
 	}
@@ -236,4 +241,9 @@ public abstract class Mech implements TurnSubscriber, Target{
 	public boolean checkFire() {
 		return hp > 0;
 	}
+	
+	@Override
+	public int dodgeValue() {
+		return baseDodge();
+	} 
 }

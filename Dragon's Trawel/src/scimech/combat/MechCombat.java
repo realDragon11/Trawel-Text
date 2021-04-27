@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import scimech.mech.Fixture;
 import scimech.mech.Mech;
 
 public class MechCombat {
@@ -78,5 +79,10 @@ public class MechCombat {
 	
 	public Mech activeMech() {
 		return turnOrder.get(0);
+	}
+	
+	public float computeHit(Target t,AimType at,Fixture attacker) {
+		int acc = attacker.accValue();
+		int dodge = (int) (at.getMultFor(t.targetType())*t.dodgeValue());
 	}
 }

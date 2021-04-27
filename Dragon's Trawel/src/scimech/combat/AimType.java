@@ -1,5 +1,7 @@
 package scimech.combat;
 
+import scimech.combat.Target.TargetType;
+
 public enum AimType {
 	LASER(1f,0.9f),
 	BALLISTIC(1f,0.8f),
@@ -17,5 +19,15 @@ public enum AimType {
 	}
 	public float getMountHit() {
 		return mountHit;
+	}
+	
+	public float getMultFor(TargetType tt) {
+		switch (tt) {
+		case MECH:
+			return getMechHit();
+		case MOUNT:
+			return getMountHit();
+		}
+		throw new RuntimeException("targettype not found");
 	}
 }
