@@ -27,6 +27,9 @@ public abstract class Mount implements TurnSubscriber, Target{
 			if (f.powered) {
 				f.activate(t,this);
 			}
+			if (t.checkFire()) {
+				MechCombat.mc.activeMechs.remove(t);
+			}
 		}
 	}
 	
@@ -120,7 +123,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 	public abstract String getName();
 	public boolean targeting() {
 		List<Mech> enemies = MechCombat.enemies(this.currentMech);
-		
+		fired =  false;
 		extra.menuGoPaged(new MenuGeneratorPaged() {
 
 			@Override
@@ -151,7 +154,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 			this.activate(MechCombat.mc.t,null);
 		}
 		MechCombat.mc.t = null;
-		return fired;//TODO: Method stubby wubby
+		return fired;
 	}
 	
 	public void manageFixtures() {
@@ -257,5 +260,14 @@ public abstract class Mount implements TurnSubscriber, Target{
 			total += f.getSlots();
 		}
 		return total;
+	}
+	
+	public boolean checkFire() {
+		int damageSum = 0;
+		for (Fixture f: fixtures) {
+			damageSum += f.damage;
+		}
+		damageSum/=fixtures.size();
+		return damageSum > 98;
 	}
 }

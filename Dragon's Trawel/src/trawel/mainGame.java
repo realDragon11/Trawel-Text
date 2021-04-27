@@ -7,6 +7,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
+import scimech.combat.MechCombat;
+import scimech.mech.Mech;
 import trawel.factions.HostileTask;
 import trawel.townevents.TownFlavorFactory;
 /**
@@ -97,50 +99,18 @@ public class mainGame {
 		extra.println("Choose an adventure:");
 		extra.println("1 The DeathStrider (recommended)");
 		extra.println("2 rTrawel (experimental jrpg)");
-		//extra.println("2 Eoanan Sandbox");
-		//extra.println("3 Eoanan Wizard Mode");
-		//extra.println("4 model mode");
+		extra.println("3 SciMechs (mech jam game)");
 		switch(extra.inInt(3)) {
 		case 1: adventure1();break;
 		case 2:extra.println("This gamemode can only be played in the command prompt."); rtrawel.TestRunner.run();break;
 		case 3:
-			extra.menuGoPaged(new MenuGeneratorPaged() {
-
-				@Override
-				public List<MenuItem> gen() {
-					List<MenuItem> mList = new ArrayList<MenuItem>();
-					this.header = new MenuLine() {
-
-						@Override
-						public String title() {
-							return "BLAH";
-						}};
-						for (int i = 0; i < 99; i++) {
-							MenuSelectNumber m = (new MenuSelectNumber(){
-
-								@Override
-								public String title() {
-									return "blah" + number;
-								}
-
-								@Override
-								public boolean go() {
-									return false;
-								}
-								
-							});
-							m.number = i;
-							mList.add(m);
-							
-							mList.add(new MenuLine() {
-
-								@Override
-								public String title() {
-									return "BLAH";
-								}});
-						}
-					return mList;
-				}});
+			List<Mech> mechs = new ArrayList<Mech>();
+			mechs.add(new DebugMech(true));
+			mechs.add(new DebugMech(true));
+			mechs.add(new DebugMech(false));
+			mechs.add(new DebugMech(false));
+			new MechCombat(mechs).go();;
+			break;
 		//case 2: adventure2();break;
 		//case 3: adventure3();break;
 		//case 4: modelMode();break;

@@ -16,14 +16,22 @@ public class MechCombat {
 	public List<Mech> activeMechs = new ArrayList<Mech>();
 	public Target t;
 	
-	public MechCombat(Mech...mechs) {
+	public MechCombat(List<Mech> mechs) {
 		mc = null;
-		totalMechs = Arrays.asList(mechs);
+		totalMechs = mechs;
 		activeMechs.addAll(totalMechs);
 		for (Mech m: totalMechs) {
 			m.refreshForBattle();
 		}
+		
+		mc = this;
+	}
+	
+	public void go() {
 		while (twoSided()) {
+			for (Mech m: activeMechs) {
+				m.roundStart();
+			}
 			turnOrder.clear();
 			turnOrder.addAll(activeMechs);
 			turnOrder.sort(new Comparator<Mech>() {
@@ -32,8 +40,10 @@ public class MechCombat {
 				public int compare(Mech o1, Mech o2) {
 					return o1.getSpeed()-o2.getSpeed();
 				}});
+			while (turnOrder.size() > 0) {
+				activeMech().activate(null,null);
+			}
 		}
-		mc = this;
 	}
 
 	private boolean twoSided() {

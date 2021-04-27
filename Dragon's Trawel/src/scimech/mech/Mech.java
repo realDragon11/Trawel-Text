@@ -218,6 +218,9 @@ public abstract class Mech implements TurnSubscriber, Target{
 						return true;
 					}});
 				for (Mount m: menuMechTarget.owner.mounts) {
+					if (m.checkFire()) {
+						continue;
+					}
 					MenuMountTarget mmt = m.new MenuMountTarget();
 					mmt.owner = m;
 					mList.add(mmt);
@@ -228,5 +231,9 @@ public abstract class Mech implements TurnSubscriber, Target{
 			return true;
 		}
 		return false;
+	}
+	
+	public boolean checkFire() {
+		return hp > 0;
 	}
 }
