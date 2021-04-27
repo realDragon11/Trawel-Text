@@ -1,5 +1,6 @@
 package scimech.mech;
 
+import trawel.MenuSelect;
 import trawel.extra;
 
 public abstract class Fixture implements TurnSubscriber{
@@ -21,4 +22,36 @@ public abstract class Fixture implements TurnSubscriber{
 	public void takeDamage(int toTake) {
 		damage = extra.clamp(damage+toTake, 0, 100);
 	}
+	
+	
+	public class MenuFixture extends MenuSelect {//can be extended further
+
+		public Fixture fix;
+		@Override
+		public String title() {
+			String damString = "";
+			if (damage > 30) {
+				if (damage > 60) {
+					if (damage > 90) {
+						damString = "destroyed";
+					}else {
+						damString = "damaged";
+					}
+				}else {
+					damString = "scratched";
+				}
+			}
+			return fix.getName() + ": " + (fix.powered ? "on" : "off") + (fix.overclocked ? "OVERCLOCKED" : "") + " " + damString;
+		}
+
+		@Override
+		public boolean go() {
+			// TODO Auto-generated method stub
+			return false;
+		}}
+
+
+	public abstract String getName();
+	
+	public abstract int getEnergyDraw();
 }

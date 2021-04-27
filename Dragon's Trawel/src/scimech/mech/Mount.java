@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import scimech.combat.Target;
+import scimech.mech.Fixture.MenuFixture;
+import trawel.MenuGeneratorPaged;
+import trawel.MenuItem;
+import trawel.MenuLine;
+import trawel.MenuSelect;
+import trawel.extra;
 
 public abstract class Mount implements TurnSubscriber{
 
@@ -35,5 +41,52 @@ public abstract class Mount implements TurnSubscriber{
 			f.roundStart();
 		}
 		heat /=2;
+	}
+	
+	public void togglePowerAll(boolean state) {
+		for (Fixture f: fixtures) {
+			f.powered = state;
+		}
+	}
+	
+	public int getEnergyDraw() {
+		int total = 0;
+		for (Fixture f: fixtures) {
+			total += f.getEnergyDraw();
+		}
+		return total;
+	}
+	
+	public void examine() {
+		extra.menuGoPaged(new MenuGeneratorPaged(){
+
+			@Override
+			public List<MenuItem> gen() {
+				this.header = new MenuLine() {
+
+					@Override
+					public String title() {
+						return "heat: "  + heat + " draw: " + getEnergyDraw();
+					}};
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}});
+				for (Fixture f: fixtures) {
+					MenuFixture mf = f.new MenuFixture();
+					mf.fix = f;
+					mList.add(mf);
+				}
+				return mList;
+			}});
+		
 	}
 }
