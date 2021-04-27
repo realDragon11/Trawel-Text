@@ -463,9 +463,9 @@ public class extra {
 			mList = mGen.gen();
 			 
 			mGen.page = 0;
-			mGen.maxPage = 99;
 			while (true) {
-				
+				mGen.lists.clear();
+				mGen.maxPage = 0;
 				int j = 0;
 				int count = 0;
 				mList.add(new MenuLine() {//dummy node
@@ -487,7 +487,7 @@ public class extra {
 
 							@Override
 							public String title() {
-								return mGen.page + "/" + mGen.maxPage;
+								return (mGen.page+1) + "/" + (mGen.maxPage+1);
 							}});
 						j++;
 						mList.add(j,new MenuSelect() {
@@ -515,7 +515,7 @@ public class extra {
 
 								@Override
 								public String title() {
-									return mGen.page + "/" + mGen.maxPage;
+									return (mGen.page+1) + "/" + (mGen.maxPage+1);
 								}});
 							j++;
 							mList.add(j,new MenuSelect() {
@@ -545,35 +545,35 @@ public class extra {
 										return false;
 									}});
 								count++; j++;
-								int start = mList.indexOf(mGen.lists.get(mGen.lists.size()-1));
+								int start = mList.indexOf(mGen.lists.get(mGen.maxPage-1).get(mGen.lists.get(mGen.maxPage-1).size()-1));
 								mGen.lists.add(new ArrayList<MenuItem>());
-								for (int k = start;k < j;k++) {
-									mGen.lists.get(mGen.lists.size()-1).add(mList.get(k));
+								
+								for (int k = start;k <= j;k++) {
+									mGen.lists.get(mGen.maxPage).add(mList.get(k));
 								}
 								mGen.maxPage++;
+								
 							}
 						}
 						
 					}
 					
 				}
+				mGen.page = extra.clamp(mGen.page,0,mGen.maxPage);
 				if (mGen.header != null) {
 					extra.println(mGen.header.title());
 				}
 				mList.remove(mList.size()-1);;
 				int v = 1;
 				List<MenuItem> subList = new ArrayList<MenuItem>();
-				for (int i = mGen.page*9; i < (mGen.page+1)*9 && i < mList.size();) {
-					
+				for (int i = 0;i < mGen.lists.get(mGen.page).size();i++)
 					if (mList.get(i).canClick() == true) {
 						subList.add(mList.get(i));
 						extra.println(v + " " +mList.get(i).title());
-						i++;
 						v++;
 					}else {
 						extra.println(mList.get(i).title());
 					}
-				}
 				int val = extra.inInt(subList.size())-1;
 				boolean ret = subList.get(val).go();
 				if (ret) {
