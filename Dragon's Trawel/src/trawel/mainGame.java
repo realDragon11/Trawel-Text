@@ -14,6 +14,7 @@ import scimech.units.mechs.Dynamo;
 import scimech.units.mechs.Musketeer;
 import scimech.units.mechs.Packrat;
 import scimech.units.mechs.Pirate;
+import scimech.units.mechs.Pyro;
 import scimech.units.mechs.Swashbuckler;
 import trawel.factions.HostileTask;
 import trawel.townevents.TownFlavorFactory;
@@ -216,8 +217,8 @@ public class mainGame {
 	private List<Mech> scienceSquad(boolean side){
 		List<Mech> mechs = new ArrayList<Mech>();
 		mechs.add(new Dynamo(side));
-		mechs.add(new Dynamo(side));
-		mechs.add(new Dynamo(side));
+		mechs.add(new Pyro(side));
+		mechs.add(new Pyro(side));
 		return mechs;
 	}
 	

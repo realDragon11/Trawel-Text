@@ -462,9 +462,11 @@ public abstract class Mount implements TurnSubscriber, Target{
 
 	public boolean addFixture(Fixture f) {
 		if (f.getSlots() > (baseSlots()-usedSlots())) {
+			extra.println("Hit slot cap.");
 			return false;
 		}
 		if (f.getComplexity() > currentMech.hardComplexityCap()-currentMech.totalComplexity()) {
+			extra.println("Hit complexity cap.");
 			return false;
 		}
 		fixtures.add(f);

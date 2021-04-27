@@ -17,12 +17,12 @@ public class HotLaser extends Fixture {
 	@Override
 	public void activate(Target t, TurnSubscriber ts) {
 		int acc = (int) (30*rating());
-		double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc);
+		double hit = MechCombat.computeHit(t, AimType.LASER, acc);
 		if (!t.isDummy()) {
 			extra.print("The Hot Laser " + ( hit >= 0 ? "hits!" : "misses!") + " ");
 		}
 		if (hit  >=0) {
-			t.takeDamage().take(DamageTypes.BURN,DamageMods.HOLLOW,(int) (20*rating()), t);
+			t.takeDamage().take(DamageTypes.BURN,DamageMods.HOLLOW,(int) (13*rating()), t);
 			if (!t.isDummy()) {
 				if (t.targetType() == TargetType.MECH) {
 					Mech m = (Mech)t;
@@ -78,7 +78,7 @@ public class HotLaser extends Fixture {
 
 	@Override
 	public int getSlots() {
-		return 3;
+		return 2;//TODO: changed from 3 because that's  what I was using it as
 	}
 
 }
