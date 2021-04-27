@@ -52,7 +52,7 @@ public class MechCombat {
 		}
 	}
 
-	private boolean twoSided() {
+	public boolean twoSided() {
 		boolean sideF = false;
 		int count = 0;
 		for (Mech m: activeMechs) {

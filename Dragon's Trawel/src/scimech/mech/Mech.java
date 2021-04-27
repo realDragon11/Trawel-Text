@@ -161,7 +161,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 					return mList;
 				}});
 		}else {
-			while (energy > 0) {
+			while (energy > 0 && MechCombat.mc.twoSided()) {
 				boolean activated = false;
 				for (int i = 0; i < 5;i++) {
 					if (mounts.get(extra.randRange(0,mounts.size()-1)).aiFire()) {
