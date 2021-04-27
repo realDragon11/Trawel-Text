@@ -306,7 +306,23 @@ public abstract class Mech implements TurnSubscriber, Target{
 			}};
 	}
 	public void takeSystemDamage(int dam) {
-		// TODO Auto-generated method stub
+		int[] arr = new int[mounts.size()];
+		for (int i = 0; i < arr.length;i++) {
+			arr[i] = 0;
+		}
+		for (int i = 0; i < dam;i++) {
+			int v = extra.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
+			if (extra.chanceIn(2,3) && mounts.get(v).checkFire()) {
+				if (extra.chanceIn(1,3)){
+					i--;
+					}
+			}else {
+				arr[v]++;
+			}
+		}
+		for (int i = 0; i < arr.length;i++) {
+			mounts.get(i).takeSystemDamage(arr[i]);
+		}
 		
 	}
 }
