@@ -476,10 +476,13 @@ public class extra {
 						return null;
 					}});
 				while (j < mList.size()) {
+					j++;
 					if (mList.get(j).canClick() == true) {
 						count++;
+					}else {
+						continue;
 					}
-					if (count == 8 && mList.size() > 8) {
+					if (count == 8 && mList.size()-1 > 8) {
 						mList.add(8,new MenuSelect() {
 
 							@Override
@@ -492,27 +495,51 @@ public class extra {
 								mGen.page++;
 								return false;
 							}});
-						count++;
+						count++; j++;
+						mGen.maxPage++;
+						mList.add(new MenuLine() {
+
+							@Override
+							public String title() {
+								return mGen.page + "/" + mGen.maxPage;
+							}});
 					}else {
-						if (j > 14 && count%9 == 0) {
+						if (j > 14 && (count%9 == 0 || j == mList.size()-1)) {
 							mList.add(new MenuSelect() {
 
 								@Override
 								public String title() {
-									return "next page";
+									return "last page";
 								}
 
 								@Override
 								public boolean go() {
-									mGen.page++;
+									mGen.page--;
 									return false;
 								}});
-							count++;
-							if (mList.size() > )
+							count++; j++;
+							if (mList.size() > j-1) {
+								mList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "next page";
+									}
+
+									@Override
+									public boolean go() {
+										mGen.page++;
+										return false;
+									}});
+								count++; j++;
+								mGen.maxPage++;
+							}
 						}
 						
 					}
+					
 				}
+				mList.remove(mList.size()-1);;
 				int v = 1;
 				List<MenuItem> subList = new ArrayList<MenuItem>();
 				for (int i = mGen.page*9; i < (mGen.page+1)*9 && i < mList.size() && (i%(((mGen.page+1)*7)-(mGen.page*9)) != 0 ^ (i%9 == 0));) {
