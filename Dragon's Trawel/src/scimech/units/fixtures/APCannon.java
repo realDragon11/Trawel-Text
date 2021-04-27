@@ -15,7 +15,7 @@ public class APCannon extends Fixture {
 	public void activate(Target t, TurnSubscriber ts) {
 		int acc = (int) (12*rating());
 			double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc);
-			extra.println("The AP Cannon " + ( hit >= 0 ? "hits!" : "misses!"));
+			extra.print("The AP Cannon " + ( hit >= 0 ? "hits!" : "misses!") + " ");
 			if (hit  >=0) {
 				t.takeDamage().take(DamageTypes.KINETIC,DamageMods.AP,40, t);
 				if (!t.isDummy()) {

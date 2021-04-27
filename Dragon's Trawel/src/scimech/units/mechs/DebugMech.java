@@ -68,7 +68,7 @@ public class DebugMech extends Mech {
 
 	@Override
 	public int baseDodge() {
-		return 10;
+		return 7;
 	}
 
 	@Override

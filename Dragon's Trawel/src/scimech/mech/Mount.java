@@ -50,6 +50,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 			}
 		}
 		if (!t.isDummy()) {
+			extra.println();
 			extra.println(t.targetName() + " takes " + (before-t.getHP())  + " damage!");
 		}
 	}
