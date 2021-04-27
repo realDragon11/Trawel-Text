@@ -6,10 +6,15 @@ import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
 
 public class MiniReactor extends Systems {
+	
+	public MiniReactor() {
+		passive = true;
+		powered = true;
+	}
 
 	@Override
 	public int getComplexity() {
-		return 2;
+		return 3;
 	}
 
 	@Override
@@ -31,7 +36,7 @@ public class MiniReactor extends Systems {
 
 	@Override
 	public String getDescription() {
-		return "Produces up to 2 Energy";
+		return "Produces up to 2 Energy, without creating Heat.";
 	}
 
 	@Override

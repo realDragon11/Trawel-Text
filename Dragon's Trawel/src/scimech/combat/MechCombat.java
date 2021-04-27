@@ -82,7 +82,7 @@ public class MechCombat {
 		return turnOrder.get(0);
 	}
 	
-	public double computeHit(Target t,AimType at, int attackValue) {
+	public static double computeHit(Target t,AimType at, int attackValue) {
 		int acc = (int) (at.getMultFor(t.targetType())*attackValue);
 		int dodge = (int) (t.dodgeValue());
 		double accRoll = acc*Math.random();

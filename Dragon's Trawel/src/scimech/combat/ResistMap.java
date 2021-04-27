@@ -40,9 +40,9 @@ public class ResistMap {
 			b = new SubHolder(1f,1f);;
 		}
 		SubHolder c;
-		if (isSub) {
+		//if (isSub) {
 			c = new SubHolder(1f,1f);
-		}else {
+		//}else {
 			float totalA = 1,totalB =1;
 			for (ResistMap rm: subMaps) {
 				SubHolder sh = rm.calcMult(dt, dm);
@@ -50,7 +50,7 @@ public class ResistMap {
 				totalB *=sh.hpDamageMult;
 			}
 			c = new SubHolder(totalA,totalB);
-		}
+		//}
 		return new SubHolder(a.systemDamageMult*b.systemDamageMult*c.systemDamageMult,a.hpDamageMult*b.hpDamageMult*c.hpDamageMult);
 	}
 }
