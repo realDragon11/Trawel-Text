@@ -26,11 +26,11 @@ public class HotLaser extends Fixture {
 			if (!t.isDummy()) {
 				if (t.targetType() == TargetType.MECH) {
 					Mech m = (Mech)t;
-					m.takeHeat(5);
+					m.takeHeat(3);
 				}else {
 					if (t.targetType() == TargetType.MOUNT) {
 						Mount m = (Mount)t;
-						m.takeHeat(3);
+						m.takeHeat(1);
 					}
 				}
 			}

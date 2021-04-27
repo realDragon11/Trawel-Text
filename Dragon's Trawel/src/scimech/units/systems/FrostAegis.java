@@ -12,7 +12,7 @@ public class FrostAegis extends Systems {
 
 	@Override
 	public int getComplexity() {
-		return 20;
+		return 10;
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class FrostAegis extends Systems {
 
 	@Override
 	public int getEnergyDraw() {
-		return 5;
+		return 6;
 	}
 
 	@Override
