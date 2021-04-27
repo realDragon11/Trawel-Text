@@ -8,13 +8,11 @@ import scimech.mech.Mount;
 import scimech.people.Pilot;
 import scimech.units.fixtures.APCannon;
 import scimech.units.fixtures.ArtemisCannon;
-import scimech.units.fixtures.HotLaser;
 import scimech.units.fixtures.LightAutocannon;
 import scimech.units.mounts.Blunderbuss;
+import scimech.units.mounts.Foil;
 import scimech.units.systems.CoolantRod;
 import scimech.units.systems.FusionReactor;
-import scimech.units.systems.MiniReactor;
-import scimech.units.systems.Plating;
 import scimech.units.systems.Ramjet;
 import trawel.randomLists;
 
@@ -22,15 +20,19 @@ public class Musketeer extends Mech {
 
 	public Musketeer(boolean side) {
 		playerControlled = side;
-		complexityCap = 70;
-		weightCap = 60;
+		complexityCap = 80;
+		weightCap = 65;
 		
 		callsign = randomLists.randomElement();
 		pilot = new Pilot();
 		
-		Mount m = new Blunderbuss();
+		Mount m = new Foil();
 		this.addMount(m);
 		m.addFixture(new LightAutocannon());
+		m.addFixture(new LightAutocannon());
+		
+		m = new Foil();
+		this.addMount(m);
 		m.addFixture(new LightAutocannon());
 		m.addFixture(new LightAutocannon());
 		
@@ -57,7 +59,7 @@ public class Musketeer extends Mech {
 	
 	@Override
 	public int baseHP() {
-		return 170;
+		return 150;
 	}
 
 	@Override
@@ -67,7 +69,7 @@ public class Musketeer extends Mech {
 
 	@Override
 	public int baseComplexity() {
-		return 7;
+		return 4;
 	}
 
 	@Override

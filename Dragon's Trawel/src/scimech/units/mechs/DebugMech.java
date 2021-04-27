@@ -20,7 +20,7 @@ public class DebugMech extends Mech {
 	public DebugMech(boolean side) {
 		playerControlled = side;
 		complexityCap = 70;
-		weightCap = 60;
+		weightCap = 80;
 		
 		callsign = randomLists.randomElement();
 		pilot = new Pilot();
@@ -30,7 +30,6 @@ public class DebugMech extends Mech {
 		m.addFixture(new LightAutocannon());
 		m.addFixture(new LightAutocannon());
 		m.addFixture(new LightAutocannon());
-		
 		
 		m = new Blunderbuss();
 		this.addMount(m);
