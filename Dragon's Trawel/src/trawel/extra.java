@@ -461,12 +461,61 @@ public class extra {
 		public static int menuGoPaged(MenuGeneratorPaged mGen) {
 			List<MenuItem> mList = new ArrayList<MenuItem>();
 			mList = mGen.gen();
-			
+			 
 			mGen.page = 0;
+			mGen.maxPage = 99;
 			while (true) {
+				if (mGen.header != null) {
+					extra.println(mGen.header.title());
+				}
+				int j = 0;
+				int count = 0;
+				mList.add(new MenuLine() {//dummy node
+					@Override
+					public String title() {
+						return null;
+					}});
+				while (j < mList.size()) {
+					if (mList.get(j).canClick() == true) {
+						count++;
+					}
+					if (count == 8 && mList.size() > 8) {
+						mList.add(8,new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "next page";
+							}
+
+							@Override
+							public boolean go() {
+								mGen.page++;
+								return false;
+							}});
+						count++;
+					}else {
+						if (j > 14 && count%9 == 0) {
+							mList.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return "next page";
+								}
+
+								@Override
+								public boolean go() {
+									mGen.page++;
+									return false;
+								}});
+							count++;
+							if (mList.size() > )
+						}
+						
+					}
+				}
 				int v = 1;
 				List<MenuItem> subList = new ArrayList<MenuItem>();
-				for (int i = mGen.page*9; i < (mGen.page+1)*9 && i < mList.size() && (i%(((mGen.page+1)*7)-(mGen.page*9)) != 0 ^ i%9 == 0);) {
+				for (int i = mGen.page*9; i < (mGen.page+1)*9 && i < mList.size() && (i%(((mGen.page+1)*7)-(mGen.page*9)) != 0 ^ (i%9 == 0));) {
 					
 					if (mList.get(i).canClick() == true) {
 						subList.add(mList.get(i));
@@ -506,7 +555,7 @@ public class extra {
 							mGen.page--;
 							return false;
 						}});
-					extra.println(v + " " + subList.get(subList.size()-1));
+					extra.println(v + " " + subList.get(subList.size()-1).title());
 					v++;
 				}
 				int val = extra.inInt(subList.size())-1;
@@ -517,8 +566,6 @@ public class extra {
 				mList = mGen.gen();
 
 			}
-		//int val = extra.inInt(Math.min((v%9)+2,9))-1;
-		//boolean ret = subList.get(val+(mGen.page*9)).go();
 		}
 		
 		public static float lerp(float a, float b, float f) 
