@@ -28,7 +28,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 
 	public boolean playerControlled = false;
 	protected int heat = 0, energy = 0, hp, speed, 
-			complexityCap = 30;//for debug
+			complexityCap = 30, weightCap = 40;//for debug
 	protected List<Mount> mounts = new ArrayList<Mount>();
 	protected List<Systems> systems = new ArrayList<Systems>();
 	protected Pilot pilot;
@@ -202,6 +202,25 @@ public abstract class Mech implements TurnSubscriber, Target{
 		return (Math.pow(((total-complexityCap)/2f),1.5f)+3f)/3f;
 	}
 	
+	
+	public double weightPenalty() {//TODO
+		int total = totalWeight();
+		if (total <= weightCap) {
+			return 1;
+		}
+		return (Math.pow(((total-weightCap)/2f),1.5f)+3f)/3f;
+	}
+	
+	public int totalWeight() {
+		int total = 0;
+		for (Systems ss: systems) {
+			total +=ss.getWeight();
+		}
+		for (Mount mount: mounts) {
+			total += mount.getWeight();
+		}
+		return total;
+	}
 	public int hardComplexityCap() {
 		return complexityCap+20;
 	}

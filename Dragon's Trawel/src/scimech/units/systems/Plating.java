@@ -1,53 +1,60 @@
 package scimech.units.systems;
 
+import scimech.combat.DamageMods;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
+import trawel.extra;
 
-public class MiniReactor extends Systems {
+public class Plating extends Systems {
 
 	@Override
 	public int getComplexity() {
-		return 2;
+		return 1;
 	}
 
 	@Override
 	public ResistMap resistMap() {
-		return null;
+		//normally would check for powered
+		ResistMap map = new ResistMap();
+		map.isSub = true;
+		float r = rating();
+		//map.put(DamageMods.AP, 1f, 1f);
+		map.put(DamageMods.NORMAL, extra.lerp(1f, 0.9f,r), extra.lerp(1f, 0.9f,r));
+		map.put(DamageMods.HOLLOW, extra.lerp(1f, 0.7f,r), extra.lerp(1f, 0.7f,r));
+		return map;
 	}
 
 	@Override
 	public String getTitleAdditions() {
-		float r = rating();
-		int pow = Math.round(2*r);
-		return (pow > 0) ? " " + pow : " offline";
+		return "";
 	}
 
 	@Override
 	public String getName() {
-		return "Mini-Reactor";
+		return "plating";
 	}
 
 	@Override
 	public String getDescription() {
-		return "Produces up to 2 Energy";
+		return "provides protection without an energy cost";
 	}
 
 	@Override
 	public int getEnergyDraw() {
-		return Math.round(-2*rating());
+		return 0;
 	}
 
 	@Override
 	protected void activateInternal(Target t, TurnSubscriber ts) {
-		//no effect
+		// NONE
 
 	}
 
 	@Override
 	public int getWeight() {
-		return 1;
+		return 3;
 	}
 
 }
