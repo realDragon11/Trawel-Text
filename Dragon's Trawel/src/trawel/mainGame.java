@@ -11,6 +11,8 @@ import scimech.combat.MechCombat;
 import scimech.mech.Mech;
 import scimech.units.mechs.DebugMech;
 import scimech.units.mechs.Musketeer;
+import scimech.units.mechs.Packrat;
+import scimech.units.mechs.Pirate;
 import scimech.units.mechs.Swashbuckler;
 import trawel.factions.HostileTask;
 import trawel.townevents.TownFlavorFactory;
@@ -193,8 +195,8 @@ public class mainGame {
 	private List<Mech> pirateSquad(boolean side){
 		List<Mech> mechs = new ArrayList<Mech>();
 		mechs.add(new Swashbuckler(side));
-		mechs.add(new Swashbuckler(side));
-		mechs.add(new Swashbuckler(side));
+		mechs.add(new Packrat(side));
+		mechs.add(new Pirate(side));
 		return mechs;
 	}
 	

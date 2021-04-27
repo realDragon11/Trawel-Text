@@ -1,6 +1,7 @@
 package scimech.units.mechs;
 
 import scimech.combat.DamageMods;
+import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
 import scimech.mech.Mech;
 import scimech.mech.Mount;
@@ -8,78 +9,79 @@ import scimech.people.Pilot;
 import scimech.units.fixtures.APCannon;
 import scimech.units.fixtures.ArtemisCannon;
 import scimech.units.fixtures.LightAutocannon;
-import scimech.units.fixtures.Mortar;
 import scimech.units.mounts.Blunderbuss;
-import scimech.units.mounts.Broadside;
 import scimech.units.mounts.Foil;
-import scimech.units.systems.AblativeArmor;
+import scimech.units.mounts.Handcannon;
 import scimech.units.systems.CoolantRod;
 import scimech.units.systems.FusionReactor;
-import scimech.units.systems.MiniReactor;
 import scimech.units.systems.Ramjet;
 import trawel.randomLists;
 
-public class Packrat extends Mech {
+public class Pirate extends Mech {
 
-	public Packrat(boolean side) {
+	public Pirate(boolean side) {
 		playerControlled = side;
 		complexityCap = 80;
-		weightCap = 100;
+		weightCap = 75;
 		
 		callsign = randomLists.randomElement();
 		pilot = new Pilot();
 		
-		Mount m = new Blunderbuss();
-		this.addMount(m);
-		m.addFixture(new Mortar());
-		
-		m = new Blunderbuss();
-		this.addMount(m);
-		m.addFixture(new APCannon());
-		
-		m = new Blunderbuss();
+		Mount m = new Handcannon();
 		this.addMount(m);
 		m.addFixture(new LightAutocannon());
 		m.addFixture(new LightAutocannon());
+		
+		m = new Handcannon();
+		this.addMount(m);
+		m.addFixture(new LightAutocannon());
 		m.addFixture(new LightAutocannon());
 		
-		for (int i = 0; i < 10;i++) {
-			this.addSystem(new MiniReactor());
-		}
+		m = new Handcannon();
+		this.addMount(m);
+		m.addFixture(new LightAutocannon());
+		m.addFixture(new LightAutocannon());
 		
-		this.addSystem(new AblativeArmor());
+		this.addSystem(new FusionReactor());
+		this.addSystem(new FusionReactor());
+		this.addSystem(new FusionReactor());
+		
+		this.addSystem(new Ramjet());
+		
+		this.addSystem(new CoolantRod());
+		this.addSystem(new CoolantRod());
 		
 		hp = this.getMaxHP();
 	}
 	
 	@Override
 	public int baseHP() {
-		return 180;
+		return 220;
 	}
 
 	@Override
 	public int baseSpeed() {
-		return 9;
+		return 8;
 	}
 
 	@Override
 	public int baseComplexity() {
-		return 4;
+		return 8;
 	}
 
 	@Override
 	public String getName() {
-		return "Packrat";
+		return "Pirate";
 	}
 
 	@Override
 	public int baseDodge() {
-		return 5;
+		return 6;
 	}
 
 	@Override
 	public int baseHeatCap() {
-		return 17;
+		return 18;
 	}
 
 	@Override

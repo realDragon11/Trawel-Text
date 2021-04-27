@@ -39,7 +39,7 @@ public class Blunderbuss extends Mount {
 
 	@Override
 	public float dodgeMult() {
-		return 0.5f;
+		return 0.7f;
 	}
 
 }

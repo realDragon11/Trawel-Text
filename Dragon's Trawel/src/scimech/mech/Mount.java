@@ -56,8 +56,11 @@ public abstract class Mount implements TurnSubscriber, Target{
 					break;
 				}
 				if (m.checkFire()) {
-					MechCombat.mc.activeMechs.remove(t);
-					extra.println(m.callsign + " is taken out!");
+					
+					if (MechCombat.mc.activeMechs.contains(t)) {
+						extra.print(m.callsign + " is taken out! ");
+						MechCombat.mc.activeMechs.remove(t);
+					}
 				}
 			}
 
@@ -65,10 +68,15 @@ public abstract class Mount implements TurnSubscriber, Target{
 		if (!t.isDummy()) {
 			extra.println();
 			extra.println(t.targetName() + " takes " + (before-t.getHP())  + " damage!");
+			this.bonusEffect(t,before-t.getHP());
 			currentMech.energy-=this.getEnergyDraw();//TODO: did I forget to add this?
 		}
 	}
 	
+	public void bonusEffect(Target t, int damage) {
+		//abstract but not required
+	}
+
 	public void takeHeat(int amount) {
 		amount *=currentMech.complexityHeatPenalty();
 		heat+=amount;

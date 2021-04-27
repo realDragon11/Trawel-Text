@@ -1,11 +1,13 @@
 package scimech.units.mounts;
 
 import scimech.combat.DamageMods;
+import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
+import scimech.combat.Target;
 import scimech.mech.Mount;
 import trawel.extra;
 
-public class Broadside extends Mount {
+public class Handcannon extends Mount {
 
 	@Override
 	public ResistMap resistMap() {
@@ -17,27 +19,36 @@ public class Broadside extends Mount {
 
 	@Override
 	public String getName() {
-		return "Broadside Mount";
+		return "Handcannon Mount";
 	}
 
 	@Override
 	public int baseWeight() {
-		return 12;
+		return 4;
 	}
 
 	@Override
 	public int baseComplexity() {
-		return 5;
+		return 3;
 	}
 
 	@Override
 	public int baseSlots() {
-		return 18;
+		return 4;
 	}
 
 	@Override
 	public float dodgeMult() {
-		return 0.8f;
+		return 1f;
+	}
+	
+	@Override
+	public void bonusEffect(Target t, int damage) {
+		if (damage > 5) {
+			int before = t.getHP();
+			t.takeDamage().take(DamageTypes.KINETIC, DamageMods.AP,3,t);
+			extra.println("Handcannon: " + (before-t.getHP()) + " bonus damage!");
+		}
 	}
 
 }

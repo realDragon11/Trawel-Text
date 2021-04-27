@@ -99,7 +99,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 
 						@Override
 						public String title() {
-							return callsign + " ("+getName()+") " + "/"+pilot.getName() +" HP: " + hp + "/" + getMaxHP() +" Energy: " + energy + " Heat: " + heat+ "/" + heatCap();
+							return callsign + " ("+getName()+")" + "/"+pilot.getName() +" HP: " + hp + "/" + getMaxHP() +" Energy: " + energy + " Heat: " + heat+ "/" + heatCap();
 						}});
 					mList.add(new MenuSelect() {
 
@@ -277,7 +277,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 		protected Mount firing;
 		@Override
 		public String title() {
-			return callsign + " ("+getName()+") " + "/"+pilot.getName() + " hp: " + hp + "/" + getMaxHP();
+			return callsign + " ("+getName()+")" + "/"+pilot.getName() + " hp: " + hp + "/" + getMaxHP();
 		}
 		
 
@@ -321,7 +321,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 						MechCombat.mc.t = menuMechTarget.owner;
 						return true;
 					}});
-				ms.number = MechCombat.averageDamage(menuMechTarget.owner,mount,8);
+				ms.number = MechCombat.averageDamage(menuMechTarget.owner,mount,12);
 				mList.add(ms);
 				for (Mount m: menuMechTarget.owner.mounts) {
 					if (m.checkFire()) {
@@ -329,7 +329,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 					}
 					MenuMountTarget mmt = m.new MenuMountTarget();
 					mmt.owner = m;
-					mmt.damage = MechCombat.averageDamage(m,mount,6);
+					mmt.damage = MechCombat.averageDamage(m,mount,8);
 					mList.add(mmt);
 				}
 				return mList;
@@ -477,7 +477,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 	}
 	
 	public void statistics() {
-		extra.println(callsign + " ("+getName()+") " + "/"+pilot.getName() +" HP: " + hp + "/" + getMaxHP() +" Energy: " + energy + " Heat: " + heat+ "/" + heatCap());
+		extra.println(callsign + " ("+getName()+")" + "/"+pilot.getName() +" HP: " + hp + "/" + getMaxHP() +" Energy: " + energy + " Heat: " + heat+ "/" + heatCap());
 		extra.println("Weight: " + this.totalWeight() + "/" + this.weightCap + " Complexity: "+ this.totalComplexity() + "/" +this.complexityCap);
 		extra.println("Mounts: " + this.mounts.size() + " Systems: " + this.systems.size());
 		extra.println("Speed: " + this.getSpeed() + " Dodge: " + this.dodgeValue());
