@@ -468,6 +468,7 @@ public class extra {
 				mGen.maxPage = 0;
 				int j = 0;
 				int count = 0;
+				int start = 0;
 				mList.add(new MenuLine() {//dummy node
 					@Override
 					public String title() {
@@ -507,8 +508,9 @@ public class extra {
 						for (int k = 0;k < j;k++) {
 							mGen.lists.get(0).add(mList.get(k));
 						}
+						start = j;
 						mGen.maxPage++;
-						
+						count+=2;
 					}else {
 						if (count > 10 && (count%9 == 0 || j == mList.size()-1)) {
 							mList.add(j,new MenuLine() {
@@ -531,7 +533,7 @@ public class extra {
 									return false;
 								}});
 							count++; j++;
-							if (mList.size() > j-1) {
+							if (true == true) {//TODO: figure out a last page condition
 								mList.add(j,new MenuSelect() {
 
 									@Override
@@ -545,19 +547,24 @@ public class extra {
 										return false;
 									}});
 								count++; j++;
-								int start = 1+mList.indexOf(mGen.lists.get(mGen.maxPage-1).get(mGen.lists.get(mGen.maxPage-1).size()-1));
+								//int start = 1+mList.indexOf(mGen.lists.get(mGen.maxPage-1).get(mGen.lists.get(mGen.maxPage-1).size()-1));
 								mGen.lists.add(new ArrayList<MenuItem>());
 								
 								for (int k = start;k < j;k++) {
 									mGen.lists.get(mGen.maxPage).add(mList.get(k));
 								}
-								mGen.maxPage++;
-								
+								//if (count%9==0) {//doesn't work in every case
+								mGen.maxPage++;//}
+								start = j;
 							}
 						}
 						
 					}
 					
+				}
+				if (start == j-1) {
+					mGen.maxPage--;
+					mGen.lists.get(mGen.maxPage).remove(mGen.lists.get(mGen.maxPage).size()-1);
 				}
 				mGen.page = extra.clamp(mGen.page,0,mGen.maxPage);
 				if (mGen.header != null) {
