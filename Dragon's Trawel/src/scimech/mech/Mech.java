@@ -16,12 +16,14 @@ import trawel.extra;
 public abstract class Mech implements TurnSubscriber, Target{
 
 	public boolean playerControlled = false;
-	protected int heat = 0, energy = 0, hp, speed;
+	protected int heat = 0, energy = 0, hp, speed, 
+			complexityCap = 30;//for debug
 	protected List<Mount> mounts = new ArrayList<Mount>();
 	protected List<Systems> systems = new ArrayList<Systems>();
 	
 	public abstract int baseHP();
 	public abstract int baseSpeed();
+	public abstract int baseComplexity();
 	
 	public int getSpeed() {
 		return baseSpeed()+speed;
@@ -132,5 +134,27 @@ public abstract class Mech implements TurnSubscriber, Target{
 	
 	public void systemsSelect() {
 		
+	}
+	
+	public int totalComplexity() {
+		int total = this.baseComplexity();
+		for (Systems ss: systems) {
+			total +=ss.getComplexity();
+		}
+		for (Mount mount: mounts) {
+			total += mount.getComplexity();
+		}
+		return total;
+	}
+	public double complexityHeatPenalty() {
+		int total = totalComplexity();
+		if (total <= complexityCap) {
+			return 1;
+		}
+		return (Math.pow(((total-complexityCap)/2f),1.5f)+3f)/3f;
+	}
+	
+	public int hardComplexityCap() {
+		return complexityCap+20;
 	}
 }

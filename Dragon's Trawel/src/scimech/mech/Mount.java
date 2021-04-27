@@ -29,6 +29,7 @@ public abstract class Mount implements TurnSubscriber{
 	}
 	
 	public void takeHeat(int amount) {
+		amount *=currentMech.complexityHeatPenalty();
 		heat+=amount;
 		currentMech.takeHeat(amount);
 	}

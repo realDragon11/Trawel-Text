@@ -16,6 +16,7 @@ public abstract class Fixture implements TurnSubscriber{
 	public boolean powered = true;
 	public boolean overclocked = false;
 	protected int damage = 0;//max 100
+	public Mount currentMount;
 	public void heatCheck(int heat) {
 		if (heat > heatCap()) {
 			int over = (heat-heatCap())-1;
@@ -30,7 +31,7 @@ public abstract class Fixture implements TurnSubscriber{
 	}
 	
 	public float rating() {
-		int total = ((100-damage)/100);
+		float total = ((100f-damage)/100f);
 		if (damage < 80 && overclocked) {
 			total += 0.2f;
 		}
@@ -54,7 +55,7 @@ public abstract class Fixture implements TurnSubscriber{
 					damString = "scratched";
 				}
 			}
-			return fix.getName() + ": " + (fix.powered ? "on" : "off") + (fix.overclocked ? "OVERCLOCKED" : "") + (damString == null ? "" : " " + damString);
+			return fix.getName() + ": " + (fix.powered ? "on" : "off") + (fix.overclocked ? "OVERCLOCKED" : "") + (damString == null ? "" : " " + damString) + fix.getTitleAdditions();
 		}
 
 		@Override
@@ -134,6 +135,10 @@ public abstract class Fixture implements TurnSubscriber{
 			}});
 		
 	}
+	public String getTitleAdditions() {
+		return "";
+	}
+
 	public abstract String getName();
 	public abstract int getEnergyDraw();
 	public abstract String getDescription();
