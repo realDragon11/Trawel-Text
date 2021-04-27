@@ -9,62 +9,59 @@ import scimech.mech.Fixture;
 import scimech.mech.TurnSubscriber;
 import trawel.extra;
 
-public class LightAutocannon extends Fixture{
+public class APCannon extends Fixture {
 
 	@Override
 	public void activate(Target t, TurnSubscriber ts) {
-		int acc = (int) (20*rating());
-		for (int i = 0; i < 3;i++) {
+		int acc = (int) (10*rating());
 			double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc);
 			if (hit  >=0) {
-				t.takeDamage().take(DamageTypes.KINETIC,DamageMods.NORMAL,4, t);
+				t.takeDamage().take(DamageTypes.KINETIC,DamageMods.AP,40, t);
 				if (!t.isDummy()) {
-					currentMount.takeHeat(1);
+					currentMount.takeHeat(2);
 				}
-			}
-			acc-=extra.randRange(2, 5);
 		}
-		
+
 	}
 
 	@Override
 	public void roundStart() {
-		
+
 	}
 
 	@Override
 	public int heatCap() {
-		return 12;
+		return 20;
 	}
 
 	@Override
 	public String getName() {
-		return "Light Autocannon";
+		return "AP Cannon";
 	}
 
 	@Override
 	public int getEnergyDraw() {
-		return 2;
-	}
-
-	@Override
-	public String getDescription() {
-		return "";
-	}
-
-	@Override
-	public int getComplexity() {
 		return 4;
 	}
 
 	@Override
+	public String getDescription() {
+		return "TODO";
+	}
+
+	@Override
+	public int getComplexity() {
+		return 5;
+	}
+
+	@Override
 	public int getWeight() {
-		return 2;
+		return 10;
 	}
 
 	@Override
 	public int getSlots() {
-		return 2;
+		return 6;
 	}
 
 }

@@ -14,6 +14,7 @@ import scimech.combat.Target;
 import scimech.combat.Target.TargetType;
 import scimech.mech.Fixture.MenuFixture;
 import scimech.mech.Mech.MenuMechTarget;
+import scimech.units.fixtures.LightAutocannon;
 import trawel.MenuGenerator;
 import trawel.MenuGeneratorPaged;
 import trawel.MenuItem;
@@ -379,6 +380,17 @@ public abstract class Mount implements TurnSubscriber, Target{
 			fixtures.get(i).takeDamage(arr[i]);
 		}
 		
+	}
+
+	public boolean addFixture(Fixture f) {
+		if (f.getSlots() > (baseSlots()-usedSlots())) {
+			return false;
+		}
+		if (f.getComplexity() > currentMech.totalComplexity()-currentMech.hardComplexityCap()) {
+			return false;
+		}
+		fixtures.add(f);
+		return true;
 	}
 
 }

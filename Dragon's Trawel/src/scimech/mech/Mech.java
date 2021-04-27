@@ -28,7 +28,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 
 	public boolean playerControlled = false;
 	protected int heat = 0, energy = 0, hp, speed, 
-			complexityCap = 30, weightCap = 40;//for debug
+			complexityCap, weightCap;//for debug
 	protected List<Mount> mounts = new ArrayList<Mount>();
 	protected List<Systems> systems = new ArrayList<Systems>();
 	protected Pilot pilot;
