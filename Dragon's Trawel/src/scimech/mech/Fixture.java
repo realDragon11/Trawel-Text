@@ -87,7 +87,7 @@ public abstract class Fixture implements TurnSubscriber{
 								damString = "scratched";
 							}
 						}
-						return getName() + ": " + (powered ? "on" : "off") + (overclocked ? "OVERCLOCKED" : "") + (damString == null ? "" : " " + damString);
+						return getName() + ": " + (powered ? "on" : "off") + (overclocked ? "OVERCLOCKED" : "") + (damString == null ? "" : " " + damString) +getTitleAdditions();
 					}
 				});
 				

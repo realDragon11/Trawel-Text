@@ -52,6 +52,8 @@ public abstract class Mech implements TurnSubscriber, Target{
 	}
 	public void refreshForBattle() {
 		speed = extra.randRange(0,10);
+		heat = 0;
+		energy = 0;
 	}
 	
 	public void fullRepair() {
@@ -63,6 +65,8 @@ public abstract class Mech implements TurnSubscriber, Target{
 	}
 	
 	public void roundStart() {
+		energy = 0;
+		speed = extra.randRange(0,10);
 		for (Systems ss: systems) {
 			ss.roundStart();
 		}
@@ -155,7 +159,28 @@ public abstract class Mech implements TurnSubscriber, Target{
 	}
 	
 	public void systemsSelect() {
-		
+		extra.menuGoPaged(new MenuGeneratorPaged() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}});
+				for (System s: systems) {
+					MenuSystem ms = s.new MenuSystem();
+					mList.add(ms);
+				}
+				return mList;
+			}});
 	}
 	
 	public int totalComplexity() {
@@ -310,11 +335,13 @@ public abstract class Mech implements TurnSubscriber, Target{
 			}};
 	}
 	public void takeSystemDamage(int dam) {
+		int mDam = extra.randRange(0,dam);
+		int sDam = dam-mDam;
 		int[] arr = new int[mounts.size()];
 		for (int i = 0; i < arr.length;i++) {
 			arr[i] = 0;
 		}
-		for (int i = 0; i < dam;i++) {
+		for (int i = 0; i < mDam;i++) {
 			int v = extra.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
 			if (extra.chanceIn(2,3) && mounts.get(v).checkFire()) {
 				if (extra.chanceIn(1,3)){
@@ -326,6 +353,21 @@ public abstract class Mech implements TurnSubscriber, Target{
 		}
 		for (int i = 0; i < arr.length;i++) {
 			mounts.get(i).takeSystemDamage(arr[i]);
+		}
+		arr = new int[systems.size()];//TODO: should probably include slot size into it so they don't flood their mounts with shitty fixtures
+		for (int i = 0; i < arr.length;i++) {
+			arr[i] = 0;
+		}
+		for (int i = 0; i < sDam;i++) {
+			int v = extra.randRange(0,arr.length-1);//Mounts MUST have at least one fixture
+			if (extra.chanceIn(2,3) && systems.get(v).damage == 100) {
+				i--;
+			}else {
+				arr[v]++;
+			}
+		}
+		for (int i = 0; i < arr.length;i++) {
+			systems.get(i).takeDamage(arr[i]);
 		}
 		
 	}
