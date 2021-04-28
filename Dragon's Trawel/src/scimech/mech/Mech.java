@@ -30,10 +30,10 @@ public abstract class Mech implements TurnSubscriber, Target{
 	protected int heat = 0;//for debug
 	public int energy = 0;
 	protected int hp;
-	protected float speed;
+	protected float speed, slow;
 	protected int complexityCap;
 	protected int weightCap;
-	protected int dodgeBonus;
+	protected float dodgeBonus;
 	protected List<Mount> mounts = new ArrayList<Mount>();
 	protected List<Systems> systems = new ArrayList<Systems>();
 	protected Pilot pilot;
@@ -64,6 +64,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 		//speed = extra.randRange(0,10);
 		heat = 0;
 		//energy = 0;
+		slow = 0;
 	}
 	
 	public void fullRepair() {
@@ -76,14 +77,15 @@ public abstract class Mech implements TurnSubscriber, Target{
 	
 	public void roundStart() {
 		energy = 0;
-		dodgeBonus = 0;
-		speed = extra.randRange(0,10);
+		dodgeBonus = -slow;
+		speed = extra.randRange(0,10)-slow;
 		for (Systems ss: systems) {
 			ss.roundStart();
 		}
 		for (Mount mount: mounts) {
 			mount.roundStart();
 		}
+		slow = 0;
 		heat /=2;
 	}
 	
@@ -355,9 +357,9 @@ public abstract class Mech implements TurnSubscriber, Target{
 	
 	@Override
 	public int dodgeValue() {
-		return baseDodge()+dodgeBonus;
+		return (int) (baseDodge()+dodgeBonus);
 	}
-	public int addDodgeBonus(int bonus) {
+	public float addDodgeBonus(float bonus) {
 		return dodgeBonus+=bonus;
 	}
 	
@@ -414,7 +416,14 @@ public abstract class Mech implements TurnSubscriber, Target{
 				case EMP:
 					takeEMPDamage((int)amount);
 					break;
-
+				case SLOW:
+					if (!damaged.isDummy()) {
+						Mech mech = (Mech)damaged;
+						mech.slow+=amount;
+						mech.dodgeBonus-=amount;
+					}else {
+						damaged.constructDummy().dodgeValue-=amount;
+					}
 				}
 				
 			}};

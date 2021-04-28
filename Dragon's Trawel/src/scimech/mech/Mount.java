@@ -419,9 +419,17 @@ public abstract class Mount implements TurnSubscriber, Target{
 					}
 					break;
 				case EMP:
-					takeEMPDamage((int)amount);
+					if (!damaged.isDummy()) {
+						takeEMPDamage((int)amount);
+					}
 					break;
-
+				case SLOW:
+					if (!damaged.isDummy()) {
+						currentMech.takeDamage().suffer(de, amount, currentMech);
+					}else {
+						damaged.constructDummy().dodgeValue-=amount;
+					}
+					break;
 				}
 			}};
 	}
