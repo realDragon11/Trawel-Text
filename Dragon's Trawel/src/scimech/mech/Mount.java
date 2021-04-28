@@ -14,6 +14,8 @@ import scimech.combat.Target;
 import scimech.combat.Target.TargetType;
 import scimech.mech.Fixture.MenuFixture;
 import scimech.mech.Mech.MenuMechTarget;
+import scimech.people.Trait;
+import scimech.people.TraitKeeper;
 import scimech.units.fixtures.LightAutocannon;
 import trawel.MenuGenerator;
 import trawel.MenuGeneratorPaged;
@@ -28,6 +30,8 @@ public abstract class Mount implements TurnSubscriber, Target{
 	protected List<Fixture> fixtures = new ArrayList<Fixture>();
 	public Mech currentMech;
 	public boolean fired = false;
+	
+	protected TraitKeeper keeper = new TraitKeeper();
 	
 	public TargetType targetType() {
 		return TargetType.MOUNT;
@@ -506,6 +510,16 @@ public abstract class Mount implements TurnSubscriber, Target{
 
 	public void clearHeat(int heat) {
 		this.heat = Math.max(0,this.heat-heat); 
+	}
+	
+	public void repair(int rep) {
+		for (Fixture f: fixtures) {
+			f.repair(rep);
+		}
+	}
+	
+	public int getTrait(Trait t) {
+		return keeper.getTrait(t)+currentMech.getTrait(t);
 	}
 
 }

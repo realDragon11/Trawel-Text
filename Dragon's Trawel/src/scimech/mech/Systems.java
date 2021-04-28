@@ -187,5 +187,9 @@ public abstract class Systems implements TurnSubscriber{
 	protected abstract void activateInternal(Target t, TurnSubscriber ts);
 
 	public abstract int getWeight();
+	
+	public void repair(int rep) {
+		damage = extra.clamp(damage-rep, 0, 100);
+	}
 
 }

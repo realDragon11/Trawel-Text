@@ -23,6 +23,7 @@ import scimech.units.mounts.Pulsar;
 import scimech.units.systems.AblativeArmor;
 import scimech.units.systems.FrostAegis;
 import scimech.units.systems.FusionReactor;
+import scimech.units.systems.InternalRepair;
 import scimech.units.systems.MiniReactor;
 import scimech.units.systems.Plating;
 import trawel.extra;
@@ -48,7 +49,11 @@ public class Hazmat extends Mech {
 		
 		this.addSystem(new FusionReactor());
 		this.addSystem(new FusionReactor());
-		this.addSystem(new FusionReactor());
+		this.addSystem(new InternalRepair());
+		for (int i = 0; i < 8;i++) {
+			this.addSystem(new MiniReactor());
+		}
+		
 		
 		
 		hp = this.getMaxHP();

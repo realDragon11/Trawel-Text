@@ -16,6 +16,8 @@ import scimech.mech.Mount.MenuMount;
 import scimech.mech.Mount.MenuMountTarget;
 import scimech.mech.Systems.MenuSystem;
 import scimech.people.Pilot;
+import scimech.people.Trait;
+import scimech.people.TraitKeeper;
 import trawel.MenuGenerator;
 import trawel.MenuGeneratorPaged;
 import trawel.MenuItem;
@@ -38,6 +40,8 @@ public abstract class Mech implements TurnSubscriber, Target{
 	protected List<Systems> systems = new ArrayList<Systems>();
 	protected Pilot pilot;
 	public String callsign;
+	
+	protected TraitKeeper keeper = new TraitKeeper();
 	
 	public abstract int baseHP();
 	public abstract int baseSpeed();
@@ -560,4 +564,18 @@ public abstract class Mech implements TurnSubscriber, Target{
 		damageSum/=(mounts.size()+systems.size());
 		return damageSum;
 	}
+	
+	public void repair(int rep) {
+		for (Mount m: mounts) {
+			m.repair(rep);
+		}
+		for (Systems s: systems) {
+			s.repair(rep);
+		}
+	}
+	
+	public int getTrait(Trait t) {
+		return keeper.getTrait(t)+pilot.getTrait(t);
+	}
+
 }

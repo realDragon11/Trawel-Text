@@ -11,6 +11,7 @@ import scimech.combat.MechCombat;
 import scimech.mech.Mech;
 import scimech.units.mechs.DebugMech;
 import scimech.units.mechs.Dynamo;
+import scimech.units.mechs.Hazmat;
 import scimech.units.mechs.Musketeer;
 import scimech.units.mechs.Packrat;
 import scimech.units.mechs.Pirate;
@@ -218,7 +219,7 @@ public class mainGame {
 		List<Mech> mechs = new ArrayList<Mech>();
 		mechs.add(new Dynamo(side));
 		mechs.add(new Pyro(side));
-		mechs.add(new Pyro(side));
+		mechs.add(new Hazmat(side));
 		return mechs;
 	}
 	

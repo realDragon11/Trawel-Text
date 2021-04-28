@@ -162,4 +162,8 @@ public abstract class Fixture implements TurnSubscriber{
 	public abstract int getWeight();
 	public abstract int getSlots();
 	//activate is abstract, remember to check to see if it's a dummy before applying heat to yourself
+
+	public void repair(int rep) {
+		damage = extra.clamp(damage-rep, 0, 100);
+	}
 }
