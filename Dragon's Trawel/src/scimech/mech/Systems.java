@@ -191,5 +191,12 @@ public abstract class Systems implements TurnSubscriber{
 	public void repair(int rep) {
 		damage = extra.clamp(damage-rep, 0, 100);
 	}
+	
+	public void repairLimit(int rep, int limit) {
+		while (damage < limit && rep > 0) {
+		damage = extra.clamp(damage-1, 0, 100);
+		rep--;
+		}
+	}
 
 }

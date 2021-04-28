@@ -69,6 +69,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 		heat = 0;
 		//energy = 0;
 		slow = 0;
+		this.repairLimit(100,this.getTrait(Trait.GREASE_MONKEY)*5);
 	}
 	
 	public void fullRepair() {
@@ -91,6 +92,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 		}
 		slow = 0;
 		heat /=2;
+		this.repairLimit(this.getTrait(Trait.GREASE_MONKEY),this.getTrait(Trait.GREASE_MONKEY)*5);
 	}
 	
 	@Override
@@ -527,6 +529,10 @@ public abstract class Mech implements TurnSubscriber, Target{
 				map.subMaps.add(sMap);
 			}
 		}
+		ResistMap traitMap = new ResistMap();
+		float tv = extra.lerp(1f,.7f,Math.min(10, this.getTrait(Trait.THICK_SKULL)/10f));
+		traitMap.put(DamageMods.AP,(tv+1)/2f, tv); 
+		map.subMaps.add(traitMap);
 		return map;
 	}
 	
@@ -581,6 +587,15 @@ public abstract class Mech implements TurnSubscriber, Target{
 		}
 		for (Systems s: systems) {
 			s.repair(rep);
+		}
+	}
+	
+	public void repairLimit(int rep,int limit) {
+		for (Mount m: mounts) {
+			m.repairLimit(rep,limit);
+		}
+		for (Systems s: systems) {
+			s.repairLimit(rep,limit);
 		}
 	}
 	

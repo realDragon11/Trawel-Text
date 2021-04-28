@@ -172,7 +172,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 					@Override
 					public boolean go() {
 						manageFixtures();
-						return true;
+						return false;
 					}});
 				
 				return mList;
@@ -520,6 +520,12 @@ public abstract class Mount implements TurnSubscriber, Target{
 	
 	public int getTrait(Trait t) {
 		return keeper.getTrait(t)+currentMech.getTrait(t);
+	}
+
+	public void repairLimit(int rep, int limit) {
+		for (Fixture f: fixtures) {
+			f.repairLimit(rep,limit);
+		}
 	}
 
 }

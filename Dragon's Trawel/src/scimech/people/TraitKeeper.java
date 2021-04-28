@@ -8,6 +8,9 @@ public class TraitKeeper {
 	protected Map<Trait,Integer> traits = new HashMap<Trait,Integer>();
 	
 	public int getTrait(Trait t) {
+		if (!traits.containsKey(t)) {
+			return 0;
+		}
 		return traits.get(t);
 	}
 	

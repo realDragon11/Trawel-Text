@@ -26,7 +26,7 @@ public class Pilot {
 	}
 	
 	public Trait randStartingTrait() {
-		return extra.choose(Trait.HARDENED);
+		return extra.choose(Trait.HARDENED,Trait.DUELIST,Trait.GUN_NUT,Trait.LASER_SPEC,Trait.LASER_SPEC,Trait.LOBBER,Trait.GREASE_MONKEY);
 	}
 	
 	public int getTrait(Trait t) {
