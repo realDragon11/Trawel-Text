@@ -20,13 +20,19 @@ public class Pilot {
 	
 	public Pilot() {
 		name = randomLists.randomFirstName();
-		keeper.addTrait(randStartingTrait() , 1);
-		keeper.addTrait(randStartingTrait() , 1);
-		keeper.addTrait(randStartingTrait() , 1);
+		for (int i = 0; i < 20;i++) {
+			if (keeper.addTrait(randStartingTrait() , 1)) {
+				i--;
+			}
+		}
+		keeper.addTrait(randCapstoneTrait(), 1);
 	}
 	
 	public Trait randStartingTrait() {
 		return extra.choose(Trait.HARDENED,Trait.DUELIST,Trait.GUN_NUT,Trait.LASER_SPEC,Trait.LASER_SPEC,Trait.LOBBER,Trait.GREASE_MONKEY);
+	}
+	public Trait randCapstoneTrait() {
+		return extra.choose(Trait.ACCURATE,Trait.MOBILE,Trait.TOUGH,Trait.EVASIVE);
 	}
 	
 	public int getTrait(Trait t) {

@@ -92,6 +92,13 @@ public abstract class Mech implements TurnSubscriber, Target{
 		}
 		slow = 0;
 		heat /=2;
+		if (this.getTrait(Trait.MOBILE) > 0) {
+			dodgeBonus+=2;
+			speed +=10;
+		}
+		if (this.getTrait(Trait.EVASIVE) > 0) {
+			dodgeBonus+=6;
+		}
 		this.repairLimit(this.getTrait(Trait.GREASE_MONKEY),this.getTrait(Trait.GREASE_MONKEY)*5);
 	}
 	
@@ -285,7 +292,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 	}
 	
 	public int getMaxHP() {
-		return baseHP()+this.getTrait(Trait.HARDENED)*10;//TODO
+		return baseHP()+this.getTrait(Trait.HARDENED)*5+(this.getTrait(Trait.TOUGH) > 0 ? 50 : 0);//TODO
 	}
 	
 	public class MenuMechTarget extends MenuSelect {//can be extended further

@@ -14,12 +14,23 @@ public class TraitKeeper {
 		return traits.get(t);
 	}
 	
-	public void addTrait(Trait t, int i) {
+	/***
+	 * 
+	 * @param t
+	 * @param i
+	 * @return whether you went over the cap or not
+	 */
+	public boolean addTrait(Trait t, int i) {
 		if (traits.containsKey(t)) {
-			traits.put(t,traits.get(t)+i);
+			int newval = traits.get(t)+i;
+			traits.put(t,Math.min(10,newval));
+			if (newval > 10) {
+				return true;
+			}
 		}else {
 			traits.put(t, i);
 		}
+		return false;
 	}
 	
 	@Override

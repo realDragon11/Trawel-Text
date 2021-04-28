@@ -105,7 +105,10 @@ public class MechCombat {
 		case SPECIAL:
 			break;
 		}
-		int acc = (int) (at.getMultFor(t.targetType())*attackValue+abonus);
+		if (f.currentMount.getTrait(Trait.ACCURATE) > 0) {
+			abonus+=5;
+		}
+		int acc = (int) (extra.lerp(at.getMultFor(t.targetType()),1.2f, Math.min(10,f.currentMount.getTrait(Trait.PINPOINT)/20f))*attackValue+abonus);
 		int dodge = (int) (t.dodgeValue());
 		double accRoll = acc*Math.random();
 		double dodgeRoll = dodge*Math.random();
