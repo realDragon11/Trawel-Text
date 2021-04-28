@@ -1,5 +1,6 @@
 package scimech.people;
 
+import trawel.extra;
 import trawel.randomLists;
 
 public class Pilot {
@@ -10,6 +11,10 @@ public class Pilot {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public void statistics() {
+		extra.println();
 	}
 	
 	public Pilot() {

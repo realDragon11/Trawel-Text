@@ -12,11 +12,19 @@ public class TraitKeeper {
 	}
 	
 	public void addTrait(Trait t, int i) {
-		int k;
 		if (traits.containsKey(t)) {
 			traits.put(t,traits.get(t)+i);
 		}else {
 			traits.put(t, i);
 		}
+	}
+	
+	public String toString() {
+		String str = "Traits: ";
+		for (Object t: traits.keySet().toArray()) {
+			str +=t.toString() + ": "+ traits.get((Trait)t) + ", ";
+		}
+		return str;
+		
 	}
 }
