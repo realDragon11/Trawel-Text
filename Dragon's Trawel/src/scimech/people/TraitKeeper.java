@@ -18,15 +18,15 @@ public class TraitKeeper {
 	 * 
 	 * @param t
 	 * @param i
-	 * @return whether you went over the cap or not
+	 * @return whether you went over the cap or not, blocking the addition
 	 */
 	public boolean addTrait(Trait t, int i) {
 		if (traits.containsKey(t)) {
 			int newval = traits.get(t)+i;
-			traits.put(t,Math.min(10,newval));
 			if (newval > 10) {
 				return true;
 			}
+			traits.put(t,Math.min(10,newval));
 		}else {
 			traits.put(t, i);
 		}

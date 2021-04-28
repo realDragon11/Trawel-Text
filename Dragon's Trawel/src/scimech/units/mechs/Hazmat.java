@@ -34,7 +34,7 @@ public class Hazmat extends Mech {
 	public Hazmat(boolean side) {
 		playerControlled = side;
 		complexityCap = 120;
-		weightCap = 60;
+		weightCap = 50;
 		
 		callsign = randomLists.randomElement();
 		pilot = new Pilot();
@@ -47,10 +47,15 @@ public class Hazmat extends Mech {
 		this.addMount(m);
 		m.addFixture(new AcidFoam());
 		
+		m = new Pulsar();
+		this.addMount(m);
+		m.addFixture(new HotLaser());
+		m.addFixture(new HotLaser());
+		
 		this.addSystem(new FusionReactor());
 		this.addSystem(new FusionReactor());
 		this.addSystem(new InternalRepair());
-		for (int i = 0; i < 8;i++) {
+		for (int i = 0; i < 6;i++) {
 			this.addSystem(new MiniReactor());
 		}
 		

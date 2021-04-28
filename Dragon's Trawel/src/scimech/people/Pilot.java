@@ -20,8 +20,8 @@ public class Pilot {
 	
 	public Pilot() {
 		name = randomLists.randomFirstName();
-		for (int i = 0; i < 20;i++) {
-			if (keeper.addTrait(randStartingTrait() , 1)) {
+		for (int i = 0; i < 6;i++) {
+			if (keeper.addTrait(randStartingTrait() , 3)) {
 				i--;
 			}
 		}
