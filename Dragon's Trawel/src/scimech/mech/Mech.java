@@ -410,13 +410,14 @@ public abstract class Mech implements TurnSubscriber, Target{
 				case BURN:
 					if (!damaged.isDummy()) {
 						Mech mech = (Mech)damaged;
-						mech.takeHeat((int)amount);
+						mech.takeHeat((int)(amount*extra.lerp(resistMap().calcMult(DamageTypes.BURN,DamageMods.EFFECT).effectMult,1f,.75f)));
 					}
 					break;
 				case EMP:
-					takeEMPDamage((int)amount);
+					takeEMPDamage((int)(amount*resistMap().calcMult(DamageTypes.SHOCK,DamageMods.EFFECT).effectMult));
 					break;
 				case SLOW:
+					amount *=resistMap().calcMult(DamageTypes.KINETIC,DamageMods.EFFECT).effectMult;
 					if (!damaged.isDummy()) {
 						Mech mech = (Mech)damaged;
 						mech.slow+=amount;
@@ -424,6 +425,14 @@ public abstract class Mech implements TurnSubscriber, Target{
 					}else {
 						damaged.constructDummy().dodgeValue-=amount;
 					}
+					break;
+				case ACID:
+					if (!damaged.isDummy()) {
+						amount *=resistMap().calcMult(DamageTypes.KINETIC,DamageMods.EFFECT).effectMult;
+						Mech mech = (Mech)damaged;
+						mech.takeSystemDamage((int) amount);
+					}
+					break;
 				}
 				
 			}};

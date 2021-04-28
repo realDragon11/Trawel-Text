@@ -414,20 +414,28 @@ public abstract class Mount implements TurnSubscriber, Target{
 				switch (de) {
 				case BURN:
 					if (!damaged.isDummy()) {
-						Mount mech = (Mount)damaged;
-						mech.takeHeat((int)amount);
+						Mount mount = (Mount)damaged;
+						mount.takeHeat((int)(amount*extra.lerp(resistMap().calcMult(DamageTypes.BURN,DamageMods.EFFECT).effectMult,1f,.75f)));
 					}
 					break;
 				case EMP:
 					if (!damaged.isDummy()) {
-						takeEMPDamage((int)amount);
+						takeEMPDamage((int)(amount*resistMap().calcMult(DamageTypes.SHOCK,DamageMods.EFFECT).effectMult));
 					}
 					break;
 				case SLOW:
+					amount *=resistMap().calcMult(DamageTypes.KINETIC,DamageMods.EFFECT).effectMult;
 					if (!damaged.isDummy()) {
 						currentMech.takeDamage().suffer(de, amount, currentMech);
 					}else {
 						damaged.constructDummy().dodgeValue-=amount;
+					}
+					break;
+				case ACID:
+					if (!damaged.isDummy()) {
+						amount *=resistMap().calcMult(DamageTypes.KINETIC,DamageMods.EFFECT).effectMult;
+						Mount mount = (Mount)damaged;
+						mount.takeSystemDamage((int) amount);
 					}
 					break;
 				}
