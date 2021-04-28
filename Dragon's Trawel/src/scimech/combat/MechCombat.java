@@ -8,6 +8,7 @@ import java.util.List;
 import scimech.mech.Fixture;
 import scimech.mech.Mech;
 import scimech.mech.Mount;
+import scimech.people.Trait;
 import trawel.extra;
 
 public class MechCombat {
@@ -86,8 +87,25 @@ public class MechCombat {
 		return turnOrder.get(0);
 	}
 	
-	public static double computeHit(Target t,AimType at, int attackValue) {
-		int acc = (int) (at.getMultFor(t.targetType())*attackValue);
+	public static double computeHit(Target t,AimType at, int attackValue,Fixture f) {
+		int abonus = 0;
+		switch (at) {
+		case ARCING:
+			abonus+=f.currentMount.getTrait(Trait.LOBBER);
+			break;
+		case BALLISTIC:
+			abonus+=f.currentMount.getTrait(Trait.GUN_NUT);
+			break;
+		case LASER:
+			abonus+=f.currentMount.getTrait(Trait.LASER_SPEC);
+			break;
+		case MELEE:
+			abonus+=f.currentMount.getTrait(Trait.DUELIST);
+			break;
+		case SPECIAL:
+			break;
+		}
+		int acc = (int) (at.getMultFor(t.targetType())*attackValue+abonus);
 		int dodge = (int) (t.dodgeValue());
 		double accRoll = acc*Math.random();
 		double dodgeRoll = dodge*Math.random();

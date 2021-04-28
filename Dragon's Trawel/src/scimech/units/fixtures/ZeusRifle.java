@@ -17,7 +17,7 @@ public class ZeusRifle extends Fixture{
 		int acc = (int) (18*rating());
 		int hits = 0;
 		for (int i = 0; i < 10;i++) {
-			double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc);
+			double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc,this);
 			if (hit  >=0) {
 				t.takeDamage().take(DamageTypes.SHOCK,DamageMods.NORMAL,5, t);
 				t.takeDamage().suffer(DamageEffect.EMP,3*rating(), t);

@@ -16,7 +16,7 @@ public class Krakatoa extends Fixture {
 	@Override
 	public void activate(Target t, TurnSubscriber ts) {
 		int acc = (int) (10*rating());
-		double hit = MechCombat.computeHit(t, AimType.ARCING, acc);
+		double hit = MechCombat.computeHit(t, AimType.ARCING, acc,this);
 		if (!t.isDummy()) {
 			extra.print("Krakatoa " + ( hit >= 0 ? "hits!" : "misses!") + " ");
 		}

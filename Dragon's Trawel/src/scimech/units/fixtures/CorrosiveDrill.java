@@ -17,7 +17,7 @@ public class CorrosiveDrill extends Fixture {
 		int acc = (int) (10*rating());
 		int hits = 0;
 		for (int i = 0; i < 5;i++) {
-			double hit = MechCombat.computeHit(t, AimType.MELEE, acc);
+			double hit = MechCombat.computeHit(t, AimType.MELEE, acc,this);
 			if (hit  >=0) {
 				hits++;
 				t.takeDamage().take(DamageTypes.KINETIC,DamageMods.AP,4, t);

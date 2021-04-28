@@ -20,7 +20,7 @@ public class ArcThrower extends Fixture {
 		int acc = (int) (25*rating());
 		int hits = 0;
 		for (int i = 0; i < 5;i++) {
-			double hit = MechCombat.computeHit(t, AimType.MELEE, acc);
+			double hit = MechCombat.computeHit(t, AimType.SPECIAL, acc,this);
 			if (hit  >=0) {
 				t.takeDamage().take(DamageTypes.SHOCK,DamageMods.HOLLOW,2, t);
 				hits++;

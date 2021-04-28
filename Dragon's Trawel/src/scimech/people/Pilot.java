@@ -14,11 +14,19 @@ public class Pilot {
 	}
 	
 	public void statistics() {
-		extra.println();
+		extra.println(name);
+		extra.println(keeper.toString());
 	}
 	
 	public Pilot() {
 		name = randomLists.randomFirstName();
+		keeper.addTrait(randStartingTrait() , 1);
+		keeper.addTrait(randStartingTrait() , 1);
+		keeper.addTrait(randStartingTrait() , 1);
+	}
+	
+	public Trait randStartingTrait() {
+		return extra.choose(Trait.HARDENED);
 	}
 	
 	public int getTrait(Trait t) {

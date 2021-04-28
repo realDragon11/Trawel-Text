@@ -72,7 +72,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 	}
 	
 	public void fullRepair() {
-		hp = baseHP();
+		hp = getMaxHP();
 	}
 
 	public void takeHeat(int amount) {
@@ -283,7 +283,7 @@ public abstract class Mech implements TurnSubscriber, Target{
 	}
 	
 	public int getMaxHP() {
-		return baseHP();//TODO
+		return baseHP()+this.getTrait(Trait.HARDENED)*10;//TODO
 	}
 	
 	public class MenuMechTarget extends MenuSelect {//can be extended further
@@ -542,8 +542,18 @@ public abstract class Mech implements TurnSubscriber, Target{
 	public void statistics() {
 		extra.println(callsign + " ("+getName()+")" + "/"+pilot.getName() +" HP: " + hp + "/" + getMaxHP() +" Energy: " + energy + " Heat: " + heat+ "/" + heatCap());
 		extra.println("Weight: " + this.totalWeight() + "/" + this.weightCap + " Complexity: "+ this.totalComplexity() + "/" +this.complexityCap);
-		extra.println("Mounts: " + this.mounts.size() + " Systems: " + this.systems.size());
+		extra.println("Mounts: " + this.mounts.size() + " Systems: " + this.systems.size() + " Fixtures: " + this.totalFixtures());
 		extra.println("Speed: " + this.getSpeed() + " Dodge: " + this.dodgeValue());
+		extra.println(keeper.toString());
+		extra.println();
+		pilot.statistics();
+	}
+	public int totalFixtures() {
+		int total = 0;
+		for (Mount m: mounts) {
+			total += m.fixtures.size();
+		}
+		return total;
 	}
 	public void addSpeed(float i) {
 		speed +=i;

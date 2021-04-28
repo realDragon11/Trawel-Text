@@ -19,6 +19,7 @@ public class TraitKeeper {
 		}
 	}
 	
+	@Override
 	public String toString() {
 		String str = "Traits: ";
 		for (Object t: traits.keySet().toArray()) {

@@ -16,7 +16,7 @@ public class LightAutocannon extends Fixture{
 		int acc = (int) (20*rating());
 		int hits = 0;
 		for (int i = 0; i < 3;i++) {
-			double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc);
+			double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc,this);
 			if (hit  >=0) {
 				t.takeDamage().take(DamageTypes.KINETIC,DamageMods.NORMAL,4, t);
 				hits++;

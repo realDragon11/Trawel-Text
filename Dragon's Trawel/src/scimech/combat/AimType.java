@@ -7,6 +7,7 @@ public enum AimType {
 	BALLISTIC(1f,0.8f),
 	MELEE(1f,1f),
 	ARCING(1f,0.4f),
+	SPECIAL(1f,1f),
 	;
 	
 	private float mechHit, mountHit;

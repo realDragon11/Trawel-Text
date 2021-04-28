@@ -17,7 +17,7 @@ public class HotLaser extends Fixture {
 	@Override
 	public void activate(Target t, TurnSubscriber ts) {
 		int acc = (int) (30*rating());
-		double hit = MechCombat.computeHit(t, AimType.LASER, acc);
+		double hit = MechCombat.computeHit(t, AimType.LASER, acc,this);
 		if (!t.isDummy()) {
 			extra.print("The Hot Laser " + ( hit >= 0 ? "hits!" : "misses!") + " ");
 		}

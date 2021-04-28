@@ -17,7 +17,7 @@ public class AcidFoam extends Fixture {
 		int acc = (int) (10*rating());
 		int hits = 0;
 		for (int i = 0; i < 20;i++) {
-			double hit = MechCombat.computeHit(t, AimType.ARCING, acc);
+			double hit = MechCombat.computeHit(t, AimType.ARCING, acc,this);
 			if (hit  >=0) {
 				hits++;
 			}

@@ -14,7 +14,7 @@ public class ArtemisCannon extends Fixture {
 	@Override
 	public void activate(Target t, TurnSubscriber ts) {
 		int acc = (int) (40*rating());
-		double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc);
+		double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc,this);
 		if (!t.isDummy()) {
 			extra.print("The Artemis Cannon " + ( hit >= 0 ? "hits!" : "misses!") + " ");
 		}

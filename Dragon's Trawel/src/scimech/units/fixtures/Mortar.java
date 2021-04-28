@@ -14,7 +14,7 @@ public class Mortar extends Fixture {
 	@Override
 	public void activate(Target t, TurnSubscriber ts) {
 		int acc = (int) (8*rating());
-		double hit = MechCombat.computeHit(t, AimType.ARCING, acc);
+		double hit = MechCombat.computeHit(t, AimType.ARCING, acc,this);
 		if (!t.isDummy()) {
 			extra.print("The Mortar " + ( hit >= 0 ? "hits!" : "misses!") + " ");
 		}

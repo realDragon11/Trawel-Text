@@ -16,7 +16,7 @@ public class Harpoon extends Fixture {
 	@Override
 	public void activate(Target t, TurnSubscriber ts) {
 		int acc = (int) (15*rating());
-			double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc);
+			double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc,this);
 			if (!t.isDummy()) {
 				extra.print("The Breakaway Harpoon " + ( hit >= 0 ? "hits!" : "misses!") + " ");
 			}
