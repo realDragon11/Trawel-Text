@@ -96,7 +96,7 @@ public class mainGame {
 	
 	private void credits() {
 		extra.println("Made by Brian Malone");
-		extra.println("Book writer: Tibo Smolders");
+		//extra.println("Book writer: Tibo Smolders");
 		extra.println("With thanks to the GameMaker discord");
 		extra.println("Achievement icons can be found on game-icons.net");
 		extra.println("Music by manicInsomniac");
@@ -271,7 +271,7 @@ public class mainGame {
 		new WeaponAttackFactory();
 		new TownFlavorFactory();
 		story = new StoryNone();
-		extra.println("Dragon's Trawel v0.6.2");
+		extra.println("Dragon's Trawel v0.6.3");
 		extra.println(
 				" ___________  ___  _    _ _____ _     \r\n" + 
 				"|_   _| ___ \\/ _ \\| |  | |  ___| |    \r\n" + 
