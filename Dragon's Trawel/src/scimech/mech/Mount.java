@@ -61,9 +61,9 @@ public abstract class Mount implements TurnSubscriber, Target{
 				}
 				if (m.checkFire()) {
 					
-					if (MechCombat.mc.activeMechs.contains(t)) {
+					if (MechCombat.mc.activeMechs.contains(m)) {
 						extra.print(m.callsign + " is taken out! ");
-						MechCombat.mc.activeMechs.remove(t);
+						MechCombat.mc.activeMechs.remove(m);
 					}
 				}
 			}
