@@ -23,7 +23,7 @@ public class SaveHandler implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public static List<String> mechs = new ArrayList<String>();
+	public List<String> mechs = new ArrayList<String>();
 
 	/*
 	switch (getName.toLowerCase()) {
@@ -40,14 +40,14 @@ public class SaveHandler implements java.io.Serializable{
 	
 	public static void imprintMechs(List<Mech> lMechs) {
 		for (Mech m: lMechs) {
-			mechs.add(m.saveString());
+			save.mechs.add(m.saveString());
 		}
 	}
 	
 	public static List<Mech> exportMechs() {
 		List<Mech> exporting = new ArrayList<Mech>();
 		try {
-		for (String m: mechs) {
+		for (String m: save.mechs) {
 			exporting.add((Mech) SaveHandler.deserialize(m));
 		}
 		}catch (Exception e) {

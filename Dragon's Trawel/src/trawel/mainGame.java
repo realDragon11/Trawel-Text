@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import scimech.combat.MechCombat;
+import scimech.handlers.SaveHandler;
 import scimech.mech.Mech;
 import scimech.units.mechs.DebugMech;
 import scimech.units.mechs.Dynamo;
@@ -115,6 +116,11 @@ public class mainGame {
 			while (true) {
 				extra.println("Choose your mechs");
 				List<Mech> mechs = mechsForSide(true);
+				extra.println("Save mechs?");
+				if (extra.yesNo()) {
+					SaveHandler.imprintMechs(mechs);
+					SaveHandler.save();
+				}
 				extra.println("Choose their mechs");
 				mechs.addAll(mechsForSide(false));
 				
@@ -137,6 +143,18 @@ public class mainGame {
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "load mechs (??? complexity)";
+					}
+
+					@Override
+					public boolean go() {
+						curMechs = SaveHandler.exportMechs();
+						return true;
+					}});
 				mList.add(new MenuSelect() {
 
 					@Override
