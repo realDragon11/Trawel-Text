@@ -640,7 +640,7 @@ public abstract class Mech implements TurnSubscriber, Target, Savable{
 		add.keeper = (TraitKeeper) SaveHandler.deserialize(s.substring(start,end));
 		
 		start = s.indexOf('(')+1;
-		end = s.lastIndexOf(')');
+		end = s.indexOf(')');
 		String sub = s.substring(start, end);
 		String[] sSubs = sub.split(",");
 		add.callsign = sSubs[0];
@@ -648,8 +648,8 @@ public abstract class Mech implements TurnSubscriber, Target, Savable{
 		add.complexityCap = Integer.parseInt(sSubs[2]);
 		add.hp = Integer.parseInt(sSubs[3]);
 		
-		start = s.indexOf('(')+1;
-		end = s.lastIndexOf(')');
+		start = s.indexOf('(',start)+1;
+		end = s.indexOf(')',start);
 		sub = s.substring(start, end);
 		sSubs = sub.split(",");
 		for (int i = 0; i < sSubs.length;i++) {

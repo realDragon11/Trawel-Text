@@ -155,6 +155,9 @@ public class mainGame {
 					@Override
 					public boolean go() {
 						curMechs = SaveHandler.exportMechs();
+						for (Mech m: curMechs) {
+							m.playerControlled = side;
+						}
 						return true;
 					}});
 				mList.add(new MenuSelect() {

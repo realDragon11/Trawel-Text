@@ -57,7 +57,10 @@ public class TraitKeeper implements Savable{
 	
 	public static Savable deserialize(String s) {
 		TraitKeeper tk = new TraitKeeper();
-		String working = s.split("|")[1];
+		String working = s.substring(s.indexOf('|')+1,s.lastIndexOf('|'));//s.split("|")[1];
+		if (working.length() == 0) {
+			return tk;
+		}
 		for (String sub: working.split(",")) {
 			String[] sSub = sub.split(":");
 			tk.addTrait(Trait.valueOf(sSub[0]),Integer.parseInt(sSub[1]));
