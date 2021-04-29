@@ -52,7 +52,7 @@ public class TraitKeeper implements Savable{
 		for (Object t: traits.keySet().toArray()) {
 			internals +=((Trait)t).name() + ":"+ traits.get((Trait)t) + ",";
 		}
-		return this.getClass().getName() + "|" + internals +"|";
+		return this.getClass().getName() + "&|" + internals +"|";
 	}
 	
 	public static Savable deserialize(String s) {

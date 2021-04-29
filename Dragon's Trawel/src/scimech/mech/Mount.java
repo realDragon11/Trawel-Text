@@ -13,6 +13,7 @@ import scimech.combat.TakeDamage;
 import scimech.combat.Target;
 import scimech.combat.Target.TargetType;
 import scimech.handlers.Savable;
+import scimech.handlers.SaveHandler;
 import scimech.mech.Fixture.MenuFixture;
 import scimech.mech.Mech.MenuMechTarget;
 import scimech.people.Trait;
@@ -538,6 +539,18 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 		}
 		output+=")";
 		return output;
+	}
+	
+	public static Mount internalDeserial(String s,Mount add) throws Exception {
+		add.keeper = (TraitKeeper) SaveHandler.deserialize(s.split("&")[1]);
+		int start = s.indexOf('(');
+		int end = s.lastIndexOf(')');
+		String sub = s.substring(start, end);
+		String[] sSubs = sub.split(",");
+		for (int i = 0; i < sSubs.length;i++) {
+			add.fixtures.add((Fixture) SaveHandler.deserialize(sSubs[i]));
+		}
+		return add;
 	}
 
 }
