@@ -635,11 +635,11 @@ public abstract class Mech implements TurnSubscriber, Target, Savable{
 	}
 	
 	public static Mech internalDeserial(String s,Mech add) throws Exception {
-		int start = s.indexOf('[');
+		int start = s.indexOf('[')+1;
 		int end = s.indexOf(']');
 		add.keeper = (TraitKeeper) SaveHandler.deserialize(s.substring(start,end));
 		
-		start = s.indexOf('(');
+		start = s.indexOf('(')+1;
 		end = s.lastIndexOf(')');
 		String sub = s.substring(start, end);
 		String[] sSubs = sub.split(",");
@@ -648,14 +648,14 @@ public abstract class Mech implements TurnSubscriber, Target, Savable{
 		add.complexityCap = Integer.parseInt(sSubs[2]);
 		add.hp = Integer.parseInt(sSubs[3]);
 		
-		start = s.indexOf('(');
+		start = s.indexOf('(')+1;
 		end = s.lastIndexOf(')');
 		sub = s.substring(start, end);
 		sSubs = sub.split(",");
 		for (int i = 0; i < sSubs.length;i++) {
 			add.mounts.add((Mount) SaveHandler.deserialize(sSubs[i]));
 		}
-		start = s.indexOf('(',start);
+		start = s.indexOf('(',start)+1;
 		end = s.lastIndexOf(')',start);
 		sub = s.substring(start, end);
 		sSubs = sub.split(",");

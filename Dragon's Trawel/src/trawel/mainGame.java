@@ -113,11 +113,13 @@ public class mainGame {
 		case 1: adventure1();break;
 		case 2:extra.println("This gamemode can only be played in the command prompt."); rtrawel.TestRunner.run();break;
 		case 3:
+			SaveHandler.clean();
 			while (true) {
 				extra.println("Choose your mechs");
 				List<Mech> mechs = mechsForSide(true);
 				extra.println("Save mechs?");
 				if (extra.yesNo()) {
+					SaveHandler.clean();
 					SaveHandler.imprintMechs(mechs);
 					SaveHandler.save();
 				}
