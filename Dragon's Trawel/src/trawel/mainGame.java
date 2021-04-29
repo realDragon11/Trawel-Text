@@ -10,6 +10,7 @@ import java.util.Scanner;
 import scimech.combat.MechCombat;
 import scimech.handlers.SaveHandler;
 import scimech.mech.Mech;
+import scimech.people.Pilot;
 import scimech.units.mechs.DebugMech;
 import scimech.units.mechs.Dynamo;
 import scimech.units.mechs.Hazmat;
@@ -157,6 +158,7 @@ public class mainGame {
 						curMechs = SaveHandler.exportMechs();
 						for (Mech m: curMechs) {
 							m.playerControlled = side;
+							m.swapPilot(new Pilot());
 						}
 						return true;
 					}});

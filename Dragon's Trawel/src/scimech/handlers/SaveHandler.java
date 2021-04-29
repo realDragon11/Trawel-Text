@@ -94,6 +94,7 @@ public class SaveHandler implements java.io.Serializable{
 	
 	public static Savable deserialize(String s) throws Exception {
 		String getName = s.substring(0,s.indexOf('&'));
+		System.err.println(s);
 		return (Savable)Class.forName(getName).getMethod("deserialize", String.class).invoke(null,s);
 	}
 }

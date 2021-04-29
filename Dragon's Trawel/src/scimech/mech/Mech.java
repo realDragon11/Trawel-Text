@@ -622,15 +622,15 @@ public abstract class Mech implements TurnSubscriber, Target, Savable{
 	
 	@Override
 	public String saveString() {
-		String output = this.getClass().getName()+"&["+keeper.saveString()+"]{"+callsign +"," + weightCap+","+complexityCap+","+hp+",}(";
+		String output = this.getClass().getName()+"&["+keeper.saveString()+"]{"+callsign +"," + weightCap+","+complexityCap+","+hp+",}{";
 		for (Mount m: mounts) {
-			output+=m.saveString() +",";
+			output+=m.saveString() +";";
 		}
-		output+=")(";
+		output+="}{";
 		for (Systems s: systems) {
-			output+=s.saveString() +",";
+			output+=s.saveString() +";";
 		}
-		output+=")";
+		output+="}";
 		return output;
 	}
 	
@@ -639,8 +639,8 @@ public abstract class Mech implements TurnSubscriber, Target, Savable{
 		int end = s.indexOf(']');
 		add.keeper = (TraitKeeper) SaveHandler.deserialize(s.substring(start,end));
 		
-		start = s.indexOf('(')+1;
-		end = s.indexOf(')');
+		start = s.indexOf('{')+1;
+		end = s.indexOf('}');
 		String sub = s.substring(start, end);
 		String[] sSubs = sub.split(",");
 		add.callsign = sSubs[0];
@@ -648,22 +648,27 @@ public abstract class Mech implements TurnSubscriber, Target, Savable{
 		add.complexityCap = Integer.parseInt(sSubs[2]);
 		add.hp = Integer.parseInt(sSubs[3]);
 		
-		start = s.indexOf('(',start)+1;
-		end = s.indexOf(')',start);
+		start = end+2;
+		end = s.indexOf('}',start);
 		sub = s.substring(start, end);
-		sSubs = sub.split(",");
+		sSubs = sub.split(";");
 		for (int i = 0; i < sSubs.length;i++) {
 			add.mounts.add((Mount) SaveHandler.deserialize(sSubs[i]));
 		}
-		start = s.indexOf('(',start)+1;
-		end = s.lastIndexOf(')',start);
+		start = end+2;
+		end = s.indexOf('}',start);
 		sub = s.substring(start, end);
-		sSubs = sub.split(",");
+		sSubs = sub.split(";");
 		for (int i = 0; i < sSubs.length;i++) {
 			add.systems.add((Systems) SaveHandler.deserialize(sSubs[i]));
 		}
 		
 		return add;
+	}
+	public Pilot swapPilot(Pilot pilot2) {
+		Pilot pilot3 = pilot;
+		pilot = pilot2;
+		return pilot3;
 	}
 
 }

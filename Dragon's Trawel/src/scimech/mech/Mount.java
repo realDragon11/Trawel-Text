@@ -542,11 +542,11 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 	}
 	
 	public static Mount internalDeserial(String s,Mount add) throws Exception {
-		int start = s.indexOf('[');
+		int start = s.indexOf('[')+1;
 		int end = s.indexOf(']');
 		add.keeper = (TraitKeeper) SaveHandler.deserialize(s.substring(start,end));
 		
-		start = s.indexOf('(');
+		start = s.indexOf('(')+1;
 		end = s.lastIndexOf(')');
 		String sub = s.substring(start, end);
 		String[] sSubs = sub.split(",");
