@@ -1,9 +1,11 @@
 package scimech.mech;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import scimech.combat.Target;
+import scimech.handlers.Savable;
 import trawel.MenuGenerator;
 import trawel.MenuItem;
 import trawel.MenuLine;
@@ -172,5 +174,9 @@ public abstract class Fixture extends MechPart implements TurnSubscriber{
 		damage = extra.clamp(damage-1, 0, 100);
 		rep--;
 		}
+	}
+	
+	public Savable deserialize(String s) throws Exception {
+		return (Savable) this.getClass().getConstructors()[0].newInstance();
 	}
 }
