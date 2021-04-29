@@ -12,6 +12,7 @@ import scimech.combat.ResistMap;
 import scimech.combat.TakeDamage;
 import scimech.combat.Target;
 import scimech.combat.Target.TargetType;
+import scimech.handlers.Savable;
 import scimech.mech.Fixture.MenuFixture;
 import scimech.mech.Mech.MenuMechTarget;
 import scimech.people.Trait;
@@ -24,7 +25,7 @@ import trawel.MenuLine;
 import trawel.MenuSelect;
 import trawel.extra;
 
-public abstract class Mount extends MechPart implements TurnSubscriber, Target{
+public abstract class Mount extends MechPart implements TurnSubscriber, Target, Savable{
 
 	protected int heat = 0;
 	protected List<Fixture> fixtures = new ArrayList<Fixture>();
@@ -527,6 +528,16 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target{
 		for (Fixture f: fixtures) {
 			f.repairLimit(rep,limit);
 		}
+	}
+	
+	@Override
+	public String saveString() {
+		String output = this.getClass().getName()+"&["+keeper.saveString()+"](";
+		for (Fixture f: fixtures) {
+			output+=f.saveString() +",";
+		}
+		output+=")";
+		return output;
 	}
 
 }

@@ -179,6 +179,6 @@ public abstract class Fixture extends MechPart implements TurnSubscriber, Savabl
 
 	@Override
 	public String saveString() {
-		return this.getClass().getName();
+		return this.getClass().getName()+"&";
 	}
 }

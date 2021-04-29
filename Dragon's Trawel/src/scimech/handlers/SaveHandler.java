@@ -13,7 +13,7 @@ public class SaveHandler {
 	//pilots TODO
 	}*/
 	public static Savable deserialize(String s) throws Exception {
-		String getName = "";
+		String getName = s.substring(0,s.indexOf('&'));
 		return (Savable)Class.forName(getName).getMethod("deserialize", String.class).invoke(null,s);
 	}
 }

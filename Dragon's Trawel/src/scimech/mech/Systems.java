@@ -202,7 +202,7 @@ public abstract class Systems extends MechPart implements TurnSubscriber, Savabl
 	
 	@Override
 	public String saveString() {
-		return this.getClass().getName();
+		return this.getClass().getName()+"&";
 	}
 
 }
