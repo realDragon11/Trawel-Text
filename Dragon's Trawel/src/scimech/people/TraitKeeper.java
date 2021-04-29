@@ -3,7 +3,10 @@ package scimech.people;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TraitKeeper {
+import scimech.handlers.Savable;
+import scimech.units.fixtures.AcidFoam;
+
+public class TraitKeeper implements Savable{
 
 	protected Map<Trait,Integer> traits = new HashMap<Trait,Integer>();
 	
@@ -41,5 +44,24 @@ public class TraitKeeper {
 		}
 		return str;
 		
+	}
+
+	@Override
+	public String saveString() {
+		String internals = "";
+		for (Object t: traits.keySet().toArray()) {
+			internals +=((Trait)t).name() + ":"+ traits.get((Trait)t) + ",";
+		}
+		return this.getClass().getName() + "|" + internals +"|";
+	}
+	
+	public static Savable deserialize(String s) {
+		TraitKeeper tk = new TraitKeeper();
+		String working = s.split("|")[1];
+		for (String sub: working.split(",")) {
+			String[] sSub = sub.split(":");
+			tk.addTrait(Trait.valueOf(sSub[0]),Integer.parseInt(sSub[1]));
+		}
+		return tk;
 	}
 }
