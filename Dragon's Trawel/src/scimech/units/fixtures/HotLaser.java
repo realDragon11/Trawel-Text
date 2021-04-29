@@ -6,6 +6,7 @@ import scimech.combat.DamageTypes;
 import scimech.combat.MechCombat;
 import scimech.combat.Target;
 import scimech.combat.Target.TargetType;
+import scimech.handlers.Savable;
 import scimech.mech.Fixture;
 import scimech.mech.Mech;
 import scimech.mech.Mount;
@@ -79,6 +80,10 @@ public class HotLaser extends Fixture {
 	@Override
 	public int getSlots() {
 		return 2;//TODO: changed from 3 because that's  what I was using it as
+	}
+	
+	public static Savable deserialize(String s) {
+		return new HotLaser();
 	}
 
 }

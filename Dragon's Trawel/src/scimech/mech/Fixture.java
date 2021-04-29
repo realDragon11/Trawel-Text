@@ -12,7 +12,7 @@ import trawel.MenuLine;
 import trawel.MenuSelect;
 import trawel.extra;
 
-public abstract class Fixture extends MechPart implements TurnSubscriber{
+public abstract class Fixture extends MechPart implements TurnSubscriber, Savable{
 	
 	//TODO: don't save this, save a text representation of the name, power state, and damage state
 
@@ -176,7 +176,9 @@ public abstract class Fixture extends MechPart implements TurnSubscriber{
 		}
 	}
 	
-	public Savable deserialize(String s) throws Exception {
-		return (Savable) this.getClass().getConstructors()[0].newInstance();
+
+	@Override
+	public String saveString() {
+		return this.getClass().getName();
 	}
 }

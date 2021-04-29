@@ -5,6 +5,7 @@ import scimech.combat.DamageMods;
 import scimech.combat.DamageTypes;
 import scimech.combat.MechCombat;
 import scimech.combat.Target;
+import scimech.handlers.Savable;
 import scimech.mech.Fixture;
 import scimech.mech.TurnSubscriber;
 import trawel.extra;
@@ -68,6 +69,10 @@ public class Mortar extends Fixture {
 	@Override
 	public int getSlots() {
 		return 6;
+	}
+	
+	public static Savable deserialize(String s) {
+		return new Mortar();
 	}
 
 }

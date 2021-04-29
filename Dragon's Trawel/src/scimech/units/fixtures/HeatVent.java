@@ -1,6 +1,7 @@
 package scimech.units.fixtures;
 
 import scimech.combat.Target;
+import scimech.handlers.Savable;
 import scimech.mech.Fixture;
 import scimech.mech.TurnSubscriber;
 
@@ -52,6 +53,10 @@ public class HeatVent extends Fixture {
 	@Override
 	public int getSlots() {
 		return 2;
+	}
+	
+	public static Savable deserialize(String s) {
+		return new HeatVent();
 	}
 
 }
