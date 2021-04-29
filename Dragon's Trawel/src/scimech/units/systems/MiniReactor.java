@@ -2,6 +2,7 @@ package scimech.units.systems;
 
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
+import scimech.handlers.Savable;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
 
@@ -53,6 +54,10 @@ public class MiniReactor extends Systems {
 	@Override
 	public int getWeight() {
 		return 1;
+	}
+	
+	public static Savable deserialize(String s) {
+		return new MiniReactor();
 	}
 
 }

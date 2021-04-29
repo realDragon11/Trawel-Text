@@ -5,13 +5,14 @@ import java.util.List;
 
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
+import scimech.handlers.Savable;
 import trawel.MenuGenerator;
 import trawel.MenuItem;
 import trawel.MenuLine;
 import trawel.MenuSelect;
 import trawel.extra;
 
-public abstract class Systems extends MechPart implements TurnSubscriber{
+public abstract class Systems extends MechPart implements TurnSubscriber, Savable{
 
 	public abstract int getComplexity();
 	
@@ -197,6 +198,11 @@ public abstract class Systems extends MechPart implements TurnSubscriber{
 		damage = extra.clamp(damage-1, 0, 100);
 		rep--;
 		}
+	}
+	
+	@Override
+	public String saveString() {
+		return this.getClass().getName();
 	}
 
 }

@@ -4,6 +4,7 @@ import scimech.combat.DamageMods;
 import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
+import scimech.handlers.Savable;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
 import trawel.extra;
@@ -58,6 +59,10 @@ public class FrostAegis extends Systems {
 	@Override
 	public int getWeight() {
 		return 6;
+	}
+	
+	public static Savable deserialize(String s) {
+		return new FrostAegis();
 	}
 
 }

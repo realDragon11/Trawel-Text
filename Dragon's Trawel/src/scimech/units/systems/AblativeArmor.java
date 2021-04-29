@@ -4,8 +4,10 @@ import scimech.combat.DamageMods;
 import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
+import scimech.handlers.Savable;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
+import scimech.units.fixtures.ZeusRifle;
 import trawel.extra;
 
 public class AblativeArmor extends Systems {
@@ -59,6 +61,10 @@ public class AblativeArmor extends Systems {
 	@Override
 	public int getWeight() {
 		return 22;
+	}
+	
+	public static Savable deserialize(String s) {
+		return new AblativeArmor();
 	}
 
 }

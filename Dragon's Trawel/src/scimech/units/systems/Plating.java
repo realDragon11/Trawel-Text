@@ -6,6 +6,7 @@ import java.util.List;
 import scimech.combat.DamageMods;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
+import scimech.handlers.Savable;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
 import trawel.MenuGenerator;
@@ -122,6 +123,10 @@ public class Plating extends Systems {
 					}});
 				return mList;
 			}});
+	}
+	
+	public static Savable deserialize(String s) {
+		return new Plating();
 	}
 	
 }

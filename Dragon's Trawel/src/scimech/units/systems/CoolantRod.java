@@ -5,6 +5,7 @@ import java.util.List;
 
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
+import scimech.handlers.Savable;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
 import trawel.MenuGenerator;
@@ -133,6 +134,10 @@ public class CoolantRod extends Systems {
 				}
 				return mList;
 			}});
+	}
+	
+	public static Savable deserialize(String s) {
+		return new CoolantRod();
 	}
 
 }
