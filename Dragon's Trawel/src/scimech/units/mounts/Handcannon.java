@@ -4,6 +4,7 @@ import scimech.combat.DamageMods;
 import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
+import scimech.handlers.Savable;
 import scimech.mech.Mount;
 import trawel.extra;
 
@@ -49,6 +50,10 @@ public class Handcannon extends Mount {
 			t.takeDamage().take(DamageTypes.KINETIC, DamageMods.AP,3,t);
 			extra.println("Handcannon: " + (before-t.getHP()) + " bonus damage!");
 		}
+	}
+	
+	public static Savable deserialize(String s) throws Exception {
+		return Mount.internalDeserial(s,new Handcannon());
 	}
 
 }

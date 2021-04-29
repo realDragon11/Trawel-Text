@@ -2,6 +2,7 @@ package scimech.units.mounts;
 
 import scimech.combat.DamageMods;
 import scimech.combat.ResistMap;
+import scimech.handlers.Savable;
 import scimech.mech.Mount;
 import trawel.extra;
 
@@ -38,6 +39,10 @@ public class Broadside extends Mount {
 	@Override
 	public float dodgeMult() {
 		return 0.8f;
+	}
+	
+	public static Savable deserialize(String s) throws Exception {
+		return Mount.internalDeserial(s,new Broadside());
 	}
 
 }

@@ -2,7 +2,9 @@ package scimech.units.mounts;
 
 import scimech.combat.DamageMods;
 import scimech.combat.ResistMap;
+import scimech.handlers.Savable;
 import scimech.mech.Mount;
+import scimech.units.systems.InternalRepair;
 import trawel.extra;
 
 public class Blunderbuss extends Mount {
@@ -40,6 +42,10 @@ public class Blunderbuss extends Mount {
 	@Override
 	public float dodgeMult() {
 		return 0.7f;
+	}
+	
+	public static Savable deserialize(String s) throws Exception {
+		return Mount.internalDeserial(s,new Blunderbuss());
 	}
 
 }
