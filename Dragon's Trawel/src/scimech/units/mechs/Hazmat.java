@@ -3,6 +3,7 @@ package scimech.units.mechs;
 import scimech.combat.DamageMods;
 import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
+import scimech.handlers.Savable;
 import scimech.mech.Mech;
 import scimech.mech.Mount;
 import scimech.people.Pilot;
@@ -64,6 +65,10 @@ public class Hazmat extends Mech {
 		hp = this.getMaxHP();
 	}
 
+	public Hazmat() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public int baseHP() {
 		return 200;
@@ -108,6 +113,10 @@ public class Hazmat extends Mech {
 		map.put(DamageTypes.BLAST,0.95f,1f,0.5f);
 		map.put(DamageTypes.SHOCK,0.8f,0.8f,0.5f);
 		return map;
+	}
+	
+	public static Savable deserialize(String s) throws Exception {
+		return Mech.internalDeserial(s,new Hazmat());
 	}
 
 }

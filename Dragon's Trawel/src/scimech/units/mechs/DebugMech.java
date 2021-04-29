@@ -2,6 +2,7 @@ package scimech.units.mechs;
 
 import scimech.combat.DamageMods;
 import scimech.combat.ResistMap;
+import scimech.handlers.Savable;
 import scimech.mech.Mech;
 import scimech.mech.Mount;
 import scimech.people.Pilot;
@@ -16,6 +17,8 @@ import trawel.extra;
 import trawel.randomLists;
 
 public class DebugMech extends Mech {
+	
+	public DebugMech() {}//serial
 	
 	public DebugMech(boolean side) {
 		playerControlled = side;
@@ -90,6 +93,10 @@ public class DebugMech extends Mech {
 		map.put(DamageMods.NORMAL,1f,1f);
 		map.put(DamageMods.HOLLOW,1.5f, 1f);
 		return map;
+	}
+	
+	public static Savable deserialize(String s) throws Exception {
+		return Mech.internalDeserial(s,new DebugMech());
 	}
 
 }

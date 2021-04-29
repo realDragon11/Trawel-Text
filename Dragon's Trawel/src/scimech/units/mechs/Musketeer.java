@@ -3,6 +3,7 @@ package scimech.units.mechs;
 import scimech.combat.DamageMods;
 import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
+import scimech.handlers.Savable;
 import scimech.mech.Mech;
 import scimech.mech.Mount;
 import scimech.people.Pilot;
@@ -57,6 +58,10 @@ public class Musketeer extends Mech {
 		hp = this.getMaxHP();
 	}
 	
+	public Musketeer() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public int baseHP() {
 		return 150;
@@ -98,6 +103,10 @@ public class Musketeer extends Mech {
 		map.put(DamageTypes.KINETIC,0.5f,0.8f);//strength
 		map.put(DamageTypes.BLAST,1.2f,1.4f);//weakness
 		return map;
+	}
+	
+	public static Savable deserialize(String s) throws Exception {
+		return Mech.internalDeserial(s,new Musketeer());
 	}
 
 }

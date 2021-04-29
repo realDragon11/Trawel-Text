@@ -3,6 +3,7 @@ package scimech.units.mechs;
 import scimech.combat.DamageMods;
 import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
+import scimech.handlers.Savable;
 import scimech.mech.Mech;
 import scimech.mech.Mount;
 import scimech.people.Pilot;
@@ -61,6 +62,10 @@ public class Pyro extends Mech {
 		hp = this.getMaxHP();
 	}
 
+	public Pyro() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public int baseHP() {
 		return 210;
@@ -101,6 +106,10 @@ public class Pyro extends Mech {
 		
 		map.put(DamageTypes.BURN,0.6f,0.7f,0.7f);
 		return map;
+	}
+	
+	public static Savable deserialize(String s) throws Exception {
+		return Mech.internalDeserial(s,new Pyro());
 	}
 
 }

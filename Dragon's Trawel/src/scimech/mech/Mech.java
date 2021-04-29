@@ -622,7 +622,7 @@ public abstract class Mech implements TurnSubscriber, Target, Savable{
 	
 	@Override
 	public String saveString() {
-		String output = this.getClass().getName()+"&["+keeper.saveString()+"]{"+callsign +"," + weightCap+","+complexityCap+",}(";
+		String output = this.getClass().getName()+"&["+keeper.saveString()+"]{"+callsign +"," + weightCap+","+complexityCap+","+hp+",}(";
 		for (Mount m: mounts) {
 			output+=m.saveString() +",";
 		}
@@ -646,6 +646,7 @@ public abstract class Mech implements TurnSubscriber, Target, Savable{
 		add.callsign = sSubs[0];
 		add.weightCap = Integer.parseInt(sSubs[1]);
 		add.complexityCap = Integer.parseInt(sSubs[2]);
+		add.hp = Integer.parseInt(sSubs[3]);
 		
 		start = s.indexOf('(');
 		end = s.lastIndexOf(')');

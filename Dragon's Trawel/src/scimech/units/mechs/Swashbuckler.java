@@ -2,6 +2,7 @@ package scimech.units.mechs;
 
 import scimech.combat.DamageMods;
 import scimech.combat.ResistMap;
+import scimech.handlers.Savable;
 import scimech.mech.Mech;
 import scimech.mech.Mount;
 import scimech.people.Pilot;
@@ -50,6 +51,10 @@ public class Swashbuckler extends Mech {
 		hp = this.getMaxHP();
 	}
 	
+	public Swashbuckler() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public int baseHP() {
 		return 200;
@@ -88,6 +93,10 @@ public class Swashbuckler extends Mech {
 		map.put(DamageMods.NORMAL,1f,1f);
 		map.put(DamageMods.HOLLOW,1.5f, 1f);
 		return map;
+	}
+	
+	public static Savable deserialize(String s) throws Exception {
+		return Mech.internalDeserial(s,new Swashbuckler());
 	}
 
 }
