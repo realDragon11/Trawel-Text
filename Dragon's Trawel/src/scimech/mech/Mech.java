@@ -11,6 +11,8 @@ import scimech.combat.MechCombat;
 import scimech.combat.ResistMap;
 import scimech.combat.TakeDamage;
 import scimech.combat.Target;
+import scimech.handlers.Savable;
+import scimech.handlers.SaveHandler;
 import scimech.mech.Fixture.MenuFixture;
 import scimech.mech.Mount.MenuMount;
 import scimech.mech.Mount.MenuMountTarget;
@@ -26,7 +28,7 @@ import trawel.MenuSelect;
 import trawel.MenuSelectNumber;
 import trawel.extra;
 
-public abstract class Mech implements TurnSubscriber, Target{
+public abstract class Mech implements TurnSubscriber, Target, Savable{
 
 	public boolean playerControlled = false;
 	protected int heat = 0;//for debug
@@ -616,6 +618,51 @@ public abstract class Mech implements TurnSubscriber, Target{
 	
 	public int getTrait(Trait t) {
 		return keeper.getTrait(t)+pilot.getTrait(t);
+	}
+	
+	@Override
+	public String saveString() {
+		String output = this.getClass().getName()+"&["+keeper.saveString()+"]{"+callsign +"," + weightCap+","+complexityCap+",}(";
+		for (Mount m: mounts) {
+			output+=m.saveString() +",";
+		}
+		output+=")(";
+		for (Systems s: systems) {
+			output+=s.saveString() +",";
+		}
+		output+=")";
+		return output;
+	}
+	
+	public static Mech internalDeserial(String s,Mech add) throws Exception {
+		int start = s.indexOf('[');
+		int end = s.indexOf(']');
+		add.keeper = (TraitKeeper) SaveHandler.deserialize(s.substring(start,end));
+		
+		start = s.indexOf('(');
+		end = s.lastIndexOf(')');
+		String sub = s.substring(start, end);
+		String[] sSubs = sub.split(",");
+		add.callsign = sSubs[0];
+		add.weightCap = Integer.parseInt(sSubs[1]);
+		add.complexityCap = Integer.parseInt(sSubs[2]);
+		
+		start = s.indexOf('(');
+		end = s.lastIndexOf(')');
+		sub = s.substring(start, end);
+		sSubs = sub.split(",");
+		for (int i = 0; i < sSubs.length;i++) {
+			add.mounts.add((Mount) SaveHandler.deserialize(sSubs[i]));
+		}
+		start = s.indexOf('(',start);
+		end = s.lastIndexOf(')',start);
+		sub = s.substring(start, end);
+		sSubs = sub.split(",");
+		for (int i = 0; i < sSubs.length;i++) {
+			add.systems.add((Systems) SaveHandler.deserialize(sSubs[i]));
+		}
+		
+		return add;
 	}
 
 }
