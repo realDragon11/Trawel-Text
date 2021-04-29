@@ -10,13 +10,13 @@ import trawel.MenuLine;
 import trawel.MenuSelect;
 import trawel.extra;
 
-public abstract class Fixture implements TurnSubscriber{
+public abstract class Fixture extends MechPart implements TurnSubscriber{
 	
 	//TODO: don't save this, save a text representation of the name, power state, and damage state
 
 	public boolean powered = true;
 	public boolean overclocked = false;
-	protected int damage = 0, empDamage = 0;//max 100
+	protected int damage = 0, empDamage = 0;//max 100, 200
 	public Mount currentMount;
 	public void heatCheck(int heat) {
 		if (heat > heatCap()) {
@@ -32,7 +32,7 @@ public abstract class Fixture implements TurnSubscriber{
 	}
 	
 	public void takeEMPDamage(int toTake) {
-		empDamage = extra.clamp(empDamage+toTake, 0, 100);
+		empDamage = extra.clamp(empDamage+toTake, 0, 200);
 	}
 	public void empDecay() {
 		empDamage/=2;

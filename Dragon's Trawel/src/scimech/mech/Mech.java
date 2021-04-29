@@ -70,6 +70,14 @@ public abstract class Mech implements TurnSubscriber, Target{
 		//energy = 0;
 		slow = 0;
 		this.repairLimit(100,this.getTrait(Trait.GREASE_MONKEY)*5);
+		for (Mount m: mounts) {
+			for (Fixture f: m.fixtures) {
+				f.empDamage = 0;
+			}
+		}
+		for (Systems s: systems) {
+			s.empDamage = 0;
+		}
 	}
 	
 	public void fullRepair() {

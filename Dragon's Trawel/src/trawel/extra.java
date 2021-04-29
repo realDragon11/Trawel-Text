@@ -440,7 +440,7 @@ public class extra {
 			while (true) {
 				List<MenuItem> subList = new ArrayList<MenuItem>();
 				mList.stream().filter(m -> m.canClick() == true).forEach(subList::add);
-				int val = extra.inInt(v)-1;
+				int val = extra.inInt(subList.size())-1;
 				boolean ret = subList.get(val).go();
 				//mList = mGen.gen();
 				if (ret) {

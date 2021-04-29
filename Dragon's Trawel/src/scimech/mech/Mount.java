@@ -24,7 +24,7 @@ import trawel.MenuLine;
 import trawel.MenuSelect;
 import trawel.extra;
 
-public abstract class Mount implements TurnSubscriber, Target{
+public abstract class Mount extends MechPart implements TurnSubscriber, Target{
 
 	protected int heat = 0;
 	protected List<Fixture> fixtures = new ArrayList<Fixture>();
@@ -63,6 +63,7 @@ public abstract class Mount implements TurnSubscriber, Target{
 					
 					if (MechCombat.mc.activeMechs.contains(m)) {
 						extra.print(m.callsign + " is taken out! ");
+						MechCombat.mc.turnOrder.remove(m);
 						MechCombat.mc.activeMechs.remove(m);
 					}
 				}

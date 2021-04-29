@@ -11,7 +11,7 @@ import trawel.MenuLine;
 import trawel.MenuSelect;
 import trawel.extra;
 
-public abstract class Systems implements TurnSubscriber{
+public abstract class Systems extends MechPart implements TurnSubscriber{
 
 	public abstract int getComplexity();
 	
@@ -22,7 +22,7 @@ public abstract class Systems implements TurnSubscriber{
 	public int uses = 0;
 	public int activated = 0;
 	
-	protected int damage = 0, empDamage = 0;//max 100
+	protected int damage = 0, empDamage = 0;//max 100, 200
 	public Mech currentMech;
 	
 	public void takeDamage(int toTake) {
@@ -30,7 +30,7 @@ public abstract class Systems implements TurnSubscriber{
 	}
 	
 	public void takeEMPDamage(int toTake) {
-		empDamage = extra.clamp(empDamage+toTake, 0, 100);
+		empDamage = extra.clamp(empDamage+toTake, 0, 200);
 	}
 	
 	public void empDecay() {
