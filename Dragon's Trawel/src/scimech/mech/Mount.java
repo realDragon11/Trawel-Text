@@ -552,6 +552,7 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 		String[] sSubs = sub.split(",");
 		for (int i = 0; i < sSubs.length;i++) {
 			add.fixtures.add((Fixture) SaveHandler.deserialize(sSubs[i]));
+			add.fixtures.get(i).currentMount = add;
 		}
 		return add;
 	}

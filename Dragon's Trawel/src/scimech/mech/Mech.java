@@ -654,6 +654,7 @@ public abstract class Mech implements TurnSubscriber, Target, Savable{
 		sSubs = sub.split(";");
 		for (int i = 0; i < sSubs.length;i++) {
 			add.mounts.add((Mount) SaveHandler.deserialize(sSubs[i]));
+			add.mounts.get(i).currentMech = add;
 		}
 		start = end+2;
 		end = s.indexOf('}',start);
@@ -661,6 +662,7 @@ public abstract class Mech implements TurnSubscriber, Target, Savable{
 		sSubs = sub.split(";");
 		for (int i = 0; i < sSubs.length;i++) {
 			add.systems.add((Systems) SaveHandler.deserialize(sSubs[i]));
+			add.systems.get(i).currentMech = add;
 		}
 		
 		return add;
