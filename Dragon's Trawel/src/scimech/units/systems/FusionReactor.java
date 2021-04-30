@@ -58,7 +58,7 @@ public class FusionReactor extends Systems {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new FusionReactor();
+		return Systems.internalDeserial(s,new FusionReactor());
 	}
 
 }

@@ -75,7 +75,7 @@ public class ZeusRifle extends Fixture{
 	}
 	
 	public static Savable deserialize(String s) {
-		return new ZeusRifle();
+		return Fixture.internalDeserial(s,new ZeusRifle());
 	}
 
 }

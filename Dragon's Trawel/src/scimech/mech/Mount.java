@@ -538,6 +538,9 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 			output+=f.saveString() +",";
 		}
 		output+=")";
+		if (locked) {
+			output+="L";
+		}
 		return output;
 	}
 	
@@ -553,6 +556,9 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 		for (int i = 0; i < sSubs.length;i++) {
 			add.fixtures.add((Fixture) SaveHandler.deserialize(sSubs[i]));
 			add.fixtures.get(i).currentMount = add;
+		}
+		if (s.charAt(s.length()-1) == 'L') {
+			add.locked = true;
 		}
 		return add;
 	}

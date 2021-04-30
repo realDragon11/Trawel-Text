@@ -72,7 +72,7 @@ public class Harpoon extends Fixture {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new Harpoon();
+		return Fixture.internalDeserial(s,new Harpoon());
 	}
 
 }

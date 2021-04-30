@@ -78,7 +78,7 @@ public class CorrosiveDrill extends Fixture {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new CorrosiveDrill();
+		return Fixture.internalDeserial(s,new CorrosiveDrill());
 	}
 
 }

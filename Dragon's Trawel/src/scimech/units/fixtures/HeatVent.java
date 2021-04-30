@@ -56,7 +56,7 @@ public class HeatVent extends Fixture {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new HeatVent();
+		return Fixture.internalDeserial(s,new HeatVent());
 	}
 
 }

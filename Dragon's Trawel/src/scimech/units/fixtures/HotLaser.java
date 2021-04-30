@@ -83,7 +83,7 @@ public class HotLaser extends Fixture {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new HotLaser();
+		return Fixture.internalDeserial(s,new HotLaser());
 	}
 
 }

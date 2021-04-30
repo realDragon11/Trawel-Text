@@ -72,7 +72,7 @@ public class Mortar extends Fixture {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new Mortar();
+		return Fixture.internalDeserial(s,new Mortar());
 	}
 
 }

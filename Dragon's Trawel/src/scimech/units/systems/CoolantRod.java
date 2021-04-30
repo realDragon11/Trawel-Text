@@ -137,7 +137,7 @@ public class CoolantRod extends Systems {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new CoolantRod();
+		return Systems.internalDeserial(s,new CoolantRod());
 	}
 
 }

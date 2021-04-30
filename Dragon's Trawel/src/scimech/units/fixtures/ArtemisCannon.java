@@ -68,7 +68,7 @@ public class ArtemisCannon extends Fixture {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new ArtemisCannon();
+		return Fixture.internalDeserial(s,new ArtemisCannon());
 	}
 
 }

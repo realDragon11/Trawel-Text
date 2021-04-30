@@ -57,7 +57,7 @@ public class MiniReactor extends Systems {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new MiniReactor();
+		return Systems.internalDeserial(s,new MiniReactor());
 	}
 
 }

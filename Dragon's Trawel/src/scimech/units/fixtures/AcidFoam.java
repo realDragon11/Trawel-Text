@@ -8,6 +8,7 @@ import scimech.combat.MechCombat;
 import scimech.combat.Target;
 import scimech.handlers.Savable;
 import scimech.mech.Fixture;
+import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
 import trawel.extra;
 
@@ -73,7 +74,7 @@ public class AcidFoam extends Fixture {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new AcidFoam();
+		return Fixture.internalDeserial(s,new AcidFoam());
 	}
 
 }

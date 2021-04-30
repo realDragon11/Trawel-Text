@@ -56,7 +56,7 @@ public class Ramjet extends Systems {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new Ramjet();
+		return Systems.internalDeserial(s,new Ramjet());
 	}
 
 }

@@ -76,7 +76,7 @@ public class LightAutocannon extends Fixture{
 	}
 	
 	public static Savable deserialize(String s) {
-		return new LightAutocannon();
+		return Fixture.internalDeserial(s,new LightAutocannon());
 	}
 
 }

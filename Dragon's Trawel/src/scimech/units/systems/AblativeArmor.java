@@ -64,7 +64,7 @@ public class AblativeArmor extends Systems {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new AblativeArmor();
+		return Systems.internalDeserial(s,new AblativeArmor());
 	}
 
 }

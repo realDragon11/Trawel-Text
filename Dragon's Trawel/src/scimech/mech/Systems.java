@@ -6,6 +6,8 @@ import java.util.List;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
 import scimech.handlers.Savable;
+import scimech.handlers.SaveHandler;
+import scimech.people.TraitKeeper;
 import trawel.MenuGenerator;
 import trawel.MenuItem;
 import trawel.MenuLine;
@@ -202,7 +204,14 @@ public abstract class Systems extends MechPart implements TurnSubscriber, Savabl
 	
 	@Override
 	public String saveString() {
-		return this.getClass().getName()+"&";
+		return this.getClass().getName()+"&" + (locked ? "L" : "");
+	}
+	
+	public static Systems internalDeserial(String s,Systems add){
+		if (s.charAt(s.length()-1) == 'L') {
+			add.locked = true;
+		}
+		return add;
 	}
 
 }

@@ -76,7 +76,7 @@ public class ArcThrower extends Fixture {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new ArcThrower();
+		return Fixture.internalDeserial(s,new ArcThrower());
 	}
 
 }

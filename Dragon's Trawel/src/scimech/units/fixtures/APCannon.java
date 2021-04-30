@@ -69,7 +69,7 @@ public class APCannon extends Fixture {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new APCannon();
+		return Fixture.internalDeserial(s,new APCannon());
 	}
 
 }

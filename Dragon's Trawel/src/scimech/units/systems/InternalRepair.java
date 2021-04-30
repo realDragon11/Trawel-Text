@@ -55,7 +55,7 @@ public class InternalRepair extends Systems {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new InternalRepair();
+		return Systems.internalDeserial(s,new InternalRepair());
 	}
 
 }

@@ -179,6 +179,13 @@ public abstract class Fixture extends MechPart implements TurnSubscriber, Savabl
 
 	@Override
 	public String saveString() {
-		return this.getClass().getName()+"&";
+		return this.getClass().getName()+"&"+ (locked ? "L" : "");
+	}
+	
+	public static Fixture internalDeserial(String s,Fixture add){
+		if (s.charAt(s.length()-1) == 'L') {
+			add.locked = true;
+		}
+		return add;
 	}
 }

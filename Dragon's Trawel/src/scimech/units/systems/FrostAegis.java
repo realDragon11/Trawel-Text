@@ -62,7 +62,7 @@ public class FrostAegis extends Systems {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new FrostAegis();
+		return Systems.internalDeserial(s,new FrostAegis());
 	}
 
 }

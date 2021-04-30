@@ -75,7 +75,7 @@ public class Krakatoa extends Fixture {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new Krakatoa();
+		return Fixture.internalDeserial(s,new Krakatoa());
 	}
 
 }

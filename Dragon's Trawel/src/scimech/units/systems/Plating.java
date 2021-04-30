@@ -126,7 +126,7 @@ public class Plating extends Systems {
 	}
 	
 	public static Savable deserialize(String s) {
-		return new Plating();
+		return Systems.internalDeserial(s,new Plating());
 	}
 	
 }
