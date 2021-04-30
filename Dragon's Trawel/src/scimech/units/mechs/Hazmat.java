@@ -5,6 +5,7 @@ import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
 import scimech.handlers.Savable;
 import scimech.mech.Mech;
+import scimech.mech.MechPart;
 import scimech.mech.Mount;
 import scimech.people.Pilot;
 import scimech.units.fixtures.APCannon;
@@ -41,21 +42,21 @@ public class Hazmat extends Mech {
 		pilot = new Pilot();
 	
 		Mount m = new Blunderbuss();
-		this.addMount(m);
-		m.addFixture(new CorrosiveDrill());
+		this.addMount(MechPart.lock(m));
+		m.addFixture(MechPart.lock(new CorrosiveDrill()));
 		
 		m = new Handcannon();
-		this.addMount(m);
-		m.addFixture(new AcidFoam());
+		this.addMount(MechPart.lock(m));
+		m.addFixture(MechPart.lock(new AcidFoam()));
 		
 		m = new Pulsar();
-		this.addMount(m);
+		this.addMount(MechPart.lock(m));
 		m.addFixture(new HotLaser());
 		m.addFixture(new HotLaser());
 		
+		this.addSystem(MechPart.lock(new FusionReactor()));
 		this.addSystem(new FusionReactor());
-		this.addSystem(new FusionReactor());
-		this.addSystem(new InternalRepair());
+		this.addSystem(MechPart.lock(new InternalRepair()));
 		for (int i = 0; i < 6;i++) {
 			this.addSystem(new MiniReactor());
 		}

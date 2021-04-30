@@ -5,6 +5,7 @@ import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
 import scimech.handlers.Savable;
 import scimech.mech.Mech;
+import scimech.mech.MechPart;
 import scimech.mech.Mount;
 import scimech.people.Pilot;
 import scimech.units.fixtures.APCannon;
@@ -30,24 +31,24 @@ public class Pirate extends Mech {
 		pilot = new Pilot();
 		
 		Mount m = new Handcannon();
-		this.addMount(m);
+		this.addMount(MechPart.lock(m));
 		m.addFixture(new LightAutocannon());
 		m.addFixture(new LightAutocannon());
 		
 		m = new Handcannon();
-		this.addMount(m);
+		this.addMount(MechPart.lock(m));
 		m.addFixture(new LightAutocannon());
 		m.addFixture(new LightAutocannon());
 		
 		m = new Handcannon();
-		this.addMount(m);
+		this.addMount(MechPart.lock(m));
 		m.addFixture(new LightAutocannon());
 		m.addFixture(new LightAutocannon());
 		
-		this.addSystem(new FusionReactor());
+		this.addSystem(MechPart.lock(new FusionReactor()));
 		this.addSystem(new FusionReactor());
 		
-		this.addSystem(new Ramjet());
+		this.addSystem(MechPart.lock(new Ramjet()));
 		this.addSystem(new Ramjet());
 		
 		this.addSystem(new CoolantRod());

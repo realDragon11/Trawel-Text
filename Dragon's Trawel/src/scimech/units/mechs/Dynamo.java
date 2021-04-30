@@ -4,6 +4,7 @@ import scimech.combat.DamageMods;
 import scimech.combat.ResistMap;
 import scimech.handlers.Savable;
 import scimech.mech.Mech;
+import scimech.mech.MechPart;
 import scimech.mech.Mount;
 import scimech.people.Pilot;
 import scimech.units.fixtures.APCannon;
@@ -32,8 +33,8 @@ public class Dynamo extends Mech {
 		pilot = new Pilot();
 		
 		Mount m = new Pulsar();
-		this.addMount(m);
-		m.addFixture(new ArcThrower());
+		this.addMount(MechPart.lock(m));
+		m.addFixture(MechPart.lock(new ArcThrower()));
 		
 		m = new Pulsar();
 		this.addMount(m);
@@ -41,15 +42,15 @@ public class Dynamo extends Mech {
 		m.addFixture(new HeatVent());
 		
 		m = new Broadside();
-		this.addMount(m);
-		m.addFixture(new ZeusRifle());
+		this.addMount(MechPart.lock(m));
+		m.addFixture(MechPart.lock(new ZeusRifle()));
 		m.addFixture(new ZeusRifle());
 		m.addFixture(new HeatVent());
 		
 		
-		this.addSystem(new FusionReactor());
-		this.addSystem(new FusionReactor());
-		this.addSystem(new FusionReactor());
+		this.addSystem(MechPart.lock(new FusionReactor()));
+		this.addSystem(MechPart.lock(new FusionReactor()));
+		this.addSystem(MechPart.lock(new FusionReactor()));
 		this.addSystem(new FusionReactor());
 
 		

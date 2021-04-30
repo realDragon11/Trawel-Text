@@ -4,6 +4,7 @@ import scimech.combat.DamageMods;
 import scimech.combat.ResistMap;
 import scimech.handlers.Savable;
 import scimech.mech.Mech;
+import scimech.mech.MechPart;
 import scimech.mech.Mount;
 import scimech.people.Pilot;
 import scimech.units.fixtures.APCannon;
@@ -28,10 +29,10 @@ public class Swashbuckler extends Mech {
 		pilot = new Pilot();
 		
 		Mount m = new Broadside();
-		this.addMount(m);
-		m.addFixture(new APCannon());
-		m.addFixture(new APCannon());
-		m.addFixture(new APCannon());
+		this.addMount(MechPart.lock(m));
+		m.addFixture(MechPart.lock(new APCannon()));
+		m.addFixture(MechPart.lock(new APCannon()));
+		m.addFixture(MechPart.lock(new APCannon()));
 		
 		m = new Blunderbuss();
 		this.addMount(m);

@@ -5,6 +5,7 @@ import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
 import scimech.handlers.Savable;
 import scimech.mech.Mech;
+import scimech.mech.MechPart;
 import scimech.mech.Mount;
 import scimech.people.Pilot;
 import scimech.units.fixtures.APCannon;
@@ -37,13 +38,13 @@ public class Pyro extends Mech {
 		pilot = new Pilot();
 	
 		Mount m = new Blunderbuss();
-		this.addMount(m);
-		m.addFixture(new Krakatoa());
+		this.addMount(MechPart.lock(m));
+		m.addFixture(MechPart.lock(new Krakatoa()));
 		m.addFixture(new HeatVent());
 		
 		m = new Blunderbuss();
-		this.addMount(m);
-		m.addFixture(new Krakatoa());
+		this.addMount(MechPart.lock(m));
+		m.addFixture(MechPart.lock(new Krakatoa()));
 		m.addFixture(new HeatVent());
 		
 		m = new Foil();
@@ -51,12 +52,12 @@ public class Pyro extends Mech {
 		m.addFixture(new HotLaser());
 		m.addFixture(new HotLaser());
 		
-		this.addSystem(new FusionReactor());
-		this.addSystem(new FusionReactor());
+		this.addSystem(MechPart.lock(new FusionReactor()));
+		this.addSystem(MechPart.lock(new FusionReactor()));
 		this.addSystem(new FusionReactor());
 		this.addSystem(new FusionReactor());
 		
-		this.addSystem(new FrostAegis());
+		this.addSystem(MechPart.lock(new FrostAegis()));
 		
 		
 		hp = this.getMaxHP();

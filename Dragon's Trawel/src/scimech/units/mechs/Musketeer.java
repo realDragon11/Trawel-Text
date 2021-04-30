@@ -5,6 +5,7 @@ import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
 import scimech.handlers.Savable;
 import scimech.mech.Mech;
+import scimech.mech.MechPart;
 import scimech.mech.Mount;
 import scimech.people.Pilot;
 import scimech.units.fixtures.APCannon;
@@ -28,12 +29,12 @@ public class Musketeer extends Mech {
 		pilot = new Pilot();
 		
 		Mount m = new Foil();
-		this.addMount(m);
+		this.addMount(MechPart.lock(m));
 		m.addFixture(new LightAutocannon());
 		m.addFixture(new LightAutocannon());
 		
 		m = new Foil();
-		this.addMount(m);
+		this.addMount(MechPart.lock(m));
 		m.addFixture(new LightAutocannon());
 		m.addFixture(new LightAutocannon());
 		
@@ -42,17 +43,17 @@ public class Musketeer extends Mech {
 		m.addFixture(new APCannon());
 		
 		m = new Blunderbuss();
-		this.addMount(m);
-		m.addFixture(new ArtemisCannon());
-		m.addFixture(new ArtemisCannon());
+		this.addMount(MechPart.lock(m));
+		m.addFixture(MechPart.lock(new ArtemisCannon()));
+		m.addFixture(MechPart.lock(new ArtemisCannon()));
 		
 		this.addSystem(new FusionReactor());
 		this.addSystem(new FusionReactor());
 		
-		this.addSystem(new Ramjet());
-		this.addSystem(new Ramjet());
+		this.addSystem(MechPart.lock(new Ramjet()));
+		this.addSystem(MechPart.lock(new Ramjet()));
 		
-		this.addSystem(new CoolantRod());
+		this.addSystem(MechPart.lock(new CoolantRod()));
 		this.addSystem(new CoolantRod());
 		
 		hp = this.getMaxHP();
