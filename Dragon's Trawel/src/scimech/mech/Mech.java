@@ -263,7 +263,7 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 	public int totalComplexity() {
 		int total = this.baseComplexity();
 		for (Systems ss: systems) {
-			total +=ss.getBaseComplexity();
+			total +=ss.getComplexity();
 		}
 		for (Mount mount: mounts) {
 			total += mount.getComplexity();
@@ -566,7 +566,7 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 		extra.println(callsign + " ("+getName()+")" + "/"+pilot.getName() +" HP: " + hp + "/" + getMaxHP() +" Energy: " + energy + " Heat: " + heat+ "/" + heatCap());
 		extra.println("Weight: " + this.totalWeight() + "/" + this.weightCap + " Complexity: "+ this.totalComplexity() + "/" +this.complexityCap);
 		extra.println("Mounts: " + this.mounts.size() + " Systems: " + this.systems.size() + " Fixtures: " + this.totalFixtures());
-		extra.println("Speed: " + this.getSpeed() + " Dodge: " + this.dodgeValue());
+		extra.println("Speed: " + this.getSpeed() + " Dodge: " + this.dodgeValue() +"Saved: " + this.getLockedComplexity());
 		extra.println(keeper.toString());
 		extra.println();
 		pilot.statistics();
@@ -671,6 +671,27 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 		Pilot pilot3 = pilot;
 		pilot = pilot2;
 		return pilot3;
+	}
+	
+	public int getLockedComplexity() {
+		int total = this.baseComplexity();
+		for (Systems ss: systems) {
+			if (ss.locked) {
+				total +=ss.getBaseComplexity();
+			}
+		}
+		for (Mount mount: mounts) {
+			if (mount.locked) {
+				total += mount.baseComplexity();
+			}
+			for (Fixture f: mount.fixtures) {
+				if (f.locked) {
+					total += f.getBaseComplexity();
+				}
+			}
+		}
+		return total;
+		
 	}
 
 }
