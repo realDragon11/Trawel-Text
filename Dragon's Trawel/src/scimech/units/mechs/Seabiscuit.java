@@ -18,6 +18,7 @@ import scimech.units.systems.CoolantRod;
 import scimech.units.systems.FusionReactor;
 import scimech.units.systems.RacerFrame;
 import scimech.units.systems.Ramjet;
+import scimech.units.systems.UnshieldedCycleReactor;
 import trawel.randomLists;
 
 public class Seabiscuit extends Mech {
@@ -32,8 +33,8 @@ public class Seabiscuit extends Mech {
 		
 		Mount m;
 		
-		this.addSystem(new FusionReactor());
-		this.addSystem(new FusionReactor());
+		this.addSystem(MechPart.lock(new UnshieldedCycleReactor()));
+		this.addSystem(MechPart.lock(new UnshieldedCycleReactor()));
 		
 		
 		this.addSystem(MechPart.lock(new RacerFrame()));
