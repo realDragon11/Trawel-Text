@@ -569,6 +569,24 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 			extra.println("Hit complexity cap.");
 			return false;
 		}
+		
+		if (s.getComplexity() > hardComplexityCap()-totalComplexity()) {
+			extra.println("Hit complexity cap.");
+			return false;
+		}
+		
+		Class<? extends Systems> c = s.getClass();
+		int count = 0;
+		for (Systems sys: systems) {
+			if (sys.getClass().equals(c)) {
+				count++;
+			}
+		}
+		
+		if (count >= s.installLimit()) {
+			extra.println("Hit install cap.");
+			return false;	
+		}
 		this.systems.add(s);
 		return true;
 	}

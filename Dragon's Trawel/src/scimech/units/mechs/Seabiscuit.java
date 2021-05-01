@@ -1,0 +1,100 @@
+package scimech.units.mechs;
+
+import scimech.combat.DamageMods;
+import scimech.combat.DamageTypes;
+import scimech.combat.ResistMap;
+import scimech.handlers.Savable;
+import scimech.mech.Corpo;
+import scimech.mech.Mech;
+import scimech.mech.MechPart;
+import scimech.mech.Mount;
+import scimech.people.Pilot;
+import scimech.units.fixtures.APCannon;
+import scimech.units.fixtures.ArtemisCannon;
+import scimech.units.fixtures.LightAutocannon;
+import scimech.units.mounts.Blunderbuss;
+import scimech.units.mounts.Foil;
+import scimech.units.systems.CoolantRod;
+import scimech.units.systems.FusionReactor;
+import scimech.units.systems.RacerFrame;
+import scimech.units.systems.Ramjet;
+import trawel.randomLists;
+
+public class Seabiscuit extends Mech {
+
+	public Seabiscuit(boolean side) {
+		playerControlled = side;
+		complexityCap = 80;
+		weightCap = 60;
+		
+		callsign = randomLists.randomElement();
+		pilot = new Pilot();
+		
+		Mount m;
+		
+		this.addSystem(new FusionReactor());
+		this.addSystem(new FusionReactor());
+		
+		
+		this.addSystem(MechPart.lock(new RacerFrame()));
+		
+		hp = this.getMaxHP();
+	}
+	
+	public Seabiscuit() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public int baseHP() {
+		return 120;
+	}
+
+	@Override
+	public int baseSpeed() {
+		return 14;
+	}
+
+	@Override
+	public int baseComplexity() {
+		return 20;
+	}
+
+	@Override
+	public String getName() {
+		return "Musketeer";
+	}
+
+	@Override
+	public int baseDodge() {
+		return 10;
+	}
+
+	@Override
+	public int baseHeatCap() {
+		return 14;
+	}
+
+	@Override
+	public ResistMap internalResistMap() {
+		ResistMap map = new ResistMap();
+		map.isSub = true;
+		map.put(DamageMods.AP, .7f, 1.15f);//slight strength
+		map.put(DamageMods.NORMAL,1f,1f);
+		map.put(DamageMods.HOLLOW,1.6f, 1.1f);//slight weakness
+		
+		map.put(DamageTypes.KINETIC,0.5f,0.8f);//strength
+		map.put(DamageTypes.BLAST,1.2f,1.4f);//weakness
+		return map;
+	}
+	
+	public static Savable deserialize(String s) throws Exception {
+		return Mech.internalDeserial(s,new Seabiscuit());
+	}
+	
+	@Override
+	public Corpo getCorp() {
+		return Corpo.GENERIC_REFACTOR;
+	}
+
+}

@@ -44,6 +44,10 @@ public abstract class Systems extends MechPart implements TurnSubscriber, Savabl
 		empDamage/=2;
 	}
 	
+	public int installLimit() {
+		return 256;
+	}
+	
 	
 	public float rating() {
 		float total = ((100f-Math.min(damage+empDamage,100))/100f)*currentMech.rating();
