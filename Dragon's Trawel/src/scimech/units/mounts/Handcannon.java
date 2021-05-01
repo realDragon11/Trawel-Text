@@ -5,6 +5,7 @@ import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
 import scimech.handlers.Savable;
+import scimech.mech.Corpo;
 import scimech.mech.Mount;
 import trawel.extra;
 
@@ -54,6 +55,11 @@ public class Handcannon extends Mount {
 	
 	public static Savable deserialize(String s) throws Exception {
 		return Mount.internalDeserial(s,new Handcannon());
+	}
+	
+	@Override
+	public Corpo getCorp() {
+		return Corpo.GENERIC_REFACTOR;
 	}
 
 }

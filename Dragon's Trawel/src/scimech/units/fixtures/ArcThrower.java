@@ -8,6 +8,7 @@ import scimech.combat.MechCombat;
 import scimech.combat.Target;
 import scimech.combat.Target.TargetType;
 import scimech.handlers.Savable;
+import scimech.mech.Corpo;
 import scimech.mech.Fixture;
 import scimech.mech.Mech;
 import scimech.mech.Mount;
@@ -77,6 +78,11 @@ public class ArcThrower extends Fixture {
 	
 	public static Savable deserialize(String s) {
 		return Fixture.internalDeserial(s,new ArcThrower());
+	}
+	
+	@Override
+	public Corpo getCorp() {
+		return Corpo.GENERIC_REFACTOR;
 	}
 
 }

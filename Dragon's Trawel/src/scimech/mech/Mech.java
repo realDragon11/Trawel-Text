@@ -28,7 +28,7 @@ import trawel.MenuSelect;
 import trawel.MenuSelectNumber;
 import trawel.extra;
 
-public abstract class Mech implements TurnSubscriber, Target, Savable{
+public abstract class Mech extends MechPart implements TurnSubscriber, Target, Savable{
 
 	public boolean playerControlled = false;
 	protected int heat = 0;//for debug

@@ -6,6 +6,7 @@ import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
 import scimech.handlers.Savable;
+import scimech.mech.Corpo;
 import scimech.mech.Mount;
 import trawel.extra;
 
@@ -55,6 +56,11 @@ public class Pulsar extends Mount {
 	
 	public static Savable deserialize(String s) throws Exception {
 		return Mount.internalDeserial(s,new Pulsar());
+	}
+	
+	@Override
+	public Corpo getCorp() {
+		return Corpo.GENERIC_REFACTOR;
 	}
 
 }

@@ -7,6 +7,7 @@ import scimech.combat.DamageTypes;
 import scimech.combat.MechCombat;
 import scimech.combat.Target;
 import scimech.handlers.Savable;
+import scimech.mech.Corpo;
 import scimech.mech.Fixture;
 import scimech.mech.TurnSubscriber;
 import trawel.extra;
@@ -76,6 +77,11 @@ public class ZeusRifle extends Fixture{
 	
 	public static Savable deserialize(String s) {
 		return Fixture.internalDeserial(s,new ZeusRifle());
+	}
+	
+	@Override
+	public Corpo getCorp() {
+		return Corpo.GENERIC_REFACTOR;
 	}
 
 }

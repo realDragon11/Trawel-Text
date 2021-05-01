@@ -3,6 +3,7 @@ package scimech.units.mechs;
 import scimech.combat.DamageMods;
 import scimech.combat.ResistMap;
 import scimech.handlers.Savable;
+import scimech.mech.Corpo;
 import scimech.mech.Mech;
 import scimech.mech.Mount;
 import scimech.people.Pilot;
@@ -97,6 +98,11 @@ public class DebugMech extends Mech {
 	
 	public static Savable deserialize(String s) throws Exception {
 		return Mech.internalDeserial(s,new DebugMech());
+	}
+	
+	@Override
+	public Corpo getCorp() {
+		return Corpo.GENERIC_REFACTOR;
 	}
 
 }

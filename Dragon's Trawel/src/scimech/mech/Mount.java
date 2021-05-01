@@ -76,6 +76,26 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 			extra.println();
 			extra.println(t.targetName() + " takes " + (before-t.getHP())  + " damage!");
 			this.bonusEffect(t,before-t.getHP());
+			//thing
+			if (!t.isDummy()) {
+				Mech m = null;
+				switch (t.targetType()) {
+				case MECH:
+					m = (Mech)t;
+					break;
+				case MOUNT:
+					m = ((Mount)t).currentMech;
+					break;
+				}
+				if (m.checkFire()) {
+					
+					if (MechCombat.mc.activeMechs.contains(m)) {
+						extra.print(m.callsign + " is taken out! ");
+						MechCombat.mc.turnOrder.remove(m);
+						MechCombat.mc.activeMechs.remove(m);
+					}
+				}
+			}
 			currentMech.energy-=this.getEnergyDraw();//TODO: did I forget to add this?
 		}
 	}
