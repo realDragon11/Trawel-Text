@@ -90,10 +90,12 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 		heat += amount;
 	}
 	
+	public static final int SPEED_DIE = 10;
+	
 	public void roundStart() {
 		energy = 0;
 		dodgeBonus = -slow;
-		speed = extra.randRange(0,10)-slow;
+		speed = extra.randRange(0,SPEED_DIE)-slow;
 		for (Systems ss: systems) {
 			ss.roundStart();
 		}

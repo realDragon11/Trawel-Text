@@ -11,9 +11,11 @@ import scimech.mech.Mount;
 import scimech.people.Pilot;
 import scimech.units.fixtures.APCannon;
 import scimech.units.fixtures.ArtemisCannon;
+import scimech.units.fixtures.Clash;
 import scimech.units.fixtures.LightAutocannon;
 import scimech.units.mounts.Blunderbuss;
 import scimech.units.mounts.Foil;
+import scimech.units.mounts.Hoof;
 import scimech.units.systems.CoolantRod;
 import scimech.units.systems.FusionReactor;
 import scimech.units.systems.RacerFrame;
@@ -31,7 +33,14 @@ public class Seabiscuit extends Mech {
 		callsign = randomLists.randomElement();
 		pilot = new Pilot();
 		
-		Mount m;
+		Mount m = MechPart.lock(new Hoof());
+		m.addFixture(MechPart.lock(new Clash()));
+		
+		m = MechPart.lock(new Hoof());
+		m.addFixture(MechPart.lock(new Clash()));
+		
+		m = MechPart.lock(new Hoof());
+		m.addFixture(MechPart.lock(new Clash()));
 		
 		this.addSystem(MechPart.lock(new UnshieldedCycleReactor()));
 		this.addSystem(MechPart.lock(new UnshieldedCycleReactor()));
@@ -63,29 +72,23 @@ public class Seabiscuit extends Mech {
 
 	@Override
 	public String getName() {
-		return "Musketeer";
+		return "Seabiscuit";
 	}
 
 	@Override
 	public int baseDodge() {
-		return 10;
+		return 8;
 	}
 
 	@Override
 	public int baseHeatCap() {
-		return 14;
+		return 16;
 	}
 
 	@Override
 	public ResistMap internalResistMap() {
 		ResistMap map = new ResistMap();
 		map.isSub = true;
-		map.put(DamageMods.AP, .7f, 1.15f);//slight strength
-		map.put(DamageMods.NORMAL,1f,1f);
-		map.put(DamageMods.HOLLOW,1.6f, 1.1f);//slight weakness
-		
-		map.put(DamageTypes.KINETIC,0.5f,0.8f);//strength
-		map.put(DamageTypes.BLAST,1.2f,1.4f);//weakness
 		return map;
 	}
 	
@@ -95,7 +98,7 @@ public class Seabiscuit extends Mech {
 	
 	@Override
 	public Corpo getCorp() {
-		return Corpo.GENERIC_REFACTOR;
+		return Corpo.SARATOGA_SYSTEMS;
 	}
 
 }
