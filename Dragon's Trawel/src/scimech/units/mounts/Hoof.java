@@ -46,7 +46,7 @@ public class Hoof extends Mount {
 	
 	@Override
 	public void bonusEffect(Target t, int damage) {
-		float bonus = Math.max(1.2f-(this.currentMech.totalWeight()/120f),0);
+		float bonus = Math.max(2.5f-(this.currentMech.totalWeight()/100f),0);
 		this.currentMech.addDodgeBonus(bonus);
 		extra.println("Hoof Dodge: "+extra.format(bonus)+"!");
 	}
