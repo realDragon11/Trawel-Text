@@ -504,6 +504,7 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 	}
 
 	public boolean addFixture(Fixture f) {
+		f.currentMount = this;//used for detecting stuff
 		if (f.getSlots() > (baseSlots()-usedSlots())) {
 			extra.println("Hit slot cap.");
 			return false;
@@ -513,7 +514,6 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 			return false;
 		}
 		fixtures.add(f);
-		f.currentMount = this;
 		return true;
 	}
 

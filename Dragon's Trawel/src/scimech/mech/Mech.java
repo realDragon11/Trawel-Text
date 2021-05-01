@@ -553,13 +553,24 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 		return map;
 	}
 	
-	public void addMount(Mount m) {
-		this.mounts.add(m);
+	public boolean addMount(Mount m) {
 		m.currentMech = this;
+		if (m.getComplexity() > hardComplexityCap()-totalComplexity()) {
+			extra.println("Hit complexity cap.");
+			return false;
+		}
+		
+		this.mounts.add(m);
+		return true;
 	}
-	public void addSystem(Systems s) {
-		this.systems.add(s);
+	public boolean addSystem(Systems s) {
 		s.currentMech = this;
+		if (s.getComplexity() > hardComplexityCap()-totalComplexity()) {
+			extra.println("Hit complexity cap.");
+			return false;
+		}
+		this.systems.add(s);
+		return true;
 	}
 	
 	public void statistics() {
