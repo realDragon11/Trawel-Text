@@ -55,7 +55,7 @@ public class APCannon extends Fixture {
 	}
 
 	@Override
-	public int getComplexity() {
+	public int getBaseComplexity() {
 		return 5;
 	}
 

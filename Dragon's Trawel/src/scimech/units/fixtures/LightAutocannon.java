@@ -62,7 +62,7 @@ public class LightAutocannon extends Fixture{
 	}
 
 	@Override
-	public int getComplexity() {
+	public int getBaseComplexity() {
 		return 4;
 	}
 

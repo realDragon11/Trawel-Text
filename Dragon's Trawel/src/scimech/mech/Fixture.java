@@ -160,9 +160,13 @@ public abstract class Fixture extends MechPart implements TurnSubscriber, Savabl
 	public abstract String getName();
 	public abstract int getEnergyDraw();
 	public abstract String getDescription();
-	public abstract int getComplexity();
+	public abstract int getBaseComplexity();
 	public abstract int getWeight();
 	public abstract int getSlots();
+	
+	public int getComplexity() {
+		return (locked ? 0 : getBaseComplexity());
+	}
 	//activate is abstract, remember to check to see if it's a dummy before applying heat to yourself
 
 	public void repair(int rep) {
@@ -179,18 +183,14 @@ public abstract class Fixture extends MechPart implements TurnSubscriber, Savabl
 
 	@Override
 	public String saveString() {
-		return this.getClass().getName()+"&"+ extra.format(discount) + (locked ? "L" : "");
+		return this.getClass().getName()+"&" + (locked ? "L" : "");
 	}
 	
 	public static Fixture internalDeserial(String s,Fixture add){
 		String edit;
 		if (s.charAt(s.length()-1) == 'L') {
 			add.locked = true;
-			edit = s.substring(s.indexOf('&')+1,s.length()-1);
-		}else {
-			edit = s.substring(s.indexOf('&')+1,s.length());
 		}
-		add.discount = Float.parseFloat(edit);
 		
 		return add;
 	}

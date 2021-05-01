@@ -362,7 +362,7 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 	public abstract int baseComplexity();
 	
 	public int getComplexity() {
-		int total = baseComplexity();
+		int total = (locked ? 0 : baseComplexity());
 		for (Fixture f: fixtures) {
 			total += f.getComplexity();
 		}

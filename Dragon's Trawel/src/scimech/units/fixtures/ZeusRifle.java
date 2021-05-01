@@ -61,7 +61,7 @@ public class ZeusRifle extends Fixture{
 	}
 
 	@Override
-	public int getComplexity() {
+	public int getBaseComplexity() {
 		return 12;
 	}
 

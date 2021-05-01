@@ -42,7 +42,7 @@ public class HeatVent extends Fixture {
 	}
 
 	@Override
-	public int getComplexity() {
+	public int getBaseComplexity() {
 		return 5;
 	}
 

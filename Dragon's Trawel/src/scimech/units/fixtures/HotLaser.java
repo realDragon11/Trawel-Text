@@ -69,7 +69,7 @@ public class HotLaser extends Fixture {
 	}
 
 	@Override
-	public int getComplexity() {
+	public int getBaseComplexity() {
 		return 10;
 	}
 

@@ -61,7 +61,7 @@ public class Krakatoa extends Fixture {
 	}
 
 	@Override
-	public int getComplexity() {
+	public int getBaseComplexity() {
 		return 14;
 	}
 
