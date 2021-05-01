@@ -3,6 +3,7 @@ package scimech.units.systems;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
 import scimech.handlers.Savable;
+import scimech.mech.Corpo;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
 
@@ -14,7 +15,7 @@ public class InternalRepair extends Systems {
 	}
 
 	@Override
-	public int getComplexity() {
+	public int getBaseComplexity() {
 		return 8;
 	}
 
@@ -56,6 +57,11 @@ public class InternalRepair extends Systems {
 	
 	public static Savable deserialize(String s) {
 		return Systems.internalDeserial(s,new InternalRepair());
+	}
+	
+	@Override
+	public Corpo getCorp() {
+		return Corpo.GENERIC_REFACTOR;
 	}
 
 }

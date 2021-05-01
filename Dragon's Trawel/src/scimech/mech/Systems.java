@@ -16,7 +16,11 @@ import trawel.extra;
 
 public abstract class Systems extends MechPart implements TurnSubscriber, Savable{
 
-	public abstract int getComplexity();
+	public abstract int getBaseComplexity();
+	
+	public int getComplexity() {
+		return (locked ? 0 : getBaseComplexity());
+	}
 	
 	protected boolean powered = true;
 	protected boolean passive = false;

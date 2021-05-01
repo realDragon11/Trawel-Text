@@ -7,6 +7,7 @@ import scimech.combat.DamageMods;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
 import scimech.handlers.Savable;
+import scimech.mech.Corpo;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
 import trawel.MenuGenerator;
@@ -23,7 +24,7 @@ public class Plating extends Systems {
 	}
 
 	@Override
-	public int getComplexity() {
+	public int getBaseComplexity() {
 		return 1;
 	}
 
@@ -127,6 +128,11 @@ public class Plating extends Systems {
 	
 	public static Savable deserialize(String s) {
 		return Systems.internalDeserial(s,new Plating());
+	}
+	
+	@Override
+	public Corpo getCorp() {
+		return Corpo.GENERIC_REFACTOR;
 	}
 	
 }

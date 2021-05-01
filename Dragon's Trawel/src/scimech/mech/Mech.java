@@ -263,7 +263,7 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 	public int totalComplexity() {
 		int total = this.baseComplexity();
 		for (Systems ss: systems) {
-			total +=ss.getComplexity();
+			total +=ss.getBaseComplexity();
 		}
 		for (Mount mount: mounts) {
 			total += mount.getComplexity();

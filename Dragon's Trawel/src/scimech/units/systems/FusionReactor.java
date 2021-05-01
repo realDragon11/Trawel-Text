@@ -4,6 +4,7 @@ import scimech.combat.DamageEffect;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
 import scimech.handlers.Savable;
+import scimech.mech.Corpo;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
 
@@ -15,7 +16,7 @@ public class FusionReactor extends Systems {
 	}
 	
 	@Override
-	public int getComplexity() {
+	public int getBaseComplexity() {
 		return 10;
 	}
 
@@ -59,6 +60,11 @@ public class FusionReactor extends Systems {
 	
 	public static Savable deserialize(String s) {
 		return Systems.internalDeserial(s,new FusionReactor());
+	}
+	
+	@Override
+	public Corpo getCorp() {
+		return Corpo.GENERIC_REFACTOR;
 	}
 
 }
