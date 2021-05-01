@@ -566,7 +566,7 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 		extra.println(callsign + " ("+getName()+")" + "/"+pilot.getName() +" HP: " + hp + "/" + getMaxHP() +" Energy: " + energy + " Heat: " + heat+ "/" + heatCap());
 		extra.println("Weight: " + this.totalWeight() + "/" + this.weightCap + " Complexity: "+ this.totalComplexity() + "/" +this.complexityCap);
 		extra.println("Mounts: " + this.mounts.size() + " Systems: " + this.systems.size() + " Fixtures: " + this.totalFixtures());
-		extra.println("Speed: " + this.getSpeed() + " Dodge: " + this.dodgeValue() +"Saved: " + this.getLockedComplexity());
+		extra.println("Speed: " + this.getSpeed() + " Dodge: " + this.dodgeValue() +" Saved: " + this.getLockedComplexity() + "/"+this.baseComplexity());
 		extra.println(keeper.toString());
 		extra.println();
 		pilot.statistics();
@@ -674,7 +674,7 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 	}
 	
 	public int getLockedComplexity() {
-		int total = this.baseComplexity();
+		int total = 0;
 		for (Systems ss: systems) {
 			if (ss.locked) {
 				total +=ss.getBaseComplexity();

@@ -78,7 +78,7 @@ public class Pirate extends Mech {
 
 	@Override
 	public int baseComplexity() {
-		return 8;
+		return 32;
 	}
 
 	@Override

@@ -69,7 +69,7 @@ public class Swashbuckler extends Mech {
 
 	@Override
 	public int baseComplexity() {
-		return 5;
+		return 25;
 	}
 
 	@Override

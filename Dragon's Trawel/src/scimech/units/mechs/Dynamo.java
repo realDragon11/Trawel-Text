@@ -74,7 +74,7 @@ public class Dynamo extends Mech {
 
 	@Override
 	public int baseComplexity() {
-		return 8;
+		return 72;
 	}
 
 	@Override

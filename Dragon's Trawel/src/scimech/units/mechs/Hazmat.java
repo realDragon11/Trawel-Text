@@ -83,7 +83,7 @@ public class Hazmat extends Mech {
 
 	@Override
 	public int baseComplexity() {
-		return 20;
+		return 70;
 	}
 
 	@Override

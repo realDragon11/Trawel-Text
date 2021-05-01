@@ -76,7 +76,7 @@ public class Musketeer extends Mech {
 
 	@Override
 	public int baseComplexity() {
-		return 4;
+		return 30;
 	}
 
 	@Override

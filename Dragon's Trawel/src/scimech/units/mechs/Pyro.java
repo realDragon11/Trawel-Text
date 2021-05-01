@@ -80,7 +80,7 @@ public class Pyro extends Mech {
 
 	@Override
 	public int baseComplexity() {
-		return 10;
+		return 70;
 	}
 
 	@Override
