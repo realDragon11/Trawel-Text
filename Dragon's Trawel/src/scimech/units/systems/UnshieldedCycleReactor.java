@@ -38,7 +38,7 @@ public class UnshieldedCycleReactor extends Systems {
 	@Override
 	public String getTitleAdditions() {
 		float r = rating();
-		int pow = Math.round(10*r);
+		int pow = (int) (12*Math.pow(r,2));
 		return (pow > 0) ? " " + pow : " offline";
 	}
 

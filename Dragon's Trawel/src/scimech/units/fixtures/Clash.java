@@ -19,10 +19,10 @@ public class Clash extends Fixture{
 		float speedBonus = Math.min(this.currentMount.currentMech.getSpeed(),30)-Mech.SPEED_DIE/2;
 		int acc = (int) (speedBonus*rating());
 		int hits = 0;
-		for (int i = 0; i < 5;i++) {
+		for (int i = 0; i < 4;i++) {
 			double hit = MechCombat.computeHit(t, AimType.BALLISTIC, acc,this);
 			if (hit  >=0) {
-				t.takeDamage().take(DamageTypes.KINETIC,DamageMods.NORMAL,2+Math.round(speedBonus/5f), t);
+				t.takeDamage().take(DamageTypes.KINETIC,DamageMods.NORMAL,3+Math.round(speedBonus/8f), t);
 				hits++;
 			}
 		}
