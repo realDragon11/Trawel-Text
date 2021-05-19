@@ -17,7 +17,7 @@ public abstract class Feature implements java.io.Serializable{
 	protected String background_area = "main";
 	public abstract void go();
 	public void goHeader() {
-		Networking.setArea(background_area);
+		Networking.setBackground(background_area);
 		Networking.sendStrong("Backvariant|"+background_area+background_variant+"|"+Player.player.world.getCalender().getBackTime()+"|");
 	}
 	public void init() {
