@@ -25,8 +25,7 @@ public class BumperFactory {
 				for (int i = 0;i < count;i++) {
 					list.add(RaceFactory.makeWolf(extra.zeroOut(level-3)+1));}
 				
-				Networking.sendColor(Color.RED);
-				extra.println("A pack of wolves descend upon you!");
+				extra.println((extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)))+"A pack of wolves descend upon you!");
 				ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
 				if (survivors.contains(Player.player.getPerson())) {
 					Player.player.questTrigger("wolf",count);
@@ -44,8 +43,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeFellReaver(level);
 					
-					Networking.sendColor(Color.RED);
-					extra.println("A fell reaver appears!");
+					extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"A fell reaver appears!");
 					mainGame.CombatTwo(Player.player.getPerson(),p);
 					
 				}};
@@ -59,8 +57,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeEnt(level);
 					
-					Networking.sendColor(Color.RED);
-					extra.println("An ent appears!");
+					extra.println((extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)))+"An ent appears!");
 					mainGame.CombatTwo(Player.player.getPerson(),p);
 					
 				}};
@@ -72,8 +69,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeVampire(level);
 					
-					Networking.sendColor(Color.RED);
-					extra.println("A vampire jumps from the shadows!");
+					extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"A vampire jumps from the shadows!");
 					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
 							Player.player.questTrigger("vampire",1);
 					}
@@ -90,8 +86,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.getMugger(level);
 					
-					Networking.sendColor(Color.RED);
-					extra.println("A thief charges you!");
+					extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"A thief charges you!");
 					mainGame.CombatTwo(Player.player.getPerson(),p);
 					
 				}};
@@ -104,8 +99,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeBear(level);
 					
-					Networking.sendColor(Color.RED);
-					extra.println("A bear attacks you!");
+					extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"A bear attacks you!");
 					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
 						Player.player.questTrigger("bear",1);
 				}
@@ -122,8 +116,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeBat(level);
 					
-					Networking.sendColor(Color.RED);
-					extra.println("A bat attacks you!");
+					extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"A bat attacks you!");
 					mainGame.CombatTwo(Player.player.getPerson(),p);
 					
 				}};
@@ -138,8 +131,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeUnicorn(level);
 					
-					Networking.sendColor(Color.RED);
-					extra.println("A unicorn accosts you for holding the virgin captive!");
+					extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"A unicorn accosts you for holding the virgin captive!");
 					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
 							Player.player.questTrigger("unicorn",1);
 					}
@@ -157,8 +149,7 @@ public class BumperFactory {
 					int count = extra.randRange(1,3);
 					for (int i = 0;i < count;i++) {
 						list.add(RaceFactory.makeHarpy(extra.zeroOut(level-3)+1));}
-					Networking.sendColor(Color.RED);
-					extra.println("A flock of harpies attack!");
+					extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"A flock of harpies attack!");
 					ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
 					if (survivors.contains(Player.player.getPerson())) {
 						Player.player.questTrigger("harpy",count);
@@ -180,8 +171,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.getMugger(level);
 					
-					Networking.sendColor(Color.RED);
-					extra.println("A pirate challenges you for your booty!");
+					extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"A pirate challenges you for your booty!");
 					mainGame.CombatTwo(Player.player.getPerson(),p);
 					
 				}};
@@ -195,8 +185,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeDrudgerStock(level);
 					
-					Networking.sendColor(Color.RED);
-					extra.println("A drudger attacks your ship!");
+					extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"A drudger attacks your ship!");
 					mainGame.CombatTwo(Player.player.getPerson(),p);
 					
 				}};

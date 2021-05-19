@@ -35,8 +35,7 @@ public class Chase {
 		if (timer >= 10) {
 			return target;
 		}
-		Networking.sendColor(Color.RED);
-		extra.println("You have caught up to " + target.getName() +"!");
+		extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"You have caught up to " + target.getName() +"!");
 		return mainGame.CombatTwo(chaser,target);
 	}
 

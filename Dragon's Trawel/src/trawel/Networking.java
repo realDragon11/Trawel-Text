@@ -96,14 +96,20 @@ public class Networking {
 		Networking.sendStrong("Discord|imagelarge|icon|" + Player.player.getPerson().getName() + " level "+ Player.player.getPerson().getLevel() +"|");//replace icon with player.player.race later
 	}
 
+	@Deprecated
 	public static void sendColor(Color col) {
-		int in = col.getRGB();
+		/*int in = col.getRGB();
 		int red = (in >> 16) & 0xFF;
 		int green = (in >> 8) & 0xFF;
 		int blue = (in >> 0) & 0xFF;
-		int out = (blue << 16) | (green << 8) | (red << 0);
-		Networking.send("Color|" + out +"|");
+		int out = (blue << 16) | (green << 8) | (red << 0);*/
+		//Networking.send("Color|" + out +"|");
+		Networking.send("[#"+Integer.toHexString(col.getRGB()).substring(2)+"]");
+		
+		//removes alpha but won't work for small alphas
 	}
+	
+	
 
 	public static void clearSides() {
 		Networking.sendStrong("ClearInv|1|");

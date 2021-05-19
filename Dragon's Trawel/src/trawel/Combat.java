@@ -475,7 +475,7 @@ public class Combat {
 				defender.getNextAttack().blind(1 + (percent));
 			}
 			if (!extra.printMode) {
-				Networking.sendColor(Color.ORANGE);
+				extra.print(extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f)));
 				if (defender.isPlayer()) {
 					int splashes =(damageDone*100)/defender.getMaxHp();
 					if (splashes > 0) {
@@ -487,14 +487,14 @@ public class Combat {
 			if (defender.takeDamage(damageDone)) {
 				//extra.print(" " + choose("Striking them down!"," They are struck down."));
 				if (!extra.printMode) {
-					Networking.sendColor(Color.RED);
+					extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 				}
 			}
 		}else {
 			if (damageDone == -1) {
 				song.addAttackMiss(attacker,defender);
 				if (!extra.printMode) {
-					Networking.sendColor(Color.YELLOW);
+					extra.print(extra.inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f)));
 					Networking.sendStrong("PlayMiss|" + "todo" + "|");
 				}
 					extra.print((String)extra.choose(" They miss!"," The attack is dodged!"," It's a miss!"," It goes wide!"," It's not even close!"));
@@ -512,7 +512,7 @@ public class Combat {
 					if (damageDone == 0) {
 						song.addAttackArmor(attacker,defender);
 						if (!extra.printMode) {
-							Networking.sendColor(Color.BLUE);
+							extra.print(extra.inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f)));
 						}
 					extra.print(" "+(String)extra.choose("But it is ineffective...","The armor deflects the blow!","However, the attack fails to deal damage through the armor."));
 					if (defender.hasSkill(Skill.ARMORHEART)) {
@@ -649,7 +649,7 @@ public class Combat {
 
 
 	private void handleMagicSpell(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
-		Networking.sendColor(Color.ORANGE);
+		extra.print(extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f)));
 		extra.println(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
 		if  (att.getSkill() == Skill.ELEMENTAL_MAGE) {
 			defender.inflictWound(att.getWound());

@@ -92,8 +92,7 @@ public class CaveNode extends NodeConnector implements java.io.Serializable{
 	
 	private void bear1() {
 		if (state == 0) {
-			Networking.sendColor(Color.RED);
-			extra.println("The bear attacks you!");
+			extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"The bear attacks you!");
 			Person p = (Person)storage1;
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
@@ -131,8 +130,7 @@ public class CaveNode extends NodeConnector implements java.io.Serializable{
 	
 	private void bat1() {
 		if (state == 0) {
-			Networking.sendColor(Color.RED);
-			extra.println("The bat attacks you!");
+			extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"The bat attacks you!");
 			Person p = (Person)storage1;
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {

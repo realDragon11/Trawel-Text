@@ -414,14 +414,12 @@ public class AIClass {
 		if (Armor.class.isInstance(hasItem)) {
 			Armor hasArm = (Armor) hasItem;
 			Armor toArm = (Armor) toReplace;
-			Networking.sendColor(Color.PINK);
-			extra.println("Difference: sbp: " + extra.format2(toArm.getSharpResist()*toArm.getResist()-hasArm.getSharpResist()*hasArm.getResist()) + " " +  extra.format2(toArm.getBluntResist()*toArm.getResist()-hasArm.getBluntResist()*hasArm.getResist()) + " " + extra.format2((toArm.getPierceResist()*toArm.getResist())- hasArm.getPierceResist()*hasArm.getResist())+  " cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));//" dex: " + extra.format2(toArm.getDexMod()-hasArm.getDexMod()) +
+			extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.5f))+"Difference: sbp: " + extra.format2(toArm.getSharpResist()*toArm.getResist()-hasArm.getSharpResist()*hasArm.getResist()) + " " +  extra.format2(toArm.getBluntResist()*toArm.getResist()-hasArm.getBluntResist()*hasArm.getResist()) + " " + extra.format2((toArm.getPierceResist()*toArm.getResist())- hasArm.getPierceResist()*hasArm.getResist())+  " cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));//" dex: " + extra.format2(toArm.getDexMod()-hasArm.getDexMod()) +
 		}
 		if (Weapon.class.isInstance(hasItem)) {
 			Weapon hasWeap = (Weapon)hasItem;
 			Weapon toWeap = (Weapon)toReplace;
-			Networking.sendColor(Color.PINK);
-			extra.println("Difference: hd/ad: " + extra.format2((toWeap.highestDamage().highest-hasWeap.highestDamage().highest)) + "/" + extra.format2(toWeap.highestDamage().average-hasWeap.highestDamage().average) + " cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));
+			extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.5f))+"Difference: hd/ad: " + extra.format2((toWeap.highestDamage().highest-hasWeap.highestDamage().highest)) + "/" + extra.format2(toWeap.highestDamage().average-hasWeap.highestDamage().average) + " cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));
 			if (((Weapon)hasItem).getEnchantHit() != null || ((Weapon)toReplace).getEnchantHit()!= null) {
 				displayEnchantDiff(((Weapon)hasItem).getEnchantHit(),((Weapon)toReplace).getEnchantHit());
 			}
@@ -477,8 +475,7 @@ public class AIClass {
 	
 	private static void enchantDiff(double has, double get, String name) {
 		if (has-get != 0) {
-			Networking.sendColor(Color.PINK);
-			extra.println(" " +extra.format2(get-has) + " " + name);
+			extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.5f))+" " +extra.format2(get-has) + " " + name);
 		}
 	}
 	

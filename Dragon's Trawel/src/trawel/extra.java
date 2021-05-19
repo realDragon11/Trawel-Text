@@ -1,6 +1,7 @@
 package trawel;
 
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -600,6 +601,14 @@ public class extra {
 		public static float lerp(float a, float b, float f) 
 		{
 		    return (a * (1.0f - f)) + (b * f);
+		}
+
+		public static Color colorMix(Color c1, Color c2, float f) {
+			return new Color((int) extra.lerp(c1.getRed(),c2.getRed(), f),(int) extra.lerp(c1.getGreen(),c2.getGreen(), f),(int) extra.lerp(c1.getBlue(),c2.getBlue(), f));
+		}
+
+		public static String inlineColor(Color col) {
+			return "[#"+Integer.toHexString(col.getRGB()).substring(2)+"]";
 		}
 		
 }
