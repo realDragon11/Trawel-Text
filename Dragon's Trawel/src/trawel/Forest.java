@@ -173,7 +173,7 @@ public class Forest extends Feature implements java.io.Serializable{
 			}
 			if (Math.random() > .8) {
 			extra.println("As you eat the mushroom, you hear a voice cry out:");
-			Networking.sendColor(Color.RED);
+			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 			switch(extra.randRange(1,3)) {
 			case 1: extra.println("\"You dare violate the forest?!\"");break;
 			case 2: extra.println("\"Hey, I wanted that!\"");break;
@@ -186,7 +186,7 @@ public class Forest extends Feature implements java.io.Serializable{
 			extra.println("You pick up the mushroom to sell it.");
 			if (Math.random() > .8) {
 			extra.println("You hear someone cry out from behind you!");
-			Networking.sendColor(Color.RED);
+			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 			switch(extra.randRange(1,3)) {
 			case 1: extra.println("\"You dare violate the forest?!\"");break;
 			case 2: extra.println("\"Hey, I wanted that!\"");break;
@@ -206,7 +206,7 @@ public class Forest extends Feature implements java.io.Serializable{
 		case 4:
 			extra.println("You crush the mushroom under your heel.");
 			extra.println("You hear someone cry out from behind you!");
-			Networking.sendColor(Color.RED);
+			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 			switch(extra.randRange(1,3)) {
 			case 1: extra.println("\"You dare violate the forest?!\"");break;
 			case 2: extra.println("\"Hey, I wanted that!\"");break;
@@ -251,7 +251,7 @@ public class Forest extends Feature implements java.io.Serializable{
 	}
 	
 	private void mugger2() {
-		Networking.sendColor(Color.RED);
+		extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 		extra.println("You see a mugger charge at you! Prepare for battle!");
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
 		if (winner == Player.player.getPerson()) {
@@ -272,7 +272,7 @@ public class Forest extends Feature implements java.io.Serializable{
 		while (true) {
 		extra.println("You come across a dryad tending to a tree.");
 		extra.println("1 Leave");
-		Networking.sendColor(Color.RED);
+		extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 		extra.println("2 Attack them.");
 		extra.println("3 Chat with them");
 		switch (extra.inInt(3)) {
@@ -303,7 +303,7 @@ public class Forest extends Feature implements java.io.Serializable{
 		if (extra.yesNo()) {
 			extra.println("You move the tree off of them.");
 			if (Math.random() > .9) {
-				Networking.sendColor(Color.RED);
+				extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 				extra.println("Suddenly, they attack you!");
 				mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getMugger(tier));
 			}else {
@@ -335,7 +335,7 @@ public class Forest extends Feature implements java.io.Serializable{
 		while (true) {
 		extra.println("You come across an old fighter, resting on a log.");
 		extra.println("1 Leave");
-		Networking.sendColor(Color.RED);
+		extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 		extra.println("2 Attack them.");
 		extra.println("3 Chat with them");
 		switch (extra.inInt(3)) {
@@ -409,10 +409,10 @@ public class Forest extends Feature implements java.io.Serializable{
 		//if (extra.chanceIn(1,2) ) {
 			LocalDateTime t = LocalDateTime.now();
 			if (t.getMonth() == Month.DECEMBER && t.getDayOfMonth() > 14 && t.getDayOfMonth() < 25 ) {
-				Networking.sendColor(Color.RED);
+				extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 				extra.println("A person is chopping down a christmas tree! Attack them?");
 			}else {
-				Networking.sendColor(Color.RED);
+				extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 				extra.println("A lumberjack is chopping down a tree! Attack them?");
 			}
 		/*}else {
@@ -423,7 +423,7 @@ public class Forest extends Feature implements java.io.Serializable{
 			if (extra.chanceIn(1, 3)) {
 			robber.getBag().getDrawBanes().add(DrawBane.ENT_CORE);}
 		
-			Networking.sendColor(Color.RED);
+			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 		if (extra.yesNo()) {
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(),robber);
 		if (winner == Player.player.getPerson()) {

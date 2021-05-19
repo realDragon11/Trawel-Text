@@ -163,7 +163,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 	
 	private void mugger1() {
 		if (state == 0) {
-			Networking.sendColor(Color.RED);
+			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 			extra.println("They attack you!");
 			Person p = (Person)storage1;
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
@@ -180,7 +180,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 	
 	private boolean gateGuards() {
 		if (state == 0) {
-			Networking.sendColor(Color.RED);
+			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 			extra.println("They attack you!");
 			ArrayList<Person> list = (ArrayList<Person>)storage1;
 			ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
@@ -211,7 +211,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 			p.getBag().graphicalDisplay(1,p);
 			extra.println("Really open the " + name + "?");
 		if (extra.yesNo()) {
-			Networking.sendColor(Color.RED);
+			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 			extra.println("The mimic attacks you!");
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
@@ -235,7 +235,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 	
 	private void statue() {
 		if (state == 0) {
-			Networking.sendColor(Color.RED);
+			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 			extra.println("The statue springs to life and attacks you!");
 			Person p = (Person)storage1;
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
@@ -252,7 +252,7 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 	
 	private void statueLoot() {
 		if (state == 0) {
-			Networking.sendColor(Color.RED);
+			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 			extra.println("You loot the statue...");
 			Person p = (Person)storage1;
 			p.getBag().graphicalDisplay(1,p);

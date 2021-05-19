@@ -36,10 +36,10 @@ public class Connection implements java.io.Serializable{
 	public void display(int style,Town town1) {
 		Town ot = otherTown(town1);
 		switch (ot.visited) {
-		case 0: Networking.sendColor(Color.ORANGE); ot.visited = 1;break;
-		case 1: Networking.sendColor(Color.YELLOW);break;
-		case 2: Networking.sendColor(Color.BLUE);break;
-		case 3: Networking.sendColor(Color.GREEN);break;
+		case 0: extra.print(extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f))); ot.visited = 1;break;
+		case 1: extra.print(extra.inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f)));break;
+		case 2: extra.print(extra.inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f)));break;
+		case 3: extra.print(extra.inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f)));;break;
 		}
 		extra.println(getName() + " to " + ot.getName() + " {Level: "+ot.getTier()+"} ("+dir(town1,ot)+")");
 		if (Player.hasSkill(Skill.TOWNSENSE)) {

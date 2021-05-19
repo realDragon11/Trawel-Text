@@ -103,7 +103,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 	
 	private boolean packOfBats() {
 		if (state == 0) {
-			Networking.sendColor(Color.RED);
+			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 			extra.println("The bats descend upon you!");
 			ArrayList<Person> list = (ArrayList<Person>)storage1;
 			ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
@@ -137,7 +137,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 		extra.println("You come across a weary gravedigger, warding against undead during a break.");
 		name = "Gravedigger";interactString = "Approach the "+name;
 		extra.println("1 Leave");
-		Networking.sendColor(Color.RED);
+		extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 		extra.println("2 Mug them");
 		extra.println("3 Chat with them");
 		switch (extra.inInt(3)) {
@@ -176,7 +176,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 			return;
 		}
 		if (state == 0) {
-			Networking.sendColor(Color.RED);
+			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 			extra.println("The graverobber attacks you!");
 			name = "Graverobber";
 			interactString = "Approach the "+name;
@@ -199,7 +199,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 			return;
 		}
 		if (state == 0) {
-			Networking.sendColor(Color.RED);
+			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 			extra.println("The vampire attacks you!");
 			name = "Vampire";
 			interactString = "Approach the "+name;
@@ -228,7 +228,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 		}
 		if (state == 0) {
 			name = ((Person)storage1).getBag().getRace().name + " statue";
-			Networking.sendColor(Color.RED);
+			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 			extra.println("The statue springs to life and attacks you!");
 			name = "Living Statue";
 			interactString = "Approach the "+name;
@@ -251,7 +251,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 			return;
 		}
 		if (state == 0) {
-			Networking.sendColor(Color.RED);
+			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 			extra.println("You loot the statue...");
 			Person p = (Person)storage1;
 			p.getBag().graphicalDisplay(1,p);
@@ -276,7 +276,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 			name = p.getName();
 			interactString = "Approach "+ name;
 			p.getBag().graphicalDisplay(1, p);
-			Networking.sendColor(Color.RED);
+			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
 			extra.println("Challenge "+ p.getName() + "?");
 			if (extra.yesNo()){
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
