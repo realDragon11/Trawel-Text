@@ -41,7 +41,7 @@ public class Battle {
 		for (RUnit f: foes) {
 			bt.targets.add(f);
 		}
-		extra.println("A battle begins! [" + bt.toString() + "]");
+		extra.println("A battle begins! (" + bt.toString() + ")");
 		for (RUnit r: global) {
 			r.cleanUp();
 			r.curBattle = this;

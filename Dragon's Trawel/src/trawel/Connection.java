@@ -41,7 +41,7 @@ public class Connection implements java.io.Serializable{
 		case 2: Networking.sendColor(Color.BLUE);break;
 		case 3: Networking.sendColor(Color.GREEN);break;
 		}
-		extra.println(getName() + " to " + ot.getName() + " [Level: "+ot.getTier()+"] ("+dir(town1,ot)+")");
+		extra.println(getName() + " to " + ot.getName() + " {Level: "+ot.getTier()+"} ("+dir(town1,ot)+")");
 		if (Player.hasSkill(Skill.TOWNSENSE)) {
 			extra.println(ot.getName() + " has " + ot.getConnects().size() + " connections.");
 		}

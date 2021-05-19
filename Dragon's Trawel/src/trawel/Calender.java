@@ -27,7 +27,7 @@ public class Calender implements Serializable {
 	}
 	
 	public int getMonthsInYear() {
-		return (int) (getYearLength()/getMonthLength());
+		return (int)Math.round(getYearLength()/getMonthLength());
 	}
 	
 	/**
