@@ -323,7 +323,7 @@ public class extra {
 		
 		public static void println(String str) {
 			if (!printMode) {
-			System.out.println(str);
+			System.out.println(stripPrint(str));
 			detectInputString(printStuff +str);
 			Networking.send("println|"+ printStuff + str + "|");
 			printStuff = "";
@@ -333,8 +333,17 @@ public class extra {
 		
 		public static void print(String str) {
 			if (!printMode) {
-			System.out.print(str);
+			System.out.print(stripPrint(str));
 			printStuff+=str;}
+		}
+		
+		private static String stripPrint(String str) {
+			int index = str.indexOf('[');
+			while (index != -1) {
+				int lastindex = str.indexOf(']');
+				str = str.replaceAll(str.substring(index,lastindex), "");
+			}
+			return str;
 		}
 		
 		private static void detectInputString(String str) {
