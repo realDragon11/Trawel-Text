@@ -113,7 +113,7 @@ public class Calender implements Serializable {
 	}
 	
 	public int getBackTime() {
-		return (int) Math.round(timeCounter*12);
+		return (int) Math.round((timeCounter%1)*12);
 	}
 
 }
