@@ -55,7 +55,7 @@ public class mainGame {
 	extra.println("6 Connect");
 	extra.println("7 Exit");
 	extra.linebreak();
-	switch(extra.inInt(8)){
+	switch(extra.inInt(7)){
 	case 1:
 		Networking.clearSides();
 		gameTypes();

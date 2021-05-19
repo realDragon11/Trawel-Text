@@ -342,11 +342,12 @@ public class Combat {
 	 * @param printString (boolean) - if true, print the attack
 	 * @return
 	 */
-	public int handleAttack(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
+	public AttackReturn handleAttack(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
+		String str = "";
 		if (att.getName().contains("examine")){
 			if  (!attacker.isPlayer()) {
-				extra.println("They examine you...");
-				return -2;
+				str +=("They examine you...");
+				return new AttackReturn(-2,str);
 			}
 			attacker.displayStats();
 			attacker.displayArmor();
@@ -356,24 +357,34 @@ public class Combat {
 			defender.displayHp();
 			if (attacker.hasSkill(Skill.HPSENSE)) {
 			defender.displaySkills();}
-			extra.print(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
-			return -2;
+			str +=(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
+			return new AttackReturn(-2,str);
 		}
 		if (extra.chanceIn(1, 5)) {
 			Networking.send("PlayDelayPitch|"+SoundBox.getSound(off.getRace().voice,SoundBox.Type.SWING) + "|1|" +attacker.getPitch() +"|");
 		}
 		if (defender.isAlive()) {
-		extra.print(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));}else {
-			extra.print(att.attackStringer(attacker.getName(),defender.getName() + "'s corpse",off.getHand().getName()));	
+			str +=(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
+		}else {
+			str +=(att.attackStringer(attacker.getName(),defender.getName() + "'s corpse",off.getHand().getName()));	
 		}
 		double damMod = off.getDam();
 		if (((def.getDodge()*defender.getTornCalc())/(att.getHitmod()*off.getAim()))*Math.random() > 1.0){
-			return -1;//do a dodge
+			return new AttackReturn(-1,str);//do a dodge
 		}
 		//return the damage-armor, with each type evaluated individually
 		Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getSoundIntensity() + "|" +att.getSoundType()+"|");
-		return (int)((extra.zeroOut((att.getSharp()*damMod)-(def.getSharp(att.getSlot())*armMod))*Math.random())+extra.zeroOut((att.getBlunt()*damMod)-(def.getBlunt(att.getSlot())*armMod)*Math.random())+extra.zeroOut((att.getPierce()*damMod)-(def.getPierce(att.getSlot())*armMod)*Math.random()));
+		return new AttackReturn((int)((extra.zeroOut((att.getSharp()*damMod)-(def.getSharp(att.getSlot())*armMod))*Math.random())+extra.zeroOut((att.getBlunt()*damMod)-(def.getBlunt(att.getSlot())*armMod)*Math.random())+extra.zeroOut((att.getPierce()*damMod)-(def.getPierce(att.getSlot())*armMod)*Math.random())),str);
 		
+	}
+	
+	public class AttackReturn {
+		public int damage;
+		public String stringer;
+		public AttackReturn(int dam, String str) {
+			damage = dam;
+			stringer = str;
+		}
 	}
 	
 	/**
@@ -433,7 +444,8 @@ public class Combat {
 		}
 		
 		if (!attacker.getNextAttack().isMagic()) {
-		int damageDone = this.handleAttack(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender);
+		AttackReturn atr = this.handleAttack(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender);
+		int damageDone = atr.damage;
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender,damageDone);
 		if (damageDone > 0) {
 			float percent = damageDone/(float)defender.getMaxHp();
@@ -485,19 +497,19 @@ public class Combat {
 			}
 			
 			if (defender.takeDamage(damageDone)) {
-				//extra.print(" " + choose("Striking them down!"," They are struck down."));
+				//extra.print(" " + extra.choose("Striking them down!"," They are struck down."));
 				if (!extra.printMode) {
-					extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+					extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)) +atr.stringer);
 				}
 			}
 		}else {
 			if (damageDone == -1) {
 				song.addAttackMiss(attacker,defender);
 				if (!extra.printMode) {
-					extra.print(extra.inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f)));
+					extra.print(extra.inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f)) +atr.stringer);
 					Networking.sendStrong("PlayMiss|" + "todo" + "|");
 				}
-					extra.print((String)extra.choose(" They miss!"," The attack is dodged!"," It's a miss!"," It goes wide!"," It's not even close!"));
+					extra.print(extra.inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.3f))+(String)extra.choose(" They miss!"," The attack is dodged!"," It's a miss!"," It goes wide!"," It's not even close!"));
 					if (defender.hasSkill(Skill.SPEEDDODGE)) {
 						defender.advanceTime(10);
 						if (defender.hasSkill(Skill.DODGEREF)) {
@@ -505,14 +517,14 @@ public class Combat {
 						}
 					}
 					if (defender.hasEffect(Effect.BEE_SHROUD)) {
-						extra.println("The bees sting back!");
+						extra.println(extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f))+"The bees sting back!");
 						attacker.takeDamage(1);
 					}
 				}else {
 					if (damageDone == 0) {
 						song.addAttackArmor(attacker,defender);
 						if (!extra.printMode) {
-							extra.print(extra.inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f)));
+							extra.print(extra.inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f))+atr.stringer);
 						}
 					extra.print(" "+(String)extra.choose("But it is ineffective...","The armor deflects the blow!","However, the attack fails to deal damage through the armor."));
 					if (defender.hasSkill(Skill.ARMORHEART)) {
