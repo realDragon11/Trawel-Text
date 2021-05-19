@@ -315,7 +315,7 @@ public class extra {
 		
 		public static void println(String str) {
 			if (!printMode) {
-			System.out.println(str);
+			System.out.println(stripPrint(str));
 			detectInputString(stripPrint(printStuff +str));
 			Networking.send("println|"+ printStuff + str + "|");
 			printStuff = "";
@@ -325,7 +325,7 @@ public class extra {
 		
 		public static void print(String str) {
 			if (!printMode) {
-			System.out.print(str);
+			System.out.print(stripPrint(str));
 			printStuff+=str;}
 		}
 		
