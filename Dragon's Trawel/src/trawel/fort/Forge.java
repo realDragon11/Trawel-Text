@@ -9,8 +9,6 @@ import trawel.MenuItem;
 import trawel.MenuSelect;
 import trawel.MenuSelectNumber;
 import trawel.Player;
-import trawel.QRMenuItem;
-import trawel.QuestR;
 import trawel.extra;
 import trawel.fort.SubSkill.Active;
 import trawel.fort.SubSkill.Type;

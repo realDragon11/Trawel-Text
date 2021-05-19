@@ -11,7 +11,6 @@ import trawel.MenuGenerator;
 import trawel.MenuItem;
 import trawel.MenuLine;
 import trawel.MenuSelect;
-import trawel.MenuSelectNumber;
 import trawel.Person;
 import trawel.Player;
 import trawel.Race;
@@ -19,9 +18,6 @@ import trawel.RaceFactory;
 import trawel.Skill;
 import trawel.Town;
 import trawel.extra;
-import trawel.mainGame;
-import trawel.fort.SubSkill.Active;
-import trawel.fort.SubSkill.Type;
 
 /**
  * 

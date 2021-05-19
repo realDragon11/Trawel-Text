@@ -3,8 +3,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import trawel.Feature.QRType;
-
 //sells booze which increases temp hp for a few fights,
 //has a resident which changes with time
 public class Inn extends Feature implements java.io.Serializable{

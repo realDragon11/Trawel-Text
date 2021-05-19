@@ -5,7 +5,6 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
-import trawel.Feature.QRType;
 import trawel.factions.Faction;
 
 public class Forest extends Feature implements java.io.Serializable{

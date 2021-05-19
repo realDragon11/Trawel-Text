@@ -1,11 +1,7 @@
 package trawel.townevents;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import trawel.Bumper;
-import trawel.BumperFactory;
-import trawel.Inventory;
 import trawel.Player;
 import trawel.Town;
 import trawel.extra;

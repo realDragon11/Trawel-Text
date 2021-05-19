@@ -9,23 +9,13 @@ import scimech.mech.Mech;
 import scimech.mech.MechPart;
 import scimech.mech.Mount;
 import scimech.people.Pilot;
-import scimech.units.fixtures.APCannon;
-import scimech.units.fixtures.ArcThrower;
 import scimech.units.fixtures.HeatVent;
 import scimech.units.fixtures.HotLaser;
 import scimech.units.fixtures.Krakatoa;
-import scimech.units.fixtures.LightAutocannon;
-import scimech.units.fixtures.ZeusRifle;
 import scimech.units.mounts.Blunderbuss;
-import scimech.units.mounts.Broadside;
 import scimech.units.mounts.Foil;
-import scimech.units.mounts.Pulsar;
-import scimech.units.systems.AblativeArmor;
 import scimech.units.systems.FrostAegis;
 import scimech.units.systems.FusionReactor;
-import scimech.units.systems.MiniReactor;
-import scimech.units.systems.Plating;
-import trawel.extra;
 import trawel.randomLists;
 
 public class Pyro extends Mech {

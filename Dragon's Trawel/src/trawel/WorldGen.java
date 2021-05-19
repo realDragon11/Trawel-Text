@@ -1,11 +1,15 @@
 package trawel;
 import java.awt.Point;
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import trawel.fort.FortHall;
 import trawel.fort.FortQual;
 import trawel.fort.WizardTower;
 import trawel.townevents.TownTag;

@@ -6,12 +6,9 @@ import scimech.combat.DamageMods;
 import scimech.combat.DamageTypes;
 import scimech.combat.MechCombat;
 import scimech.combat.Target;
-import scimech.combat.Target.TargetType;
 import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Fixture;
-import scimech.mech.Mech;
-import scimech.mech.Mount;
 import scimech.mech.TurnSubscriber;
 import trawel.extra;
 

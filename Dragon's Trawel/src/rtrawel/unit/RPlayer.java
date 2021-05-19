@@ -7,12 +7,11 @@ import rtrawel.battle.Party;
 import rtrawel.items.Armor;
 import rtrawel.items.Armor.ArmorClass;
 import rtrawel.items.Consumable;
-import rtrawel.items.ConsumableFactory;
 import rtrawel.items.Item;
+import rtrawel.items.Item.ItemType;
 import rtrawel.items.Weapon;
 import rtrawel.items.Weapon.WeaponType;
 import rtrawel.items.WeaponFactory;
-import rtrawel.items.Item.ItemType;
 import rtrawel.jobs.Job;
 import rtrawel.jobs.JobFactory;
 import rtrawel.jobs.JobWithLevel;
@@ -20,7 +19,6 @@ import rtrawel.jobs.PathFactory;
 import rtrawel.jobs.PathWithLevel;
 import rtrawel.jobs.Progression;
 import rtrawel.unit.Action.TargetType;
-import rtrawel.unit.RUnit.FightingStance;
 import trawel.extra;
 
 public class RPlayer extends RUnit {

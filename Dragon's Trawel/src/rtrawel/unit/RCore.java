@@ -22,8 +22,6 @@ import rtrawel.jobs.PathFactory;
 import rtrawel.unit.RUnit.FightingStance;
 import rtrawel.unit.RUnit.RaceType;
 import rtrawel.village.RecipeFactory;
-import trawel.Plane;
-import trawel.Player;
 import trawel.extra;
 
 public class RCore {

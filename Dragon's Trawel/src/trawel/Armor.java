@@ -1,8 +1,5 @@
 package trawel;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
 /***
  * An extension of Item, an armor has varying stats that can effect a person, and possibly and enchantment.
  * Different materials and different slots effect the attributes of items, as well as the level of the item.

@@ -1,7 +1,6 @@
 package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class CaveNode extends NodeConnector implements java.io.Serializable{
 	//potentail problem: all this code is in a highly duplicated node

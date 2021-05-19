@@ -1,8 +1,6 @@
 package trawel;
 import java.util.ArrayList;
 
-import trawel.Person.AIJob;
-
 public class MaterialFactory {
 	public static ArrayList<Material> matList = new ArrayList<Material>();
 	

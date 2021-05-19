@@ -7,7 +7,6 @@ import java.util.List;
 import rtrawel.items.Armor.ArmorClass;
 import rtrawel.items.Weapon.WeaponType;
 import rtrawel.unit.RCore;
-import rtrawel.unit.RPlayer;
 
 public class JobFactory {
 	private static HashMap<String,Job> data = new HashMap<String, Job>();

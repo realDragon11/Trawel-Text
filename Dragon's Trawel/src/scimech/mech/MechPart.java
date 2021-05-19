@@ -1,7 +1,5 @@
 package scimech.mech;
 
-import trawel.extra;
-
 public abstract class MechPart {
 
 	protected boolean locked = false;

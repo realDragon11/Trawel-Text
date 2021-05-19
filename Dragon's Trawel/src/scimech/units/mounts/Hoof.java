@@ -1,7 +1,5 @@
 package scimech.units.mounts;
 
-import scimech.combat.DamageMods;
-import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
 import scimech.handlers.Savable;

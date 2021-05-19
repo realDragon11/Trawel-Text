@@ -1,6 +1,5 @@
 package scimech.units.systems;
 
-import scimech.combat.DamageEffect;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
 import scimech.handlers.Savable;

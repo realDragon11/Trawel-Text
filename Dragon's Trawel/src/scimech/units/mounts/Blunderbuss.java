@@ -5,8 +5,6 @@ import scimech.combat.ResistMap;
 import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Mount;
-import scimech.units.systems.InternalRepair;
-import trawel.extra;
 
 public class Blunderbuss extends Mount {
 

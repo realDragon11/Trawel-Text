@@ -2,8 +2,6 @@ package rtrawel.unit;
 
 import java.util.List;
 
-import rtrawel.items.Item;
-
 public interface MonsterData {
 	public int getStrength();
 	public int getKnowledge();

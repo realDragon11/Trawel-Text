@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import rtrawel.items.ArmorFactory;
-import rtrawel.items.Item;
-import rtrawel.items.WeaponFactory;
 import rtrawel.unit.RUnit.RaceType;
 
 public class MonsterFactory {

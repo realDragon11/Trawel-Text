@@ -4,11 +4,11 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.fort.FortFeature;
+import trawel.fort.FortHall;
 import trawel.fort.FortQual;
 import trawel.townevents.TownFlavorFactory;
 import trawel.townevents.TownTag;
-import trawel.fort.FortFeature;
-import trawel.fort.FortHall;
 
 /**
  * 

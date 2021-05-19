@@ -13,7 +13,6 @@ import scimech.combat.TakeDamage;
 import scimech.combat.Target;
 import scimech.handlers.Savable;
 import scimech.handlers.SaveHandler;
-import scimech.mech.Fixture.MenuFixture;
 import scimech.mech.Mount.MenuMount;
 import scimech.mech.Mount.MenuMountTarget;
 import scimech.mech.Systems.MenuSystem;

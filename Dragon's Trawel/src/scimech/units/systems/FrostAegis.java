@@ -1,6 +1,5 @@
 package scimech.units.systems;
 
-import scimech.combat.DamageMods;
 import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;

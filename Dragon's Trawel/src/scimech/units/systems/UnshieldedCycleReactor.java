@@ -1,7 +1,5 @@
 package scimech.units.systems;
 
-import rtrawel.unit.DamageType;
-import scimech.combat.DamageEffect;
 import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
@@ -9,7 +7,6 @@ import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
-import trawel.extra;
 
 public class UnshieldedCycleReactor extends Systems {
 

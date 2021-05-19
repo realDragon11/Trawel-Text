@@ -1,7 +1,6 @@
 package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Champion  extends TravelingFeature{
 

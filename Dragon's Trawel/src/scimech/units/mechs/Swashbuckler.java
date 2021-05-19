@@ -9,14 +9,10 @@ import scimech.mech.MechPart;
 import scimech.mech.Mount;
 import scimech.people.Pilot;
 import scimech.units.fixtures.APCannon;
-import scimech.units.fixtures.ArtemisCannon;
 import scimech.units.fixtures.LightAutocannon;
 import scimech.units.mounts.Blunderbuss;
 import scimech.units.mounts.Broadside;
-import scimech.units.mounts.Foil;
-import scimech.units.systems.CoolantRod;
 import scimech.units.systems.FusionReactor;
-import scimech.units.systems.Ramjet;
 import trawel.randomLists;
 
 public class Swashbuckler extends Mech {

@@ -11,8 +11,6 @@ import rtrawel.items.WeaponFactory;
 import rtrawel.unit.RCore;
 import rtrawel.unit.RPlayer;
 import rtrawel.unit.RUnit;
-import rtrawel.village.Village;
-import rtrawel.village.VillageFactory;
 
 public class SaveData implements Serializable {
 

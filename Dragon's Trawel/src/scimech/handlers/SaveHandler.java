@@ -9,8 +9,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import rtrawel.SaveData;
-import rtrawel.battle.Party;
 import scimech.mech.Mech;
 import trawel.extra;
 

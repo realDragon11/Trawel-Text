@@ -8,7 +8,6 @@ import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
-import scimech.units.fixtures.ZeusRifle;
 import trawel.extra;
 
 public class AblativeArmor extends Systems {

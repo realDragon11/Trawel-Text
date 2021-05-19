@@ -3,7 +3,6 @@ package scimech.units.systems;
 import java.util.ArrayList;
 import java.util.List;
 
-import scimech.combat.DamageMods;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
 import scimech.handlers.Savable;

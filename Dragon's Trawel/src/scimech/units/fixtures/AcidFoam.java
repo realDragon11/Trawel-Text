@@ -9,7 +9,6 @@ import scimech.combat.Target;
 import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Fixture;
-import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
 import trawel.extra;
 

@@ -1,5 +1,4 @@
 package trawel;
-import java.awt.Color;
 import java.util.ArrayList;
 
 public abstract class Bumper {

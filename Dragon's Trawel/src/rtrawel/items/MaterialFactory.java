@@ -2,9 +2,6 @@ package rtrawel.items;
 
 import java.util.HashMap;
 
-import rtrawel.unit.Action;
-import rtrawel.unit.ActionFactory;
-
 public class MaterialFactory {
 	private static HashMap<String,MaterialItem> data = new HashMap<String, MaterialItem>();
 	public static void init() {

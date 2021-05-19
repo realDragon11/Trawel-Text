@@ -6,8 +6,6 @@ import java.util.List;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
 import scimech.handlers.Savable;
-import scimech.handlers.SaveHandler;
-import scimech.people.TraitKeeper;
 import trawel.MenuGenerator;
 import trawel.MenuItem;
 import trawel.MenuLine;

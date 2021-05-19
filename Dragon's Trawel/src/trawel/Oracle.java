@@ -1,10 +1,5 @@
 package trawel;
 import java.awt.Color;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 

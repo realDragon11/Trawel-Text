@@ -1,16 +1,9 @@
 package rtrawel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import rtrawel.battle.Battle;
 import rtrawel.battle.Party;
-import rtrawel.items.WeaponFactory;
-import rtrawel.jobs.JobWithLevel;
 import rtrawel.story.MainStory;
 import rtrawel.story.Story;
 import rtrawel.unit.RCore;
-import rtrawel.unit.RMonster;
 import rtrawel.unit.RPlayer;
 import rtrawel.unit.RUnit;
 import rtrawel.village.Village;

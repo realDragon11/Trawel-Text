@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import scimech.handlers.Savable;
-import scimech.units.fixtures.AcidFoam;
 
 public class TraitKeeper implements Savable{
 

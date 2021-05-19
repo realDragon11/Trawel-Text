@@ -1,7 +1,6 @@
 package scimech.units.fixtures;
 
 import scimech.combat.AimType;
-import scimech.combat.DamageEffect;
 import scimech.combat.DamageMods;
 import scimech.combat.DamageTypes;
 import scimech.combat.MechCombat;

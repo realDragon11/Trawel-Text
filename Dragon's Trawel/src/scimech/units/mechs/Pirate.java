@@ -1,7 +1,6 @@
 package scimech.units.mechs;
 
 import scimech.combat.DamageMods;
-import scimech.combat.DamageTypes;
 import scimech.combat.ResistMap;
 import scimech.handlers.Savable;
 import scimech.mech.Corpo;
@@ -9,11 +8,7 @@ import scimech.mech.Mech;
 import scimech.mech.MechPart;
 import scimech.mech.Mount;
 import scimech.people.Pilot;
-import scimech.units.fixtures.APCannon;
-import scimech.units.fixtures.ArtemisCannon;
 import scimech.units.fixtures.LightAutocannon;
-import scimech.units.mounts.Blunderbuss;
-import scimech.units.mounts.Foil;
 import scimech.units.mounts.Handcannon;
 import scimech.units.systems.CoolantRod;
 import scimech.units.systems.FusionReactor;

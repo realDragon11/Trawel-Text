@@ -5,7 +5,6 @@ import scimech.combat.DamageEffect;
 import scimech.combat.DamageMods;
 import scimech.combat.DamageTypes;
 import scimech.combat.MechCombat;
-import scimech.combat.TakeDamage;
 import scimech.combat.Target;
 import scimech.handlers.Savable;
 import scimech.mech.Corpo;

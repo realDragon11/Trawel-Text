@@ -4,11 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import rtrawel.items.Armor;
 import rtrawel.items.Item;
-import rtrawel.items.Weapon;
 import rtrawel.jobs.Progression;
-import rtrawel.unit.Action;
 import rtrawel.unit.RPlayer;
 
 public class PersonSave implements Serializable {

@@ -2,8 +2,6 @@ package rtrawel.battle;
 
 import java.util.HashMap;
 
-import rtrawel.items.Armor;
-
 public class FightFactory {
 	private static HashMap<String,Fight> data = new HashMap<String, Fight>();
 	public static void init() {

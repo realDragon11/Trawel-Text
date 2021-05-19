@@ -1,10 +1,8 @@
 package scimech.mech;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import scimech.combat.Target;
 import scimech.handlers.Savable;
 import trawel.MenuGenerator;
 import trawel.MenuItem;
