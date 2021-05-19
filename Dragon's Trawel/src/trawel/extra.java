@@ -4,6 +4,7 @@ package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class extra {
 /**
@@ -314,8 +315,8 @@ public class extra {
 		
 		public static void println(String str) {
 			if (!printMode) {
-			System.out.println(stripPrint(str));
-			detectInputString(printStuff +str);
+			System.out.println(str);
+			detectInputString(stripPrint(printStuff +str));
 			Networking.send("println|"+ printStuff + str + "|");
 			printStuff = "";
 			}
@@ -324,7 +325,7 @@ public class extra {
 		
 		public static void print(String str) {
 			if (!printMode) {
-			System.out.print(stripPrint(str));
+			System.out.print(str);
 			printStuff+=str;}
 		}
 		
@@ -332,7 +333,8 @@ public class extra {
 			int index = str.indexOf('[');
 			while (index != -1) {
 				int lastindex = str.indexOf(']');
-				str = str.replaceAll(str.substring(index,lastindex), "");
+				str = str.replace(str.substring(index,lastindex+1), "");
+				index = str.indexOf('[');
 			}
 			return str;
 		}
