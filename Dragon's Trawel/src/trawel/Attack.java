@@ -299,7 +299,7 @@ public class Attack implements java.io.Serializable{
 			}
 		}
 		if (wound != null) {
-		extra.println(this.wound.name + " - " + this.wound.desc);}
+		extra.println(" "+this.wound.name + " - " + this.wound.desc);}
 	}
 	
 	public Attack impair(int handLevel, TargetFactory.TargetType targetType,Weapon weap) {

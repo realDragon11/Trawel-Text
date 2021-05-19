@@ -481,13 +481,13 @@ public class Combat {
 				}*/
 			}
 			//Wound effects
-			inflictWound(attacker,defender,damageDone);
+			String woundstr = inflictWound(attacker,defender,damageDone);
 			song.addAttackHit(attacker,defender);
 			if (defender.hasEffect(Effect.R_AIM)) {
 				defender.getNextAttack().blind(1 + (percent));
 			}
 			if (!extra.printMode) {
-				extra.print(extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f)));
+				//extra.print(extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f)));
 				if (defender.isPlayer()) {
 					int splashes =(damageDone*100)/defender.getMaxHp();
 					if (splashes > 0) {
@@ -499,7 +499,11 @@ public class Combat {
 			if (defender.takeDamage(damageDone)) {
 				//extra.print(" " + extra.choose("Striking them down!"," They are struck down."));
 				if (!extra.printMode) {
-					extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)) +atr.stringer);
+					extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)) +atr.stringer+woundstr);
+				}
+			}else {
+				if (!extra.printMode) {
+					extra.print(extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f)) +atr.stringer+woundstr);
 				}
 			}
 		}else {
@@ -517,7 +521,7 @@ public class Combat {
 						}
 					}
 					if (defender.hasEffect(Effect.BEE_SHROUD)) {
-						extra.println(extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f))+"The bees sting back!");
+						extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.2f))+"The bees sting back!");
 						attacker.takeDamage(1);
 					}
 				}else {
@@ -634,12 +638,12 @@ public class Combat {
 			Networking.waitIfConnected(300L);}
 		}
 	}
-	private void inflictWound(Person attacker2, Person defender2, int damage) {
-		if (defender2.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1) {
-			extra.print(" They shrug off the blow!");
+	private String inflictWound(Person attacker2, Person defender2, int damage) {
+		if ((defender2.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 )|| damage == 0) {//wounds no longer hit if dam=0, if this needs to change, fix woundstring printing as well
+			return (" They shrug off the blow!");
 		}else {
 		defender2.inflictWound(attacker2.getNextAttack().getWound());
-		extra.print(" " +attacker2.getNextAttack().getWound().active);
+		
 		switch (attacker2.getNextAttack().getWound()) {
 		case CONFUSED:
 			newTarget = true;
@@ -656,7 +660,10 @@ public class Combat {
 		case SCALDED: case FROSTBITE:
 			defender2.takeDamage(attacker2.getMageLevel());
 			break;
-		}}
+		}
+		
+		}
+		return (" " +attacker2.getNextAttack().getWound().active);
 	}
 
 

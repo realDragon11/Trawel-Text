@@ -98,7 +98,7 @@ public class mainGame {
 	private void credits() {
 		extra.println("Made by Brian Malone");
 		//extra.println("Book writer: Tibo Smolders");
-		extra.println("With thanks to the GameMaker discord");
+		extra.println("With thanks to the GameMaker discords");
 		extra.println("Achievement icons can be found on game-icons.net");
 		extra.println("Music by manicInsomniac");
 	}
@@ -331,7 +331,7 @@ public class mainGame {
 		while (true) { new mainGame();}
 		}//catch (Exception )
 		catch(Exception e) {
-			extra.println("Trawel has encountered an exception. Please report to realDragon. More details can be found on the command prompt.");
+			extra.println("[jitter]Trawel has encountered an exception. Please report to realDragon. More details can be found on the command prompt.");
 			e.printStackTrace();
 			if (!e.getMessage().equals("invalid input stream error") && !e.getMessage().equals("No line found")) {
 			main(args);}
