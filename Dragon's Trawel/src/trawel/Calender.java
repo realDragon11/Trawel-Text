@@ -111,5 +111,9 @@ public class Calender implements Serializable {
 		str+=((int)getYear()) + "RC";
 		return str;
 	}
+	
+	public int getBackTime() {
+		return (int) Math.round(timeCounter*12);
+	}
 
 }
