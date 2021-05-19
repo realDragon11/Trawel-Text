@@ -13,10 +13,12 @@ public class Grove extends Feature {
 		tutorialText = "Explore groves to progress in level.";
 		generate();
 		color = Color.RED;
+		background_area = "forest";
 	}
 	@Override
 	public void go() {
 		Networking.setArea("forest");
+		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|grove|Grove|");
 		start.go();
 	}

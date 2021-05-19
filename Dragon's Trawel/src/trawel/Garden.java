@@ -14,11 +14,13 @@ public class Garden extends Feature {
 		tutorialText = "Gardens can grow plants.";
 		for (int i = 0; i < 4;i++) {
 		plants.add(new PlantSpot(tier));}
+		background_area = "forest";
 	}
 
 	@Override
 	public void go() {
 		Networking.setArea("shop");
+		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|garden|Garden|");
 		while (true) {
 			for (int i = 0; i < plants.size();i++) {

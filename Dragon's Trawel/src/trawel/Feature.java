@@ -12,8 +12,14 @@ public abstract class Feature implements java.io.Serializable{
 	protected Town town;
 	protected int moneyEarned;
 	protected ArrayList<QuestR> qrList = new ArrayList<QuestR>();
-	protected ArrayList<QuestR> qrRemoveList = new ArrayList<QuestR>(); 
+	protected ArrayList<QuestR> qrRemoveList = new ArrayList<QuestR>();
+	protected int background_variant = extra.randRange(1, 3);
+	protected String background_area = "main";
 	public abstract void go();
+	public void goHeader() {
+		Networking.setArea(name);
+		Networking.sendStrong("Backvariant|map_"+background_area+background_variant);
+	}
 	public void init() {
 	}
 	public abstract void passTime(double time);

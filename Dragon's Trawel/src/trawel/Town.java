@@ -37,7 +37,7 @@ public class Town implements java.io.Serializable{
 	public List<TownTag> tTags = new ArrayList<TownTag>();
 	private Town leaveTown;
 	public int visited = 0;
-	
+	public int background_variant = extra.randRange(1,3);
 	public Town() {
 		connects = new ArrayList<Connection>();
 		features = new ArrayList<Feature>();
@@ -199,6 +199,8 @@ public class Town implements java.io.Serializable{
 		Networking.sendStrong("Discord|desc|Adventuring in " + name +"|");
 		Networking.sendStrong("Discord|imagesmall|town|Town|");
 		Networking.setArea("main");
+		Networking.setBackground("main");
+		Networking.sendStrong("Backvariant|map_"+"town"+background_variant);
 		Networking.charUpdate();
 		if (isFort) {
 			doFort();

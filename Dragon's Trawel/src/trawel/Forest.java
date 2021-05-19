@@ -27,11 +27,13 @@ public class Forest extends Feature implements java.io.Serializable{
 		exhaust = 0;
 		tutorialText = "Explore forests to progress in level.";
 		color = Color.RED;
+		background_area = "forest";
 	}
 	
 	@Override
 	public void go() {
 		Networking.setArea("forest");
+		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|forest|Forest|");
 		
 		extra.menuGo(new MenuGenerator() {

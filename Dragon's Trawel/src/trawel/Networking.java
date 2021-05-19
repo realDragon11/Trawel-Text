@@ -16,7 +16,7 @@ public class Networking {
 	 public static Socket socket;
 	 private static boolean connected = false;
 	 private static BattleType inBattle = BattleType.NONE;
-	 private static String songType = "main";
+	 private static String songType = "main", backtype = "main";
 	public static boolean autoconnectSilence = false;
 	 
 	 public enum BattleType{
@@ -139,6 +139,13 @@ public class Networking {
 				Networking.sendStrong("PlaySong|"+ songType +"_boss|");
 			}else {
 			Networking.sendStrong("PlaySong|" + songType + (inBattle == BattleType.NORMAL ? "_fight" : "_explore")  + "|");}
+		}
+	}
+	
+	public static void setBackground(String background) {
+		if (!background.equals(backtype)) {
+			backtype = background;
+			Networking.sendStrong("Background|"+background+"|");
 		}
 	}
 	
