@@ -19,23 +19,27 @@ public class Calender implements Serializable {
 	}
 
 	public double getYearLength() {
-		return 364;
+		return 364*24;
 	}
 	
 	public double getMonthLength() {
-		return 28;
+		return 28*24;
 	}
 	
 	public int getMonthsInYear() {
 		return (int) (getYearLength()/getMonthLength());
 	}
 	
+	/**
+	 * gets the day of month
+	 * @return
+	 */
 	public int getDay() {
-		return (int)((timeCounter%getYearLength())%getMonthLength())+1;
+		return (int)(((timeCounter%getYearLength())%getMonthLength())/24)+1;
 	}
 	
 	public int getDayOfWeek() {
-		return (getDay()%7)+1;
+		return (int) ((timeCounter/24)%7)+1;//(getDay()%7)+1;
 	}
 	
 	public String getDayOfWeekName() {
