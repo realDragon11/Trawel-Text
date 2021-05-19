@@ -104,8 +104,8 @@ public class Networking {
 		int blue = (in >> 0) & 0xFF;
 		int out = (blue << 16) | (green << 8) | (red << 0);*/
 		//Networking.send("Color|" + out +"|");
-		Networking.send("[#"+Integer.toHexString(col.getRGB()).substring(2)+"]");
-		
+		//Networking.send("[#"+Integer.toHexString(col.getRGB()).substring(2)+"]");
+		extra.print(extra.inlineColor(extra.colorMix(col,Color.WHITE,.5f)));
 		//removes alpha but won't work for small alphas
 	}
 	
