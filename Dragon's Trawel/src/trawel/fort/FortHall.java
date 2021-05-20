@@ -274,12 +274,14 @@ public class FortHall extends FortFeature {
 		
 		forgeTimer -= (time* (double)getSkillCount(SubSkill.SMITHING))/10.0;
 		if (forgeTimer <=0) {
+			extra.printMode = true;
 			forgeTimer = 24.0*7;
 			Inventory inv = new Inventory(level, Race.RaceType.HUMANOID, null, null);
 			inv.deEnchant();
 			for (Person p: allies) {
 				AIClass.loot(p.getBag(), inv,level, false);
 			}
+			extra.printMode = false;
 		}
 		enchantTimer -= (time* (double)getSkillCount(SubSkill.ENCHANTING))/2.0;
 		if (enchantTimer <=0) {
@@ -299,7 +301,6 @@ public class FortHall extends FortFeature {
 			while (people.size() < 5) {
 				people.add(RaceFactory.getMugger(level));
 			}
-			
 			Fight(this.getAllies(),people);
 		}
 		
@@ -322,7 +323,8 @@ public class FortHall extends FortFeature {
 	}
 	
 	public void Fight(ArrayList<Person>... people) {
-		extra.disablePrintSubtle();
+		boolean hold = extra.printMode;
+		extra.printMode = true;
 		Combat c = new Combat(this.town.getIsland().getWorld(),this,people);
 		allies.clear();
 		if (c.survivors.get(0).hasSkill(Skill.PLAYERSIDE)) {
@@ -334,7 +336,7 @@ public class FortHall extends FortFeature {
 		}else {
 			this.goldBank = 0;
 		}
-		extra.enablePrintSubtle();
+		extra.printMode = hold;
 	}
 
 	private ArrayList<Person> getAllies() {

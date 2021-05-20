@@ -14,7 +14,7 @@ public class extra {
  * 2/5/2018
  */
 	
-	static Boolean printMode = false;
+	public static Boolean printMode = false;
 	private static Boolean oldPrintMode = false;
 	private static long lastMod = -1;
 	private static String printStuff = "";
