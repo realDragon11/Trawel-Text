@@ -66,7 +66,7 @@ public class Arena extends Feature{
 			this.doTournyPlayer();
 			return;
 		}
-		WorldGen.plane.passTime(Player.passTime);
+		mainGame.globalPassTime();
 		go();
 	}
 	

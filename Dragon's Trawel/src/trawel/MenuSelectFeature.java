@@ -5,6 +5,9 @@ public class MenuSelectFeature implements MenuItem {
 	public Feature feature;
 
 	public String title() {
+		if (feature.getName() == null) {
+			return "nullname";
+		}
 		return extra.inlineColor(feature.getColor())+extra.capFirst(feature.getName());
 	}
 	
@@ -17,7 +20,7 @@ public class MenuSelectFeature implements MenuItem {
 	 */
 	public boolean go() {
 		feature.go();
-		return false;
+		return true;
 	}
 	
 	public boolean canClick() {

@@ -244,20 +244,23 @@ public class Town implements java.io.Serializable{
 							return false;
 						}});
 				}
+				
 				for (Feature f: features) {
-					mList.add(new MenuSelectFeature(f));
-					if (Player.getTutorial()) {
-						mList.add(new MenuSelectFeature(f) {
-
-							@Override
-							public String title() {
-								return feature.tutorialText;
-							}
-							@Override
-							public boolean canClick() {
-								return false;
-							}
-						});
+					if (!TravelingFeature.class.isInstance(f) || ((TravelingFeature)f).hasSomething) {
+						mList.add(new MenuSelectFeature(f));
+						if (Player.getTutorial()) {
+							mList.add(new MenuSelectFeature(f) {
+	
+								@Override
+								public String title() {
+									return feature.tutorialText;
+								}
+								@Override
+								public boolean canClick() {
+									return false;
+								}
+							});
+						}
 					}
 				}
 				if (openSlots() > 0 ) {
@@ -271,7 +274,13 @@ public class Town implements java.io.Serializable{
 						@Override
 						public boolean go() {
 							buyLot();
-							return false;
+							return true;
+						}});
+					mList.add(new MenuLine() {
+
+						@Override
+						public String title() {
+							return "Buying a lot will allow you to add a new building to this town, with enough gold.";
 						}});
 				}
 				if (hasRoads()) {
@@ -285,8 +294,16 @@ public class Town implements java.io.Serializable{
 						@Override
 						public boolean go() {
 							goRoads();
-							return false;
+							return true;
 						}});
+					if (Player.getTutorial()) {
+						mList.add(new MenuLine() {
+
+							@Override
+							public String title() {
+								return "Roads are the most basic way to travel from town to town.\nTry exploring the town a bit before moving on!";
+							}});
+					}
 				}
 				mList.add(new MenuSelect() {
 
@@ -298,7 +315,7 @@ public class Town implements java.io.Serializable{
 					@Override
 					public boolean go() {
 						you();
-						return false;
+						return true;
 					}
 				});
 				return mList;
