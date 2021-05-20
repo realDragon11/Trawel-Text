@@ -211,6 +211,100 @@ public class Town implements java.io.Serializable{
 			Player.player.townEventTimer = extra.randRange(18,24*5);
 			}
 		}
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				if (hasTeleporters()) {
+					mList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return extra.inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f))+"Teleport Shop";
+						}
+
+						@Override
+						public boolean go() {
+							goTeleporters();
+							return false;
+						}});
+				}
+				if (hasTeleporters()) {
+					mList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return extra.inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f))+"Shipyard";
+						}
+
+						@Override
+						public boolean go() {
+							goPort();
+							return false;
+						}});
+				}
+				for (Feature f: features) {
+					mList.add(new MenuSelectFeature(f));
+					if (Player.getTutorial()) {
+						mList.add(new MenuSelectFeature(f) {
+
+							@Override
+							public String title() {
+								return feature.tutorialText;
+							}
+							@Override
+							public boolean canClick() {
+								return false;
+							}
+						});
+					}
+				}
+				if (openSlots() > 0 ) {
+					mList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Buy Lot";
+						}
+
+						@Override
+						public boolean go() {
+							buyLot();
+							return false;
+						}});
+				}
+				if (hasRoads()) {
+					mList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return extra.inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f))+"Roads";
+						}
+
+						@Override
+						public boolean go() {
+							goRoads();
+							return false;
+						}});
+				}
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "you";
+					}
+
+					@Override
+					public boolean go() {
+						you();
+						return false;
+					}
+				});
+				return mList;
+			}});
+		
+		/*
 		if (this.hasTeleporters()) {
 			Networking.sendColor(Color.GREEN);
 			extra.println(i + " Teleport Shop.");
@@ -255,6 +349,7 @@ public class Town implements java.io.Serializable{
 		if (Player.getTutorial()) {
 			extra.println("The you menu includes your stats and saving, among other things.");
 		}
+		
 		int in = extra.inInt(i-1);
 		i = 1;
 		if (this.hasTeleporters()) {
@@ -296,9 +391,10 @@ public class Town implements java.io.Serializable{
 		if (in == i) {
 			this.you();
 			return;
-		}i++;
+		}i++;*/
 		
 	}
+	
 
 	private void doFort() {
 		extra.menuGo(new MenuGenerator() {
