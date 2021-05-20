@@ -446,6 +446,7 @@ public class Combat {
 		if (!attacker.getNextAttack().isMagic()) {
 		AttackReturn atr = this.handleAttack(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender);
 		int damageDone = atr.damage;
+		Color inlined_color = Color.WHITE;
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender,damageDone);
 		if (damageDone > 0) {
 			float percent = damageDone/(float)defender.getMaxHp();
@@ -499,18 +500,21 @@ public class Combat {
 			if (defender.takeDamage(damageDone)) {
 				//extra.print(" " + extra.choose("Striking them down!"," They are struck down."));
 				if (!extra.printMode) {
-					extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)) +atr.stringer+woundstr);
+					inlined_color=extra.colorMix(Color.RED,Color.WHITE,.5f);
+					extra.print(extra.inlineColor(inlined_color) +atr.stringer.replace("[*]", extra.inlineColor(inlined_color))+woundstr);
 				}
 			}else {
 				if (!extra.printMode) {
-					extra.print(extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f)) +atr.stringer+woundstr);
+					inlined_color=extra.colorMix(Color.ORANGE,Color.WHITE,.5f);
+					extra.print(extra.inlineColor(inlined_color) +atr.stringer.replace("[*]", extra.inlineColor(inlined_color))+woundstr);
 				}
 			}
 		}else {
 			if (damageDone == -1) {
 				song.addAttackMiss(attacker,defender);
 				if (!extra.printMode) {
-					extra.print(extra.inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f)) +atr.stringer);
+					inlined_color=extra.colorMix(Color.YELLOW,Color.WHITE,.5f);
+					extra.print(extra.inlineColor(inlined_color) +atr.stringer.replace("[*]", extra.inlineColor(inlined_color)));
 					Networking.sendStrong("PlayMiss|" + "todo" + "|");
 				}
 					extra.print(extra.inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.3f))+(String)extra.choose(" They miss!"," The attack is dodged!"," It's a miss!"," It goes wide!"," It's not even close!"));
@@ -528,7 +532,8 @@ public class Combat {
 					if (damageDone == 0) {
 						song.addAttackArmor(attacker,defender);
 						if (!extra.printMode) {
-							extra.print(extra.inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f))+atr.stringer);
+							inlined_color = extra.colorMix(Color.BLUE,Color.WHITE,.5f);
+							extra.print(extra.inlineColor(inlined_color)+atr.stringer.replace("[*]", extra.inlineColor(inlined_color)));
 						}
 					extra.print(" "+(String)extra.choose("But it is ineffective...","The armor deflects the blow!","However, the attack fails to deal damage through the armor."));
 					if (defender.hasSkill(Skill.ARMORHEART)) {
@@ -554,6 +559,8 @@ public class Combat {
 				float hpRatio = ((float)p.getHp())/(p.getMaxHp());
 				//extra.println(p.getHp() + p.getMaxHp() +" " + hpRatio);
 				if (Math.random()*5 >= 2) {song.addHealth(p);}
+				int tval = 255-(int) (hpRatio*125);
+				extra.print(extra.inlineColor(new Color(tval,tval,tval)));
 				if (hpRatio == 1) {
 					extra.println(p.getName() + " is untouched.");
 				}else {

@@ -1,4 +1,7 @@
 package trawel;
+
+import java.awt.Color;
+
 /**
  * 
  * @author Brian Malone
@@ -26,6 +29,7 @@ public abstract class Item implements java.io.Serializable{
 	public abstract void display(int style);
 	public abstract void display(int style,float markup);
 	public String getModiferName() {
+		/*
 		switch (level) {
 		case 0: return "broken";
 		case 1: return "crude";
@@ -39,10 +43,12 @@ public abstract class Item implements java.io.Serializable{
 		case 9: return "amazing";
 		case 10: return "masterwork";
 		}
-		return "legendary";
+		return "legendary";*/
+		return getModiferNameColored(level);
 	}
 	
 	public static String getModiferName(int inlevel) {
+		/*
 		switch (inlevel) {
 		case 0: return "broken";
 		case 1: return "crude";
@@ -56,7 +62,25 @@ public abstract class Item implements java.io.Serializable{
 		case 9: return "amazing";
 		case 10: return "masterwork";
 		}
-		return "legendary";
+		return "legendary";*/
+		return getModiferNameColored(inlevel);
+	}
+	
+	public static String getModiferNameColored(int inlevel) {
+		switch (inlevel) {
+		case 0: return extra.inlineColor(new Color(60,60,60))+"broken[c_white]";
+		case 1: return extra.inlineColor(new Color(128,128,128))+"crude[c_white]";
+		case 2: return extra.inlineColor(new Color(160,160,160))+"shoddy[c_white]";
+		case 3: return "[c_white]poor";
+		case 4: return (extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.5f)))+"fair[c_white]";//pink
+		case 5: return (extra.inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f)))+"okay[c_white]";//green
+		case 6: return (extra.inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f)))+"good[c_white]";//blue
+		case 7: return (extra.inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.5f)))+"great[c_white]";//purple
+		case 8: return (extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f)))+"heroic[c_white]";//orange
+		case 9: return (extra.inlineColor(extra.colorMix(Color.yellow,Color.WHITE,.5f)))+"amazing[c_white]";//yellow
+		case 10: return (extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)))+"masterwork[c_white]";//red
+		}
+		return extra.inlineColor(Color.RED)+"legendary[c_white]";//vibrant red
 	}
 	
 	public abstract String getType();

@@ -266,7 +266,7 @@ public class Attack implements java.io.Serializable{
 			//probably happens because of HD and such
 		}
 		tempStr = tempStr.replace("Y`",Y + "'s " + target.name);
-		tempStr = tempStr.replace("Z`",Z);//technically if you were to look upwards you could find the weapon, but I'm gonna put it in this way
+		tempStr = tempStr.replace("Z`",Z+"[*]");//technically if you were to look upwards you could find the weapon, but I'm gonna put it in this way
 		return tempStr;
 	}
 	/**
