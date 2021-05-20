@@ -1,5 +1,7 @@
 package trawel;
 
+import java.awt.Color;
+
 public class MenuSelectFeature implements MenuItem {
 	
 	public Feature feature;
@@ -8,7 +10,7 @@ public class MenuSelectFeature implements MenuItem {
 		if (feature.getName() == null) {
 			return "nullname";
 		}
-		return extra.inlineColor(feature.getColor())+extra.capFirst(feature.getName());
+		return extra.inlineColor(extra.colorMix(feature.getColor(),Color.WHITE,.5f))+extra.capFirst(feature.getName());
 	}
 	
 	public MenuSelectFeature(Feature f) {
