@@ -59,7 +59,7 @@ public abstract class NodeConnector implements Serializable {
 			}
 		}
 		Player.addTime(.1);
-		
+		mainGame.globalPassTime();
 		int i = 1;
 		if (forceGo) {
 			visited = 3;

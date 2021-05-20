@@ -559,9 +559,9 @@ public class Combat {
 				float hpRatio = ((float)p.getHp())/(p.getMaxHp());
 				//extra.println(p.getHp() + p.getMaxHp() +" " + hpRatio);
 				if (Math.random()*5 >= 2) {song.addHealth(p);}
-				int tval = 255-(int) (hpRatio*125);
+				int tval = extra.clamp(0,255,(int) (hpRatio*125));
 				extra.print(extra.inlineColor(new Color(tval,tval,tval)));
-				if (hpRatio == 1) {
+				if (hpRatio >= 1) {
 					extra.println(p.getName() + " is untouched.");
 				}else {
 				if (hpRatio > .9) {

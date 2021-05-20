@@ -520,13 +520,19 @@ public class mainGame {
 			while(Player.player.isAlive()) {
 				
 				Player.player.getLocation().atTown();
-				double time = Player.popTime();
+				globalPassTime();
+			}
+			extra.println("You do not wake up.");
+		}
+		
+		public static void globalPassTime() {//TODO: test and put elsewhere
+			double time = Player.popTime();
+			if (time > 0) {
 				if (Player.hasSkill(Skill.MONEY_MAGE)) {
 					Player.bag.addGold((int) (Player.player.getPerson().getMageLevel()*time));
 				}
 				WorldGen.plane.passTime(time);
 			}
-			extra.println("You do not wake up.");
 		}
 		
 		private static Player randPerson(boolean printIt, boolean choice) {

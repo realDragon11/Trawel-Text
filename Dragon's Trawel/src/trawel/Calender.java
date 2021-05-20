@@ -117,7 +117,7 @@ public class Calender implements Serializable {
 	}
 	
 	public int getBackTime() {
-		return (int) Math.round((timeCounter%1)*12)+1;
+		return (int) Math.round((timeCounter%1)/2)+1;
 	}
 
 }
