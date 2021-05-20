@@ -248,7 +248,7 @@ public class Town implements java.io.Serializable{
 				for (Feature f: features) {
 					if (!TravelingFeature.class.isInstance(f) || ((TravelingFeature)f).hasSomething) {
 						mList.add(new MenuSelectFeature(f));
-						if (Player.getTutorial()) {
+						if (Player.getTutorial() && f.tutorialText != null) {
 							mList.add(new MenuSelectFeature(f) {
 	
 								@Override

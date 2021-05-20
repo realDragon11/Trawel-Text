@@ -150,6 +150,7 @@ public class Inn extends Feature implements java.io.Serializable{
 					@Override
 					public boolean go() {
 						playerwatch = true; occupantDuel(); Player.addTime((nextReset-timePassed+1));
+						mainGame.globalPassTime();
 						return false;
 					}
 				});
