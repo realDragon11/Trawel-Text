@@ -11,7 +11,14 @@ public class RaceFactory {
 	public static ArrayList<Race> raceList = new ArrayList<Race>();
 	
 	public static float audioSteps(int steps) {
-		return 1.0f+(steps*0.004f);
+		/*if (steps < 0) {
+			return (float) (1.0f-(Math.log(Math.abs(steps*10))*0.004f));
+		}*/
+		//return 1.0f+(steps);
+		if (steps < 0) {
+			return (extra.lerp(1f,0.75f,(-steps)/10f));
+		}
+		return (extra.lerp(1f,1.5f,(steps)/10f));
 	}
 	
 	public RaceFactory() {
@@ -37,8 +44,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
-		misc.minPitch = audioSteps(-10);
-		misc.maxPitch = audioSteps(10);
+		misc.minPitch = audioSteps(-5);
+		misc.maxPitch = audioSteps(5);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -61,7 +68,7 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
-		misc.minPitch = audioSteps(-20);
+		misc.minPitch = audioSteps(-10);
 		misc.maxPitch = audioSteps(0);
 		raceList.add(misc);
 		
@@ -86,8 +93,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
-		misc.minPitch = audioSteps(-10);
-		misc.maxPitch = audioSteps(10);
+		misc.minPitch = audioSteps(-5);
+		misc.maxPitch = audioSteps(5);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -111,8 +118,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
-		misc.minPitch = audioSteps(-8);
-		misc.maxPitch = audioSteps(12);
+		misc.minPitch = audioSteps(-3);
+		misc.maxPitch = audioSteps(7);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -138,8 +145,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
-		misc.minPitch = audioSteps(-8);
-		misc.maxPitch = audioSteps(12);
+		misc.minPitch = audioSteps(-3);
+		misc.maxPitch = audioSteps(7);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -163,8 +170,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
-		misc.minPitch = audioSteps(-10);
-		misc.maxPitch = audioSteps(10);
+		misc.minPitch = audioSteps(-5);
+		misc.maxPitch = audioSteps(5);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -187,8 +194,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
-		misc.minPitch = audioSteps(-20);
-		misc.maxPitch = audioSteps(0);
+		misc.minPitch = audioSteps(-8);
+		misc.maxPitch = audioSteps(2);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -217,8 +224,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
-		misc.minPitch = audioSteps(3);
-		misc.maxPitch = audioSteps(23);
+		misc.minPitch = audioSteps(2);
+		misc.maxPitch = audioSteps(8);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -241,7 +248,7 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
-		misc.minPitch = audioSteps(-20);
+		misc.minPitch = audioSteps(-10);
 		misc.maxPitch = audioSteps(0);
 		raceList.add(misc);
 		
@@ -265,8 +272,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
-		misc.minPitch = audioSteps(-10);
-		misc.maxPitch = audioSteps(10);
+		misc.minPitch = audioSteps(-5);
+		misc.maxPitch = audioSteps(5);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -289,8 +296,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = false;
 		misc.voice = SoundBox.Voice.NONE;
-		misc.minPitch = audioSteps(-10);
-		misc.maxPitch = audioSteps(10);
+		misc.minPitch = audioSteps(-5);
+		misc.maxPitch = audioSteps(5);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -313,8 +320,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = false;
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
-		misc.minPitch = audioSteps(10);
-		misc.maxPitch = audioSteps(20);
+		misc.minPitch = audioSteps(0);
+		misc.maxPitch = audioSteps(10);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -337,8 +344,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
-		misc.minPitch = audioSteps(-15);
-		misc.maxPitch = audioSteps(5);
+		misc.minPitch = audioSteps(-10);
+		misc.maxPitch = audioSteps(0);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -361,8 +368,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
-		misc.minPitch = audioSteps(-10);
-		misc.maxPitch = audioSteps(10);
+		misc.minPitch = audioSteps(-5);
+		misc.maxPitch = audioSteps(5);
 		raceList.add(misc);
 		
 		
@@ -393,8 +400,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.QUAD;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.WOLF;
-		misc.minPitch = audioSteps(-10);
-		misc.maxPitch = audioSteps(10);
+		misc.minPitch = audioSteps(-5);
+		misc.maxPitch = audioSteps(5);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -510,8 +517,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.STATUE;
 		misc.emitsBlood = false;
 		misc.voice = SoundBox.Voice.ENT;
-		misc.minPitch = audioSteps(-10);
-		misc.maxPitch = audioSteps(10);
+		misc.minPitch = audioSteps(-5);
+		misc.maxPitch = audioSteps(5);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -535,8 +542,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.QUAD;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.BEAR;
-		misc.minPitch = audioSteps(-10);
-		misc.maxPitch = audioSteps(10);
+		misc.minPitch = audioSteps(-5);
+		misc.maxPitch = audioSteps(5);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -560,8 +567,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.FLY;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.BAT;
-		misc.minPitch = audioSteps(-10);
-		misc.maxPitch = audioSteps(10);
+		misc.minPitch = audioSteps(-5);
+		misc.maxPitch = audioSteps(5);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -584,8 +591,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.F_GOLEM;
-		misc.minPitch = audioSteps(-10);
-		misc.maxPitch = audioSteps(10);
+		misc.minPitch = audioSteps(-5);
+		misc.maxPitch = audioSteps(5);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -608,8 +615,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.QUAD;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.WOLF;
-		misc.minPitch = audioSteps(-10);
-		misc.maxPitch = audioSteps(10);
+		misc.minPitch = audioSteps(-5);
+		misc.maxPitch = audioSteps(5);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -632,8 +639,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.FLY;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.BAT;
-		misc.minPitch = audioSteps(-10);
-		misc.maxPitch = audioSteps(10);
+		misc.minPitch = audioSteps(-5);
+		misc.maxPitch = audioSteps(5);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -656,8 +663,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.F_GOLEM;
-		misc.minPitch = audioSteps(-10);
-		misc.maxPitch = audioSteps(10);
+		misc.minPitch = audioSteps(-5);
+		misc.maxPitch = audioSteps(5);
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -680,8 +687,8 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.F_GOLEM;
-		misc.minPitch = audioSteps(-10);
-		misc.maxPitch = audioSteps(10);
+		misc.minPitch = audioSteps(-5);
+		misc.maxPitch = audioSteps(5);
 		raceList.add(misc);
 		
 	}
