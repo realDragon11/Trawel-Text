@@ -43,6 +43,17 @@ public class EnchantHit extends Enchant {
 		goldMult = 1+(freezeMod+shockMod+fireMod+(isKeen ? .3 : 0))/2;
 	}
 	
+	public EnchantHit(boolean b,double powMod) {//testing only
+		fireMod = 0;
+		freezeMod = 0;
+		shockMod = 0;
+		
+		goldMult = 1;
+		name = " testing";
+		enchantstyle = 3;
+		colorSaved = extra.inlineColor(extra.colorMix(Color.MAGENTA,Color.LIGHT_GRAY,.5f));
+	}
+
 	@Override
 	public String getEnchantType() {
 		return "hit";

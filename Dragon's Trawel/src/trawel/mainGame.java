@@ -47,7 +47,7 @@ public class mainGame {
 	//script variables
 	extra.changePrint(false);
 	Networking.sendStrong("Discord|desc|Main Menu|");
-	extra.println("1 Adventures (single player).");
+	extra.println("1 Play Game");
 	extra.println("2 Help");
 	extra.println("3 Load (version-specific)");
 	extra.println("4 Links");
@@ -109,7 +109,8 @@ public class mainGame {
 		extra.println("1 The DeathStrider (recommended)");
 		extra.println("2 rTrawel (experimental jrpg)");
 		extra.println("3 SciMechs (mech jam game)");
-		switch(extra.inInt(3)) {
+		extra.println("4 model mode");
+		switch(extra.inInt(4)) {
 		case 1: adventure1();break;
 		case 2:extra.println("This gamemode can only be played in the command prompt."); rtrawel.TestRunner.run();break;
 		case 3:
@@ -133,7 +134,7 @@ public class mainGame {
 			}
 		//case 2: adventure2();break;
 		//case 3: adventure3();break;
-		//case 4: modelMode();break;
+		case 4: modelMode();break;
 			}
 	}
 	
@@ -250,8 +251,9 @@ public class mainGame {
 	private void modelMode() {
 		Person manOne;
 		Player player;
-			 manOne = RaceFactory.makeMimic(2);//new Person(starting_level,false,Race.RaceType.HUMANOID,null);
+			 manOne = RaceFactory.makeOld(2);//new Person(starting_level,false,Race.RaceType.HUMANOID,null);
 			 player = new Player(manOne);
+			 player.bag.getHand().forceEnchantHit(0);
 			 /*
 			 player.bag.swapArmorSlot(new Armor(1,0,MaterialFactory.getMat("emerald")),0);
 			 player.bag.swapArmorSlot(new Armor(1,1,MaterialFactory.getMat("emerald")),1);
