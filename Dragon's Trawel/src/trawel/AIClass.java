@@ -308,6 +308,7 @@ public class AIClass {
 			Services.sellItem(loot.getHand(),loot,stash,false);
 			}
 		}
+		Networking.send("RemoveInv|1|2|");
 		if (smarts < 0) {
 			Networking.charUpdate();
 			if (Player.hasSkill(Skill.LOOTER)) {

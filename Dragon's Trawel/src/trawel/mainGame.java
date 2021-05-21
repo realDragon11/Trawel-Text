@@ -297,7 +297,7 @@ public class mainGame {
 		new WeaponAttackFactory();
 		new TownFlavorFactory();
 		story = new StoryNone();
-		extra.println("Dragon's Trawel v0.6.3");
+		extra.println("Dragon's Trawel v0.7.0");
 		extra.println(
 				" ___________  ___  _    _ _____ _     \r\n" + 
 				"|_   _| ___ \\/ _ \\| |  | |  ___| |    \r\n" + 

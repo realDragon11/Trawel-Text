@@ -78,7 +78,7 @@ public class FortHall extends FortFeature {
 	@Override
 	public void go() {
 		if (this.getOwner() != Player.player) {
-			int cost = this.level*2500;
+			int cost = (this.level*2500)+this.goldBank;
 			extra.println("Buy this for fort for "+cost+" gold? (You have " + Player.bag.getGold()+")");
 			if (extra.yesNo()) {
 				if (Player.bag.getGold() < cost) {

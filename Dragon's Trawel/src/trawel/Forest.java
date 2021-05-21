@@ -87,10 +87,10 @@ public class Forest extends Feature implements java.io.Serializable{
 			Player.player.addTitle(this.getName() + " guide");
 		}
 		if (Player.player.animalQuest == 0 && Math.random() > .8) {
-			fallenTree(); go();return;
+			fallenTree();return;
 		}
 		if (dryadQuest > 0 && dryadQuest < 5 && Math.random() > .5) {
-			lumerbjackDryad(); go();return;
+			lumerbjackDryad();return;
 		}
 		if (exhaust > 10) {
 			if (!extra.chanceIn(1,(int)(exhaust/3))) {

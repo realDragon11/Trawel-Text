@@ -40,6 +40,7 @@ public class BasicSideQuest implements Quest{
 	
 	public static BasicSideQuest getRandomSideQuest(Town loc,Inn inn) {
 		BasicSideQuest q = new BasicSideQuest();
+		int i;
 		switch (extra.randRange(1,3)) {
 		case 1: //fetch quest
 			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
@@ -80,8 +81,18 @@ public class BasicSideQuest implements Quest{
 				}
 				
 			};
-			q.target.locationF = extra.randList(loc.getQuestLocationsInRange(3));
+			i = 3; 
+			while (q.target.locationF == null) {
+			q.target.locationF = extra.randList(loc.getQuestLocationsInRange(i));
+			i++;
+			if (i > 10) {
+				return null;
+			}
+			}
 			q.target.locationT = q.target.locationF.town;
+			if (q.target.locationT == null) {
+				return null;
+			}
 			q.target.overQuest = q;
 			//q.target.locationF.addQR(q.target);
 			q.name = q.giverName + "'s " + q.targetName;
@@ -146,12 +157,18 @@ public class BasicSideQuest implements Quest{
 				}
 				
 			};
-			int i = 3; 
+			i = 3; 
 			while (q.target.locationF == null) {
 			q.target.locationF = extra.randList(loc.getQuestLocationsInRange(i));
 			i++;
+			if (i > 10) {
+				return null;
+			}
 			}
 			q.target.locationT = q.target.locationF.town;
+			if (q.target.locationT == null) {
+				return null;
+			}
 			if (murder == true) {
 				q.targetPerson = RaceFactory.getPeace(q.target.locationT.getTier());
 			}else {

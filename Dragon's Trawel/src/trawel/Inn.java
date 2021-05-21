@@ -56,7 +56,10 @@ public class Inn extends Feature implements java.io.Serializable{
 		if (sideQuests.size() >= 3) {
 			sideQuests.remove(extra.randList(sideQuests));
 		}
-		sideQuests.add(BasicSideQuest.getRandomSideQuest(this.getTown(),this));
+		BasicSideQuest bsq = BasicSideQuest.getRandomSideQuest(this.getTown(),this);
+		if (bsq != null) {
+		sideQuests.add(bsq);
+		}
 	}
 
 	@Override
