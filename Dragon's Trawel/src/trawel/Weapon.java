@@ -392,5 +392,11 @@ public class Weapon extends Item {
 		enchantHit = null;
 	}
 
+	public Enchant getAnyEnchant() {
+	if (isEnchantedHit()) {
+		return this.getEnchantHit();
+	}
+	return this.getEnchant();
+	}
 	
 }
