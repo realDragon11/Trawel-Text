@@ -50,7 +50,7 @@ public class EnchantHit extends Enchant {
 		
 		goldMult = 1;
 		name = " testing";
-		enchantstyle = 3;
+		enchantstyle = 1;
 		colorSaved = extra.inlineColor(extra.colorMix(Color.MAGENTA,Color.LIGHT_GRAY,.5f));
 	}
 
