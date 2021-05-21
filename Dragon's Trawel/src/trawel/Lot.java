@@ -106,5 +106,9 @@ public class Lot extends Feature {
 		}
 		}
 	}
+	
+	public double getConstructTime() {
+		return constructTime;
+	}
 
 }

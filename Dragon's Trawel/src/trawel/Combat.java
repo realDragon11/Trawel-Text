@@ -449,7 +449,7 @@ public class Combat {
 		Color inlined_color = Color.WHITE;
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender,damageDone);
 		//armor quality handling
-		defender.getBag().breakFragile(damageDone);
+		defender.getBag().armorQualDam(damageDone);
 		//message handling
 		if (damageDone > 0) {
 			float percent = damageDone/(float)defender.getMaxHp();

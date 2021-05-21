@@ -430,7 +430,7 @@ public class Armor extends Item {
 		return quals;
 	}
 	
-	public void breakFragile(int dam) {
+	public void armorQualDam(int dam) {
 		if (quals.contains(ArmorQuality.FRAGILE)) {
 			burned = extra.clamp(burned-extra.lerp(0.05f,.5f, extra.clamp(dam,1,20)/20f),0,2);
 		}

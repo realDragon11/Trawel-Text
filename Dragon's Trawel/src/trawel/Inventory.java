@@ -754,9 +754,9 @@ public class Inventory implements java.io.Serializable{
 		return count;
 	}
 	
-	public void breakFragile(int dam) {
+	public void armorQualDam(int dam) {
 		for (Armor a: armorSlots) {
-			a.breakFragile(dam);
+			a.armorQualDam(dam);
 		}
 	}
 

@@ -10,7 +10,13 @@ public class MenuSelectFeature implements MenuItem {
 		if (feature.getName() == null) {
 			return "nullname";
 		}
-		return extra.inlineColor(extra.colorMix(feature.getColor(),Color.WHITE,.5f))+extra.capFirst(feature.getName());
+		String append = "";
+		if (feature instanceof Lot) {
+			if (((Lot)feature).getConstructTime() != -1) {
+				append += " ("+((Lot)feature).getConstructTime()+")";
+			}
+		}
+		return extra.inlineColor(extra.colorMix(feature.getColor(),Color.WHITE,.5f))+extra.capFirst(feature.getName()) + append;
 	}
 	
 	public MenuSelectFeature(Feature f) {
