@@ -1242,7 +1242,8 @@ public class Person implements java.io.Serializable{
 	
 	public float getPitch() {
 		if (pitch < this.getBag().getRace().minPitch || pitch > this.getBag().getRace().maxPitch) {
-		pitch = extra.randRange((int)this.getBag().getRace().minPitch*1000,(int)this.getBag().getRace().maxPitch*1000)/1000.0f;}
+			pitch = extra.curveLerp(this.getBag().getRace().minPitch, this.getBag().getRace().maxPitch,.7f);
+		}//extra.randRange((int)this.getBag().getRace().minPitch*1000,(int)this.getBag().getRace().maxPitch*1000)/1000.0f;}
 		return pitch;
 	}
 

@@ -613,5 +613,19 @@ public class extra {
 			return "[#"+Integer.toHexString(col.getRGB()).substring(2)+"]";
 		}
 		
+		/**
+		 * https://stackoverflow.com/a/13091759
+		 * @param a - How deep the curve is - 0 <-> 1
+		 * @return
+		 */
+		public static float bellCurve(float a){
+			double x = Math.random();
+			return (float) (4*a*Math.pow(x,3) - 6*a*Math.pow(x,2) + 2*a*x + x);
+		}
+		
+		public static float curveLerp(float start, float end, float depth) {
+			return extra.lerp(start, end, bellCurve(depth));
+		}
+		
 }
 
