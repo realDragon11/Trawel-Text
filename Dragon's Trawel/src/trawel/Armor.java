@@ -1,5 +1,6 @@
 package trawel;
 
+import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -154,6 +155,13 @@ public class Armor extends Item {
 					case 4: baseName = (String)extra.choose("tevaran boots"); weight = 4; baseResist = 2; cost = 2;break;
 				}
 					cost*=1.5;
+					if (extra.chanceIn(2,3)) {
+						quals.add(ArmorQuality.FRAGILE);
+						baseName = extra.inlineColor(Color.YELLOW)+"fragile[c_white] " + baseName;
+						sharpResist*=1.25;
+						bluntResist*=1.25;
+						pierceResist*=1.25;
+					}
 				}
 			}
 		}

@@ -448,6 +448,9 @@ public class Combat {
 		int damageDone = atr.damage;
 		Color inlined_color = Color.WHITE;
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender,damageDone);
+		//armor quality handling
+		defender.getBag().breakFragile(damageDone);
+		//message handling
 		if (damageDone > 0) {
 			float percent = damageDone/(float)defender.getMaxHp();
 			if (extra.chanceIn((int)(percent*100) + (defender.getHp() <= 0 ? 10 : 0), 120)) {
