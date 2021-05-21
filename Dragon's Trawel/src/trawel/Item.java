@@ -71,7 +71,7 @@ public abstract class Item implements java.io.Serializable{
 		case 0: return extra.inlineColor(new Color(60,60,60))+"broken[c_white]";
 		case 1: return extra.inlineColor(new Color(128,128,128))+"crude[c_white]";
 		case 2: return extra.inlineColor(new Color(160,160,160))+"shoddy[c_white]";
-		case 3: return "[c_white]poor";
+		case 3: return extra.inlineColor(new Color(220,220,220))+"poor";
 		case 4: return (extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.5f)))+"fair[c_white]";//pink
 		case 5: return (extra.inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f)))+"okay[c_white]";//green
 		case 6: return (extra.inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f)))+"good[c_white]";//blue

@@ -230,7 +230,7 @@ public class Town implements java.io.Serializable{
 							return false;
 						}});
 				}
-				if (hasTeleporters()) {
+				if (hasPort()) {
 					mList.add(new MenuSelect() {
 
 						@Override
@@ -276,12 +276,14 @@ public class Town implements java.io.Serializable{
 							buyLot();
 							return true;
 						}});
+					if (Player.getTutorial()) {
 					mList.add(new MenuLine() {
 
 						@Override
 						public String title() {
 							return "Buying a lot will allow you to add a new building to this town, with enough gold.";
 						}});
+					}
 				}
 				if (hasRoads()) {
 					mList.add(new MenuSelect() {
