@@ -432,7 +432,7 @@ public class MaterialFactory {
 		misc.fireVul = 2;
 		misc.shockVul = 1;
 		misc.freezeVul = 1;
-		misc.palIndex = 0;
+		misc.palIndex = 10;
 		misc.soundType = "ecto";
 		misc.color = extra.inlineColor(Color.BLUE);
 		matList.add(misc);

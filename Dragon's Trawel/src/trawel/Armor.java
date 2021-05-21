@@ -42,7 +42,8 @@ public class Armor extends Item {
 	//enums
 	
 	public enum ArmorQuality implements Serializable {
-		FRAGILE("Fragile","Loses power when hit.");
+		FRAGILE("Fragile","Loses power when hit."),
+		HAUNTED("Haunted","Chance to turn any hit on you into a miss.");
 		
 		public String name, desc;
 		ArmorQuality(String nam, String des){
@@ -190,6 +191,17 @@ public class Armor extends Item {
 		enchantment = new EnchantConstant(level*baseEnchant);
 		effectiveCost=(int) extra.zeroOut(cost * enchantment.getGoldMult()+enchantment.getGoldMod());
 		isEnchanted = true;
+		}else {
+			if (extra.chanceIn(1,5)) {//non-enchanted qualities
+				baseEnchant = 0;
+				ArmorQuality aaq = extra.choose(ArmorQuality.HAUNTED);
+				this.quals.add(aaq);
+				switch (aaq) {
+				case HAUNTED:
+					cost*=1.2;
+					break;
+				}
+			}
 		}
 		
 

@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.Armor.ArmorQuality;
 import trawel.factions.FBox;
 import trawel.fort.FortHall;
 import trawel.fort.LSkill;
@@ -371,6 +372,9 @@ public class Combat {
 		double damMod = off.getDam();
 		if (((def.getDodge()*defender.getTornCalc())/(att.getHitmod()*off.getAim()))*Math.random() > 1.0){
 			return new AttackReturn(-1,str);//do a dodge
+		}
+		if (extra.chanceIn(def.countArmorQuality(ArmorQuality.HAUNTED),75)){
+			return new AttackReturn(-1,str +extra.inlineColor(Color.GREEN)+" An occult hand leaps forth, pulling them out of the way![c_white]");
 		}
 		//return the damage-armor, with each type evaluated individually
 		Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getSoundIntensity() + "|" +att.getSoundType()+"|");
