@@ -15,6 +15,7 @@ public class Material implements java.io.Serializable{
 	public ArrayList<String> typeList = new ArrayList<String>();
 	public int palIndex;
 	public String soundType;
+	public String color = "";
 
 	/**
 	Material(String name,String clothType,

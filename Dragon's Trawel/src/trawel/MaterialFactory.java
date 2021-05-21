@@ -1,4 +1,5 @@
 package trawel;
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class MaterialFactory {
@@ -31,6 +32,7 @@ public class MaterialFactory {
 		misc.freezeVul = .2;
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
+		misc.color = extra.inlineColor(Color.WHITE);
 		matList.add(misc);
 		
 		/*TODO readd leather
@@ -84,6 +86,7 @@ public class MaterialFactory {
 		misc.freezeVul = 2;
 		misc.palIndex = 0;
 		misc.soundType = "metal";
+		misc.color = extra.inlineColor(new Color(131,145,169));
 		matList.add(misc);
 		
 		misc = new Material();//TODO: beta numbers
@@ -111,6 +114,7 @@ public class MaterialFactory {
 		misc.freezeVul = 2;
 		misc.palIndex = 1;
 		misc.soundType = "metal";
+		misc.color = extra.inlineColor(new Color(169,94,60));
 		matList.add(misc);
 		
 		misc = new Material();//TODO: beta numbers
@@ -138,6 +142,7 @@ public class MaterialFactory {
 		misc.freezeVul = 2;
 		misc.palIndex = 2;
 		misc.soundType = "metal";
+		misc.color = extra.inlineColor(new Color(198,198,198));
 		matList.add(misc);
 		
 		misc = new Material();//TODO: beta numbers
@@ -166,6 +171,7 @@ public class MaterialFactory {
 		misc.freezeVul = 2;
 		misc.palIndex = 3;
 		misc.soundType = "metal";
+		misc.color = extra.inlineColor(new Color(169,94,60));
 		matList.add(misc);
 		
 		misc = new Material();
@@ -194,6 +200,7 @@ public class MaterialFactory {
 		misc.freezeVul = 2;
 		misc.palIndex = 4;
 		misc.soundType = "metal";
+		misc.color = extra.inlineColor(new Color(204,204,204));
 		matList.add(misc);
 		
 		misc = new Material();
@@ -223,6 +230,7 @@ public class MaterialFactory {
 		misc.freezeVul = 2;
 		misc.palIndex = 5;
 		misc.soundType = "metal";
+		misc.color = extra.inlineColor(new Color(236,236,236));
 		matList.add(misc);
 		
 		misc = new Material();
@@ -252,6 +260,7 @@ public class MaterialFactory {
 		misc.freezeVul = 2;
 		misc.palIndex = 6;
 		misc.soundType = "metal";
+		misc.color = extra.inlineColor(new Color(203,185,83));
 		matList.add(misc);
 		
 		misc = new Material();
@@ -277,6 +286,7 @@ public class MaterialFactory {
 		misc.freezeVul = .6;
 		misc.palIndex = 1;
 		misc.soundType = "flesh";
+		misc.color = extra.inlineColor(Color.LIGHT_GRAY);
 		matList.add(misc);
 		
 		misc = new Material();
@@ -306,6 +316,7 @@ public class MaterialFactory {
 		misc.freezeVul = 2;
 		misc.palIndex = 7;
 		misc.soundType = "metal";
+		misc.color = extra.inlineColor(new Color(236,236,236));
 		matList.add(misc);
 		
 		misc = new Material();
@@ -335,6 +346,7 @@ public class MaterialFactory {
 		misc.freezeVul = 1.5;
 		misc.palIndex = 9;
 		misc.soundType = "metal";
+		misc.color = extra.inlineColor(new Color(151,131,169));
 		matList.add(misc);
 		
 		misc = new Material();
@@ -366,6 +378,7 @@ public class MaterialFactory {
 		misc.freezeVul = 0;
 		misc.palIndex = 10;
 		misc.soundType = "metal";
+		misc.color = extra.inlineColor(new Color(160,182,255));
 		matList.add(misc);
 		
 		misc = new Material();
@@ -395,6 +408,7 @@ public class MaterialFactory {
 		misc.freezeVul = 2;
 		misc.palIndex = 11;
 		misc.soundType = "metal";
+		misc.color = extra.inlineColor(new Color(249,255,160));
 		matList.add(misc);
 		
 		misc = new Material();
@@ -420,6 +434,7 @@ public class MaterialFactory {
 		misc.freezeVul = 1;
 		misc.palIndex = 0;
 		misc.soundType = "ecto";
+		misc.color = extra.inlineColor(Color.BLUE);
 		matList.add(misc);
 		
 		misc = new Material();
@@ -449,6 +464,7 @@ public class MaterialFactory {
 		misc.freezeVul = 2;
 		misc.palIndex = 13;
 		misc.soundType = "metal";
+		misc.color = extra.inlineColor(new Color(255,255,255));
 		matList.add(misc);
 		
 		misc = new Material();
@@ -478,6 +494,7 @@ public class MaterialFactory {
 		misc.freezeVul = .5;
 		misc.palIndex = 8;
 		misc.soundType = "wood";
+		misc.color = extra.inlineColor(new Color(131,94,35));
 		matList.add(misc);
 		
 		misc = new Material();
@@ -507,6 +524,7 @@ public class MaterialFactory {
 		misc.freezeVul = 2;
 		misc.palIndex = 12;
 		misc.soundType = "metal";
+		misc.color = extra.inlineColor(new Color(255,210,73));
 		matList.add(misc);
 		
 		
@@ -533,6 +551,7 @@ public class MaterialFactory {
 		misc.freezeVul = .5;
 		misc.palIndex = 0;
 		misc.soundType = "crystal";
+		misc.color = extra.inlineColor(new Color(210,227,255));
 		matList.add(misc);
 		
 		misc = new Material();//yeah these crystal stats will be totally inaccurate TODO
@@ -558,6 +577,7 @@ public class MaterialFactory {
 		misc.freezeVul = .5;
 		misc.palIndex = 1;
 		misc.soundType = "crystal";
+		misc.color = extra.inlineColor(new Color(210,255,216));
 		matList.add(misc);
 		
 		misc = new Material();
@@ -583,6 +603,7 @@ public class MaterialFactory {
 		misc.freezeVul = .3;
 		misc.palIndex = 2;
 		misc.soundType = "crystal";
+		misc.color = extra.inlineColor(new Color(237,163,175));
 		matList.add(misc);
 		
 		misc = new Material();
@@ -608,6 +629,7 @@ public class MaterialFactory {
 		misc.freezeVul = 0;
 		misc.palIndex = 3;
 		misc.soundType = "crystal";
+		misc.color = extra.inlineColor(new Color(158,184,228));
 		matList.add(misc);
 		
 		misc = new Material();
@@ -632,6 +654,7 @@ public class MaterialFactory {
 		misc.shockVul = .5;
 		misc.freezeVul = 2;
 		misc.palIndex = 4;
+		misc.color = extra.inlineColor(new Color(229,238,255));
 		misc.soundType = "crystal";
 		matList.add(misc);
 		
@@ -658,6 +681,7 @@ public class MaterialFactory {
 		misc.freezeVul = .3;
 		misc.palIndex = 5;
 		misc.soundType = "crystal";
+		misc.color = extra.inlineColor(new Color(255,226,210));
 		matList.add(misc);
 		
 		misc = new Material();
@@ -683,6 +707,7 @@ public class MaterialFactory {
 		misc.freezeVul = 0;
 		misc.palIndex = 6;
 		misc.soundType = "crystal";
+		misc.color = extra.inlineColor(new Color(224,166,225));
 		matList.add(misc);
 		
 		
@@ -710,6 +735,7 @@ public class MaterialFactory {
 		misc.freezeVul = 1;
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
+		misc.color = extra.inlineColor(new Color(212,89,107));
 		matList.add(misc);
 		
 		misc = new Material();

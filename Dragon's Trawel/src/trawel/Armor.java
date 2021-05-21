@@ -36,6 +36,7 @@ public class Armor extends Item {
 	private double burned;
 	private String matType;//ie heavy, light, chainmail
 	private String baseMap;
+	private String prefixName;
 	private List<ArmorQuality> quals = new ArrayList<ArmorQuality>();
 	
 	//enums
@@ -90,6 +91,7 @@ public class Armor extends Item {
 	mat = mati;
 	material = mat.name;
 	level = newLevel;
+	prefixName = "";
 	
 	sharpResist = 1;
 	bluntResist = 1;
@@ -139,7 +141,7 @@ public class Armor extends Item {
 				case 2: baseName = (String)extra.choose("mail shirt"); weight = 10; baseResist = 4; cost = 3;break;
 				case 3: baseName = (String)extra.choose("mail pants"); weight = 6; baseResist = 3; cost = 3;break;
 				case 4: baseName = (String)extra.choose("mail boots"); weight = 4; baseResist = 2; cost = 2;break;
-			}
+				}
 				weight*=2;
 				sharpResist*=1.5;
 				pierceResist*=.5;
@@ -157,7 +159,7 @@ public class Armor extends Item {
 					cost*=1.5;
 					if (extra.chanceIn(2,3)) {
 						quals.add(ArmorQuality.FRAGILE);
-						baseName = extra.inlineColor(Color.YELLOW)+"fragile[c_white] " + baseName;
+						prefixName = extra.inlineColor(Color.YELLOW)+"fragile[c_white] ";
 						sharpResist*=1.25;
 						bluntResist*=1.25;
 						pierceResist*=1.25;
@@ -210,8 +212,8 @@ public class Armor extends Item {
 	 */
 	public String getName() {
 		if (isEnchanted){
-		return (getModiferName() + " " +enchantment.getBeforeName() + material + " " + baseName + enchantment.getAfterName());}
-			return (getModiferName() + " " +material + " " +  baseName);
+		return (getModiferName() + " " +enchantment.getBeforeName() +prefixName+MaterialFactory.getMat(material).color + material+"[c_white]" + " " + baseName + enchantment.getAfterName());}
+			return (getModiferName() + " "+prefixName +MaterialFactory.getMat(material).color + material+"[c_white]"  + " " +  baseName);
 	}
 	
 
