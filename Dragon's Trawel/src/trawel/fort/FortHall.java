@@ -284,7 +284,7 @@ public class FortHall extends FortFeature {
 			extra.printMode = false;
 		}
 		enchantTimer -= (time* (double)getSkillCount(SubSkill.ENCHANTING))/2.0;
-		if (enchantTimer <=0) {
+		if (enchantTimer <=0 && allies.size() > 0) {
 			enchantTimer = 24.0*7;
 			allies.get(extra.randRange(0,allies.size()-1)).getBag().getArmorSlot(extra.randRange(0,4)).improveEnchantChance(this.level);
 		}
