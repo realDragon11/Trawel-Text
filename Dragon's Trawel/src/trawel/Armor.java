@@ -1,5 +1,9 @@
 package trawel;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 /***
  * An extension of Item, an armor has varying stats that can effect a person, and possibly and enchantment.
  * Different materials and different slots effect the attributes of items, as well as the level of the item.
@@ -31,6 +35,20 @@ public class Armor extends Item {
 	private double burned;
 	private String matType;//ie heavy, light, chainmail
 	private String baseMap;
+	private List<ArmorQuality> quals = new ArrayList<ArmorQuality>();
+	
+	//enums
+	
+	public enum ArmorQuality implements Serializable {
+		FRAGILE("Fragile","Loses power when hit.");
+		
+		public String name, desc;
+		ArmorQuality(String nam, String des){
+			name = nam;
+			desc = des;
+			
+		}
+	}
 	
 	//constructors
 	
@@ -350,6 +368,9 @@ public class Armor extends Item {
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
+			for (ArmorQuality aq: quals) {
+				extra.println(aq.name + ": " + aq.desc);
+			}
 			;break;
 		}
 		
@@ -395,6 +416,16 @@ public class Armor extends Item {
 	public void deEnchant() {
 		enchantment = null;
 		isEnchanted = false;
+	}
+
+	public List<ArmorQuality> getQuals() {
+		return quals;
+	}
+	
+	public void breakFragile(int dam) {
+		if (quals.contains(ArmorQuality.FRAGILE)) {
+			burned = extra.clamp(burned-extra.lerp(0.05f,.5f, extra.clamp(dam,1,20)/20f),0,2);
+		}
 	}
 	
 }

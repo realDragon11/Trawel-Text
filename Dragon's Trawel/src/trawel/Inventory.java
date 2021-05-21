@@ -743,5 +743,21 @@ public class Inventory implements java.io.Serializable{
 	public int getWorth() {
 		return armorSlots[0].getCost()+armorSlots[1].getCost()+armorSlots[2].getCost()+armorSlots[3].getCost()+armorSlots[4].getCost()+hand.getCost()+this.getGold();
 	}
+	
+	public int countArmorQuality(Armor.ArmorQuality qual) {
+		int count = 0;
+		for (Armor a: armorSlots) {
+			if (a.getQuals().contains(qual)) {
+				count++;
+			}
+		}
+		return count;
+	}
+	
+	public void breakFragile(int dam) {
+		for (Armor a: armorSlots) {
+			a.breakFragile(dam);
+		}
+	}
 
 }
