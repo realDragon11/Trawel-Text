@@ -227,7 +227,7 @@ public class Town implements java.io.Serializable{
 						@Override
 						public boolean go() {
 							goTeleporters();
-							return false;
+							return true;
 						}});
 				}
 				if (hasPort()) {
@@ -241,7 +241,7 @@ public class Town implements java.io.Serializable{
 						@Override
 						public boolean go() {
 							goPort();
-							return false;
+							return true;
 						}});
 				}
 				
