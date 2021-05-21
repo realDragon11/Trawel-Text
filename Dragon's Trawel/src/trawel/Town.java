@@ -542,8 +542,13 @@ public class Town implements java.io.Serializable{
 			Networking.sendColor(Color.RED);
 			extra.println("SAVES ARE NOT COMPATIBLE ACROSS VERSIONS");
 			if (extra.yesNo()) {
-				extra.println("Saving... (this will take a while)");
-				WorldGen.save();
+				extra.println("Save to which slot?");
+				for (int i = 1; i < 9;i++) {
+					extra.println(i+ " slot:"+WorldGen.checkNameInFile(""+i));
+				}
+				int in = extra.inInt(8);
+				extra.println("Saving... (this used to take a while)");
+				WorldGen.save(in+"");
 				
 			} break;
 		case 8: Player.toggleTutorial();break;

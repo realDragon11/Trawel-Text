@@ -1,11 +1,16 @@
 package trawel;
 import java.awt.Point;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -490,14 +495,19 @@ public class WorldGen {
 		return Math.sqrt(Math.pow(a.x-b.x,2)+Math.pow(a.y-b.y,2));		
 	}
 	
-	public static void save() {
+	public static void save(String str) {
 		   FileOutputStream fos;
 		try {
-			fos = new FileOutputStream("trawel.save");//Player.player.getPerson().getName()
+			fos = new FileOutputStream("trawel"+str+".save");//Player.player.getPerson().getName()
+			 PrintWriter pws = new PrintWriter(fos);
+			 pws.write(Player.player.getPerson().getName() +", level" + Player.player.getPerson().getLevel()+"\n");
+			 pws.flush();
 			 ObjectOutputStream oos = new ObjectOutputStream(fos);
 			 oos.writeObject(plane);
 		     oos.close();
 		     fos.close();
+		     pws.close();
+		     extra.println("Saved!");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -505,11 +515,28 @@ public class WorldGen {
 		}
 	}
 	
-	public static void load() {
+	public static String checkNameInFile(String str) {
+		FileReader fr;
+		String ret = "";
+		try {
+			fr = new FileReader("trawel"+str+".save");
+			BufferedReader br = new BufferedReader(fr);
+			ret = br.readLine();
+			 br.close();
+			 fr.close();
+		} catch (Exception e) {
+			extra.println("Invalid load. Either no save file was found or it was outdated.");
+		}
+		return ret;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static void load(String str) {
 		FileInputStream fos;
 		try {
-			fos = new FileInputStream("trawel.save");
+			fos = new FileInputStream("trawel"+str+".save");
 			 ObjectInputStream oos = new ObjectInputStream(fos);
+			 oos.readLine();
 			 plane = (Plane) oos.readObject();
 			 Player.player = plane.getPlayer();
 			 //World worlda = world;

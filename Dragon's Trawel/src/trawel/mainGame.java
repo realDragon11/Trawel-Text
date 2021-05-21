@@ -1,8 +1,10 @@
 package trawel;
 import java.awt.Desktop;
 import java.net.URL;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -39,6 +41,11 @@ public class mainGame {
 	public static boolean GUIInput = true;
 	
 	public static Story story = null;
+	
+	public static Date lastAutoSave = new Date();
+	
+	public static boolean doAutoSave = true;
+	
 	//constructors
 	/**
 	 * The main game. Includes the selector for gamemode and output type.
@@ -84,7 +91,13 @@ public class mainGame {
 		return;
 	
 	case 7: System.exit(0);break;
-	case 3: Networking.clearSides(); WorldGen.load(); adventureBody(); break;
+	case 3: Networking.clearSides();
+	for (int i = 0; i < 9; i++) {
+		extra.println(i+" slot: "+WorldGen.checkNameInFile(""+i));
+	}
+	extra.println("9 autosave"+WorldGen.checkNameInFile("auto"));
+	int in = extra.inInt(9);
+	WorldGen.load(in == 9 ? "auto" : in+""); adventureBody(); break;
 	case 6: extra.println("Really connect? This will clear your current connection!");
 		if (extra.yesNo()) {
 		extra.println("Port?"); Networking.connect(extra.inInt(65535)); Networking.send("Visual|MainMenu|");}
@@ -523,6 +536,10 @@ public class mainGame {
 				
 				Player.player.getLocation().atTown();
 				globalPassTime();
+				if (doAutoSave && (lastAutoSave.getTime()-new Date().getTime() > 1000*60*2)) {
+					extra.println("Autosaving...");
+					WorldGen.save("auto");
+				}
 			}
 			extra.println("You do not wake up.");
 		}
