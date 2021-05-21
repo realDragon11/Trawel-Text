@@ -103,7 +103,7 @@ public class Services {
 	 */
 	public static void sellItem(Armor item, Inventory bag, Inventory purse, boolean getNew) {
 		purse.setGold(purse.getGold()+item.getCost());
-		extra.println("The " + item.getName() + " "+extra.pluralIs(item.getBaseName())+" sold for " + item.getCost() + " " + extra.choose("gold pieces","pieces of gold","gold") + "." );
+		extra.println("The " + item.getName() + " "+extra.pluralIs(item.getName())+" sold for " + item.getCost() + " " + extra.choose("gold pieces","pieces of gold","gold") + "." );
 		if (getNew) {
 			boolean soldIt = false;
 			int i = 0;

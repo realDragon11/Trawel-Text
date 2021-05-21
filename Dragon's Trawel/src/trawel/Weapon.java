@@ -184,15 +184,15 @@ public class Weapon extends Item {
 	 */
 	public String getName() {
 		if (IsEnchantedConstant){
-		return (getModiferName() + " " +enchant.getBeforeName() + material + " " +  weapName + enchant.getAfterName());}
+		return (getModiferName() + " " +enchant.getBeforeName() +MaterialFactory.getMat(material).color+ material + "[c_white] " +  weapName + enchant.getAfterName());}
 		if (this.isEnchantedHit()){
 			if (isKeen()) {
-				return (getModiferName() + " " + enchantHit.getName() + material  + " " + weapName);
+				return (getModiferName() + " " + enchantHit.getName() + MaterialFactory.getMat(material).color+material  + "[c_white] " + weapName);
 			}else {
-			return (getModiferName() +" "+ material + " " +  weapName + enchantHit.getName());}
+			return (getModiferName() +" "+MaterialFactory.getMat(material).color+ material + "[c_white] " +  weapName + enchantHit.getName());}
 			
 		}
-			return (getModiferName() + " " + material  + " " + weapName);
+			return (getModiferName() + " " +MaterialFactory.getMat(material).color+ material  + "[c_white] " + weapName);
 	}
 	
 	
