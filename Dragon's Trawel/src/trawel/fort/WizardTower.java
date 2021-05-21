@@ -212,7 +212,7 @@ public class WizardTower extends FortFeature {
 					public boolean go() {
 						extra.println(pickList.get(number).name + ": " + pickList.get(number).desc + " Buy?");
 						if (extra.yesNo()){
-							downTimeSkill.equals(pickList.get(number));
+							downTimeSkill=(pickList.get(number));
 							pickList.clear();
 							return true;
 						}
@@ -265,7 +265,7 @@ public class WizardTower extends FortFeature {
 					public boolean go() {
 						extra.println(pickList.get(number).name + ": " + pickList.get(number).desc + " Buy?");
 						if (extra.yesNo()){
-							battleSkill.equals(pickList.get(number));
+							battleSkill=(pickList.get(number));
 							pickList.clear();
 							return true;
 						}
