@@ -12,23 +12,23 @@ public class EnchantConstant extends Enchant {
 	//instance variables
 	private String beforeName = "";
 	private String afterName = "";// beforeName armor afterName
-	private double goldMult = 1;
+	private float goldMult = 1;
 	private int goldMod = 0;
 
 	//powers
-	private double speedMod = 1;
-	private double healthMod = 1;
-	private double damMod = 1;
-	private double aimMod = 1;
-	private double dodgeMod = 1;//would add armor, but keywords would be too close to dodging
-	private double magnitudeOne,magnitudeTwo;
+	private float speedMod = 1;
+	private float healthMod = 1;
+	private float damMod = 1;
+	private float aimMod = 1;
+	private float dodgeMod = 1;//would add armor, but keywords would be too close to dodging
+	private float magnitudeOne,magnitudeTwo;
 	
 	//constructors
 	/**
 	 * An constant enchantment which effects the user's stats constantly.
 	 * @param powMod (double)
 	 */
-	public EnchantConstant(double powMod){
+	public EnchantConstant(double powMod){//TODO: double -> float
 		if (powMod <= 0){
 			extra.println("Not enough base enchant? Did the ai try to enchant a steel weapon?");
 			//should be handled top level to prevent the ai from endlessly trying to enchant a steel weapon and failing
@@ -37,11 +37,11 @@ public class EnchantConstant extends Enchant {
 			throw new InvalidEnchantException();
 		}
 		//first component of enchantment
-		magnitudeOne = Math.random()*powMod;
-		magnitudeTwo = Math.random()*powMod;
+		magnitudeOne = (float) (Math.random()*powMod);
+		magnitudeTwo = (float) (Math.random()*powMod);
 		
-		magnitudeOne = extra.clamp(magnitudeOne,1,4);
-		magnitudeTwo = extra.clamp(magnitudeTwo,1,4);
+		magnitudeOne = (float) extra.clamp(magnitudeOne,1,4);
+		magnitudeTwo = (float) extra.clamp(magnitudeTwo,1,4);
 		if (extra.chanceIn(3,5)) {//3/5 chance of only getting one enchantment
 			if (extra.chanceIn(1,2)) {
 			magnitudeTwo = 0;}else {

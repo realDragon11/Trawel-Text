@@ -32,7 +32,7 @@ import trawel.townevents.TownFlavorFactory;
 public class mainGame {
 	public static final boolean bumpEnabled = true;//a boolean for an update
 
-	public static final String VERSION_STRING = "v0.7.0";
+	public static final String VERSION_STRING = "v0.7.1";
 
 	//instance variables
 	public static Scanner scanner = new Scanner(System.in);

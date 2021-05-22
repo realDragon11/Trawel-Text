@@ -17,6 +17,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.nustaq.serialization.FSTConfiguration;
+import org.nustaq.serialization.FSTObjectInput;
+import org.nustaq.serialization.FSTObjectOutput;
+
 import trawel.fort.FortQual;
 import trawel.fort.WizardTower;
 import trawel.townevents.TownTag;
@@ -26,6 +30,11 @@ public class WorldGen {
 	
 	public static Plane plane;
 	public static Town lynchPin;
+	
+	static final FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
+	static{
+		conf.registerClass(Armor.class,Weapon.class,Person.class);
+	}
 
 	public static void eoano(World w) {
 		plane = new Plane();
@@ -609,7 +618,7 @@ public class WorldGen {
 			 PrintWriter pws = new PrintWriter(fos);
 			 pws.write(Player.player.getPerson().getName() +", level " + Player.player.getPerson().getLevel()+" "+mainGame.VERSION_STRING+"\0");
 			 pws.flush();
-			 ObjectOutputStream oos = new ObjectOutputStream(fos);
+			 FSTObjectOutput oos = conf.getObjectOutput(fos);
 			 oos.writeObject(plane);
 		     oos.close();
 		     fos.close();
@@ -665,7 +674,7 @@ public class WorldGen {
 				}
 			}
 			
-			 ObjectInputStream oos = new ObjectInputStream(fos);
+			 FSTObjectInput oos = conf.getObjectInput(fos);
 			// while (oos.readChar() != '\n') {
 				 //should automagically work
 			 //}
