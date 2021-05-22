@@ -383,8 +383,8 @@ public class mainGame {
 		 */
 		public static Person CombatTwo(Person first_man,Person second_man, World w) {
 				Person holdPerson;
-				extra.println("Our first fighter is " + first_man.getName()  + ". " +extra.choose("They hail from the","They come from the","They are from the","The place they call home is the") + " " + first_man.whereFrom() + ".");
-				extra.println("Our second fighter is " + second_man.getName()  + ". " +extra.choose("They hail from the","They come from the","They are from the","The place they call home is the") + " " + second_man.whereFrom() + ".");
+				extra.println("Our first fighter is " + first_man.getName()  + "."); //+extra.choose("They hail from the","They come from the","They are from the","The place they call home is the") + " " + first_man.whereFrom() + ".");
+				extra.println("Our second fighter is " + second_man.getName()  + "."); //+extra.choose("They hail from the","They come from the","They are from the","The place they call home is the") + " " + second_man.whereFrom() + ".");
 				extra.println();
 				if (first_man.isPlayer()) {
 					first_man.getBag().graphicalDisplay(-1,first_man);

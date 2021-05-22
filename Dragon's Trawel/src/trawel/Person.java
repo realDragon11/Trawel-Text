@@ -26,7 +26,7 @@ public class Person implements java.io.Serializable{
 	private int hp, intellect, maxHp, tempMaxHp;
 	//private Taunts brag;
 	public String personType = extra.choose("cowardly","fearless");
-	private String placeOfBirth;
+	//private String placeOfBirth;
 	private int beer;
 	private boolean racist;
 	
@@ -80,7 +80,7 @@ public class Person implements java.io.Serializable{
 		bag.owner = this;
 		firstName = randomLists.randomFirstName();
 		title = randomLists.randomLastName();
-		placeOfBirth = extra.capFirst((String)extra.choose(randomLists.randomElement(),randomLists.randomColor()))+ " " +extra.choose("Kingdom","Kingdom","Colony","Domain","Realm");
+		//placeOfBirth = extra.capFirst((String)extra.choose(randomLists.randomElement(),randomLists.randomColor()))+ " " +extra.choose("Kingdom","Kingdom","Colony","Domain","Realm");
 		
 		//brag = new Taunts(bag.getRace());
 		
@@ -911,9 +911,10 @@ public class Person implements java.io.Serializable{
 	 * Get's the string of where this person is 'from'
 	 * @return (String) - place of birth
 	 */
+	/*
 	public String whereFrom() {
 		return placeOfBirth;
-	}
+	}*/
 
 
 	/**
