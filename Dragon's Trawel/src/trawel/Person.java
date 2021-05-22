@@ -21,8 +21,8 @@ public class Person implements java.io.Serializable{
 	private Attack attackNext;
 	private int xp = 0;
 	private int level = 1;
-	private double speedFill = 0;
-	private boolean isAttacking;
+	private transient double speedFill = 0;
+	private transient boolean isAttacking =false;
 	private int hp, intellect, maxHp, tempMaxHp;
 	//private Taunts brag;
 	public String personType = extra.choose("cowardly","fearless");

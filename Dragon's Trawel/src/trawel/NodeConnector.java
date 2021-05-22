@@ -20,7 +20,7 @@ public abstract class NodeConnector implements Serializable {
 	public boolean passing = false;
 	public int visited = 0;
 	
-	public static NodeConnector lastNode = null;
+	public static transient NodeConnector lastNode = null;
 	
 	public ArrayList<NodeConnector> getConnects() {
 		return connects;
