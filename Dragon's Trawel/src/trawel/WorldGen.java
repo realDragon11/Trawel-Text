@@ -502,7 +502,7 @@ public class WorldGen {
 		try {
 			fos = new FileOutputStream("trawel"+str+".save");//Player.player.getPerson().getName()
 			 PrintWriter pws = new PrintWriter(fos);
-			 pws.write(Player.player.getPerson().getName() +", level" + Player.player.getPerson().getLevel()+"\0");
+			 pws.write(Player.player.getPerson().getName() +", level " + Player.player.getPerson().getLevel()+" "+mainGame.VERSION_STRING+"\0");
 			 pws.flush();
 			 ObjectOutputStream oos = new ObjectOutputStream(fos);
 			 oos.writeObject(plane);
