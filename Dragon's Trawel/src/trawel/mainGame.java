@@ -145,7 +145,8 @@ public class mainGame {
 		extra.println("2 rTrawel (experimental jrpg)");
 		extra.println("3 SciMechs (mech jam game)");
 		extra.println("4 model mode");
-		switch(extra.inInt(4)) {
+		extra.println("5 save test");
+		switch(extra.inInt(5)) {
 		case 1: adventure1();break;
 		case 2:extra.println("This gamemode can only be played in the command prompt."); rtrawel.TestRunner.run();break;
 		case 3:
@@ -170,9 +171,24 @@ public class mainGame {
 		//case 2: adventure2();break;
 		//case 3: adventure3();break;
 		case 4: modelMode();break;
+		case 5: saveTest();break;
 			}
 	}
 	
+	private void saveTest() {
+		for (int i = 1;i<9;i++ ) {
+			extra.println(""+i);
+			World world = new World(10,20,"eoano");
+			WorldGen.eoano(world);
+			Person p = new Person(1);
+			p.setPlayer();
+			WorldGen.plane.setPlayer(new Player(p));
+			WorldGen.save(i+"");
+			WorldGen.load(1+"");
+		}
+		
+	}
+
 	private static List<Mech> curMechs;
 
 	public static PrintStream logStream;
