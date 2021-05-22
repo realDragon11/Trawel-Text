@@ -352,23 +352,23 @@ public class mainGame {
 				GUIInput = false;
 			}
 			if (a.toLowerCase().equals("nowarnings")) {
-				System.err.close();//TODO: used to disable fst warning messages
+				System.setErr(null);//TODO: used to disable fst warning messages
 			}
 			
 		}
-		/*
-		int i = 1;
-		while (i < 30) {
-			extra.println(new Person(i).getName());
-			i++;
-		}*/
 		
 		while (true) { new mainGame();}
 		}//catch (Exception )
 		catch(Exception e) {
+			System.setErr(System.out);
+			e.printStackTrace();
+			System.setErr(null);
 			extra.println("[jitter]Trawel has encountered an exception. Please report to realDragon. More details can be found on the command prompt.");
-			extra.println("ERROR: e.getMessage() + e.getStackTrace()");
-			if (!e.getMessage().equals("invalid input stream error") && !e.getMessage().equals("No line found")) {
+			System.out.println("ERROR: "+e.getMessage() != null ? (e.getMessage()) :"null" + e.getStackTrace());
+			if (e.getMessage() == null) {
+				return;
+			} 
+			if ( (!e.getMessage().equals("invalid input stream error") && !e.getMessage().equals("No line found"))) {
 			main(args);}
 		}
 		//

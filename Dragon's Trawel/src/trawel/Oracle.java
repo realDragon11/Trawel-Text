@@ -58,13 +58,13 @@ public class Oracle extends Feature implements java.io.Serializable{ //extends f
 		
 		
 		//System.out.println(new File(".").getAbsolutePath());
-		Scanner fileInput = new Scanner (getClass().getResourceAsStream("/resource/oldTips.txt"));
+		Scanner fileInput = new Scanner (Oracle.class.getResourceAsStream("/resc/resource/oldTips.txt"));
 		
 		while (fileInput.hasNextLine()) {
 			tips.add(new Tip(fileInput.nextLine(),"old"));
 		}
 		fileInput.close();
-		fileInput = new Scanner (getClass().getResourceAsStream("/resource/utterTips.txt"));
+		fileInput = new Scanner (Oracle.class.getResourceAsStream("/resource/utterTips.txt"));
 		
 		while (fileInput.hasNextLine()) {
 			tips.add(new Tip(fileInput.nextLine(),"utter"));
@@ -72,7 +72,7 @@ public class Oracle extends Feature implements java.io.Serializable{ //extends f
 		
 		fileInput.close();
 		//
-		fileInput = new Scanner (getClass().getResourceAsStream("/resource/cultTips.txt"));
+		fileInput = new Scanner (Oracle.class.getResourceAsStream("/resource/cultTips.txt"));
 		
 		while (fileInput.hasNextLine()) {
 			tips.add(new Tip(fileInput.nextLine(),"cult"));
@@ -80,7 +80,7 @@ public class Oracle extends Feature implements java.io.Serializable{ //extends f
 		
 		fileInput.close();
 		
-		fileInput = new Scanner (getClass().getResourceAsStream("/resource/racistPraiseTips.txt"));
+		fileInput = new Scanner (Oracle.class.getResourceAsStream("/resource/racistPraiseTips.txt"));
 		
 		while (fileInput.hasNextLine()) {
 			tips.add(new Tip(fileInput.nextLine(),"racistPraise"));
@@ -88,7 +88,7 @@ public class Oracle extends Feature implements java.io.Serializable{ //extends f
 		
 		fileInput.close();
 		
-		fileInput = new Scanner (getClass().getResourceAsStream("/resource/racistShunTips.txt"));
+		fileInput = new Scanner (Oracle.class.getResourceAsStream("/resource/racistShunTips.txt"));
 		
 		while (fileInput.hasNextLine()) {
 			tips.add(new Tip(fileInput.nextLine(),"racistShun"));
@@ -96,7 +96,7 @@ public class Oracle extends Feature implements java.io.Serializable{ //extends f
 		
 		fileInput.close();
 		
-		fileInput = new Scanner (getClass().getResourceAsStream("/resource/equalityTips.txt"));
+		fileInput = new Scanner (Oracle.class.getResourceAsStream("/resource/equalityTips.txt"));
 		
 		while (fileInput.hasNextLine()) {
 			tips.add(new Tip(fileInput.nextLine(),"equality"));
@@ -104,7 +104,7 @@ public class Oracle extends Feature implements java.io.Serializable{ //extends f
 		
 		fileInput.close();
 		
-		fileInput = new Scanner (getClass().getResourceAsStream("/resource/shamanTips.txt"));
+		fileInput = new Scanner (Oracle.class.getResourceAsStream("/resource/shamanTips.txt"));
 		
 		while (fileInput.hasNextLine()) {
 			tips.add(new Tip(fileInput.nextLine(),"shaman"));
@@ -112,7 +112,7 @@ public class Oracle extends Feature implements java.io.Serializable{ //extends f
 		
 		fileInput.close();
 		
-		fileInput = new Scanner (getClass().getResourceAsStream("/resource/gravediggerTips.txt"));
+		fileInput = new Scanner (Oracle.class.getResourceAsStream("/resource/gravediggerTips.txt"));
 		
 		while (fileInput.hasNextLine()) {
 			tips.add(new Tip(fileInput.nextLine(),"gravedigger"));
