@@ -231,7 +231,11 @@ public class Inn extends Feature implements java.io.Serializable{
 	}
 
 	private void bard() {
-		town.getIsland().getWorld().getRandSong().printSong();
+		if (mainGame.noBards) {
+			extra.println("Silence reigns.");
+		}else {
+			town.getIsland().getWorld().getRandSong().printSong();
+		}
 	}
 
 	@Override

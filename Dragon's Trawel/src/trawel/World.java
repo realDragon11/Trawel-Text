@@ -124,13 +124,13 @@ public class World implements java.io.Serializable{
 
 	public BardSong startBardSong(Person manOne, Person manTwo) {
 		BardSong b = new BardSong(manOne,manTwo);
-		bardSongs.add(b);
+		if (!mainGame.noBards) {bardSongs.add(b);}
 		return b;
 	}
 	
 	public BardSong startBardSong() {
 		BardSong b = new BardSong();
-		bardSongs.add(b);
+		if (!mainGame.noBards) {bardSongs.add(b);}
 		return b;
 	}
 	

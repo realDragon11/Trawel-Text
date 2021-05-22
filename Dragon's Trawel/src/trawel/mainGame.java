@@ -46,6 +46,8 @@ public class mainGame {
 	
 	public static Date lastAutoSave = new Date();
 	
+	public static boolean noBards = true;
+	
 	public static boolean doAutoSave = true;
 	
 	//constructors
@@ -550,7 +552,7 @@ public class mainGame {
 				
 				Player.player.getLocation().atTown();
 				globalPassTime();
-				if (doAutoSave && (lastAutoSave.getTime()-new Date().getTime() > 1000*60*2)) {
+				if (doAutoSave && (new Date().getTime()-lastAutoSave.getTime() > 1000*60*2)) {
 					extra.println("Autosaving...");
 					WorldGen.save("auto");
 				}
