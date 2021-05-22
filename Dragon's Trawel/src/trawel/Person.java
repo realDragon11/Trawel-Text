@@ -2,6 +2,8 @@ package trawel;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.nustaq.serialization.annotations.OneOf;
+
 import trawel.earts.EAType;
 import trawel.earts.EArt;
 import trawel.earts.EArtSkillMenu;
@@ -18,18 +20,19 @@ public class Person implements java.io.Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	//inst vars
 	private Inventory bag;
 	
-	private Attack attackNext;
+	private transient Attack attackNext;
 	private int xp = 0;
 	private int level = 1;
 	private transient double speedFill = 0;
 	private transient boolean isAttacking =false;
 	private int hp, intellect, maxHp, tempMaxHp;
 	//private Taunts brag;
+	@OneOf({"cowardly","fearless","grizzled"})
 	public String personType = extra.choose("cowardly","fearless");
 	//private String placeOfBirth;
 	private int beer;
