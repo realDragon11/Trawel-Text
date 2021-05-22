@@ -548,14 +548,15 @@ public class mainGame {
 		}
 		
 		public void adventureBody() {
+			lastAutoSave = new Date();
 			while(Player.player.isAlive()) {
-				
-				Player.player.getLocation().atTown();
-				globalPassTime();
 				if (doAutoSave && (new Date().getTime()-lastAutoSave.getTime() > 1000*60*2)) {
 					extra.println("Autosaving...");
 					WorldGen.save("auto");
+					lastAutoSave = new Date();
 				}
+				Player.player.getLocation().atTown();
+				globalPassTime();
 			}
 			extra.println("You do not wake up.");
 		}
