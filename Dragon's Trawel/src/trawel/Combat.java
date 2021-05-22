@@ -21,6 +21,9 @@ public class Combat {
 	public ArrayList<Person> survivors;
 	public ArrayList<Person> killed;
 	private boolean newTarget = false;
+	public long turns = 0;
+	public int totalFighters = 2;
+	public boolean battleIsLong = false;
 	//constructor
 	/**
 	 * Holds a fight to the death, between two people.
@@ -215,6 +218,7 @@ public class Combat {
 			p.getNextAttack().defender = otherperson;
 			}
 		}
+		totalFighters = totalList.size();
 		while(true) {
 			Person quickest= null;
 			double lowestDelay = Double.MAX_VALUE;
@@ -418,6 +422,16 @@ public class Combat {
 	 * @return damagedone
 	 */
 	public void handleTurn(Person attacker, Person defender, BardSong song,boolean canWait) {
+		turns++;
+		if (turns > 100*totalFighters) {
+			//VERY LONG BATTLE
+			attacker.takeDamage((int)(turns-(100*totalFighters)));
+			defender.takeDamage((int)(turns-(100*totalFighters)));
+			if (!battleIsLong) {
+				System.out.println("Resolving long battle...");
+				battleIsLong = true;
+			}
+		}
 		if (attacker.hasEffect(Effect.RECOVERING)) {
 			attacker.removeEffect(Effect.RECOVERING);
 			attacker.addHp(attacker.getLevel()*5);

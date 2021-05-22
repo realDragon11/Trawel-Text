@@ -176,17 +176,19 @@ public class mainGame {
 	}
 	
 	private void saveTest() {
-		for (int i = 1;i<9;i++ ) {
-			extra.println(""+i);
-			World world = new World(10,20,"eoano");
-			WorldGen.eoano(world);
-			Person p = new Person(1);
-			p.setPlayer();
-			WorldGen.plane.setPlayer(new Player(p));
-			WorldGen.save(i+"");
-			WorldGen.load(1+"");
+		for (int j = 0;j < 10;j++) {
+			extra.println("try: "+j);
+			for (int i = 1;i<9;i++ ) {
+				extra.println("slot: "+i);
+				World world = new World(10,20,"eoano");
+				WorldGen.eoano(world);
+				Person p = new Person(1);
+				p.setPlayer();
+				WorldGen.plane.setPlayer(new Player(p));
+				WorldGen.save(i+"");
+				WorldGen.load(1+"");
+			}
 		}
-		
 	}
 
 	private static List<Mech> curMechs;
