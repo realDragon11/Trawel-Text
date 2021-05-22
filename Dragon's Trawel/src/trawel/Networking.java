@@ -59,9 +59,6 @@ public class Networking {
 		if (out != null && (!extra.printMode)) {
 		out.println(str);
 		//out.flush();
-		if (mainGame.debug == true) {
-			System.err.println(str);
-		}
 		}
 	}
 	
@@ -69,9 +66,6 @@ public class Networking {
 		if (out != null) {
 		out.println(str);
 		//out.flush();
-		if (mainGame.debug == true) {
-			System.err.println(str);
-		}
 		}
 	}
 	

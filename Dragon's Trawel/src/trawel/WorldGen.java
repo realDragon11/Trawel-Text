@@ -33,7 +33,7 @@ public class WorldGen {
 	
 	static final FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
 	static{
-		conf.registerClass(Armor.class,Weapon.class,Person.class);
+		//conf.registerClass(Armor.class,Weapon.class,Person.class);//seems to produce deserial errors?
 	}
 
 	public static void eoano(World w) {
@@ -687,6 +687,9 @@ public class WorldGen {
 			 oos.close();
 			 fos.close();
 		} catch (ClassNotFoundException | IOException e) {
+			if (mainGame.inEclipse) {
+				e.printStackTrace();
+			}
 			extra.println("Invalid load. Either no save file was found or it was outdated.");
 		}
 		

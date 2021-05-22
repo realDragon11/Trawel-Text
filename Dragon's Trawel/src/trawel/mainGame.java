@@ -1,5 +1,7 @@
 package trawel;
 import java.awt.Desktop;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.net.URL;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -39,6 +41,8 @@ public class mainGame {
 	
 	public static int starting_level = 1;
 	public static boolean debug = false;
+	public static boolean inEclipse = false;
+	public static boolean autoConnect = false;
 
 	public static boolean GUIInput = true;
 	
@@ -49,6 +53,8 @@ public class mainGame {
 	public static boolean noBards = true;
 	
 	public static boolean doAutoSave = true;
+	
+	public static boolean logStreamIsErr = false;
 	
 	//constructors
 	/**
@@ -168,6 +174,8 @@ public class mainGame {
 	}
 	
 	private static List<Mech> curMechs;
+
+	public static PrintStream logStream;
 	
 	private List<Mech> mechsForSide(boolean side){
 		extra.menuGoPaged(new MenuGeneratorPaged(){
@@ -314,7 +322,39 @@ public class mainGame {
 	 * @param args (Strings)
 	 */
 	public static void main(String[] args) {
-		
+		new WorldGen();
+		try {
+			logStream = new PrintStream("log.txt");
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		extra.println("Dragon's Trawel "+VERSION_STRING);
+		extra.println(
+				" ___________  ___  _    _ _____ _     \r\n" + 
+				"|_   _| ___ \\/ _ \\| |  | |  ___| |    \r\n" + 
+				"  | | | |_/ / /_\\ \\ |  | | |__ | |    \r\n" + 
+				"  | | |    /|  _  | |/\\| |  __|| |    \r\n" + 
+				"  | | | |\\ \\| | | \\  /\\  / |___| |____\r\n" + 
+				"  \\_/ \\_| \\_\\_| |_/\\/  \\/\\____/\\_____/");
+		for (String a: args) {
+			if (a.toLowerCase().equals("autoconnect")){
+				autoConnect = true;
+				extra.println("Please wait for the graphical to load...");
+				Networking.autoConnect();
+			}
+			if (a.toLowerCase().equals("noguiinput")){
+				GUIInput = false;
+			}
+			if (a.toLowerCase().equals("nowarnings")) {
+				logStreamIsErr = true;
+				System.setErr(logStream);
+			}
+			if (a.toLowerCase().equals("ineclipse")) {
+				inEclipse = true;
+			}
+			
+		}
 		try {
 		new MaterialFactory();
 		new RaceFactory();
@@ -327,34 +367,11 @@ public class mainGame {
 		new WeaponAttackFactory();
 		new TownFlavorFactory();
 		story = new StoryNone();
-		extra.println("Dragon's Trawel "+VERSION_STRING);
-		extra.println(
-				" ___________  ___  _    _ _____ _     \r\n" + 
-				"|_   _| ___ \\/ _ \\| |  | |  ___| |    \r\n" + 
-				"  | | | |_/ / /_\\ \\ |  | | |__ | |    \r\n" + 
-				"  | | |    /|  _  | |/\\| |  __|| |    \r\n" + 
-				"  | | | |\\ \\| | | \\  /\\  / |___| |____\r\n" + 
-				"  \\_/ \\_| \\_\\_| |_/\\/  \\/\\____/\\_____/");
-		/*extra.println("   ▄▄▄▄▀ █▄▄▄▄ ██     ▄ ▄   ▄███▄   █     \r\n" + 
-				"▀▀▀ █    █  ▄▀ █ █   █   █  █▀   ▀  █     \r\n" + 
-				"    █    █▀▀▌  █▄▄█ █ ▄   █ ██▄▄    █     \r\n" + 
-				"   █     █  █  █  █ █  █  █ █▄   ▄▀ ███▄  \r\n" + 
-				"  ▀        █      █  █ █ █  ▀███▀       ▀ \r\n" + 
-				"          ▀      █    ▀ ▀                 \r\n" + 
-				"                ▀                         ");*/
+		
 		new Networking();
-		for (String a: args) {
-			if (a.toLowerCase().equals("autoconnect")){
-				extra.println("Please wait for the graphical to load...");
-				Networking.autoConnect();
-			}
-			if (a.toLowerCase().equals("noguiinput")){
-				GUIInput = false;
-			}
-			if (a.toLowerCase().equals("nowarnings")) {
-				System.setErr(null);//TODO: used to disable fst warning messages
-			}
-			
+		if (autoConnect) {
+			extra.println("Please wait for the graphical to load...");
+			Networking.autoConnect();
 		}
 		
 		while (true) { new mainGame();}
@@ -362,7 +379,9 @@ public class mainGame {
 		catch(Exception e) {
 			System.setErr(System.out);
 			e.printStackTrace();
-			System.setErr(null);
+			if (logStreamIsErr) {
+				System.setErr(logStream);
+			}
 			extra.println("[jitter]Trawel has encountered an exception. Please report to realDragon. More details can be found on the command prompt.");
 			System.out.println("ERROR: "+e.getMessage() != null ? (e.getMessage()) :"null" + e.getStackTrace());
 			if (e.getMessage() == null) {
@@ -373,6 +392,7 @@ public class mainGame {
 		}
 		//
 		
+		logStream.close();
 	}
 	
 	
