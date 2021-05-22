@@ -92,12 +92,24 @@ public class mainGame {
 	
 	case 7: System.exit(0);break;
 	case 3: Networking.clearSides();
-	for (int i = 0; i < 9; i++) {
+	for (int i = 1; i < 9; i++) {
 		extra.println(i+" slot: "+WorldGen.checkNameInFile(""+i));
 	}
-	extra.println("9 autosave"+WorldGen.checkNameInFile("auto"));
+	extra.println("9 autosave: "+WorldGen.checkNameInFile("auto"));
 	int in = extra.inInt(9);
-	WorldGen.load(in == 9 ? "auto" : in+""); adventureBody(); break;
+	WorldGen.load(in == 9 ? "auto" : in+"");
+	boolean runit;
+	try {
+		Player.player.getPerson();
+		runit = true;
+	}catch (Exception e) {
+		runit = false;
+	}
+	 if (runit) {
+		 adventureBody();
+	 }
+	
+	break;
 	case 6: extra.println("Really connect? This will clear your current connection!");
 		if (extra.yesNo()) {
 		extra.println("Port?"); Networking.connect(extra.inInt(65535)); Networking.send("Visual|MainMenu|");}

@@ -1,6 +1,7 @@
 package trawel;
 import java.awt.Point;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -500,7 +502,7 @@ public class WorldGen {
 		try {
 			fos = new FileOutputStream("trawel"+str+".save");//Player.player.getPerson().getName()
 			 PrintWriter pws = new PrintWriter(fos);
-			 pws.write(Player.player.getPerson().getName() +", level" + Player.player.getPerson().getLevel()+"\n");
+			 pws.write(Player.player.getPerson().getName() +", level" + Player.player.getPerson().getLevel()+"\0");
 			 pws.flush();
 			 ObjectOutputStream oos = new ObjectOutputStream(fos);
 			 oos.writeObject(plane);
@@ -521,22 +523,57 @@ public class WorldGen {
 		try {
 			fr = new FileReader("trawel"+str+".save");
 			BufferedReader br = new BufferedReader(fr);
-			ret = br.readLine();
+			ArrayList<Integer> values = new ArrayList<Integer>();
+			while (true) {
+				int red = br.read();
+				if (red == 0) {
+					break;
+				}
+				if (red == -1) {
+					extra.println("Invaild file.");
+					break;
+				}
+				values.add(red);
+			}
+			for (int i = 0; i < values.size();i++) {
+				ret+=(char)(int)values.get(i);
+			}
 			 br.close();
 			 fr.close();
 		} catch (Exception e) {
-			extra.println("Invalid load. Either no save file was found or it was outdated.");
+			ret = "n/a";
 		}
 		return ret;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static void load(String str) {
 		FileInputStream fos;
 		try {
 			fos = new FileInputStream("trawel"+str+".save");
+			//byte[] comp = new byte[]{(byte)0,};
+			while (true) {
+				if (fos.read() == 0) {
+					break;
+				}
+				if (fos.read() == -1) {
+					extra.println("Invaild file.");
+					break;
+				}
+				/*
+				byte[] read = fos.read(1);
+				if (read.equals(comp)) {
+					break;
+				}
+				if (read.length == 0) {
+					extra.println("Invaild file.");
+					break;
+				}*/
+			}
+			
 			 ObjectInputStream oos = new ObjectInputStream(fos);
-			 oos.readLine();
+			// while (oos.readChar() != '\n') {
+				 //should automagically work
+			 //}
 			 plane = (Plane) oos.readObject();
 			 Player.player = plane.getPlayer();
 			 //World worlda = world;
