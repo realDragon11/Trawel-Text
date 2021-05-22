@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.nustaq.serialization.annotations.OneOf;
+
 /***
  * An extension of Item, an armor has varying stats that can effect a person, and possibly and enchantment.
  * Different materials and different slots effect the attributes of items, as well as the level of the item.
@@ -22,6 +24,7 @@ public class Armor extends Item {
 	//instance variables
 	private int armorType;//The slot which the armor goes into
 	private String baseName;//what we call it, ie helm, helmet, hat, cap
+	@OneOf({"cloth","iron","tin","copper","bronze","steel","silver","gold"})
 	private String material;//what material the object is made from
 	private int cost;//how much it costs in gold pieces
 	//private int level;//the level of the item
@@ -39,6 +42,7 @@ public class Armor extends Item {
 	private double burnMod, freezeMod, shockMod;
 	private double burned;
 	private String matType;//ie heavy, light, chainmail
+	@OneOf({"iron","cloth","crystal"})
 	private String baseMap;
 	private String prefixName;
 	private List<ArmorQuality> quals = new ArrayList<ArmorQuality>();

@@ -17,8 +17,8 @@ public class Attack implements java.io.Serializable{
 	private double hitMod, speed;
 	private int sharp, blunt, pierce;
 	private String desc, name;
-	private Target target;
-	public Person defender;//only used for mass battles
+	private transient Target target;
+	public transient Person defender;//only used for mass battles
 	private boolean isMagic = false;
 	private String magicDesc;
 	private Skill skill;
