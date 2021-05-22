@@ -7,6 +7,10 @@ import trawel.factions.Faction;
 public class GroveNode extends NodeConnector implements java.io.Serializable{
 	//potentail problem: all this code is in a highly duplicated node
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//private String name;
 	private static final int EVENT_NUMBER = 21;
 	private int state;

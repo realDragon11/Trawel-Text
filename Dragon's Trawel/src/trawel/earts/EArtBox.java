@@ -8,6 +8,10 @@ import trawel.Person;
 
 public class EArtBox implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public List<ASpell> aSpells = new ArrayList<ASpell>();
 	public float aSpellPower = 1;
 	

@@ -4,6 +4,10 @@ import rtrawel.unit.RPlayer;
 
 public class PathWithLevel implements java.io.Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public String path;
 	public int level;
 	

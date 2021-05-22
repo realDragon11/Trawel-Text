@@ -2,6 +2,10 @@ package trawel;
 import java.awt.Color;
 
 public class Doctor extends Feature {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Town town;
 
 	public Doctor(String name,Town t) {

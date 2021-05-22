@@ -27,6 +27,10 @@ import trawel.extra;
  */
 public class FortHall extends FortFeature {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public int level;
 	public ArrayList<Person> allies = new ArrayList<Person>();
 	

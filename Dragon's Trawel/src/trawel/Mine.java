@@ -3,6 +3,10 @@ import java.awt.Color;
 
 public class Mine extends Feature {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Town town;
 	private int size;
 	private MineNode start;

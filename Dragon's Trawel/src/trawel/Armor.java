@@ -15,6 +15,10 @@ import java.util.List;
  */
 public class Armor extends Item {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//instance variables
 	private int armorType;//The slot which the armor goes into
 	private String baseName;//what we call it, ie helm, helmet, hat, cap

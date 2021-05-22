@@ -3,6 +3,10 @@ import java.util.ArrayList;
 
 
 public class Race extends Item implements java.io.Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//only extends item so I can have my secret hidden race store
 	public String name, namePlural;
 	public double tradeMod, aimMod, hpMod,dodgeMod, damMod, speedMod, rarity;

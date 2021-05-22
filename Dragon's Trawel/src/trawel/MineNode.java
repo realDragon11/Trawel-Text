@@ -5,6 +5,10 @@ import java.util.ArrayList;
 public class MineNode extends NodeConnector implements java.io.Serializable{
 	//potentail problem: all this code is in a highly duplicated node
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//private String name;
 	private static final int EVENT_NUMBER = 9;
 	private int state;

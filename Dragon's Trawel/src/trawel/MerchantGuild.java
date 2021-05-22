@@ -5,6 +5,10 @@ import java.util.List;
 
 public class MerchantGuild extends Feature {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public MerchantGuild(String name){
 		this.name = name;
 		tutorialText = "Merchant quests will make stores willing to sell items higher than your level.";

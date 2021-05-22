@@ -7,6 +7,11 @@ import trawel.factions.Faction;
 
 public class BasicSideQuest implements Quest{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public QuestR giver, target;
 	
 	public String giverName;
@@ -47,6 +52,11 @@ public class BasicSideQuest implements Quest{
 			q.targetName = extra.choose("totem","heirloom","keepsake","letter","key");
 			q.giver = new QuestR() {
 
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public String getName() {
 					return q.giverName;
@@ -64,6 +74,11 @@ public class BasicSideQuest implements Quest{
 				q.giver.locationT = loc;
 				q.giver.overQuest = q;
 			q.target = new QuestR() {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
 				@Override
 				public String getName() {
@@ -103,6 +118,11 @@ public class BasicSideQuest implements Quest{
 			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
 			q.giver = new QuestR() {
 
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
 				@Override
 				public String getName() {
 					return q.giverName;
@@ -119,6 +139,11 @@ public class BasicSideQuest implements Quest{
 				q.giver.locationT = loc;
 				q.giver.overQuest = q;
 			q.target = new QuestR() {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
 				@Override
 				public String getName() {
@@ -188,6 +213,11 @@ public class BasicSideQuest implements Quest{
 		case 3: //cleanse quest
 			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
 			q.giver = new QuestR() {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
 				@Override
 				public String getName() {

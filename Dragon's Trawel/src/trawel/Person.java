@@ -15,6 +15,11 @@ import trawel.factions.HostileTask;
  * A collection of a monster and an inventory.
  */
 public class Person implements java.io.Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	//inst vars
 	private Inventory bag;
 	

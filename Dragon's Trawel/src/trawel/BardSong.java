@@ -3,6 +3,10 @@ import java.util.ArrayList;
 
 public class BardSong implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<String> strings = new ArrayList<String>();
 
 	public BardSong(Person manOne, Person manTwo) {

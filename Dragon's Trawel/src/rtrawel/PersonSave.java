@@ -9,6 +9,11 @@ import rtrawel.jobs.Progression;
 import rtrawel.unit.RPlayer;
 
 public class PersonSave implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public String name;
 	
 	public String weap, shield;

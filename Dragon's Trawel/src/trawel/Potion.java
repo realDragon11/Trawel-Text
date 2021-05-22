@@ -2,6 +2,10 @@ package trawel;
 
 public class Potion implements java.io.Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public int sips;
 	public Effect effect;
 	

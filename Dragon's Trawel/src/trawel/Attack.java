@@ -9,6 +9,10 @@ package trawel;
  *
  */
 public class Attack implements java.io.Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//instance variables
 	private double hitMod, speed;
 	private int sharp, blunt, pierce;

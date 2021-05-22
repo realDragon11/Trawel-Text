@@ -18,6 +18,10 @@ import trawel.townevents.TownTag;
 
 public class Town implements java.io.Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean hasPort;
 	private boolean hasTeleporters;
 	private Point location;

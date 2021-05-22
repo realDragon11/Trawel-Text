@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class BossNode extends NodeConnector implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Person> people;
 	private int state = 0;
 	private int type;

@@ -3,6 +3,10 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public class Arena extends Feature{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int tier, rounds;
 	private double interval, timeLeft;
 	private int timesDone;

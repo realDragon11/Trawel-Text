@@ -3,6 +3,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Plane implements java.io.Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<World> worlds = new ArrayList<World>();
 	private Player player;
 	

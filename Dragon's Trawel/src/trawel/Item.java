@@ -11,6 +11,10 @@ import java.awt.Color;
  */
 public abstract class Item implements java.io.Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected int level;
 	public int bloodSeed = extra.randRange(0,2000);
 	private float bloodCount = 0;

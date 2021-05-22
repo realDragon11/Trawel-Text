@@ -7,6 +7,10 @@ import trawel.earts.EArtBox;
 import trawel.factions.FBox;
 
 public class Player extends SuperPerson{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Person person;
 	private Boolean isAlive;
 	public static Player player;

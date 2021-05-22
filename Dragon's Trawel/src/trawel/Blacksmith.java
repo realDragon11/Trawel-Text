@@ -2,6 +2,10 @@ package trawel;
 
 public class Blacksmith extends Feature {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int tier;
 	private double time = 0;
 	private Store store;

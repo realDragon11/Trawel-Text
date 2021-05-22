@@ -5,6 +5,10 @@ import java.util.List;
 
 public class EventFlag implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static EventFlag eventFlag;
 	private List<String> events = new ArrayList<String>();
 	private List<Integer> flags = new ArrayList<Integer>();

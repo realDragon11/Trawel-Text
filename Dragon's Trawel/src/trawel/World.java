@@ -3,6 +3,10 @@ import java.util.ArrayList;
 
 public class World implements java.io.Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Island> islands;
 	private int xSize;
 	private int ySize;

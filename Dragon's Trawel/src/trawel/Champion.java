@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 public class Champion  extends TravelingFeature{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Person person;
 	double timeElapsed;
 	

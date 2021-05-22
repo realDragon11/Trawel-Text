@@ -12,6 +12,10 @@ package trawel;
 
 public class Weapon extends Item {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//instance variables
 	private int weight = 1;//how much does it weigh?
 	private double baseEnchant;//how good is the material at receiving enchantments?
@@ -305,6 +309,10 @@ public class Weapon extends Item {
 	
 	public class DamTuple implements java.io.Serializable{
 		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		public double highest;
 		public double average;
 		public DamTuple(double h, double a) {

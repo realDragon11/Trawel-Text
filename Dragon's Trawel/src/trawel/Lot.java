@@ -2,6 +2,10 @@ package trawel;
 
 public class Lot extends Feature {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Town town;
 	private int tier;
 	private double constructTime = -1;

@@ -11,6 +11,10 @@ public class RogueGuild extends Feature {
 	
 	
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public RogueGuild(String name){
 		this.name = name;
 		tutorialText = "The rogue's guild allows you to launder gems.";

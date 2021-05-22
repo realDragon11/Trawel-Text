@@ -4,6 +4,10 @@ import java.awt.Color;
 
 public class EnchantHit extends Enchant {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private double fireMod,freezeMod,shockMod;
 	private String name;
 	private double goldMult;

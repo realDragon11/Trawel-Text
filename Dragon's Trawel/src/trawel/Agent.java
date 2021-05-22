@@ -6,6 +6,11 @@ import java.util.ArrayList;
  * like Player, but for the ai. can be programmed with behaviors
  */
 public class Agent extends SuperPerson{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Person person;
 	
 	private ArrayList<Behavior> behaviors;

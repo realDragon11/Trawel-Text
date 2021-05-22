@@ -5,11 +5,15 @@ package trawel;
  * 2/8/2018
  */
 public class EnchantConstant extends Enchant {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2L;
 	//instance variables
 	private String beforeName = "";
 	private String afterName = "";// beforeName armor afterName
 	private double goldMult = 1;
-	private double goldMod = 0;
+	private int goldMod = 0;
 
 	//powers
 	private double speedMod = 1;

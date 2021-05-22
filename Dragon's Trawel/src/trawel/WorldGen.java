@@ -46,6 +46,11 @@ public class WorldGen {
 		homa.tTags.add(TownTag.SMALL_TOWN);
 		homa.setGoPrinter(new PrintEvent(){
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void print() {
 				extra.println("You return to homa, the birthplace of your new self.");
@@ -53,6 +58,11 @@ public class WorldGen {
 			
 		});
 		homa.setFirstPrinter(new PrintEvent(){
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void print() {
@@ -76,6 +86,11 @@ public class WorldGen {
 		unun.tTags.add(TownTag.MERCHANT);
 		unun.setGoPrinter(new PrintEvent(){
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void print() {
 				extra.println("You return to unun, and the tower of fate.");
@@ -83,6 +98,11 @@ public class WorldGen {
 			
 		});
 		unun.setFirstPrinter(new PrintEvent(){
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void print() {
@@ -100,6 +120,11 @@ public class WorldGen {
 		tevar.addFeature(new Mine("tevar mine",tevar,null,Mine.Shape.STANDARD));
 		tevar.setGoPrinter(new PrintEvent(){
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void print() {
 				extra.println("You return to the mining town of tevar.");
@@ -107,6 +132,11 @@ public class WorldGen {
 			
 		});
 		tevar.setFirstPrinter(new PrintEvent(){
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void print() {
@@ -130,6 +160,11 @@ public class WorldGen {
 		hemo.tTags.add(TownTag.ALCHEMY);
 		hemo.setGoPrinter(new PrintEvent(){
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void print() {
 				extra.println("Hemo's forest looms ahead.");
@@ -149,6 +184,11 @@ public class WorldGen {
 		tanak.tTags.add(TownTag.CITY);
 		tanak.setGoPrinter(new PrintEvent(){
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void print() {
 				extra.println("You look up at the city of the sky once more, and make your way to the teleport station.");
@@ -157,6 +197,11 @@ public class WorldGen {
 			
 		});
 		tanak.setFirstPrinter(new PrintEvent(){
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void print() {
@@ -180,6 +225,11 @@ public class WorldGen {
 		lokan.tTags.add(TownTag.MYSTIC);
 		lokan.setGoPrinter(new PrintEvent(){
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void print() {
 				extra.println("The oracle in lokan awaits.");
@@ -188,6 +238,11 @@ public class WorldGen {
 			
 		});
 		lokan.setFirstPrinter(new PrintEvent(){
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void print() {
@@ -206,6 +261,11 @@ public class WorldGen {
 		
 		haka.setGoPrinter(new PrintEvent(){
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void print() {
 				extra.println("The mountain looms over you.");
@@ -214,6 +274,11 @@ public class WorldGen {
 			
 		});
 		haka.setFirstPrinter(new PrintEvent(){
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void print() {
@@ -240,6 +305,11 @@ public class WorldGen {
 		alhax.tTags.add(TownTag.MERCHANT);
 		alhax.setGoPrinter(new PrintEvent(){
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void print() {
 				extra.println("Alhaxian merchant ships surround the port when you arrive.");
@@ -250,6 +320,11 @@ public class WorldGen {
 			
 		});
 		alhax.setFirstPrinter(new PrintEvent(){
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void print() {
@@ -273,6 +348,11 @@ public class WorldGen {
 		revan.tTags.add(TownTag.MERCHANT);
 		revan.setGoPrinter(new PrintEvent(){
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void print() {
 				extra.println("You return to the altar town.");
@@ -281,6 +361,11 @@ public class WorldGen {
 			
 		});
 		revan.setFirstPrinter(new PrintEvent(){
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void print() {
@@ -302,6 +387,11 @@ public class WorldGen {
 		
 		arona.setGoPrinter(new PrintEvent(){
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void print() {
 				extra.println("You return to the pocket dimension.");
@@ -310,6 +400,11 @@ public class WorldGen {
 			
 		});
 		arona.setFirstPrinter(new PrintEvent(){
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void print() {
@@ -356,6 +451,11 @@ public class WorldGen {
 		erin.tTags.add(TownTag.ARCANE);
 		erin.setGoPrinter(new PrintEvent(){
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void print() {
 				extra.println("You return to erin, the library town.");
@@ -364,6 +464,11 @@ public class WorldGen {
 			
 		});
 		erin.setFirstPrinter(new PrintEvent(){
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void print() {

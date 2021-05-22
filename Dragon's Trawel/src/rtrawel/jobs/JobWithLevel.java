@@ -6,6 +6,10 @@ import trawel.extra;
 
 public class JobWithLevel implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public String jobName;
 	public int level;
 	public int xp;

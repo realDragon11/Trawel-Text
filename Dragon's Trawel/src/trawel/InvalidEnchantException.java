@@ -9,5 +9,10 @@ package trawel;
  */
 public class InvalidEnchantException extends RuntimeException{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	
 }

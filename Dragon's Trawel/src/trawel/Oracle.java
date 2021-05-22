@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Oracle extends Feature implements java.io.Serializable{ //extends feature later
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	static ArrayList<Tip> tips;
 	private int visits = 0;
 	private int level;

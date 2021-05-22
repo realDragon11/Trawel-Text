@@ -16,6 +16,11 @@ import trawel.fort.SubSkill.Type;
 public class WizardTower extends FortFeature {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public int tier;
 	
 	public SubSkill downTimeSkill;

@@ -10,9 +10,17 @@ import trawel.extra;
 public class FBox implements java.io.Serializable{
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private List<FSub> factions = new ArrayList<FSub>();
 	
 	public class FSub implements java.io.Serializable{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		public Faction name;
 		public float forFac;
 		public float againstFac;

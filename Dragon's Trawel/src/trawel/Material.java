@@ -7,6 +7,10 @@ import java.util.ArrayList;
  * 5/29/2018
  */
 public class Material implements java.io.Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public String name;
 	public double baseResist, baseEnchant, sharpResist, bluntResist, pierceResist, weight, cost, dexMod;
 	public double rarity, tier, sharpMult, bluntMult, pierceMult;

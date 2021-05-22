@@ -6,6 +6,10 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 	//potentail problem: all this code is in a highly duplicated node
 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final int EVENT_NUMBER =7;
 	private int state;
 	private int idNum;

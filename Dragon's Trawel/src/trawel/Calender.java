@@ -3,6 +3,10 @@ import java.io.Serializable;
 
 public class Calender implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public double timeCounter = extra.randRange(0,3640)/10.0;
 
 	public void passTime(double time) {

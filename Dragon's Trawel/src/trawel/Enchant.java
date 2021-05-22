@@ -7,6 +7,11 @@ package trawel;
  * on-hit was dropped.
  */
 public abstract class Enchant implements java.io.Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	//instance methods
 	public abstract String getEnchantType();
 

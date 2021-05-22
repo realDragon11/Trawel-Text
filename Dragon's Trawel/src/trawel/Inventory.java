@@ -12,6 +12,10 @@ import java.util.ArrayList;
  */
 public class Inventory implements java.io.Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//instance vars
 	private int gold = 0;
 	private Armor[] armorSlots = new Armor[5];

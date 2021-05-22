@@ -9,6 +9,10 @@ import trawel.factions.Faction;
 
 public class Forest extends Feature implements java.io.Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int tier;
 	private int explores;
 	private int dryadQuest;

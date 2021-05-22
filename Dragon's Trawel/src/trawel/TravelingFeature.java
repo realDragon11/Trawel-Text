@@ -2,6 +2,10 @@ package trawel;
 
 public class TravelingFeature extends Feature implements java.io.Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public boolean hasSomething  = false;
 	private Feature feature;
 	private double timePassed = 30;

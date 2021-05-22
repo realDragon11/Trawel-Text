@@ -2,6 +2,10 @@ package trawel;
 import java.util.ArrayList;
 
 public class Book implements java.io.Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public String name, author;
 	public ArrayList<String> text = new ArrayList<String>();
 	public void display() {

@@ -10,6 +10,11 @@ import trawel.extra;
 public class Hunter extends FortFeature {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public int tier;
 	
 	public SubSkill downTimeSkill;

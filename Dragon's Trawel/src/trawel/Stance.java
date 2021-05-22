@@ -9,6 +9,10 @@ import java.util.ArrayList;
  * Should only be used to hold the attacks of one weapon instance.
  */
 public class Stance implements java.io.Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//instance variables
 	private int attackCount;
 	private ArrayList<Attack> attacks = new ArrayList<Attack>();

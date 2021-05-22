@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 public class Island implements java.io.Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Town> towns;
 	private String name;
 	private World world;

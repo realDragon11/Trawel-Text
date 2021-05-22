@@ -9,6 +9,10 @@ import trawel.factions.Faction;
 
 public class HeroGuild extends Feature {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static float hSpentOnKno = 0f;
 
 	public HeroGuild(String name){

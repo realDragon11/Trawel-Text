@@ -8,6 +8,10 @@ public abstract class NodeConnector implements Serializable {
 
 	//used for connecting event nodes with bosses
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected ArrayList<NodeConnector> connects;
 	protected String name;
 	protected int level;

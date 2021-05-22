@@ -6,6 +6,10 @@ import java.util.List;
 //sells booze which increases temp hp for a few fights,
 //has a resident which changes with time
 public class Inn extends Feature implements java.io.Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int tier;
 	private int resident;
 	private double timePassed;

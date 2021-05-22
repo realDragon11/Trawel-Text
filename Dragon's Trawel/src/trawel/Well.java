@@ -2,6 +2,11 @@ package trawel;
 
 public class Well extends Feature implements java.io.Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public Well(String name) {
 		this.name = name;
 		tutorialText = "This is a well.";

@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 public class Store extends Feature implements java.io.Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int type;
 	private ArrayList<Item> items;
 	private ArrayList<DrawBane> dbs;

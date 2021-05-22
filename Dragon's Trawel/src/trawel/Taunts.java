@@ -6,6 +6,10 @@ package trawel;
  *
  */
 public class Taunts implements java.io.Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//instance variables
 	private int tauntCount;
 	private String[] taunts = new String[21];

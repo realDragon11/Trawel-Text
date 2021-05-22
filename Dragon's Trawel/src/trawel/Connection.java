@@ -8,6 +8,10 @@ import java.util.ArrayList;
  * 5/30/2018
  */
 public class Connection implements java.io.Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Town> towns;
 	private double time;
 	private String type;

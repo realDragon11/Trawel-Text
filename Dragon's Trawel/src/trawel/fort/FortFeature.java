@@ -6,6 +6,10 @@ import trawel.extra;
 
 public abstract class FortFeature extends Feature {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public abstract int getSize();
 	public abstract int getDefenceRating();
 	public abstract int getOffenseRating();

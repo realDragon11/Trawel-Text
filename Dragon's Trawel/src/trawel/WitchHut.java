@@ -3,6 +3,10 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public class WitchHut extends Feature{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public Town town;
 	
 	public WitchHut(Town t) {
