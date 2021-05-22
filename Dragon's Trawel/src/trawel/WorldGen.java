@@ -550,7 +550,6 @@ public class WorldGen {
 		FileInputStream fos;
 		try {
 			fos = new FileInputStream("trawel"+str+".save");
-			//byte[] comp = new byte[]{(byte)0,};
 			while (true) {
 				if (fos.read() == 0) {
 					break;
@@ -559,15 +558,6 @@ public class WorldGen {
 					extra.println("Invaild file.");
 					break;
 				}
-				/*
-				byte[] read = fos.read(1);
-				if (read.equals(comp)) {
-					break;
-				}
-				if (read.length == 0) {
-					extra.println("Invaild file.");
-					break;
-				}*/
 			}
 			
 			 ObjectInputStream oos = new ObjectInputStream(fos);
