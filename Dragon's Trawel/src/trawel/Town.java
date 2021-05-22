@@ -806,7 +806,6 @@ public class Town implements java.io.Serializable{
 	}
 	
 	public boolean wander(double threshold) {
-		if (mainGame.bumpEnabled == true) {
 			Networking.setArea("forest");
 			Networking.sendStrong("Discord|imagesmall|grove|Grove|");
 			boolean went = Bumper.go(threshold,tier,0);
@@ -824,16 +823,11 @@ public class Town implements java.io.Serializable{
 				}
 			}
 			return went;
-		}
-		return false;
 	}
 	
 	private boolean wanderShip(double d) {
-		if (mainGame.bumpEnabled == true) {
 			Networking.setArea("port");
 			return Bumper.go(d,tier,1);
-		}
-		return false;
 	}
 	
 	public ArrayList<Feature> getQuestLocationsInRange(int i){

@@ -30,9 +30,9 @@ import trawel.townevents.TownFlavorFactory;
  * calls all the other classes, and holds the defining gameplay types and inputs.
  */
 public class mainGame {
-	public static final boolean bumpEnabled = true;//a boolean for an update
+	//public static final boolean bumpEnabled = true;//a boolean for an update
 
-	public static final String VERSION_STRING = "v0.7.1";
+	public static final String VERSION_STRING = "v0.7.2";
 
 	//instance variables
 	public static Scanner scanner = new Scanner(System.in);
@@ -314,6 +314,7 @@ public class mainGame {
 	 * @param args (Strings)
 	 */
 	public static void main(String[] args) {
+		
 		try {
 		new MaterialFactory();
 		new RaceFactory();
@@ -350,6 +351,9 @@ public class mainGame {
 			if (a.toLowerCase().equals("noguiinput")){
 				GUIInput = false;
 			}
+			if (a.toLowerCase().equals("nowarnings")) {
+				System.err.close();//TODO: used to disable fst warning messages
+			}
 			
 		}
 		/*
@@ -363,7 +367,7 @@ public class mainGame {
 		}//catch (Exception )
 		catch(Exception e) {
 			extra.println("[jitter]Trawel has encountered an exception. Please report to realDragon. More details can be found on the command prompt.");
-			e.printStackTrace();
+			extra.println("ERROR: e.getMessage() + e.getStackTrace()");
 			if (!e.getMessage().equals("invalid input stream error") && !e.getMessage().equals("No line found")) {
 			main(args);}
 		}
