@@ -146,11 +146,6 @@ public class Calender implements Serializable {
 		return ((time1)+2+(timeZone))%1;
 	}
 	
-	/*public double getLocalTime24(double time24, double longa) {
-		int timeZone =(int) Math.round(extra.lerp(0, 12,(float)Math.abs(longa)/90)*(longa/Math.abs(longa)));
-		return (time24+48+timeZone)%24;
-	}*/
-	
 	
 	public static final double sunsetRadius = 1/(double)38;//1/(double)48;//half hour in 1 = 1 day
 	
@@ -167,13 +162,6 @@ public class Calender implements Serializable {
 		if (hourOfDay < sunRise+sunsetRadius) {
 			return extra.lerp(1,2,(float) ((hourOfDay-sunRise)/(sunsetRadius)));
 		}
-		/*
-		if (hourOfDay < getLocalTime(rns[0],longa)) {
-			return extra.lerp(1,2,(float) ((hourOfDay-(getLocalTime(rns[0],longa)-sunsetRadius))/(sunsetRadius)));
-		}
-		if (hourOfDay < getLocalTime(rns[0],longa)+sunsetRadius) {
-			return extra.lerp(2,3,(float) ((hourOfDay-(getLocalTime(rns[0],longa)))/(sunsetRadius)));
-		}*/
 		double sunSet = getLocalTime(rns[2],longa);
 		if (hourOfDay < sunSet-sunsetRadius) {
 			return 2;
@@ -184,13 +172,6 @@ public class Calender implements Serializable {
 		if (hourOfDay < sunSet+sunsetRadius) {
 			return extra.lerp(3,4,(float) ((hourOfDay-sunSet)/(sunsetRadius)));
 		}
-		/*
-		if (hourOfDay < getLocalTime(rns[2],longa)) {
-			return extra.lerp(2,4,(float) ((hourOfDay-getLocalTime(rns[2],longa)-sunsetRadius)/(sunsetRadius)));
-		}
-		if (hourOfDay < getLocalTime(rns[2],longa)+sunsetRadius) {
-			return extra.lerp(4,5,(float) ((hourOfDay-(getLocalTime(rns[2],longa)))/(sunsetRadius)));
-		}*/
 		return 4;
 	}
 
