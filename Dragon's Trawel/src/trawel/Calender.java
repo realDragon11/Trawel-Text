@@ -126,18 +126,19 @@ public class Calender implements Serializable {
 	 * @param riseOrSet
 	 * @return
 	 */
-	public float getSunTime(double time,double lata, double longa) {
+	public double[] getSunTime(double time,double lata, double longa) {
 		double j =  time/24-Math.toRadians(longa)/360;
 		double m = Math.toRadians((357.5291 + 0.98560028  * j)%360);
 		double c = 1.9148*Math.sin(m)+0.02*Math.sin(2*m)+0.0003*Math.sin(3*m);
 		double l = Math.toRadians((m+c+180+102.9372)%360);
 		double noon = j+0.0053*Math.sin(m)+0.0069*Math.sin(2*l);
-		double d = Math.sin(l)*Math.sin(Math.toRadians(23.44));//needs to be unsin-ed
-		double hour =  (Math.sin(Math.toRadians(-0.83)-Math.sin(Math.toRadians(lata))*Math.sin(Math.toRadians(d)))/(Math.cos(Math.toRadians(lata))*Math.cos(Math.toRadians(d))));
+		double d = Math.asin(Math.sin(l)*Math.sin(Math.toRadians(23.44)));//needs to be unsin-ed
+		double hour = Math.acos(Math.sin(Math.toRadians(-0.83)-Math.sin(Math.toRadians(lata))*Math.sin(d))/(Math.cos(Math.toRadians(lata))*Math.cos(d)));
 		//needs to be uncos-d
-		double rise = 0;
-		double set = 0;
-		return double[] {rise,noon,set};
+		double rise = noon-(hour/360);
+		double set = noon+(hour/360);
+		double[] ret = {rise,noon,set};
+		return ret;
 	}
 	
 	public float getBackTime() {
