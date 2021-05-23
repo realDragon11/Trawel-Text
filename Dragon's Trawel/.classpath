@@ -22,6 +22,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/trawel 2021/Trawel-Graphical-2021/fst/fstlibcustom.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
