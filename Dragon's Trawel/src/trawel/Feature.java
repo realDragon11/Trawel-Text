@@ -15,10 +15,12 @@ public abstract class Feature implements java.io.Serializable{
 	protected ArrayList<QuestR> qrRemoveList = new ArrayList<QuestR>();
 	protected int background_variant = extra.randRange(1, 3);
 	protected String background_area = "main";
+	public static Feature atFeatureForHeader = null;
 	public abstract void go();
 	public void goHeader() {
 		Networking.setBackground(background_area);
 		Networking.sendStrong("Backvariant|"+background_area+background_variant+"|"+Player.player.world.getCalender().getBackTime()+"|");
+		atFeatureForHeader = this;
 	}
 	public void init() {
 	}

@@ -120,8 +120,8 @@ public class Calender implements Serializable {
 		return str;
 	}
 	
-	public int getBackTime() {
-		return (int) Math.round((timeCounter%1)/2)+1;
+	public float getBackTime() {
+		return (float) (((timeCounter%24)/(25f/4f))+1);
 	}
 
 }

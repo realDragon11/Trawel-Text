@@ -52,6 +52,7 @@ public abstract class NodeConnector implements Serializable {
 
 
 	public void go() {
+		Feature.atFeatureForHeader.goHeader();
 		if (isSummit) {
 			switch(this.shapeName()) {
 			case "TOWER":
