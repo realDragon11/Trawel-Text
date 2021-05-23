@@ -174,7 +174,7 @@ public class Calender implements Serializable {
 		if (hourOfDay < getLocalTime(rns[0],longa)+sunsetRadius) {
 			return extra.lerp(2,3,(float) ((hourOfDay-(getLocalTime(rns[0],longa)))/(sunsetRadius)));
 		}*/
-		double sunSet = getLocalTime(rns[0],longa);
+		double sunSet = getLocalTime(rns[2],longa);
 		if (hourOfDay < sunSet-sunsetRadius) {
 			return 2;
 		}
