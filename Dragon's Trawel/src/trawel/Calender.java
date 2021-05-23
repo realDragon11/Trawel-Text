@@ -121,7 +121,42 @@ public class Calender implements Serializable {
 	}
 	
 	public float getBackTime() {
-		return (float) (((timeCounter%24)/(25f/4f))+1);
+		float hourOfDay = (float) (timeCounter%24);
+		switch (getMonth()) {
+		case 1:
+			if (hourOfDay < 5) {
+				return 1;
+			}
+			if (hourOfDay < 5.5f) {
+				return extra.lerp(1,2, (hourOfDay-5)*2);
+			}
+			if (hourOfDay < 6) {
+				return extra.lerp(2,3, (hourOfDay-5.5f)*2);
+			}
+			if (hourOfDay < 17.5f) {
+				return 3;
+			}
+			if (hourOfDay < 18f) {
+				return extra.lerp(3,4, (hourOfDay-17)*2);
+			}
+			if (hourOfDay < 18.5f) {
+				return extra.lerp(4,5, (hourOfDay-17.5f)*2);
+			}
+			return 1;
+		case 2:
+		case 3: 
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
+		case 9:
+		case 10: 
+		case 11:
+		case 12:
+		case 13:
+		}
+		throw new RuntimeException("Invalid back time!");
 	}
 
 }
