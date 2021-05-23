@@ -16,14 +16,19 @@ public class World implements java.io.Serializable{
 	private ArrayList<BardSong> bardSongs;
 	private ArrayList<Person> deathCheaters;
 	private Calender calender = new Calender();
+	private float minLata, maxLata, minLonga, maxLonga;
 		
-	public World(int x, int y, String _name,double minLata, double maxLata, double minLonga, double maxLonga) {
+	public World(int x, int y, String _name,float minLata, float minLonga) {
 		xSize = x;
 		ySize = y;
 		islands = new ArrayList<Island>();
 		bardSongs = new ArrayList<BardSong>();
 		deathCheaters = new ArrayList<Person>();
 		name = _name;
+		this.minLata = minLata;
+		this.maxLata = minLata+y*WorldGen.unitToDegrees;
+		this.minLonga = minLonga;
+		this.maxLonga = minLonga+x*WorldGen.unitToDegrees;;
 	}
 	
 	public void addIsland(Island t) {
@@ -159,6 +164,22 @@ public class World implements java.io.Serializable{
 
 	public Calender getCalender() {
 		return calender;
+	}
+
+	public float getMinLata() {
+		return minLata;
+	}
+
+	public float getMaxLata() {
+		return maxLata;
+	}
+
+	public float getMinLonga() {
+		return minLonga;
+	}
+
+	public float getMaxLonga() {
+		return maxLonga;
 	}
 	
 
