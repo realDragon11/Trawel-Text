@@ -19,6 +19,7 @@ public class Garden extends Feature {
 		for (int i = 0; i < 4;i++) {
 		plants.add(new PlantSpot(tier));}
 		background_area = "forest";
+		background_variant = 1;
 	}
 
 	@Override

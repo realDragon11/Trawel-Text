@@ -18,6 +18,7 @@ public class Grove extends Feature {
 		generate();
 		color = Color.RED;
 		background_area = "forest";
+		background_variant = 1;
 	}
 	@Override
 	public void go() {

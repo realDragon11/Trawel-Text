@@ -38,13 +38,13 @@ public class WorldGen {
 		//conf.getClassRegistry().dragonDump();
 	}
 	public static final double distanceScale = 2;//average distance between towns is like 1-3 units
-	public static final double footTravelPerHour = 4;
-	public static final double shipTravelPerHour =  9;
-	public static final double teleTravelPerHour =  40;
+	public static final double footTravelPerHour = 4/distanceScale;
+	public static final double shipTravelPerHour =  9/distanceScale;
+	public static final double teleTravelPerHour =  40/distanceScale;
 	public static final double milesInLata = 69;
-	public static final double unitsInLata = milesInLata/distanceScale;
-
-	public static final float unitToDegrees = (float) (1/unitsInLata);//approx 1/35 rn
+	public static final double milesInLonga = 54.6;
+	public static final float unitsInLata = (float) (milesInLata/distanceScale);
+	public static final float unitsInLonga = (float) (milesInLonga/distanceScale);
 	public static World eoano() {
 		World w = new World(16,10,"eoano",41f,-72f);
 		plane = new Plane();
@@ -620,11 +620,11 @@ public class WorldGen {
 		}
 		switch (type) {
 		case "road":
-			return distanceScale*pointDistance(t1.getLocation(),t2.getLocation())/footTravelPerHour;
+			return pointDistance(t1.getLocation(),t2.getLocation())/footTravelPerHour;
 		case "ship":
-			return distanceScale*pointDistance(t1.getLocation(),t2.getLocation())/shipTravelPerHour;
+			return pointDistance(t1.getLocation(),t2.getLocation())/shipTravelPerHour;
 		case "teleport":
-			return distanceScale*pointDistance(t1.getLocation(),t2.getLocation())/teleTravelPerHour;
+			return pointDistance(t1.getLocation(),t2.getLocation())/teleTravelPerHour;
 		}
 		//fallback
 		return pointDistance(t1.getLocation(),t2.getLocation());

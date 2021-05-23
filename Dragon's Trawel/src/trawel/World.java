@@ -26,9 +26,9 @@ public class World implements java.io.Serializable{
 		deathCheaters = new ArrayList<Person>();
 		name = _name;
 		this.minLata = minLata;
-		this.maxLata = minLata+y*WorldGen.unitToDegrees;
+		this.maxLata = minLata+y/WorldGen.unitsInLata;
 		this.minLonga = minLonga;
-		this.maxLonga = minLonga+x*WorldGen.unitToDegrees;;
+		this.maxLonga = minLonga+x/WorldGen.unitsInLonga;;
 	}
 	
 	public void addIsland(Island t) {

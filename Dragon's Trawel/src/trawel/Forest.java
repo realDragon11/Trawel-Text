@@ -31,6 +31,7 @@ public class Forest extends Feature implements java.io.Serializable{
 		tutorialText = "Explore forests to progress in level.";
 		color = Color.RED;
 		background_area = "forest";
+		background_variant = 1;
 	}
 	
 	@Override

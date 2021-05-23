@@ -143,7 +143,7 @@ public class Calender implements Serializable {
 	}
 	
 	public double getLocalTime(double time1, double longa) {
-		double timeZone =(longa >0 ? 1 : -1)*(extra.lerp(0, 1/2f,(float)Math.abs(longa)/90));
+		double timeZone =(longa >0 ? 1 : -1)*(extra.lerp(0, 1/2f,(float)Math.abs(longa)/180));
 		return ((time1)+2+(timeZone))%1;
 	}
 	
@@ -180,7 +180,7 @@ public class Calender implements Serializable {
 		Calender test = new Calender();
 		extra.println(sunsetRadius+"");
 		test.timeCounter = 0;
-		int longa = 0;
+		int longa = -72;
 		for (int i = 0;i < 100;i++) {
 			
 			extra.println(test.getBackTime(30,longa)+"");
