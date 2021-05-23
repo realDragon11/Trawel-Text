@@ -31,9 +31,10 @@ public class WorldGen {
 	public static Plane plane;
 	public static Town lynchPin;
 	
-	static final FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration();
+	static final FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration(); //.createDefaultConfiguration();
 	static{
 		conf.registerClass(Armor.class,Weapon.class,Person.class);//seems to produce deserial errors?
+		//conf.getClassRegistry().dragonDump();
 	}
 
 	public static void eoano(World w) {

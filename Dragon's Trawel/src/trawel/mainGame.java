@@ -188,6 +188,7 @@ public class mainGame {
 				WorldGen.save(i+"");
 				WorldGen.load(1+"");
 			}
+			//WorldGen.conf.getClassRegistry().dragonDump();
 		}
 	}
 
