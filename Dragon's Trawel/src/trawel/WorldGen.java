@@ -671,17 +671,10 @@ public class WorldGen {
 	
 	public static void load(String str) {
 		FileInputStream fos;
+		int len;
 		try {
 			fos = new FileInputStream("trawel"+str+".save");
 			while (true) {
-				if (fos.read() == 0) {
-					break;
-				}
-				if (fos.read() == -1) {
-					extra.println("Invaild file.");
-					break;
-				}
-			}
 			String ret = "";
 			
 				ArrayList<Integer> values = new ArrayList<Integer>();
@@ -699,12 +692,19 @@ public class WorldGen {
 				for (int i = 0; i < values.size();i++) {
 					ret+=(char)(int)values.get(i);
 				}
+				try {
+				 len = Integer.parseInt(ret);
+				 break;
+				}catch(NumberFormatException e) {
+					
+				}
+			}
 			
 			 //FSTObjectInput oos = conf.getObjectInput();
 			// while (oos.readChar() != '\n') {
 				 //should automagically work
 			 //}
-			 int len = Integer.parseInt(ret);
+			 //when it opens the same file again it crashes?
 			 extra.println(""+len);
 			 byte buffer[] = new byte[len];
 	            while (len > 0) {
