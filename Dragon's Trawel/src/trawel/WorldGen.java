@@ -1,6 +1,7 @@
 package trawel;
 import java.awt.Point;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -616,14 +617,13 @@ public class WorldGen {
 		   FileOutputStream fos;
 		try {
 			fos = new FileOutputStream("trawel"+str+".save");//Player.player.getPerson().getName()
-			 PrintWriter pws = new PrintWriter(fos);
+			PrintWriter pws =new PrintWriter(fos);
 			 pws.write(Player.player.getPerson().getName() +", level " + Player.player.getPerson().getLevel()+" "+mainGame.VERSION_STRING+"\0");
 			 FSTObjectOutput oos = conf.getObjectOutput();
 			 oos.writeObject(plane);
-			 
-			 extra.println(oos.getWritten()+"");
+			 pws.write(oos.getWritten()+"\0");
+			 extra.println(oos.getWritten()+" bytes");
 			 pws.flush();
-			 fos.write((byte)oos.getWritten());
 			 fos.flush();
 			 fos.write(oos.getBuffer(), 0,oos.getWritten());
 			 fos.flush();
@@ -668,6 +668,7 @@ public class WorldGen {
 		return ret;
 	}
 	
+	
 	public static void load(String str) {
 		FileInputStream fos;
 		try {
@@ -681,12 +682,29 @@ public class WorldGen {
 					break;
 				}
 			}
+			String ret = "";
+			
+				ArrayList<Integer> values = new ArrayList<Integer>();
+				while (true) {
+					int red = fos.read();
+					if (red == 0) {
+						break;
+					}
+					if (red == -1) {
+						extra.println("Invaild file.");
+						break;
+					}
+					values.add(red);
+				}
+				for (int i = 0; i < values.size();i++) {
+					ret+=(char)(int)values.get(i);
+				}
 			
 			 //FSTObjectInput oos = conf.getObjectInput();
 			// while (oos.readChar() != '\n') {
 				 //should automagically work
 			 //}
-			 int len = fos.read();
+			 int len = Integer.parseInt(ret);
 			 extra.println(""+len);
 			 byte buffer[] = new byte[len];
 	            while (len > 0) {
