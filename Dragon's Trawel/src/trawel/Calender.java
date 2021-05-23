@@ -136,7 +136,7 @@ public class Calender implements Serializable {
 		//testing
 		//d = Math.abs(d);
 		//end test
-		double hour = Math.toDegrees(Math.acos(Math.sin(Math.toRadians(-0.83))-Math.sin(Math.toRadians(lata))*Math.sin(d))/(Math.cos(Math.toRadians(lata))*Math.cos(d)));
+		double hour = -Math.toDegrees(Math.acos(Math.sin(Math.toRadians(-0.83))-Math.sin(Math.toRadians(lata))*Math.sin(d))/(Math.cos(Math.toRadians(lata))*Math.cos(d)));
 		//needs to be uncos-d
 		double rise = noon-(hour/(360));
 		double set = noon+(hour/360);
@@ -155,7 +155,7 @@ public class Calender implements Serializable {
 	}*/
 	
 	
-	public static final double sunsetRadius = 1/(double)48;//half hour in 1 = 1 day
+	public static final double sunsetRadius = 1/(double)40;//1/(double)48;//half hour in 1 = 1 day
 	
 	public float getBackTime(double lata, double longa) {
 		double hourOfDay = getLocalTime((timeCounter+12)/24,longa);//(%24)/24;
@@ -164,19 +164,19 @@ public class Calender implements Serializable {
 			return 1;
 		}
 		if (hourOfDay < getLocalTime(rns[0],longa)) {
-			return extra.lerp(1,2,(float) ((hourOfDay-getLocalTime(rns[0],longa))/(sunsetRadius)));
+			return extra.lerp(1,2,(float) ((hourOfDay-(getLocalTime(rns[0],longa)+sunsetRadius))/(sunsetRadius)));
 		}
 		if (hourOfDay < getLocalTime(rns[0],longa)+sunsetRadius) {
-			return extra.lerp(2,3,(float) ((hourOfDay-(getLocalTime(rns[0],longa)+sunsetRadius))/(sunsetRadius)));
+			return extra.lerp(2,3,(float) ((hourOfDay-(getLocalTime(rns[0],longa)+sunsetRadius*2))/(sunsetRadius)));
 		}
 		if (hourOfDay < getLocalTime(rns[2],longa)-sunsetRadius) {
 			return 2;
 		}
 		if (hourOfDay < getLocalTime(rns[2],longa)) {
-			return extra.lerp(2,4,(float) ((hourOfDay-getLocalTime(rns[2],longa))/(sunsetRadius)));
+			return extra.lerp(2,4,(float) ((hourOfDay-getLocalTime(rns[2],longa)+sunsetRadius)/(sunsetRadius)));
 		}
 		if (hourOfDay < getLocalTime(rns[2],longa)+sunsetRadius) {
-			return extra.lerp(4,5,(float) ((hourOfDay-(getLocalTime(rns[2],longa)+sunsetRadius))/(sunsetRadius)));
+			return extra.lerp(4,5,(float) ((hourOfDay-(getLocalTime(rns[2],longa)+sunsetRadius*2))/(sunsetRadius)));
 		}
 		return 1;
 	}
