@@ -127,17 +127,13 @@ public class Calender implements Serializable {
 	 * @return
 	 */
 	public double[] getSunTime(double lata, double longa) {
-		double j = ((int) ((timeCounter+12)/24))-(longa/360);
-		double m = Math.toRadians((357.5291 + 0.98560028  * j)%360);
+		double j = ((int)((timeCounter)/24))-(longa/360);
+		double m = Math.toRadians((357.5291 + 0.98560028 * j)%360);
 		double c = 1.9148*Math.sin(m)+0.02*Math.sin(2*m)+0.0003*Math.sin(3*m);
-		double l = Math.toRadians((m+c+180+102.9372)%360);
-		double noon = j+0.0053*Math.sin(m)+0.0069*Math.sin(2*l);
-		double d = Math.asin(Math.sin(l)*Math.sin(Math.toRadians(23.44)));//needs to be unsin-ed
-		//testing
-		//d = Math.abs(d);
-		//end test
-		double hour = -Math.toDegrees(Math.acos(Math.sin(Math.toRadians(-0.83))-Math.sin(Math.toRadians(lata))*Math.sin(d))/(Math.cos(Math.toRadians(lata))*Math.cos(d)));
-		//needs to be uncos-d
+		double l = Math.toRadians((Math.toDegrees(m)+c+180+102.9372)%360);
+		double noon = j+0.0053*Math.sin(m)-0.0069*Math.sin(2*l)/*testing:*/+.5;
+		double d = Math.asin(Math.sin(l)*Math.sin(Math.toRadians(23.44)));
+		double hour = Math.toDegrees(Math.acos(Math.sin(Math.toRadians(-0.83))-Math.sin(Math.toRadians(lata))*Math.sin(d))/(Math.cos(Math.toRadians(lata))*Math.cos(d)));
 		double rise = noon-(hour/(360));
 		double set = noon+(hour/360);
 		double[] ret = {rise,noon,set};
@@ -145,7 +141,7 @@ public class Calender implements Serializable {
 	}
 	
 	public double getLocalTime(double time1, double longa) {
-		double timeZone =(extra.lerp(0, 1/2f,(float)Math.abs(longa)/90)*(longa/Math.abs(longa)));
+		double timeZone =(longa >0 ? 1 : -1)*(extra.lerp(0, 1/2f,(float)Math.abs(longa)/90));
 		return ((time1)+2+(timeZone))%1;
 	}
 	
@@ -158,25 +154,25 @@ public class Calender implements Serializable {
 	public static final double sunsetRadius = 1/(double)40;//1/(double)48;//half hour in 1 = 1 day
 	
 	public float getBackTime(double lata, double longa) {
-		double hourOfDay = getLocalTime((timeCounter+12)/24,longa);//(%24)/24;
+		double hourOfDay = getLocalTime((timeCounter-12)/24,longa);//(%24)/24;
 		double[] rns = this.getSunTime(lata,longa);
 		if (hourOfDay < getLocalTime(rns[0],longa)-sunsetRadius) {
 			return 1;
 		}
 		if (hourOfDay < getLocalTime(rns[0],longa)) {
-			return extra.lerp(1,2,(float) ((hourOfDay-(getLocalTime(rns[0],longa)+sunsetRadius))/(sunsetRadius)));
+			return extra.lerp(1,2,(float) ((hourOfDay-(getLocalTime(rns[0],longa)-sunsetRadius))/(sunsetRadius)));
 		}
 		if (hourOfDay < getLocalTime(rns[0],longa)+sunsetRadius) {
-			return extra.lerp(2,3,(float) ((hourOfDay-(getLocalTime(rns[0],longa)+sunsetRadius*2))/(sunsetRadius)));
+			return extra.lerp(2,3,(float) ((hourOfDay-(getLocalTime(rns[0],longa)))/(sunsetRadius)));
 		}
 		if (hourOfDay < getLocalTime(rns[2],longa)-sunsetRadius) {
 			return 2;
 		}
 		if (hourOfDay < getLocalTime(rns[2],longa)) {
-			return extra.lerp(2,4,(float) ((hourOfDay-getLocalTime(rns[2],longa)+sunsetRadius)/(sunsetRadius)));
+			return extra.lerp(2,4,(float) ((hourOfDay-getLocalTime(rns[2],longa)-sunsetRadius)/(sunsetRadius)));
 		}
 		if (hourOfDay < getLocalTime(rns[2],longa)+sunsetRadius) {
-			return extra.lerp(4,5,(float) ((hourOfDay-(getLocalTime(rns[2],longa)+sunsetRadius*2))/(sunsetRadius)));
+			return extra.lerp(4,5,(float) ((hourOfDay-(getLocalTime(rns[2],longa)))/(sunsetRadius)));
 		}
 		return 1;
 	}
@@ -184,13 +180,15 @@ public class Calender implements Serializable {
 	public static void timeTest() {
 		Calender test = new Calender();
 		extra.println(sunsetRadius+"");
-		test.timeCounter = 10;
-		for (int i = 0;i < 3600;i++) {
-			test.timeCounter+=1f;
-			extra.println(test.getBackTime(30,20)+"");
-			double[] t = test.getSunTime(30,20);
+		test.timeCounter = 0;
+		int longa = 0;
+		for (int i = 0;i < 100;i++) {
+			
+			extra.println(test.getBackTime(30,longa)+"");
+			double[] t = test.getSunTime(30,longa);
 			System.out.println((test.timeCounter/24) +": "+ (t[0]) + " " + (t[1]) +" "+ (t[2]));
-			System.out.println(test.getLocalTime(test.timeCounter/24,20) +": "+ test.getLocalTime(t[0],20) + " " + test.getLocalTime(t[1],20) +" "+ test.getLocalTime(t[2],20));
+			System.out.println(test.getLocalTime(test.timeCounter/24,longa) +": "+ test.getLocalTime(t[0],longa) + " " + test.getLocalTime(t[1],longa) +" "+ test.getLocalTime(t[2],longa));
+			test.timeCounter+=1f;
 		}
 		
 	}
