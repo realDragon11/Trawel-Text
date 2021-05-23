@@ -38,7 +38,8 @@ public class WorldGen {
 		//conf.getClassRegistry().dragonDump();
 	}
 
-	public static void eoano(World w) {
+	public static World eoano() {
+		World w = new World(10,20,"eoano");
 		plane = new Plane();
 		Player.world = w;
 		plane.addWorld(w);
@@ -527,6 +528,7 @@ public class WorldGen {
 		for (World wor: plane.worlds()) {
 			townFinal(wor);
 		}
+		return w;
 	
 	}
 	

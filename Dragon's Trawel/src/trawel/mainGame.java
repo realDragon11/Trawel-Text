@@ -182,8 +182,7 @@ public class mainGame {
 			extra.println("try: "+j);
 			for (int i = 1;i<9;i++ ) {
 				extra.println("slot: "+i);
-				World world = new World(10,20,"eoano");
-				WorldGen.eoano(world);
+				WorldGen.eoano();
 				Person p = new Person(1);
 				p.setPlayer();
 				WorldGen.plane.setPlayer(new Player(p));
@@ -569,7 +568,7 @@ public class mainGame {
 
 		
 		
-		public void adventure2(){
+		/*public void adventure2(){
 			World world = new World(10,20,"eoano");
 			WorldGen.eoano(world);
 			Player player = randPerson(false,true);
@@ -590,7 +589,7 @@ public class mainGame {
 			player.getPerson().addXpSilent(9999);
 			Player.toggleTutorial();
 			adventureBody();
-		}
+		}*/
 		
 		public void adventureBody() {
 			lastAutoSave = new Date();
@@ -645,8 +644,7 @@ public class mainGame {
 		
 		
 		public void adventure1(){
-			World world = new World(10,20,"eoano");
-			WorldGen.eoano(world);
+			World world = WorldGen.eoano();
 			story = new StoryDeathWalker();
 			Person manOne, manTwo;
 			Player player;

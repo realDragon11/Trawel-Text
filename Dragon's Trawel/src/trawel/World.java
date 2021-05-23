@@ -17,7 +17,7 @@ public class World implements java.io.Serializable{
 	private ArrayList<Person> deathCheaters;
 	private Calender calender = new Calender();
 		
-	public World(int x, int y, String _name) {
+	public World(int x, int y, String _name,double minLata, double maxLata, double minLonga, double maxLonga) {
 		xSize = x;
 		ySize = y;
 		islands = new ArrayList<Island>();

@@ -122,6 +122,7 @@ public class Calender implements Serializable {
 	}
 	
 	/**
+	 * Won't sync up to year exactly
 	 * https://en.wikipedia.org/wiki/Sunrise_equation
 	 * @param time
 	 * @param riseOrSet
@@ -195,8 +196,8 @@ public class Calender implements Serializable {
 		double[] d = new double[2];
 		Point p = t.getLocation();
 		World w = t.getIsland().getWorld();
-		d[0] = extra.lerp(90,-90,p.y/(float)w.getYSize());
-		d[1] = extra.lerp(-90,90,p.y/(float)w.getXSize());
+		d[0] = extra.lerp(w.getMinLata(),w.getMaxLata(),p.y/(float)w.getYSize());
+		d[1] = extra.lerp(w.getMinLonga(),w.getMaxLonga(),p.y/(float)w.getXSize());
 		return d;
 	}
 
