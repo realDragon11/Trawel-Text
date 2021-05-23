@@ -618,10 +618,17 @@ public class WorldGen {
 			fos = new FileOutputStream("trawel"+str+".save");//Player.player.getPerson().getName()
 			 PrintWriter pws = new PrintWriter(fos);
 			 pws.write(Player.player.getPerson().getName() +", level " + Player.player.getPerson().getLevel()+" "+mainGame.VERSION_STRING+"\0");
-			 pws.flush();
-			 FSTObjectOutput oos = conf.getObjectOutput(fos);
+			 FSTObjectOutput oos = conf.getObjectOutput();
 			 oos.writeObject(plane);
-		     oos.close();
+			 
+			 extra.println(oos.getWritten()+"");
+			 pws.flush();
+			 fos.write((byte)oos.getWritten());
+			 fos.flush();
+			 fos.write(oos.getBuffer(), 0,oos.getWritten());
+			 fos.flush();
+			 //oos.flush();
+		     //oos.close();
 		     fos.close();
 		     pws.close();
 		     extra.println("Saved!");
@@ -675,17 +682,23 @@ public class WorldGen {
 				}
 			}
 			
-			 FSTObjectInput oos = conf.getObjectInput(fos);
+			 //FSTObjectInput oos = conf.getObjectInput();
 			// while (oos.readChar() != '\n') {
 				 //should automagically work
 			 //}
-			 plane = (Plane) oos.readObject();
+			 int len = fos.read();
+			 extra.println(""+len);
+			 byte buffer[] = new byte[len];
+	            while (len > 0) {
+	                len -= fos.read(buffer, buffer.length - len, len);}
+			 
+			 plane = (Plane) conf.getObjectInput(buffer).readObject();//plane = (Plane) oos.readObject();
 			 Player.player = plane.getPlayer();
 			 //World worlda = world;
 			 Player.bag = Player.player.getPerson().getBag();
 			 Player.passTime = 0;
 			 Player.world = Player.player.world2;
-			 oos.close();
+			 //oos.close();
 			 fos.close();
 		} catch (ClassNotFoundException | IOException e) {
 			if (!mainGame.logStreamIsErr) {
