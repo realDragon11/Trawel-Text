@@ -146,7 +146,8 @@ public class mainGame {
 		extra.println("3 SciMechs (mech jam game)");
 		extra.println("4 model mode");
 		extra.println("5 save test");
-		switch(extra.inInt(5)) {
+		extra.println("6 time test");
+		switch(extra.inInt(6)) {
 		case 1: adventure1();break;
 		case 2:extra.println("This gamemode can only be played in the command prompt."); rtrawel.TestRunner.run();break;
 		case 3:
@@ -172,6 +173,7 @@ public class mainGame {
 		//case 3: adventure3();break;
 		case 4: modelMode();break;
 		case 5: saveTest();break;
+		case 6: Calender.timeTest();
 			}
 	}
 	

@@ -126,8 +126,8 @@ public class Calender implements Serializable {
 	 * @param riseOrSet
 	 * @return
 	 */
-	public double[] getSunTime(double time,double lata, double longa) {
-		double j =  time/24-Math.toRadians(longa)/360;
+	public double[] getSunTime(double lata, double longa) {
+		double j =  ((timeCounter+12)/24)-(longa/360);
 		double m = Math.toRadians((357.5291 + 0.98560028  * j)%360);
 		double c = 1.9148*Math.sin(m)+0.02*Math.sin(2*m)+0.0003*Math.sin(3*m);
 		double l = Math.toRadians((m+c+180+102.9372)%360);
@@ -141,8 +141,12 @@ public class Calender implements Serializable {
 		return ret;
 	}
 	
+	
+	public static final double sunsetRadius = ;
+	
 	public float getBackTime() {
-		float hourOfDay = (float) (timeCounter%24);
+		double hourOfDay = (timeCounter%24)/24;
+		/*
 		switch (getMonth()) {
 		case 1:
 			if (hourOfDay < 5) {
@@ -177,7 +181,38 @@ public class Calender implements Serializable {
 		case 12:
 		case 13:
 		}
-		throw new RuntimeException("Invalid back time!");
+		throw new RuntimeException("Invalid back time!");*/
+		double[] rns = this.getSunTime(20,30);
+		if (hourOfDay < rns[0]-sunsetRadius) {
+			return 1;
+		}
+		if (hourOfDay < rns[0]) {
+			return extra.lerp(1,2,(float) ((hourOfDay-rns[0])/(sunsetRadius)));
+		}
+		if (hourOfDay < rns[0]+sunsetRadius) {
+			return extra.lerp(1,2,(float) ((hourOfDay-(rns[0]+sunsetRadius))/(sunsetRadius)));
+		}
+		if (hourOfDay < rns[2]-sunsetRadius) {
+			return 2;
+		}
+		if (hourOfDay < rns[2]) {
+			return extra.lerp(2,3,(float) ((hourOfDay-rns[2])/(sunsetRadius)));
+		}
+		if (hourOfDay < rns[2]+sunsetRadius) {
+			return extra.lerp(3,4,(float) ((hourOfDay-(rns[2]+sunsetRadius))/(sunsetRadius)));
+		}
+		return 1;
+	}
+
+	public static void timeTest() {
+		Calender test = new Calender();
+		test.timeCounter = 0;
+		for (int i = 0;i < 365;i++) {
+			test.timeCounter+=24;
+			double[] t = test.getSunTime(30,30);
+			System.out.println(t[0] + " " + t[1] +" "+ t[2]);
+		}
+		
 	}
 
 }
