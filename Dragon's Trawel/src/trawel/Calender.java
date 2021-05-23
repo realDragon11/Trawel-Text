@@ -120,6 +120,24 @@ public class Calender implements Serializable {
 		return str;
 	}
 	
+	/**
+	 * https://en.wikipedia.org/wiki/Sunrise_equation
+	 * @param time
+	 * @param riseOrSet
+	 * @return
+	 */
+	public float getSunTime(double time) {
+		double j =  time/24;
+		double m = Math.toRadians((357.5291 + 0.98560028  * j)%360);
+		double c = 1.9148*Math.sin(m)+0.02*Math.sin(2*m)+0.0003*Math.sin(3*m);
+		double l = Math.toRadians((m+c+180+102.9372)%360);
+		double noon = j+0.0053*Math.sin(m)+0.0069*Math.sin(2*l);
+		
+		double rise = 0;
+		double set = 0;
+		return double[] {rise,noon,set};
+	}
+	
 	public float getBackTime() {
 		float hourOfDay = (float) (timeCounter%24);
 		switch (getMonth()) {
