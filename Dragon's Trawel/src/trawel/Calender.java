@@ -1,4 +1,5 @@
 package trawel;
+import java.awt.Point;
 import java.io.Serializable;
 
 public class Calender implements Serializable {
@@ -191,6 +192,15 @@ public class Calender implements Serializable {
 			test.timeCounter+=1f;
 		}
 		
+	}
+
+	public static double[] lerpLocation(Town t) {
+		double[] d = new double[2];
+		Point p = t.getLocation();
+		World w = t.getIsland().getWorld();
+		d[0] = extra.lerp(90,-90,p.y/(float)w.getYSize());
+		d[1] = extra.lerp(-90,90,p.y/(float)w.getXSize());
+		return d;
 	}
 
 }

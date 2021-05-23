@@ -204,7 +204,8 @@ public class Town implements java.io.Serializable{
 		Networking.sendStrong("Discord|imagesmall|town|Town|");
 		Networking.setArea("main");
 		Networking.setBackground("main");
-		Networking.sendStrong("Backvariant|map_"+"town"+background_variant+"|"+Player.player.world.getCalender().getBackTime(30,20)+"|");
+		double[] p = Calender.lerpLocation(Player.player.lastTown);
+		Networking.sendStrong("Backvariant|map_"+"town"+background_variant+"|"+Player.world.getCalender().getBackTime(p[0],p[1])+"|");
 		Networking.charUpdate();
 		if (isFort) {
 			doFort();
