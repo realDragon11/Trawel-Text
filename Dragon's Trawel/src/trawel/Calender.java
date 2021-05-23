@@ -7,7 +7,7 @@ public class Calender implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public double timeCounter = extra.randRange(0,3640)/10.0;
+	public double timeCounter = 10;//extra.randRange(0,3640)/10.0;
 
 	public void passTime(double time) {
 		timeCounter +=time;
@@ -127,7 +127,7 @@ public class Calender implements Serializable {
 	 * @return
 	 */
 	public double[] getSunTime(double lata, double longa) {
-		double j =  ((timeCounter+12)/24)-(longa/360);
+		double j = (int) ((timeCounter+12)/24)-(longa/360);
 		double m = Math.toRadians((357.5291 + 0.98560028  * j)%360);
 		double c = 1.9148*Math.sin(m)+0.02*Math.sin(2*m)+0.0003*Math.sin(3*m);
 		double l = Math.toRadians((m+c+180+102.9372)%360);
@@ -141,76 +141,52 @@ public class Calender implements Serializable {
 		return ret;
 	}
 	
+	public double getLocalTime(double time1, double longa) {
+		double timeZone =(extra.lerp(0, 12,(float)Math.abs(longa)/90)*(longa/Math.abs(longa)));
+		return ((time1)+2+(timeZone/24))%1;
+	}
 	
-	public static final double sunsetRadius = ;
+	public double getLocalTime24(double time24, double longa) {
+		int timeZone =(int) Math.round(extra.lerp(0, 12,(float)Math.abs(longa)/90)*(longa/Math.abs(longa)));
+		return (time24+48+timeZone)%24;
+	}
 	
-	public float getBackTime() {
-		double hourOfDay = (timeCounter%24)/24;
-		/*
-		switch (getMonth()) {
-		case 1:
-			if (hourOfDay < 5) {
-				return 1;
-			}
-			if (hourOfDay < 5.5f) {
-				return extra.lerp(1,2, (hourOfDay-5)*2);
-			}
-			if (hourOfDay < 6) {
-				return extra.lerp(2,3, (hourOfDay-5.5f)*2);
-			}
-			if (hourOfDay < 17.5f) {
-				return 3;
-			}
-			if (hourOfDay < 18f) {
-				return extra.lerp(3,4, (hourOfDay-17)*2);
-			}
-			if (hourOfDay < 18.5f) {
-				return extra.lerp(4,5, (hourOfDay-17.5f)*2);
-			}
-			return 1;
-		case 2:
-		case 3: 
-		case 4:
-		case 5:
-		case 6:
-		case 7:
-		case 8:
-		case 9:
-		case 10: 
-		case 11:
-		case 12:
-		case 13:
-		}
-		throw new RuntimeException("Invalid back time!");*/
-		double[] rns = this.getSunTime(20,30);
-		if (hourOfDay < rns[0]-sunsetRadius) {
+	
+	public static final double sunsetRadius = 1/(double)48;//half hour in 1 = 1 day
+	
+	public float getBackTime(double lata, double longa) {
+		double hourOfDay = getLocalTime(timeCounter/24,longa);//(%24)/24;
+		double[] rns = this.getSunTime(lata,longa);
+		if (hourOfDay < getLocalTime(rns[0],longa)-sunsetRadius) {
 			return 1;
 		}
-		if (hourOfDay < rns[0]) {
-			return extra.lerp(1,2,(float) ((hourOfDay-rns[0])/(sunsetRadius)));
+		if (hourOfDay < getLocalTime(rns[0],longa)) {
+			return extra.lerp(1,2,(float) ((hourOfDay-getLocalTime(rns[0],longa))/(sunsetRadius)));
 		}
-		if (hourOfDay < rns[0]+sunsetRadius) {
-			return extra.lerp(1,2,(float) ((hourOfDay-(rns[0]+sunsetRadius))/(sunsetRadius)));
+		if (hourOfDay < getLocalTime(rns[0],longa)+sunsetRadius) {
+			return extra.lerp(2,3,(float) ((hourOfDay-(getLocalTime(rns[0],longa)+sunsetRadius))/(sunsetRadius)));
 		}
-		if (hourOfDay < rns[2]-sunsetRadius) {
+		if (hourOfDay < getLocalTime(rns[2],longa)-sunsetRadius) {
 			return 2;
 		}
-		if (hourOfDay < rns[2]) {
-			return extra.lerp(2,3,(float) ((hourOfDay-rns[2])/(sunsetRadius)));
+		if (hourOfDay < getLocalTime(rns[2],longa)) {
+			return extra.lerp(2,4,(float) ((hourOfDay-getLocalTime(rns[2],longa))/(sunsetRadius)));
 		}
-		if (hourOfDay < rns[2]+sunsetRadius) {
-			return extra.lerp(3,4,(float) ((hourOfDay-(rns[2]+sunsetRadius))/(sunsetRadius)));
+		if (hourOfDay < getLocalTime(rns[2],longa)+sunsetRadius) {
+			return extra.lerp(4,5,(float) ((hourOfDay-(getLocalTime(rns[2],longa)+sunsetRadius))/(sunsetRadius)));
 		}
 		return 1;
 	}
 
 	public static void timeTest() {
 		Calender test = new Calender();
-		test.timeCounter = 0;
-		for (int i = 0;i < 365;i++) {
-			test.timeCounter+=24;
-			double[] t = test.getSunTime(30,30);
-			System.out.println(t[0] + " " + t[1] +" "+ t[2]);
+		extra.println(sunsetRadius+"");
+		test.timeCounter = 10;
+		for (int i = 0;i < 3600;i++) {
+			test.timeCounter+=1f;
+			extra.println(test.getBackTime(30,20)+"");
+			//double[] t = test.getSunTime(30,30);
+			//System.out.println(t[0] + " " + t[1] +" "+ t[2]);
 		}
 		
 	}
