@@ -38,15 +38,15 @@ public class WorldGen {
 		//conf.getClassRegistry().dragonDump();
 	}
 	public static final double distanceScale = 2;//average distance between towns is like 1-3 units
-	public static final double footTravelPerHour = 3;//20/(double)24;
-	public static final double shipTravelPerHour =  9;//20/(double)24;
+	public static final double footTravelPerHour = 4;
+	public static final double shipTravelPerHour =  9;
 	public static final double teleTravelPerHour =  40;
 	public static final double milesInLata = 69;
-	public static final double unitsInLata = milesInLata;
+	public static final double unitsInLata = milesInLata/distanceScale;
 
-	public static final float unitToDegrees = (float) ((distanceScale)/(unitsInLata));
+	public static final float unitToDegrees = (float) (1/unitsInLata);//approx 1/35 rn
 	public static World eoano() {
-		World w = new World(16,10,"eoano",-30f,-20f);
+		World w = new World(16,10,"eoano",41f,-72f);
 		plane = new Plane();
 		Player.world = w;
 		plane.addWorld(w);
@@ -540,7 +540,7 @@ public class WorldGen {
 	}
 	
 	public static Town greap() {
-		World w = new World(30,20,"greap");
+		World w = new World(30,20,"greap",40f,-74f);
 		Island apen = new Island("apen",w);
 		plane.addWorld(w);
 		Town holik = new Town("holik", 9, apen, new Point(2,3));
@@ -615,13 +615,16 @@ public class WorldGen {
 	}
 	
 	public static double distanceBetweenTowns(Town t1,Town t2,String type) {
+		if (!t1.getIsland().getWorld().equals(t2.getIsland().getWorld())) {
+			return 100/teleTravelPerHour;
+		}
 		switch (type) {
 		case "road":
 			return distanceScale*pointDistance(t1.getLocation(),t2.getLocation())/footTravelPerHour;
 		case "ship":
-			return distanceScale*pointDistance(t1.getLocation(),t2.getLocation())/footTravelPerHour;
-		case "teleport":
 			return distanceScale*pointDistance(t1.getLocation(),t2.getLocation())/shipTravelPerHour;
+		case "teleport":
+			return distanceScale*pointDistance(t1.getLocation(),t2.getLocation())/teleTravelPerHour;
 		}
 		//fallback
 		return pointDistance(t1.getLocation(),t2.getLocation());
