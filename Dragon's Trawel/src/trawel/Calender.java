@@ -9,6 +9,18 @@ public class Calender implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	public double timeCounter = 10;//extra.randRange(0,3640)/10.0;
+	
+	/*public enum LunarPhase{//not nearly as exact as the sun
+		NEW_MOON(0f),
+		WAX_CRESCENT(0.05f),FIRST_QUARTER(0.1f),WAX_GIBBOUS(0.15f),
+		FULL_MOON(0.2f),
+		WANE_CRESCENT(0.05f),LAST_QUARTER(0.1f),WANE_GIBBOUS(0.15f);
+	
+		public float lum;
+		LunarPhase(float lum){
+			this.lum = lum;
+		}
+	}*/
 
 	public void passTime(double time) {
 		timeCounter +=time;
@@ -154,16 +166,17 @@ public class Calender implements Serializable {
 		double hourOfDay = getLocalTime((timeCounter)/24,longa);//(%24)/24;
 		double[] rns = this.getSunTime(lata,longa);
 		double sunRise = getLocalTime(rns[0],longa);
+		double sunSet = getLocalTime(rns[2],longa);
 		if (hourOfDay < sunRise-sunsetRadius) {
-			return new float[] {4,0};
+			return new float[] {4,moonLum(sunRise,sunSet,hourOfDay)};
 		}
 		if (hourOfDay < sunRise) {
-			return new float[] {extra.lerp(4,5,(float) ((hourOfDay-(sunRise-sunsetRadius))/(sunsetRadius))),0};
+			return new float[] {extra.lerp(4,5,(float) ((hourOfDay-(sunRise-sunsetRadius))/(sunsetRadius))),moonLum(sunRise,sunSet,hourOfDay)};
 		}
 		if (hourOfDay < sunRise+sunsetRadius) {
-			return new float[] {extra.lerp(1,2,(float) ((hourOfDay-sunRise)/(sunsetRadius))),0};
+			return new float[] {extra.lerp(1,2,(float) ((hourOfDay-sunRise)/(sunsetRadius))),moonLum(sunRise,sunSet,hourOfDay)};
 		}
-		double sunSet = getLocalTime(rns[2],longa);
+		
 		//double noonTime = getLocalTime(rns[1],longa);
 		if (hourOfDay < sunSet-sunsetRadius) {
 			//double timeToNoon = Math.abs(hourOfDay-noonTime);
@@ -173,7 +186,7 @@ public class Calender implements Serializable {
 			return new float[] {extra.lerp(2,3,(float) ((hourOfDay-(sunSet-sunsetRadius))/(sunsetRadius))),0};
 		}
 		if (hourOfDay < sunSet+sunsetRadius) {
-			return new float[] {extra.lerp(3,4,(float) ((hourOfDay-sunSet)/(sunsetRadius))),0};
+			return new float[] {extra.lerp(3,4,(float) ((hourOfDay-sunSet)/(sunsetRadius))),moonLum(sunRise,sunSet,hourOfDay)};
 		}
 		return new float[] {4,moonLum(sunRise,sunSet,hourOfDay)};
 	}
@@ -186,7 +199,8 @@ public class Calender implements Serializable {
 		return (float)extra.lerpDepth((float)(sunRise+sunsetRadius),(float)(sunSet-sunsetRadius),(float) ((hourOfDay)),.25f);
 	}
 	public float moonLum(double sunRise,double sunSet, double hourOfDay) {
-		return 0f;
+		float phaseProgress = (float) (getDay()/getMonthLength());
+		return extra.lerpDepth(0,0.2f,phaseProgress, 0.2f);
 	}
 
 	public static void timeTest() {
