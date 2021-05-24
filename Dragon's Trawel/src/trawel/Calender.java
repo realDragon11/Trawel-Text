@@ -200,7 +200,7 @@ public class Calender implements Serializable {
 	}
 	public float moonLum(double sunRise,double sunSet, double hourOfDay) {
 		float phaseProgress = (float) ((timeCounter%getMonthLength())/getMonthLength());
-		return extra.lerpDepth(0,0.2f,phaseProgress, 0.2f);
+		return extra.lerpDepth(0,1,phaseProgress, 0.2f)*0.2f;
 	}
 
 	public static void timeTest() {
@@ -208,13 +208,18 @@ public class Calender implements Serializable {
 		extra.println(sunsetRadius+"");
 		test.timeCounter = 0;
 		int longa = -72;
-		for (int i = 0;i < 100;i++) {
-			float[] back = test.getBackTime(30,longa);
-			extra.println(back[0]+""+back[1]);
-			double[] t = test.getSunTime(30,longa);
-			System.out.println((test.timeCounter/24) +": "+ (t[0]) + " " + (t[1]) +" "+ (t[2]));
-			System.out.println(test.getLocalTime(test.timeCounter/24,longa) +": "+ test.getLocalTime(t[0],longa) + " " + test.getLocalTime(t[1],longa) +" "+ test.getLocalTime(t[2],longa));
-			test.timeCounter+=.5f;
+		Networking.setBackground("forest");
+		for (int i = 0;i < 99999999;i++) {
+			//float[] back = test.getBackTime(30,longa);
+			//extra.println(back[0]+""+back[1]);
+			//double[] t = test.getSunTime(30,longa);
+			//System.out.println((test.timeCounter/24) +": "+ (t[0]) + " " + (t[1]) +" "+ (t[2]));
+			//System.out.println(test.getLocalTime(test.timeCounter/24,longa) +": "+ test.getLocalTime(t[0],longa) + " " + test.getLocalTime(t[1],longa) +" "+ test.getLocalTime(t[2],longa));
+			
+			test.timeCounter+=.1f;
+			float[] b = Player.world.getCalender().getBackTime(42,-72);
+			Networking.sendStrong("Backvariant|map_"+"forest1"+"|"+b[0]+"|"+b[1]+"|");
+			Networking.waitIfConnected(50L);
 		}
 		
 	}
