@@ -205,7 +205,8 @@ public class Town implements java.io.Serializable{
 		Networking.setArea("main");
 		Networking.setBackground("main");
 		double[] p = Calender.lerpLocation(Player.player.lastTown);
-		Networking.sendStrong("Backvariant|map_"+"town"+background_variant+"|"+Player.world.getCalender().getBackTime(p[0],p[1])+"|");
+		float[] b = Player.world.getCalender().getBackTime(p[0],p[1]);
+		Networking.sendStrong("Backvariant|map_"+"town"+background_variant+"|"+b[0]+"|"+b[1]+"|");
 		Networking.charUpdate();
 		if (isFort) {
 			doFort();

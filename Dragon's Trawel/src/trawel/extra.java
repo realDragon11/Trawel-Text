@@ -4,7 +4,6 @@ package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class extra {
 /**
@@ -628,7 +627,7 @@ public class extra {
 		}
 		
 		public static float lerpDepth(float start, float end, float f,float depth) {
-			float x = 
+			float x = (f-start)/(end-start);
 			return (float) (4*depth*Math.pow(x,3) - 6*depth*Math.pow(x,2) + 2*depth*x + x);
 		}
 		

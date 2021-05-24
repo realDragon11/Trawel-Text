@@ -20,7 +20,8 @@ public abstract class Feature implements java.io.Serializable{
 	public void goHeader() {
 		Networking.setBackground(background_area);
 		double[] p = Calender.lerpLocation(town);
-		Networking.sendStrong("Backvariant|"+background_area+background_variant+"|"+Player.player.world.getCalender().getBackTime(p[0],p[1])+"|");
+		float[] b = Player.world.getCalender().getBackTime(p[0],p[1]);
+		Networking.sendStrong("Backvariant|"+background_area+background_variant+"|"+b[0]+"|"+b[1]+"|");
 		atFeatureForHeader = this;
 	}
 	public void init() {

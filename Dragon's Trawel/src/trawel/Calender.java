@@ -164,10 +164,10 @@ public class Calender implements Serializable {
 			return new float[] {extra.lerp(1,2,(float) ((hourOfDay-sunRise)/(sunsetRadius))),0};
 		}
 		double sunSet = getLocalTime(rns[2],longa);
-		double noonTime = getLocalTime(rns[1],longa);
+		//double noonTime = getLocalTime(rns[1],longa);
 		if (hourOfDay < sunSet-sunsetRadius) {
-			double timeToNoon = Math.abs(hourOfDay-noonTime);
-			return new float[] {2,(float)timeToNoon };
+			//double timeToNoon = Math.abs(hourOfDay-noonTime);
+			return new float[] {2,(float)extra.lerpDepth((float)(sunRise+sunsetRadius),(float)(sunSet-sunsetRadius),(float) ((hourOfDay)-(sunRise+sunsetRadius)),.25f)};
 		}
 		if (hourOfDay < sunSet) {
 			return new float[] {extra.lerp(2,3,(float) ((hourOfDay-(sunSet-sunsetRadius))/(sunsetRadius))),0};
@@ -184,8 +184,8 @@ public class Calender implements Serializable {
 		test.timeCounter = 0;
 		int longa = -72;
 		for (int i = 0;i < 100;i++) {
-			
-			extra.println(test.getBackTime(30,longa)+"");
+			float[] back = test.getBackTime(30,longa);
+			extra.println(back[0]+""+back[1]);
 			double[] t = test.getSunTime(30,longa);
 			System.out.println((test.timeCounter/24) +": "+ (t[0]) + " " + (t[1]) +" "+ (t[2]));
 			System.out.println(test.getLocalTime(test.timeCounter/24,longa) +": "+ test.getLocalTime(t[0],longa) + " " + test.getLocalTime(t[1],longa) +" "+ test.getLocalTime(t[2],longa));
