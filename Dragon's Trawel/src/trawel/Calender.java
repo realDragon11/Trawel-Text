@@ -167,7 +167,7 @@ public class Calender implements Serializable {
 		//double noonTime = getLocalTime(rns[1],longa);
 		if (hourOfDay < sunSet-sunsetRadius) {
 			//double timeToNoon = Math.abs(hourOfDay-noonTime);
-			return new float[] {2,(float)extra.lerpDepth((float)(sunRise+sunsetRadius),(float)(sunSet-sunsetRadius),(float) ((hourOfDay)-(sunRise+sunsetRadius)),.25f)};
+			return new float[] {2,(float)extra.lerpDepth((float)(sunRise+sunsetRadius),(float)(sunSet-sunsetRadius),(float) ((hourOfDay)),.25f)};
 		}
 		if (hourOfDay < sunSet) {
 			return new float[] {extra.lerp(2,3,(float) ((hourOfDay-(sunSet-sunsetRadius))/(sunsetRadius))),0};
