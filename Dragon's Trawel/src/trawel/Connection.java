@@ -2,6 +2,8 @@ package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import org.nustaq.serialization.annotations.OneOf;
+
 /**
  * 
  * @author Brian Malone
@@ -14,6 +16,7 @@ public class Connection implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Town> towns;
 	private double time;
+	@OneOf({"road","ship","teleport"})
 	private String type;
 	private String nameString;
 	
