@@ -167,7 +167,7 @@ public class Calender implements Serializable {
 		//double noonTime = getLocalTime(rns[1],longa);
 		if (hourOfDay < sunSet-sunsetRadius) {
 			//double timeToNoon = Math.abs(hourOfDay-noonTime);
-			return new float[] {2,(float)extra.lerpDepth((float)(sunRise+sunsetRadius),(float)(sunSet-sunsetRadius),(float) ((hourOfDay)),.25f)};
+			return new float[] {2,getDayLum(sunRise,sunSet,hourOfDay)};
 		}
 		if (hourOfDay < sunSet) {
 			return new float[] {extra.lerp(2,3,(float) ((hourOfDay-(sunSet-sunsetRadius))/(sunsetRadius))),0};
@@ -175,7 +175,18 @@ public class Calender implements Serializable {
 		if (hourOfDay < sunSet+sunsetRadius) {
 			return new float[] {extra.lerp(3,4,(float) ((hourOfDay-sunSet)/(sunsetRadius))),0};
 		}
-		return new float[] {4,0};
+		return new float[] {4,moonLum(sunRise,sunSet,hourOfDay)};
+	}
+	
+	public float getDayLum(double sunRise,double sunSet, double hourOfDay) {
+		return Math.max(moonLum( sunRise, sunSet,  hourOfDay), dayLum( sunRise, sunSet,  hourOfDay));
+	}
+	
+	public float dayLum(double sunRise,double sunSet, double hourOfDay) {
+		return (float)extra.lerpDepth((float)(sunRise+sunsetRadius),(float)(sunSet-sunsetRadius),(float) ((hourOfDay)),.25f);
+	}
+	public float moonLum(double sunRise,double sunSet, double hourOfDay) {
+		return 0f;
 	}
 
 	public static void timeTest() {
@@ -202,5 +213,6 @@ public class Calender implements Serializable {
 		d[1] = extra.lerp(w.getMinLonga(),w.getMaxLonga(),p.y/(float)w.getXSize());
 		return d;
 	}
+	
 
 }
