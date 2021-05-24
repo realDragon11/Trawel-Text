@@ -175,7 +175,7 @@ public class Calender implements Serializable {
 		if (hourOfDay < sunSet+sunsetRadius) {
 			return new float[] {extra.lerp(3,4,(float) ((hourOfDay-sunSet)/(sunsetRadius))),0};
 		}
-		return new float[] {4};
+		return new float[] {4,0};
 	}
 
 	public static void timeTest() {

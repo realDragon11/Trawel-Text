@@ -627,8 +627,9 @@ public class extra {
 		}
 		
 		public static float lerpDepth(float start, float end, float f,float depth) {
-			float x = (f-start)/(end-start);
-			return (float) (4*depth*Math.pow(x,3) - 6*depth*Math.pow(x,2) + 2*depth*x + x);
+			float midpoint = start+(end-start)/2;
+			float x = 1-(Math.abs(midpoint-f)/(end-start));
+			return (float) (4*depth*Math.pow(x,3) - 6*depth*Math.pow(x,2) + 2*depth*x + x);//4*.25*x^3-6*.25*x^2+2*.25*x+x
 		}
 		
 }
