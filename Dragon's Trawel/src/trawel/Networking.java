@@ -164,4 +164,17 @@ public class Networking {
 		connected = false;
 		
 	}
+	
+	public static void addLight(Color col,int x, int y, int minSize,int maxSize,int spin) {
+		int in = col.getRGB();
+		int red = (in >> 16) & 0xFF;
+		int green = (in >> 8) & 0xFF;
+		int blue = (in >> 0) & 0xFF;
+		int out = (blue << 16) | (green << 8) | (red << 0);
+		Networking.sendStrong("AddLight|"+out + "|" + x +"|"+ y +"|" + minSize+"|"+maxSize+"|"+spin+"|");
+	}
+	
+	public static void clearLights() {
+		Networking.sendStrong("ClearLights|");
+	}
 }

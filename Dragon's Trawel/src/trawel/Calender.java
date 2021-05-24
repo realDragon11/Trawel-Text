@@ -205,7 +205,7 @@ public class Calender implements Serializable {
 
 	public static void timeTest() {
 		Calender test = new Calender();
-		extra.println(sunsetRadius+"");
+		//extra.println(sunsetRadius+"");
 		test.timeCounter = 0;
 		int longa = -72;
 		Networking.setBackground("forest");
@@ -217,8 +217,8 @@ public class Calender implements Serializable {
 			//System.out.println(test.getLocalTime(test.timeCounter/24,longa) +": "+ test.getLocalTime(t[0],longa) + " " + test.getLocalTime(t[1],longa) +" "+ test.getLocalTime(t[2],longa));
 			
 			test.timeCounter+=.1f;
-			float[] b = Player.world.getCalender().getBackTime(42,-72);
-			Networking.sendStrong("Backvariant|map_"+"forest1"+"|"+b[0]+"|"+b[1]+"|");
+			float[] b = test.getBackTime(42,-72);
+			Networking.sendStrong("Backvariant|"+"forest1"+"|"+b[0]+"|"+b[1]+"|");
 			Networking.waitIfConnected(50L);
 		}
 		
