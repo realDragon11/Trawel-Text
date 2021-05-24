@@ -405,7 +405,7 @@ public class mainGame {
 			extra.println("[jitter]Trawel has encountered an exception. Please report to realDragon. More details can be found on the command prompt.");
 			System.out.println("ERROR: "+e.getMessage() != null ? (e.getMessage()) :"null" + e.getStackTrace());
 			if (e.getMessage() == null) {
-				return;
+				main(args);
 			} 
 			if ( (!e.getMessage().equals("invalid input stream error") && !e.getMessage().equals("No line found"))) {
 			main(args);}

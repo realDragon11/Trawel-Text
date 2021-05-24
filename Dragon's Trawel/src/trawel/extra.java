@@ -627,5 +627,10 @@ public class extra {
 			return extra.lerp(start, end, bellCurve(depth));
 		}
 		
+		public static float lerpDepth(float start, float end, float f,float depth) {
+			float x = 
+			return (float) (4*depth*Math.pow(x,3) - 6*depth*Math.pow(x,2) + 2*depth*x + x);
+		}
+		
 }
 
