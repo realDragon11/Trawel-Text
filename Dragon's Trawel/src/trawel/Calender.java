@@ -167,41 +167,46 @@ public class Calender implements Serializable {
 		double[] rns = this.getSunTime(lata,longa);
 		double sunRise = getLocalTime(rns[0],longa);
 		double sunSet = getLocalTime(rns[2],longa);
+		double noon = getLocalTime(rns[1],longa);
 		if (hourOfDay < sunRise-sunsetRadius) {
-			return new float[] {4,moonLum(sunRise,sunSet,hourOfDay)};
+			return new float[] {4,moonLum(noon,hourOfDay)};
 		}
 		if (hourOfDay < sunRise) {
-			return new float[] {extra.lerp(4,5,(float) ((hourOfDay-(sunRise-sunsetRadius))/(sunsetRadius))),moonLum(sunRise,sunSet,hourOfDay)};
+			return new float[] {extra.lerp(4,5,(float) ((hourOfDay-(sunRise-sunsetRadius))/(sunsetRadius))),moonLum(noon,hourOfDay)};
 		}
 		if (hourOfDay < sunRise+sunsetRadius) {
-			return new float[] {extra.lerp(1,2,(float) ((hourOfDay-sunRise)/(sunsetRadius))),moonLum(sunRise,sunSet,hourOfDay)};
+			return new float[] {extra.lerp(1,2,(float) ((hourOfDay-sunRise)/(sunsetRadius))),moonLum(noon,hourOfDay)};
 		}
 		
 		//double noonTime = getLocalTime(rns[1],longa);
 		if (hourOfDay < sunSet-sunsetRadius) {
 			//double timeToNoon = Math.abs(hourOfDay-noonTime);
-			return new float[] {2,getDayLum(sunRise,sunSet,hourOfDay)};
+			return new float[] {2,getDayLum(sunRise,sunSet,noon,hourOfDay)};
 		}
 		if (hourOfDay < sunSet) {
 			return new float[] {extra.lerp(2,3,(float) ((hourOfDay-(sunSet-sunsetRadius))/(sunsetRadius))),0};
 		}
 		if (hourOfDay < sunSet+sunsetRadius) {
-			return new float[] {extra.lerp(3,4,(float) ((hourOfDay-sunSet)/(sunsetRadius))),moonLum(sunRise,sunSet,hourOfDay)};
+			return new float[] {extra.lerp(3,4,(float) ((hourOfDay-sunSet)/(sunsetRadius))),moonLum(noon,hourOfDay)};
 		}
-		return new float[] {4,moonLum(sunRise,sunSet,hourOfDay)};
+		return new float[] {4,moonLum(noon,hourOfDay)};
 	}
 	
-	public float getDayLum(double sunRise,double sunSet, double hourOfDay) {
-		return Math.max(moonLum( sunRise, sunSet,  hourOfDay), dayLum( sunRise, sunSet,  hourOfDay));
+	public float getDayLum(double sunRise,double sunSet,double noon, double hourOfDay) {
+		return Math.max(moonLum( noon,  hourOfDay), dayLum( sunRise, sunSet,  hourOfDay));
 	}
 	
 	public float dayLum(double sunRise,double sunSet, double hourOfDay) {
 		return (float)extra.lerpDepth((float)(sunRise+sunsetRadius),(float)(sunSet-sunsetRadius),(float) ((hourOfDay)),.25f);
 	}
-	public float moonLum(double sunRise,double sunSet, double hourOfDay) {
+	public float moonLum(double noon, double hourOfDay) {
 		float phaseProgress = (float) ((timeCounter%getMonthLength())/getMonthLength());
 		float maxLum = extra.lerpDepth(0,1,phaseProgress, 0.2f)*0.2f;
-		return (float)extra.lerpDepth((float)(sunRise+.5+sunsetRadius),(float)(sunSet+.5-sunsetRadius),(float) ((hourOfDay)),.25f)*maxLum;
+		double moonNoon = noon+extra.lerp(0,-1,phaseProgress);
+		double hour = 1/4;//6 hours, currently nonseasonal
+		double moonRise = moonNoon-hour;
+		double moonSet = moonNoon+hour;
+		return (float)extra.lerpDepth((float)(moonRise+.5)+2,(float)(moonSet+.5)+2,(float) ((hourOfDay))+2,.25f)*maxLum;
 	}
 
 	public static void timeTest() {

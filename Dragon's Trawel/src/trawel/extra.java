@@ -633,5 +633,9 @@ public class extra {
 			return (float) (4*depth*Math.pow(x,3) - 6*depth*Math.pow(x,2) + 2*depth*x + x);//4*.25*x^3-6*.25*x^2+2*.25*x+x
 		}
 		
+		public static float lerpSetup(float start, float end, float f) {
+			return 1-(2*Math.abs((start+(end-start)/2)-f)/(end-start));
+		}
+		
 }
 
