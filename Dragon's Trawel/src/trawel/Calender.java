@@ -8,7 +8,7 @@ public class Calender implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public double timeCounter = 10;//extra.randRange(0,3640)/10.0;
+	public double timeCounter = 30;//extra.randRange(0,3640)/10.0;
 	
 	/*public enum LunarPhase{//not nearly as exact as the sun
 		NEW_MOON(0f),
@@ -210,7 +210,7 @@ public class Calender implements Serializable {
 		float maxLum = extra.lerpDepth(0,1,phaseProgress, 0.2f)*0.2f;
 		double[] rnsLast = getSunTime(timeCounter-24,lata,longa);
 		double moonNoonMod = extra.lerp(0,-1,phaseProgress);
-		double hour = 1/4;//6 hours, currently nonseasonal
+		double hour = 1/4.0;//6 hours, currently nonseasonal
 		double moonRise = unoon +moonNoonMod-hour;
 		double moonSet = unoon +moonNoonMod+hour;
 		double thour = uhour +getTimeZone(longa);
@@ -227,7 +227,7 @@ public class Calender implements Serializable {
 	public static void timeTest() {
 		Calender test = new Calender();
 		//extra.println(sunsetRadius+"");
-		test.timeCounter = 0;
+		test.timeCounter = 24*12;
 		//int longa = -72;
 		Networking.setBackground("forest");
 		for (int i = 0;i < 99999999;i++) {
