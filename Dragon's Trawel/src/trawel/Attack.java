@@ -1,4 +1,7 @@
 package trawel;
+
+import org.nustaq.serialization.annotations.OneOf;
+
 /**
  * 
  * @author Brian Malone
@@ -19,13 +22,14 @@ public class Attack implements java.io.Serializable{
 	private String desc, name;
 	private transient Target target;
 	public transient Person defender;//only used for mass battles
-	private boolean isMagic = false;
-	private String magicDesc;
-	private Skill skill;
+	private transient boolean isMagic = false;
+	private transient String magicDesc;
+	private transient Skill skill;
 	private int soundStrength;
+	@OneOf({"sharp","blunt","pierce"})
 	private String soundType;
-	private Wound wound;
-	private Weapon weapon;
+	private transient Wound wound;
+	private transient Weapon weapon;
 	//constructor
 	/**
 	 * Creates an attack with the following attributes:

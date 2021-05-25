@@ -433,7 +433,7 @@ public class MaterialFactory {
 		misc.shockVul = 1;
 		misc.freezeVul = 1;
 		misc.palIndex = 10;
-		misc.soundType = "ecto";
+		misc.soundType = "flesh";
 		misc.color = extra.inlineColor(Color.BLUE);
 		matList.add(misc);
 		
@@ -760,7 +760,7 @@ public class MaterialFactory {
 		misc.shockVul = 1;
 		misc.freezeVul = 1;
 		misc.palIndex = 0;
-		misc.soundType = "bone";
+		misc.soundType = "flesh";
 		matList.add(misc);
 	}
 	
