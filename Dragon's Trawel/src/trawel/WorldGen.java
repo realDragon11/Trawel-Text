@@ -38,7 +38,7 @@ public class WorldGen {
 		//conf.getClassRegistry().dragonDump();
 	}
 	public static final double distanceScale = 2;//average distance between towns is like 1-3 units
-	public static final double footTravelPerHour = 4/distanceScale;
+	public static final double footTravelPerHour = 3/distanceScale;
 	public static final double shipTravelPerHour =  9/distanceScale;
 	public static final double teleTravelPerHour =  40/distanceScale;
 	public static final double milesInLata = 69;

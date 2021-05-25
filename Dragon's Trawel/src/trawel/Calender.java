@@ -227,7 +227,7 @@ public class Calender implements Serializable {
 	public static void timeTest() {
 		Calender test = new Calender();
 		//extra.println(sunsetRadius+"");
-		test.timeCounter = 24*12;
+		test.timeCounter = 24*12+24*28*3;
 		//int longa = -72;
 		Networking.setBackground("forest");
 		for (int i = 0;i < 99999999;i++) {
