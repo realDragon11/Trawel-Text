@@ -36,6 +36,10 @@ public class Mine extends Feature {
 		start.go();
 		Networking.clearLights();
 	}
+	@Override
+	public void sendBackVariant() {
+		Networking.sendStrong("Backvariant|"+background_area+background_variant+"|1|0|");
+	}
 
 	@Override
 	public void passTime(double time) {

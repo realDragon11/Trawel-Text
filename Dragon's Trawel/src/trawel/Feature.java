@@ -19,11 +19,15 @@ public abstract class Feature implements java.io.Serializable{
 	public abstract void go();
 	public void goHeader() {
 		Networking.setBackground(background_area);
+		this.sendBackVariant();
+		atFeatureForHeader = this;
+	}
+	public void sendBackVariant() {
 		double[] p = Calender.lerpLocation(town);
 		float[] b = Player.world.getCalender().getBackTime(p[0],p[1]);
 		Networking.sendStrong("Backvariant|"+background_area+background_variant+"|"+b[0]+"|"+b[1]+"|");
-		atFeatureForHeader = this;
 	}
+	
 	public void init() {
 	}
 	public abstract void passTime(double time);
