@@ -1,6 +1,9 @@
 package trawel;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class WeaponAttackFactory {
@@ -147,5 +150,22 @@ public class WeaponAttackFactory {
 	
 	public static Stance getStance(String str) {
 		return stanceMap.get(str);
+	}
+	
+	public static void weaponMetrics() {
+		List<Weapon> weaponList = new ArrayList<Weapon>();
+		for (int i = 0; i< 400;i++) {
+			weaponList.add(new Weapon(1));
+		}
+		weaponList.sort(new Comparator<Weapon>(){
+
+			@Override
+			public int compare(Weapon o1, Weapon o2) {
+				return -(int)Math.round(o1.highestDamage().battleScore-o2.highestDamage().battleScore);
+			}
+		});
+		for (int i = 0; i< weaponList.size();i++) {
+			weaponList.get(i).display(0);
+		}
 	}
 }

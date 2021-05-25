@@ -147,7 +147,8 @@ public class mainGame {
 		extra.println("4 model mode");
 		extra.println("5 save test");
 		extra.println("6 time test");
-		switch(extra.inInt(6)) {
+		extra.println("7 weapon tests");
+		switch(extra.inInt(7)) {
 		case 1: adventure1();break;
 		case 2:extra.println("This gamemode can only be played in the command prompt."); rtrawel.TestRunner.run();break;
 		case 3:
@@ -174,6 +175,8 @@ public class mainGame {
 		case 4: modelMode();break;
 		case 5: saveTest();break;
 		case 6: Calender.timeTest();
+		break;
+		case 7: WeaponAttackFactory.weaponMetrics();break;
 			}
 	}
 	

@@ -336,6 +336,8 @@ public class Weapon extends Item {
 	@Override
 	public void display(int style,float markup) {
 		switch (style) {
+		case 0: extra.println(material +" "+weapName+": "+extra.format(this.highestDamage().battleScore));
+		break;
 		case 1:
 			extra.println(this.getName()
 			+ " hd/ad/bs: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+"/"+extra.format(this.highestDamage().battleScore)+" value: " + (int)(this.getCost()*markup));
