@@ -382,8 +382,15 @@ public class Combat {
 		}
 		//return the damage-armor, with each type evaluated individually
 		Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getSoundIntensity() + "|" +att.getSoundType()+"|");
-		return new AttackReturn((int)((extra.zeroOut((att.getSharp()*damMod)-(def.getSharp(att.getSlot())*armMod))*Math.random())+extra.zeroOut((att.getBlunt()*damMod)-(def.getBlunt(att.getSlot())*armMod)*Math.random())+extra.zeroOut((att.getPierce()*damMod)-(def.getPierce(att.getSlot())*armMod)*Math.random())),str);
-		
+		switch (mainGame.attackType) {
+		case 1:default:
+			double depthWeapon = .25;
+			double midWeapon = .7;
+			double depthArmor = .25;
+			double midArmor = .7;
+			return new AttackReturn((int)((extra.zeroOut((att.getSharp()*damMod*extra.upDamCurve(depthWeapon,midWeapon))-(def.getSharp(att.getSlot())*armMod*extra.upDamCurve(depthArmor,midArmor))))+extra.zeroOut((att.getBlunt()*damMod*extra.upDamCurve(depthWeapon,midWeapon))-(def.getBlunt(att.getSlot())*armMod*extra.upDamCurve(depthArmor,midArmor)))+extra.zeroOut((att.getPierce()*damMod*extra.upDamCurve(depthWeapon,midWeapon))-(def.getPierce(att.getSlot())*armMod*extra.upDamCurve(depthArmor,midArmor)))),str);
+		case 0: return new AttackReturn((int)((extra.zeroOut((att.getSharp()*damMod)-(def.getSharp(att.getSlot())*armMod))*Math.random())+extra.zeroOut((att.getBlunt()*damMod)-(def.getBlunt(att.getSlot())*armMod)*Math.random())+extra.zeroOut((att.getPierce()*damMod)-(def.getPierce(att.getSlot())*armMod)*Math.random())),str);
+		}
 	}
 	
 	public class AttackReturn {

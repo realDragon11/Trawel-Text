@@ -196,6 +196,8 @@ public class mainGame {
 	private static List<Mech> curMechs;
 
 	public static PrintStream logStream;
+
+	public static int attackType = 1;
 	
 	private List<Mech> mechsForSide(boolean side){
 		extra.menuGoPaged(new MenuGeneratorPaged(){

@@ -636,6 +636,11 @@ public class extra {
 		public static float lerpSetup(float start, float end, float f) {
 			return 1-(2*Math.abs((start+(end-start)/2)-f)/(end-start));
 		}
+
+		public static double upDamCurve(double depth, double midpoint) {
+			double x = 1-(2*Math.abs(Math.random()-midpoint));
+			return (4*depth*Math.pow(x,3) - 6*depth*Math.pow(x,2) + 2*depth*x + x);
+		}
 		
 }
 
