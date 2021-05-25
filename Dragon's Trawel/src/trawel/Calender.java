@@ -200,7 +200,8 @@ public class Calender implements Serializable {
 	}
 	public float moonLum(double sunRise,double sunSet, double hourOfDay) {
 		float phaseProgress = (float) ((timeCounter%getMonthLength())/getMonthLength());
-		return extra.lerpDepth(0,1,phaseProgress, 0.2f)*0.2f;
+		float maxLum = extra.lerpDepth(0,1,phaseProgress, 0.2f)*0.2f;
+		return (float)extra.lerpDepth((float)(sunRise+.5+sunsetRadius),(float)(sunSet+.5-sunsetRadius),(float) ((hourOfDay)),.25f)*maxLum;
 	}
 
 	public static void timeTest() {

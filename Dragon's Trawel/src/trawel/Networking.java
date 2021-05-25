@@ -165,13 +165,24 @@ public class Networking {
 		
 	}
 	
-	public static void addLight(Color col,int x, int y, int minSize,int maxSize,int spin) {
-		int in = col.getRGB();
+	public static void addLight(Color col1,Color col2, int x, int y, int minSize,int maxSize,int spin) {
+		int in = col1.getRGB();
 		int red = (in >> 16) & 0xFF;
 		int green = (in >> 8) & 0xFF;
 		int blue = (in >> 0) & 0xFF;
-		int out = (blue << 16) | (green << 8) | (red << 0);
-		Networking.sendStrong("AddLight|"+out + "|" + x +"|"+ y +"|" + minSize+"|"+maxSize+"|"+spin+"|");
+		int out1 = (blue << 16) | (green << 8) | (red << 0);
+		in = col1.getRGB();
+		red = (in >> 16) & 0xFF;
+		green = (in >> 8) & 0xFF;
+		blue = (in >> 0) & 0xFF;
+		int out2 = (blue << 16) | (green << 8) | (red << 0);
+		Networking.sendStrong("AddLight|"+out1 + "|"+out2+ "|" + x +"|"+ y +"|" + minSize+"|"+maxSize+"|"+spin+"|");
+	}
+	
+	public static void addMultiLight(int x,int y) {
+		Networking.addLight(extra.colorMix(Color.RED, Color.WHITE,0.6f) ,extra.colorMix(Color.RED, Color.WHITE,0.4f), x,y, 200, 300, 1);
+		Networking.addLight(extra.colorMix(Color.RED, Color.WHITE,0.8f) ,extra.colorMix(Color.RED, Color.WHITE,0.6f), x,y, 100, 200, 2);
+		Networking.addLight(extra.colorMix(Color.RED, Color.WHITE,0.3f) ,extra.colorMix(Color.RED, Color.WHITE,0.2f), x,y, 50, 100, 1);
 	}
 	
 	public static void clearLights() {

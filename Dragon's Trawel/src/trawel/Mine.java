@@ -28,8 +28,13 @@ public class Mine extends Feature {
 	@Override
 	public void go() {
 		Networking.setArea("mine");
+		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|mine|Mine|");
+		Networking.addMultiLight(500,500);
+		Networking.addMultiLight(100,100);
+		Networking.addMultiLight(900,600);
 		start.go();
+		Networking.clearLights();
 	}
 
 	@Override
