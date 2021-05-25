@@ -185,7 +185,7 @@ public class AIClass {
 			j = 0;
 			do {
 				if (!attacks.get(i).isMagic()) {
-				damray[i]+=100*extra.zeroOut((double)com.handleAttack(attacks.get(i),defender.getBag(),attacker.getBag(),0.05,attacker,defender).damage);}else {
+				damray[i]+=100*extra.zeroOut((double)com.handleAttack(attacks.get(i),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender).damage);}else {
 					if (attacks.get(i).getSkill() == Skill.DEATH_MAGE) {
 						damray[i]+=100*extra.zeroOut(attacks.get(i).getBlunt());
 						if (defender.hasSkill(Skill.LIFE_MAGE)) {
@@ -216,6 +216,8 @@ public class AIClass {
 		//extra.println("Chose: " + theStance.getAttack(i).getName() + " " + damray[i]);//debug
 		return attacks.get(i);
 	}
+	
+	
 	
 	/**
 	 * Checks to see if there's any items in the inventory that cost zero gold.
@@ -420,7 +422,7 @@ public class AIClass {
 		if (Weapon.class.isInstance(hasItem)) {
 			Weapon hasWeap = (Weapon)hasItem;
 			Weapon toWeap = (Weapon)toReplace;
-			extra.println(extra.inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.5f))+"Difference: hd/ad: " + colorPlusMinus(extra.format2((toWeap.highestDamage().highest-hasWeap.highestDamage().highest))) + "/" + colorPlusMinus(extra.format2(toWeap.highestDamage().average-hasWeap.highestDamage().average)) + "[c_white] cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));
+			extra.println(extra.inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.5f))+"Difference: highest damage/average damage/battlescore: " + colorPlusMinus(extra.format2((toWeap.highestDamage().highest-hasWeap.highestDamage().highest))) + "/" + colorPlusMinus(extra.format2(toWeap.highestDamage().average-hasWeap.highestDamage().average))+ "/" + colorPlusMinus(extra.format2(toWeap.highestDamage().battleScore-hasWeap.highestDamage().battleScore))  + "[c_white] cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));
 			if (((Weapon)hasItem).getEnchantHit() != null || ((Weapon)toReplace).getEnchantHit()!= null) {
 				displayEnchantDiff(((Weapon)hasItem).getEnchantHit(),((Weapon)toReplace).getEnchantHit());
 			}

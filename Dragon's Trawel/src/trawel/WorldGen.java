@@ -45,6 +45,20 @@ public class WorldGen {
 	public static final double milesInLonga = 54.6;
 	public static final float unitsInLata = (float) (milesInLata/distanceScale);
 	public static final float unitsInLonga = (float) (milesInLonga/distanceScale);
+	
+	private static List<Inventory> dumInvs = new ArrayList<Inventory>();
+	
+	public static List<Inventory> getDummyInvs() {
+		if (dumInvs.size() == 0) {
+			for (int i = 0; i < 50;i++) {
+				dumInvs.add(new Inventory(10, Race.RaceType.HUMANOID, null, null));
+			}
+			
+		}
+		return dumInvs;
+		
+	}
+	
 	public static World eoano() {
 		World w = new World(16,10,"eoano",41f,-72f);
 		plane = new Plane();

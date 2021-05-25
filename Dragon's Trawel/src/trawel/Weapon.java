@@ -1,4 +1,7 @@
 package trawel;
+
+import trawel.TargetFactory.TargetType;
+
 /**
  * 
  * @author Brian Malone
@@ -290,6 +293,7 @@ public class Weapon extends Item {
 		double high = 0;
 		double damage = 0;
 		double average = 0;
+		double bs = 0;
 		int size = this.getMartialStance().getAttackCount();
 		int i = 0;
 		Attack holdAttack;
@@ -301,11 +305,17 @@ public class Weapon extends Item {
 			if (damage > high) {
 				high = damage;
 			}
+			for (int j = 0; j < battleTests;j++) {
+			bs+=Combat.handleTestAttack(holdAttack.impair(10,TargetType.HUMANOID,this),extra.randList(WorldGen.getDummyInvs()),Armor.armorEffectiveness).damage;
+			}
 			i++;
 		}
-		dam = new DamTuple(high,average);
+		bs/=battleTests;
+		dam = new DamTuple(high,average,bs/size);
 		return dam;
 	}
+	
+	public static final int battleTests = 20;
 	
 	public class DamTuple implements java.io.Serializable{
 		
@@ -315,9 +325,11 @@ public class Weapon extends Item {
 		private static final long serialVersionUID = 1L;
 		public double highest;
 		public double average;
-		public DamTuple(double h, double a) {
+		public double battleScore;
+		public DamTuple(double h, double a, double b) {
 			highest = h;
 			average = a;
+			battleScore = b;
 		}
 	}
 
@@ -326,7 +338,7 @@ public class Weapon extends Item {
 		switch (style) {
 		case 1:
 			extra.println(this.getName()
-			+ " hd/ad: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+" value: " + (int)(this.getCost()*markup));
+			+ " hd/ad/bs: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+"/"+extra.format2(this.highestDamage().battleScore)+" value: " + (int)(this.getCost()*markup));
 			if (this.IsEnchantedConstant()) {
 				this.getEnchant().display(1);
 			}
@@ -336,7 +348,7 @@ public class Weapon extends Item {
 			;break;
 		case 2:
 			extra.println(this.getName()
-			+ " hd/ad: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+" value: " + (int)(this.getCost()*markup) + " kills: " +this.getKills());
+			+ " hd/ad/bs: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+ "/"+extra.format2(this.highestDamage().battleScore)+" value: " + (int)(this.getCost()*markup) + " kills: " +this.getKills());
 			if (this.IsEnchantedConstant()) {
 				this.getEnchant().display(2);
 			}

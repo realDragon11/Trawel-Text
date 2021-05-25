@@ -24,6 +24,8 @@ public class Combat {
 	public long turns = 0;
 	public int totalFighters = 2;
 	public boolean battleIsLong = false;
+	
+	public static Combat testCombat = new Combat();
 	//constructor
 	/**
 	 * Holds a fight to the death, between two people.
@@ -337,6 +339,10 @@ public class Combat {
 		
 	}
 	
+	public Combat() {
+		// TODO empty for tests
+	}
+
 	//instance methods
 	/**
 	 * Calculate if an attack hits, and how much damage it would deal, countered by the armor.
@@ -390,6 +396,23 @@ public class Combat {
 			double midArmor = .7;
 			return new AttackReturn((int)((extra.zeroOut((att.getSharp()*damMod*extra.upDamCurve(depthWeapon,midWeapon))-(def.getSharp(att.getSlot())*armMod*extra.upDamCurve(depthArmor,midArmor))))+extra.zeroOut((att.getBlunt()*damMod*extra.upDamCurve(depthWeapon,midWeapon))-(def.getBlunt(att.getSlot())*armMod*extra.upDamCurve(depthArmor,midArmor)))+extra.zeroOut((att.getPierce()*damMod*extra.upDamCurve(depthWeapon,midWeapon))-(def.getPierce(att.getSlot())*armMod*extra.upDamCurve(depthArmor,midArmor)))),str);
 		case 0: return new AttackReturn((int)((extra.zeroOut((att.getSharp()*damMod)-(def.getSharp(att.getSlot())*armMod))*Math.random())+extra.zeroOut((att.getBlunt()*damMod)-(def.getBlunt(att.getSlot())*armMod)*Math.random())+extra.zeroOut((att.getPierce()*damMod)-(def.getPierce(att.getSlot())*armMod)*Math.random())),str);
+		}
+	}
+	
+	public static AttackReturn handleTestAttack(Attack att, Inventory def, double armMod) {
+		double damMod = 1;
+		if (((def.getDodge())/(att.getHitmod()))*Math.random() > 1.0){
+			return Combat.testCombat.new AttackReturn(-1,"");//do a dodge
+		}
+		//return the damage-armor, with each type evaluated individually
+		switch (mainGame.attackType) {
+		case 1:default:
+			double depthWeapon = .25;
+			double midWeapon = .7;
+			double depthArmor = .25;
+			double midArmor = .7;
+			return Combat.testCombat.new AttackReturn((int)((extra.zeroOut((att.getSharp()*damMod*extra.upDamCurve(depthWeapon,midWeapon))-(def.getSharp(att.getSlot())*armMod*extra.upDamCurve(depthArmor,midArmor))))+extra.zeroOut((att.getBlunt()*damMod*extra.upDamCurve(depthWeapon,midWeapon))-(def.getBlunt(att.getSlot())*armMod*extra.upDamCurve(depthArmor,midArmor)))+extra.zeroOut((att.getPierce()*damMod*extra.upDamCurve(depthWeapon,midWeapon))-(def.getPierce(att.getSlot())*armMod*extra.upDamCurve(depthArmor,midArmor)))),"");
+		case 0: return Combat.testCombat.new AttackReturn((int)((extra.zeroOut((att.getSharp()*damMod)-(def.getSharp(att.getSlot())*armMod))*Math.random())+extra.zeroOut((att.getBlunt()*damMod)-(def.getBlunt(att.getSlot())*armMod)*Math.random())+extra.zeroOut((att.getPierce()*damMod)-(def.getPierce(att.getSlot())*armMod)*Math.random())),"");
 		}
 	}
 	
@@ -469,10 +492,10 @@ public class Combat {
 		}
 		
 		if (!attacker.getNextAttack().isMagic()) {
-		AttackReturn atr = this.handleAttack(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender);
+		AttackReturn atr = this.handleAttack(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
 		int damageDone = atr.damage;
 		Color inlined_color = Color.WHITE;
-		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender,damageDone);
+		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender,damageDone);
 		//armor quality handling
 		defender.getBag().armorQualDam(damageDone);
 		//message handling
@@ -577,7 +600,7 @@ public class Combat {
 		}
 		}else {
 			//the attack is a magic spell
-			handleMagicSpell(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),0.05,attacker,defender);
+			handleMagicSpell(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
 			song.addAttackHit(attacker,defender);
 		}
 		
