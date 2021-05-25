@@ -359,7 +359,7 @@ public class AIClass {
 		if (smarts < 2) {
 			return (toReplace.getCost()>hasItem.getCost());
 			}
-		if (((Weapon) hasItem).highestDamage().average > ((Weapon) toReplace).highestDamage().average){
+		if (((Weapon)(toReplace)).highestDamage().battleScore>((Weapon)(hasItem)).highestDamage().battleScore){
 			return true;	
 			}
 		return false;
