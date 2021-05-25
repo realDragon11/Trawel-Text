@@ -274,6 +274,9 @@ public class AIClass {
 	 */
 	public static void loot(Inventory loot, Inventory stash, int smarts, boolean sellStuff) {
 		int i = 0;
+		if (smarts < 0 && Player.getTutorial()) {
+			extra.println("You are now looting something! The first item presented will be the new item, the second, your current item, and finally, the difference will be shown. Some items may be autosold if all their visible stats are worse.");
+		}
 		while (i < 5) {
 			if (compareItem((Item)stash.getArmorSlot(i),(Item)loot.getArmorSlot(i),smarts,true)) {
 				if (sellStuff) {
@@ -287,9 +290,6 @@ public class AIClass {
 			
 			
 			if (smarts < 0) {
-			if (Player.getTutorial()) {
-				extra.println("You are now looting something! The first item presented will be the new item, the second, your current item, and finally, the difference will be shown. Some items may be autosold if all their visible stats are worse.");
-			}
 			Networking.charUpdate();
 			String depth = null;
 			switch (i) {
