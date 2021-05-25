@@ -311,7 +311,7 @@ public class Weapon extends Item {
 			i++;
 		}
 		bs/=battleTests;
-		dam = new DamTuple(high,average,bs/size);
+		dam = new DamTuple(high,average,bs*level/size);
 		return dam;
 	}
 	
@@ -338,7 +338,7 @@ public class Weapon extends Item {
 		switch (style) {
 		case 1:
 			extra.println(this.getName()
-			+ " hd/ad/bs: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+"/"+extra.format2(this.highestDamage().battleScore)+" value: " + (int)(this.getCost()*markup));
+			+ " hd/ad/bs: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+"/"+extra.format(this.highestDamage().battleScore)+" value: " + (int)(this.getCost()*markup));
 			if (this.IsEnchantedConstant()) {
 				this.getEnchant().display(1);
 			}
@@ -348,7 +348,7 @@ public class Weapon extends Item {
 			;break;
 		case 2:
 			extra.println(this.getName()
-			+ " hd/ad/bs: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+ "/"+extra.format2(this.highestDamage().battleScore)+" value: " + (int)(this.getCost()*markup) + " kills: " +this.getKills());
+			+ " hd/ad/bs: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+ "/"+extra.format(this.highestDamage().battleScore)+" value: " + (int)(this.getCost()*markup) + " kills: " +this.getKills());
 			if (this.IsEnchantedConstant()) {
 				this.getEnchant().display(2);
 			}

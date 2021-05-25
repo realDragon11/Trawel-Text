@@ -145,14 +145,14 @@ public class Inventory implements java.io.Serializable{
 			retMod *= armorSlots[i].getEnchant().getDodgeMod();}
 		if (armorSlots[i].getDexMod() < 1.0) {
 			//heavy armor
-			if (owner.heavyArmorLevel > 20.0) {
+			if ((owner != null ? owner.heavyArmorLevel : 0 ) > 20.0) {
 				//do nothing, negate heavy armor penalty
 			}else {
-				retMod *= extra.lerp((float)armorSlots[i].getDexMod(),1,owner.heavyArmorLevel/20.0f);
+				retMod *= extra.lerp((float)armorSlots[i].getDexMod(),1,(owner != null ? owner.heavyArmorLevel : 0 )/20.0f);
 			}
 		}else {
 			//light armor
-			retMod*= Math.pow(armorSlots[i].getDexMod(),Math.log10(10+(owner.lightArmorLevel*2.5f)));
+			retMod*= Math.pow(armorSlots[i].getDexMod(),Math.log10(10+((owner != null ? owner.lightArmorLevel : 0 )*2.5f)));
 		}
 		
 		i++;
@@ -162,7 +162,7 @@ public class Inventory implements java.io.Serializable{
 		}
 		retMod*=race.dodgeMod;
 		
-		if (owner.hasEffect(Effect.BEE_SHROUD)) {
+		if ((owner != null ? owner.hasEffect(Effect.BEE_SHROUD) : false )) {
 			retMod*=1.1;
 		}
 		

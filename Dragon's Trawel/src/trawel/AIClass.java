@@ -287,6 +287,9 @@ public class AIClass {
 			
 			
 			if (smarts < 0) {
+			if (Player.getTutorial()) {
+				extra.println("You are now looting something! The first item presented will be the new item, the second, your current item, and finally, the difference will be shown. Some items may be autosold if all their visible stats are worse.");
+			}
 			Networking.charUpdate();
 			String depth = null;
 			switch (i) {
@@ -417,12 +420,18 @@ public class AIClass {
 		if (Armor.class.isInstance(hasItem)) {
 			Armor hasArm = (Armor) hasItem;
 			Armor toArm = (Armor) toReplace;
+			if (Player.getTutorial()) {
+				extra.println("sbp = sharp, blunt, pierce");
+			}
 			extra.println(extra.inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.5f))+"Difference: sbp: " + colorPlusMinus(extra.format2(toArm.getSharpResist()*toArm.getResist()-hasArm.getSharpResist()*hasArm.getResist())) + " " +  colorPlusMinus(extra.format2(toArm.getBluntResist()*toArm.getResist()-hasArm.getBluntResist()*hasArm.getResist())) + " " + colorPlusMinus(extra.format2((toArm.getPierceResist()*toArm.getResist())- hasArm.getPierceResist()*hasArm.getResist()))+  "[c_white] cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));//" dex: " + extra.format2(toArm.getDexMod()-hasArm.getDexMod()) +
 		}
 		if (Weapon.class.isInstance(hasItem)) {
 			Weapon hasWeap = (Weapon)hasItem;
 			Weapon toWeap = (Weapon)toReplace;
-			extra.println(extra.inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.5f))+"Difference: highest damage/average damage/battlescore: " + colorPlusMinus(extra.format2((toWeap.highestDamage().highest-hasWeap.highestDamage().highest))) + "/" + colorPlusMinus(extra.format2(toWeap.highestDamage().average-hasWeap.highestDamage().average))+ "/" + colorPlusMinus(extra.format2(toWeap.highestDamage().battleScore-hasWeap.highestDamage().battleScore))  + "[c_white] cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));
+			if (Player.getTutorial()) {
+				extra.println("hd = highest damage, ad = average damage, bs = battlescore");
+			}
+			extra.println(extra.inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.5f))+"Difference: hd/ad/bs: " + colorPlusMinus(extra.format2((toWeap.highestDamage().highest-hasWeap.highestDamage().highest))) + "/" + colorPlusMinus(extra.format2(toWeap.highestDamage().average-hasWeap.highestDamage().average))+ "/" + colorPlusMinus(extra.format2(toWeap.highestDamage().battleScore-hasWeap.highestDamage().battleScore))  + "[c_white] cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));
 			if (((Weapon)hasItem).getEnchantHit() != null || ((Weapon)toReplace).getEnchantHit()!= null) {
 				displayEnchantDiff(((Weapon)hasItem).getEnchantHit(),((Weapon)toReplace).getEnchantHit());
 			}
