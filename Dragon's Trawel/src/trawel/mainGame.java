@@ -181,7 +181,12 @@ public class mainGame {
 		case 5: saveTest();break;
 		case 6: Calender.timeTest();
 		break;
-		case 7: WeaponAttackFactory.weaponMetrics();break;
+		case 7: try {
+				WeaponAttackFactory.weaponMetrics();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}break;
 			}
 	}
 	

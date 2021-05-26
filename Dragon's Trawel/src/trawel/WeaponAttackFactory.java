@@ -1,5 +1,7 @@
 package trawel;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -24,10 +26,10 @@ public class WeaponAttackFactory {
 		stanceMap.put("longsword", martialStance);
 		
 		martialStance = new Stance();
-		tempAttack = new Attack("slash",1.3,110.0,35,8,0,"X` slashes at Y` with their Z`!",1,"sharp");
+		tempAttack = new Attack("slash",1.3,110.0,37,8,0,"X` slashes at Y` with their Z`!",1,"sharp");
 		martialStance.addAttack(tempAttack);
 		martialStance.addAttack(tempAttack);
-		tempAttack = new Attack("stab",1.0,110.0,2,3,10,"X` stabs at Y` with their Z`!",1,"pierce");
+		tempAttack = new Attack("stab",1.0,110.0,2,4,10,"X` stabs at Y` with their Z`!",1,"pierce");
 		martialStance.addAttack(tempAttack);	
 		martialStance.addAttack(new Attack("pommel",1,110.0,0,12,0,"X` hits Y` with the pommel of their Z`!",0,"blunt"));
 		martialStance.addAttack(new Attack("slap",1.2,120.0,0,15,0,"X` slaps Y` with the side of their Z`!",1,"blunt"));
@@ -35,9 +37,9 @@ public class WeaponAttackFactory {
 		stanceMap.put("broadsword", martialStance);
 		
 		martialStance = new Stance();
-		martialStance.addAttack(new Attack("bash",1.5,150.0,0,35,1,"X` bashes Y` with their Z`!",1,"blunt"));
-		martialStance.addAttack(new Attack("smash",1,100.0,0,30,1,"X` smashes Y` with their Z`!",1,"blunt"));
-		martialStance.addAttack(new Attack("power",.5,180.0,1,80,5,"X` lifts their Z` over their head, and then brings it down on Y`!",2,"blunt"));
+		martialStance.addAttack(new Attack("bash",1.5,150.0,2,30,3,"X` bashes Y` with their Z`!",1,"blunt"));
+		martialStance.addAttack(new Attack("smash",1,100.0,2,25,3,"X` smashes Y` with their Z`!",1,"blunt"));
+		martialStance.addAttack(new Attack("power",.5,180.0,5,70,10,"X` lifts their Z` over their head, and then brings it down on Y`!",2,"blunt"));
 		stanceMap.put("mace", martialStance);
 		martialStance = new Stance();
 		tempAttack = new Attack("skewer",1.1,120.0,1,2,50,"X` skewers Y` with their Z`!",1,"pierce");
@@ -142,9 +144,9 @@ public class WeaponAttackFactory {
 		stanceMap.put("fishing spear", martialStance);
 		
 		martialStance = new Stance();
-		martialStance.addAttack(new Attack("slam",.1,300.0,0,15,0,"X` hits Y` with their rusty anchor!",0,"blunt"));
+		martialStance.addAttack(new Attack("slam",.5,300.0,0,40,0,"X` hits Y` with their rusty anchor!",0,"blunt"));
 		martialStance.addAttack(new Attack("slap",1.3,200.0,0,30,0,"X` slaps Y` with the side of their rusty anchor!",1,"blunt"));
-		martialStance.addAttack(new Attack("power",.4,400.0,100,50,0,"X` lifts their rusty anchor over their head, and then brings it down on Y`!",2,"sharp"));
+		martialStance.addAttack(new Attack("power",.9,400.0,100,50,0,"X` lifts their rusty anchor over their head, and then brings it down on Y`!",2,"sharp"));
 		stanceMap.put("anchor", martialStance);
 	}
 	
@@ -152,22 +154,32 @@ public class WeaponAttackFactory {
 		return stanceMap.get(str);
 	}
 	
-	public static void weaponMetrics() {
+	public static void weaponMetrics() throws FileNotFoundException {
+		PrintWriter writer = new PrintWriter("wmetrics.csv");
 		int hold = Weapon.battleTests;
 		Weapon.battleTests = 1000;
 		List<Weapon> weaponList = new ArrayList<Weapon>();
 		int mats = 0;
 		int weaps = 0;
+		writer.write(",");
+		for (String str: new String[] {"longsword","broadsword","mace","spear","axe","rapier","dagger","claymore","lance","shovel"}) {
+			writer.write(str+",");
+		}
+		writer.write("\n");
 		for (Material m: MaterialFactory.matList) {
 			if (!m.weapon) {
 				continue;
 			}
 			mats++;
+			writer.write(m.name+",");
 			for (String str: new String[] {"longsword","broadsword","mace","spear","axe","rapier","dagger","claymore","lance","shovel"}) {
 				weaps++;
 				weaponList.add(new Weapon(1,m,str));
+				writer.write(weaponList.get(weaponList.size()-1).highestDamage().battleScore+",");
 			}
+			writer.write("\n");
 		}
+		writer.flush();
 		weaponList.sort(new Comparator<Weapon>(){
 
 			@Override
@@ -197,6 +209,7 @@ public class WeaponAttackFactory {
 				weapMap.put(weapon.getBaseName(),weapon.highestDamage().battleScore+get);
 			}
 		}
+		
 		List<WeaponMetric> metrics = new ArrayList<WeaponMetric>();
 		for (String str: matMap.keySet()) {
 			metrics.add(new WeaponAttackFactory().new WeaponMetric(str,(matMap.get(str)/weaps),MaterialFactory.getMat(str).rarity));
@@ -219,6 +232,7 @@ public class WeaponAttackFactory {
 			extra.println(wm.toString());
 		}
 		Weapon.battleTests = hold;
+		writer.close();
 	}
 	
 	public class WeaponMetric{
