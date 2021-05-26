@@ -208,7 +208,7 @@ public class WeaponAttackFactory {
 
 			@Override
 			public int compare(WeaponMetric o1, WeaponMetric o2) {
-				double comp = ((o1.raw*o1.rarity)-(o2.raw*o2.rarity));
+				double comp = ((o1.raw/*o1.rarity*/)-(o2.raw/*o2.rarity*/));
 				if (comp == 0) {
 					return 0;
 				}

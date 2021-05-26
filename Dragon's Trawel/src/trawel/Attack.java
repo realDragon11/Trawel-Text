@@ -297,7 +297,7 @@ public class Attack implements java.io.Serializable{
 			in[3] = 9;
 			in[4] = 10;
 			in[5] = 6+4;
-			extra.specialPrint(in,name ,extra.format(hitMod) , extra.format((speed))  , extra.format(sharp)  , extra.format(blunt)  ,  extra.format(pierce));
+			extra.specialPrint(in,name ,extra.format(hitMod) , extra.format((speed))  ,""+ (sharp)  ,""+(blunt)  ,  ""+(pierce));
 			}else {
 				int[] in = new int[3];
 				in[0] = 20+7;

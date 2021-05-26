@@ -24,15 +24,16 @@ public class Mine extends Feature {
 		this.owner = owner;
 		shape = s;
 		generate();
+		background_area = "mine";
 	}
 	@Override
 	public void go() {
 		Networking.setArea("mine");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|mine|Mine|");
-		Networking.addMultiLight(500,500);
-		Networking.addMultiLight(100,100);
-		Networking.addMultiLight(900,600);
+		Networking.addMultiLight(52,471);
+		Networking.addMultiLight(479,339);
+		Networking.addMultiLight(1000,406);
 		start.go();
 		Networking.clearLights();
 	}
