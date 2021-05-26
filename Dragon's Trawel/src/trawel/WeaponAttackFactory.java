@@ -153,19 +153,31 @@ public class WeaponAttackFactory {
 	}
 	
 	public static void weaponMetrics() {
+		int hold = Weapon.battleTests;
+		Weapon.battleTests = 1000;
 		List<Weapon> weaponList = new ArrayList<Weapon>();
-		for (int i = 0; i< 400;i++) {
-			weaponList.add(new Weapon(1));
+		for (Material m: MaterialFactory.matList) {
+			if (!m.weapon) {
+				continue;
+			}
+			for (String str: new String[] {"longsword","broadsword","mace","spear","axe","rapier","dagger","claymore","lance","shovel"}) {
+				weaponList.add(new Weapon(1,m,str));
+			}
 		}
 		weaponList.sort(new Comparator<Weapon>(){
 
 			@Override
 			public int compare(Weapon o1, Weapon o2) {
-				return -(int)Math.round(o1.highestDamage().battleScore-o2.highestDamage().battleScore);
+				double comp = (o1.highestDamage().battleScore-o2.highestDamage().battleScore);
+				if (comp == 0) {
+					return 0;
+				}
+				return (comp > 0 ? -1 : 1);
 			}
 		});
 		for (int i = 0; i< weaponList.size();i++) {
 			weaponList.get(i).display(0);
 		}
+		Weapon.battleTests = hold;
 	}
 }

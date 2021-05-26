@@ -306,16 +306,16 @@ public class Weapon extends Item {
 				high = damage;
 			}
 			for (int j = 0; j < battleTests;j++) {
-			bs+=Combat.handleTestAttack(holdAttack.impair(10,TargetType.HUMANOID,this),extra.randList(WorldGen.getDummyInvs()),Armor.armorEffectiveness).damage;
+			bs+=Combat.handleTestAttack(holdAttack.impair(10,TargetType.HUMANOID,this),extra.randList(WorldGen.getDummyInvs()),Armor.armorEffectiveness).damage/holdAttack.getSpeed() ;
 			}
 			i++;
 		}
 		bs/=battleTests;
-		dam = new DamTuple(high,average,bs*level/size);
+		dam = new DamTuple(high,average,(bs*level)/(size));
 		return dam;
 	}
 	
-	public static final int battleTests = 20;
+	public static int battleTests = 50;
 	
 	public class DamTuple implements java.io.Serializable{
 		
