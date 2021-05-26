@@ -156,6 +156,9 @@ public class Networking {
 	}
 
 	public static void unConnect() {
+		if (mainGame.noDisconnect) {
+			return;
+		}
 		try {
 			in.close();
 		} catch (IOException e) {

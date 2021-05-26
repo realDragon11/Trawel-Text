@@ -34,7 +34,7 @@ import trawel.townevents.TownFlavorFactory;
 public class mainGame {
 	//public static final boolean bumpEnabled = true;//a boolean for an update
 
-	public static final String VERSION_STRING = "v0.7.2";
+	public static final String VERSION_STRING = "v0.7.3";
 
 	//instance variables
 	public static Scanner scanner = new Scanner(System.in);
@@ -43,6 +43,7 @@ public class mainGame {
 	public static boolean debug = false;
 	public static boolean inEclipse = false;
 	public static boolean autoConnect = false;
+	public static boolean noDisconnect = false;
 
 	public static boolean GUIInput = true;
 	
@@ -382,6 +383,9 @@ public class mainGame {
 			if (a.toLowerCase().equals("ineclipse")) {
 				inEclipse = true;
 			}
+			if (a.toLowerCase().equals("nodisconnect")) {
+				noDisconnect = true;
+			}
 			
 		}
 		try {
@@ -416,7 +420,7 @@ public class mainGame {
 			if (e.getMessage() == null) {
 				main(args);
 			} 
-			if ( (!e.getMessage().equals("invalid input stream error") && !e.getMessage().equals("No line found"))) {
+			if (noDisconnect == true || (!e.getMessage().equals("invalid input stream error") && !e.getMessage().equals("No line found"))) {
 			main(args);}
 		}
 		//

@@ -224,68 +224,6 @@ public class extra {
 				}
 				extra.linebreak();
 				return ini;
-				/*while(true) {
-				
-				try {
-					String str2 = System.getenv("APPDATA")+"\\Local\\Trawel\\buff.txt";
-					str2 = str2.replace("Roaming\\","");
-					File f = new File(str2);
-					if (lastMod == -1) {
-						lastMod = f.lastModified();
-					}
-					if (f.lastModified() < lastMod+50) {
-						throw new Exception();
-					}
-					lastMod = f.lastModified();
-					if (!f.exists()){
-						throw new Exception();
-					}
-					InputStream input = new FileInputStream(f);
-					int temp = input.read();
-					input.close();
-					extra.linebreak();
-					if((temp < 1 || temp > max)) {
-						extra.println("You've encountered a disk error. Please re-enter your input");
-						extra.println("1 ");
-						extra.println("2 ");
-						extra.println("3 ");
-						extra.println("4 ");
-						extra.println("5 ");
-						extra.println("6 ");
-						extra.println("7 ");
-						extra.println("8 ");
-						extra.println("9 ");
-						throw new Exception("blah");
-					}
-					return temp;
-				} catch (Exception e) {	}
-				
-				try {
-					if (System.in.available() > 0) {
-						str = mainGame.scanner.next();
-						try {
-							in = Integer.parseInt(str);
-						}catch(NumberFormatException e) {
-							if (!str.equals("\n")) {
-							in = 0;}
-						}catch(Exception e) {
-							extra.println("error");
-						}
-						if((in < 1 || in > max)) {
-							extra.println("Please type a number from 1 to " + max + ".");
-							continue;
-						}extra.linebreak();
-						return in;
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					//e.printStackTrace();
-				}
-				
-				
-				
-			}*/
-			
 			
 			}else {
 				
