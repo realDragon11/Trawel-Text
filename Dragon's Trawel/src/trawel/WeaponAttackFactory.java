@@ -156,11 +156,15 @@ public class WeaponAttackFactory {
 		int hold = Weapon.battleTests;
 		Weapon.battleTests = 1000;
 		List<Weapon> weaponList = new ArrayList<Weapon>();
+		int mats = 0;
+		int weaps = 0;
 		for (Material m: MaterialFactory.matList) {
 			if (!m.weapon) {
 				continue;
 			}
+			mats++;
 			for (String str: new String[] {"longsword","broadsword","mace","spear","axe","rapier","dagger","claymore","lance","shovel"}) {
+				weaps++;
 				weaponList.add(new Weapon(1,m,str));
 			}
 		}
@@ -175,9 +179,31 @@ public class WeaponAttackFactory {
 				return (comp > 0 ? -1 : 1);
 			}
 		});
+		HashMap<String,Double> matMap = new HashMap<String, Double>();
+		HashMap<String,Double> weapMap = new HashMap<String, Double>();
 		for (int i = 0; i< weaponList.size();i++) {
-			weaponList.get(i).display(0);
+			Weapon weapon = weaponList.get(i);
+			weapon.display(0);
+			Double get = matMap.get(weapon.getMaterial());
+			if (get == null) {
+				matMap.put(weapon.getMaterial(),weapon.highestDamage().battleScore);
+			}else {
+				matMap.put(weapon.getMaterial(),weapon.highestDamage().battleScore+get);
+			}
+			get = weapMap.get(weapon.getBaseName());
+			if (get == null) {
+				weapMap.put(weapon.getBaseName(),weapon.highestDamage().battleScore);
+			}else {
+				weapMap.put(weapon.getBaseName(),weapon.highestDamage().battleScore+get);
+			}
 		}
+		for (String str: matMap.keySet()) {
+			extra.println(""+ (matMap.get(str)/weaps));
+		}
+		for (String str: weapMap.keySet()) {
+			extra.println(""+ (weapMap.get(str)/mats));
+		}
+		
 		Weapon.battleTests = hold;
 	}
 }
