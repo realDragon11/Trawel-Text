@@ -202,8 +202,19 @@ public class WeaponAttackFactory {
 			metrics.add(new WeaponAttackFactory().new WeaponMetric(str,(matMap.get(str)/weaps),MaterialFactory.getMat(str).rarity));
 		}
 		for (String str: weapMap.keySet()) {
-			metrics.add(new WeaponAttackFactory().new WeaponMetric(str,(matMap.get(str)/mats),Weapon.getRarity(str)));
+			metrics.add(new WeaponAttackFactory().new WeaponMetric(str,(weapMap.get(str)/mats),Weapon.getRarity(str)));
 		}
+		metrics.sort(new Comparator<WeaponMetric>(){
+
+			@Override
+			public int compare(WeaponMetric o1, WeaponMetric o2) {
+				double comp = ((o1.raw*o1.rarity)-(o2.raw*o2.rarity));
+				if (comp == 0) {
+					return 0;
+				}
+				return (comp > 0 ? -1 : 1);
+			}
+		});
 		for (WeaponMetric wm: metrics) {
 			extra.println(wm.toString());
 		}
