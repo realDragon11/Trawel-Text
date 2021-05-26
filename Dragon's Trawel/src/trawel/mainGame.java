@@ -420,7 +420,7 @@ public class mainGame {
 			if (e.getMessage() == null) {
 				main(args);
 			} 
-			if (noDisconnect == true || (!e.getMessage().equals("invalid input stream error") && !e.getMessage().equals("No line found"))) {
+			if ((!e.getMessage().equals("invalid input stream error") && !e.getMessage().equals("No line found"))) {
 			main(args);}
 		}
 		//
