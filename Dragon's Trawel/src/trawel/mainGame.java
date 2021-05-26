@@ -370,8 +370,8 @@ public class mainGame {
 		for (String a: args) {
 			if (a.toLowerCase().equals("autoconnect")){
 				autoConnect = true;
-				extra.println("Please wait for the graphical to load...");
-				Networking.autoConnect();
+				//extra.println("Please wait for the graphical to load...");
+				//Networking.autoConnect();
 			}
 			if (a.toLowerCase().equals("noguiinput")){
 				GUIInput = false;

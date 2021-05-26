@@ -44,11 +44,13 @@ public class Networking {
 		extra.println("Connecting...");
 		while (doit) {
 			try {
+			TimeUnit.MILLISECONDS.sleep(20L);
 			socket = new Socket("127.0.0.1", 6510);
 			out = new PrintWriter(socket.getOutputStream(), true);
 		    in = socket.getInputStream();
 		    doit = false;
-			}catch (Exception e) {}
+			}catch (Exception e) {
+			}
 		}
 		 extra.println("Connected!");
 		 connected = true;
