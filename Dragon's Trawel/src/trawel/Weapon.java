@@ -426,5 +426,14 @@ public class Weapon extends Item {
 		this.enchantHit = new EnchantHit(true,baseEnchant);
 		
 	}
+
+	public static double getRarity(String str) {
+		switch (str) {
+		case "claymore": case " lance": case "shovel":
+			return (1/8.0)/3.0;
+		default:
+			return 1.0/8.0;
+		}
+	}
 	
 }

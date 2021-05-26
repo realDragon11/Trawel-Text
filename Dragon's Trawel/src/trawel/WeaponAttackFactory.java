@@ -197,13 +197,34 @@ public class WeaponAttackFactory {
 				weapMap.put(weapon.getBaseName(),weapon.highestDamage().battleScore+get);
 			}
 		}
+		List<WeaponMetric> metrics = new ArrayList<WeaponMetric>();
 		for (String str: matMap.keySet()) {
-			extra.println(""+ (matMap.get(str)/weaps));
+			metrics.add(new WeaponAttackFactory().new WeaponMetric(str,(matMap.get(str)/weaps),MaterialFactory.getMat(str).rarity));
 		}
 		for (String str: weapMap.keySet()) {
-			extra.println(""+ (weapMap.get(str)/mats));
+			metrics.add(new WeaponAttackFactory().new WeaponMetric(str,(matMap.get(str)/mats),Weapon.getRarity(str)));
+		}
+		for (WeaponMetric wm: metrics) {
+			extra.println(wm.toString());
+		}
+		Weapon.battleTests = hold;
+	}
+	
+	public class WeaponMetric{
+		public String name;
+		public double raw;
+		public double rarity;
+		
+		public WeaponMetric(String nam, double ra, double rarit) {
+			name = nam;
+			raw = ra;
+			rarity = rarit;
 		}
 		
-		Weapon.battleTests = hold;
+		public String toString() {
+			java.text.DecimalFormat formata = new java.text.DecimalFormat("0.0000");
+			return name +": "+ formata.format(raw) +")(" +formata.format(rarity*raw); 
+		}
+		
 	}
 }
