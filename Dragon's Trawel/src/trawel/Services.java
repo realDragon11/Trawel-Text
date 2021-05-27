@@ -79,7 +79,7 @@ public class Services {
 	public static void sellItem(Weapon item, Inventory bag, Inventory purse, boolean getNew) {
 		purse.setGold(purse.getGold()+item.getCost());
 		if (getNew) {
-		bag.swapWeapon(new Weapon(1));}
+		bag.swapWeapon(new Weapon(extra.zeroOut(item.getLevel()-1)));}
 		extra.println("The " + item.getName() + " "+extra.pluralIs(item.getBaseName())+" sold for " + item.getCost()+ " " + extra.choose("gold pieces","pieces of gold","gold") + "." );
 	}
 	/**
@@ -109,7 +109,7 @@ public class Services {
 			int i = 0;
 			while (i < 5) {
 			if (bag.getArmorSlot(i) == item) {
-			bag.swapArmorSlot(new Armor(1,i),i);
+			bag.swapArmorSlot(new Armor(extra.zeroOut(item.getLevel()-1),i),i);
 			soldIt = true;
 			}
 			i++;

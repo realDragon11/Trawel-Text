@@ -150,32 +150,34 @@ public class FortFoundation extends FortFeature {
 		if (timeLeft > 0) {
 			timeLeft-=time;
 			if (timeLeft <=0) {
+				FortFeature built = null;
 				switch (buildCode) {
 				case 1:
-					town.enqueneAdd(new WizardTower(town.getTier()));
+					built = new WizardTower(town.getTier());
 					break;
 				case 2:
-					town.enqueneAdd(new Forge(town.getTier()));
+					built = (new Forge(town.getTier()));
 					break;
 				case 3:
-					town.enqueneAdd(new Watchtower(town.getTier(),1));
+					built = (new Watchtower(town.getTier(),1));
 					break;
 				case 4:
-					town.enqueneAdd(new Watchtower(town.getTier(),2));
+					built = (new Watchtower(town.getTier(),2));
 					break;
 				case 5:
-					town.enqueneAdd(new Watchtower(town.getTier(),3));
+					built = (new Watchtower(town.getTier(),3));
 					break;
 				case 6:
-					town.enqueneAdd(new Hunter(town.getTier(),1));
+					built = (new Hunter(town.getTier(),1));
 					break;
 				case 7:
-					town.enqueneAdd(new Hunter(town.getTier(),2));
+					built = (new Hunter(town.getTier(),2));
 					break;
 				case 8:
-					town.enqueneAdd(new Hunter(town.getTier(),3));
+					built = (new Hunter(town.getTier(),3));
 					break;
 				}
+				town.enqueneAdd(built);
 				town.enqueneRemove(this);
 			}
 		}

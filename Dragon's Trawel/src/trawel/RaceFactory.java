@@ -495,6 +495,7 @@ public class RaceFactory {
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.C_REAVER;
 		misc.emitsBlood = true;
+		misc.voice = SoundBox.Voice.MONSTER1;
 		raceList.add(misc);
 		
 		misc = new Race();
@@ -638,7 +639,7 @@ public class RaceFactory {
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.FLY;
 		misc.emitsBlood = true;
-		misc.voice = SoundBox.Voice.BAT;
+		misc.voice = SoundBox.Voice.HARPY;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
 		raceList.add(misc);

@@ -140,7 +140,7 @@ public class mainGame {
 		extra.println("Art:");
 		extra.println("Character, armor, and weapon art by SmashCooper and Duster. Background art by Damrok and he-who-shall-not-be-named");
 		extra.println("Sounds:");
-		extra.println("Stock Media provided by Soundrangers / FxProSound / SoundIdeasCom / PrankAudio / hdaudio / agcnf_media / sounddogs / AbloomAudio => through Pond5");
+		extra.println("Stock Media provided by Soundrangers / FxProSound / SoundIdeasCom / PrankAudio / hdaudio / agcnf_media / sounddogs / AbloomAudio / Yurikud / SoundMorph => through Pond5");
 	}
 
 	
