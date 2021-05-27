@@ -587,7 +587,7 @@ public class extra {
 		}*/
 		
 		public static double upDamCurve(double depth, double midpoint) {
-			double x = 1-(2*Math.abs(Math.random()-midpoint));
+			double x = 1-(2*Math.abs((Math.random())-midpoint));
 			x = extra.clamp(x,0,1);
 			return (4*depth*Math.pow(x,3) - 6*depth*Math.pow(x,2) + 2*depth*x + x);
 		}

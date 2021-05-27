@@ -382,7 +382,7 @@ public class MaterialFactory {
 		matList.add(misc);
 		
 		misc = new Material();
-		misc.name = "sunsunsteel";
+		misc.name = "sunsteel";
 		misc.typeList.add("heavy");
 		misc.typeList.add("heavy");
 		misc.typeList.add("heavy");

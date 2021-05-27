@@ -52,6 +52,7 @@ public class WorldGen {
 		if (dumInvs.size() == 0) {
 			for (int i = 0; i < 100;i++) {
 				dumInvs.add(new Inventory(10, Race.RaceType.HUMANOID, null, null));
+				dumInvs.get(dumInvs.size()-1).resetArmor(0, 0, 0);
 			}
 			
 		}
