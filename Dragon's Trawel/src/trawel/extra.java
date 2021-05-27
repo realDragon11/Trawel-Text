@@ -576,11 +576,11 @@ public class extra {
 		}
 
 		public static double upDamCurve(double depth, double midpoint) {
-			//double rand = Math.random();
-			//double distance = 1-(Math.abs(rand-midpoint));
+			double rand = Math.random();
+			double distance = (Math.abs(rand-midpoint));
 			//double x = rand/midpoint;
-			//double x = (rand > midpoint ? rand/midpoint : (midpoint-distance)/midpoint);
-			double x = (midpoint-(1-(Math.abs(Math.random()-midpoint))))/midpoint;
+			double x = (rand < midpoint ? rand/midpoint : (midpoint-distance)/midpoint);
+			//double x = (midpoint-(1-(Math.abs(Math.random()-midpoint))))/midpoint;
 			return (4*depth*Math.pow(x,3) - 6*depth*Math.pow(x,2) + 2*depth*x + x);
 		}
 		
