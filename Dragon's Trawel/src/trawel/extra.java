@@ -557,7 +557,7 @@ public class extra {
 		 */
 		public static float bellCurve(float a){
 			double x = Math.random();
-			return (float) (4*a*Math.pow(x,3) - 6*a*Math.pow(x,2) + 2*a*x + x);
+			return (float) (4*a*Math.pow(x,3) - 6*a*Math.pow(x,2) + 2*a*x + x);//TODO fix
 		}
 		
 		public static float curveLerp(float start, float end, float depth) {
@@ -566,17 +566,21 @@ public class extra {
 		
 		public static float lerpDepth(float start, float end, float f,float depth) {
 			float midpoint = start+(end-start)/2;
-			float x = 1-(2*Math.abs(midpoint-f)/(end-start));
+			float x = 1-(2*Math.abs(midpoint-f)/(end-start));//TODO fix
 			//System.out.println(start + ", "+end +", " +f+";"+midpoint+": "+x);
 			return (float) (4*depth*Math.pow(x,3) - 6*depth*Math.pow(x,2) + 2*depth*x + x);//4*.25*x^3-6*.25*x^2+2*.25*x+x
 		}
 		
 		public static float lerpSetup(float start, float end, float f) {
-			return 1-(2*Math.abs((start+(end-start)/2)-f)/(end-start));
+			return 1-(2*Math.abs((start+(end-start)/2)-f)/(end-start));//TODO fix
 		}
 
 		public static double upDamCurve(double depth, double midpoint) {
-			double x = 1-(2*Math.abs(Math.random()-midpoint));
+			//double rand = Math.random();
+			//double distance = 1-(Math.abs(rand-midpoint));
+			//double x = rand/midpoint;
+			//double x = (rand > midpoint ? rand/midpoint : (midpoint-distance)/midpoint);
+			double x = (midpoint-(1-(Math.abs(Math.random()-midpoint))))/midpoint;
 			return (4*depth*Math.pow(x,3) - 6*depth*Math.pow(x,2) + 2*depth*x + x);
 		}
 		
