@@ -26,6 +26,8 @@ public class Combat {
 	public boolean battleIsLong = false;
 	
 	public static Combat testCombat = new Combat();
+	
+	public static int longBattleLength = 50;
 	//constructor
 	/**
 	 * Holds a fight to the death, between two people.
@@ -389,7 +391,7 @@ public class Combat {
 		//return the damage-armor, with each type evaluated individually
 		Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getSoundIntensity() + "|" +att.getSoundType()+"|");
 		switch (mainGame.attackType) {
-		case 2:
+		default:
 			//double depthWeapon2 = .25;
 			//double midWeapon2 = .7;
 			double depthArmor2 = .25;
@@ -403,14 +405,7 @@ public class Combat {
 			return Combat.testCombat.new AttackReturn((int)(
 					(extra.zeroOut((att.getSharp())-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
 					+extra.zeroOut((att.getBlunt())-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
-					+extra.zeroOut((att.getPierce())-((armorMinShear*pierceA)+((1-armorMinShear)*pierceA*extra.upDamCurve(depthArmor2,midArmor2))))),"");
-		case 1:default:
-			double depthWeapon = .25;
-			double midWeapon = .7;
-			double depthArmor = .25;
-			double midArmor = .7;
-			return new AttackReturn((int)((extra.zeroOut((att.getSharp()*damMod*extra.upDamCurve(depthWeapon,midWeapon))-(def.getSharp(att.getSlot())*armMod*extra.upDamCurve(depthArmor,midArmor))))+extra.zeroOut((att.getBlunt()*damMod*extra.upDamCurve(depthWeapon,midWeapon))-(def.getBlunt(att.getSlot())*armMod*extra.upDamCurve(depthArmor,midArmor)))+extra.zeroOut((att.getPierce()*damMod*extra.upDamCurve(depthWeapon,midWeapon))-(def.getPierce(att.getSlot())*armMod*extra.upDamCurve(depthArmor,midArmor)))),str);
-		case 0: return new AttackReturn((int)((extra.zeroOut((att.getSharp()*damMod)-(def.getSharp(att.getSlot())*armMod))*Math.random())+extra.zeroOut((att.getBlunt()*damMod)-(def.getBlunt(att.getSlot())*armMod)*Math.random())+extra.zeroOut((att.getPierce()*damMod)-(def.getPierce(att.getSlot())*armMod)*Math.random())),str);
+					+extra.zeroOut((att.getPierce())-((armorMinShear*pierceA)+((1-armorMinShear)*pierceA*extra.upDamCurve(depthArmor2,midArmor2))))),str);
 		}
 	}
 	
@@ -421,7 +416,7 @@ public class Combat {
 		}
 		//return the damage-armor, with each type evaluated individually
 		switch (mainGame.attackType) {
-		case 2:
+		default:
 			//double depthWeapon2 = .25;
 			//double midWeapon2 = .7;
 			double depthArmor2 = .25;
@@ -436,14 +431,7 @@ public class Combat {
 					(extra.zeroOut((att.getSharp())-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
 					+extra.zeroOut((att.getBlunt())-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
 					+extra.zeroOut((att.getPierce())-((armorMinShear*pierceA)+((1-armorMinShear)*pierceA*extra.upDamCurve(depthArmor2,midArmor2))))),"");
-		case 1:default:
-			double depthWeapon = .25;
-			double midWeapon = .7;
-			double depthArmor = .25;
-			double midArmor = .7;
-			return Combat.testCombat.new AttackReturn((int)((extra.zeroOut((att.getSharp()*damMod*extra.upDamCurve(depthWeapon,midWeapon))-(def.getSharp(att.getSlot())*armMod*extra.upDamCurve(depthArmor,midArmor))))+extra.zeroOut((att.getBlunt()*damMod*extra.upDamCurve(depthWeapon,midWeapon))-(def.getBlunt(att.getSlot())*armMod*extra.upDamCurve(depthArmor,midArmor)))+extra.zeroOut((att.getPierce()*damMod*extra.upDamCurve(depthWeapon,midWeapon))-(def.getPierce(att.getSlot())*armMod*extra.upDamCurve(depthArmor,midArmor)))),"");
-		case 0: return Combat.testCombat.new AttackReturn((int)((extra.zeroOut((att.getSharp()*damMod)-(def.getSharp(att.getSlot())*armMod))*Math.random())+extra.zeroOut((att.getBlunt()*damMod)-(def.getBlunt(att.getSlot())*armMod)*Math.random())+extra.zeroOut((att.getPierce()*damMod)-(def.getPierce(att.getSlot())*armMod)*Math.random())),"");
-		}
+			}
 	}
 	
 	public class AttackReturn {
@@ -483,10 +471,10 @@ public class Combat {
 	 */
 	public void handleTurn(Person attacker, Person defender, BardSong song,boolean canWait) {
 		turns++;
-		if (turns > 100*totalFighters) {
+		if (turns > longBattleLength*totalFighters) {
 			//VERY LONG BATTLE
-			attacker.takeDamage((int)(turns-(100*totalFighters)));
-			defender.takeDamage((int)(turns-(100*totalFighters)));
+			attacker.takeDamage((int)(turns-(longBattleLength*totalFighters)));
+			defender.takeDamage((int)(turns-(longBattleLength*totalFighters)));
 			if (!battleIsLong) {
 				System.out.println("Resolving long battle...");
 				battleIsLong = true;

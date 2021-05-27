@@ -252,7 +252,7 @@ public class extra {
 		
 		public static void println(String str) {
 			if (!printMode) {
-			System.out.println(stripPrint(str));
+			System.out.println(stripPrint(printStuff+str));
 			detectInputString(stripPrint(printStuff +str));
 			Networking.send("println|"+ printStuff + str + "|");
 			printStuff = "";
@@ -262,7 +262,8 @@ public class extra {
 		
 		public static void print(String str) {
 			if (!printMode) {
-			System.out.print(stripPrint(str));
+			//System.out.print(stripPrint(str));
+			//System.out.print(str);//TODO
 			printStuff+=str;}
 		}
 		
@@ -270,6 +271,7 @@ public class extra {
 			int index = str.indexOf('[');
 			while (index != -1) {
 				int lastindex = str.indexOf(']');
+				//str = str.substring(0, index) + str.substring(lastindex+1, str.length());
 				str = str.replace(str.substring(index,lastindex+1), "");
 				index = str.indexOf('[');
 			}
@@ -574,13 +576,19 @@ public class extra {
 		public static float lerpSetup(float start, float end, float f) {
 			return 1-(2*Math.abs((start+(end-start)/2)-f)/(end-start));//TODO fix
 		}
-
+		/*
 		public static double upDamCurve(double depth, double midpoint) {
 			double rand = Math.random();
 			double distance = (Math.abs(rand-midpoint));
 			//double x = rand/midpoint;
 			double x = (rand < midpoint ? rand/midpoint : (midpoint-distance)/midpoint);
 			//double x = (midpoint-(1-(Math.abs(Math.random()-midpoint))))/midpoint;
+			return (4*depth*Math.pow(x,3) - 6*depth*Math.pow(x,2) + 2*depth*x + x);
+		}*/
+		
+		public static double upDamCurve(double depth, double midpoint) {
+			double x = 1-(2*Math.abs(Math.random()-midpoint));
+			x = extra.clamp(x,0,1);
 			return (4*depth*Math.pow(x,3) - 6*depth*Math.pow(x,2) + 2*depth*x + x);
 		}
 		
