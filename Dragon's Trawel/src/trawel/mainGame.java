@@ -57,6 +57,11 @@ public class mainGame {
 	
 	public static boolean logStreamIsErr = false;
 	
+
+	public static PrintStream logStream;
+
+	public static int attackType = 2;
+	
 	//constructors
 	/**
 	 * The main game. Includes the selector for gamemode and output type.
@@ -208,9 +213,6 @@ public class mainGame {
 
 	private static List<Mech> curMechs;
 
-	public static PrintStream logStream;
-
-	public static int attackType = 1;
 	
 	private List<Mech> mechsForSide(boolean side){
 		extra.menuGoPaged(new MenuGeneratorPaged(){

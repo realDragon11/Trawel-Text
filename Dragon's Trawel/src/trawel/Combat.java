@@ -389,6 +389,19 @@ public class Combat {
 		//return the damage-armor, with each type evaluated individually
 		Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getSoundIntensity() + "|" +att.getSoundType()+"|");
 		switch (mainGame.attackType) {
+		case 2:
+			double depthWeapon2 = .25;
+			double midWeapon2 = .7;
+			double depthArmor2 = .25;
+			double midArmor2 = .7;
+			double armorMinShear = .2;
+			double sharpA = def.getSharp(att.getSlot())*armMod;
+			double bluntA = def.getBlunt(att.getSlot())*armMod;
+			double pierceA= def.getPierce(att.getSlot())*armMod;
+			return new AttackReturn((int)(
+					(extra.zeroOut((att.getSharp()*damMod*extra.upDamCurve(depthWeapon2,midWeapon2))-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
+					+extra.zeroOut((att.getBlunt()*damMod*extra.upDamCurve(depthWeapon2,midWeapon2))-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
+					+extra.zeroOut((att.getPierce()*damMod*extra.upDamCurve(depthWeapon2,midWeapon2))-((armorMinShear*pierceA)+((1-armorMinShear)*pierceA*extra.upDamCurve(depthArmor2,midArmor2))))),str);
 		case 1:default:
 			double depthWeapon = .25;
 			double midWeapon = .7;
