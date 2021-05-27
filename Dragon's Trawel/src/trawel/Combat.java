@@ -383,7 +383,7 @@ public class Combat {
 		if (((def.getDodge()*defender.getTornCalc())/(att.getHitmod()*off.getAim()))*Math.random() > 1.0){
 			return new AttackReturn(-1,str);//do a dodge
 		}
-		if (extra.chanceIn(def.countArmorQuality(ArmorQuality.HAUNTED),75)){
+		if (extra.chanceIn(def.countArmorQuality(ArmorQuality.HAUNTED),80)){
 			return new AttackReturn(-1,str +extra.inlineColor(Color.GREEN)+" An occult hand leaps forth, pulling them out of the way![c_white]");
 		}
 		//return the damage-armor, with each type evaluated individually
@@ -395,6 +395,8 @@ public class Combat {
 			double depthArmor2 = .25;
 			double midArmor2 = .7;
 			double armorMinShear = .2;
+			armMod = armMod*(1-armorMinShear);
+			
 			double sharpA = def.getSharp(att.getSlot())*armMod;
 			double bluntA = def.getBlunt(att.getSlot())*armMod;
 			double pierceA= def.getPierce(att.getSlot())*armMod;
@@ -419,6 +421,21 @@ public class Combat {
 		}
 		//return the damage-armor, with each type evaluated individually
 		switch (mainGame.attackType) {
+		case 2:
+			//double depthWeapon2 = .25;
+			//double midWeapon2 = .7;
+			double depthArmor2 = .25;
+			double midArmor2 = .7;
+			double armorMinShear = .2;
+			armMod = armMod*(1-(armorMinShear/2));
+			
+			double sharpA = def.getSharp(att.getSlot())*armMod;
+			double bluntA = def.getBlunt(att.getSlot())*armMod;
+			double pierceA= def.getPierce(att.getSlot())*armMod;
+			return Combat.testCombat.new AttackReturn((int)(
+					(extra.zeroOut((att.getSharp())-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
+					+extra.zeroOut((att.getBlunt())-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
+					+extra.zeroOut((att.getPierce())-((armorMinShear*pierceA)+((1-armorMinShear)*pierceA*extra.upDamCurve(depthArmor2,midArmor2))))),"");
 		case 1:default:
 			double depthWeapon = .25;
 			double midWeapon = .7;
