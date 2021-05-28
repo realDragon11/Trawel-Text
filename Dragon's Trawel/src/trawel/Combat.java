@@ -73,9 +73,10 @@ public class Combat {
 			if (attacker.hasSkill(Skill.SKY_BLESSING_1)) {
 				attacker.advanceTime(1);
 			}
-			defender.advanceTime(attacker.getTime());
-			
-			handleTurn( attacker,  defender,  song,playerIsInBattle);
+			double delay = attacker.getTime();
+			defender.advanceTime(delay);
+			attacker.advanceTime(delay);//TODO: figure out why this wasn't included
+			handleTurn( attacker,  defender,  song,playerIsInBattle,delay);
 			if (playerIsInBattle) {
 				manTwo.getBag().graphicalDisplay(1,manTwo);
 				Player.player.getPerson().getBag().graphicalDisplay(-1,Player.player.getPerson());
@@ -246,7 +247,7 @@ public class Combat {
 			Person defender = quickest.getNextAttack().defender;
 			boolean wasAlive = defender.isAlive();
 			newTarget = false;
-			handleTurn(quickest,defender,song,playerIsInBattle);
+			handleTurn(quickest,defender,song,playerIsInBattle,lowestDelay);
 			if (!defender.isAlive() && wasAlive) {
 				extra.println("They die!");
 				quickest.getBag().getHand().addKill();
@@ -469,7 +470,7 @@ public class Combat {
 	 * @param defender
 	 * @return damagedone
 	 */
-	public void handleTurn(Person attacker, Person defender, BardSong song,boolean canWait) {
+	public void handleTurn(Person attacker, Person defender, BardSong song,boolean canWait, double delay) {
 		turns++;
 		if (turns > longBattleLength*totalFighters) {
 			//VERY LONG BATTLE
@@ -709,9 +710,9 @@ public class Combat {
 		}
 		if (canWait && !attacker.isPlayer()) {
 			if (defender.isPlayer()) {
-				Networking.waitIfConnected(500L);
+				Networking.waitIfConnected(300L+(long)delay);//was 500L
 			}else {
-			Networking.waitIfConnected(300L);}
+			Networking.waitIfConnected(300L+(long)delay);}
 		}
 	}
 	private String inflictWound(Person attacker2, Person defender2, int damage) {

@@ -34,7 +34,7 @@ import trawel.townevents.TownFlavorFactory;
 public class mainGame {
 	//public static final boolean bumpEnabled = true;//a boolean for an update
 
-	public static final String VERSION_STRING = "v0.7.3";
+	public static final String VERSION_STRING = "v0.7.4";
 
 	//instance variables
 	public static Scanner scanner = new Scanner(System.in);
@@ -664,6 +664,7 @@ public class mainGame {
 		
 		
 		public void adventure1(){
+			extra.println("Generating world...");
 			World world = WorldGen.eoano();
 			story = new StoryDeathWalker();
 			Person manOne, manTwo;

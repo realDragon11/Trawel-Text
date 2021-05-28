@@ -66,7 +66,7 @@ public class WeaponAttackFactory {
 		martialStance.addAttack(new Attack("pommel",1,110.0,0,10,0,"X` hits Y` with the pommel of their Z`!",1,"blunt"));
 		stanceMap.put("rapier", martialStance);
 		martialStance = new Stance();
-		tempAttack = new Attack("slash",1,70.0,25,2,0,"X` slashes at Y` with their Z`!",0,"sharp");
+		tempAttack = new Attack("slash",1,70.0,20,2,0,"X` slashes at Y` with their Z`!",0,"sharp");
 		martialStance.addAttack(tempAttack);
 		martialStance.addAttack(tempAttack);
 		martialStance.addAttack(tempAttack);
