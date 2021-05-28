@@ -66,14 +66,14 @@ public class WeaponAttackFactory {
 		martialStance.addAttack(new Attack("pommel",1,110.0,0,10,0,"X` hits Y` with the pommel of their Z`!",1,"blunt"));
 		stanceMap.put("rapier", martialStance);
 		martialStance = new Stance();
-		tempAttack = new Attack("slash",1,70.0,20,2,0,"X` slashes at Y` with their Z`!",0,"sharp");
+		tempAttack = new Attack("slash",1,70.0,25,2,0,"X` slashes at Y` with their Z`!",0,"sharp");
 		martialStance.addAttack(tempAttack);
 		martialStance.addAttack(tempAttack);
 		martialStance.addAttack(tempAttack);
-		tempAttack = new Attack("stab",1.1,70.0,1,1,12,"X` stabs at Y` with their Z`!",0,"pierce");
+		tempAttack = new Attack("stab",1.1,70.0,1,1,15,"X` stabs at Y` with their Z`!",0,"pierce");
 		martialStance.addAttack(tempAttack);
 		martialStance.addAttack(tempAttack);
-		tempAttack = new Attack("thrust",.4,70.0,1,2,20,"X` thrusts at Y` with their Z`!",1,"pierce");
+		tempAttack = new Attack("thrust",.6,60.0,1,2,20,"X` thrusts at Y` with their Z`!",1,"pierce");
 		martialStance.addAttack(tempAttack);
 		martialStance.addAttack(tempAttack);
 		//martialStance.addAttack(new Attack("slap",.8,85.0,0,10,0,"X` slaps Y` with the side of their Z`!",0,"blunt"));

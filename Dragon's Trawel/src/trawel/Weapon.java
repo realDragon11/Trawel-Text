@@ -436,4 +436,49 @@ public class Weapon extends Item {
 		}
 	}
 	
+	public static Weapon genMidWeapon(int newLevel) {
+		Weapon[] arr = new Weapon[3];
+		arr[2] = new Weapon(newLevel);
+		arr[1] = new Weapon(newLevel);
+		arr[0] = new Weapon(newLevel);
+		double highest = 0;
+		double lowest = 99999;
+		for (Weapon w: arr) {
+			if (w.highestDamage().battleScore > highest) {
+				highest = w.highestDamage().battleScore;
+			}
+			if (w.highestDamage().battleScore < lowest) {
+				lowest = w.highestDamage().battleScore;
+			}
+		}
+		for (Weapon w: arr) {
+			if (w.highestDamage().battleScore != highest && w.highestDamage().battleScore  != lowest) {
+				return w;
+			}
+		}
+		return arr[0];
+	}
+	public static Weapon genMidWeapon(int newLevel,String name) {
+		Weapon[] arr = new Weapon[3];
+		arr[2] = new Weapon(newLevel,name);
+		arr[1] = new Weapon(newLevel,name);
+		arr[0] = new Weapon(newLevel,name);
+		double highest = 0;
+		double lowest = 99999;
+		for (Weapon w: arr) {
+			if (w.highestDamage().battleScore > highest) {
+				highest = w.highestDamage().battleScore;
+			}
+			if (w.highestDamage().battleScore < lowest) {
+				lowest = w.highestDamage().battleScore;
+			}
+		}
+		for (Weapon w: arr) {
+			if (w.highestDamage().battleScore != highest && w.highestDamage().battleScore  != lowest) {
+				return w;
+			}
+		}
+		return arr[0];
+	}
+	
 }

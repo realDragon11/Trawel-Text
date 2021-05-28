@@ -66,13 +66,13 @@ public class Store extends Feature implements java.io.Serializable{
 		}
 		if (type == 5) {
 			for (int j = 0;j < 5;j++) {
-				items.add(new Weapon(Math.max(tier+(int)(Math.random()*5)-2,1)));
+				items.add(Weapon.genMidWeapon(Math.max(tier+(int)(Math.random()*5)-2,1)));
 			}
 		}
 		if (type == 6) {
 			for (int j = 0;j < 5;j++) {
 				if (Math.random() > .5) {
-				items.add(new Weapon(Math.max(tier+(int)(Math.random()*5)-2,1)));}else {
+				items.add(Weapon.genMidWeapon(Math.max(tier+(int)(Math.random()*5)-2,1)));}else {
 					items.add(new Armor(Math.max(tier+(int)(Math.random()*5)-2,1),(int)(Math.random()*5)));
 				}
 			}
@@ -343,11 +343,11 @@ public class Store extends Feature implements java.io.Serializable{
 					items.add(new Armor(Math.max(tier+(int)(Math.random()*5)-2,1),type));
 			}
 			if (type == 5) {
-					items.add(new Weapon(Math.max(tier+(int)(Math.random()*5)-2,1)));
+					items.add(Weapon.genMidWeapon(Math.max(tier+(int)(Math.random()*5)-2,1)));
 			}
 			if (type == 6) {
 					if (Math.random() > .5) {
-					items.add(new Weapon(Math.max(tier+(int)(Math.random()*5)-2,1)));}else {
+					items.add(Weapon.genMidWeapon(Math.max(tier+(int)(Math.random()*5)-2,1)));}else {
 						items.add(new Armor(Math.max(tier+(int)(Math.random()*5)-2,1),(int)(Math.random()*5)));
 					}
 				}

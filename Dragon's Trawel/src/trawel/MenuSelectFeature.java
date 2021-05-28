@@ -13,7 +13,7 @@ public class MenuSelectFeature implements MenuItem {
 		String append = "";
 		if (feature instanceof Lot) {
 			if (((Lot)feature).getConstructTime() != -1) {
-				append += " ("+extra.format2(((Lot)feature).getConstructTime())+")";
+				append += " ("+extra.format(((Lot)feature).getConstructTime())+")";
 			}
 		}
 		return extra.inlineColor(extra.colorMix(feature.getColor(),Color.WHITE,.5f))+extra.capFirst(feature.getName()) + append;

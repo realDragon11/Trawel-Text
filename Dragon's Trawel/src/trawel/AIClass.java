@@ -261,7 +261,9 @@ public class AIClass {
 	 */
 	public static void checkYoSelf(Person man) {
 		//extra.println(man.getName() + " starts looking over their "+bpmFunctions.choose("equipment","gear","inventory","belongings")+".");
-		while (checkCheap(man.getBag()));
+		if (!man.isPlayer()) {
+			while (checkCheap(man.getBag()));
+		}
 		//extra.println(man.getName() + " has taken stock of their "+bpmFunctions.choose("equipment","gear","inventory","belongings")+".");
 		//man.displayStatsShort();
 	}

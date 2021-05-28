@@ -34,6 +34,11 @@ public class Inventory implements java.io.Serializable{
 	 * @param matType 
 	 */
 	public Inventory(int level, Race.RaceType type, Material matType,Person.AIJob job) {
+		boolean isDummy = false;
+		if (level == -1) {
+			isDummy = true;
+			level = 10;
+		}
 		if (type == Race.RaceType.HUMANOID) {
 			if (job != null) {
 				String matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
@@ -46,14 +51,18 @@ public class Inventory implements java.io.Serializable{
 				armorSlots[3] = new Armor(level,3,MaterialFactory.randMatByType(matType2),matType2);
 				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
 				armorSlots[4] = new Armor(level,4,MaterialFactory.randMatByType(matType2),matType2);
-				hand = new Weapon(level,job.weapType[extra.randRange(0,job.weapType.length-1)]);
+				hand = Weapon.genMidWeapon(level,job.weapType[extra.randRange(0,job.weapType.length-1)]);
 			}else {
 				armorSlots[0] = new Armor(level,0);
 				armorSlots[1] = new Armor(level,1);
 				armorSlots[2] = new Armor(level,2);
 				armorSlots[3] = new Armor(level,3);
 				armorSlots[4] = new Armor(level,4);
-				hand = new Weapon(level);
+				if (isDummy) {
+					hand = new Weapon(level);
+				}else {
+					hand = Weapon.genMidWeapon(level);
+				}
 			}
 		}
 		if (type == Race.RaceType.BEAST) {
