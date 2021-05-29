@@ -623,6 +623,10 @@ public class Combat {
 			song.addAttackHit(attacker,defender);
 		}
 		
+			if (canWait && mainGame.delayWaits) {
+				Networking.waitIfConnected(100L+(long)delay*2);
+			}
+		
 			extra.println("");
 			
 				Person p = defender;
@@ -710,9 +714,9 @@ public class Combat {
 		}
 		if (canWait && !attacker.isPlayer()) {
 			if (defender.isPlayer()) {
-				Networking.waitIfConnected(300L+(long)delay);//was 500L
+				Networking.waitIfConnected(500L);//was 500L
 			}else {
-			Networking.waitIfConnected(300L+(long)delay);}
+			Networking.waitIfConnected(300L);}
 		}
 	}
 	private String inflictWound(Person attacker2, Person defender2, int damage) {

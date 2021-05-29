@@ -36,6 +36,7 @@ public class mainGame {
 
 	public static final String VERSION_STRING = "v0.7.4";
 
+
 	//instance variables
 	public static Scanner scanner = new Scanner(System.in);
 	
@@ -61,6 +62,9 @@ public class mainGame {
 	public static PrintStream logStream;
 
 	public static int attackType = 2;
+	
+	public static boolean delayWaits = false;
+
 	
 	//constructors
 	/**
