@@ -31,9 +31,9 @@ public class Mine extends Feature {
 		Networking.setArea("mine");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|mine|Mine|");
-		Networking.addMultiLight(52,471);
-		Networking.addMultiLight(479,339);
-		Networking.addMultiLight(1000,406);
+		Networking.addMultiLight(80,471);
+		Networking.addMultiLight(486,360);
+		Networking.addMultiLight(1012,353);
 		start.go();
 		Networking.clearLights();
 	}

@@ -331,7 +331,8 @@ public class mainGame {
 		Player player;
 			 manOne = RaceFactory.makeOld(2);//new Person(starting_level,false,Race.RaceType.HUMANOID,null);
 			 player = new Player(manOne);
-			 player.bag.getHand().forceEnchantHit(0);
+			 Player.bag.swapWeapon(new Weapon(1,"shovel"));
+			 //Player.bag.getHand().forceEnchantHit(0);
 			 /*
 			 player.bag.swapArmorSlot(new Armor(1,0,MaterialFactory.getMat("emerald")),0);
 			 player.bag.swapArmorSlot(new Armor(1,1,MaterialFactory.getMat("emerald")),1);
