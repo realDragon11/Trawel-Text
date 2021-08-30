@@ -45,7 +45,7 @@ public class TownFlavorFactory {
 		b = new TownFlavor() {
 			@Override
 			public void activate(int level) {
-				extra.println("Three small children are playing tag on a rural stret inside the town.");
+				extra.println("Three small children are playing tag on a rural street inside the town.");
 			}
 		};
 		b.responses.add(new Response(TownTag.SMALL_TOWN,2));
@@ -96,7 +96,7 @@ public class TownFlavorFactory {
 					return;
 				}
 				if (total > 0) {
-					extra.println("Some adventurers chat with your about heroic deeds.");
+					extra.println("Some adventurers chat with you about your heroic deeds.");
 					return;
 				}
 				extra.println("Some adventurers eye you warily.");
