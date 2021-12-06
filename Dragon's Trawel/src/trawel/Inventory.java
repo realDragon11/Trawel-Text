@@ -1,5 +1,8 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.List;
+
+import trawel.Weapon.WeaponQual;
 
 /**
  * 
@@ -440,15 +443,21 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	//TO BE USED IN COMBAT
-	public double getSharp(int slot) {
+	public double getSharp(int slot, List<WeaponQual> qualList) {
 		int i = 0;
 		double mult;
 		double retResist = 0;
 		while (i < 5) {
 			if (slot == i) {
 				mult = 2;
+				if (qualList.contains(Weapon.WeaponQual.PENETRATIVE)) {
+					mult-=0.25;
+				}
 			}else {
 				mult = .75;
+				if (qualList.contains(Weapon.WeaponQual.PINPOINT)) {
+					mult-=0.25;
+				}
 			}
 			retResist += (armorSlots[i].getSharp())*mult;
 			i++;
@@ -456,30 +465,42 @@ public class Inventory implements java.io.Serializable{
 		return extra.zeroOut(retResist);
 	}
 	
-	public double getBlunt(int slot) {
+	public double getBlunt(int slot, List<WeaponQual> qualList) {
 		int i = 0;
 		double mult;
 		double retResist = 0;
 		while (i < 5) {
 			if (slot == i) {
 				mult = 2;
+				if (qualList.contains(Weapon.WeaponQual.PENETRATIVE)) {
+					mult-=0.25;
+				}
 			}else {
 				mult = .75;
+				if (qualList.contains(Weapon.WeaponQual.PINPOINT)) {
+					mult-=0.25;
+				}
 			}
 			retResist += (armorSlots[i].getBlunt())*mult;
 			i++;
 		}
 		return extra.zeroOut(retResist);
 	}
-	public double getPierce(int slot) {
+	public double getPierce(int slot, List<WeaponQual> qualList) {
 		int i = 0;
 		double mult;
 		double retResist = 0;
 		while (i < 5) {
 			if (slot == i) {
 				mult = 2;
+				if (qualList.contains(Weapon.WeaponQual.PENETRATIVE)) {
+					mult-=0.25;
+				}
 			}else {
 				mult = .75;
+				if (qualList.contains(Weapon.WeaponQual.PINPOINT)) {
+					mult-=0.25;
+				}
 			}
 			retResist += (armorSlots[i].getPierce())*mult;
 			i++;

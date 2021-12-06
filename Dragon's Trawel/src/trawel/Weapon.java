@@ -1,5 +1,9 @@
 package trawel;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import trawel.TargetFactory.TargetType;
 
 /**
@@ -44,6 +48,20 @@ public class Weapon extends Item {
 	private Material mat;
 	private DamTuple dam;
 	
+	public List<WeaponQual> qualList = new ArrayList<WeaponQual>();
+	
+	public enum WeaponQual{
+		DESTRUCTIVE("Destructive","Destroys some armor on hit."),
+		PENETRATIVE("Penetrative","Ignores some local armor."),
+		PINPOINT("Pinpoint","Ignores some global armor."),
+		;
+		public String name, desc;
+		WeaponQual(String name,String desc) {
+			this.name = name;
+			this.desc = desc;
+		}
+	}
+	
 	//constructors
 	/**
 	 * Standard weapon constructor. Makes a weapon of level level
@@ -85,6 +103,7 @@ public class Weapon extends Item {
 		case "mace":
 		cost *= 2;
 		weight *=3;
+		cost *= 1+ 0.1 * addQuals(WeaponQual.DESTRUCTIVE);
 		;break;
 		case "spear":
 		cost *= 1;
@@ -97,10 +116,12 @@ public class Weapon extends Item {
 		case "rapier":
 		cost *= 2;
 		weight *=3;//I think rapiers were heavy? The blunt damage doesn't really reflect this though.
+		cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT);
 		;break;
 		case "dagger":
 		cost *= .7;
 		weight *=1;
+		cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE);
 		;break;
 		case "claymore":
 		cost *= 3;
@@ -109,6 +130,7 @@ public class Weapon extends Item {
 		case "lance":
 		cost *= 2;
 		weight *=3;
+		cost *= 1+ 0.1 * addQuals(WeaponQual.PENETRATIVE);
 		;break;
 		case "shovel":
 		cost *= .8;
@@ -347,6 +369,9 @@ public class Weapon extends Item {
 			if (this.isEnchantedHit()) {
 				this.getEnchantHit().display(1);
 			}
+			for (WeaponQual wq: qualList) {
+				extra.println(wq.name + ": "+wq.desc);
+			}
 			;break;
 		case 2:
 			extra.println(this.getName()
@@ -356,6 +381,9 @@ public class Weapon extends Item {
 			}
 			if (this.isEnchantedHit()) {
 				this.getEnchantHit().display(2);
+			}
+			for (WeaponQual wq: qualList) {
+				extra.println(wq.name + ": "+wq.desc);
 			}
 			;break;
 		}
@@ -479,6 +507,22 @@ public class Weapon extends Item {
 			}
 		}
 		return arr[0];
+	}
+	
+	private int addQuals(WeaponQual ...quals) {
+		List<WeaponQual> wqs = Arrays.asList(quals);
+		int added = 0;
+		for (int i = 0; i < 5;i++) {
+			if (added >= 3) {
+				return added;
+			}
+			WeaponQual wq = extra.randList(wqs);
+			if (!this.qualList.contains(wq)) {
+				qualList.add(wq);
+				added++;
+			}
+		}
+		return added;
 	}
 	
 }

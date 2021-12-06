@@ -391,6 +391,10 @@ public class Combat {
 		}
 		//return the damage-armor, with each type evaluated individually
 		Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getSoundIntensity() + "|" +att.getSoundType()+"|");
+		
+		if (att.getWeapon().qualList.contains(Weapon.WeaponQual.DESTRUCTIVE)) {
+			def.burn(.01,att.getSlot());
+		}
 		switch (mainGame.attackType) {
 		default:
 			//double depthWeapon2 = .25;
@@ -400,9 +404,9 @@ public class Combat {
 			double armorMinShear = .1;
 			//armMod = armMod*(1-(armorMinShear/2));
 			
-			double sharpA = def.getSharp(att.getSlot())*armMod;
-			double bluntA = def.getBlunt(att.getSlot())*armMod;
-			double pierceA= def.getPierce(att.getSlot())*armMod;
+			double sharpA = def.getSharp(att.getSlot(),att.getWeapon().qualList)*armMod;
+			double bluntA = def.getBlunt(att.getSlot(),att.getWeapon().qualList)*armMod;
+			double pierceA= def.getPierce(att.getSlot(),att.getWeapon().qualList)*armMod;
 			return Combat.testCombat.new AttackReturn((int)(
 					(extra.zeroOut((att.getSharp())-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
 					+extra.zeroOut((att.getBlunt())-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
@@ -425,9 +429,9 @@ public class Combat {
 			double armorMinShear = .1;
 			//armMod = armMod*(1-(armorMinShear/2));
 			
-			double sharpA = def.getSharp(att.getSlot())*armMod;
-			double bluntA = def.getBlunt(att.getSlot())*armMod;
-			double pierceA= def.getPierce(att.getSlot())*armMod;
+			double sharpA = def.getSharp(att.getSlot(),att.getWeapon().qualList)*armMod;
+			double bluntA = def.getBlunt(att.getSlot(),att.getWeapon().qualList)*armMod;
+			double pierceA= def.getPierce(att.getSlot(),att.getWeapon().qualList)*armMod;
 			return Combat.testCombat.new AttackReturn((int)(
 					(extra.zeroOut((att.getSharp())-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
 					+extra.zeroOut((att.getBlunt())-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
