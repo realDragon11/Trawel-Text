@@ -419,6 +419,9 @@ public class Combat {
 				ret.reliable = true;
 			}else {
 				if (ret.damage > 0) {
+					if (att.getWeapon().qualList.contains(Weapon.WeaponQual.REFINED)) {
+						ret.damage += att.getWeapon().getLevel();
+					}
 					if (att.getWeapon().qualList.contains(Weapon.WeaponQual.WEIGHTED)) {
 						if (att.getHitmod() < 1.5) {
 							ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitmod()*10))));
@@ -457,6 +460,9 @@ public class Combat {
 				ret.reliable = true;
 			}else {
 				if (ret.damage > 0) {
+					if (att.getWeapon().qualList.contains(Weapon.WeaponQual.REFINED)) {
+						ret.damage += att.getWeapon().getLevel();
+					}
 					if (att.getWeapon().qualList.contains(Weapon.WeaponQual.WEIGHTED)) {
 						if (att.getHitmod() < 1.5) {
 							ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitmod()*10))));

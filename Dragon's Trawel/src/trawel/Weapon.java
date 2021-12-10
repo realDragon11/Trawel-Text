@@ -54,9 +54,11 @@ public class Weapon extends Item {
 		DESTRUCTIVE("Destructive","Destroys some armor on hit."),
 		PENETRATIVE("Penetrative","Ignores some local armor."),
 		PINPOINT("Pinpoint","Ignores some global armor."),
-		RELIABLE("Reliable","Deals damage even when blocked by armor."), 
+		RELIABLE("Reliable","Deals damage even when blocked by armor, equal to the weapon level."), 
 		DUELING("Dueling","In large fights, attack the same opponent repeatedly."),
 		WEIGHTED("Weighted","Less accurate attacks deal more damage."),
+		REFINED("Refined","Upon dealing damage, deals bonus damage equal to weapon level."),
+		ACCURATE("Accurate","Flat accuracy bonus to all attacks."),
 		;
 		public String name, desc;
 		WeaponQual(String name,String desc) {
@@ -98,51 +100,52 @@ public class Weapon extends Item {
 		case "longsword":
 		cost *= 1;
 		weight *=2;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.DUELING);
+		cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
 		;break;
 		case "broadsword":
 		cost *= 2;
 		weight *=3;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.WEIGHTED);
+		cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
 		;break;
 		case "mace":
 		cost *= 2;
 		weight *=3;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED);
+		cost *= 1+ 0.1 * addQuals(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED);
 		;break;
 		case "spear":
 		cost *= 1;
 		weight *=2;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE);
+		cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
 		;break;
 		case "axe":
 		cost *= 1;
 		weight *=2;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.WEIGHTED);
+		cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
 		;break;
 		case "rapier":
 		cost *= 2;
 		weight *=3;//I think rapiers were heavy? The blunt damage doesn't really reflect this though.
-		cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.DUELING);
+		cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
 		;break;
 		case "dagger":
 		cost *= .7;
 		weight *=1;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE);
+		cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
 		;break;
 		case "claymore":
 		cost *= 3;
 		weight *=5;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.WEIGHTED);
+		cost *= 1+ 0.1 * addQuals(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED);
 		;break;
 		case "lance":
 		cost *= 2;
 		weight *=3;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.PENETRATIVE);
+		cost *= 1+ 0.1 * addQuals(WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
 		;break;
 		case "shovel":
 		cost *= .8;
-		weight *=2;	
+		weight *=2;
+		cost *= 1+ 0.1 * addQuals(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED);
 		;break;
 		case "generic teeth":
 			cost *= 1;

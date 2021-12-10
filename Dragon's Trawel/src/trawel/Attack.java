@@ -322,7 +322,7 @@ public class Attack implements java.io.Serializable{
 				bMult = weap.getMat().bluntMult;
 				pMult = weap.getMat().pierceMult;
 			}
-		return new Attack(s.name + name + " " + t.name, hitMod*t.hit*s.hit,  (s.speed*speed)+extra.randRange(0,20)-10,
+		return new Attack(s.name + name + " " + t.name, hitMod*t.hit*s.hit + (weap.qualList.contains(Weapon.WeaponQual.ACCURATE) ? 0.1 : 0 ),  (s.speed*speed)+extra.randRange(0,20)-10,
 				handLevel*s.damage*t.sharp*sharp*extra.upDamCurve(.25,.5)*sMult,
 				handLevel*s.damage*t.blunt*blunt*extra.upDamCurve(.25,.5)*bMult,
 				handLevel*s.damage*t.pierce*pierce*extra.upDamCurve(.25,.5)*pMult,  desc,soundStrength,soundType,t,weap);
