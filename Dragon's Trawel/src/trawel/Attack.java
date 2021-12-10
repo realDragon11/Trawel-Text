@@ -361,7 +361,7 @@ public class Attack implements java.io.Serializable{
 	}
 	
 	public enum Wound{
-		HAMSTRUNG("Hamstrung","Delays the next attacks.","Their leg is hamstrung!"), 
+		HAMSTRUNG("Hamstrung","Delays the next attack.","Their leg is hamstrung!"), 
 		BLINDED("Blinded","The next attack will probably miss.","Blood falls into their eyes!"),
 		CONFUSED("Confused","Forces the opponent to retarget.","They look confused!"), 
 		DIZZY("Dizzy","Decreases their next attack's to-hit.","They look dizzy!"),

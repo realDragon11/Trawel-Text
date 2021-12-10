@@ -296,6 +296,9 @@ public class Combat {
 		
 			
 			Person otherperson = null;
+			if (defender.isAlive() && attacker.getBag().getHand().qualList.contains(Weapon.WeaponQual.DUELING)) {
+				otherperson = defender;
+			}
 			while (otherperson == null) {
 				if (quickest.isPlayer() && Player.player.eaBox.markTarget != null) {
 					if (totalList.contains(Player.player.eaBox.markTarget)) {
@@ -407,10 +410,23 @@ public class Combat {
 			double sharpA = def.getSharp(att.getSlot(),att.getWeapon().qualList)*armMod;
 			double bluntA = def.getBlunt(att.getSlot(),att.getWeapon().qualList)*armMod;
 			double pierceA= def.getPierce(att.getSlot(),att.getWeapon().qualList)*armMod;
-			return Combat.testCombat.new AttackReturn((int)(
+			AttackReturn ret = Combat.testCombat.new AttackReturn((int)(
 					(extra.zeroOut((att.getSharp())-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
 					+extra.zeroOut((att.getBlunt())-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
 					+extra.zeroOut((att.getPierce())-((armorMinShear*pierceA)+((1-armorMinShear)*pierceA*extra.upDamCurve(depthArmor2,midArmor2))))),str);
+			if (att.getWeapon().qualList.contains(Weapon.WeaponQual.RELIABLE) && ret.damage <= att.getWeapon().getLevel()) {
+				ret.damage = att.getWeapon().getLevel();
+				ret.reliable = true;
+			}else {
+				if (ret.damage > 0) {
+					if (att.getWeapon().qualList.contains(Weapon.WeaponQual.WEIGHTED)) {
+						if (att.getHitmod() < 1.5) {
+							ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitmod()*10))));
+						}
+					}
+				}
+			}
+			return ret;
 		}
 	}
 	
@@ -432,16 +448,30 @@ public class Combat {
 			double sharpA = def.getSharp(att.getSlot(),att.getWeapon().qualList)*armMod;
 			double bluntA = def.getBlunt(att.getSlot(),att.getWeapon().qualList)*armMod;
 			double pierceA= def.getPierce(att.getSlot(),att.getWeapon().qualList)*armMod;
-			return Combat.testCombat.new AttackReturn((int)(
+			AttackReturn ret = Combat.testCombat.new AttackReturn((int)(
 					(extra.zeroOut((att.getSharp())-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
 					+extra.zeroOut((att.getBlunt())-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
 					+extra.zeroOut((att.getPierce())-((armorMinShear*pierceA)+((1-armorMinShear)*pierceA*extra.upDamCurve(depthArmor2,midArmor2))))),"");
+			if (att.getWeapon().qualList.contains(Weapon.WeaponQual.RELIABLE) && ret.damage <= att.getWeapon().getLevel()) {
+				ret.damage = att.getWeapon().getLevel();
+				ret.reliable = true;
+			}else {
+				if (ret.damage > 0) {
+					if (att.getWeapon().qualList.contains(Weapon.WeaponQual.WEIGHTED)) {
+						if (att.getHitmod() < 1.5) {
+							ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitmod()*10))));
+						}
+					}
+				}
 			}
+			return ret;	
+		}
 	}
 	
 	public class AttackReturn {
 		public int damage;
 		public String stringer;
+		public boolean reliable = false;
 		public AttackReturn(int dam, String str) {
 			damage = dam;
 			stringer = str;
@@ -556,7 +586,7 @@ public class Combat {
 				}*/
 			}
 			//Wound effects
-			String woundstr = inflictWound(attacker,defender,damageDone);
+			String woundstr = inflictWound(attacker,defender,atr);
 			song.addAttackHit(attacker,defender);
 			if (defender.hasEffect(Effect.R_AIM)) {
 				defender.getNextAttack().blind(1 + (percent));
@@ -723,7 +753,11 @@ public class Combat {
 			Networking.waitIfConnected(300L);}
 		}
 	}
-	private String inflictWound(Person attacker2, Person defender2, int damage) {
+	private String inflictWound(Person attacker2, Person defender2, AttackReturn retu) {
+		int damage = retu.damage;
+		if (retu.reliable == true) {
+			return " The armor deflects the wound.";//reliable hits don't inflict wound effects
+		}
 		if ((defender2.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 )|| damage == 0) {//wounds no longer hit if dam=0, if this needs to change, fix woundstring printing as well
 			return (" They shrug off the blow!");
 		}else {

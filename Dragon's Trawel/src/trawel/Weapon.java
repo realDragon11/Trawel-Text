@@ -54,6 +54,9 @@ public class Weapon extends Item {
 		DESTRUCTIVE("Destructive","Destroys some armor on hit."),
 		PENETRATIVE("Penetrative","Ignores some local armor."),
 		PINPOINT("Pinpoint","Ignores some global armor."),
+		RELIABLE("Reliable","Deals damage even when blocked by armor."), 
+		DUELING("Dueling","In large fights, attack the same opponent repeatedly."),
+		WEIGHTED("Weighted","Less accurate attacks deal more damage."),
 		;
 		public String name, desc;
 		WeaponQual(String name,String desc) {
@@ -95,28 +98,32 @@ public class Weapon extends Item {
 		case "longsword":
 		cost *= 1;
 		weight *=2;
+		cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.DUELING);
 		;break;
 		case "broadsword":
 		cost *= 2;
 		weight *=3;
+		cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.WEIGHTED);
 		;break;
 		case "mace":
 		cost *= 2;
 		weight *=3;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.DESTRUCTIVE);
+		cost *= 1+ 0.1 * addQuals(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED);
 		;break;
 		case "spear":
 		cost *= 1;
 		weight *=2;
+		cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE);
 		;break;
 		case "axe":
 		cost *= 1;
 		weight *=2;
+		cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.WEIGHTED);
 		;break;
 		case "rapier":
 		cost *= 2;
 		weight *=3;//I think rapiers were heavy? The blunt damage doesn't really reflect this though.
-		cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT);
+		cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.DUELING);
 		;break;
 		case "dagger":
 		cost *= .7;
@@ -126,6 +133,7 @@ public class Weapon extends Item {
 		case "claymore":
 		cost *= 3;
 		weight *=5;
+		cost *= 1+ 0.1 * addQuals(WeaponQual.WEIGHTED);
 		;break;
 		case "lance":
 		cost *= 2;
