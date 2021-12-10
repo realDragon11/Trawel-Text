@@ -326,6 +326,9 @@ public class Combat {
 				}
 			}
 			setAttack(quickest,otherperson);
+			if (otherperson != defender) {
+				quickest.advanceTime(Math.min(10,quickest.getTime()-1));
+			}
 			quickest.getNextAttack().defender = otherperson;
 			if (quickest.hasSkill(Skill.LIFE_MAGE)) {
 				for (ArrayList<Person> list: people) {

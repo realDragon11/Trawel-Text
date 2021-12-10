@@ -59,6 +59,7 @@ public class Weapon extends Item {
 		WEIGHTED("Weighted","Less accurate attacks deal more damage."),
 		REFINED("Refined","Upon dealing damage, deals bonus damage equal to weapon level."),
 		ACCURATE("Accurate","Flat accuracy bonus to all attacks."),
+		CARRYTHROUGH("Carrythrough","Missing an attack makes your next attack on another target quicker."),
 		;
 		public String name, desc;
 		WeaponQual(String name,String desc) {
