@@ -247,7 +247,7 @@ public class Combat {
 			Person defender = quickest.getNextAttack().defender;
 			boolean wasAlive = defender.isAlive();
 			newTarget = false;
-			handleTurn(quickest,defender,song,playerIsInBattle,lowestDelay);
+			AttackReturn atr = handleTurn(quickest,defender,song,playerIsInBattle,lowestDelay);
 			if (!defender.isAlive() && wasAlive) {
 				extra.println("They die!");
 				quickest.getBag().getHand().addKill();
@@ -326,7 +326,7 @@ public class Combat {
 				}
 			}
 			setAttack(quickest,otherperson);
-			if (otherperson != defender) {
+			if (otherperson != defender && atr != null && atr.damage== -1) {
 				quickest.advanceTime(Math.min(10,quickest.getTime()-1));
 			}
 			quickest.getNextAttack().defender = otherperson;
@@ -513,8 +513,9 @@ public class Combat {
 	 * @param defender
 	 * @return damagedone
 	 */
-	public void handleTurn(Person attacker, Person defender, BardSong song,boolean canWait, double delay) {
+	public AttackReturn handleTurn(Person attacker, Person defender, BardSong song,boolean canWait, double delay) {
 		turns++;
+		AttackReturn ret = null;
 		if (turns > longBattleLength*totalFighters) {
 			//VERY LONG BATTLE
 			attacker.takeDamage((int)(turns-(longBattleLength*totalFighters)));
@@ -555,6 +556,7 @@ public class Combat {
 		
 		if (!attacker.getNextAttack().isMagic()) {
 		AttackReturn atr = this.handleAttack(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
+		ret = atr;
 		int damageDone = atr.damage;
 		Color inlined_color = Color.WHITE;
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender,damageDone);
@@ -761,6 +763,7 @@ public class Combat {
 			}else {
 			Networking.waitIfConnected(300L);}
 		}
+		return ret;
 	}
 	private String inflictWound(Person attacker2, Person defender2, AttackReturn retu) {
 		int damage = retu.damage;
