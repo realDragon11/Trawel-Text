@@ -26,11 +26,13 @@ public class Mountain extends Feature implements java.io.Serializable{
 		exhaust = 0;
 		this.tutorialText = "This is a mountain.";
 		background_area = "mountain";
+		background_variant = 1;
 	}
 	
 	@Override
 	public void go() {
 		Networking.setArea("mountain");
+		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|mountain|Mountain|");
 		MenuGenerator mGen = new MenuGenerator() {
 
