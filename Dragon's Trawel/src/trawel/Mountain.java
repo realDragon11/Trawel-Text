@@ -25,6 +25,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 		explores = 0;
 		exhaust = 0;
 		this.tutorialText = "This is a mountain.";
+		background_area = "mountain";
 	}
 	
 	@Override
