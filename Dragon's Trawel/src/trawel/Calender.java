@@ -229,7 +229,7 @@ public class Calender implements Serializable {
 		//extra.println(sunsetRadius+"");
 		test.timeCounter = 24*12+24*28*3;
 		//int longa = -72;
-		Networking.setBackground("forest");
+		Networking.setBackground("mountain");
 		for (int i = 0;i < 99999999;i++) {
 			//float[] back = test.getBackTime(30,longa);
 			//extra.println(back[0]+""+back[1]);
@@ -239,7 +239,7 @@ public class Calender implements Serializable {
 			
 			test.timeCounter+=.1f;
 			float[] b = test.getBackTime(42,-72);
-			Networking.sendStrong("Backvariant|"+"forest1"+"|"+b[0]+"|"+b[1]+"|");
+			Networking.sendStrong("Backvariant|"+"mountain1"+"|"+b[0]+"|"+b[1]+"|");
 			Networking.waitIfConnected(50L);
 		}
 		
