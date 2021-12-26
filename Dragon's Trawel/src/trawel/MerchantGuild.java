@@ -22,6 +22,8 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 		this.name = name;
 		tutorialText = "Merchant quests will make stores willing to sell items higher than your level.";
 		color = Color.PINK;
+		timePassed = extra.randRange(1,30);
+		nextReset = extra.randRange(4,30);
 	}
 	@Override
 	public void go() {

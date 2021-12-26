@@ -23,6 +23,16 @@ public class BasicSideQuest implements Quest{
 	
 	public String name, desc;
 	
+	public List<QKey> qKeywords = new ArrayList<QKey>();
+	
+	public enum QKey implements java.io.Serializable {
+		FETCH, KILL, CLEANSE, 
+		GOOD, EVIL,
+		LAWFUL, CHAOTIC,
+		DEST_MOUNTAIN,DEST_WOODS,DEST_INN,
+		GIVE_INN,GIVE_MGUILD,
+	}
+	
 	public void cleanup() {
 		giver.cleanup();
 		if (target != null) {
@@ -45,11 +55,13 @@ public class BasicSideQuest implements Quest{
 	
 	public static BasicSideQuest getRandomSideQuest(Town loc,Inn inn) {
 		BasicSideQuest q = new BasicSideQuest();
+		q.qKeywords.add(QKey.GIVE_INN);
 		int i;
 		switch (extra.randRange(1,3)) {
 		case 1: //fetch quest
 			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
 			q.targetName = extra.choose("totem","heirloom","keepsake","letter","key");
+			q.qKeywords.add(QKey.FETCH);
 			q.giver = new QuestR() {
 
 				/**
@@ -104,6 +116,7 @@ public class BasicSideQuest implements Quest{
 				return null;
 			}
 			}
+			q.resolveDest(q.target.locationF);
 			q.target.locationT = q.target.locationF.town;
 			if (q.target.locationT == null) {
 				return null;
@@ -115,6 +128,12 @@ public class BasicSideQuest implements Quest{
 			break;
 		case 2: //kill quest (murder/hero variants)
 			boolean murder = extra.choose(false,true);
+			q.qKeywords.add(QKey.KILL);
+			if (murder) {
+				q.qKeywords.add(QKey.EVIL);
+			}else {
+				q.qKeywords.add(QKey.LAWFUL);
+			}
 			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
 			q.giver = new QuestR() {
 
@@ -190,6 +209,7 @@ public class BasicSideQuest implements Quest{
 				return null;
 			}
 			}
+			q.resolveDest(q.target.locationF);
 			q.target.locationT = q.target.locationF.town;
 			if (q.target.locationT == null) {
 				return null;
@@ -211,6 +231,8 @@ public class BasicSideQuest implements Quest{
 			}
 			break;
 		case 3: //cleanse quest
+			q.qKeywords.add(QKey.CLEANSE);
+			q.qKeywords.add(QKey.LAWFUL);
 			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
 			q.giver = new QuestR() {
 
@@ -269,9 +291,11 @@ public class BasicSideQuest implements Quest{
 	
 	public static BasicSideQuest getRandomMerchantQuest(Town loc,MerchantGuild mguild) {
 		BasicSideQuest q = new BasicSideQuest();
+		q.qKeywords.add(QKey.GIVE_MGUILD);
 		int i;
 		switch (extra.randRange(1,2)) {
 		case 1: //fetch quest
+			q.qKeywords.add(QKey.FETCH);
 			q.giverName = mguild.getQuarterMaster().getName();
 			q.targetName = "crate of "+ extra.choose("supplies","goods","trade goods","documents");
 			q.giver = new QuestR() {
@@ -329,6 +353,7 @@ public class BasicSideQuest implements Quest{
 				return null;
 			}
 			}
+			q.resolveDest(q.target.locationF);
 			q.target.locationT = q.target.locationF.town;
 			if (q.target.locationT == null) {
 				return null;
@@ -339,6 +364,7 @@ public class BasicSideQuest implements Quest{
 			q.desc = "Fetch " + q.targetName + " from " + q.target.locationF.getName() + " in " + q.target.locationT.getName() + " for " + q.giverName;
 			break;
 		case 2: //cleanse quest
+			q.qKeywords.add(QKey.CLEANSE);
 			q.giverName = mguild.getQuarterMaster().getName();
 			q.giver = new QuestR() {
 
@@ -374,7 +400,22 @@ public class BasicSideQuest implements Quest{
 			break;
 		
 		}
+		
 		return q;
+	}
+
+	private void resolveDest(Feature locationF) {
+		switch (locationF.getQRType()) {
+		case FOREST:
+			this.qKeywords.add(QKey.DEST_WOODS);
+			break;
+		case INN:
+			this.qKeywords.add(QKey.DEST_INN);
+			break;
+		case MOUNTAIN:
+			this.qKeywords.add(QKey.DEST_MOUNTAIN);
+			break;
+		}
 	}
 
 	@Override
