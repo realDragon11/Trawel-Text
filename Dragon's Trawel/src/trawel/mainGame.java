@@ -411,6 +411,7 @@ public class mainGame {
 		new BumperFactory();
 		new WeaponAttackFactory();
 		new TownFlavorFactory();
+		new QuestReactionFactory();
 		story = new StoryNone();
 		
 		new Networking();

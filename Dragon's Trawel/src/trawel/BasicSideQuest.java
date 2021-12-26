@@ -25,6 +25,8 @@ public class BasicSideQuest implements Quest{
 	
 	public List<QKey> qKeywords = new ArrayList<QKey>();
 	
+	public int reactionsLeft = 2;
+	
 	public enum QKey implements java.io.Serializable {
 		FETCH, KILL, CLEANSE, 
 		GOOD, EVIL,
@@ -450,6 +452,14 @@ public class BasicSideQuest implements Quest{
 			}
 		}
 		
+	}
+
+	@Override
+	public BasicSideQuest reactionQuest() {
+		if (reactionsLeft <= 0) {
+			return null;
+		}
+		return this;
 	}
 }
 
