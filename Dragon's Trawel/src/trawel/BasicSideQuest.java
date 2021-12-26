@@ -291,6 +291,7 @@ public class BasicSideQuest implements Quest{
 					Player.player.getPerson().addXp(1);
 					Player.bag.addGold(20);
 					Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,.1f, 0);
+					Player.player.addMPoints(.2f);
 					q.complete();
 					return false;
 				}};
@@ -355,8 +356,9 @@ public class BasicSideQuest implements Quest{
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
 					Player.bag.addGold(40);
-					Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,2,0);
+					Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,1,0);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
+					Player.player.addMPoints(.2f);
 					q.complete();
 					return false;
 				}};

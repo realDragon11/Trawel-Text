@@ -3,7 +3,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MerchantGuild extends Feature {
+public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 	/**
 	 * 
@@ -11,6 +11,13 @@ public class MerchantGuild extends Feature {
 	private static final long serialVersionUID = 1L;
 	
 	private Person quarterMaster;
+	private boolean canQuest = true;
+	
+	private double timePassed;
+	private int nextReset;
+	
+	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
+	
 	public MerchantGuild(String name){
 		this.name = name;
 		tutorialText = "Merchant quests will make stores willing to sell items higher than your level.";
@@ -25,7 +32,8 @@ public class MerchantGuild extends Feature {
 		extra.println("1 Donate Drawbanes.");
 		extra.println("2 Donate emerald. (You have " + Player.player.emeralds + ")");
 		extra.println("3 buy shipments with gold");
-		extra.println("4 leave");
+		extra.println("4 quest board");
+		extra.println("5 leave");
 		switch (extra.inInt(4)) {
 		case 2:
 			if (Player.player.emeralds > 0) {
@@ -49,7 +57,38 @@ public class MerchantGuild extends Feature {
 		case 3:
 			buyGShip();
 			go();
-		case 4: break; 
+			break;
+		case 4:
+			MerchantGuild mguild = this;
+			extra.menuGo(new MenuGenerator() {
+
+				@Override
+				public List<MenuItem> gen() {
+					List<MenuItem> mList = new ArrayList<MenuItem>();
+					
+					for (Quest q: sideQuests) {
+						mList.add(new QBMenuItem(q,mguild));
+					}
+					for (QuestR qr: qrList) {
+						mList.add(new QRMenuItem(qr));
+					}
+					mList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "back";
+						}
+
+						@Override
+						public boolean go() {
+							return true;
+						}
+					});
+					return mList;
+				}});
+			go();
+			break;
+		case 5: break; 
 		}
 	}
 
@@ -126,6 +165,13 @@ public class MerchantGuild extends Feature {
 	public void passTime(double time) {
 		// TODO Auto-generated method stub
 		//TODO: make certain drawbanes give more depending one what the guild needs
+		timePassed += time;
+		if (timePassed > nextReset) {
+			timePassed = 0;
+			nextReset = extra.randRange(4,30);
+			if (canQuest) {this.generateSideQuest();}
+		}
+		
 	}
 	public Person getQuarterMaster() {
 		return quarterMaster;
@@ -134,6 +180,29 @@ public class MerchantGuild extends Feature {
 	@Override
 	public void init() {
 		quarterMaster = RaceFactory.makeQuarterMaster(this.town.getTier());
+		try {
+			while (sideQuests.size() < 2) {
+				generateSideQuest();
+			}
+			}catch (Exception e) {
+				canQuest = false;
+			}
 	}
+	
+	private void generateSideQuest() {
+		if (sideQuests.size() >= 2) {
+			sideQuests.remove(extra.randList(sideQuests));
+		}
+		BasicSideQuest bsq = BasicSideQuest.getRandomMerchantQuest(this.town,this);
+		if (bsq != null) {
+		sideQuests.add(bsq);
+		}
+	}
+	
+	@Override
+	public void removeSideQuest(Quest q) {
+		sideQuests.remove(q);
+	}
+
 
 }

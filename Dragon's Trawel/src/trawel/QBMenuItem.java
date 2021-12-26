@@ -3,9 +3,9 @@ package trawel;
 public class QBMenuItem extends MenuSelect {
 
 	public Quest q;
-	public Inn i;
+	public QuestBoardLocation i;
 	
-	public QBMenuItem(Quest q, Inn i) {
+	public QBMenuItem(Quest q, QuestBoardLocation i) {
 		this.q = q;
 		this.i = i;
 	}
@@ -23,7 +23,7 @@ public class QBMenuItem extends MenuSelect {
 		}else {
 			Player.player.sideQuests.add(q);
 			q.take();
-			i.sideQuests.remove(q);
+			i.removeSideQuest(q);
 		}
 		return false;
 	}

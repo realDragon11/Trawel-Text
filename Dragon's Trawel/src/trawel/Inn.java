@@ -5,7 +5,7 @@ import java.util.List;
 
 //sells booze which increases temp hp for a few fights,
 //has a resident which changes with time
-public class Inn extends Feature implements java.io.Serializable{
+public class Inn extends Feature implements java.io.Serializable, QuestBoardLocation{
 	/**
 	 * 
 	 */
@@ -436,6 +436,11 @@ public class Inn extends Feature implements java.io.Serializable{
 			}else {
 				extra.println("You can't afford that!");
 			}
+	}
+
+	@Override
+	public void removeSideQuest(Quest q) {
+		sideQuests.remove(q);
 	}
 
 }
