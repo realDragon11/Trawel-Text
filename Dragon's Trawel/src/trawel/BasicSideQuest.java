@@ -3,6 +3,7 @@ package trawel;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.QuestReactionFactory.QKey;
 import trawel.factions.Faction;
 
 public class BasicSideQuest implements Quest{
@@ -27,13 +28,7 @@ public class BasicSideQuest implements Quest{
 	
 	public int reactionsLeft = 2;
 	
-	public enum QKey implements java.io.Serializable {
-		FETCH, KILL, CLEANSE, 
-		GOOD, EVIL,
-		LAWFUL, CHAOTIC,
-		DEST_MOUNTAIN,DEST_WOODS,DEST_INN,
-		GIVE_INN,GIVE_MGUILD,
-	}
+	
 	
 	public void cleanup() {
 		giver.cleanup();

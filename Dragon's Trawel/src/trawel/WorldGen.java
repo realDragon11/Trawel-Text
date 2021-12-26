@@ -763,18 +763,22 @@ public class WorldGen {
 		
 	}
 
-	public static void pathToUnun() {
+	public static void pathToTown(Town dest) {
 		try {
-		List<Connection> connects = WorldGen.aStarTown();
+		List<Connection> connects = WorldGen.aStarTown(dest);
 		Town curTown = Player.player.getLocation();
 		int i = 0;
-		while (curTown != lynchPin) {
+		while (curTown != dest) {
 			extra.println(curTown.getName() + "->" + connects.get(i).otherTown(curTown).getName() + " (" + connects.get(i).getType() + ": " +connects.get(i).getName()+")");
 			curTown = connects.get(i).otherTown(curTown);
 			i++;
 		}}catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void pathToUnun() {
+		pathToTown(lynchPin);
 	}
 	
 	public class PathTown {
@@ -786,7 +790,7 @@ public class WorldGen {
 			t = town;
 		}
 	}
-	public static List<Connection> aStarTown() {
+	public static List<Connection> aStarTown(Town dest) {
 		List<Town> towns = plane.getTowns();
 		WorldGen wg = new WorldGen();
 		List<PathTown> nodeList = new ArrayList<PathTown>();
@@ -803,7 +807,7 @@ public class WorldGen {
 		openSet.add(start);
 		openSet.get(0).gScore = 0;
 		
-		openSet.get(0).fScore = heuristic_cost_estimate(openSet.get(0));
+		openSet.get(0).fScore = heuristic_cost_estimate(openSet.get(0),dest);
 		
 		//AISpaceNode[][] cameFrom = new AISpaceNode[g.getWidth()][g.getHeight()]; 
 		//cameFrom[openSet.get(0).x][openSet.get(0).y] = null;
@@ -812,7 +816,7 @@ public class WorldGen {
 		while (openSet.size() > 0) {
 			int currentIndex = getLowest(openSet);
 			PathTown current = openSet.get(currentIndex);
-			if (current.t.equals(lynchPin)) {
+			if (current.t.equals(dest)) {
 				return reconstruct_path(current.cameFrom, current,nodeList);
 			}
 			openSet.remove(currentIndex);
@@ -826,7 +830,7 @@ public class WorldGen {
 						break;
 					}
 				}
-				explore(current,otherTown, c,nodeList, openSet, closedSet);
+				explore(current,otherTown, c,nodeList, openSet, closedSet,dest);
 			}
 		}
 		//we couldn't find a path
@@ -873,7 +877,7 @@ public class WorldGen {
 		return list.indexOf(bestIndex);
 	} 
 	
-	private static void explore(PathTown current, PathTown otherTown,Connection c, List<PathTown> nodeList,List<PathTown> openSet,List<PathTown> closedSet) {
+	private static void explore(PathTown current, PathTown otherTown,Connection c, List<PathTown> nodeList,List<PathTown> openSet,List<PathTown> closedSet,Town dest) {
 		if (closedSet.contains(otherTown)) {
 			return;//already explored
 		}
@@ -887,11 +891,11 @@ public class WorldGen {
 		}
 		otherTown.cameFrom = current;
 		otherTown.gScore = potential_gScore;
-        otherTown.fScore = potential_gScore + heuristic_cost_estimate(otherTown);
+        otherTown.fScore = potential_gScore + heuristic_cost_estimate(otherTown,dest);
 	}
 	
-	private static int heuristic_cost_estimate(PathTown cur) {
+	private static int heuristic_cost_estimate(PathTown cur, Town dest) {
 		
-		return Math.abs((cur.t.getLocation().x-lynchPin.getLocation().x)) + Math.abs((cur.t.getLocation().y-lynchPin.getLocation().y));
+		return Math.abs((cur.t.getLocation().x-dest.getLocation().x)) + Math.abs((cur.t.getLocation().y-dest.getLocation().y));
 	}
 }
