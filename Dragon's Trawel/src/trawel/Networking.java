@@ -6,9 +6,11 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.text.AttributeSet.ColorAttribute;
+
 public class Networking {
 
-	 public static final String AGGRO = extra.colorMix(, null, 0);
+	 public static final String AGGRO = extra.inlineColor(extra.colorMix(Color.RED, Color.WHITE, 0.5f));
 	public static PrintWriter out;
 	 public static InputStream in;
 	 public static Socket socket;

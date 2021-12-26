@@ -41,11 +41,34 @@ public class QuestReactionFactory {
 
 							@Override
 							public String title() {
-								return Networking.aggro + "leave";
+								return "ask for directions";
 							}
 
 							@Override
 							public boolean go() {
+								if (q.target.locationT != null) {
+									WorldGen.pathToTown(q.target.locationT);
+								}else {
+									extra.println("They cannot seem to say the instructions.");
+								}
+								
+								return false;
+							}});
+						mList.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return Networking.AGGRO + "attack them";
+							}
+
+							@Override
+							public boolean go() {
+								if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+									
+								}else {
+									extra.println(p.getName() +" wanders off, regreting their helpfulness.");
+								}
+								
 								return true;
 							}});
 						mList.add(new MenuSelect() {
