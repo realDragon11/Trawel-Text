@@ -8,7 +8,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Networking {
 
-	 public static PrintWriter out;
+	 public static final String AGGRO = extra.colorMix(, null, 0);
+	public static PrintWriter out;
 	 public static InputStream in;
 	 public static Socket socket;
 	 private static boolean connected = false;

@@ -20,17 +20,47 @@ public class QuestReactionFactory {
 		reactions.add(new QuestReaction(new QKey[] {},new QKey[] {}, new QuestTriggerEvent() {
 
 			@Override
-			public void trigger(BasicSideQuest q) {
+			public void trigger(BasicSideQuest q, Town bumperLocation) {
 				// TODO Auto-generated method stub
 				
 			}}) );
 		*/
-		reactions.add(new QuestReaction(new QKey[] {},new QKey[] {QKey.DEST_WOODS,QKey.DEST_MOUNTAIN}, new QuestTriggerEvent() {
+		reactions.add(new QuestReaction(new QKey[] {},new QKey[] {QKey.DEST_WOODS,QKey.DEST_MOUNTAIN,QKey.DEST_WOODS}, new QuestTriggerEvent() {
 
 			@Override
-			public void trigger(BasicSideQuest q) {
-				// TODO Auto-generated method stub
-				
+			public void trigger(BasicSideQuest q, Town bumperLocation) {
+				Person p = RaceFactory.getPeace(bumperLocation.getTier());
+				extra.println("A traveler greets you and notices your quest ("+q.name() +") and asks if you want directions.");
+				p.getBag().graphicalDisplay(1, p);
+				extra.menuGo(new MenuGenerator() {
+
+					@Override
+					public List<MenuItem> gen() {
+						List<MenuItem> mList = new ArrayList<MenuItem>();
+						mList.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return Networking.aggro + "leave";
+							}
+
+							@Override
+							public boolean go() {
+								return true;
+							}});
+						mList.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "leave";
+							}
+
+							@Override
+							public boolean go() {
+								return true;
+							}});
+						return mList;
+					}});
 			}}) );
 	}
 	
@@ -49,6 +79,6 @@ public class QuestReactionFactory {
 	
 	
 	public interface QuestTriggerEvent{
-		public void trigger(BasicSideQuest q);
+		public void trigger(BasicSideQuest q, Town bumperLocation);
 	}
 }
