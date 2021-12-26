@@ -71,7 +71,7 @@ public class WitchHut extends Feature{
 				int lflames =  (int) dbs.stream().filter(d -> d.equals(DrawBane.LIVING_FLAME)).count();
 				int telescopes =  (int) dbs.stream().filter(d -> d.equals(DrawBane.TELESCOPE)).count();
 				int food = meats + apples + garlics + honeys + pumpkins + pumpkins + eggcorns+truffles + (virgins*2);
-				int filler = apples + woods + waxs+(Player.player.eaBox.witchTrainLevel/3);
+				int filler = apples + woods + waxs;
 				
 				if (Player.player.eaBox.witchTrainLevel > 2) {
 					filler+=Player.player.eaBox.witchTrainLevel/3;
@@ -103,7 +103,7 @@ public class WitchHut extends Feature{
 					return;
 				}
 				if (mGuts > 0 && telescopes >0) {
-					Player.player.setFlask(new Potion(Effect.TELESCOPIC,batWings+telescopes+filler));
+					Player.player.setFlask(new Potion(Effect.TELESCOPIC,mGuts+telescopes+filler));
 					return;
 				}
 				if (mGuts > 0 && batWings >0) {

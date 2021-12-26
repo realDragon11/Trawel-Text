@@ -107,6 +107,6 @@ public class randomLists {
 	}
 	
 	public static String randomCollectorName() {
-		return extra.choose("the collector","the keeper","the finder");
+		return extra.choose("the Collector","the Keeper","the Finder");
 	}
 }
