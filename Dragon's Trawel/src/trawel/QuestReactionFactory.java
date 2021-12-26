@@ -1,6 +1,7 @@
 package trawel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class QuestReactionFactory {
@@ -13,7 +14,7 @@ public class QuestReactionFactory {
 		GIVE_INN,GIVE_MGUILD,
 	}
 	
-	public List<QuestReaction> reactions = new ArrayList<QuestReaction>();
+	public static List<QuestReaction> reactions = new ArrayList<QuestReaction>();
 	
 	public QuestReactionFactory() {
 		/*//EXAMPLE
@@ -85,6 +86,8 @@ public class QuestReactionFactory {
 						return mList;
 					}});
 			}}) );
+		
+		Collections.shuffle(reactions);
 	}
 	
 	public class QuestReaction{
@@ -103,5 +106,53 @@ public class QuestReactionFactory {
 	
 	public interface QuestTriggerEvent{
 		public void trigger(BasicSideQuest q, Town bumperLocation);
+	}
+
+
+	public static boolean runMe(Town t) {
+		if (extra.chanceIn(1,3)) {
+			return false;
+		}
+		BasicSideQuest side = extra.randList(Player.player.sideQuests).reactionQuest();
+		boolean evented = false;
+		for (QuestReaction qr: reactions) {
+			boolean greenStep = true;
+			if (qr.mandates.length == 0) {
+				//greenStep = true;
+			}else {
+				for (QKey mandate: qr.mandates) {
+					if (!side.qKeywords.contains(mandate)) {
+						greenStep = false;
+						break;
+					}
+				}
+				if (greenStep == false) {
+					continue;
+				}
+				greenStep = false;
+				if (qr.needsOne.length == 0) {
+					greenStep = true;
+				}else {
+					for (QKey mandate: qr.mandates) {
+						if (side.qKeywords.contains(mandate)) {
+							greenStep = true;
+							break;
+						}
+					}
+					if (greenStep == false) {
+						continue;
+					}
+					evented = true;
+					side.reactionsLeft--;
+					qr.qte.trigger(side, t);
+					break;
+				}
+			}
+		}
+		if (evented) {
+			Collections.shuffle(reactions);
+			return true;
+		}
+		return false;
 	}
 }

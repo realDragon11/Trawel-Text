@@ -7,7 +7,7 @@ public abstract class Bumper {
 	public int minAreaLevel = 0;
 	
 
-	public static boolean go(double threshold, int level, int i) {
+	public static boolean go(double threshold, int level, int i,Town t) {
 		//TODO: calculate which enemy to fight
 		double highest = -999;
 		double d = 0;
@@ -30,8 +30,14 @@ public abstract class Bumper {
 			}
 		}
 		if (d > threshold) {
-		highestB.activate(level);
-		return true;}
+			highestB.activate(level);
+			return true;
+		}else {
+			//Quest bumpers
+			if (QuestReactionFactory.runMe(t)) {
+				return true;
+			}
+		}
 		return false;
 	}
 	

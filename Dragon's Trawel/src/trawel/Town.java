@@ -810,7 +810,7 @@ public class Town implements java.io.Serializable{
 	public boolean wander(double threshold) {
 			Networking.setArea("forest");
 			Networking.sendStrong("Discord|imagesmall|grove|Grove|");
-			boolean went = Bumper.go(threshold,tier,0);
+			boolean went = Bumper.go(threshold,tier,0,this);
 			
 			if (!went && extra.chanceIn(1,3)) {
 				Person p = this.island.getWorld().getDeathCheater(tier);
@@ -829,7 +829,7 @@ public class Town implements java.io.Serializable{
 	
 	private boolean wanderShip(double d) {
 			Networking.setArea("port");
-			return Bumper.go(d,tier,1);
+			return Bumper.go(d,tier,1,this);
 	}
 	
 	public ArrayList<Feature> getQuestLocationsInRange(int i){
