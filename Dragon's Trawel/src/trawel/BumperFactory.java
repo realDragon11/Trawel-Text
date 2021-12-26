@@ -87,7 +87,9 @@ public class BumperFactory {
 					Person p = RaceFactory.getMugger(level);
 					
 					extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"A thief charges you!");
-					mainGame.CombatTwo(Player.player.getPerson(),p);
+					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+						Player.player.questTrigger("bandit",1);
+				}
 					
 				}};
 			b.responses.add(new Response(DrawBane.SILVER,1));
@@ -172,7 +174,9 @@ public class BumperFactory {
 					Person p = RaceFactory.getMugger(level);
 					
 					extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"A pirate challenges you for your booty!");
-					mainGame.CombatTwo(Player.player.getPerson(),p);
+					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+						Player.player.questTrigger("bandit",1);
+				}
 					
 				}};
 			b.responses.add(new Response(DrawBane.SILVER,1));

@@ -9,6 +9,8 @@ public class MerchantGuild extends Feature {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private Person quarterMaster;
 	public MerchantGuild(String name){
 		this.name = name;
 		tutorialText = "Merchant quests will make stores willing to sell items higher than your level.";
@@ -124,6 +126,14 @@ public class MerchantGuild extends Feature {
 	public void passTime(double time) {
 		// TODO Auto-generated method stub
 		//TODO: make certain drawbanes give more depending one what the guild needs
+	}
+	public Person getQuarterMaster() {
+		return quarterMaster;
+	}
+	
+	@Override
+	public void init() {
+		quarterMaster = RaceFactory.makeQuarterMaster(this.town.getTier());
 	}
 
 }

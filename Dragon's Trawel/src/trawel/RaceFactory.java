@@ -745,6 +745,13 @@ public class RaceFactory {
 		return p;
 	}
 	
+	public static Person makeQuarterMaster(int level) {
+		Person p = new Person(level);
+		p.personType = "grizzled";
+		p.hTask = HostileTask.RICH;
+		return p;
+	}
+	
 	public static Person makeWolf(int level) {
 		extra.printMode = true;
 		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);

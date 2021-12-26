@@ -266,6 +266,114 @@ public class BasicSideQuest implements Quest{
 		}
 		return q;
 	}
+	
+	public static BasicSideQuest getRandomMerchantQuest(Town loc,MerchantGuild mguild) {
+		BasicSideQuest q = new BasicSideQuest();
+		int i;
+		switch (extra.randRange(1,2)) {
+		case 1: //fetch quest
+			q.giverName = mguild.getQuarterMaster().getName();
+			q.targetName = "crate of "+ extra.choose("supplies","goods","trade goods","documents");
+			q.giver = new QuestR() {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public String getName() {
+					return q.giverName;
+				}
+
+				@Override
+				public boolean go() {
+					Player.player.getPerson().addXp(1);
+					Player.bag.addGold(20);
+					Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,.1f, 0);
+					q.complete();
+					return false;
+				}};
+				q.giver.locationF = mguild;
+				q.giver.locationT = loc;
+				q.giver.overQuest = q;
+			q.target = new QuestR() {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public String getName() {
+					return q.targetName;
+				}
+
+				@Override
+				public boolean go() {
+					extra.println("You claim the " + q.targetName);
+					q.giver.locationF.addQR(q.giver);
+					q.desc = "Return the " + q.targetName + " to " + q.giverName + " at " + q.giver.locationF.getName() + " in " + q.giver.locationT.getName();
+					this.cleanup();
+					q.announceUpdate();
+					return false;
+				}
+				
+			};
+			i = 3; 
+			while (q.target.locationF == null) {
+			q.target.locationF = extra.randList(loc.getQuestLocationsInRange(i));
+			i++;
+			if (i > 10) {
+				return null;
+			}
+			}
+			q.target.locationT = q.target.locationF.town;
+			if (q.target.locationT == null) {
+				return null;
+			}
+			q.target.overQuest = q;
+			//q.target.locationF.addQR(q.target);
+			q.name = q.giverName + "'s " + q.targetName;
+			q.desc = "Fetch " + q.targetName + " from " + q.target.locationF.getName() + " in " + q.target.locationT.getName() + " for " + q.giverName;
+			break;
+		case 2: //cleanse quest
+			q.giverName = mguild.getQuarterMaster().getName();
+			q.giver = new QuestR() {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public String getName() {
+					return q.giverName;
+				}
+
+				@Override
+				public boolean go() {
+					Player.player.getPerson().addXp(1);
+					Player.bag.addGold(40);
+					Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,2,0);
+					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
+					q.complete();
+					return false;
+				}};
+				q.giver.locationF = mguild;
+				q.giver.locationT = loc;
+				q.giver.overQuest = q;
+				q.targetName = "bandits";
+				q.trigger = "bandit";
+				q.count = 3;
+			//q.target.locationF.addQR(q.target);
+				q.name = "Kill " + q.targetName + " for " + q.giverName ;
+				q.desc = "Kill " + q.count + " more " + q.targetName + " on the roads for " + q.giverName;
+			break;
+		
+		}
+		return q;
+	}
 
 	@Override
 	public String name() {
