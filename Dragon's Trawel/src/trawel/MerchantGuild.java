@@ -36,7 +36,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 		extra.println("3 buy shipments with gold");
 		extra.println("4 quest board");
 		extra.println("5 leave");
-		switch (extra.inInt(4)) {
+		switch (extra.inInt(5)) {
 		case 2:
 			if (Player.player.emeralds > 0) {
 			Player.player.addMPoints(10);

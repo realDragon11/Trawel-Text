@@ -32,11 +32,6 @@ public abstract class Bumper {
 		if (d > threshold) {
 			highestB.activate(level);
 			return true;
-		}else {
-			//Quest bumpers
-			if (QuestReactionFactory.runMe(t)) {
-				return true;
-			}
 		}
 		return false;
 	}

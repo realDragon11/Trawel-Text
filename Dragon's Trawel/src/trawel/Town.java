@@ -810,6 +810,12 @@ public class Town implements java.io.Serializable{
 	public boolean wander(double threshold) {
 			Networking.setArea("forest");
 			Networking.sendStrong("Discord|imagesmall|grove|Grove|");
+			
+			//Quest bumpers
+			if (QuestReactionFactory.runMe(this)) {
+				return true;
+			}
+			
 			boolean went = Bumper.go(threshold,tier,0,this);
 			
 			if (!went && extra.chanceIn(1,3)) {

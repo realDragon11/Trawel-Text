@@ -26,7 +26,7 @@ public class QuestReactionFactory {
 				
 			}}) );
 		*/
-		reactions.add(new QuestReaction(new QKey[] {},new QKey[] {QKey.DEST_WOODS,QKey.DEST_MOUNTAIN,QKey.DEST_WOODS}, new QuestTriggerEvent() {
+		reactions.add(new QuestReaction(new QKey[] {},new QKey[] {QKey.DEST_WOODS,QKey.DEST_MOUNTAIN,QKey.DEST_INN}, new QuestTriggerEvent() {
 
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
@@ -110,7 +110,7 @@ public class QuestReactionFactory {
 
 
 	public static boolean runMe(Town t) {
-		if (extra.chanceIn(1,3)) {
+		if (Player.player.sideQuests.size() == 0 || extra.chanceIn(1,3)) {
 			return false;
 		}
 		BasicSideQuest side = extra.randList(Player.player.sideQuests).reactionQuest();
@@ -126,28 +126,30 @@ public class QuestReactionFactory {
 						break;
 					}
 				}
-				if (greenStep == false) {
-					continue;
-				}
-				greenStep = false;
-				if (qr.needsOne.length == 0) {
-					greenStep = true;
-				}else {
-					for (QKey mandate: qr.mandates) {
-						if (side.qKeywords.contains(mandate)) {
-							greenStep = true;
-							break;
-						}
+			}
+			if (greenStep == false) {
+				continue;
+			}
+			greenStep = false;
+			if (qr.needsOne.length == 0) {
+				greenStep = true;
+			}else {
+				for (QKey req: qr.needsOne) {
+					if (side.qKeywords.contains(req)) {
+						greenStep = true;
+						break;
 					}
-					if (greenStep == false) {
-						continue;
-					}
-					evented = true;
-					side.reactionsLeft--;
-					qr.qte.trigger(side, t);
-					break;
 				}
 			}
+			if (greenStep == false) {
+				continue;
+			}
+			evented = true;
+			side.reactionsLeft--;
+			qr.qte.trigger(side, t);
+			break;
+			
+			
 		}
 		if (evented) {
 			Collections.shuffle(reactions);
