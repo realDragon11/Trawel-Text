@@ -103,6 +103,10 @@ public class FBox implements java.io.Serializable{
 			break;
 		case REVENGE:
 			break;
+		case LAW:
+			manOne.facRep.addFactionRep(Faction.HEROIC,0,manTwo.getLevel());
+			manOne.facRep.addFactionRep(Faction.MERCHANT,0,manTwo.getLevel()/10.0f);
+			break;
 		}
 		
 	}

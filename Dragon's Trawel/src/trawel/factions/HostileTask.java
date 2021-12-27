@@ -9,5 +9,5 @@ public enum HostileTask implements java.io.Serializable{
 	ANIMAL,
 	DUEL,
 	REVENGE,
-	GUARD_DUNGEON, BOSS, LUMBER,
+	GUARD_DUNGEON, BOSS, LUMBER, LAW,
 }

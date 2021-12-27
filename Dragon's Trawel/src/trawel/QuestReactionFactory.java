@@ -87,6 +87,33 @@ public class QuestReactionFactory {
 					}});
 			}}) );
 		
+		reactions.add(new QuestReaction(new QKey[] {QKey.KILL},new QKey[] {}, new QuestTriggerEvent() {
+
+			@Override
+			public void trigger(BasicSideQuest q, Town bumperLocation) {
+				Person p = RaceFactory.getDueler(bumperLocation.getTier());
+				extra.println(Networking.AGGRO +p.getName() + " appears, claiming that they were hired to defend " + q.targetName +"!");
+				
+				if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+					
+				}else {
+					extra.println(p.getName() +" wanders off, job well done.");
+				}
+			}}) );
+		reactions.add(new QuestReaction(new QKey[] {QKey.KILL,QKey.EVIL},new QKey[] {}, new QuestTriggerEvent() {
+
+			@Override
+			public void trigger(BasicSideQuest q, Town bumperLocation) {
+				Person p = RaceFactory.getLawman(bumperLocation.getTier());
+				extra.println(Networking.AGGRO +p.getName() + " attacks you for traveling to murder " + q.targetName +"!");
+				
+				if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+					
+				}else {
+					extra.println(p.getName() +" wanders off, job well done.");
+				}
+			}}) );
+		
 		Collections.shuffle(reactions);
 	}
 	
@@ -114,6 +141,9 @@ public class QuestReactionFactory {
 			return false;
 		}
 		BasicSideQuest side = extra.randList(Player.player.sideQuests).reactionQuest();
+		if (side == null) {
+			return false;
+		}
 		boolean evented = false;
 		for (QuestReaction qr: reactions) {
 			boolean greenStep = true;

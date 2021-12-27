@@ -1057,6 +1057,15 @@ public class RaceFactory {
 		return w;
 	}
 	
+	public static Person getLawman(int level) {
+		extra.printMode = true;
+		Person w = new Person(level);
+		w.hTask = HostileTask.LAW;
+		w.facRep.addFactionRep(Faction.HEROIC,5*level,0);
+		extra.printMode = false;
+		return w;
+	}
+	
 	public static Person getGraverobber(int level) {
 		extra.printMode = true;
 		Person w = new Person(level,AIJob.GRAVER);
@@ -1109,6 +1118,8 @@ public class RaceFactory {
 		}
 		return "";
 	}
+
+	
 
 	
 	

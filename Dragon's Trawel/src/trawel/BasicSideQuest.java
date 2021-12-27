@@ -265,6 +265,7 @@ public class BasicSideQuest implements Quest{
 					q.targetName = "vampires";
 					q.trigger = "vampire";
 					q.count = 2;
+					q.qKeywords.add(QKey.GOOD);
 					break;
 				case 3:
 					q.targetName = "wolves";
@@ -388,6 +389,7 @@ public class BasicSideQuest implements Quest{
 				q.giver.locationF = mguild;
 				q.giver.locationT = loc;
 				q.giver.overQuest = q;
+				q.qKeywords.add(QKey.LAWFUL);
 				q.targetName = "bandits";
 				q.trigger = "bandit";
 				q.count = 3;
