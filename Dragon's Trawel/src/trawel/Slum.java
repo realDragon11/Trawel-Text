@@ -79,6 +79,22 @@ public class Slum extends Feature implements QuestBoardLocation{
 						return false;
 					}
 				});
+				if (crimeLord != null) { 
+					mList.add(new MenuSelect() {
+						
+						@Override
+						public String title() {
+							return "attack crime lord";
+						}
+		
+						@Override
+						public boolean go() {
+							killCrime();
+							return false;
+						}
+					});
+				}
+				
 				if (crimeLord == null && removable) {
 					
 					mList.add(new MenuSelect() {
@@ -122,6 +138,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	public void passTime(double time) {
 		timePassed-=time;
 		if (timePassed < 0) {
+			if (canQuest) {this.generateSideQuest();}
 			if (crimeLord == null){
 				crimeLord = extra.randList(town.getOccupants());
 				town.getOccupants().remove(crimeLord);
@@ -171,6 +188,21 @@ public class Slum extends Feature implements QuestBoardLocation{
 				});
 				return mList;
 			}});
+		
+	}
+	
+	private void killCrime() {
+		Person p = ((Agent)crimeLord).getPerson();
+		extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"Attack " + p.getName() + "?");
+		if (extra.yesNo()) {
+			Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
+			if (winner == Player.player.getPerson()) {
+				extra.println("You kill the crime lord!");
+				crimeLord = null;
+			}else {
+				extra.println("The crime lord kills you.");
+			}
+		}
 		
 	}
 
