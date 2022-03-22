@@ -402,6 +402,189 @@ public class BasicSideQuest implements Quest{
 		
 		return q;
 	}
+	
+	public static BasicSideQuest getRandomSideQuest(Town loc,Slum slum) {
+		BasicSideQuest q = new BasicSideQuest();
+		q.qKeywords.add(QKey.GIVE_SLUM);
+		int i;
+		switch (extra.randRange(1,2)) {
+		case 1: //fetch quest
+			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
+			q.targetName = extra.choose("'taxes'","spice","letter","sealed letter","key");
+			q.qKeywords.add(QKey.FETCH);
+			q.qKeywords.add(QKey.EVIL);
+			q.giver = new QuestR() {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public String getName() {
+					return q.giverName;
+				}
+
+				@Override
+				public boolean go() {
+					Player.player.getPerson().addXp(1);
+					Player.bag.addGold(100);
+					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,0, .05f);
+					q.complete();
+					return false;
+				}};
+				q.giver.locationF = slum;
+				q.giver.locationT = loc;
+				q.giver.overQuest = q;
+			q.target = new QuestR() {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public String getName() {
+					return q.targetName;
+				}
+
+				@Override
+				public boolean go() {
+					extra.println("You claim the " + q.targetName);
+					q.giver.locationF.addQR(q.giver);
+					q.desc = "Return the " + q.targetName + " to " + q.giverName + " at " + q.giver.locationF.getName() + " in " + q.giver.locationT.getName();
+					this.cleanup();
+					q.announceUpdate();
+					return false;
+				}
+				
+			};
+			i = 2; 
+			while (q.target.locationF == null) {
+			q.target.locationF = extra.randList(loc.getQuestLocationsInRange(i));
+			i++;
+			if (i > 6) {
+				return null;
+			}
+			}
+			q.resolveDest(q.target.locationF);
+			q.target.locationT = q.target.locationF.town;
+			if (q.target.locationT == null) {
+				return null;
+			}
+			q.target.overQuest = q;
+			//q.target.locationF.addQR(q.target);
+			q.name = q.giverName + "'s " + q.targetName;
+			q.desc = "Obtain " + q.targetName + " from " + q.target.locationF.getName() + " in " + q.target.locationT.getName() + " for " + q.giverName + " using any means";
+			break;
+		case 2: //kill quest (murder/hero variants)
+			boolean murder = extra.choose(false,true,true);
+			q.qKeywords.add(QKey.KILL);
+			if (murder) {
+				q.qKeywords.add(QKey.EVIL);
+			}else {
+				q.qKeywords.add(QKey.LAWFUL);
+			}
+			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
+			q.giver = new QuestR() {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public String getName() {
+					return q.giverName;
+				}
+
+				@Override
+				public boolean go() {
+					Player.player.getPerson().addXp(1);
+					Player.bag.addGold(50);
+					q.complete();
+					return false;
+				}};
+				q.giver.locationF = slum;
+				q.giver.locationT = loc;
+				q.giver.overQuest = q;
+			q.target = new QuestR() {
+
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public String getName() {
+					return q.targetName;
+				}
+
+				@Override
+				public boolean go() {
+					extra.menuGo(new MenuGenerator() {
+
+						@Override
+						public List<MenuItem> gen() {
+							List<MenuItem> mList = new ArrayList<MenuItem>();
+							mList.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return "Attack " + q.targetName;
+								}
+
+								@Override
+								public boolean go() {
+									if (mainGame.CombatTwo(Player.player.getPerson(), q.targetPerson).equals(Player.player.getPerson())) {
+										Player.player.eaBox.exeKillLevel += 1;
+										q.giver.locationF.addQR(q.giver);
+										q.desc = "Return to " + q.giverName + " at " + q.giver.locationF.getName() + " in " + q.giver.locationT.getName();
+										cleanup();
+										q.announceUpdate();
+									}
+									return true;
+								}});
+							return mList;
+						}});
+					
+					return false;
+				}
+				
+			};
+			i = 2; 
+			while (q.target.locationF == null) {
+			q.target.locationF = extra.randList(loc.getQuestLocationsInRange(i));
+			i++;
+			if (i > 8) {
+				return null;
+			}
+			}
+			q.resolveDest(q.target.locationF);
+			q.target.locationT = q.target.locationF.town;
+			if (q.target.locationT == null) {
+				return null;
+			}
+			if (murder == true) {
+				q.targetPerson = RaceFactory.getPeace(q.target.locationT.getTier());
+			}else {
+				q.targetPerson = RaceFactory.getMugger(q.target.locationT.getTier());
+			}
+			q.targetName = q.targetPerson.getName();
+			q.target.overQuest = q;
+			//q.target.locationF.addQR(q.target);
+			if (murder == true) {
+				q.name = "Murder " + q.targetName + " for " + q.giverName;
+				q.desc = "Murder " + q.targetName + " at " + q.target.locationF.getName() + " in " + q.target.locationT.getName() + " for " + q.giverName;
+			}else {
+				q.name = "Execute " + q.targetName + " for " + q.giverName;
+				q.desc = "Execute " + q.targetName + " at " + q.target.locationF.getName() + " in " + q.target.locationT.getName() + " for " + q.giverName;
+			}
+			break;
+		
+		}
+		return q;
+	}
 
 	private void resolveDest(Feature locationF) {
 		switch (locationF.getQRType()) {
@@ -413,6 +596,9 @@ public class BasicSideQuest implements Quest{
 			break;
 		case MOUNTAIN:
 			this.qKeywords.add(QKey.DEST_MOUNTAIN);
+			break;
+		case SLUM:
+			this.qKeywords.add(QKey.DEST_SLUM);
 			break;
 		}
 	}

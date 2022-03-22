@@ -11,7 +11,7 @@ public class QuestReactionFactory {
 		GOOD, EVIL,
 		LAWFUL, CHAOTIC,
 		DEST_MOUNTAIN,DEST_WOODS,DEST_INN,
-		GIVE_INN,GIVE_MGUILD,
+		GIVE_INN,GIVE_MGUILD,GIVE_SLUM, DEST_SLUM
 	}
 	
 	public static List<QuestReaction> reactions = new ArrayList<QuestReaction>();

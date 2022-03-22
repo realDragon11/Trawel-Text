@@ -63,7 +63,7 @@ public abstract class Feature implements java.io.Serializable{
 	}
 	
 	public enum QRType{
-		NONE, MOUNTAIN, FOREST, INN;
+		NONE, MOUNTAIN, FOREST, INN, SLUM;
 	}
 	
 	public void addQR(QuestR qr) {

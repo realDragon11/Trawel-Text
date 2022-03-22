@@ -3,17 +3,29 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Slum extends Feature {
+import trawel.Feature.QRType;
+
+public class Slum extends Feature implements QuestBoardLocation{
 
 	private boolean removable;
 	public SuperPerson crimeLord;
 	private double timePassed = 0;
 	private int wins = 0;
 	private Town town;
+	
+	private boolean canQuest = true;
+	
+	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	@Override
+	public QRType getQRType() {
+		return QRType.SLUM;
+	}
 
 	public Slum(Town t, String name,boolean removable) {
 		town = t;
@@ -21,6 +33,27 @@ public class Slum extends Feature {
 		tutorialText = "Slums house crime lords.";
 		color = Color.RED;
 		this.removable = removable;
+	}
+	
+	@Override
+	public void init() {
+		try {
+			while (sideQuests.size() < 3) {
+				generateSideQuest();
+			}
+			}catch (Exception e) {
+				canQuest = false;
+			}
+	}
+	
+	private void generateSideQuest() {
+		if (sideQuests.size() >= 3) {
+			sideQuests.remove(extra.randList(sideQuests));
+		}
+		BasicSideQuest bsq = BasicSideQuest.getRandomSideQuest(town,this);
+		if (bsq != null) {
+		sideQuests.add(bsq);
+		}
 	}
 	
 	@Override
@@ -33,7 +66,19 @@ public class Slum extends Feature {
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> mList = new ArrayList<MenuItem>();
-			
+				mList.add(new MenuSelect() {
+					
+					@Override
+					public String title() {
+						return "hang around";
+					}
+	
+					@Override
+					public boolean go() {
+						backroom();
+						return false;
+					}
+				});
 				if (crimeLord == null && removable) {
 					
 					mList.add(new MenuSelect() {
@@ -96,6 +141,42 @@ public class Slum extends Feature {
 			
 		}
 
+	}
+	
+	private void backroom() {
+		Slum sl = this;
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				
+				for (Quest q: sideQuests) {
+					mList.add(new QBMenuItem(q,sl));
+				}
+				for (QuestR qr: qrList) {
+					mList.add(new QRMenuItem(qr));
+				}
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}
+				});
+				return mList;
+			}});
+		
+	}
+
+	@Override
+	public void removeSideQuest(Quest q) {
+		sideQuests.remove(q);
 	}
 
 }
