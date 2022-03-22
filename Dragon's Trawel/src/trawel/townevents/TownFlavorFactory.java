@@ -131,7 +131,6 @@ public class TownFlavorFactory {
 	}
 	
 	public static boolean go(double threshold, int level, Town t) {
-		//TODO: calculate which enemy to fight
 		double highest = -999;
 		double d = 0;
 		TownFlavor highestB = null;
