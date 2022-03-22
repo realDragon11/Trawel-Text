@@ -112,9 +112,9 @@ public class WorldGen {
 		addConnection(homa,unun,"road","barrier way");
 		unun.addFeature(new Inn("unun inn",2,unun,null));
 		unun.addTravel();
-		unun.addTravel();
 		unun.addFeature(new MerchantGuild("unun merchant guild"));
 		unun.addFeature(new Dungeon("tower of fate",unun,Dungeon.Shape.TOWER,0));
+		unun.addFeature(new Slum(unun,"unun slums",true));
 		unun.tTags.add(TownTag.CITY);
 		unun.tTags.add(TownTag.ADVENTURE);
 		unun.tTags.add(TownTag.MERCHANT);
@@ -533,7 +533,8 @@ public class WorldGen {
 		tunka.addFeature(new Graveyard("tunka graveyard", tunka));
 		tunka.addFeature(new Store(7,6));
 		tunka.addFeature(new RogueGuild("tunka rogue's guild"));
-		tunka.addTravel();
+		tunka.addFeature(new Slum(tunka,"tunka slums",false));
+		tunka.tTags.add(TownTag.LAWLESS);
 		
 		Town repa = new Town("repa",8,teran,new Point(14,6));
 		addConnection(repa,tunka,"road","right-over road");
@@ -597,6 +598,7 @@ public class WorldGen {
 		addConnection(inka,peana,"road","era road");
 		inka.addFeature(new Mine("left mine", inka, null,Mine.Shape.STANDARD));
 		inka.addFeature(new Mine("right mine", inka, null,Mine.Shape.STANDARD));
+		inka.addFeature(new Slum(inka,"inka mining subtown",true));
 		inka.addTravel();
 		inka.addTravel();
 		inka.tTags.add(TownTag.CITY);
