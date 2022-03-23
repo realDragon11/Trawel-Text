@@ -36,4 +36,6 @@ public enum Effect implements java.io.Serializable {
 	public boolean stacks() {
 		return stacks;
 	}
+	
+	public static Effect[] estimEffects = new Effect[] {HASTE,HEARTY};//random drug effects
 }

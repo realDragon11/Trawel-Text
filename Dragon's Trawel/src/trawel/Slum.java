@@ -1,6 +1,7 @@
 package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import trawel.Feature.QRType;
@@ -38,7 +39,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	@Override
 	public void init() {
 		try {
-			while (sideQuests.size() < 3) {
+			while (sideQuests.size() < 2) {
 				generateSideQuest();
 			}
 			}catch (Exception e) {
@@ -47,7 +48,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	}
 	
 	private void generateSideQuest() {
-		if (sideQuests.size() >= 3) {
+		if (sideQuests.size() >= 2) {
 			sideQuests.remove(extra.randList(sideQuests));
 		}
 		BasicSideQuest bsq = BasicSideQuest.getRandomSideQuest(town,this);
@@ -70,12 +71,25 @@ public class Slum extends Feature implements QuestBoardLocation{
 					
 					@Override
 					public String title() {
-						return "hang around";
+						return "hang around (quests)";
 					}
 	
 					@Override
 					public boolean go() {
 						backroom();
+						return false;
+					}
+				});
+				mList.add(new MenuSelect() {
+					
+					@Override
+					public String title() {
+						return "backalleys (crime)";
+					}
+	
+					@Override
+					public boolean go() {
+						crime();
 						return false;
 					}
 				});
@@ -191,6 +205,101 @@ public class Slum extends Feature implements QuestBoardLocation{
 		
 	}
 	
+	private void crime() {
+		Slum sl = this;
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "buy experimental potions";
+					}
+
+					@Override
+					public boolean go() {
+						int potionCost = 50*town.getTier();
+						extra.println(Player.player.getFlask() != null ? "You already have a potion, buying one will replace it." : "Quality not assured.");
+						
+						switch (extra.randRange(1, 3)) {
+						case 1:
+							extra.println("Buy a low-quality potion? ("+potionCost+" gold)");
+							if (extra.yesNo()) {
+								if (Player.bag.getGold() < potionCost) {
+									extra.println("You cannot afford this. (You have "+Player.bag.getGold()+" gold.)");
+									return false;
+								}
+								Player.bag.modGold(-potionCost);
+								if (extra.chanceIn(1, 3)) {
+									Player.player.setFlask(new Potion(Effect.CURSE,extra.randRange(2, 3)));
+								}else {
+									Player.player.setFlask(new Potion(extra.randList(Arrays.asList(Effect.estimEffects)),extra.randRange(2, 3)));	
+								}
+								extra.println("You buy the potion.");
+							}
+							break;
+						case 2:
+							potionCost *=2;
+							extra.println("Buy a medium-quality potion? ("+(potionCost)+" gold)");
+							if (extra.yesNo()) {
+								if (Player.bag.getGold() < potionCost) {
+									extra.println("You cannot afford this. (You have "+Player.bag.getGold()+" gold.)");
+									return false;
+								}
+								Player.bag.modGold(-potionCost);
+								if (extra.chanceIn(1, 4)) {
+									Player.player.setFlask(new Potion(Effect.CURSE,extra.randRange(3, 4)));
+								}else {
+									Player.player.setFlask(new Potion(extra.randList(Arrays.asList(Effect.estimEffects)),extra.randRange(3, 4)));	
+								}
+								extra.println("You buy the potion.");
+							}
+							break;
+						case 3:
+							potionCost *=4;
+							extra.println("Buy a high-quality potion? ("+(potionCost)+" gold)");
+							if (extra.yesNo()) {
+								if (Player.bag.getGold() < potionCost) {
+									extra.println("You cannot afford this. (You have "+Player.bag.getGold()+" gold.)");
+									return false;
+								}
+								Player.bag.modGold(-potionCost);
+								if (extra.chanceIn(1, 6)) {
+									Player.player.setFlask(new Potion(Effect.CURSE,extra.randRange(3, 5)));
+								}else {
+									Player.player.setFlask(new Potion(extra.randList(Arrays.asList(Effect.estimEffects)),extra.randRange(3, 5)));	
+								}
+								extra.println("You buy the potion.");
+							}
+							break;
+						}
+						
+						
+						
+						return false;
+					}
+				});
+				
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}
+				});
+				return mList;
+			}});
+		
+	}
+	
 	private void killCrime() {
 		Person p = ((Agent)crimeLord).getPerson();
 		extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"Attack " + p.getName() + "?");
@@ -198,6 +307,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 			Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 			if (winner == Player.player.getPerson()) {
 				extra.println("You kill the crime lord!");
+				wins++;
 				crimeLord = null;
 			}else {
 				extra.println("The crime lord kills you.");
