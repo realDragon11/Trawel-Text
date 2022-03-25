@@ -26,7 +26,7 @@ public class QuestReactionFactory {
 				
 			}}) );
 		*/
-		reactions.add(new QuestReaction(new QKey[] {},new QKey[] {QKey.DEST_WOODS,QKey.DEST_MOUNTAIN,QKey.DEST_INN}, new QuestTriggerEvent() {
+		reactions.add(new QuestReaction(new QKey[] {},new QKey[] {QKey.DEST_WOODS,QKey.DEST_MOUNTAIN,QKey.DEST_INN,QKey.DEST_SLUM}, new QuestTriggerEvent() {
 
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {

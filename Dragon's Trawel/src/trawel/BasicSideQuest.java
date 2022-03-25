@@ -28,6 +28,8 @@ public class BasicSideQuest implements Quest{
 	
 	public int reactionsLeft = 2;
 	
+	public boolean completed = false;
+	
 	
 	
 	public void cleanup() {
@@ -626,9 +628,13 @@ public class BasicSideQuest implements Quest{
 			if (this.trigger.equals(trigger)) {
 				count-=num;
 				if (count <=0) {
-					giver.locationF.addQR(giver);
 					desc = "Return to " + giverName + " at " + giver.locationF.getName() + " in " + giver.locationT.getName();
-					this.announceUpdate();
+					
+					if (completed == false) {
+						giver.locationF.addQR(giver);
+						this.announceUpdate();
+						completed = true;
+					}
 				}else {
 					desc = "Kill " + count + " more " + targetName + " on the roads for " + giverName;
 				}

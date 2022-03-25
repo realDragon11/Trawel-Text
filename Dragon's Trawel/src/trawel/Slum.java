@@ -99,7 +99,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 						
 						@Override
 						public String title() {
-							return extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"attack crime lord";
+							return Networking.AGGRO +"attack crime lord";
 						}
 		
 						@Override
@@ -286,7 +286,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	
 						@Override
 						public String title() {
-							return extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"go vigilante";
+							return Networking.AGGRO +"go vigilante";
 						}
 	
 						@Override
@@ -306,7 +306,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 					
 					@Override
 					public String title() {
-						return extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"mug someone";
+						return Networking.AGGRO +"mug someone";
 					}
 
 					@Override
@@ -341,7 +341,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	
 	private void killCrime() {
 		Person p = ((Agent)crimeLord).getPerson();
-		extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"Attack " + p.getName() + "?");
+		extra.println(Networking.AGGRO +"Attack " + p.getName() + "?");
 		if (extra.yesNo()) {
 			Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 			if (winner == Player.player.getPerson()) {
