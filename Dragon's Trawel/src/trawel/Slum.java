@@ -13,6 +13,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	private double timePassed = 0;
 	private int wins = 0;
 	private Town town;
+	private int crimeRating = 10;
 	
 	private boolean canQuest = true;
 	
@@ -61,7 +62,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	public void go() {
 		Networking.setArea("dungeon");
 		Slum sl = this;
-		int removecost = town.getTier()*1000;
+		int removecost = Math.max(100, (crimeRating*50)+(town.getTier()*1000));
 		extra.menuGo(new MenuGenerator() {
 
 			@Override
@@ -166,7 +167,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 					timePassed = 24;
 				}else {
 					((Agent)crimeLord).getPerson().getBag().modGold(100*town.getTier());
-					
+					crimeRating+=((Agent)crimeLord).getPerson().getLevel();
 				}
 			}
 			
@@ -276,12 +277,31 @@ public class Slum extends Feature implements QuestBoardLocation{
 							}
 							break;
 						}
-						
-						
-						
 						return false;
 					}
 				});
+				
+				if (crimeRating > 0) {
+					mList.add(new MenuSelect() {
+	
+						@Override
+						public String title() {
+							return "go vigilante";
+						}
+	
+						@Override
+						public boolean go() {
+							extra.println("You wait around and find a mugger.");
+							Player.addTime(2);
+							
+							if (mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getMugger(town.getTier())).equals(Player.player.getPerson())) {
+							//crime rating go down
+								crimeRating-=town.getTier();
+							}
+							return false;
+						}
+					});
+				}
 				
 				mList.add(new MenuSelect() {
 
@@ -308,6 +328,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 			if (winner == Player.player.getPerson()) {
 				extra.println("You kill the crime lord!");
 				wins++;
+				crimeRating -=  ((Agent)crimeLord).getPerson().getLevel()*3;
 				crimeLord = null;
 			}else {
 				extra.println("The crime lord kills you.");
