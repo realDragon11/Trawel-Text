@@ -99,7 +99,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 						
 						@Override
 						public String title() {
-							return "attack crime lord";
+							return extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"attack crime lord";
 						}
 		
 						@Override
@@ -286,7 +286,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	
 						@Override
 						public String title() {
-							return "go vigilante";
+							return extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"go vigilante";
 						}
 	
 						@Override
@@ -302,6 +302,25 @@ public class Slum extends Feature implements QuestBoardLocation{
 						}
 					});
 				}
+				mList.add(new MenuSelect() {
+					
+					@Override
+					public String title() {
+						return extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"mug someone";
+					}
+
+					@Override
+					public boolean go() {
+						extra.println("You wait around and find someone to rob.");
+						Player.addTime(1);
+						
+						if (mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getPeace(town.getTier())).equals(Player.player.getPerson())) {
+						//crime rating go down
+							crimeRating+=Player.player.getPerson().getLevel();
+						}
+						return false;
+					}
+				});
 				
 				mList.add(new MenuSelect() {
 
