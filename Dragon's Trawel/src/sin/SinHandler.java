@@ -10,8 +10,6 @@ import java.util.HashMap;
 public class SinHandler {
 
 	private int guid = 0;
-	
-	
 	//not saved
 	public HashMap<String,SinE> guidMap = new HashMap<String,SinE>();
 	
