@@ -162,7 +162,8 @@ public class mainGame {
 		extra.println("5 save test");
 		extra.println("6 time test");
 		extra.println("7 weapon tests");
-		switch(extra.inInt(7)) {
+		extra.println("8 rarity tests");
+		switch(extra.inInt(8)) {
 		case 1: adventure1();break;
 		case 2:extra.println("This gamemode can only be played in the command prompt."); rtrawel.TestRunner.run();break;
 		case 3:

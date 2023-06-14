@@ -569,9 +569,13 @@ public class Weapon extends Item {
 		}
 		writer.write("\n");
 		for (Material m: MaterialFactory.matList) {
-			extra.println(m+": "+materialCount.getOrDefault(m,0));
+			if (!m.weapon) {
+				continue;
+			}
+			writer.write(m.name+",");
+			extra.println(m.name+": "+materialCount.getOrDefault(m.name,0));
 			for (String str: Weapon.weaponTypes) {
-				writer.write(combCount.getOrDefault(m+str,0));
+				writer.write(combCount.getOrDefault(m.name+str,0));
 			}
 			writer.write("\n");
 		}
