@@ -162,7 +162,7 @@ public class WeaponAttackFactory {
 		int mats = 0;
 		int weaps = 0;
 		writer.write(",");
-		for (String str: new String[] {"longsword","broadsword","mace","spear","axe","rapier","dagger","claymore","lance","shovel"}) {
+		for (String str: Weapon.weaponTypes) {
 			writer.write(str+",");
 		}
 		writer.write("\n");
@@ -172,7 +172,7 @@ public class WeaponAttackFactory {
 			}
 			mats++;
 			writer.write(m.name+",");
-			for (String str: new String[] {"longsword","broadsword","mace","spear","axe","rapier","dagger","claymore","lance","shovel"}) {
+			for (String str: Weapon.weaponTypes) {
 				weaps++;
 				weaponList.add(new Weapon(1,m,str));
 				writer.write(weaponList.get(weaponList.size()-1).highestDamage().battleScore+",");

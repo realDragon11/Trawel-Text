@@ -196,6 +196,13 @@ public class mainGame {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}break;
+		case 8:
+			try {
+				Weapon.rarityMetrics();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}break;
 			}
 	}
 	

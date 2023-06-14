@@ -1,7 +1,10 @@
 package trawel;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import trawel.TargetFactory.TargetType;
@@ -535,6 +538,47 @@ public class Weapon extends Item {
 			}
 		}
 		return added;
+	}
+	
+	public static final String[] weaponTypes = new String[]{"longsword","broadsword","mace","spear","axe","rapier","dagger","claymore","lance","shovel"};
+	
+	public static void rarityMetrics() throws FileNotFoundException {
+		final int attempts = 10_000;
+		PrintWriter writer = new PrintWriter("rmetrics.csv");
+		//List<Weapon> weaponList = new ArrayList<Weapon>();
+		HashMap<String,Integer> weaponCount = new HashMap<String,Integer>();
+		HashMap<String,Integer> materialCount = new HashMap<String,Integer>();
+		HashMap<String,Integer> combCount = new HashMap<String,Integer>();
+		double battleTotal = 0;
+		for (int i = 0; i < attempts;i++) {
+			//weaponList.add(Weapon.genMidWeapon(1));
+			Weapon weap = genMidWeapon(1);
+			weaponCount.put(weap.getBaseName(), weaponCount.getOrDefault(weap.getBaseName(),0)+1);
+			materialCount.put(weap.getMaterial(), materialCount.getOrDefault(weap.getMaterial(),0)+1);
+			String temp = weap.getMaterial() +weap.getBaseName();
+			combCount.put(temp, materialCount.getOrDefault(temp,0)+1);
+			battleTotal+=weap.highestDamage().battleScore;
+			//weaponList.add(weap);
+		}
+		battleTotal/=attempts;
+		extra.println("total score: "+battleTotal);
+		writer.write(",");
+		for (String str: Weapon.weaponTypes) {
+			writer.write(str+",");
+			extra.println(str+": "+weaponCount.getOrDefault(str,0));
+		}
+		writer.write("\n");
+		for (Material m: MaterialFactory.matList) {
+			extra.println(m+": "+materialCount.getOrDefault(m,0));
+			for (String str: Weapon.weaponTypes) {
+				writer.write(combCount.getOrDefault(m+str,0));
+			}
+			writer.write("\n");
+		}
+		writer.flush();
+		writer.close();
+		
+		
 	}
 	
 }
