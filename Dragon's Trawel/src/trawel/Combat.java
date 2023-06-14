@@ -224,8 +224,9 @@ public class Combat {
 			}
 		}
 		totalFighters = totalList.size();
+		Person quickest= null;//moved out so we can have a default last actor to default as alive
 		while(true) {
-			Person quickest= null;
+			
 			double lowestDelay = Double.MAX_VALUE;
 			for (Person p: totalList) {
 				if (lowestDelay > p.getTime()) {
@@ -248,7 +249,7 @@ public class Combat {
 			boolean wasAlive = defender.isAlive();
 			newTarget = false;
 			AttackReturn atr = handleTurn(quickest,defender,song,playerIsInBattle,lowestDelay);
-			if (!defender.isAlive() && wasAlive) {
+			if (!defender.isAlive() && (wasAlive || totalList.contains(defender))) {
 				extra.println("They die!");
 				quickest.getBag().getHand().addKill();
 				if (quickest.hasSkill(Skill.KILLHEAL)){
@@ -279,6 +280,20 @@ public class Combat {
 							continue;
 						}
 						defender.getNextAttack().defender = otherperson;
+					}
+				}
+			}
+			
+			//if the attacker is dead, through bleeding or otherwise, they are force removed- they would not have acted if they were already removed
+			if (!quickest.isAlive()) {
+				extra.println(quickest.getName() + " falls to the floor!");
+				//quickest.addKillStuff();
+				totalList.remove(quickest);
+				killList.add(quickest);
+				for (ArrayList<Person> list: people) {
+					if (list.contains(quickest)) {
+						list.remove(quickest);
+						break;
 					}
 				}
 			}
@@ -340,6 +355,11 @@ public class Combat {
 				}
 			}
 			
+		}
+		
+		if (totalList.size() == 0) {//no survivors, last actor wins
+			totalList.add(quickest);
+			killList.remove(quickest);
 		}
 		
 		survivors = totalList;
