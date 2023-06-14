@@ -556,7 +556,7 @@ public class Weapon extends Item {
 			weaponCount.put(weap.getBaseName(), weaponCount.getOrDefault(weap.getBaseName(),0)+1);
 			materialCount.put(weap.getMaterial(), materialCount.getOrDefault(weap.getMaterial(),0)+1);
 			String temp = weap.getMaterial() +weap.getBaseName();
-			combCount.put(temp, materialCount.getOrDefault(temp,0)+1);
+			combCount.put(temp, combCount.getOrDefault(temp,0)+1);
 			battleTotal+=weap.highestDamage().battleScore;
 			//weaponList.add(weap);
 		}
@@ -575,7 +575,7 @@ public class Weapon extends Item {
 			writer.write(m.name+",");
 			extra.println(m.name+": "+materialCount.getOrDefault(m.name,0));
 			for (String str: Weapon.weaponTypes) {
-				writer.write(combCount.getOrDefault(m.name+str,0));
+				writer.write(combCount.getOrDefault(m.name+str,0)+",");
 			}
 			writer.write("\n");
 		}
