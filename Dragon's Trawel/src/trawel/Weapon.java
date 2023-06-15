@@ -543,7 +543,7 @@ public class Weapon extends Item {
 	public static final String[] weaponTypes = new String[]{"longsword","broadsword","mace","spear","axe","rapier","dagger","claymore","lance","shovel"};
 	
 	public static void rarityMetrics() throws FileNotFoundException {
-		final int attempts = 10_000;
+		final int attempts = 1_000_000;
 		PrintWriter writer = new PrintWriter("rmetrics.csv");
 		//List<Weapon> weaponList = new ArrayList<Weapon>();
 		HashMap<String,Integer> weaponCount = new HashMap<String,Integer>();
