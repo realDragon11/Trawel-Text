@@ -764,6 +764,7 @@ public class MaterialFactory {
 		matList.add(misc);
 	}
 	
+	/*
 	public static Material randMat(Boolean armor, Boolean weapon) {
 		ArrayList<Material> copyList = new ArrayList<Material>();
 		ArrayList<Material> copyList2 = new ArrayList<Material>();
@@ -793,7 +794,26 @@ public class MaterialFactory {
 				
 		}while(totalRarity > 0);
 		return mat;
+	}*/
+	public static Material randMat(Boolean armor, Boolean weapon) {
+		ArrayList<Material> copyList = new ArrayList<Material>();
+		double totalRarity = 0;
+		for (Material mat: matList){
+			if ((mat.armor == true && armor == true)||(mat.weapon == true && weapon == true)) {
+			copyList.add(mat);
+			totalRarity +=mat.rarity;
+			}
+		}
+		totalRarity *= Math.random();
+		int i = 0;
+		while (true) {
+			totalRarity-=copyList.get(i).rarity;//out of bounds exception serves as a built in error to warn
+			if (totalRarity <=0) {//equals unneeded
+				return copyList.get(i);
+			}
+		}
 	}
+
 
 	public static Material getMat(String string) {
 		for (Material m: matList) {
@@ -834,5 +854,19 @@ public class MaterialFactory {
 				
 		}while(totalRarity > 0);
 		return mat;
+	}
+	
+	public static void materialWeapDiag() {
+		ArrayList<Material> copyList = new ArrayList<Material>();
+		double totalRarity = 0;
+		for (Material mat: matList){
+			if (mat.weapon == true) {
+			copyList.add(mat);
+			totalRarity +=mat.rarity;
+			}
+		}
+		for (int i = 0; i < copyList.size();i++) {
+			extra.println(copyList.get(i).name+"% "+copyList.get(i).rarity/totalRarity);
+		}
 	}
 }

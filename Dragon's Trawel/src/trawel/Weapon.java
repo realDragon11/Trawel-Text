@@ -581,7 +581,8 @@ public class Weapon extends Item {
 		}
 		writer.flush();
 		writer.close();
-		
+		extra.println("---");
+		MaterialmaterialWeapDiag();
 		
 	}
 	
