@@ -811,6 +811,7 @@ public class MaterialFactory {
 			if (totalRarity <=0) {//equals unneeded
 				return copyList.get(i);
 			}
+			i++;
 		}
 	}
 
