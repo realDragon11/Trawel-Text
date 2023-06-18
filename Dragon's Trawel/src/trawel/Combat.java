@@ -436,9 +436,9 @@ public class Combat {
 			double bluntA = def.getBlunt(att.getSlot(),wqL)*armMod;
 			double pierceA= def.getPierce(att.getSlot(),wqL)*armMod;
 			AttackReturn ret = Combat.testCombat.new AttackReturn((int)(
-					(extra.zeroOut((att.getSharp())-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
-					+extra.zeroOut((att.getBlunt())-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
-					+extra.zeroOut((att.getPierce())-((armorMinShear*pierceA)+((1-armorMinShear)*pierceA*extra.upDamCurve(depthArmor2,midArmor2))))),str);
+					(extra.zeroOut((att.getSharp()*damMod)-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
+					+extra.zeroOut((att.getBlunt()*damMod)-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
+					+extra.zeroOut((att.getPierce()*damMod)-((armorMinShear*pierceA)+((1-armorMinShear)*pierceA*extra.upDamCurve(depthArmor2,midArmor2))))),str);
 			if (att.getWeapon() != null &&att.getWeapon().qualList.contains(Weapon.WeaponQual.RELIABLE) && ret.damage <= att.getWeapon().getLevel()) {
 				ret.damage = att.getWeapon().getLevel();
 				ret.reliable = true;
@@ -477,9 +477,9 @@ public class Combat {
 			double bluntA = def.getBlunt(att.getSlot(),wqL)*armMod;
 			double pierceA= def.getPierce(att.getSlot(),wqL)*armMod;
 			AttackReturn ret = Combat.testCombat.new AttackReturn((int)(
-					(extra.zeroOut((att.getSharp())-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
-					+extra.zeroOut((att.getBlunt())-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
-					+extra.zeroOut((att.getPierce())-((armorMinShear*pierceA)+((1-armorMinShear)*pierceA*extra.upDamCurve(depthArmor2,midArmor2))))),"");
+					(extra.zeroOut((att.getSharp()*damMod)-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
+					+extra.zeroOut((att.getBlunt()*damMod)-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
+					+extra.zeroOut((att.getPierce()*damMod)-((armorMinShear*pierceA)+((1-armorMinShear)*pierceA*extra.upDamCurve(depthArmor2,midArmor2))))),"");
 			if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.RELIABLE) && ret.damage <= att.getWeapon().getLevel()) {
 				ret.damage = att.getWeapon().getLevel();
 				ret.reliable = true;
