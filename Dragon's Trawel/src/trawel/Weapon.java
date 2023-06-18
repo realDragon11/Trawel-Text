@@ -195,6 +195,16 @@ public class Weapon extends Item {
 			effectiveCost=(int)extra.zeroOut(cost * enchantHit.getGoldMult());
 		}
 		}
+		
+		//new first phase 'no bad enchants' code
+		if (enchant != null) {//if there's an enchant, check to see if the weapon causes any zero's or is overwhelmingly negative
+			if (effectiveCost < 2 || (enchant.getAimMod()*enchant.getDamMod()*enchant.getHealthMod()*enchant.getSpeedMod()) < .6) {
+				//in this case we merely remove the enchantment entirely to avoid having to do recursive failure
+				enchant = null;
+				effectiveCost = cost;
+				IsEnchantedConstant = false;
+			}
+		}
 	}
 	
 	public Weapon(int newLevel) {

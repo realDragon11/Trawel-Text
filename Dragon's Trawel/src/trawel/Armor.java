@@ -198,9 +198,17 @@ public class Armor extends Item {
 		effectiveCost = cost;
 		//add an enchantment and mark it down if the enchantment is greater than a random value form 0 to <1.0
 		if (baseEnchant*2 > Math.random() && extra.chanceIn(8,10)) {
-		enchantment = new EnchantConstant(level*baseEnchant);
-		effectiveCost=(int) extra.zeroOut(cost * enchantment.getGoldMult()+enchantment.getGoldMod());
-		isEnchanted = true;
+			enchantment = new EnchantConstant(level*baseEnchant);
+			effectiveCost=(int) extra.zeroOut(cost * enchantment.getGoldMult()+enchantment.getGoldMod());
+			isEnchanted = true;
+			
+			//new failure of value checking system
+			if (effectiveCost < 2 || (enchantment.getAimMod()*enchantment.getDamMod()*enchantment.getDodgeMod()*enchantment.getHealthMod()*enchantment.getSpeedMod()) < .6) {
+				enchantment = null;
+				effectiveCost = cost;
+				isEnchanted = false;
+				//in this case we merely remove the enchantment entirely to avoid having to do recursive failure
+			}
 		}else {
 			if (extra.chanceIn(1,5)) {//non-enchanted qualities
 				baseEnchant = 0;

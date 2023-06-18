@@ -225,6 +225,9 @@ public class AIClass {
 	 * it discards them in favor of a level 1 item, randomly generated.
 	 * Also checks to see if the total modifier for the item is very low.
 	 * Returns true if an item was replaced this way.
+	 * 
+	 * NOTE: this function should be replaced with not handing out such items in the first place and relegated to a backup
+	 * 
 	 * @param inv (Inventory)
 	 */
 	public static boolean checkCheap(Inventory inv) {

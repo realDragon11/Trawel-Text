@@ -204,6 +204,12 @@ public class Person implements java.io.Serializable{
 	 * Clear the person for a new battle.
 	 */
 	public void battleSetup() {
+		
+		Boolean print = extra.getPrint();
+		extra.changePrint(true);
+		AIClass.checkYoSelf(this);
+		extra.changePrint(print);
+		
 		if (this.isPlayer()) {
 			Player.player.doSip();
 		}
@@ -263,10 +269,6 @@ public class Person implements java.io.Serializable{
 		if (this.hasEffect(Effect.B_MARY)) {
 			this.addEffect(Effect.BLEED);
 		}
-		Boolean print = extra.getPrint();
-		extra.changePrint(true);
-		AIClass.checkYoSelf(this);
-		extra.changePrint(print);
 	}
 	
 
