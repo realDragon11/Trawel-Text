@@ -603,7 +603,7 @@ public class WorldGen {
 		inka.addTravel();
 		inka.tTags.add(TownTag.CITY);
 		
-		Town pipa = new Town("inka",11, apen, new Point(4,7));
+		Town pipa = new Town("pipa",11, apen, new Point(4,7));
 		addConnection(inka,pipa,"road","mystery road");
 		inka.addFeature(new WitchHut(pipa));
 		inka.addFeature(new Store(11,9));
