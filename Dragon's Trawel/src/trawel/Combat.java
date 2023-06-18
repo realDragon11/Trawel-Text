@@ -371,6 +371,10 @@ public class Combat {
 	public Combat() {
 		// TODO empty for tests
 	}
+	
+	private static final double depthArmor2 = .25;
+	private static final double midArmor2 = .7;
+	private static final double armorMinShear = .1;
 
 	//instance methods
 	/**
@@ -425,9 +429,7 @@ public class Combat {
 		default:
 			//double depthWeapon2 = .25;
 			//double midWeapon2 = .7;
-			double depthArmor2 = .25;
-			double midArmor2 = .7;
-			double armorMinShear = .1;
+			
 			//armMod = armMod*(1-(armorMinShear/2));
 			List<Weapon.WeaponQual> wqL = (att != null && att.getWeapon() != null ? att.getWeapon().qualList : new ArrayList<Weapon.WeaponQual>());
 			double sharpA = def.getSharp(att.getSlot(),wqL)*armMod;
@@ -466,9 +468,9 @@ public class Combat {
 		default:
 			//double depthWeapon2 = .25;
 			//double midWeapon2 = .7;
-			double depthArmor2 = .25;
+			/*double depthArmor2 = .25;
 			double midArmor2 = .7;
-			double armorMinShear = .1;
+			double armorMinShear = .1;*/
 			//armMod = armMod*(1-(armorMinShear/2));
 			List<Weapon.WeaponQual> wqL = (att != null && att.getWeapon() != null ? att.getWeapon().qualList : new ArrayList<Weapon.WeaponQual>());
 			double sharpA = def.getSharp(att.getSlot(),wqL)*armMod;

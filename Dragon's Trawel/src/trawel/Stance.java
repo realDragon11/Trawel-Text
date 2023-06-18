@@ -22,7 +22,7 @@ public class Stance implements java.io.Serializable{
 	 */
 	public Stance() {
 	attackCount = 1;
-	attacks.add(new Attack("examine",0,50,0,0,0,"You examine your foe...",-1,"examine"));
+	attacks.add(new Attack("examine",0,50,0,0,0,"You examine your foe...",-1,"examine"));//TODO: replace this system
 	}
 	
 	public Stance(ArrayList<Attack> a) {
