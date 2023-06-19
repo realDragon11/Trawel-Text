@@ -70,7 +70,7 @@ public class MaterialFactory {
 		misc.weapon = true;
 		misc.weight = 20;
 		misc.cost = 30;
-		misc.baseEnchant = .3;
+		misc.baseEnchant = .3f;
 		misc.baseResist = 6;
 		misc.sharpResist = 1;
 		misc.bluntResist = 1;
@@ -98,7 +98,7 @@ public class MaterialFactory {
 		misc.weapon = true;
 		misc.weight = 20;
 		misc.cost = 15;
-		misc.baseEnchant = .3;
+		misc.baseEnchant = .3f;
 		misc.baseResist = 4;
 		misc.sharpResist = 1;
 		misc.bluntResist = 1;
@@ -126,7 +126,7 @@ public class MaterialFactory {
 		misc.weapon = true;
 		misc.weight = 20;
 		misc.cost = 15;
-		misc.baseEnchant = .3;
+		misc.baseEnchant = .3f;
 		misc.baseResist = 4;
 		misc.sharpResist = 1;
 		misc.bluntResist = 1;
@@ -214,7 +214,7 @@ public class MaterialFactory {
 		misc.weapon = true;
 		misc.weight = 25;
 		misc.cost = 30;
-		misc.baseEnchant = 1.2;
+		misc.baseEnchant = 1.2f;
 		misc.baseResist = 6;
 		misc.sharpResist = 1;
 		misc.bluntResist = 1;
@@ -300,7 +300,7 @@ public class MaterialFactory {
 		misc.weapon = true;
 		misc.weight = 55;
 		misc.cost = 60;
-		misc.baseEnchant = 1.8;
+		misc.baseEnchant = 1.8f;
 		misc.baseResist = 6;
 		misc.sharpResist = 1;
 		misc.bluntResist = 1;
@@ -330,7 +330,7 @@ public class MaterialFactory {
 		misc.weapon = true;
 		misc.weight = 15;
 		misc.cost = 80;
-		misc.baseEnchant = 1.5;
+		misc.baseEnchant = 1.5f;
 		misc.baseResist = 15;
 		misc.sharpResist = 1;
 		misc.bluntResist = 1;
@@ -362,7 +362,7 @@ public class MaterialFactory {
 		misc.weapon = true;
 		misc.weight = 1;
 		misc.cost = 120;
-		misc.baseEnchant = 1.5;
+		misc.baseEnchant = 1.5f;
 		misc.baseResist = 20;
 		misc.sharpResist = 1.1;
 		misc.bluntResist = .8;
@@ -448,7 +448,7 @@ public class MaterialFactory {
 		misc.weapon = true;
 		misc.weight = 25;
 		misc.cost = 60;
-		misc.baseEnchant = 1.5;
+		misc.baseEnchant = 1.5f;
 		misc.baseResist = 7;
 		misc.sharpResist = 1;
 		misc.bluntResist = 1;
@@ -535,7 +535,7 @@ public class MaterialFactory {
 		misc.weapon = false;
 		misc.weight = 10;
 		misc.cost = 100;
-		misc.baseEnchant = 1.5;
+		misc.baseEnchant = 1.5f;
 		misc.baseResist = 6;
 		misc.sharpResist = 4;
 		misc.bluntResist = .1;
@@ -561,7 +561,7 @@ public class MaterialFactory {
 		misc.weapon = false;
 		misc.weight = 10;
 		misc.cost = 60;
-		misc.baseEnchant = 1.5;
+		misc.baseEnchant = 1.5f;
 		misc.baseResist = 6;
 		misc.sharpResist = 2;
 		misc.bluntResist = .5;

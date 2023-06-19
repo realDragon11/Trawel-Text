@@ -9,7 +9,7 @@ package trawel;
 public class Services {
 
 	//constructor
-	public static EnchantConstant improveEnchantChance(EnchantConstant theEnchant, int level, double mod) {
+	public static EnchantConstant improveEnchantChance(EnchantConstant theEnchant, int level, float mod) {
 		EnchantConstant newEnchant = new EnchantConstant(level*mod);
 		if (newEnchant.getGoldMod() > theEnchant.getGoldMod()) {
 			return newEnchant;

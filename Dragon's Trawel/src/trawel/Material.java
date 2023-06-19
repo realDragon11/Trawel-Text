@@ -12,7 +12,8 @@ public class Material implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	public String name;
-	public double baseResist, baseEnchant, sharpResist, bluntResist, pierceResist, weight, cost, dexMod;
+	public float baseEnchant;//some of these should probably be made floats as well TODO
+	public double baseResist, sharpResist, bluntResist, pierceResist, weight, cost, dexMod;
 	public double rarity, tier, sharpMult, bluntMult, pierceMult;
 	public Boolean armor, weapon;
 	public double fireVul, shockVul, freezeVul;//vulernability

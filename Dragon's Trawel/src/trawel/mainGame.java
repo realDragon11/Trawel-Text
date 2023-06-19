@@ -194,14 +194,12 @@ public class mainGame {
 		case 7: try {
 				WeaponAttackFactory.weaponMetrics();
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}break;
 		case 8:
 			try {
 				Weapon.rarityMetrics();
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}break;
 			}
@@ -376,7 +374,6 @@ public class mainGame {
 		try {
 			logStream = new PrintStream("log.txt");
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		extra.println("Dragon's Trawel "+VERSION_STRING);

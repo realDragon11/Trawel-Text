@@ -156,36 +156,6 @@ public class extra {
 						}
 						extra.linebreak();
 						return ini == 1;
-						/*
-						try {
-							String str2 = System.getenv("APPDATA")+"\\Local\\Trawel\\buff.txt";
-							str2 = str2.replace("Roaming\\","");
-							File f = new File(str2);
-							if (lastMod == -1) {
-								lastMod = f.lastModified();
-							}
-							if (f.lastModified() < lastMod+50) {
-								throw new Exception();
-							}
-							lastMod = f.lastModified();
-							if (!f.exists()){
-								throw new Exception();
-							}
-							InputStream input = new FileInputStream(f);
-							int temp = input.read();
-							input.close();
-							str = temp +"";
-							break;
-						} catch (Exception e) {	}
-						try {
-							if (System.in.available() > 0) {
-								str = mainGame.scanner.next();break;
-							}
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							//e.printStackTrace();
-						}*/
-					//}
 					
 					}else {
 				str = mainGame.scanner.next();
@@ -263,7 +233,7 @@ public class extra {
 		public static void print(String str) {
 			if (!printMode) {
 			//System.out.print(stripPrint(str));
-			//System.out.print(str);//TODO
+			//System.out.print(str);
 			printStuff+=str;}
 		}
 		

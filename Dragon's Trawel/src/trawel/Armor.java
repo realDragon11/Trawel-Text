@@ -34,7 +34,7 @@ public class Armor extends Item {
 	private double sharpResist, sharpActive;
 	private double bluntResist, bluntActive;
 	private double pierceResist, pierceActive;
-	private double baseEnchant;//the multiplier of how powerful enchantments on the item are
+	private float baseEnchant;//the multiplier of how powerful enchantments on the item are
 	private int weight;
 	private EnchantConstant enchantment;
 	private boolean isEnchanted = false;

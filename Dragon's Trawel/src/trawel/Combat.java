@@ -75,7 +75,7 @@ public class Combat {
 			}
 			double delay = attacker.getTime();
 			defender.advanceTime(delay);
-			attacker.advanceTime(delay);//TODO: figure out why this wasn't included
+			attacker.advanceTime(delay);
 			handleTurn( attacker,  defender,  song,playerIsInBattle,delay);
 			if (playerIsInBattle) {
 				manTwo.getBag().graphicalDisplay(1,manTwo);
@@ -369,7 +369,7 @@ public class Combat {
 	}
 	
 	public Combat() {
-		// TODO empty for tests
+		//empty for tests
 	}
 	
 	private static final double depthArmor2 = .25;

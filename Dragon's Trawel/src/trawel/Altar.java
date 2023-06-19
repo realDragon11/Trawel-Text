@@ -120,7 +120,7 @@ public class Altar extends Feature{
 
 	@Override
 	public void passTime(double time) {
-		// TODO Auto-generated method stub
+		//Auto-generated method stub
 		
 	}
 	

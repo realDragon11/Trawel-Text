@@ -140,7 +140,6 @@ public class HeroGuild extends Feature {
 	@Override
 	public void passTime(double time) {
 		// TODO Auto-generated method stub
-		//TODO: make certain drawbanes give more depending one what the guild needs
 	}
 
 }

@@ -22,7 +22,7 @@ public class QuestReactionFactory {
 
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
-				// TODO Auto-generated method stub
+				// generated method stub
 				
 			}}) );
 		*/

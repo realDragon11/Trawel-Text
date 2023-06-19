@@ -188,11 +188,11 @@ public class Oracle extends Feature implements java.io.Serializable{ //extends f
 
 	@Override
 	public void passTime(double time) {
-		// TODO Auto-generated method stub
+		// Auto-generated method stub
 		
 	}
 	
-	//TODO: Main quest guidance, swallow touched
+	//Main quest guidance
 	
 	private void goDelphi() {
 		while (true) {

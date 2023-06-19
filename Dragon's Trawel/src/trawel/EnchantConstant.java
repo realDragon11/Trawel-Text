@@ -28,7 +28,7 @@ public class EnchantConstant extends Enchant {
 	 * An constant enchantment which effects the user's stats constantly.
 	 * @param powMod (double)
 	 */
-	public EnchantConstant(double powMod){//TODO: double -> float
+	public EnchantConstant(float powMod){//done: double -> float
 		if (powMod <= 0){
 			extra.println("Not enough base enchant? Did the ai try to enchant a steel weapon?");
 			//should be handled top level to prevent the ai from endlessly trying to enchant a steel weapon and failing

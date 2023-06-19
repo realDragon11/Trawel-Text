@@ -165,7 +165,6 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	}
 	@Override
 	public void passTime(double time) {
-		// TODO Auto-generated method stub
 		//TODO: make certain drawbanes give more depending one what the guild needs
 		timePassed += time;
 		if (timePassed > nextReset) {

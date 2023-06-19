@@ -327,7 +327,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 
 	@Override
 	public void passTime(double d) {
-		// TODO Auto-generated method stub
+		// Auto-generated method stub
 		
 	}
 
@@ -336,7 +336,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 
 	@Override
 	public void timeFinish() {
-		// TODO Auto-generated method stub
+		// Auto-generated method stub
 		
 	}
 	

@@ -155,7 +155,7 @@ public class Town implements java.io.Serializable{
 	}
 	
 	private void addRandomFeature(int tier) {
-		//TODO: add all possible features
+		//undo: add all possible features
 		while (true) {
 			if (!this.hasTeleporters() && Math.random()*100+tier > 96) {
 				this.setHasTeleporters(true);

@@ -28,12 +28,10 @@ public class Race extends Item implements java.io.Serializable{
 	
 	@Override
 	public EnchantConstant getEnchant() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
 	public int getCost() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	@Override

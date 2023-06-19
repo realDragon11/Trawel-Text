@@ -28,7 +28,7 @@ public class Weapon extends Item {
 	private static final long serialVersionUID = 1L;
 	//instance variables
 	private int weight = 1;//how much does it weigh?
-	private double baseEnchant;//how good is the material at receiving enchantments?
+	private float baseEnchant;//how good is the material at receiving enchantments?
 	private EnchantConstant enchant;
 	private boolean IsEnchantedConstant = false;
 	private EnchantHit enchantHit;
@@ -91,12 +91,6 @@ public class Weapon extends Item {
 		//choosing the type of weapon
 		weapName = weaponName;
 		kills = 0;
-		//level scaling
-		/*
-		sharpMult*=level;
-		bluntMult*=level;//TODO: reincoperate
-		pierceMult*=level;
-		*/
 		//cost*=level;
 		
 		

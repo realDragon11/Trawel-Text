@@ -103,7 +103,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public String title() {
-										return "swap first spell";
+										return "select first spell";
 									}
 
 									@Override
@@ -128,7 +128,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public String title() {
-										return "swap second spell";
+										return "select second spell";
 									}
 
 									@Override
