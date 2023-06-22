@@ -3,7 +3,6 @@ import java.awt.Desktop;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.net.URL;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -334,9 +333,8 @@ public class mainGame {
 	
 	private void modelMode() {
 		Person manOne;
-		Player player;
-			 manOne = RaceFactory.makeOld(2);//new Person(starting_level,false,Race.RaceType.HUMANOID,null);
-			 player = new Player(manOne);
+		manOne = RaceFactory.makeOld(2);//new Person(starting_level,false,Race.RaceType.HUMANOID,null);
+			 new Player(manOne);
 			 Player.bag.swapWeapon(new Weapon(1,"shovel"));
 			 //Player.bag.getHand().forceEnchantHit(0);
 			 /*
@@ -646,6 +644,7 @@ public class mainGame {
 			}
 		}
 		
+		/*
 		private static Player randPerson(boolean printIt, boolean choice) {
 			Person manOne, manTwo;
 			Player player;
@@ -671,7 +670,7 @@ public class mainGame {
 				 }
 			}
 			return player;
-		}
+		}*/
 		
 		
 		public void adventure1(){

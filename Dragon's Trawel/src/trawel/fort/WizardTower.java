@@ -54,7 +54,7 @@ public class WizardTower extends FortFeature {
 
 	@Override
 	public void go() {
-		if (this.getOwner() != Player.player.player) {
+		if (this.getOwner() != Player.player) {
 			extra.println("You do not own this fort.");
 			return;
 		}

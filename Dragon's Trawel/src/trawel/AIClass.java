@@ -448,7 +448,7 @@ public class AIClass {
 	
 	public static String colorPlusMinus(String str) {
 		if (str.charAt(0) == '-') {
-			return extra.inlineColor(Color.RED)+str;
+			return extra.PRE_RED+str;
 		}
 		if (str.charAt(0) == '0') {
 			return "[c_white]"+str;

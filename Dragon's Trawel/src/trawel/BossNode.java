@@ -1,5 +1,4 @@
 package trawel;
-import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -42,7 +41,7 @@ public class BossNode extends NodeConnector implements Serializable {
 	
 	private boolean fatespinner() {
 		if (state == 0) {
-			extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"You challenge the fatespinner!");
+			extra.println(extra.PRE_RED+"You challenge the fatespinner!");
 			ArrayList<Person> list = people;
 			ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
 			if (survivors.contains(Player.player.getPerson())) {
@@ -66,7 +65,7 @@ public class BossNode extends NodeConnector implements Serializable {
 	
 	private boolean hellbaron() {
 		if (state == 0) {
-			extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"You challenge the hell baron!");
+			extra.println(extra.PRE_RED+"You challenge the hell baron!");
 			ArrayList<Person> list = people;
 			Person winner = mainGame.CombatTwo(Player.player.getPerson(),list.get(0));
 			if (winner == Player.player.getPerson()) {

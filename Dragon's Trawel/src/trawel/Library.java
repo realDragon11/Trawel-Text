@@ -11,7 +11,7 @@ public class Library extends Feature {
 	 */
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Book> books = new ArrayList<Book>();
-	private Town town;
+	//private Town town;
 	private boolean hasStudiedArcane = false;
 	
 	public Library(String _name, Town _town) {

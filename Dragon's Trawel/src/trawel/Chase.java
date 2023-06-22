@@ -1,5 +1,4 @@
 package trawel;
-import java.awt.Color;
 import java.util.ArrayList;
 
 public class Chase {
@@ -35,7 +34,7 @@ public class Chase {
 		if (timer >= 10) {
 			return target;
 		}
-		extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"You have caught up to " + target.getName() +"!");
+		extra.println(extra.PRE_RED+"You have caught up to " + target.getName() +"!");
 		return mainGame.CombatTwo(chaser,target);
 	}
 

@@ -4,16 +4,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import trawel.Feature.QRType;
-
 public class Slum extends Feature implements QuestBoardLocation{
 
 	private boolean removable;
 	public SuperPerson crimeLord;
 	private double timePassed = 0;
-	private int wins = 0;
 	private Town town;
 	private int crimeRating = 10;
+	private int wins = 0;
 	
 	private boolean canQuest = true;
 	
@@ -207,7 +205,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	}
 	
 	private void crime() {
-		Slum sl = this;
+		//Slum sl = this;
 		extra.menuGo(new MenuGenerator() {
 
 			@Override

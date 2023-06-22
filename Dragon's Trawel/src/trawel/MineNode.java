@@ -1,5 +1,4 @@
 package trawel;
-import java.awt.Color;
 import java.util.ArrayList;
 
 public class MineNode extends NodeConnector implements java.io.Serializable{
@@ -182,8 +181,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 		if (state == 0) {
 			Person p = (Person)storage1;
 			p.getBag().graphicalDisplay(1, p);
-			Networking.sendColor(Color.RED);
-			extra.println("Challenge "+ p.getName() + "?");
+			extra.println(extra.PRE_RED+"Challenge "+ p.getName() + "?");
 			if (extra.yesNo()){
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
@@ -286,8 +284,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 			extra.println("The cultists offer to enhance you... if you sacrifice some blood.");
 			extra.println("1 accept offer");
 		}
-		Networking.sendColor(Color.RED);
-		extra.println("2 attack");	
+		extra.println("2 "+extra.PRE_RED+"attack");	
 		extra.println("3 leave");
 		inInt = extra.inInt(3);
 		switch (inInt) {

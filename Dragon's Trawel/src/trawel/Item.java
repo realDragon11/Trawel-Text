@@ -82,7 +82,7 @@ public abstract class Item implements java.io.Serializable{
 		case 7: return (extra.inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.5f)))+"great[c_white]";//purple
 		case 8: return (extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f)))+"heroic[c_white]";//orange
 		case 9: return (extra.inlineColor(extra.colorMix(Color.yellow,Color.WHITE,.5f)))+"amazing[c_white]";//yellow
-		case 10: return (extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)))+"masterwork[c_white]";//red
+		case 10: return (extra.PRE_RED)+"masterwork[c_white]";//red
 		}
 		return extra.inlineColor(Color.RED)+"legendary[c_white]";//vibrant red
 	}

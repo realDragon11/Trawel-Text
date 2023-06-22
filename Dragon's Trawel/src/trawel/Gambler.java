@@ -63,8 +63,8 @@ public class Gambler extends Feature implements java.io.Serializable{
 			;break;
 			case "digger":
 			//generate a 8 by 8 grid, ask for width and than height, three tries use taxicab distance
-			int x = extra.randRange(1,8);
-			int y = extra.randRange(1,8);
+			//int x = extra.randRange(1,8);
+			//int y = extra.randRange(1,8);
 			//need something to store tries
 			
 			

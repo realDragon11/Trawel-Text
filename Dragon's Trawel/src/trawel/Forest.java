@@ -178,7 +178,7 @@ public class Forest extends Feature implements java.io.Serializable{
 			}
 			if (Math.random() > .8) {
 			extra.println("As you eat the mushroom, you hear a voice cry out:");
-			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+			extra.print(extra.PRE_RED);
 			switch(extra.randRange(1,3)) {
 			case 1: extra.println("\"You dare violate the forest?!\"");break;
 			case 2: extra.println("\"Hey, I wanted that!\"");break;
@@ -191,7 +191,7 @@ public class Forest extends Feature implements java.io.Serializable{
 			extra.println("You pick up the mushroom to sell it.");
 			if (Math.random() > .8) {
 			extra.println("You hear someone cry out from behind you!");
-			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+			extra.print(extra.PRE_RED);
 			switch(extra.randRange(1,3)) {
 			case 1: extra.println("\"You dare violate the forest?!\"");break;
 			case 2: extra.println("\"Hey, I wanted that!\"");break;
@@ -211,7 +211,7 @@ public class Forest extends Feature implements java.io.Serializable{
 		case 4:
 			extra.println("You crush the mushroom under your heel.");
 			extra.println("You hear someone cry out from behind you!");
-			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+			extra.print(extra.PRE_RED);
 			switch(extra.randRange(1,3)) {
 			case 1: extra.println("\"You dare violate the forest?!\"");break;
 			case 2: extra.println("\"Hey, I wanted that!\"");break;
@@ -256,7 +256,7 @@ public class Forest extends Feature implements java.io.Serializable{
 	}
 	
 	private void mugger2() {
-		extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+		extra.print(extra.PRE_RED);
 		extra.println("You see a mugger charge at you! Prepare for battle!");
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
 		if (winner == Player.player.getPerson()) {
@@ -277,7 +277,7 @@ public class Forest extends Feature implements java.io.Serializable{
 		while (true) {
 		extra.println("You come across a dryad tending to a tree.");
 		extra.println("1 Leave");
-		extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+		extra.print(extra.PRE_RED);
 		extra.println("2 Attack them.");
 		extra.println("3 Chat with them");
 		switch (extra.inInt(3)) {
@@ -308,7 +308,7 @@ public class Forest extends Feature implements java.io.Serializable{
 		if (extra.yesNo()) {
 			extra.println("You move the tree off of them.");
 			if (Math.random() > .9) {
-				extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+				extra.print(extra.PRE_RED);
 				extra.println("Suddenly, they attack you!");
 				mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getMugger(tier));
 			}else {
@@ -340,7 +340,7 @@ public class Forest extends Feature implements java.io.Serializable{
 		while (true) {
 		extra.println("You come across an old fighter, resting on a log.");
 		extra.println("1 Leave");
-		extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+		extra.print(extra.PRE_RED);
 		extra.println("2 Attack them.");
 		extra.println("3 Chat with them");
 		switch (extra.inInt(3)) {
@@ -374,6 +374,7 @@ public class Forest extends Feature implements java.io.Serializable{
 		}
 	}
 	
+	/*
 	private boolean fairyCircle2() {
 		extra.println("You find a fairy circle of mushrooms. Step in it?");
 		if (extra.yesNo()) {
@@ -384,7 +385,7 @@ public class Forest extends Feature implements java.io.Serializable{
 			extra.println("You stay away from the circle.");
 			return false;
 		}
-	}
+	}*/
 	
 	private void fairyCircle3() {
 		extra.println("You find a fairy circle of mushrooms. Step in it?");
@@ -414,10 +415,10 @@ public class Forest extends Feature implements java.io.Serializable{
 		//if (extra.chanceIn(1,2) ) {
 			LocalDateTime t = LocalDateTime.now();
 			if (t.getMonth() == Month.DECEMBER && t.getDayOfMonth() > 14 && t.getDayOfMonth() < 25 ) {
-				extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+				extra.print(extra.PRE_RED);
 				extra.println("A person is chopping down a christmas tree! Attack them?");
 			}else {
-				extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+				extra.print(extra.PRE_RED);
 				extra.println("A lumberjack is chopping down a tree! Attack them?");
 			}
 		/*}else {
@@ -428,7 +429,7 @@ public class Forest extends Feature implements java.io.Serializable{
 			if (extra.chanceIn(1, 3)) {
 			robber.getBag().getDrawBanes().add(DrawBane.ENT_CORE);}
 		
-			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+			extra.print(extra.PRE_RED);
 		if (extra.yesNo()) {
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(),robber);
 		if (winner == Player.player.getPerson()) {

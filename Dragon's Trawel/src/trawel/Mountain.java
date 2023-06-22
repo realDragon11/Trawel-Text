@@ -1,5 +1,4 @@
 package trawel;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -189,8 +188,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 		extra.linebreak();
 		if (result) {
 			if (Math.random() > .5) {
-				Networking.sendColor(Color.RED);
-				extra.println("A fighter runs up and calls you a thief before launching into battle!");
+				extra.println(extra.PRE_RED+"A fighter runs up and calls you a thief before launching into battle!");
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getMugger(tier));
 				if (winner == Player.player.getPerson()) {
 					int gold = (int) (tier*(30*Math.random()));
@@ -210,8 +208,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 	}
 	
 	private void mugger2() {
-		Networking.sendColor(Color.RED);
-		extra.println("You see a mugger charge at you! Prepare for battle!");
+		extra.println(extra.PRE_RED+"You see a mugger charge at you! Prepare for battle!");
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
 		if (winner == Player.player.getPerson()) {
 		}else {
@@ -221,8 +218,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 	}
 	
 	private void mugger1() {
-		Networking.sendColor(Color.RED);
-		extra.println("You see someone being robbed! Help?");
+		extra.println(extra.PRE_RED+"You see someone being robbed! Help?");
 		Person robber =  RaceFactory.getMugger(tier);
 		robber.getBag().graphicalDisplay(1, robber);
 		Boolean help = extra.yesNo();
@@ -245,10 +241,9 @@ public class Mountain extends Feature implements java.io.Serializable{
 	
 	private void mugger3() {
 		
-		extra.println("You see a toll road keeper. Mug them for their gold?");
+		extra.println(extra.PRE_RED+"You see a toll road keeper. Mug them for their gold?");
 		Person robber = RaceFactory.getPeace(tier);
 		robber.getBag().graphicalDisplay(1, robber);
-		Networking.sendColor(Color.RED);
 		Boolean help = extra.yesNo();
 		if (help) {
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);
@@ -267,10 +262,9 @@ public class Mountain extends Feature implements java.io.Serializable{
 	}
 	
 	private void wanderingDuelist() {
-		extra.println("A duelist approaches and challenges you to a duel. Accept?");
+		extra.println(extra.PRE_RED+"A duelist approaches and challenges you to a duel. Accept?");
 		Person robber = RaceFactory.getDueler(tier+1);
 		robber.getBag().graphicalDisplay(1, robber);
-		Networking.sendColor(Color.RED);
 		Boolean help = extra.yesNo();
 		if (help) {
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);
@@ -291,8 +285,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 		while (true) {
 		extra.println("You come across an old fighter, resting on a rock.");
 		extra.println("1 Leave");
-		Networking.sendColor(Color.RED);
-		extra.println("2 Attack them.");
+		extra.println("2 "+extra.PRE_RED+"Attack them.");
 		extra.println("3 Chat with them");
 		switch (extra.inInt(3)) {
 		default: case 1: extra.println("You leave the fighter alone");return;
@@ -322,8 +315,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 		extra.linebreak();
 		if (result) {
 			if (Math.random() > .5) {
-				Networking.sendColor(Color.RED);
-				extra.println("A fighter runs up and calls you a thief before launching into battle!");
+				extra.println(extra.PRE_RED+"A fighter runs up and calls you a thief before launching into battle!");
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
 				if (winner == Player.player.getPerson()) {
 					int gold = (int) (tier*(100*Math.random()));
@@ -351,12 +343,11 @@ public class Mountain extends Feature implements java.io.Serializable{
 	}
 	
 	private void vampireHunter() {
-		extra.println("A vampire hunter is walking around. Mug them?");
+		extra.println(extra.PRE_RED+"A vampire hunter is walking around. Mug them?");
 		Person robber = RaceFactory.getPeace(tier);
 		robber.getBag().getDrawBanes().add(DrawBane.SILVER);
 		robber.getBag().getDrawBanes().add(DrawBane.GARLIC);
 		robber.getBag().graphicalDisplay(1, robber);
-		Networking.sendColor(Color.RED);
 		Boolean help = extra.yesNo();
 		if (help) {
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);

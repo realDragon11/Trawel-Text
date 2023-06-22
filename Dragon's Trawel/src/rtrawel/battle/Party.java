@@ -162,7 +162,7 @@ public class Party {
 		for (RUnit r: list) {
 			total *= ((RPlayer)r).lootChance();
 		}
-		return 0;
+		return 0;//TODO: I think this is 0 to disable looting
 	}
 
 	public int getKillCount(String str) {

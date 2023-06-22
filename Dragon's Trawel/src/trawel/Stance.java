@@ -60,25 +60,12 @@ public class Stance implements java.io.Serializable{
 
 	public void display(int style) {
 		if (style == 1) {
-			if (attacks.size() == 3) {
-			extra.println("     name                hit    delay    sharp    blunt     pierce");
-			int j = 1;
-			for(Attack i: attacks) {
-				extra.print(j + "    ");
-				i.display(1);
-				j++;
-			}
-			}else {
 			//extra.println("     name\thit\tdelay\tsharp\tblunt\tpierce");
 			extra.println("     name                hit    delay    sharp    blunt     pierce");
-			int j = 1;
 			for(Attack i: attacks) {
 				extra.print("-    ");
 				i.display(1);
-				j++;
 			}
-			}
-			
 		}
 		
 	}

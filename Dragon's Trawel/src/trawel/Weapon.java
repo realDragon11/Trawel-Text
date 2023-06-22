@@ -35,11 +35,6 @@ public class Weapon extends Item {
 	//private boolean IsEnchantedHit = false;//likely unused
 	//private Stance martialStance = new Stance(); //what attacks the weapon can use
 	
-	//the multipiers of what material is good at dealing what types of damage
-	private double sharpMult;
-	private double bluntMult;
-	private double pierceMult;
-	
 	
 	private String weapName;
 	private String material;
@@ -83,9 +78,6 @@ public class Weapon extends Item {
 		material = mat.name;
 		level = newLevel;
 		baseEnchant = mat.baseEnchant;
-		sharpMult = mat.sharpMult;
-		bluntMult = mat.bluntMult;
-		pierceMult = mat.pierceMult;
 		weight *= mat.weight;
 		cost = (int) mat.cost;
 		//choosing the type of weapon

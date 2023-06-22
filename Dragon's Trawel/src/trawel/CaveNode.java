@@ -1,5 +1,4 @@
 package trawel;
-import java.awt.Color;
 import java.util.ArrayList;
 
 public class CaveNode extends NodeConnector implements java.io.Serializable{
@@ -96,7 +95,7 @@ public class CaveNode extends NodeConnector implements java.io.Serializable{
 	
 	private void bear1() {
 		if (state == 0) {
-			extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"The bear attacks you!");
+			extra.println(extra.PRE_RED+"The bear attacks you!");
 			Person p = (Person)storage1;
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
@@ -134,7 +133,7 @@ public class CaveNode extends NodeConnector implements java.io.Serializable{
 	
 	private void bat1() {
 		if (state == 0) {
-			extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"The bat attacks you!");
+			extra.println(extra.PRE_RED+"The bat attacks you!");
 			Person p = (Person)storage1;
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {

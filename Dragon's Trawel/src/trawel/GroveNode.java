@@ -1,5 +1,4 @@
 package trawel;
-import java.awt.Color;
 import java.util.ArrayList;
 
 import trawel.factions.Faction;
@@ -240,7 +239,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		if (state == 0) {
 			Person p = (Person)storage1;
 			p.getBag().graphicalDisplay(1, p);
-			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+			extra.print(extra.PRE_RED);
 			extra.println("Challenge "+ p.getName() + "?");
 			if (extra.yesNo()){
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
@@ -259,7 +258,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 	private void mugger1() {
 		if (state == 0) {
 			Person p = (Person)storage1;
-			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+			extra.print(extra.PRE_RED);
 			extra.println("You are attacked by a " + name);
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
@@ -328,7 +327,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			p.getBag().graphicalDisplay(1, p);
 		extra.println("You come across an " + name + ", resting on a log.");
 		extra.println("1 Leave");
-		extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+		extra.print(extra.PRE_RED);
 		extra.println("2 Attack them");
 		extra.println("3 Chat with them");
 		switch (extra.inInt(3)) {
@@ -371,7 +370,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			extra.println("You move the tree off of them.");
 			state = 1;
 			if (Math.random() > .9) {
-				extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+				extra.print(extra.PRE_RED);
 				extra.println("Suddenly, they attack you!");
 				mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getMugger(level));
 			}else {
@@ -396,7 +395,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			p.getBag().graphicalDisplay(1, p);
 		extra.println("You come across a dryad tending to a tree.");
 		extra.println("1 Leave");
-		extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+		extra.print(extra.PRE_RED);
 		extra.println("2 Attack them.");
 		extra.println("3 Chat with them");
 		switch (extra.inInt(3)) {
@@ -489,7 +488,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			Player.bag.addGold(-53*level);break;
 			}
 			if (Math.random() > .8) {
-				extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+				extra.print(extra.PRE_RED);
 			extra.println("As you eat the mushroom, you hear a voice cry out:");
 			switch((int)extra.randRange(1,2)) {
 			case 1: mushHelpDryad();break;
@@ -506,7 +505,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			storage1 = new PlantSpot(level);
 			extra.println("You pick up the mushroom to sell it.");
 			if (Math.random() > .8) {
-				extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+				extra.print(extra.PRE_RED);
 			extra.println("You hear someone cry out from behind you!");
 			Person winner = null;
 			switch((int)extra.randRange(1,2)) {
@@ -527,7 +526,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 			name = "plant spot";
 			state = 1;
 			extra.println("You crush the mushroom under your heel.");
-			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+			extra.print(extra.PRE_RED);
 			extra.println("You hear someone cry out from behind you!");
 			switch(extra.randRange(1,2)) {
 			case 1: mushHelpDryad();break;
@@ -635,7 +634,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 				Player.bag.addGold(-20*level);break;
 				}
 				if (Math.random() > .8) {
-					extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+					extra.print(extra.PRE_RED);
 				extra.println("As you eat the moss, you hear a voice cry out:");
 				switch((int)extra.randRange(1,2)) {
 				case 1: mushHelpDryad();break;
@@ -651,7 +650,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 				storage1 = new PlantSpot(level);
 				extra.println("You pick up the moss to sell it.");
 				if (Math.random() > .8) {
-					extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+					extra.print(extra.PRE_RED);
 				extra.println("You hear someone cry out from behind you!");
 				Person winner = null;
 				switch((int)extra.randRange(1,2)) {
@@ -715,7 +714,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 	private void racist1() {
 		boolean bool = true;
 		while (bool) {
-			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+			extra.print(extra.PRE_RED);
 			((Person)storage2).getBag().graphicalDisplay(1, (Person)storage2);
 		extra.println("1 attack");
 		extra.println("2 chat");
@@ -756,7 +755,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		if (state == 0) {
 		boolean bool = true;
 		while (bool) {
-			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+			extra.print(extra.PRE_RED);
 		extra.println("1 attack");
 		extra.println("2 chat");
 		extra.println("3 leave");
@@ -794,7 +793,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 	private boolean richHelper(Person bodyguard, Person rich) {
 		Person winner;
 		if (bodyguard.isAlive()) {
-			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+			extra.print(extra.PRE_RED);
 			extra.println("Their bodyguard attacks you!");
 			winner = mainGame.CombatTwo(Player.player.getPerson(),bodyguard);
 			if (!winner.isPlayer()) {
@@ -845,7 +844,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		equal.getBag().graphicalDisplay(1, equal);
 		boolean bool = true;
 		while (bool) {
-			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+			extra.print(extra.PRE_RED);
 		extra.println("1 attack");
 		extra.println("2 chat");
 		extra.println("3 leave");
@@ -875,7 +874,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		equal.getBag().graphicalDisplay(1,equal);
 		boolean bool = true;
 		while (bool) {
-			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+			extra.print(extra.PRE_RED);
 		extra.println("1 attack");
 		extra.println("2 chat");
 		extra.println("3 leave");
@@ -916,7 +915,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 	
 	private boolean packOfWolves() {
 		if (state == 0) {
-			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+			extra.print(extra.PRE_RED);
 			extra.println("The pack descends upon you!");
 			ArrayList<Person> list = (ArrayList<Person>)storage1;
 			ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
@@ -941,7 +940,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		if (state == 0) {
 			Person p = (Person)storage1;
 			p.getBag().graphicalDisplay(1, p);
-			extra.print(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f)));
+			extra.print(extra.PRE_RED);
 			extra.println("Challenge "+ p.getName() + "?");
 			if (extra.yesNo()){
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);

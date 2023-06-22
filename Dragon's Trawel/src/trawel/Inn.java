@@ -304,8 +304,7 @@ public class Inn extends Feature implements java.io.Serializable, QuestBoardLoca
 	}
 	
 	private void goAgent(Agent agent) {
-		Networking.sendColor(Color.RED);
-		extra.println("1 fight");
+		extra.println("1 "+extra.PRE_RED+"fight");
 		extra.println("2 chat");
 		extra.println("3 leave");
 		switch(extra.inInt(3)) {
@@ -362,8 +361,7 @@ public class Inn extends Feature implements java.io.Serializable, QuestBoardLoca
 			extra.println("1 tell them goodbye");
 			extra.println("2 ask for a tip");
 			extra.println("3 this inn");
-			Networking.sendColor(Color.RED);
-			extra.println("4 a duel");
+			extra.println("4 "+extra.PRE_RED+" a duel");
 			int in = extra.inInt(4);
 			switch (in) {
 				case 1: extra.println("They wish you well.") ;break;
@@ -393,8 +391,7 @@ public class Inn extends Feature implements java.io.Serializable, QuestBoardLoca
 	}
 	
 	private void barFight() {
-		extra.println("There is no resident, but there is room for a barfight... start one?");
-		Networking.sendColor(Color.RED);
+		extra.println(extra.PRE_RED+"There is no resident, but there is room for a barfight... start one?");
 		if (extra.yesNo()) {
 			Person winner = mainGame.CombatTwo(Player.player.getPerson(),RaceFactory.getDueler(this.tier));
 			if (winner.isPlayer()) {

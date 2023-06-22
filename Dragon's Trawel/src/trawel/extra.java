@@ -15,7 +15,7 @@ public class extra {
 	
 	public static Boolean printMode = false;
 	private static Boolean oldPrintMode = false;
-	private static long lastMod = -1;
+	//private static long lastMod = -1;
 	private static String printStuff = "";
 	
 	//static methods
@@ -521,6 +521,13 @@ public class extra {
 		public static String inlineColor(Color col) {
 			return "[#"+Integer.toHexString(col.getRGB()).substring(2)+"]";
 		}
+		
+		//NOTE: predefined color mixes inlined
+		public static final String PRE_WHITE = inlineColor(Color.WHITE);
+		public static final String PRE_RED = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f));
+		public static final String PRE_ORANGE = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f));
+		public static final String PRE_YELLOW = inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f));
+		public static final String PRE_BLUE = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f));
 		
 		/**
 		 * https://stackoverflow.com/a/13091759

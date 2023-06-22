@@ -179,7 +179,6 @@ public class Town implements java.io.Serializable{
 	public void atTown() {
 		Player.world = island.getWorld();
 		Player.player.world2 = island.getWorld();
-		int i = 1;
 		if (Player.player.lastTown != this) {
 			if (!hasBeen && newPrinter != null) {
 				newPrinter.print();
@@ -329,95 +328,6 @@ public class Town implements java.io.Serializable{
 				return mList;
 			}});
 		
-		/*
-		if (this.hasTeleporters()) {
-			Networking.sendColor(Color.GREEN);
-			extra.println(i + " Teleport Shop.");
-			i++;
-		}
-		
-		if (this.hasPort()) {
-			Networking.sendColor(Color.GREEN);
-			extra.println(i + " Shipyard");
-			i++;
-		}
-		for (Feature f: features) {
-			if (!TravelingFeature.class.isInstance(f) || ((TravelingFeature)f).hasSomething) {
-			Networking.sendColor(f.getColor());
-			extra.println(i + " " + extra.capFirst(f.getName()));
-			if (Player.getTutorial()) {
-				f.printTutorial();}
-			i++;
-			}
-		}
-		if (openSlots() > 0) {
-			extra.println(i  + " Buy Lot");
-			if (Player.getTutorial()) {
-				extra.println("Buying a lot will allow you to add a new building to this town, with enough gold.");
-			}
-			i++;
-		}
-		
-	
-		if (hasRoads()) {
-			Networking.sendColor(Color.GREEN);
-			extra.println(i + " Roads");
-			i++;
-		
-		if (Player.getTutorial()) {
-			extra.println("Roads are the most basic way to travel from town to town.");
-			extra.println("Try exploring the town a bit before moving on!");
-		}
-		}
-		
-		extra.println(i + " You");i++;
-		if (Player.getTutorial()) {
-			extra.println("The you menu includes your stats and saving, among other things.");
-		}
-		
-		int in = extra.inInt(i-1);
-		i = 1;
-		if (this.hasTeleporters()) {
-			if (in == i) {
-				this.goTeleporters();
-				return;
-			}
-			i++;
-		}
-		if (this.hasPort()) {
-			if (in == i) {
-				this.goPort();
-				return;
-			}
-			i++;
-		}
-		for (Feature f: features) {
-			if (!TravelingFeature.class.isInstance(f) || ((TravelingFeature)f).hasSomething) {
-			if (in == i) {
-				f.go();
-				return;
-			}
-			i++;
-			}
-		}
-		if (openSlots() > 0 ) {
-			if (in == i) {
-				this.buyLot();
-				return;
-			}
-			i++;
-		}
-		if (hasRoads()) {
-		if (in == i) {
-			this.goRoads();
-			return;
-		}i++;}
-		
-		if (in == i) {
-			this.you();
-			return;
-		}i++;*/
-		
 	}
 	
 
@@ -442,7 +352,8 @@ public class Town implements java.io.Serializable{
 					}
 				});
 				int i = 0;
-				for (Feature f: features) {
+				int fSize = features.size();//testing this out instead of a foreach
+				while (i < fSize) {
 					mList.add(new MenuSelectNumber() {
 
 						@Override
@@ -545,8 +456,7 @@ public class Town implements java.io.Serializable{
 		case 9: return;
 		case 7:
 			extra.println("Really save?");
-			Networking.sendColor(Color.RED);
-			extra.println("SAVES ARE NOT COMPATIBLE ACROSS VERSIONS");
+			extra.println(extra.PRE_RED+"SAVES ARE NOT COMPATIBLE ACROSS VERSIONS");
 			if (extra.yesNo()) {
 				extra.println("Save to which slot?");
 				for (int i = 1; i < 9;i++) {
@@ -822,8 +732,7 @@ public class Town implements java.io.Serializable{
 				Person p = this.island.getWorld().getDeathCheater(tier);
 				if (p != null) {
 					went = true;
-					Networking.sendColor(Color.red);
-					extra.println(p.getName() + " is back!");
+					extra.println(extra.PRE_RED+p.getName() + " is back!");
 					Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 					if (winner != p) {
 						this.island.getWorld().removeDeathCheater(p);

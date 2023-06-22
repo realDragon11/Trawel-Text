@@ -59,7 +59,7 @@ public class Champion  extends TravelingFeature{
 	public void go() {
 		Networking.setArea("champ");
 		Networking.sendStrong("Discord|imagesmall|champion|Champion|");
-		extra.println(extra.inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f))+"Challenge " + person.getName() + "?");
+		extra.println(extra.PRE_RED+"Challenge " + person.getName() + "?");
 		if (extra.yesNo()) {
 			Person winner = mainGame.CombatTwo(Player.player.getPerson(),this.person);
 			if (winner == Player.player.getPerson()) {
