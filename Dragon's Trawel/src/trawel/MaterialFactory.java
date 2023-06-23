@@ -1,9 +1,20 @@
 package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Random;
+import java.util.HashMap;
+
+import com.github.tommyettinger.random.WhiskerRandom;
+import com.github.yellowstonegames.core.WeightedTable;
 
 public class MaterialFactory {
 	public static ArrayList<Material> matList = new ArrayList<Material>();
+	public static Map<String,Material> matMap = new HashMap<String,Material>();
+	
+	public static WeightedTable weapMats, armMats;
+	
+	public static Random juneRand = new WhiskerRandom();
 	
 	/**
 	 * Set up the static flyweights for the materials.
@@ -762,6 +773,14 @@ public class MaterialFactory {
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
 		matList.add(misc);
+		
+		
+		
+		for (Material m: matList) {
+			matMap.put(m.name, m);
+		}
+		
+		tableSetup();
 	}
 	
 	/*
@@ -795,6 +814,29 @@ public class MaterialFactory {
 		}while(totalRarity > 0);
 		return mat;
 	}*/
+	
+	public static void tableSetup() {
+		float[] wWeightList = new float[matList.size()];
+		float[] aWeightList = new float[matList.size()];
+		Material curMat;
+		for (int i = matList.size()-1;i>=0;--i) {
+			curMat = matList.get(i);
+			wWeightList[i] = curMat.weapon ? (float) curMat.rarity : 0f;
+			aWeightList[i] = curMat.weapon ? (float) curMat.rarity : 0f;
+		}
+		weapMats = new WeightedTable(wWeightList);
+		armMats = new WeightedTable(aWeightList);
+		
+	}
+	
+	public static Material randArmorMat() {
+		return matList.get(armMats.random(juneRand));
+	}
+	
+	public static Material randWeapMat() {
+		return matList.get(armMats.random(juneRand));
+	}
+	
 	public static Material randMat(Boolean armor, Boolean weapon) {
 		ArrayList<Material> copyList = new ArrayList<Material>();
 		double totalRarity = 0;
@@ -817,13 +859,7 @@ public class MaterialFactory {
 
 
 	public static Material getMat(String string) {
-		for (Material m: matList) {
-			if (m.name.equals(string)) {
-				return m;
-			}
-		}
-		
-		return null;
+		return matMap.get(string);
 	}
 
 	public static Material randMatByType(String matType) {
