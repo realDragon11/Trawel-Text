@@ -70,7 +70,7 @@ public class Armor extends Item {
 	 * @param newLevel (int)
 	 */
 	public Armor(int newLevel) {
-		this(newLevel,(int)(Math.random()*5),MaterialFactory.randMat(true,false),null);
+		this(newLevel,(int)(Math.random()*5),MaterialFactory.randArmorMat(),null);
 	}
 	
 	/**
@@ -86,7 +86,7 @@ public class Armor extends Item {
 		this(newLevel,slot,mati,null);
 	}
 	public Armor(int newLevel, int slot) {
-		this(newLevel,slot,MaterialFactory.randMat(true,false),null);
+		this(newLevel,slot,MaterialFactory.randArmorMat(),null);
 	}
 	
 	/**

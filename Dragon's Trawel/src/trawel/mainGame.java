@@ -197,7 +197,7 @@ public class mainGame {
 			}break;
 		case 8:
 			try {
-				Weapon.rarityMetrics();
+				Weapon.duoRarityMetrics();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}break;

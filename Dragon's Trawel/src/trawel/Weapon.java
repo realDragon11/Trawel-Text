@@ -194,10 +194,18 @@ public class Weapon extends Item {
 	}
 	
 	public Weapon(int newLevel) {
-		this(newLevel,MaterialFactory.randMat(false,true),(String)extra.choose("longsword","broadsword","mace","spear","axe","rapier","dagger",extra.choose("claymore","lance","shovel")));
+		this(newLevel,MaterialFactory.randWeapMat(),(String)extra.choose("longsword","broadsword","mace","spear","axe","rapier","dagger",extra.choose("claymore","lance","shovel")));
 	}
 	public Weapon(int newLevel, String weaponName) {
-		this(newLevel,MaterialFactory.randMat(false,true),weaponName);
+		this(newLevel,MaterialFactory.randWeapMat(),weaponName);
+	}
+	
+	/***
+	 * used for testing
+	 * 
+	 */
+	public Weapon(boolean useSquid) {
+		this(1,useSquid ? MaterialFactory.randWeapMat() : MaterialFactory.randMat(false, true),(String)extra.choose("longsword","broadsword","mace","spear","axe","rapier","dagger",extra.choose("claymore","lance","shovel")));
 	}
 
 	//instance methods
@@ -475,6 +483,30 @@ public class Weapon extends Item {
 		}
 	}
 	
+	public static Weapon genTestWeapon(int useSquid) {
+		Weapon[] arr = new Weapon[3];
+		boolean useS = useSquid == 1;
+		arr[2] = new Weapon(useS);
+		arr[1] = new Weapon(useS);
+		arr[0] = new Weapon(useS);
+		double highest = 0;
+		double lowest = 99999;
+		for (Weapon w: arr) {
+			if (w.highestDamage().battleScore > highest) {
+				highest = w.highestDamage().battleScore;
+			}
+			if (w.highestDamage().battleScore < lowest) {
+				lowest = w.highestDamage().battleScore;
+			}
+		}
+		for (Weapon w: arr) {
+			if (w.highestDamage().battleScore != highest && w.highestDamage().battleScore  != lowest) {
+				return w;
+			}
+		}
+		return arr[0];
+	}
+	
 	public static Weapon genMidWeapon(int newLevel) {
 		Weapon[] arr = new Weapon[3];
 		arr[2] = new Weapon(newLevel);
@@ -578,8 +610,85 @@ public class Weapon extends Item {
 		writer.flush();
 		writer.close();
 		extra.println("---");
-		MaterialFactory.materialWeapDiag();
 		
+	}
+	/***
+	 * behold, a horrible performance test
+	 * @throws FileNotFoundException
+	 */
+	public static void duoRarityMetrics() throws FileNotFoundException {
+		final int trials = 100;
+		final int attempts = 1_000;
+		PrintWriter writer1 = new PrintWriter("rmetrics1.csv");
+		PrintWriter writer2 = new PrintWriter("rmetrics2.csv");
+		//List<Weapon> weaponList = new ArrayList<Weapon>();
+		HashMap<String,Integer> weaponCount1 = new HashMap<String,Integer>();
+		HashMap<String,Integer> materialCount1 = new HashMap<String,Integer>();
+		HashMap<String,Integer> combCount1 = new HashMap<String,Integer>();
+		HashMap<String,Integer> weaponCount2 = new HashMap<String,Integer>();
+		HashMap<String,Integer> materialCount2 = new HashMap<String,Integer>();
+		HashMap<String,Integer> combCount2 = new HashMap<String,Integer>();
+		
+		List<HashMap<String,Integer>> maps = Arrays.asList(weaponCount1,materialCount1,combCount1,weaponCount2,materialCount2,combCount2);
+		
+		for (int warmup = 0; warmup < 200;warmup++) {
+			genTestWeapon(0);
+			genTestWeapon(1);
+		}
+		extra.println("warmup complete");
+		
+		long[] time = {0,0};
+		long[] temptime = {0,0};
+		double[] battleTotal = {0,0};
+		long starttime;
+		int mult = 1;
+		for (int j = 0; j <=trials;j++) {
+			extra.println("trial " + j + " - "+ temptime[0] +" _ "+  temptime[1]);
+			for (int s = 0; s <= 1; s++) {
+				starttime = System.nanoTime();
+				mult = s+1;
+				for (int i = 0; i < attempts;i++) {
+					Weapon weap = genTestWeapon(s);
+					maps.get((1*mult)-1).put(weap.getBaseName(), maps.get((1*mult)-1).getOrDefault(weap.getBaseName(),0)+1);
+					maps.get((2*mult)-1).put(weap.getMaterial(), maps.get((2*mult)-1).getOrDefault(weap.getMaterial(),0)+1);
+					String temp = weap.getMaterial() +weap.getBaseName();
+					maps.get((3*mult)-1).put(temp, maps.get((3*mult)-1).getOrDefault(temp,0)+1);
+					battleTotal[s]+=weap.highestDamage().battleScore;
+				}
+				temptime[s]=System.nanoTime()-starttime;
+				time[s] += temptime[s];
+			}
+		}
+		battleTotal[0]/=attempts;
+		battleTotal[1]/=attempts;
+		extra.println("total score 1: "+battleTotal[0]);
+		extra.println("total score 2: "+battleTotal[1]);
+		for (int s = 0; s <= 1; s++) {
+			mult = s+1;
+			PrintWriter writer = s == 0 ? writer1 : writer2;
+			writer.write(",");
+			extra.println("starting " + (s+1));
+			for (String str: Weapon.weaponTypes) {
+				writer.write(str+",");
+				extra.println(str+": "+maps.get((1*mult)-1).getOrDefault(str,0));
+			}
+			writer.write("\n");
+			for (Material m: MaterialFactory.matList) {
+				if (!m.weapon) {
+					continue;
+				}
+				writer.write(m.name+",");
+				extra.println(m.name+": "+maps.get((2*mult)-1).getOrDefault(m.name,0));
+				for (String str: Weapon.weaponTypes) {
+					writer.write(maps.get((3*mult)-1).getOrDefault(m.name+str,0)+",");
+				}
+				writer.write("\n");
+			}
+			writer.flush();
+			writer.close();
+		}
+		extra.println("---");
+		MaterialFactory.materialWeapDiag();
 	}
 	
 }
