@@ -618,7 +618,7 @@ public class Weapon extends Item {
 	 */
 	public static void duoRarityMetrics() throws FileNotFoundException {
 		final int trials = 100;
-		final int attempts = 1_000;
+		final int attempts = 10_000;
 		PrintWriter writer1 = new PrintWriter("rmetrics1.csv");
 		PrintWriter writer2 = new PrintWriter("rmetrics2.csv");
 		//List<Weapon> weaponList = new ArrayList<Weapon>();
@@ -663,6 +663,8 @@ public class Weapon extends Item {
 		battleTotal[1]/=attempts;
 		extra.println("total score 1: "+battleTotal[0]);
 		extra.println("total score 2: "+battleTotal[1]);
+		extra.println("old way took: " + time[0]/1_000_000_000 + " total");
+		extra.println("squid way took: " + time[1]/1_000_000_000 + " total");
 		for (int s = 0; s <= 1; s++) {
 			mult = s+1;
 			PrintWriter writer = s == 0 ? writer1 : writer2;
