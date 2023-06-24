@@ -1,5 +1,12 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
+import com.github.tommyettinger.random.WhiskerRandom;
+import com.github.yellowstonegames.core.WeightedTable;
 
 public class TargetFactory {
 
@@ -8,6 +15,12 @@ public class TargetFactory {
 	public static ArrayList<Attack.Wound> fireWounds = new ArrayList<Attack.Wound>();
 	public static ArrayList<Attack.Wound> shockWounds = new ArrayList<Attack.Wound>();
 	public static ArrayList<Attack.Wound> freezeWounds = new ArrayList<Attack.Wound>();
+	
+	//public static Map<TargetType,List<Target>> targetTypeMap = new HashMap<TargetType,List<Target>>();
+	public static Map<TargetType,WeightedTable> targetTypeTable = new HashMap<TargetType,WeightedTable>();
+	
+	public static Random juneRand = new WhiskerRandom();
+	
 	public TargetFactory() {
 		
 		
@@ -827,6 +840,25 @@ public class TargetFactory {
 		t.pierceWounds.add(Attack.Wound.TAT);
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		targetList.add(t);
+		
+		
+		//setup part 2
+		for (TargetType tt: TargetType.values()) {
+			ArrayList<Target> copyList = new ArrayList<Target>();
+			for (Target mat: targetList){
+				if (mat.type == tt) {
+				copyList.add(mat);}
+			}
+			float[] sWeightList = new float[targetList.size()];
+			for (int i = targetList.size()-1;i>=0;--i) {
+				sWeightList[i] = targetList.get(i).type == tt ? (float) targetList.get(i).rarity : 0f;
+			}
+			try {
+			targetTypeTable.put(tt,new WeightedTable(sWeightList));
+			}catch(java.lang.IllegalArgumentException e) {
+				
+			}
+		}
 	}
 	
 	public enum TargetType{
@@ -834,6 +866,8 @@ public class TargetFactory {
 	}
 	
 	public static Target randTarget(TargetType targetType) {
+		return targetList.get(targetTypeTable.get(targetType).random(juneRand));
+		/*
 		ArrayList<Target> copyList = new ArrayList<Target>();
 		ArrayList<Target> copyList2 = new ArrayList<Target>();
 		for (Target mat: targetList){
@@ -861,6 +895,6 @@ public class TargetFactory {
 				
 				
 		}while(totalRarity > 0);
-		return mat;
+		return mat;*/
 	}
 }

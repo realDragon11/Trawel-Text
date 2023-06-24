@@ -1,9 +1,17 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.Random;
+
+import com.github.tommyettinger.random.WhiskerRandom;
+import com.github.yellowstonegames.core.WeightedTable;
 
 public class StyleFactory {
 
 	public static ArrayList<Style> StyleList = new ArrayList<Style>();
+	
+	public static WeightedTable styleTable;
+	public static Random juneRand = new WhiskerRandom();
+	
 	public StyleFactory() {
 		Style s = new Style();
 		s.name = "";//normal
@@ -46,11 +54,21 @@ public class StyleFactory {
 		StyleList.add(s);
 		
 		
-		
+		tableSetup();
+	}
+	
+	public static void tableSetup() {
+		float[] sWeightList = new float[StyleList.size()];
+		for (int i = StyleList.size()-1;i>=0;--i) {
+			sWeightList[i] = (float) StyleList.get(i).rarity;
+		}
+		styleTable = new WeightedTable(sWeightList);
 	}
 	
 	
 	public static Style randStyle() {
+		return StyleList.get(styleTable.random(juneRand));
+		/*
 		ArrayList<Style> copyList = new ArrayList<Style>();
 		ArrayList<Style> copyList2 = new ArrayList<Style>();
 		for (Style mat: StyleList){
@@ -77,6 +95,6 @@ public class StyleFactory {
 				
 				
 		}while(totalRarity > 0);
-		return mat;
+		return mat;*/
 	}
 }

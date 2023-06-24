@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-public class extra {
+public final class extra {
 /**
  * Brian Malone
  * Various static methods to be used in other classes
@@ -48,11 +48,12 @@ public class extra {
 	 * @param (int)
 	 * @return (int)
 	 */
-	public static int zeroOut(int i) {
-		if (i > 0){
+	public static final int zeroOut(int i) {
+		return Math.max(i,0);
+		/*if (i > 0){
 			return i;
 		}
-		return 0;
+		return 0;*/
 	}
 	
 	/**
@@ -60,11 +61,13 @@ public class extra {
 	 * @param (double)
 	 * @return (double)
 	 */
-	public static double zeroOut(double i) {
+	public static final double zeroOut(double i) {
+		return Math.max(i,0);
+		/*
 		if (i > 0){
 			return i;
 		}
-		return 0;
+		return 0;*/
 	}
 	/**
 	 * Has a (a) in (b) chance of returning true
@@ -72,7 +75,7 @@ public class extra {
 	 * @param b (int)
 	 * @return (boolean)
 	 */
-	public static boolean chanceIn(int a,int b) {
+	public static final boolean chanceIn(int a,int b) {
 		if (((double)a/b) < Math.random()) {return false;}
 		return true;
 	}
@@ -82,7 +85,7 @@ public class extra {
 	 * @param str (String)
 	 * @return Str (String)
  	 */
-	public static String capFirst(String str){
+	public static final String capFirst(String str){
 		return str.substring(0, 1).toUpperCase() + str.substring(1);
 	}
 	
@@ -91,7 +94,7 @@ public class extra {
 	 * @param str (String)
 	 * @return (String)
 	 */
-	public static String pluralIs(String str) {
+	public static final String pluralIs(String str) {
 		if (str.endsWith("s")){
 			return "are";
 		}else {
@@ -103,7 +106,7 @@ public class extra {
 	 * Changes the output to be the 'output.txt' file, or the console.
 	 * @param file - (boolean) true if you want to swap to a file output, false if you want to swap to the standard output system.
 	 */
-	public static void changePrint(boolean file) {
+	public static final void changePrint(boolean file) {
 		printMode = file;
 		/*if (file) {	//https://stackoverflow.com/a/1994283/9320090
 			//redirecting printing
@@ -123,18 +126,18 @@ public class extra {
 	 * @param str - (double)
 	 * @return (String)
 	 */
-	public static String format(double str) {
+	public static final String format(double str) {
 		java.text.DecimalFormat format2 = new java.text.DecimalFormat("0.00");
 		return(format2.format(str));
 	}
 	
 	//extra.linebreak();
-		public static void linebreak() {
+		public static final void linebreak() {
 			extra.println("------------");
 			//clear the synth
 		}
 		
-		public static boolean yesNo() {
+		public static final boolean yesNo() {
 			String str;
 			while (true) {
 				extra.println("1 yes");
@@ -174,11 +177,11 @@ public class extra {
 				}
 			}
 		}
-		public static int randRange(int i, int j) {
+		public static final int randRange(int i, int j) {
 			return (int)(Math.random()*(j+1-i))+i;
 		}
 
-		public static int inInt(int max) {
+		public static final int inInt(int max) {
 			String str;
 			int in =0;
 			Networking.sendStrong("Entry|Activate|" + max + "|");
@@ -216,11 +219,11 @@ public class extra {
 			}
 		}
 		
-		public static void println() {
+		public static final void println() {
 			println("");
 		}
 		
-		public static void println(String str) {
+		public static final void println(String str) {
 			if (!printMode) {
 			System.out.println(stripPrint(printStuff+str));
 			detectInputString(stripPrint(printStuff +str));
@@ -230,14 +233,14 @@ public class extra {
 			
 		}
 		
-		public static void print(String str) {
+		public static final void print(String str) {
 			if (!printMode) {
 			//System.out.print(stripPrint(str));
 			//System.out.print(str);
 			printStuff+=str;}
 		}
 		
-		private static String stripPrint(String str) {
+		private static final String stripPrint(String str) {
 			int index = str.indexOf('[');
 			while (index != -1) {
 				int lastindex = str.indexOf(']');
@@ -260,7 +263,7 @@ public class extra {
 			return mainGame.scanner.nextLine().toLowerCase();
 		}
 
-		public static Boolean getPrint() {
+		public static final Boolean getPrint() {
 			return printMode;
 		}
 
@@ -273,7 +276,7 @@ public class extra {
 			return(str);
 		}
 
-		public static double hrandom() {
+		public static final double hrandom() {
 			if (randRange(1,5) != 5) {
 			return  (((double)randRange(45,55))/100.0);}else {
 				return Math.random();
@@ -330,10 +333,10 @@ public class extra {
 			
 		}
 
-		public static double clamp(double d, double min, double max) {
+		public static final double clamp(double d, double min, double max) {
 			return Math.min(max, Math.max(d, min));
 		}
-		public static int clamp(int d, int min, int max) {
+		public static final int clamp(int d, int min, int max) {
 			return Math.min(max, Math.max(d, min));
 		}
 
@@ -509,16 +512,16 @@ public class extra {
 			}
 		}
 		
-		public static float lerp(float a, float b, float f) 
+		public static final float lerp(float a, float b, float f) 
 		{
 		    return (a * (1.0f - f)) + (b * f);
 		}
 
-		public static Color colorMix(Color c1, Color c2, float f) {
+		public static final Color colorMix(Color c1, Color c2, float f) {
 			return new Color((int) extra.lerp(c1.getRed(),c2.getRed(), f),(int) extra.lerp(c1.getGreen(),c2.getGreen(), f),(int) extra.lerp(c1.getBlue(),c2.getBlue(), f));
 		}
 
-		public static String inlineColor(Color col) {
+		public static final String inlineColor(Color col) {
 			return "[#"+Integer.toHexString(col.getRGB()).substring(2)+"]";
 		}
 		
@@ -563,7 +566,7 @@ public class extra {
 			return (4*depth*Math.pow(x,3) - 6*depth*Math.pow(x,2) + 2*depth*x + x);
 		}*/
 		
-		public static double upDamCurve(double depth, double midpoint) {
+		public static final double upDamCurve(double depth, double midpoint) {
 			double x = 1-(2*Math.abs((Math.random())-midpoint));
 			x = extra.clamp(x,0,1);
 			return (4*depth*Math.pow(x,3) - 6*depth*Math.pow(x,2) + 2*depth*x + x);
