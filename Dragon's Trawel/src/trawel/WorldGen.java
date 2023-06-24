@@ -42,10 +42,17 @@ public class WorldGen {
 	
 	public static List<Inventory> getDummyInvs() {
 		if (dumInvs.size() == 0) {
-			for (int i = 0; i < 100;i++) {
-				dumInvs.add(new Inventory(-1, Race.RaceType.HUMANOID, null, null));
+			//TODO: 5 preset armor sets
+			for (int i = 0; i < 10;i++) {
+				dumInvs.add(new DummyInventory());
 				dumInvs.get(dumInvs.size()-1).resetArmor(0, 0, 0);
 			}
+			//random 15
+			for (int i = 0; i < 15;i++) {
+				dumInvs.add(new DummyInventory());
+				dumInvs.get(dumInvs.size()-1).resetArmor(0, 0, 0);
+			}
+			
 			
 		}
 		return dumInvs;

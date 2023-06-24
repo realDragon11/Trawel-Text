@@ -346,17 +346,19 @@ public class Weapon extends Item {
 			if (damage > high) {
 				high = damage;
 			}
-			for (int j = 0; j < battleTests;j++) {
-			bs+=Combat.handleTestAttack(holdAttack.impair(10,TargetType.HUMANOID,this),extra.randList(WorldGen.getDummyInvs()),Armor.armorEffectiveness).damage/holdAttack.getSpeed() ;
+			for (int t = 0; t < battleTests;t++) {
+				for (int j = WorldGen.getDummyInvs().size()-1; j >=0;j++) {
+					bs+=Combat.handleTestAttack(holdAttack.impair(10,TargetType.HUMANOID,this),WorldGen.getDummyInvs().get(j),Armor.armorEffectiveness).damage/holdAttack.getSpeed() ;
+				}
 			}
 			i++;
 		}
-		bs/=battleTests;
+		bs/=(battleTests*WorldGen.getDummyInvs().size());
 		dam = new DamTuple(high,average,(bs*level)/(size));
 		return dam;
 	}
 	
-	public static int battleTests = 50;
+	public static int battleTests = 3;//was 50, then got converted into goes at all the dummy inventories (15 now)
 	
 	public class DamTuple implements java.io.Serializable{
 		
