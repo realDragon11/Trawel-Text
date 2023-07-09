@@ -1,0 +1,43 @@
+{
+	name: "DEFAULT_ABILITY",
+	%dampower: {//resolve when called, custom name
+		"USER.strength": 1 //calling actor's strength, weighted 1
+	}
+	/*
+	&dampower: {//append contents
+		"USER.dexterity": 1
+	}
+	*/
+	$base_damage: {// $ is like a % except instead of weight it uses a formula. % is just sugar for this with weighted formula
+		formula: "MULT",
+		scalars: ["%CONTEXT.dampower","$weapon.physicalpower],//get the ability context's .dampower, and the .physicalpower of the weapon
+		multmap: {
+			"TARGET.alive": 2,//double damage to enemies with the .alive tag set to true, or > 0 if a number
+			"TARGET.dead": "CONTEXT.whatever",//run a new rule to modify damage based on the context's whatever struct thing
+			"RESOLVE.crit": "CONTEXT.critmult",//use the successresolver for a boolean to alter by crit
+		},
+		keywords: ["physical"],//used for innate damage vulns on enemy and other damage keywords
+	}
+
+	targetresolvers: {
+		base: {
+			amount: "single",
+			type: "foe",
+		}
+	}
+	
+	successresolvers: {
+		dodge: "CONTEXT.accuracy",//contains code to tell it was a dodge
+		crit: "CONTEXT.crit",
+	}
+	
+	execute: ["GET TARGET base -> t",//get target, put it in t
+	{
+	withtarget: "EXECUTE.t",//with everything in t, do the following
+	execute: ["RESOLVE dodge ? BREAK : NEXT","TARGET.hp @ SUB $basedamage"]//if they dodge, exit this nested struct, otherwise deal damage by calulcating damage
+	}//dodge would probably include miss and hit pushing in itself
+	,"FLAVOR CONTEXT.attackstring"],//use the attackstring to display stuff, the TARGET.hp would push to a list of targets and their damages
+	//list of things to do in a stack
+	//first we get the targetresolver to get base target 
+	cleanup: ["DEDUCT resources"]//deduct mana and stuff from user
+}

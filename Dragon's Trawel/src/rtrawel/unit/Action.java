@@ -32,4 +32,6 @@ public interface Action {
 	public enum TargetGrouping{
 		SINGLE, GROUP, ALL;
 	}
+	
+	//should have a map for common data types, like crit and mana cost, then have a function for detecting those elsewhere that can be called on
 }

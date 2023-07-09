@@ -1050,7 +1050,7 @@ public class ActionFactory {
 
 			@Override
 			public String getDesc() {
-				return "A zealous smite that deals extra holy damage..";
+				return "A zealous smite that deals extra holy damage.";
 			}});
 		
 		data.put("ranga",new Action(){
@@ -1177,7 +1177,7 @@ public class ActionFactory {
 
 			@Override
 			public void go(RUnit caster, TargetGroup target) {
-				extra.println(caster.getName() + " hammer stuns " + target.toString());
+				extra.println(caster.getName() + " sling stuns " + target.toString());
 				caster.drainMp(3);
 				Weapon w = caster.getWeapon();
 				for (RUnit u: target.targets) {
