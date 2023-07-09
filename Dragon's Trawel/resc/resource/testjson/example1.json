@@ -9,6 +9,9 @@
 	//note that this is dynamically typed, with the types being:
 	//number: ints, doubles, and both used as booleans. first, check if there's a decimal. if so, double. otherwise, int. If used as a boolean, >0 is true, otherwise false.
 	//string: either a 'ref' to a struct in a package somewhere, actionable data, or a normal string. all are stored the same
+	//all strings intended to be used as plaintext should be escape character'd with ` at the start, any further in the string are fine
+	//refs should always start with a letter because all special characters are reserved, and numbers can be used after, but it should start with a letter
+	//using uppercase is also not allowed in package names or structs because it is special refs
 	//array/object: more json-like, these are structures rather than a base type. arrays are lists, objects are maps.
 	//however, there are special commands to inherit and override
 	//using @paste inside a struct will take a struct from somewhere else and put it's contents also here
