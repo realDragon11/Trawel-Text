@@ -6,9 +6,22 @@
 	//use your own and assume that anything that wants that subpath will call on BASE, even from within that package
 	//content are actual structs only, a subpackage would use the above format to nest itself
 	contents: [
+	//note that this is dynamically typed, with the types being:
+	//number: ints, doubles, and both used as booleans. first, check if there's a decimal. if so, double. otherwise, int. If used as a boolean, >0 is true, otherwise false.
+	//string: either a 'ref' to a struct in a package somewhere, actionable data, or a normal string. all are stored the same
+	//array/object: more json-like, these are structures rather than a base type. arrays are lists, objects are maps.
+	//however, there are special commands to inherit and override
+	//using @paste inside a struct will take a struct from somewhere else and put it's contents also here
+	//& will add to a struct we already have in the current scope (usually after pasting)- otherwise it overwrites when you do that
+	//collisions WITHIN that will still overwrite, but any old keys will be used base
+	//+ is that, except any keys will be added if the computer can figure out how (which is only possible if there is an instruction
+	//within that struct on how to do so, for example, formula = weight adds numbers, formula = mult adds numbers)
+	//likewise, * is + but with multiplication instead, and there is also - and /, and ^ which removes keys if the thing assigned to them resolves to true
 	{
-		name: "DEFAULT_ABILITY",
+		name: "ATTACK_EXAMPLE",
+		keywords: ["physical","weapon","attack"],
 		dampower: {//resolve when called, custom name
+			formula: "BASE.formula.weight",
 			"USER.strength": 1 //calling actor's strength, weighted 1
 		}
 		/*
@@ -17,13 +30,11 @@
 		}
 		*/
 		base_damage: {
-		// $ is like a % except instead of weight it uses a formula. % is just sugar for this with weighted formula
-		// otherwise you have to wrap it in a formula that tells you how to handle the contents
-			formula: "BASE.formula.MULT",//this formula multiplies everything in scalars unconditionally, and then 
+			formula: "BASE.formula.mult",//this formula multiplies everything in scalars unconditionally, and then 
 			//any of the multmap items that resolve or get to >0 or true effectively are present to be multiplied as well
 			//note that forumlas don't actually have to work on just data, they could decide between formulas
 			//, or even just send back a string which is a ref
-			scalars: ["%CONTEXT.dampower","USER.weapon.physicalpower],//get the ability context's .dampower, and the .physicalpower of the weapon
+			scalars: ["CONTEXT.dampower","USER.weapon.physicalpower],//get the ability context's .dampower, and the .physicalpower of the weapon
 			multmap: {
 				"TARGET.alive": 2,//double damage to enemies with the .alive tag set to true, or > 0 if a number
 				"TARGET.dead": "CONTEXT.whatever",//run a new rule to modify damage based on the context's whatever struct thing
@@ -37,8 +48,15 @@
 		
 		accuracy: "base.hitchance.accuracy",
 		crit: {
-		
+			formula: "BASE.compare.random",//times math.random each and then a >= b
+			a: {
+				formula: "BASE.formula.mult",
+				scalars: ["BASE.stat2.basehit","USER.weapon.acc","BASE.bonus.hitmults"]
+			},
+			b: "BASE.stat2.dodge",
+			//stat2 is a package for derived stats, bonus is a package for applying any weird bonuses, like a trident being better against fish
 		},
+		critdamage: 2,
 		
 		resolvers: {//used for some types of functions that are expected
 			targets: {//targeting, used with OBTAIN for setting and GET to get what was set
