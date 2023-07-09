@@ -21,42 +21,46 @@
 		// otherwise you have to wrap it in a formula that tells you how to handle the contents
 			formula: "BASE.formula.MULT",//this formula multiplies everything in scalars unconditionally, and then 
 			//any of the multmap items that resolve or get to >0 or true effectively are present to be multiplied as well
+			//note that forumlas don't actually have to work on just data, they could decide between formulas
+			//, or even just send back a string which is a ref
 			scalars: ["%CONTEXT.dampower","USER.weapon.physicalpower],//get the ability context's .dampower, and the .physicalpower of the weapon
 			multmap: {
 				"TARGET.alive": 2,//double damage to enemies with the .alive tag set to true, or > 0 if a number
-				"TARGET.dead": "$CONTEXT.whatever",//run a new rule to modify damage based on the context's whatever struct thing
-				"RESOLVE.success.crit": "$CONTEXT.critmult",//use the successresolver for a boolean to alter by crit
+				"TARGET.dead": "CONTEXT.whatever",//run a new rule to modify damage based on the context's whatever struct thing
+				"CONTEXT.crit": "CONTEXT.critmult",//use the resolution of the crit for a boolean to alter by crit.
+				//the multmap understands that it gets a string which is a ref to a rule, and then that is assigned a number or string
+				//whenever it executes, it expects to resolve into a number, but it is willing to keep resolving multiple strings
+				//into refs. It errors if it hits the same ref multiple times in such a chain, or if the string doesn't resolve to a ref
 			},
 			keywords: ["physical"],//used for innate damage vulns on enemy and other damage keywords
 		}
-	
-		targetresolvers: {
-			base: {
-				amount: "BASE.target.single",
-				type: "BASE.target.foe",
-			}
-		}
 		
-		successresolvers: {
-			dodge: "CONTEXT.accuracy",//contains code to tell it was a dodge
-			crit: "CONTEXT.crit",
-		},
-		
-		accuracy: {
-		
-		},
-		
+		accuracy: "base.hitchance.accuracy",
 		crit: {
 		
 		},
 		
-		resourceresolvers: {
-			base:
-			{
-				mana: 0,
-				warmup: 50,//special for us in that RESERVE actually sets something based off of this if the setup phase works
-				cooldown: 50,
+		resolvers: {//used for some types of functions that are expected
+			targets: {//targeting, used with OBTAIN for setting and GET to get what was set
+				example: {
+					@paste: "BASE.target.singlefoe",
+					@paste: "BASE.target.selftargeted",
+					//you would just link BASE.target.singlefoe in real use, this is just to show
+					//that @ is commands, here we paste in the singlefoe targeting, then make it self targeted, then go back to single
+					//there are more complicated commands, like "pastehere" which takes a struct telling it where to paste the contents
+					//and what to do if it can't find the spot to paste it
+					amount: "BASE.target.single",
+					type: "BASE.target.foe",
+				},
+				base: "BASE.target.singlefoe",
 			},
+			resources: {//resource usage, RESERVE makes sure you have enough, DEDUCT spends them
+				base: {
+					mana: 0,
+					warmup: 50,//special for us in that RESERVE actually sets something based off of this if the setup phase works
+					cooldown: 50,
+				},
+			}
 		},
 		
 		setup: ["RESERVE FINAL.resources","OBTAIN TARGET FINAL.base"],
@@ -67,7 +71,7 @@
 		execute: ["GET TARGET FINAL.base -> t",//get selected targets, put it in t
 		{
 		withtarget: "EXECUTE.t",//with everything in t, do the following
-		execute: ["RESOLVE FINAL.dodge ? BREAK : NEXT","TARGET.hp @ SUB $FINAL.basedamage"]//if they dodge, exit this nested struct, otherwise deal damage by calulcating damage
+		execute: ["RESOLVE CONTEXT.dodge ? BREAK : NEXT","TARGET.hp @ SUB $FINAL.basedamage"]//if they dodge, exit this nested struct, otherwise deal damage by calulcating damage
 		}//dodge would probably include miss and hit pushing in itself
 		,"FLAVOR FINAL.attackstring"],//use the attackstring to display stuff, the TARGET.hp would push to a list of targets and their damages
 		//list of things to do in a stack
