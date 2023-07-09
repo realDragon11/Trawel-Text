@@ -1,43 +1,82 @@
 {
-	name: "DEFAULT_ABILITY",
-	%dampower: {//resolve when called, custom name
-		"USER.strength": 1 //calling actor's strength, weighted 1
-	}
-	/*
-	&dampower: {//append contents
-		"USER.dexterity": 1
-	}
-	*/
-	$base_damage: {// $ is like a % except instead of weight it uses a formula. % is just sugar for this with weighted formula
-		formula: "MULT",
-		scalars: ["%CONTEXT.dampower","$weapon.physicalpower],//get the ability context's .dampower, and the .physicalpower of the weapon
-		multmap: {
-			"TARGET.alive": 2,//double damage to enemies with the .alive tag set to true, or > 0 if a number
-			"TARGET.dead": "CONTEXT.whatever",//run a new rule to modify damage based on the context's whatever struct thing
-			"RESOLVE.crit": "CONTEXT.critmult",//use the successresolver for a boolean to alter by crit
-		},
-		keywords: ["physical"],//used for innate damage vulns on enemy and other damage keywords
-	}
-
-	targetresolvers: {
-		base: {
-			amount: "single",
-			type: "foe",
-		}
-	}
-	
-	successresolvers: {
-		dodge: "CONTEXT.accuracy",//contains code to tell it was a dodge
-		crit: "CONTEXT.crit",
-	}
-	
-	execute: ["GET TARGET base -> t",//get target, put it in t
+	package: "game.actions",
+	//package rules:
+	//BASE. is a special top level package, it finds the last implemented method (there can be override priority) with that subpath in any package
+	//game. is the actual package most base game things will use- you can override it but in most cases it should be better to just
+	//use your own and assume that anything that wants that subpath will call on BASE, even from within that package
+	//content are actual structs only, a subpackage would use the above format to nest itself
+	contents: [
 	{
-	withtarget: "EXECUTE.t",//with everything in t, do the following
-	execute: ["RESOLVE dodge ? BREAK : NEXT","TARGET.hp @ SUB $basedamage"]//if they dodge, exit this nested struct, otherwise deal damage by calulcating damage
-	}//dodge would probably include miss and hit pushing in itself
-	,"FLAVOR CONTEXT.attackstring"],//use the attackstring to display stuff, the TARGET.hp would push to a list of targets and their damages
-	//list of things to do in a stack
-	//first we get the targetresolver to get base target 
-	cleanup: ["DEDUCT resources"]//deduct mana and stuff from user
+		name: "DEFAULT_ABILITY",
+		dampower: {//resolve when called, custom name
+			"USER.strength": 1 //calling actor's strength, weighted 1
+		}
+		/*
+		&dampower: {//append contents
+			"USER.dexterity": 1
+		}
+		*/
+		base_damage: {
+		// $ is like a % except instead of weight it uses a formula. % is just sugar for this with weighted formula
+		// otherwise you have to wrap it in a formula that tells you how to handle the contents
+			formula: "BASE.formula.MULT",//this formula multiplies everything in scalars unconditionally, and then 
+			//any of the multmap items that resolve or get to >0 or true effectively are present to be multiplied as well
+			scalars: ["%CONTEXT.dampower","USER.weapon.physicalpower],//get the ability context's .dampower, and the .physicalpower of the weapon
+			multmap: {
+				"TARGET.alive": 2,//double damage to enemies with the .alive tag set to true, or > 0 if a number
+				"TARGET.dead": "$CONTEXT.whatever",//run a new rule to modify damage based on the context's whatever struct thing
+				"RESOLVE.success.crit": "$CONTEXT.critmult",//use the successresolver for a boolean to alter by crit
+			},
+			keywords: ["physical"],//used for innate damage vulns on enemy and other damage keywords
+		}
+	
+		targetresolvers: {
+			base: {
+				amount: "BASE.target.single",
+				type: "BASE.target.foe",
+			}
+		}
+		
+		successresolvers: {
+			dodge: "CONTEXT.accuracy",//contains code to tell it was a dodge
+			crit: "CONTEXT.crit",
+		},
+		
+		accuracy: {
+		
+		},
+		
+		crit: {
+		
+		},
+		
+		resourceresolvers: {
+			base:
+			{
+				mana: 0,
+				warmup: 50,//special for us in that RESERVE actually sets something based off of this if the setup phase works
+				cooldown: 50,
+			},
+		},
+		
+		setup: ["RESERVE FINAL.resources","OBTAIN TARGET FINAL.base"],
+		//RESERVE prevents the action from being queued if you don't have enough resources. It also sets the current actable timer
+		//on the actor to the warmup if the setup action doesn't return a fail state. It does not change anything else
+		//OBTAIN TARGET asks the ai or ui to get whatever targets they need from that targeting function
+		
+		execute: ["GET TARGET FINAL.base -> t",//get selected targets, put it in t
+		{
+		withtarget: "EXECUTE.t",//with everything in t, do the following
+		execute: ["RESOLVE FINAL.dodge ? BREAK : NEXT","TARGET.hp @ SUB $FINAL.basedamage"]//if they dodge, exit this nested struct, otherwise deal damage by calulcating damage
+		}//dodge would probably include miss and hit pushing in itself
+		,"FLAVOR FINAL.attackstring"],//use the attackstring to display stuff, the TARGET.hp would push to a list of targets and their damages
+		//list of things to do in a stack
+		//first we get the targetresolver to get base target 
+		finish: ["DEDUCT CONTEXT.resources"]//deduct mana and stuff from user. DEDUCT knows which ones need to be subtracted if present, and how
+		
+		//FINAL and CONTEXT are similar in that they use the final implementation of something in our layer, except FINAL implies that we're designating a middlemen path, usually a 'resolver'
+		//note that this is very prototype, and to fix modularity we'll need to come up with a better method of 
+		//chaining target/dodge/damage/effect/display code
+	},
+	],
 }
