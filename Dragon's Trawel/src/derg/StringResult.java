@@ -32,4 +32,11 @@ public abstract class StringResult {
 	public List<String> backing(){
 		return null;
 	}
+	/**
+	 * uses context, if not needed will just call next()
+	 * @return a (probably semi-random) string, usually from a list
+	 */
+	public String with(StringContext context) {
+		return next();
+	}
 }

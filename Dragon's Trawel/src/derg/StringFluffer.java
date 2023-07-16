@@ -16,9 +16,9 @@ import java.util.ArrayList;
  */
 public class StringFluffer {
 	
-	public static String fluffChainFinal(String str, StringFluffer ...fluffs) {
+	public static String fluffChainFinal(String str, StringContext context, StringFluffer ...fluffs) {
 		for (StringFluffer fluff: fluffs) {
-			str = fluff.process(str);
+			str = fluff.processContext(str,context);
 		}
 		return str.replaceAll("\\|","$");
 	}
@@ -98,6 +98,7 @@ public class StringFluffer {
 	
 	private boolean realOperation = false;
 	private String lastResult;
+	private StringContext context = null;
 	
 	/**
 	 * SHOULD NOT BE SET ANYHWHERE BUT ON PROCESS START
@@ -139,11 +140,18 @@ public class StringFluffer {
 	}
 
 	/**
-	 * processes all command in string. Default metadata
+	 * processes all command in string. Default metadata and no context
 	 * @param str
 	 * @return a new string, or str if there was no changes
 	 */
 	public String process(String str) {
+		context = null;
+		currentTask = new MetaData(str);
+		return processInternal(str);
+	}
+	
+	public String processContext(String str,StringContext context) {
+		this.context = context;
 		currentTask = new MetaData(str);
 		return processInternal(str);
 	}
@@ -171,6 +179,7 @@ public class StringFluffer {
 	}
 	
 	public String processCustom(String str, int globalDupes, int localDupes,boolean strictDupe) {
+		context = null;
 		currentTask= new MetaData(str,globalDupes,localDupes,strictDupe);
 		return processInternal(str);
 	}
@@ -265,7 +274,7 @@ public class StringFluffer {
 			return null;
 		}
 		realOperation = true;
-		return sublist.next();
+		return sublist.with(context);
 	}
 
 	
