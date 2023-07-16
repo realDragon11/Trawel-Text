@@ -63,6 +63,9 @@ public class mainGame {
 	public static int attackType = 2;
 	
 	public static boolean delayWaits = false;
+	
+	private static boolean finalSetup1 = false;
+	private static boolean basicSetup1 = false;
 
 	
 	//constructors
@@ -140,8 +143,7 @@ public class mainGame {
 	
 	
 	private void credits() {
-		extra.println("Made by Brian Malone");
-		//extra.println("Book writer: Tibo Smolders");
+		extra.println("Made by Brian 'dragon' Malone");
 		extra.println("With thanks to the GameMaker discords");
 		extra.println("Achievement icons can be found on game-icons.net");
 		extra.println("Music by manicInsomniac");
@@ -149,6 +151,24 @@ public class mainGame {
 		extra.println("Character, armor, and weapon art by SmashCooper and Duster. Background art by Damrok and he-who-shall-not-be-named");
 		extra.println("Sounds:");
 		extra.println("Stock Media provided by Soundrangers / FxProSound / SoundIdeasCom / PrankAudio / hdaudio / agcnf_media / sounddogs / AbloomAudio / Yurikud / SoundMorph => through Pond5");
+	}
+	
+	private static void baseSetup1() {
+		if (!basicSetup1) {
+			new MaterialFactory();
+			new RaceFactory();
+			new TargetFactory();
+			new StyleFactory();
+			new Oracle().load();
+			new TauntsFactory();
+			new BookFactory();
+			new BumperFactory();
+			new WeaponAttackFactory();
+			new TownFlavorFactory();
+			new QuestReactionFactory();
+			story = new StoryNone();
+			basicSetup1 = true;
+		}
 	}
 
 	
@@ -163,7 +183,8 @@ public class mainGame {
 		extra.println("7 weapon tests");
 		extra.println("8 rarity tests");
 		switch(extra.inInt(8)) {
-		case 1: adventure1();break;
+		case 1: 
+			adventure1();break;
 		case 2:extra.println("This gamemode can only be played in the command prompt."); rtrawel.TestRunner.run();break;
 		case 3:
 			SaveHandler.clean();
@@ -190,12 +211,15 @@ public class mainGame {
 		case 5: saveTest();break;
 		case 6: Calender.timeTest();
 		break;
-		case 7: try {
+		case 7: 
+			baseSetup1();
+			try {
 				WeaponAttackFactory.weaponMetrics();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}break;
 		case 8:
+			baseSetup1();
 			try {
 				Weapon.duoRarityMetrics();
 			} catch (FileNotFoundException e) {
@@ -205,6 +229,7 @@ public class mainGame {
 	}
 	
 	private void saveTest() {
+		baseSetup1();
 		for (int j = 0;j < 10;j++) {
 			extra.println("try: "+j);
 			for (int i = 1;i<9;i++ ) {
@@ -332,6 +357,7 @@ public class mainGame {
 	}
 	
 	private void modelMode() {
+		baseSetup1();
 		Person manOne;
 		manOne = RaceFactory.makeOld(2);//new Person(starting_level,false,Race.RaceType.HUMANOID,null);
 			 new Player(manOne);
@@ -404,18 +430,6 @@ public class mainGame {
 			
 		}
 		try {
-		new MaterialFactory();
-		new RaceFactory();
-		new TargetFactory();
-		new StyleFactory();
-		new Oracle().load();
-		new TauntsFactory();
-		new BookFactory();
-		new BumperFactory();
-		new WeaponAttackFactory();
-		new TownFlavorFactory();
-		new QuestReactionFactory();
-		story = new StoryNone();
 		
 		new Networking();
 		if (autoConnect) {
@@ -674,6 +688,11 @@ public class mainGame {
 		
 		
 		public void adventure1(){
+			baseSetup1();
+			if (!finalSetup1) {
+				randomLists.init();
+				finalSetup1 = true;
+			}
 			extra.println("Generating world...");
 			World world = WorldGen.eoano();
 			story = new StoryDeathWalker();
