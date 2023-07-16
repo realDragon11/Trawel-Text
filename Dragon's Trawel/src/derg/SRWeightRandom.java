@@ -14,16 +14,16 @@ import com.github.tommyettinger.random.WhiskerRandom;
 public class SRWeightRandom extends StringResult {
 
 	private List<StringFloatWeight> contents;
-	private Predicate<Float[]> tolerance;
+	private ToleranceFunction<Boolean,Float,Float> tolerance;
 	
 	@FunctionalInterface
-	interface ToleranceFunction<Return, a, b> {
+	public interface ToleranceFunction<Return, a, b> {
 	    public Return apply(a one, b two);
 	}
 	
 	private static EnhancedRandom random = new WhiskerRandom(); 
 	
-	public SRWeightRandom(List<StringFloatWeight> list,Predicate<Float[]> tolerance) {
+	public SRWeightRandom(List<StringFloatWeight> list,ToleranceFunction<Boolean,Float,Float> tolerance) {
 		contents = list;
 		this.tolerance = tolerance;
 	}
@@ -49,12 +49,12 @@ public class SRWeightRandom extends StringResult {
 		return contents.stream().flatMap(a -> Arrays.asList(new String[] {a.result}).stream()).collect(Collectors.toList());
 	}
 	
-	private static final ToleranceFunction<Float[],Float,Float> flattener = (Float a, Float b) -> {return new Float[] {a,b};};
+	private static final Predicate<Object[]> flattener = (Object[] fs) -> {return ((ToleranceFunction<Boolean,Float,Float>)fs[0]).apply((float)fs[1], (float)fs[2]);};
 	
 	@Override
 	public String with(StringContext context) {
 		//context.floatMap.getOrDefault(fw.weights, -1f)
-		contents.stream().filter(a -> a.weights.stream().flatMap(flattener).allMatch(tolerance));
+		contents.stream().filter(a -> a.weights.stream().flatMap(base -> {return Arrays.asList(new Object[][] {new Object[] {tolerance,base.f,context.floatMap.getOrDefault(base.s, -1f)}}).stream();}).allMatch(flattener));
 		//.filter((a) -> ((context.floatMap.getOrDefault(fw.weights, -1f))));
 		//context.floatMap.getOrDefault(s.weights, -1f)
 		//allMatch
