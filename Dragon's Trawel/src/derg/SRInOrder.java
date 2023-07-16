@@ -21,7 +21,13 @@ public class SRInOrder extends StringResult {
 		return contents.get(marker++%contents.size());
 	}
 	
-	public List<String> getContents() {
+	@Override
+	public String any(){
+		return contents.get((int)(Math.random()*contents.size()));
+	}
+	
+	@Override
+	public List<String> backing(){
 		return contents;
 	}
 	

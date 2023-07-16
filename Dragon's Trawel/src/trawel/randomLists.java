@@ -16,18 +16,22 @@ import derg.StringResult;
 public class randomLists {
 	//holding lists, internal
 	//initers
-	private static StringResult commonElements, rareElements, randMats = null, colorList, normalFirstNames;
+	private static StringResult commonElements, rareElements, randMats = null, colorList, normalFirstNames, theTitles;
 	//NOTE: any =null means it should use a lazyloaded getter instead
 	static {
 		commonElements = new SRPlainRandom(Arrays.asList("earth","wind","fire","air","water","ice","storm","thunder","flame","lightning","frost","stone"));
 		rareElements = new SRPlainRandom(Arrays.asList("grass","metal","mountain","ocean","sky","flesh","life","death","balance","rust","pie","math","soul","heart","word"));
 		colorList = new SRPlainRandom("green","blue","yellow","purple","red","orange","white","black","grey","cyan","silver","maroon","rose","chestnut","vermilion","russet","scarlet","rust","auburn","mahogany","pumpkin","chocolate","copper","bronze","sepia","ochre","brown","cinnamon","tan","orange","peach","goldenrod","amber","saffron","ecru","gold","pearl","buff","flax","brass","lemon","cream","beige","olive","ivory","lime","chartreuse","emerald","jade","aquamarine","turquoise","teal","aqua","cerulean","charcoal","azure","cobalt","lavender","periwinkle","amethyst","violet","indigo","heliotrope","liliac","plum","fuchsia","mauve","puce","crimson","pink","cardinal","carmine");
+		//https://www.ssa.gov/oact/babynames/decades/century.html - manually screened and inputed for 'normal' sounding names	
+		normalFirstNames = new SRPlainRandom("Fred","Dave","Brian","Thomas","Alex","Bob","Susy","Cindy","Jessica","Jamie","James","Mary","John","Jennifier","Robert","Linda","Barbara","Susan","Margaret","Sarah","Karen","Nancy","Betty","Lisa","Michael","William","David","Richard","Joeseph","Charles","Christopher","Daniel","Matthew","Anthony","Donald","Mark","Paul","Steven","Andrew","George","Kevin","Edward","Timothy","Jason","Jeffrey","Ryan","Gary","Jacob","Nicholas","Eric","Stephen","Jonathan","Larry","Justin","Scott","Frank","Brandon","Sandra","Ashley","Kimberly","Donna","Carol","Michelle","Emily","Amanda","Helen","Melissa","Stephanie","Laura","Rebecca","Sharon","Cynthisa","Kathleen","Amy","Shirly","Anna","Angela","Ruth","Brenda","Nicole","Katherine","Benjamin","Samuel","Patrick","Jack","Dennis","Jerry","Tyler","Aaron","Henry","Jose","Peter","Adam","Zachary","Nathan","Walter","Harold","Kyle","Carl","Arthur","Roger","Keith","Jeremy","Catherine","Christine","Samantha","Debra","Janet","Rachel","Carolyn","Emma","Maria","Heather","Diane","Julie","Joyce","Evelyn","Joan","Christina","Kelly","Victoria","Lauren","Martha","Judith","Cheryl","Megan","Andrea","Ann","Terry","Lawrence","Sean","Christian","Albert","Joe","Ethan","Austin","Jesse","Willie","Billy","Bryan","Bruce","Jordan","Ralph","Roy","Noah","Dylan","Eugene","Wayne","Alan","Jaun","Louis","Russell","Gabriel","Randy","Philip","Alice","Jean","Doris","Kathryn","Hannah","Oliva","Gloria","Marie","Teresa","Sara","Janice","Julia","Grace","Judy","Theresa","Rose","Denise","Marilyn","Amber","Madison","Danielle","Brittany","Diana","Abigail","Jane","Harry","Vincent","Bobby","Johnny","Logan","Natalie","Lori","Tiffany","Alexis","Kayla");
+		theTitles = new SRPlainRandom("daring","terrible","great","strong","mighty","amazing","fantastic","awesome","beheader","wise", "gullible","deceitful", "trickster", "hero", "protector", "devout", "crusader", "loyal", "disloyal", "epic", "legend", "myth", "cunning", "kind","rich", "poor", "nomad", "rebel", "creator", "destroyer","Hungry","Obnoxious","Grumpy","Mediocre","dreaded","feared","loathed","odious","vile","adaptable","adventurous","ambitious","amiable","courageous","diligent","persistent","witty","determined","humble");
 	}
 	
 	//our lazyloaded lists
 	/**
 	 * lazyloaded random material
 	 * note that this is string only and shouldn't be used for anything but fluff
+	 * it also doesn't care about weight
 	 */
 	public static String getRandMat() {
 		if (randMats == null) {
@@ -56,7 +60,10 @@ public class randomLists {
 		if (extra.chanceIn(2,3)) {
 			return rareElements.next();
 		}
-		return getRandMat();
+		if (extra.chanceIn(2,3)) {
+			return MaterialFactory.randWeapMat().name;
+		}
+		return MaterialFactory.randArmorMat().name;
 	}
 	
 	/**
@@ -73,12 +80,11 @@ public class randomLists {
 	 * @return name (string)
 	 */
 	public static String randomFirstName() {
-	return(String)extra.choose("Fred","Dave","Brian","Thomas","Alex","Bob","Susy","Cindy","Jessica","Jamie","James","Mary","John","Jennifier","Robert","Linda","Barbara","Susan","Margaret","Sarah","Karen","Nancy","Betty","Lisa","Michael","William","David","Richard","Joeseph","Charles","Christopher","Daniel","Matthew","Anthony","Donald","Mark","Paul","Steven","Andrew","George","Kevin","Edward","Timothy","Jason","Jeffrey","Ryan","Gary","Jacob","Nicholas","Eric","Stephen","Jonathan","Larry","Justin","Scott","Frank","Brandon","Sandra","Ashley","Kimberly","Donna","Carol","Michelle","Emily","Amanda","Helen","Melissa","Stephanie","Laura","Rebecca","Sharon","Cynthisa","Kathleen","Amy","Shirly","Anna","Angela","Ruth","Brenda","Nicole","Katherine","Benjamin","Samuel","Patrick","Jack","Dennis","Jerry","Tyler","Aaron","Henry","Jose","Peter","Adam","Zachary","Nathan","Walter","Harold","Kyle","Carl","Arthur","Roger","Keith","Jeremy","Catherine","Christine","Samantha","Debra","Janet","Rachel","Carolyn","Emma","Maria","Heather","Diane","Julie","Joyce","Evelyn","Joan","Christina","Kelly","Victoria","Lauren","Martha","Judith","Cheryl","Megan","Andrea","Ann","Terry","Lawrence","Sean","Christian","Albert","Joe","Ethan","Austin","Jesse","Willie","Billy","Bryan","Bruce","Jordan","Ralph","Roy","Noah","Dylan","Eugene","Wayne","Alan","Jaun","Louis","Russell","Gabriel","Randy","Philip","Alice","Jean","Doris","Kathryn","Hannah","Oliva","Gloria","Marie","Teresa","Sara","Janice","Julia","Grace","Judy","Theresa","Rose","Denise","Marilyn","Amber","Madison","Danielle","Brittany","Diana","Abigail","Jane","Harry","Vincent","Bobby","Johnny","Logan","Natalie","Lori","Tiffany","Alexis","Kayla");
-	//https://www.ssa.gov/oact/babynames/decades/century.html - manually screened and inputed for 'normal' sounding names	
+		return normalFirstNames.next();
 	}
 	
 	public static String randomMighty() {
-		return "the " + extra.capFirst(extra.choose("Daring","Terrible","Great","Strong","Mighty","Amazing","Fantastic","Awesome","Beheader","Wise", "Gullible","Deceitful", "Trickster", "Hero", "protector", "devout", "crusader", "loyal", "disloyal", "epic", "legend", "myth", "cunning", "kind","rich", "poor", "nomad", "rebel", "creator", "destroyer","Hungry","Obnoxious","Grumpy","Mediocre","dreaded","feared","loathed","odious","vile","adaptable","adventurous","ambitious","amiable","courageous","diligent","persistent","witty","determined","humble"));
+		return "the " + extra.capFirst(theTitles.next());
 	}
 	
 	public static String randomDancer() {
