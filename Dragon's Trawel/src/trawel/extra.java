@@ -280,13 +280,17 @@ public final class extra {
 			return(str);
 		}
 
-		//TODO: fix
+		/*
 		public static final double hrandom() {
 			if (randRange(1,5) != 5) {
 			return  (((double)randRange(45,55))/100.0);}else {
 				return Math.random();
 			}
-		}
+		}*/
+		
+		public static final double hrandom() {
+			   return ((Long.bitCount(rand.nextLong()) - 32. + rand.nextDouble() - rand.nextDouble()) / 66.0 + 0.5);
+		}//given by TEtt from squidsquad
 		
 		
 		public static void specialPrint(int[] in,String...strs) {
