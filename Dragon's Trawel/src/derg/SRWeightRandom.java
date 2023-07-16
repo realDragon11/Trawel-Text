@@ -54,11 +54,13 @@ public class SRWeightRandom extends StringResult {
 	@Override
 	public String with(StringContext context) {
 		//context.floatMap.getOrDefault(fw.weights, -1f)
-		contents.stream().filter(a -> a.weights.stream().flatMap(base -> {return Arrays.asList(new Object[][] {new Object[] {tolerance,base.f,context.floatMap.getOrDefault(base.s, -1f)}}).stream();}).allMatch(flattener));
+		List<StringFloatWeight> list = contents.stream()
+		.filter(a -> a.weights.stream().flatMap(base -> {return Arrays.asList(new Object[][] {new Object[] {tolerance,base.f,context.floatMap.getOrDefault(base.s, -1f)}}).stream();}).allMatch(flattener))
+		.collect(Collectors.toList());
 		//.filter((a) -> ((context.floatMap.getOrDefault(fw.weights, -1f))));
 		//context.floatMap.getOrDefault(s.weights, -1f)
 		//allMatch
-		return any();
+		return list.get(random.nextInt(list.size())).result;
 	}
 	
 	//not keen to have so much overhead, but tuples
