@@ -46,9 +46,9 @@ public class Person implements java.io.Serializable{
 	public int lightArmorLevel = 0, heavyArmorLevel = 0, edrLevel = 0;
 	public boolean hasEnduranceTraining = false;
 	
-	private ArrayList<Skill> skills = new ArrayList<Skill>();
+	private List<Skill> skills = new ArrayList<Skill>();
 	private boolean noAILevel;
-	private ArrayList<Effect> effects;
+	private List<Effect> effects;
 	private RaceFlag rFlag;
 
 	public TargetFactory.TargetType targetOverride = null;
@@ -156,7 +156,7 @@ public class Person implements java.io.Serializable{
 	}
 	
 	/**
-	 * Quene an attack for usage, which will be completed when the speed fills up
+	 * Queue an attack for usage, which will be completed when the speed fills up
 	 * @param newAttack (Attack)
 	 */
 	public void setAttack(Attack newAttack){
@@ -166,7 +166,7 @@ public class Person implements java.io.Serializable{
 	}
 	
 	/**
-	 * Returns whether there is an attack quened or not
+	 * Returns whether there is an attack queued or not
 	 * @return has an attack already (boolean)
 	 */
 	public boolean isAttacking() {
@@ -225,7 +225,7 @@ public class Person implements java.io.Serializable{
 		if (hasSkill(Skill.BEER_BELLY)) {
 			if (takeBeer()) {
 				hp+=level*5;
-			}	
+			}
 		}
 		if (this.hasSkill(Skill.LIFE_MAGE)) {
 			hp+=this.getMageLevel();
@@ -252,7 +252,8 @@ public class Person implements java.io.Serializable{
 				p+=1*defLvl;
 			}else {
 				if (this.hasSkill(Skill.PARRY)) {
-					s+=2*(defLvl);//want to make skill matter more but don't want to exponent it
+					s+=2*(defLvl);
+					b+=1*(defLvl);
 				}
 			}
 		}else {
@@ -262,7 +263,8 @@ public class Person implements java.io.Serializable{
 			p+=1*defenderLevel;
 		}else {
 			if (this.hasSkill(Skill.PARRY)) {
-				s+=2*(defenderLevel);//want to make skill matter more but don't want to exponent it
+				s+=2*(defenderLevel);
+				b+=1*(defenderLevel);
 			}
 		}}
 		bag.resetArmor(s,b,p);
@@ -292,40 +294,46 @@ public class Person implements java.io.Serializable{
 	}
 	
 	/**
-	 * Adds Xp. Returns true if this causes a level up.
+	 * Adds xp. Returns true if this causes a level up.
 	 * @param x (int)
 	 * @return has leveled up (boolean)
 	 */
 	public boolean addXp(int x) {
 		xp += x;
-		if (x > 0) {
-		extra.println(this.getName() + " has " + xp + "/" + level*level + " xp toward level " + (level+1) + ". +" + x + "xp.");
+		int pluslevel = level;
+		if (xp >= pluslevel*pluslevel) {
+			xp-=pluslevel*pluslevel;
+			pluslevel++;
 		}
-		if (xp >= level*level) {
-			xp-=level*level;
-			level++;
-			//extra.println(level + " " + xp + " " + x);
-			if (isPlayer() == false) {
-			intellect++;}else {
-				Networking.send("PlayDelay|sound_magelevel|1|");
-				Networking.sendStrong("Leaderboard|Highest Level|" + level+ "|");
-			}
-			maxHp+=50;
-			if (this.getBag().getRace().racialType != Race.RaceType.BEAST) {
-			//extra.println("\"" + brag.getBoast() + "\" " + getName() + " " + extra.choose("declares","boasts","states firmly")+ ".");}
+		if (pluslevel > level) {
+			extra.println(this.getName() + " leveled up " + (pluslevel-level) + "times and is now level " + (pluslevel) + ".");
+			computeLevels(pluslevel-level);
+		}
+		extra.println(this.getName() + " has " + xp + "/" + level*level + " xp toward level " + (level+1) + ". +" + x + "xp.");
+		return pluslevel > level;
+	}
+	
+	/**
+	 * call after leveling up
+	 * @param levels
+	 * @return
+	 */
+	public void computeLevels(int levels) {
+			maxHp+=50*levels;
+			if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 				BarkManager.getBoast(this, false);
 			}
-			addXp(0);//recursive level easy trick
-			this.setSkillPoints(this.getSkillPoints() + 1);
+			this.setSkillPoints(this.getSkillPoints() + level);
 			if (this.isPlayer()) {
+				Networking.send("PlayDelay|sound_magelevel|1|");
+				Networking.sendStrong("Leaderboard|Highest Level|" + level+ "|");
 				playerLevelUp();
 			}else {
 				if (!noAILevel) {
-				this.AILevelUp();}
+					intellect+=levels;
+					this.AILevelUp();
+				}
 			}
-			return true;
-		}
-		return false;
 	}
 	
 	public void playerLevelUp() {
@@ -1000,7 +1008,7 @@ public class Person implements java.io.Serializable{
 		this.skillPoints = skillPoints;
 	}
 	
-	public ArrayList<Skill> getSkills(){
+	public List<Skill> getSkills(){
 		return skills;
 	}
 	
@@ -1047,19 +1055,6 @@ public class Person implements java.io.Serializable{
 		return extra.zeroOut(mageLevel+magePow-burnouts());
 	}
 
-	public void addXpSilent(int x) {
-		xp += x;
-		if (xp >= level*level) {
-			xp-=level*level;
-			level++;
-			if (isPlayer() == false) {
-			intellect++;}
-			maxHp+=50;
-			addXpSilent(0);//recursive level easy trick
-			this.setSkillPoints(this.getSkillPoints() + 1);
-		}
-	}
-
 	public int getDefenderLevel() {
 		return extra.zeroOut(defenderLevel+defPow-burnouts());
 	}
@@ -1074,9 +1069,8 @@ public class Person implements java.io.Serializable{
 		}
 	}
 	
-	
 	public void cureEffects() {
-		effects.clear();//will need to be more complex if there ever are negative effects
+		effects.clear();//will need to be more complex if there ever are positive longterm effects
 	}
 	
 	public int effectsSize() {
@@ -1251,9 +1245,9 @@ public class Person implements java.io.Serializable{
 		scar = b;
 	}
 	
-	public float getPitch() {
+	public float getPitch() {//TODO: examine for what it does besides just set it base, probably missing rng
 		if (pitch < this.getBag().getRace().minPitch || pitch > this.getBag().getRace().maxPitch) {
-			pitch = extra.curveLerp(this.getBag().getRace().minPitch, this.getBag().getRace().maxPitch,.7f);
+			pitch = extra.curveLerp(this.getBag().getRace().minPitch, this.getBag().getRace().maxPitch,(float)Math.random());//TODO: was .7f, now is rng
 		}//extra.randRange((int)this.getBag().getRace().minPitch*1000,(int)this.getBag().getRace().maxPitch*1000)/1000.0f;}
 		return pitch;
 	}

@@ -241,6 +241,7 @@ public class Player extends SuperPerson{
 		
 	}
 	public void addEArt(EArt earta) {
+		extra.println("You have chosen an Exotic Art. You may now spend skillpoints on it from the skill menu. You can have a max of 2.");
 		this.eArts.add(earta);
 		switch (earta) {
 		case ARCANIST:
