@@ -15,6 +15,21 @@ import java.util.ArrayList;
  * created 7/16/2023
  */
 public class StringFluffer {
+	
+	public static String fluffChainFinal(String str, StringFluffer ...fluffs) {
+		for (StringFluffer fluff: fluffs) {
+			str = fluff.process(str);
+		}
+		return str.replaceAll("\\|","$");
+	}
+	
+	public static String staticFinalize(String str) {
+		return str.replaceAll("\\|","$");
+	}
+	
+	public String finalize(String str) {
+		return lastResult.replaceAll("\\|","$");
+	}
 
 	
 	public static Pattern commandMatch = Pattern.compile("\\|[^!\\(]+!?\\([^)]+\\)");
@@ -82,6 +97,7 @@ public class StringFluffer {
 	public final boolean strictDupe;
 	
 	private boolean realOperation = false;
+	private String lastResult;
 	
 	/**
 	 * SHOULD NOT BE SET ANYHWHERE BUT ON PROCESS START
@@ -150,6 +166,7 @@ public class StringFluffer {
 		}//note that hilariously it will not respect the order if the same command is used more than once, but that shouldn't matter
 		//that could cause some really weird behavior but that would mean state elsewhere impacted a replace, which is
 		//not how this class is supposed to work
+		lastResult = working;
 		return working;
 	}
 	
@@ -247,6 +264,7 @@ public class StringFluffer {
 		if (sublist == null) {
 			return null;
 		}
+		realOperation = true;
 		return sublist.next();
 	}
 
