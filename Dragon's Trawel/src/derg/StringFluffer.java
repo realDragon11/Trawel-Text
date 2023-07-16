@@ -35,7 +35,7 @@ public class StringFluffer {
 	 */
 	
 	//StringFluffers call on StringResults, so they can share lists
-	public Map<String,StringResult> shufflers = new HashMap<String,StringResult>();
+	private Map<String,StringResult> shufflers = new HashMap<String,StringResult>();
 	/**
 	 * command syntax is type:sublist
 	 * types must be at least two characters long, and alphabet only
@@ -102,6 +102,24 @@ public class StringFluffer {
 		localDupes = 3;
 		strictDupe = true;
 	}
+	
+	public StringFluffer addMapping(String name, StringResult sublist) {
+		shufflers.put(name, sublist);
+		return this;
+	}
+	
+	//rip tuples
+	public Object[][] getMappings() {
+		
+		Object[][] arr = new Object[shufflers.size()][2];
+		int i = 0;
+		for (String key: shufflers.keySet()) {
+			arr[i][0] = key;
+			arr[i][1] = shufflers.get(key);
+			i++;
+		}
+		return arr;
+	}
 
 	/**
 	 * processes all command in string. Default metadata
@@ -109,10 +127,20 @@ public class StringFluffer {
 	 * @return a new string, or str if there was no changes
 	 */
 	public String process(String str) {
-		realOperation = false;//we didn't complete a command yet
 		currentTask = new MetaData(str);
+		return processInternal(str);
+	}
+	private String processInternal(String str) {
+		realOperation = false;//we didn't complete a command yet
+		String working = str;
+		// TODO Auto-generated method stub
 		//process should operate backwards
-		return str;
+		return working;
+	}
+	
+	public String processCustom(String str, int globalDupes, int localDupes,boolean strictDupe) {
+		currentTask= new MetaData(str,globalDupes,localDupes,strictDupe);
+		return processInternal(str);
 	}
 	/**
 	 * processes one command
@@ -133,7 +161,8 @@ public class StringFluffer {
 		}
 		String result = null;
 		int rejections = 0;
-		while (result == null) {
+		int maxtrials = 2+Math.max(10, Math.max(currentTask.getLocalDupes(),currentTask.getGlobalDupes()));
+		while (result == null && rejections < maxtrials) {
 			result = srArr[(int)(Math.random()*srArr.length)].next();
 			if (rejections < currentTask.getGlobalDupes()) {
 				Pattern resultMatch = resultMatcher(result);
@@ -160,9 +189,15 @@ public class StringFluffer {
 					}
 				}
 			}
+			if (result == null) {//shouldn't be allowed to happen, but we fail gracefully
+				rejections++;
+			}
 		}
 		if (result != null) {
 			currentTask.results.add(result);
+		}else {
+			//we didn't terminate earlier on, soft error because we shouldn't have even bothered
+			result = command.replace("|","!why!");
 		}
 		return result;
 	}
@@ -188,10 +223,7 @@ public class StringFluffer {
 		}
 		return sublist.next();
 	}
-	
-	public MetaData customMeta(String str, int globalDupes, int localDupes,boolean strictDupe) {
-		return new MetaData(str,globalDupes,localDupes,strictDupe);
-	}
+
 	
 	protected class MetaData {
 		//flag: avoid substring elsewhere
