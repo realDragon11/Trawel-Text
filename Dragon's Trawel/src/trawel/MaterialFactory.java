@@ -834,7 +834,7 @@ public class MaterialFactory {
 	}
 	
 	public static Material randWeapMat() {
-		return matList.get(armMats.random(juneRand));
+		return matList.get(weapMats.random(juneRand));
 	}
 	
 	public static Material randMat(Boolean armor, Boolean weapon) {
