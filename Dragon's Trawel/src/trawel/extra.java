@@ -292,6 +292,9 @@ public final class extra {
 			   return ((Long.bitCount(rand.nextLong()) - 32. + rand.nextDouble() - rand.nextDouble()) / 66.0 + 0.5);
 		}//given by TEtt from squidsquad
 		
+		public static final float hrandomFloat() {
+			return ((Long.bitCount(rand.nextLong()) - 32f + rand.nextFloat() - rand.nextFloat()) / 66f + 0.5f);
+		}
 		
 		public static void specialPrint(int[] in,String...strs) {
 			int j = 0;
