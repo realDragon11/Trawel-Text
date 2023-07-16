@@ -3,6 +3,7 @@ package derg;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -26,6 +27,15 @@ public class SRWeightRandom extends StringResult {
 	public SRWeightRandom(List<StringFloatWeight> list,ToleranceFunction<Boolean,Float,Float> tolerance) {
 		contents = list;
 		this.tolerance = tolerance;
+	}
+	
+	public SRWeightRandom addWeight(String name, String[] strs, Float[] floats) {
+		final List<FloatWeight> finfws = new ArrayList<FloatWeight> ();
+		for (int i = strs.length-1;i >=0;i--) {
+			finfws.add(new FloatWeight(strs[i],floats[i]));
+		}
+		contents.add(new StringFloatWeight(name,finfws));
+		return this;
 	}
 
 	@Override
@@ -54,7 +64,7 @@ public class SRWeightRandom extends StringResult {
 	@Override
 	public String with(StringContext context) {
 		List<StringFloatWeight> list = contents.stream()
-		.filter(a -> a.weights.stream().flatMap(base -> {return Arrays.asList(new Object[][] {new Object[] {tolerance,base.f,context.floatMap.getOrDefault(base.s, -1f)}}).stream();}).allMatch(flattener))
+		.filter(a -> a.weights.stream().flatMap(base -> {return Arrays.asList(new Object[][] {new Object[] {tolerance,base.f,context.floatMap.getOrDefault(base.s, -2f)}}).stream();}).allMatch(flattener))
 		.collect(Collectors.toList());
 		return list.get(random.nextInt(list.size())).result;
 	}
@@ -82,6 +92,10 @@ public class SRWeightRandom extends StringResult {
 			//this.floats = floats;
 			//this.strings = strings;
 			this.weights = Arrays.asList(weights);
+		}
+		public StringFloatWeight(String result, List<FloatWeight> weights) {
+			this.result = result;
+			this.weights = weights;
 		}
 		
 		/*
