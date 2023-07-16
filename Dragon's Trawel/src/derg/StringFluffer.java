@@ -3,6 +3,8 @@ package derg;
 import java.util.regex.Pattern;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 
 /**
@@ -48,25 +50,32 @@ public class StringFluffer {
 	//TODO: decide if I want some 'ignore X sublists if present' for better chain control
 	/**
 	 * Reject results that occur ANYWHERE in the string we're dealing with, up to X times per command attempt
+	 * the nth attempt where n = the dupecount will ignore this restriction
 	 * typically should be set to 10 at max to cut off bad cases
 	 * applied in metadata, 0 is no rejections. -1 used as a command code, so do not set to that
 	 * 
 	 * suggested default is 0 (off)
 	 */
-	public final int avoidGlobalDupes;
+	public final int globalDupes;
 	/**
 	 * Reject results that occur in a previous command result, up to X times per command attempt
+	 * the nth attempt where n = the dupecount will ignore this restriction
 	 * global and local dupes are not added together, whichever limit is hit first is applied
+	 * each time it fails, it will try another random list it has, if in a multicommand
+	 * 
 	 * typically should be set to 10 at max to cut off bad cases
 	 * applied in metadata, 0 is no rejections. -1 used as a command code, so do not set to that
 	 * 
 	 * suggested default is 3
 	 */
-	public final int avoidLocalDupes;
+	public final int localDupes;
 	
 	/**
 	 * when strictdupe = true, dupes only count if the found dupe doesn't have alphabetical characters on either side
 	 * so, ".test!" and " test)" would both still count under strict, but "atest" would not
+	 * 
+	 * when off, localdupes checks if any prior results are contained with the new result as well
+	 * 
 	 * suggested default is true
 	 */
 	public final boolean strictDupe;
@@ -89,8 +98,8 @@ public class StringFluffer {
 	 * default StringFluffer can handle all base commands, and is good as a fallback
 	 */
 	public StringFluffer() {
-		avoidGlobalDupes = 0;
-		avoidLocalDupes = 3;
+		globalDupes = 0;
+		localDupes = 3;
 		strictDupe = true;
 	}
 
@@ -101,7 +110,7 @@ public class StringFluffer {
 	 */
 	public String process(String str) {
 		realOperation = false;//we didn't complete a command yet
-		currentTask = getMeta(str);
+		currentTask = new MetaData(str);
 		//process should operate backwards
 		return str;
 	}
@@ -112,16 +121,59 @@ public class StringFluffer {
 	 * if the switchLookup was able to detect a malformed request, it will return the command with the pipe replaced with a !
 	 */
 	public String switchLookup(String command) {
+		//result = command.replace("|","!"); //this isn't actually malformed :|
 		String[] dataArr = commandDataMatch.matcher(command).group().split(",");
+		StringResult[] srArr = new StringResult[dataArr.length];
+		for (int i = 0;i < dataArr.length; i++) {
+			StringResult cur = shufflers.get(dataArr[i]);
+			if (cur == null) {
+				return null;
+			}
+			srArr[i] = cur;
+		}
 		String result = null;
-		try {
-			result = lookup(dataArr[0]);
-		} catch (NullPointerException e) {
-			result = command.replace("|","!");
+		int rejections = 0;
+		while (result == null) {
+			result = srArr[(int)(Math.random()*srArr.length)].next();
+			if (rejections < currentTask.getGlobalDupes()) {
+				Pattern resultMatch = resultMatcher(result);
+				if (resultMatch.matcher(currentTask.string).find()) {
+					rejections++;
+					result = null;
+					continue;
+				}
+			}
+			if (rejections < currentTask.getLocalDupes()) {
+				if (currentTask.getStrictDupe() == true) {
+					if (currentTask.results.contains(result)) {
+						rejections++;
+						result = null;
+						continue;
+					}
+				}else {
+					for (String s: currentTask.results) {
+						if (s.contains(result) || result.contains(s)) {
+							rejections++;
+							result = null;
+							continue;
+						}
+					}
+				}
+			}
+		}
+		if (result != null) {
+			currentTask.results.add(result);
 		}
 		return result;
-		
-		 
+	}
+	
+	//private to avoid external sources calling it while we don't have metadata
+	private Pattern resultMatcher(String str) {
+		if (currentTask.getStrictDupe()) {
+			return Pattern.compile(""+Pattern.quote(str)+"");
+		}else {
+			return Pattern.compile(Pattern.quote(str));
+		}		
 	}
 	
 	/**
@@ -137,8 +189,8 @@ public class StringFluffer {
 		return sublist.next();
 	}
 	
-	private MetaData getMeta(String str) {
-		return new MetaData(str,avoidGlobalDupes);
+	public MetaData customMeta(String str, int globalDupes, int localDupes,boolean strictDupe) {
+		return new MetaData(str,globalDupes,localDupes,strictDupe);
 	}
 	
 	protected class MetaData {
@@ -146,17 +198,37 @@ public class StringFluffer {
 		//flag: avoid doublepicks but substring is fine
 		//numberflag: avoid word proximity
 		public final String string;
-		private final int globalDupes;
-		private final int localDupes;
+		private final int globalDupesL;
+		private final int localDupesL;
+		private final int strictDupeL;
+		public final List<String> results;
 		public MetaData(String str) {
 			string = str;
-			globalDupes = 0;
-			localDupes = 0;
+			globalDupesL = -1;
+			localDupesL = -1;
+			strictDupeL = -1;
+			results = new ArrayList<String>();
 		}
-		public MetaData(String str, int globalDupes, int localDupes) {
+		public MetaData(String str, int globalDupes, int localDupes,boolean strictDupe) {
 			string = str;
-			this.globalDupes = globalDupes;
-			this.localDupes = localDupes;
+			globalDupesL = globalDupes;
+			localDupesL = localDupes;
+			strictDupeL = 1;
+			results = new ArrayList<String>();
+		}
+		
+		public int getGlobalDupes() {
+			return globalDupesL == -1 ? globalDupes : globalDupesL;
+		}
+		public int getLocalDupes() {
+			return localDupesL == -1 ? localDupes : localDupesL;
+		}
+		
+		public boolean getStrictDupe() {
+			if (strictDupeL == -1) {
+				return strictDupeL == 1 ? true : false;
+			}
+			return strictDupe;//from top level class
 		}
 		
 	}
