@@ -1,5 +1,6 @@
 package derg;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Map;
 import java.util.HashMap;
@@ -134,7 +135,24 @@ public class StringFluffer {
 		realOperation = false;//we didn't complete a command yet
 		String working = str;
 		// TODO Auto-generated method stub
-		//process should operate backwards
+		//process should operate backwards to avoid replacement issues, but matcher doesn't seem to allow that, so we store the results instead
+		List<String> befores = new ArrayList<String>();
+		List<String> afters = new ArrayList<String>();
+		Matcher m = subMatch.matcher(working);
+		int count = m.groupCount();
+		int j = 1;
+		while (j <= count) {
+			String temp = m.group(j);
+			befores.add(temp);
+			afters.add(switchLookup(temp));
+			j++;
+		}
+		
+		for (int i = befores.size()-1; i >=0;i--) {//we don't actually need to go backwards anymore but it saves some steps in the for checker
+			working.replaceFirst(befores.get(i),afters.get(i));
+		}//note that hilariously it will not respect the order if the same command is used more than once, but that shouldn't matter
+		//that could cause some really weird behavior but that would mean state elsewhere impacted a replace, which is
+		//not how this class is supposed to work
 		return working;
 	}
 	
@@ -145,17 +163,26 @@ public class StringFluffer {
 	/**
 	 * processes one command
 	 * @param command
-	 * @return the new string, or null if the operation didn't go through
+	 * @return the new string, or the same string with an inserted ! before the first paren if we didn't know how to deal
 	 * if the switchLookup was able to detect a malformed request, it will return the command with the pipe replaced with a !
 	 */
 	public String switchLookup(String command) {
 		//result = command.replace("|","!"); //this isn't actually malformed :|
-		String[] dataArr = commandDataMatch.matcher(command).group().split(",");
+		//ugh this is the most unfluent interface possible...
+		Matcher m = commandDataMatch.matcher(command);
+		if (!m.find()) {
+			throw new RuntimeException("StringFluffer found a match but then couldn't find it again!");
+		}
+		String[] dataArr = m.group().substring(1).split(",");
 		StringResult[] srArr = new StringResult[dataArr.length];
 		for (int i = 0;i < dataArr.length; i++) {
 			StringResult cur = shufflers.get(dataArr[i]);
 			if (cur == null) {
-				return null;
+				int firstparen = command.indexOf("(");
+				if (command.charAt(firstparen)-1 == '!') {
+					return command;
+				}
+				return command.substring(0,firstparen) +"!"+command.substring(firstparen);
 			}
 			srArr[i] = cur;
 		}
