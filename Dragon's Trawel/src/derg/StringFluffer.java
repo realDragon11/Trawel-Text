@@ -17,9 +17,9 @@ import java.util.ArrayList;
 public class StringFluffer {
 
 	
-	public static Pattern commandMatch = Pattern.compile("\\|[^!(]+!?([^)]+)");
-	public static Pattern subMatch = Pattern.compile("\\|sub!?([^)]+)");
-	public static Pattern commandDataMatch = Pattern.compile("([^)]+");//note you need to start from index 1
+	public static Pattern commandMatch = Pattern.compile("\\|[^!\\(]+!?\\([^)]+\\)");
+	public static Pattern subMatch = Pattern.compile("\\|sub!?\\([^)]+\\)");
+	public static Pattern commandDataMatch = Pattern.compile("\\([^)]+");//note you need to start from index 1
 	/*
 	 * regex breakdown:
 	 * \\ escapes the escape character in case pipe is reserved
@@ -139,17 +139,14 @@ public class StringFluffer {
 		List<String> befores = new ArrayList<String>();
 		List<String> afters = new ArrayList<String>();
 		Matcher m = subMatch.matcher(working);
-		int count = m.groupCount();
-		int j = 1;
-		while (j <= count) {
-			String temp = m.group(j);
+		while (m.find()) {
+			String temp = working.substring(m.start(),m.end());
 			befores.add(temp);
 			afters.add(switchLookup(temp));
-			j++;
 		}
 		
-		for (int i = befores.size()-1; i >=0;i--) {//we don't actually need to go backwards anymore but it saves some steps in the for checker
-			working.replaceFirst(befores.get(i),afters.get(i));
+		for (int i = 0; i < befores.size();i++) {//we don't actually need to go backwards anymore but it saves some steps in the for checker
+			working = working.replaceFirst(Pattern.quote(befores.get(i)),afters.get(i));
 		}//note that hilariously it will not respect the order if the same command is used more than once, but that shouldn't matter
 		//that could cause some really weird behavior but that would mean state elsewhere impacted a replace, which is
 		//not how this class is supposed to work
@@ -173,7 +170,7 @@ public class StringFluffer {
 		if (!m.find()) {
 			throw new RuntimeException("StringFluffer found a match but then couldn't find it again!");
 		}
-		String[] dataArr = m.group().substring(1).split(",");
+		String[] dataArr = command.substring(m.start()+1,m.end()).split(",");
 		StringResult[] srArr = new StringResult[dataArr.length];
 		for (int i = 0;i < dataArr.length; i++) {
 			StringResult cur = shufflers.get(dataArr[i]);
@@ -191,33 +188,35 @@ public class StringFluffer {
 		int maxtrials = 2+Math.max(10, Math.max(currentTask.getLocalDupes(),currentTask.getGlobalDupes()));
 		while (result == null && rejections < maxtrials) {
 			result = srArr[(int)(Math.random()*srArr.length)].next();
-			if (rejections < currentTask.getGlobalDupes()) {
-				Pattern resultMatch = resultMatcher(result);
-				if (resultMatch.matcher(currentTask.string).find()) {
-					rejections++;
-					result = null;
-					continue;
-				}
-			}
-			if (rejections < currentTask.getLocalDupes()) {
-				if (currentTask.getStrictDupe() == true) {
-					if (currentTask.results.contains(result)) {
+			if (result == null) {//shouldn't be allowed to happen, but we fail gracefully
+				rejections++;
+			}else {
+				if (rejections < currentTask.getGlobalDupes()) {
+					Pattern resultMatch = resultMatcher(result);
+					if (resultMatch.matcher(currentTask.string).find()) {
 						rejections++;
 						result = null;
 						continue;
 					}
-				}else {
-					for (String s: currentTask.results) {
-						if (s.contains(result) || result.contains(s)) {
+				}
+				if (rejections < currentTask.getLocalDupes()) {
+					if (currentTask.getStrictDupe() == true) {
+						if (currentTask.results.contains(result)) {
 							rejections++;
 							result = null;
 							continue;
 						}
+					}else {
+						for (String s: currentTask.results) {
+							if (s.contains(result) || result.contains(s)) {
+								rejections++;
+								result = null;
+								break;
+							}
+						}
+						//falling through if null now
 					}
 				}
-			}
-			if (result == null) {//shouldn't be allowed to happen, but we fail gracefully
-				rejections++;
 			}
 		}
 		if (result != null) {

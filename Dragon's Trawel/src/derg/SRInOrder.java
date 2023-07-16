@@ -1,5 +1,6 @@
 package derg;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class SRInOrder extends StringResult {
@@ -9,6 +10,10 @@ public class SRInOrder extends StringResult {
 	
 	public SRInOrder(List<String> list) {
 		contents = list;
+	}
+	
+	public SRInOrder(String...strings) {
+		contents = Arrays.asList(strings);
 	}
 	
 	@Override
