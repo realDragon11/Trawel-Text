@@ -1,13 +1,18 @@
 package derg;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class SPlainRandom extends StringResult {
+public class SRPlainRandom extends StringResult {
 
 	private List<String> contents;
 	
-	public SPlainRandom(List<String> list) {
+	public SRPlainRandom(List<String> list) {
 		contents = list;
+	}
+	
+	public SRPlainRandom(String...strings) {
+		contents = Arrays.asList(strings);
 	}
 	
 	@Override

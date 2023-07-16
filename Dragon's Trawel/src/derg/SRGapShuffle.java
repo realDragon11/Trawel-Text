@@ -1,5 +1,7 @@
 package derg;
 
+import java.util.List;
+
 import com.github.yellowstonegames.core.GapShuffler;
 
 public class SRGapShuffle extends StringResult {
@@ -8,6 +10,10 @@ public class SRGapShuffle extends StringResult {
 	
 	public SRGapShuffle(GapShuffler<String> shuffler) {
 		gps = shuffler;
+	}
+	
+	public SRGapShuffle(List<String> list) {
+		gps = new GapShuffler<String>(list);
 	}
 	
 	@Override

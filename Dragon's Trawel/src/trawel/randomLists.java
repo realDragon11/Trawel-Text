@@ -1,5 +1,12 @@
 package trawel;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
+
+import derg.SRGapShuffle;
+import derg.SRPlainRandom;
+import derg.StringResult;
 
 /**
  * @author Brian Malone
@@ -7,19 +14,49 @@ package trawel;
  * Some random lists that are used elsewhere, put here for cleanliness.
  */
 public class randomLists {
-	//static methods
+	//holding lists, internal
+	//initers
+	private static StringResult commonElements, rareElements, randMats = null, colorList, normalFirstNames;
+	//NOTE: any =null means it should use a lazyloaded getter instead
+	static {
+		commonElements = new SRPlainRandom(Arrays.asList("earth","wind","fire","air","water","ice","storm","thunder","flame","lightning","frost","stone"));
+		rareElements = new SRPlainRandom(Arrays.asList("grass","metal","mountain","ocean","sky","flesh","life","death","balance","rust","pie","math","soul","heart","word"));
+		colorList = new SRPlainRandom("green","blue","yellow","purple","red","orange","white","black","grey","cyan","silver","maroon","rose","chestnut","vermilion","russet","scarlet","rust","auburn","mahogany","pumpkin","chocolate","copper","bronze","sepia","ochre","brown","cinnamon","tan","orange","peach","goldenrod","amber","saffron","ecru","gold","pearl","buff","flax","brass","lemon","cream","beige","olive","ivory","lime","chartreuse","emerald","jade","aquamarine","turquoise","teal","aqua","cerulean","charcoal","azure","cobalt","lavender","periwinkle","amethyst","violet","indigo","heliotrope","liliac","plum","fuchsia","mauve","puce","crimson","pink","cardinal","carmine");
+	}
+	
+	//our lazyloaded lists
+	/**
+	 * lazyloaded random material
+	 * note that this is string only and shouldn't be used for anything but fluff
+	 */
+	public static String getRandMat() {
+		if (randMats == null) {
+			//uses a gap shuffler because otherwise plain random would be useless- if you want plain random you can take it from the source
+			List<String> list = new ArrayList<String>();
+			for (Material m: MaterialFactory.matList) {
+				list.add(m.name);
+			}
+			randMats = new SRGapShuffle(list);
+		}
+		
+		return randMats.next();
+	}
+	
+	
+	//get random methods
+	
 	/**
 	 * Returns a random 'element'
 	 * @return an element (String)
 	 */
 	public static String randomElement(){
 		if (extra.chanceIn(2,3)) {
-			return (String) extra.choose("earth","wind","fire","air","water","ice","storm","thunder","flame","lightning","frost","stone");
+			return commonElements.next();
 		}
 		if (extra.chanceIn(2,3)) {
-			return (String)extra.choose("grass","metal","mountain","ocean","sky","flesh","life","death","balance","rust","pie","math","soul","heart","word");	
+			return rareElements.next();
 		}
-		return MaterialFactory.randMat(true,true).name;
+		return getRandMat();
 	}
 	
 	/**
@@ -27,7 +64,7 @@ public class randomLists {
 	 * @return color (String)
 	 */
 	public static String randomColor() {
-		return (String)extra.choose("green","blue","yellow","purple","red","orange","white","black","grey","cyan","silver","maroon","rose","chestnut","vermilion","russet","scarlet","rust","auburn","mahogany","pumpkin","chocolate","copper","bronze","sepia","ochre","brown","cinnamon","tan","orange","peach","goldenrod","amber","saffron","ecru","gold","pearl","buff","flax","brass","lemon","cream","beige","olive","ivory","lime","chartreuse","emerald","jade","aquamarine","turquoise","teal","aqua","cerulean","charcoal","azure","cobalt","lavender","periwinkle","amethyst","violet","indigo","heliotrope","liliac","plum","fuchsia","mauve","puce","crimson","pink","cardinal","carmine");
+		return colorList.next();
 	}
 	
 	
