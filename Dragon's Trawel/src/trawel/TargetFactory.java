@@ -10,11 +10,11 @@ import com.github.yellowstonegames.core.WeightedTable;
 
 public class TargetFactory {
 
-	public static ArrayList<Target> targetList = new ArrayList<Target>();
+	public static List<Target> targetList = new ArrayList<Target>();
 	public static Target noTarget;
-	public static ArrayList<Attack.Wound> fireWounds = new ArrayList<Attack.Wound>();
-	public static ArrayList<Attack.Wound> shockWounds = new ArrayList<Attack.Wound>();
-	public static ArrayList<Attack.Wound> freezeWounds = new ArrayList<Attack.Wound>();
+	public static List<Attack.Wound> fireWounds = new ArrayList<Attack.Wound>();
+	public static List<Attack.Wound> shockWounds = new ArrayList<Attack.Wound>();
+	public static List<Attack.Wound> freezeWounds = new ArrayList<Attack.Wound>();
 	
 	//public static Map<TargetType,List<Target>> targetTypeMap = new HashMap<TargetType,List<Target>>();
 	public static Map<TargetType,WeightedTable> targetTypeTable = new HashMap<TargetType,WeightedTable>();

@@ -4,6 +4,7 @@ package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import com.github.tommyettinger.random.*;
 
 public final class extra {
 /**
@@ -17,6 +18,8 @@ public final class extra {
 	private static Boolean oldPrintMode = false;
 	//private static long lastMod = -1;
 	private static String printStuff = "";
+	
+	private static EnhancedRandom rand = new WhiskerRandom();
 	
 	//static methods
 
@@ -36,11 +39,11 @@ public final class extra {
 	 * @return (String)
 	*/
 	public static String choose(String... options) {
-		return options[(int)(Math.random()*(double)options.length)];
+		return options[rand.nextInt(options.length)];
 	}
 	
 	public static <E> E choose(E... options) {
-		return options[(int)(Math.random()*(double)options.length)];
+		return options[rand.nextInt(options.length)];
 	}
 	
 	/**
@@ -76,7 +79,7 @@ public final class extra {
 	 * @return (boolean)
 	 */
 	public static final boolean chanceIn(int a,int b) {
-		if (((double)a/b) < Math.random()) {return false;}
+		if (rand.next(b) <= a) {return false;}
 		return true;
 	}
 	
@@ -178,7 +181,8 @@ public final class extra {
 			}
 		}
 		public static final int randRange(int i, int j) {
-			return (int)(Math.random()*(j+1-i))+i;
+			//return (int)(Math.random()*(j+1-i))+i;
+			return rand.next((j+1)-i)+i;
 		}
 
 		public static final int inInt(int max) {
@@ -276,6 +280,7 @@ public final class extra {
 			return(str);
 		}
 
+		//TODO: fix
 		public static final double hrandom() {
 			if (randRange(1,5) != 5) {
 			return  (((double)randRange(45,55))/100.0);}else {
@@ -324,12 +329,12 @@ public final class extra {
 		}
 
 		public static <E> E randList(ArrayList<E> list) {
-			return list.get(randRange(0,list.size()-1));
+			return list.get(rand.next(list.size()-1));
 			
 		}
 		
 		public static <E> E randList(List<E> list) {
-			return list.get(randRange(0,list.size()-1));
+			return list.get(rand.next(list.size()-1));
 			
 		}
 
