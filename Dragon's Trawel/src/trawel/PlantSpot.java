@@ -1,6 +1,12 @@
 package trawel;
 
-public class PlantSpot implements java.io.Serializable{
+import java.util.List;
+
+import trawel.time.CanPassTime;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
+
+public class PlantSpot implements java.io.Serializable, CanPassTime{
 
 	/**
 	 * 
@@ -90,7 +96,7 @@ public class PlantSpot implements java.io.Serializable{
 		}
 	}
 
-	public void passTime(double t) {
+	public List<TimeEvent> passTime(double t, TimeContext tc) {
 		timer +=t;
 		switch (contains) {
 		case "garlic seed": if (timer > 57) { contains = "garlic";timer = 0;}break;
@@ -101,5 +107,6 @@ public class PlantSpot implements java.io.Serializable{
 		case "eggcorn seed": if (timer > 33) { contains = "eggcorn";timer = 0;}break;
 		case "truffle spores": if (timer > 60) { contains = "truffle";timer = 0;}break;
 		}
+		return null;
 	}
 }

@@ -16,7 +16,7 @@ import trawel.townevents.TownTag;
  * 5/30/2018
  */
 
-public class Town implements java.io.Serializable{
+public class Town implements java.io.Serializable, CanPassTime, ReloadAble{
 
 	/**
 	 * 

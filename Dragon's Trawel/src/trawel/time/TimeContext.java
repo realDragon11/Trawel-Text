@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class TimeContext {
 
 	public final ContextType type;
-	public final List<TimeEvent> events = new ArrayList<TimeEvent>();
+	private List<TimeEvent> events = new ArrayList<TimeEvent>();
     //private final Lock lock = new ReentrantLock();
 	public final CanPassTime scope;
 	
@@ -37,7 +37,11 @@ public class TimeContext {
 			processEvents();
 		}
 	}
-	
+	/**
+	 * used internally to recursively pull together contexts, which then get processed, and unprocessed ones get passed on
+	 * (sometimes they may get altered and then passed on as mere notifications)
+	 * @param es
+	 */
 	private void addEvents(List<TimeEvent> es) {
 		if (es == null) {
 			return;
@@ -47,5 +51,26 @@ public class TimeContext {
 	
 	private void processEvents() {
 		
+	}
+
+	/**
+	 * used to add local events- for when a context contains recursive areas without their own contexts
+	 * @param passTime
+	 */
+	public void localEvents(List<TimeEvent> es) {
+		if (es == null) {
+			return;
+		}
+		events.addAll(es);
+	}
+	
+	/**
+	 * give up all our events to another context
+	 * @return
+	 */
+	public List<TimeEvent> pop(){
+		List<TimeEvent> ret = events;
+		events = new ArrayList<TimeEvent>();
+		return ret;
 	}
 }

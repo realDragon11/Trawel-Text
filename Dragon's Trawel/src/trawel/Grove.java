@@ -2,20 +2,18 @@ package trawel;
 import java.awt.Color;
 import java.util.List;
 
+import trawel.FeatureNodes.NodeFeature;
 import trawel.time.ContextType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 
-public class Grove extends Feature {
+public class Grove extends NodeFeature {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Town town;
-	private int size;
-	private GroveNode start;
-	private transient TimeContext timeScope;
+
 	public Grove(String name,Town t) {
 		this.name = name;
 		town = t;
@@ -25,7 +23,6 @@ public class Grove extends Feature {
 		color = Color.RED;
 		background_area = "forest";
 		background_variant = 1;
-		timeScope = new TimeContext(ContextType.UNBOUNDED,this);
 	}
 	@Override
 	public void go() {
@@ -34,15 +31,10 @@ public class Grove extends Feature {
 		Networking.sendStrong("Discord|imagesmall|grove|Grove|");
 		start.go();
 	}
-
-	@Override
-	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		start.passTime(time);
-		start.timeFinish();
-	}
 	
 	public void generate() {
 		start = new GroveNode(size,town.getTier(),this);
+		reload();
 	}
 	public Shape getShape() {
 		return Shape.STANDARD;

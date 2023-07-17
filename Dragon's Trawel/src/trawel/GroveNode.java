@@ -984,13 +984,13 @@ public class GroveNode extends NodeConnector{
 		passing = true;
 		for (NodeConnector n: connects) {
 			if (!n.passing) {
-				n.passTime(d);
+				n.passTime(d,calling);
 			}
 		}
 		if (idNum == -1) {
-			((PlantSpot)storage1).passTime(d);
+			calling.localEvents(((PlantSpot)storage1).passTime(d,calling));
 		}
-		return 
+		return null;
 	}
 
 
