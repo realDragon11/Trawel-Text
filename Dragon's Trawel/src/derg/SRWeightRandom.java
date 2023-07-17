@@ -56,7 +56,7 @@ public class SRWeightRandom extends StringResult {
 	
 	@Override
 	public List<String> backing(){
-		return contents.stream().flatMap(a -> Arrays.asList(new String[] {a.result}).stream()).collect(Collectors.toList());
+		return contents.stream().map(a -> a.result).collect(Collectors.toList());
 	}
 	
 	private static final Predicate<Object[]> flattener = (Object[] fs) -> {return ((ToleranceFunction<Boolean,Float,Float>)fs[0]).apply((float)fs[1], (float)fs[2]);};
@@ -64,7 +64,7 @@ public class SRWeightRandom extends StringResult {
 	@Override
 	public String with(StringContext context) {
 		List<StringFloatWeight> list = contents.stream()
-		.filter(a -> a.weights.stream().flatMap(base -> {return Arrays.asList(new Object[][] {new Object[] {tolerance,base.f,context.floatMap.getOrDefault(base.s, -2f)}}).stream();}).allMatch(flattener))
+		.filter(a -> a.weights.stream().map(base -> {return new Object[] {tolerance,base.f,context.floatMap.getOrDefault(base.s, -2f)};}).allMatch(flattener))
 		.collect(Collectors.toList());
 		return list.get(random.nextInt(list.size())).result;
 	}
