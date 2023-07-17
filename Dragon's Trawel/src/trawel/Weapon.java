@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.Callable;
 
 import trawel.TargetFactory.TargetType;
 
@@ -327,7 +329,7 @@ public class Weapon extends Item {
 	 * Returns the damage/time (ie dps) of the most powerful attack the weapon has
 	 * @return highest damage (int)
 	 */
-	public DamTuple highestDamage() {
+	public DamTuple highestDamageThreadLess() {
 		if (dam != null) {
 			return dam;
 		}
@@ -358,17 +360,79 @@ public class Weapon extends Item {
 		return dam;
 	}
 	
+	/**
+	 * Returns the damage/time (ie dps) of the most powerful attack the weapon has
+	 * @return highest damage (int)
+	 */
+	public DamTuple highestDamage() {
+		if (dam != null) {
+			return dam;
+		}
+		Attack holdAttack;
+		double high = 0;
+		double damage = 0;
+		double average = 0;
+		final List<Attack> attacks = this.getMartialStance().giveList();
+		int size = attacks.size();
+		int i = 0;
+		double bs = 0;
+		while (i < size) {
+			holdAttack = attacks.get(i++);
+			damage = (holdAttack.getHitmod()*100*holdAttack.getTotalDam(this))/holdAttack.getSpeed()*level;
+			average +=damage;
+			if (damage > high) {
+				high = damage;
+			}
+		}
+		average/=size;
+		
+		
+		bs/=(battleTests*WorldGen.getDummyInvs().size());
+		dam = new DamTuple(high,average,(bs*level)/(size));
+		return dam;
+	}
+	
+	protected class testArmor implements Callable<Double>{
+
+		private static final long serialVersionUID = 1L;
+		public final List<Attack> attacks;
+		public final List<Inventory> tests;
+		public final Weapon weap;
+		public testArmor(List<Attack> attacks,List<Inventory> tests,Weapon weapon) {
+			this.attacks = attacks;
+			this.tests = tests;
+			weap = weapon;
+		}
+
+		@Override
+		public Double call() throws RuntimeException {
+
+			double bs = 0;
+			int size = attacks.size();
+			int i = 0;
+			Attack holdAttack;
+			//does not account for aiming, since that is *very* opponent dependent
+			while (i < size) {
+				holdAttack = attacks.get(i++);
+				for (int t = 0; t < battleTests;t++) {
+					for (int j = tests.size()-1; j >=0;j--) {
+						bs+=Combat.handleTestAttack(holdAttack.impair(10,TargetType.HUMANOID,weap),tests.get(j),Armor.armorEffectiveness).damage/holdAttack.getSpeed() ;
+					}
+				}
+			}
+			return bs;
+		}
+		
+	}
+	
 	public static int battleTests = 3;//was 50, then got converted into goes at all the dummy inventories (20 now)
 	
 	public class DamTuple implements java.io.Serializable{
 		
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
-		public double highest;
-		public double average;
-		public double battleScore;
+		public final double highest;
+		public final double average;
+		public final double battleScore;
 		public DamTuple(double h, double a, double b) {
 			highest = h;
 			average = a;

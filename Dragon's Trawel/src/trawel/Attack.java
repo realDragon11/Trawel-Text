@@ -412,6 +412,9 @@ public class Attack implements java.io.Serializable{
 		}
 		return (this.getSharp()*sMult)+(this.getBlunt()*bMult)+(this.getPierce()*pMult);
 	}
+	public double getTotalDam(double sMult, double bMult, double pMult) {
+		return (this.getSharp()*sMult)+(this.getBlunt()*bMult)+(this.getPierce()*pMult);
+	}
 	
 	public Weapon getWeapon() {
 		return weapon;

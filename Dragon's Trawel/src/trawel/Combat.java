@@ -2,6 +2,7 @@ package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import trawel.Armor.ArmorQuality;
 import trawel.factions.FBox;
@@ -460,7 +461,7 @@ public class Combat {
 	
 	public static AttackReturn handleTestAttack(Attack att, Inventory def, double armMod) {
 		double damMod = 1;
-		if (((def.getDodge())/(att.getHitmod()))*Math.random() > 1.0){
+		if (((def.getDodge())/(att.getHitmod()))*ThreadLocalRandom.current().nextDouble() > 1.0){
 			return Combat.testCombat.new AttackReturn(-1,"");//do a dodge
 		}
 		//return the damage-armor, with each type evaluated individually
