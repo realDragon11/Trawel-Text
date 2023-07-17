@@ -49,8 +49,9 @@ public class Garden extends Feature {
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		time *= (1.0+(tier/100.0));
 		for (PlantSpot p: plants) {
-			p.passTime(time);
+			p.passTime(time,calling);
 		}
+		return null;
 	}
 
 }

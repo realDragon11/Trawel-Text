@@ -16,14 +16,21 @@ public class GroveNode extends NodeConnector{
 	private static final long serialVersionUID = 1L;
 	//private String name;
 	private static final int EVENT_NUMBER = 21;
-	private int state;
+	protected int state;
 	//private String interactString;
-	private int idNum;
+	protected int idNum;
 	//private int level;
-	private Object storage1, storage2;
+	protected Object storage1, storage2;
 	//private ArrayList<GroveNode> connects;
 	//private boolean forceGo;
 	public Grove parent;
+	
+	/**
+	 * used for CaveNode
+	 */
+	protected GroveNode() {
+		
+	}
 	
 	public GroveNode(int size, int tier,Grove p ) {
 		state = 0;
@@ -978,31 +985,18 @@ public class GroveNode extends NodeConnector{
 		return "STANDARD";
 	}
 
+	@Override
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
+		this.spreadTime(time, calling);
+		return timeEvent(time,calling);
+	}
 
 	@Override
-	public List<TimeEvent> passTime(double d, TimeContext calling) {
-		passing = true;
-		for (NodeConnector n: connects) {
-			if (!n.passing) {
-				n.passTime(d,calling);
-			}
-		}
+	public List<TimeEvent> timeEvent(double d, TimeContext calling) {
 		if (idNum == -1) {
 			calling.localEvents(((PlantSpot)storage1).passTime(d,calling));
 		}
 		return null;
-	}
-
-
-	@Override
-	public void timeFinish() {
-		passing = false;
-		for (NodeConnector n: connects) {
-			if (n.passing) {
-				n.timeFinish();
-			}
-		}
-		
 	}
 
 

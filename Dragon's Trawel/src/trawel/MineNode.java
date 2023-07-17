@@ -1,5 +1,9 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.List;
+
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 public class MineNode extends NodeConnector implements java.io.Serializable{
 	//potentail problem: all this code is in a highly duplicated node
@@ -323,12 +327,10 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 
 
 	@Override
-	public void passTime(double d) {
-		// Auto-generated method stub
-		
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
+		// TODO Auto-generated method stub
+		return null;
 	}
-
-
 
 
 	@Override

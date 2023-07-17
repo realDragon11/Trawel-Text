@@ -3,8 +3,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import trawel.time.CanPassTime;
+import trawel.time.ReloadAble;
 
-public abstract class Feature implements java.io.Serializable, CanPassTime{
+public abstract class Feature implements java.io.Serializable, CanPassTime, ReloadAble{
 	
 	private static final long serialVersionUID = 7285785408935895233L;
 	protected String name;
@@ -86,6 +87,10 @@ public abstract class Feature implements java.io.Serializable, CanPassTime{
 	
 	public int qrSize() {
 		return qrList.size();
+	}
+	
+	public void reload() {
+		//optional
 	}
 	
 }

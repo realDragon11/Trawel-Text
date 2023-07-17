@@ -9,7 +9,7 @@ import trawel.factions.Faction;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 
-public class Forest extends Feature implements java.io.Serializable{
+public class Forest extends Feature{
 
 	/**
 	 * 
@@ -129,10 +129,10 @@ public class Forest extends Feature implements java.io.Serializable{
 
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		if (exhaust > 0) {
+		if (exhaust > 0 && time > .1) {
 			exhaust--;
 		}
-
+		return null;
 	}
 	
 	private void goldStream() {

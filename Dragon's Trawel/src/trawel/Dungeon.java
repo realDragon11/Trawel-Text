@@ -4,18 +4,16 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import trawel.FeatureNodes.NodeFeature;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 
-public class Dungeon extends Feature {
+public class Dungeon extends NodeFeature {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Town town;
-	private int size;
-	private DungeonNode start;
 	public enum Shape{
 		STANDARD, TOWER;
 	}
@@ -39,28 +37,24 @@ public class Dungeon extends Feature {
 		Networking.sendStrong("Discord|imagesmall|dungeon|Dungeon|");
 		start.go();
 	}
-
-	@Override
-	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		// TODO Auto-generated method stub
-	}
 	
-	public void generate() {
+	@Override
+	protected void generate() {
 		switch (shape) {
 		case STANDARD: start = new DungeonNode(size,town.getTier(),town,this,false);break;
 		case TOWER:
 			int curSize = 1;
-			List<List<DungeonNode>> floors = new ArrayList<List<DungeonNode>>();
-			List<DungeonNode> curFloor;
-			DungeonNode stair;
-			DungeonNode curStair;
+			List<List<NodeConnector>> floors = new ArrayList<List<NodeConnector>>();
+			List<NodeConnector> curFloor;
+			NodeConnector stair;
+			NodeConnector curStair;
 			start = new DungeonNode(size,town.getTier(),town,this,true);
 			start.floor = 0;
 			stair = start;
 			int levelUp = 0;
 			int floor = 0;
-			DungeonNode lastNode;
-			DungeonNode lastNode2;
+			NodeConnector lastNode;
+			NodeConnector lastNode2;
 			//List<DungeonNode> lastFloorOnboarding;
 			//List<DungeonNode> thisFloorOnboarding;//TODO: fix order of nodes
 			while (curSize < size) {
@@ -71,7 +65,7 @@ public class Dungeon extends Feature {
 				levelUp++;
 				curStair = new DungeonNode(size,stair.getLevel()+(levelUp == 3 ? 1 : 0),town,this,true);
 				
-				curFloor = new ArrayList<DungeonNode>();
+				curFloor = new ArrayList<NodeConnector>();
 				for (int i = 0;i <2; i++) {
 					floor++;
 					lastNode2 = new DungeonNode(size,stair.getLevel()+(levelUp == 3 ? 1 : 0),town,this,false);
@@ -137,8 +131,8 @@ public class Dungeon extends Feature {
 			stair.getConnects().add(b);
 			stair.reverseConnections();
 			//
-			for (List<DungeonNode> fl: floors) {
-				for (DungeonNode f: fl) {
+			for (List<NodeConnector> fl: floors) {
+				for (NodeConnector f: fl) {
 					f.getConnects().sort(new Comparator<NodeConnector>() {
 
 						@Override
@@ -154,6 +148,7 @@ public class Dungeon extends Feature {
 			//start.addBacks();
 			break;
 		}
+		reload();
 	}
 	public Shape getShape() {
 		return shape;

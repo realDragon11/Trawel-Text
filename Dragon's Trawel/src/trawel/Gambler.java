@@ -83,7 +83,7 @@ public class Gambler extends Feature implements java.io.Serializable{
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		gold += (int)time;
-
+		return null;
 	}
 
 	public String getType() {

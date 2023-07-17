@@ -11,7 +11,7 @@ import trawel.time.ReloadAble;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 
-public abstract class NodeFeature extends Feature implements ReloadAble {
+public abstract class NodeFeature extends Feature {
 
 	protected NodeConnector start;
 	protected transient TimeContext timeScope;
@@ -28,5 +28,7 @@ public abstract class NodeFeature extends Feature implements ReloadAble {
 	public void reload() {
 		timeScope = new TimeContext(ContextType.UNBOUNDED,start);
 	}
+
+	protected abstract void generate();
 
 }

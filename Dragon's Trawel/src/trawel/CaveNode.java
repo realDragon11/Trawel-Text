@@ -1,7 +1,7 @@
 package trawel;
 import java.util.ArrayList;
 
-public class CaveNode extends NodeConnector implements java.io.Serializable{
+public class CaveNode extends GroveNode{
 	//potentail problem: all this code is in a highly duplicated node
 
 
@@ -10,14 +10,6 @@ public class CaveNode extends NodeConnector implements java.io.Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final int EVENT_NUMBER =3;
-	private int state;
-	private int idNum;
-	
-	private Object storage1, storage2;
-	
-	//private Town town;
-	private Grove parent;
-	
 	
 	
 	public CaveNode(int size, int tier,Grove p,boolean stair) {
@@ -153,34 +145,6 @@ public class CaveNode extends NodeConnector implements java.io.Serializable{
 	protected String shapeName() {
 		return parent.getShape().name();
 	}
-
-	@Override
-	public void passTime(double d) {
-		// Auto-generated method stub
-		
-	}
-
-	@Override
-	public void timeFinish() {
-		// Auto-generated method stub
-		
-	}
-
-
-
-	/*
-	public void addBacks() {
-		backed++;
-		if (connects.size() > 0) {
-			for (DungeonNode d: connects) {
-				if ((this.isStair)
-				if (backed == 0) {
-				d.connects.add(this);
-				d.addBacks();}
-			}
-		}
-		
-	}*/
 	
 
 }

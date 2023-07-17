@@ -50,7 +50,7 @@ public class Doctor extends Feature {
 
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
-
+		return null;
 	}
 
 }

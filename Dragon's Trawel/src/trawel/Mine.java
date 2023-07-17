@@ -2,18 +2,13 @@ package trawel;
 import java.awt.Color;
 import java.util.List;
 
+import trawel.FeatureNodes.NodeFeature;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 
-public class Mine extends Feature {
+public class Mine extends NodeFeature {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private Town town;
-	private int size;
-	private MineNode start;
 	private int veinsLeft = 0;
 	public enum Shape{
 		STANDARD, HELL;
@@ -52,15 +47,16 @@ public class Mine extends Feature {
 		return null;
 	}
 	
-	public void generate() {
+	@Override
+	protected void generate() {
 		switch (shape) {
 		case STANDARD:
 			start = new MineNode(size,town.getTier(),this);
 			break;
 		case HELL:
 			start = new MineNode(size,town.getTier(),this);
-			MineNode lastNode = start;
-			MineNode newNode;
+			NodeConnector lastNode = start;
+			NodeConnector newNode;
 			for (int i = 0;i < 50;i++) {
 				newNode = new MineNode(size,town.getTier()+(i/10),this);
 				lastNode.getConnects().add(newNode);
@@ -76,6 +72,7 @@ public class Mine extends Feature {
 			lastNode.reverseConnections();
 			break;
 		}
+		reload();
 	}
 	
 	public void addVein() {

@@ -3,8 +3,11 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import trawel.time.CanPassTime;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 public abstract class NodeConnector implements Serializable, CanPassTime {
 
@@ -142,5 +145,31 @@ public abstract class NodeConnector implements Serializable, CanPassTime {
 	public void reverseConnections() {
 		Collections.reverse(connects);
 	}
-	public abstract void timeFinish();
+	public void timeFinish() {
+		passing = false;
+		for (NodeConnector n: connects) {
+			if (n.passing) {
+				n.timeFinish();
+			}
+		}
+	}
+	//used for nodes without a passtime component
+	@Override
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
+		return null;
+	}
+	
+	//called in some passTime implementations to propagate it
+	public void spreadTime(double time, TimeContext calling) {
+		passing = true;
+		for (NodeConnector n: connects) {
+			if (!n.passing) {
+				n.passTime(time,calling);
+			}
+		}
+	}
+	
+	public List<TimeEvent> timeEvent(double time, TimeContext calling){
+		return null;
+	}
 }

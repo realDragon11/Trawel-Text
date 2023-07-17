@@ -2,18 +2,16 @@ package trawel;
 import java.awt.Color;
 import java.util.List;
 
+import trawel.FeatureNodes.NodeFeature;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 
-public class Graveyard extends Feature {
+public class Graveyard extends NodeFeature {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Town town;
-	private int size;
-	private GraveyardNode start;
 	public Graveyard(String name,Town t) {
 		this.name = name;
 		town = t;
@@ -31,13 +29,9 @@ public class Graveyard extends Feature {
 	}
 
 	@Override
-	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		start.passTime(time);
-		start.timeFinish();
-	}
-	
-	public void generate() {
+	protected void generate() {
 		start = new GraveyardNode(size,town.getTier(),town,this);
+		reload();
 	}
 	public Shape getShape() {
 		return Shape.STANDARD;

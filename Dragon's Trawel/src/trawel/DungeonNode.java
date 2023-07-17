@@ -1,13 +1,12 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.List;
 
-public class DungeonNode extends NodeConnector implements java.io.Serializable{
-	//potentail problem: all this code is in a highly duplicated node
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
+public class DungeonNode extends NodeConnector{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private static final int EVENT_NUMBER =7;
 	private int state;
@@ -269,20 +268,6 @@ public class DungeonNode extends NodeConnector implements java.io.Serializable{
 		}else {extra.println("You already looted this statue!");}
 		Networking.clearSide(1);
 	}
-
-	@Override
-	public void passTime(double d) {
-		// Auto-generated method stub
-		
-	}
-
-	@Override
-	public void timeFinish() {
-		// Auto-generated method stub
-		
-	}
-
-
 
 	/*
 	public void addBacks() {
