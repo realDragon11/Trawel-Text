@@ -5,6 +5,8 @@ import java.util.List;
 import trawel.earts.EArt;
 import trawel.earts.EArtBox;
 import trawel.factions.FBox;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 public class Player extends SuperPerson{
 	/**
@@ -77,7 +79,9 @@ public class Player extends SuperPerson{
 	}
 	
 	@Override
-	public void passTime(double d) {}
+	public List<TimeEvent> passTime(double d, TimeContext caller) {
+		return null;
+	}
 	
 	public static void addXp(int amount) {
 		player.getPerson().addXp(amount);

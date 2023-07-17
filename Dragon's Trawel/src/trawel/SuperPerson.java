@@ -1,7 +1,9 @@
 package trawel;
 import java.util.ArrayList;
 
-public abstract class SuperPerson implements java.io.Serializable{
+import trawel.time.CanPassTime;
+
+public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	/**
 	 * 
 	 */
@@ -11,8 +13,6 @@ public abstract class SuperPerson implements java.io.Serializable{
 	public void addTitle(String title) {
 		titleList.add(title);
 	}
-
-	public abstract void passTime(double time);
 	
 	public void displayTitles() {
 		if (titleList.isEmpty()) {extra.println("They have no titles.");}else {

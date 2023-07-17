@@ -40,12 +40,6 @@ public class Mine extends NodeFeature {
 	public void sendBackVariant() {
 		Networking.sendStrong("Backvariant|"+background_area+background_variant+"|1|0|");
 	}
-
-	@Override
-	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	@Override
 	protected void generate() {

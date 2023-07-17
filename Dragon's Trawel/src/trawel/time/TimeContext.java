@@ -7,10 +7,12 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class TimeContext {
 
-	public final ContextType type;
+	public final ContextType owntype;
+	private ContextType type;
 	private List<TimeEvent> events = new ArrayList<TimeEvent>();
     //private final Lock lock = new ReentrantLock();
 	public final CanPassTime scope;
+	private TimeContext caller;
 	
 	//TODO: for now, timecontext itself is not thread safe, but the rest of the program
 	//is expected to only ever access it in a thread safe way
@@ -18,11 +20,21 @@ public class TimeContext {
 	//but are instead resolved by the global context they are in
 	
 	public TimeContext(ContextType type, CanPassTime scope) {
-		this.type = type;
+		this.owntype = type;
 		this.scope = scope;
 	}
 	
-	public void call(TimeContext parent, double calltime) {
+	/**
+	 * calls with another forced type, ie for the players current world, you can force set the type to local
+	 * since otherwise worlds are global
+	 * @param parent
+	 * @param calltime
+	 * @param type
+	 * @return
+	 */
+	public TimeContext call(TimeContext parent, double calltime,ContextType type) {
+		this.type = type;
+		caller = parent;
 		double timeleft = calltime;
 		double time;
 		while (timeleft > 0) {
@@ -34,8 +46,12 @@ public class TimeContext {
 				timeleft = 0;
 			}
 			addEvents(scope.passTime(time, this));
-			processEvents();
 		}
+		return this;
+	}
+	
+	public TimeContext call(TimeContext parent, double calltime) {
+		return call(parent,calltime,owntype);
 	}
 	/**
 	 * used internally to recursively pull together contexts, which then get processed, and unprocessed ones get passed on
@@ -49,7 +65,10 @@ public class TimeContext {
 		events.addAll(es);
 	}
 	
-	private void processEvents() {
+	/**
+	 * call to process events without popping them
+	 */
+	public void processEvents() {
 		
 	}
 
@@ -69,8 +88,13 @@ public class TimeContext {
 	 * @return
 	 */
 	public List<TimeEvent> pop(){
+		processEvents();
 		List<TimeEvent> ret = events;
 		events = new ArrayList<TimeEvent>();
 		return ret;
+	}
+	
+	public TimeContext caller() {
+		return caller;
 	}
 }

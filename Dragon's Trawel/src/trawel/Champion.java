@@ -98,10 +98,11 @@ public class Champion  extends TravelingFeature{
 					}
 				}
 				if (delete != null) {
-				town.getOccupants().remove(delete);}
+				town.getOccupants().remove(delete);}//TODO use events
 				
 			}
 		}
+		return null;
 	}
 
 }

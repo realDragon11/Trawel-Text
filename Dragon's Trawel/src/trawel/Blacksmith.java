@@ -80,10 +80,10 @@ public class Blacksmith extends Feature {
 	public List<TimeEvent> passTime(double addtime, TimeContext calling) {
 		this.time += addtime;
 		if (time > 12+(Math.random()*30)) {
-			store.addAnItem();
+			store.addAnItem();//TODO: should probably add in event?
 			time = 0;
 		}
-
+		return null;
 	}
 	
 	private int askSlot() {

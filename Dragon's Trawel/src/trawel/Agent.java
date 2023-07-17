@@ -1,5 +1,9 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.List;
+
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 /**
  * @author Brian Malone
@@ -47,7 +51,7 @@ public class Agent extends SuperPerson{
 	}
 
 	@Override
-	public void passTime(double d) {
+	public List<TimeEvent> passTime(double d, TimeContext calling) {
 		//will need to look at connections and features
 		//a* pathing?
 		while(current.getTimeTo() < d) {
@@ -56,6 +60,7 @@ public class Agent extends SuperPerson{
 			current = popBehave();
 		}
 			current.passTime(d);
+			return null;
 	}
 
 	public void enqueueBehavior(Behavior b) {

@@ -1,11 +1,17 @@
 package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 
 import trawel.time.CanPassTime;
+import trawel.time.ContextType;
+import trawel.time.HasTimeContext;
 import trawel.time.ReloadAble;
+import trawel.time.TContextOwner;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
-public abstract class Feature implements java.io.Serializable, CanPassTime, ReloadAble{
+public abstract class Feature extends TContextOwner{
 	
 	private static final long serialVersionUID = 7285785408935895233L;
 	protected String name;
@@ -19,6 +25,8 @@ public abstract class Feature implements java.io.Serializable, CanPassTime, Relo
 	protected int background_variant = extra.randRange(1, 3);
 	protected String background_area = "main";
 	public static Feature atFeatureForHeader = null;
+	protected transient TimeContext timeScope;
+	
 	public abstract void go();
 	public void goHeader() {
 		Networking.setBackground(background_area);
@@ -88,9 +96,15 @@ public abstract class Feature implements java.io.Serializable, CanPassTime, Relo
 	public int qrSize() {
 		return qrList.size();
 	}
-	
+
+	@Override
 	public void reload() {
-		//optional
+		timeScope = new TimeContext(ContextType.UNBOUNDED,this);
+		timeSetup();
+	}
+	@Override
+	public List<TimeEvent> contextTime(double time, TimeContext calling) {
+		return timeScope.call(calling, time).pop();
 	}
 	
 }

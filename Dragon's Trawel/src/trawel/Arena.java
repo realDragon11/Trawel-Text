@@ -195,6 +195,7 @@ public class Arena extends Feature{
 			timesDone++;
 			timeLeft = interval;
 		}
-		}
+		}//TODO: perhaps actual fights get recorded?
+		return null;
 	}
 }

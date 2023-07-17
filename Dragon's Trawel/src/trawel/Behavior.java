@@ -14,6 +14,7 @@ public abstract class Behavior {
 	
 	public abstract void action(Agent user);
 
+	//TODO: add context
 	public void passTime(double d) {
 		timeTo-=d;
 	}

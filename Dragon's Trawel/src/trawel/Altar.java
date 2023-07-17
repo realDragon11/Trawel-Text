@@ -124,7 +124,7 @@ public class Altar extends Feature{
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		//Auto-generated method stub
-		
+		return null;
 	}
 	
 	private void examine() {

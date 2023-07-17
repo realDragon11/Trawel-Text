@@ -7,20 +7,24 @@ import java.util.List;
 import trawel.fort.FortFeature;
 import trawel.fort.FortHall;
 import trawel.fort.FortQual;
+import trawel.time.CanPassTime;
+import trawel.time.ContextType;
+import trawel.time.HasTimeContext;
+import trawel.time.ReloadAble;
+import trawel.time.TContextOwner;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 import trawel.townevents.TownFlavorFactory;
 import trawel.townevents.TownTag;
 
 /**
  * 
- * @author Brian Malone 
+ * @author dragon 
  * 5/30/2018
  */
 
-public class Town implements java.io.Serializable, CanPassTime, ReloadAble{
+public class Town extends TContextOwner implements java.io.Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private boolean hasPort;
 	private boolean hasTeleporters;
@@ -42,6 +46,7 @@ public class Town implements java.io.Serializable, CanPassTime, ReloadAble{
 	private Town leaveTown;
 	public int visited = 0;
 	public int background_variant = extra.randRange(1,3);
+	
 	public Town() {
 		connects = new ArrayList<Connection>();
 		features = new ArrayList<Feature>();
@@ -79,6 +84,12 @@ public class Town implements java.io.Serializable, CanPassTime, ReloadAble{
 		timePassed = 0;
 		features.add(new FortHall(tier,this));
 		island.addTown(this);
+	}
+	
+	@Override
+	public void reload() {
+		timeScope = new TimeContext(ContextType.LOCAL,this);
+		timeSetup();
 	}
 	
 	public void setGoPrinter(PrintEvent e) {
@@ -640,7 +651,8 @@ public class Town implements java.io.Serializable, CanPassTime, ReloadAble{
 	}
 
 
-	public void passTime(double time) {
+	@Override
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		timePassed+=time;
 		defenseTimer-=time;
 		if (defenseTimer < 0) {
@@ -651,8 +663,9 @@ public class Town implements java.io.Serializable, CanPassTime, ReloadAble{
 			this.addPerson();
 		}
 		for (Feature f: features) {
-			f.passTime(time, error);
+			timeScope.localEvents(f.contextTime(time,calling));
 		}
+		
 		for (Feature f: removeList) {
 			features.remove(f);
 		}
@@ -662,8 +675,14 @@ public class Town implements java.io.Serializable, CanPassTime, ReloadAble{
 		}
 		addList = new ArrayList<Feature>();
 		for (SuperPerson a: occupants) {
-			a.passTime(time);
+			a.passTime(time,calling);
 		}
+		return null;
+	}
+	
+	@Override
+	public List<TimeEvent> contextTime(double time, TimeContext calling) {
+		return timeScope.call(calling, time).pop();
 	}
 	
 	public ArrayList<SuperPerson> getOccupants() {

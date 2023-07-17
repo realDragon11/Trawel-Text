@@ -46,7 +46,7 @@ public class Appraiser extends Feature {
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		// TODO Auto-generated method stub
-
+		return null;
 	}
 
 }
