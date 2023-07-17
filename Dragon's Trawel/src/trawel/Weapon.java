@@ -399,9 +399,9 @@ public class Weapon extends Item {
 			}
 			building.tests.add(WorldGen.getDummyInvs().get(p));
 		}
-		Lock lock = new ReentrantLock();
+		//Lock lock = new ReentrantLock();
 		
-		synchronized(lock) {
+		//synchronized(lock) {
 			for (FutureTask<Double> ta: runners) {
 				ta.run();
 			}
@@ -412,7 +412,7 @@ public class Weapon extends Item {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		//}
 		
 		bs/=(battleTests*WorldGen.getDummyInvs().size());
 		dam = new DamTuple(high,average,(bs*level)/(size));

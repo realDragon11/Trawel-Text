@@ -38,6 +38,8 @@ public class DummyInventory extends Inventory {
 			return MaterialFactory.getMat("flesh");
 		case 10:
 			return MaterialFactory.getMat("adamantine");
+		case 11:
+			return MaterialFactory.getMat("silk");
 		}
 		throw new RuntimeException("not a valid dummy inv preset");
 	}
