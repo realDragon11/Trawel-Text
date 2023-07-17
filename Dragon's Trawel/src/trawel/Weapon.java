@@ -331,7 +331,7 @@ public class Weapon extends Item {
 	 * Returns the damage/time (ie dps) of the most powerful attack the weapon has
 	 * @return highest damage (int)
 	 */
-	public DamTuple highestDamageThreadLess() {
+	public DamTuple highestDamage() {
 		if (dam != null) {
 			return dam;
 		}
@@ -366,7 +366,7 @@ public class Weapon extends Item {
 	 * Returns the damage/time (ie dps) of the most powerful attack the weapon has
 	 * @return highest damage (int)
 	 */
-	public DamTuple highestDamage() {
+	public DamTuple highestDamageThreaded() {
 		if (dam != null) {
 			return dam;
 		}

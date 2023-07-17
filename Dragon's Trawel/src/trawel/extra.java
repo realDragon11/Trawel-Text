@@ -146,41 +146,45 @@ public final class extra {
 		
 		public static final boolean yesNo() {
 			String str;
+			trawel.threads.BlockTaskManager.start();
 			while (true) {
 				extra.println("1 yes");
 				extra.println("9 no");
 				Networking.sendStrong("Entry|yesno|");
 				if ((Networking.connected() && mainGame.GUIInput)  || Networking.autoconnectSilence) {
 					//while(true) {
-						int ini = Networking.nextInt();
-						while(ini != 1 && ini != 9) {
-							extra.println("Please type 1 or 9.");
-							extra.println("1 yes");
-							extra.println("9 no");
-							ini=  Networking.nextInt();
-							if (ini == -99 || ini == -1) {
-								Networking.unConnect();
-								throw new RuntimeException("invalid input stream error");
-							}
-							
+					int ini = Networking.nextInt();
+					while(ini != 1 && ini != 9) {
+						extra.println("Please type 1 or 9.");
+						extra.println("1 yes");
+						extra.println("9 no");
+						ini=  Networking.nextInt();
+						if (ini == -99 || ini == -1) {
+							Networking.unConnect();
+							throw new RuntimeException("invalid input stream error");
 						}
-						extra.linebreak();
-						return ini == 1;
+
+					}
+					extra.linebreak();
+					trawel.threads.BlockTaskManager.halt();
+					return ini == 1;
+
+				}else {
 					
-					}else {
-				str = mainGame.scanner.next();
-					
-				extra.linebreak();
-				str = str.toLowerCase();
-				//extra.println(str);
-				if (str.equals("yes") || str.equals("y")|| str.equals("1")) {
-					return true;
-				}
-				if (str.equals("no") || str.equals("n") || str.equals("0") || str.equals("9")) {
-					return false;
-				}
-				extra.println("Yes or No?");
-						
+					str = mainGame.scanner.next();
+					extra.linebreak();
+					str = str.toLowerCase();
+					//extra.println(str);
+					if (str.equals("yes") || str.equals("y")|| str.equals("1")) {
+						trawel.threads.BlockTaskManager.halt();
+						return true;
+					}
+					if (str.equals("no") || str.equals("n") || str.equals("0") || str.equals("9")) {
+						trawel.threads.BlockTaskManager.halt();
+						return false;
+					}
+					extra.println("Yes or No?");
+
 				}
 			}
 		}
@@ -194,6 +198,7 @@ public final class extra {
 			int in =0;
 			Networking.sendStrong("Entry|Activate|" + max + "|");
 			if ((Networking.connected() && mainGame.GUIInput) || Networking.autoconnectSilence) {
+				trawel.threads.BlockTaskManager.start();
 				int ini=  Networking.nextInt();
 				while(ini < 1 || ini > max) {
 					extra.println("Please type a number from 1 to " + max + ".");
@@ -203,12 +208,14 @@ public final class extra {
 						throw new RuntimeException("invalid input stream error");
 					}
 				}
+				trawel.threads.BlockTaskManager.halt();
 				extra.linebreak();
 				return ini;
 			
 			}else {
 				
 			do{
+			trawel.threads.BlockTaskManager.start();
 			str = extra.inString(); 
 			try {
 				in = Integer.parseInt(str);
@@ -221,7 +228,8 @@ public final class extra {
 			if((in < 1 || in > max)) {
 				extra.println("Please type a number from 1 to " + max + ".");
 			}
-			} while (in < 1 || in > max); 
+			} while (in < 1 || in > max);
+			trawel.threads.BlockTaskManager.halt();
 			extra.linebreak();
 			return in;
 			}

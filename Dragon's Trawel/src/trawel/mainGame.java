@@ -155,6 +155,7 @@ public class mainGame {
 	
 	private static void baseSetup1() {
 		if (!basicSetup1) {
+			trawel.threads.BlockTaskManager.setup();
 			new MaterialFactory();
 			new RaceFactory();
 			new TargetFactory();
