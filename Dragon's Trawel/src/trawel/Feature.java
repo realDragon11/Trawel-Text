@@ -2,7 +2,9 @@ package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
 
-public abstract class Feature implements java.io.Serializable{
+import trawel.time.CanPassTime;
+
+public abstract class Feature implements java.io.Serializable, CanPassTime{
 	
 	private static final long serialVersionUID = 7285785408935895233L;
 	protected String name;
@@ -30,7 +32,6 @@ public abstract class Feature implements java.io.Serializable{
 	
 	public void init() {
 	}
-	public abstract void passTime(double time);
 	
 	public String getName() {
 		return name;
