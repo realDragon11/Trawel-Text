@@ -1,6 +1,10 @@
 package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
+
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 public class Champion  extends TravelingFeature{
 
@@ -76,7 +80,7 @@ public class Champion  extends TravelingFeature{
 	}
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		if (hasSomething == false) {
 			timeElapsed+=time;
 			if (timeElapsed > extra.randRange(24, 60)) {

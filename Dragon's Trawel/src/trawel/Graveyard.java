@@ -1,5 +1,9 @@
 package trawel;
 import java.awt.Color;
+import java.util.List;
+
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 public class Graveyard extends Feature {
 
@@ -27,7 +31,7 @@ public class Graveyard extends Feature {
 	}
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		start.passTime(time);
 		start.timeFinish();
 	}

@@ -1,6 +1,10 @@
 package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
+
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 public class Arena extends Feature{
 	/**
@@ -180,7 +184,7 @@ public class Arena extends Feature{
 		this.rounds = rounds;
 	}
 
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		moneyEarned +=tier*2*time;
 		while (time > 0) {
 		if (time < timeLeft) {

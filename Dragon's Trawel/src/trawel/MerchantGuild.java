@@ -3,6 +3,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
+
 public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 	/**
@@ -164,7 +167,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 		
 	}
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		//TODO: make certain drawbanes give more depending one what the guild needs
 		timePassed += time;
 		if (timePassed > nextReset) {
@@ -172,7 +175,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 			nextReset = extra.randRange(4,30);
 			if (canQuest) {this.generateSideQuest();}
 		}
-		
+		return null;
 	}
 	public Person getQuarterMaster() {
 		return quarterMaster;

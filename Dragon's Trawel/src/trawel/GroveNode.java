@@ -1,9 +1,13 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.List;
 
 import trawel.factions.Faction;
+import trawel.time.CanPassTime;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
-public class GroveNode extends NodeConnector implements java.io.Serializable{
+public class GroveNode extends NodeConnector{
 	//potentail problem: all this code is in a highly duplicated node
 
 	/**
@@ -976,7 +980,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 
 
 	@Override
-	public void passTime(double d) {
+	public List<TimeEvent> passTime(double d, TimeContext calling) {
 		passing = true;
 		for (NodeConnector n: connects) {
 			if (!n.passing) {
@@ -986,6 +990,7 @@ public class GroveNode extends NodeConnector implements java.io.Serializable{
 		if (idNum == -1) {
 			((PlantSpot)storage1).passTime(d);
 		}
+		return 
 	}
 
 

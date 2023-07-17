@@ -18,6 +18,8 @@ import trawel.RaceFactory;
 import trawel.Skill;
 import trawel.Town;
 import trawel.extra;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 /**
  * 
@@ -269,7 +271,7 @@ public class FortHall extends FortFeature {
 	}
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		forgeTimer -= (time);
 		while (offenseTimer <= 0) {
 			offenseTimer += 12.0;
@@ -307,7 +309,7 @@ public class FortHall extends FortFeature {
 			}
 			Fight(this.getAllies(),people);
 		}
-		
+		return null;
 	}
 	
 	public int getSkillCount(SubSkill s) {

@@ -6,6 +6,8 @@ import java.util.List;
 
 import trawel.Player;
 import trawel.extra;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 public class Watchtower extends FortFeature {
 
@@ -68,9 +70,9 @@ public class Watchtower extends FortFeature {
 	}
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		// TODO Auto-generated method stub
-
+		return null;
 	}
 	
 

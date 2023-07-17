@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.factions.Faction;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 public class Forest extends Feature implements java.io.Serializable{
 
@@ -126,7 +128,7 @@ public class Forest extends Feature implements java.io.Serializable{
 
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		if (exhaust > 0) {
 			exhaust--;
 		}

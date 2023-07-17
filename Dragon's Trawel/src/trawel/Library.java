@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.earts.EArt;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 public class Library extends Feature {
 
@@ -10,6 +12,7 @@ public class Library extends Feature {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	//TODO: make these have some real meaning and not just be bad flavor
 	private ArrayList<Book> books = new ArrayList<Book>();
 	//private Town town;
 	private boolean hasStudiedArcane = false;
@@ -125,7 +128,7 @@ public class Library extends Feature {
 	}
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		if (books.size() > 4 && extra.chanceIn(1,5)) {
 			books.remove(0);
 		}
@@ -135,6 +138,8 @@ public class Library extends Feature {
 		if (books.size() < 8 && extra.chanceIn(1,3)) {
 			books.add(BookFactory.randBook());
 		}
+		
+		return null;
 
 	}
 

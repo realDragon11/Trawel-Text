@@ -6,6 +6,8 @@ import java.util.List;
 import trawel.factions.FBox;
 import trawel.factions.FBox.FSub;
 import trawel.factions.Faction;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 public class HeroGuild extends Feature {
 	
@@ -138,8 +140,9 @@ public class HeroGuild extends Feature {
 	}
 	
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		// TODO Auto-generated method stub
+		return null;//TODO monster bounty quests or something
 	}
 
 }

@@ -3,6 +3,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
+
 //sells booze which increases temp hp for a few fights,
 //has a resident which changes with time
 public class Inn extends Feature implements java.io.Serializable, QuestBoardLocation{
@@ -243,7 +246,7 @@ public class Inn extends Feature implements java.io.Serializable, QuestBoardLoca
 	}
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		timePassed += time;
 		moneyEarned +=tier*5*time;
 		if (timePassed > nextReset) {
@@ -253,7 +256,7 @@ public class Inn extends Feature implements java.io.Serializable, QuestBoardLoca
 			nextReset = extra.randRange(4,30);
 			if (canQuest) {this.generateSideQuest();}
 		}
-		
+		return null;//TODO make inn time matter more
 	}
 	
 	private void occupantDuel() {

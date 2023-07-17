@@ -1,5 +1,9 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.List;
+
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 public class Garden extends Feature {
 
@@ -42,7 +46,7 @@ public class Garden extends Feature {
 	}
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		time *= (1.0+(tier/100.0));
 		for (PlantSpot p: plants) {
 			p.passTime(time);

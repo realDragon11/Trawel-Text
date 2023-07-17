@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface CanPassTime {
 
-	public List<TimeEvent> passTime(double time);
+	public List<TimeEvent> passTime(double time, TimeContext calling);
 }

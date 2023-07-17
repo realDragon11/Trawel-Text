@@ -1,5 +1,10 @@
 package trawel;
 import java.awt.Color;
+import java.util.List;
+
+import trawel.time.ContextType;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 public class Grove extends Feature {
 
@@ -10,6 +15,7 @@ public class Grove extends Feature {
 	private Town town;
 	private int size;
 	private GroveNode start;
+	private transient TimeContext timeScope;
 	public Grove(String name,Town t) {
 		this.name = name;
 		town = t;
@@ -19,6 +25,7 @@ public class Grove extends Feature {
 		color = Color.RED;
 		background_area = "forest";
 		background_variant = 1;
+		timeScope = new TimeContext(ContextType.UNBOUNDED,this);
 	}
 	@Override
 	public void go() {
@@ -29,7 +36,7 @@ public class Grove extends Feature {
 	}
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		start.passTime(time);
 		start.timeFinish();
 	}

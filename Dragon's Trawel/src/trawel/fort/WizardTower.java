@@ -12,6 +12,8 @@ import trawel.Player;
 import trawel.extra;
 import trawel.fort.SubSkill.Active;
 import trawel.fort.SubSkill.Type;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 public class WizardTower extends FortFeature {
 
@@ -95,9 +97,9 @@ public class WizardTower extends FortFeature {
 	}
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		// TODO Auto-generated method stub
-
+		return null;
 	}
 	public void skills() {
 		extra.menuGo(new MenuGenerator() {

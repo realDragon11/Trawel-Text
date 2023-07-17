@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
+
 public class Slum extends Feature implements QuestBoardLocation{
 
 	private boolean removable;
@@ -148,7 +151,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	}
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		timePassed-=time;
 		if (timePassed < 0) {
 			if (canQuest) {this.generateSideQuest();}
@@ -170,7 +173,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 			}
 			
 		}
-
+		return null;//TODO: might need events
 	}
 	
 	private void backroom() {

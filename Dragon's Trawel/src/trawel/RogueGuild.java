@@ -6,6 +6,8 @@ import java.util.List;
 import trawel.factions.FBox;
 import trawel.factions.FBox.FSub;
 import trawel.factions.Faction;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 public class RogueGuild extends Feature {
 	
@@ -117,8 +119,9 @@ public class RogueGuild extends Feature {
 	}
 	
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	public void gemLaunder() {

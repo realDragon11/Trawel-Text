@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
+
 public class Dungeon extends Feature {
 
 	/**
@@ -38,7 +41,7 @@ public class Dungeon extends Feature {
 	}
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		// TODO Auto-generated method stub
 	}
 	

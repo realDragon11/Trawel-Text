@@ -1,7 +1,11 @@
 package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 public class Oracle extends Feature implements java.io.Serializable{ //extends feature later
 	/**
@@ -187,9 +191,9 @@ public class Oracle extends Feature implements java.io.Serializable{ //extends f
 	}
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		// Auto-generated method stub
-		
+		return null;
 	}
 	
 	//Main quest guidance

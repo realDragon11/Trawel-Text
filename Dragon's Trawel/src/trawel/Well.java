@@ -1,5 +1,10 @@
 package trawel;
 
+import java.util.List;
+
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
+
 public class Well extends Feature implements java.io.Serializable{
 	
 	/**
@@ -14,30 +19,14 @@ public class Well extends Feature implements java.io.Serializable{
 
 	@Override
 	public void go() {
-		extra.println("1 make a wish");
-		extra.println("2 exit");
-		int in =  extra.inInt(2);
-		extra.linebreak();
-		if (in == 2) {
-			return;
-		}
-		if (in == 1) {
-			if (Player.bag.getGold() > 0) {
-				extra.println("You toss a coin into the well... what do you wish?");
-				extra.inString();
-				extra.println("You hear a small splash and make your wish...");
-				Player.bag.addGold(-1);
-			}else {
-				extra.println("You don't have a coin to wish with!");
-			}
-		}
-		
-		go();
+		return;
 
 	}
 
 	@Override
-	public void passTime(double time) {}
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
+		return null;
+	}
 	
 	
 

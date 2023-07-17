@@ -1,5 +1,10 @@
 package trawel;
 
+import java.util.List;
+
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
+
 public class Blacksmith extends Feature {
 	
 	/**
@@ -72,7 +77,7 @@ public class Blacksmith extends Feature {
 	}
 
 	@Override
-	public void passTime(double addtime) {
+	public List<TimeEvent> passTime(double addtime, TimeContext calling) {
 		this.time += addtime;
 		if (time > 12+(Math.random()*30)) {
 			store.addAnItem();

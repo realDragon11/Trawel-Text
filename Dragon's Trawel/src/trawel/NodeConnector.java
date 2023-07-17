@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public abstract class NodeConnector implements Serializable {
+import trawel.time.CanPassTime;
+
+public abstract class NodeConnector implements Serializable, CanPassTime {
 
 	//used for connecting event nodes with bosses
 	
@@ -140,7 +142,5 @@ public abstract class NodeConnector implements Serializable {
 	public void reverseConnections() {
 		Collections.reverse(connects);
 	}
-	
-	public abstract void passTime(double d);
 	public abstract void timeFinish();
 }

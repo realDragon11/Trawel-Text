@@ -651,7 +651,7 @@ public class Town implements java.io.Serializable{
 			this.addPerson();
 		}
 		for (Feature f: features) {
-			f.passTime(time);
+			f.passTime(time, error);
 		}
 		for (Feature f: removeList) {
 			features.remove(f);

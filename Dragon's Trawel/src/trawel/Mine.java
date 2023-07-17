@@ -1,5 +1,9 @@
 package trawel;
 import java.awt.Color;
+import java.util.List;
+
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 public class Mine extends Feature {
 
@@ -43,8 +47,9 @@ public class Mine extends Feature {
 	}
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	public void generate() {

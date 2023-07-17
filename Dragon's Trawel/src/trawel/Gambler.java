@@ -1,5 +1,10 @@
 package trawel;
 
+import java.util.List;
+
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
+
 public class Gambler extends Feature implements java.io.Serializable{
 	/**
 	 * 
@@ -76,7 +81,7 @@ public class Gambler extends Feature implements java.io.Serializable{
 
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		gold += (int)time;
 
 	}

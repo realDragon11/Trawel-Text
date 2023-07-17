@@ -1,5 +1,10 @@
 package trawel;
 
+import java.util.List;
+
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
+
 public class Lot extends Feature {
 
 	/**
@@ -95,11 +100,11 @@ public class Lot extends Feature {
 	}
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		if (constructTime != -1) {
 			constructTime-=time;
 		if (construct != null && constructTime <= 0) {
-			switch (construct) {
+			switch (construct) {//TODO: enquene add might be better off in time events
 			case "inn": town.enqueneAdd(new Inn("your inn (" + town.getName() + ")",tier,town,Player.player));break;
 			case "arena":town.enqueneAdd(new Arena("your arena (" + town.getName() + ")",tier,1,24,200,1,Player.player));break;
 			case "mine": town.enqueneAdd(new Mine("your mine (" + town.getName() + ")",town,Player.player,Mine.Shape.STANDARD));break;
@@ -109,6 +114,7 @@ public class Lot extends Feature {
 			
 		}
 		}
+		return null;
 	}
 	
 	public double getConstructTime() {

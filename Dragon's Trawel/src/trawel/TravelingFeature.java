@@ -1,5 +1,10 @@
 package trawel;
 
+import java.util.List;
+
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
+
 public class TravelingFeature extends Feature implements java.io.Serializable{
 
 	/**
@@ -22,16 +27,16 @@ public class TravelingFeature extends Feature implements java.io.Serializable{
 	}
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		timePassed += time;
 		if (hasSomething) {
-			feature.passTime(time);
+			feature.passTime(time, calling);
 		}
 		if (timePassed > extra.randRange(20,81)) {
 			timePassed = 0;
 			newFeature();
 		}
-		
+		return null;
 	}
 	
 	public void newFeature() {

@@ -1,6 +1,10 @@
 package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
+
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 public class Store extends Feature implements java.io.Serializable{
 
@@ -292,7 +296,7 @@ public class Store extends Feature implements java.io.Serializable{
 	}
 	
 	@Override
-	public void passTime(double addtime) {
+	public List<TimeEvent> passTime(double addtime, TimeContext calling) {
 		this.time += addtime;
 		if (time > 12+(Math.random()*30)) {
 			if (type != 7) {
@@ -302,8 +306,7 @@ public class Store extends Feature implements java.io.Serializable{
 			addAnItem();
 			time = 0;
 		}
-		
-		
+		return null;//TODO: should probably make these events or something instead? idk, shouldn't have much issues
 	}
 	
 	@Override

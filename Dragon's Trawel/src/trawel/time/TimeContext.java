@@ -33,12 +33,15 @@ public class TimeContext {
 				time = timeleft;
 				timeleft = 0;
 			}
-			addEvents(scope.passTime(time));
+			addEvents(scope.passTime(time, this));
 			processEvents();
 		}
 	}
 	
 	private void addEvents(List<TimeEvent> es) {
+		if (es == null) {
+			return;
+		}
 		events.addAll(es);
 	}
 	

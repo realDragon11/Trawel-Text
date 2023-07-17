@@ -128,14 +128,16 @@ public final class extra {
 			}*/
 	}
 	
+	
+	public static final java.text.DecimalFormat F_TWO_TRAILING = new java.text.DecimalFormat("0.00");
+	public static final java.text.DecimalFormat F_WHOLE = new java.text.DecimalFormat("0");
 	/**
 	 * Formats a double into a string that looks nicer.
 	 * @param str - (double)
 	 * @return (String)
 	 */
 	public static final String format(double str) {
-		java.text.DecimalFormat format2 = new java.text.DecimalFormat("0.00");
-		return(format2.format(str));
+		return(F_TWO_TRAILING.format(str));
 	}
 	
 	//extra.linebreak();

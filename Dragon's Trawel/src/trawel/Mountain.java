@@ -2,6 +2,9 @@ package trawel;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
+
 public class Mountain extends Feature implements java.io.Serializable{
 
 	/**
@@ -90,7 +93,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 	}
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		if (exhaust > 0) {
 			exhaust--;
 		}
@@ -100,7 +103,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 			cleanTown();
 			this.time = 0;
 		}
-
+		return null;
 	}
 	
 	private void cleanTown() {

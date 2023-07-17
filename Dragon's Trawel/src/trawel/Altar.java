@@ -3,6 +3,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
+
 public class Altar extends Feature{
 
 	
@@ -119,7 +122,7 @@ public class Altar extends Feature{
 
 
 	@Override
-	public void passTime(double time) {
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		//Auto-generated method stub
 		
 	}
