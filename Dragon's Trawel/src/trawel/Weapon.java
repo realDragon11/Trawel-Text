@@ -11,13 +11,12 @@ import trawel.TargetFactory.TargetType;
 
 /**
  * 
- * @author Brian Malone
+ * @author dragon
  * before 2/11/2018
- * A weapon is an item.
- * It contains a Stance, of attacks, and possibly an enchantment.
- * It is also made up of a certain material, and of a certain type.
- * Different materials have different properites, differnt types have different attacks, which
- * are stored in the weapon's stance.
+ * A Weapon is an Item.
+ * It is made up of a certain material, and of a certain type. It my also have an Enchantment of some sort.
+ * Different materials have different properties, different types have different attacks, which
+ * are stored in the weapon's stance elsewhere.
  */
 
 public class Weapon extends Item {
@@ -172,14 +171,15 @@ public class Weapon extends Item {
 		}
 		//random chance, partially based on enchantment power, to enchant the weapon
 		effectiveCost = cost;
-		if (baseEnchant*2 > Math.random() && extra.chanceIn(8,10)) {
-		if (extra.chanceIn(2, 3)) {
-		enchant = new EnchantConstant(level*baseEnchant);
-		effectiveCost=(int)extra.zeroOut(cost * enchant.getGoldMult()+enchant.getGoldMod());
-		IsEnchantedConstant = true;}else {
-			enchantHit = new EnchantHit(baseEnchant);//no level
-			effectiveCost=(int)extra.zeroOut(cost * enchantHit.getGoldMult());
-		}
+		if (baseEnchant*2 > extra.randFloat() && extra.chanceIn(8,10)) {
+			if (extra.chanceIn(2, 3)) {
+				enchant = new EnchantConstant(level*baseEnchant);
+				effectiveCost=(int)extra.zeroOut(cost * enchant.getGoldMult()+enchant.getGoldMod());
+				IsEnchantedConstant = true;
+			}else {
+				enchantHit = new EnchantHit(baseEnchant);//no level
+				effectiveCost=(int)extra.zeroOut(cost * enchantHit.getGoldMult());
+			}
 		}
 		
 		//new first phase 'no bad enchants' code
@@ -324,7 +324,7 @@ public class Weapon extends Item {
 	}*/
 	
 	/**
-	 * Returns the damage/time (ie dps) of the most powerfull attack the weapon has
+	 * Returns the damage/time (ie dps) of the most powerful attack the weapon has
 	 * @return highest damage (int)
 	 */
 	public DamTuple highestDamage() {
@@ -358,7 +358,7 @@ public class Weapon extends Item {
 		return dam;
 	}
 	
-	public static int battleTests = 3;//was 50, then got converted into goes at all the dummy inventories (15 now)
+	public static int battleTests = 3;//was 50, then got converted into goes at all the dummy inventories (20 now)
 	
 	public class DamTuple implements java.io.Serializable{
 		

@@ -56,11 +56,20 @@ public class Inventory implements java.io.Serializable{
 				armorSlots[4] = new Armor(level,4,MaterialFactory.randMatByType(matType2),matType2);
 				hand = Weapon.genMidWeapon(level,job.weapType[extra.randRange(0,job.weapType.length-1)]);
 			}else {
-				armorSlots[0] = new Armor(level,0);
-				armorSlots[1] = new Armor(level,1);
-				armorSlots[2] = new Armor(level,2);
-				armorSlots[3] = new Armor(level,3);
-				armorSlots[4] = new Armor(level,4);
+				
+				if (isDummy && matType != null) {
+					armorSlots[0] = new Armor(level,0,matType);
+					armorSlots[1] = new Armor(level,1,matType);
+					armorSlots[2] = new Armor(level,2,matType);
+					armorSlots[3] = new Armor(level,3,matType);
+					armorSlots[4] = new Armor(level,4,matType);
+				} else {
+					armorSlots[0] = new Armor(level,0);
+					armorSlots[1] = new Armor(level,1);
+					armorSlots[2] = new Armor(level,2);
+					armorSlots[3] = new Armor(level,3);
+					armorSlots[4] = new Armor(level,4);
+				}
 				if (isDummy) {
 					hand = new Weapon(level);
 				}else {

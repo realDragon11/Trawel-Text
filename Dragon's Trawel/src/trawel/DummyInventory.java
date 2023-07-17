@@ -13,6 +13,34 @@ public class DummyInventory extends Inventory {
 		super(-1, Race.RaceType.HUMANOID, null, null);
 		myDodge = super.getDodge();
 	}
+	public DummyInventory(int i) {
+		super(-1, Race.RaceType.HUMANOID, presetSwitch(i), null);
+		myDodge = super.getDodge();
+	}
+	
+	private static final Material presetSwitch(int i) {
+		switch (i) {
+		case 0: case 1:
+			return MaterialFactory.getMat("cloth");
+		case 2: case 3:
+			return MaterialFactory.getMat("iron");
+		case 4:
+			return MaterialFactory.getMat("copper");
+		case 5:
+			return MaterialFactory.getMat("tin");
+		case 6:
+			return MaterialFactory.getMat("bronze");
+		case 7:
+			return MaterialFactory.getMat("silver");
+		case 8:
+			return MaterialFactory.getMat("gold");
+		case 9:
+			return MaterialFactory.getMat("flesh");
+		case 10:
+			return MaterialFactory.getMat("adamantine");
+		}
+		throw new RuntimeException("not a valid dummy inv preset");
+	}
 	
 	@Override
 	public double getSharp(int slot, List<WeaponQual> qualList) {

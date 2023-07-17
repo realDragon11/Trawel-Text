@@ -21,8 +21,12 @@ public final class extra {
 	
 	private static EnhancedRandom rand = new WhiskerRandom();
 	
+	
 	//static methods
 
+	public static final float randFloat() {
+		return rand.nextFloat();
+	}
 	
 	/**
 	 * randomly returns one of the parameters
