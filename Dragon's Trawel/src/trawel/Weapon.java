@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
 import trawel.TargetFactory.TargetType;
 
@@ -385,20 +387,45 @@ public class Weapon extends Item {
 			}
 		}
 		average/=size;
+		List<FutureTask<Double>> runners = new ArrayList<FutureTask<Double>>();
+		List<Inventory> tests = new ArrayList<Inventory>();
+		TestArmor building = new TestArmor(attacks,tests,this);
+		runners.add(new FutureTask<Double>(building));
+		for (int p = WorldGen.getDummyInvs().size()-1; p >= 0;p--) {
+			if (p != 0 && tests.size() > 3) {
+				tests = new ArrayList<Inventory>();
+				building = new TestArmor(attacks,tests,this);
+				runners.add(new FutureTask<Double>(building));
+			}
+			building.tests.add(WorldGen.getDummyInvs().get(p));
+		}
+		Lock lock = new ReentrantLock();
 		
+		synchronized(lock) {
+			for (FutureTask<Double> ta: runners) {
+				ta.run();
+			}
+			try {
+				for (FutureTask<Double> ta: runners) {
+					bs+=ta.get();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		
 		bs/=(battleTests*WorldGen.getDummyInvs().size());
 		dam = new DamTuple(high,average,(bs*level)/(size));
 		return dam;
 	}
 	
-	protected class testArmor implements Callable<Double>{
+	protected class TestArmor implements Callable<Double>{
 
 		private static final long serialVersionUID = 1L;
 		public final List<Attack> attacks;
 		public final List<Inventory> tests;
 		public final Weapon weap;
-		public testArmor(List<Attack> attacks,List<Inventory> tests,Weapon weapon) {
+		public TestArmor(List<Attack> attacks,List<Inventory> tests,Weapon weapon) {
 			this.attacks = attacks;
 			this.tests = tests;
 			weap = weapon;
