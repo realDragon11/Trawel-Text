@@ -4,5 +4,5 @@
 
 Please keep the game roughly PG13.
 
-Remember that I (dragon/Brian) will review every line of code submitted.
+Remember that I (dragon) will review every line of code submitted.
 
