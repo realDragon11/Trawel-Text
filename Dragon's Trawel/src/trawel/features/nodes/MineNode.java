@@ -31,7 +31,6 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 	//private int level;
 	private Object storage1, storage2;
 	//private boolean forceGo;
-	private Mine parent;
 	
 	public MineNode(int size, int tier,Mine p) {
 		parent = p;
@@ -79,7 +78,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 		storage1 = RaceFactory.getCultist(level);
 		break;
 		}
-		if (size < 2 || parent.getShape().equals(Mine.Shape.HELL)) {
+		if (size < 2 || ((Mine)parent).getShape().equals(Mine.Shape.HELL)) {
 			return;
 		}
 		if (extra.chanceIn(1,10)) {
@@ -91,12 +90,12 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 		while (i < split) {
 			int sizeRemove = extra.randRange(0,sizeLeft-1);
 			sizeLeft-=sizeRemove;
-			MineNode n = new MineNode(sizeRemove,level,parent);
+			MineNode n = new MineNode(sizeRemove,level,((Mine)parent));
 			connects.add(n);
 			n.getConnects().add(this);
 			i++;
 		}
-		MineNode n = new MineNode(sizeLeft,level,parent);
+		MineNode n = new MineNode(sizeLeft,level,((Mine)parent));
 		connects.add(n);
 		n.getConnects().add(this);
 	}
@@ -217,10 +216,10 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 			Networking.sendStrong("Achievement|ore1|");
 			Player.player.emeralds++;
 			extra.println("You mine the vein and claim an emerald!");
-					state = 1;
-					name = "empty vein";
-					interactString = "examine empty vein";
-			parent.removeVein();
+			state = 1;
+			name = "empty vein";
+			interactString = "examine empty vein";
+			((Mine)parent).removeVein();
 			findBehind("vein");
 			}else {extra.println("The emeralds have already been mined.");}
 	}
@@ -230,10 +229,10 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 			Networking.sendStrong("Achievement|ore1|");
 			Player.player.rubies++;
 			extra.println("You mine the vein and claim a ruby!");
-					state = 1;
-					name = "empty vein";
-					interactString = "examine empty vein";
-			parent.removeVein();
+			state = 1;
+			name = "empty vein";
+			interactString = "examine empty vein";
+			((Mine)parent).removeVein();
 			findBehind("vein");
 			}else {extra.println("The rubies have already been mined.");}
 	}
@@ -243,10 +242,10 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 			Networking.sendStrong("Achievement|ore1|");
 			Player.player.sapphires++;
 			extra.println("You mine the vein and claim a sapphire!");
-					state = 1;
-					name = "empty vein";
-					interactString = "examine empty vein";
-			parent.removeVein();
+			state = 1;
+			name = "empty vein";
+			interactString = "examine empty vein";
+			((Mine)parent).removeVein();
 			findBehind("vein");
 			}else {extra.println("The sapphires have already been mined.");}
 	}
@@ -265,10 +264,10 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 			int gold = extra.randRange(mult1,mult2)*level;
 			Player.bag.addGold(gold);
 			extra.println("You mine the vein for "+storage1+" worth "+ gold + " gold.");
-					state = 1;
-					name = "empty vein";
-					interactString = "examine empty vein";
-			parent.removeVein();
+			state = 1;
+			name = "empty vein";
+			interactString = "examine empty vein";
+			((Mine)parent).removeVein();
 			findBehind("vein");
 			}else {extra.println("The "+storage1+" has already been mined.");
 			findBehind("empty vein");
@@ -340,7 +339,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 	
 	@Override
 	protected String shapeName() {
-		return parent.getShape().name();
+		return ((Mine)parent).getShape().name();
 	}
 
 
@@ -353,7 +352,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 
 
 	@Override
-	public void timeFinish() {
+	public void endPass() {
 		// Auto-generated method stub
 		
 	}

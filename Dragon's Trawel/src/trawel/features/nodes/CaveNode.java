@@ -61,7 +61,7 @@ public class CaveNode extends GroveNode{
 		case 3: name = extra.choose("bat"); interactString = "ERROR"; forceGo = true;
 		storage1 = RaceFactory.makeBat(level);break;
 		}
-		if (size < 2 || parent.getShape() != Grove.Shape.STANDARD) {
+		if (size < 2 || ((Grove)parent).getShape() != Grove.Shape.STANDARD) {
 			return;
 		}
 		int split = extra.randRange(1,Math.min(size,3));
@@ -70,12 +70,12 @@ public class CaveNode extends GroveNode{
 		while (i < split) {
 			int sizeRemove = extra.randRange(0,sizeLeft-1);
 			sizeLeft-=sizeRemove;
-			CaveNode n = new CaveNode(sizeRemove,level,parent,false);
+			CaveNode n = new CaveNode(sizeRemove,level,(Grove)parent,false);
 			connects.add(n);
 			n.getConnects().add(this);
 			i++;
 		}
-		CaveNode n = new CaveNode(sizeLeft,level,parent,false);
+		CaveNode n = new CaveNode(sizeLeft,level,(Grove)parent,false);
 		connects.add(n);
 		n.getConnects().add(this);
 	}
@@ -150,7 +150,7 @@ public class CaveNode extends GroveNode{
 
 	@Override
 	protected String shapeName() {
-		return parent.getShape().name();
+		return ((Grove)parent).getShape().name();
 	}
 	
 

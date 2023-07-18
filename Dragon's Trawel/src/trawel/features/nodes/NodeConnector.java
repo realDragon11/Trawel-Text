@@ -36,8 +36,8 @@ public abstract class NodeConnector implements Serializable, CanPassTime {
 	public boolean passing = false;
 	public int visited = 0;
 	
-	protected Feature parent;
-	protected Class<Feature> parentType;
+	protected transient Feature parent;
+	//protected Class<Feature> parentType;
 	
 	public static transient NodeConnector lastNode = null;
 	
@@ -155,11 +155,11 @@ public abstract class NodeConnector implements Serializable, CanPassTime {
 	public void reverseConnections() {
 		Collections.reverse(connects);
 	}
-	public void timeFinish() {
+	public void endPass() {
 		passing = false;
 		for (NodeConnector n: connects) {
 			if (n.passing) {
-				n.timeFinish();
+				n.endPass();
 			}
 		}
 	}
@@ -207,5 +207,16 @@ public abstract class NodeConnector implements Serializable, CanPassTime {
 		if (db == null) {return false;}
 		extra.println("Hey, there's some "+ db.getName() +" pieces behind that "+ behind+"!");
 		return true;
+	}
+
+
+	protected void parentChain(Feature p) {
+		parent = p;
+		passing = true;
+		for (NodeConnector n: connects) {
+			if (!n.passing) {
+				n.parentChain(p);
+			}
+		}
 	}
 }

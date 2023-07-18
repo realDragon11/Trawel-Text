@@ -39,7 +39,6 @@ public class GroveNode extends NodeConnector{
 	protected Object storage1, storage2;
 	//private ArrayList<GroveNode> connects;
 	//private boolean forceGo;
-	public Grove parent;
 	
 	/**
 	 * used for CaveNode
@@ -149,17 +148,17 @@ public class GroveNode extends NodeConnector{
 		while (i < split) {
 			int sizeRemove = extra.randRange(0,sizeLeft-1);
 			sizeLeft-=sizeRemove;
-			GroveNode n = new GroveNode(sizeRemove,level,parent);
+			GroveNode n = new GroveNode(sizeRemove,level,(Grove)parent);
 			connects.add(n);
 			n.getConnects().add(this);
 			i++;
 		}
 		if (extra.chanceIn(1, 20) && sizeLeft < 4) {
-			CaveNode n = new CaveNode(sizeLeft,level,parent,true);
+			CaveNode n = new CaveNode(sizeLeft,level,(Grove)parent,true);
 			connects.add(n);
 			n.getConnects().add(this);
 		}else {
-		GroveNode n = new GroveNode(sizeLeft,level,parent);
+		GroveNode n = new GroveNode(sizeLeft,level,(Grove)parent);
 		connects.add(n);
 		n.getConnects().add(this);}
 	}

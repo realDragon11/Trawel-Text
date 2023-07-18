@@ -24,10 +24,7 @@ public class DungeonNode extends NodeConnector{
 	
 	private Object storage1, storage2;
 	
-	private Town town;
-	private Dungeon parent;
-	
-	
+	private Town town;	
 	
 	public DungeonNode(int size, int tier, Town t,Dungeon p,boolean stair) {
 		state = 0;
@@ -97,7 +94,7 @@ public class DungeonNode extends NodeConnector{
 			interactString = "loot statue";
 			break;
 		}
-		if (size < 2 || parent.getShape() != Dungeon.Shape.STANDARD) {
+		if (size < 2 || ((Dungeon)parent).getShape() != Dungeon.Shape.STANDARD) {
 			return;
 		}
 		int split = extra.randRange(1,Math.min(size,3));
@@ -106,12 +103,12 @@ public class DungeonNode extends NodeConnector{
 		while (i < split) {
 			int sizeRemove = extra.randRange(0,sizeLeft-1);
 			sizeLeft-=sizeRemove;
-			DungeonNode n = new DungeonNode(sizeRemove,level,town,parent,false);
+			DungeonNode n = new DungeonNode(sizeRemove,level,town,(Dungeon)parent,false);
 			connects.add(n);
 			n.getConnects().add(this);
 			i++;
 		}
-		DungeonNode n = new DungeonNode(sizeLeft,level,town,parent,false);
+		DungeonNode n = new DungeonNode(sizeLeft,level,town,(Dungeon)parent,false);
 		connects.add(n);
 		n.getConnects().add(this);
 	}
@@ -243,7 +240,7 @@ public class DungeonNode extends NodeConnector{
 
 	@Override
 	protected String shapeName() {
-		return parent.getShape().name();
+		return ((Dungeon)parent).getShape().name();
 	}
 	
 	private void statue() {

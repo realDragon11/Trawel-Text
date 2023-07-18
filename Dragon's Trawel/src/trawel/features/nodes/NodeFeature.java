@@ -20,7 +20,7 @@ public abstract class NodeFeature extends Feature {
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		start.passTime(time, calling);
-		start.timeFinish();
+		start.endPass();
 		findTime += time;
 		return timeScope.pop();
 	}
@@ -42,6 +42,13 @@ public abstract class NodeFeature extends Feature {
 		}
 		findTime -=1;
 		
+	}
+	
+	@Override
+	public void reload() {
+		super.reload();
+		start.parentChain(this);
+		start.endPass();
 	}
 
 }

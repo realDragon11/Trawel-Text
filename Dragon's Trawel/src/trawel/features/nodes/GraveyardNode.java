@@ -31,7 +31,6 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 	private Object storage1, storage2;
 	
 	private Town town;
-	private Graveyard parent;
 	
 	
 	
@@ -93,12 +92,12 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 		while (i < split) {
 			int sizeRemove = extra.randRange(0,sizeLeft-1);
 			sizeLeft-=sizeRemove;
-			GraveyardNode n = new GraveyardNode(sizeRemove,level,town,parent);
+			GraveyardNode n = new GraveyardNode(sizeRemove,level,town,(Graveyard)parent);
 			connects.add(n);
 			n.getConnects().add(this);
 			i++;
 		}
-		GraveyardNode n = new GraveyardNode(sizeLeft,level,town,parent);
+		GraveyardNode n = new GraveyardNode(sizeLeft,level,town,(Graveyard)parent);
 		connects.add(n);
 		n.getConnects().add(this);
 	}
@@ -237,7 +236,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 
 	@Override
 	protected String shapeName() {
-		return parent.getShape().name();
+		return ((Graveyard)parent).getShape().name();
 	}
 	
 	private void statue() {
@@ -311,7 +310,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 	}
 
 	@Override
-	public void timeFinish() {
+	public void endPass() {
 		// Auto-generated method stub
 		
 	}
