@@ -37,11 +37,15 @@ public class Plane extends TContextOwner{
 		
 		return list;
 	}
-
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		for (World t: worlds) {
-			timeScope.localEvents(t.contextTime(time, calling));
+			if (t == Player.world) {
+				timeScope.localEvents(t.contextTime(time, calling,true));
+			}else {
+				timeScope.localEvents(t.contextTime(time, calling));
+			}
+			
 		}
 		return null;
 	}

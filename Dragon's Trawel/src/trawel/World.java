@@ -188,7 +188,8 @@ public class World extends TContextOwner{
 	
 	@Override
 	public void reload() {
-		super.reload();
+		timeScope = new TimeContext(ContextType.GLOBAL,this,true);//world is lazy
+		timeSetup();
 		for(Island i: islands) {
 			i.reload();
 		}

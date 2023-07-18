@@ -14,6 +14,10 @@ public class TimeContext {
 	public final CanPassTime scope;
 	private TimeContext caller;
 	
+	public final boolean isLazy;
+	private boolean didUpdate = false;
+	private double trackedTime;
+	
 	//TODO: for now, timecontext itself is not thread safe, but the rest of the program
 	//is expected to only ever access it in a thread safe way
 	//likely, this will be by only accessing global contexts from the main thread, and local contexts do not access each other
@@ -22,20 +26,38 @@ public class TimeContext {
 	public TimeContext(ContextType type, CanPassTime scope) {
 		this.owntype = type;
 		this.scope = scope;
+		isLazy = false;
+	}
+	
+	public TimeContext(ContextType type, CanPassTime scope, boolean isLazy) {
+		assert !(type == ContextType.UNBOUNDED && isLazy); 
+		this.owntype = type;
+		this.scope = scope;
+		this.isLazy = isLazy;
+		trackedTime=0;
+		
 	}
 	
 	/**
-	 * calls with another forced type
-	 * most of the time you will just want to not update it until later instead of this
+	 * calls with another forced type and lazyload
+	 * most of the time you should use the call with only parent and calltime instead
 	 * @param parent
 	 * @param calltime
 	 * @param type
+	 * @param forced - ignore lazy updating
 	 * @return
 	 */
-	public TimeContext call(TimeContext parent, double calltime,ContextType type) {
+	public TimeContext call(TimeContext parent, double calltime,ContextType type, boolean forced) {
 		this.type = type;
 		caller = parent;
-		double timeleft = calltime;
+		
+		double timeleft = calltime+trackedTime;
+		if (!forced && timeleft < type.time_span) {
+			didUpdate = false;
+			trackedTime+=calltime;
+		}
+		trackedTime = 0;
+		didUpdate = true;
 		double time;
 		while (timeleft > 0) {
 			if (timeleft > type.time_span) {
@@ -50,8 +72,15 @@ public class TimeContext {
 		return this;
 	}
 	
+	/**
+	 * @param forced - ignore lazy updating
+	 */
+	public TimeContext call(TimeContext parent, double calltime,boolean forced) {
+		return call(parent,calltime,owntype,forced);
+	}
+	
 	public TimeContext call(TimeContext parent, double calltime) {
-		return call(parent,calltime,owntype);
+		return call(parent,calltime,owntype,false);
 	}
 	/**
 	 * used internally to recursively pull together contexts, which then get processed, and unprocessed ones get passed on
@@ -96,5 +125,14 @@ public class TimeContext {
 	
 	public TimeContext caller() {
 		return caller;
+	}
+	
+	/**
+	 * will be false unless an actual update happened last time call was invoked.
+	 * Typically caused by lazy contexts
+	 * @return
+	 */
+	public boolean updated() {
+		return didUpdate;
 	}
 }

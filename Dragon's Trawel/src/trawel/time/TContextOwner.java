@@ -23,4 +23,8 @@ public abstract class TContextOwner implements java.io.Serializable, CanPassTime
 	public List<TimeEvent> contextTime(double time, TimeContext calling) {
 		return timeScope.call(calling, time).pop();
 	}
+	
+	public List<TimeEvent> contextTime(double time, TimeContext calling, boolean ignorelazy) {
+		return timeScope.call(calling, time,ignorelazy).pop();
+	}
 }
