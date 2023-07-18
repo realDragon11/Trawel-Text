@@ -52,7 +52,7 @@ public class TimeContext {
 		caller = parent;
 		
 		double timeleft = calltime+trackedTime;
-		if (timeleft != 0 && (!forced && timeleft < type.time_span)) {
+		if (timeleft != 0 && (!forced && isLazy && timeleft < type.time_span)) {
 			//if we got forced with 0 but didn't have any timedebt, we can safely skip
 			didUpdate = false;
 			trackedTime+=calltime;
