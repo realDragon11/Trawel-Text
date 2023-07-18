@@ -22,6 +22,7 @@ import scimech.units.mechs.Pirate;
 import scimech.units.mechs.Pyro;
 import scimech.units.mechs.Swashbuckler;
 import trawel.factions.HostileTask;
+import trawel.quests.QuestReactionFactory;
 import trawel.townevents.TownFlavorFactory;
 /**
  * 

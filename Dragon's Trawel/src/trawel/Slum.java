@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import trawel.quests.BasicSideQuest;
+import trawel.quests.QBMenuItem;
+import trawel.quests.QRMenuItem;
+import trawel.quests.Quest;
+import trawel.quests.QuestBoardLocation;
+import trawel.quests.QuestR;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 

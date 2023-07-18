@@ -651,7 +651,7 @@ public class Inventory implements java.io.Serializable{
 	 */
 	public void giveBackDrawBane(DrawBane d,String rejectText) {
 		if (rejectText != null) {
-			extra.println(String.format(rejectText,d));
+			extra.println(String.format(rejectText,d.getName()));
 		}
 		dbs.add(d);
 	}

@@ -1,6 +1,8 @@
 package trawel;
 import java.util.ArrayList;
 
+import trawel.quests.Quest.TriggerType;
+
 
 public class BumperFactory {
 	
@@ -27,7 +29,7 @@ public class BumperFactory {
 				extra.println(extra.PRE_RED+"A pack of wolves descend upon you!");
 				ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
 				if (survivors.contains(Player.player.getPerson())) {
-					Player.player.questTrigger("wolf",count);
+					Player.player.questTrigger(TriggerType.CLEANSE,"wolf", count);
 				}
 			}};
 		b.responses.add(new Response(DrawBane.MEAT,5));
@@ -70,7 +72,7 @@ public class BumperFactory {
 					
 					extra.println(extra.PRE_RED+"A vampire jumps from the shadows!");
 					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
-							Player.player.questTrigger("vampire",1);
+							Player.player.questTrigger(TriggerType.CLEANSE,"vampire", 1);
 					}
 					
 				}};
@@ -87,7 +89,7 @@ public class BumperFactory {
 					
 					extra.println(extra.PRE_RED+"A thief charges you!");
 					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
-						Player.player.questTrigger("bandit",1);
+						Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
 				}
 					
 				}};
@@ -102,7 +104,7 @@ public class BumperFactory {
 					
 					extra.println(extra.PRE_RED+"A bear attacks you!");
 					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
-						Player.player.questTrigger("bear",1);
+						Player.player.questTrigger(TriggerType.CLEANSE,"bear", 1);
 				}
 					
 				}};
@@ -134,7 +136,7 @@ public class BumperFactory {
 					
 					extra.println(extra.PRE_RED+"A unicorn accosts you for holding the virgin captive!");
 					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
-							Player.player.questTrigger("unicorn",1);
+							Player.player.questTrigger(TriggerType.CLEANSE,"unicorn", 1);
 					}
 					
 				}};
@@ -153,7 +155,7 @@ public class BumperFactory {
 					extra.println(extra.PRE_RED+"A flock of harpies attack!");
 					ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
 					if (survivors.contains(Player.player.getPerson())) {
-						Player.player.questTrigger("harpy",count);
+						Player.player.questTrigger(TriggerType.CLEANSE,"harpy", count);
 					}
 					
 				}};
@@ -174,7 +176,7 @@ public class BumperFactory {
 					
 					extra.println(extra.PRE_RED+"A pirate challenges you for your booty!");
 					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
-						Player.player.questTrigger("bandit",1);
+						Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
 				}
 					
 				}};

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.factions.Faction;
+import trawel.quests.QRMenuItem;
+import trawel.quests.QuestR;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 

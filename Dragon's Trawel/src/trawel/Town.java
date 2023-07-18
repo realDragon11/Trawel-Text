@@ -7,6 +7,7 @@ import java.util.List;
 import trawel.fort.FortFeature;
 import trawel.fort.FortHall;
 import trawel.fort.FortQual;
+import trawel.quests.QuestReactionFactory;
 import trawel.time.CanPassTime;
 import trawel.time.ContextType;
 import trawel.time.HasTimeContext;

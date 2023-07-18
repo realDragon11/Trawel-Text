@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.quests.QuestR;
 import trawel.time.CanPassTime;
 import trawel.time.ContextType;
 import trawel.time.HasTimeContext;
@@ -100,6 +101,9 @@ public abstract class Feature extends TContextOwner{
 	public void reload() {
 		timeScope = new TimeContext(ContextType.UNBOUNDED,this);
 		timeSetup();
+	}
+	public Town getTown() {
+		return town;
 	}
 	
 }

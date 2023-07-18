@@ -5,6 +5,9 @@ import java.util.List;
 import trawel.earts.EArt;
 import trawel.earts.EArtBox;
 import trawel.factions.FBox;
+import trawel.quests.BasicSideQuest;
+import trawel.quests.Quest;
+import trawel.quests.Quest.TriggerType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 
@@ -256,11 +259,23 @@ public class Player extends SuperPerson{
 		}
 		
 	}
-	public void questTrigger(String string, int count) {
+	public void questTrigger(TriggerType type, String string, int count) {
 		for (Quest q: sideQuests) {
-			q.questTrigger(string,count);
+			q.questTrigger(type,string, count);
 		}
 		
+	}
+	
+	public BasicSideQuest anyTrigger(TriggerType type, String string) {
+		string = BasicSideQuest.triggerText(type) + string;
+		for (Quest q: sideQuests) {
+			if (q instanceof BasicSideQuest) {
+				if (((BasicSideQuest) q).trigger == string) {
+					return ((BasicSideQuest) q);
+				}
+			}
+		}
+		return null;
 	}
 	
 	public void addKnowFrag() {

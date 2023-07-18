@@ -1,17 +1,30 @@
-package trawel;
+package trawel.quests;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import trawel.MenuGenerator;
+import trawel.MenuItem;
+import trawel.MenuSelect;
+import trawel.Networking;
+import trawel.Person;
+import trawel.Player;
+import trawel.RaceFactory;
+import trawel.Town;
+import trawel.WorldGen;
+import trawel.extra;
+import trawel.mainGame;
+
 public class QuestReactionFactory {
 
-	public enum QKey implements java.io.Serializable {
+	public enum QKey implements java.io.Serializable {//while saves don't update, can rearrange, otherwise no
 		FETCH, KILL, CLEANSE, 
 		GOOD, EVIL,
 		LAWFUL, CHAOTIC,
-		DEST_MOUNTAIN,DEST_WOODS,DEST_INN,
-		GIVE_INN,GIVE_MGUILD,GIVE_SLUM, DEST_SLUM
+		DEST_MOUNTAIN,DEST_WOODS,DEST_INN,DEST_SLUM,
+		GIVE_INN,GIVE_MGUILD,GIVE_SLUM, GIVE_FORT,
+		COLLECT, FIRE_ALIGN, KNOW_ALIGN//aligns used for collecting
 	}
 	
 	public static List<QuestReaction> reactions = new ArrayList<QuestReaction>();
