@@ -1,6 +1,8 @@
 package trawel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 import trawel.time.ContextType;
 import trawel.time.TContextOwner;
@@ -20,6 +22,8 @@ public class World extends TContextOwner{
 	private ArrayList<Person> deathCheaters;
 	private Calender calender = new Calender();
 	private float minLata, maxLata, minLonga, maxLonga;
+	
+	private transient ReentrantLock debtLock = new ReentrantLock();
 		
 	public World(int x, int y, String _name,float minLata, float minLonga) {
 		xSize = x;
@@ -126,12 +130,14 @@ public class World extends TContextOwner{
 		return bardSongs.get(extra.randRange(0,bardSongs.size()-1));
 	}
 
+	@Deprecated
 	public BardSong startBardSong(Person manOne, Person manTwo) {
 		BardSong b = new BardSong(manOne,manTwo);
 		if (!mainGame.noBards) {bardSongs.add(b);}
 		return b;
 	}
 	
+	@Deprecated
 	public BardSong startBardSong() {
 		BardSong b = new BardSong();
 		if (!mainGame.noBards) {bardSongs.add(b);}
@@ -177,6 +183,9 @@ public class World extends TContextOwner{
 		return maxLonga;
 	}
 
+	//TODO: worlds can't interact with each other right now, at all, because planes would need to handle it, but
+	//we might be handling it from a thread and not know how to pass it around
+	//NOTE: that means that the calling context for our own context call could be either the plane or null
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		calender.passTime(time,calling);
@@ -201,6 +210,34 @@ public class World extends TContextOwner{
 		for(Island i: islands) {
 			i.prepareSave();
 		}
+	}
+	
+	
+	public double assumeDebt(double limit) {
+		try {
+			if (!debtLock.tryLock(50, TimeUnit.MILLISECONDS)) {
+				return -1;
+			}
+		} catch (InterruptedException e) {
+			return -1;
+		}
+		if (savedTime > .2) {//different threshold from hasDebt- lower
+			double taken = Math.min(limit, savedTime);
+			savedTime -= taken;
+			return taken;
+		}
+		return 0;
+	}
+	
+	/**
+	 * needs to be called after assuming debt with a return of > 0
+	 */
+	public void freeLock() {
+		debtLock.unlock();
+	}
+
+	public boolean hasDebt() {
+		return savedTime > 1;//needs at least an hour of debt to bother
 	}
 	
 

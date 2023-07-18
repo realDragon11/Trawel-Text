@@ -3,10 +3,15 @@ package trawel.threads;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.locks.ReentrantLock;
+
+import trawel.extra;
 
 public class BlockTaskManager extends ThreadPoolExecutor {
 	
@@ -30,12 +35,22 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	//each world is still single threaded as a whole
 	//this might need careful integration with other goals
 	
+	/**
+	 * all tasks given to BlockTaskManager should not particularly care if they don't get run for quite some time
+	 * each start -> halt phase does not clear undone tasks, so tasks should partly figure out if they still need
+	 * to do the work
+	 * 
+	 * this is because of the pause mechanism done by halt, in order to gradually stop
+	 * 
+	 * tasks should also be very brief to avoid noticeable lag
+	 */
 	public BlockTaskManager() {
-		super(4, 24, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(), new TrawelTaskThreadFactory());
+		super(2, 24, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(), new TrawelTaskThreadFactory());
 		
 		handler = this;
 	}
 	
+	@Override
 	protected void beforeExecute(Thread t, Runnable r) {
 		super.beforeExecute(t, r);
 		pauseLock.lock();
@@ -47,17 +62,81 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	    	pauseLock.unlock();
 	    }
 	}
+
+	@Override
+	protected void afterExecute(Runnable r,Throwable t) {
+		super.afterExecute(r,t);
+		pauseLock.lock();
+		try {
+			if (!isPaused) {
+				if (t == null && r instanceof Future<?>) {
+					try {
+						Object result = ((Future<?>) r).get();
+						if (result instanceof FollowUp) {
+							Runnable next = ((FollowUp)result).nextTask();
+							if (next != null) {
+								handler.execute(r);
+							}
+						}
+					} catch (CancellationException ce) {
+						t = ce;
+					} catch (ExecutionException ee) {
+						t = ee.getCause();
+					} catch (InterruptedException ie) {
+						Thread.currentThread().interrupt(); // ignore/reset
+					}
+				}
+				if (t != null)
+					t.printStackTrace();
+			}
+	    } finally {
+	    	pauseLock.unlock();
+	    }
+	}
 	
 	public static void setup() {
+		if (trawel.mainGame.noThreads) {
+			return;
+		}
 		handler = new BlockTaskManager();
 	}
 	
 	public static void start() {
+		if (trawel.mainGame.noThreads) {
+			return;
+		}
 		handler.resume();
 	}
 	
+	public static void addTask() {
+		
+	}
+	
+	/**
+	 * note that tasks will never get canceled, they might have already taken timeDebt or some other resource
+	 * from another place.
+	 * However, expect not noticeable to humans delay on the average computer
+	 */
 	public static void halt() {
+		if (trawel.mainGame.noThreads) {
+			return;
+		}
 		handler.pause();
+		try {
+			long time1 = System.currentTimeMillis();//TODO might be able to remove if this works better than I expected
+			if (handler.awaitTermination(10,TimeUnit.SECONDS)) {
+				extra.println("Threads took >10 seconds to complete- you may encounter broken behavior and should treat this as an error. You can disable threads with the '-nothreads' argument if you keep encountering this.");
+			}
+			long timeSpan = (System.currentTimeMillis()-time1)/10;
+			System.err.println("Threadstop 100ths: "+timeSpan);
+			if (timeSpan > 50) {
+				System.err.println("Threadstop took "+timeSpan+ " hundredth seconds. You are experiencing at least minor multithreading issues. You can disable threads with the '-nothreads' argument if you keep encountering this.");
+			}
+			
+		} catch (InterruptedException e) {
+			e.printStackTrace();//should never happen because this should only be called from the main thread
+		}
+		
 	}
 	
 	private void pause() {

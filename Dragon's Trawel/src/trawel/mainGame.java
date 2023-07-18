@@ -44,6 +44,7 @@ public class mainGame {
 	public static boolean inEclipse = false;
 	public static boolean autoConnect = false;
 	public static boolean noDisconnect = false;
+	public static boolean noThreads = false;
 
 	public static boolean GUIInput = true;
 	
@@ -426,6 +427,9 @@ public class mainGame {
 			}
 			if (a.toLowerCase().equals("nodisconnect")) {
 				noDisconnect = true;
+			}
+			if (a.toLowerCase().equals("nothreads")) {
+				noThreads = true;
 			}
 			
 		}
