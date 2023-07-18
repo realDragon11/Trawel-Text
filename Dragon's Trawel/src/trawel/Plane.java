@@ -37,17 +37,44 @@ public class Plane extends TContextOwner{
 		
 		return list;
 	}
+	/**
+	 * unused for Planes, since they are top level
+	 */
+	@Deprecated
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
+		return null;
+	}
+	
+	public void advanceTime(double time) {
+		timepassive(time);
 		for (World t: worlds) {
 			if (t == Player.world) {
-				timeScope.localEvents(t.contextTime(time, calling,true));
+				timeScope.localEvents(t.contextTime(time,timeScope,true));
 			}else {
-				timeScope.localEvents(t.contextTime(time, calling));
+				timeScope.localEvents(t.contextTime(time,timeScope,ContextType.BACKGROUND,false));
 			}
-			
 		}
-		return null;
+	}
+	
+	/**
+	 * we do not save time debt, so we resolve it before saves
+	 * @param time
+	 */
+	public void resolveTimeDebt(double time) {
+		timepassive(time);
+		for (World t: worlds) {
+			timeScope.localEvents(t.contextTime(time,timeScope,true));
+		}
+	}
+	
+	private void timepassive(double time) {
+		if (time == 0) {
+			return;
+		}
+		if (Player.hasSkill(Skill.MONEY_MAGE)) {
+			Player.bag.addGold((int) (Player.player.getPerson().getMageLevel()*time));
+		}
 	}
 	
 	@Override

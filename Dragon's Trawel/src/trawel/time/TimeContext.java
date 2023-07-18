@@ -12,7 +12,7 @@ public class TimeContext {
 	private List<TimeEvent> events = new ArrayList<TimeEvent>();
     //private final Lock lock = new ReentrantLock();
 	public final CanPassTime scope;
-	private TimeContext caller;
+	private TimeContext caller = null;//plane's will always be null
 	
 	public final boolean isLazy;
 	private boolean didUpdate = false;
@@ -52,7 +52,8 @@ public class TimeContext {
 		caller = parent;
 		
 		double timeleft = calltime+trackedTime;
-		if (!forced && timeleft < type.time_span) {
+		if (timeleft != 0 && (!forced && timeleft < type.time_span)) {
+			//if we got forced with 0 but didn't have any timedebt, we can safely skip
 			didUpdate = false;
 			trackedTime+=calltime;
 		}

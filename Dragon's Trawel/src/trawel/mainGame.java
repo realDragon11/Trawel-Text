@@ -640,6 +640,8 @@ public class mainGame {
 			while(Player.player.isAlive()) {
 				if (doAutoSave && (new Date().getTime()-lastAutoSave.getTime() > 1000*60*2)) {
 					extra.println("Autosaving...");
+					double time = Player.popTime();
+					WorldGen.plane.resolveTimeDebt(time);
 					WorldGen.save("auto");
 					lastAutoSave = new Date();
 				}
@@ -655,10 +657,7 @@ public class mainGame {
 		public static void globalPassTime() {//TODO: test and put elsewhere
 			double time = Player.popTime();
 			if (time > 0) {
-				if (Player.hasSkill(Skill.MONEY_MAGE)) {
-					Player.bag.addGold((int) (Player.player.getPerson().getMageLevel()*time));
-				}
-				WorldGen.plane.passTime(time,null);
+				WorldGen.plane.advanceTime(time);
 			}
 		}
 		
