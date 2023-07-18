@@ -291,6 +291,15 @@ public class Player extends SuperPerson{
 		return ts;
 	}
 	
+	public boolean hasTrigger(String string) {
+		for (Quest q: sideQuests) {
+			if (q.triggers().contains(string)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void addKnowFrag() {
 		if (++this.knowledgeFragments >= this.fragmentReq) {
 			knowledgeFragments-=fragmentReq;
@@ -301,5 +310,6 @@ public class Player extends SuperPerson{
 		
 		
 	}
+	
 	
 }

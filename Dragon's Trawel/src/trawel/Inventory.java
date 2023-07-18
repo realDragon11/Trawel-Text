@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.Weapon.WeaponQual;
+import trawel.quests.Quest.TriggerType;
 
 /**
  * 
@@ -634,14 +635,23 @@ public class Inventory implements java.io.Serializable{
 	
 	public DrawBane addNewDrawBane(DrawBane d) {
 		extra.println("You found - " + d.getName() + ": " + d.getFlavor());
+		if (Player.player.hasTrigger("db:"+d.name())) {
+			extra.println("You have a quest for this DrawBane, discarding it will grant progress.");
+		}
 		this.displayDrawBanes();
 		extra.println((dbMax+ 2) +" discard.");
 		int in = extra.inInt((dbMax+ 2));
 		if (in == (dbMax+ 2)) {
+			Player.player.questTrigger(TriggerType.CLEANSE,"db:"+d.name(),15);
 			return null;
 		}
 		dbs.add(d);
-		return dbs.remove(in-1);
+		DrawBane b = dbs.remove(in-1);
+		if (Player.player.hasTrigger("db:"+b.name())) {
+			Player.player.questTrigger(TriggerType.CLEANSE,"db:"+b.name(),15);
+			return null;
+		}
+		return b;
 	}
 	
 	/**
@@ -667,7 +677,11 @@ public class Inventory implements java.io.Serializable{
 		}
 		
 	}
-	
+	/**
+	 * selling is when it's not getting thrown away, but used
+	 * @param selling
+	 * @return
+	 */
 	public DrawBane discardDrawBanes(boolean selling) {
 		this.displayDrawBanes();
 		extra.println((dbMax+ 2)+" keep");
@@ -675,8 +689,17 @@ public class Inventory implements java.io.Serializable{
 		if (in == (dbMax+ 2) ) {
 			return null;
 		}
-		if (dbs.get(in-1) == DrawBane.CLEANER && !selling) {
-			this.washAll();
+		DrawBane b = dbs.get(in-1);
+		if (!selling) {
+			if (Player.player.hasTrigger("db:"+b.name())) {
+				Player.player.questTrigger(TriggerType.CLEANSE,"db:"+b.name(),15);
+				return null;
+			}
+			
+			if (b == DrawBane.CLEANER) {
+				this.washAll();
+			}
+			return null;
 		}
 		return dbs.remove(in-1);
 	}
