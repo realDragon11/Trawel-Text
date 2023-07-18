@@ -74,10 +74,10 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	protected void afterExecute(Runnable r,Throwable t) {
 		super.afterExecute(r,t);
 		
-		completedTasks.incrementAndGet();
-		
+		boolean newTask = false;
 		pauseLock.lock();
 		try {
+			
 			if (!isPaused) {
 				if (t == null && r instanceof Future<?>) {
 					try {
@@ -86,6 +86,7 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 							Runnable next = ((FollowUp)result).nextTask();
 							if (next != null) {
 								handler.execute(r);
+								newTask = true;
 							}
 						}
 					} catch (CancellationException ce) {
@@ -101,6 +102,9 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 			}
 	    } finally {
 	    	pauseLock.unlock();
+	    	if (!newTask) {
+	    		completedTasks.incrementAndGet();
+	    	}
 	    }
 	}
 	
