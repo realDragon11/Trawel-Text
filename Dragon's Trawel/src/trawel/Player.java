@@ -266,8 +266,13 @@ public class Player extends SuperPerson{
 		
 	}
 	
-	public BasicSideQuest anyTrigger(TriggerType type, String string) {
-		string = BasicSideQuest.triggerText(type) + string;
+	/**
+	 * do not use if not needed
+	 * @param type
+	 * @param string
+	 * @return
+	 */
+	public BasicSideQuest anyQTrigger(TriggerType type, String string) {
 		for (Quest q: sideQuests) {
 			if (q instanceof BasicSideQuest) {
 				if (((BasicSideQuest) q).trigger == string) {
@@ -276,6 +281,14 @@ public class Player extends SuperPerson{
 			}
 		}
 		return null;
+	}
+	
+	public List<String> allQTriggers() {
+		List<String> ts = new ArrayList<String>();
+		for (Quest q: sideQuests) {
+			ts.addAll(q.triggers());
+		}
+		return ts;
 	}
 	
 	public void addKnowFrag() {

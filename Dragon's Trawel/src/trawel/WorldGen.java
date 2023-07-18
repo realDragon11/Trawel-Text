@@ -14,6 +14,10 @@ import java.util.List;
 import org.nustaq.serialization.FSTConfiguration;
 import org.nustaq.serialization.FSTObjectOutput;
 
+import trawel.features.nodes.Dungeon;
+import trawel.features.nodes.Graveyard;
+import trawel.features.nodes.Grove;
+import trawel.features.nodes.Mine;
 import trawel.fort.FortQual;
 import trawel.fort.WizardTower;
 import trawel.townevents.TownTag;

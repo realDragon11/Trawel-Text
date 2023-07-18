@@ -1,6 +1,7 @@
 package trawel.quests;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 public interface Quest extends Serializable {
 
@@ -21,5 +22,7 @@ public interface Quest extends Serializable {
 	public enum TriggerType{
 		CLEANSE,COLLECT
 	}
+
+	public Collection<? extends String> triggers();
 	
 }

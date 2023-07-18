@@ -2,6 +2,7 @@ package trawel;
 
 import java.util.List;
 
+import trawel.features.nodes.Mine;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 

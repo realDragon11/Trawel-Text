@@ -1,7 +1,18 @@
-package trawel;
+package trawel.features.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.DrawBane;
+import trawel.Effect;
+import trawel.Networking;
+import trawel.Oracle;
+import trawel.Person;
+import trawel.Player;
+import trawel.RaceFactory;
+import trawel.extra;
+import trawel.mainGame;
+import trawel.randomLists;
+import trawel.quests.Quest.TriggerType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 
@@ -108,11 +119,13 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 			 name = "broken door";forceGo = false;}
 		}else {
 			extra.println("The door is broken.");
+			findBehind("broken door");
 		};break;
-		case 6: extra.println("You examine the " + ((String)storage1)+ " crystals. They are very pretty.");break;
-		case 7: extra.println("You examine the iron minecart. It is on the tracks that travel throughout the mine.");break;
+		case 6: extra.println("You examine the " + ((String)storage1)+ " crystals. They are very pretty.");findBehind(((String)storage1)+ " crystals");break;
+		case 7: extra.println("You examine the iron minecart. It is on the tracks that travel throughout the mine.");findBehind("minecart");break;
 		case 8: extra.println("You traverse the ladder.");
 		Networking.sendStrong("PlayDelay|sound_footsteps|1|");
+		findBehind("ladder");
 		break;
 		case 9: cultists1();break;
 		
@@ -195,7 +208,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 					interactString = "examine body";
 				}
 			}
-		}else {randomLists.deadPerson();}
+		}else {randomLists.deadPerson();findBehind("body");}
 		
 	}
 
@@ -208,6 +221,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 					name = "empty vein";
 					interactString = "examine empty vein";
 			parent.removeVein();
+			findBehind("vein");
 			}else {extra.println("The emeralds have already been mined.");}
 	}
 	
@@ -220,6 +234,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 					name = "empty vein";
 					interactString = "examine empty vein";
 			parent.removeVein();
+			findBehind("vein");
 			}else {extra.println("The rubies have already been mined.");}
 	}
 	
@@ -232,6 +247,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 					name = "empty vein";
 					interactString = "examine empty vein";
 			parent.removeVein();
+			findBehind("vein");
 			}else {extra.println("The sapphires have already been mined.");}
 	}
 	
@@ -253,8 +269,10 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 					name = "empty vein";
 					interactString = "examine empty vein";
 			parent.removeVein();
-			}else {extra.println("The "+storage1+" has already been mined.");}
-		
+			findBehind("vein");
+			}else {extra.println("The "+storage1+" has already been mined.");
+			findBehind("empty vein");
+			}
 	}
 	
 	private void mugger1() {
@@ -268,7 +286,9 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 					interactString = "examine body";
 					forceGo = false;
 				}
-		}else {randomLists.deadPerson();}
+		}else {randomLists.deadPerson();
+		findBehind("body");
+		}
 		
 	}
 	
@@ -325,7 +345,6 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 
 
 
-
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		// TODO Auto-generated method stub
@@ -338,6 +357,16 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 		// Auto-generated method stub
 		
 	}
+
+
+
+
+	@Override
+	protected DrawBane[] dbFinds() {
+		return new DrawBane[] {DrawBane.LIVING_FLAME,DrawBane.SILVER,DrawBane.GOLD};
+	}
+	
+	
 	
 	
 

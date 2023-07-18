@@ -1,6 +1,8 @@
 package trawel.quests;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import trawel.DrawBane;
@@ -719,7 +721,7 @@ public class BasicSideQuest implements Quest{
 						completed = true;
 					}
 				}else {
-					switch (type) {
+					switch (type) {//should replace with the string key
 					case CLEANSE:
 						desc = "Kill " + count + " more " + targetName + " on the roads for " + giverName;
 						break;
@@ -739,6 +741,12 @@ public class BasicSideQuest implements Quest{
 			return null;
 		}
 		return this;
+	}
+
+
+	@Override
+	public Collection<? extends String> triggers() {
+		return Collections.singletonList(trigger);
 	}
 }
 
