@@ -195,5 +195,13 @@ public class World extends TContextOwner{
 		}
 	}
 	
+	@Override
+	public void prepareSave() {
+		super.prepareSave();
+		for(Island i: islands) {
+			i.prepareSave();
+		}
+	}
+	
 
 }

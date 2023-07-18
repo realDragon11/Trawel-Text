@@ -148,7 +148,6 @@ public class Dungeon extends NodeFeature {
 			//start.addBacks();
 			break;
 		}
-		reload();
 	}
 	public Shape getShape() {
 		return shape;

@@ -83,8 +83,7 @@ public final class extra {
 	 * @return (boolean)
 	 */
 	public static final boolean chanceIn(int a,int b) {
-		if (rand.nextInt(b) <= a) {return false;}
-		return true;
+		return (rand.nextInt(b+1)+1 <= a);
 	}
 	
 	/**
@@ -350,12 +349,12 @@ public final class extra {
 		}
 
 		public static <E> E randList(ArrayList<E> list) {
-			return list.get(rand.nextInt(list.size()-1));
+			return list.get(rand.nextInt(list.size()));
 			
 		}
 		
 		public static <E> E randList(List<E> list) {
-			return list.get(rand.nextInt(list.size()-1));
+			return list.get(rand.nextInt(list.size()));
 			
 		}
 

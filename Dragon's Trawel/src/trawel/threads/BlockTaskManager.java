@@ -32,6 +32,8 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	
 	public BlockTaskManager() {
 		super(4, 24, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(), new TrawelTaskThreadFactory());
+		
+		handler = this;
 	}
 	
 	protected void beforeExecute(Thread t, Runnable r) {

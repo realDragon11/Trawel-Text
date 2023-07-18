@@ -60,6 +60,14 @@ public class Island extends TContextOwner{
 			t.reload();
 		}
 	}
+	
+	@Override
+	public void prepareSave() {
+		super.prepareSave();
+		for(Town t: towns) {
+			t.prepareSave();
+		}
+	}
 
 	
 }

@@ -11,7 +11,7 @@ public class CaveNode extends GroveNode{
 	private static final long serialVersionUID = 1L;
 	private static final int EVENT_NUMBER =3;
 	
-	
+	//NOTE: idNum = -1 is reserved by GroveNode
 	public CaveNode(int size, int tier,Grove p,boolean stair) {
 		state = 0;
 		parent = p;
@@ -28,7 +28,7 @@ public class CaveNode extends GroveNode{
 			level++;
 		}
 		if (stair) {
-			idNum = -1;
+			idNum = -2;
 			isStair = true;
 		}
 		
@@ -47,7 +47,7 @@ public class CaveNode extends GroveNode{
 	
 	private void generate(int size) {
 		switch (idNum) {
-		case -1:name = extra.choose("cave entrance"); interactString = "traverse "+name;forceGo = true;break;
+		case -2:name = extra.choose("cave entrance"); interactString = "traverse "+name;forceGo = true;break;
 		case 1: name = extra.choose("bear"); interactString = "ERROR"; forceGo = true;
 		storage1 = RaceFactory.makeBear(level);break;
 		case 2: storage1 = extra.choose("silver","gold","platinum","iron","copper"); name = storage1+" vein"; interactString = "mine "+storage1;break;
@@ -76,7 +76,7 @@ public class CaveNode extends GroveNode{
 	@Override
 	protected boolean interact() {
 		switch(idNum) {
-		case -1: Networking.sendStrong("Achievement|cave1|"); break;
+		case -2: Networking.sendStrong("Achievement|cave1|"); break;
 		case 1: bear1(); if (state == 0) {return true;};break;
 		case 2: goldVein1();break;
 		case 3: bat1(); if (state == 0) {return true;};break;

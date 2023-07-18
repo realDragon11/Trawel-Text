@@ -155,7 +155,6 @@ public class mainGame {
 	
 	private static void baseSetup1() {
 		if (!basicSetup1) {
-			trawel.threads.BlockTaskManager.setup();
 			new MaterialFactory();
 			new RaceFactory();
 			new TargetFactory();
@@ -438,6 +437,8 @@ public class mainGame {
 			Networking.autoConnect();
 		}
 		
+		trawel.threads.BlockTaskManager.setup();
+		
 		while (true) { new mainGame();}
 		}//catch (Exception )
 		catch(Exception e) {
@@ -640,8 +641,7 @@ public class mainGame {
 			while(Player.player.isAlive()) {
 				if (doAutoSave && (new Date().getTime()-lastAutoSave.getTime() > 1000*60*2)) {
 					extra.println("Autosaving...");
-					double time = Player.popTime();
-					WorldGen.plane.resolveTimeDebt(time);
+					WorldGen.plane.prepareSave();;
 					WorldGen.save("auto");
 					lastAutoSave = new Date();
 				}
@@ -654,7 +654,7 @@ public class mainGame {
 		/**
 		 * note that some events, like the player generating gold, ignore normal restrictions
 		 */
-		public static void globalPassTime() {//TODO: test and put elsewhere
+		public static void globalPassTime() {
 			double time = Player.popTime();
 			if (time > 0) {
 				WorldGen.plane.advanceTime(time);

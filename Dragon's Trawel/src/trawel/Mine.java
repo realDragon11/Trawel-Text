@@ -66,7 +66,6 @@ public class Mine extends NodeFeature {
 			lastNode.reverseConnections();
 			break;
 		}
-		reload();
 	}
 	
 	public void addVein() {

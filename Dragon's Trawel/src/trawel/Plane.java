@@ -85,4 +85,12 @@ public class Plane extends TContextOwner{
 			w.reload();
 		}
 	}
+	
+	@Override
+	public void prepareSave() {
+		super.prepareSave();
+		for(World w: worlds) {
+			w.prepareSave();
+		}
+	}
 }

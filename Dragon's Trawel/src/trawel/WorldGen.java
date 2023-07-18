@@ -550,6 +550,8 @@ public class WorldGen {
 		for (World wor: plane.worlds()) {
 			townFinal(wor);
 		}
+		plane.reload();
+		
 		return w;
 	
 	}
@@ -651,6 +653,7 @@ public class WorldGen {
 	}
 	
 	public static void save(String str) {
+		plane.prepareSave();
 		   FileOutputStream fos;
 		try {
 			fos = new FileOutputStream("trawel"+str+".save");//Player.player.getPerson().getName()
@@ -755,6 +758,7 @@ public class WorldGen {
 			 Player.world = Player.player.world2;
 			 //oos.close();
 			 fos.close();
+			 plane.reload();
 		} catch (ClassNotFoundException | IOException e) {
 			if (!mainGame.logStreamIsErr) {
 				e.printStackTrace();

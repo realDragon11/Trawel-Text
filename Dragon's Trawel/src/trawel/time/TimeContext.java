@@ -16,7 +16,7 @@ public class TimeContext {
 	
 	public final boolean isLazy;
 	private boolean didUpdate = false;
-	private double trackedTime;
+	private double trackedTime = 0;
 	
 	//TODO: for now, timecontext itself is not thread safe, but the rest of the program
 	//is expected to only ever access it in a thread safe way
@@ -135,5 +135,13 @@ public class TimeContext {
 	 */
 	public boolean updated() {
 		return didUpdate;
+	}
+
+	protected void load(double savedTime) {
+		trackedTime = savedTime;
+	}
+
+	public double getDebt() {
+		return trackedTime;
 	}
 }

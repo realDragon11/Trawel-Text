@@ -31,7 +31,6 @@ public class Graveyard extends NodeFeature {
 	@Override
 	protected void generate() {
 		start = new GraveyardNode(size,town.getTier(),town,this);
-		reload();
 	}
 	public Shape getShape() {
 		return Shape.STANDARD;

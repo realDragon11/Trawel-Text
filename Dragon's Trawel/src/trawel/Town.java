@@ -478,8 +478,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 				}
 				int in = extra.inInt(8);
 				extra.println("Saving... (this used to take a while)");
-				double time = Player.popTime();
-				WorldGen.plane.resolveTimeDebt(time);
+				WorldGen.plane.prepareSave();
 				WorldGen.save(in+"");
 				
 			} break;
@@ -806,5 +805,13 @@ public class Town extends TContextOwner implements java.io.Serializable{
 			i-=((FortFeature)f).getSize();
 		}
 		return i;
+	}
+	
+	@Override
+	public void prepareSave() {
+		super.prepareSave();
+		for(Feature f: features) {
+			f.prepareSave();
+		}
 	}
 }

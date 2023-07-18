@@ -35,7 +35,6 @@ public class Grove extends NodeFeature {
 	@Override
 	protected void generate() {
 		start = new GroveNode(size,town.getTier(),this);
-		reload();
 	}
 	public Shape getShape() {
 		return Shape.STANDARD;
