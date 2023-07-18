@@ -90,6 +90,9 @@ public class Town extends TContextOwner implements java.io.Serializable{
 	public void reload() {
 		timeScope = new TimeContext(ContextType.LOCAL,this);
 		timeSetup();
+		for (Feature f: features) {
+			f.reload();
+		}
 	}
 	
 	public void setGoPrinter(PrintEvent e) {
@@ -678,11 +681,6 @@ public class Town extends TContextOwner implements java.io.Serializable{
 			a.passTime(time,calling);
 		}
 		return null;
-	}
-	
-	@Override
-	public List<TimeEvent> contextTime(double time, TimeContext calling) {
-		return timeScope.call(calling, time).pop();
 	}
 	
 	public ArrayList<SuperPerson> getOccupants() {

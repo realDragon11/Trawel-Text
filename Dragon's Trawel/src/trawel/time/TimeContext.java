@@ -25,8 +25,8 @@ public class TimeContext {
 	}
 	
 	/**
-	 * calls with another forced type, ie for the players current world, you can force set the type to local
-	 * since otherwise worlds are global
+	 * calls with another forced type
+	 * most of the time you will just want to not update it until later instead of this
 	 * @param parent
 	 * @param calltime
 	 * @param type

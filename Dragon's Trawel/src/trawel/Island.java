@@ -1,5 +1,10 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.List;
+
+import trawel.time.TContextOwner;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 
 /**
  * 
@@ -7,11 +12,7 @@ import java.util.ArrayList;
  * 5/30/2018
  */
 
-public class Island implements java.io.Serializable{
-
-	/**
-	 * 
-	 */
+public class Island extends TContextOwner{
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Town> towns;
 	private String name;
@@ -32,12 +33,6 @@ public class Island implements java.io.Serializable{
 		return towns;
 	}
 
-	public void passTime(double time) {
-		for (Town t: towns) {
-			t.passTime(time);
-		}
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -48,6 +43,22 @@ public class Island implements java.io.Serializable{
 
 	public World getWorld() {
 		return world;
+	}
+
+	@Override
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
+		for (Town t: towns) {
+			timeScope.localEvents(t.contextTime(time, calling));
+		}
+		return null;
+	}
+	
+	@Override
+	public void reload() {
+		super.reload();
+		for(Town t: towns) {
+			t.reload();
+		}
 	}
 
 	

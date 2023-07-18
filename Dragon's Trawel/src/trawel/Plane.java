@@ -2,10 +2,12 @@ package trawel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Plane implements java.io.Serializable{
-	/**
-	 * 
-	 */
+import trawel.time.ContextType;
+import trawel.time.TContextOwner;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
+
+public class Plane extends TContextOwner{
 	private static final long serialVersionUID = 1L;
 	private ArrayList<World> worlds = new ArrayList<World>();
 	private Player player;
@@ -25,13 +27,6 @@ public class Plane implements java.io.Serializable{
 		player = p;
 	}
 
-	public void passTime(double time) {
-		for (World w: worlds) {
-		
-		w.passTime(time);	
-		}
-	}
-
 	public List<Town> getTowns() {
 		List<Town> list = new ArrayList<Town>();
 		for(World w: worlds) {
@@ -41,5 +36,22 @@ public class Plane implements java.io.Serializable{
 		}
 		
 		return list;
+	}
+
+	@Override
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
+		for (World t: worlds) {
+			timeScope.localEvents(t.contextTime(time, calling));
+		}
+		return null;
+	}
+	
+	@Override
+	public void reload() {
+		timeScope = new TimeContext(ContextType.UNBOUNDED,this);
+		timeSetup();
+		for(World w: worlds) {
+			w.reload();
+		}
 	}
 }

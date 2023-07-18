@@ -1,11 +1,14 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.List;
 
-public class World implements java.io.Serializable{
-	
-	/**
-	 * 
-	 */
+import trawel.time.ContextType;
+import trawel.time.TContextOwner;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
+
+public class World extends TContextOwner{
+
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Island> islands;
 	private int xSize;
@@ -65,14 +68,6 @@ public class World implements java.io.Serializable{
 
 	public void setYSize(int ySize) {
 		this.ySize = ySize;
-	}
-
-	public void passTime(double time) {
-		calender.passTime(time);
-		for(Island i: islands) {
-			i.passTime(time);
-		}
-		
 	}
 
 	public Town getStartTown() {
@@ -180,6 +175,23 @@ public class World implements java.io.Serializable{
 
 	public float getMaxLonga() {
 		return maxLonga;
+	}
+
+	@Override
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
+		calender.passTime(time,calling);
+		for (Island t: islands) {
+			timeScope.localEvents(t.contextTime(time, calling));
+		}
+		return null;
+	}
+	
+	@Override
+	public void reload() {
+		super.reload();
+		for(Island i: islands) {
+			i.reload();
+		}
 	}
 	
 

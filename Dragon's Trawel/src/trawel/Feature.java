@@ -102,9 +102,5 @@ public abstract class Feature extends TContextOwner{
 		timeScope = new TimeContext(ContextType.UNBOUNDED,this);
 		timeSetup();
 	}
-	@Override
-	public List<TimeEvent> contextTime(double time, TimeContext calling) {
-		return timeScope.call(calling, time).pop();
-	}
 	
 }

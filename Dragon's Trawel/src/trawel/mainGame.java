@@ -649,13 +649,16 @@ public class mainGame {
 			extra.println("You do not wake up.");
 		}
 		
+		/**
+		 * note that some events, like the player generating gold, ignore normal restrictions
+		 */
 		public static void globalPassTime() {//TODO: test and put elsewhere
 			double time = Player.popTime();
 			if (time > 0) {
 				if (Player.hasSkill(Skill.MONEY_MAGE)) {
 					Player.bag.addGold((int) (Player.player.getPerson().getMageLevel()*time));
 				}
-				WorldGen.plane.passTime(time);
+				WorldGen.plane.passTime(time,null);
 			}
 		}
 		

@@ -1,8 +1,13 @@
 package trawel;
 import java.awt.Point;
 import java.io.Serializable;
+import java.util.List;
 
-public class Calender implements Serializable {
+import trawel.time.CanPassTime;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
+
+public class Calender implements Serializable, CanPassTime {
 	
 	/**
 	 * 
@@ -21,11 +26,6 @@ public class Calender implements Serializable {
 			this.lum = lum;
 		}
 	}*/
-
-	public void passTime(double time) {
-		timeCounter +=time;
-		
-	}
 	
 	public int getMonth() {
 		return (int)((timeCounter%getYearLength())/getMonthLength())+1;
@@ -252,6 +252,12 @@ public class Calender implements Serializable {
 		d[0] = extra.lerp(w.getMinLata(),w.getMaxLata(),p.y/(float)w.getYSize());
 		d[1] = extra.lerp(w.getMinLonga(),w.getMaxLonga(),p.y/(float)w.getXSize());
 		return d;
+	}
+
+	@Override
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
+		timeCounter +=time;
+		return null;//TODO: use for holidays
 	}
 	
 
