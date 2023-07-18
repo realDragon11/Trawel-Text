@@ -23,7 +23,7 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	private static BlockTaskManager handler;
 	
 	public int lastNewTasks;
-	//public AtomicInteger completedTasks = new AtomicInteger();
+	public AtomicInteger completedTasks = new AtomicInteger();
 
 	//this class manages doing work while the main thread is blocking for input
 	
@@ -74,7 +74,7 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	protected void afterExecute(Runnable r,Throwable t) {
 		super.afterExecute(r,t);
 		
-		//completedTasks.decrementAndGet();
+		completedTasks.incrementAndGet();
 		
 		pauseLock.lock();
 		try {
@@ -122,7 +122,7 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 		synchronized (handler){
 			handler.resume();
 			//handler.notifyAll();//if any threads still exist we're screwed TODO
-			//handler.completedTasks.set(0);
+			handler.completedTasks.set(0);
 			handler.lastNewTasks = trawel.WorldGen.plane.passiveTasks(handler);
 		}
 		extra.println("new: " + handler.lastNewTasks);
@@ -146,9 +146,9 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 		try {
 			long time1 = System.currentTimeMillis();//TODO might be able to remove if this works better than I expected
 
-			/*
+			
 			int checks = 0;
-			while (handler.lastNewTasks > handler.completedTasks.get() && handler.getActiveCount() > 0) {//TODO might only need one of these
+			while (handler.lastNewTasks > handler.completedTasks.get() ) {//TODO might only need one of these//&& handler.getActiveCount() > 0
 				if (checks >= 200) {
 					extra.println("Threads took >3 second to complete- you may encounter broken behavior and should treat this as an error. You can disable threads with the '-nothreads' argument if you keep encountering this.");
 					break;
@@ -159,10 +159,10 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 			if (handler.lastNewTasks > handler.completedTasks.get()) {
 				extra.println("Task Mismatch: " + handler.lastNewTasks +" new; " + handler.completedTasks.get() + "done");
 			}
-			*/
-			if (handler.awaitTermination(10,TimeUnit.SECONDS)) {
+			
+			/*if (handler.awaitTermination(10,TimeUnit.SECONDS)) {
 				extra.println("Threads took >10 seconds to complete- you may encounter broken behavior and should treat this as an error. You can disable threads with the '-nothreads' argument if you keep encountering this.");
-			}
+			}*/
 			long timeSpan = (System.currentTimeMillis()-time1)/10;
 			System.err.println("Threadstop 100ths: "+timeSpan);
 			if (timeSpan > 90) {
