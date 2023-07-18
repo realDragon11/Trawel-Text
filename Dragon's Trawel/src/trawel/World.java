@@ -221,9 +221,9 @@ public class World extends TContextOwner{
 		} catch (InterruptedException e) {
 			return -1;
 		}
-		if (savedTime > .2) {//different threshold from hasDebt- lower
-			double taken = Math.min(limit, savedTime);
-			savedTime -= taken;
+		if (timeScope.getDebt() > .2) {//different threshold from hasDebt- lower
+			double taken = Math.min(limit, timeScope.getDebt());
+			timeScope.assumeDebt(taken);
 			return taken;
 		}
 		return 0;
@@ -237,7 +237,7 @@ public class World extends TContextOwner{
 	}
 
 	public boolean hasDebt() {
-		return savedTime > 1;//needs at least an hour of debt to bother
+		return timeScope.getDebt() > 1;//needs at least an hour of debt to bother
 	}
 	
 

@@ -2,6 +2,8 @@ package trawel;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.threads.BlockTaskManager;
+import trawel.threads.FollowUp.FollowType;
 import trawel.time.ContextType;
 import trawel.time.TContextOwner;
 import trawel.time.TimeContext;
@@ -79,6 +81,7 @@ public class Plane extends TContextOwner{
 	
 	@Override
 	public void reload() {
+		trawel.threads.BlockTaskManager.setup();//we set up threads here
 		timeScope = new TimeContext(ContextType.UNBOUNDED,this);
 		timeSetup();
 		for(World w: worlds) {
@@ -92,5 +95,16 @@ public class Plane extends TContextOwner{
 		for(World w: worlds) {
 			w.prepareSave();
 		}
+	}
+
+	public int passiveTasks(BlockTaskManager handler) {
+		int tasks = 0;
+		for(World w: worlds) {
+			if (w.hasDebt()) {
+				handler.execute(trawel.threads.FollowUp.createTask(w,FollowType.WORLD_TIME));
+				tasks++;
+			}
+		}
+		return tasks;
 	}
 }

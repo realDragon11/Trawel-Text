@@ -44,7 +44,8 @@ public class mainGame {
 	public static boolean inEclipse = false;
 	public static boolean autoConnect = false;
 	public static boolean noDisconnect = false;
-	public static boolean noThreads = false;
+	public static boolean noThreads = true;
+	public static boolean permaNoThreads = false;
 
 	public static boolean GUIInput = true;
 	
@@ -429,7 +430,7 @@ public class mainGame {
 				noDisconnect = true;
 			}
 			if (a.toLowerCase().equals("nothreads")) {
-				noThreads = true;
+				permaNoThreads = true;
 			}
 			
 		}
@@ -440,8 +441,6 @@ public class mainGame {
 			extra.println("Please wait for the graphical to load...");
 			Networking.autoConnect();
 		}
-		
-		trawel.threads.BlockTaskManager.setup();
 		
 		while (true) { new mainGame();}
 		}//catch (Exception )

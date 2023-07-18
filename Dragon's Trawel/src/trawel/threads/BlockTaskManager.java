@@ -2,6 +2,7 @@ package trawel.threads;
 
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -20,6 +21,9 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	private ReentrantLock pauseLock = new ReentrantLock();
 	private Condition unpaused = pauseLock.newCondition();
 	private static BlockTaskManager handler;
+	
+	public int lastNewTasks;
+	public AtomicInteger completedTasks = new AtomicInteger();
 
 	//this class manages doing work while the main thread is blocking for input
 	
@@ -37,7 +41,7 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	
 	/**
 	 * all tasks given to BlockTaskManager should not particularly care if they don't get run for quite some time
-	 * each start -> halt phase does not clear undone tasks, so tasks should partly figure out if they still need
+	 * each start -> halt phase might not clear undone tasks, so tasks should partly figure out if they still need
 	 * to do the work
 	 * 
 	 * this is because of the pause mechanism done by halt, in order to gradually stop
@@ -55,7 +59,10 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 		super.beforeExecute(t, r);
 		pauseLock.lock();
 	    try {
-	    	while (isPaused) unpaused.await();
+	    	//while (isPaused) unpaused.await();
+	    	if (isPaused) {
+	    		throw new InterruptedException();//TODO
+	    	}
 	    } catch (InterruptedException ie) {
 	    	t.interrupt();
 	    } finally {
@@ -66,6 +73,9 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	@Override
 	protected void afterExecute(Runnable r,Throwable t) {
 		super.afterExecute(r,t);
+		
+		completedTasks.decrementAndGet();
+		
 		pauseLock.lock();
 		try {
 			if (!isPaused) {
@@ -95,21 +105,27 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	}
 	
 	public static void setup() {
-		if (trawel.mainGame.noThreads) {
+		if (trawel.mainGame.permaNoThreads) {
 			return;
 		}
+		trawel.mainGame.noThreads = false;
+		
 		handler = new BlockTaskManager();
+		handler.prestartCoreThread();
 	}
 	
 	public static void start() {
 		if (trawel.mainGame.noThreads) {
 			return;
 		}
-		handler.resume();
-	}
-	
-	public static void addTask() {
 		
+		synchronized (handler){
+			handler.resume();
+			//handler.notifyAll();//if any threads still exist we're screwed TODO
+			handler.completedTasks.set(0);
+			handler.lastNewTasks = trawel.WorldGen.plane.passiveTasks(handler);
+		}
+		extra.println("new: " + handler.lastNewTasks);
 	}
 	
 	/**
@@ -121,15 +137,33 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 		if (trawel.mainGame.noThreads) {
 			return;
 		}
-		handler.pause();
+		synchronized (handler){
+			handler.pause();
+		}
+		if (handler.lastNewTasks == 0) {
+			return;//might bug out, TODO TODO
+		}
 		try {
 			long time1 = System.currentTimeMillis();//TODO might be able to remove if this works better than I expected
-			if (handler.awaitTermination(10,TimeUnit.SECONDS)) {
-				extra.println("Threads took >10 seconds to complete- you may encounter broken behavior and should treat this as an error. You can disable threads with the '-nothreads' argument if you keep encountering this.");
+
+			int checks = 0;
+			while (handler.lastNewTasks > handler.completedTasks.get() && handler.getActiveCount() > 0) {//TODO might only need one of these
+				if (checks >= 200) {
+					extra.println("Threads took >3 second to complete- you may encounter broken behavior and should treat this as an error. You can disable threads with the '-nothreads' argument if you keep encountering this.");
+					break;
+				}
+				Thread.sleep(15);
+				checks++;
 			}
+			if (handler.lastNewTasks > handler.completedTasks.get()) {
+				extra.println("Task Mismatch: " + handler.lastNewTasks +" new; " + handler.completedTasks.get() + "done");
+			}
+			/*if (handler.awaitTermination(10,TimeUnit.SECONDS)) {
+				extra.println("Threads took >10 seconds to complete- you may encounter broken behavior and should treat this as an error. You can disable threads with the '-nothreads' argument if you keep encountering this.");
+			}*/
 			long timeSpan = (System.currentTimeMillis()-time1)/10;
 			System.err.println("Threadstop 100ths: "+timeSpan);
-			if (timeSpan > 50) {
+			if (timeSpan > 90) {
 				System.err.println("Threadstop took "+timeSpan+ " hundredth seconds. You are experiencing at least minor multithreading issues. You can disable threads with the '-nothreads' argument if you keep encountering this.");
 			}
 			

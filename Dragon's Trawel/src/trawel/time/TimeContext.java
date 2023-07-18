@@ -56,6 +56,7 @@ public class TimeContext {
 			//if we got forced with 0 but didn't have any timedebt, we can safely skip
 			didUpdate = false;
 			trackedTime+=calltime;
+			return this;
 		}
 		trackedTime = 0;
 		didUpdate = true;
@@ -143,5 +144,10 @@ public class TimeContext {
 
 	public double getDebt() {
 		return trackedTime;
+	}
+
+	public void assumeDebt(double taken) {
+		assert taken >= trackedTime;
+		trackedTime-=taken;
 	}
 }
