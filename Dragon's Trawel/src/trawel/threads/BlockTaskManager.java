@@ -125,7 +125,7 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 			handler.completedTasks.set(0);
 			handler.lastNewTasks = trawel.WorldGen.plane.passiveTasks(handler);
 		}
-		extra.println("new: " + handler.lastNewTasks);
+		//extra.println("new: " + handler.lastNewTasks);
 	}
 	
 	/**
@@ -145,7 +145,6 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 		}
 		try {
 			long time1 = System.currentTimeMillis();//TODO might be able to remove if this works better than I expected
-
 			
 			int checks = 0;
 			while (handler.lastNewTasks > handler.completedTasks.get() ) {//TODO might only need one of these//&& handler.getActiveCount() > 0
@@ -164,7 +163,7 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 				extra.println("Threads took >10 seconds to complete- you may encounter broken behavior and should treat this as an error. You can disable threads with the '-nothreads' argument if you keep encountering this.");
 			}*/
 			long timeSpan = (System.currentTimeMillis()-time1)/10;
-			System.err.println("Threadstop 100ths: "+timeSpan);
+			//System.err.println("Threadstop 100ths: "+timeSpan);
 			if (timeSpan > 90) {
 				System.err.println("Threadstop took "+timeSpan+ " hundredth seconds. You are experiencing at least minor multithreading issues. You can disable threads with the '-nothreads' argument if you keep encountering this.");
 			}

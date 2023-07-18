@@ -84,16 +84,20 @@ public class FortFoundation extends FortFeature {
 								name = "Wizard Tower in progress";
 								timeLeft = 24.0*7;
 								return true;
+							}else {
+								Player.bag.giveBackDrawBane(db,"%s can't be used on this foundation size. (Only Large)");
+								return false;
 							}
-							break;
 						case LIVING_FLAME:
 							if (size == 2) {
 								buildCode = 2;
 								name = "Forge in progress";
 								timeLeft = 24.0*7;
 								return true;
+							}else {
+								Player.bag.giveBackDrawBane(db,"%s can't be used on this foundation size. (Only Medium)");
+								return false;
 							}
-							break;
 						case TELESCOPE:
 							switch (size) {
 							case 1:
@@ -133,8 +137,7 @@ public class FortFoundation extends FortFeature {
 							}
 							break;
 						}
-						Player.bag.addNewDrawBane(db);
-						extra.println("You can't build a building with this drawbane and foundation size.");
+						Player.bag.giveBackDrawBane(db,"You can't make a building here with %s.");
 						return false;
 					}
 				});

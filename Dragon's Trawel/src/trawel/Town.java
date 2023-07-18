@@ -728,6 +728,8 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		}
 		return false;
 	}
+	
+	//TODO: replace these with time events
 	public void enqueneRemove(Feature f) {
 		this.removeList.add(f);
 	}

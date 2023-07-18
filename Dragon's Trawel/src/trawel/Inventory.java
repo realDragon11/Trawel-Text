@@ -644,6 +644,18 @@ public class Inventory implements java.io.Serializable{
 		return dbs.remove(in-1);
 	}
 	
+	/**
+	 * used only for when a player presents a drawbane, and it isn't wanted
+	 * @param db
+	 * @paremt rejection text, use %s to replace. null permitted
+	 */
+	public void giveBackDrawBane(DrawBane d,String rejectText) {
+		if (rejectText != null) {
+			extra.println(String.format(rejectText,d));
+		}
+		dbs.add(d);
+	}
+	
 	public void displayDrawBanes() {
 		while (dbs.size() < dbMax) {
 			dbs.add(DrawBane.NOTHING);
