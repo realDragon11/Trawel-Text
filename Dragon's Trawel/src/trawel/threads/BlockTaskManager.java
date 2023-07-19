@@ -186,9 +186,8 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 		if (trawel.mainGame.noThreads) {
 			return;
 		}
-		
+		handler.pause();
 		synchronized (handler){
-			handler.pause();
 			if (handler.lastNewTasks == 0) {
 				return;//might bug out, TODO
 			}
