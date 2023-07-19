@@ -18,12 +18,20 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	
 	//https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadPoolExecutor.html
 	private boolean isPaused;
+	/**
+	 * Whenever pauseLock is obtained, make sure that, if you are also syncing on handler, you
+	 * do not give up pause lock until you are done also syncing on handler
+	 * ie, any time you sync on handler it should not rely on other locks (like pause lock)
+	 * and, if it does, should hold that lock before it gets handler's sync lock
+	 */
 	private ReentrantLock pauseLock = new ReentrantLock();
 	private Condition unpaused = pauseLock.newCondition();
 	private static BlockTaskManager handler;
 	
 	public int lastNewTasks;
-	public AtomicInteger completedTasks = new AtomicInteger();
+	public AtomicInteger completedTasks = new AtomicInteger();//also counts canceled tasks
+	
+	public boolean hasWarned = false;
 
 	//this class manages doing work while the main thread is blocking for input
 	
@@ -61,6 +69,10 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	    try {
 	    	//while (isPaused) unpaused.await();
 	    	if (isPaused) {
+	    		completedTasks.incrementAndGet();
+	    		synchronized (handler){
+	    			handler.notifyAll();
+	    		}
 	    		throw new InterruptedException();//TODO
 	    	}
 	    } catch (InterruptedException ie) {
@@ -101,10 +113,13 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 					t.printStackTrace();
 			}
 	    } finally {
-	    	pauseLock.unlock();
 	    	if (!newTask) {
 	    		completedTasks.incrementAndGet();
+	    		synchronized (handler){
+	    			handler.notifyAll();
+	    		}
 	    	}
+	    	pauseLock.unlock();
 	    }
 	}
 	
@@ -118,62 +133,91 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 		handler.prestartCoreThread();
 	}
 	
+	/**
+	 * start computing background tasks
+	 * 
+	 * should only ever be called on the main thread
+	 */
 	public static void start() {
 		if (trawel.mainGame.noThreads) {
 			return;
 		}
 		
-		synchronized (handler){
-			handler.resume();
-			//handler.notifyAll();//if any threads still exist we're screwed TODO
-			handler.completedTasks.set(0);
-			handler.lastNewTasks = trawel.WorldGen.plane.passiveTasks(handler);
+		//attempt to gain pause lock, if not, merely set that we have no new tasks
+		//to avoid issues with rapid starting and halting
+		try {
+			if (handler.pauseLock.tryLock(20, TimeUnit.MILLISECONDS)) {
+				synchronized (handler){
+					handler.resume();
+					//handler.notifyAll();//if any threads still exist we're screwed TODO
+					handler.completedTasks.set(0);
+					handler.lastNewTasks = trawel.WorldGen.plane.passiveTasks(handler);
+					handler.pauseLock.unlock();
+				}
+			}else {
+				synchronized (handler){
+					//need to check if this causes issues, however it is monolock so probably not
+					//still, might not be needed, or there might be a better way
+					handler.lastNewTasks = 0;
+					handler.completedTasks.set(0);
+				}
+			}
+		} catch (InterruptedException e) {
+			// unsure what to do here so just stack trace
+			e.printStackTrace();
+			throw new RuntimeException("Main thread couldn't get pause lock but was interrupted.");
 		}
+		
+		
 		//extra.println("new: " + handler.lastNewTasks);
 	}
+	
+	public static final long HALT_TIMEOUT = 3_000;
+	public static final long WARN_TIMEOUT = 300;//if we spend longer than 300ms
 	
 	/**
 	 * note that tasks will never get canceled, they might have already taken timeDebt or some other resource
 	 * from another place.
 	 * However, expect not noticeable to humans delay on the average computer
+	 * 
+	 * should only ever be called on the main thread
 	 */
 	public static void halt() {
 		if (trawel.mainGame.noThreads) {
 			return;
 		}
+		
 		synchronized (handler){
 			handler.pause();
-		}
-		if (handler.lastNewTasks == 0) {
-			return;//might bug out, TODO TODO
-		}
+			if (handler.lastNewTasks == 0) {
+				return;//might bug out, TODO
+			}
 		try {
-			long time1 = System.currentTimeMillis();//TODO might be able to remove if this works better than I expected
-			
-			int checks = 0;
-			while (handler.lastNewTasks > handler.completedTasks.get() ) {//TODO might only need one of these//&& handler.getActiveCount() > 0
-				if (checks >= 200) {
-					extra.println("Threads took >3 second to complete- you may encounter broken behavior and should treat this as an error. You can disable threads with the '-nothreads' argument if you keep encountering this.");
-					break;
-				}
-				Thread.sleep(15);
-				checks++;
+		
+			long curtime = System.currentTimeMillis();
+			long expiretime = System.currentTimeMillis()+HALT_TIMEOUT;
+			while (handler.lastNewTasks > handler.completedTasks.get() && curtime < expiretime) {
+				handler.wait(expiretime-curtime);//should never be 0
+				curtime = System.currentTimeMillis();
 			}
 			if (handler.lastNewTasks > handler.completedTasks.get()) {
 				extra.println("Task Mismatch: " + handler.lastNewTasks +" new; " + handler.completedTasks.get() + "done");
 			}
-			
-			/*if (handler.awaitTermination(10,TimeUnit.SECONDS)) {
-				extra.println("Threads took >10 seconds to complete- you may encounter broken behavior and should treat this as an error. You can disable threads with the '-nothreads' argument if you keep encountering this.");
-			}*/
-			long timeSpan = (System.currentTimeMillis()-time1)/10;
-			//System.err.println("Threadstop 100ths: "+timeSpan);
-			if (timeSpan > 90) {
-				System.err.println("Threadstop took "+timeSpan+ " hundredth seconds. You are experiencing at least minor multithreading issues. You can disable threads with the '-nothreads' argument if you keep encountering this.");
+			long timeSpan = (curtime-expiretime);//this is the time left before HALT_TIMEOUT, but negative;
+			if (timeSpan > 0) {//if we timed out
+				extra.println("Threads took >3 seconds to complete and timed out- you may encounter broken behavior and should treat this as an error. You can disable threads with the '-nothreads' argument if you keep encountering this.");
+			}else {
+				if (HALT_TIMEOUT+timeSpan > WARN_TIMEOUT) {//timeSpan is negative, for example 3000+(1000-3000) > 500 for 1 second going over .5 seconds of warn
+					if (!handler.hasWarned) {
+						handler.hasWarned = true;
+						extra.println("Threadstop took "+(HALT_TIMEOUT+timeSpan)+ " milliseconds. You are experiencing at least minor multithreading issues. You can disable threads with the '-nothreads' argument if this is causing lag- this warning will only display once per game.");
+					}
+				}
 			}
 			
 		} catch (InterruptedException e) {
 			e.printStackTrace();//should never happen because this should only be called from the main thread
+		}
 		}
 		
 	}
