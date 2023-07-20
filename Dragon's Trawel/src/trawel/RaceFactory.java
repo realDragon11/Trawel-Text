@@ -766,6 +766,21 @@ public class RaceFactory {
 		w.hTask = HostileTask.ANIMAL;
 		return w;
 	}
+	
+	public static Person makeAlphaWolf(int level) {
+		extra.printMode = true;
+		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
+		w.getBag().swapRace(RaceFactory.getRace("wolf"));
+		if (extra.chanceIn(4,5)) {
+			w.getBag().getDrawBanes().add(DrawBane.MEAT);
+		}
+		extra.printMode = false;
+		w.setFirstName(randomLists.randomWolfName());
+		w.setTitle(randomLists.randomAlphaName());
+		w.hTask = HostileTask.ANIMAL;
+		return w;
+	}
 
 	public static Person makeMimic(int level) {
 		extra.printMode = true;

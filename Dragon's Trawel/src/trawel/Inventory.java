@@ -84,8 +84,11 @@ public class Inventory implements java.io.Serializable{
 			armorSlots[2] = new Armor(level,2,matType);
 			armorSlots[3] = new Armor(level,3,matType);
 			armorSlots[4] = new Armor(level,4,matType);
-			hand = new Weapon(level);}
-		race = RaceFactory.randRace(type);
+			hand = null;//new Weapon(level); //beasts always swap out the weapon, thus making it is pointless
+		}else {
+			race = RaceFactory.randRace(type);//might even want to swap to just humanoid
+		}
+		
 		raceMap = race.randomRaceMap();
 	}
 	

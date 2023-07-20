@@ -21,21 +21,65 @@ public class BumperFactory {
 
 			@Override
 			public void activate(int level) {
-				ArrayList<Person> list = new ArrayList<Person>();
-				int count = extra.randRange(1,3);
-				for (int i = 0;i < count;i++) {
-					list.add(RaceFactory.makeWolf(extra.zeroOut(level-3)+1));}
-				
-				extra.println(extra.PRE_RED+"A pack of wolves descend upon you!");
-				ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
-				if (survivors.contains(Player.player.getPerson())) {
-					Player.player.questTrigger(TriggerType.CLEANSE,"wolf", count);
+				if (level >= 5 && extra.chanceIn(2,5)) {
+					ArrayList<Person> list = new ArrayList<Person>();
+					//int count = extra.randRange(1,3);
+					list.add(RaceFactory.makeAlphaWolf(extra.zeroOut(level-1)+1));
+					for (int i = 0;i < 3;i++) {
+						list.add(RaceFactory.makeWolf(extra.zeroOut(level-3)+1));
+					}
+
+					extra.println(extra.PRE_RED+"A large pack of wolves ambush you!");
+					ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
+					if (survivors.contains(Player.player.getPerson())) {
+						Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 4);
+					}
+				}else {
+					if (level >= 3) {
+						ArrayList<Person> list = new ArrayList<Person>();
+						//int count = extra.randRange(1,3);
+						for (int i = 0;i < 3;i++) {
+							list.add(RaceFactory.makeWolf(extra.zeroOut(level-3)+1));
+						}
+	
+						extra.println(extra.PRE_RED+"A pack of wolves descend upon you!");
+						ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
+						if (survivors.contains(Player.player.getPerson())) {
+							Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 3);
+						}
+					}else {
+						Person p = RaceFactory.makeWolf(level);
+	
+						extra.println(extra.PRE_RED+"A wolf attacks you!");
+						if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+							Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 1);
+						}
+					}
 				}
 			}};
-		b.responses.add(new Response(DrawBane.MEAT,5));
-		b.responses.add(new Response(DrawBane.NOTHING,.5));
-		b.responses.add(new Response(DrawBane.REPEL,-8));
-		b.minAreaLevel = 3;
+			b.responses.add(new Response(DrawBane.MEAT,5));
+			b.responses.add(new Response(DrawBane.NOTHING,.5));
+			b.responses.add(new Response(DrawBane.REPEL,-8));
+			//b.minAreaLevel = 3;//replaced with solowoofs
+			bumperList.add(b);
+
+			b = new Bumper() {
+
+				@Override
+				public void activate(int level) {
+					Person p = RaceFactory.makeWolf(level);
+
+					extra.println(extra.PRE_RED+"A wolf attacks you!");
+					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+						Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 1);
+					}
+
+				}};
+		b.responses.add(new Response(DrawBane.MEAT,2));
+		b.responses.add(new Response(DrawBane.NOTHING,.3));
+		b.responses.add(new Response(DrawBane.REPEL,-10));
+		
+		
 		bumperList.add(b);
 		
 		 b = new Bumper() {
@@ -50,8 +94,8 @@ public class BumperFactory {
 				}};
 			b.responses.add(new Response(DrawBane.MEAT,3));
 			b.responses.add(new Response(DrawBane.CEON_STONE,3));
-			bumperList.add(b);
 			b.minAreaLevel = 5;
+			bumperList.add(b);
 		 b = new Bumper() {
 				
 				@Override
@@ -63,6 +107,7 @@ public class BumperFactory {
 					
 				}};
 			b.responses.add(new Response(DrawBane.ENT_CORE,5));
+			b.minAreaLevel = 3;
 			bumperList.add(b);
 		 b = new Bumper() {
 				
@@ -112,6 +157,7 @@ public class BumperFactory {
 			b.responses.add(new Response(DrawBane.NOTHING,.5));
 			b.responses.add(new Response(DrawBane.HONEY,.7));
 			b.responses.add(new Response(DrawBane.REPEL,-8));
+			b.minAreaLevel = 2;
 			bumperList.add(b);
 			b = new Bumper() {
 
@@ -149,9 +195,9 @@ public class BumperFactory {
 				@Override
 				public void activate(int level) {
 					ArrayList<Person> list = new ArrayList<Person>();
-					int count = extra.randRange(1,3);
+					int count = 5;//extra.randRange(4,5);
 					for (int i = 0;i < count;i++) {
-						list.add(RaceFactory.makeHarpy(extra.zeroOut(level-3)+1));}
+						list.add(RaceFactory.makeHarpy(extra.zeroOut(level-4)+1));}
 					extra.println(extra.PRE_RED+"A flock of harpies attack!");
 					ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
 					if (survivors.contains(Player.player.getPerson())) {
@@ -163,7 +209,7 @@ public class BumperFactory {
 			b.responses.add(new Response(DrawBane.SILVER,1.25));
 			b.responses.add(new Response(DrawBane.GOLD,1.25));
 			b.responses.add(new Response(DrawBane.REPEL,-1));
-			b.minAreaLevel = 5;
+			b.minAreaLevel = 6;
 			bumperList.add(b);
 			
 			//ships
