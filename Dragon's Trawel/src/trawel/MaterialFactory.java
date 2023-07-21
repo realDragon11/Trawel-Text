@@ -20,6 +20,9 @@ public class MaterialFactory {
 	 * Set up the static flyweights for the materials.
 	 */
 	public MaterialFactory() {
+		
+		//baseEnchant > rand*3f, so any baseEnchant >=3f will always enchant
+		
 		Material misc = new Material();
 		misc.name = "cloth";
 		misc.typeList.add("light");
@@ -255,7 +258,7 @@ public class MaterialFactory {
 		misc.weapon = true;
 		misc.weight = 50;
 		misc.cost = 50;
-		misc.baseEnchant = 2;
+		misc.baseEnchant = 2.1f;
 		misc.baseResist = 8;
 		misc.sharpResist = .1;
 		misc.bluntResist = 1;
@@ -281,7 +284,7 @@ public class MaterialFactory {
 		misc.weapon = false;
 		misc.weight = 2;
 		misc.cost = 20;
-		misc.baseEnchant = 2;
+		misc.baseEnchant = 2.3f;
 		misc.baseResist = .1;
 		misc.sharpResist = 0;
 		misc.bluntResist = 1;
@@ -341,7 +344,7 @@ public class MaterialFactory {
 		misc.weapon = true;
 		misc.weight = 15;
 		misc.cost = 80;
-		misc.baseEnchant = 1.5f;
+		misc.baseEnchant = 2f;
 		misc.baseResist = 15;
 		misc.sharpResist = 1;
 		misc.bluntResist = 1;
@@ -519,7 +522,7 @@ public class MaterialFactory {
 		misc.weapon = true;
 		misc.weight = 100;
 		misc.cost = 100;
-		misc.baseEnchant = 2;
+		misc.baseEnchant = 3;
 		misc.baseResist = 10;
 		misc.sharpResist = .3;
 		misc.bluntResist = 1.2;

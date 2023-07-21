@@ -183,9 +183,9 @@ public class Weapon extends Item {
 		}
 		//random chance, partially based on enchantment power, to enchant the weapon
 		//effectiveCost = cost;
-		if (baseEnchant*2 > extra.randFloat() && extra.chanceIn(8,10)) {
+		if (baseEnchant > extra.randFloat()*3f) {
 			if (extra.chanceIn(2, 3)) {
-				enchant = EnchantConstant.makeEnchant(baseEnchant);//removed level, like with armor
+				enchant = EnchantConstant.makeEnchant(baseEnchant,cost);//removed level, like with armor
 				//effectiveCost=(int)extra.zeroOut(cost * enchant.getGoldMult()+enchant.getGoldMod());
 				//IsEnchantedConstant = true;
 			}else {
@@ -322,7 +322,7 @@ public class Weapon extends Item {
 			return pastEnchant != enchant;
 		}else {
 			//IsEnchantedConstant = true;
-			enchant = EnchantConstant.makeEnchant(baseEnchant);//new EnchantConstant(level*baseEnchant);
+			enchant = EnchantConstant.makeEnchant(baseEnchant,cost);//new EnchantConstant(level*baseEnchant);
 			//effectiveCost=(int) extra.zeroOut(cost * enchant.getGoldMult()+enchant.getGoldMod());
 			return true;
 		}

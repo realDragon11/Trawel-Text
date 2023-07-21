@@ -21,7 +21,7 @@ public class randomLists {
 			doerTitles, animals, wolfNames,bearNames,batNames, entNames, waterNames,
 			fighterTypes,muggerTypes,collectTypes,theAlphaTitles,
 			//following have fallbacks if not loaded, and you can avoid filling them in for test purposes
-			powerAdj = new SRInOrder("")
+			powerAdj = new SRInOrder(""), powerAdjFront = new SRInOrder("")
 			;
 	//NOTE: any =null means it should use a lazyloaded getter instead
 	public static void init() {
@@ -40,7 +40,8 @@ public class randomLists {
 		
 		//https://en.wikipedia.org/wiki/List_of_domesticated_animals
 		animals = new SRPlainRandom("fox","ox","bird","cat","dog","horse","wolf","bear","monkey","lizard","snake","goat","pig","sheep","cow","chicken","donkey","zebra","hog","duck","buffalo","camel","pigeon","goose","yak","llama","alpaca","ferret","dove","turkey","goldfish","shark","rabbit","canary","finch","mouse","mink","hedgehog","guppy","reindeer","ostrich","oryx","gazelle","ibex","hyena","serval","bobcat","caracal","cheetah","elephant","mongoose","genet","deer","parakeet","snail","bee","wasp","hornet","cockatoo","swan","cricket","quail","squid","carp","sparrow","swallow","swallow","robin","rat","squirrel","pheasant","eland","alligator","moose","elk","stoat","coypu","skunk","hamster","lovebird","rainbowfish","frog","axolotl");
-		powerAdj = 	new SRPlainRandom("undoubtable","impossible","endless","incredible","soaring","infinite","amazing","implausible","miraculous","astonishing","astounding","awesome","extraordinary","wondrous","bewildering","supernatural","great","considerable","extreme","abundant","prodigious");
+		powerAdj = new SRPlainRandom("undoubtable","impossible","endless","incredible","soaring","infinite","amazing","implausible","miraculous","astonishing","astounding","awesome","extraordinary","wondrous","bewildering","supernatural","great","considerable","extreme","abundant","prodigious");
+		powerAdjFront = new SRPlainRandom("undoubtedly","impossibly","endlessly","incredibly","infinitely","implausibly","miraculously","astonishingly","astoundingly","awesomely","wondrous","bewilderingly","supernaturaly","greatly","considerably","extremely","abundantly","prodigiously");
 		
 		//https://www.fantasynamegenerators.com/scripts/wolfNames.js
 		wolfNames = new SRPlainRandom("Ace","Akira","Alistair","Alpha","Apache","Apollo","Archer","Artemis","Astro","Athene","Atlas","Avalanche","Axis","Bandit","Bane","Baron","Beacon","Bear","Blaze","Blitz","Bolt","Bones","Boomer","Boon","Booth","Boulder","Brawn","Brick","Brock","Browne","Bruno","Brutus","Buck","Bud","Buddy","Bullet","Buster","Butch","Buzz","Caesar","Camelot","Chase","Chewy","Chronos","Cloud","Colt","Comet","Conan","Courage","Dagger","Dane","Danger","Dash","Delta","Dexter","Diablo","Digger","Drake","Duke","Dust","Dutch","Echo","Edge","Excalibur","Fang","Farkas","Flash","Frost","Fury","Ghost","Goliath","Gray","Grunt","Hannibal","Havoc","Hawke","Hawkeye","Hector","Hercules","Hooch","Hulk","Hunter","Hyde","Ice","Jaws","Jax","Jeckyll","Jethro","Judge","Kaine","Kane","Khan","Killer","King","Lad","Laika","Lecter","Lightning","Logan","Loki","Lupin","Lupus","Magnus","Mako","Mason","Maverick","Max","Maximus","Mayhem","Menace","Midnight","Miles","Murdoch","Myst","Nanook","Nero","Nightmare","Nova","Oak","Obsidian","Odin","Omega","Omen","Onyx","Orbit","Outlaw","Patriot","Phantom","Prince","Pyro","Quicksilver","Rage","Ralph","Ranger","Razor","Rebel","Rex","Rider","Riggs","Ripley","Riptide","Rogue","Rover","Scar","Scout","Shade","Shadow","Shepherd","Shredder","Silver","Skye","Slate","Sly","Smoke","Splinter","Steele","Storm","Striker","Summit","Tank","Thor","Thunder","Timber","Titan","Tooth","Trace","Trapper","Trouble","Tundra","Vapor","Whisper","Wolf","Acadia","Aiyana","Akita","Alaska","Alexia","Alexis","Alize","Alpine","Amber","Amethyst","Angel","Ares","Ari","Aspen","Astral","Athena","Atilla","Aura","Aurora","Avril","Babe","Banshee","Beauty","Blaze","Blitz","Blitzen","Blossom","Bo","Boone","Breeze","Charm","Chronis","Clarity","Cleo","Codex","Coral","Crystal","Dakota","Dash","Dawn","Delphi","Destiny","Dharma","Diva","Dodger","Dot","Duchess","Ebony","Echo","Eclipse","Enigma","Faith","Fern","Gemini","Gia","Girl","Grace","Hailey","Heather","Heaven","Helen","Hope","Ice","Indigo","Iris","Ivory","Ivy","Jade","Jasmine","Jewel","Jinx","June","Juno","Justice","Jynx","Karma","Kenya","Lady","Laika","Levi","Lexis","Liberty","Lore","Lotus","Luna","Maple","Maxima","Meadow","Mello","Melody","Mercy","Midnight","Mona","Moone","Myst","Mysti","Mystique","Myth","Nanook","Nova","Nymph","Nyx","Omen","Onyxia","Opal","Oracle","Pandora","Paws","Pearl","Pepper","Phantom","Phoenix","Precious","Princess","Pyro","Queen","Rags","Raine","Raven","Rogue","Sable","Saffron","Sapphire","Satin","Scarlet","Shade","Shadow","Silver","Snow","Snowball","Snowflake","Solstice","Star","Twilight","Vapor","Velvet","Violet","Vixen","Whisper","Willow","Winter","Xena","Zelda");
@@ -165,6 +166,10 @@ public class randomLists {
 	 */
 	public static String powerAdjective() {
 		return powerAdj.next();
+	}
+	
+	public static String powerAdjectiveFront() {
+		return powerAdjFront.next();
 	}
 
 	public static String randomWarrior() {

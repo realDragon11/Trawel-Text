@@ -71,17 +71,30 @@ public class EnchantConstant extends Enchant {
 			};
 			float[] chances = new float[floatMultList.length];
 			for (int i = floatMultList.length-1;i>=0;i--) {
-				chances[i] = floatMultList[i][4];
+				float chance = floatMultList[i][4];
+				if (!(floatMultList[i][1] != 0 && floatMultList[i][3] != 0)) {
+					//if we're not a multistat one
+					chance *= 1.6f;
+				}
+				if ((floatMultList[i][1] != 0 && floatMultList[i][3] != 0)) {
+					//if we don't have a downside
+					chance *= 1.2f;
+				}
+				chances[i] = chance;
 			}
 			enchantChances = new WeightedTable(chances);
 	}
 	
 	//constructors
 	
-	public static EnchantConstant makeEnchant(float mod) {
+	public static EnchantConstant makeEnchant(float mod, int cost) {
 		for (int i = 0; i < 4;i++) {
 			EnchantConstant enchant = new EnchantConstant(mod);
 			if (cutOff(enchant,.6f,.7f)) {
+				continue;
+			}
+			int newcost = (int) (cost*enchant.getGoldMult()+enchant.getGoldMod());
+			if (newcost < 10 || newcost < cost*0.04f) {
 				continue;
 			}
 			return enchant;
@@ -167,62 +180,71 @@ public class EnchantConstant extends Enchant {
 		magnitudeOne *= mults[3];
 		
 		if (magnitudeOne > 0) {
-			magnitudeOne = extra.clamp(magnitudeOne,0.1f,3f);
+			magnitudeOne = extra.clamp(magnitudeOne,0.1f,2f);
 		}
 		if (magnitudeTwo > 0) {
-			magnitudeTwo = extra.clamp(magnitudeTwo,0.1f,3f);
+			magnitudeTwo = extra.clamp(magnitudeTwo,0.1f,2f);
 		}
+		float positiveGoldMult = .05f;
+		float negativeGoldMult = .07f;
+		
+		int positiveGoldMod = 8;
+		int negativeGoldMod = 4;
+		
 		if (magnitudeOne > 0){
+			if (extra.randFloat() < magnitudeOne*3) {
+				afterName = randomLists.powerAdjective()+ " ";
+			}
 			switch (off1+(extra.randRange(0, 4)*2)) {
 			case 0: beforeName = (String)extra.choose("speedy","quick","fast","hasty","brisk");
-			speedMod+=.1*magnitudeOne;
-			goldMult +=.1*magnitudeOne;
-			goldMod +=magnitudeOne*20;
+			speedMod+=.2*magnitudeOne;
+			goldMult +=positiveGoldMult*magnitudeOne;
+			goldMod +=magnitudeOne*positiveGoldMod;
 			break;
 			case 1: beforeName = (String)extra.choose("slow","sluggish","lackadaisical","lethargic","reluctant");
-			speedMod-=.1*magnitudeOne;
-			goldMult -=.1*magnitudeOne;
-			goldMod -=magnitudeOne*20;
+			speedMod-=.2*magnitudeOne;
+			goldMult -=negativeGoldMult*magnitudeOne;
+			goldMod -=magnitudeOne*negativeGoldMod;
 			break;
 			case 2: beforeName = (String)extra.choose("healthy","bolstering","hearty","tough","robust","stalwart");
-			healthMod+=.1*magnitudeOne;
-			goldMult +=.1*magnitudeOne;
-			goldMod +=magnitudeOne*20;
+			healthMod+=.2*magnitudeOne;
+			goldMult +=positiveGoldMult*magnitudeOne;
+			goldMod +=magnitudeOne*positiveGoldMod;
 			break;
 			case 3: beforeName = (String)extra.choose("sickly","ailing","delicate");
-			healthMod-=.1*magnitudeOne;
-			goldMult -=.1*magnitudeOne;
-			goldMod -=magnitudeOne*20;
+			healthMod-=.2*magnitudeOne;
+			goldMult -=negativeGoldMult*magnitudeOne;
+			goldMod -=magnitudeOne*negativeGoldMod;
 			break;
 			case 4: beforeName = (String)extra.choose("powerful","offensive","angry","mighty","furious");
-			damMod+=.1*magnitudeOne;
-			goldMult +=.1*magnitudeOne;
-			goldMod +=magnitudeOne*20;
+			damMod+=.2*magnitudeOne;
+			goldMult +=positiveGoldMult*magnitudeOne;
+			goldMod +=magnitudeOne*positiveGoldMod;
 			break;
 			case 5: beforeName = (String)extra.choose("weak","pitiful","merciful","timid");
-			damMod-=.1*magnitudeOne;
-			goldMult -=.1*magnitudeOne;
-			goldMod -=magnitudeOne*20;
+			damMod-=.2*magnitudeOne;
+			goldMult -=negativeGoldMult*magnitudeOne;
+			goldMod -=magnitudeOne*negativeGoldMod;
 			break;
 			case 6: beforeName = (String)extra.choose("accurate","exact","eagle-eyed");
-			aimMod+=.1*magnitudeOne;
-			goldMult +=.1*magnitudeOne;
-			goldMod +=magnitudeOne*20;
+			aimMod+=.2*magnitudeOne;
+			goldMult +=positiveGoldMult*magnitudeOne;
+			goldMod +=magnitudeOne*positiveGoldMod;
 			break;
 			case 7: beforeName = (String)extra.choose("clumsy","unwieldy","bungling","graceless","clunky");
-			aimMod-=.1*magnitudeOne;
-			goldMult -=.1*magnitudeOne;
-			goldMod -=magnitudeOne*20;
+			aimMod-=.2*magnitudeOne;
+			goldMult -=negativeGoldMult*magnitudeOne;
+			goldMod -=magnitudeOne*negativeGoldMod;
 			break;
 			case 8: beforeName = (String)extra.choose("dodgy","displacing","evasive");
-			dodgeMod+=.1*magnitudeOne;
-			goldMult +=.1*magnitudeOne;
-			goldMod +=magnitudeOne*20;
+			dodgeMod+=.2*magnitudeOne;
+			goldMult +=positiveGoldMult*magnitudeOne*.9;
+			goldMod +=magnitudeOne*positiveGoldMod*.3;
 			break;
 			case 9: beforeName = (String)extra.choose("restraining","exposing","constraining","restrictive");
-			dodgeMod-=.1*magnitudeOne;
-			goldMult -=.1*magnitudeOne;
-			goldMod -=magnitudeOne*10;
+			dodgeMod-=.2*magnitudeOne;
+			goldMult -=negativeGoldMult*magnitudeOne*.8;
+			goldMod -=magnitudeOne*negativeGoldMod*.2;
 			break;
 		
 		}
@@ -230,57 +252,62 @@ public class EnchantConstant extends Enchant {
 		}
 		//second component of enchantment
 		if (magnitudeTwo > 0){
-			afterName = " of "+randomLists.powerAdjective()+ " ";
-		switch (off1+(extra.randRange(0, 4)*2)) {
+			if (extra.randFloat() < magnitudeTwo*3) {
+				afterName = " of "+randomLists.powerAdjective()+ " ";
+			}else {
+				afterName = " of ";
+			}
+			
+		switch (off2+(extra.randRange(0, 4)*2)) {
 			case 0: afterName += (String)extra.choose("speed","quickness","haste","alacrity","briskness","fleetness");
 			speedMod+=.1*magnitudeTwo;
-			goldMult +=.1*magnitudeTwo;
-			goldMod +=magnitudeTwo*20;
+			goldMult +=positiveGoldMult*magnitudeTwo;
+			goldMod +=magnitudeTwo*positiveGoldMod;
 			break;
 			case 1: afterName += (String)extra.choose("slowness","sluggishness","reluctance","lethargy");
 			speedMod-=.1*magnitudeTwo;
 			goldMult -=.1*magnitudeTwo;
-			goldMod -=magnitudeTwo*20;
+			goldMod -=magnitudeTwo*negativeGoldMod;
 			break;
 			case 2: afterName += (String)extra.choose("health","heart","resistance","toughness","robustness");
 			healthMod+=.1*magnitudeTwo;
-			goldMult +=.1*magnitudeTwo;
-			goldMod +=magnitudeTwo*20;
+			goldMult +=positiveGoldMult*magnitudeTwo;
+			goldMod +=magnitudeTwo*positiveGoldMod;
 			break;
 			case 3: afterName += (String)extra.choose("sickness","illness","infirmity");
 			healthMod-=.1*magnitudeTwo;
 			goldMult -=.1*magnitudeTwo;
-			goldMod -=magnitudeTwo*20;
+			goldMod -=magnitudeTwo*negativeGoldMod;
 			break;
 			case 4: afterName += (String)extra.choose("power","offense","anger","might","fury");
 			damMod+=.1*magnitudeTwo;
-			goldMult +=.1*magnitudeTwo;
-			goldMod +=magnitudeTwo*20;
+			goldMult +=positiveGoldMult*magnitudeTwo;
+			goldMod +=magnitudeTwo*positiveGoldMod;
 			break;
 			case 5: afterName += (String)extra.choose("weakness","pitifulness","mercy");
 			damMod-=.1*magnitudeTwo;
 			goldMult -=.1*magnitudeTwo;
-			goldMod -=magnitudeTwo*20;
+			goldMod -=magnitudeTwo*negativeGoldMod;
 			break;
 			case 6: afterName += (String)extra.choose("accuracy","aiming","exactness");
 			aimMod+=.1*magnitudeTwo;
-			goldMult +=.1*magnitudeTwo;
-			goldMod +=magnitudeTwo*20;
+			goldMult +=positiveGoldMult*magnitudeTwo;
+			goldMod +=magnitudeTwo*positiveGoldMod;
 			break;
 			case 7: afterName += (String)extra.choose("missing","bungling","floundering");
 			aimMod-=.1*magnitudeTwo;
 			goldMult -=.1*magnitudeTwo;
-			goldMod -=magnitudeTwo*20;
+			goldMod -=magnitudeTwo*negativeGoldMod;
 			break;
 			case 8: afterName += (String)extra.choose("dodging","displacement","evasion","avoidance");
 			dodgeMod+=.1*magnitudeTwo;
-			goldMult +=.1*magnitudeTwo;
-			goldMod +=magnitudeTwo*20;
+			goldMult +=positiveGoldMult*magnitudeTwo*.9;
+			goldMod +=magnitudeTwo*positiveGoldMod*.3;
 			break;
 			case 9: afterName += (String)extra.choose("restrainment","openness","restriction","stumbling");
 			dodgeMod-=.1*magnitudeTwo;
-			goldMult -=.1*magnitudeTwo;
-			goldMod -=magnitudeTwo*10;
+			goldMult -=.1*magnitudeTwo*.8;
+			goldMod -=magnitudeTwo*negativeGoldMod*.2;
 			break;
 		
 		}

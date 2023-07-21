@@ -201,8 +201,8 @@ public class Armor extends Item {
 		
 		//effectiveCost = cost;
 		//add an enchantment and mark it down if the enchantment is greater than a random value form 0 to <1.0
-		if (baseEnchant*2 > extra.randFloat() && extra.chanceIn(8,10)) {
-			enchantment = EnchantConstant.makeEnchant(baseEnchant);//used to include level in the mult, need a new rarity system
+		if (baseEnchant > extra.randFloat()*3f) {
+			enchantment = EnchantConstant.makeEnchant(baseEnchant,cost);//used to include level in the mult, need a new rarity system
 		}else {
 			if (extra.chanceIn(1,5)) {//non-enchanted qualities
 				baseEnchant = 0;
