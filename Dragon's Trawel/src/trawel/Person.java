@@ -899,8 +899,16 @@ public class Person implements java.io.Serializable{
 	 * Display this person's stats.
 	 */
 	public void displayStats() {
+		displayStats(true);
+	}
+	
+	public void displayStats(boolean inCombat) {
 		extra.println("This is " + this.getName() +". They are a level " + this.getLevel() +" " + this.getBag().getRace().name+".");
-		extra.println("They have " + (int) (maxHp*bag.getHealth()) + " hp. Their health modifier is " + extra.format(bag.getHealth()) + "x.");
+		if (inCombat) {
+			extra.println("They have " + (int) (maxHp*bag.getHealth()) + " hp. Their health modifier is " + extra.format(bag.getHealth()) + "x.");
+		}else {
+			extra.println("Their health modifier is " + extra.format(bag.getHealth()) + "x.");	
+		}
 		extra.println("They have " + extra.format(bag.getAim()) + "x aiming, " +  extra.format(bag.getDam()) + "x damage, and "+extra.format(bag.getSpeed()) + "x speed.");
 		extra.println("They have " + extra.format(bag.getDodge()) + "x dodging, " + extra.format(bag.getBluntResist()) + " blunt resistance, " +
 		extra.format(bag.getSharpResist()) + " sharp resistance, and "+ extra.format(bag.getPierceResist()) + " pierce resistance.");

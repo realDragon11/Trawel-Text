@@ -195,6 +195,8 @@ public class Weapon extends Item {
 				IsEnchantedConstant = false;
 			}
 		}
+		
+		initDamTuple();//no longer lazy loaded
 	}
 	
 	public Weapon(int newLevel) {
@@ -332,9 +334,10 @@ public class Weapon extends Item {
 	 * @return highest damage (int)
 	 */
 	public DamTuple highestDamage() {
-		if (dam != null) {
-			return dam;
-		}
+		return dam;
+	}
+	
+	private void initDamTuple() {
 		double high = 0;
 		double damage = 0;
 		double average = 0;
@@ -359,14 +362,13 @@ public class Weapon extends Item {
 		}
 		bs/=(battleTests*WorldGen.getDummyInvs().size());
 		dam = new DamTuple(high,average,(bs*level)/(size));
-		return dam;
 	}
 	
 	/**
 	 * Returns the damage/time (ie dps) of the most powerful attack the weapon has
 	 * @return highest damage (int)
 	 */
-	public DamTuple highestDamageThreaded() {
+	private DamTuple highestDamageThreaded() {
 		if (dam != null) {
 			return dam;
 		}

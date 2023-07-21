@@ -69,83 +69,198 @@ public class mainGame {
 	
 	private static boolean finalSetup1 = false;
 	private static boolean basicSetup1 = false;
+	
+	public static void mainMenu() {
+		extra.menuGo(new MenuGenerator(){
 
-	
-	//constructors
-	/**
-	 * The main game. Includes the selector for gamemode and output type.
-	 */
-	mainGame(){
-	//script variables
-	extra.changePrint(false);
-	Networking.sendStrong("Discord|desc|Main Menu|");
-	extra.println("1 Play Game");
-	extra.println("2 Help");
-	extra.println("3 Load (version-specific)");
-	extra.println("4 Links");
-	extra.println("5 Credits");
-	extra.println("6 Connect");
-	extra.println("7 Exit");
-	extra.linebreak();
-	switch(extra.inInt(7)){
-	case 1:
-		Networking.clearSides();
-		gameTypes();
-		return;
-	case 2:
-		extra.println("Thanks for playing Trawel! Here's a few tips about learning how to play:");
-		extra.println("Stylized like the old days, you may enter all input through a command line.");
-		extra.println("As you start your adventure, be on the lookout for better gear than you currently have.");
-		extra.println("There are three primary attack and defense types, sharp, blunt, and pierce.");
-		extra.println("Sharp is edged. Swords are good at it, and chainmail is good at defending from it.");
-		extra.println("Blunt is heavy. Maces are good at it, and gold is good at defending from it.");
-		extra.println("Pierce is pointy. Spears are good at it, and metals are better at defending from it.");
-		extra.println("Check your opponent's equipment to try to determine which type they are weak to!");
-		extra.println("As you play the game, you'll get a grasp of the strengths and weaknesses of varying");
-		extra.println("materials and weapons. It's part of the fun of the game!");
-		extra.println("Attacks have a speed and a hitchance, along with damage types.");
-		extra.println("Lower is faster for delay, higher is more accurate for the hitchance.");
-		extra.println("Enchantments can be both good and bad, so keep an eye out!");
-		extra.println("Value can be a good indicator of quality, but watch out for misses like");
-		extra.println("Gold (a soft metal) sharp/piercing weapons.");
-		extra.println("When in combat, type the number of the attack you wish to use.");
-		extra.println("Pay close attention to hit, speed, sharp, blunt, and pierce.");
-		extra.println("Higher is better, except in the case of delay.");
-		extra.println("Well, you made it through bootcamp. Have fun!");
-		extra.println("-realDragon");
-		return;
-	
-	case 7: System.exit(0);break;
-	case 3: Networking.clearSides();
-	for (int i = 1; i < 9; i++) {
-		extra.println(i+" slot: "+WorldGen.checkNameInFile(""+i));
+			@Override
+			public List<MenuItem> gen() {
+				extra.changePrint(false);
+				Networking.sendStrong("Discord|desc|Main Menu|");
+				Networking.send("Visual|MainMenu|");
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				/*mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return "Choose a Game Mode:";
+					}}
+				);*/
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Play Game";
+					}
+
+					@Override
+					public boolean go() {
+						Networking.clearSides();
+						gameTypes();
+						return false;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Basic Tutorial";
+					}
+
+					@Override
+					public boolean go() {
+						extra.println("Thanks for playing Trawel! Here's a few tips about learning how to play:");
+						extra.println("All of Trawel proper, and most of the side games, only require inputing a number between 1 and 9.");
+						extra.println();
+						extra.println("There are a few games in Trawel, but the one simply called 'Trawel' has the following advice:");
+						extra.println("Always be on the lookout for better gear than you currently have. Your power level is largely determined by how powerful your gear is- not just it's level.");
+						extra.println("There are three primary attack and defense types, sharp, blunt, and pierce.");
+						extra.println("Sharp is edged and cutting. Swords are good at it, and chainmail is good at defending from it. Some materials are softer, like Gold, and thus bad at it.");
+						extra.println("Blunt is heavy and crushing. Maces are good at it, and gold is good at defending from it- and also dealing it.");
+						extra.println("Pierce is pointy and puncturing. Spears are good at it, and metals are better at defending from it.");
+						extra.println("If you're feeling tactical, you can read your opponent's equipment to try to determine which type they are weak to!");
+						extra.println("As you play the game, you'll get a grasp of the strengths and weaknesses of varying materials and weapons. It's part of the fun of the game!");
+						extra.println("Attacks have a delay amount and a hitchance, along with damage types.");
+						extra.println("Delay is how long it takes for the attack to happen- it can be thought of how 'slow' the attack is, so lower is better.");
+						extra.println("Hitchance is the opposite- higher is more accurate. However, it is not a percent chance to hit, as it does not account for the opponent's dodge, which can change over time.");
+						extra.println("Enchantments can be both good and bad, so keep an eye out for gear that has low stats but boosts overall stats a high amount- or gear that makes you much weaker!");
+						extra.println("When looting equipment, you are shown the new item, then your current item, and then the stat changes between the two- plus for stat increases, minus for stat decreases. The difference will not show stats that remain the same.");
+						extra.println("Value can be a good rough indicator of quality, but it does not account for the actual effectiveness of the item, just the rarity and tier.");
+						extra.println("For example, gold (a soft metal) sharp/piercing weapons are expensive but ineffective.");
+						extra.println("When in combat, you will be given 3 (by default, skills and circumstance may change this) random attacks ('opportunities') to use your weapon.");
+						extra.println("Pay close attention to hit, delay, and sbp (sharp, blunt, pierce) damage.");
+						extra.println("More simply: Higher is better, except in the case of delay.");
+						extra.println("Well, you made it through bootcamp. Have fun!");
+						extra.println("-realDragon");
+						return false;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Load Trawel Save";
+					}
+
+					@Override
+					public boolean go() {
+						Networking.clearSides();
+						for (int i = 1; i < 9; i++) {
+							extra.println(i+" slot: "+WorldGen.checkNameInFile(""+i));
+						}
+						extra.println("9 autosave: "+WorldGen.checkNameInFile("auto"));
+						int in = extra.inInt(9);
+						WorldGen.load(in == 9 ? "auto" : in+"");
+						boolean runit;
+						try {
+							Player.player.getPerson();
+							runit = true;
+						}catch (Exception e) {
+							runit = false;
+						}
+						 if (runit) {
+							 adventureBody();
+						 }
+						return false;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Credits";
+					}
+
+					@Override
+					public boolean go() {
+						credits();
+						return false;
+					}});
+				
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "GitHub (opens in browser)";
+					}
+
+					@Override
+					public boolean go() {
+						openWebpage("https://github.com/realDragon11/Trawel-Text");
+						return false;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Advanced (beta)";
+					}
+
+					@Override
+					public boolean go() {
+						//TODO: just reconnecting for now, need to have accessibility options later
+						advancedOptions();
+						return false;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Exit";
+					}
+
+					@Override
+					public boolean go() {
+						System.exit(0);
+						return false;
+					}});
+				
+				return mList;
+			}
+		});
 	}
-	extra.println("9 autosave: "+WorldGen.checkNameInFile("auto"));
-	int in = extra.inInt(9);
-	WorldGen.load(in == 9 ? "auto" : in+"");
-	boolean runit;
-	try {
-		Player.player.getPerson();
-		runit = true;
-	}catch (Exception e) {
-		runit = false;
-	}
-	 if (runit) {
-		 adventureBody();
-	 }
 	
-	break;
-	case 6: extra.println("Really connect? This will clear your current connection!");
-		if (extra.yesNo()) {
-		extra.println("Port?"); Networking.connect(extra.inInt(65535)); Networking.send("Visual|MainMenu|");}
-		return;
-	case 4: links();break;
-	case 5: credits();break;
-	}
+	private static void advancedOptions() {
+		extra.menuGo(new MenuGenerator(){
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return "These first options deal with reconnecting to Trawel Graphical, and only apply to the Steam version. They only work on the command line, otherwise you may have to restart or use the command line to finish reconnecting.";
+					}}
+				);
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Quick Reconnect";
+					}
+
+					@Override
+					public boolean go() {
+						Networking.connect(6510); 
+						return true;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Full Reconnect";
+					}
+
+					@Override
+					public boolean go() {
+							extra.println("Port?"); Networking.connect(extra.inInt(65535)); 
+						return true;
+					}});
+				return mList;
+			}
+		});
 	}
 	
 	
-	private void credits() {
+	private static void credits() {
 		extra.println("Made by Brian 'dragon' Malone");
 		extra.println("With thanks to the GameMaker discords");
 		extra.println("Achievement icons can be found on game-icons.net");
@@ -169,69 +284,214 @@ public class mainGame {
 			new WeaponAttackFactory();
 			new TownFlavorFactory();
 			new QuestReactionFactory();
+			WorldGen.initDummyInvs();
 			story = new StoryNone();
 			basicSetup1 = true;
 		}
 	}
 
 	
-	private void gameTypes() {
-		extra.println("Choose an adventure:");
-		extra.println("1 The DeathStrider (recommended)");
-		extra.println("2 rTrawel (experimental jrpg)");
-		extra.println("3 SciMechs (mech jam game)");
-		extra.println("4 model mode");
-		extra.println("5 save test");
-		extra.println("6 time test");
-		extra.println("7 weapon tests");
-		extra.println("8 rarity tests");
-		switch(extra.inInt(8)) {
-		case 1: 
-			adventure1();break;
-		case 2:extra.println("This gamemode can only be played in the command prompt."); rtrawel.TestRunner.run();break;
-		case 3:
-			SaveHandler.clean();
-			while (true) {
-				extra.println("Choose your mechs");
-				List<Mech> mechs = mechsForSide(true);
-				extra.println("Save mechs?");
-				if (extra.yesNo()) {
-					SaveHandler.clean();
-					SaveHandler.imprintMechs(mechs);
-					SaveHandler.save();
-				}
-				extra.println("Choose their mechs");
-				mechs.addAll(mechsForSide(false));
-				
-				MechCombat mc = new MechCombat(mechs);
-				mc.go();
-				
-				extra.println(mc.activeMechs.get(0).playerControlled == true ? "You win!" : "You lose!");
+	private static void gameTypes() {
+		extra.menuGo(new MenuGenerator(){
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return "Choose a Game Mode:";
+					}}
+				);
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Trawel Quickstart (base game, recommended)";
+					}
+
+					@Override
+					public boolean go() {
+						adventure1(false,false,false,false);
+						return true;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Trawel Slowstart (base game)";
+					}
+
+					@Override
+					public boolean go() {
+						adventure1(false,true,true,true);
+						return true;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "rTrawel (experimental jrpg, prototype, nongraphical)";
+					}
+
+					@Override
+					public boolean go() {
+						rtrawel.TestRunner.run();
+						return true;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "SciMechs (experimental mech game, prototype, nongraphical)";
+					}
+
+					@Override
+					public boolean go() {
+						SaveHandler.clean();
+						while (true) {
+							extra.println("Choose your mechs");
+							List<Mech> mechs = mechsForSide(true);
+							extra.println("Save mechs?");
+							if (extra.yesNo()) {
+								SaveHandler.clean();
+								SaveHandler.imprintMechs(mechs);
+								SaveHandler.save();
+							}
+							extra.println("Choose their mechs");
+							mechs.addAll(mechsForSide(false));
+							
+							MechCombat mc = new MechCombat(mechs);
+							mc.go();
+							
+							extra.println(mc.activeMechs.get(0).playerControlled == true ? "You win!" : "You lose!"+ "\n Would you like the quit?");
+							if (extra.yesNo()) {
+								return true;
+							}
+						}
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "various tests";
+					}
+
+					@Override
+					public boolean go() {
+						extra.menuGo(new MenuGenerator(){
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> mList = new ArrayList<MenuItem>();
+								mList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Cheat Trawel";
+									}
+
+									@Override
+									public boolean go() {
+										adventure1(true,false,false,false);
+										return true;
+									}});
+								mList.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "Graphical Tests:";
+									}}
+								);
+								mList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Model Mode";
+									}
+
+									@Override
+									public boolean go() {
+										modelMode();
+										return true;
+									}});
+								mList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Time Test";
+									}
+
+									@Override
+									public boolean go() {
+										Calender.timeTest();
+										return true;
+									}});
+								mList.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "Backend Tests:";
+									}}
+								);
+								mList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Weapon Power Metrics (creates csv)";
+									}
+
+									@Override
+									public boolean go() {
+										baseSetup1();
+										try {
+											WeaponAttackFactory.weaponMetrics();
+										} catch (FileNotFoundException e) {
+											e.printStackTrace();
+										}
+										return true;
+									}});
+								mList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Weapon Rarity Metrics (creates csv)";
+									}
+
+									@Override
+									public boolean go() {
+										baseSetup1();
+										try {
+											Weapon.duoRarityMetrics();
+										} catch (FileNotFoundException e) {
+											e.printStackTrace();
+										}
+										return true;
+									}});
+								mList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Save Test";
+									}
+
+									@Override
+									public boolean go() {
+										saveTest();
+										return true;
+									}});
+								return mList;
+							}
+						});
+						return true;
+					}});
+				return mList;
 			}
-		//case 2: adventure2();break;
-		//case 3: adventure3();break;
-		case 4: modelMode();break;
-		case 5: saveTest();break;
-		case 6: Calender.timeTest();
-		break;
-		case 7: 
-			baseSetup1();
-			try {
-				WeaponAttackFactory.weaponMetrics();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}break;
-		case 8:
-			baseSetup1();
-			try {
-				Weapon.duoRarityMetrics();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}break;
-			}
+			});
 	}
 	
-	private void saveTest() {
+	private static void saveTest() {
 		baseSetup1();
 		for (int j = 0;j < 10;j++) {
 			extra.println("try: "+j);
@@ -251,7 +511,7 @@ public class mainGame {
 	private static List<Mech> curMechs;
 
 	
-	private List<Mech> mechsForSide(boolean side){
+	private static List<Mech> mechsForSide(boolean side){
 		extra.menuGoPaged(new MenuGeneratorPaged(){
 
 			@Override
@@ -328,14 +588,14 @@ public class mainGame {
 		return curMechs;
 	}
 	
-	private List<Mech> debugMechs(boolean side){
+	private static List<Mech> debugMechs(boolean side){
 		List<Mech> mechs = new ArrayList<Mech>();
 		mechs.add(new DebugMech(side));
 		mechs.add(new DebugMech(side));
 		return mechs;
 	}
 	
-	private List<Mech> threeMusketeers(boolean side){
+	private static List<Mech> threeMusketeers(boolean side){
 		List<Mech> mechs = new ArrayList<Mech>();
 		mechs.add(new Musketeer(side));
 		mechs.add(new Musketeer(side));
@@ -343,7 +603,7 @@ public class mainGame {
 		return mechs;
 	}
 	
-	private List<Mech> pirateSquad(boolean side){
+	private static List<Mech> pirateSquad(boolean side){
 		List<Mech> mechs = new ArrayList<Mech>();
 		mechs.add(new Swashbuckler(side));
 		mechs.add(new Packrat(side));
@@ -351,7 +611,7 @@ public class mainGame {
 		return mechs;
 	}
 	
-	private List<Mech> scienceSquad(boolean side){
+	private static List<Mech> scienceSquad(boolean side){
 		List<Mech> mechs = new ArrayList<Mech>();
 		mechs.add(new Dynamo(side));
 		mechs.add(new Pyro(side));
@@ -359,7 +619,7 @@ public class mainGame {
 		return mechs;
 	}
 	
-	private void modelMode() {
+	private static void modelMode() {
 		baseSetup1();
 		Person manOne;
 		manOne = RaceFactory.makeOld(2);//new Person(starting_level,false,Race.RaceType.HUMANOID,null);
@@ -443,7 +703,7 @@ public class mainGame {
 			Networking.autoConnect();
 		}
 		
-		while (true) { new mainGame();}
+		mainMenu();
 		}//catch (Exception )
 		catch(Exception e) {
 			System.setErr(System.out);
@@ -614,33 +874,8 @@ public class mainGame {
 			
 			return battle.survivors;
 		}
-
 		
-		
-		/*public void adventure2(){
-			World world = new World(10,20,"eoano");
-			WorldGen.eoano(world);
-			Player player = randPerson(false,true);
-			player.setLocation(world.getStartTown());
-			WorldGen.plane.setPlayer(player);
-			player.getPerson().playerLevelUp();
-			Player.toggleTutorial();
-			adventureBody();
-		}
-		
-		public void adventure3(){
-			World world = new World(10,20,"eoano");
-			WorldGen.eoano(world);
-			Player player = randPerson(false,true);
-			player.setLocation(world.getStartTown());
-			WorldGen.plane.setPlayer(player);
-			//player.getPerson().playerLevelUp();
-			player.getPerson().addXpSilent(9999);
-			Player.toggleTutorial();
-			adventureBody();
-		}*/
-		
-		public void adventureBody() {
+		public static void adventureBody() {
 			lastAutoSave = new Date();
 			while(Player.player.isAlive()) {
 				if (doAutoSave && (new Date().getTime()-lastAutoSave.getTime() > 1000*60*2)) {
@@ -694,42 +929,64 @@ public class mainGame {
 		}*/
 		
 		
-		public void adventure1(){
+		public static void adventure1(boolean cheaty, boolean displayFight, boolean rerolls, boolean advancedDisplay){
 			baseSetup1();
 			if (!finalSetup1) {
 				randomLists.init();
 				finalSetup1 = true;
 			}
+			Networking.sendStrong("Discord|desc|Character Select|");
 			extra.println("Generating world...");
 			World world = WorldGen.eoano();
 			story = new StoryDeathWalker();
-			Person manOne, manTwo;
+			Person manOne = null, manTwo;
 			Player player;
-				 manOne = new Person(starting_level,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
-				 manOne.hTask = HostileTask.DUEL;
-				 Person manThree = manOne;
-				 manTwo = new Person(starting_level,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
-				 manTwo.hTask = HostileTask.DUEL;
-				 extra.changePrint(true);
-				 manOne = CombatTwo(manOne,manTwo);
-				 if (manOne == manThree) {
-					 StoryDeathWalker.killed = manTwo;
-				 }else {
-					 StoryDeathWalker.killed = manThree;
-				 }
-				 extra.changePrint(false);
-				 //manOne.displayStats();
-				 player = new Player(manOne);
-				 manOne.setPlayer();
-				 Networking.sendStrong("Discord|desc|Character Select|");
-				 //Networking.send("Visual|Race|" + manOne.getBag().getRace().name+  "|");
-				 Networking.charUpdate();
-				 player.getPerson().setSkillPoints(0);
-				 Player.addSkill(Skill.BLOODTHIRSTY);
-				 Player.player.getPerson().addFighterLevel();
+			//
+			while (manOne == null) {
+				manOne = new Person(starting_level,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
+				manOne.hTask = HostileTask.DUEL;
+				Person manThree = manOne;
+				manTwo = new Person(starting_level,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
+				manTwo.hTask = HostileTask.DUEL;
+				if (!displayFight) {
+					extra.changePrint(true);
+				}
+				manOne = CombatTwo(manOne,manTwo);
+				if (manOne == manThree) {
+					StoryDeathWalker.killed = manTwo;
+				}else {
+					StoryDeathWalker.killed = manThree;
+				}
+				if (!displayFight) {
+					extra.changePrint(false);
+				}
+				if (rerolls) {
+					manOne.getBag().graphicalDisplay(1, manOne);
+					if (advancedDisplay) {
+						manOne.displayStats(false);
+					}
+					extra.println("Play as " + manOne.getName() +"?");
+					if (extra.yesNo()) {
+						break;
+					}
+				}
+				//manOne.displayStats();
+				Networking.clearSides();
+			}
+			Networking.clearSides();
+			player = new Player(manOne);
+			manOne.setPlayer();
+			//Networking.send("Visual|Race|" + manOne.getBag().getRace().name+  "|");
+			Networking.charUpdate();
+			player.getPerson().setSkillPoints(0);
+			Player.addSkill(Skill.BLOODTHIRSTY);
+			Player.player.getPerson().addFighterLevel();
 			story.storyStart();
 			player.setLocation(world.getStartTown());
 			WorldGen.plane.setPlayer(player);
+			if (cheaty) {
+				player.getPerson().addXp(9999);
+			}
 			//player.getPerson().playerLevelUp();
 			adventureBody();
 		}

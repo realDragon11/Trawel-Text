@@ -17,7 +17,7 @@ public class Gambler extends Feature implements java.io.Serializable{
 		this.type = type;
 		this.name = name;
 		this.gold = gold;
-		tutorialText = "Lose money at gamblers.";
+		tutorialText = "Lose money at gambling halls.";
 	}
 	
 	@Override

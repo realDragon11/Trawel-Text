@@ -44,23 +44,22 @@ public class WorldGen {
 	
 	private static List<Inventory> dumInvs = new ArrayList<Inventory>();
 	
-	public static List<Inventory> getDummyInvs() {
-		if (dumInvs.size() == 0) {
-			//11 preset armor sets
-			for (int j = 0; j < 12;j++) {
-				dumInvs.add(new DummyInventory(j));
-				dumInvs.get(dumInvs.size()-1).resetArmor(0, 0, 0);
-			}
-			//random 9
-			for (int i = 0; i < 10;i++) {
-				dumInvs.add(new DummyInventory());
-				dumInvs.get(dumInvs.size()-1).resetArmor(0, 0, 0);
-			}
-			
-			
+	
+	public static void initDummyInvs() {
+		//11 preset armor sets
+		for (int j = 0; j < 12;j++) {
+			dumInvs.add(new DummyInventory(j));
+			dumInvs.get(dumInvs.size()-1).resetArmor(0, 0, 0);
 		}
+		//random 9
+		for (int i = 0; i < 10;i++) {
+			dumInvs.add(new DummyInventory());
+			dumInvs.get(dumInvs.size()-1).resetArmor(0, 0, 0);
+		}
+	}
+	
+	public static List<Inventory> getDummyInvs() {
 		return dumInvs;
-		
 	}
 	
 	public static World eoano() {
