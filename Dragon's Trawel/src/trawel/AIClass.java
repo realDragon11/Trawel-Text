@@ -180,7 +180,7 @@ public class AIClass {
 		int j = 0;
 		double[] damray = new double[size];
 		
-		extra.disablePrintSubtle();
+		extra.offPrintStack();
 		while (i >= 0) {
 			j = 0;
 			do {
@@ -198,7 +198,7 @@ public class AIClass {
 			damray[i]/= ((double)rounds*attacks.get(i).getSpeed());
 			i--;
 		}
-		extra.enablePrintSubtle();
+		extra.popPrintStack();
 		j=0;
 		i=0;//will now hold position of the highest one
 		double highestValue = -1;

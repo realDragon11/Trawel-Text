@@ -300,9 +300,9 @@ public class Store extends Feature implements java.io.Serializable{
 		this.time += addtime;
 		if (time > 12+(Math.random()*30)) {
 			if (type != 7) {
-			extra.disablePrintSubtle();
+			extra.offPrintStack();
 			goShopping();
-			extra.enablePrintSubtle();}
+			extra.popPrintStack();}
 			addAnItem();
 			time = 0;
 		}

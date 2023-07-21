@@ -753,14 +753,14 @@ public class RaceFactory {
 	}
 	
 	public static Person makeWolf(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
 		w.getBag().swapRace(RaceFactory.getRace("wolf"));
 		if (extra.chanceIn(1,5)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
-		extra.printMode = false;
+		extra.popPrintStack();
 		w.setFirstName(randomLists.randomWolfName());
 		w.setTitle("");
 		w.hTask = HostileTask.ANIMAL;
@@ -768,14 +768,14 @@ public class RaceFactory {
 	}
 	
 	public static Person makeAlphaWolf(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
 		w.getBag().swapRace(RaceFactory.getRace("wolf"));
 		if (extra.chanceIn(4,5)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
-		extra.printMode = false;
+		extra.popPrintStack();
 		w.setFirstName(randomLists.randomWolfName());
 		w.setTitle(randomLists.randomAlphaName());
 		w.hTask = HostileTask.ANIMAL;
@@ -783,7 +783,7 @@ public class RaceFactory {
 	}
 
 	public static Person makeMimic(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("wood"),Person.RaceFlag.NONE,false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
 		w.getBag().swapArmorSlot(new Armor(level,0,MaterialFactory.getMat("flesh")),0);
@@ -792,51 +792,51 @@ public class RaceFactory {
 		if (extra.chanceIn(1,3)) {
 			w.getBag().getDrawBanes().add(DrawBane.MIMIC_GUTS);
 		}
-		extra.printMode = false;
+		extra.popPrintStack();
 		w.hTask = HostileTask.MONSTER;
 		return w;
 	}
 	
 	public static Person makeStatue(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level,true, Race.RaceType.HUMANOID,MaterialFactory.getMat("flesh"),Person.RaceFlag.CRACKS,false);
 		//w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
 		if (extra.chanceIn(1,2)) {
 			w.getBag().getDrawBanes().add(DrawBane.CEON_STONE);
 		}
-		extra.printMode = false;
+		extra.popPrintStack();
 		w.targetOverride = TargetFactory.TargetType.STATUE;
 		w.hTask = HostileTask.GUARD_DUNGEON;
 		return w;
 	}
 	
 	public static Person makeFellReaver(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"standing reaver"));
 		w.backupWeapon = new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth and claws");
 		w.getBag().swapRace(RaceFactory.getRace("standing-reaver"));
 		w.addSkill(Skill.FELL_REAVER);
-		extra.printMode = false;
+		extra.popPrintStack();
 		w.hTask = HostileTask.MONSTER;
 		return w;
 	}
 
 	public static Person getShaman(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level);
 		w.getBag().getDrawBanes().add(DrawBane.PROTECTIVE_WARD);
-		extra.printMode = false;
+		extra.popPrintStack();
 		w.hTask = HostileTask.DUEL;
 		return w;
 	}
 	public static Person makeEnt(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("wood"),Person.RaceFlag.NONE,false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("wood"),"branches"));
 		w.getBag().getDrawBanes().add(DrawBane.ENT_CORE);
 		w.getBag().swapRace(RaceFactory.getRace("ent"));
-		extra.printMode = false;
+		extra.popPrintStack();
 		w.setFirstName(randomLists.randomEntName());
 		w.setTitle("");
 		w.hTask = HostileTask.ANIMAL;
@@ -844,24 +844,24 @@ public class RaceFactory {
 	}
 	
 	public static Person makeVampire(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level,true, Race.RaceType.HUMANOID,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
 		w.setScar(biteFor(w.getBag().getRace()));
 		if (extra.chanceIn(1,20)) {
 			w.getBag().getDrawBanes().add(DrawBane.BLOOD);
 		}
-		extra.printMode = false;
+		extra.popPrintStack();
 		w.targetOverride = TargetFactory.TargetType.UNDEAD_H;
 		w.hTask = HostileTask.MONSTER;
 		return w;
 	}
 	
 	public static Person makeBear(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = Person.animal(level, RaceFactory.getRace("bear"), MaterialFactory.getMat("flesh"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth and claws"));
 		w.getBag().getDrawBanes().add(DrawBane.MEAT);
-		extra.printMode = false;
+		extra.popPrintStack();
 		w.setFirstName(randomLists.randomBearName());
 		w.setTitle("");
 		w.hTask = HostileTask.ANIMAL;
@@ -869,7 +869,7 @@ public class RaceFactory {
 	}
 	
 	public static Person makeBat(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = Person.animal(level, RaceFactory.getRace("bat"), MaterialFactory.getMat("flesh"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
 		if (extra.chanceIn(1,7)) {
@@ -878,7 +878,7 @@ public class RaceFactory {
 		if (extra.chanceIn(1,2)) {
 			w.getBag().getDrawBanes().add(DrawBane.BAT_WING);
 		}
-		extra.printMode = false;
+		extra.popPrintStack();
 		w.setFirstName(randomLists.randomBatName());
 		w.setTitle("");
 		w.hTask = HostileTask.ANIMAL;
@@ -886,31 +886,31 @@ public class RaceFactory {
 	}
 	
 	public static Person getFleshGolem(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = Person.animal(level, RaceFactory.getRace("flesh-golem"), MaterialFactory.getMat("flesh"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("flesh"),"generic fists"));
 		w.getBag().getDrawBanes().add(DrawBane.BEATING_HEART);
-		extra.printMode = false;
+		extra.popPrintStack();
 		//w.targetOverride = TargetFactory.TargetType.HUMANOID;
 		w.hTask = HostileTask.MONSTER;
 		return w;
 	}
 	
 	public static Person makeUnicorn(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = Person.animal(level, RaceFactory.getRace("unicorn"), MaterialFactory.getMat("flesh"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"unicorn horn"));
 		if (extra.chanceIn(1,3)) {
 			w.getBag().getDrawBanes().add(DrawBane.UNICORN_HORN);
 		}
-		extra.printMode = false;
+		extra.popPrintStack();
 		w.setTitle("");
 		w.hTask = HostileTask.ANIMAL;
 		return w;
 	}
 	
 	public static Person makeHarpy(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = Person.animal(level, RaceFactory.getRace("harpy"), MaterialFactory.getMat("flesh"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic talons"));
 		if (extra.chanceIn(1,6)) {
@@ -922,28 +922,28 @@ public class RaceFactory {
 		if (extra.chanceIn(1,20)) {
 			w.getBag().getDrawBanes().add(DrawBane.SILVER);
 		}
-		extra.printMode = false;
+		extra.popPrintStack();
 		w.setTitle("");
 		w.hTask = HostileTask.MONSTER;
 		return w;
 	}
 	
 	public static Person makeDrudgerStock(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = Person.animal(level, RaceFactory.getRace("drudger-stock"), MaterialFactory.getMat("flesh"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("iron"),"fishing spear"));
 		w.getBag().swapRace(RaceFactory.getRace("drudger-stock"));
 		if (extra.chanceIn(1,6)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
-		extra.printMode = false;
+		extra.popPrintStack();
 		w.setFirstName(randomLists.randomWaterName());
 		w.setTitle("");
 		w.hTask = HostileTask.MONSTER;
 		return w;
 	}
 	public static Person makeDrudgerTitan(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = Person.animal(level, RaceFactory.getRace("drudger-titan"), MaterialFactory.getMat("flesh"), false);
 		//TODO: maybe drudger armor?
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("iron"),"anchor"));
@@ -951,7 +951,7 @@ public class RaceFactory {
 		if (extra.chanceIn(1,2)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
-		extra.printMode = false;
+		extra.popPrintStack();
 		w.setFirstName(randomLists.randomWaterName());
 		w.setTitle("");
 		w.hTask = HostileTask.MONSTER;
@@ -959,7 +959,7 @@ public class RaceFactory {
 	}
 	
 	public static Person getMugger(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w;
 		if (extra.chanceIn(1,4)) {
 			w = new Person(level,AIJob.ROGUE);
@@ -975,86 +975,86 @@ public class RaceFactory {
 		if (extra.chanceIn(1,50)) {
 			w.getBag().getDrawBanes().add(DrawBane.SILVER);
 		}
-		extra.printMode = false;
+		extra.popPrintStack();
 		return w;
 	}
 	public static Person getDueler(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level);
 		w.facRep.addFactionRep(Faction.DUEL,extra.randRange(10,20)*level, 0);
 		w.hTask = HostileTask.DUEL;
-		extra.printMode = false;
+		extra.popPrintStack();
 		return w;
 	}
 	
 	public static Person getRacist(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level);
 		w.hTask = HostileTask.RACIST;
 		w.setRacism(true);
-		extra.printMode = false;
+		extra.popPrintStack();
 		return w;
 	}
 	public static Person getPeace(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level);
 		w.hTask = HostileTask.PEACE;
-		extra.printMode = false;
+		extra.popPrintStack();
 		return w;
 	}
 	public static Person getBoss(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level);
 		w.hTask = HostileTask.BOSS;
-		extra.printMode = false;
+		extra.popPrintStack();
 		return w;
 	}
 	
 	public static Person getDryad(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level);
 		w.hTask = HostileTask.ANIMAL;
 		w.facRep.addFactionRep(Faction.FOREST, level*15,0);
-		extra.printMode = false;
+		extra.popPrintStack();
 		return w;
 	}
 	public static Person getDGuard(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level);
 		w.hTask = HostileTask.GUARD_DUNGEON;
-		extra.printMode = false;
+		extra.popPrintStack();
 		return w;
 	}
 	
 	public static Person getLumberjack(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level,AIJob.LUMBERJACK);
 		w.hTask = HostileTask.LUMBER;
 		w.facRep.addFactionRep(Faction.FOREST,0,100);
-		extra.printMode = false;
+		extra.popPrintStack();
 		return w;
 	}
 	public static Person getRich(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level);
 		w.hTask = HostileTask.RICH;
 		w.facRep.addFactionRep(Faction.MERCHANT,10*level,0);
-		extra.printMode = false;
+		extra.popPrintStack();
 		return w;
 	}
 	public static Person makeCollector(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level);
 		w.hTask = HostileTask.DUEL;
 		w.facRep.addFactionRep(Faction.MERCHANT,5*level,0);
 		w.getBag().getDrawBanes().add(DrawBane.forCollector());
 		w.getBag().getDrawBanes().add(DrawBane.forCollector());
-		extra.printMode = false;
+		extra.popPrintStack();
 		w.setTitle(randomLists.randomCollectorName());
 		return w;
 	}
 	public static Person getCultist(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level);
 		w.hTask = HostileTask.GUARD_DUNGEON;
 		if (extra.chanceIn(1, 3)) {
@@ -1063,21 +1063,21 @@ public class RaceFactory {
 		if (extra.chanceIn(1, 3)) {
 			w.getBag().getDrawBanes().add(DrawBane.BLOOD);
 		}
-		extra.printMode = false;
+		extra.popPrintStack();
 		return w;
 	}
 	
 	public static Person getLawman(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level);
 		w.hTask = HostileTask.LAW;
 		w.facRep.addFactionRep(Faction.HEROIC,5*level,0);
-		extra.printMode = false;
+		extra.popPrintStack();
 		return w;
 	}
 	
 	public static Person getGraverobber(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level,AIJob.GRAVER);
 		w.facRep.addFactionRep(Faction.ROGUE,extra.randRange(10,20)*level, 0);
 		w.facRep.addFactionRep(Faction.HEROIC,0, 10*level);
@@ -1091,12 +1091,12 @@ public class RaceFactory {
 		if (extra.chanceIn(1,4)) {
 			w.getBag().getDrawBanes().add(DrawBane.GRAVE_DIRT);
 		}
-		extra.printMode = false;
+		extra.popPrintStack();
 		return w;
 	}
 	
 	public static Person getGravedigger(int level) {
-		extra.printMode = true;
+		extra.offPrintStack();
 		Person w = new Person(level,AIJob.GRAVER);
 		w.hTask = HostileTask.PEACE;
 		w.getBag().getDrawBanes().add(DrawBane.GRAVE_DIRT);
@@ -1106,7 +1106,7 @@ public class RaceFactory {
 		if (extra.chanceIn(1,8)) {
 			w.getBag().getDrawBanes().add(DrawBane.PROTECTIVE_WARD);
 		}
-		extra.printMode = false;
+		extra.popPrintStack();
 		return w;
 	}
 

@@ -59,7 +59,7 @@ public class Networking {
 	
 	
 	public static void send(String str) {
-		if (out != null && (!extra.printMode)) {
+		if (out != null && (!extra.getPrint())) {
 		out.println(str);
 		//out.flush();
 		}

@@ -54,14 +54,14 @@ public class Champion  extends TravelingFeature{
 			people = mainGame.HugeBattle(t.getIsland().getWorld(),people1,people2);
 		}*/
 		//no longer teamfights
-		extra.disablePrintSubtle();
+		extra.offPrintStack();
 		List<List<Person>> people = new ArrayList<List<Person>>();
 		while(people.size() < battleSize) {
 			people.add(Collections.singletonList(RaceFactory.getDueler(level)));
 		}
 		
 		person = mainGame.HugeBattle(t.getIsland().getWorld(),people).get(0);
-		extra.enablePrintSubtle();
+		extra.popPrintStack();
 		this.name = person.getName() + " (Level " + person.getLevel()+")" ;
 		
 	}

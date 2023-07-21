@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import com.github.tommyettinger.random.*;
+import java.util.Stack;
 
 public final class extra {
 /**
@@ -14,12 +15,13 @@ public final class extra {
  * 2/5/2018
  */
 	
-	public static Boolean printMode = false;
-	private static Boolean oldPrintMode = false;
+	private static Boolean printMode = false;
 	//private static long lastMod = -1;
 	private static String printStuff = "";
 	
 	private static EnhancedRandom rand = new WhiskerRandom();
+	
+	private static Stack<Boolean> printStack = new Stack<Boolean>();
 	
 	
 	//static methods
@@ -337,15 +339,14 @@ public final class extra {
 			}
 			extra.println();
 		}
-
-		public static void enablePrintSubtle() {
-			printMode = oldPrintMode;
+		
+		public static void offPrintStack() {
+			printStack.push(printMode);
+			printMode = true;
 		}
-
-		public static void disablePrintSubtle() {
-			oldPrintMode = printMode;
-			printMode = true;//inverted???
-			
+		
+		public static void popPrintStack() {
+			printMode = printStack.pop();
 		}
 
 		public static <E> E randList(ArrayList<E> list) {

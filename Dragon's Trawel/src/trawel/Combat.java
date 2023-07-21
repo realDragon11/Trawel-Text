@@ -637,7 +637,7 @@ public class Combat {
 			if (defender.hasEffect(Effect.R_AIM)) {
 				defender.getNextAttack().blind(1 + (percent));
 			}
-			if (!extra.printMode) {
+			if (!extra.getPrint()) {
 				//extra.print(extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f)));
 				if (defender.isPlayer()) {
 					int splashes =(damageDone*100)/defender.getMaxHp();
@@ -649,12 +649,12 @@ public class Combat {
 			
 			if (defender.takeDamage(damageDone)) {
 				//extra.print(" " + extra.choose("Striking them down!"," They are struck down."));
-				if (!extra.printMode) {
+				if (!extra.getPrint()) {
 					inlined_color=extra.PRE_RED;
 					extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color)+woundstr);
 				}
 			}else {
-				if (!extra.printMode) {
+				if (!extra.getPrint()) {
 					inlined_color=extra.PRE_ORANGE;
 					extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color)+woundstr);
 				}
@@ -662,7 +662,7 @@ public class Combat {
 		}else {
 			if (damageDone == -1) {
 				//song.addAttackMiss(attacker,defender);
-				if (!extra.printMode) {
+				if (!extra.getPrint()) {
 					inlined_color= extra.PRE_YELLOW;
 					extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color));
 					Networking.sendStrong("PlayMiss|" + "todo" + "|");
@@ -681,7 +681,7 @@ public class Combat {
 				}else {
 					if (damageDone == 0) {
 						//song.addAttackArmor(attacker,defender);
-						if (!extra.printMode) {
+						if (!extra.getPrint()) {
 							inlined_color = extra.PRE_BLUE;
 							extra.print(inlined_color+atr.stringer.replace("[*]", inlined_color));
 						}
