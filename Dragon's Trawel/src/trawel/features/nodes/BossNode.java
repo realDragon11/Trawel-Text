@@ -1,6 +1,7 @@
 package trawel.features.nodes;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import trawel.DrawBane;
 import trawel.Networking;
@@ -15,7 +16,7 @@ public class BossNode extends NodeConnector implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ArrayList<Person> people;
+	private List<Person> people;
 	private int state = 0;
 	private int type;
 	public BossNode(int tier,int t){
@@ -50,8 +51,8 @@ public class BossNode extends NodeConnector implements Serializable {
 	private boolean fatespinner() {
 		if (state == 0) {
 			extra.println(extra.PRE_RED+"You challenge the fatespinner!");
-			ArrayList<Person> list = people;
-			ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
+			List<Person> list = people;
+			List<Person> survivors = mainGame.HugeBattle(list,Player.list());
 			if (survivors.contains(Player.player.getPerson())) {
 			forceGo = false;
 			interactString = "approach the fatespinner's corpse";
@@ -74,7 +75,7 @@ public class BossNode extends NodeConnector implements Serializable {
 	private boolean hellbaron() {
 		if (state == 0) {
 			extra.println(extra.PRE_RED+"You challenge the hell baron!");
-			ArrayList<Person> list = people;
+			List<Person> list = people;
 			Person winner = mainGame.CombatTwo(Player.player.getPerson(),list.get(0));
 			if (winner == Player.player.getPerson()) {
 			forceGo = false;

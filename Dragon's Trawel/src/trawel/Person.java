@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.nustaq.serialization.annotations.OneOf;
 
+import trawel.Race.RaceType;
 import trawel.earts.EAType;
 import trawel.earts.EArt;
 import trawel.earts.EArtSkillMenu;
@@ -73,7 +74,7 @@ public class Person implements java.io.Serializable{
 	//private boolean isPlayer;
 	
 	//Constructor
-	public Person(int level, boolean aiLevel, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar,AIJob job) {
+	public Person(int level, boolean isAI, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar,AIJob job,Race race) {
 		this.job = job;
 		rFlag = raceFlag;
 		if (level < 1) {
@@ -84,7 +85,7 @@ public class Person implements java.io.Serializable{
 		intellect = level;
 		
 		
-		bag = new Inventory(level,raceType,matType,job);
+		bag = new Inventory(level,raceType,matType,job,race);
 		bag.owner = this;
 		firstName = randomLists.randomFirstName();
 		title = randomLists.randomLastName();
@@ -102,10 +103,10 @@ public class Person implements java.io.Serializable{
 		}
 		this.magePow = bag.getRace().magicPower;
 		this.defPow = bag.getRace().defPower;
-		if (aiLevel) {
+		if (isAI) {
 			this.AILevelUp();
 		}
-		this.noAILevel = !aiLevel;
+		this.noAILevel = !isAI;
 		effects = new ArrayList<Effect>();
 		Boolean print = extra.getPrint();
 		extra.changePrint(true);
@@ -119,15 +120,18 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public Person(int level, boolean aiLevel, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar) {
-		this(level,aiLevel,raceType,matType,raceFlag,giveScar,null);
+		this(level,aiLevel,raceType,matType,raceFlag,giveScar,null,null);
 	}
 	
 	@Deprecated
 	public Person(int level,AIJob job) {
-		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true,job);
-
+		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true,job,null);
 	}
 	
+	public static Person animal(int level,Race race,Material matType,boolean giveScar){
+		return new Person(level,true,Race.RaceType.BEAST,matType,RaceFlag.NONE,giveScar,null,race);
+	}
+
 	public enum AIJob{
 		KNIGHT(new String[] {"heavy","chainmail"},new String[] {"longsword","mace","axe","lance"}),
 		ROGUE(new String[] {"light"},new String[] {"rapier","dagger"}), 

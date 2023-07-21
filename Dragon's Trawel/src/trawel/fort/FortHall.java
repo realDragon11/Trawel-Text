@@ -282,7 +282,7 @@ public class FortHall extends FortFeature {
 		if (forgeTimer <=0) {
 			extra.printMode = true;
 			forgeTimer = 24.0*7;
-			Inventory inv = new Inventory(level, Race.RaceType.HUMANOID, null, null);
+			Inventory inv = new Inventory(level, Race.RaceType.HUMANOID, null, null,null);//TODO probably make custom inv type
 			inv.deEnchant();
 			for (Person p: allies) {
 				AIClass.loot(p.getBag(), inv,level, false);

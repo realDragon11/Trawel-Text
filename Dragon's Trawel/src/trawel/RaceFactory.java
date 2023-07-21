@@ -858,9 +858,8 @@ public class RaceFactory {
 	
 	public static Person makeBear(int level) {
 		extra.printMode = true;
-		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
+		Person w = Person.animal(level, RaceFactory.getRace("bear"), MaterialFactory.getMat("flesh"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth and claws"));
-		w.getBag().swapRace(RaceFactory.getRace("bear"));
 		w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		extra.printMode = false;
 		w.setFirstName(randomLists.randomBearName());
@@ -871,9 +870,8 @@ public class RaceFactory {
 	
 	public static Person makeBat(int level) {
 		extra.printMode = true;
-		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
+		Person w = Person.animal(level, RaceFactory.getRace("bat"), MaterialFactory.getMat("flesh"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
-		w.getBag().swapRace(RaceFactory.getRace("bat"));
 		if (extra.chanceIn(1,7)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
@@ -889,9 +887,8 @@ public class RaceFactory {
 	
 	public static Person getFleshGolem(int level) {
 		extra.printMode = true;
-		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
+		Person w = Person.animal(level, RaceFactory.getRace("flesh-golem"), MaterialFactory.getMat("flesh"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("flesh"),"generic fists"));
-		w.getBag().swapRace(RaceFactory.getRace("flesh-golem"));
 		w.getBag().getDrawBanes().add(DrawBane.BEATING_HEART);
 		extra.printMode = false;
 		//w.targetOverride = TargetFactory.TargetType.HUMANOID;
@@ -901,9 +898,8 @@ public class RaceFactory {
 	
 	public static Person makeUnicorn(int level) {
 		extra.printMode = true;
-		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
+		Person w = Person.animal(level, RaceFactory.getRace("unicorn"), MaterialFactory.getMat("flesh"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"unicorn horn"));
-		w.getBag().swapRace(RaceFactory.getRace("unicorn"));
 		if (extra.chanceIn(1,3)) {
 			w.getBag().getDrawBanes().add(DrawBane.UNICORN_HORN);
 		}
@@ -915,9 +911,8 @@ public class RaceFactory {
 	
 	public static Person makeHarpy(int level) {
 		extra.printMode = true;
-		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
+		Person w = Person.animal(level, RaceFactory.getRace("harpy"), MaterialFactory.getMat("flesh"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic talons"));
-		w.getBag().swapRace(RaceFactory.getRace("harpy"));
 		if (extra.chanceIn(1,6)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
@@ -935,7 +930,7 @@ public class RaceFactory {
 	
 	public static Person makeDrudgerStock(int level) {
 		extra.printMode = true;
-		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
+		Person w = Person.animal(level, RaceFactory.getRace("drudger-stock"), MaterialFactory.getMat("flesh"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("iron"),"fishing spear"));
 		w.getBag().swapRace(RaceFactory.getRace("drudger-stock"));
 		if (extra.chanceIn(1,6)) {
@@ -949,9 +944,9 @@ public class RaceFactory {
 	}
 	public static Person makeDrudgerTitan(int level) {
 		extra.printMode = true;
-		Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
+		Person w = Person.animal(level, RaceFactory.getRace("drudger-titan"), MaterialFactory.getMat("flesh"), false);
+		//TODO: maybe drudger armor?
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("iron"),"anchor"));
-		w.getBag().swapRace(RaceFactory.getRace("drudger-titan"));
 		w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		if (extra.chanceIn(1,2)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);

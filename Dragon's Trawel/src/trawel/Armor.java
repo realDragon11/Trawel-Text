@@ -467,5 +467,14 @@ public class Armor extends Item {
 			burned = extra.clamp(burned-extra.lerp(0.05f,.5f, extra.clamp(dam,1,20)/20f),0,2);
 		}
 	}
+
+	@Override
+	public boolean coinLoot() {
+		switch (material) {
+		case "flesh": return false;
+		case "bone": return false;
+			default: return true;
+		}
+	}
 	
 }

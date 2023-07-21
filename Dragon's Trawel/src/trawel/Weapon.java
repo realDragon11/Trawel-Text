@@ -172,6 +172,10 @@ public class Weapon extends Item {
 			cost *= 1;
 			weight *=1;
 			;break;
+		case "anchor":
+			cost *= 1;
+			weight *=5;
+			;break;
 		}
 		//random chance, partially based on enchantment power, to enchant the weapon
 		effectiveCost = cost;
@@ -215,6 +219,21 @@ public class Weapon extends Item {
 	}
 
 	//instance methods
+	
+	public boolean coinLoot() {
+		switch (weapName) {
+		case "generic teeth": return false;
+		case "standing reaver": return false;
+		case "generic teeth and claws": return false;
+		case "branches": return false;
+		case "generic fists": return false;
+		case "unicorn horn": return false;//maybe make a drawbane for this
+		case "generic talons": return false;
+		case "fishing spear": return true;
+		case "anchor": return true;
+		default: return true;//normal weapons
+		}
+	}
 	
 	/**
 	 * Returns true if the weapon is enchanted

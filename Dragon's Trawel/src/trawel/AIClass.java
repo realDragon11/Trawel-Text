@@ -248,13 +248,16 @@ public class AIClass {
 			i++;
 		}//end while
 		hold = inv.getHand();
-		if (hold.getEnchant() != null) {//if there's an enchant, check to see if the weapon causes any zero's or is overwhelmingly negative
-			holdEnchant = hold.getEnchant();
-		
-		if (hold.getCost() < 2 || (holdEnchant.getAimMod()*holdEnchant.getDamMod()*holdEnchant.getHealthMod()*holdEnchant.getSpeedMod()) < .5) {//*holdEnchant.getDodgeMod() //not being able to dodge isn't an instant loss
-		Services.sellItem((Weapon)hold,inv,true);
-		soldSomething = true;
-		}}
+		if (hold != null) {
+			if (hold.getEnchant() != null) {//if there's an enchant, check to see if the weapon causes any zero's or is overwhelmingly negative
+				holdEnchant = hold.getEnchant();
+			
+			if (hold.getCost() < 2 || (holdEnchant.getAimMod()*holdEnchant.getDamMod()*holdEnchant.getHealthMod()*holdEnchant.getSpeedMod()) < .5) {//*holdEnchant.getDodgeMod() //not being able to dodge isn't an instant loss
+				Services.sellItem((Weapon)hold,inv,true);
+				soldSomething = true;
+			}
+			}
+		}
 		return soldSomething;
 	}
 	
@@ -279,49 +282,63 @@ public class AIClass {
 	 */
 	public static void loot(Inventory loot, Inventory stash, int smarts, boolean sellStuff) {
 		int i = 0;
-		if (smarts < 0 && Player.getTutorial()) {
+		boolean normalLoot = loot.getRace().racialType == Race.RaceType.HUMANOID;
+		if (normalLoot && smarts < 0 && Player.getTutorial()) {
 			extra.println("You are now looting something! The first item presented will be the new item, the second, your current item, and finally, the difference will be shown. Some items may be autosold if all their visible stats are worse.");
 		}
-		while (i < 5) {
-			if (compareItem((Item)stash.getArmorSlot(i),(Item)loot.getArmorSlot(i),smarts,true)) {
-				if (sellStuff) {
-				Services.sellItem(stash.swapArmorSlot(loot.getArmorSlot(i),i),stash,false);}else {
-					loot.swapArmorSlot(stash.swapArmorSlot(loot.getArmorSlot(i),i), i);
+		if (normalLoot) {
+			while (i < 5) {
+				if (compareItem((Item)stash.getArmorSlot(i),(Item)loot.getArmorSlot(i),smarts,true)) {
+					if (sellStuff) {
+						Services.sellItem(stash.swapArmorSlot(loot.getArmorSlot(i),i),stash,false);}else {
+							loot.swapArmorSlot(stash.swapArmorSlot(loot.getArmorSlot(i),i), i);
+						}
+				}else {
+					if (sellStuff) {
+						Services.sellItem(loot.getArmorSlot(i),loot,stash,false);}
 				}
+
+
+				if (smarts < 0) {
+					Networking.charUpdate();
+					String depth = null;
+					switch (i) {
+					case 0:depth= "-6|";break; //head
+					case 1:depth= "-3|";break; //arms
+					case 2:depth= "-5|";break; //chest
+					case 3:depth= "-1|";break; //legs
+					case 4:depth= "-2|";break; //feet
+					}
+					Networking.send("RemoveInv|1|" + depth);
+				}
+				i++;
+			}
+			if (compareItem((Item)stash.getHand(),(Item)loot.getHand(),smarts,true)) {
+				if (sellStuff) {
+					Services.sellItem(stash.swapWeapon(loot.getHand()),stash,false);}else {
+						loot.swapWeapon(stash.swapWeapon(loot.getHand()));
+					}
 			}else {
 				if (sellStuff) {
-				Services.sellItem(loot.getArmorSlot(i),loot,stash,false);}
+					Services.sellItem(loot.getHand(),loot,stash,false);
+				}
 			}
-			
-			
-			if (smarts < 0) {
-			Networking.charUpdate();
-			String depth = null;
-			switch (i) {
-			case 0:depth= "-6|";break; //head
-			case 1:depth= "-3|";break; //arms
-			case 2:depth= "-5|";break; //chest
-			case 3:depth= "-1|";break; //legs
-			case 4:depth= "-2|";break; //feet
-			}
-			Networking.send("RemoveInv|1|" + depth);
-			}
-			i++;
-		}
-		if (compareItem((Item)stash.getHand(),(Item)loot.getHand(),smarts,true)) {
-			if (sellStuff) {
-			Services.sellItem(stash.swapWeapon(loot.getHand()),stash,false);}else {
-				loot.swapWeapon(stash.swapWeapon(loot.getHand()));
-			}
+			Networking.send("RemoveInv|1|2|");
 		}else {
 			if (sellStuff) {
-			Services.sellItem(loot.getHand(),loot,stash,false);
+				while (i < 5) {
+					if (loot.getArmorSlot(i).coinLoot()) {
+						Services.sellItem(loot.getArmorSlot(i),loot,stash,false);
+					}
+					if (loot.getHand().coinLoot()) {
+						Services.sellItem(loot.getHand(),loot,stash,false);
+					}
+				}
 			}
 		}
-		Networking.send("RemoveInv|1|2|");
 		if (smarts < 0) {
 			Networking.charUpdate();
-			if (Player.hasSkill(Skill.LOOTER)) {
+			if (Player.hasSkill(Skill.LOOTER) && normalLoot) {
 				stash.addGold(10);
 				extra.println("You take the extra coins they had stored away in their " + extra.choose("spleen","appendix","imagination","lower left thigh","no-no place","closed eyes") + ". +10 gold");
 			}
@@ -331,8 +348,10 @@ public class AIClass {
 		}else {
 			//TODO drawbane taking ai
 		}
-		stash.setGold(stash.getGold()+loot.getGold());
-		loot.setGold(0);
+		if (sellStuff) {
+			stash.setGold(stash.getGold()+loot.getGold());
+			loot.setGold(0);
+		}
 	}
 	
 	/**

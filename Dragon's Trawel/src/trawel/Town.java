@@ -549,9 +549,9 @@ public class Town extends TContextOwner implements java.io.Serializable{
 			if (Player.player.getPerson().getLevel() >= tier) {
 				extra.println("You help defend the port against the drudger onslaught.");
 				int eSize = extra.randRange(2,3);
-				ArrayList<Person> oallyList = new ArrayList<Person>();
-				ArrayList<Person> allyList = new ArrayList<Person>();
-				ArrayList<Person> foeList = new ArrayList<Person>();
+				List<Person> oallyList = new ArrayList<Person>();
+				List<Person> allyList = new ArrayList<Person>();
+				List<Person> foeList = new ArrayList<Person>();
 				for (int o = 0;o < eSize;o++) {
 					oallyList.add(popHelper());
 					allyList.add(popHelper());
@@ -560,7 +560,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 				oallyList.add(Player.player.getPerson());
 				allyList.add(Player.player.getPerson());
 				foeList.add(RaceFactory.makeDrudgerTitan(tier));
-				ArrayList<Person> survivors = mainGame.HugeBattle(Player.world,foeList,allyList);
+				List<Person> survivors = mainGame.HugeBattle(Player.world,foeList,allyList);
 				boolean pass = false;
 				for (Person p: oallyList) {
 					if (survivors.contains(p)) {

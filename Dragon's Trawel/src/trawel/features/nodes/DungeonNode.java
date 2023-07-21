@@ -191,8 +191,8 @@ public class DungeonNode extends NodeConnector{
 		if (state == 0) {
 			extra.print(extra.PRE_RED);
 			extra.println("They attack you!");
-			ArrayList<Person> list = (ArrayList<Person>)storage1;
-			ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
+			List<Person> list = (List<Person>)storage1;
+			List<Person> survivors = mainGame.HugeBattle(list,Player.list());
 			
 			
 			if (survivors.contains(Player.player.getPerson())) {

@@ -37,7 +37,7 @@ public class Inventory implements java.io.Serializable{
 	 * @param level (int)
 	 * @param matType 
 	 */
-	public Inventory(int level, Race.RaceType type, Material matType,Person.AIJob job) {
+	public Inventory(int level, Race.RaceType type, Material matType,Person.AIJob job, Race ra) {
 		boolean isDummy = false;
 		if (level == -1) {
 			isDummy = true;
@@ -72,7 +72,7 @@ public class Inventory implements java.io.Serializable{
 					armorSlots[4] = new Armor(level,4);
 				}
 				if (isDummy) {
-					hand = new Weapon(level);
+					hand = null;
 				}else {
 					hand = Weapon.genMidWeapon(level);
 				}
@@ -85,8 +85,11 @@ public class Inventory implements java.io.Serializable{
 			armorSlots[3] = new Armor(level,3,matType);
 			armorSlots[4] = new Armor(level,4,matType);
 			hand = null;//new Weapon(level); //beasts always swap out the weapon, thus making it is pointless
-		}else {
+		}
+		if (ra == null) {
 			race = RaceFactory.randRace(type);//might even want to swap to just humanoid
+		}else {
+			race = ra;
 		}
 		
 		raceMap = race.randomRaceMap();
@@ -182,7 +185,7 @@ public class Inventory implements java.io.Serializable{
 		
 		i++;
 		}
-		if (hand.IsEnchantedConstant()) {
+		if (hand != null && hand.IsEnchantedConstant()) {
 			retMod *= hand.getEnchant().getDodgeMod();
 		}
 		retMod*=race.dodgeMod;
@@ -206,7 +209,7 @@ public class Inventory implements java.io.Serializable{
 			retMod *= armorSlots[i].getEnchant().getAimMod();}
 			i++;
 		}
-		if (hand.IsEnchantedConstant()) {
+		if (hand != null && hand.IsEnchantedConstant()) {
 			retMod *= hand.getEnchant().getAimMod();
 		}
 		retMod*=race.aimMod;
@@ -225,7 +228,7 @@ public class Inventory implements java.io.Serializable{
 			retMod *= armorSlots[i].getEnchant().getDamMod();}
 			i++;
 		}
-		if (hand.IsEnchantedConstant()) {
+		if (hand != null && hand.IsEnchantedConstant()) {
 			retMod *= hand.getEnchant().getDamMod();
 		}
 		retMod*=race.damMod;
@@ -245,7 +248,7 @@ public class Inventory implements java.io.Serializable{
 			retMod *= armorSlots[i].getEnchant().getHealthMod();}
 			i++;
 		}
-		if (hand.IsEnchantedConstant()) {
+		if (hand != null && hand.IsEnchantedConstant()) {
 			retMod *= hand.getEnchant().getHealthMod();
 		}
 		retMod*=race.hpMod;
@@ -264,7 +267,7 @@ public class Inventory implements java.io.Serializable{
 			retMod *= armorSlots[i].getEnchant().getSpeedMod();}
 			i++;
 		}
-		if (hand.IsEnchantedConstant()) {
+		if (hand != null && hand.IsEnchantedConstant()) {
 			retMod *= hand.getEnchant().getSpeedMod();
 		}
 		retMod*=race.speedMod;

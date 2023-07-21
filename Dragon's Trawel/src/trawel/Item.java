@@ -110,4 +110,12 @@ public abstract class Item implements java.io.Serializable{
 			bloodCount = 16;
 		}
 	}
+	
+	/**
+	 * used to indicate things that can't be wielded or worn but still can be sold
+	 * things that CAN be looted normally still should return true, since Huge Battles
+	 * will go over the unclaimed items in a final pass to convert to gold
+	 * @return true if can be looted for money
+	 */
+	public abstract boolean coinLoot();
 }

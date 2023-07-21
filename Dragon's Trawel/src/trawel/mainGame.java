@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -254,6 +255,17 @@ public class mainGame {
 							extra.println("Port?"); Networking.connect(extra.inInt(65535)); 
 						return true;
 					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}});
 				return mList;
 			}
 		});
@@ -481,9 +493,31 @@ public class mainGame {
 										saveTest();
 										return true;
 									}});
+								mList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Back";
+									}
+
+									@Override
+									public boolean go() {
+										return true;
+									}});
 								return mList;
 							}
 						});
+						return false;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Back";
+					}
+
+					@Override
+					public boolean go() {
 						return true;
 					}});
 				return mList;
@@ -753,15 +787,16 @@ public class mainGame {
 				//if (first_man.isPlayer()) {//now this combat only works with the player
 				//extra.println("");
 				
-				if (!second_man.isPlayer() && first_man.getBag().getRace().racialType == Race.RaceType.HUMANOID && second_man.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
+				if (!second_man.isPlayer() && first_man.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 					extra.println(first_man.getName() +" goes to loot " + second_man.getName() +".");
-				AIClass.loot(second_man.getBag(),first_man.getBag(),first_man.getIntellect(),true);}else {
+				AIClass.loot(second_man.getBag(),first_man.getBag(),first_man.getIntellect(),true);}
+				/*else {
 					if (first_man.isPlayer()) {
 						for (DrawBane db: second_man.getBag().getDrawBanes()) {
 							first_man.getBag().addNewDrawBane(db);
 						}
 					}
-				}
+				}*/
 				
 				first_man.addXp(second_man.getLevel());
 				
@@ -812,17 +847,29 @@ public class mainGame {
 			return CombatTwo( first_man, second_man,Player.world);
 		}
 		
-		public static ArrayList<Person> HugeBattle(ArrayList<Person>...people){
-			return HugeBattle(Player.world,people);
+		public static List<Person> HugeBattle(List<Person>...people){
+			return HugeBattle(Player.world,Arrays.asList(people));
+		}
+		public static List<Person> HugeBattle(World w,List<Person>...people){
+			return HugeBattle(w,Arrays.asList(people));
 		}
 		
-		public static ArrayList<Person> HugeBattle(World w, ArrayList<Person>... people){
+		public static List<Person> HugeBattle(World w, List<List<Person>> people){
 			Combat battle = new Combat(w, people);
 			Comparator<Person> levelSorter = new Comparator<Person>(){//sort in descending order
 				@Override
 				public int compare(Person arg0, Person arg1) {
 					if (arg0.getLevel() == arg1.getLevel()) {
-					return 0;}
+						//there can only be one player, multiplayer would need a bigger re-write
+						//player wins ties
+						if (arg0.isPlayer()) {
+							return 1;
+						}
+						if (arg1.isPlayer()) {
+							return -1;
+						}
+						return 0;
+					}
 					if (arg0.getLevel() < arg1.getLevel()) {
 						return -1;
 					}
@@ -833,39 +880,113 @@ public class mainGame {
 			battle.killed.sort(levelSorter);
 			battle.survivors.sort(levelSorter);
 			
+			
+			int killLevelTotal = 0;
+			int winSide = -1;
+			int[] xpTotalList = new int[people.size()];
+			int[] xpDeadList = new int[people.size()];
+			int[] xpAverage = new int[people.size()];
+			int xpHighestKill = battle.killed.get(0).getLevel();
+			int xpHighestAverage = 0;//excludes winning side
+			int xpSideHigh = -1;
+			int xpLowestAverage = Integer.MAX_VALUE;//excludes winning side
+			int xpSideLow = -1;
+			
+			for (int i = people.size()-1;i >=0;i--) {
+				xpTotalList[i] = 0;
+				xpDeadList[i] = 0;
+				if (people.get(i).contains(battle.survivors.get(0))) {
+					winSide = i;
+				}
+				for (Person p: people.get(i)) {
+					int lvl = p.getLevel();
+					if (battle.killed.contains(p)) {
+						xpDeadList[i]+=lvl;
+					}
+					xpTotalList[i]=lvl;
+				}
+				xpAverage[i] = xpTotalList[i]/people.get(i).size();
+				if (i != winSide) {
+					if (xpAverage[i] <= xpLowestAverage) {
+						xpLowestAverage = xpAverage[i];
+						xpSideLow = i;
+					}
+					if (xpAverage[i] >= xpHighestAverage) {
+						xpHighestAverage = xpAverage[i];
+						xpSideHigh = i;
+					}
+					//we use >= and <= so that if they're all the same it will pick the last one for both, so we can compare xpSideHigh == xpSideLow for that
+				}
+			}
+			
+			assert winSide >= 0;
+			assert xpSideHigh >= 0;
+			assert xpSideLow >= 0;
+			
+			
+			int xpReward = xpHighestKill;//by default it's just the highest level of the killed list
+			boolean bypassLevelCap = false;
+			if (people.size() == 2) {//if a XvX battle
+				assert xpSideHigh == xpSideLow;
+				if (people.get(winSide).size() == 1) {// if it was a 1vX
+					xpReward = xpDeadList[xpSideHigh];
+					if (xpAverage[winSide]-1 < xpHighestAverage) {//if it was a 1vX where average level of X side was at least winside level minus one
+						bypassLevelCap = true;
+						//the solo winner gets xp equal to total dead level instead of just the best one
+						//because the 1vX was roughly fair
+						//otherwise, still capped at their level to avoid kicking a bunch of level 1 wolves being good
+					}
+				}
+			}
+			
+			//NOTE: player does not get first pick unless they were highest level, they do win ties
+			
 			for (Person surv: battle.survivors){
 				surv.clearBattleEffects();
-				surv.addXp(Math.min(surv.getLevel(),battle.killed.get(0).getLevel()));
+				int subReward = xpReward;
+				if (!bypassLevelCap && subReward > surv.getLevel()) {
+					subReward = surv.getLevel();
+				}
+				surv.addXp(subReward);
 				for (Person kill: battle.killed) {
-					if (kill.isPlayer() || surv.getBag().getRace().racialType != Race.RaceType.HUMANOID || kill.getBag().getRace().racialType != Race.RaceType.HUMANOID) {
+					/*if (kill.isPlayer() || surv.getBag().getRace().racialType != Race.RaceType.HUMANOID || kill.getBag().getRace().racialType != Race.RaceType.HUMANOID) {
 						if (surv.isPlayer()) {
 							for (DrawBane db: kill.getBag().getDrawBanes()) {
 								surv.getBag().addNewDrawBane(db);
 							}
 						}
-						continue;}else {
-					AIClass.loot(kill.getBag(),surv.getBag(),surv.getIntellect(),false);}
+						continue;}else {*/
+					AIClass.loot(kill.getBag(),surv.getBag(),surv.getIntellect(),false);
 				}
+				
 			}
 			
 			int gold = 0;
+			Item isell = null;
 			for (Person kill: battle.killed) {
 				kill.clearBattleEffects();
 				if (kill.isPlayer()) {
 					Networking.setBattle(Networking.BattleType.NONE);
 					Networking.clearSide(1);
 					die();
-					continue;}
+					continue;
+				}
 				gold += kill.getBag().getGold();
 				for (int i = 0;i<5;i++) {
-					gold +=kill.getBag().getArmorSlot(i).getCost();
+					isell = kill.getBag().getArmorSlot(i);
+					if (isell.coinLoot()) {
+						gold +=isell.getCost();
+					}
 				}
-				gold+=kill.getBag().getHand().getCost();
+				isell = kill.getBag().getHand();
+				if (isell.coinLoot()) {
+					gold +=isell.getCost();
+				}
 				
 			}
-			
+			int giveGold = gold/battle.survivors.size();
 			for (Person surv: battle.survivors){
-				surv.getBag().addGold(gold/battle.survivors.size());
+				surv.getBag().addGold(giveGold);
 				if (surv.isPlayer()) {
 					Networking.setBattle(Networking.BattleType.NONE);
 					Networking.clearSide(1);

@@ -1,5 +1,6 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.List;
 
 import trawel.quests.Quest.TriggerType;
 
@@ -22,7 +23,7 @@ public class BumperFactory {
 			@Override
 			public void activate(int level) {
 				if (level >= 5 && extra.chanceIn(2,5)) {
-					ArrayList<Person> list = new ArrayList<Person>();
+					List<Person> list = new ArrayList<Person>();
 					//int count = extra.randRange(1,3);
 					list.add(RaceFactory.makeAlphaWolf(extra.zeroOut(level-1)+1));
 					for (int i = 0;i < 3;i++) {
@@ -30,20 +31,20 @@ public class BumperFactory {
 					}
 
 					extra.println(extra.PRE_RED+"A large pack of wolves ambush you!");
-					ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
+					List<Person> survivors = mainGame.HugeBattle(list,Player.list());
 					if (survivors.contains(Player.player.getPerson())) {
 						Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 4);
 					}
 				}else {
 					if (level >= 3) {
-						ArrayList<Person> list = new ArrayList<Person>();
+						List<Person> list = new ArrayList<Person>();
 						//int count = extra.randRange(1,3);
 						for (int i = 0;i < 3;i++) {
 							list.add(RaceFactory.makeWolf(extra.zeroOut(level-3)+1));
 						}
 	
 						extra.println(extra.PRE_RED+"A pack of wolves descend upon you!");
-						ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
+						List<Person> survivors = mainGame.HugeBattle(list,Player.list());
 						if (survivors.contains(Player.player.getPerson())) {
 							Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 3);
 						}
@@ -194,12 +195,12 @@ public class BumperFactory {
 				
 				@Override
 				public void activate(int level) {
-					ArrayList<Person> list = new ArrayList<Person>();
+					List<Person> list = new ArrayList<Person>();
 					int count = 5;//extra.randRange(4,5);
 					for (int i = 0;i < count;i++) {
 						list.add(RaceFactory.makeHarpy(extra.zeroOut(level-4)+1));}
 					extra.println(extra.PRE_RED+"A flock of harpies attack!");
-					ArrayList<Person> survivors = mainGame.HugeBattle(list,Player.list());
+					List<Person> survivors = mainGame.HugeBattle(list,Player.list());
 					if (survivors.contains(Player.player.getPerson())) {
 						Player.player.questTrigger(TriggerType.CLEANSE,"harpy", count);
 					}

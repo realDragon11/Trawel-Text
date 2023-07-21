@@ -1,6 +1,7 @@
 package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import trawel.time.TimeContext;
@@ -31,15 +32,15 @@ public class Champion  extends TravelingFeature{
 		
 		tutorialText = "Battleforged champions fought in a pit fight to survive.";
 		timeElapsed=0;
-		color = Color.RED;
-		ArrayList<Person> people = new ArrayList<Person>();
+		color = Color.RED;/*
+		List<Person> people = new ArrayList<Person>();
 		while(people.size() < battleSize) {
 			people.add(RaceFactory.getDueler(level));
 		}
 		extra.disablePrintSubtle();
 		while (people.size() > 1) {
-			ArrayList<Person> people1 = new ArrayList<Person>();
-			ArrayList<Person> people2 = new ArrayList<Person>();
+			List<Person> people1 = new ArrayList<Person>();
+			List<Person> people2 = new ArrayList<Person>();
 			//Iterator<Person> iter = people.iterator();
 			boolean sorter = false;
 			for(Person p: people) {
@@ -51,10 +52,16 @@ public class Champion  extends TravelingFeature{
 				sorter = !sorter;
 			}
 			people = mainGame.HugeBattle(t.getIsland().getWorld(),people1,people2);
+		}*/
+		//no longer teamfights
+		extra.disablePrintSubtle();
+		List<List<Person>> people = new ArrayList<List<Person>>();
+		while(people.size() < battleSize) {
+			people.add(Collections.singletonList(RaceFactory.getDueler(level)));
 		}
-		extra.enablePrintSubtle();
 		
-		person = people.get(0);
+		person = mainGame.HugeBattle(t.getIsland().getWorld(),people).get(0);
+		extra.enablePrintSubtle();
 		this.name = person.getName() + " (Level " + person.getLevel()+")" ;
 		
 	}

@@ -58,6 +58,10 @@ public class Race extends Item implements java.io.Serializable{
 		return extra.randList(raceMaps);
 	}
 	
+	public boolean coinLoot() {
+		return false;//handled elsewhere
+	}
+	
 	public void levelUp() {}
 	
 }

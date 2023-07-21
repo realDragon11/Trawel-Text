@@ -106,7 +106,7 @@ public class EnchantConstant extends Enchant {
 		}
 		//second component of enchantment
 		if (magnitudeTwo > 0){
-			afterName = " of "+randomLists.powerAdjective();
+			afterName = " of "+randomLists.powerAdjective()+ " ";
 		switch ((int)(Math.random()*10)) {
 			case 0: afterName += (String)extra.choose("speed","quickness","haste","alacrity","briskness","fleetness");
 			speedMod+=.1*magnitudeTwo;

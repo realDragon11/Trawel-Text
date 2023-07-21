@@ -344,7 +344,7 @@ public final class extra {
 
 		public static void disablePrintSubtle() {
 			oldPrintMode = printMode;
-			printMode = true;
+			printMode = true;//inverted???
 			
 		}
 
@@ -365,6 +365,11 @@ public final class extra {
 			return Math.min(max, Math.max(d, min));
 		}
 
+		//TODO: menuGoCategory that takes MenuItems that have categories- (up to 8 usually, but allows nesting)
+		//if a category (and it's nested categories) only have on option
+		//it is displayed directly, otherwise a new option that just lets you enter the category is created
+		//this will have different logic code but maintains the 'store menu until an actual option is picked'
+		//logic of menuGo
 		public static int menuGo(MenuGenerator mGen) {
 			List<MenuItem> mList = new ArrayList<MenuItem>();
 			mList = mGen.gen();

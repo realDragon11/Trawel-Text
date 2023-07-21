@@ -1,6 +1,7 @@
 package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -19,8 +20,8 @@ public class Combat {
 	//instance variables
 	private Person attacker;
 	private Person defender;
-	public ArrayList<Person> survivors;
-	public ArrayList<Person> killed;
+	public List<Person> survivors;
+	public List<Person> killed;
 	private boolean newTarget = false;
 	public long turns = 0;
 	public int totalFighters = 2;
@@ -59,7 +60,7 @@ public class Combat {
 		setAttack(manOne,manTwo);
 		extra.println("");
 		extra.println(extra.choose("Our two fighters square off...","They look tense.","It's time to fight.","They look ready to fight.","The battle has begun."));
-		BardSong song = w.startBardSong(manOne,manTwo);
+		//BardSong song = w.startBardSong(manOne,manTwo);
 		do {//combat loop
 			if (manOne.getTime() < manTwo.getTime()) {
 				attacker = manOne;
@@ -77,7 +78,7 @@ public class Combat {
 			double delay = attacker.getTime();
 			defender.advanceTime(delay);
 			attacker.advanceTime(delay);
-			handleTurn( attacker,  defender,  song,playerIsInBattle,delay);
+			handleTurn( attacker, defender, playerIsInBattle, delay);
 			if (playerIsInBattle) {
 				manTwo.getBag().graphicalDisplay(1,manTwo);
 				Player.player.getPerson().getBag().graphicalDisplay(-1,Player.player.getPerson());
@@ -113,7 +114,7 @@ public class Combat {
 		
 		extra.println(extra.choose("The dust settles...","The body drops to the floor.","Death has come.","The battle is over."));
 		extra.println(manTwo.getName() + extra.choose(" lies dead..."," walks the earth no more..."," has been slain."));
-		song.addKill(manOne, manTwo);
+		//song.addKill(manOne, manTwo);
 		manOne.getBag().getHand().addKill();
 		manOne.addKillStuff();
 		FBox.repCalc(manOne,manTwo);
@@ -129,7 +130,7 @@ public class Combat {
 		}
 	}
 	
-	public void handleSkillCons(List<SkillCon> cons, ArrayList<Person> totalList,double timePassed) {
+	public void handleSkillCons(List<SkillCon> cons, List<Person> totalList,double timePassed) {
 		for (SkillCon sk: cons) {
 			sk.timer-=timePassed;
 			if (sk.timer <=0) {
@@ -170,14 +171,26 @@ public class Combat {
 		}
 	}
 	
-	public Combat(World w,ArrayList<Person>... people) {
-		this(w,null, people);
+	public Combat(World w,List<Person>... people) {
+		this(w,null,Arrays.asList(people));
 	}
-	public Combat(World w, FortHall hall,ArrayList<Person>[] people) {
-		int size = people.length;
-		BardSong song = w.startBardSong();
-		ArrayList<Person> totalList = new ArrayList<Person>();
-		ArrayList<Person> killList = new ArrayList<Person>();
+	public Combat(World w, FortHall hall,List<Person>... people) {
+		this(w,hall, Arrays.asList(people));
+	}
+	public Combat(World w,List<List<Person>> people) {
+		this(w,null,people);
+	}
+	public Combat(World w, FortHall hall,List<List<Person>> people) {
+		int size = people.size();
+		List<Person> totalList = new ArrayList<Person>();
+		List<Person> killList = new ArrayList<Person>();
+		List<List<Person>> liveLists = new ArrayList<List<Person>>();
+		for (int i = 0; i < people.size();i++) {
+			List<Person> newList = new ArrayList<Person>();
+			newList.addAll(people.get(i));
+			liveLists.add(newList);
+		}
+		
 		boolean playerIsInBattle = false;
 		List<SkillCon> cons = new ArrayList<SkillCon>();
 		if (hall != null) {
@@ -198,7 +211,7 @@ public class Combat {
 				cons.add(new SkillCon(new LSkill(SubSkill.SCRYING,temp),100,500));
 			}
 		}
-		for (ArrayList<Person> peoples: people) {
+		for (List<Person> peoples: liveLists) {
 			for (Person p: peoples) {
 				if (p.isPlayer()) {
 					Networking.setBattle(Networking.BattleType.NORMAL);
@@ -209,7 +222,7 @@ public class Combat {
 			Person otherperson = null;
 			while (otherperson == null) {
 				int rand = extra.randRange(0,size-1);
-				ArrayList<Person> otherpeople = people[rand];
+				List<Person> otherpeople = liveLists.get(rand);
 				if (otherpeople.contains(p) || otherpeople.size() == 0) {
 					continue;
 				}
@@ -249,18 +262,17 @@ public class Combat {
 			Person defender = quickest.getNextAttack().defender;
 			boolean wasAlive = defender.isAlive();
 			newTarget = false;
-			AttackReturn atr = handleTurn(quickest,defender,song,playerIsInBattle,lowestDelay);
+			AttackReturn atr = handleTurn(quickest,defender,playerIsInBattle,lowestDelay);
 			if (!defender.isAlive() && (wasAlive || totalList.contains(defender))) {
 				extra.println("They die!");
 				quickest.getBag().getHand().addKill();
 				if (quickest.hasSkill(Skill.KILLHEAL)){
 					quickest.addHp(5*quickest.getLevel());
 				}
-				song.addKill(quickest,defender);
 				quickest.addKillStuff();
 				totalList.remove(defender);
 				killList.add(defender);
-				for (ArrayList<Person> list: people) {
+				for (List<Person> list: liveLists) {
 					if (list.contains(defender)) {
 						list.remove(defender);
 						break;
@@ -272,7 +284,7 @@ public class Combat {
 					Person otherperson = null;
 					while (otherperson == null) {
 						int rand = extra.randRange(0,size-1);
-						ArrayList<Person> otherpeople = people[rand];
+						List<Person> otherpeople = liveLists.get(rand);
 						if ((otherpeople.contains(defender) && extra.chanceIn(3,quickest.getMageLevel()+3)) || otherpeople.size() == 0) {
 							continue;
 						}
@@ -291,7 +303,7 @@ public class Combat {
 				//quickest.addKillStuff();
 				totalList.remove(quickest);
 				killList.add(quickest);
-				for (ArrayList<Person> list: people) {
+				for (List<Person> list: liveLists) {
 					if (list.contains(quickest)) {
 						list.remove(quickest);
 						break;
@@ -300,7 +312,7 @@ public class Combat {
 			}
 			
 			int sides = 0;
-			for (ArrayList<Person> list: people) {
+			for (List<Person> list: liveLists) {
 				if (list.size() > 0) {
 					sides++;
 				}
@@ -325,7 +337,7 @@ public class Combat {
 					}
 				}
 				int rand = extra.randRange(0,size-1);
-				ArrayList<Person> otherpeople = people[rand];
+				List<Person> otherpeople = liveLists.get(rand);
 				if (otherpeople.contains(quickest) || otherpeople.size() == 0) {
 					continue;
 				}
@@ -347,7 +359,7 @@ public class Combat {
 			}
 			quickest.getNextAttack().defender = otherperson;
 			if (quickest.hasSkill(Skill.LIFE_MAGE)) {
-				for (ArrayList<Person> list: people) {
+				for (List<Person> list: liveLists) {
 					if (list.contains(quickest)) {
 						for (Person p: list) {
 							if (p.getHp() < p.getMaxHp()) {p.addHp(1);}
@@ -536,7 +548,7 @@ public class Combat {
 	 * @param defender
 	 * @return damagedone
 	 */
-	public AttackReturn handleTurn(Person attacker, Person defender, BardSong song,boolean canWait, double delay) {
+	public AttackReturn handleTurn(Person attacker, Person defender,boolean canWait, double delay) {
 		turns++;
 		AttackReturn ret = null;
 		if (turns > longBattleLength*totalFighters) {
@@ -621,7 +633,7 @@ public class Combat {
 			}
 			//Wound effects
 			String woundstr = inflictWound(attacker,defender,atr);
-			song.addAttackHit(attacker,defender);
+			//song.addAttackHit(attacker,defender);
 			if (defender.hasEffect(Effect.R_AIM)) {
 				defender.getNextAttack().blind(1 + (percent));
 			}
@@ -649,7 +661,7 @@ public class Combat {
 			}
 		}else {
 			if (damageDone == -1) {
-				song.addAttackMiss(attacker,defender);
+				//song.addAttackMiss(attacker,defender);
 				if (!extra.printMode) {
 					inlined_color= extra.PRE_YELLOW;
 					extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color));
@@ -668,7 +680,7 @@ public class Combat {
 					}
 				}else {
 					if (damageDone == 0) {
-						song.addAttackArmor(attacker,defender);
+						//song.addAttackArmor(attacker,defender);
 						if (!extra.printMode) {
 							inlined_color = extra.PRE_BLUE;
 							extra.print(inlined_color+atr.stringer.replace("[*]", inlined_color));
@@ -688,7 +700,7 @@ public class Combat {
 		}else {
 			//the attack is a magic spell
 			handleMagicSpell(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
-			song.addAttackHit(attacker,defender);
+			//song.addAttackHit(attacker,defender);
 		}
 		
 			if (canWait && mainGame.delayWaits) {
@@ -700,7 +712,7 @@ public class Combat {
 				Person p = defender;
 				float hpRatio = ((float)p.getHp())/(p.getMaxHp());
 				//extra.println(p.getHp() + p.getMaxHp() +" " + hpRatio);
-				if (Math.random()*5 >= 2) {song.addHealth(p);}
+				//if (Math.random()*5 >= 2) {song.addHealth(p);}
 				int tval = extra.clamp((int)(extra.lerp(125,256,hpRatio)),100,255);
 				extra.print(extra.inlineColor(new Color(tval,tval,tval)));
 				if (hpRatio >= 1) {
