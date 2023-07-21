@@ -395,13 +395,16 @@ public final class extra {
 			return list.get(rand.nextInt(list.size()));
 			
 		}
-
+		public static final float clamp(float d, float min, float max) {
+			return Math.min(max, Math.max(d, min));
+		}
 		public static final double clamp(double d, double min, double max) {
 			return Math.min(max, Math.max(d, min));
 		}
 		public static final int clamp(int d, int min, int max) {
 			return Math.min(max, Math.max(d, min));
 		}
+		
 
 		//TODO: menuGoCategory that takes MenuItems that have categories- (up to 8 usually, but allows nesting)
 		//if a category (and it's nested categories) only have on option

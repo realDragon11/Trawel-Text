@@ -185,7 +185,7 @@ public class Inventory implements java.io.Serializable{
 		
 		i++;
 		}
-		if (hand != null && hand.IsEnchantedConstant()) {
+		if (hand != null && hand.isEnchantedConstant()) {
 			retMod *= hand.getEnchant().getDodgeMod();
 		}
 		retMod*=race.dodgeMod;
@@ -209,7 +209,7 @@ public class Inventory implements java.io.Serializable{
 			retMod *= armorSlots[i].getEnchant().getAimMod();}
 			i++;
 		}
-		if (hand != null && hand.IsEnchantedConstant()) {
+		if (hand != null && hand.isEnchantedConstant()) {
 			retMod *= hand.getEnchant().getAimMod();
 		}
 		retMod*=race.aimMod;
@@ -228,7 +228,7 @@ public class Inventory implements java.io.Serializable{
 			retMod *= armorSlots[i].getEnchant().getDamMod();}
 			i++;
 		}
-		if (hand != null && hand.IsEnchantedConstant()) {
+		if (hand != null && hand.isEnchantedConstant()) {
 			retMod *= hand.getEnchant().getDamMod();
 		}
 		retMod*=race.damMod;
@@ -248,7 +248,7 @@ public class Inventory implements java.io.Serializable{
 			retMod *= armorSlots[i].getEnchant().getHealthMod();}
 			i++;
 		}
-		if (hand != null && hand.IsEnchantedConstant()) {
+		if (hand != null && hand.isEnchantedConstant()) {
 			retMod *= hand.getEnchant().getHealthMod();
 		}
 		retMod*=race.hpMod;
@@ -267,7 +267,7 @@ public class Inventory implements java.io.Serializable{
 			retMod *= armorSlots[i].getEnchant().getSpeedMod();}
 			i++;
 		}
-		if (hand != null && hand.IsEnchantedConstant()) {
+		if (hand != null && hand.isEnchantedConstant()) {
 			retMod *= hand.getEnchant().getSpeedMod();
 		}
 		retMod*=race.speedMod;
@@ -376,13 +376,13 @@ public class Inventory implements java.io.Serializable{
 			Networking.sendStrong(str);
 		}
 		if (p.hasSkill(Skill.SHIELD)) {
-			Networking.sendStrong("AddInv|"+side+"|shield|iron|"+hand.getMat().palIndex+"|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getAnyEnchant() != null ? hand.getAnyEnchant().enchantstyle :0 )+"|-7|");
+			Networking.sendStrong("AddInv|"+side+"|shield|iron|"+hand.getMat().palIndex+"|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-7|");
 		}else {
 		if (p.hasSkill(Skill.PARRY)) {
-			Networking.sendStrong("AddInv|"+side+"|parry|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount()+ "|" +(hand.getAnyEnchant() != null ? hand.getAnyEnchant().enchantstyle :0 )+ "|-4|");
+			Networking.sendStrong("AddInv|"+side+"|parry|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount()+ "|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+ "|-4|");
 		}}
 		
-		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getAnyEnchant() != null ? hand.getAnyEnchant().enchantstyle :0 )+"|2|");
+		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|2|");
 		}else {
 			if (p.getBag().getRace().name.equals("wolf")) {
 				Networking.sendStrong("AddInv|"+side+"|" +"wolf_teeth" +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-9|");

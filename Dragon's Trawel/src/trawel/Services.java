@@ -8,9 +8,15 @@ package trawel;
 
 public class Services {
 
-	//constructor
-	public static EnchantConstant improveEnchantChance(EnchantConstant theEnchant, int level, float mod) {
-		EnchantConstant newEnchant = new EnchantConstant(level*mod);
+	/**
+	 * only takes goldmod
+	 * @param theEnchant
+	 * @param level
+	 * @param mod
+	 * @return
+	 */
+	public static Enchant improveEnchantChance(Enchant theEnchant, int level, float mod) {
+		Enchant newEnchant = EnchantConstant.makeEnchant(1.2f*mod);
 		if (newEnchant.getGoldMod() > theEnchant.getGoldMod()) {
 			return newEnchant;
 		}else {

@@ -231,7 +231,9 @@ public class AIClass {
 	 * @param inv (Inventory)
 	 */
 	public static boolean checkCheap(Inventory inv) {
+		return false;
 		//local vars
+		/*
 		int i=0;
 		boolean soldSomething = false; //did we sell something yet?
 		Item hold; //the item we're currently looking at
@@ -259,6 +261,9 @@ public class AIClass {
 			}
 		}
 		return soldSomething;
+		*/
+		
+		//for now, this is done elsewhere again
 	}
 	
 	/**
@@ -416,20 +421,20 @@ public class AIClass {
 		//enchant compare
 		if (hasItem.isEnchanted()) {
 			if (toReplace.isEnchanted()) {
-				EnchantConstant e = hasItem.getEnchant();
-				EnchantConstant e2 = toReplace.getEnchant();
+				Enchant e = hasItem.getEnchant();
+				Enchant e2 = toReplace.getEnchant();
 				if (e.getAimMod() < e2.getAimMod() || e.getDamMod() < e2.getDamMod() || e.getDodgeMod() < e2.getDodgeMod() || e.getHealthMod() < e2.getHealthMod() || e.getSpeedMod() < e2.getSpeedMod()) {
 					return false;
 				}
 			}else {
-				EnchantConstant e = hasItem.getEnchant();
+				Enchant e = hasItem.getEnchant();
 				if (e.getAimMod() < 1 || e.getDamMod() < 1 || e.getDodgeMod() < 1 || e.getHealthMod() < 1 || e.getSpeedMod() < 1) {
 					return false;
 				}
 			}
 		}else {
 			if (toReplace.isEnchanted()) {
-				EnchantConstant e = toReplace.getEnchant();
+				Enchant e = toReplace.getEnchant();
 				if (e.getAimMod() > 1 || e.getDamMod() > 1 || e.getDodgeMod() > 1 || e.getHealthMod() > 1 || e.getSpeedMod() > 1) {
 					return false;
 				}
@@ -448,6 +453,9 @@ public class AIClass {
 				extra.println("sbp = sharp, blunt, pierce");
 			}
 			extra.println(extra.inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.5f))+"Difference: sbp: " + colorPlusMinus(extra.format2(toArm.getSharpResist()*toArm.getResist()-hasArm.getSharpResist()*hasArm.getResist())) + " " +  colorPlusMinus(extra.format2(toArm.getBluntResist()*toArm.getResist()-hasArm.getBluntResist()*hasArm.getResist())) + " " + colorPlusMinus(extra.format2((toArm.getPierceResist()*toArm.getResist())- hasArm.getPierceResist()*hasArm.getResist()))+  "[c_white] cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));//" dex: " + extra.format2(toArm.getDexMod()-hasArm.getDexMod()) +
+			if (hasItem.getEnchant() != null || toReplace.getEnchant()!= null) {
+				displayEnchantDiff(hasItem.getEnchant(),toReplace.getEnchant());
+			}
 		}
 		if (Weapon.class.isInstance(hasItem)) {
 			Weapon hasWeap = (Weapon)hasItem;
@@ -456,13 +464,11 @@ public class AIClass {
 				extra.println("hd = highest damage, ad = average damage, bs = battlescore");
 			}
 			extra.println(extra.inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.5f))+"Difference: hd/ad/bs: " + colorPlusMinus(extra.format2((toWeap.highestDamage().highest-hasWeap.highestDamage().highest))) + "/" + colorPlusMinus(extra.format2(toWeap.highestDamage().average-hasWeap.highestDamage().average))+ "/" + colorPlusMinus(extra.format2(toWeap.highestDamage().battleScore-hasWeap.highestDamage().battleScore))  + "[c_white] cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));
-			if (((Weapon)hasItem).getEnchantHit() != null || ((Weapon)toReplace).getEnchantHit()!= null) {
-				displayEnchantDiff(((Weapon)hasItem).getEnchantHit(),((Weapon)toReplace).getEnchantHit());
+			if (((Weapon)hasItem).getEnchant() != null || ((Weapon)toReplace).getEnchant()!= null) {
+				displayEnchantDiff(((Weapon)hasItem).getEnchant(),((Weapon)toReplace).getEnchant());
 			}
 		}
-		if (hasItem.getEnchant() != null || toReplace.getEnchant()!= null) {
-			displayEnchantDiff(hasItem.getEnchant(),toReplace.getEnchant());
-		}
+		
 	}
 	
 	public static String colorPlusMinus(String str) {
@@ -473,6 +479,41 @@ public class AIClass {
 			return "[c_white]"+str;
 		}
 		return extra.inlineColor(Color.GREEN)+str;
+	}
+	
+	private static void displayEnchantDiff(Enchant hasItem, Enchant toReplace) {
+		if (hasItem == null) {
+			enchantDiff(1,toReplace.getAimMod(),"aim");
+			enchantDiff(1,toReplace.getDamMod(),"damage");
+			enchantDiff(1,toReplace.getDodgeMod(),"dodge");
+			enchantDiff(1,toReplace.getHealthMod(),"health");
+			enchantDiff(1,toReplace.getSpeedMod(),"speed");
+			enchantDiff(0,toReplace.getFireMod(),"fire");
+			enchantDiff(0,toReplace.getShockMod(),"shock");
+			enchantDiff(0,toReplace.getFreezeMod(),"frost");
+		}else {
+			if (toReplace == null) {
+				enchantDiff(hasItem.getAimMod(),1,"aim");
+				enchantDiff(hasItem.getDamMod(),1,"damage");
+				enchantDiff(hasItem.getDodgeMod(),1,"dodge");
+				enchantDiff(hasItem.getHealthMod(),1,"health");
+				enchantDiff(hasItem.getSpeedMod(),1,"speed");
+				enchantDiff(hasItem.getFireMod(),0,"fire");
+				enchantDiff(hasItem.getShockMod(),0,"shock");
+				enchantDiff(hasItem.getFreezeMod(),0,"frost");
+			}else {
+				enchantDiff(hasItem.getAimMod(),toReplace.getAimMod(),"aim");
+				enchantDiff(hasItem.getDamMod(),toReplace.getDamMod(),"damage");
+				enchantDiff(hasItem.getDodgeMod(),toReplace.getDodgeMod(),"dodge");
+				enchantDiff(hasItem.getHealthMod(),toReplace.getHealthMod(),"health");
+				enchantDiff(hasItem.getSpeedMod(),toReplace.getSpeedMod(),"speed");
+				enchantDiff(hasItem.getFireMod(),toReplace.getFireMod(),"fire");
+				enchantDiff(hasItem.getShockMod(),toReplace.getShockMod(),"shock");
+				enchantDiff(hasItem.getFreezeMod(),toReplace.getFreezeMod(),"frost");
+				//enchantDiff(hasItem,toReplace,"aim");
+			}
+		}
+		
 	}
 	
 	private static void displayEnchantDiff(EnchantConstant hasItem, EnchantConstant toReplace) {

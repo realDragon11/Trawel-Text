@@ -525,12 +525,12 @@ public class Combat {
 	public void handleAttackPart2(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender, int damageDone) {
 		double percent = ((double)extra.zeroOut(damageDone))/((double)defender.getMaxHp());
 		if (off.getHand().isEnchantedHit() && !(att.getName().contains("examine"))) {
+			EnchantHit ehit = (EnchantHit)off.getHand().getEnchant();
+			def.burn(def.getFire(att.getSlot())*percent*ehit.getFireMod()/2,att.getSlot());
 			
-			def.burn(def.getFire(att.getSlot())*percent*off.getHand().getEnchantHit().getFireMod()/2,att.getSlot());
+			defender.advanceTime(-(percent*defender.getTime()*ehit.getFreezeMod()*def.getFreeze(att.getSlot())));
 			
-			defender.advanceTime(-(percent*defender.getTime()*off.getHand().getEnchantHit().getFreezeMod()*def.getFreeze(att.getSlot())));
-			
-			defender.takeDamage((int)(percent*off.getHand().getEnchantHit().getShockMod()/3*def.getShock(att.getSlot())));
+			defender.takeDamage((int)(percent*ehit.getShockMod()/3*def.getShock(att.getSlot())));
 		}
 		if (attacker.hasSkill(Skill.DSTRIKE) && percent >= .80) {
 			defender.takeDamage((int) (((1-percent)*defender.getMaxHp())+10));

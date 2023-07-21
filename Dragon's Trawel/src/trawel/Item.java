@@ -24,7 +24,7 @@ public abstract class Item implements java.io.Serializable{
 	 * get the enchantment on the item
 	 * @return (EnchantConstant)
 	 */
-	public abstract EnchantConstant getEnchant();
+	public abstract Enchant getEnchant();
 	/**
 	 * Returns the cost of the item
 	 * @return (int) - gold cost
@@ -33,41 +33,7 @@ public abstract class Item implements java.io.Serializable{
 	public abstract void display(int style);
 	public abstract void display(int style,float markup);
 	public String getModiferName() {
-		/*
-		switch (level) {
-		case 0: return "broken";
-		case 1: return "crude";
-		case 2: return "shoddy";
-		case 3: return "poor";
-		case 4: return "fair";
-		case 5: return "okay";
-		case 6: return "good";
-		case 7: return "great";
-		case 8: return "heroic";
-		case 9: return "amazing";
-		case 10: return "masterwork";
-		}
-		return "legendary";*/
 		return getModiferNameColored(level);
-	}
-	
-	public static String getModiferName(int inlevel) {
-		/*
-		switch (inlevel) {
-		case 0: return "broken";
-		case 1: return "crude";
-		case 2: return "shoddy";
-		case 3: return "poor";
-		case 4: return "fair";
-		case 5: return "okay";
-		case 6: return "good";
-		case 7: return "great";
-		case 8: return "heroic";
-		case 9: return "amazing";
-		case 10: return "masterwork";
-		}
-		return "legendary";*/
-		return getModiferNameColored(inlevel);
 	}
 	
 	public static String getModiferNameColored(int inlevel) {
@@ -83,8 +49,9 @@ public abstract class Item implements java.io.Serializable{
 		case 8: return (extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f)))+"heroic[c_white]";//orange
 		case 9: return (extra.inlineColor(extra.colorMix(Color.yellow,Color.WHITE,.5f)))+"amazing[c_white]";//yellow
 		case 10: return (extra.PRE_RED)+"masterwork[c_white]";//red
+		case 11: return extra.inlineColor(Color.RED)+"legendary[c_white]";//vibrant red
 		}
-		return extra.inlineColor(Color.RED)+"legendary[c_white]";//vibrant red
+		return extra.inlineColor(Color.RED)+"legendary+"+(inlevel-10)+"[c_white]";//vibrant red
 	}
 	
 	public abstract String getType();

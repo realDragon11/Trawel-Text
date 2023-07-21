@@ -24,32 +24,59 @@ public class EnchantConstant extends Enchant {
 	private float magnitudeOne,magnitudeTwo;
 	
 	//constructors
+	
+	public static EnchantConstant makeEnchant(float mod) {
+		for (int i = 0; i < 4;i++) {
+			EnchantConstant enchant = new EnchantConstant(mod);
+			if (cutOff(enchant,.6f,.7f)) {
+				continue;
+			}
+			return enchant;
+		}
+		return null;//give up
+	}
+	
+	/**
+	 * 
+	 * @param enchant
+	 * @param overall mult of properties min(.6f suggested)
+	 * @param min allowed property (.7f suggested)
+	 * @return if the enchantment sucks too much
+	 */
+	public static boolean cutOff(EnchantConstant enchant, float overall, float min) {
+		if (enchant.getAimMod() < min || enchant.getDamMod() < min || enchant.getDodgeMod() < min || enchant.getHealthMod() < min || enchant.getSpeedMod() < min){
+			return true;
+		}
+		if (enchant.getAimMod()*enchant.getDamMod()*enchant.getDodgeMod()*enchant.getHealthMod()*enchant.getSpeedMod() < overall){
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * An constant enchantment which effects the user's stats constantly.
 	 * @param powMod (double)
 	 */
-	public EnchantConstant(float powMod){//done: double -> float
+	public EnchantConstant(float powMod){
 		if (powMod <= 0){
-			extra.println("Not enough base enchant? Did the ai try to enchant a steel weapon?");
 			//should be handled top level to prevent the ai from endlessly trying to enchant a steel weapon and failing
-			//is of runtime exception because it isn't worth a throw chain, when it shouldn't happen anyway
-			//ie should be avoided, never caught in a try/catch, to avoid any chance of an endless loop
-			throw new InvalidEnchantException();
+			throw new RuntimeException("Not enough base enchant? Did the ai try to enchant a steel weapon?");
 		}
 		//first component of enchantment
-		magnitudeOne = (float) (Math.random()*powMod);
-		magnitudeTwo = (float) (Math.random()*powMod);
-		
-		magnitudeOne = (float) extra.clamp(magnitudeOne,1,4);
-		magnitudeTwo = (float) extra.clamp(magnitudeTwo,1,4);
+		magnitudeOne = (extra.hrandomFloat()*powMod);
+		magnitudeTwo = (extra.hrandomFloat()*powMod);
+
+		magnitudeOne = extra.clamp(magnitudeOne,1f,4f);
+		magnitudeTwo = extra.clamp(magnitudeTwo,1f,4f);
 		if (extra.chanceIn(3,5)) {//3/5 chance of only getting one enchantment
 			if (extra.chanceIn(1,2)) {
-			magnitudeTwo = 0;}else {
-			magnitudeOne = 0;
+				magnitudeTwo = 0;
+			}else {
+				magnitudeOne = 0;
 			}
 		}
 		if (magnitudeOne > 0){
-		switch ((int)(Math.random()*10)) {
+			switch (extra.randRange(0, 9)) {
 			case 0: beforeName = (String)extra.choose("speedy","quick","fast","hasty","brisk");
 			speedMod+=.1*magnitudeOne;
 			goldMult +=.1*magnitudeOne;
@@ -107,7 +134,7 @@ public class EnchantConstant extends Enchant {
 		//second component of enchantment
 		if (magnitudeTwo > 0){
 			afterName = " of "+randomLists.powerAdjective()+ " ";
-		switch ((int)(Math.random()*10)) {
+		switch (extra.randRange(0, 9)) {
 			case 0: afterName += (String)extra.choose("speed","quickness","haste","alacrity","briskness","fleetness");
 			speedMod+=.1*magnitudeTwo;
 			goldMult +=.1*magnitudeTwo;
@@ -166,9 +193,9 @@ public class EnchantConstant extends Enchant {
 	//instance methods
 	
 	/**
-	 * @return the goldMod (double)
+	 * @return the goldMod (int)
 	 */
-	public double getGoldMod() {
+	public int getGoldMod() {
 		return goldMod;
 	}
 
@@ -176,7 +203,7 @@ public class EnchantConstant extends Enchant {
 	/**
 	 * @return the goldMult (double)
 	 */
-	public double getGoldMult() {
+	public float getGoldMult() {
 		return goldMult;
 	}
 
@@ -201,14 +228,16 @@ public class EnchantConstant extends Enchant {
 	/**
 	 * @return the speedMod (double)
 	 */
-	public double getSpeedMod() {
+	@Override
+	public float getSpeedMod() {
 		return speedMod;
 	}
 
 	/**
 	 * @return the healthMod (double)
 	 */
-	public double getHealthMod() {
+	@Override
+	public float getHealthMod() {
 		return healthMod;
 	}
 
@@ -216,7 +245,8 @@ public class EnchantConstant extends Enchant {
 	/**
 	 * @return the damMod (double)
 	 */
-	public double getDamMod() {
+	@Override
+	public float getDamMod() {
 		return damMod;
 	}
 
@@ -225,7 +255,8 @@ public class EnchantConstant extends Enchant {
 	/**
 	 * @return the aimMod (double)
 	 */
-	public double getAimMod() {
+	@Override
+	public float getAimMod() {
 		return aimMod;
 	}
 
@@ -234,7 +265,8 @@ public class EnchantConstant extends Enchant {
 	/**
 	 * @return the dodgeMod (double)
 	 */
-	public double getDodgeMod() {
+	@Override
+	public float getDodgeMod() {
 		return dodgeMod;
 	}
 
@@ -259,8 +291,8 @@ public class EnchantConstant extends Enchant {
 	}
 
 	@Override
-	public String getEnchantType() {
-		return "constant";
+	public Enchant.Type getEnchantType() {
+		return Enchant.Type.CONSTANT;
 	}
 
 

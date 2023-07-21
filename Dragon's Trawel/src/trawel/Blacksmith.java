@@ -35,7 +35,7 @@ public class Blacksmith extends Feature {
 		Networking.sendStrong("Discord|imagesmall|blacksmith|Blacksmith|");
 		extra.println("You have " + Player.bag.getGold() + " gold.");
 		extra.println("1 forge item for store (" + tier*100 + " gold)");
-		extra.println("2 improve item up to " + Item.getModiferName(tier) +" quality");
+		extra.println("2 improve item up to " + Item.getModiferNameColored(tier) +" quality");
 		extra.println("3 exit");
 		switch (extra.inInt(3)) {
 		case 1: 
@@ -63,7 +63,7 @@ public class Blacksmith extends Feature {
 				extra.println("You can't afford this! (" + cost + " gold)");
 				break;
 			}
-			extra.println("Improve your item to " + Item.getModiferName(tier) + " quality for " +cost +" gold?");
+			extra.println("Improve your item to " + Item.getModiferNameColored(tier) + " quality for " +cost +" gold?");
 			if (extra.yesNo()) {
 				Player.bag.addGold(-cost);
 				while (item.getLevel() < tier) {

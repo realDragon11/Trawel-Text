@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import org.nustaq.serialization.annotations.OneOf;
+
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
@@ -32,21 +35,22 @@ public class Weapon extends Item {
 	//instance variables
 	private int weight = 1;//how much does it weigh?
 	private float baseEnchant;//how good is the material at receiving enchantments?
-	private EnchantConstant enchant;
-	private boolean IsEnchantedConstant = false;
-	private EnchantHit enchantHit;
+	private Enchant enchant;
+	//private boolean IsEnchantedConstant = false;
+	//private EnchantHit enchantHit;
 	//private boolean IsEnchantedHit = false;//likely unused
 	//private Stance martialStance = new Stance(); //what attacks the weapon can use
 	
 	
 	private String weapName;
+	@OneOf({"iron","tin","copper","bronze","steel","silver","gold"})
 	private String material;
 	private int cost;
 	//private int level;
-	private int effectiveCost;
+	//private int effectiveCost;
 	private int kills;
 	
-	private Material mat;
+	//private Material mat;
 	private DamTuple dam;
 	
 	public List<WeaponQual> qualList = new ArrayList<WeaponQual>();
@@ -77,12 +81,12 @@ public class Weapon extends Item {
 	public Weapon(int newLevel, Material materia, String weaponName) {
 		
 		//material = (String)bpmFunctions.choose("iron",bpmFunctions.choose("steel","silver",bpmFunctions.choose("gold","platinum",bpmFunctions.choose("adamantine","mithril"))));
-		mat = materia;
-		material = mat.name;
+		//mat = materia;
+		material = materia.name;
 		level = newLevel;
-		baseEnchant = mat.baseEnchant;
-		weight *= mat.weight;
-		cost = (int) mat.cost;
+		baseEnchant = materia.baseEnchant;
+		weight *= materia.weight;
+		cost = (int) materia.cost;
 		//choosing the type of weapon
 		weapName = weaponName;
 		kills = 0;
@@ -178,25 +182,15 @@ public class Weapon extends Item {
 			;break;
 		}
 		//random chance, partially based on enchantment power, to enchant the weapon
-		effectiveCost = cost;
+		//effectiveCost = cost;
 		if (baseEnchant*2 > extra.randFloat() && extra.chanceIn(8,10)) {
 			if (extra.chanceIn(2, 3)) {
-				enchant = new EnchantConstant(level*baseEnchant);
-				effectiveCost=(int)extra.zeroOut(cost * enchant.getGoldMult()+enchant.getGoldMod());
-				IsEnchantedConstant = true;
+				enchant = EnchantConstant.makeEnchant(baseEnchant);//removed level, like with armor
+				//effectiveCost=(int)extra.zeroOut(cost * enchant.getGoldMult()+enchant.getGoldMod());
+				//IsEnchantedConstant = true;
 			}else {
-				enchantHit = new EnchantHit(baseEnchant);//no level
-				effectiveCost=(int)extra.zeroOut(cost * enchantHit.getGoldMult());
-			}
-		}
-		
-		//new first phase 'no bad enchants' code
-		if (enchant != null) {//if there's an enchant, check to see if the weapon causes any zero's or is overwhelmingly negative
-			if (effectiveCost < 2 || (enchant.getAimMod()*enchant.getDamMod()*enchant.getHealthMod()*enchant.getSpeedMod()) < .6) {
-				//in this case we merely remove the enchantment entirely to avoid having to do recursive failure
-				enchant = null;
-				effectiveCost = cost;
-				IsEnchantedConstant = false;
+				enchant = new EnchantHit(baseEnchant);//no level
+				//effectiveCost=(int)extra.zeroOut(cost * enchantHit.getGoldMult());
 			}
 		}
 		
@@ -239,8 +233,20 @@ public class Weapon extends Item {
 	 * Returns true if the weapon is enchanted
 	 * @return isEnchantedConstant (boolean)
 	 */
-	public boolean IsEnchantedConstant() {
-		return IsEnchantedConstant;
+	public boolean isEnchantedConstant() {
+		return enchant != null && enchant.getEnchantType() == Enchant.Type.CONSTANT;
+	}
+	
+	public boolean isEnchantedHit() {
+		return enchant != null && enchant.getEnchantType() == Enchant.Type.CONSTANT;
+	}
+	
+	/**
+	 * get the reference to the enchantment on the weapon
+	 * @return enchant (EnchantConstant)
+	 */
+	public Enchant getEnchant() {
+		return enchant;
 	}
 
 	/**
@@ -256,13 +262,15 @@ public class Weapon extends Item {
 	 * @return String
 	 */
 	public String getName() {
-		if (IsEnchantedConstant){
-		return (getModiferName() + " " +enchant.getBeforeName() +MaterialFactory.getMat(material).color+ material + "[c_white] " +  weapName + enchant.getAfterName());}
+		if (this.isEnchantedConstant()){
+			EnchantConstant conste = ((EnchantConstant)enchant);
+		return (getModiferName() + " " +conste.getBeforeName() +MaterialFactory.getMat(material).color+ material + "[c_white] " +  weapName + conste.getAfterName());}
 		if (this.isEnchantedHit()){
+			;
 			if (isKeen()) {
-				return (getModiferName() + " " + enchantHit.getName() + MaterialFactory.getMat(material).color+material  + "[c_white] " + weapName);
+				return (getModiferName() + " " + ((EnchantHit)enchant).getName() + MaterialFactory.getMat(material).color+material  + "[c_white] " + weapName);
 			}else {
-			return (getModiferName() +" "+MaterialFactory.getMat(material).color+ material + "[c_white] " +  weapName + enchantHit.getName());}
+			return (getModiferName() +" "+MaterialFactory.getMat(material).color+ material + "[c_white] " +  weapName + ((EnchantHit)enchant).getName());}
 			
 		}
 			return (getModiferName() + " " +MaterialFactory.getMat(material).color+ material  + "[c_white] " + weapName);
@@ -282,7 +290,13 @@ public class Weapon extends Item {
 	 * @return cost (int)
 	 */
 	public int getCost() {
-		return effectiveCost*level;
+		if (this.isEnchantedConstant()) {
+			return (int) (level*cost * enchant.getGoldMult()+enchant.getGoldMod());
+		}
+		if (this.isEnchantedHit()) {
+			return (int) (level*cost * enchant.getGoldMult());
+		}
+		return cost*level;
 	}
 	
 	/**
@@ -292,14 +306,7 @@ public class Weapon extends Item {
 	public int getBaseCost() {
 		return cost*level;
 	}
-	
-	/**
-	 * get the reference to the enchantment on the weapon
-	 * @return enchant (EnchantConstant)
-	 */
-	public EnchantConstant getEnchant() {
-		return enchant;
-	}
+
 	
 	/**
 	 * Swap out the current enchantment for a new one, if a better one is generated.
@@ -308,15 +315,15 @@ public class Weapon extends Item {
 	 * @return changed enchantment? (boolean)
 	 */
 	public boolean improveEnchantChance(int level) {
-		if (IsEnchantedConstant) {
-			EnchantConstant pastEnchant = enchant;
+		if (this.isEnchantedConstant()) {
+			Enchant pastEnchant = enchant;
 			enchant = Services.improveEnchantChance(enchant, level, baseEnchant);
-			effectiveCost=(int) extra.zeroOut(cost * enchant.getGoldMult()+enchant.getGoldMod());
+			//effectiveCost=(int) extra.zeroOut(cost * enchant.getGoldMult()+enchant.getGoldMod());
 			return pastEnchant != enchant;
 		}else {
-			IsEnchantedConstant = true;
-			enchant = new EnchantConstant(level*baseEnchant);
-			effectiveCost=(int) extra.zeroOut(cost * enchant.getGoldMult()+enchant.getGoldMod());
+			//IsEnchantedConstant = true;
+			enchant = EnchantConstant.makeEnchant(baseEnchant);//new EnchantConstant(level*baseEnchant);
+			//effectiveCost=(int) extra.zeroOut(cost * enchant.getGoldMult()+enchant.getGoldMod());
 			return true;
 		}
 	}
@@ -496,11 +503,11 @@ public class Weapon extends Item {
 		case 1:
 			extra.println(this.getName()
 			+ " hd/ad/bs: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+"/"+extra.format(this.highestDamage().battleScore)+" value: " + (int)(this.getCost()*markup));
-			if (this.IsEnchantedConstant()) {
+			if (this.isEnchantedConstant()) {
 				this.getEnchant().display(1);
 			}
 			if (this.isEnchantedHit()) {
-				this.getEnchantHit().display(1);
+				this.getEnchant().display(1);
 			}
 			for (WeaponQual wq: qualList) {
 				extra.println(wq.name + ": "+wq.desc);
@@ -509,11 +516,11 @@ public class Weapon extends Item {
 		case 2:
 			extra.println(this.getName()
 			+ " hd/ad/bs: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+ "/"+extra.format(this.highestDamage().battleScore)+" value: " + (int)(this.getCost()*markup) + " kills: " +this.getKills());
-			if (this.IsEnchantedConstant()) {
+			if (this.isEnchantedConstant()) {
 				this.getEnchant().display(2);
 			}
 			if (this.isEnchantedHit()) {
-				this.getEnchantHit().display(2);
+				this.getEnchant().display(2);
 			}
 			for (WeaponQual wq: qualList) {
 				extra.println(wq.name + ": "+wq.desc);
@@ -537,14 +544,6 @@ public class Weapon extends Item {
 		return material;
 	}
 
-	public boolean isEnchantedHit() {
-		return enchantHit != null;
-	}
-
-	public EnchantHit getEnchantHit() {
-		return enchantHit;
-	}
-
 	public int getKills() {
 		return kills;
 	}
@@ -554,7 +553,7 @@ public class Weapon extends Item {
 	}
 
 	public Material getMat() {
-		return mat;
+		return MaterialFactory.getMat(material);
 	}
 	
 	public void levelUp() {
@@ -564,27 +563,17 @@ public class Weapon extends Item {
 	
 	public boolean isKeen() {
 		if (this.isEnchantedHit()) {
-			return this.enchantHit.isKeen();
+			return ((EnchantHit)enchant).isKeen();
 		}
 		return false;
 	}
 	
 	public void deEnchant() {
 		enchant = null;
-		IsEnchantedConstant = false;
-		enchantHit = null;
-	}
-
-	public Enchant getAnyEnchant() {
-	if (isEnchantedHit()) {
-		return this.getEnchantHit();
-	}
-	return this.getEnchant();
 	}
 
 	public void forceEnchantHit(int i) {
-		this.enchant = null;
-		this.enchantHit = new EnchantHit(true,baseEnchant);
+		this.enchant = new EnchantHit(true,baseEnchant);
 		
 	}
 

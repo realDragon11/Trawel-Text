@@ -29,23 +29,23 @@ public class Armor extends Item {
 	@OneOf({"cloth","iron","tin","copper","bronze","steel","silver","gold"})
 	private String material;//what material the object is made from
 	private int cost;//how much it costs in gold pieces
-	//private int level;//the level of the item
 	private int baseResist;//the base damage resistance of the item
-	private double sharpResist, sharpActive;
-	private double bluntResist, bluntActive;
-	private double pierceResist, pierceActive;
+	private double sharpResist;
+	private double bluntResist;
+	private double pierceResist;
+	private transient double sharpActive, bluntActive, pierceActive;
 	private float baseEnchant;//the multiplier of how powerful enchantments on the item are
 	private int weight;
-	private EnchantConstant enchantment;
-	private boolean isEnchanted = false;
-	private int effectiveCost;
+	private Enchant enchantment;
 	private double dexMod = 1;
-	private Material mat;
 	private double burnMod, freezeMod, shockMod;
-	private double burned;
+	private transient double burned;
 	private String matType;//ie heavy, light, chainmail
-	@OneOf({"iron","cloth","crystal"})
-	private String baseMap;
+	//@OneOf({"iron","cloth","crystal"})
+	//private String baseMap;
+	private int baseMap;//switched to offset
+	private static final String[] BASE_MAPS = new String[] {"iron","cloth","crystal"};
+	
 	private String prefixName;
 	private List<ArmorQuality> quals = new ArrayList<ArmorQuality>();
 	
@@ -99,8 +99,8 @@ public class Armor extends Item {
 	public Armor(int newLevel, int slot,Material mati,String amatType) {
 	//initialize	
 	armorType = slot;//type is equal to the array armor slot
-	mat = mati;
-	material = mat.name;
+	//mat = mati;
+	material = mati.name;
 	level = newLevel;
 	prefixName = "";
 	
@@ -108,11 +108,15 @@ public class Armor extends Item {
 	bluntResist = 1;
 	pierceResist = 1;
 	
-	baseMap = "iron";
+	burnMod = 1;
+	shockMod = 1;
+	freezeMod = 1;
+	
+	baseMap = 0;//"iron";
 	
 	//what names make sense for the given material?
 	if (amatType == null) {
-		this.matType = extra.randList(mat.typeList);
+		this.matType = extra.randList(mati.typeList);
 	}else {
 		this.matType = amatType;
 		/*
@@ -125,7 +129,7 @@ public class Armor extends Item {
 	}
 	
 	if (matType.equals("light")){
-		baseMap = "cloth";
+		baseMap = 1;//"cloth";
 		switch (armorType) {//adamantine can be either
 			case 0: baseName = (String)extra.choose("homan hat"); weight = 2; baseResist = 1; cost = 1;break;//"hood"
 			case 1: baseName = (String)extra.choose("homan gloves"); weight = 2; baseResist = 1; cost = 1;break;//,"gloves","gloves","fingerless gloves"
@@ -135,7 +139,7 @@ public class Armor extends Item {
 		}
 	}else {
 		if (matType.equals("heavy")) {
-			baseMap = "iron";
+			baseMap = 0;//"iron";
 		switch (armorType) {
 			case 0: baseName = (String)extra.choose("plackan helm"); weight = 2; baseResist = 1; cost = 1;break;//"helmet",,"cap","hat","mask"
 			case 1: baseName = (String)extra.choose("plackan gauntlets"); weight = 2; baseResist = 1; cost = 1;break;//"bracers",
@@ -145,7 +149,7 @@ public class Armor extends Item {
 		}
 		}else {
 			if (matType.equals("chainmail")) {
-				baseMap = "iron";
+				baseMap = 0;//"iron";
 				switch (armorType) {
 				case 0: baseName = (String)extra.choose("mail hood"); weight = 2; baseResist = 1; cost = 1;break;
 				case 1: baseName = (String)extra.choose("mail gloves"); weight = 2; baseResist = 1; cost = 1;break;
@@ -159,7 +163,7 @@ public class Armor extends Item {
 				
 			}else {
 				if (matType.equals("crystal")) {
-					baseMap = "crystal";
+					baseMap = 2;//"crystal";
 					switch (armorType) {
 					case 0: baseName = (String)extra.choose("tevaran helmet"); weight = 2; baseResist = 1; cost = 1;break;
 					case 1: baseName = (String)extra.choose("tevaran bracers"); weight = 2; baseResist = 1; cost = 1;break;
@@ -180,35 +184,25 @@ public class Armor extends Item {
 		}
 	}
 	
-		baseEnchant = mat.baseEnchant;
-		baseResist *= mat.baseResist;
-		sharpResist *= mat.sharpResist;
-		bluntResist *= mat.bluntResist;
-		pierceResist *= mat.pierceResist;
-		burnMod = mat.fireVul;
-		shockMod = mat.shockVul;
-		freezeMod = mat.freezeVul;
-		weight *= mat.weight;
-		cost *= mat.cost;
-		dexMod *= mat.dexMod;
+		baseEnchant = mati.baseEnchant;
+		baseResist *= mati.baseResist;
+		sharpResist *= mati.sharpResist;
+		bluntResist *= mati.bluntResist;
+		pierceResist *= mati.pierceResist;
+		burnMod *= mati.fireVul;
+		shockMod *= mati.shockVul;
+		freezeMod *= mati.freezeVul;
+		weight *= mati.weight;
+		cost *= mati.cost;
+		dexMod *= mati.dexMod;
 		//level scaling
 		//cost *= level;
 		//baseResist *= level;
 		
-		effectiveCost = cost;
+		//effectiveCost = cost;
 		//add an enchantment and mark it down if the enchantment is greater than a random value form 0 to <1.0
-		if (baseEnchant*2 > Math.random() && extra.chanceIn(8,10)) {
-			enchantment = new EnchantConstant(level*baseEnchant);
-			effectiveCost=(int) extra.zeroOut(cost * enchantment.getGoldMult()+enchantment.getGoldMod());
-			isEnchanted = true;
-			
-			//new failure of value checking system
-			if (effectiveCost < 2 || (enchantment.getAimMod()*enchantment.getDamMod()*enchantment.getDodgeMod()*enchantment.getHealthMod()*enchantment.getSpeedMod()) < .6) {
-				enchantment = null;
-				effectiveCost = cost;
-				isEnchanted = false;
-				//in this case we merely remove the enchantment entirely to avoid having to do recursive failure
-			}
+		if (baseEnchant*2 > extra.randFloat() && extra.chanceIn(8,10)) {
+			enchantment = EnchantConstant.makeEnchant(baseEnchant);//used to include level in the mult, need a new rarity system
 		}else {
 			if (extra.chanceIn(1,5)) {//non-enchanted qualities
 				baseEnchant = 0;
@@ -241,8 +235,9 @@ public class Armor extends Item {
 	 * @return name - String
 	 */
 	public String getName() {
-		if (isEnchanted){
-		return (getModiferName() + " " +enchantment.getBeforeName() +prefixName+MaterialFactory.getMat(material).color + material+"[c_white]" + " " + baseName + enchantment.getAfterName());}
+		if (enchantment != null){
+			EnchantConstant enchant = (EnchantConstant)enchantment; 
+		return (getModiferName() + " " +enchant.getBeforeName() +prefixName+this.getMat().color + material+"[c_white]" + " " + baseName + enchant.getAfterName());}
 			return (getModiferName() + " "+prefixName +MaterialFactory.getMat(material).color + material+"[c_white]"  + " " +  baseName);
 	}
 	
@@ -319,7 +314,7 @@ public class Armor extends Item {
 	 * @return cost (int)
 	 */
 	public int getCost() {
-		return effectiveCost*level;
+		return (int) (cost*level*(isEnchanted() ? enchantment.getGoldMult()+enchantment.getGoldMod() : 1));
 	}
 	
 	/**
@@ -335,7 +330,7 @@ public class Armor extends Item {
 	 * @return if enchanted (boolean)
 	 */
 	public boolean isEnchanted() {
-		return isEnchanted;
+		return enchantment != null;
 	}
 	
 	/**
@@ -345,19 +340,20 @@ public class Armor extends Item {
 	 * @return changed enchantment? (boolean)
 	 */
 	public boolean improveEnchantChance(int level) {
-		if (isEnchanted) {
-			EnchantConstant pastEnchant = enchantment;
+		if (isEnchanted()) {
+			Enchant pastEnchant = enchantment;
 			enchantment = Services.improveEnchantChance(enchantment, level, baseEnchant);
-			effectiveCost=(int) extra.zeroOut(cost * enchantment.getGoldMult()+enchantment.getGoldMod());
+			//effectiveCost=(int) extra.zeroOut(cost * enchantment.getGoldMult()+enchantment.getGoldMod());
 			return pastEnchant != enchantment;
 		}else {
 			
 			enchantment = new EnchantConstant(level*baseEnchant);
 			if (cost * enchantment.getGoldMult()+enchantment.getGoldMod() > 0) {
-				isEnchanted = true;
-				effectiveCost=(int) extra.zeroOut(cost * enchantment.getGoldMult()+enchantment.getGoldMod());
+				//isEnchanted = true;
+				//effectiveCost=(int) extra.zeroOut(cost * enchantment.getGoldMult()+enchantment.getGoldMod());
 				return true;
 			}else {
+				enchantment = null;
 				return false;
 			}
 		}
@@ -380,7 +376,7 @@ public class Armor extends Item {
 	/**
 	 * @return the enchantment (EnchantConstant)
 	 */
-	public EnchantConstant getEnchant() {
+	public Enchant getEnchant() {
 		return enchantment;
 	}
 	
@@ -430,11 +426,11 @@ public class Armor extends Item {
 	}
 
 	public String getBaseMap() {
-		return baseMap;
+		return BASE_MAPS[baseMap];
 	}
 
 	public Material getMat() {
-		return mat;
+		return MaterialFactory.getMat(material);
 	}
 
 	public void restoreArmor(double d) {
@@ -447,7 +443,7 @@ public class Armor extends Item {
 	}
 
 	public String getSoundType() {
-		return mat.soundType;
+		return getMat().soundType;
 	}
 	public String getMatType() {
 		return this.matType;
@@ -455,7 +451,7 @@ public class Armor extends Item {
 
 	public void deEnchant() {
 		enchantment = null;
-		isEnchanted = false;
+		//isEnchanted = false;
 	}
 
 	public List<ArmorQuality> getQuals() {
