@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.github.tommyettinger.random.*;
 import java.util.Stack;
+import java.util.concurrent.locks.ReentrantLock;
 
 public final class extra {
 /**
@@ -23,8 +24,20 @@ public final class extra {
 	
 	private static Stack<Boolean> printStack = new Stack<Boolean>();
 	
+	private static ReentrantLock mainThreadLock = new ReentrantLock();
+	
 	
 	//static methods
+	
+	public static final boolean isMainThread() {
+		return mainThreadLock.isHeldByCurrentThread();
+	}
+	
+	public static final void setMainThread() {
+		System.out.print("booting");
+		mainThreadLock.lock();
+		System.out.println("...");
+	}
 
 	public static final float randFloat() {
 		return rand.nextFloat();
@@ -115,6 +128,9 @@ public final class extra {
 	 * @param file - (boolean) true if you want to swap to a file output, false if you want to swap to the standard output system.
 	 */
 	public static final void changePrint(boolean file) {
+		if (!isMainThread()) {
+			return;
+		}
 		printMode = file;
 		/*if (file) {	//https://stackoverflow.com/a/1994283/9320090
 			//redirecting printing
@@ -243,6 +259,9 @@ public final class extra {
 		}
 		
 		public static final void println(String str) {
+			if (!isMainThread()) {
+				return;
+			}
 			if (!printMode) {
 			System.out.println(stripPrint(printStuff+str));
 			detectInputString(stripPrint(printStuff +str));
@@ -253,6 +272,9 @@ public final class extra {
 		}
 		
 		public static final void print(String str) {
+			if (!isMainThread()) {
+				return;
+			}
 			if (!printMode) {
 			//System.out.print(stripPrint(str));
 			//System.out.print(str);
@@ -283,6 +305,9 @@ public final class extra {
 		}
 
 		public static final Boolean getPrint() {
+			if (!isMainThread()){
+				return false;
+			}
 			return printMode;
 		}
 
@@ -341,11 +366,17 @@ public final class extra {
 		}
 		
 		public static void offPrintStack() {
+			if (!isMainThread()){
+				return;
+			}
 			printStack.push(printMode);
 			printMode = true;
 		}
 		
 		public static void popPrintStack() {
+			if (!isMainThread()){
+				return;
+			}
 			printMode = printStack.pop();
 		}
 

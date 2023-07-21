@@ -59,6 +59,9 @@ public class Networking {
 	
 	
 	public static void send(String str) {
+		if (!extra.isMainThread()) {
+			return;
+		}
 		if (out != null && (!extra.getPrint())) {
 		out.println(str);
 		//out.flush();
@@ -66,6 +69,9 @@ public class Networking {
 	}
 	
 	public static void sendStrong(String str) {
+		if (!extra.isMainThread()) {
+			return;
+		}
 		if (out != null) {
 		out.println(str);
 		//out.flush();
