@@ -238,7 +238,7 @@ public class Weapon extends Item {
 	}
 	
 	public boolean isEnchantedHit() {
-		return enchant != null && enchant.getEnchantType() == Enchant.Type.CONSTANT;
+		return enchant != null && enchant.getEnchantType() == Enchant.Type.HIT;
 	}
 	
 	/**

@@ -452,7 +452,7 @@ public class AIClass {
 			if (Player.getTutorial()) {
 				extra.println("sbp = sharp, blunt, pierce");
 			}
-			extra.println(extra.inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.5f))+"Difference: sbp: " + colorPlusMinus(extra.format2(toArm.getSharpResist()*toArm.getResist()-hasArm.getSharpResist()*hasArm.getResist())) + " " +  colorPlusMinus(extra.format2(toArm.getBluntResist()*toArm.getResist()-hasArm.getBluntResist()*hasArm.getResist())) + " " + colorPlusMinus(extra.format2((toArm.getPierceResist()*toArm.getResist())- hasArm.getPierceResist()*hasArm.getResist()))+  "[c_white] cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));//" dex: " + extra.format2(toArm.getDexMod()-hasArm.getDexMod()) +
+			extra.println(extra.PRE_MAGENTA+"Difference: sbp: " + colorPlusMinus(extra.format2(toArm.getSharpResist()*toArm.getResist()-hasArm.getSharpResist()*hasArm.getResist())) + " " +  colorPlusMinus(extra.format2(toArm.getBluntResist()*toArm.getResist()-hasArm.getBluntResist()*hasArm.getResist())) + " " + colorPlusMinus(extra.format2((toArm.getPierceResist()*toArm.getResist())- hasArm.getPierceResist()*hasArm.getResist()))+  "[c_white] cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));//" dex: " + extra.format2(toArm.getDexMod()-hasArm.getDexMod()) +
 			if (hasItem.getEnchant() != null || toReplace.getEnchant()!= null) {
 				displayEnchantDiff(hasItem.getEnchant(),toReplace.getEnchant());
 			}
@@ -463,7 +463,7 @@ public class AIClass {
 			if (Player.getTutorial()) {
 				extra.println("hd = highest damage, ad = average damage, bs = battlescore");
 			}
-			extra.println(extra.inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.5f))+"Difference: hd/ad/bs: " + colorPlusMinus(extra.format2((toWeap.highestDamage().highest-hasWeap.highestDamage().highest))) + "/" + colorPlusMinus(extra.format2(toWeap.highestDamage().average-hasWeap.highestDamage().average))+ "/" + colorPlusMinus(extra.format2(toWeap.highestDamage().battleScore-hasWeap.highestDamage().battleScore))  + "[c_white] cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));
+			extra.println(extra.PRE_MAGENTA+"Difference: hd/ad/bs: " + colorPlusMinus(extra.format2((toWeap.highestDamage().highest-hasWeap.highestDamage().highest))) + "/" + colorPlusMinus(extra.format2(toWeap.highestDamage().average-hasWeap.highestDamage().average))+ "/" + colorPlusMinus(extra.format2(toWeap.highestDamage().battleScore-hasWeap.highestDamage().battleScore))  + "[c_white] cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));
 			if (((Weapon)hasItem).getEnchant() != null || ((Weapon)toReplace).getEnchant()!= null) {
 				displayEnchantDiff(((Weapon)hasItem).getEnchant(),((Weapon)toReplace).getEnchant());
 			}
@@ -475,10 +475,11 @@ public class AIClass {
 		if (str.charAt(0) == '-') {
 			return extra.PRE_RED+str;
 		}
+		/*
 		if (str.charAt(0) == '0') {
 			return "[c_white]"+str;
-		}
-		return extra.inlineColor(Color.GREEN)+str;
+		}*///TODO: check that this is fine to comment out
+		return extra.PRE_GREEN+str;
 	}
 	
 	private static void displayEnchantDiff(Enchant hasItem, Enchant toReplace) {
@@ -560,7 +561,7 @@ public class AIClass {
 		}
 	}
 	
-	private static void enchantDiff(double has, double get, String name) {
+	private static void enchantDiff(float has, float get, String name) {
 		if (has-get != 0) {
 			extra.println(" " +colorPlusMinus(extra.format2(get-has)) + " " + name);
 		}

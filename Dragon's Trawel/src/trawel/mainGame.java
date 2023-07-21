@@ -279,6 +279,8 @@ public class mainGame {
 	
 	private static void baseSetup1() {
 		if (!basicSetup1) {
+			EnchantConstant.init();
+			
 			new MaterialFactory();
 			new RaceFactory();
 			new TargetFactory();
@@ -292,6 +294,7 @@ public class mainGame {
 			new QuestReactionFactory();
 			WorldGen.initDummyInvs();
 			story = new StoryNone();
+			
 			basicSetup1 = true;
 		}
 	}
@@ -1038,8 +1041,7 @@ public class mainGame {
 				finalSetup1 = true;
 			}
 			Networking.sendStrong("Discord|desc|Character Select|");
-			extra.println("Generating world...");
-			World world = WorldGen.eoano();
+			World world = null;//WorldGen.eoano();
 			story = new StoryDeathWalker();
 			Person manOne = null, manTwo;
 			Player player;
@@ -1053,7 +1055,7 @@ public class mainGame {
 				if (!displayFight) {
 					extra.changePrint(true);
 				}
-				manOne = CombatTwo(manOne,manTwo);
+				manOne = CombatTwo(manOne,manTwo,null);
 				if (manOne == manThree) {
 					StoryDeathWalker.killed = manTwo;
 				}else {
@@ -1061,6 +1063,10 @@ public class mainGame {
 				}
 				if (!displayFight) {
 					extra.changePrint(false);
+				}
+				if (world == null) {
+					extra.println("Generating world...");
+					world = WorldGen.eoano();
 				}
 				if (rerolls) {
 					manOne.getBag().graphicalDisplay(1, manOne);
@@ -1071,6 +1077,7 @@ public class mainGame {
 					if (extra.yesNo()) {
 						break;
 					}
+					manOne = null;
 				}
 				//manOne.displayStats();
 				Networking.clearSides();

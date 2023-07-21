@@ -26,7 +26,7 @@ public class Player extends SuperPerson{
 	public static World world;
 	public World world2;
 	private String animalName;
-	private int rpts;//reincarnatepoints
+	//private int rpts;//reincarnatepoints
 	private boolean tutorial;
 	public int merchantLevel = 1;
 	public Town lastTown = null;
@@ -59,7 +59,7 @@ public class Player extends SuperPerson{
 		passTime = 0;
 		animalQuest = -1;//not started unless another quest starts it
 		animalName = randomLists.randomAnimal();
-		rpts = 0;
+		//rpts = 0;
 		tutorial = true;
 	}
 	public Person getPerson() {

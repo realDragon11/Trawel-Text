@@ -316,9 +316,8 @@ public final class extra {
 			}
 			return printMode;
 		}
-
+		public static final java.text.DecimalFormat format3 = new java.text.DecimalFormat("0.00");
 		public static String format2(double d) {
-			java.text.DecimalFormat format3 = new java.text.DecimalFormat("0.00");
 			String str = format3.format(d);
 			if (d > 0) {
 				str = "+" + str;
@@ -619,7 +618,24 @@ public final class extra {
 		public static final String PRE_ORANGE = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f));
 		public static final String PRE_YELLOW = inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f));
 		public static final String PRE_BLUE = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f));
+		public static final String PRE_GREEN = inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f));
+		public static final String PRE_MAGENTA = inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.5f));
 		
+		//timid colors that are slight, used for bad and good hinting
+		public static final String TIMID_GREEN = inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.8f));
+		public static final String TIMID_RED = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.8f));
+		
+		
+		public static String colorBasedAtOne(double number, String plus, String minus, String empty) {
+			String str = format3.format(number);
+			if (number < 1) {
+				return minus+str;
+			}
+			if (number > 1) {
+				return plus+str;
+			}
+			return empty+str;
+		}
 		/**
 		 * https://stackoverflow.com/a/13091759
 		 * @param a - How deep the curve is - 0 <-> 1

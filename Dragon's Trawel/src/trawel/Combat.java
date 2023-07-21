@@ -49,11 +49,23 @@ public class Combat {
 		manOne.battleSetup();
 		//extra.println("");
 		manTwo.battleSetup();
-		manTwo.displayStatsShort();
+		
 		attacker = manOne;
 		defender = manTwo;
 		
-		boolean playerIsInBattle = attacker.isPlayer() || defender.isPlayer();
+		boolean playerIsInBattle;//= attacker.isPlayer() || defender.isPlayer();
+		if (manOne.isPlayer()) {
+			manTwo.displayStatsShort();
+			playerIsInBattle = true;
+		}else {
+			if (manTwo.isPlayer()) {
+				manOne.displayStatsShort();
+				playerIsInBattle = true;
+			}else {
+				playerIsInBattle = false;
+			}
+		}
+		
 		attacker = manTwo;
 		defender = manOne;
 		setAttack(manTwo,manOne);

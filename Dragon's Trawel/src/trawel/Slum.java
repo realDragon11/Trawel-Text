@@ -162,16 +162,22 @@ public class Slum extends Feature implements QuestBoardLocation{
 		if (timePassed < 0) {
 			if (canQuest) {this.generateSideQuest();}
 			if (crimeLord == null){
+				timePassed = 24;
+				if (town.getOccupants().size() == 0) {
+					return null;
+				}
 				crimeLord = extra.randList(town.getOccupants());
 				town.getOccupants().remove(crimeLord);
-				timePassed = 24;
 			}else {
+				timePassed = 24;
+				if (town.getOccupants().size() == 0) {
+					return null;
+				}
 				SuperPerson sp = extra.randList(town.getOccupants());
 				if (((Agent)sp).getPerson().getLevel() > ((Agent)crimeLord).getPerson().getLevel() && extra.chanceIn(1,3)) {
 					town.getOccupants().add(crimeLord);
 					crimeLord = sp;
 					town.getOccupants().remove(sp);
-					timePassed = 24;
 				}else {
 					((Agent)crimeLord).getPerson().getBag().modGold(100*town.getTier());
 					crimeRating+=((Agent)crimeLord).getPerson().getLevel();

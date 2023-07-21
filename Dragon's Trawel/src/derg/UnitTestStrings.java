@@ -1,5 +1,7 @@
 package derg;
 
+import trawel.extra;
+
 public class UnitTestStrings {
 
 	public static void main(String[] args) {
@@ -17,6 +19,11 @@ public class UnitTestStrings {
 		testString = "|sub(bacon:eggs) |sub(word:fire) |sub(word:fire) |sub(word:earth,word:shock,word:shock) |sub(word:ice) |sub(word:fire) |sub(bacon:eggs)";
 		System.out.println(testString);
 		System.out.println(elementFluffy.process(fluffy.process(testString)));
+		
+		System.out.println("-------");
+		for (int i = 0; i < 100;i++) {
+			System.out.print(extra.hrandomFloat()+", ");
+		}
 	}
 
 }
