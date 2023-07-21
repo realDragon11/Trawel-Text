@@ -211,16 +211,20 @@ public final class extra {
 			//return (int)(Math.random()*(j+1-i))+i;
 			return rand.nextInt((j+1)-i)+i;
 		}
-
+		
 		public static final int inInt(int max) {
+			return inInt(max,false);
+		}
+
+		public static final int inInt(int max, boolean alwaysNine) {
 			String str;
 			int in =0;
 			Networking.sendStrong("Entry|Activate|" + max + "|");
 			if ((Networking.connected() && mainGame.GUIInput) || Networking.autoconnectSilence) {
 				trawel.threads.BlockTaskManager.start();
 				int ini=  Networking.nextInt();
-				while(ini < 1 || ini > max) {
-					extra.println("Please type a number from 1 to " + max + ".");
+				while(!(alwaysNine && ini == 9) && (ini < 1 || ini > max)) {
+					extra.println("Please type a number from 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
 					ini=  Networking.nextInt();
 					if (ini == -99 || ini == -1) {
 						Networking.unConnect();
@@ -232,23 +236,25 @@ public final class extra {
 				return ini;
 			
 			}else {
-				
-			do{
-			trawel.threads.BlockTaskManager.start();
-			str = extra.inString(); 
-			try {
-				in = Integer.parseInt(str);
-			}catch(NumberFormatException e) {
-				if (!str.equals("\n")) {
-				in = 0;}
-			}catch(Exception e) {
-				extra.println("error");
-			}
-			if((in < 1 || in > max)) {
-				extra.println("Please type a number from 1 to " + max + ".");
-			}
-			} while (in < 1 || in > max);
-			trawel.threads.BlockTaskManager.halt();
+
+				while (true){
+					trawel.threads.BlockTaskManager.start();
+					str = extra.inString(); 
+					try {
+						in = Integer.parseInt(str);
+					}catch(NumberFormatException e) {
+						if (!str.equals("\n")) {
+							in = 0;}
+					}catch(Exception e) {
+						extra.println("error");
+					}
+					if (!(alwaysNine && in == 9) && (in < 1 || in > max)) {
+						extra.println("Please type a number from 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
+					}else {
+						break;
+					}
+				}
+				trawel.threads.BlockTaskManager.halt();
 			extra.linebreak();
 			return in;
 			}
@@ -404,32 +410,49 @@ public final class extra {
 		//logic of menuGo
 		public static int menuGo(MenuGenerator mGen) {
 			List<MenuItem> mList = new ArrayList<MenuItem>();
-			mList = mGen.gen();
-			int v = 1;
-			for (MenuItem m: mList) {
-				if (m.canClick()) {
-				extra.println(v + " " + m.title());
-				v++;}else {
-					extra.println(m.title());
-				}
-			}
+			int v;
+			boolean forceLast;
+			List<MenuItem> subList;
 			while (true) {
-				List<MenuItem> subList = new ArrayList<MenuItem>();
-				mList.stream().filter(m -> m.canClick() == true).forEach(subList::add);
-				int val = extra.inInt(subList.size())-1;
-				boolean ret = subList.get(val).go();
+				mList = mGen.gen();
+				v = 1;
+				forceLast = false;
+				subList = new ArrayList<MenuItem>();
+				for (MenuItem m: mList) {
+					if (m.forceLast()) {
+						subList.add(m);
+						extra.println("9 " + m.title());
+						forceLast = true;
+						//force last must be last, and pickable
+						break;
+					}else {
+						if (m.canClick()) {
+							extra.println(v + " " + m.title());
+							v++;
+							subList.add(m);
+						}else {
+							extra.println(m.title());
+						}
+					}
+				}
+				
+				//mList.stream().filter(m -> m.canClick() == true).forEach(subList::add);
+				int val;
+				if (!forceLast) {
+					val = extra.inInt(subList.size())-1;
+				}else {
+					val = extra.inInt(subList.size()-1,true)-1;
+				}
+				boolean ret;
+				if (val < subList.size()) {
+					ret = subList.get(val).go();
+				}else {
+					ret = subList.get(subList.size()-1).go();
+				}
+				 
 				//mList = mGen.gen();
 				if (ret) {
 					return val;
-				}
-				mList = mGen.gen();
-				v = 1;
-				for (MenuItem m: mList) {
-					if (m.canClick()) {
-						extra.println(v + " " + m.title());
-						v++;}else {
-							extra.println(m.title());
-						}
 				}
 			}
 		}

@@ -35,4 +35,9 @@ public class MenuSelectFeature implements MenuItem {
 		return true;
 	}
 
+	@Override
+	public boolean forceLast() {
+		return false;
+	}
+
 }

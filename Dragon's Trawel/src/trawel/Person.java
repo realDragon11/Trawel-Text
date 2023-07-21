@@ -309,7 +309,7 @@ public class Person implements java.io.Serializable{
 			pluslevel++;
 		}
 		if (pluslevel > level) {
-			extra.println(this.getName() + " leveled up " + (pluslevel-level) + "times and is now level " + (pluslevel) + ".");
+			extra.println(this.getName() + " leveled up " + (pluslevel-level) + " times and is now level " + (pluslevel) + ".");
 			computeLevels(pluslevel-level);
 		}
 		extra.println(this.getName() + " has " + xp + "/" + level*level + " xp toward level " + (level+1) + ". +" + x + "xp.");

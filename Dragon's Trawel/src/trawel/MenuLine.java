@@ -14,4 +14,9 @@ public abstract class MenuLine implements MenuItem{
 	public boolean canClick() {
 		return false;
 	}
+	
+	@Override
+	public boolean forceLast() {
+		return false;
+	}
 }

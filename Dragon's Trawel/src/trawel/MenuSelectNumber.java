@@ -15,5 +15,10 @@ public abstract class MenuSelectNumber implements MenuItem {
 	public boolean canClick() {
 		return true;
 	}
+	
+	@Override
+	public boolean forceLast() {
+		return false;
+	}
 
 }

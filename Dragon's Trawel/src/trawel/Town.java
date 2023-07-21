@@ -344,7 +344,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 					}
 				}
 				
-				mList.add(new MenuSelect() {
+				mList.add(new MenuLast() {
 
 					@Override
 					public String title() {

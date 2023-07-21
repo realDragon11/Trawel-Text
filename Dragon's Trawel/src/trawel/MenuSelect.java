@@ -13,4 +13,9 @@ public abstract class MenuSelect implements MenuItem{
 	public boolean canClick() {
 		return true;
 	}
+	
+	@Override
+	public boolean forceLast() {
+		return false;
+	}
 }

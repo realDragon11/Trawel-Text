@@ -11,4 +11,6 @@ public interface MenuItem {
 	public boolean go();
 
 	public boolean canClick();
+	
+	public boolean forceLast();
 }
