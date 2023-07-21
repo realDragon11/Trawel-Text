@@ -108,10 +108,10 @@ public class Person implements java.io.Serializable{
 		}
 		this.noAILevel = !isAI;
 		effects = new ArrayList<Effect>();
-		Boolean print = extra.getPrint();
+		extra.offPrintStack();
 		extra.changePrint(true);
 		AIClass.checkYoSelf(this);
-		extra.changePrint(print);
+		extra.popPrintStack();
 	}
 	
 	@Deprecated
@@ -209,10 +209,9 @@ public class Person implements java.io.Serializable{
 	 */
 	public void battleSetup() {
 		
-		Boolean print = extra.getPrint();
-		extra.changePrint(true);
+		extra.offPrintStack();
 		AIClass.checkYoSelf(this);
-		extra.changePrint(print);
+		extra.popPrintStack();
 		
 		if (this.isPlayer()) {
 			Player.player.doSip();

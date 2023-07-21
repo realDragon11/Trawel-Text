@@ -27,21 +27,18 @@ import trawel.quests.QuestReactionFactory;
 import trawel.townevents.TownFlavorFactory;
 /**
  * 
- * @author Brian Malone
+ * @author dragon
  * 2/5/2018
- * The main method.
- * calls all the other classes, and holds the defining gameplay types and inputs.
+ * Entry point for compiled game.
  */
 public class mainGame {
-	//public static final boolean bumpEnabled = true;//a boolean for an update
 
-	public static final String VERSION_STRING = "v0.7.4";
+	public static final String VERSION_STRING = "v0.8.X";
 
 
-	//instance variables
+	//static vars
 	public static Scanner scanner = new Scanner(System.in);
 	
-	public static int starting_level = 1;
 	public static boolean debug = false;
 	public static boolean inEclipse = false;
 	public static boolean autoConnect = false;
@@ -55,8 +52,6 @@ public class mainGame {
 	
 	public static Date lastAutoSave = new Date();
 	
-	public static boolean noBards = true;
-	
 	public static boolean doAutoSave = true;
 	
 	public static boolean logStreamIsErr = false;
@@ -64,9 +59,8 @@ public class mainGame {
 
 	public static PrintStream logStream;
 
-	public static int attackType = 2;
 	
-	public static boolean delayWaits = false;
+	public static boolean delayWaits = false;//TODO maybe turn back on
 	
 	private static boolean finalSetup1 = false;
 	private static boolean basicSetup1 = false;
@@ -671,26 +665,13 @@ public class mainGame {
 			 Networking.charUpdate();
 		
 	}
-
-
-	private void links() {
-		while (true) {
-			extra.println("1 Discord");
-			extra.println("2 Github");
-			extra.println("3 back");
-			switch(extra.inInt(3)) {
-			case 1: openWebpage("https://discord.gg/jsyqu7X");break;
-			case 2: openWebpage("https://github.com/realDragon11/Trawel-Text");
-			case 3: return;
-			}
-		}
-	}
 	
 	/**
 	 * Main method. Calls the main game.
 	 * @param args (Strings)
 	 */
 	public static void main(String[] args) {
+		extra.setMainThread();
 		new WorldGen();
 		try {
 			logStream = new PrintStream("log.txt");
@@ -1064,10 +1045,10 @@ public class mainGame {
 			Player player;
 			//
 			while (manOne == null) {
-				manOne = new Person(starting_level,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
+				manOne = new Person(1,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
 				manOne.hTask = HostileTask.DUEL;
 				Person manThree = manOne;
-				manTwo = new Person(starting_level,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
+				manTwo = new Person(1,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
 				manTwo.hTask = HostileTask.DUEL;
 				if (!displayFight) {
 					extra.changePrint(true);
@@ -1107,6 +1088,7 @@ public class mainGame {
 			WorldGen.plane.setPlayer(player);
 			if (cheaty) {
 				player.getPerson().addXp(9999);
+				Player.toggleTutorial();
 			}
 			//player.getPerson().playerLevelUp();
 			adventureBody();

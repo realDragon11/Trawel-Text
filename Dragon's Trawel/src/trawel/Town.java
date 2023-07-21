@@ -236,6 +236,28 @@ public class Town extends TContextOwner implements java.io.Serializable{
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> mList = new ArrayList<MenuItem>();
+				if (hasRoads()) {
+					mList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return extra.inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f))+"Roads";
+						}
+
+						@Override
+						public boolean go() {
+							goRoads();
+							return true;
+						}});
+					if (Player.getTutorial()) {
+						mList.add(new MenuLine() {
+
+							@Override
+							public String title() {
+								return "Roads are the most basic way to travel from town to town.\nTry exploring the town a bit before moving on!";
+							}});
+					}
+				}
 				if (hasTeleporters()) {
 					mList.add(new MenuSelect() {
 
@@ -249,6 +271,14 @@ public class Town extends TContextOwner implements java.io.Serializable{
 							goTeleporters();
 							return true;
 						}});
+					if (Player.getTutorial()) {
+						mList.add(new MenuLine() {
+
+							@Override
+							public String title() {
+								return "Teleporters are like roads, but don't require physical connection.";
+							}});
+					}
 				}
 				if (hasPort()) {
 					mList.add(new MenuSelect() {
@@ -263,6 +293,14 @@ public class Town extends TContextOwner implements java.io.Serializable{
 							goPort();
 							return true;
 						}});
+					if (Player.getTutorial()) {
+						mList.add(new MenuLine() {
+
+							@Override
+							public String title() {
+								return "Ports will take you through sea routes to other towns.";
+							}});
+					}
 				}
 				
 				for (Feature f: features) {
@@ -305,28 +343,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 						}});
 					}
 				}
-				if (hasRoads()) {
-					mList.add(new MenuSelect() {
-
-						@Override
-						public String title() {
-							return extra.inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f))+"Roads";
-						}
-
-						@Override
-						public boolean go() {
-							goRoads();
-							return true;
-						}});
-					if (Player.getTutorial()) {
-						mList.add(new MenuLine() {
-
-							@Override
-							public String title() {
-								return "Roads are the most basic way to travel from town to town.\nTry exploring the town a bit before moving on!";
-							}});
-					}
-				}
+				
 				mList.add(new MenuSelect() {
 
 					@Override

@@ -438,37 +438,34 @@ public class Combat {
 		if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.DESTRUCTIVE)) {
 			def.burn(.01,att.getSlot());
 		}
-		switch (mainGame.attackType) {
-		default:
-			//double depthWeapon2 = .25;
-			//double midWeapon2 = .7;
-			
-			//armMod = armMod*(1-(armorMinShear/2));
-			List<Weapon.WeaponQual> wqL = (att != null && att.getWeapon() != null ? att.getWeapon().qualList : new ArrayList<Weapon.WeaponQual>());
-			double sharpA = def.getSharp(att.getSlot(),wqL)*armMod;
-			double bluntA = def.getBlunt(att.getSlot(),wqL)*armMod;
-			double pierceA= def.getPierce(att.getSlot(),wqL)*armMod;
-			AttackReturn ret = Combat.testCombat.new AttackReturn((int)(
-					(extra.zeroOut((att.getSharp()*damMod)-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
-					+extra.zeroOut((att.getBlunt()*damMod)-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
-					+extra.zeroOut((att.getPierce()*damMod)-((armorMinShear*pierceA)+((1-armorMinShear)*pierceA*extra.upDamCurve(depthArmor2,midArmor2))))),str);
-			if (att.getWeapon() != null &&att.getWeapon().qualList.contains(Weapon.WeaponQual.RELIABLE) && ret.damage <= att.getWeapon().getLevel()) {
-				ret.damage = att.getWeapon().getLevel();
-				ret.reliable = true;
-			}else {
-				if (ret.damage > 0) {
-					if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.REFINED)) {
-						ret.damage += att.getWeapon().getLevel();
-					}
-					if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.WEIGHTED)) {
-						if (att.getHitmod() < 1.5) {
-							ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitmod()*10))));
-						}
+		//double depthWeapon2 = .25;
+		//double midWeapon2 = .7;
+		
+		//armMod = armMod*(1-(armorMinShear/2));
+		List<Weapon.WeaponQual> wqL = (att != null && att.getWeapon() != null ? att.getWeapon().qualList : new ArrayList<Weapon.WeaponQual>());
+		double sharpA = def.getSharp(att.getSlot(),wqL)*armMod;
+		double bluntA = def.getBlunt(att.getSlot(),wqL)*armMod;
+		double pierceA= def.getPierce(att.getSlot(),wqL)*armMod;
+		AttackReturn ret = Combat.testCombat.new AttackReturn((int)(
+				(extra.zeroOut((att.getSharp()*damMod)-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
+				+extra.zeroOut((att.getBlunt()*damMod)-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
+				+extra.zeroOut((att.getPierce()*damMod)-((armorMinShear*pierceA)+((1-armorMinShear)*pierceA*extra.upDamCurve(depthArmor2,midArmor2))))),str);
+		if (att.getWeapon() != null &&att.getWeapon().qualList.contains(Weapon.WeaponQual.RELIABLE) && ret.damage <= att.getWeapon().getLevel()) {
+			ret.damage = att.getWeapon().getLevel();
+			ret.reliable = true;
+		}else {
+			if (ret.damage > 0) {
+				if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.REFINED)) {
+					ret.damage += att.getWeapon().getLevel();
+				}
+				if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.WEIGHTED)) {
+					if (att.getHitmod() < 1.5) {
+						ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitmod()*10))));
 					}
 				}
 			}
-			return ret;
 		}
+		return ret;
 	}
 	
 	public static AttackReturn handleTestAttack(Attack att, Inventory def, double armMod) {
@@ -477,39 +474,37 @@ public class Combat {
 			return Combat.testCombat.new AttackReturn(-1,"");//do a dodge
 		}
 		//return the damage-armor, with each type evaluated individually
-		switch (mainGame.attackType) {
-		default:
-			//double depthWeapon2 = .25;
-			//double midWeapon2 = .7;
-			/*double depthArmor2 = .25;
-			double midArmor2 = .7;
-			double armorMinShear = .1;*/
-			//armMod = armMod*(1-(armorMinShear/2));
-			List<Weapon.WeaponQual> wqL = (att != null && att.getWeapon() != null ? att.getWeapon().qualList : new ArrayList<Weapon.WeaponQual>());
-			double sharpA = def.getSharp(att.getSlot(),wqL)*armMod;
-			double bluntA = def.getBlunt(att.getSlot(),wqL)*armMod;
-			double pierceA= def.getPierce(att.getSlot(),wqL)*armMod;
-			AttackReturn ret = Combat.testCombat.new AttackReturn((int)(
-					(extra.zeroOut((att.getSharp()*damMod)-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
-					+extra.zeroOut((att.getBlunt()*damMod)-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
-					+extra.zeroOut((att.getPierce()*damMod)-((armorMinShear*pierceA)+((1-armorMinShear)*pierceA*extra.upDamCurve(depthArmor2,midArmor2))))),"");
-			if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.RELIABLE) && ret.damage <= att.getWeapon().getLevel()) {
-				ret.damage = att.getWeapon().getLevel();
-				ret.reliable = true;
-			}else {
-				if (ret.damage > 0) {
-					if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.REFINED)) {
-						ret.damage += att.getWeapon().getLevel();
-					}
-					if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.WEIGHTED)) {
-						if (att.getHitmod() < 1.5) {
-							ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitmod()*10))));
-						}
+		//double depthWeapon2 = .25;
+		//double midWeapon2 = .7;
+		/*double depthArmor2 = .25;
+		double midArmor2 = .7;
+		double armorMinShear = .1;*/
+		//armMod = armMod*(1-(armorMinShear/2));
+		List<Weapon.WeaponQual> wqL = (att != null && att.getWeapon() != null ? att.getWeapon().qualList : new ArrayList<Weapon.WeaponQual>());
+		double sharpA = def.getSharp(att.getSlot(),wqL)*armMod;
+		double bluntA = def.getBlunt(att.getSlot(),wqL)*armMod;
+		double pierceA= def.getPierce(att.getSlot(),wqL)*armMod;
+		AttackReturn ret = Combat.testCombat.new AttackReturn((int)(
+				(extra.zeroOut((att.getSharp()*damMod)-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
+				+extra.zeroOut((att.getBlunt()*damMod)-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
+				+extra.zeroOut((att.getPierce()*damMod)-((armorMinShear*pierceA)+((1-armorMinShear)*pierceA*extra.upDamCurve(depthArmor2,midArmor2))))),"");
+		if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.RELIABLE) && ret.damage <= att.getWeapon().getLevel()) {
+			ret.damage = att.getWeapon().getLevel();
+			ret.reliable = true;
+		}else {
+			if (ret.damage > 0) {
+				if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.REFINED)) {
+					ret.damage += att.getWeapon().getLevel();
+				}
+				if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.WEIGHTED)) {
+					if (att.getHitmod() < 1.5) {
+						ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitmod()*10))));
 					}
 				}
 			}
-			return ret;	
 		}
+		return ret;	
+		
 	}
 	
 	public class AttackReturn {

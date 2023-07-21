@@ -123,26 +123,6 @@ public class World extends TContextOwner{
 			return getRandom(level-1);}else {return startTown;}
 		}
 	}
-
-
-	
-	public BardSong getRandSong() {
-		return bardSongs.get(extra.randRange(0,bardSongs.size()-1));
-	}
-
-	@Deprecated
-	public BardSong startBardSong(Person manOne, Person manTwo) {
-		BardSong b = new BardSong(manOne,manTwo);
-		if (!mainGame.noBards) {bardSongs.add(b);}
-		return b;
-	}
-	
-	@Deprecated
-	public BardSong startBardSong() {
-		BardSong b = new BardSong();
-		if (!mainGame.noBards) {bardSongs.add(b);}
-		return b;
-	}
 	
 	public void addDeathCheater(Person p) {
 		deathCheaters.add(p);
