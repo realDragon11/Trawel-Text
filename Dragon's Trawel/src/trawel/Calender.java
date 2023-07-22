@@ -247,10 +247,11 @@ public class Calender implements Serializable, CanPassTime {
 
 	public static double[] lerpLocation(Town t) {
 		double[] d = new double[2];
-		Point p = t.getLocation();
+		byte x = t.getLocationX();
+		byte y = t.getLocationY();
 		World w = t.getIsland().getWorld();
-		d[0] = extra.lerp(w.getMinLata(),w.getMaxLata(),p.y/(float)w.getYSize());
-		d[1] = extra.lerp(w.getMinLonga(),w.getMaxLonga(),p.y/(float)w.getXSize());
+		d[0] = extra.lerp(w.getMinLata(),w.getMaxLata(),y/(float)w.getYSize());
+		d[1] = extra.lerp(w.getMinLonga(),w.getMaxLonga(),x/(float)w.getXSize());
 		return d;
 	}
 

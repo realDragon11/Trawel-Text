@@ -1,6 +1,8 @@
 package trawel.time;
 
-public class TimeEvent {
+import java.io.Serializable;
 
-	public ContextType context;
+public class TimeEvent implements Serializable {
+	private static final long serialVersionUID = 1L;
+	public ContextLevel context;
 }

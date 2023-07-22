@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
+import trawel.time.ContextLevel;
 import trawel.time.ContextType;
 import trawel.time.TContextOwner;
 import trawel.time.TimeContext;
@@ -82,7 +83,7 @@ public class World extends TContextOwner{
 		this.startTown = startTown;
 	}
 	
-	public void displayMap1() {
+	private void displayMap1() {
 		String[][] map = new String[xSize][ySize];
 		for (int i = 0; i < xSize; i++) {
 			for (int j = 0; j < ySize; j++) {
@@ -92,9 +93,9 @@ public class World extends TContextOwner{
 		for(Island i: islands) {
 			for (Town t: i.getTowns()) {
 				if (Player.player.getLocation() != t) {
-				map[t.getLocation().y-1][t.getLocation().x-1] = Integer.toString(t.getTier()%10);		
+				map[t.getLocationY()-1][t.getLocationX()-1] = Integer.toString(t.getTier()%10);		
 				}else {
-					map[t.getLocation().y-1][t.getLocation().x-1] = "x";
+					map[t.getLocationY()-1][t.getLocationX()-1] = "x";
 				}
 			}
 		}
@@ -227,6 +228,15 @@ public class World extends TContextOwner{
 
 	public boolean hasDebt() {
 		return timeScope.getDebt() > 1;//needs at least an hour of debt to bother
+	}
+	
+	@Override
+	public void consumeEvents(List<TimeEvent> list) {
+		// TODO Auto-generated method stub
+	}
+	@Override
+	public ContextLevel contextLevel() {
+		return ContextLevel.WORLD;
 	}
 	
 

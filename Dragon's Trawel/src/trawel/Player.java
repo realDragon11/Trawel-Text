@@ -92,10 +92,6 @@ public class Player extends SuperPerson{
 		player.getPerson().addXp(amount);
 		}
 	
-	
-	public static void showMap1() {
-		world.displayMap1();
-	}
 	public static boolean hasSkill(Skill skill) {
 		return player.getPerson().getSkills().contains(skill);
 	}

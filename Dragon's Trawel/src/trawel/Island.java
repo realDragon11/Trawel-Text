@@ -2,6 +2,7 @@ package trawel;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.time.ContextLevel;
 import trawel.time.TContextOwner;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -67,6 +68,15 @@ public class Island extends TContextOwner{
 		for(Town t: towns) {
 			t.prepareSave();
 		}
+	}
+	
+	@Override
+	public void consumeEvents(List<TimeEvent> list) {
+		// TODO Auto-generated method stub
+	}
+	@Override
+	public ContextLevel contextLevel() {
+		return ContextLevel.ISLAND;
 	}
 
 	

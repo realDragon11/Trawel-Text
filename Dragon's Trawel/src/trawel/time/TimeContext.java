@@ -98,9 +98,10 @@ public class TimeContext {
 	
 	/**
 	 * call to process events without popping them
+	 * @param caller 
 	 */
-	public void processEvents() {
-		
+	public void processEvents(HasTimeContext caller) {
+		caller.consumeEvents(events);
 	}
 
 	/**
@@ -118,8 +119,8 @@ public class TimeContext {
 	 * give up all our events to another context
 	 * @return
 	 */
-	public List<TimeEvent> pop(){
-		processEvents();
+	public List<TimeEvent> pop(HasTimeContext caller){
+		processEvents(caller);
 		List<TimeEvent> ret = events;
 		events = new ArrayList<TimeEvent>();
 		return ret;
@@ -149,5 +150,9 @@ public class TimeContext {
 	public void assumeDebt(double taken) {
 		assert taken <= trackedTime;
 		trackedTime-=taken;
+	}
+
+	public List<TimeEvent> forSaveEvents() {
+		return events;
 	}
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import trawel.threads.BlockTaskManager;
 import trawel.threads.FollowUp.FollowType;
+import trawel.time.ContextLevel;
 import trawel.time.ContextType;
 import trawel.time.TContextOwner;
 import trawel.time.TimeContext;
@@ -106,5 +107,14 @@ public class Plane extends TContextOwner{
 			}
 		}
 		return tasks;
+	}
+	
+	@Override
+	public void consumeEvents(List<TimeEvent> list) {
+		// TODO Auto-generated method stub
+	}
+	@Override
+	public ContextLevel contextLevel() {
+		return ContextLevel.PLANE;
 	}
 }

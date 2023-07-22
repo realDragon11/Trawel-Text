@@ -14,10 +14,15 @@ import java.util.List;
 import org.nustaq.serialization.FSTConfiguration;
 import org.nustaq.serialization.FSTObjectOutput;
 
+import trawel.features.nodes.CaveNode;
 import trawel.features.nodes.Dungeon;
+import trawel.features.nodes.DungeonNode;
 import trawel.features.nodes.Graveyard;
+import trawel.features.nodes.GraveyardNode;
 import trawel.features.nodes.Grove;
+import trawel.features.nodes.GroveNode;
 import trawel.features.nodes.Mine;
+import trawel.features.nodes.MineNode;
 import trawel.fort.FortQual;
 import trawel.fort.WizardTower;
 import trawel.townevents.TownTag;
@@ -30,8 +35,13 @@ public class WorldGen {
 	
 	static final FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration(); //.createDefaultConfiguration();
 	static{
-		conf.registerClass(Armor.class,Weapon.class,Person.class);//seems to produce deserial errors?
+		conf.registerClass(Armor.class,Weapon.class,Person.class,
+				GroveNode.class,CaveNode.class,MineNode.class,DungeonNode.class,GraveyardNode.class//node set doesn't give much benefit right now
+				);
+		//I think strings are already registered somehow
 		//conf.getClassRegistry().dragonDump();
+		//could do something with enums where it writes their names to a list and the ordinal uses the SAVED list
+		//unsure how FST truly does it but there was a comment about a TCP full name version
 	}
 	public static final double distanceScale = 2;//average distance between towns is like 1-3 units
 	public static final double footTravelPerHour = 3/distanceScale;
@@ -641,18 +651,21 @@ public class WorldGen {
 		}
 		switch (type) {
 		case "road":
-			return pointDistance(t1.getLocation(),t2.getLocation())/footTravelPerHour;
+			return pointDistance(t1,t2)/footTravelPerHour;
 		case "ship":
-			return pointDistance(t1.getLocation(),t2.getLocation())/shipTravelPerHour;
+			return pointDistance(t1,t2)/shipTravelPerHour;
 		case "teleport":
-			return pointDistance(t1.getLocation(),t2.getLocation())/teleTravelPerHour;
+			return pointDistance(t1,t2)/teleTravelPerHour;
 		}
 		//fallback
-		return pointDistance(t1.getLocation(),t2.getLocation());
+		return pointDistance(t1,t2);
 	}
 	
 	public static double pointDistance(Point a, Point b) {
 		return Math.sqrt(Math.pow(a.x-b.x,2)+Math.pow(a.y-b.y,2));		
+	}
+	public static double pointDistance(Town a, Town b) {
+		return Math.sqrt(Math.pow(a.getLocationX()-b.getLocationX(),2)+Math.pow(a.getLocationY()-b.getLocationY(),2));		
 	}
 	
 	public static void save(String str) {
@@ -905,6 +918,6 @@ public class WorldGen {
 	
 	private static int heuristic_cost_estimate(PathTown cur, Town dest) {
 		
-		return Math.abs((cur.t.getLocation().x-dest.getLocation().x)) + Math.abs((cur.t.getLocation().y-dest.getLocation().y));
+		return Math.abs((cur.t.getLocationX()-dest.getLocationX())) + Math.abs((cur.t.getLocationY()-dest.getLocationY()));
 	}
 }

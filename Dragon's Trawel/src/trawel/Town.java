@@ -9,6 +9,7 @@ import trawel.fort.FortHall;
 import trawel.fort.FortQual;
 import trawel.quests.QuestReactionFactory;
 import trawel.time.CanPassTime;
+import trawel.time.ContextLevel;
 import trawel.time.ContextType;
 import trawel.time.HasTimeContext;
 import trawel.time.ReloadAble;
@@ -29,13 +30,13 @@ public class Town extends TContextOwner implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 	private boolean hasPort;
 	private boolean hasTeleporters;
-	private Point location;
+	private byte locationX, locationY;
 	private Island island;
 	private String name;
 	private int tier;
 	private double timePassed;
 	private ArrayList<Connection> connects;
-	private ArrayList<Feature> features, removeList, addList;
+	private ArrayList<Feature> features;
 	private ArrayList<SuperPerson> occupants;
 	private PrintEvent goPrinter, newPrinter;
 	private boolean hasBeen;
@@ -48,11 +49,11 @@ public class Town extends TContextOwner implements java.io.Serializable{
 	public int visited = 0;
 	public int background_variant = extra.randRange(1,3);
 	
+	private transient List<TimeEvent> events;
+	
 	public Town() {
 		connects = new ArrayList<Connection>();
 		features = new ArrayList<Feature>();
-		removeList = new ArrayList<Feature>();
-		addList = new ArrayList<Feature>();
 		occupants = new ArrayList<SuperPerson>();
 		hasTeleporters = false;
 		hasPort = false;
@@ -62,7 +63,8 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		this.name = name;
 		this.tier = tier;
 		this.island = island;
-		this.location = location;
+		locationX = (byte) location.x;
+		locationY = (byte) location.y;
 		timePassed = 0;
 		int j = extra.randRange(2, 5);
 		int i = 0;
@@ -79,7 +81,8 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		this.name = name;
 		this.tier = tier;
 		this.island = island;
-		this.location = location;
+		locationX = (byte) location.x;
+		locationY = (byte) location.y;
 		this.fQuals = fQuals;
 		this.leaveTown = lTown;
 		timePassed = 0;
@@ -91,6 +94,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 	public void reload() {
 		timeScope = new TimeContext(ContextType.LOCAL,this);
 		timeSetup();
+		events = new ArrayList<TimeEvent>();
 		for (Feature f: features) {
 			f.reload();
 		}
@@ -121,11 +125,11 @@ public class Town extends TContextOwner implements java.io.Serializable{
 	public void setHasTeleporters(boolean hasTeleporters) {
 		this.hasTeleporters = hasTeleporters;
 	}
-	public Point getLocation() {
-		return location;
+	public byte getLocationX() {
+		return locationX;
 	}
-	public void setLocation(Point location) {
-		this.location = location;
+	public byte getLocationY() {
+		return locationY;
 	}
 	public Island getIsland() {
 		return island;
@@ -675,6 +679,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
+		events.clear();
 		timePassed+=time;
 		defenseTimer-=time;
 		if (defenseTimer < 0) {
@@ -687,19 +692,33 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		for (Feature f: features) {
 			timeScope.localEvents(f.contextTime(time,calling));
 		}
-		
-		for (Feature f: removeList) {
-			features.remove(f);
-		}
-		removeList = new ArrayList<Feature>();
-		for (Feature f: addList) {
-			features.add(f);
-		}
-		addList = new ArrayList<Feature>();
 		for (SuperPerson a: occupants) {
 			a.passTime(time,calling);
 		}
-		return null;
+		return events;
+	}
+	
+	
+	//TODO: replace these with time events
+	public void enqueneRemove(Feature f) {
+		events.add(new StructuralFeatureEvent(f,false));
+	}
+	public void enqueneAdd(Feature f) {
+		events.add(new StructuralFeatureEvent(f,true));
+	}
+	
+	public class StructuralFeatureEvent extends TimeEvent{
+		private static final long serialVersionUID = 1L;
+		
+		public final Feature modify;
+		public final boolean adding;
+		
+		public StructuralFeatureEvent(Feature modify,boolean adding) {
+			this.modify = modify;
+			this.adding = adding;
+			context = ContextLevel.TOWN;
+		}
+		
 	}
 	
 	public ArrayList<SuperPerson> getOccupants() {
@@ -745,14 +764,6 @@ public class Town extends TContextOwner implements java.io.Serializable{
 			}
 		}
 		return false;
-	}
-	
-	//TODO: replace these with time events
-	public void enqueneRemove(Feature f) {
-		this.removeList.add(f);
-	}
-	public void enqueneAdd(Feature f) {
-		this.addList.add(f);
 	}
 	
 	public boolean wander(double threshold) {
@@ -833,5 +844,25 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		for(Feature f: features) {
 			f.prepareSave();
 		}
+	}
+	@Override
+	public void consumeEvents(List<TimeEvent> list) {
+		for (int i = list.size()-1;i >=0;i--) {//backwards for removal reasons
+			TimeEvent e = list.get(i);
+			if (e.context.tier() <= contextLevel().tier())
+			if (e instanceof StructuralFeatureEvent) {
+				StructuralFeatureEvent sfe = (StructuralFeatureEvent)e;
+				if (sfe.adding) {
+					features.add(sfe.modify);
+				}else {
+					features.remove(sfe.modify);
+				}
+				list.remove(i);
+			}
+		}
+	}
+	@Override
+	public ContextLevel contextLevel() {
+		return ContextLevel.TOWN;
 	}
 }

@@ -1,11 +1,14 @@
 package trawel.time;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class TContextOwner implements java.io.Serializable, CanPassTime, ReloadAble, HasTimeContext{
 
 	protected transient TimeContext timeScope;
 	protected double savedTime = 0;
+	
+	protected List<TimeEvent> storedTimeEvents = new ArrayList<TimeEvent>();
 	
 	@Override
 	public void reload() {
@@ -23,17 +26,18 @@ public abstract class TContextOwner implements java.io.Serializable, CanPassTime
 	
 	public void prepareSave() {
 		savedTime = timeScope.getDebt();
+		storedTimeEvents = timeScope.forSaveEvents();
 	}
 	
 	@Override
 	public List<TimeEvent> contextTime(double time, TimeContext calling) {
-		return timeScope.call(calling, time).pop();
+		return timeScope.call(calling, time).pop(this);
 	}
 	
 	public List<TimeEvent> contextTime(double time, TimeContext calling, boolean ignorelazy) {
-		return timeScope.call(calling, time,ignorelazy).pop();
+		return timeScope.call(calling, time,ignorelazy).pop(this);
 	}
 	public List<TimeEvent> contextTime(double time, TimeContext calling, ContextType type, boolean ignorelazy) {
-		return timeScope.call(calling, time,type, ignorelazy).pop();
+		return timeScope.call(calling, time,type, ignorelazy).pop(this);
 	}
 }

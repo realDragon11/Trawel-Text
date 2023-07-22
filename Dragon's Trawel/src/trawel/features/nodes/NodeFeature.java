@@ -22,7 +22,7 @@ public abstract class NodeFeature extends Feature {
 		start.passTime(time, calling);
 		start.endPass();
 		findTime += time;
-		return timeScope.pop();
+		return timeScope.pop(this);
 	}
 	
 	public double getFindTime() {

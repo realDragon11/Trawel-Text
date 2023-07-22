@@ -5,6 +5,7 @@ import java.util.List;
 
 import trawel.quests.QuestR;
 import trawel.time.CanPassTime;
+import trawel.time.ContextLevel;
 import trawel.time.ContextType;
 import trawel.time.HasTimeContext;
 import trawel.time.ReloadAble;
@@ -104,6 +105,15 @@ public abstract class Feature extends TContextOwner{
 	}
 	public Town getTown() {
 		return town;
+	}
+	
+	@Override
+	public void consumeEvents(List<TimeEvent> list) {
+		// TODO Auto-generated method stub
+	}
+	@Override
+	public ContextLevel contextLevel() {
+		return ContextLevel.FEATURE;
 	}
 	
 }
