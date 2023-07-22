@@ -446,41 +446,66 @@ public class AIClass {
 
 	public static void displayChange(Item hasItem, Item toReplace) {
 		extra.println();
+		int goldDiff = toReplace.getCost() - hasItem.getCost();
 		if (Armor.class.isInstance(hasItem)) {
 			Armor hasArm = (Armor) hasItem;
 			Armor toArm = (Armor) toReplace;
 			if (Player.getTutorial()) {
 				extra.println("sbp = sharp, blunt, pierce");
 			}
-			extra.println(extra.PRE_MAGENTA+"Difference: sbp: " + colorPlusMinus(extra.format2(toArm.getSharpResist()*toArm.getResist()-hasArm.getSharpResist()*hasArm.getResist())) + " " +  colorPlusMinus(extra.format2(toArm.getBluntResist()*toArm.getResist()-hasArm.getBluntResist()*hasArm.getResist())) + " " + colorPlusMinus(extra.format2((toArm.getPierceResist()*toArm.getResist())- hasArm.getPierceResist()*hasArm.getResist()))+  "[c_white] cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));//" dex: " + extra.format2(toArm.getDexMod()-hasArm.getDexMod()) +
+			extra.println(extra.PRE_MAGENTA+"Difference: sbp: " 
+			+ extra.hardColorDelta1(toArm.getSharpResist()*toArm.getResist(),hasArm.getSharpResist()*hasArm.getResist())
+			+ " " + extra.hardColorDelta1(toArm.getBluntResist()*toArm.getResist(),hasArm.getBluntResist()*hasArm.getResist())
+			+ " " + extra.hardColorDelta1(toArm.getPierceResist()*toArm.getResist(),hasArm.getPierceResist()*hasArm.getResist())
+			+ "[c_white] cost: " + (goldDiff != 0 ? extra.colorBaseZeroTimid(goldDiff) : "=")
+			);
+			//" dex: " + extra.format2(toArm.getDexMod()-hasArm.getDexMod()) +
 			if (hasItem.getEnchant() != null || toReplace.getEnchant()!= null) {
 				displayEnchantDiff(hasItem.getEnchant(),toReplace.getEnchant());
 			}
-		}
-		if (Weapon.class.isInstance(hasItem)) {
-			Weapon hasWeap = (Weapon)hasItem;
-			Weapon toWeap = (Weapon)toReplace;
-			if (Player.getTutorial()) {
-				extra.println("hd = highest damage, ad = average damage, bs = battlescore");
-			}
-			extra.println(extra.PRE_MAGENTA+"Difference: hd/ad/bs: " + colorPlusMinus(extra.format2((toWeap.highest()-hasWeap.highest()))) + "/" + colorPlusMinus(extra.format2(toWeap.average()-hasWeap.average()))+ "/" + colorPlusMinus(extra.format2(toWeap.score()-hasWeap.score()))  + "[c_white] cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));
-			if (((Weapon)hasItem).getEnchant() != null || ((Weapon)toReplace).getEnchant()!= null) {
-				displayEnchantDiff(((Weapon)hasItem).getEnchant(),((Weapon)toReplace).getEnchant());
+		}else {
+			if (Weapon.class.isInstance(hasItem)) {
+				Weapon hasWeap = (Weapon)hasItem;
+				Weapon toWeap = (Weapon)toReplace;
+				if (Player.getTutorial()) {
+					extra.println("hd = highest damage, ad = average damage, bs = battlescore, q = weapon qualities");
+				}
+				//TODO: this will break if a qual is in it more than twice
+				boolean isQDiff = !toWeap.qualList.containsAll(hasWeap.qualList) && !hasWeap.qualList.containsAll(toWeap.qualList);
+				int qualDiff = isQDiff ? toWeap.qualList.size()-hasWeap.qualList.size() : 0;
+				
+				extra.println(extra.PRE_MAGENTA+"Difference: hd/ad/bs: " 
+				+ (extra.hardColorDelta2(toWeap.highest(),hasWeap.highest()))
+				+ "/" + (extra.hardColorDelta2(toWeap.average(),hasWeap.average()))
+				+ "/" + (extra.hardColorDelta2(toWeap.score(),hasWeap.score()))
+				//if the qualities are the same, 'q=', if neither has any, do not display
+				+ (isQDiff ? " q " + extra.colorBaseZeroTimid(qualDiff) : (toWeap.qualList.size() > 0 ? (" q =") : ""))
+				+ "[c_white] cost: " + (goldDiff != 0 ? extra.colorBaseZeroTimid(goldDiff) : "=")
+				);
+				if (((Weapon)hasItem).getEnchant() != null || ((Weapon)toReplace).getEnchant()!= null) {
+					displayEnchantDiff(((Weapon)hasItem).getEnchant(),((Weapon)toReplace).getEnchant());
+				}
+			}else {
+				extra.println("[c_white] cost: " + (goldDiff != 0 ? extra.colorBaseZeroTimid(goldDiff) : "="));
 			}
 		}
 		
 	}
-	
+	/*
 	public static String colorPlusMinus(String str) {
 		if (str.charAt(0) == '-') {
 			return extra.PRE_RED+str;
 		}
+		if (str.equals("0.00")) {
+			return extra.PRE_WHITE;
+		}
 		/*
 		if (str.charAt(0) == '0') {
 			return "[c_white]"+str;
-		}*///TODO: check that this is fine to comment out
+		}///TODO: check that this is fine to comment out
 		return extra.PRE_GREEN+str;
-	}
+	}*/
+	
 	
 	private static void displayEnchantDiff(Enchant hasItem, Enchant toReplace) {
 		if (hasItem == null) {
@@ -563,7 +588,7 @@ public class AIClass {
 	
 	private static void enchantDiff(float has, float get, String name) {
 		if (has-get != 0) {
-			extra.println(" " +colorPlusMinus(extra.format2(get-has)) + " " + name);
+			extra.println(" " +extra.hardColorDelta2(get,has) + " " + name + " mult");
 		}
 	}
 	

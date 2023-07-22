@@ -316,9 +316,10 @@ public final class extra {
 			}
 			return printMode;
 		}
-		public static final java.text.DecimalFormat format3 = new java.text.DecimalFormat("0.00");
+		public static final java.text.DecimalFormat format1 = new java.text.DecimalFormat("0.0");
+		public static final java.text.DecimalFormat format2 = new java.text.DecimalFormat("0.00");
 		public static String format2(double d) {
-			String str = format3.format(d);
+			String str = format2.format(d);
 			if (d > 0) {
 				str = "+" + str;
 			}
@@ -624,10 +625,12 @@ public final class extra {
 		//timid colors that are slight, used for bad and good hinting
 		public static final String TIMID_GREEN = inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.8f));
 		public static final String TIMID_RED = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.8f));
+		//do not use for no change whatsoever, use white for that- this is a change that might be bad or good but is a net 0 to this stat
+		public static final String TIMID_GREY = inlineColor(extra.colorMix(Color.BLACK,Color.WHITE,.95f));
 		
 		
 		public static String colorBasedAtOne(double number, String plus, String minus, String empty) {
-			String str = format3.format(number);
+			String str = format2.format(number);
 			if (number < 1) {
 				return minus+str;
 			}
@@ -636,6 +639,55 @@ public final class extra {
 			}
 			return empty+str;
 		}
+		
+		/**
+		 * used to indicate that < 0 might be bad, > 0 might be good, and that =0 is not the same, but not bad or good
+		 * caller should display = instead of a number if they are TRULY equal, higher up in the chain
+		 * @param i
+		 * @return green +1 OR red -1 OR grey ~ with no zero
+		 */
+		public static String colorBaseZeroTimid(int i) {
+			if (i > 0) {
+				return extra.TIMID_GREEN+"+"+i;
+			}
+			if (i < 0) {
+				return extra.TIMID_RED+i;
+			}
+			return extra.TIMID_GREY+"~";
+		}
+		
+		/**
+		 * 
+		 * @param to the number moving into, is green if better
+		 * @param was the old number, is red if better
+		 * @return +/-/= green/red/white 0.00
+		 */
+		public static final String hardColorDelta2(double to, double was) {
+			if (to > was) {
+				return extra.PRE_GREEN+"+"+format2.format(to-was);
+			}
+			if (to == was) {
+				return extra.PRE_WHITE+"=0.00";
+			}
+			return extra.PRE_GREEN+"-"+format2.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
+		}
+		
+		/**
+		 * 
+		 * @param to the number moving into, is green if better
+		 * @param was the old number, is red if better
+		 * @return +/-/= green/red/white 0.0
+		 */
+		public static final String hardColorDelta1(double to, double was) {
+			if (to > was) {
+				return extra.PRE_GREEN+"+"+format1.format(to-was);
+			}
+			if (to == was) {
+				return extra.PRE_WHITE+"=0.0";
+			}
+			return extra.PRE_GREEN+"-"+format1.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
+		}
+		
 		/**
 		 * https://stackoverflow.com/a/13091759
 		 * @param a - How deep the curve is - 0 <-> 1
