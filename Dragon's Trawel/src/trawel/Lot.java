@@ -8,11 +8,7 @@ import trawel.time.TimeEvent;
 
 public class Lot extends Feature {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private Town town;
 	private int tier;
 	private double constructTime = -1;
 	private String construct;
@@ -68,8 +64,8 @@ public class Lot extends Feature {
 		case 3: 
 			extra.println("Donate to the town?");
 			if (extra.yesNo()) {
-			town.getFeatures().remove(this);
-			town.addTravel();
+			town.enqueneRemove(this);
+			town.enqueneAdd(new TravelingFeature(this.town));;
 			}break;
 		case 4: 
 			if (Player.bag.getGold() >= minecost) {

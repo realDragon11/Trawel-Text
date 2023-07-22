@@ -10,7 +10,6 @@ public class Doctor extends Feature {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Town town;
 
 	public Doctor(String name,Town t) {
 		this.name = name;

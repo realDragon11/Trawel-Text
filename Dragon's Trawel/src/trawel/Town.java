@@ -36,7 +36,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 	private int tier;
 	private double timePassed;
 	private ArrayList<Connection> connects;
-	private ArrayList<Feature> features;
+	private List<Feature> features;
 	private ArrayList<SuperPerson> occupants;
 	private PrintEvent goPrinter, newPrinter;
 	private boolean hasBeen;
@@ -194,6 +194,10 @@ public class Town extends TContextOwner implements java.io.Serializable{
 	public void addConnection(Connection c) {
 		this.connects.add(c);
 	}
+	
+	public void townProcess() {
+		consumeEvents(events);
+	}
 
 	public void atTown() {
 		Player.world = island.getWorld();
@@ -206,6 +210,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 					goPrinter.print();}
 			}
 		}
+		townProcess();//works because the menu generator below always backs out
 		hasBeen = true;
 		Player.player.lastTown = this;
 		switch (visited) {
@@ -308,7 +313,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 				}
 				
 				for (Feature f: features) {
-					if (!TravelingFeature.class.isInstance(f) || ((TravelingFeature)f).hasSomething) {
+					if (f.canShow()) {
 						mList.add(new MenuSelectFeature(f));
 						if (Player.getTutorial() && f.tutorialText != null) {
 							mList.add(new MenuSelectFeature(f) {
@@ -400,7 +405,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 						@Override
 						public boolean go() {
 							features.get(number).go();
-							return false;
+							return true;
 						}
 					});
 					((MenuSelectNumber)mList.get(mList.size()-1)).number = i;
@@ -416,14 +421,14 @@ public class Town extends TContextOwner implements java.io.Serializable{
 					@Override
 					public boolean go() {
 						you();
-						return false;
+						return true;
 					}
 				});
 				return mList;
 			}
 			
 		});
-		
+
 	}
 	private void buyLot() {
 		if (Player.getTutorial()) {
@@ -434,15 +439,16 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		if (extra.yesNo()) {
 			if (Player.bag.getGold()> cost) {
 				Player.bag.addGold(-cost);
-			extra.println("You buy a lot.");
-			visited = 3;
-			Networking.sendStrong("Achievement|buy_lot|");
-			this.addFeature(new Lot(this));}else {
+				extra.println("You buy a lot.");
+				visited = 3;
+				Networking.sendStrong("Achievement|buy_lot|");
+				this.enqueneAdd(new Lot(this));
+			}else {
 				extra.println("Not enough gold.");
 			}
-			
+
 		}
-		
+
 	}
 	private void you() {
 		extra.println("1 Stats");
@@ -667,7 +673,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		
 	}
 
-	public ArrayList<Feature> getFeatures() {
+	public List<Feature> getFeatures() {
 		return features;
 	}
 
@@ -679,7 +685,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		events.clear();
+		//events.clear();
 		timePassed+=time;
 		defenseTimer-=time;
 		if (defenseTimer < 0) {
@@ -698,8 +704,6 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		return events;
 	}
 	
-	
-	//TODO: replace these with time events
 	public void enqueneRemove(Feature f) {
 		events.add(new StructuralFeatureEvent(f,false));
 	}
@@ -753,8 +757,11 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		return i;
 	}
 	
+	/**
+	 * world gen only
+	 */
 	public void addTravel() {
-		this.addFeature(new TravelingFeature(this.getTier()));
+		this.features.add(new TravelingFeature(this));
 	}
 	
 	public boolean hasRoads() {
@@ -853,7 +860,8 @@ public class Town extends TContextOwner implements java.io.Serializable{
 			if (e instanceof StructuralFeatureEvent) {
 				StructuralFeatureEvent sfe = (StructuralFeatureEvent)e;
 				if (sfe.adding) {
-					features.add(sfe.modify);
+					addFeature(sfe.modify);
+					sfe.modify.reload();//important to give it it's context
 				}else {
 					features.remove(sfe.modify);
 				}

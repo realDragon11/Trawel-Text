@@ -20,10 +20,16 @@ public class TravelingFeature extends Feature implements java.io.Serializable{
 	}
 	protected int tier, curTier;
 	
-	public TravelingFeature(int tier) {
-		this.tier = tier;
+	public TravelingFeature(Town town) {
+		this.town = town;
+		this.tier = town.getTier();
 		tutorialText = "Traveling features and celebrations can be host to a wide array of things.";
 		
+	}
+	
+	@Override
+	public boolean canShow() {
+		return hasSomething;
 	}
 
 	@Override

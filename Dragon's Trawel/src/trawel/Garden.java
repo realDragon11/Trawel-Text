@@ -7,11 +7,7 @@ import trawel.time.TimeEvent;
 
 public class Garden extends Feature {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	//private Town town;
 	private int tier;
 	private ArrayList<PlantSpot> plants = new ArrayList<PlantSpot>();
 	public Garden(Town town) {

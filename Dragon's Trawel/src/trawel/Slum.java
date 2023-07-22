@@ -18,7 +18,6 @@ public class Slum extends Feature implements QuestBoardLocation{
 	private boolean removable;
 	public SuperPerson crimeLord;
 	private double timePassed = 0;
-	private Town town;
 	private int crimeRating = 10;
 	private int wins = 0;
 	

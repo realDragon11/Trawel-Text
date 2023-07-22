@@ -31,6 +31,9 @@ public abstract class TContextOwner implements java.io.Serializable, CanPassTime
 	
 	@Override
 	public List<TimeEvent> contextTime(double time, TimeContext calling) {
+		/*if (timeScope == null) {
+			System.out.println(this.toString());
+		}*/
 		return timeScope.call(calling, time).pop(this);
 	}
 	

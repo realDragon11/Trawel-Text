@@ -112,7 +112,7 @@ public class GroveNode extends NodeConnector{
 			((Person)storage2).setRacism(true);
 			//storage1 = ((Person)storage2).getBag().getRace();
 			name = ((Person)storage2).getBag().getRace().renderName(false);
-			interactString = "approach " + name; ;break;
+			interactString = "approach " + name;break;
 		case 15: storage1 = RaceFactory.getRich(level); storage2 = RaceFactory.getRich(level+1);
 		name = ((Person)storage1).getBag().getRace().renderName(false); interactString = "approach " + name; 
 		((Person)storage1).getBag().addGold(level*300);break;
@@ -930,7 +930,7 @@ public class GroveNode extends NodeConnector{
 		extra.println("3 leave");
 		switch (extra.inInt(3)) {
 		case 1: name = "angry " +name ; interactString = "ERROR";
-			storage1 = storage2;
+			//storage1 = storage2;
 			forceGo = true;
 			idNum = 3;
 			bool = false;

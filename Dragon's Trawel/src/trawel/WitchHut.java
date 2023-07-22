@@ -11,7 +11,6 @@ public class WitchHut extends Feature{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public Town town;
 	
 	public WitchHut(Town t) {
 		name = "witch hut";

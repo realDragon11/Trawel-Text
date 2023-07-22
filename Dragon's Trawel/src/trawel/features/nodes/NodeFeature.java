@@ -14,7 +14,6 @@ import trawel.time.TimeEvent;
 public abstract class NodeFeature extends Feature {
 
 	protected NodeConnector start;
-	protected Town town;
 	protected int size;
 	protected double findTime = 0;
 	@Override

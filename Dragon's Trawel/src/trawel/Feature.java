@@ -116,4 +116,8 @@ public abstract class Feature extends TContextOwner{
 		return ContextLevel.FEATURE;
 	}
 	
+	public boolean canShow() {
+		return true;
+	}
+	
 }

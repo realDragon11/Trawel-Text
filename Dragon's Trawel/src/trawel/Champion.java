@@ -7,7 +7,7 @@ import java.util.List;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 
-public class Champion  extends TravelingFeature{
+public class Champion  extends Feature{
 
 	/**
 	 * 
@@ -17,8 +17,6 @@ public class Champion  extends TravelingFeature{
 	double timeElapsed;
 	
 	public Champion(int level){
-		super(level);
-		hasSomething = true;
 		person = RaceFactory.getDueler(level);
 		this.name = person.getName() + " (Level " + person.getLevel()+")" ;
 		tutorialText = "You should probably hold off on fighting champions until you're their level- explore the world and come back later.";
@@ -27,8 +25,6 @@ public class Champion  extends TravelingFeature{
 	}
 	
 	public Champion(int level,int battleSize, Town t) {
-		super(level);
-		hasSomething = true; 
 		
 		tutorialText = "Battleforged champions fought in a pit fight to survive.";
 		timeElapsed=0;
@@ -76,7 +72,7 @@ public class Champion  extends TravelingFeature{
 			if (winner == Player.player.getPerson()) {
 				extra.println("You defeat the champion!");
 				Player.player.addTitle(person.getName() + " " + extra.choose("slayer","killer","champion-killer","champion"));
-				this.hasSomething = false;
+				person = null;
 				Networking.sendStrong("Achievement|beat_champion|");
 			}else {
 				this.name = person.getName() + " (Level " + person.getLevel()+")" ;
@@ -88,17 +84,16 @@ public class Champion  extends TravelingFeature{
 
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		if (hasSomething == false) {
+		if (person == null) {
 			timeElapsed+=time;
 			if (timeElapsed > extra.randRange(24, 60)) {
 				SuperPerson delete = null;
 				for (SuperPerson p: town.getOccupants()) {
 					Agent a = (Agent)p;
-					if (a.getPerson().getLevel() == this.tier) {
+					if (a.getPerson().getLevel() == town.getTier()) {
 						person = a.getPerson();
 						this.name = person.getName() + " (Level " + person.getLevel()+")" ;
 						tutorialText = "You should probably hold off on fighting champions until you're their level.";
-						hasSomething = true;
 						//town.getOccupants().remove(p); // not sure if safe
 						delete = p;
 						break;
@@ -110,6 +105,11 @@ public class Champion  extends TravelingFeature{
 			}
 		}
 		return null;
+	}
+	
+	@Override
+	public boolean canShow() {
+		return person != null;
 	}
 
 }

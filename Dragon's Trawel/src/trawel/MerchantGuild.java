@@ -14,9 +14,6 @@ import trawel.time.TimeEvent;
 
 public class MerchantGuild extends Feature implements QuestBoardLocation {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private Person quarterMaster;

@@ -157,6 +157,18 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 						mList.add(harvestFunction);
 					}
 				}
+				mList.add(new MenuSelect() {
+					
+					@Override
+					public String title() {
+						return "back";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}
+				});
 				return mList;
 			}
 		});

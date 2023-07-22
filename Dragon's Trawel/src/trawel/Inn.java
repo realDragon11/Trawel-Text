@@ -23,7 +23,6 @@ public class Inn extends Feature implements java.io.Serializable, QuestBoardLoca
 	private int resident;
 	private double timePassed;
 	private int wins = 0;
-	private Town town;
 	private String residentName;
 	private int nextReset;
 	private boolean playerwatch;

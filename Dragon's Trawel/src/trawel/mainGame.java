@@ -1123,6 +1123,7 @@ public class mainGame {
 				Player.toggleTutorial();
 				player.getPerson().addXp(9999);
 				story = new StoryNone();
+				player.getPerson().getBag().addGold(100000);
 			}
 			story.storyStart();
 			player.storyHold = story;
