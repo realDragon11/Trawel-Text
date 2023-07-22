@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import trawel.Armor.ArmorQuality;
+import trawel.RaceFactory.RaceID;
 import trawel.factions.FBox;
 import trawel.fort.FortHall;
 import trawel.fort.LSkill;
@@ -756,20 +757,41 @@ public class Combat {
 		}
 		if (defender.hasSkill(Skill.MIMIC_CHEST)) {
 			if (extra.chanceIn(1,2)){
-				defender.getBag().swapRace(RaceFactory.getRace(extra.choose("hiding-mimic","open-mimic")));
+				RaceID rid = defender.getBag().getRace().raceID();
+				if (hpRatio > .6f) {//if healthy, prefer closed, if damaged, prefer open and swap more in general
+					if (rid == RaceFactory.RaceID.B_MIMIC_CLOSED) {
+						if (extra.randFloat() < .2) {
+							defender.getBag().swapRace(RaceFactory.getRace(RaceID.B_MIMIC_OPEN));
+						}
+					}else {
+						if (extra.randFloat() < .6) {
+							defender.getBag().swapRace(RaceFactory.getRace(RaceID.B_MIMIC_CLOSED));
+						}
+					}
+				}else {
+					if (rid == RaceFactory.RaceID.B_MIMIC_CLOSED) {
+						if (extra.randFloat() < .9) {
+							defender.getBag().swapRace(RaceFactory.getRace(RaceID.B_MIMIC_OPEN));
+						}
+					}else {
+						if (extra.randFloat() < .5) {
+							defender.getBag().swapRace(RaceFactory.getRace(RaceID.B_MIMIC_CLOSED));
+						}
+					}
+				}
 				Networking.clearSide(1);
 				defender.getBag().graphicalDisplay(1,defender);
 			}
 		}
 		if (defender.hasSkill(Skill.FELL_REAVER)) {
 			defender.backupWeapon = defender.getBag().swapWeapon(defender.backupWeapon);
-			switch (defender.getBag().getRace().name) {
-			case "standing reaver":
-				defender.getBag().swapRace(RaceFactory.getRace("crouched reaver"));
+			switch (defender.getBag().getRace().raceID()) {
+			case B_REAVER_TALL:
+				defender.getBag().swapRace(RaceFactory.getRace(RaceID.B_REAVER_SHORT));
 				
 				break;
-			case "crouched reaver":
-				defender.getBag().swapRace(RaceFactory.getRace("standing reaver"));
+			case B_REAVER_SHORT:
+				defender.getBag().swapRace(RaceFactory.getRace(RaceID.B_REAVER_TALL));
 				break;
 			}
 		}

@@ -2,13 +2,13 @@ package trawel;
 import java.util.ArrayList;
 
 
-public class Race extends Item implements java.io.Serializable{
+public class Race extends Item{
 	/**
-	 * 
+	 * should not be saved
 	 */
 	private static final long serialVersionUID = 1L;
 	//only extends item so I can have my secret hidden race store
-	public String name, namePlural;
+	private final RaceFactory.RaceID internalName;
 	public double tradeMod, aimMod, hpMod,dodgeMod, damMod, speedMod, rarity;
 	public ArrayList<String> insultList = new ArrayList<String>();
 	public ArrayList<String> swears = new ArrayList<String>();
@@ -26,6 +26,18 @@ public class Race extends Item implements java.io.Serializable{
 		HUMANOID, BEAST;
 	}
 	
+	public Race(RaceFactory.RaceID internalName) {
+		this.internalName = internalName;
+	}
+	
+	public RaceFactory.RaceID raceID() {
+		return internalName;
+	}
+	
+	public String renderName(boolean makePlural) {
+		return makePlural ? internalName.namePlural : internalName.name;
+	}
+	
 	@Override
 	public EnchantConstant getEnchant() {
 		return null;
@@ -36,7 +48,7 @@ public class Race extends Item implements java.io.Serializable{
 	}
 	@Override
 	public void display(int style, float markup) {
-		extra.println(name);
+		extra.println(internalName.name);
 	}
 	@Override
 	public void display(int style) {
@@ -63,5 +75,9 @@ public class Race extends Item implements java.io.Serializable{
 	}
 	
 	public void levelUp() {}
+
+	public String getMap() {
+		return internalName.map;
+	}
 	
 }

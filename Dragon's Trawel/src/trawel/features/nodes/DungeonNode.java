@@ -90,7 +90,7 @@ public class DungeonNode extends NodeConnector{
 			if (extra.chanceIn(1, 3)) {
 			forceGo = true;}
 		case 7:
-			storage1 =  RaceFactory.makeStatue(level); name = ((Person)storage1).getBag().getRace().name + " statue";
+			storage1 =  RaceFactory.makeStatue(level); name = ((Person)storage1).getBag().getRace().renderName(false) + " statue";
 			interactString = "loot statue";
 			break;
 		}

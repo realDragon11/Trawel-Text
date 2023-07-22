@@ -89,7 +89,7 @@ public class GroveNode extends NodeConnector{
 		case 2: name = extra.choose("river","pond","lake","stream","brook"); interactString = "wash yourself";break;
 		case 3: name = randomLists.randomMuggerName(); interactString = "ERROR"; forceGo = true;
 		storage1 = RaceFactory.getMugger(level);break;
-		case 4: name = extra.choose("rotting","decaying") + " " +RaceFactory.randRace(Race.RaceType.HUMANOID).name +" " + extra.choose("corpse","body"); interactString = "loot corpse";break;
+		case 4: name = extra.choose("rotting","decaying") + " " +RaceFactory.randRace(Race.RaceType.HUMANOID).renderName(false) +" " + extra.choose("corpse","body"); interactString = "loot corpse";break;
 		case 5: name = "fairy circle"; interactString = "examine circle";break;
 		case 6: name = "fairy circle"; interactString = "examine circle";break;
 		case 7: name = "old " + randomLists.randomWarrior(); interactString = "approach " + name;
@@ -106,13 +106,13 @@ public class GroveNode extends NodeConnector{
 		case 11: name = randomLists.randomColor() + " mushroom";interactString = "approach mushroom";break;
 		case 12: name = "moss"; interactString = "approach moss"; state = extra.randRange(0,1);break;
 		case 13: name = "grey hole";interactString = "approach hole";break;
-		case 14:storage2 = RaceFactory.getRacist(level); ((Person)storage2).setRacism(true); storage1 = ((Person)storage2).getBag().getRace(); name = ((Race)storage1).name; interactString = "approach " + name; ;break;
+		case 14:storage2 = RaceFactory.getRacist(level); ((Person)storage2).setRacism(true); storage1 = ((Person)storage2).getBag().getRace(); name = ((Race)storage1).renderName(false); interactString = "approach " + name; ;break;
 		case 15: storage1 = RaceFactory.getRich(level); storage2 = RaceFactory.getRich(level+1);
-		name = ((Person)storage1).getBag().getRace().name; interactString = "approach " + name; 
+		name = ((Person)storage1).getBag().getRace().renderName(false); interactString = "approach " + name; 
 		((Person)storage1).getBag().addGold(level*300);break;
 		case 16: storage1 = new Weapon(level); name = ((Weapon)storage1).getBaseName() + " in a rock"; interactString = "pull on " +((Weapon)storage1).getBaseName(); break;
 		case 17: storage1 = RaceFactory.getPeace(level); ((Person)storage1).setRacism(false);
-		name = ((Person)storage1).getBag().getRace().name; interactString = "approach " + name;break;
+		name = ((Person)storage1).getBag().getRace().renderName(false); interactString = "approach " + name;break;
 		case 18: ArrayList<Person> list = new ArrayList<Person>();
 		for (int i = 0;i < extra.randRange(2,3);i++) {
 		list.add(RaceFactory.makeWolf(extra.zeroOut(level-3)+1));}
@@ -767,15 +767,15 @@ public class GroveNode extends NodeConnector{
 		case 2:
 			if (((Race)storage1) == Player.bag.getRace()) {
 				String str = Oracle.tipString("racistPraise");
-				str = str.replaceAll("oracles",((Race)storage1).namePlural);
-				str = str.replaceAll("oracle",((Race)storage1).name);
+				str = str.replaceAll("oracles",((Race)storage1).renderName(true));
+				str = str.replaceAll("oracle",((Race)storage1).renderName(false));
 				extra.println("\"" +extra.capFirst(str)+"\"");
 			}else {
 				if (extra.chanceIn(4,5)) {
 				String str = Oracle.tipString(extra.choose("racistShun","racistPraise"));
 				str = str.replaceAll("not-oracle",Player.bag.getRace().randomSwear());
-				str = str.replaceAll("oracles",((Race)storage1).namePlural);
-				str = str.replaceAll("oracle",((Race)storage1).name);
+				str = str.replaceAll("oracles",((Race)storage1).renderName(true));
+				str = str.replaceAll("oracle",((Race)storage1).renderName(false));
 				extra.println("\"" +extra.capFirst(str)+"\"");	
 				}else {
 					extra.println("\"" + Player.bag.getRace().randomInsult() +"\"");

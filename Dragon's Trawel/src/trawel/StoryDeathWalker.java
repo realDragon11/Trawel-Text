@@ -15,7 +15,7 @@ public class StoryDeathWalker extends Story{
 		extra.println("They were a nice kid.");
 		extra.println("1 sigh");
 		extra.inInt(1);
-		extra.println("They were a young " + killed.getBag().getRace().name +", always eager to please.");
+		extra.println("They were a young " + killed.getBag().getRace().renderName(false) +", always eager to please.");
 		extra.println("Damn that wizard!");
 		
 		extra.println("...");

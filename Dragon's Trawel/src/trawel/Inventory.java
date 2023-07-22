@@ -2,6 +2,7 @@ package trawel;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.RaceFactory.RaceID;
 import trawel.Weapon.WeaponQual;
 import trawel.quests.Quest.TriggerType;
 
@@ -358,7 +359,7 @@ public class Inventory implements java.io.Serializable{
 	
 	public void graphicalDisplay(int side, Person p) { 
 		Networking.sendStrong("RaceFlag|"+side+"|"+p.getRaceFlag().name()+"|");
-		Networking.sendStrong("RaceInv|"+side+"|" +race.name.replace("-","_") +"|"+race.baseMap+"|"+raceMap+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|1|");
+		Networking.sendStrong("RaceInv|"+side+"|" +race.getMap()+"|"+race.baseMap+"|"+raceMap+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|1|");
 		if (!p.getScar().equals("")) {
 			Networking.sendStrong("AddInv|"+side+"|" + p.getScar() +"|iron|0|" + p.bloodSeed + "|" + p.getBloodCount()+"|0|0|");
 		}
@@ -384,7 +385,7 @@ public class Inventory implements java.io.Serializable{
 		
 		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|2|");
 		}else {
-			if (p.getBag().getRace().name.equals("wolf")) {
+			if (p.getBag().getRace().raceID() == RaceID.B_WOLF) {
 				Networking.sendStrong("AddInv|"+side+"|" +"wolf_teeth" +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-9|");
 				
 			}

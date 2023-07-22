@@ -29,9 +29,10 @@ public class Person implements java.io.Serializable{
 	private transient Attack attackNext;
 	private int xp = 0;
 	private int level = 1;
+	private int intellect;
 	private transient double speedFill = 0;
 	private transient boolean isAttacking =false;
-	private int hp, intellect, tempMaxHp;
+	private transient int hp, tempMaxHp;
 	//private Taunts brag;
 	@OneOf({"cowardly","fearless","grizzled"})
 	public String personType = extra.choose("cowardly","fearless");
@@ -48,7 +49,7 @@ public class Person implements java.io.Serializable{
 	public boolean hasEnduranceTraining = false;
 	
 	private List<Skill> skills = new ArrayList<Skill>();
-	private boolean noAILevel;
+	//private boolean noAILevel;
 	private List<Effect> effects;
 	private RaceFlag rFlag;
 
@@ -94,19 +95,19 @@ public class Person implements java.io.Serializable{
 		//brag = new Taunts(bag.getRace());
 		
 		if (giveScar) {
-		this.scar = RaceFactory.scarFor(bag.getRace());
+			this.scar = RaceFactory.scarFor(bag.getRace().raceID());
 		}
 		this.level = level;
 		skillPoints = level-1;
 		if (extra.chanceIn(1,5)) {
 			racist = true;
 		}
-		this.magePow = bag.getRace().magicPower;
-		this.defPow = bag.getRace().defPower;
+		//this.magePow = bag.getRace().magicPower;
+		//this.defPow = bag.getRace().defPower;
 		if (isAI) {
 			this.AILevelUp();
 		}
-		this.noAILevel = !isAI;
+		//this.noAILevel = !isAI;
 		effects = new ArrayList<Effect>();
 		extra.offPrintStack();
 		extra.changePrint(true);
@@ -128,9 +129,10 @@ public class Person implements java.io.Serializable{
 		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true,job,null);
 	}
 	
-	public static Person animal(int level,Race race,Material matType,boolean giveScar){
-		return new Person(level,true,Race.RaceType.BEAST,matType,RaceFlag.NONE,giveScar,null,race);
+	public static Person animal(int level,RaceFactory.RaceID race,Material matType,boolean giveScar){
+		return new Person(level,true,Race.RaceType.BEAST,matType,RaceFlag.NONE,giveScar,null,RaceFactory.getRace(race));
 	}
+	
 
 	public enum AIJob{
 		KNIGHT(new String[] {"heavy","chainmail"},new String[] {"longsword","mace","axe","lance"}),
@@ -332,10 +334,8 @@ public class Person implements java.io.Serializable{
 				Networking.sendStrong("Leaderboard|Highest Level|" + level+ "|");
 				playerLevelUp();
 			}else {
-				if (!noAILevel) {
-					intellect+=levels;
-					this.AILevelUp();
-				}
+				intellect+=levels;
+				this.AILevelUp();
 			}
 	}
 	
@@ -906,7 +906,7 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public void displayStats(boolean inCombat) {
-		extra.println("This is " + this.getName() +". They are a level " + this.getLevel() +" " + this.getBag().getRace().name+".");
+		extra.println("This is " + this.getName() +". They are a level " + this.getLevel() +" " + this.getBag().getRace().renderName(false)+".");
 		if (inCombat) {
 			extra.println("They have " + this.getHp() +"/"+ tempMaxHp + " hp. Their health modifier is " + extra.format(bag.getHealth()) + "x.");
 		}else {
@@ -974,7 +974,7 @@ public class Person implements java.io.Serializable{
 	}
 
 	public void displayStatsShort() {
-		extra.println("This is " + this.getName() +". They are a level " + this.getLevel() +" " + this.getBag().getRace().name+".");
+		extra.println("This is " + this.getName() +". They are a level " + this.getLevel() +" " + this.getBag().getRace().renderName(false)+".");
 		if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 		extra.println("Their inventory includes: \n " + bag.nameInventory()); 
 		if (beer > 0 || skills.contains(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
@@ -1064,12 +1064,12 @@ public class Person implements java.io.Serializable{
 
 	public int getMageLevel() {
 		int base = this.isPlayer() ? Player.player.eaBox.getStatMAG() : mageLevel;
-		return extra.zeroOut(base+magePow-burnouts());
+		return extra.zeroOut(base+bag.getRace().magicPower+magePow-burnouts());
 	}
 
 	public int getDefenderLevel() {
 		int base = this.isPlayer() ? Player.player.eaBox.getStatDEF() : defenderLevel;
-		return extra.zeroOut(base+defPow-burnouts());
+		return extra.zeroOut(base+bag.getRace().defPower+defPow-burnouts());
 	}
 
 	public int getFighterLevel() {

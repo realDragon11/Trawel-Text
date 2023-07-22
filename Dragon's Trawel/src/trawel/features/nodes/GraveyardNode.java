@@ -245,7 +245,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 			return;
 		}
 		if (state == 0) {
-			name = ((Person)storage1).getBag().getRace().name + " statue";
+			name = ((Person)storage1).getBag().getRace().renderName(false) + " statue";
 			extra.print(extra.PRE_RED);
 			extra.println("The statue springs to life and attacks you!");
 			name = "Living Statue";

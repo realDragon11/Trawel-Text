@@ -1,6 +1,8 @@
 package trawel;
 import java.util.ArrayList;
 
+import trawel.RaceFactory.RaceID;
+
 public class TauntsFactory {
 	public static ArrayList<String> tauntList = new ArrayList<String>();
 	public static ArrayList<String> boastList = new ArrayList<String>();
@@ -82,11 +84,11 @@ public class TauntsFactory {
 	
 	public static String randTaunt(Race r) {
 		if (extra.randRange(1,10) == 1) {
-			if (r.name == "orc") {
+			if (r.raceID() == RaceID.ORC) {
 				return tauntListOrc.get(extra.randRange(0,tauntListOrc.size()-1));
 			}
 			
-			if (r.name == "fugue") {
+			if (r.raceID() == RaceID.FUGUE) {
 				return tauntListFugue.get(extra.randRange(0,tauntListFugue.size()-1));
 			}
 		}
