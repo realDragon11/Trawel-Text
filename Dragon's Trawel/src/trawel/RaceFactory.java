@@ -644,6 +644,7 @@ public class RaceFactory {
 		
 		misc = new Race(RaceID.B_DRUDGER_STOCK);
 		misc.swears.add("drowner");
+		misc.swears.add("pond scum");
 		misc.aimMod = 1;
 		misc.damMod = 1;
 		misc.dodgeMod = 1;
@@ -652,6 +653,7 @@ public class RaceFactory {
 		misc.tradeMod = .5;
 		misc.rarity = 1;
 		misc.insultList.add("Drudger!");
+		misc.insultList.add("Die pond scum!");
 		misc.baseMap = "flesh_golem";
 		misc.raceMaps.add("0");;
 		misc.magicPower = 0;

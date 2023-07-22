@@ -1,5 +1,7 @@
 package trawel;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -86,8 +88,14 @@ public class Race extends Item{
 	}
 	
 	
+	private void writeObject(java.io.ObjectOutputStream out) throws IOException{
+		throw new RuntimeException("can't save races");
+	}
+	
+	
 	public Object writeReplace() throws ObjectStreamException{
-		System.out.println("Storing: " + internalName.name());
+		//System.out.println("Storing: " + internalName.name());
+		//doesn't get stored right now, but can get stored
 		return new STORE(internalName);
 	}
 	
@@ -99,7 +107,7 @@ public class Race extends Item{
 		}
 		//enums have special saves, so this will refresh their data
 		public Object readResolve() throws ObjectStreamException{
-			System.out.println("Resolving " + r.name + "/" + r.name());
+			//System.out.println("Resolving " + r.name + "/" + r.name());
 			return RaceFactory.getRace(r);
 		}
 	}

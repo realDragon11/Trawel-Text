@@ -23,15 +23,7 @@ public class World extends TContextOwner{
 	private Calender calender = new Calender();
 	private float minLata, maxLata, minLonga, maxLonga;
 	
-	private transient ReentrantLock debtLock = new ReentrantLock();
-	
-	/**
-	 * used for serialization only
-	 */
-	@Deprecated
-	public World() {
-		System.out.println("woe");
-	}
+	private transient ReentrantLock debtLock;
 	
 	public World(int x, int y, String _name,float minLata, float minLonga) {
 		xSize = x;
@@ -185,6 +177,7 @@ public class World extends TContextOwner{
 	
 	@Override
 	public void reload() {
+		debtLock = new ReentrantLock();
 		timeScope = new TimeContext(ContextType.GLOBAL,this,true);//world is lazy
 		timeSetup();
 		for(Island i: islands) {

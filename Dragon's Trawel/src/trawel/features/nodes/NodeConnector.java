@@ -39,7 +39,7 @@ public abstract class NodeConnector implements Serializable, CanPassTime {
 	protected transient Feature parent;
 	//protected Class<Feature> parentType;
 	
-	public static transient NodeConnector lastNode = null;
+	public static NodeConnector lastNode = null;
 	
 	public ArrayList<NodeConnector> getConnects() {
 		return connects;
