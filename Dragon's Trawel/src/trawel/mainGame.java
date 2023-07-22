@@ -40,7 +40,7 @@ public class mainGame {
 	public static Scanner scanner = new Scanner(System.in);
 	
 	public static boolean debug = false;
-	public static boolean inEclipse = false;
+	public static boolean inEclipse = true;//for other run configs
 	public static boolean autoConnect = false;
 	public static boolean noDisconnect = false;
 	public static boolean noThreads = true;
@@ -296,6 +296,14 @@ public class mainGame {
 			story = new StoryNone();
 			
 			basicSetup1 = true;
+		}
+	}
+	
+	public static void unitTestSetup() {
+		baseSetup1();
+		if (!finalSetup1) {
+			randomLists.init();
+			finalSetup1 = true;
 		}
 	}
 
@@ -674,6 +682,7 @@ public class mainGame {
 	 * @param args (Strings)
 	 */
 	public static void main(String[] args) {
+		inEclipse = false;
 		extra.setMainThread();
 		new WorldGen();
 		try {

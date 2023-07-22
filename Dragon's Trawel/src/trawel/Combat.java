@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import trawel.Armor.ArmorQuality;
+import trawel.Race.RaceType;
 import trawel.RaceFactory.RaceID;
 import trawel.factions.FBox;
 import trawel.fort.FortHall;
@@ -588,12 +589,12 @@ public class Combat {
 			if (extra.chanceIn(1,3)) {
 					BarkManager.getBoast(attacker,true);//extra.println(attacker.getName() + " "+extra.choose("shouts","screams","boasts")+ " \"" + attacker.getTaunts().getBoast()+"\"");		
 			}else {
-				if (attacker.isRacist() && !attacker.getBag().getRace().equals(defender.getBag().getRace()) && extra.chanceIn(1,3)) 
+				if (((attacker.isAngry() && defender.getBag().getRace().racialType == RaceType.BEAST) || (attacker.isRacist() && !attacker.getBag().getRace().equals(defender.getBag().getRace()))) && extra.chanceIn(1,3)) 
 				{
 					extra.println(attacker.getName() + " "+extra.choose("shouts","screams","taunts")+ " \"" +defender.getBag().getRace().randomInsult()+"\"");
 				}else {
 					BarkManager.getTaunt(attacker);//extra.println(attacker.getName() + " "+extra.choose("shouts","screams","taunts")+ " \"" + attacker.getTaunts().getTaunt()+"\"");
-					}				
+				}				
 			}
 		}
 		
@@ -757,25 +758,25 @@ public class Combat {
 		}
 		if (defender.hasSkill(Skill.MIMIC_CHEST)) {
 			if (extra.chanceIn(1,2)){
-				RaceID rid = defender.getBag().getRace().raceID();
+				RaceID rid = defender.getBag().getRaceID();
 				if (hpRatio > .6f) {//if healthy, prefer closed, if damaged, prefer open and swap more in general
 					if (rid == RaceFactory.RaceID.B_MIMIC_CLOSED) {
 						if (extra.randFloat() < .2) {
-							defender.getBag().swapRace(RaceFactory.getRace(RaceID.B_MIMIC_OPEN));
+							defender.getBag().setRace(RaceID.B_MIMIC_OPEN);
 						}
 					}else {
 						if (extra.randFloat() < .6) {
-							defender.getBag().swapRace(RaceFactory.getRace(RaceID.B_MIMIC_CLOSED));
+							defender.getBag().setRace(RaceID.B_MIMIC_CLOSED);
 						}
 					}
 				}else {
 					if (rid == RaceFactory.RaceID.B_MIMIC_CLOSED) {
 						if (extra.randFloat() < .9) {
-							defender.getBag().swapRace(RaceFactory.getRace(RaceID.B_MIMIC_OPEN));
+							defender.getBag().setRace(RaceID.B_MIMIC_OPEN);
 						}
 					}else {
 						if (extra.randFloat() < .5) {
-							defender.getBag().swapRace(RaceFactory.getRace(RaceID.B_MIMIC_CLOSED));
+							defender.getBag().setRace(RaceID.B_MIMIC_CLOSED);
 						}
 					}
 				}
@@ -785,13 +786,13 @@ public class Combat {
 		}
 		if (defender.hasSkill(Skill.FELL_REAVER)) {
 			defender.backupWeapon = defender.getBag().swapWeapon(defender.backupWeapon);
-			switch (defender.getBag().getRace().raceID()) {
+			switch (defender.getBag().getRaceID()) {
 			case B_REAVER_TALL:
-				defender.getBag().swapRace(RaceFactory.getRace(RaceID.B_REAVER_SHORT));
+				defender.getBag().setRace(RaceID.B_REAVER_SHORT);
 				
 				break;
 			case B_REAVER_SHORT:
-				defender.getBag().swapRace(RaceFactory.getRace(RaceID.B_REAVER_TALL));
+				defender.getBag().setRace(RaceID.B_REAVER_TALL);
 				break;
 			}
 		}

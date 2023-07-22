@@ -28,8 +28,8 @@ public class Person implements java.io.Serializable{
 	
 	private transient Attack attackNext;
 	private int xp = 0;
-	private int level = 1;
-	private int intellect;
+	private short level = 1;
+	private byte intellect;
 	private transient double speedFill = 0;
 	private transient boolean isAttacking =false;
 	private transient int hp, tempMaxHp;
@@ -38,7 +38,9 @@ public class Person implements java.io.Serializable{
 	public String personType = extra.choose("cowardly","fearless");
 	//private String placeOfBirth;
 	private int beer;
-	private boolean racist;
+	private byte flags = 0b00000000;//used with bitmasking
+	//bit 1 = racism (0b00000001)
+	//bit 2 = angry (racist to non humanoids) (0b00000010)
 	
 	private String firstName,title;
 
@@ -83,7 +85,7 @@ public class Person implements java.io.Serializable{
 		}
 		//maxHp = 40*level;//doesn't get all the hp it would naturally get
 		//hp = maxHp;
-		intellect = level;
+		intellect = 2;//advanced looting
 		
 		
 		bag = new Inventory(level,raceType,matType,job,race);
@@ -97,10 +99,17 @@ public class Person implements java.io.Serializable{
 		if (giveScar) {
 			this.scar = RaceFactory.scarFor(bag.getRace().raceID());
 		}
-		this.level = level;
+		this.level = (short)level;
 		skillPoints = level-1;
 		if (extra.chanceIn(1,5)) {
-			racist = true;
+			this.setRacism(true);
+			if (extra.chanceIn(4,5)) {
+				this.setAngry(true);
+			}
+		}else {
+			if (extra.chanceIn(3,5)) {
+				this.setAngry(true);
+			}
 		}
 		//this.magePow = bag.getRace().magicPower;
 		//this.defPow = bag.getRace().defPower;
@@ -109,10 +118,6 @@ public class Person implements java.io.Serializable{
 		}
 		//this.noAILevel = !isAI;
 		effects = new ArrayList<Effect>();
-		extra.offPrintStack();
-		extra.changePrint(true);
-		AIClass.checkYoSelf(this);
-		extra.popPrintStack();
 	}
 	
 	@Deprecated
@@ -334,7 +339,7 @@ public class Person implements java.io.Serializable{
 				Networking.sendStrong("Leaderboard|Highest Level|" + level+ "|");
 				playerLevelUp();
 			}else {
-				intellect+=levels;
+				//intellect+=levels;
 				this.AILevelUp();
 			}
 	}
@@ -949,7 +954,7 @@ public class Person implements java.io.Serializable{
 	/**
 	 * @return the intellect (int)
 	 */
-	public int getIntellect() {
+	public byte getIntellect() {
 		return intellect;
 	}
 
@@ -957,7 +962,7 @@ public class Person implements java.io.Serializable{
 	/**
 	 * @param intellect (int) -  the intellect to set
 	 */
-	public void setIntellect(int intellect) {
+	public void setIntellect(byte intellect) {
 		this.intellect = intellect;
 	}
 
@@ -1039,11 +1044,31 @@ public class Person implements java.io.Serializable{
 	}
 
 	public boolean isRacist() {
-		return racist;
+		//unsure if best way, but I care more about memory storage than speed, so doesn't need to be fast rn
+		return Byte.toUnsignedInt((byte) (flags & (1 << 0))) > 0;
 	}
 	
 	public void setRacism(boolean bool) {
-		racist = bool;
+		//at 0 index
+		if (bool) {
+			flags |= (1 << 0);
+			return;
+		}
+		flags &= ~(1 << 0);
+	}
+	
+	public boolean isAngry() {
+		//unsure if best way, but I care more about memory storage than speed, so doesn't need to be fast rn
+		return Byte.toUnsignedInt((byte) (flags & (1 << 1))) > 0;
+	}
+	
+	public void setAngry(boolean bool) {
+		//at 1 index
+		if (bool) {
+			flags |= (1 << 1);
+			return;
+		}
+		flags &= ~(1 << 1);
 	}
 
 	public void displayArmor() {

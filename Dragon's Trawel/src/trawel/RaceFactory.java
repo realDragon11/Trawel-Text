@@ -1,5 +1,9 @@
 package trawel;
+import java.io.ObjectStreamException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import trawel.Person.AIJob;
 import trawel.factions.Faction;
@@ -8,7 +12,8 @@ import trawel.factions.HostileTask;
 @SuppressWarnings("deprecation")
 public class RaceFactory {
 	public static Race misc = new Race(RaceID.EMPTY);
-	public static ArrayList<Race> raceList = new ArrayList<Race>();
+	public static List<Race> raceList = new ArrayList<Race>();
+	public static Map<String,Race> raceMap = new HashMap<String,Race>();
 	
 	public static float audioSteps(int steps) {
 		/*if (steps < 0) {
@@ -681,6 +686,10 @@ public class RaceFactory {
 		misc.maxPitch = audioSteps(5);
 		raceList.add(misc);
 		
+		for (Race r: raceList) {
+			raceMap.put(r.raceID().name(), r);
+		}
+		
 	}
 	
 	public static Race randRace(Race.RaceType type) {
@@ -714,24 +723,8 @@ public class RaceFactory {
 		return mat;
 	}
 	
-	public static Race getRaceOld(String string) {
-		for (Race m: raceList) {
-			if (m.renderName(false).equals(string)) {
-				return m;
-			}
-		}
-		
-		return null;
-	}
-	
 	public static Race getRace(RaceID id) {
-		for (Race m: raceList) {
-			if (m.raceID().equals(id)) {
-				return m;
-			}
-		}
-		
-		return null;
+		return raceMap.get(id.name());
 	}
 	
 	public static Person makeOld(int level) {
@@ -755,7 +748,6 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_WOLF, MaterialFactory.getMat("flesh"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
-		w.getBag().swapRace(RaceFactory.getRace(RaceID.B_WOLF));
 		if (extra.chanceIn(1,5)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
@@ -770,7 +762,6 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_WOLF, MaterialFactory.getMat("flesh"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
-		w.getBag().swapRace(RaceFactory.getRace(RaceID.B_WOLF));
 		if (extra.chanceIn(4,5)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}

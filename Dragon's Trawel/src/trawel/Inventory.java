@@ -2,6 +2,7 @@ package trawel;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.Race.RaceType;
 import trawel.RaceFactory.RaceID;
 import trawel.Weapon.WeaponQual;
 import trawel.quests.Quest.TriggerType;
@@ -25,7 +26,7 @@ public class Inventory implements java.io.Serializable{
 	private int gold = 0;
 	private Armor[] armorSlots = new Armor[5];
 	private Weapon hand;
-	private Race race;
+	private RaceID race;
 	private String raceMap;
 	private ArrayList<DrawBane> dbs = new ArrayList<DrawBane>();
 	private ArrayList<Seed> seeds = new ArrayList<Seed>();
@@ -88,12 +89,12 @@ public class Inventory implements java.io.Serializable{
 			hand = null;//new Weapon(level); //beasts always swap out the weapon, thus making it is pointless
 		}
 		if (ra == null) {
-			race = RaceFactory.randRace(type);//might even want to swap to just humanoid
-		}else {
-			race = ra;
+			ra = RaceFactory.randRace(type);
+			//might even want to swap to just humanoid
 		}
+		race = ra.raceID();
 		
-		raceMap = race.randomRaceMap();
+		raceMap = ra.randomRaceMap();
 	}
 	
 
@@ -189,7 +190,7 @@ public class Inventory implements java.io.Serializable{
 		if (hand != null && hand.isEnchantedConstant()) {
 			retMod *= hand.getEnchant().getDodgeMod();
 		}
-		retMod*=race.dodgeMod;
+		retMod*=getRace().dodgeMod;
 		
 		if ((owner != null ? owner.hasEffect(Effect.BEE_SHROUD) : false )) {
 			retMod*=1.1;
@@ -213,7 +214,7 @@ public class Inventory implements java.io.Serializable{
 		if (hand != null && hand.isEnchantedConstant()) {
 			retMod *= hand.getEnchant().getAimMod();
 		}
-		retMod*=race.aimMod;
+		retMod*=getRace().aimMod;
 		return extra.zeroOut(retMod);
 	}
 	
@@ -232,7 +233,7 @@ public class Inventory implements java.io.Serializable{
 		if (hand != null && hand.isEnchantedConstant()) {
 			retMod *= hand.getEnchant().getDamMod();
 		}
-		retMod*=race.damMod;
+		retMod*=getRace().damMod;
 		return extra.zeroOut(retMod);
 	}
 	
@@ -252,7 +253,7 @@ public class Inventory implements java.io.Serializable{
 		if (hand != null && hand.isEnchantedConstant()) {
 			retMod *= hand.getEnchant().getHealthMod();
 		}
-		retMod*=race.hpMod;
+		retMod*=getRace().hpMod;
 		return extra.zeroOut(retMod);
 	}
 	
@@ -271,7 +272,7 @@ public class Inventory implements java.io.Serializable{
 		if (hand != null && hand.isEnchantedConstant()) {
 			retMod *= hand.getEnchant().getSpeedMod();
 		}
-		retMod*=race.speedMod;
+		retMod*=getRace().speedMod;
 		return extra.zeroOut(retMod);
 	}
 	
@@ -359,11 +360,12 @@ public class Inventory implements java.io.Serializable{
 	
 	public void graphicalDisplay(int side, Person p) { 
 		Networking.sendStrong("RaceFlag|"+side+"|"+p.getRaceFlag().name()+"|");
-		Networking.sendStrong("RaceInv|"+side+"|" +race.getMap()+"|"+race.baseMap+"|"+raceMap+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|1|");
+		Race r_race = getRace();
+		Networking.sendStrong("RaceInv|"+side+"|" +r_race.getMap()+"|"+r_race.baseMap+"|"+raceMap+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|1|");
 		if (!p.getScar().equals("")) {
 			Networking.sendStrong("AddInv|"+side+"|" + p.getScar() +"|iron|0|" + p.bloodSeed + "|" + p.getBloodCount()+"|0|0|");
 		}
-		if (race.racialType == Race.RaceType.HUMANOID) {
+		if (r_race.racialType == Race.RaceType.HUMANOID) {
 		for (Armor a: armorSlots) {
 			String str = "AddInv|"+side+"|" +a.getBaseName().replace(' ','_') +"|"+a.getBaseMap()+"|"+a.getMat().palIndex+"|"+a.bloodSeed + "|" + a.getBloodCount() + "|" +(a.getEnchant() != null ? a.getEnchant().enchantstyle :0 )+"|";
 			switch (a.getArmorType()) {
@@ -398,20 +400,30 @@ public class Inventory implements java.io.Serializable{
 		gold += add;
 		gold = Math.max(gold,0);
 	}
-
-	public Race getRace() {
-		return race;
+	
+	public RaceID getRaceID() {
+		return  race;
 	}
 
-	public void setRace(Race race) {
+	public Race getRace() {
+		return  RaceFactory.getRace(race);
+	}
+	
+	public Race swapRace(Race newRace) {
+		Race r = RaceFactory.getRace(race);
+		race = newRace.raceID();
+		return r;
+	}
+	
+	public void setRace(RaceID race) {
 		this.race = race;
 	}
 
-	public Race swapRace(Race newRace) {
-		Race r = race;
-		race = newRace;
-		return r;
+	public void setRace(Race race) {
+		this.race = race.raceID();
 	}
+
+	
 
 	public double getSharpResist(int slot) {
 		int i = 0;

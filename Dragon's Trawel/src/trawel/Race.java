@@ -1,5 +1,10 @@
 package trawel;
+import java.io.IOException;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 import java.util.ArrayList;
+
+import trawel.RaceFactory.RaceID;
 
 
 public class Race extends Item{
@@ -78,6 +83,24 @@ public class Race extends Item{
 
 	public String getMap() {
 		return internalName.map;
+	}
+	
+	
+	public Object writeReplace() throws ObjectStreamException{
+		return new STORE(internalName);
+	}
+	
+	
+	private class STORE implements Serializable{
+		public final RaceID r;
+		public STORE(RaceID r) {
+			this.r = r;
+		}
+		//enums have special saves, so this will refresh their data
+		public Object readResolve() throws ObjectStreamException{
+			System.out.println("Resolving " + r.name + "/" + r.name());
+			return RaceFactory.getRace(r);
+		}
 	}
 	
 }
