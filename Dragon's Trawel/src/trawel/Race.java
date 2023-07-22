@@ -87,6 +87,7 @@ public class Race extends Item{
 	
 	
 	public Object writeReplace() throws ObjectStreamException{
+		System.out.println("Storing: " + internalName.name());
 		return new STORE(internalName);
 	}
 	

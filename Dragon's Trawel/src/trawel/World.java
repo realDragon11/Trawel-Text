@@ -18,18 +18,26 @@ public class World extends TContextOwner{
 	private Town startTown;
 	private String name;
 
-	private ArrayList<BardSong> bardSongs;
+	//private ArrayList<BardSong> bardSongs;
 	private ArrayList<Person> deathCheaters;
 	private Calender calender = new Calender();
 	private float minLata, maxLata, minLonga, maxLonga;
 	
 	private transient ReentrantLock debtLock = new ReentrantLock();
-		
+	
+	/**
+	 * used for serialization only
+	 */
+	@Deprecated
+	public World() {
+		System.out.println("woe");
+	}
+	
 	public World(int x, int y, String _name,float minLata, float minLonga) {
 		xSize = x;
 		ySize = y;
 		islands = new ArrayList<Island>();
-		bardSongs = new ArrayList<BardSong>();
+		//bardSongs = new ArrayList<BardSong>();
 		deathCheaters = new ArrayList<Person>();
 		name = _name;
 		this.minLata = minLata;
@@ -195,6 +203,7 @@ public class World extends TContextOwner{
 	
 	public double assumeDebt(double limit) {
 		//try {
+		assert debtLock != null;
 		try {
 			if (!debtLock.tryLock(50, TimeUnit.MILLISECONDS)) {
 				return -1;

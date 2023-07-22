@@ -137,6 +137,7 @@ public class mainGame {
 
 					@Override
 					public boolean go() {
+						forceSetup();
 						Networking.clearSides();
 						for (int i = 1; i < 9; i++) {
 							extra.println(i+" slot: "+WorldGen.checkNameInFile(""+i));
@@ -299,12 +300,16 @@ public class mainGame {
 		}
 	}
 	
-	public static void unitTestSetup() {
+	public static void forceSetup() {
 		baseSetup1();
 		if (!finalSetup1) {
 			randomLists.init();
 			finalSetup1 = true;
 		}
+	}
+	
+	public static void unitTestSetup() {
+		forceSetup();
 	}
 
 	
