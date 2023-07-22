@@ -477,7 +477,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		case 4:
 			Player.player.showQuests();
 			break;
-		case 5: Player.player.getPerson().playerLevelUp();break;
+		case 5: Player.player.getPerson().playerSkillMenu();break;
 		case 6: 
 			extra.println("Really quit? Your progress will not be saved.");
 			if (extra.yesNo()) {

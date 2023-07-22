@@ -977,14 +977,29 @@ public class mainGame {
 				}
 				
 			}
-			int giveGold = gold/battle.survivors.size();
-			for (Person surv: battle.survivors){
-				surv.getBag().addGold(giveGold);
-				if (surv.isPlayer()) {
-					Networking.setBattle(Networking.BattleType.NONE);
-					Networking.clearSide(1);
+			
+			
+			if (battle.survivors.size() > 1) {
+				
+				int giveGold = gold/battle.survivors.size();
+				if (giveGold > 0) {
+					extra.println("The remaining " + gold +" gold is divvied up, "+giveGold +" gold pieces each.");
+					for (Person surv: battle.survivors){
+						surv.getBag().addGold(giveGold);
+						if (surv.isPlayer()) {
+							Networking.setBattle(Networking.BattleType.NONE);
+							Networking.clearSide(1);
+						}
+					}
 				}
+			}else {
+				if (gold > 0) {
+					Person looter = battle.survivors.get(0);
+					extra.println(looter.getName() + " claims the remaining " +gold +" gold.");
+				}
+				
 			}
+			
 			
 			return battle.survivors;
 		}
@@ -1099,13 +1114,16 @@ public class mainGame {
 			player.getPerson().setSkillPoints(0);
 			Player.addSkill(Skill.BLOODTHIRSTY);
 			Player.player.getPerson().addFighterLevel();
+			if (cheaty) {
+				Player.toggleTutorial();
+				player.getPerson().addXp(9999);
+				story = new StoryNone();
+			}
 			story.storyStart();
+			player.storyHold = story;
 			player.setLocation(world.getStartTown());
 			WorldGen.plane.setPlayer(player);
-			if (cheaty) {
-				player.getPerson().addXp(9999);
-				Player.toggleTutorial();
-			}
+			
 			//player.getPerson().playerLevelUp();
 			adventureBody();
 		}

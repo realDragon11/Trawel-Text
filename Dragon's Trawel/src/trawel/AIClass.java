@@ -338,6 +338,7 @@ public class AIClass {
 					if (loot.getHand().coinLoot()) {
 						Services.sellItem(loot.getHand(),loot,stash,false);
 					}
+					i++;
 				}
 			}
 		}

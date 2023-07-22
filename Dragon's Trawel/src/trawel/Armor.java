@@ -40,6 +40,7 @@ public class Armor extends Item {
 	private double dexMod = 1;
 	private double burnMod, freezeMod, shockMod;
 	private transient double burned;
+	@OneOf({"heavy","light","chainmail","crystal","drudger"})
 	private String matType;//ie heavy, light, chainmail
 	//@OneOf({"iron","cloth","crystal"})
 	//private String baseMap;
@@ -131,31 +132,31 @@ public class Armor extends Item {
 	if (matType.equals("light")){
 		baseMap = 1;//"cloth";
 		switch (armorType) {//adamantine can be either
-			case 0: baseName = (String)extra.choose("homan hat"); weight = 2; baseResist = 1; cost = 1;break;//"hood"
-			case 1: baseName = (String)extra.choose("homan gloves"); weight = 2; baseResist = 1; cost = 1;break;//,"gloves","gloves","fingerless gloves"
-			case 2: baseName = (String)extra.choose("homan tunic"); weight = 10; baseResist = 4; cost = 3;break;//"shirt","toga"
-			case 3: baseName = (String)extra.choose("homan pants"); weight = 6; baseResist = 3; cost = 3;break;//"leggings",
-			case 4: baseName = (String)extra.choose("homan boots"); weight = 4; baseResist = 2; cost = 2;break;//,"slippers","shoes"
+			case 0: baseName = "hat"; weight = 2; baseResist = 1; cost = 1;break;//"hood"
+			case 1: baseName = "gloves"; weight = 2; baseResist = 1; cost = 1;break;//,"gloves","gloves","fingerless gloves"
+			case 2: baseName = "tunic"; weight = 10; baseResist = 4; cost = 3;break;//"shirt","toga"
+			case 3: baseName = "pants"; weight = 6; baseResist = 3; cost = 3;break;//"leggings",
+			case 4: baseName = "boots"; weight = 4; baseResist = 2; cost = 2;break;//,"slippers","shoes"
 		}
 	}else {
 		if (matType.equals("heavy")) {
 			baseMap = 0;//"iron";
 		switch (armorType) {
-			case 0: baseName = (String)extra.choose("plackan helm"); weight = 2; baseResist = 1; cost = 1;break;//"helmet",,"cap","hat","mask"
-			case 1: baseName = (String)extra.choose("plackan gauntlets"); weight = 2; baseResist = 1; cost = 1;break;//"bracers",
-			case 2: baseName = (String)extra.choose("plackan chestplate"); weight = 10; baseResist = 4; cost = 3;break;//,"breastplate","cuirass"
-			case 3: baseName = (String)extra.choose("plackan greaves"); weight = 6; baseResist = 3; cost = 3;break;
-			case 4: baseName = (String)extra.choose("plackan boots"); weight = 4; baseResist = 2; cost = 2;break;//,"shoes","high boots","low boots"
+			case 0: baseName = "helm"; weight = 2; baseResist = 1; cost = 1;break;//"helmet",,"cap","hat","mask"
+			case 1: baseName = "gauntlets"; weight = 2; baseResist = 1; cost = 1;break;//"bracers",
+			case 2: baseName = "chestplate"; weight = 10; baseResist = 4; cost = 3;break;//,"breastplate","cuirass"
+			case 3: baseName = "greaves"; weight = 6; baseResist = 3; cost = 3;break;
+			case 4: baseName = "boots"; weight = 4; baseResist = 2; cost = 2;break;//,"shoes","high boots","low boots"
 		}
 		}else {
 			if (matType.equals("chainmail")) {
 				baseMap = 0;//"iron";
 				switch (armorType) {
-				case 0: baseName = (String)extra.choose("mail hood"); weight = 2; baseResist = 1; cost = 1;break;
-				case 1: baseName = (String)extra.choose("mail gloves"); weight = 2; baseResist = 1; cost = 1;break;
-				case 2: baseName = (String)extra.choose("mail shirt"); weight = 10; baseResist = 4; cost = 3;break;
-				case 3: baseName = (String)extra.choose("mail pants"); weight = 6; baseResist = 3; cost = 3;break;
-				case 4: baseName = (String)extra.choose("mail boots"); weight = 4; baseResist = 2; cost = 2;break;
+				case 0: baseName = "mail hood"; weight = 2; baseResist = 1; cost = 1;break;
+				case 1: baseName = "mail gloves"; weight = 2; baseResist = 1; cost = 1;break;
+				case 2: baseName = "mail shirt"; weight = 10; baseResist = 4; cost = 3;break;
+				case 3: baseName = "mail pants"; weight = 6; baseResist = 3; cost = 3;break;
+				case 4: baseName = "mail boots"; weight = 4; baseResist = 2; cost = 2;break;
 				}
 				weight*=2;
 				sharpResist*=1.5;
@@ -165,11 +166,11 @@ public class Armor extends Item {
 				if (matType.equals("crystal")) {
 					baseMap = 2;//"crystal";
 					switch (armorType) {
-					case 0: baseName = (String)extra.choose("tevaran helmet"); weight = 2; baseResist = 1; cost = 1;break;
-					case 1: baseName = (String)extra.choose("tevaran bracers"); weight = 2; baseResist = 1; cost = 1;break;
-					case 2: baseName = (String)extra.choose("tevaran breastplate"); weight = 10; baseResist = 4; cost = 3;break;
-					case 3: baseName = (String)extra.choose("tevaran pants"); weight = 6; baseResist = 3; cost = 3;break;
-					case 4: baseName = (String)extra.choose("tevaran boots"); weight = 4; baseResist = 2; cost = 2;break;
+					case 0: baseName = "helmet"; weight = 2; baseResist = 1; cost = 1;break;
+					case 1: baseName = "bracers"; weight = 2; baseResist = 1; cost = 1;break;
+					case 2: baseName = "breastplate"; weight = 10; baseResist = 4; cost = 3;break;
+					case 3: baseName = "pants"; weight = 6; baseResist = 3; cost = 3;break;
+					case 4: baseName = "boots"; weight = 4; baseResist = 2; cost = 2;break;
 				}
 					cost*=1.5;
 					if (extra.chanceIn(2,3)) {
@@ -178,6 +179,32 @@ public class Armor extends Item {
 						sharpResist*=1.25;
 						bluntResist*=1.25;
 						pierceResist*=1.25;
+					}
+				}else {
+					if (matType.equals("is")) {//flesh and bone mostly
+						baseMap = 0;//"iron";
+						switch (armorType) {
+						case 0: baseName = "head"; weight = 2; baseResist = 1; cost = 1;break;
+						case 1: baseName = "arms"; weight = 2; baseResist = 1; cost = 1;break;
+						case 2: baseName = "body"; weight = 10; baseResist = 4; cost = 3;break;
+						case 3: baseName = "legs"; weight = 6; baseResist = 3; cost = 3;break;
+						case 4: baseName = "feet"; weight = 4; baseResist = 2; cost = 2;break;
+						}
+						weight*=2;
+						sharpResist*=1.5;
+						pierceResist*=.5;
+						
+					}else {
+					if (matType.equals("drudger")) {
+						baseMap = 0;//"iron";
+					switch (armorType) {
+						case 0: baseName = "mask"; weight = 2; baseResist = 1; cost = 1;break;//"helmet",,"cap","hat","mask"
+						case 1: baseName = "bracers"; weight = 2; baseResist = 1; cost = 1;break;//"bracers",
+						case 2: baseName = "chestplate"; weight = 10; baseResist = 4; cost = 3;break;//,"breastplate","cuirass"
+						case 3: baseName = "greaves"; weight = 6; baseResist = 3; cost = 3;break;
+						case 4: baseName = "boots"; weight = 4; baseResist = 2; cost = 2;break;//,"shoes","high boots","low boots"
+					}
+					}
 					}
 				}
 			}

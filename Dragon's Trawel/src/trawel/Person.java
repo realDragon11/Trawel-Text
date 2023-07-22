@@ -90,8 +90,12 @@ public class Person implements java.io.Serializable{
 		
 		bag = new Inventory(level,raceType,matType,job,race);
 		bag.owner = this;
-		firstName = randomLists.randomFirstName();
-		title = randomLists.randomLastName();
+		if (raceType == RaceType.HUMANOID) {
+			firstName = randomLists.randomFirstName();
+			title = randomLists.randomLastName();
+		}else {
+			title = "";
+		}
 		//placeOfBirth = extra.capFirst((String)extra.choose(randomLists.randomElement(),randomLists.randomColor()))+ " " +extra.choose("Kingdom","Kingdom","Colony","Domain","Realm");
 		
 		//brag = new Taunts(bag.getRace());
@@ -311,7 +315,7 @@ public class Person implements java.io.Serializable{
 	public boolean addXp(int x) {
 		xp += x;
 		int pluslevel = level;
-		if (xp >= pluslevel*pluslevel) {
+		while (xp >= pluslevel*pluslevel) {
 			xp-=pluslevel*pluslevel;
 			pluslevel++;
 		}
@@ -333,23 +337,24 @@ public class Person implements java.io.Serializable{
 			if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 				BarkManager.getBoast(this, false);
 			}
-			this.setSkillPoints(this.getSkillPoints() + level);
+			this.setSkillPoints(this.getSkillPoints() + levels);
 			if (this.isPlayer()) {
 				Networking.send("PlayDelay|sound_magelevel|1|");
 				Networking.sendStrong("Leaderboard|Highest Level|" + level+ "|");
-				playerLevelUp();
+				mainGame.story.levelUp(level+levels);
+				if (level < 5 && level+levels >= 5) {
+				Networking.sendStrong("Achievement|level5|");}
+				if (level < 10 && level+levels >= 10) {
+				Networking.sendStrong("Achievement|level10|");}
+				playerSkillMenu();
 			}else {
 				//intellect+=levels;
 				this.AILevelUp();
 			}
+			level+=levels;
 	}
 	
-	public void playerLevelUp() {
-		mainGame.story.levelUp(level);
-		if (level == 5) {
-		Networking.sendStrong("Achievement|level5|");}
-		if (level == 10) {
-		Networking.sendStrong("Achievement|level10|");}
+	public void playerSkillMenu() {
 		if (Player.getTutorial()) {
 			extra.println("This is the skill menu.");
 			if (skillPoints == 0) {
@@ -439,74 +444,6 @@ public class Person implements java.io.Serializable{
 			}
 			
 		});
-		/*
-		extra.println("Pick a class to examine:");
-		extra.println("1 fighter");
-		extra.println("2 trader");
-		extra.println("3 explorer");
-		extra.println("4 mage");
-		extra.println("5 defender");
-		extra.println("6 exit");
-		ArrayList<Skill> list = new ArrayList<Skill>();
-		switch(extra.inInt(6)) {
-		case 1: 
-			extra.println("Fighter Class Level: " + fighterLevel);
-			for (Skill s: Skill.values()) {
-			if (s.getLevel() == fighterLevel+1 && s.getType() == Skill.Type.FIGHTER) {
-				list.add(s);
-			}};break;
-		case 2: extra.println("Trader Class Level: " + traderLevel); 
-			for (Skill s: Skill.values()) {
-			if (s.getLevel() == traderLevel+1 && s.getType() == Skill.Type.TRADER) {
-				list.add(s);
-			}};break;
-		case 3: extra.println("Explorer Class Level: " + explorerLevel); 
-		for (Skill s: Skill.values()) {
-		if (s.getLevel() == explorerLevel+1 && s.getType() == Skill.Type.EXPLORER) {
-			list.add(s);
-		}};break;
-		
-		case 4: extra.println("Mage Class Level: " + mageLevel); 
-		for (Skill s: Skill.values()) {
-		if (s.getLevel() == mageLevel+1 && s.getType() == Skill.Type.MAGE) {
-			list.add(s);
-		}};break;
-		
-		case 5: extra.println("Defender Class Level: " + defenderLevel); 
-		for (Skill s: Skill.values()) {
-		if (s.getLevel() == defenderLevel+1 && s.getType() == Skill.Type.DEFENDER) {
-			list.add(s);
-		}};break;
-		case 6: return;
-		}
-		extra.println("Pick a skill to buy:");
-		int i = 1;
-		for (Skill s: list) {
-			extra.println(i+" "+ s.getName() + ": " + s.getDesc());
-			i++;
-		}
-		extra.println(i + " back");
-		int in = extra.inInt(i);
-		i=1;
-		
-		for (Skill s: list) {
-			
-			if (in == i) {
-				extra.println("Buy the " + s.getName() + " skill?");
-				extra.println(s.getDesc());
-				extra.println(s.getLongDesc());
-				if (extra.yesNo()) {
-				if (skillPoints > 0) {
-				extra.println("You spend a skillpoint to gain the "+s.getName() + " skill!");
-				skillAdd(s);
-				}else {
-					extra.println("You don't have any skillpoints!");
-				}
-			}}
-			
-			i++;
-		}*/
-		//playerLevelUp();
 	}
 	
 	private void skillAdd(Skill s) {

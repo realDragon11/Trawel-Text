@@ -83,6 +83,9 @@ public class FollowUp {
 			double debt = world.assumeDebt(1);//will take on up to 1 hour of debt
 			if (debt <= 0) {//0 = no debt or not enough to bother, -1 = lock failure
 				completed = false;
+				if (debt == 0) {
+					world.freeLock();
+				}
 				return;
 			}
 			//actually do the debt

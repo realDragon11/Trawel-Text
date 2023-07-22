@@ -93,61 +93,64 @@ public class Weapon extends Item {
 		kills = 0;
 		//cost*=level;
 		
-		
+
 		switch (weapName) {
 		case "longsword":
-		cost *= 1;
-		weight *=2;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
-		;break;
+			cost *= 1;
+			weight *=2;
+			cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
+			;break;
 		case "broadsword":
-		cost *= 2;
-		weight *=3;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
-		;break;
+			cost *= 2;
+			weight *=3;
+			cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
+			;break;
 		case "mace":
-		cost *= 2;
-		weight *=3;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED);
-		;break;
+			cost *= 2;
+			weight *=3;
+			cost *= 1+ 0.1 * addQuals(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED);
+			;break;
 		case "spear":
-		cost *= 1;
-		weight *=2;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
-		;break;
+			cost *= 1;
+			weight *=2;
+			cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
+			;break;
 		case "axe":
-		cost *= 1;
-		weight *=2;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
-		;break;
+			cost *= 1;
+			weight *=2;
+			cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
+			;break;
 		case "rapier":
-		cost *= 2;
-		weight *=3;//I think rapiers were heavy? The blunt damage doesn't really reflect this though.
-		cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
-		;break;
+			cost *= 2;
+			weight *=3;//I think rapiers were heavy? The blunt damage doesn't really reflect this though.
+			cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
+			;break;
 		case "dagger":
-		cost *= .7;
-		weight *=1;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
-		;break;
+			cost *= .7;
+			weight *=1;
+			cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
+			;break;
 		case "claymore":
-		cost *= 3;
-		weight *=5;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED);
-		;break;
+			cost *= 3;
+			weight *=5;
+			cost *= 1+ 0.1 * addQuals(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED);
+			;break;
 		case "lance":
-		cost *= 2;
-		weight *=3;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
-		;break;
+			cost *= 2;
+			weight *=3;
+			cost *= 1+ 0.1 * addQuals(WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
+			;break;
 		case "shovel":
-		cost *= .8;
-		weight *=2;
-		cost *= 1+ 0.1 * addQuals(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED);
-		;break;
+			cost *= .8;
+			weight *=2;
+			cost *= 1+ 0.1 * addQuals(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED);
+			;break;
+
+
+	//not normal weapons start
 		case "generic teeth":
 			cost *= 1;
-			weight *=3;	
+			weight *=3;
 			;break;
 		case "standing reaver":
 			cost *= 1;
@@ -174,7 +177,7 @@ public class Weapon extends Item {
 			weight *=3;	
 			;break;
 		case "fishing spear":
-			cost *= 1;
+			cost *= .2f;
 			weight *=1;
 			;break;
 		case "anchor":

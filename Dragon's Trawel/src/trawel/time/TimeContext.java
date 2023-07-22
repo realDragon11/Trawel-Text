@@ -147,7 +147,7 @@ public class TimeContext {
 	}
 
 	public void assumeDebt(double taken) {
-		assert taken >= trackedTime;
+		assert taken <= trackedTime;
 		trackedTime-=taken;
 	}
 }

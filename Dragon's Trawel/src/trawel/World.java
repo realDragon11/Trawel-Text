@@ -194,6 +194,7 @@ public class World extends TContextOwner{
 	
 	
 	public double assumeDebt(double limit) {
+		//try {
 		try {
 			if (!debtLock.tryLock(50, TimeUnit.MILLISECONDS)) {
 				return -1;
@@ -203,10 +204,16 @@ public class World extends TContextOwner{
 		}
 		if (timeScope.getDebt() > .2) {//different threshold from hasDebt- lower
 			double taken = Math.min(limit, timeScope.getDebt());
+			assert debtLock.isHeldByCurrentThread();
 			timeScope.assumeDebt(taken);
 			return taken;
 		}
 		return 0;
+		//}finally {
+		//	if (debtLock.isHeldByCurrentThread()) {
+		//		debtLock.unlock();
+		//	}
+		//}
 	}
 	
 	/**

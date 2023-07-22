@@ -728,16 +728,16 @@ public class MaterialFactory {
 		//beast materials
 		misc = new Material();
 		misc.name = "flesh";
-		misc.typeList.add("light");
+		misc.typeList.add("is");
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 20;
 		misc.cost = 30;
 		misc.baseEnchant = 0;
 		misc.baseResist = 6;
-		misc.sharpResist = 1;
+		misc.sharpResist = .75f;
 		misc.bluntResist = 1;
-		misc.pierceResist = 1;
+		misc.pierceResist = .9f;
 		misc.dexMod = 1.1;
 		misc.sharpMult = .5;
 		misc.bluntMult = 1.1;
@@ -754,7 +754,7 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "bone";
-		misc.typeList.add("light");
+		misc.typeList.add("is");
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 20;
@@ -775,6 +775,32 @@ public class MaterialFactory {
 		misc.freezeVul = 1;
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
+		matList.add(misc);
+		
+		misc = new Material();//used for drudgers right now
+		misc.name = "rusty iron";
+		misc.typeList.add("drudger");
+		misc.armor = false;
+		misc.weapon = false;
+		misc.weight = 25;
+		misc.cost = 20;
+		misc.baseEnchant = .1f;
+		misc.baseResist = 5;
+		misc.sharpResist = 1;
+		misc.bluntResist = 1;
+		misc.pierceResist = 1;
+		misc.dexMod = .8;
+		misc.sharpMult = .95f;
+		misc.bluntMult = .95f;
+		misc.pierceMult = .95f;
+		misc.tier = 1;
+		misc.rarity = 0;
+		misc.fireVul = .8;
+		misc.shockVul = 1.3f;
+		misc.freezeVul = 1.5f;
+		misc.palIndex = 0;
+		misc.soundType = "metal";
+		misc.color = extra.inlineColor(new Color(105,113,128));
 		matList.add(misc);
 		
 		

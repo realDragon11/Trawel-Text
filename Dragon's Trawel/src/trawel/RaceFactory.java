@@ -753,7 +753,6 @@ public class RaceFactory {
 		}
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomWolfName());
-		w.setTitle("");
 		w.hTask = HostileTask.ANIMAL;
 		return w;
 	}
@@ -782,6 +781,8 @@ public class RaceFactory {
 		if (extra.chanceIn(1,3)) {
 			w.getBag().getDrawBanes().add(DrawBane.MIMIC_GUTS);
 		}
+		w.setFirstName(randomLists.randomFirstName());
+		
 		extra.popPrintStack();
 		w.hTask = HostileTask.MONSTER;
 		return w;
@@ -808,6 +809,7 @@ public class RaceFactory {
 		w.backupWeapon = new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth and claws");
 		//w.getBag().swapRace(RaceFactory.getRace("standing-reaver"));
 		w.addSkill(Skill.FELL_REAVER);
+		w.setFirstName(randomLists.randomFirstName());
 		extra.popPrintStack();
 		w.hTask = HostileTask.MONSTER;
 		return w;
@@ -883,6 +885,7 @@ public class RaceFactory {
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("flesh"),"generic fists"));
 		w.getBag().getDrawBanes().add(DrawBane.BEATING_HEART);
 		extra.popPrintStack();
+		w.setFirstName(randomLists.randomFirstName());
 		//w.targetOverride = TargetFactory.TargetType.HUMANOID;
 		w.hTask = HostileTask.MONSTER;
 		return w;
@@ -895,8 +898,8 @@ public class RaceFactory {
 		if (extra.chanceIn(1,3)) {
 			w.getBag().getDrawBanes().add(DrawBane.UNICORN_HORN);
 		}
+		w.setFirstName(randomLists.randomFirstName());
 		extra.popPrintStack();
-		w.setTitle("");
 		w.hTask = HostileTask.ANIMAL;
 		return w;
 	}
@@ -914,8 +917,8 @@ public class RaceFactory {
 		if (extra.chanceIn(1,20)) {
 			w.getBag().getDrawBanes().add(DrawBane.SILVER);
 		}
+		w.setFirstName(randomLists.randomFirstName());
 		extra.popPrintStack();
-		w.setTitle("");
 		w.hTask = HostileTask.MONSTER;
 		return w;
 	}
@@ -923,13 +926,17 @@ public class RaceFactory {
 	public static Person makeDrudgerStock(int level) {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_DRUDGER_STOCK, MaterialFactory.getMat("flesh"), false);
-		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("iron"),"fishing spear"));
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","rusty iron","iron")),"fishing spear"));
+		for (int i=0;i<5;i++) {
+			if (extra.chanceIn(1,8)) {
+				w.getBag().swapArmorSlot(new Armor(level,i,MaterialFactory.getMat("rusty iron"),null),i);
+			}
+		}
 		if (extra.chanceIn(1,6)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomWaterName());
-		w.setTitle("");
 		w.hTask = HostileTask.MONSTER;
 		return w;
 	}
@@ -937,14 +944,15 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_DRUDGER_TITAN, MaterialFactory.getMat("flesh"), false);
 		//TODO: maybe drudger armor?
-		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("iron"),"anchor"));
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","iron")),"anchor"));
+		w.getBag().swapArmorSlot(new Armor(level,2,MaterialFactory.getMat("rusty iron"),null),2);
 		w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		if (extra.chanceIn(1,2)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomWaterName());
-		w.setTitle("");
+		w.setTitle("the "+randomLists.randomLargeName());
 		w.hTask = HostileTask.MONSTER;
 		return w;
 	}

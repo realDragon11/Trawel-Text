@@ -50,6 +50,8 @@ public class Player extends SuperPerson{
 	public int launderCredits = 0;
 	public float hSpentOnKno = 0f;
 	
+	public Story storyHold;
+	
 	public Player(Person p) {
 		person = p;
 		flask = null;
