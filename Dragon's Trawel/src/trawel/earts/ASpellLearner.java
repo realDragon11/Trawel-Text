@@ -20,6 +20,7 @@ public class ASpellLearner extends MenuSelect {
 		Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
 		Player.player.eaBox.aSpellPower+=.5;
 		Player.player.eaBox.aSpells.add(spell);
+		Player.player.eaBox.arcTrainLevel++;
 		return true;
 	}
 

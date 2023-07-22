@@ -60,7 +60,8 @@ public abstract class EArtSkillMenu extends MenuSelect{
 									@Override
 									public boolean go() {
 										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
-										Player.player.eaBox.aSpellPower+=1.1;
+										Player.player.eaBox.aSpellPower+=1;
+										Player.player.eaBox.arcTrainLevel++;
 										return false;
 									}});
 								list.add(new MenuSelect() {

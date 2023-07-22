@@ -669,7 +669,7 @@ public final class extra {
 			if (to == was) {
 				return extra.PRE_WHITE+"=0.00";
 			}
-			return extra.PRE_GREEN+"-"+format2.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
+			return extra.PRE_RED+"-"+format2.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
 		}
 		
 		/**
@@ -685,7 +685,7 @@ public final class extra {
 			if (to == was) {
 				return extra.PRE_WHITE+"=0.0";
 			}
-			return extra.PRE_GREEN+"-"+format1.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
+			return extra.PRE_RED+"-"+format1.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
 		}
 		
 		/**

@@ -31,7 +31,7 @@ public class Person implements java.io.Serializable{
 	private int level = 1;
 	private transient double speedFill = 0;
 	private transient boolean isAttacking =false;
-	private int hp, intellect, maxHp, tempMaxHp;
+	private int hp, intellect, tempMaxHp;
 	//private Taunts brag;
 	@OneOf({"cowardly","fearless","grizzled"})
 	public String personType = extra.choose("cowardly","fearless");
@@ -80,8 +80,8 @@ public class Person implements java.io.Serializable{
 		if (level < 1) {
 			extra.println("non-fatal (until you run into the level zero person) exception: level is zero on someone");
 		}
-		maxHp = 40*level;//doesn't get all the hp it would naturally get
-		hp = maxHp;
+		//maxHp = 40*level;//doesn't get all the hp it would naturally get
+		//hp = maxHp;
 		intellect = level;
 		
 		
@@ -204,20 +204,36 @@ public class Person implements java.io.Serializable{
 	public void advanceTime(double t){
 		speedFill-=t;
 	}
+	
+	public int getOOB_HP() {
+		int total = getBase_HP();
+		if (this.hasSkill(Skill.LIFE_MAGE)) {
+			hp+=this.getMageLevel();
+		}
+		total*=bag.getHealth();
+		return total;
+	}
+	
+	public int getBase_HP() {
+		int total = 20+(50*level);
+		total+=(edrLevel*6)*( hasEnduranceTraining ? 2 :1);
+		total+=skillPoints*3;
+		return total;
+	}
+	
 	/**
 	 * Clear the person for a new battle.
 	 */
 	public void battleSetup() {
 		
-		extra.offPrintStack();
-		AIClass.checkYoSelf(this);
-		extra.popPrintStack();
-		
+		boolean isPlay = false;
 		if (this.isPlayer()) {
 			Player.player.doSip();
+			isPlay = true;
 		}
 		speedFill = 0;
-		hp = (int) (maxHp*bag.getHealth());
+		tempMaxHp = getOOB_HP();
+		hp = tempMaxHp;
 		if (takeBeer()) {
 			if (Player.player.getPerson() == this) {
 				Networking.sendStrong("Achievement|drink_beer|");
@@ -230,46 +246,30 @@ public class Person implements java.io.Serializable{
 				hp+=level*5;
 			}
 		}
-		if (this.hasSkill(Skill.LIFE_MAGE)) {
-			hp+=this.getMageLevel();
-		}
 		if (this.hasEffect(Effect.CURSE)) {
 			hp-=10*level;
 		}
 		if (this.hasEffect(Effect.HEARTY) || this.hasEffect(Effect.FORGED)) {
 			hp+=3*level;
 		}
-		hp+=(edrLevel*6)*( hasEnduranceTraining ? 2 :1);
-		hp+=skillPoints*3;
-		tempMaxHp = hp;
+		
+		
 		speedFill = -1;
 		isAttacking = false;
 		int s = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
 		int b = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
 		int p = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
-		if (this.isPlayer()) {
-			int defLvl = Player.player.eaBox.defTrainLevel;
-			if (this.hasSkill(Skill.SHIELD)) {
-				s+=1*defLvl;
-				b+=1*defLvl;
-				p+=1*defLvl;
-			}else {
-				if (this.hasSkill(Skill.PARRY)) {
-					s+=2*(defLvl);
-					b+=1*(defLvl);
-				}
-			}
-		}else {
+		int defLvl = this.getDefenderLevel();
 		if (this.hasSkill(Skill.SHIELD)) {
-			s+=1*defenderLevel;
-			b+=1*defenderLevel;
-			p+=1*defenderLevel;
+			s+=1*defLvl;
+			b+=1*defLvl;
+			p+=1*defLvl;
 		}else {
 			if (this.hasSkill(Skill.PARRY)) {
-				s+=2*(defenderLevel);
-				b+=1*(defenderLevel);
+				s+=2*(defLvl);
+				b+=1*(defLvl);
 			}
-		}}
+		}
 		bag.resetArmor(s,b,p);
 		if (this.hasEffect(Effect.B_MARY)) {
 			this.addEffect(Effect.BLEED);
@@ -322,7 +322,7 @@ public class Person implements java.io.Serializable{
 	 * @return
 	 */
 	public void computeLevels(int levels) {
-			maxHp+=50*levels;
+			//maxHp+=50*levels;
 			if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 				BarkManager.getBoast(this, false);
 			}
@@ -908,9 +908,9 @@ public class Person implements java.io.Serializable{
 	public void displayStats(boolean inCombat) {
 		extra.println("This is " + this.getName() +". They are a level " + this.getLevel() +" " + this.getBag().getRace().name+".");
 		if (inCombat) {
-			extra.println("They have " + (int) (maxHp*bag.getHealth()) + " hp. Their health modifier is " + extra.format(bag.getHealth()) + "x.");
+			extra.println("They have " + this.getHp() +"/"+ tempMaxHp + " hp. Their health modifier is " + extra.format(bag.getHealth()) + "x.");
 		}else {
-			extra.println("Their health modifier is " + extra.format(bag.getHealth()) + "x.");	
+			extra.println("They have " + getBase_HP() + " base hp. Their health modifier is " + extra.format(bag.getHealth()) + "x. Their expected hp is "+getOOB_HP() +".");
 		}
 		extra.println("They have " + extra.format(bag.getAim()) + "x aiming, " +  extra.format(bag.getDam()) + "x damage, and "+extra.format(bag.getSpeed()) + "x speed.");
 		extra.println("They have " + extra.format(bag.getDodge()) + "x dodging, " + extra.format(bag.getBluntResist()) + " blunt resistance, " +
@@ -1063,15 +1063,18 @@ public class Person implements java.io.Serializable{
 	}
 
 	public int getMageLevel() {
-		return extra.zeroOut(mageLevel+magePow-burnouts());
+		int base = this.isPlayer() ? Player.player.eaBox.getStatMAG() : mageLevel;
+		return extra.zeroOut(base+magePow-burnouts());
 	}
 
 	public int getDefenderLevel() {
-		return extra.zeroOut(defenderLevel+defPow-burnouts());
+		int base = this.isPlayer() ? Player.player.eaBox.getStatDEF() : defenderLevel;
+		return extra.zeroOut(base+defPow-burnouts());
 	}
 
 	public int getFighterLevel() {
-		return extra.zeroOut(fighterLevel+fightPow-burnouts());
+		int base = this.isPlayer() ? Player.player.eaBox.getStatATK() : fighterLevel;
+		return extra.zeroOut(base+fightPow-burnouts());
 	}
 	
 	public void removeEffectAll(Effect e) {
