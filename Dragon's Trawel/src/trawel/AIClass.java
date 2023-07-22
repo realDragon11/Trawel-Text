@@ -391,7 +391,7 @@ public class AIClass {
 		if (smarts < 2) {
 			return (toReplace.getCost()>hasItem.getCost());
 			}
-		if (((Weapon)(toReplace)).highestDamage().battleScore>((Weapon)(hasItem)).highestDamage().battleScore){
+		if (((Weapon)(toReplace)).score() > ((Weapon)(hasItem)).score()){
 			return true;	
 			}
 		return false;
@@ -463,7 +463,7 @@ public class AIClass {
 			if (Player.getTutorial()) {
 				extra.println("hd = highest damage, ad = average damage, bs = battlescore");
 			}
-			extra.println(extra.PRE_MAGENTA+"Difference: hd/ad/bs: " + colorPlusMinus(extra.format2((toWeap.highestDamage().highest-hasWeap.highestDamage().highest))) + "/" + colorPlusMinus(extra.format2(toWeap.highestDamage().average-hasWeap.highestDamage().average))+ "/" + colorPlusMinus(extra.format2(toWeap.highestDamage().battleScore-hasWeap.highestDamage().battleScore))  + "[c_white] cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));
+			extra.println(extra.PRE_MAGENTA+"Difference: hd/ad/bs: " + colorPlusMinus(extra.format2((toWeap.highest()-hasWeap.highest()))) + "/" + colorPlusMinus(extra.format2(toWeap.average()-hasWeap.average()))+ "/" + colorPlusMinus(extra.format2(toWeap.score()-hasWeap.score()))  + "[c_white] cost: " + extra.format2(toReplace.getCost() - hasItem.getCost()));
 			if (((Weapon)hasItem).getEnchant() != null || ((Weapon)toReplace).getEnchant()!= null) {
 				displayEnchantDiff(((Weapon)hasItem).getEnchant(),((Weapon)toReplace).getEnchant());
 			}

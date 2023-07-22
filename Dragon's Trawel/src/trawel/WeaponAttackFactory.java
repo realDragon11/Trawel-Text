@@ -175,7 +175,7 @@ public class WeaponAttackFactory {
 			for (String str: Weapon.weaponTypes) {
 				weaps++;
 				weaponList.add(new Weapon(1,m,str));
-				writer.write(weaponList.get(weaponList.size()-1).highestDamage().battleScore+",");
+				writer.write(weaponList.get(weaponList.size()-1).score()+",");
 			}
 			writer.write("\n");
 		}
@@ -184,7 +184,7 @@ public class WeaponAttackFactory {
 
 			@Override
 			public int compare(Weapon o1, Weapon o2) {
-				double comp = (o1.highestDamage().battleScore-o2.highestDamage().battleScore);
+				double comp = (o1.score()-o2.score());
 				if (comp == 0) {
 					return 0;
 				}
@@ -198,15 +198,15 @@ public class WeaponAttackFactory {
 			weapon.display(0);
 			Double get = matMap.get(weapon.getMaterial());
 			if (get == null) {
-				matMap.put(weapon.getMaterial(),weapon.highestDamage().battleScore);
+				matMap.put(weapon.getMaterial(),weapon.score());
 			}else {
-				matMap.put(weapon.getMaterial(),weapon.highestDamage().battleScore+get);
+				matMap.put(weapon.getMaterial(),weapon.score()+get);
 			}
 			get = weapMap.get(weapon.getBaseName());
 			if (get == null) {
-				weapMap.put(weapon.getBaseName(),weapon.highestDamage().battleScore);
+				weapMap.put(weapon.getBaseName(),weapon.score());
 			}else {
-				weapMap.put(weapon.getBaseName(),weapon.highestDamage().battleScore+get);
+				weapMap.put(weapon.getBaseName(),weapon.score()+get);
 			}
 		}
 		

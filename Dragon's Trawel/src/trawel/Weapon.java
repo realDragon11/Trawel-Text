@@ -51,7 +51,8 @@ public class Weapon extends Item {
 	private int kills;
 	
 	//private Material mat;
-	private DamTuple dam;
+	//private transient DamTuple dam;
+	private double highDam, avgDam, bScore;
 	
 	public List<WeaponQual> qualList = new ArrayList<WeaponQual>();
 	
@@ -194,7 +195,7 @@ public class Weapon extends Item {
 			}
 		}
 		
-		initDamTuple();//no longer lazy loaded
+		refreshBattleScore();//no longer lazy loaded
 	}
 	
 	public Weapon(int newLevel) {
@@ -359,11 +360,11 @@ public class Weapon extends Item {
 	 * Returns the damage/time (ie dps) of the most powerful attack the weapon has
 	 * @return highest damage (int)
 	 */
-	public DamTuple highestDamage() {
-		return dam;
+	public void highestDamage() {
+		return;
 	}
 	
-	private void initDamTuple() {
+	private void refreshBattleScore() {
 		double high = 0;
 		double damage = 0;
 		double average = 0;
@@ -387,17 +388,20 @@ public class Weapon extends Item {
 			i++;
 		}
 		bs/=(battleTests*WorldGen.getDummyInvs().size());
-		dam = new DamTuple(high,average,(bs*level)/(size));
+		this.highDam = high*level;//TODO: unsure if need to do level
+		this.avgDam = average*level;
+		this.bScore = (bs*level)/(size);
+		//dam = new DamTuple(high,average,(bs*level)/(size));
 	}
 	
 	/**
 	 * Returns the damage/time (ie dps) of the most powerful attack the weapon has
 	 * @return highest damage (int)
 	 */
-	private DamTuple highestDamageThreaded() {
-		if (dam != null) {
+	private void highestDamageThreaded() {
+		/*if (dam != null) {
 			return dam;
-		}
+		}*/
 		Attack holdAttack;
 		double high = 0;
 		double damage = 0;
@@ -443,8 +447,8 @@ public class Weapon extends Item {
 		//}
 		
 		bs/=(battleTests*WorldGen.getDummyInvs().size());
-		dam = new DamTuple(high,average,(bs*level)/(size));
-		return dam;
+		//dam = new DamTuple(high,average,(bs*level)/(size));
+		//return dam;
 	}
 	
 	protected class TestArmor implements Callable<Double>{
@@ -494,15 +498,27 @@ public class Weapon extends Item {
 			battleScore = b;
 		}
 	}
+	
+	public double highest() {
+		return this.highDam;
+	}
+	
+	public double average() {
+		return this.avgDam;
+	}
+	
+	public double score() {
+		return this.bScore;
+	}
 
 	@Override
 	public void display(int style,float markup) {
 		switch (style) {
-		case 0: extra.println(material +" "+weapName+": "+extra.format(this.highestDamage().battleScore));
+		case 0: extra.println(material +" "+weapName+": "+extra.format(this.score()));
 		break;
 		case 1:
 			extra.println(this.getName()
-			+ " hd/ad/bs: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+"/"+extra.format(this.highestDamage().battleScore)+" value: " + (int)(this.getCost()*markup));
+			+ " hd/ad/bs: " + extra.format(this.highest()) + "/" + extra.format(this.average())+"/"+extra.format(this.score())+" value: " + (int)(this.getCost()*markup));
 			if (this.isEnchantedConstant()) {
 				this.getEnchant().display(1);
 			}
@@ -515,7 +531,7 @@ public class Weapon extends Item {
 			;break;
 		case 2:
 			extra.println(this.getName()
-			+ " hd/ad/bs: " + extra.format(this.highestDamage().highest) + "/" + extra.format(this.highestDamage().average)+ "/"+extra.format(this.highestDamage().battleScore)+" value: " + (int)(this.getCost()*markup) + " kills: " +this.getKills());
+			+ " hd/ad/bs: " + extra.format(this.highest()) + "/" + extra.format(this.average())+ "/"+extra.format(this.score())+" value: " + (int)(this.getCost()*markup) + " kills: " +this.getKills());
 			if (this.isEnchantedConstant()) {
 				this.getEnchant().display(2);
 			}
@@ -558,7 +574,8 @@ public class Weapon extends Item {
 	
 	public void levelUp() {
 		level++;
-		dam = null;
+		//dam = null;
+		refreshBattleScore();
 	}
 	
 	public boolean isKeen() {
@@ -595,15 +612,15 @@ public class Weapon extends Item {
 		double highest = 0;
 		double lowest = 99999;
 		for (Weapon w: arr) {
-			if (w.highestDamage().battleScore > highest) {
-				highest = w.highestDamage().battleScore;
+			if (w.score() > highest) {
+				highest = w.score();
 			}
-			if (w.highestDamage().battleScore < lowest) {
-				lowest = w.highestDamage().battleScore;
+			if (w.score() < lowest) {
+				lowest = w.score();
 			}
 		}
 		for (Weapon w: arr) {
-			if (w.highestDamage().battleScore != highest && w.highestDamage().battleScore  != lowest) {
+			if (w.score() != highest && w.score()  != lowest) {
 				return w;
 			}
 		}
@@ -618,15 +635,15 @@ public class Weapon extends Item {
 		double highest = 0;
 		double lowest = 99999;
 		for (Weapon w: arr) {
-			if (w.highestDamage().battleScore > highest) {
-				highest = w.highestDamage().battleScore;
+			if (w.score() > highest) {
+				highest = w.score();
 			}
-			if (w.highestDamage().battleScore < lowest) {
-				lowest = w.highestDamage().battleScore;
+			if (w.score() < lowest) {
+				lowest = w.score();
 			}
 		}
 		for (Weapon w: arr) {
-			if (w.highestDamage().battleScore != highest && w.highestDamage().battleScore  != lowest) {
+			if (w.score() != highest && w.score()  != lowest) {
 				return w;
 			}
 		}
@@ -640,15 +657,15 @@ public class Weapon extends Item {
 		double highest = 0;
 		double lowest = 99999;
 		for (Weapon w: arr) {
-			if (w.highestDamage().battleScore > highest) {
-				highest = w.highestDamage().battleScore;
+			if (w.score() > highest) {
+				highest = w.score();
 			}
-			if (w.highestDamage().battleScore < lowest) {
-				lowest = w.highestDamage().battleScore;
+			if (w.score() < lowest) {
+				lowest = w.score();
 			}
 		}
 		for (Weapon w: arr) {
-			if (w.highestDamage().battleScore != highest && w.highestDamage().battleScore  != lowest) {
+			if (w.score() != highest && w.score()  != lowest) {
 				return w;
 			}
 		}
@@ -688,7 +705,7 @@ public class Weapon extends Item {
 			materialCount.put(weap.getMaterial(), materialCount.getOrDefault(weap.getMaterial(),0)+1);
 			String temp = weap.getMaterial() +weap.getBaseName();
 			combCount.put(temp, combCount.getOrDefault(temp,0)+1);
-			battleTotal+=weap.highestDamage().battleScore;
+			battleTotal+=weap.score();
 			//weaponList.add(weap);
 		}
 		battleTotal/=attempts;
@@ -756,7 +773,7 @@ public class Weapon extends Item {
 					maps.get((2*mult)-1).put(weap.getMaterial(), maps.get((2*mult)-1).getOrDefault(weap.getMaterial(),0)+1);
 					String temp = weap.getMaterial() +weap.getBaseName();
 					maps.get((3*mult)-1).put(temp, maps.get((3*mult)-1).getOrDefault(temp,0)+1);
-					battleTotal[s]+=weap.highestDamage().battleScore;
+					battleTotal[s]+=weap.score();
 				}
 				temptime[s]=System.nanoTime()-starttime;
 				time[s] += temptime[s];
