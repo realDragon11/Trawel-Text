@@ -845,10 +845,21 @@ public class mainGame {
 						Player.player.addTitle("master duelist");
 					}
 					second_man.addDeath();
-					if (extra.chanceIn(second_man.getPlayerKills(), 5*(second_man.getDeaths()))) {
-						w.addDeathCheater(second_man);//dupes don't happen since in this case the dupe is instantly removed in the wander code
-						second_man.hTask = HostileTask.REVENGE;
-					}
+					if (second_man.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
+						int deaths = second_man.getDeaths();
+						int pKills = second_man.getPlayerKills();
+						//max revive chance decreases the more they die, even if they have infinite kills on you, to reduce annoyance
+						if (
+								(deaths == 1 && extra.randFloat() > .97)//~3% chance if this is our only death
+								|| (pKills > 0 && deaths < 4 && extra.chanceIn(Math.min((4*deaths)+pKills,(pKills*2)+1), pKills+(5*deaths)))
+								//killing the player is effective
+								//we can at most get a (X-1)/x chance
+								//can cheat death a max of 3 times
+								) {
+							w.addDeathCheater(second_man);//dupes don't happen since in this case the dupe is instantly removed in the wander code
+							second_man.hTask = HostileTask.REVENGE;
+						}
+						}
 					}
 					if (first_man.isPlayer() || second_man.isPlayer()) {
 						Networking.setBattle(Networking.BattleType.NONE);

@@ -41,7 +41,7 @@ public class Armor extends Item {
 	private float pierceResist;
 	private transient double sharpActive, bluntActive, pierceActive;
 	private float baseEnchant;//the multiplier of how powerful enchantments on the item are
-	private int weight;
+	private byte weight;
 	private Enchant enchantment;
 	private float dexMod = 1;
 	//private double burnMod, freezeMod, shockMod;
@@ -348,9 +348,9 @@ public class Armor extends Item {
 	
 	/**
 	 * Get the weight of the item
-	 * @return weight (int)
+	 * @return weight (byte)
 	 */
-	public int getWeight() {
+	public byte getWeight() {
 		return weight;
 	}
 	

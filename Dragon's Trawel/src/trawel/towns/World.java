@@ -5,12 +5,16 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Predicate;
 
 import trawel.PrintEvent;
 import trawel.WorldGen;
 import trawel.extra;
+import trawel.factions.HostileTask;
 import trawel.personal.Person;
+import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
+import trawel.personal.people.SuperPerson;
 import trawel.time.ContextLevel;
 import trawel.time.ContextType;
 import trawel.time.TContextOwner;
@@ -31,7 +35,12 @@ public class World extends TContextOwner{
 	private List<PrintEvent> printers;
 
 	//private ArrayList<BardSong> bardSongs;
-	private ArrayList<Person> deathCheaters;
+	private List<Person> deathCheaters;
+	/**
+	 * used for notable characters that either cheated death and didn't die in the rematch, or otherwise were notable but would
+	 * get lost
+	 */
+	//private List<Person> characters;
 	private Calender calender = new Calender();
 	private float minLata, maxLata, minLonga, maxLonga;
 	
@@ -143,8 +152,21 @@ public class World extends TContextOwner{
 		deathCheaters.add(p);
 	}
 	
+	/**
+	 * removes all occurrences of this person in death cheaters
+	 * @param p
+	 */
 	public void removeDeathCheater(Person p) {
+		deathCheaters.removeIf(Predicate.isEqual(p));
+	}
+	
+	public void deathCheaterToChar(Person p) {
+		assert deathCheaters.contains(p);
 		deathCheaters.remove(p);
+		//characters.add(p);
+		p.hTask = HostileTask.DUEL;//? probably need a better intent system, maybe turn them into a SuperPerson or something
+		//TODO: for now just place there where the player is
+		Player.player.getLocation().addOccupant(new Agent(p));
 	}
 	
 	public Person getDeathCheater(int level) {

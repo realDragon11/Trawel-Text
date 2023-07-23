@@ -57,8 +57,7 @@ public class Person implements java.io.Serializable{
 	private transient boolean isAttacking =false;
 	private transient int hp, tempMaxHp;
 	//private Taunts brag;
-	@OneOf({"cowardly","fearless","grizzled"})
-	public String personType = extra.choose("cowardly","fearless");
+	private PersonType personType = extra.choose(PersonType.COWARDLY,PersonType.FEARLESS);
 	//private String placeOfBirth;
 	private int beer;
 	private byte flags = 0b00000000;//used with bitmasking
@@ -96,6 +95,10 @@ public class Person implements java.io.Serializable{
 	
 	public enum RaceFlag {
 		NONE, CRACKS, UNDEAD;
+	}
+	
+	public enum PersonType{
+		COWARDLY,FEARLESS,GRIZZLED,DEATHCHEATED,LIFEKEEPER
 	}
 	//private boolean isPlayer;
 	
@@ -894,8 +897,12 @@ public class Person implements java.io.Serializable{
 		//return brag;
 	//}
 	
-	public String getPersonType() {
+	public PersonType getPersonType() {
 		return personType;
+	}
+	
+	public void setPersonType(PersonType pt) {
+		personType = pt;
 	}
 	
 	/**
@@ -1130,6 +1137,19 @@ public class Person implements java.io.Serializable{
 	public void addSkill(Skill skill) {
 		skills.add(skill);
 	}
+	
+	/**
+	 * 
+	 * @param skill
+	 * @return false if already has and no change
+	 */
+	public boolean setHasSkill(Skill skill) {
+		if (skills.contains(skill)) {
+			return false;
+		}
+		skills.add(skill);
+		return true;
+	}
 
 	public void setTitle(String s) {
 		title = s;
@@ -1277,6 +1297,12 @@ public class Person implements java.io.Serializable{
 
 	public void consumeBeer() {
 		beer--;
+	}
+
+	public void forceLevelUp(int endLevel) {
+		while (getLevel() < endLevel) {
+			addXp(getLevel()*getLevel());
+		}
 	}
 
 }

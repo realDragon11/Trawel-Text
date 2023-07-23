@@ -11,6 +11,7 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.MenuSelectFeature;
 import derg.menus.MenuSelectNumber;
+import trawel.AIClass;
 import trawel.Bumper;
 import trawel.Networking;
 import trawel.PrintEvent;
@@ -19,10 +20,14 @@ import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
 import trawel.personal.Person;
+import trawel.personal.Person.PersonType;
 import trawel.personal.RaceFactory;
+import trawel.personal.item.Inventory;
+import trawel.personal.item.body.Race;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
+import trawel.personal.people.Skill;
 import trawel.personal.people.SuperPerson;
 import trawel.quests.QuestReactionFactory;
 import trawel.time.ContextLevel;
@@ -816,11 +821,61 @@ public class Town extends TContextOwner implements java.io.Serializable{
 			if (!went && extra.chanceIn(1,3)) {
 				Person p = this.island.getWorld().getDeathCheater(tier);
 				if (p != null) {
+					this.island.getWorld().removeDeathCheater(p);
 					went = true;
-					extra.println(extra.PRE_RED+p.getName() + " is back!");
-					Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
+					int pLevel = Player.player.getPerson().getLevel();
+					if (p.getLevel() < pLevel) {
+						extra.offPrintStack();
+						p.forceLevelUp(pLevel);
+						AIClass.loot(p.getBag(), new Inventory(pLevel, Race.RaceType.HUMANOID, null, null, null), 2, false);
+						extra.popPrintStack();
+					}
+					int part1 = extra.randRange(0, 1);
+					switch (part1) {
+					case 0:
+						extra.print(extra.PRE_RED+p.getName() +" charges you out of nowhere! They're back for more, and this time they're not fighting fair! ");
+						p.setHasSkill(Skill.SPUNCH);
+						break;
+					case 1:
+						extra.print(extra.PRE_RED+p.getName() +" charges you, screaming bloody murder! Their thirst of blood has not yet been satiated! ");
+						p.setHasSkill(Skill.BLOODTHIRSTY);
+						break;
+
+					default:
+						extra.print(extra.PRE_RED+p.getName() + " is back!");
+						break;
+					}
+					switch (extra.randRange(0, 1)) {
+					case 0:
+						if (p.getPersonType() == PersonType.COWARDLY) {
+							extra.println("\"I was once weak and broken... no more! I will be better! I shall not break again!\"");
+							p.setTitle(extra.choose(" the Unbreakable"," the Unfettered"));
+						}else {
+							extra.println("\"You may have broken my body, but not my spirit!\"");
+							p.setTitle(extra.choose(" the Unbroken"," the Unfettered"));
+						}
+						p.setHasSkill(Skill.TA_NAILS);
+						
+						p.setPersonType(PersonType.DEATHCHEATED);
+						break;
+					case 1:
+						if (part1 == 1) {
+							extra.println("\"Primal forces demand I take back what you took from me!\"");
+						}else {
+							extra.println("\"I fell, but they picked me back up! Now I stand beside life itself against you!\"");
+						}
+						p.setTitle(extra.choose(", ","the ") +extra.choose("Life ","Primal ")+extra.choose("Keeper","Defender","Servant","Judge"));
+						p.setHasSkill(Skill.LIFE_MAGE);
+						p.setPersonType(PersonType.LIFEKEEPER);
+						break;
+					}
+
+				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 					if (winner != p) {
-						this.island.getWorld().removeDeathCheater(p);
+						//this.island.getWorld().removeDeathCheater(p);
+						//removed earlier, might get re-added in the combat above, which is fine
+					}else {
+						this.island.getWorld().deathCheaterToChar(p);
 					}
 				}
 			}

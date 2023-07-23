@@ -12,6 +12,7 @@ import trawel.battle.attacks.TargetFactory.TargetType;
 import trawel.factions.Faction;
 import trawel.factions.HostileTask;
 import trawel.personal.Person.AIJob;
+import trawel.personal.Person.PersonType;
 import trawel.personal.Person.RaceFlag;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.body.SoundBox;
@@ -745,7 +746,7 @@ public class RaceFactory {
 	
 	public static Person makeOld(int level) {
 		Person p = new Person(level);
-		p.personType = "grizzled";
+		p.setPersonType(PersonType.GRIZZLED);
 		p.hTask = HostileTask.DUEL;
 		if (extra.chanceIn(1,5)) {
 			p.getBag().getDrawBanes().add(DrawBane.KNOW_FRAG);
@@ -755,7 +756,7 @@ public class RaceFactory {
 	
 	public static Person makeQuarterMaster(int level) {
 		Person p = new Person(level);
-		p.personType = "grizzled";
+		p.setPersonType(PersonType.GRIZZLED);
 		p.hTask = HostileTask.RICH;
 		return p;
 	}

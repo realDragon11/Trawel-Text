@@ -10,16 +10,19 @@ public class BarkManager {
 
 	
 	public static void getTaunt(Person p) {
+		if (extra.getPrint()) {
+			return;
+		}
 		double hpPercent = ((double)p.getHp())/p.getMaxHp();
 		switch (p.getPersonType()) {
-		case "cowardly":
+		case COWARDLY:
 			if (hpPercent > .4) {
 				extra.println(genericTaunt(p));
 			}else {
 				extra.println(cowardTaunt(p));
 			}
 			break;
-		case "fearless":
+		case FEARLESS:
 			if (hpPercent > .3) {
 				extra.println(genericTaunt(p));
 			}else {
@@ -30,7 +33,7 @@ public class BarkManager {
 				}
 			}
 			break;
-		case "grizzled":
+		case GRIZZLED:
 			if (hpPercent > .3) {
 				extra.println(genericTaunt(p));
 			}else {
@@ -41,24 +44,51 @@ public class BarkManager {
 				}
 			}
 			break;
+		case DEATHCHEATED:
+			if (hpPercent > .33) {
+				extra.println(genericTaunt(p));
+			}else {
+				if (extra.randRange(1,2) == 1) {
+				extra.println(deathCheaterTaunt(p));
+				}else {
+					extra.println(genericTaunt(p));
+				}
+			}
+			break;
+		case LIFEKEEPER:
+			if (hpPercent > .33) {
+				extra.println(lifeKeeperTaunt(p));
+			}else {
+				if (extra.randRange(1,2) == 1) {
+					extra.println(lifeKeeperTaunt(p));
+					}else {
+						extra.println(lifeKeeperTauntLow(p));
+					}
+			}
+			break;
 		}
 		
 	}
 	
 	public static void getBoast(Person p, boolean opposed) {
+		if (extra.getPrint()) {
+			return;
+		}
 		double hpPercent = ((double)p.getHp())/p.getMaxHp();
 		switch (p.getPersonType()) {
-		case "cowardly":
+		case COWARDLY:
 			if (hpPercent > .4) {
 				extra.println(genericBoast(p,opposed));
 			}else {
 				return;
 			}
 			break;
-		case "fearless": case "grizzled":
+		case FEARLESS: case GRIZZLED: case DEATHCHEATED:
 			extra.println(genericBoast(p,opposed));
 			break;
-			
+		case LIFEKEEPER:
+			extra.println(lifeKeeperBoast(p));
+			break;
 		}
 	}
 
@@ -78,11 +108,43 @@ public class BarkManager {
 		return p.getName() + " " + extra.choose("screams","shouts","boasts")+  " \""+ extra.randList(list) +"\"";
 	}
 	
+	private static String lifeKeeperBoast(Person p) {
+		List<String> list = new ArrayList<String>();
+		list.add("My task is not always clear, but that belies its importance.");//TODO: it's its it's i'ts
+		list.add("Life itself pushes me to move forward!");
+		list.add("The ebb and flow... wax and wane... it... I!");
+		return p.getName() + " " + extra.choose("mutters","shouts","boasts","declares")+  " \""+ extra.randList(list) + "\"";
+	}
+	
 	private static String resolveTaunt(Person p) {
 		List<String> list = new ArrayList<String>();
 		list.add("Death draws near... but I am unafraid!");
 		list.add("Can you kill me, or will you fall, like the others?");
 		list.add("I greet death with courage!" + extra.choose(""," Can you say the same?"));
+		return p.getName() + " " + extra.choose("screams","shouts","taunts")+  " \""+ extra.randList(list) + "\"";
+	}
+	
+	private static String lifeKeeperTaunt(Person p) {
+		List<String> list = new ArrayList<String>();
+		list.add("Primal forces urge me on!");
+		list.add("Life itself demands that I do this!");
+		list.add("The ebb and flow speaks to me!" + extra.choose(""," It whispers your weaknesses in my ear!"," It bolsters me with pure strength!"));
+		return p.getName() + " " + extra.choose("mutters","shouts","taunts","declares")+  " \""+ extra.randList(list) + "\"";
+	}
+	
+	private static String lifeKeeperTauntLow(Person p) {
+		List<String> list = new ArrayList<String>();
+		list.add("Primal forces urge me on, and if I fall another shall rise to take my place!");
+		list.add("If I fall, primality will reclaim me!");
+		list.add("The ebb and flow speaks to me!" + extra.choose(""," Whispers of death and life are constant!"," I face oblivion."));
+		return p.getName() + " " + extra.choose("mutters","shouts","taunts","declares")+  " \""+ extra.randList(list) + "\"";
+	}
+	
+	private static String deathCheaterTaunt(Person p) {
+		List<String> list = new ArrayList<String>();
+		list.add("Death draws near... "+extra.choose("but I am unafraid!","I care not, I fight on!","but I know it well!"));
+		list.add("Can you kill me... for real?"+ extra.choose(""," I care not, I fight on!"));
+		list.add("I greet death with courage!" + extra.choose(""," Can you say the same?"," It has proven weak!"));
 		return p.getName() + " " + extra.choose("screams","shouts","taunts")+  " \""+ extra.randList(list) + "\"";
 	}
 	
