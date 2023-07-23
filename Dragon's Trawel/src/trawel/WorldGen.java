@@ -14,6 +14,7 @@ import java.util.List;
 import org.nustaq.serialization.FSTConfiguration;
 import org.nustaq.serialization.FSTObjectOutput;
 
+import trawel.Connection.ConnectType;
 import trawel.features.nodes.CaveNode;
 import trawel.features.nodes.Dungeon;
 import trawel.features.nodes.DungeonNode;
@@ -23,7 +24,6 @@ import trawel.features.nodes.Grove;
 import trawel.features.nodes.GroveNode;
 import trawel.features.nodes.Mine;
 import trawel.features.nodes.MineNode;
-import trawel.fort.FortQual;
 import trawel.fort.WizardTower;
 import trawel.townevents.TownTag;
 
@@ -120,7 +120,6 @@ public class WorldGen {
 		
 		Town unun = new Town("unun",2,rona,new Point(5,4));
 		lynchPin = unun;
-		unun.setHasPort(true);
 		addConnection(homa,unun,"road","barrier way");
 		unun.addFeature(new Inn("unun inn",2,unun,null));
 		unun.addTravel();
@@ -222,7 +221,6 @@ public class WorldGen {
 		addConnection(hemo,tanak,"road","windy pass");
 		tanak.addFeature(new Arena("tanak colosseum",4,6,24*3,24*20,1));
 		tanak.addFeature(new Store(4,6));
-		tanak.setHasTeleporters(true);
 		tanak.addFeature(new Inn("tanak inn",5,tanak,null));
 		tanak.addTravel();
 		tanak.addTravel();
@@ -258,7 +256,6 @@ public class WorldGen {
 		});
 		
 		Town lokan = new Town("lokan",3,rona,new Point(5,10));
-		lokan.setHasPort(true);
 		//lokan.addFeature(new Gambler("cup dealer","cups",300));
 		addConnection(lokan,tanak,"road","flat walk");
 		addConnection(lokan,unun,"ship","two way current");
@@ -333,15 +330,13 @@ public class WorldGen {
 			}
 			
 		});
-		List<FortQual> fqualist = new ArrayList<FortQual>();
-		Town fortMerida = new Town("fort merida",4, rona, new Point(1,11),fqualist, haka);
+		Town fortMerida = new Town("fort merida",4, rona,(byte) 1,(byte)11, null);
 		fortMerida.addFeature(new WizardTower(4));
 		addConnection(fortMerida,haka,"road","mountain pass");
 		
 		
 		Island apa = new Island("apa",w);
 		Town alhax = new Town("alhax",2,apa,new Point(5,2));
-		alhax.setHasPort(true);
 		alhax.addFeature(new Arena("yenona arena",2,5,24*7,3,37));
 		addConnection(alhax,unun,"ship","yellow passageway");
 		alhax.addFeature(new Inn("alhax bar",2,alhax,null));
@@ -381,14 +376,12 @@ public class WorldGen {
 		});
 		
 		Town revan = new Town("revan",3,apa,new Point(3,1));
-		revan.setHasPort(true);
 		addConnection(revan,alhax,"ship","green passageway");
 		addConnection(revan,alhax,"road","the tops");
 		revan.addFeature(new Store(2,0));
 		revan.addFeature(new Store(2,1));
 		revan.addFeature(new Store(2,2));
 		revan.addFeature(new Store(2,3));
-		revan.setHasTeleporters(true);
 		revan.addFeature(new Altar());
 		addConnection(revan,tanak,"teleport","the red ritual");
 		revan.tTags.add(TownTag.MERCHANT);
@@ -426,7 +419,6 @@ public class WorldGen {
 		//s = new Store(2,7);
 		//arona.addFeature(s);
 		addConnection(revan,arona,"teleport","the polka-dot ritual");
-		arona.setHasTeleporters(true);
 		//arona.addFeature(new Blacksmith(0,s));
 		arona.addFeature(new Champion(10));
 		arona.addFeature(new Store(4,8));
@@ -462,7 +454,6 @@ public class WorldGen {
 		
 		Island teran = new Island("teran",w);
 		Town yena = new Town("yena",4,teran,new Point(8,2));
-		yena.setHasPort(true);
 		addConnection(revan,yena,"ship","blue sea");
 		addConnection(alhax,yena,"ship","blue sea");
 		//yena.addFeature(new Gambler("cup master","cups",1000));
@@ -529,7 +520,6 @@ public class WorldGen {
 		addConnection(erin,placka,"road","peach road");
 		addConnection(placka,denok,"road","pineapple road");
 		placka.addFeature(new Forest("the white forest", 6));
-		placka.setHasPort(true);
 		//addConnection(alhax,placka,"ship","the yellow sea");
 		addConnection(yena,placka,"ship","the yellow sea");
 		placka.addTravel();
@@ -550,7 +540,7 @@ public class WorldGen {
 		
 		Town repa = new Town("repa",8,teran,new Point(14,6));
 		addConnection(repa,tunka,"road","right-over road");
-		repa.setHasTeleporters(true);//add connection to a new world area
+		//add connection to a new world area
 		repa.addTravel();
 		repa.addTravel();
 		repa.addTravel();
@@ -574,7 +564,6 @@ public class WorldGen {
 		Island apen = new Island("apen",w);
 		plane.addWorld(w);
 		Town holik = new Town("holik", 9, apen, new Point(2,3));
-		holik.setHasTeleporters(true);;
 		holik.addFeature(new Oracle("holik oracle",9));
 		holik.addTravel();
 		holik.addTravel();
@@ -630,6 +619,7 @@ public class WorldGen {
 	private static void townFinal(World w) {
 		for (Island i: w.getislands()) {
 			for (Town t: i.getTowns()) {
+				t.detectConnectTypes();
 				for (Feature f: t.getFeatures()) {
 					f.init();
 				}
@@ -637,24 +627,38 @@ public class WorldGen {
 		}
 		
 	}
-
+	
 	public static void addConnection(Town t1, Town t2,String type, String name) {
-		Connection connect = new Connection(t1,t2,distanceBetweenTowns(t1,t2,type),type);
+		ConnectType ct;
+		switch (name) {
+		case "road":
+			ct = ConnectType.ROAD;break;
+		case "ship":
+			ct = ConnectType.SHIP;break;
+		case "teleport":
+			ct = ConnectType.TELE;break;
+		default:
+			throw new RuntimeException("invalid connection type " + type);
+		}
+		addConnection(t1,t2,ct,name);
+	}
+
+	public static void addConnection(Town t1, Town t2,ConnectType type, String name) {
+		Connection connect = new Connection(name,t1,t2,type);
 		t1.addConnection(connect);
 		t2.addConnection(connect);
-		connect.setName(name);
 	}
 	
-	public static double distanceBetweenTowns(Town t1,Town t2,String type) {
+	public static double distanceBetweenTowns(Town t1,Town t2,ConnectType connectType) {
 		if (!t1.getIsland().getWorld().equals(t2.getIsland().getWorld())) {
 			return 100/teleTravelPerHour;
 		}
-		switch (type) {
-		case "road":
+		switch (connectType) {
+		case ROAD:
 			return pointDistance(t1,t2)/footTravelPerHour;
-		case "ship":
+		case SHIP:
 			return pointDistance(t1,t2)/shipTravelPerHour;
-		case "teleport":
+		case TELE:
 			return pointDistance(t1,t2)/teleTravelPerHour;
 		}
 		//fallback
@@ -791,8 +795,9 @@ public class WorldGen {
 		Town curTown = Player.player.getLocation();
 		int i = 0;
 		while (curTown != dest) {
-			extra.println(curTown.getName() + "->" + connects.get(i).otherTown(curTown).getName() + " (" + connects.get(i).getType() + ": " +connects.get(i).getName()+")");
-			curTown = connects.get(i).otherTown(curTown);
+			Town nextTown = connects.get(i).otherTown(curTown);
+			extra.println(curTown.getName() + "->" + nextTown.getName() + " (" + connects.get(i).getType().desc() + ": " +connects.get(i).getName()+")");
+			curTown = nextTown;
 			i++;
 		}}catch (Exception e) {
 			e.printStackTrace();

@@ -1,6 +1,8 @@
 package trawel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -18,6 +20,10 @@ public class World extends TContextOwner{
 	private int ySize;
 	private Town startTown;
 	private String name;
+	
+	private transient Map<String,PrintEvent> printerMap;
+	private List<String> printerLabels;
+	private List<PrintEvent> printers;
 
 	//private ArrayList<BardSong> bardSongs;
 	private ArrayList<Person> deathCheaters;
@@ -36,7 +42,10 @@ public class World extends TContextOwner{
 		this.minLata = minLata;
 		this.maxLata = minLata+y/WorldGen.unitsInLata;
 		this.minLonga = minLonga;
-		this.maxLonga = minLonga+x/WorldGen.unitsInLonga;;
+		this.maxLonga = minLonga+x/WorldGen.unitsInLonga;
+		
+		printerLabels = new ArrayList<String>();
+		printers = new ArrayList<PrintEvent>();
 	}
 	
 	public void addIsland(Island t) {
@@ -237,6 +246,21 @@ public class World extends TContextOwner{
 	@Override
 	public ContextLevel contextLevel() {
 		return ContextLevel.WORLD;
+	}
+
+	public void addPrintEvent(String string, PrintEvent e) {
+		printerMap.put(string, e);
+		printerLabels.add(string);
+		printers.add(e);
+	}
+
+	public boolean getAndPrint(String string) {
+		PrintEvent printer = printerMap.getOrDefault(string, null);
+		if (printer !=null) {
+			printer.print();
+			return true;
+		}
+		return false;
 	}
 	
 

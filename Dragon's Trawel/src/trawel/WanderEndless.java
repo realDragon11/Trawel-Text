@@ -1,5 +1,8 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.List;
+
+import trawel.Connection.ConnectType;
 
 public class WanderEndless extends Behavior implements java.io.Serializable{
 
@@ -10,7 +13,7 @@ public class WanderEndless extends Behavior implements java.io.Serializable{
 
 	@Override
 	public void action(Agent user) {
-		ArrayList<Connection> connects = user.getLocation().getConnects();
+		List<Connection> connects = user.getLocation().getConnects();
 		Boolean bool = false;
 		Connection c;
 		int i = 0;
@@ -23,7 +26,7 @@ public class WanderEndless extends Behavior implements java.io.Serializable{
 			user.enqueueBehavior(b);
 			return;
 		}
-		if (c.getType().equals("teleport") || (c.getType().equals("ship") && extra.chanceIn(1,2))) {
+		if (c.getType() != ConnectType.ROAD && extra.chanceIn(1,2)) {
 			bool = true;
 		}else {
 			bool = false;

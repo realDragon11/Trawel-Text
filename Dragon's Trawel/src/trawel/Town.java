@@ -4,15 +4,12 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.Connection.ConnectType;
 import trawel.fort.FortFeature;
 import trawel.fort.FortHall;
-import trawel.fort.FortQual;
 import trawel.quests.QuestReactionFactory;
-import trawel.time.CanPassTime;
 import trawel.time.ContextLevel;
 import trawel.time.ContextType;
-import trawel.time.HasTimeContext;
-import trawel.time.ReloadAble;
 import trawel.time.TContextOwner;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -28,43 +25,44 @@ import trawel.townevents.TownTag;
 public class Town extends TContextOwner implements java.io.Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private boolean hasPort;
-	private boolean hasTeleporters;
+	/**
+	 * bitmask, use the functions instead
+	 * 0 bit = roads
+	 * 1 bit = port
+	 * 2 bit = teleports
+	 * 
+	 * 7 bit = is fort
+	 */
+	private byte hasFlags = 0b00000000;
 	private byte locationX, locationY;
 	private Island island;
-	private String name;
+	//WARNING: towns must have unique names within their world
+	private final String name;
 	private int tier;
 	private double timePassed;
-	private ArrayList<Connection> connects;
+	private List<Connection> connects;
 	private List<Feature> features;
-	private ArrayList<SuperPerson> occupants;
-	private PrintEvent goPrinter, newPrinter;
-	private boolean hasBeen;
+	private List<SuperPerson> occupants;
 	private List<Person> helpers = new ArrayList<Person>();
 	private double defenseTimer = 0;
-	private boolean isFort = false;
-	private List<FortQual> fQuals;
 	public List<TownTag> tTags = new ArrayList<TownTag>();
-	private Town leaveTown;
 	public int visited = 0;
 	public int background_variant = extra.randRange(1,3);
 	
 	private transient List<TimeEvent> events;
 	
-	public Town() {
+	private Town(String name) {
+		this.name = name;
 		connects = new ArrayList<Connection>();
 		features = new ArrayList<Feature>();
 		occupants = new ArrayList<SuperPerson>();
-		hasTeleporters = false;
-		hasPort = false;
 	}
-	public Town(String name, int tier, Island island, Point location) {
-		this();
-		this.name = name;
+	public Town(String name, int tier, Island island, byte x, byte y) {
+		this(name);
 		this.tier = tier;
 		this.island = island;
-		locationX = (byte) location.x;
-		locationY = (byte) location.y;
+		locationX = x;
+		locationY = y;
 		timePassed = 0;
 		int j = extra.randRange(2, 5);
 		int i = 0;
@@ -74,17 +72,18 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		}
 		island.addTown(this);
 	}
+	public Town(String name, int tier, Island island, Point location) {
+		this(name,tier,island,(byte)location.x,(byte)location.y);
+	}
 	
-	public Town(String name, int tier, Island island, Point location,List<FortQual> fQuals, Town lTown) {
-		this();
-		this.isFort = true;
-		this.name = name;
+	public Town(String name, int tier, Island island, byte x, byte y, FortFeature fortOverload) {
+		this(name);
+		hasFlags |= (1 << 7);//set that it is a fort
 		this.tier = tier;
 		this.island = island;
-		locationX = (byte) location.x;
-		locationY = (byte) location.y;
-		this.fQuals = fQuals;
-		this.leaveTown = lTown;
+		locationX = x;
+		locationY = y;
+		//this.leaveTown = lTown;
 		timePassed = 0;
 		features.add(new FortHall(tier,this));
 		island.addTown(this);
@@ -101,10 +100,10 @@ public class Town extends TContextOwner implements java.io.Serializable{
 	}
 	
 	public void setGoPrinter(PrintEvent e) {
-		goPrinter = e;
+		this.getIsland().getWorld().addPrintEvent("g"+this.name,e);
 	}
 	public void setFirstPrinter(PrintEvent e) {
-		newPrinter = e;
+		this.getIsland().getWorld().addPrintEvent("n"+this.name,e);
 	}
 	
 	public void addPerson() {
@@ -113,17 +112,31 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		o.setLocation(this);
 	}
 	
-	public boolean hasPort() {
-		return hasPort;
+	public boolean isFort() {
+		//unsure if best way, but I care more about memory storage than speed, so doesn't need to be fast rn
+		return Byte.toUnsignedInt((byte) (hasFlags & (1 << 7))) > 0;
 	}
-	public void setHasPort(boolean hasPort) {
-		this.hasPort = hasPort;
-	}
+	
 	public boolean hasTeleporters() {
-		return hasTeleporters;
+		//unsure if best way, but I care more about memory storage than speed, so doesn't need to be fast rn
+		return Byte.toUnsignedInt((byte) (hasFlags & (1 << 2))) > 0;
 	}
-	public void setHasTeleporters(boolean hasTeleporters) {
-		this.hasTeleporters = hasTeleporters;
+	public boolean hasPort() {
+		//unsure if best way, but I care more about memory storage than speed, so doesn't need to be fast rn
+		return Byte.toUnsignedInt((byte) (hasFlags & (1 << 1))) > 0;
+	}
+	public boolean hasRoads() {
+		//unsure if best way, but I care more about memory storage than speed, so doesn't need to be fast rn
+		return Byte.toUnsignedInt((byte) (hasFlags & (1 << 0))) > 0;
+	}
+	//https://stackoverflow.com/a/4674055 if you need help understanding
+	public void detectConnectTypes() {
+		boolean hasRoads = false;
+		boolean hasPort = false;
+		boolean hasTele = false;
+		hasFlags = (byte) (hasRoads ? hasFlags | (1 << 0) : hasFlags & ~(1 << 0));
+		hasFlags = (byte) (hasPort ? hasFlags | (1 << 1) : hasFlags & ~(1 << 1));
+		hasFlags = (byte) (hasTele ? hasFlags | (1 << 2) : hasFlags & ~(1 << 2));
 	}
 	public byte getLocationX() {
 		return locationX;
@@ -137,11 +150,12 @@ public class Town extends TContextOwner implements java.io.Serializable{
 	public void setIsland(Island island) {
 		this.island = island;
 	}
+	/**
+	 * WARNING: towns must have unique names
+	 * @return
+	 */
 	public String getName() {
 		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	public int getTier() {
 		return tier;
@@ -149,13 +163,9 @@ public class Town extends TContextOwner implements java.io.Serializable{
 	public void setTier(int tier) {
 		this.tier = tier;
 	}
-	public void generate() {
-		this.generate(((int)Math.random()*8)+1);
-	}
 	
-	public void generate(int tier) {
-		this.name = extra.capFirst((String)extra.choose(randomLists.randomElement(),randomLists.randomColor()));
-		this.tier = tier;
+	public static Town generate(int tier, Island island, byte x, byte y) {
+		String name = extra.capFirst((String)extra.choose(randomLists.randomElement(),randomLists.randomColor()));
 		switch (tier) {
 		case 1:name+= " Enclave";break;
 		case 2:name+= " District";break;
@@ -167,15 +177,16 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		case 8:name+= " Domain";break;
 		case 9:name+= " Realm";break;//bpmFunctions.choose("Kingdom","Kingdom","Colony","Domain","Realm")
 		}
-		
+		Town t = new Town(name,tier, island, x, y);
 		for (int j = 0;j < tier;j++) {
-			addRandomFeature(tier);
+			t.addRandomFeature(tier);
 		}
+		return t;
 	}
 	
 	private void addRandomFeature(int tier) {
 		//undo: add all possible features
-		while (true) {
+		/*while (true) {
 			if (!this.hasTeleporters() && Math.random()*100+tier > 96) {
 				this.setHasTeleporters(true);
 				return;
@@ -186,9 +197,9 @@ public class Town extends TContextOwner implements java.io.Serializable{
 				//this.addStore(store);
 				return;
 			}
-		}
+		}*/
 	}
-	public ArrayList<Connection> getConnects() {
+	public List<Connection> getConnects() {
 		return connects;
 	}
 	public void addConnection(Connection c) {
@@ -200,29 +211,28 @@ public class Town extends TContextOwner implements java.io.Serializable{
 	}
 
 	public void atTown() {
-		Player.world = island.getWorld();
-		Player.player.world2 = island.getWorld();
-		if (Player.player.lastTown != this) {
-			if (!hasBeen && newPrinter != null) {
-				newPrinter.print();
+		World w = island.getWorld();
+		Player.world = w;
+		Player.player.world2 = w;
+		if (Player.player.lastTown != this) { 
+			if (visited < 2 && w.getAndPrint("n"+this.name)) {
 			}else {
-				if (goPrinter != null) {
-					goPrinter.print();}
+				w.getAndPrint("g"+this.name);
 			}
 		}
 		townProcess();//works because the menu generator below always backs out
-		hasBeen = true;
 		Player.player.lastTown = this;
+		String visitColor = extra.PRE_WHITE;
 		switch (visited) {
-		case 0: Networking.sendColor(Color.ORANGE);break;
-		case 1: Networking.sendColor(Color.YELLOW);break;
-		case 2: Networking.sendColor(Color.BLUE);break;
-		case 3: Networking.sendColor(Color.GREEN);break;
+		case 0: visitColor = extra.COLOR_NEW;break;
+		case 1: visitColor = extra.COLOR_SEEN;break;
+		case 2: visitColor = extra.COLOR_BEEN;break;
+		case 3: visitColor = extra.COLOR_OWN;break;
 		}
 		if (visited < 2) {
 			visited = 2;
 		}
-		extra.println("You are in " + extra.capFirst(name) + ", on the " +island.getWorld().getCalender().dateName() + ".");
+		extra.println(visitColor+"You are in " + extra.capFirst(name) + ", on the " +island.getWorld().getCalender().dateName() + ".");
 		Networking.sendStrong("Discord|desc|Adventuring in " + name +"|");
 		Networking.sendStrong("Discord|imagesmall|town|Town|");
 		Networking.setArea("main");
@@ -231,7 +241,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		float[] b = Player.world.getCalender().getBackTime(p[0],p[1]);
 		Networking.sendStrong("Backvariant|"+"town"+background_variant+"|"+b[0]+"|"+b[1]+"|");
 		Networking.charUpdate();
-		if (isFort) {
+		if (isFort()) {
 			doFort();
 			return;
 		}
@@ -387,8 +397,15 @@ public class Town extends TContextOwner implements java.io.Serializable{
 
 					@Override
 					public boolean go() {
-						extra.println("You return to " + leaveTown.getName());
-						Player.player.setLocation(leaveTown);
+						assert connects.size() == 1;
+						Connection c = connects.get(0);
+						Town t = c.otherTown(features.get(0).getTown());
+						extra.println("You return to " + t.getName());
+						Player.addTime(c.getTime());
+						if (extra.chanceIn(1,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
+							wanderForConnect(c);
+						}
+						Player.player.setLocation(t);
 						return true;
 					}
 				});
@@ -517,7 +534,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 	private void goRoads() {
 		int i = 1;
 		for (Connection c: connects) {
-			if (c.getType().equals("road")){
+			if (c.getType() == ConnectType.ROAD){
 			extra.print(i + " ");
 			c.display(1,this);
 			i++;}
@@ -528,7 +545,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		int j = extra.inInt(i-1);
 		i = 1;
 		for (Connection c: connects) {
-			if (c.getType().equals("road")){
+			if (c.getType() == ConnectType.ROAD){
 			if (i == j) {
 			//extra.print(i + " ");
 			Town t = c.otherTown(this);
@@ -562,10 +579,11 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		int i = 2;
 		Networking.setArea("port");
 		for (Connection c: connects) {
-			if (c.getType().equals("ship")){
-			extra.print(i + " ");
-			c.display(1,this);
-			i++;}
+			if (c.getType() == ConnectType.SHIP){
+				extra.print(i + " ");
+				c.display(1,this);
+				i++;
+			}
 		}
 		extra.println(i + " exit");i++;
 		int j = extra.inInt(i-1);
@@ -613,7 +631,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		}
 		i = 2;
 		for (Connection c: connects) {
-			if (c.getType().equals("ship")){//ships are free for now
+			if (c.getType() == ConnectType.SHIP){//ships are free for now
 			if (i == j) {
 			//extra.print(i + " ");
 			Town t = c.otherTown(this);
@@ -645,7 +663,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 	private void goTeleporters() {
 		int i = 1;
 		for (Connection c: connects) {
-			if (c.getType().equals("teleport")){
+			if (c.getType() == ConnectType.TELE){
 			extra.print(i + " ");
 			c.display(1,this);
 			i++;}
@@ -654,7 +672,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		int j = extra.inInt(i-1);
 		i = 1;
 		for (Connection c: connects) {
-			if (c.getType().equals("teleport")){//ships are free for now
+			if (c.getType()  == ConnectType.TELE){//teles are free for now
 			if (i == j) {
 			//extra.print(i + " ");
 			Town t = c.otherTown(this);
@@ -725,7 +743,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		
 	}
 	
-	public ArrayList<SuperPerson> getOccupants() {
+	public List<SuperPerson> getOccupants() {
 		return occupants;
 	}
 	
@@ -744,8 +762,8 @@ public class Town extends TContextOwner implements java.io.Serializable{
 	 */
 	public int openSlots(){
 		int i = 9-1;
-		if (this.hasTeleporters) {i--;}
-		if (this.hasPort) {i--;}
+		if (this.hasTeleporters()) {i--;}
+		if (this.hasPort()) {i--;}
 		if (this.hasRoads()) {i--;}
 		/*
 		for (Feature f: features) {
@@ -762,15 +780,6 @@ public class Town extends TContextOwner implements java.io.Serializable{
 	 */
 	public void addTravel() {
 		this.features.add(new TravelingFeature(this));
-	}
-	
-	public boolean hasRoads() {
-		for (Connection c: connects) {
-			if (c.getType().equals("road")) {
-				return true;
-			}
-		}
-		return false;
 	}
 	
 	public boolean wander(double threshold) {
@@ -803,6 +812,16 @@ public class Town extends TContextOwner implements java.io.Serializable{
 			return Bumper.go(d,tier,1,this);
 	}
 	
+	private boolean wanderForConnect(Connection c) {
+		switch (c.getType()) {
+		case ROAD:
+			return this.wander(3);
+		case SHIP:
+			return this.wanderShip(3);
+		}
+		return false;
+	}
+	
 	public ArrayList<Feature> getQuestLocationsInRange(int i){
 		ArrayList<Town> tList = new ArrayList<Town>();
 		ArrayList<Town> addList = new ArrayList<Town>();
@@ -810,13 +829,12 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		for (int v = 0; v < i;v++) {
 			for (Town t: tList) {
 				for (Connection c: t.getConnects()) {
-					if (c.getType().equals("teleport")) {
+					if (c.getType() == ConnectType.TELE) {
 						continue;
 					}
-					for (Town f: c.getTowns()) {
-						if (!tList.contains(f) && !addList.contains(f)) {
-							addList.add(f);
-						}
+					Town f = c.otherTown(t);
+					if (!tList.contains(f) && !addList.contains(f)) {
+						addList.add(f);
 					}
 				}
 			}
@@ -835,7 +853,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 	}
 	
 	public int fortSizeLeft() {
-		if (!isFort) {
+		if (!isFort()) {
 			return 0;
 		}
 		int i = 6;

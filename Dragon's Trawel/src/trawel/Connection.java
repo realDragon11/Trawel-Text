@@ -1,54 +1,85 @@
 package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.nustaq.serialization.annotations.OneOf;
 
 /**
  * 
- * @author Brian Malone
+ * @author dragon
  * 5/30/2018
  */
 public class Connection implements java.io.Serializable{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
-	private ArrayList<Town> towns;
+	private Town townA, townB;
 	private double time;
 	@OneOf({"road","ship","teleport"})
-	private String type;
-	private String nameString;
+	private final byte type;
+	private final String nameString;
 	
-	public Connection(Town t1, Town t2,double time, String type) {
-		towns = new ArrayList<Town>();
-		towns.add(t1);
-		towns.add(t2);
+	public Connection(String name, Town t1, Town t2,double time, String typeS) {
+		townA = t1;
+		townB = t2;
 		this.time = (time);
-		this.type = type;
+		switch (typeS) {
+		case "road":
+			type = 0;
+			break;
+		case "ship":
+			type = 1;
+			break;
+		case "teleport":
+			type = 2;
+			break;
+		default:
+			throw new RuntimeException("invalid connect type");
+		}
+		nameString = name;
+	}
+	public Connection(String name, Town t1, Town t2, ConnectType connectType) {
+		townA = t1;
+		townB = t2;
+		time = 0;
+		type = (byte) connectType.ordinal();
+		nameString = name;
 	}
 	
-	public ArrayList<Town> getTowns(){
-		return towns;
+	public Town[] getTowns(){
+		return new Town[] {townA,townB};
 	}
 
 	public double getTime() {
-		return time;
+		return WorldGen.distanceBetweenTowns(townA,townB,getType());
+	}
+	
+	public enum ConnectType {
+		ROAD("road"),SHIP("ship"),TELE("tele");
+
+		private final String desc;
+		ConnectType(String name){
+			desc = name;
+		}
+		public String desc() {
+			return desc;
+		}
 	}
 
-	public String getType() {
-		return type;
+	public ConnectType getType() {
+		return ConnectType.values()[type];
 	}
 
 	public void display(int style,Town town1) {
 		Town ot = otherTown(town1);
+		String visitColor = extra.PRE_WHITE;
 		switch (ot.visited) {
-		case 0: extra.print(extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f))); ot.visited = 1;break;
-		case 1: extra.print(extra.inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f)));break;
-		case 2: extra.print(extra.inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f)));break;
-		case 3: extra.print(extra.inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f)));;break;
+		case 0: visitColor = extra.COLOR_NEW; ot.visited = 1;break;
+		case 1: visitColor = extra.COLOR_SEEN;break;
+		case 2: visitColor = extra.COLOR_BEEN;break;
+		case 3: visitColor = extra.COLOR_OWN;break;
 		}
-		extra.println(getName() + " to " + ot.getName() + " {Level: "+ot.getTier()+"} ("+dir(town1,ot)+")");
+		extra.println(visitColor + getName() + " to " + ot.getName() + " {Level: "+ot.getTier()+"} ("+dir(town1,ot)+")");
 		if (Player.hasSkill(Skill.TOWNSENSE)) {
 			extra.println(ot.getName() + " has " + ot.getConnects().size() + " connections.");
 		}
@@ -87,7 +118,7 @@ public class Connection implements java.io.Serializable{
 			}
 		}
 	}
-	private String dir(Town t1, Town t2) {
+	private static String dir(Town t1, Town t2) {
 		//vectors: int angle = (int) Math.atan2((t1.getLocation().x*t2.getLocation().y)-(t1.getLocation().y*t2.getLocation().x),(t1.getLocation().x*t2.getLocation().x)+(t1.getLocation().y*t2.getLocation().y));
 		int angle = (int) Math.toDegrees(Math.atan2(t2.getLocationX()-t1.getLocationX(),t2.getLocationY()-t1.getLocationY()))-90;
 		while(angle <0) {
@@ -122,16 +153,16 @@ public class Connection implements java.io.Serializable{
 	}
 
 	public Town otherTown(Town town1) {
-		ArrayList<Town> towns2 = (ArrayList<Town>) towns.clone();
-		towns2.remove(town1);
-		return towns2.get(0);
+		if (town1.equals(townA)) {
+			return townB;
+		}
+		if (town1.equals(townB)) {
+			return townA;
+		}
+		throw new RuntimeException("neither town was in the connect: " +town1.getName() +" . " + this.getName());
 	}
 
 	public String getName() {
 		return nameString;
-	}
-
-	public void setName(String nameString) {
-		this.nameString = nameString;
 	}
 }

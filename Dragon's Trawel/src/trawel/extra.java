@@ -625,9 +625,15 @@ public final class extra {
 		//timid colors that are slight, used for bad and good hinting
 		public static final String TIMID_GREEN = inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.8f));
 		public static final String TIMID_RED = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.8f));
-		//do not use for no change whatsoever, use white for that- this is a change that might be bad or good but is a net 0 to this stat
+		/** 
+		 * do not use for no change whatsoever, use white for that- this is a change that might be bad or good but is a net 0 to this stat
+		 */
 		public static final String TIMID_GREY = inlineColor(extra.colorMix(Color.BLACK,Color.WHITE,.95f));
 		
+		public static final String COLOR_NEW = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f));
+		public static final String COLOR_SEEN = inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f));
+		public static final String COLOR_BEEN = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f));
+		public static final String COLOR_OWN = inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f));
 		
 		public static String colorBasedAtOne(double number, String plus, String minus, String empty) {
 			String str = format2.format(number);
