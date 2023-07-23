@@ -429,9 +429,9 @@ public class AIClass {
 	}
 
 	private static boolean worseArmor(Armor hasItem, Armor toReplace) {
-		if (toReplace.getBluntResist()*toReplace.getResist() > hasItem.getBluntResist()*hasItem.getResist() || 
-				toReplace.getSharpResist()*toReplace.getResist() > hasItem.getSharpResist()*hasItem.getResist() || 
-				toReplace.getPierceResist()*toReplace.getResist() > hasItem.getPierceResist()*hasItem.getResist() //|| toReplace.getDexMod() >hasItem.getDexMod()
+		if (toReplace.getBluntResist() > hasItem.getBluntResist() || 
+				toReplace.getSharpResist() > hasItem.getSharpResist() || 
+				toReplace.getPierceResist() > hasItem.getPierceResist() //|| toReplace.getDexMod() >hasItem.getDexMod()
 				) 
 		{
 		return false;}
@@ -471,9 +471,9 @@ public class AIClass {
 				extra.println("sbp = sharp, blunt, pierce");
 			}
 			extra.println(extra.PRE_MAGENTA+"Difference: sbp: " 
-			+ extra.hardColorDelta1(toArm.getSharpResist()*toArm.getResist(),hasArm.getSharpResist()*hasArm.getResist())
-			+ " " + extra.hardColorDelta1(toArm.getBluntResist()*toArm.getResist(),hasArm.getBluntResist()*hasArm.getResist())
-			+ " " + extra.hardColorDelta1(toArm.getPierceResist()*toArm.getResist(),hasArm.getPierceResist()*hasArm.getResist())
+			+ extra.hardColorDelta1(toArm.getSharpResist(),hasArm.getSharpResist())
+			+ " " + extra.hardColorDelta1(toArm.getBluntResist(),hasArm.getBluntResist())
+			+ " " + extra.hardColorDelta1(toArm.getPierceResist(),hasArm.getPierceResist())
 			+ "[c_white] cost: " + (goldDiff != 0 ? extra.colorBaseZeroTimid(goldDiff) : "=")
 			);
 			//" dex: " + extra.format2(toArm.getDexMod()-hasArm.getDexMod()) +

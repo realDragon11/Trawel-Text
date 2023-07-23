@@ -30,27 +30,27 @@ public class Armor extends Item {
 	
 	public static final double armorEffectiveness = .1;//was .05
 	//instance variables
-	private int armorType;//The slot which the armor goes into
+	private byte armorType;//The slot which the armor goes into
 	private String baseName;//what we call it, ie helm, helmet, hat, cap
 	@OneOf({"cloth","iron","tin","copper","bronze","steel","silver","gold"})
 	private String material;//what material the object is made from
 	private int cost;//how much it costs in gold pieces
-	private int baseResist;//the base damage resistance of the item
-	private double sharpResist;
-	private double bluntResist;
-	private double pierceResist;
+	//private int baseResist;//the base damage resistance of the item//now built into the following
+	private float sharpResist;
+	private float bluntResist;
+	private float pierceResist;
 	private transient double sharpActive, bluntActive, pierceActive;
 	private float baseEnchant;//the multiplier of how powerful enchantments on the item are
 	private int weight;
 	private Enchant enchantment;
-	private double dexMod = 1;
-	private double burnMod, freezeMod, shockMod;
+	private float dexMod = 1;
+	//private double burnMod, freezeMod, shockMod;
 	private transient double burned;
 	@OneOf({"heavy","light","chainmail","crystal","drudger"})
 	private String matType;//ie heavy, light, chainmail
 	//@OneOf({"iron","cloth","crystal"})
 	//private String baseMap;
-	private int baseMap;//switched to offset
+	private byte baseMap;//switched to offset, unsigned, but positives are normal
 	private static final String[] BASE_MAPS = new String[] {"iron","cloth","crystal"};
 	
 	private String prefixName;
@@ -73,39 +73,37 @@ public class Armor extends Item {
 	//constructors
 	
 	/**
-	 * Make a new armor.
+	 * Make a new random armor.
 	 * @param newLevel (int)
 	 */
 	public Armor(int newLevel) {
 		this(newLevel,(int)(Math.random()*5),MaterialFactory.randArmorMat(),null);
 	}
 	
-	/**
-	 * Make a new armor, that will go in a certain slot.
-	 * @param newLevel (int)
-	 * @param slot (int)
-	 */
-	/*public Armor(int newLevel,int slot,String matType) {
-		this(newLevel,slot,MaterialFactory.randMatByType(matType),job.amatType);		
-	}*/
-	
 	public Armor(int newLevel, int slot,Material mati) {
 		this(newLevel,slot,mati,null);
 	}
-	public Armor(int newLevel, int slot) {
-		this(newLevel,slot,MaterialFactory.randArmorMat(),null);
+	/**
+	 * This should be used in most cases if you want armor for one slot.
+	 * TODO: replace with a similar thing to genMidWeapon maybe?
+	 * @param level
+	 * @param slot (head, arms, body, legs, feet)
+	 */
+	public Armor(int level, int slot) {
+		this(level,slot,MaterialFactory.randArmorMat(),null);
 	}
 	
 	/**
 	 * Make a new armor that is of newLevel level, will go in slot slot, and has a certain material.
-	 * This function should mostly be only used interally, but if you want a certain material to be generated, it will work.
+	 * This function should mostly be only used interally, but if you want a certain material and type to be generated, it will work.
 	 * @param newLevel (int)
 	 * @param slot (int)
-	 * @param mat (String)
+	 * @param mat (Material)
+	 * @param amatType (String)
 	 */
 	public Armor(int newLevel, int slot,Material mati,String amatType) {
 	//initialize	
-	armorType = slot;//type is equal to the array armor slot
+	armorType = (byte)slot;//type is equal to the array armor slot
 	//mat = mati;
 	material = mati.name;
 	level = newLevel;
@@ -115,9 +113,9 @@ public class Armor extends Item {
 	bluntResist = 1;
 	pierceResist = 1;
 	
-	burnMod = 1;
-	shockMod = 1;
-	freezeMod = 1;
+	//burnMod = 1;
+	//shockMod = 1;
+	//freezeMod = 1;
 	
 	baseMap = 0;//"iron";
 	
@@ -134,6 +132,8 @@ public class Armor extends Item {
 	    this.matType = strs[extra.randRange(0,strs.length-1)];
 		*/
 	}
+	
+	float baseResist = 1;
 	
 	if (matType.equals("light")){
 		baseMap = 1;//"cloth";
@@ -215,6 +215,7 @@ public class Armor extends Item {
 				}
 			}
 		}
+		
 	}
 	
 		baseEnchant = mati.baseEnchant;
@@ -222,15 +223,17 @@ public class Armor extends Item {
 		sharpResist *= mati.sharpResist;
 		bluntResist *= mati.bluntResist;
 		pierceResist *= mati.pierceResist;
-		burnMod *= mati.fireVul;
-		shockMod *= mati.shockVul;
-		freezeMod *= mati.freezeVul;
+		//burnMod *= mati.fireVul;
+		//shockMod *= mati.shockVul;
+		//freezeMod *= mati.freezeVul;
 		weight *= mati.weight;
 		cost *= mati.cost;
 		dexMod *= mati.dexMod;
-		//level scaling
-		//cost *= level;
-		//baseResist *= level;
+		
+		
+		sharpResist *= baseResist;
+		bluntResist *= baseResist;
+		pierceResist *= baseResist;
 		
 		//effectiveCost = cost;
 		//add an enchantment and mark it down if the enchantment is greater than a random value form 0 to <1.0
@@ -257,9 +260,9 @@ public class Armor extends Item {
 	//getters
 	/**
 	 * Gives the slot of the armor
-	 * @return the armortype [aka slot] (int)
+	 * @return the armortype [aka slot] (byte)
 	 */
-	public int getArmorType() {
+	public byte getArmorType() {
 		return armorType;
 	}
 	
@@ -276,30 +279,33 @@ public class Armor extends Item {
 	
 
 	/**
-	 * @return the sharpResist (double)
+	 * gets the 'normal' armor level OOB
+	 * @return the sharpResist (float)
 	 */
-	public double getSharpResist() {
+	public float getSharpResist() {
 		return sharpResist*level;
 	}
 
 	/**
-	 * @return the bluntResist (double)
+	 * gets the 'normal' armor level OOB
+	 * @return the bluntResist (float)
 	 */
-	public double getBluntResist() {
+	public float getBluntResist() {
 		return bluntResist*level;
 	}
 
 	/**
-	 * @return the pierceResist (double)
+	 * gets the 'normal' armor level OOB
+	 * @return the pierceResist (float)
 	 */
-	public double getPierceResist() {
+	public float getPierceResist() {
 		return pierceResist*level;
 	}
 	
 	public void resetArmor(int s, int b, int p) {
-		sharpActive = sharpResist*baseResist*level+s;
-		pierceActive = pierceResist*baseResist*level+b;
-		bluntActive = bluntResist*baseResist*level+p;
+		sharpActive = sharpResist*level+s;
+		pierceActive = pierceResist*level+b;
+		bluntActive = bluntResist*level+p;
 		burned = 1;
 	}
 	
@@ -316,19 +322,25 @@ public class Armor extends Item {
 	}
 	
 	public double getFireMod() {
-		return burnMod;
+		return this.getMat().fireVul;
 	}
 	
 	public double getShockMod() {
-		return shockMod;
+		return this.getMat().shockVul;
 	}
 	
 	public double getFreezeMod() {
-		return freezeMod;
+		return this.getMat().freezeVul;
 	}
 	
+	/**
+	 * reduces armor by the provided double, scaled against fireMod and with diminishing returns as burned approaches 0
+	 * bigger burns at once will ignore part of the diminishing returns
+	 * @param d
+	 */
 	public void burn(double d) {
-		burned-=d*burnMod;
+		assert d > 0;
+		burned = Math.min(1, Math.max(0, burned - Math.min(burned,1)*(1- (d*getFireMod())))) ;
 	}
 	
 	
@@ -393,17 +405,10 @@ public class Armor extends Item {
 	}
 
 	/**
-	 * @return the dexMod (double)
+	 * @return the dexMod (float)
 	 */
-	public double getDexMod() {
+	public float getDexMod() {
 		return dexMod;
-	}
-	
-	/**
-	 * @return the baseResist (double)
-	 */
-	public double getResist() {
-		return baseResist;
 	}
 	
 	/**
@@ -424,7 +429,7 @@ public class Armor extends Item {
 	public void display(int style,float markup) {
 		switch (style) {
 		case 1:
-			extra.println(this.getName() + " sbp:" + extra.format(this.baseResist*this.getSharpResist()) + " " + extra.format(this.baseResist*this.getBluntResist()) + " " + extra.format(this.baseResist*this.getPierceResist())
+			extra.println(this.getName() + " sbp:" + extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
 			 + " value: " + (int)(this.getCost()*markup));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
@@ -432,7 +437,7 @@ public class Armor extends Item {
 			;break;
 			
 		case 2:
-			extra.println(this.getName() + " sbp:" + extra.format(this.baseResist*this.getSharpResist()) + " " + extra.format(this.baseResist*this.getBluntResist()) + " " + extra.format(this.baseResist*this.getPierceResist())
+			extra.println(this.getName() + " sbp:" + extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
 			+ " dex: "+ this.getDexMod() + " flame: "+ this.getFireMod() + " shock: "+ this.getShockMod() + " frost: "+ this.getFreezeMod() + " value: " + (int)(this.getCost()*markup));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
@@ -459,7 +464,7 @@ public class Armor extends Item {
 	}
 
 	public String getBaseMap() {
-		return BASE_MAPS[baseMap];
+		return BASE_MAPS[Byte.toUnsignedInt(baseMap)];
 	}
 
 	public Material getMat() {

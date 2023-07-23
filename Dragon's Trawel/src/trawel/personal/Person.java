@@ -1035,9 +1035,9 @@ public class Person implements java.io.Serializable{
 			blunt += a.getBlunt();
 			pierce += a.getPierce();
 			
-			sharpm += a.getSharpResist()*a.getResist();
-			bluntm += a.getBluntResist()*a.getResist();
-			piercem += a.getPierceResist()*a.getResist();
+			sharpm += a.getSharpResist();
+			bluntm += a.getBluntResist();
+			piercem += a.getPierceResist();
 		}
 		extra.println("Sharp: " + sharp + "/" +sharpm);
 		extra.println("Blunt: " + blunt + "/" +bluntm);

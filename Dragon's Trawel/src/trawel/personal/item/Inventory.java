@@ -144,7 +144,7 @@ public class Inventory implements java.io.Serializable{
 		int i = 0;
 		double retResist = 0;
 		while (i < 5) {
-			retResist += armorSlots[i].getSharpResist()*armorSlots[i].getResist();
+			retResist += armorSlots[i].getSharpResist();
 			i++;
 		}
 		return extra.zeroOut(retResist);
@@ -158,7 +158,7 @@ public class Inventory implements java.io.Serializable{
 		int i = 0;
 		double retResist = 0;
 		while (i < 5) {
-			retResist += armorSlots[i].getBluntResist()*armorSlots[i].getResist();
+			retResist += armorSlots[i].getBluntResist();
 			i++;
 		}
 		return extra.zeroOut(retResist);
@@ -172,7 +172,7 @@ public class Inventory implements java.io.Serializable{
 		int i = 0;
 		double retResist = 0;
 		while (i < 5) {
-			retResist += armorSlots[i].getPierceResist()*armorSlots[i].getResist();
+			retResist += armorSlots[i].getPierceResist();
 			i++;
 		}
 		return extra.zeroOut(retResist);
@@ -450,7 +450,7 @@ public class Inventory implements java.io.Serializable{
 			}else {
 				mult = .75;
 			}
-			retResist += (armorSlots[i].getSharpResist()*armorSlots[i].getResist())*mult;
+			retResist += (armorSlots[i].getSharpResist())*mult;
 			i++;
 		}
 		return extra.zeroOut(retResist);
@@ -465,7 +465,7 @@ public class Inventory implements java.io.Serializable{
 			}else {
 				mult = .75;
 			}
-			retResist += (armorSlots[i].getBluntResist()*armorSlots[i].getResist())*mult;
+			retResist += (armorSlots[i].getBluntResist())*mult;
 			i++;
 		}
 		return extra.zeroOut(retResist);
@@ -480,7 +480,7 @@ public class Inventory implements java.io.Serializable{
 			}else {
 				mult = .75;
 			}
-			retResist += (armorSlots[i].getPierceResist()*armorSlots[i].getResist())*mult;
+			retResist += (armorSlots[i].getPierceResist())*mult;
 			i++;
 		}
 		return extra.zeroOut(retResist);
