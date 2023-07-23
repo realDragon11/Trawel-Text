@@ -14,18 +14,47 @@ import java.util.List;
 import org.nustaq.serialization.FSTConfiguration;
 import org.nustaq.serialization.FSTObjectOutput;
 
-import trawel.Connection.ConnectType;
-import trawel.features.nodes.CaveNode;
-import trawel.features.nodes.Dungeon;
-import trawel.features.nodes.DungeonNode;
-import trawel.features.nodes.Graveyard;
-import trawel.features.nodes.GraveyardNode;
-import trawel.features.nodes.Grove;
-import trawel.features.nodes.GroveNode;
-import trawel.features.nodes.Mine;
-import trawel.features.nodes.MineNode;
-import trawel.fort.WizardTower;
-import trawel.townevents.TownTag;
+import trawel.personal.Person;
+import trawel.personal.item.DummyInventory;
+import trawel.personal.item.Inventory;
+import trawel.personal.item.solid.Armor;
+import trawel.personal.item.solid.Weapon;
+import trawel.personal.people.Player;
+import trawel.towns.Connection;
+import trawel.towns.Feature;
+import trawel.towns.Island;
+import trawel.towns.Plane;
+import trawel.towns.Town;
+import trawel.towns.World;
+import trawel.towns.Connection.ConnectType;
+import trawel.towns.events.TownTag;
+import trawel.towns.fight.Arena;
+import trawel.towns.fight.Champion;
+import trawel.towns.fight.Forest;
+import trawel.towns.fight.Mountain;
+import trawel.towns.fight.Slum;
+import trawel.towns.fort.WizardTower;
+import trawel.towns.nodes.CaveNode;
+import trawel.towns.nodes.Dungeon;
+import trawel.towns.nodes.DungeonNode;
+import trawel.towns.nodes.Graveyard;
+import trawel.towns.nodes.GraveyardNode;
+import trawel.towns.nodes.Grove;
+import trawel.towns.nodes.GroveNode;
+import trawel.towns.nodes.Mine;
+import trawel.towns.nodes.MineNode;
+import trawel.towns.services.Altar;
+import trawel.towns.services.Appraiser;
+import trawel.towns.services.Blacksmith;
+import trawel.towns.services.Doctor;
+import trawel.towns.services.HeroGuild;
+import trawel.towns.services.Inn;
+import trawel.towns.services.Library;
+import trawel.towns.services.MerchantGuild;
+import trawel.towns.services.Oracle;
+import trawel.towns.services.RogueGuild;
+import trawel.towns.services.Store;
+import trawel.towns.services.WitchHut;
 
 public class WorldGen {
 
@@ -630,7 +659,7 @@ public class WorldGen {
 	
 	public static void addConnection(Town t1, Town t2,String type, String name) {
 		ConnectType ct;
-		switch (name) {
+		switch (type) {
 		case "road":
 			ct = ConnectType.ROAD;break;
 		case "ship":

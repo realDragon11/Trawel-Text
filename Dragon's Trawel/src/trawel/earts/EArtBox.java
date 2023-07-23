@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import trawel.Person;
+import trawel.personal.Person;
 
 public class EArtBox implements Serializable {
 

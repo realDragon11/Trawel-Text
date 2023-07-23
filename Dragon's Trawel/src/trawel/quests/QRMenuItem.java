@@ -3,7 +3,7 @@
  */
 package trawel.quests;
 
-import trawel.MenuSelect;
+import derg.menus.MenuSelect;
 
 /**
  * @author realb

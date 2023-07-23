@@ -3,11 +3,11 @@ package scimech.mech;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuGenerator;
+import derg.menus.MenuItem;
+import derg.menus.MenuLine;
+import derg.menus.MenuSelect;
 import scimech.handlers.Savable;
-import trawel.MenuGenerator;
-import trawel.MenuItem;
-import trawel.MenuLine;
-import trawel.MenuSelect;
 import trawel.extra;
 
 public abstract class Fixture extends MechPart implements TurnSubscriber, Savable{

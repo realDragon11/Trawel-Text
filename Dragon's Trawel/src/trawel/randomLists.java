@@ -8,6 +8,8 @@ import derg.SRGapShuffle;
 import derg.SRInOrder;
 import derg.SRPlainRandom;
 import derg.StringResult;
+import trawel.personal.item.solid.Material;
+import trawel.personal.item.solid.MaterialFactory;
 
 /**
  * @author Brian Malone

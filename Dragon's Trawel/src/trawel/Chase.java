@@ -1,6 +1,9 @@
 package trawel;
 import java.util.ArrayList;
 
+import trawel.personal.Person;
+import trawel.personal.people.Player;
+
 public class Chase {
 
 	public Person chaser, target;

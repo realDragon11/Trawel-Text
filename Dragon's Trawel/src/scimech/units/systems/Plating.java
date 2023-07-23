@@ -3,6 +3,10 @@ package scimech.units.systems;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuGenerator;
+import derg.menus.MenuItem;
+import derg.menus.MenuLine;
+import derg.menus.MenuSelect;
 import scimech.combat.DamageMods;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
@@ -10,10 +14,6 @@ import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
-import trawel.MenuGenerator;
-import trawel.MenuItem;
-import trawel.MenuLine;
-import trawel.MenuSelect;
 import trawel.extra;
 
 public class Plating extends Systems {

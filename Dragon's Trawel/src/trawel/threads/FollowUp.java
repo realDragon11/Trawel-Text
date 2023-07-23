@@ -5,7 +5,7 @@ import java.util.concurrent.RunnableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import trawel.World;
+import trawel.towns.World;
 
 public class FollowUp {
 

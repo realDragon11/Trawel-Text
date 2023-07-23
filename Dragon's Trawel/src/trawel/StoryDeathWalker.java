@@ -1,5 +1,8 @@
 package trawel;
 
+import trawel.personal.Person;
+import trawel.personal.people.Player;
+
 public class StoryDeathWalker extends Story{
 
 	public static Person killed;

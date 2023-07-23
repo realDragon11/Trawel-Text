@@ -5,6 +5,13 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import com.github.tommyettinger.random.*;
+
+import derg.menus.MenuGenerator;
+import derg.menus.MenuGeneratorPaged;
+import derg.menus.MenuItem;
+import derg.menus.MenuLine;
+import derg.menus.MenuSelect;
+
 import java.util.Stack;
 import java.util.concurrent.locks.ReentrantLock;
 

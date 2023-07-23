@@ -28,7 +28,7 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	private Condition unpaused = pauseLock.newCondition();
 	private static BlockTaskManager handler;
 	
-	public int lastNewTasks;
+	public int lastNewTasks = 0;
 	public AtomicInteger completedTasks = new AtomicInteger();//also counts canceled tasks
 	
 	public boolean hasWarned = false;
@@ -142,6 +142,9 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 		if (trawel.mainGame.noThreads) {
 			return;
 		}
+		if (!trawel.mainGame.multiCanRun) {
+			return;
+		}
 		
 		//attempt to gain pause lock, if not, merely set that we have no new tasks
 		//to avoid issues with rapid starting and halting
@@ -184,6 +187,9 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	 */
 	public static void halt() {
 		if (trawel.mainGame.noThreads) {
+			return;
+		}
+		if (!trawel.mainGame.multiCanRun) {
 			return;
 		}
 		handler.pause();

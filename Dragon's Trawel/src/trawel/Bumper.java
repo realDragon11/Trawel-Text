@@ -1,6 +1,10 @@
 package trawel;
 import java.util.ArrayList;
 
+import trawel.personal.item.Inventory;
+import trawel.personal.people.Player;
+import trawel.towns.Town;
+
 public abstract class Bumper {
 	
 	public ArrayList<BumperFactory.Response> responses = new ArrayList<BumperFactory.Response>();

@@ -1,7 +1,7 @@
 package derg;
 
 import trawel.mainGame;
-import trawel.Person;
+import trawel.personal.Person;
 import trawel.extra;
 
 public class UnitAssertions {

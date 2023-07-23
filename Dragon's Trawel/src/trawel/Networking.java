@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 
+import trawel.personal.people.Player;
+
 public class Networking {
 
 	 public static final String AGGRO = extra.inlineColor(extra.colorMix(Color.RED, Color.WHITE, 0.5f));//not sure if pre red comes first so
@@ -36,13 +38,13 @@ public class Networking {
 			}
 				//e.printStackTrace();
 				return;
-			}
+	}
 	
 	public static void autoConnect() {
 		autoconnectSilence = true;
 		boolean doit = true;
 		//int value= 6510;
-		extra.println("Connecting...");
+		extra.println("Connecting to localhost Graphical...");
 		while (doit) {
 			try {
 			TimeUnit.MILLISECONDS.sleep(20L);
@@ -63,8 +65,8 @@ public class Networking {
 			return;
 		}
 		if (out != null && (!extra.getPrint())) {
-		out.println(str);
-		//out.flush();
+			out.println(str);
+			//out.flush();
 		}
 	}
 	
@@ -72,9 +74,9 @@ public class Networking {
 		if (!extra.isMainThread()) {
 			return;
 		}
-		if (out != null) {
-		out.println(str);
-		//out.flush();
+		if (out != null) {	
+			out.println(str);
+			//out.flush();
 		}
 	}
 	
@@ -98,21 +100,6 @@ public class Networking {
 		//Networking.sendStrong("Discord|imagelarge|"+Player.bag.getRace().name+"|" + Player.player.getPerson().getName() + " level "+ Player.player.getPerson().getLevel() +"|/");//replace icon with player.player.race later
 		Networking.sendStrong("Discord|imagelarge|icon|" + Player.player.getPerson().getName() + " level "+ Player.player.getPerson().getLevel() +"|");//replace icon with player.player.race later
 	}
-
-	@Deprecated
-	public static void sendColor(Color col) {
-		/*int in = col.getRGB();
-		int red = (in >> 16) & 0xFF;
-		int green = (in >> 8) & 0xFF;
-		int blue = (in >> 0) & 0xFF;
-		int out = (blue << 16) | (green << 8) | (red << 0);*/
-		//Networking.send("Color|" + out +"|");
-		//Networking.send("[#"+Integer.toHexString(col.getRGB()).substring(2)+"]");
-		extra.print(extra.inlineColor(extra.colorMix(col,Color.WHITE,.5f)));
-		//removes alpha but won't work for small alphas
-	}
-	
-	
 
 	public static void clearSides() {
 		Networking.sendStrong("ClearInv|1|");

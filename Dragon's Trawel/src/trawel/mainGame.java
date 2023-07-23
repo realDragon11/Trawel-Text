@@ -10,6 +10,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import derg.menus.MenuGenerator;
+import derg.menus.MenuGeneratorPaged;
+import derg.menus.MenuItem;
+import derg.menus.MenuLine;
+import derg.menus.MenuSelect;
 import scimech.combat.MechCombat;
 import scimech.handlers.SaveHandler;
 import scimech.mech.Mech;
@@ -22,9 +27,27 @@ import scimech.units.mechs.Packrat;
 import scimech.units.mechs.Pirate;
 import scimech.units.mechs.Pyro;
 import scimech.units.mechs.Swashbuckler;
+import trawel.battle.Combat;
+import trawel.battle.TauntsFactory;
+import trawel.battle.attacks.StyleFactory;
+import trawel.battle.attacks.TargetFactory;
+import trawel.battle.attacks.WeaponAttackFactory;
 import trawel.factions.HostileTask;
+import trawel.personal.Person;
+import trawel.personal.RaceFactory;
+import trawel.personal.item.Item;
+import trawel.personal.item.body.Race;
+import trawel.personal.item.magic.EnchantConstant;
+import trawel.personal.item.solid.MaterialFactory;
+import trawel.personal.item.solid.Weapon;
+import trawel.personal.people.Player;
+import trawel.personal.people.Skill;
 import trawel.quests.QuestReactionFactory;
-import trawel.townevents.TownFlavorFactory;
+import trawel.towns.Calender;
+import trawel.towns.World;
+import trawel.towns.events.TownFlavorFactory;
+import trawel.towns.services.BookFactory;
+import trawel.towns.services.Oracle;
 /**
  * 
  * @author dragon
@@ -64,6 +87,8 @@ public class mainGame {
 	
 	private static boolean finalSetup1 = false;
 	private static boolean basicSetup1 = false;
+	
+	public static boolean multiCanRun = false;
 	
 	public static void mainMenu() {
 		extra.menuGo(new MenuGenerator(){
@@ -1021,6 +1046,7 @@ public class mainGame {
 				Player.player.getLocation().atTown();
 				globalPassTime();
 			}
+			multiCanRun = false;
 			extra.println("You do not wake up.");
 		}
 		
@@ -1129,6 +1155,8 @@ public class mainGame {
 			player.storyHold = story;
 			player.setLocation(world.getStartTown());
 			WorldGen.plane.setPlayer(player);
+			
+			multiCanRun = true;
 			
 			//player.getPerson().playerLevelUp();
 			adventureBody();

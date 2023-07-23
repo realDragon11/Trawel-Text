@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import trawel.MenuGenerator;
-import trawel.MenuItem;
-import trawel.MenuSelect;
+import derg.menus.MenuGenerator;
+import derg.menus.MenuItem;
+import derg.menus.MenuSelect;
 import trawel.Networking;
-import trawel.Person;
-import trawel.Player;
-import trawel.RaceFactory;
-import trawel.Town;
 import trawel.WorldGen;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.personal.Person;
+import trawel.personal.RaceFactory;
+import trawel.personal.people.Player;
+import trawel.towns.Town;
 
 public class QuestReactionFactory {
 

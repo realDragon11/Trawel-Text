@@ -3,9 +3,9 @@ package trawel.factions;
 import java.util.ArrayList;
 import java.util.List;
 
-import trawel.Person;
-import trawel.Player;
 import trawel.extra;
+import trawel.personal.Person;
+import trawel.personal.people.Player;
 
 public class FBox implements java.io.Serializable{
 

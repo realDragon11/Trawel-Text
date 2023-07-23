@@ -1,4 +1,11 @@
 package trawel;
+
+import trawel.personal.item.Inventory;
+import trawel.personal.item.magic.Enchant;
+import trawel.personal.item.magic.EnchantConstant;
+import trawel.personal.item.solid.Armor;
+import trawel.personal.item.solid.Weapon;
+
 /**
  * 
  * @author Brian Malone

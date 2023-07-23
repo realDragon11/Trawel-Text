@@ -2,6 +2,10 @@ package trawel;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.personal.Person;
+import trawel.personal.RaceFactory;
+import trawel.personal.item.solid.DrawBane;
+import trawel.personal.people.Player;
 import trawel.quests.Quest.TriggerType;
 
 

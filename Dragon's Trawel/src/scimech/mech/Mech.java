@@ -3,6 +3,12 @@ package scimech.mech;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuGenerator;
+import derg.menus.MenuGeneratorPaged;
+import derg.menus.MenuItem;
+import derg.menus.MenuLine;
+import derg.menus.MenuSelect;
+import derg.menus.MenuSelectNumber;
 import scimech.combat.DamageEffect;
 import scimech.combat.DamageMods;
 import scimech.combat.DamageTypes;
@@ -19,12 +25,6 @@ import scimech.mech.Systems.MenuSystem;
 import scimech.people.Pilot;
 import scimech.people.Trait;
 import scimech.people.TraitKeeper;
-import trawel.MenuGenerator;
-import trawel.MenuGeneratorPaged;
-import trawel.MenuItem;
-import trawel.MenuLine;
-import trawel.MenuSelect;
-import trawel.MenuSelectNumber;
 import trawel.extra;
 
 public abstract class Mech extends MechPart implements TurnSubscriber, Target, Savable{

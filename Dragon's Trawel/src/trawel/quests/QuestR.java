@@ -2,8 +2,8 @@ package trawel.quests;
 
 import java.io.Serializable;
 
-import trawel.Feature;
-import trawel.Town;
+import trawel.towns.Feature;
+import trawel.towns.Town;
 
 public abstract class QuestR implements Serializable {
 

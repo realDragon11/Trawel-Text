@@ -2,7 +2,23 @@ package trawel;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import trawel.battle.Combat;
+import trawel.battle.attacks.Attack;
+import trawel.battle.attacks.Stance;
 import trawel.earts.ASpell;
+import trawel.personal.Person;
+import trawel.personal.item.Inventory;
+import trawel.personal.item.Item;
+import trawel.personal.item.body.Race;
+import trawel.personal.item.magic.Enchant;
+import trawel.personal.item.magic.EnchantConstant;
+import trawel.personal.item.magic.EnchantHit;
+import trawel.personal.item.solid.Armor;
+import trawel.personal.item.solid.DrawBane;
+import trawel.personal.item.solid.Material;
+import trawel.personal.item.solid.Weapon;
+import trawel.personal.people.Player;
+import trawel.personal.people.Skill;
 
 /**
  * @author Brian Malone

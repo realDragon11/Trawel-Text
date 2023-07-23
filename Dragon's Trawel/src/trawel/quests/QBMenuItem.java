@@ -1,8 +1,8 @@
 package trawel.quests;
 
-import trawel.MenuSelect;
-import trawel.Player;
+import derg.menus.MenuSelect;
 import trawel.extra;
+import trawel.personal.people.Player;
 
 public class QBMenuItem extends MenuSelect {
 

@@ -1,7 +1,7 @@
 package trawel.earts;
 
-import trawel.MenuSelect;
-import trawel.Player;
+import derg.menus.MenuSelect;
+import trawel.personal.people.Player;
 
 public class ASpellLearner extends MenuSelect {
 

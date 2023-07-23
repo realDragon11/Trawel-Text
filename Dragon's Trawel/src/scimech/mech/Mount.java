@@ -3,6 +3,11 @@ package scimech.mech;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuGenerator;
+import derg.menus.MenuGeneratorPaged;
+import derg.menus.MenuItem;
+import derg.menus.MenuLine;
+import derg.menus.MenuSelect;
 import scimech.combat.DamageEffect;
 import scimech.combat.DamageMods;
 import scimech.combat.DamageTypes;
@@ -17,11 +22,6 @@ import scimech.mech.Fixture.MenuFixture;
 import scimech.mech.Mech.MenuMechTarget;
 import scimech.people.Trait;
 import scimech.people.TraitKeeper;
-import trawel.MenuGenerator;
-import trawel.MenuGeneratorPaged;
-import trawel.MenuItem;
-import trawel.MenuLine;
-import trawel.MenuSelect;
 import trawel.extra;
 
 public abstract class Mount extends MechPart implements TurnSubscriber, Target, Savable{
