@@ -260,7 +260,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 
 						@Override
 						public String title() {
-							return extra.inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f))+"Roads";
+							return extra.PRE_ROAD+"Roads";
 						}
 
 						@Override
@@ -282,7 +282,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 
 						@Override
 						public String title() {
-							return extra.inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f))+"Teleport Shop";
+							return extra.PRE_TELE+"Teleport Shop";
 						}
 
 						@Override
@@ -304,7 +304,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 
 						@Override
 						public String title() {
-							return extra.inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f))+"Shipyard";
+							return extra.PRE_SHIP+"Shipyard";
 						}
 
 						@Override

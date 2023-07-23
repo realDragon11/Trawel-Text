@@ -65,6 +65,7 @@ public abstract class Feature extends TContextOwner{
 		//}
 	}
 
+	//TODO: replace with hardcoded strings
 	public Color getColor() {
 		return color;
 	}

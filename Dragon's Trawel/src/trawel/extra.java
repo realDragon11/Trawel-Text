@@ -622,6 +622,10 @@ public final class extra {
 		public static final String PRE_GREEN = inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f));
 		public static final String PRE_MAGENTA = inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.5f));
 		
+		public static final String PRE_ROAD = PRE_GREEN;
+		public static final String PRE_SHIP = PRE_GREEN;
+		public static final String PRE_TELE = PRE_GREEN;
+		
 		//timid colors that are slight, used for bad and good hinting
 		public static final String TIMID_GREEN = inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.8f));
 		public static final String TIMID_RED = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.8f));
@@ -634,6 +638,15 @@ public final class extra {
 		public static final String COLOR_SEEN = inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f));
 		public static final String COLOR_BEEN = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f));
 		public static final String COLOR_OWN = inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f));
+		
+		/**
+		 * used for "it's a miss!" after the attack proper
+		 */
+		public static final String AFTER_ATTACK_MISS = extra.inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.3f));
+		public static final String ATTACK_DAMAGED = PRE_ORANGE;
+		public static final String ATTACK_KILL = PRE_RED;
+		public static final String ATTACK_BLOCKED = PRE_BLUE;
+		public static final String ATTACK_MISS = PRE_YELLOW;
 		
 		public static String colorBasedAtOne(double number, String plus, String minus, String empty) {
 			String str = format2.format(number);

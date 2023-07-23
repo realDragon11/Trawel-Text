@@ -444,7 +444,7 @@ public class Combat {
 			return new AttackReturn(-1,str);//do a dodge
 		}
 		if (extra.chanceIn(def.countArmorQuality(ArmorQuality.HAUNTED),80)){
-			return new AttackReturn(-1,str +extra.inlineColor(Color.GREEN)+" An occult hand leaps forth, pulling them out of the way![c_white]");
+			return new AttackReturn(-1,str +extra.PRE_GREEN+" An occult hand leaps forth, pulling them out of the way![c_white]");
 		}
 		//return the damage-armor, with each type evaluated individually
 		Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getSoundIntensity() + "|" +att.getSoundType()+"|");
@@ -659,12 +659,12 @@ public class Combat {
 			if (defender.takeDamage(damageDone)) {
 				//extra.print(" " + extra.choose("Striking them down!"," They are struck down."));
 				if (!extra.getPrint()) {
-					inlined_color=extra.PRE_RED;
+					inlined_color=extra.ATTACK_KILL;
 					extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color)+woundstr);
 				}
 			}else {
 				if (!extra.getPrint()) {
-					inlined_color=extra.PRE_ORANGE;
+					inlined_color=extra.ATTACK_DAMAGED;
 					extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color)+woundstr);
 				}
 			}
@@ -675,81 +675,80 @@ public class Combat {
 					inlined_color= extra.PRE_YELLOW;
 					extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color));
 					Networking.sendStrong("PlayMiss|" + "todo" + "|");
+					extra.print(" "+extra.AFTER_ATTACK_MISS+randomLists.attackMissFluff());
 				}
-					extra.print(extra.inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.3f))+(String)extra.choose(" They miss!"," The attack is dodged!"," It's a miss!"," It goes wide!"," It's not even close!"));
-					if (defender.hasSkill(Skill.SPEEDDODGE)) {
-						defender.advanceTime(10);
-						if (defender.hasSkill(Skill.DODGEREF)) {
-							defender.addHp(attacker.getLevel());
-						}
+				if (defender.hasSkill(Skill.SPEEDDODGE)) {
+					defender.advanceTime(10);
+					if (defender.hasSkill(Skill.DODGEREF)) {
+						defender.addHp(attacker.getLevel());
 					}
-					if (defender.hasEffect(Effect.BEE_SHROUD)) {
-						extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.2f))+"The bees sting back!");
-						attacker.takeDamage(1);
+				}
+				if (defender.hasEffect(Effect.BEE_SHROUD)) {
+					extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.2f))+"The bees sting back!");
+					attacker.takeDamage(1);
+				}
+			}else {
+				if (damageDone == 0) {
+					//song.addAttackArmor(attacker,defender);
+					if (!extra.getPrint()) {
+						inlined_color = extra.ATTACK_BLOCKED;
+						extra.print(inlined_color+atr.stringer.replace("[*]", inlined_color)+" "+randomLists.attackNegateFluff());
 					}
-				}else {
-					if (damageDone == 0) {
-						//song.addAttackArmor(attacker,defender);
-						if (!extra.getPrint()) {
-							inlined_color = extra.PRE_BLUE;
-							extra.print(inlined_color+atr.stringer.replace("[*]", inlined_color));
-						}
-					extra.print(" "+(String)extra.choose("But it is ineffective...","The armor deflects the blow!","However, the attack fails to deal damage through the armor."));
 					if (defender.hasSkill(Skill.ARMORHEART)) {
 						defender.addHp(attacker.getLevel());
 					}
 					if (defender.hasSkill(Skill.ARMORSPEED)) {
 						defender.advanceTime(10);
 					}
-					}else {
-						
-					}
+				}else {
+
 				}
+			}
 		}
 		}else {
 			//the attack is a magic spell
 			handleMagicSpell(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
 			//song.addAttackHit(attacker,defender);
 		}
-		
-			if (canWait && mainGame.delayWaits) {
-				Networking.waitIfConnected(100L+(long)delay*2);
-			}
-		
-			extra.println("");
-			
-				Person p = defender;
-				float hpRatio = ((float)p.getHp())/(p.getMaxHp());
-				//extra.println(p.getHp() + p.getMaxHp() +" " + hpRatio);
-				//if (Math.random()*5 >= 2) {song.addHealth(p);}
-				int tval = extra.clamp((int)(extra.lerp(125,256,hpRatio)),100,255);
-				extra.print(extra.inlineColor(new Color(tval,tval,tval)));
-				if (hpRatio >= 1) {
-					extra.println(p.getName() + " is untouched.");
+
+		if (canWait && mainGame.delayWaits) {
+			Networking.waitIfConnected(100L+(long)delay*2);
+		}
+
+		extra.println("");
+
+		Person p = defender;
+		float hpRatio = ((float)p.getHp())/(p.getMaxHp());
+		//extra.println(p.getHp() + p.getMaxHp() +" " + hpRatio);
+		//if (Math.random()*5 >= 2) {song.addHealth(p);}
+		int tval = extra.clamp((int)(extra.lerp(125,256,hpRatio)),100,255);
+		extra.print(extra.inlineColor(new Color(tval,tval,tval)));
+		if (hpRatio >= 1) {
+			extra.println(p.getName() + " is untouched.");
+		}else {
+			if (hpRatio > .9) {
+				extra.println(p.getName() + " looks barely scratched.");
+			}else {
+				if (hpRatio > .7) {
+					extra.println(p.getName() + " looks a little hurt.");
 				}else {
-				if (hpRatio > .9) {
-					extra.println(p.getName() + " looks barely scratched.");
-				}else {
-					if (hpRatio > .7) {
-						extra.println(p.getName() + " looks a little hurt.");
+					if (hpRatio > .5) {
+						extra.println(p.getName() + " looks a bit damaged.");
 					}else {
-						if (hpRatio > .5) {
-							extra.println(p.getName() + " looks a bit damaged.");
+						if (hpRatio > .25) {
+							extra.println(p.getName() + " looks moderately damaged.");
 						}else {
-							if (hpRatio > .25) {
-								extra.println(p.getName() + " looks moderately damaged.");
+							if (hpRatio > .1) {
+								extra.println(p.getName() + " looks close to death.");
 							}else {
-								if (hpRatio > .1) {
-									extra.println(p.getName() + " looks close to death.");
-								}else {
-									extra.println(p.getName() + " looks like they're dying.");
-								}
+								extra.println(p.getName() + " looks like they're dying.");
 							}
 						}
 					}
 				}
-				}
-			//}
+			}
+		}
+		//}
 		if (attacker.hasSkill(Skill.BLOODTHIRSTY)) {
 			attacker.addHp(attacker.getLevel());
 		}
@@ -864,8 +863,7 @@ public class Combat {
 
 
 	private void handleMagicSpell(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
-		extra.print(extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f)));
-		extra.println(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
+		extra.println(extra.PRE_ORANGE + att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
 		if  (att.getSkill() == Skill.ELEMENTAL_MAGE) {
 			defender.inflictWound(att.getWound());
 		def.burn(def.getFire(att.getSlot())*(att.getSharp()/100),att.getSlot());

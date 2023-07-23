@@ -371,7 +371,7 @@ public class AIClass {
 		if (Armor.class.isInstance(hasItem)) {
 			if (autosellOn && worseArmor((Armor)hasItem,(Armor)toReplace)) {
 				if (smarts < 0) {
-					extra.print(extra.inlineColor(Color.YELLOW)+"Autosold the ");
+					extra.print(extra.PRE_YELLOW+"Autosold the ");
 					toReplace.display(1);
 					Networking.waitIfConnected(100L);
 				}

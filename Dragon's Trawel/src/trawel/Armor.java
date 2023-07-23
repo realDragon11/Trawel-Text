@@ -175,7 +175,7 @@ public class Armor extends Item {
 					cost*=1.5;
 					if (extra.chanceIn(2,3)) {
 						quals.add(ArmorQuality.FRAGILE);
-						prefixName = extra.inlineColor(Color.YELLOW)+"fragile[c_white] ";
+						prefixName = extra.PRE_YELLOW+"fragile[c_white] ";
 						sharpResist*=1.25;
 						bluntResist*=1.25;
 						pierceResist*=1.25;

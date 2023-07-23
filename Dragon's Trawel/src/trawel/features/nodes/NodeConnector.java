@@ -88,25 +88,26 @@ public abstract class NodeConnector implements Serializable, CanPassTime {
 			}
 
 		}
+		String visitColor = extra.PRE_YELLOW;
 		switch (visited) {
-		case 0: Networking.sendColor(Color.ORANGE);break;
-		case 1: Networking.sendColor(Color.YELLOW);break;
-		case 2: Networking.sendColor(Color.BLUE);break;
-		case 3: Networking.sendColor(Color.GREEN);break;
+		case 0: visitColor = extra.COLOR_NEW;break;
+		case 1: visitColor = extra.COLOR_SEEN;break;
+		case 2: visitColor = extra.COLOR_BEEN;break;
+		case 3: visitColor = extra.COLOR_OWN;break;
 		}
 		if (visited < 2) {
 			visited = 2;
 		}
 		extra.println(name);
-		extra.println(i+ " " + interactString);i++;
+		extra.println(i+ " "+visitColor + interactString);i++;
 		for (NodeConnector n: connects) {
 			switch (n.visited) {
-			case 0: Networking.sendColor(Color.ORANGE); n.visited = 1;break;
-			case 1: Networking.sendColor(Color.YELLOW);break;
-			case 2: Networking.sendColor(Color.BLUE);break;
-			case 3: Networking.sendColor(Color.GREEN);break;
+			case 0: visitColor = extra.COLOR_NEW; n.visited = 1;break;
+			case 1: visitColor = extra.COLOR_SEEN;break;
+			case 2: visitColor = extra.COLOR_BEEN;break;
+			case 3: visitColor = extra.COLOR_OWN;break;
 			}
-			extra.print(i + " " + n.getName());
+			extra.print(i + " "+visitColor + n.getName());
 			if (n.isStair) {
 				if (this.floor > n.floor) {
 					extra.print(" down");
