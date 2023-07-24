@@ -25,6 +25,14 @@ public class Island extends TContextOwner{
 		w.addIsland(this);
 		world = w;
 	}
+	/**
+	 * only for tests!
+	 * @param testOnly
+	 */
+	public Island(boolean testOnly) {
+		towns = new ArrayList<Town>();
+		this.name = "test";
+	}
 	
 	public void addTown(Town t) {
 		towns.add(t);

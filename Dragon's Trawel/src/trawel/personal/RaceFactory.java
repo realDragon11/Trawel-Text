@@ -719,13 +719,12 @@ public class RaceFactory {
 		double totalRarity = 0;
 		Race mat;
 		do {
-			int i = (int) Math.floor((Math.random()*copyList.size()));
-			mat = copyList.get(i);
+			mat = extra.randList(copyList);
 			copyList2.add(mat);
 			totalRarity += mat.rarity;
-			copyList.remove(i);
+			copyList.remove(mat);
 		}while(!copyList.isEmpty());
-		totalRarity*=Math.random();
+		totalRarity*= extra.getRand().nextDouble();
 		do {
 			mat = copyList2.get(0);
 			if (totalRarity > mat.rarity) {

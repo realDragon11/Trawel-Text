@@ -116,7 +116,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 		}
 		
 		this.time += time;
-		if (this.time > 12+(Math.random()*30)) {
+		if (this.time > 12+(extra.getRand().nextInt(30))) {
 			cleanTown();
 			this.time = 0;
 		}
@@ -211,14 +211,14 @@ public class Mountain extends Feature implements java.io.Serializable{
 				extra.println(extra.PRE_RED+"A fighter runs up and calls you a thief before launching into battle!");
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getMugger(tier));
 				if (winner == Player.player.getPerson()) {
-					int gold = (int) (tier*(30*Math.random()));
+					int gold = extra.getRand().nextInt(30*tier);
 					extra.println("You pick up " + gold + " gold!");
 					Player.bag.addGold(gold);
 				}else {
 					extra.println("They take the gold sack and leave you rolling down the mountain...");
 				}
 			}else {
-				int gold = (int) (tier*(30*Math.random()));
+				int gold = extra.getRand().nextInt(30*tier);
 				extra.println("You pick up " + gold + " gold!");
 				Player.bag.addGold(gold);
 			}
@@ -233,7 +233,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 		if (winner == Player.player.getPerson()) {
 		}else {
 			extra.println("They take some of your gold!");
-			Player.bag.addGold((int) (tier*300*Math.random()));
+			Player.bag.addGold(extra.getRand().nextInt(300*tier));
 		}
 	}
 	
@@ -246,7 +246,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(),robber);
 	
 		if (winner == Player.player.getPerson()) {
-			int gold = (int) (Math.random()*130*tier);
+			int gold = extra.getRand().nextInt(130*tier);
 			extra.println("They give you a reward of " + gold + " gold in thanks for saving them.");
 			Player.bag.addGold(gold);
 		}else {
@@ -269,7 +269,7 @@ public class Mountain extends Feature implements java.io.Serializable{
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);
 	
 		if (winner == Player.player.getPerson()) {
-			int gold = (int) (Math.random()*150*tier);
+			int gold = extra.getRand().nextInt(150*tier);
 			extra.println("You find " + gold + " gold in tolls.");
 			Player.bag.addGold(gold);
 		}else {
@@ -338,14 +338,14 @@ public class Mountain extends Feature implements java.io.Serializable{
 				extra.println(extra.PRE_RED+"A fighter runs up and calls you a thief before launching into battle!");
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
 				if (winner == Player.player.getPerson()) {
-					int gold = (int) (tier*(100*Math.random()));
+					int gold = extra.getRand().nextInt(100*tier);
 					extra.println("You pick up " + gold + " gold!");
 					Player.bag.addGold(gold);
 				}else {
 					extra.println("They take the gold rock and leave you rolling down the mountain...");
 				}
 			}else {
-				int gold = (int) (tier*(100*Math.random()));
+				int gold = extra.getRand().nextInt(100*tier);
 				extra.println("You pick up " + gold + " gold!");
 				Player.bag.addGold(gold);
 			}

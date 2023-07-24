@@ -154,7 +154,7 @@ public class Services {
 	 * @param level (int)
 	 */
 	public static void storeFront(Inventory inv, int smarts, int level) {
-		level = Math.max(level+(int)(Math.random()*5)-2,1);
+		level = Math.max(level+extra.getRand().nextInt(5)-2,1);
 		extra.println("");
 		extra.println(extra.choose("They start browsing a shop.","They come across a wandering merchant.","They take the chance to go to the nearest store."));
 		extra.println("They start with " + inv.getGold() + extra.choose(" gold."," gold pieces."," pieces of gold."));

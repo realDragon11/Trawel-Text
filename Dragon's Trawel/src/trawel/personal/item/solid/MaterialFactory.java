@@ -16,8 +16,6 @@ public class MaterialFactory {
 	
 	public static WeightedTable weapMats, armMats;
 	
-	public static Random juneRand = new WhiskerRandom();
-	
 	/**
 	 * Set up the static flyweights for the materials.
 	 */
@@ -814,38 +812,6 @@ public class MaterialFactory {
 		tableSetup();
 	}
 	
-	/*
-	public static Material randMat(Boolean armor, Boolean weapon) {
-		ArrayList<Material> copyList = new ArrayList<Material>();
-		ArrayList<Material> copyList2 = new ArrayList<Material>();
-		for (Material mat: matList){
-			if ((mat.armor == true && armor == true)||(mat.weapon == true && weapon == true)) {
-			copyList.add(mat);}
-		}
-		double totalRarity = 0;
-		Material mat;
-		do {
-			int i = (int) Math.floor((Math.random()*copyList.size()));
-			mat = copyList.get(i);
-			copyList2.add(mat);
-			totalRarity += mat.rarity;
-			copyList.remove(i);
-		}while(!copyList.isEmpty());
-		totalRarity*=Math.random();
-		do {
-			mat = copyList2.get(0);
-			if (totalRarity > mat.rarity) {
-				totalRarity-=mat.rarity;
-				copyList2.remove(0);
-			}else {
-				totalRarity = 0;
-			} 
-				
-				
-		}while(totalRarity > 0);
-		return mat;
-	}*/
-	
 	public static void tableSetup() {
 		float[] wWeightList = new float[matList.size()];
 		float[] aWeightList = new float[matList.size()];
@@ -861,11 +827,11 @@ public class MaterialFactory {
 	}
 	
 	public static Material randArmorMat() {
-		return matList.get(armMats.random(juneRand));
+		return matList.get(armMats.random(extra.getRand()));
 	}
 	
 	public static Material randWeapMat() {
-		return matList.get(weapMats.random(juneRand));
+		return matList.get(weapMats.random(extra.getRand()));
 	}
 	
 	public static Material randMat(Boolean armor, Boolean weapon) {
@@ -877,7 +843,7 @@ public class MaterialFactory {
 			totalRarity +=mat.rarity;
 			}
 		}
-		totalRarity *= Math.random();
+		totalRarity *= extra.getRand().nextDouble();
 		int i = 0;
 		while (true) {
 			totalRarity-=copyList.get(i).rarity;//out of bounds exception serves as a built in error to warn
@@ -903,13 +869,12 @@ public class MaterialFactory {
 		double totalRarity = 0;
 		Material mat;
 		do {
-			int i = (int) Math.floor((Math.random()*copyList.size()));
-			mat = copyList.get(i);
+			mat = extra.randList(copyList);
 			copyList2.add(mat);
 			totalRarity += mat.rarity;
-			copyList.remove(i);
+			copyList.remove(mat);
 		}while(!copyList.isEmpty());
-		totalRarity*=Math.random();
+		totalRarity*= extra.getRand().nextDouble();
 		do {
 			mat = copyList2.get(0);
 			if (totalRarity > mat.rarity) {

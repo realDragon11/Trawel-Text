@@ -77,7 +77,7 @@ public class Attack implements java.io.Serializable{
 		if (extra.randRange(1,10) == 1 && (weapon == null || !weapon.isKeen())) {
 			this.wound = Attack.Wound.GRAZE;
 		}else {
-		double counter = Math.random() * (sharp + blunt + pierce);
+		double counter = extra.getRand().nextDouble() * (sharp + blunt + pierce);
 		counter-=sharp;
 		if (counter<=0) {
 			this.wound = extra.randList(target.slashWounds);

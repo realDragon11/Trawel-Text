@@ -552,12 +552,12 @@ public class GroveNode extends NodeConnector{
 			case 2: winner = mushHelpRobber();break;
 			}
 			if (winner == Player.player.getPerson()) {
-				int gold = (int) (Math.random()*150*level);
+				int gold = extra.getRand().nextInt(80*level)+30*level;
 				extra.println("You sell the mushroom for " + gold + " gold.");
 				Player.bag.addGold(gold);
 			}
 			}else {
-				int gold = (int) (Math.random()*100*level);
+				int gold = extra.getRand().nextInt(60*level);
 				extra.println("You sell the mushroom for " + gold + " gold.");
 				Player.bag.addGold(gold);
 			};break;
@@ -704,12 +704,12 @@ public class GroveNode extends NodeConnector{
 				case 2: winner = mushHelpRobber();break;
 				}
 				if (winner == Player.player.getPerson()) {
-					int gold = (int) (Math.random()*30*level);
+					int gold = extra.getRand().nextInt(25*level);
 					extra.println("You sell the moss for " + gold + " gold.");
 					Player.bag.addGold(gold);
 				}
 				}else {
-					int gold = (int) (Math.random()*20*level);
+					int gold = extra.getRand().nextInt(10*level);
 					extra.println("You sell the moss for " + gold + " gold.");
 					Player.bag.addGold(gold);
 				};break;

@@ -2,6 +2,9 @@ package derg;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import trawel.extra;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -213,7 +216,7 @@ public class StringFluffer {
 		int rejections = 0;
 		int maxtrials = 2+Math.max(10, Math.max(currentTask.getLocalDupes(),currentTask.getGlobalDupes()));
 		while (result == null && rejections < maxtrials) {
-			result = srArr[(int)(Math.random()*srArr.length)].next();
+			result = srArr[extra.getRand().nextInt(srArr.length)].next();
 			if (result == null) {//shouldn't be allowed to happen, but we fail gracefully
 				rejections++;
 			}else {

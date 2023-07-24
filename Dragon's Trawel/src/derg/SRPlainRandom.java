@@ -6,11 +6,11 @@ import java.util.List;
 import com.github.tommyettinger.random.EnhancedRandom;
 import com.github.tommyettinger.random.WhiskerRandom;
 
+import trawel.extra;
+
 public class SRPlainRandom extends StringResult {
 
 	private List<String> contents;
-	
-	private static EnhancedRandom random = new WhiskerRandom(); 
 	
 	public SRPlainRandom(List<String> list) {
 		contents = list;
@@ -27,7 +27,7 @@ public class SRPlainRandom extends StringResult {
 	
 	@Override
 	public String next() {
-		return contents.get(random.nextInt(contents.size()));
+		return contents.get(extra.getRand().nextInt(contents.size()));
 	}
 
 	@Override

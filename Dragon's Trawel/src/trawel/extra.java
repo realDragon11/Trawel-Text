@@ -27,12 +27,15 @@ public final class extra {
 	//private static long lastMod = -1;
 	private static String printStuff = "";
 	
-	private static EnhancedRandom rand = new WhiskerRandom();
-	
 	private static Stack<Boolean> printStack = new Stack<Boolean>();
 	
 	private static ReentrantLock mainThreadLock = new ReentrantLock();
 	
+	private static final ThreadLocal<EnhancedRandom> localRands = new ThreadLocal<EnhancedRandom>() {
+		@Override protected EnhancedRandom initialValue() {
+			return new WhiskerRandom();
+		}
+	};
 	
 	//static methods
 	
@@ -45,9 +48,19 @@ public final class extra {
 		mainThreadLock.lock();
 		System.out.println("...");
 	}
+	
+	/**
+	 * gets the rand instance for the current thread, should be used
+	 * instead of making your own.
+	 * @return
+	 */
+	public static final EnhancedRandom getRand() {
+		//https://docs.oracle.com/javase/8/docs/api/java/lang/ThreadLocal.html
+		return localRands.get();
+	}
 
 	public static final float randFloat() {
-		return rand.nextFloat();
+		return getRand().nextFloat();
 	}
 	
 	/**
@@ -65,11 +78,11 @@ public final class extra {
 	 * @return (String)
 	*/
 	public static String choose(String... options) {
-		return options[rand.nextInt(options.length)];
+		return options[getRand().nextInt(options.length)];
 	}
 	
 	public static <E> E choose(E... options) {
-		return options[rand.nextInt(options.length)];
+		return options[getRand().nextInt(options.length)];
 	}
 	
 	/**
@@ -105,7 +118,7 @@ public final class extra {
 	 * @return (boolean)
 	 */
 	public static final boolean chanceIn(int a,int b) {
-		return (rand.nextInt(b+1)+1 <= a);
+		return (getRand().nextInt(b+1)+1 <= a);
 	}
 	
 	/**
@@ -216,7 +229,7 @@ public final class extra {
 		}
 		public static final int randRange(int i, int j) {
 			//return (int)(Math.random()*(j+1-i))+i;
-			return rand.nextInt((j+1)-i)+i;
+			return getRand().nextInt((j+1)-i)+i;
 		}
 		
 		public static final int inInt(int max) {
@@ -342,11 +355,11 @@ public final class extra {
 		}*/
 		
 		public static final double hrandom() {
-			   return ((Long.bitCount(rand.nextLong()) - 32. + rand.nextDouble() - rand.nextDouble()) / 66.0 + 0.5);
+			   return ((Long.bitCount(getRand().nextLong()) - 32. + getRand().nextDouble() - getRand().nextDouble()) / 66.0 + 0.5);
 		}//given by TEtt from squidsquad
 		
 		public static final float hrandomFloat() {
-			return ((Long.bitCount(rand.nextLong()) - 32f + rand.nextFloat() - rand.nextFloat()) / 66f + 0.5f);
+			return ((Long.bitCount(getRand().nextLong()) - 32f + getRand().nextFloat() - getRand().nextFloat()) / 66f + 0.5f);
 		}
 		
 		public static void specialPrint(int[] in,String...strs) {
@@ -394,12 +407,12 @@ public final class extra {
 		}
 
 		public static <E> E randList(ArrayList<E> list) {
-			return list.get(rand.nextInt(list.size()));
+			return list.get(getRand().nextInt(list.size()));
 			
 		}
 		
 		public static <E> E randList(List<E> list) {
-			return list.get(rand.nextInt(list.size()));
+			return list.get(getRand().nextInt(list.size()));
 			
 		}
 		public static final float clamp(float d, float min, float max) {
@@ -720,7 +733,7 @@ public final class extra {
 		 * @return
 		 */
 		public static float bellCurve(float a){
-			double x = Math.random();
+			double x = extra.getRand().nextDouble();
 			return (float) (4*a*Math.pow(x,3) - 6*a*Math.pow(x,2) + 2*a*x + x);//TODO fix
 		}
 		
@@ -749,7 +762,7 @@ public final class extra {
 		}*/
 		
 		public static final double upDamCurve(double depth, double midpoint) {
-			double x = 1-(2*Math.abs((Math.random())-midpoint));
+			double x = 1-(2*Math.abs(extra.getRand().nextDouble()-midpoint));
 			x = extra.clamp(x,0,1);
 			return (4*depth*Math.pow(x,3) - 6*depth*Math.pow(x,2) + 2*depth*x + x);
 		}

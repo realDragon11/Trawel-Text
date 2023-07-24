@@ -2,6 +2,7 @@ package trawel.towns.services;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import trawel.AIClass;
 import trawel.Networking;
@@ -53,7 +54,7 @@ public class Store extends Feature implements java.io.Serializable{
 	
 	public Store(int tier) {
 		this();
-		type = (int)(Math.random()*7);//6 = general
+		type = extra.getRand().nextInt(7);//6 = general
 		this.generate(tier, type);
 	}
 	public Store(int tier, int type) {
@@ -89,19 +90,21 @@ public class Store extends Feature implements java.io.Serializable{
 			items = new ArrayList<Item>();
 			if (type < 5) {
 				for (int j = 0;j < 5;j++) {
-					items.add(new Armor(Math.max(tier+(int)(Math.random()*5)-2,1),type));
+					items.add(new Armor(Math.max(tier+extra.getRand().nextInt(6)-2,1),type));
 				}
 			}
 			if (type == 5) {
 				for (int j = 0;j < 5;j++) {
-					items.add(Weapon.genMidWeapon(Math.max(tier+(int)(Math.random()*5)-2,1)));
+					items.add(Weapon.genMidWeapon(Math.max(tier+extra.getRand().nextInt(6)-2,1)));
 				}
 			}
 			if (type == 6) {
 				for (int j = 0;j < 5;j++) {
-					if (Math.random() > .5) {
-					items.add(Weapon.genMidWeapon(Math.max(tier+(int)(Math.random()*5)-2,1)));}else {
-						items.add(new Armor(Math.max(tier+(int)(Math.random()*5)-2,1),(int)(Math.random()*5)));
+					Random rand = extra.getRand();
+					if (rand.nextFloat() > .5f) {
+						items.add(Weapon.genMidWeapon(Math.max(tier+rand.nextInt(6)-2,1)));
+					}else {
+						items.add(new Armor(Math.max(tier+rand.nextInt(6)-2,1),rand.nextInt(5)));
 					}
 				}
 			}
@@ -326,7 +329,7 @@ public class Store extends Feature implements java.io.Serializable{
 	@Override
 	public List<TimeEvent> passTime(double addtime, TimeContext calling) {
 		time += addtime;
-		if (time > 12+(Math.random()*30)) {
+		if (time > 12+(extra.getRand().nextInt(30))) {
 			if (type != 7) {
 			extra.offPrintStack();
 			goShopping();
@@ -358,30 +361,32 @@ public class Store extends Feature implements java.io.Serializable{
 	public void addAnItem() {
 		if (type == 8) {
 			if (dbs.size() >= INVENTORY_SIZE) {
-				dbs.remove((int)(Math.random()*dbs.size()));}
+				dbs.remove(extra.randList(dbs));}
 			dbs.add(randomDB());
 			return;
 		}
 		if (type == 9) {
 			if (dbs.size() >= INVENTORY_SIZE) {
-				dbs.remove((int)(Math.random()*dbs.size()));}
+				dbs.remove(extra.randList(dbs));}
 			dbs.add(randomPI());
 			return;
 		}
 		if (items.size() >= INVENTORY_SIZE) {
-			items.remove((int)(Math.random()*items.size()));}
+			items.remove(extra.randList(items));}
 			if (type < 5) {
-					items.add(new Armor(Math.max(tier+(int)(Math.random()*5)-2,1),type));
+					items.add(new Armor(Math.max(tier+extra.getRand().nextInt(6)-2,1),type));
 			}
 			if (type == 5) {
-					items.add(Weapon.genMidWeapon(Math.max(tier+(int)(Math.random()*5)-2,1)));
+					items.add(Weapon.genMidWeapon(Math.max(tier+extra.getRand().nextInt(6)-2,1)));
 			}
 			if (type == 6) {
-					if (Math.random() > .5) {
-					items.add(Weapon.genMidWeapon(Math.max(tier+(int)(Math.random()*5)-2,1)));}else {
-						items.add(new Armor(Math.max(tier+(int)(Math.random()*5)-2,1),(int)(Math.random()*5)));
-					}
+				Random rand = extra.getRand();
+				if (rand.nextFloat() > .5f) {
+					items.add(Weapon.genMidWeapon(Math.max(tier+rand.nextInt(6)-2,1)));
+				}else {
+					items.add(new Armor(Math.max(tier+rand.nextInt(6)-2,1),rand.nextInt(5)));
 				}
+			}
 	}
 	private void goShopping() {
 		if (type == 8 || type == 9) {

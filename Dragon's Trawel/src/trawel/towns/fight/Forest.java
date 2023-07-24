@@ -158,14 +158,14 @@ public class Forest extends Feature{
 				extra.println("A fighter runs up and calls you a thief before launching into battle!");
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
 				if (winner == Player.player.getPerson()) {
-					int gold = (int) (tier*(30*Math.random()));
+					int gold = extra.getRand().nextInt(30*tier);
 					extra.println("You pick up " + gold + " gold!");
 					Player.bag.addGold(gold);
 				}else {
 					extra.println("They take the gold sack and leave you floating down the stream...");
 				}
 			}else {
-				int gold = (int) (tier*(30*Math.random()));
+				int gold = extra.getRand().nextInt(30*tier);
 				extra.println("You pick up " + gold + " gold!");
 				Player.bag.addGold(gold);
 			}
@@ -216,12 +216,12 @@ public class Forest extends Feature{
 			}
 			Person winner = mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getDryad(tier));
 			if (winner == Player.player.getPerson()) {
-				int gold = (int) (Math.random()*150*tier);
+				int gold = extra.getRand().nextInt(80*tier)+tier*20;
 				extra.println("You sell the mushroom for " + gold + " gold.");
 				Player.bag.addGold(gold);
 			}
 			}else {
-				int gold = (int) (Math.random()*100*tier);
+				int gold = extra.getRand().nextInt(50*tier);
 				extra.println("You sell the mushroom for " + gold + " gold.");
 				Player.bag.addGold(gold);
 			};break;
@@ -248,7 +248,7 @@ public class Forest extends Feature{
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);
 	
 		if (winner == Player.player.getPerson()) {
-			int gold = (int) (Math.random()*130*tier);
+			int gold = extra.getRand().nextInt(130*tier);
 			extra.println("They give you a reward of " + gold + " gold in thanks for saving them.");
 			Player.bag.addGold(gold);
 		}else {
@@ -279,7 +279,7 @@ public class Forest extends Feature{
 		if (winner == Player.player.getPerson()) {
 		}else {
 			extra.println("They take some of your gold!");
-			Player.bag.addGold(-(int) (tier*300*Math.random()));
+			Player.bag.addGold(-extra.getRand().nextInt(300*tier));
 		}
 	}
 	
@@ -332,7 +332,7 @@ public class Forest extends Feature{
 				if (Math.random() < .3) {
 					extra.println("They scamper off...");
 				}else {
-					int gold = (int) (Math.random()*50*tier);
+					int gold = extra.getRand().nextInt(50*tier);
 					extra.println("They give you a reward of " + gold + " gold in thanks for saving them.");
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
 					Player.bag.addGold(gold);

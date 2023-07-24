@@ -159,6 +159,21 @@ public class Town extends TContextOwner implements java.io.Serializable{
 		boolean hasRoads = false;
 		boolean hasPort = false;
 		boolean hasTele = false;
+		
+		for (Connection c: connects) {
+			switch (c.getType()) {
+			case ROAD:
+				hasRoads = true;
+				break;
+			case SHIP:
+				hasPort = true;
+				break;
+			case TELE:
+				hasTele = true;
+				break;
+			}
+		}
+		
 		hasFlags = (byte) (hasRoads ? hasFlags | (1 << 0) : hasFlags & ~(1 << 0));
 		hasFlags = (byte) (hasPort ? hasFlags | (1 << 1) : hasFlags & ~(1 << 1));
 		hasFlags = (byte) (hasTele ? hasFlags | (1 << 2) : hasFlags & ~(1 << 2));

@@ -77,7 +77,7 @@ public class Armor extends Item {
 	 * @param newLevel (int)
 	 */
 	public Armor(int newLevel) {
-		this(newLevel,(int)(Math.random()*5),MaterialFactory.randArmorMat(),null);
+		this(newLevel,extra.getRand().nextInt(5),MaterialFactory.randArmorMat(),null);
 	}
 	
 	public Armor(int newLevel, int slot,Material mati) {
@@ -339,7 +339,7 @@ public class Armor extends Item {
 	 * @param d
 	 */
 	public void burn(double d) {
-		assert d > 0;
+		assert d >= 0;
 		burned = Math.min(1, Math.max(0, burned - Math.min(burned,1)*(1- (d*getFireMod())))) ;
 	}
 	

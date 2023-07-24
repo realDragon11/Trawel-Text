@@ -460,7 +460,7 @@ public class Combat {
 			str +=(att.attackStringer(attacker.getName(),defender.getName() + "'s corpse",off.getHand().getName()));	
 		}
 		double damMod = off.getDam();
-		if (((def.getDodge()*defender.getTornCalc())/(att.getHitmod()*off.getAim()))*Math.random() > 1.0){
+		if (((def.getDodge()*defender.getTornCalc())/(att.getHitmod()*off.getAim()))* extra.getRand().nextDouble() > 1.0){
 			return new AttackReturn(-1,str);//do a dodge
 		}
 		if (extra.chanceIn(def.countArmorQuality(ArmorQuality.HAUNTED),80)){
@@ -740,7 +740,6 @@ public class Combat {
 		Person p = defender;
 		float hpRatio = ((float)p.getHp())/(p.getMaxHp());
 		//extra.println(p.getHp() + p.getMaxHp() +" " + hpRatio);
-		//if (Math.random()*5 >= 2) {song.addHealth(p);}
 		int tval = extra.clamp((int)(extra.lerp(125,256,hpRatio)),100,255);
 		extra.print(extra.inlineColor(new Color(tval,tval,tval)));
 		if (hpRatio >= 1) {

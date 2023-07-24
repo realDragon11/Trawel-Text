@@ -35,10 +35,8 @@ public class EnchantConstant extends Enchant {
 	
 	private static WeightedTable enchantChances;
 	private static float[][] floatMultList;
-	private static Random juneRand;
 	
 	public static void init() {
-		juneRand = new WhiskerRandom();
 		
 		floatMultList = new float[][] {
 			{1,1f,9,0f,8},//first mult normal, no second mult
@@ -176,7 +174,7 @@ public class EnchantConstant extends Enchant {
 			break;
 		}*/
 		
-		float[] mults = floatMultList[enchantChances.random(juneRand)];
+		float[] mults = floatMultList[enchantChances.random(extra.getRand())];
 		off1 = mults[0] == 0 ? 1 : 0;//0 = bad, but not in our offset scheme
 		magnitudeOne *= mults[1];
 		off2 = mults[2] == 0 ? 1 : 0;

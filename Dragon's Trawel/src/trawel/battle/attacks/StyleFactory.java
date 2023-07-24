@@ -5,12 +5,13 @@ import java.util.Random;
 import com.github.tommyettinger.random.WhiskerRandom;
 import com.github.yellowstonegames.core.WeightedTable;
 
+import trawel.extra;
+
 public class StyleFactory {
 
 	public static ArrayList<Style> StyleList = new ArrayList<Style>();
 	
 	public static WeightedTable styleTable;
-	public static Random juneRand = new WhiskerRandom();
 	
 	public StyleFactory() {
 		Style s = new Style();
@@ -67,34 +68,6 @@ public class StyleFactory {
 	
 	
 	public static Style randStyle() {
-		return StyleList.get(styleTable.random(juneRand));
-		/*
-		ArrayList<Style> copyList = new ArrayList<Style>();
-		ArrayList<Style> copyList2 = new ArrayList<Style>();
-		for (Style mat: StyleList){
-			copyList.add(mat);
-		}
-		double totalRarity = 0;
-		Style mat;
-		do {
-			int i = (int) Math.floor((Math.random()*copyList.size()));
-			mat = copyList.get(i);
-			copyList2.add(mat);
-			totalRarity += mat.rarity;
-			copyList.remove(i);
-		}while(!copyList.isEmpty());
-		totalRarity*=Math.random();
-		do {
-			mat = copyList2.get(0);
-			if (totalRarity > mat.rarity) {
-				totalRarity-=mat.rarity;
-				copyList2.remove(0);
-			}else {
-				totalRarity = 0;
-			} 
-				
-				
-		}while(totalRarity > 0);
-		return mat;*/
+		return StyleList.get(styleTable.random(extra.getRand()));
 	}
 }

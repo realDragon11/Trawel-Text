@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 import com.github.tommyettinger.random.EnhancedRandom;
 import com.github.tommyettinger.random.WhiskerRandom;
 
+import trawel.extra;
+
 public class SRWeightRandom extends StringResult {
 
 	private List<StringFloatWeight> contents;
@@ -21,8 +23,6 @@ public class SRWeightRandom extends StringResult {
 	public interface ToleranceFunction<Return, a, b> {
 	    public Return apply(a one, b two);
 	}
-	
-	private static EnhancedRandom random = new WhiskerRandom(); 
 	
 	public SRWeightRandom(List<StringFloatWeight> list,ToleranceFunction<Boolean,Float,Float> tolerance) {
 		contents = list;
@@ -66,7 +66,7 @@ public class SRWeightRandom extends StringResult {
 		List<StringFloatWeight> list = contents.stream()
 		.filter(a -> a.weights.stream().map(base -> {return new Object[] {tolerance,base.f,context.floatMap.getOrDefault(base.s, -2f)};}).allMatch(flattener))
 		.collect(Collectors.toList());
-		return list.get(random.nextInt(list.size())).result;
+		return list.get(extra.getRand().nextInt(list.size())).result;
 	}
 	
 	//not keen to have so much overhead, but tuples

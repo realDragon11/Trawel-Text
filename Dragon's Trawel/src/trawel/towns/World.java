@@ -142,7 +142,7 @@ public class World extends TContextOwner{
 				}
 			}
 		if (list.size() > 0) {
-		return list.get((int)(list.size()*Math.random()));}else {
+		return extra.randList(list);}else {
 			if (level > 0) {
 			return getRandom(level-1);}else {return startTown;}
 		}

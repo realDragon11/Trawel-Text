@@ -39,7 +39,7 @@ public class AIClass {
 	 * @return a random attack (Attack)
 	 */
 	public static Attack randomAttack(Stance theStance){
-		return theStance.getAttack((int)(theStance.getAttackCount()*Math.random()));
+		return theStance.getAttack(extra.getRand().nextInt(theStance.getAttackCount()));
 	}
 	
 	/**

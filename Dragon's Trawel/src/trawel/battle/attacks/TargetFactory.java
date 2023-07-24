@@ -8,6 +8,8 @@ import java.util.Random;
 import com.github.tommyettinger.random.WhiskerRandom;
 import com.github.yellowstonegames.core.WeightedTable;
 
+import trawel.extra;
+
 public class TargetFactory {
 
 	public static List<Target> targetList = new ArrayList<Target>();
@@ -18,8 +20,6 @@ public class TargetFactory {
 	
 	//public static Map<TargetType,List<Target>> targetTypeMap = new HashMap<TargetType,List<Target>>();
 	public static Map<TargetType,WeightedTable> targetTypeTable = new HashMap<TargetType,WeightedTable>();
-	
-	public static Random juneRand = new WhiskerRandom();
 	
 	public TargetFactory() {
 		
@@ -866,35 +866,6 @@ public class TargetFactory {
 	}
 	
 	public static Target randTarget(TargetType targetType) {
-		return targetList.get(targetTypeTable.get(targetType).random(juneRand));
-		/*
-		ArrayList<Target> copyList = new ArrayList<Target>();
-		ArrayList<Target> copyList2 = new ArrayList<Target>();
-		for (Target mat: targetList){
-			if (mat.type == targetType) {
-			copyList.add(mat);}
-		}
-		double totalRarity = 0;
-		Target mat;
-		do {
-			int i = (int) Math.floor((Math.random()*copyList.size()));
-			mat = copyList.get(i);
-			copyList2.add(mat);
-			totalRarity += mat.rarity;
-			copyList.remove(i);
-		}while(!copyList.isEmpty());
-		totalRarity*=Math.random();
-		do {
-			mat = copyList2.get(0);
-			if (totalRarity > mat.rarity) {
-				totalRarity-=mat.rarity;
-				copyList2.remove(0);
-			}else {
-				totalRarity = 0;
-			} 
-				
-				
-		}while(totalRarity > 0);
-		return mat;*/
+		return targetList.get(targetTypeTable.get(targetType).random(extra.getRand()));
 	}
 }

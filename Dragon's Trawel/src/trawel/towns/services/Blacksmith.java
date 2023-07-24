@@ -84,7 +84,7 @@ public class Blacksmith extends Feature {
 	@Override
 	public List<TimeEvent> passTime(double addtime, TimeContext calling) {
 		this.time += addtime;
-		if (time > 12+(Math.random()*30)) {
+		if (time > 12+(extra.getRand().nextInt(30))) {
 			store.addAnItem();//TODO: should probably add in event?
 			time = 0;
 		}
