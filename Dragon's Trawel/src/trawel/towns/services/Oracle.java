@@ -2,10 +2,11 @@ package trawel.towns.services;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import trawel.Networking;
-import trawel.Tip;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.personal.people.Player;
@@ -18,7 +19,7 @@ public class Oracle extends Feature implements java.io.Serializable{ //extends f
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	static ArrayList<Tip> tips;
+	private static Map<String,List<String>> tips = new HashMap<String,List<String>>();
 	private int visits = 0;
 	private int level;
 
@@ -35,32 +36,12 @@ public class Oracle extends Feature implements java.io.Serializable{ //extends f
 		color = Color.MAGENTA;
 	}
 
-	public static void tip(String mask) {//public so it can be accessed in other stuff
-		ArrayList<Tip> masklist = (ArrayList<Tip>) tips.clone();
-		if (!mask.equals("")) {
-		for (int i = masklist.size()-1;i> 0;i-- ) {
-			Tip t = masklist.get(i);
-			if (!t.mask.equals(mask)) {
-				masklist.remove(i);
-			}
-		}
-		}
-		
-		extra.println("\""+ masklist.get(extra.randRange(1,masklist.size()-1)).tip + "\"");
+	public static void tip(String mask) {//public so it can be accessed in other stuff		
+		extra.println("\""+ extra.randList(tips.get(mask)) + "\"");
 	}
 	
 	public static String tipString(String mask) {//public so it can be accessed in other stuff
-		ArrayList<Tip> masklist = (ArrayList<Tip>) tips.clone();
-		if (!mask.equals("")) {
-		for (int i = masklist.size()-1;i> 0;i-- ) {
-			Tip t = masklist.get(i);
-			if (!t.mask.equals(mask)) {
-				masklist.remove(i);
-			}
-		}
-		}
-		
-		return masklist.get(extra.randRange(1,masklist.size()-1)).tip;
+		return extra.randList(tips.get(mask));
 	}
 	
 	public static String rescLocation() {
@@ -71,69 +52,82 @@ public class Oracle extends Feature implements java.io.Serializable{ //extends f
 	}
 	
 	public void load() {
-		tips = new ArrayList<Tip>();
+		tips.clear();
 		
 		
 		//System.out.println(new File(".").getAbsolutePath());
 		Scanner fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+"oldTips.txt"));
 		
+		List<String> list = new ArrayList<String>();
 		while (fileInput.hasNextLine()) {
-			tips.add(new Tip(fileInput.nextLine(),"old"));
+			list.add(fileInput.nextLine());
 		}
+		tips.put("old", list);
 		fileInput.close();
+		
 		fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+"utterTips.txt"));
 		
+		list = new ArrayList<String>();
 		while (fileInput.hasNextLine()) {
-			tips.add(new Tip(fileInput.nextLine(),"utter"));
+			list.add(fileInput.nextLine());
 		}
-		
+		tips.put("utter", list);
 		fileInput.close();
 		//
 		fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+"cultTips.txt"));
 		
+		list = new ArrayList<String>();
 		while (fileInput.hasNextLine()) {
-			tips.add(new Tip(fileInput.nextLine(),"cult"));
+			list.add(fileInput.nextLine());
 		}
-		
+		tips.put("cult", list);
 		fileInput.close();
 		
 		fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+"racistPraiseTips.txt"));
 		
+		list = new ArrayList<String>();
 		while (fileInput.hasNextLine()) {
-			tips.add(new Tip(fileInput.nextLine(),"racistPraise"));
+			list.add(fileInput.nextLine());
 		}
-		
+		tips.put("racistPraise", list);
 		fileInput.close();
 		
 		fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+"racistShunTips.txt"));
 		
+		list = new ArrayList<String>();
 		while (fileInput.hasNextLine()) {
-			tips.add(new Tip(fileInput.nextLine(),"racistShun"));
+			list.add(fileInput.nextLine());
 		}
-		
+		tips.put("racistShun", list);
 		fileInput.close();
 		
 		fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+"equalityTips.txt"));
 		
+		list = new ArrayList<String>();
 		while (fileInput.hasNextLine()) {
-			tips.add(new Tip(fileInput.nextLine(),"equality"));
+			list.add(fileInput.nextLine());
 		}
+		tips.put("equality", list);
 		
 		fileInput.close();
 		
 		fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+"shamanTips.txt"));
 		
+		list = new ArrayList<String>();
 		while (fileInput.hasNextLine()) {
-			tips.add(new Tip(fileInput.nextLine(),"shaman"));
+			list.add(fileInput.nextLine());
 		}
+		tips.put("shaman", list);
 		
 		fileInput.close();
 		
 		fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+"gravediggerTips.txt"));
 		
+		list = new ArrayList<String>();
 		while (fileInput.hasNextLine()) {
-			tips.add(new Tip(fileInput.nextLine(),"gravedigger"));
+			list.add(fileInput.nextLine());
 		}
+		tips.put("gravedigger", list);
 		
 		fileInput.close();
 		
@@ -169,15 +163,16 @@ public class Oracle extends Feature implements java.io.Serializable{ //extends f
 		if (extra.yesNo()) {
 			Player.bag.addGold(-level*100);
 			tip("utter");
-			visits++;
+			int oldVisits = visits;
+			visits+=4;
 			Networking.sendStrong("Achievement|oracle1|");
-			if (visits == 5) {
+			if (oldVisits < 5 && visits >= 5) {
 				Player.player.addTitle(this.getName() + " vistor");
 			}
-			if (visits == 10) {
+			if (oldVisits < 10 && visits >= 10) {
 				Player.player.addTitle(this.getName() + " listener");
 			}
-			if (visits == 50) {
+			if (oldVisits < 50 && visits >= 50) {
 				Player.player.addTitle(this.getName() + " consulter");
 			}
 		}
