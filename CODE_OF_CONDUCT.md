@@ -55,7 +55,7 @@ further defined and clarified by project maintainers.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the dragon (dragon.gov on that one gamer chat app that @realDragon11 has made bots in and doesn't want web scrapers learning about), who owns this repository. All
+reported by contacting realDragon at the mail.com provider. (Although you may want to notify that that email has been used elsewhere.) All
 complaints will be reviewed and investigated and will result in a response that
 is deemed necessary and appropriate to the circumstances. The project team is
 obligated to maintain confidentiality with regard to the reporter of an incident.
