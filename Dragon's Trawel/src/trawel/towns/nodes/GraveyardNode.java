@@ -42,7 +42,7 @@ public class GraveyardNode implements NodeType{
 	
 	@Override
 	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
-		return generate(owner,size,tier);
+		return generate(owner,size,tier).finalize(owner);
 	}
 	
 	@Override
@@ -64,13 +64,15 @@ public class GraveyardNode implements NodeType{
 			NodeConnector n = generate(owner,sizeRemove,tempLevel);
 			made.connects.add(n);
 			n.getConnects().add(made);
+			n.finalize(owner);
 			i++;
 		}
 		return made;
 	}
 	private static final String DEF_INTERACT = "Approach Shadowy Figure", DEF_NAME = "Shadowy Figure";
 	//DOLATER: maybe some nightvision mechanic
-	private void apply(NodeConnector made) {
+	@Override
+	public void apply(NodeConnector made) {
 		switch (made.eventNum) {
 		case -1:made.name = extra.choose("stairs","ladder"); made.interactString = "traverse "+made.name;made.forceGo = true;break;
 		case 1: made.name = DEF_NAME; made.storage1 =  RaceFactory.getGravedigger(made.level); made.interactString = DEF_INTERACT;break;

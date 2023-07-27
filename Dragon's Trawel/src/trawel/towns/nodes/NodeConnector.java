@@ -299,4 +299,9 @@ public class NodeConnector implements Serializable {
 			}
 		}
 	}
+	
+	protected NodeConnector finalize(NodeFeature owner) {
+		owner.numType(typeNum).apply(this);
+		return this;
+	} 
 }

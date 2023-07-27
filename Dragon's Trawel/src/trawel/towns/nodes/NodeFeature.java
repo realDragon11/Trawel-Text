@@ -19,7 +19,7 @@ public abstract class NodeFeature extends Feature {
 	protected double findTime = 0;
 	protected boolean spreadTime = false;
 	
-	protected List<NodeType> typeList = new ArrayList<NodeType>();
+	//protected List<NodeType> typeList = new ArrayList<NodeType>();
 	
 	public enum Shape{
 		NONE, TOWER, ELEVATOR;
@@ -30,9 +30,7 @@ public abstract class NodeFeature extends Feature {
 		return shape;
 	}
 	
-	public NodeType numType(byte i) {
-		return typeList.get(i);
-	}
+	public abstract NodeType numType(int i);
 	
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {

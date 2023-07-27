@@ -26,5 +26,7 @@ public interface NodeType{
 	NodeConnector generate(NodeFeature owner, int sizeLeft, int tier);
 	
 	NodeConnector getStart(NodeFeature owner, int size, int tier);
+	
+	void apply(NodeConnector made);
 
 }

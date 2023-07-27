@@ -37,5 +37,13 @@ public class Grove extends NodeFeature {
 	protected void generate() {
 		start = GroveNode.getSingleton().getStart(this, size, getTown().getTier());//DOLATER: get actual level
 	}
+	@Override
+	public NodeType numType(int i) {
+		switch (i) {
+		case 0: return GroveNode.getSingleton();
+		case 1: return CaveNode.getSingleton();
+		}
+		return null;
+	}
 
 }

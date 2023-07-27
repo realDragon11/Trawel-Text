@@ -6,64 +6,52 @@ import trawel.extra;
 import trawel.mainGame;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
+import trawel.time.TimeContext;
+import trawel.towns.misc.PlantSpot;
 
-public class CaveNode extends GroveNode{
-	//potentail problem: all this code is in a highly duplicated node
-
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class CaveNode implements NodeType{
+	
 	private static final int EVENT_NUMBER =3;
 	
-	//NOTE: idNum = -1 is reserved by GroveNode
-	public CaveNode(int size, int tier,Grove p,boolean stair) {
-		state = 0;
-		parent = p;
-		parentName = "cave";
-		
-		idNum = extra.randRange(1,EVENT_NUMBER);
-
-		if (extra.chanceIn(1,10)) {
-			idNum = 1;//bear
-			
-		}
-		level = tier;
-		if (extra.chanceIn(1,10)) {
-			level++;
-		}
-		if (stair) {
-			idNum = -2;
-			isStair = true;
-		}
-		
-		setConnects(new ArrayList<NodeConnector>());
-		forceGo = false;
-		//town = t;
-		generate(size);
-		
+	private static final CaveNode handler = new CaveNode();
+	
+	private NodeConnector node;
+	
+	public static CaveNode getSingleton() {
+		return handler;
 	}
 	
 	@Override
-	public int getLevel() {
-		return level;
+	public NodeConnector getNode(NodeFeature owner, int tier) {
+		byte idNum = (byte) extra.randRange(1,EVENT_NUMBER);
+		NodeConnector make = new NodeConnector();
+		make.eventNum = idNum;
+		make.typeNum = 0;
+		make.level = tier;
+		apply(make);
+		return make;
 	}
 	
-	
-	
-	private void generate(int size) {
-		switch (idNum) {
-		case -2:name = extra.choose("cave entrance"); interactString = "traverse "+name;forceGo = true;break;
-		case 1: name = extra.choose("bear"); interactString = "ERROR"; forceGo = true;
-		storage1 = RaceFactory.makeBear(level);break;
-		case 2: storage1 = extra.choose("silver","gold","platinum","iron","copper"); name = storage1+" vein"; interactString = "mine "+storage1;break;
-		case 3: name = extra.choose("bat"); interactString = "ERROR"; forceGo = true;
-		storage1 = RaceFactory.makeBat(level);break;
+	//NOTE: idNum = -1 is reserved by GroveNode
+	/*
+	  if (stair) {
+			idNum = -2;
+			isStair = true;
 		}
-		if (size < 2 || parent.getShape() != NodeFeature.Shape.NONE) {
-			return;
+	 */
+	
+	@Override
+	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
+		return generate(owner,size,tier).finalize(owner);
+	}
+	
+	@Override
+	public NodeConnector generate(NodeFeature owner, int size, int tier) {
+		NodeConnector made = getNode(owner,tier);
+		if (size < 2) {
+			return made;
 		}
 		int split = extra.randRange(1,Math.min(size,3));
 		int i = 1;
@@ -71,87 +59,131 @@ public class CaveNode extends GroveNode{
 		while (i < split) {
 			int sizeRemove = extra.randRange(0,sizeLeft-1);
 			sizeLeft-=sizeRemove;
-			CaveNode n = new CaveNode(sizeRemove,level,(Grove)parent,false);
-			connects.add(n);
-			n.getConnects().add(this);
+			int tempLevel = tier;
+			if (extra.chanceIn(1,10)) {
+				tempLevel++;
+			}
+			NodeConnector n = generate(owner,sizeRemove,tempLevel);
+			made.connects.add(n);
+			n.getConnects().add(made);
+			n.finalize(owner);
 			i++;
 		}
-		CaveNode n = new CaveNode(sizeLeft,level,(Grove)parent,false);
-		connects.add(n);
-		n.getConnects().add(this);
+		return made;
+	}
+
+	@Override
+	public void apply(NodeConnector made) {
+		switch (made.idNum) {
+		case -2:
+			made.name = "cave entrance";
+			made.interactString = "traverse "+made.name;
+			made.forceGo = true;
+			break;
+		case 1:
+			made.name = "bear";
+			made.interactString = "ERROR";
+			made.forceGo = true;
+			made.storage1 = RaceFactory.makeBear(made.level);
+			break;
+		case 2:
+			made.storage1 = extra.choose("silver","gold","platinum","iron","copper");
+			made.name = made.storage1+" vein";
+			made.interactString = "mine "+made.storage1;
+			break;
+		case 3:
+			made.name = "bat";
+			made.interactString = "ERROR";
+			made.forceGo = true;
+			made.storage1 = RaceFactory.makeBat(made.level);
+			break;
+		}
 	}
 	
 	@Override
-	protected boolean interact() {
-		switch(idNum) {
+	public boolean interact(NodeConnector node) {
+		this.node = node;
+		switch(node.idNum) {
 		case -2: Networking.sendStrong("Achievement|cave1|"); break;
-		case 1: bear1(); if (state == 0) {return true;};break;
+		case 1: bear1(); if (node.state == 0) {return true;};break;
 		case 2: goldVein1();break;
-		case 3: bat1(); if (state == 0) {return true;};break;
+		case 3: bat1(); if (node.state == 0) {return true;};break;
 		}
 		return false;
 	}
 	
+	@Override
+	public DrawBane[] dbFinds() {
+		return new DrawBane[] {DrawBane.MEAT,DrawBane.BAT_WING,DrawBane.HONEY};
+	}
+
+	@Override
+	public void passTime(NodeConnector node, double time, TimeContext calling){
+		//none for now
+	}
+	
 	
 	private void bear1() {
-		if (state == 0) {
+		if (node.state == 0) {
 			extra.println(extra.PRE_RED+"The bear attacks you!");
-			Person p = (Person)storage1;
+			Person p = (Person)node.storage1;
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
-					state = 1;
-					storage1 = null;
-					name = "dead "+name;
-					interactString = "examine body";
-					forceGo = false;
+					node.state = 1;
+					node.storage1 = null;
+					node.name = "dead "+node.name;
+					node.interactString = "examine body";
+					node.forceGo = false;
 				}
-		}else {extra.println("The bear's corpse lays here.");}
+		}else {
+			extra.println("The bear's corpse lays here.");
+			node.findBehind("dead bear");	
+		}
 		
 	}
 
-	
+
 	private void goldVein1() {
-		if (state == 0) {
+		if (node.state == 0) {
 			Networking.sendStrong("Achievement|ore1|");
 			int mult1 = 0, mult2 = 0;
-			switch (storage1.toString()) {
+			switch (node.storage1.toString()) {
 			case "gold": mult1 = 100; mult2 = 200;break;
 			case "silver": mult1 = 75; mult2 = 150;break;
 			case "platinum": mult1 = 150; mult2 = 300;break;
 			case "iron": mult1 = 50; mult2 = 100;break;
 			case "copper": mult1 = 25; mult2 = 50;break;
 			}
-			int gold = extra.randRange(mult1,mult2)*level;
+			int gold = extra.randRange(mult1,mult2)*node.level;
 			Player.bag.addGold(gold);
-			extra.println("You mine the vein for "+storage1+" worth "+ gold + " gold.");
-					state = 1;
-					name = "empty vein";
-					interactString = "examine empty vein";
-			}else {extra.println("The "+storage1+" has already been mined.");}
-		
+			extra.println("You mine the vein for "+node.storage1+" worth "+ gold + " gold.");
+			node.state = 1;
+			node.name = "empty vein";
+			node.interactString = "examine empty vein";
+		}else {
+			extra.println("The "+node.storage1+" has already been mined.");
+			node.findBehind("vein");
+		}
+
 	}
 	
 	private void bat1() {
-		if (state == 0) {
+		if (node.state == 0) {
 			extra.println(extra.PRE_RED+"The bat attacks you!");
-			Person p = (Person)storage1;
+			Person p = (Person)node.storage1;
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
-					state = 1;
-					storage1 = null;
-					name = "dead "+name;
-					interactString = "examine body";
-					forceGo = false;
+					node.state = 1;
+					node.storage1 = null;
+					node.name = "dead "+node.name;
+					node.interactString = "examine body";
+					node.forceGo = false;
 				}
-		}else {extra.println("The bat corpse lies here.");}
+		}else {
+			extra.println("The bat corpse lies here.");
+			//too small for now
+		}
 		
-	}
-
-	
-
-	@Override
-	protected String shapeName() {
-		return ((Grove)parent).getShape().name();
 	}
 	
 

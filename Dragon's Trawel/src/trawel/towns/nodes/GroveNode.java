@@ -58,7 +58,7 @@ public class GroveNode implements NodeType{
 	
 	@Override
 	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
-		return generate(owner,size,tier);
+		return generate(owner,size,tier).finalize(owner);
 	}
 
 	@Override
@@ -77,7 +77,16 @@ public class GroveNode implements NodeType{
 			if (extra.chanceIn(1,10)) {
 				tempLevel++;
 			}
-			NodeConnector n = generate(owner,sizeRemove,tempLevel);
+			NodeConnector n;
+			if (size < 4 && extra.chanceIn(1,5) && owner.numType(1).equals(CaveNode.getSingleton())) {
+				n = owner.numType(1).generate(owner, sizeRemove, tempLevel+1);
+				n.eventNum = -2;
+				n.finalize(owner);
+			}else {
+				n = generate(owner,sizeRemove,tempLevel);
+				n.finalize(owner);
+			}
+				
 			made.connects.add(n);
 			n.getConnects().add(made);
 			i++;
@@ -95,8 +104,8 @@ public class GroveNode implements NodeType{
 		return made;
 	}
 
-
-	private void apply(NodeConnector made) {
+	@Override
+	public void apply(NodeConnector made) {
 		switch (made.eventNum) {
 		case 0: made.name = ""; made.interactString = "";break;
 		case 1: made.name = randomLists.randomWarrior(); made.interactString = "challenge " + made.name;
@@ -195,6 +204,17 @@ public class GroveNode implements NodeType{
 		return false;
 	}
 	
+	@Override
+	public DrawBane[] dbFinds() {
+		return new DrawBane[] {DrawBane.MEAT,DrawBane.WOOD,DrawBane.TRUFFLE};
+	}
+
+	@Override
+	public void passTime(NodeConnector node, double time, TimeContext calling){
+		if (node.idNum == -1) {
+			calling.localEvents(((PlantSpot)node.storage1).passTime(time,calling));
+		}
+	}
 
 	public void plantSpot() {
 		((PlantSpot)node.storage1).go();
@@ -921,18 +941,5 @@ public class GroveNode implements NodeType{
 		Player.player.getPerson().addEffect(Effect.BEES);
 		
 	}
-	
-	@Override
-	public DrawBane[] dbFinds() {
-		return new DrawBane[] {DrawBane.MEAT,DrawBane.WOOD,DrawBane.TRUFFLE};
-	}
-
-	@Override
-	public void passTime(NodeConnector node, double time, TimeContext calling){
-		if (node.idNum == -1) {
-			calling.localEvents(((PlantSpot)node.storage1).passTime(time,calling));
-		}
-	}
-
 
 }
