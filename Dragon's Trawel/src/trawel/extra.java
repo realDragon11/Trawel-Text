@@ -23,6 +23,9 @@ public final class extra {
  * 2/5/2018
  */
 	
+	public static final byte emptyByte = 0b00000000;
+	public static final byte emptyInt = 0b0000000000000000;
+	
 	private static Boolean printMode = false;
 	//private static long lastMod = -1;
 	private static String printStuff = "";
@@ -38,6 +41,7 @@ public final class extra {
 	};
 	
 	//static methods
+
 	
 	public static final boolean isMainThread() {
 		return mainThreadLock.isHeldByCurrentThread();

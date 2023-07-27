@@ -25,22 +25,16 @@ public class EnchantConstant extends Enchant {
 	 * actually two bytes, the first is used to indicate the name 'might' fluff ordinal
 	 * the second is the actual fluff ordinal
 	 */
-	private int beforeName = 0;
+	private int beforeName = extra.emptyInt;
 	/**
 	 * actually two bytes, the first is used to indicate the name 'might' fluff ordinal
 	 * the second is the actual fluff ordinal
 	 */
-	private int afterName = 0;
+	private int afterName = extra.emptyInt;
 	// beforeName armor afterName
 	private float goldMult = 1;
 	private int goldMod = 0;
 
-	//powers
-	private float speedMod = 1;
-	private float healthMod = 1;
-	private float damMod = 1;
-	private float aimMod = 1;
-	private float dodgeMod = 1;//would add armor, but keywords would be too close to dodging
 	private float magnitudeOne,magnitudeTwo;
 	
 	/**
@@ -50,12 +44,20 @@ public class EnchantConstant extends Enchant {
 	 * bits 1-3 = turned into int determining type of enchant (max 8 possible with this enchant type)
 	 * if all bits are 0 (more importantly, 1-3), then this slot isn't used.
 	 */
-	private byte enchantTypes = 0;
+	private byte enchantTypes = extra.emptyByte;
 	
 	private static WeightedTable enchantChances;
 	private static float[][] floatMultList;
 	private static String[][][][] stringFluffArr;
 	private static SRFrontBackedRandom backFronter;
+
+	public enum EnchantType{
+		SPEED, HEALTH, DAMAGE, AIM, DODGE;
+		
+		public int getNum() {
+			return this.ordinal();
+		}
+	}
 	
 	public static void init() {
 		
@@ -120,7 +122,7 @@ public class EnchantConstant extends Enchant {
 					new String[]{"sickly","ailing","delicate"}//neg
 				},
 				{//damage
-					new String[]{"powerful","offensive","angry","mighty","furious"},//pos
+					new String[]{"powerful","offensive","angry","furious"},//pos
 					new String[]{"weak","pitiful","merciful","timid"}//neg
 				},
 				{//aim
@@ -170,6 +172,12 @@ public class EnchantConstant extends Enchant {
 	
 	//constructors
 	
+	/**
+	 * can be null
+	 * @param mod
+	 * @param cost
+	 * @return
+	 */
 	public static EnchantConstant makeEnchant(float mod, int cost) {
 		for (int i = 0; i < 4;i++) {
 			EnchantConstant enchant = new EnchantConstant(mod);
@@ -274,162 +282,206 @@ public class EnchantConstant extends Enchant {
 		int positiveGoldMod = 8;
 		int negativeGoldMod = 4;
 		
-		byte might = 0;
+		int might;
 		String[] fluff = null;
-		int subType;
+		byte subType;
 		
 		
-		if (magnitudeOne > 0){
-			if (extra.randFloat() < magnitudeOne*3) {
-				//TODO: afterName = randomLists.powerAdjective()+ " ";
-				might = 1<<1;//FIXME
+		if (magnitudeOne > 0f){
+			//two rand floats, one scaled off of mag, one off of 3
+			//thus slightly worse than even chances when mag == 3
+			//worse chances than the after mighty, to make it rarer
+			if (extra.randFloat()*magnitudeTwo > extra.randFloat()*3f ) {
+				might = randomLists.powerMightyAdj(true).getNumByte();
+				might |= 1 << 7;//sets that we're mighty, note that mighty is limited to 2^7 options due to this
+			}else {
+				might = extra.emptyInt;
 			}
-			subType = extra.randRange(0, 4);
-			enchantTypes = (byte) (internalByteConverter(off1,subType) << 4);
+			subType = (byte) extra.randRange(0, 4);
+			enchantTypes = (byte) (internalNibbleConverter(off1,subType) << 4);
+			//System.err.println(off1 + "/" + subType + " 1: " + Integer.toBinaryString(Byte.toUnsignedInt(enchantTypes)));
 			switch (off1+(subType*2)) {
 			case 0: fluff = stringFluffArr[0][0][0];
-			speedMod+=.2*magnitudeOne;
 			goldMult +=positiveGoldMult*magnitudeOne;
 			goldMod +=magnitudeOne*positiveGoldMod;
 			break;
 			case 1: fluff = stringFluffArr[0][0][0];
-			speedMod-=.2*magnitudeOne;
 			goldMult -=negativeGoldMult*magnitudeOne;
 			goldMod -=magnitudeOne*negativeGoldMod;
 			break;
 			case 2: fluff = stringFluffArr[0][1][0];
-			healthMod+=.2*magnitudeOne;
 			goldMult +=positiveGoldMult*magnitudeOne;
 			goldMod +=magnitudeOne*positiveGoldMod;
 			break;
 			case 3: fluff = stringFluffArr[0][1][1];
-			healthMod-=.2*magnitudeOne;
 			goldMult -=negativeGoldMult*magnitudeOne;
 			goldMod -=magnitudeOne*negativeGoldMod;
 			break;
 			case 4: fluff = stringFluffArr[0][2][0];
-			damMod+=.2*magnitudeOne;
 			goldMult +=positiveGoldMult*magnitudeOne;
 			goldMod +=magnitudeOne*positiveGoldMod;
 			break;
 			case 5: fluff = stringFluffArr[0][2][1];
-			damMod-=.2*magnitudeOne;
 			goldMult -=negativeGoldMult*magnitudeOne;
 			goldMod -=magnitudeOne*negativeGoldMod;
 			break;
 			case 6: fluff = stringFluffArr[0][3][0];
-			aimMod+=.2*magnitudeOne;
 			goldMult +=positiveGoldMult*magnitudeOne;
 			goldMod +=magnitudeOne*positiveGoldMod;
 			break;
 			case 7: fluff = stringFluffArr[0][3][1];
-			aimMod-=.2*magnitudeOne;
 			goldMult -=negativeGoldMult*magnitudeOne;
 			goldMod -=magnitudeOne*negativeGoldMod;
 			break;
 			case 8: fluff = stringFluffArr[0][4][0];
-			dodgeMod+=.2*magnitudeOne;
 			goldMult +=positiveGoldMult*magnitudeOne*.9;
 			goldMod +=magnitudeOne*positiveGoldMod*.3;
 			break;
 			case 9: fluff = stringFluffArr[0][4][1];
-			dodgeMod-=.2*magnitudeOne;
 			goldMult -=negativeGoldMult*magnitudeOne*.8;
 			goldMod -=magnitudeOne*negativeGoldMod*.2;
 			break;
 		
 		}
 			backFronter.setBack(fluff);
-			beforeName = (might << 4) | (backFronter.getNumByte());
+			beforeName = (might << 8) | (backFronter.getNumByte());
 		}
 		//second component of enchantment
-		if (magnitudeTwo > 0){
-			if (extra.randFloat() < magnitudeTwo*3) {
-				//afterName = " of "+randomLists.powerAdjective()+ " ";
-				//FIXME:
-				might = 1<<1;
+		if (magnitudeTwo > 0f){
+			//two rand floats, one scaled off of mag, one off of 2
+			//thus slightly worse than even chances when mag == 2
+			if (extra.randFloat()*magnitudeTwo > extra.randFloat()*2f ) {
+				might = randomLists.powerMightyAdj(false).getNumByte();
+				might |= 1 << 7;//sets that we're mighty, note that mighty is limited to 2^7 options due to this
+			}else {
+				might = extra.emptyInt;
 			}
-			subType = extra.randRange(0, 4);
-			enchantTypes = (byte) (enchantTypes | internalByteConverter(off2, subType));//FIXME
+			subType = (byte) extra.randRange(0, 4);
+			enchantTypes = (byte) (enchantTypes | internalNibbleConverter(off2, subType));//FIXME
+			//System.err.println(off2 + "/" + subType + " 2: " + Integer.toBinaryString(Byte.toUnsignedInt(enchantTypes)));
 		switch (off2+(subType*2)) {
 			case 0: fluff = stringFluffArr[1][0][0];
-			speedMod+=.1*magnitudeTwo;
 			goldMult +=positiveGoldMult*magnitudeTwo;
 			goldMod +=magnitudeTwo*positiveGoldMod;
 			break;
 			case 1: fluff = stringFluffArr[1][0][1];
-			speedMod-=.1*magnitudeTwo;
 			goldMult -=.1*magnitudeTwo;
 			goldMod -=magnitudeTwo*negativeGoldMod;
 			break;
 			case 2: fluff = stringFluffArr[1][1][0];
-			healthMod+=.1*magnitudeTwo;
 			goldMult +=positiveGoldMult*magnitudeTwo;
 			goldMod +=magnitudeTwo*positiveGoldMod;
 			break;
 			case 3: fluff = stringFluffArr[1][1][1];
-			healthMod-=.1*magnitudeTwo;
 			goldMult -=.1*magnitudeTwo;
 			goldMod -=magnitudeTwo*negativeGoldMod;
 			break;
 			case 4: fluff = stringFluffArr[1][2][0];
-			damMod+=.1*magnitudeTwo;
 			goldMult +=positiveGoldMult*magnitudeTwo;
 			goldMod +=magnitudeTwo*positiveGoldMod;
 			break;
 			case 5: fluff = stringFluffArr[1][2][1];
-			damMod-=.1*magnitudeTwo;
 			goldMult -=.1*magnitudeTwo;
 			goldMod -=magnitudeTwo*negativeGoldMod;
 			break;
 			case 6: fluff = stringFluffArr[1][3][0];
-			aimMod+=.1*magnitudeTwo;
 			goldMult +=positiveGoldMult*magnitudeTwo;
 			goldMod +=magnitudeTwo*positiveGoldMod;
 			break;
 			case 7: fluff = stringFluffArr[1][3][1];
-			aimMod-=.1*magnitudeTwo;
 			goldMult -=.1*magnitudeTwo;
 			goldMod -=magnitudeTwo*negativeGoldMod;
 			break;
 			case 8: fluff = stringFluffArr[1][4][0];
-			dodgeMod+=.1*magnitudeTwo;
 			goldMult +=positiveGoldMult*magnitudeTwo*.9;
 			goldMod +=magnitudeTwo*positiveGoldMod*.3;
 			break;
 			case 9: fluff = stringFluffArr[1][4][1];
-			dodgeMod-=.1*magnitudeTwo;
 			goldMult -=.1*magnitudeTwo*.8;
 			goldMod -=magnitudeTwo*negativeGoldMod*.2;
 			break;
 		
 		}
 		backFronter.setBack(fluff);
-		afterName = (might << 4) | (backFronter.getNumByte());
+		afterName = ((might << 8) | backFronter.getNumByte());
 		}
+		//System.err.println("type bits: " + Integer.toBinaryString(Byte.toUnsignedInt(enchantTypes)));
+		//System.err.println("before bits: " + Integer.toBinaryString(beforeName));
+		//System.err.println("after bits: " + Integer.toBinaryString(afterName));
 	}
 	
-	protected static final byte internalByteConverter(int positive,int subtype) {
-		return (byte) (((byte)positive << 4) | ((byte)subtype));
+	protected static final int internalNibbleConverter(int negative,int subtype) {
+		assert subtype < 8;
+		assert subtype >= 0;
+		assert negative >= 0;
+		assert negative <= 1;
+		return ((negative << 3) | subtype);
 	}
-	
-	protected static int subTypeNum(boolean first, byte b) {
+	/**
+	 * this method will fail if you attempt to pass it a byte
+	 * but it needs a number of unsigned byte size
+	 */
+	protected static int subTypeNum(boolean first, int b) {
+		/**
+		 * needed because java is REALLLLLY dumb about bitwise on bytes and automatically unboxes them as signed byte to int
+		 */
 		if (first) {
-			return b & 0b01110000;
+			return ((b & 0b01110000) >>> 4);
 		}else {
-			return b & 0b00000111;
+			return (b & 0b00000111);
 		}
 	}
-	protected static int isPositive(boolean first, byte b) {
+	/**
+	 * this method will fail if you attempt to pass it a byte
+	 * but it needs a number of unsigned byte size
+	 */
+	protected static boolean isPositive(boolean first, int b) {
 		if (first) {
-			return b & 0b10000000;
+			return (b & 0b10000000) < 1;
 		}else {
-			return b & 0b00001000;
+			return (b & 0b00001000) < 1;
 		}
 	}
 	
-	protected static boolean hasMighty(byte b) {
+	/**
+	 * this method will fail if you attempt to pass it an int
+	 * but it needs a number of unsigned byte size
+	 */
+	protected static boolean hasMighty(int b) {
 		return (b & 0b10000000) > 0;
+	}
+	//TODO: maybe cache this in something trasient the first time it gets loaded
+	//don't need to worry about threading or anything like that since it will always be the same
+	
+	/**
+	 * 
+	 * @param num EnchantType.X.getNum()
+	 * @param posMag should be positive
+	 * @param negMag should be negative
+	 * @return
+	 */
+	protected float getMultFor(int num,float posMag, float negMag) {
+		float mult = 1f;
+		if (magnitudeOne > 0f) {
+			if (subTypeNum(true,enchantTypes) == num) {
+				if (isPositive(true,enchantTypes)) {
+					mult += magnitudeOne*posMag;
+				}else {
+					mult += magnitudeOne*negMag;
+				}
+				
+			}
+		}
+		if (magnitudeTwo > 0f) {
+			if (subTypeNum(false,enchantTypes) == num) {
+				if (isPositive(false,enchantTypes)) {
+					mult += magnitudeTwo*posMag;
+				}else {
+					mult += magnitudeTwo*negMag;
+				}
+			}
+		}
+		return mult;
 	}
 	
 	//instance methods
@@ -452,12 +504,34 @@ public class EnchantConstant extends Enchant {
 	}
 	
 	protected String inameResolver(boolean first, int in) {
-		String mighty = "";
-		if (hasMighty((byte) (in >>> 4))) {
-			mighty = "later ";
+		//int subject;
+		if (first) {
+			if (magnitudeOne <= 0f) {
+				return "";
+			}
+			//subject = (byte) (in & 0b1111111100000000);
+			//subject = (in >>> 8);
+		}else {
+			if (magnitudeTwo <= 0f) {
+				return "";
+			}
+			//subject = (in & 0b0000000011111111);
 		}
-		return mighty + backFronter.setBack(stringFluffArr[first ? 0 : 1][subTypeNum(first,enchantTypes)][isPositive(first,enchantTypes)])
-		.getWithNum(in & 0b0000000011111111);
+		String mighty = null;
+		int mbyte = (in >>> 8);
+		//System.out.println(Integer.toBinaryString(mbyte));
+		if (hasMighty(mbyte)) {
+			mighty = randomLists.powerMightyAdj(first).getWithNum(mbyte & 0b01111111);//remove the flag bit (which is probably the sign bit tbh)
+		}
+		//System.out.println(Integer.toBinaryString(subTypeNum(first,enchantTypes)));
+		if (first) {
+			return (mighty != null ? mighty + " " : "") + backFronter.setBack(stringFluffArr[0][subTypeNum(first,enchantTypes)][isPositive(first,enchantTypes)? 0 : 1])
+			.getWithNum(in & 0b0000000011111111);
+		}else {
+			return " of " +(mighty != null ? mighty + " " : "") + backFronter.setBack(stringFluffArr[1][subTypeNum(first,enchantTypes)][isPositive(first,enchantTypes)? 0 : 1])
+			.getWithNum(in & 0b0000000011111111);
+		}
+		
 	}
 
 
@@ -465,12 +539,7 @@ public class EnchantConstant extends Enchant {
 	 * @return the beforeName (String)
 	 */
 	public String getBeforeName() {
-		String mighty = "";
-		if (hasMighty((byte) (beforeName >>> 4))) {
-			mighty = "later ";
-		}
-		return mighty + backFronter.setBack(stringFluffArr[0][subTypeNum(true,enchantTypes)][isPositive(true,enchantTypes)])
-		.getWithNum(beforeName & 0b0000000011111111);
+		return inameResolver(true,beforeName);
 	}
 
 
@@ -486,7 +555,7 @@ public class EnchantConstant extends Enchant {
 	 */
 	@Override
 	public float getSpeedMod() {
-		return speedMod;
+		return getMultFor(EnchantType.SPEED.getNum(),.1f,-.1f);
 	}
 
 	/**
@@ -494,7 +563,7 @@ public class EnchantConstant extends Enchant {
 	 */
 	@Override
 	public float getHealthMod() {
-		return healthMod;
+		return getMultFor(EnchantType.HEALTH.getNum(),.2f,-.1f);
 	}
 
 	/**
@@ -502,7 +571,7 @@ public class EnchantConstant extends Enchant {
 	 */
 	@Override
 	public float getDamMod() {
-		return damMod;
+		return getMultFor(EnchantType.DAMAGE.getNum(),.1f,-.1f);
 	}
 
 	/**
@@ -510,7 +579,7 @@ public class EnchantConstant extends Enchant {
 	 */
 	@Override
 	public float getAimMod() {
-		return aimMod;
+		return getMultFor(EnchantType.AIM.getNum(),.15f,-.1f);
 	}
 
 	/**
@@ -518,7 +587,7 @@ public class EnchantConstant extends Enchant {
 	 */
 	@Override
 	public float getDodgeMod() {
-		return dodgeMod;
+		return getMultFor(EnchantType.DODGE.getNum(),.25f,-.15f);
 	}
 
 	@Override
@@ -546,12 +615,33 @@ public class EnchantConstant extends Enchant {
 		return Enchant.Type.CONSTANT;
 	}
 	public static void testAsserts() {
-		EnchantConstant test = new EnchantConstant(20f);
-		assert isPositive(true, (byte) 0b11111111) == 1;
-		assert isPositive(false, (byte) 0b11111111) == 1;
-		assert isPositive(true, (byte) 0) == 0;
-		assert isPositive(false, (byte) 0) == 0;
+		EnchantConstant test;
+		assert isPositive(true, 0b11111111) == false;
+		assert isPositive(false, 0b11111111) == false;
+		assert isPositive(true, 0) == true;
+		assert isPositive(false, 0) == true;
 		
+		assert hasMighty( 0b10000000) == true;
+		assert hasMighty( 0b01111111) == false;
+		
+		for (int i = 1; i < 6; i++) {
+			test = new EnchantConstant(1f*i);
+			System.out.println(test.getBeforeName() +"x" + test.getAfterName() + "]" + test.beforeName +"x"+test.afterName +"[" + test.enchantTypes);
+			test.display(0);
+		}
+		byte testb = 1<<1;
+		System.out.println("push test: " + Integer.toBinaryString(testb) + " and " + Integer.toBinaryString(testb | (1 << 7)));
+		System.out.println("empties: " + Integer.toBinaryString(extra.emptyInt) + " " + Integer.toBinaryString(extra.emptyByte));
+		
+		for (int i = 1; i < 6; i++) {
+			test = EnchantConstant.makeEnchant(i%1.2f, 50);
+			if (test == null) {
+				System.err.println("null enchant, not made");
+			}else {
+				System.out.println(test.getBeforeName() +"x" + test.getAfterName() + "]" + test.beforeName +"x"+test.afterName +"[" + test.enchantTypes);
+				test.display(0);
+			}
+		}
 	}
 
 

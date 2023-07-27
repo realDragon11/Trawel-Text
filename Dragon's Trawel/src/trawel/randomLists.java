@@ -8,6 +8,7 @@ import derg.SRGapShuffle;
 import derg.SRInOrder;
 import derg.SRPlainRandom;
 import derg.StringResult;
+import derg.StringNum;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
 
@@ -21,10 +22,11 @@ public class randomLists {
 	//initers
 	private static StringResult commonElements, rareElements, randMats = null, colorList, normalFirstNames, theTitles,
 			doerTitles, animals, wolfNames,bearNames,batNames, entNames, waterNames,
-			fighterTypes,muggerTypes,collectTypes,theAlphaTitles,theLargeTitles, attackMisses, attackNegates,
+			fighterTypes,muggerTypes,collectTypes,theAlphaTitles,theLargeTitles, attackMisses, attackNegates
 			//following have fallbacks if not loaded, and you can avoid filling them in for test purposes
-			powerAdj = new SRInOrder(""), powerAdjFront = new SRInOrder("")
+			
 			;
+	private static StringNum powerAdj = new SRInOrder(""), powerAdjFront = new SRInOrder("");
 	//NOTE: any =null means it should use a lazyloaded getter instead
 	public static void init() {
 		commonElements = new SRPlainRandom(Arrays.asList("earth","wind","fire","air","water","ice","storm","thunder","flame","lightning","frost","stone"));
@@ -203,5 +205,9 @@ public class randomLists {
 	
 	public static String attackNegateFluff() {
 		return attackNegates.next();
+	}
+	
+	public static StringNum powerMightyAdj(boolean before) {
+		return before ? powerAdjFront : powerAdj;
 	}
 }

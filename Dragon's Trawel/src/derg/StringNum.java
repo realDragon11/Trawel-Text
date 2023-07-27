@@ -55,6 +55,7 @@ public abstract class StringNum extends StringResult{
 	
 	/**
 	 * gets an unsigned byte that can be stored to get a stringresult later from this StringResult
+	 * java really doesn't like doing bitwise math with bytes, be careful
 	 * @return the unsigned byte
 	 */
 	public byte getNumByte() {

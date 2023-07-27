@@ -3,7 +3,7 @@ package derg;
 import java.util.Arrays;
 import java.util.List;
 
-public class SRInOrder extends StringResult {
+public class SRInOrder extends StringNum {
 
 	private List<String> contents;
 	private int marker = 0;
@@ -43,5 +43,32 @@ public class SRInOrder extends StringResult {
 	public void setMarker(int i) {
 		marker = i;
 	}
+
+	@Override
+	public String getWithNum(int i) {
+		if (contents.size() == 0) {
+			return null;
+		}
+		return contents.get(i%contents.size());
+	}
+
+	@Override
+	public String getWithNumExact(int i) {
+		if (!(contents.size() > i)) {
+			return null;
+		}
+		return contents.get(i);
+	}
+
+	@Override
+	public int getNum() {
+		return marker++%contents.size();
+	}
+
+	@Override
+	public int getMaxNum() {
+		return contents.size()-1;
+	}
+	
 	
 }
