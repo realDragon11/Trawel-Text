@@ -20,11 +20,11 @@ import trawel.towns.services.Oracle;
 public class GraveyardNode implements NodeType{
 	private static final int EVENT_NUMBER =7;
 	
-	private static final GroveNode handler = new GroveNode();
+	private static final GraveyardNode handler = new GraveyardNode();
 	
 	private NodeConnector node;
 	
-	public static GroveNode getSingleton() {
+	public static GraveyardNode getSingleton() {
 		return handler;
 	}
 
@@ -47,20 +47,24 @@ public class GraveyardNode implements NodeType{
 	@Override
 	public NodeConnector generate(NodeFeature owner, int size, int tier) {
 		NodeConnector made = getNode(owner,tier);
-		if (size < 2) {
+		if (size <= 0) {
 			return made;
 		}
 		int split = extra.randRange(1,Math.min(size,3));
-		int i = 1;
-		int sizeLeft = size;
+		int i = 0;
+		int sizeLeft = size-(split+1);
+		int[] dist = new int[split]; 
+		while (sizeLeft > 0)//DOLATER: maybe give a better gen type
+		{
+			dist[extra.randRange(0,split-1)]++;
+			sizeLeft--;
+		}
 		while (i < split) {
-			int sizeRemove = extra.randRange(0,sizeLeft-1);
-			sizeLeft-=sizeRemove;
 			int tempLevel = tier;
 			if (extra.chanceIn(1,10)) {
 				tempLevel++;
 			}
-			NodeConnector n = generate(owner,sizeRemove,tempLevel);
+			NodeConnector n = generate(owner,dist[i],tempLevel);
 			made.connects.add(n);
 			n.getConnects().add(made);
 			n.finalize(owner);

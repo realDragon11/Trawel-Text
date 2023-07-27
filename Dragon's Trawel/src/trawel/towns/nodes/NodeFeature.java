@@ -15,7 +15,7 @@ import trawel.towns.Town;
 public abstract class NodeFeature extends Feature {
 
 	protected NodeConnector start;
-	protected int size;
+	protected transient int size;
 	protected double findTime = 0;
 	protected boolean spreadTime = false;
 	
@@ -64,10 +64,16 @@ public abstract class NodeFeature extends Feature {
 	@Override
 	public void reload() {
 		super.reload();
+		size = 0;
 		start.parentChain(this);
 		start.endPass();
+		System.out.println(this.size +" size of " + this.getName());
 	}
 
 	protected abstract byte bossType();
+
+	public String sizeDesc() {
+		return " S: " + size;
+	}
 
 }

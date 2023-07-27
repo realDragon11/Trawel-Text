@@ -113,7 +113,7 @@ public class NodeConnector implements Serializable {
 						break;
 					}
 				}
-				if (forceGo) {
+				if (forceGo && currentNode != lastNode) {
 					visited = 3;
 					interactCode();
 					return null;//redo operation
@@ -241,6 +241,7 @@ public class NodeConnector implements Serializable {
 
 		@Override
 		public boolean go() {
+			NodeConnector.lastNode = NodeConnector.currentNode;
 			currentNode = owner;
 			owner.visited = 2;
 			return true;//always return true to prevent recursive nesting issues
@@ -302,6 +303,7 @@ public class NodeConnector implements Serializable {
 
 	protected void parentChain(NodeFeature p) {
 		parent = p;
+		p.size++;
 		passing = true;
 		for (NodeConnector n: connects) {
 			if (!n.passing) {

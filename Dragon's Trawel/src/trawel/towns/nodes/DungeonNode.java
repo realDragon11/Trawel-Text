@@ -59,11 +59,11 @@ public class DungeonNode implements NodeType{
 			return made;
 		}
 		int split = extra.randRange(1,Math.min(size,3));
-		int i = 1;
-		int sizeLeft = size;
+		int i = 0;
+		int sizeLeft = size-1;
 		//now more even, as with new groves, but less likely to fill it entirely
-		int baseSize = sizeLeft/(split+2);
-		sizeLeft-=baseSize;
+		int baseSize = sizeLeft/split;
+		sizeLeft-=baseSize*split;
 		while (i < split) {
 			int sizeRemove = sizeLeft > 2 ? extra.randRange(1,sizeLeft-1) : 0;
 			sizeLeft-=sizeRemove;
@@ -84,14 +84,14 @@ public class DungeonNode implements NodeType{
 	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
 		switch (owner.shape) {
 		case NONE: 
-			return getNode(owner, tier).finalize(owner);
+			return generate(owner,size, tier).finalize(owner);
 		case TOWER:
 			int curSize = 1;
 			List<List<NodeConnector>> floors = new ArrayList<List<NodeConnector>>();
 			List<NodeConnector> curFloor;
 			NodeConnector stair;
 			NodeConnector curStair;
-			NodeConnector start = getNode(owner,tier);
+			NodeConnector start = getNode(owner,tier).finalize(owner);
 			start.setFloor(0);
 			stair = start;
 			int levelUp = 0;

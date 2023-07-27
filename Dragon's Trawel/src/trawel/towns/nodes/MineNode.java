@@ -56,20 +56,23 @@ public class MineNode implements NodeType{
 		if (extra.chanceIn(1,3)) {//mineshaft splitting
 			return genShaft(owner,size,tier,extra.randRange(2,5));
 		}
-		NodeConnector made = getNode(owner,tier);
+		NodeConnector made = getNode(owner,tier).finalize(owner);
+		size--;
 		int sizeLeft;
 		int[] split;
 		if (size < 5) {
 			split = new int[size];
-			sizeLeft = 1;
+			sizeLeft = 0;
+			size = 0;
 		}else {
 			split = new int[extra.randRange(3,Math.min(size,5))];
-			sizeLeft = size/(split.length+2);
+			size-=split.length;
+			sizeLeft = (size)/(split.length+2);
 		}
 		for (int i = 0; i < split.length;i++) {
 			split[i] = sizeLeft;
 		}
-		sizeLeft = size-sizeLeft;
+		sizeLeft = size-(sizeLeft*split.length);
 		while (sizeLeft > 0) {
 			split[extra.randRange(0,split.length-1)]+=1;
 			sizeLeft--;
@@ -88,10 +91,10 @@ public class MineNode implements NodeType{
 	}
 	
 	protected NodeConnector genShaft(NodeFeature owner, int size, int tier,int shaftLeft) {
-		if (size == 0) {//ran out of resources
+		if (size <= 1) {//ran out of resources
 			return getNode(owner,tier).finalize(owner);
 		}
-		if (shaftLeft > 1) {
+		if (shaftLeft > 1 || size < 3) {
 			//shaft always is same level
 			NodeConnector n = genShaft(owner, size-1, tier,shaftLeft-1);
 			NodeConnector me = getNode(owner,tier);
@@ -108,7 +111,7 @@ public class MineNode implements NodeType{
 	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
 		switch (owner.shape) {
 		case NONE: 
-			return getNode(owner, tier).finalize(owner);
+			return generate(owner,size, tier).finalize(owner);
 		case ELEVATOR:
 			NodeConnector start = getNode(owner,tier).finalize(owner);
 			NodeConnector lastNode = start;

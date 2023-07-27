@@ -66,43 +66,40 @@ public class GroveNode implements NodeType{
 		if (size <= 1) {
 			return made;
 		}
-		int split = extra.randRange(1,Math.min(size,3));
-		int i = 1;
-		int sizeLeft = size;
+		int split;
+		if (size > 5) {
+			split = extra.randRange(3,5);
+		}else {
+			split = extra.randRange(1,Math.min(size, 3));
+		}
+		
+		int i = 0;
+		int sizeLeft = size-1;
 		//now more even, for groves, but less likely to fill it entirely
 		int baseSize = sizeLeft/(split+1);
-		sizeLeft-=baseSize;
+		sizeLeft-=baseSize*split;
 		while (i < split) {
-			int sizeRemove = extra.randRange(0,sizeLeft-1);
+			int sizeRemove = extra.zeroOut(extra.randRange(sizeLeft/2,sizeLeft)-1);
 			sizeLeft-=sizeRemove;
 			int tempLevel = tier;
 			if (extra.chanceIn(1,10)) {
 				tempLevel++;
 			}
 			NodeConnector n;
+			assert owner instanceof Grove;
 			if (size < 4 && extra.chanceIn(1,5) && owner.numType(1).equals(CaveNode.getSingleton())) {
-				n = owner.numType(1).generate(owner, baseSize+sizeRemove, tempLevel+1);//caves always level up
+				n = owner.numType(1).generate(owner,baseSize+sizeRemove, tempLevel+1);//caves always level up
 				n.eventNum = -2;
 				n.finalize(owner);
 			}else {
 				n = generate(owner,baseSize+sizeRemove,tempLevel);
 				n.finalize(owner);
 			}
-				
+			
 			made.connects.add(n);
 			n.getConnects().add(made);
 			i++;
 		}
-		/*
-		if (extra.chanceIn(1, 20) && sizeLeft < 4) {
-			CaveNode n = new CaveNode(sizeLeft,level,(Grove)parent,true);
-			connects.add(n);
-			n.getConnects().add(this);
-		}else {
-			GroveNode n = new GroveNode(sizeLeft,level,(Grove)parent);
-			connects.add(n);
-			n.getConnects().add(this);}
-		*/
 		return made;
 	}
 

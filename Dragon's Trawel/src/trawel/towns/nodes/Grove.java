@@ -40,7 +40,7 @@ public class Grove extends NodeFeature {
 		case 0: return GroveNode.getSingleton();
 		case 1: return CaveNode.getSingleton();
 		}
-		return null;
+		throw new RuntimeException("invalid numtype");
 	}
 	@Override
 	protected byte bossType() {

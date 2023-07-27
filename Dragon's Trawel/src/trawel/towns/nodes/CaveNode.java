@@ -48,6 +48,7 @@ public class CaveNode implements NodeType{
 	
 	@Override
 	public NodeConnector generate(NodeFeature owner, int size, int tier) {
+		size--;
 		NodeConnector made = getNode(owner,tier);
 		int split;
 		int sizePer;

@@ -5,6 +5,7 @@ import java.awt.Color;
 import trawel.extra;
 import trawel.towns.Feature;
 import trawel.towns.Lot;
+import trawel.towns.nodes.NodeFeature;
 
 public class MenuSelectFeature implements MenuItem {
 	
@@ -19,6 +20,10 @@ public class MenuSelectFeature implements MenuItem {
 		if (feature instanceof Lot) {
 			if (((Lot)feature).getConstructTime() != -1) {
 				append += " ("+extra.F_WHOLE.format(((Lot)feature).getConstructTime())+" hours)";
+			}
+		}else {
+			if (feature instanceof NodeFeature) {
+				append += ((NodeFeature)feature).sizeDesc();
 			}
 		}
 		return extra.inlineColor(extra.colorMix(feature.getColor(),Color.WHITE,.5f))+extra.capFirst(feature.getName()) + append;
