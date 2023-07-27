@@ -170,6 +170,7 @@ public class GroveNode extends NodeConnector{
 		n.getConnects().add(this);}
 	}
 	
+	@Override
 	protected boolean interact() {
 		switch(idNum) {
 		case -1: plantSpot();break;

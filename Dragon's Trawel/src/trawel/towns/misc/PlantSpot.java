@@ -269,6 +269,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 		}
 	}
 
+	@Override
 	public List<TimeEvent> passTime(double t, TimeContext tc) {
 		timer +=t;
 		switch (contains) {

@@ -52,6 +52,7 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 		
 	}
 	
+	@Override
 	public int getLevel() {
 		return level;
 	}

@@ -8,7 +8,7 @@ import com.github.tommyettinger.random.WhiskerRandom;
 
 import trawel.extra;
 
-public class SRPlainRandom extends StringResult {
+public class SRPlainRandom extends StringNum {
 
 	private List<String> contents;
 	
@@ -38,6 +38,32 @@ public class SRPlainRandom extends StringResult {
 	@Override
 	public List<String> backing(){
 		return contents;
+	}
+
+	@Override
+	public String getWithNum(int i) {
+		if (contents.size() == 0) {
+			return null;
+		}
+		return contents.get(i%contents.size());
+	}
+
+	@Override
+	public String getWithNumExact(int i) {
+		if (!(contents.size() > i)) {
+			return null;
+		}
+		return contents.get(i);
+	}
+
+	@Override
+	public int getNum() {
+		return extra.getRand().nextInt(contents.size());
+	}
+
+	@Override
+	public int getMaxNum() {
+		return contents.size()-1;
 	}
 	
 }

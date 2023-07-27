@@ -437,6 +437,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 		}}
 	}
 
+	@Override
 	public Town getTown() {
 		return town;
 	}

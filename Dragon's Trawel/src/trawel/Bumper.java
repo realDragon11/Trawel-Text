@@ -34,6 +34,7 @@ public abstract class Bumper {
 			}
 		}
 		if (d > threshold) {
+			assert highestB != null;
 			highestB.activate(level);
 			return true;
 		}

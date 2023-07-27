@@ -10,6 +10,7 @@ public class MenuSelectFeature implements MenuItem {
 	
 	public Feature feature;
 
+	@Override
 	public String title() {
 		if (feature.getName() == null) {
 			return "nullname";
@@ -30,11 +31,13 @@ public class MenuSelectFeature implements MenuItem {
 	 * 
 	 * @return whether to go back or not
 	 */
+	@Override
 	public boolean go() {
 		feature.go();
 		return true;
 	}
 	
+	@Override
 	public boolean canClick() {
 		return true;
 	}

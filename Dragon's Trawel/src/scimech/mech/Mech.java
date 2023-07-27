@@ -55,10 +55,12 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 		return baseHeatCap();
 	}
 	
+	@Override
 	public int getHP() {
 		return hp;
 	}
 	
+	@Override
 	public TargetType targetType() {
 		return TargetType.MECH;
 	}
@@ -91,6 +93,7 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 	
 	public static final int SPEED_DIE = 10;
 	
+	@Override
 	public void roundStart() {
 		energy = 0;
 		dodgeBonus = -slow;
@@ -375,6 +378,7 @@ public abstract class Mech extends MechPart implements TurnSubscriber, Target, S
 		return false;
 	}
 	
+	@Override
 	public boolean checkFire() {
 		return hp <= 0;
 	}

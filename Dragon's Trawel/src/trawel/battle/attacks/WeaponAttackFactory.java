@@ -251,6 +251,7 @@ public class WeaponAttackFactory {
 			rarity = rarit;
 		}
 		
+		@Override
 		public String toString() {
 			java.text.DecimalFormat formata = new java.text.DecimalFormat("0.0000");
 			return name +": "+ formata.format(raw) +")(" +formata.format(rarity*raw); 

@@ -22,9 +22,11 @@ public class RMonster extends RUnit {
 		fStance = FightingStance.BALANCED;
 		 MonsterFactory.getMonsterByName(name).initer(this);
 	}
+	@Override
 	public String getBaseName() {
 		return name;
 	}
+	@Override
 	public String getName() {
 		return getBaseName() +" " + monsterNumber;
 	}

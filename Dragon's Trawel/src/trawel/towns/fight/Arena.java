@@ -42,14 +42,17 @@ public class Arena extends Feature{
 		this(name,tier,rounds,interval,timeLeft,timesDone,null);
 	}
 	
+	@Override
 	public String getName() {
 		return name;
 	}
 
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	@Override
 	public void go() {
 		Networking.setArea("arena");
 		if (owner == Player.player && moneyEarned > 0) {
@@ -192,6 +195,7 @@ public class Arena extends Feature{
 		this.rounds = rounds;
 	}
 
+	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		moneyEarned +=tier*2*time;
 		while (time > 0) {

@@ -231,6 +231,7 @@ public class Weapon extends Item {
 
 	//instance methods
 	
+	@Override
 	public boolean coinLoot() {
 		switch (weapName) {
 		case "generic teeth": return false;
@@ -262,6 +263,7 @@ public class Weapon extends Item {
 	 * get the reference to the enchantment on the weapon
 	 * @return enchant (EnchantConstant)
 	 */
+	@Override
 	public Enchant getEnchant() {
 		return enchant;
 	}
@@ -306,6 +308,7 @@ public class Weapon extends Item {
 	 * get the cost of the item
 	 * @return cost (int)
 	 */
+	@Override
 	public int getCost() {
 		if (this.isEnchantedConstant()) {
 			return (int) (level*cost * enchant.getGoldMult()+enchant.getGoldMod());
@@ -588,6 +591,7 @@ public class Weapon extends Item {
 		return MaterialFactory.getMat(material);
 	}
 	
+	@Override
 	public void levelUp() {
 		level++;
 		//dam = null;

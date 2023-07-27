@@ -358,6 +358,7 @@ public class Armor extends Item {
 	 * get the cost of the item
 	 * @return cost (int)
 	 */
+	@Override
 	public int getCost() {
 		return (int) (cost*level*(isEnchanted() ? enchantment.getGoldMult()+enchantment.getGoldMod() : 1));
 	}
@@ -414,6 +415,7 @@ public class Armor extends Item {
 	/**
 	 * @return the enchantment (EnchantConstant)
 	 */
+	@Override
 	public Enchant getEnchant() {
 		return enchantment;
 	}
@@ -476,6 +478,7 @@ public class Armor extends Item {
 		burned = extra.clamp(burned,0,1);
 	}
 	
+	@Override
 	public void levelUp() {
 		level++;
 	}

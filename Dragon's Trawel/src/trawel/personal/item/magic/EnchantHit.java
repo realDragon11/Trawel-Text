@@ -108,6 +108,7 @@ public class EnchantHit extends Enchant {
 		return " of " +colorSaved+ name+"[c_white]";
 	}
 	
+	@Override
 	public float getGoldMult(){
 		return goldMult;
 	}

@@ -84,10 +84,12 @@ public class Race extends Item{
 		return extra.randList(raceMaps);
 	}
 	
+	@Override
 	public boolean coinLoot() {
 		return false;//handled elsewhere
 	}
 	
+	@Override
 	public void levelUp() {}
 
 	public String getMap() {

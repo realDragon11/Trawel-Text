@@ -413,6 +413,7 @@ public class RPlayer extends RUnit {
 		abs.add(action);
 	}
 	
+	@Override
 	public void addBuff(Buff b) {
 		buffMap.buffs.add(b);
 	}

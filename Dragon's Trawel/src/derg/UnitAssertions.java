@@ -2,6 +2,7 @@ package derg;
 
 import trawel.mainGame;
 import trawel.personal.Person;
+import trawel.personal.item.magic.EnchantConstant;
 import trawel.WorldGen;
 import trawel.extra;
 import trawel.towns.*;
@@ -59,6 +60,8 @@ public class UnitAssertions {
 		assert t2.hasPort() == true;
 		assert t1.hasPort() == false;
 		assert t1.hasTeleporters() == false;
+		
+		EnchantConstant.testAsserts();
 		
 		System.out.println("An assertion will now error to make sure you have those on.");
 		assert false == true;

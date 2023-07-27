@@ -319,6 +319,7 @@ public class Store extends Feature implements java.io.Serializable{
 		
 	}
 	
+	@Override
 	public void go() {
 		Networking.setArea("shop");
 		super.goHeader();

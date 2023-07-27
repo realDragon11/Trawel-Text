@@ -62,6 +62,7 @@ public class BasicSideQuest implements Quest{
 		target.cleanup();}
 	}
 	
+	@Override
 	public void fail() {
 		cleanup();
 		Player.player.sideQuests.remove(this);
@@ -71,6 +72,7 @@ public class BasicSideQuest implements Quest{
 		extra.println(desc);
 	}
 	
+	@Override
 	public void complete() {
 		cleanup();
 		Player.player.sideQuests.remove(this);

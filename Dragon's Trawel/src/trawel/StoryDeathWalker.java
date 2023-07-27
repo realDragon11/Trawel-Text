@@ -11,6 +11,7 @@ public class StoryDeathWalker extends Story{
 	public static int lastKnownLevel = 0;
 	
 	
+	@Override
 	public void storyStart() {
 		extra.println("You did what you had to.");
 		extra.println("At least, that's what you told yourself, when you struck them down.");
@@ -30,6 +31,7 @@ public class StoryDeathWalker extends Story{
 	}
 
 
+	@Override
 	public void onDeath() {
 		deaths++;
 		switch (deaths) {
@@ -52,6 +54,7 @@ public class StoryDeathWalker extends Story{
 		
 	}
 	
+	@Override
 	public void onDeathPart2() {
 		switch (deaths) {
 		case 1:
@@ -75,6 +78,7 @@ public class StoryDeathWalker extends Story{
 		
 	}
 	
+	@Override
 	public void inn() {
 		switch(step) {
 		case "gotoinn1":
@@ -109,6 +113,7 @@ public class StoryDeathWalker extends Story{
 		
 	}
 	
+	@Override
 	public void altar() {
 		switch(step) {
 		case "gotorevan1": 

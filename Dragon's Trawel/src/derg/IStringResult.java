@@ -2,19 +2,17 @@ package derg;
 
 import java.util.List;
 
-public abstract class StringResult implements IStringResult{
+public interface IStringResult {
 
 	/**
 	 * @return some descriptor used to determine what the concrete class's method is
 	 */
-	@Override
-	public abstract String stringMethod();
+	public String stringMethod();
 	
 	/**
 	 * @return a (probably semi-random) string, usually from a list
 	 */
-	@Override
-	public abstract String next();
+	public String next();
 	
 	/**
 	 * 
@@ -22,8 +20,7 @@ public abstract class StringResult implements IStringResult{
 	 *  instance from the backing dataset
 	 * some cases this might just call next again
 	 */
-	@Override
-	public abstract String any();
+	public String any();
 	
 	/**
 	 * @return the backing list, if possible
@@ -32,16 +29,10 @@ public abstract class StringResult implements IStringResult{
 	 * 
 	 * if unsupported, will return null
 	 */
-	@Override
-	public List<String> backing(){
-		return null;
-	}
+	public List<String> backing();
 	/**
 	 * uses context, if not needed will just call next()
 	 * @return a (probably semi-random) string, usually from a list
 	 */
-	@Override
-	public String with(StringContext context) {
-		return next();
-	}
+	public String with(StringContext context);
 }

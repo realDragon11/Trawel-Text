@@ -6,6 +6,7 @@ import java.util.Random;
 import com.github.tommyettinger.random.WhiskerRandom;
 import com.github.yellowstonegames.core.WeightedTable;
 
+import derg.SRFrontBackedRandom;
 import trawel.extra;
 import trawel.randomLists;
 
@@ -20,8 +21,17 @@ public class EnchantConstant extends Enchant {
 	 */
 	private static final long serialVersionUID = 2L;
 	//instance variables
-	private String beforeName = "";
-	private String afterName = "";// beforeName armor afterName
+	/**
+	 * actually two bytes, the first is used to indicate the name 'might' fluff ordinal
+	 * the second is the actual fluff ordinal
+	 */
+	private int beforeName = 0;
+	/**
+	 * actually two bytes, the first is used to indicate the name 'might' fluff ordinal
+	 * the second is the actual fluff ordinal
+	 */
+	private int afterName = 0;
+	// beforeName armor afterName
 	private float goldMult = 1;
 	private int goldMod = 0;
 
@@ -33,10 +43,23 @@ public class EnchantConstant extends Enchant {
 	private float dodgeMod = 1;//would add armor, but keywords would be too close to dodging
 	private float magnitudeOne,magnitudeTwo;
 	
+	/**
+	 * two 4 bit registers, left register (<<4) is magone, the right is magtwo
+	 * magone is 'before', magtwo is 'after'
+	 * bit 0 = positive (1), negative (0)
+	 * bits 1-3 = turned into int determining type of enchant (max 8 possible with this enchant type)
+	 * if all bits are 0 (more importantly, 1-3), then this slot isn't used.
+	 */
+	private byte enchantTypes = 0;
+	
 	private static WeightedTable enchantChances;
 	private static float[][] floatMultList;
+	private static String[][][][] stringFluffArr;
+	private static SRFrontBackedRandom backFronter;
 	
 	public static void init() {
+		
+		assert Integer.bitCount(0) == 0;//otherwise our math doesn't work.
 		
 		floatMultList = new float[][] {
 			{1,1f,9,0f,8},//first mult normal, no second mult
@@ -84,7 +107,66 @@ public class EnchantConstant extends Enchant {
 				chances[i] = chance;
 			}
 			enchantChances = new WeightedTable(chances);
+
+			//string fluff enchant
+			stringFluffArr = new String[][][][]{
+				new String[][][]{//before
+				{//speed
+					new String[]{"speedy","quick","fast","hasty","brisk"},//pos
+					new String[]{"slow","sluggish","lackadaisical","lethargic","reluctant"}//neg
+				},
+				{//health
+					new String[]{"healthy","bolstering","hearty","tough","robust","stalwart"},//pos
+					new String[]{"sickly","ailing","delicate"}//neg
+				},
+				{//damage
+					new String[]{"powerful","offensive","angry","mighty","furious"},//pos
+					new String[]{"weak","pitiful","merciful","timid"}//neg
+				},
+				{//aim
+					new String[]{"accurate","exact","eagle-eyed"},//pos
+					new String[]{"clumsy","unwieldy","bungling","graceless","clunky"}//neg
+				},
+				{//dodging
+					new String[]{"dodgy","displacing","evasive"},//pos
+					new String[]{"restraining","exposing","constraining","restrictive"}//neg
+				}/*,
+				{//x
+					new String[]{},//pos
+					new String[]{}//neg
+				}*/
+				},
+				new String[][][]{//after
+					{//speed
+						new String[]{"speed","quickness","haste","alacrity","briskness","fleetness"},//pos
+						new String[]{"slowness","sluggishness","reluctance","lethargy"}//neg
+					},
+					{//health
+						new String[]{"health","heart","resistance","toughness","robustness"},//pos
+						new String[]{"sickness","illness","infirmity"}//neg
+					},
+					{//damage
+						new String[]{"power","offense","anger","might","fury"},//pos
+						new String[]{"weakness","pitifulness","mercy"}//neg
+					},
+					{//aim
+						new String[]{"accuracy","aiming","exactness"},//pos
+						new String[]{"missing","bungling","floundering"}//neg
+					},
+					{//dodging
+						new String[]{"dodging","displacement","evasion","avoidance"},//pos
+						new String[]{"restrainment","openness","restriction","stumbling"}//neg
+					}
+				}
+			};
+			backFronter = new SRFrontBackedRandom();
 	}
+	/**
+	 * {//x
+					new String[]{},//pos
+					new String[]{}//neg
+				}
+	 */
 	
 	//constructors
 	
@@ -192,127 +274,162 @@ public class EnchantConstant extends Enchant {
 		int positiveGoldMod = 8;
 		int negativeGoldMod = 4;
 		
+		byte might = 0;
+		String[] fluff = null;
+		int subType;
+		
+		
 		if (magnitudeOne > 0){
 			if (extra.randFloat() < magnitudeOne*3) {
-				afterName = randomLists.powerAdjective()+ " ";
+				//TODO: afterName = randomLists.powerAdjective()+ " ";
+				might = 1<<1;//FIXME
 			}
-			switch (off1+(extra.randRange(0, 4)*2)) {
-			case 0: beforeName = (String)extra.choose("speedy","quick","fast","hasty","brisk");
+			subType = extra.randRange(0, 4);
+			enchantTypes = (byte) (internalByteConverter(off1,subType) << 4);
+			switch (off1+(subType*2)) {
+			case 0: fluff = stringFluffArr[0][0][0];
 			speedMod+=.2*magnitudeOne;
 			goldMult +=positiveGoldMult*magnitudeOne;
 			goldMod +=magnitudeOne*positiveGoldMod;
 			break;
-			case 1: beforeName = (String)extra.choose("slow","sluggish","lackadaisical","lethargic","reluctant");
+			case 1: fluff = stringFluffArr[0][0][0];
 			speedMod-=.2*magnitudeOne;
 			goldMult -=negativeGoldMult*magnitudeOne;
 			goldMod -=magnitudeOne*negativeGoldMod;
 			break;
-			case 2: beforeName = (String)extra.choose("healthy","bolstering","hearty","tough","robust","stalwart");
+			case 2: fluff = stringFluffArr[0][1][0];
 			healthMod+=.2*magnitudeOne;
 			goldMult +=positiveGoldMult*magnitudeOne;
 			goldMod +=magnitudeOne*positiveGoldMod;
 			break;
-			case 3: beforeName = (String)extra.choose("sickly","ailing","delicate");
+			case 3: fluff = stringFluffArr[0][1][1];
 			healthMod-=.2*magnitudeOne;
 			goldMult -=negativeGoldMult*magnitudeOne;
 			goldMod -=magnitudeOne*negativeGoldMod;
 			break;
-			case 4: beforeName = (String)extra.choose("powerful","offensive","angry","mighty","furious");
+			case 4: fluff = stringFluffArr[0][2][0];
 			damMod+=.2*magnitudeOne;
 			goldMult +=positiveGoldMult*magnitudeOne;
 			goldMod +=magnitudeOne*positiveGoldMod;
 			break;
-			case 5: beforeName = (String)extra.choose("weak","pitiful","merciful","timid");
+			case 5: fluff = stringFluffArr[0][2][1];
 			damMod-=.2*magnitudeOne;
 			goldMult -=negativeGoldMult*magnitudeOne;
 			goldMod -=magnitudeOne*negativeGoldMod;
 			break;
-			case 6: beforeName = (String)extra.choose("accurate","exact","eagle-eyed");
+			case 6: fluff = stringFluffArr[0][3][0];
 			aimMod+=.2*magnitudeOne;
 			goldMult +=positiveGoldMult*magnitudeOne;
 			goldMod +=magnitudeOne*positiveGoldMod;
 			break;
-			case 7: beforeName = (String)extra.choose("clumsy","unwieldy","bungling","graceless","clunky");
+			case 7: fluff = stringFluffArr[0][3][1];
 			aimMod-=.2*magnitudeOne;
 			goldMult -=negativeGoldMult*magnitudeOne;
 			goldMod -=magnitudeOne*negativeGoldMod;
 			break;
-			case 8: beforeName = (String)extra.choose("dodgy","displacing","evasive");
+			case 8: fluff = stringFluffArr[0][4][0];
 			dodgeMod+=.2*magnitudeOne;
 			goldMult +=positiveGoldMult*magnitudeOne*.9;
 			goldMod +=magnitudeOne*positiveGoldMod*.3;
 			break;
-			case 9: beforeName = (String)extra.choose("restraining","exposing","constraining","restrictive");
+			case 9: fluff = stringFluffArr[0][4][1];
 			dodgeMod-=.2*magnitudeOne;
 			goldMult -=negativeGoldMult*magnitudeOne*.8;
 			goldMod -=magnitudeOne*negativeGoldMod*.2;
 			break;
 		
 		}
-		beforeName += " ";
+			backFronter.setBack(fluff);
+			beforeName = (might << 4) | (backFronter.getNumByte());
 		}
 		//second component of enchantment
 		if (magnitudeTwo > 0){
 			if (extra.randFloat() < magnitudeTwo*3) {
-				afterName = " of "+randomLists.powerAdjective()+ " ";
-			}else {
-				afterName = " of ";
+				//afterName = " of "+randomLists.powerAdjective()+ " ";
+				//FIXME:
+				might = 1<<1;
 			}
-			
-		switch (off2+(extra.randRange(0, 4)*2)) {
-			case 0: afterName += (String)extra.choose("speed","quickness","haste","alacrity","briskness","fleetness");
+			subType = extra.randRange(0, 4);
+			enchantTypes = (byte) (enchantTypes | internalByteConverter(off2, subType));//FIXME
+		switch (off2+(subType*2)) {
+			case 0: fluff = stringFluffArr[1][0][0];
 			speedMod+=.1*magnitudeTwo;
 			goldMult +=positiveGoldMult*magnitudeTwo;
 			goldMod +=magnitudeTwo*positiveGoldMod;
 			break;
-			case 1: afterName += (String)extra.choose("slowness","sluggishness","reluctance","lethargy");
+			case 1: fluff = stringFluffArr[1][0][1];
 			speedMod-=.1*magnitudeTwo;
 			goldMult -=.1*magnitudeTwo;
 			goldMod -=magnitudeTwo*negativeGoldMod;
 			break;
-			case 2: afterName += (String)extra.choose("health","heart","resistance","toughness","robustness");
+			case 2: fluff = stringFluffArr[1][1][0];
 			healthMod+=.1*magnitudeTwo;
 			goldMult +=positiveGoldMult*magnitudeTwo;
 			goldMod +=magnitudeTwo*positiveGoldMod;
 			break;
-			case 3: afterName += (String)extra.choose("sickness","illness","infirmity");
+			case 3: fluff = stringFluffArr[1][1][1];
 			healthMod-=.1*magnitudeTwo;
 			goldMult -=.1*magnitudeTwo;
 			goldMod -=magnitudeTwo*negativeGoldMod;
 			break;
-			case 4: afterName += (String)extra.choose("power","offense","anger","might","fury");
+			case 4: fluff = stringFluffArr[1][2][0];
 			damMod+=.1*magnitudeTwo;
 			goldMult +=positiveGoldMult*magnitudeTwo;
 			goldMod +=magnitudeTwo*positiveGoldMod;
 			break;
-			case 5: afterName += (String)extra.choose("weakness","pitifulness","mercy");
+			case 5: fluff = stringFluffArr[1][2][1];
 			damMod-=.1*magnitudeTwo;
 			goldMult -=.1*magnitudeTwo;
 			goldMod -=magnitudeTwo*negativeGoldMod;
 			break;
-			case 6: afterName += (String)extra.choose("accuracy","aiming","exactness");
+			case 6: fluff = stringFluffArr[1][3][0];
 			aimMod+=.1*magnitudeTwo;
 			goldMult +=positiveGoldMult*magnitudeTwo;
 			goldMod +=magnitudeTwo*positiveGoldMod;
 			break;
-			case 7: afterName += (String)extra.choose("missing","bungling","floundering");
+			case 7: fluff = stringFluffArr[1][3][1];
 			aimMod-=.1*magnitudeTwo;
 			goldMult -=.1*magnitudeTwo;
 			goldMod -=magnitudeTwo*negativeGoldMod;
 			break;
-			case 8: afterName += (String)extra.choose("dodging","displacement","evasion","avoidance");
+			case 8: fluff = stringFluffArr[1][4][0];
 			dodgeMod+=.1*magnitudeTwo;
 			goldMult +=positiveGoldMult*magnitudeTwo*.9;
 			goldMod +=magnitudeTwo*positiveGoldMod*.3;
 			break;
-			case 9: afterName += (String)extra.choose("restrainment","openness","restriction","stumbling");
+			case 9: fluff = stringFluffArr[1][4][1];
 			dodgeMod-=.1*magnitudeTwo;
 			goldMult -=.1*magnitudeTwo*.8;
 			goldMod -=magnitudeTwo*negativeGoldMod*.2;
 			break;
 		
 		}
+		backFronter.setBack(fluff);
+		afterName = (might << 4) | (backFronter.getNumByte());
 		}
+	}
+	
+	protected static final byte internalByteConverter(int positive,int subtype) {
+		return (byte) (((byte)positive << 4) | ((byte)subtype));
+	}
+	
+	protected static int subTypeNum(boolean first, byte b) {
+		if (first) {
+			return b & 0b01110000;
+		}else {
+			return b & 0b00000111;
+		}
+	}
+	protected static int isPositive(boolean first, byte b) {
+		if (first) {
+			return b & 0b10000000;
+		}else {
+			return b & 0b00001000;
+		}
+	}
+	
+	protected static boolean hasMighty(byte b) {
+		return (b & 0b10000000) > 0;
 	}
 	
 	//instance methods
@@ -320,6 +437,7 @@ public class EnchantConstant extends Enchant {
 	/**
 	 * @return the goldMod (int)
 	 */
+	@Override
 	public int getGoldMod() {
 		return goldMod;
 	}
@@ -328,8 +446,18 @@ public class EnchantConstant extends Enchant {
 	/**
 	 * @return the goldMult (double)
 	 */
+	@Override
 	public float getGoldMult() {
 		return goldMult;
+	}
+	
+	protected String inameResolver(boolean first, int in) {
+		String mighty = "";
+		if (hasMighty((byte) (in >>> 4))) {
+			mighty = "later ";
+		}
+		return mighty + backFronter.setBack(stringFluffArr[first ? 0 : 1][subTypeNum(first,enchantTypes)][isPositive(first,enchantTypes)])
+		.getWithNum(in & 0b0000000011111111);
 	}
 
 
@@ -337,7 +465,12 @@ public class EnchantConstant extends Enchant {
 	 * @return the beforeName (String)
 	 */
 	public String getBeforeName() {
-		return beforeName;
+		String mighty = "";
+		if (hasMighty((byte) (beforeName >>> 4))) {
+			mighty = "later ";
+		}
+		return mighty + backFronter.setBack(stringFluffArr[0][subTypeNum(true,enchantTypes)][isPositive(true,enchantTypes)])
+		.getWithNum(beforeName & 0b0000000011111111);
 	}
 
 
@@ -345,7 +478,7 @@ public class EnchantConstant extends Enchant {
 	 * @return the afterName (String)
 	 */
 	public String getAfterName() {
-		return afterName;
+		return inameResolver(false,afterName);
 	}
 
 	/**
@@ -411,6 +544,14 @@ public class EnchantConstant extends Enchant {
 	@Override
 	public Enchant.Type getEnchantType() {
 		return Enchant.Type.CONSTANT;
+	}
+	public static void testAsserts() {
+		EnchantConstant test = new EnchantConstant(20f);
+		assert isPositive(true, (byte) 0b11111111) == 1;
+		assert isPositive(false, (byte) 0b11111111) == 1;
+		assert isPositive(true, (byte) 0) == 0;
+		assert isPositive(false, (byte) 0) == 0;
+		
 	}
 
 

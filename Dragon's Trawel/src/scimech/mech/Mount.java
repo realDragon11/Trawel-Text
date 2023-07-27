@@ -33,6 +33,7 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 	
 	protected TraitKeeper keeper = new TraitKeeper();
 	
+	@Override
 	public TargetType targetType() {
 		return TargetType.MOUNT;
 	}
@@ -108,6 +109,7 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 		currentMech.takeHeat(amount);
 	}
 	
+	@Override
 	public void roundStart() {
 		fired = false;
 		for (Fixture f: fixtures) {
@@ -377,6 +379,7 @@ public abstract class Mount extends MechPart implements TurnSubscriber, Target, 
 		return total;
 	}
 	
+	@Override
 	public boolean checkFire() {
 		int damageSum = 0;
 		for (Fixture f: fixtures) {
