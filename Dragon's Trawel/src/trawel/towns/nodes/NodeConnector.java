@@ -44,7 +44,6 @@ public class NodeConnector implements Serializable {
 	protected byte typeNum;
 	protected byte eventNum;
 	protected byte state;
-	protected int idNum;
 	protected Object storage1, storage2;
 	
 	
@@ -58,8 +57,8 @@ public class NodeConnector implements Serializable {
 		connects = new ArrayList<NodeConnector>();
 		state = 0;
 		floor = -1;
-		typeNum = -1;
-		eventNum = -1;
+		typeNum = Byte.MIN_VALUE;
+		eventNum = Byte.MIN_VALUE;
 		forceGo = false;
 	}
 	
@@ -133,7 +132,7 @@ public class NodeConnector implements Serializable {
 
 					@Override
 					public boolean go() {
-						NodeConnector.lastNode = null;
+						NodeConnector.currentNode = null;
 						return true;
 					}
 					
@@ -194,14 +193,13 @@ public class NodeConnector implements Serializable {
 			if (owner.visited != 3) {
 				visitColor = extra.TIMID_GREY;
 			}
-			return visitColor + owner.name;
+			return visitColor + owner.interactString;
 		}
 
 		@Override
 		public boolean go() {
 			owner.visited = 3;
 			interactCode();
-			
 			return true;
 		}
 		
@@ -313,8 +311,16 @@ public class NodeConnector implements Serializable {
 	}
 	
 	protected NodeConnector finalize(NodeFeature owner) {
+		if (typeNum < 0) {
+			switch (typeNum) {
+			case -1:
+				BossNode.getSingleton().apply(this);
+				break;
+			}
+			return this;
+		}
 		owner.numType(typeNum).apply(this);
-		if (idNum == 3) {
+		if (eventNum == 3) {
 			if (owner instanceof Mine) {
 				((Mine) owner).addVein();
 			}

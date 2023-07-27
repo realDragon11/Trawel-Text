@@ -10,6 +10,7 @@ import trawel.time.TimeEvent;
 import trawel.towns.fight.Arena;
 import trawel.towns.misc.Garden;
 import trawel.towns.nodes.Mine;
+import trawel.towns.nodes.NodeFeature;
 import trawel.towns.services.Inn;
 
 public class Lot extends Feature {
@@ -110,7 +111,7 @@ public class Lot extends Feature {
 			switch (construct) {//TODO: enquene add might be better off in time events
 			case "inn": town.enqueneAdd(new Inn("your inn (" + town.getName() + ")",tier,town,Player.player));break;
 			case "arena":town.enqueneAdd(new Arena("your arena (" + town.getName() + ")",tier,1,24,200,1,Player.player));break;
-			case "mine": town.enqueneAdd(new Mine("your mine (" + town.getName() + ")",town,Player.player,Mine.Shape.STANDARD));break;
+			case "mine": town.enqueneAdd(new Mine("your mine (" + town.getName() + ")",town,Player.player,NodeFeature.Shape.NONE));break;
 			case "garden": town.enqueneAdd(new Garden(town));
 			}
 			town.enqueneRemove(this);

@@ -63,12 +63,15 @@ public class GroveNode implements NodeType{
 	@Override
 	public NodeConnector generate(NodeFeature owner, int size, int tier) {
 		NodeConnector made = getNode(owner,tier);
-		if (size < 2) {
+		if (size <= 1) {
 			return made;
 		}
 		int split = extra.randRange(1,Math.min(size,3));
 		int i = 1;
 		int sizeLeft = size;
+		//now more even, for groves, but less likely to fill it entirely
+		int baseSize = sizeLeft/(split+1);
+		sizeLeft-=baseSize;
 		while (i < split) {
 			int sizeRemove = extra.randRange(0,sizeLeft-1);
 			sizeLeft-=sizeRemove;
@@ -78,11 +81,11 @@ public class GroveNode implements NodeType{
 			}
 			NodeConnector n;
 			if (size < 4 && extra.chanceIn(1,5) && owner.numType(1).equals(CaveNode.getSingleton())) {
-				n = owner.numType(1).generate(owner, sizeRemove, tempLevel+1);
+				n = owner.numType(1).generate(owner, baseSize+sizeRemove, tempLevel+1);//caves always level up
 				n.eventNum = -2;
 				n.finalize(owner);
 			}else {
-				n = generate(owner,sizeRemove,tempLevel);
+				n = generate(owner,baseSize+sizeRemove,tempLevel);
 				n.finalize(owner);
 			}
 				
@@ -210,7 +213,7 @@ public class GroveNode implements NodeType{
 
 	@Override
 	public void passTime(NodeConnector node, double time, TimeContext calling){
-		if (node.idNum == -1) {
+		if (node.eventNum == -1) {
 			calling.localEvents(((PlantSpot)node.storage1).passTime(time,calling));
 		}
 	}
@@ -468,7 +471,7 @@ public class GroveNode implements NodeType{
 			if (in > 1) {
 				node.name = "plant spot";
 				node.interactString = "approach plant spot";
-				node.idNum = -1;
+				node.eventNum = -1;
 				node.storage1 = new PlantSpot(node.level + (in == 4 ? 1 : 0));
 				node.state = 1;
 			}
@@ -614,7 +617,7 @@ public class GroveNode implements NodeType{
 					node.state = 2;
 					node.name = "plant spot";
 					node.interactString = "approach plant spot";
-					node.idNum = -1;
+					node.eventNum = -1;
 					node.storage1 = new PlantSpot(extra.zeroOut(node.level-1));
 				}
 				switch (in) {
@@ -676,7 +679,7 @@ public class GroveNode implements NodeType{
 			case 1: node.name = "angry " +node.name ; node.interactString = "ERROR";
 			node.storage1 = node.storage2;
 			node.forceGo = true;
-			node.idNum = 3;
+			node.eventNum = 3;
 			bool = false;break;
 			case 2:
 				Race r = ((Person)node.storage2).getBag().getRace();
@@ -851,7 +854,7 @@ public class GroveNode implements NodeType{
 			case 1: node.name = "angry " +node.name ; node.interactString = "ERROR";
 			//storage1 = storage2;
 			node.forceGo = true;
-			node.idNum = 3;
+			node.eventNum = 3;
 			bool = false;
 			;break;
 			case 2:
@@ -931,7 +934,7 @@ public class GroveNode implements NodeType{
 	private void beeHive() {
 		node.name = "plant spot";
 		node.interactString = "approach plant spot";
-		node.idNum = -1;
+		node.eventNum = -1;
 		node.storage1 = new PlantSpot(node.level);
 		extra.println("You destroy the hive, angering the bees!");
 		Player.bag.addNewDrawBane(DrawBane.HONEY);

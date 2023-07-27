@@ -48,27 +48,60 @@ public class MineNode implements NodeType{
 
 	@Override
 	public NodeConnector generate(NodeFeature owner, int size, int tier) {
-		NodeConnector made = getNode(owner,tier);
-		if (size < 2) {
-			return made;
+		if (size < 3) {
+			return genShaft(owner,size,tier,10);
+			//shafts finalize themselves
+			//they will also auto terminate if they run out
 		}
-		int split = extra.randRange(1,Math.min(size,3));
-		int i = 1;
-		int sizeLeft = size;
-		while (i < split) {
-			int sizeRemove = extra.randRange(0,sizeLeft-1);
-			sizeLeft-=sizeRemove;
+		if (extra.chanceIn(1,3)) {//mineshaft splitting
+			return genShaft(owner,size,tier,extra.randRange(2,5));
+		}
+		NodeConnector made = getNode(owner,tier);
+		int sizeLeft;
+		int[] split;
+		if (size < 5) {
+			split = new int[size];
+			sizeLeft = 1;
+		}else {
+			split = new int[extra.randRange(3,Math.min(size,5))];
+			sizeLeft = size/(split.length+2);
+		}
+		for (int i = 0; i < split.length;i++) {
+			split[i] = sizeLeft;
+		}
+		sizeLeft = size-sizeLeft;
+		while (sizeLeft > 0) {
+			split[extra.randRange(0,split.length-1)]+=1;
+			sizeLeft--;
+		}
+		for (int j = 0; j < split.length;j++) {
 			int tempLevel = tier;
-			if (extra.chanceIn(1,10)) {
+			if (extra.chanceIn(1,20)) {//less likely to tier up without mineshafts
 				tempLevel++;
 			}
-			NodeConnector n = generate(owner,sizeRemove,tempLevel);
+			NodeConnector n = generate(owner,split[j],tempLevel);
 			made.connects.add(n);
 			n.getConnects().add(made);
 			n.finalize(owner);
-			i++;
 		}
 		return made;
+	}
+	
+	protected NodeConnector genShaft(NodeFeature owner, int size, int tier,int shaftLeft) {
+		if (size == 0) {//ran out of resources
+			return getNode(owner,tier).finalize(owner);
+		}
+		if (shaftLeft > 1) {
+			//shaft always is same level
+			NodeConnector n = genShaft(owner, size-1, tier,shaftLeft-1);
+			NodeConnector me = getNode(owner,tier);
+			me.connects.add(n);
+			n.getConnects().add(me);
+			return me.finalize(owner);//shafts finalize themselves
+		}else {
+			//always a tier up when ending shaft
+			return generate(owner,size-1,tier+1);
+		}
 	}
 
 	@Override
@@ -100,7 +133,7 @@ public class MineNode implements NodeType{
 	
 	@Override
 	public void apply(NodeConnector made) {
-		switch (made.idNum) {
+		switch (made.eventNum) {
 		case -3: made.name = "sapphire cluster"; made.interactString = "mine sapphires";break;
 		case -2: made.name = "ruby cluster"; made.interactString = "mine rubies";break;
 		case -1: made.name = "emerald cluster"; made.interactString = "mine emeralds";break;
@@ -143,7 +176,7 @@ public class MineNode implements NodeType{
 	@Override
 	public boolean interact(NodeConnector node) {
 		this.node = node;
-		switch(node.idNum) {
+		switch(node.eventNum) {
 		case -3: saph1();break;
 		case -2: rubies1();break;
 		case -1: emeralds1();break;
@@ -337,7 +370,7 @@ public class MineNode implements NodeType{
 				node.interactString = "ERROR";
 
 				node.forceGo = true;
-				node.idNum = 4;
+				node.eventNum = 4;
 				break;
 
 			case 3: extra.println("You leave them alone.");break;

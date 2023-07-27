@@ -28,7 +28,7 @@ public class CaveNode implements NodeType{
 		byte idNum = (byte) extra.randRange(1,EVENT_NUMBER);
 		NodeConnector make = new NodeConnector();
 		make.eventNum = idNum;
-		make.typeNum = 0;
+		make.typeNum = 1;
 		make.level = tier;
 		return make;
 	}
@@ -49,31 +49,31 @@ public class CaveNode implements NodeType{
 	@Override
 	public NodeConnector generate(NodeFeature owner, int size, int tier) {
 		NodeConnector made = getNode(owner,tier);
-		if (size < 2) {
-			return made;
+		int split;
+		int sizePer;
+		if (size < 5) {
+			split = size;
+			sizePer = 1;
+		}else {
+			split = 2;
+			sizePer = size/2;
 		}
-		int split = extra.randRange(1,Math.min(size,3));
-		int i = 1;
-		int sizeLeft = size;
-		while (i < split) {
-			int sizeRemove = extra.randRange(0,sizeLeft-1);
-			sizeLeft-=sizeRemove;
+		for (int i = 0; i < split;i++) {
 			int tempLevel = tier;
-			if (extra.chanceIn(1,10)) {
+			if (extra.chanceIn(1,5)) {//much higher chance to level up
 				tempLevel++;
 			}
-			NodeConnector n = generate(owner,sizeRemove,tempLevel);
+			NodeConnector n = generate(owner,sizePer,tempLevel);
 			made.connects.add(n);
 			n.getConnects().add(made);
 			n.finalize(owner);
-			i++;
 		}
 		return made;
 	}
 
 	@Override
 	public void apply(NodeConnector made) {
-		switch (made.idNum) {
+		switch (made.eventNum) {
 		case -2:
 			made.name = "cave entrance";
 			made.interactString = "traverse "+made.name;
@@ -102,7 +102,7 @@ public class CaveNode implements NodeType{
 	@Override
 	public boolean interact(NodeConnector node) {
 		this.node = node;
-		switch(node.idNum) {
+		switch(node.eventNum) {
 		case -2: Networking.sendStrong("Achievement|cave1|"); break;
 		case 1: bear1(); if (node.state == 0) {return true;};break;
 		case 2: goldVein1();break;

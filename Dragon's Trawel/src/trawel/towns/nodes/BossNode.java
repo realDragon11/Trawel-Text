@@ -121,7 +121,7 @@ public class BossNode implements NodeType {
 	@Override
 	public boolean interact(NodeConnector node) {
 		this.node = node;
-		switch(node.idNum) {
+		switch(node.eventNum) {
 		case 1: return fatespinner();
 		case 2: return hellbaron();
 		}

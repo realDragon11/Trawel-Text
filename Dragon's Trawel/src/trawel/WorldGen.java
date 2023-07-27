@@ -43,6 +43,8 @@ import trawel.towns.nodes.Grove;
 import trawel.towns.nodes.GroveNode;
 import trawel.towns.nodes.Mine;
 import trawel.towns.nodes.MineNode;
+import trawel.towns.nodes.NodeConnector;
+import trawel.towns.nodes.NodeFeature;
 import trawel.towns.services.Altar;
 import trawel.towns.services.Appraiser;
 import trawel.towns.services.Blacksmith;
@@ -65,7 +67,7 @@ public class WorldGen {
 	static final FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration(); //.createDefaultConfiguration();
 	static{
 		conf.registerClass(Armor.class,Weapon.class,Person.class,
-				GroveNode.class,CaveNode.class,MineNode.class,DungeonNode.class,GraveyardNode.class//node set doesn't give much benefit right now
+				NodeConnector.class//now there's only one of these :)
 				);
 		//I think strings are already registered somehow
 		//conf.getClassRegistry().dragonDump();
@@ -191,7 +193,7 @@ public class WorldGen {
 		addConnection(homa,tevar,"road","red road");
 		addConnection(tevar,unun,"road","blue road");
 		tevar.addFeature(new Forest("the black forest",2));
-		tevar.addFeature(new Mine("tevar mine",tevar,null,Mine.Shape.STANDARD));
+		tevar.addFeature(new Mine("tevar mine",tevar,null,NodeFeature.Shape.NONE));
 		tevar.setGoPrinter(new PrintEvent(){
 
 			/**
@@ -487,7 +489,7 @@ public class WorldGen {
 		addConnection(alhax,yena,"ship","blue sea");
 		//yena.addFeature(new Gambler("cup master","cups",1000));
 		//yena.addFeature(new Well("trinity well"));
-		yena.addFeature(new Dungeon("Dungeon of Fame", yena,Dungeon.Shape.STANDARD,-1));
+		yena.addFeature(new Dungeon("Dungeon of Fame", yena,NodeFeature.Shape.NONE,-1));
 		yena.addTravel();
 		yena.addTravel();
 		yena.addFeature(new HeroGuild("yena hero's guild"));
@@ -500,7 +502,7 @@ public class WorldGen {
 		denok.addFeature(new Store(5,5));
 		denok.addFeature(new Forest("the white forest",4));
 		denok.addFeature(new Grove("the white grove",denok));
-		denok.addFeature(new Mine("denok mine",denok,null,Mine.Shape.STANDARD));
+		denok.addFeature(new Mine("denok mine",denok,null,NodeFeature.Shape.NONE));
 		denok.addFeature(new Doctor("Shaman",denok));
 		denok.addTravel();
 		denok.tTags.add(TownTag.DRUDIC);
@@ -554,7 +556,7 @@ public class WorldGen {
 		placka.addTravel();
 		placka.addTravel();
 		placka.addFeature(new Champion(6));
-		placka.addFeature(new Dungeon("The Dungeon of Woe",placka,Dungeon.Shape.STANDARD,-1));
+		placka.addFeature(new Dungeon("The Dungeon of Woe",placka,NodeFeature.Shape.NONE,-1));
 		placka.tTags.add(TownTag.ADVENTURE);
 		
 		Town tunka = new Town("tunka",7,teran,new Point(12,5));
@@ -623,13 +625,13 @@ public class WorldGen {
 		peana.addFeature(new Arena("peana arena",10,1,24,12,135));
 		peana.addFeature(new Appraiser("peana appraiser"));
 		peana.addFeature(new Store(10,8));
-		peana.addFeature(new Mine("staircase to hell", peana, null,Mine.Shape.HELL));
+		peana.addFeature(new Mine("staircase to hell", peana, null,NodeFeature.Shape.ELEVATOR));
 		
 		Town inka = new Town("inka",10, apen, new Point(4,7));
 		addConnection(unika,inka,"road","youn road");
 		addConnection(inka,peana,"road","era road");
-		inka.addFeature(new Mine("left mine", inka, null,Mine.Shape.STANDARD));
-		inka.addFeature(new Mine("right mine", inka, null,Mine.Shape.STANDARD));
+		inka.addFeature(new Mine("left mine", inka, null,NodeFeature.Shape.NONE));
+		inka.addFeature(new Mine("right mine", inka, null,NodeFeature.Shape.NONE));
 		inka.addFeature(new Slum(inka,"inka mining subtown",true));
 		inka.addTravel();
 		inka.addTravel();

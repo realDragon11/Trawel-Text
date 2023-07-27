@@ -61,14 +61,17 @@ public class DungeonNode implements NodeType{
 		int split = extra.randRange(1,Math.min(size,3));
 		int i = 1;
 		int sizeLeft = size;
+		//now more even, as with new groves, but less likely to fill it entirely
+		int baseSize = sizeLeft/(split+2);
+		sizeLeft-=baseSize;
 		while (i < split) {
-			int sizeRemove = extra.randRange(0,sizeLeft-1);
+			int sizeRemove = sizeLeft > 2 ? extra.randRange(1,sizeLeft-1) : 0;
 			sizeLeft-=sizeRemove;
 			int tempLevel = tier;
 			if (extra.chanceIn(1,10)) {
 				tempLevel++;
 			}
-			NodeConnector n = generate(owner,sizeRemove,tempLevel);
+			NodeConnector n = generate(owner,sizeRemove+baseSize,tempLevel);
 			made.connects.add(n);
 			n.getConnects().add(made);
 			n.finalize(owner);
