@@ -34,10 +34,9 @@ public class NodeConnector implements Serializable {
 	protected int level;
 	protected String interactString = "ERROR";
 	protected boolean forceGo = false;
-	private boolean isSummit;//DOLATER: make just detect deepest floor
-	private int floor = 0;//DOLATER: make floor apply to all types as 'depth'. Floor needs to stay an int for spacing reasons
+	private short floor = 0;
+	//DOLATER: make floor apply to all types as 'depth'. Floor needs to stay an int/short for spacing reasons
 	private boolean isStair = false;//idk what to do
-	//public String parentName;//removed, convert to parent
 	public transient boolean passing;//FIXME: might have to init at false every time
 	public byte visited = 0;
 	
@@ -52,6 +51,7 @@ public class NodeConnector implements Serializable {
 	
 	public static NodeConnector lastNode = null;
 	protected static NodeConnector currentNode = null;
+	protected static boolean forceGoProtection = false;
 	
 	protected NodeConnector() {
 		connects = new ArrayList<NodeConnector>();
@@ -101,7 +101,7 @@ public class NodeConnector implements Serializable {
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> mList = new ArrayList<MenuItem>();
-				if (NodeConnector.this.isSummit()) {
+				if (NodeConnector.currentNode.parent.isDeepest(NodeConnector.this)) {
 					switch(NodeConnector.currentNode.parent.getShape()) {
 					case TOWER:
 					Networking.sendStrong("Achievement|tower1|");
@@ -113,8 +113,9 @@ public class NodeConnector implements Serializable {
 						break;
 					}
 				}
-				if (forceGo && currentNode != lastNode) {
+				if (forceGo && !forceGoProtection) {
 					visited = 3;
+					forceGoProtection = true;
 					interactCode();
 					return null;//redo operation
 				}
@@ -224,7 +225,7 @@ public class NodeConnector implements Serializable {
 			}
 			String postText = "";
 			if (owner.isStair()) {
-				if (owner.floor > NodeConnector.currentNode.floor) {
+				if (owner.floor < NodeConnector.currentNode.floor) {
 					postText = " down";
 				}else {
 					postText = " up";
@@ -241,6 +242,7 @@ public class NodeConnector implements Serializable {
 
 		@Override
 		public boolean go() {
+			forceGoProtection = false;
 			NodeConnector.lastNode = NodeConnector.currentNode;
 			currentNode = owner;
 			owner.visited = 2;
@@ -310,6 +312,7 @@ public class NodeConnector implements Serializable {
 				n.parentChain(p);
 			}
 		}
+		p.deepest = (short) Math.max(p.deepest,getFloor());
 	}
 	
 	protected NodeConnector finalize(NodeFeature owner) {
@@ -333,20 +336,13 @@ public class NodeConnector implements Serializable {
 	protected void setStair() {
 		isStair = true;
 	}
-	protected void setSummit() {
-		isSummit = true;
-	}
 
 	protected void setFloor(int b) {
-		floor = b;
+		floor = (short) b;
 	}
 
 	public boolean isStair() {
 		return isStair;
-	}
-	
-	protected boolean isSummit() {
-		return isSummit;
 	}
 
 	public int getFloor() {

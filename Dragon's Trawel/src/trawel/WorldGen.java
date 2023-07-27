@@ -66,7 +66,8 @@ public class WorldGen {
 	
 	static final FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration(); //.createDefaultConfiguration();
 	static{
-		conf.registerClass(Armor.class,Weapon.class,Person.class,
+		conf.registerClass(String.class,//probably already built in
+				Armor.class,Weapon.class,Person.class,
 				NodeConnector.class//now there's only one of these :)
 				);
 		//I think strings are already registered somehow

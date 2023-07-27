@@ -3,6 +3,7 @@ package trawel.towns.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.mainGame;
 import trawel.personal.people.Player;
 import trawel.quests.Quest.TriggerType;
 import trawel.time.ContextType;
@@ -18,6 +19,7 @@ public abstract class NodeFeature extends Feature {
 	protected transient int size;
 	protected double findTime = 0;
 	protected boolean spreadTime = false;
+	protected transient short deepest;
 	
 	//protected List<NodeType> typeList = new ArrayList<NodeType>();
 	
@@ -65,15 +67,22 @@ public abstract class NodeFeature extends Feature {
 	public void reload() {
 		super.reload();
 		size = 0;
+		deepest = 0;
 		start.parentChain(this);
 		start.endPass();
-		System.out.println(this.size +" size of " + this.getName());
+		if (mainGame.debug) {
+			System.out.println(this.size +" size of " + this.getName());
+		}
 	}
 
 	protected abstract byte bossType();
 
 	public String sizeDesc() {
 		return " S: " + size;
+	}
+	
+	public boolean isDeepest(NodeConnector n) {
+		return n.getFloor() == deepest;
 	}
 
 }

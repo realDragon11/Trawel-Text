@@ -72,7 +72,7 @@ public class MineNode implements NodeType{
 		for (int i = 0; i < split.length;i++) {
 			split[i] = sizeLeft;
 		}
-		sizeLeft = size-(sizeLeft*split.length);
+		sizeLeft = size-(split.length*split.length);
 		while (sizeLeft > 0) {
 			split[extra.randRange(0,split.length-1)]+=1;
 			sizeLeft--;
@@ -91,7 +91,7 @@ public class MineNode implements NodeType{
 	}
 	
 	protected NodeConnector genShaft(NodeFeature owner, int size, int tier,int shaftLeft) {
-		if (size <= 1) {//ran out of resources
+		if (size <= 0) {//ran out of resources
 			return getNode(owner,tier).finalize(owner);
 		}
 		if (shaftLeft > 1 || size < 3) {

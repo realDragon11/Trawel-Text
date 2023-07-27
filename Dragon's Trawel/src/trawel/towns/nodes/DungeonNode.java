@@ -41,11 +41,6 @@ public class DungeonNode implements NodeType{
 		if (extra.chanceIn(1,10)) {
 			idNum = 1;//chest	
 		}
-		/*
-		if (stair) {
-			idNum = -1;
-			isStair = true;
-		}*///FIXME: stairs
 		make.eventNum = idNum;
 		make.typeNum = 0;
 		make.level = tier;
@@ -106,6 +101,7 @@ public class DungeonNode implements NodeType{
 				levelUp++;
 				curStair = getNode(owner,stair.getLevel()+levelUp%3);
 				curStair.setStair();
+				curStair.finalize(owner);
 				
 				curFloor = new ArrayList<NodeConnector>();
 				for (int j = 0; j < 2;j++) {
@@ -134,12 +130,10 @@ public class DungeonNode implements NodeType{
 				curSize +=curFloor.size();
 				//reverse order of stair connects
 				stair.reverseConnections();
-				floor++;
 				curStair.setFloor(floor);
 				//move onto next floor
 				stair = curStair;
 			}
-			stair.setSummit();
 			NodeConnector b = BossNode.getSingleton().getNode(owner,(levelUp%3)+1);
 			b.getConnects().add(stair);
 			b.setFloor(floor+10);
