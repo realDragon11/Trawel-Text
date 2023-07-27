@@ -176,7 +176,7 @@ public class EnchantConstant extends Enchant {
 	 * can be null
 	 * @param mod
 	 * @param cost
-	 * @return
+	 * @return the first valid enchant in 4 tries, or null
 	 */
 	public static EnchantConstant makeEnchant(float mod, int cost) {
 		for (int i = 0; i < 4;i++) {
@@ -219,50 +219,11 @@ public class EnchantConstant extends Enchant {
 			//should be handled top level to prevent the ai from endlessly trying to enchant a steel weapon and failing
 			throw new RuntimeException("Not enough base enchant? Did the ai try to enchant a steel weapon?");
 		}
-		//first component of enchantment
-		
-		
-		
+
 		int off1 = 0;//0 = benefit, 1 = downside
 		int off2 = 0;
 		magnitudeOne = (extra.hrandomFloat()*powMod);
 		magnitudeTwo = (extra.hrandomFloat()*powMod);
-		/*
-		int rng = extra.randRange(0,14);
-		float badfloat = extra.randFloat();
-		switch (rng) {
-		case 0: case 6://yn weak enchant
-			magnitudeOne = (extra.hrandomFloat()*powMod);
-			magnitudeTwo = 0;
-			if (badfloat < .2f) {
-				off1 = 1;
-			}
-			break;
-		case 1: case 7://ny weak enchant
-			magnitudeOne = 0;
-			magnitudeTwo = (extra.hrandomFloat()*powMod);
-			break;
-		case 2: case 8: case 11://yy weak enchant
-			magnitudeOne = (extra.hrandomFloat()*powMod);
-			magnitudeTwo = (extra.hrandomFloat()*powMod);
-			break;
-		case 3: case 9: case 12://yn strong enchant
-			magnitudeOne = 1.5f*(extra.hrandomFloat()*powMod);
-			magnitudeTwo = 0;
-			break;
-		case 4: case 10: case 13://ny strong enchant
-			magnitudeOne = 0;
-			magnitudeTwo = 1.5f*(extra.hrandomFloat()*powMod);
-			break;
-		case 5: case 14://yy strong enchant
-			magnitudeOne = 1.4f*(extra.hrandomFloat()*powMod);
-			magnitudeTwo = 1.4f*(extra.hrandomFloat()*powMod);
-			break;
-		default://def
-			magnitudeOne = (extra.hrandomFloat()*powMod);
-			magnitudeTwo = (extra.hrandomFloat()*powMod);
-			break;
-		}*/
 		
 		float[] mults = floatMultList[enchantChances.random(extra.getRand())];
 		off1 = mults[0] == 0 ? 1 : 0;//0 = bad, but not in our offset scheme
@@ -286,7 +247,7 @@ public class EnchantConstant extends Enchant {
 		String[] fluff = null;
 		byte subType;
 		
-		
+		//first component of enchantment
 		if (magnitudeOne > 0f){
 			//two rand floats, one scaled off of mag, one off of 3
 			//thus slightly worse than even chances when mag == 3

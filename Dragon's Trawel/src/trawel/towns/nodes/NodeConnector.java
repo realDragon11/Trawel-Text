@@ -30,24 +30,25 @@ public class NodeConnector implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	protected ArrayList<NodeConnector> connects;
-	protected String name;
-	protected int level;
+	protected String name;//DOLATER: could probably generate these two Strings from the Objects
 	protected String interactString = "ERROR";
-	protected boolean forceGo = false;
-	private short floor = 0;
-	//DOLATER: make floor apply to all types as 'depth'. Floor needs to stay an int/short for spacing reasons
-	private boolean isStair = false;//idk what to do
-	public transient boolean passing;//FIXME: might have to init at false every time
-	public byte visited = 0;
+	
+	protected int level;
+	
+	private short floor = 0;//DOLATER: make floor apply to all types as 'depth'. Floor needs to stay an int/short for spacing reasons
+	
+	protected boolean forceGo = false;//only needs one bit
+	private boolean isStair = false;//only needs one bit
+	
+	public byte visited = 0;//TODO: only needs 2 bits
 	
 	protected byte typeNum;
 	protected byte eventNum;
 	protected byte state;
 	protected Object storage1, storage2;
 	
-	
+	public transient boolean passing;//FIXME: might have to init at false every time
 	protected transient NodeFeature parent;
-	//protected Class<Feature> parentType;
 	
 	public static NodeConnector lastNode = null;
 	protected static NodeConnector currentNode = null;
