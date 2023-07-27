@@ -1,10 +1,18 @@
 package derg;
 
 import trawel.extra;
+import trawel.mainGame;
 
 public class UnitTestStrings {
 
 	public static void main(String[] args) {
+		extra.setMainThread();
+		System.out.println("starting");
+		mainGame.unitTestSetup();
+		System.out.println("setup");
+		
+		
+		
 		StringFluffer fluffy = new StringFluffer().addMapping("bacon:eggs",new SRInOrder("1baconeggsham","2eggshambacon","3hambaconeggs"));
 		String testString = "Let's go! |sub(bacon:eggs). <|sub(bacon:eggs)> |sub(bacon:eggs) |sub(bacon:eggs) |sub(bacon:eggs) !!!!!!!!";
 		System.out.println(testString);
@@ -24,6 +32,10 @@ public class UnitTestStrings {
 		for (int i = 0; i < 100;i++) {
 			System.out.print(extra.hrandomFloat()+", ");
 		}
+		
+		System.out.println("-------");
+		
+		LembdaFactory.test();
 	}
 
 }

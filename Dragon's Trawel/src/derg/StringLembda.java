@@ -7,17 +7,22 @@ import java.util.Map;
 
 public class StringLembda {
 
-	public String[] variants;
+	public Map<Integer,String> variants = new HashMap<Integer,String>();
 	public Map<CanLembdaUpdate,Integer> users = new HashMap<CanLembdaUpdate,Integer>();
 	
-	public StringLembda(String...strings) {
-		variants = strings;
+	public StringLembda() {
+		//
 	}
 	
 	public void updateAll() {
 		for (CanLembdaUpdate user: users.keySet()) {
 			user.update(this);
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return variants.get((int)'a');
 	}
 	
 }
