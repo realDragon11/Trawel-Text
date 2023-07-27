@@ -1232,12 +1232,18 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public void washAll() {
+		int bTotal = (int)bloodCount;
 		this.wash();
 		for (Armor a: bag.getArmor()) {
+			bTotal+=a.getBloodCount();
 			a.wash();
 		}
+		bTotal += bag.getHand().getBloodCount();
 		bag.getHand().wash();
 		if (this.isPlayer()) {
+			if (bTotal > 6) {
+				extra.println("You were REALLY bloody!");
+			}
 			this.bag.graphicalDisplay(-1,this);
 		}
 	}

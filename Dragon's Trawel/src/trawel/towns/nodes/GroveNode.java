@@ -128,7 +128,7 @@ public class GroveNode implements NodeType{
 		break;
 		case 10: made.name = "fallen tree";made.interactString = "examine fallen tree";break;
 		case 11: made.name = randomLists.randomColor() + " mushroom";made.interactString = "approach mushroom";break;
-		case 12: made.name = "moss"; made.interactString = "approach moss"; made.state = extra.randRange(0,1);break;
+		case 12: made.name = "moss"; made.interactString = "approach moss"; made.state = (byte) extra.randRange(0,1);break;
 		case 13: made.name = "grey hole";made.interactString = "approach hole";break;
 		case 14:
 			made.storage2 = RaceFactory.getRacist(made.level); 

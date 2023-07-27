@@ -89,7 +89,7 @@ public class DungeonNode implements NodeType{
 			NodeConnector stair;
 			NodeConnector curStair;
 			NodeConnector start = getNode(owner,tier);
-			start.floor = 0;
+			start.setFloor(0);
 			stair = start;
 			int levelUp = 0;
 			int floor = 0;
@@ -110,7 +110,7 @@ public class DungeonNode implements NodeType{
 						floor++;
 						lastNode2 = getNode(owner,curStair.getLevel());
 						lastNode2.finalize(owner);
-						lastNode2.floor = floor;
+						lastNode2.setFloor(floor);
 						lastNode.getConnects().add(lastNode2);
 						lastNode2.getConnects().add(lastNode);
 						lastNode.reverseConnections();
@@ -132,14 +132,14 @@ public class DungeonNode implements NodeType{
 				//reverse order of stair connects
 				stair.reverseConnections();
 				floor++;
-				curStair.floor = floor;
+				curStair.setFloor(floor);
 				//move onto next floor
 				stair = curStair;
 			}
-			stair.isSummit = true;
+			stair.setSummit();
 			NodeConnector b = BossNode.getSingleton().getNode(owner,(levelUp%3)+1);
 			b.getConnects().add(stair);
-			b.floor = floor +10;
+			b.setFloor(floor+10);
 			b.finalize(owner);
 			stair.reverseConnections();
 			stair.getConnects().add(b);
@@ -151,7 +151,7 @@ public class DungeonNode implements NodeType{
 
 						@Override
 						public int compare(NodeConnector a0, NodeConnector a1) {
-							return (int) Math.signum(a0.floor-a1.floor);//TODO
+							return (int) Math.signum(a0.getFloor()-a1.getFloor());
 						}});
 					f.reverseConnections();
 				}

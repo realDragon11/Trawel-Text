@@ -34,16 +34,16 @@ public class NodeConnector implements Serializable {
 	protected int level;
 	protected String interactString = "ERROR";
 	protected boolean forceGo = false;
-	public boolean isSummit;//DOLATER: make just detect deepest floor
-	public int floor = 0;//DOLATER: make floor apply to all types as 'depth'
-	public boolean isStair = false;//idk what to do
+	private boolean isSummit;//DOLATER: make just detect deepest floor
+	private int floor = 0;//DOLATER: make floor apply to all types as 'depth'. Floor needs to stay an int for spacing reasons
+	private boolean isStair = false;//idk what to do
 	//public String parentName;//removed, convert to parent
 	public transient boolean passing;//FIXME: might have to init at false every time
 	public byte visited = 0;
 	
 	protected byte typeNum;
 	protected byte eventNum;
-	protected int state;
+	protected byte state;
 	protected int idNum;
 	protected Object storage1, storage2;
 	
@@ -102,7 +102,7 @@ public class NodeConnector implements Serializable {
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> mList = new ArrayList<MenuItem>();
-				if (isSummit) {
+				if (NodeConnector.this.isSummit()) {
 					switch(NodeConnector.currentNode.parent.getShape()) {
 					case TOWER:
 					Networking.sendStrong("Achievement|tower1|");
@@ -225,7 +225,7 @@ public class NodeConnector implements Serializable {
 			case 3: visitColor = extra.COLOR_OWN;break;
 			}
 			String postText = "";
-			if (owner.isStair) {
+			if (owner.isStair()) {
 				if (owner.floor > NodeConnector.currentNode.floor) {
 					postText = " down";
 				}else {
@@ -314,21 +314,35 @@ public class NodeConnector implements Serializable {
 	
 	protected NodeConnector finalize(NodeFeature owner) {
 		owner.numType(typeNum).apply(this);
+		if (idNum == 3) {
+			if (owner instanceof Mine) {
+				((Mine) owner).addVein();
+			}
+		}
 		return this;
 	}
 	
 	protected void setStair() {
 		isStair = true;
 	}
-	/**
-	 * max allowed floors is 2^7, first bit used for set is stair
-	 * @param b
-	 */
-	protected void setFloor(byte b) {
+	protected void setSummit() {
+		isSummit = true;
+	}
+
+	protected void setFloor(int b) {
 		floor = b;
 	}
 
 	public boolean isStair() {
 		return isStair;
 	}
+	
+	protected boolean isSummit() {
+		return isSummit;
+	}
+
+	public int getFloor() {
+		return floor;
+	}
+	
 }

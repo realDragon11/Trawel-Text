@@ -40,33 +40,6 @@ public class Mine extends NodeFeature {
 		Networking.sendStrong("Backvariant|"+background_area+background_variant+"|1|0|");
 	}
 	
-	@Override
-	protected void generate() {
-		switch (shape) {
-		case NONE:
-			start = new MineNode(size,town.getTier(),this);
-			break;
-		case ELEVATOR:
-			start = new MineNode(size,town.getTier(),this);
-			NodeConnector lastNode = start;
-			NodeConnector newNode;
-			for (int i = 0;i < 50;i++) {
-				newNode = new MineNode(size,town.getTier()+(i/10),this);
-				lastNode.getConnects().add(newNode);
-				newNode.getConnects().add(lastNode);
-				lastNode.reverseConnections();
-				lastNode = newNode;
-			}
-			lastNode.isSummit = true;
-			BossNode b = new BossNode(town.getTier()+5,1);
-			lastNode.getConnects().add(b);
-			b.getConnects().add(lastNode);
-			b.parentName = "hell";
-			lastNode.reverseConnections();
-			break;
-		}
-	}
-	
 	public void addVein() {
 		veinsLeft++;
 	}
@@ -75,6 +48,22 @@ public class Mine extends NodeFeature {
 		if (veinsLeft == 0 && shape.equals(Shape.NONE)) {
 			Networking.sendStrong("Achievement|mine1|");
 		}
+	}
+	
+	@Override
+	protected void generate() {
+		start = MineNode.getSingleton().getStart(this, size, getTown().getTier());//DOLATER: get actual level
+	}
+	@Override
+	public NodeType numType(int i) {
+		switch (i) {
+		case 0: return MineNode.getSingleton();
+		}
+		return null;
+	}
+	@Override
+	protected byte bossType() {
+		return 2;
 	}
 	
 
