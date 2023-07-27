@@ -14,78 +14,42 @@ import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Town;
+import trawel.towns.misc.PlantSpot;
 import trawel.towns.services.Oracle;
 
-public class GraveyardNode extends NodeConnector implements java.io.Serializable{
-	//potentail problem: all this code is in a highly duplicated node
-
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class GraveyardNode implements NodeType{
 	private static final int EVENT_NUMBER =7;
-	private int state;
-	private int idNum;
 	
-	private Object storage1, storage2;
+	private static final GroveNode handler = new GroveNode();
 	
-	private Town town;
+	private NodeConnector node;
 	
+	public static GroveNode getSingleton() {
+		return handler;
+	}
+
 	
-	
-	public GraveyardNode(int size, int tier, Town t,Graveyard p) {
-		state = 0;
-		parent = p;
-		parentName = "graveyard";
-		
-		idNum = extra.randRange(1,EVENT_NUMBER);
-		level = tier;
-		if (extra.chanceIn(1,10)) {
-			level++;
-		}
-		
-		setConnects(new ArrayList<NodeConnector>());
-		forceGo = false;
-		town = t;
-		generate(size);
-		
+	@Override
+	public NodeConnector getNode(NodeFeature owner, int tier) {
+		byte idNum = (byte) extra.randRange(1,EVENT_NUMBER);
+		NodeConnector make = new NodeConnector();
+		make.eventNum = idNum;
+		make.typeNum = 0;
+		make.level = tier;
+		apply(make);
+		return make;
 	}
 	
 	@Override
-	public int getLevel() {
-		return level;
+	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
+		return generate(owner,size,tier);
 	}
 	
-	
-	
-	private void generate(int size) {
-		switch (idNum) {
-		case -1:name = extra.choose("stairs","ladder"); interactString = "traverse "+name;forceGo = true;break;
-		case 1: name = "Shadowy Figure"; storage1 =  RaceFactory.getGravedigger(level); interactString = "Approach Shadowy Figure";break;
-		case 2: name = "Shadowy Figure"; interactString = "Approach Shadowy Figure";storage1 = RaceFactory.getGraverobber(level);break;
-		
-		case 3: ArrayList<Person> list = new ArrayList<Person>();
-			for (int i = 0;i < extra.randRange(3,4);i++) {
-			list.add(RaceFactory.makeBat(extra.zeroOut(level-4)+1));}
-			name = "bats";
-			interactString = "ERROR";
-			storage1 = list;
-			forceGo = true;
-			state = 0;
-		;break;
-		case 4: name = "Shadowy Figure"; interactString = "Approach Shadowy Figure";storage1 = RaceFactory.makeVampire(level);break;
-		case 5:
-			name = "Shadowy Figure"; interactString = "Approach Shadowy Figure";
-			storage1 = RaceFactory.makeCollector(level);
-			break;
-		case 6: case 7:
-			storage1 =  RaceFactory.makeStatue(level); name = "Shadowy Figure";
-			interactString = "Approach Shadowy Figure";
-			break;
-		}
+	@Override
+	public NodeConnector generate(NodeFeature owner, int size, int tier) {
+		NodeConnector made = getNode(owner,tier);
 		if (size < 2) {
-			return;
+			return made;
 		}
 		int split = extra.randRange(1,Math.min(size,3));
 		int i = 1;
@@ -93,238 +57,285 @@ public class GraveyardNode extends NodeConnector implements java.io.Serializable
 		while (i < split) {
 			int sizeRemove = extra.randRange(0,sizeLeft-1);
 			sizeLeft-=sizeRemove;
-			GraveyardNode n = new GraveyardNode(sizeRemove,level,town,(Graveyard)parent);
-			connects.add(n);
-			n.getConnects().add(this);
+			int tempLevel = tier;
+			if (extra.chanceIn(1,10)) {
+				tempLevel++;
+			}
+			NodeConnector n = generate(owner,sizeRemove,tempLevel);
+			made.connects.add(n);
+			n.getConnects().add(made);
 			i++;
 		}
-		GraveyardNode n = new GraveyardNode(sizeLeft,level,town,(Graveyard)parent);
-		connects.add(n);
-		n.getConnects().add(this);
+		return made;
+	}
+	private static final String DEF_INTERACT = "Approach Shadowy Figure", DEF_NAME = "Shadowy Figure";
+	//DOLATER: maybe some nightvision mechanic
+	private void apply(NodeConnector made) {
+		switch (made.eventNum) {
+		case -1:made.name = extra.choose("stairs","ladder"); made.interactString = "traverse "+made.name;made.forceGo = true;break;
+		case 1: made.name = DEF_NAME; made.storage1 =  RaceFactory.getGravedigger(made.level); made.interactString = DEF_INTERACT;break;
+		case 2: made.name = DEF_NAME; made.interactString = DEF_INTERACT;made.storage1 = RaceFactory.getGraverobber(made.level);break;
+		
+		case 3: ArrayList<Person> list = new ArrayList<Person>();
+			for (int i = Math.min(extra.randRange(3,4),made.level);i >= 0 ;i--) {
+				list.add(RaceFactory.makeBat(extra.zeroOut(made.level-4)+1));
+			}
+			made.name = "bats";
+			made.interactString = "ERROR";
+			made.storage1 = list;
+			made.forceGo = true;
+			made.state = 0;
+		;break;
+		case 4: 
+			made.name = DEF_NAME;
+			made.interactString = DEF_INTERACT;
+			made.storage1 = RaceFactory.makeVampire(made.level)
+			;break;
+		case 5:
+			made.name = DEF_NAME;
+			made.interactString = DEF_INTERACT;
+			made.storage1 = RaceFactory.makeCollector(made.level);
+			break;
+		case 6:
+			made.storage1 = RaceFactory.makeStatue(made.level); 
+			made.name = DEF_NAME;
+			made.interactString = DEF_INTERACT;
+			break;
+		 case 7: //non hostile statue
+			made.name = DEF_NAME;
+			made.interactString = DEF_INTERACT;
+			break;
+		}
 	}
 	
 	@Override
-	protected boolean interact() {
-		switch(idNum) {
+	public boolean interact(NodeConnector node) {
+		this.node = node;
+		switch(node.eventNum) {
 		case -1: Networking.sendStrong("PlayDelay|sound_footsteps|1|"); break;
 		case 1:graveDigger(); break;
-		case 2: mugger1(); if (state == 0) {return true;};break;
+		case 2: mugger1(); if (node.state == 0) {return true;};break;
 		case 3: return packOfBats();
-		case 4: vampire1(); if (state == 0) {return true;};break;
+		case 4: vampire1(); if (node.state == 0) {return true;};break;
 		case 5:	collector();break;
-		case 6: statue(); if (state == 0) {return true;};break;
+		case 6: statue(); if (node.state == 0) {return true;};break;
 		case 7: statueLoot();break;
-		
 		}
 		return false;
 	}
 	
 	private boolean packOfBats() {
-		if (state == 0) {
+		if (node.state == 0) {
 			extra.print(extra.PRE_RED);
 			extra.println("The bats descend upon you!");
-			List<Person> list = (List<Person>)storage1;
+			List<Person> list = (List<Person>)node.storage1;
 			List<Person> survivors = mainGame.HugeBattle(list,Player.list());
 			
 			if (survivors.contains(Player.player.getPerson())) {
-			forceGo = false;
-			interactString = "approach bat corpses";
-			storage1 = null;
-			state = 1;
-			name = "dead "+name;
+				node.forceGo = false;
+				node.interactString = "approach bat corpses";
+				node.storage1 = null;
+				node.state = 1;
+				node.name = "dead swarm of bats";
 			return false;}else {
-				storage1 = survivors;
+				node.storage1 = survivors;
 				return true;
 			}
 		}else {
 			extra.println("There are a few bat corpses here.");
-			findBehind("corpses");
+			node.findBehind("corpses");
 			return false;
 		}
 	}
 
-	
+
 	private void graveDigger() {
-		extra.println("Approach the "+ name+"?");
+		extra.println("Approach the "+ node.name+"?");
 		if (!extra.yesNo()) {
 			return;
 		}
-		if (state == 0) {
-		while (true) {
-			Person p = (Person)storage1;
-			p.getBag().graphicalDisplay(1, p);
-		extra.println("You come across a weary gravedigger, warding against undead during a break.");
-		name = "Gravedigger";interactString = "Approach the "+name;
-		extra.println("1 Leave");
-		extra.print(extra.PRE_RED);
-		extra.println("2 Mug them");
-		extra.println("3 Chat with them");
-		switch (extra.inInt(3)) {
-		default: case 1: extra.println("You leave the gravedigger alone.");return;
-		case 2: extra.println("You attack the "+name+"!");
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-		if (winner != p) {
-			state = 1;
-			storage1 = null;
-			name = "dead "+name;
-			interactString = "examine body";
+		if (node.state == 0) {
+			while (true) {
+				Person p = (Person)node.storage1;
+				p.getBag().graphicalDisplay(1, p);
+				extra.println("You come across a weary gravedigger, warding against undead during a break.");
+				node.name = "Gravedigger";node.interactString = "Approach the "+node.name;
+				extra.println("1 Leave");
+				extra.print(extra.PRE_RED);
+				extra.println("2 Mug them");
+				extra.println("3 Chat with them");
+				switch (extra.inInt(3)) {
+				default: case 1: extra.println("You leave the gravedigger alone.");return;
+				case 2: extra.println("You attack the "+node.name+"!");
+				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
+				if (winner != p) {
+					node.state = 1;
+					node.storage1 = null;
+					node.name = "dead "+node.name;
+					node.interactString = "examine body";
+				}
+				;return;
+				case 3: extra.println("The " + node.name + " turns and answers your greeting.");
+				while (true) {
+					extra.println("What would you like to ask about?");
+					extra.println("1 tell them goodbye");
+					extra.println("2 ask for a tip");
+					extra.println("3 this graveyard");
+					int in = extra.inInt(3);
+					switch (in) {
+					case 1: extra.println("They wish you well.") ;break;
+					case 2: Oracle.tip("gravedigger");break;
+					case 3: extra.println("\"We are in " + node.parent.getName() + ". Beware, danger lurks everywhere.\"");break;
+					}
+					if (in == 1) {
+						break;
+					}
+				}
+				}
+			}
+		}else {
+			randomLists.deadPerson();
+			node.findBehind("body");
 		}
-		;return;
-		case 3: extra.println("The " + name + " turns and answers your greeting.");
-		while (true) {
-		extra.println("What would you like to ask about?");
-		extra.println("1 tell them goodbye");
-		extra.println("2 ask for a tip");
-		extra.println("3 this graveyard");
-		int in = extra.inInt(3);
-		switch (in) {
-			case 1: extra.println("They wish you well.") ;break;
-			case 2: Oracle.tip("gravedigger");break;
-			case 3: extra.println("\"We are in " + parent.getName() + ". Beware, danger lurks everywhere.\"");break;
-		}
-		if (in == 1) {
-			break;
-		}
-		}
-		}
-	}}else {randomLists.deadPerson();}findBehind("body");}
+	}
 	
 	private void mugger1() {
-		extra.println("Approach the "+ name+"?");
+		extra.println("Approach the "+ node.name+"?");
 		if (!extra.yesNo()) {
 			return;
 		}
-		if (state == 0) {
+		if (node.state == 0) {
 			extra.print(extra.PRE_RED);
 			extra.println("The graverobber attacks you!");
-			name = "Graverobber";
-			interactString = "Approach the "+name;
-			Person p = (Person)storage1;
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-				if (winner != p) {
-					state = 1;
-					storage1 = null;
-					name = "dead "+name;
-					interactString = "examine body";
-					forceGo = false;
-				}
-		}else {randomLists.deadPerson();findBehind("body");}
-		
+			node.name = "Graverobber";
+			node.interactString = "Approach the "+node.name;
+			Person p = (Person)node.storage1;
+			Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
+			if (winner != p) {
+				node.state = 1;
+				node.storage1 = null;
+				node.name = "dead "+node.name;
+				node.interactString = "examine body";
+				node.forceGo = false;
+			}
+		}else {
+			randomLists.deadPerson();node.findBehind("body");
+		}
+
 	}
-	
+
 	private void vampire1() {
-		extra.println("Approach the "+ name+"?");
+		extra.println("Approach the "+ node.name+"?");
 		if (!extra.yesNo()) {
 			return;
 		}
-		if (state == 0) {
+		if (node.state == 0) {
 			extra.print(extra.PRE_RED);
 			extra.println("The vampire attacks you!");
-			name = "Vampire";
-			interactString = "Approach the "+name;
-			Person p = (Person)storage1;
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-				if (winner != p) {
-					state = 1;
-					storage1 = null;
-					name = "dead "+name;
-					interactString = "examine body";
-					forceGo = false;
-				}
-		}else {randomLists.deadPerson();findBehind("dust");}
-		
-	}
+			node.name = "Vampire";
+			node.interactString = "Approach the "+node.name;
+			Person p = (Person)node.storage1;
+			Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
+			if (winner != p) {
+				node.state = 1;
+				node.storage1 = null;
+				node.name = "dead "+node.name;
+				node.interactString = "examine body";
+				node.forceGo = false;
+			}
+		}else {
+			randomLists.deadPerson();
+			node.findBehind("dust");
+		}
 
-	@Override
-	protected String shapeName() {
-		return ((Graveyard)parent).getShape().name();
 	}
 	
 	private void statue() {
-		extra.println("Approach the "+ name+"?");
+		extra.println("Approach the "+ node.name+"?");
 		if (!extra.yesNo()) {
 			return;
 		}
-		if (state == 0) {
-			name = ((Person)storage1).getBag().getRace().renderName(false) + " statue";
+		if (node.state == 0) {
+			node.name = ((Person)node.storage1).getBag().getRace().renderName(false) + " statue";
 			extra.print(extra.PRE_RED);
 			extra.println("The statue springs to life and attacks you!");
-			name = "Living Statue";
-			interactString = "Approach the "+name;
-			Person p = (Person)storage1;
+			node.name = "Living Statue";
+			node.interactString = "Approach the "+node.name;
+			Person p = (Person)node.storage1;
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
-					state = 1;
-					storage1 = null;
-					name = "destroyed "+name;
-					interactString = "examine destroyed statue";
-					forceGo = false;
+					node.state = 1;
+					node.storage1 = null;
+					node.name = "destroyed "+node.name;
+					node.interactString = "examine destroyed statue";
+					node.forceGo = false;
 				}
-		}else {randomLists.deadPerson();findBehind("destroyed statue");}
+		}else {
+			randomLists.deadPerson();
+			node.findBehind("destroyed statue");
+		}
 		
 	}
 	
 	private void statueLoot() {
-		extra.println("Approach the "+ name+"?");
+		extra.println("Approach the "+ node.name+"?");
 		if (!extra.yesNo()) {
 			return;
 		}
-		if (state == 0) {
+		if (node.state == 0) {
 			extra.print(extra.PRE_RED);
 			extra.println("You loot the statue...");
-			Person p = (Person)storage1;
+			Person p = RaceFactory.makeStatue(Math.min(Player.player.getPerson().getLevel(), node.level)); ;
 			p.getBag().graphicalDisplay(1,p);
 			AIClass.loot(p.getBag(),Player.bag,Player.player.getPerson().getIntellect(),true);
-					state = 1;
-					storage1 = null;
-					name = "looted statue";
-					interactString = "examine statue";
-					forceGo = false;
+			node.state = 1;
+			node.name = "looted statue";
+			node.interactString = "examine statue";
+			node.forceGo = false;
 				
-		}else {extra.println("You already looted this statue!");findBehind("statue");}
+		}else {
+			extra.println("You already looted this statue!");
+			node.findBehind("statue");
+		}
 		Networking.clearSide(1);
 	}
-	
+
 	private void collector() {
-		extra.println("Approach the "+ name+"?");
+		extra.println("Approach the "+ node.name+"?");
 		if (!extra.yesNo()) {
 			return;
 		}
-		if (state == 0) {
-			Person p = (Person)storage1;
-			name = p.getName();
-			interactString = "Approach "+ name;
+		if (node.state == 0) {
+			Person p = (Person)node.storage1;
+			node.name = p.getName();
+			node.interactString = "Approach "+ node.name;
 			p.getBag().graphicalDisplay(1, p);
 			extra.print(extra.PRE_RED);
 			extra.println("Challenge "+ p.getName() + "?");
 			if (extra.yesNo()){
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
-					state = 1;
-					storage1 = null;
-					name = "dead "+name;
-					interactString = "examine body";
+					node.state = 1;
+					node.storage1 = null;
+					node.name = "dead "+node.name;
+					node.interactString = "examine body";
 				}
 			}
-		}else {randomLists.deadPerson();findBehind("body");}
-		
-	}
+		}else {
+			randomLists.deadPerson();
+			node.findBehind("body");
+		}
 
-	@Override
-	public void endPass() {
-		// Auto-generated method stub
-		
 	}
 	
 	@Override
-	protected DrawBane[] dbFinds() {
+	public DrawBane[] dbFinds() {
 		return new DrawBane[] {DrawBane.GRAVE_DIRT,DrawBane.GARLIC,DrawBane.TELESCOPE};
 	}
 
 	@Override
-	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		// TODO Auto-generated method stub
-		return null;
+	public void passTime(NodeConnector node, double time, TimeContext calling){
+		//none yet
 	}
 	
 

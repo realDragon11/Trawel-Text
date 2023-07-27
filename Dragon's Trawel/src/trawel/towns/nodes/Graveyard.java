@@ -31,7 +31,7 @@ public class Graveyard extends NodeFeature {
 
 	@Override
 	protected void generate() {
-		start = new GraveyardNode(size,town.getTier(),town,this);
+		start = GraveyardNode.getSingleton().getStart(this, size, getTown().getTier());//DOLATER: get actual level
 	}
 
 }
