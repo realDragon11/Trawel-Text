@@ -8,19 +8,23 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 
 public interface NodeType{
-	
-	NodeType getSingleton();
 
 	boolean interact(NodeConnector node);
 	
 	DrawBane[] dbFinds();
 	
-	List<TimeEvent> passTime(NodeConnector node, double time, TimeContext calling);
+	/**
+	 * should make time events happen in localevents
+	 * @param node
+	 * @param time
+	 * @param calling
+	 */
+	void passTime(NodeConnector node, double time, TimeContext calling);
 	
 	NodeConnector getNode(NodeFeature owner, int tier);
 	
 	NodeConnector generate(NodeFeature owner, int sizeLeft, int tier);
 	
-	NodeConnector getStart(NodeFeature owner, int sizeLeft, int tier);
+	NodeConnector getStart(NodeFeature owner, int size, int tier);
 
 }

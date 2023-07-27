@@ -743,6 +743,13 @@ public class RaceFactory {
 		return raceMap.get(id.name());
 	}
 	
+	public static Person makeLootBody(int level) {
+		extra.offPrintStack();
+		Person w = new Person(level);
+		extra.popPrintStack();
+		return w;
+	}
+	
 	public static Person makeOld(int level) {
 		Person p = new Person(level);
 		p.setPersonType(PersonType.GRIZZLED);

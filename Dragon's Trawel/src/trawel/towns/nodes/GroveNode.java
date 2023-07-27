@@ -31,7 +31,7 @@ public class GroveNode implements NodeType{
 	
 	private NodeConnector node;
 	
-	public static GroveNode singleton() {
+	public static GroveNode getSingleton() {
 		return handler;
 	}
 	
@@ -56,6 +56,11 @@ public class GroveNode implements NodeType{
 		
 		
 		return make;
+	}
+	
+	@Override
+	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
+		return generate(owner,size,tier);
 	}
 
 	@Override
@@ -113,7 +118,7 @@ public class GroveNode implements NodeType{
 		case 8: made.name = "fallen tree"; made.interactString = "examine fallen tree";break;
 		case 9: made.name = "dryad"; made.interactString = "approach the " + made.name;
 		made.storage1 = RaceFactory.getDryad(made.level);
-		made.storage2 = 0;
+		made.storage2 = extra.randRange(0,1);
 		break;
 		case 10: made.name = "fallen tree";made.interactString = "examine fallen tree";break;
 		case 11: made.name = randomLists.randomColor() + " mushroom";made.interactString = "approach mushroom";break;
@@ -171,8 +176,7 @@ public class GroveNode implements NodeType{
 		;break;
 		case 3: mugger1(); if (node.state == 0) {return true;};break;
 		case 4: findEquip();break;
-		case 5: fairyCircle1();break;
-		case 6: return fairyCircle2();
+		case 5: case 6: fairyCircle1();break;
 		case 7: oldFighter();break;
 		case 8: treeOnPerson();break;
 		case 9: dryad();break;
@@ -203,8 +207,7 @@ public class GroveNode implements NodeType{
 		if (node.state == 0) {
 			Person p = (Person)node.storage1;
 			p.getBag().graphicalDisplay(1, p);
-			extra.print(extra.PRE_RED);
-			extra.println("Challenge "+ p.getName() + "?");
+			extra.println(extra.PRE_RED +"Challenge "+ p.getName() + "?");
 			if (extra.yesNo()){
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
@@ -222,8 +225,7 @@ public class GroveNode implements NodeType{
 	private void mugger1() {
 		if (node.state == 0) {
 			Person p = (Person)node.storage1;
-			extra.print(extra.PRE_RED);
-			extra.println("You are attacked by a " + node.name);
+			extra.println(extra.PRE_RED+"You are attacked by a " + node.name);
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
 					node.state = 1;
@@ -239,11 +241,13 @@ public class GroveNode implements NodeType{
 	
 	private void findEquip() {
 		if (node.state == 0) {
-		extra.println("You find a rotting body... With their equipment intact!");
-		AIClass.loot(new Person(level).getBag(),Player.bag,Player.player.getPerson().getIntellect(),true);
-		state = 1;}else {
+			extra.println("You find a rotting body... With their equipment intact!");
+			AIClass.loot(RaceFactory.makeLootBody(Math.min(node.level,Player.player.getPerson().getLevel())).getBag(),
+				Player.bag,Player.player.getPerson().getIntellect(),true);
+			node.state = 1;
+		}else {
 			extra.println("You've already looted this corpse.");
-			findBehind("body");
+			node.findBehind("body");
 		}
 	}
 	
@@ -256,6 +260,7 @@ public class GroveNode implements NodeType{
 		}
 	}
 	
+	/*//DOLATER: make the 'I'm lost' mechanic again
 	private boolean fairyCircle2() {
 		extra.println("You find a fairy circle of mushrooms. Step in it?");
 		if (extra.yesNo()) {
@@ -283,67 +288,68 @@ public class GroveNode implements NodeType{
 			extra.println("You stay away from the circle.");
 			return false;
 		}
-	}
-	
+	}*/
+
 	private void oldFighter() {
-		if (state == 0) {
-		while (true) {
-			Person p = (Person)storage1;
-			p.getBag().graphicalDisplay(1, p);
-		extra.println("You come across an " + name + ", resting on a log.");
-		extra.println("1 Leave");
-		extra.print(extra.PRE_RED);
-		extra.println("2 Attack them");
-		extra.println("3 Chat with them");
-		switch (extra.inInt(3)) {
-		default: case 1: extra.println("You leave the " + name + " alone");return;
-		case 2: extra.println("You attack the "+name+"!");
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-		if (winner != p) {
-			state = 1;
-			storage1 = null;
-			name = "dead "+name;
-			interactString = "examine body";
-		}
-		;return;
-		case 3: extra.println("The " + name + " turns and answers your greeting.");
-		while (true) {
-		extra.println("What would you like to ask about?");
-		extra.println("1 tell them goodbye");
-		extra.println("2 ask for a tip");
-		extra.println("3 this grove");
-		int in = extra.inInt(3);
-		switch (in) {
-			case 1: extra.println("They wish you well.") ;break;
-			case 2: Oracle.tip("old");break;
-			case 3: extra.println("\"We are in " + parent.getName() + ". Beware, danger lurks under these trees.\"");break;
-		}
-		if (in == 1) {
-			break;
-		}
-		}
-		}
-	}}else {randomLists.deadPerson();}}
-	
+		if (node.state == 0) {
+			while (true) {
+				Person p = (Person)node.storage1;
+				p.getBag().graphicalDisplay(1, p);
+				extra.println("You come across an " + node.name + ", resting on a log.");
+				extra.println("1 Leave");
+				extra.println("2 "+extra.PRE_RED+"Attack them");
+				extra.println("3 Chat with them");
+				switch (extra.inInt(3)) {
+				default: case 1: extra.println("You leave the " + node.name + " alone");return;
+				case 2: extra.println("You attack the "+node.name+"!");
+				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
+				if (winner != p) {
+					node.state = 1;
+					node.storage1 = null;
+					node.name = "dead "+node.name;
+					node.interactString = "examine body";
+				}
+				;return;
+				case 3: extra.println("The " + node.name + " turns and answers your greeting.");
+				while (true) {
+					extra.println("What would you like to ask about?");
+					extra.println("1 tell them goodbye");
+					extra.println("2 ask for a tip");
+					extra.println("3 this grove");
+					int in = extra.inInt(3);
+					switch (in) {
+					case 1: extra.println("They wish you well.") ;break;
+					case 2: Oracle.tip("old");break;
+					case 3: extra.println("\"We are in " + node.parent.getName() + ". Beware, danger lurks under these trees.\"");break;
+					}
+					if (in == 1) {
+						break;
+					}
+				}
+				}
+			}
+		}else {randomLists.deadPerson();}
+	}
+
 	private void treeOnPerson() {
-		if (state == 1) {
+		if (node.state == 1) {
 			extra.println("You examine the fallen tree. It is very pretty.");
 			return;
 		}
 		extra.println("There's a person stuck under the fallen tree! Help them?");
 		if (extra.yesNo()) {
 			extra.println("You move the tree off of them.");
-			state = 1;
+			node.state = 1;
 			if (Math.random() > .9) {
 				extra.print(extra.PRE_RED);
 				extra.println("Suddenly, they attack you!");
-				mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getMugger(level));
+				mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getMugger(node.level));
 			}else {
 				if (Math.random() < .3) {
 					extra.println("They scamper off...");
-					findBehind("tree");
+					node.findBehind("tree");
 				}else {
-					int gold = (int) (extra.hrandom()*50*level);
+					int gold = (int) (extra.hrandomFloat()*50*node.level);
 					extra.println("They give you a reward of " + gold + " gold in thanks for saving them.");
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
 					Player.bag.addGold(gold);
@@ -353,416 +359,374 @@ public class GroveNode implements NodeType{
 			extra.println("You leave them alone to rot...");
 		}
 	}
-	
+
 	private void dryad() {
-		if (state == 0 || state == -1) {
-		while (true) {
-			Person p = (Person)storage1;
-			p.getBag().graphicalDisplay(1, p);
-		extra.println("You come across a dryad tending to a tree.");
-		extra.println("1 Leave");
-		extra.print(extra.PRE_RED);
-		extra.println("2 Attack them.");
-		extra.println("3 Chat with them");
-		switch (extra.inInt(3)) {
-		default: case 1: extra.println("You leave the "+name+" alone");return;
-		case 2: extra.println("You attack the dryad!");
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-		if (winner != p) {
-			state = 1;
-			storage1 = null;
-			name = "dead "+name;
-			interactString = "examine body";
-		}
-		;return;
-		case 3: extra.println("The dryad turns and answers your greeting.");
-		while (true) {
-		extra.println("What would you like to ask about?");
-		extra.println("1 tell them goodbye");
-		extra.println("2 their tree");
-		extra.println("3 this forest");
-		int in = extra.inInt(3);
-		switch (in) {
-			case 1: extra.println("They wish you well.") ;break;
-			case 2: extra.println("They start describing their tree in intricate detail before finishing.");
-			if (storage2 instanceof Integer) {
-			if ((int)storage2 > 3) {
-				if (extra.chanceIn(1, 3)) {
-				extra.println("They ask if you would like your own tree.");
-				if (extra.yesNo()) {
-					extra.println("They say to find a spot where a lumberjack has chopped down a tree and plant one there.");
-					storage2 = null;
-					Player.bag.addSeed(Seed.ENT);
+		if (node.state == 0 || node.state == -1) {
+			while (true) {
+				Person p = (Person)node.storage1;
+				p.getBag().graphicalDisplay(1, p);
+				extra.println("You come across a dryad tending to a tree.");
+				extra.println("1 Leave");
+				extra.print(extra.PRE_RED);
+				extra.println("2 Attack them.");
+				extra.println("3 Chat with them");
+				switch (extra.inInt(3)) {
+				default: case 1: extra.println("You leave the "+node.name+" alone");return;
+				case 2: extra.println("You attack the dryad!");
+				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
+				if (winner != p) {
+					node.state = 1;
+					node.storage1 = null;
+					node.name = "dead "+node.name;
+					node.interactString = "examine body";
 				}
-				}else {
-					storage2 = null;
+				;return;
+				case 3: extra.println("The dryad turns and answers your greeting.");
+				while (true) {
+					extra.println("What would you like to ask about?");
+					extra.println("1 tell them goodbye");
+					extra.println("2 their tree");
+					extra.println("3 this forest");
+					int in = extra.inInt(3);
+					switch (in) {
+					case 1: extra.println("They wish you well.") ;break;
+					case 2: extra.println("They start describing their tree in intricate detail before finishing.");
+					if ((int)node.storage2 != -1) {
+						if ((int)node.storage2 == 1) {
+							extra.println("\"Would like your own tree?\"");
+							if (extra.yesNo()) {
+								extra.println("The dryad says to find a spot where a lumberjack has chopped down a tree and plant one there.");
+								node.storage2 = -1;
+								Player.bag.addSeed(Seed.ENT);
+							}
+						}else {
+							//when it's 0
+							node.storage2 = -1;
+							extra.println("The dryad says it's a shame that they don't have anything to offer such an intelligent "+Player.bag.getRace().renderName(false)+".");
+
+						}
+					}else {
+						extra.println("They seem very passionate about it.");
+					}
+					break;
+					case 3: extra.println("\"We are in " + node.parent.getName() + ". I don't venture away from my tree.\"");
+					if (node.state == 0) {extra.println("\"Would you like a seed to help grow the forest?\"");
+					if (extra.yesNo()) {
+						node.state = -1;
+						Player.bag.addSeed(Seed.randSeed());
+					}
+					};break;
+					}
+					if (in == 1) {
+						break;
+					}
 				}
-			}else {
-				storage2 = (int)storage2+1;
+				}
 			}
-			}
-			extra.println("They seem very passionate about it.");break;
-			case 3: extra.println("\"We are in " + parent.getName() + ". I don't venture away from my tree.\"");
-			if (state == 0) {extra.println("\"Would you like a seed to help grow the forest?\"");
-			if (extra.yesNo()) {
-				state = -1;
-				Player.bag.addSeed(Seed.randSeed());
-			}
-			};break;
+		}else {
+			randomLists.deadPerson();node.findBehind("body");
 		}
-		if (in == 1) {
-			break;
-		}
-		}
-		}
-		}}else {randomLists.deadPerson();findBehind("body");}}
-	
+	}
+
 	private void fallenTree() {
 		extra.println("You examine the fallen tree. It is very pretty.");
 		if (Player.player.animalQuest == 0) {
-		extra.println("A "+Player.player.animalName()+" is sitting on it." );
-		extra.println("It vanishes.");
-		extra.println();
-		extra.println("You feel a sense of loss.");
-		Player.player.animalQuest = 1;
+			extra.println("A "+Player.player.animalName()+" is sitting on it." );
+			extra.println("It vanishes.");
+			extra.println();
+			extra.println("You feel strange...");
+			Player.player.animalQuest = 1;
 		}
-		findBehind("tree");
+		node.findBehind("tree");
 	}
-	
+
 	private void funkyMushroom() {
-		if (state == 0) {
-		extra.println("You spot a glowing mushroom on the forest floor.");
-		extra.println("1 leave it");
-		extra.println("2 eat it");
-		extra.println("3 sell it");
-		extra.println("4 crush it");
-		int in =  extra.inInt(4);
-		switch (in) {
-		default: case 1: extra.println("You decide to leave it alone.");findBehind("mushroom");break;
-		case 2:
-			name = "plant spot";
-			interactString = "approach plant spot";
-			idNum = -1;
-			extra.println("You eat the mushroom...");
-			storage1 = new PlantSpot(level);
-			state = 1;
-			switch(extra.randRange(1,3)) {
-			case 1: extra.println("The mushroom is delicous!");break;
-			case 2: extra.println("Eating the mushroom is very difficult... but you manage.");
-			Player.player.getPerson().addXp(level*2);break;
-			case 3: extra.println("You feel lightheaded.... you pass out!");
-			extra.println("When you wake up, you find that some of your gold is missing!");
-			Player.bag.addGold(-53*level);break;
+		if (node.state == 0) {
+			extra.println("You spot a glowing mushroom on the forest floor.");
+			extra.println("1 leave it");
+			extra.println("2 eat it");
+			extra.println("3 sell it");
+			extra.println("4 crush it");
+			int in =  extra.inInt(4);
+			if (in > 1) {
+				node.name = "plant spot";
+				node.interactString = "approach plant spot";
+				node.idNum = -1;
+				node.storage1 = new PlantSpot(node.level + (in == 4 ? 1 : 0));
+				node.state = 1;
 			}
-			if (Math.random() > .8) {
-				extra.print(extra.PRE_RED);
-			extra.println("As you eat the mushroom, you hear a voice cry out:");
-			switch((int)extra.randRange(1,2)) {
-			case 1: mushHelpDryad();break;
-			case 2: mushHelpRobber();break;}
-			//mainGame.CombatTwo(Player.player.getPerson(), new Person(level));
+			switch (in) {
+			default: case 1: extra.println("You decide to leave it alone.");node.findBehind("mushroom");break;
+			case 2:
+				extra.println("You eat the mushroom...");
+				switch(extra.randRange(1,3)) {
+				case 1: extra.println("The mushroom is delicous!")//DOLATER: maybe something?
+				;break;
+				case 2: extra.println("Eating the mushroom is very difficult... but you manage.");
+				Player.player.getPerson().addXp(node.level*2);break;
+				case 3: extra.println("You feel lightheaded.... you pass out!");
+				extra.println("When you wake up, you find that some of your gold is missing!");
+				Player.bag.addGold(-extra.randRange(20*node.level, 60*node.level));break;
+				}
+				if (Math.random() > .8) {
+					extra.println(extra.PRE_RED+"As you eat the mushroom, you hear a voice cry out:");
+					switch(extra.randRange(1,2)) {
+					case 1: mushHelpDryad();break;
+					case 2: mushHelpRobber();break;}
+				}
+
+				;break;
+			case 3:
+				extra.println("You pick up the mushroom to sell it.");
+				if (Math.random() > .8) {
+					extra.print(extra.PRE_RED);
+					extra.println("You hear someone cry out from behind you!");
+					Person winner = null;
+					switch(extra.randRange(1,2)) {
+					case 1: winner = mushHelpDryad() ;break;
+					case 2: winner = mushHelpRobber();break;
+					}
+					if (winner == Player.player.getPerson()) {
+						int gold = extra.getRand().nextInt(80*node.level)+30*node.level;
+						extra.println("You sell the mushroom for " + gold + " gold.");
+						Player.bag.addGold(gold);
+					}
+				}else {
+					int gold = extra.getRand().nextInt(60*node.level);
+					extra.println("You sell the mushroom for " + gold + " gold.");
+					Player.bag.addGold(gold);
+				};break;
+			case 4:
+				extra.println("You crush the mushroom under your heel.");
+				extra.println(extra.PRE_RED+"You hear someone cry out from behind you!");
+				switch(extra.randRange(1,2)) {
+				case 1: mushHelpDryad();break;
+				case 2: mushHelpRobber();break;
+				}
+				;break;
 			}
-			
-			;break;
-		case 3:
-			state = 1;
-			name = "plant spot";
-			interactString = "approach plant spot";
-			idNum = -1;
-			storage1 = new PlantSpot(level);
-			extra.println("You pick up the mushroom to sell it.");
-			if (Math.random() > .8) {
-				extra.print(extra.PRE_RED);
-			extra.println("You hear someone cry out from behind you!");
-			Person winner = null;
-			switch((int)extra.randRange(1,2)) {
-			case 1: winner = mushHelpDryad() ;break;
-			case 2: winner = mushHelpRobber();break;
-			}
-			if (winner == Player.player.getPerson()) {
-				int gold = extra.getRand().nextInt(80*level)+30*level;
-				extra.println("You sell the mushroom for " + gold + " gold.");
-				Player.bag.addGold(gold);
-			}
-			}else {
-				int gold = extra.getRand().nextInt(60*level);
-				extra.println("You sell the mushroom for " + gold + " gold.");
-				Player.bag.addGold(gold);
-			};break;
-		case 4:
-			name = "plant spot";
-			state = 1;
-			extra.println("You crush the mushroom under your heel.");
-			extra.print(extra.PRE_RED);
-			extra.println("You hear someone cry out from behind you!");
-			switch(extra.randRange(1,2)) {
-			case 1: mushHelpDryad();break;
-			case 2: mushHelpRobber();break;
-			}
-			;break;
-		}
 		}else {
-			extra.println("There was a mushroom here.");
+			extra.println("There was a mushroom here.");//no longer happens
 		}
 	}
-	
+
 	private Person mushHelpRobber() {
-		name = extra.choose("mugger","robber","thug","bandit","marauder","outlaw","desperado","cutthroat"); interactString = "ERROR";
-		storage1 = RaceFactory.getMugger(level);
 		switch (extra.randRange(0, 1)) {
 		case 0: extra.println("\"Hey, I wanted that!\"");break;
 		case 1: extra.println("\"You dirty plant-thief!\"");break;
 		}
-		idNum = 3;
-		state = 0;
-		Person p = (Person)storage1;
+		
+		Person p = RaceFactory.getMugger(node.level);
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-		if (winner != p) {
-			state = 1;
-			storage1 = null;
-			name = "dead "+name;
-			interactString = "examine body";
+		if (winner != p) {//player won, now it can be a plant spot
+			/*
+			node.state = 1;
+			node.storage1 = null;
+			node.name = "dead "+name;
+			node.interactString = "examine body";
+			*/
 		}else {
-			 forceGo = true;
+			node.forceGo = true;
+			node.eventNum = 3;
+			node.state = 0;
+			node.name = extra.choose("mugger","robber","thug","bandit","marauder","outlaw","desperado","cutthroat");
+			node.interactString = "ERROR";
+			node.storage1 = p;
 		}
 		return winner;
 	}
 	private Person mushHelpDryad() {
-		extra.println("\"You dare violate the forest?!\"");
-		storage1 = RaceFactory.getDryad(level);
-		Person p = (Person)storage1;
+		switch (extra.randRange(0, 1)) {
+		case 0: extra.println("\"You dare violate the forest?!\"");break;
+		case 1: extra.println("\"That was sacred!\"");break;
+		}
+		
+		Person p = RaceFactory.getDryad(node.level);
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-		idNum = 9;
-		name = "dryad";
-		if (winner != p) {
-			state = 1;
-			storage1 = null;
-			name = "dead "+name;
-			interactString = "examine body";
+		if (winner != p) {//player won, now it can be a plant spot
+			/*
+			node.state = 1;
+			node.storage1 = null;
+			node.name = "dead "+name;
+			node.interactString = "examine body";
+			*/
 		}else {
-			state = 0;
-			 interactString = "approach the " + name;
+			node.forceGo = true;
+			node.eventNum = 9;
+			node.state = 1;
+			node.name = "dryad";
+			node.interactString = "ERROR";
+			node.storage1 = p;
 		}
 		return winner;
 	}
 
-	
-	private void mossHelpRobber() {
-		name = extra.choose("mugger","robber","thug","bandit","marauder","outlaw","desperado","cutthroat"); interactString = "ERROR";
-		storage1 = RaceFactory.getMugger(level);
-		switch (extra.randRange(0, 1)) {
-		case 0: extra.println("\"Hey, I wanted that!\"");break;
-		case 1: extra.println("\"You dirty plant-thief!\"");break;
-		}
-		idNum = 3;
-		state = 0;
-			 forceGo = true;
-		
-	}
+
 	/*for  Albin Grahn */
 	private void funkyMoss() {
-		if (state == 0) {
-		extra.println("You see something shining under the moss!");
-		extra.println("1 take it");
-		extra.println("2 leave it alone");
-		switch (extra.inInt(2)) {
-		case 1: 
-			DrawBane db = this.attemptCollectAll(.7f, 3);
-			if (db != null) {
-				extra.println("Wow, there were a ton of "+ db.getName() +" pieces under the moss!");
-				state = 1;
-			}else {
-				int g = extra.randRange(20,30)*level;
-				extra.println("You find " +g + " gold!");
-				Player.bag.addGold(g);
-				if (extra.randRange(1,3) == 1) {
-					mossHelpRobber();
+		if (node.state == 0) {
+			extra.println("You see something shining under the moss!");
+			extra.println("1 take it");
+			extra.println("2 leave it alone");
+			switch (extra.inInt(2)) {
+			case 1: 
+				DrawBane db = node.attemptCollectAll(.7f, 3);
+				if (db != null) {
+					extra.println("Wow, there were a ton of "+ db.getName() +" pieces under the moss!");
+					node.state = 1;
 				}else {
-					state = 1;
+					int g = extra.randRange(20,30)*node.level;
+					extra.println("You find " +g + " gold!");
+					Player.bag.addGold(g);
+					node.state = 1;
+					if (extra.randRange(1,3) == 1) {
+						mushHelpRobber();
+					}
 				}
+				//no break because moss remains
+			case 2: extra.println("You leave the moss alone.");break;
 			}
-			//no break because moss remains
-		case 2: extra.println("You leave the moss alone.");;break;
-		}
 		}else {
-			if (state == 1) { 
-			extra.println("There is some moss here.");
-			extra.println("1 eat it");
-			extra.println("2 sell it");
-			extra.println("3 leave it alone");
-			switch (extra.inInt(3)) {
-			default: case 3: extra.println("You decide to leave it alone.");break;
-			case 1:
-				state = 2;
-				name = "plant spot";
-				interactString = "approach plant spot";
-				idNum = -1;
-				storage1 = new PlantSpot(level);
-				extra.println("You eat the moss...");
-				switch(extra.randRange(1,4)) {
-				case 1: extra.println("The moss is delicous!");break;
-				case 2: case 4: extra.println("Eating the moss is very difficult... but you manage.");
-				Player.player.getPerson().addXp(level*1);break;
-				case 3: extra.println("You feel lightheaded.... you pass out!");
-				extra.println("When you wake up, you find that some of your gold is missing!");
-				Player.bag.addGold(-20*level);break;
+			if (node.state == 1) { 
+				extra.println("There is some moss here.");
+				extra.println("1 eat it");
+				extra.println("2 sell it");
+				extra.println("3 leave it alone");
+				int in = extra.inInt(3);
+				if (in < 3) {
+					node.state = 2;
+					node.name = "plant spot";
+					node.interactString = "approach plant spot";
+					node.idNum = -1;
+					node.storage1 = new PlantSpot(extra.zeroOut(node.level-1));
 				}
-				if (Math.random() > .8) {
-					extra.print(extra.PRE_RED);
-				extra.println("As you eat the moss, you hear a voice cry out:");
-				switch((int)extra.randRange(1,2)) {
-				case 1: mushHelpDryad();break;
-				case 2: mushHelpRobber();break;}
+				switch (in) {
+				default: case 3: extra.println("You decide to leave it alone.");break;
+				case 1:
+					extra.println("You eat the moss...");
+					switch(extra.randRange(1,4)) {
+					case 1: extra.println("The moss is delicous!");//DOLATER: maybe something?
+					break;
+					case 2: case 4: extra.println("Eating the moss is very difficult... but you manage.");
+					Player.player.getPerson().addXp(node.level);break;
+					case 3: extra.println("You feel lightheaded.... you pass out!");
+					extra.println("When you wake up, you find that some of your gold is missing!");
+					Player.bag.addGold(-extra.randRange(10,10*node.level));break;
+					}
+					if (extra.randFloat() > .8f) {
+						extra.println(extra.PRE_RED + "As you eat the moss, you hear a voice cry out:");
+						switch((int)extra.randRange(1,2)) {
+						case 1: mushHelpDryad();break;
+						case 2: mushHelpRobber();break;}
+					}
+
+					;break;
+				case 2:
+					extra.println("You pick up the moss to sell it.");
+					if (extra.randFloat() > .8f) {
+						extra.println(extra.PRE_RED+"You hear someone cry out from behind you!");
+						Person winner = null;
+						switch((int)extra.randRange(1,2)) {
+						case 1: winner = mushHelpDryad() ;break;
+						case 2: winner = mushHelpRobber();break;
+						}
+						if (winner == Player.player.getPerson()) {
+							int gold = extra.getRand().nextInt(20*node.level)+node.level*5;
+							extra.println("You sell the moss for " + gold + " gold.");
+							Player.bag.addGold(gold);
+						}
+					}else {
+						int gold = extra.getRand().nextInt(8*node.level)+node.level*2;
+						extra.println("You sell the moss for " + gold + " gold.");
+						Player.bag.addGold(gold);
+					};break;
 				}
-				
-				;break;
-			case 2:
-				state = 2;
-				name = "plant spot";
-				interactString = "approach plant spot";
-				idNum = -1;
-				storage1 = new PlantSpot(level);
-				extra.println("You pick up the moss to sell it.");
-				if (Math.random() > .8) {
-					extra.print(extra.PRE_RED);
-				extra.println("You hear someone cry out from behind you!");
-				Person winner = null;
-				switch((int)extra.randRange(1,2)) {
-				case 1: winner = mushHelpDryad() ;break;
-				case 2: winner = mushHelpRobber();break;
-				}
-				if (winner == Player.player.getPerson()) {
-					int gold = extra.getRand().nextInt(25*level);
-					extra.println("You sell the moss for " + gold + " gold.");
-					Player.bag.addGold(gold);
-				}
-				}else {
-					int gold = extra.getRand().nextInt(10*level);
-					extra.println("You sell the moss for " + gold + " gold.");
-					Player.bag.addGold(gold);
-				};break;
-			}}else {
+			}else {
 				extra.println("There was some moss here.");
 			}
 		}
 	}
-	/*for wuzzelf of the greyhole game*/ //soft taken out, sorry :(
-	private boolean greyHole() {
-		if (state == 0) {
-		extra.println("You find a mysterious grey shimmering hole right there on the ground in front of you. It's not stationary as you would expect from a hole in the floor. It moves around! And it sucks in detritus and gravel in it's vicinity.");
-		extra.println("1 jump in");
-		extra.println("2 throw rocks in it");
-		extra.println("3 stick your " +Player.bag.getHand().getName() + " in it");
-		extra.println("4 stay away from it");
-		switch (extra.inInt(4)) {
-		case 1:
-			extra.println("You jump in it. You find yourself jerked nowhere. Your surroundings change...");
-			state = 1; name = "black hole"; interactString = "approach black hole";
-			Player.player.setLocation(Player.world.getRandom(Player.player.getPerson().getLevel()));
-			return true;
-		case 2:
-			extra.println("You throw rocks at it...");
-			extra.println("It grows into a black hole and you are sucked in! You find yourself jerked nowhere. Your surroundings change...");
-			state = 1; name = "black hole"; interactString = "approach black hole";
-			Player.player.setLocation(Player.world.getRandom(Player.player.getPerson().getLevel()));
-			return true;
-		case 3: 
-			extra.println("You stick your "+Player.bag.getHand().getName() +" in it...");
-			extra.println("It grows into a black hole and you are sucked in! You find yourself jerked nowhere. Your surroundings change...");
-			state = 1; name = "black hole"; interactString = "approach black hole";
-			Player.player.setLocation(Player.world.getRandom(Player.player.getPerson().getLevel()));
-			return true;
-		case 4:
-			extra.println("You stay away from the hole.");
-			return false;
-		}
-		return false;
-		}else {
-			Player.player.setLocation(Player.world.getRandom(Player.player.getPerson().getLevel()));
-			extra.println("You are sucked in by the black hole! You find yourself jerked nowhere. Your surroundings change...");
-			return true;
-			
-		}
-	}
-	
+
 	private void racist1() {
 		boolean bool = true;
 		while (bool) {
 			extra.print(extra.PRE_RED);
-			((Person)storage2).getBag().graphicalDisplay(1, (Person)storage2);
-		extra.println("1 attack");
-		extra.println("2 chat");
-		extra.println("3 leave");
-		switch (extra.inInt(3)) {
-		case 1: name = "angry " +name ; interactString = "ERROR";
-		storage1 = storage2;
-		forceGo = true;
-		idNum = 3;
-		bool = false;break;
-		case 2:
-			Race r = ((Person)storage2).getBag().getRace();
-			if (r == Player.bag.getRace()) {
-				String str = Oracle.tipString("racistPraise");
-				str = str.replaceAll("oracles",r.renderName(true));
-				str = str.replaceAll("oracle",r.renderName(false));
-				extra.println("\"" +extra.capFirst(str)+"\"");
-			}else {
-				if (extra.chanceIn(4,5)) {
-				String str = Oracle.tipString(extra.choose("racistShun","racistPraise"));
-				str = str.replaceAll("not-oracle",Player.bag.getRace().randomSwear());
-				str = str.replaceAll("oracles",r.renderName(true));
-				str = str.replaceAll("oracle",r.renderName(false));
-				extra.println("\"" +extra.capFirst(str)+"\"");	
+			((Person)node.storage2).getBag().graphicalDisplay(1, (Person)node.storage2);
+			extra.println("1 attack");
+			extra.println("2 chat");
+			extra.println("3 leave");
+			switch (extra.inInt(3)) {
+			case 1: node.name = "angry " +node.name ; node.interactString = "ERROR";
+			node.storage1 = node.storage2;
+			node.forceGo = true;
+			node.idNum = 3;
+			bool = false;break;
+			case 2:
+				Race r = ((Person)node.storage2).getBag().getRace();
+				if (r == Player.bag.getRace()) {
+					String str = Oracle.tipString("racistPraise");
+					str = str.replaceAll("oracles",r.renderName(true));
+					str = str.replaceAll("oracle",r.renderName(false));
+					extra.println("\"" +extra.capFirst(str)+"\"");
 				}else {
-					extra.println("\"" + Player.bag.getRace().randomInsult() +"\"");
-				}
-			};break;
-			
-		case 3:bool = false;break;
-		}
+					if (extra.chanceIn(4,5)) {
+						String str = Oracle.tipString(extra.choose("racistShun","racistPraise"));
+						str = str.replaceAll("not-oracle",Player.bag.getRace().randomSwear());
+						str = str.replaceAll("oracles",r.renderName(true));
+						str = str.replaceAll("oracle",r.renderName(false));
+						extra.println("\"" +extra.capFirst(str)+"\"");	
+					}else {
+						extra.println("\"" + Player.bag.getRace().randomInsult() +"\"");
+					}
+				};break;
+
+			case 3:bool = false;break;
+			}
 		}
 	}
-	
+
 	private void rich1() {
-		Person rich = (Person)storage1;
-		Person bodyguard = (Person)storage2;
+		Person rich = (Person)node.storage1;
+		Person bodyguard = (Person)node.storage2;
 		rich.getBag().graphicalDisplay(1,rich);
-		if (state == 0) {
-		boolean bool = true;
-		while (bool) {
-			extra.print(extra.PRE_RED);
-		extra.println("1 attack");
-		extra.println("2 chat");
-		extra.println("3 leave");
-		switch (extra.inInt(3)) {
-		case 1: name = "angry " +name ; interactString = "approach " +name;
-		state = 2;
-		//forceGo = true;//can't do this without kicking them out
-		this.richHelper(bodyguard, rich);
-		bool = false;break;
-		case 2:
-			if (Player.bag.getGold() > rich.getBag().getGold()*10) {
-				String str = Oracle.tipString("racistPraise");
-				str = str.replaceAll(" an "," a ");
-				str = str.replaceAll("oracles","rich person");
-				str = str.replaceAll("oracle","rich people");
-				extra.println("\"" +extra.capFirst(str)+"\"");
-			}else {
-				String str = Oracle.tipString(extra.choose("racistShun","racistPraise"));
-				str = str.replaceAll(" an "," a ");
-				str = str.replaceAll("not-oracle","poor person");
-				str = str.replaceAll("oracles","rich people");
-				str = str.replaceAll("oracle","rich person");
-				extra.println("\"" +extra.capFirst(str)+"\"");	
-			};break;
-			
-		case 3:bool = false;break;
-		}}}else {
-			if (state == 2) {
+		if (node.state == 0) {
+			boolean bool = true;
+			while (bool) {
+				extra.print(extra.PRE_RED);
+				extra.println("1 attack");
+				extra.println("2 chat");
+				extra.println("3 leave");
+				switch (extra.inInt(3)) {
+				case 1: node.name = "angry " +node.name ; node.interactString = "approach " +node.name;
+				node.state = 2;
+				//forceGo = true;//can't do this without kicking them out
+				this.richHelper(bodyguard, rich);
+				bool = false;break;
+				case 2:
+					if (Player.bag.getGold() > rich.getBag().getGold()*10) {
+						String str = Oracle.tipString("racistPraise");
+						str = str.replaceAll(" an "," a ");
+						str = str.replaceAll("oracles","rich person");
+						str = str.replaceAll("oracle","rich people");
+						extra.println("\"" +extra.capFirst(str)+"\"");
+					}else {
+						String str = Oracle.tipString(extra.choose("racistShun","racistPraise"));
+						str = str.replaceAll(" an "," a ");
+						str = str.replaceAll("not-oracle","poor person");
+						str = str.replaceAll("oracles","rich people");
+						str = str.replaceAll("oracle","rich person");
+						extra.println("\"" +extra.capFirst(str)+"\"");	
+					};break;
+
+				case 3:bool = false;break;
+				}
+			}
+		}else {
+			if (node.state == 2) {
 				this.richHelper(bodyguard, rich);
 			}else {
 				randomLists.deadPerson();
-				findBehind("bodies");
+				node.findBehind("bodies");
 			}
 		}
 	}
@@ -782,163 +746,176 @@ public class GroveNode implements NodeType{
 				return true;
 			}
 		}
-		state = 3;
-		name = "dead "+ name;
-		interactString = "examine body";
+		node.state = 3;
+		node.name = "dead "+ node.name;
+		node.interactString = "examine body";
 		return false;
 	}
 	
 	private void weapStone() {
-		if (state ==0) {
-			extra.println("There is a " + ((Weapon)storage1).getBaseName() + " embeded in the stone here. Try to take it?");
+		if (node.state ==0) {
+			extra.println("There is a " + ((Weapon)node.storage1).getBaseName() + " embeded in the stone here. Try to take it?");
 			if (extra.yesNo()) {
-				extra.println("As you pull on it, the stone crumbles to pieces!");
-				state = 1;
-				name = "rock pieces";
-				interactString = "examine rock pieces";
-				if (AIClass.compareItem(Player.bag.getHand(),(Item)storage1,-1,false)) {
+				int lvl = Player.player.getPerson().getLevel();
+				if (lvl < node.level-1) {
+					extra.println("Try as you might, you can't pry lose the " + ((Weapon)node.storage1).getBaseName());
+					return;
+				}
+				if (lvl > node.level + 1) {
+					extra.println("As you pull on it, the stone crumbles to pieces!");
+				}else {
+					extra.println("As you pull on it, the "+((Weapon)node.storage1).getBaseName()+" slowly slips free, and the rock crumbles!");
+				}
+				
+				node.state = 1;
+				node.name = "rock pieces";
+				node.interactString = "examine rock pieces";
+				if (AIClass.compareItem(Player.bag.getHand(),(Item)node.storage1,-1,false)) {
 					;
-					Services.sellItem(Player.bag.swapWeapon((Weapon)storage1),Player.bag,false);
+					Services.sellItem(Player.bag.swapWeapon((Weapon)node.storage1),Player.bag,false);
 					Networking.charUpdate();
 				}else {
-					Services.sellItem((Weapon)storage1,Player.bag,false);
+					Services.sellItem((Weapon)node.storage1,Player.bag,false);
 				}
 			}else {
 				extra.println("You leave it alone.");
 			}
 		}else {
 			extra.println("Crumbled rock lies on the forest floor.");
+			node.findBehind("rock fragments");
 		}
 	}
 	
 	private void equal1() {
-		if (state == 1) {
+		if (node.state == 1) {
 			randomLists.deadPerson();
-			findBehind("body");
+			node.findBehind("body");
 			return;
 		}
-		Person equal = (Person)storage1;
+		Person equal = (Person)node.storage1;
 		equal.getBag().graphicalDisplay(1, equal);
 		boolean bool = true;
 		while (bool) {
-			extra.print(extra.PRE_RED);
-		extra.println("1 attack");
-		extra.println("2 chat");
-		extra.println("3 leave");
-		switch (extra.inInt(3)) {
-		case 1: bool = false;
+			extra.println("1 "+extra.PRE_RED+"attack");
+			extra.println("2 chat");
+			extra.println("3 leave");
+			switch (extra.inInt(3)) {
+			case 1: bool = false;
 			mainGame.CombatTwo(Player.player.getPerson(),equal);
 			if (equal.isAlive()) {break;}
-			state = 1;
-			name = "dead "+ name;
-			interactString = "examine body";
-			
-		;break;
-		case 2:
-			Oracle.tip("equality");break;
-			
-		case 3:bool = false;break;
-		}
+			node.state = 1;
+			node.name = "dead "+ node.name;
+			node.interactString = "examine body";
+
+			;break;
+			case 2:
+				Oracle.tip("equality");break;
+
+			case 3:bool = false;break;
+			}
 		}
 	}
-	
+
 	private void shaman() {
-		if (state == 1) {
+		if (node.state == 1) {
 			randomLists.deadPerson();
-			findBehind("body");
+			node.findBehind("body");
 			return;
 		}
-		Person equal = (Person)storage1;
+		Person equal = (Person)node.storage1;
 		equal.getBag().graphicalDisplay(1,equal);
 		boolean bool = true;
 		while (bool) {
 			extra.print(extra.PRE_RED);
-		extra.println("1 attack");
-		extra.println("2 chat");
-		extra.println("3 leave");
-		switch (extra.inInt(3)) {
-		case 1: name = "angry " +name ; interactString = "ERROR";
-			//storage1 = storage2;
-			forceGo = true;
-			idNum = 3;
-			bool = false;
-		;break;
-		case 2:
-			boolean bool2 = true;
-			while (bool2) {
-			extra.println("They say that they are a shaman.");
-			int cost = level*50;
-			extra.println("1 Buy cleansing ("+cost + " gold)");
+			extra.println("1 attack");
 			extra.println("2 chat");
-			extra.println("3 return");
-			
+			extra.println("3 leave");
 			switch (extra.inInt(3)) {
-			case 1: if (Player.bag.getGold() < cost) {
-					extra.println("Not enough gold!");
+			case 1: node.name = "angry " +node.name ; node.interactString = "ERROR";
+			//storage1 = storage2;
+			node.forceGo = true;
+			node.idNum = 3;
+			bool = false;
+			;break;
+			case 2:
+				boolean bool2 = true;
+				while (bool2) {
+					extra.println("They say that they are a shaman.");
+					int cost = node.level*50;
+					extra.println("1 Buy cleansing ("+cost + " gold)");
+					extra.println("2 chat");
+					extra.println("3 return");
+
+					switch (extra.inInt(3)) {
+					case 1: if (Player.bag.getGold() < cost) {
+						extra.println("Not enough gold!");
+						break;
+					}
+					Player.bag.addGold(-cost);
+					Player.player.getPerson().cureEffects();
+					extra.println("You feel better.");
+
 					break;
-				}
-			Player.bag.addGold(-cost);
-			Player.player.getPerson().cureEffects();
-			extra.println("You feel better.");
-			
-			break;
-			case 2: Oracle.tip("shaman");break;
-			case 3: bool2 = false;break;
+					case 2: Oracle.tip("shaman");break;
+					case 3: bool2 = false;break;
+					}
+				};break;
+			case 3:bool = false;break;
 			}
-			};break;
-		case 3:bool = false;break;
-		}
 		}
 	}
-	
+
 	private boolean packOfWolves() {
-		if (state == 0) {
+		if (node.state == 0) {
 			extra.print(extra.PRE_RED);
 			extra.println("The pack descends upon you!");
-			List<Person> list = (List<Person>)storage1;
+			List<Person> list = (List<Person>)node.storage1;
 			List<Person> survivors = mainGame.HugeBattle(list,Player.list());
-			
+
 			if (survivors.contains(Player.player.getPerson())) {
-			forceGo = false;
-			interactString = "approach wolf corpses";
-			storage1 = null;
-			state = 1;
-			name = "dead "+name;
-			return false;}else {
-				storage1 = survivors;
+				node.forceGo = false;
+				node.interactString = "approach wolf corpses";
+				node.storage1 = null;
+				node.state = 1;
+				node.name = "dead wolves";
+				return false;
+			}else {
+				node.storage1 = survivors;
 				return true;
 			}
 		}else {
 			extra.println("There are a few wolf corpses here.");
-			findBehind("corpses");
+			node.findBehind("corpses");
 			return false;
 		}
 	}
 	
 	private void collector() {
-		if (state == 0) {
-			Person p = (Person)storage1;
+		if (node.state == 0) {
+			Person p = (Person)node.storage1;
 			p.getBag().graphicalDisplay(1, p);
 			extra.print(extra.PRE_RED);
 			extra.println("Challenge "+ p.getName() + "?");
 			if (extra.yesNo()){
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
-					state = 1;
-					storage1 = null;
-					name = "dead "+name;
-					interactString = "examine body";
+					node.state = 1;
+					node.storage1 = null;
+					node.name = "dead "+node.name;
+					node.interactString = "examine body";
 				}
 			}
-		}else {randomLists.deadPerson();findBehind("body");}
-		
+		}else {randomLists.deadPerson();
+		node.findBehind("body");
+		}
+
 	}
 	
 	private void beeHive() {
-		name = "plant spot";
-		interactString = "approach plant spot";
-		idNum = -1;
-		storage1 = new PlantSpot(level);
+		node.name = "plant spot";
+		node.interactString = "approach plant spot";
+		node.idNum = -1;
+		node.storage1 = new PlantSpot(node.level);
 		extra.println("You destroy the hive, angering the bees!");
 		Player.bag.addNewDrawBane(DrawBane.HONEY);
 		Player.bag.addNewDrawBane(DrawBane.WAX);
@@ -948,22 +925,15 @@ public class GroveNode implements NodeType{
 	}
 	
 	@Override
-	protected DrawBane[] dbFinds() {
+	public DrawBane[] dbFinds() {
 		return new DrawBane[] {DrawBane.MEAT,DrawBane.WOOD,DrawBane.TRUFFLE};
 	}
 
 	@Override
-	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		this.spreadTime(time, calling);
-		return timeEvent(time,calling);
-	}
-
-	@Override
-	public List<TimeEvent> timeEvent(double d, TimeContext calling) {
-		if (idNum == -1) {
-			calling.localEvents(((PlantSpot)storage1).passTime(d,calling));
+	public void passTime(NodeConnector node, double time, TimeContext calling){
+		if (node.idNum == -1) {
+			calling.localEvents(((PlantSpot)node.storage1).passTime(time,calling));
 		}
-		return null;
 	}
 
 
