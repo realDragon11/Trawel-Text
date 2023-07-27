@@ -9,9 +9,6 @@ import trawel.towns.Town;
 
 public class Graveyard extends NodeFeature {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	public Graveyard(String name,Town t) {
 		this.name = name;
@@ -40,6 +37,10 @@ public class Graveyard extends NodeFeature {
 		case 0: return GraveyardNode.getSingleton();
 		}
 		return null;
+	}
+	@Override
+	protected byte bossType() {
+		return -1;
 	}
 
 }

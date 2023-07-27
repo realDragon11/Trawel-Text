@@ -68,4 +68,6 @@ public abstract class NodeFeature extends Feature {
 		start.endPass();
 	}
 
+	protected abstract byte bossType();
+
 }

@@ -116,10 +116,7 @@ public class NodeConnector implements Serializable {
 				}
 				if (forceGo) {
 					visited = 3;
-					if (parent.numType(typeNum).interact(NodeConnector.this)) {
-						NodeConnector.lastNode = null;
-						return null;
-					}
+					interactCode();
 					return null;//redo operation
 				}
 				mList.add(new NodeMenuTitle(NodeConnector.this));
@@ -167,6 +164,22 @@ public class NodeConnector implements Serializable {
 		}
 		
 	}
+	
+	protected void interactCode() {
+		if (typeNum < 0) {
+			switch (typeNum) {
+			case -1:
+				if (BossNode.getSingleton().interact(currentNode)) {
+					currentNode = null;
+				}
+				break;
+			}
+			return;
+		}
+		if (parent.numType(typeNum).interact(currentNode)) {
+			currentNode = null;
+		}
+	}
 	protected class NodeMenuInteract extends MenuSelect{
 
 		private NodeConnector owner;
@@ -187,9 +200,8 @@ public class NodeConnector implements Serializable {
 		@Override
 		public boolean go() {
 			owner.visited = 3;
-			if (parent.numType(typeNum).interact(currentNode)) {
-				currentNode = null;
-			}
+			interactCode();
+			
 			return true;
 		}
 		
@@ -303,5 +315,20 @@ public class NodeConnector implements Serializable {
 	protected NodeConnector finalize(NodeFeature owner) {
 		owner.numType(typeNum).apply(this);
 		return this;
-	} 
+	}
+	
+	protected void setStair() {
+		isStair = true;
+	}
+	/**
+	 * max allowed floors is 2^7, first bit used for set is stair
+	 * @param b
+	 */
+	protected void setFloor(byte b) {
+		floor = b;
+	}
+
+	public boolean isStair() {
+		return isStair;
+	}
 }

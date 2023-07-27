@@ -36,7 +36,6 @@ public class GraveyardNode implements NodeType{
 		make.eventNum = idNum;
 		make.typeNum = 0;
 		make.level = tier;
-		apply(make);
 		return make;
 	}
 	

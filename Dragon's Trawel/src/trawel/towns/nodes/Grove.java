@@ -10,9 +10,6 @@ import trawel.towns.Town;
 
 public class Grove extends NodeFeature {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public Grove(String name,Town t) {
@@ -44,6 +41,10 @@ public class Grove extends NodeFeature {
 		case 1: return CaveNode.getSingleton();
 		}
 		return null;
+	}
+	@Override
+	protected byte bossType() {
+		return 0;
 	}
 
 }

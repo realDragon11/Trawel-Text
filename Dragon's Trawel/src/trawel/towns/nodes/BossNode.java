@@ -10,58 +10,80 @@ import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
+import trawel.time.TimeContext;
 
-public class BossNode extends NodeConnector implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private List<Person> people;
-	private int state = 0;
-	private int type;
-	public BossNode(int tier,int t){
-		type = t;
-		setConnects(new ArrayList<NodeConnector>());
-		level = tier;
+public class BossNode implements NodeType {
+	
+	private static final BossNode handler = new BossNode();
+	
+	private NodeConnector node;
+	
+	public static BossNode getSingleton() {
+		return handler;
+	}
+	
+	@Override
+	public NodeConnector getNode(NodeFeature owner, int tier) {
+		NodeConnector make = new NodeConnector();
+		make.eventNum = owner.bossType();
+		make.typeNum = -1;
+		make.level = tier;
+		make.storage1 = new ArrayList<Person>();
+		return make;
+	}
+	
+	@Override
+	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
+		return getNode(owner,tier);
+	}
+	
+	@Override
+	public NodeConnector generate(NodeFeature owner, int size, int tier) {
+		return getNode(owner,tier);
+	}
+	
+	@Override
+	public void apply(NodeConnector made) {
 		Person p;
-		switch (type) {
-		case 0:
-			name = "The Fatespinner (Boss)";
-			interactString = "challenge The Fatespinner";
-			people = new ArrayList<Person>();
-			people.add(RaceFactory.makeMimic(extra.zeroOut(tier-3)+1));
-			people.add(RaceFactory.makeMimic(extra.zeroOut(tier-3)+1));
-			p = RaceFactory.getBoss(tier);
+		List<Person> peeps = (List<Person>) made.storage1;
+		switch (made.eventNum) {
+		case 1:
+			made.name = "The Fatespinner (Boss)";
+			made.interactString = "challenge The Fatespinner";
+			peeps.add(RaceFactory.makeMimic(extra.zeroOut(made.level-3)+1));
+			peeps.add(RaceFactory.makeMimic(extra.zeroOut(made.level-3)+1));
+			p = RaceFactory.getBoss(made.level);
 			p.setTitle("The Fatespinner");
 			p.getBag().getDrawBanes().add(DrawBane.TELESCOPE);
-			people.add(p);
+			peeps.add(p);
 		break;
-		case 1:
-			name = "The Hell Baron (Boss)";
-			interactString = "challenge The Hell Baron";
-			people = new ArrayList<Person>();
-			p = RaceFactory.getBoss(tier);
+		case 2:
+			made.name = "The Hell Baron (Boss)";
+			made.interactString = "challenge The Hell Baron";
+			p = RaceFactory.getBoss(made.level);
 			p.setTitle("The Baron of Hell");
 			p.getBag().getDrawBanes().add(DrawBane.LIVING_FLAME);
-			people.add(p);
+			peeps.add(p);
 		break;
 		}
+		made.storage1 = peeps;
 	}
 	
 	private boolean fatespinner() {
-		if (state == 0) {
+		if (node.state == 0) {
 			extra.println(extra.PRE_RED+"You challenge the fatespinner!");
-			List<Person> list = people;
+			List<Person> list = (List<Person>) node.storage1;
 			List<Person> survivors = mainGame.HugeBattle(list,Player.list());
 			if (survivors.contains(Player.player.getPerson())) {
-			forceGo = false;
-			interactString = "approach the fatespinner's corpse";
-			people = null;
-			state = 1;
-			name = name + "'s corpse";
-			Networking.sendStrong("Achievement|boss1|");
-			return false;}else {
-				people = survivors;
+				node.forceGo = false;
+				node.interactString = "approach the fatespinner's corpse";
+				node.storage1 = null;
+				node.state = 1;
+				node.name = "The Fatespinner's corpse";
+				Networking.sendStrong("Achievement|boss1|");
+				return false;
+			}else {
+				node.storage1 = survivors;
 				return true;
 			}
 		}else {
@@ -73,18 +95,19 @@ public class BossNode extends NodeConnector implements Serializable {
 	}
 	
 	private boolean hellbaron() {
-		if (state == 0) {
+		if (node.state == 0) {
 			extra.println(extra.PRE_RED+"You challenge the hell baron!");
-			List<Person> list = people;
+			List<Person> list = (List<Person>) node.storage1;
 			Person winner = mainGame.CombatTwo(Player.player.getPerson(),list.get(0));
 			if (winner == Player.player.getPerson()) {
-			forceGo = false;
-			interactString = "approach the hell baron's corpse";
-			people = null;
-			state = 1;
-			name = name + "'s corpse";
-			Networking.sendStrong("Achievement|boss2|");
-			return false;}else {
+				node.forceGo = false;
+				node.interactString = "approach the hell baron's corpse";
+				node.storage1 = null;
+				node.state = 1;
+				node.name = "The Hell Baron's corpse";
+				Networking.sendStrong("Achievement|boss2|");
+				return false;
+			}else {
 				return true;
 			}
 		}else {
@@ -96,17 +119,24 @@ public class BossNode extends NodeConnector implements Serializable {
 	}
 
 	@Override
-	protected boolean interact() {
-		switch (type) {
-		case 0: return fatespinner();
-		case 1: return hellbaron();
+	public boolean interact(NodeConnector node) {
+		this.node = node;
+		switch(node.idNum) {
+		case 1: return fatespinner();
+		case 2: return hellbaron();
 		}
 		throw new RuntimeException("Invalid boss");
 	}
 	
 	@Override
-	protected DrawBane[] dbFinds() {
+	public DrawBane[] dbFinds() {
 		return null;
+	}
+
+	@Override
+	public void passTime(NodeConnector node, double time, TimeContext calling) {
+		// empty
+		
 	}
 
 }
