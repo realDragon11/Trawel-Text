@@ -26,19 +26,12 @@ public class Graveyard extends NodeFeature {
 		Networking.setArea("dungeon");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|dungeon|Dungeon|");
-		start.go();
+		NodeConnector.enter(start);
 	}
 
 	@Override
 	protected void generate() {
 		start = new GraveyardNode(size,town.getTier(),town,this);
-	}
-	public Shape getShape() {
-		return Shape.STANDARD;
-	}
-	
-	public enum Shape{
-		STANDARD;
 	}
 
 }

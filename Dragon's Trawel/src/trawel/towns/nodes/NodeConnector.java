@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import derg.menus.MenuGenerator;
+import derg.menus.MenuItem;
+import derg.menus.MenuLast;
+import derg.menus.MenuLine;
+import derg.menus.MenuSelect;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
@@ -16,7 +21,7 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 
-public abstract class NodeConnector implements Serializable, CanPassTime {
+public class NodeConnector implements Serializable {
 
 	//used for connecting event nodes with bosses
 	
@@ -29,17 +34,34 @@ public abstract class NodeConnector implements Serializable, CanPassTime {
 	protected int level;
 	protected String interactString = "ERROR";
 	protected boolean forceGo = false;
-	public boolean isSummit;
-	public int floor = 0;
-	public boolean isStair = false;
-	public String parentName;
-	public boolean passing = false;
-	public int visited = 0;
+	public boolean isSummit;//DOLATER: make just detect deepest floor
+	public int floor = 0;//DOLATER: make floor apply to all types as 'depth'
+	public boolean isStair = false;//idk what to do
+	//public String parentName;//removed, convert to parent
+	public transient boolean passing;//FIXME: might have to init at false every time
+	public byte visited = 0;
 	
-	protected transient Feature parent;
+	protected byte typeNum;
+	protected byte eventNum;
+	protected int state;
+	protected int idNum;
+	protected Object storage1, storage2;
+	
+	
+	protected transient NodeFeature parent;
 	//protected Class<Feature> parentType;
 	
 	public static NodeConnector lastNode = null;
+	protected static NodeConnector currentNode = null;
+	
+	protected NodeConnector() {
+		connects = new ArrayList<NodeConnector>();
+		state = 0;
+		floor = -1;
+		typeNum = -1;
+		eventNum = -1;
+		forceGo = false;
+	}
 	
 	public ArrayList<NodeConnector> getConnects() {
 		return connects;
@@ -62,96 +84,159 @@ public abstract class NodeConnector implements Serializable, CanPassTime {
 	public int getLevel() {
 		return level;
 	}
-	
-	protected abstract String shapeName();
 
-
-	public void go() {
+	public static void enter(NodeConnector start) {
 		Feature.atFeatureForHeader.goHeader();
-		if (isSummit) {
-			switch(this.shapeName()) {
-			case "TOWER":
-			Networking.sendStrong("Achievement|tower1|");
-			break;
-			case "HELL":
-				Networking.sendStrong("Achievement|mine2|");
-				break;
-			}
+		lastNode = null;
+		currentNode = start;
+		while (currentNode != null) {
+			Player.addTime(.1);
+			mainGame.globalPassTime();
+			extra.menuGo(currentNode.menuGen());
 		}
-		Player.addTime(.1);
-		mainGame.globalPassTime();
-		int i = 1;
-		if (forceGo) {
-			visited = 3;
-			if (interact()) {
-				return;
-			}
+	}
+	
+	public MenuGenerator menuGen() {
+		return new MenuGenerator() {
 
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				if (isSummit) {
+					switch(NodeConnector.currentNode.parent.getShape()) {
+					case TOWER:
+					Networking.sendStrong("Achievement|tower1|");
+					break;
+					case ELEVATOR:
+						if (parent instanceof Mine) {
+							Networking.sendStrong("Achievement|mine2|");
+						}
+						break;
+					}
+				}
+				if (forceGo) {
+					visited = 3;
+					if (parent.numType(typeNum).interact(NodeConnector.this)) {
+						NodeConnector.lastNode = null;
+						return null;
+					}
+					return null;//redo operation
+				}
+				mList.add(new NodeMenuTitle(NodeConnector.this));
+				mList.add(new NodeMenuInteract(NodeConnector.this));
+				for (NodeConnector n: connects) {
+					mList.add(new NodeMenuItem(n));
+				}
+				mList.add(new MenuLast() {
+
+					@Override
+					public String title() {
+						return extra.TIMID_RED + "exit " + parent.getName();//TODO: fix parent name
+					}
+
+					@Override
+					public boolean go() {
+						NodeConnector.lastNode = null;
+						return true;
+					}
+					
+				});
+				return mList;
+			}
+		};
+	}
+	
+	protected class NodeMenuTitle extends MenuLine{
+
+		private NodeConnector owner;
+		
+		public NodeMenuTitle(NodeConnector own) {
+			owner = own;
 		}
-		String visitColor = extra.PRE_YELLOW;
-		switch (visited) {
-		case 0: visitColor = extra.COLOR_NEW;break;
-		case 1: visitColor = extra.COLOR_SEEN;break;
-		case 2: visitColor = extra.COLOR_BEEN;break;
-		case 3: visitColor = extra.COLOR_OWN;break;
+		
+		@Override
+		public String title() {
+			String visitColor = extra.PRE_WHITE;
+			switch (owner.visited) {
+			case 0: visitColor = extra.COLOR_NEW; owner.visited = 2;break;
+			case 1: visitColor = extra.COLOR_SEEN; owner.visited = 2;break;
+			case 2: visitColor = extra.COLOR_BEEN;break;
+			case 3: visitColor = extra.COLOR_OWN;break;
+			}
+			return visitColor + owner.name;
 		}
-		if (visited < 2) {
-			visited = 2;
+		
+	}
+	protected class NodeMenuInteract extends MenuSelect{
+
+		private NodeConnector owner;
+		
+		public NodeMenuInteract(NodeConnector own) {
+			owner = own;
 		}
-		extra.println(name);
-		extra.println(i+ " "+visitColor + interactString);i++;
-		for (NodeConnector n: connects) {
-			switch (n.visited) {
-			case 0: visitColor = extra.COLOR_NEW; n.visited = 1;break;
+		
+		@Override
+		public String title() {
+			String visitColor = extra.PRE_WHITE;
+			if (owner.visited != 3) {
+				visitColor = extra.TIMID_GREY;
+			}
+			return visitColor + owner.name;
+		}
+
+		@Override
+		public boolean go() {
+			owner.visited = 3;
+			if (parent.numType(typeNum).interact(currentNode)) {
+				currentNode = null;
+			}
+			return true;
+		}
+		
+	}
+	
+	protected class NodeMenuItem extends MenuSelect{
+
+		private NodeConnector owner;
+		
+		public NodeMenuItem(NodeConnector own) {
+			owner = own;
+		}
+		
+		@Override
+		public String title() {
+			String visitColor = extra.PRE_WHITE;
+			switch (owner.visited) {
+			case 0: visitColor = extra.COLOR_NEW; owner.visited = 1;break;
 			case 1: visitColor = extra.COLOR_SEEN;break;
 			case 2: visitColor = extra.COLOR_BEEN;break;
 			case 3: visitColor = extra.COLOR_OWN;break;
 			}
-			extra.print(i + " "+visitColor + n.getName());
-			if (n.isStair) {
-				if (this.floor > n.floor) {
-					extra.print(" down");
+			String postText = "";
+			if (owner.isStair) {
+				if (owner.floor > NodeConnector.currentNode.floor) {
+					postText = " down";
 				}else {
-					extra.print(" up");
+					postText = " up";
 				}
 			}
-			if (n.equals(lastNode)) {
-				extra.print(" (back) ");
-			}
-			extra.println();
 			if (Player.hasSkill(Skill.TIERSENSE)) {
-				extra.println("Tier: " + n.getLevel());
+				postText +=" T: " + owner.getLevel();
 			}
 			if (Player.hasSkill(Skill.TOWNSENSE)) {
-				extra.println("Connections: " + n.connects.size());
+				postText +=" C: " + owner.connects.size();
 			}
-			i++;
-			}
-		extra.println(i + " exit " + parentName);i++;
-		int j = 1;
-		int in = extra.inInt(i-1);
-		if (in == j) {
-			visited = 3;
-			if (interact()) {
-				return;
-			}
-		}j++;
-		for (NodeConnector n: connects) {
-			if (in == j) {
-				lastNode = this;
-				n.go();
-				return;
-			}
-			j++;
-			}
-		if (in == j) {
-			return;
+			return visitColor + owner.name +postText+ (owner == NodeConnector.lastNode ? extra.PRE_WHITE+" (back)" : "");
 		}
-		go();
+
+		@Override
+		public boolean go() {
+			currentNode = owner;
+			owner.visited = 2;
+			return true;//always return true to prevent recursive nesting issues
+		}
+		
 	}
-
-
-	protected abstract boolean interact();
 	
 	public void reverseConnections() {
 		Collections.reverse(connects);
@@ -164,18 +249,14 @@ public abstract class NodeConnector implements Serializable, CanPassTime {
 			}
 		}
 	}
-	//used for nodes without a passtime component
-	@Override
-	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		return null;
-	}
 	
 	//called in some passTime implementations to propagate it
 	public void spreadTime(double time, TimeContext calling) {
 		passing = true;
+		parent.numType(typeNum).passTime(this, time, calling);
 		for (NodeConnector n: connects) {
 			if (!n.passing) {
-				n.passTime(time,calling);
+				n.spreadTime(time,calling);
 			}
 		}
 	}
@@ -184,14 +265,12 @@ public abstract class NodeConnector implements Serializable, CanPassTime {
 		return null;
 	}
 	
-	abstract protected DrawBane[] dbFinds();
-	
 	protected DrawBane attemptCollectAll(float odds,int amount) {
 		NodeFeature keeper = (NodeFeature)parent;
 		if (keeper.getFindTime() > 1 && Player.player.sideQuests.size() > 0) {
 			if (extra.randFloat() < odds) {
 				List<String> list = Player.player.allQTriggers();
-				for (DrawBane str: dbFinds()) {
+				for (DrawBane str: parent.numType(typeNum).dbFinds()) {
 					if (list.contains("db:"+str.name())) {
 						keeper.findCollect("db:"+str.name(), amount);
 						return str;
@@ -211,7 +290,7 @@ public abstract class NodeConnector implements Serializable, CanPassTime {
 	}
 
 
-	protected void parentChain(Feature p) {
+	protected void parentChain(NodeFeature p) {
 		parent = p;
 		passing = true;
 		for (NodeConnector n: connects) {

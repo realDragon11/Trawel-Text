@@ -78,7 +78,7 @@ public class MineNode extends NodeConnector implements java.io.Serializable{
 		storage1 = RaceFactory.getCultist(level);
 		break;
 		}
-		if (size < 2 || ((Mine)parent).getShape().equals(Mine.Shape.HELL)) {
+		if (size < 2 || parent.getShape() != NodeFeature.Shape.NONE) {
 			return;
 		}
 		if (extra.chanceIn(1,10)) {

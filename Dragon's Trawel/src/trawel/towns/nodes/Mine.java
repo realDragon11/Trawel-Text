@@ -12,10 +12,7 @@ public class Mine extends NodeFeature {
 
 	private static final long serialVersionUID = 1L;
 	private int veinsLeft = 0;
-	public enum Shape{
-		STANDARD, HELL;
-	}
-	private Shape shape;
+	
 	public Mine(String name,Town t, SuperPerson owner,Shape s) {
 		this.name = name;
 		town = t;
@@ -35,7 +32,7 @@ public class Mine extends NodeFeature {
 		Networking.addMultiLight(80,471);
 		Networking.addMultiLight(486,360);
 		Networking.addMultiLight(1012,353);
-		start.go();
+		NodeConnector.enter(start);
 		Networking.clearLights();
 	}
 	@Override
@@ -46,10 +43,10 @@ public class Mine extends NodeFeature {
 	@Override
 	protected void generate() {
 		switch (shape) {
-		case STANDARD:
+		case NONE:
 			start = new MineNode(size,town.getTier(),this);
 			break;
-		case HELL:
+		case ELEVATOR:
 			start = new MineNode(size,town.getTier(),this);
 			NodeConnector lastNode = start;
 			NodeConnector newNode;
@@ -75,12 +72,9 @@ public class Mine extends NodeFeature {
 	}
 	public void removeVein() {
 		veinsLeft--;
-		if (veinsLeft == 0 && shape.equals(Shape.STANDARD)) {
+		if (veinsLeft == 0 && shape.equals(Shape.NONE)) {
 			Networking.sendStrong("Achievement|mine1|");
 		}
-	}
-	public Shape getShape() {
-		return shape;
 	}
 	
 

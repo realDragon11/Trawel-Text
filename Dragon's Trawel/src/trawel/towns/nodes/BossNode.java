@@ -103,11 +103,6 @@ public class BossNode extends NodeConnector implements Serializable {
 		}
 		throw new RuntimeException("Invalid boss");
 	}
-
-	@Override
-	protected String shapeName() {
-		return "NOPE";
-	}
 	
 	@Override
 	protected DrawBane[] dbFinds() {

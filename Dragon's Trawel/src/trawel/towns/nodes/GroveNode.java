@@ -23,42 +23,21 @@ import trawel.time.TimeEvent;
 import trawel.towns.misc.PlantSpot;
 import trawel.towns.services.Oracle;
 
-public class GroveNode extends NodeConnector{
-	//potentail problem: all this code is in a highly duplicated node
+public class GroveNode implements NodeType{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	//private String name;
 	private static final int EVENT_NUMBER = 21;
-	protected int state;
-	//private String interactString;
-	protected int idNum;
-	//private int level;
-	protected Object storage1, storage2;
-	//private ArrayList<GroveNode> connects;
-	//private boolean forceGo;
 	
-	/**
-	 * used for CaveNode
-	 */
-	protected GroveNode() {
-		
+	private static final GroveNode handler = new GroveNode();
+	
+	private NodeConnector node;
+	
+	public static GroveNode singleton() {
+		return handler;
 	}
 	
-	public GroveNode(int size, int tier,Grove p ) {
-		state = 0;
-		parent = p;
-		idNum = extra.randRange(1,EVENT_NUMBER);
-		//idNum = 18;//woof
-		//if (idNum == 18 && tier <= 3) {//wolves
-		//	idNum = extra.randRange(1,EVENT_NUMBER);
-		//}
-		//DEBUG
-		//idNum = (int)extra.choose(14,15);
-		
-		
+	@Override
+	public NodeConnector getNode(NodeFeature owner, int tier) {
+		byte idNum = (byte) extra.randRange(1,EVENT_NUMBER);
 		if (extra.chanceIn(1,10)) {
 			idNum = 11;//mushroom
 			if (extra.chanceIn(1,3)) {
@@ -69,85 +48,21 @@ public class GroveNode extends NodeConnector{
 		if (idNum == 13) {
 			idNum = 12; //moss
 		}
-		level = tier;
-		if (extra.chanceIn(1,10)) {
-			level++;
-		}
-		setConnects(new ArrayList<NodeConnector>());
-		forceGo = false;
-		generate(size);
-		parentName = p.getName();
+		NodeConnector make = new NodeConnector();
+		make.eventNum = idNum;
+		make.typeNum = 0;
+		make.level = tier;
 		
+		
+		
+		return make;
 	}
-	
-	
-	private void generate(int size) {
-		switch (idNum) {
-		case 0: name = ""; interactString = "";break;
-		case 1: name = randomLists.randomWarrior(); interactString = "challenge " + name;
-		storage1 = RaceFactory.getDueler(level);
-		break;
-		case 2: name = extra.choose("river","pond","lake","stream","brook"); interactString = "wash yourself";break;
-		case 3: name = randomLists.randomMuggerName(); interactString = "ERROR"; forceGo = true;
-		storage1 = RaceFactory.getMugger(level);break;
-		case 4: name = extra.choose("rotting","decaying") + " " +RaceFactory.randRace(Race.RaceType.HUMANOID).renderName(false) +" " + extra.choose("corpse","body"); interactString = "loot corpse";break;
-		case 5: name = "fairy circle"; interactString = "examine circle";break;
-		case 6: name = "fairy circle"; interactString = "examine circle";break;
-		case 7: name = "old " + randomLists.randomWarrior(); interactString = "approach " + name;
-		storage1 = RaceFactory.makeOld(level + 2);
-		if (extra.chanceIn(1, 4)) {
-		((Person)storage1).getBag().getDrawBanes().add(DrawBane.REPEL);}
-		break;
-		case 8: name = "fallen tree"; interactString = "examine fallen tree";break;
-		case 9: name = "dryad"; interactString = "approach the " + name;
-		storage1 = RaceFactory.getDryad(level);
-		storage2 = 0;
-		break;
-		case 10: name = "fallen tree";interactString = "examine fallen tree";break;
-		case 11: name = randomLists.randomColor() + " mushroom";interactString = "approach mushroom";break;
-		case 12: name = "moss"; interactString = "approach moss"; state = extra.randRange(0,1);break;
-		case 13: name = "grey hole";interactString = "approach hole";break;
-		case 14:
-			storage2 = RaceFactory.getRacist(level); 
-			((Person)storage2).setRacism(true);
-			//storage1 = ((Person)storage2).getBag().getRace();
-			name = ((Person)storage2).getBag().getRace().renderName(false);
-			interactString = "approach " + name;break;
-		case 15: storage1 = RaceFactory.getRich(level); storage2 = RaceFactory.getRich(level+1);
-		name = ((Person)storage1).getBag().getRace().renderName(false); interactString = "approach " + name; 
-		((Person)storage1).getBag().addGold(level*300);break;
-		case 16: storage1 = new Weapon(level); name = ((Weapon)storage1).getBaseName() + " in a rock"; interactString = "pull on " +((Weapon)storage1).getBaseName(); break;
-		case 17: storage1 = RaceFactory.getPeace(level); ((Person)storage1).setRacism(false);
-		name = ((Person)storage1).getBag().getRace().renderName(false); interactString = "approach " + name;break;
-		case 18: ArrayList<Person> list = new ArrayList<Person>();
-		for (int i = Math.min(level, extra.randRange(3,4));i > 0 ;i--) {
-			list.add(RaceFactory.makeWolf(extra.zeroOut(level-3)+1));
-			}
-		name = "pack of wolves";
-		interactString = "ERROR";
-		storage1 = list;
-		forceGo = true;
-		state = 0;
-		;break;
-		case 19:
-		name = extra.choose("shaman"); interactString = "approach the shaman"; forceGo = false;
-		storage1 = RaceFactory.getShaman(level);
-		storage2 = storage1;break;
-		case 20:
-			name = extra.choose("collector");
-			interactString = "approach the " + name;
-			forceGo = false;
-			storage1 = RaceFactory.makeCollector(level);
-			break;
-		case 21:
-			name = "bee hive";
-			interactString = "destroy hive";
-			forceGo = false;
-			break;
-		}
-		//TODO: add lumberjacks and tending to tree
+
+	@Override
+	public NodeConnector generate(NodeFeature owner, int size, int tier) {
+		NodeConnector made = getNode(owner,tier);
 		if (size < 2) {
-			return;
+			return made;
 		}
 		int split = extra.randRange(1,Math.min(size,3));
 		int i = 1;
@@ -155,30 +70,106 @@ public class GroveNode extends NodeConnector{
 		while (i < split) {
 			int sizeRemove = extra.randRange(0,sizeLeft-1);
 			sizeLeft-=sizeRemove;
-			GroveNode n = new GroveNode(sizeRemove,level,(Grove)parent);
-			connects.add(n);
-			n.getConnects().add(this);
+			int tempLevel = tier;
+			if (extra.chanceIn(1,10)) {
+				tempLevel++;
+			}
+			NodeConnector n = generate(owner,sizeRemove,tempLevel);
+			made.connects.add(n);
+			n.getConnects().add(made);
 			i++;
 		}
+		/*
 		if (extra.chanceIn(1, 20) && sizeLeft < 4) {
 			CaveNode n = new CaveNode(sizeLeft,level,(Grove)parent,true);
 			connects.add(n);
 			n.getConnects().add(this);
 		}else {
-		GroveNode n = new GroveNode(sizeLeft,level,(Grove)parent);
-		connects.add(n);
-		n.getConnects().add(this);}
+			GroveNode n = new GroveNode(sizeLeft,level,(Grove)parent);
+			connects.add(n);
+			n.getConnects().add(this);}
+		*/
+		return made;
+	}
+
+
+	private void apply(NodeConnector made) {
+		switch (made.eventNum) {
+		case 0: made.name = ""; made.interactString = "";break;
+		case 1: made.name = randomLists.randomWarrior(); made.interactString = "challenge " + made.name;
+		made.storage1 = RaceFactory.getDueler(made.level);
+		break;
+		case 2: made.name = extra.choose("river","pond","lake","stream","brook"); made.interactString = "wash yourself";break;
+		case 3: made.name = randomLists.randomMuggerName(); made.interactString = "ERROR"; made.forceGo = true;
+		made.storage1 = RaceFactory.getMugger(made.level);break;
+		case 4: made.name = extra.choose("rotting","decaying") + " " +RaceFactory.randRace(Race.RaceType.HUMANOID).renderName(false) +" " + extra.choose("corpse","body"); made.interactString = "loot corpse";break;
+		case 5: made.name = "fairy circle"; made.interactString = "examine circle";break;
+		case 6: made.name = "fairy circle"; made.interactString = "examine circle";break;
+		case 7: made.name = "old " + randomLists.randomWarrior(); made.interactString = "approach " + made.name;
+		made.storage1 = RaceFactory.makeOld(made.level + 2);
+		if (extra.chanceIn(1, 4)) {
+		((Person)made.storage1).getBag().getDrawBanes().add(DrawBane.REPEL);}
+		break;
+		case 8: made.name = "fallen tree"; made.interactString = "examine fallen tree";break;
+		case 9: made.name = "dryad"; made.interactString = "approach the " + made.name;
+		made.storage1 = RaceFactory.getDryad(made.level);
+		made.storage2 = 0;
+		break;
+		case 10: made.name = "fallen tree";made.interactString = "examine fallen tree";break;
+		case 11: made.name = randomLists.randomColor() + " mushroom";made.interactString = "approach mushroom";break;
+		case 12: made.name = "moss"; made.interactString = "approach moss"; made.state = extra.randRange(0,1);break;
+		case 13: made.name = "grey hole";made.interactString = "approach hole";break;
+		case 14:
+			made.storage2 = RaceFactory.getRacist(made.level); 
+			//storage1 = ((Person)storage2).getBag().getRace();
+			made.name = ((Person)made.storage2).getBag().getRace().renderName(false);
+			made.interactString = "approach " + made.name;break;
+		case 15: made.storage1 = RaceFactory.getRich(made.level); made.storage2 = RaceFactory.getRich(made.level+1);
+		made.name = ((Person)made.storage1).getBag().getRace().renderName(false); made.interactString = "approach " + made.name; 
+		((Person)made.storage1).getBag().addGold(made.level*300);break;
+		case 16: made.storage1 = new Weapon(made.level); made.name = ((Weapon)made.storage1).getBaseName() + " in a rock"; made.interactString = "pull on " +((Weapon)made.storage1).getBaseName(); break;
+		case 17: made.storage1 = RaceFactory.getPeace(made.level); ((Person)made.storage1).setRacism(false);
+		made.name = ((Person)made.storage1).getBag().getRace().renderName(false); made.interactString = "approach " + made.name;break;
+		case 18: ArrayList<Person> list = new ArrayList<Person>();
+		for (int i = Math.min(made.level, extra.randRange(3,4));i > 0 ;i--) {
+			list.add(RaceFactory.makeWolf(extra.zeroOut(made.level-3)+1));
+			}
+		made.name = "pack of wolves";
+		made.interactString = "ERROR";
+		made.storage1 = list;
+		made.forceGo = true;
+		made.state = 0;
+		;break;
+		case 19:
+			made.name = extra.choose("shaman"); made.interactString = "approach the shaman"; made.forceGo = false;
+			made.storage1 = RaceFactory.getShaman(made.level);
+			made.storage2 = made.storage1;break;
+		case 20:
+			made.name = extra.choose("collector");
+			made.interactString = "approach the " + made.name;
+			made.forceGo = false;
+			made.storage1 = RaceFactory.makeCollector(made.level);
+			break;
+		case 21:
+			made.name = "bee hive";
+			made.interactString = "destroy hive";
+			made.forceGo = false;
+			break;
+		}
+		//TODO: add lumberjacks and tending to tree
+		
 	}
 	
 	@Override
-	protected boolean interact() {
-		switch(idNum) {
+	public boolean interact(NodeConnector node) {
+		this.node = node;
+		switch(node.eventNum) {
 		case -1: plantSpot();break;
 		case 1: duelist();break;
-		case 2: extra.println("You wash yourself in the "+name+".");
+		case 2: extra.println("You wash yourself in the "+node.name+".");
 		Player.player.getPerson().washAll();
 		;break;
-		case 3: mugger1(); if (state == 0) {return true;};break;
+		case 3: mugger1(); if (node.state == 0) {return true;};break;
 		case 4: findEquip();break;
 		case 5: fairyCircle1();break;
 		case 6: return fairyCircle2();
@@ -188,7 +179,7 @@ public class GroveNode extends NodeConnector{
 		case 10: fallenTree();break;
 		case 11: funkyMushroom();break;
 		case 12: funkyMoss();break;
-		case 13: return greyHole();
+		case 13: break;
 		case 14: racist1();break;
 		case 15: rich1();break;
 		case 16: weapStone();break;
@@ -203,115 +194,51 @@ public class GroveNode extends NodeConnector{
 	}
 	
 
-
-
 	public void plantSpot() {
-		((PlantSpot)storage1).go();
+		((PlantSpot)node.storage1).go();
 	}
 
-
-/*
-	public void go() {
-		Player.addTime(.1);
-		int i = 1;
-		if (forceGo) {
-			if (interact()) {
-				return;
-			}
-
-		}
-		extra.println(name);
-		extra.println(i+ " " + interactString);i++;
-		for (GroveNode n: connects) {
-			extra.println(i + " " + n.getName());
-			if (Player.hasSkill(Skill.TIERSENSE)) {
-				extra.println("Tier: " + n.level);
-			}
-			if (Player.hasSkill(Skill.TOWNSENSE)) {
-				extra.println("Connections: " + n.connects.size());
-			}
-			i++;
-			}
-		extra.println(i + " exit grove");i++;
-		int j = 1;
-		int in = extra.inInt(i-1);
-		if (in == j) {
-			if (interact()) {
-				return;
-			}
-		}j++;
-		for (GroveNode n: connects) {
-			if (in == j) {
-				n.go();
-				return;
-			}
-			j++;
-			}
-		if (in == j) {
-			return;
-		}
-		go();
-	}
-
-	
-	public String getName() {
-		return name;
-	}
-
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public ArrayList<GroveNode> getConnects() {
-		return connects;
-	}
-
-
-	private void setConnects(ArrayList<GroveNode> connects) {
-		this.connects = connects;
-	}*/
 	
 	private void duelist() {
-		if (state == 0) {
-			Person p = (Person)storage1;
+		if (node.state == 0) {
+			Person p = (Person)node.storage1;
 			p.getBag().graphicalDisplay(1, p);
 			extra.print(extra.PRE_RED);
 			extra.println("Challenge "+ p.getName() + "?");
 			if (extra.yesNo()){
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
-					state = 1;
-					storage1 = null;
-					name = "dead "+name;
-					interactString = "examine body";
+					node.state = 1;
+					node.storage1 = null;
+					node.name = "dead "+node.name;
+					node.interactString = "examine body";
 				}
 			}
-		}else {randomLists.deadPerson();findBehind("body");}
+		}else {randomLists.deadPerson();node.findBehind("body");}
 		
 	}
 
 	
 	private void mugger1() {
-		if (state == 0) {
-			Person p = (Person)storage1;
+		if (node.state == 0) {
+			Person p = (Person)node.storage1;
 			extra.print(extra.PRE_RED);
-			extra.println("You are attacked by a " + name);
+			extra.println("You are attacked by a " + node.name);
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 				if (winner != p) {
-					state = 1;
-					storage1 = null;
-					name = "dead "+name;
-					interactString = "examine body";
-					forceGo = false;
+					node.state = 1;
+					node.storage1 = null;
+					node.name = "dead "+node.name;
+					node.interactString = "examine body";
+					node.forceGo = false;
 				}
-		}else {randomLists.deadPerson();findBehind("body");}
+		}else {randomLists.deadPerson();node.findBehind("body");}
 		
 	}
 	
 	
 	private void findEquip() {
-		if (state == 0) {
+		if (node.state == 0) {
 		extra.println("You find a rotting body... With their equipment intact!");
 		AIClass.loot(new Person(level).getBag(),Player.bag,Player.player.getPerson().getIntellect(),true);
 		state = 1;}else {
@@ -1018,12 +945,6 @@ public class GroveNode extends NodeConnector{
 		Player.bag.addSeed(Seed.BEE);
 		Player.player.getPerson().addEffect(Effect.BEES);
 		
-	}
-
-
-	@Override
-	protected String shapeName() {
-		return "STANDARD";
 	}
 	
 	@Override

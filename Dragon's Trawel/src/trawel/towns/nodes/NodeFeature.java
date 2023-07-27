@@ -1,5 +1,6 @@
 package trawel.towns.nodes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import trawel.personal.people.Player;
@@ -16,10 +17,29 @@ public abstract class NodeFeature extends Feature {
 	protected NodeConnector start;
 	protected int size;
 	protected double findTime = 0;
+	protected boolean spreadTime = false;
+	
+	protected List<NodeType> typeList = new ArrayList<NodeType>();
+	
+	public enum Shape{
+		NONE, TOWER, ELEVATOR;
+	}
+	protected Shape shape;
+	
+	public Shape getShape() {
+		return shape;
+	}
+	
+	public NodeType numType(byte i) {
+		return typeList.get(i);
+	}
+	
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		start.passTime(time, calling);
-		start.endPass();
+		if (spreadTime) {
+			start.spreadTime(time, calling);
+			start.endPass();
+		}
 		findTime += time;
 		return timeScope.pop(this);
 	}

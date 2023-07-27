@@ -95,7 +95,7 @@ public class DungeonNode extends NodeConnector{
 			interactString = "loot statue";
 			break;
 		}
-		if (size < 2 || ((Dungeon)parent).getShape() != Dungeon.Shape.STANDARD) {
+		if (size < 2 || parent.getShape() != NodeFeature.Shape.NONE) {
 			return;
 		}
 		int split = extra.randRange(1,Math.min(size,3));

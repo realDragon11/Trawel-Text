@@ -15,10 +15,6 @@ public class Dungeon extends NodeFeature {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public enum Shape{
-		STANDARD, TOWER;
-	}
-	private Shape shape;
 	private int boss;
 	public Dungeon(String name,Town t,Shape s,int bossType) {
 		this.name = name;
@@ -36,13 +32,13 @@ public class Dungeon extends NodeFeature {
 		Networking.setArea("dungeon");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|dungeon|Dungeon|");
-		start.go();
+		NodeConnector.enter(start);
 	}
 	
 	@Override
 	protected void generate() {
 		switch (shape) {
-		case STANDARD: start = new DungeonNode(size,town.getTier(),town,this,false);break;
+		case NONE: start = new DungeonNode(size,town.getTier(),town,this,false);break;
 		case TOWER:
 			int curSize = 1;
 			List<List<NodeConnector>> floors = new ArrayList<List<NodeConnector>>();
@@ -149,9 +145,6 @@ public class Dungeon extends NodeFeature {
 			//start.addBacks();
 			break;
 		}
-	}
-	public Shape getShape() {
-		return shape;
 	}
 
 }

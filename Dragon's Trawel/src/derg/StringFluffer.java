@@ -153,6 +153,16 @@ public class StringFluffer {
 		return processInternal(str);
 	}
 	
+	//TODO: instead of doing context, we could do binary tree shufflers that work
+	//on keyword strings like 'wsb' (weak sharp blunt), which would be seen as weak (low damage relatively) sharp primary blunt secondary
+	//would also likely need some metadata for weapon type
+	//and the shufflers would work better if they interacted to avoid repeats with other shufflers
+	//maybe nested pickers that have an ultimate pool of shufflers somehow?
+	//might be able to make a more complex type of tree and have 'paths'
+	//and it takes the lowest node that fits and moves it back up to the top
+	//where it then goes down as normal
+	//this would increase the running time by a fair amount because it would have to view each level in order
+	//but might be worth it for player facing content
 	public String processContext(String str,StringContext context) {
 		this.context = context;
 		currentTask = new MetaData(str);

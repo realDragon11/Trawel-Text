@@ -442,6 +442,9 @@ public final class extra {
 			List<MenuItem> subList;
 			while (true) {
 				mList = mGen.gen();
+				if (mList == null) {
+					return -1;//used for nodes so they can force interactions cleanly
+				}
 				v = 1;
 				forceLast = false;
 				subList = new ArrayList<MenuItem>();

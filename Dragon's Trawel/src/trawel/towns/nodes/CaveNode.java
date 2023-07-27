@@ -62,7 +62,7 @@ public class CaveNode extends GroveNode{
 		case 3: name = extra.choose("bat"); interactString = "ERROR"; forceGo = true;
 		storage1 = RaceFactory.makeBat(level);break;
 		}
-		if (size < 2 || ((Grove)parent).getShape() != Grove.Shape.STANDARD) {
+		if (size < 2 || parent.getShape() != NodeFeature.Shape.NONE) {
 			return;
 		}
 		int split = extra.randRange(1,Math.min(size,3));

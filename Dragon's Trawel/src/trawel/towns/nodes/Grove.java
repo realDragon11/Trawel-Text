@@ -30,19 +30,12 @@ public class Grove extends NodeFeature {
 		Networking.setArea("forest");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|grove|Grove|");
-		start.go();
+		NodeConnector.enter(start);
 	}
 	
 	@Override
 	protected void generate() {
 		start = new GroveNode(size,town.getTier(),this);
-	}
-	public Shape getShape() {
-		return Shape.STANDARD;
-	}
-	
-	public enum Shape{
-		STANDARD;
 	}
 
 }
