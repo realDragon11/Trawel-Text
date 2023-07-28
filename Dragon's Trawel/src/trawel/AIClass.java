@@ -210,7 +210,7 @@ public class AIClass {
 				}
 				j++;
 			}while (j < rounds);
-			damray[i]/= ((double)rounds*attacks.get(i).getSpeed());
+			damray[i]/= (rounds*attacks.get(i).getSpeed());
 			i--;
 		}
 		extra.popPrintStack();

@@ -631,7 +631,7 @@ public class GroveNode implements NodeType{
 					}
 					if (extra.randFloat() > .8f) {
 						extra.println(extra.PRE_RED + "As you eat the moss, you hear a voice cry out:");
-						switch((int)extra.randRange(1,2)) {
+						switch(extra.randRange(1,2)) {
 						case 1: mushHelpDryad();break;
 						case 2: mushHelpRobber();break;}
 					}
@@ -642,7 +642,7 @@ public class GroveNode implements NodeType{
 					if (extra.randFloat() > .8f) {
 						extra.println(extra.PRE_RED+"You hear someone cry out from behind you!");
 						Person winner = null;
-						switch((int)extra.randRange(1,2)) {
+						switch(extra.randRange(1,2)) {
 						case 1: winner = mushHelpDryad() ;break;
 						case 2: winner = mushHelpRobber();break;
 						}

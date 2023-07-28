@@ -50,7 +50,7 @@ public class Services {
 	public void renchantPremium(Armor theArm,int goldSpent) {
 		int attempts = 0;
 		do {
-		theArm.improveEnchantChance((int)Math.ceil(((double)goldSpent*.5)/theArm.getBaseCost()));
+		theArm.improveEnchantChance((int)Math.ceil((goldSpent*.5)/theArm.getBaseCost()));
 		attempts++;
 		}while(attempts <= 10);
 	}
@@ -76,7 +76,7 @@ public class Services {
 		//boolean didEnchant; //was going to have it take ten tries, but now it's the best of 10
 		int attempts = 0;
 		do {
-		theWeap.improveEnchantChance((int)Math.ceil(((double)goldSpent*.5)/theWeap.getBaseCost()));
+		theWeap.improveEnchantChance((int)Math.ceil((goldSpent*.5)/theWeap.getBaseCost()));
 		attempts++;
 		}while(attempts <= 10);
 	}

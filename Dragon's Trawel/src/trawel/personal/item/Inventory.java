@@ -192,7 +192,7 @@ public class Inventory implements java.io.Serializable{
 			if ((owner != null ? owner.heavyArmorLevel : 0 ) > 20.0) {
 				//do nothing, negate heavy armor penalty
 			}else {
-				retMod *= extra.lerp((float)armorSlots[i].getDexMod(),1,(owner != null ? owner.heavyArmorLevel : 0 )/20.0f);
+				retMod *= extra.lerp(armorSlots[i].getDexMod(),1,(owner != null ? owner.heavyArmorLevel : 0 )/20.0f);
 			}
 		}else {
 			//light armor

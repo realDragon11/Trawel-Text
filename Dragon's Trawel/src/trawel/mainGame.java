@@ -304,6 +304,7 @@ public class mainGame {
 		extra.println("Stock Media provided by Soundrangers / FxProSound / SoundIdeasCom / PrankAudio / hdaudio / agcnf_media / sounddogs / AbloomAudio / Yurikud / SoundMorph => through Pond5");
 	}
 	
+	@SuppressWarnings("unused")
 	private static void baseSetup1() {
 		if (!basicSetup1) {
 			EnchantConstant.init();
@@ -771,7 +772,7 @@ public class mainGame {
 				System.setErr(logStream);
 			}
 			extra.println("[jitter]Trawel has encountered an exception. Please report to realDragon. More details can be found on the command prompt.");
-			System.out.println("ERROR: "+e.getMessage() != null ? (e.getMessage()) :"null" + e.getStackTrace());
+			System.out.println("ERROR: "+ (e.getMessage() != null ? (e.getMessage()) :"null" + e.getStackTrace()));
 			if (e.getMessage() == null) {
 				main(args);
 			} 
@@ -804,7 +805,7 @@ public class mainGame {
 					Networking.setBattle(Networking.BattleType.NORMAL);
 				}
 				new Combat(first_man,second_man, w);//////
-				if (first_man.getHp() <= 0) {
+				if (second_man.getHp() > 0) {
 					holdPerson = second_man;
 					second_man = first_man;
 					first_man = holdPerson;

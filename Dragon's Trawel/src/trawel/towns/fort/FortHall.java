@@ -283,7 +283,7 @@ public class FortHall extends FortFeature {
 			goldBank+=this.getTotalOffenseRating()*this.level;
 		}
 		
-		forgeTimer -= (time* (double)getSkillCount(SubSkill.SMITHING))/10.0;
+		forgeTimer -= (time*getSkillCount(SubSkill.SMITHING))/10.0;
 		if (forgeTimer <=0) {
 			extra.offPrintStack();
 			forgeTimer = 24.0*7;
@@ -294,7 +294,7 @@ public class FortHall extends FortFeature {
 			}
 			extra.popPrintStack();
 		}
-		enchantTimer -= (time* (double)getSkillCount(SubSkill.ENCHANTING))/2.0;
+		enchantTimer -= (time*getSkillCount(SubSkill.ENCHANTING))/2.0;
 		if (enchantTimer <=0 && allies.size() > 0) {
 			enchantTimer = 24.0*7;
 			allies.get(extra.randRange(0,allies.size()-1)).getBag().getArmorSlot(extra.randRange(0,4)).improveEnchantChance(this.level);

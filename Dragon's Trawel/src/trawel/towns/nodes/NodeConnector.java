@@ -278,7 +278,7 @@ public class NodeConnector implements Serializable {
 	}
 	
 	protected DrawBane attemptCollectAll(float odds,int amount) {
-		NodeFeature keeper = (NodeFeature)parent;
+		NodeFeature keeper = parent;
 		if (keeper.getFindTime() > 1 && Player.player.sideQuests.size() > 0) {
 			if (extra.randFloat() < odds) {
 				List<String> list = Player.player.allQTriggers();

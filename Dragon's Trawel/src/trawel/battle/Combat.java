@@ -429,7 +429,6 @@ public class Combat {
 	 * @param def the inventory of the defender (Inventory)
 	 * @param off the inventory of the attacker (Inventory)
 	 * @param armMod the armormod (double)
-	 * @param printString (boolean) - if true, print the attack
 	 * @return
 	 */
 	public AttackReturn handleAttack(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
@@ -475,7 +474,7 @@ public class Combat {
 		//double midWeapon2 = .7;
 		
 		//armMod = armMod*(1-(armorMinShear/2));
-		List<Weapon.WeaponQual> wqL = (att != null && att.getWeapon() != null ? att.getWeapon().qualList : new ArrayList<Weapon.WeaponQual>());
+		List<Weapon.WeaponQual> wqL = (att.getWeapon() != null ? att.getWeapon().qualList : new ArrayList<Weapon.WeaponQual>());
 		double sharpA = def.getSharp(att.getSlot(),wqL)*armMod;
 		double bluntA = def.getBlunt(att.getSlot(),wqL)*armMod;
 		double pierceA= def.getPierce(att.getSlot(),wqL)*armMod;
@@ -513,7 +512,7 @@ public class Combat {
 		double midArmor2 = .7;
 		double armorMinShear = .1;*/
 		//armMod = armMod*(1-(armorMinShear/2));
-		List<Weapon.WeaponQual> wqL = (att != null && att.getWeapon() != null ? att.getWeapon().qualList : new ArrayList<Weapon.WeaponQual>());
+		List<Weapon.WeaponQual> wqL = (att.getWeapon() != null ? att.getWeapon().qualList : new ArrayList<Weapon.WeaponQual>());
 		double sharpA = def.getSharp(att.getSlot(),wqL)*armMod;
 		double bluntA = def.getBlunt(att.getSlot(),wqL)*armMod;
 		double pierceA= def.getPierce(att.getSlot(),wqL)*armMod;
@@ -900,7 +899,7 @@ public class Combat {
 		if  (att.getSkill() == Skill.DEATH_MAGE) {
 			defender.getNextAttack().wither(att.getSharp()/100);
 			if (!defender.hasSkill(Skill.LIFE_MAGE)) {
-			defender.takeDamage((int)((att.getBlunt())));}
+			defender.takeDamage(att.getBlunt());}
 			int i = 0;
 			while (i < att.getPierce()) {
 				defender.addEffect(Effect.BURNOUT);

@@ -204,7 +204,7 @@ public class Calender implements Serializable, CanPassTime {
 	}
 	
 	public float dayLum(double sunRise,double sunSet, double hourOfDay) {
-		return (float)extra.lerpDepth((float)(sunRise+sunsetRadius),(float)(sunSet-sunsetRadius),(float) ((hourOfDay)),.25f);
+		return extra.lerpDepth((float)(sunRise+sunsetRadius),(float)(sunSet-sunsetRadius),(float) ((hourOfDay)),.25f);
 	}
 	public float moonLum(double unoon, double uhour,double lata, double longa) {
 		float phaseProgress = (float) ((timeCounter%getMonthLength())/getMonthLength());
@@ -218,11 +218,11 @@ public class Calender implements Serializable, CanPassTime {
 		if ((thour < moonRise || thour > moonSet)) {
 			double lastMoonSet = rnsLast[1]+moonNoonMod+hour;
 			if (thour < lastMoonSet) {
-				return (float)extra.lerpDepth((float)(rnsLast[1]+moonNoonMod-hour),(float)(lastMoonSet),(float) ((thour)),.25f)*maxLum;
+				return extra.lerpDepth((float)(rnsLast[1]+moonNoonMod-hour),(float)(lastMoonSet),(float) ((thour)),.25f)*maxLum;
 			}
 			return 0;
 		}
-		return (float)extra.lerpDepth((float)(moonRise),(float)(moonSet),(float) ((thour)),.25f)*maxLum;
+		return extra.lerpDepth((float)(moonRise),(float)(moonSet),(float) ((thour)),.25f)*maxLum;
 	}
 
 	public static void timeTest() {

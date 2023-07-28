@@ -204,7 +204,7 @@ public class Town extends TContextOwner{
 	}
 	
 	public static Town generate(int tier, Island island, byte x, byte y) {
-		String name = extra.capFirst((String)extra.choose(randomLists.randomElement(),randomLists.randomColor()));
+		String name = extra.capFirst(extra.choose(randomLists.randomElement(),randomLists.randomColor()));
 		switch (tier) {
 		case 1:name+= " Enclave";break;
 		case 2:name+= " District";break;

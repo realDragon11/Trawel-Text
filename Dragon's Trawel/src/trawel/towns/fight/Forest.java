@@ -420,7 +420,7 @@ public class Forest extends Feature{
 			}else {
 				if (dryadQuest == 4) {
 				extra.println("You feel the forest reward you! A sack of gold appears at your feet!");
-				int gold = (int) (tier*(extra.randRange(30,50)));
+				int gold = (tier*(extra.randRange(30,50)));
 				extra.println("You pick up " + gold + " gold!");
 				Player.bag.addGold(gold);
 				dryadQuest = 5;
