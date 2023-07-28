@@ -49,6 +49,11 @@ public class Mountain extends Feature implements java.io.Serializable{
 	}
 	
 	@Override
+	public String getColor() {
+		return extra.F_COMBAT;//unsure
+	}
+	
+	@Override
 	public void go() {
 		Networking.setArea("mountain");
 		super.goHeader();

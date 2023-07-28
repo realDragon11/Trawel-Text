@@ -11,17 +11,19 @@ import trawel.towns.Feature;
 import trawel.towns.Town;
 
 public class Doctor extends Feature {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	public Doctor(String name,Town t) {
 		this.name = name;
 		town = t;
-		color = Color.BLUE;
 		tutorialText = "Doctors can cure your ailments.";
 	}
+	@Override
+	public String getColor() {
+		return extra.F_SERVICE;
+	}
+	
 	@Override
 	public void go() {
 		Networking.setArea("shop");

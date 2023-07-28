@@ -20,7 +20,11 @@ public class Appraiser extends Feature {
 	public Appraiser(String name) {
 		this.name = name;
 		tutorialText = "Appraisers will tell you more about your items.";
-		color = Color.BLUE;
+	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_SERVICE;
 	}
 	
 	@Override

@@ -41,8 +41,11 @@ public class Watchtower extends FortFeature {
 		
 		}
 		tutorialText = "";
-		color = Color.PINK;
-		
+	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_FORT;
 	}
 	@Override
 	public int getSize() {

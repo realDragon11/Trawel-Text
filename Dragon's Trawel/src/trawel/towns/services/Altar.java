@@ -29,8 +29,13 @@ public class Altar extends Feature{
 	public Altar() {
 		name = "sky altar";
 		tutorialText = "OwO what's this?";
-		color = Color.MAGENTA;
 	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_SPECIAL;
+	}
+	
 	@Override
 	public void go() {
 		Networking.sendStrong("Discord|imagesmall|altar|Altar|");

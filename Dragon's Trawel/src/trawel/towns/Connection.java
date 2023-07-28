@@ -21,15 +21,13 @@ public class Connection implements java.io.Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	private Town townA, townB;
-	private double time;
-	@OneOf({"road","ship","teleport"})
 	private final byte type;
 	private final String nameString;
 	
+	//DOLATER: refactor to always use the other constructor instead of this old one
 	public Connection(String name, Town t1, Town t2,double time, String typeS) {
 		townA = t1;
 		townB = t2;
-		this.time = (time);
 		switch (typeS) {
 		case "road":
 			type = 0;
@@ -48,7 +46,6 @@ public class Connection implements java.io.Serializable{
 	public Connection(String name, Town t1, Town t2, ConnectType connectType) {
 		townA = t1;
 		townB = t2;
-		time = 0;
 		type = (byte) connectType.ordinal();
 		nameString = name;
 	}

@@ -20,17 +20,19 @@ import trawel.towns.Feature;
 
 public class HeroGuild extends Feature {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	public static float hSpentOnKno = 0f;
 
 	public HeroGuild(String name){
 		this.name = name;
 		tutorialText = "The heroes guild allows you to spend your fame on knowledge.";
-		color = Color.PINK;
 	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_GUILD;
+	}
+	
 	@Override
 	public void go() {
 		Networking.setArea("shop");

@@ -30,7 +30,11 @@ public class TravelingFeature extends Feature{
 		this.town = town;
 		this.tier = town.getTier();
 		tutorialText = "Traveling features and celebrations can be host to a wide array of things.";
-		
+	}
+	
+	@Override
+	public String getColor() {
+		return (hasSomething ? feature.getColor() : extra.F_SPECIAL);
 	}
 	
 	@Override

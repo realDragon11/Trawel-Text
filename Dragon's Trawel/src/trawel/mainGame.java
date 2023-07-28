@@ -84,7 +84,7 @@ public class mainGame {
 	public static PrintStream logStream;
 
 	
-	public static boolean delayWaits = false;//TODO maybe turn back on
+	public static boolean delayWaits = false;//FIXME maybe turn back on
 	
 	private static boolean finalSetup1 = false;
 	private static boolean basicSetup1 = false;

@@ -35,6 +35,11 @@ public class Blacksmith extends Feature {
 	}
 	
 	@Override
+	public String getColor() {
+		return extra.F_AUX_SERVICE;
+	}
+	
+	@Override
 	public void go() {
 		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|blacksmith|Blacksmith|");

@@ -25,6 +25,11 @@ public class Garden extends Feature {
 		background_area = "forest";
 		background_variant = 1;
 	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_SERVICE;
+	}
 
 	@Override
 	public void go() {

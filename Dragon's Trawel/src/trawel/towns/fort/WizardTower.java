@@ -34,9 +34,14 @@ public class WizardTower extends FortFeature {
 		this.tier = tier;
 		this.name = "Wizard Tower";
 		tutorialText = "";
-		color = Color.PINK;
 		laborer = new Laborer(LaborType.WIZARD);
 	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_FORT;
+	}
+	
 	@Override
 	public int getSize() {
 		return 3;

@@ -2,6 +2,7 @@ package trawel.towns.misc;
 
 import java.util.List;
 
+import trawel.extra;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
@@ -16,6 +17,11 @@ public class Well extends Feature implements java.io.Serializable{
 	public Well(String name) {
 		this.name = name;
 		tutorialText = "This is a well.";
+	}
+	
+	@Override
+	public String getColor() {
+		return extra.PRE_TELE;//lol
 	}
 
 	@Override

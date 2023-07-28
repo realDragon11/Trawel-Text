@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.util.List;
 
 import trawel.Networking;
+import trawel.extra;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Town;
@@ -16,8 +17,13 @@ public class Graveyard extends NodeFeature {
 		size = 40;
 		tutorialText = "Graveyards are teeming with undead.";
 		generate();
-		color = Color.RED;
 	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_NODE;
+	}
+	
 	@Override
 	public void go() {
 		Networking.setArea("dungeon");

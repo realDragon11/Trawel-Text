@@ -40,9 +40,6 @@ public class Slum extends Feature implements QuestBoardLocation{
 	
 	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	@Override
@@ -54,8 +51,12 @@ public class Slum extends Feature implements QuestBoardLocation{
 		town = t;
 		this.name = name;
 		tutorialText = "Slums house crime lords.";
-		color = Color.RED;
 		this.removable = removable;
+	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_NODE;//unsure
 	}
 	
 	@Override

@@ -218,7 +218,7 @@ public class WeaponAttackFactory {
 		List<WeaponMetric> metrics = new ArrayList<WeaponMetric>();
 		for (int i: matMap.keySet()) {
 			String str = MaterialFactory.getMat(i).name;
-			metrics.add(new WeaponAttackFactory().new WeaponMetric(str,(matMap.get(str)/weaps),MaterialFactory.getMat(str).rarity));
+			metrics.add(new WeaponAttackFactory().new WeaponMetric(str,(matMap.get(i)/weaps),MaterialFactory.getMat(str).rarity));
 		}
 		for (String str: weapMap.keySet()) {
 			metrics.add(new WeaponAttackFactory().new WeaponMetric(str,(weapMap.get(str)/mats),Weapon.getRarity(str)));

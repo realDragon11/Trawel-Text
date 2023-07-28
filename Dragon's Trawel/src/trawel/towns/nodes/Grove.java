@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.util.List;
 
 import trawel.Networking;
+import trawel.extra;
 import trawel.time.ContextType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -18,10 +19,15 @@ public class Grove extends NodeFeature {
 		size = 50;//t.getTier()*10;
 		tutorialText = "Explore groves to progress in level.";
 		generate();
-		color = Color.RED;
 		background_area = "forest";
 		background_variant = 1;
 	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_NODE;
+	}
+	
 	@Override
 	public void go() {
 		Networking.setArea("forest");

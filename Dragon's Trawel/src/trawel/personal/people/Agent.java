@@ -60,7 +60,7 @@ public class Agent extends SuperPerson{
 			current.action(this);
 			current = popBehave();
 		}
-			current.passTime(d);
+			current.passTime(d, calling);
 			return null;
 	}
 

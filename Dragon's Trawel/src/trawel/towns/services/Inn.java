@@ -63,9 +63,12 @@ public class Inn extends Feature implements QuestBoardLocation{
 		nextReset = extra.randRange(4,30);
 		playerwatch = false;
 		tutorialText = "Inns are a great place to buy beer and have various residents.";
-		color = Color.YELLOW;
 		this.owner = owner;
-		
+	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_SERVICE;
 	}
 	
 	@Override

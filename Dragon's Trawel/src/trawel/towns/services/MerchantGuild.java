@@ -37,10 +37,15 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	public MerchantGuild(String name){
 		this.name = name;
 		tutorialText = "Merchant quests will make stores willing to sell items higher than your level.";
-		color = Color.PINK;
 		timePassed = extra.randRange(1,30);
 		nextReset = extra.randRange(4,30);
 	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_GUILD;
+	}
+	
 	@Override
 	public void go() {
 		Networking.setArea("shop");
@@ -181,7 +186,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	}
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		//TODO: make certain drawbanes give more depending one what the guild needs
+		//TODO: make certain drawbanes give more depending on what the guild needs
 		timePassed += time;
 		if (timePassed > nextReset) {
 			timePassed = 0;

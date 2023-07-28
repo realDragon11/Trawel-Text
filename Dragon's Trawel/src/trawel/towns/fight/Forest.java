@@ -46,9 +46,13 @@ public class Forest extends Feature{
 		explores = 0;
 		exhaust = 0;
 		tutorialText = "Explore forests to progress in level.";
-		color = Color.RED;
 		background_area = "forest";
 		background_variant = 1;
+	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_COMBAT;//unsure
 	}
 	
 	@Override

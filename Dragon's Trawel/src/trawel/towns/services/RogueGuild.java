@@ -19,17 +19,17 @@ import trawel.towns.Feature;
 
 public class RogueGuild extends Feature {
 	
-	
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	public RogueGuild(String name){
 		this.name = name;
 		tutorialText = "The rogue's guild allows you to launder gems.";
-		color = Color.PINK;
 	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_GUILD;
+	}
+	
 	@Override
 	public void go() {
 		Networking.setArea("shop");

@@ -11,10 +11,6 @@ import trawel.time.TimeEvent;
 
 public class Hunter extends FortFeature {
 
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public int tier;
@@ -40,9 +36,13 @@ public class Hunter extends FortFeature {
 		
 		}
 		tutorialText = "";
-		color = Color.PINK;
-		
 	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_FORT;
+	}
+	
 	@Override
 	public int getSize() {
 		return size;

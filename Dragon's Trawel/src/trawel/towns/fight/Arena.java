@@ -34,8 +34,12 @@ public class Arena extends Feature{
 		this.timesDone = timesDone;
 		winners = new ArrayList<Person>();
 		tutorialText = "Arenas are a great place to get started.";
-		color = Color.RED;
 		this.owner = owner;
+	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_COMBAT;
 	}
 	
 	public Arena(String name,int tier,int rounds, double interval, double timeLeft,int timesDone) {

@@ -661,6 +661,10 @@ public final class extra {
 		 */
 		public static final String TIMID_GREY = inlineColor(extra.colorMix(Color.BLACK,Color.WHITE,.95f));
 		
+		//not directly used yet
+		public static final String TIMID_BLUE = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.8f));
+		public static final String TIMID_MAGENTA = inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.8f));
+		
 		public static final String COLOR_NEW = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f));
 		public static final String COLOR_SEEN = inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f));
 		public static final String COLOR_BEEN = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f));
@@ -674,6 +678,16 @@ public final class extra {
 		public static final String ATTACK_KILL = PRE_RED;
 		public static final String ATTACK_BLOCKED = PRE_BLUE;
 		public static final String ATTACK_MISS = PRE_YELLOW;
+		
+		public static final String F_SPECIAL = PRE_MAGENTA;
+		public static final String F_SERVICE = PRE_BLUE;
+		public static final String F_AUX_SERVICE = TIMID_BLUE;
+		public static final String F_SERVICE_MAGIC = TIMID_MAGENTA;
+		public static final String F_COMBAT = PRE_RED;
+		public static final String F_NODE = TIMID_RED;
+		public static final String F_FORT = TIMID_GREY;
+		public static final String F_BUILDABLE = PRE_ORANGE;
+		public static final String F_GUILD = PRE_YELLOW;
 		
 		public static String colorBasedAtOne(double number, String plus, String minus, String empty) {
 			String str = format2.format(number);

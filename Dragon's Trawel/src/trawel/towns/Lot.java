@@ -25,6 +25,11 @@ public class Lot extends Feature {
 		name = "lot";
 		tutorialText = "This is a lot you own. \n Go to it to decide what you want to build.";
 	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_BUILDABLE;
+	}
 
 	@Override
 	public void go() {

@@ -26,14 +26,17 @@ public class Oracle extends Feature implements java.io.Serializable{ //extends f
 	public Oracle(String string, int level) {
 		name = string;
 		this.level = level;
-		color = Color.MAGENTA;
 		tutorialText = "Oracles can provide guidance.";
 	}
 
 	public Oracle() {
 		//just for non-static single commands
 		tutorialText = "Oracles can provide guidance.";
-		color = Color.MAGENTA;
+	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_SPECIAL;
 	}
 
 	public static void tip(String mask) {//public so it can be accessed in other stuff		

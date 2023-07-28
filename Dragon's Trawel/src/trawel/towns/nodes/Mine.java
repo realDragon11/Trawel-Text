@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.util.List;
 
 import trawel.Networking;
+import trawel.extra;
 import trawel.personal.people.SuperPerson;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -18,12 +19,17 @@ public class Mine extends NodeFeature {
 		town = t;
 		size = 50;//t.getTier()*10;
 		tutorialText = "Mines have minerals for you to make profit off of.";
-		color = Color.RED;
 		this.owner = owner;
 		shape = s;
 		generate();
 		background_area = "mine";
 	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_NODE;
+	}
+	
 	@Override
 	public void go() {
 		Networking.setArea("mine");

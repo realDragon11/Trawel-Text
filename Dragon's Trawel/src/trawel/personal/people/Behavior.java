@@ -1,6 +1,12 @@
 package trawel.personal.people;
 
-public abstract class Behavior {
+import java.util.List;
+
+import trawel.time.CanPassTime;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
+
+public abstract class Behavior implements CanPassTime{
 	private double timeTo;
 
 	public double getTimeTo() {
@@ -14,9 +20,10 @@ public abstract class Behavior {
 	
 	public abstract void action(Agent user);
 
-	//TODO: add context
-	public void passTime(double d) {
+	@Override
+	public List<TimeEvent> passTime(double d, TimeContext calling) {
 		timeTo-=d;
+		return null;
 	}
 
 }

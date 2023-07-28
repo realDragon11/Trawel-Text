@@ -49,6 +49,11 @@ public class FortHall extends FortFeature {
 		this.level = tier;
 		laborer = new Laborer(LaborType.CHIEF);
 	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_SERVICE;
+	}
 
 	@Override
 	public int getSize() {
@@ -302,7 +307,7 @@ public class FortHall extends FortFeature {
 		fightTimer -= (time);
 		if (fightTimer <=0) {
 			fightTimer = 24.0*7;
-			ArrayList<Person> people = new ArrayList<Person>();
+			List<Person> people = new ArrayList<Person>();
 			
 			while (people.size() < 5) {
 				people.add(RaceFactory.getMugger(level));
@@ -328,7 +333,7 @@ public class FortHall extends FortFeature {
 		return i;
 	}
 	
-	public void Fight(ArrayList<Person>... people) {
+	public void Fight(List<Person>... people) {
 		extra.offPrintStack();
 		Combat c = new Combat(this.town.getIsland().getWorld(),this,people);
 		allies.clear();
@@ -344,7 +349,7 @@ public class FortHall extends FortFeature {
 		extra.popPrintStack();
 	}
 
-	private ArrayList<Person> getAllies() {
+	private List<Person> getAllies() {
 		/*while (allies.size() < 10) {
 			allies.add(new Person(level));
 		}*/

@@ -32,7 +32,7 @@ public class Armor extends Item {
 	//instance variables
 	private byte slot;//The slot which the armor goes into
 	private int material;//what material the object is made from
-	private short style;//FIXME
+	private short style;
 	private int fluff;//stores the fluff of the style
 	private Enchant enchantment;
 	
@@ -213,6 +213,10 @@ public class Armor extends Item {
 	 */
 	public byte getArmorType() {
 		return slot;
+	}
+	
+	public ArmorStyle getStyle() {
+		return ArmorStyle.fetch(style);
 	}
 	
 	/**
@@ -467,10 +471,12 @@ public class Armor extends Item {
 	}
 
 	public String getSoundType() {
-		return getMat().soundType;
-	}
-	public String getMatType() {
-		return "";//FIXME
+		if (getStyle().equals(ArmorStyle.MAIL)) {
+			return "mail";
+		}else {
+			return getMat().soundType;
+		}
+		
 	}
 
 	public void deEnchant() {

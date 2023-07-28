@@ -31,6 +31,12 @@ public class FortFoundation extends FortFeature {
 		case 3: name = "Large Foundation";break;
 		}
 	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_BUILDABLE;
+	}
+	
 	@Override
 	public int getSize() {
 		return size;

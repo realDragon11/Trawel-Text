@@ -23,7 +23,6 @@ public abstract class Feature extends TContextOwner{
 	protected String name;
 	protected SuperPerson owner = null;
 	protected String tutorialText = null;
-	protected Color color = Color.WHITE;
 	protected Town town;
 	protected int moneyEarned;
 	protected ArrayList<QuestR> qrList = new ArrayList<QuestR>();
@@ -69,10 +68,7 @@ public abstract class Feature extends TContextOwner{
 		//}
 	}
 
-	//TODO: replace with hardcoded strings
-	public Color getColor() {
-		return color;
-	}
+	public abstract String getColor();
 	
 	public QRType getQRType() {
 		return QRType.NONE;
@@ -114,7 +110,7 @@ public abstract class Feature extends TContextOwner{
 	
 	@Override
 	public void consumeEvents(List<TimeEvent> list) {
-		// TODO Auto-generated method stub
+		
 	}
 	@Override
 	public ContextLevel contextLevel() {

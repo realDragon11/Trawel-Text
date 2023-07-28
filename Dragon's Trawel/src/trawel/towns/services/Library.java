@@ -28,6 +28,11 @@ public class Library extends Feature {
 		town = _town;
 		tutorialText = "Libraries hold knowledge from all worlds.";
 	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_AUX_SERVICE;
+	}
 
 	@Override
 	public void go() {

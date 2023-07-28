@@ -25,9 +25,14 @@ public class WitchHut extends Feature{
 	public WitchHut(Town t) {
 		name = "witch hut";
 		tutorialText = "A place to brew potions.";
-		color = Color.pink;
 		town = t;
 	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_SERVICE_MAGIC;
+	}
+	
 	@Override
 	public void go() {
 		Networking.sendStrong("Discord|imagesmall|hut|Witch Hut|");

@@ -43,7 +43,6 @@ public class Store extends Feature implements java.io.Serializable{
 	private Store() {
 		time = 0;
 		tutorialText = "This is a store. You can buy stuff here.";
-		color = Color.BLUE;
 		markup = 1.5f;
 	}
 	
@@ -61,6 +60,11 @@ public class Store extends Feature implements java.io.Serializable{
 	public Store(int tier, int type) {
 		this();
 		this.generate(tier, type);
+	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_SERVICE;
 	}
 	
 	public int getType() {

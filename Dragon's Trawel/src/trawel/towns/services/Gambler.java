@@ -11,9 +11,7 @@ import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 
 public class Gambler extends Feature implements java.io.Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private String type;
 	private int gold;
@@ -23,6 +21,11 @@ public class Gambler extends Feature implements java.io.Serializable{
 		this.name = name;
 		this.gold = gold;
 		tutorialText = "Lose money at gambling halls.";
+	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_SERVICE;
 	}
 	
 	@Override

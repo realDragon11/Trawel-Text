@@ -17,10 +17,6 @@ import trawel.towns.fort.SubSkill.Type;
 
 public class Forge extends FortFeature {
 
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public int tier;
@@ -34,9 +30,14 @@ public class Forge extends FortFeature {
 		this.tier = tier;
 		this.name = "Blacksmith";
 		tutorialText = "";
-		color = Color.PINK;
 		laborer = new Laborer(LaborType.BLACKSMITH);
 	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_FORT;
+	}
+	
 	@Override
 	public int getSize() {
 		return 2;

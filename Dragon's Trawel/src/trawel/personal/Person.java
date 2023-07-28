@@ -205,7 +205,7 @@ public class Person implements java.io.Serializable{
 	 */
 	public void setAttack(Attack newAttack){
 		attackNext = newAttack;
-		speedFill += attackNext.getSpeed()/(bag.getSpeed() + (this.hasEffect(Effect.HASTE) ? 0.1 : 0 ));//TODO: make sure making this += doesn't fuck anything up
+		speedFill += attackNext.getSpeed()/(bag.getSpeed() + (this.hasEffect(Effect.HASTE) ? 0.1 : 0 ));
 		isAttacking = true;
 	}
 	
@@ -272,7 +272,7 @@ public class Person implements java.io.Serializable{
 		tempMaxHp = getOOB_HP();
 		hp = tempMaxHp;
 		if (takeBeer()) {
-			if (Player.player.getPerson() == this) {
+			if (isPlay) {
 				Networking.sendStrong("Achievement|drink_beer|");
 			}
 			hp+=level*5;

@@ -31,14 +31,12 @@ public class Champion  extends Feature{
 		this.name = person.getName() + " (Level " + person.getLevel()+")" ;
 		tutorialText = "You should probably hold off on fighting champions until you're their level- explore the world and come back later.";
 		timeElapsed=0;
-		color = Color.RED;
 	}
 	
 	public Champion(int level,int battleSize, Town t) {
 		
 		tutorialText = "Battleforged champions fought in a pit fight to survive.";
-		timeElapsed=0;
-		color = Color.RED;/*
+		timeElapsed=0;/*
 		List<Person> people = new ArrayList<Person>();
 		while(people.size() < battleSize) {
 			people.add(RaceFactory.getDueler(level));
@@ -70,6 +68,11 @@ public class Champion  extends Feature{
 		extra.popPrintStack();
 		this.name = person.getName() + " (Level " + person.getLevel()+")" ;
 		
+	}
+	
+	@Override
+	public String getColor() {
+		return extra.F_COMBAT;
 	}
 	
 	@Override

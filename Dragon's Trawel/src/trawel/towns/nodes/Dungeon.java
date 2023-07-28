@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import trawel.Networking;
+import trawel.extra;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Town;
@@ -20,10 +21,14 @@ public class Dungeon extends NodeFeature {
 		tutorialText = "Explore dungeons to find treasure.";
 		shape = s;
 		generate();
-		color = Color.RED;
 		boss = bossType;
 		
 	}
+	@Override
+	public String getColor() {
+		return extra.F_NODE;
+	}
+	
 	@Override
 	public void go() {
 		Networking.setArea("dungeon");

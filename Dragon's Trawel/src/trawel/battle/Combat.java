@@ -55,7 +55,7 @@ public class Combat {
 	//constructor
 	/**
 	 * Holds a fight to the death, between two people.
-	 * @param manOne(Person)
+	 * @param manOne (Person)
 	 * @param manTwo (Person)
 	 */
 	public Combat(Person manOne, Person manTwo,World w) {
