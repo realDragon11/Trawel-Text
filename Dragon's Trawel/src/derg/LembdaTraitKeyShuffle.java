@@ -13,14 +13,16 @@ import java.util.Collections;
 public class LembdaTraitKeyShuffle implements CanLembdaUpdate{
 
 	private List<StringLembda> tree;
-	//private int treeSize, 
-	//depthChunk;//used as how many 'leaf' nodes exist. However, they do not have to be actual leaves
+	private int treeSize, 
+	depthChunk,//used as how many 'leaf' nodes exist. However, they do not have to be actual leaves
+	minRand;//minimum allowed randomness
 	//we just care about the bottom ones on the tree
 	
 	public LembdaTraitKeyShuffle() {
 		tree = new ArrayList<StringLembda>();
-		//treeSize = tree.size();
-		//depthChunk = -1;
+		treeSize = tree.size();
+		depthChunk = (treeSize+1)/2;
+		minRand = 2;
 	}
 	
 	/**
@@ -46,7 +48,7 @@ public class LembdaTraitKeyShuffle implements CanLembdaUpdate{
 	public List<StringLembda> leafLayer(int forword){
 		List<StringLembda> results = new ArrayList<StringLembda>();
 		int num = 0;
-		for (int i = tree.size()-1; num < 3 && i >=0;i--) {//DOLATER: decide if num needs to be 2 or 3
+		for (int i = tree.size()-1; (num < minRand || i < depthChunk) && i >=0;i--) {//DOLATER: decide if num needs to be 2 or 3
 			if (tree.get(i).variants.get(forword) != null) {
 				results.add(tree.get(i));
 				num++;
@@ -76,6 +78,9 @@ public class LembdaTraitKeyShuffle implements CanLembdaUpdate{
 	}
 
 	public String next(char forword) {
+		if (!extra.isMainThread()) {
+			throw new RuntimeException("Tried to trait shuffle outside of main thread.");
+		}
 		List<StringLembda> list = leafLayer(forword);
 		if (list.isEmpty()) {
 			throw new RuntimeException("could not find Lembda in list " + this.toString() + " for forward " + forword);
