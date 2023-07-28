@@ -18,6 +18,7 @@ import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponQual;
+import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Player;
 import trawel.personal.people.Skill;
 import trawel.quests.Quest.TriggerType;
@@ -62,7 +63,7 @@ public class Inventory implements java.io.Serializable{
 		}
 		if (type == Race.RaceType.HUMANOID) {
 			if (job != null) {
-				String matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
+				ArmorStyle matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
 				armorSlots[0] = new Armor(level,(byte) 0,MaterialFactory.randMatByType(matType2),matType2);
 				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
 				armorSlots[1] = new Armor(level,(byte) 1,MaterialFactory.randMatByType(matType2),matType2);

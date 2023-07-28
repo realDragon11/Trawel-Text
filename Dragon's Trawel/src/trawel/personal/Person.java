@@ -30,6 +30,7 @@ import trawel.personal.item.body.Race.RaceType;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.Weapon;
+import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Player;
 import trawel.personal.people.Skill;
 import trawel.towns.services.Store;
@@ -170,13 +171,15 @@ public class Person implements java.io.Serializable{
 	
 
 	public enum AIJob{
-		KNIGHT(new String[] {"heavy","chainmail"},new String[] {"longsword","mace","axe","lance"}),
-		ROGUE(new String[] {"light"},new String[] {"rapier","dagger"}), 
-		LUMBERJACK(new String[] {"light"},new String[] {"axe"}), 
-		GRAVER(new String[] {"light"},new String[] {"shovel"});
+		KNIGHT(new ArmorStyle[] {ArmorStyle.PLATE,ArmorStyle.PLATE,ArmorStyle.MAIL},
+				new String[] {"longsword","mace","axe","lance"}),
+		ROGUE(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},new String[] {"rapier","dagger"}), 
+		LUMBERJACK(new ArmorStyle[] {ArmorStyle.FABRIC},new String[] {"axe"}), 
+		GRAVER(new ArmorStyle[] {ArmorStyle.FABRIC},new String[] {"shovel"});
 		
-		public String[] amatType, weapType;
-		AIJob(String[] amatType, String[] weapType) {
+		public ArmorStyle[] amatType;
+		public String[] weapType;
+		AIJob(ArmorStyle[] amatType, String[] weapType) {
 			this.amatType = amatType;
 			this.weapType = weapType;
 		}

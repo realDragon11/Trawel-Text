@@ -41,25 +41,17 @@ import trawel.personal.item.magic.Enchant.Type;
 
 public class Weapon extends Item {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	//instance variables
-	private int weight = 1;//how much does it weigh?
-	private float baseEnchant;//how good is the material at receiving enchantments?
+	
 	private Enchant enchant;
 
 	private String weapName;
 	private int material;
 	private int cost;
-	//private int level;
-	//private int effectiveCost;
+	private int weight;
+
 	private int kills;
-	
-	//private Material mat;
-	//private transient DamTuple dam;
-	private double highDam, avgDam, bScore;
+	private float highDam, avgDam, bScore;
 	
 	public List<WeaponQual> qualList = new ArrayList<WeaponQual>();
 	
@@ -83,24 +75,19 @@ public class Weapon extends Item {
 	
 	//constructors
 	/**
-	 * Standard weapon constructor. Makes a weapon of level level
+	 * Standard weapon constructor. Makes a weapon of level newLevel
 	 * @param newLevel (int)
 	 */
 	public Weapon(int newLevel, Material materia, String weaponName) {
-		
-		//material = (String)bpmFunctions.choose("iron",bpmFunctions.choose("steel","silver",bpmFunctions.choose("gold","platinum",bpmFunctions.choose("adamantine","mithril"))));
-		//mat = materia;
 		material = materia.curNum;
 		level = newLevel;
-		baseEnchant = materia.baseEnchant;
 		weight *= materia.weight;
 		cost = (int) materia.cost;
 		//choosing the type of weapon
 		weapName = weaponName;
 		kills = 0;
-		//cost*=level;
 		
-
+		//DOLATER: convert to enum or some other method
 		switch (weapName) {
 		case "longsword":
 			cost *= 1;
@@ -193,23 +180,19 @@ public class Weapon extends Item {
 			;break;
 		}
 		//random chance, partially based on enchantment power, to enchant the weapon
-		//effectiveCost = cost;
-		if (baseEnchant > extra.randFloat()*3f) {
+		if (getEnchantMult() > extra.randFloat()*3f) {
 			if (extra.chanceIn(2, 3)) {
-				enchant = EnchantConstant.makeEnchant(baseEnchant,cost);//removed level, like with armor
-				//effectiveCost=(int)extra.zeroOut(cost * enchant.getGoldMult()+enchant.getGoldMod());
-				//IsEnchantedConstant = true;
+				enchant = EnchantConstant.makeEnchant(getEnchantMult(),cost);
 			}else {
-				enchant = new EnchantHit(baseEnchant);//no level
-				//effectiveCost=(int)extra.zeroOut(cost * enchantHit.getGoldMult());
+				enchant = new EnchantHit(getEnchantMult());
 			}
 		}
 		
-		refreshBattleScore();//no longer lazy loaded
+		refreshBattleScore();
 	}
 	
 	public Weapon(int newLevel) {
-		this(newLevel,MaterialFactory.randWeapMat(),(String)extra.choose("longsword","broadsword","mace","spear","axe","rapier","dagger",extra.choose("claymore","lance","shovel")));
+		this(newLevel,MaterialFactory.randWeapMat(),extra.choose("longsword","broadsword","mace","spear","axe","rapier","dagger",extra.choose("claymore","lance","shovel")));
 	}
 	public Weapon(int newLevel, String weaponName) {
 		this(newLevel,MaterialFactory.randWeapMat(),weaponName);
@@ -220,10 +203,14 @@ public class Weapon extends Item {
 	 * 
 	 */
 	public Weapon(boolean useSquid) {
-		this(1,useSquid ? MaterialFactory.randWeapMat() : MaterialFactory.randMat(false, true),(String)extra.choose("longsword","broadsword","mace","spear","axe","rapier","dagger",extra.choose("claymore","lance","shovel")));
+		this(1,MaterialFactory.randWeapMat(),extra.choose("longsword","broadsword","mace","spear","axe","rapier","dagger",extra.choose("claymore","lance","shovel")));
 	}
 
 	//instance methods
+	
+	public float getEnchantMult() {
+		return MaterialFactory.getMat(material).baseEnchant;
+	}
 	
 	@Override
 	public boolean coinLoot() {
@@ -275,18 +262,19 @@ public class Weapon extends Item {
 	 * @return String
 	 */
 	public String getName() {
+		Material mat = MaterialFactory.getMat(material);
 		if (this.isEnchantedConstant()){
 			EnchantConstant conste = ((EnchantConstant)enchant);
-		return (getModiferName() + " " +conste.getBeforeName() +MaterialFactory.getMat(material).color+ material + "[c_white] " +  weapName + conste.getAfterName());}
+		return (getModiferName() + " " +conste.getBeforeName() +mat.color+ mat.name + "[c_white] " +  weapName + conste.getAfterName());}
 		if (this.isEnchantedHit()){
 			;
 			if (isKeen()) {
-				return (getModiferName() + " " + ((EnchantHit)enchant).getName() + MaterialFactory.getMat(material).color+material  + "[c_white] " + weapName);
+				return (getModiferName() + " " + ((EnchantHit)enchant).getName() + mat.color+mat.name  + "[c_white] " + weapName);
 			}else {
-			return (getModiferName() +" "+MaterialFactory.getMat(material).color+ material + "[c_white] " +  weapName + ((EnchantHit)enchant).getName());}
+			return (getModiferName() +" "+mat.color+ mat.name + "[c_white] " +  weapName + ((EnchantHit)enchant).getName());}
 			
 		}
-			return (getModiferName() + " " +MaterialFactory.getMat(material).color+ material  + "[c_white] " + weapName);
+			return (getModiferName() + " " +mat.color+ mat.name  + "[c_white] " + weapName);
 	}
 	
 	
@@ -331,12 +319,12 @@ public class Weapon extends Item {
 	public boolean improveEnchantChance(int level) {
 		if (this.isEnchantedConstant()) {
 			Enchant pastEnchant = enchant;
-			enchant = Services.improveEnchantChance(enchant, level, baseEnchant);
+			enchant = Services.improveEnchantChance(enchant, level, getEnchantMult());
 			//effectiveCost=(int) extra.zeroOut(cost * enchant.getGoldMult()+enchant.getGoldMod());
 			return pastEnchant != enchant;
 		}else {
 			//IsEnchantedConstant = true;
-			enchant = EnchantConstant.makeEnchant(baseEnchant,cost);//new EnchantConstant(level*baseEnchant);
+			enchant = EnchantConstant.makeEnchant(getEnchantMult(),cost);//new EnchantConstant(level*baseEnchant);
 			//effectiveCost=(int) extra.zeroOut(cost * enchant.getGoldMult()+enchant.getGoldMod());
 			return true;
 		}
@@ -349,9 +337,9 @@ public class Weapon extends Item {
 		return weapName;
 	}
 
-	/**
+	/*
 	 * Returns the average damage of all the weapon's attacks. Factors in speed and damage, but not aiming.
-	 * @return - average (int)
+	 *  - average (int)
 	 */
 	/*public double averageDamage() {
 		double average = 0;
@@ -368,14 +356,6 @@ public class Weapon extends Item {
 		
 		return (int)(average/size);
 	}*/
-	
-	/**
-	 * Returns the damage/time (ie dps) of the most powerful attack the weapon has
-	 * @return highest damage (int)
-	 */
-	public void highestDamage() {
-		return;
-	}
 	
 	private void refreshBattleScore() {
 		double high = 0;
@@ -401,10 +381,11 @@ public class Weapon extends Item {
 			i++;
 		}
 		bs/=(battleTests*WorldGen.getDummyInvs().size());
-		this.highDam = high*level;//TODO: unsure if need to do level
-		this.avgDam = average*level;
-		this.bScore = (bs*level)/(size);
-		//dam = new DamTuple(high,average,(bs*level)/(size));
+		//the above battlescore assumes level 10 power weapon on level 10 armor
+		//so we put the real level in now
+		this.highDam = (float) (high*level);
+		this.avgDam = (float) (average*level);
+		this.bScore = (float) ((bs*level)/(size));
 	}
 	
 	/**
@@ -466,7 +447,6 @@ public class Weapon extends Item {
 	
 	protected class TestArmor implements Callable<Double>{
 
-		private static final long serialVersionUID = 1L;
 		public final List<Attack> attacks;
 		public final List<Inventory> tests;
 		public final Weapon weap;
@@ -613,7 +593,7 @@ public class Weapon extends Item {
 	}
 
 	public void forceEnchantHit(int i) {
-		this.enchant = new EnchantHit(true,baseEnchant);
+		this.enchant = new EnchantHit(true,getEnchantMult());
 		
 	}
 

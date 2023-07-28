@@ -487,7 +487,7 @@ public class EnchantConstant extends Enchant {
 		//System.out.println(Integer.toBinaryString(subTypeNum(first,enchantTypes)));
 		if (first) {
 			return (mighty != null ? mighty + " " : "") + backFronter.setBack(stringFluffArr[0][subTypeNum(first,enchantTypes)][isPositive(first,enchantTypes)? 0 : 1])
-			.getWithNum(in & 0b0000000011111111);
+			.getWithNum(in & 0b0000000011111111) + " ";
 		}else {
 			return " of " +(mighty != null ? mighty + " " : "") + backFronter.setBack(stringFluffArr[1][subTypeNum(first,enchantTypes)][isPositive(first,enchantTypes)? 0 : 1])
 			.getWithNum(in & 0b0000000011111111);
@@ -500,7 +500,7 @@ public class EnchantConstant extends Enchant {
 	 * @return the beforeName (String)
 	 */
 	public String getBeforeName() {
-		return inameResolver(true,beforeName)+ " ";
+		return inameResolver(true,beforeName);
 	}
 
 

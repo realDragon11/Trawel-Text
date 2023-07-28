@@ -1,5 +1,8 @@
 package trawel.personal.item.solid;
 import java.util.ArrayList;
+import java.util.List;
+
+import trawel.personal.item.solid.variants.ArmorStyle;
 
 /**
  * A flyweight class
@@ -13,7 +16,7 @@ public class Material{
 	public double rarity, tier, sharpMult, bluntMult, pierceMult;
 	public Boolean armor, weapon;
 	public double fireVul, shockVul, freezeVul;//vulernability
-	public ArrayList<String> typeList = new ArrayList<String>();
+	public List<ArmorStyle> typeList = new ArrayList<ArmorStyle>();
 	public int palIndex;
 	public String soundType;
 	public String color = "";

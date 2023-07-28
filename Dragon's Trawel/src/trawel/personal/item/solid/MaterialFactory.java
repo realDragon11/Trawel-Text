@@ -10,6 +10,7 @@ import com.github.tommyettinger.random.WhiskerRandom;
 import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.extra;
+import trawel.personal.item.solid.variants.ArmorStyle;
 
 public class MaterialFactory {
 	public static List<Material> matList = new ArrayList<Material>();
@@ -43,8 +44,11 @@ public class MaterialFactory {
 		//baseEnchant > rand*3f, so any baseEnchant >=3f will always enchant
 		
 		Material misc = new Material();
-		misc.name = "cloth";
-		misc.typeList.add("light");
+		misc.name = "cloth";//TODO: wool and linen
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.SEWN);
+		misc.typeList.add(ArmorStyle.SEWN);
+		misc.typeList.add(ArmorStyle.SEWN);
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 2;
@@ -96,9 +100,9 @@ public class MaterialFactory {
 		*/
 		misc = new Material();
 		misc.name = "iron";
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("chainmail");
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.MAIL);
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 20;
@@ -124,9 +128,9 @@ public class MaterialFactory {
 		
 		misc = new Material();//TODO: beta numbers
 		misc.name = "tin";
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("chainmail");
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.MAIL);
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 20;
@@ -152,9 +156,9 @@ public class MaterialFactory {
 		
 		misc = new Material();//TODO: beta numbers
 		misc.name = "copper";
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("chainmail");
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.MAIL);
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 20;
@@ -180,10 +184,10 @@ public class MaterialFactory {
 		
 		misc = new Material();//TODO: beta numbers
 		misc.name = "bronze";
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("chainmail");
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.MAIL);
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 30;
@@ -209,10 +213,10 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "steel";
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("chainmail");
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.MAIL);
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 25;
@@ -238,11 +242,11 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "silver";
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("chainmail");
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.MAIL);
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 25;
@@ -268,11 +272,11 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "gold";
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("chainmail");
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.MAIL);
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 50;
@@ -298,7 +302,12 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "silk";
-		misc.typeList.add("light");
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.SEWN);
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 2;
@@ -324,11 +333,11 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "platinum";
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("chainmail");
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.MAIL);
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 55;
@@ -354,11 +363,11 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "mythril";
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("chainmail");
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.MAIL);
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 15;
@@ -384,13 +393,19 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "adamantine";
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("light");
-		misc.typeList.add("light");
-		misc.typeList.add("light");
-		misc.typeList.add("chainmail");
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.MAIL);
+		misc.typeList.add(ArmorStyle.MAIL);
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.SEWN);
+		misc.typeList.add(ArmorStyle.SEWN);
+		misc.typeList.add(ArmorStyle.SEWN);
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 1;
@@ -416,11 +431,11 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "sunsteel";
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("chainmail");
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.MAIL);
 		misc.armor = false;
 		misc.weapon = true;
 		misc.weight = 25;
@@ -446,7 +461,7 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "ectoplasm";
-		misc.typeList.add("light");
+		misc.typeList.add(ArmorStyle.FABRIC);
 		misc.armor = false;
 		misc.weapon = true;
 		misc.weight = 2;
@@ -472,11 +487,11 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "moonsilver";
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("chainmail");
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.MAIL);
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 25;
@@ -502,11 +517,11 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "wood";
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("chainmail");
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.MAIL);
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 4;
@@ -532,11 +547,11 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "solar gold";
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("heavy");
-		misc.typeList.add("chainmail");
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.typeList.add(ArmorStyle.MAIL);
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 100;
@@ -563,7 +578,10 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "diamond";
-		misc.typeList.add("crystal");
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.PLATE);
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 10;
@@ -589,7 +607,10 @@ public class MaterialFactory {
 		
 		misc = new Material();//yeah these crystal stats will be totally inaccurate TODO
 		misc.name = "emerald";
-		misc.typeList.add("crystal");
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.PLATE);
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 10;
@@ -615,7 +636,10 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "ruby";
-		misc.typeList.add("crystal");
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.PLATE);
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 10;
@@ -641,7 +665,10 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "sapphire";
-		misc.typeList.add("crystal");
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.PLATE);
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 10;
@@ -667,7 +694,10 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "nevermelt ice";
-		misc.typeList.add("crystal");
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.PLATE);
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 10;
@@ -693,7 +723,10 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "topaz";
-		misc.typeList.add("crystal");
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.PLATE);
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 10;
@@ -719,7 +752,10 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "amethyst";
-		misc.typeList.add("crystal");
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.GEM);
+		misc.typeList.add(ArmorStyle.PLATE);
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 10;
@@ -747,7 +783,7 @@ public class MaterialFactory {
 		//beast materials
 		misc = new Material();
 		misc.name = "flesh";
-		misc.typeList.add("is");
+		misc.typeList.add(ArmorStyle.BODY);
 		misc.armor = true;
 		misc.weapon = false;
 		misc.weight = 20;
@@ -773,7 +809,7 @@ public class MaterialFactory {
 		
 		misc = new Material();
 		misc.name = "bone";
-		misc.typeList.add("is");
+		misc.typeList.add(ArmorStyle.BODY);
 		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 20;
@@ -798,7 +834,7 @@ public class MaterialFactory {
 		
 		misc = new Material();//used for drudgers right now
 		misc.name = "rusty iron";
-		misc.typeList.add("drudger");
+		misc.typeList.add(ArmorStyle.PLATE);//might make it's own style later
 		misc.armor = false;
 		misc.weapon = false;
 		misc.weight = 25;
@@ -853,6 +889,7 @@ public class MaterialFactory {
 		return matList.get(weapMats.random(extra.getRand()));
 	}
 	
+	@Deprecated
 	public static Material randMat(Boolean armor, Boolean weapon) {
 		ArrayList<Material> copyList = new ArrayList<Material>();
 		double totalRarity = 0;
@@ -876,12 +913,13 @@ public class MaterialFactory {
 
 	
 
-	public static Material randMatByType(String matType) {
+	public static Material randMatByType(ArmorStyle matType) {
 		ArrayList<Material> copyList = new ArrayList<Material>();
 		ArrayList<Material> copyList2 = new ArrayList<Material>();
 		for (Material mat: matList){
 			if (mat.typeList.contains(matType)) {
-			copyList.add(mat);}
+				copyList.add(mat);
+			}
 		}
 		double totalRarity = 0;
 		Material mat;

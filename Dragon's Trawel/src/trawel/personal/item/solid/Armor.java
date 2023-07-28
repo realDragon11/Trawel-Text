@@ -96,20 +96,19 @@ public class Armor extends Item {
 	 * @param mati (Material)
 	 * @param amatType (String)
 	 */
-	public Armor(int newLevel, byte slot,Material mati,String amatType) {	
+	public Armor(int newLevel, byte slot,Material mati,ArmorStyle styleType) {	
 		this.slot = slot;//type is equal to the array armor slot
 		material = mati.curNum;
 		level = newLevel;
 		
 		baseMap = 0;//"iron";
 		
-		if (amatType == null) {
-			this.matType = extra.randList(mati.typeList);
+		if (styleType == null) {
+			style = (short) extra.randList(mati.typeList).ordinal();
 		}else {
-			this.matType = amatType;
+			style = (short) styleType.ordinal();
 		}
-		
-		style = (short) ArmorStyle.PLATE.ordinal();//FIXME
+
 		fluff = ArmorStyle.fetch(style).genner[slot].generate();
 
 		/*
@@ -471,7 +470,7 @@ public class Armor extends Item {
 		return getMat().soundType;
 	}
 	public String getMatType() {
-		return this.matType;
+		return "";//FIXME
 	}
 
 	public void deEnchant() {
@@ -491,11 +490,10 @@ public class Armor extends Item {
 
 	@Override
 	public boolean coinLoot() {
-		switch (getMaterialName()) {
-		case "flesh": return false;
-		case "bone": return false;
-			default: return true;
+		if (ArmorStyle.fetch(style).equals(ArmorStyle.BODY)) {
+			return false;
 		}
+		return true;
 	}
 	
 }
