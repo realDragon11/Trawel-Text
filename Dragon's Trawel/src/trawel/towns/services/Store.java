@@ -7,6 +7,7 @@ import java.util.Random;
 import trawel.AIClass;
 import trawel.Networking;
 import trawel.extra;
+import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;
@@ -140,7 +141,8 @@ public class Store extends Feature implements java.io.Serializable{
 	}
 	
 	private void serviceItem(int index) {
-		Inventory bag = Player.player.getPerson().getBag();
+		Person p = Player.player.getPerson();
+		Inventory bag = p.getBag();
 		if (type == 8 || type == 9) {
 			if (index == -1) {
 				DrawBane sellItem = bag.discardDrawBanes(true);
@@ -190,7 +192,7 @@ public class Store extends Feature implements java.io.Serializable{
 			extra.println("You can't afford this item!");
 			return;
 		}
-		if (!AIClass.compareItem(sellItem,buyItem,-2,false)) {
+		if (!AIClass.compareItem(sellItem,buyItem,-2,false,p)) {
 			extra.println("You decide not to buy the item.");
 			return;
 		}
@@ -399,7 +401,7 @@ public class Store extends Feature implements java.io.Serializable{
 			ArrayList<Item> add = new ArrayList<Item>();
 			ArrayList<Item> remove = new ArrayList<Item>();
 			for (Item i: items) {
-				if (AIClass.compareItem(bag,i,a.getPerson().getIntellect(),false)) {
+				if (AIClass.compareItem(bag,i,a.getPerson().getIntellect(),false,a.getPerson())) {
 					int goldDiff = i.getCost()-bag.itemCounterpart(i).getCost();
 					if (goldDiff <= bag.getGold()){
 					bag.addGold(-goldDiff);

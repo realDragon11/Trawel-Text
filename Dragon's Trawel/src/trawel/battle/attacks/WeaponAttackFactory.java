@@ -196,16 +196,16 @@ public class WeaponAttackFactory {
 				return (comp > 0 ? -1 : 1);
 			}
 		});
-		HashMap<String,Double> matMap = new HashMap<String, Double>();
+		HashMap<Integer,Double> matMap = new HashMap<Integer, Double>();
 		HashMap<String,Double> weapMap = new HashMap<String, Double>();
 		for (int i = 0; i< weaponList.size();i++) {
 			Weapon weapon = weaponList.get(i);
 			weapon.display(0);
-			Double get = matMap.get(weapon.getMaterial());
+			Double get = matMap.get(weapon.getMat().curNum);
 			if (get == null) {
-				matMap.put(weapon.getMaterial(),weapon.score());
+				matMap.put(weapon.getMat().curNum,weapon.score());
 			}else {
-				matMap.put(weapon.getMaterial(),weapon.score()+get);
+				matMap.put(weapon.getMat().curNum,weapon.score()+get);
 			}
 			get = weapMap.get(weapon.getBaseName());
 			if (get == null) {
@@ -216,7 +216,8 @@ public class WeaponAttackFactory {
 		}
 		
 		List<WeaponMetric> metrics = new ArrayList<WeaponMetric>();
-		for (String str: matMap.keySet()) {
+		for (int i: matMap.keySet()) {
+			String str = MaterialFactory.getMat(i).name;
 			metrics.add(new WeaponAttackFactory().new WeaponMetric(str,(matMap.get(str)/weaps),MaterialFactory.getMat(str).rarity));
 		}
 		for (String str: weapMap.keySet()) {

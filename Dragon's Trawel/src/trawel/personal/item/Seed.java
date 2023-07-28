@@ -3,7 +3,13 @@ package trawel.personal.item;
 import trawel.extra;
 
 public enum Seed {
-	GARLIC("garlic seed"),APPLE("apple seed"),BEE("bee larva"),ENT("ent sapling"),PUMPKIN("pumpkin seed"), EGGCORN("eggcorn seed"),TRUFFLE("truffle spores");
+	GARLIC("garlic seed"),
+	APPLE("apple seed"),
+	BEE("bee larva"),
+	ENT("ent sapling"),
+	PUMPKIN("pumpkin seed"),
+	EGGCORN("eggcorn seed"),
+	TRUFFLE("truffle spores");
 	
 	private String name;
 	Seed(String n){

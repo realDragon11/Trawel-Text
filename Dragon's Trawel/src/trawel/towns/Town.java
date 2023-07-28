@@ -842,7 +842,7 @@ public class Town extends TContextOwner implements java.io.Serializable{
 					if (p.getLevel() < pLevel) {
 						extra.offPrintStack();
 						p.forceLevelUp(pLevel);
-						AIClass.loot(p.getBag(), new Inventory(pLevel, Race.RaceType.HUMANOID, null, null, null), 2, false);
+						AIClass.loot(p.getBag(), new Inventory(pLevel, Race.RaceType.HUMANOID, null, null, null), 2, false,p);
 						extra.popPrintStack();
 					}
 					int part1 = extra.randRange(0, 1);

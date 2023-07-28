@@ -6,11 +6,7 @@ import java.util.ArrayList;
  * @author Brian Malone
  * 5/29/2018
  */
-public class Material implements java.io.Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Material{
 	public String name;
 	public float baseEnchant;//some of these should probably be made floats as well TODO
 	public double baseResist, sharpResist, bluntResist, pierceResist, weight, cost, dexMod;
@@ -21,6 +17,9 @@ public class Material implements java.io.Serializable{
 	public int palIndex;
 	public String soundType;
 	public String color = "";
+	
+	public transient int curNum;//not stored anyway, but marked transient
+	//used for reverse lookup so we don't even have to store them as strings
 
 	/**
 	Material(String name,String clothType,

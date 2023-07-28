@@ -301,7 +301,7 @@ public class AIClass {
 	 * @param stash (Inventory)
 	 * @param smarts (int)
 	 */
-	public static void loot(Inventory loot, Inventory stash, int smarts, boolean sellStuff) {
+	public static void loot(Inventory loot, Inventory stash, int smarts, boolean sellStuff, Person p) {
 		int i = 0;
 		boolean normalLoot = loot.getRace().racialType == Race.RaceType.HUMANOID;
 		if (normalLoot && smarts < 0 && Player.getTutorial()) {
@@ -309,7 +309,7 @@ public class AIClass {
 		}
 		if (normalLoot) {
 			while (i < 5) {
-				if (compareItem((Item)stash.getArmorSlot(i),(Item)loot.getArmorSlot(i),smarts,true)) {
+				if (compareItem(stash.getArmorSlot(i),loot.getArmorSlot(i),smarts,true,p)) {
 					if (sellStuff) {
 						Services.sellItem(stash.swapArmorSlot(loot.getArmorSlot(i),i),stash,false);}else {
 							loot.swapArmorSlot(stash.swapArmorSlot(loot.getArmorSlot(i),i), i);
@@ -334,7 +334,7 @@ public class AIClass {
 				}
 				i++;
 			}
-			if (compareItem((Item)stash.getHand(),(Item)loot.getHand(),smarts,true)) {
+			if (compareItem(stash.getHand(),loot.getHand(),smarts,true,p)) {
 				if (sellStuff) {
 					Services.sellItem(stash.swapWeapon(loot.getHand()),stash,false);}else {
 						loot.swapWeapon(stash.swapWeapon(loot.getHand()));
@@ -383,7 +383,10 @@ public class AIClass {
 	 * @param smarts (int)
 	 * @return if you should swap items (boolean)
 	 */
-	public static boolean compareItem(Item hasItem, Item toReplace,int smarts, boolean autosellOn) {
+	public static boolean compareItem(Item hasItem, Item toReplace,int smarts, boolean autosellOn, Person p) {
+		//p is the person comparing it, and is used to apply skills and feats that modify stats
+		//for the player, the base stats should be the same, but the 'diff' should show the actual difference
+		//when swapped
 		if (Armor.class.isInstance(hasItem)) {
 			if (autosellOn && worseArmor((Armor)hasItem,(Armor)toReplace)) {
 				if (smarts < 0) {
@@ -399,7 +402,7 @@ public class AIClass {
 			toReplace.display(1);
 			extra.println("instead of your");
 			hasItem.display(1);
-			displayChange(hasItem,toReplace);
+			displayChange(hasItem,toReplace, p);
 			return extra.yesNo();
 		}
 		if (!Weapon.class.isInstance(hasItem)){
@@ -415,7 +418,7 @@ public class AIClass {
 		}
 	}
 	
-	public static boolean compareItem(Inventory bag, Item toReplace,int smarts, boolean autosellOn) {
+	public static boolean compareItem(Inventory bag, Item toReplace,int smarts, boolean autosellOn, Person p) {
 		Item item = null;
 		if (Armor.class.isInstance(toReplace)) {
 			Armor a = (Armor)toReplace;
@@ -425,7 +428,7 @@ public class AIClass {
 				item = bag.getHand();
 			}
 		}
-		return compareItem(item,toReplace,smarts,autosellOn);
+		return compareItem(item,toReplace,smarts,autosellOn, p);
 	}
 
 	private static boolean worseArmor(Armor hasItem, Armor toReplace) {
@@ -461,7 +464,8 @@ public class AIClass {
 		return true;
 	}
 
-	public static void displayChange(Item hasItem, Item toReplace) {
+	public static void displayChange(Item hasItem, Item toReplace, Person p) {
+		//p is used to display absolute stat changes instead of just raw stats like the non-diff
 		extra.println();
 		int goldDiff = toReplace.getCost() - hasItem.getCost();
 		if (Armor.class.isInstance(hasItem)) {

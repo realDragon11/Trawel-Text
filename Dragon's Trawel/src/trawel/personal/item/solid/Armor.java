@@ -17,23 +17,19 @@ import trawel.personal.item.magic.EnchantConstant;
  * An extension of Item, an armor has varying stats that can effect a person, and possibly and enchantment.
  * Different materials and different slots effect the attributes of items, as well as the level of the item.
  * 
- * @author Brian Malone
+ * @author dragon
  * 2/5/2018
  *
  */
 public class Armor extends Item {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	public static final double armorEffectiveness = .1;//was .05
 	//instance variables
 	private byte armorType;//The slot which the armor goes into
 	private String baseName;//what we call it, ie helm, helmet, hat, cap
-	@OneOf({"cloth","iron","tin","copper","bronze","steel","silver","gold"})
-	private String material;//what material the object is made from
+	private int material;//what material the object is made from
 	private int cost;//how much it costs in gold pieces
 	//private int baseResist;//the base damage resistance of the item//now built into the following
 	private float sharpResist;
@@ -105,7 +101,7 @@ public class Armor extends Item {
 	//initialize	
 	armorType = (byte)slot;//type is equal to the array armor slot
 	//mat = mati;
-	material = mati.name;
+	material = mati.curNum;
 	level = newLevel;
 	prefixName = "";
 	
@@ -271,10 +267,11 @@ public class Armor extends Item {
 	 * @return name - String
 	 */
 	public String getName() {
+		Material mat = getMat();
 		if (enchantment != null){
 			EnchantConstant enchant = (EnchantConstant)enchantment; 
-		return (getModiferName() + " " +enchant.getBeforeName() +prefixName+this.getMat().color + material+"[c_white]" + " " + baseName + enchant.getAfterName());}
-			return (getModiferName() + " "+prefixName +MaterialFactory.getMat(material).color + material+"[c_white]"  + " " +  baseName);
+		return (getModiferName() + " " +enchant.getBeforeName() +prefixName+mat.color + mat.name+"[c_white]" + " " + baseName + enchant.getAfterName());}
+			return (getModiferName() + " "+prefixName +mat.color + mat.name+"[c_white]"  + " " +  baseName);
 	}
 	
 
@@ -461,8 +458,8 @@ public class Armor extends Item {
 		return "armor" + armorType;
 	}
 
-	public String getMaterial() {
-		return material;
+	public String getMaterialName() {
+		return MaterialFactory.getMat(material).name;
 	}
 
 	public String getBaseMap() {
@@ -507,7 +504,7 @@ public class Armor extends Item {
 
 	@Override
 	public boolean coinLoot() {
-		switch (material) {
+		switch (getMaterialName()) {
 		case "flesh": return false;
 		case "bone": return false;
 			default: return true;

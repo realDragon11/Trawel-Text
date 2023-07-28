@@ -285,7 +285,7 @@ public class FortHall extends FortFeature {
 			Inventory inv = new Inventory(level, Race.RaceType.HUMANOID, null, null,null);//TODO probably make custom inv type
 			inv.deEnchant();
 			for (Person p: allies) {
-				AIClass.loot(p.getBag(), inv,level, false);
+				AIClass.loot(p.getBag(), inv,level, false,p);
 			}
 			extra.popPrintStack();
 		}

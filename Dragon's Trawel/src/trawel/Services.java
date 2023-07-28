@@ -153,6 +153,7 @@ public class Services {
 	 * @param smarts (int)
 	 * @param level (int)
 	 */
+	@Deprecated
 	public static void storeFront(Inventory inv, int smarts, int level) {
 		level = Math.max(level+extra.getRand().nextInt(5)-2,1);
 		extra.println("");
@@ -162,7 +163,7 @@ public class Services {
 		while (i > 0) {
 			if (extra.chanceIn(1,3)) {
 				Weapon weap = new Weapon(extra.zeroOut(level + (int)(Math.random()*6)-3)+1);
-				if (weap.getCost() <= inv.getGold() && AIClass.compareItem(inv.getHand(),weap, smarts, false) ) {
+				if (weap.getCost() <= inv.getGold() && AIClass.compareItem(inv.getHand(),weap, smarts, false,null) ) {
 					inv.setGold(inv.getGold()-weap.getCost());
 					sellItem(inv.getHand(),inv, false);
 					inv.swapWeapon(weap);
@@ -171,7 +172,7 @@ public class Services {
 			}else {
 				Armor arm = new Armor(extra.zeroOut(level + (int)(Math.random()*6)-3)+1);
 				int slot = arm.getArmorType();
-				if (arm.getCost() <= inv.getGold() && AIClass.compareItem(inv.getArmorSlot(slot),arm, smarts, false)) {
+				if (arm.getCost() <= inv.getGold() && AIClass.compareItem(inv.getArmorSlot(slot),arm, smarts, false,null)) {
 					inv.setGold(inv.getGold()-arm.getCost());
 					sellItem(inv.getArmorSlot(slot),inv, false);
 					inv.swapArmorSlot(arm,slot);

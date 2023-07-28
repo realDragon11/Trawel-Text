@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 import java.util.HashMap;
+import java.util.List;
 
 import com.github.tommyettinger.random.WhiskerRandom;
 import com.github.yellowstonegames.core.WeightedTable;
@@ -11,10 +12,28 @@ import com.github.yellowstonegames.core.WeightedTable;
 import trawel.extra;
 
 public class MaterialFactory {
-	public static ArrayList<Material> matList = new ArrayList<Material>();
+	public static List<Material> matList = new ArrayList<Material>();
 	public static Map<String,Material> matMap = new HashMap<String,Material>();
-	
 	public static WeightedTable weapMats, armMats;
+	
+	//public final List<String> matKeys = new ArrayList<String>();
+	
+	private void register(Material m) {
+		//matKeys.add(m.name);
+		//DOLATER: if supporting multiple material versions (right now game is too updated for that to matter)
+		//add them to a list to save, which can be used to decode updates
+		//probably in a dedicated save updater function
+		m.curNum = matList.size();
+		matList.add(m);
+	}
+	
+	public static Material getMat(String string) {
+		return matMap.get(string);
+	}
+	
+	public static Material getMat(int i) {
+		return matList.get(i);
+	}
 	
 	/**
 	 * Set up the static flyweights for the materials.
@@ -47,7 +66,7 @@ public class MaterialFactory {
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
 		misc.color = extra.inlineColor(Color.WHITE);
-		matList.add(misc);
+		register(misc);
 		
 		/*TODO readd leather
 		misc = new Material();
@@ -73,7 +92,7 @@ public class MaterialFactory {
 		misc.freezeVul = .1;
 		misc.palIndex = 0;
 		misc.soundType = "padding";
-		matList.add(misc);
+		register(misc);
 		*/
 		misc = new Material();
 		misc.name = "iron";
@@ -101,7 +120,7 @@ public class MaterialFactory {
 		misc.palIndex = 0;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(131,145,169));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();//TODO: beta numbers
 		misc.name = "tin";
@@ -129,7 +148,7 @@ public class MaterialFactory {
 		misc.palIndex = 1;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(169,94,60));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();//TODO: beta numbers
 		misc.name = "copper";
@@ -157,7 +176,7 @@ public class MaterialFactory {
 		misc.palIndex = 2;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(198,198,198));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();//TODO: beta numbers
 		misc.name = "bronze";
@@ -186,7 +205,7 @@ public class MaterialFactory {
 		misc.palIndex = 3;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(169,94,60));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "steel";
@@ -215,7 +234,7 @@ public class MaterialFactory {
 		misc.palIndex = 4;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(204,204,204));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "silver";
@@ -245,7 +264,7 @@ public class MaterialFactory {
 		misc.palIndex = 5;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(236,236,236));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "gold";
@@ -275,7 +294,7 @@ public class MaterialFactory {
 		misc.palIndex = 6;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(203,185,83));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "silk";
@@ -301,7 +320,7 @@ public class MaterialFactory {
 		misc.palIndex = 1;
 		misc.soundType = "flesh";
 		misc.color = extra.inlineColor(Color.LIGHT_GRAY);
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "platinum";
@@ -331,7 +350,7 @@ public class MaterialFactory {
 		misc.palIndex = 7;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(236,236,236));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "mythril";
@@ -361,7 +380,7 @@ public class MaterialFactory {
 		misc.palIndex = 9;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(151,131,169));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "adamantine";
@@ -393,7 +412,7 @@ public class MaterialFactory {
 		misc.palIndex = 10;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(160,182,255));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "sunsteel";
@@ -423,7 +442,7 @@ public class MaterialFactory {
 		misc.palIndex = 11;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(249,255,160));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "ectoplasm";
@@ -449,7 +468,7 @@ public class MaterialFactory {
 		misc.palIndex = 10;
 		misc.soundType = "flesh";
 		misc.color = extra.inlineColor(Color.BLUE);
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "moonsilver";
@@ -479,7 +498,7 @@ public class MaterialFactory {
 		misc.palIndex = 13;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(255,255,255));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "wood";
@@ -509,7 +528,7 @@ public class MaterialFactory {
 		misc.palIndex = 8;
 		misc.soundType = "wood";
 		misc.color = extra.inlineColor(new Color(131,94,35));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "solar gold";
@@ -539,7 +558,7 @@ public class MaterialFactory {
 		misc.palIndex = 12;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(255,210,73));
-		matList.add(misc);
+		register(misc);
 		
 		
 		misc = new Material();
@@ -566,7 +585,7 @@ public class MaterialFactory {
 		misc.palIndex = 0;
 		misc.soundType = "crystal";
 		misc.color = extra.inlineColor(new Color(210,227,255));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();//yeah these crystal stats will be totally inaccurate TODO
 		misc.name = "emerald";
@@ -592,7 +611,7 @@ public class MaterialFactory {
 		misc.palIndex = 1;
 		misc.soundType = "crystal";
 		misc.color = extra.inlineColor(new Color(210,255,216));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "ruby";
@@ -618,7 +637,7 @@ public class MaterialFactory {
 		misc.palIndex = 2;
 		misc.soundType = "crystal";
 		misc.color = extra.inlineColor(new Color(237,163,175));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "sapphire";
@@ -644,7 +663,7 @@ public class MaterialFactory {
 		misc.palIndex = 3;
 		misc.soundType = "crystal";
 		misc.color = extra.inlineColor(new Color(158,184,228));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "nevermelt ice";
@@ -670,7 +689,7 @@ public class MaterialFactory {
 		misc.palIndex = 4;
 		misc.color = extra.inlineColor(new Color(229,238,255));
 		misc.soundType = "crystal";
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "topaz";
@@ -696,7 +715,7 @@ public class MaterialFactory {
 		misc.palIndex = 5;
 		misc.soundType = "crystal";
 		misc.color = extra.inlineColor(new Color(255,226,210));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "amethyst";
@@ -722,7 +741,7 @@ public class MaterialFactory {
 		misc.palIndex = 6;
 		misc.soundType = "crystal";
 		misc.color = extra.inlineColor(new Color(224,166,225));
-		matList.add(misc);
+		register(misc);
 		
 		
 		//beast materials
@@ -750,7 +769,7 @@ public class MaterialFactory {
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
 		misc.color = extra.inlineColor(new Color(212,89,107));
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();
 		misc.name = "bone";
@@ -775,7 +794,7 @@ public class MaterialFactory {
 		misc.freezeVul = 1;
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
-		matList.add(misc);
+		register(misc);
 		
 		misc = new Material();//used for drudgers right now
 		misc.name = "rusty iron";
@@ -801,7 +820,7 @@ public class MaterialFactory {
 		misc.palIndex = 0;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(105,113,128));
-		matList.add(misc);
+		register(misc);
 		
 		
 		
@@ -855,9 +874,7 @@ public class MaterialFactory {
 	}
 
 
-	public static Material getMat(String string) {
-		return matMap.get(string);
-	}
+	
 
 	public static Material randMatByType(String matType) {
 		ArrayList<Material> copyList = new ArrayList<Material>();

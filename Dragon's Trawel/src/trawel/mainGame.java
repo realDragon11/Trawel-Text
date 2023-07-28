@@ -812,7 +812,8 @@ public class mainGame {
 				
 				if (!second_man.isPlayer() && first_man.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 					extra.println(first_man.getName() +" goes to loot " + second_man.getName() +".");
-				AIClass.loot(second_man.getBag(),first_man.getBag(),first_man.getIntellect(),true);}
+					AIClass.loot(second_man.getBag(),first_man.getBag(),first_man.getIntellect(),true,first_man);
+				}
 				/*else {
 					if (first_man.isPlayer()) {
 						for (DrawBane db: second_man.getBag().getDrawBanes()) {
@@ -990,7 +991,7 @@ public class mainGame {
 							}
 						}
 						continue;}else {*/
-					AIClass.loot(kill.getBag(),surv.getBag(),surv.getIntellect(),false);
+					AIClass.loot(kill.getBag(),surv.getBag(),surv.getIntellect(),false,surv);
 				}
 				
 			}

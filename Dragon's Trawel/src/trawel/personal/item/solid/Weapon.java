@@ -49,15 +49,9 @@ public class Weapon extends Item {
 	private int weight = 1;//how much does it weigh?
 	private float baseEnchant;//how good is the material at receiving enchantments?
 	private Enchant enchant;
-	//private boolean IsEnchantedConstant = false;
-	//private EnchantHit enchantHit;
-	//private boolean IsEnchantedHit = false;//likely unused
-	//private Stance martialStance = new Stance(); //what attacks the weapon can use
-	
-	
+
 	private String weapName;
-	@OneOf({"iron","tin","copper","bronze","steel","silver","gold"})
-	private String material;
+	private int material;
 	private int cost;
 	//private int level;
 	//private int effectiveCost;
@@ -96,7 +90,7 @@ public class Weapon extends Item {
 		
 		//material = (String)bpmFunctions.choose("iron",bpmFunctions.choose("steel","silver",bpmFunctions.choose("gold","platinum",bpmFunctions.choose("adamantine","mithril"))));
 		//mat = materia;
-		material = materia.name;
+		material = materia.curNum;
 		level = newLevel;
 		baseEnchant = materia.baseEnchant;
 		weight *= materia.weight;
@@ -533,11 +527,15 @@ public class Weapon extends Item {
 	@Override
 	public void display(int style,float markup) {
 		switch (style) {
-		case 0: extra.println(material +" "+weapName+": "+extra.format(this.score()));
+		case 0: extra.println(getMaterialName() +" "+weapName+": "+extra.format(this.score()));
 		break;
 		case 1:
 			extra.println(this.getName()
-			+ " hd/ad/bs: " + extra.format(this.highest()) + "/" + extra.format(this.average())+"/"+extra.format(this.score())+" value: " + (int)(this.getCost()*markup));
+			+ " hd/ad/bs: " + extra.format(this.highest())
+			+ "/" + extra.format(this.average())
+			+"/"+extra.format(this.score())
+			+" value: " + (int)(this.getCost()*markup));
+			
 			if (this.isEnchantedConstant()) {
 				this.getEnchant().display(1);
 			}
@@ -550,7 +548,12 @@ public class Weapon extends Item {
 			;break;
 		case 2:
 			extra.println(this.getName()
-			+ " hd/ad/bs: " + extra.format(this.highest()) + "/" + extra.format(this.average())+ "/"+extra.format(this.score())+" value: " + (int)(this.getCost()*markup) + " kills: " +this.getKills());
+			+ " hd/ad/bs: " + extra.format(this.highest())
+			+ "/" + extra.format(this.average())
+			+ "/"+extra.format(this.score())
+			+" value: " + (int)(this.getCost()*markup)
+			+ " kills: " +this.getKills());
+			
 			if (this.isEnchantedConstant()) {
 				this.getEnchant().display(2);
 			}
@@ -575,8 +578,8 @@ public class Weapon extends Item {
 		return "weapon";
 	}
 
-	public String getMaterial() {
-		return material;
+	public String getMaterialName() {
+		return MaterialFactory.getMat(material).name;
 	}
 
 	public int getKills() {
@@ -715,15 +718,15 @@ public class Weapon extends Item {
 		PrintWriter writer = new PrintWriter("rmetrics.csv");
 		//List<Weapon> weaponList = new ArrayList<Weapon>();
 		HashMap<String,Integer> weaponCount = new HashMap<String,Integer>();
-		HashMap<String,Integer> materialCount = new HashMap<String,Integer>();
+		HashMap<Integer,Integer> materialCount = new HashMap<Integer,Integer>();
 		HashMap<String,Integer> combCount = new HashMap<String,Integer>();
 		double battleTotal = 0;
 		for (int i = 0; i < attempts;i++) {
 			//weaponList.add(Weapon.genMidWeapon(1));
 			Weapon weap = genMidWeapon(1);
 			weaponCount.put(weap.getBaseName(), weaponCount.getOrDefault(weap.getBaseName(),0)+1);
-			materialCount.put(weap.getMaterial(), materialCount.getOrDefault(weap.getMaterial(),0)+1);
-			String temp = weap.getMaterial() +weap.getBaseName();
+			materialCount.put(weap.material, materialCount.getOrDefault(weap.material,0)+1);
+			String temp = weap.material +weap.getBaseName();
 			combCount.put(temp, combCount.getOrDefault(temp,0)+1);
 			battleTotal+=weap.score();
 			//weaponList.add(weap);
@@ -741,9 +744,9 @@ public class Weapon extends Item {
 				continue;
 			}
 			writer.write(m.name+",");
-			extra.println(m.name+": "+materialCount.getOrDefault(m.name,0));
+			extra.println(m.name+": "+materialCount.getOrDefault(m.curNum,0));
 			for (String str: Weapon.weaponTypes) {
-				writer.write(combCount.getOrDefault(m.name+str,0)+",");
+				writer.write(combCount.getOrDefault(m.curNum+str,0)+",");
 			}
 			writer.write("\n");
 		}
@@ -790,8 +793,8 @@ public class Weapon extends Item {
 				for (int i = 0; i < attempts;i++) {
 					Weapon weap = genTestWeapon(s);
 					maps.get((1*mult)-1).put(weap.getBaseName(), maps.get((1*mult)-1).getOrDefault(weap.getBaseName(),0)+1);
-					maps.get((2*mult)-1).put(weap.getMaterial(), maps.get((2*mult)-1).getOrDefault(weap.getMaterial(),0)+1);
-					String temp = weap.getMaterial() +weap.getBaseName();
+					maps.get((2*mult)-1).put(weap.getMaterialName(), maps.get((2*mult)-1).getOrDefault(weap.getMaterialName(),0)+1);
+					String temp = weap.getMaterialName() +weap.getBaseName();
 					maps.get((3*mult)-1).put(temp, maps.get((3*mult)-1).getOrDefault(temp,0)+1);
 					battleTotal[s]+=weap.score();
 				}

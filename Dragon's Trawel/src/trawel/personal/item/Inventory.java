@@ -755,21 +755,21 @@ public class Inventory implements java.io.Serializable{
 		switch (d) {
 		case SILVER:
 			for (Armor a: armorSlots) {
-				if (a.getMaterial().equals("silver")) {
+				if (a.getMaterialName().equals("silver")) {
 					i++;
 				}
 			}
-			if (hand.getMaterial().equals("silver")) {
+			if (hand.getMaterialName().equals("silver")) {
 				i++;
 			}
 			break;
 		case GOLD:
 			for (Armor a: armorSlots) {
-				if (a.getMaterial().equals("gold")) {
+				if (a.getMaterialName().equals("gold")) {
 					i++;
 				}
 			}
-			if (hand.getMaterial().equals("gold")) {
+			if (hand.getMaterialName().equals("gold")) {
 				i++;
 			}
 			break;
