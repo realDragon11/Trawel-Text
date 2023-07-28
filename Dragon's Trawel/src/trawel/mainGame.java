@@ -40,6 +40,7 @@ import trawel.personal.item.body.Race;
 import trawel.personal.item.magic.EnchantConstant;
 import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
+import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Player;
 import trawel.personal.people.Skill;
 import trawel.quests.QuestReactionFactory;
@@ -311,6 +312,7 @@ public class mainGame {
 			new RaceFactory();
 			new TargetFactory();
 			new StyleFactory();
+			ArmorStyle.init();
 			new Oracle().load();
 			new TauntsFactory();
 			new BookFactory();

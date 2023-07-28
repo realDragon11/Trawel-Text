@@ -63,15 +63,15 @@ public class Inventory implements java.io.Serializable{
 		if (type == Race.RaceType.HUMANOID) {
 			if (job != null) {
 				String matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
-				armorSlots[0] = new Armor(level,0,MaterialFactory.randMatByType(matType2),matType2);
+				armorSlots[0] = new Armor(level,(byte) 0,MaterialFactory.randMatByType(matType2),matType2);
 				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
-				armorSlots[1] = new Armor(level,1,MaterialFactory.randMatByType(matType2),matType2);
+				armorSlots[1] = new Armor(level,(byte) 1,MaterialFactory.randMatByType(matType2),matType2);
 				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
-				armorSlots[2] = new Armor(level,2,MaterialFactory.randMatByType(matType2),matType2);
+				armorSlots[2] = new Armor(level,(byte) 2,MaterialFactory.randMatByType(matType2),matType2);
 				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
-				armorSlots[3] = new Armor(level,3,MaterialFactory.randMatByType(matType2),matType2);
+				armorSlots[3] = new Armor(level,(byte) 3,MaterialFactory.randMatByType(matType2),matType2);
 				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
-				armorSlots[4] = new Armor(level,4,MaterialFactory.randMatByType(matType2),matType2);
+				armorSlots[4] = new Armor(level,(byte) 4,MaterialFactory.randMatByType(matType2),matType2);
 				hand = Weapon.genMidWeapon(level,job.weapType[extra.randRange(0,job.weapType.length-1)]);
 			}else {
 				

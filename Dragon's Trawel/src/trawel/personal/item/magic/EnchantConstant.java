@@ -500,7 +500,7 @@ public class EnchantConstant extends Enchant {
 	 * @return the beforeName (String)
 	 */
 	public String getBeforeName() {
-		return inameResolver(true,beforeName);
+		return inameResolver(true,beforeName)+ " ";
 	}
 
 

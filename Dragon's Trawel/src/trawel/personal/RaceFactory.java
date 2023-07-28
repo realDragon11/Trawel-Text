@@ -950,7 +950,7 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_DRUDGER_STOCK, MaterialFactory.getMat("flesh"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","rusty iron","iron")),"fishing spear"));
-		for (int i=0;i<5;i++) {
+		for (byte i=0;i<5;i++) {
 			if (extra.chanceIn(1,8)) {
 				w.getBag().swapArmorSlot(new Armor(level,i,MaterialFactory.getMat("rusty iron"),null),i);
 			}
@@ -968,7 +968,7 @@ public class RaceFactory {
 		Person w = Person.animal(level, RaceID.B_DRUDGER_TITAN, MaterialFactory.getMat("flesh"), false);
 		//TODO: maybe drudger armor?
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","iron")),"anchor"));
-		w.getBag().swapArmorSlot(new Armor(level,2,MaterialFactory.getMat("rusty iron"),null),2);
+		w.getBag().swapArmorSlot(new Armor(level,(byte)2,MaterialFactory.getMat("rusty iron"),null),2);
 		w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		if (extra.chanceIn(1,2)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);

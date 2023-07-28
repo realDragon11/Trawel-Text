@@ -12,6 +12,7 @@ import trawel.extra;
 import trawel.personal.item.Item;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.magic.EnchantConstant;
+import trawel.personal.item.solid.variants.ArmorStyle;
 
 /***
  * An extension of Item, an armor has varying stats that can effect a person, and possibly and enchantment.
@@ -26,35 +27,33 @@ public class Armor extends Item {
 	private static final long serialVersionUID = 1L;
 	
 	public static final double armorEffectiveness = .1;//was .05
+	
+	
 	//instance variables
-	private byte armorType;//The slot which the armor goes into
-	private String baseName;//what we call it, ie helm, helmet, hat, cap
+	private byte slot;//The slot which the armor goes into
 	private int material;//what material the object is made from
-	private int cost;//how much it costs in gold pieces
-	//private int baseResist;//the base damage resistance of the item//now built into the following
-	private float sharpResist;
-	private float bluntResist;
-	private float pierceResist;
-	private transient double sharpActive, bluntActive, pierceActive;
-	private float baseEnchant;//the multiplier of how powerful enchantments on the item are
-	private byte weight;
+	private short style;//FIXME
+	private int fluff;//stores the fluff of the style
 	private Enchant enchantment;
-	private float dexMod = 1;
-	//private double burnMod, freezeMod, shockMod;
+	
 	private transient double burned;
-	@OneOf({"heavy","light","chainmail","crystal","drudger"})
-	private String matType;//ie heavy, light, chainmail
-	//@OneOf({"iron","cloth","crystal"})
-	//private String baseMap;
+	private transient float sharpActive, bluntActive, pierceActive;
+	
+	private List<ArmorQuality> quals = new ArrayList<ArmorQuality>();
+	
+	
+	//removable after armor style rework
 	private byte baseMap;//switched to offset, unsigned, but positives are normal
 	private static final String[] BASE_MAPS = new String[] {"iron","cloth","crystal"};
+	@OneOf({"heavy","light","chainmail","crystal","drudger"})
+	private String matType;//ie heavy, light, chainmail
+	private float dexMod = 1;
 	
-	private String prefixName;
-	private List<ArmorQuality> quals = new ArrayList<ArmorQuality>();
+	//end removable after
 	
 	//enums
 	
-	public enum ArmorQuality implements Serializable {
+	public enum ArmorQuality {
 		FRAGILE("Fragile","Loses power when hit."),
 		HAUNTED("Haunted","Chance to turn any hit on you into a miss.");
 		
@@ -73,11 +72,11 @@ public class Armor extends Item {
 	 * @param newLevel (int)
 	 */
 	public Armor(int newLevel) {
-		this(newLevel,extra.getRand().nextInt(5),MaterialFactory.randArmorMat(),null);
+		this(newLevel,(byte) extra.getRand().nextInt(5),MaterialFactory.randArmorMat(),null);
 	}
 	
 	public Armor(int newLevel, int slot,Material mati) {
-		this(newLevel,slot,mati,null);
+		this(newLevel,(byte) slot,mati,null);
 	}
 	/**
 	 * This should be used in most cases if you want armor for one slot.
@@ -86,7 +85,7 @@ public class Armor extends Item {
 	 * @param slot (head, arms, body, legs, feet)
 	 */
 	public Armor(int level, int slot) {
-		this(level,slot,MaterialFactory.randArmorMat(),null);
+		this(level,(byte) slot,MaterialFactory.randArmorMat(),null);
 	}
 	
 	/**
@@ -94,160 +93,115 @@ public class Armor extends Item {
 	 * This function should mostly be only used interally, but if you want a certain material and type to be generated, it will work.
 	 * @param newLevel (int)
 	 * @param slot (int)
-	 * @param mat (Material)
+	 * @param mati (Material)
 	 * @param amatType (String)
 	 */
-	public Armor(int newLevel, int slot,Material mati,String amatType) {
-	//initialize	
-	armorType = (byte)slot;//type is equal to the array armor slot
-	//mat = mati;
-	material = mati.curNum;
-	level = newLevel;
-	prefixName = "";
-	
-	sharpResist = 1;
-	bluntResist = 1;
-	pierceResist = 1;
-	
-	//burnMod = 1;
-	//shockMod = 1;
-	//freezeMod = 1;
-	
-	baseMap = 0;//"iron";
-	
-	//what names make sense for the given material?
-	if (amatType == null) {
-		this.matType = extra.randList(mati.typeList);
-	}else {
-		this.matType = amatType;
+	public Armor(int newLevel, byte slot,Material mati,String amatType) {	
+		this.slot = slot;//type is equal to the array armor slot
+		material = mati.curNum;
+		level = newLevel;
+		
+		baseMap = 0;//"iron";
+		
+		if (amatType == null) {
+			this.matType = extra.randList(mati.typeList);
+		}else {
+			this.matType = amatType;
+		}
+		
+		style = (short) ArmorStyle.PLATE.ordinal();//FIXME
+		fluff = ArmorStyle.fetch(style).genner[slot].generate();
+
 		/*
-	    HashSet<String> set = new HashSet<>();
-	    set.addAll(Arrays.asList(amatType));
-	    set.retainAll(mat.typeList);
-	    String[] strs = (String[])set.toArray();
-	    this.matType = strs[extra.randRange(0,strs.length-1)];
-		*/
-	}
-	
-	float baseResist = 1;
-	
-	if (matType.equals("light")){
-		baseMap = 1;//"cloth";
-		switch (armorType) {//adamantine can be either
-			case 0: baseName = "hat"; weight = 2; baseResist = 1; cost = 1;break;//"hood"
-			case 1: baseName = "gloves"; weight = 2; baseResist = 1; cost = 1;break;//,"gloves","gloves","fingerless gloves"
-			case 2: baseName = "tunic"; weight = 10; baseResist = 4; cost = 3;break;//"shirt","toga"
-			case 3: baseName = "pants"; weight = 6; baseResist = 3; cost = 3;break;//"leggings",
-			case 4: baseName = "boots"; weight = 4; baseResist = 2; cost = 2;break;//,"slippers","shoes"
-		}
-	}else {
-		if (matType.equals("heavy")) {
-			baseMap = 0;//"iron";
-		switch (armorType) {
-			case 0: baseName = "helm"; weight = 2; baseResist = 1; cost = 1;break;//"helmet",,"cap","hat","mask"
-			case 1: baseName = "gauntlets"; weight = 2; baseResist = 1; cost = 1;break;//"bracers",
-			case 2: baseName = "chestplate"; weight = 10; baseResist = 4; cost = 3;break;//,"breastplate","cuirass"
-			case 3: baseName = "greaves"; weight = 6; baseResist = 3; cost = 3;break;
-			case 4: baseName = "boots"; weight = 4; baseResist = 2; cost = 2;break;//,"shoes","high boots","low boots"
-		}
+		if (matType.equals("light")){
+			baseMap = 1;//"cloth";
+			switch (armorType) {//adamantine can be either
+				case 0: baseName = "hat"; weight = 2; baseResist = 1; cost = 1;break;//"hood"
+				case 1: baseName = "gloves"; weight = 2; baseResist = 1; cost = 1;break;//,"gloves","gloves","fingerless gloves"
+				case 2: baseName = "tunic"; weight = 10; baseResist = 4; cost = 3;break;//"shirt","toga"
+				case 3: baseName = "pants"; weight = 6; baseResist = 3; cost = 3;break;//"leggings",
+				case 4: baseName = "boots"; weight = 4; baseResist = 2; cost = 2;break;//,"slippers","shoes"
+			}
 		}else {
-			if (matType.equals("chainmail")) {
+			if (matType.equals("heavy")) {
 				baseMap = 0;//"iron";
-				switch (armorType) {
-				case 0: baseName = "mail hood"; weight = 2; baseResist = 1; cost = 1;break;
-				case 1: baseName = "mail gloves"; weight = 2; baseResist = 1; cost = 1;break;
-				case 2: baseName = "mail shirt"; weight = 10; baseResist = 4; cost = 3;break;
-				case 3: baseName = "mail pants"; weight = 6; baseResist = 3; cost = 3;break;
-				case 4: baseName = "mail boots"; weight = 4; baseResist = 2; cost = 2;break;
-				}
-				weight*=2;
-				sharpResist*=1.5;
-				pierceResist*=.5;
-				
+			switch (armorType) {
+				case 0: baseName = "helm"; weight = 2; baseResist = 1; cost = 1;break;//"helmet",,"cap","hat","mask"
+				case 1: baseName = "gauntlets"; weight = 2; baseResist = 1; cost = 1;break;//"bracers",
+				case 2: baseName = "chestplate"; weight = 10; baseResist = 4; cost = 3;break;//,"breastplate","cuirass"
+				case 3: baseName = "greaves"; weight = 6; baseResist = 3; cost = 3;break;
+				case 4: baseName = "boots"; weight = 4; baseResist = 2; cost = 2;break;//,"shoes","high boots","low boots"
+			}
 			}else {
-				if (matType.equals("crystal")) {
-					baseMap = 2;//"crystal";
+				if (matType.equals("chainmail")) {
+					baseMap = 0;//"iron";
 					switch (armorType) {
-					case 0: baseName = "helmet"; weight = 2; baseResist = 1; cost = 1;break;
-					case 1: baseName = "bracers"; weight = 2; baseResist = 1; cost = 1;break;
-					case 2: baseName = "breastplate"; weight = 10; baseResist = 4; cost = 3;break;
-					case 3: baseName = "pants"; weight = 6; baseResist = 3; cost = 3;break;
-					case 4: baseName = "boots"; weight = 4; baseResist = 2; cost = 2;break;
-				}
-					cost*=1.5;
-					if (extra.chanceIn(2,3)) {
-						quals.add(ArmorQuality.FRAGILE);
-						prefixName = extra.PRE_YELLOW+"fragile[c_white] ";
-						sharpResist*=1.25;
-						bluntResist*=1.25;
-						pierceResist*=1.25;
+					case 0: baseName = "mail hood"; weight = 2; baseResist = 1; cost = 1;break;
+					case 1: baseName = "mail gloves"; weight = 2; baseResist = 1; cost = 1;break;
+					case 2: baseName = "mail shirt"; weight = 10; baseResist = 4; cost = 3;break;
+					case 3: baseName = "mail pants"; weight = 6; baseResist = 3; cost = 3;break;
+					case 4: baseName = "mail boots"; weight = 4; baseResist = 2; cost = 2;break;
 					}
-				}else {
-					if (matType.equals("is")) {//flesh and bone mostly
-						baseMap = 0;//"iron";
-						switch (armorType) {
-						case 0: baseName = "head"; weight = 2; baseResist = 1; cost = 1;break;
-						case 1: baseName = "arms"; weight = 2; baseResist = 1; cost = 1;break;
-						case 2: baseName = "body"; weight = 10; baseResist = 4; cost = 3;break;
-						case 3: baseName = "legs"; weight = 6; baseResist = 3; cost = 3;break;
-						case 4: baseName = "feet"; weight = 4; baseResist = 2; cost = 2;break;
-						}
-						weight*=2;
-						sharpResist*=1.5;
-						pierceResist*=.5;
-						
-					}else {
-					if (matType.equals("drudger")) {
-						baseMap = 0;//"iron";
-					switch (armorType) {
-						case 0: baseName = "mask"; weight = 2; baseResist = 1; cost = 1;break;//"helmet",,"cap","hat","mask"
-						case 1: baseName = "bracers"; weight = 2; baseResist = 1; cost = 1;break;//"bracers",
-						case 2: baseName = "chestplate"; weight = 10; baseResist = 4; cost = 3;break;//,"breastplate","cuirass"
-						case 3: baseName = "greaves"; weight = 6; baseResist = 3; cost = 3;break;
-						case 4: baseName = "boots"; weight = 4; baseResist = 2; cost = 2;break;//,"shoes","high boots","low boots"
-					}
-					}
-					}
-				}
-			}
-		}
-		
-	}
+					weight*=2;
+					sharpResist*=1.5;
+					pierceResist*=.5;
 	
-		baseEnchant = mati.baseEnchant;
-		baseResist *= mati.baseResist;
-		sharpResist *= mati.sharpResist;
-		bluntResist *= mati.bluntResist;
-		pierceResist *= mati.pierceResist;
-		//burnMod *= mati.fireVul;
-		//shockMod *= mati.shockVul;
-		//freezeMod *= mati.freezeVul;
-		weight *= mati.weight;
-		cost *= mati.cost;
-		dexMod *= mati.dexMod;
-		
-		
-		sharpResist *= baseResist;
-		bluntResist *= baseResist;
-		pierceResist *= baseResist;
-		
-		//effectiveCost = cost;
-		//add an enchantment and mark it down if the enchantment is greater than a random value form 0 to <1.0
-		if (baseEnchant > extra.randFloat()*3f) {
-			enchantment = EnchantConstant.makeEnchant(baseEnchant,cost);//used to include level in the mult, need a new rarity system
-		}else {
-			if (extra.chanceIn(1,5)) {//non-enchanted qualities
-				baseEnchant = 0;
-				ArmorQuality aaq = extra.choose(ArmorQuality.HAUNTED);
-				this.quals.add(aaq);
-				switch (aaq) {
-				case HAUNTED:
-					cost*=1.2;
-					break;
+				}else {
+					if (matType.equals("crystal")) {
+						baseMap = 2;//"crystal";
+						switch (armorType) {
+						case 0: baseName = "helmet"; weight = 2; baseResist = 1; cost = 1;break;
+						case 1: baseName = "bracers"; weight = 2; baseResist = 1; cost = 1;break;
+						case 2: baseName = "breastplate"; weight = 10; baseResist = 4; cost = 3;break;
+						case 3: baseName = "pants"; weight = 6; baseResist = 3; cost = 3;break;
+						case 4: baseName = "boots"; weight = 4; baseResist = 2; cost = 2;break;
+					}
+						cost*=1.5;
+						if (extra.chanceIn(2,3)) {
+							quals.add(ArmorQuality.FRAGILE);
+							//prefixName = extra.PRE_YELLOW+"fragile[c_white] ";//DOLATER
+							sharpResist*=1.25;
+							bluntResist*=1.25;
+							pierceResist*=1.25;
+						}
+					}else {
+						if (matType.equals("is")) {//flesh and bone mostly
+							baseMap = 0;//"iron";
+							switch (armorType) {
+							case 0: baseName = "head"; weight = 2; baseResist = 1; cost = 1;break;
+							case 1: baseName = "arms"; weight = 2; baseResist = 1; cost = 1;break;
+							case 2: baseName = "body"; weight = 10; baseResist = 4; cost = 3;break;
+							case 3: baseName = "legs"; weight = 6; baseResist = 3; cost = 3;break;
+							case 4: baseName = "feet"; weight = 4; baseResist = 2; cost = 2;break;
+							}
+							weight*=2;
+							sharpResist*=1.5;
+							pierceResist*=.5;
+	
+						}else {
+						if (matType.equals("drudger")) {
+							baseMap = 0;//"iron";
+						switch (armorType) {
+							case 0: baseName = "mask"; weight = 2; baseResist = 1; cost = 1;break;//"helmet",,"cap","hat","mask"
+							case 1: baseName = "bracers"; weight = 2; baseResist = 1; cost = 1;break;//"bracers",
+							case 2: baseName = "chestplate"; weight = 10; baseResist = 4; cost = 3;break;//,"breastplate","cuirass"
+							case 3: baseName = "greaves"; weight = 6; baseResist = 3; cost = 3;break;
+							case 4: baseName = "boots"; weight = 4; baseResist = 2; cost = 2;break;//,"shoes","high boots","low boots"
+						}
+						}
+						}
+					}
 				}
 			}
+
+		}*/
+
+		dexMod *= mati.dexMod;
+
+		float baseEnchant = getEnchantMult();
+		if (baseEnchant > extra.randFloat()*3f) {
+			enchantment = EnchantConstant.makeEnchant(baseEnchant,getCost());//used to include level in the mult, need a new rarity system
 		}
-		
 
 	}
 
@@ -259,7 +213,7 @@ public class Armor extends Item {
 	 * @return the armortype [aka slot] (byte)
 	 */
 	public byte getArmorType() {
-		return armorType;
+		return slot;
 	}
 	
 	/**
@@ -270,8 +224,8 @@ public class Armor extends Item {
 		Material mat = getMat();
 		if (enchantment != null){
 			EnchantConstant enchant = (EnchantConstant)enchantment; 
-		return (getModiferName() + " " +enchant.getBeforeName() +prefixName+mat.color + mat.name+"[c_white]" + " " + baseName + enchant.getAfterName());}
-			return (getModiferName() + " "+prefixName +mat.color + mat.name+"[c_white]"  + " " +  baseName);
+		return (getModiferName() + " " +enchant.getBeforeName() +mat.color + mat.name+"[c_white]" + " " + getBaseName() + enchant.getAfterName());}
+			return (getModiferName() + " " +mat.color + mat.name+"[c_white]"  + " " +  getBaseName());
 	}
 	
 
@@ -280,7 +234,7 @@ public class Armor extends Item {
 	 * @return the sharpResist (float)
 	 */
 	public float getSharpResist() {
-		return sharpResist*level;
+		return MaterialFactory.getMat(material).sharpResist*baseResist();
 	}
 
 	/**
@@ -288,7 +242,7 @@ public class Armor extends Item {
 	 * @return the bluntResist (float)
 	 */
 	public float getBluntResist() {
-		return bluntResist*level;
+		return MaterialFactory.getMat(material).bluntResist*baseResist();
 	}
 
 	/**
@@ -296,14 +250,36 @@ public class Armor extends Item {
 	 * @return the pierceResist (float)
 	 */
 	public float getPierceResist() {
-		return pierceResist*level;
+		return MaterialFactory.getMat(material).pierceResist*baseResist();
 	}
 	
 	public void resetArmor(int s, int b, int p) {
-		sharpActive = sharpResist*level+s;
-		pierceActive = pierceResist*level+b;
-		bluntActive = bluntResist*level+p;
+		sharpActive = getSharpResist()+s;
+		bluntActive = getBluntResist()+b;
+		pierceActive = getPierceResist()+p;
 		burned = 1;
+	}
+	
+	
+	//DOLATER: for now, all are the same
+	//either fix, or make certain armor bits count more for global armor
+	private float baseResist() {
+		return 1*level*ArmorStyle.fetch(style).totalMult*MaterialFactory.getMat(material).baseResist;
+		/*
+		switch (slot) {
+		case 0://helm
+			return 1*level*ArmorStyle.fetch(style).totalMult;
+		case 1://gloves
+			return 1*level*ArmorStyle.fetch(style).totalMult;
+		case 2://chest
+			return 1*level*ArmorStyle.fetch(style).totalMult;
+		case 3://greaves
+			return 1*level*ArmorStyle.fetch(style).totalMult;
+		case 4://boots
+			return 1*level*ArmorStyle.fetch(style).totalMult;
+		}
+		throw new RuntimeException("invalid armor slot for base resist");
+		*/
 	}
 	
 	public double getPierce() {
@@ -345,10 +321,25 @@ public class Armor extends Item {
 	
 	/**
 	 * Get the weight of the item
-	 * @return weight (byte)
+	 * @return weight (int)
 	 */
-	public byte getWeight() {
-		return weight;
+	public int getWeight() {
+		return (int) (slotImpact()*MaterialFactory.getMat(material).weight*ArmorStyle.fetch(style).weightMult);
+	}
+	
+	private int slotImpact() {
+		if (slot > 1) {
+			if (slot == 2) {
+				return 10;//chest
+			}else {
+				if (slot == 3) {
+					return 7;//pants
+				}else {
+					return 4;//boots
+				}
+			}
+		}
+		return 3;//head and gloves
 	}
 	
 	/**
@@ -357,7 +348,7 @@ public class Armor extends Item {
 	 */
 	@Override
 	public int getCost() {
-		return (int) (cost*level*(isEnchanted() ? enchantment.getGoldMult()+enchantment.getGoldMod() : 1));
+		return (int) (getBaseCost()*(isEnchanted() ? enchantment.getGoldMult() : 1)+(isEnchanted() ? enchantment.getGoldMod() : 0));
 	}
 	
 	/**
@@ -365,7 +356,11 @@ public class Armor extends Item {
 	 * @return base cost (int)
 	 */
 	public int getBaseCost() {
-		return cost*level;
+		return (int) (MaterialFactory.getMat(material).cost*ArmorStyle.fetch(style).costMult*slotImpact()*level);
+	}
+	
+	public float getEnchantMult() {
+		return ArmorStyle.fetch(style).enchantMult*MaterialFactory.getMat(material).baseEnchant;
 	}
 	
 	/**
@@ -385,20 +380,12 @@ public class Armor extends Item {
 	public boolean improveEnchantChance(int level) {
 		if (isEnchanted()) {
 			Enchant pastEnchant = enchantment;
-			enchantment = Services.improveEnchantChance(enchantment, level, baseEnchant);
+			enchantment = Services.improveEnchantChance(enchantment, level, getEnchantMult());
 			//effectiveCost=(int) extra.zeroOut(cost * enchantment.getGoldMult()+enchantment.getGoldMod());
 			return pastEnchant != enchantment;
 		}else {
-			
-			enchantment = new EnchantConstant(level*baseEnchant);
-			if (cost * enchantment.getGoldMult()+enchantment.getGoldMod() > 0) {
-				//isEnchanted = true;
-				//effectiveCost=(int) extra.zeroOut(cost * enchantment.getGoldMult()+enchantment.getGoldMod());
-				return true;
-			}else {
-				enchantment = null;
-				return false;
-			}
+			enchantment = EnchantConstant.makeEnchant(getEnchantMult(), getCost());
+			return enchantment != null;
 		}
 	}
 
@@ -421,7 +408,7 @@ public class Armor extends Item {
 	 * @return the baseName (String)
 	 */
 	public String getBaseName() {
-		return baseName;
+		return ArmorStyle.fetch(style).genner[slot].decode(fluff)[0];
 	}
 
 	@Override
@@ -455,7 +442,7 @@ public class Armor extends Item {
 	
 	@Override
 	public String getType() {
-		return "armor" + armorType;
+		return "armor" + slot;
 	}
 
 	public String getMaterialName() {

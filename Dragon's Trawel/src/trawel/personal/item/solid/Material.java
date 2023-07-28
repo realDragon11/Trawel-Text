@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Material{
 	public String name;
 	public float baseEnchant;//some of these should probably be made floats as well TODO
-	public double baseResist, sharpResist, bluntResist, pierceResist, weight, cost, dexMod;
+	public float baseResist, sharpResist, bluntResist, pierceResist, weight, cost, dexMod;
 	public double rarity, tier, sharpMult, bluntMult, pierceMult;
 	public Boolean armor, weapon;
 	public double fireVul, shockVul, freezeVul;//vulernability
