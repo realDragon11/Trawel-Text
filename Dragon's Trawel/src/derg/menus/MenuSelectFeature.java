@@ -1,7 +1,5 @@
 package derg.menus;
 
-import java.awt.Color;
-
 import trawel.extra;
 import trawel.towns.Feature;
 import trawel.towns.Lot;

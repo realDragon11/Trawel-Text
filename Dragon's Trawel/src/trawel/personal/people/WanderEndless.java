@@ -1,5 +1,4 @@
 package trawel.personal.people;
-import java.util.ArrayList;
 import java.util.List;
 
 import trawel.extra;

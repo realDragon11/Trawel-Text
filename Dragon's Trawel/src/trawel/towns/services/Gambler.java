@@ -10,7 +10,7 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 
-public class Gambler extends Feature implements java.io.Serializable{
+public class Gambler extends Feature{
 
 	private static final long serialVersionUID = 1L;
 	private String type;

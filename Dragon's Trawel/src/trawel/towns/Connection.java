@@ -1,10 +1,4 @@
 package trawel.towns;
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.nustaq.serialization.annotations.OneOf;
-
 import trawel.WorldGen;
 import trawel.extra;
 import trawel.personal.people.Player;

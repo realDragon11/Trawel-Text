@@ -1,6 +1,4 @@
 package trawel.towns.nodes;
-import java.util.ArrayList;
-
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
@@ -9,7 +7,6 @@ import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
-import trawel.towns.misc.PlantSpot;
 
 public class CaveNode implements NodeType{
 	

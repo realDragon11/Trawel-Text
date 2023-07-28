@@ -1,5 +1,4 @@
 package trawel.towns.services;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,7 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 
-public class Oracle extends Feature implements java.io.Serializable{ //extends feature later
+public class Oracle extends Feature{ //extends feature later
 	/**
 	 * 
 	 */

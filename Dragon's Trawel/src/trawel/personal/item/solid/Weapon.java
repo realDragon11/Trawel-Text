@@ -6,11 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
-import org.nustaq.serialization.annotations.OneOf;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
@@ -27,7 +22,6 @@ import trawel.personal.item.Item;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.magic.EnchantConstant;
 import trawel.personal.item.magic.EnchantHit;
-import trawel.personal.item.magic.Enchant.Type;
 
 /**
  * 

@@ -1,5 +1,4 @@
 package trawel;
-import java.awt.Color;
 import java.util.ArrayList;
 
 import trawel.battle.Combat;

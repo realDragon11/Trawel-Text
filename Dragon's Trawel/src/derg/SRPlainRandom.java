@@ -3,9 +3,6 @@ package derg;
 import java.util.Arrays;
 import java.util.List;
 
-import com.github.tommyettinger.random.EnhancedRandom;
-import com.github.tommyettinger.random.WhiskerRandom;
-
 import trawel.extra;
 
 public class SRPlainRandom extends StringNum {

@@ -1,5 +1,4 @@
 package trawel.towns.nodes;
-import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +15,6 @@ import trawel.mainGame;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.personal.people.Skill;
-import trawel.time.CanPassTime;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;

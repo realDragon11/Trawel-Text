@@ -3,9 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
-
-import com.github.tommyettinger.random.WhiskerRandom;
 import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.extra;

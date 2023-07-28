@@ -1,5 +1,4 @@
 package trawel.towns;
-import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +46,7 @@ import trawel.towns.fort.FortHall;
  * 5/30/2018
  */
 
-public class Town extends TContextOwner implements java.io.Serializable{
+public class Town extends TContextOwner{
 
 	private static final long serialVersionUID = 1L;
 	/**

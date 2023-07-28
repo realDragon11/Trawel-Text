@@ -22,7 +22,7 @@ import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.services.Oracle;
 
-public class Mountain extends Feature implements java.io.Serializable{
+public class Mountain extends Feature{
 
 	/**
 	 * 

@@ -1,5 +1,4 @@
 package trawel.towns.services;
-import java.awt.Color;
 import java.util.List;
 
 import trawel.Networking;

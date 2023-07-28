@@ -1,11 +1,7 @@
 package trawel.towns.nodes;
 
-import java.util.List;
-
 import trawel.personal.item.solid.DrawBane;
-import trawel.time.CanPassTime;
 import trawel.time.TimeContext;
-import trawel.time.TimeEvent;
 
 public interface NodeType{
 

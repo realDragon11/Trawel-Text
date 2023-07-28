@@ -1,18 +1,14 @@
 package trawel.personal.item.body;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 import trawel.extra;
 import trawel.battle.attacks.TargetFactory;
-import trawel.battle.attacks.TargetFactory.TargetType;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceID;
 import trawel.personal.item.Item;
-import trawel.personal.item.body.SoundBox.Voice;
 import trawel.personal.item.magic.EnchantConstant;
 
 

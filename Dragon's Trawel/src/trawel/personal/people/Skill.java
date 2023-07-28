@@ -2,7 +2,7 @@ package trawel.personal.people;
 
 import trawel.extra;
 
-public enum Skill implements java.io.Serializable{
+public enum Skill{
 	
 	    BEER_BELLY("Beer Belly","Use two beers at once in battle!",true,Type.FIGHTER,1,"Gives you the beer health bonus twice- if you have two beers to drink."),
 	    BLOODTHIRSTY("Bloodthirsty","Gain some hp each time you attack!",true,Type.FIGHTER,1,""),

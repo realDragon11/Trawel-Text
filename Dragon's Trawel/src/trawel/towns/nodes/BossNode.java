@@ -1,5 +1,4 @@
 package trawel.towns.nodes;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

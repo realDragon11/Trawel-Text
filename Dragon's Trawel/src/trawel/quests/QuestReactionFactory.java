@@ -18,7 +18,7 @@ import trawel.towns.Town;
 
 public class QuestReactionFactory {
 
-	public enum QKey implements java.io.Serializable {//while saves don't update, can rearrange, otherwise no
+	public enum QKey{//while saves don't update, can rearrange, otherwise no
 		FETCH, KILL, CLEANSE, 
 		GOOD, EVIL,
 		LAWFUL, CHAOTIC,

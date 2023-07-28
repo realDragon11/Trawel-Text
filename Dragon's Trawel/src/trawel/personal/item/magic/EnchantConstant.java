@@ -1,9 +1,5 @@
 package trawel.personal.item.magic;
 
-import java.util.List;
-import java.util.Random;
-
-import com.github.tommyettinger.random.WhiskerRandom;
 import com.github.yellowstonegames.core.WeightedTable;
 
 import derg.SRFrontBackedRandom;

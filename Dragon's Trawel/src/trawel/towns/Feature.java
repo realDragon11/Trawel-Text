@@ -1,5 +1,4 @@
 package trawel.towns;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,11 +7,8 @@ import trawel.extra;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.quests.QuestR;
-import trawel.time.CanPassTime;
 import trawel.time.ContextLevel;
 import trawel.time.ContextType;
-import trawel.time.HasTimeContext;
-import trawel.time.ReloadAble;
 import trawel.time.TContextOwner;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;

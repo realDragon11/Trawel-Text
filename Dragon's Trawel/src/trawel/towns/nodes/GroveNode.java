@@ -19,7 +19,6 @@ import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
-import trawel.time.TimeEvent;
 import trawel.towns.misc.PlantSpot;
 import trawel.towns.services.Oracle;
 

@@ -1,5 +1,5 @@
 package trawel.earts;
 
-public enum EAType implements java.io.Serializable{
+public enum EAType{
 	MARTIAL, MAGIC, OTHER;
 }

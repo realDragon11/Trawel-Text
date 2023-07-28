@@ -3,7 +3,6 @@ package trawel.battle.attacks;
 import org.nustaq.serialization.annotations.OneOf;
 
 import trawel.extra;
-import trawel.battle.attacks.TargetFactory.TargetType;
 import trawel.personal.Person;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Skill;

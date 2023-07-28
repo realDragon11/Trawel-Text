@@ -7,7 +7,7 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 
-public class Well extends Feature implements java.io.Serializable{
+public class Well extends Feature{
 	
 	/**
 	 * 

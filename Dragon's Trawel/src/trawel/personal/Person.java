@@ -2,8 +2,6 @@ package trawel.personal;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.nustaq.serialization.annotations.OneOf;
-
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
@@ -18,7 +16,6 @@ import trawel.battle.BarkManager;
 import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.Stance;
 import trawel.battle.attacks.TargetFactory;
-import trawel.battle.attacks.TargetFactory.TargetType;
 import trawel.earts.EAType;
 import trawel.earts.EArt;
 import trawel.earts.EArtSkillMenu;

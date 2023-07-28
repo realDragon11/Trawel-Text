@@ -13,8 +13,6 @@ import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
-import trawel.time.TimeEvent;
-import trawel.towns.Town;
 
 public class DungeonNode implements NodeType{
 

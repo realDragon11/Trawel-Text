@@ -14,7 +14,6 @@ import trawel.factions.HostileTask;
 import trawel.personal.Person;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
-import trawel.personal.people.SuperPerson;
 import trawel.time.ContextLevel;
 import trawel.time.ContextType;
 import trawel.time.TContextOwner;

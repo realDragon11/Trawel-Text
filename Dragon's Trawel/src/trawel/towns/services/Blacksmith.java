@@ -96,7 +96,7 @@ public class Blacksmith extends Feature {
 		return null;
 	}
 	
-	private int askSlot() {
+	private static int askSlot() {
 		extra.println("1 head");
 		extra.println("2 arms");
 		extra.println("3 chest");

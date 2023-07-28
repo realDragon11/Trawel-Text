@@ -1,7 +1,4 @@
 package trawel.towns.nodes;
-import java.util.ArrayList;
-import java.util.List;
-
 import trawel.Effect;
 import trawel.Networking;
 import trawel.extra;
@@ -11,9 +8,7 @@ import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
-import trawel.quests.Quest.TriggerType;
 import trawel.time.TimeContext;
-import trawel.time.TimeEvent;
 import trawel.towns.services.Oracle;
 
 public class MineNode implements NodeType{

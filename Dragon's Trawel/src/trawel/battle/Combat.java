@@ -11,7 +11,6 @@ import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
-import trawel.Networking.BattleType;
 import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.TargetFactory;
 import trawel.factions.FBox;

@@ -1,6 +1,6 @@
 package trawel;
 
-public enum Effect implements java.io.Serializable {
+public enum Effect{
 	
 	CURSE("Cursed","Start battles with less hp.",true,false),
 	BURNOUT("Burnout","Decreased skill.",false,true),

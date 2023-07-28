@@ -1,12 +1,6 @@
 package trawel.towns.nodes;
-import java.awt.Color;
-import java.util.List;
-
 import trawel.Networking;
 import trawel.extra;
-import trawel.time.ContextType;
-import trawel.time.TimeContext;
-import trawel.time.TimeEvent;
 import trawel.towns.Town;
 
 public class Grove extends NodeFeature {

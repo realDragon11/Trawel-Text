@@ -1,5 +1,4 @@
 package trawel.towns.services;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -24,7 +23,7 @@ import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.Town;
 
-public class Store extends Feature implements java.io.Serializable{
+public class Store extends Feature{
 
 	/**
 	 * 

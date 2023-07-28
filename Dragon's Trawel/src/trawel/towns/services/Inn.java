@@ -1,6 +1,5 @@
 package trawel.towns.services;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,7 +141,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public boolean go() {
-						bard();
+						extra.println("Silence reigns.");
 						return false;
 					}
 				});
@@ -258,14 +257,6 @@ public class Inn extends Feature implements QuestBoardLocation{
 				return mList;
 			}});
 		
-	}
-
-	private void bard() {
-		//if (mainGame.noBards) {
-			extra.println("Silence reigns.");
-		//}else {
-		//	town.getIsland().getWorld().getRandSong().printSong();
-		//}
 	}
 
 	@Override

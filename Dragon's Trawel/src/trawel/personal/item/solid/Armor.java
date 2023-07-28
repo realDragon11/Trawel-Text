@@ -1,7 +1,5 @@
 package trawel.personal.item.solid;
 
-import java.awt.Color;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

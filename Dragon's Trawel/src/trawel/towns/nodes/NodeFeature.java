@@ -1,17 +1,13 @@
 package trawel.towns.nodes;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import trawel.mainGame;
 import trawel.personal.people.Player;
 import trawel.quests.Quest.TriggerType;
-import trawel.time.ContextType;
-import trawel.time.ReloadAble;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
-import trawel.towns.Town;
 
 public abstract class NodeFeature extends Feature {
 
