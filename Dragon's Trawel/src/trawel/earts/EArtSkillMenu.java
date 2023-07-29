@@ -39,11 +39,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 								public String title() {
 									return "A combat magic class focused on swapping out spell slots. Study arcane lore at libraries.";
 								}});
-							list.add(new MenuLine() {
-								@Override
-								public String title() {
-									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
-								}});
+							list.add(new PlayerSkillpointsLine());
 							list.add(new MenuLine() {
 								@Override
 								public String title() {
@@ -59,7 +55,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public boolean go() {
-										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().useSkillPoint();
 										Player.player.eaBox.aSpellPower+=1;
 										Player.player.eaBox.arcTrainLevel++;
 										return false;
@@ -190,12 +186,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 								public String title() {
 									return "A martial class based around dealing the final blow. Complete kill quests to increase in power.";
 								}});
-							list.add(new MenuLine() {
-
-								@Override
-								public String title() {
-									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
-								}});
+							list.add(new PlayerSkillpointsLine());
 							list.add(new MenuLine() {
 								@Override
 								public String title() {
@@ -212,7 +203,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public boolean go() {
-										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().useSkillPoint();
 										Player.player.getPerson().addSkill(Skill.BLOODTHIRSTY);
 										Player.player.getPerson().addSkill(Skill.DSTRIKE);
 										Player.player.getPerson().addSkill(Skill.KILLHEAL);
@@ -259,12 +250,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 								public String title() {
 									return "A martial class that cannot examine, and instead strikes lightning-quick. Also adept at hand-to-hand.";
 								}});
-							list.add(new MenuLine() {
-
-								@Override
-								public String title() {
-									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
-								}});
+							list.add(new PlayerSkillpointsLine());
 							list.add(new MenuLine() {
 								@Override
 								public String title() {
@@ -281,7 +267,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public boolean go() {
-										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().useSkillPoint();
 										Player.player.getPerson().addSkill(Skill.BLOODTHIRSTY);
 										Player.player.getPerson().addSkill(Skill.BLITZ);
 										Player.player.getPerson().addSkill(Skill.BERSERKER);
@@ -299,7 +285,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public boolean go() {
-										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().useSkillPoint();
 										Player.player.eaBox.berTrainLevel += 1;
 										if (Player.player.eaBox.berTrainLevel%5 == 0) {
 											Player.player.eaBox.berTrainLevel += 1;
@@ -347,12 +333,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 								public String title() {
 									return "A utility class that can carry more drawbanes.";
 								}});
-							list.add(new MenuLine() {
-
-								@Override
-								public String title() {
-									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
-								}});
+							list.add(new PlayerSkillpointsLine());
 							list.add(new MenuLine() {
 								@Override
 								public String title() {
@@ -369,7 +350,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public boolean go() {
-										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().useSkillPoint();
 										Player.bag.dbMax++;
 										Player.player.eaBox.huntTrainLevel = 1;
 										return false;
@@ -385,7 +366,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public boolean go() {
-										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().useSkillPoint();
 										Player.bag.dbMax++;
 										Player.player.getPerson().addSkill(Skill.HPSENSE);
 										Player.player.eaBox.huntTrainLevel = 2;
@@ -433,12 +414,8 @@ public abstract class EArtSkillMenu extends MenuSelect{
 								public String title() {
 									return "A martial class that has more health and can use kung-fu.";
 								}});
-							list.add(new MenuLine() {
-
-								@Override
-								public String title() {
-									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
-								}});
+							list.add(new PlayerSkillpointsLine());
+							list.add(new PlayerSkillpointsLine());
 							list.add(new MenuLine() {
 								@Override
 								public String title() {
@@ -455,7 +432,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public boolean go() {
-										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().useSkillPoint();
 										Player.player.getPerson().addSkill(Skill.BEER_BELLY);
 										Player.player.getPerson().addSkill(Skill.BEER_LOVER);
 										Player.player.eaBox.drunkTrainLevel = 1;
@@ -472,7 +449,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public boolean go() {
-										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().useSkillPoint();
 										Player.player.eaBox.drunkTrainLevel += 1;
 										if (Player.player.eaBox.drunkTrainLevel%5 == 0) {
 											Player.player.eaBox.drunkTrainLevel += 1;
@@ -490,7 +467,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 										@Override
 										public boolean go() {
-											Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+											Player.player.getPerson().useSkillPoint();
 											Player.player.getPerson().hasEnduranceTraining = true;
 											Player.player.getPerson().edrLevel++;
 											return false;
@@ -506,7 +483,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 										@Override
 										public boolean go() {
-											Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+											Player.player.getPerson().useSkillPoint();
 											Player.player.getPerson().addSkill(Skill.SPUNCH);
 											return false;
 										}});
@@ -552,12 +529,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 								public String title() {
 									return "A utility class that is adept with curses, alchemy, and healing magic.";
 								}});
-							list.add(new MenuLine() {
-
-								@Override
-								public String title() {
-									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
-								}});
+							list.add(new PlayerSkillpointsLine());
 							list.add(new MenuLine() {
 								@Override
 								public String title() {
@@ -574,7 +546,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public boolean go() {
-										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().useSkillPoint();
 										Player.player.getPerson().addSkill(Skill.CURSE_MAGE);
 										Player.player.getPerson().addSkill(Skill.LIFE_MAGE);
 										Player.player.getPerson().addSkill(Skill.MONEY_MAGE);
@@ -592,7 +564,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public boolean go() {
-										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().useSkillPoint();
 										Player.player.eaBox.witchTrainLevel += 1;
 										if (Player.player.eaBox.witchTrainLevel%5 == 0) {
 											Player.player.eaBox.witchTrainLevel += 1;
@@ -641,12 +613,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 								public String title() {
 									return "A magic class that uses blood.";
 								}});
-							list.add(new MenuLine() {
-
-								@Override
-								public String title() {
-									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
-								}});
+							list.add(new PlayerSkillpointsLine());
 							list.add(new MenuLine() {
 								@Override
 								public String title() {
@@ -663,7 +630,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public boolean go() {
-										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().useSkillPoint();
 										Player.player.getPerson().addSkill(Skill.BLOODTHIRSTY);
 										Player.player.eaBox.bloodTrainLevel = 1;
 										return false;
@@ -679,7 +646,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public boolean go() {
-										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().useSkillPoint();
 										Player.player.eaBox.bloodTrainLevel += 1;
 										if (Player.player.eaBox.bloodTrainLevel%5 == 0) {
 											Player.player.eaBox.bloodTrainLevel += 1;
@@ -728,12 +695,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 								public String title() {
 									return "A martial class with a shield or dagger.";
 								}});
-							list.add(new MenuLine() {
-
-								@Override
-								public String title() {
-									return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
-								}});
+							list.add(new PlayerSkillpointsLine());
 							list.add(new MenuLine() {
 								@Override
 								public String title() {
@@ -750,7 +712,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public boolean go() {
-										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().useSkillPoint();
 										Player.player.getPerson().addSkill(Skill.ARMORHEART);
 										Player.player.getPerson().addSkill(Skill.TA_NAILS);
 										Player.player.getPerson().addSkill(Skill.COUNTER);
@@ -768,7 +730,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 									@Override
 									public boolean go() {
-										Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+										Player.player.getPerson().useSkillPoint();
 										Player.player.eaBox.defTrainLevel += 1;
 										if (Player.player.eaBox.defTrainLevel%5 == 0) {
 											Player.player.eaBox.defTrainLevel += 1;
@@ -787,7 +749,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 										@Override
 										public boolean go() {
-											Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+											Player.player.getPerson().useSkillPoint();
 											Player.player.eaBox.defTrainLevel += 1;
 											Player.player.getPerson().addSkill(Skill.SHIELD);
 											Player.player.getPerson().addSkill(Skill.ARMORSPEED);
@@ -802,7 +764,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 
 										@Override
 										public boolean go() {
-											Player.player.getPerson().setSkillPoints((Player.player.getPerson().getSkillPoints()-1));
+											Player.player.getPerson().useSkillPoint();
 											Player.player.eaBox.defTrainLevel += 1;
 											Player.player.getPerson().addSkill(Skill.PARRY);
 											Player.player.getPerson().addSkill(Skill.SPEEDDODGE);

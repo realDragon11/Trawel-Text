@@ -19,6 +19,7 @@ import trawel.battle.attacks.TargetFactory;
 import trawel.earts.EAType;
 import trawel.earts.EArt;
 import trawel.earts.EArtSkillMenu;
+import trawel.earts.PlayerSkillpointsLine;
 import trawel.factions.FBox;
 import trawel.factions.HostileTask;
 import trawel.personal.item.Inventory;
@@ -34,14 +35,12 @@ import trawel.towns.services.Store;
 
 /**
  * 
- * @author Brian Malone
+ * @author dragon
  * 2/5/2018
- * A collection of a monster and an inventory.
+ * A collection of stats, attributes, and an inventory.
  */
 public class Person implements java.io.Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 2L;
 
 	//inst vars
@@ -54,7 +53,6 @@ public class Person implements java.io.Serializable{
 	private transient double speedFill = 0;
 	private transient boolean isAttacking =false;
 	private transient int hp, tempMaxHp;
-	//private Taunts brag;
 	private PersonType personType = extra.choose(PersonType.COWARDLY,PersonType.FEARLESS);
 	//private String placeOfBirth;
 	private int beer;
@@ -71,7 +69,6 @@ public class Person implements java.io.Serializable{
 	public boolean hasEnduranceTraining = false;
 	
 	private List<Skill> skills = new ArrayList<Skill>();
-	//private boolean noAILevel;
 	private List<Effect> effects;
 	private RaceFlag rFlag;
 
@@ -239,6 +236,9 @@ public class Person implements java.io.Serializable{
 		speedFill-=t;
 	}
 	
+	public static final int ENDURANCE_HP_BONUS = 6;
+	public static final int SKILLPOINT_HP_BONUS = 3;
+	
 	public int getOOB_HP() {
 		int total = getBase_HP();
 		if (this.hasSkill(Skill.LIFE_MAGE)) {
@@ -250,8 +250,8 @@ public class Person implements java.io.Serializable{
 	
 	public int getBase_HP() {
 		int total = 20+(50*level);
-		total+=(edrLevel*6)*( hasEnduranceTraining ? 2 :1);
-		total+=skillPoints*3;
+		total+=(edrLevel*ENDURANCE_HP_BONUS)*( hasEnduranceTraining ? 2 :1);
+		total+=skillPoints*SKILLPOINT_HP_BONUS;
 		return total;
 	}
 	
@@ -360,7 +360,7 @@ public class Person implements java.io.Serializable{
 			if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 				BarkManager.getBoast(this, false);
 			}
-			this.setSkillPoints(this.getSkillPoints() + levels);
+			setSkillPoints(getSkillPoints() + levels);
 			if (this.isPlayer()) {
 				Networking.send("PlayDelay|sound_magelevel|1|");
 				Networking.sendStrong("Leaderboard|Highest Level|" + level+ "|");
@@ -654,12 +654,7 @@ public class Person implements java.io.Serializable{
 							@Override
 							public List<MenuItem> gen() {
 								List<MenuItem> list2 = new ArrayList<MenuItem>();
-								list2.add(new MenuLine() {
-
-									@Override
-									public String title() {
-										return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
-									}});
+								list2.add(new PlayerSkillpointsLine());
 								list2.add(new MenuSelect() {
 
 									@Override
@@ -672,7 +667,7 @@ public class Person implements java.io.Serializable{
 										extra.println("Light Armor skill will help you with armor pieces that already grant a benefit to dodge. It costs 1 skillpoint per level. Buy?");
 										if (extra.yesNo()) {
 										if (Player.player.getPerson().getSkillPoints() > 0) {
-											Player.player.getPerson().setSkillPoints(Player.player.getPerson().getSkillPoints()-1);
+											Player.player.getPerson().useSkillPoint();
 											Player.player.getPerson().lightArmorLevel++;
 										}}
 										return false;
@@ -689,7 +684,7 @@ public class Person implements java.io.Serializable{
 										extra.println("Heavy Armor skill will help negate the dodge penalty of armors. It costs 1 skillpoint per level. Buy?");
 										if (extra.yesNo()) {
 										if (Player.player.getPerson().getSkillPoints() > 0) {
-											Player.player.getPerson().setSkillPoints(Player.player.getPerson().getSkillPoints()-1);
+											Player.player.getPerson().useSkillPoint();
 											Player.player.getPerson().heavyArmorLevel++;
 										}}
 										return false;
@@ -723,12 +718,7 @@ public class Person implements java.io.Serializable{
 							@Override
 							public List<MenuItem> gen() {
 								List<MenuItem> list2 = new ArrayList<MenuItem>();
-								list2.add(new MenuLine() {
-
-									@Override
-									public String title() {
-										return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
-									}});
+								list2.add(new PlayerSkillpointsLine());
 								list2.add(new MenuSelect() {
 
 									@Override
@@ -738,10 +728,10 @@ public class Person implements java.io.Serializable{
 
 									@Override
 									public boolean go() {
-										extra.println("Endurance grants you more hp than you get having the skillpoint unspent. It costs 1 skillpoint per level. Buy?");
+										extra.println("Endurance grants you "+ENDURANCE_HP_BONUS+" base hp per stack. It costs 1 skillpoint per level. Buy?");
 										if (extra.yesNo()) {
 										if (Player.player.getPerson().getSkillPoints() > 0) {
-											Player.player.getPerson().setSkillPoints(Player.player.getPerson().getSkillPoints()-1);
+											Player.player.getPerson().useSkillPoint();
 											Player.player.getPerson().edrLevel++;
 										}}
 										return false;
@@ -775,12 +765,7 @@ public class Person implements java.io.Serializable{
 							@Override
 							public List<MenuItem> gen() {
 								List<MenuItem> list2 = new ArrayList<MenuItem>();
-								list2.add(new MenuLine() {
-
-									@Override
-									public String title() {
-										return "You have " + Player.player.getPerson().getSkillPoints() + " skillpoint"+ (Player.player.getPerson().getSkillPoints() == 1 ? "" : "s") +".";
-									}});
+								list2.add(new PlayerSkillpointsLine());
 								if (!Player.player.getPerson().hasSkill(Skill.EXPANDER)) {
 								list2.add(new MenuSelect() {
 
@@ -794,7 +779,7 @@ public class Person implements java.io.Serializable{
 										extra.println("Adds +1 item in each store maximum. Buy?");
 										if (extra.yesNo()) {
 										if (Player.player.getPerson().getSkillPoints() > 0) {
-											Player.player.getPerson().setSkillPoints(Player.player.getPerson().getSkillPoints()-1);
+											Player.player.getPerson().useSkillPoint();
 											Player.player.getPerson().addSkill(Skill.EXPANDER);
 										}}
 										return false;
@@ -986,6 +971,13 @@ public class Person implements java.io.Serializable{
 
 	public void setSkillPoints(int skillPoints) {
 		this.skillPoints = skillPoints;
+	}
+	
+	public void useSkillPoint() {
+		skillPoints--;
+	}
+	public void addSkillPoint() {
+		skillPoints++;
 	}
 	
 	public List<Skill> getSkills(){

@@ -357,7 +357,7 @@ public class MineNode implements NodeType{
 					mainGame.die("You rise from the altar!");
 					extra.println("The cultists praise you as the second coming of flagjaij!");
 					Player.player.getPerson().addEffect(Effect.CURSE);
-					Player.player.getPerson().setSkillPoints(Player.player.getPerson().getSkillPoints()+1);
+					Player.player.getPerson().addSkillPoint();;
 					Player.player.hasCult = true;
 					hasSkills = true;
 					Networking.sendStrong("Achievement|cult1|");
