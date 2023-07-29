@@ -4,6 +4,7 @@ import org.nustaq.serialization.annotations.OneOf;
 
 import trawel.extra;
 import trawel.personal.Person;
+import trawel.personal.item.Inventory;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Skill;
 
@@ -315,19 +316,25 @@ public class Attack implements java.io.Serializable{
 		extra.println(" "+this.wound.name + " - " + this.wound.desc);}
 	}
 	
-	public Attack impair(int handLevel, TargetFactory.TargetType targetType,Weapon weap) {
+	public Attack impair(int handLevel, TargetFactory.TargetType targetType,Weapon weap, Person p) {
 		Target t = TargetFactory.randTarget(targetType);
 		Style s = StyleFactory.randStyle();
 		if (!name.contains("examine")) {
 			double sMult = 1;
 			double bMult = 1;
 			double pMult = 1;
+			double speedMult = 1;
 			if (weap != null) {
 				sMult = weap.getMat().sharpMult;
 				bMult = weap.getMat().bluntMult;
 				pMult = weap.getMat().pierceMult;
 			}
-		return new Attack(s.name + name + " " + t.name, hitMod*t.hit*s.hit + (weap != null && weap.qualList.contains(Weapon.WeaponQual.ACCURATE) ? 0.1 : 0 ),  (s.speed*speed)+extra.randRange(0,20)-10,
+			if (p != null) {
+				speedMult *= p.getSpeed();
+			}
+		return new Attack(s.name + name + " " + t.name,
+				hitMod*t.hit*s.hit + (weap != null && weap.qualList.contains(Weapon.WeaponQual.ACCURATE) ? 0.1 : 0 ),
+				(s.speed*speed)+extra.randRange(0,20)-10,
 				handLevel*s.damage*t.sharp*sharp*extra.upDamCurve(.25,.5)*sMult,
 				handLevel*s.damage*t.blunt*blunt*extra.upDamCurve(.25,.5)*bMult,
 				handLevel*s.damage*t.pierce*pierce*extra.upDamCurve(.25,.5)*pMult,  desc,soundStrength,soundType,t,weap);

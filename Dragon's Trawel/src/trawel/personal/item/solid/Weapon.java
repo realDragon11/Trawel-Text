@@ -369,7 +369,7 @@ public class Weapon extends Item {
 			}
 			for (int t = 0; t < battleTests;t++) {
 				for (int j = WorldGen.getDummyInvs().size()-1; j >=0;j--) {
-					bs+=Combat.handleTestAttack(holdAttack.impair(10,TargetType.HUMANOID,this),WorldGen.getDummyInvs().get(j),Armor.armorEffectiveness).damage/holdAttack.getSpeed() ;
+					bs+=Combat.handleTestAttack(holdAttack.impair(10,TargetType.HUMANOID,this,null),WorldGen.getDummyInvs().get(j),Armor.armorEffectiveness).damage/holdAttack.getSpeed() ;
 				}
 			}
 			i++;
@@ -462,7 +462,7 @@ public class Weapon extends Item {
 				holdAttack = attacks.get(i++);
 				for (int t = 0; t < battleTests;t++) {
 					for (int j = tests.size()-1; j >=0;j--) {
-						bs+=Combat.handleTestAttack(holdAttack.impair(10,TargetType.HUMANOID,weap),tests.get(j),Armor.armorEffectiveness).damage/holdAttack.getSpeed() ;
+						bs+=Combat.handleTestAttack(holdAttack.impair(10,TargetType.HUMANOID,weap,null),tests.get(j),Armor.armorEffectiveness).damage/holdAttack.getSpeed() ;
 					}
 				}
 			}

@@ -202,7 +202,7 @@ public class Person implements java.io.Serializable{
 	 */
 	public void setAttack(Attack newAttack){
 		attackNext = newAttack;
-		speedFill += attackNext.getSpeed()/(bag.getSpeed() + (this.hasEffect(Effect.HASTE) ? 0.1 : 0 ));
+		speedFill += attackNext.getSpeed();// /(bag.getSpeed() + (this.hasEffect(Effect.HASTE) ? 0.1 : 0 ));
 		isAttacking = true;
 	}
 	
@@ -1309,6 +1309,10 @@ public class Person implements java.io.Serializable{
 		while (getLevel() < endLevel) {
 			addXp(getLevel()*getLevel());
 		}
+	}
+
+	public double getSpeed() {
+		return getBag().getSpeed() + (hasEffect(Effect.HASTE) ? 0.1 : 0 );
 	}
 
 }
