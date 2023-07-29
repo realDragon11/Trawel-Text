@@ -13,6 +13,7 @@ import trawel.mainGame;
 import trawel.randomLists;
 import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.TargetFactory;
+import trawel.battle.attacks.Attack.Wound;
 import trawel.factions.FBox;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -481,9 +482,6 @@ public class Combat {
 		//return the damage-armor, with each type evaluated individually
 		Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getSoundIntensity() + "|" +att.getSoundType()+"|");
 		
-		if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.DESTRUCTIVE)) {
-			def.burn(.01,att.getSlot());
-		}
 		//double depthWeapon2 = .25;
 		//double midWeapon2 = .7;
 		
@@ -898,7 +896,11 @@ public class Combat {
 		}else {
 		Attack attack = attacker2.getNextAttack();
 		Integer[] nums = woundNums(attack,attacker2,defender2,retu);
-		switch (attack.getWound()) {
+		Wound w = attack.getWound();
+		if (w == null) {
+			throw new RuntimeException("inflicting null wound");
+		}
+		switch (w) {
 		case CONFUSED:
 			newTarget = true;
 			break;
@@ -939,8 +941,12 @@ public class Combat {
 		case TEAR:
 			defender2.addEffect(Effect.TORN);
 			break;
+			
 		}
-		
+		if (w != Wound.GRAZE)
+			if (attack.getWeapon() != null && attack.getWeapon().qualList.contains(Weapon.WeaponQual.DESTRUCTIVE)) {
+				defender2.getBag().burn((retu.damage/defender2.getMaxHp())/3, attack.getSlot());
+			}
 		}
 		return (" " +attacker2.getNextAttack().getWound().active);
 	}

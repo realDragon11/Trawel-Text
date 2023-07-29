@@ -324,9 +324,9 @@ public class Attack{
 		Target t = TargetFactory.randTarget(targetType);
 		Style s = StyleFactory.randStyle();
 		if (!name.contains("examine")) {
-			double sMult = 1;
-			double bMult = 1;
-			double pMult = 1;
+			double sMult = s.damage*t.sharp;
+			double bMult = s.damage*t.blunt;
+			double pMult = s.damage*t.pierce;
 			double speedMult = s.speed;
 			double speedMod = extra.randRange(-10,10);
 			double hitMult = t.hit*s.hit;
@@ -334,7 +334,7 @@ public class Attack{
 				sMult *= weap.getMat().sharpMult;
 				bMult *= weap.getMat().bluntMult;
 				pMult *= weap.getMat().pierceMult;
-				hitMult *=weap.qualList.contains(Weapon.WeaponQual.ACCURATE) ? 0.1 : 0;
+				hitMult *=weap.qualList.contains(Weapon.WeaponQual.ACCURATE) ? 1.1 : 1;
 			}
 			if (p != null) {
 				speedMult *= p.getSpeed();
@@ -349,9 +349,10 @@ public class Attack{
 		return new Attack(s.name + name + " " + t.name,
 				hitMod*hitMult,
 				Math.min((speed*speedMult)+speedMod,15),
-				handLevel*s.damage*t.sharp*sharp*extra.upDamCurve(.25,.5)*sMult,
-				handLevel*s.damage*t.blunt*blunt*extra.upDamCurve(.25,.5)*bMult,
-				handLevel*s.damage*t.pierce*pierce*extra.upDamCurve(.25,.5)*pMult,  desc,soundStrength,soundType,t,weap);
+				handLevel*sharp*extra.upDamCurve(.25,.5)*sMult,
+				handLevel*blunt*extra.upDamCurve(.25,.5)*bMult,
+				handLevel*pierce*extra.upDamCurve(.25,.5)*pMult,
+				desc,soundStrength,soundType,t,weap);
 		}else {
 			return this;
 		}

@@ -50,14 +50,14 @@ public class Weapon extends Item {
 	public List<WeaponQual> qualList = new ArrayList<WeaponQual>();
 	
 	public enum WeaponQual{
-		DESTRUCTIVE("Destructive","Destroys some armor on hit."),
-		PENETRATIVE("Penetrative","Ignores some local armor."),
-		PINPOINT("Pinpoint","Ignores some global armor."),
+		DESTRUCTIVE("Destructive","On Damage: Destroys 33% * percent of health damage dealt local armor."),
+		PENETRATIVE("Penetrative","Attack: The locally attacked armor counts for 3/5ths as much."),
+		PINPOINT("Pinpoint","Attack: Armor not in slots you are attacking counts for 2/3rds as much."),
 		RELIABLE("Reliable","On Armor Block: Deals damage equal to the weapon level instead. Counts as being blocked by armor."), 
-		DUELING("Dueling","In large fights, attack the same opponent repeatedly."),
+		DUELING("Dueling","Attack: In large fights, attack the same opponent repeatedly."),
 		WEIGHTED("Weighted","On Damage: Less accurate attacks deal more damage."),
 		REFINED("Refined","On Damage: Deals bonus damage equal to weapon level."),
-		ACCURATE("Accurate","Flat accuracy bonus to all attacks."),
+		ACCURATE("Accurate","Attack: Flat +10% accuracy bonus to all attacks."),
 		CARRYTHROUGH("Carrythrough","On Miss/Dodge: Your next attack on another target is 10% quicker."),
 		;
 		public String name, desc;
