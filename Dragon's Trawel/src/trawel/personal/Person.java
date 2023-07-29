@@ -202,7 +202,7 @@ public class Person implements java.io.Serializable{
 	 */
 	public void setAttack(Attack newAttack){
 		attackNext = newAttack;
-		speedFill += attackNext.getSpeed();// /(bag.getSpeed() + (this.hasEffect(Effect.HASTE) ? 0.1 : 0 ));
+		speedFill = Math.min(speedFill+attackNext.getSpeed(),10);
 		isAttacking = true;
 	}
 	
@@ -1100,9 +1100,16 @@ public class Person implements java.io.Serializable{
 		}
 	}
 	
-	//made public 5/11/2020
 	public boolean hasEffect(Effect e) {
 		return effects.contains(e);
+	}
+	
+	/**
+	 * should only be used to iterate over the effects, instead of calling
+	 * hasEffect repeatedly.
+	 */
+	public List<Effect> getEffects() {
+		return effects;
 	}
 	
 	public void clearBattleEffects() {
@@ -1153,43 +1160,6 @@ public class Person implements java.io.Serializable{
 
 	public void setTitle(String s) {
 		title = s;
-	}
-
-	public void inflictWound(Attack.Wound wound) {
-		switch (wound) {
-		case BLINDED:
-			this.attackNext.blind(.5);
-			break;
-		case HAMSTRUNG:
-			this.advanceTime(-8);
-			break;
-		case DIZZY: case FROSTED:
-			this.attackNext.blind(.75);
-			break;	
-		case WINDED:
-			this.advanceTime(-16);
-			break;
-		case MAJOR_BLEED:
-			this.addEffect(Effect.MAJOR_BLEED);
-			//major bleed stuff, lack of break is on purpose
-		case BLEED:
-			this.addEffect(Effect.BLEED);
-			break;
-		case DISARMED: case SCREAMING:
-			this.addEffect(Effect.DISARMED);
-			break;
-		case TRIPPED:
-			this.advanceTime(-20);
-			break;
-		case KO:
-			this.takeDamage(5*level);
-			this.addEffect(Effect.RECOVERING);
-			break;
-		case I_BLEED:
-			this.addEffect(Effect.I_BLEED);
-			break;
-		}
-		
 	}
 
 	public int attacksThisAttack() {

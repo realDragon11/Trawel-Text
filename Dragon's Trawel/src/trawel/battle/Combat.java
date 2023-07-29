@@ -24,6 +24,7 @@ import trawel.personal.item.body.Race.RaceType;
 import trawel.personal.item.magic.EnchantHit;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Weapon;
+import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.item.solid.Armor.ArmorQuality;
 import trawel.personal.people.Player;
 import trawel.personal.people.Skill;
@@ -382,12 +383,14 @@ public class Combat {
 				otherperson.getBag().graphicalDisplay(1,otherperson);
 			}else {
 				if (playerIsInBattle) {
-				quickest.getBag().graphicalDisplay(1,quickest);
-				Player.player.getPerson().getBag().graphicalDisplay(-1,Player.player.getPerson());
+					quickest.getBag().graphicalDisplay(1,quickest);
+					Player.player.getPerson().getBag().graphicalDisplay(-1,Player.player.getPerson());
 				}
 			}
 			setAttack(quickest,otherperson);
-			if (otherperson != defender && atr != null && atr.damage== -1) {
+			if (otherperson != defender && atr != null && (atr.code == ATK_ResultCode.MISS || atr.code == ATK_ResultCode.DODGE)
+					&& quickest.getBag().getHand().qualList.contains(WeaponQual.CARRYTHROUGH)) 
+			{
 				quickest.advanceTime(Math.min(10,quickest.getTime()-1));
 			}
 			quickest.getNextAttack().defender = otherperson;
@@ -421,6 +424,16 @@ public class Combat {
 	private static final double depthArmor2 = .25;
 	private static final double midArmor2 = .7;
 	private static final double armorMinShear = .1;
+	
+	private static int attackSub(double dam,double armor) {
+		return (int)(
+				(dam)
+					-(
+						(armorMinShear*dam)
+						+((1-armorMinShear)*dam*extra.upDamCurve(depthArmor2,midArmor2))
+					)
+				);
+	}
 
 	//instance methods
 	/**
@@ -436,7 +449,7 @@ public class Combat {
 		if (att.getName().contains("examine")){
 			if  (!attacker.isPlayer()) {
 				str +=("They examine you...");
-				return new AttackReturn(-2,str);
+				return new AttackReturn(ATK_ResultCode.NOT_ATTACK,str,null);
 			}
 			attacker.displayStats();
 			attacker.displayArmor();
@@ -447,7 +460,7 @@ public class Combat {
 			if (attacker.hasSkill(Skill.HPSENSE)) {
 			defender.displaySkills();}
 			str +=(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
-			return new AttackReturn(-2,str);
+			return new AttackReturn(ATK_ResultCode.NOT_ATTACK,str,null);
 		}
 		if (extra.chanceIn(1, 5)) {
 			Networking.send("PlayDelayPitch|"+SoundBox.getSound(off.getRace().voice,SoundBox.Type.SWING) + "|1|" +attacker.getPitch() +"|");
@@ -459,11 +472,12 @@ public class Combat {
 		}
 		double damMod = off.getDam();
 		if (((def.getDodge()*defender.getTornCalc())/(att.getHitmod()*off.getAim()))* extra.getRand().nextDouble() > 1.0){
-			return new AttackReturn(-1,str);//do a dodge
+			return new AttackReturn(ATK_ResultCode.DODGE,str,null);
 		}
+		/*
 		if (extra.chanceIn(def.countArmorQuality(ArmorQuality.HAUNTED),80)){
-			return new AttackReturn(-1,str +extra.PRE_GREEN+" An occult hand leaps forth, pulling them out of the way![c_white]");
-		}
+			return new AttackReturn(-1,str +extra.PRE_GREEN+" An occult hand leaps forth, pulling them out of the way![c_white]",null);//DOLATER probably just remove
+		}*/
 		//return the damage-armor, with each type evaluated individually
 		Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getSoundIntensity() + "|" +att.getSoundType()+"|");
 		
@@ -478,15 +492,18 @@ public class Combat {
 		double sharpA = def.getSharp(att.getSlot(),wqL)*armMod;
 		double bluntA = def.getBlunt(att.getSlot(),wqL)*armMod;
 		double pierceA= def.getPierce(att.getSlot(),wqL)*armMod;
-		AttackReturn ret = Combat.testCombat.new AttackReturn((int)(
-				(extra.zeroOut((att.getSharp()*damMod)-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
-				+extra.zeroOut((att.getBlunt()*damMod)-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
-				+extra.zeroOut((att.getPierce()*damMod)-((armorMinShear*pierceA)+((1-armorMinShear)*pierceA*extra.upDamCurve(depthArmor2,midArmor2))))),str);
-		if (att.getWeapon() != null &&att.getWeapon().qualList.contains(Weapon.WeaponQual.RELIABLE) && ret.damage <= att.getWeapon().getLevel()) {
+		AttackReturn ret = new AttackReturn(
+				attackSub(att.getSharp()*damMod,sharpA),
+				attackSub(att.getBlunt()*damMod,bluntA),
+				attackSub(att.getPierce()*damMod,pierceA),
+				str,att);
+		if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.RELIABLE)
+				&& ret.damage <= att.getWeapon().getLevel()) 
+		{
 			ret.damage = att.getWeapon().getLevel();
 			ret.reliable = true;
-		}else {
-			if (ret.damage > 0) {
+		} else {
+			if (ret.code == ATK_ResultCode.DAMAGE) {//no longer functions on reliable
 				if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.REFINED)) {
 					ret.damage += att.getWeapon().getLevel();
 				}
@@ -503,7 +520,7 @@ public class Combat {
 	public static AttackReturn handleTestAttack(Attack att, Inventory def, double armMod) {
 		double damMod = 1;
 		if (((def.getDodge())/(att.getHitmod()))*ThreadLocalRandom.current().nextDouble() > 1.0){
-			return Combat.testCombat.new AttackReturn(-1,"");//do a dodge
+			return Combat.testCombat.new AttackReturn(ATK_ResultCode.DODGE,"",null);//do a dodge
 		}
 		//return the damage-armor, with each type evaluated individually
 		//double depthWeapon2 = .25;
@@ -516,10 +533,11 @@ public class Combat {
 		double sharpA = def.getSharp(att.getSlot(),wqL)*armMod;
 		double bluntA = def.getBlunt(att.getSlot(),wqL)*armMod;
 		double pierceA= def.getPierce(att.getSlot(),wqL)*armMod;
-		AttackReturn ret = Combat.testCombat.new AttackReturn((int)(
-				(extra.zeroOut((att.getSharp()*damMod)-((armorMinShear*sharpA)+((1-armorMinShear)*sharpA*extra.upDamCurve(depthArmor2,midArmor2)))))
-				+extra.zeroOut((att.getBlunt()*damMod)-((armorMinShear*bluntA)+((1-armorMinShear)*bluntA*extra.upDamCurve(depthArmor2,midArmor2))))
-				+extra.zeroOut((att.getPierce()*damMod)-((armorMinShear*pierceA)+((1-armorMinShear)*pierceA*extra.upDamCurve(depthArmor2,midArmor2))))),"");
+		AttackReturn ret = Combat.testCombat.new AttackReturn(
+				attackSub(att.getSharp()*damMod,sharpA),
+				attackSub(att.getBlunt()*damMod,bluntA),
+				attackSub(att.getPierce()*damMod,pierceA),
+				"",att);
 		if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.RELIABLE) && ret.damage <= att.getWeapon().getLevel()) {
 			ret.damage = att.getWeapon().getLevel();
 			ret.reliable = true;
@@ -541,12 +559,30 @@ public class Combat {
 	
 	public class AttackReturn {
 		public int damage;
+		public int[] subDamage;
 		public String stringer;
 		public boolean reliable = false;
-		public AttackReturn(int dam, String str) {
-			damage = dam;
+		public Attack attack;
+		public ATK_ResultCode code;
+		public AttackReturn(int sdam,int bdam, int pdam, String str, Attack att) {
+			code = ATK_ResultCode.DAMAGE;
+			damage = sdam+bdam+pdam;
+			subDamage = new int[] {sdam,bdam,pdam};
 			stringer = str;
+			attack = att;
 		}
+		
+		public AttackReturn(ATK_ResultCode rcode, String str, Attack att) {
+			code = rcode;
+			damage = -1;
+			//null
+			stringer = str;
+			attack = att;
+		}
+	}
+	
+	public enum ATK_ResultCode{
+		DAMAGE, NOT_ATTACK, MISS, DODGE, ARMOR
 	}
 	
 	/**
@@ -623,6 +659,7 @@ public class Combat {
 		String inlined_color = extra.PRE_WHITE;
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender,damageDone);
 		//armor quality handling
+		//FIXME: apply new attack result code system where needed
 		defender.getBag().armorQualDam(damageDone);
 		//message handling
 		if (damageDone > 0) {
@@ -687,7 +724,7 @@ public class Combat {
 				}
 			}
 		}else {
-			if (damageDone == -1) {
+			if (atr.code == ATK_ResultCode.DODGE || atr.code == ATK_ResultCode.MISS) {
 				//song.addAttackMiss(attacker,defender);
 				if (!extra.getPrint()) {
 					inlined_color= extra.PRE_YELLOW;
@@ -706,7 +743,7 @@ public class Combat {
 					attacker.takeDamage(1);
 				}
 			}else {
-				if (damageDone == 0) {
+				if (atr.code == ATK_ResultCode.ARMOR) {//TODO: now reliable causes this, but we catch it earlier with the damage >0
 					//song.addAttackArmor(attacker,defender);
 					if (!extra.getPrint()) {
 						inlined_color = extra.ATTACK_BLOCKED;
@@ -814,24 +851,29 @@ public class Combat {
 		}
 		//TODO: bleedout death quotes
 		boolean bMary = (defender.hasEffect(Effect.B_MARY));
-		if (attacker.hasEffect(Effect.I_BLEED)) {
-			attacker.takeDamage(1);
-			if (bMary) {defender.addHp(1);}
-			
+		for (Effect e: attacker.getEffects()) {
+			switch (e) {
+				case I_BLEED: case BLEED://only I_BLEED stacks, BLEED should only appear once
+					attacker.takeDamage(attacker.getLevel());
+					if (bMary) {
+						defender.addHp(attacker.getLevel());
+					}
+					break;
+				case MAJOR_BLEED://only I_BLEED stacks, others should only appear once
+					attacker.takeDamage(2*attacker.getLevel());
+					if (bMary) {
+						defender.addHp(2*attacker.getLevel());
+					}
+					break;
+				case BEES:
+					if (attacker.hasEffect(Effect.BEES) && extra.chanceIn(1,5)) {
+						extra.println("The bees sting "+attacker.getName()+"!");
+						attacker.takeDamage(extra.randRange(1,attacker.getLevel()*2));
+					}
+					break;
+			}
 		}
-		if (attacker.hasEffect(Effect.BLEED)) {
-			attacker.takeDamage(1);
-			if (bMary) {defender.addHp(1);}
-		}
-		if (attacker.hasEffect(Effect.MAJOR_BLEED)) {
-			attacker.takeDamage(2);
-			if (bMary) {defender.addHp(2);}
-		}
-		if (attacker.hasEffect(Effect.BEES) && extra.chanceIn(1,5)) {
-			extra.println("The bees sting!");
-			attacker.takeDamage(1);
-			
-		}
+		
 		if (defender.getHp() <= 0) {
 			Networking.send("PlayDelay|sound_fallover1|35|");
 		}
@@ -851,38 +893,115 @@ public class Combat {
 		if (retu.reliable == true) {
 			return " The armor deflects the wound.";//reliable hits don't inflict wound effects
 		}
-		if ((defender2.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 )|| damage == 0) {//wounds no longer hit if dam=0, if this needs to change, fix woundstring printing as well
+		if ((defender2.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 )) {//|| damage == 0//wounds no longer hit if dam=0, if this needs to change, fix woundstring printing as well
 			return (" They shrug off the blow!");
 		}else {
-		defender2.inflictWound(attacker2.getNextAttack().getWound());
-		
-		switch (attacker2.getNextAttack().getWound()) {
+		Attack attack = attacker2.getNextAttack();
+		Integer[] nums = woundNums(attack,attacker2,defender2,retu);
+		switch (attack.getWound()) {
 		case CONFUSED:
 			newTarget = true;
 			break;
-		case SLICE: case DICE:
-			attacker2.advanceTime(10);
+		case SLICE:
+			attacker2.addEffect(Effect.SLICE);
 			break;
-		case HACK: case TAT:
-			defender2.takeDamage(damage/10);
-			break;
-		case CRUSHED:
-			defender2.takeDamage((int)attacker2.getNextAttack().getTotalDam(attacker2.getBag().getHand())/10);
-			break;
+		 case DICE:
+			 attacker2.advanceTime(nums[1]);
+			 attacker2.addEffect(Effect.DICE);
+			 break;
+		case HACK: case TAT:case CRUSHED:
 		case SCALDED: case FROSTBITE:
-			defender2.takeDamage(attacker2.getMageLevel());
+			defender2.takeDamage(nums[0]);
+			break;
+		case HAMSTRUNG: case WINDED: case TRIPPED:
+			defender2.advanceTime(-nums[0]);
+			break;
+		case DIZZY: case FROSTED: case BLINDED:
+			defender2.getNextAttack().blind(1-(nums[0]/10f));
+			break;	
+		case MAJOR_BLEED:
+			defender2.addEffect(Effect.BLEED);
+			defender2.addEffect(Effect.MAJOR_BLEED);
+			break;
+		case BLEED:
+			defender2.addEffect(Effect.BLEED);
+			break;
+		case DISARMED: case SCREAMING:
+			defender2.addEffect(Effect.DISARMED);
+			break;
+		case KO:
+			defender2.takeDamage(nums[0]);
+			defender2.addEffect(Effect.RECOVERING);
+			break;
+		case I_BLEED:
+			defender2.addEffect(Effect.I_BLEED);
+			break;
+		case TEAR:
+			defender2.addEffect(Effect.TORN);
 			break;
 		}
 		
 		}
 		return (" " +attacker2.getNextAttack().getWound().active);
 	}
+	
+	//had to convert from double to Double to Integer
+	/**
+	 * gives the numerical results of the wound being inflicted
+	 * used to DRY sync results of wounds with the display text
+	 * @param attacker
+	 * @param defender
+	 * @param result (null if attack didn't happen yet)
+	 * @return array of doubles, you can round them if needed
+	 */
+	public static Integer[] woundNums(Attack attack, Person attacker, Person defender, AttackReturn result) {
+		switch (attack.getWound()) {
+		case CONFUSED:
+			//nothing
+			break;
+		case SLICE:
+			return new Integer[] {10,10};//10% faster, 10% more accurate
+		 case DICE:
+			 return new Integer[] {10,10};//10% faster, 10 time units faster
+		case HACK: 
+			return new Integer[] {result.damage/10};
+		case TAT:
+			if (result == null) {
+				return new Integer[] {(int)(attack.getPierce()*extra.clamp(attack.getHitmod(),.5f,3f)/3f)};//this is 'up to'
+			}
+			return new Integer[] {(int)(result.subDamage[2] *extra.clamp(attack.getHitmod(),.5f,3f)/3f)};
+		case CRUSHED:
+			return new Integer[] {(int)attack.getTotalDam()/10};
+		case SCALDED: case FROSTBITE:
+			return new Integer[] {(int)attacker.getMageLevel()};
+		case BLINDED:
+			return new Integer[] {50};//50% less accurate
+		case HAMSTRUNG:
+			return new Integer[] {8};//-8 time units
+		case DIZZY: case FROSTED:
+			return new Integer[] {25};//25% less accurate
+		case WINDED:
+			return new Integer[] {16};//-16 time units
+		case TRIPPED:
+			return new Integer[] {20};//-20 time units
+		case KO:
+			return new Integer[] {5*defender.getLevel()};
+		case BLEED: case I_BLEED://bleeds aren't synced, WET :(
+			return new Integer[] {defender.getLevel()};
+		case MAJOR_BLEED:
+			return new Integer[] {2*defender.getLevel(),defender.getLevel()};
+		case TEAR://WET
+			return new Integer[] {10};// %, multiplicative dodge mult penalty
+		}
+		return new Integer[0];
+	}
 
 
 	private void handleMagicSpell(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
 		extra.println(extra.PRE_ORANGE + att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
 		if  (att.getSkill() == Skill.ELEMENTAL_MAGE) {
-			defender.inflictWound(att.getWound());
+			//defender.inflictWound(att.getWound());//FIXME readd elemental wounds- but prefer to just make those normal
+			//attacks instead, I don't store those so they can have more fields now
 		def.burn(def.getFire(att.getSlot())*(att.getSharp()/100),att.getSlot());
 		if (att.getSharp() > 0) {
 			Networking.send("PlayDelay|sound_fireball|1|");
@@ -946,8 +1065,8 @@ public class Combat {
 
 	private void setAttack(Person manOne, Person manTwo) {
 		manOne.setAttack(AIClass.chooseAttack(manOne.getStance().part(manOne, manTwo),manOne.getIntellect(),this,manOne,manTwo));
-		manOne.getNextAttack().blind(1 + manOne.getNextAttack().getSpeed()/1000.0);
-		
+		//manOne.getNextAttack().blind(1 + manOne.getNextAttack().getSpeed()/1000.0);
+		//this blind was here to simulate quicker attacks being harder to dodge, it has been removed
 	}
 		
 }

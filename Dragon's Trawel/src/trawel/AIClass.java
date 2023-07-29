@@ -1,5 +1,6 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.List;
 
 import trawel.battle.Combat;
 import trawel.battle.attacks.Attack;
@@ -41,15 +42,6 @@ public class AIClass {
 		return theStance.getAttack(extra.getRand().nextInt(theStance.getAttackCount()));
 	}
 	
-	/**
-	 * Choose an attack. No intellect level provided, so it defaults to 0.
-	 * @param theStance - (Stance) the stance from which to take the attack 
-	 * @return (Attack) an attack chosen by the AI 
-	 */
-	public static Attack chooseAttack(Stance theStance) {
-		return chooseAttack(theStance, 0, null, null, null);
-	}
-	
 	public static Attack eArtASpell(ASpell a, Person d) {
 		switch (a) {
 		case ELEMENTAL_BURST:
@@ -74,7 +66,7 @@ public class AIClass {
 	public static Attack chooseAttack(Stance theStance, int smarts, Combat com, Person attacker, Person defender) {
 		
 			int j = 1;
-			ArrayList<Attack> attacks = theStance.giveList();
+			List<Attack> attacks = theStance.giveList();
 			
 			if (!attacker.isPlayer()) {
 			int times = 1;
@@ -169,7 +161,7 @@ public class AIClass {
 			extra.println("     name                hit    delay    sharp    blunt     pierce");
 			for(Attack a: attacks) {
 				extra.print(j + "    ");
-				a.display(1);
+				a.display(1,attacker,defender);
 				j++;
 			}
 			int numb = extra.inInt(attacks.size())-1;
@@ -189,7 +181,7 @@ public class AIClass {
 	 * @param defender (Person) - the person who is defending from the attack
 	 * @return the chosen attack (Attack)
 	 */
-	public static Attack attackTest(ArrayList<Attack> attacks,int rounds, Combat com, Person attacker, Person defender) {
+	public static Attack attackTest(List<Attack> attacks,int rounds, Combat com, Person attacker, Person defender) {
 		int size = attacks.size();
 		int i = size-1;
 		int j = 0;

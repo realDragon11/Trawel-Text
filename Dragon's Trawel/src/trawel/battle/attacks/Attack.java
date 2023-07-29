@@ -2,7 +2,9 @@ package trawel.battle.attacks;
 
 import org.nustaq.serialization.annotations.OneOf;
 
+import trawel.Effect;
 import trawel.extra;
+import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.solid.Weapon;
@@ -10,17 +12,15 @@ import trawel.personal.people.Skill;
 
 /**
  * 
- * @author Brian Malone
+ * @author dragon
  * 2/8/2018
  * 
  * An attack has speed, accuracy, damage values, and a description.
- * It it used to attack other creates in a certain way. It should be held in a Stance.
+ * It it used to attack other Persons in a certain way. It should be held in a Stance.
  *
  */
-public class Attack implements java.io.Serializable{
-	/**
-	 * 
-	 */
+public class Attack{
+
 	private static final long serialVersionUID = 1L;
 	//instance variables
 	private double hitMod, speed;
@@ -289,8 +289,12 @@ public class Attack implements java.io.Serializable{
 	public String getName() {
 		return name;
 	}
-
+	
 	public void display(int style) {
+		display(style,null,null);
+	}
+
+	public void display(int style, Person attacker, Person defender) {
 		if (style == 0) {
 			extra.println(name + "\t" + extra.format(hitMod) + "\t" + speed + "\t" + sharp + "\t" + blunt + "\t" + pierce);
 		}
@@ -313,7 +317,7 @@ public class Attack implements java.io.Serializable{
 			}
 		}
 		if (wound != null) {
-		extra.println(" "+this.wound.name + " - " + this.wound.desc);}
+		extra.println(" "+this.wound.name + " - " + String.format(this.wound.desc,(Object[])Combat.woundNums(this,attacker,defender,null)));}
 	}
 	
 	public Attack impair(int handLevel, TargetFactory.TargetType targetType,Weapon weap, Person p) {
@@ -323,18 +327,28 @@ public class Attack implements java.io.Serializable{
 			double sMult = 1;
 			double bMult = 1;
 			double pMult = 1;
-			double speedMult = 1;
+			double speedMult = s.speed;
+			double speedMod = extra.randRange(-10,10);
+			double hitMult = t.hit*s.hit;
 			if (weap != null) {
-				sMult = weap.getMat().sharpMult;
-				bMult = weap.getMat().bluntMult;
-				pMult = weap.getMat().pierceMult;
+				sMult *= weap.getMat().sharpMult;
+				bMult *= weap.getMat().bluntMult;
+				pMult *= weap.getMat().pierceMult;
+				hitMult *=weap.qualList.contains(Weapon.WeaponQual.ACCURATE) ? 0.1 : 0;
 			}
 			if (p != null) {
 				speedMult *= p.getSpeed();
+				if (p.hasEffect(Effect.SLICE)) {
+					hitMult*=1.1;//WET
+					speedMult*=.9;
+				}
+				if (p.hasEffect(Effect.DICE)) {
+					speedMult*=.9;//WET
+				}
 			}
 		return new Attack(s.name + name + " " + t.name,
-				hitMod*t.hit*s.hit + (weap != null && weap.qualList.contains(Weapon.WeaponQual.ACCURATE) ? 0.1 : 0 ),
-				(s.speed*speed)+extra.randRange(0,20)-10,
+				hitMod*hitMult,
+				Math.min((speed*speedMult)+speedMod,15),
 				handLevel*s.damage*t.sharp*sharp*extra.upDamCurve(.25,.5)*sMult,
 				handLevel*s.damage*t.blunt*blunt*extra.upDamCurve(.25,.5)*bMult,
 				handLevel*s.damage*t.pierce*pierce*extra.upDamCurve(.25,.5)*pMult,  desc,soundStrength,soundType,t,weap);
@@ -372,30 +386,32 @@ public class Attack implements java.io.Serializable{
 		return wound;
 	}
 	
-	public enum Wound{
-		HAMSTRUNG("Hamstrung","Delays the next attack.","Their leg is hamstrung!"), 
-		BLINDED("Blinded","The next attack will probably miss.","Blood falls into their eyes!"),
+	//.0f = float/double with no decimal places. Weird that it can't auto convert, but oh well
+	//UPDATE welp can't make them look nicer so just made them all ints anyways
+	public enum Wound{//FIXME: make sure the reworked wounds are fully in
+		HAMSTRUNG("Hamstrung","Delays the next attack by %1$d instants.","Their leg is hamstrung!"), 
+		BLINDED("Blinded","The next attack will be %1$d%% less accurate.","Blood falls into their eyes!"),
 		CONFUSED("Confused","Forces the opponent to retarget.","They look confused!"), 
-		DIZZY("Dizzy","Decreases their next attack's to-hit.","They look dizzy!"),
-		SLICE("Slice","Your next attack will happen sooner.","They are sliced!"),
-		DICE("Dice","Your next attack will happen sooner.","They are diced!"),
-		WINDED("Winded","Greatly delays the next attack.","The wind is knocked out of them!"),
-		BLEED("Bleed","Causes them to take damage every attack they make.","They bleed..."),
+		DIZZY("Dizzy","Decreases their next attack's to-hit by %1$d%%","They look dizzy!"),
+		SLICE("Slice","Your next attack will happen %1$d%% quicker and be %2$d%% more accurate.","They are sliced!"),//TODO
+		DICE("Dice","Your next attack will happen %1$d%% and %2$d instants sooner.","They are diced!"),//TODO
+		WINDED("Winded","The next attack will take %1$d instants longer.","The wind is knocked out of them!"),
+		BLEED("Bleed","Applies %1$d bleed.","They bleed..."),
 		DISARMED("Disarm","Removes one attack choice.","Their attack is put off-kilter!"),
-		MAJOR_BLEED("Cut Artery","Causes them to take major damage every attack they make.","An artery is cut!"),
-		TRIPPED("Tripped","Greatly delays the next attack.","They are tripped!"),
+		MAJOR_BLEED("Cut Artery","Applies %1$d bleed plus %2$d bleed.","An artery is cut!"),
+		TRIPPED("Tripped","The next attack will take %1$d instants longer.","They are tripped!"),
 		GRAZE("Grazed","No effect.","The blow's a graze..."),
-		KO("Knockout","Deals temporary damage.","It's a knockout!"),
-		HACK("Hack","Deals bonus damage.","It's a wicked hack!"),
-		TAT("Punctured","Deals bonus damage.","The blow goes right through them!"),
-		I_BLEED("Internal Bleeding","Causes them to take damage every attack they make.","Their insides get crushed."),
-		CRUSHED("Crushed","Deals bonus damage through armor.","They are crushed!"),
+		KO("Knockout","Deals %1$d bonus damage, but heals after their next attack.","It's a knockout!"),
+		HACK("Hack","Deals %1$d bonus damage.","It's a wicked hack!"),
+		TAT("Punctured","Deals up to %1$d bonus damage, based on final pierce damage and to-hit.","The blow goes right through them!"),
+		I_BLEED("Internal Bleeding","Applies a stacking %1$d bleed.","Their insides get crushed."),
+		CRUSHED("Crushed","Deals %1$d armor piercing damage, repeating the attack's damage once more.","They are crushed!"),
 		ERROR("Error","error","ERROR"),
-		SCALDED("Scalded","Deals bonus damage through armor.","They are scalded by the flames!"),
+		SCALDED("Scalded","Deals bonus damage through armor.","They are scalded by the flames!"),//TODO: the other wound types
 		SCREAMING("Screaming","Removes one attack choice.","They scream!"),
 		FROSTED("Frosted","Decreases their next attack's to-hit.","They are frozen over..."),
 		FROSTBITE("Frostbite","Deals bonus damage through armor.","Their flesh is frozen!"),
-		TEAR("Tear","Decreases dodge, stacking.","Their wing is torn!"), 
+		TEAR("Tear","Decreases dodge by %1$%d%%, stacking.","Their wing is torn!"), //see if need to add a '%'
 		EXE_WOUND("Execute","Kills low health targets.",""),
 		DRINK("Drink","Heals and provides a random potion effect.",""),
 		;
@@ -413,6 +429,9 @@ public class Attack implements java.io.Serializable{
 		
 	}
 
+	/**
+	 * should not be used on impaired/final attacks
+	 */
 	public double getTotalDam(Weapon weap) {
 		double sMult = 1;
 		double bMult = 1;
@@ -424,6 +443,14 @@ public class Attack implements java.io.Serializable{
 		}
 		return (this.getSharp()*sMult)+(this.getBlunt()*bMult)+(this.getPierce()*pMult);
 	}
+	
+	/**
+	 * note that, for an impaired attack, the weapon substats and person are already applied
+	 */
+	public double getTotalDam() {
+		return getSharp()+getBlunt()+getPierce();
+	}
+	
 	public double getTotalDam(double sMult, double bMult, double pMult) {
 		return (this.getSharp()*sMult)+(this.getBlunt()*bMult)+(this.getPierce()*pMult);
 	}

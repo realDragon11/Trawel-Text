@@ -53,12 +53,12 @@ public class Weapon extends Item {
 		DESTRUCTIVE("Destructive","Destroys some armor on hit."),
 		PENETRATIVE("Penetrative","Ignores some local armor."),
 		PINPOINT("Pinpoint","Ignores some global armor."),
-		RELIABLE("Reliable","Deals damage even when blocked by armor, equal to the weapon level."), 
+		RELIABLE("Reliable","On Armor Block: Deals damage equal to the weapon level instead. Counts as being blocked by armor."), 
 		DUELING("Dueling","In large fights, attack the same opponent repeatedly."),
-		WEIGHTED("Weighted","Less accurate attacks deal more damage."),
-		REFINED("Refined","Upon dealing damage, deals bonus damage equal to weapon level."),
+		WEIGHTED("Weighted","On Damage: Less accurate attacks deal more damage."),
+		REFINED("Refined","On Damage: Deals bonus damage equal to weapon level."),
 		ACCURATE("Accurate","Flat accuracy bonus to all attacks."),
-		CARRYTHROUGH("Carrythrough","Missing an attack makes your next attack on another target quicker."),
+		CARRYTHROUGH("Carrythrough","On Miss/Dodge: Your next attack on another target is 10% quicker."),
 		;
 		public String name, desc;
 		WeaponQual(String name,String desc) {

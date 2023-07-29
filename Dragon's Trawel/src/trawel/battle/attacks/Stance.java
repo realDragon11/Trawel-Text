@@ -1,5 +1,6 @@
 package trawel.battle.attacks;
 import java.util.ArrayList;
+import java.util.List;
 
 import trawel.extra;
 import trawel.personal.Person;
@@ -19,7 +20,7 @@ public class Stance implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 	//instance variables
 	private int attackCount;
-	private ArrayList<Attack> attacks = new ArrayList<Attack>();
+	private List<Attack> attacks = new ArrayList<Attack>();
 	//constructor
 	/**
 	 * Make a stance instance.
@@ -29,7 +30,7 @@ public class Stance implements java.io.Serializable{
 	attacks.add(new Attack("examine",0,50,0,0,0,"You examine your foe...",-1,"examine"));//TODO: replace this system
 	}
 	
-	public Stance(ArrayList<Attack> a) {
+	public Stance(List<Attack> a) {
 		attackCount = a.size();
 		attacks = a;
 		
@@ -95,8 +96,8 @@ public class Stance implements java.io.Serializable{
 	}
 	
 
-	private ArrayList<Attack> randAtts(Person p, Person defender) {
-		ArrayList<Attack> a = new ArrayList<Attack>();
+	private List<Attack> randAtts(Person p, Person defender) {
+		List<Attack> a = new ArrayList<Attack>();
 		int atts = p.attacksThisAttack();
 		while (a.size() < atts) {
 			int i = extra.randRange(0,attacks.size()-1);
@@ -117,7 +118,7 @@ public class Stance implements java.io.Serializable{
 		return a;
 	}
 	
-	public ArrayList<Attack> giveList(){
+	public List<Attack> giveList(){
 		return attacks;
 	}
 	
