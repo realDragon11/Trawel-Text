@@ -348,7 +348,7 @@ public class Attack{
 			}
 		return new Attack(s.name + name + " " + t.name,
 				hitMod*hitMult,
-				Math.min((speed*speedMult)+speedMod,15),
+				Math.max((speed*speedMult)+speedMod,15),
 				handLevel*sharp*extra.upDamCurve(.25,.5)*sMult,
 				handLevel*blunt*extra.upDamCurve(.25,.5)*bMult,
 				handLevel*pierce*extra.upDamCurve(.25,.5)*pMult,

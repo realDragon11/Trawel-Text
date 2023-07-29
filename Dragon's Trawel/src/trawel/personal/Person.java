@@ -200,7 +200,7 @@ public class Person implements java.io.Serializable{
 	 */
 	public void setAttack(Attack newAttack){
 		attackNext = newAttack;
-		speedFill = Math.min(speedFill+attackNext.getSpeed(),10);
+		speedFill = Math.max(speedFill+attackNext.getSpeed(),10);
 		isAttacking = true;
 	}
 	
