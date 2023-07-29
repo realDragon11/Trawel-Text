@@ -2,6 +2,7 @@ package trawel.personal.people;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
@@ -181,18 +182,7 @@ public class Player extends SuperPerson{
 				for (Quest q: sideQuests) {
 					mList.add(new ExamineQuest(q));
 				}
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "back";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}
-				});
+				mList.add(new MenuBack());
 				return mList;
 			}});
 		
@@ -237,18 +227,7 @@ public class Player extends SuperPerson{
 				public List<MenuItem> gen() {
 					List<MenuItem> mList = new ArrayList<MenuItem>();
 					mList.add(new AbandonQuest(quest));
-					mList.add(new MenuSelect() {
-
-						@Override
-						public String title() {
-							return "back";
-						}
-
-						@Override
-						public boolean go() {
-							return true;
-						}
-					});
+					mList.add(new MenuBack());
 					return mList;
 				}
 				

@@ -3,6 +3,7 @@ package trawel.towns.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
@@ -99,7 +100,6 @@ public class Inn extends Feature implements QuestBoardLocation{
 			Player.bag.addGold(moneyEarned);
 			moneyEarned = 0;
 		}
-		mainGame.story.inn();
 		Networking.sendStrong("Discord|imagesmall|inn|Inn|");
 		extra.menuGo(new MenuGenerator() {
 
@@ -187,43 +187,9 @@ public class Inn extends Feature implements QuestBoardLocation{
 					}
 				});
 				}
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "leave";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}
-				});
+				mList.add(new MenuBack("leave"));
 				return mList;
 			}});
-		/*
-		while (true) {
-		getResidentName();
-		extra.println("1 leave");
-		extra.println("2 beer ("+tier+"gp)");
-		extra.println("3 "+residentName);
-		extra.println("4 bard");
-		extra.println("5 backroom");
-		int size = 5;
-		if (town.getOccupants().size() >=2){
-		extra.println("6 watch duel (" + extra.format(nextReset-timePassed+1) + " hours)");
-		size++;}
-		
-		switch(extra.inInt(size)) {
-		case 1: return;
-		case 2: buyBeer();break;
-		case 3: goResident();break;
-		case 4: bard();break;
-		case 5: backroom();break;
-		case 6: this.playerwatch = true; occupantDuel(); Player.addTime((nextReset-timePassed+1));
-		;return;
-		}
-		}*/
 	}
 
 	
@@ -242,18 +208,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 				for (QuestR qr: qrList) {
 					mList.add(new QRMenuItem(qr));
 				}
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "back";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}
-				});
+				mList.add(new MenuBack());
 				return mList;
 			}});
 		
@@ -368,7 +323,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 	private void goOldFighter() {
 		while (true) {
 			extra.println("There's an old fighter here, at the inn.");
-			extra.println("1 Leave");
+			extra.println("1 Leave");//DOLATER: fix menu
 			extra.println("2 Chat with them");
 			switch (extra.inInt(2)) {
 			default: case 1: extra.println("You leave the fighter");return;

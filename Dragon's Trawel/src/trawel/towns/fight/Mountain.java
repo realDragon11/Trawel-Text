@@ -309,7 +309,7 @@ public class Mountain extends Feature{
 		robber.getBag().graphicalDisplay(1, robber);
 		while (true) {
 		extra.println("You come across an old fighter, resting on a rock.");
-		extra.println("1 Leave");
+		extra.println("1 Leave");//DOLATER: fix menu
 		extra.println("2 "+extra.PRE_RED+"Attack them.");
 		extra.println("3 Chat with them");
 		switch (extra.inInt(3)) {

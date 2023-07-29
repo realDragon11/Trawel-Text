@@ -2,6 +2,7 @@ package trawel.towns.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
@@ -94,18 +95,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 					for (QuestR qr: qrList) {
 						mList.add(new QRMenuItem(qr));
 					}
-					mList.add(new MenuSelect() {
-
-						@Override
-						public String title() {
-							return "back";
-						}
-
-						@Override
-						public boolean go() {
-							return true;
-						}
-					});
+					mList.add(new MenuBack());
 					return mList;
 				}});
 			go();

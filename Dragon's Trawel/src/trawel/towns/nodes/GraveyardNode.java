@@ -162,7 +162,7 @@ public class GraveyardNode implements NodeType{
 				p.getBag().graphicalDisplay(1, p);
 				extra.println("You come across a weary gravedigger, warding against undead during a break.");
 				node.name = "Gravedigger";node.interactString = "Approach the "+node.name;
-				extra.println("1 Leave");
+				extra.println("1 Leave");//DOLATER: fix menu
 				extra.print(extra.PRE_RED);
 				extra.println("2 Mug them");
 				extra.println("3 Chat with them");

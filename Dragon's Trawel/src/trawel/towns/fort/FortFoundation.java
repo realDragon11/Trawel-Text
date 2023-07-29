@@ -3,6 +3,7 @@ package trawel.towns.fort;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
@@ -60,18 +61,6 @@ public class FortFoundation extends FortFeature {
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> mList = new ArrayList<MenuItem>();
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "leave";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}
-				});
 				if (buildCode == -1) {
 				mList.add(new MenuSelect() {
 
@@ -148,7 +137,7 @@ public class FortFoundation extends FortFeature {
 					}
 				});
 				}
-				
+				mList.add(new MenuBack("leave"));
 				return mList;
 			}
 			

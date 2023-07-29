@@ -3,6 +3,7 @@ package trawel.towns.misc;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
@@ -169,18 +170,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 						mList.add(harvestFunction);
 					}
 				}
-				mList.add(new MenuSelect() {
-					
-					@Override
-					public String title() {
-						return "back";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}
-				});
+				mList.add(new MenuBack());
 				return mList;
 			}
 		});

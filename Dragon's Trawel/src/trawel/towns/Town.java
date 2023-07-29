@@ -124,10 +124,16 @@ public class Town extends TContextOwner{
 	}
 	
 	public void setGoPrinter(PrintEvent e) {
-		this.getIsland().getWorld().addPrintEvent("g"+this.name,e);
+		if (true) {
+			return;//DOLATER disabled for now
+		}
+		getIsland().getWorld().addPrintEvent("g"+this.name,e);
 	}
 	public void setFirstPrinter(PrintEvent e) {
-		this.getIsland().getWorld().addPrintEvent("n"+this.name,e);
+		if (true) {
+			return;//DOLATER disabled for now
+		}
+		getIsland().getWorld().addPrintEvent("n"+this.name,e);
 	}
 	
 	public void addPerson() {
@@ -431,7 +437,7 @@ public class Town extends TContextOwner{
 
 					@Override
 					public String title() {
-						return "leave";
+						return "return to " + connects.get(0).otherTown(features.get(0).getTown()).getName();
 					}
 
 					@Override

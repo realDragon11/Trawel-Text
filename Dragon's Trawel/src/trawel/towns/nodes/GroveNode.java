@@ -312,7 +312,7 @@ public class GroveNode implements NodeType{
 				Person p = (Person)node.storage1;
 				p.getBag().graphicalDisplay(1, p);
 				extra.println("You come across an " + node.name + ", resting on a log.");
-				extra.println("1 Leave");
+				extra.println("1 Leave");//DOLATER: fix menu
 				extra.println("2 "+extra.PRE_RED+"Attack them");
 				extra.println("3 Chat with them");
 				switch (extra.inInt(3)) {
@@ -382,7 +382,7 @@ public class GroveNode implements NodeType{
 				Person p = (Person)node.storage1;
 				p.getBag().graphicalDisplay(1, p);
 				extra.println("You come across a dryad tending to a tree.");
-				extra.println("1 Leave");
+				extra.println("1 Leave");//DOLATER: fix menu
 				extra.print(extra.PRE_RED);
 				extra.println("2 Attack them.");
 				extra.println("3 Chat with them");

@@ -39,7 +39,6 @@ public class Altar extends Feature{
 	public void go() {
 		Networking.sendStrong("Discord|imagesmall|altar|Altar|");
 		Networking.setArea("mountain");
-		mainGame.story.altar();
 		MenuGenerator mGen = new MenuGenerator() {
 
 			@Override

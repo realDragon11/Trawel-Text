@@ -2,14 +2,20 @@ package trawel;
 
 import trawel.personal.Person;
 import trawel.personal.people.Player;
+import trawel.towns.Feature;
+import trawel.towns.Feature.QRType;
 
 public class StoryDeathWalker extends Story{
 
-	public static Person killed;
-	public static int deaths = 0;
-	public static String step;
-	public static int lastKnownLevel = 0;
+	public Person killed;
+	public int deaths = 0;
+	public String step;
 	
+	
+	@Override
+	public void setPerson(Person p, int index) {
+		killed = p;
+	}
 	
 	@Override
 	public void storyStart() {
@@ -73,13 +79,17 @@ public class StoryDeathWalker extends Story{
 		extra.println("1 look around");
 		extra.inInt(1);
 		;break;
-		default:;break;
+		default:
+			;break;
 		}
 		
 	}
 	
 	@Override
-	public void inn() {
+	public void enterFeature(Feature f) {
+		if (f.getQRType() != QRType.INN) {
+			return;
+		}
 		switch(step) {
 		case "gotoinn1":
 			extra.println("As you enter the inn you can hear the clashing of mugs.");
@@ -94,7 +104,7 @@ public class StoryDeathWalker extends Story{
 			extra.println("What was the teacher's name?\"");
 			extra.println("\""+Player.player.getPerson().getName()+".\"");
 			extra.println("Maybe you should come back later...");
-			extra.println("1 leave");
+			extra.println("1 lurk");
 			extra.inInt(1);
 			step = "gotoinn2";
 			break;
@@ -108,23 +118,17 @@ public class StoryDeathWalker extends Story{
 			step = "gotorevan1";
 			extra.inInt(1);
 			;break;
-		default: break;
-		}
-		
-	}
-	
-	@Override
-	public void altar() {
-		switch(step) {
 		case "gotorevan1": 
 			extra.println("You hear a voice within your head.");
 			extra.println("\"Greetings " +Player.player.getPerson().getName()+", and welcome... to our sanctuary.\"");
 			extra.println("\"You have been chosen- not for your skill, but for your loss.\"");
 			step = "potato";
 		;break;
+		default: break;
 		}
 		
 	}
+	
 	@Override
 	public void levelUp(int level) {
 		while (lastKnownLevel < level) {

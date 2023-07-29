@@ -1,6 +1,7 @@
 package derg.menus;
 
 import trawel.extra;
+import trawel.personal.people.Player;
 import trawel.towns.Feature;
 import trawel.towns.Lot;
 import trawel.towns.nodes.NodeFeature;
@@ -36,6 +37,7 @@ public class MenuSelectFeature implements MenuItem {
 	 */
 	@Override
 	public boolean go() {
+		Player.player.storyHold.enterFeature(feature);
 		feature.go();
 		return true;
 	}

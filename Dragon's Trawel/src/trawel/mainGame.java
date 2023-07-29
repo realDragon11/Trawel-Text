@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuGeneratorPaged;
 import derg.menus.MenuItem;
@@ -124,7 +125,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Basic Tutorial";
+						return "Infodump Tutorial";
 					}
 
 					@Override
@@ -276,17 +277,7 @@ public class mainGame {
 							extra.println("Port?"); Networking.connect(extra.inInt(65535)); 
 						return true;
 					}});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "Back";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}});
+				mList.add(new MenuBack());
 				return mList;
 			}
 		});
@@ -294,7 +285,7 @@ public class mainGame {
 	
 	
 	private static void credits() {
-		extra.println("Made by Brian 'dragon' Malone");
+		extra.println("Made by 'dragon' from realDragon");
 		extra.println("With thanks to the GameMaker discords");
 		extra.println("Achievement icons can be found on game-icons.net");
 		extra.println("Music by manicInsomniac");
@@ -531,33 +522,13 @@ public class mainGame {
 										saveTest();
 										return true;
 									}});
-								mList.add(new MenuSelect() {
-
-									@Override
-									public String title() {
-										return "Back";
-									}
-
-									@Override
-									public boolean go() {
-										return true;
-									}});
+								mList.add(new MenuBack());
 								return mList;
 							}
 						});
 						return false;
 					}});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "Back";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}});
+				mList.add(new MenuBack());
 				return mList;
 			}
 			});
@@ -783,97 +754,96 @@ public class mainGame {
 		
 		logStream.close();
 	}
-	
-	
-	//instance methods
-	
-	
-		/**
-		 * The advanced combat, incorporating weapons and armors.
-		 * @param first_man (Person)
-		 * @param second_man (Person)
-		 * @return winner (Person)
-		 */
-		public static Person CombatTwo(Person first_man,Person second_man, World w) {
-				Person holdPerson;
-				extra.println("Our first fighter is " + first_man.getName()  + "."); //+extra.choose("They hail from the","They come from the","They are from the","The place they call home is the") + " " + first_man.whereFrom() + ".");
-				extra.println("Our second fighter is " + second_man.getName()  + "."); //+extra.choose("They hail from the","They come from the","They are from the","The place they call home is the") + " " + second_man.whereFrom() + ".");
-				extra.println();
-				if (first_man.isPlayer()) {
-					first_man.getBag().graphicalDisplay(-1,first_man);
-					second_man.getBag().graphicalDisplay(1,second_man);
-					Networking.setBattle(Networking.BattleType.NORMAL);
-				}
-				new Combat(first_man,second_man, w);//////
-				if (second_man.getHp() > 0) {
-					holdPerson = second_man;
-					second_man = first_man;
-					first_man = holdPerson;
-				}
-				//if (first_man.isPlayer()) {//now this combat only works with the player
-				//extra.println("");
-				
-				if (!second_man.isPlayer() && first_man.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
-					extra.println(first_man.getName() +" goes to loot " + second_man.getName() +".");
-					AIClass.loot(second_man.getBag(),first_man.getBag(),first_man.getIntellect(),true,first_man);
-				}
-				/*else {
-					if (first_man.isPlayer()) {
-						for (DrawBane db: second_man.getBag().getDrawBanes()) {
-							first_man.getBag().addNewDrawBane(db);
-						}
-					}
-				}*/
-				
-				first_man.addXp(second_man.getLevel());
-				
-				if (second_man.isPlayer()) {
-					first_man.addPlayerKill();
-					Player.addXp(extra.zeroOut((int) (first_man.getLevel()*Math.floor((first_man.getMaxHp()-first_man.getHp())/(first_man.getMaxHp())))));
-					die();
-				}
-				
 
-					if (first_man.isPlayer()) {
-					Player.player.wins++;
-					if (Player.player.wins == 10) {
-						Player.player.addTitle("duelist");
-					}
-					if (Player.player.wins == 50) {
-						Player.player.addTitle("fighter");
-					}
-					if (Player.player.wins == 100) {
-						Player.player.addTitle("warrior");
-					}
-					if (Player.player.wins == 1000) {
-						Player.player.addTitle("master duelist");
-					}
-					second_man.addDeath();
-					if (second_man.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
-						int deaths = second_man.getDeaths();
-						int pKills = second_man.getPlayerKills();
-						//max revive chance decreases the more they die, even if they have infinite kills on you, to reduce annoyance
-						if (
-								(deaths == 1 && extra.randFloat() > .97)//~3% chance if this is our only death
-								|| (pKills > 0 && deaths < 4 && extra.chanceIn(Math.min((4*deaths)+pKills,(pKills*2)+1), pKills+(5*deaths)))
-								//killing the player is effective
-								//we can at most get a (X-1)/x chance
-								//can cheat death a max of 3 times
-								) {
-							w.addDeathCheater(second_man);//dupes don't happen since in this case the dupe is instantly removed in the wander code
-							second_man.hTask = HostileTask.REVENGE;
-						}
-						}
-					}
-					if (first_man.isPlayer() || second_man.isPlayer()) {
-						Networking.setBattle(Networking.BattleType.NONE);
-						Networking.clearSide(1);
-					}
-					first_man.clearBattleEffects();
-					second_man.clearBattleEffects();
-					
-				return first_man;
+
+	//instance methods
+
+
+	/**
+	 * The advanced combat, incorporating weapons and armors.
+	 * @param first_man (Person)
+	 * @param second_man (Person)
+	 * @return winner (Person)
+	 */
+	public static Person CombatTwo(Person first_man,Person second_man, World w) {
+		Person holdPerson;
+		extra.println("Our first fighter is " + first_man.getName()  + "."); //+extra.choose("They hail from the","They come from the","They are from the","The place they call home is the") + " " + first_man.whereFrom() + ".");
+		extra.println("Our second fighter is " + second_man.getName()  + "."); //+extra.choose("They hail from the","They come from the","They are from the","The place they call home is the") + " " + second_man.whereFrom() + ".");
+		extra.println();
+		if (first_man.isPlayer()) {
+			first_man.getBag().graphicalDisplay(-1,first_man);
+			second_man.getBag().graphicalDisplay(1,second_man);
+			Networking.setBattle(Networking.BattleType.NORMAL);
+			story.startFight(false);
 		}
+		new Combat(first_man,second_man, w);//////
+		if (second_man.getHp() > 0) {
+			holdPerson = second_man;
+			second_man = first_man;
+			first_man = holdPerson;
+		}
+		boolean hasPlayer = false;
+		if (first_man.isPlayer() || second_man.isPlayer()) {
+			Networking.setBattle(Networking.BattleType.NONE);
+			hasPlayer = true;
+
+		}
+
+		first_man.addXp(second_man.getLevel());
+
+		if (!second_man.isPlayer() && first_man.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
+			extra.println(first_man.getName() +" goes to loot " + second_man.getName() +".");
+			AIClass.loot(second_man.getBag(),first_man.getBag(),first_man.getIntellect(),true,first_man);
+		}
+
+		if (second_man.isPlayer()) {
+			first_man.addPlayerKill();
+			Player.addXp(extra.zeroOut((int) (first_man.getLevel()*Math.floor((first_man.getMaxHp()-first_man.getHp())/(first_man.getMaxHp())))));
+			die();
+		}
+
+
+		if (first_man.isPlayer()) {
+			Player.player.wins++;
+			if (Player.player.wins == 10) {
+				Player.player.addTitle("duelist");
+			}
+			if (Player.player.wins == 50) {
+				Player.player.addTitle("fighter");
+			}
+			if (Player.player.wins == 100) {
+				Player.player.addTitle("warrior");
+			}
+			if (Player.player.wins == 1000) {
+				Player.player.addTitle("master duelist");
+			}
+			second_man.addDeath();
+			if (second_man.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
+				int deaths = second_man.getDeaths();
+				int pKills = second_man.getPlayerKills();
+				//max revive chance decreases the more they die, even if they have infinite kills on you, to reduce annoyance
+				if (
+						(deaths == 1 && extra.randFloat() > .97)//~3% chance if this is our only death
+						|| (pKills > 0 && deaths < 4 && extra.chanceIn(Math.min((4*deaths)+pKills,(pKills*2)+1), pKills+(5*deaths)))
+						//killing the player is effective
+						//we can at most get a (X-1)/x chance
+						//can cheat death a max of 3 times
+						) {
+					w.addDeathCheater(second_man);//dupes don't happen since in this case the dupe is instantly removed in the wander code
+					second_man.hTask = HostileTask.REVENGE;
+				}
+			}
+			story.winFight(false);
+		}
+		if (hasPlayer) {
+			Networking.setBattle(Networking.BattleType.NONE);
+			Networking.clearSide(1);
+		}
+		first_man.clearBattleEffects();
+		second_man.clearBattleEffects();
+
+		return first_man;
+	}
 		
 		/**
 		 * if the fight doesn't involve the player, use the full method, with the World parameter
@@ -985,18 +955,20 @@ public class mainGame {
 				if (!bypassLevelCap && subReward > surv.getLevel()) {
 					subReward = surv.getLevel();
 				}
+				boolean isPlayer = surv.isPlayer();
+				if (isPlayer) {
+					Networking.setBattle(Networking.BattleType.NONE);
+				}
 				surv.addXp(subReward);
 				for (Person kill: battle.killed) {
-					/*if (kill.isPlayer() || surv.getBag().getRace().racialType != Race.RaceType.HUMANOID || kill.getBag().getRace().racialType != Race.RaceType.HUMANOID) {
-						if (surv.isPlayer()) {
-							for (DrawBane db: kill.getBag().getDrawBanes()) {
-								surv.getBag().addNewDrawBane(db);
-							}
-						}
-						continue;}else {*/
+					if (isPlayer) {
+						kill.getBag().graphicalDisplay(1,kill);
+					}
 					AIClass.loot(kill.getBag(),surv.getBag(),surv.getIntellect(),false,surv);
 				}
-				
+				if (isPlayer) {
+					Networking.clearSide(1);
+				}
 			}
 			
 			int gold = 0;
@@ -1034,6 +1006,7 @@ public class mainGame {
 						if (surv.isPlayer()) {
 							Networking.setBattle(Networking.BattleType.NONE);
 							Networking.clearSide(1);
+							mainGame.story.winFight(true);
 						}
 					}
 				}
@@ -1041,6 +1014,9 @@ public class mainGame {
 				if (gold > 0) {
 					Person looter = battle.survivors.get(0);
 					extra.println(looter.getName() + " claims the remaining " +gold +" gold.");
+					if (looter.isPlayer()) {
+						mainGame.story.winFight(true);
+					}
 				}
 				
 			}
@@ -1075,34 +1051,6 @@ public class mainGame {
 			}
 		}
 		
-		/*
-		private static Player randPerson(boolean printIt, boolean choice) {
-			Person manOne, manTwo;
-			Player player;
-			while (true) {
-				 manOne = new Person(starting_level,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
-				 manTwo = new Person(starting_level,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
-				 extra.changePrint(!printIt);
-				 manOne = CombatTwo(manOne,manTwo);
-				 extra.changePrint(false);
-				 manOne.displayStats();
-				 player = new Player(manOne);
-				 manOne.setPlayer();
-				 Networking.sendStrong("Discord|desc|Character Select|");
-				 //Networking.send("Visual|Race|" + manOne.getBag().getRace().name+  "|");
-				 Networking.charUpdate();
-				 if (!choice) {
-					 break;
-				 }
-				 extra.println("Play as " + manOne.getName() + "?");
-				
-				 if (extra.yesNo()) {
-					 break;
-				 }
-			}
-			return player;
-		}*/
-		
 		
 		public static void adventure1(boolean cheaty, boolean displayFight, boolean rerolls, boolean advancedDisplay){
 			baseSetup1();
@@ -1112,7 +1060,11 @@ public class mainGame {
 			}
 			Networking.sendStrong("Discord|desc|Character Select|");
 			World world = null;//WorldGen.eoano();
-			story = new StoryDeathWalker();
+			if (rerolls) {
+				story = new StoryNone();
+			}else {
+				story = new StoryTutorial();
+			}
 			Person manOne = null, manTwo;
 			Player player;
 			//
@@ -1127,9 +1079,9 @@ public class mainGame {
 				}
 				manOne = CombatTwo(manOne,manTwo,null);
 				if (manOne == manThree) {
-					StoryDeathWalker.killed = manTwo;
+					story.setPerson(manTwo, 0);
 				}else {
-					StoryDeathWalker.killed = manThree;
+					story.setPerson(manThree, 0);
 				}
 				if (!displayFight) {
 					extra.changePrint(false);

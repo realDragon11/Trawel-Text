@@ -3,6 +3,7 @@ package trawel.towns.fort;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
@@ -73,18 +74,6 @@ public class WizardTower extends FortFeature {
 
 					@Override
 					public String title() {
-						return "leave";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}
-				});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
 						return "skills";
 					}
 
@@ -94,6 +83,7 @@ public class WizardTower extends FortFeature {
 						return false;
 					}
 				});
+				mList.add(new MenuBack("leave"));
 				return mList;
 			}
 			
@@ -190,18 +180,6 @@ public class WizardTower extends FortFeature {
 		@Override
 		public List<MenuItem> gen() {
 			List<MenuItem> mList = new ArrayList<MenuItem>();
-			mList.add(new MenuSelect() {
-
-				@Override
-				public String title() {
-					return "leave";
-				}
-
-				@Override
-				public boolean go() {
-					return true;
-				}
-			});
 			if (downTimeSkill != null) {
 				return mList;
 			}
@@ -232,7 +210,7 @@ public class WizardTower extends FortFeature {
 				});
 				((MenuSelectNumber)(mList.get(mList.size()-1))).number = i;
 			}
-			
+			mList.add(new MenuBack());
 			return mList;
 		}
 		
@@ -243,18 +221,6 @@ public class WizardTower extends FortFeature {
 		@Override
 		public List<MenuItem> gen() {
 			List<MenuItem> mList = new ArrayList<MenuItem>();
-			mList.add(new MenuSelect() {
-
-				@Override
-				public String title() {
-					return "leave";
-				}
-
-				@Override
-				public boolean go() {
-					return true;
-				}
-			});
 			if (battleSkill != null) {
 				return mList;
 			}
@@ -285,7 +251,7 @@ public class WizardTower extends FortFeature {
 				});
 				((MenuSelectNumber)(mList.get(mList.size()-1))).number = i;
 			}
-			
+			mList.add(new MenuBack());
 			return mList;
 		}
 		

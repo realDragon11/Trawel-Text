@@ -60,14 +60,14 @@ public class Combat {
 	 * @param manTwo (Person)
 	 */
 	public Combat(Person manOne, Person manTwo,World w) {
-		if (Player.getTutorial()) {
+		/*if (Player.getTutorial()) {
 			extra.println("Welcome to a battle! You can turn the tutorial off in the 'you' menu.");
 			extra.println("Choose your attack below: higher is better, except in the case of delay!");
 			extra.println("Delay is how long an action takes- it determines turn order and skipping.");
 			extra.println("For example, two 30 delay actions would go through before one 100 delay action.");
 			extra.println("sbp stands for sharp blunt pierce- the three damage types.");
 			extra.println("Hp is restored at the start of every battle.");
-		}
+		}*/
 		//Setup
 		manOne.battleSetup();
 		//extra.println("");
@@ -206,9 +206,6 @@ public class Combat {
 		}
 	}
 	
-	public Combat(World w,List<Person>... people) {
-		this(w,null,Arrays.asList(people));
-	}
 	public Combat(World w, FortHall hall,List<Person>... people) {
 		this(w,hall, Arrays.asList(people));
 	}
@@ -251,6 +248,7 @@ public class Combat {
 				if (p.isPlayer()) {
 					Networking.setBattle(Networking.BattleType.NORMAL);
 					playerIsInBattle = true;
+					mainGame.story.startFight(true);
 				}
 				p.battleSetup();
 				totalList.add(p);
@@ -969,7 +967,10 @@ public class Combat {
 			return new Integer[] {10,10};//10% faster, 10% more accurate
 		 case DICE:
 			 return new Integer[] {10,10};//10% faster, 10 time units faster
-		case HACK: 
+		case HACK:
+			if (result == null) {
+				return new Integer[] {(int)attack.getTotalDam()/10};
+			}
 			return new Integer[] {result.damage/10};
 		case TAT:
 			if (result == null) {

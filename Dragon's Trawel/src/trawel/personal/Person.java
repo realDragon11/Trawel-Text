@@ -2,6 +2,7 @@ package trawel.personal;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
@@ -451,18 +452,7 @@ public class Person implements java.io.Serializable{
 						csSubMenu();
 						return false;
 					}});
-				
-				list.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "back";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}});
+				list.add(new MenuBack());
 				return list;
 			}
 			
@@ -553,17 +543,7 @@ public class Person implements java.io.Serializable{
 			public List<MenuItem> gen() {
 				List<MenuItem> list2 = new ArrayList<MenuItem>();
 				if (Player.player.eArts.size() >= 2) {
-					list2.add(new MenuSelect() {
-
-						@Override
-						public String title() {
-							return "back";
-						}
-
-						@Override
-						public boolean go() {
-							return true;
-						}});
+					list2.add(new MenuBack());
 					return list2;
 				}
 				for (EArt ear: EArt.values()) {
@@ -600,19 +580,7 @@ public class Person implements java.io.Serializable{
 											
 										});
 										
-										list3.add(new MenuSelect() {
-
-											@Override
-											public String title() {
-												return "back";
-											}
-
-											@Override
-											public boolean go() {
-												return true;
-											}
-											
-										});
+										list3.add(new MenuBack());
 										
 										return list3;
 									}});
@@ -620,17 +588,7 @@ public class Person implements java.io.Serializable{
 							}});
 					}
 				}
-				list2.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "back";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}});
+				list2.add(new MenuBack());
 				return list2;
 			}});
 	}
@@ -689,17 +647,7 @@ public class Person implements java.io.Serializable{
 										}}
 										return false;
 									}});
-								list2.add(new MenuSelect() {
-
-									@Override
-									public String title() {
-										return "back";
-									}
-
-									@Override
-									public boolean go() {
-										return true;
-									}});
+								list2.add(new MenuBack());
 								return list2;
 							}});
 						return false;
@@ -736,17 +684,7 @@ public class Person implements java.io.Serializable{
 										}}
 										return false;
 									}});
-								list2.add(new MenuSelect() {
-
-									@Override
-									public String title() {
-										return "back";
-									}
-
-									@Override
-									public boolean go() {
-										return true;
-									}});
+								list2.add(new MenuBack());
 								return list2;
 							}});
 						return false;
@@ -785,32 +723,12 @@ public class Person implements java.io.Serializable{
 										return false;
 									}});
 								}
-								list2.add(new MenuSelect() {
-
-									@Override
-									public String title() {
-										return "back";
-									}
-
-									@Override
-									public boolean go() {
-										return true;
-									}});
+								list2.add(new MenuBack());
 								return list2;
 							}});
 						return false;
 					}});
-				list.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "back";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}});
+				list.add(new MenuBack());
 				return list;
 			}});
 	}

@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
@@ -154,18 +155,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 						}
 					});
 				}
-				mList.add(new MenuSelect() {
-	
-					@Override
-					public String title() {
-						return "leave";
-					}
-	
-					@Override
-					public boolean go() {
-						return true;
-					}
-				});
+				mList.add(new MenuBack("leave"));
 				return mList;
 			}});
 	}
@@ -216,18 +206,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 				for (QuestR qr: qrList) {
 					mList.add(new QRMenuItem(qr));
 				}
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "back";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}
-				});
+				mList.add(new MenuBack());
 				return mList;
 			}});
 		
@@ -349,18 +328,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 					}
 				});
 				
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "back";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}
-				});
+				mList.add(new MenuBack());
 				return mList;
 			}});
 		

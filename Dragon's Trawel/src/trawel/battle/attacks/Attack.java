@@ -403,7 +403,7 @@ public class Attack{
 		TRIPPED("Tripped","The next attack will take %1$d instants longer.","They are tripped!"),
 		GRAZE("Grazed","No effect.","The blow's a graze..."),
 		KO("Knockout","Deals %1$d bonus damage, but heals after their next attack.","It's a knockout!"),
-		HACK("Hack","Deals %1$d bonus damage.","It's a wicked hack!"),
+		HACK("Hack","Deals up to %1$d bonus damage based on unblocked damage.","It's a wicked hack!"),
 		TAT("Punctured","Deals up to %1$d bonus damage, based on final pierce damage and to-hit.","The blow goes right through them!"),
 		I_BLEED("Internal Bleeding","Applies a stacking %1$d bleed.","Their insides get crushed."),
 		CRUSHED("Crushed","Deals %1$d armor piercing damage, repeating the attack's damage once more.","They are crushed!"),

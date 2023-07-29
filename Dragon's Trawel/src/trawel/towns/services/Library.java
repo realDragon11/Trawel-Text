@@ -2,6 +2,7 @@ package trawel.towns.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
@@ -113,19 +114,7 @@ public class Library extends Feature {
 						
 					});
 				}
-				list.add(new MenuSelect(){
-
-					@Override
-					public String title() {
-						return "leave";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}
-					
-				});
+				list.add(new MenuBack("leave"));
 				return list;
 			}});
 	}

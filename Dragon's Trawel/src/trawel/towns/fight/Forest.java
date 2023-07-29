@@ -296,7 +296,7 @@ public class Forest extends Feature{
 		robber.getBag().graphicalDisplay(1, robber);
 		while (true) {
 		extra.println("You come across a dryad tending to a tree.");
-		extra.println("1 Leave");
+		extra.println("1 Leave");//DOLATER: fix menu
 		extra.print(extra.PRE_RED);
 		extra.println("2 Attack them.");
 		extra.println("3 Chat with them");
@@ -359,7 +359,7 @@ public class Forest extends Feature{
 		robber.getBag().graphicalDisplay(1, robber);
 		while (true) {
 		extra.println("You come across an old fighter, resting on a log.");
-		extra.println("1 Leave");
+		extra.println("1 Leave");//DOLATER: fix menu
 		extra.print(extra.PRE_RED);
 		extra.println("2 Attack them.");
 		extra.println("3 Chat with them");

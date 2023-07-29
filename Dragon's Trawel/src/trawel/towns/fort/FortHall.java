@@ -3,6 +3,7 @@ package trawel.towns.fort;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
@@ -118,18 +119,6 @@ public class FortHall extends FortFeature {
 						public String title() {
 							return "You have " + allies.size() + " soldiers here.";
 						}});
-					mList.add(new MenuSelect() {
-
-						@Override
-						public String title() {
-							return "leave";
-						}
-
-						@Override
-						public boolean go() {
-							return true;
-						}
-					});
 					if (allies.size() < 10) {
 					mList.add(new MenuSelect() {
 
@@ -181,6 +170,7 @@ public class FortHall extends FortFeature {
 							}
 						});
 						}
+					mList.add(new MenuBack("leave"));
 					return mList;
 				}
 			});
@@ -198,18 +188,6 @@ public class FortHall extends FortFeature {
 					public String title() {
 						return "You have " + town.fortSizeLeft() + " more space.";
 					}});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "back";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}
-				});
 				if (town.fortSizeLeft() > 2) {
 					mList.add(new MenuSelect() {
 
@@ -270,6 +248,7 @@ public class FortHall extends FortFeature {
 						}
 					});
 					}
+				mList.add(new MenuBack());
 				return mList;
 			}
 		});
