@@ -11,3 +11,6 @@ Small bits of code that are likely uncopyrightable anyway (due to their atomic n
 Larger sections of code, but still code that is isolated to a single task, will often be treated as MIT, although if copying effectively an entire class, it is recommended to ask first and get a contract to secure your legal safety.
 
 You should not copy systems from within Trawel Text, but if there is demand for one system to be copied, I may take that as a sign to pull it into its own library and license that with MIT.
+
+
+To ask for an exemption, mail my (somewhat unchecked) mail.com email, or find me on Discord.
