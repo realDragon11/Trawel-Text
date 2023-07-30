@@ -92,6 +92,12 @@ public class mainGame {
 	
 	public static boolean multiCanRun = false;
 	
+	public static DispAttack attackDisplayStyle = DispAttack.TWO_LINE1;
+	
+	public enum DispAttack{
+		CLASSIC, TWO_LINE1
+	}
+	
 	public static void mainMenu() {
 		extra.menuGo(new MenuGenerator(){
 

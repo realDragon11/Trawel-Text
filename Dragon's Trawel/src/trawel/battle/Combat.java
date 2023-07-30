@@ -2,8 +2,8 @@ package trawel.battle;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 import trawel.AIClass;
 import trawel.Effect;
@@ -35,7 +35,7 @@ import trawel.towns.fort.LSkill;
 import trawel.towns.fort.SubSkill;
 /**
  * A combat holds some of the more battle-focused commands.
- * @author Brian Malone
+ * @author dragon
  * 2/8/2018
  */
 
@@ -477,14 +477,8 @@ public class Combat {
 		if (extra.chanceIn(def.countArmorQuality(ArmorQuality.HAUNTED),80)){
 			return new AttackReturn(-1,str +extra.PRE_GREEN+" An occult hand leaps forth, pulling them out of the way![c_white]",null);//DOLATER probably just remove
 		}*/
-		//return the damage-armor, with each type evaluated individually
 		Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getSoundIntensity() + "|" +att.getSoundType()+"|");
-		
-		//double depthWeapon2 = .25;
-		//double midWeapon2 = .7;
-		
-		//armMod = armMod*(1-(armorMinShear/2));
-		List<Weapon.WeaponQual> wqL = (att.getWeapon() != null ? att.getWeapon().qualList : new ArrayList<Weapon.WeaponQual>());
+		List<Weapon.WeaponQual> wqL = (att.getWeapon() != null ? att.getWeapon().qualList : Collections.emptyList());
 		double sharpA = def.getSharp(att.getSlot(),wqL)*armMod;
 		double bluntA = def.getBlunt(att.getSlot(),wqL)*armMod;
 		double pierceA= def.getPierce(att.getSlot(),wqL)*armMod;
@@ -515,16 +509,9 @@ public class Combat {
 	
 	public static AttackReturn handleTestAttack(Attack att, Inventory def, double armMod) {
 		double damMod = 1;
-		if (((def.getDodge())/(att.getHitmod()))*ThreadLocalRandom.current().nextDouble() > 1.0){
+		if (((def.getDodge())/(att.getHitmod()))*extra.getRand().nextDouble() > 1.0){
 			return Combat.testCombat.new AttackReturn(ATK_ResultCode.DODGE,"",null);//do a dodge
 		}
-		//return the damage-armor, with each type evaluated individually
-		//double depthWeapon2 = .25;
-		//double midWeapon2 = .7;
-		/*double depthArmor2 = .25;
-		double midArmor2 = .7;
-		double armorMinShear = .1;*/
-		//armMod = armMod*(1-(armorMinShear/2));
 		List<Weapon.WeaponQual> wqL = (att.getWeapon() != null ? att.getWeapon().qualList : new ArrayList<Weapon.WeaponQual>());
 		double sharpA = def.getSharp(att.getSlot(),wqL)*armMod;
 		double bluntA = def.getBlunt(att.getSlot(),wqL)*armMod;
@@ -537,7 +524,8 @@ public class Combat {
 		if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.RELIABLE) && ret.damage <= att.getWeapon().getLevel()) {
 			ret.damage = att.getWeapon().getLevel();
 			ret.reliable = true;
-		}else {
+		}
+		if (ret.code == ATK_ResultCode.DAMAGE) {
 			if (ret.damage > 0) {
 				if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.REFINED)) {
 					ret.damage += att.getWeapon().getLevel();
@@ -561,8 +549,8 @@ public class Combat {
 		public Attack attack;
 		public ATK_ResultCode code;
 		public AttackReturn(int sdam,int bdam, int pdam, String str, Attack att) {
-			code = ATK_ResultCode.DAMAGE;
 			damage = sdam+bdam+pdam;
+			code = damage > 0 ? ATK_ResultCode.DAMAGE : ATK_ResultCode.ARMOR;
 			subDamage = new int[] {sdam,bdam,pdam};
 			stringer = str;
 			attack = att;
@@ -652,6 +640,7 @@ public class Combat {
 		AttackReturn atr = this.handleAttack(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
 		ret = atr;
 		int damageDone = atr.damage;
+		extra.println(damageDone + " " + defender.getHp()+"/"+defender.getMaxHp());//FIXME: probably turn damage responses into a better thing
 		String inlined_color = extra.PRE_WHITE;
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender,damageDone);
 		//armor quality handling
@@ -885,11 +874,13 @@ public class Combat {
 		return ret;
 	}
 	private String inflictWound(Person attacker2, Person defender2, AttackReturn retu) {
-		int damage = retu.damage;
-		if (retu.reliable == true) {
-			return " The armor deflects the wound.";//reliable hits don't inflict wound effects
+		if (retu.code == ATK_ResultCode.ARMOR) {
+			return " The armor deflects the wound.";//reliable/other armor hits don't inflict wound effects
 		}
-		if ((defender2.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 )) {//|| damage == 0//wounds no longer hit if dam=0, if this needs to change, fix woundstring printing as well
+		if ((defender2.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 )) {
+			//|| damage == 0//wounds no longer hit if dam=0, if this needs to change, fix woundstring printing as well
+			//DOLATER: fix that?
+			//although they'll still not usually apply if damage == 0
 			return (" They shrug off the blow!");
 		}else {
 		Attack attack = attacker2.getNextAttack();

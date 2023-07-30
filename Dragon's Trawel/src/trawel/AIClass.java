@@ -158,15 +158,25 @@ public class AIClass {
 			
 			
 			if (attacker.isPlayer()) {
-			extra.println("     name                hit    delay    sharp    blunt     pierce");
-			for(Attack a: attacks) {
-				extra.print(j + "    ");
-				a.display(1,attacker,defender);
-				j++;
+				switch (mainGame.attackDisplayStyle) {
+				case CLASSIC:
+					extra.println("     name                hit    delay    sharp    blunt     pierce");
+					for(Attack a: attacks) {
+						extra.print(j + "    ");
+						a.display(1,attacker,defender);
+						j++;
+					}
+				case TWO_LINE1:
+					for(Attack a: attacks) {
+						extra.print(j + " ");
+						a.display(2,attacker,defender);
+						j++;
+					}
+					break;
+				}
+				int numb = extra.inInt(attacks.size())-1;
+				return attacks.get(numb);
 			}
-			int numb = extra.inInt(attacks.size())-1;
-			return attacks.get(numb);
-		}
 		return attackTest(attacks,smarts,com, attacker, defender);
 	}
 	

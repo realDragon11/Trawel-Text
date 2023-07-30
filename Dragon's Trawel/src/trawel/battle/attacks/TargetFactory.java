@@ -841,7 +841,8 @@ public class TargetFactory {
 			ArrayList<Target> copyList = new ArrayList<Target>();
 			for (Target mat: targetList){
 				if (mat.type == tt) {
-				copyList.add(mat);}
+					copyList.add(mat);
+				}
 			}
 			float[] sWeightList = new float[targetList.size()];
 			for (int i = targetList.size()-1;i>=0;--i) {

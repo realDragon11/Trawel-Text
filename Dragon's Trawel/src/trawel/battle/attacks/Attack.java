@@ -295,10 +295,11 @@ public class Attack{
 	}
 
 	public void display(int style, Person attacker, Person defender) {
-		if (style == 0) {
+		switch (style) {
+		case 0://not impaired style
 			extra.println(name + "\t" + extra.format(hitMod) + "\t" + speed + "\t" + sharp + "\t" + blunt + "\t" + pierce);
-		}
-		if (style == 1) {
+			break;	
+		case 1://classic
 			if (!isMagic) {
 			int[] in = new int[6];
 			in[0] = 8+12;
@@ -307,7 +308,7 @@ public class Attack{
 			in[3] = 9;
 			in[4] = 10;
 			in[5] = 6+4;
-			extra.specialPrint(in,name ,extra.format(hitMod) , extra.format((speed))  ,""+ (sharp)  ,""+(blunt)  ,  ""+(pierce));
+			extra.specialPrint(in,name ,extra.format(hitMod) , extra.format(speed)  ,""+ (sharp)  ,""+(blunt)  ,  ""+(pierce));
 			}else {
 				int[] in = new int[3];
 				in[0] = 20+7;
@@ -315,9 +316,32 @@ public class Attack{
 				in[2] = 9+10+10;
 				extra.specialPrint(in, name,extra.format(speed),magicDesc);
 			}
+			if (wound != null) {
+				extra.println(" "+this.wound.name + " - " + String.format(this.wound.desc,(Object[])Combat.woundNums(this,attacker,defender,null)));
+			}
+			break;
+		case 2://two line 1
+			extra.println(name);
+			if (!isMagic) {
+				int[] in = new int[5];
+				in[0] = 9;//hitchance, should be 9.99 >= x > 0.00
+				in[1] = 5;//instants, should be 999 >= x > 0
+				//sbp 6 should be fine for 3 digits, 7 for 4
+				in[2] = 7;
+				in[3] = 7;
+				in[4] = 7;
+				extra.specialPrint(in,"  "+extra.CHAR_HITCHANCE + extra.format(hitMod),
+						extra.CHAR_INSTANTS +extra.formatInt(speed),
+						"S "+(sharp),"B "+(blunt),"P "+(pierce)//unsure if spacing messes up narrator
+						);
+			}else {
+				extra.println("magic needs rehaul");
+			}
+			if (wound != null) {
+				extra.println("  "+this.wound.name + " - " + String.format(this.wound.desc,(Object[])Combat.woundNums(this,attacker,defender,null)));
+			}
+			break;
 		}
-		if (wound != null) {
-		extra.println(" "+this.wound.name + " - " + String.format(this.wound.desc,(Object[])Combat.woundNums(this,attacker,defender,null)));}
 	}
 	
 	public Attack impair(int handLevel, TargetFactory.TargetType targetType,Weapon weap, Person p) {

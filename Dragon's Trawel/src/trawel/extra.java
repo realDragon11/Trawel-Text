@@ -172,6 +172,15 @@ public final class extra {
 	
 	public static final java.text.DecimalFormat F_TWO_TRAILING = new java.text.DecimalFormat("0.00");
 	public static final java.text.DecimalFormat F_WHOLE = new java.text.DecimalFormat("0");
+	
+	public static final String CHAR_INSTANTS = "_";
+	//was having trouble finding something that narrator read 
+	//should probably make instants display an actual icon in the graphical with an insert sprite code
+	//should handle replacement on gms2.3 side for compat + brevity
+	
+	public static final String CHAR_HITCHANCE = "%";
+	//also probably something better out there
+	
 	/**
 	 * Formats a double into a string that looks nicer.
 	 * @param str - (double)
@@ -179,6 +188,10 @@ public final class extra {
 	 */
 	public static final String format(double str) {
 		return(F_TWO_TRAILING.format(str));
+	}
+	
+	public static final String formatInt(double str) {
+		return(F_WHOLE.format(str));
 	}
 	
 	//extra.linebreak();
