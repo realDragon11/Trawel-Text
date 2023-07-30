@@ -1004,6 +1004,8 @@ public class TargetFactory {
 		private List<Integer> multiNums;
 		private List<Integer> multiCount;
 		
+		//private List<VariantResolver> attachNums;
+		
 		private List<TargetReturn> tRets;
 		/**
 		 * links a type/variant to a final part
@@ -1038,55 +1040,70 @@ public class TargetFactory {
 			}
 			List<Target> singles = new ArrayList<Target>();
 			multiNums = new ArrayList<Integer>();
+			//attachNums = new ArrayList<VariantResolver>();
 			List<List<Target>> subTargets = new ArrayList<List<Target>>();
 			List<List<Integer>> subVariants = new ArrayList<List<Integer>>();
 			multiCount = new ArrayList<Integer>();
 			for (int i = 0; i < allTargets.size();i++) {
 				Target t = allTargets.get(i);
-				if (t.mappingNumber == -1 && t.attachNumber == -1) {
+				if (t.mappingNumber == 0 && t.attachNumber == 0) {
 					singles.add(t);
 				}else {
-					int special = t.mappingNumber;
-					if (special == 0) {
-						special = -t.attachNumber;
+					int special = getSpecialNum(t,allVariants.get(i));
+					if (t.mappingNumber > 0) {
+						int index = multiNums.indexOf(special);
+						Integer variNum = allVariants.get(i).variant;
+						if (index == -1) {
+							multiNums.add(special);
+							subTargets.add(new ArrayList<Target>());
+							subVariants.add(new ArrayList<Integer>());
+							multiCount.add(variNum == -1 ? 1 : 0);//if we don't have variants, set 1
+							index = multiNums.size()-1;
+						}
+						if (variNum != -1 && !subVariants.get(index).contains(variNum)) {//add all variants
+							multiCount.set(index,multiCount.get(index) + 1);
+						}
+						subTargets.get(index).add(t);
+						subVariants.get(index).add(variNum);
+					}else {
+						/*
+						while (multiNums.indexOf(special) != -1) {
+							special += 1_000;
+						}*/
+						multiNums.add(special);//DOLATER might be a better way
+						multiCount.add(1);
+						subTargets.add(null);
+						subVariants.add(null);
+						//attachNums.add(allVariants.get(i));
 					}
-					int index = multiNums.indexOf(special);
-					Integer variNum = allVariants.get(i).variant;
-					if (index == -1) {
-						multiNums.add(special);
-						subTargets.add(new ArrayList<Target>());
-						subVariants.add(new ArrayList<Integer>());
-						multiCount.add(variNum == -1 ? 1 : 0);//if we don't have variants, set 1
-						index = multiNums.size()-1;
-					}
-					if (variNum != -1 && !subVariants.get(index).contains(variNum)) {//add all variants
-						multiCount.set(index,multiCount.get(index) + 1);
-					}
-					subTargets.get(index).add(t);
-					subVariants.get(index).add(variNum);
+					
 				}
 			}
 			int offset = singles.size();
-			uniqueParts = offset + multiNums.size();
+			uniqueParts = offset + multiSum(multiNums.size());
 			map = new int[allTargets.size()];
 			attached = new int[allTargets.size()];
 			//the maps converts an alltarget number to a condition arr number
 			//the outcome numbers don't matter as long as they're consistent, so we make them here
 			for (int i = 0;i < map.length;i++) {
 				Target t = allTargets.get(i);
-				if (t.mappingNumber == -1) {
-					map[i] = singles.indexOf(t);
-					tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i));
+				if (t.mappingNumber == 0) {
+					if (t.attachNumber == 0) {
+						map[i] = singles.indexOf(t);
+						tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i));
+					}else {
+						VariantResolver vr = allVariants.get(i);
+						int index = multiNums.indexOf(getSpecialNum(t,vr));
+						map[i] = mapNumForAttach(offset,multiSum(index),vr.combo);
+						tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i));
+					}
 				}else {
-					int index = multiNums.indexOf(t.mappingNumber);
+					int index = multiNums.indexOf(getSpecialNum(t,null));
 					int subindex;
-					//int variant;
 					if (t.variants == null) {
 						subindex = 0;
-						//variant = -1;
 					}else {
-						int variant = (int) backmap.get(1).get(i);
-						subindex = subVariants.get(index).indexOf(variant);
+						subindex = subVariants.get(index).indexOf(allVariants.get(i).variant);
 					}
 					//very fancy system to make each variant mappable
 					map[i] = offset + multiSum(index) + subindex;
@@ -1096,8 +1113,45 @@ public class TargetFactory {
 					tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i));
 					//System.err.println(subindex +" " +subVariants.get(index).get(subindex));
 				}
-				
 			}
+			//two pass makes this much easier to write from this point, probably could have done it better
+			for (int i = 0;i < attached.length;i++) {
+				Target t = allTargets.get(i);
+				if (t.attachNumber == 0) {
+					attached[i] = -1;
+				}else {
+					attached[i] = -1;
+					VariantResolver vr = allVariants.get(i);
+					
+					int raw = t.attachNumber;
+					if (raw < 0) {//attach chain
+						int special = getSpecialNum(t,vr);
+						int index = multiNums.indexOf(special);
+						attached[i] = mapNumForAttach(offset, index, vr.combo);
+						if (attached[i] >= 0) {//should always happen
+							continue;
+						}
+						throw new RuntimeException("could not find attach "+special+" map to attach chain to");
+					}else {//to a base map
+						int num = Math.abs(raw);
+						for (int j = 0; j < allTargets.size();j++) {
+							if (allTargets.get(j).mappingNumber == num) {
+								attached[i] = map[j];//connect to base map
+								break;
+							}
+						}
+						if (attached[i] >= 0) {
+							continue;
+						}
+						throw new RuntimeException("could not find base "+num+" map to attach to");
+					}
+				}
+			}
+			this.toString();
+		}
+		
+		protected int getSpecialNum(Target t,VariantResolver vr) {
+			return (t.mappingNumber > 0 ? t.mappingNumber : t.attachNumber + ((vr.combo+1)*1_000));
 		}
 		
 		protected int getSlotByMappingNumber(int mapping,int variant) {
@@ -1108,6 +1162,16 @@ public class TargetFactory {
 			int total = multiSum(multiNums.size()-1);
 			return (allTargets.size() - total)+multiSum(multIndex)+variant;
 		}
+		
+		protected int mapNumForAttach(int offset, int index, int combo) {
+			return offset + multiSum(index-1)-1;//combo part of multisum
+		}
+		
+		/*
+		protected int getBaseMappingNumber(VariantResolver vr) {
+			
+		}
+		*/
 		
 		/**
 		 * returns the sum of the ints inside nums up to the array index of upTo
@@ -1239,13 +1303,18 @@ public class TargetFactory {
 					int total = variantNum*TargetFactory.totalNeededVariants(t.type,t.attachNumber);
 					for (int i = 0; i < total;i++) {
 						String str = "";
-						int[] vAttaches = new int[list.size()-1];
+						int[] vAttaches = new int[list.size()];
 						for (int j = 0;j < list.size(); j++) {
-							str += namePermutation(list.get(j),i);
-							vAttaches[j] = (t.variants == null ? -1 : i%t.variants.length);
+							Target subT = list.get(j);
+							if (j == list.size()-1) {
+								str += (subT.variants == null ? subT.name : subT.variants[i%subT.variants.length] +subT.name);
+							}else {
+								str += namePermutation(list.get(j),i);
+							}
+							vAttaches[j] = (subT.variants == null ? -1 : i%subT.variants.length);
 						}
 						targets.add(t);
-						variants.add(new VariantResolver(i,str,vAttaches));
+						variants.add(new VariantResolver(str,i,vAttaches));
 					}
 					
 				}else {
@@ -1263,7 +1332,7 @@ public class TargetFactory {
 		return list;
 	}
 	public static String namePermutation(Target t,int toMod) {
-		return (t.variants == null ? "" : t.variants[toMod%t.variants.length] +"'s ");
+		return (t.variants == null ? "" : t.variants[toMod%t.variants.length] +t.name+"'s ");
 	}
 	
 	public class VariantResolver{
@@ -1271,17 +1340,20 @@ public class TargetFactory {
 		public final String name;
 		//public final int[] attaches;
 		public final int[] vAttaches;
+		public final int combo;
 		public VariantResolver(int variant, String name) {
 			this.variant = variant;
 			this.name = name;
 			//attaches = null;
 			vAttaches = null;
+			combo = Math.min(0,variant);
 		}
-		public VariantResolver(int variant, String name, int[] vAttaches) {
-			this.variant = variant;
+		public VariantResolver(String name, int combo, int[] vAttaches) {
+			this.variant = vAttaches[vAttaches.length-1];
 			this.name = name;
 			assert vAttaches[vAttaches.length-1] == variant;
 			this.vAttaches = vAttaches;
+			this.combo = combo;
 		}
 	}
 	

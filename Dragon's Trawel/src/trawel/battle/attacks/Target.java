@@ -19,6 +19,7 @@ public class Target{
 	 * 5 = feet (fails for quads)
 	 * 
 	 * cannot do negatives
+	 * should keep numbers below 100
 	 */
 	public int mappingNumber = 0;
 	/**
@@ -33,7 +34,13 @@ public class Target{
 	 * name format is: [base part variant name]'s [variant name or normal name]
 	 * if there are no base variants it just displays as if it were freestanding
 	 * 
-	 * cannot do negatives, zero is also reserved
+	 * zero is reserved. Will offset by 100000 internally, so limit numbers to abs(num) < 100
+	 * 100_000 is the base offset, and then 1_000 more is used every time a duplicate of that offset is encounted
+	 * 
+	 * if negative, is attached to another attach
+	 * if positive, attached to a mapping number
+	 * 
+	 * there must always be a base mapping number
 	 */
 	public int attachNumber = 0;
 	public TargetFactory.TargetType type;
