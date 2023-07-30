@@ -17,6 +17,8 @@ import trawel.battle.BarkManager;
 import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.Stance;
 import trawel.battle.attacks.TargetFactory;
+import trawel.battle.attacks.TargetFactory.TypeBody;
+import trawel.battle.attacks.TargetHolder;
 import trawel.earts.EAType;
 import trawel.earts.EArt;
 import trawel.earts.EArtSkillMenu;
@@ -73,7 +75,12 @@ public class Person implements java.io.Serializable{
 	private List<Effect> effects;
 	private RaceFlag rFlag;
 
-	public TargetFactory.TargetType targetOverride = null;
+	public TargetFactory.TargetType targetOverride = null;//DOLATER swap over
+	
+	//need to make either this or raceflag not a thing
+	//if removing this, raceflag needs to override
+	//if removing raceflag, idk
+	public TypeBody bodyType;
 	
 	public Weapon backupWeapon = null;
 	
@@ -96,6 +103,8 @@ public class Person implements java.io.Serializable{
 	public enum PersonType{
 		COWARDLY,FEARLESS,GRIZZLED,DEATHCHEATED,LIFEKEEPER
 	}
+	
+	private transient TargetHolder body;
 	//private boolean isPlayer;
 	
 	//Constructor
@@ -115,7 +124,35 @@ public class Person implements java.io.Serializable{
 		if (raceType == RaceType.HUMANOID) {
 			firstName = randomLists.randomFirstName();
 			title = randomLists.randomLastName();
+			switch (raceFlag) {
+			case CRACKS:
+				bodyType = TypeBody.STATUE;
+				break;
+			case UNDEAD:
+				bodyType = TypeBody.UNDEAD;
+				break;
+			default:
+				bodyType = TypeBody.HUMAN_LIKE;
+				break;
+			
+			}
 		}else {
+			switch (race.targetType) {
+			case C_REAVER: case S_REAVER:
+				bodyType = TypeBody.REAVER;
+				break;
+			case FLY:
+				bodyType = TypeBody.BASIC_FLY;
+				break;
+			case MIMIC: case OPEN_MIMIC:
+				bodyType = TypeBody.MIMIC;
+				break;
+			case QUAD:
+				bodyType = TypeBody.BASIC_QUAD;
+				break;
+			default:
+				throw new RuntimeException("invalid target type and flag");
+			}
 			title = "";
 		}
 		//placeOfBirth = extra.capFirst((String)extra.choose(randomLists.randomElement(),randomLists.randomColor()))+ " " +extra.choose("Kingdom","Kingdom","Colony","Domain","Realm");
@@ -1193,6 +1230,18 @@ public class Person implements java.io.Serializable{
 
 	public double getSpeed() {
 		return getBag().getSpeed() + (hasEffect(Effect.HASTE) ? 0.1 : 0 );
+	}
+
+	public TargetHolder getBody() {
+		return body;
+	}
+
+	public void setBody(TargetHolder body) {
+		this.body = body;
+	}
+
+	public TypeBody getBodyType() {
+		return bodyType;
 	}
 
 }

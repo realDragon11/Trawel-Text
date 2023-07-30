@@ -12,7 +12,7 @@ public class Target{
 	public List<Attack.Wound> slashWounds = new ArrayList<Attack.Wound>();
 	public List<Attack.Wound> bluntWounds = new ArrayList<Attack.Wound>();
 	public List<Attack.Wound> pierceWounds = new ArrayList<Attack.Wound>();
-	public String[] variants;
+	public String[] variants = new String[0];
 	//used for 'left' and 'right' arms- they should be mechanically the same
 	//that doesn't mean you can't have an 'arm' mechanic, just that either arm should always count
 }

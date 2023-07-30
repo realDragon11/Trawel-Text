@@ -3,9 +3,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.extra;
+import trawel.personal.Person;
 
 public class TargetFactory {
 
@@ -17,6 +21,7 @@ public class TargetFactory {
 	
 	//public static Map<TargetType,List<Target>> targetTypeMap = new HashMap<TargetType,List<Target>>();
 	public static Map<TargetType,WeightedTable> targetTypeTable = new HashMap<TargetType,WeightedTable>();
+	private static Map<String,Target> targetMap = new HashMap<String,Target>();
 	
 	public TargetFactory() {
 		
@@ -85,6 +90,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "arm";
+		t.variants = new String[] {"right ","left "};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -101,6 +107,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "leg";
+		t.variants = new String[] {"right ","left "};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -117,6 +124,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "eye";
+		t.variants = new String[] {"right ","left "};
 		t.hit = .1;
 		t.sharp = 5;
 		t.blunt = 3;
@@ -313,6 +321,24 @@ public class TargetFactory {
 		targetList.add(t);
 		
 		t = new Target();
+		t.variants = new String[] {"right fore","left fore","right hind","left hind"};
+		t.name = "leg";
+		t.hit = 1;
+		t.sharp = 1.1;
+		t.blunt = .8;
+		t.pierce = .8;
+		t.rarity = 2;
+		t.slot = 1;
+		t.type = TargetType.QUAD;
+		t.slashWounds.add(Attack.Wound.DICE);
+		t.slashWounds.add(Attack.Wound.HAMSTRUNG);
+		t.slashWounds.add(Attack.Wound.BLEED);
+		t.bluntWounds.add(Attack.Wound.TRIPPED);
+		t.pierceWounds.add(Attack.Wound.BLEED);
+		targetList.add(t);
+		
+		/*
+		t = new Target();
 		t.name = "foreleg";
 		t.hit = 1;
 		t.sharp = 1.1;
@@ -343,9 +369,11 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.TRIPPED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		targetList.add(t);
+		*/
 		
 		t = new Target();
 		t.name = "eye";
+		t.variants = new String[] {"right ","left "};
 		t.hit = .1;
 		t.sharp = 5;
 		t.blunt = 3;
@@ -452,6 +480,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "arm";
+		t.variants = new String[] {"right ","left "};
 		t.hit = 1;
 		t.sharp = 1;
 		t.blunt = .6;
@@ -469,6 +498,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "leg";
+		t.variants = new String[] {"right ","left "};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -487,6 +517,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "leg";
+		t.variants = new String[] {"right ","left "};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -559,6 +590,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "arm";
+		t.variants = new String[] {"right ","left "};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -575,6 +607,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "leg";
+		t.variants = new String[] {"right ","left "};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -591,6 +624,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "eye";
+		t.variants = new String[] {"right ","left "};
 		t.hit = .1;
 		t.sharp = 5;
 		t.blunt = 3;
@@ -657,6 +691,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "arm";
+		t.variants = new String[] {"right ","left "};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -672,6 +707,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "leg";
+		t.variants = new String[] {"right ","left "};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -687,6 +723,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "eye";
+		t.variants = new String[] {"right ","left "};
 		t.hit = .1;
 		t.sharp = 5;
 		t.blunt = 3;
@@ -758,11 +795,12 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "wing";
+		t.variants = new String[] {"right ","left "};
 		t.hit = 2;
 		t.sharp = 1.1;
 		t.blunt = .8;
 		t.pierce = .8;
-		t.rarity = 1;
+		t.rarity = 1.5;
 		t.slot = 1;
 		t.type = TargetType.FLY;
 		t.slashWounds.add(Attack.Wound.TEAR);
@@ -772,11 +810,12 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "leg";
+		t.variants = new String[] {"right ","left "};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
 		t.pierce = .8;
-		t.rarity = 1;
+		t.rarity = .5;
 		t.slot = 3;
 		t.type = TargetType.FLY;
 		t.slashWounds.add(Attack.Wound.DICE);
@@ -787,6 +826,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "eye";
+		t.variants = new String[] {"right ","left "};
 		t.hit = .1;
 		t.sharp = 5;
 		t.blunt = 3;
@@ -836,6 +876,10 @@ public class TargetFactory {
 		targetList.add(t);
 		
 		
+		for (Target ta: targetList) {
+			toMap(ta);
+		}
+		
 		//setup part 2
 		for (TargetType tt: TargetType.values()) {
 			ArrayList<Target> copyList = new ArrayList<Target>();
@@ -860,7 +904,71 @@ public class TargetFactory {
 		HUMANOID, MIMIC, OPEN_MIMIC, NONE,QUAD, STATUE, S_REAVER, C_REAVER, UNDEAD_H, FLY;
 	}
 	
+	public enum BodyPlan {
+		HUMANOID, QUAD, FLY, NO_VARIANTS_ALL;
+	}
+	
+	public enum TypeBody {
+		HUMAN_LIKE(BodyPlan.HUMANOID,TargetType.HUMANOID),
+		BASIC_QUAD(BodyPlan.QUAD,TargetType.QUAD),
+		MIMIC(BodyPlan.NO_VARIANTS_ALL,TargetType.MIMIC,TargetType.OPEN_MIMIC),
+		STATUE(BodyPlan.HUMANOID,TargetType.STATUE),
+		REAVER(BodyPlan.NO_VARIANTS_ALL,TargetType.S_REAVER,TargetType.C_REAVER),//DOLATER needs it's variants
+		BASIC_FLY(BodyPlan.FLY,TargetType.FLY),
+		UNDEAD(BodyPlan.HUMANOID,TargetType.UNDEAD_H);
+		
+		public BodyPlan plan;
+		public TargetType[] types;
+		
+		TypeBody(BodyPlan plan, TargetType... types){
+			this.plan = plan;
+			this.types = types;
+		}
+	}
+	
 	public static Target randTarget(TargetType targetType) {
 		return targetList.get(targetTypeTable.get(targetType).random(extra.getRand()));
+	}
+	
+	public static Target randTarget(Person p) {
+		TargetHolder hold = p.getBody();
+		return null;
+	}
+	
+	public static TargetHolder battleSetup(Person p) {
+		TargetHolder hold = new TargetHolder();
+		TypeBody types = p.getBodyType();
+		switch (types.plan) {
+		
+		}
+		
+		p.setBody(hold);
+		
+		return hold;
+	}
+	
+
+	/**
+	 * for masks, all of the tables should be the same, so only need to calculate one of them
+	 */
+	protected static WeightedTable buildTable(Target[] targets) {
+		float[] weights = new float[targets.length];
+		Map<Target,Integer> counts = new HashMap<Target,Integer>();
+		//hashmap is needless overkill but idk if the tree thing is better
+		for (Target t: targets) {
+			counts.put(t,counts.getOrDefault(t, 0)+1);
+		}
+		for (int i = 0; i < targets.length; i++) {
+			weights[i] = (float) (targets[i].rarity/counts.get(targets[i]));
+		}
+		return new WeightedTable(weights);
+	}
+	
+	private static void toMap(Target t) {
+		targetMap.put(t.type.ordinal() + t.name,t);
+	}
+	
+	public static Target fromMap(TargetType type, String name) {
+		return targetMap.get(type.ordinal() + name);
 	}
 }
