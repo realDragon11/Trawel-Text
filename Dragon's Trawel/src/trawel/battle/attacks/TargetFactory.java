@@ -1184,8 +1184,12 @@ public class TargetFactory {
 			return total;
 		}
 		
-		public int getTotalParts() {
+		public int getUniqueParts() {
 			return uniqueParts;
+		}
+		
+		public int getPartCount() {
+			return allTargets.size();
 		}
 		
 		//were added later so don't get used when passing arrays around

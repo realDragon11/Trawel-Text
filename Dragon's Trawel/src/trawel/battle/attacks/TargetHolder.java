@@ -27,7 +27,7 @@ public class TargetHolder {
 		plan = type;
 		config = null;
 		
-		condition = new double[plan.getTotalParts()];
+		condition = new double[plan.getUniqueParts()];
 		for (int i = condition.length-1;i >= 0;i--) {
 			condition[i] = 1;
 		}
@@ -87,7 +87,7 @@ public class TargetHolder {
 	public void debug_print(boolean full) {
 		if (full) {
 			extra.print("   ");
-			for (int i = 0; i < plan.getTotalParts();i++) {
+			for (int i = 0; i < plan.getPartCount();i++) {
 				extra.print(getPartName(i) + ": " + plan.getMap(i) + "-" + getStatus(i) + " ");
 			}
 			extra.println();
