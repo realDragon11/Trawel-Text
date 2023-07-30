@@ -32,49 +32,7 @@ public class TargetHolder {
 			condition[i] = 1;
 		}
 	}
-	/**
-	 * constructs an array of targets with variants
-	 * the variants are ints, you must fetch them from the strings
-	 * variants will be null if it's a singlet
-	 * @param typeBody 
-	 * @return the array of parts, Object[2][count] where Target and Integer are sub arrays
-	 */
-	protected static List<List<Object>> makeMap(TypeBody typeBody) {
-		List<Object> targets = new ArrayList<Object>();
-		List<Object> variants = new ArrayList<Object>();
-		for (Target t: TargetFactory.tList()) {
-			boolean contains = false;
-			for (TargetType taty: typeBody.types) {
-				if (t.type == taty) {
-					contains = true;
-					break;
-				}
-			}
-			if (!contains) {
-				continue;
-			}
-			if (t.variants == null) {
-				targets.add(t);
-				variants.add(null);
-			}else {
-				int j = 0;
-				for (String s: t.variants) {
-					targets.add(t);
-					variants.add(j++);
-				}
-			}
-		}
-		/*
-		Object[][] ret = new Object[2][targets.size()];
-		for (int i = targets.size()-1;i >=0;i--) {//we don't care about order
-			ret[0][i] = targets.get(i);
-			ret[1][i] = variants.get(i);
-		}*/
-		List<List<Object>> list = new ArrayList<List<Object>>();
-		list.add(targets);
-		list.add(variants);
-		return list;
-	}
+	
 	
 	/**
 	 * the damage % on a part

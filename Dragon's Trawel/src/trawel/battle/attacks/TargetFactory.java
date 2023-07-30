@@ -1,5 +1,7 @@
 package trawel.battle.attacks;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +10,8 @@ import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.extra;
 import trawel.battle.attacks.Attack.Wound;
+import trawel.battle.attacks.TargetFactory.TargetType;
+import trawel.battle.attacks.TargetFactory.TypeBody;
 
 public class TargetFactory {
 
@@ -78,7 +82,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.KO);
 		t.bluntWounds.add(Attack.Wound.DIZZY);
 		t.pierceWounds.add(Attack.Wound.BLINDED);
-		t.mappingNumber = 0;
+		t.mappingNumber = 1;
 		targetList.add(t);
 		
 		t = new Target();
@@ -96,7 +100,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.WINDED);
 		t.bluntWounds.add(Attack.Wound.WINDED);
 		t.pierceWounds.add(Attack.Wound.MAJOR_BLEED);
-		t.mappingNumber = 0;
+		t.mappingNumber = 1;
 		targetList.add(t);
 		
 		t = new Target();
@@ -117,7 +121,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.TAT);
-		t.mappingNumber = 2;
+		t.mappingNumber = 3;
 		targetList.add(t);
 		
 		t = new Target();
@@ -135,7 +139,7 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.BLEED);
 		t.bluntWounds.add(Attack.Wound.DISARMED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
-		t.mappingNumber = 1;
+		t.mappingNumber = 2;
 		targetList.add(t);
 		
 		t = new Target();
@@ -149,12 +153,12 @@ public class TargetFactory {
 		t.slot = 3;
 		t.type = TargetType.HUMANOID;
 		addLeg_LimbWounds(t,null);
-		t.mappingNumber = 3;
+		t.mappingNumber = 4;
 		targetList.add(t);
 		
 		t = new Target();
 		t.name = "eye";
-		//t.variants = new String[] {"right ","left "};//FIXME: having variants and non variants in the same slot obviously doesn't work rn
+		t.variants = new String[] {"right ","left "};//FIXME: having variants and non variants in the same slot obviously doesn't work rn
 		t.hit = .1;
 		t.sharp = 5;
 		t.blunt = 3;
@@ -167,7 +171,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.BLINDED);
 		t.pierceWounds.add(Attack.Wound.BLINDED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
-		t.mappingNumber = 0;
+		t.attachNumber = 1;
 		targetList.add(t);
 		
 		t = new Target();
@@ -181,7 +185,7 @@ public class TargetFactory {
 		t.type = TargetType.HUMANOID;
 		add_IBleed_MBleed(t);
 		t.bluntWounds.add(Attack.Wound.KO);
-		t.mappingNumber = 2;
+		t.mappingNumber = 3;
 		targetList.add(t);
 		
 		t = new Target();
@@ -201,7 +205,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.TAT);
-		t.mappingNumber = 2;
+		t.mappingNumber = 3;
 		targetList.add(t);
 		
 		
@@ -936,6 +940,7 @@ public class TargetFactory {
 				System.out.println("error with " +tb.name());
 				e.printStackTrace();
 			}
+			break;//FIXME for now just getting humans working
 		}
 		
 		//DOLATER: this is an old system now, likely will be removed
@@ -994,6 +999,10 @@ public class TargetFactory {
 		 * contains dupes, the other code handles them being variants
 		 */
 		private List<Target> allTargets;
+		private List<VariantResolver> allVariants;
+		
+		private List<Integer> multiNums;
+		private List<Integer> multiCount;
 		
 		private List<TargetReturn> tRets;
 		/**
@@ -1005,6 +1014,7 @@ public class TargetFactory {
 		//and the others are linked maps
 		//should probably compute chains at compile time to avoid recursion issues
 		//but in such a case the mapping would be useless and should be reduced anyway?
+		private int[] attached;
 		
 		TypeBody(BodyPlan plan, BloodType blood, TargetType... types){
 			this.plan = plan;
@@ -1014,91 +1024,98 @@ public class TargetFactory {
 		//could use another function to call if needs to have different behavior
 		public void setup() {
 			tRets = new ArrayList<TargetReturn>();
-			backmap = TargetHolder.makeMap(this);
+			backmap = handler.makeMap(this);
 			tables = new WeightedTable[types.length+1];
 			allTargets = new ArrayList<Target>();
-			for (Object o: backmap.get(0)) {
-				allTargets.add((Target) o);
+			allVariants = new ArrayList<VariantResolver>();
+			for (int i = 0;i < backmap.get(0).size();i++) {
+				allTargets.add((Target)backmap.get(0).get(i));
+				allVariants.add((VariantResolver)backmap.get(1).get(i));
 			}
 			tables[0] = buildTable(allTargets, null);//table of 'all', used for null masks
 			for (int i = 1; i < tables.length-1;i++) {
 				tables[i] = buildTable(allTargets, new TargetType[]{types[i-1]});
 			}
 			List<Target> singles = new ArrayList<Target>();
-			List<Integer> multiNums = new ArrayList<Integer>();
+			multiNums = new ArrayList<Integer>();
 			List<List<Target>> subTargets = new ArrayList<List<Target>>();
 			List<List<Integer>> subVariants = new ArrayList<List<Integer>>();
-			List<Integer> multiCount = new ArrayList<Integer>();
+			multiCount = new ArrayList<Integer>();
 			for (int i = 0; i < allTargets.size();i++) {
 				Target t = allTargets.get(i);
-				if (t.mappingNumber == -1) {
+				if (t.mappingNumber == -1 && t.attachNumber == -1) {
 					singles.add(t);
 				}else {
-					int index = multiNums.indexOf(t.mappingNumber);
-					Integer variNum = (Integer)backmap.get(1).get(i);
+					int special = t.mappingNumber;
+					if (special == 0) {
+						special = -t.attachNumber;
+					}
+					int index = multiNums.indexOf(special);
+					Integer variNum = allVariants.get(i).variant;
 					if (index == -1) {
-						multiNums.add(t.mappingNumber);
+						multiNums.add(special);
 						subTargets.add(new ArrayList<Target>());
 						subVariants.add(new ArrayList<Integer>());
-						multiCount.add(variNum == null ? 1 : 0);//if we don't have variants, set 1
+						multiCount.add(variNum == -1 ? 1 : 0);//if we don't have variants, set 1
 						index = multiNums.size()-1;
-					}
-					
-					if (variNum == null) {
-						variNum = -1;
 					}
 					if (variNum != -1 && !subVariants.get(index).contains(variNum)) {//add all variants
 						multiCount.set(index,multiCount.get(index) + 1);
 					}
 					subTargets.get(index).add(t);
 					subVariants.get(index).add(variNum);
-					
 				}
 			}
 			int offset = singles.size();
 			uniqueParts = offset + multiNums.size();
 			map = new int[allTargets.size()];
+			attached = new int[allTargets.size()];
 			//the maps converts an alltarget number to a condition arr number
 			//the outcome numbers don't matter as long as they're consistent, so we make them here
 			for (int i = 0;i < map.length;i++) {
 				Target t = allTargets.get(i);
 				if (t.mappingNumber == -1) {
 					map[i] = singles.indexOf(t);
-					tRets.add(new TargetReturn(t,-1,map[i],i));
+					tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i));
 				}else {
 					int index = multiNums.indexOf(t.mappingNumber);
 					int subindex;
-					int variant = -99;
+					//int variant;
 					if (t.variants == null) {
 						subindex = 0;
+						//variant = -1;
 					}else {
-						variant = (int) backmap.get(1).get(i);
+						int variant = (int) backmap.get(1).get(i);
 						subindex = subVariants.get(index).indexOf(variant);
 					}
 					//very fancy system to make each variant mappable
-					map[i] = offset + multiSum(multiCount,index) + subindex;
+					map[i] = offset + multiSum(index) + subindex;
 					//offset = singlets
 					//multisum gets all the prior counts of multis taking up space
 					//the last bit gets our value within the current multi
-					if (t.variants != null) {
-						//assert subVariants.get(index).get(subindex) != -1;
-						tRets.add(new TargetReturn(t,variant,map[i],i));
-					}else {
-						tRets.add(new TargetReturn(t,-1,map[i],i));
-					}
+					tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i));
 					//System.err.println(subindex +" " +subVariants.get(index).get(subindex));
 				}
 				
 			}
 		}
 		
+		protected int getSlotByMappingNumber(int mapping,int variant) {
+			int multIndex = multiNums.indexOf(mapping);
+			if (multIndex == -1) {
+				return -1;
+			}
+			int total = multiSum(multiNums.size()-1);
+			return (allTargets.size() - total)+multiSum(multIndex)+variant;
+		}
+		
 		/**
 		 * returns the sum of the ints inside nums up to the array index of upTo
 		 */
-		private static int multiSum(List<Integer> nums,int upTo) {
+		private int multiSum(int upTo) {
 			int total = 0;
 			for (int i = 0; i < upTo;i++) {
-				total+=nums.get(i);
+				total+=multiCount.get(i);
 			}
 			return total;
 		}
@@ -1110,12 +1127,12 @@ public class TargetFactory {
 		//were added later so don't get used when passing arrays around
 		//the arrays work better for certain internal things anyway
 		public class TargetReturn{
-			public final int variant;
+			public final VariantResolver variant;
 			public final Target tar;
 			public final int mapLoc;
 			public final int spot;
 			
-			public TargetReturn(Target tar, int vari, int mapLoc, int spot){
+			public TargetReturn(Target tar, VariantResolver vari, int mapLoc, int spot){
 				this.variant = vari;
 				this.tar = tar;
 				this.mapLoc = mapLoc;
@@ -1123,7 +1140,7 @@ public class TargetFactory {
 			}
 			
 			public String getName() {
-				return (variant >= 0 ? tar.variants[variant] : "" )+ tar.name;
+				return variant.name;//(variant.variant >= 0 ? tar.variants[variant.variant] : "" )+ tar.name;
 			}
 		}
 		
@@ -1160,6 +1177,112 @@ public class TargetFactory {
 	
 	public static Target randTarget(TargetType targetType) {
 		return handler.targetList.get(targetTypeTable.get(targetType).random(extra.getRand()));
+	}
+	
+	public static int totalNeededVariants(TargetType type, int attach) {
+		for (Target subt: TargetFactory.tList()) {
+			if (subt.type == type && subt.mappingNumber == attach) {
+				return (subt.variants != null ? subt.variants.length : 1)
+						* (subt.attachNumber == 0 ? 1 : totalNeededVariants(type,subt.attachNumber));
+			}
+		}
+		throw new RuntimeException("attach part not found");
+	}
+	
+	public static List<Target> neededVariants(TargetType type, int attach) {
+		for (Target subt: TargetFactory.tList()) {
+			if (subt.type == type && subt.mappingNumber == attach) {
+				if (subt.attachNumber == 0) {
+					List<Target> list = new ArrayList<Target>();
+					list.add(subt);
+					return list;
+				}else {
+					List<Target> list = neededVariants(type,subt.attachNumber);
+					list.add(0,subt);//add to base of list
+					return list;
+				}
+			}
+		}
+		throw new RuntimeException("attach part not found");
+	}
+	
+	/**
+	 * constructs an array of targets with variants
+	 * the variants are ints, you must fetch them from the strings
+	 * variants will be null if it's a singlet
+	 * @param typeBody 
+	 * @return the array of parts, Object[2][count] where Target and Integer are sub arrays
+	 */
+	protected List<List<Object>> makeMap(TypeBody typeBody) {
+		List<Object> targets = new ArrayList<Object>();
+		List<Object> variants = new ArrayList<Object>();
+		for (Target t: TargetFactory.tList()) {
+			boolean contains = false;
+			for (TargetType taty: typeBody.types) {
+				if (t.type == taty) {
+					contains = true;
+					break;
+				}
+			}
+			if (!contains) {
+				continue;
+			}
+			
+			if (t.variants == null && t.attachNumber == 0) {
+				targets.add(t);
+				variants.add(new VariantResolver(-1,t.name));
+			}else {
+				int variantNum = (t.variants == null ? 1 : t.variants.length);
+				if (t.attachNumber != 0) {
+					List<Target> list = TargetFactory.neededVariants(t.type, t.attachNumber);
+					list.add(t);
+					int total = variantNum*TargetFactory.totalNeededVariants(t.type,t.attachNumber);
+					for (int i = 0; i < total;i++) {
+						String str = "";
+						int[] vAttaches = new int[list.size()-1];
+						for (int j = 0;j < list.size(); j++) {
+							str += namePermutation(list.get(j),i);
+							vAttaches[j] = (t.variants == null ? -1 : i%t.variants.length);
+						}
+						targets.add(t);
+						variants.add(new VariantResolver(i,str,vAttaches));
+					}
+					
+				}else {
+					int j = 0;
+					for (int i = 0; i < t.variants.length;i++) {
+						targets.add(t);
+						variants.add(new VariantResolver(i,t.variants[i]+ t.name));
+					}
+				}
+			}
+		}
+		List<List<Object>> list = new ArrayList<List<Object>>();
+		list.add(targets);
+		list.add(variants);
+		return list;
+	}
+	public static String namePermutation(Target t,int toMod) {
+		return (t.variants == null ? "" : t.variants[toMod%t.variants.length] +"'s ");
+	}
+	
+	public class VariantResolver{
+		public final int variant;
+		public final String name;
+		//public final int[] attaches;
+		public final int[] vAttaches;
+		public VariantResolver(int variant, String name) {
+			this.variant = variant;
+			this.name = name;
+			//attaches = null;
+			vAttaches = null;
+		}
+		public VariantResolver(int variant, String name, int[] vAttaches) {
+			this.variant = variant;
+			this.name = name;
+			assert vAttaches[vAttaches.length-1] == variant;
+			this.vAttaches = vAttaches;
+		}
 	}
 	
 	
