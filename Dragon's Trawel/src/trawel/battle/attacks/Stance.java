@@ -112,7 +112,7 @@ public class Stance implements java.io.Serializable{
 				break;
 				}
 			}
-			if (doIt){a.add(newAttack.impair(p.getBag().getHand().getLevel(), (defender.targetOverride == null) ? defender.getBag().getRace().targetType : defender.targetOverride,p.getBag().getHand(),p));
+			if (doIt){a.add(newAttack.impair(p.getBag().getHand().getLevel(), defender,p.getBag().getHand(),p));
 			}
 		}
 		return a;

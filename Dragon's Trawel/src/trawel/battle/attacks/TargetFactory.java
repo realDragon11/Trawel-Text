@@ -10,6 +10,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.extra;
+import trawel.battle.Combat.AttackReturn;
 import trawel.personal.Person;
 
 public class TargetFactory {
@@ -881,7 +882,12 @@ public class TargetFactory {
 			toMap(ta);
 		}
 		
-		//setup part 2
+		//new system with variants
+		for (TypeBody tb: TypeBody.values()) {
+			tb.setup();
+		}
+		
+		//DOLATER: this is an old system now, likely will be removed
 		for (TargetType tt: TargetType.values()) {
 			ArrayList<Target> copyList = new ArrayList<Target>();
 			for (Target mat: targetList){
@@ -913,17 +919,23 @@ public class TargetFactory {
 		ALL
 	}
 	
+	public enum BloodType{
+		NORMAL, NONE, VARIES
+	}
+	
 	public enum TypeBody {
-		HUMAN_LIKE(BodyPlan.HUMANOID,TargetType.HUMANOID),
-		BASIC_QUAD(BodyPlan.QUAD,TargetType.QUAD),
-		MIMIC(BodyPlan.NO_VARIANTS_ALL,TargetType.MIMIC,TargetType.OPEN_MIMIC),
-		STATUE(BodyPlan.HUMANOID,TargetType.STATUE),
-		REAVER(BodyPlan.NO_VARIANTS_ALL,TargetType.S_REAVER,TargetType.C_REAVER),//DOLATER needs it's variants
-		BASIC_FLY(BodyPlan.FLY,TargetType.FLY),
-		UNDEAD(BodyPlan.HUMANOID,TargetType.UNDEAD_H);
+		HUMAN_LIKE(BodyPlan.HUMANOID,BloodType.NORMAL,TargetType.HUMANOID),
+		BASIC_QUAD(BodyPlan.QUAD,BloodType.NORMAL,TargetType.QUAD),
+		MIMIC(BodyPlan.NO_VARIANTS_ALL,BloodType.VARIES,TargetType.MIMIC,TargetType.OPEN_MIMIC),
+		STATUE(BodyPlan.HUMANOID,BloodType.NONE,TargetType.STATUE),
+		REAVER(BodyPlan.NO_VARIANTS_ALL,BloodType.NONE,TargetType.S_REAVER,TargetType.C_REAVER),//DOLATER needs it's variants
+		BASIC_FLY(BodyPlan.FLY,BloodType.NORMAL,TargetType.FLY),
+		UNDEAD(BodyPlan.HUMANOID,BloodType.NONE,TargetType.UNDEAD_H);
 		
 		public final BodyPlan plan;
+		private final BloodType blood;
 		public final TargetType[] types;
+		
 		private WeightedTable[] tables;
 		private Object[][] backmap;
 		private int uniqueParts;
@@ -931,6 +943,8 @@ public class TargetFactory {
 		 * contains dupes, the other code handles them being variants
 		 */
 		private List<Target> allTargets;
+		
+		private List<TargetReturn> tRets;
 		/**
 		 * links a type/variant to a final part
 		 * used mostly for mapping to different parts
@@ -938,8 +952,9 @@ public class TargetFactory {
 		 */
 		private int[] map;
 		
-		TypeBody(BodyPlan plan, TargetType... types){
+		TypeBody(BodyPlan plan, BloodType blood, TargetType... types){
 			this.plan = plan;
+			this.blood = blood;
 			this.types = types;
 		}
 		//could use another function to call if needs to have different behavior
@@ -952,7 +967,6 @@ public class TargetFactory {
 				tables[i] = buildTable(allTargets, new TargetType[]{types[i]});
 			}
 			List<Target> singles = new ArrayList<Target>();
-			//Map<Integer,List<Target>> multis = new HashMap<Integer,List<Target>>();
 			List<Integer> multiNums = new ArrayList<Integer>();
 			List<List<Target>> subTargets = new ArrayList<List<Target>>();
 			List<List<Integer>> subVariants = new ArrayList<List<Integer>>();
@@ -961,9 +975,6 @@ public class TargetFactory {
 				if (t.mappingNumber == -1) {
 					singles.add(t);
 				}else {
-					//List<Target> list = multis.getOrDefault(t.mappingNumber, new ArrayList<Target>());
-					//list.add(t);
-					//multis.put(t.mappingNumber, list);
 					int index = multiNums.indexOf(t.mappingNumber);
 					if (index == -1) {
 						multiNums.add(t.mappingNumber);
@@ -992,17 +1003,24 @@ public class TargetFactory {
 				Target t = allTargets.get(i);
 				if (t.mappingNumber == -1) {
 					map[i] = singles.indexOf(t);
+					tRets.add(new TargetReturn(t,-1,map[i],i));
 				}else {
 					int index = multiNums.indexOf(t.mappingNumber);
+					int subindex = subTargets.get(index).indexOf(t);
 					//very fancy system to make each variant mappable
-					map[i] = offset + multiSum(multiCount,index) + subTargets.get(index).indexOf(t);
+					map[i] = offset + multiSum(multiCount,index) + subindex;
 					//offset = singlets
 					//multisum gets all the prior counts of multis taking up space
 					//the last bit gets our value within the current multi
+					tRets.add(new TargetReturn(t,subVariants.get(index).get(subindex),map[i],i));
 				}
+				
 			}
 		}
 		
+		/**
+		 * returns the sum of the ints inside nums up to the array index of upTo
+		 */
 		private static int multiSum(int[] nums,int upTo) {
 			int total = 0;
 			for (int i = 0; i < upTo;i++) {
@@ -1015,34 +1033,54 @@ public class TargetFactory {
 			return uniqueParts;
 		}
 		
-		public Target getTarget(int spot) {
-			return allTargets.get(map[spot]);
+		//were added later so don't get used when passing arrays around
+		//the arrays work better for certain internal things anyway
+		public class TargetReturn{
+			public final int variant;
+			public final Target tar;
+			public final int mapLoc;
+			public final int spot;
+			
+			public TargetReturn(Target tar, int vari, int mapLoc, int spot){
+				this.variant = vari;
+				this.tar = tar;
+				this.mapLoc = mapLoc;
+				this.spot = spot;
+			}
+			
+			public String getName() {
+				return (variant >= 0 ? tar.variants[variant] : "" )+ tar.name;
+			}
 		}
 		
 		/**
-		 * returns the map spot of a target
-		 * use getPartName, getTarget and getStatus on this number
+		 * changed
 		 */
-		public int randTarget(TargetType config) {
+		public TargetReturn randTarget(TargetType config) {
 			int val;
 			if (config == null) {
-				return tables[0].random(extra.getRand());//0 is the global table
+				return tRets.get(tables[0].random(extra.getRand()));//0 is the global table
 			}
 			for (val = types.length-1; val >= 0;val--) {
 				if (config == types[val]) {
 					break;//we found what list we're in, it's stored now
 				}
 			}
-			return tables[val+1].random(extra.getRand());//0 is the global table, so offset
+			return tRets.get(tables[val+1].random(extra.getRand()));//0 is the global table, so offset
 		}
 		
-		public String spotName(int i) {
-			Target t = getTarget(i);
-			return t.variants[((int)backmap[1][i])] + t.name;
+		public String spotName(int spot) {
+			return tRets.get(spot).getName();
 		}
 		
 		public int getMap(int spot) {
-			return map[spot];
+			return tRets.get(spot).mapLoc;
+		}
+		public TargetReturn getTargetReturn(int spot) {
+			return tRets.get(spot);
+		}
+		public BloodType getBlood() {
+			return blood;
 		}
 	}
 	
@@ -1050,18 +1088,15 @@ public class TargetFactory {
 		return targetList.get(targetTypeTable.get(targetType).random(extra.getRand()));
 	}
 	
-	public static Target randTarget(Person p) {
-		TargetHolder hold = p.getBody();
-		return null;
-	}
 	
+	/*
 	public static TargetHolder battleSetup(Person p) {
 		TargetHolder hold = new TargetHolder(p.getBodyType());
 		
 		p.setBody(hold);
 		
 		return hold;
-	}
+	}*/
 	
 
 	/**

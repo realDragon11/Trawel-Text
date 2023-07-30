@@ -814,7 +814,7 @@ public class RaceFactory {
 			w.getBag().getDrawBanes().add(DrawBane.CEON_STONE);
 		}
 		extra.popPrintStack();
-		w.targetOverride = TargetFactory.TargetType.STATUE;
+		//w.targetOverride = TargetFactory.TargetType.STATUE;
 		w.hTask = HostileTask.GUARD_DUNGEON;
 		return w;
 	}
@@ -857,13 +857,13 @@ public class RaceFactory {
 	
 	public static Person makeVampire(int level) {
 		extra.offPrintStack();
-		Person w = new Person(level,true, Race.RaceType.HUMANOID,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
+		Person w = new Person(level,true, Race.RaceType.HUMANOID,MaterialFactory.getMat("flesh"),Person.RaceFlag.UNDEAD,false);
 		w.setScar(biteFor(w.getBag().getRace().raceID()));
 		if (extra.chanceIn(1,20)) {
 			w.getBag().getDrawBanes().add(DrawBane.BLOOD);
 		}
 		extra.popPrintStack();
-		w.targetOverride = TargetFactory.TargetType.UNDEAD_H;
+		//w.targetOverride = TargetFactory.TargetType.UNDEAD_H;
 		w.hTask = HostileTask.MONSTER;
 		return w;
 	}

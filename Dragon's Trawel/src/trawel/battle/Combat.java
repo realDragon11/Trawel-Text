@@ -13,6 +13,7 @@ import trawel.mainGame;
 import trawel.randomLists;
 import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.TargetFactory;
+import trawel.battle.attacks.TargetFactory.BloodType;
 import trawel.battle.attacks.Attack.Wound;
 import trawel.factions.FBox;
 import trawel.personal.Person;
@@ -654,7 +655,7 @@ public class Combat {
 			}
 			//blood
 			
-			if (defender.getBag().getRace().emitsBlood == true && ( defender.targetOverride != TargetFactory.TargetType.STATUE && defender.targetOverride != TargetFactory.TargetType.UNDEAD_H )) {
+			if (defender.getBlood() == BloodType.NORMAL) {
 				
 				attacker.getBag().getHand().addBlood(percent*5);
 				defender.getBag().getArmorSlot(attacker.getNextAttack().getSlot()).addBlood(percent*2f);

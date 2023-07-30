@@ -6,6 +6,7 @@ import java.util.List;
 import trawel.extra;
 import trawel.battle.attacks.TargetFactory.TargetType;
 import trawel.battle.attacks.TargetFactory.TypeBody;
+import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 
 public class TargetHolder {
 	/**
@@ -81,8 +82,9 @@ public class TargetHolder {
 	public String getPartName(int spot) {
 		return plan.spotName(spot);
 	}
-	public Target getTarget(int spot) {
-		return plan.getTarget(spot);
+	
+	public TargetReturn getTargetReturn(int spot) {
+		return plan.getTargetReturn(spot);
 	}
 	
 	public double multStatus(int spot, double mult) {
@@ -117,7 +119,7 @@ public class TargetHolder {
 	 * returns the map spot of a target
 	 * use getPartName, getTarget and getStatus on this number
 	 */
-	public int randTarget() {
+	public TargetReturn randTarget() {
 		return plan.randTarget(config);
 	}
 

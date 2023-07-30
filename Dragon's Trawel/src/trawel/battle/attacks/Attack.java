@@ -5,6 +5,7 @@ import org.nustaq.serialization.annotations.OneOf;
 import trawel.Effect;
 import trawel.extra;
 import trawel.battle.Combat;
+import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 import trawel.personal.Person;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.solid.Weapon;
@@ -26,7 +27,7 @@ public class Attack{
 	private double hitMod, speed;
 	private int sharp, blunt, pierce;
 	private String desc, name;
-	private transient Target target;
+	private transient TargetReturn target;
 	public transient Person defender;//only used for mass battles
 	private transient boolean isMagic = false;
 	private transient String magicDesc;
@@ -59,7 +60,7 @@ public class Attack{
 		this.soundType = stype;
 	}
 	
-	public Attack(String name, double hitmod, double speed, double sharp, double blunt, double pierce, String desc,int sstr,String stype, Target target, Weapon weap) {
+	public Attack(String name, double hitmod, double speed, double sharp, double blunt, double pierce, String desc,int sstr,String stype, TargetReturn target, Weapon weap) {
 		this.hitMod = hitmod;
 		this.speed = speed;
 		this.sharp = (int)sharp;
@@ -80,20 +81,20 @@ public class Attack{
 		double counter = extra.getRand().nextDouble() * (sharp + blunt + pierce);
 		counter-=sharp;
 		if (counter<=0) {
-			this.wound = extra.randList(target.slashWounds);
+			this.wound = extra.randList(target.tar.slashWounds);
 		}else {
 			counter-=blunt;
 			if (counter<=0) {
-				this.wound = extra.randList(target.bluntWounds);
+				this.wound = extra.randList(target.tar.bluntWounds);
 			}else {
-				this.wound = extra.randList(target.pierceWounds);
+				this.wound = extra.randList(target.tar.pierceWounds);
 			}
 		}
 		}}catch (RuntimeException e) {
 			this.wound = Wound.ERROR;
 		}
 	}
-	
+	//FIXME entirely nonfunctional at this point, just remake the whole system
 	public Attack(Skill skill, int mageLevel, TargetFactory.TargetType targetType) {
 		//name
 		//magicDesc;
@@ -108,7 +109,7 @@ public class Attack{
 		double pow = extra.hrandom()*Math.log(mageLevel);
 		if (skill == Skill.ELEMENTAL_MAGE) {
 			speed = 100+extra.randRange(0,20)-10;
-			target = TargetFactory.randTarget(targetType);
+			target = null;//TargetFactory.randTarget(targetType);
 			switch (extra.randRange(1,3)) {
 			case 1: 
 				name = extra.choose("sear","flame blast","searing shot","fireball");
@@ -137,7 +138,7 @@ public class Attack{
 		}
 		if (skill == Skill.DEATH_MAGE) {
 			speed = 60+extra.randRange(0,20)-10;
-			target = TargetFactory.randTarget(targetType);
+			target = null;//TargetFactory.randTarget(targetType);
 			soundType = "wither";
 			switch (extra.randRange(1,3)) {
 			case 1:
@@ -162,7 +163,7 @@ public class Attack{
 		
 		if (skill == Skill.ARMOR_MAGE) {
 			speed = 50+extra.randRange(0,20)-10;
-			target = TargetFactory.randTarget(targetType);
+			target = null;//TargetFactory.randTarget(targetType);
 			name = extra.choose("repair","armorweave");
 			desc = "X` casts "+name+"!";
 			sharp = (int)((pow*.4)*100);
@@ -171,7 +172,7 @@ public class Attack{
 		}
 		if (skill == Skill.ILLUSION_MAGE) {
 			speed = 60+extra.randRange(0,20)-10;
-			target = TargetFactory.randTarget(targetType);
+			target = null;//TargetFactory.randTarget(targetType);
 			name = extra.choose("befuddle","confuse");
 			desc = "X` casts "+name+"!";
 			magicDesc = "";
@@ -179,7 +180,7 @@ public class Attack{
 		}
 		if (skill == Skill.EXECUTE_ATTACK) {
 			speed = 100+extra.randRange(0,20)-10;
-			target = TargetFactory.randTarget(targetType);
+			target = null;//TargetFactory.randTarget(targetType);
 			name = "execute";
 			desc = "X` attempts to "+name+" Y`!";
 			magicDesc = "";
@@ -190,7 +191,7 @@ public class Attack{
 		}
 		if (skill == Skill.DRUNK_DRINK) {
 			speed = 120+extra.randRange(0,40)-20;
-			target = TargetFactory.randTarget(targetType);
+			target = null;//TargetFactory.randTarget(targetType);
 			name = "drink";
 			desc = "X` drinks from a flagon!";
 			magicDesc = "+" + mageLevel + " hp";
@@ -198,7 +199,7 @@ public class Attack{
 		}
 		if (skill == Skill.MARK_ATTACK) {
 			speed = 80+extra.randRange(0,40)-20;
-			target = TargetFactory.randTarget(targetType);
+			target = null;//TargetFactory.randTarget(targetType);
 			name = "mark";
 			desc = "X` marks Y`!";
 			magicDesc = "";
@@ -206,7 +207,7 @@ public class Attack{
 		
 		if (skill == Skill.BLOOD_SURGE) {
 			speed = 100+extra.randRange(0,40)-20;
-			target = TargetFactory.randTarget(targetType);
+			target = null;//TargetFactory.randTarget(targetType);
 			name = "blood surge";
 			desc = "X` regenerates!";
 			magicDesc = "";
@@ -214,7 +215,7 @@ public class Attack{
 		
 		if (skill == Skill.BLOOD_HARVEST) {
 			speed = 140+extra.randRange(0,40)-20;
-			target = TargetFactory.randTarget(targetType);
+			target = null;//TargetFactory.randTarget(targetType);
 			name = "blood harvest";
 			desc = "X` harvests Y`!";
 			magicDesc = "";
@@ -272,14 +273,7 @@ public class Attack{
 	public String attackStringer(String X, String Y, String Z) {
 		String tempStr = desc;
 		tempStr = tempStr.replace("X`",X);
-		
-		if (target == null) {
-			target = TargetFactory.noTarget;
-			//System.err.println("error1");
-			// ~~figure out why this is happening and fix it, for now, a simple fix~~
-			//probably happens because of HD and such
-		}
-		tempStr = tempStr.replace("Y`",Y + "'s " + target.name);
+		tempStr = tempStr.replace("Y`",Y + "'s " + (target != null ? target.tar.name : "!!"));
 		tempStr = tempStr.replace("Z`",Z+"[*]");//technically if you were to look upwards you could find the weapon, but I'm gonna put it in this way
 		return tempStr;
 	}
@@ -344,8 +338,15 @@ public class Attack{
 		}
 	}
 	
-	public Attack impair(int handLevel, TargetFactory.TargetType targetType,Weapon weap, Person p) {
-		Target t = TargetFactory.randTarget(targetType);
+	public Attack impair(int handLevel, Person defender,Weapon weap, Person p) {
+		TargetReturn rtar;
+		if (defender == null) {
+			rtar = TargetFactory.TypeBody.HUMAN_LIKE.randTarget(null);//empty config
+		}else {
+			rtar = defender.randTarget();
+		}
+		Target t = rtar.tar;
+		
 		Style s = StyleFactory.randStyle();
 		if (!name.contains("examine")) {
 			double sMult = s.damage*t.sharp;
@@ -376,7 +377,7 @@ public class Attack{
 				handLevel*sharp*extra.upDamCurve(.25,.5)*sMult,
 				handLevel*blunt*extra.upDamCurve(.25,.5)*bMult,
 				handLevel*pierce*extra.upDamCurve(.25,.5)*pMult,
-				desc,soundStrength,soundType,t,weap);
+				desc,soundStrength,soundType,rtar,weap);
 		}else {
 			return this;
 		}
@@ -388,7 +389,7 @@ public class Attack{
 	}
 	
 	public int getSlot() {
-		return target.slot;
+		return target.tar.slot;
 	}
 
 	public boolean isMagic() {

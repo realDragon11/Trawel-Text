@@ -17,7 +17,10 @@ import trawel.battle.BarkManager;
 import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.Stance;
 import trawel.battle.attacks.TargetFactory;
+import trawel.battle.attacks.TargetFactory.BloodType;
+import trawel.battle.attacks.TargetFactory.TargetType;
 import trawel.battle.attacks.TargetFactory.TypeBody;
+import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 import trawel.battle.attacks.TargetHolder;
 import trawel.earts.EAType;
 import trawel.earts.EArt;
@@ -75,12 +78,14 @@ public class Person implements java.io.Serializable{
 	private List<Effect> effects;
 	private RaceFlag rFlag;
 
-	public TargetFactory.TargetType targetOverride = null;//DOLATER swap over
+	private TargetFactory.TargetType targetOverride = null;//DOLATER swap over
 	
 	//need to make either this or raceflag not a thing
 	//if removing this, raceflag needs to override
 	//if removing raceflag, idk
-	public TypeBody bodyType;
+	private TypeBody bodyType;
+	//bodystatus should be entirely internal, use own hp values and stuff to display externally
+	private transient TargetHolder bodystatus;
 	
 	public Weapon backupWeapon = null;
 	
@@ -104,7 +109,7 @@ public class Person implements java.io.Serializable{
 		COWARDLY,FEARLESS,GRIZZLED,DEATHCHEATED,LIFEKEEPER
 	}
 	
-	private transient TargetHolder body;
+	
 	//private boolean isPlayer;
 	
 	//Constructor
@@ -223,6 +228,27 @@ public class Person implements java.io.Serializable{
 		return rFlag;
 	}
 	
+	public TargetReturn randTarget() {
+		return bodystatus.randTarget();
+	}
+	
+	public BloodType getBlood() {
+		BloodType temp = bodyType.getBlood();
+		if (temp == BloodType.VARIES) {
+			switch (targetOverride) {
+			case C_REAVER:
+				break;
+			case MIMIC:
+				return BloodType.NONE;
+			case OPEN_MIMIC:
+				return BloodType.NORMAL;
+			case S_REAVER:
+				break;
+			}
+		}
+		return temp;
+	}
+	
 	/**
 	 * Returns the references to the inventory associated with this person.
 	 * @return the bag (Inventory)
@@ -303,6 +329,7 @@ public class Person implements java.io.Serializable{
 			Player.player.doSip();
 			isPlay = true;
 		}
+		bodystatus = new TargetHolder(bodyType);
 		speedFill = 0;
 		tempMaxHp = getOOB_HP();
 		hp = tempMaxHp;
@@ -1230,14 +1257,6 @@ public class Person implements java.io.Serializable{
 
 	public double getSpeed() {
 		return getBag().getSpeed() + (hasEffect(Effect.HASTE) ? 0.1 : 0 );
-	}
-
-	public TargetHolder getBody() {
-		return body;
-	}
-
-	public void setBody(TargetHolder body) {
-		this.body = body;
 	}
 
 	public TypeBody getBodyType() {
