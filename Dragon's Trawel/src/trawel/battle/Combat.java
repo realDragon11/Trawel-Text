@@ -646,7 +646,8 @@ public class Combat {
 		AttackReturn atr = this.handleAttack(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
 		ret = atr;
 		int damageDone = atr.damage;
-		extra.println(damageDone + " " + defender.getHp()+"/"+defender.getMaxHp());//FIXME: probably turn damage responses into a better thing
+		defender.debug_print_status(damageDone);
+		//extra.println(damageDone + " " + defender.getHp()+"/"+defender.getMaxHp());//FIXME: probably turn damage responses into a better thing
 		String inlined_color = extra.PRE_WHITE;
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender,damageDone);
 		//armor quality handling

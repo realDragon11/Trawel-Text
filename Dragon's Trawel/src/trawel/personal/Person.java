@@ -1275,4 +1275,12 @@ public class Person implements java.io.Serializable{
 		
 	}
 
+	public void debug_print_status(int damageDone) {
+		if (extra.getPrint()) {
+			return;
+		}
+		extra.println(getHp() +" ("+damageDone+")->"+ (getHp()-damageDone) + "/" + getMaxHp());
+		bodystatus.debug_print(true);
+	}
+
 }

@@ -22,7 +22,6 @@ import trawel.personal.people.Skill;
  */
 public class Attack{
 
-	private static final long serialVersionUID = 1L;
 	//instance variables
 	private double hitMod, speed;
 	private int sharp, blunt, pierce;

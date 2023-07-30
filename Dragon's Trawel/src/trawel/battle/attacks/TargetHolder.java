@@ -40,9 +40,6 @@ public class TargetHolder {
 	 * @return the array of parts, Object[2][count] where Target and Integer are sub arrays
 	 */
 	protected static List<List<Object>> makeMap(TypeBody typeBody) {
-		if (typeBody == TypeBody.MIMIC) {
-			boolean debug = true;
-		}
 		List<Object> targets = new ArrayList<Object>();
 		List<Object> variants = new ArrayList<Object>();
 		for (Target t: TargetFactory.tList()) {
@@ -128,6 +125,21 @@ public class TargetHolder {
 	 */
 	public TargetReturn randTarget() {
 		return plan.randTarget(config);
+	}
+	public void debug_print(boolean full) {
+		if (full) {
+			extra.print("   ");
+			for (int i = 0; i < plan.getTotalParts();i++) {
+				extra.print(getPartName(i) + ": " + plan.getMap(i) + "-" + getStatus(i) + " ");
+			}
+			extra.println();
+		}
+		extra.print("   ");
+		for (int i = 0; i < condition.length;i++) {
+			extra.print(condition[i]+" ");
+		}
+		extra.println();
+		
 	}
 
 }

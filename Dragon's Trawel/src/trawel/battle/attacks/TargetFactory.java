@@ -1,18 +1,13 @@
 package trawel.battle.attacks;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-
 import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.extra;
-import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.Attack.Wound;
-import trawel.personal.Person;
 
 public class TargetFactory {
 
@@ -159,7 +154,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "eye";
-		t.variants = new String[] {"right ","left "};
+		//t.variants = new String[] {"right ","left "};//FIXME: having variants and non variants in the same slot obviously doesn't work rn
 		t.hit = .1;
 		t.sharp = 5;
 		t.blunt = 3;
@@ -936,6 +931,7 @@ public class TargetFactory {
 		for (TypeBody tb: TypeBody.values()) {
 			try {
 				tb.setup();
+				tb.toString();
 			}catch (Exception e) {
 				System.out.println("error with " +tb.name());
 				e.printStackTrace();
@@ -1005,7 +1001,10 @@ public class TargetFactory {
 		 * used mostly for mapping to different parts
 		 * otherwise will just be counting from 0 to size-1
 		 */
-		private int[] map;
+		private int[] map;//FIXME: do an int[][] where the first one is the actual map
+		//and the others are linked maps
+		//should probably compute chains at compile time to avoid recursion issues
+		//but in such a case the mapping would be useless and should be reduced anyway?
 		
 		TypeBody(BodyPlan plan, BloodType blood, TargetType... types){
 			this.plan = plan;
@@ -1029,32 +1028,35 @@ public class TargetFactory {
 			List<Integer> multiNums = new ArrayList<Integer>();
 			List<List<Target>> subTargets = new ArrayList<List<Target>>();
 			List<List<Integer>> subVariants = new ArrayList<List<Integer>>();
+			List<Integer> multiCount = new ArrayList<Integer>();
 			for (int i = 0; i < allTargets.size();i++) {
 				Target t = allTargets.get(i);
 				if (t.mappingNumber == -1) {
 					singles.add(t);
 				}else {
 					int index = multiNums.indexOf(t.mappingNumber);
+					Integer variNum = (Integer)backmap.get(1).get(i);
 					if (index == -1) {
 						multiNums.add(t.mappingNumber);
 						subTargets.add(new ArrayList<Target>());
 						subVariants.add(new ArrayList<Integer>());
+						multiCount.add(variNum == null ? 1 : 0);//if we don't have variants, set 1
 						index = multiNums.size()-1;
 					}
+					
+					if (variNum == null) {
+						variNum = -1;
+					}
+					if (variNum != -1 && !subVariants.get(index).contains(variNum)) {//add all variants
+						multiCount.set(index,multiCount.get(index) + 1);
+					}
 					subTargets.get(index).add(t);
-					subVariants.get(index).add((Integer)backmap.get(1).get(i));
+					subVariants.get(index).add(variNum);
+					
 				}
 			}
-			int[] multiCount = new int[multiNums.size()];//the number of different variants in the mapping
-			for (int i = 0; i < multiNums.size();i++) {
-				multiCount[i] = (int) subVariants.get(i).stream().distinct().count();
-			}
 			int offset = singles.size();
-			int totalMulti = 0;
-			for (int i = 0; i < multiCount.length;i++) {
-				totalMulti += multiCount[i];
-			}
-			uniqueParts = offset + totalMulti;
+			uniqueParts = offset + multiNums.size();
 			map = new int[allTargets.size()];
 			//the maps converts an alltarget number to a condition arr number
 			//the outcome numbers don't matter as long as they're consistent, so we make them here
@@ -1065,14 +1067,22 @@ public class TargetFactory {
 					tRets.add(new TargetReturn(t,-1,map[i],i));
 				}else {
 					int index = multiNums.indexOf(t.mappingNumber);
-					int subindex = subTargets.get(index).indexOf(t);
+					int subindex;
+					int variant = -99;
+					if (t.variants == null) {
+						subindex = 0;
+					}else {
+						variant = (int) backmap.get(1).get(i);
+						subindex = subVariants.get(index).indexOf(variant);
+					}
 					//very fancy system to make each variant mappable
 					map[i] = offset + multiSum(multiCount,index) + subindex;
 					//offset = singlets
 					//multisum gets all the prior counts of multis taking up space
 					//the last bit gets our value within the current multi
 					if (t.variants != null) {
-						tRets.add(new TargetReturn(t,subVariants.get(index).get(subindex),map[i],i));
+						//assert subVariants.get(index).get(subindex) != -1;
+						tRets.add(new TargetReturn(t,variant,map[i],i));
 					}else {
 						tRets.add(new TargetReturn(t,-1,map[i],i));
 					}
@@ -1085,10 +1095,10 @@ public class TargetFactory {
 		/**
 		 * returns the sum of the ints inside nums up to the array index of upTo
 		 */
-		private static int multiSum(int[] nums,int upTo) {
+		private static int multiSum(List<Integer> nums,int upTo) {
 			int total = 0;
 			for (int i = 0; i < upTo;i++) {
-				total+=nums[i];
+				total+=nums.get(i);
 			}
 			return total;
 		}
