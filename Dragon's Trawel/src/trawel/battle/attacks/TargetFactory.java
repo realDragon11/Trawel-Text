@@ -1,5 +1,6 @@
 package trawel.battle.attacks;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -923,8 +924,16 @@ public class TargetFactory {
 		
 		public final BodyPlan plan;
 		public final TargetType[] types;
-		public WeightedTable[] tables;
-		public Object[][] map;
+		private WeightedTable[] tables;
+		private Object[][] backmap;
+		private int uniqueParts;
+		private List<Target> allTargets;
+		/**
+		 * links a type/variant to a final part
+		 * used mostly for mapping to different parts
+		 * otherwise will just be counting from 0 to size-1
+		 */
+		private int[] map;
 		
 		TypeBody(BodyPlan plan, TargetType... types){
 			this.plan = plan;
@@ -932,12 +941,68 @@ public class TargetFactory {
 		}
 		//could use another function to call if needs to have different behavior
 		public void setup() {
-			map = TargetHolder.makeMap(this);
+			backmap = TargetHolder.makeMap(this);
 			tables = new WeightedTable[types.length+1];
-			tables[0] = buildTable((Target[]) map[0], null);//table of 'all', used for null masks
+			allTargets = Arrays.asList((Target[]) backmap[0]);
+			tables[0] = buildTable(allTargets, null);//table of 'all', used for null masks
 			for (int i = 1; i < tables.length-1;i++) {
-				tables[i] = buildTable((Target[]) map[0], new TargetType[]{types[i]});
+				tables[i] = buildTable(allTargets, new TargetType[]{types[i]});
 			}
+			List<Target> singles = new ArrayList<Target>();
+			Map<Integer,List<Target>> multis = new HashMap<Integer,List<Target>>();
+			for (Target t: allTargets) {
+				if (t.mappingNumber == -1) {
+					singles.add(t);
+				}else {
+					List<Target> list = multis.getOrDefault(t.mappingNumber, new ArrayList<Target>());
+					list.add(t);
+					multis.put(t.mappingNumber, list);
+				}
+			}
+			uniqueParts = singles.size() + multis.size();
+			map = new int[allTargets.size()];
+			for (int i = 0;i < map.length;i++) {
+				Target t = allTargets.get(i);
+				if (t.mappingNumber == -1) {
+					map[i] = singles.indexOf(t);
+				}else {
+					//FIXME
+				}
+			}
+		}
+		
+		public int getTotalParts() {
+			return uniqueParts;
+		}
+		
+		public Target getTarget(int spot) {
+			return allTargets.get(map[spot]);
+		}
+		
+		/**
+		 * returns the map spot of a target
+		 * use getPartName, getTarget and getStatus on this number
+		 */
+		public int randTarget(TargetType config) {
+			int val;
+			if (config == null) {
+				return tables[0].random(extra.getRand());//0 is the global table
+			}
+			for (val = types.length-1; val >= 0;val--) {
+				if (config == types[val]) {
+					break;//we found what list we're in, it's stored now
+				}
+			}
+			return tables[val+1].random(extra.getRand());//0 is the global table, so offset
+		}
+		
+		public String spotName(int i) {
+			Target t = getTarget(i);
+			return t.variants[((int)backmap[1][i])] + t.name;
+		}
+		
+		public int getMap(int spot) {
+			return map[spot];
 		}
 	}
 	
@@ -964,17 +1029,17 @@ public class TargetFactory {
 	 * use masks if a mode doesn't expose all the current targets
 	 * @param masks used to filter out all other types if non-null
 	 */
-	protected static WeightedTable buildTable(Target[] targets, TargetType[] masks) {
-		float[] weights = new float[targets.length];
+	protected static WeightedTable buildTable(List<Target> targets, TargetType[] masks) {
+		float[] weights = new float[targets.size()];
 		Map<Target,Integer> counts = new HashMap<Target,Integer>();
 		//hashmap is needless overkill but idk if the tree thing is better
 		for (Target t: targets) {
 			counts.put(t,counts.getOrDefault(t, 0)+1);
 		}
-		for (int i = 0; i < targets.length; i++) {
+		for (int i = 0; i < targets.size(); i++) {
 			if (masks != null) {
 				boolean contains = false;
-				TargetType ty = targets[i].type;
+				TargetType ty = targets.get(i).type;
 				for (TargetType tyin: masks) {
 					if (ty == tyin) {
 						contains = true;
@@ -985,7 +1050,7 @@ public class TargetFactory {
 					continue;
 				}
 			}
-			weights[i] = (float) (targets[i].rarity/counts.get(targets[i]));
+			weights[i] = (float) (targets.get(i).rarity/counts.get(targets.get(i)));
 		}
 		return new WeightedTable(weights);
 	}
