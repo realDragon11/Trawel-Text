@@ -273,7 +273,7 @@ public class Attack{
 	public String attackStringer(String X, String Y, String Z) {
 		String tempStr = desc;
 		tempStr = tempStr.replace("X`",X);
-		tempStr = tempStr.replace("Y`",Y + "'s " + (target != null ? target.tar.name : "!!"));
+		tempStr = tempStr.replace("Y`",Y + "'s " + (target != null ? target.getName() : "!!"));
 		tempStr = tempStr.replace("Z`",Z+"[*]");//technically if you were to look upwards you could find the weapon, but I'm gonna put it in this way
 		return tempStr;
 	}
@@ -371,7 +371,7 @@ public class Attack{
 					speedMult*=.9;//WET
 				}
 			}
-		return new Attack(s.name + name + " " + t.name,
+		return new Attack(s.name + name + " " + rtar.getName(),
 				hitMod*hitMult,
 				Math.max((speed*speedMult)+speedMod,15),
 				handLevel*sharp*extra.upDamCurve(.25,.5)*sMult,

@@ -253,28 +253,33 @@ public class Combat {
 				}
 				p.battleSetup();
 				totalList.add(p);
-			Person otherperson = null;
-			while (otherperson == null) {
-				int rand = extra.randRange(0,size-1);
-				List<Person> otherpeople = liveLists.get(rand);
-				if (otherpeople.contains(p) || otherpeople.size() == 0) {
-					continue;
+			}
+		}
+		for (List<Person> peoples: liveLists) {//attack set start code now in new loop
+			//DOLATER: make that something DRY and not WET
+			for (Person p: peoples) {
+				Person otherperson = null;
+				while (otherperson == null) {
+					int rand = extra.randRange(0,size-1);
+					List<Person> otherpeople = liveLists.get(rand);
+					if (otherpeople.contains(p) || otherpeople.size() == 0) {
+						continue;//FIXME: one of the few possible hanging sources in the game
+					}
+					otherperson = extra.randList(otherpeople);
 				}
-				otherperson = extra.randList(otherpeople);
-			}
-			if (p.isPlayer()) {
-				otherperson.displayStatsShort();
-				p.getBag().graphicalDisplay(-1,p);
-				otherperson.getBag().graphicalDisplay(1,otherperson);
-			}
-			setAttack(p,otherperson);
-			p.getNextAttack().defender = otherperson;
+				if (p.isPlayer()) {
+					otherperson.displayStatsShort();
+					p.getBag().graphicalDisplay(-1,p);
+					otherperson.getBag().graphicalDisplay(1,otherperson);
+				}
+				setAttack(p,otherperson);
+				p.getNextAttack().defender = otherperson;
 			}
 		}
 		totalFighters = totalList.size();
 		Person quickest= null;//moved out so we can have a default last actor to default as alive
 		while(true) {
-			
+
 			double lowestDelay = Double.MAX_VALUE;
 			for (Person p: totalList) {
 				if (lowestDelay > p.getTime()) {

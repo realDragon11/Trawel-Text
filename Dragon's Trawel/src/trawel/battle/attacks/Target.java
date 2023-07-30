@@ -26,7 +26,7 @@ public class Target{
 	/**
 	 * for mapped parts, variants must be in same order
 	 */
-	public String[] variants = new String[0];
+	public String[] variants = null;
 	//used for 'left' and 'right' arms- they should be mechanically the same
 	//that doesn't mean you can't have an 'arm' mechanic, just that either arm should always count
 }

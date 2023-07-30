@@ -39,10 +39,13 @@ public class TargetHolder {
 	 * @param typeBody 
 	 * @return the array of parts, Object[2][count] where Target and Integer are sub arrays
 	 */
-	protected static Object[][] makeMap(TypeBody typeBody) {
-		List<Target> targets = new ArrayList<Target>();
-		List<Integer> variants = new ArrayList<Integer>();
-		for (Target t: TargetFactory.targetList) {
+	protected static List<List<Object>> makeMap(TypeBody typeBody) {
+		if (typeBody == TypeBody.MIMIC) {
+			boolean debug = true;
+		}
+		List<Object> targets = new ArrayList<Object>();
+		List<Object> variants = new ArrayList<Object>();
+		for (Target t: TargetFactory.tList()) {
 			boolean contains = false;
 			for (TargetType taty: typeBody.types) {
 				if (t.type == taty) {
@@ -64,12 +67,16 @@ public class TargetHolder {
 				}
 			}
 		}
+		/*
 		Object[][] ret = new Object[2][targets.size()];
 		for (int i = targets.size()-1;i >=0;i--) {//we don't care about order
 			ret[0][i] = targets.get(i);
 			ret[1][i] = variants.get(i);
-		}
-		return ret;
+		}*/
+		List<List<Object>> list = new ArrayList<List<Object>>();
+		list.add(targets);
+		list.add(variants);
+		return list;
 	}
 	
 	/**
