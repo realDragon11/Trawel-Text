@@ -829,16 +829,16 @@ public class Combat {
 			}
 		}
 		if (defender.hasSkill(Skill.FELL_REAVER)) {
-			defender.backupWeapon = defender.getBag().swapWeapon(defender.backupWeapon);
+			//defender.backupWeapon = defender.getBag().swapWeapon(defender.backupWeapon);
 			switch (defender.getBag().getRaceID()) {
 			case B_REAVER_TALL:
 				defender.getBag().setRace(RaceID.B_REAVER_SHORT);
-				
 				break;
 			case B_REAVER_SHORT:
 				defender.getBag().setRace(RaceID.B_REAVER_TALL);
 				break;
 			}
+			defender.updateRaceWeapon();
 		}
 		//TODO: bleedout death quotes
 		boolean bMary = (defender.hasEffect(Effect.B_MARY));

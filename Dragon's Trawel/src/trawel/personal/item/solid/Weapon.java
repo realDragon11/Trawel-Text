@@ -39,13 +39,13 @@ public class Weapon extends Item {
 	
 	private Enchant enchant;
 
-	private String weapName;
+	private String weapName;//TODO: make this an enum or byte or something
 	private int material;
-	private int cost;
+	private int cost;//probably also remove cost and weight like I did for armor
 	private int weight;
 
 	private int kills;
-	private float highDam, avgDam, bScore;
+	private float highDam, avgDam, bScore;//these don't need to update for internal weapons
 	
 	public List<WeaponQual> qualList = new ArrayList<WeaponQual>();
 	
@@ -181,8 +181,10 @@ public class Weapon extends Item {
 				enchant = new EnchantHit(getEnchantMult());
 			}
 		}
+		if (materia != MaterialFactory.getMat("bone")) {
+			refreshBattleScore();//TODO: make a better way to realize we're not gonna need battlescore
+		}
 		
-		refreshBattleScore();
 	}
 	
 	public Weapon(int newLevel) {
@@ -194,7 +196,6 @@ public class Weapon extends Item {
 	
 	/***
 	 * used for testing
-	 * 
 	 */
 	public Weapon(boolean useSquid) {
 		this(1,MaterialFactory.randWeapMat(),extra.choose("longsword","broadsword","mace","spear","axe","rapier","dagger",extra.choose("claymore","lance","shovel")));
@@ -596,6 +597,11 @@ public class Weapon extends Item {
 		return added;
 	}
 	
+
+	public void transmuteWeapType(String string) {
+		weapName = string;//DOLATER conver to enum
+	}
+	
 	public static final String[] weaponTypes = new String[]{"longsword","broadsword","mace","spear","axe","rapier","dagger","claymore","lance","shovel"};
 	
 	public static void rarityMetrics() throws FileNotFoundException {
@@ -720,5 +726,6 @@ public class Weapon extends Item {
 		extra.println("---");
 		MaterialFactory.materialWeapDiag();
 	}
+
 	
 }

@@ -76,8 +76,8 @@ public class Race extends Item{
 	public String randomSwear() {
 		return extra.randList(swears);
 	}
-	public String randomRaceMap() {
-		return extra.randList(raceMaps);
+	public int randomRaceMap() {
+		return Integer.parseInt(extra.randList(raceMaps));//TODO: should probably store them as ints in the first place
 	}
 	
 	@Override

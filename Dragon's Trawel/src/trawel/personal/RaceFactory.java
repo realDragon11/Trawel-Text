@@ -824,7 +824,7 @@ public class RaceFactory {
 		Person w = Person.animal(level, RaceID.B_REAVER_TALL, MaterialFactory.getMat("flesh"), false);//DOLATER change flesh type
 		//Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"standing reaver"));
-		w.backupWeapon = new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth and claws");
+		//w.backupWeapon = new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth and claws");
 		//w.getBag().swapRace(RaceFactory.getRace("standing-reaver"));
 		w.addSkill(Skill.FELL_REAVER);
 		w.setFirstName(randomLists.randomFirstName());

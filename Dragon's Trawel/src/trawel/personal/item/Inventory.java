@@ -32,18 +32,15 @@ import trawel.quests.Quest.TriggerType;
  */
 public class Inventory implements java.io.Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	//instance vars
 	private int gold = 0;
 	private Armor[] armorSlots = new Armor[5];
 	private Weapon hand;
 	private RaceID race;
-	private String raceMap;
-	private ArrayList<DrawBane> dbs = new ArrayList<DrawBane>();
-	private ArrayList<Seed> seeds = new ArrayList<Seed>();
+	private int raceMap;
+	private List<DrawBane> dbs = new ArrayList<DrawBane>();
+	private List<Seed> seeds = new ArrayList<Seed>();
 	public int dbMax = 3;
 	public Person owner;
 	
@@ -658,7 +655,7 @@ public class Inventory implements java.io.Serializable{
 		return armorSlots[slot].getSoundType();
 	}
 	
-	public ArrayList<DrawBane> getDrawBanes() {
+	public List<DrawBane> getDrawBanes() {
 		return dbs;
 	}
 	

@@ -87,7 +87,7 @@ public class Person implements java.io.Serializable{
 	//bodystatus should be entirely internal, use own hp values and stuff to display externally
 	private transient TargetHolder bodystatus;
 	
-	public Weapon backupWeapon = null;
+	//public Weapon backupWeapon = null;
 	
 	private String scar = "";
 	
@@ -1261,6 +1261,18 @@ public class Person implements java.io.Serializable{
 
 	public TypeBody getBodyType() {
 		return bodyType;
+	}
+
+	public void updateRaceWeapon() {
+		switch (bag.getRaceID()) {
+		case B_REAVER_SHORT:
+			bag.getHand().transmuteWeapType("generic teeth and claws");
+			break;
+		case B_REAVER_TALL:
+			bag.getHand().transmuteWeapType("standing reaver");
+			break;
+		}
+		
 	}
 
 }
