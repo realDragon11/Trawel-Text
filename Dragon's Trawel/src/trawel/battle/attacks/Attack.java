@@ -439,6 +439,7 @@ public class Attack{
 		TEAR("Tear","Decreases dodge by %1$%d%%, stacking.","Their wing is torn!"), //see if need to add a '%'
 		EXE_WOUND("Execute","Kills low health targets.",""),
 		DRINK("Drink","Heals and provides a random potion effect.",""),
+		MANGLED("Mangled","Halves the condition of the body part.","Their body is mangled!")//FIXME
 		;
 		//done line
 		public String name, desc, active;

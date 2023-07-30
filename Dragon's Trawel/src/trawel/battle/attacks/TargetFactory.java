@@ -145,7 +145,6 @@ public class TargetFactory {
 		t = new Target();
 		t.name = "hand";
 		//attached to arms, so no variants needed
-		t.variants = new String[] {"test","test"};
 		t.hit = .8;
 		t.sharp = 1;
 		t.blunt = 1;
@@ -157,6 +156,22 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.DISARMED);
 		t.pierceWounds.add(Attack.Wound.DISARMED);
 		t.attachNumber = 2;
+		targetList.add(t);
+		
+		t = new Target();
+		t.name = "";//might be able to?
+		t.variants = new String[] {"thumb","index finger","middle finger","ring finger","pinkie"};
+		t.hit = .6;
+		t.sharp = 1;
+		t.blunt = 1;
+		t.pierce = 1;
+		t.rarity = .01;
+		t.slot = 1;
+		t.type = TargetType.HUMANOID;
+		t.slashWounds.add(Attack.Wound.MANGLED);
+		t.bluntWounds.add(Attack.Wound.MANGLED);
+		t.pierceWounds.add(Attack.Wound.MANGLED);
+		t.attachNumber = -2;
 		targetList.add(t);
 		
 		t = new Target();
@@ -175,7 +190,6 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "foot";
-		t.variants = new String[] {"ty a ","np b "};
 		t.hit = .8;
 		t.sharp = 1;
 		t.blunt = 1;
@@ -1185,15 +1199,29 @@ public class TargetFactory {
 							copy[j] = vr.vAttaches[j];
 						}
 						for (int j = 0; j < allVariants.size();j++) {
+							Target t2 = allTargets.get(j);
 							VariantResolver subvr = allVariants.get(j);
-							if (subvr.vAttaches.equals(copy)) {
+							if (t2.attachNumber != -raw) {
+								continue;
+							}
+							boolean isSame = true;
+							for (int k = 0;k < Math.max(subvr.vAttaches.length,copy.length);k++) {
+								if (subvr.vAttaches[k] != copy[k]) {
+									isSame = false;
+									break;
+								}
+							}
+							//assert isSame == subvr.vAttaches.equals(copy);//apparently something weird makes these not equal
+							if (isSame) {
+								attached[i] = map[j];
+								tRets.add(new TargetReturn(t,vr,map[i],i,attached[i]));
 								break;
 							}
 						}
 						if (attached[i] >=0) {
 							continue;
 						}
-						throw new RuntimeException(this.name()+ "could not find base "+raw+" map to attach to");
+						throw new RuntimeException(this.name()+ "could not find attach "+raw+" to attach to");
 					}else {//to a base map
 						for (int j = 0; j < allTargets.size();j++) {
 							Target t2 = allTargets.get(j);
@@ -1399,7 +1427,7 @@ public class TargetFactory {
 	
 	public static int totalNeededVariants(TargetType type, int attach) {
 		for (Target subt: TargetFactory.tList()) {
-			if (subt.type == type && subt.mappingNumber == attach) {
+			if (subt.type == type && (subt.mappingNumber == attach || subt.attachNumber == -attach)) {
 				return (subt.variants != null ? subt.variants.length : 1)
 						* (subt.attachNumber == 0 ? 1 : totalNeededVariants(type,subt.attachNumber));
 			}
@@ -1409,14 +1437,15 @@ public class TargetFactory {
 	
 	public static List<Target> neededVariants(TargetType type, int attach) {
 		for (Target subt: TargetFactory.tList()) {
-			if (subt.type == type && subt.mappingNumber == attach) {
+			if (subt.type == type && (subt.mappingNumber == attach || subt.attachNumber == -attach)) {
 				if (subt.attachNumber == 0) {
 					List<Target> list = new ArrayList<Target>();
 					list.add(subt);
 					return list;
 				}else {
 					List<Target> list = neededVariants(type,subt.attachNumber);
-					list.add(0,subt);//add to base of list
+					//list.add(0,subt);//add to base of list
+					list.add(subt);
 					return list;
 				}
 			}
