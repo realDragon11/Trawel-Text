@@ -927,6 +927,9 @@ public class TargetFactory {
 		private WeightedTable[] tables;
 		private Object[][] backmap;
 		private int uniqueParts;
+		/**
+		 * contains dupes, the other code handles them being variants
+		 */
 		private List<Target> allTargets;
 		/**
 		 * links a type/variant to a final part
@@ -949,26 +952,63 @@ public class TargetFactory {
 				tables[i] = buildTable(allTargets, new TargetType[]{types[i]});
 			}
 			List<Target> singles = new ArrayList<Target>();
-			Map<Integer,List<Target>> multis = new HashMap<Integer,List<Target>>();
-			for (Target t: allTargets) {
+			//Map<Integer,List<Target>> multis = new HashMap<Integer,List<Target>>();
+			List<Integer> multiNums = new ArrayList<Integer>();
+			List<List<Target>> subTargets = new ArrayList<List<Target>>();
+			List<List<Integer>> subVariants = new ArrayList<List<Integer>>();
+			for (int i = 0; i < allTargets.size();i++) {
+				Target t = allTargets.get(i);
 				if (t.mappingNumber == -1) {
 					singles.add(t);
 				}else {
-					List<Target> list = multis.getOrDefault(t.mappingNumber, new ArrayList<Target>());
-					list.add(t);
-					multis.put(t.mappingNumber, list);
+					//List<Target> list = multis.getOrDefault(t.mappingNumber, new ArrayList<Target>());
+					//list.add(t);
+					//multis.put(t.mappingNumber, list);
+					int index = multiNums.indexOf(t.mappingNumber);
+					if (index == -1) {
+						multiNums.add(t.mappingNumber);
+						subTargets.add(new ArrayList<Target>());
+						subVariants.add(new ArrayList<Integer>());
+						index = multiNums.size()-1;
+					}
+					subTargets.get(index).add(t);
+					subVariants.get(index).add((Integer) backmap[1][i]);
 				}
 			}
-			uniqueParts = singles.size() + multis.size();
+			int[] multiCount = new int[multiNums.size()];//the number of different variants in the mapping
+			for (int i = 0; i < multiNums.size();i++) {
+				multiCount[i] = (int) subVariants.get(i).stream().distinct().count();
+			}
+			int offset = singles.size();
+			int totalMulti = 0;
+			for (int i = 0; i < multiCount.length;i++) {
+				totalMulti += multiCount[i];
+			}
+			uniqueParts = offset + totalMulti;
 			map = new int[allTargets.size()];
+			//the maps converts an alltarget number to a condition arr number
+			//the outcome numbers don't matter as long as they're consistent, so we make them here
 			for (int i = 0;i < map.length;i++) {
 				Target t = allTargets.get(i);
 				if (t.mappingNumber == -1) {
 					map[i] = singles.indexOf(t);
 				}else {
-					//FIXME
+					int index = multiNums.indexOf(t.mappingNumber);
+					//very fancy system to make each variant mappable
+					map[i] = offset + multiSum(multiCount,index) + subTargets.get(index).indexOf(t);
+					//offset = singlets
+					//multisum gets all the prior counts of multis taking up space
+					//the last bit gets our value within the current multi
 				}
 			}
+		}
+		
+		private static int multiSum(int[] nums,int upTo) {
+			int total = 0;
+			for (int i = 0; i < upTo;i++) {
+				total+=nums[i];
+			}
+			return total;
 		}
 		
 		public int getTotalParts() {
