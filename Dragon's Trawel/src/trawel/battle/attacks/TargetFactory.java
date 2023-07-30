@@ -143,6 +143,22 @@ public class TargetFactory {
 		targetList.add(t);
 		
 		t = new Target();
+		t.name = "hand";
+		//attached to arms, so no variants needed
+		t.hit = .8;
+		t.sharp = 1;
+		t.blunt = 1;
+		t.pierce = 1;
+		t.rarity = .3;
+		t.slot = 1;
+		t.type = TargetType.HUMANOID;
+		t.slashWounds.add(Attack.Wound.DISARMED);
+		t.bluntWounds.add(Attack.Wound.DISARMED);
+		t.pierceWounds.add(Attack.Wound.DISARMED);
+		t.attachNumber = 2;
+		targetList.add(t);
+		
+		t = new Target();
 		t.name = "leg";
 		t.variants = new String[] {"right ","left "};
 		t.hit = 1;
@@ -157,8 +173,22 @@ public class TargetFactory {
 		targetList.add(t);
 		
 		t = new Target();
+		t.name = "foot";
+		t.variants = new String[] {"ty a ","np b "};
+		t.hit = .8;
+		t.sharp = 1;
+		t.blunt = 1;
+		t.pierce = 1;
+		t.rarity = .2;
+		t.slot = 4;//slot is different than attached part
+		t.type = TargetType.HUMANOID;
+		addLeg_LimbWounds(t,null);
+		t.attachNumber = 4;
+		targetList.add(t);
+		
+		t = new Target();
 		t.name = "eye";
-		t.variants = new String[] {"right ","left "};//FIXME: having variants and non variants in the same slot obviously doesn't work rn
+		t.variants = new String[] {"right ","left "};
 		t.hit = .1;
 		t.sharp = 5;
 		t.blunt = 3;
@@ -320,7 +350,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.DIZZY);
 		t.bluntWounds.add(Attack.Wound.DISARMED);
 		t.pierceWounds.add(Attack.Wound.BLINDED);
-		t.mappingNumber = 0;
+		t.mappingNumber = 1;
 		targetList.add(t);
 		
 		t = new Target();
@@ -337,7 +367,7 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.MAJOR_BLEED);
 		t.pierceWounds.add(Attack.Wound.MAJOR_BLEED);
 		t.bluntWounds.add(Attack.Wound.WINDED);
-		t.mappingNumber = 0;
+		t.mappingNumber = 1;
 		targetList.add(t);
 		
 		t = new Target();
@@ -347,7 +377,7 @@ public class TargetFactory {
 		t.blunt = 1;
 		t.pierce = 1;
 		t.rarity = 1.5;
-		t.slot = 2;
+		t.slot = 3;
 		t.type = TargetType.QUAD;
 		t.slashWounds.add(Attack.Wound.SLICE);
 		t.slashWounds.add(Attack.Wound.DICE);
@@ -369,10 +399,23 @@ public class TargetFactory {
 		t.blunt = .8;
 		t.pierce = .8;
 		t.rarity = 2;
-		t.slot = 1;
+		t.slot = 4;
 		t.type = TargetType.QUAD;
 		addLeg_LimbWounds(t,null);
-		t.mappingNumber = 3;
+		t.mappingNumber = 4;
+		targetList.add(t);
+		
+		t = new Target();
+		t.name = "paw";
+		t.hit = .8;
+		t.sharp = 1;
+		t.blunt = 1;
+		t.pierce = 1;
+		t.rarity = .2;
+		t.slot = 2;//slot is different
+		t.type = TargetType.QUAD;
+		addLeg_LimbWounds(t,null);
+		t.attachNumber = 4;
 		targetList.add(t);
 		
 		/*
@@ -424,7 +467,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.BLINDED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.BLINDED);
-		t.mappingNumber = 0;
+		t.attachNumber = 1;
 		targetList.add(t);
 		
 		t = new Target();
@@ -438,7 +481,7 @@ public class TargetFactory {
 		t.type = TargetType.QUAD;
 		add_IBleed_MBleed(t);
 		t.bluntWounds.add(Attack.Wound.KO);
-		t.mappingNumber = 2;
+		t.mappingNumber = 3;
 		targetList.add(t);
 		
 		t = new Target();
@@ -458,7 +501,7 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.HACK);
 		t.pierceWounds.add(Attack.Wound.TAT);
 		t.pierceWounds.add(Attack.Wound.BLEED);
-		t.mappingNumber = 2;
+		t.mappingNumber = 3;
 		targetList.add(t);
 		
 		
@@ -480,7 +523,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.GRAZE);
 		t.pierceWounds.add(Attack.Wound.CRUSHED);
-		t.mappingNumber = 0;
+		t.mappingNumber = 1;
 		targetList.add(t);
 		
 		t = new Target();
@@ -498,7 +541,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.GRAZE);
 		t.pierceWounds.add(Attack.Wound.CRUSHED);
-		t.mappingNumber = 0;
+		t.mappingNumber = 1;
 		targetList.add(t);
 		
 		t = new Target();
@@ -516,7 +559,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.GRAZE);
 		t.pierceWounds.add(Attack.Wound.CRUSHED);
-		t.mappingNumber = 2;
+		t.mappingNumber = 3;
 		targetList.add(t);
 		
 		t = new Target();
@@ -535,7 +578,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.GRAZE);
 		t.pierceWounds.add(Attack.Wound.CRUSHED);
-		t.mappingNumber = 1;
+		t.mappingNumber = 3;
 		targetList.add(t);
 		
 		t = new Target();
@@ -554,7 +597,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.GRAZE);
-		t.mappingNumber = 3;
+		t.mappingNumber = 4;
 		targetList.add(t);
 		
 		//fell reaver standing
@@ -570,7 +613,7 @@ public class TargetFactory {
 		t.slot = 3;
 		t.type = TargetType.S_REAVER;
 		addLeg_LimbWounds(t,null);
-		t.mappingNumber = 3;
+		t.mappingNumber = 4;
 		targetList.add(t);
 		
 		//fell reaver crouched
@@ -590,7 +633,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.KO);
 		t.bluntWounds.add(Attack.Wound.DIZZY);
 		t.pierceWounds.add(Attack.Wound.BLINDED);
-		t.mappingNumber = 0;
+		t.mappingNumber = 1;
 		targetList.add(t);
 		
 		t = new Target();
@@ -608,7 +651,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.WINDED);
 		t.bluntWounds.add(Attack.Wound.WINDED);
 		t.pierceWounds.add(Attack.Wound.MAJOR_BLEED);
-		t.mappingNumber = 0;
+		t.mappingNumber = 1;
 		targetList.add(t);
 		
 		t = new Target();
@@ -629,7 +672,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.TAT);
 		t.pierceWounds.add(Attack.Wound.BLEED);
-		t.mappingNumber = 2;
+		t.mappingNumber = 3;
 		targetList.add(t);
 		
 		t = new Target();
@@ -647,7 +690,7 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.BLEED);
 		t.bluntWounds.add(Attack.Wound.DISARMED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
-		t.mappingNumber = 1;
+		t.mappingNumber = 2;
 		targetList.add(t);
 		
 		t = new Target();
@@ -661,7 +704,7 @@ public class TargetFactory {
 		t.slot = 3;
 		t.type = TargetType.C_REAVER;
 		addLeg_LimbWounds(t,null);
-		t.mappingNumber = 1;
+		t.mappingNumber = 4;
 		targetList.add(t);
 		
 		t = new Target();
@@ -679,7 +722,7 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.BLINDED);
-		t.mappingNumber = 0;
+		t.attachNumber = 1;
 		targetList.add(t);
 		
 		//undead
@@ -697,7 +740,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.CONFUSED);
 		t.bluntWounds.add(Attack.Wound.DIZZY);
 		t.pierceWounds.add(Attack.Wound.BLINDED);
-		t.mappingNumber = 0;
+		t.mappingNumber = 1;
 		targetList.add(t);
 		
 		t = new Target();
@@ -713,7 +756,7 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.DICE);
 		t.bluntWounds.add(Attack.Wound.WINDED);
 		t.pierceWounds.add(Attack.Wound.GRAZE);
-		t.mappingNumber = 0;
+		t.mappingNumber = 1;
 		targetList.add(t);
 		
 		t = new Target();
@@ -731,7 +774,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.WINDED);
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.TAT);
-		t.mappingNumber = 2;
+		t.mappingNumber = 3;
 		targetList.add(t);
 		
 		t = new Target();
@@ -748,7 +791,7 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.DISARMED);
 		t.bluntWounds.add(Attack.Wound.DISARMED);
 		t.pierceWounds.add(Attack.Wound.GRAZE);
-		t.mappingNumber = 1;
+		t.mappingNumber = 2;
 		targetList.add(t);
 		
 		t = new Target();
@@ -762,7 +805,7 @@ public class TargetFactory {
 		t.slot = 3;
 		t.type = TargetType.UNDEAD_H;
 		addLeg_LimbWounds(t,Wound.GRAZE);
-		t.mappingNumber = 3;
+		t.mappingNumber = 4;
 		targetList.add(t);
 		
 		t = new Target();
@@ -778,7 +821,7 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.BLINDED);
 		t.bluntWounds.add(Attack.Wound.BLINDED);
 		t.pierceWounds.add(Attack.Wound.BLINDED);
-		t.mappingNumber = 0;
+		t.mappingNumber = 1;
 		targetList.add(t);
 		
 		t = new Target();
@@ -796,7 +839,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.WINDED);
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.TAT);
-		t.mappingNumber = 2;
+		t.mappingNumber = 3;
 		targetList.add(t);
 		
 		//flying
@@ -817,7 +860,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.DIZZY);		
 		t.bluntWounds.add(Attack.Wound.DISARMED);
 		t.pierceWounds.add(Attack.Wound.BLINDED);
-		t.mappingNumber = 0;
+		t.mappingNumber = 1;
 		targetList.add(t);
 		
 		t = new Target();
@@ -838,7 +881,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.TAT);
-		t.mappingNumber = 2;
+		t.mappingNumber = 3;
 		targetList.add(t);
 		
 		t = new Target();
@@ -854,7 +897,7 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.TEAR);
 		t.bluntWounds.add(Attack.Wound.TEAR);
 		t.pierceWounds.add(Attack.Wound.TEAR);
-		t.mappingNumber = 1;
+		t.mappingNumber = 2;
 		targetList.add(t);
 		
 		t = new Target();
@@ -871,7 +914,7 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.BLEED);
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
-		t.mappingNumber = 3;
+		t.mappingNumber = 4;
 		targetList.add(t);
 		
 		t = new Target();
@@ -889,7 +932,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.BLINDED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.BLINDED);
-		t.mappingNumber = 0;
+		t.attachNumber = 1;
 		targetList.add(t);
 		
 		t = new Target();
@@ -903,7 +946,7 @@ public class TargetFactory {
 		t.type = TargetType.FLY;
 		add_IBleed_MBleed(t);
 		t.bluntWounds.add(Attack.Wound.KO);
-		t.mappingNumber = 2;
+		t.mappingNumber = 3;
 		targetList.add(t);
 		
 		t = new Target();
@@ -923,7 +966,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.TAT);
 		t.pierceWounds.add(Attack.Wound.BLEED);
-		t.mappingNumber = 2;
+		t.mappingNumber = 3;
 		targetList.add(t);
 		
 		
@@ -935,12 +978,10 @@ public class TargetFactory {
 		for (TypeBody tb: TypeBody.values()) {
 			try {
 				tb.setup();
-				tb.toString();
 			}catch (Exception e) {
 				System.out.println("error with " +tb.name());
 				e.printStackTrace();
 			}
-			break;//FIXME for now just getting humans working
 		}
 		
 		//DOLATER: this is an old system now, likely will be removed
@@ -1003,6 +1044,11 @@ public class TargetFactory {
 		
 		private List<Integer> multiNums;
 		private List<Integer> multiCount;
+		
+		/**
+		 * how many 'single' non-multi cond slots there are
+		 */
+		int offset;
 		
 		//private List<VariantResolver> attachNums;
 		
@@ -1079,7 +1125,7 @@ public class TargetFactory {
 					
 				}
 			}
-			int offset = singles.size();
+			offset = singles.size();
 			uniqueParts = offset + multiSum(multiNums.size());
 			map = new int[allTargets.size()];
 			attached = new int[allTargets.size()];
@@ -1090,12 +1136,10 @@ public class TargetFactory {
 				if (t.mappingNumber == 0) {
 					if (t.attachNumber == 0) {
 						map[i] = singles.indexOf(t);
-						tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i));
 					}else {
 						VariantResolver vr = allVariants.get(i);
 						int index = multiNums.indexOf(getSpecialNum(t,vr));
 						map[i] = mapNumForAttach(offset,multiSum(index),vr.combo);
-						tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i));
 					}
 				}else {
 					int index = multiNums.indexOf(getSpecialNum(t,null));
@@ -1110,7 +1154,6 @@ public class TargetFactory {
 					//offset = singlets
 					//multisum gets all the prior counts of multis taking up space
 					//the last bit gets our value within the current multi
-					tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i));
 					//System.err.println(subindex +" " +subVariants.get(index).get(subindex));
 				}
 			}
@@ -1119,6 +1162,7 @@ public class TargetFactory {
 				Target t = allTargets.get(i);
 				if (t.attachNumber == 0) {
 					attached[i] = -1;
+					tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i,-1));
 				}else {
 					attached[i] = -1;
 					VariantResolver vr = allVariants.get(i);
@@ -1128,26 +1172,24 @@ public class TargetFactory {
 						int special = getSpecialNum(t,vr);
 						int index = multiNums.indexOf(special);
 						attached[i] = mapNumForAttach(offset, index, vr.combo);
-						if (attached[i] >= 0) {//should always happen
-							continue;
-						}
-						throw new RuntimeException("could not find attach "+special+" map to attach chain to");
+						assert attached[i] >= 0 && attached[i] < attached.length;
+						tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i,attached[i]));
+						continue;
 					}else {//to a base map
-						int num = Math.abs(raw);
 						for (int j = 0; j < allTargets.size();j++) {
-							if (allTargets.get(j).mappingNumber == num) {
+							if (allTargets.get(j).mappingNumber == raw) {
 								attached[i] = map[j];//connect to base map
+								tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i,attached[i]));
 								break;
 							}
 						}
-						if (attached[i] >= 0) {
+						if (attached[i] >=0) {
 							continue;
 						}
-						throw new RuntimeException("could not find base "+num+" map to attach to");
+						throw new RuntimeException(this.name()+ "could not find base "+raw+" map to attach to");
 					}
 				}
 			}
-			this.toString();
 		}
 		
 		protected int getSpecialNum(Target t,VariantResolver vr) {
@@ -1184,6 +1226,77 @@ public class TargetFactory {
 			return total;
 		}
 		
+		public int refParts(int slot) {
+			return (slot < offset ? 1 : multiCount.get(slot-offset));
+		}
+		
+		/**
+		 * slow and recursive, debug use only
+		 * can do refPartsFrom-refParts to get child count
+		 */
+		public int refPartsFrom(int slot) {
+			int total = 0;
+			for (int i = 0; i < allVariants.size();i++) {
+				TargetReturn tr = tRets.get(i);
+				if (tr.attachSpot == slot) {
+					total += refPartsFrom(tr.spot);
+				}else {
+					if (tr.spot == slot) {
+						total++;
+					}
+				}
+			}
+			return total;
+		}
+		/**
+		 * fairly slow
+		 */
+		public List<TargetReturn> getDirectChildren(int spot){
+			List<TargetReturn> list = new ArrayList<TargetReturn>();
+			for (int i = 0; i < tRets.size();i++) {
+				TargetReturn tr = tRets.get(i);
+				if (tr.attachSpot == spot) {
+					list.add(tr);
+				}
+			}
+			return list;
+		}
+		
+		public List<TargetReturn> getForSlot(int slot){
+			List<TargetReturn> list = new ArrayList<TargetReturn>();
+			for (int i = 0; i < tRets.size();i++) {
+				TargetReturn tr = tRets.get(i);
+				if (getMap(tr.spot) == slot) {
+					list.add(tr);
+				}
+			}
+			return list;
+		}
+		
+		public boolean isRoot(int slot) {
+			return tRets.get(slot).attachSpot == -1;
+		}
+		
+		public List<Integer> rootSlots(){
+			List<Integer> list = new ArrayList<Integer>();
+			for (int i = 0; i < map.length;i++) {
+				if (attached[i] == -1 && list.indexOf(map[i]) == -1) {
+					list.add(map[i]);
+				}
+			}
+			return list;
+		}
+		
+		public List<TargetReturn> rootTargetReturns(){
+			List<TargetReturn> list = new ArrayList<TargetReturn>();
+			for (int i = 0; i < map.length;i++) {
+				if (attached[i] == -1) {
+					list.add(getTargetReturn(i));
+				}
+			}
+			return list;
+		}
+		
 		public int getUniqueParts() {
 			return uniqueParts;
 		}
@@ -1199,12 +1312,14 @@ public class TargetFactory {
 			public final Target tar;
 			public final int mapLoc;
 			public final int spot;
+			public final int attachSpot;
 			
-			public TargetReturn(Target tar, VariantResolver vari, int mapLoc, int spot){
+			public TargetReturn(Target tar, VariantResolver vari, int mapLoc, int spot, int attachSpot){
 				this.variant = vari;
 				this.tar = tar;
 				this.mapLoc = mapLoc;
 				this.spot = spot;
+				this.attachSpot = attachSpot;
 			}
 			
 			public String getName() {
@@ -1234,6 +1349,10 @@ public class TargetFactory {
 		
 		public int getMap(int spot) {
 			return tRets.get(spot).mapLoc;
+		}
+		
+		public int getAttach(int spot) {
+			return tRets.get(spot).attachSpot;
 		}
 		public TargetReturn getTargetReturn(int spot) {
 			return tRets.get(spot);

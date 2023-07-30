@@ -3,6 +3,7 @@ package trawel;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import com.github.tommyettinger.random.*;
 
@@ -799,6 +800,11 @@ public final class extra {
 			double x = 1-(2*Math.abs(extra.getRand().nextDouble()-midpoint));
 			x = extra.clamp(x,0,1);
 			return (4*depth*Math.pow(x,3) - 6*depth*Math.pow(x,2) + 2*depth*x + x);
+		}
+
+		public static String spaceBuffer(int size) {
+			// TODO upgrade to java 11 with " ".repeat() and just do that everywhere this is used
+			return String.join("", Collections.nCopies(size," "));
 		}
 		
 }

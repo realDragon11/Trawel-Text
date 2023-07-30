@@ -2,6 +2,7 @@ package trawel.battle.attacks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import trawel.extra;
 import trawel.battle.attacks.TargetFactory.TargetType;
@@ -36,9 +37,30 @@ public class TargetHolder {
 	
 	/**
 	 * the damage % on a part
+	 * does not list subparts
 	 */
 	public double getStatus(int spot) {
 		return condition[plan.getMap(spot)];
+	}
+	
+	/**
+	 * the damage % on a part
+	 * gets the final part in the attach chain
+	 */
+	public double getRootStatus(int spot) {
+		int aspot = plan.getAttach(spot);
+		if (aspot >= 0) {
+			return getRootStatus(aspot);
+		}
+		return condition[plan.getMap(spot)];
+	}
+	
+	public int getRootSpot(int spot) {
+		int aspot = plan.getAttach(spot);
+		if (aspot >= 0) {
+			return getRootSpot(aspot);
+		}
+		return spot;
 	}
 	
 	public String getPartName(int spot) {
@@ -52,12 +74,20 @@ public class TargetHolder {
 	public double multStatus(int spot, double mult) {
 		double store = condition[plan.getMap(spot)]*mult;
 		condition[plan.getMap(spot)] = store;
+		int aspot = plan.getAttach(spot);
+		if (aspot >= 0) {
+			multStatus(aspot,mult);
+		}
 		return store;
 	}
 	
 	public double addStatus(int spot, double add) {
 		double store = condition[plan.getMap(spot)]+add;
 		condition[plan.getMap(spot)] = store;
+		int aspot = plan.getAttach(spot);
+		if (aspot >= 0) {
+			addStatus(aspot,add);
+		}
 		return store;
 	}
 
@@ -84,20 +114,41 @@ public class TargetHolder {
 	public TargetReturn randTarget() {
 		return plan.randTarget(config);
 	}
+	
 	public void debug_print(boolean full) {
 		if (full) {
-			extra.print("   ");
-			for (int i = 0; i < plan.getPartCount();i++) {
-				extra.print(getPartName(i) + ": " + plan.getMap(i) + "-" + getStatus(i) + " ");
+			//Stack<List<TargetReturn>> stack = new Stack<List<TargetReturn>>();//sadly I'm on java 8 so no '" ".repeat'
+			//List<TargetReturn> children;
+			//List<TargetReturn> curLevel = null;
+			for (TargetReturn b: plan.rootTargetReturns()) {
+				printSpot(b.spot,1);
+				List<TargetReturn> children = plan.getDirectChildren(b.spot);
+				if (children.size() > 0) {
+					debug_printLAYER(children,2);
+				}
 			}
-			extra.println();
 		}
-		extra.print("   ");
+		extra.print("  >");
 		for (int i = 0; i < condition.length;i++) {
 			extra.print(condition[i]+" ");
 		}
 		extra.println();
 		
+	}
+	
+	private void debug_printLAYER(List<TargetReturn> layer, int num) {
+		for (TargetReturn tr: layer) {
+			List<TargetReturn> children = plan.getDirectChildren(tr.spot);
+			printSpot(tr.spot,num);
+			if (children.size() > 0) {
+				debug_printLAYER(children,num+2);
+			}
+		}
+	}
+	private void printSpot(int spot, int buffer) {
+		extra.println(extra.spaceBuffer(buffer)+
+				getPartName(spot) + " " +spot+": " + plan.getMap(spot) + "-" + getStatus(spot) + " attach: " +plan.getAttach(spot)
+				);
 	}
 
 }
