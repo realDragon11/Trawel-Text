@@ -145,6 +145,7 @@ public class TargetFactory {
 		t = new Target();
 		t.name = "hand";
 		//attached to arms, so no variants needed
+		t.variants = new String[] {"test","test"};
 		t.hit = .8;
 		t.sharp = 1;
 		t.blunt = 1;
@@ -982,6 +983,7 @@ public class TargetFactory {
 				System.out.println("error with " +tb.name());
 				e.printStackTrace();
 			}
+			dispPlan(tb);
 		}
 		
 		//DOLATER: this is an old system now, likely will be removed
@@ -1126,7 +1128,7 @@ public class TargetFactory {
 				}
 			}
 			offset = singles.size();
-			uniqueParts = offset + multiSum(multiNums.size());
+			uniqueParts = offset + multiSum(multiNums.size())+1;//DOLATER off by one error???
 			map = new int[allTargets.size()];
 			attached = new int[allTargets.size()];
 			//the maps converts an alltarget number to a condition arr number
@@ -1169,17 +1171,40 @@ public class TargetFactory {
 					
 					int raw = t.attachNumber;
 					if (raw < 0) {//attach chain
+						/*
 						int special = getSpecialNum(t,vr);
 						int index = multiNums.indexOf(special);
+						
 						attached[i] = mapNumForAttach(offset, index, vr.combo);
 						assert attached[i] >= 0 && attached[i] < attached.length;
 						tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i,attached[i]));
-						continue;
+						*/
+						//no a very effective way, but it should work.
+						int[] copy = new int[vr.vAttaches.length-1];
+						for (int j = 0; j < vr.vAttaches.length-1;j++) {
+							copy[j] = vr.vAttaches[j];
+						}
+						for (int j = 0; j < allVariants.size();j++) {
+							VariantResolver subvr = allVariants.get(j);
+							if (subvr.vAttaches.equals(copy)) {
+								break;
+							}
+						}
+						if (attached[i] >=0) {
+							continue;
+						}
+						throw new RuntimeException(this.name()+ "could not find base "+raw+" map to attach to");
 					}else {//to a base map
 						for (int j = 0; j < allTargets.size();j++) {
-							if (allTargets.get(j).mappingNumber == raw) {
+							Target t2 = allTargets.get(j);
+							if (t2.mappingNumber == raw) {
+								VariantResolver subvr = allVariants.get(j);
+								int subvariants = t.variants == null ? 1 : t.variants.length;
+								if (vr.vAttaches[0] != subvr.variant) {//%subvariants
+									continue;//not the one we need
+								}
 								attached[i] = map[j];//connect to base map
-								tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i,attached[i]));
+								tRets.add(new TargetReturn(t,vr,map[i],i,attached[i]));
 								break;
 							}
 						}
@@ -1206,7 +1231,7 @@ public class TargetFactory {
 		}
 		
 		protected int mapNumForAttach(int offset, int index, int combo) {
-			return offset + multiSum(index-1)-1;//combo part of multisum
+			return offset + multiSum(index-1);//combo part of multisum
 		}
 		
 		/*
@@ -1238,7 +1263,7 @@ public class TargetFactory {
 			int total = 0;
 			for (int i = 0; i < allVariants.size();i++) {
 				TargetReturn tr = tRets.get(i);
-				if (tr.attachSpot == slot) {
+				if (tr.attachSlot == slot) {
 					total += refPartsFrom(tr.spot);
 				}else {
 					if (tr.spot == slot) {
@@ -1251,11 +1276,11 @@ public class TargetFactory {
 		/**
 		 * fairly slow
 		 */
-		public List<TargetReturn> getDirectChildren(int spot){
+		public List<TargetReturn> getDirectChildren(int slot){
 			List<TargetReturn> list = new ArrayList<TargetReturn>();
 			for (int i = 0; i < tRets.size();i++) {
 				TargetReturn tr = tRets.get(i);
-				if (tr.attachSpot == spot) {
+				if (tr.attachSlot == slot) {
 					list.add(tr);
 				}
 			}
@@ -1274,7 +1299,7 @@ public class TargetFactory {
 		}
 		
 		public boolean isRoot(int slot) {
-			return tRets.get(slot).attachSpot == -1;
+			return tRets.get(slot).attachSlot == -1;
 		}
 		
 		public List<Integer> rootSlots(){
@@ -1310,16 +1335,16 @@ public class TargetFactory {
 		public class TargetReturn{
 			public final VariantResolver variant;
 			public final Target tar;
-			public final int mapLoc;
+			public final int slot;
 			public final int spot;
-			public final int attachSpot;
+			public final int attachSlot;
 			
 			public TargetReturn(Target tar, VariantResolver vari, int mapLoc, int spot, int attachSpot){
 				this.variant = vari;
 				this.tar = tar;
-				this.mapLoc = mapLoc;
+				this.slot = mapLoc;
 				this.spot = spot;
-				this.attachSpot = attachSpot;
+				this.attachSlot = attachSpot;
 			}
 			
 			public String getName() {
@@ -1348,17 +1373,23 @@ public class TargetFactory {
 		}
 		
 		public int getMap(int spot) {
-			return tRets.get(spot).mapLoc;
+			return tRets.get(spot).slot;
 		}
 		
 		public int getAttach(int spot) {
-			return tRets.get(spot).attachSpot;
+			return tRets.get(spot).attachSlot;
 		}
 		public TargetReturn getTargetReturn(int spot) {
 			return tRets.get(spot);
 		}
 		public BloodType getBlood() {
 			return blood;
+		}
+	}
+	
+	public static void dispPlan(TypeBody plan) {
+		for (int i = 0; i < plan.getPartCount();i++) {
+			extra.println(i + " m" + plan.getMap(i) + " a: " +plan.getAttach(i) + " " + plan.spotName(i));
 		}
 	}
 	
@@ -1430,11 +1461,11 @@ public class TargetFactory {
 						for (int j = 0;j < list.size(); j++) {
 							Target subT = list.get(j);
 							if (j == list.size()-1) {
-								str += (subT.variants == null ? subT.name : subT.variants[i%subT.variants.length] +subT.name);
+								str += (subT.variants == null ? subT.name : subT.variants[moduloTarget(subT,i)] +subT.name);
 							}else {
 								str += namePermutation(list.get(j),i);
 							}
-							vAttaches[j] = (subT.variants == null ? -1 : i%subT.variants.length);
+							vAttaches[j] = (subT.variants == null ? -1 : moduloTarget(subT,i));
 						}
 						targets.add(t);
 						variants.add(new VariantResolver(str,i,vAttaches));
@@ -1455,7 +1486,11 @@ public class TargetFactory {
 		return list;
 	}
 	public static String namePermutation(Target t,int toMod) {
-		return (t.variants == null ? "" : t.variants[toMod%t.variants.length] +t.name+"'s ");
+		return (t.variants == null ? "" : t.variants[moduloTarget(t,toMod)] +t.name+"'s ");
+	}
+	
+	public static int moduloTarget(Target t, int i) {
+		return i%(t.variants == null ? 1 : t.variants.length);
 	}
 	
 	public class VariantResolver{

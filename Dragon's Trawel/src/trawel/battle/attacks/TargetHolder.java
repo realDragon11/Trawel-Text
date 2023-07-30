@@ -120,11 +120,17 @@ public class TargetHolder {
 			//Stack<List<TargetReturn>> stack = new Stack<List<TargetReturn>>();//sadly I'm on java 8 so no '" ".repeat'
 			//List<TargetReturn> children;
 			//List<TargetReturn> curLevel = null;
+			List<Integer> seen = new ArrayList<Integer>();
 			for (TargetReturn b: plan.rootTargetReturns()) {
 				printSpot(b.spot,1);
-				List<TargetReturn> children = plan.getDirectChildren(b.spot);
-				if (children.size() > 0) {
-					debug_printLAYER(children,2);
+				if (seen.contains(b.slot)) {
+					extra.println("    ...");
+				}else {
+					seen.add(b.slot);
+					List<TargetReturn> children = plan.getDirectChildren(b.slot);
+					if (children.size() > 0) {
+						debug_printLAYER(children,2);
+					}
 				}
 			}
 		}
@@ -138,7 +144,7 @@ public class TargetHolder {
 	
 	private void debug_printLAYER(List<TargetReturn> layer, int num) {
 		for (TargetReturn tr: layer) {
-			List<TargetReturn> children = plan.getDirectChildren(tr.spot);
+			List<TargetReturn> children = plan.getDirectChildren(tr.slot);
 			printSpot(tr.spot,num);
 			if (children.size() > 0) {
 				debug_printLAYER(children,num+2);
