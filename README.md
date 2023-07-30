@@ -3,7 +3,7 @@ An open world text adventure rpg.
 
 Currently undergoing a massive rewrite in July 2023.
 
-If you are vision impaired and using a screenreader for this text, the following portions have inline links. You can find a compiled version at "[real.itch.io/trawel](real.itch.io/trawel)", but that might be out of date.      <br>  <br>
+If you are vision impaired and using a screenreader for this text, the following portions have inline links. You can find a compiled version at "[real.itch.io/trawel](https://real.itch.io/trawel)", but that might be out of date.      <br>  <br>
 
   
 Trawel can be found on [Steam](https://store.steampowered.com/app/992240/Trawel/) for ~$5 USD, which also includes a graphical, and for free ($0) on [Itch.io](https://real.itch.io/trawel). The Steam version's demo will be the same as the Itch.io download.
