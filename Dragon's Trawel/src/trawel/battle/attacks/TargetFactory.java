@@ -908,6 +908,10 @@ public class TargetFactory {
 		HUMANOID, QUAD, FLY, NO_VARIANTS_ALL;
 	}
 	
+	public enum TargetMode{
+		ALL
+	}
+	
 	public enum TypeBody {
 		HUMAN_LIKE(BodyPlan.HUMANOID,TargetType.HUMANOID),
 		BASIC_QUAD(BodyPlan.QUAD,TargetType.QUAD),
@@ -917,12 +921,23 @@ public class TargetFactory {
 		BASIC_FLY(BodyPlan.FLY,TargetType.FLY),
 		UNDEAD(BodyPlan.HUMANOID,TargetType.UNDEAD_H);
 		
-		public BodyPlan plan;
-		public TargetType[] types;
+		public final BodyPlan plan;
+		public final TargetType[] types;
+		public WeightedTable[] tables;
+		public Object[][] map;
 		
 		TypeBody(BodyPlan plan, TargetType... types){
 			this.plan = plan;
 			this.types = types;
+		}
+		//could use another function to call if needs to have different behavior
+		public void setup() {
+			map = TargetHolder.makeMap(this);
+			tables = new WeightedTable[types.length+1];
+			tables[0] = buildTable((Target[]) map[0], null);//table of 'all', used for null masks
+			for (int i = 1; i < tables.length-1;i++) {
+				tables[i] = buildTable((Target[]) map[0], new TargetType[]{types[i]});
+			}
 		}
 	}
 	
@@ -936,11 +951,7 @@ public class TargetFactory {
 	}
 	
 	public static TargetHolder battleSetup(Person p) {
-		TargetHolder hold = new TargetHolder();
-		TypeBody types = p.getBodyType();
-		switch (types.plan) {
-		
-		}
+		TargetHolder hold = new TargetHolder(p.getBodyType());
 		
 		p.setBody(hold);
 		
@@ -949,9 +960,11 @@ public class TargetFactory {
 	
 
 	/**
-	 * for masks, all of the tables should be the same, so only need to calculate one of them
+	 * for overrides, all of the tables should be the same, so only need to calculate one of them
+	 * use masks if a mode doesn't expose all the current targets
+	 * @param masks used to filter out all other types if non-null
 	 */
-	protected static WeightedTable buildTable(Target[] targets) {
+	protected static WeightedTable buildTable(Target[] targets, TargetType[] masks) {
 		float[] weights = new float[targets.length];
 		Map<Target,Integer> counts = new HashMap<Target,Integer>();
 		//hashmap is needless overkill but idk if the tree thing is better
@@ -959,6 +972,19 @@ public class TargetFactory {
 			counts.put(t,counts.getOrDefault(t, 0)+1);
 		}
 		for (int i = 0; i < targets.length; i++) {
+			if (masks != null) {
+				boolean contains = false;
+				TargetType ty = targets[i].type;
+				for (TargetType tyin: masks) {
+					if (ty == tyin) {
+						contains = true;
+						break;
+					}
+				}
+				if (!contains) {
+					continue;
+				}
+			}
 			weights[i] = (float) (targets[i].rarity/counts.get(targets[i]));
 		}
 		return new WeightedTable(weights);
