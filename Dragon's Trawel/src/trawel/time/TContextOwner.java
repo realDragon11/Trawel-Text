@@ -10,6 +10,12 @@ public abstract class TContextOwner implements java.io.Serializable, CanPassTime
 	
 	protected List<TimeEvent> storedTimeEvents = new ArrayList<TimeEvent>();
 	
+	/**
+	 * use when adding a time event in the middle of a time event processing
+	 * removing time events shouldn't need to do this since you loop backwards
+	 */
+	protected transient boolean eventsModified;
+	
 	@Override
 	public void reload() {
 		timeScope = new TimeContext(ContextType.GLOBAL,this);//subclasses will want to override this with their own contexts

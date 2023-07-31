@@ -17,6 +17,10 @@ public class Lot extends Feature {
 
 	private static final long serialVersionUID = 1L;
 	private int tier;
+	/**
+	 * -1 = can add
+	 * -2 = added
+	 */
 	private double constructTime = -1;
 	private String construct;
 	public Lot(Town town) {
@@ -76,8 +80,8 @@ public class Lot extends Feature {
 		case 3: 
 			extra.println("Donate to the town?");
 			if (extra.yesNo()) {
-			town.enqueneRemove(this);
-			town.enqueneAdd(new TravelingFeature(this.town));;
+				town.enqueneRemove(this);
+				town.enqueneAdd(new TravelingFeature(this.town));;
 			}break;
 		case 4: 
 			if (Player.bag.getGold() >= minecost) {
@@ -110,7 +114,7 @@ public class Lot extends Feature {
 
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		if (constructTime != -1) {
+		if (constructTime >= 0) {
 			constructTime-=time;
 		if (construct != null && constructTime <= 0) {
 			switch (construct) {//TODO: enquene add might be better off in time events
@@ -120,7 +124,7 @@ public class Lot extends Feature {
 			case "garden": town.enqueneAdd(new Garden(town));
 			}
 			town.enqueneRemove(this);
-			
+			constructTime = -2;
 		}
 		}
 		return null;

@@ -73,7 +73,7 @@ public class Town extends TContextOwner{
 	public int visited = 0;
 	public int background_variant = extra.randRange(1,3);
 	
-	private transient List<TimeEvent> events;
+	//private transient List<TimeEvent> events;
 	
 	private Town(String name) {
 		this.name = name;
@@ -117,7 +117,7 @@ public class Town extends TContextOwner{
 	public void reload() {
 		timeScope = new TimeContext(ContextType.LOCAL,this);
 		timeSetup();
-		events = new ArrayList<TimeEvent>();
+		//events = new ArrayList<TimeEvent>();
 		for (Feature f: features) {
 			f.reload();
 		}
@@ -252,7 +252,8 @@ public class Town extends TContextOwner{
 	}
 	
 	public void townProcess() {
-		consumeEvents(events);
+		//System.err.println("at town processing");
+		timeScope.processEvents(this);
 	}
 
 	public void atTown() {
@@ -519,9 +520,7 @@ public class Town extends TContextOwner{
 		extra.println("4 Quests");
 		extra.println("5 Skills");
 		extra.println("6 Main Menu");
-		extra.println("7 Save"
-				+ ""
-				+ "");
+		extra.println("7 Save");
 		extra.println("8 Toggle Tutorial " + ( Player.getTutorial() ? "Off" : "On"));
 		extra.println("9 Return");
 		
@@ -764,14 +763,16 @@ public class Town extends TContextOwner{
 		for (SuperPerson a: occupants) {
 			a.passTime(time,calling);
 		}
-		return events;
+		return null;//uses local events
 	}
 	
 	public void enqueneRemove(Feature f) {
-		events.add(new StructuralFeatureEvent(f,false));
+		eventsModified = true;
+		timeScope.addEvent(new StructuralFeatureEvent(f,false));
 	}
 	public void enqueneAdd(Feature f) {
-		events.add(new StructuralFeatureEvent(f,true));
+		eventsModified = true;
+		timeScope.addEvent(new StructuralFeatureEvent(f,true));
 	}
 	
 	public class StructuralFeatureEvent extends TimeEvent{
@@ -966,21 +967,27 @@ public class Town extends TContextOwner{
 		}
 	}
 	@Override
-	public void consumeEvents(List<TimeEvent> list) {
-		for (int i = list.size()-1;i >=0;i--) {//backwards for removal reasons
-			TimeEvent e = list.get(i);
-			if (e.context.tier() <= contextLevel().tier())
-			if (e instanceof StructuralFeatureEvent) {
-				StructuralFeatureEvent sfe = (StructuralFeatureEvent)e;
-				if (sfe.adding) {
-					addFeature(sfe.modify);
-					sfe.modify.reload();//important to give it it's context
-				}else {
-					features.remove(sfe.modify);
+	public List<TimeEvent> consumeEvents(List<TimeEvent> list) {
+		eventsModified = true;
+		while (eventsModified) {
+			eventsModified = false;
+			for (int i = list.size()-1;i >=0;i--) {//backwards for removal reasons
+				TimeEvent e = list.get(i);
+				if (e.context.tier() <= contextLevel().tier()) {
+					if (e instanceof StructuralFeatureEvent) {
+						StructuralFeatureEvent sfe = (StructuralFeatureEvent)e;
+						if (sfe.adding) {
+							addFeature(sfe.modify);
+							sfe.modify.reload();//important to give it it's context
+						}else {
+							features.remove(sfe.modify);
+						}
+						list.remove(i);
+					}
 				}
-				list.remove(i);
 			}
 		}
+		return list;
 	}
 	@Override
 	public ContextLevel contextLevel() {

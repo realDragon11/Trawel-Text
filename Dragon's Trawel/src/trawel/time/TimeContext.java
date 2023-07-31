@@ -3,6 +3,8 @@ package trawel.time;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.towns.Town.StructuralFeatureEvent;
+
 public class TimeContext {
 
 	public final ContextType owntype;
@@ -99,7 +101,7 @@ public class TimeContext {
 	 * @param caller 
 	 */
 	public void processEvents(HasTimeContext caller) {
-		caller.consumeEvents(events);
+		events = caller.consumeEvents(events);
 	}
 
 	/**
@@ -121,6 +123,7 @@ public class TimeContext {
 		processEvents(caller);
 		List<TimeEvent> ret = events;
 		events = new ArrayList<TimeEvent>();
+		assert events.size() == 0;
 		return ret;
 	}
 	
@@ -152,5 +155,10 @@ public class TimeContext {
 
 	public List<TimeEvent> forSaveEvents() {
 		return events;
+	}
+
+	public void addEvent(TimeEvent e) {
+		assert e != null;
+		events.add(e);
 	}
 }

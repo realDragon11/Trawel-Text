@@ -113,8 +113,11 @@ public class Plane extends TContextOwner{
 	}
 	
 	@Override
-	public void consumeEvents(List<TimeEvent> list) {
+	public List<TimeEvent> consumeEvents(List<TimeEvent> list) {
 		// TODO Auto-generated method stub
+		//FIXME plane just discards events rn
+		list.clear();
+		return list;
 	}
 	@Override
 	public ContextLevel contextLevel() {

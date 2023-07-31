@@ -105,8 +105,11 @@ public abstract class Feature extends TContextOwner{
 	}
 	
 	@Override
-	public void consumeEvents(List<TimeEvent> list) {
-		
+	public List<TimeEvent> consumeEvents(List<TimeEvent> list) {
+		if (list.size() > 0) {
+			System.err.println(list.toString());
+		}
+		return list;
 	}
 	@Override
 	public ContextLevel contextLevel() {

@@ -79,8 +79,8 @@ public class Island extends TContextOwner{
 	}
 	
 	@Override
-	public void consumeEvents(List<TimeEvent> list) {
-		// TODO Auto-generated method stub
+	public List<TimeEvent> consumeEvents(List<TimeEvent> list) {
+		return list;//TODO
 	}
 	@Override
 	public ContextLevel contextLevel() {
