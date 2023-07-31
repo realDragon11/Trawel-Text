@@ -390,6 +390,10 @@ public class Attack{
 	public int getSlot() {
 		return target.tar.slot;
 	}
+	
+	public int getTargetSpot() {
+		return target.spot;
+	}
 
 	public boolean isMagic() {
 		return isMagic;
@@ -415,7 +419,7 @@ public class Attack{
 	//UPDATE welp can't make them look nicer so just made them all ints anyways
 	public enum Wound{//FIXME: make sure the reworked wounds are fully in
 		HAMSTRUNG("Hamstrung","Delays the next attack by %1$d instants.","Their leg is hamstrung!"), 
-		BLINDED("Blinded","The next attack will be %1$d%% less accurate.","Blood falls into their eyes!"),
+		BLINDED("Blinded","The next attack will be %1$d%% less accurate.","They can't see!"),
 		CONFUSED("Confused","Forces the opponent to retarget.","They look confused!"), 
 		DIZZY("Dizzy","Decreases their next attack's to-hit by %1$d%%","They look dizzy!"),
 		SLICE("Slice","Your next attack will happen %1$d%% quicker and be %2$d%% more accurate.","They are sliced!"),//TODO
@@ -439,7 +443,8 @@ public class Attack{
 		TEAR("Tear","Decreases dodge by %1$%d%%, stacking.","Their wing is torn!"), //see if need to add a '%'
 		EXE_WOUND("Execute","Kills low health targets.",""),
 		DRINK("Drink","Heals and provides a random potion effect.",""),
-		MANGLED("Mangled","Halves the condition of the body part.","Their body is mangled!")//FIXME
+		MANGLED("Mangled","Halves the condition of the body part.","Their body is mangled!"),//FIXME
+		BLOODY("Bloody","The next attack will be %1$d%% less accurate. Applies %2$d bleed.","Blood wells around their eyes!"),
 		;
 		//done line
 		public String name, desc, active;

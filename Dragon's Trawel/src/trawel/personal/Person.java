@@ -1282,5 +1282,17 @@ public class Person implements java.io.Serializable{
 		extra.println(getHp() +" ("+damageDone+")->"+ (getHp()-damageDone) + "/" + getMaxHp());
 		bodystatus.debug_print(true);
 	}
+	
+	public void multBodyStatus(int spot, double mult) {
+		bodystatus.multStatus(spot, mult);
+	}
+	
+	public void addBodyStatus(int spot, double add) {
+		bodystatus.addStatus(spot, add);
+	}
+	
+	public int guessBodyHP(int spot) {
+		return (int) (bodystatus.getRootStatus(spot)*getMaxHp());
+	}
 
 }

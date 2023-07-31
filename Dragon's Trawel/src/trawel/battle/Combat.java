@@ -646,7 +646,6 @@ public class Combat {
 		AttackReturn atr = this.handleAttack(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
 		ret = atr;
 		int damageDone = atr.damage;
-		defender.debug_print_status(damageDone);
 		//extra.println(damageDone + " " + defender.getHp()+"/"+defender.getMaxHp());//FIXME: probably turn damage responses into a better thing
 		String inlined_color = extra.PRE_WHITE;
 		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender,damageDone);
@@ -671,25 +670,14 @@ public class Combat {
 						a.addBlood(percent*.5f);
 					}
 				}
-				/*if (damageDone > .05*defender.getMaxHp()) {
-				
-				
-				attacker.getBag().getHand().addBlood(.5f);
-				defender.getBag().getArmorSlot(attacker.getNextAttack().getSlot()).addBlood(1);
-				if (damageDone > .2*defender.getMaxHp()) {
-					attacker.getBag().getHand().addBlood(.5f);
-					defender.getBag().getArmorSlot(attacker.getNextAttack().getSlot()).addBlood(.5f);
-					defender.addBlood(1);
-				}
-				if (damageDone > .4*defender.getMaxHp()) {
-					attacker.getBag().getHand().addBlood(.5f);
-					defender.getBag().getArmorSlot(attacker.getNextAttack().getSlot()).addBlood(1);
-					defender.addBlood(1);
-				}*/
 			}
+			//condition damage
+			defender.addBodyStatus(atr.attack.getTargetSpot(),-percent);
+			
+			defender.debug_print_status(damageDone);
+			
 			//Wound effects
 			String woundstr = inflictWound(attacker,defender,atr);
-			//song.addAttackHit(attacker,defender);
 			if (defender.hasEffect(Effect.R_AIM)) {
 				defender.getNextAttack().blind(1 + (percent));
 			}
@@ -937,6 +925,13 @@ public class Combat {
 		case TEAR:
 			defender2.addEffect(Effect.TORN);
 			break;
+		case BLOODY:
+			defender2.addEffect(Effect.BLEED);
+			defender2.getNextAttack().blind(1-(nums[0]/10f));
+			break;
+		case MANGLED:
+			defender2.multBodyStatus(attack.getTargetSpot(), 1-(nums[0]/10f));
+			break;
 			
 		}
 		if (w != Wound.GRAZE)
@@ -997,6 +992,10 @@ public class Combat {
 			return new Integer[] {2*defender.getLevel(),defender.getLevel()};
 		case TEAR://WET
 			return new Integer[] {10};// %, multiplicative dodge mult penalty
+		case MANGLED:
+			return new Integer[] {50};//50% reduction in condition
+		case BLOODY://bleeds aren't synced, WET :(
+			return new Integer[] {50,defender.getLevel()};//bloody blind
 		}
 		return new Integer[0];
 	}

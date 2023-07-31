@@ -83,7 +83,7 @@ public class TargetHolder {
 	
 	public double addStatus(int spot, double add) {
 		double store = condition[plan.getMap(spot)]+add;
-		condition[plan.getMap(spot)] = store;
+		condition[plan.getMap(spot)] = Math.max(0,store);
 		int aspot = plan.getAttach(spot);
 		if (aspot >= 0) {
 			addStatus(aspot,add);
@@ -136,7 +136,7 @@ public class TargetHolder {
 		}
 		extra.print("  >");
 		for (int i = 0; i < condition.length;i++) {
-			extra.print(condition[i]+" ");
+			extra.print(extra.format2.format(condition[i])+" ");
 		}
 		extra.println();
 		
@@ -153,7 +153,7 @@ public class TargetHolder {
 	}
 	private void printSpot(int spot, int buffer) {
 		extra.println(extra.spaceBuffer(buffer)+
-				getPartName(spot) + " " +spot+": " + plan.getMap(spot) + "-" + getStatus(spot) + " attach: " +plan.getAttach(spot)
+				getPartName(spot) + " " +spot+": " + plan.getMap(spot) + "-" + extra.format2.format(getStatus(spot)) + " attach: " +plan.getAttach(spot)
 				);
 	}
 
