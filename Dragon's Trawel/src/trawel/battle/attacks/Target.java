@@ -49,6 +49,10 @@ public class Target{
 	public List<Attack.Wound> pierceWounds = new ArrayList<Attack.Wound>();
 	/**
 	 * for mapped parts, variants must be in same order
+	 * supports inserting
+	 * {} = insert the base name here, but base name will be overridden with children names if they don't have variants themselves
+	 * [] = insert base name here
+	 * if neither is present, will not use name
 	 */
 	public String[] variants = null;
 	//used for 'left' and 'right' arms- they should be mechanically the same

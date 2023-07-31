@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
@@ -126,7 +127,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "arm";
-		t.variants = new String[] {"right ","left "};
+		t.variants = new String[] {"right {}","left {}"};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -159,8 +160,8 @@ public class TargetFactory {
 		targetList.add(t);
 		
 		t = new Target();
-		t.name = "";//might be able to?
-		t.variants = new String[] {"thumb","index finger","middle finger","ring finger","pinkie"};
+		t.name = "finger";//might be able to?
+		t.variants = new String[] {"thumb","index []","middle []","ring []","pinkie []"};
 		t.hit = .6;
 		t.sharp = 1;
 		t.blunt = 1;
@@ -176,7 +177,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "leg";
-		t.variants = new String[] {"right ","left "};
+		t.variants = new String[] {"right {}","left {}"};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -203,7 +204,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "eye";
-		t.variants = new String[] {"right ","left "};
+		t.variants = new String[] {"right []","left []"};
 		t.hit = .1;
 		t.sharp = 5;
 		t.blunt = 3;
@@ -407,7 +408,7 @@ public class TargetFactory {
 		targetList.add(t);
 		
 		t = new Target();
-		t.variants = new String[] {"right fore","left fore","right hind","left hind"};
+		t.variants = new String[] {"right fore{}","left fore{}","right hind{}","left hind{}"};
 		t.name = "leg";
 		t.hit = 1;
 		t.sharp = 1.1;
@@ -469,7 +470,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "eye";
-		t.variants = new String[] {"right ","left "};
+		t.variants = new String[] {"right []","left []"};
 		t.hit = .1;
 		t.sharp = 5;
 		t.blunt = 3;
@@ -579,7 +580,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "arm";
-		t.variants = new String[] {"right ","left "};
+		t.variants = new String[] {"right {}","left {}"};
 		t.hit = 1;
 		t.sharp = 1;
 		t.blunt = .6;
@@ -598,7 +599,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "leg";
-		t.variants = new String[] {"right ","left "};
+		t.variants = new String[] {"right {}","left {}"};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -619,7 +620,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "leg";
-		t.variants = new String[] {"right ","left "};
+		t.variants = new String[] {"right {}","left {}"};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -692,7 +693,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "arm";
-		t.variants = new String[] {"right ","left "};
+		t.variants = new String[] {"right {}","left {}"};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -710,7 +711,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "leg";
-		t.variants = new String[] {"right ","left "};
+		t.variants = new String[] {"right {}","left {}"};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -724,7 +725,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "eye";
-		t.variants = new String[] {"right ","left "};
+		t.variants = new String[] {"right {}","left {}"};
 		t.hit = .1;
 		t.sharp = 5;
 		t.blunt = 3;
@@ -794,7 +795,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "arm";
-		t.variants = new String[] {"right ","left "};
+		t.variants = new String[] {"right {}","left {}"};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -811,7 +812,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "leg";
-		t.variants = new String[] {"right ","left "};
+		t.variants = new String[] {"right {}","left {}"};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -825,7 +826,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "eye";
-		t.variants = new String[] {"right ","left "};
+		t.variants = new String[] {"right []","left []"};
 		t.hit = .1;
 		t.sharp = 5;
 		t.blunt = 3;
@@ -901,7 +902,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "wing";
-		t.variants = new String[] {"right ","left "};
+		t.variants = new String[] {"right {}","left {}"};
 		t.hit = 2;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -917,7 +918,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "leg";
-		t.variants = new String[] {"right ","left "};
+		t.variants = new String[] {"right {}","left {}"};
 		t.hit = 1;
 		t.sharp = 1.1;
 		t.blunt = .8;
@@ -934,7 +935,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "eye";
-		t.variants = new String[] {"right ","left "};
+		t.variants = new String[] {"right {}","left {}"};
 		t.hit = .1;
 		t.sharp = 5;
 		t.blunt = 3;
@@ -1486,14 +1487,50 @@ public class TargetFactory {
 					int total = variantNum*TargetFactory.totalNeededVariants(t.type,t.attachNumber);
 					for (int i = 0; i < total;i++) {
 						String str = "";
+						String holdReplaceName = null;
+						String strLast = null;
+						String strCur = "";
+						int passing = -1;
 						int[] vAttaches = new int[list.size()];
 						for (int j = 0;j < list.size(); j++) {
 							Target subT = list.get(j);
-							if (j == list.size()-1) {
-								str += (subT.variants == null ? subT.name : subT.variants[moduloTarget(subT,i)] +subT.name);
+							boolean lastPass = (j == list.size()-1);
+							if (lastPass) {
+								strCur = (subT.variants == null ? subT.name : subT.variants[moduloTarget(subT,i)]);
 							}else {
-								str += namePermutation(list.get(j),i);
+								strCur= namePermutation(list.get(j),i);
+								if (passing >= 0) {
+									passing++;
+								}else {
+									passing = strCur.contains("{}") ? 0 : -1;
+								}
 							}
+							
+							strCur = strCur.replaceAll(Pattern.quote("[]"),subT.name + (!lastPass ? "'s " : ""));
+							if (passing < 0 || (lastPass && strLast == null)) {
+								str += strCur.replaceAll(Pattern.quote("{}"),subT.name + (!lastPass ? "'s " : ""));//idk if 's will ever trigger here rn
+							}else {
+								if ((strCur.equals(strLast) || passing == 0)
+										&& !lastPass) {
+									//pass down
+									holdReplaceName = subT.name;
+								}else {
+									//different
+									if (subT.variants == null || holdReplaceName == null) {
+										strCur = strLast.replaceAll(Pattern.quote("{}"),subT.name + (!lastPass ? "'s " : ""));
+										passing = -1;
+									}else {
+										strCur = (strLast + strCur).replaceAll(Pattern.quote("{}"),holdReplaceName + (!lastPass ? "'s " : ""));
+										passing = -1;
+									}
+									
+									holdReplaceName = subT.name;
+									str+=strCur;
+								}
+							}
+							
+							strLast = strCur;
+							
 							vAttaches[j] = (subT.variants == null ? -1 : moduloTarget(subT,i));
 						}
 						targets.add(t);
@@ -1504,7 +1541,7 @@ public class TargetFactory {
 					int j = 0;
 					for (int i = 0; i < t.variants.length;i++) {
 						targets.add(t);
-						variants.add(new VariantResolver(i,t.variants[i]+ t.name));
+						variants.add(new VariantResolver(i,t.variants[i].replaceAll(Pattern.quote("[]"),t.name).replaceAll(Pattern.quote("{}"),t.name)));
 					}
 				}
 			}
@@ -1515,7 +1552,8 @@ public class TargetFactory {
 		return list;
 	}
 	public static String namePermutation(Target t,int toMod) {
-		return (t.variants == null ? "" : t.variants[moduloTarget(t,toMod)] +t.name+"'s ");
+		return (t.variants == null ? "" : t.variants[moduloTarget(t,toMod)]);
+		//return (t.variants == null ? "" : t.variants[moduloTarget(t,toMod)] +t.name+"'s ");
 	}
 	
 	public static int moduloTarget(Target t, int i) {
