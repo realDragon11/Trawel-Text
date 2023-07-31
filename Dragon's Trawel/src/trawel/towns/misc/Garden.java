@@ -2,6 +2,9 @@ package trawel.towns.misc;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuBack;
+import derg.menus.MenuGenerator;
+import derg.menus.MenuItem;
 import trawel.Networking;
 import trawel.extra;
 import trawel.time.TimeContext;
@@ -36,18 +39,17 @@ public class Garden extends Feature {
 		Networking.setArea("shop");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|garden|Garden|");
-		while (true) {
-			for (int i = 0; i < plants.size();i++) {
-				extra.println((i+1) + " garden section containing " + plants.get(i).contains);
+		extra.menuGo(new MenuGenerator() {
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				for (PlantSpot ps: plants) {
+					list.add(ps.getMenuForGarden());
+				}
+				list.add(new MenuBack("leave"));
+				return list;
 			}
-			extra.println(plants.size()+1 + " exit");
-			int in = extra.inInt(plants.size()+1);
-			if (in <= plants.size()) {
-				plants.get(in-1).go();
-			}else {
-				break;
-			}
-		}
+		});
 	}
 
 	@Override

@@ -174,23 +174,6 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 				return mList;
 			}
 		});
-		boolean breakit = false;
-		while (!breakit) {
-			extra.println("Contains: " + contains);
-			extra.println(contains.equals("") ? "1 plant" : "1 take");
-			extra.println("2 leave");
-			switch (extra.inInt(2)) {
-			case 1:
-				if (contains.equals("")) {
-					plant();
-				}else {
-					take();
-				}
-			case 2:
-				breakit = true;
-				break;
-			}
-		}
 	}
 	
 	private void take() {
@@ -276,5 +259,21 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 		case "angry bee hive": if (timer >= 0) { contains = "bee hive";}break;
 		}
 		return null;
+	}
+	
+	public MenuItem getMenuForGarden() {
+		return new MenuSelect() {
+
+			@Override
+			public String title() {
+				return contains == "" ? "empty plant spot" : "section- " + contains;
+			}
+
+			@Override
+			public boolean go() {
+				PlantSpot.this.go();
+				return false;
+			}
+		};
 	}
 }
