@@ -3,7 +3,9 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import trawel.AIClass;
 import trawel.Effect;
@@ -42,8 +44,6 @@ import trawel.towns.fort.SubSkill;
 
 public class Combat {
 	//instance variables
-	private Person attacker;
-	private Person defender;
 	public List<Person> survivors;
 	public List<Person> killed;
 	private boolean newTarget = false;
@@ -69,6 +69,8 @@ public class Combat {
 			extra.println("sbp stands for sharp blunt pierce- the three damage types.");
 			extra.println("Hp is restored at the start of every battle.");
 		}*/
+		Person attacker;
+		Person defender;
 		//Setup
 		manOne.battleSetup();
 		//extra.println("");
@@ -213,15 +215,47 @@ public class Combat {
 	public Combat(World w,List<List<Person>> people) {
 		this(w,null,people);
 	}
+	
+	private List<List<Person>> liveLists;
+	private List<List<Person>> targetLists;
+	private Map<Person,BattleData> dataMap;
+	private List<Person> totalList, killList;
+	private int sides;
+	
+	private class BattleData{
+		public int side;
+		public Person lastAttacker = null;
+	}
+	
 	public Combat(World w, FortHall hall,List<List<Person>> people) {
 		int size = people.size();
-		List<Person> totalList = new ArrayList<Person>();
-		List<Person> killList = new ArrayList<Person>();
-		List<List<Person>> liveLists = new ArrayList<List<Person>>();
+		sides = size;
+		totalList = new ArrayList<Person>();
+		killList = new ArrayList<Person>();
+		liveLists = new ArrayList<List<Person>>();
+		targetLists = new ArrayList<List<Person>>();
+		dataMap = new HashMap<Person,BattleData>();
 		for (int i = 0; i < people.size();i++) {
+			List<Person> subPList = people.get(i);
 			List<Person> newList = new ArrayList<Person>();
-			newList.addAll(people.get(i));
+			for (int j = 0;j < subPList.size();j++) {
+				Person p = subPList.get(j);
+				newList.add(p);
+				BattleData data = new BattleData();
+				data.side = i;
+				dataMap.put(p,data);
+			}
 			liveLists.add(newList);
+			targetLists.add(new ArrayList<Person>());
+		}
+		for (int i = 0; i < people.size();i++) {
+			List<Person> subTList = targetLists.get(i);
+			for (int j = 0; j < people.size();j++) {
+				if (i == j) {
+					continue;
+				}
+				subTList.addAll(people.get(j));
+			}
 		}
 		
 		boolean playerIsInBattle = false;
@@ -255,31 +289,19 @@ public class Combat {
 				totalList.add(p);
 			}
 		}
-		for (List<Person> peoples: liveLists) {//attack set start code now in new loop
-			//DOLATER: make that something DRY and not WET
-			for (Person p: peoples) {
-				Person otherperson = null;
-				while (otherperson == null) {
-					int rand = extra.randRange(0,size-1);
-					List<Person> otherpeople = liveLists.get(rand);
-					if (otherpeople.contains(p) || otherpeople.size() == 0) {
-						continue;//FIXME: one of the few possible hanging sources in the game
-					}
-					otherperson = extra.randList(otherpeople);
-				}
-				if (p.isPlayer()) {
-					otherperson.displayStatsShort();
-					p.getBag().graphicalDisplay(-1,p);
-					otherperson.getBag().graphicalDisplay(1,otherperson);
-				}
-				setAttack(p,otherperson);
-				p.getNextAttack().defender = otherperson;
+		for (Person p: totalList) {
+			Person otherperson = getDefenderFor(p);
+			if (p.isPlayer()) {
+				otherperson.displayStatsShort();
+				p.getBag().graphicalDisplay(-1,p);
+				otherperson.getBag().graphicalDisplay(1,otherperson);
 			}
+			setAttack(p,otherperson);
+			p.getNextAttack().defender = otherperson;
 		}
 		totalFighters = totalList.size();
-		Person quickest= null;//moved out so we can have a default last actor to default as alive
+		Person quickest = null;//moved out so we can have a default last actor to default as alive
 		while(true) {
-
 			double lowestDelay = Double.MAX_VALUE;
 			for (Person p: totalList) {
 				if (lowestDelay > p.getTime()) {
@@ -297,67 +319,45 @@ public class Combat {
 			}
 			
 			this.handleSkillCons(cons, totalList, lowestDelay);
-			
+
 			Person defender = quickest.getNextAttack().defender;
 			boolean wasAlive = defender.isAlive();
+			dataMap.get(defender).lastAttacker = quickest;
 			newTarget = false;
 			AttackReturn atr = handleTurn(quickest,defender,playerIsInBattle,lowestDelay);
-			if (!defender.isAlive() && (wasAlive || totalList.contains(defender))) {
-				extra.println("They die!");
-				quickest.getBag().getHand().addKill();
-				if (quickest.hasSkill(Skill.KILLHEAL)){
-					quickest.addHp(5*quickest.getLevel());
-				}
-				quickest.addKillStuff();
-				totalList.remove(defender);
-				killList.add(defender);
-				for (List<Person> list: liveLists) {
-					if (list.contains(defender)) {
-						list.remove(defender);
-						break;
-					}
-				}
+			if (!defender.isAlive() && wasAlive) {
+				killWrapUp(defender, quickest, false);
 			}else {
 				if (newTarget) {
 					//the defender has been befuddled or confused
-					Person otherperson = null;
-					while (otherperson == null) {
-						int rand = extra.randRange(0,size-1);
-						List<Person> otherpeople = liveLists.get(rand);
-						if ((otherpeople.contains(defender) && extra.chanceIn(3,quickest.getMageLevel()+3)) || otherpeople.size() == 0) {
-							continue;
-						}
-						otherperson = extra.randList(otherpeople);
-						if (otherperson == defender) {
-							continue;
-						}
-						defender.getNextAttack().defender = otherperson;
+					Person newDef = getDefenderForConfusion(defender);
+					if (defender.getNextAttack().defender.isSameTargets(newDef)) {
+						defender.getNextAttack().defender = newDef;
+					}else {
+						//targets don't match, need new attack.
+						//get discount on next one
+						double discount = -Math.max(0,((defender.getTime()-defender.getNextAttack().getSpeed()))/2.0);
+						setAttack(defender,newDef);
+						defender.getNextAttack().defender = newDef;
+						defender.applyDiscount(discount);
 					}
 				}
 			}
-			
+
+
 			//if the attacker is dead, through bleeding or otherwise, they are force removed- they would not have acted if they were already removed
 			if (!quickest.isAlive()) {
-				extra.println(quickest.getName() + " falls to the floor!");
-				//quickest.addKillStuff();
-				totalList.remove(quickest);
-				killList.add(quickest);
-				for (List<Person> list: liveLists) {
-					if (list.contains(quickest)) {
-						list.remove(quickest);
-						break;
-					}
-				}
+				killWrapUp(quickest,dataMap.get(quickest).lastAttacker,true);
 			}
 			
-			int sides = 0;
+			int sidesLeft = 0;
 			for (List<Person> list: liveLists) {
 				if (list.size() > 0) {
-					sides++;
+					sidesLeft++;
 				}
 			}
 			
-			if (sides == 1) {
+			if (sidesLeft <= 1) {
 				break;//end battle
 			}
 		
@@ -365,22 +365,17 @@ public class Combat {
 			Person otherperson = null;
 			if (defender.isAlive() && quickest.getBag().getHand().qualList.contains(Weapon.WeaponQual.DUELING)) {
 				otherperson = defender;
-			}
-			while (otherperson == null) {
+			}else {
 				if (quickest.isPlayer() && Player.player.eaBox.markTarget != null) {
 					if (totalList.contains(Player.player.eaBox.markTarget)) {
 						otherperson = Player.player.eaBox.markTarget;
-						break;
 					}else {
 						Player.player.eaBox.markTarget = null;
 					}
 				}
-				int rand = extra.randRange(0,size-1);
-				List<Person> otherpeople = liveLists.get(rand);
-				if (otherpeople.contains(quickest) || otherpeople.size() == 0) {
-					continue;
+				if (otherperson == null) {
+					otherperson = getDefenderFor(quickest);
 				}
-				otherperson = extra.randList(otherpeople);
 			}
 			if (quickest.isPlayer()) {
 				otherperson.displayStatsShort();
@@ -399,7 +394,7 @@ public class Combat {
 				quickest.advanceTime(Math.min(10,quickest.getTime()-1));
 			}
 			quickest.getNextAttack().defender = otherperson;
-			if (quickest.hasSkill(Skill.LIFE_MAGE)) {
+			/*if (quickest.hasSkill(Skill.LIFE_MAGE)) {
 				for (List<Person> list: liveLists) {
 					if (list.contains(quickest)) {
 						for (Person p: list) {
@@ -407,7 +402,7 @@ public class Combat {
 						}
 					}
 				}
-			}
+			}*/
 			
 		}
 		
@@ -424,6 +419,63 @@ public class Combat {
 	
 	public Combat() {
 		//empty for tests
+	}
+	
+	private Person getDefenderFor(Person attacker) {
+		return extra.randList(targetLists.get(dataMap.get(attacker).side));
+	}
+	
+	private Person getDefenderForConfusion(Person attacker) {
+		//will attempt to target anyone, but if that fails and targets self, revert to old way
+		Person defender = extra.randList(totalList);
+		if (defender == attacker) {
+			return getDefenderFor(attacker);
+		}
+		return defender;
+	}
+	
+	/**
+	 * should not be used outside of killWrapUp
+	 * @return if any change happened in backing data due to this call
+	 */
+	private boolean killRemovePerson(Person dead) {
+		int side = dataMap.get(dead).side;
+		boolean changed = liveLists.get(side).remove(dead);
+		for (int i = 0; i < sides; i++) {
+			if (i == side) {
+				continue;
+			}
+			changed = targetLists.get(i).remove(dead) ? true : changed ;
+		}
+		changed = totalList.remove(dead) ? true : changed ;
+		if (!killList.contains(dead)) {
+			changed = true;
+			killList.add(dead);
+		}
+		return changed;
+	}
+	
+	private boolean killWrapUp(Person dead, Person killer, boolean bledOut) {
+		boolean changed = killRemovePerson(dead);
+		if (changed) {
+			if (bledOut) {
+				extra.println(dead.getName() + " falls to the ground, dead!");
+			}else {
+				extra.println(dead.getName() + " dies!");
+			}
+			dead.addDeath();
+			//can insert a null check here later if need be
+			//DOLATER: need null for starting bleeding, but for now null exceptions are needed
+			killer.addKillStuff();
+			killer.getBag().getHand().addKill();
+			if (dead.isPlayer()) {
+				killer.addPlayerKill();
+			}
+			if (killer.hasSkill(Skill.KILLHEAL)){
+				killer.addHp(5*killer.getLevel());
+			}
+		}
+		return changed;
 	}
 	
 	private static final double depthArmor2 = .25;
@@ -463,7 +515,9 @@ public class Combat {
 			defender.displayArmor();
 			defender.displayHp();
 			if (attacker.hasSkill(Skill.HPSENSE)) {
-			defender.displaySkills();}
+				defender.displaySkills();
+			}
+			defender.debug_print_status(0);
 			str +=(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
 			return new AttackReturn(ATK_ResultCode.NOT_ATTACK,str,null);
 		}
@@ -554,6 +608,7 @@ public class Combat {
 		public boolean reliable = false;
 		public Attack attack;
 		public ATK_ResultCode code;
+		//DOLATER: instead of new target, might be able to ride confusion effects on this
 		public AttackReturn(int sdam,int bdam, int pdam, String str, Attack att) {
 			damage = sdam+bdam+pdam;
 			code = damage > 0 ? ATK_ResultCode.DAMAGE : ATK_ResultCode.ARMOR;
@@ -580,6 +635,7 @@ public class Combat {
 	 * handles elemental damage
 	 * should scale of off % of hp damaged or something to avoid confusing the ai
 	 */
+	//FIXME: should probably move this to attack returns or something??? and the 'handle turn' code
 	public void handleAttackPart2(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender, int damageDone) {
 		double percent = ((double)extra.zeroOut(damageDone))/((double)defender.getMaxHp());
 		if (off.getHand().isEnchantedHit() && !(att.getName().contains("examine"))) {
@@ -1072,5 +1128,6 @@ public class Combat {
 		//manOne.getNextAttack().blind(1 + manOne.getNextAttack().getSpeed()/1000.0);
 		//this blind was here to simulate quicker attacks being harder to dodge, it has been removed
 	}
+	
 		
 }

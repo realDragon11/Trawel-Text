@@ -155,6 +155,9 @@ public class Person implements java.io.Serializable{
 			case QUAD:
 				bodyType = TypeBody.BASIC_QUAD;
 				break;
+			case HUMANOID:
+				bodyType = TypeBody.HUMAN_LIKE;
+				break;
 			default:
 				throw new RuntimeException("invalid target type and flag");
 			}
@@ -1279,8 +1282,11 @@ public class Person implements java.io.Serializable{
 		if (extra.getPrint()) {
 			return;
 		}
-		extra.println(getHp() +" ("+damageDone+")->"+ (getHp()-damageDone) + "/" + getMaxHp());
-		bodystatus.debug_print(true);
+		if (damageDone != 0) {
+			extra.println(getHp() +" ("+damageDone+")->"+ (getHp()-damageDone) + "/" + getMaxHp());
+		}else {
+			bodystatus.debug_print(true);//testing, will have to redo both this and submethods if used for real
+		}
 	}
 	
 	public void multBodyStatus(int spot, double mult) {
@@ -1293,6 +1299,19 @@ public class Person implements java.io.Serializable{
 	
 	public int guessBodyHP(int spot) {
 		return (int) (bodystatus.getRootStatus(spot)*getMaxHp());
+	}
+
+	public boolean isSameTargets(Person other) {
+		return bodyType == other.internalBType();
+	}
+	
+	protected TypeBody internalBType() {
+		return bodyType;
+	}
+	
+	//TODO: should probably declare this to the player
+	public void applyDiscount(double time) {
+		speedFill-=time;
 	}
 
 }

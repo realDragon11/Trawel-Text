@@ -152,32 +152,49 @@ public class AIClass {
 					attacks.add(new Attack(Skill.BLOOD_HARVEST,Player.player.eaBox.bloodTrainLevel, defender.getBag().getRace().targetType));
 				}
 				
-				
+
 			}
-			
-			
-			
+
+
 			if (attacker.isPlayer()) {
-				switch (mainGame.attackDisplayStyle) {
-				case CLASSIC:
-					extra.println("     name                hit    delay    sharp    blunt     pierce");
-					for(Attack a: attacks) {
-						extra.print(j + "    ");
-						a.display(1,attacker,defender);
-						j++;
+				int numb = 8;
+				while (numb == 8) {
+					switch (mainGame.attackDisplayStyle) {
+					case CLASSIC:
+						extra.println("     name                hit    delay    sharp    blunt     pierce");
+						for(Attack a: attacks) {
+							extra.print(j + "    ");
+							a.display(1,attacker,defender);
+							j++;
+						}
+					case TWO_LINE1:
+						for(Attack a: attacks) {
+							extra.print(j + " ");
+							a.display(2,attacker,defender);
+							j++;
+						}
+						break;
 					}
-				case TWO_LINE1:
-					for(Attack a: attacks) {
-						extra.print(j + " ");
-						a.display(2,attacker,defender);
-						j++;
+					extra.println("9 debug examine");
+					numb = extra.inInt(attacks.size(),true)-1;
+					if (numb == 8) {
+						attacker.displayStats();
+						attacker.displayArmor();
+						attacker.displayHp();
+						defender.displayStats();
+						defender.displayArmor();
+						defender.displayHp();
+						if (attacker.hasSkill(Skill.HPSENSE)) {
+							defender.displaySkills();
+						}
+						defender.debug_print_status(0);
+						//new debug examine code
+						numb = extra.inInt(attacks.size(),true)-1;
 					}
-					break;
 				}
-				int numb = extra.inInt(attacks.size())-1;
 				return attacks.get(numb);
 			}
-		return attackTest(attacks,smarts,com, attacker, defender);
+			return attackTest(attacks,smarts,com, attacker, defender);
 	}
 	
 	/**
