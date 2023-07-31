@@ -26,14 +26,13 @@ public class Stance implements java.io.Serializable{
 	 * Make a stance instance.
 	 */
 	public Stance() {
-	attackCount = 1;
-	attacks.add(new Attack("examine",0,50,0,0,0,"You examine your foe...",-1,"examine"));//TODO: replace this system
+		attackCount = 0;
+		//attacks.add(new Attack("examine",0,50,0,0,0,"You examine your foe...",-1,"examine"));//TODO: replace this system
 	}
 	
 	public Stance(List<Attack> a) {
 		attackCount = a.size();
 		attacks = a;
-		
 	}
 
 	//instance methods
@@ -43,9 +42,8 @@ public class Stance implements java.io.Serializable{
 	 * @param newAttack (Attack)
 	 */
 	public void addAttack(Attack newAttack) {
-	attacks.add(newAttack);
-	attackCount++;
-	
+		attacks.add(newAttack);
+		attackCount++;
 	}
 	/**
 	 * Returns the number of attacks in the stance.

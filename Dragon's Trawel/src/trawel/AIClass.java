@@ -157,42 +157,50 @@ public class AIClass {
 
 
 			if (attacker.isPlayer()) {
-				int numb = 8;
-				while (numb == 8) {
-					switch (mainGame.attackDisplayStyle) {
-					case CLASSIC:
-						extra.println("     name                hit    delay    sharp    blunt     pierce");
-						for(Attack a: attacks) {
-							extra.print(j + "    ");
-							a.display(1,attacker,defender);
-							j++;
+				int numb = 9;
+				while (numb == 9 || numb < 1) {
+					if (numb == 9) {
+						switch (mainGame.attackDisplayStyle) {
+						case CLASSIC:
+							extra.println("     name                hit    delay    sharp    blunt     pierce");
+							for(Attack a: attacks) {
+								extra.print(j + "    ");
+								a.display(1,attacker,defender);
+								j++;
+							}
+						case TWO_LINE1:
+							extra.println("Attacks:");
+							for(Attack a: attacks) {
+								extra.print(j + " ");
+								a.display(2,attacker,defender);
+								j++;
+							}
+							break;
 						}
-					case TWO_LINE1:
-						for(Attack a: attacks) {
-							extra.print(j + " ");
-							a.display(2,attacker,defender);
-							j++;
-						}
-						break;
+						extra.println("9 debug examine");
+						numb = extra.inInt(attacks.size(),true);
+					}else {
+						numb = -numb;//restore attack choice
 					}
-					extra.println("9 debug examine");
-					numb = extra.inInt(attacks.size(),true)-1;
-					if (numb == 8) {
-						attacker.displayStats();
-						attacker.displayArmor();
+					if (numb == 9) {
+						extra.print("You have ");
 						attacker.displayHp();
 						defender.displayStats();
+						
+						defender.displaySkills();
+						defender.debug_print_status(0);
+						
 						defender.displayArmor();
 						defender.displayHp();
-						if (attacker.hasSkill(Skill.HPSENSE)) {
-							defender.displaySkills();
-						}
-						defender.debug_print_status(0);
 						//new debug examine code
-						numb = extra.inInt(attacks.size(),true)-1;
+						extra.println("Press 9 to repeat attacks.");
+						numb = extra.inInt(attacks.size(),true);
+						if (numb != 9) {
+							numb = -numb;//store attack choice
+						}
 					}
 				}
-				return attacks.get(numb);
+				return attacks.get(numb-1);
 			}
 			return attackTest(attacks,smarts,com, attacker, defender);
 	}
