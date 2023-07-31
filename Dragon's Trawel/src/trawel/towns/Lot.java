@@ -80,8 +80,7 @@ public class Lot extends Feature {
 		case 3: 
 			extra.println("Donate to the town?");
 			if (extra.yesNo()) {
-				town.enqueneRemove(this);
-				town.enqueneAdd(new TravelingFeature(this.town));;
+				town.replaceFeature(this,new TravelingFeature(this.town));
 			}break;
 		case 4: 
 			if (Player.bag.getGold() >= minecost) {
@@ -107,6 +106,9 @@ public class Lot extends Feature {
 				}break;
 		case 6: return;
 		}
+		if (construct != null) {
+			tutorialText = "Your " + construct + " is under construction.";
+		}
 		}else {
 			extra.println("Your " + construct + " is being built.");
 		}
@@ -117,13 +119,14 @@ public class Lot extends Feature {
 		if (constructTime >= 0) {
 			constructTime-=time;
 		if (construct != null && constructTime <= 0) {
+			Feature add = null;
 			switch (construct) {//TODO: enquene add might be better off in time events
-			case "inn": town.enqueneAdd(new Inn("your inn (" + town.getName() + ")",tier,town,Player.player));break;
-			case "arena":town.enqueneAdd(new Arena("your arena (" + town.getName() + ")",tier,1,24,200,1,Player.player));break;
-			case "mine": town.enqueneAdd(new Mine("your mine (" + town.getName() + ")",town,Player.player,NodeFeature.Shape.NONE));break;
-			case "garden": town.enqueneAdd(new Garden(town));
+			case "inn": add = (new Inn("your inn (" + town.getName() + ")",tier,town,Player.player));break;
+			case "arena":add = (new Arena("your arena (" + town.getName() + ")",tier,1,24,200,1,Player.player));break;
+			case "mine": add = (new Mine("your mine (" + town.getName() + ")",town,Player.player,NodeFeature.Shape.NONE));break;
+			case "garden": add = (new Garden(town));
 			}
-			town.enqueneRemove(this);
+			town.enqueneReplace(this,add);
 			constructTime = -2;
 		}
 		}

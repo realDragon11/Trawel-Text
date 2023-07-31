@@ -146,7 +146,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 							if (Player.bag.getGold() > removecost) {
 								extra.println("You pay for the reform programs.");
 								Player.bag.modGold(-removecost);
-								town.enqueneRemove(sl);
+								town.enqueneRemove(sl);//TODO: replace with like 'residental district'
 								return true;
 							}else {
 								extra.println("You can't afford to uplift the slum out of poverty.");

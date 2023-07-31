@@ -468,9 +468,11 @@ public final class extra {
 						extra.println("9 " + m.title());
 						forceLast = true;
 						//force last must be last, and pickable
-						break;
+						//UPDATE: it works with other labels after it now
+						continue;
 					}else {
 						if (m.canClick()) {
+							assert forceLast == false;
 							extra.println(v + " " + m.title());
 							v++;
 							subList.add(m);

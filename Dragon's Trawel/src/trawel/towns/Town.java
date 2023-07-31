@@ -319,7 +319,7 @@ public class Town extends TContextOwner{
 
 							@Override
 							public String title() {
-								return "Roads are the most basic way to travel from town to town.\nTry exploring the town a bit before moving on!";
+								return " Roads are the most basic way to travel from town to town.\nTry exploring the town a bit before moving on!";
 							}});
 					}
 				}
@@ -341,7 +341,7 @@ public class Town extends TContextOwner{
 
 							@Override
 							public String title() {
-								return "Teleporters are like roads, but don't require physical connection.";
+								return " Teleporters are like roads, but don't require physical connection.";
 							}});
 					}
 				}
@@ -363,7 +363,7 @@ public class Town extends TContextOwner{
 
 							@Override
 							public String title() {
-								return "Ports will take you through sea routes to other towns.";
+								return " Ports will take you through sea routes to other towns.";
 							}});
 					}
 				}
@@ -376,7 +376,7 @@ public class Town extends TContextOwner{
 	
 								@Override
 								public String title() {
-									return feature.getTutorialText();
+									return " "+feature.getTutorialText();
 								}
 								@Override
 								public boolean canClick() {
@@ -404,7 +404,7 @@ public class Town extends TContextOwner{
 
 						@Override
 						public String title() {
-							return "Buying a lot will allow you to add a new building to this town, with enough gold.";
+							return " Buying a lot will allow you to add a new building to this town, with enough gold.";
 						}});
 					}
 				}
@@ -422,6 +422,14 @@ public class Town extends TContextOwner{
 						return true;
 					}
 				});
+				if (Player.getTutorial()) {
+					mList.add(new MenuLine() {
+
+						@Override
+						public String title() {
+							return " The 'you' menu includes options and your stats.";
+						}});
+				}
 				return mList;
 			}});
 		
@@ -743,6 +751,12 @@ public class Town extends TContextOwner{
 		features.add(feature);
 		feature.setTownInternal(this);
 	}
+	
+	public void replaceFeature(Feature replaceThis, Feature with) {
+		features.add(features.indexOf(replaceThis),with);
+		features.remove(replaceThis);
+		with.setTownInternal(this);
+	}
 
 
 	@Override
@@ -774,16 +788,29 @@ public class Town extends TContextOwner{
 		eventsModified = true;
 		timeScope.addEvent(new StructuralFeatureEvent(f,true));
 	}
+	public void enqueneReplace(Feature replaceThis, Feature with) {
+		eventsModified = true;
+		timeScope.addEvent(new StructuralFeatureEvent(with,replaceThis));
+	}
 	
 	public class StructuralFeatureEvent extends TimeEvent{
 		private static final long serialVersionUID = 1L;
 		
 		public final Feature modify;
 		public final boolean adding;
+		public final Feature replace;
 		
 		public StructuralFeatureEvent(Feature modify,boolean adding) {
 			this.modify = modify;
 			this.adding = adding;
+			this.replace = null;
+			context = ContextLevel.TOWN;
+		}
+		
+		public StructuralFeatureEvent(Feature add,Feature replace) {
+			this.modify = add;
+			this.adding = true;
+			this.replace = replace;
 			context = ContextLevel.TOWN;
 		}
 		
@@ -977,7 +1004,12 @@ public class Town extends TContextOwner{
 					if (e instanceof StructuralFeatureEvent) {
 						StructuralFeatureEvent sfe = (StructuralFeatureEvent)e;
 						if (sfe.adding) {
-							addFeature(sfe.modify);
+							if (sfe.replace == null) {
+								addFeature(sfe.modify);
+							}else {
+								replaceFeature(sfe.replace,sfe.modify);
+							}
+							
 							sfe.modify.reload();//important to give it it's context
 						}else {
 							features.remove(sfe.modify);

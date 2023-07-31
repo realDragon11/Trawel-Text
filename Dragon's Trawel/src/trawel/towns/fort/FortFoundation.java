@@ -177,8 +177,7 @@ public class FortFoundation extends FortFeature {
 					built = (new Hunter(town.getTier(),3));
 					break;
 				}
-				town.enqueneAdd(built);
-				town.enqueneRemove(this);
+				town.enqueneReplace(this, built);
 			}
 		}
 		return null;
