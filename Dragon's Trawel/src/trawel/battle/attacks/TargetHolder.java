@@ -2,7 +2,6 @@ package trawel.battle.attacks;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import trawel.extra;
 import trawel.battle.attacks.TargetFactory.TargetType;
@@ -117,17 +116,14 @@ public class TargetHolder {
 	
 	public void debug_print(boolean full) {
 		if (full) {
-			//Stack<List<TargetReturn>> stack = new Stack<List<TargetReturn>>();//sadly I'm on java 8 so no '" ".repeat'
-			//List<TargetReturn> children;
-			//List<TargetReturn> curLevel = null;
 			List<Integer> seen = new ArrayList<Integer>();
 			for (TargetReturn b: plan.rootTargetReturns()) {
 				printSpot(b.spot,1);
-				if (seen.contains(b.slot)) {
+				if (seen.contains(b.spot)) {
 					extra.println("    ...");
 				}else {
-					seen.add(b.slot);
-					List<TargetReturn> children = plan.getDirectChildren(b.slot);
+					seen.add(b.spot);
+					List<TargetReturn> children = plan.getDirectChildren(b.spot);
 					if (children.size() > 0) {
 						debug_printLAYER(children,2);
 					}
@@ -144,16 +140,17 @@ public class TargetHolder {
 	
 	private void debug_printLAYER(List<TargetReturn> layer, int num) {
 		for (TargetReturn tr: layer) {
-			List<TargetReturn> children = plan.getDirectChildren(tr.slot);
+			List<TargetReturn> children = plan.getDirectChildren(tr.spot);
 			printSpot(tr.spot,num);
-			if (children.size() > 0) {
+			if (children.size() > 0 && num < 20) {
 				debug_printLAYER(children,num+2);
 			}
 		}
 	}
 	private void printSpot(int spot, int buffer) {
+		TargetReturn tr = plan.getTargetReturn(spot);
 		extra.println(extra.spaceBuffer(buffer)+
-				getPartName(spot) + " " +spot+": " + plan.getMap(spot) + "-" + extra.format2.format(getStatus(spot)) + " attach: " +plan.getAttach(spot)
+				getPartName(spot) + " " +spot+": " + plan.getMap(spot) + "-" + (tr.tar.passthrough ? "p" : extra.format2.format(getStatus(spot))) + " attach: " + (plan.getAttach(spot) != -1 ? plan.getAttach(spot) : "-")
 				);
 	}
 

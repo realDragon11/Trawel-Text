@@ -18,7 +18,7 @@ public class WeaponAttackFactory {
 	
 	public WeaponAttackFactory() {
 		Attack tempAttack;
-		Stance martialStance = new Stance();
+		Stance martialStance = new Stance();//FIXME attacks need reworked
 		tempAttack = new Attack("slash",1.5,100.0,40,5,0,"X` slashes at Y` with their Z`!",1,"sharp");
 		martialStance.addAttack(tempAttack);
 		martialStance.addAttack(tempAttack);

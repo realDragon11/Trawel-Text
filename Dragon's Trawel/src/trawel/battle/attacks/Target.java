@@ -57,4 +57,10 @@ public class Target{
 	public String[] variants = null;
 	//used for 'left' and 'right' arms- they should be mechanically the same
 	//that doesn't mean you can't have an 'arm' mechanic, just that either arm should always count
+	
+	/**
+	 * if set to true, this attach part won't have it's own condition
+	 * only applies to attachNumber things
+	 */
+	public boolean passthrough = false;
 }

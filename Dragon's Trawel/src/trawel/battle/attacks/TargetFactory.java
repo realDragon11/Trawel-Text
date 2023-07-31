@@ -179,6 +179,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.MANGLED);
 		t.pierceWounds.add(Attack.Wound.MANGLED);
 		t.attachNumber = -2;
+		t.passthrough = true;
 		targetList.add(t);
 		
 		t = new Target();
@@ -1070,10 +1071,12 @@ public class TargetFactory {
 			List<List<Target>> subTargets = new ArrayList<List<Target>>();
 			List<List<Integer>> subVariants = new ArrayList<List<Integer>>();
 			multiCount = new ArrayList<Integer>();
+			uniqueParts = 0;
 			for (int i = 0; i < allTargets.size();i++) {
 				Target t = allTargets.get(i);
 				if (t.mappingNumber == 0 && t.attachNumber == 0) {
 					singles.add(t);
+					uniqueParts++;
 				}else {
 					int special = getSpecialNum(t,allVariants.get(i));
 					if (t.mappingNumber > 0) {
@@ -1083,30 +1086,36 @@ public class TargetFactory {
 							multiNums.add(special);
 							subTargets.add(new ArrayList<Target>());
 							subVariants.add(new ArrayList<Integer>());
-							multiCount.add(variNum == -1 ? 1 : 0);//if we don't have variants, set 1
+							if (variNum == -1) {//if we don't have variants, set 1
+								multiCount.add(1);
+								uniqueParts++;
+							}else {
+								multiCount.add(0);
+							}
 							index = multiNums.size()-1;
 						}
 						if (variNum != -1 && !subVariants.get(index).contains(variNum)) {//add all variants
 							multiCount.set(index,multiCount.get(index) + 1);
+							uniqueParts++;
 						}
 						subTargets.get(index).add(t);
 						subVariants.get(index).add(variNum);
 					}else {
-						/*
-						while (multiNums.indexOf(special) != -1) {
-							special += 1_000;
-						}*/
 						multiNums.add(special);//DOLATER might be a better way
-						multiCount.add(1);
+						if (t.passthrough) {
+							multiCount.add(0);
+						}else {
+							multiCount.add(1);
+							uniqueParts++;
+						}
 						subTargets.add(null);
 						subVariants.add(null);
-						//attachNums.add(allVariants.get(i));
 					}
 					
 				}
 			}
 			offset = singles.size();
-			uniqueParts = offset + multiSum(multiNums.size())+1;//DOLATER off by one error???
+			//uniqueParts = offset + multiSum(multiNums.size())+1;//DOLATER off by one error???
 			map = new int[allTargets.size()];
 			attached = new int[allTargets.size()];
 			//the maps converts an alltarget number to a condition arr number
@@ -1117,9 +1126,15 @@ public class TargetFactory {
 					if (t.attachNumber == 0) {
 						map[i] = singles.indexOf(t);
 					}else {
-						VariantResolver vr = allVariants.get(i);
-						int index = multiNums.indexOf(getSpecialNum(t,vr));
-						map[i] = mapNumForAttach(offset,multiSum(index),vr.combo);
+						if (t.passthrough) {
+							map[i] = -1;//need to do it in a later pass
+						}else {
+							VariantResolver vr = allVariants.get(i);
+							int index = multiNums.indexOf(getSpecialNum(t,vr));
+							int a = mapNumForAttach(offset,index,vr.combo);
+							map[i] = a;
+							extra.println(t.name + i + " " +a + " " + map[i]);
+						}
 					}
 				}else {
 					int index = multiNums.indexOf(getSpecialNum(t,null));
@@ -1129,12 +1144,7 @@ public class TargetFactory {
 					}else {
 						subindex = subVariants.get(index).indexOf(allVariants.get(i).variant);
 					}
-					//very fancy system to make each variant mappable
 					map[i] = offset + multiSum(index) + subindex;
-					//offset = singlets
-					//multisum gets all the prior counts of multis taking up space
-					//the last bit gets our value within the current multi
-					//System.err.println(subindex +" " +subVariants.get(index).get(subindex));
 				}
 			}
 			//two pass makes this much easier to write from this point, probably could have done it better
@@ -1142,22 +1152,14 @@ public class TargetFactory {
 				Target t = allTargets.get(i);
 				if (t.attachNumber == 0) {
 					attached[i] = -1;
-					tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i,-1));
+					//tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i,-1));
 				}else {
 					attached[i] = -1;
 					VariantResolver vr = allVariants.get(i);
 					
 					int raw = t.attachNumber;
 					if (raw < 0) {//attach chain
-						/*
-						int special = getSpecialNum(t,vr);
-						int index = multiNums.indexOf(special);
-						
-						attached[i] = mapNumForAttach(offset, index, vr.combo);
-						assert attached[i] >= 0 && attached[i] < attached.length;
-						tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i,attached[i]));
-						*/
-						//no a very effective way, but it should work.
+						//not a very effective way, but it should work.
 						int[] copy = new int[vr.vAttaches.length-1];
 						for (int j = 0; j < vr.vAttaches.length-1;j++) {
 							copy[j] = vr.vAttaches[j];
@@ -1177,8 +1179,8 @@ public class TargetFactory {
 							}
 							//assert isSame == subvr.vAttaches.equals(copy);//apparently something weird makes these not equal
 							if (isSame) {
-								attached[i] = map[j];
-								tRets.add(new TargetReturn(t,vr,map[i],i,attached[i]));
+								attached[i] = j;//map[j];
+								//tRets.add(new TargetReturn(t,vr,map[i],i,attached[i]));
 								break;
 							}
 						}
@@ -1195,8 +1197,8 @@ public class TargetFactory {
 								if (vr.vAttaches[0] != subvr.variant) {//%subvariants
 									continue;//not the one we need
 								}
-								attached[i] = map[j];//connect to base map
-								tRets.add(new TargetReturn(t,vr,map[i],i,attached[i]));
+								attached[i] = j;//map[j];//connect to base map
+								//tRets.add(new TargetReturn(t,vr,map[i],i,attached[i]));
 								break;
 							}
 						}
@@ -1206,6 +1208,25 @@ public class TargetFactory {
 						throw new RuntimeException(this.name()+ "could not find base "+raw+" map to attach to");
 					}
 				}
+			}
+			//third pass :DDDDD
+			//which is actually any number of passes D:
+			boolean canEnd = false;
+			while (!canEnd) {
+				canEnd = true;
+				for (int i = 0;i < map.length;i++) {
+					if (map[i] == -1) {
+						if (map[attached[i]] == -1) {
+							canEnd = false;
+							continue;
+						}else {
+							map[i] = map[attached[i]];
+						}
+					}
+				}
+			}
+			for (int i = 0; i < map.length;i++) {
+				tRets.add(new TargetReturn(allTargets.get(i),allVariants.get(i),map[i],i,attached[i]));
 			}
 		}
 		
@@ -1223,7 +1244,8 @@ public class TargetFactory {
 		}
 		
 		protected int mapNumForAttach(int offset, int index, int combo) {
-			return offset + multiSum(index-1);//combo part of multisum
+			return offset + multiSum(index);//combo part of multisum
+			//-1 because that's the end of the arrlist
 		}
 		
 		/*
@@ -1255,7 +1277,7 @@ public class TargetFactory {
 			int total = 0;
 			for (int i = 0; i < allVariants.size();i++) {
 				TargetReturn tr = tRets.get(i);
-				if (tr.attachSlot == slot) {
+				if (tr.attachSpot == slot) {
 					total += refPartsFrom(tr.spot);
 				}else {
 					if (tr.spot == slot) {
@@ -1268,11 +1290,11 @@ public class TargetFactory {
 		/**
 		 * fairly slow
 		 */
-		public List<TargetReturn> getDirectChildren(int slot){
+		public List<TargetReturn> getDirectChildren(int spot){
 			List<TargetReturn> list = new ArrayList<TargetReturn>();
 			for (int i = 0; i < tRets.size();i++) {
 				TargetReturn tr = tRets.get(i);
-				if (tr.attachSlot == slot) {
+				if (tr.attachSpot == spot) {
 					list.add(tr);
 				}
 			}
@@ -1290,8 +1312,8 @@ public class TargetFactory {
 			return list;
 		}
 		
-		public boolean isRoot(int slot) {
-			return tRets.get(slot).attachSlot == -1;
+		public boolean isRoot(int spot) {
+			return attached[spot] == -1;
 		}
 		
 		public List<Integer> rootSlots(){
@@ -1329,14 +1351,14 @@ public class TargetFactory {
 			public final Target tar;
 			public final int slot;
 			public final int spot;
-			public final int attachSlot;
+			public final int attachSpot;
 			
 			public TargetReturn(Target tar, VariantResolver vari, int mapLoc, int spot, int attachSpot){
 				this.variant = vari;
 				this.tar = tar;
 				this.slot = mapLoc;
 				this.spot = spot;
-				this.attachSlot = attachSpot;
+				this.attachSpot = attachSpot;
 			}
 			
 			public String getName() {
@@ -1365,11 +1387,11 @@ public class TargetFactory {
 		}
 		
 		public int getMap(int spot) {
-			return tRets.get(spot).slot;
+			return map[spot];
 		}
 		
 		public int getAttach(int spot) {
-			return tRets.get(spot).attachSlot;
+			return attached[spot];
 		}
 		public TargetReturn getTargetReturn(int spot) {
 			return tRets.get(spot);
