@@ -14,6 +14,7 @@ import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuGeneratorPaged;
 import derg.menus.MenuItem;
+import derg.menus.MenuLast;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import scimech.combat.MechCombat;
@@ -228,7 +229,7 @@ public class mainGame {
 						advancedOptions();
 						return false;
 					}});
-				mList.add(new MenuSelect() {
+				mList.add(new MenuLast() {
 
 					@Override
 					public String title() {
@@ -693,13 +694,10 @@ public class mainGame {
 	 */
 	public static void main(String[] args) {
 		inEclipse = false;
+		try {
 		extra.setMainThread();
 		new WorldGen();
-		try {
-			logStream = new PrintStream("log.txt");
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		}
+		logStream = new PrintStream("log.txt");
 		extra.println("Dragon's Trawel "+VERSION_STRING);
 		extra.println(
 				" ___________  ___  _    _ _____ _     \r\n" + 
@@ -732,33 +730,49 @@ public class mainGame {
 			}
 			
 		}
-		try {
-		
 		new Networking();
 		if (autoConnect) {
 			extra.println("Please wait for the graphical to load...");
 			Networking.autoConnect();
 		}
-		
-		mainMenu();
-		}//catch (Exception )
-		catch(Exception e) {
-			System.setErr(System.out);
+		}catch(Exception e) {
+			System.out.println("There was an error when setting up Trawel.");
 			e.printStackTrace();
-			if (logStreamIsErr) {
-				System.setErr(logStream);
-			}
+			
 			extra.println("[jitter]Trawel has encountered an exception. Please report to realDragon. More details can be found on the command prompt.");
-			System.out.println("ERROR: "+ (e.getMessage() != null ? (e.getMessage()) :"null" + e.getStackTrace()));
-			if (e.getMessage() == null) {
-				main(args);
-			} 
-			if ((!e.getMessage().equals("invalid input stream error") && !e.getMessage().equals("No line found"))) {
-			main(args);}
+			extra.println("PREVIEW, SEE ABOVE IN TEXT FOR FULL MESSAGE: "+ (e.getMessage() != null ? (e.getMessage()) :"null" + e.getStackTrace()));
+			System.out.println("Press enter to quit.");
+			extra.inString();
 		}
+		boolean breakErr = false;
+		while (!breakErr) {
+			try {
+				mainMenu();
+			}catch (Exception e) {
+				try {
+					errorHandle(e);
+				}catch(Exception fatal) {
+					System.out.println("Error was fatal. Press enter to close.");
+					breakErr = true;
+				}
+				if (!breakErr) {
+					System.out.println("Press enter to attempt to recover from the error.");
+				}
+				extra.inString();
+			}
+		}
+		
+		
 		//
 		
 		logStream.close();
+	}
+	
+	private static void errorHandle(Exception e) {
+		System.out.println("Error Stacktrace:");
+		e.printStackTrace();
+		extra.println("[jitter]Trawel has encountered an exception. Please report to realDragon. More details can be found on the command prompt.");
+		extra.println((e.getMessage() != null ? (e.getMessage()) :"null" + e.getStackTrace()));
 	}
 
 
