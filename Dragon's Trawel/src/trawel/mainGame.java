@@ -292,9 +292,45 @@ public class mainGame {
 	
 	
 	private static void credits() {
-		extra.println("Made by 'dragon' from realDragon");
-		extra.println("With thanks to the GameMaker discords");
+		extra.println("Made by 'dragon' of realDragon");
+		extra.println("With thanks to many different discords across different programming languages and engines.");
 		extra.println("Achievement icons can be found on game-icons.net");
+		extra.println("Game-Icons.net list:\r\n"
+				+ "    Lorc, http://lorcblog.blogspot.com\r\n"
+				+ "    Delapouite, https://delapouite.com\r\n"
+				+ "    John Colburn, http://ninmunanmu.com\r\n"
+				+ "    Felbrigg, http://blackdogofdoom.blogspot.co.uk\r\n"
+				+ "    John Redman, http://www.uniquedicetowers.com\r\n"
+				+ "    Carl Olsen, https://twitter.com/unstoppableCarl\r\n"
+				+ "    Sbed, http://opengameart.org/content/95-game-icons\r\n"
+				+ "    PriorBlue\r\n"
+				+ "    Willdabeast, http://wjbstories.blogspot.com\r\n"
+				+ "    Viscious Speed, http://viscious-speed.deviantart.com\r\n"
+				+ "    Lord Berandas, http://berandas.deviantart.com\r\n"
+				+ "    Irongamer, http://ecesisllc.wix.com/home\r\n"
+				+ "    HeavenlyDog, http://www.gnomosygoblins.blogspot.com\r\n"
+				+ "    Lucas\r\n"
+				+ "    Faithtoken, http://fungustoken.deviantart.com\r\n"
+				+ "    Skoll\r\n"
+				+ "    Andy Meneely, http://www.se.rit.edu/~andy/\r\n"
+				+ "    Cathelineau\r\n"
+				+ "    Kier Heyl\r\n"
+				+ "    Aussiesim\r\n"
+				+ "    Sparker, http://citizenparker.com\r\n"
+				+ "    Zeromancer\r\n"
+				+ "    Rihlsul\r\n"
+				+ "    Quoting\r\n"
+				+ "    Guard13007, https://guard13007.com\r\n"
+				+ "    DarkZaitzev, http://darkzaitzev.deviantart.com\r\n"
+				+ "    SpencerDub\r\n"
+				+ "    GeneralAce135\r\n"
+				+ "    Zajkonur\r\n"
+				+ "    Catsu\r\n"
+				+ "    Starseeker\r\n"
+				+ "    Pepijn Poolman\r\n"
+				+ "    Pierre Leducq\r\n"
+				+ "    Caro Asercion\r\n"
+				+ "");
 		extra.println("Music by manicInsomniac");
 		extra.println("Art:");
 		extra.println("Character, armor, and weapon art by SmashCooper and Duster. Background art by Damrok and he-who-shall-not-be-named");
