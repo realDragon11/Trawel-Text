@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -27,7 +29,10 @@ public class Networking {
 	private static Scanner in;
 
 	private static PrintWriter netOut, out;
+	private static OutputStream gdxOut;
 	private static Process commandPrompt;
+	
+	private static ConnectType type = ConnectType.NONE;
 	
 	public static OSNUM os;
 	
@@ -77,6 +82,7 @@ public class Networking {
 			out = new PrintWriter(commandPrompt.getOutputStream());
 			netIn = System.in;
 			netOut = new PrintWriter(System.out);
+			gdxOut = System.out;
 			System.setErr(new PrintStream(commandPrompt.getOutputStream()));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -122,22 +128,29 @@ public class Networking {
 	
 	
 	public static void send(String str) {
-		if (!extra.isMainThread()) {
+		if (!extra.isMainThread() || !connected) {
 			return;
 		}
 		if (netOut != null && (!extra.getPrint())) {
-			netOut.println(str);
+			sendStrong(str);
 			//out.flush();
 		}
 	}
 	
 	public static void sendStrong(String str) {
-		if (!extra.isMainThread()) {
+		if (!extra.isMainThread() || !connected) {
 			return;
 		}
-		if (netOut != null) {	
+		if (gdxOut != null) {
+			try {
+				sendHeader(HeaderType.LEGACY);
+				sendStringContent(str);
+				commit();
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}else {
 			netOut.println(str);
-			//out.flush();
 		}
 	}
 	
@@ -259,5 +272,54 @@ public class Networking {
 	public static void printlocalln(String print) {
 		out.println(print);
 		out.flush();
+	}
+
+	public static void printlnTo(String string) {
+		switch (type) {
+		case GDX:
+			try {
+				sendHeader(HeaderType.PRINTLN);
+				sendStringContent(string);
+				commit();
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			break;
+		case LEGACY:
+			//FIXME after update text hinting/display code, make the code here unupdate it
+			//that or make a dedicated fancy text builder class
+			Networking.send("println|"+ string + "|");
+			break;		
+		}
+	}
+	
+	public enum HeaderType{
+		PRINTLN, LEGACY
+	}
+	
+	//for codes:
+	//https://en.wikipedia.org/wiki/UTF-8#Codepage_layout
+	//https://en.wikipedia.org/wiki/C0_and_C1_control_codes#Basic_ASCII_control_codes
+	
+	
+	private static void sendHeader(HeaderType hType)  throws IOException{
+		gdxOut.write(1);//start of heading
+		switch (hType) {
+		default:
+			gdxOut.write(hType.ordinal());
+			break;
+		}
+		gdxOut.write(2);//start of text
+	}
+	
+	private static void sendStringContent(String str) throws IOException {
+		byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
+		gdxOut.write(bytes);
+		gdxOut.write(23);//end transmission block
+	}
+	
+	private static void commit() throws IOException {
+		gdxOut.write(3);//end of text
+		gdxOut.flush();
 	}
 }

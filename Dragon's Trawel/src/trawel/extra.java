@@ -282,7 +282,7 @@ public final class extra {
 			if (!printMode) {
 				Networking.printlocalln(stripPrint(printStuff+str));
 				detectInputString(stripPrint(printStuff +str));
-				Networking.send("println|"+ printStuff + str + "|");
+				Networking.printlnTo(printStuff + str);
 				printStuff = "";
 			}
 			
