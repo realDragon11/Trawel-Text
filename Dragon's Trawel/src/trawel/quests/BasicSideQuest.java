@@ -88,10 +88,6 @@ public class BasicSideQuest implements Quest{
 			q.targetName = extra.choose("totem","heirloom","keepsake","letter","key");
 			q.qKeywords.add(QKey.FETCH);
 			q.giver = new QuestR() {
-
-				/**
-				 * 
-				 */
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -102,7 +98,7 @@ public class BasicSideQuest implements Quest{
 				@Override
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
-					Player.bag.addGold(20);
+					Player.addGold(10);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,.1f, 0);
 					q.complete();
 					return false;
@@ -162,9 +158,6 @@ public class BasicSideQuest implements Quest{
 			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
 			q.giver = new QuestR() {
 
-				/**
-				 * 
-				 */
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -175,7 +168,7 @@ public class BasicSideQuest implements Quest{
 				@Override
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
-					Player.bag.addGold(40);
+					Player.addGold(30);
 					q.complete();
 					return false;
 				}};
@@ -261,9 +254,6 @@ public class BasicSideQuest implements Quest{
 			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
 			q.giver = new QuestR() {
 
-				/**
-				 * 
-				 */
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -274,7 +264,7 @@ public class BasicSideQuest implements Quest{
 				@Override
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
-					Player.bag.addGold(40);
+					Player.addGold(50);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,2,0);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
 					q.complete();
@@ -326,9 +316,6 @@ public class BasicSideQuest implements Quest{
 			q.targetName = "crate of "+ extra.choose("supplies","goods","trade goods","documents");
 			q.giver = new QuestR() {
 
-				/**
-				 * 
-				 */
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -339,7 +326,7 @@ public class BasicSideQuest implements Quest{
 				@Override
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
-					Player.bag.addGold(20);
+					Player.addGold(20);
 					Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,.1f, 0);
 					Player.player.addMPoints(.2f);
 					q.complete();
@@ -394,9 +381,6 @@ public class BasicSideQuest implements Quest{
 			q.giverName = mguild.getQuarterMaster().getName();
 			q.giver = new QuestR() {
 
-				/**
-				 * 
-				 */
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -407,7 +391,7 @@ public class BasicSideQuest implements Quest{
 				@Override
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
-					Player.bag.addGold(40);
+					Player.addGold(50);
 					Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,1,0);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
 					Player.player.addMPoints(.2f);
@@ -443,9 +427,6 @@ public class BasicSideQuest implements Quest{
 			q.qKeywords.add(QKey.EVIL);
 			q.giver = new QuestR() {
 
-				/**
-				 * 
-				 */
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -456,7 +437,7 @@ public class BasicSideQuest implements Quest{
 				@Override
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
-					Player.bag.addGold(100);
+					Player.addGold(100);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,0, .05f);
 					q.complete();
 					return false;
@@ -466,9 +447,6 @@ public class BasicSideQuest implements Quest{
 				q.giver.overQuest = q;
 			q.target = new QuestR() {
 
-				/**
-				 * 
-				 */
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -516,9 +494,6 @@ public class BasicSideQuest implements Quest{
 			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
 			q.giver = new QuestR() {
 
-				/**
-				 * 
-				 */
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -529,7 +504,7 @@ public class BasicSideQuest implements Quest{
 				@Override
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
-					Player.bag.addGold(50);
+					Player.addGold(50);
 					q.complete();
 					return false;
 				}};

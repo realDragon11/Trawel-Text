@@ -9,6 +9,7 @@ import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
+import trawel.towns.World;
 
 public class Blacksmith extends Feature {
 	
@@ -41,16 +42,17 @@ public class Blacksmith extends Feature {
 	
 	@Override
 	public void go() {
+		String mname = World.currentMoneyString();
 		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|blacksmith|Blacksmith|");
-		extra.println("You have " + Player.bag.getGold() + " gold.");
-		extra.println("1 forge item for store (" + tier*100 + " gold)");
+		extra.println("You have " + World.currentMoneyDisplay(Player.getGold()) + " and "+Player.bag.getAether()+ " aether.");
+		extra.println("1 forge item for store (" + tier*10 + " "+mname+")");
 		extra.println("2 improve item up to " + Item.getModiferNameColored(tier) +" quality");
 		extra.println("3 exit");
 		switch (extra.inInt(3)) {
 		case 1: 
-			if (Player.bag.getGold() >= tier*100) {
-				Player.bag.addGold(-tier*100);
+			if (Player.getTotalBuyPower() >= tier*10) {
+				Player.buyMoneyAmount(tier*10);
 				store.addAnItem();
 				extra.println("An item has been forged and sent to " + store.getName() + "!");
 			}else {
@@ -68,17 +70,17 @@ public class Blacksmith extends Feature {
 				extra.println("This item is too high in quality to improve here!");
 				break;
 			}
-			int cost = (int) (Math.pow(tier-item.getLevel(),2)*item.getAetherValue()+(tier*100));//want to encourage gradual leveling rather than drastic jumps in power
-			if (Player.bag.getGold() < cost) {
-				extra.println("You can't afford this! (" + cost + " gold)");
+			int cost = item.getMoneyValue()+tier*20;//(int) (Math.pow(tier-item.getLevel(),2)*item.getAetherValue()+(tier*100));//want to encourage gradual leveling rather than drastic jumps in power
+			if (Player.getTotalBuyPower() < cost) {
+				extra.println("You can't afford this! (" + cost + " "+mname+")");
 				break;
 			}
-			extra.println("Improve your item to " + Item.getModiferNameColored(tier) + " quality for " +cost +" gold?");
+			extra.println("Improve your item to " + Item.getModiferNameColored(item.getLevel()+1) + " quality for " +cost +" "+mname+"?");
 			if (extra.yesNo()) {
-				Player.bag.addGold(-cost);
-				while (item.getLevel() < tier) {
-					item.levelUp();
-				}
+				Player.buyMoneyAmount(cost);
+				//while (item.getLevel() < tier) {
+				item.levelUp();
+				//}
 			}
 			;break;
 		case 3: return;

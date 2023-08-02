@@ -3,6 +3,7 @@ package trawel.towns.fort;
 import trawel.extra;
 import trawel.personal.people.Player;
 import trawel.towns.Feature;
+import trawel.towns.World;
 
 public abstract class FortFeature extends Feature {
 
@@ -18,10 +19,10 @@ public abstract class FortFeature extends Feature {
 		int skillIndex = findLSkill(skill);
 		int cost = (int)(  Math.pow(skillIndex == -1 ? 1000 :(laborer.lSkills.get(skillIndex).value+1)*1000,valueMult));
 		
-		if (Player.bag.getGold() >= cost) {
-			extra.println("This upgrade will cost " + cost + " gp. Buy?");
+		if (Player.getTotalBuyPower() >= cost) {
+			extra.println("This upgrade will cost " + cost + " "+World.currentMoneyString()+". Buy?");
 			if (extra.yesNo()) {
-				Player.bag.addGold(-cost);
+				Player.buyMoneyAmount(cost);
 				if (skillIndex == -1) {
 					laborer.lSkills.add(new LSkill(skill,1));
 				}else {
@@ -29,7 +30,7 @@ public abstract class FortFeature extends Feature {
 				}
 			}
 		}else {
-			extra.println("You can't afford that upgrade. (" + cost + " gp)");
+			extra.println("You can't afford that upgrade. (" + cost + " "+World.currentMoneyString()+")");
 		}
 	}
 	public int findLSkill(SubSkill skill) {

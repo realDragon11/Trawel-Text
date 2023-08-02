@@ -8,6 +8,7 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.Town;
+import trawel.towns.World;
 
 public class Doctor extends Feature {
 
@@ -27,25 +28,26 @@ public class Doctor extends Feature {
 	public void go() {
 		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|doctor|Doctor|");
+		String mstr = World.currentMoneyString();
 		int dcost = town.getTier()*5;
-		int cost = 50*town.getTier()+(town.getTier()*Player.player.getPerson().effectsSize()*30);
-		extra.println("gold: " +Player.bag.getGold());
-		extra.println("1 diagnosis (" + dcost+" gold)");
-		extra.println("2 cure (" + cost+" gold)");
+		int cost = 50*town.getTier()+(town.getTier()*Math.min(3,Player.player.getPerson().effectsSize())*30);
+		extra.println(mstr+": " +Player.getGold());
+		extra.println("1 diagnosis (" + dcost+" "+mstr+")");
+		extra.println("2 cure (" + cost+" "+mstr+")");
 		extra.println("3 exit");
 		switch (extra.inInt(3)) {
 		case 1:
-			if (Player.bag.getGold() < dcost) {
-				extra.println("Not enough gold!");break;
+			if (Player.getGold() < dcost) {
+				extra.println("Not enough "+mstr+"!");break;
 			}
-			Player.bag.addGold(-dcost);
+			Player.addGold(-dcost);
 			Player.player.getPerson().displayEffects();
 			break;
 		case 2:
-			if (Player.bag.getGold() < cost) {
-				extra.println("Not enough gold!");break;
+			if (Player.getGold() < cost) {
+				extra.println("Not enough "+mstr+"!");break;
 			}
-			Player.bag.addGold(-cost);
+			Player.addGold(-cost);
 			Player.player.getPerson().cureEffects();
 			break;
 		case 3: return;

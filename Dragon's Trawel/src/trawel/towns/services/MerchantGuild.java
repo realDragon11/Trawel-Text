@@ -5,6 +5,7 @@ import java.util.List;
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
+import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.Networking;
 import trawel.extra;
@@ -21,6 +22,7 @@ import trawel.quests.QuestR;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
+import trawel.towns.World;
 
 public class MerchantGuild extends Feature implements QuestBoardLocation {
 
@@ -54,7 +56,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 		extra.println("(current reputation: " + Player.player.merchantLevel+ ")");
 		extra.println("1 Donate Drawbanes.");
 		extra.println("2 Donate emerald. (You have " + Player.player.emeralds + ")");
-		extra.println("3 buy shipments with gold");
+		extra.println("3 buy shipments with "+World.currentMoneyString());
 		extra.println("4 quest board");
 		extra.println("5 leave");
 		switch (extra.inInt(5)) {
@@ -112,11 +114,17 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return World.currentMoneyDisplay(Player.getGold());
+					}});
 				mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "buy a shipment of books ("+Player.player.merchantBookPrice+" gp)";
+						return "buy a shipment of books ("+Player.player.merchantBookPrice;
 					}
 
 					@Override
@@ -127,9 +135,9 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 						}
 						extra.println("Buying lots of books might increase your knowledge- buy?");
 						if (extra.yesNo()) {
-							Player.bag.addGold(-Player.player.merchantBookPrice);
+							Player.addGold(-Player.player.merchantBookPrice);
 							if (extra.chanceIn(1, 2)) {
-								Player.player.merchantBookPrice*=2;
+								Player.player.merchantBookPrice*=1.5f;
 								Player.bag.addNewDrawBane(DrawBane.KNOW_FRAG);
 							}else {
 								extra.println("There was nothing interesting in this batch.");
@@ -142,19 +150,19 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 					@Override
 					public String title() {
-						return "buy a shipment of cheap beer ("+(100*(town.getTier()))+" gp)";
+						return "buy a shipment of cheap beer ("+(20*(town.getTier()));
 					}
 
 					@Override
 					public boolean go() {
-						if (Player.bag.getGold() < Player.player.merchantBookPrice) {
+						if (Player.getGold() < Player.player.merchantBookPrice) {
 							extra.println("You can't afford that many beers!");
 							return false;
 						}
-						extra.println("Beer increases your hp in battle, one use per beer- buy 100 of them?");
+						extra.println("Beer increases your hp in battle, one use per beer- buy 20 of them?");
 						if (extra.yesNo()) {
-							Player.bag.addGold(-(100*(town.getTier())));
-							Player.player.getPerson().addBeer(100);
+							Player.addGold(-(100*(town.getTier())));
+							Player.player.getPerson().addBeer(20);
 						}
 						return false;
 					}

@@ -12,6 +12,7 @@ import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
+import trawel.towns.World;
 
 public class Oracle extends Feature{ //extends feature later
 	/**
@@ -135,49 +136,49 @@ public class Oracle extends Feature{ //extends feature later
 		
 		
 	}
-	
+
 	public void utterance() {
-		if (Player.bag.getGold() >= level*1) {
-		extra.println("Pay "+ level*1 +" gold for an utterance?");
-		if (extra.yesNo()) {
-			Player.bag.addGold(-level*1);
-			tip("");
-			visits++;
-			Networking.sendStrong("Achievement|oracle1|");
-			if (visits == 5) {
-				Player.player.addTitle(this.getName() + " vistor");
+		if (Player.getGold() >= level*1) {
+			extra.println("Pay "+ level*1 +" "+World.currentMoneyString()+" for an utterance?");
+			if (extra.yesNo()) {
+				Player.addGold(-level*1);
+				tip("");
+				visits++;
+				Networking.sendStrong("Achievement|oracle1|");
+				if (visits == 5) {
+					Player.player.addTitle(this.getName() + " vistor");
+				}
+				if (visits == 10) {
+					Player.player.addTitle(this.getName() + " listener");
+				}
+				if (visits == 50) {
+					Player.player.addTitle(this.getName() + " consulter");
+				}
 			}
-			if (visits == 10) {
-				Player.player.addTitle(this.getName() + " listener");
-			}
-			if (visits == 50) {
-				Player.player.addTitle(this.getName() + " consulter");
-			}
-		}
 		}else {
 			extra.println("You can't afford that!");
 		}
 	}
-	
+
 	public void utterance2() {
 		if (Player.bag.getGold() >= level*100) {
-		extra.println("Pay "+ level*100 +" gold for an premium utterance?");
-		if (extra.yesNo()) {
-			Player.bag.addGold(-level*100);
-			tip("utter");
-			int oldVisits = visits;
-			visits+=4;
-			Networking.sendStrong("Achievement|oracle1|");
-			if (oldVisits < 5 && visits >= 5) {
-				Player.player.addTitle(this.getName() + " vistor");
+			extra.println("Pay "+ level*5 +" "+World.currentMoneyString()+" for a premium utterance?");
+			if (extra.yesNo()) {
+				Player.addGold(-level*5);
+				tip("utter");
+				int oldVisits = visits;
+				visits+=4;
+				Networking.sendStrong("Achievement|oracle1|");
+				if (oldVisits < 5 && visits >= 5) {
+					Player.player.addTitle(this.getName() + " vistor");
+				}
+				if (oldVisits < 10 && visits >= 10) {
+					Player.player.addTitle(this.getName() + " listener");
+				}
+				if (oldVisits < 50 && visits >= 50) {
+					Player.player.addTitle(this.getName() + " consulter");
+				}
 			}
-			if (oldVisits < 10 && visits >= 10) {
-				Player.player.addTitle(this.getName() + " listener");
-			}
-			if (oldVisits < 50 && visits >= 50) {
-				Player.player.addTitle(this.getName() + " consulter");
-			}
-		}
 		}else {
 			extra.println("You can't afford that!");
 		}
@@ -203,8 +204,8 @@ public class Oracle extends Feature{ //extends feature later
 	
 	private void goDelphi() {
 		while (true) {
-		extra.println("1 buy an utterance ("+level*1+" gold)");
-		extra.println("2 buy a premium utterance ("+level*100+" gold)");
+		extra.println("1 buy an utterance ("+level*1+" "+World.currentMoneyString()+")");
+		extra.println("2 buy a premium utterance ("+level*5+" "+World.currentMoneyString()+")");
 		extra.println("3 sit around and wait for them to talk to you");
 		extra.println("4 leave");
 		switch (extra.inInt(4)) {

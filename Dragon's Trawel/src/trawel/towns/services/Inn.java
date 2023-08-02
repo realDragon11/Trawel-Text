@@ -97,7 +97,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 		Networking.setArea("inn");
 		if (owner == Player.player && moneyEarned > 0) {
 			extra.println("You take the " + moneyEarned + " in profits.");
-			Player.bag.addGold(moneyEarned);
+			Player.addGold(moneyEarned);
 			moneyEarned = 0;
 		}
 		Networking.sendStrong("Discord|imagesmall|inn|Inn|");
@@ -217,8 +217,9 @@ public class Inn extends Feature implements QuestBoardLocation{
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		timePassed += time;
-		moneyEarned +=tier*5*time;
+		
 		if (timePassed > nextReset) {
+			moneyEarned +=tier*5*(nextReset/10);
 			timePassed = 0;
 			occupantDuel();
 			resident = extra.randRange(1,RES_COUNT);
@@ -308,12 +309,12 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 	private void buyBeer() {
 		//resident = 4;//???????
-		if (Player.bag.getGold() >= tier) {
-			extra.println("Pay "+tier+" gold for a beer?");
+		if (Player.getGold() >= 2*tier) {
+			extra.println("Pay "+2*tier+" gold for a beer?");
 			if (extra.yesNo()) {
 				Player.player.getPerson().addBeer();
 				moneyEarned +=tier;
-				Player.bag.addGold(-tier);
+				Player.addGold(-2*tier);
 			}
 			}else {
 				extra.println("You can't afford that!");

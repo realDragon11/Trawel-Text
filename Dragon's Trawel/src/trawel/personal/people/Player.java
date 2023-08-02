@@ -374,5 +374,39 @@ public class Player extends SuperPerson{
 		}
 	}
 	
+	public static final float NORMAL_AETHER_RATE = .4f;
+	
+	public static boolean canBuyMoneyAmount(int money,float aetherRate) {
+		int hasMoney = getGold();
+		int hasAether = Player.bag.getAether();
+		return hasMoney+ (int)(hasAether*aetherRate) >= money;
+	}
+	
+	public static boolean canBuyMoneyAmount(int money) {
+		return canBuyMoneyAmount(money,NORMAL_AETHER_RATE);
+	}
+	
+	public static int getTotalBuyPower(float aetherRate) {
+		return getGold()+ (int)(Player.bag.getAether()*aetherRate);
+	}
+	public static int getTotalBuyPower() {
+		return getTotalBuyPower(NORMAL_AETHER_RATE);
+	}
+	
+	public static void buyMoneyAmount(int money,float aetherRate) {
+		int value = money;
+		int gold = getGold();
+		if (gold >= value) {
+			addGold(-value);
+			return;
+		}
+		value-=gold;
+		Player.bag.addAether( -((int)(value/aetherRate)));
+	}
+	
+	public static void buyMoneyAmount(int money) {
+		buyMoneyAmount(money,NORMAL_AETHER_RATE);
+	}
+	
 	
 }

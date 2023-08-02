@@ -16,6 +16,7 @@ import trawel.factions.Faction;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
+import trawel.towns.World;
 
 public class RogueGuild extends Feature {
 	
@@ -139,7 +140,7 @@ public class RogueGuild extends Feature {
 
 					@Override
 					public String title() {
-						return "current gold: " + Player.bag.getGold();
+						return "current money: " + World.currentMoneyDisplay(Player.bag.getGold());
 					}
 				});
 				mList.add(new MenuLine() {
@@ -160,19 +161,19 @@ public class RogueGuild extends Feature {
 
 					@Override
 					public String title() {
-						return "buy a launder credit for 1000 gold";
+						return "buy a launder credit for 1000 " + World.currentMoneyString();
 					}
 
 					@Override
 					public boolean go() {
 						while (true) {
 						int cost = 1000;
-						extra.println("Buy a launder credit? cost: " +cost + "/"+Player.bag.getGold());
+						extra.println("Buy a launder credit? cost: " +cost + "/"+Player.getGold());
 						if (extra.yesNo()) {
-							if (cost <= Player.bag.getGold()) {
+							if (cost <= Player.getGold()) {
 								Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
 								Player.player.launderCredits++;
-								Player.bag.addGold(-cost);
+								Player.addGold(-cost);
 							}
 						}else {
 							break;
@@ -299,14 +300,14 @@ public class RogueGuild extends Feature {
 
 					@Override
 					public String title() {
-						return "quickly sell an emerald (750 gold)";
+						return "quickly sell an emerald (750 "+World.currentMoneyString()+")";
 					}
 
 					@Override
 					public boolean go() {
 						if (Player.player.emeralds > 0) {
 							Player.player.emeralds--;
-							Player.bag.addGold(750);
+							Player.addGold(750);
 							Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
 						}
 						return false;
@@ -368,14 +369,14 @@ public class RogueGuild extends Feature {
 
 					@Override
 					public String title() {
-						return "quickly sell a ruby (750 gold)";
+						return "quickly sell a ruby (750 "+World.currentMoneyString()+")";
 					}
 
 					@Override
 					public boolean go() {
 						if (Player.player.rubies > 0) {
 							Player.player.rubies--;
-							Player.bag.addGold(750);
+							Player.addGold(750);
 							Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
 						}
 						return false;
@@ -436,14 +437,14 @@ public class RogueGuild extends Feature {
 
 					@Override
 					public String title() {
-						return "quickly sell a sapphire (750 gold)";
+						return "quickly sell a sapphire (750 "+World.currentMoneyString()+")";
 					}
 
 					@Override
 					public boolean go() {
 						if (Player.player.sapphires > 0) {
 							Player.player.sapphires--;
-							Player.bag.addGold(750);
+							Player.addGold(750);
 							Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
 						}
 						return false;

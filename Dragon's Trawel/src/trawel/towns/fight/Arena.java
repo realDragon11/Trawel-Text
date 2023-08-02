@@ -60,7 +60,7 @@ public class Arena extends Feature{
 		Networking.setArea("arena");
 		if (owner == Player.player && moneyEarned > 0) {
 			extra.println("You take the " + moneyEarned + " in profits.");
-			Player.bag.addGold(moneyEarned);
+			Player.addGold(moneyEarned);
 			moneyEarned = 0;
 		}
 		Networking.sendStrong("Discord|imagesmall|arena|Arena|");
@@ -200,16 +200,17 @@ public class Arena extends Feature{
 
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		moneyEarned +=tier*2*time;
+		
 		while (time > 0) {
-		if (time < timeLeft) {
-			timeLeft-=time;
-			time = 0;
-		}else {
-			time -=timeLeft;
-			timesDone++;
-			timeLeft = interval;
-		}
+			if (time < timeLeft) {
+				timeLeft-=time;
+				time = 0;
+			}else {
+				time -=timeLeft;
+				timesDone++;
+				moneyEarned +=tier*2*(timeLeft/100);
+				timeLeft = interval;
+			}
 		}//TODO: perhaps actual fights get recorded?
 		return null;
 	}

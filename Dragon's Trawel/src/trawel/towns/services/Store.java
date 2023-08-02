@@ -22,6 +22,7 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.Town;
+import trawel.towns.World;
 
 public class Store extends Feature{
 
@@ -158,12 +159,12 @@ public class Store extends Feature{
 			}
 			DrawBane db = dbs.get(index);
 			int buyGold = db.getValue() * tier;
-			if (bag.getGold() >= buyGold) {
-				extra.println("Buy the "+ db.getName() + "? (" + buyGold + " gold)");
+			if (Player.getTotalBuyPower() >= buyGold) {
+				extra.println("Buy the "+ db.getName() + "? (" + buyGold + " "+World.currentMoneyString()+")");//TODO: explain aether conversion
 				if (extra.yesNo()) {
 					DrawBane sellItem = bag.addNewDrawBane(db);
 					if (sellItem != null) {
-						bag.addGold(sellItem.getValue()-buyGold);
+						Player.buyMoneyAmount(sellItem.getValue()-buyGold);
 					}
 					dbs.remove(index);
 				}
@@ -189,9 +190,11 @@ public class Store extends Feature{
 		if (itemType.contains("race")) {
 			sellItem = bag.getRace();
 		}
-		int sellGold = extra.zeroOut(sellItem.getAetherValue());//the gold the item you are exchanging it for is worth
-		int buyGold = (int)(buyItem.getAetherValue()*markup);
-		if (buyGold > (bag.getGold()+sellGold)) {
+		//the gold the item you are exchanging it for is worth
+		int sellGold = extra.zeroOut(sellItem.getMoneyValue());
+		int buyGold = (int)(buyItem.getMoneyValue()*markup);
+		int delta = buyGold-sellGold;
+		if (Player.getTotalBuyPower() < delta) {
 			extra.println("You can't afford this item!");
 			return;
 		}
@@ -209,8 +212,8 @@ public class Store extends Feature{
 		if (itemType.contains("race")) {
 			arraySwap(bag.swapRace((Race)buyItem),buyItem);
 		}
-		bag.setGold(bag.getGold()+sellGold-buyGold);
-		extra.println("You complete the trade. "+ (sellGold-buyGold) + " gold.");
+		Player.buyMoneyAmount(-delta);
+		extra.println("You complete the trade. "+ (delta) + " value.");
 	}
 	
 	private void arraySwap(Item i,Item i2) {
@@ -225,9 +228,9 @@ public class Store extends Feature{
 			}
 	}
 	
-	public void storeFront() {
+	public void storeFront() {//FIXME: make modern menu
 		Networking.charUpdate();
-		extra.println("You have " + Player.bag.getGold() + " gold.");
+		extra.println("You have " + World.currentMoneyDisplay(Player.getGold()) + " and "+Player.bag.getAether() +" aether. Current aether rate is " + extra.F_TWO_TRAILING.format(Player.NORMAL_AETHER_RATE));
 		int j = 1;
 		extra.println(j + " examine all");j++;
 		if (type == 8 || type == 9) {
@@ -239,21 +242,22 @@ public class Store extends Feature{
 		for (Item i: items) {
 			extra.print(j + " ");
 			if (canSee(i)) {
-			i.display(1,markup);}else {
-				extra.println("They refuse to show you this item.");
+				i.display(1,markup);
+			}else {
+				extra.println("They refuse to show you this item.");//DOLATER: have a hint of what they're not showing you with modern menu type
 			}
 			j++;
 		}}
 		if (Player.hasSkill(Skill.RESTOCK)) {
-		extra.println(j + " restock (" + tier*100 +" gold)" );
+		extra.println(j + " restock (" + tier*100 +" gold)" );//DOLATER
 		j++;
 		}
 		if (type == 8) {
 			extra.println(j+ " sell drawbane");
 			j++;
 		}
-		extra.println(j + " Exit");
-		int i = extra.inInt(j);
+		extra.println("9 Exit");
+		int i = extra.inInt(j,true);
 		j = 1;
 		if (i == j) {//examine all
 			if (type == 8 || type == 9) {
@@ -405,7 +409,7 @@ public class Store extends Feature{
 			ArrayList<Item> remove = new ArrayList<Item>();
 			for (Item i: items) {
 				if (AIClass.compareItem(bag,i,a.getPerson().getIntellect(),false,a.getPerson())) {
-					int goldDiff = i.getAetherValue()-bag.itemCounterpart(i).getAetherValue();
+					int goldDiff = i.getMoneyValue()-bag.itemCounterpart(i).getMoneyValue();
 					if (goldDiff <= bag.getGold()){
 					bag.addGold(-goldDiff);
 					remove.add(i);
