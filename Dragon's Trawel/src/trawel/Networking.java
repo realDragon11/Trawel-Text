@@ -32,7 +32,7 @@ public class Networking {
 	private static OutputStream gdxOut;
 	private static Process commandPrompt;
 	
-	private static boolean simpleTransmit = true;//DOLATER
+	private static boolean simpleTransmit = false;//DOLATER
 	
 	private static ConnectType type = ConnectType.NONE;
 	
@@ -144,7 +144,7 @@ public class Networking {
 		System.out.println("Connecting to localhost Graphical...");
 		while (true) {
 			try {
-				TimeUnit.MILLISECONDS.sleep(20L);
+				TimeUnit.MILLISECONDS.sleep(500L);
 			} catch (InterruptedException e) {
 			}
 			if (connect(6510)) {
@@ -167,7 +167,7 @@ public class Networking {
 		switch (type) {
 		case GDX:
 			try {
-				sendHeader(HeaderType.LEGACY);
+				sendHeader(OpCode.LEGACY);
 				sendStringContent(str);
 				commit();
 			}catch(Exception e) {
@@ -192,7 +192,7 @@ public class Networking {
 			//network only
 			if (netIn == null && autoconnectSilence) {
 				try {
-					TimeUnit.MILLISECONDS.sleep(20L);
+					TimeUnit.MILLISECONDS.sleep(500L);
 				} catch (InterruptedException e) {
 				}
 				return -2;
@@ -330,7 +330,7 @@ public class Networking {
 			break;
 		case GDX:
 			try {
-				sendHeader(HeaderType.PRINTLN);
+				sendHeader(OpCode.PRINTLN);
 				sendStringContent(string);
 				commit();
 			}catch(Exception e) {
@@ -345,8 +345,19 @@ public class Networking {
 		}
 	}
 	
-	public enum HeaderType{
-		PRINTLN, LEGACY
+	public enum OpCode{
+		//control codes
+		HEADER(1),START_CONTENT(2), END_BLOCK(23),
+		END_MESSAGE(3),
+		//our codes
+		LEGACY(33), PRINTLN(34),
+		INPUT_NUM(35)
+		;
+		
+		public final int code;
+		OpCode(int code) {
+			this.code = code;
+		}
 	}
 	
 	//for codes:
@@ -354,19 +365,19 @@ public class Networking {
 	//https://en.wikipedia.org/wiki/C0_and_C1_control_codes#Basic_ASCII_control_codes
 	
 	
-	private static void sendHeader(HeaderType hType)  throws IOException{
+	private static void sendHeader(OpCode hType)  throws IOException{
 		if (simpleTransmit) {
 			debugGDXPrint(hType.name());
 			return;
 		}
 		
-		gdxOut.write(1);//start of heading
+		gdxOut.write(OpCode.HEADER.code);//start of heading
 		switch (hType) {
 		default:
-			gdxOut.write(hType.ordinal());
+			gdxOut.write(hType.code);
 			break;
 		}
-		gdxOut.write(2);//start of text
+		gdxOut.write(OpCode.START_CONTENT.code);//start of text
 	}
 	
 	private static void sendStringContent(String str) throws IOException {
@@ -377,18 +388,18 @@ public class Networking {
 		
 		byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
 		gdxOut.write(bytes);
-		gdxOut.write(23);//end transmission block
+		gdxOut.write(OpCode.END_BLOCK.code);//end transmission block
 	}
 	
 	private static void commit() throws IOException {
 		if (simpleTransmit) {
 			debugGDXPrint(" |END|");
-			gdxOut.write(3);//end of text still needed
+			gdxOut.write(OpCode.END_MESSAGE.code);//end of text still needed
 			gdxOut.flush();
 			return;
 		}
 		
-		gdxOut.write(3);//end of text
+		gdxOut.write(OpCode.END_MESSAGE.code);//end of text
 		gdxOut.flush();
 	}
 	
@@ -401,7 +412,12 @@ public class Networking {
 	public static void debugGDXPrintLegacy(String str) {
 		byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
 		try {
+			gdxOut.write(OpCode.HEADER.code);//start of heading
+			gdxOut.write(OpCode.LEGACY.code);
+			gdxOut.write(OpCode.START_CONTENT.code);//start of text
 			gdxOut.write(bytes);
+			gdxOut.write(OpCode.END_BLOCK.code);//end transmission block
+			gdxOut.write(OpCode.END_MESSAGE.code);//end of text
 		} catch (IOException e) {
 		}
 	}
