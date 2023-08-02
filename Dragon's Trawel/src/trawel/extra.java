@@ -248,8 +248,10 @@ public final class extra {
 			trawel.threads.BlockTaskManager.start();
 			int ini=  Networking.nextInt();
 			while(!(alwaysNine && ini == 9) && (ini < 1 || ini > max)) {
-				extra.println("Please type a number from 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
-				ini=  Networking.nextInt();
+				if (ini != -2) {//silent loading
+					extra.println("Please type a number from 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
+				}
+				ini= Networking.nextInt();
 				if (ini == -99) {
 					Networking.unConnect();
 					throw new RuntimeException("invalid input stream error");

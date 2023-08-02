@@ -32,7 +32,7 @@ public class Networking {
 	private static OutputStream gdxOut;
 	private static Process commandPrompt;
 	
-	private static boolean simpleTransmit = true;
+	private static boolean simpleTransmit = true;//DOLATER
 	
 	private static ConnectType type = ConnectType.NONE;
 	
@@ -47,14 +47,20 @@ public class Networking {
 	}
 	
 	public enum ConnectType{
-		NONE, GDX, LEGACY
+		NONE, GDX, LEGACY, GDX_WITH_LEGACY
 	}
 	
 	public static void handleAnyConnection(ConnectType atype) {
 		type = atype;
 		switch (atype) {
 		case GDX:
-			connectGDX();
+			if (mainGame.headless) {
+				System.out.println("loud");
+				connectGDXHeadless();
+			}else {
+				System.out.println("normal");
+				connectGDX();
+			}
 			break;
 		case LEGACY:
 			autoConnect();
@@ -63,6 +69,13 @@ public class Networking {
 			out = new PrintWriter(System.out);
 			break;
 		}
+	}
+	
+	public static void connectGDXHeadless() {
+		in = new Scanner(System.in);
+		out = new PrintWriter(System.out);
+		autoConnect();
+		//type = ConnectType.GDX_WITH_LEGACY;
 	}
 	
 	public static void connectGDX() {		
@@ -103,45 +116,41 @@ public class Networking {
 		}
 		connected = true;
 		printlnTo(mainGame.headerText());
-		printlnTo("in: "+nextInt());
+		//printlnTo("in: "+nextInt());
 		mainGame.log("got handoff");
 		printlnTo(mainGame.headerText());
 	}
 
-	public static void connect(int port) {
+	public static boolean connect(int port) {
 		try {
 			socket = new Socket("127.0.0.1", port);
-			netOut = new PrintWriter(socket.getOutputStream());
+			gdxOut = socket.getOutputStream();
+			netOut = new PrintWriter(gdxOut);
 
 		    netIn = socket.getInputStream();
-
-		    extra.println("Connected!");
+		    System.out.println("Connection.");
 		    connected = true;
-		    return;
+		    extra.println("Connected!");
+		    return true;
 			}catch(Exception e) {
-				extra.println("Connection failed.");
+				System.out.println("Connection failed.");
 			}
-				//e.printStackTrace();
-				return;
+			//e.printStackTrace();
+			return false;
 	}
 	
 	public static void autoConnect() {
-		autoconnectSilence = true;
-		boolean doit = true;
-		//int value= 6510;
-		extra.println("Connecting to localhost Graphical...");
-		while (doit) {
+		//autoconnectSilence = true;
+		System.out.println("Connecting to localhost Graphical...");
+		while (true) {
 			try {
-			TimeUnit.MILLISECONDS.sleep(20L);
-			socket = new Socket("127.0.0.1", 6510);
-			netOut = new PrintWriter(socket.getOutputStream(), true);
-			netIn = socket.getInputStream();
-		    doit = false;
-			}catch (Exception e) {
+				TimeUnit.MILLISECONDS.sleep(20L);
+			} catch (InterruptedException e) {
+			}
+			if (connect(6510)) {
+				break;
 			}
 		}
-		 extra.println("Connected!");
-		 connected = true;
 	}
 	
 	
@@ -155,7 +164,8 @@ public class Networking {
 		if (!extra.isMainThread() || !connected) {
 			return;
 		}
-		if (gdxOut != null) {
+		switch (type) {
+		case GDX:
 			try {
 				sendHeader(HeaderType.LEGACY);
 				sendStringContent(str);
@@ -164,20 +174,31 @@ public class Networking {
 				e.printStackTrace();
 				mainGame.log(e.getMessage());
 			}
-		}else {
+			break;
+		case GDX_WITH_LEGACY:
+			debugGDXPrintLegacy(str);
+			break;
+		case LEGACY:
 			if (netOut != null) {
 				netOut.println(str);
 				netOut.flush();
 			}
+			break;
 		}
 	}
 	
 	public static int nextInt() {
-		if ((Networking.connected() && mainGame.GUIInput) || Networking.autoconnectSilence) {
+		if (!mainGame.headless && ((Networking.connected() && mainGame.GUIInput) || Networking.autoconnectSilence)) {
 			//network only
+			if (netIn == null && autoconnectSilence) {
+				try {
+					TimeUnit.MILLISECONDS.sleep(20L);
+				} catch (InterruptedException e) {
+				}
+				return -2;
+			}
 			if (simpleTransmit) {
 				//return in.nextInt();
-				return 1;
 			}
 			try {
 				return netIn.read();
@@ -304,6 +325,9 @@ public class Networking {
 			return;
 		}
 		switch (type) {
+		case GDX_WITH_LEGACY:
+			debugGDXPrintLegacy(string);
+			break;
 		case GDX:
 			try {
 				sendHeader(HeaderType.PRINTLN);
@@ -372,5 +396,13 @@ public class Networking {
 		mainGame.log(str);
 		byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
 		gdxOut.write(bytes);
+	}
+	
+	public static void debugGDXPrintLegacy(String str) {
+		byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
+		try {
+			gdxOut.write(bytes);
+		} catch (IOException e) {
+		}
 	}
 }

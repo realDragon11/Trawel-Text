@@ -74,6 +74,7 @@ public class mainGame {
 	public static boolean noThreads = true;
 	public static boolean permaNoThreads = false;
 	public static boolean noTerminal = false;
+	public static boolean headless = false;
 
 	public static boolean GUIInput = true;
 	
@@ -103,14 +104,18 @@ public class mainGame {
 	}
 	
 	public static void mainMenu() {
+		log("gen main menu 0");
 		extra.menuGo(new MenuGenerator(){
 
 			@Override
 			public List<MenuItem> gen() {
+				log("gen main menu 1");
 				extra.changePrint(false);
-				log("gen main menu");
+				log("gen main menu 2");
 				Networking.sendStrong("Discord|desc|Main Menu|");
 				Networking.sendStrong("Visual|MainMenu|");
+				
+				log("gen main menu 3");
 				List<MenuItem> mList = new ArrayList<MenuItem>();
 				mList.add(new MenuSelect() {
 
@@ -733,8 +738,10 @@ public class mainGame {
 	}
 	
 	public static void log(String str) {
-		logStream.println(str);
-		logStream.flush();
+		if (extra.isMainThread()) {
+			logStream.println(str);
+			logStream.flush();
+		}
 	}
 	
 	/**
@@ -775,6 +782,9 @@ public class mainGame {
 			}
 			if (a.toLowerCase().equals("quiet")) {
 				noTerminal = true;
+			}
+			if (a.toLowerCase().equals("loud")) {
+				headless = true;
 			}
 			
 		}
