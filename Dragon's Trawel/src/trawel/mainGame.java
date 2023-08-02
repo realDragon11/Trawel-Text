@@ -29,6 +29,7 @@ import scimech.units.mechs.Packrat;
 import scimech.units.mechs.Pirate;
 import scimech.units.mechs.Pyro;
 import scimech.units.mechs.Swashbuckler;
+import trawel.Networking.ConnectType;
 import trawel.battle.Combat;
 import trawel.battle.TauntsFactory;
 import trawel.battle.attacks.StyleFactory;
@@ -68,6 +69,7 @@ public class mainGame {
 	public static boolean debug = false;
 	public static boolean inEclipse = true;//for other run configs
 	public static boolean autoConnect = false;
+	public static boolean legacyConnect = true;
 	public static boolean noDisconnect = false;
 	public static boolean noThreads = true;
 	public static boolean permaNoThreads = false;
@@ -724,6 +726,17 @@ public class mainGame {
 		
 	}
 	
+	public static String headerText() {
+		return ("Dragon's Trawel "+VERSION_STRING)+"\r\n"+
+		(
+				" ___________  ___  _    _ _____ _     \r\n" + 
+				"|_   _| ___ \\/ _ \\| |  | |  ___| |    \r\n" + 
+				"  | | | |_/ / /_\\ \\ |  | | |__ | |    \r\n" + 
+				"  | | |    /|  _  | |/\\| |  __|| |    \r\n" + 
+				"  | | | |\\ \\| | | \\  /\\  / |___| |____\r\n" + 
+				"  \\_/ \\_| \\_\\_| |_/\\/  \\/\\____/\\_____/");
+	}
+	
 	/**
 	 * Main method. Calls the main game.
 	 * @param args (Strings)
@@ -731,17 +744,10 @@ public class mainGame {
 	public static void main(String[] args) {
 		inEclipse = false;
 		try {
+		System.out.println(headerText());
 		extra.setMainThread();
 		new WorldGen();
 		logStream = new PrintStream("log.txt");
-		extra.println("Dragon's Trawel "+VERSION_STRING);
-		extra.println(
-				" ___________  ___  _    _ _____ _     \r\n" + 
-				"|_   _| ___ \\/ _ \\| |  | |  ___| |    \r\n" + 
-				"  | | | |_/ / /_\\ \\ |  | | |__ | |    \r\n" + 
-				"  | | |    /|  _  | |/\\| |  __|| |    \r\n" + 
-				"  | | | |\\ \\| | | \\  /\\  / |___| |____\r\n" + 
-				"  \\_/ \\_| \\_\\_| |_/\\/  \\/\\____/\\_____/");
 		for (String a: args) {
 			if (a.toLowerCase().equals("autoconnect")){
 				autoConnect = true;
@@ -764,12 +770,17 @@ public class mainGame {
 			if (a.toLowerCase().equals("nothreads")) {
 				permaNoThreads = true;
 			}
+			if (a.toLowerCase().equals("gdx")) {
+				legacyConnect = false;
+			}
 			
 		}
 		new Networking();
 		if (autoConnect) {
-			extra.println("Please wait for the graphical to load...");
-			Networking.autoConnect();
+			System.out.println("Please wait for the graphical to load...");
+			Networking.handleAnyConnection(legacyConnect ? ConnectType.LEGACY : ConnectType.GDX);
+		}else {
+			Networking.handleAnyConnection(ConnectType.NONE);
 		}
 		}catch(Exception e) {
 			System.out.println("There was an error when setting up Trawel.");

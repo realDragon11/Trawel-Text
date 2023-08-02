@@ -307,10 +307,10 @@ public final class extra {
 				return;
 			}
 			if (!printMode) {
-			System.out.println(stripPrint(printStuff+str));
-			detectInputString(stripPrint(printStuff +str));
-			Networking.send("println|"+ printStuff + str + "|");
-			printStuff = "";
+				Networking.printlocalln(stripPrint(printStuff+str));
+				detectInputString(stripPrint(printStuff +str));
+				Networking.send("println|"+ printStuff + str + "|");
+				printStuff = "";
 			}
 			
 		}
@@ -320,9 +320,8 @@ public final class extra {
 				return;
 			}
 			if (!printMode) {
-			//System.out.print(stripPrint(str));
-			//System.out.print(str);
-			printStuff+=str;}
+				printStuff+=str;
+			}
 		}
 		
 		private static final String stripPrint(String str) {

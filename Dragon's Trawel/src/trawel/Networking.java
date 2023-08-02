@@ -1,7 +1,10 @@
 package trawel;
 import java.awt.Color;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
@@ -10,25 +13,80 @@ import trawel.personal.people.Player;
 
 public class Networking {
 
-	 public static final String AGGRO = extra.inlineColor(extra.colorMix(Color.RED, Color.WHITE, 0.5f));//not sure if pre red comes first so
-	public static PrintWriter out;
-	 public static InputStream in;
-	 public static Socket socket;
-	 private static boolean connected = false;
-	 private static BattleType inBattle = BattleType.NONE;
-	 private static String songType = "main", backtype = "main";
-	public static boolean autoconnectSilence = false;
-	 
-	 public enum BattleType{
-		 NONE, NORMAL, BOSS;
-	 }
+	public static final String AGGRO = extra.inlineColor(extra.colorMix(Color.RED, Color.WHITE, 0.5f));//not sure if pre red comes first so
 	
-	 public static void connect(int port) {
-			try {
-		    socket = new Socket("127.0.0.1", port);
-		    out = new PrintWriter(socket.getOutputStream(), true);
+	//public static InputStream in;
+	public static Socket socket;
+	private static boolean connected = false;
+	private static BattleType inBattle = BattleType.NONE;
+	private static String songType = "main", backtype = "main";
+	public static boolean autoconnectSilence = false;
+	
+	private static InputStream netIn, in;
 
-		    in = socket.getInputStream();
+	private static PrintWriter netOut, out;
+	private static Process commandPrompt;
+	
+	public static OSNUM os;
+	
+	public enum OSNUM{
+		LINUX,WINDOWS
+	}
+
+	public enum BattleType{
+		NONE, NORMAL, BOSS;
+	}
+	
+	public enum ConnectType{
+		NONE, GDX, LEGACY
+	}
+	
+	public static void handleAnyConnection(ConnectType type) {
+		switch (type) {
+		case GDX:
+			connectGDX();
+			break;
+		case LEGACY:
+			autoConnect();
+		case NONE:
+			in = System.in;
+			out = new PrintWriter(System.out);
+			break;
+		}
+	}
+	
+	public static void connectGDX() {		
+		//new idea: we assume our standard output is hijacked and we need to make out own console out
+		os = OSNUM.LINUX;//testing
+		String osTerm;
+		switch (os) {
+		case LINUX:
+			osTerm = "xTerm";
+			break;
+		case WINDOWS:
+			osTerm = "cmd /c start cmd.exe";
+			break;
+		}
+		ProcessBuilder builder = new ProcessBuilder();
+		builder.directory(null);//current directory
+		try {
+			commandPrompt = builder.start();
+			in = commandPrompt.getInputStream();
+			out = new PrintWriter(commandPrompt.getOutputStream());
+			netIn = System.in;
+			netOut = new PrintWriter(System.out);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void connect(int port) {
+		try {
+			socket = new Socket("127.0.0.1", port);
+			netOut = new PrintWriter(socket.getOutputStream());
+
+		    netIn = socket.getInputStream();
 
 		    extra.println("Connected!");
 		    connected = true;
@@ -49,8 +107,8 @@ public class Networking {
 			try {
 			TimeUnit.MILLISECONDS.sleep(20L);
 			socket = new Socket("127.0.0.1", 6510);
-			out = new PrintWriter(socket.getOutputStream(), true);
-		    in = socket.getInputStream();
+			netOut = new PrintWriter(socket.getOutputStream(), true);
+			netIn = socket.getInputStream();
 		    doit = false;
 			}catch (Exception e) {
 			}
@@ -64,8 +122,8 @@ public class Networking {
 		if (!extra.isMainThread()) {
 			return;
 		}
-		if (out != null && (!extra.getPrint())) {
-			out.println(str);
+		if (netOut != null && (!extra.getPrint())) {
+			netOut.println(str);
 			//out.flush();
 		}
 	}
@@ -74,8 +132,8 @@ public class Networking {
 		if (!extra.isMainThread()) {
 			return;
 		}
-		if (out != null) {	
-			out.println(str);
+		if (netOut != null) {	
+			netOut.println(str);
 			//out.flush();
 		}
 	}
@@ -83,7 +141,7 @@ public class Networking {
 	public static int nextInt() {
 		
 		try {
-			return in.read();
+			return netIn.read();
 			//(int)(Byte.toUnsignedInt(in.nextByte()));
 			//return in.nextInt();
 		}catch(Exception e) {
@@ -156,10 +214,10 @@ public class Networking {
 			return;
 		}
 		try {
-			in.close();
+			netIn.close();
 		} catch (IOException e) {
 		}
-		out.close();
+		netOut.close();
 		connected = false;
 		
 	}
@@ -186,5 +244,10 @@ public class Networking {
 	
 	public static void clearLights() {
 		Networking.sendStrong("ClearLights|");
+	}
+
+	public static void printlocalln(String print) {
+		out.println(print);
+		out.flush();
 	}
 }
