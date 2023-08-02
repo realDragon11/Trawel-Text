@@ -68,7 +68,7 @@ public class Blacksmith extends Feature {
 				extra.println("This item is too high in quality to improve here!");
 				break;
 			}
-			int cost = (int) (Math.pow(tier-item.getLevel(),2)*item.getCost()+(tier*100));//want to encourage gradual leveling rather than drastic jumps in power
+			int cost = (int) (Math.pow(tier-item.getLevel(),2)*item.getAetherValue()+(tier*100));//want to encourage gradual leveling rather than drastic jumps in power
 			if (Player.bag.getGold() < cost) {
 				extra.println("You can't afford this! (" + cost + " gold)");
 				break;

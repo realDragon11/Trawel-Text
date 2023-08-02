@@ -77,9 +77,10 @@ public class Plane extends TContextOwner{
 		if (time == 0) {
 			return;
 		}
+		/*
 		if (Player.hasSkill(Skill.MONEY_MAGE)) {
 			Player.bag.addGold((int) (Player.player.getPerson().getMageLevel()*time));
-		}
+		}*/
 	}
 	
 	@Override

@@ -42,6 +42,7 @@ public class Weapon extends Item {
 	private String weapName;//TODO: make this an enum or byte or something
 	private int material;
 	private int cost;//probably also remove cost and weight like I did for armor
+	//FIXME: needs to be changed to account for the aether/money divide
 	private int weight;
 
 	private int kills;
@@ -256,6 +257,7 @@ public class Weapon extends Item {
 	 * Returns the full name of the weapon.
 	 * @return String
 	 */
+	@Override
 	public String getName() {
 		Material mat = MaterialFactory.getMat(material);
 		if (this.isEnchantedConstant()){
@@ -286,7 +288,7 @@ public class Weapon extends Item {
 	 * @return cost (int)
 	 */
 	@Override
-	public int getCost() {
+	public int getAetherValue() {
 		if (this.isEnchantedConstant()) {
 			return (int) (level*cost * enchant.getGoldMult()+enchant.getGoldMod());
 		}
@@ -420,7 +422,7 @@ public class Weapon extends Item {
 			+ " hd/ad/bs: " + extra.format(this.highest())
 			+ "/" + extra.format(this.average())
 			+"/"+extra.format(this.score())
-			+" value: " + (int)(this.getCost()*markup));
+			+" value: " + (int)(this.getAetherValue()*markup));
 			
 			if (this.isEnchantedConstant()) {
 				this.getEnchant().display(1);
@@ -437,7 +439,7 @@ public class Weapon extends Item {
 			+ " hd/ad/bs: " + extra.format(this.highest())
 			+ "/" + extra.format(this.average())
 			+ "/"+extra.format(this.score())
-			+" value: " + (int)(this.getCost()*markup)
+			+" aether: " + (int)(this.getAetherValue()*markup)
 			+ " kills: " +this.getKills());
 			
 			if (this.isEnchantedConstant()) {

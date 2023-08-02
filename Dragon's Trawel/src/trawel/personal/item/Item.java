@@ -7,16 +7,13 @@ import trawel.personal.item.magic.Enchant;
 
 /**
  * 
- * @author Brian Malone
+ * @author dragon
  * 2/8/2018
  * 
  * an abstract class for use with the Weapon and Armor classes.
  */
 public abstract class Item implements java.io.Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	protected int level;
 	public int bloodSeed = extra.randRange(0,2000);
@@ -30,9 +27,14 @@ public abstract class Item implements java.io.Serializable{
 	public abstract Enchant getEnchant();
 	/**
 	 * Returns the cost of the item
-	 * @return (int) - gold cost
+	 * @return (int) - aether cost
 	 */
-	public abstract int getCost();
+	public abstract int getAetherValue();
+	
+	public int getMoneyValue() {
+		return getAetherValue()/10;//DOLATER maybe conversion and exchange rates???
+	}
+	
 	public abstract void display(int style);
 	public abstract void display(int style,float markup);
 	public String getModiferName() {
@@ -82,10 +84,14 @@ public abstract class Item implements java.io.Serializable{
 	}
 	
 	/**
+	 * FIXME: rename to aetherloot or something
+	 * 
 	 * used to indicate things that can't be wielded or worn but still can be sold
 	 * things that CAN be looted normally still should return true, since Huge Battles
 	 * will go over the unclaimed items in a final pass to convert to gold
 	 * @return true if can be looted for money
 	 */
 	public abstract boolean coinLoot();
+	
+	public abstract String getName();
 }

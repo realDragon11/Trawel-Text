@@ -404,7 +404,7 @@ public class Town extends TContextOwner{
 
 						@Override
 						public String title() {
-							return " Buying a lot will allow you to add a new building to this town, with enough gold.";
+							return " Buying a lot will allow you to add a new building to this town, with enough "+World.currentMoneyString()+".";
 						}});
 					}
 				}
@@ -506,16 +506,18 @@ public class Town extends TContextOwner{
 			extra.println("You can build buildings on lots you own, extending the facilities of the town.");	
 		}
 		int cost = this.getTier()*250;
-		extra.println("Buy a lot? "+ cost + " gold. You have " +Player.bag.getGold() + " gold.");
+		String moneyname = World.currentMoneyString();
+		extra.println("Buy a lot? "+ cost + " "+moneyname+". You have "
+		+ World.currentMoneyDisplay(Player.getGold()) + " "+moneyname+".");
 		if (extra.yesNo()) {
-			if (Player.bag.getGold()> cost) {
-				Player.bag.addGold(-cost);
+			if (Player.getGold()> cost) {
+				Player.addGold(-cost);
 				extra.println("You buy a lot.");
 				visited = 3;
 				Networking.sendStrong("Achievement|buy_lot|");
 				this.enqueneAdd(new Lot(this));
 			}else {
-				extra.println("Not enough gold.");
+				extra.println("Not enough "+moneyname+".");
 			}
 
 		}
@@ -669,7 +671,7 @@ public class Town extends TContextOwner{
 					survivors.remove(Player.player.getPerson());
 					helpers.addAll(survivors);
 					extra.println("You take back the docks. +"+(100*tier)+" gp");
-					Player.bag.addGold(100*tier);
+					Player.bag.addGold(10*tier);
 					defenseTimer = 3;
 				}else {
 					defenseTimer = 1;

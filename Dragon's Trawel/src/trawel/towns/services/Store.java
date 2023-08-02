@@ -189,8 +189,8 @@ public class Store extends Feature{
 		if (itemType.contains("race")) {
 			sellItem = bag.getRace();
 		}
-		int sellGold = extra.zeroOut(sellItem.getCost());//the gold the item you are exchanging it for is worth
-		int buyGold = (int)(buyItem.getCost()*markup);
+		int sellGold = extra.zeroOut(sellItem.getAetherValue());//the gold the item you are exchanging it for is worth
+		int buyGold = (int)(buyItem.getAetherValue()*markup);
 		if (buyGold > (bag.getGold()+sellGold)) {
 			extra.println("You can't afford this item!");
 			return;
@@ -405,7 +405,7 @@ public class Store extends Feature{
 			ArrayList<Item> remove = new ArrayList<Item>();
 			for (Item i: items) {
 				if (AIClass.compareItem(bag,i,a.getPerson().getIntellect(),false,a.getPerson())) {
-					int goldDiff = i.getCost()-bag.itemCounterpart(i).getCost();
+					int goldDiff = i.getAetherValue()-bag.itemCounterpart(i).getAetherValue();
 					if (goldDiff <= bag.getGold()){
 					bag.addGold(-goldDiff);
 					remove.add(i);

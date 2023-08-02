@@ -1067,12 +1067,12 @@ public class mainGame {
 				for (int i = 0;i<5;i++) {
 					isell = kill.getBag().getArmorSlot(i);
 					if (isell.coinLoot()) {
-						gold +=isell.getCost();
+						gold +=isell.getAetherValue();
 					}
 				}
 				isell = kill.getBag().getHand();
 				if (isell.coinLoot()) {
-					gold +=isell.getCost();
+					gold +=isell.getAetherValue();
 				}
 				
 			}

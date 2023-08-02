@@ -6,9 +6,7 @@ import trawel.time.CanPassTime;
 import trawel.towns.Town;
 
 public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	protected ArrayList<String> titleList = new ArrayList<String>();
 	private Town location;

@@ -20,13 +20,14 @@ import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Player;
 import trawel.personal.people.Skill;
 import trawel.quests.Quest.TriggerType;
+import trawel.towns.World;
 
 /**
  * 
  * @author Brian Malone
  * 2/8/2018
  * 
- * An inventory, which holds 5 armors, and a weapon, as wells as some gold.
+ * An inventory, which holds 5 armors, and a weapon, as wells as some money and aether.
  *
  * Must have all it's slot's filled, or else it will cause errors.
  */
@@ -34,7 +35,7 @@ public class Inventory implements java.io.Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	//instance vars
-	private int gold = 0;
+	private int money = 0, aether = 0;
 	private Armor[] armorSlots = new Armor[5];
 	private Weapon hand;
 	private RaceID race;
@@ -315,8 +316,9 @@ public class Inventory implements java.io.Serializable{
 			tempStr += " "+ armorSlots[i].getName() + ",\n";
 			i++;
 		}
-		return tempStr + " and a " + hand.getName() + "\n as well as " + gold + " " + extra.choose("gold","gold pieces","pieces of gold") +".";//There are way to many plurals to account for
-	}
+		return tempStr + " and a " + hand.getName() + "\n as well as " 
+		+ World.currentMoneyDisplay(money)  +".";//There are way to many plurals to account for
+	}//gold + " " + extra.choose("gold","gold pieces","pieces of gold")
 	
 	
 	/**
@@ -336,7 +338,7 @@ public class Inventory implements java.io.Serializable{
 	 * @return the gold in the inventory (int)
 	 */
 	public int getGold() {
-		return gold;
+		return money;
 	}
 
 
@@ -344,7 +346,7 @@ public class Inventory implements java.io.Serializable{
 	 * @param gold the gold to set (int)
 	 */
 	public void setGold(int gold) {
-		this.gold = gold;
+		this.money = gold;
 	}
 	
 	/**
@@ -352,7 +354,7 @@ public class Inventory implements java.io.Serializable{
 	 * @param net gold change (int)
 	 */
 	public void modGold(int gold) {
-		this.gold += gold;
+		this.money += gold;
 	}
 
 	
@@ -363,9 +365,8 @@ public class Inventory implements java.io.Serializable{
 		}
 		hand.display(1);
 		hand.getMartialStance().display(1);
-		
 	
-	extra.println( gold + " " + extra.choose("gold","gold pieces","pieces of gold") +".");
+	extra.println( World.currentMoneyDisplay(money) +".");
 	
 	}
 	
@@ -408,8 +409,8 @@ public class Inventory implements java.io.Serializable{
 	
 
 	public void addGold(int add) {
-		gold += add;
-		gold = Math.max(gold,0);
+		money += add;
+		money = Math.max(money,0);
 	}
 	
 	public RaceID getRaceID() {
@@ -843,9 +844,9 @@ public class Inventory implements java.io.Serializable{
 		hand.deEnchant();
 	}
 
-
+	//FIXME: naive money
 	public int getWorth() {
-		return armorSlots[0].getCost()+armorSlots[1].getCost()+armorSlots[2].getCost()+armorSlots[3].getCost()+armorSlots[4].getCost()+hand.getCost()+this.getGold();
+		return armorSlots[0].getAetherValue()+armorSlots[1].getAetherValue()+armorSlots[2].getAetherValue()+armorSlots[3].getAetherValue()+armorSlots[4].getAetherValue()+hand.getAetherValue()+this.getGold();
 	}
 	
 	public int countArmorQuality(Armor.ArmorQuality qual) {
@@ -862,6 +863,35 @@ public class Inventory implements java.io.Serializable{
 		for (Armor a: armorSlots) {
 			a.armorQualDam(dam);
 		}
+	}
+
+
+	public void addAether(int cost) {
+		aether = Math.max(0,aether+cost);
+	}
+	
+	public int getAether() {
+		return aether;
+	}
+
+
+	/**
+	 * used to regenerate sold items on death cheaters
+	 * @param level
+	 */
+	public void regenNullEquips(int level) {
+		if (hand == null) {
+			hand = new Weapon(level);
+		}
+		for (int i = 0; i < 5; i++) {
+			armorSlots[i] = armorSlots[i] == null ? new Armor(level,i) : armorSlots[i];
+		}
+	}
+
+
+	public void removeCurrency() {
+		money = 0;
+		aether = 0;
 	}
 
 }

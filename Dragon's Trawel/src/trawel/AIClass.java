@@ -19,6 +19,7 @@ import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Player;
 import trawel.personal.people.Skill;
+import trawel.towns.World;
 
 /**
  * @author Brian Malone
@@ -326,6 +327,7 @@ public class AIClass {
 	 * @param loot (Inventory)
 	 * @param stash (Inventory)
 	 * @param smarts (int)
+	 * @param sellStuff if the items can be atom-smashed into aether
 	 */
 	public static void loot(Inventory loot, Inventory stash, int smarts, boolean sellStuff, Person p) {
 		int i = 0;
@@ -337,12 +339,19 @@ public class AIClass {
 			while (i < 5) {
 				if (compareItem(stash.getArmorSlot(i),loot.getArmorSlot(i),smarts,true,p)) {
 					if (sellStuff) {
-						Services.sellItem(stash.swapArmorSlot(loot.getArmorSlot(i),i),stash,false);}else {
+							//Services.sellItem(stash.swapArmorSlot(loot.getArmorSlot(i),i),stash,false);
+							Services.aetherifyItem(loot.getArmorSlot(i),stash);
+							loot.swapArmorSlot(stash.getArmorSlot(i),i);
+							loot.swapArmorSlot(null,i);
+						}else {
 							loot.swapArmorSlot(stash.swapArmorSlot(loot.getArmorSlot(i),i), i);
 						}
 				}else {
 					if (sellStuff) {
-						Services.sellItem(loot.getArmorSlot(i),loot,stash,false);}
+						//Services.sellItem(loot.getArmorSlot(i),loot,stash,false);}
+						Services.aetherifyItem(stash.getArmorSlot(i),stash);
+						stash.swapArmorSlot(null,i);
+					}
 				}
 
 
@@ -386,10 +395,10 @@ public class AIClass {
 		}
 		if (smarts < 0) {
 			Networking.charUpdate();
-			if (Player.hasSkill(Skill.LOOTER) && normalLoot) {
+			/*if (Player.hasSkill(Skill.LOOTER) && normalLoot) {
 				stash.addGold(10);
 				extra.println("You take the extra coins they had stored away in their " + extra.choose("spleen","appendix","imagination","lower left thigh","no-no place","closed eyes") + ". +10 gold");
-			}
+			}*/
 			for (DrawBane db: loot.getDrawBanes()) {
 				stash.addNewDrawBane(db);
 			}
@@ -397,8 +406,12 @@ public class AIClass {
 			//TODO drawbane taking ai
 		}
 		if (sellStuff) {
-			stash.setGold(stash.getGold()+loot.getGold());
-			loot.setGold(0);
+			int money = loot.getGold();
+			stash.addGold(money);
+			int aether = loot.getAether();
+			stash.addAether(aether);
+			loot.removeCurrency();
+			extra.println(p.getName() + " claims the " + aether + " aether and " + World.currentMoneyDisplay(money) + ".");
 		}
 	}
 	
@@ -416,7 +429,7 @@ public class AIClass {
 		if (Armor.class.isInstance(hasItem)) {
 			if (autosellOn && worseArmor((Armor)hasItem,(Armor)toReplace)) {
 				if (smarts < 0) {
-					extra.print(extra.PRE_YELLOW+"Autosold the ");
+					extra.print(extra.PRE_YELLOW+"Automelted the ");
 					toReplace.display(1);
 					Networking.waitIfConnected(100L);
 				}
@@ -432,10 +445,10 @@ public class AIClass {
 			return extra.yesNo();
 		}
 		if (!Weapon.class.isInstance(hasItem)){
-		return (toReplace.getCost()>hasItem.getCost());
+		return (toReplace.getAetherValue()>hasItem.getAetherValue());
 	}else {
 		if (smarts < 2) {
-			return (toReplace.getCost()>hasItem.getCost());
+			return (toReplace.getAetherValue()>hasItem.getAetherValue());
 			}
 		if (((Weapon)(toReplace)).score() > ((Weapon)(hasItem)).score()){
 			return true;	
@@ -493,7 +506,7 @@ public class AIClass {
 	public static void displayChange(Item hasItem, Item toReplace, Person p) {
 		//p is used to display absolute stat changes instead of just raw stats like the non-diff
 		extra.println();
-		int goldDiff = toReplace.getCost() - hasItem.getCost();
+		int goldDiff = toReplace.getAetherValue() - hasItem.getAetherValue();
 		if (Armor.class.isInstance(hasItem)) {
 			Armor hasArm = (Armor) hasItem;
 			Armor toArm = (Armor) toReplace;
@@ -533,7 +546,7 @@ public class AIClass {
 					displayEnchantDiff(((Weapon)hasItem).getEnchant(),((Weapon)toReplace).getEnchant());
 				}
 			}else {
-				extra.println("[c_white] cost: " + (goldDiff != 0 ? extra.colorBaseZeroTimid(goldDiff) : "="));
+				extra.println("[c_white] aether: " + (goldDiff != 0 ? extra.colorBaseZeroTimid(goldDiff) : "="));
 			}
 		}
 		

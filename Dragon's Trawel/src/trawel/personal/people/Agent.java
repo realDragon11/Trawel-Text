@@ -7,16 +7,16 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 
 /**
- * @author Brian Malone
+ * @author dragon
  * like Player, but for the ai. can be programmed with behaviors
  */
 public class Agent extends SuperPerson{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	private Person person;
+	
+	//might include currencies from other worlds, and a home world
 	
 	private ArrayList<Behavior> behaviors;
 	private int aiType = 0;//malop... why is it in my head?

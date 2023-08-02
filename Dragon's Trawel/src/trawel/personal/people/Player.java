@@ -25,9 +25,7 @@ import trawel.towns.Town;
 import trawel.towns.World;
 
 public class Player extends SuperPerson{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private Person person;
 	private Boolean isAlive;
@@ -49,6 +47,9 @@ public class Player extends SuperPerson{
 	public float forceRelation = 0.0f;
 	public int forceRewardCount = 0;
 	public int merchantBookPrice = 1000;
+	
+	public List<Integer> moneys;
+	public List<World> moneymappings;
 	
 	public int knowledgeFragments = 0, fragmentReq = 5;
 	
@@ -298,6 +299,79 @@ public class Player extends SuperPerson{
 		}
 		
 		
+	}
+	public static int getGold() {
+		Player p = player;
+		World w = world;
+		int index = p.moneymappings.indexOf(w);
+		if (index == -1) {
+			p.moneymappings.add(w);
+			p.moneys.add(0);
+			return 0;
+		}
+		return p.moneys.get(index);
+	}
+	
+	public static void addGold(int delta) {
+		Player p = player;
+		World w = world;
+		int index = p.moneymappings.indexOf(w);
+		if (index == -1) {
+			p.moneymappings.add(w);
+			p.moneys.add(Math.max(0, delta));
+			return;
+		}
+		p.moneys.set(index, Math.max(0,p.moneys.get(index)+delta));
+	}
+	
+	/**
+	 * subtracts and prints failure for the caller
+	 * @param aether
+	 * @param money
+	 * @return if bought successfully
+	 */
+	public static boolean doCanBuy(int aether, int money) {
+		int hasMoney = getGold();
+		int hasAether = Player.bag.getAether();
+		if (hasAether > aether) {
+			if (hasMoney < money) {
+				extra.println("Not enough " + World.currentMoneyString()+"!");
+				return false;
+			}else {
+				addGold(-money);
+				Player.bag.addAether(aether);
+				return true;
+			}
+		}else {
+			if (hasMoney < money) {
+				extra.println("Not enough aether or " + World.currentMoneyString()+"!");
+				return false;
+			}else {
+				extra.println("Not enough aether!");
+				return false;
+			}
+		}
+	}
+	
+	public static boolean getCanBuy(int aether, int money) {
+		int hasMoney = getGold();
+		int hasAether = Player.bag.getAether();
+		if (hasAether > aether) {
+			if (hasMoney < money) {
+				extra.println("Not enough " + World.currentMoneyString()+"!");
+				return false;
+			}else {
+				return true;
+			}
+		}else {
+			if (hasMoney < money) {
+				extra.println("Not enough aether or " + World.currentMoneyString()+"!");
+				return false;
+			}else {
+				extra.println("Not enough aether!");
+				return false;
+			}
+		}
 	}
 	
 	

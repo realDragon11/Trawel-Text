@@ -40,75 +40,79 @@ public class Lot extends Feature {
 		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|lot|Lot|");
 		if (construct == null) {
-		int inncost = tier*600;
-		int arenacost = tier *400;
-		int minecost = tier*1200;
-		int gardencost = tier*50;
-		extra.println("What do you want to build? You have " +Player.bag.getGold() + " gold.");
-		extra.println("1 inn " + inncost + " gold.");
-		extra.println("2 arena " + arenacost + " gold.");
-		extra.println("3 donate to town");
-		extra.println("4 mine " + minecost + " gold.");
-		extra.println("5 garden " + gardencost + " gold.");
-		extra.println("6 exit");
-		
-		switch(extra.inInt(6)) {
-		case 1: 
-			if (Player.bag.getGold() >= inncost) {
-			extra.println("Build an inn here?");
-			if (extra.yesNo()) {	
-			Player.bag.addGold(-inncost);
-			construct = "inn";
-			constructTime = 24*3;
-			name = "inn under construction";
-			}}else {
-				extra.println("Not enough gold!");
-			}
-			
-			break;
-		case 2: 
-			extra.println("Build an arena here?");
-			if (Player.bag.getGold() >= arenacost) {
-			if (extra.yesNo()) {
-			Player.bag.addGold(-arenacost);
-			construct = "arena";
-			constructTime = 24*2;
-			name = "arena under construction";
-			}}else {
-				extra.println("Not enough gold!");
-			}break;
-		case 3: 
-			extra.println("Donate to the town?");
-			if (extra.yesNo()) {
-				town.replaceFeature(this,new TravelingFeature(this.town));
-			}break;
-		case 4: 
-			if (Player.bag.getGold() >= minecost) {
-			extra.println("Build a mine?");
-			if (extra.yesNo()) {
-			Player.bag.addGold(-minecost);
-			construct = "mine";
-			constructTime = 24*7;
-			name = "mine under construction";
-			}}else {
-				extra.println("Not enough gold!");
-			}break;
-		case 5:
-			if (Player.bag.getGold() >= gardencost) {
-				extra.println("Build a garden?");
-				if (extra.yesNo()) {
-				Player.bag.addGold(-gardencost);
-				construct = "garden";
-				constructTime = 24;
-				name = "garden under construction";
-				}}else {
-					extra.println("Not enough gold!");
+			int inncost = tier*200;
+			int arenacost = tier*40;
+			int minecost = tier*200;
+			int gardencost = tier*5;
+
+			int a_inncost = tier*1000;
+			int a_arenacost = tier*700;
+			int a_minecost = tier*3000;
+			int a_gardencost = tier*200;
+
+			extra.println("What do you want to build? You have "+World.currentMoneyDisplay(Player.bag.getGold()));
+			extra.println("1 inn "+a_inncost + " aether, " + inncost + " "+World.currentMoneyString());
+			extra.println("2 arena "+a_arenacost + " aether, " + arenacost + " "+World.currentMoneyString());
+			extra.println("3 donate to town");
+			extra.println("4 mine "+a_minecost + " aether, " + minecost + " "+World.currentMoneyString());
+			extra.println("5 garden "+a_gardencost + " aether, " + gardencost + " "+World.currentMoneyString());
+			extra.println("6 exit");
+
+			switch(extra.inInt(6)) {
+			case 1: 
+				if (Player.getCanBuy(a_inncost,inncost)) {
+					extra.println("Build an inn here?");
+					if (extra.yesNo()) {	
+						Player.doCanBuy(a_inncost,inncost);
+						construct = "inn";
+						constructTime = 24*3;
+						name = "inn under construction";
+					}
+				}
+
+				break;
+			case 2: 
+				extra.println("Build an arena here?");
+				if (Player.getCanBuy(a_arenacost,arenacost)) {
+					if (extra.yesNo()) {
+						Player.doCanBuy(a_arenacost,arenacost);
+						construct = "arena";
+						constructTime = 24*2;
+						name = "arena under construction";
+					}
 				}break;
-		case 6: return;
-		}
-		if (construct != null) {
-			tutorialText = "Your " + construct + " is under construction.";
-		}
+			case 3: 
+				extra.println("Donate to the town?");
+				if (extra.yesNo()) {
+					town.replaceFeature(this,new TravelingFeature(this.town));
+				}
+				break;
+			case 4: 
+				if (Player.getCanBuy(a_minecost,minecost)) {
+					extra.println("Build a mine?");
+					if (extra.yesNo()) {
+						Player.doCanBuy(a_minecost,minecost);
+						construct = "mine";
+						constructTime = 24*7;
+						name = "mine under construction";
+					}
+				}
+				break;
+			case 5:
+				if (Player.getCanBuy(a_gardencost,gardencost)) {
+					extra.println("Build a garden?");
+					if (extra.yesNo()) {
+						Player.doCanBuy(a_gardencost,gardencost);
+						construct = "garden";
+						constructTime = 24;
+						name = "garden under construction";
+					}
+				}break;
+			case 6: return;
+			}
+			if (construct != null) {
+				tutorialText = "Your " + construct + " is under construction.";
+			}
 		}else {
 			extra.println("Your " + construct + " is being built.");
 		}

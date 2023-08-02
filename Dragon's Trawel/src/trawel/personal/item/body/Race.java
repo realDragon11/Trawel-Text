@@ -49,11 +49,16 @@ public class Race extends Item{
 	}
 	
 	@Override
+	public String getName() {
+		return renderName(false);
+	}
+	
+	@Override
 	public EnchantConstant getEnchant() {
 		return null;
 	}
 	@Override
-	public int getCost() {
+	public int getAetherValue() {
 		return 0;
 	}
 	@Override

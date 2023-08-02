@@ -42,6 +42,7 @@ public class World extends TContextOwner{
 	//private List<Person> characters;
 	private Calender calender = new Calender();
 	private float minLata, maxLata, minLonga, maxLonga;
+	private String moneyname;
 	
 	private transient ReentrantLock debtLock;
 	
@@ -59,6 +60,7 @@ public class World extends TContextOwner{
 		
 		printerLabels = new ArrayList<String>();
 		printers = new ArrayList<PrintEvent>();
+		moneyname = extra.choose(extra.choose("gold","silver","electrum")+" coins",_name + " notes", _name+" proof marks");
 	}
 	
 	public void addIsland(Island t) {
@@ -148,6 +150,7 @@ public class World extends TContextOwner{
 	}
 	
 	public void addDeathCheater(Person p) {
+		p.getBag().regenNullEquips(p.getLevel());
 		deathCheaters.add(p);
 	}
 	
@@ -295,6 +298,19 @@ public class World extends TContextOwner{
 			return true;
 		}
 		return false;
+	}
+
+	public static String currentMoneyDisplay(int money) {
+		World w = Player.world;
+		return w.moneyString(money);
+	}
+	
+	public static String currentMoneyString() {
+		return Player.world.moneyname;
+	}
+
+	public String moneyString(int money) {
+		return money + " " + moneyname;//for now always plural
 	}
 	
 

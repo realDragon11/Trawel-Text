@@ -197,7 +197,7 @@ public class Armor extends Item {
 
 		float baseEnchant = getEnchantMult();
 		if (baseEnchant > extra.randFloat()*3f) {
-			enchantment = EnchantConstant.makeEnchant(baseEnchant,getCost());//used to include level in the mult, need a new rarity system
+			enchantment = EnchantConstant.makeEnchant(baseEnchant,getAetherValue());//used to include level in the mult, need a new rarity system
 		}
 
 	}
@@ -221,6 +221,7 @@ public class Armor extends Item {
 	 * Returns the name of the armor, with any enchantments tacked on.
 	 * @return name - String
 	 */
+	@Override
 	public String getName() {
 		Material mat = getMat();
 		if (enchantment != null){
@@ -348,7 +349,7 @@ public class Armor extends Item {
 	 * @return cost (int)
 	 */
 	@Override
-	public int getCost() {
+	public int getAetherValue() {
 		return (int) (getBaseCost()*(isEnchanted() ? enchantment.getGoldMult() : 1)+(isEnchanted() ? enchantment.getGoldMod() : 0));
 	}
 	
@@ -385,7 +386,7 @@ public class Armor extends Item {
 			//effectiveCost=(int) extra.zeroOut(cost * enchantment.getGoldMult()+enchantment.getGoldMod());
 			return pastEnchant != enchantment;
 		}else {
-			enchantment = EnchantConstant.makeEnchant(getEnchantMult(), getCost());
+			enchantment = EnchantConstant.makeEnchant(getEnchantMult(), getAetherValue());
 			return enchantment != null;
 		}
 	}
@@ -417,7 +418,7 @@ public class Armor extends Item {
 		switch (style) {
 		case 1:
 			extra.println(this.getName() + " sbp:" + extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
-			 + " value: " + (int)(this.getCost()*markup));
+			 + " aether: " + (int)(this.getAetherValue()*markup));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
@@ -425,7 +426,7 @@ public class Armor extends Item {
 			
 		case 2:
 			extra.println(this.getName() + " sbp:" + extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
-			+ " dex: "+ this.getDexMod() + " flame: "+ this.getFireMod() + " shock: "+ this.getShockMod() + " frost: "+ this.getFreezeMod() + " value: " + (int)(this.getCost()*markup));
+			+ " dex: "+ this.getDexMod() + " flame: "+ this.getFireMod() + " shock: "+ this.getShockMod() + " frost: "+ this.getFreezeMod() + " aether: " + (int)(this.getAetherValue()*markup));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
