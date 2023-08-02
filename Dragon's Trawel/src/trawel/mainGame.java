@@ -737,6 +737,11 @@ public class mainGame {
 				"  \\_/ \\_| \\_\\_| |_/\\/  \\/\\____/\\_____/");
 	}
 	
+	public static void log(String str) {
+		logStream.println(str);
+		logStream.flush();
+	}
+	
 	/**
 	 * Main method. Calls the main game.
 	 * @param args (Strings)

@@ -48,8 +48,9 @@ public class Networking {
 		NONE, GDX, LEGACY
 	}
 	
-	public static void handleAnyConnection(ConnectType type) {
-		switch (type) {
+	public static void handleAnyConnection(ConnectType atype) {
+		type = atype;
+		switch (atype) {
 		case GDX:
 			connectGDX();
 			break;
@@ -65,16 +66,16 @@ public class Networking {
 	public static void connectGDX() {		
 		//new idea: we assume our standard output is hijacked and we need to make out own console out
 		os = OSNUM.LINUX;//testing
-		String osTerm;
+		String osTerm = null;
 		switch (os) {
 		case LINUX:
-			osTerm = "xTerm";
+			osTerm = "xterm";
 			break;
 		case WINDOWS:
 			osTerm = "cmd /c start cmd.exe";
 			break;
 		}
-		ProcessBuilder builder = new ProcessBuilder();
+		ProcessBuilder builder = new ProcessBuilder(osTerm);
 		builder.directory(null);//current directory
 		try {
 			commandPrompt = builder.start();
@@ -83,11 +84,18 @@ public class Networking {
 			netIn = System.in;
 			netOut = new PrintWriter(System.out);
 			gdxOut = System.out;
-			System.setErr(new PrintStream(commandPrompt.getOutputStream()));
+			//System.setErr(new PrintStream(commandPrompt.getOutputStream()));
+			mainGame.log("terminal started");
 		} catch (IOException e) {
+			mainGame.log(e.getMessage());
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
+		connected = true;
+		printlnTo(mainGame.headerText());
+		printlnTo("in: "+nextInt());
+		mainGame.log("got handoff");
+		printlnTo(mainGame.headerText());
 	}
 
 	public static void connect(int port) {
@@ -275,6 +283,9 @@ public class Networking {
 	}
 
 	public static void printlnTo(String string) {
+		if (!connected) {
+			return;
+		}
 		switch (type) {
 		case GDX:
 			try {
