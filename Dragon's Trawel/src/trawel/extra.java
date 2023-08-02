@@ -255,47 +255,20 @@ public final class extra {
 		}
 
 		public static final int inInt(int max, boolean alwaysNine) {
-			String str;
-			int in =0;
 			Networking.sendStrong("Entry|Activate|" + max + "|");
-			if ((Networking.connected() && mainGame.GUIInput) || Networking.autoconnectSilence) {
-				trawel.threads.BlockTaskManager.start();
-				int ini=  Networking.nextInt();
-				while(!(alwaysNine && ini == 9) && (ini < 1 || ini > max)) {
-					extra.println("Please type a number from 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
-					ini=  Networking.nextInt();
-					if (ini == -99 || ini == -1) {
-						Networking.unConnect();
-						throw new RuntimeException("invalid input stream error");
-					}
+			trawel.threads.BlockTaskManager.start();
+			int ini=  Networking.nextInt();
+			while(!(alwaysNine && ini == 9) && (ini < 1 || ini > max)) {
+				extra.println("Please type a number from 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
+				ini=  Networking.nextInt();
+				if (ini == -99 || ini == -1) {
+					Networking.unConnect();
+					throw new RuntimeException("invalid input stream error");
 				}
-				trawel.threads.BlockTaskManager.halt();
-				extra.linebreak();
-				return ini;
-			
-			}else {
-
-				while (true){
-					trawel.threads.BlockTaskManager.start();
-					str = extra.inString(); 
-					try {
-						in = Integer.parseInt(str);
-					}catch(NumberFormatException e) {
-						if (!str.equals("\n")) {
-							in = 0;}
-					}catch(Exception e) {
-						extra.println("error");
-					}
-					if (!(alwaysNine && in == 9) && (in < 1 || in > max)) {
-						extra.println("Please type a number from 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
-					}else {
-						break;
-					}
-				}
-				trawel.threads.BlockTaskManager.halt();
-			extra.linebreak();
-			return in;
 			}
+			trawel.threads.BlockTaskManager.halt();
+			extra.linebreak();
+			return ini;
 		}
 		
 		public static final void println() {

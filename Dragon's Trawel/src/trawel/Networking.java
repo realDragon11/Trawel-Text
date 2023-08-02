@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import trawel.personal.people.Player;
@@ -22,7 +23,8 @@ public class Networking {
 	private static String songType = "main", backtype = "main";
 	public static boolean autoconnectSilence = false;
 	
-	private static InputStream netIn, in;
+	private static InputStream netIn;
+	private static Scanner in;
 
 	private static PrintWriter netOut, out;
 	private static Process commandPrompt;
@@ -49,7 +51,7 @@ public class Networking {
 		case LEGACY:
 			autoConnect();
 		case NONE:
-			in = System.in;
+			in = new Scanner(System.in);
 			out = new PrintWriter(System.out);
 			break;
 		}
@@ -71,10 +73,11 @@ public class Networking {
 		builder.directory(null);//current directory
 		try {
 			commandPrompt = builder.start();
-			in = commandPrompt.getInputStream();
+			in = new Scanner(commandPrompt.getInputStream());
 			out = new PrintWriter(commandPrompt.getOutputStream());
 			netIn = System.in;
 			netOut = new PrintWriter(System.out);
+			System.setErr(new PrintStream(commandPrompt.getOutputStream()));
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
@@ -139,13 +142,20 @@ public class Networking {
 	}
 	
 	public static int nextInt() {
-		
-		try {
-			return netIn.read();
-			//(int)(Byte.toUnsignedInt(in.nextByte()));
-			//return in.nextInt();
-		}catch(Exception e) {
-			return -99;
+		if ((Networking.connected() && mainGame.GUIInput) || Networking.autoconnectSilence) {
+			//network only
+			try {
+				return netIn.read();
+			} catch (IOException e) {
+				return -99;
+			}
+		}else {
+			//terminal only
+			try {
+				return Integer.parseInt(in.nextLine());
+			}catch(NumberFormatException e) {
+				return 0;
+			}
 		}
 	}
 	
