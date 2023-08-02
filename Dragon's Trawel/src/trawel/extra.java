@@ -149,25 +149,14 @@ public final class extra {
 	}
 	
 	/**
-	 * Changes the output to be the 'output.txt' file, or the console.
-	 * @param file - (boolean) true if you want to swap to a file output, false if you want to swap to the standard output system.
+	 * can set to true to disable normal outputs
+	 * some graphical functions still write, as well as most error messages
 	 */
-	public static final void changePrint(boolean file) {
+	public static final void changePrint(boolean disable) {
 		if (!isMainThread()) {
 			return;
 		}
-		printMode = file;
-		/*if (file) {	//https://stackoverflow.com/a/1994283/9320090
-			//redirecting printing
-			PrintStream out;
-			try {
-				out = new PrintStream(new FileOutputStream("output.txt"));
-				System.setOut(out);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}}else {
-				System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
-			}*/
+		printMode = disable;
 	}
 	
 	
@@ -261,9 +250,13 @@ public final class extra {
 			while(!(alwaysNine && ini == 9) && (ini < 1 || ini > max)) {
 				extra.println("Please type a number from 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
 				ini=  Networking.nextInt();
-				if (ini == -99 || ini == -1) {
+				if (ini == -99) {
 					Networking.unConnect();
 					throw new RuntimeException("invalid input stream error");
+				}
+				if (ini == -1) {
+					Networking.unConnect();
+					throw new RuntimeException("input stream ended");
 				}
 			}
 			trawel.threads.BlockTaskManager.halt();
@@ -280,6 +273,7 @@ public final class extra {
 				return;
 			}
 			if (!printMode) {
+				mainGame.log(str);
 				Networking.printlocalln(stripPrint(printStuff+str));
 				detectInputString(stripPrint(printStuff +str));
 				Networking.printlnTo(printStuff + str);

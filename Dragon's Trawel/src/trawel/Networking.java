@@ -32,6 +32,8 @@ public class Networking {
 	private static OutputStream gdxOut;
 	private static Process commandPrompt;
 	
+	private static boolean simpleTransmit = true;
+	
 	private static ConnectType type = ConnectType.NONE;
 	
 	public static OSNUM os;
@@ -75,21 +77,29 @@ public class Networking {
 			osTerm = "cmd /c start cmd.exe";
 			break;
 		}
-		ProcessBuilder builder = new ProcessBuilder(osTerm);
-		builder.directory(null);//current directory
-		try {
-			commandPrompt = builder.start();
-			in = new Scanner(commandPrompt.getInputStream());
-			out = new PrintWriter(commandPrompt.getOutputStream());
-			netIn = System.in;
-			netOut = new PrintWriter(System.out);
-			gdxOut = System.out;
-			//System.setErr(new PrintStream(commandPrompt.getOutputStream()));
-			mainGame.log("terminal started");
-		} catch (IOException e) {
-			mainGame.log(e.getMessage());
-			e.printStackTrace();
-			throw new RuntimeException(e);
+		netIn = System.in;
+		netOut = new PrintWriter(System.out);
+		gdxOut = System.out;
+		if (mainGame.noTerminal) {
+			in = null;
+			out = null;
+		}else {
+			ProcessBuilder builder = new ProcessBuilder(osTerm);
+			//FIXME: just do this in the other half
+			//SEO has ruined java resources but I could just resort to sockets to pass stuff off again
+			//if there is no website willing to tell me how to pass off non-standard streams
+			builder.directory(null);//current directory
+			try {
+				commandPrompt = builder.start();
+				in = new Scanner(commandPrompt.getInputStream());
+				out = new PrintWriter(commandPrompt.getOutputStream());				
+				//System.setErr(new PrintStream(commandPrompt.getOutputStream()));
+				mainGame.log("terminal started");
+			} catch (IOException e) {
+				mainGame.log(e.getMessage());
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
 		}
 		connected = true;
 		printlnTo(mainGame.headerText());
@@ -136,12 +146,8 @@ public class Networking {
 	
 	
 	public static void send(String str) {
-		if (!extra.isMainThread() || !connected) {
-			return;
-		}
-		if (netOut != null && (!extra.getPrint())) {
+		if (!extra.getPrint()) {
 			sendStrong(str);
-			//out.flush();
 		}
 	}
 	
@@ -156,15 +162,23 @@ public class Networking {
 				commit();
 			}catch(Exception e) {
 				e.printStackTrace();
+				mainGame.log(e.getMessage());
 			}
 		}else {
-			netOut.println(str);
+			if (netOut != null) {
+				netOut.println(str);
+				netOut.flush();
+			}
 		}
 	}
 	
 	public static int nextInt() {
 		if ((Networking.connected() && mainGame.GUIInput) || Networking.autoconnectSilence) {
 			//network only
+			if (simpleTransmit) {
+				//return in.nextInt();
+				return 1;
+			}
 			try {
 				return netIn.read();
 			} catch (IOException e) {
@@ -173,7 +187,7 @@ public class Networking {
 		}else {
 			//terminal only
 			try {
-				return Integer.parseInt(in.nextLine());
+				return Math.max(0,Integer.parseInt(in.nextLine()));
 			}catch(NumberFormatException e) {
 				return 0;
 			}
@@ -278,6 +292,9 @@ public class Networking {
 	}
 
 	public static void printlocalln(String print) {
+		if (out == null) {
+			return;
+		}
 		out.println(print);
 		out.flush();
 	}
@@ -314,6 +331,11 @@ public class Networking {
 	
 	
 	private static void sendHeader(HeaderType hType)  throws IOException{
+		if (simpleTransmit) {
+			debugGDXPrint(hType.name());
+			return;
+		}
+		
 		gdxOut.write(1);//start of heading
 		switch (hType) {
 		default:
@@ -324,13 +346,31 @@ public class Networking {
 	}
 	
 	private static void sendStringContent(String str) throws IOException {
+		if (simpleTransmit) {
+			debugGDXPrint(str);
+			return;
+		}
+		
 		byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
 		gdxOut.write(bytes);
 		gdxOut.write(23);//end transmission block
 	}
 	
 	private static void commit() throws IOException {
+		if (simpleTransmit) {
+			debugGDXPrint(" |END|");
+			gdxOut.write(3);//end of text still needed
+			gdxOut.flush();
+			return;
+		}
+		
 		gdxOut.write(3);//end of text
 		gdxOut.flush();
+	}
+	
+	public static void debugGDXPrint(String str) throws IOException {
+		mainGame.log(str);
+		byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
+		gdxOut.write(bytes);
 	}
 }

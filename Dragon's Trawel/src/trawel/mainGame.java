@@ -73,6 +73,7 @@ public class mainGame {
 	public static boolean noDisconnect = false;
 	public static boolean noThreads = true;
 	public static boolean permaNoThreads = false;
+	public static boolean noTerminal = false;
 
 	public static boolean GUIInput = true;
 	
@@ -107,16 +108,10 @@ public class mainGame {
 			@Override
 			public List<MenuItem> gen() {
 				extra.changePrint(false);
+				log("gen main menu");
 				Networking.sendStrong("Discord|desc|Main Menu|");
-				Networking.send("Visual|MainMenu|");
+				Networking.sendStrong("Visual|MainMenu|");
 				List<MenuItem> mList = new ArrayList<MenuItem>();
-				/*mList.add(new MenuLine() {
-
-					@Override
-					public String title() {
-						return "Choose a Game Mode:";
-					}}
-				);*/
 				mList.add(new MenuSelect() {
 
 					@Override
@@ -778,6 +773,9 @@ public class mainGame {
 			if (a.toLowerCase().equals("gdx")) {
 				legacyConnect = false;
 			}
+			if (a.toLowerCase().equals("quiet")) {
+				noTerminal = true;
+			}
 			
 		}
 		new Networking();
@@ -799,9 +797,11 @@ public class mainGame {
 		boolean breakErr = false;
 		while (!breakErr) {
 			try {
+				mainGame.log("starting main menu");
 				mainMenu();
 			}catch (Exception e) {
 				try {
+					mainGame.log(e.getMessage());
 					errorHandle(e);
 				}catch(Exception fatal) {
 					System.out.println("Error was fatal. Press enter to close.");
@@ -813,7 +813,7 @@ public class mainGame {
 				extra.inString();
 			}
 		}
-		
+		mainGame.log("exiting game");
 		
 		//
 		
