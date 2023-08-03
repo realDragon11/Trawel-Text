@@ -458,7 +458,7 @@ public class Weapon extends Item {
 					+ " hd/ad/bs: " + extra.format(this.highest())
 					+ "/" + extra.format(this.average())
 					+"/"+extra.format(this.score())
-					+" value: " + (int)(this.getMoneyValue()*markup));
+					+" value: " + extra.F_WHOLE.format(Math.ceil(this.getMoneyValue()*markup)));
 					
 					if (this.isEnchantedConstant()) {
 						this.getEnchant().display(1);

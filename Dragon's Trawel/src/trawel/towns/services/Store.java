@@ -65,6 +65,7 @@ public class Store extends Feature{
 		if (invSize < 5) {
 			markup *= .95;
 		}
+		markup = Math.max(1.1f,markup);
 	}
 	
 	public Store(Town t, int tier, int type) {
@@ -168,6 +169,20 @@ public class Store extends Feature{
 	private void serviceItem(Item item) {
 		serviceItem(items.indexOf(item));
 	}
+	/**
+	 * > 0 = gaining money from the trade (player selling something worth more)
+	 * < 0 = losing money from the trade (player selling something worth less)
+	 * @param selling
+	 * @param buying
+	 * @return
+	 */
+	public int getDelta(Item selling, Item buying) {
+		//the gold the item you are exchanging it for is worth
+		int sellGold = extra.zeroOut(selling.getMoneyValue());
+		double buyGold = Math.ceil(buying.getMoneyValue()*markup);
+		double raw_delta = sellGold-buyGold;// > 0 = earning money, < 0 = spending money
+		return (int) (raw_delta > 0 ? Math.floor(raw_delta) : Math.ceil(raw_delta));
+	}
 	
 	private void serviceItem(int index) {
 		Person p = Player.player.getPerson();
@@ -218,11 +233,7 @@ public class Store extends Feature{
 		default:
 			throw new RuntimeException("invalid store item type");
 		}
-		//the gold the item you are exchanging it for is worth
-		int sellGold = extra.zeroOut(sellItem.getMoneyValue());
-		float buyGold = (int)Math.ceil(buyItem.getMoneyValue()*markup);
-		float raw_delta = sellGold-buyGold;// > 0 = earning money, < 0 = spending money
-		int delta = (int) (raw_delta > 0 ? Math.floor(raw_delta) : Math.ceil(raw_delta));
+		int delta = getDelta(sellItem,buyItem);
 		if (Player.getTotalBuyPower()+delta < 0) {
 			extra.println("You can't afford this item!");
 			return;
@@ -243,7 +254,7 @@ public class Store extends Feature{
 			arraySwap(bag.swapWeapon((Weapon)buyItem),buyItem);
 			break;	
 		}
-		if (delta <0) {
+		if (delta < 0) {
 			int beforeMoney = Player.getGold();
 			int beforeAether = Player.bag.getAether();
 			Player.buyMoneyAmount(-delta);
@@ -257,8 +268,8 @@ public class Store extends Feature{
 					);
 		}else {
 			if (delta > 0) {//we sold something more expensive
-				Player.addGold(-delta);
-				extra.println("You complete the trade, gaining " + World.currentMoneyDisplay(-delta) +".");
+				Player.addGold(delta);
+				extra.println("You complete the trade, gaining " + World.currentMoneyDisplay(delta) +".");
 			}else {//equal value
 				extra.println("You complete the trade.");
 			}

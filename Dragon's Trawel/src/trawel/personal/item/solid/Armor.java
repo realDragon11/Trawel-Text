@@ -435,7 +435,7 @@ public class Armor extends Item {
 			;break;
 		case 3://for stores
 			extra.println(this.getName() + " sbp:" + extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
-			 + " value: " + (int)(this.getMoneyValue()*markup));
+			 + " value: " + extra.F_WHOLE.format(Math.ceil(this.getMoneyValue()*markup)));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}

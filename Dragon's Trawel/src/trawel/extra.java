@@ -366,9 +366,15 @@ public final class extra {
 			return mainGame.scanner.nextLine().toLowerCase();
 		}
 
+		/**
+		 * true = do not print
+		 * <br>
+		 * false = can print
+		 * @return if you can't print
+		 */
 		public static final Boolean getPrint() {
 			if (!isMainThread()){
-				return false;
+				return true;
 			}
 			return printMode;
 		}

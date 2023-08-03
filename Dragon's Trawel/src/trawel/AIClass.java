@@ -419,12 +419,14 @@ public class AIClass {
 			int aether = loot.getAether();
 			stash.addAether(aether);
 			loot.removeCurrency();
-			extra.println(p.getName() + " claims the " + aether + " aether and " + World.currentMoneyDisplay(money) + ".");
+			if (!extra.getPrint()) {
+				extra.println(p.getName() + " claims the " + aether + " aether and " + World.currentMoneyDisplay(money) + ".");
+			}
 		}
 	}
 	
 	/**
-	 * Returns true if @param hasItem costs more than @param toReplace
+	 * Returns true if they want to replace it
 	 * @param hasItem (Item)
 	 * @param toReplace (Item)
 	 * @param smarts (int)
@@ -483,9 +485,9 @@ public class AIClass {
 			return compareItem(current,next,2,false,p);
 		}
 		extra.println("Buy the");
-		current.display(s);
+		next.display(s,true);
 		extra.println("replacing your");
-		next.display(s);
+		current.display(s,false);
 		displayChange(current,next, p,s);
 		return extra.yesNo();
 	}
@@ -530,14 +532,15 @@ public class AIClass {
 	public static void displayChange(Item hasItem, Item toReplace, Person p, Store s) {
 		//p is used to display absolute stat changes instead of just raw stats like the non-diff
 		extra.println();
-		float costDiff = 0;
+		int costDiff = 0;
 		String costName = null;
 		if (s == null) {
 			costName = "aether";
 			costDiff = toReplace.getAetherValue() - hasItem.getAetherValue();
 		}else {
 			costName = s.getTown().getIsland().getWorld().moneyString();
-			costDiff = ((s.getMarkup()*toReplace.getMoneyValue()) - hasItem.getMoneyValue());//DOLATER match rounding across places
+			costDiff = s.getDelta(hasItem,toReplace);
+			//costDiff = (int) (Math.ceil(s.getMarkup()*toReplace.getMoneyValue()) - hasItem.getMoneyValue());//DOLATER match rounding across places
 		}
 		
 		if (Armor.class.isInstance(hasItem)) {
@@ -585,14 +588,25 @@ public class AIClass {
 		
 	}
 	
-	public static String priceDiffDisp(float delta,String name, Store s) {
+	/**
+	 * this method works differently if given a Store or not.
+	 * <br>
+	 * if given a store, the delta should be provided from its delta function
+	 * <br>
+	 * otherwise, do (item wanting to take) - (item that they have)
+	 * @param delta
+	 * @param name
+	 * @param s
+	 * @return
+	 */
+	public static String priceDiffDisp(int delta,String name, Store s) {
 		if (s == null) {
-			return "[c_white]"+name+": " + (delta != 0 ? extra.colorBaseZeroTimid((int)delta) : "=");
+			return "[c_white]"+name+": " + (delta != 0 ? extra.colorBaseZeroTimid(delta) : "=");
 		}
-		if (delta > 0) {//costs more, losing money
-			return extra.TIMID_BLUE + "requires " + extra.F_WHOLE.format(Math.ceil(delta)) + " buy value";
-		}else {//costs less, might be gaining money
-			return extra.TIMID_GREY + "will return " + extra.F_WHOLE.format(Math.floor(delta)) + " " + name;
+		if (delta < 0) {//costs less, might be gaining money
+			return extra.TIMID_BLUE + "requires " +  Math.abs(delta) + " buy value";
+		}else {//costs more, losing money
+			return extra.TIMID_GREY + "will return " +delta + " " + name;
 		}
 	}
 	

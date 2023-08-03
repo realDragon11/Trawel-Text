@@ -98,6 +98,9 @@ public class Services {
 		if (getNew) {
 			bag.swapWeapon(new Weapon(extra.zeroOut(item.getLevel()-2)+1));
 		}
+		if (extra.getPrint()) {
+			return;
+		}
 		extra.println("The " + item.getName() + " "+extra.pluralIs(item.getBaseName())+" sold for " + World.currentMoneyDisplay(val) + "." );
 	}
 	
@@ -125,9 +128,6 @@ public class Services {
 	public static void sellItem(Armor item, Inventory bag, Inventory purse, boolean getNew) {
 		int val = item.getMoneyValue();
 		purse.addGold(val);
-		extra.println("The " + item.getName() + " "
-				+extra.pluralIs(item.getName())
-				+" sold for " + World.currentMoneyDisplay(val)+ "." );
 		if (getNew) {
 			boolean soldIt = false;
 			int i = 0;
@@ -142,6 +142,12 @@ public class Services {
 				throw new RuntimeException("Couldn't find the item they were trying to sell, a " + item.getName()+ "!");
 			}
 		}
+		if (extra.getPrint()) {
+			return;
+		}
+		extra.println("The " + item.getName() + " "
+				+extra.pluralIs(item.getName())
+				+" sold for " + World.currentMoneyDisplay(val)+ "." );
 	}
 	/**
 	 * Sells and item from inventory bag, and puts the resulting cash in that inventory.
@@ -157,6 +163,9 @@ public class Services {
 	public static void sellItem(DrawBane item, Inventory purse) {
 		int val = item.getValue();
 		purse.addGold(val);
+		if (extra.getPrint()) {
+			return;
+		}
 		extra.println("The " + item.getName() + " "+extra.pluralIs(item.getName())+" sold for " + World.currentMoneyDisplay(val) + "." );
 	}
 	
@@ -170,7 +179,10 @@ public class Services {
 	public static void aetherifyItem(Item item, Inventory dest) {
 		int val = item.getAetherValue();
 		dest.addAether(val);
-		extra.println("The " + item.getName() + "dissolves into " + val + " aether." );
+		if (extra.getPrint()) {
+			return;
+		}
+		extra.println("The " + item.getName() + " dissolves into " + val + " aether." );
 	}
 	
 	/**

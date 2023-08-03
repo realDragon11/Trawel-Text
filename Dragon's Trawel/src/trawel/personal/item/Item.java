@@ -40,8 +40,8 @@ public abstract class Item implements java.io.Serializable{
 	
 	public abstract void display(int style);
 	public abstract void display(int style,float markup);
-	public void display(Store s) {
-		display(3,s.getMarkup());
+	public void display(Store s, boolean markedUp) {
+		display(3,markedUp ? s.getMarkup() : 1f);
 	}
 	public String getModiferName() {
 		return getModiferNameColored(level);
