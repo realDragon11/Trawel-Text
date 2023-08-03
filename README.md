@@ -1,7 +1,7 @@
 # Trawel-Text
 An open world text adventure rpg.
 
-Currently undergoing a massive rewrite in July 2023.
+Currently undergoing a massive rewrite in August 2023 to prepare for a new major version.
 
 If you are vision impaired and using a screenreader for this text, the following portions have inline links. You can find a compiled version at "[real.itch.io/trawel](https://real.itch.io/trawel)", but that might be out of date.      <br>  <br>
 
