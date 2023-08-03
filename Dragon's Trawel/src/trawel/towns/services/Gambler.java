@@ -46,7 +46,7 @@ public class Gambler extends Feature{
 		extra.println("How much do you bid? They have " +gold + " gold to win.");
 		int in =  extra.inInt(gold);
 		extra.linebreak();
-		Inventory bag = Player.player.getPerson().getBag();
+		Inventory bag = Player.player.getPerson().getBag();//TODO: invalid but this is old anyway
 		int bid = Math.max(Math.min(bag.getGold(),Math.min(gold,in)),0);
 		extra.println("You bid " + bid + " gold.");
 		switch (type) {

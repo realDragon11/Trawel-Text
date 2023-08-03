@@ -9,6 +9,7 @@ import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
+import trawel.towns.World;
 import trawel.towns.services.Oracle;
 
 public class MineNode implements NodeType{
@@ -284,30 +285,29 @@ public class MineNode implements NodeType{
 			node.findBehind("vein");
 		}
 	}
-
+	
 	private void goldVein1() {
 		if (node.state == 0) {
 			Networking.sendStrong("Achievement|ore1|");
 			int mult1 = 0, mult2 = 0;
 			switch (node.storage1.toString()) {
-			case "gold": mult1 = 100; mult2 = 200;break;
-			case "silver": mult1 = 75; mult2 = 150;break;
-			case "platinum": mult1 = 150; mult2 = 300;break;
-			case "iron": mult1 = 50; mult2 = 100;break;
-			case "copper": mult1 = 25; mult2 = 50;break;
+			case "gold": mult1 = 5; mult2 = 10;break;
+			case "silver": mult1 = 3; mult2 = 7;break;
+			case "platinum": mult1 = 6; mult2 = 12;break;
+			case "iron": mult1 = 2; mult2 = 5;break;
+			case "copper": mult1 = 1; mult2 = 3;break;
 			}
-			int gold = extra.randRange(mult1,mult2)*node.level;
-			Player.bag.addGold(gold);
-			extra.println("You mine the vein for "+node.storage1+" worth "+ gold + " gold.");
+			int gold = extra.randRange(0,2)+extra.randRange(mult1,mult2)*node.level;
+			Player.addGold(gold);
+			extra.println("You mine the vein for "+node.storage1+" worth "+ World.currentMoneyDisplay(gold) + ".");
 			node.state = 1;
-			node.name = "empty vein";
-			node.interactString = "examine empty vein";
+			node.name = "empty "+node.storage1+" vein";
+			node.interactString = "examine empty "+node.storage1+" vein";
 			((Mine)node.parent).removeVein();
-			//to indicate you can find stuff
-			node.findBehind("empty vein");
+			node.findBehind("empty "+node.storage1+"vein");//instant chance so they want to mine more
 		}else {
 			extra.println("The "+node.storage1+" has already been mined.");
-			node.findBehind("empty vein");
+			node.findBehind("empty "+node.storage1+"vein");
 		}
 	}
 	

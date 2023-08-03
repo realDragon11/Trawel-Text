@@ -21,6 +21,7 @@ import trawel.quests.QuestR;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
+import trawel.towns.World;
 import trawel.towns.services.Oracle;
 
 public class Forest extends Feature{
@@ -154,23 +155,23 @@ public class Forest extends Feature{
 	}
 	
 	private void goldStream() {
-		extra.println("You spot a bag of gold floating down a stream! Chase it?");
+		extra.println("You spot a bag of "+World.currentMoneyString()+" floating down a stream! Chase it?");
 		Boolean result = extra.yesNo();
 		if (result) {
 			if (Math.random() > .5) {
 				extra.println("A fighter runs up and calls you a thief before launching into battle!");
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
 				if (winner == Player.player.getPerson()) {
-					int gold = extra.getRand().nextInt(30*tier);
-					extra.println("You pick up " + gold + " gold!");
-					Player.bag.addGold(gold);
+					int gold = (2*tier)+extra.randRange(0,3);
+					extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
+					Player.addGold(gold);
 				}else {
 					extra.println("They take the gold sack and leave you floating down the stream...");
 				}
 			}else {
-				int gold = extra.getRand().nextInt(30*tier);
-				extra.println("You pick up " + gold + " gold!");
-				Player.bag.addGold(gold);
+				int gold = (tier)+extra.randRange(0,2);
+				extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
+				Player.addGold(gold);
 			}
 		}else {
 			extra.println("You let the bag drift out of sight...");
@@ -193,8 +194,9 @@ public class Forest extends Feature{
 			case 2: extra.println("Eating the mushroom is very difficult... but you manage.");
 			Player.player.getPerson().addXp(tier*2);break;
 			case 3: extra.println("You feel lightheaded.... you pass out!");
-			extra.println("When you wake up, you find that some of your gold is missing!");
-			Player.bag.addGold(-53*tier);break;
+			extra.println("When you wake up, you notice someone went through your bags!");
+			extra.println(Player.loseGold(tier*extra.randRange(5,10),true));
+			break;
 			}
 			if (Math.random() > .8) {
 			extra.println("As you eat the mushroom, you hear a voice cry out:");
@@ -219,14 +221,14 @@ public class Forest extends Feature{
 			}
 			Person winner = mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getDryad(tier));
 			if (winner == Player.player.getPerson()) {
-				int gold = extra.getRand().nextInt(80*tier)+tier*20;
-				extra.println("You sell the mushroom for " + gold + " gold.");
-				Player.bag.addGold(gold);
+				int gold = 2*extra.randRange(1,tier+1);
+				extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
+				Player.addGold(gold);
 			}
 			}else {
-				int gold = extra.getRand().nextInt(50*tier);
-				extra.println("You sell the mushroom for " + gold + " gold.");
-				Player.bag.addGold(gold);
+				int gold = extra.randRange(1,tier+1);
+				extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
+				Player.addGold(gold);
 			};break;
 		case 4:
 			extra.println("You crush the mushroom under your heel.");
@@ -419,10 +421,10 @@ public class Forest extends Feature{
 			}
 			}else {
 				if (dryadQuest == 4) {
-				extra.println("You feel the forest reward you! A sack of gold appears at your feet!");
-				int gold = (tier*(extra.randRange(30,50)));
-				extra.println("You pick up " + gold + " gold!");
-				Player.bag.addGold(gold);
+				extra.println("You feel the forest reward you! Whirlwinds of aether appear at your feet!");
+				int a_reward = (tier*(extra.randRange(400,500)));
+				extra.println("You gain " + a_reward + " aether!");
+				Player.bag.addAether(a_reward);
 				dryadQuest = 5;
 				}
 			}

@@ -1,5 +1,6 @@
 package trawel.personal.item;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import trawel.Effect;
@@ -112,11 +113,56 @@ public class Inventory implements java.io.Serializable{
 
 	//instance
 	/**
-	 * Get a pointer to an armor in slot slot.
+	 * Get a ref to an armor in slot slot.
 	 * @return  armorSlots (Armor)
 	 */
 	public Armor getArmorSlot(int slot) {
 		return armorSlots[slot];
+	}
+	
+	public Iterable<Armor> getArmors(){
+		return new ArmorIterable();
+	}
+	
+	public class ArmorIterable implements Iterable<Armor>{
+
+		@Override
+		public Iterator<Armor> iterator() {
+			return new ArmorIts();
+		}
+		
+	}
+	
+	public class ArmorIts implements Iterator<Armor>{
+
+		private Armor current;
+		
+		public ArmorIts() {
+			current = scanFrom(0);
+		}
+		
+		private Armor scanFrom(int i) {
+			Armor[] slots = Inventory.this.armorSlots;
+			for (;i < slots.length;i++) {
+				if (slots[i] != null) {
+					return slots[i];
+				}
+			}
+			return null;
+		}
+		
+		@Override
+		public boolean hasNext() {
+			return current != null;
+		}
+
+		@Override
+		public Armor next() {
+			Armor ret = current;
+			current = scanFrom(current.getSlot());
+			return ret;
+		}
+		
 	}
 
 
@@ -153,9 +199,8 @@ public class Inventory implements java.io.Serializable{
 	public double getSharpResist() {
 		int i = 0;
 		double retResist = 0;
-		while (i < 5) {
-			retResist += armorSlots[i].getSharpResist();
-			i++;
+		for (Armor a: getArmor()) {
+			retResist += a.getSharpResist();
 		}
 		return extra.zeroOut(retResist);
 	}
@@ -167,9 +212,8 @@ public class Inventory implements java.io.Serializable{
 	public double getBluntResist() {
 		int i = 0;
 		double retResist = 0;
-		while (i < 5) {
-			retResist += armorSlots[i].getBluntResist();
-			i++;
+		for (Armor a: getArmor()) {
+			retResist += a.getBluntResist();
 		}
 		return extra.zeroOut(retResist);
 	}
@@ -181,9 +225,8 @@ public class Inventory implements java.io.Serializable{
 	public double getPierceResist() {
 		int i = 0;
 		double retResist = 0;
-		while (i < 5) {
-			retResist += armorSlots[i].getPierceResist();
-			i++;
+		for (Armor a: getArmor()) {
+			retResist += a.getPierceResist();
 		}
 		return extra.zeroOut(retResist);
 	}
@@ -196,8 +239,13 @@ public class Inventory implements java.io.Serializable{
 		int i = 0;
 		double retMod = 1;
 		while (i < 5) {
+			if (armorSlots[i] == null) {
+				i++;
+				continue;
+			}
 			if (armorSlots[i].isEnchanted()) {
-			retMod *= armorSlots[i].getEnchant().getDodgeMod();}
+				retMod *= armorSlots[i].getEnchant().getDodgeMod();
+			}
 		if (armorSlots[i].getDexMod() < 1.0) {
 			//heavy armor
 			if ((owner != null ? owner.heavyArmorLevel : 0 ) > 20.0) {
@@ -231,10 +279,10 @@ public class Inventory implements java.io.Serializable{
 	public double getAim() {
 		int i = 0;
 		double retMod = 1;
-		while (i < 5) {
-			if (armorSlots[i].isEnchanted()) {
-			retMod *= armorSlots[i].getEnchant().getAimMod();}
-			i++;
+		for (Armor a: getArmors()) {
+			if (a.isEnchanted()) {
+				retMod *= a.getEnchant().getAimMod();
+			}
 		}
 		if (hand != null && hand.isEnchantedConstant()) {
 			retMod *= hand.getEnchant().getAimMod();
@@ -250,10 +298,10 @@ public class Inventory implements java.io.Serializable{
 	public double getDam() {
 		int i = 0;
 		double retMod = 1;
-		while (i < 5) {
-			if (armorSlots[i].isEnchanted()) {
-			retMod *= armorSlots[i].getEnchant().getDamMod();}
-			i++;
+		for (Armor a: getArmors()) {
+			if (a.isEnchanted()) {
+				retMod *= a.getEnchant().getDamMod();
+			}
 		}
 		if (hand != null && hand.isEnchantedConstant()) {
 			retMod *= hand.getEnchant().getDamMod();
@@ -270,10 +318,10 @@ public class Inventory implements java.io.Serializable{
 	public double getHealth() {
 		int i = 0;
 		double retMod = 1;
-		while (i < 5) {
-			if (armorSlots[i].isEnchanted()) {
-			retMod *= armorSlots[i].getEnchant().getHealthMod();}
-			i++;
+		for (Armor a: getArmors()) {
+			if (a.isEnchanted()) {
+				retMod *= a.getEnchant().getHealthMod();
+			}
 		}
 		if (hand != null && hand.isEnchantedConstant()) {
 			retMod *= hand.getEnchant().getHealthMod();
@@ -289,10 +337,10 @@ public class Inventory implements java.io.Serializable{
 	public double getSpeed() {
 		int i = 0;
 		double retMod = 1;
-		while (i < 5) {
-			if (armorSlots[i].isEnchanted()) {
-			retMod *= armorSlots[i].getEnchant().getSpeedMod();}
-			i++;
+		for (Armor a: getArmors()) {
+			if (a.isEnchanted()) {
+				retMod *= a.getEnchant().getSpeedMod();
+			}
 		}
 		if (hand != null && hand.isEnchantedConstant()) {
 			retMod *= hand.getEnchant().getSpeedMod();
@@ -377,18 +425,9 @@ public class Inventory implements java.io.Serializable{
 		this.money = gold;
 	}
 	
-	/**
-	 * Add or subtract from the inventories current gold
-	 * @param net gold change (int)
-	 */
-	public void modGold(int gold) {
-		this.money += gold;
-	}
-
-	
 	public void display(int i) {
 		
-		for (Armor a: armorSlots) {
+		for (Armor a: getArmors()) {
 			a.display(1);
 		}
 		hand.display(1);
@@ -397,7 +436,7 @@ public class Inventory implements java.io.Serializable{
 	extra.println( World.currentMoneyDisplay(money) +".");
 	
 	}
-	
+
 	public void graphicalDisplay(int side, Person p) { 
 		Networking.sendStrong("RaceFlag|"+side+"|"+p.getRaceFlag().name()+"|");
 		Race r_race = getRace();
@@ -406,30 +445,35 @@ public class Inventory implements java.io.Serializable{
 			Networking.sendStrong("AddInv|"+side+"|" + p.getScar() +"|iron|0|" + p.bloodSeed + "|" + p.getBloodCount()+"|0|0|");
 		}
 		if (r_race.racialType == Race.RaceType.HUMANOID) {
-		for (Armor a: armorSlots) {
-			String str = "AddInv|"+side+"|" +a.getBaseName().replace(' ','_') +"|"+a.getBaseMap()+"|"+a.getMat().palIndex+"|"+a.bloodSeed + "|" + a.getBloodCount() + "|" +(a.getEnchant() != null ? a.getEnchant().enchantstyle :0 )+"|";
-			switch (a.getArmorType()) {
-			case 0:str+= "-6|";break; //head
-			case 1:str+= "-3|";break; //arms
-			case 2:str+= "-5|";break; //chest
-			case 3:str+= "-1|";break; //legs
-			case 4:str+= "-2|";break; //feet
+			for (Armor a: armorSlots) {
+				if (a == null) {
+					continue;
+				}
+				String str = "AddInv|"+side+"|" +a.getBaseName().replace(' ','_') +"|"+a.getBaseMap()+"|"+a.getMat().palIndex+"|"+a.bloodSeed + "|" + a.getBloodCount() + "|" +(a.getEnchant() != null ? a.getEnchant().enchantstyle :0 )+"|";
+				switch (a.getArmorType()) {
+				case 0:str+= "-6|";break; //head
+				case 1:str+= "-3|";break; //arms
+				case 2:str+= "-5|";break; //chest
+				case 3:str+= "-1|";break; //legs
+				case 4:str+= "-2|";break; //feet
+				}
+
+				Networking.sendStrong(str);
 			}
-			
-			Networking.sendStrong(str);
-		}
-		if (p.hasSkill(Skill.SHIELD)) {
-			Networking.sendStrong("AddInv|"+side+"|shield|iron|"+hand.getMat().palIndex+"|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-7|");
-		}else {
-		if (p.hasSkill(Skill.PARRY)) {
-			Networking.sendStrong("AddInv|"+side+"|parry|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount()+ "|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+ "|-4|");
-		}}
-		
-		Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|2|");
+			if (p.hasSkill(Skill.SHIELD)) {
+				Networking.sendStrong("AddInv|"+side+"|shield|iron|"+hand.getMat().palIndex+"|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-7|");
+			}else {
+				if (p.hasSkill(Skill.PARRY)) {
+					Networking.sendStrong("AddInv|"+side+"|parry|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount()+ "|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+ "|-4|");
+				}
+			}
+			if (hand != null) {
+				Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|2|");
+			}
 		}else {
 			if (p.getBag().getRace().raceID() == RaceID.B_WOLF) {
 				Networking.sendStrong("AddInv|"+side+"|" +"wolf_teeth" +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-9|");
-				
+
 			}
 		}
 		Networking.sendStrong("ClearInv|"+side+"|");
@@ -437,6 +481,10 @@ public class Inventory implements java.io.Serializable{
 	
 
 	public void addGold(int add) {
+		if (owner.isPlayer()) {
+			Player.addGold(add);
+			return;
+		}
 		money += add;
 		money = Math.max(money,0);
 	}
@@ -469,7 +517,7 @@ public class Inventory implements java.io.Serializable{
 		int i = 0;
 		double mult;
 		double retResist = 0;
-		while (i < 5) {
+		while (i < 5) {//should never be null
 			if (slot == i) {
 				mult = 2;
 			}else {
@@ -484,7 +532,7 @@ public class Inventory implements java.io.Serializable{
 		int i = 0;
 		double mult;
 		double retResist = 0;
-		while (i < 5) {
+		while (i < 5) {//should never be null
 			if (slot == i) {
 				mult = 2;
 			}else {
@@ -499,7 +547,7 @@ public class Inventory implements java.io.Serializable{
 		int i = 0;
 		double mult;
 		double retResist = 0;
-		while (i < 5) {
+		while (i < 5) {//should never be null
 			if (slot == i) {
 				mult = 2;
 			}else {
@@ -516,7 +564,7 @@ public class Inventory implements java.io.Serializable{
 		int i = 0;
 		double mult;
 		double retResist = 0;
-		while (i < 5) {
+		while (i < 5) {//should never be null
 			if (slot == i) {
 				mult = 2;
 				if (qualList.contains(Weapon.WeaponQual.PENETRATIVE)) {
@@ -538,7 +586,7 @@ public class Inventory implements java.io.Serializable{
 		int i = 0;
 		double mult;
 		double retResist = 0;
-		while (i < 5) {
+		while (i < 5) {//should never be null
 			if (slot == i) {
 				mult = 2;
 				if (qualList.contains(Weapon.WeaponQual.PENETRATIVE)) {
@@ -559,7 +607,7 @@ public class Inventory implements java.io.Serializable{
 		int i = 0;
 		double mult;
 		double retResist = 0;
-		while (i < 5) {
+		while (i < 5) {//should never be null
 			if (slot == i) {
 				mult = 2;
 				if (qualList.contains(Weapon.WeaponQual.PENETRATIVE)) {
@@ -581,7 +629,7 @@ public class Inventory implements java.io.Serializable{
 		int i = 0;
 		double mult;
 		double retResist = 0;
-		while (i < 5) {
+		while (i < 5) {//should never be null
 			if (slot == i) {
 				mult = 2;
 			}else {
@@ -597,7 +645,7 @@ public class Inventory implements java.io.Serializable{
 		int i = 0;
 		double mult;
 		double retResist = 0;
-		while (i < 5) {
+		while (i < 5) {//should never be null
 			if (slot == i) {
 				mult = 2;
 			}else {
@@ -613,7 +661,7 @@ public class Inventory implements java.io.Serializable{
 		int i = 0;
 		double mult;
 		double retResist = 0;
-		while (i < 5) {
+		while (i < 5) {//should never be null
 			if (slot == i) {
 				mult = 2;
 			}else {
@@ -627,7 +675,7 @@ public class Inventory implements java.io.Serializable{
 	
 	
 	public void resetArmor(int s, int b, int p) {
-		for (Armor a: armorSlots) {
+		for (Armor a: armorSlots) {//should never be null
 			a.resetArmor(s, b, p);
 		}
 	}
@@ -635,7 +683,7 @@ public class Inventory implements java.io.Serializable{
 	public void burn(double percent, int slot) {
 		int i = 0;
 		double mult;
-		while (i < 5) {
+		while (i < 5) {//should never be null
 			if (slot == i) {
 				mult = 2;
 			}else {
@@ -681,7 +729,7 @@ public class Inventory implements java.io.Serializable{
 	}
 
 	public String getSoundType(int slot) {
-		return armorSlots[slot].getSoundType();
+		return armorSlots[slot].getSoundType();//should never be null
 	}
 	
 	public List<DrawBane> getDrawBanes() {
@@ -775,7 +823,7 @@ public class Inventory implements java.io.Serializable{
 		int i = 0;
 		switch (d) {
 		case SILVER:
-			for (Armor a: armorSlots) {
+			for (Armor a: getArmors()) {
 				if (a.getMaterialName().equals("silver")) {
 					i++;
 				}
@@ -785,7 +833,7 @@ public class Inventory implements java.io.Serializable{
 			}
 			break;
 		case GOLD:
-			for (Armor a: armorSlots) {
+			for (Armor a: getArmors()) {
 				if (a.getMaterialName().equals("gold")) {
 					i++;
 				}
@@ -796,7 +844,7 @@ public class Inventory implements java.io.Serializable{
 			break;
 		case BLOOD:
 			int sub = 0;
-			for (Armor a: armorSlots) {
+			for (Armor a: getArmors()) {
 				sub+= a.getBloodCount();
 			}
 			sub+= hand.getBloodCount();
@@ -866,20 +914,27 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	public void deEnchant() {
-		for (Armor a: armorSlots) {
+		for (Armor a: getArmors()) {
 			a.deEnchant();
 		}
 		hand.deEnchant();
 	}
 
-	//FIXME: naive money
+	//FIXME: naive aether money
 	public int getWorth() {
-		return armorSlots[0].getAetherValue()+armorSlots[1].getAetherValue()+armorSlots[2].getAetherValue()+armorSlots[3].getAetherValue()+armorSlots[4].getAetherValue()+hand.getAetherValue()+this.getGold();
+		int value = this.getAether();
+		for (Armor a: getArmors()) {
+			value += a.getAetherValue();
+		}
+		if (hand != null) {
+			value += hand.getAetherValue();
+		}
+		return value;
 	}
 	
 	public int countArmorQuality(Armor.ArmorQuality qual) {
 		int count = 0;
-		for (Armor a: armorSlots) {
+		for (Armor a: getArmors()) {
 			if (a.getQuals().contains(qual)) {
 				count++;
 			}
@@ -888,7 +943,7 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	public void armorQualDam(int dam) {
-		for (Armor a: armorSlots) {
+		for (Armor a: getArmors()) {
 			a.armorQualDam(dam);
 		}
 	}

@@ -140,7 +140,7 @@ public class RogueGuild extends Feature {
 
 					@Override
 					public String title() {
-						return "current money: " + World.currentMoneyDisplay(Player.bag.getGold());
+						return "current money: " + Player.showGold();
 					}
 				});
 				mList.add(new MenuLine() {

@@ -50,7 +50,7 @@ public class Lot extends Feature {
 			int a_minecost = tier*3000;
 			int a_gardencost = tier*200;
 
-			extra.println("What do you want to build? You have "+World.currentMoneyDisplay(Player.bag.getGold()));
+			extra.println("What do you want to build? You have "+Player.bag.getAether() + " aether and " + Player.showGold() + " .");
 			extra.println("1 inn "+a_inncost + " aether, " + inncost + " "+World.currentMoneyString());
 			extra.println("2 arena "+a_arenacost + " aether, " + arenacost + " "+World.currentMoneyString());
 			extra.println("3 donate to town");

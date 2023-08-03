@@ -19,6 +19,7 @@ import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
+import trawel.towns.World;
 import trawel.towns.misc.PlantSpot;
 import trawel.towns.services.Oracle;
 
@@ -481,14 +482,16 @@ public class GroveNode implements NodeType{
 				case 2: extra.println("Eating the mushroom is very difficult... but you manage.");
 				Player.player.getPerson().addXp(node.level*2);break;
 				case 3: extra.println("You feel lightheaded.... you pass out!");
-				extra.println("When you wake up, you find that some of your gold is missing!");
-				Player.bag.addGold(-extra.randRange(20*node.level, 60*node.level));break;
+				extra.println("When you wake up, you notice someone went through your bags!");
+				extra.println(Player.loseGold(node.level*extra.randRange(5,10),true));
+				break;
 				}
 				if (Math.random() > .8) {
 					extra.println(extra.PRE_RED+"As you eat the mushroom, you hear a voice cry out:");
 					switch(extra.randRange(1,2)) {
 					case 1: mushHelpDryad();break;
-					case 2: mushHelpRobber();break;}
+					case 2: mushHelpRobber();break;
+					}
 				}
 
 				;break;
@@ -503,14 +506,14 @@ public class GroveNode implements NodeType{
 					case 2: winner = mushHelpRobber();break;
 					}
 					if (winner == Player.player.getPerson()) {
-						int gold = extra.getRand().nextInt(80*node.level)+30*node.level;
-						extra.println("You sell the mushroom for " + gold + " gold.");
-						Player.bag.addGold(gold);
+						int gold = 3*extra.randRange(1,node.level+1);
+						extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
+						Player.addGold(gold);
 					}
 				}else {
-					int gold = extra.getRand().nextInt(60*node.level);
-					extra.println("You sell the mushroom for " + gold + " gold.");
-					Player.bag.addGold(gold);
+					int gold = extra.randRange(1,node.level+1);
+					extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
+					Player.addGold(gold);
 				};break;
 			case 4:
 				extra.println("You crush the mushroom under your heel.");
@@ -591,9 +594,9 @@ public class GroveNode implements NodeType{
 					extra.println("Wow, there were a ton of "+ db.getName() +" pieces under the moss!");
 					node.state = 1;
 				}else {
-					int g = extra.randRange(20,30)*node.level;
-					extra.println("You find " +g + " gold!");
-					Player.bag.addGold(g);
+					int g = extra.randRange(1,3)*node.level;
+					extra.println("You find " +World.currentMoneyDisplay(g) + "!");
+					Player.addGold(g);
 					node.state = 1;
 					if (extra.randRange(1,3) == 1) {
 						mushHelpRobber();
@@ -719,7 +722,7 @@ public class GroveNode implements NodeType{
 				this.richHelper(bodyguard, rich);
 				bool = false;break;
 				case 2:
-					if (Player.bag.getGold() > rich.getBag().getGold()*10) {
+					if (Player.getGold() > rich.getBag().getGold()*4) {//now local class bigotry
 						String str = Oracle.tipString("racistPraise");
 						str = str.replaceAll(" an "," a ");
 						str = str.replaceAll("oracles","rich person");
@@ -858,16 +861,16 @@ public class GroveNode implements NodeType{
 				while (bool2) {
 					extra.println("They say that they are a shaman.");
 					int cost = node.level*50;
-					extra.println("1 Buy cleansing ("+cost + " gold)");
+					extra.println("1 Buy cleansing ("+World.currentMoneyDisplay(cost)+ ")");
 					extra.println("2 chat");
 					extra.println("3 return");
 
 					switch (extra.inInt(3)) {
-					case 1: if (Player.bag.getGold() < cost) {
-						extra.println("Not enough gold!");
+					case 1: if (Player.getGold() < cost) {
+						extra.println("Not enough "+ World.currentMoneyString()+"! (You have " + Player.showGold() + ")");
 						break;
 					}
-					Player.bag.addGold(-cost);
+					Player.addGold(-cost);
 					Player.player.getPerson().cureEffects();
 					extra.println("You feel better.");
 

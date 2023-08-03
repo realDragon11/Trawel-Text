@@ -27,6 +27,7 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.Town;
+import trawel.towns.World;
 
 public class Slum extends Feature implements QuestBoardLocation{
 
@@ -143,9 +144,9 @@ public class Slum extends Feature implements QuestBoardLocation{
 		
 						@Override
 						public boolean go() {
-							if (Player.bag.getGold() > removecost) {
+							if (Player.getGold() > removecost) {
 								extra.println("You pay for the reform programs.");
-								Player.bag.modGold(-removecost);
+								Player.addGold(-removecost);
 								town.enqueneRemove(sl);//TODO: replace with like 'residental district'
 								return true;
 							}else {
@@ -183,7 +184,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 					crimeLord = sp;
 					town.getOccupants().remove(sp);
 				}else {
-					((Agent)crimeLord).getPerson().getBag().modGold(100*town.getTier());
+					((Agent)crimeLord).getPerson().getBag().addGold(100*town.getTier());
 					crimeRating+=((Agent)crimeLord).getPerson().getLevel();
 				}
 			}
@@ -230,16 +231,16 @@ public class Slum extends Feature implements QuestBoardLocation{
 					public boolean go() {
 						int potionCost = 50*town.getTier();
 						extra.println(Player.player.getFlask() != null ? "You already have a potion, buying one will replace it." : "Quality not assured.");
-						
+						extra.println("You have "+Player.showGold()+".");
 						switch (extra.randRange(1, 3)) {
 						case 1:
-							extra.println("Buy a low-quality potion? ("+potionCost+" gold)");
+							extra.println("Buy a low-quality potion? ("+World.currentMoneyDisplay(potionCost)+")");
 							if (extra.yesNo()) {
-								if (Player.bag.getGold() < potionCost) {
-									extra.println("You cannot afford this. (You have "+Player.bag.getGold()+" gold.)");
+								if (Player.getGold() < potionCost) {
+									extra.println("You cannot afford this. (You have "+Player.showGold()+".)");
 									return false;
 								}
-								Player.bag.modGold(-potionCost);
+								Player.addGold(-potionCost);
 								if (extra.chanceIn(1, 3)) {
 									Player.player.setFlask(new Potion(Effect.CURSE,extra.randRange(2, 3)));
 								}else {
@@ -250,13 +251,13 @@ public class Slum extends Feature implements QuestBoardLocation{
 							break;
 						case 2:
 							potionCost *=2;
-							extra.println("Buy a medium-quality potion? ("+(potionCost)+" gold)");
+							extra.println("Buy a medium-quality potion? ("+World.currentMoneyDisplay(potionCost)+")");
 							if (extra.yesNo()) {
-								if (Player.bag.getGold() < potionCost) {
-									extra.println("You cannot afford this. (You have "+Player.bag.getGold()+" gold.)");
+								if (Player.getGold() < potionCost) {
+									extra.println("You cannot afford this. (You have "+Player.showGold()+".)");
 									return false;
 								}
-								Player.bag.modGold(-potionCost);
+								Player.addGold(-potionCost);
 								if (extra.chanceIn(1, 4)) {
 									Player.player.setFlask(new Potion(Effect.CURSE,extra.randRange(3, 4)));
 								}else {
@@ -267,13 +268,13 @@ public class Slum extends Feature implements QuestBoardLocation{
 							break;
 						case 3:
 							potionCost *=4;
-							extra.println("Buy a high-quality potion? ("+(potionCost)+" gold)");
+							extra.println("Buy a high-quality potion? ("+World.currentMoneyDisplay(potionCost)+")");
 							if (extra.yesNo()) {
-								if (Player.bag.getGold() < potionCost) {
-									extra.println("You cannot afford this. (You have "+Player.bag.getGold()+" gold.)");
+								if (Player.getGold() < potionCost) {
+									extra.println("You cannot afford this. (You have "+Player.showGold()+" gold.)");
 									return false;
 								}
-								Player.bag.modGold(-potionCost);
+								Player.addGold(-potionCost);
 								if (extra.chanceIn(1, 6)) {
 									Player.player.setFlask(new Potion(Effect.CURSE,extra.randRange(3, 5)));
 								}else {

@@ -210,7 +210,7 @@ public class Armor extends Item {
 	 * @return the armortype [aka slot] (byte)
 	 */
 	public byte getArmorType() {
-		return slot;
+		return getSlot();
 	}
 	
 	public ArmorStyle getStyle() {
@@ -330,11 +330,11 @@ public class Armor extends Item {
 	}
 	
 	private int slotImpact() {
-		if (slot > 1) {
-			if (slot == 2) {
+		if (getSlot() > 1) {
+			if (getSlot() == 2) {
 				return 10;//chest
 			}else {
-				if (slot == 3) {
+				if (getSlot() == 3) {
 					return 7;//pants
 				}else {
 					return 4;//boots
@@ -410,7 +410,7 @@ public class Armor extends Item {
 	 * @return the baseName (String)
 	 */
 	public String getBaseName() {
-		return ArmorStyle.fetch(style).genner[slot].decode(fluff)[0];
+		return ArmorStyle.fetch(style).genner[getSlot()].decode(fluff)[0];
 	}
 
 	@Override
@@ -444,7 +444,7 @@ public class Armor extends Item {
 	
 	@Override
 	public String getType() {
-		return "armor" + slot;
+		return "armor" + getSlot();
 	}
 
 	public String getMaterialName() {
@@ -499,6 +499,10 @@ public class Armor extends Item {
 			return false;
 		}
 		return true;
+	}
+
+	public byte getSlot() {
+		return slot;
 	}
 	
 }

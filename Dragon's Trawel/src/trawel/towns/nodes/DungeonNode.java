@@ -13,6 +13,7 @@ import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
+import trawel.towns.World;
 
 public class DungeonNode implements NodeType{
 
@@ -253,9 +254,9 @@ public class DungeonNode implements NodeType{
 							Player.player.sapphires++;
 							extra.println("You open the " +node.storage1 + " and find a sapphire!");
 						}else {
-							int gold = extra.randRange(100,200)*node.level;
-							Player.bag.addGold(gold);
-							extra.println("You open the " +node.storage1 + " and find " + gold + " gold.");
+							int gold = extra.randRange(3,10)*node.level;
+							Player.addGold(gold);
+							extra.println("You open the " +node.storage1 + " and find " + World.currentMoneyDisplay(gold) + ".");
 						}
 					}
 				}

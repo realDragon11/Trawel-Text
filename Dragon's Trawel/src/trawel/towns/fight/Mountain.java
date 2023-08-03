@@ -20,6 +20,7 @@ import trawel.quests.QuestR;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
+import trawel.towns.World;
 import trawel.towns.services.Oracle;
 
 public class Mountain extends Feature{
@@ -208,7 +209,7 @@ public class Mountain extends Feature{
 	}
 	
 	private void goldGoat() {
-		extra.println("You spot a bag of gold being carried by a mountain goat! Chase it?");
+		extra.println("You spot a bag of "+World.currentMoneyString()+" being carried by a mountain goat! Chase it?");
 		Boolean result = extra.yesNo();
 		extra.linebreak();
 		if (result) {
@@ -216,16 +217,16 @@ public class Mountain extends Feature{
 				extra.println(extra.PRE_RED+"A fighter runs up and calls you a thief before launching into battle!");
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getMugger(tier));
 				if (winner == Player.player.getPerson()) {
-					int gold = extra.getRand().nextInt(30*tier);
-					extra.println("You pick up " + gold + " gold!");
-					Player.bag.addGold(gold);
+					int gold = extra.randRange(15,20)*tier;
+					extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
+					Player.addGold(gold);
 				}else {
-					extra.println("They take the gold sack and leave you rolling down the mountain...");
+					extra.println("They take the "+World.currentMoneyString()+" sack and leave you rolling down the mountain...");
 				}
 			}else {
-				int gold = extra.getRand().nextInt(30*tier);
-				extra.println("You pick up " + gold + " gold!");
-				Player.bag.addGold(gold);
+				int gold = extra.randRange(5,10)*tier;
+				extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
+				Player.addGold(gold);
 			}
 		}else {
 			extra.println("You let the goat run away...");
@@ -237,8 +238,8 @@ public class Mountain extends Feature{
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
 		if (winner == Player.player.getPerson()) {
 		}else {
-			extra.println("They take some of your gold!");
-			Player.bag.addGold(extra.getRand().nextInt(300*tier));
+			extra.println("They fumble through your bags!");
+			extra.println(Player.loseGold(50*tier,true));
 		}
 	}
 	
@@ -251,12 +252,12 @@ public class Mountain extends Feature{
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(),robber);
 	
 		if (winner == Player.player.getPerson()) {
-			int gold = extra.getRand().nextInt(130*tier);
-			extra.println("They give you a reward of " + gold + " gold in thanks for saving them.");
-			Player.bag.addGold(gold);
+			int gold = extra.randRange(tier,10*tier);
+			extra.println("They give you a reward of " +World.currentMoneyDisplay(gold) + " in thanks for saving them.");
+			Player.addGold(gold);
 		}else {
-			extra.println("They mugged you too!");
-			Player.bag.addGold(-tier*134);
+			extra.println("They steal from your bags as well!");
+			extra.println(Player.loseGold(50*tier,true));
 		}
 		}else {
 			extra.println("You walk away.");
@@ -278,8 +279,17 @@ public class Mountain extends Feature{
 			extra.println("You find " + gold + " gold in tolls.");
 			Player.bag.addGold(gold);
 		}else {
-			extra.println("They make you pay the toll.");
-			Player.bag.addGold(-tier*50);
+			int want = tier*5 + extra.randRange(0,5);
+			int lost = Player.loseGold(want);
+			if (lost == -1) {
+				extra.println("They mutter something about freeloaders.");
+			}else {
+				if (lost < want) {
+					extra.println("They make you pay the toll, but you don't have enough. (-"+World.currentMoneyDisplay(lost)+")");
+				}else {
+					extra.println("They make you pay the toll. (-"+World.currentMoneyDisplay(lost)+")");
+				}
+			}
 		}
 		}else {
 			extra.println("You walk away.");
@@ -335,7 +345,7 @@ public class Mountain extends Feature{
 	}}
 	
 	private void goldRock() {
-		extra.println("You spot a gold rock rolling down the mountain. Chase it?");
+		extra.println("You spot a solidified aether rock rolling down the mountain. Chase it?");
 		Boolean result = extra.yesNo();
 		extra.linebreak();
 		if (result) {
@@ -343,16 +353,16 @@ public class Mountain extends Feature{
 				extra.println(extra.PRE_RED+"A fighter runs up and calls you a thief before launching into battle!");
 				Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
 				if (winner == Player.player.getPerson()) {
-					int gold = extra.getRand().nextInt(100*tier);
-					extra.println("You pick up " + gold + " gold!");
-					Player.bag.addGold(gold);
+					int aether = 100+extra.randRange(150*tier,300*tier);
+					extra.println("You pick up " + aether + " aether!");
+					Player.bag.addAether(aether);
 				}else {
-					extra.println("They take the gold rock and leave you rolling down the mountain...");
+					extra.println("They take the aether rock and leave you rolling down the mountain...");
 				}
 			}else {
-				int gold = extra.getRand().nextInt(100*tier);
-				extra.println("You pick up " + gold + " gold!");
-				Player.bag.addGold(gold);
+				int aether = 100+extra.randRange(100*tier,200*tier);
+				extra.println("You pick up " + aether + " aether!");
+				Player.bag.addAether(aether);
 			}
 		}else {
 			extra.println("You let the rock roll away...");

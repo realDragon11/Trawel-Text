@@ -8,6 +8,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import trawel.Networking;
 import trawel.Story;
+import trawel.WorldGen;
 import trawel.extra;
 import trawel.randomLists;
 import trawel.earts.EArt;
@@ -81,6 +82,9 @@ public class Player extends SuperPerson{
 		tutorial = true;
 	}
 	public static World getWorld() {
+		if (Player.player == null) {
+			return WorldGen.fallBackWorld;
+		}
 		return Player.player.world;
 	}
 	/**
@@ -421,6 +425,45 @@ public class Player extends SuperPerson{
 	
 	public static void buyMoneyAmount(int money) {
 		buyMoneyAmount(money,NORMAL_AETHER_RATE);
+	}
+	public static String showGold() {
+		int i = getGold();
+		return getWorld().moneyString(i);
+	}
+	/**
+	 * player will lose up to i gold, and this will return how much they lose
+	 * <br>
+	 * if they were broke will return -1
+	 * <br>
+	 * 0 will be returned if i == 0
+	 * @param i
+	 */
+	public static int loseGold(int i) {
+		if (i == 0) {
+			return 0;
+		}
+		int has = getGold();
+		if (has == 0) {
+			return -1;
+		}
+		int lose = Math.max(has,i);
+		addGold(-lose);
+		return lose;
+	}
+	
+	public static String loseGold(int amount,boolean commentBroke) {
+		int lost = loseGold(amount);
+		if (lost == 0) {
+			return "";//no change
+		}
+		if (lost == -1) {
+			return commentBroke ? "Seems like you didn't have anything they wanted to take!" : "" ;
+		}
+		if (lost < amount) {//now broke
+			return "They took all your " + World.currentMoneyString() +"! (lost "+lost+")";
+		}else {
+			return World.currentMoneyDisplay(lost) + " was stolen!";
+		}
 	}
 	
 	

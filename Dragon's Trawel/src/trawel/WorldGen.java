@@ -59,6 +59,11 @@ public class WorldGen {
 	public static Plane plane;
 	public static Town lynchPin;
 	
+	/**
+	 * used mostly for world generation pre character creation
+	 */
+	public static World fallBackWorld;
+	
 	static final FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration(); //.createDefaultConfiguration();
 	static{
 		conf.registerClass(String.class,//probably already built in
@@ -101,6 +106,7 @@ public class WorldGen {
 	
 	public static World eoano() {
 		World w = new World(16,10,"eoano",41f,-72f);
+		fallBackWorld = w;
 		plane = new Plane();
 		Player.updateWorld(w);
 		plane.addWorld(w);
@@ -588,6 +594,7 @@ public class WorldGen {
 	
 	public static Town greap() {
 		World w = new World(30,20,"greap",40f,-74f);
+		fallBackWorld = w;
 		Island apen = new Island("apen",w);
 		plane.addWorld(w);
 		Town holik = new Town("holik", 9, apen, new Point(2,3));

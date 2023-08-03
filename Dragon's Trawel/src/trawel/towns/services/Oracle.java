@@ -161,7 +161,7 @@ public class Oracle extends Feature{ //extends feature later
 	}
 
 	public void utterance2() {
-		if (Player.bag.getGold() >= level*100) {
+		if (Player.getGold() >= level*100) {
 			extra.println("Pay "+ level*5 +" "+World.currentMoneyString()+" for a premium utterance?");
 			if (extra.yesNo()) {
 				Player.addGold(-level*5);

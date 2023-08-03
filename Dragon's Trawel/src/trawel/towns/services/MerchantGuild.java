@@ -118,18 +118,18 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 					@Override
 					public String title() {
-						return World.currentMoneyDisplay(Player.getGold());
+						return "You have " + Player.showGold();
 					}});
 				mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "buy a shipment of books ("+Player.player.merchantBookPrice;
+						return "buy a shipment of books ("+World.currentMoneyDisplay(Player.player.merchantBookPrice)+")";
 					}
 
 					@Override
 					public boolean go() {
-						if (Player.bag.getGold() < Player.player.merchantBookPrice) {
+						if (Player.getGold() < Player.player.merchantBookPrice) {
 							extra.println("You can't afford that many books!");
 							return false;
 						}

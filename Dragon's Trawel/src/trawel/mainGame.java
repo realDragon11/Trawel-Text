@@ -1151,6 +1151,10 @@ public class mainGame {
 			Player player;
 			//
 			while (manOne == null) {
+				if (world == null) {
+					extra.println("Generating world...");
+					world = WorldGen.eoano();
+				}
 				manOne = new Person(1,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
 				manOne.hTask = HostileTask.DUEL;
 				Person manThree = manOne;
@@ -1167,10 +1171,6 @@ public class mainGame {
 				}
 				if (!displayFight) {
 					extra.changePrint(false);
-				}
-				if (world == null) {
-					extra.println("Generating world...");
-					world = WorldGen.eoano();
 				}
 				if (rerolls) {
 					manOne.getBag().graphicalDisplay(1, manOne);
@@ -1198,7 +1198,8 @@ public class mainGame {
 				Player.toggleTutorial();
 				player.getPerson().addXp(9999);
 				story = new StoryNone();
-				player.getPerson().getBag().addGold(100000);
+				Player.addGold(1000);
+				Player.bag.addAether(100000);
 			}
 			story.storyStart();
 			player.storyHold = story;

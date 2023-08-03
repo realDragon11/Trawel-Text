@@ -26,6 +26,7 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.Town;
+import trawel.towns.World;
 
 //sells booze which increases temp hp for a few fights,
 //has a resident which changes with time
@@ -398,11 +399,11 @@ public class Inn extends Feature implements QuestBoardLocation{
 	
 	private void bathe() {
 		//resident = 4;//???
-		if (Player.bag.getGold() >= (tier*2)) {
-			extra.println("Pay "+(tier*2)+" gold for a bath?");
+		if (Player.getGold() >= (tier*2)) {
+			extra.println("Pay "+(tier*2)+" "+World.currentMoneyString()+" for a bath?");
 			if (extra.yesNo()) {
 				Player.player.getPerson().washAll();
-				Player.bag.addGold(-(tier*2));
+				Player.addGold(-(tier*2));
 			}
 			}else {
 				extra.println("You can't afford that!");

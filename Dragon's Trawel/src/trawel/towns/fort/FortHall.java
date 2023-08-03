@@ -21,6 +21,7 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.Town;
+import trawel.towns.World;
 
 /**
  * 
@@ -41,7 +42,7 @@ public class FortHall extends FortFeature {
 	public double fightTimer = 24.0*14;
 	public double enchantTimer = 24.0*7;
 	
-	public int goldBank = 0;
+	public int aetherBank = 0;
 	public double offenseTimer = 24.0;
 	
 	public FortHall(int tier, Town town) {
@@ -90,13 +91,13 @@ public class FortHall extends FortFeature {
 	@Override
 	public void go() {
 		if (this.getOwner() != Player.player) {
-			int cost = (this.level*2500)+this.goldBank;
-			extra.println("Buy this for fort for "+cost+" gold? (You have " + Player.bag.getGold()+")");
+			int cost = (this.level*2500)+(this.aetherBank*3);
+			extra.println("Buy this for fort for "+cost+" "+World.currentMoneyString()+"? (You have " + Player.getGold()+")");
 			if (extra.yesNo()) {
-				if (Player.bag.getGold() < cost) {
+				if (Player.getGold() < cost) {
 					extra.println("You can't afford to buy this fort.");
 				}else {
-					Player.bag.addGold(-cost);
+					Player.addGold(-cost);
 					for (Feature f: this.town.getFeatures()) {
 						f.setOwner(Player.player);
 					}
@@ -117,7 +118,7 @@ public class FortHall extends FortFeature {
 
 						@Override
 						public String title() {
-							return "You have " + allies.size() + " soldiers here.";
+							return "You have " + allies.size() + " soldiers here and "+Player.getGold()+".";
 						}});
 					if (allies.size() < 10) {
 					mList.add(new MenuSelect() {
@@ -129,8 +130,8 @@ public class FortHall extends FortFeature {
 
 						@Override
 						public boolean go() {
-							if (Player.bag.getGold() >= getSoldierCost()) {
-								Player.bag.addGold(-getSoldierCost());
+							if (Player.getGold() >= getSoldierCost()) {
+								Player.addGold(-getSoldierCost());
 								allies.add(RaceFactory.getDueler(level));
 							}else {
 								extra.println("You can't afford another soldier.");
@@ -154,18 +155,18 @@ public class FortHall extends FortFeature {
 							}
 						});
 						}
-					if (goldBank > 0) {
+					if (aetherBank > 0) {
 						mList.add(new MenuSelect() {
 
 							@Override
 							public String title() {
-								return "Collect Gold ("+goldBank+")";
+								return "Collect Aether ("+aetherBank+")";
 							}
 
 							@Override
 							public boolean go() {
-								Player.bag.addGold(goldBank);
-								goldBank = 0;
+								Player.bag.addAether(aetherBank);
+								aetherBank = 0;
 								return false;
 							}
 						});
@@ -186,7 +187,7 @@ public class FortHall extends FortFeature {
 
 					@Override
 					public String title() {
-						return "You have " + town.fortSizeLeft() + " more space.";
+						return "You have " + town.fortSizeLeft() + " more space and " + Player.showGold() + ".";
 					}});
 				if (town.fortSizeLeft() > 2) {
 					mList.add(new MenuSelect() {
@@ -198,8 +199,8 @@ public class FortHall extends FortFeature {
 
 						@Override
 						public boolean go() {
-							if (Player.bag.getGold() >= (level*1000)) {
-								Player.bag.addGold(-(level*1000));
+							if (Player.getGold() >= (level*1000)) {
+								Player.addGold(-(level*1000));
 								town.enqueneAdd(new FortFoundation(3));
 							}else {
 								extra.println("You can't afford a new large foundation.");
@@ -218,8 +219,8 @@ public class FortHall extends FortFeature {
 
 						@Override
 						public boolean go() {
-							if (Player.bag.getGold() >= (level*500)) {
-								Player.bag.addGold(-(level*500));
+							if (Player.getGold() >= (level*500)) {
+								Player.addGold(-(level*500));
 								town.enqueneAdd(new FortFoundation(2));
 							}else {
 								extra.println("You can't afford a new medium foundation.");
@@ -238,8 +239,8 @@ public class FortHall extends FortFeature {
 
 						@Override
 						public boolean go() {
-							if (Player.bag.getGold() >= (level*250)) {
-								Player.bag.addGold(-(level*250));
+							if (Player.getGold() >= (level*250)) {
+								Player.addGold(-(level*250));
 								town.enqueneAdd(new FortFoundation(1));
 							}else {
 								extra.println("You can't afford a new small foundation.");
@@ -259,7 +260,7 @@ public class FortHall extends FortFeature {
 		forgeTimer -= (time);
 		while (offenseTimer <= 0) {
 			offenseTimer += 12.0;
-			goldBank+=this.getTotalOffenseRating()*this.level;
+			aetherBank+=this.getTotalOffenseRating()*this.level;
 		}
 		
 		forgeTimer -= (time*getSkillCount(SubSkill.SMITHING))/10.0;
@@ -320,10 +321,10 @@ public class FortHall extends FortFeature {
 			c.survivors.remove(Player.player.getPerson());
 			allies.addAll(c.survivors);
 			for (Person p: c.killed) {
-				this.goldBank +=p.getBag().getWorth();
+				this.aetherBank +=p.getBag().getWorth();
 			}
 		}else {
-			this.goldBank = 0;
+			this.aetherBank = 0;
 		}
 		extra.popPrintStack();
 	}
