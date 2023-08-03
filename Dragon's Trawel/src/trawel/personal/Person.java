@@ -36,6 +36,7 @@ import trawel.personal.classless.Archetype;
 import trawel.personal.classless.Feat;
 import trawel.personal.classless.HasSkills;
 import trawel.personal.classless.Perk;
+import trawel.personal.classless.Skill;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.body.Race.RaceType;
@@ -44,7 +45,6 @@ import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Player;
-import trawel.personal.people.Skill;
 import trawel.towns.services.Store;
 
 /**
@@ -82,7 +82,7 @@ public class Person implements java.io.Serializable, HasSkills{
 	public int lightArmorLevel = 0, heavyArmorLevel = 0, edrLevel = 0;
 	public boolean hasEnduranceTraining = false;
 	
-	private List<Skill> skills = new ArrayList<Skill>();
+	//private List<Skill> skills = new ArrayList<Skill>();
 	private List<Effect> effects;
 	private RaceFlag rFlag;
 
@@ -117,7 +117,7 @@ public class Person implements java.io.Serializable, HasSkills{
 		COWARDLY,FEARLESS,GRIZZLED,DEATHCHEATED,LIFEKEEPER
 	}
 	
-	private transient Set<trawel.personal.classless.Skill> skillSet =  EnumSet.noneOf(trawel.personal.classless.Skill.class);//new EnumSet<trawel.personal.classless.Skill>();
+	private transient Set<Skill> skillSet =  EnumSet.noneOf(Skill.class);//new EnumSet<trawel.personal.classless.Skill>();
 	private Set<Feat> featSet =  EnumSet.noneOf(Feat.class);//new EnumSet<trawel.personal.classless.Skill>();
 	private Set<Perk> perkSet =  EnumSet.noneOf(Perk.class);
 	private Set<Archetype> archSet =  EnumSet.noneOf(Archetype.class);
@@ -240,7 +240,7 @@ public class Person implements java.io.Serializable, HasSkills{
 	//instance methods
 	
 	@Override
-	public Stream<trawel.personal.classless.Skill> collectSkills(){
+	public Stream<Skill> collectSkills(){
 		//return Stream.concat(featSet.parallelStream(), perkSet.parallelStream(),archSet.parallelStream());
 		//return Stream.of(featSet.parallelStream(),perkSet.parallelStream(),archSet.parallelStream());
 		return HasSkills.combine(featSet.stream().flatMap(s -> collectSkills()),
@@ -248,12 +248,12 @@ public class Person implements java.io.Serializable, HasSkills{
 				archSet.stream().flatMap(s -> collectSkills()));
 	}
 	
-	public Set<trawel.personal.classless.Skill> updateSkills() {
-		skillSet = EnumSet.noneOf(trawel.personal.classless.Skill.class);
+	public Set<Skill> updateSkills() {
+		skillSet = EnumSet.noneOf(Skill.class);
 		collectSkills().forEach(skillSet::add);
 		return skillSet;
 	}
-	public Set<trawel.personal.classless.Skill> fetchSkills() {
+	public Set<Skill> fetchSkills() {
 		return skillSet;
 	}
 	
@@ -556,8 +556,9 @@ public class Person implements java.io.Serializable, HasSkills{
 		});
 	}
 	
+	@Deprecated
 	private void skillAdd(Skill s) {
-		skills.add(s);
+		skillSet.add(s);
 		skillPoints--;
 		switch (s.getType()) {
 		case FIGHTER: fighterLevel++;break;
@@ -884,7 +885,7 @@ public class Person implements java.io.Serializable, HasSkills{
 		
 		if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 		extra.println("Their inventory includes " + bag.nameInventory());
-		if (beer > 0 || skills.contains(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
+		if (beer > 0 || hasSkill(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
 		if (hasSkill(Skill.PARRY)) {extra.println("They have a parrying dagger.");}
 		if (hasSkill(Skill.SHIELD)) {extra.println("They have a shield.");}}
 	}
@@ -946,7 +947,7 @@ public class Person implements java.io.Serializable, HasSkills{
 		extra.println("This is " + this.getName() +". They are a level " + this.getLevel() +" " + this.getBag().getRace().renderName(false)+".");
 		if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 		extra.println("Their inventory includes: \n " + bag.nameInventory()); 
-		if (beer > 0 || skills.contains(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
+		if (beer > 0 || hasSkill(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
 		if (hasSkill(Skill.PARRY)) {extra.println("They have a parrying dagger.");}
 		if (hasSkill(Skill.SHIELD)) {extra.println("They have a shield.");}}
 	}
@@ -959,7 +960,7 @@ public class Person implements java.io.Serializable, HasSkills{
 	}
 	
 	public boolean takeBeer() {
-		if (beer > 0 || skills.contains(Skill.BEER_LOVER)) {
+		if (beer > 0 || hasSkill(Skill.BEER_LOVER)) {
 		beer--;
 		return true;
 		}else {
@@ -995,12 +996,8 @@ public class Person implements java.io.Serializable, HasSkills{
 		skillPoints++;
 	}
 	
-	public List<Skill> getSkills(){
-		return skills;
-	}
-	
 	public boolean hasSkill(Skill o) {
-		return skills.contains(o);
+		return skillSet.contains(o);
 	}
 
 	public boolean isAlive() {
@@ -1142,26 +1139,29 @@ public class Person implements java.io.Serializable, HasSkills{
 	}
 
 	public void displaySkills() {
-		for (Skill s: skills) {
+		for (Skill s: fetchSkills()) {
 			s.display();
 		}
 		
 	}
 
 	public void addSkill(Skill skill) {
-		skills.add(skill);
+		skillSet.add(skill);
 	}
 	
 	/**
-	 * 
+	 * due to code changes there is a max of one skill count anyway
+	 * <br>
+	 * in the future will need to use perks or feats mostly
 	 * @param skill
 	 * @return false if already has and no change
 	 */
+	@Deprecated
 	public boolean setHasSkill(Skill skill) {
-		if (skills.contains(skill)) {
+		if (hasSkill(skill)) {
 			return false;
 		}
-		skills.add(skill);
+		skillSet.add(skill);
 		return true;
 	}
 

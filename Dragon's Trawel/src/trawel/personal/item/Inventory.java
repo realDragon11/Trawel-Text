@@ -10,6 +10,7 @@ import trawel.battle.attacks.Stance;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceID;
+import trawel.personal.classless.Skill;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.DrawBane;
@@ -19,7 +20,6 @@ import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Player;
-import trawel.personal.people.Skill;
 import trawel.quests.Quest.TriggerType;
 import trawel.towns.World;
 

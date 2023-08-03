@@ -9,8 +9,8 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.extra;
+import trawel.personal.classless.Skill;
 import trawel.personal.people.Player;
-import trawel.personal.people.Skill;
 
 public abstract class EArtSkillMenu extends MenuSelect{
 	

@@ -11,13 +11,13 @@ import trawel.factions.Faction;
 import trawel.factions.HostileTask;
 import trawel.personal.Person.AIJob;
 import trawel.personal.Person.PersonType;
+import trawel.personal.classless.Skill;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.body.SoundBox;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
-import trawel.personal.people.Skill;
 
 @SuppressWarnings("deprecation")
 public class RaceFactory {

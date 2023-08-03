@@ -7,6 +7,7 @@ import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.Stance;
 import trawel.earts.ASpell;
 import trawel.personal.Person;
+import trawel.personal.classless.Skill;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;
 import trawel.personal.item.body.Race;
@@ -18,7 +19,6 @@ import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Player;
-import trawel.personal.people.Skill;
 import trawel.towns.World;
 import trawel.towns.services.Store;
 

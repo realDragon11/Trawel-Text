@@ -7,9 +7,9 @@ import trawel.extra;
 import trawel.battle.Combat;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 import trawel.personal.Person;
+import trawel.personal.classless.Skill;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.solid.Weapon;
-import trawel.personal.people.Skill;
 
 /**
  * 

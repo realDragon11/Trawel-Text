@@ -5,6 +5,9 @@ import java.util.stream.Stream;
 
 public interface HasSkills {
 
+	//NOTE
+	//can do EnumSet.of(Skill1,Skill2) etc etc
+	
 	public Stream<Skill> collectSkills();
 	
 	

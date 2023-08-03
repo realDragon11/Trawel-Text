@@ -1,8 +1,8 @@
 package trawel.towns;
 import trawel.WorldGen;
 import trawel.extra;
+import trawel.personal.classless.Skill;
 import trawel.personal.people.Player;
-import trawel.personal.people.Skill;
 import trawel.towns.fight.Arena;
 import trawel.towns.services.Store;
 

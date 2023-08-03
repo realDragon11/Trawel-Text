@@ -15,6 +15,7 @@ import trawel.earts.EArt;
 import trawel.earts.EArtBox;
 import trawel.factions.FBox;
 import trawel.personal.Person;
+import trawel.personal.classless.Skill;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Potion;
 import trawel.quests.BasicSideQuest;
@@ -129,7 +130,7 @@ public class Player extends SuperPerson{
 		}
 	
 	public static boolean hasSkill(Skill skill) {
-		return player.getPerson().getSkills().contains(skill);
+		return player.getPerson().hasSkill(skill);
 	}
 	public String animalName() {
 		return animalName;
@@ -145,7 +146,7 @@ public class Player extends SuperPerson{
 	}*/
 	public static void addSkill(Skill skill) {
 		if (!Player.hasSkill(skill)) {
-		player.getPerson().getSkills().add(skill);
+		player.getPerson().addSkill(skill);
 	
 		}
 	}

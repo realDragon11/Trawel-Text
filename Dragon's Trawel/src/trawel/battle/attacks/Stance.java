@@ -4,7 +4,7 @@ import java.util.List;
 
 import trawel.extra;
 import trawel.personal.Person;
-import trawel.personal.people.Skill;
+import trawel.personal.classless.Skill;
 
 /**
  *

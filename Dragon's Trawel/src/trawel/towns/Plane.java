@@ -2,8 +2,8 @@ package trawel.towns;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.personal.classless.Skill;
 import trawel.personal.people.Player;
-import trawel.personal.people.Skill;
 import trawel.threads.BlockTaskManager;
 import trawel.threads.FollowUp.FollowType;
 import trawel.time.ContextLevel;
