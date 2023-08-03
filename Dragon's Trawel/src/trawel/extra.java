@@ -12,6 +12,8 @@ import derg.menus.MenuGeneratorPaged;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import trawel.personal.people.Player;
+import trawel.towns.World;
 
 import java.util.Stack;
 import java.util.concurrent.locks.ReentrantLock;
@@ -41,6 +43,16 @@ public final class extra {
 		}
 	};
 	
+	private static final ThreadLocal<ThreadData> threadLocalData = new ThreadLocal<ThreadData>() {
+		@Override protected ThreadData initialValue() {
+			return new ThreadData();
+		}
+	};
+	
+	public static final class ThreadData {
+		public World world;
+	}
+	
 	//static methods
 
 	
@@ -62,6 +74,34 @@ public final class extra {
 	public static final EnhancedRandom getRand() {
 		//https://docs.oracle.com/javase/8/docs/api/java/lang/ThreadLocal.html
 		return localRands.get();
+	}
+	
+	/**
+	 * since each thread will only ever be dealing with one world at a time
+	 * this method lets you store that world to be accessed later
+	 * 
+	 * this is true because we made the assumption that threads will never trip over each other
+	 * for the purposes of not needing to give everything in the game locks
+	 * @return a container
+	 */
+	public static final ThreadData getThreadData() {
+		//https://docs.oracle.com/javase/8/docs/api/java/lang/ThreadLocal.html
+		return threadLocalData.get();
+	}
+	
+	/**
+	 * should be called after you update one of the following, in the main thread:
+	 * <br>
+	 * 1. the player's world
+	 * @return getThreadData()
+	 */
+	public static final ThreadData mainThreadDataUpdate() {
+		if (!isMainThread()) {
+			throw new RuntimeException("trying to main update a non main thread");
+		}
+		ThreadData temp = getThreadData();
+		temp.world = Player.getWorld();
+		return temp;
 	}
 
 	public static final float randFloat() {

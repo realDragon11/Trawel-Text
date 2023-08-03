@@ -934,11 +934,11 @@ public class mainGame {
 		 * @return
 		 */
 		public static Person CombatTwo(Person first_man,Person second_man) {
-			return CombatTwo( first_man, second_man,Player.world);
+			return CombatTwo( first_man, second_man,Player.getWorld());
 		}
 		
 		public static List<Person> HugeBattle(List<Person>...people){
-			return HugeBattle(Player.world,Arrays.asList(people));
+			return HugeBattle(Player.getWorld(),Arrays.asList(people));
 		}
 		public static List<Person> HugeBattle(World w,List<Person>...people){
 			return HugeBattle(w,Arrays.asList(people));
@@ -1066,12 +1066,12 @@ public class mainGame {
 				gold += kill.getBag().getGold();
 				for (int i = 0;i<5;i++) {
 					isell = kill.getBag().getArmorSlot(i);
-					if (isell.coinLoot()) {
+					if (isell.canAetherLoot()) {
 						gold +=isell.getAetherValue();
 					}
 				}
 				isell = kill.getBag().getHand();
-				if (isell.coinLoot()) {
+				if (isell.canAetherLoot()) {
 					gold +=isell.getAetherValue();
 				}
 				

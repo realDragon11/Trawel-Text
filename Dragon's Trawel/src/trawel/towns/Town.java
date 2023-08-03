@@ -258,8 +258,7 @@ public class Town extends TContextOwner{
 
 	public void atTown() {
 		World w = island.getWorld();
-		Player.world = w;
-		Player.player.world2 = w;
+		Player.updateWorld(w);
 		if (Player.player.lastTown != this) { 
 			if (visited < 2 && w.getAndPrint("n"+this.name)) {
 			}else {
@@ -284,7 +283,7 @@ public class Town extends TContextOwner{
 		Networking.setArea("main");
 		Networking.setBackground("main");
 		double[] p = Calender.lerpLocation(Player.player.lastTown);
-		float[] b = Player.world.getCalender().getBackTime(p[0],p[1]);
+		float[] b = Player.getWorld().getCalender().getBackTime(p[0],p[1]);
 		Networking.sendStrong("Backvariant|"+"town"+background_variant+"|"+b[0]+"|"+b[1]+"|");
 		Networking.charUpdate();
 		if (isFort()) {
@@ -659,7 +658,7 @@ public class Town extends TContextOwner{
 				oallyList.add(Player.player.getPerson());
 				allyList.add(Player.player.getPerson());
 				foeList.add(RaceFactory.makeDrudgerTitan(tier));
-				List<Person> survivors = mainGame.HugeBattle(Player.world,foeList,allyList);
+				List<Person> survivors = mainGame.HugeBattle(Player.getWorld(),foeList,allyList);
 				boolean pass = false;
 				for (Person p: oallyList) {
 					if (survivors.contains(p)) {

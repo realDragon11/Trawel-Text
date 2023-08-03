@@ -122,12 +122,25 @@ public class Inventory implements java.io.Serializable{
 
 	/**
 	 * Swaps out an armor for the one in the slot.
+	 * <br>
+	 * cannot accept nulls, but may return nulls
 	 * @param newArmor (Armor)
 	 * @param slot (int)
 	 * @return old armor (Armor)
 	 */
 	public Armor swapArmorSlot(Armor newArmor, int slot) {
 		extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + newArmor.getName() + ".");
+		Armor tempArm = armorSlots[slot];
+		armorSlots[slot] = newArmor;
+		return tempArm;
+	}
+	/**
+	 * does not print anything, accepts nulls
+	 * @param newArmor
+	 * @param slot
+	 * @return what was in the slot, if any
+	 */
+	public Armor setArmorSlot(Armor newArmor, int slot) {
 		Armor tempArm = armorSlots[slot];
 		armorSlots[slot] = newArmor;
 		return tempArm;
@@ -323,11 +336,26 @@ public class Inventory implements java.io.Serializable{
 	
 	/**
 	 * Swaps out a new weapon.
+	 * <br>
+	 * cannot accept nulls, but may return nulls
 	 * @param newWeap (Weapon)
 	 * @return old weapon (Weapon)
 	 */
 	public Weapon swapWeapon(Weapon newWeap) {
 		extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + newWeap.getName() + ".");
+		Weapon tempWeap = hand;
+		hand = newWeap;
+		return tempWeap;
+	}
+	
+	/**
+	 * does not print anything
+	 * <br>
+	 * can accept and return nulls
+	 * @param newWeap
+	 * @return
+	 */
+	public Weapon setWeapon(Weapon newWeap) {
 		Weapon tempWeap = hand;
 		hand = newWeap;
 		return tempWeap;

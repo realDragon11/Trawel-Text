@@ -91,7 +91,7 @@ public abstract class Item implements java.io.Serializable{
 	 * will go over the unclaimed items in a final pass to convert to gold
 	 * @return true if can be looted for money
 	 */
-	public abstract boolean coinLoot();
+	public abstract boolean canAetherLoot();
 	
 	public abstract String getName();
 }

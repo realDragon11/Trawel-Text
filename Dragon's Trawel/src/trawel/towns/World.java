@@ -301,12 +301,12 @@ public class World extends TContextOwner{
 	}
 
 	public static String currentMoneyDisplay(int money) {
-		World w = Player.world;
+		World w = Player.getWorld();
 		return w.moneyString(money);
 	}
 	
 	public static String currentMoneyString() {
-		return Player.world.moneyname;
+		return Player.getWorld().moneyname;
 	}
 
 	public String moneyString(int money) {

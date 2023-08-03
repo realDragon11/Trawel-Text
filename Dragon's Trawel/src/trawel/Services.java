@@ -153,6 +153,8 @@ public class Services {
 	
 	/**
 	 * used for removing items that should no longer exist
+	 * <br>
+	 * make sure to null them in local inventory yourself
 	 * @param item
 	 * @param dest
 	 */

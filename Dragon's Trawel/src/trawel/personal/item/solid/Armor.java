@@ -494,7 +494,7 @@ public class Armor extends Item {
 	}
 
 	@Override
-	public boolean coinLoot() {
+	public boolean canAetherLoot() {
 		if (ArmorStyle.fetch(style).equals(ArmorStyle.BODY)) {
 			return false;
 		}

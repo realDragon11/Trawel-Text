@@ -340,9 +340,9 @@ public class AIClass {
 				if (compareItem(stash.getArmorSlot(i),loot.getArmorSlot(i),smarts,true,p)) {
 					if (sellStuff) {
 							//Services.sellItem(stash.swapArmorSlot(loot.getArmorSlot(i),i),stash,false);
-							Services.aetherifyItem(loot.getArmorSlot(i),stash);
-							loot.swapArmorSlot(stash.getArmorSlot(i),i);
-							loot.swapArmorSlot(null,i);
+							Services.aetherifyItem(stash.getArmorSlot(i),stash);
+							stash.swapArmorSlot(loot.getArmorSlot(i),i);//we lose the ref to the thing we just deleted here
+							loot.setArmorSlot(null,i);
 						}else {
 							loot.swapArmorSlot(stash.swapArmorSlot(loot.getArmorSlot(i),i), i);
 						}
@@ -350,7 +350,7 @@ public class AIClass {
 					if (sellStuff) {
 						//Services.sellItem(loot.getArmorSlot(i),loot,stash,false);}
 						Services.aetherifyItem(stash.getArmorSlot(i),stash);
-						stash.swapArmorSlot(null,i);
+						stash.setArmorSlot(null,i);
 					}
 				}
 
@@ -371,23 +371,30 @@ public class AIClass {
 			}
 			if (compareItem(stash.getHand(),loot.getHand(),smarts,true,p)) {
 				if (sellStuff) {
-					Services.sellItem(stash.swapWeapon(loot.getHand()),stash,false);}else {
+						Services.sellItem(stash.swapWeapon(loot.getHand()),stash,false);
+						Services.aetherifyItem(stash.getHand(),stash);
+						stash.swapWeapon(loot.getHand());//we lose the ref to the thing we just deleted here
+						loot.setWeapon(null);
+					}else {
 						loot.swapWeapon(stash.swapWeapon(loot.getHand()));
 					}
 			}else {
 				if (sellStuff) {
-					Services.sellItem(loot.getHand(),loot,stash,false);
+					Services.aetherifyItem(loot.getHand(), stash);
+					loot.setWeapon(null);
 				}
 			}
 			Networking.send("RemoveInv|1|2|");
 		}else {
 			if (sellStuff) {
 				while (i < 5) {
-					if (loot.getArmorSlot(i).coinLoot()) {
-						Services.sellItem(loot.getArmorSlot(i),loot,stash,false);
+					if (loot.getArmorSlot(i).canAetherLoot()) {
+						Services.aetherifyItem(loot.getArmorSlot(i),stash);
+						loot.setArmorSlot(null,i);
 					}
-					if (loot.getHand().coinLoot()) {
-						Services.sellItem(loot.getHand(),loot,stash,false);
+					if (loot.getHand().canAetherLoot()) {
+						Services.aetherifyItem(loot.getHand(), stash);
+						loot.setWeapon(null);
 					}
 					i++;
 				}

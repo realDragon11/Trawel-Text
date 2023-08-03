@@ -5,6 +5,8 @@ import java.util.concurrent.RunnableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import trawel.extra;
+import trawel.extra.ThreadData;
 import trawel.towns.World;
 
 public class FollowUp {
@@ -80,6 +82,8 @@ public class FollowUp {
 		@Override
 		public void run() {
 			running = true;
+			ThreadData d = extra.getThreadData();
+			d.world = world;
 			double debt = world.assumeDebt(1);//will take on up to 1 hour of debt
 			if (debt <= 0) {//0 = no debt or not enough to bother, -1 = lock failure
 				completed = false;

@@ -34,8 +34,10 @@ public class Player extends SuperPerson{
 	public static Inventory bag;
 	public int animalQuest;
 	public int wins = 0;
-	public static World world;
-	public World world2;
+	/**
+	 * the instance copy of the player's world
+	 */
+	private World world;
 	private String animalName;
 	//private int rpts;//reincarnatepoints
 	private boolean tutorial;
@@ -77,6 +79,19 @@ public class Player extends SuperPerson{
 		animalName = randomLists.randomAnimal();
 		//rpts = 0;
 		tutorial = true;
+	}
+	public static World getWorld() {
+		return Player.player.world;
+	}
+	/**
+	 * can only be called on main thread
+	 * @param world
+	 */
+	public static void updateWorld(World world) {
+		if (world != getWorld()) {
+			Player.player.world = world;
+			extra.mainThreadDataUpdate();
+		}
 	}
 	public Person getPerson() {
 		return person;
@@ -302,7 +317,7 @@ public class Player extends SuperPerson{
 	}
 	public static int getGold() {
 		Player p = player;
-		World w = world;
+		World w = getWorld();
 		int index = p.moneymappings.indexOf(w);
 		if (index == -1) {
 			p.moneymappings.add(w);
@@ -314,7 +329,7 @@ public class Player extends SuperPerson{
 	
 	public static void addGold(int delta) {
 		Player p = player;
-		World w = world;
+		World w = getWorld();
 		int index = p.moneymappings.indexOf(w);
 		if (index == -1) {
 			p.moneymappings.add(w);

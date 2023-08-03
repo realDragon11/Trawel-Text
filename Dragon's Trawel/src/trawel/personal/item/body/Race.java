@@ -86,7 +86,7 @@ public class Race extends Item{
 	}
 	
 	@Override
-	public boolean coinLoot() {
+	public boolean canAetherLoot() {
 		return false;//handled elsewhere
 	}
 	

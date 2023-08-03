@@ -102,7 +102,7 @@ public class WorldGen {
 	public static World eoano() {
 		World w = new World(16,10,"eoano",41f,-72f);
 		plane = new Plane();
-		Player.world = w;
+		Player.updateWorld(w);
 		plane.addWorld(w);
 		Island pocket = new Island("pocket dimension",w);
 		
@@ -802,7 +802,6 @@ public class WorldGen {
 			 //World worlda = world;
 			 Player.bag = Player.player.getPerson().getBag();
 			 Player.passTime = 0;
-			 Player.world = Player.player.world2;
 			 mainGame.story = Player.player.storyHold;
 			 //oos.close();
 			 fos.close();

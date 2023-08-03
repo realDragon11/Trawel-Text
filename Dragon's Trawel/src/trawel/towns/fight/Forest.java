@@ -472,7 +472,7 @@ public class Forest extends Feature{
 		if (extra.yesNo()) {
 			switch (extra.randRange(1,2)) {
 			case 1: extra.println("You step in it. You find yourseslf jerked nowhere. Your surroundings change...");
-			Player.player.setLocation(Player.world.getRandom(Player.player.getPerson().getLevel()));break;
+			Player.player.setLocation(Player.getWorld().getRandom(Player.player.getPerson().getLevel()));break;
 			case 2: extra.println("There is a log in the hut");oldFighter();break;
 			case 3: extra.println("There is a tree inside the hut."); lumerbjackDryad();break;
 			}

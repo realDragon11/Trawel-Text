@@ -209,7 +209,7 @@ public class Weapon extends Item {
 	}
 	
 	@Override
-	public boolean coinLoot() {
+	public boolean canAetherLoot() {
 		switch (weapName) {
 		case "generic teeth": return false;
 		case "standing reaver": return false;
