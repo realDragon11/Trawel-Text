@@ -19,6 +19,7 @@ import trawel.battle.attacks.WeaponAttackFactory;
 import trawel.battle.attacks.TargetFactory.TargetType;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;
+import trawel.personal.item.Item.ItemType;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.magic.EnchantConstant;
 import trawel.personal.item.magic.EnchantHit;
@@ -462,8 +463,8 @@ public class Weapon extends Item {
 
 
 	@Override
-	public String getType() {
-		return "weapon";
+	public ItemType getType() {
+		return Item.ItemType.WEAPON;
 	}
 
 	public String getMaterialName() {

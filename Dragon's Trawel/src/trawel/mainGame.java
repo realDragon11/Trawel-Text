@@ -1054,6 +1054,7 @@ public class mainGame {
 			}
 			
 			int gold = 0;
+			int aether = 0;
 			Item isell = null;
 			for (Person kill: battle.killed) {
 				kill.clearBattleEffects();
@@ -1064,43 +1065,59 @@ public class mainGame {
 					continue;
 				}
 				gold += kill.getBag().getGold();
+				aether += kill.getBag().getAether();
 				for (int i = 0;i<5;i++) {
 					isell = kill.getBag().getArmorSlot(i);
 					if (isell.canAetherLoot()) {
-						gold +=isell.getAetherValue();
+						aether +=isell.getAetherValue();
 					}
 				}
 				isell = kill.getBag().getHand();
 				if (isell.canAetherLoot()) {
-					gold +=isell.getAetherValue();
+					aether +=isell.getAetherValue();
 				}
-				
+				//DOLATER: none of these people have their aether, money or items taken because it is assumed they won't be used again
 			}
 			
 			
 			if (battle.survivors.size() > 1) {
-				
 				int giveGold = gold/battle.survivors.size();
+				int giveAether = aether/battle.survivors.size();
 				if (giveGold > 0) {
-					extra.println("The remaining " + gold +" gold is divvied up, "+giveGold +" gold pieces each.");
-					for (Person surv: battle.survivors){
-						surv.getBag().addGold(giveGold);
-						if (surv.isPlayer()) {
-							Networking.setBattle(Networking.BattleType.NONE);
-							Networking.clearSide(1);
-							mainGame.story.winFight(true);
-						}
-					}
+					extra.println("The remaining " +World.currentMoneyDisplay(gold) +" is divvied up, "+giveGold +" each.");
 				}
-			}else {
-				if (gold > 0) {
-					Person looter = battle.survivors.get(0);
-					extra.println(looter.getName() + " claims the remaining " +gold +" gold.");
-					if (looter.isPlayer()) {
+				if (giveAether > 0) {
+					extra.println("The remaining " + aether +" aether is divvied up, "+giveAether +" each.");
+				}
+				for (Person surv: battle.survivors){
+					if (giveGold > 0) {
+						surv.getBag().addGold(giveGold);
+					}
+					if (giveAether > 0) {
+						surv.getBag().addAether(giveAether);
+					}
+					if (surv.isPlayer()) {
+						Networking.setBattle(Networking.BattleType.NONE);
+						Networking.clearSide(1);
 						mainGame.story.winFight(true);
 					}
 				}
+			}else {
+				Person looter = battle.survivors.get(0);
+				if (gold > 0) {
+					extra.println(looter.getName() + " claims the remaining " +World.currentMoneyDisplay(gold) +".");
+					looter.getBag().addGold(gold);
+				}
+				if (aether > 0) {
+					extra.println(looter.getName() + " claims the remaining " +aether +" aether.");
+					looter.getBag().addAether(aether);
+				}
 				
+				if (looter.isPlayer()) {
+					Networking.setBattle(Networking.BattleType.NONE);
+					Networking.clearSide(1);
+					mainGame.story.winFight(true);
+				}
 			}
 			
 			

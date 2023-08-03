@@ -9,6 +9,7 @@ import trawel.battle.attacks.TargetFactory;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceID;
 import trawel.personal.item.Item;
+import trawel.personal.item.Item.ItemType;
 import trawel.personal.item.magic.EnchantConstant;
 
 
@@ -69,9 +70,10 @@ public class Race extends Item{
 	public void display(int style) {
 		this.display(style, 1);
 	}
+	
 	@Override
-	public String getType() {
-		return "race";
+	public ItemType getType() {
+		return Item.ItemType.RACE;
 	}
 	
 	public String randomInsult() {

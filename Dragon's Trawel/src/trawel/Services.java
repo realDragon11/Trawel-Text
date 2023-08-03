@@ -5,6 +5,7 @@ import trawel.personal.item.Item;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.magic.EnchantConstant;
 import trawel.personal.item.solid.Armor;
+import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Weapon;
 import trawel.towns.World;
 
@@ -92,11 +93,12 @@ public class Services {
 	 * Otherwise, the current item is kept, and the calling function is responsible for getting rid of it.
 	 */
 	public static void sellItem(Weapon item, Inventory bag, Inventory purse, boolean getNew) {
-		purse.addGold(item.getMoneyValue());
+		int val = item.getMoneyValue();
+		purse.addGold(val);
 		if (getNew) {
 			bag.swapWeapon(new Weapon(extra.zeroOut(item.getLevel()-2)+1));
 		}
-		extra.println("The " + item.getName() + " "+extra.pluralIs(item.getBaseName())+" sold for " + item.getAetherValue()+ " " + extra.choose("gold pieces","pieces of gold","gold") + "." );
+		extra.println("The " + item.getName() + " "+extra.pluralIs(item.getBaseName())+" sold for " + World.currentMoneyDisplay(val) + "." );
 	}
 	
 	//purse.addAether(item.getCost());
@@ -121,10 +123,11 @@ public class Services {
 	 * Otherwise, the current item is kept, and the calling function is responsible for getting rid of it.
 	 */
 	public static void sellItem(Armor item, Inventory bag, Inventory purse, boolean getNew) {
-		purse.addGold(item.getMoneyValue());
+		int val = item.getMoneyValue();
+		purse.addGold(val);
 		extra.println("The " + item.getName() + " "
 				+extra.pluralIs(item.getName())
-				+" sold for " + World.currentMoneyDisplay(item.getAetherValue())+ "." );
+				+" sold for " + World.currentMoneyDisplay(val)+ "." );
 		if (getNew) {
 			boolean soldIt = false;
 			int i = 0;
@@ -149,6 +152,12 @@ public class Services {
 	 */
 	public static void sellItem(Armor item, Inventory bag, boolean getNew) {
 		sellItem(item,bag,bag,getNew);
+	}
+	
+	public static void sellItem(DrawBane item, Inventory purse) {
+		int val = item.getValue();
+		purse.addGold(val);
+		extra.println("The " + item.getName() + " "+extra.pluralIs(item.getName())+" sold for " + World.currentMoneyDisplay(val) + "." );
 	}
 	
 	/**

@@ -5,11 +5,13 @@ import java.util.Random;
 
 import trawel.AIClass;
 import trawel.Networking;
+import trawel.Services;
 import trawel.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;
+import trawel.personal.item.Item.ItemType;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.DrawBane;
@@ -151,14 +153,13 @@ public class Store extends Feature{
 			if (index == -1) {
 				DrawBane sellItem = bag.discardDrawBanes(true);
 				if (sellItem != null) {
-					bag.addGold(sellItem.getValue());
-					//dbs.remove(index);
+					Services.sellItem(sellItem, bag);
 				}
 				
 				return;
 			}
 			DrawBane db = dbs.get(index);
-			int buyGold = db.getValue() * tier;
+			int buyGold = (int) (db.getValue() * markup);
 			if (Player.getTotalBuyPower() >= buyGold) {
 				extra.println("Buy the "+ db.getName() + "? (" + buyGold + " "+World.currentMoneyString()+")");//TODO: explain aether conversion
 				if (extra.yesNo()) {
@@ -177,18 +178,19 @@ public class Store extends Feature{
 		if (!canSee(buyItem)) {
 			return;
 		}
-		String itemType = buyItem.getType();
+		ItemType itemType = buyItem.getType();
 		Item sellItem = null;
 		int slot = -1;
-		if (itemType.contains("armor")) {
-			slot = Integer.parseInt(itemType.replaceAll("armor",""));
-			sellItem = bag.getArmorSlot(slot);
-		}
-		if (itemType.contains("weapon")) {
-			sellItem = bag.getHand();
-		}
-		if (itemType.contains("race")) {
+		switch (itemType) {
+		case ARMOR:
+			sellItem = bag.getArmorSlot(((Armor)buyItem).getSlot());
+			break;
+		case RACE:
 			sellItem = bag.getRace();
+			break;
+		case WEAPON:
+			sellItem = bag.getHand();
+			break;		
 		}
 		//the gold the item you are exchanging it for is worth
 		int sellGold = extra.zeroOut(sellItem.getMoneyValue());
@@ -203,14 +205,16 @@ public class Store extends Feature{
 			return;
 		}
 		this.addBuy();
-		if (itemType.contains("armor")) {
+		switch (itemType) {
+		case ARMOR:
 			arraySwap(bag.swapArmorSlot((Armor)buyItem, slot),buyItem);
-		}
-		if (itemType.contains("weapon")) {
-			arraySwap(bag.swapWeapon((Weapon)buyItem),buyItem);
-		}
-		if (itemType.contains("race")) {
+			break;
+		case RACE:
 			arraySwap(bag.swapRace((Race)buyItem),buyItem);
+			break;
+		case WEAPON:
+			arraySwap(bag.swapWeapon((Weapon)buyItem),buyItem);
+			break;	
 		}
 		Player.buyMoneyAmount(-delta);
 		extra.println("You complete the trade. "+ (delta) + " value.");

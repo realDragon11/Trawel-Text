@@ -59,7 +59,11 @@ public abstract class Item implements java.io.Serializable{
 		return extra.inlineColor(Color.RED)+"legendary+"+(inlevel-10)+"[c_white]";//vibrant red
 	}
 	
-	public abstract String getType();
+	public abstract ItemType getType();
+	
+	public enum ItemType{
+		RACE, ARMOR, WEAPON
+	}
 	
 	public abstract void levelUp();
 	

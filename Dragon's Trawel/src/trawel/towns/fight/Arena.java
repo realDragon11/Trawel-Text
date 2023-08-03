@@ -131,8 +131,8 @@ public class Arena extends Feature{
 					Player.player.addTitle(this.getTitle());
 					if (Player.player.animalQuest == 4 && this.name.equals("epino arena")) {
 						extra.println("Well done hotshot! Here's the promised reward!");
-						Player.bag.addGold(1000);
-						extra.println("He gives you 1000 gold.");
+						Player.bag.addGold(100);
+						extra.println("He gives you 100 gold.");
 						extra.println("Now, I heard you went up to the altar...");
 						extra.println("And that you keep returning from the grave!");
 						extra.println("I think you might be something special.");

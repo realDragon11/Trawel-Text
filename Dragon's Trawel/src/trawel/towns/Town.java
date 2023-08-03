@@ -669,14 +669,15 @@ public class Town extends TContextOwner{
 				if (pass) {
 					survivors.remove(Player.player.getPerson());
 					helpers.addAll(survivors);
-					extra.println("You take back the docks. +"+(100*tier)+" gp");
-					Player.bag.addGold(10*tier);
-					defenseTimer = 3;
+					int reward = (10*tier)+extra.randRange(0,4);
+					extra.println("You take back the docks. They pay you with "+World.currentMoneyDisplay(reward)+".");
+					Player.addGold(reward);
+					defenseTimer = 24*3;//3 days
 				}else {
-					defenseTimer = 1;
-					extra.println("The docks are overrun.");
+					defenseTimer = 12;//12 hours
+					extra.println("The docks are overrun.");//FIXME add consequence
 				}
-				Player.addTime(5);
+				Player.addTime(3);//3 hour battle
 			}else {
 				extra.println("They size you up and then turn you away.");
 			}

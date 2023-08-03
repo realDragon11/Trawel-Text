@@ -80,6 +80,9 @@ public class Player extends SuperPerson{
 		animalName = randomLists.randomAnimal();
 		//rpts = 0;
 		tutorial = true;
+		
+		moneys = new ArrayList<Integer>();
+		moneymappings = new ArrayList<World>();
 	}
 	public static World getWorld() {
 		if (Player.player == null) {

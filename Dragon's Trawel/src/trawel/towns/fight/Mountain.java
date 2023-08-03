@@ -273,13 +273,14 @@ public class Mountain extends Feature{
 		Boolean help = extra.yesNo();
 		if (help) {
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);
-	
+		int want = tier*5 + extra.randRange(0,5);
 		if (winner == Player.player.getPerson()) {
-			int gold = extra.getRand().nextInt(150*tier);
-			extra.println("You find " + gold + " gold in tolls.");
-			Player.bag.addGold(gold);
+			want*=extra.randRange(2,4);
+			want += extra.randRange(0,5);
+			extra.println("You find " + World.currentMoneyDisplay(want) + " in tolls.");
+			Player.addGold(want);
 		}else {
-			int want = tier*5 + extra.randRange(0,5);
+			
 			int lost = Player.loseGold(want);
 			if (lost == -1) {
 				extra.println("They mutter something about freeloaders.");

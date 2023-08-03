@@ -253,12 +253,12 @@ public class Forest extends Feature{
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);
 	
 		if (winner == Player.player.getPerson()) {
-			int gold = extra.getRand().nextInt(130*tier);
-			extra.println("They give you a reward of " + gold + " gold in thanks for saving them.");
-			Player.bag.addGold(gold);
+			int gold = extra.randRange(2,10)*tier;
+			extra.println("They give you a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them.");
+			Player.addGold(gold);
 		}else {
 			extra.println("They mugged you too!");
-			Player.bag.addGold(-tier*134);
+			extra.println(Player.loseGold((20*tier)+extra.randRange(0,10),true));
 		}
 		}else {
 			extra.println("You walk away.");
@@ -283,8 +283,8 @@ public class Forest extends Feature{
 		Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
 		if (winner == Player.player.getPerson()) {
 		}else {
-			extra.println("They take some of your gold!");
-			Player.bag.addGold(-extra.getRand().nextInt(300*tier));
+			extra.println("They rifle through your bags!");
+			extra.println(Player.loseGold((30*tier)+extra.randRange(0,20),true));
 		}
 	}
 	
@@ -337,10 +337,10 @@ public class Forest extends Feature{
 				if (Math.random() < .3) {
 					extra.println("They scamper off...");
 				}else {
-					int gold = extra.getRand().nextInt(50*tier);
-					extra.println("They give you a reward of " + gold + " gold in thanks for saving them.");
+					int gold = extra.randRange(0,5)+ (tier*extra.randRange(1,4));
+					extra.println("They give you a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them.");
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
-					Player.bag.addGold(gold);
+					Player.addGold(gold);
 				}
 			}
 		}else {

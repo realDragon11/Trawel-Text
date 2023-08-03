@@ -159,7 +159,7 @@ public class Inventory implements java.io.Serializable{
 		@Override
 		public Armor next() {
 			Armor ret = current;
-			current = scanFrom(current.getSlot());
+			current = scanFrom(current.getSlot()+1);
 			return ret;
 		}
 		

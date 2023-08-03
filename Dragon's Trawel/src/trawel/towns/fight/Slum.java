@@ -184,7 +184,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 					crimeLord = sp;
 					town.getOccupants().remove(sp);
 				}else {
-					((Agent)crimeLord).getPerson().getBag().addGold(100*town.getTier());
+					((Agent)crimeLord).getPerson().getBag().addGold(3*town.getTier());
 					crimeRating+=((Agent)crimeLord).getPerson().getLevel();
 				}
 			}

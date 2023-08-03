@@ -137,7 +137,7 @@ public class GroveNode implements NodeType{
 			made.interactString = "approach " + made.name;break;
 		case 15: made.storage1 = RaceFactory.getRich(made.level); made.storage2 = RaceFactory.getRich(made.level+1);
 		made.name = ((Person)made.storage1).getBag().getRace().renderName(false); made.interactString = "approach " + made.name; 
-		((Person)made.storage1).getBag().addGold(made.level*300);break;
+		((Person)made.storage1).getBag().addGold(made.level*100);break;
 		case 16: made.storage1 = new Weapon(made.level); made.name = ((Weapon)made.storage1).getBaseName() + " in a rock"; made.interactString = "pull on " +((Weapon)made.storage1).getBaseName(); break;
 		case 17: made.storage1 = RaceFactory.getPeace(made.level); ((Person)made.storage1).setRacism(false);
 		made.name = ((Person)made.storage1).getBag().getRace().renderName(false); made.interactString = "approach " + made.name;break;
@@ -366,10 +366,10 @@ public class GroveNode implements NodeType{
 					extra.println("They scamper off...");
 					node.findBehind("tree");
 				}else {
-					int gold = (int) (extra.hrandomFloat()*50*node.level);
-					extra.println("They give you a reward of " + gold + " gold in thanks for saving them.");
+					int gold = extra.randRange(0,5)+ (node.getLevel()*extra.randRange(1,4));
+					extra.println("They give you a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them.");
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
-					Player.bag.addGold(gold);
+					Player.addGold(gold);
 				}
 			}
 		}else {
@@ -629,8 +629,9 @@ public class GroveNode implements NodeType{
 					case 2: case 4: extra.println("Eating the moss is very difficult... but you manage.");
 					Player.player.getPerson().addXp(node.level);break;
 					case 3: extra.println("You feel lightheaded.... you pass out!");
-					extra.println("When you wake up, you find that some of your gold is missing!");
-					Player.bag.addGold(-extra.randRange(10,10*node.level));break;
+					extra.println("When you wake up, you find that someone went through your stuff!");
+					extra.println(Player.loseGold(extra.randRange(1,5*node.level),true))
+					;break;
 					}
 					if (extra.randFloat() > .8f) {
 						extra.println(extra.PRE_RED + "As you eat the moss, you hear a voice cry out:");
@@ -650,14 +651,17 @@ public class GroveNode implements NodeType{
 						case 2: winner = mushHelpRobber();break;
 						}
 						if (winner == Player.player.getPerson()) {
-							int gold = extra.getRand().nextInt(20*node.level)+node.level*5;
-							extra.println("You sell the moss for " + gold + " gold.");
-							Player.bag.addGold(gold);
+							int gold = extra.randRange(1,node.level);
+							extra.println("You sell the moss for " + World.currentMoneyDisplay(gold) + ".");
+							Player.addGold(gold);
 						}
 					}else {
-						int gold = extra.getRand().nextInt(8*node.level)+node.level*2;
-						extra.println("You sell the moss for " + gold + " gold.");
-						Player.bag.addGold(gold);
+						int gold = extra.randRange(0,Math.max(1,node.level/2));
+						if (gold == 0 || extra.chanceIn(1,1+node.level)) {
+							extra.println("The moss wasn't worth anything");
+						}
+						extra.println("You sell the moss for " + World.currentMoneyDisplay(gold) + ".");
+						Player.addGold(gold);
 					};break;
 				}
 			}else {

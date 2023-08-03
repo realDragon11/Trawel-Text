@@ -443,8 +443,8 @@ public class Armor extends Item {
 	}
 	
 	@Override
-	public String getType() {
-		return "armor" + getSlot();
+	public ItemType getType() {
+		return Item.ItemType.ARMOR;
 	}
 
 	public String getMaterialName() {
