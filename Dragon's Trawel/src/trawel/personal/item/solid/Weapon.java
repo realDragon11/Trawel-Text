@@ -460,7 +460,15 @@ public class Weapon extends Item {
 		this.display(style, 1);
 	}
 	
-
+	@Override
+	public String storeString(float markup, boolean canShow) {
+		return this.getName() 
+				+ " hd/ad/bs: " + extra.format(this.highest())
+				+ "/" + extra.format(this.average())
+				+ "/" + extra.format(this.score())
+				+ " cost: " +  extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
+				;
+	}
 
 	@Override
 	public ItemType getType() {

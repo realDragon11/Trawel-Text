@@ -443,6 +443,16 @@ public class Armor extends Item {
 	}
 	
 	@Override
+	public String storeString(float markup, boolean canShow) {
+		return this.getName() 
+				+ " S " + extra.F_WHOLE.format(this.getSharpResist())
+				+ " B " + extra.F_WHOLE.format(this.getBluntResist())
+				+ " P " + extra.F_WHOLE.format(this.getPierceResist())
+				+ " cost: " +  extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
+				;
+	}
+	
+	@Override
 	public ItemType getType() {
 		return Item.ItemType.ARMOR;
 	}

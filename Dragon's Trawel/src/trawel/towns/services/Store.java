@@ -3,6 +3,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import derg.menus.MenuBack;
+import derg.menus.MenuGenerator;
+import derg.menus.MenuItem;
+import derg.menus.MenuLine;
+import derg.menus.MenuSelect;
 import trawel.AIClass;
 import trawel.Networking;
 import trawel.Services;
@@ -39,6 +44,7 @@ public class Store extends Feature{
 	private int tier;
 	private int buys;
 	private float markup;
+	private float aetherRate;
 	
 	public static int INVENTORY_SIZE = 5;
 
@@ -46,6 +52,11 @@ public class Store extends Feature{
 		time = 0;
 		tutorialText = "This is a store. You can buy stuff here.";
 		markup = 1.5f;
+		aetherRate = Player.NORMAL_AETHER_RATE;
+		if (extra.chanceIn(3,4)) {
+			//3 out of 4 chance to move at least somewhat towards a % deviated rate
+			aetherRate= extra.lerp(aetherRate,extra.choose(.8f,.7f,.4f,1.1f,1.2f),extra.randFloat());
+		}
 	}
 	
 	public Store(Town t, int tier, int type) {
@@ -146,6 +157,10 @@ public class Store extends Feature{
 		return extra.choose(DrawBane.MEAT,DrawBane.BAT_WING,DrawBane.APPLE,DrawBane.CEON_STONE,DrawBane.MIMIC_GUTS,DrawBane.BLOOD);
 	}
 	
+	private void serviceItem(Item item) {
+		serviceItem(items.indexOf(item));
+	}
+	
 	private void serviceItem(int index) {
 		Person p = Player.player.getPerson();
 		Inventory bag = p.getBag();
@@ -159,7 +174,7 @@ public class Store extends Feature{
 				return;
 			}
 			DrawBane db = dbs.get(index);
-			int buyGold = (int) (db.getValue() * markup);
+			int buyGold = (int) Math.ceil(db.getValue() * markup);
 			if (Player.getTotalBuyPower() >= buyGold) {
 				extra.println("Buy the "+ db.getName() + "? (" + buyGold + " "+World.currentMoneyString()+")");//TODO: explain aether conversion
 				if (extra.yesNo()) {
@@ -194,7 +209,7 @@ public class Store extends Feature{
 		}
 		//the gold the item you are exchanging it for is worth
 		int sellGold = extra.zeroOut(sellItem.getMoneyValue());
-		int buyGold = (int)(buyItem.getMoneyValue()*markup);
+		int buyGold = (int)Math.ceil(buyItem.getMoneyValue()*markup);
 		int delta = buyGold-sellGold;
 		if (Player.getTotalBuyPower() < delta) {
 			extra.println("You can't afford this item!");
@@ -232,6 +247,154 @@ public class Store extends Feature{
 			}
 	}
 	
+	private int aetherPerMoney() {
+		return ((int)(1/aetherRate));
+	}
+	
+	private int aetherRateGuess() {
+		if (aetherRate == Player.NORMAL_AETHER_RATE) {
+			return 0;
+		}
+		float delta = Math.abs(aetherRate-Player.NORMAL_AETHER_RATE);
+		float perOfLarger = delta/Math.max(aetherRate,Player.NORMAL_AETHER_RATE);
+		if (aetherRate < Player.NORMAL_AETHER_RATE) {
+			if (perOfLarger < .5) {//less than half rate
+				return -3;
+			}else {
+				if (perOfLarger < .8) {
+					return -2;
+				}
+				return -1;
+			}
+		}//better rate than normal
+		if (perOfLarger < .5) {//double rate or more
+			return 3;
+		}else {
+			if (perOfLarger < .8) {
+				return 2;
+			}
+			return 1;
+		}
+	}
+	
+	private String aetherRateString() {
+		switch (aetherRateGuess()) {
+		case 0:
+			return "normal";
+		case -3:
+			return "shockingly bad";
+		case -2:
+			return "bad";
+		case -1:
+			return "poor";
+		case 1:
+			return "good";
+		case 2:
+			return "great";
+		case 3:
+			return "amazing";
+		}
+		throw new RuntimeException("bad aether rate guess");
+	}
+	
+	public MenuGenerator modernStoreFront() {
+		return new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return "You have " + World.currentMoneyDisplay(Player.getGold()) + " and "+Player.bag.getAether() +" aether.";
+					}});
+				list.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return "They will exchange "+aetherPerMoney() + " aether for " + World.currentMoneyDisplay(1) + " a " +aetherRateString() + " rate.";
+					}});
+				
+				if (type != 8 && type != 9) {//normal items
+					for (Item i: items) {
+						list.add(new StoreMenuItem(i));
+					}
+				}else {
+					for (DrawBane db: dbs) {
+						list.add(new StoreMenuDraw(db));
+					}
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "sell drawbane";
+						}
+
+						@Override
+						public boolean go() {
+							serviceItem(-1);
+							return false;
+						}});
+				}
+				list.add(new MenuBack());
+				return list;
+			}
+			
+		};
+	}
+	
+	private class StoreMenuItem implements MenuItem{
+		private Item item;
+		
+		private StoreMenuItem(Item it) {
+			item = it;
+		}
+
+		@Override
+		public String title() {
+			return item.storeString(markup,canSee(item));
+		}
+
+		@Override
+		public boolean go() {
+			serviceItem(item);
+			return false;
+		}
+
+		@Override
+		public boolean canClick() {
+			return canSee(item);
+		}
+
+		@Override
+		public boolean forceLast() {
+			return false;
+		}
+	}
+	
+	private class StoreMenuDraw extends MenuSelect{
+		
+		private DrawBane item;
+		
+		private StoreMenuDraw(DrawBane it) {
+			item = it;
+		}
+
+		@Override
+		public String title() {
+			return item.getName() + " cost: " + extra.F_WHOLE.format(Math.ceil(item.getValue()*markup));
+		}
+
+		@Override
+		public boolean go() {
+			serviceItem(dbs.indexOf(item));
+			return false;
+		}
+		
+	}
+	
+	@Deprecated
 	public void storeFront() {//FIXME: make modern menu
 		Networking.charUpdate();
 		extra.println("You have " + World.currentMoneyDisplay(Player.getGold()) + " and "+Player.bag.getAether() +" aether. Current aether rate is " + extra.F_TWO_TRAILING.format(Player.NORMAL_AETHER_RATE));
