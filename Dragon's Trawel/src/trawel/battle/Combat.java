@@ -845,45 +845,45 @@ public class Combat {
 		if (attacker.hasSkill(Skill.HPSENSE) || defender.hasSkill(Skill.HPSENSE)) {
 			extra.println(defender.getHp()+"/" + defender.getMaxHp() );
 		}
-		if (defender.hasSkill(Skill.MIMIC_CHEST)) {
-			if (extra.chanceIn(1,2)){
-				RaceID rid = defender.getBag().getRaceID();
+		if (defender.hasSkill(Skill.RACIAL_SHIFTS)) {
+			RaceID rid = defender.getBag().getRaceID();
+			switch (rid) {
+			case B_MIMIC_CLOSED:
 				if (hpRatio > .6f) {//if healthy, prefer closed, if damaged, prefer open and swap more in general
-					if (rid == RaceFactory.RaceID.B_MIMIC_CLOSED) {
-						if (extra.randFloat() < .2) {
-							defender.getBag().setRace(RaceID.B_MIMIC_OPEN);
-						}
-					}else {
-						if (extra.randFloat() < .6) {
-							defender.getBag().setRace(RaceID.B_MIMIC_CLOSED);
-						}
+					if (extra.randFloat() < .2) {
+						defender.getBag().setRace(RaceID.B_MIMIC_OPEN);
 					}
 				}else {
-					if (rid == RaceFactory.RaceID.B_MIMIC_CLOSED) {
-						if (extra.randFloat() < .9) {
-							defender.getBag().setRace(RaceID.B_MIMIC_OPEN);
-						}
-					}else {
-						if (extra.randFloat() < .5) {
-							defender.getBag().setRace(RaceID.B_MIMIC_CLOSED);
-						}
+					if (extra.randFloat() < .9) {
+						defender.getBag().setRace(RaceID.B_MIMIC_OPEN);
 					}
 				}
 				Networking.clearSide(1);
 				defender.getBag().graphicalDisplay(1,defender);
-			}
-		}
-		if (defender.hasSkill(Skill.FELL_REAVER)) {
-			//defender.backupWeapon = defender.getBag().swapWeapon(defender.backupWeapon);
-			switch (defender.getBag().getRaceID()) {
+				break;
+			case B_MIMIC_OPEN:
+				if (hpRatio > .6f) {//if healthy, prefer closed, if damaged, prefer open and swap more in general
+					if (extra.randFloat() < .6) {
+						defender.getBag().setRace(RaceID.B_MIMIC_CLOSED);
+					}
+				}else {
+					if (extra.randFloat() < .5) {
+						defender.getBag().setRace(RaceID.B_MIMIC_CLOSED);
+					}
+				}
+				Networking.clearSide(1);
+				defender.getBag().graphicalDisplay(1,defender);
+				break;
 			case B_REAVER_TALL:
 				defender.getBag().setRace(RaceID.B_REAVER_SHORT);
+				defender.updateRaceWeapon();
 				break;
 			case B_REAVER_SHORT:
 				defender.getBag().setRace(RaceID.B_REAVER_TALL);
+				defender.updateRaceWeapon();
 				break;
+				
 			}
-			defender.updateRaceWeapon();
 		}
 		//TODO: bleedout death quotes
 		boolean bMary = (defender.hasEffect(Effect.B_MARY));

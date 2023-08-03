@@ -91,7 +91,9 @@ public enum Skill{
 		BLOOD_HARVEST("BH","Internal",false,Type.FEATURE,0,""),
 		SKY_BLESSING_1("Sky Blessing I","Internal",false,Type.FEATURE,0,""),
 		PLAYERSIDE("PSIDE","Internal",false,Type.FEATURE,0,""),
-		ENDSKILL("","",false,Type.FIGHTER,0,""),;
+		ENDSKILL("","",false,Type.FIGHTER,0,""),
+		RACIAL_SHIFTS("Flexible","Prone to changing its defense patterns.","Changes stances in combat.")
+		;
 	    private String name,desc, longDesc;
 	    private Type type;
 	    private int level;
@@ -106,7 +108,13 @@ public enum Skill{
 			level = lvl;
 			this.AITake = AITake;
 			this.longDesc = longDesc;
-		}   
+		}
+		//new skills
+		Skill(String name,String desc, String mechanicDesc){
+			this.name = name;
+			this.desc = desc;
+			this.longDesc = mechanicDesc;
+		}
 		
 		public String getName() {return name;}
 		public String getDesc() {return desc;}

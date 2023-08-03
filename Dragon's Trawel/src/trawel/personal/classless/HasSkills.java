@@ -10,7 +10,6 @@ public interface HasSkills {
 	
 	public Stream<Skill> collectSkills();
 	
-	
 	public static Stream<Skill> combine(Stream<Skill>...streams) {
 		//https://stackoverflow.com/a/22741520
 		//pain

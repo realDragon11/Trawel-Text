@@ -33,6 +33,7 @@ import trawel.earts.PlayerSkillpointsLine;
 import trawel.factions.FBox;
 import trawel.factions.HostileTask;
 import trawel.personal.classless.Archetype;
+import trawel.personal.classless.AttributeBox;
 import trawel.personal.classless.Feat;
 import trawel.personal.classless.HasSkills;
 import trawel.personal.classless.Perk;
@@ -117,15 +118,21 @@ public class Person implements java.io.Serializable, HasSkills{
 		COWARDLY,FEARLESS,GRIZZLED,DEATHCHEATED,LIFEKEEPER
 	}
 	
-	private transient Set<Skill> skillSet =  EnumSet.noneOf(Skill.class);//new EnumSet<trawel.personal.classless.Skill>();
-	private Set<Feat> featSet =  EnumSet.noneOf(Feat.class);//new EnumSet<trawel.personal.classless.Skill>();
-	private Set<Perk> perkSet =  EnumSet.noneOf(Perk.class);
-	private Set<Archetype> archSet =  EnumSet.noneOf(Archetype.class);
+	private transient Set<Skill> skillSet; //= EnumSet.noneOf(Skill.class);//new EnumSet<trawel.personal.classless.Skill>();
+	private Set<Feat> featSet;//new EnumSet<trawel.personal.classless.Skill>();
+	private Set<Perk> perkSet;
+	private Set<Archetype> archSet;
+	
+	private AttributeBox atrBox;
 	
 	//private boolean isPlayer;
 	
 	//Constructor
 	public Person(int level, boolean isAI, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar,AIJob job,Race race) {
+		featSet = EnumSet.noneOf(Feat.class);
+		perkSet = EnumSet.noneOf(Perk.class);
+		archSet = EnumSet.noneOf(Archetype.class);
+		
 		this.job = job;
 		rFlag = raceFlag;
 		if (level < 1) {
@@ -201,6 +208,9 @@ public class Person implements java.io.Serializable, HasSkills{
 		}
 		//this.noAILevel = !isAI;
 		effects = new ArrayList<Effect>();
+		
+		
+		atrBox = new AttributeBox(this);
 	}
 	
 	@Deprecated
@@ -243,9 +253,27 @@ public class Person implements java.io.Serializable, HasSkills{
 	public Stream<Skill> collectSkills(){
 		//return Stream.concat(featSet.parallelStream(), perkSet.parallelStream(),archSet.parallelStream());
 		//return Stream.of(featSet.parallelStream(),perkSet.parallelStream(),archSet.parallelStream());
-		return HasSkills.combine(featSet.stream().flatMap(s -> collectSkills()),
-				perkSet.stream().flatMap(s -> collectSkills()),
-				archSet.stream().flatMap(s -> collectSkills()));
+		//return HasSkills.combine(featSet.stream().flatMap(s -> collectSkills()),
+		//		perkSet.stream().flatMap(s -> collectSkills()),
+		//		archSet.stream().flatMap(s -> collectSkills()));
+		
+		//ugh need to process them for attributes anyway
+		atrBox.reset();
+		Stream<Skill> s = Stream.empty();
+		for (Archetype a: archSet) {
+			atrBox.process(a);
+			Stream.concat(s,a.collectSkills());
+		}
+		for (Perk p: perkSet) {
+			atrBox.process(p);
+			Stream.concat(s,p.collectSkills());
+		}
+		for (Feat f: featSet) {
+			atrBox.process(f);
+			Stream.concat(s,f.collectSkills());
+		}
+		
+		return s;
 	}
 	
 	public Set<Skill> updateSkills() {
@@ -255,6 +283,10 @@ public class Person implements java.io.Serializable, HasSkills{
 	}
 	public Set<Skill> fetchSkills() {
 		return skillSet;
+	}
+	
+	public void setPerk(Perk p) {
+		perkSet.add(p);
 	}
 	
 	public RaceFlag getRaceFlag() {
