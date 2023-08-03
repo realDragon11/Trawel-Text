@@ -239,10 +239,22 @@ public class Person implements java.io.Serializable, HasSkills{
 	
 	//instance methods
 	
-	public Iterator<trawel.personal.classless.Skill> getSkills(){
+	@Override
+	public Stream<trawel.personal.classless.Skill> collectSkills(){
 		//return Stream.concat(featSet.parallelStream(), perkSet.parallelStream(),archSet.parallelStream());
 		//return Stream.of(featSet.parallelStream(),perkSet.parallelStream(),archSet.parallelStream());
-		return new HasSkills.SkillJoiner(featSet,perkSet,archSet);
+		return HasSkills.combine(featSet.stream().flatMap(s -> collectSkills()),
+				perkSet.stream().flatMap(s -> collectSkills()),
+				archSet.stream().flatMap(s -> collectSkills()));
+	}
+	
+	public Set<trawel.personal.classless.Skill> updateSkills() {
+		skillSet = EnumSet.noneOf(trawel.personal.classless.Skill.class);
+		collectSkills().forEach(skillSet::add);
+		return skillSet;
+	}
+	public Set<trawel.personal.classless.Skill> fetchSkills() {
+		return skillSet;
 	}
 	
 	public RaceFlag getRaceFlag() {
