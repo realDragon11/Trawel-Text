@@ -375,7 +375,7 @@ public class Mountain extends Feature{
 	
 	private void findEquip() {
 		extra.println("You find a rotting body... With their equipment intact!");
-		AIClass.loot(new Person(tier).getBag(),Player.bag,Player.player.getPerson().getIntellect(),true,Player.player.getPerson());
+		AIClass.loot(RaceFactory.makeLootBody(tier).getBag(),Player.bag,Player.player.getPerson().getIntellect(),true,Player.player.getPerson());
 	}
 	
 	private void vampireHunter() {

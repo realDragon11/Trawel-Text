@@ -80,9 +80,6 @@ public enum Skill{
 		
 		IDEF_TRAINING("Defensive Training","Hone your defensive skills.",true,Type.DEFENDER,6,""),
 		
-		MIMIC_CHEST("False Appearance: Chest","",false,Type.FEATURE,0,""),
-		FELL_REAVER("Astounding Height","",false,Type.FEATURE,0,""),
-		
 		EXECUTE_ATTACK("EXEATTACK","Internal",false,Type.FEATURE,0,""),
 		DRUNK_DRINK("DRUNKDRINK","Internal",false,Type.FEATURE,0,""),
 		BONUSATTACK_BERSERKER("BABER","Internal",false,Type.FEATURE,0,""),
@@ -92,7 +89,12 @@ public enum Skill{
 		SKY_BLESSING_1("Sky Blessing I","Internal",false,Type.FEATURE,0,""),
 		PLAYERSIDE("PSIDE","Internal",false,Type.FEATURE,0,""),
 		ENDSKILL("","",false,Type.FIGHTER,0,""),
-		RACIAL_SHIFTS("Flexible","Prone to changing its defense patterns.","Changes stances in combat.")
+		RACIAL_SHIFTS("Flexible","Prone to changing its defense patterns."
+				,"Changes stances in combat, changing its target types, and possibly its attacks."
+				,Type.FEATURE),
+		RAW_GUTS("Raw Guts","Resist damage based on level and Torso condition."
+				,"Can only resist up to half the base damage of an attack. Only applies to hit attacks. Amount is random."
+				,Type.DEFENDER),
 		;
 	    private String name,desc, longDesc;
 	    private Type type;
@@ -110,10 +112,15 @@ public enum Skill{
 			this.longDesc = longDesc;
 		}
 		//new skills
-		Skill(String name,String desc, String mechanicDesc){
+		Skill(String name,String desc, String mechanicDesc,Type type){
 			this.name = name;
 			this.desc = desc;
 			this.longDesc = mechanicDesc;
+			this.type = type;
+			
+			//REMOVE LATER:
+			level = 0;
+			AITake = false;
 		}
 		
 		public String getName() {return name;}
@@ -125,8 +132,16 @@ public enum Skill{
 		public void display() {
 			extra.println(name + ": " + desc);
 		}
+		
+		public String disp() {
+			return (name + ": " + desc);
+		}
 
 		public String getLongDesc() {
 			return longDesc;
+		}
+		
+		public String explain() {
+			return (name + ": " + desc + "\n " + " " + longDesc);
 		}
 }

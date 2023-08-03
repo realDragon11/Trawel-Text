@@ -128,7 +128,7 @@ public class Person implements java.io.Serializable, HasSkills{
 	//private boolean isPlayer;
 	
 	//Constructor
-	public Person(int level, boolean isAI, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar,AIJob job,Race race) {
+	protected Person(int level, boolean isAI, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar,AIJob job,Race race) {
 		featSet = EnumSet.noneOf(Feat.class);
 		perkSet = EnumSet.noneOf(Perk.class);
 		archSet = EnumSet.noneOf(Archetype.class);
@@ -213,21 +213,19 @@ public class Person implements java.io.Serializable, HasSkills{
 		atrBox = new AttributeBox(this);
 	}
 	
-	@Deprecated
-	public Person(int level) {
+	protected Person(int level) {
 		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
 	}
 	
-	public Person(int level, boolean aiLevel, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar) {
+	protected Person(int level, boolean aiLevel, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar) {
 		this(level,aiLevel,raceType,matType,raceFlag,giveScar,null,null);
 	}
 	
-	@Deprecated
-	public Person(int level,AIJob job) {
+	protected Person(int level,AIJob job) {
 		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true,job,null);
 	}
 	
-	public static Person animal(int level,RaceFactory.RaceID race,Material matType,boolean giveScar){
+	protected static Person animal(int level,RaceFactory.RaceID race,Material matType,boolean giveScar){
 		return new Person(level,true,Race.RaceType.BEAST,matType,RaceFlag.NONE,giveScar,null,RaceFactory.getRace(race));
 	}
 	
@@ -274,6 +272,11 @@ public class Person implements java.io.Serializable, HasSkills{
 		}
 		
 		return s;
+	}
+	
+	@Override
+	public String getText() {
+		throw new UnsupportedOperationException("people can't give class text");
 	}
 	
 	public Set<Skill> updateSkills() {
@@ -1374,6 +1377,10 @@ public class Person implements java.io.Serializable, HasSkills{
 	//TODO: should probably declare this to the player
 	public void applyDiscount(double time) {
 		speedFill-=time;
+	}
+
+	public double getConditionForPart() {
+		return bodystatus.getStatusOnMapping(TargetFactory.TORSO_MAPPING);
 	}
 
 }

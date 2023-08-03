@@ -586,7 +586,7 @@ public class mainGame {
 			for (int i = 1;i<9;i++ ) {
 				extra.println("slot: "+i);
 				WorldGen.eoano();
-				Person p = new Person(1);
+				Person p = RaceFactory.makeGeneric(1);
 				p.setPlayer();
 				WorldGen.plane.setPlayer(new Player(p));
 				WorldGen.save(i+"");
@@ -1172,11 +1172,9 @@ public class mainGame {
 					extra.println("Generating world...");
 					world = WorldGen.eoano();
 				}
-				manOne = new Person(1,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
-				manOne.hTask = HostileTask.DUEL;
+				manOne = RaceFactory.makePlayerValid();
 				Person manThree = manOne;
-				manTwo = new Person(1,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
-				manTwo.hTask = HostileTask.DUEL;
+				manTwo = RaceFactory.makePlayerValid();;
 				if (!displayFight) {
 					extra.changePrint(true);
 				}

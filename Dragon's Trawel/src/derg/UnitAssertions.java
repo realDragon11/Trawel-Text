@@ -2,6 +2,7 @@ package derg;
 
 import trawel.mainGame;
 import trawel.personal.Person;
+import trawel.personal.RaceFactory;
 import trawel.personal.item.magic.EnchantConstant;
 import trawel.WorldGen;
 import trawel.extra;
@@ -18,7 +19,7 @@ public class UnitAssertions {
 		System.out.println("starting");
 		mainGame.unitTestSetup();
 		System.out.println("setup");
-		Person p = new Person(1);
+		Person p = RaceFactory.makeGeneric(1);
 		System.out.println("Flags: "+p.isRacist() + "-" + p.isAngry());
 		p.setRacism(true);
 		p.setAngry(false);

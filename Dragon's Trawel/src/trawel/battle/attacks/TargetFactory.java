@@ -27,6 +27,8 @@ public class TargetFactory {
 	public static Map<TargetType,WeightedTable> targetTypeTable = new HashMap<TargetType,WeightedTable>();
 	private static Map<String,Target> targetMap = new HashMap<String,Target>();
 	
+	public static final byte TORSO_MAPPING = 3;
+	
 	/**
 	 * 3 slash 1 blunt 1 pierce
 	 */
@@ -128,7 +130,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.TAT);
-		t.mappingNumber = 3;
+		t.mappingNumber = TORSO_MAPPING;
 		targetList.add(t);
 		
 		t = new Target();
@@ -254,7 +256,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.TAT);
-		t.mappingNumber = 3;
+		t.mappingNumber = TORSO_MAPPING;
 		targetList.add(t);
 		
 		

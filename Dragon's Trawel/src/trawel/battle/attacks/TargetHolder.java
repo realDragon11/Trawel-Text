@@ -33,6 +33,18 @@ public class TargetHolder {
 		}
 	}
 	
+	public int getVariant() {
+		if (config == null) {
+			return 0;
+		}
+		for (int i = 0; i < plan.types.length;i++) {
+			if (plan.types[i] == config) {
+				return i;
+			}
+		}
+		return 0;
+	}
+	
 	
 	/**
 	 * the damage % on a part
@@ -152,6 +164,13 @@ public class TargetHolder {
 		extra.println(extra.spaceBuffer(buffer)+
 				getPartName(spot) + " " +spot+": " + plan.getMap(spot) + "-" + (tr.tar.passthrough ? "p" : extra.format2.format(getStatus(spot))) + " attach: " + (plan.getAttach(spot) != -1 ? plan.getAttach(spot) : "-")
 				);
+	}
+
+	/**
+	 * will return 0 if no mapping found
+	 */
+	public double getStatusOnMapping(int mapping) {
+		return condition[plan.getSlotByMappingNumber(mapping, getVariant())];
 	}
 
 }

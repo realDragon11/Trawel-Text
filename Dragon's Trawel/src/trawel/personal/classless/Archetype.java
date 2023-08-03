@@ -9,10 +9,10 @@ public enum Archetype implements HasSkills{
 	;
 	
 	public final boolean entryLevel;
-	public final String shortname, desc;
+	public final String name, desc;
 	public final Set<Skill> skills;
-	Archetype(String name, String description, boolean entry, Set<Skill> skillset){
-		shortname = name;
+	Archetype(String _name, String description, boolean entry, Set<Skill> skillset){
+		name = _name;
 		desc = description;
 		entryLevel = entry;
 		skills = skillset;
@@ -21,6 +21,15 @@ public enum Archetype implements HasSkills{
 	@Override
 	public Stream<Skill> collectSkills() {
 		return skills.stream();
+	}
+	
+	@Override
+	public String getText() {
+		String str = name + ": "+desc;
+		for (Skill s: skills) {
+			str += "\n "+HasSkills.padNewlines(s.disp());
+		}
+		return str;
 	}
 	
 	/**

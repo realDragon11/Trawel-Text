@@ -746,6 +746,24 @@ public class RaceFactory {
 		return w;
 	}
 	
+	public static Person makeGeneric(int level) {
+		extra.offPrintStack();
+		Person p = new Person(level);
+		p.hTask = HostileTask.DUEL;
+		p.updateSkills();
+		extra.popPrintStack();
+		return p;
+	}
+	
+	public static Person makePlayerValid() {
+		extra.offPrintStack();
+		Person p = new Person(1,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
+		p.hTask = HostileTask.DUEL;
+		p.updateSkills();
+		extra.popPrintStack();
+		return p;
+	}
+	
 	public static Person makeOld(int level) {
 		Person p = new Person(level);
 		p.setPersonType(PersonType.GRIZZLED);

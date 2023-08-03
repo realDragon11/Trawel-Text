@@ -503,6 +503,7 @@ public class Combat {
 	 */
 	public AttackReturn handleAttack(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
 		String str = "";
+		int wLevel = att.getWeapon() != null ? att.getWeapon().getLevel() : 0;
 		if (att.getName().contains("examine")){
 			if  (!attacker.isPlayer()) {
 				str +=("They examine you...");
@@ -547,20 +548,32 @@ public class Combat {
 				attackSub(att.getBlunt()*damMod,bluntA),
 				attackSub(att.getPierce()*damMod,pierceA),
 				str,att);
-		if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.RELIABLE)
-				&& ret.damage <= att.getWeapon().getLevel()) 
+		if (wLevel > 0 && att.getWeapon().qualList.contains(Weapon.WeaponQual.RELIABLE)
+				&& ret.damage <= wLevel) 
 		{
-			ret.damage = att.getWeapon().getLevel();
+			ret.damage = wLevel;
 			ret.reliable = true;
+			ret.addNote("Reliable Damage: "+wLevel);
 		} else {
 			if (ret.code == ATK_ResultCode.DAMAGE) {//no longer functions on reliable
-				if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.REFINED)) {
-					ret.damage += att.getWeapon().getLevel();
+				if (wLevel > 0 && att.getWeapon().qualList.contains(Weapon.WeaponQual.REFINED)) {
+					ret.damage += wLevel;
+					ret.addNote("Refined Bonus: " + wLevel);
 				}
-				if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.WEIGHTED)) {
+				if (wLevel > 0 && att.getWeapon().qualList.contains(Weapon.WeaponQual.WEIGHTED)) {
 					if (att.getHitmod() < 1.5) {
+						int weightBonus = ret.damage;
 						ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitmod()*10))));
+						weightBonus = ret.damage-weightBonus;
+						ret.addNote("Weighted Bonus: " + weightBonus);
 					}
+				}
+				if (defender.hasSkill(Skill.RAW_GUTS)) {
+					int maxGResist = (int) (defender.getLevel() * defender.getConditionForPart());
+					int gResisted = ret.damage;
+					ret.damage = Math.max(ret.damage/2,ret.damage-extra.randRange(0,maxGResist));
+					gResisted = gResisted-ret.damage;
+					ret.addNote("Raw Guts Resisted: " + gResisted);
 				}
 			}
 		}
@@ -608,6 +621,7 @@ public class Combat {
 		public boolean reliable = false;
 		public Attack attack;
 		public ATK_ResultCode code;
+		private String notes;
 		//DOLATER: instead of new target, might be able to ride confusion effects on this
 		public AttackReturn(int sdam,int bdam, int pdam, String str, Attack att) {
 			damage = sdam+bdam+pdam;
@@ -615,6 +629,7 @@ public class Combat {
 			subDamage = new int[] {sdam,bdam,pdam};
 			stringer = str;
 			attack = att;
+			notes = null;
 		}
 		
 		public AttackReturn(ATK_ResultCode rcode, String str, Attack att) {
@@ -623,6 +638,15 @@ public class Combat {
 			//null
 			stringer = str;
 			attack = att;
+			notes = null;
+		}
+		
+		public void addNote(String str) {
+			if (notes == null) {
+				notes = str;
+			}else {
+				notes +="\n"+str;
+			}
 		}
 	}
 	
@@ -882,7 +906,6 @@ public class Combat {
 				defender.getBag().setRace(RaceID.B_REAVER_TALL);
 				defender.updateRaceWeapon();
 				break;
-				
 			}
 		}
 		//TODO: bleedout death quotes
