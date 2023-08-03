@@ -54,7 +54,7 @@ public class Store extends Feature{
 	private Store() {
 		time = 0;
 		tutorialText = "This is a store. You can buy stuff here.";
-		markup= extra.lerp(BASE_MARKUP,BASE_MARKUP*extra.choose(.8f,.7f,.4f,1.1f,1.2f),extra.randFloat());
+		markup= extra.lerp(BASE_MARKUP,BASE_MARKUP*extra.choose(.9f,.95f,1.2f,1.3f,1.5f),extra.randFloat());
 		aetherRate = Player.NORMAL_AETHER_RATE;
 		if (extra.chanceIn(3,4)) {
 			//3 out of 4 chance to move at least somewhat towards a % deviated rate
@@ -295,26 +295,27 @@ public class Store extends Feature{
 		return ((int)(1/aetherRate));
 	}
 	
-	public static int rateGuess(float base, float actual) {
+	public static int rateGuess(float base, float actual, boolean higherBetter) {
 		if (actual == base) {
 			return 0;
 		}
 		//float delta = Math.abs(actual-base);
 		float perOfLarger = Math.min(actual,base)/Math.max(actual,base);
-		if (actual < base) {
-			if (perOfLarger < .5) {//less than half rate
+		boolean worse = higherBetter ? actual < base : actual > base;
+		if (worse) {
+			if (perOfLarger < .75) {
 				return -3;
 			}else {
-				if (perOfLarger < .8) {
+				if (perOfLarger < .9) {
 					return -2;
 				}
 				return -1;
 			}
 		}//better rate than normal
-		if (perOfLarger < .5) {//double rate or more
+		if (perOfLarger < .75) {
 			return 3;
 		}else {
-			if (perOfLarger < .8) {
+			if (perOfLarger < .9) {
 				return 2;
 			}
 			return 1;
@@ -379,8 +380,8 @@ public class Store extends Feature{
 					public String title() {
 						return "They will exchange "+aetherPerMoney() + " aether for "
 					+ World.currentMoneyDisplay(1)
-					+" which is " +rateString(rateGuess(Player.NORMAL_AETHER_RATE,aetherRate)) + " rate."
-					+" Their prices seem " + priceRateString(rateGuess(BASE_MARKUP,markup)) +".";
+					+" which is " +rateString(rateGuess(Player.NORMAL_AETHER_RATE,aetherRate,true)) + " rate."
+					+" Their prices seem " + priceRateString(rateGuess(BASE_MARKUP,markup,false)) +".";
 					}});
 				
 				list.add(new MenuLine() {

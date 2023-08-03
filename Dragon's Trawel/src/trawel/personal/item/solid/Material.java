@@ -21,6 +21,19 @@ public class Material{
 	public String soundType;
 	public String color = "";
 	
+	/**
+	 * defaults to 1f
+	 * <br>
+	 * the multiplier on how much the material impacts the trading price vs the aether price
+	 * <br>
+	 * the normal value is used to determine trading price
+	 * <br>
+	 * materials that are expensive in general but are bad for weapons should have a sub 1 mult
+	 * <br>
+	 * TODO: unsure how this should interact with weird materials like blunt gold
+	 */
+	public float moneyMultTradeMult = 1f;
+	
 	public transient int curNum;//not stored anyway, but marked transient
 	//used for reverse lookup so we don't even have to store them as strings
 

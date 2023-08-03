@@ -399,7 +399,7 @@ public class Player extends SuperPerson{
 	/**
 	 * how much aether converts into normal money
 	 */
-	public static final float PURE_AETHER_RATE = .1f;
+	public static final float PURE_AETHER_RATE = .02f;
 	/**
 	 * how much aether converts into normal money at shops
 	 * <br>

@@ -508,6 +508,7 @@ public class Weapon extends Item {
 		this.kills++;
 	}
 
+	@Override
 	public Material getMat() {
 		return MaterialFactory.getMat(material);
 	}

@@ -475,6 +475,7 @@ public class Armor extends Item {
 		return BASE_MAPS[Byte.toUnsignedInt(baseMap)];
 	}
 
+	@Override
 	public Material getMat() {
 		return MaterialFactory.getMat(material);
 	}

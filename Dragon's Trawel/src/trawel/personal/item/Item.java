@@ -4,6 +4,8 @@ import java.awt.Color;
 
 import trawel.extra;
 import trawel.personal.item.magic.Enchant;
+import trawel.personal.item.solid.Material;
+import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.people.Player;
 import trawel.towns.services.Store;
 
@@ -34,8 +36,13 @@ public abstract class Item implements java.io.Serializable{
 	public abstract int getAetherValue();
 	
 	public int getMoneyValue() {
+		float mult = 1f;
+		Material mat = getMat();
+		if (mat != null) {
+			mult *= mat.moneyMultTradeMult;
+		}
 		//note that it's more than the rate since the rate determines automatic conversions
-		return (int) (getAetherValue()*Player.PURE_AETHER_RATE*Player.TRADE_VALUE_BONUS);//DOLATER maybe conversion and exchange rates???
+		return (int) Math.ceil(getAetherValue()*Player.PURE_AETHER_RATE*Player.TRADE_VALUE_BONUS*mult);//DOLATER maybe conversion and exchange rates???
 	}
 	
 	public abstract void display(int style);
@@ -43,6 +50,14 @@ public abstract class Item implements java.io.Serializable{
 	public void display(Store s, boolean markedUp) {
 		display(3,markedUp ? s.getMarkup() : 1f);
 	}
+	
+	/**
+	 * will return null if no mat
+	 */
+	public Material getMat() {
+		return null;
+	}
+	
 	public String getModiferName() {
 		return getModiferNameColored(level);
 	}

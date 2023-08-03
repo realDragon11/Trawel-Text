@@ -659,6 +659,7 @@ public class GroveNode implements NodeType{
 						int gold = extra.randRange(0,Math.max(1,node.level/2));
 						if (gold == 0 || extra.chanceIn(1,1+node.level)) {
 							extra.println("The moss wasn't worth anything");
+							break;
 						}
 						extra.println("You sell the moss for " + World.currentMoneyDisplay(gold) + ".");
 						Player.addGold(gold);
@@ -715,16 +716,18 @@ public class GroveNode implements NodeType{
 		if (node.state == 0) {
 			boolean bool = true;
 			while (bool) {
-				extra.print(extra.PRE_RED);
-				extra.println("1 attack");
+				extra.println("1 "+extra.PRE_RED+"attack");
 				extra.println("2 chat");
 				extra.println("3 leave");
 				switch (extra.inInt(3)) {
-				case 1: node.name = "angry " +node.name ; node.interactString = "approach " +node.name;
-				node.state = 2;
+				case 1:
+					node.name = "angry " +node.name;
+					node.interactString = "approach " +node.name;
+					node.state = 2;
 				//forceGo = true;//can't do this without kicking them out
-				this.richHelper(bodyguard, rich);
-				bool = false;break;
+				richHelper(bodyguard, rich);
+				bool = false;
+				break;
 				case 2:
 					if (Player.getGold() > rich.getBag().getGold()*4) {//now local class bigotry
 						String str = Oracle.tipString("racistPraise");
@@ -746,7 +749,7 @@ public class GroveNode implements NodeType{
 			}
 		}else {
 			if (node.state == 2) {
-				this.richHelper(bodyguard, rich);
+				richHelper(bodyguard, rich);
 			}else {
 				randomLists.deadPerson();
 				node.findBehind("bodies");
@@ -755,22 +758,24 @@ public class GroveNode implements NodeType{
 	}
 	private boolean richHelper(Person bodyguard, Person rich) {
 		Person winner;
-		if (bodyguard.isAlive()) {
-			extra.print(extra.PRE_RED);
-			extra.println("Their bodyguard attacks you!");
+		if (bodyguard != null) {
+			extra.println(extra.PRE_RED+"Their bodyguard attacks you!");
 			winner = mainGame.CombatTwo(Player.player.getPerson(),bodyguard);
 			if (!winner.isPlayer()) {
 				return true;
 			}
+			node.storage2 = null;
 		}
-		if (rich.isAlive()) {
+		if (rich != null) {
 			winner = mainGame.CombatTwo(Player.player.getPerson(),rich);
 			if (!winner.isPlayer()) {
 				return true;
 			}
+			
 		}
 		node.state = 3;
-		node.name = "dead "+ node.name;
+		node.name = "dead "+ rich.getBag().getRace().getName();
+		node.storage1 = null;
 		node.interactString = "examine body";
 		return false;
 	}

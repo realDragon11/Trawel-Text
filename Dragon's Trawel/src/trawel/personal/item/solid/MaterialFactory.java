@@ -264,6 +264,7 @@ public class MaterialFactory {
 		misc.freezeVul = 2;
 		misc.palIndex = 5;
 		misc.soundType = "metal";
+		misc.moneyMultTradeMult = .8f;
 		misc.color = extra.inlineColor(new Color(236,236,236));
 		register(misc);
 		
@@ -294,6 +295,7 @@ public class MaterialFactory {
 		misc.freezeVul = 2;
 		misc.palIndex = 6;
 		misc.soundType = "metal";
+		misc.moneyMultTradeMult = .6f;
 		misc.color = extra.inlineColor(new Color(203,185,83));
 		register(misc);
 		
@@ -355,6 +357,7 @@ public class MaterialFactory {
 		misc.freezeVul = 2;
 		misc.palIndex = 7;
 		misc.soundType = "metal";
+		misc.moneyMultTradeMult = .7f;
 		misc.color = extra.inlineColor(new Color(236,236,236));
 		register(misc);
 		
