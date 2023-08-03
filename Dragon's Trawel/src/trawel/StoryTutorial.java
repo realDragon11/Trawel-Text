@@ -3,6 +3,8 @@ package trawel;
 import trawel.personal.Person;
 import trawel.personal.people.Player;
 import trawel.towns.Feature;
+import trawel.towns.fight.Arena;
+import trawel.towns.services.Inn;
 
 public class StoryTutorial extends Story{
 
@@ -87,10 +89,16 @@ public class StoryTutorial extends Story{
 	public void enterFeature(Feature f) {
 		switch(step) {
 		case "gotoarena1":
+			if (! (f instanceof Arena)) {
+				return;
+			}
 			extra.println("It looks like there's a fight about to take place here. You could wait to participate in it. Winner gets the loser's stuff, apparently.");
 			step = "anyfight1";
 			break;
 		case "gotoinn1":
+			if (! (f instanceof Inn)) {
+				return;
+			}
 			extra.println("The inn has 'beer' (you hope its actually beer) which can raise your HP for as many fights as you buy beer for... but somewhat more importantly, random side quests.");
 			extra.println("Browse the backrooms, and see if any quests suit your fancy. In general, its much more fun to explore, but sidequests can help you if you're having trouble justifying going into the scary wider world.");
 			extra.println("There's no main quest in this version of Trawel, so good luck. If you make it to >10 level, you've essentially beaten the game.");

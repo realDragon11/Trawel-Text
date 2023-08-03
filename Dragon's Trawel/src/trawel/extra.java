@@ -176,7 +176,7 @@ public final class extra {
 	}
 	
 	/**
-	 * Decides whether to become 'are' or 'is' based on plurality of the input
+	 * Decides whether to become 'are' or 'is' based on the guessed plurality of the input
 	 * @param str (String)
 	 * @return (String)
 	 */
@@ -185,6 +185,16 @@ public final class extra {
 			return "are";
 		}else {
 			return "is";
+		}
+	}
+	/**
+	 * Decides whether to become 'are some' or 'is a' based on the guessed plurality of the input
+	 */
+	public static final String pluralIsA(String str) {
+		if (str.endsWith("s")){
+			return "are some";
+		}else {
+			return "is a";
 		}
 	}
 	

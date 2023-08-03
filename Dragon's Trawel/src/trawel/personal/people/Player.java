@@ -396,7 +396,22 @@ public class Player extends SuperPerson{
 		}
 	}
 	
-	public static final float NORMAL_AETHER_RATE = .4f;
+	/**
+	 * how much aether converts into normal money
+	 */
+	public static final float PURE_AETHER_RATE = .1f;
+	/**
+	 * how much aether converts into normal money at shops
+	 * <br>
+	 * ie how much they charge for using aether instead of real money
+	 */
+	public static final float NORMAL_AETHER_RATE = PURE_AETHER_RATE*.75f;
+	/**
+	 * a multiplier on how much items are worth, but only applies to their trade value, not aether value
+	 * <br>
+	 * this effectively makes having the money itself better when buying
+	 */
+	public static final float TRADE_VALUE_BONUS = 4f;
 	
 	public static boolean canBuyMoneyAmount(int money,float aetherRate) {
 		int hasMoney = getGold();

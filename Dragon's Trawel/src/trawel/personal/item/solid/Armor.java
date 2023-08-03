@@ -422,8 +422,7 @@ public class Armor extends Item {
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
-			;break;
-			
+			;break;	
 		case 2:
 			extra.println(this.getName() + " sbp:" + extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
 			+ " dex: "+ this.getDexMod() + " flame: "+ this.getFireMod() + " shock: "+ this.getShockMod() + " frost: "+ this.getFreezeMod() + " aether: " + (int)(this.getAetherValue()*markup));
@@ -432,6 +431,13 @@ public class Armor extends Item {
 			}
 			for (ArmorQuality aq: quals) {
 				extra.println(aq.name + ": " + aq.desc);
+			}
+			;break;
+		case 3://for stores
+			extra.println(this.getName() + " sbp:" + extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
+			 + " value: " + (int)(this.getMoneyValue()*markup));
+			if (this.getEnchant() != null) {
+				this.getEnchant().display(1);
 			}
 			;break;
 		}
@@ -444,12 +450,16 @@ public class Armor extends Item {
 	
 	@Override
 	public String storeString(float markup, boolean canShow) {
-		return this.getName() 
+		if (canShow) {
+			return this.getName() 
 				+ " S " + extra.F_WHOLE.format(this.getSharpResist())
 				+ " B " + extra.F_WHOLE.format(this.getBluntResist())
 				+ " P " + extra.F_WHOLE.format(this.getPierceResist())
 				+ " cost: " +  extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
 				;
+		}
+		String base = getBaseName();
+		return "  They refuse to show you something you think " + extra.pluralIsA(base) + " "+base+".";
 	}
 	
 	@Override

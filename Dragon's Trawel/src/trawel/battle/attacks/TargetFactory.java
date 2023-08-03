@@ -962,7 +962,7 @@ public class TargetFactory {
 				System.out.println("error with " +tb.name());
 				e.printStackTrace();
 			}
-			dispPlan(tb);
+			//dispPlan(tb);
 		}
 		
 		//DOLATER: this is an old system now, likely will be removed
@@ -1133,7 +1133,7 @@ public class TargetFactory {
 							int index = multiNums.indexOf(getSpecialNum(t,vr));
 							int a = mapNumForAttach(offset,index,vr.combo);
 							map[i] = a;
-							extra.println(t.name + i + " " +a + " " + map[i]);
+							//extra.println(t.name + i + " " +a + " " + map[i]);
 						}
 					}
 				}else {

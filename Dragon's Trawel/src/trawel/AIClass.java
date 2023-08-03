@@ -20,6 +20,7 @@ import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Player;
 import trawel.personal.people.Skill;
 import trawel.towns.World;
+import trawel.towns.services.Store;
 
 /**
  * @author Brian Malone
@@ -349,13 +350,13 @@ public class AIClass {
 				}else {
 					if (sellStuff) {
 						//Services.sellItem(loot.getArmorSlot(i),loot,stash,false);}
-						Services.aetherifyItem(stash.getArmorSlot(i),stash);
-						stash.setArmorSlot(null,i);
+						Services.aetherifyItem(loot.getArmorSlot(i),stash);
+						loot.setArmorSlot(null,i);
 					}
 				}
 
 
-				if (smarts < 0) {
+				if (smarts < 0 && Networking.connected()) {
 					Networking.charUpdate();
 					String depth = null;
 					switch (i) {
@@ -476,6 +477,18 @@ public class AIClass {
 		}
 		return compareItem(item,toReplace,smarts,autosellOn, p);
 	}
+	
+	public static boolean compareItem(Item current, Item next, Person p, Store s) {
+		if (!p.isPlayer()) {
+			return compareItem(current,next,2,false,p);
+		}
+		extra.println("Buy the");
+		current.display(s);
+		extra.println("replacing your");
+		next.display(s);
+		displayChange(current,next, p,s);
+		return extra.yesNo();
+	}
 
 	private static boolean worseArmor(Armor hasItem, Armor toReplace) {
 		if (toReplace.getBluntResist() > hasItem.getBluntResist() || 
@@ -511,9 +524,22 @@ public class AIClass {
 	}
 
 	public static void displayChange(Item hasItem, Item toReplace, Person p) {
+		displayChange(hasItem,toReplace,p,null);
+	}
+	
+	public static void displayChange(Item hasItem, Item toReplace, Person p, Store s) {
 		//p is used to display absolute stat changes instead of just raw stats like the non-diff
 		extra.println();
-		int goldDiff = toReplace.getAetherValue() - hasItem.getAetherValue();
+		float costDiff = 0;
+		String costName = null;
+		if (s == null) {
+			costName = "aether";
+			costDiff = toReplace.getAetherValue() - hasItem.getAetherValue();
+		}else {
+			costName = s.getTown().getIsland().getWorld().moneyString();
+			costDiff = ((s.getMarkup()*toReplace.getMoneyValue()) - hasItem.getMoneyValue());//DOLATER match rounding across places
+		}
+		
 		if (Armor.class.isInstance(hasItem)) {
 			Armor hasArm = (Armor) hasItem;
 			Armor toArm = (Armor) toReplace;
@@ -524,7 +550,7 @@ public class AIClass {
 			+ extra.hardColorDelta1(toArm.getSharpResist(),hasArm.getSharpResist())
 			+ " " + extra.hardColorDelta1(toArm.getBluntResist(),hasArm.getBluntResist())
 			+ " " + extra.hardColorDelta1(toArm.getPierceResist(),hasArm.getPierceResist())
-			+ "[c_white] cost: " + (goldDiff != 0 ? extra.colorBaseZeroTimid(goldDiff) : "=")
+			+ " " + priceDiffDisp(costDiff,costName,s)
 			);
 			//" dex: " + extra.format2(toArm.getDexMod()-hasArm.getDexMod()) +
 			if (hasItem.getEnchant() != null || toReplace.getEnchant()!= null) {
@@ -547,16 +573,27 @@ public class AIClass {
 				+ "/" + (extra.hardColorDelta2(toWeap.score(),hasWeap.score()))
 				//if the qualities are the same, 'q=', if neither has any, do not display
 				+ (isQDiff ? " q " + extra.colorBaseZeroTimid(qualDiff) : (toWeap.qualList.size() > 0 ? (" q =") : ""))
-				+ "[c_white] cost: " + (goldDiff != 0 ? extra.colorBaseZeroTimid(goldDiff) : "=")
+				+ " " + priceDiffDisp(costDiff,costName,s)
 				);
 				if (((Weapon)hasItem).getEnchant() != null || ((Weapon)toReplace).getEnchant()!= null) {
 					displayEnchantDiff(((Weapon)hasItem).getEnchant(),((Weapon)toReplace).getEnchant());
 				}
 			}else {
-				extra.println("[c_white] aether: " + (goldDiff != 0 ? extra.colorBaseZeroTimid(goldDiff) : "="));
+				extra.println(priceDiffDisp(costDiff,costName,s));
 			}
 		}
 		
+	}
+	
+	public static String priceDiffDisp(float delta,String name, Store s) {
+		if (s == null) {
+			return "[c_white]"+name+": " + (delta != 0 ? extra.colorBaseZeroTimid((int)delta) : "=");
+		}
+		if (delta > 0) {//costs more, losing money
+			return extra.TIMID_BLUE + "requires " + extra.F_WHOLE.format(Math.ceil(delta)) + " buy value";
+		}else {//costs less, might be gaining money
+			return extra.TIMID_GREY + "will return " + extra.F_WHOLE.format(Math.floor(delta)) + " " + name;
+		}
 	}
 	
 	

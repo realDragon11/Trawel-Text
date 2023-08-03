@@ -313,5 +313,9 @@ public class World extends TContextOwner{
 		return money + " " + moneyname;//for now always plural
 	}
 	
+	public String moneyString() {
+		return moneyname;//for now always plural
+	}
+	
 
 }

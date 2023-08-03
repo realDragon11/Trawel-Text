@@ -4,6 +4,8 @@ import java.awt.Color;
 
 import trawel.extra;
 import trawel.personal.item.magic.Enchant;
+import trawel.personal.people.Player;
+import trawel.towns.services.Store;
 
 /**
  * 
@@ -32,11 +34,15 @@ public abstract class Item implements java.io.Serializable{
 	public abstract int getAetherValue();
 	
 	public int getMoneyValue() {
-		return getAetherValue()/10;//DOLATER maybe conversion and exchange rates???
+		//note that it's more than the rate since the rate determines automatic conversions
+		return (int) (getAetherValue()*Player.PURE_AETHER_RATE*Player.TRADE_VALUE_BONUS);//DOLATER maybe conversion and exchange rates???
 	}
 	
 	public abstract void display(int style);
 	public abstract void display(int style,float markup);
+	public void display(Store s) {
+		display(3,s.getMarkup());
+	}
 	public String getModiferName() {
 		return getModiferNameColored(level);
 	}

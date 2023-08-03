@@ -423,7 +423,7 @@ public class Weapon extends Item {
 			+ " hd/ad/bs: " + extra.format(this.highest())
 			+ "/" + extra.format(this.average())
 			+"/"+extra.format(this.score())
-			+" value: " + (int)(this.getAetherValue()*markup));
+			+" aether: " + (int)(this.getAetherValue()*markup));
 			
 			if (this.isEnchantedConstant()) {
 				this.getEnchant().display(1);
@@ -453,6 +453,23 @@ public class Weapon extends Item {
 				extra.println(wq.name + ": "+wq.desc);
 			}
 			;break;
+		case 3://for stores
+			extra.println(this.getName()
+					+ " hd/ad/bs: " + extra.format(this.highest())
+					+ "/" + extra.format(this.average())
+					+"/"+extra.format(this.score())
+					+" value: " + (int)(this.getMoneyValue()*markup));
+					
+					if (this.isEnchantedConstant()) {
+						this.getEnchant().display(1);
+					}
+					if (this.isEnchantedHit()) {
+						this.getEnchant().display(1);
+					}
+					for (WeaponQual wq: qualList) {
+						extra.println(wq.name + ": "+wq.desc);
+					}
+			break;
 		}
 	}
 	@Override
@@ -462,12 +479,16 @@ public class Weapon extends Item {
 	
 	@Override
 	public String storeString(float markup, boolean canShow) {
-		return this.getName() 
+		if (canShow) {
+			return this.getName() 
 				+ " hd/ad/bs: " + extra.format(this.highest())
 				+ "/" + extra.format(this.average())
 				+ "/" + extra.format(this.score())
 				+ " cost: " +  extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
 				;
+		}
+		String base = getBaseName();
+		return "  They refuse to show you something you think " + extra.pluralIsA(base) + " "+base+".";
 	}
 
 	@Override

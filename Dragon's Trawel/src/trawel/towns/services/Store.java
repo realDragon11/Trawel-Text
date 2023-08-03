@@ -45,17 +45,25 @@ public class Store extends Feature{
 	private int buys;
 	private float markup;
 	private float aetherRate;
+	private int invSize;
 	
 	public static int INVENTORY_SIZE = 5;
+	
+	private static final float BASE_MARKUP = 1.5f;
 
 	private Store() {
 		time = 0;
 		tutorialText = "This is a store. You can buy stuff here.";
-		markup = 1.5f;
+		markup= extra.lerp(BASE_MARKUP,BASE_MARKUP*extra.choose(.8f,.7f,.4f,1.1f,1.2f),extra.randFloat());
 		aetherRate = Player.NORMAL_AETHER_RATE;
 		if (extra.chanceIn(3,4)) {
 			//3 out of 4 chance to move at least somewhat towards a % deviated rate
-			aetherRate= extra.lerp(aetherRate,extra.choose(.8f,.7f,.4f,1.1f,1.2f),extra.randFloat());
+			aetherRate= extra.lerp(aetherRate,aetherRate*extra.choose(.8f,.7f,.4f,1.1f,1.2f),extra.randFloat());
+		}
+		//System.out.println(aetherRate+" "+markup);
+		invSize = extra.randRange(4,6);
+		if (invSize < 5) {
+			markup *= .95;
 		}
 	}
 	
@@ -198,24 +206,28 @@ public class Store extends Feature{
 		int slot = -1;
 		switch (itemType) {
 		case ARMOR:
-			sellItem = bag.getArmorSlot(((Armor)buyItem).getSlot());
+			slot = ((Armor)buyItem).getSlot();
+			sellItem = bag.getArmorSlot(slot);
 			break;
 		case RACE:
 			sellItem = bag.getRace();
 			break;
 		case WEAPON:
 			sellItem = bag.getHand();
-			break;		
+			break;
+		default:
+			throw new RuntimeException("invalid store item type");
 		}
 		//the gold the item you are exchanging it for is worth
 		int sellGold = extra.zeroOut(sellItem.getMoneyValue());
-		int buyGold = (int)Math.ceil(buyItem.getMoneyValue()*markup);
-		int delta = buyGold-sellGold;
-		if (Player.getTotalBuyPower() < delta) {
+		float buyGold = (int)Math.ceil(buyItem.getMoneyValue()*markup);
+		float raw_delta = sellGold-buyGold;// > 0 = earning money, < 0 = spending money
+		int delta = (int) (raw_delta > 0 ? Math.floor(raw_delta) : Math.ceil(raw_delta));
+		if (Player.getTotalBuyPower()+delta < 0) {
 			extra.println("You can't afford this item!");
 			return;
 		}
-		if (!AIClass.compareItem(sellItem,buyItem,-2,false,p)) {
+		if (!AIClass.compareItem(sellItem,buyItem,p,this)) {
 			extra.println("You decide not to buy the item.");
 			return;
 		}
@@ -231,8 +243,28 @@ public class Store extends Feature{
 			arraySwap(bag.swapWeapon((Weapon)buyItem),buyItem);
 			break;	
 		}
-		Player.buyMoneyAmount(-delta);
-		extra.println("You complete the trade. "+ (delta) + " value.");
+		if (delta <0) {
+			int beforeMoney = Player.getGold();
+			int beforeAether = Player.bag.getAether();
+			Player.buyMoneyAmount(-delta);
+			int moneyDelta = beforeMoney-Player.getGold();
+			int aetherDelta = beforeAether-Player.bag.getAether();
+			extra.println("You complete the trade."
+			+ (moneyDelta > 0 ? " Spent " +World.currentMoneyDisplay(moneyDelta) : "")
+			+ (moneyDelta > 0 && aetherDelta > 0 ? " and" : (aetherDelta > 0 ? " Spent" : ""))
+			+ (aetherDelta > 0 ? " " +aetherDelta +" aether" : "")
+			+ "."
+					);
+		}else {
+			if (delta > 0) {//we sold something more expensive
+				Player.addGold(-delta);
+				extra.println("You complete the trade, gaining " + World.currentMoneyDisplay(-delta) +".");
+			}else {//equal value
+				extra.println("You complete the trade.");
+			}
+		}
+		
+		
 	}
 	
 	private void arraySwap(Item i,Item i2) {
@@ -242,22 +274,23 @@ public class Store extends Feature{
 	
 	public static boolean canSee(Item i) {
 		if (Player.player.merchantLevel >= i.getLevel() || Player.player.getPerson().getLevel() > i.getLevel()) {
-			return true;}else {
-				return false;
-			}
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
-	private int aetherPerMoney() {
+	public int aetherPerMoney() {
 		return ((int)(1/aetherRate));
 	}
 	
-	private int aetherRateGuess() {
-		if (aetherRate == Player.NORMAL_AETHER_RATE) {
+	public static int rateGuess(float base, float actual) {
+		if (actual == base) {
 			return 0;
 		}
-		float delta = Math.abs(aetherRate-Player.NORMAL_AETHER_RATE);
-		float perOfLarger = delta/Math.max(aetherRate,Player.NORMAL_AETHER_RATE);
-		if (aetherRate < Player.NORMAL_AETHER_RATE) {
+		//float delta = Math.abs(actual-base);
+		float perOfLarger = Math.min(actual,base)/Math.max(actual,base);
+		if (actual < base) {
 			if (perOfLarger < .5) {//less than half rate
 				return -3;
 			}else {
@@ -277,24 +310,44 @@ public class Store extends Feature{
 		}
 	}
 	
-	private String aetherRateString() {
-		switch (aetherRateGuess()) {
+	private String rateString(int i) {
+		switch (i) {
+		case 0:
+			return "a normal";
+		case -3:
+			return "a shockingly bad";
+		case -2:
+			return "a bad";
+		case -1:
+			return "a poor";
+		case 1:
+			return "a good";
+		case 2:
+			return "a great";
+		case 3:
+			return "an amazing";
+		}
+		throw new RuntimeException("bad rate guess");
+	}
+	
+	private String priceRateString(int i) {
+		switch (i) {
 		case 0:
 			return "normal";
 		case -3:
-			return "shockingly bad";
+			return "extremely high";
 		case -2:
-			return "bad";
+			return "high";
 		case -1:
-			return "poor";
+			return "above average";
 		case 1:
-			return "good";
+			return "below average";
 		case 2:
-			return "great";
+			return "cheap";
 		case 3:
-			return "amazing";
+			return "like they are basically charity";
 		}
-		throw new RuntimeException("bad aether rate guess");
+		throw new RuntimeException("bad rate guess");
 	}
 	
 	public MenuGenerator modernStoreFront() {
@@ -313,7 +366,17 @@ public class Store extends Feature{
 
 					@Override
 					public String title() {
-						return "They will exchange "+aetherPerMoney() + " aether for " + World.currentMoneyDisplay(1) + " a " +aetherRateString() + " rate.";
+						return "They will exchange "+aetherPerMoney() + " aether for "
+					+ World.currentMoneyDisplay(1)
+					+" which is " +rateString(rateGuess(Player.NORMAL_AETHER_RATE,aetherRate)) + " rate."
+					+" Their prices seem " + priceRateString(rateGuess(BASE_MARKUP,markup)) +".";
+					}});
+				
+				list.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return "You have a total of "+(Player.getGold() + (int)(aetherRate*Player.bag.getAether())) +" buying power.";
 					}});
 				
 				if (type != 8 && type != 9) {//normal items
@@ -500,7 +563,7 @@ public class Store extends Feature{
 		Networking.setArea("shop");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|store|Store|");
-		this.storeFront();
+		extra.menuGo(modernStoreFront());
 	}
 	
 	@Override
@@ -537,18 +600,18 @@ public class Store extends Feature{
 	
 	public void addAnItem() {
 		if (type == 8) {
-			if (dbs.size() >= INVENTORY_SIZE) {
+			if (dbs.size() >= invSize) {
 				dbs.remove(extra.randList(dbs));}
 			dbs.add(randomDB());
 			return;
 		}
 		if (type == 9) {
-			if (dbs.size() >= INVENTORY_SIZE) {
+			if (dbs.size() >= invSize) {
 				dbs.remove(extra.randList(dbs));}
 			dbs.add(randomPI());
 			return;
 		}
-		if (items.size() >= INVENTORY_SIZE) {
+		if (items.size() >= invSize) {
 			items.remove(extra.randList(items));}
 			if (type < 5) {
 					items.add(new Armor(Math.max(tier+extra.getRand().nextInt(6)-2,1),type));
@@ -578,9 +641,9 @@ public class Store extends Feature{
 				if (AIClass.compareItem(bag,i,a.getPerson().getIntellect(),false,a.getPerson())) {
 					int goldDiff = i.getMoneyValue()-bag.itemCounterpart(i).getMoneyValue();
 					if (goldDiff <= bag.getGold()){
-					bag.addGold(-goldDiff);
-					remove.add(i);
-					add.add(bag.swapItem(i));
+						bag.addGold(-goldDiff);
+						remove.add(i);
+						add.add(bag.swapItem(i));
 					}
 				}
 			}
@@ -591,5 +654,9 @@ public class Store extends Feature{
 				items.remove(i);
 			}
 		}
+	}
+
+	public float getMarkup() {
+		return markup;
 	}
 }

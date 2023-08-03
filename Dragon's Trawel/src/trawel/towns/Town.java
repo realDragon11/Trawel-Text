@@ -507,7 +507,7 @@ public class Town extends TContextOwner{
 		int cost = this.getTier()*250;
 		String moneyname = World.currentMoneyString();
 		extra.println("Buy a lot? "+ cost + " "+moneyname+". You have "
-		+ World.currentMoneyDisplay(Player.getGold()) + " "+moneyname+".");
+		+ Player.showGold());
 		if (extra.yesNo()) {
 			if (Player.getGold()> cost) {
 				Player.addGold(-cost);
