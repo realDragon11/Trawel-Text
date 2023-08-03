@@ -1,6 +1,10 @@
 package trawel.personal;
 import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
@@ -28,6 +32,10 @@ import trawel.earts.EArtSkillMenu;
 import trawel.earts.PlayerSkillpointsLine;
 import trawel.factions.FBox;
 import trawel.factions.HostileTask;
+import trawel.personal.classless.Archetype;
+import trawel.personal.classless.Feat;
+import trawel.personal.classless.HasSkills;
+import trawel.personal.classless.Perk;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.body.Race.RaceType;
@@ -45,7 +53,7 @@ import trawel.towns.services.Store;
  * 2/5/2018
  * A collection of stats, attributes, and an inventory.
  */
-public class Person implements java.io.Serializable{
+public class Person implements java.io.Serializable, HasSkills{
 
 	private static final long serialVersionUID = 2L;
 
@@ -109,6 +117,10 @@ public class Person implements java.io.Serializable{
 		COWARDLY,FEARLESS,GRIZZLED,DEATHCHEATED,LIFEKEEPER
 	}
 	
+	private transient Set<trawel.personal.classless.Skill> skillSet =  EnumSet.noneOf(trawel.personal.classless.Skill.class);//new EnumSet<trawel.personal.classless.Skill>();
+	private Set<Feat> featSet =  EnumSet.noneOf(Feat.class);//new EnumSet<trawel.personal.classless.Skill>();
+	private Set<Perk> perkSet =  EnumSet.noneOf(Perk.class);
+	private Set<Archetype> archSet =  EnumSet.noneOf(Archetype.class);
 	
 	//private boolean isPlayer;
 	
@@ -226,6 +238,12 @@ public class Person implements java.io.Serializable{
 	}
 	
 	//instance methods
+	
+	public Iterator<trawel.personal.classless.Skill> getSkills(){
+		//return Stream.concat(featSet.parallelStream(), perkSet.parallelStream(),archSet.parallelStream());
+		//return Stream.of(featSet.parallelStream(),perkSet.parallelStream(),archSet.parallelStream());
+		return new HasSkills.SkillJoiner(featSet,perkSet,archSet);
+	}
 	
 	public RaceFlag getRaceFlag() {
 		return rFlag;
