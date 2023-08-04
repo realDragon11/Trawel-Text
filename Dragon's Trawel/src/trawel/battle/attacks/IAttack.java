@@ -31,6 +31,13 @@ public interface IAttack {
 	public double getCooldown();
 	
 	public double getHitMult();
+	/**
+	 * value used so that the class doesn't have to constantly shift it's vals
+	 * <br>
+	 * lets you decrease an internal value instead of knowing which vals need to be decreased
+	 */
+	public double getPotencyMult();
+	public void multPotencyMult(double multMult);
 	
 	public static int getSharpFromWeap(int[] vals) {
 		return vals[0];
@@ -41,4 +48,6 @@ public interface IAttack {
 	public static int getPierceFromWeap(int[] vals) {
 		return vals[2];
 	}
+
+	public int getTotalDam();
 }

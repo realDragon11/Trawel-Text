@@ -34,8 +34,6 @@ public class Attack implements IAttack{
 	@Deprecated
 	private transient boolean isMagic = false;
 	@Deprecated
-	private transient String magicDesc;
-	@Deprecated
 	private transient Skill skill;//should be dictated by the holding stance now
 	
 	
@@ -86,6 +84,24 @@ public class Attack implements IAttack{
 	public Attack(String name, String desc, String fluff, double hitMult, int sharp, int blunt, int pierce,
 			double warmup, double cooldown) {
 		this(name,desc,new SRInOrder(fluff),hitMult,AttackType.REAL_WEAPON,new int[] {sharp,blunt,pierce},warmup,cooldown);
+		if (pierce > sharp) {
+			if (pierce > blunt) {
+				soundType = "pierce";
+			}else {
+				soundType = "blunt";
+			}
+		}else {
+			if (sharp > blunt) {
+				soundType = "sharp";
+			}else {
+				soundType = "blunt";
+			}
+		}
+		//0 to 29 = 0
+		//30 to 59 = 1
+		//60+ = 2
+		soundStrength = extra.clamp(getTotalDam()/30, 0,2);
+		//priority -> blunt > sharp > pierce
 	}
 	//simple for prototyping
 	public Attack(String name, String fluff, double hitMult, double time, int sharp, int blunt, int pierce) {
@@ -103,53 +119,15 @@ public class Attack implements IAttack{
 	 * @param desc - (String) what is printed when it is used (use X = attacker, Y = defender, Z = weapon name)
 	 */
 	@Deprecated
-	public Attack(String name, double hitmod, double speed, double sharp, double blunt, double pierce, String desc,int sstr, String stype) {
-		this.hitMod = hitmod;
-		this.speed = speed;
-		this.sharp = (int)sharp;
-		this.blunt = (int)blunt;
-		this.pierce = (int)pierce;
+	public Attack(String name, double hitmod, double speed, int sharp, int blunt, int pierce, String desc,int sstr, String stype) {
+		this(name,desc,hitmod,speed,sharp,blunt,pierce);
 		this.desc = desc;
 		this.name = name;
 		this.soundStrength = sstr;
 		this.soundType = stype;
-	}
-	@Deprecated
-	public Attack(String name, double hitmod, double speed, double sharp, double blunt, double pierce, String desc,int sstr,String stype, TargetReturn target, Weapon weap) {
-		this.hitMod = hitmod;
-		this.speed = speed;
-		this.sharp = (int)sharp;
-		this.blunt = (int)blunt;
-		this.pierce = (int)pierce;
-		this.desc = desc;
-		this.name = name;
-		this.soundStrength = sstr;
-		this.soundType = stype;
-		this.target = target;
-		this.weapon = weap;
-		//add a wound effect
-		//TODO: see if examine needs fixing
-		try {
-		if (extra.randRange(1,10) == 1 && (weapon == null || !weapon.isKeen())) {
-			this.wound = Attack.Wound.GRAZE;
-		}else {
-		double counter = extra.getRand().nextDouble() * (sharp + blunt + pierce);
-		counter-=sharp;
-		if (counter<=0) {
-			this.wound = extra.randList(target.tar.slashWounds);
-		}else {
-			counter-=blunt;
-			if (counter<=0) {
-				this.wound = extra.randList(target.tar.bluntWounds);
-			}else {
-				this.wound = extra.randList(target.tar.pierceWounds);
-			}
-		}
-		}}catch (RuntimeException e) {
-			this.wound = Wound.ERROR;
-		}
 	}
 	//FIXME entirely nonfunctional at this point, just remake the whole system
+	/*
 	@Deprecated
 	public Attack(Skill skill, int mageLevel, TargetFactory.TargetType targetType) {
 		//name
@@ -276,7 +254,7 @@ public class Attack implements IAttack{
 			desc = "X` harvests Y`!";
 			magicDesc = "";
 		}
-	}
+	}*/
 	
 	//instance methods
 	
@@ -350,6 +328,7 @@ public class Attack implements IAttack{
 	}
 	@Deprecated
 	public void display(int style, Person attacker, Person defender) {
+		/*
 		switch (style) {
 		case 0://not impaired style
 			extra.println(name + "\t" + extra.format(hitMod) + "\t" + speed + "\t" + sharp + "\t" + blunt + "\t" + pierce);
@@ -396,7 +375,8 @@ public class Attack implements IAttack{
 				extra.println("  "+this.wound.name + " - " + String.format(this.wound.desc,(Object[])Combat.woundNums(this,attacker,defender,null)));
 			}
 			break;
-		}
+		}*/
+		extra.println(this.toString());
 	}
 	
 	public ImpairedAttack impair( Person attacker, Weapon weap, Person defender) {
@@ -406,16 +386,10 @@ public class Attack implements IAttack{
 		}else {
 			rtar = defender.randTarget();
 		}
-		Target t = rtar.tar;
 		
 		Style s = StyleFactory.randStyle();
 		
 		return new ImpairedAttack(this,rtar,s,weap,attacker,defender);
-	}
-	@Deprecated
-	public Attack wither(double percent) {
-		percent = 1-percent;
-		return new Attack(name,hitMod*percent,speed*percent,sharp*percent,blunt*percent,pierce*percent,desc,soundStrength,soundType,target, weapon);	
 	}
 	
 	public int getSlot() {
@@ -506,10 +480,9 @@ public class Attack implements IAttack{
 		return (this.getSharp()*sMult)+(this.getBlunt()*bMult)+(this.getPierce()*pMult);
 	}
 	
-	/**
-	 * note that, for an impaired attack, the weapon substats and person are already applied
-	 */
-	public double getTotalDam() {
+	@Override
+	public int getTotalDam() {
+		// TODO add other damage types when they get added
 		return getSharp()+getBlunt()+getPierce();
 	}
 	
@@ -556,5 +529,25 @@ public class Attack implements IAttack{
 	public int valueSize() {
 		return intValues.length;
 	}
+
+	@Override
+	public double getPotencyMult() {
+		return 1;
+	}
+
+	@Override
+	public void multPotencyMult(double multMult) {
+		
+	}
+
+	public Stance getStance() {
+		return holdingStance;
+	}
+
+	public void setStance(Stance holdingStance) {
+		this.holdingStance = holdingStance;
+	}
+	
+	
 
 }

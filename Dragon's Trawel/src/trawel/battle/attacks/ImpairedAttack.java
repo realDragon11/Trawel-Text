@@ -24,6 +24,8 @@ public class ImpairedAttack implements IAttack{
 	
 	private float hitroll;
 	
+	private double potencyMult;
+	
 	public ImpairedAttack(Attack _attack,
 			TargetReturn _target, Style _style,
 			Weapon _weapon, Person _attacker, Person _defender) {
@@ -203,7 +205,7 @@ public class ImpairedAttack implements IAttack{
 		switch (attack.getType()) {
 		case FAKE_WEAPON:
 		case REAL_WEAPON:
-			return IAttack.getSharpFromWeap(vals);
+			return (int) (getPotencyMult()*IAttack.getSharpFromWeap(vals));
 		case SKILL:
 			break;
 		}
@@ -214,7 +216,7 @@ public class ImpairedAttack implements IAttack{
 		switch (attack.getType()) {
 		case FAKE_WEAPON:
 		case REAL_WEAPON:
-			return IAttack.getBluntFromWeap(vals);
+			return (int) (getPotencyMult()*IAttack.getBluntFromWeap(vals));
 		case SKILL:
 			break;
 		}
@@ -225,7 +227,7 @@ public class ImpairedAttack implements IAttack{
 		switch (attack.getType()) {
 		case FAKE_WEAPON:
 		case REAL_WEAPON:
-			return IAttack.getPierceFromWeap(vals);
+			return (int) (getPotencyMult()*IAttack.getPierceFromWeap(vals));
 		case SKILL:
 			break;
 		}
@@ -259,8 +261,23 @@ public class ImpairedAttack implements IAttack{
 		return warmup+cooldown;
 	}
 
+	@Override
 	public int getTotalDam() {
 		// TODO add other damage types when they get added
 		return getSharp()+getBlunt()+getPierce();
+	}
+	
+	public float multiplyHit(float mult) {
+		return hitroll*=mult;
+	}
+
+	@Override
+	public double getPotencyMult() {
+		return potencyMult;
+	}
+
+	@Override
+	public void multPotencyMult(double multMult) {
+		potencyMult*= multMult;
 	}
 }

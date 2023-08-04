@@ -47,7 +47,7 @@ public class Combat {
 	//instance variables
 	public List<Person> survivors;
 	public List<Person> killed;
-	private boolean newTarget = false;
+	//private boolean newTarget = false;
 	public long turns = 0;
 	public int totalFighters = 2;
 	public boolean battleIsLong = false;
@@ -178,7 +178,7 @@ public class Combat {
 				case DEATH:
 					for (Person p: totalList) {
 						if (!p.hasSkill(Skill.PLAYERSIDE)) {
-							p.getNextAttack().wither(Math.min(20,sk.lSkill.value)/100.0);
+							p.getNextAttack().multPotencyMult(Math.min(20,sk.lSkill.value)/100.0);
 							p.takeDamage(1);
 						}
 					}
@@ -299,7 +299,6 @@ public class Combat {
 				otherperson.getBag().graphicalDisplay(1,otherperson);
 			}
 			setAttack(p,otherperson);
-			p.getNextAttack().defender = otherperson;
 		}
 		totalFighters = totalList.size();
 		Person quickest = null;//moved out so we can have a default last actor to default as alive
@@ -322,27 +321,30 @@ public class Combat {
 			
 			this.handleSkillCons(cons, totalList, lowestDelay);
 
-			Person defender = quickest.getNextAttack().defender;
+			Person defender = quickest.getNextAttack().getDefender();
 			boolean wasAlive = defender.isAlive();
 			dataMap.get(defender).lastAttacker = quickest;
-			newTarget = false;
 			AttackReturn atr = handleTurn(quickest,defender,playerIsInBattle,lowestDelay);
 			if (atr.code != ATK_ResultCode.NOT_ATTACK) {
 			if (!defender.isAlive() && wasAlive) {
 				killWrapUp(defender, quickest, false);
 			}else {
-				if (newTarget) {
+				if (defender.hasEffect(Effect.CONFUSED_TARGET)) {
 					//the defender has been befuddled or confused
+					if (defender.isOnCooldown()) {//if on cooldown, add the effect for next attack instead
+						
+					}else {
+						defender.removeEffect(Effect.CONFUSED_TARGET);
 					Person newDef = getDefenderForConfusion(defender);
-					if (defender.getNextAttack().defender.isSameTargets(newDef)) {
-						defender.getNextAttack().defender = newDef;
+					if (defender.getNextAttack().getDefender().isSameTargets(newDef)) {
+						defender.getNextAttack().setDefender(newDef);
 					}else {
 						//targets don't match, need new attack.
 						//get discount on next one
-						double discount = -Math.max(0,((defender.getTime()-defender.getNextAttack().getSpeed()))/2.0);
+						double discount = -Math.max(0,((defender.getTime()-defender.getNextAttack().getWarmup()))/2.0);
 						setAttack(defender,newDef);
-						defender.getNextAttack().defender = newDef;
 						defender.applyDiscount(discount);
+					}
 					}
 				}
 			}
@@ -367,6 +369,10 @@ public class Combat {
 		
 			if (!quickest.isAttacking()) {
 			Person otherperson = null;
+			if (quickest.hasEffect(Effect.CONFUSED_TARGET)) {
+				quickest.removeEffect(Effect.CONFUSED_TARGET);
+				otherperson = getDefenderForConfusion(quickest);
+			}else {
 			if (defender.isAlive() && quickest.getBag().getHand().qualList.contains(Weapon.WeaponQual.DUELING)) {
 				otherperson = defender;
 			}else {
@@ -380,6 +386,7 @@ public class Combat {
 				if (otherperson == null) {
 					otherperson = getDefenderFor(quickest);
 				}
+			}
 			}
 			if (quickest.isPlayer()) {
 				otherperson.displayStatsShort();
@@ -397,7 +404,6 @@ public class Combat {
 			{
 				quickest.advanceTime(Math.min(10,quickest.getTime()-1));
 			}
-			quickest.getNextAttack().setDefender(otherperson);
 			}
 		}
 		
@@ -649,7 +655,7 @@ public class Combat {
 	 * should scale of off % of hp damaged or something to avoid confusing the ai
 	 */
 	//FIXME: should probably move this to attack returns or something??? and the 'handle turn' code
-	public void handleAttackPart2(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender, int damageDone) {
+	public void handleAttackPart2(ImpairedAttack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender, int damageDone) {
 		double percent = ((double)extra.zeroOut(damageDone))/((double)defender.getMaxHp());
 		if (off.getHand().isEnchantedHit() && !(att.getName().contains("examine"))) {
 			EnchantHit ehit = (EnchantHit)off.getHand().getEnchant();
@@ -714,14 +720,13 @@ public class Combat {
 				}				
 			}
 		}
-		
-		if (!attacker.getNextAttack().isMagic()) {
-		AttackReturn atr = this.handleAttack(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
+		ImpairedAttack attack = attacker.getNextAttack();
+		AttackReturn atr = this.handleAttack(attack,defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
 		ret = atr;
 		int damageDone = atr.damage;
 		//extra.println(damageDone + " " + defender.getHp()+"/"+defender.getMaxHp());//FIXME: probably turn damage responses into a better thing
 		String inlined_color = extra.PRE_WHITE;
-		this.handleAttackPart2(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender,damageDone);
+		this.handleAttackPart2(attack,defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender,damageDone);
 		//armor quality handling
 		//FIXME: apply new attack result code system where needed
 		defender.getBag().armorQualDam(damageDone);
@@ -752,7 +757,7 @@ public class Combat {
 			//Wound effects
 			String woundstr = inflictWound(attacker,defender,atr);
 			if (defender.hasEffect(Effect.R_AIM)) {
-				defender.getNextAttack().blind(1 + (percent));
+				defender.getNextAttack().multiplyHit(1 + (percent));
 			}
 			if (!extra.getPrint()) {
 				//extra.print(extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f)));
@@ -812,11 +817,6 @@ public class Combat {
 
 				}
 			}
-		}
-		}else {
-			//the attack is a magic spell
-			handleMagicSpell(attacker.getNextAttack(),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
-			//song.addAttackHit(attacker,defender);
 		}
 
 		if (canWait && mainGame.delayWaits) {
@@ -958,7 +958,8 @@ public class Combat {
 			}
 			switch (w) {
 			case CONFUSED:
-				newTarget = true;
+				attacker2.addEffect(Effect.CONFUSED_TARGET);
+				//newTarget = true;
 				break;
 			case SLICE:
 				attacker2.addEffect(Effect.SLICE);
@@ -975,7 +976,7 @@ public class Combat {
 				defender2.advanceTime(-nums[0]);
 				break;
 			case DIZZY: case FROSTED: case BLINDED:
-				defender2.getNextAttack().blind(1-(nums[0]/10f));
+				defender2.getNextAttack().multiplyHit(1-(nums[0]/10f));
 				break;	
 			case MAJOR_BLEED:
 				defender2.addEffect(Effect.BLEED);
@@ -999,7 +1000,7 @@ public class Combat {
 				break;
 			case BLOODY:
 				defender2.addEffect(Effect.BLEED);
-				defender2.getNextAttack().blind(1-(nums[0]/10f));
+				defender2.getNextAttack().multiplyHit(1-(nums[0]/10f));
 				break;
 			case MANGLED:
 				defender2.multBodyStatus(attack.getTargetSpot(), 1-(nums[0]/10f));
@@ -1092,7 +1093,7 @@ public class Combat {
 		}
 		}
 		if  (att.getSkill() == Skill.DEATH_MAGE) {
-			defender.getNextAttack().wither(att.getSharp()/100);
+			defender.getNextAttack().multPotencyMult(att.getSharp()/100);
 			if (!defender.hasSkill(Skill.LIFE_MAGE)) {
 			defender.takeDamage(att.getBlunt());}
 			int i = 0;
@@ -1106,7 +1107,7 @@ public class Combat {
 		}
 		if(att.getSkill() == Skill.ILLUSION_MAGE) {
 			Networking.send("PlayDelay|sound_befuddle|1|");
-			newTarget = true;
+			//newTarget = true;
 		}
 		if (att.getSkill() == Skill.EXECUTE_ATTACK) {
 			double percent = ((double)extra.zeroOut(defender.getHp()-att.getBlunt()))/((double)defender.getMaxHp());
@@ -1145,6 +1146,7 @@ public class Combat {
 		List<ImpairedAttack> atts = (attacker.getStance().randAtts(3,attacker.getBag().getHand(),attacker,defender));
 		newAttack = AIClass.chooseAttack(atts,this,attacker,defender);
 		attacker.setAttack(newAttack);
+		newAttack.setDefender(defender);
 		//manOne.getNextAttack().blind(1 + manOne.getNextAttack().getSpeed()/1000.0);
 		//this blind was here to simulate quicker attacks being harder to dodge, it has been removed
 	}

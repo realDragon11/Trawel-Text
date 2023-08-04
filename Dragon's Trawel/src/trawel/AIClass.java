@@ -44,6 +44,7 @@ public class AIClass {
 	public static Attack randomAttack(Stance theStance){
 		return theStance.getAttack(extra.getRand().nextInt(theStance.getAttackCount()));
 	}
+	/*
 	@Deprecated
 	public static Attack eArtASpell(ASpell a, Person d) {
 		switch (a) {
@@ -57,15 +58,15 @@ public class AIClass {
 			return (new Attack(Skill.ILLUSION_MAGE,(int)Math.round(Player.player.eaBox.aSpellPower), d.getBag().getRace().targetType));
 		}
 		throw new RuntimeException("ASpell not defined.");
-	}
-	
+	}*/
+	/*
 	/**
 	 * Choose which attack in a stance to use. Supply with an intellect level for varying levels of 
 	 * smarts
 	 * @param theStance - (Stance) the stance from which to take the attack
 	 * @param smarts - (int) intellect, how smart the attacker is 
 	 * @return an attack (Attack)
-	 */
+	 /
 	@Deprecated
 	public static Attack chooseAttack(Stance theStance, int smarts, Combat com, Person attacker, Person defender) {
 		
@@ -207,7 +208,7 @@ public class AIClass {
 				return attacks.get(numb-1);
 			}
 			return attackTest(attacks,smarts,com, attacker, defender);
-	}
+	}*/
 	
 	/**
 	 * Has the ai simulate a couple attacks, and choose which one is best.

@@ -44,6 +44,17 @@ public class Stance{
 	public void addAttack(Attack newAttack, float rarity) {
 		attacks.add(newAttack);
 		rarities.add(rarity);
+		newAttack.setStance(this);
+	}
+	//LEGACY
+	@Deprecated
+	public void addAttack(Attack newAttack) {
+		int index = attacks.indexOf(newAttack);
+		if (index == -1) {
+			addAttack(newAttack,1f);
+			return;
+		}
+		rarities.set(index, rarities.get(index)+1f);
 	}
 	/**
 	 * Returns the number of attacks in the stance.

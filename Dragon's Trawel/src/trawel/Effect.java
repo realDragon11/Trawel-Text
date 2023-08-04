@@ -19,8 +19,9 @@ public enum Effect{
 	B_MARY("Bloody Mary","Start the battle bleeding- whenever someone attacks you, their bleeding heals you.",false,false),
 	FORGED("Forged","Increased health and armor regen.",false,false),
 	TELESCOPIC("Telescopic","Slow attacks gain an accuracy boost.",false,false),
-	SLICE("Slicing","Your next attack is 10% faster and accurate.",false,false),
-	DICE("Dicing","Your next attack is 10% faster and also 10 time units quicker.",false,false)
+	SLICE("Slicing","Their next attack is 10% faster and accurate.",false,false),
+	DICE("Dicing","Their next attack is 10% faster and also 10 time units quicker.",false,false),
+	CONFUSED_TARGET("Confused","Their next attack will have a random defender from any side.",false,false)
 	;
 	
 	private String name,desc;
