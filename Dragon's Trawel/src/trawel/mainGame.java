@@ -60,8 +60,13 @@ import trawel.towns.services.Oracle;
  */
 public class mainGame {
 
-	public static final String VERSION_STRING = "v0.8.X";
-
+	public static final String VERSION_STRING = "v0.8.b_1";
+	public static final String[] changelog = new String[] {
+			//add to front, changeviewer cycles to older ones when used
+			"b_1: base attack code reworked in basically every way. currency divided. threading added (nothreads is an arg), time passing redone. Node exploration mostly same but had entire backend update. Locational damage exists but does little at the moment."
+			,"End of current beta ingame changelog. Check the github for more."
+	};
+	public static int changelogViewer = 0;
 
 	//static vars
 	public static Scanner scanner = new Scanner(System.in);
@@ -115,18 +120,18 @@ public class mainGame {
 	}
 	
 	public static void mainMenu() {
-		log("gen main menu 0");
+		//log("gen main menu 0");
 		extra.menuGo(new MenuGenerator(){
 
 			@Override
 			public List<MenuItem> gen() {
-				log("gen main menu 1");
+				//log("gen main menu 1");
 				extra.changePrint(false);
-				log("gen main menu 2");
+				//log("gen main menu 2");
 				Networking.sendStrong("Discord|desc|Main Menu|");
 				Networking.sendStrong("Visual|MainMenu|");
 				
-				log("gen main menu 3");
+				//log("gen main menu 3");
 				List<MenuItem> mList = new ArrayList<MenuItem>();
 				mList.add(new MenuSelect() {
 
@@ -139,6 +144,48 @@ public class mainGame {
 					public boolean go() {
 						Networking.clearSides();
 						gameTypes();
+						return false;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Load Trawel Save";
+					}
+
+					@Override
+					public boolean go() {
+						forceSetup();
+						Networking.clearSides();
+						for (int i = 1; i < 9; i++) {
+							extra.println(i+" slot: "+WorldGen.checkNameInFile(""+i));
+						}
+						extra.println("9 autosave: "+WorldGen.checkNameInFile("auto"));
+						int in = extra.inInt(9);
+						WorldGen.load(in == 9 ? "auto" : in+"");
+						boolean runit;
+						try {
+							Player.player.getPerson();
+							runit = true;
+						}catch (Exception e) {
+							runit = false;
+						}
+						 if (runit) {
+							 adventureBody();
+						 }
+						return false;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Changelog, press multiple times to cycle\n";
+					}
+
+					@Override
+					public boolean go() {
+						extra.println(changelog[changelogViewer++]);
+						changelogViewer%=changelog.length;
 						return false;
 					}});
 				mList.add(new MenuSelect() {
@@ -175,35 +222,7 @@ public class mainGame {
 						extra.println("-realDragon");
 						return false;
 					}});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "Load Trawel Save";
-					}
-
-					@Override
-					public boolean go() {
-						forceSetup();
-						Networking.clearSides();
-						for (int i = 1; i < 9; i++) {
-							extra.println(i+" slot: "+WorldGen.checkNameInFile(""+i));
-						}
-						extra.println("9 autosave: "+WorldGen.checkNameInFile("auto"));
-						int in = extra.inInt(9);
-						WorldGen.load(in == 9 ? "auto" : in+"");
-						boolean runit;
-						try {
-							Player.player.getPerson();
-							runit = true;
-						}catch (Exception e) {
-							runit = false;
-						}
-						 if (runit) {
-							 adventureBody();
-						 }
-						return false;
-					}});
+				
 				mList.add(new MenuSelect() {
 
 					@Override
@@ -233,7 +252,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Advanced (beta)";
+						return "Advanced Options";
 					}
 
 					@Override
@@ -849,7 +868,7 @@ public class mainGame {
 		boolean breakErr = false;
 		while (!breakErr) {
 			try {
-				mainGame.log("starting main menu");
+				//mainGame.log("starting main menu");
 				mainMenu();
 			}catch (Exception e) {
 				try {
@@ -865,7 +884,7 @@ public class mainGame {
 				extra.inString();
 			}
 		}
-		mainGame.log("exiting game");
+		//mainGame.log("exiting game");
 		
 		//
 		

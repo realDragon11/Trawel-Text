@@ -329,7 +329,7 @@ public final class extra {
 				return;
 			}
 			if (!printMode || debugPrint) {
-				mainGame.log(str);
+				//mainGame.log(str);
 				Networking.printlocalln(stripPrint(printStuff+str));
 				detectInputString(stripPrint(printStuff +str));
 				Networking.printlnTo(printStuff + str);

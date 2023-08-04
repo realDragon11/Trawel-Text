@@ -172,7 +172,7 @@ public class Networking {
 				commit();
 			}catch(Exception e) {
 				e.printStackTrace();
-				mainGame.log(e.getMessage());
+				//mainGame.log(e.getMessage());
 			}
 			break;
 		case GDX_WITH_LEGACY:
