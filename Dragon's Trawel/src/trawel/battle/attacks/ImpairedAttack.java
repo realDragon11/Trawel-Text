@@ -36,6 +36,8 @@ public class ImpairedAttack implements IAttack{
 		weapon = _weapon;
 		attacker = _attacker;
 		defender = _defender;
+		
+		potencyMult = 1;
 		//compution
 		Target t = target.tar;
 		vals = new int[attack.valueSize()];
@@ -198,7 +200,7 @@ public class ImpairedAttack implements IAttack{
 	@Override
 	public String fluff(AttackReturn attret) {
 		// TODO Auto-generated method stub
-		return null;
+		return attack.fluff(attret);
 	}
 	@Override
 	public int getSharp() {
@@ -235,8 +237,7 @@ public class ImpairedAttack implements IAttack{
 	}
 	@Override
 	public double getHitMult() {
-		// TODO Auto-generated method stub
-		return 0;
+		return hitroll;
 	}
 	
 	@Override

@@ -19,21 +19,22 @@ public class WeaponAttackFactory {
 	public WeaponAttackFactory() {
 		Attack tempAttack;
 		Stance martialStance = new Stance();//FIXME attacks need reworked
-		tempAttack = new Attack("slash","slash them",1.5d,100.0d,40,5,0);
+		tempAttack = new Attack("slash","X` slashes at Y` with their Z`!",1.5d,100.0d,40,5,0);
 		//new Attack("slash",1.5,100.0,40,5,0,"X` slashes at Y` with their Z`!",1,"sharp");
 		martialStance.addAttack(tempAttack,3f);
-		tempAttack = new Attack("stab","stab them",1.0d,90.0d,10,0,25);
+		tempAttack = new Attack("stab","X` stabs at Y` with their Z`",1.0d,90.0d,10,0,25);
 		//tempAttack = new Attack("stab",1.0,90.0,1,2,20,"X` stabs at Y` with their Z`!",1,"pierce");
 		martialStance.addAttack(tempAttack,3f);
-		tempAttack = new Attack("thrust","thrust them",0.5d,60.0d,5,0,30);
+		tempAttack = new Attack("thrust","X` thrusts at Y` with their Z`!",0.5d,60.0d,5,0,30);
 		//tempAttack = new Attack("thrust",.4,60.0,1,4,20,"X` thrusts at Y` with their Z`!",2,"pierce");
 		martialStance.addAttack(tempAttack,1f);
-		tempAttack = new Attack("pommel","pommel them",1d,120.0d,0,20,0);//probably needs a bonus of some sort
+		tempAttack = new Attack("pommel","X` hits Y` with the pommel of their Z`!",1d,120.0d,0,20,0);//probably needs a bonus of some sort
 		//tempAttack = new Attack("pommel",1,110.0,0,12,0,"X` hits Y` with the pommel of their Z`!",0,"blunt");
 		martialStance.addAttack(tempAttack,.2f);
-		tempAttack = new Attack("slap","slap them",1.1d,100.0d,0,15,0);
+		tempAttack = new Attack("slap","X` slaps Y` with the side of their Z`!",1.1d,100.0d,0,15,0);
 		//tempAttack = new Attack("slap",1.1,100.0,0,10,0,"X` slaps Y` with the side of their Z`!",1,"blunt");		
 		martialStance.addAttack(tempAttack,1f);
+		martialStance.finish();
 		stanceMap.put("longsword", martialStance);
 		
 		martialStance = new Stance();
@@ -45,12 +46,14 @@ public class WeaponAttackFactory {
 		martialStance.addAttack(new Attack("pommel",1,110.0,0,12,0,"X` hits Y` with the pommel of their Z`!",0,"blunt"));
 		martialStance.addAttack(new Attack("slap",1.2,120.0,0,15,0,"X` slaps Y` with the side of their Z`!",1,"blunt"));
 		martialStance.addAttack(new Attack("power",.5,180.0,50,20,0,"X` lifts their Z` over their head, and then brings it down on Y`!",2,"sharp"));
+		martialStance.finish();
 		stanceMap.put("broadsword", martialStance);
 		
 		martialStance = new Stance();
 		martialStance.addAttack(new Attack("bash",1.5,150.0,4,25,4,"X` bashes Y` with their Z`!",1,"blunt"));
 		martialStance.addAttack(new Attack("smash",1,100.0,4,20,4,"X` smashes Y` with their Z`!",1,"blunt"));
 		martialStance.addAttack(new Attack("power",.5,180.0,10,50,10,"X` lifts their Z` over their head, and then brings it down on Y`!",2,"blunt"));
+		martialStance.finish();
 		stanceMap.put("mace", martialStance);
 		martialStance = new Stance();
 		tempAttack = new Attack("skewer",1.1,120.0,1,2,45,"X` skewers Y` with their Z`!",1,"pierce");
@@ -60,6 +63,7 @@ public class WeaponAttackFactory {
 		martialStance.addAttack(new Attack("thrust",.4,60.0,1,2,30,"X` thrusts at Y` with their Z`!",2,"pierce"));
 		martialStance.addAttack(new Attack("pole",.6,120.0,0,10,0,"X` hits Y` with the pole of their Z`!",1,"blunt"));
 		martialStance.addAttack(new Attack("smack",1,100.0,1,8,0,"X` smacks Y` with the side of their Z`!",0,"blunt"));
+		martialStance.finish();
 		stanceMap.put("spear", martialStance);
 		martialStance = new Stance();
 		tempAttack = new Attack("hack",.9,90.0,20,18,0,"X` hacks at Y` with their Z`!",1,"sharp");
@@ -68,6 +72,7 @@ public class WeaponAttackFactory {
 		martialStance.addAttack(tempAttack);
 		martialStance.addAttack(new Attack("slap",.8,100.0,0,30,0,"X` slaps Y` with the side of their Z`!",1,"blunt"));
 		martialStance.addAttack(new Attack("heft",1,120.0,0,10,0,"X` hits Y` with the heft of their Z`!",0,"blunt"));
+		martialStance.finish();
 		stanceMap.put("axe", martialStance);
 		martialStance = new Stance();
 		martialStance.addAttack(new Attack("slash",1.3,90.0,25,1,0,"X` slashes at Y` with their Z`!",1,"sharp"));
@@ -75,6 +80,7 @@ public class WeaponAttackFactory {
 		martialStance.addAttack(new Attack("stab",1.2,100.0,5,0,25,"X` stabs at Y` with their Z`!",1,"pierce"));	
 		martialStance.addAttack(new Attack("thrust",.6,50.0,10,0,20,"X` thrusts at Y` with their Z`!",2,"pierce"));
 		martialStance.addAttack(new Attack("pommel",1,110.0,0,10,0,"X` hits Y` with the pommel of their Z`!",1,"blunt"));
+		martialStance.finish();
 		stanceMap.put("rapier", martialStance);
 		martialStance = new Stance();
 		tempAttack = new Attack("slash",1,70.0,20,2,0,"X` slashes at Y` with their Z`!",0,"sharp");
@@ -88,6 +94,7 @@ public class WeaponAttackFactory {
 		martialStance.addAttack(tempAttack);
 		martialStance.addAttack(tempAttack);
 		//martialStance.addAttack(new Attack("slap",.8,85.0,0,10,0,"X` slaps Y` with the side of their Z`!",0,"blunt"));
+		martialStance.finish();
 		stanceMap.put("dagger", martialStance);
 		martialStance = new Stance();
 		tempAttack = new Attack("slash",1.4,200.0,60,20,0,"X` slashes at Y` with their Z`!",1,"sharp");
@@ -97,67 +104,79 @@ public class WeaponAttackFactory {
 		//martialStance.addAttack(new Attack("pommel",.2,300.0,0,17,0,"X` hits Y` with the pommel of their Z`!",0,"blunt"));
 		martialStance.addAttack(new Attack("slap",1.3,200.0,0,30,0,"X` slaps Y` with the side of their Z`!",1,"blunt"));
 		martialStance.addAttack(new Attack("power",.4,400.0,100,50,0,"X` lifts their Z` over their head, and then brings it down on Y`!",2,"sharp"));
+		martialStance.finish();
 		stanceMap.put("claymore", martialStance);
 		martialStance = new Stance();
 		martialStance.addAttack(new Attack("skewer",0.8,150.0,1,5,35,"X` skewers Y` with their Z`!",1,"pierce"));	
 		martialStance.addAttack(new Attack("thrust",.6,100.0,1,5,20,"X` thrusts at Y` with their Z`!",1,"pierce"));
 		martialStance.addAttack(new Attack("smack",1,100.0,0,15,0,"X` smacks Y` with the side of their Z`!",0,"blunt"));
 		martialStance.addAttack(new Attack("charge",1.4,300.0,1,20,80,"X` charges forward with their Z`!",2,"pierce"));
+		martialStance.finish();
 		stanceMap.put("lance", martialStance);
 		martialStance = new Stance();
 		martialStance.addAttack(new Attack("thrust",.4,60.0,2,30,3,"X` thrusts at Y` with their Z`!",2,"blunt"));
 		martialStance.addAttack(new Attack("slap",1.2,100.0,0,20,0,"X` slaps Y` with the side of their Z`!",1,"blunt"));
 		martialStance.addAttack(new Attack("pole",.6,120.0,0,10,0,"X` hits Y` with the pole of their Z`!",0,"blunt"));
 		martialStance.addAttack(new Attack("smack",1,100.0,2,25,0,"X` smacks Y` with the side of their Z`!",1,"blunt"));
+		martialStance.finish();
 		stanceMap.put("shovel", martialStance);
 		martialStance = new Stance();
 		martialStance.addAttack(new Attack("bite",1,100.0,5,0,35,"X` bites at Y` with their teeth!",2,"pierce"));
 		martialStance.addAttack(new Attack("tear",1.4,140.0,20,0,20,"X` tears into Y`'s flesh with their teeth!",1,"pierce"));
 		martialStance.addAttack(new Attack("rip",.6,120.0,30,0,30,"X` rips up Y`'s flesh with their teeth!",0,"pierce"));
+		martialStance.finish();
 		stanceMap.put("generic teeth", martialStance);
 		martialStance = new Stance();
 		martialStance.addAttack(new Attack("kick",1,100.0,1,35,0,"X` kicks at Y`!",2,"blunt"));
 		martialStance.addAttack(new Attack("kick",1,100.0,1,35,0,"X` kicks at Y`!",2,"blunt"));
 		martialStance.addAttack(new Attack("kick",1,100.0,1,35,0,"X` kicks at Y`!",2,"blunt"));
+		martialStance.finish();
 		stanceMap.put("standing reaver", martialStance);
 		martialStance = new Stance();
 		martialStance.addAttack(new Attack("bite",1,100.0,5,0,35,"X` bites at Y` with their teeth!",2,"pierce"));
 		martialStance.addAttack(new Attack("tear",1.4,140.0,20,0,20,"X` tears into Y`'s flesh with their claws!",1,"pierce"));
 		martialStance.addAttack(new Attack("rip",.6,120.0,30,0,30,"X` rips up Y`'s flesh with their claws!",0,"pierce"));
+		martialStance.finish();
 		stanceMap.put("generic teeth and claws", martialStance);
 		martialStance = new Stance();
 		martialStance.addAttack(new Attack("rake",1.1,110.0,20,10,0,"X` rakes Y`!",1,"sharp"));
 		martialStance.addAttack(new Attack("bash",1,120.0,0,35,35,"X` bashes Y` with their branches!",1,"blunt"));
 		martialStance.addAttack(new Attack("rake",1.1,110.0,20,10,0,"X` rakes Y`!",1,"sharp"));
 		martialStance.addAttack(new Attack("bash",1,120.0,0,35,35,"X` bashes Y` with their branches!",1,"blunt"));
+		martialStance.finish();
 		stanceMap.put("branches", martialStance);
 		martialStance = new Stance();
 		martialStance.addAttack(new Attack("bash",1.5,150.0,0,35,0,"X` bashes Y` with their fists!",1,"blunt"));
 		martialStance.addAttack(new Attack("smash",1,100.0,0,30,0,"X` smashes Y` with their fists!",1,"blunt"));
 		martialStance.addAttack(new Attack("power punch",.5,180.0,0,80,0,"X` lifts their fists over their head, and then brings them down on Y`!",2,"blunt"));
+		martialStance.finish();
 		stanceMap.put("generic fists", martialStance);
 		martialStance = new Stance();
 		martialStance.addAttack(new Attack("skewer",0.5,150.0,1,5,35,"X` skewers Y` with their horn!",1,"pierce"));	
 		martialStance.addAttack(new Attack("thrust",.3,100.0,1,5,20,"X` thrusts at Y` with their horn!",1,"pierce"));
 		martialStance.addAttack(new Attack("smack",1,100.0,0,15,0,"X` smacks Y` with the side of their horn!",0,"blunt"));
 		martialStance.addAttack(new Attack("charge",1.4,300.0,1,20,80,"X` charges forward with their horn!",2,"pierce"));
+		martialStance.finish();
 		stanceMap.put("unicorn horn", martialStance);
 		martialStance = new Stance();
 		martialStance.addAttack(new Attack("grip",1,100.0,5,0,35,"X` grips Y` with their talons!",2,"pierce"));
 		martialStance.addAttack(new Attack("tear",1.4,140.0,20,0,20,"X` tears into Y`'s flesh with their talons!",1,"pierce"));
 		martialStance.addAttack(new Attack("rip",.6,120.0,30,0,30,"X` rips up Y`'s flesh with their talons!",0,"pierce"));
+		martialStance.finish();
 		stanceMap.put("generic talons", martialStance);
 		
 		martialStance = new Stance();
 		martialStance.addAttack(new Attack("skewer",1,100.0,1,2,45,"X` skewers Y` with their rusty fishing spear!",1,"pierce"));	
 		martialStance.addAttack(new Attack("thrust",.3,50.0,1,2,30,"X` thrusts at Y` with their rusty fishing spear!",2,"pierce"));
 		martialStance.addAttack(new Attack("pole",.6,110.0,0,8,0,"X` hits Y` with the pole of their rusty fishing spear!",1,"blunt"));
+		martialStance.finish();
 		stanceMap.put("fishing spear", martialStance);
 		
 		martialStance = new Stance();
 		martialStance.addAttack(new Attack("slam",.5,300.0,0,40,0,"X` hits Y` with their rusty anchor!",0,"blunt"));
 		martialStance.addAttack(new Attack("slap",1.3,200.0,0,30,0,"X` slaps Y` with the side of their rusty anchor!",1,"blunt"));
 		martialStance.addAttack(new Attack("power",.9,400.0,100,50,0,"X` lifts their rusty anchor over their head, and then brings it down on Y`!",2,"sharp"));
+		martialStance.finish();
 		stanceMap.put("anchor", martialStance);
 	}
 	

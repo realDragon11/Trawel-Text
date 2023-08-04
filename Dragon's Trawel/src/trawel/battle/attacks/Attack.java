@@ -501,8 +501,12 @@ public class Attack implements IAttack{
 
 	@Override
 	public String fluff(AttackReturn attret) {
-		// TODO Auto-generated method stub
-		return null;
+		String tempStr = fluffer.next();
+		tempStr = tempStr.replace("X`",attret.attack.getAttacker().getName());
+		tempStr = tempStr.replace("Y`",attret.attack.getDefender().getName() + "'s " +
+		(attret.attack.getTarget() != null ? attret.attack.getTarget().getName() : "!!"));
+		tempStr = tempStr.replace("Z`",(attret.attack.getWeapon() != null ? attret.attack.getWeapon().getBaseName() : "fists" )+"[*]");//technically if you were to look upwards you could find the weapon, but I'm gonna put it in this way
+		return tempStr;
 	}
 
 	@Override

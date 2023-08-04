@@ -37,6 +37,10 @@ public final class extra {
 	
 	private static ReentrantLock mainThreadLock = new ReentrantLock();
 	
+	private static final int debugChunkPer = 10;
+	private static boolean debugPrint = false;
+	private static int debugChunk = 0;
+	
 	private static final ThreadLocal<EnhancedRandom> localRands = new ThreadLocal<EnhancedRandom>() {
 		@Override protected EnhancedRandom initialValue() {
 			return new WhiskerRandom();
@@ -324,12 +328,20 @@ public final class extra {
 			if (!isMainThread()) {
 				return;
 			}
-			if (!printMode) {
+			if (!printMode || debugPrint) {
 				mainGame.log(str);
 				Networking.printlocalln(stripPrint(printStuff+str));
 				detectInputString(stripPrint(printStuff +str));
 				Networking.printlnTo(printStuff + str);
 				printStuff = "";
+				
+				if (debugPrint) {
+					debugChunk++;
+					if (debugChunk > debugChunkPer) {
+						extra.inString();
+						debugChunk = 0;
+					}
+				}
 			}
 			
 		}

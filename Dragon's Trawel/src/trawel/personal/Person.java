@@ -374,6 +374,10 @@ public class Person implements java.io.Serializable, HasSkills{
 		return isWarmingUp == false;
 	}
 	
+	public void finishWarmup() {
+		isWarmingUp = false;
+	}
+	
 	public void finishTurn() {
 		attackNext = null;
 	}

@@ -54,7 +54,7 @@ public class Combat {
 	
 	public static Combat testCombat = new Combat();
 	
-	public static int longBattleLength = 50;
+	public static int longBattleLength = 20;
 	//constructor
 	/**
 	 * Holds a fight to the death, between two people.
@@ -117,14 +117,21 @@ public class Combat {
 			double delay = attacker.getTime();
 			defender.advanceTime(delay);
 			attacker.advanceTime(delay);
+			if (!attacker.isOnCooldown()) {
 			handleTurn(attacker, defender, playerIsInBattle, delay);
 			if (playerIsInBattle) {
 				manTwo.getBag().graphicalDisplay(1,manTwo);
 				Player.player.getPerson().getBag().graphicalDisplay(-1,Player.player.getPerson());
 			}
+			}
 			
-			if (manOne.isAlive() && manTwo.isAlive() && !manOne.isAttacking()) {
-				setAttack(attacker,defender);
+			if (manOne.isAlive() && manTwo.isAlive()) {
+				if (!attacker.isAttacking()){
+					setAttack(attacker,defender);
+				}else {
+					attacker.finishTurn();
+				}
+				
 			}
 		}
 		while(manOne.isAlive() && manTwo.isAlive());
@@ -613,7 +620,6 @@ public class Combat {
 		public ImpairedAttack attack;
 		public ATK_ResultCode code;
 		private String notes;
-		//DOLATER: instead of new target, might be able to ride confusion effects on this
 		public AttackReturn(int sdam,int bdam, int pdam, String str, ImpairedAttack att) {
 			damage = sdam+bdam+pdam;
 			code = damage > 0 ? ATK_ResultCode.DAMAGE : ATK_ResultCode.ARMOR;
@@ -681,6 +687,7 @@ public class Combat {
 			attacker.finishTurn();
 			return new AttackReturn();
 		}
+		attacker.finishWarmup();
 		turns++;
 		AttackReturn ret = null;
 		if (turns > longBattleLength*totalFighters) {
