@@ -7,7 +7,7 @@ import trawel.extra;
 import trawel.personal.classless.Skill.Type;
 
 public enum Archetype implements HasSkills{
-	;
+	EMPTY("","",false,null,HasSkills.emptySkillSet);
 	
 	private final boolean entryLevel;
 	private final String name, desc;

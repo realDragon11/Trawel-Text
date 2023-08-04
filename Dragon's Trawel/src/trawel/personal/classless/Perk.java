@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 import trawel.personal.classless.Skill.Type;
 
 public enum Perk implements HasSkills{
+	EMPTY("","",HasSkills.emptySkillSet),
 	RACIAL_SHIFTS("Flexible","Prone to changing its defense patterns.",EnumSet.of(Skill.RACIAL_SHIFTS))
 	;
 	private final String name, desc;

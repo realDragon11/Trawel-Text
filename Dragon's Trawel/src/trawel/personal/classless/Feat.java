@@ -8,6 +8,7 @@ import trawel.extra;
 import trawel.personal.classless.Skill.Type;
 
 public enum Feat implements HasSkills{
+	EMPTY("","","",0f,null,HasSkills.emptySkillSet),
 	TOUGH_COMMON("The Tough","They're tougher than they look. And they look tough.","",
 			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS),5,0)
 	;

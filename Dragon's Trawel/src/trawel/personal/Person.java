@@ -138,6 +138,10 @@ public class Person implements java.io.Serializable, HasSkills{
 		featSet = EnumSet.noneOf(Feat.class);
 		perkSet = EnumSet.noneOf(Perk.class);
 		archSet = EnumSet.noneOf(Archetype.class);
+		/*featSet = EnumSet.of(Feat.EMPTY);
+		perkSet = EnumSet.of(Perk.EMPTY);
+		archSet = EnumSet.of(Archetype.EMPTY);*/
+		//FST has a problem saving enum sets if the enum has no element
 		
 		xp = 0;
 		
@@ -319,6 +323,12 @@ public class Person implements java.io.Serializable, HasSkills{
 	
 	public void setPerk(Perk p) {
 		perkSet.add(p);
+	}
+	public void setFeat(Feat f) {
+		featSet.add(f);
+	}
+	public void setArch(Archetype a) {//did I actually misspell that
+		archSet.add(a);
 	}
 	
 	public RaceFlag getRaceFlag() {
@@ -556,6 +566,11 @@ public class Person implements java.io.Serializable, HasSkills{
 		}
 		extra.println();
 		Person p = this;
+		extra.println("Classless backend is implemented, but both choosing new feats/archetypes and the actual feats/archetypes/perks did not make it into this beta release. Instead get 'The Tough'.");
+		setFeat(Feat.TOUGH_COMMON);
+		if (true == true) {
+			return;//the poor man's comment
+		}
 		extra.menuGo(new MenuGenerator() {
 
 			@Override
