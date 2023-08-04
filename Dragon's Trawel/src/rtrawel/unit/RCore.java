@@ -54,7 +54,7 @@ public class RCore {
 	}
 	
 	public static int dealDamage(RUnit defender, int attackStat, double damage, List<DamageType> types ) {
-		double mult = calcDamageMod(attackStat, defender.getResilence());
+		double mult = calcDamageMod(attackStat, defender.getResilience());
 		for (DamageType t: types) {
 			mult*= defender.getDamageMultFor(t);
 		}

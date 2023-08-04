@@ -179,16 +179,16 @@ public class RPlayer extends RUnit {
 	}
 
 	@Override
-	protected int getEquipResilence() {
+	protected int getEquipResilience() {
 		int total = 0;
 		for (Item a: this.getItems()) {
-			total+=a.getResilenceMod();
+			total+=a.getResilienceMod();
 		}
 		return total;
 	}
 
 	@Override
-	protected int getBaseResilence() {
+	protected int getBaseResilience() {
 		return JobFactory.getJobByName(currentJob).getResAtLevel(progression.jobLevel(currentJob));
 	}
 
@@ -566,7 +566,7 @@ public class RPlayer extends RUnit {
 		// TODO Auto-generated method stub
 		extra.println(this.getName() + ": level "+this.progression.jobLevel(currentJob) + " " + currentJob);
 		extra.println("HP: " + this.getHp() + "/" + this.getMaxHp() + " MP: " + this.getMana() + "/" + this.getMaxMana() + " Tsn: " + this.getTension() + "/" + this.getMaxTension());
-		extra.println("Str: " + this.getStrength() +" Agi: " +this.getAgility() + " Kno: " +this.getKnowledge() + " Res: " + this.getResilence() + " Dex: " + this.getDexterity() + " Spd: " + this.getSpeed());
+		extra.println("Str: " + this.getStrength() +" Agi: " +this.getAgility() + " Kno: " +this.getKnowledge() + " Res: " + this.getResilience() + " Dex: " + this.getDexterity() + " Spd: " + this.getSpeed());
 	}
 
 	public List<Item> getItems() {

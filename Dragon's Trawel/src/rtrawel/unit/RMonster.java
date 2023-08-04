@@ -101,13 +101,13 @@ public class RMonster extends RUnit {
 	}
 
 	@Override
-	protected int getEquipResilence() {
+	protected int getEquipResilience() {
 		return 0;
 	}
 
 	@Override
-	protected int getBaseResilence() {
-		return  MonsterFactory.getMonsterByName(name).getResilence();
+	protected int getBaseResilience() {
+		return  MonsterFactory.getMonsterByName(name).getResilience();
 	}
 
 	@Override

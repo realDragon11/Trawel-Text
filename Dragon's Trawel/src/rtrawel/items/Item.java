@@ -30,7 +30,7 @@ public abstract class Item {
 	public int getDexterityMod() {
 		return 0;
 	}
-	public int getResilenceMod() {
+	public int getResilienceMod() {
 		return 0;
 	}
 }

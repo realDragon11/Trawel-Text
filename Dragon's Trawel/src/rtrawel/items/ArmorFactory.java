@@ -38,7 +38,7 @@ public class ArmorFactory {
 			}
 			
 			@Override
-			public int getResilenceMod() {
+			public int getResilienceMod() {
 				return 5;
 			}
 
@@ -76,7 +76,7 @@ public class ArmorFactory {
 			}
 			
 			@Override
-			public int getResilenceMod() {
+			public int getResilienceMod() {
 				return 9;
 			}
 
@@ -115,7 +115,7 @@ public class ArmorFactory {
 			}
 			
 			@Override
-			public int getResilenceMod() {
+			public int getResilienceMod() {
 				return 12;
 			}
 
@@ -154,7 +154,7 @@ public class ArmorFactory {
 			}
 			
 			@Override
-			public int getResilenceMod() {
+			public int getResilienceMod() {
 				return 7;
 			}
 
@@ -192,7 +192,7 @@ public class ArmorFactory {
 			}
 			
 			@Override
-			public int getResilenceMod() {
+			public int getResilienceMod() {
 				return 12;
 			}
 
@@ -231,7 +231,7 @@ public class ArmorFactory {
 			}
 			
 			@Override
-			public int getResilenceMod() {
+			public int getResilienceMod() {
 				return 16;
 			}
 
@@ -269,7 +269,7 @@ public class ArmorFactory {
 			}
 			
 			@Override
-			public int getResilenceMod() {
+			public int getResilienceMod() {
 				return 0;
 			}
 			@Override
@@ -312,7 +312,7 @@ public class ArmorFactory {
 			}
 			
 			@Override
-			public int getResilenceMod() {
+			public int getResilienceMod() {
 				return 0;
 			}
 			@Override
@@ -355,7 +355,7 @@ public class ArmorFactory {
 			}
 			
 			@Override
-			public int getResilenceMod() {
+			public int getResilienceMod() {
 				return 0;
 			}
 			@Override
@@ -397,7 +397,7 @@ public class ArmorFactory {
 			}
 			
 			@Override
-			public int getResilenceMod() {
+			public int getResilienceMod() {
 				return 8;
 			}
 

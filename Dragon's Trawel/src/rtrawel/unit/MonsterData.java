@@ -11,7 +11,7 @@ public interface MonsterData {
 	public int getSpeed();
 	public int getAgility();
 	public int getDexterity();
-	public int getResilence();
+	public int getResilience();
 	public List<Action> getActions();
 	public String getName();
 	public String getDesc();

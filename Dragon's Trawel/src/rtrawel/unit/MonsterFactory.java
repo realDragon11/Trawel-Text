@@ -53,7 +53,7 @@ public class MonsterFactory {
 			}
 
 			@Override
-			public int getResilence() {
+			public int getResilience() {
 				return 2;
 			}
 
@@ -185,7 +185,7 @@ public class MonsterFactory {
 			}
 
 			@Override
-			public int getResilence() {
+			public int getResilience() {
 				return 4;
 			}
 
@@ -317,7 +317,7 @@ public class MonsterFactory {
 			}
 
 			@Override
-			public int getResilence() {
+			public int getResilience() {
 				return 24;
 			}
 
@@ -450,7 +450,7 @@ public class MonsterFactory {
 			}
 
 			@Override
-			public int getResilence() {
+			public int getResilience() {
 				return 2;
 			}
 
@@ -586,7 +586,7 @@ public class MonsterFactory {
 			}
 
 			@Override
-			public int getResilence() {
+			public int getResilience() {
 				return 60;
 			}
 
@@ -637,7 +637,7 @@ public class MonsterFactory {
 
 			@Override
 			public String getRareDrop() {
-				return "root of resilence";
+				return "root of resilience";
 			}
 
 			@Override
@@ -720,7 +720,7 @@ public class MonsterFactory {
 			}
 
 			@Override
-			public int getResilence() {
+			public int getResilience() {
 				return 6;
 			}
 
@@ -853,7 +853,7 @@ public class MonsterFactory {
 			}
 
 			@Override
-			public int getResilence() {
+			public int getResilience() {
 				return 15;
 			}
 
@@ -985,7 +985,7 @@ public class MonsterFactory {
 			}
 
 			@Override
-			public int getResilence() {
+			public int getResilience() {
 				return 12;
 			}
 
@@ -1119,7 +1119,7 @@ public class MonsterFactory {
 			}
 
 			@Override
-			public int getResilence() {
+			public int getResilience() {
 				return 100;
 			}
 
@@ -1254,7 +1254,7 @@ public class MonsterFactory {
 			}
 
 			@Override
-			public int getResilence() {
+			public int getResilience() {
 				return 50;
 			}
 
@@ -1387,7 +1387,7 @@ public class MonsterFactory {
 			}
 
 			@Override
-			public int getResilence() {
+			public int getResilience() {
 				return 40;
 			}
 
@@ -1520,7 +1520,7 @@ public class MonsterFactory {
 			}
 
 			@Override
-			public int getResilence() {
+			public int getResilience() {
 				return 10;
 			}
 
@@ -1654,7 +1654,7 @@ public class MonsterFactory {
 			}
 
 			@Override
-			public int getResilence() {
+			public int getResilience() {
 				return 40;
 			}
 
@@ -1787,7 +1787,7 @@ public class MonsterFactory {
 			}
 
 			@Override
-			public int getResilence() {
+			public int getResilience() {
 				return 200;
 			}
 

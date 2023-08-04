@@ -27,7 +27,7 @@ public abstract class Armor extends Item {
 	@Override
 	public String display() {
 		String str = this.getName() + "(" +this.getArmorClass().toString().toLowerCase()+ ", " +this.getArmorType().toString().toLowerCase()+ ") " + this.getDesc() +"\n";
-		str+= this.getResilenceMod() + "res ";
+		str+= this.getResilienceMod() + "res ";
 		if (this.getKnowledgeMod() > 0) {
 			str+= this.getKnowledgeMod() + "kno ";
 		}

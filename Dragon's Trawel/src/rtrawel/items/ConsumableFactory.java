@@ -70,7 +70,7 @@ public class ConsumableFactory {
 
 			@Override
 			public String getDesc() {
-				return "A special root that increases your resilence.";
+				return "A special root that increases your resilience.";
 			}
 
 			@Override

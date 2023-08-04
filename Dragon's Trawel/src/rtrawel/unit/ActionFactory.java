@@ -599,7 +599,7 @@ public class ActionFactory {
 						b.mag = 1.05;
 						b.passive = false;
 						b.timeLeft = 500;
-						b.source = "root of resilence mult";
+						b.source = "root of resilience mult";
 						b.type = Buff.BuffType.RES_MULT;
 						u.addBuffUq(b);
 						b = new Buff();
@@ -607,7 +607,7 @@ public class ActionFactory {
 						b.mag = 20;
 						b.passive = false;
 						b.timeLeft = 500;
-						b.source = "root of resilence mod";
+						b.source = "root of resilience mod";
 						b.type = Buff.BuffType.RES_MOD;
 						u.addBuffUq(b);
 				}
@@ -645,12 +645,12 @@ public class ActionFactory {
 
 			@Override
 			public String getName() {
-				return "root of resilence";
+				return "root of resilience";
 			}
 
 			@Override
 			public String getDesc() {
-				return "Increases resilence for a long duration.";
+				return "Increases resilience for a long duration.";
 			}});
 		
 		data.put("body slam",new Action(){

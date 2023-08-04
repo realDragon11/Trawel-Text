@@ -269,7 +269,7 @@ public class WeaponFactory {
 			}
 		
 			@Override
-			public int getResilenceMod() {
+			public int getResilienceMod() {
 				return 3;
 			}
 		});
@@ -724,7 +724,7 @@ public class WeaponFactory {
 			}
 		
 			@Override
-			public int getResilenceMod() {
+			public int getResilienceMod() {
 				return 7;
 			}
 		});
@@ -794,7 +794,7 @@ public class WeaponFactory {
 			}
 		
 			@Override
-			public int getResilenceMod() {
+			public int getResilienceMod() {
 				return 5;
 			}
 		});

@@ -63,11 +63,11 @@ public abstract class RUnit {
 	}
 	protected abstract int getEquipDexterity();
 	protected abstract int getBaseDexterity();
-	public int getResilence(){
-		return (int) (((this.getBaseResilence()+this.getEquipResilence())*buffMap.getTotalBuffMult(Buff.BuffType.RES_MULT))+buffMap.getTotalBuffMod(Buff.BuffType.RES_MOD));
+	public int getResilience(){
+		return (int) (((this.getBaseResilience()+this.getEquipResilience())*buffMap.getTotalBuffMult(Buff.BuffType.RES_MULT))+buffMap.getTotalBuffMod(Buff.BuffType.RES_MOD));
 	}
-	protected abstract int getEquipResilence();
-	protected abstract int getBaseResilence();
+	protected abstract int getEquipResilience();
+	protected abstract int getBaseResilience();
 	
 	public void takeDamage(int dam) {
 		//int d = (int)(dam*getDamageMultFor(t));
