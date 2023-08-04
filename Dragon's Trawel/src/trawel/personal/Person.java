@@ -38,6 +38,7 @@ import trawel.personal.classless.Feat;
 import trawel.personal.classless.HasSkills;
 import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
+import trawel.personal.classless.Skill.Type;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.body.Race.RaceType;
@@ -642,6 +643,7 @@ public class Person implements java.io.Serializable, HasSkills{
 		}
 	}
 	
+	@Deprecated
 	public void AILevelUp() {
 		if (skillPoints > 0) {
 			ArrayList<Skill> list = new ArrayList<Skill>();
@@ -1200,6 +1202,9 @@ public class Person implements java.io.Serializable, HasSkills{
 
 	public void displaySkills() {
 		for (Skill s: fetchSkills()) {
+			if (s.getType() == Type.INTERNAL_USE_ONLY) {
+				continue;
+			}
 			s.display();
 		}
 		

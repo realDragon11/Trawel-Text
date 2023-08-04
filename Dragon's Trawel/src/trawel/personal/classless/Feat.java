@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import trawel.extra;
+import trawel.personal.classless.Skill.Type;
 
 public enum Feat implements HasSkills{
 	TOUGH_COMMON("The Tough","They're tougher than they look. And they look tough.","",
@@ -76,6 +77,9 @@ public enum Feat implements HasSkills{
 	public String getText() {
 		String str = name + ": "+desc;
 		for (Skill s: skills) {
+			if (s.getType() == Type.INTERNAL_USE_ONLY) {
+				continue;
+			}
 			str += "\n "+HasSkills.padNewlines(s.disp());
 		}
 		return str;

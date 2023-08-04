@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import trawel.personal.classless.Skill.Type;
+
 public enum Perk implements HasSkills{
 	RACIAL_SHIFTS("Flexible","Prone to changing its defense patterns.",EnumSet.of(Skill.RACIAL_SHIFTS))
 	;
@@ -28,6 +30,9 @@ public enum Perk implements HasSkills{
 	public String getText() {
 		String str = name + ": "+desc;
 		for (Skill s: skills) {
+			if (s.getType() == Type.INTERNAL_USE_ONLY) {
+				continue;
+			}
 			str += "\n "+HasSkills.padNewlines(s.disp());
 		}
 		return str;

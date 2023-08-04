@@ -43,7 +43,7 @@ public class AIClass {
 	public static Attack randomAttack(Stance theStance){
 		return theStance.getAttack(extra.getRand().nextInt(theStance.getAttackCount()));
 	}
-	
+	@Deprecated
 	public static Attack eArtASpell(ASpell a, Person d) {
 		switch (a) {
 		case ELEMENTAL_BURST:
@@ -65,6 +65,7 @@ public class AIClass {
 	 * @param smarts - (int) intellect, how smart the attacker is 
 	 * @return an attack (Attack)
 	 */
+	@Deprecated
 	public static Attack chooseAttack(Stance theStance, int smarts, Combat com, Person attacker, Person defender) {
 		
 			int j = 1;
@@ -274,6 +275,7 @@ public class AIClass {
 	 * 
 	 * @param inv (Inventory)
 	 */
+	@Deprecated
 	public static boolean checkCheap(Inventory inv) {
 		return false;
 		//local vars
@@ -314,6 +316,7 @@ public class AIClass {
 	 * Look over this person's equipment to make sure it doesn't render them impossible to win.
 	 * @param man (Person)
 	 */
+	@Deprecated
 	public static void checkYoSelf(Person man) {
 		//extra.println(man.getName() + " starts looking over their "+bpmFunctions.choose("equipment","gear","inventory","belongings")+".");
 		if (!man.isPlayer()) {

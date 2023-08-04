@@ -2,9 +2,11 @@ package trawel.battle.attacks;
 
 import org.nustaq.serialization.annotations.OneOf;
 
+import derg.StringResult;
 import trawel.Effect;
 import trawel.extra;
 import trawel.battle.Combat;
+import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill;
@@ -20,22 +22,32 @@ import trawel.personal.item.solid.Weapon;
  * It it used to attack other Persons in a certain way. It should be held in a Stance.
  *
  */
-public class Attack{
+public class Attack implements IAttack{
 
-	//instance variables
+	//old instance variables, phase out
 	private double hitMod, speed;
 	private int sharp, blunt, pierce;
-	private String desc, name;
-	private transient TargetReturn target;
-	public transient Person defender;//only used for mass battles
+	
 	private transient boolean isMagic = false;
 	private transient String magicDesc;
-	private transient Skill skill;
+	private transient Skill skill;//should be dictated by the holding stance now
+	
+	
+	//new values
+	private double hitMult, warmup, cooldown;
+	private int intValues[];
+	private String name, desc;
+	private StringResult fluffer;
+	private Stance holdingStance;//will be used for some shared data
 	private int soundStrength;
-	@OneOf({"sharp","blunt","pierce"})
-	private String soundType;
+	private String soundType;//shouldn't be a string
+	private AttackType type;
+	
+	//values only present in impaired attacks, moving out
+	private transient TargetReturn target;
 	private transient Wound wound;
 	private transient Weapon weapon;
+	public transient Person defender;//only used for mass battles
 	//constructor
 	/**
 	 * Creates an attack with the following attributes:
@@ -239,6 +251,7 @@ public class Attack{
 	/**
 	 * @return the sharp damage (int)
 	 */
+	@Override
 	public int getSharp() {
 		return sharp;
 	}
@@ -246,6 +259,7 @@ public class Attack{
 	/**
 	 * @return the blunt damage (int)
 	 */
+	@Override
 	public int getBlunt() {
 		return blunt;
 	}
@@ -253,12 +267,14 @@ public class Attack{
 	/**
 	 * @return the pierce damage (int)
 	 */
+	@Override
 	public int getPierce() {
 		return pierce;
 	}
 	/**
 	 * @return the desc (String)
 	 */
+	@Override
 	public String getDesc() {
 		return desc;
 	}
@@ -279,6 +295,7 @@ public class Attack{
 	/**
 	 * @return the name (String) of the attack
 	 */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -337,7 +354,7 @@ public class Attack{
 		}
 	}
 	
-	public Attack impair(int handLevel, Person defender,Weapon weap, Person p) {
+	public ImpairedAttack impair(int handLevel, Person defender,Weapon weap, Person p) {
 		TargetReturn rtar;
 		if (defender == null) {
 			rtar = TargetFactory.TypeBody.HUMAN_LIKE.randTarget(null);//empty config
@@ -347,39 +364,16 @@ public class Attack{
 		Target t = rtar.tar;
 		
 		Style s = StyleFactory.randStyle();
-		if (!name.contains("examine")) {
-			double sMult = s.damage*t.sharp;
-			double bMult = s.damage*t.blunt;
-			double pMult = s.damage*t.pierce;
-			double speedMult = s.speed;
-			double speedMod = extra.randRange(-10,10);
-			double hitMult = t.hit*s.hit;
-			if (weap != null) {
-				sMult *= weap.getMat().sharpMult;
-				bMult *= weap.getMat().bluntMult;
-				pMult *= weap.getMat().pierceMult;
-				hitMult *=weap.qualList.contains(Weapon.WeaponQual.ACCURATE) ? 1.1 : 1;
-			}
-			if (p != null) {
-				speedMult *= p.getSpeed();
-				if (p.hasEffect(Effect.SLICE)) {
-					hitMult*=1.1;//WET
-					speedMult*=.9;
-				}
-				if (p.hasEffect(Effect.DICE)) {
-					speedMult*=.9;//WET
-				}
-			}
-		return new Attack(s.name + name + " " + rtar.getName(),
-				hitMod*hitMult,
-				Math.max((speed*speedMult)+speedMod,15),
-				handLevel*sharp*extra.upDamCurve(.25,.5)*sMult,
-				handLevel*blunt*extra.upDamCurve(.25,.5)*bMult,
-				handLevel*pierce*extra.upDamCurve(.25,.5)*pMult,
-				desc,soundStrength,soundType,rtar,weap);
-		}else {
-			return this;
-		}
+		
+		return new ImpairedAttack(this,rtar,s,weap,p,null);
+		/*
+	return new Attack(s.name + name + " " + rtar.getName(),
+			hitMod*hitMult,
+			Math.max((speed*speedMult)+speedMod,15),
+			handLevel*sharp*extra.upDamCurve(.25,.5)*sMult,
+			handLevel*blunt*extra.upDamCurve(.25,.5)*bMult,
+			handLevel*pierce*extra.upDamCurve(.25,.5)*pMult,
+			desc,soundStrength,soundType,rtar,weap);*/
 	}
 	
 	public Attack wither(double percent) {
@@ -488,6 +482,42 @@ public class Attack{
 	
 	public Weapon getWeapon() {
 		return weapon;
+	}
+
+	@Override
+	public boolean physicalDamage() {
+		return type != AttackType.SKILL;//DOLATER
+	}
+
+	@Override
+	public String fluff(AttackReturn attret) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double getWarmup() {
+		return warmup;
+	}
+
+	@Override
+	public double getCooldown() {
+		return cooldown;
+	}
+
+	@Override
+	public double getHitMult() {
+		return hitMult;
+	}
+
+	@Override
+	public AttackType getType() {
+		return type;
+	}
+
+	@Override
+	public int valueSize() {
+		return intValues.length;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import trawel.extra;
+import trawel.personal.classless.Skill.Type;
 
 public enum Archetype implements HasSkills{
 	;
@@ -12,13 +13,19 @@ public enum Archetype implements HasSkills{
 	private final String name, desc;
 	private final Set<Skill> skills;
 	private final int strength, dexterity;
-	Archetype(String _name, String description, boolean entry, Set<Skill> skillset){
+	private final AType type;
+	Archetype(String _name, String description, boolean entry, AType _type, Set<Skill> skillset){
 		name = _name;
 		desc = description;
 		entryLevel = entry;
 		skills = skillset;
 		strength = 0;
 		dexterity = 0;
+		type = _type;
+	}
+	
+	public enum AType{
+		RACIAL
 	}
 	
 	@Override
@@ -30,6 +37,9 @@ public enum Archetype implements HasSkills{
 	public String getText() {
 		String str = name + ": "+desc;
 		for (Skill s: skills) {
+			if (s.getType() == Type.INTERNAL_USE_ONLY) {
+				continue;
+			}
 			str += "\n "+HasSkills.padNewlines(s.disp());
 		}
 		return str;
@@ -46,6 +56,9 @@ public enum Archetype implements HasSkills{
 		list[0] = vals[extra.randRange(0,vals.length-1)];
 		for (int i = 0; i < vals.length;i++) {
 			Archetype local = vals[i];
+			if (!local.entryLevel) {
+				continue;
+			}
 			for (int j = 0; j < has;i++) {
 				if (!list[j].canFirstWith(local)) {
 					continue;

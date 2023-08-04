@@ -963,66 +963,66 @@ public class Combat {
 			//although they'll still not usually apply if damage == 0
 			return (" They shrug off the blow!");
 		}else {
-		Attack attack = attacker2.getNextAttack();
-		Integer[] nums = woundNums(attack,attacker2,defender2,retu);
-		Wound w = attack.getWound();
-		if (w == null) {
-			throw new RuntimeException("inflicting null wound");
-		}
-		switch (w) {
-		case CONFUSED:
-			newTarget = true;
-			break;
-		case SLICE:
-			attacker2.addEffect(Effect.SLICE);
-			break;
-		 case DICE:
-			 attacker2.advanceTime(nums[1]);
-			 attacker2.addEffect(Effect.DICE);
-			 break;
-		case HACK: case TAT:case CRUSHED:
-		case SCALDED: case FROSTBITE:
-			defender2.takeDamage(nums[0]);
-			break;
-		case HAMSTRUNG: case WINDED: case TRIPPED:
-			defender2.advanceTime(-nums[0]);
-			break;
-		case DIZZY: case FROSTED: case BLINDED:
-			defender2.getNextAttack().blind(1-(nums[0]/10f));
-			break;	
-		case MAJOR_BLEED:
-			defender2.addEffect(Effect.BLEED);
-			defender2.addEffect(Effect.MAJOR_BLEED);
-			break;
-		case BLEED:
-			defender2.addEffect(Effect.BLEED);
-			break;
-		case DISARMED: case SCREAMING:
-			defender2.addEffect(Effect.DISARMED);
-			break;
-		case KO:
-			defender2.takeDamage(nums[0]);
-			defender2.addEffect(Effect.RECOVERING);
-			break;
-		case I_BLEED:
-			defender2.addEffect(Effect.I_BLEED);
-			break;
-		case TEAR:
-			defender2.addEffect(Effect.TORN);
-			break;
-		case BLOODY:
-			defender2.addEffect(Effect.BLEED);
-			defender2.getNextAttack().blind(1-(nums[0]/10f));
-			break;
-		case MANGLED:
-			defender2.multBodyStatus(attack.getTargetSpot(), 1-(nums[0]/10f));
-			break;
-			
-		}
-		if (w != Wound.GRAZE)
-			if (attack.getWeapon() != null && attack.getWeapon().qualList.contains(Weapon.WeaponQual.DESTRUCTIVE)) {
-				defender2.getBag().burn((retu.damage/defender2.getMaxHp())/3, attack.getSlot());
+			Attack attack = attacker2.getNextAttack();
+			Integer[] nums = woundNums(attack,attacker2,defender2,retu);
+			Wound w = attack.getWound();
+			if (w == null) {
+				throw new RuntimeException("inflicting null wound");
 			}
+			switch (w) {
+			case CONFUSED:
+				newTarget = true;
+				break;
+			case SLICE:
+				attacker2.addEffect(Effect.SLICE);
+				break;
+			case DICE:
+				attacker2.advanceTime(nums[1]);
+				attacker2.addEffect(Effect.DICE);
+				break;
+			case HACK: case TAT:case CRUSHED:
+			case SCALDED: case FROSTBITE:
+				defender2.takeDamage(nums[0]);
+				break;
+			case HAMSTRUNG: case WINDED: case TRIPPED:
+				defender2.advanceTime(-nums[0]);
+				break;
+			case DIZZY: case FROSTED: case BLINDED:
+				defender2.getNextAttack().blind(1-(nums[0]/10f));
+				break;	
+			case MAJOR_BLEED:
+				defender2.addEffect(Effect.BLEED);
+				defender2.addEffect(Effect.MAJOR_BLEED);
+				break;
+			case BLEED:
+				defender2.addEffect(Effect.BLEED);
+				break;
+			case DISARMED: case SCREAMING:
+				defender2.addEffect(Effect.DISARMED);
+				break;
+			case KO:
+				defender2.takeDamage(nums[0]);
+				defender2.addEffect(Effect.RECOVERING);
+				break;
+			case I_BLEED:
+				defender2.addEffect(Effect.I_BLEED);
+				break;
+			case TEAR:
+				defender2.addEffect(Effect.TORN);
+				break;
+			case BLOODY:
+				defender2.addEffect(Effect.BLEED);
+				defender2.getNextAttack().blind(1-(nums[0]/10f));
+				break;
+			case MANGLED:
+				defender2.multBodyStatus(attack.getTargetSpot(), 1-(nums[0]/10f));
+				break;
+
+			}
+			if (w != Wound.GRAZE)
+				if (attack.getWeapon() != null && attack.getWeapon().qualList.contains(Weapon.WeaponQual.DESTRUCTIVE)) {
+					defender2.getBag().burn((retu.damage/defender2.getMaxHp())/3, attack.getSlot());
+				}
 		}
 		return (" " +attacker2.getNextAttack().getWound().active);
 	}

@@ -18,7 +18,6 @@ public enum Skill{
 		DSTRIKE("Decisive Strike","Instantly kill anyone you damage by more than 80% in one blow.",true,Type.FIGHTER,4,""),
 		SPUNCH("Sucker Punch","Your attacks slow down your foe.",true,Type.FIGHTER,4,""),
 		
-		KUNG_FU("Hand to Hand","Gain martial arts attacks.",true,Type.FIGHTER,5,""),
 		WAIT("Wait","Allows you to wait for a better opportunity.",false,Type.FIGHTER,5,""),
 		//LAST_STAND("Last Stand","When reduced to 0 hp or lower, stay alive at 1 hp.",Type.FIGHTER,3),
 		
@@ -76,7 +75,7 @@ public enum Skill{
 		GOOFFENSIVE("Go on the offensive","Allows you to attack with your defensive item.",true,Type.DEFENDER,4,""),
 		DEFENSIVE_TRAINING("Stay on the defensive","Unlocks your defensive potential.",true,Type.DEFENDER,4,""),
 		
-		TA_NAILS("Tough as Nails","Grants a 20% chance to ignore wound effects.",true,Type.DEFENDER,5,""),
+		
 		
 		IDEF_TRAINING("Defensive Training","Hone your defensive skills.",true,Type.DEFENDER,6,""),
 		
@@ -87,21 +86,42 @@ public enum Skill{
 		BLOOD_SURGE("BS","Internal",false,Type.FEATURE,0,""),
 		BLOOD_HARVEST("BH","Internal",false,Type.FEATURE,0,""),
 		SKY_BLESSING_1("Sky Blessing I","Internal",false,Type.FEATURE,0,""),
-		PLAYERSIDE("PSIDE","Internal",false,Type.FEATURE,0,""),
 		ENDSKILL("","",false,Type.FIGHTER,0,""),
+		//anything above should be removed and filtered out over time
+		
+		
+		//INTERNAL MARKER VALUES, KEEP
+		PLAYERSIDE(null,null,null,Type.INTERNAL_USE_ONLY),
+		
+		//new values, sorting by type because saves break without order changing anyway
 		RACIAL_SHIFTS("Flexible","Prone to changing its defense patterns."
 				,"Changes stances in combat, changing its target types, and possibly its attacks."
 				,Type.FEATURE),
-		RAW_GUTS("Raw Guts","Resist damage based on level and Torso condition."
+		TA_NAILS("Tough as Nails","Grants a 20% chance to ignore incoming wounds."
+				,"Can apply to any wound inflicted on them, completely negating it.",
+				Type.DEFENSE),
+		RAW_GUTS("Raw Guts","Resist damage up to level, by Torso condition."
 				,"Can only resist up to half the base damage of an attack. Only applies to hit attacks. Amount is random."
-				,Type.DEFENDER),
+				,Type.DEFENSE),
+		KUNG_FU("Unarmed Attacks","Gain martial arts attacks."
+				,"Adds one attack option per turn, which is based on strength and dexterity, but capped to weapon level."
+				,Type.ATTACK_TYPE),
 		;
 	    private String name,desc, longDesc;
 	    private Type type;
 	    private int level;
 	    private boolean AITake;
 	    public enum Type{
-	    	TRADER, EXPLORER, FIGHTER, MAGE, DEFENDER, FEATURE;
+	    	TRADER,
+	    	EXPLORER,
+	    	FIGHTER,
+	    	MAGE,
+	    	DEFENDER,
+	    	//new set
+	    	DEFENSE,//skills that provide defensive benefits
+	    	ATTACK_TYPE,//skills that grant a new attack type, generally there should only be 5 of these total
+	    	FEATURE,//skills that are 'part' of a person or thing. Should be only granted by perks
+	    	INTERNAL_USE_ONLY;//skills that should not be displayed
 	    }
 		Skill(String name,String desc,boolean AITake, Type t, int lvl, String longDesc){
 			this.name = name;
