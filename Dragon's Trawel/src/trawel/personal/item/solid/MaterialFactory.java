@@ -56,7 +56,7 @@ public class MaterialFactory {
 		misc.sharpResist = .5f;
 		misc.bluntResist = 1;
 		misc.pierceResist = .5f;
-		misc.dexMod = 1.1f;
+		misc.dexMod = 1f;
 		misc.sharpMult = 0;
 		misc.bluntMult = 0;
 		misc.pierceMult = 0;
@@ -316,7 +316,7 @@ public class MaterialFactory {
 		misc.sharpResist = 0;
 		misc.bluntResist = 1;
 		misc.pierceResist = 0;
-		misc.dexMod = 1.2f;
+		misc.dexMod = 1f;
 		misc.sharpMult = 0;
 		misc.bluntMult = 0;
 		misc.pierceMult = 0;

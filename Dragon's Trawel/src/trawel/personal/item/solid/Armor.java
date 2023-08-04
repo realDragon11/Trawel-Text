@@ -7,6 +7,7 @@ import org.nustaq.serialization.annotations.OneOf;
 
 import trawel.Services;
 import trawel.extra;
+import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.magic.EnchantConstant;
@@ -326,7 +327,7 @@ public class Armor extends Item {
 	 * @return weight (int)
 	 */
 	public int getWeight() {
-		return (int) (slotImpact()*MaterialFactory.getMat(material).weight*ArmorStyle.fetch(style).weightMult);
+		return (int) (Inventory.TEMP_WEIGHT_MULT*slotImpact()*MaterialFactory.getMat(material).weight*ArmorStyle.fetch(style).weightMult);
 	}
 	
 	private int slotImpact() {
@@ -394,8 +395,8 @@ public class Armor extends Item {
 	/**
 	 * @return the dexMod (float)
 	 */
-	public float getDexMod() {
-		return dexMod;
+	public float getAgiPenMult() {
+		return extra.lerp(getMat().dexMod,1f,getStyle().dexMultBase);
 	}
 	
 	/**
@@ -425,7 +426,7 @@ public class Armor extends Item {
 			;break;	
 		case 2:
 			extra.println(this.getName() + " sbp:" + extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
-			+ " dex: "+ this.getDexMod() + " flame: "+ this.getFireMod() + " shock: "+ this.getShockMod() + " frost: "+ this.getFreezeMod() + " aether: " + (int)(this.getAetherValue()*markup));
+			+ " agi: "+ getAgiPenMult() + " flame: "+ this.getFireMod() + " shock: "+ this.getShockMod() + " frost: "+ this.getFreezeMod() + " aether: " + (int)(this.getAetherValue()*markup));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}

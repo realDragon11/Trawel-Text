@@ -246,24 +246,19 @@ public class Inventory implements java.io.Serializable{
 			if (armorSlots[i].isEnchanted()) {
 				retMod *= armorSlots[i].getEnchant().getDodgeMod();
 			}
-		if (armorSlots[i].getDexMod() < 1.0) {
-			//heavy armor
-			if ((owner != null ? owner.heavyArmorLevel : 0 ) > 20.0) {
-				//do nothing, negate heavy armor penalty
-			}else {
-				retMod *= extra.lerp(armorSlots[i].getDexMod(),1,(owner != null ? owner.heavyArmorLevel : 0 )/20.0f);
-			}
-		}else {
-			//light armor
-			retMod*= Math.pow(armorSlots[i].getDexMod(),Math.log10(10+((owner != null ? owner.lightArmorLevel : 0 )*2.5f)));
-		}
-		
+			//retMod *= armorSlots[i].getAgiPenMult();
+			//now applied elsewhere
 		i++;
 		}
 		if (hand != null && hand.isEnchantedConstant()) {
 			retMod *= hand.getEnchant().getDodgeMod();
 		}
 		retMod*=getRace().dodgeMod;
+		if (owner != null) {
+			retMod *= owner.getTotalAgiPen();
+		}else {
+			retMod *= getAgiPen();
+		}
 		
 		if ((owner != null ? owner.hasEffect(Effect.BEE_SHROUD) : false )) {
 			retMod*=1.1;
@@ -971,10 +966,46 @@ public class Inventory implements java.io.Serializable{
 		}
 	}
 
-
 	public void removeCurrency() {
 		money = 0;
 		aether = 0;
+	}
+	
+	public static final float TEMP_WEIGHT_MULT = .06f;
+	public static final float LEVEL_CAP_PEN = 2f;
+	public static final float LEVEL_CAP_PEN_EXTREME = 3f;
+	
+	public int getCapacity() {
+		float weight = 0;
+		if (hand != null) {
+			weight += getCapacityLevelMult(hand.getLevel(),owner.getLevel())*hand.getWeight();
+		}
+		for (Armor a: getArmors()) {
+			weight += getCapacityLevelMult(a.getLevel(),owner.getLevel())*a.getWeight();
+		}
+		return (int) weight;
+	}
+	
+	public static final float getCapacityLevelMult(int itemLevel, int personLevel) {
+		if (personLevel >= itemLevel-1) {
+			return 1f;
+		}
+		if (personLevel >= itemLevel-3) {
+			return LEVEL_CAP_PEN;
+		}
+		return LEVEL_CAP_PEN_EXTREME;
+	}
+
+
+	public float getAgiPen() {
+		float mult = 1;
+		for (int i = 0; i < 5; i++) {
+			if (armorSlots[i] == null) {
+				continue;
+			}
+			mult *= armorSlots[i].getAgiPenMult();
+		}
+		return mult;
 	}
 
 }

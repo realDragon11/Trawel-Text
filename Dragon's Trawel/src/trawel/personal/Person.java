@@ -253,6 +253,10 @@ public class Person implements java.io.Serializable, HasSkills{
 	
 	//instance methods
 	
+	/**
+	 * do not use, use updateSkills instead
+	 * FIXME: see if can just put updateskills code here... might have some stream issues
+	 */
 	@Override
 	public Stream<Skill> collectSkills(){
 		//return Stream.concat(featSet.parallelStream(), perkSet.parallelStream(),archSet.parallelStream());
@@ -263,6 +267,7 @@ public class Person implements java.io.Serializable, HasSkills{
 		
 		//ugh need to process them for attributes anyway
 		atrBox.reset();
+		atrBox.setCapacity(bag.getCapacity());
 		Stream<Skill> s = Stream.empty();
 		for (Archetype a: archSet) {
 			atrBox.process(a);
@@ -1372,6 +1377,7 @@ public class Person implements java.io.Serializable, HasSkills{
 			extra.println(getHp() +" ("+damageDone+")->"+ (getHp()-damageDone) + "/" + getMaxHp());
 		}else {
 			bodystatus.debug_print(true);//testing, will have to redo both this and submethods if used for real
+			extra.println(attributeDesc());
 		}
 	}
 	
@@ -1411,7 +1417,29 @@ public class Person implements java.io.Serializable, HasSkills{
 
 	@Override
 	public int getDexterity() {
+		return (int) (getRawDexterity()* bag.getAgiPen());
+	}
+	
+	public int getRawDexterity() {
 		return fetchAttributes().getDexterity();
+	}
+	
+	public float getAttributeAgiPen() {
+		//make sure to update capacity
+		if (atrBox == null) {
+			updateSkills();
+		}
+		return atrBox.getTotalAgiPen(bag.getAgiPen());
+	}
+	
+	public float getTotalAgiPen() {
+		//make sure to update capacity
+		return getAttributeAgiPen() * bag.getAgiPen();
+	}
+	
+	public String attributeDesc() {
+		return "(raw) dex (" + getRawDexterity() +") " + getDexterity() + " cap/str " + bag.getCapacity() + "/"+getStrength()
+		+ " (total) AMP (" + getTotalAgiPen() + ") " + getAttributeAgiPen();
 	}
 
 }

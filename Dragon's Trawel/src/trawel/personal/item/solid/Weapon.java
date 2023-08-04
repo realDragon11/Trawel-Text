@@ -140,31 +140,31 @@ public class Weapon extends Item {
 	//not normal weapons start
 		case "generic teeth":
 			cost *= 1;
-			weight *=3;
+			weight *=0;
 			;break;
 		case "standing reaver":
 			cost *= 1;
-			weight *=3;	
+			weight *=0;	
 			;break;
 		case "generic teeth and claws":
 			cost *= 1;
-			weight *=3;	
+			weight *=0;	
 			;break;
 		case "branches":
 			cost *= 1;
-			weight *=3;	
+			weight *=0;	
 			;break;
 		case "generic fists":
 			cost *= 1;
-			weight *=1;
+			weight *=0;
 			;break;
 		case "unicorn horn":
 			cost *= 3;
-			weight *=3;	
+			weight *=0;	
 			;break;
 		case "generic talons":
 			cost *= 1;
-			weight *=3;	
+			weight *=0;	
 			;break;
 		case "fishing spear":
 			cost *= .2f;
@@ -281,7 +281,7 @@ public class Weapon extends Item {
 	 * @return weight (int)
 	 */
 	public int getWeight() {
-		return weight;
+		return (int) (weight*Inventory.TEMP_WEIGHT_MULT);
 	}
 	
 	/**

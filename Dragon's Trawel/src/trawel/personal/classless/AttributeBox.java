@@ -53,12 +53,12 @@ public class AttributeBox {
 	//NOTE
 	//can insert skill stuff here since we have a link to the person!
 	
-	public float getTotalAgiPen(float capOver) {
-		return getCapAgiPen(capOver)*multDex(capOver);
+	public float getTotalAgiPen(float capOver,float agiPenToDex) {
+		return getCapAgiPen(capOver)*multDex(capOver,agiPenToDex*dexterity);
 	}
 	
-	public float getTotalAgiPen() {
-		return getTotalAgiPen(getNaiveStrCap(capacity));
+	public float getTotalAgiPen(float agiPenToDex) {
+		return getTotalAgiPen(getNaiveStrCap(capacity),agiPenToDex);
 	}
 	
 	/**
@@ -74,6 +74,14 @@ public class AttributeBox {
 			return extra.lerp(dp,1f,dexterity/100f);
 		}
 		return extra.lerp(1f,2f,dexterity/1500f);//reaches 2x at 1500
+	}
+	
+	private float multDex(float capOver,float effective_dex) {
+		float dp = getDexPen(capOver);
+		if (dexterity <= 100) {
+			return extra.lerp(dp,1f,effective_dex/100f);
+		}
+		return extra.lerp(1f,2f,effective_dex/1500f);//reaches 2x at 1500
 	}
 	
 	public float getCapAgiPen() {
@@ -100,6 +108,9 @@ public class AttributeBox {
 		return capacity/(float)strength;
 	}
 	
+	/**
+	 * not a pen to dex, how much dex can pen AMP for being negative dex
+	 */
 	public float getDexPen(float capacityPercent) {
 		if (capacityPercent <= 1f) {
 			return .75f;
@@ -121,5 +132,9 @@ public class AttributeBox {
 			return extra.lerp(.5f,1f,Math.max(0,strength)/100f);
 		}
 		return 1f + (strength/1000f);//+.1f per 100
+	}
+	
+	public String getDesc() {
+		return "dex: " +getDexterity() + " cap/str: "+capacity+"/"+getStrength();
 	}
 }
