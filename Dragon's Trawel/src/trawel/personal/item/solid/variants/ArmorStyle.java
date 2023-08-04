@@ -1,5 +1,16 @@
 package trawel.personal.item.solid.variants;
 
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+
+import com.github.yellowstonegames.core.WeightedTable;
+
+import trawel.extra;
+import trawel.personal.item.solid.Material;
+import trawel.personal.item.solid.MaterialFactory;
+
 /**
  * Stores a 'style' of armor, which, when combined with it's slot and material, give complete the physical properties of the item
  * not storable directly, but supports retrieval with shorts
@@ -20,6 +31,7 @@ public enum ArmorStyle {
 	public float dexMultBase;//combined with material and slot weirdly
 	public RestrictType restrictType;
 	public boolean[] bannedSlots = new boolean[] {false,false,false,false,false};
+	public WeightedTable matTable;
 	
 	//FIXME: if not using global pallete swapping, also needs ids
 	ArmorStyle(){
@@ -116,10 +128,31 @@ public enum ArmorStyle {
 		BODY.genner[2] = new NameStyleNum("body");
 		BODY.genner[3] = new NameStyleNum("legs");
 		BODY.genner[4] = new NameStyleNum("feet");
-			
-		};
-	
+
+		//Set<ArmorStyle> have = EnumSet.noneOf(ArmorStyle.class);
+		List<ArmorStyle> vals = Arrays.asList(ArmorStyle.values());
+		float[][] lists = new float[vals.size()][MaterialFactory.matList.size()];
+		for (Material m: MaterialFactory.matList) {
+			for (int i = 0; i < MaterialFactory.matList.size();i++) {
+				for (int j = 0; j < m.typeList.size();j++) {
+					lists[vals.indexOf(m.typeList.get(j))][i] += m.rarity;
+				}
+			}
+		}
+		for (int i = 0; i < vals.size(); i++) {
+			if (vals.get(i) == BODY) {
+				continue;
+			}
+			vals.get(i).matTable = new WeightedTable(lists[i]);
+		}
+
+	};
+
 	public static ArmorStyle fetch(short i) {
 		return ArmorStyle.values()[i];
+	}
+	
+	public Material getMatFor() {
+		return MaterialFactory.getMat(matTable.random(extra.getRand()));
 	}
 }

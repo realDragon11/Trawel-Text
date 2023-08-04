@@ -62,18 +62,20 @@ public class Person implements java.io.Serializable, HasSkills{
 	private Inventory bag;
 	
 	private transient Attack attackNext;
-	private int xp = 0;
-	private short level = 1;
+	private int xp;
+	private short level;
 	private byte intellect;
-	private transient double speedFill = 0;
-	private transient boolean isAttacking =false;
+	private transient double speedFill;
+	private transient boolean isAttacking =false;//TODO: either remove or convert to warmup and cooldown
 	private transient int hp, tempMaxHp;
 	private PersonType personType = extra.choose(PersonType.COWARDLY,PersonType.FEARLESS);
 	//private String placeOfBirth;
 	private int beer;
+	/**
+	 * bit 1 = racism (0b00000001) <br>
+	 * bit 2 = angry (racist to non humanoids) (0b00000010) <br>
+	 */
 	private byte flags = 0b00000000;//used with bitmasking
-	//bit 1 = racism (0b00000001)
-	//bit 2 = angry (racist to non humanoids) (0b00000010)
 	
 	private String firstName,title;
 
@@ -118,12 +120,14 @@ public class Person implements java.io.Serializable, HasSkills{
 		COWARDLY,FEARLESS,GRIZZLED,DEATHCHEATED,LIFEKEEPER
 	}
 	
-	private transient Set<Skill> skillSet; //= EnumSet.noneOf(Skill.class);//new EnumSet<trawel.personal.classless.Skill>();
+	 //= EnumSet.noneOf(Skill.class);//new EnumSet<trawel.personal.classless.Skill>();
 	private Set<Feat> featSet;//new EnumSet<trawel.personal.classless.Skill>();
 	private Set<Perk> perkSet;
 	private Set<Archetype> archSet;
 	
-	private AttributeBox atrBox;
+	//rebuilt from the above 3, lazyloaded
+	private transient AttributeBox atrBox;
+	private transient Set<Skill> skillSet;
 	
 	//private boolean isPlayer;
 	
@@ -132,6 +136,8 @@ public class Person implements java.io.Serializable, HasSkills{
 		featSet = EnumSet.noneOf(Feat.class);
 		perkSet = EnumSet.noneOf(Perk.class);
 		archSet = EnumSet.noneOf(Archetype.class);
+		
+		xp = 0;
 		
 		this.job = job;
 		rFlag = raceFlag;
@@ -210,7 +216,7 @@ public class Person implements java.io.Serializable, HasSkills{
 		effects = new ArrayList<Effect>();
 		
 		
-		atrBox = new AttributeBox(this);
+		//atrBox = new AttributeBox(this);
 	}
 	
 	protected Person(int level) {
@@ -260,15 +266,15 @@ public class Person implements java.io.Serializable, HasSkills{
 		Stream<Skill> s = Stream.empty();
 		for (Archetype a: archSet) {
 			atrBox.process(a);
-			Stream.concat(s,a.collectSkills());
+			s = Stream.concat(s,a.collectSkills());
 		}
 		for (Perk p: perkSet) {
 			atrBox.process(p);
-			Stream.concat(s,p.collectSkills());
+			s = Stream.concat(s,p.collectSkills());
 		}
 		for (Feat f: featSet) {
 			atrBox.process(f);
-			Stream.concat(s,f.collectSkills());
+			s = Stream.concat(s,f.collectSkills());
 		}
 		
 		return s;
@@ -276,16 +282,32 @@ public class Person implements java.io.Serializable, HasSkills{
 	
 	@Override
 	public String getText() {
-		throw new UnsupportedOperationException("people can't give class text");
+		throw new UnsupportedOperationException("people can't give classless text");
 	}
 	
+	/**
+	 * this will be called automatically if the Person does not have one of the base things yet
+	 * but you should call it after you assemble them or update them, in case they got it built
+	 * while you weren't looking.
+	 */
 	public Set<Skill> updateSkills() {
+		atrBox = new AttributeBox(this);
 		skillSet = EnumSet.noneOf(Skill.class);
 		collectSkills().forEach(skillSet::add);
 		return skillSet;
 	}
 	public Set<Skill> fetchSkills() {
+		if (skillSet == null) {
+			updateSkills();
+		}
 		return skillSet;
+	}
+	
+	public AttributeBox fetchAttributes() {
+		if (atrBox == null) {
+			updateSkills();
+		}
+		return atrBox;
 	}
 	
 	public void setPerk(Perk p) {
@@ -303,15 +325,13 @@ public class Person implements java.io.Serializable, HasSkills{
 	public BloodType getBlood() {
 		BloodType temp = bodyType.getBlood();
 		if (temp == BloodType.VARIES) {
-			switch (targetOverride) {
-			case C_REAVER:
+			switch (getBag().getRaceID()) {
+			case B_REAVER_SHORT: case B_REAVER_TALL:
 				break;
-			case MIMIC:
+			case B_MIMIC_CLOSED:
 				return BloodType.NONE;
-			case OPEN_MIMIC:
+			case B_MIMIC_OPEN:
 				return BloodType.NORMAL;
-			case S_REAVER:
-				break;
 			}
 		}
 		return temp;
@@ -661,10 +681,10 @@ public class Person implements java.io.Serializable, HasSkills{
 					i++;
 				s = extra.randList(list);
 				}while((s.equals(Skill.KUNG_FU) && this.getBag().getRace().racialType != Race.RaceType.HUMANOID) && i < 99);
-			skillAdd(s);
+			//skillAdd(s);
 			
 			
-			AILevelUp();//recursive hack
+			//AILevelUp();//recursive hack
 			}
 		}
 	}
@@ -1032,7 +1052,7 @@ public class Person implements java.io.Serializable, HasSkills{
 	}
 	
 	public boolean hasSkill(Skill o) {
-		return skillSet.contains(o);
+		return fetchSkills().contains(o);
 	}
 
 	public boolean isAlive() {
@@ -1180,6 +1200,7 @@ public class Person implements java.io.Serializable, HasSkills{
 		
 	}
 
+	@Deprecated
 	public void addSkill(Skill skill) {
 		skillSet.add(skill);
 	}
@@ -1381,6 +1402,16 @@ public class Person implements java.io.Serializable, HasSkills{
 
 	public double getConditionForPart() {
 		return bodystatus.getStatusOnMapping(TargetFactory.TORSO_MAPPING);
+	}
+
+	@Override
+	public int getStrength() {
+		return fetchAttributes().getStrength();
+	}
+
+	@Override
+	public int getDexterity() {
+		return fetchAttributes().getDexterity();
 	}
 
 }

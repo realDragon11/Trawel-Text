@@ -493,6 +493,12 @@ public class Combat {
 	}
 
 	//instance methods
+	
+	//TODO: could store a 'skill resolver' in a local variable, if defender/attacker = null, then set it to a static empty enum set
+	//this would make the overhead and problems of null checking people a billion times for skills not a problem anymore
+	//it would have a minor performance impact on battlescore since the checks would need to be made
+	//but the DRY > WET advantages might be good
+	
 	/**
 	 * Calculate if an attack hits, and how much damage it would deal, countered by the armor.
 	 * @param att The attack being used (Attack)
@@ -569,7 +575,7 @@ public class Combat {
 					}
 				}
 				if (defender.hasSkill(Skill.RAW_GUTS)) {
-					int maxGResist = (int) (defender.getLevel() * defender.getConditionForPart());
+					int maxGResist = (int) Math.ceil(defender.getLevel() * defender.getConditionForPart());
 					int gResisted = ret.damage;
 					ret.damage = Math.max(ret.damage/2,ret.damage-extra.randRange(0,maxGResist));
 					gResisted = gResisted-ret.damage;

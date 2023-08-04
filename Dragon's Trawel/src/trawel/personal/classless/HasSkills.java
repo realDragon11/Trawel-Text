@@ -13,6 +13,9 @@ public interface HasSkills {
 	
 	public String getText();
 	
+	public int getStrength();
+	public int getDexterity();
+	
 	public static Stream<Skill> combine(Stream<Skill>...streams) {
 		//https://stackoverflow.com/a/22741520
 		//pain
@@ -24,5 +27,7 @@ public interface HasSkills {
 	public static String padNewlines(String input) {
 		return input.replaceAll(Pattern.quote("\n"),"\n ");
 	}
+	
+	
 
 }

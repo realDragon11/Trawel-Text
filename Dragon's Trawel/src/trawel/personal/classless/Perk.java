@@ -8,12 +8,15 @@ import java.util.stream.Stream;
 public enum Perk implements HasSkills{
 	RACIAL_SHIFTS("Flexible","Prone to changing its defense patterns.",EnumSet.of(Skill.RACIAL_SHIFTS))
 	;
-	public final String name, desc;
-	public final Set<Skill> skills;
+	private final String name, desc;
+	private final Set<Skill> skills;
+	private final int strength, dexterity;
 	Perk(String _name, String description, Set<Skill> skillset){
 		name = _name;
 		desc = description;
 		skills = skillset;
+		strength = 0;
+		dexterity = 0;
 	}
 	
 	@Override
@@ -28,6 +31,15 @@ public enum Perk implements HasSkills{
 			str += "\n "+HasSkills.padNewlines(s.disp());
 		}
 		return str;
+	}
+	@Override
+	public int getStrength() {
+		return strength;
+	}
+
+	@Override
+	public int getDexterity() {
+		return dexterity;
 	}
 
 }

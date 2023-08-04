@@ -8,23 +8,30 @@ import trawel.extra;
 
 public enum Feat implements HasSkills{
 	TOUGH_COMMON("The Tough","They're tougher than they look. And they look tough.","",
-			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS))
+			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS),5,0)
 	;
 
-	public final String name, desc, getDesc;
-	public final Set<Skill> skills;
+	private final String name, desc, getDesc;
+	private final Set<Skill> skills;
 	/**
 	 * can set to 0 to make feat not spawn, or set FeatType to null
 	 */
 	public final float rarity;
 	public final FeatType type;
-	Feat(String _name, String _desc, String _getDesc,float _rarity,FeatType _type ,Set<Skill> skillset){
+	private final int strength, dexterity;
+	Feat(String _name, String _desc, String _getDesc,float _rarity,FeatType _type ,Set<Skill> skillset,int stre, int dext){
 		name = _name;
 		desc = _desc;
 		getDesc = _getDesc;
 		skills = skillset;
 		rarity = _rarity;
 		type = _type;
+		strength = stre;
+		dexterity = dext;
+	}
+	
+	Feat(String _name, String _desc, String _getDesc,float _rarity,FeatType _type ,Set<Skill> skillset){
+		this(_name,_desc,_getDesc,_rarity,_type,skillset,0,0);
 	}
 	
 	public enum FeatType{
@@ -72,6 +79,15 @@ public enum Feat implements HasSkills{
 			str += "\n "+HasSkills.padNewlines(s.disp());
 		}
 		return str;
+	}
+	@Override
+	public int getStrength() {
+		return strength;
+	}
+
+	@Override
+	public int getDexterity() {
+		return dexterity;
 	}
 
 }

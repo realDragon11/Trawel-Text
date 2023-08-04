@@ -8,14 +8,17 @@ import trawel.extra;
 public enum Archetype implements HasSkills{
 	;
 	
-	public final boolean entryLevel;
-	public final String name, desc;
-	public final Set<Skill> skills;
+	private final boolean entryLevel;
+	private final String name, desc;
+	private final Set<Skill> skills;
+	private final int strength, dexterity;
 	Archetype(String _name, String description, boolean entry, Set<Skill> skillset){
 		name = _name;
 		desc = description;
 		entryLevel = entry;
 		skills = skillset;
+		strength = 0;
+		dexterity = 0;
 	}
 	
 	@Override
@@ -55,5 +58,15 @@ public enum Archetype implements HasSkills{
 	
 	public boolean canFirstWith(Archetype t) {
 		return !t.equals(this);//FIXME
+	}
+
+	@Override
+	public int getStrength() {
+		return strength;
+	}
+
+	@Override
+	public int getDexterity() {
+		return dexterity;
 	}
 }
