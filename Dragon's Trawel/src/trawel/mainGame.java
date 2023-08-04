@@ -101,7 +101,17 @@ public class mainGame {
 	public static boolean advancedCombatDisplay = false;
 	
 	public enum DispAttack{
-		CLASSIC, TWO_LINE1
+		CLASSIC("Classic simple table, delay instead of cooldown and warmup"),
+		TWO_LINE1("Current version, hybrid table with per-cell labels instead of a header.");
+		
+		private String desc;
+		DispAttack(String _desc){
+			desc = _desc;
+		}
+		
+		public String desc() {
+			return desc;
+		}
 	}
 	
 	public static void mainMenu() {
@@ -260,7 +270,38 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "These first options deal with reconnecting to Trawel Graphical, and only apply to the Steam version. They only work on the command line, otherwise you may have to restart or use the command line to finish reconnecting.";
+						return "Here are some display options. They currently do not save per run, although they are planned to later after prefs get made bigger.";
+					}}
+				);
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return advancedCombatDisplay +" Advanced Combat Display (HP per attack, attack result notes)";
+					}
+
+					@Override
+					public boolean go() {
+						advancedCombatDisplay = !advancedCombatDisplay;
+						return false;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return attackDisplayStyle +" Attack Display Style (Cycles through options) currently: " + attackDisplayStyle.desc();
+					}
+
+					@Override
+					public boolean go() {
+						attackDisplayStyle = DispAttack.values()[(attackDisplayStyle.ordinal()+1)%DispAttack.values().length];
+						return false;
+					}});
+				mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return "\nThese options deal with reconnecting to Trawel Graphical, and only apply to the Steam version. They only work on the command line, otherwise you may have to restart or use the command line to finish reconnecting.";
 					}}
 				);
 				mList.add(new MenuSelect() {
@@ -279,7 +320,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Full Reconnect";
+						return "Full Reconnect\n";
 					}
 
 					@Override

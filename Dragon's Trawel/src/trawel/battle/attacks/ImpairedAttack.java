@@ -2,6 +2,7 @@ package trawel.battle.attacks;
 
 import trawel.Effect;
 import trawel.extra;
+import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.Attack.Wound;
@@ -204,7 +205,7 @@ public class ImpairedAttack implements IAttack{
 	@Override
 	public String fluff(AttackReturn attret) {
 		// TODO Auto-generated method stub
-		return attack.fluff(attret);
+		return attack.fluff(attret) + (mainGame.advancedCombatDisplay ? attret.getNotes() : "");
 	}
 	@Override
 	public int getSharp() {

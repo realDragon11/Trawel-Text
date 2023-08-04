@@ -1389,7 +1389,10 @@ public class Person implements java.io.Serializable, HasSkills{
 		if (extra.getPrint()) {
 			return;
 		}
-		if (damageDone != 0 && mainGame.advancedCombatDisplay) {
+		if (damageDone != 0) {
+			if (!mainGame.advancedCombatDisplay) {
+				return;
+			}
 			extra.println(getHp() +" ("+damageDone+")->"+ (getHp()-damageDone) + "/" + getMaxHp());
 		}else {
 			bodystatus.debug_print(true);//testing, will have to redo both this and submethods if used for real

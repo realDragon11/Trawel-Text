@@ -530,7 +530,7 @@ public class Combat {
 		double damMod = 1;//off.getDam();//built in now
 		//TODO unsure if should add attacker's aim at impairment phase
 		if (((def.getDodge()*defender.getTornCalc())/(att.getHitMult()*off.getAim()))* extra.getRand().nextDouble() > 1.0){
-			ret= new AttackReturn(ATK_ResultCode.DODGE,"",null);
+			ret= new AttackReturn(ATK_ResultCode.DODGE,"",att);
 			ret.stringer = att.fluff(ret);
 			if (wasDead) {
 				ret.addNote("What a dodgy corpse!");
@@ -660,6 +660,10 @@ public class Combat {
 			}
 		}
 		
+		public String getNotes() {
+			return notes;
+		}
+		
 		public void putPlayerFeedback() {
 			if (attack == null) {
 				extra.getPrint();
@@ -667,16 +671,16 @@ public class Combat {
 			if (attack.getAttacker().isPlayer()) {
 				switch (code) {
 				case ARMOR:
-					Player.lastAttackStringer = "You hit "+attack.getDefender().getName() + 
+					Player.lastAttackStringer = "\nYou hit "+attack.getDefender().getName() + 
 					" but their armor held!";
 					break;
 				case DAMAGE:
-					Player.lastAttackStringer = "You hit "+attack.getDefender().getName() + 
+					Player.lastAttackStringer = "\nYou hit "+attack.getDefender().getName() + 
 					" dealing "+ damage+" damage!";
 					break;
 				case DODGE:
 				case MISS:
-					Player.lastAttackStringer = "You missed "+attack.getDefender().getName() + 
+					Player.lastAttackStringer = "\nYou missed "+attack.getDefender().getName() + 
 					(damage > 0 ? " but dealt " + damage+" damage!" : "!");
 					break;
 				case NOT_ATTACK:

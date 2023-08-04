@@ -711,6 +711,7 @@ public class AIClass {
 							a.display(1);
 							j++;
 						}
+						break;
 					case TWO_LINE1:
 						if (combat.turns > 0) {
 							extra.println(Player.lastAttackStringer);
