@@ -1,5 +1,6 @@
 package trawel.personal.classless;
 
+import trawel.extra;
 import trawel.personal.Person;
 
 public class AttributeBox {
@@ -8,6 +9,8 @@ public class AttributeBox {
 	
 	private int strength, dexterity;
 	
+	private int capacity;
+	
 	public AttributeBox(Person p) {
 		owner = p;
 		
@@ -15,8 +18,13 @@ public class AttributeBox {
 	}
 
 	public void reset() {
-		strength = 0;
-		dexterity = 0;
+		strength = 100;
+		dexterity = 100;
+		capacity = 0;
+	}
+	
+	public void setCapacity(int i) {
+		capacity = i;
 	}
 	
 	public void process(Feat f) {
@@ -40,5 +48,78 @@ public class AttributeBox {
 
 	public int getDexterity() {
 		return dexterity;
+	}
+	
+	//NOTE
+	//can insert skill stuff here since we have a link to the person!
+	
+	public float getTotalAgiPen(float capOver) {
+		return getCapAgiPen(capOver)*multDex(capOver);
+	}
+	
+	public float getTotalAgiPen() {
+		return getTotalAgiPen(getNaiveStrCap(capacity));
+	}
+	
+	/**
+	 * use at lerped strength for aim penalties
+	 * <br>
+	 * this applies to the agi mult and aim
+	 * <br>
+	 * indirectly applies to dodge
+	 */
+	public float multDex(float capOver) {
+		float dp = getDexPen(capOver);
+		if (dexterity <= 100) {
+			return extra.lerp(dp,1f,dexterity/100f);
+		}
+		return extra.lerp(1f,2f,dexterity/1500f);//reaches 2x at 1500
+	}
+	
+	public float getCapAgiPen() {
+		return getCapAgiPen(getNaiveStrCap(capacity));
+	}
+	
+	public float getCapAgiPen(float capacityPercent) {
+		if (capacityPercent <= 1f) {
+			return 1f;
+		}
+		if (capacityPercent <= 1.5f) {
+			return extra.lerp(1f,.75f,capacityPercent/1.5f);
+		}
+		if (capacityPercent <= 2f) {
+			return extra.lerp(.75f,.5f,capacityPercent/2f);
+		}
+		if (capacityPercent <= 3f) {
+			return extra.lerp(.5f,.25f,capacityPercent/3f);
+		}
+		return .25f;
+	}
+	
+	public float getNaiveStrCap(int capacity) {
+		return capacity/(float)strength;
+	}
+	
+	public float getDexPen(float capacityPercent) {
+		if (capacityPercent <= 1f) {
+			return .75f;
+		}
+		if (capacityPercent <= 1.5f) {
+			return extra.lerp(.75f,.5f,capacityPercent/1.5f);
+		}
+		if (capacityPercent <= 2f) {
+			return extra.lerp(.5f,.25f,capacityPercent/2f);
+		}
+		if (capacityPercent <= 3f) {
+			return extra.lerp(.25f,.1f,capacityPercent/3f);
+		}
+		return .1f;
+	}
+	
+	public float multStrength() {
+		if (strength <= 100) {
+			return extra.lerp(.5f,1f,Math.max(0,strength)/100f);
+		}
+		return 1f + (strength/1000f);//+.1f per 100
 	}
 }
