@@ -373,7 +373,7 @@ public class Weapon extends Item {
 			}
 			for (int t = 0; t < battleTests;t++) {
 				for (int j = WorldGen.getDummyInvs().size()-1; j >=0;j--) {
-					bs+=Combat.handleTestAttack(holdAttack.impair(10,null,this,null),WorldGen.getDummyInvs().get(j),Armor.armorEffectiveness).damage/holdAttack.getSpeed() ;
+					bs+=Combat.handleTestAttack(holdAttack.impair(null,this,null),WorldGen.getDummyInvs().get(j),Armor.armorEffectiveness).damage/holdAttack.getSpeed() ;
 				}
 			}
 			i++;

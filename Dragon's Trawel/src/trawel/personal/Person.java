@@ -19,6 +19,7 @@ import trawel.mainGame;
 import trawel.randomLists;
 import trawel.battle.BarkManager;
 import trawel.battle.attacks.Attack;
+import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.Stance;
 import trawel.battle.attacks.TargetFactory;
 import trawel.battle.attacks.TargetFactory.BloodType;
@@ -62,12 +63,12 @@ public class Person implements java.io.Serializable, HasSkills{
 	//inst vars
 	private Inventory bag;
 	
-	private transient Attack attackNext;
+	private transient ImpairedAttack attackNext;
 	private int xp;
 	private short level;
 	private byte intellect;
 	private transient double speedFill;
-	private transient boolean isAttacking =false;//TODO: either remove or convert to warmup and cooldown
+	private transient boolean isWarmingUp;
 	private transient int hp, tempMaxHp;
 	private PersonType personType = extra.choose(PersonType.COWARDLY,PersonType.FEARLESS);
 	//private String placeOfBirth;
@@ -355,26 +356,33 @@ public class Person implements java.io.Serializable, HasSkills{
 	 * Queue an attack for usage, which will be completed when the speed fills up
 	 * @param newAttack (Attack)
 	 */
-	public void setAttack(Attack newAttack){
+	public void setAttack(ImpairedAttack newAttack){
 		attackNext = newAttack;
-		speedFill = Math.max(speedFill+attackNext.getSpeed(),10);
-		isAttacking = true;
+		speedFill = Math.max(speedFill+attackNext.getWarmup(),10);
+		isWarmingUp = true;
 	}
 	
 	/**
-	 * Returns whether there is an attack queued or not
+	 * if currently dealing with an attack time
 	 * @return has an attack already (boolean)
 	 */
 	public boolean isAttacking() {
-		return isAttacking;
+		return attackNext != null;
+	}
+	
+	public boolean isOnCooldown() {
+		return isWarmingUp == false;
+	}
+	
+	public void finishTurn() {
+		attackNext = null;
 	}
 	
 	/**
 	 * Returns what attack the person wants to use next
 	 * @return the next attack (Attack)
 	 */
-	public Attack getNextAttack() {
-		assert isAttacking != false;
+	public ImpairedAttack getNextAttack() {
 		return attackNext;
 	}
 	
@@ -424,7 +432,6 @@ public class Person implements java.io.Serializable, HasSkills{
 			isPlay = true;
 		}
 		bodystatus = new TargetHolder(bodyType);
-		speedFill = 0;
 		tempMaxHp = getOOB_HP();
 		hp = tempMaxHp;
 		if (takeBeer()) {
@@ -448,7 +455,7 @@ public class Person implements java.io.Serializable, HasSkills{
 		
 		
 		speedFill = -1;
-		isAttacking = false;
+		isWarmingUp = false;
 		int s = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
 		int b = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
 		int p = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;

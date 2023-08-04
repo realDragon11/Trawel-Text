@@ -52,15 +52,21 @@ public class ImpairedAttack implements IAttack{
 			double pMult = attack.getPierce()*t.pierce;
 			int w_lvl;
 			boolean alwaysWound = (_weapon != null && _weapon.isKeen());
+			boolean isAttackTest = defender == null;
 			
 			if (_weapon != null) {
-				w_lvl = _weapon.getLevel();
+				w_lvl = isAttackTest ? 10 :_weapon.getLevel();
 				sMult *= _weapon.getMat().sharpMult;
 				bMult *= _weapon.getMat().bluntMult;
 				pMult *= _weapon.getMat().pierceMult;
 				hitMult *=_weapon.qualList.contains(Weapon.WeaponQual.ACCURATE) ? 1.1 : 1;
 			}else {
-				w_lvl = _attacker.getLevel();//if no weapon and no attacker, null pointer error
+				if (_attacker != null) {
+					w_lvl = _attacker.getLevel();
+				}else {
+					throw new RuntimeException("invalid weapon resolved level for impaired attack");
+				}
+
 			}
 			double damMult = w_lvl*_style.damage;
 
@@ -169,7 +175,10 @@ public class ImpairedAttack implements IAttack{
 		return target;
 	}
 	
-	private Attack getAttack() {//should probably do direct functions
+	/**
+	 * discourged use
+	 */
+	public Attack getAttack() {//should probably do direct functions
 		return attack;
 	}
 	@Override
@@ -244,5 +253,14 @@ public class ImpairedAttack implements IAttack{
 	
 	public int getTargetSpot() {
 		return target.spot;
+	}
+
+	public double getTime() {
+		return warmup+cooldown;
+	}
+
+	public int getTotalDam() {
+		// TODO add other damage types when they get added
+		return getSharp()+getBlunt()+getPierce();
 	}
 }

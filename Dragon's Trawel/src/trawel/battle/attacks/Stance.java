@@ -74,7 +74,7 @@ public class Stance{
 	}
 	
 
-	private List<ImpairedAttack> randAtts(int count, Weapon weapon, Person attacker, Person defender) {
+	public List<ImpairedAttack> randAtts(int count, Weapon weapon, Person attacker, Person defender) {
 		List<ImpairedAttack> a = new ArrayList<ImpairedAttack>();
 		while (a.size() < count) {
 			a.add(attacks.get(roller.random(extra.getRand())).impair(attacker, weapon,defender));

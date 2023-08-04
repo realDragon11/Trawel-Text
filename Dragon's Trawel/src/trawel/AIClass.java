@@ -4,6 +4,7 @@ import java.util.List;
 
 import trawel.battle.Combat;
 import trawel.battle.attacks.Attack;
+import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.Stance;
 import trawel.earts.ASpell;
 import trawel.personal.Person;
@@ -219,7 +220,7 @@ public class AIClass {
 	 * @param defender (Person) - the person who is defending from the attack
 	 * @return the chosen attack (Attack)
 	 */
-	public static Attack attackTest(List<Attack> attacks,int rounds, Combat com, Person attacker, Person defender) {
+	public static ImpairedAttack attackTest(List<ImpairedAttack> attacks,int rounds, Combat com, Person attacker, Person defender) {
 		int size = attacks.size();
 		int i = size-1;
 		int j = 0;
@@ -229,18 +230,10 @@ public class AIClass {
 		while (i >= 0) {
 			j = 0;
 			do {
-				if (!attacks.get(i).isMagic()) {
-				damray[i]+=100*extra.zeroOut((double)com.handleAttack(attacks.get(i),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender).damage);}else {
-					if (attacks.get(i).getSkill() == Skill.DEATH_MAGE) {
-						damray[i]+=100*extra.zeroOut(attacks.get(i).getBlunt());
-						if (defender.hasSkill(Skill.LIFE_MAGE)) {
-							damray[i] = 0;
-						}
-					}
-				}
+				damray[i]+=100*extra.zeroOut((double)com.handleAttack(attacks.get(i),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender).damage);
 				j++;
 			}while (j < rounds);
-			damray[i]/= (rounds*attacks.get(i).getSpeed());
+			damray[i]/= (rounds*attacks.get(i).getTime());
 			i--;
 		}
 		extra.popPrintStack();
@@ -697,6 +690,11 @@ public class AIClass {
 		if (has-get != 0) {
 			extra.println(" " +extra.hardColorDelta2(get,has) + " " + name + " mult");
 		}
+	}
+	
+	public static ImpairedAttack chooseAttack(List<ImpairedAttack> atts,Combat combat, Person attacker, Person defender) {
+		//FIXME: readd player choice
+		return AIClass.attackTest(atts, 4, combat, attacker, defender);
 	}
 	
 	/*

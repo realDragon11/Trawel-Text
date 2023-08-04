@@ -17,6 +17,7 @@ import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.TargetFactory;
 import trawel.battle.attacks.TargetFactory.BloodType;
 import trawel.battle.attacks.Attack.Wound;
+import trawel.battle.attacks.ImpairedAttack;
 import trawel.factions.FBox;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -116,14 +117,15 @@ public class Combat {
 			double delay = attacker.getTime();
 			defender.advanceTime(delay);
 			attacker.advanceTime(delay);
-			handleTurn( attacker, defender, playerIsInBattle, delay);
+			handleTurn(attacker, defender, playerIsInBattle, delay);
 			if (playerIsInBattle) {
 				manTwo.getBag().graphicalDisplay(1,manTwo);
 				Player.player.getPerson().getBag().graphicalDisplay(-1,Player.player.getPerson());
-				}
+			}
 			
-			if (manOne.isAlive() && manTwo.isAlive()) {
-			setAttack(attacker,defender);}
+			if (manOne.isAlive() && manTwo.isAlive() && !manOne.isAttacking()) {
+				setAttack(attacker,defender);
+			}
 		}
 		while(manOne.isAlive() && manTwo.isAlive());
 		
@@ -325,6 +327,7 @@ public class Combat {
 			dataMap.get(defender).lastAttacker = quickest;
 			newTarget = false;
 			AttackReturn atr = handleTurn(quickest,defender,playerIsInBattle,lowestDelay);
+			if (atr.code != ATK_ResultCode.NOT_ATTACK) {
 			if (!defender.isAlive() && wasAlive) {
 				killWrapUp(defender, quickest, false);
 			}else {
@@ -342,6 +345,7 @@ public class Combat {
 						defender.applyDiscount(discount);
 					}
 				}
+			}
 			}
 
 
@@ -361,7 +365,7 @@ public class Combat {
 				break;//end battle
 			}
 		
-			
+			if (!quickest.isAttacking()) {
 			Person otherperson = null;
 			if (defender.isAlive() && quickest.getBag().getHand().qualList.contains(Weapon.WeaponQual.DUELING)) {
 				otherperson = defender;
@@ -393,17 +397,8 @@ public class Combat {
 			{
 				quickest.advanceTime(Math.min(10,quickest.getTime()-1));
 			}
-			quickest.getNextAttack().defender = otherperson;
-			/*if (quickest.hasSkill(Skill.LIFE_MAGE)) {
-				for (List<Person> list: liveLists) {
-					if (list.contains(quickest)) {
-						for (Person p: list) {
-							if (p.getHp() < p.getMaxHp()) {p.addHp(1);}
-						}
-					}
-				}
-			}*/
-			
+			quickest.getNextAttack().setDefender(otherperson);
+			}
 		}
 		
 		if (totalList.size() == 0) {//no survivors, last actor wins
@@ -507,44 +502,27 @@ public class Combat {
 	 * @param armMod the armormod (double)
 	 * @return
 	 */
-	public AttackReturn handleAttack(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
+	public AttackReturn handleAttack(ImpairedAttack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
 		String str = "";
 		int wLevel = att.getWeapon() != null ? att.getWeapon().getLevel() : 0;
-		if (att.getName().contains("examine")){
-			if  (!attacker.isPlayer()) {
-				str +=("They examine you...");
-				return new AttackReturn(ATK_ResultCode.NOT_ATTACK,str,null);
-			}
-			attacker.displayStats();
-			attacker.displayArmor();
-			attacker.displayHp();
-			defender.displayStats();
-			defender.displayArmor();
-			defender.displayHp();
-			if (attacker.hasSkill(Skill.HPSENSE)) {
-				defender.displaySkills();
-			}
-			defender.debug_print_status(0);
-			str +=(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
-			return new AttackReturn(ATK_ResultCode.NOT_ATTACK,str,null);
-		}
 		if (extra.chanceIn(1, 5)) {
 			Networking.send("PlayDelayPitch|"+SoundBox.getSound(off.getRace().voice,SoundBox.Type.SWING) + "|1|" +attacker.getPitch() +"|");
 		}
 		if (defender.isAlive()) {
-			str +=(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
+			str += "";//(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
 		}else {
-			str +=(att.attackStringer(attacker.getName(),defender.getName() + "'s corpse",off.getHand().getName()));	
+			str += "ded";//(att.attackStringer(attacker.getName(),defender.getName() + "'s corpse",off.getHand().getName()));	
 		}
-		double damMod = off.getDam();
-		if (((def.getDodge()*defender.getTornCalc())/(att.getHitmod()*off.getAim()))* extra.getRand().nextDouble() > 1.0){
+		double damMod = 1;//off.getDam();//built in now
+		//TODO unsure if should add attacker's aim at impairment phase
+		if (((def.getDodge()*defender.getTornCalc())/(att.getHitMult()*off.getAim()))* extra.getRand().nextDouble() > 1.0){
 			return new AttackReturn(ATK_ResultCode.DODGE,str,null);
 		}
 		/*
 		if (extra.chanceIn(def.countArmorQuality(ArmorQuality.HAUNTED),80)){
 			return new AttackReturn(-1,str +extra.PRE_GREEN+" An occult hand leaps forth, pulling them out of the way![c_white]",null);//DOLATER probably just remove
 		}*/
-		Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getSoundIntensity() + "|" +att.getSoundType()+"|");
+		Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getAttack().getSoundIntensity() + "|" +att.getAttack().getSoundType()+"|");
 		List<Weapon.WeaponQual> wqL = (att.getWeapon() != null ? att.getWeapon().qualList : Collections.emptyList());
 		double sharpA = def.getSharp(att.getSlot(),wqL)*armMod;
 		double bluntA = def.getBlunt(att.getSlot(),wqL)*armMod;
@@ -567,9 +545,9 @@ public class Combat {
 					ret.addNote("Refined Bonus: " + wLevel);
 				}
 				if (wLevel > 0 && att.getWeapon().qualList.contains(Weapon.WeaponQual.WEIGHTED)) {
-					if (att.getHitmod() < 1.5) {
+					if (att.getHitMult() < 1.5) {
 						int weightBonus = ret.damage;
-						ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitmod()*10))));
+						ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitMult()*10))));
 						weightBonus = ret.damage-weightBonus;
 						ret.addNote("Weighted Bonus: " + weightBonus);
 					}
@@ -583,12 +561,13 @@ public class Combat {
 				}
 			}
 		}
+		ret.stringer = str + att.fluff(ret);
 		return ret;
 	}
 	
-	public static AttackReturn handleTestAttack(Attack att, Inventory def, double armMod) {
+	public static AttackReturn handleTestAttack(ImpairedAttack att, Inventory def, double armMod) {
 		double damMod = 1;
-		if (((def.getDodge())/(att.getHitmod()))*extra.getRand().nextDouble() > 1.0){
+		if (((def.getDodge())/(att.getHitMult()))*extra.getRand().nextDouble() > 1.0){
 			return Combat.testCombat.new AttackReturn(ATK_ResultCode.DODGE,"",null);//do a dodge
 		}
 		List<Weapon.WeaponQual> wqL = (att.getWeapon() != null ? att.getWeapon().qualList : new ArrayList<Weapon.WeaponQual>());
@@ -610,8 +589,8 @@ public class Combat {
 					ret.damage += att.getWeapon().getLevel();
 				}
 				if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.WEIGHTED)) {
-					if (att.getHitmod() < 1.5) {
-						ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitmod()*10))));
+					if (att.getHitMult() < 1.5) {
+						ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitMult()*10))));
 					}
 				}
 			}
@@ -625,11 +604,11 @@ public class Combat {
 		public int[] subDamage;
 		public String stringer;
 		public boolean reliable = false;
-		public Attack attack;
+		public ImpairedAttack attack;
 		public ATK_ResultCode code;
 		private String notes;
 		//DOLATER: instead of new target, might be able to ride confusion effects on this
-		public AttackReturn(int sdam,int bdam, int pdam, String str, Attack att) {
+		public AttackReturn(int sdam,int bdam, int pdam, String str, ImpairedAttack att) {
 			damage = sdam+bdam+pdam;
 			code = damage > 0 ? ATK_ResultCode.DAMAGE : ATK_ResultCode.ARMOR;
 			subDamage = new int[] {sdam,bdam,pdam};
@@ -638,13 +617,17 @@ public class Combat {
 			notes = null;
 		}
 		
-		public AttackReturn(ATK_ResultCode rcode, String str, Attack att) {
+		public AttackReturn(ATK_ResultCode rcode, String str, ImpairedAttack att) {
 			code = rcode;
 			damage = -1;
 			//null
 			stringer = str;
 			attack = att;
 			notes = null;
+		}
+		
+		public AttackReturn() {
+			code = ATK_ResultCode.NOT_ATTACK;
 		}
 		
 		public void addNote(String str) {
@@ -688,6 +671,10 @@ public class Combat {
 	 * @return damagedone
 	 */
 	public AttackReturn handleTurn(Person attacker, Person defender,boolean canWait, double delay) {
+		if (attacker.isOnCooldown()) {
+			attacker.finishTurn();
+			return new AttackReturn();
+		}
 		turns++;
 		AttackReturn ret = null;
 		if (turns > longBattleLength*totalFighters) {
@@ -963,7 +950,7 @@ public class Combat {
 			//although they'll still not usually apply if damage == 0
 			return (" They shrug off the blow!");
 		}else {
-			Attack attack = attacker2.getNextAttack();
+			ImpairedAttack attack = attacker2.getNextAttack();
 			Integer[] nums = woundNums(attack,attacker2,defender2,retu);
 			Wound w = attack.getWound();
 			if (w == null) {
@@ -1036,7 +1023,7 @@ public class Combat {
 	 * @param result (null if attack didn't happen yet)
 	 * @return array of doubles, you can round them if needed
 	 */
-	public static Integer[] woundNums(Attack attack, Person attacker, Person defender, AttackReturn result) {
+	public static Integer[] woundNums(ImpairedAttack attack, Person attacker, Person defender, AttackReturn result) {
 		switch (attack.getWound()) {
 		case CONFUSED:
 			//nothing
@@ -1052,9 +1039,9 @@ public class Combat {
 			return new Integer[] {result.damage/10};
 		case TAT:
 			if (result == null) {
-				return new Integer[] {(int)(attack.getPierce()*extra.clamp(attack.getHitmod(),.5f,3f)/3f)};//this is 'up to'
+				return new Integer[] {(int)(attack.getPierce()*extra.clamp(attack.getHitMult(),.5f,3f)/3f)};//this is 'up to'
 			}
-			return new Integer[] {(int)(result.subDamage[2] *extra.clamp(attack.getHitmod(),.5f,3f)/3f)};
+			return new Integer[] {(int)(result.subDamage[2] *extra.clamp(attack.getHitMult(),.5f,3f)/3f)};
 		case CRUSHED:
 			return new Integer[] {(int)attack.getTotalDam()/10};
 		case SCALDED: case FROSTBITE:
@@ -1152,8 +1139,12 @@ public class Combat {
 	}
 
 
-	private void setAttack(Person manOne, Person manTwo) {
-		manOne.setAttack(AIClass.chooseAttack(manOne.getStance().part(manOne, manTwo),manOne.getIntellect(),this,manOne,manTwo));
+	private void setAttack(Person attacker, Person defender) {
+		//manOne.setAttack(AIClass.chooseAttack(manOne.getStance().part(manOne, manTwo),manOne.getIntellect(),this,manOne,manTwo));
+		ImpairedAttack newAttack;
+		List<ImpairedAttack> atts = (attacker.getStance().randAtts(3,attacker.getBag().getHand(),attacker,defender));
+		newAttack = AIClass.chooseAttack(atts,this,attacker,defender);
+		attacker.setAttack(newAttack);
 		//manOne.getNextAttack().blind(1 + manOne.getNextAttack().getSpeed()/1000.0);
 		//this blind was here to simulate quicker attacks being harder to dodge, it has been removed
 	}

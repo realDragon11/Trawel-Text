@@ -290,7 +290,7 @@ public class Attack implements IAttack{
 	 * @return the speed(double)
 	 */
 	public double getSpeed() {
-		return speed;
+		return warmup+cooldown;
 	}
 	
 	/**
@@ -298,7 +298,7 @@ public class Attack implements IAttack{
 	 */
 	@Override
 	public int getSharp() {
-		return sharp;
+		return IAttack.getSharpFromWeap(intValues);
 	}
 
 	/**
@@ -306,7 +306,7 @@ public class Attack implements IAttack{
 	 */
 	@Override
 	public int getBlunt() {
-		return blunt;
+		return IAttack.getBluntFromWeap(intValues);
 	}
 
 	/**
@@ -314,7 +314,7 @@ public class Attack implements IAttack{
 	 */
 	@Override
 	public int getPierce() {
-		return pierce;
+		return IAttack.getPierceFromWeap(intValues);
 	}
 	/**
 	 * @return the desc (String)
@@ -410,7 +410,7 @@ public class Attack implements IAttack{
 		
 		Style s = StyleFactory.randStyle();
 		
-		return new ImpairedAttack(this,rtar,s,weap,attacker,null);
+		return new ImpairedAttack(this,rtar,s,weap,attacker,defender);
 	}
 	@Deprecated
 	public Attack wither(double percent) {
