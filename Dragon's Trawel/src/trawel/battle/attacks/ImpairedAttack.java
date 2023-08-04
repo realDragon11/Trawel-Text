@@ -46,17 +46,44 @@ public class ImpairedAttack implements IAttack{
 		switch (getType()) {
 		case FAKE_WEAPON:
 		case REAL_WEAPON:
-			double sMult = _style.damage*t.sharp;
-			double bMult = _style.damage*t.blunt;
-			double pMult = _style.damage*t.pierce;
+			assert !(_weapon == null && _attacker == null);//only one can be null
+			double sMult = attack.getSharp()*t.sharp;
+			double bMult = attack.getBlunt()*t.blunt;
+			double pMult = attack.getPierce()*t.pierce;
+			int w_lvl;
+			boolean alwaysWound = (_weapon != null && _weapon.isKeen());
 			
 			if (_weapon != null) {
+				w_lvl = _weapon.getLevel();
 				sMult *= _weapon.getMat().sharpMult;
 				bMult *= _weapon.getMat().bluntMult;
 				pMult *= _weapon.getMat().pierceMult;
 				hitMult *=_weapon.qualList.contains(Weapon.WeaponQual.ACCURATE) ? 1.1 : 1;
+			}else {
+				w_lvl = _attacker.getLevel();//if no weapon and no attacker, null pointer error
 			}
-			
+			double damMult = w_lvl*_style.damage;
+
+			vals[0] = damageRoll(DamageType.SHARP,sMult*damMult);
+			vals[1] = damageRoll(DamageType.BLUNT,bMult*damMult);
+			vals[2] = damageRoll(DamageType.PIERCE,pMult*damMult);
+
+			if (!alwaysWound && extra.randRange(1,10) == 1) {
+				this.wound = Attack.Wound.GRAZE;
+			}else {
+				double counter = extra.getRand().nextDouble() * (vals[0] + vals[1] + vals[2]);
+				counter-=vals[0];
+				if (counter<=0) {
+					this.wound = extra.randList(target.tar.slashWounds);
+				}else {
+					counter-=vals[2];
+					if (counter<=0) {
+						this.wound = extra.randList(target.tar.pierceWounds);
+					}else {//blunt is last now to be a default for rounding errors
+						this.wound = extra.randList(target.tar.bluntWounds);
+					}
+				}
+			}
 			break;
 		case SKILL:
 			break;
@@ -77,6 +104,30 @@ public class ImpairedAttack implements IAttack{
 		//
 		hitroll = extra.lerp(hitMult*.8f,hitMult*1.2f, extra.hrandomFloat());
 	}
+	
+	public enum DamageType{
+		SHARP, BLUNT, PIERCE, SHOCK, FIRE, FROST, DECAY
+	}
+	
+	private int damageRoll(DamageType dt, double max) {
+		switch (dt) {
+		case SHARP: case BLUNT: case PIERCE:
+			if (attacker != null) {
+				max*= attacker.getBag().getDam();//DOLATER make physical damage mult seperate;
+				max*= attacker.fetchAttributes().multStrength();//DOLATER see if working
+			}else {
+				if (weapon != null) {
+					if (weapon.getEnchant() != null) {
+						max*=weapon.getEnchant().getDamMod();//DOLATER make physical damage mult seperate
+					}	
+				}
+			}
+			return extra.randRange((int)(max*.7),(int)max);
+		default: 
+			return 0;
+		}
+	}
+	
 	/**
 	 * can be null
 	 */
