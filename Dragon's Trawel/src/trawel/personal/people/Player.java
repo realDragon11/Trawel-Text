@@ -34,6 +34,7 @@ public class Player extends SuperPerson{
 	public static Player player;
 	public static double passTime;
 	public static Inventory bag;
+	public static String lastAttackStringer;
 	public int animalQuest;
 	public int wins = 0;
 	/**

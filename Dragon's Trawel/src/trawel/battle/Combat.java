@@ -517,19 +517,25 @@ public class Combat {
 	 */
 	public AttackReturn handleAttack(ImpairedAttack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
 		String str = "";
+		AttackReturn ret;
 		int wLevel = att.getWeapon() != null ? att.getWeapon().getLevel() : 0;
 		if (extra.chanceIn(1, 5)) {
 			Networking.send("PlayDelayPitch|"+SoundBox.getSound(off.getRace().voice,SoundBox.Type.SWING) + "|1|" +attacker.getPitch() +"|");
 		}
+		boolean wasDead = true;
 		if (defender.isAlive()) {
-			str += "";//(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
-		}else {
-			str += "ded";//(att.attackStringer(attacker.getName(),defender.getName() + "'s corpse",off.getHand().getName()));	
+			wasDead = false;//(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
 		}
+		//(att.attackStringer(attacker.getName(),defender.getName() + "'s corpse",off.getHand().getName()));
 		double damMod = 1;//off.getDam();//built in now
 		//TODO unsure if should add attacker's aim at impairment phase
 		if (((def.getDodge()*defender.getTornCalc())/(att.getHitMult()*off.getAim()))* extra.getRand().nextDouble() > 1.0){
-			return new AttackReturn(ATK_ResultCode.DODGE,str,null);
+			ret= new AttackReturn(ATK_ResultCode.DODGE,"",null);
+			ret.stringer = att.fluff(ret);
+			if (wasDead) {
+				ret.addNote("What a dodgy corpse!");
+			}
+			return ret;
 		}
 		/*
 		if (extra.chanceIn(def.countArmorQuality(ArmorQuality.HAUNTED),80)){
@@ -540,11 +546,14 @@ public class Combat {
 		double sharpA = def.getSharp(att.getSlot(),wqL)*armMod;
 		double bluntA = def.getBlunt(att.getSlot(),wqL)*armMod;
 		double pierceA= def.getPierce(att.getSlot(),wqL)*armMod;
-		AttackReturn ret = new AttackReturn(
+		ret = new AttackReturn(
 				attackSub(att.getSharp()*damMod,sharpA),
 				attackSub(att.getBlunt()*damMod,bluntA),
 				attackSub(att.getPierce()*damMod,pierceA),
 				str,att);
+		if (wasDead) {
+			ret.addNote("Beating their corpse!");
+		}
 		if (wLevel > 0 && att.getWeapon().qualList.contains(Weapon.WeaponQual.RELIABLE)
 				&& ret.damage <= wLevel) 
 		{
@@ -575,6 +584,7 @@ public class Combat {
 			}
 		}
 		ret.stringer = str + att.fluff(ret);
+		ret.putPlayerFeedback();
 		return ret;
 	}
 	
@@ -649,6 +659,32 @@ public class Combat {
 				notes +="\n"+str;
 			}
 		}
+		
+		public void putPlayerFeedback() {
+			if (attack == null) {
+				extra.getPrint();
+			}
+			if (attack.getAttacker().isPlayer()) {
+				switch (code) {
+				case ARMOR:
+					Player.lastAttackStringer = "You hit "+attack.getDefender().getName() + 
+					" but their armor held!";
+					break;
+				case DAMAGE:
+					Player.lastAttackStringer = "You hit "+attack.getDefender().getName() + 
+					" dealing "+ damage+" damage!";
+					break;
+				case DODGE:
+				case MISS:
+					Player.lastAttackStringer = "You missed "+attack.getDefender().getName() + 
+					(damage > 0 ? " but dealt " + damage+" damage!" : "!");
+					break;
+				case NOT_ATTACK:
+					
+					break;
+				}
+			}
+		}
 	}
 	
 	public enum ATK_ResultCode{
@@ -689,7 +725,6 @@ public class Combat {
 		}
 		attacker.finishWarmup();
 		turns++;
-		AttackReturn ret = null;
 		if (turns > longBattleLength*totalFighters) {
 			//VERY LONG BATTLE
 			attacker.takeDamage((int)(turns-(longBattleLength*totalFighters)));
@@ -729,7 +764,6 @@ public class Combat {
 		}
 		ImpairedAttack attack = attacker.getNextAttack();
 		AttackReturn atr = this.handleAttack(attack,defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
-		ret = atr;
 		int damageDone = atr.damage;
 		//extra.println(damageDone + " " + defender.getHp()+"/"+defender.getMaxHp());//FIXME: probably turn damage responses into a better thing
 		String inlined_color = extra.PRE_WHITE;
@@ -945,7 +979,8 @@ public class Combat {
 			}else {
 			Networking.waitIfConnected(300L);}
 		}
-		return ret;
+		
+		return atr;
 	}
 	private String inflictWound(Person attacker2, Person defender2, AttackReturn retu) {
 		if (retu.code == ATK_ResultCode.ARMOR) {

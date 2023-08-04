@@ -693,9 +693,62 @@ public class AIClass {
 		}
 	}
 	
-	public static ImpairedAttack chooseAttack(List<ImpairedAttack> atts,Combat combat, Person attacker, Person defender) {
+	public static ImpairedAttack chooseAttack(List<ImpairedAttack> attacks,Combat combat, Person attacker, Person defender) {
 		//FIXME: readd player choice
-		return AIClass.attackTest(atts, 4, combat, attacker, defender);
+		if (attacker.isPlayer()) {
+			int numb = 9;
+			while (numb == 9 || numb < 1) {
+				if (numb == 9) {
+					int j = 1;
+					switch (mainGame.attackDisplayStyle) {
+					case CLASSIC:
+						if (combat.turns > 0) {
+							extra.println(Player.lastAttackStringer);
+						}
+						extra.println("     name                hit    delay    sharp    blunt     pierce");
+						for(ImpairedAttack a: attacks) {
+							extra.print(j + "    ");
+							a.display(1);
+							j++;
+						}
+					case TWO_LINE1:
+						if (combat.turns > 0) {
+							extra.println(Player.lastAttackStringer);
+						}
+						extra.println("Attacks:");
+						for(ImpairedAttack a: attacks) {
+							extra.print(j + " ");
+							a.display(2);
+							j++;
+						}
+						break;
+					}
+					extra.println("9 debug examine");
+					numb = extra.inInt(attacks.size(),true);
+				}else {
+					numb = -numb;//restore attack choice
+				}
+				if (numb == 9) {
+					extra.print("You have ");
+					attacker.displayHp();
+					defender.displayStats();
+					
+					defender.displaySkills();
+					defender.debug_print_status(0);
+					
+					defender.displayArmor();
+					defender.displayHp();
+					//new debug examine code
+					extra.println("Press 9 to repeat attacks.");
+					numb = extra.inInt(attacks.size(),true);
+					if (numb != 9) {
+						numb = -numb;//store attack choice
+					}
+				}
+			}
+			return attacks.get(numb-1);
+		}
+		return AIClass.attackTest(attacks, 4, combat, attacker, defender);
 	}
 	
 	/*

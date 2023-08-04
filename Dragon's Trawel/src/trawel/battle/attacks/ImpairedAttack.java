@@ -2,6 +2,7 @@ package trawel.battle.attacks;
 
 import trawel.Effect;
 import trawel.extra;
+import trawel.battle.Combat;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.Attack.Wound;
 import trawel.battle.attacks.IAttack.AttackType;
@@ -110,6 +111,9 @@ public class ImpairedAttack implements IAttack{
 		}
 		cooldown = (attack.getCooldown()*speedMult)+speedModDown;
 		warmup = (attack.getWarmup()*speedMult)+speedModUp;
+		
+		warmup = extra.clamp(warmup,10,400);
+		cooldown = extra.clamp(cooldown,10,400);
 
 		//
 		hitroll = extra.lerp(hitMult*.8f,hitMult*1.2f, extra.hrandomFloat());
@@ -281,4 +285,40 @@ public class ImpairedAttack implements IAttack{
 	public void multPotencyMult(double multMult) {
 		potencyMult*= multMult;
 	}
+
+	public void display(int style) {
+		int[] in;
+		switch (style) {
+		case 0://not impaired style
+		case 1://classic
+			in = new int[6];
+			in[0] = 8+12;
+			in[1] = 7;
+			in[2] = 9;
+			in[3] = 9;
+			in[4] = 10;
+			in[5] = 6+4;
+			extra.specialPrint(in,getName() ,extra.format(getHitMult()) , extra.format(getWarmup()+getCooldown())  ,""+ (getSharp())  ,""+(getBlunt())  ,  ""+(getPierce()));
+			break;
+		case 2://two line 1
+			extra.println(getName());
+				in = new int[7];
+				in[0] = 9;//hitchance, should be 9.99 >= x > 0.00
+				in[1] = 4;//instants, should be 999 >= x > 0
+				in[2] = 1;//seperator
+				in[3] = 5;//instants, should be 999 >= x > 0
+				//sbp 6 should be fine for 3 digits, 7 for 4
+				in[4] = 7;
+				in[5] = 7;
+				in[6] = 7;
+				extra.specialPrint(in,"  "+extra.CHAR_HITCHANCE + extra.format(getHitMult()),
+						extra.CHAR_INSTANTS +extra.formatInt(getWarmup()),"-",extra.CHAR_INSTANTS+extra.formatInt(getCooldown()),
+						"S "+(getSharp()),"B "+(getBlunt()),"P "+(getPierce())//unsure if spacing messes up narrator
+						);
+			}
+			if (wound != null) {
+				extra.println("  "+this.wound.name + " - " + String.format(this.wound.desc,(Object[])Combat.woundNums(this,attacker,defender,null)));
+			}
+		}
+	
 }

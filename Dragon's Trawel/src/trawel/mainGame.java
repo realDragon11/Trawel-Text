@@ -98,6 +98,7 @@ public class mainGame {
 	public static boolean multiCanRun = false;
 	
 	public static DispAttack attackDisplayStyle = DispAttack.TWO_LINE1;
+	public static boolean advancedCombatDisplay = false;
 	
 	public enum DispAttack{
 		CLASSIC, TWO_LINE1
@@ -148,18 +149,18 @@ public class mainGame {
 						extra.println("Sharp is edged and cutting. Swords are good at it, and chainmail is good at defending from it. Some materials are softer, like Gold, and thus bad at it.");
 						extra.println("Blunt is heavy and crushing. Maces are good at it, and gold is good at defending from it- and also dealing it.");
 						extra.println("Pierce is pointy and puncturing. Spears are good at it, and metals are better at defending from it.");
-						extra.println("If you're feeling tactical, you can read your opponent's equipment to try to determine which type they are weak to!");
+						extra.println("If you're feeling tactical, you can read your opponent's equipment to try to determine which type they are weak to.");
 						extra.println("As you play the game, you'll get a grasp of the strengths and weaknesses of varying materials and weapons. It's part of the fun of the game!");
-						extra.println("Attacks have a delay amount and a hitchance, along with damage types.");
-						extra.println("Delay is how long it takes for the attack to happen- it can be thought of how 'slow' the attack is, so lower is better.");
+						extra.println("Attacks have a delay amount (further broken down into warmup/cooldown) and a hitchance, along with damage types.");
+						extra.println("Delay is how long it takes for the attack to happen- it can be thought of how 'slow' the attack is, so lower is better. Warmup is the period before you act, and Cooldown is the period after- but you can't choose another action until both elapse.");
 						extra.println("Hitchance is the opposite- higher is more accurate. However, it is not a percent chance to hit, as it does not account for the opponent's dodge, which can change over time.");
 						extra.println("Enchantments can be both good and bad, so keep an eye out for gear that has low stats but boosts overall stats a high amount- or gear that makes you much weaker!");
 						extra.println("When looting equipment, you are shown the new item, then your current item, and then the stat changes between the two- plus for stat increases, minus for stat decreases. The difference will not show stats that remain the same.");
 						extra.println("Value can be a good rough indicator of quality, but it does not account for the actual effectiveness of the item, just the rarity and tier.");
 						extra.println("For example, gold (a soft metal) sharp/piercing weapons are expensive but ineffective.");
 						extra.println("When in combat, you will be given 3 (by default, skills and circumstance may change this) random attacks ('opportunities') to use your weapon.");
-						extra.println("Pay close attention to hit, delay, and sbp (sharp, blunt, pierce) damage.");
-						extra.println("More simply: Higher is better, except in the case of delay.");
+						extra.println("Pay close attention to hit, warmup/cooldown, and sbp (sharp, blunt, pierce) damage.");
+						extra.println("More simply: Higher is better, except in the case of delay (warmup and cooldown).");
 						extra.println("Well, you made it through bootcamp. Have fun!");
 						extra.println("-realDragon");
 						return false;
