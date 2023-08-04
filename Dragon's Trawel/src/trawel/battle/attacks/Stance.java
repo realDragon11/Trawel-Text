@@ -2,9 +2,12 @@ package trawel.battle.attacks;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.yellowstonegames.core.WeightedTable;
+
 import trawel.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill;
+import trawel.personal.item.solid.Weapon;
 
 /**
  *
@@ -13,26 +16,23 @@ import trawel.personal.classless.Skill;
  * A stance holds different attack instances.
  * Should only be used to hold the attacks of one weapon instance.
  */
-public class Stance implements java.io.Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class Stance{
 	//instance variables
-	private int attackCount;
-	private List<Attack> attacks = new ArrayList<Attack>();
-	//constructor
-	/**
-	 * Make a stance instance.
-	 */
+	private List<Attack> attacks;
+	private List<Float> rarities;
+	private WeightedTable roller;
+	//constructor and initer
 	public Stance() {
-		attackCount = 0;
-		//attacks.add(new Attack("examine",0,50,0,0,0,"You examine your foe...",-1,"examine"));//TODO: replace this system
+		attacks = new ArrayList<Attack>();
+		rarities = new ArrayList<Float>();
 	}
 	
-	public Stance(List<Attack> a) {
-		attackCount = a.size();
-		attacks = a;
+	public void finish() {
+		float[] rares = new float[rarities.size()];
+		for (int i = 0; i < rares.length;i++) {
+			rares[i] = rarities.get(i);
+		}
+		roller = new WeightedTable(rares);
 	}
 
 	//instance methods
@@ -41,16 +41,16 @@ public class Stance implements java.io.Serializable{
 	 * Add an attack to the stance.
 	 * @param newAttack (Attack)
 	 */
-	public void addAttack(Attack newAttack) {
+	public void addAttack(Attack newAttack, float rarity) {
 		attacks.add(newAttack);
-		attackCount++;
+		rarities.add(rarity);
 	}
 	/**
 	 * Returns the number of attacks in the stance.
 	 * @return number of attacks in the stance (int)
 	 */
 	public int getAttackCount() {
-		return attackCount;
+		return attacks.size();
 	}
 	/**
 	 * Returns the reference to the attack in slot slot.
@@ -73,45 +73,11 @@ public class Stance implements java.io.Serializable{
 		
 	}
 	
-	public Attack getAttack() {;
-		while (true) {
-		int j = 0;
-		int parsed = extra.inInt(3);
 
-
-		for (Attack i: attacks) {
-			if (parsed == j+1) {
-				return attacks.get(j);
-			}
-			j++;
-			
-		}
-		}
-	}
-
-	public Stance part(Person p, Person defender) {
-		return new Stance(this.randAtts(p,defender));
-	}
-	
-
-	private List<Attack> randAtts(Person p, Person defender) {
-		List<Attack> a = new ArrayList<Attack>();
-		int atts = p.attacksThisAttack();
-		while (a.size() < atts) {
-			int i = extra.randRange(0,attacks.size()-1);
-			boolean doIt = true;
-			Attack newAttack = attacks.get(i);
-			for (Attack att: a) {
-				if ((att.getName().equals(newAttack.getName()) || p.hasSkill(Skill.BERSERKER)) && newAttack.getName().equals("examine")) {
-				doIt = false;
-				if (p.hasSkill(Skill.BERSERKER)){
-					//extra.println("it worked");
-				}
-				break;
-				}
-			}
-			if (doIt){a.add(newAttack.impair(p.getBag().getHand().getLevel(), defender,p.getBag().getHand(),p));
-			}
+	private List<ImpairedAttack> randAtts(int count, Weapon weapon, Person attacker, Person defender) {
+		List<ImpairedAttack> a = new ArrayList<ImpairedAttack>();
+		while (a.size() < count) {
+			a.add(attacks.get(roller.random(extra.getRand())).impair(attacker, weapon,defender));
 		}
 		return a;
 	}

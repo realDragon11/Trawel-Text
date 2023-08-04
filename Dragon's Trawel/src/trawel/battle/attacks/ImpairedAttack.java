@@ -237,4 +237,12 @@ public class ImpairedAttack implements IAttack{
 	public int valueSize() {
 		return vals.length;
 	}
+	
+	public int getSlot() {
+		return target.tar.slot;
+	}
+	
+	public int getTargetSpot() {
+		return target.spot;
+	}
 }

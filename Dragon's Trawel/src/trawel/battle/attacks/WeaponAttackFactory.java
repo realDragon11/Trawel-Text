@@ -19,15 +19,21 @@ public class WeaponAttackFactory {
 	public WeaponAttackFactory() {
 		Attack tempAttack;
 		Stance martialStance = new Stance();//FIXME attacks need reworked
-		tempAttack = new Attack("slash",1.5,100.0,40,5,0,"X` slashes at Y` with their Z`!",1,"sharp");
-		martialStance.addAttack(tempAttack);
-		martialStance.addAttack(tempAttack);
-		tempAttack = new Attack("stab",1.0,90.0,1,2,20,"X` stabs at Y` with their Z`!",1,"pierce");
-		martialStance.addAttack(tempAttack);
-		martialStance.addAttack(tempAttack);
-		martialStance.addAttack(new Attack("thrust",.4,60.0,1,4,20,"X` thrusts at Y` with their Z`!",2,"pierce"));
-		martialStance.addAttack(new Attack("pommel",1,110.0,0,12,0,"X` hits Y` with the pommel of their Z`!",0,"blunt"));
-		martialStance.addAttack(new Attack("slap",1.1,100.0,0,10,0,"X` slaps Y` with the side of their Z`!",1,"blunt"));
+		tempAttack = new Attack("slash","slash them",1.5d,100.0d,40,5,0);
+		//new Attack("slash",1.5,100.0,40,5,0,"X` slashes at Y` with their Z`!",1,"sharp");
+		martialStance.addAttack(tempAttack,3f);
+		tempAttack = new Attack("stab","stab them",1.0d,90.0d,10,0,25);
+		//tempAttack = new Attack("stab",1.0,90.0,1,2,20,"X` stabs at Y` with their Z`!",1,"pierce");
+		martialStance.addAttack(tempAttack,3f);
+		tempAttack = new Attack("thrust","thrust them",0.5d,60.0d,5,0,30);
+		//tempAttack = new Attack("thrust",.4,60.0,1,4,20,"X` thrusts at Y` with their Z`!",2,"pierce");
+		martialStance.addAttack(tempAttack,1f);
+		tempAttack = new Attack("pommel","pommel them",1d,120.0d,0,20,0);//probably needs a bonus of some sort
+		//tempAttack = new Attack("pommel",1,110.0,0,12,0,"X` hits Y` with the pommel of their Z`!",0,"blunt");
+		martialStance.addAttack(tempAttack,.2f);
+		tempAttack = new Attack("slap","slap them",1.1d,100.0d,0,15,0);
+		//tempAttack = new Attack("slap",1.1,100.0,0,10,0,"X` slaps Y` with the side of their Z`!",1,"blunt");		
+		martialStance.addAttack(tempAttack,1f);
 		stanceMap.put("longsword", martialStance);
 		
 		martialStance = new Stance();

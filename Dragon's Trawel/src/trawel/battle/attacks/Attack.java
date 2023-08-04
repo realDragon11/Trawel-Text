@@ -2,6 +2,7 @@ package trawel.battle.attacks;
 
 import org.nustaq.serialization.annotations.OneOf;
 
+import derg.SRInOrder;
 import derg.StringResult;
 import trawel.Effect;
 import trawel.extra;
@@ -25,11 +26,16 @@ import trawel.personal.item.solid.Weapon;
 public class Attack implements IAttack{
 
 	//old instance variables, phase out
+	@Deprecated
 	private double hitMod, speed;
+	@Deprecated
 	private int sharp, blunt, pierce;
 	
+	@Deprecated
 	private transient boolean isMagic = false;
+	@Deprecated
 	private transient String magicDesc;
+	@Deprecated
 	private transient Skill skill;//should be dictated by the holding stance now
 	
 	
@@ -43,12 +49,49 @@ public class Attack implements IAttack{
 	private String soundType;//shouldn't be a string
 	private AttackType type;
 	
+	
 	//values only present in impaired attacks, moving out
+	@Deprecated
 	private transient TargetReturn target;
+	@Deprecated
 	private transient Wound wound;
+	@Deprecated
 	private transient Weapon weapon;
+	@Deprecated
 	public transient Person defender;//only used for mass battles
+	
 	//constructor
+	/**
+	 * @param name
+	 * @param desc
+	 * @param fluffer
+	 * @param hitMult
+	 * @param type
+	 * @param intValues
+	 * @param warmup
+	 * @param cooldown
+	 */
+	public Attack(String name, String desc, StringResult fluffer, double hitMult, AttackType type, int[] intValues,
+			double warmup, double cooldown) {
+		this.name = name;
+		this.desc = desc;
+		this.fluffer = fluffer;
+		this.hitMult = hitMult;
+		this.type = type;
+		this.intValues = intValues;
+		this.warmup = warmup;
+		this.cooldown = cooldown;
+	}
+	
+	public Attack(String name, String desc, String fluff, double hitMult, int sharp, int blunt, int pierce,
+			double warmup, double cooldown) {
+		this(name,desc,new SRInOrder(fluff),hitMult,AttackType.REAL_WEAPON,new int[] {sharp,blunt,pierce},warmup,cooldown);
+	}
+	//simple for prototyping
+	public Attack(String name, String fluff, double hitMult, double time, int sharp, int blunt, int pierce) {
+		this(name,"",fluff,hitMult,sharp,blunt,pierce,time*.6,time*.4);
+	}
+
 	/**
 	 * Creates an attack with the following attributes:
 	 * @param name - (String) the name of the attack
@@ -59,6 +102,7 @@ public class Attack implements IAttack{
 	 * @param pierce - (double) the piercing damage [converted to int for you]
 	 * @param desc - (String) what is printed when it is used (use X = attacker, Y = defender, Z = weapon name)
 	 */
+	@Deprecated
 	public Attack(String name, double hitmod, double speed, double sharp, double blunt, double pierce, String desc,int sstr, String stype) {
 		this.hitMod = hitmod;
 		this.speed = speed;
@@ -70,7 +114,7 @@ public class Attack implements IAttack{
 		this.soundStrength = sstr;
 		this.soundType = stype;
 	}
-	
+	@Deprecated
 	public Attack(String name, double hitmod, double speed, double sharp, double blunt, double pierce, String desc,int sstr,String stype, TargetReturn target, Weapon weap) {
 		this.hitMod = hitmod;
 		this.speed = speed;
@@ -106,6 +150,7 @@ public class Attack implements IAttack{
 		}
 	}
 	//FIXME entirely nonfunctional at this point, just remake the whole system
+	@Deprecated
 	public Attack(Skill skill, int mageLevel, TargetFactory.TargetType targetType) {
 		//name
 		//magicDesc;
@@ -299,11 +344,11 @@ public class Attack implements IAttack{
 	public String getName() {
 		return name;
 	}
-	
+	@Deprecated
 	public void display(int style) {
 		display(style,null,null);
 	}
-
+	@Deprecated
 	public void display(int style, Person attacker, Person defender) {
 		switch (style) {
 		case 0://not impaired style
@@ -354,7 +399,7 @@ public class Attack implements IAttack{
 		}
 	}
 	
-	public ImpairedAttack impair(int handLevel, Person defender,Weapon weap, Person p) {
+	public ImpairedAttack impair( Person attacker, Weapon weap, Person defender) {
 		TargetReturn rtar;
 		if (defender == null) {
 			rtar = TargetFactory.TypeBody.HUMAN_LIKE.randTarget(null);//empty config
@@ -365,20 +410,12 @@ public class Attack implements IAttack{
 		
 		Style s = StyleFactory.randStyle();
 		
-		return new ImpairedAttack(this,rtar,s,weap,p,null);
-		/*
-	return new Attack(s.name + name + " " + rtar.getName(),
-			hitMod*hitMult,
-			Math.max((speed*speedMult)+speedMod,15),
-			handLevel*sharp*extra.upDamCurve(.25,.5)*sMult,
-			handLevel*blunt*extra.upDamCurve(.25,.5)*bMult,
-			handLevel*pierce*extra.upDamCurve(.25,.5)*pMult,
-			desc,soundStrength,soundType,rtar,weap);*/
+		return new ImpairedAttack(this,rtar,s,weap,attacker,null);
 	}
-	
+	@Deprecated
 	public Attack wither(double percent) {
-	percent = 1-percent;
-	return new Attack(name,hitMod*percent,speed*percent,sharp*percent,blunt*percent,pierce*percent,desc,soundStrength,soundType,target, weapon);	
+		percent = 1-percent;
+		return new Attack(name,hitMod*percent,speed*percent,sharp*percent,blunt*percent,pierce*percent,desc,soundStrength,soundType,target, weapon);	
 	}
 	
 	public int getSlot() {
