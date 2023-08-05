@@ -23,37 +23,55 @@ public class WeaponAttackFactory {
 	//FIXME: update stancemap to new weapon naming system, and also every attack
 	
 	public WeaponAttackFactory() {
-		Attack tempAttack;
 		Stance sta;
-		Stance martialStance = new Stance();//FIXME attacks need reworked
-		tempAttack = new Attack("slash","X` slashes at Y` with their Z`!",1.5d,100.0d,40,5,0);
-		//new Attack("slash",1.5,100.0,40,5,0,"X` slashes at Y` with their Z`!",1,"sharp");
-		martialStance.addAttack(tempAttack,3f);
-		tempAttack = new Attack("stab","X` stabs at Y` with their Z`",1.0d,90.0d,10,0,25);
-		//tempAttack = new Attack("stab",1.0,90.0,1,2,20,"X` stabs at Y` with their Z`!",1,"pierce");
-		martialStance.addAttack(tempAttack,3f);
-		tempAttack = new Attack("thrust","X` thrusts at Y` with their Z`!",0.5d,60.0d,5,0,30);
-		//tempAttack = new Attack("thrust",.4,60.0,1,4,20,"X` thrusts at Y` with their Z`!",2,"pierce");
-		martialStance.addAttack(tempAttack,1f);
-		tempAttack = new Attack("pommel","X` hits Y` with the pommel of their Z`!",1d,120.0d,0,20,0);//probably needs a bonus of some sort
-		//tempAttack = new Attack("pommel",1,110.0,0,12,0,"X` hits Y` with the pommel of their Z`!",0,"blunt");
-		martialStance.addAttack(tempAttack,.2f);
-		tempAttack = new Attack("slap","X` slaps Y` with the side of their Z`!",1.1d,100.0d,0,15,0);
-		//tempAttack = new Attack("slap",1.1,100.0,0,10,0,"X` slaps Y` with the side of their Z`!",1,"blunt");		
-		martialStance.addAttack(tempAttack,1f);
-		martialStance.finish();
-		stanceMap.put(WeaponType.LONGSWORD, martialStance);
 		
 		sta = new Stance();
 		sta.addAttack(
 				make("slash")
 				.setFluff("X` slashes at Y` with their Z`!")
-				.setRarity(3f)
+				.setRarity(4f)
 				.setAcc(1.5f)
 				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.4f)
-				.setMix(10,0,2)
-				.setTime(100,.5f)
+				.setMix(12,1,3)
+				.setTime(TimeTier.NORMAL,.5f)
 				);
+		sta.addAttack(
+				make("stab")
+				.setFluff("X` stabs at Y` with their Z`")
+				.setRarity(2.5f)
+				.setAcc(1f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.8f)
+				.setMix(3,0,10)
+				.setTime(TimeTier.SLOW,.3f)//longer cooldown
+				);
+		sta.addAttack(
+				make("thrust")
+				.setFluff("X` thrusts at Y` with their Z`!")
+				.setRarity(1f)
+				.setAcc(.6f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.5f)
+				.setMix(3,0,20)
+				.setTime(TimeTier.NORMAL,.2f)//little warmup
+				);
+		sta.addAttack(
+				make("pommel")
+				.setFluff("X` hits Y` with the pommel of their Z`!")
+				.setRarity(.8f)
+				.setAcc(1f)
+				.setDamage(DamageTier.LOW,DamageTier.WEAK,.2f)
+				.setMix(0,1,0)
+				.setWarmupOfTotal(TimeTier.FASTEST,TimeTier.NORMAL)//lower cooldown but still normal time
+				);
+		sta.addAttack(
+				make("slap")
+				.setFluff("X` slaps Y` with the side of their Z`!")
+				.setRarity(1.5f)
+				.setAcc(1.3f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.3f)
+				.setMix(0,1,0)
+				.setTime(TimeTier.NORMAL,.5f)
+				);
+		sta.finish();
 		stanceMap.put(WeaponType.LONGSWORD, sta);
 		
 		
@@ -327,13 +345,22 @@ public class WeaponAttackFactory {
 		}
 	}
 	
+	public enum TimeTier{
+		SLOWEST(160),SLOWER(140),SLOW(120),NORMAL(100),FAST(80),FASTER(65), FASTEST(55);
+		public final float time;
+		TimeTier(float t){
+			time = t;
+		}
+	}
+	
 	private static final AttackMaker make(String name) {
 		return new AttackMaker(name);
 	}
 	
 	public static class AttackMaker{
 		private DamageTier start = DamageTier.AVERAGE, end = DamageTier.AVERAGE;
-		private float slant = .5f, hitmult = 1f;
+		private TimeTier t_tier1 = TimeTier.NORMAL, t_tier2 = TimeTier.NORMAL;
+		private float slant = .5f, hitmult = 1f, timeSlant = 1f;
 		private float sharpW = 1f, bluntW = 1f, pierceW = 1f;
 		private float warmup = 50f, cooldown = 50f;
 		private String name, desc = "", fluff = "X` attacks Y` with their Z`!";
@@ -344,7 +371,7 @@ public class WeaponAttackFactory {
 		AttackMaker(String _name){
 			name = name;
 		}
-		
+
 		public AttackMaker setFluff(String fluff) {
 			this.fluff = fluff;
 			return this;
@@ -392,6 +419,31 @@ public class WeaponAttackFactory {
 			return this;
 		}
 		
+		public AttackMaker setTime(TimeTier tier, float mix) {
+			warmup = tier.time * mix;
+			cooldown = tier.time * (1f-mix);
+			return this;
+		}
+		
+		public AttackMaker setTime(TimeTier tier1, TimeTier tier2, float slant, float mix) {
+			float total = extra.lerp(tier1.time,tier2.time,slant);
+			warmup = total * mix;
+			cooldown = total * (1f-mix);
+			return this;
+		}
+		
+		public AttackMaker setTimeTiers(TimeTier tier1, TimeTier tier2, float slant) {
+			t_tier1 = tier1;
+			t_tier2 = tier2;
+			timeSlant = slant;
+			return this;
+		}
+		
+		public AttackMaker setTimeMix(float time_mix) {
+			setTime(t_tier1,t_tier2,timeSlant,time_mix);
+			return this;
+		}
+		
 		public AttackMaker setWarmup(float time) {
 			warmup = time;
 			return this;
@@ -399,6 +451,12 @@ public class WeaponAttackFactory {
 		
 		public AttackMaker setCooldown(float time) {
 			cooldown = time;
+			return this;
+		}
+		
+		public AttackMaker setWarmupOfTotal(TimeTier warmup_time, TimeTier total) {
+			warmup = warmup_time.time;
+			cooldown = total.time-warmup;
 			return this;
 		}
 		
