@@ -1324,7 +1324,7 @@ public class mainGame {
 		}
 
 		public static void scrollTest() {
-			extra.menuGo(new ScrollMenuGenerator(15, "back <> more","forward (<> left)") {
+			extra.menuGo(new ScrollMenuGenerator(30, "back <> more","forward (<> left)") {
 				
 				@Override
 				public List<MenuItem> header() {

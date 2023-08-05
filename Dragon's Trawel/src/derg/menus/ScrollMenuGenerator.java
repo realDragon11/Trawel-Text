@@ -29,7 +29,28 @@ public abstract class ScrollMenuGenerator implements MenuGenerator {
 		this.size = size;
 		this.backtext = backtext;
 		this.forwardtext = forwardtext;
-		locationBottom = Math.min(size-1, size == 9 ? 8 : 7);
+		
+		//TODO
+		List<MenuItem> header = header();
+		List<MenuItem> footer = footer();
+		int contentslots = 8;
+		if (header != null) {
+			for (MenuItem m: header) {
+				if (m.canClick()) {
+					contentslots--;
+				}
+			}
+		}
+
+		if (footer != null) {
+			for (MenuItem m: footer) {
+				if (m.canClick()) {
+					contentslots--;
+				}
+			}
+		}
+		
+		locationBottom = Math.min(size-1,contentslots -(contentslots == size-1 ? 0 : 1));
 	}
 	
 	@Override
@@ -37,7 +58,7 @@ public abstract class ScrollMenuGenerator implements MenuGenerator {
 		List<MenuItem> list = new ArrayList<MenuItem>();
 		List<MenuItem> header = header();
 		List<MenuItem> footer = footer();
-		int contentslots = 9;
+		int contentslots = 8;
 		if (header != null) {
 			for (MenuItem m: header) {
 				if (m.canClick()) {
@@ -58,44 +79,59 @@ public abstract class ScrollMenuGenerator implements MenuGenerator {
 		int topWindow = locationTop;
 		int botWindow = locationBottom;
 		if (scrollDir != 0 && !(scrollDir == -1 && topWindow == 0) && !(scrollDir == 1 && botWindow == size-1)) {
-			int i = (scrollDir == 1 ? locationBottom+1 : locationTop-1);
 			int limiter = (scrollDir == 1 ? locationBottom+1 : locationTop-1);
-			int[] lastpredict = new int[] {topWindow,botWindow};
+			//int limiter = i;
+			if (scrollDir == 1) {//going down
+				if ((size-1)-(contentslots-1) > limiter) {//if we can't display the bottom and our next element
+					//we're in the middle
+					topWindow = limiter;
+					botWindow = limiter+(contentslots-2);
+				}else {
+					//we're at the bottom
+					topWindow = (size-1)-((contentslots-1));
+					botWindow = size-1;
+				}
+			}else {
+				if ((contentslots-1) < limiter) {//if we can't display the top and our next element
+					//we're in the middle
+					topWindow = limiter-(contentslots-2);
+					botWindow = limiter;
+				}else {
+					//we're at the top
+					topWindow = 0;
+					botWindow = (contentslots-1);
+				}
+			}
+			/*int[] lastpredict = new int[] {topWindow,botWindow};
 			do{
 				int[] predict = getTopBot(size,contentslots,i+scrollDir,scrollDir);
-				if (
-						(scrollDir == 1 && predict[0] > limiter)
+				if (//if we aren't displaying our next item, or lose ground
+						(scrollDir == 1 && (predict[0] > limiter || lastpredict[1] > predict[1]))
 						||
-						(scrollDir == -1 && predict[1] < limiter)
+						(scrollDir == -1 && predict[1] < limiter || lastpredict[0] < predict[0])
 						) {
 					break;
 				}
-				/*if (scrollDir == 1 && predict[0] > locationTop-1) {
-					break;
-				}
-				if (scrollDir == -1 && predict[1] < locationBottom-1) {
-					break;
-				}*/
 				i+=scrollDir;
 				//scrolled++;
 				lastpredict = predict;
 			}while(i > 0 && i < size);
 			topWindow = lastpredict[0];
-			botWindow = lastpredict[1];
+			botWindow = lastpredict[1];*/
 		}
+		locationTop = topWindow;
+		locationBottom = botWindow;
+		
 		if (topWindow > 0) {
 			list.add(new ScrollMenuItem(backtext,-1,topWindow));
 		}
-
-		locationTop = topWindow;
-		locationBottom = botWindow;
 		
 		for (int i = locationTop; i <= locationBottom;i++) {
 			list.addAll(forSlot(i));
 		}
 		
 		if (botWindow < size-1) {
-			list.add(new ScrollMenuItem(forwardtext,1,botWindow-(size-1)));
+			list.add(new ScrollMenuItem(forwardtext,1,(size-1)-botWindow));
 		}
 		
 		if (footer != null) {
@@ -115,6 +151,19 @@ public abstract class ScrollMenuGenerator implements MenuGenerator {
 		
 		return predict;
 	}
+	
+	/**
+	 * sanity check: there are actually only 3 cases:
+	 * 1: we can display everything up
+	 * 2: we are in the middle
+	 * 3: we can display everything down
+	 * 
+	 * if in case 1 or 3, instead of trying to scan, should just...
+	 * display from that point on???
+	 * and I can detect that by seeing if there's 8 items left in that direction,
+	 * from our limiter
+	 * this will probably not be a flawed algo like the others
+	 */
 	
 	private static int[] getTopBot(int size, int purecapacity, int current, int direction) {
 		int top = direction == -1 ? current : current-purecapacity;
@@ -188,6 +237,7 @@ public abstract class ScrollMenuGenerator implements MenuGenerator {
 		private ScrollMenuItem(String str, int dir, int left) {
 			this.text = str;
 			this.dir = dir;
+			this.left = left;
 		}
 		@Override
 		public String title() {
