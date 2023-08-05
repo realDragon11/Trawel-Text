@@ -402,7 +402,7 @@ public class Weapon extends Item {
 		//does not account for aiming, since that is *very* opponent dependent
 		while (i < size) {
 			holdAttack = this.getMartialStance().getAttack(i);
-			damage = (holdAttack.getHitmod()*100*holdAttack.getTotalDam(this))/holdAttack.getSpeed()*level;
+			damage = level*(holdAttack.getHitMult()*100*holdAttack.getTotalDam(this))/holdAttack.getSpeed();
 			average +=damage/size;
 			if (damage > high) {
 				high = damage;

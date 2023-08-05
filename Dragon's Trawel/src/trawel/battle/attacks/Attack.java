@@ -27,19 +27,8 @@ import trawel.personal.item.solid.Weapon;
  */
 public class Attack implements IAttack{
 
-	//old instance variables, phase out
-	@Deprecated
-	private double hitMod, speed;
-	@Deprecated
-	private int sharp, blunt, pierce;
+	//private transient Skill skill;//should be dictated by the holding stance now	
 	
-	@Deprecated
-	private transient boolean isMagic = false;
-	@Deprecated
-	private transient Skill skill;//should be dictated by the holding stance now
-	
-	
-	//new values
 	private double hitMult, warmup, cooldown;
 	private int intValues[];
 	private String name, desc;
@@ -48,17 +37,6 @@ public class Attack implements IAttack{
 	private int soundStrength;
 	private String soundType;//shouldn't be a string
 	private AttackType type;
-	
-	
-	//values only present in impaired attacks, moving out
-	@Deprecated
-	private transient TargetReturn target;
-	@Deprecated
-	private transient Wound wound;
-	@Deprecated
-	private transient Weapon weapon;
-	@Deprecated
-	public transient Person defender;//only used for mass battles
 	
 	//constructor
 	/**
@@ -270,12 +248,6 @@ public class Attack implements IAttack{
 	//instance methods
 	
 	/**
-	 * @return the hitmod (double)
-	 */
-	public double getHitmod() {
-		return hitMod;
-	}
-	/**
 	 * @return the speed(double)
 	 */
 	public double getSpeed() {
@@ -318,7 +290,7 @@ public class Attack implements IAttack{
  * @param X - (String) Attacker name
  * @param Y - (String) Defender name
  * @param Z - (String) Weapon name
- */
+ 
 	public String attackStringer(String X, String Y, String Z) {
 		String tempStr = desc;
 		tempStr = tempStr.replace("X`",X);
@@ -326,6 +298,7 @@ public class Attack implements IAttack{
 		tempStr = tempStr.replace("Z`",Z+"[*]");//technically if you were to look upwards you could find the weapon, but I'm gonna put it in this way
 		return tempStr;
 	}
+	*/
 	/**
 	 * @return the name (String) of the attack
 	 */
@@ -402,22 +375,6 @@ public class Attack implements IAttack{
 		
 		return new ImpairedAttack(this,rtar,s,weap,attacker,defender);
 	}
-	
-	public int getSlot() {
-		return target.tar.slot;
-	}
-	
-	public int getTargetSpot() {
-		return target.spot;
-	}
-
-	public boolean isMagic() {
-		return isMagic;
-	}
-	
-	public Skill getSkill() {
-		return skill;
-	}
 
 	public int getSoundIntensity() {
 		return soundStrength;
@@ -425,10 +382,6 @@ public class Attack implements IAttack{
 
 	public String getSoundType() {
 		return soundType;
-	}
-
-	public Wound getWound() {
-		return wound;
 	}
 	
 	//.0f = float/double with no decimal places. Weird that it can't auto convert, but oh well
@@ -471,11 +424,6 @@ public class Attack implements IAttack{
 		}
 	}
 
-	public void blind(double d) {
-		hitMod*=d;
-		
-	}
-
 	/**
 	 * should not be used on impaired/final attacks
 	 */
@@ -499,10 +447,6 @@ public class Attack implements IAttack{
 	
 	public double getTotalDam(double sMult, double bMult, double pMult) {
 		return (this.getSharp()*sMult)+(this.getBlunt()*bMult)+(this.getPierce()*pMult);
-	}
-	
-	public Weapon getWeapon() {
-		return weapon;
 	}
 
 	@Override

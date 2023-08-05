@@ -1119,7 +1119,7 @@ public class Combat {
 		return new Integer[0];
 	}
 
-
+	/*
 	private void handleMagicSpell(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
 		extra.println(extra.PRE_ORANGE + att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
 		if  (att.getSkill() == Skill.ELEMENTAL_MAGE) {
@@ -1183,7 +1183,7 @@ public class Combat {
 			defender.takeDamage(Player.player.eaBox.bloodTrainLevel*((defender.getBloodCount()/10)));
 			defender.washAll();
 		}
-	}
+	}*/
 
 
 	private void setAttack(Person attacker, Person defender) {
