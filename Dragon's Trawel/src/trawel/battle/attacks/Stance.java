@@ -9,6 +9,7 @@ import trawel.battle.attacks.WeaponAttackFactory.AttackMaker;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.Weapon;
+import trawel.personal.item.solid.Weapon.WeaponType;
 
 /**
  *
@@ -19,11 +20,13 @@ import trawel.personal.item.solid.Weapon;
  */
 public class Stance{
 	//instance variables
+	private WeaponType weap_source;
 	private List<Attack> attacks;
 	private List<Float> rarities;
 	private WeightedTable roller;
 	//constructor and initer
-	public Stance() {
+	public Stance(WeaponType t) {
+		weap_source = t;
 		attacks = new ArrayList<Attack>();
 		rarities = new ArrayList<Float>();
 	}
@@ -99,6 +102,10 @@ public class Stance{
 	
 	public List<Attack> giveList(){
 		return attacks;
+	}
+
+	public WeaponType getWType() {
+		return weap_source;
 	}
 	
 }

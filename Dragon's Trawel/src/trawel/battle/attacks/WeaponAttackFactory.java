@@ -25,7 +25,21 @@ public class WeaponAttackFactory {
 	public WeaponAttackFactory() {
 		Stance sta;
 		
-		sta = new Stance();
+		//TEMPLATE SECTION
+		sta = new Stance(null);
+		sta.addAttack(
+				make("")
+				.setFluff("X` does to Y` with their Z`!")
+				.setRarity(1f)
+				.setAcc(1f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.AVERAGE,.5f)
+				.setMix(1,1,1)
+				.setTime(TimeTier.NORMAL,.5f)
+				);
+		addStance(null,sta);
+		//END TEMPLATE
+		
+		sta = new Stance(WeaponType.LONGSWORD);
 		sta.addAttack(
 				make("slash")
 				.setFluff("X` slashes at Y` with their Z`!")
@@ -71,25 +85,10 @@ public class WeaponAttackFactory {
 				.setMix(0,1,0)
 				.setTime(TimeTier.NORMAL,.5f)
 				);
-		sta.finish();
-		stanceMap.put(WeaponType.LONGSWORD, sta);
+		addStance(WeaponType.LONGSWORD,sta);
 		
-		//TEMPLATE SECTION
-		sta = new Stance();
-		sta.addAttack(
-				make("")
-				.setFluff("X` does to Y` with their Z`!")
-				.setRarity(1f)
-				.setAcc(1f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.AVERAGE,.5f)
-				.setMix(1,1,1)
-				.setTime(TimeTier.NORMAL,.5f)
-				);
-		sta.finish();
-		stanceMap.put(null, sta);
-		//END TEMPLATE
 		
-		sta = new Stance();
+		sta = new Stance(WeaponType.BROADSWORD);
 		sta.addAttack(
 				make("slash")
 				.setFluff("X` slashes at Y` with their Z`!")
@@ -127,10 +126,9 @@ public class WeaponAttackFactory {
 				.setMix(15,6,3)
 				.setTime(TimeTier.SLOWEST,.8f)//mostly warmup
 				);
-		sta.finish();
-		stanceMap.put(WeaponType.BROADSWORD, sta);
+		addStance(WeaponType.BROADSWORD,sta);
 		
-		sta = new Stance();
+		sta = new Stance(WeaponType.MACE);
 		sta.addAttack(
 				make("bash")
 				.setFluff("X` bashes Y` with their Z`!")
@@ -159,12 +157,11 @@ public class WeaponAttackFactory {
 				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.8f)
 				.setMix(3,20,6)
 				.setTimeTiers(TimeTier.SLOWER,TimeTier.SLOWEST,.4f)
-				.setTimeMix(.4f)
+				.setTimeMix(.7f)
 				);
-		sta.finish();
-		stanceMap.put(WeaponType.MACE, sta);
+		addStance(WeaponType.MACE,sta);
 		
-		sta = new Stance();
+		sta = new Stance(WeaponType.SPEAR);
 		sta.addAttack(
 				make("stab")
 				.setFluff("X` stabs at Y` with their Z`!")
@@ -194,34 +191,102 @@ public class WeaponAttackFactory {
 				);
 		sta.addAttack(
 				make("smack")
-				.setFluff("X` smacks at Y` with the side of their Z`!")
+				.setFluff("X` smacks Y` with the side of their Z`!")
 				.setRarity(1f)
 				.setAcc(.9f)
 				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.5f)
 				.setMix(0,1,0)
 				.setTime(TimeTier.NORMAL,.5f)
 				);
-		sta.finish();
-		stanceMap.put(WeaponType.SPEAR, sta);
+		addStance(WeaponType.SPEAR,sta);
 		
+		sta = new Stance(WeaponType.AXE);
+		sta.addAttack(
+				make("hack")
+				.setFluff("X` hacks at Y` with their Z`!")
+				.setRarity(6f)
+				.setAcc(.95f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.4f)
+				.setMix(10,2,0)
+				.setTime(TimeTier.NORMAL,.6f)
+				);
+		sta.addAttack(
+				make("chop")
+				.setFluff("X` chops Y` with their Z`!")
+				.setRarity(4f)
+				.setAcc(1.1f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.5f)
+				.setMix(1,0,0)
+				.setTime(TimeTier.SLOW,.6f)
+				);
+		sta.addAttack(
+				make("power")
+				.setFluff("X` prepares their Z`, then brings it down on Y` with a furious swing!")
+				.setRarity(2f)
+				.setAcc(1.2f)
+				.setDamage(DamageTier.HIGH,DamageTier.ASTOUNDING,.5f)
+				.setMix(20,5,0)
+				.setWarmupOfTotal(TimeTier.SLOWER, TimeTier.SLOWEST)
+				);
+		sta.addAttack(
+				make("heft")
+				.setFluff("X` bats the heft of their Z` at Y`!")
+				.setRarity(.8f)
+				.setAcc(1.3f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.AVERAGE,.5f)
+				.setMix(0,1,0)
+				.setTime(TimeTier.SLOW,.4f)
+				);
+		addStance(WeaponType.AXE,sta);
 		
-		martialStance = new Stance();
-		tempAttack = new Attack("hack",.9,90.0,20,18,0,"X` hacks at Y` with their Z`!",1,"sharp");
-		martialStance.addAttack(tempAttack);
-		martialStance.addAttack(tempAttack);
-		martialStance.addAttack(tempAttack);
-		martialStance.addAttack(new Attack("slap",.8,100.0,0,30,0,"X` slaps Y` with the side of their Z`!",1,"blunt"));
-		martialStance.addAttack(new Attack("heft",1,120.0,0,10,0,"X` hits Y` with the heft of their Z`!",0,"blunt"));
-		martialStance.finish();
-		stanceMap.put(WeaponType.AXE, martialStance);
-		martialStance = new Stance();
-		martialStance.addAttack(new Attack("slash",1.3,90.0,25,1,0,"X` slashes at Y` with their Z`!",1,"sharp"));
-		martialStance.addAttack(new Attack("slice",.9,60.0,18,0,0,"X` slices up Y` with their Z`!",0,"sharp"));
-		martialStance.addAttack(new Attack("stab",1.2,100.0,5,0,25,"X` stabs at Y` with their Z`!",1,"pierce"));	
-		martialStance.addAttack(new Attack("thrust",.6,50.0,10,0,20,"X` thrusts at Y` with their Z`!",2,"pierce"));
-		martialStance.addAttack(new Attack("pommel",1,110.0,0,10,0,"X` hits Y` with the pommel of their Z`!",1,"blunt"));
-		martialStance.finish();
-		stanceMap.put(WeaponType.RAPIER, martialStance);
+		sta = new Stance(WeaponType.RAPIER);
+		sta.addAttack(
+				make("slice")
+				.setFluff("X` slices up Y` with their Z`!")
+				.setRarity(3f)
+				.setAcc(.8f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.1f)
+				.setMix(10,0,4)
+				.setTime(TimeTier.FASTER,.6f)
+				);
+		sta.addAttack(
+				make("stab")
+				.setFluff("X` stabs at Y` with their Z`!")
+				.setRarity(3f)
+				.setAcc(1.1f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.AVERAGE,.5f)
+				.setMix(2,0,10)
+				.setTime(TimeTier.NORMAL,.5f)
+				);
+		sta.addAttack(
+				make("thrust")
+				.setFluff("X` thrusts towards Y` with their Z`!")
+				.setRarity(1f)
+				.setAcc(.4f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.1f)
+				.setMix(1,0,10)
+				.setTime(TimeTier.FAST,.5f)
+				);
+		sta.addAttack(
+				make("slash")
+				.setFluff("X` slashes up Y` with their Z`!")
+				.setRarity(2.5f)
+				.setAcc(1.2f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.2f)
+				.setMix(10,0,2)
+				.setWarmupOfTotal(TimeTier.FAST, TimeTier.SLOW)
+				);
+		sta.addAttack(
+				make("pommel")
+				.setFluff("X` brings the pommel of their Z` down on Y`!")
+				.setRarity(2f)
+				.setAcc(1.2f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.7f)
+				.setMix(0,1,0)
+				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOWER)
+				);
+		addStance(WeaponType.RAPIER,sta);
+		
 		martialStance = new Stance();
 		tempAttack = new Attack("slash",1,70.0,20,2,0,"X` slashes at Y` with their Z`!",0,"sharp");
 		martialStance.addAttack(tempAttack);
@@ -324,6 +389,9 @@ public class WeaponAttackFactory {
 		return stanceMap.get(str);
 	}
 	
+	
+	//FIXME make a per attack metric that lists the average results (hit/miss, damage results for each vector, armor deflection) using unenchanted unqualitied
+	//weapons of the following materials: iron, tin, copper, bronze, steel, silver, gold, adamantine, solar gold
 	public static void weaponMetrics() throws FileNotFoundException {
 		PrintWriter writer = new PrintWriter("wmetrics.csv");
 		int hold = Weapon.battleTests;
@@ -585,6 +653,16 @@ public class WeaponAttackFactory {
 			return rarity;
 		}
 		
+	}
+	
+	public static void addStance(WeaponType t, Stance s) {
+		assert !stanceMap.containsKey(t);
+		assert !stanceMap.containsValue(s);
+		assert t == s.getWType();//we do this so it requires listing the stance at the bottom and top of the declaration
+		//double checking ensures that human error is less likely, and top/bottom is considerably more readable
+		//which is likely to prevent human error in the first place
+		s.finish();
+		stanceMap.put(t, s);
 	}
 	
 	/*
