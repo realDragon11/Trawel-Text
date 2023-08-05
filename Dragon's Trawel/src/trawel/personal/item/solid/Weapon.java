@@ -286,7 +286,7 @@ public class Weapon extends Item {
 	 * @return the martialStance (Stance)
 	 */
 	public Stance getMartialStance() {
-		return WeaponAttackFactory.getStance(this.getBaseName());
+		return WeaponAttackFactory.getStance(weap);
 	}
 	
 	/**

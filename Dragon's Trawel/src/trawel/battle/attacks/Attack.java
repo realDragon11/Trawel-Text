@@ -9,6 +9,7 @@ import trawel.extra;
 import trawel.battle.Combat;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
+import trawel.battle.attacks.WeaponAttackFactory.AttackMaker;
 import trawel.battle.attacks.WeaponAttackFactory.DamageTier;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill;
@@ -560,6 +561,10 @@ public class Attack implements IAttack{
 
 	public void setStance(Stance holdingStance) {
 		this.holdingStance = holdingStance;
+	}
+
+	public Attack copy() {
+		return new Attack(name, desc, fluffer, hitMult, type, intValues, warmup,cooldown);
 	}
 	
 	

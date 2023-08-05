@@ -107,5 +107,9 @@ public class Stance{
 	public WeaponType getWType() {
 		return weap_source;
 	}
+
+	public float getRarity(int i) {
+		return rarities.get(i);
+	}
 	
 }

@@ -79,6 +79,10 @@ public class Person implements java.io.Serializable, HasSkills{
 	 * bit 2 = angry (racist to non humanoids) (0b00000010) <br>
 	 */
 	private byte flags = 0b00000000;//used with bitmasking
+	//DOLATER: add a Set<Culture> that holds cultures. This can be used for advanced bigorty, cultural norms, etc etc
+	//this might also be used to hold a place of origin
+	//cultures won't have to be all of one type, so there might be a weaker 'world' culture
+	//a 'town' culture, an 'island' culture, and then actually heavy cultures that aren't 'cultural groups'
 	
 	private String firstName,title;
 
