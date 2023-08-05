@@ -1,19 +1,12 @@
 package trawel.battle.attacks;
 
-import org.nustaq.serialization.annotations.OneOf;
-
 import derg.SRInOrder;
 import derg.StringResult;
-import trawel.Effect;
 import trawel.extra;
-import trawel.battle.Combat;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
-import trawel.battle.attacks.WeaponAttackFactory.AttackMaker;
 import trawel.battle.attacks.WeaponAttackFactory.DamageTier;
 import trawel.personal.Person;
-import trawel.personal.classless.Skill;
-import trawel.personal.item.Inventory;
 import trawel.personal.item.solid.Weapon;
 
 /**
