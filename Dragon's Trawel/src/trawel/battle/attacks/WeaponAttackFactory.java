@@ -46,7 +46,7 @@ public class WeaponAttackFactory {
 				);
 		sta.addAttack(
 				make("thrust")
-				.setFluff("X` thrusts at Y` with their Z`!")
+				.setFluff("X` quickly thrusts at Y` with their Z`!")
 				.setRarity(1f)
 				.setAcc(.6f)
 				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.5f)
@@ -74,36 +74,137 @@ public class WeaponAttackFactory {
 		sta.finish();
 		stanceMap.put(WeaponType.LONGSWORD, sta);
 		
+		//TEMPLATE SECTION
+		sta = new Stance();
+		sta.addAttack(
+				make("")
+				.setFluff("X` does to Y` with their Z`!")
+				.setRarity(1f)
+				.setAcc(1f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.AVERAGE,.5f)
+				.setMix(1,1,1)
+				.setTime(TimeTier.NORMAL,.5f)
+				);
+		sta.finish();
+		stanceMap.put(null, sta);
+		//END TEMPLATE
+		
+		sta = new Stance();
+		sta.addAttack(
+				make("slash")
+				.setFluff("X` slashes at Y` with their Z`!")
+				.setRarity(3f)
+				.setAcc(1.3f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.5f)
+				.setMix(12,3,3)
+				.setTime(TimeTier.NORMAL,.5f)
+				);
+		sta.addAttack(
+				make("thrust")
+				.setFluff("X` thrusts towards Y` with their Z`!")
+				.setRarity(1.5f)
+				.setAcc(.9f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.1f)
+				.setMix(5,1,10)
+				.setTime(TimeTier.SLOW,.6f)
+				);
+		sta.addAttack(
+				make("slap")
+				.setFluff("X` slaps Y` with their Z`!")
+				.setRarity(2f)
+				.setAcc(1.6f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.2f)
+				.setMix(0,1,0)
+				.setTimeTiers(TimeTier.NORMAL,TimeTier.SLOW,.3f)
+				.setTimeMix(.6f)
+				);
+		sta.addAttack(
+				make("power")
+				.setFluff("X` prepares their Z`, then brings it down on Y` with a furious swing!")
+				.setRarity(1f)
+				.setAcc(1.2f)
+				.setDamage(DamageTier.HIGH,DamageTier.ASTOUNDING,.1f)
+				.setMix(15,6,3)
+				.setTime(TimeTier.SLOWEST,.8f)//mostly warmup
+				);
+		sta.finish();
+		stanceMap.put(WeaponType.BROADSWORD, sta);
+		
+		sta = new Stance();
+		sta.addAttack(
+				make("bash")
+				.setFluff("X` bashes Y` with their Z`!")
+				.setRarity(2f)
+				.setAcc(1.5f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.5f)
+				.setMix(3,20,6)
+				.setTimeTiers(TimeTier.NORMAL,TimeTier.SLOW,.5f)
+				.setTimeMix(.6f)
+				);
+		sta.addAttack(
+				make("smash")
+				.setFluff("X` smashes Y` with their Z`!")
+				.setRarity(1.5f)
+				.setAcc(.8f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.3f)
+				.setMix(3,20,6)
+				.setTimeTiers(TimeTier.NORMAL,TimeTier.FAST,.2f)
+				.setTimeMix(.4f)
+				);
+		sta.addAttack(
+				make("power")
+				.setFluff("X` prepares their Z`, then brings it down on Y` with a furious swing!")
+				.setRarity(1f)
+				.setAcc(1.2f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.8f)
+				.setMix(3,20,6)
+				.setTimeTiers(TimeTier.SLOWER,TimeTier.SLOWEST,.4f)
+				.setTimeMix(.4f)
+				);
+		sta.finish();
+		stanceMap.put(WeaponType.MACE, sta);
+		
+		sta = new Stance();
+		sta.addAttack(
+				make("stab")
+				.setFluff("X` stabs at Y` with their Z`!")
+				.setRarity(2f)
+				.setAcc(2.5f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.1f)
+				.setMix(3,0,30)
+				.setTime(TimeTier.SLOWEST,.5f)
+				);
+		sta.addAttack(
+				make("skewer")
+				.setFluff("X` charges to skewer Y`!")
+				.setRarity(5f)
+				.setAcc(1.1f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.AVERAGE,.5f)
+				.setMix(5,0,30)
+				.setTime(TimeTier.SLOW,.7f)
+				);
+		sta.addAttack(
+				make("thrust")
+				.setFluff("X` thrusts at Y` with their Z`!")
+				.setRarity(3f)
+				.setAcc(.5f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.1f)
+				.setMix(3,0,35)
+				.setTime(TimeTier.FAST,.4f)
+				);
+		sta.addAttack(
+				make("smack")
+				.setFluff("X` smacks at Y` with the side of their Z`!")
+				.setRarity(1f)
+				.setAcc(.9f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.5f)
+				.setMix(0,1,0)
+				.setTime(TimeTier.NORMAL,.5f)
+				);
+		sta.finish();
+		stanceMap.put(WeaponType.SPEAR, sta);
 		
 		
-		martialStance = new Stance();
-		tempAttack = new Attack("slash",1.3,110.0,37,8,0,"X` slashes at Y` with their Z`!",1,"sharp");
-		martialStance.addAttack(tempAttack);
-		martialStance.addAttack(tempAttack);
-		tempAttack = new Attack("stab",1.0,110.0,2,4,10,"X` stabs at Y` with their Z`!",1,"pierce");
-		martialStance.addAttack(tempAttack);	
-		martialStance.addAttack(new Attack("pommel",1,110.0,0,12,0,"X` hits Y` with the pommel of their Z`!",0,"blunt"));
-		martialStance.addAttack(new Attack("slap",1.2,120.0,0,15,0,"X` slaps Y` with the side of their Z`!",1,"blunt"));
-		martialStance.addAttack(new Attack("power",.5,180.0,50,20,0,"X` lifts their Z` over their head, and then brings it down on Y`!",2,"sharp"));
-		martialStance.finish();
-		stanceMap.put(WeaponType.BROADSWORD, martialStance);
-		
-		martialStance = new Stance();
-		martialStance.addAttack(new Attack("bash",1.5,150.0,4,25,4,"X` bashes Y` with their Z`!",1,"blunt"));
-		martialStance.addAttack(new Attack("smash",1,100.0,4,20,4,"X` smashes Y` with their Z`!",1,"blunt"));
-		martialStance.addAttack(new Attack("power",.5,180.0,10,50,10,"X` lifts their Z` over their head, and then brings it down on Y`!",2,"blunt"));
-		martialStance.finish();
-		stanceMap.put(WeaponType.MACE, martialStance);
-		martialStance = new Stance();
-		tempAttack = new Attack("skewer",1.1,120.0,1,2,45,"X` skewers Y` with their Z`!",1,"pierce");
-		martialStance.addAttack(tempAttack);
-		martialStance.addAttack(tempAttack);
-		martialStance.addAttack(tempAttack);
-		martialStance.addAttack(new Attack("thrust",.4,60.0,1,2,30,"X` thrusts at Y` with their Z`!",2,"pierce"));
-		martialStance.addAttack(new Attack("pole",.6,120.0,0,10,0,"X` hits Y` with the pole of their Z`!",1,"blunt"));
-		martialStance.addAttack(new Attack("smack",1,100.0,1,8,0,"X` smacks Y` with the side of their Z`!",0,"blunt"));
-		martialStance.finish();
-		stanceMap.put(WeaponType.SPEAR, martialStance);
 		martialStance = new Stance();
 		tempAttack = new Attack("hack",.9,90.0,20,18,0,"X` hacks at Y` with their Z`!",1,"sharp");
 		martialStance.addAttack(tempAttack);
@@ -329,6 +430,13 @@ public class WeaponAttackFactory {
 		private int damage;
 		DamageTier(int _damage){
 			damage = _damage;
+		}
+		
+		/**
+		 * used to set sound intensity
+		 */
+		public int getDam() {
+			return damage;
 		}
 		
 		public static float totalDamage(DamageTier start, DamageTier end, float lerp) {

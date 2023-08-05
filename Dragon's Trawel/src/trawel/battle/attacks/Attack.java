@@ -9,6 +9,7 @@ import trawel.extra;
 import trawel.battle.Combat;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
+import trawel.battle.attacks.WeaponAttackFactory.DamageTier;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Inventory;
@@ -41,7 +42,7 @@ public class Attack implements IAttack{
 	private double hitMult, warmup, cooldown;
 	private int intValues[];
 	private String name, desc;
-	private StringResult fluffer;
+	private StringResult fluffer;//TODO handle missing and hitting and damage types and etc etc
 	private Stance holdingStance;//will be used for some shared data
 	private int soundStrength;
 	private String soundType;//shouldn't be a string
@@ -84,6 +85,8 @@ public class Attack implements IAttack{
 	public Attack(String name, String desc, String fluff, double hitMult, int sharp, int blunt, int pierce,
 			double warmup, double cooldown) {
 		this(name,desc,new SRInOrder(fluff),hitMult,AttackType.REAL_WEAPON,new int[] {sharp,blunt,pierce},warmup,cooldown);
+		
+		//priority -> blunt > sharp > pierce
 		if (pierce > sharp) {
 			if (pierce > blunt) {
 				soundType = "pierce";
@@ -97,11 +100,18 @@ public class Attack implements IAttack{
 				soundType = "blunt";
 			}
 		}
-		//0 to 29 = 0
-		//30 to 59 = 1
-		//60+ = 2
-		soundStrength = extra.clamp(getTotalDam()/30, 0,2);
-		//priority -> blunt > sharp > pierce
+		
+		int dam = getTotalDam();
+		if (dam < DamageTier.AVERAGE.getDam()) {
+			soundStrength = 0;
+		}else {
+			if (dam >= DamageTier.HIGH.getDam()) {
+				soundStrength = 2;
+			}else {
+				soundStrength = 1;
+			}
+		}
+		
 	}
 	//simple for prototyping
 	public Attack(String name, String fluff, double hitMult, double time, int sharp, int blunt, int pierce) {
