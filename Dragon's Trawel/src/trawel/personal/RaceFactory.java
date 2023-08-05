@@ -19,6 +19,7 @@ import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
+import trawel.personal.item.solid.Weapon.WeaponType;
 
 @SuppressWarnings("deprecation")
 public class RaceFactory {
@@ -79,6 +80,69 @@ public class RaceFactory {
 		}
 	}
 	
+	public enum RaceClass{
+		HUMAN_LIKE(LegacyType.HUMAN), ELF(LegacyType.ORC), ANTHRO_FUR(LegacyType.CAT),
+		ANTHRO_REPTILE(LegacyType.MERMAID), SKELETON(LegacyType.SKELETON),
+		OTHER(LegacyType.NONE),VARIES(LegacyType.VARIES), GOLEM(LegacyType.GOLEM),
+		WOLF(LegacyType.WOLF), BEAR(LegacyType.BEAR), UNDONE_BEAST(LegacyType.WOLF);
+		private LegacyType ltype;
+		RaceClass(LegacyType _ltype) {
+			ltype = _ltype;
+		}
+		
+		public LegacyType getLegacy() {
+			return ltype;
+		}
+	}
+	public enum LegacyType{
+		HUMAN("human",3,"human"), ORC("orc",0,null), MERMAID("mermaid",0,null), CAT("cat_kin",5,"cat"),
+		WOLF("wolf",5,"wolf"), BEAR("bear",0,null), NONE(null,0,null),
+		SKELETON("skeleton",0, null), VARIES(null,5,"mimic"), GOLEM("flesh_golem",0,"flesh_golem");
+		private String spritename;
+		private String mapname;
+		private int maps;
+		private LegacyType(String spritename, int maps, String mapname) {
+			this.mapname = mapname;
+			this.maps = maps;
+			this.mapname = mapname;
+		}
+		
+		public String getSpriteName(RaceID id) {
+			if (spritename != null) {
+				return spritename;
+			}
+			if (this != LegacyType.VARIES) {
+				return "";
+			}
+			switch (id) {
+			case B_MIMIC_OPEN: case B_REAVER_SHORT:
+				return "open-mimic";
+			case B_MIMIC_CLOSED: case B_REAVER_TALL:
+				return "hiding-mimic";
+			}
+			
+			return null;
+		}
+		public String getMapName(RaceID id) {
+			if (mapname != null) {
+				return mapname;
+			}
+			return "";
+		}
+		/**
+		 * use to convert a new number to a legacy map number
+		 * <br>
+		 * so you don't have to store a legacy number, just have a number you associate with it dervivable from the modern data
+		 */
+		public int getMap(int offset) {
+			if (maps == 0) {
+				return 0;
+			}
+			return offset%maps;
+		}
+		
+	}
+	
 	public RaceFactory() {
 		misc = new Race(RaceID.HUMAN);
 		misc.swears.add("thinskin");
@@ -102,6 +166,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
+		misc.raceClass = RaceClass.HUMAN_LIKE;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.ORC);
@@ -124,6 +189,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(-10);
 		misc.maxPitch = audioSteps(0);
+		misc.raceClass = RaceClass.ELF;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.LIZARDFOLK);
@@ -147,6 +213,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
+		misc.raceClass = RaceClass.ANTHRO_REPTILE;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.HIGH_ELF);
@@ -170,6 +237,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(-3);
 		misc.maxPitch = audioSteps(7);
+		misc.raceClass = RaceClass.ELF;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.TREE_ELF);
@@ -196,6 +264,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(-3);
 		misc.maxPitch = audioSteps(7);
+		misc.raceClass = RaceClass.ELF;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.WOLF_ANTHRO);
@@ -219,6 +288,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
+		misc.raceClass = RaceClass.ANTHRO_FUR;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.TURTLE_ANTHRO);
@@ -241,6 +311,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(-8);
 		misc.maxPitch = audioSteps(2);
+		misc.raceClass = RaceClass.ANTHRO_REPTILE;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.CAT_ANTHRO);//also maybe make nekos for funny reasons
@@ -269,6 +340,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(2);
 		misc.maxPitch = audioSteps(8);
+		misc.raceClass = RaceClass.ANTHRO_FUR;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.SLUG_ANTHRO);
@@ -291,6 +363,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(-10);
 		misc.maxPitch = audioSteps(0);
+		misc.raceClass = RaceClass.ANTHRO_REPTILE;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.TENDERHEART);
@@ -313,6 +386,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
+		misc.raceClass = RaceClass.ELF;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.SKELETON_NON_BEASTLY);
@@ -335,6 +409,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.NONE;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
+		misc.raceClass = RaceClass.SKELETON;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.ZAP_PEOPLE);
@@ -357,6 +432,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(0);
 		misc.maxPitch = audioSteps(10);
+		misc.raceClass = RaceClass.HUMAN_LIKE;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.FUGUE);
@@ -379,6 +455,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(-10);
 		misc.maxPitch = audioSteps(0);
+		misc.raceClass = RaceClass.HUMAN_LIKE;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.FISHFOLK);
@@ -401,6 +478,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
+		misc.raceClass = RaceClass.ANTHRO_REPTILE;
 		raceList.add(misc);
 		
 		
@@ -431,6 +509,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.WOLF;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
+		misc.raceClass = RaceClass.WOLF;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_MIMIC_OPEN);
@@ -454,6 +533,7 @@ public class RaceFactory {
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.OPEN_MIMIC;
 		misc.emitsBlood = true;
+		misc.raceClass = RaceClass.VARIES;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_MIMIC_CLOSED);
@@ -477,6 +557,7 @@ public class RaceFactory {
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.MIMIC;
 		misc.emitsBlood = false;
+		misc.raceClass = RaceClass.VARIES;
 		raceList.add(misc);
 		
 		
@@ -497,6 +578,7 @@ public class RaceFactory {
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.S_REAVER;
 		misc.emitsBlood = true;
+		misc.raceClass = RaceClass.VARIES;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_REAVER_SHORT);
@@ -517,6 +599,7 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.C_REAVER;
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.MONSTER1;
+		misc.raceClass = RaceClass.VARIES;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_ENT);
@@ -539,6 +622,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.ENT;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
+		misc.raceClass = RaceClass.UNDONE_BEAST;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_BEAR);
@@ -562,6 +646,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.BEAR;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
+		misc.raceClass = RaceClass.BEAR;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_BAT);
@@ -585,6 +670,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.BAT;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
+		misc.raceClass = RaceClass.UNDONE_BEAST;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_FLESH_GOLEM);
@@ -607,6 +693,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.F_GOLEM;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
+		misc.raceClass = RaceClass.GOLEM;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_UNICORN);
@@ -629,6 +716,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.WOLF;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
+		misc.raceClass = RaceClass.UNDONE_BEAST;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_HARPY);
@@ -651,6 +739,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.HARPY;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
+		misc.raceClass = RaceClass.UNDONE_BEAST;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_DRUDGER_STOCK);
@@ -675,6 +764,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.F_GOLEM;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
+		misc.raceClass = RaceClass.ANTHRO_REPTILE;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_DRUDGER_TITAN);
@@ -697,6 +787,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.F_GOLEM;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
+		misc.raceClass = RaceClass.ANTHRO_REPTILE;
 		raceList.add(misc);
 		
 		for (Race r: raceList) {
@@ -786,7 +877,7 @@ public class RaceFactory {
 	public static Person makeWolf(int level) {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_WOLF, MaterialFactory.getMat("flesh"), false);
-		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
 		if (extra.chanceIn(1,5)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
@@ -800,7 +891,7 @@ public class RaceFactory {
 	public static Person makeAlphaWolf(int level) {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_WOLF, MaterialFactory.getMat("flesh"), false);
-		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
 		if (extra.chanceIn(4,5)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
@@ -815,7 +906,7 @@ public class RaceFactory {
 	public static Person makeMimic(int level) {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_MIMIC_OPEN, MaterialFactory.getMat("wood"), false);
-		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
 		w.getBag().swapArmorSlot(new Armor(level,0,MaterialFactory.getMat("flesh")),0);
 		//w.getBag().swapRace(RaceFactory.getRace("hiding-mimic"));
 		w.setPerk(Perk.RACIAL_SHIFTS);
@@ -848,7 +939,7 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_REAVER_TALL, MaterialFactory.getMat("flesh"), false);//DOLATER change flesh type
 		//Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("flesh"),Person.RaceFlag.NONE,false);
-		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"standing reaver"));
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.REAVER_STANDING));
 		//w.backupWeapon = new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth and claws");
 		//w.getBag().swapRace(RaceFactory.getRace("standing-reaver"));
 		w.setPerk(Perk.RACIAL_SHIFTS);
@@ -872,7 +963,7 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_ENT, MaterialFactory.getMat("wood"), false);
 		//Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("wood"),Person.RaceFlag.NONE,false);
-		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("wood"),"branches"));
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("wood"),WeaponType.BRANCHES));
 		w.getBag().getDrawBanes().add(DrawBane.ENT_CORE);
 		//w.getBag().swapRace(RaceFactory.getRace("ent"));
 		extra.popPrintStack();
@@ -900,7 +991,7 @@ public class RaceFactory {
 	public static Person makeBear(int level) {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_BEAR, MaterialFactory.getMat("flesh"), false);
-		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth and claws"));
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.CLAWS_TEETH_GENERIC));
 		w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomBearName());
@@ -913,7 +1004,7 @@ public class RaceFactory {
 	public static Person makeBat(int level) {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_BAT, MaterialFactory.getMat("flesh"), false);
-		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic teeth"));
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
 		if (extra.chanceIn(1,7)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
@@ -931,7 +1022,7 @@ public class RaceFactory {
 	public static Person getFleshGolem(int level) {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_FLESH_GOLEM, MaterialFactory.getMat("flesh"), false);
-		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("flesh"),"generic fists"));
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("flesh"),WeaponType.GENERIC_FISTS));
 		w.getBag().getDrawBanes().add(DrawBane.BEATING_HEART);
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomFirstName());
@@ -944,7 +1035,7 @@ public class RaceFactory {
 	public static Person makeUnicorn(int level) {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_UNICORN, MaterialFactory.getMat("flesh"), false);
-		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"unicorn horn"));
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.UNICORN_HORN));
 		if (extra.chanceIn(1,3)) {
 			w.getBag().getDrawBanes().add(DrawBane.UNICORN_HORN);
 		}
@@ -958,7 +1049,7 @@ public class RaceFactory {
 	public static Person makeHarpy(int level) {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_HARPY, MaterialFactory.getMat("flesh"), false);
-		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),"generic talons"));
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TALONS_GENERIC));
 		if (extra.chanceIn(1,6)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		}
@@ -978,7 +1069,7 @@ public class RaceFactory {
 	public static Person makeDrudgerStock(int level) {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_DRUDGER_STOCK, MaterialFactory.getMat("flesh"), false);
-		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","rusty iron","iron")),"fishing spear"));
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","rusty iron","iron")),WeaponType.FISH_SPEAR));
 		for (byte i=0;i<5;i++) {
 			if (extra.chanceIn(1,8)) {
 				w.getBag().swapArmorSlot(new Armor(level,i,MaterialFactory.getMat("rusty iron"),null),i);
@@ -996,7 +1087,7 @@ public class RaceFactory {
 	public static Person makeDrudgerTitan(int level) {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_DRUDGER_TITAN, MaterialFactory.getMat("flesh"), false);
-		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","iron")),"anchor"));
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","iron")),WeaponType.FISH_ANCHOR));
 		w.getBag().swapArmorSlot(new Armor(level,(byte)2,MaterialFactory.getMat("rusty iron"),null),2);
 		w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		if (extra.chanceIn(1,2)) {

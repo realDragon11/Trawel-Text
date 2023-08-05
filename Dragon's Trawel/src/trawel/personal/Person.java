@@ -46,6 +46,7 @@ import trawel.personal.item.body.Race.RaceType;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.Weapon;
+import trawel.personal.item.solid.Weapon.WeaponType;
 import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Player;
 import trawel.towns.services.Store;
@@ -1391,10 +1392,10 @@ public class Person implements java.io.Serializable, HasSkills{
 	public void updateRaceWeapon() {
 		switch (bag.getRaceID()) {
 		case B_REAVER_SHORT:
-			bag.getHand().transmuteWeapType("generic teeth and claws");
+			bag.getHand().transmuteWeapType(WeaponType.CLAWS_TEETH_GENERIC);
 			break;
 		case B_REAVER_TALL:
-			bag.getHand().transmuteWeapType("standing reaver");
+			bag.getHand().transmuteWeapType(WeaponType.REAVER_STANDING);
 			break;
 		}
 		

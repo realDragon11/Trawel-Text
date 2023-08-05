@@ -12,9 +12,12 @@ import trawel.extra;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
+import trawel.personal.item.solid.Weapon.WeaponType;
 
 public class WeaponAttackFactory {
-	private static Map<String,Stance> stanceMap = new HashMap<String,Stance>(); 
+	private static Map<String,Stance> stanceMap = new HashMap<String,Stance>();
+	
+	//FIXME: update stancemap to new weapon naming system, and also every attack
 	
 	public WeaponAttackFactory() {
 		Attack tempAttack;
@@ -202,7 +205,7 @@ public class WeaponAttackFactory {
 			}
 			mats++;
 			writer.write(m.name+",");
-			for (String str: Weapon.weaponTypes) {
+			for (WeaponType str: Weapon.WeaponType.values()) {
 				weaps++;
 				weaponList.add(new Weapon(1,m,str));
 				writer.write(weaponList.get(weaponList.size()-1).score()+",");

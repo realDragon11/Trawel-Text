@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import trawel.extra;
 import trawel.battle.attacks.TargetFactory;
 import trawel.personal.RaceFactory;
+import trawel.personal.RaceFactory.RaceClass;
 import trawel.personal.RaceFactory.RaceID;
 import trawel.personal.item.Item;
 import trawel.personal.item.Item.ItemType;
@@ -29,6 +30,7 @@ public class Race extends Item{
 	public RaceType racialType;
 	public TargetFactory.TargetType targetType;
 	public boolean emitsBlood;
+	public RaceClass raceClass;
 	
 	public SoundBox.Voice voice = SoundBox.Voice.NONE;
 	public float minPitch = 1, maxPitch = 1;
@@ -84,7 +86,8 @@ public class Race extends Item{
 		return extra.randList(swears);
 	}
 	public int randomRaceMap() {
-		return Integer.parseInt(extra.randList(raceMaps));//TODO: should probably store them as ints in the first place
+		//return Integer.parseInt(extra.randList(raceMaps));//DOLATER check to see if the conversion worked
+		return extra.getRand().nextInt();//is moduluo'd for now
 	}
 	
 	@Override
@@ -95,8 +98,16 @@ public class Race extends Item{
 	@Override
 	public void levelUp() {}
 
-	public String getMap() {
-		return internalName.map;
+	public String getLegacySprite() {
+		return raceClass.getLegacy().getSpriteName(raceID());
+	}
+	
+	public String getLegacyMap() {
+		return raceClass.getLegacy().getMapName(raceID());
+	}
+	
+	public int getLegacyNumber(int offset) {
+		return raceClass.getLegacy().getMap(offset);
 	}
 	
 	

@@ -432,10 +432,13 @@ public class Inventory implements java.io.Serializable{
 	
 	}
 
+	/**
+	 * legacy, use a converter later to decide if to use this function or a new system based on starting args
+	 */
 	public void graphicalDisplay(int side, Person p) { 
 		Networking.sendStrong("RaceFlag|"+side+"|"+p.getRaceFlag().name()+"|");
 		Race r_race = getRace();
-		Networking.sendStrong("RaceInv|"+side+"|" +r_race.getMap()+"|"+r_race.baseMap+"|"+raceMap+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|1|");
+		Networking.sendStrong("RaceInv|"+side+"|" +r_race.getLegacySprite()+"|"+r_race.getLegacyMap()+"|"+r_race.getLegacyNumber(raceMap)+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|1|");
 		if (!p.getScar().equals("")) {
 			Networking.sendStrong("AddInv|"+side+"|" + p.getScar() +"|iron|0|" + p.bloodSeed + "|" + p.getBloodCount()+"|0|0|");
 		}

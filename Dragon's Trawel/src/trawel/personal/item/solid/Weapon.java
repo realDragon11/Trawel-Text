@@ -40,7 +40,7 @@ public class Weapon extends Item {
 	
 	private Enchant enchant;
 
-	private String weapName;//TODO: make this an enum or byte or something
+	private WeaponType weap;//TODO: make this an enum or byte or something
 	private int material;
 	private int cost;//probably also remove cost and weight like I did for armor
 	//FIXME: needs to be changed to account for the aether/money divide
@@ -69,68 +69,91 @@ public class Weapon extends Item {
 		}
 	}
 	
+	public enum WeaponType{
+		LONGSWORD("longsword","longsword"),BROADSWORD("broadsword","broadsword"),MACE("mace","mace"),SPEAR("spear","spear"),AXE("axe","small_axe"),RAPIER("rapier","rapier")
+		,DAGGER("dagger","dagger"),CLAYMORE("claymore","claymore"),LANCE("spear","spear"),
+		SHOVEL("shovel","shovel"),TEETH_GENERIC("teeth",null),
+		REAVER_STANDING("clawed feet",null),
+		CLAWS_TEETH_GENERIC("teeth and claws",null), BRANCHES("branches",null), 
+		GENERIC_FISTS("fists",null), UNICORN_HORN("horn",null), TALONS_GENERIC("talons",null),
+		FISH_SPEAR("fishing spear","spear"), FISH_ANCHOR("anchor","claymore");
+		
+		private final String name, legacysprite;
+		WeaponType(String _name, String _legacysprite) {
+			name = _name;
+			legacysprite = _legacysprite;
+		}
+		
+		public String getName() {
+			return name;
+		}
+		public String getLegacy() {
+			return legacysprite;
+		}
+	}
+	
 	//constructors
 	/**
 	 * Standard weapon constructor. Makes a weapon of level newLevel
 	 * @param newLevel (int)
 	 */
-	public Weapon(int newLevel, Material materia, String weaponName) {
+	public Weapon(int newLevel, Material materia, WeaponType weapon) {
 		material = materia.curNum;
 		level = newLevel;
 		weight *= materia.weight;
 		cost = (int) materia.cost;
 		//choosing the type of weapon
-		weapName = weaponName;
+		weap = weapon;
 		kills = 0;
 		
 		//DOLATER: convert to enum or some other method
-		switch (weapName) {
-		case "longsword":
+		switch (weap) {
+		case LONGSWORD:
 			cost *= 1;
 			weight *=2;
 			cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
 			;break;
-		case "broadsword":
+		case BROADSWORD:
 			cost *= 2;
 			weight *=3;
 			cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
 			;break;
-		case "mace":
+		case MACE:
 			cost *= 2;
 			weight *=3;
 			cost *= 1+ 0.1 * addQuals(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED);
 			;break;
-		case "spear":
+		case SPEAR:
 			cost *= 1;
 			weight *=2;
 			cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
 			;break;
-		case "axe":
+		case AXE:
 			cost *= 1;
 			weight *=2;
 			cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
 			;break;
-		case "rapier":
+		case RAPIER:
 			cost *= 2;
 			weight *=3;//I think rapiers were heavy? The blunt damage doesn't really reflect this though.
 			cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
 			;break;
-		case "dagger":
+		case DAGGER:
 			cost *= .7;
 			weight *=1;
 			cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
 			;break;
-		case "claymore":
+		case CLAYMORE:
 			cost *= 3;
 			weight *=5;
 			cost *= 1+ 0.1 * addQuals(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED);
 			;break;
-		case "lance":
+		case LANCE:
 			cost *= 2;
 			weight *=3;
 			cost *= 1+ 0.1 * addQuals(WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
 			;break;
-		case "shovel":
+		case SHOVEL:
 			cost *= .8;
 			weight *=2;
 			cost *= 1+ 0.1 * addQuals(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED);
@@ -138,39 +161,39 @@ public class Weapon extends Item {
 
 
 	//not normal weapons start
-		case "generic teeth":
+		case TEETH_GENERIC:
 			cost *= 1;
 			weight *=0;
 			;break;
-		case "standing reaver":
+		case REAVER_STANDING:
 			cost *= 1;
 			weight *=0;	
 			;break;
-		case "generic teeth and claws":
+		case CLAWS_TEETH_GENERIC:
 			cost *= 1;
 			weight *=0;	
 			;break;
-		case "branches":
+		case BRANCHES:
 			cost *= 1;
 			weight *=0;	
 			;break;
-		case "generic fists":
+		case GENERIC_FISTS:
 			cost *= 1;
 			weight *=0;
 			;break;
-		case "unicorn horn":
+		case UNICORN_HORN:
 			cost *= 3;
 			weight *=0;	
 			;break;
-		case "generic talons":
+		case TALONS_GENERIC:
 			cost *= 1;
 			weight *=0;	
 			;break;
-		case "fishing spear":
+		case FISH_SPEAR:
 			cost *= .2f;
 			weight *=1;
 			;break;
-		case "anchor":
+		case FISH_ANCHOR:
 			cost *= 1;
 			weight *=5;
 			;break;
@@ -189,18 +212,30 @@ public class Weapon extends Item {
 		
 	}
 	
+	public static WeaponType randWeapType() {
+		//FIXME needs better generation anyway, should be full stack
+		return extra.choose(WeaponType.LONGSWORD,
+				WeaponType.BROADSWORD,
+				WeaponType.MACE,
+				WeaponType.SPEAR,
+				WeaponType.AXE,
+				WeaponType.RAPIER,
+				WeaponType.DAGGER,
+				extra.choose(WeaponType.CLAYMORE,WeaponType.LANCE,WeaponType.SHOVEL));
+	}
+	
 	public Weapon(int newLevel) {
-		this(newLevel,MaterialFactory.randWeapMat(),extra.choose("longsword","broadsword","mace","spear","axe","rapier","dagger",extra.choose("claymore","lance","shovel")));
+		this(newLevel,MaterialFactory.randWeapMat(),randWeapType());
 	}
 	public Weapon(int newLevel, String weaponName) {
-		this(newLevel,MaterialFactory.randWeapMat(),weaponName);
+		this(newLevel,MaterialFactory.randWeapMat(),randWeapType());
 	}
 	
 	/***
 	 * used for testing
 	 */
 	public Weapon(boolean useSquid) {
-		this(1,MaterialFactory.randWeapMat(),extra.choose("longsword","broadsword","mace","spear","axe","rapier","dagger",extra.choose("claymore","lance","shovel")));
+		this(1,MaterialFactory.randWeapMat(),randWeapType());
 	}
 
 	//instance methods
@@ -211,16 +246,16 @@ public class Weapon extends Item {
 	
 	@Override
 	public boolean canAetherLoot() {
-		switch (weapName) {
-		case "generic teeth": return false;
-		case "standing reaver": return false;
-		case "generic teeth and claws": return false;
-		case "branches": return false;
-		case "generic fists": return false;
-		case "unicorn horn": return false;//maybe make a drawbane for this
-		case "generic talons": return false;
-		case "fishing spear": return true;
-		case "anchor": return true;
+		switch (weap) {
+		case TEETH_GENERIC: return false;
+		case REAVER_STANDING: return false;
+		case CLAWS_TEETH_GENERIC: return false;
+		case BRANCHES: return false;
+		case GENERIC_FISTS: return false;
+		case UNICORN_HORN: return false;//maybe make a drawbane for this
+		case TALONS_GENERIC: return false;
+		case FISH_SPEAR: return true;
+		case FISH_ANCHOR: return true;
 		default: return true;//normal weapons
 		}
 	}
@@ -260,6 +295,7 @@ public class Weapon extends Item {
 	 */
 	@Override
 	public String getName() {
+		String weapName = weap.getName();
 		Material mat = MaterialFactory.getMat(material);
 		if (this.isEnchantedConstant()){
 			EnchantConstant conste = ((EnchantConstant)enchant);
@@ -332,7 +368,7 @@ public class Weapon extends Item {
 	 * @return the baseName (String)
 	 */
 	public String getBaseName() {
-		return weapName;
+		return weap.getName();
 	}
 
 	/*
@@ -416,7 +452,7 @@ public class Weapon extends Item {
 	@Override
 	public void display(int style,float markup) {
 		switch (style) {
-		case 0: extra.println(getMaterialName() +" "+weapName+": "+extra.format(this.score()));
+		case 0: extra.println(getMaterialName() +" "+getBaseName()+": "+extra.format(this.score()));
 		break;
 		case 1:
 			extra.println(this.getName()
@@ -631,8 +667,8 @@ public class Weapon extends Item {
 	}
 	
 
-	public void transmuteWeapType(String string) {
-		weapName = string;//DOLATER conver to enum
+	public void transmuteWeapType(WeaponType newt) {
+		weap = newt;//DOLATER?
 	}
 	
 	public static final String[] weaponTypes = new String[]{"longsword","broadsword","mace","spear","axe","rapier","dagger","claymore","lance","shovel"};
