@@ -17,6 +17,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLast;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import derg.menus.ScrollMenuGenerator;
 import scimech.combat.MechCombat;
 import scimech.handlers.SaveHandler;
 import scimech.mech.Mech;
@@ -575,6 +576,19 @@ public class mainGame {
 										Calender.timeTest();
 										return true;
 									}});
+								mList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Scroll Menu Test";
+									}
+
+									@Override
+									public boolean go() {
+										scrollTest();
+										return true;
+									}});
+								/*
 								mList.add(new MenuLine() {
 
 									@Override
@@ -582,6 +596,7 @@ public class mainGame {
 										return "Backend Tests:";
 									}}
 								);
+								
 								mList.add(new MenuSelect() {
 
 									@Override
@@ -627,7 +642,7 @@ public class mainGame {
 									public boolean go() {
 										saveTest();
 										return true;
-									}});
+									}});*/
 								mList.add(new MenuBack());
 								return mList;
 							}
@@ -1308,6 +1323,85 @@ public class mainGame {
 			die(extra.choose("You rise from death...","You return to life.","You walk again!","You rise from the grave!","Death releases its hold on you."));
 		}
 
+		public static void scrollTest() {
+			extra.menuGo(new ScrollMenuGenerator(15, "back <> more","forward (<> left)") {
+				
+				@Override
+				public List<MenuItem> header() {
+					return null;
+				}
+				
+				@Override
+				public List<MenuItem> forSlot(int i) {
+					List<MenuItem> list = new ArrayList<MenuItem>();
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return " hi " + i;
+						}
+
+						@Override
+						public boolean go() {
+							return true;
+						}});
+					return list;
+				}
+				
+				@Override
+				public List<MenuItem> footer() {
+					return null;
+				}
+			});
+			extra.menuGo(new ScrollMenuGenerator(16,"a <>", "b<>") {
+				
+				@Override
+				public List<MenuItem> header() {
+					List<MenuItem> list = new ArrayList<MenuItem>();
+					list.add(new MenuLine() {
+
+						@Override
+						public String title() {
+							return "dead header";
+						}});
+					return list;
+				}
+				
+				@Override
+				public List<MenuItem> forSlot(int i) {
+					List<MenuItem> list = new ArrayList<MenuItem>();
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return " hi " + i;
+						}
+
+						@Override
+						public boolean go() {
+							return false;
+						}});
+					return list;
+				}
+				
+				@Override
+				public List<MenuItem> footer() {
+					List<MenuItem> list = new ArrayList<MenuItem>();
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return " live footer";
+						}
+
+						@Override
+						public boolean go() {
+							return true;
+						}});
+					return list;
+				}
+			});
+		}
 
 
 }
