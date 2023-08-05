@@ -12,6 +12,7 @@ import derg.menus.MenuGeneratorPaged;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import derg.menus.ScrollMenuGenerator;
 import trawel.personal.people.Player;
 import trawel.towns.World;
 
@@ -531,9 +532,10 @@ public final class extra {
 				}else {
 					ret = subList.get(subList.size()-1).go();
 				}
-				 
-				//mList = mGen.gen();
 				if (ret) {
+					if (mGen instanceof ScrollMenuGenerator) {
+						return ((ScrollMenuGenerator)mGen).getVal(val);
+					}
 					return val;
 				}
 			}

@@ -1374,7 +1374,7 @@ public class mainGame {
 
 						@Override
 						public String title() {
-							return " hi " + i;
+							return " bye " + i;
 						}
 
 						@Override
