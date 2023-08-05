@@ -8,14 +8,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import derg.SRInOrder;
+import derg.StringResult;
 import trawel.extra;
+import trawel.battle.attacks.IAttack.AttackType;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponType;
 
 public class WeaponAttackFactory {
-	private static Map<String,Stance> stanceMap = new HashMap<String,Stance>();
+	private static Map<Weapon.WeaponType,Stance> stanceMap = new HashMap<Weapon.WeaponType,Stance>();
 	
 	//FIXME: update stancemap to new weapon naming system, and also every attack
 	
@@ -38,7 +41,7 @@ public class WeaponAttackFactory {
 		//tempAttack = new Attack("slap",1.1,100.0,0,10,0,"X` slaps Y` with the side of their Z`!",1,"blunt");		
 		martialStance.addAttack(tempAttack,1f);
 		martialStance.finish();
-		stanceMap.put("longsword", martialStance);
+		stanceMap.put(WeaponType.LONGSWORD, martialStance);
 		
 		martialStance = new Stance();
 		tempAttack = new Attack("slash",1.3,110.0,37,8,0,"X` slashes at Y` with their Z`!",1,"sharp");
@@ -50,14 +53,14 @@ public class WeaponAttackFactory {
 		martialStance.addAttack(new Attack("slap",1.2,120.0,0,15,0,"X` slaps Y` with the side of their Z`!",1,"blunt"));
 		martialStance.addAttack(new Attack("power",.5,180.0,50,20,0,"X` lifts their Z` over their head, and then brings it down on Y`!",2,"sharp"));
 		martialStance.finish();
-		stanceMap.put("broadsword", martialStance);
+		stanceMap.put(WeaponType.BROADSWORD, martialStance);
 		
 		martialStance = new Stance();
 		martialStance.addAttack(new Attack("bash",1.5,150.0,4,25,4,"X` bashes Y` with their Z`!",1,"blunt"));
 		martialStance.addAttack(new Attack("smash",1,100.0,4,20,4,"X` smashes Y` with their Z`!",1,"blunt"));
 		martialStance.addAttack(new Attack("power",.5,180.0,10,50,10,"X` lifts their Z` over their head, and then brings it down on Y`!",2,"blunt"));
 		martialStance.finish();
-		stanceMap.put("mace", martialStance);
+		stanceMap.put(WeaponType.MACE, martialStance);
 		martialStance = new Stance();
 		tempAttack = new Attack("skewer",1.1,120.0,1,2,45,"X` skewers Y` with their Z`!",1,"pierce");
 		martialStance.addAttack(tempAttack);
@@ -67,7 +70,7 @@ public class WeaponAttackFactory {
 		martialStance.addAttack(new Attack("pole",.6,120.0,0,10,0,"X` hits Y` with the pole of their Z`!",1,"blunt"));
 		martialStance.addAttack(new Attack("smack",1,100.0,1,8,0,"X` smacks Y` with the side of their Z`!",0,"blunt"));
 		martialStance.finish();
-		stanceMap.put("spear", martialStance);
+		stanceMap.put(WeaponType.SPEAR, martialStance);
 		martialStance = new Stance();
 		tempAttack = new Attack("hack",.9,90.0,20,18,0,"X` hacks at Y` with their Z`!",1,"sharp");
 		martialStance.addAttack(tempAttack);
@@ -76,7 +79,7 @@ public class WeaponAttackFactory {
 		martialStance.addAttack(new Attack("slap",.8,100.0,0,30,0,"X` slaps Y` with the side of their Z`!",1,"blunt"));
 		martialStance.addAttack(new Attack("heft",1,120.0,0,10,0,"X` hits Y` with the heft of their Z`!",0,"blunt"));
 		martialStance.finish();
-		stanceMap.put("axe", martialStance);
+		stanceMap.put(WeaponType.AXE, martialStance);
 		martialStance = new Stance();
 		martialStance.addAttack(new Attack("slash",1.3,90.0,25,1,0,"X` slashes at Y` with their Z`!",1,"sharp"));
 		martialStance.addAttack(new Attack("slice",.9,60.0,18,0,0,"X` slices up Y` with their Z`!",0,"sharp"));
@@ -84,7 +87,7 @@ public class WeaponAttackFactory {
 		martialStance.addAttack(new Attack("thrust",.6,50.0,10,0,20,"X` thrusts at Y` with their Z`!",2,"pierce"));
 		martialStance.addAttack(new Attack("pommel",1,110.0,0,10,0,"X` hits Y` with the pommel of their Z`!",1,"blunt"));
 		martialStance.finish();
-		stanceMap.put("rapier", martialStance);
+		stanceMap.put(WeaponType.RAPIER, martialStance);
 		martialStance = new Stance();
 		tempAttack = new Attack("slash",1,70.0,20,2,0,"X` slashes at Y` with their Z`!",0,"sharp");
 		martialStance.addAttack(tempAttack);
@@ -98,7 +101,7 @@ public class WeaponAttackFactory {
 		martialStance.addAttack(tempAttack);
 		//martialStance.addAttack(new Attack("slap",.8,85.0,0,10,0,"X` slaps Y` with the side of their Z`!",0,"blunt"));
 		martialStance.finish();
-		stanceMap.put("dagger", martialStance);
+		stanceMap.put(WeaponType.DAGGER, martialStance);
 		martialStance = new Stance();
 		tempAttack = new Attack("slash",1.4,200.0,60,20,0,"X` slashes at Y` with their Z`!",1,"sharp");
 		martialStance.addAttack(tempAttack);
@@ -287,4 +290,93 @@ public class WeaponAttackFactory {
 		}
 		
 	}
+	
+	public enum DamageTier{
+		NONE(0), WEAK(10), LOW(20), AVERAGE(30), HIGH(40), ASTOUNDING(50);
+		private int damage;
+		DamageTier(int _damage){
+			damage = _damage;
+		}
+		
+		public static float totalDamage(DamageTier start, DamageTier end, float lerp) {
+			return extra.lerp(start.damage,end.damage,lerp);
+		}
+		
+		public static int[] distribute(float total, float sharpW, float bluntW, float pierceW) {
+			int[] arr = new int[3];
+			arr[0] = Math.round(sharpW*total);
+			arr[0] = Math.round(sharpW*total);
+			arr[0] = Math.round(sharpW*total);
+			return arr;
+		}
+	}
+	
+	private static final AttackMaker make(String name) {
+		return new AttackMaker(name);
+	}
+	
+	public static class AttackMaker{
+		private DamageTier start = DamageTier.AVERAGE, end = DamageTier.AVERAGE;
+		private float slant = .5f, hitmult = 1f;
+		private float sharpW = 1f, bluntW = 1f, pierceW = 1f;
+		private float warmup = 50f, cooldown = 50f;
+		private String name, desc = "", fluff = "X` attacks Y` with their Z`!";
+		
+		AttackMaker(String _name){
+			name = name;
+		}
+		
+		public AttackMaker setFluff(String fluff) {
+			this.fluff = fluff;
+			return this;
+		}
+		
+		public AttackMaker setDesc(String description) {
+			desc = description;
+			return this;
+		}
+		
+		public AttackMaker setDamage(DamageTier low, DamageTier high, float damageSlant) {
+			start = low;
+			end = high;
+			slant = damageSlant;
+			return this;
+		}
+		
+		public AttackMaker setMix(float sharp, float blunt, float pierce) {
+			sharpW = sharp;
+			bluntW = blunt;
+			pierceW = pierce;
+			return this;
+		}
+		
+		/**
+		 * mix = 1 -> only warmup
+		 * <br>
+		 * mix = 0 -> only cooldown
+		 * @param time
+		 * @param mix
+		 * @return
+		 */
+		public AttackMaker setTime(int time, float mix) {
+			warmup = time * mix;
+			cooldown = time * (1f-mix);
+			return this;
+		}
+		
+		public Attack finish() {
+			int[] arr = DamageTier.distribute(DamageTier.totalDamage(start, end, slant),sharpW,bluntW,pierceW);
+			return new Attack(name, desc, new SRInOrder(fluff), hitmult, AttackType.REAL_WEAPON, arr,
+					warmup, cooldown);
+		}
+		
+	}
+	
+	/*
+	public static Attack attackMaker(String name, String desc, String fluff, float totalDamage, int sharp, int blunt, int pierce,
+			double hitMult, float warmup, float cooldown){
+		int[] arr = DamageTier.distribute(totalDamage,sharp,blunt,pierce);
+		return new Attack(name, desc, new SRInOrder(fluff), hitMult, AttackType.REAL_WEAPON, arr,
+				warmup, cooldown);
+	}*/
 }
