@@ -24,6 +24,7 @@ public class WeaponAttackFactory {
 	
 	public WeaponAttackFactory() {
 		Attack tempAttack;
+		Stance sta;
 		Stance martialStance = new Stance();//FIXME attacks need reworked
 		tempAttack = new Attack("slash","X` slashes at Y` with their Z`!",1.5d,100.0d,40,5,0);
 		//new Attack("slash",1.5,100.0,40,5,0,"X` slashes at Y` with their Z`!",1,"sharp");
@@ -42,6 +43,20 @@ public class WeaponAttackFactory {
 		martialStance.addAttack(tempAttack,1f);
 		martialStance.finish();
 		stanceMap.put(WeaponType.LONGSWORD, martialStance);
+		
+		sta = new Stance();
+		sta.addAttack(
+				make("slash")
+				.setFluff("X` slashes at Y` with their Z`!")
+				.setRarity(3f)
+				.setAcc(1.5f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.4f)
+				.setMix(10,0,2)
+				.setTime(100,.5f)
+				);
+		stanceMap.put(WeaponType.LONGSWORD, sta);
+		
+		
 		
 		martialStance = new Stance();
 		tempAttack = new Attack("slash",1.3,110.0,37,8,0,"X` slashes at Y` with their Z`!",1,"sharp");
@@ -302,11 +317,12 @@ public class WeaponAttackFactory {
 			return extra.lerp(start.damage,end.damage,lerp);
 		}
 		
-		public static int[] distribute(float total, float sharpW, float bluntW, float pierceW) {
+		public static int[] distribute(float damage, float sharpW, float bluntW, float pierceW) {
 			int[] arr = new int[3];
-			arr[0] = Math.round(sharpW*total);
-			arr[0] = Math.round(sharpW*total);
-			arr[0] = Math.round(sharpW*total);
+			float total = sharpW+bluntW+pierceW;
+			arr[0] = Math.round((sharpW/total)*damage);
+			arr[1] = Math.round((bluntW/total)*damage);
+			arr[2] = Math.round((pierceW/total)*damage);
 			return arr;
 		}
 	}
@@ -321,6 +337,9 @@ public class WeaponAttackFactory {
 		private float sharpW = 1f, bluntW = 1f, pierceW = 1f;
 		private float warmup = 50f, cooldown = 50f;
 		private String name, desc = "", fluff = "X` attacks Y` with their Z`!";
+		private StringResult fluffer;
+		
+		private float rarity = 1f;
 		
 		AttackMaker(String _name){
 			name = name;
@@ -328,6 +347,10 @@ public class WeaponAttackFactory {
 		
 		public AttackMaker setFluff(String fluff) {
 			this.fluff = fluff;
+			return this;
+		}
+		public AttackMaker setFluff(StringResult fluff) {
+			fluffer = fluff;
 			return this;
 		}
 		
@@ -340,6 +363,11 @@ public class WeaponAttackFactory {
 			start = low;
 			end = high;
 			slant = damageSlant;
+			return this;
+		}
+		
+		public AttackMaker setAcc(float acc) {
+			hitmult = acc;
 			return this;
 		}
 		
@@ -364,10 +392,31 @@ public class WeaponAttackFactory {
 			return this;
 		}
 		
+		public AttackMaker setWarmup(float time) {
+			warmup = time;
+			return this;
+		}
+		
+		public AttackMaker setCooldown(float time) {
+			cooldown = time;
+			return this;
+		}
+		
 		public Attack finish() {
 			int[] arr = DamageTier.distribute(DamageTier.totalDamage(start, end, slant),sharpW,bluntW,pierceW);
-			return new Attack(name, desc, new SRInOrder(fluff), hitmult, AttackType.REAL_WEAPON, arr,
+			return new Attack(name, desc,
+					fluffer == null ? new SRInOrder(fluff) : fluffer,
+					hitmult, AttackType.REAL_WEAPON, arr,
 					warmup, cooldown);
+		}
+		
+		public AttackMaker setRarity(float rare) {
+			rarity = rare;
+			return this;
+		}
+		
+		public float getRarity() {
+			return rarity;
 		}
 		
 	}

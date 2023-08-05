@@ -5,6 +5,7 @@ import java.util.List;
 import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.extra;
+import trawel.battle.attacks.WeaponAttackFactory.AttackMaker;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.Weapon;
@@ -45,6 +46,9 @@ public class Stance{
 		attacks.add(newAttack);
 		rarities.add(rarity);
 		newAttack.setStance(this);
+	}
+	public void addAttack(AttackMaker newAttack) {
+		addAttack(newAttack.finish(),newAttack.getRarity());
 	}
 	//LEGACY
 	@Deprecated
