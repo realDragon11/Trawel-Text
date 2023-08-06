@@ -487,13 +487,13 @@ public class Weapon extends Item {
 				this.getEnchant().display(1);
 			}
 			for (WeaponQual wq: qualList) {
-				extra.println(wq.name + ": "+wq.desc);
+				extra.println(" " +wq.name + ": "+wq.desc);
 			}
 			;break;
 		case 2:
 			extra.println(this.getName()
 			+ " highest contribution: " + extra.formatPerSubOne(this.scoreHighestContribution())
-			+ " impact chance: " + extra.format(this.scoreImpact())
+			+ " impact chance: " + extra.formatPerSubOne(this.scoreImpact())
 			+ " average damage: " + extra.format(this.scoreAverage())
 			+ " weighted average damage: " + extra.format(this.scoreWeight())
 			+" aether: " + (int)(this.getAetherValue()*markup)
@@ -506,7 +506,7 @@ public class Weapon extends Item {
 				this.getEnchant().display(2);
 			}
 			for (WeaponQual wq: qualList) {
-				extra.println(wq.name + ": "+wq.desc);
+				extra.println(" " +wq.name + ": "+wq.desc);
 			}
 			;break;
 		case 3://for stores in depth
@@ -523,7 +523,7 @@ public class Weapon extends Item {
 						this.getEnchant().display(1);
 					}
 					for (WeaponQual wq: qualList) {
-						extra.println(wq.name + ": "+wq.desc);
+						extra.println(" " +wq.name + ": "+wq.desc);
 					}
 			break;
 		}
