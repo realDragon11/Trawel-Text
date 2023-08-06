@@ -640,9 +640,12 @@ public class WeaponAttackFactory {
 	}
 	
 	public static final void dispTestWeapon(WeaponType t, List<Material> mats) {
-		int tests = 100;
+		int tests = 1000;
 		int totalTests = tests*WorldGen.getDummyInvs().size();
 		
+		for (Attack a: WeaponAttackFactory.getStance(t).giveList()) {
+			a.display(0);
+		}
 		
 		for (Material m: mats) {
 			List<AttackMetric> metrics = new ArrayList<AttackMetric>();

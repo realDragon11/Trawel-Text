@@ -395,50 +395,65 @@ public class Weapon extends Item {
 	
 	private void refreshBattleScore() {
 		int impactChance = 0;
-		double average = 0;
+		double total = 0;
 		double weighted = 0;
-		double highestContrib = -10;
+		//double highestContrib = -10;
 		Stance stance = this.getMartialStance();
-		int size = stance.getAttackCount()-1;
+		int size = stance.getAttackCount();
+		double[] contributions = new double[size];//used for determining highest contribution
 		//does not account for aiming, since that is *very* opponent dependent
-		for (int j = WorldGen.getDummyInvs().size()-1; j >=0;j--) {
-			double thisaverage = 0;
-			double thishighest = -10;
-			for (int i = size;i >=0;i--) {
-				Attack holdAttack = stance.getAttack(i);
+		for (int i = size-1;i >=0;i--) {
+			Attack holdAttack = stance.getAttack(i);
+			int dam = 0;
+			for (int j = WorldGen.getDummyInvs().size()-1; j >=0;j--) {
+				//double thisaverage = 0;
+				//double thishighest = -10;
+				
 				for (int ta = 0; ta < battleTests;ta++) {
 					AttackReturn ret = Combat.handleTestAttack(holdAttack.impair(null,this,null)
 							,WorldGen.getDummyInvs().get(j)
 							,Armor.armorEffectiveness);
-					double thisret = ret.damage/holdAttack.getSpeed();
+					//double thisret = ;
+					dam+= ret.damage/holdAttack.getSpeed();//thisret;
+					/*
 					thisaverage += thisret;
 					if (thisret > thishighest) {
 						thishighest = thisret;
-					}
+					}*/
 					if (ret.code == ATK_ResultCode.DAMAGE) {
 						impactChance++;
 					}
 				}
+				/*
 				if (thishighest/thisaverage > highestContrib) {
 					highestContrib = thishighest/thisaverage;
 				}
 				weighted += thisaverage * stance.getWeight(i);
-				average+=thisaverage;
+				average+=thisaverage;*/
 			}
-			
+			contributions[i] = dam;
+			total += dam;
+			weighted += dam*stance.getWeight(i);
 		}
+		double highest = 0;
+		for (int h = size-1; h >= 0 ;h--) {
+			if (highest < contributions[h]) {
+				highest = contributions[h];
+			}
+		}
+		highest /= total;
+		
 		int subTests = battleTests*WorldGen.getDummyInvs().size();
-		int totalTests = (size+1)*subTests;
-		average/=totalTests;
+		int totalTests = size*subTests;
 		//the above battlescore assumes level 10 power weapon on level 10 armor
 		//so we put the real level in now
-		this.bsCon = (float)highestContrib;//(float) (high*level);
-		this.bsAvg = (float)average;//(float) (average*level);
+		this.bsCon = (float)highest;//(float) (high*level);
+		this.bsAvg = (float)total/totalTests;//(float) (average*level);
 		this.bsIpt = impactChance/(float)totalTests;
 		this.bsWgt = (float) (weighted/subTests);
 	}
 	
-	public static int battleTests = 5;//now how many times each attack gets tested on each armor set 3 to 5
+	public static int battleTests = 10;//now how many times each attack gets tested on each armor set 3 to 5
 	
 	public class DamTuple implements java.io.Serializable{
 		

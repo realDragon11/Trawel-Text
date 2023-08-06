@@ -85,29 +85,6 @@ public class Attack implements IAttack{
 		}
 		
 	}
-	//simple for prototyping
-	public Attack(String name, String fluff, double hitMult, double time, int sharp, int blunt, int pierce) {
-		this(name,"",fluff,hitMult,sharp,blunt,pierce,time*.6,time*.4);
-	}
-
-	/**
-	 * Creates an attack with the following attributes:
-	 * @param name - (String) the name of the attack
-	 * @param hitmod - (double) the accuracy of the attack
-	 * @param speed - (double) how long the attack takes to complete
-	 * @param sharp - (double) the sharp damage [converted to int for you]
-	 * @param blunt - (double) the blunt damage [converted to int for you]
-	 * @param pierce - (double) the piercing damage [converted to int for you]
-	 * @param desc - (String) what is printed when it is used (use X = attacker, Y = defender, Z = weapon name)
-	 */
-	@Deprecated
-	public Attack(String name, double hitmod, double speed, int sharp, int blunt, int pierce, String desc,int sstr, String stype) {
-		this(name,desc,hitmod,speed,sharp,blunt,pierce);
-		this.desc = desc;
-		this.name = name;
-		this.soundStrength = sstr;
-		this.soundType = stype;
-	}
 	//FIXME entirely nonfunctional at this point, just remake the whole system
 	/*
 	@Deprecated
@@ -299,61 +276,27 @@ public class Attack implements IAttack{
 	public String getName() {
 		return name;
 	}
+	
 	@Deprecated
 	public void display(int style) {
-		display(style,null,null);
-	}
-	@Deprecated
-	public void display(int style, Person attacker, Person defender) {
-		/*
 		switch (style) {
-		case 0://not impaired style
-			extra.println(name + "\t" + extra.format(hitMod) + "\t" + speed + "\t" + sharp + "\t" + blunt + "\t" + pierce);
+		case 0://naive style
+			extra.println(
+				name 
+				+" rarity: " + extra.formatPerSubOne(holdingStance.getRarity(this))
+				+" hit mult: " + extra.format(hitMult)
+				+" warmup: " + extra.format(warmup)
+				+" cooldown: " + extra.format(cooldown)
+				+" Sharp: " + extra.format(getSharp())
+				+" Blunt: " + extra.format(getBlunt())
+				+" Pierce: " + extra.format(getPierce())
+				);
 			break;	
-		case 1://classic
-			if (!isMagic) {
-			int[] in = new int[6];
-			in[0] = 8+12;
-			in[1] = 7;
-			in[2] = 9;
-			in[3] = 9;
-			in[4] = 10;
-			in[5] = 6+4;
-			extra.specialPrint(in,name ,extra.format(hitMod) , extra.format(speed)  ,""+ (sharp)  ,""+(blunt)  ,  ""+(pierce));
-			}else {
-				int[] in = new int[3];
-				in[0] = 20+7;
-				in[1] = 9;
-				in[2] = 9+10+10;
-				extra.specialPrint(in, name,extra.format(speed),magicDesc);
-			}
-			if (wound != null) {
-				extra.println(" "+this.wound.name + " - " + String.format(this.wound.desc,(Object[])Combat.woundNums(this,attacker,defender,null)));
-			}
+		default:
+			extra.println(this.toString());
 			break;
-		case 2://two line 1
-			extra.println(name);
-			if (!isMagic) {
-				int[] in = new int[5];
-				in[0] = 9;//hitchance, should be 9.99 >= x > 0.00
-				in[1] = 5;//instants, should be 999 >= x > 0
-				//sbp 6 should be fine for 3 digits, 7 for 4
-				in[2] = 7;
-				in[3] = 7;
-				in[4] = 7;
-				extra.specialPrint(in,"  "+extra.CHAR_HITCHANCE + extra.format(hitMod),
-						extra.CHAR_INSTANTS +extra.formatInt(speed),
-						"S "+(sharp),"B "+(blunt),"P "+(pierce)//unsure if spacing messes up narrator
-						);
-			}else {
-				extra.println("magic needs rehaul");
-			}
-			if (wound != null) {
-				extra.println("  "+this.wound.name + " - " + String.format(this.wound.desc,(Object[])Combat.woundNums(this,attacker,defender,null)));
-			}
-			break;
-		}*/
-		extra.println(this.toString());
+		}
+		
 	}
 	
 	public ImpairedAttack impair( Person attacker, Weapon weap, Person defender) {
@@ -500,6 +443,7 @@ public class Attack implements IAttack{
 		this.holdingStance = holdingStance;
 	}
 
+	//TODO: this will break in some circumstances, and not copy sound
 	public Attack copy() {
 		return new Attack(name, desc, fluffer, hitMult, type, intValues, warmup,cooldown);
 	}

@@ -118,5 +118,9 @@ public class Stance{
 	public float getWeight(int i) {
 		return rarities.get(i)/totalWeight;
 	}
+
+	public float getRarity(Attack attack) {
+		return rarities.get(attacks.indexOf(attack))/totalWeight;
+	}
 	
 }
