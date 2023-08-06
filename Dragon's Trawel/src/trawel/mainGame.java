@@ -61,7 +61,7 @@ import trawel.towns.services.Oracle;
  */
 public class mainGame {
 
-	public static final String VERSION_STRING = "v0.8.b_1";
+	public static final String VERSION_STRING = "v0.8.b__2";//__X is in development, _X is the actual release of that version
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			"b_1: base attack code reworked in basically every way. currency divided. threading added (nothreads is an arg), time passing redone. Node exploration mostly same but had entire backend update. Locational damage exists but does little at the moment."
@@ -88,27 +88,25 @@ public class mainGame {
 	
 	public static Date lastAutoSave = new Date();
 	
-	public static boolean doAutoSave = true;
-	
 	public static boolean logStreamIsErr = false;
 	
-
-	public static PrintStream logStream;
-
-	
-	public static boolean delayWaits = false;//FIXME maybe turn back on
+	public static boolean delayWaits = false;//DOLATER maybe turn back on TODO: seems to apply anyway???
 	
 	private static boolean finalSetup1 = false;
 	private static boolean basicSetup1 = false;
 	
 	public static boolean multiCanRun = false;
 	
-	public static DispAttack attackDisplayStyle = DispAttack.TWO_LINE1;
+	//FIXME: need saved prefs
+	public static DispAttack attackDisplayStyle = DispAttack.TWO_LINE1_WITH_KEY;
 	public static boolean advancedCombatDisplay = false;
+	public static boolean doAutoSave = true;
+	public static PrintStream logStream;
 	
 	public enum DispAttack{
 		CLASSIC("Classic simple table, delay instead of cooldown and warmup"),
-		TWO_LINE1("Current version, hybrid table with per-cell labels instead of a header.");
+		TWO_LINE1_WITH_KEY("Current version, hybrid table with per-cell labels instead of a header. Includes a key/legend."),
+		TWO_LINE1("Current version, hybrid table with per-cell labels instead of a header. Does not include key/legend");
 		
 		private String desc;
 		DispAttack(String _desc){

@@ -303,17 +303,21 @@ public class ImpairedAttack implements IAttack{
 			break;
 		case 2://two line 1
 			extra.println(getName());
-				in = new int[7];
-				in[0] = 9;//hitchance, should be 9.99 >= x > 0.00
-				in[1] = 4;//instants, should be 999 >= x > 0
-				in[2] = 1;//seperator
-				in[3] = 5;//instants, should be 999 >= x > 0
+				in = new int[8];
+				in[0] = 9;//hitchance, should be %9.99 >= x > 0.00 | 9 gives a 2 spot gap to the times
+				in[1] = 4;//instants, should be _999 >= x > 0 | 4 because we're okay with pressing up against the next one
+				in[2] = 1;//warmup/cooldown seperator
+				in[3] = 5;//instants, should be _999 >= x > 0 | 5 because we want to give the next a one-two spot gap
+				//
+				in[4] = 2;//details seperator
 				//sbp 6 should be fine for 3 digits, 7 for 4
-				in[4] = 7;
-				in[5] = 7;
-				in[6] = 7;
+				//these can vary based on the attack
+				in[5] = 6;
+				in[6] = 6;
+				in[7] = 6;
 				extra.specialPrint(in,"  "+extra.CHAR_HITCHANCE + extra.format(getHitMult()),
 						extra.CHAR_INSTANTS +extra.formatInt(getWarmup()),"-",extra.CHAR_INSTANTS+extra.formatInt(getCooldown()),
+						"=",
 						"S "+(getSharp()),"B "+(getBlunt()),"P "+(getPierce())//unsure if spacing messes up narrator
 						);
 			}

@@ -2,6 +2,7 @@ package trawel;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.mainGame.DispAttack;
 import trawel.battle.Combat;
 import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.ImpairedAttack;
@@ -712,9 +713,14 @@ public class AIClass {
 							j++;
 						}
 						break;
+					case TWO_LINE1_WITH_KEY:
 					case TWO_LINE1:
 						if (combat.turns > 0) {
 							extra.println(Player.lastAttackStringer);
+						}
+						if (mainGame.attackDisplayStyle == DispAttack.TWO_LINE1_WITH_KEY) {
+							extra.println(extra.CHAR_HITCHANCE + " hitchance; " +extra.CHAR_INSTANTS+" warmup -cooldown; "+
+									extra.EXPLAIN_SIMPLE_CHARS_DAMAGE +";");
 						}
 						extra.println("Attacks:");
 						for(ImpairedAttack a: attacks) {

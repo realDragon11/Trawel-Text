@@ -218,6 +218,18 @@ public final class extra {
 	public static final java.text.DecimalFormat F_TWO_TRAILING = new java.text.DecimalFormat("0.00");
 	public static final java.text.DecimalFormat F_WHOLE = new java.text.DecimalFormat("0");
 	
+	/**
+	 * CHARACTER NOTES:
+	 * this can only be one width of DISPLAY
+	 * <br>
+	 * it's fine if it's a long string,
+	 * as long as ultimately it gets reduced to one IMAGE or CHARACTER when displayed
+	 * on either end
+	 * <br>
+	 * FIXME: some string code processes it before displaying it, in which case the data should get stripped out
+	 * before then
+	 */
+	
 	public static final String CHAR_INSTANTS = "_";
 	//was having trouble finding something that narrator read 
 	//should probably make instants display an actual icon in the graphical with an insert sprite code
@@ -225,6 +237,33 @@ public final class extra {
 	
 	public static final String CHAR_HITCHANCE = "%";
 	//also probably something better out there
+	
+	//TODO: make some better global DRY damage code system
+	public static final String CHAR_SHARP = "S";
+	public static final String CHAR_BLUNT = "B";
+	public static final String CHAR_PIERCE = "P";
+	
+	public static final String[] EXPLAIN_CHARS_DAMAGE = new String[]{
+			CHAR_SHARP + " sharp",
+			CHAR_BLUNT + " blunt",
+			CHAR_PIERCE + " blunt",
+	};
+	
+	private static String stringBuilder;
+	
+	static {
+		stringBuilder = "damage: ";
+		for (int i = 0;;i++) {
+			stringBuilder += EXPLAIN_CHARS_DAMAGE[i];
+			if (i == EXPLAIN_CHARS_DAMAGE.length-1) {
+				break;
+			}
+			stringBuilder+=", ";
+		}
+		
+	}
+	
+	public static final String EXPLAIN_SIMPLE_CHARS_DAMAGE = stringBuilder;
 	
 	/**
 	 * Formats a double into a string that looks nicer.
@@ -416,7 +455,7 @@ public final class extra {
 		public static final float hrandomFloat() {
 			return ((Long.bitCount(getRand().nextLong()) - 32f + getRand().nextFloat() - getRand().nextFloat()) / 66f + 0.5f);
 		}
-		
+		//FIXME: make it so it strips out the data and sends the right text to the graphical and terminal
 		public static void specialPrint(int[] in,String...strs) {
 			int j = 0;
 			while (j < in.length) {
