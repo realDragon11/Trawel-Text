@@ -639,6 +639,7 @@ public class WeaponAttackFactory {
 	
 	public static final void dispTestWeapon(WeaponType t, List<Material> mats) {
 		int tests = 100;
+		int totalTests = tests*WorldGen.getDummyInvs().size();
 		
 		
 		for (Material m: mats) {
@@ -665,7 +666,7 @@ public class WeaponAttackFactory {
 						AttackReturn ret = Combat.handleTestAttack(holdAttack.impair(null,w,null)
 								,WorldGen.getDummyInvs().get(j)
 								,Armor.armorEffectiveness);
-						damage= ret.damage;
+						damage += ret.damage;
 						if (ret.code == ATK_ResultCode.DAMAGE) {
 							hits++;
 							fullhits++;
@@ -674,16 +675,18 @@ public class WeaponAttackFactory {
 								hits++;
 							}
 						}
-						speed = holdAttack.getSpeed();
+						speed += holdAttack.getSpeed();
 					}
 				}
-				damage/=tests;
-				speed/=tests;
-				hits/=tests;
-				fullhits/=tests;
 				
-				metrics.add(new AttackMetric(w.getName(), holdAttack.getName(), w.getMartialStance().getWeight(i)
-						, hits,fullhits, damage, speed));
+				damage/=totalTests;
+				speed/=totalTests;
+				hits/=totalTests;
+				fullhits/=totalTests;
+				AttackMetric am = new AttackMetric(w.getName(), holdAttack.getName(), w.getMartialStance().getWeight(i)
+						, hits,fullhits, damage, speed);
+				metrics.add(am);
+				totalDPS+=am.average_dps;
 				
 				i++;
 			}
@@ -738,11 +741,11 @@ public class WeaponAttackFactory {
 		@Override
 		public String toString() {
 			java.text.DecimalFormat formata = extra.F_TWO_TRAILING;
-			return weaponname + "'s " + basename +": chance:"
+			return weaponname + "'s " + basename +": rng%"
 					+ formata.format(rarity)
 					+" hit%" +formata.format(average_hit)
 					+" full%" +formata.format(average_full)
-					+" dam: "+formata.format(average_damage)
+					+" raw: d"+formata.format(average_damage)
 					+" _"+formata.format(average_time)
 					+" avg: "+formata.format(average_dps)
 					+ " contrib %"+ formata.format(total_percent_dps); 

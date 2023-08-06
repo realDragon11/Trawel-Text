@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -1415,21 +1416,108 @@ public class mainGame {
 			});
 		}
 		
+		private static List<Material> weaponMatTesterList;
+		
 		public static void weaponStatQuery() {
-			extra.println("1 cannot be used in graphical, enter weapon name with string");
-			String w = extra.inString();
+			forceSetup();
+			
+			List<Material> standardList = new ArrayList<Material>();
+			standardList.add(MaterialFactory.getMat("iron"));
+			standardList.add(MaterialFactory.getMat("steel"));
+			standardList.add(MaterialFactory.getMat("gold"));
+			standardList.add(MaterialFactory.getMat("adamantine"));
+			
+			MenuGenerator weapMenu = new ScrollMenuGenerator(WeaponType.values().length,"previous <> weapons", "next <> weapons") {
+
+				@Override
+				public List<MenuItem> forSlot(int i) {
+					List<MenuItem> list= new ArrayList<MenuItem>();
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return WeaponType.values()[i].toString();
+						}
+
+						@Override
+						public boolean go() {
+							WeaponAttackFactory.dispTestWeapon(WeaponType.values()[i],weaponMatTesterList);
+							return false;
+						}});
+					return list;
+				}
+
+				@Override
+				public List<MenuItem> header() {
+					return null;
+				}
+
+				@Override
+				public List<MenuItem> footer() {
+					List<MenuItem> list = new ArrayList<MenuItem>();
+					list.add(new MenuBack("back"));
+					return list;
+				}};
+				List<Material> allWeapMats = new ArrayList<Material>();
+				MaterialFactory.matList.stream().filter(M->M.weapon).forEach(allWeapMats::add);
+				
+				MenuGenerator matMenu = new ScrollMenuGenerator(allWeapMats.size(),"previous <> weapons", "next <> weapons") {
+
+					@Override
+					public List<MenuItem> forSlot(int i) {
+						List<MenuItem> list= new ArrayList<MenuItem>();
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return allWeapMats.get(i).name;
+							}
+
+							@Override
+							public boolean go() {
+								weaponMatTesterList = Collections.singletonList(allWeapMats.get(i));
+								extra.menuGo(weapMenu);
+								return false;
+							}});
+						return list;
+					}
+
+					@Override
+					public List<MenuItem> header() {
+						List<MenuItem> list = new ArrayList<MenuItem>();
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "standard";
+							}
+
+							@Override
+							public boolean go() {
+								weaponMatTesterList = standardList;
+								extra.menuGo(weapMenu);
+								return false;
+							}});
+						return list;
+					}
+
+					@Override
+					public List<MenuItem> footer() {
+						List<MenuItem> list = new ArrayList<MenuItem>();
+						list.add(new MenuBack("exit"));
+						return list;
+					}};
+			
+			/*extra.println("1 cannot be used in graphical, enter weapon name with string");
+			//String w = extra.inString();
 			WeaponType t = null;
 			try {
 				t = WeaponType.valueOf(w.toUpperCase());
 			}catch(Exception e) {
 				return;
-			}
-			List<Material> mats = new ArrayList<Material>();
-			mats.add(MaterialFactory.getMat("iron"));
-			mats.add(MaterialFactory.getMat("steel"));
-			mats.add(MaterialFactory.getMat("gold"));
-			mats.add(MaterialFactory.getMat("adamantine"));
-			WeaponAttackFactory.dispTestWeapon(t,mats);
+			}*/
+			
+			
 		}
 
 

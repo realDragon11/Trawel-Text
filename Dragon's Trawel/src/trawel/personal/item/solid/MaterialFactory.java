@@ -13,7 +13,7 @@ import trawel.personal.item.solid.variants.ArmorStyle;
 public class MaterialFactory {
 	public static List<Material> matList = new ArrayList<Material>();
 	public static Map<String,Material> matMap = new HashMap<String,Material>();
-	public static WeightedTable weapMats, armMats;
+	private static WeightedTable weapMats, armMats;
 	
 	//public final List<String> matKeys = new ArrayList<String>();
 	
