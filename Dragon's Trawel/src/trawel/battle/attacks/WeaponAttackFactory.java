@@ -10,8 +10,13 @@ import java.util.Map;
 
 import derg.SRInOrder;
 import derg.StringResult;
+import trawel.WorldGen;
 import trawel.extra;
+import trawel.battle.Combat;
+import trawel.battle.Combat.ATK_ResultCode;
+import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.IAttack.AttackType;
+import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
@@ -632,6 +637,67 @@ public class WeaponAttackFactory {
 		writer.close();
 	}
 	
+	public static final void dispTestWeapon(WeaponType t, List<Material> mats) {
+		int tests = 100;
+		
+		
+		for (Material m: mats) {
+			List<AttackMetric> metrics = new ArrayList<AttackMetric>();
+			
+			double totalDPS = 0;
+			Weapon w = new Weapon(10,m,t);
+			
+			
+			int i = 0;
+			int size = w.getMartialStance().getAttackCount();
+			
+			//does not account for aiming, since that is *very* opponent dependent
+			while (i < size) {
+				double damage = 0;
+				double speed = 0;
+				Attack holdAttack;
+				holdAttack = w.getMartialStance().getAttack(i);
+				double hits = 0;
+				double fullhits = 0;
+				//damage = (holdAttack.getHitMult()*100*holdAttack.getTotalDam(w))/holdAttack.getSpeed();
+				for (int ta = 0; ta < tests;ta++) {
+					for (int j = WorldGen.getDummyInvs().size()-1; j >=0;j--) {
+						AttackReturn ret = Combat.handleTestAttack(holdAttack.impair(null,w,null)
+								,WorldGen.getDummyInvs().get(j)
+								,Armor.armorEffectiveness);
+						damage= ret.damage;
+						if (ret.code == ATK_ResultCode.DAMAGE) {
+							hits++;
+							fullhits++;
+						}else {
+							if (ret.code == ATK_ResultCode.ARMOR) {
+								hits++;
+							}
+						}
+						speed = holdAttack.getSpeed();
+					}
+				}
+				damage/=tests;
+				speed/=tests;
+				hits/=tests;
+				fullhits/=tests;
+				
+				metrics.add(new AttackMetric(w.getName(), holdAttack.getName(), w.getMartialStance().getWeight(i)
+						, hits,fullhits, damage, speed));
+				
+				i++;
+			}
+			
+			w.display(2);//unsure how to handle qualities impacting the test, because I need to know what they do
+			for (AttackMetric a: metrics) {
+				a.total_percent_dps = a.average_dps/totalDPS;
+				extra.println(a.toString());
+			}
+			extra.println("1 continue");
+			extra.inInt(1);
+		}
+	}
+	
 	public class WeaponMetric{
 		public String name;
 		public double raw;
@@ -647,6 +713,39 @@ public class WeaponAttackFactory {
 		public String toString() {
 			java.text.DecimalFormat formata = new java.text.DecimalFormat("0.0000");
 			return name +": "+ formata.format(raw) +")(" +formata.format(rarity*raw); 
+		}
+		
+	}
+	
+	public static class AttackMetric{
+		public String basename, weaponname;
+		public double rarity;
+		public double average_hit, average_full, average_damage, average_time, average_dps;
+		public double total_percent_dps;
+		
+		public AttackMetric(String weap, String nam, double rare, 
+				double averagehit,double averagefull, double averagedam, double averagetime) {
+			weaponname = weap;
+			basename = nam;
+			rarity = rare;
+			average_hit = averagehit;
+			average_full = averagefull;
+			average_damage = averagedam;
+			average_time = averagetime;
+			average_dps = averagedam/averagetime;
+		}
+		
+		@Override
+		public String toString() {
+			java.text.DecimalFormat formata = extra.F_TWO_TRAILING;
+			return weaponname + "'s " + basename +": chance:"
+					+ formata.format(rarity)
+					+" hit%" +formata.format(average_hit)
+					+" full%" +formata.format(average_full)
+					+" dam: "+formata.format(average_damage)
+					+" _"+formata.format(average_time)
+					+" avg: "+formata.format(average_dps)
+					+ " contrib %"+ formata.format(total_percent_dps); 
 		}
 		
 	}

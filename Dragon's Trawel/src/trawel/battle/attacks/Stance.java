@@ -24,6 +24,7 @@ public class Stance{
 	private List<Attack> attacks;
 	private List<Float> rarities;
 	private WeightedTable roller;
+	private float[] rares;
 	//constructor and initer
 	public Stance(WeaponType t) {
 		weap_source = t;
@@ -32,7 +33,7 @@ public class Stance{
 	}
 	
 	public void finish() {
-		float[] rares = new float[rarities.size()];
+		rares = new float[rarities.size()];
 		for (int i = 0; i < rares.length;i++) {
 			rares[i] = rarities.get(i);
 		}
@@ -110,6 +111,10 @@ public class Stance{
 
 	public float getRarity(int i) {
 		return rarities.get(i);
+	}
+
+	public float getWeight(int i) {
+		return rares[i];
 	}
 	
 }

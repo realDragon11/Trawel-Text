@@ -43,8 +43,10 @@ import trawel.personal.classless.Skill;
 import trawel.personal.item.Item;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.magic.EnchantConstant;
+import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
+import trawel.personal.item.solid.Weapon.WeaponType;
 import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Player;
 import trawel.quests.QuestReactionFactory;
@@ -584,6 +586,18 @@ public class mainGame {
 									@Override
 									public boolean go() {
 										scrollTest();
+										return true;
+									}});
+								mList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Weapon Stat Query";
+									}
+
+									@Override
+									public boolean go() {
+										weaponStatQuery();
 										return true;
 									}});
 								/*
@@ -1399,6 +1413,23 @@ public class mainGame {
 					return list;
 				}
 			});
+		}
+		
+		public static void weaponStatQuery() {
+			extra.println("1 cannot be used in graphical, enter weapon name with string");
+			String w = extra.inString();
+			WeaponType t = null;
+			try {
+				t = WeaponType.valueOf(w.toUpperCase());
+			}catch(Exception e) {
+				return;
+			}
+			List<Material> mats = new ArrayList<Material>();
+			mats.add(MaterialFactory.getMat("iron"));
+			mats.add(MaterialFactory.getMat("steel"));
+			mats.add(MaterialFactory.getMat("gold"));
+			mats.add(MaterialFactory.getMat("adamantine"));
+			WeaponAttackFactory.dispTestWeapon(t,mats);
 		}
 
 

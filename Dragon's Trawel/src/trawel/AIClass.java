@@ -719,10 +719,11 @@ public class AIClass {
 							extra.println(Player.lastAttackStringer);
 						}
 						if (mainGame.attackDisplayStyle == DispAttack.TWO_LINE1_WITH_KEY) {
-							extra.println(extra.CHAR_HITCHANCE + " hitchance; " +extra.CHAR_INSTANTS+" warmup -cooldown; "+
+							extra.println("Attacks:   " + extra.CHAR_HITCHANCE + " hitchance; " +extra.CHAR_INSTANTS+" warmup -cooldown; "+
 									extra.EXPLAIN_SIMPLE_CHARS_DAMAGE +";");
+						}else {
+							extra.println("Attacks:");
 						}
-						extra.println("Attacks:");
 						for(ImpairedAttack a: attacks) {
 							extra.print(j + " ");
 							a.display(2);
