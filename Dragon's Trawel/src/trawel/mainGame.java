@@ -1517,7 +1517,7 @@ public class mainGame {
 				return;
 			}*/
 			
-			
+			extra.menuGo(matMenu);
 		}
 
 

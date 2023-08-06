@@ -556,6 +556,7 @@ public class WeaponAttackFactory {
 	//FIXME make a per attack metric that lists the average results (hit/miss, damage results for each vector, armor deflection) using unenchanted unqualitied
 	//weapons of the following materials: iron, tin, copper, bronze, steel, silver, gold, adamantine, solar gold
 	public static void weaponMetrics() throws FileNotFoundException {
+		/*
 		PrintWriter writer = new PrintWriter("wmetrics.csv");
 		int hold = Weapon.battleTests;
 		Weapon.battleTests = 1000;
@@ -623,7 +624,7 @@ public class WeaponAttackFactory {
 
 			@Override
 			public int compare(WeaponMetric o1, WeaponMetric o2) {
-				double comp = ((o1.raw/*o1.rarity*/)-(o2.raw/*o2.rarity*/));
+				double comp = ((o1.raw)-(o2.raw));
 				if (comp == 0) {
 					return 0;
 				}
@@ -635,6 +636,7 @@ public class WeaponAttackFactory {
 		}
 		Weapon.battleTests = hold;
 		writer.close();
+		*/
 	}
 	
 	public static final void dispTestWeapon(WeaponType t, List<Material> mats) {

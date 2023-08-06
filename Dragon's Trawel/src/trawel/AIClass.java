@@ -458,7 +458,7 @@ public class AIClass {
 		if (smarts < 2) {
 			return (toReplace.getAetherValue()>hasItem.getAetherValue());
 			}
-		if (((Weapon)(toReplace)).score() > ((Weapon)(hasItem)).score()){
+		if (((Weapon)(toReplace)).scoreWeight() > ((Weapon)(hasItem)).scoreWeight()){
 			return true;	
 			}
 		return false;
@@ -562,16 +562,17 @@ public class AIClass {
 				Weapon hasWeap = (Weapon)hasItem;
 				Weapon toWeap = (Weapon)toReplace;
 				if (Player.getTutorial()) {
-					extra.println("hd = highest damage, ad = average damage, bs = battlescore, q = weapon qualities");
+					//extra.println("hd = highest damage, ad = average damage, bs = battlescore, q = weapon qualities");
+					extra.println("ic = impact chance, ad = average damage, wa = weighted average damage");
 				}
 				//TODO: this will break if a qual is in it more than twice
 				boolean isQDiff = !toWeap.qualList.containsAll(hasWeap.qualList) && !hasWeap.qualList.containsAll(toWeap.qualList);
 				int qualDiff = isQDiff ? toWeap.qualList.size()-hasWeap.qualList.size() : 0;
 				
-				extra.println(extra.PRE_MAGENTA+"Difference: hd/ad/bs: " 
-				+ (extra.hardColorDelta2(toWeap.highest(),hasWeap.highest()))
-				+ "/" + (extra.hardColorDelta2(toWeap.average(),hasWeap.average()))
-				+ "/" + (extra.hardColorDelta2(toWeap.score(),hasWeap.score()))
+				extra.println(extra.PRE_MAGENTA+"Difference: ic/ad/wa: " 
+				+ (extra.hardColorDelta2(toWeap.scoreImpact(),hasWeap.scoreImpact()))
+				+ "/" + (extra.hardColorDelta2(toWeap.scoreAverage(),hasWeap.scoreAverage()))
+				+ "/" + (extra.hardColorDelta2(toWeap.scoreWeight(),hasWeap.scoreWeight()))
 				//if the qualities are the same, 'q=', if neither has any, do not display
 				+ (isQDiff ? " q " + extra.colorBaseZeroTimid(qualDiff) : (toWeap.qualList.size() > 0 ? (" q =") : ""))
 				+ " " + priceDiffDisp(costDiff,costName,s)

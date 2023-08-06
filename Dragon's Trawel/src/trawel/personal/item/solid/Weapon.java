@@ -13,6 +13,8 @@ import trawel.Services;
 import trawel.WorldGen;
 import trawel.extra;
 import trawel.battle.Combat;
+import trawel.battle.Combat.ATK_ResultCode;
+import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.Stance;
 import trawel.battle.attacks.WeaponAttackFactory;
@@ -47,7 +49,7 @@ public class Weapon extends Item {
 	private int weight;
 
 	private int kills;
-	private float highDam, avgDam, bScore;//these don't need to update for internal weapons
+	private float bsCon, bsIpt, bsAvg, bsWgt;//these don't need to update for internal weapons
 	
 	public List<WeaponQual> qualList = new ArrayList<WeaponQual>();
 	
@@ -392,34 +394,48 @@ public class Weapon extends Item {
 	}*/
 	
 	private void refreshBattleScore() {
-		double high = 0;
-		double damage = 0;
+		int impactChance = 0;
 		double average = 0;
-		double bs = 0;
-		int size = this.getMartialStance().getAttackCount();
-		int i = 0;
-		Attack holdAttack;
+		double weighted = 0;
+		double highestContrib = -10;
+		Stance stance = this.getMartialStance();
+		int size = stance.getAttackCount()-1;
 		//does not account for aiming, since that is *very* opponent dependent
-		while (i < size) {
-			holdAttack = this.getMartialStance().getAttack(i);
-			damage = level*(holdAttack.getHitMult()*100*holdAttack.getTotalDam(this))/holdAttack.getSpeed();
-			average +=damage/size;
-			if (damage > high) {
-				high = damage;
-			}
-			for (int t = 0; t < battleTests;t++) {
-				for (int j = WorldGen.getDummyInvs().size()-1; j >=0;j--) {
-					bs+=Combat.handleTestAttack(holdAttack.impair(null,this,null),WorldGen.getDummyInvs().get(j),Armor.armorEffectiveness).damage/holdAttack.getSpeed() ;
+		for (int j = WorldGen.getDummyInvs().size()-1; j >=0;j--) {
+			double thisaverage = 0;
+			double thishighest = -10;
+			for (int i = size;i >=0;i--) {
+				Attack holdAttack = stance.getAttack(i);
+				for (int ta = 0; ta < battleTests;ta++) {
+					AttackReturn ret = Combat.handleTestAttack(holdAttack.impair(null,this,null)
+							,WorldGen.getDummyInvs().get(j)
+							,Armor.armorEffectiveness);
+					double thisret = ret.damage/holdAttack.getSpeed();
+					thisaverage += thisret;
+					if (thisret > thishighest) {
+						thishighest = thisret;
+					}
+					if (ret.code == ATK_ResultCode.DAMAGE) {
+						impactChance++;
+					}
 				}
+				if (thishighest/thisaverage > highestContrib) {
+					highestContrib = thishighest/thisaverage;
+				}
+				weighted += thisaverage * stance.getWeight(i);
+				average+=thisaverage;
 			}
-			i++;
+			
 		}
-		bs/=(battleTests*WorldGen.getDummyInvs().size());
+		int subTests = battleTests*WorldGen.getDummyInvs().size();
+		int totalTests = (size+1)*subTests;
+		average/=totalTests;
 		//the above battlescore assumes level 10 power weapon on level 10 armor
 		//so we put the real level in now
-		this.highDam = (float) (high*level);
-		this.avgDam = (float) (average*level);
-		this.bScore = (float) ((bs*level)/(size));
+		this.bsCon = (float)highestContrib;//(float) (high*level);
+		this.bsAvg = (float)average;//(float) (average*level);
+		this.bsIpt = impactChance/(float)totalTests;
+		this.bsWgt = (float) (weighted/subTests);
 	}
 	
 	public static int battleTests = 3;//was 50, then got converted into goes at all the dummy inventories (20 now)
@@ -437,28 +453,31 @@ public class Weapon extends Item {
 		}
 	}
 	
-	public double highest() {
-		return this.highDam;
+	public double scoreHighestContribution() {
+		return this.bsCon;
 	}
 	
-	public double average() {
-		return this.avgDam;
+	public double scoreImpact() {
+		return this.bsIpt;
 	}
 	
-	public double score() {
-		return this.bScore;
+	public double scoreWeight() {
+		return this.bsWgt;
+	}
+	public double scoreAverage() {
+		return this.bsAvg;
 	}
 
 	@Override
 	public void display(int style,float markup) {
 		switch (style) {
-		case 0: extra.println(getMaterialName() +" "+getBaseName()+": "+extra.format(this.score()));
+		case 0: extra.println(getMaterialName() +" "+getBaseName()+": "+extra.format(this.scoreWeight()));
 		break;
 		case 1:
 			extra.println(this.getName()
-			+ " hd/ad/bs: " + extra.format(this.highest())
-			+ "/" + extra.format(this.average())
-			+"/"+extra.format(this.score())
+			+ " ic/ad/wa: " + extra.format(this.scoreImpact())
+			+ "/" + extra.format(this.scoreAverage())
+			+"/"+extra.format(this.scoreWeight())
 			+" aether: " + (int)(this.getAetherValue()*markup));
 			
 			if (this.isEnchantedConstant()) {
@@ -473,9 +492,10 @@ public class Weapon extends Item {
 			;break;
 		case 2:
 			extra.println(this.getName()
-			+ " hd/ad/bs: " + extra.format(this.highest())
-			+ "/" + extra.format(this.average())
-			+ "/"+extra.format(this.score())
+			+ " highest contribution: " + extra.format(this.scoreHighestContribution())
+			+ " impact chance: " + extra.format(this.scoreImpact())
+			+ " average damage: " + extra.format(this.scoreAverage())
+			+ " weighted average damage: " + extra.format(this.scoreWeight())
 			+" aether: " + (int)(this.getAetherValue()*markup)
 			+ " kills: " +this.getKills());
 			
@@ -491,9 +511,9 @@ public class Weapon extends Item {
 			;break;
 		case 3://for stores
 			extra.println(this.getName()
-					+ " hd/ad/bs: " + extra.format(this.highest())
-					+ "/" + extra.format(this.average())
-					+"/"+extra.format(this.score())
+					+ " ic/ad/wa: " + extra.format(this.scoreImpact())
+					+ "/" + extra.format(this.scoreAverage())
+					+"/"+extra.format(this.scoreWeight())
 					+" value: " + extra.F_WHOLE.format(Math.ceil(this.getMoneyValue()*markup)));
 					
 					if (this.isEnchantedConstant()) {
@@ -517,9 +537,9 @@ public class Weapon extends Item {
 	public String storeString(float markup, boolean canShow) {
 		if (canShow) {
 			return this.getName() 
-				+ " hd/ad/bs: " + extra.format(this.highest())
-				+ "/" + extra.format(this.average())
-				+ "/" + extra.format(this.score())
+					+ " ic/ad/rw: " + extra.format(this.scoreImpact())
+					+ "/" + extra.format(this.scoreAverage())
+					+"/"+extra.format(this.scoreWeight())
 				+ " cost: " +  extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
 				;
 		}
@@ -581,32 +601,9 @@ public class Weapon extends Item {
 		}
 	}
 	
-	public static Weapon genTestWeapon(int useSquid) {
-		Weapon[] arr = new Weapon[3];
-		boolean useS = useSquid == 1;
-		arr[2] = new Weapon(useS);
-		arr[1] = new Weapon(useS);
-		arr[0] = new Weapon(useS);
-		double highest = 0;
-		double lowest = 99999;
-		for (Weapon w: arr) {
-			if (w.score() > highest) {
-				highest = w.score();
-			}
-			if (w.score() < lowest) {
-				lowest = w.score();
-			}
-		}
-		for (Weapon w: arr) {
-			if (w.score() != highest && w.score()  != lowest) {
-				return w;
-			}
-		}
-		return arr[0];
-	}
-	
 	public static Weapon genMidWeapon(int newLevel) {
-		Weapon[] arr = new Weapon[3];
+		return new Weapon(newLevel);
+		/*Weapon[] arr = new Weapon[3];
 		arr[2] = new Weapon(newLevel);
 		arr[1] = new Weapon(newLevel);
 		arr[0] = new Weapon(newLevel);
@@ -625,10 +622,11 @@ public class Weapon extends Item {
 				return w;
 			}
 		}
-		return arr[0];
+		return arr[0];*/
 	}
 	public static Weapon genMidWeapon(int newLevel,String name) {
-		Weapon[] arr = new Weapon[3];
+		return new Weapon(newLevel,name);
+		/*Weapon[] arr = new Weapon[3];
 		arr[2] = new Weapon(newLevel,name);
 		arr[1] = new Weapon(newLevel,name);
 		arr[0] = new Weapon(newLevel,name);
@@ -647,7 +645,7 @@ public class Weapon extends Item {
 				return w;
 			}
 		}
-		return arr[0];
+		return arr[0];*/
 	}
 	
 	private int addQuals(WeaponQual ...quals) {
@@ -674,6 +672,7 @@ public class Weapon extends Item {
 	public static final String[] weaponTypes = new String[]{"longsword","broadsword","mace","spear","axe","rapier","dagger","claymore","lance","shovel"};
 	
 	public static void rarityMetrics() throws FileNotFoundException {
+		/*
 		final int attempts = 1_000_000;
 		PrintWriter writer = new PrintWriter("rmetrics.csv");
 		//List<Weapon> weaponList = new ArrayList<Weapon>();
@@ -713,13 +712,14 @@ public class Weapon extends Item {
 		writer.flush();
 		writer.close();
 		extra.println("---");
-		
+		*/
 	}
 	/***
 	 * behold, a horrible performance test
 	 * @throws FileNotFoundException
 	 */
 	public static void duoRarityMetrics() throws FileNotFoundException {
+		/*
 		final int trials = 100;
 		final int attempts = 10_000;
 		PrintWriter writer1 = new PrintWriter("rmetrics1.csv");
@@ -794,6 +794,7 @@ public class Weapon extends Item {
 		}
 		extra.println("---");
 		MaterialFactory.materialWeapDiag();
+		*/
 	}
 
 	
