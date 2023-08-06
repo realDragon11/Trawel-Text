@@ -438,7 +438,7 @@ public class Weapon extends Item {
 		this.bsWgt = (float) (weighted/subTests);
 	}
 	
-	public static int battleTests = 3;//was 50, then got converted into goes at all the dummy inventories (20 now)
+	public static int battleTests = 5;//now how many times each attack gets tested on each armor set 3 to 5
 	
 	public class DamTuple implements java.io.Serializable{
 		
@@ -471,11 +471,11 @@ public class Weapon extends Item {
 	@Override
 	public void display(int style,float markup) {
 		switch (style) {
-		case 0: extra.println(getMaterialName() +" "+getBaseName()+": "+extra.format(this.scoreWeight()));
+		case 0: extra.println(getMaterialName() +" "+getBaseName()+":"+extra.format(this.scoreWeight()));
 		break;
 		case 1:
 			extra.println(this.getName()
-			+ " ic/ad/wa: " + extra.format(this.scoreImpact())
+			+ " ic/ad/wa: " + extra.formatPerSubOne(this.scoreImpact())
 			+ "/" + extra.format(this.scoreAverage())
 			+"/"+extra.format(this.scoreWeight())
 			+" aether: " + (int)(this.getAetherValue()*markup));
@@ -492,7 +492,7 @@ public class Weapon extends Item {
 			;break;
 		case 2:
 			extra.println(this.getName()
-			+ " highest contribution: " + extra.format(this.scoreHighestContribution())
+			+ " highest contribution: " + extra.formatPerSubOne(this.scoreHighestContribution())
 			+ " impact chance: " + extra.format(this.scoreImpact())
 			+ " average damage: " + extra.format(this.scoreAverage())
 			+ " weighted average damage: " + extra.format(this.scoreWeight())
@@ -509,9 +509,9 @@ public class Weapon extends Item {
 				extra.println(wq.name + ": "+wq.desc);
 			}
 			;break;
-		case 3://for stores
+		case 3://for stores in depth
 			extra.println(this.getName()
-					+ " ic/ad/wa: " + extra.format(this.scoreImpact())
+					+ " ic/ad/wa: " + extra.formatPerSubOne(this.scoreImpact())
 					+ "/" + extra.format(this.scoreAverage())
 					+"/"+extra.format(this.scoreWeight())
 					+" value: " + extra.F_WHOLE.format(Math.ceil(this.getMoneyValue()*markup)));
@@ -534,10 +534,10 @@ public class Weapon extends Item {
 	}
 	
 	@Override
-	public String storeString(float markup, boolean canShow) {
+	public String storeString(float markup, boolean canShow) {//for stores brief overview
 		if (canShow) {
 			return this.getName() 
-					+ " ic/ad/rw: " + extra.format(this.scoreImpact())
+					+ " ic/ad/rw: " + extra.formatPerSubOne(this.scoreImpact())
 					+ "/" + extra.format(this.scoreAverage())
 					+"/"+extra.format(this.scoreWeight())
 				+ " cost: " +  extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))

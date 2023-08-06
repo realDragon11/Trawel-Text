@@ -793,6 +793,11 @@ public final class extra {
 			return empty+str;
 		}
 		
+		public static String formatPerSubOne(double percent) {
+			String str = F_TWO_TRAILING.format(percent);
+			return "%"+str.substring(1);
+		}
+		
 		/**
 		 * used to indicate that < 0 might be bad, > 0 might be good, and that =0 is not the same, but not bad or good
 		 * caller should display = instead of a number if they are TRULY equal, higher up in the chain
