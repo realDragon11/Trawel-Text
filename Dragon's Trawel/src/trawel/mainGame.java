@@ -41,6 +41,7 @@ import trawel.factions.HostileTask;
 import trawel.personal.DummyPerson;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Item;
 import trawel.personal.item.body.Race;
@@ -1304,12 +1305,13 @@ public class mainGame {
 			//Player.addSkill(Skill.BLOODTHIRSTY);
 			Player.player.getPerson().addFighterLevel();
 			if (cheaty) {
+				Player.player.setCheating();
 				Player.toggleTutorial();
-				player.getPerson().addXp(9999);
+				player.getPerson().setPerk(Perk.SKY_BLESS_2);
 				story = new StoryNone();
+				player.getPerson().addXp(9999);
 				Player.addGold(1000);
 				Player.bag.addAether(100000);
-				Player.player.setCheating();
 			}
 			story.storyStart();
 			player.storyHold = story;

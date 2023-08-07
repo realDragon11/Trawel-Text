@@ -25,6 +25,7 @@ public interface IHasSkills {
 	public static final Set<Skill> emptySkillSet = EnumSet.noneOf(Skill.class);
 	
 	public String getText();
+	public String getOwnText();
 	
 	public int getStrength();
 	public int getDexterity();
@@ -47,9 +48,15 @@ public interface IHasSkills {
 
 			@Override
 			public String title() {
-				return has.friendlyName() + ": " + has.getText();
+				return has.getOwnText();
 			}});
-		has.collectSkills().forEach(Skill::getMenuView);
+		list.add(new MenuLine() {
+
+			@Override
+			public String title() {
+				return " Strength: " + has.getStrength() + " Dexterity: " + has.getDexterity();
+			}});
+		has.collectSkills().forEach(skill -> list.add(skill.getMenuView()));
 		return list;
 	}
 	

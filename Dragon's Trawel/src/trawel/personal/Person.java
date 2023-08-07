@@ -555,7 +555,8 @@ public class Person implements java.io.Serializable{
 			setSkillPoints(getSkillPoints() + levels);
 			if (this.isPlayer()) {
 				Networking.send("PlayDelay|sound_magelevel|1|");
-				Networking.sendStrong("Leaderboard|Highest Level|" + level+ "|");
+				Networking.leaderboard("Highest Level",level);
+				
 				mainGame.story.levelUp(level+levels);
 				if (level < 5 && level+levels >= 5) {
 					Networking.unlockAchievement("level5");
@@ -661,7 +662,7 @@ public class Person implements java.io.Serializable{
 
 					@Override
 					public boolean go() {
-						if (archSet.size() == 0) {
+						if (featSet.size() == 0) {
 							extra.println("You have no feats.");
 							return false;
 						}
@@ -677,7 +678,7 @@ public class Person implements java.io.Serializable{
 
 					@Override
 					public boolean go() {
-						if (archSet.size() == 0) {
+						if (perkSet.size() == 0) {
 							extra.println("You have no perks.");
 							return false;
 						}

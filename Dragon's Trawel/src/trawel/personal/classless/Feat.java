@@ -85,6 +85,11 @@ public enum Feat implements IHasSkills{
 		}
 		return str;
 	}
+	
+	@Override
+	public String getOwnText() {
+		return name + ": "+desc;
+	}
 	@Override
 	public int getStrength() {
 		return strength;

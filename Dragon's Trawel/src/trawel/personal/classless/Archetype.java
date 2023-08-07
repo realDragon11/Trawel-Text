@@ -45,6 +45,11 @@ public enum Archetype implements IHasSkills{
 		return str;
 	}
 	
+	@Override
+	public String getOwnText() {
+		return name + ": "+desc;
+	}
+	
 	/**
 	 * will attempt to return 6 values, containing Archtypes that give a good spread of starting stat choices
 	 * @return a size 6 array, possibly partially empty

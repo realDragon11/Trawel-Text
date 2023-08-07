@@ -428,4 +428,9 @@ public class Networking {
 		}
 		
 	}
+
+	public static void leaderboard(String string, int stat) {
+		Networking.sendStrong("Leaderboard|"+string+"|" + stat+ "|");
+		
+	}
 }

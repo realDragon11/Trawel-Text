@@ -12,7 +12,7 @@ public enum Perk implements IHasSkills{
 	EMPTY("","",IHasSkills.emptySkillSet),
 	RACIAL_SHIFTS("Flexible","Prone to changing its defense patterns.",EnumSet.of(Skill.RACIAL_SHIFTS)),
 	SKY_BLESS_1("Leaf on the Wind","Has a minor blessing from the sky, granting them paranatural speed.",EnumSet.of(Skill.SPEEDDODGE,Skill.BLITZ)),
-	SKY_BLESS_2("Growing Storm","Has a blessing from the sky, granting them 5 dexterity and senses that heal them when used.",EnumSet.of(Skill.DODGEREF),0,5)
+	SKY_BLESS_2("Growing Storm","Has a blessing from the sky, granting mobility and senses that heal them when used.",EnumSet.of(Skill.DODGEREF),0,5)
 	;
 	private final String name, desc;
 	private final Set<Skill> skills;
@@ -46,6 +46,12 @@ public enum Perk implements IHasSkills{
 		}
 		return str;
 	}
+	
+	@Override
+	public String getOwnText() {
+		return name + ": "+desc;
+	}
+	
 	@Override
 	public int getStrength() {
 		return strength;
