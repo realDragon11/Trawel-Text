@@ -377,26 +377,6 @@ public class Weapon extends Item {
 	public String getBaseName() {
 		return weap.getName();
 	}
-
-	/*
-	 * Returns the average damage of all the weapon's attacks. Factors in speed and damage, but not aiming.
-	 *  - average (int)
-	 */
-	/*public double averageDamage() {
-		double average = 0;
-		int size = this.getMartialStance().getAttackCount();
-		int i = 0;
-		Attack holdAttack;
-		//does not account for aiming, since that is *very* opponent dependent
-		while (i < size) {
-			holdAttack = this.getMartialStance().getAttack(i);
-			average +=holdAttack.getHitmod()*(holdAttack.getBlunt()+holdAttack.getPierce()+holdAttack.getSharp())/holdAttack.getSpeed();
-			i++;
-		}
-		
-		
-		return (int)(average/size);
-	}*/
 	
 	private void refreshBattleScore() {
 		int impactChance = 0;
@@ -407,13 +387,13 @@ public class Weapon extends Item {
 		double[] contributions = new double[size];//used for determining highest contribution
 		for (int i = size-1;i >=0;i--) {
 			Attack holdAttack = stance.getAttack(i);
-			int dam = 0;
+			double dam = 0;
 			for (int j = WorldGen.getDummyInvs().size()-1; j >=0;j--) {
 				for (int ta = 0; ta < battleTests;ta++) {
 					AttackReturn ret = Combat.handleTestAttack(holdAttack.impair(null,this,null)
 							,WorldGen.getDummyInvs().get(j).atLevel(level)
 							,Armor.armorEffectiveness);
-					dam+= ret.damage/holdAttack.getSpeed();
+					dam+= ret.damage/ret.attack.getTime();
 					if (ret.code == ATK_ResultCode.DAMAGE) {
 						impactChance++;
 					}
@@ -442,7 +422,7 @@ public class Weapon extends Item {
 		this.bsWgt = (float) ((levelAdjust*weighted)/subTests);
 	}
 	
-	public static int battleTests = 10;//now how many times each attack gets tested on each armor set 3 to 5
+	public static int battleTests = 10;//now how many times each attack gets tested on each armor set 3 to 5 to 10
 	
 	public class DamTuple implements java.io.Serializable{
 		
@@ -576,7 +556,6 @@ public class Weapon extends Item {
 	@Override
 	public void levelUp() {
 		level++;
-		//dam = null;
 		refreshBattleScore();
 	}
 	

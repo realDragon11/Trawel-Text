@@ -657,7 +657,6 @@ public class WeaponAttackFactory {
 			int i = 0;
 			int size = w.getMartialStance().getAttackCount();
 			
-			//does not account for aiming, since that is *very* opponent dependent
 			while (i < size) {
 				double damage = 0;
 				double speed = 0;
@@ -665,7 +664,6 @@ public class WeaponAttackFactory {
 				holdAttack = w.getMartialStance().getAttack(i);
 				double hits = 0;
 				double fullhits = 0;
-				//damage = (holdAttack.getHitMult()*100*holdAttack.getTotalDam(w))/holdAttack.getSpeed();
 				for (int ta = 0; ta < tests;ta++) {
 					for (int j = WorldGen.getDummyInvs().size()-1; j >=0;j--) {
 						AttackReturn ret = Combat.handleTestAttack(holdAttack.impair(null,w,null)
@@ -680,7 +678,7 @@ public class WeaponAttackFactory {
 								hits++;
 							}
 						}
-						speed += holdAttack.getSpeed();
+						speed += ret.attack.getTime();
 					}
 				}
 				
