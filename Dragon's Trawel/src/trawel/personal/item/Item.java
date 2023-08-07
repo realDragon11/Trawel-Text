@@ -109,8 +109,6 @@ public abstract class Item implements java.io.Serializable{
 	}
 	
 	/**
-	 * FIXME: rename to aetherloot or something
-	 * 
 	 * used to indicate things that can't be wielded or worn but still can be sold
 	 * things that CAN be looted normally still should return true, since Huge Battles
 	 * will go over the unclaimed items in a final pass to convert to gold

@@ -33,15 +33,11 @@ import trawel.towns.World;
 
 public class Store extends Feature{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private int type;
 	private List<Item> items;
 	private List<DrawBane> dbs;
 	private double time;
-	private int tier;
 	private int buys;
 	private float markup;
 	private float aetherRate;
@@ -60,7 +56,6 @@ public class Store extends Feature{
 			//3 out of 4 chance to move at least somewhat towards a % deviated rate
 			aetherRate= extra.lerp(aetherRate,aetherRate*extra.choose(.8f,.7f,.4f,1.1f,1.2f),extra.randFloat());
 		}
-		//System.out.println(aetherRate+" "+markup);
 		invSize = extra.randRange(4,6);
 		if (invSize < 5) {
 			markup *= .95;

@@ -2,6 +2,7 @@ package trawel.personal.people;
 import java.util.ArrayList;
 
 import trawel.extra;
+import trawel.personal.Person;
 import trawel.time.CanPassTime;
 import trawel.towns.Town;
 
@@ -31,4 +32,6 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	public void setLocation(Town location) {
 		this.location = location;
 	}
+	
+	public abstract Person getPerson();
 }

@@ -17,6 +17,7 @@ public class Doctor extends Feature {
 	public Doctor(String name,Town t) {
 		this.name = name;
 		town = t;
+		tier = t.getTier();
 		tutorialText = "Doctors can cure your ailments.";
 	}
 	@Override
@@ -29,8 +30,8 @@ public class Doctor extends Feature {
 		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|doctor|Doctor|");
 		String mstr = World.currentMoneyString();
-		int dcost = town.getTier()*5;
-		int cost = 50*town.getTier()+(town.getTier()*Math.min(3,Player.player.getPerson().effectsSize())*30);
+		int dcost = tier*5;
+		int cost = 50*tier+(tier*Math.min(3,Player.player.getPerson().effectsSize())*30);
 		extra.println(mstr+": " +Player.getGold());
 		extra.println("1 diagnosis (" + dcost+" "+mstr+")");
 		extra.println("2 cure (" + cost+" "+mstr+")");

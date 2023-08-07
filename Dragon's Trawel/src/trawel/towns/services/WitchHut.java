@@ -16,9 +16,7 @@ import trawel.towns.Feature;
 import trawel.towns.Town;
 
 public class WitchHut extends Feature{
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	
 	public WitchHut(Town t) {

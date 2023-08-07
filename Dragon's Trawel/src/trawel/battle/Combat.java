@@ -53,13 +53,15 @@ public class Combat {
 	public int totalFighters = 2;
 	public boolean battleIsLong = false;
 	
+	private int winSide;
+	
 	public static Combat testCombat = new Combat();
 	
 	public static int longBattleLength = 20;
 	//constructor
 	/**
 	 * Holds a fight to the death, between two people.
-	 * @param manOne (Person)
+	 * @param manOne (Person) [if the combat includes the player, they must be in this slot]
 	 * @param manTwo (Person)
 	 */
 	public Combat(Person manOne, Person manTwo,World w) {
@@ -69,10 +71,10 @@ public class Combat {
 		manOne.battleSetup();
 		//extra.println("");
 		manTwo.battleSetup();
-		
+
 		attacker = manOne;
 		defender = manTwo;
-		
+
 		boolean playerIsInBattle;//= attacker.isPlayer() || defender.isPlayer();
 		if (manOne.isPlayer()) {
 			manTwo.displayStatsShort();
@@ -85,14 +87,13 @@ public class Combat {
 				playerIsInBattle = false;
 			}
 		}
-		
+
 		attacker = manTwo;
 		defender = manOne;
 		setAttack(manTwo,manOne);
 		setAttack(manOne,manTwo);
 		extra.println("");
 		extra.println(extra.choose("Our two fighters square off...","They look tense.","It's time to fight.","They look ready to fight.","The battle has begun."));
-		//BardSong song = w.startBardSong(manOne,manTwo);
 		do {//combat loop
 			if (manOne.getTime() < manTwo.getTime()) {
 				attacker = manOne;
@@ -104,40 +105,38 @@ public class Combat {
 			if (attacker.hasSkill(Skill.BLITZ)) {
 				attacker.advanceTime(3);
 			}
-			if (attacker.hasSkill(Skill.SKY_BLESSING_1)) {
-				attacker.advanceTime(1);
-			}
 			double delay = attacker.getTime();
 			defender.advanceTime(delay);
 			attacker.advanceTime(delay);
 			if (!attacker.isOnCooldown()) {
-			handleTurn(attacker, defender, playerIsInBattle, delay);
-			if (playerIsInBattle) {
-				manTwo.getBag().graphicalDisplay(1,manTwo);
-				Player.player.getPerson().getBag().graphicalDisplay(-1,Player.player.getPerson());
+				handleTurn(attacker, defender, playerIsInBattle, delay);
+				if (playerIsInBattle) {
+					manTwo.getBag().graphicalDisplay(1,manTwo);
+					Player.player.getPerson().getBag().graphicalDisplay(-1,Player.player.getPerson());
+				}
 			}
-			}
-			
+
 			if (manOne.isAlive() && manTwo.isAlive()) {
 				if (!attacker.isAttacking()){
 					setAttack(attacker,defender);
 				}else {
 					attacker.finishTurn();
 				}
-				
+
 			}
 		}
 		while(manOne.isAlive() && manTwo.isAlive());
-		
+
 		if (manOne.isAlive()) {
 			if (manTwo.isAlive()) {
 				//no
 			}else {
 				attacker = manOne;
 				defender = manTwo;
+				winSide = 0;
 				//attacker = manOne;
 				//defender = manTwo;
-				
+
 			}
 		}else {
 			if (manTwo.isAlive()) {
@@ -145,19 +144,22 @@ public class Combat {
 				defender = manOne;
 				manOne = attacker;
 				manTwo = defender;
+				winSide = 1;
 			}else {
 				//both dead, manOne wins be default
 				attacker = manOne;
 				defender = manTwo;
+				winSide = 0;
 			}
 		}
-		
+
 		extra.println(extra.choose("The dust settles...","The body drops to the floor.","Death has come.","The battle is over."));
-		extra.println(manTwo.getName() + extra.choose(" lies dead..."," walks the earth no more..."," has been slain."));
-		//song.addKill(manOne, manTwo);
-		manOne.getBag().getHand().addKill();
-		manOne.addKillStuff();
-		FBox.repCalc(manOne,manTwo);
+		extra.println(defender.getName() + extra.choose(" lies dead..."," walks the earth no more..."," has been slain."));
+		attacker.getBag().getHand().addKill();
+		attacker.addKillStuff();
+		FBox.repCalc(attacker,defender);
+		survivors = Collections.singletonList(attacker);
+		killed = Collections.singletonList(defender);
 	}
 	
 	public class SkillCon {
@@ -172,8 +174,21 @@ public class Combat {
 	
 	public void handleSkillCons(List<SkillCon> cons, List<Person> totalList,double timePassed) {
 		for (SkillCon sk: cons) {
-			sk.timer-=timePassed;
-			if (sk.timer <=0) {
+			int doTimes = 0;
+			if (sk.timeTo <= 0 && sk.timer >= 0) {
+				sk.timer-=timePassed;
+				if (sk.timer < 0) {
+					doTimes = 1;
+				}
+			}
+			if (sk.timeTo > 0) {
+				sk.timer-=timePassed;
+				while (sk.timer <= 0) {
+					sk.timer += sk.timeTo*extra.lerp(.8f,1.2f,extra.randFloat());//intentionally not perfect times
+					doTimes++;
+				}	
+			}
+			for (;doTimes > 0; doTimes--) {
 				switch (sk.lSkill.skill) {
 				case DEATH:
 					for (Person p: totalList) {
@@ -207,7 +222,7 @@ public class Combat {
 					break; 
 				}
 			}
-			sk.timer = Math.max(1,sk.timeTo-extra.randRange(0,Math.min(10,sk.lSkill.value)));//intentionally not perfect times
+			
 		}
 	}
 	
@@ -220,6 +235,7 @@ public class Combat {
 	
 	private List<List<Person>> liveLists;
 	private List<List<Person>> targetLists;
+	private List<List<Person>> inSides;
 	private Map<Person,BattleData> dataMap;
 	private List<Person> totalList, killList;
 	private int sides;
@@ -230,6 +246,7 @@ public class Combat {
 	}
 	
 	public Combat(World w, FortHall hall,List<List<Person>> people) {
+		inSides = people;
 		int size = people.size();
 		sides = size;
 		totalList = new ArrayList<Person>();
@@ -273,7 +290,7 @@ public class Combat {
 			}
 			temp = hall.getTotalDefenceRating();
 			if (temp > 0) {
-				cons.add(new SkillCon(new LSkill(SubSkill.DEFENSE,temp),1,9999999));
+				cons.add(new SkillCon(new LSkill(SubSkill.DEFENSE,temp),0,-1));
 			}
 			temp = hall.getSkillCount(SubSkill.SCRYING);
 			if (temp > 0) {
@@ -318,7 +335,7 @@ public class Combat {
 			for (Person p: totalList) {
 				p.advanceTime(lowestDelay);
 			}
-			
+
 			this.handleSkillCons(cons, totalList, lowestDelay);
 
 			Person defender = quickest.getNextAttack().getDefender();
@@ -326,28 +343,26 @@ public class Combat {
 			dataMap.get(defender).lastAttacker = quickest;
 			AttackReturn atr = handleTurn(quickest,defender,playerIsInBattle,lowestDelay);
 			if (atr.code != ATK_ResultCode.NOT_ATTACK) {
-			if (!defender.isAlive() && wasAlive) {
-				killWrapUp(defender, quickest, false);
-			}else {
-				if (defender.hasEffect(Effect.CONFUSED_TARGET)) {
-					//the defender has been befuddled or confused
-					if (defender.isOnCooldown()) {//if on cooldown, add the effect for next attack instead
-						
-					}else {
-						defender.removeEffect(Effect.CONFUSED_TARGET);
-					Person newDef = getDefenderForConfusion(defender);
-					if (defender.getNextAttack().getDefender().isSameTargets(newDef)) {
-						defender.getNextAttack().setDefender(newDef);
-					}else {
-						//targets don't match, need new attack.
-						//get discount on next one
-						double discount = -Math.max(0,((defender.getTime()-defender.getNextAttack().getWarmup()))/2.0);
-						setAttack(defender,newDef);
-						defender.applyDiscount(discount);
-					}
+				if (!defender.isAlive() && wasAlive) {
+					killWrapUp(defender, quickest, false);
+				}else {
+					if (defender.hasEffect(Effect.CONFUSED_TARGET)) {
+						//the defender has been befuddled or confused
+						if (!defender.isOnCooldown()) {//if on cooldown, the effect will apply to the next attack instead
+							defender.removeEffect(Effect.CONFUSED_TARGET);
+							Person newDef = getDefenderForConfusion(defender);
+							if (defender.getNextAttack().getDefender().isSameTargets(newDef)) {
+								defender.getNextAttack().setDefender(newDef);
+							}else {
+								//targets don't match, need new attack.
+								//get discount on next one
+								double discount = -Math.max(0,((defender.getTime()-defender.getNextAttack().getWarmup()))/2.0);
+								setAttack(defender,newDef);
+								defender.applyDiscount(discount);
+							}
+						}
 					}
 				}
-			}
 			}
 
 
@@ -410,12 +425,21 @@ public class Combat {
 		if (totalList.size() == 0) {//no survivors, last actor wins
 			totalList.add(quickest);
 			killList.remove(quickest);
+		}else {
+			if (!totalList.contains(quickest)) {//if the last actor died some other way
+				quickest = totalList.get(0);
+			}
+		}
+		
+		for (int i = 0; i < sides;i++) {
+			if (inSides.get(i).contains(quickest)) {
+				winSide  = i;
+				break;
+			}
 		}
 		
 		survivors = totalList;
 		killed = killList;
-		
-		
 	}
 	
 	public Combat() {
@@ -478,13 +502,6 @@ public class Combat {
 		}
 		return changed;
 	}
-
-	//instance methods
-	
-	//TODO: could store a 'skill resolver' in a local variable, if defender/attacker = null, then set it to a static empty enum set
-	//this would make the overhead and problems of null checking people a billion times for skills not a problem anymore
-	//it would have a minor performance impact on battlescore since the checks would need to be made
-	//but the DRY > WET advantages might be good
 	
 	/**
 	 * Redone, write new docs
@@ -514,22 +531,22 @@ public class Combat {
 		
 		double dodgeRoll = dodgeBase*extra.getRand().nextDouble();
 		double hitRoll = hitBase*extra.getRand().nextDouble();
-		if (dodgeRoll > hitRoll){
-			ret= new AttackReturn(ATK_ResultCode.DODGE,"",att);
-			if (isReal) {
-				ret.stringer = att.fluff(ret);
-				if (wasDead) {
-					ret.addNote("What a dodgy corpse!");
-				}
-			}
-			return ret;
-		}
 		if (hitRoll < .05) {//missing now exists
 			ret= new AttackReturn(ATK_ResultCode.MISS,"",att);
 			if (isReal) {
 				ret.stringer = att.fluff(ret);
 				if (wasDead) {
 					ret.addNote("They missed a corpse!");
+				}
+			}
+			return ret;
+		}
+		if (dodgeRoll > hitRoll){
+			ret= new AttackReturn(ATK_ResultCode.DODGE,"",att);
+			if (isReal) {
+				ret.stringer = att.fluff(ret);
+				if (wasDead) {
+					ret.addNote("What a dodgy corpse!");
 				}
 			}
 			return ret;
@@ -545,33 +562,35 @@ public class Combat {
 				ret.addNote("Beating their corpse!");
 			}
 		}
+		if (ret.type == ATK_ResultType.IMPACT) {//normal damage and killing
+			if (att.hasWeaponQual(WeaponQual.REFINED)) {
+				ret.damage += wLevel;
+				ret.bonus += wLevel;
+				ret.addNote("Refined Bonus: " + wLevel);
+			}
+			if (att.hasWeaponQual(Weapon.WeaponQual.WEIGHTED)) {
+				if (att.getHitMult() < 1.5) {
+					int weightBonus = ret.damage;
+					//TODO: check this
+					ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitMult()*10))));
+					weightBonus = ret.damage-weightBonus;
+					ret.bonus += weightBonus;
+					if (isReal) {ret.addNote("Weighted Bonus: " + weightBonus);}
+				}
+			}
+			if (defender.hasSkill(Skill.RAW_GUTS)) {
+				int maxGResist = (int) Math.ceil(defender.getLevel() * defender.getConditionForPart());
+				int gResisted = ret.damage;
+				ret.damage = Math.max(ret.damage/2,ret.damage-extra.randRange(0,maxGResist));
+				gResisted = gResisted-ret.damage;
+				if (isReal) {ret.addNote("Raw Guts Resisted: " + gResisted);}
+			}
+		}
 		if (att.hasWeaponQual(WeaponQual.RELIABLE) && ret.damage <= wLevel) 
 		{
 			ret.damage = wLevel;
-			ret.reliable = true;
+			ret.bonus = wLevel;
 			if (isReal) {ret.addNote("Reliable Damage: "+wLevel);}
-		} else {
-			if (ret.code == ATK_ResultCode.DAMAGE) {//no longer functions on reliable
-				if (att.hasWeaponQual(WeaponQual.REFINED)) {
-					ret.damage += wLevel;
-					ret.addNote("Refined Bonus: " + wLevel);
-				}
-				if (att.hasWeaponQual(Weapon.WeaponQual.WEIGHTED)) {
-					if (att.getHitMult() < 1.5) {
-						int weightBonus = ret.damage;
-						ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitMult()*10))));
-						weightBonus = ret.damage-weightBonus;
-						if (isReal) {ret.addNote("Weighted Bonus: " + weightBonus);}
-					}
-				}
-				if (defender.hasSkill(Skill.RAW_GUTS)) {
-					int maxGResist = (int) Math.ceil(defender.getLevel() * defender.getConditionForPart());
-					int gResisted = ret.damage;
-					ret.damage = Math.max(ret.damage/2,ret.damage-extra.randRange(0,maxGResist));
-					gResisted = gResisted-ret.damage;
-					if (isReal) {ret.addNote("Raw Guts Resisted: " + gResisted);}
-				}
-			}
 		}
 		if (isReal) {
 			ret.stringer = str + att.fluff(ret);
@@ -589,15 +608,16 @@ public class Combat {
 		public int damage;
 		public int[] subDamage;
 		public String stringer;
-		public boolean reliable = false;
+		public int bonus = 0;
 		public ImpairedAttack attack;
 		public ATK_ResultCode code;
+		public ATK_ResultType type;
 		private String notes;
 		public AttackReturn(int sdam,int bdam, int pdam, double sarm, double barm, double parm, String str, ImpairedAttack att) {
 			stringer = str;
 			attack = att;
 			notes = null;
-			//DOLATER: can turn this into an array of damage types later if need be
+			//MAYBELATER: can turn this into an array of damage types later if need be
 			double rawdam = sdam+bdam+pdam;
 			double rawarm =sarm+barm+parm;
 			double s_weight = sdam/rawdam;
@@ -612,10 +632,11 @@ public class Combat {
 				subDamage = new int[] {0,0,0};
 				damage = 0;
 				code = ATK_ResultCode.ARMOR;
+				type = ATK_ResultType.NO_IMPACT;
 			}else {//TODO: new goal: % reductions based on relativeness with a chance to negate entirely if much higher?
 				//up to half the damage if the damage roll was less than the total weighted armor (without roll)
 				double reductMult = damageCompMult(.5f,1f,1f,att_roll*rawdam,def_roll*weight_arm,1f,1.5f);
-						//extra.lerp(1f,.5f,(float) (1f-Math.min(1,(att_roll*rawdam)/weight_arm)));
+				//extra.lerp(1f,.5f,(float) (1f-Math.min(1,(att_roll*rawdam)/weight_arm)));
 				//each damage vector can be brought down to 20%, but this is cumulative so the armor has to be 4x higher
 				//to achieve that level of reduction
 				double s_reduct = damageCompMult(.2f,.9f,1f,sdam,sarm,2f,4f);
@@ -629,6 +650,7 @@ public class Combat {
 				subDamage = new int[] {scomp,bcomp,pcomp};
 				damage = Math.max(1,subDamage[0]+subDamage[1]+subDamage[2]);//deals a min of 1 damage
 				code = ATK_ResultCode.DAMAGE;
+				type = ATK_ResultType.IMPACT;
 				
 				if (!extra.getPrint()) {
 					addNote("rawdam: " +rawdam +"("+sdam+"/"+bdam+"/"+pdam+")"+ " rawarm: " + rawarm + "("+sarm+"/"+barm+"/"+parm+")"+ " weight_a: " + weight_arm + " groll: " + global_roll 
@@ -654,6 +676,7 @@ public class Combat {
 		}
 		
 		public AttackReturn(ATK_ResultCode rcode, String str, ImpairedAttack att) {
+			type = ATK_ResultType.NO_IMPACT;
 			code = rcode;
 			damage = 0;
 			//null
@@ -664,6 +687,7 @@ public class Combat {
 		
 		public AttackReturn() {
 			code = ATK_ResultCode.NOT_ATTACK;
+			type = ATK_ResultType.IMPACT;
 		}
 		
 		public void addNote(String str) {
@@ -688,7 +712,7 @@ public class Combat {
 					Player.lastAttackStringer = "\nYou hit "+attack.getDefender().getName() + 
 					" but their armor held!";
 					break;
-				case DAMAGE:
+				case DAMAGE: case KILL:
 					Player.lastAttackStringer = "\nYou hit "+attack.getDefender().getName() + 
 					" dealing "+ damage+" damage!";
 					break;
@@ -703,10 +727,32 @@ public class Combat {
 				}
 			}
 		}
+		public boolean hasWound() {
+			return attack != null && attack.getWound() != null;
+		}
 	}
 	
 	public enum ATK_ResultCode{
-		DAMAGE, NOT_ATTACK, MISS, DODGE, ARMOR
+		DAMAGE, KILL, NOT_ATTACK, MISS, DODGE, ARMOR
+	}
+	/**
+	 * whether special effects should apply (if real)
+	 * <br>
+	 * can be set to a different value than the base type is supposed to deal and things should still work
+	 */
+	public enum ATK_ResultType{
+		/**
+		 * if wounds and other special effects should not be applied
+		 * <br>
+		 * by default, this occurs on MISS, DODGE, and ARMOR
+		 */
+		NO_IMPACT,
+		/**
+		 * if wounds and other special effects should not be applied
+		 * <br>
+		 * by default, this occurs on DAMAGE, KILL, and NOT_ATTACK
+		 */
+		IMPACT
 	}
 	
 	/**
@@ -789,8 +835,9 @@ public class Combat {
 		//FIXME: apply new attack result code system where needed
 		defender.getBag().armorQualDam(damageDone);
 		//message handling
+		float percent = 0f;
 		if (damageDone > 0) {
-			float percent = damageDone/(float)defender.getMaxHp();
+			percent = damageDone/(float)defender.getMaxHp();
 			if (extra.chanceIn((int)(percent*100) + (defender.getHp() <= 0 ? 10 : 0), 120)) {
 				Networking.send("PlayDelayPitch|"+SoundBox.getSound(defender.getBag().getRace().voice,SoundBox.Type.GRUNT) + "|4|"+ defender.getPitch()+"|");
 			}
@@ -812,11 +859,10 @@ public class Combat {
 			
 			defender.debug_print_status(damageDone);
 			
-			//Wound effects
-			String woundstr = inflictWound(attacker,defender,atr);
 			if (defender.hasEffect(Effect.R_AIM)) {
 				defender.getNextAttack().multiplyHit(1 + (percent));
 			}
+			
 			if (!extra.getPrint()) {
 				//extra.print(extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f)));
 				if (defender.isPlayer()) {
@@ -826,7 +872,14 @@ public class Combat {
 					}
 				}
 			}
+		}
 			
+		//Wounds can now be inflicted even if not dealing damage
+		String woundstr = "";
+		if (atr.type == ATK_ResultType.IMPACT && atr.hasWound()) {
+			woundstr = inflictWound(attacker,defender,atr);
+		}
+		if (damageDone > 0) {
 			if (defender.takeDamage(damageDone)) {
 				//extra.print(" " + extra.choose("Striking them down!"," They are struck down."));
 				if (!extra.getPrint()) {
@@ -839,43 +892,42 @@ public class Combat {
 					extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color)+woundstr);
 				}
 			}
-		}else {
-			if (atr.code == ATK_ResultCode.DODGE || atr.code == ATK_ResultCode.MISS) {
-				//song.addAttackMiss(attacker,defender);
-				if (!extra.getPrint()) {
-					inlined_color= extra.PRE_YELLOW;
-					extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color));
-					Networking.sendStrong("PlayMiss|" + "todo" + "|");
-					extra.print(" "+extra.AFTER_ATTACK_MISS+randomLists.attackMissFluff(atr.code));
-				}
-				if (defender.hasSkill(Skill.SPEEDDODGE)) {
-					defender.advanceTime(10);
-					if (defender.hasSkill(Skill.DODGEREF)) {
-						defender.addHp(attacker.getLevel());
-					}
-				}
-				if (defender.hasEffect(Effect.BEE_SHROUD)) {
-					extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.2f))+"The bees sting back!");
-					attacker.takeDamage(1);
-				}
-			}else {
-				if (atr.code == ATK_ResultCode.ARMOR) {//TODO: now reliable causes this, but we catch it earlier with the damage >0
-					//song.addAttackArmor(attacker,defender);
-					if (!extra.getPrint()) {
-						inlined_color = extra.ATTACK_BLOCKED;
-						extra.print(inlined_color+atr.stringer.replace("[*]", inlined_color)+" "+randomLists.attackNegateFluff());
-					}
-					if (defender.hasSkill(Skill.ARMORHEART)) {
-						defender.addHp(attacker.getLevel());
-					}
-					if (defender.hasSkill(Skill.ARMORSPEED)) {
-						defender.advanceTime(10);
-					}
-				}else {
-
+		}
+		//if (atr.type == ATK_ResultType.NO_IMPACT) {
+		//impact is now more directly if wounds/special effects happen
+		switch (atr.code) {
+		case DODGE: case MISS:
+			if (!extra.getPrint()) {
+				inlined_color= extra.PRE_YELLOW;
+				extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color));
+				Networking.sendStrong("PlayMiss|" + "todo" + "|");
+				extra.print(" "+extra.AFTER_ATTACK_MISS+randomLists.attackMissFluff(atr.code));
+			}
+			if (defender.hasSkill(Skill.SPEEDDODGE)) {
+				defender.advanceTime(10);
+				if (defender.hasSkill(Skill.DODGEREF)) {
+					defender.addHp(attacker.getLevel());
 				}
 			}
+			if (defender.hasEffect(Effect.BEE_SHROUD)) {
+				extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.2f))+"The bees sting back!");
+				attacker.takeDamage(1);
+			}
+			break;
+		case ARMOR:
+			if (!extra.getPrint()) {
+				inlined_color = extra.ATTACK_BLOCKED;
+				extra.print(inlined_color+atr.stringer.replace("[*]", inlined_color)+" "+randomLists.attackNegateFluff());
+			}
+			if (defender.hasSkill(Skill.ARMORHEART)) {
+				defender.addHp(attacker.getLevel());
+			}
+			if (defender.hasSkill(Skill.ARMORSPEED)) {
+				defender.advanceTime(10);
+			}
+			break;
 		}
+		//}
 
 		if (canWait && mainGame.delayWaits) {
 			Networking.waitIfConnected(100L+(long)delay*2);
@@ -1208,6 +1260,27 @@ public class Combat {
 		newAttack.setDefender(defender);
 		//manOne.getNextAttack().blind(1 + manOne.getNextAttack().getSpeed()/1000.0);
 		//this blind was here to simulate quicker attacks being harder to dodge, it has been removed
+	}
+	
+	/**
+	 * 2 = player survived
+	 * <br>
+	 * 1 = player did not survive, but their side won
+	 * <br>
+	 * -1 = player died and their side lost
+	 */
+	public int playerWon() {
+		if (survivors.contains(Player.player.getPerson())) {
+			return 2;
+		}
+		if (totalFighters > 2) {
+			if (inSides.get(winSide).contains(Player.player.getPerson())) {
+				return 1;
+			}
+			return -2;
+		}else {
+			return -2;
+		}
 	}
 	
 		

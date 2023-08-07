@@ -15,17 +15,14 @@ import trawel.towns.Feature;
 import trawel.towns.World;
 
 public class Oracle extends Feature{ //extends feature later
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private static Map<String,List<String>> tips = new HashMap<String,List<String>>();
 	private int visits = 0;
-	private int level;
 
 	public Oracle(String string, int level) {
 		name = string;
-		this.level = level;
+		tier = level;
 		tutorialText = "Oracles can provide guidance.";
 	}
 
@@ -138,10 +135,10 @@ public class Oracle extends Feature{ //extends feature later
 	}
 
 	public void utterance() {
-		if (Player.getGold() >= level*1) {
-			extra.println("Pay "+ level*1 +" "+World.currentMoneyString()+" for an utterance?");
+		if (Player.getGold() >= tier*1) {
+			extra.println("Pay "+ tier*1 +" "+World.currentMoneyString()+" for an utterance?");
 			if (extra.yesNo()) {
-				Player.addGold(-level*1);
+				Player.addGold(-tier*1);
 				tip("");
 				visits++;
 				Networking.sendStrong("Achievement|oracle1|");
@@ -161,10 +158,10 @@ public class Oracle extends Feature{ //extends feature later
 	}
 
 	public void utterance2() {
-		if (Player.getGold() >= level*100) {
-			extra.println("Pay "+ level*5 +" "+World.currentMoneyString()+" for a premium utterance?");
+		if (Player.getGold() >= tier*100) {
+			extra.println("Pay "+ tier*5 +" "+World.currentMoneyString()+" for a premium utterance?");
 			if (extra.yesNo()) {
-				Player.addGold(-level*5);
+				Player.addGold(-tier*5);
 				tip("utter");
 				int oldVisits = visits;
 				visits+=4;
@@ -204,8 +201,8 @@ public class Oracle extends Feature{ //extends feature later
 	
 	private void goDelphi() {
 		while (true) {
-		extra.println("1 buy an utterance ("+level*1+" "+World.currentMoneyString()+")");
-		extra.println("2 buy a premium utterance ("+level*5+" "+World.currentMoneyString()+")");
+		extra.println("1 buy an utterance ("+tier*1+" "+World.currentMoneyString()+")");
+		extra.println("2 buy a premium utterance ("+tier*5+" "+World.currentMoneyString()+")");
 		extra.println("3 sit around and wait for them to talk to you");
 		extra.println("4 leave");
 		switch (extra.inInt(4)) {

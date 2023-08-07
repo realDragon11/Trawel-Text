@@ -938,7 +938,7 @@ public class mainGame {
 	 * @param second_man (Person)
 	 * @return winner (Person)
 	 */
-	public static Person CombatTwo(Person first_man,Person second_man, World w) {
+	public static Combat CombatTwo(Person first_man,Person second_man, World w) {
 		Person holdPerson;
 		extra.println("Our first fighter is " + first_man.getName()  + "."); //+extra.choose("They hail from the","They come from the","They are from the","The place they call home is the") + " " + first_man.whereFrom() + ".");
 		extra.println("Our second fighter is " + second_man.getName()  + "."); //+extra.choose("They hail from the","They come from the","They are from the","The place they call home is the") + " " + second_man.whereFrom() + ".");
@@ -949,8 +949,8 @@ public class mainGame {
 			Networking.setBattle(Networking.BattleType.NORMAL);
 			story.startFight(false);
 		}
-		new Combat(first_man,second_man, w);//////
-		if (second_man.getHp() > 0) {
+		Combat c = new Combat(first_man,second_man, w);//////
+		if (c.survivors.contains(second_man)) {
 			holdPerson = second_man;
 			second_man = first_man;
 			first_man = holdPerson;
@@ -1015,26 +1015,31 @@ public class mainGame {
 		first_man.clearBattleEffects();
 		second_man.clearBattleEffects();
 
-		return first_man;
+		return c;
 	}
 		
 		/**
 		 * if the fight doesn't involve the player, use the full method, with the World parameter
+		 * <br>
+		 * LEGACY
 		 * @param first_man
 		 * @param second_man
 		 * @return
 		 */
+		@Deprecated
 		public static Person CombatTwo(Person first_man,Person second_man) {
-			return CombatTwo( first_man, second_man,Player.getWorld());
+			return CombatTwo( first_man, second_man,Player.getWorld()).survivors.get(0);
 		}
-		
+		@Deprecated
 		public static List<Person> HugeBattle(List<Person>...people){
 			return HugeBattle(Player.getWorld(),Arrays.asList(people));
 		}
+		@Deprecated
 		public static List<Person> HugeBattle(World w,List<Person>...people){
 			return HugeBattle(w,Arrays.asList(people));
 		}
 		
+		@Deprecated
 		public static List<Person> HugeBattle(World w, List<List<Person>> people){
 			Combat battle = new Combat(w, people);
 			Comparator<Person> levelSorter = new Comparator<Person>(){//sort in descending order
@@ -1269,12 +1274,10 @@ public class mainGame {
 				if (!displayFight) {
 					extra.changePrint(true);
 				}
-				manOne = CombatTwo(manOne,manTwo,null);
-				if (manOne == manThree) {
-					story.setPerson(manTwo, 0);
-				}else {
-					story.setPerson(manThree, 0);
-				}
+				Combat c = CombatTwo(manOne,manTwo,null);
+				manOne = c.survivors.get(0);
+				story.setPerson(c.killed.get(0), 0);
+				story.setPerson(manTwo, 0);
 				if (!displayFight) {
 					extra.changePrint(false);
 				}
@@ -1298,7 +1301,7 @@ public class mainGame {
 			//Networking.send("Visual|Race|" + manOne.getBag().getRace().name+  "|");
 			Networking.charUpdate();
 			player.getPerson().setSkillPoints(0);
-			Player.addSkill(Skill.BLOODTHIRSTY);
+			//Player.addSkill(Skill.BLOODTHIRSTY);
 			Player.player.getPerson().addFighterLevel();
 			if (cheaty) {
 				Player.toggleTutorial();

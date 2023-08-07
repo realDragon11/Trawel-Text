@@ -6,11 +6,13 @@ import java.util.List;
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
+import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.battle.BarkManager;
+import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Agent;
@@ -31,21 +33,21 @@ import trawel.towns.World;
 //sells booze which increases temp hp for a few fights,
 //has a resident which changes with time
 public class Inn extends Feature implements QuestBoardLocation{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
-	private int tier;
-	private int resident;
+	private byte resident;
 	private double timePassed;
 	private int wins = 0;
-	private String residentName;
 	private int nextReset;
-	private boolean playerwatch;
+	
+	private int beerCount;
+	private int beerCost;
 	
 	private boolean canQuest = true;
 	
 	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
+	
+	private transient Agent curAgent;
 
 	
 	private final static int RES_COUNT = 8;
@@ -60,11 +62,12 @@ public class Inn extends Feature implements QuestBoardLocation{
 		tier = t;
 		town = twn;
 		timePassed = extra.randRange(1,30);
-		resident = extra.randRange(1,RES_COUNT);
+		resident = (byte) extra.randRange(1,RES_COUNT);
 		nextReset = extra.randRange(4,30);
-		playerwatch = false;
 		tutorialText = "Inns are a great place to buy beer and have various residents.";
 		this.owner = owner;
+		beerCount = extra.randRange(2,4);
+		beerCost = tier +extra.randRange(0,2);
 	}
 	
 	@Override
@@ -182,7 +185,8 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public boolean go() {
-						playerwatch = true; occupantDuel(); Player.addTime((nextReset-timePassed+1));
+						occupantDuel(true);
+						Player.addTime((nextReset-timePassed+1));
 						mainGame.globalPassTime();
 						return false;
 					}
@@ -220,31 +224,28 @@ public class Inn extends Feature implements QuestBoardLocation{
 		timePassed += time;
 		
 		if (timePassed > nextReset) {
-			moneyEarned +=tier*5*(nextReset/10);
+			moneyEarned +=tier*(nextReset/12);
 			timePassed = 0;
-			occupantDuel();
-			resident = extra.randRange(1,RES_COUNT);
-			nextReset = extra.randRange(4,30);
+			occupantDuel(false);
+			resident = (byte)extra.randRange(1,RES_COUNT);
+			nextReset = (extra.randRange(1,3)*12)+extra.randRange(0,5);
 			if (canQuest) {this.generateSideQuest();}
 		}
 		return null;//TODO make inn time matter more
 	}
-	
-	private void occupantDuel() {
+
+	private void occupantDuel(boolean playerwatching) {
 		if (town.getOccupants().size() >=2){
 			Agent agent1= ((Agent)town.getOccupants().get(0));
 			Agent agent2= ((Agent)town.getOccupants().get(1));
-			if (playerwatch == false) {extra.changePrint(true); }playerwatch =false;
-			if (mainGame.CombatTwo(agent1.getPerson(),agent2.getPerson(),town.getIsland().getWorld()) == agent2.getPerson()) {
-				town.getOccupants().remove(0);
-			}else {
-				town.getOccupants().remove(1);
-			}
+			if (!playerwatching) { extra.offPrintStack();}
+			Combat c = mainGame.CombatTwo(agent1.getPerson(),agent2.getPerson(),town.getIsland().getWorld());
+			town.getOccupants().remove(c.killed.get(0).getSuper());
 			extra.changePrint(false);
-			
-		  }
+			if (!playerwatching) { extra.popPrintStack();}
+		}
 	}
-	
+
 	private void goResident() {
 		switch (resident) {
 		case 1: goOldFighter();break;
@@ -252,74 +253,98 @@ public class Inn extends Feature implements QuestBoardLocation{
 		case 3: goOracle();break;
 		default:
 			if (town.getOccupants().size() == 0){
-			barFight();
+				barFight();
 			}else {
-			goAgent((Agent)town.getOccupants().get(0));}
+				goAgent(curAgent);
+			}
 			;break;
 		}
 	}
-	
+
 	private String getResidentName() {
-		residentName = "resident: ";
 		switch(resident) {
-		case 1: residentName += "A group of old fighters";break;
-		case 2: residentName += "A group of dancers";break;
-		case 3: residentName += "An oracle.";break;
+		case 1: return "resident: A group of old fighters";
+		case 2: return "resident: A group of dancers";
+		case 3: return "resident: An oracle.";
 		default:
-			if (town.getOccupants().size() == 0){residentName += "Open Bar";}else {
-				Person p = ((Agent)town.getOccupants().get(0)).getPerson();
-				residentName += p.getName()+ " (" +p.getLevel() +")";
+			if (curAgent == null || !town.getOccupants().contains(curAgent)){
+				if (town.getOccupants().size() == 0) {
+					return "resident: Open Bar";
+				}else {
+					newCurAgent();
+				}
+				return "resident: " + curAgent.getPerson().getName()+ " (" +curAgent.getPerson().getLevel() +")";			
 			}
-			
-			;break;
 		}
-		return residentName;
-		
+		return "ERROR";
 	}
 	
 	private void goAgent(Agent agent) {
-		extra.println("1 "+extra.PRE_RED+"fight");
-		extra.println("2 chat");
-		extra.println("3 leave");
-		switch(extra.inInt(3)) {
-		case 3: return;
-		case 1: if (mainGame.CombatTwo(Player.player.getPerson(),agent.getPerson()) == Player.player.getPerson()) {
-			town.getOccupants().remove(0);
-			return;}else {break;}
-		case 2:
-			if (extra.chanceIn(1,2)) {
-				BarkManager.getBoast(Player.player.getPerson(),true);
-				//extra.println("You "+extra.choose("boast")+ " \"" + Player.player.getPerson().getTaunts().getBoast()+"\"");		
-		}else {
-			BarkManager.getTaunt(Player.player.getPerson());
-				//extra.println("You "+extra.choose("taunt")+ " \"" + Player.player.getPerson().getTaunts().getTaunt()+"\"");				
-		}
-			if (extra.chanceIn(1,2)) {
-				BarkManager.getBoast(agent.getPerson(), true);//extra.println(agent.getPerson().getName() + " "+extra.choose("boasts")+ " \"" + agent.getPerson().getTaunts().getBoast()+"\"");		
-		}else {
-			BarkManager.getTaunt(agent.getPerson());
-				//extra.println(agent.getPerson().getName() + " "+extra.choose("taunts")+ " \"" + agent.getPerson().getTaunts().getTaunt()+"\"");				
-		} 
-			
-			;break;
-		}
-			
-			goAgent(agent);
-		
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return agent.getPerson().getName() + " is resting in the inn.";
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return extra.PRE_RED+"fight";
+					}
+
+					@Override
+					public boolean go() {
+						Combat c = Player.fightWith(agent.getPerson());
+						if (c.playerWon() > 0) {
+							town.getOccupants().remove(agent);
+							newCurAgent();
+						}
+						return true;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "chat";
+					}
+
+					@Override
+					public boolean go() {
+						if (extra.chanceIn(2,3)) {
+							BarkManager.getBoast(Player.player.getPerson(),true);
+						}else {
+							BarkManager.getTaunt(Player.player.getPerson());
+						}
+						if (extra.chanceIn(2,3)) {
+							BarkManager.getBoast(agent.getPerson(), true);	
+						}else {
+							BarkManager.getTaunt(agent.getPerson());
+						} 
+						return false;
+					}});
+				list.add(new MenuBack("back"));
+				return list;
+			}}
+				);
 	}
 
 	private void buyBeer() {
-		//resident = 4;//???????
-		if (Player.getGold() >= 2*tier) {
-			extra.println("Pay "+2*tier+" gold for a beer?");
+		if (Player.getGold() >= beerCost) {
+			extra.println("Pay "+World.currentMoneyDisplay(beerCost)+" for "+beerCount+" beers?");
 			if (extra.yesNo()) {
-				Player.player.getPerson().addBeer();
-				moneyEarned +=tier;
-				Player.addGold(-2*tier);
+				Player.player.getPerson().addBeer(beerCount);
+				moneyEarned +=beerCost;
+				Player.addGold(beerCost);
 			}
-			}else {
-				extra.println("You can't afford that!");
-			}
+		}else {
+			extra.println("You can't afford that! ("+World.currentMoneyDisplay(beerCost)+")");
+		}
 	}
 	
 	private void goOldFighter() {
@@ -367,14 +392,9 @@ public class Inn extends Feature implements QuestBoardLocation{
 	private void barFight() {
 		extra.println(extra.PRE_RED+"There is no resident, but there is room for a barfight... start one?");
 		if (extra.yesNo()) {
-			Person winner = mainGame.CombatTwo(Player.player.getPerson(),RaceFactory.getDueler(this.tier));
-			if (winner.isPlayer()) {
+			Combat c = Player.fightWith(RaceFactory.getDueler(tier));
+			if (c.playerWon() > 0) {
 				wins++;
-				if (Player.player.animalQuest == 3) {
-					extra.println("Hi, I'm Micheal SnowDancer. I really like the cut of your gib.");
-					extra.println("Tell you what. Win at epino arena and I'll give you a reward.");
-					Player.player.animalQuest++;
-				}
 			if (wins == 3) {
 				Player.player.addTitle(this.getName() + " barfighter");
 			}
@@ -385,7 +405,13 @@ public class Inn extends Feature implements QuestBoardLocation{
 				Player.player.addTitle(this.getName() + " barmaster");
 			}
 			
-		}}
+		}else {
+			Person p = c.survivors.get(0);
+			Agent a = new Agent(p);
+			town.addOccupant(a);
+		}
+			
+		}
 	}
 
 	@Override
@@ -398,12 +424,11 @@ public class Inn extends Feature implements QuestBoardLocation{
 	}
 	
 	private void bathe() {
-		//resident = 4;//???
-		if (Player.getGold() >= (tier*2)) {
-			extra.println("Pay "+(tier*2)+" "+World.currentMoneyString()+" for a bath?");
+		if (Player.getGold() >= (tier)) {
+			extra.println("Pay "+World.currentMoneyDisplay(tier)+" for a bath?");
 			if (extra.yesNo()) {
 				Player.player.getPerson().washAll();
-				Player.addGold(-(tier*2));
+				Player.addGold(-(tier));
 			}
 			}else {
 				extra.println("You can't afford that!");
@@ -413,6 +438,10 @@ public class Inn extends Feature implements QuestBoardLocation{
 	@Override
 	public void removeSideQuest(Quest q) {
 		sideQuests.remove(q);
+	}
+	
+	public void newCurAgent() {
+		curAgent = (Agent)extra.randList(town.getOccupants());
 	}
 
 }

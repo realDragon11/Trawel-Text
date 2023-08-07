@@ -2,10 +2,12 @@ package trawel.towns.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import trawel.Networking;
+import trawel.WorldGen;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.personal.classless.Skill;
@@ -20,9 +22,6 @@ import trawel.towns.Feature;
 public class Altar extends Feature{
 
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public Altar() {
@@ -44,6 +43,7 @@ public class Altar extends Feature{
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> mList = new ArrayList<MenuItem>();
+				mainGame.globalPassTime();
 				mList.add(new MenuSelect() {
 
 					@Override
@@ -69,7 +69,8 @@ public class Altar extends Feature{
 
 					@Override
 					public boolean go() {
-						swaQuest();
+						extra.println("Nothing happens. Nothing ever could happen. You spend an hour staring at your hands, lost in thought");
+						Player.addTime(1);
 						return false;
 					}
 				});
@@ -86,53 +87,10 @@ public class Altar extends Feature{
 						return false;
 					}
 				});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "exit";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}
-				});
+				mList.add(new MenuBack("leave"));
 				return mList;
 			}};
-		/*while (true) {
-		extra.println("1 ");
-		extra.println("2 ");
-		//extra.println("3 reincarnate (Restart character with skillpoints)");
-		extra.println("3 leave");
-		switch (extra.inInt(3)) {
-		case 1: examine();break;
-		case 2:swaQuest() //main quest stuff
-			;break;
-		//case 3: transmute();break;
-		//case 3: 
-			//Networking.sendColor(Color.RED);
-			//extra.println("Really reincarnate? You will lose your items and gold.");if (extra.yesNo()) {Player.player.reincarnate();}break;
-		case 3: return;
-		}
-		}*/
 			extra.menuGo(mGen);
-	}
-	
-
-	private void swaQuest() {
-		if (Player.player.animalQuest == 1) {
-			extra.println("The altar flashes. You feel bloodthirsty.");
-			Player.player.animalQuest =2;
-		}
-		if (Player.player.animalQuest == 2 && Player.player.wins > 10) {
-			extra.println("The altar flashes. The bloodlust fades. You crave a beer... and another fight.");
-			Player.player.animalQuest =3;
-		}
-		if (Player.player.animalQuest == 5) {
-			extra.println("The altar flashes.");
-		}
-		
 	}
 
 
@@ -143,50 +101,79 @@ public class Altar extends Feature{
 	}
 	
 	private void examine() {
-		extra.println("You examine the altar. It's of a "+Player.player.animalName()+".");
+		extra.println("You examine the altar. It's long and flat, and made out of a dark, black stone that reflects the sky.");
 	}
 	
 	private void sacrifice() {
 		DrawBane inter = Player.bag.discardDrawBanes(true);
+		boolean specialInteraction = false;
 		if (inter != null && !inter.equals(DrawBane.NOTHING)) {
 			switch (inter) {
 			case BEATING_HEART:
-				Player.player.forceRelation += 5;
+				Player.player.forceRelation += 8;
+				extra.println("You spend hours upon hours preparing your great sacrifice, and stab the heart when the time is right. The very heavens seem to look down upon you with favor, and a storm brews... aether rains from the sky.");
+				Player.addTime(40);
+				Player.bag.addAether((int) ((Player.player.forceRelation*100)+extra.randRange(4000,5000)));
 				break;
 			case BLOOD: case MEAT:
 				Player.player.forceRelation += 0.1;
+				extra.println("You offer the gift of flesh- in any form.");
+				Player.addTime(1);
 				break;
 			case CEON_STONE:
-				Player.player.forceRelation += 2;
+				Player.player.forceRelation += 1;
+				extra.println("You offer the gift of decay, unreason, and insane change.");
+				Player.addTime(1);
 				break;
 			case ENT_CORE:
-				Player.player.forceRelation += 1;
+				Player.player.forceRelation += 2;
+				extra.println("You offer the gift of primal life.");
+				Player.addTime(1);
 				break;
 			case TRUFFLE: case PUMPKIN: case GARLIC: case HONEY: case APPLE: case EGGCORN:
 				Player.player.forceRelation += 0.1;
+				extra.println("You offer a gift of the harvest.");
+				Player.addTime(.2);
 				break;
 			case GOLD: case SILVER:
 				Player.player.forceRelation += 0.5;
+				extra.println("You offer a gift of the ground, painful taken from the planet.");
+				Player.addTime(.2);
 				break;
 			case VIRGIN:
-				Player.player.forceRelation += 10;
+				Player.player.forceRelation += 4;
+				extra.println("You spend hours preparing your great sacrifice, and stab the innocent when the time is right. The Sky gives a gift back... but the unspoken message that it would accept this gift for itself lingers in your mind.");
+				Player.addTime(24);
+				Player.bag.addNewDrawBane(DrawBane.BEATING_HEART);
+				specialInteraction = true;
 				break;
 			case WAX: case WOOD:
 				Player.player.forceRelation += 0.02;
+				extra.println("You offer a gift of the primal forces, a minor piece of a greater whole.");
+				Player.addTime(.05);
 				break;
-			}
-			
-			switch (Player.player.forceRewardCount) {
-			case 0: if (Player.player.forceRelation >= 5) {
-				Player.player.forceRewardCount++;
-				Player.player.getPerson().addSkill(Skill.SKY_BLESSING_1);
-				extra.println("You feel blessed.");
+			default:
+				Player.bag.giveBackDrawBane(inter, "The alter rejects your %.");
 				return;
 			}
-			break;
 			
+			if (Player.player.forceRewardCount == 0 && Player.player.forceRelation >= 5) {
+				Player.player.forceRewardCount++;
+				Player.player.getPerson().addSkill(Skill.SKY_BLESSING_1);//TODO
+				extra.println("You feel blessed.");
+				specialInteraction = true;
 			}
-			extra.println("The gift disappears, but nothing else happens.");
+			
+			if (Player.player.forceRewardCount == 1 && Player.player.forceRelation >= 14) {
+				Player.player.forceRewardCount++;
+				Player.player.getPerson().addSkill(Skill.SKY_BLESSING_1);//TODO
+				extra.println("You feel blessed.");
+				specialInteraction = true;
+			}
+			
+			if (specialInteraction == false) {
+				extra.println("The gift disappears, but nothing else happens.");
+			}
 		}
 	}
 	

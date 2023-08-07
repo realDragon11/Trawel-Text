@@ -10,7 +10,9 @@ import trawel.Networking;
 import trawel.Story;
 import trawel.WorldGen;
 import trawel.extra;
+import trawel.mainGame;
 import trawel.randomLists;
+import trawel.battle.Combat;
 import trawel.earts.EArt;
 import trawel.earts.EArtBox;
 import trawel.factions.FBox;
@@ -85,6 +87,8 @@ public class Player extends SuperPerson{
 		
 		moneys = new ArrayList<Integer>();
 		moneymappings = new ArrayList<World>();
+		
+		p.setSuper(this);
 	}
 	public static World getWorld() {
 		if (Player.player == null) {
@@ -102,6 +106,7 @@ public class Player extends SuperPerson{
 			extra.mainThreadDataUpdate();
 		}
 	}
+	@Override
 	public Person getPerson() {
 		return person;
 	}
@@ -136,21 +141,6 @@ public class Player extends SuperPerson{
 	public String animalName() {
 		return animalName;
 	}
-	/*
-	public void reincarnate() {
-		rpts += this.person.getLevel()-1;
-		person = new Person(1);
-		person.setSkillPoints(rpts);
-		Player.bag = person.getBag();
-		person.setPlayer(); 
-		
-	}*/
-	public static void addSkill(Skill skill) {
-		if (!Player.hasSkill(skill)) {
-		player.getPerson().addSkill(skill);
-	
-		}
-	}
 	
 	public static void toggleTutorial() {
 		player.tutorial = !player.tutorial;
@@ -171,8 +161,7 @@ public class Player extends SuperPerson{
 			merchantPoints-=merchantLevel*merchantLevel;
 			merchantLevel++;
 			addMPoints(0);
-			}
-		
+		}
 	}
 	
 	public void doSip() {
@@ -484,6 +473,14 @@ public class Player extends SuperPerson{
 		}else {
 			return World.currentMoneyDisplay(lost) + " was stolen!";
 		}
+	}
+	
+	/**
+	 * for now this is a combattwo, but if you want to check victory conditions you should use the 'playerwon' function
+	 * <br>
+	 */
+	public static Combat fightWith(Person p) {
+		return mainGame.CombatTwo(Player.player.getPerson(),p, Player.getWorld());
 	}
 	
 	

@@ -182,7 +182,7 @@ public class Armor extends Item {
 	}
 	
 	
-	//DOLATER: for now, all are the same
+	//MAYBELATER: for now, all are the same
 	//either fix, or make certain armor bits count more for global armor
 	private float baseResist() {
 		return 1.5f*level*ArmorStyle.fetch(style).totalMult*MaterialFactory.getMat(material).baseResist;

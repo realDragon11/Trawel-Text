@@ -29,12 +29,14 @@ public class Agent extends SuperPerson{
 		current = new WanderEndless();
 	}
 
+	@Override
 	public Person getPerson() {
 		return person;
 	}
 
 	public void setPerson(Person person) {
 		this.person = person;
+		person.setSuper(this);
 	}
 
 	public ArrayList<Behavior> getBehaviors() {

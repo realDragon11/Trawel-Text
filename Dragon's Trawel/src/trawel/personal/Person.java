@@ -48,7 +48,9 @@ import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponType;
 import trawel.personal.item.solid.variants.ArmorStyle;
+import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
+import trawel.personal.people.SuperPerson;
 import trawel.towns.services.Store;
 
 /**
@@ -118,6 +120,8 @@ public class Person implements java.io.Serializable, HasSkills{
 	public FBox facRep = new FBox();
 	
 	public HostileTask hTask;
+	
+	private SuperPerson superperson; 
 	
 	public enum RaceFlag {
 		NONE, CRACKS, UNDEAD;
@@ -580,6 +584,7 @@ public class Person implements java.io.Serializable, HasSkills{
 		Person p = this;
 		extra.println("Classless backend is implemented, but both choosing new feats/archetypes and the actual feats/archetypes/perks did not make it into this beta release. Instead get 'The Tough'.");
 		setFeat(Feat.TOUGH_COMMON);
+		updateSkills();
 		if (true == true) {
 			return;//the poor man's comment
 		}
@@ -1486,6 +1491,14 @@ public class Person implements java.io.Serializable, HasSkills{
 	public String attributeDesc() {
 		return "(raw) dex (" + getRawDexterity() +") " + getDexterity() + " cap/str " + bag.getCapacity() + "/"+getStrength()
 		+ " (total) AMP (" + getTotalAgiPen() + ") " + getAttributeAgiPen();
+	}
+
+	public SuperPerson getSuper() {
+		return superperson;
+	}
+
+	public void setSuper(SuperPerson p) {
+		superperson = p;
 	}
 
 }

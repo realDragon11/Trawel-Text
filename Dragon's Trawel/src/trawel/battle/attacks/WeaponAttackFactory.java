@@ -14,6 +14,7 @@ import trawel.WorldGen;
 import trawel.extra;
 import trawel.battle.Combat;
 import trawel.battle.Combat.ATK_ResultCode;
+import trawel.battle.Combat.ATK_ResultType;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.IAttack.AttackType;
 import trawel.personal.item.solid.Armor;
@@ -667,7 +668,7 @@ public class WeaponAttackFactory {
 								,WorldGen.getDummyInvs().get(j).atLevel(w.getLevel())
 								,Armor.armorEffectiveness);
 						damage += ret.damage;
-						if (ret.code == ATK_ResultCode.DAMAGE) {
+						if (ret.type == ATK_ResultType.IMPACT) {
 							hits++;
 							fullhits++;
 						}else {
