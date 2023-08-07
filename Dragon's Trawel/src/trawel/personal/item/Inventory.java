@@ -6,6 +6,7 @@ import java.util.List;
 import trawel.Effect;
 import trawel.Networking;
 import trawel.extra;
+import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.Stance;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -558,19 +559,20 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	//TO BE USED IN COMBAT
-	public double getSharp(int slot, List<WeaponQual> qualList) {
+	public double getSharp(ImpairedAttack att) {
+		int slot = att.getSlot();
 		int i = 0;
 		double mult;
 		double retResist = 0;
 		while (i < 5) {//should never be null
 			if (slot == i) {
 				mult = 2;
-				if (qualList.contains(Weapon.WeaponQual.PENETRATIVE)) {
+				if (att.hasWeaponQual(Weapon.WeaponQual.PENETRATIVE)) {
 					mult-=0.25;
 				}
 			}else {
 				mult = .75;
-				if (qualList.contains(Weapon.WeaponQual.PINPOINT)) {
+				if (att.hasWeaponQual(Weapon.WeaponQual.PINPOINT)) {
 					mult-=0.25;
 				}
 			}
@@ -580,19 +582,20 @@ public class Inventory implements java.io.Serializable{
 		return extra.zeroOut(retResist);
 	}
 	
-	public double getBlunt(int slot, List<WeaponQual> qualList) {
+	public double getBlunt(ImpairedAttack att) {
+		int slot = att.getSlot();
 		int i = 0;
 		double mult;
 		double retResist = 0;
 		while (i < 5) {//should never be null
 			if (slot == i) {
 				mult = 2;
-				if (qualList.contains(Weapon.WeaponQual.PENETRATIVE)) {
+				if (att.hasWeaponQual(Weapon.WeaponQual.PENETRATIVE)) {
 					mult-=0.25;
 				}
 			}else {
 				mult = .75;
-				if (qualList.contains(Weapon.WeaponQual.PINPOINT)) {
+				if (att.hasWeaponQual(Weapon.WeaponQual.PINPOINT)) {
 					mult-=0.25;
 				}
 			}
@@ -601,19 +604,20 @@ public class Inventory implements java.io.Serializable{
 		}
 		return extra.zeroOut(retResist);
 	}
-	public double getPierce(int slot, List<WeaponQual> qualList) {
+	public double getPierce(ImpairedAttack att) {
+		int slot = att.getSlot();
 		int i = 0;
 		double mult;
 		double retResist = 0;
 		while (i < 5) {//should never be null
 			if (slot == i) {
 				mult = 2;
-				if (qualList.contains(Weapon.WeaponQual.PENETRATIVE)) {
+				if (att.hasWeaponQual(Weapon.WeaponQual.PENETRATIVE)) {
 					mult-=0.25;
 				}
 			}else {
 				mult = .75;
-				if (qualList.contains(Weapon.WeaponQual.PINPOINT)) {
+				if (att.hasWeaponQual(Weapon.WeaponQual.PINPOINT)) {
 					mult-=0.25;
 				}
 			}

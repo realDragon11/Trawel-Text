@@ -2,6 +2,7 @@ package trawel.personal.item;
 
 import java.util.List;
 
+import trawel.battle.attacks.ImpairedAttack;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
@@ -49,59 +50,67 @@ public class DummyInventory extends Inventory {
 	}
 	
 	@Override
-	public double getSharp(int slot, List<WeaponQual> qualList) {
+	public double getSharp(ImpairedAttack att) {
+		int slot = att.getSlot();
 		int combo = 0;
-		if (qualList.contains(Weapon.WeaponQual.PINPOINT)) {
+		if (att.hasWeaponQual(Weapon.WeaponQual.PINPOINT)) {
 			combo =1;
 		}
-		if (qualList.contains(Weapon.WeaponQual.PENETRATIVE)) {
+		if (att.hasWeaponQual(Weapon.WeaponQual.PENETRATIVE)) {
 			combo = combo == 1 ? 3 : 2;
 		}
 		Double ret = savedResults[0][slot][combo];
 		if (ret != null) {
 			return ret;
 		}
-		ret = super.getSharp(slot, qualList);
+		ret = super.getSharp(att);
 		savedResults[0][slot][combo] = ret;
 		return ret;
 	}
 	@Override
-	public double getBlunt(int slot, List<WeaponQual> qualList) {
+	public double getBlunt(ImpairedAttack att) {
+		int slot = att.getSlot();
 		int combo = 0;
-		if (qualList.contains(Weapon.WeaponQual.PINPOINT)) {
+		if (att.hasWeaponQual(Weapon.WeaponQual.PINPOINT)) {
 			combo =1;
 		}
-		if (qualList.contains(Weapon.WeaponQual.PENETRATIVE)) {
+		if (att.hasWeaponQual(Weapon.WeaponQual.PENETRATIVE)) {
 			combo = combo == 1 ? 3 : 2;
 		}
 		Double ret = savedResults[1][slot][combo];
 		if (ret != null) {
 			return ret;
 		}
-		ret = super.getSharp(slot, qualList);
+		ret = super.getSharp(att);
 		savedResults[1][slot][combo] = ret;
 		return ret;
 	}
 	@Override
-	public double getPierce(int slot, List<WeaponQual> qualList) {
+	public double getPierce(ImpairedAttack att) {
+		int slot = att.getSlot();
 		int combo = 0;
-		if (qualList.contains(Weapon.WeaponQual.PINPOINT)) {
+		if (att.hasWeaponQual(Weapon.WeaponQual.PINPOINT)) {
 			combo =1;
 		}
-		if (qualList.contains(Weapon.WeaponQual.PENETRATIVE)) {
+		if (att.hasWeaponQual(Weapon.WeaponQual.PENETRATIVE)) {
 			combo = combo == 1 ? 3 : 2;
 		}
 		Double ret = savedResults[2][slot][combo];
 		if (ret != null) {
 			return ret;
 		}
-		ret = super.getSharp(slot, qualList);
+		ret = super.getSharp(att);
 		savedResults[2][slot][combo] = ret;
 		return ret;
 	}
 	@Override
 	public double getDodge() {
 		return myDodge;
+	}
+	
+	@Override
+	public double getAim() {
+		return 1;
 	}
 
 }

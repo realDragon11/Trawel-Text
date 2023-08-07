@@ -230,6 +230,13 @@ public class Person implements java.io.Serializable, HasSkills{
 		//atrBox = new AttributeBox(this);
 	}
 	
+	/**
+	 * used for dummy person, empty
+	 */
+	protected Person() {
+		
+	}
+	
 	protected Person(int level) {
 		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
 	}

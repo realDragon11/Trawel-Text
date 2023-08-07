@@ -10,6 +10,7 @@ import java.util.Map;
 import trawel.AIClass;
 import trawel.Effect;
 import trawel.Networking;
+import trawel.WorldGen;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
@@ -19,6 +20,7 @@ import trawel.battle.attacks.TargetFactory.BloodType;
 import trawel.battle.attacks.Attack.Wound;
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.factions.FBox;
+import trawel.personal.DummyPerson;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceID;
@@ -508,70 +510,70 @@ public class Combat {
 	//but the DRY > WET advantages might be good
 	
 	/**
-	 * Calculate if an attack hits, and how much damage it would deal, countered by the armor.
-	 * @param att The attack being used (Attack)
-	 * @param def the inventory of the defender (Inventory)
-	 * @param off the inventory of the attacker (Inventory)
-	 * @param armMod the armormod (double)
-	 * @return
+	 * Redone, write new docs
 	 */
-	public AttackReturn handleAttack(ImpairedAttack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
+	public AttackReturn handleAttack(boolean isReal, ImpairedAttack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
 		String str = "";
 		AttackReturn ret;
-		int wLevel = att.getWeapon() != null ? att.getWeapon().getLevel() : 0;
-		if (extra.chanceIn(1, 5)) {
-			Networking.send("PlayDelayPitch|"+SoundBox.getSound(off.getRace().voice,SoundBox.Type.SWING) + "|1|" +attacker.getPitch() +"|");
+		boolean wasDead = false;
+		int wLevel = att.getLevel();
+		if (defender == null) {
+			defender = DummyPerson.single;
 		}
-		boolean wasDead = true;
-		if (defender.isAlive()) {
-			wasDead = false;//(att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
+		if (off == null) {
+			off = WorldGen.getDummyInvs().get(0);
 		}
-		//(att.attackStringer(attacker.getName(),defender.getName() + "'s corpse",off.getHand().getName()));
-		double damMod = 1;//off.getDam();//built in now
+		if (isReal) {
+			if (extra.chanceIn(1, 5)) {
+				Networking.send("PlayDelayPitch|"+SoundBox.getSound(off.getRace().voice,SoundBox.Type.SWING) + "|1|" +attacker.getPitch() +"|");
+			}
+			if (!defender.isAlive()) {
+				wasDead = true;
+			}
+		}
 		//TODO unsure if should add attacker's aim at impairment phase
 		if (((def.getDodge()*defender.getTornCalc())/(att.getHitMult()*off.getAim()))* extra.getRand().nextDouble() > 1.0){
 			ret= new AttackReturn(ATK_ResultCode.DODGE,"",att);
-			ret.stringer = att.fluff(ret);
-			if (wasDead) {
-				ret.addNote("What a dodgy corpse!");
+			if (isReal) {
+				ret.stringer = att.fluff(ret);
+				if (wasDead) {
+					ret.addNote("What a dodgy corpse!");
+				}
 			}
 			return ret;
 		}
-		/*
-		if (extra.chanceIn(def.countArmorQuality(ArmorQuality.HAUNTED),80)){
-			return new AttackReturn(-1,str +extra.PRE_GREEN+" An occult hand leaps forth, pulling them out of the way![c_white]",null);//DOLATER probably just remove
-		}*/
-		Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getAttack().getSoundIntensity() + "|" +att.getAttack().getSoundType()+"|");
-		List<Weapon.WeaponQual> wqL = (att.getWeapon() != null ? att.getWeapon().qualList : Collections.emptyList());
-		double sharpA = def.getSharp(att.getSlot(),wqL)*armMod;
-		double bluntA = def.getBlunt(att.getSlot(),wqL)*armMod;
-		double pierceA= def.getPierce(att.getSlot(),wqL)*armMod;
+		
+		double sharpA = def.getSharp(att)*armMod;
+		double bluntA = def.getBlunt(att)*armMod;
+		double pierceA= def.getPierce(att)*armMod;
 		ret = new AttackReturn(
-				attackSub(att.getSharp()*damMod,sharpA),
-				attackSub(att.getBlunt()*damMod,bluntA),
-				attackSub(att.getPierce()*damMod,pierceA),
+				attackSub(att.getSharp(),sharpA),
+				attackSub(att.getBlunt(),bluntA),
+				attackSub(att.getPierce(),pierceA),
 				str,att);
-		if (wasDead) {
-			ret.addNote("Beating their corpse!");
+		if (isReal) {
+			Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getAttack().getSoundIntensity() + "|" +att.getAttack().getSoundType()+"|");
+			if (wasDead) {
+				ret.addNote("Beating their corpse!");
+			}
 		}
-		if (wLevel > 0 && att.getWeapon().qualList.contains(Weapon.WeaponQual.RELIABLE)
-				&& ret.damage <= wLevel) 
+		if (att.hasWeaponQual(WeaponQual.RELIABLE) && ret.damage <= wLevel) 
 		{
 			ret.damage = wLevel;
 			ret.reliable = true;
-			ret.addNote("Reliable Damage: "+wLevel);
+			if (isReal) {ret.addNote("Reliable Damage: "+wLevel);}
 		} else {
 			if (ret.code == ATK_ResultCode.DAMAGE) {//no longer functions on reliable
-				if (wLevel > 0 && att.getWeapon().qualList.contains(Weapon.WeaponQual.REFINED)) {
+				if (att.hasWeaponQual(WeaponQual.REFINED)) {
 					ret.damage += wLevel;
 					ret.addNote("Refined Bonus: " + wLevel);
 				}
-				if (wLevel > 0 && att.getWeapon().qualList.contains(Weapon.WeaponQual.WEIGHTED)) {
+				if (att.hasWeaponQual(Weapon.WeaponQual.WEIGHTED)) {
 					if (att.getHitMult() < 1.5) {
 						int weightBonus = ret.damage;
 						ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitMult()*10))));
 						weightBonus = ret.damage-weightBonus;
-						ret.addNote("Weighted Bonus: " + weightBonus);
+						if (isReal) {ret.addNote("Weighted Bonus: " + weightBonus);}
 					}
 				}
 				if (defender.hasSkill(Skill.RAW_GUTS)) {
@@ -579,46 +581,19 @@ public class Combat {
 					int gResisted = ret.damage;
 					ret.damage = Math.max(ret.damage/2,ret.damage-extra.randRange(0,maxGResist));
 					gResisted = gResisted-ret.damage;
-					ret.addNote("Raw Guts Resisted: " + gResisted);
+					if (isReal) {ret.addNote("Raw Guts Resisted: " + gResisted);}
 				}
 			}
 		}
-		ret.stringer = str + att.fluff(ret);
-		ret.putPlayerFeedback();
+		if (isReal) {
+			ret.stringer = str + att.fluff(ret);
+			ret.putPlayerFeedback();
+		}
 		return ret;
 	}
 	
 	public static AttackReturn handleTestAttack(ImpairedAttack att, Inventory def, double armMod) {
-		double damMod = 1;
-		if (((def.getDodge())/(att.getHitMult()))*extra.getRand().nextDouble() > 1.0){
-			return Combat.testCombat.new AttackReturn(ATK_ResultCode.DODGE,"",null);//do a dodge
-		}
-		List<Weapon.WeaponQual> wqL = (att.getWeapon() != null ? att.getWeapon().qualList : new ArrayList<Weapon.WeaponQual>());
-		double sharpA = def.getSharp(att.getSlot(),wqL)*armMod;
-		double bluntA = def.getBlunt(att.getSlot(),wqL)*armMod;
-		double pierceA= def.getPierce(att.getSlot(),wqL)*armMod;
-		AttackReturn ret = Combat.testCombat.new AttackReturn(
-				attackSub(att.getSharp()*damMod,sharpA),
-				attackSub(att.getBlunt()*damMod,bluntA),
-				attackSub(att.getPierce()*damMod,pierceA),
-				"",att);
-		if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.RELIABLE) && ret.damage <= att.getWeapon().getLevel()) {
-			ret.damage = att.getWeapon().getLevel();
-			ret.reliable = true;
-		}
-		if (ret.code == ATK_ResultCode.DAMAGE) {
-			if (ret.damage > 0) {
-				if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.REFINED)) {
-					ret.damage += att.getWeapon().getLevel();
-				}
-				if (att.getWeapon() != null && att.getWeapon().qualList.contains(Weapon.WeaponQual.WEIGHTED)) {
-					if (att.getHitMult() < 1.5) {
-						ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitMult()*10))));
-					}
-				}
-			}
-		}
-		return ret;	
+		return Combat.testCombat.handleAttack(false,att,def,null,armMod,null,null);	
 		
 	}
 	
@@ -767,7 +742,7 @@ public class Combat {
 			}
 		}
 		ImpairedAttack attack = attacker.getNextAttack();
-		AttackReturn atr = this.handleAttack(attack,defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
+		AttackReturn atr = handleAttack(true,attack,defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
 		int damageDone = atr.damage;
 		//extra.println(damageDone + " " + defender.getHp()+"/"+defender.getMaxHp());//FIXME: probably turn damage responses into a better thing
 		String inlined_color = extra.PRE_WHITE;

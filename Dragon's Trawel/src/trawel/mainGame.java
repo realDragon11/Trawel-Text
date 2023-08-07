@@ -38,6 +38,7 @@ import trawel.battle.attacks.StyleFactory;
 import trawel.battle.attacks.TargetFactory;
 import trawel.battle.attacks.WeaponAttackFactory;
 import trawel.factions.HostileTask;
+import trawel.personal.DummyPerson;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.Skill;
@@ -422,6 +423,7 @@ public class mainGame {
 			new QuestReactionFactory();
 			WorldGen.initDummyInvs();
 			story = new StoryNone();
+			DummyPerson.init();
 			
 			basicSetup1 = true;
 		}

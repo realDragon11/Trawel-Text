@@ -445,12 +445,13 @@ public class Weapon extends Item {
 		
 		int subTests = battleTests*WorldGen.getDummyInvs().size();
 		int totalTests = size*subTests;
+		double levelAdjust = level/10.0;
 		//the above battlescore assumes level 10 power weapon on level 10 armor
 		//so we put the real level in now
-		this.bsCon = (float)highest;//(float) (high*level);
-		this.bsAvg = (float)total/totalTests;//(float) (average*level);
+		this.bsCon = (float)(highest);//(float) (high*level);
+		this.bsAvg = (float)((levelAdjust*total)/totalTests);//(float) (average*level);
 		this.bsIpt = impactChance/(float)totalTests;
-		this.bsWgt = (float) (weighted/subTests);
+		this.bsWgt = (float) ((levelAdjust*weighted)/subTests);
 	}
 	
 	public static int battleTests = 10;//now how many times each attack gets tested on each armor set 3 to 5

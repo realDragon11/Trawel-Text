@@ -10,6 +10,7 @@ import trawel.battle.attacks.IAttack.AttackType;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 import trawel.personal.Person;
 import trawel.personal.item.solid.Weapon;
+import trawel.personal.item.solid.Weapon.WeaponQual;
 
 public class ImpairedAttack implements IAttack{
 	private Attack attack;
@@ -27,6 +28,7 @@ public class ImpairedAttack implements IAttack{
 	private float hitroll;
 	
 	private double potencyMult;
+	private int level;
 	
 	public ImpairedAttack(Attack _attack,
 			TargetReturn _target, Style _style,
@@ -96,6 +98,8 @@ public class ImpairedAttack implements IAttack{
 					}
 				}
 			}
+			
+			level = w_lvl;
 			break;
 		case SKILL:
 			break;
@@ -325,5 +329,13 @@ public class ImpairedAttack implements IAttack{
 				extra.println("  "+this.wound.name + " - " + String.format(this.wound.desc,(Object[])Combat.woundNums(this,attacker,defender,null)));
 			}
 		}
+
+	public int getLevel() {
+		return level;
+	}
+	
+	public boolean hasWeaponQual(WeaponQual qual) {
+		return weapon != null && weapon.qualList.contains(qual);
+	}
 	
 }

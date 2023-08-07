@@ -228,22 +228,24 @@ public class AIClass {
 		int j = 0;
 		double[] damray = new double[size];
 		
-		extra.offPrintStack();
 		while (i >= 0) {
 			j = 0;
 			do {
-				damray[i]+=100*extra.zeroOut((double)com.handleAttack(attacks.get(i),defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender).damage);
+				damray[i]+= com.handleAttack(false, attacks.get(i), defender.getBag(), attacker.getBag()
+						,Armor.armorEffectiveness, attacker, defender).damage;
 				j++;
 			}while (j < rounds);
-			damray[i]/= (rounds*attacks.get(i).getTime());
+			//we don't need to divide by rounds because
+			//all the attacks get the same rounds
+			//so they're on even footing in that regard
+			//and we only care about magnitude
+			damray[i]/= (attacks.get(i).getTime());
 			i--;
 		}
-		extra.popPrintStack();
-		j=0;
+		j=0;//used to iterate over attacks now
 		i=0;//will now hold position of the highest one
 		double highestValue = -1;
 		while (j < size) {
-			//extra.println(theStance.getAttack(j).getName() + " " + damray[j]);//debug
 			if (damray[j] > highestValue) {
 				highestValue = damray[j];
 				i = j;
@@ -251,9 +253,7 @@ public class AIClass {
 			j++;
 		}
 		
-		
 		if (highestValue <=0) {return extra.randList(attacks);}//if they're all zero, just return a random one
-		//extra.println("Chose: " + theStance.getAttack(i).getName() + " " + damray[i]);//debug
 		return attacks.get(i);
 	}
 	
