@@ -25,7 +25,7 @@ public class Armor extends Item {
 
 	private static final long serialVersionUID = 1L;
 	
-	public static final double armorEffectiveness = .1;//was .05
+	public static final double armorEffectiveness = 1;//5 armor slots
 	
 	
 	//instance variables
@@ -185,7 +185,7 @@ public class Armor extends Item {
 	//DOLATER: for now, all are the same
 	//either fix, or make certain armor bits count more for global armor
 	private float baseResist() {
-		return 1*level*ArmorStyle.fetch(style).totalMult*MaterialFactory.getMat(material).baseResist;
+		return 1.5f*level*ArmorStyle.fetch(style).totalMult*MaterialFactory.getMat(material).baseResist;
 		/*
 		switch (slot) {
 		case 0://helm

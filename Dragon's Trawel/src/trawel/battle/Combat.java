@@ -478,20 +478,6 @@ public class Combat {
 		}
 		return changed;
 	}
-	
-	private static final double depthArmor2 = .25;
-	private static final double midArmor2 = .7;
-	private static final double armorMinShear = .1;
-	
-	private static int attackSub(double dam,double armor) {
-		return (int)(
-				(dam)
-					-(
-						(armorMinShear*dam)
-						+((1-armorMinShear)*dam*extra.upDamCurve(depthArmor2,midArmor2))
-					)
-				);
-	}
 
 	//instance methods
 	
@@ -612,7 +598,7 @@ public class Combat {
 			attack = att;
 			notes = null;
 			//DOLATER: can turn this into an array of damage types later if need be
-			int rawdam = sdam+bdam+pdam;
+			double rawdam = sdam+bdam+pdam;
 			double rawarm =sarm+barm+parm;
 			double s_weight = sdam/rawdam;
 			double b_weight = bdam/rawdam;
@@ -628,34 +614,43 @@ public class Combat {
 				code = ATK_ResultCode.ARMOR;
 			}else {//TODO: new goal: % reductions based on relativeness with a chance to negate entirely if much higher?
 				//up to half the damage if the damage roll was less than the total weighted armor (without roll)
-				double reductMult = extra.lerp(1f,.5f,(float) (1f-Math.min(1,(att_roll*rawdam)/weight_arm)));
+				double reductMult = damageCompMult(.5f,1f,1f,att_roll*rawdam,def_roll*weight_arm,1f,1.5f);
+						//extra.lerp(1f,.5f,(float) (1f-Math.min(1,(att_roll*rawdam)/weight_arm)));
 				//each damage vector can be brought down to 20%, but this is cumulative so the armor has to be 4x higher
 				//to achieve that level of reduction
-				double s_reduct = extra.lerp(1f,.2f,(float) (1f-Math.min(1,(sdam/(sarm/4)))));
-				double b_reduct = extra.lerp(1f,.2f,(float) (1f-Math.min(1,(bdam/(barm/4)))));
-				double p_reduct = extra.lerp(1f,.2f,(float) (1f-Math.min(1,(pdam/(parm/4)))));
+				double s_reduct = damageCompMult(.2f,.9f,1f,sdam,sarm,2f,4f);
+				double b_reduct = damageCompMult(.2f,.9f,1f,bdam,barm,2f,4f);
+				double p_reduct = damageCompMult(.2f,.9f,1f,pdam,parm,2f,4f);
 				int scomp = (int) (sdam*reductMult*s_reduct);
 				int bcomp = (int) (bdam*reductMult*b_reduct);
 				int pcomp = (int) (pdam*reductMult*p_reduct);
 				//DOLATER: not sure if this is done yet
 				
 				subDamage = new int[] {scomp,bcomp,pcomp};
-				damage = Math.min(1,subDamage[0]+subDamage[1]+subDamage[2]);//deals a min of 1 damage
+				damage = Math.max(1,subDamage[0]+subDamage[1]+subDamage[2]);//deals a min of 1 damage
 				code = ATK_ResultCode.DAMAGE;
+				
+				if (!extra.getPrint()) {
+					addNote("rawdam: " +rawdam +"("+sdam+"/"+bdam+"/"+pdam+")"+ " rawarm: " + rawarm + "("+sarm+"/"+barm+"/"+parm+")"+ " weight_a: " + weight_arm + " groll: " + global_roll 
+							+ " comps: " +subDamage[0] +"/"+subDamage[1]+"/"+subDamage[2]
+							+ " reduct: " + reductMult + " ("+s_reduct+"/"+b_reduct+"/"+p_reduct+")");
+				}
 			}
 		}
-		
-		private int damageComp(int dam, double arm, double guess, double roll) {
-			double guess2 = ((dam+arm)/arm)-1;
-			int result;
-			if (guess > 1) {//dam > arm
-				//low chance to negate entirely, global damage is high
-				return 1;
-			}else {//dam <= arm
-				//decent chance to negate entirely, global damage is low
-				result = (int) (extra.hrandom()*arm);
-				return 0;
+		/**
+		 * 
+		 * @param minMult minimum multiplier
+		 * @param maxMult maximum multiplier
+		 * @param inDam damage
+		 * @param inArm armor
+		 * @param armor_threshold how many times armor must be higher than damage to reach minmult
+		 * @param weapon_threshold how many times weapon must be higher than armor to reach maxmult
+		 */
+		private float damageCompMult(float minMult, float equalMult, float maxMult, double inDam, double inArm, float weapon_threshold, float armor_threshold) {
+			if (inDam >= inArm) {
+				return extra.lerp(maxMult,equalMult,extra.clamp((float)(inArm/(inDam/weapon_threshold)),0f,1f));
 			}
+			return extra.lerp(equalMult,maxMult,extra.clamp((float)(inDam/(inArm/armor_threshold)),0f,1f));
 		}
 		
 		public AttackReturn(ATK_ResultCode rcode, String str, ImpairedAttack att) {

@@ -103,7 +103,7 @@ public class mainGame {
 	
 	//FIXME: need saved prefs
 	public static DispAttack attackDisplayStyle = DispAttack.TWO_LINE1_WITH_KEY;
-	public static boolean advancedCombatDisplay = false;
+	public static boolean advancedCombatDisplay = true;
 	public static boolean doAutoSave = true;
 	public static PrintStream logStream;
 	
