@@ -8,9 +8,6 @@ import trawel.personal.Person;
 
 public class EArtBox implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	public List<ASpell> aSpells = new ArrayList<ASpell>();
 	public float aSpellPower = 1;
@@ -42,11 +39,9 @@ public class EArtBox implements Serializable {
 		}
 	}
 	
-	//TODO: better class system
 	public int getStatDEF() {
 		return defTrainLevel+drunkTrainLevel;
 	}
-	//TODO: better class system
 	/**
 	 * unarmed
 	 * @return

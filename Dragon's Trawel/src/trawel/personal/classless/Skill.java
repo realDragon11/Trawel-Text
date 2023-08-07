@@ -115,7 +115,9 @@ public enum Skill{
 				,Type.SPEED),
 		DODGEREF("Refreshing Dodge","Gain hp equal to your attacker's level every time you dodge."
 				,"Caps at twice your level. Does not apply to misses."
-				,Type.DEFENSE)
+				,Type.DEFENSE),
+		P_BREWER("Brewer","Your created potions can be sipped two more times without running out",
+				"Stacks with normal filler ingredients.",Type.OTHER)
 		
 		;
 	    private String name,desc, longDesc;
@@ -129,6 +131,7 @@ public enum Skill{
 	    	MAGE,
 	    	DEFENDER,
 	    	//new set
+	    	OTHER,
 	    	SPEED,//skills that tend to make you faster
 	    	DEFENSE,//skills that provide defensive benefits
 	    	ATTACK_TYPE,//skills that grant a new attack type, generally there should only be 5 of these total

@@ -18,7 +18,7 @@ public abstract class EArtSkillMenu extends MenuSelect{
 	public EArtSkillMenu(EArt ea) {
 		art = ea;
 	}
-
+/*
 	public static EArtSkillMenu construct(EArt ea) {
 		switch (ea) {
 		case ARCANIST:
@@ -705,5 +705,5 @@ public abstract class EArtSkillMenu extends MenuSelect{
 			};
 		}
 		throw new RuntimeException("EArt not found to construct");
-	}
+	}*/
 }

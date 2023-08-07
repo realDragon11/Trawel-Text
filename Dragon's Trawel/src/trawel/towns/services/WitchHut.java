@@ -7,6 +7,7 @@ import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.Skill;
 import trawel.personal.item.Potion;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
@@ -88,8 +89,12 @@ public class WitchHut extends Feature{
 				int food = meats + apples + garlics + honeys + pumpkins + pumpkins + eggcorns+truffles + (virgins*2);
 				int filler = apples + woods + waxs;
 				
+				/*
 				if (Player.player.eaBox.witchTrainLevel > 2) {
 					filler+=Player.player.eaBox.witchTrainLevel/3;
+				}*/
+				if (Player.hasSkill(Skill.P_BREWER)) {
+					filler+=2;
 				}
 				if (ents > 0 && meats > 1) {
 					mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getFleshGolem(town.getTier()));

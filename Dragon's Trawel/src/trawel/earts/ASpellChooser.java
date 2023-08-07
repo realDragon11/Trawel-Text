@@ -19,6 +19,7 @@ public class ASpellChooser extends MenuSelect {
 
 	@Override
 	public boolean go() {
+		/*
 		switch (slot) {
 		case 1:	
 			Player.player.eaBox.aSpell1 = spell;
@@ -26,7 +27,7 @@ public class ASpellChooser extends MenuSelect {
 		case 2:	
 			Player.player.eaBox.aSpell2 = spell;
 			break;
-		}
+		}*/
 		return true;
 	}
 

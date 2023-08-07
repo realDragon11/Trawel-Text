@@ -392,6 +392,7 @@ public class Combat {
 			if (defender.isAlive() && quickest.getBag().getHand().hasQual(Weapon.WeaponQual.DUELING)) {
 				otherperson = defender;
 			}else {
+				/*
 				if (quickest.isPlayer() && Player.player.eaBox.markTarget != null) {
 					if (totalList.contains(Player.player.eaBox.markTarget)) {
 						otherperson = Player.player.eaBox.markTarget;
@@ -399,9 +400,9 @@ public class Combat {
 						Player.player.eaBox.markTarget = null;
 					}
 				}
-				if (otherperson == null) {
+				if (otherperson == null) {*/
 					otherperson = getDefenderFor(quickest);
-				}
+				//}
 			}
 			}
 			if (quickest.isPlayer()) {
@@ -1161,7 +1162,7 @@ public class Combat {
 		case CRUSHED:
 			return new Integer[] {(int)attack.getTotalDam()/10};
 		case SCALDED: case FROSTBITE:
-			return new Integer[] {(int)attacker.getMageLevel()};
+			return new Integer[] {attacker.getDexterity()/60};
 		case BLINDED:
 			return new Integer[] {50};//50% less accurate
 		case HAMSTRUNG:
@@ -1192,8 +1193,7 @@ public class Combat {
 	private void handleMagicSpell(Attack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
 		extra.println(extra.PRE_ORANGE + att.attackStringer(attacker.getName(),defender.getName(),off.getHand().getName()));
 		if  (att.getSkill() == Skill.ELEMENTAL_MAGE) {
-			//defender.inflictWound(att.getWound());//FIXME readd elemental wounds- but prefer to just make those normal
-			//attacks instead, I don't store those so they can have more fields now
+			//defender.inflictWound(att.getWound());//DOLATER readd elemental wounds- but prefer to just make those normal attacks instead, I don't store those so they can have more fields now
 		def.burn(def.getFire(att.getSlot())*(att.getSharp()/100),att.getSlot());
 		if (att.getSharp() > 0) {
 			Networking.send("PlayDelay|sound_fireball|1|");

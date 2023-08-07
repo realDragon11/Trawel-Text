@@ -204,7 +204,7 @@ public class BasicSideQuest implements Quest{
 								@Override
 								public boolean go() {
 									if (mainGame.CombatTwo(Player.player.getPerson(), q.targetPerson).equals(Player.player.getPerson())) {
-										Player.player.eaBox.exeKillLevel += 1;
+										//Player.player.eaBox.exeKillLevel += 1;
 										q.giver.locationF.addQR(q.giver);
 										q.desc = "Return to " + q.giverName + " at " + q.giver.locationF.getName() + " in " + q.giver.locationT.getName();
 										cleanup();
@@ -540,7 +540,7 @@ public class BasicSideQuest implements Quest{
 								@Override
 								public boolean go() {
 									if (mainGame.CombatTwo(Player.player.getPerson(), q.targetPerson).equals(Player.player.getPerson())) {
-										Player.player.eaBox.exeKillLevel += 1;
+										//Player.player.eaBox.exeKillLevel += 1;
 										q.giver.locationF.addQR(q.giver);
 										q.desc = "Return to " + q.giverName + " at " + q.giver.locationF.getName() + " in " + q.giver.locationT.getName();
 										cleanup();

@@ -26,7 +26,6 @@ public abstract class ScrollMenuGenerator implements MenuGenerator {
 		this.backtext = backtext;
 		this.forwardtext = forwardtext;
 		
-		//TODO
 		List<MenuItem> header = header();
 		List<MenuItem> footer = footer();
 		int contentslots = 8;

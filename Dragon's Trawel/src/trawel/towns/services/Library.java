@@ -74,6 +74,7 @@ public class Library extends Feature {
 					}
 					
 				});
+				/*
 				if (!hasStudiedArcane && Player.player.eArts.contains(EArt.ARCANIST)) {
 					list.add(new MenuSelect(){
 
@@ -90,7 +91,7 @@ public class Library extends Feature {
 						}
 						
 					});
-				}
+				}*/
 				if (Player.bag.getDrawBanes().contains(DrawBane.KNOW_FRAG)) {
 					list.add(new MenuSelect(){
 

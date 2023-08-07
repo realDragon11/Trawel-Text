@@ -62,8 +62,8 @@ public class Player extends SuperPerson{
 	public int knowledgeFragments = 0, fragmentReq = 5;
 	
 	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
-	public List<EArt> eArts = new ArrayList<EArt>();
-	public EArtBox eaBox = new EArtBox();
+	//public List<EArt> eArts = new ArrayList<EArt>();
+	//public EArtBox eaBox = new EArtBox();
 	public boolean hasCult = false;
 	
 	public double townEventTimer = 10;
@@ -251,6 +251,7 @@ public class Player extends SuperPerson{
 		}
 		
 	}
+	/*
 	public void addEArt(EArt earta) {
 		extra.println("You have chosen an Exotic Art. You may now spend skillpoints on it from the skill menu. You can have a max of 2.");
 		this.eArts.add(earta);
@@ -262,7 +263,7 @@ public class Player extends SuperPerson{
 		
 		}
 		
-	}
+	}*/
 	public void questTrigger(TriggerType type, String string, int count) {
 		for (Quest q: sideQuests) {
 			q.questTrigger(type,string, count);

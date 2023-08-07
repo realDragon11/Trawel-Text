@@ -85,7 +85,7 @@ public class Attack implements IAttack{
 		}
 		
 	}
-	//FIXME entirely nonfunctional at this point, just remake the whole system
+	//DOLATER entirely nonfunctional at this point, just remake the whole system
 	/*
 	@Deprecated
 	public Attack(Skill skill, int mageLevel, TargetFactory.TargetType targetType) {
@@ -327,8 +327,8 @@ public class Attack implements IAttack{
 		BLINDED("Blinded","The next attack will be %1$d%% less accurate.","They can't see!"),
 		CONFUSED("Confused","Forces the opponent to retarget.","They look confused!"), 
 		DIZZY("Dizzy","Decreases their next attack's to-hit by %1$d%%","They look dizzy!"),
-		SLICE("Slice","Your next attack will happen %1$d%% quicker and be %2$d%% more accurate.","They are sliced!"),//TODO
-		DICE("Dice","Your next attack will happen %1$d%% and %2$d instants sooner.","They are diced!"),//TODO
+		SLICE("Slice","Your next attack will happen %1$d%% quicker and be %2$d%% more accurate.","They are sliced!"),
+		DICE("Dice","Your next attack will happen %1$d%% and %2$d instants sooner.","They are diced!"),
 		WINDED("Winded","The next attack will take %1$d instants longer.","The wind is knocked out of them!"),
 		BLEED("Bleed","Applies %1$d bleed.","They bleed..."),
 		DISARMED("Disarm","Removes one attack choice.","Their attack is put off-kilter!"),

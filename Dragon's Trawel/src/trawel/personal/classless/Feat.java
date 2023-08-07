@@ -1,6 +1,8 @@
 package trawel.personal.classless;
 
+import java.util.Collections;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -9,8 +11,10 @@ import trawel.personal.classless.Skill.Type;
 
 public enum Feat implements IHasSkills{
 	EMPTY("","","",0f,null,IHasSkills.emptySkillSet),
-	TOUGH_COMMON("The Tough","They're tougher than they look. And they look tough.","",
-			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS),5,0)
+	COMMON_TOUGH("The Tough","They're tougher than they look. And they look tough.","",
+			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS),5,0),
+	MAGIC_WITCH("The Witch","Curses and potions are their forte.","",
+			1f,FeatType.MAGIC,EnumSet.of(Skill.CURSE_MAGE,Skill.P_BREWER),0,0)
 	;
 
 	private final String name, desc, getDesc;
@@ -19,17 +23,26 @@ public enum Feat implements IHasSkills{
 	 * can set to 0 to make feat not spawn, or set FeatType to null
 	 */
 	public final float rarity;
-	public final FeatType type;
+	public final List<FeatType> typesAll, typesAny;
+	public final Set<IHasSkills> needsAll, needsOne;
 	private final int strength, dexterity;
-	Feat(String _name, String _desc, String _getDesc,float _rarity,FeatType _type ,Set<Skill> skillset,int stre, int dext){
+	Feat(String _name, String _desc, String _getDesc,float _rarity,List<FeatType> _typesAll,List<FeatType> _typesAny,Set<Skill> skillset,int stre, int dext
+			,Set<IHasSkills> needsAllOf, Set<IHasSkills> needsOneOf){
 		name = _name;
 		desc = _desc;
 		getDesc = _getDesc;
 		skills = skillset;
 		rarity = _rarity;
-		type = _type;
+		typesAny = _typesAny;
+		typesAll = _typesAll;
 		strength = stre;
 		dexterity = dext;
+		needsAll = needsAllOf;
+		needsOne = needsOneOf;
+	}
+	
+	Feat(String _name, String _desc, String _getDesc,float _rarity,FeatType _type ,Set<Skill> skillset,int stre, int dext){
+		this(_name,_desc,_getDesc,_rarity,null,Collections.singletonList(_type),skillset,stre,dext,null,null);
 	}
 	
 	Feat(String _name, String _desc, String _getDesc,float _rarity,FeatType _type ,Set<Skill> skillset){
@@ -37,7 +50,7 @@ public enum Feat implements IHasSkills{
 	}
 	
 	public enum FeatType{
-		COMMON;
+		COMMON, MAGIC;
 	}
 	
 	@Override
@@ -57,7 +70,14 @@ public enum Feat implements IHasSkills{
 		Set<Feat> copyList = EnumSet.noneOf(Feat.class);
 		double totalRarity = 0;
 		for (Feat f: Feat.values()){
-			if (f.rarity > 0 && set.contains(f.type)) {
+			if (f.rarity > 0 &&
+					(f.typesAll == null || set.containsAll(f.typesAll))&&
+					(f.typesAny == null || !Collections.disjoint(f.typesAny, set))&&
+					(f.needsAll == null || has.containsAll(has)) &&
+					(f.needsOne == null || !Collections.disjoint(f.needsOne, has))//either disjoint or streams
+				) {
+				//allll the predicate code time
+				//we don't use real predicates...yet
 				copyList.add(f);
 				totalRarity +=f.rarity;
 			}

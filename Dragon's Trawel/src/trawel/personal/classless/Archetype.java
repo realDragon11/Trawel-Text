@@ -25,7 +25,7 @@ public enum Archetype implements IHasSkills{
 	}
 	
 	public enum AType{
-		RACIAL
+		RACIAL, ENTRY
 	}
 	
 	@Override

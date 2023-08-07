@@ -434,7 +434,8 @@ public class Person implements java.io.Serializable{
 	public int getOOB_HP() {
 		int total = getBase_HP();
 		if (this.hasSkill(Skill.LIFE_MAGE)) {
-			hp+=this.getMageLevel();
+			//hp+=this.getMageLevel();
+			hp+=this.getDexterity();
 		}
 		total*=bag.getHealth();
 		return total;
@@ -482,10 +483,10 @@ public class Person implements java.io.Serializable{
 		
 		speedFill = -1;
 		isWarmingUp = false;
-		int s = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
-		int b = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
-		int p = this.hasSkill(Skill.ARMOR_MAGE) ? this.getMageLevel(): 0;
-		int defLvl = this.getDefenderLevel();
+		int s = this.hasSkill(Skill.ARMOR_MAGE) ? this.getDexterity()/60: 0;
+		int b = this.hasSkill(Skill.ARMOR_MAGE) ? this.getDexterity()/60: 0;
+		int p = this.hasSkill(Skill.ARMOR_MAGE) ?this.getDexterity()/60: 0;
+		int defLvl = this.getStrength()/60;
 		if (this.hasSkill(Skill.SHIELD)) {
 			s+=1*defLvl;
 			b+=1*defLvl;
@@ -771,7 +772,7 @@ public class Person implements java.io.Serializable{
 			}
 		}
 	}
-	
+	/*
 	private void eaSubMenu(EAType eat) {
 		extra.menuGo(new MenuGenerator() {
 
@@ -969,7 +970,7 @@ public class Person implements java.io.Serializable{
 			}});
 	}
 		
-	
+	*/
 
 	/**
 	 * Returns the stance that this person is currently using.
@@ -1193,6 +1194,7 @@ public class Person implements java.io.Serializable{
 		extra.println("Pierce: " + pierce + "/" +piercem);
 	}
 
+	/*
 	public int getMageLevel() {
 		int base = this.isPlayer() ? Player.player.eaBox.getStatMAG() : mageLevel;
 		return extra.zeroOut(base+bag.getRace().magicPower+magePow-burnouts());
@@ -1206,7 +1208,7 @@ public class Person implements java.io.Serializable{
 	public int getFighterLevel() {
 		int base = this.isPlayer() ? Player.player.eaBox.getStatATK() : fighterLevel;
 		return extra.zeroOut(base+fightPow-burnouts());
-	}
+	}*/
 	
 	public void removeEffectAll(Effect e) {
 		while (effects.contains(e)) {
@@ -1410,9 +1412,9 @@ public class Person implements java.io.Serializable{
 	}
 
 	public void addKillStuff() {
-		if (this.isPlayer()) {
-			Player.player.eaBox.exeKillLevel += .3;
-		}
+		//if (this.isPlayer()) {
+			//Player.player.eaBox.exeKillLevel += .3;
+		//}
 		
 	}
 
