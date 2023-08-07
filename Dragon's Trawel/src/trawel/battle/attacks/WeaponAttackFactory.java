@@ -543,7 +543,7 @@ public class WeaponAttackFactory {
 		stanceMap.put("anchor", martialStance);*/
 		
 		//FIXME:
-		copyStanceTo(WeaponType.CLAYMORE,WeaponType.FISH_ANCHOR);
+		copyStanceTo(WeaponType.MACE,WeaponType.FISH_ANCHOR);
 		copyStanceTo(WeaponType.SPEAR,WeaponType.FISH_SPEAR);
 	}
 

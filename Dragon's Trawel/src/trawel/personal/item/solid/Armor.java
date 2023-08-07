@@ -46,7 +46,6 @@ public class Armor extends Item {
 	private static final String[] BASE_MAPS = new String[] {"iron","cloth","crystal"};
 	@OneOf({"heavy","light","chainmail","crystal","drudger"})
 	private String matType;//ie heavy, light, chainmail
-	private float dexMod = 1;
 	
 	//end removable after
 	
@@ -109,92 +108,6 @@ public class Armor extends Item {
 		}
 
 		fluff = ArmorStyle.fetch(style).genner[slot].generate();
-
-		/*
-		if (matType.equals("light")){
-			baseMap = 1;//"cloth";
-			switch (armorType) {//adamantine can be either
-				case 0: baseName = "hat"; weight = 2; baseResist = 1; cost = 1;break;//"hood"
-				case 1: baseName = "gloves"; weight = 2; baseResist = 1; cost = 1;break;//,"gloves","gloves","fingerless gloves"
-				case 2: baseName = "tunic"; weight = 10; baseResist = 4; cost = 3;break;//"shirt","toga"
-				case 3: baseName = "pants"; weight = 6; baseResist = 3; cost = 3;break;//"leggings",
-				case 4: baseName = "boots"; weight = 4; baseResist = 2; cost = 2;break;//,"slippers","shoes"
-			}
-		}else {
-			if (matType.equals("heavy")) {
-				baseMap = 0;//"iron";
-			switch (armorType) {
-				case 0: baseName = "helm"; weight = 2; baseResist = 1; cost = 1;break;//"helmet",,"cap","hat","mask"
-				case 1: baseName = "gauntlets"; weight = 2; baseResist = 1; cost = 1;break;//"bracers",
-				case 2: baseName = "chestplate"; weight = 10; baseResist = 4; cost = 3;break;//,"breastplate","cuirass"
-				case 3: baseName = "greaves"; weight = 6; baseResist = 3; cost = 3;break;
-				case 4: baseName = "boots"; weight = 4; baseResist = 2; cost = 2;break;//,"shoes","high boots","low boots"
-			}
-			}else {
-				if (matType.equals("chainmail")) {
-					baseMap = 0;//"iron";
-					switch (armorType) {
-					case 0: baseName = "mail hood"; weight = 2; baseResist = 1; cost = 1;break;
-					case 1: baseName = "mail gloves"; weight = 2; baseResist = 1; cost = 1;break;
-					case 2: baseName = "mail shirt"; weight = 10; baseResist = 4; cost = 3;break;
-					case 3: baseName = "mail pants"; weight = 6; baseResist = 3; cost = 3;break;
-					case 4: baseName = "mail boots"; weight = 4; baseResist = 2; cost = 2;break;
-					}
-					weight*=2;
-					sharpResist*=1.5;
-					pierceResist*=.5;
-	
-				}else {
-					if (matType.equals("crystal")) {
-						baseMap = 2;//"crystal";
-						switch (armorType) {
-						case 0: baseName = "helmet"; weight = 2; baseResist = 1; cost = 1;break;
-						case 1: baseName = "bracers"; weight = 2; baseResist = 1; cost = 1;break;
-						case 2: baseName = "breastplate"; weight = 10; baseResist = 4; cost = 3;break;
-						case 3: baseName = "pants"; weight = 6; baseResist = 3; cost = 3;break;
-						case 4: baseName = "boots"; weight = 4; baseResist = 2; cost = 2;break;
-					}
-						cost*=1.5;
-						if (extra.chanceIn(2,3)) {
-							quals.add(ArmorQuality.FRAGILE);
-							//prefixName = extra.PRE_YELLOW+"fragile[c_white] ";//DOLATER
-							sharpResist*=1.25;
-							bluntResist*=1.25;
-							pierceResist*=1.25;
-						}
-					}else {
-						if (matType.equals("is")) {//flesh and bone mostly
-							baseMap = 0;//"iron";
-							switch (armorType) {
-							case 0: baseName = "head"; weight = 2; baseResist = 1; cost = 1;break;
-							case 1: baseName = "arms"; weight = 2; baseResist = 1; cost = 1;break;
-							case 2: baseName = "body"; weight = 10; baseResist = 4; cost = 3;break;
-							case 3: baseName = "legs"; weight = 6; baseResist = 3; cost = 3;break;
-							case 4: baseName = "feet"; weight = 4; baseResist = 2; cost = 2;break;
-							}
-							weight*=2;
-							sharpResist*=1.5;
-							pierceResist*=.5;
-	
-						}else {
-						if (matType.equals("drudger")) {
-							baseMap = 0;//"iron";
-						switch (armorType) {
-							case 0: baseName = "mask"; weight = 2; baseResist = 1; cost = 1;break;//"helmet",,"cap","hat","mask"
-							case 1: baseName = "bracers"; weight = 2; baseResist = 1; cost = 1;break;//"bracers",
-							case 2: baseName = "chestplate"; weight = 10; baseResist = 4; cost = 3;break;//,"breastplate","cuirass"
-							case 3: baseName = "greaves"; weight = 6; baseResist = 3; cost = 3;break;
-							case 4: baseName = "boots"; weight = 4; baseResist = 2; cost = 2;break;//,"shoes","high boots","low boots"
-						}
-						}
-						}
-					}
-				}
-			}
-
-		}*/
-
-		dexMod *= mati.dexMod;
 
 		float baseEnchant = getEnchantMult();
 		if (baseEnchant > extra.randFloat()*3f) {
@@ -401,7 +314,8 @@ public class Armor extends Item {
 	 * @return the dexMod (float)
 	 */
 	public float getAgiPenMult() {
-		return extra.lerp(getMat().dexMod,1f,getStyle().dexMultBase);
+		//FIXME: I don't know what the ultimate impact of this agipen formula is, but the goal is that if the style has no penalty, there is less impact from the material, but if it has a penalty, the material matters more
+		return extra.lerp(getMat().dexMod*getStyle().dexMultBase,1f,getStyle().dexMultBase);
 	}
 	
 	/**

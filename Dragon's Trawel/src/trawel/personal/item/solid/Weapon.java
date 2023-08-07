@@ -59,7 +59,7 @@ public class Weapon extends Item {
 		DUELING("Dueling","Attack: In large fights, attack the same opponent repeatedly."),
 		WEIGHTED("Weighted","On Damage: Less accurate attacks deal more damage."),
 		REFINED("Refined","On Damage: Deals bonus damage equal to weapon level."),
-		ACCURATE("Accurate","Attack: Flat +10% accuracy bonus to all attacks."),
+		ACCURATE("Accurate","Attack: Flat +%.10 accuracy bonus to all attacks after all modifiers."),
 		CARRYTHROUGH("Carrythrough","On Miss/Dodge: Your next attack on another target is 10% quicker."),
 		;
 		public String name, desc;
@@ -84,23 +84,23 @@ public class Weapon extends Item {
 	public enum WeaponType{
 		LONGSWORD("longsword","longsword",1,2,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
 		BROADSWORD("broadsword","broadsword",2,3,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		MACE("mace","mace",1,2,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED)),
+		MACE("mace","mace",1,2,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,WeaponQual.CARRYTHROUGH)),
 		SPEAR("spear","spear",1,2,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
 		AXE("axe","small_axe",1,2,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
 		RAPIER("rapier","rapier",2,3,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
 		DAGGER("dagger","dagger",.7f,1,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
 		CLAYMORE("claymore","claymore",3,5,EnumSet.of(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED)),
 		LANCE("spear","spear",2,3,EnumSet.of(WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		SHOVEL("shovel","shovel",.8f,2,EnumSet.of(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED)),
-		TEETH_GENERIC("teeth",null,0,0),
+		SHOVEL("shovel","shovel",.8f,2,EnumSet.of(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,WeaponQual.CARRYTHROUGH)),
+		TEETH_GENERIC("teeth",null,0,0,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.PENETRATIVE,WeaponQual.DUELING,Weapon.WeaponQual.ACCURATE)),
 		REAVER_STANDING("clawed feet",null,0,0),
-		CLAWS_TEETH_GENERIC("teeth and claws",null,0,0),
-		BRANCHES("branches",null,0,0), 
+		CLAWS_TEETH_GENERIC("teeth and claws",null,0,0,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		BRANCHES("branches",null,0,0),
 		GENERIC_FISTS("fists",null,0,0),
-		UNICORN_HORN("horn",null,0,0),
-		TALONS_GENERIC("talons",null,0,0),
+		UNICORN_HORN("horn",null,0,0,EnumSet.of(WeaponQual.PENETRATIVE,WeaponQual.PINPOINT)),
+		TALONS_GENERIC("talons",null,0,0,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.PENETRATIVE,WeaponQual.PINPOINT,Weapon.WeaponQual.ACCURATE,WeaponQual.CARRYTHROUGH)),
 		FISH_SPEAR("fishing spear","spear",.3f,1),
-		FISH_ANCHOR("anchor","claymore",1,5);
+		FISH_ANCHOR("anchor","claymore",1,5,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,WeaponQual.CARRYTHROUGH));
 		
 		private final String name, legacysprite;
 		private final float cost, weight;

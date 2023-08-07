@@ -67,7 +67,6 @@ public class ImpairedAttack implements IAttack{
 				sMult *= _weapon.getMat().sharpMult;
 				bMult *= _weapon.getMat().bluntMult;
 				pMult *= _weapon.getMat().pierceMult;
-				hitMult *=_weapon.hasQual(Weapon.WeaponQual.ACCURATE) ? 1.1 : 1;
 			}else {
 				if (_attacker != null) {
 					w_lvl = _attacker.getLevel();
@@ -122,6 +121,10 @@ public class ImpairedAttack implements IAttack{
 
 		//
 		hitroll = extra.lerp(hitMult*.8f,hitMult*1.2f, extra.hrandomFloat());
+		if (_weapon != null) {
+			hitroll +=_weapon.hasQual(Weapon.WeaponQual.ACCURATE) ? .1 : 0;
+		}
+		
 	}
 	
 	public enum DamageType{

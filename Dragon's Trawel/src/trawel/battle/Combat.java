@@ -49,7 +49,6 @@ public class Combat {
 	//instance variables
 	public List<Person> survivors;
 	public List<Person> killed;
-	//private boolean newTarget = false;
 	public long turns = 0;
 	public int totalFighters = 2;
 	public boolean battleIsLong = false;
@@ -64,14 +63,6 @@ public class Combat {
 	 * @param manTwo (Person)
 	 */
 	public Combat(Person manOne, Person manTwo,World w) {
-		/*if (Player.getTutorial()) {
-			extra.println("Welcome to a battle! You can turn the tutorial off in the 'you' menu.");
-			extra.println("Choose your attack below: higher is better, except in the case of delay!");
-			extra.println("Delay is how long an action takes- it determines turn order and skipping.");
-			extra.println("For example, two 30 delay actions would go through before one 100 delay action.");
-			extra.println("sbp stands for sharp blunt pierce- the three damage types.");
-			extra.println("Hp is restored at the start of every battle.");
-		}*/
 		Person attacker;
 		Person defender;
 		//Setup
@@ -532,7 +523,12 @@ public class Combat {
 			}
 		}
 		//TODO unsure if should add attacker's aim at impairment phase
-		if (((def.getDodge()*defender.getTornCalc())/(att.getHitMult()*off.getAim()))* extra.getRand().nextDouble() > 1.0){
+		double dodgeBase = def.getDodge()*defender.getTornCalc();
+		double hitBase = att.getHitMult()*off.getAim();
+		
+		double dodgeRoll = dodgeBase*extra.getRand().nextDouble();
+		double hitRoll = hitBase*extra.getRand().nextDouble();
+		if (dodgeRoll > hitRoll){
 			ret= new AttackReturn(ATK_ResultCode.DODGE,"",att);
 			if (isReal) {
 				ret.stringer = att.fluff(ret);
@@ -542,15 +538,21 @@ public class Combat {
 			}
 			return ret;
 		}
+		if (hitRoll < .05) {//missing now exists
+			ret= new AttackReturn(ATK_ResultCode.MISS,"",att);
+			if (isReal) {
+				ret.stringer = att.fluff(ret);
+				if (wasDead) {
+					ret.addNote("They missed a corpse!");
+				}
+			}
+			return ret;
+		}
 		
 		double sharpA = def.getSharp(att)*armMod;
 		double bluntA = def.getBlunt(att)*armMod;
 		double pierceA= def.getPierce(att)*armMod;
-		ret = new AttackReturn(
-				attackSub(att.getSharp(),sharpA),
-				attackSub(att.getBlunt(),bluntA),
-				attackSub(att.getPierce(),pierceA),
-				str,att);
+		ret = new AttackReturn(att.getSharp(),att.getBlunt(),att.getPierce(),sharpA,bluntA,pierceA,str,att);
 		if (isReal) {
 			Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getAttack().getSoundIntensity() + "|" +att.getAttack().getSoundType()+"|");
 			if (wasDead) {
@@ -605,13 +607,55 @@ public class Combat {
 		public ImpairedAttack attack;
 		public ATK_ResultCode code;
 		private String notes;
-		public AttackReturn(int sdam,int bdam, int pdam, String str, ImpairedAttack att) {
-			damage = sdam+bdam+pdam;
-			code = damage > 0 ? ATK_ResultCode.DAMAGE : ATK_ResultCode.ARMOR;
-			subDamage = new int[] {sdam,bdam,pdam};
+		public AttackReturn(int sdam,int bdam, int pdam, double sarm, double barm, double parm, String str, ImpairedAttack att) {
 			stringer = str;
 			attack = att;
 			notes = null;
+			//DOLATER: can turn this into an array of damage types later if need be
+			int rawdam = sdam+bdam+pdam;
+			double rawarm =sarm+barm+parm;
+			double s_weight = sdam/rawdam;
+			double b_weight = bdam/rawdam;
+			double p_weight = pdam/rawdam;
+			double weight_arm = (s_weight*sarm)+(b_weight*barm)+(p_weight*parm);
+			//double guess = ((rawdam+weight_arm)/weight_arm)-1;
+			double def_roll = Math.max(.05,extra.hrandom());
+			float att_roll = extra.lerp(.7f,1f,extra.hrandomFloat());
+			double global_roll = (att_roll*rawdam)/(def_roll*weight_arm);
+			if (global_roll < .4) {//if our random damage roll was less than 40% of the armor roll, negate
+				subDamage = new int[] {0,0,0};
+				damage = 0;
+				code = ATK_ResultCode.ARMOR;
+			}else {//TODO: new goal: % reductions based on relativeness with a chance to negate entirely if much higher?
+				//up to half the damage if the damage roll was less than the total weighted armor (without roll)
+				double reductMult = extra.lerp(1f,.5f,(float) (1f-Math.min(1,(att_roll*rawdam)/weight_arm)));
+				//each damage vector can be brought down to 20%, but this is cumulative so the armor has to be 4x higher
+				//to achieve that level of reduction
+				double s_reduct = extra.lerp(1f,.2f,(float) (1f-Math.min(1,(sdam/(sarm/4)))));
+				double b_reduct = extra.lerp(1f,.2f,(float) (1f-Math.min(1,(bdam/(barm/4)))));
+				double p_reduct = extra.lerp(1f,.2f,(float) (1f-Math.min(1,(pdam/(parm/4)))));
+				int scomp = (int) (sdam*reductMult*s_reduct);
+				int bcomp = (int) (bdam*reductMult*b_reduct);
+				int pcomp = (int) (pdam*reductMult*p_reduct);
+				//DOLATER: not sure if this is done yet
+				
+				subDamage = new int[] {scomp,bcomp,pcomp};
+				damage = Math.min(1,subDamage[0]+subDamage[1]+subDamage[2]);//deals a min of 1 damage
+				code = ATK_ResultCode.DAMAGE;
+			}
+		}
+		
+		private int damageComp(int dam, double arm, double guess, double roll) {
+			double guess2 = ((dam+arm)/arm)-1;
+			int result;
+			if (guess > 1) {//dam > arm
+				//low chance to negate entirely, global damage is high
+				return 1;
+			}else {//dam <= arm
+				//decent chance to negate entirely, global damage is low
+				result = (int) (extra.hrandom()*arm);
+				return 0;
+			}
 		}
 		
 		public AttackReturn(ATK_ResultCode rcode, String str, ImpairedAttack att) {
@@ -807,7 +851,7 @@ public class Combat {
 					inlined_color= extra.PRE_YELLOW;
 					extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color));
 					Networking.sendStrong("PlayMiss|" + "todo" + "|");
-					extra.print(" "+extra.AFTER_ATTACK_MISS+randomLists.attackMissFluff());
+					extra.print(" "+extra.AFTER_ATTACK_MISS+randomLists.attackMissFluff(atr.code));
 				}
 				if (defender.hasSkill(Skill.SPEEDDODGE)) {
 					defender.advanceTime(10);
