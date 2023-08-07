@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 import trawel.extra;
 import trawel.personal.Person;
+import trawel.personal.people.Agent.AgentGoal;
 import trawel.time.CanPassTime;
 import trawel.towns.Town;
 
@@ -34,4 +35,9 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	}
 	
 	public abstract Person getPerson();
+
+	public abstract void setGoal(AgentGoal goal);
+	public abstract void onlyGoal(AgentGoal goal);
+	public abstract boolean removeGoal(AgentGoal goal);
+	public abstract boolean hasGoal(AgentGoal goal);
 }

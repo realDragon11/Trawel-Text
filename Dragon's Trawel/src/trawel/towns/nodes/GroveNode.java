@@ -447,13 +447,6 @@ public class GroveNode implements NodeType{
 
 	private void fallenTree() {
 		extra.println("You examine the fallen tree. It is very pretty.");
-		if (Player.player.animalQuest == 0) {
-			extra.println("A "+Player.player.animalName()+" is sitting on it." );
-			extra.println("It vanishes.");
-			extra.println();
-			extra.println("You feel strange...");
-			Player.player.animalQuest = 1;
-		}
 		node.findBehind("tree");
 	}
 

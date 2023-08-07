@@ -13,7 +13,9 @@ import trawel.extra;
 import trawel.factions.HostileTask;
 import trawel.personal.Person;
 import trawel.personal.people.Agent;
+import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
+import trawel.personal.people.SuperPerson;
 import trawel.time.ContextLevel;
 import trawel.time.ContextType;
 import trawel.time.TContextOwner;
@@ -33,8 +35,10 @@ public class World extends TContextOwner{
 	private List<String> printerLabels;
 	private List<PrintEvent> printers;
 
-	//private ArrayList<BardSong> bardSongs;
-	private List<Person> deathCheaters;
+	/**
+	 * superpeople that the player will run into again, maybe
+	 */
+	private List<SuperPerson> reoccuring;
 	/**
 	 * used for notable characters that either cheated death and didn't die in the rematch, or otherwise were notable but would
 	 * get lost
@@ -51,7 +55,7 @@ public class World extends TContextOwner{
 		ySize = y;
 		islands = new ArrayList<Island>();
 		//bardSongs = new ArrayList<BardSong>();
-		deathCheaters = new ArrayList<Person>();
+		reoccuring = new ArrayList<SuperPerson>();
 		name = _name;
 		this.minLata = minLata;
 		this.maxLata = minLata+y/WorldGen.unitsInLata;
@@ -151,35 +155,51 @@ public class World extends TContextOwner{
 	
 	public void addDeathCheater(Person p) {
 		p.getBag().regenNullEquips(p.getLevel());
-		deathCheaters.add(p);
+		SuperPerson sp = p.getSuper();
+		if (sp == null) {
+			sp = new Agent(p,AgentGoal.DEATHCHEAT);
+		}
+		reoccuring.add(sp);
+	}
+
+	public void addReoccuring(SuperPerson sp) {
+		reoccuring.add(sp);
 	}
 	
 	/**
 	 * removes all occurrences of this person in death cheaters
 	 * @param p
 	 */
-	public void removeDeathCheater(Person p) {
-		deathCheaters.removeIf(Predicate.isEqual(p));
+	public void removeReoccuringSuperPerson(SuperPerson p) {
+		reoccuring.removeIf(Predicate.isEqual(p));
 	}
 	
-	public void deathCheaterToChar(Person p) {
-		assert deathCheaters.contains(p);
-		deathCheaters.remove(p);
+	public void deathCheaterToChar(SuperPerson p) {
+		assert reoccuring.contains(p);
+		reoccuring.remove(p);
 		//characters.add(p);
-		p.hTask = HostileTask.DUEL;//? probably need a better intent system, maybe turn them into a SuperPerson or something
-		//TODO: for now just place there where the player is
-		Player.player.getLocation().addOccupant(new Agent(p));
+		p.getPerson().hTask = HostileTask.DUEL;
+		p.onlyGoal(AgentGoal.NONE);
+		//DOLATER: for now just place there where the player is
+		Player.player.getLocation().addOccupant(p);
 	}
 	
-	public Person getDeathCheater(int level) {
-		ArrayList<Person> list = new ArrayList<Person>();
-		deathCheaters.stream().filter(p -> p.getLevel() == level).forEach(list::add);
+	public SuperPerson getDeathCheater() {
+		List<SuperPerson> list = new ArrayList<SuperPerson>();
+		reoccuring.stream().filter(p -> p.hasGoal(AgentGoal.DEATHCHEAT)).forEach(list::add);
 		if (list.size() == 0) {
 			return null;
 		}
 		return extra.randList(list);
-		
-		
+	}
+	
+	public SuperPerson getStalker() {
+		List<SuperPerson> list = new ArrayList<SuperPerson>();
+		reoccuring.stream().filter(p -> p.hasGoal(AgentGoal.SPOOKY)).forEach(list::add);
+		if (list.size() == 0) {
+			return null;
+		}
+		return extra.randList(list);
 	}
 
 	public Calender getCalender() {
@@ -315,6 +335,5 @@ public class World extends TContextOwner{
 	public String moneyString() {
 		return moneyname;//for now always plural
 	}
-	
 
 }

@@ -20,6 +20,7 @@ import trawel.personal.Person;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Potion;
+import trawel.personal.people.Agent.AgentGoal;
 import trawel.quests.BasicSideQuest;
 import trawel.quests.Quest;
 import trawel.quests.Quest.TriggerType;
@@ -37,7 +38,6 @@ public class Player extends SuperPerson{
 	public static double passTime;
 	public static Inventory bag;
 	public static String lastAttackStringer;
-	public int animalQuest;
 	public int wins = 0;
 	public boolean cheating = false;
 	/**
@@ -45,7 +45,6 @@ public class Player extends SuperPerson{
 	 */
 	private World world;
 	private String animalName;
-	//private int rpts;//reincarnatepoints
 	private boolean tutorial;
 	public int merchantLevel = 1;
 	public Town lastTown = null;
@@ -81,7 +80,6 @@ public class Player extends SuperPerson{
 		player = this;
 		bag = p.getBag();
 		passTime = 0;
-		animalQuest = -1;//not started unless another quest starts it
 		animalName = randomLists.randomAnimal();
 		//rpts = 0;
 		tutorial = true;
@@ -489,6 +487,22 @@ public class Player extends SuperPerson{
 	}
 	public boolean getCheating() {
 		return cheating;
+	}
+	@Override
+	public void setGoal(AgentGoal none) {
+		throw new RuntimeException("player cannot take agent goals");
+	}
+	@Override
+	public void onlyGoal(AgentGoal none) {
+		throw new RuntimeException("player cannot take agent goals");
+	}
+	@Override
+	public boolean removeGoal(AgentGoal none) {
+		throw new RuntimeException("player cannot take agent goals");
+	}
+	@Override
+	public boolean hasGoal(AgentGoal goal) {
+		return false;
 	}
 	
 	

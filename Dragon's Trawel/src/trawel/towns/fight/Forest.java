@@ -11,10 +11,13 @@ import trawel.AIClass;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.battle.Combat;
 import trawel.factions.Faction;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
+import trawel.personal.people.Agent;
+import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.quests.QRMenuItem;
 import trawel.quests.QuestR;
@@ -112,9 +115,6 @@ public class Forest extends Feature{
 		if (explores == 100) {
 			Player.player.addTitle(this.getName() + " guide");
 		}
-		if (Player.player.animalQuest == 0 && Math.random() > .8) {
-			fallenTree();return;
-		}
 		if (dryadQuest > 0 && dryadQuest < 5 && Math.random() > .5) {
 			lumerbjackDryad();return;
 		}
@@ -129,7 +129,9 @@ public class Forest extends Feature{
 		case 2: case 3: case 4: funkyMushroom();break;
 		case 5: case 6:  mugger1();break;
 		case 7: if (Math.random() > .5){
-			fallenTree();}else {hangedMan();}break;
+			this.treeOnPerson();
+			}else {hangedMan();
+			}break;
 		case 8: case 9: mugger2();break;
 		case 10: case 11: dryad();break;
 		case 12: case 13: this.treeOnPerson();break;
@@ -265,18 +267,6 @@ public class Forest extends Feature{
 		}
 	}
 	
-	private void fallenTree() {
-		
-		extra.println("You come across a fallen tree. It is very pretty.");
-		if (Player.player.animalQuest == 0) {
-		extra.println("A "+Player.player.animalName()+" is sitting on it." );
-		extra.println("It runs off.");
-		extra.println();
-		extra.println("You feel a sense of loss.");
-		Player.player.animalQuest = 1;
-		}
-	}
-	
 	private void mugger2() {
 		extra.print(extra.PRE_RED);
 		extra.println("You see a mugger charge at you! Prepare for battle!");
@@ -290,7 +280,25 @@ public class Forest extends Feature{
 	
 	private void hangedMan() {
 		extra.println("You come across a man hanging from a tree.");
-		extra.println("You sigh and move on.");
+		switch (extra.randRange(0,2)) {
+		case 0:extra.println("You sigh and move on.");
+			break;
+		case 1: extra.println("There's something off about the corpse... You feel like you need to leave, so you do.");
+			break;
+		case 2:
+			extra.println(extra.PRE_RED+ "Something fell and horrible steps out of the hanged man's shadow!");
+			Combat c = Player.fightWith(RaceFactory.makeFellReaver(tier));
+			if (c.playerWon() > 0) {
+				extra.println("They say a predator is often blind to its own peril- at least there won't be any more men hanged here soon.");
+				//bonus heroism
+				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC, (tier/5f),0);
+			}else {
+				extra.println("You wake up elsewhere, striken with nightmares of claw, teeth, sinew, and bone. You feel an evil presence watching you...");
+				town.getIsland().getWorld().addReoccuring(new Agent(c.survivors.get(0),AgentGoal.SPOOKY));
+			}
+			break;
+		}
+		
 	}
 	
 	private void dryad() {

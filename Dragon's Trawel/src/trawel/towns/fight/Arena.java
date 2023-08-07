@@ -129,16 +129,6 @@ public class Arena extends Feature{
 				if (i == rounds) {
 					extra.println("You win the tournment!");
 					Player.player.addTitle(this.getTitle());
-					if (Player.player.animalQuest == 4 && this.name.equals("epino arena")) {
-						extra.println("Well done hotshot! Here's the promised reward!");
-						Player.bag.addGold(100);
-						extra.println("He gives you 100 gold.");
-						extra.println("Now, I heard you went up to the altar...");
-						extra.println("And that you keep returning from the grave!");
-						extra.println("I think you might be something special.");
-						extra.println("I think you should go back to the altar and check it out again.");
-						Player.player.animalQuest++;
-					}
 				}else {
 					extra.println("You move on to the next round of the tournament.");
 				}

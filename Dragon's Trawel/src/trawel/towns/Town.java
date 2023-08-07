@@ -18,8 +18,10 @@ import trawel.WorldGen;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
+import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonType;
+import trawel.personal.classless.Feat;
 import trawel.personal.classless.Skill;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.Inventory;
@@ -869,9 +871,10 @@ public class Town extends TContextOwner{
 			boolean went = Bumper.go(threshold,tier,0,this);
 			
 			if (!went && extra.chanceIn(1,3)) {
-				Person p = this.island.getWorld().getDeathCheater(tier);
-				if (p != null) {
-					this.island.getWorld().removeDeathCheater(p);
+				SuperPerson sp = island.getWorld().getDeathCheater();
+				if (sp != null) {
+					island.getWorld().removeReoccuringSuperPerson(sp);
+					Person p = sp.getPerson();
 					went = true;
 					int pLevel = Player.player.getPerson().getLevel();
 					if (p.getLevel() < pLevel) {
@@ -904,8 +907,7 @@ public class Town extends TContextOwner{
 							extra.println("\"You may have broken my body, but not my spirit!\"");
 							p.setTitle(extra.choose(" the Unbroken"," the Unfettered"));
 						}
-						p.setHasSkill(Skill.TA_NAILS);
-						
+						p.setFeat(Feat.COMMON_TOUGH);
 						p.setPersonType(PersonType.DEATHCHEATED);
 						break;
 					case 1:
@@ -919,14 +921,25 @@ public class Town extends TContextOwner{
 						p.setPersonType(PersonType.LIFEKEEPER);
 						break;
 					}
-
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-					if (winner != p) {
+					Combat c = Player.fightWith(p);
+					if (c.playerWon() > 0) {
 						//this.island.getWorld().removeDeathCheater(p);
 						//removed earlier, might get re-added in the combat above, which is fine
 					}else {
-						this.island.getWorld().deathCheaterToChar(p);
+						this.island.getWorld().deathCheaterToChar(sp);
 					}
+				}
+			}
+			if (!went && extra.chanceIn(1,10)) {
+				SuperPerson sp = island.getWorld().getStalker();
+				//does not level up naturally
+				if (sp != null) {
+					extra.println(extra.PRE_RED + sp.getPerson().getName() + " appears to haunt you!");
+					went = true;
+					Combat c = Player.fightWith(sp.getPerson());
+					if (c.playerWon() > 0) {
+						island.getWorld().removeReoccuringSuperPerson(sp);
+					}//must be slain to get it to go away
 				}
 			}
 			return went;

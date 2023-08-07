@@ -208,22 +208,13 @@ public class Oracle extends Feature{ //extends feature later
 		switch (extra.inInt(4)) {
 		case 1: utterance();break;
 		case 2: utterance2();break;
-		case 3:swaQuest(); Player.addTime(.5);;//main quest stuff
-			;break;
-		case 4: return;
+		case 3: 
+			extra.println("After enough waiting, the oracles start rambling.");
+			Player.addTime(extra.randFloat()*5);
+			utterance();
+			break;
+			case 4: return;
 		}
-		}
-	}
-	
-	private void swaQuest() {
-		switch(Player.player.animalQuest) {
-		case -1: extra.println("The oracles ignore you.");break;
-		case 0: extra.println("\"Seek the "+Player.player.animalName() +" in the forest. Look for trees felled in it's wake.\"");break;
-		case 1: extra.println("\"You are touched now. Go to the altar, in the north. Revan is what you must seek.\"");break;
-		case 2: extra.println("\"Fight- and win...\"");break;
-		case 3: extra.println("\"Seek an empty inn... start a barfight.\"");break;
-		case 4: extra.println("\"Epino arena... in Tevar...\"");break;
-		case 5: extra.println("\"Return to the altar.\"");break;
 		}
 	}
 }

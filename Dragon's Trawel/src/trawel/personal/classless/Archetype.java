@@ -1,5 +1,6 @@
 package trawel.personal.classless;
 
+import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -7,25 +8,32 @@ import trawel.extra;
 import trawel.personal.classless.Skill.Type;
 
 public enum Archetype implements IHasSkills{
-	EMPTY("","",false,null,IHasSkills.emptySkillSet);
+	EMPTY("","",AType.RACIAL,EnumSet.of(AGroup.STRENGTH),IHasSkills.emptySkillSet);
 	
-	private final boolean entryLevel;
 	private final String name, desc;
 	private final Set<Skill> skills;
 	private final int strength, dexterity;
 	private final AType type;
-	Archetype(String _name, String description, boolean entry, AType _type, Set<Skill> skillset){
+	private final Set<AGroup> groups;
+	Archetype(String _name, String description, AType _type, Set<AGroup> _groups, Set<Skill> skillset){
 		name = _name;
 		desc = description;
-		entryLevel = entry;
 		skills = skillset;
 		strength = 0;
 		dexterity = 0;
 		type = _type;
+		groups = _groups;
 	}
 	
 	public enum AType{
-		RACIAL, ENTRY
+		RACIAL,//race archetypes
+		ENTRY,//can appear as first archetype choice, also later on
+		AFTER//can't appear as first choice, but can appear after first choice
+	}
+	
+	public enum AGroup{
+		DEXTERITY, STRENGTH,
+		MAGIC
 	}
 	
 	@Override
@@ -61,7 +69,7 @@ public enum Archetype implements IHasSkills{
 		list[0] = vals[extra.randRange(0,vals.length-1)];
 		for (int i = 0; i < vals.length;i++) {
 			Archetype local = vals[i];
-			if (!local.entryLevel) {
+			if (local.type != AType.ENTRY) {
 				continue;
 			}
 			for (int j = 0; j < has;i++) {

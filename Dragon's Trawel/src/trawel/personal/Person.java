@@ -47,6 +47,7 @@ import trawel.personal.item.body.Race;
 import trawel.personal.item.body.Race.RaceType;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Material;
+import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponType;
 import trawel.personal.item.solid.variants.ArmorStyle;
@@ -1443,10 +1444,13 @@ public class Person implements java.io.Serializable{
 	public void updateRaceWeapon() {
 		switch (bag.getRaceID()) {
 		case B_REAVER_SHORT:
+			bag.getHand().transmuteWeapMat(MaterialFactory.getMat("bone"));
 			bag.getHand().transmuteWeapType(WeaponType.CLAWS_TEETH_GENERIC);
 			break;
 		case B_REAVER_TALL:
+			bag.getHand().transmuteWeapMat(MaterialFactory.getMat("flesh"));
 			bag.getHand().transmuteWeapType(WeaponType.REAVER_STANDING);
+			
 			break;
 		}
 		
@@ -1532,6 +1536,10 @@ public class Person implements java.io.Serializable{
 
 	public void setSuper(SuperPerson p) {
 		superperson = p;
+	}
+
+	public boolean isHumanoid() {
+		return bag.getRace().racialType == RaceType.HUMANOID;
 	}
 
 

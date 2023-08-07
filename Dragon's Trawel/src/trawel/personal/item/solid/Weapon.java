@@ -608,7 +608,15 @@ public class Weapon extends Item {
 	
 
 	public void transmuteWeapType(WeaponType newt) {
-		weap = newt;//DOLATER?
+		weap = newt;//MAYBELATER?
+	}
+	
+	public void transmuteWeapMat(Material m) {
+		material = m.curNum;
+	}
+	
+	public void transmuteWeapMat(int i) {
+		material = i;
 	}
 	
 	public static final String[] weaponTypes = new String[]{"longsword","broadsword","mace","spear","axe","rapier","dagger","claymore","lance","shovel"};

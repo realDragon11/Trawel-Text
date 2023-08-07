@@ -5,8 +5,7 @@ import java.util.List;
 import trawel.personal.item.solid.variants.ArmorStyle;
 
 /**
- * A flyweight class
- * @author Brian Malone
+ * @author dragon
  * 5/29/2018
  */
 public class Material{
@@ -34,21 +33,10 @@ public class Material{
 	 */
 	public float moneyMultTradeMult = 1f;
 	
-	public transient int curNum;//not stored anyway, but marked transient
-	//used for reverse lookup so we don't even have to store them as strings
-
 	/**
-	Material(String name,String clothType,
-	 double baseResist, double baseEnchant,double sharpResist,double bluntResist,double pierceResist,double weight,double cost,double dexMod,
-	 double rarity, double tier, double sharpMult, double bluntMult, double pierceMult,
-	 Boolean armor, Boolean weapon){
-			 this.name = name; this.clothType = clothType;
-			 this.baseResist = baseResist; this.baseEnchant =  baseEnchant; this.sharpResist =  sharpResist; 
-			 this.bluntResist = bluntResist; this.pierceResist = pierceResist; this.weight = weight; this.cost = cost;
-			 this.dexMod = dexMod;
-			 this.rarity = rarity; this.tier = tier; this.sharpMult =sharpMult; this.bluntMult = bluntMult; this.pierceMult = pierceMult;
-			 this.armor = armor; this.weapon = weapon;
-	}**/
+	 * used for reverse lookup so we don't even have to store them as strings
+	 */
+	public transient int curNum;//not stored anyway, but marked transient
 
 	public Material() {}
 }
