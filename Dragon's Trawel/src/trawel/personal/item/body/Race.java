@@ -57,6 +57,11 @@ public class Race extends Item{
 	}
 	
 	@Override
+	public String getNameNoTier() {
+		return renderName(false);
+	}
+	
+	@Override
 	public EnchantConstant getEnchant() {
 		return null;
 	}

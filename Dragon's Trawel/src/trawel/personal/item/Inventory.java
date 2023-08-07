@@ -38,7 +38,10 @@ public class Inventory implements java.io.Serializable{
 	private static final long serialVersionUID = 1L;
 	//instance vars
 	private int money = 0, aether = 0;
-	private Armor[] armorSlots = new Armor[5];
+	/**
+	 * only dummy inventory should use protected status
+	 */
+	protected Armor[] armorSlots = new Armor[5];
 	private Weapon hand;
 	private RaceID race;
 	private int raceMap;

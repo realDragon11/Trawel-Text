@@ -84,7 +84,7 @@ public class WorldGen {
 	public static final float unitsInLata = (float) (milesInLata/distanceScale);
 	public static final float unitsInLonga = (float) (milesInLonga/distanceScale);
 	
-	private static List<Inventory> dumInvs = new ArrayList<Inventory>();
+	private static List<DummyInventory> dumInvs = new ArrayList<DummyInventory>();
 	
 	
 	public static void initDummyInvs() {
@@ -100,7 +100,7 @@ public class WorldGen {
 		}
 	}
 	
-	public static List<Inventory> getDummyInvs() {
+	public static List<DummyInventory> getDummyInvs() {
 		return dumInvs;
 	}
 	

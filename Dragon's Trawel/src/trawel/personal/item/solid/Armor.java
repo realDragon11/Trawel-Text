@@ -223,12 +223,17 @@ public class Armor extends Item {
 	 * @return name - String
 	 */
 	@Override
-	public String getName() {
+	public String getNameNoTier() {
 		Material mat = getMat();
 		if (enchantment != null){
 			EnchantConstant enchant = (EnchantConstant)enchantment; 
-		return (getModiferName() + " " +enchant.getBeforeName() +mat.color + mat.name+"[c_white]" + " " + getBaseName() + enchant.getAfterName());}
-			return (getModiferName() + " " +mat.color + mat.name+"[c_white]"  + " " +  getBaseName());
+		return (enchant.getBeforeName() +mat.color + mat.name+"[c_white]" + " " + getBaseName() + enchant.getAfterName());}
+			return (mat.color + mat.name+"[c_white]"  + " " +  getBaseName());
+	}
+	
+	@Override
+	public String getName() {
+		return getModiferName() + " " + getNameNoTier();
 	}
 	
 

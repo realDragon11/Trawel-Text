@@ -669,7 +669,7 @@ public class WeaponAttackFactory {
 				for (int ta = 0; ta < tests;ta++) {
 					for (int j = WorldGen.getDummyInvs().size()-1; j >=0;j--) {
 						AttackReturn ret = Combat.handleTestAttack(holdAttack.impair(null,w,null)
-								,WorldGen.getDummyInvs().get(j)
+								,WorldGen.getDummyInvs().get(j).atLevel(w.getLevel())
 								,Armor.armorEffectiveness);
 						damage += ret.damage;
 						if (ret.code == ATK_ResultCode.DAMAGE) {
@@ -688,7 +688,7 @@ public class WeaponAttackFactory {
 				speed/=totalTests;
 				hits/=totalTests;
 				fullhits/=totalTests;
-				AttackMetric am = new AttackMetric(w.getName(), holdAttack.getName(), w.getMartialStance().getWeight(i)
+				AttackMetric am = new AttackMetric(w.getNameNoTier(), holdAttack.getName(), w.getMartialStance().getWeight(i)
 						, hits,fullhits, damage, speed);
 				metrics.add(am);
 				totalDPS+=am.average_dps;

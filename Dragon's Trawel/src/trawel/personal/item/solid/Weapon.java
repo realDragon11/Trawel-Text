@@ -296,7 +296,7 @@ public class Weapon extends Item {
 	 * @return String
 	 */
 	@Override
-	public String getName() {
+	public String getNameNoTier() {
 		String weapName = weap.getName();
 		Material mat = MaterialFactory.getMat(material);
 		if (this.isEnchantedConstant()){
@@ -305,12 +305,17 @@ public class Weapon extends Item {
 		if (this.isEnchantedHit()){
 			;
 			if (isKeen()) {
-				return (getModiferName() + " " + ((EnchantHit)enchant).getName() + mat.color+mat.name  + "[c_white] " + weapName);
+				return (((EnchantHit)enchant).getName() + mat.color+mat.name  + "[c_white] " + weapName);
 			}else {
-			return (getModiferName() +" "+mat.color+ mat.name + "[c_white] " +  weapName + ((EnchantHit)enchant).getName());}
+			return (mat.color+ mat.name + "[c_white] " +  weapName + ((EnchantHit)enchant).getName());}
 			
 		}
-			return (getModiferName() + " " +mat.color+ mat.name  + "[c_white] " + weapName);
+			return (mat.color+ mat.name  + "[c_white] " + weapName);
+	}
+	
+	@Override
+	public String getName() {
+		return getModiferName() + " " + getNameNoTier();
 	}
 	
 	
@@ -397,41 +402,24 @@ public class Weapon extends Item {
 		int impactChance = 0;
 		double total = 0;
 		double weighted = 0;
-		//double highestContrib = -10;
 		Stance stance = this.getMartialStance();
 		int size = stance.getAttackCount();
 		double[] contributions = new double[size];//used for determining highest contribution
-		//does not account for aiming, since that is *very* opponent dependent
 		for (int i = size-1;i >=0;i--) {
 			Attack holdAttack = stance.getAttack(i);
 			int dam = 0;
 			for (int j = WorldGen.getDummyInvs().size()-1; j >=0;j--) {
-				//double thisaverage = 0;
-				//double thishighest = -10;
-				
 				for (int ta = 0; ta < battleTests;ta++) {
 					AttackReturn ret = Combat.handleTestAttack(holdAttack.impair(null,this,null)
-							,WorldGen.getDummyInvs().get(j)
+							,WorldGen.getDummyInvs().get(j).atLevel(level)
 							,Armor.armorEffectiveness);
-					//double thisret = ;
-					dam+= ret.damage/holdAttack.getSpeed();//thisret;
-					/*
-					thisaverage += thisret;
-					if (thisret > thishighest) {
-						thishighest = thisret;
-					}*/
+					dam+= ret.damage/holdAttack.getSpeed();
 					if (ret.code == ATK_ResultCode.DAMAGE) {
 						impactChance++;
 					}
 				}
-				/*
-				if (thishighest/thisaverage > highestContrib) {
-					highestContrib = thishighest/thisaverage;
-				}
-				weighted += thisaverage * stance.getWeight(i);
-				average+=thisaverage;*/
 			}
-			contributions[i] = dam;
+			contributions[i] += dam;
 			total += dam;
 			weighted += dam*stance.getWeight(i);
 		}
@@ -445,7 +433,7 @@ public class Weapon extends Item {
 		
 		int subTests = battleTests*WorldGen.getDummyInvs().size();
 		int totalTests = size*subTests;
-		double levelAdjust = level/10.0;
+		double levelAdjust = level;
 		//the above battlescore assumes level 10 power weapon on level 10 armor
 		//so we put the real level in now
 		this.bsCon = (float)(highest);//(float) (high*level);

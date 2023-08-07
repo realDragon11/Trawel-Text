@@ -162,7 +162,8 @@ public abstract class ScrollMenuGenerator implements MenuGenerator {
 	 */
 	public int getVal(int i) {
 		if (!(locationTop <= i && i <= locationBottom)) {
-			int headerLength = header().size();
+			List<MenuItem> heads = header();
+			int headerLength = heads == null ? 0 : heads.size();
 			//1 <= i <= 9
 			if (i > headerLength) {
 				int windowsize = locationBottom-locationTop;

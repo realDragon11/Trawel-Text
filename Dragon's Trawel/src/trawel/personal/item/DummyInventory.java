@@ -49,8 +49,8 @@ public class DummyInventory extends Inventory {
 		throw new RuntimeException("not a valid dummy inv preset");
 	}
 	
-	@Override
-	public double getSharp(ImpairedAttack att) {
+	
+	public double getSharp10(ImpairedAttack att) {
 		int slot = att.getSlot();
 		int combo = 0;
 		if (att.hasWeaponQual(Weapon.WeaponQual.PINPOINT)) {
@@ -67,8 +67,15 @@ public class DummyInventory extends Inventory {
 		savedResults[0][slot][combo] = ret;
 		return ret;
 	}
+	
 	@Override
-	public double getBlunt(ImpairedAttack att) {
+	public double getSharp(ImpairedAttack att) {
+		return super.getSharp(att);
+	}
+	
+	
+	
+	public double getBlunt10(ImpairedAttack att) {
 		int slot = att.getSlot();
 		int combo = 0;
 		if (att.hasWeaponQual(Weapon.WeaponQual.PINPOINT)) {
@@ -85,8 +92,13 @@ public class DummyInventory extends Inventory {
 		savedResults[1][slot][combo] = ret;
 		return ret;
 	}
+	
 	@Override
-	public double getPierce(ImpairedAttack att) {
+	public double getBlunt(ImpairedAttack att) {
+		return super.getBlunt(att);
+	}
+	
+	public double getPierce10(ImpairedAttack att) {
 		int slot = att.getSlot();
 		int combo = 0;
 		if (att.hasWeaponQual(Weapon.WeaponQual.PINPOINT)) {
@@ -103,6 +115,20 @@ public class DummyInventory extends Inventory {
 		savedResults[2][slot][combo] = ret;
 		return ret;
 	}
+	
+	@Override
+	public double getPierce(ImpairedAttack att) {
+		return super.getPierce(att);
+	}
+	
+	public DummyInventory atLevel(int level) {
+		for (int i = 0; i < armorSlots.length;i++) {
+			armorSlots[i].level = level;
+		}
+		resetArmor(0,0,0);
+		return this;
+	}
+	
 	@Override
 	public double getDodge() {
 		return myDodge;

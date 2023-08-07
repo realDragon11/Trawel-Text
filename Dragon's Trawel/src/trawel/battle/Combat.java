@@ -521,7 +521,7 @@ public class Combat {
 			defender = DummyPerson.single;
 		}
 		if (off == null) {
-			off = WorldGen.getDummyInvs().get(0);
+			off = WorldGen.getDummyInvs().get(0);//attacking only
 		}
 		if (isReal) {
 			if (extra.chanceIn(1, 5)) {
@@ -616,7 +616,7 @@ public class Combat {
 		
 		public AttackReturn(ATK_ResultCode rcode, String str, ImpairedAttack att) {
 			code = rcode;
-			damage = -1;
+			damage = 0;
 			//null
 			stringer = str;
 			attack = att;

@@ -1463,7 +1463,7 @@ public class mainGame {
 				List<Material> allWeapMats = new ArrayList<Material>();
 				MaterialFactory.matList.stream().filter(M->M.weapon).forEach(allWeapMats::add);
 				
-				MenuGenerator matMenu = new ScrollMenuGenerator(allWeapMats.size(),"previous <> weapons", "next <> weapons") {
+				MenuGenerator matMenu = new ScrollMenuGenerator(allWeapMats.size(),"previous <> materials", "next <> materials") {
 
 					@Override
 					public List<MenuItem> forSlot(int i) {
@@ -1509,15 +1509,6 @@ public class mainGame {
 						list.add(new MenuBack("exit"));
 						return list;
 					}};
-			
-			/*extra.println("1 cannot be used in graphical, enter weapon name with string");
-			//String w = extra.inString();
-			WeaponType t = null;
-			try {
-				t = WeaponType.valueOf(w.toUpperCase());
-			}catch(Exception e) {
-				return;
-			}*/
 			
 			extra.menuGo(matMenu);
 		}
