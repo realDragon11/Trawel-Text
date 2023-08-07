@@ -69,7 +69,7 @@ public class Altar extends Feature{
 
 					@Override
 					public boolean go() {
-						extra.println("Nothing happens. Nothing ever could happen. You spend an hour staring at your hands, lost in thought");
+						extra.println("Nothing happens. Nothing ever could happen. You spend an hour staring at your hands, lost in thought.");
 						Player.addTime(1);
 						return false;
 					}

@@ -6,8 +6,8 @@ import java.util.stream.Stream;
 import trawel.extra;
 import trawel.personal.classless.Skill.Type;
 
-public enum Archetype implements HasSkills{
-	EMPTY("","",false,null,HasSkills.emptySkillSet);
+public enum Archetype implements IHasSkills{
+	EMPTY("","",false,null,IHasSkills.emptySkillSet);
 	
 	private final boolean entryLevel;
 	private final String name, desc;
@@ -40,7 +40,7 @@ public enum Archetype implements HasSkills{
 			if (s.getType() == Type.INTERNAL_USE_ONLY) {
 				continue;
 			}
-			str += "\n "+HasSkills.padNewlines(s.disp());
+			str += "\n "+IHasSkills.padNewlines(s.disp());
 		}
 		return str;
 	}
@@ -81,5 +81,16 @@ public enum Archetype implements HasSkills{
 	@Override
 	public int getDexterity() {
 		return dexterity;
+	}
+	
+	@Override
+	public String friendlyName() {
+		return name;
+	}
+
+	@Override
+	public boolean goMenuItem() {
+		extra.println("n/a");
+		return false;
 	}
 }

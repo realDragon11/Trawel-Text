@@ -7,8 +7,8 @@ import java.util.stream.Stream;
 import trawel.extra;
 import trawel.personal.classless.Skill.Type;
 
-public enum Feat implements HasSkills{
-	EMPTY("","","",0f,null,HasSkills.emptySkillSet),
+public enum Feat implements IHasSkills{
+	EMPTY("","","",0f,null,IHasSkills.emptySkillSet),
 	TOUGH_COMMON("The Tough","They're tougher than they look. And they look tough.","",
 			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS),5,0)
 	;
@@ -81,7 +81,7 @@ public enum Feat implements HasSkills{
 			if (s.getType() == Type.INTERNAL_USE_ONLY) {
 				continue;
 			}
-			str += "\n "+HasSkills.padNewlines(s.disp());
+			str += "\n "+IHasSkills.padNewlines(s.disp());
 		}
 		return str;
 	}
@@ -93,6 +93,17 @@ public enum Feat implements HasSkills{
 	@Override
 	public int getDexterity() {
 		return dexterity;
+	}
+
+	@Override
+	public String friendlyName() {
+		return name;
+	}
+
+	@Override
+	public boolean goMenuItem() {
+		extra.println("n/a");
+		return false;
 	}
 
 }

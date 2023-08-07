@@ -12,6 +12,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.MenuSelectTitled;
+import derg.menus.ScrollMenuGenerator;
 import trawel.Effect;
 import trawel.Networking;
 import trawel.extra;
@@ -36,7 +37,8 @@ import trawel.factions.HostileTask;
 import trawel.personal.classless.Archetype;
 import trawel.personal.classless.AttributeBox;
 import trawel.personal.classless.Feat;
-import trawel.personal.classless.HasSkills;
+import trawel.personal.classless.HasSkillsClassless;
+import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
 import trawel.personal.classless.Skill.Type;
@@ -59,7 +61,7 @@ import trawel.towns.services.Store;
  * 2/5/2018
  * A collection of stats, attributes, and an inventory.
  */
-public class Person implements java.io.Serializable, HasSkills{
+public class Person implements java.io.Serializable{
 
 	private static final long serialVersionUID = 2L;
 
@@ -279,7 +281,6 @@ public class Person implements java.io.Serializable, HasSkills{
 	 * do not use, use updateSkills instead
 	 * FIXME: see if can just put updateskills code here... might have some stream issues
 	 */
-	@Override
 	public Stream<Skill> collectSkills(){
 		//return Stream.concat(featSet.parallelStream(), perkSet.parallelStream(),archSet.parallelStream());
 		//return Stream.of(featSet.parallelStream(),perkSet.parallelStream(),archSet.parallelStream());
@@ -305,11 +306,6 @@ public class Person implements java.io.Serializable, HasSkills{
 		}
 		
 		return s;
-	}
-	
-	@Override
-	public String getText() {
-		throw new UnsupportedOperationException("people can't give classless text");
 	}
 	
 	/**
@@ -573,20 +569,47 @@ public class Person implements java.io.Serializable, HasSkills{
 			level+=levels;
 	}
 	
+	public <E extends IHasSkills> ScrollMenuGenerator skillDispMenu(Set<E> set, String typeName,String typeNamePlural) {
+		List<IHasSkills> skillList = new ArrayList<IHasSkills>();
+		skillList.addAll(set);
+		return new ScrollMenuGenerator(skillList.size(), "previous <> "+typeNamePlural, "next <> "+typeNamePlural) {
+
+			@Override
+			public List<MenuItem> forSlot(int i) {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.addAll(IHasSkills.dispMenuItem(skillList.get(i)));
+				return list;
+			}
+
+			@Override
+			public List<MenuItem> header() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return getName() + "'s "+typeNamePlural;
+					}});
+				return list;
+			}
+
+			@Override
+			public List<MenuItem> footer() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuBack("back"));
+				return list;
+			}
+			
+		};
+	}
+	
 	public void playerSkillMenu() {
+		updateSkills();
 		if (Player.getTutorial()) {
-			extra.println("This is the skill menu.");
+			extra.println("This is the skill overview menu.");
 			if (skillPoints == 0) {
 				extra.println("You don't have any skillpoints, and should probably exit this menu.");
 			}
-		}
-		extra.println();
-		Person p = this;
-		extra.println("Classless backend is implemented, but both choosing new feats/archetypes and the actual feats/archetypes/perks did not make it into this beta release. Instead get 'The Tough'.");
-		setFeat(Feat.TOUGH_COMMON);
-		updateSkills();
-		if (true == true) {
-			return;//the poor man's comment
 		}
 		extra.menuGo(new MenuGenerator() {
 
@@ -597,67 +620,74 @@ public class Person implements java.io.Serializable, HasSkills{
 
 					@Override
 					public String title() {
-						return "You have " + p.skillPoints + " skillpoint"+ (p.skillPoints == 1 ? "" : "s") +".";
+						return "Classless Menu for " + getName();
 					}});
-				
-				for (EArt e: Player.player.eArts) {
-					list.add(EArtSkillMenu.construct(e));
-				}
-				if (Player.player.eArts.size() < 2) {
-					list.add(new MenuSelect() {
-
-						@Override
-						public String title() {
-							return "Select a new EArt (Martial)";
-						}
-
-						@Override
-						public boolean go() {
-							eaSubMenu(EAType.MARTIAL);
-							return false;
-						}});
-					list.add(new MenuSelect() {
-
-						@Override
-						public String title() {
-							return "Select a new EArt (Magic)";
-						}
-
-						@Override
-						public boolean go() {
-							eaSubMenu(EAType.MAGIC);
-							return false;
-						}});
-					list.add(new MenuSelect() {
-
-						@Override
-						public String title() {
-							return "Select a new EArt (Other)";
-						}
-
-						@Override
-						public boolean go() {
-							eaSubMenu(EAType.OTHER);
-							return false;
-						}});
-				}
 				list.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "Conventional Skills";
+						return "View All Skills";
 					}
 
 					@Override
 					public boolean go() {
-						csSubMenu();
+						extra.println("not in yet");
 						return false;
 					}});
-				list.add(new MenuBack());
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "View Archetypes";
+					}
+
+					@Override
+					public boolean go() {
+						if (archSet.size() == 0) {
+							extra.println("You have no archetypes.");
+							return false;
+						}
+						extra.menuGo(skillDispMenu(archSet,"archetype","archetypes"));
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "View Feats";
+					}
+
+					@Override
+					public boolean go() {
+						if (archSet.size() == 0) {
+							extra.println("You have no feats.");
+							return false;
+						}
+						extra.menuGo(skillDispMenu(featSet,"feat","feats"));
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "View Perks";
+					}
+
+					@Override
+					public boolean go() {
+						if (archSet.size() == 0) {
+							extra.println("You have no perks.");
+							return false;
+						}
+						extra.menuGo(skillDispMenu(perkSet,"perk","perks"));
+						return false;
+					}});
+				
+				list.add(new MenuBack("back"));
 				return list;
-			}
-			
-		});
+			}});
+		//extra.println("Classless backend is implemented, but both choosing new feats/archetypes and the actual feats/archetypes/perks did not make it into this beta release. Instead get 'The Tough'.");
+		//setFeat(Feat.TOUGH_COMMON);
 	}
 	
 	@Deprecated
@@ -1461,12 +1491,10 @@ public class Person implements java.io.Serializable, HasSkills{
 		return bodystatus.getStatusOnMapping(TargetFactory.TORSO_MAPPING);
 	}
 
-	@Override
 	public int getStrength() {
 		return fetchAttributes().getStrength();
 	}
 
-	@Override
 	public int getDexterity() {
 		return (int) (getRawDexterity()* bag.getAgiPen());
 	}

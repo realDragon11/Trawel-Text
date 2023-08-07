@@ -1,5 +1,7 @@
 package trawel.personal.classless;
 
+import derg.menus.MenuItem;
+import derg.menus.MenuLine;
 import trawel.extra;
 
 public enum Skill{
@@ -163,5 +165,15 @@ public enum Skill{
 		
 		public String explain() {
 			return (name + ": " + desc + "\n " + " " + longDesc);
+		}
+		
+		public MenuItem getMenuView() {
+			return new MenuLine() {
+
+				@Override
+				public String title() {
+					return " " + name + ": " + desc + " ("+longDesc+")";
+				}};
+			
 		}
 }
