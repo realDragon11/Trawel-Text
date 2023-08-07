@@ -513,7 +513,7 @@ public class Town extends TContextOwner{
 				Player.addGold(-cost);
 				extra.println("You buy a lot.");
 				visited = 3;
-				Networking.sendStrong("Achievement|buy_lot|");
+				Networking.unlockAchievement("buy_lot");
 				this.enqueneAdd(new Lot(this));
 			}else {
 				extra.println("Not enough "+moneyname+".");

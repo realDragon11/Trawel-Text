@@ -99,11 +99,11 @@ public class NodeConnector implements Serializable {
 				if (NodeConnector.currentNode.parent.isDeepest(NodeConnector.this)) {
 					switch(NodeConnector.currentNode.parent.getShape()) {
 					case TOWER:
-					Networking.sendStrong("Achievement|tower1|");
+					Networking.unlockAchievement("tower1");
 					break;
 					case ELEVATOR:
 						if (parent instanceof Mine) {
-							Networking.sendStrong("Achievement|mine2|");
+							Networking.unlockAchievement("mine2");
 						}
 						break;
 					}

@@ -14,7 +14,6 @@ public enum Skill{
 		KILLHEAL("Vampire","Gain a moderate amount of hp on a kill.",true,Type.FIGHTER,2,""),
 		
 		COUNTER("Counter","Attack slightly sooner after you are attacked.",true,Type.FIGHTER,3,""),
-		BLITZ("Blitz","Attack slightly quicker.",true,Type.FIGHTER,3,""),
 		
 		BERSERKER("Berserker","Remove examine from possible attacks you can make.",true,Type.FIGHTER,4,""),
 		DSTRIKE("Decisive Strike","Instantly kill anyone you damage by more than 80% in one blow.",true,Type.FIGHTER,4,""),
@@ -68,10 +67,10 @@ public enum Skill{
 		PARRY("Parry","Gives you a parrying dagger.",true,Type.DEFENDER,1,""),
 		SHIELD("Shield","Gives you a shield.",true,Type.DEFENDER,1,""),
 		
-		SPEEDDODGE("Speed Dodge","Attack sooner after you dodge.",true,Type.DEFENDER,2,""),
+		
 		ARMORHEART("Armor Heart","Gain some hp every time your armor blocks an attack.",true,Type.DEFENDER,2,""),
 		
-		DODGEREF("Refreshing Dodge","Gain some hp every time you dodge.",true,Type.DEFENDER,3,""),
+		
 		ARMORSPEED("Glancing Blow","Attack sooner after your armor blocks an attack.",true,Type.DEFENDER,3,""),
 		
 		GOOFFENSIVE("Go on the offensive","Allows you to attack with your defensive item.",true,Type.DEFENDER,4,""),
@@ -108,6 +107,16 @@ public enum Skill{
 		KUNG_FU("Unarmed Attacks","Gain martial arts attacks."
 				,"Adds one attack option per turn, which is based on strength and dexterity, but capped to weapon level."
 				,Type.ATTACK_TYPE),
+		BLITZ("Blitz","You actions take 3 less instants to complete than expected."
+				,"Does not allow you to act sooner in order- but does impact how much time passes when you do get to act."
+				,Type.SPEED),
+		SPEEDDODGE("Speed Dodge","Attack 10 instants sooner after you dodge."
+				,"Applies to each dodge. Does not apply to misses."
+				,Type.SPEED),
+		DODGEREF("Refreshing Dodge","Gain hp equal to your attacker's level every time you dodge."
+				,"Caps at twice your level. Does not apply to misses."
+				,Type.DEFENSE)
+		
 		;
 	    private String name,desc, longDesc;
 	    private Type type;
@@ -120,6 +129,7 @@ public enum Skill{
 	    	MAGE,
 	    	DEFENDER,
 	    	//new set
+	    	SPEED,//skills that tend to make you faster
 	    	DEFENSE,//skills that provide defensive benefits
 	    	ATTACK_TYPE,//skills that grant a new attack type, generally there should only be 5 of these total
 	    	FEATURE,//skills that are 'part' of a person or thing. Should be only granted by perks

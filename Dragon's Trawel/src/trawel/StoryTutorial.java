@@ -81,7 +81,7 @@ public class StoryTutorial extends Story{
 		switch (deaths) {
 		case 1:
 			extra.println("Welcome to your first death! You continue as normal. If you're in an exploration area, you got kicked out of it, otherwise not much changed... except maybe the thing that killed you leveled up.");
-			Networking.sendStrong("Achievement|die1|");
+			Networking.unlockAchievement("die1");
 		;break;
 		case 5:
 			extra.println("If you're having trouble, it's often best to come back with better gear and more levels than to challenge-spam someone. At least, for your own time investment.");

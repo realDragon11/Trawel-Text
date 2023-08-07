@@ -141,7 +141,7 @@ public class Oracle extends Feature{ //extends feature later
 				Player.addGold(-tier*1);
 				tip("");
 				visits++;
-				Networking.sendStrong("Achievement|oracle1|");
+				Networking.unlockAchievement("oracle1");
 				if (visits == 5) {
 					Player.player.addTitle(this.getName() + " vistor");
 				}
@@ -165,7 +165,7 @@ public class Oracle extends Feature{ //extends feature later
 				tip("utter");
 				int oldVisits = visits;
 				visits+=4;
-				Networking.sendStrong("Achievement|oracle1|");
+				Networking.unlockAchievement("oracle1");
 				if (oldVisits < 5 && visits >= 5) {
 					Player.player.addTitle(this.getName() + " vistor");
 				}

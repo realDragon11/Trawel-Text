@@ -85,11 +85,11 @@ public class Champion  extends Feature{
 				extra.println("You defeat the champion!");
 				Player.player.addTitle(person.getName() + " " + extra.choose("slayer","killer","champion-killer","champion"));
 				person = null;
-				Networking.sendStrong("Achievement|beat_champion|");
+				Networking.unlockAchievement("beat_champion");
 			}else {
 				this.name = person.getName() + " (Level " + person.getLevel()+")" ;
 				extra.println("You lose the bout. Perhaps you should explore other towns to level up before fighting them?");
-				Networking.sendStrong("Achievement|die_to_champion|");
+				Networking.unlockAchievement("die_to_champion");
 			}
 		}
 	}

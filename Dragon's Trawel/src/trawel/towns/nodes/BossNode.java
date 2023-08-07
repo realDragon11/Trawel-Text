@@ -79,7 +79,7 @@ public class BossNode implements NodeType {
 				node.storage1 = null;
 				node.state = 1;
 				node.name = "The Fatespinner's corpse";
-				Networking.sendStrong("Achievement|boss1|");
+				Networking.unlockAchievement("boss1");
 				return false;
 			}else {
 				node.storage1 = survivors;
@@ -104,7 +104,7 @@ public class BossNode implements NodeType {
 				node.storage1 = null;
 				node.state = 1;
 				node.name = "The Hell Baron's corpse";
-				Networking.sendStrong("Achievement|boss2|");
+				Networking.unlockAchievement("boss2");
 				return false;
 			}else {
 				return true;

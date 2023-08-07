@@ -462,7 +462,7 @@ public class Person implements java.io.Serializable{
 		hp = tempMaxHp;
 		if (takeBeer()) {
 			if (isPlay) {
-				Networking.sendStrong("Achievement|drink_beer|");
+				Networking.unlockAchievement("drink_beer");
 			}
 			hp+=level*5;
 		}
@@ -558,9 +558,11 @@ public class Person implements java.io.Serializable{
 				Networking.sendStrong("Leaderboard|Highest Level|" + level+ "|");
 				mainGame.story.levelUp(level+levels);
 				if (level < 5 && level+levels >= 5) {
-				Networking.sendStrong("Achievement|level5|");}
+					Networking.unlockAchievement("level5");
+				}
 				if (level < 10 && level+levels >= 10) {
-				Networking.sendStrong("Achievement|level10|");}
+					Networking.unlockAchievement("level10");
+				}
 				playerSkillMenu();
 			}else {
 				//intellect+=levels;
@@ -1528,5 +1530,6 @@ public class Person implements java.io.Serializable{
 	public void setSuper(SuperPerson p) {
 		superperson = p;
 	}
+
 
 }

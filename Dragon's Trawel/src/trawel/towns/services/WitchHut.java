@@ -64,7 +64,7 @@ public class WitchHut extends Feature{
 					return;
 				}
 				Networking.sendStrong("PlayDelay|sound_potiondone|1|");
-				Networking.sendStrong("Achievement|brew1|");
+				Networking.unlockAchievement("brew1");
 				extra.println("You finish brewing your potion, and put it in your flask... time to test it out!");
 				int batWings = (int) dbs.stream().filter(d -> d.equals(DrawBane.BAT_WING)).count();
 				int mGuts = (int) dbs.stream().filter(d -> d.equals(DrawBane.MIMIC_GUTS)).count();

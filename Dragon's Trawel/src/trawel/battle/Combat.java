@@ -103,7 +103,7 @@ public class Combat {
 				defender = manOne;
 			}
 			if (attacker.hasSkill(Skill.BLITZ)) {
-				attacker.advanceTime(3);
+				attacker.applyDiscount(3);
 			}
 			double delay = attacker.getTime();
 			defender.advanceTime(delay);
@@ -328,6 +328,7 @@ public class Combat {
 				}
 			}
 			if (quickest.hasSkill(Skill.BLITZ)) {
+				quickest.applyDiscount(3);
 				lowestDelay-=3;
 			}
 			
@@ -903,12 +904,15 @@ public class Combat {
 				Networking.sendStrong("PlayMiss|" + "todo" + "|");
 				extra.print(" "+extra.AFTER_ATTACK_MISS+randomLists.attackMissFluff(atr.code));
 			}
-			if (defender.hasSkill(Skill.SPEEDDODGE)) {
-				defender.advanceTime(10);
+			if (atr.code == ATK_ResultCode.DODGE) {
+				if (defender.hasSkill(Skill.SPEEDDODGE)) {
+					defender.applyDiscount(10);
+				}
 				if (defender.hasSkill(Skill.DODGEREF)) {
-					defender.addHp(attacker.getLevel());
+					defender.addHp(Math.min(defender.getLevel()*2,attacker.getLevel()));
 				}
 			}
+			
 			if (defender.hasEffect(Effect.BEE_SHROUD)) {
 				extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.2f))+"The bees sting back!");
 				attacker.takeDamage(1);
@@ -923,7 +927,7 @@ public class Combat {
 				defender.addHp(attacker.getLevel());
 			}
 			if (defender.hasSkill(Skill.ARMORSPEED)) {
-				defender.advanceTime(10);
+				defender.applyDiscount(10);
 			}
 			break;
 		}

@@ -39,6 +39,7 @@ public class Player extends SuperPerson{
 	public static String lastAttackStringer;
 	public int animalQuest;
 	public int wins = 0;
+	public boolean cheating = false;
 	/**
 	 * the instance copy of the player's world
 	 */
@@ -170,7 +171,7 @@ public class Player extends SuperPerson{
 			if (extra.yesNo()) {
 				flask.sip(person);
 				Networking.sendStrong("PlayDelay|sound_swallow"+extra.randRange(1,5)+"|1|");
-				Networking.sendStrong("Achievement|potion1|");
+				Networking.unlockAchievement("potion1");
 				if (flask.sips <=0) {
 					flask = null;
 				}
@@ -481,6 +482,12 @@ public class Player extends SuperPerson{
 	 */
 	public static Combat fightWith(Person p) {
 		return mainGame.CombatTwo(Player.player.getPerson(),p, Player.getWorld());
+	}
+	public void setCheating() {
+		cheating = true;
+	}
+	public boolean getCheating() {
+		return cheating;
 	}
 	
 	

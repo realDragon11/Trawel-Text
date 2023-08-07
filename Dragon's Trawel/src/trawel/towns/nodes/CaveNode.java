@@ -102,7 +102,7 @@ public class CaveNode implements NodeType{
 	public boolean interact(NodeConnector node) {
 		this.node = node;
 		switch(node.eventNum) {
-		case -2: Networking.sendStrong("Achievement|cave1|"); break;
+		case -2: Networking.unlockAchievement("cave1");break;
 		case 1: bear1(); if (node.state == 0) {return true;};break;
 		case 2: goldVein1();break;
 		case 3: bat1(); if (node.state == 0) {return true;};break;
@@ -143,7 +143,7 @@ public class CaveNode implements NodeType{
 
 	private void goldVein1() {
 		if (node.state == 0) {
-			Networking.sendStrong("Achievement|ore1|");
+			Networking.unlockAchievement("ore1");
 			int mult1 = 0, mult2 = 0;
 			switch (node.storage1.toString()) {
 			case "gold": mult1 = 5; mult2 = 10;break;

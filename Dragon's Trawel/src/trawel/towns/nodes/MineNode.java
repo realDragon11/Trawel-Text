@@ -237,7 +237,7 @@ public class MineNode implements NodeType{
 
 	private void emeralds1() {
 		if (node.state == 0) {
-			Networking.sendStrong("Achievement|ore1|");
+			Networking.unlockAchievement("ore1");
 			Player.player.emeralds++;
 			extra.println("You mine the vein and claim an emerald!");
 			node.state = 1;
@@ -254,7 +254,7 @@ public class MineNode implements NodeType{
 
 	private void rubies1() {
 		if (node.state == 0) {
-			Networking.sendStrong("Achievement|ore1|");
+			Networking.unlockAchievement("ore1");
 			Player.player.rubies++;
 			extra.println("You mine the vein and claim a ruby!");
 			node.state = 1;
@@ -271,7 +271,7 @@ public class MineNode implements NodeType{
 
 	private void saph1() {
 		if (node.state == 0) {
-			Networking.sendStrong("Achievement|ore1|");
+			Networking.unlockAchievement("ore1");
 			Player.player.sapphires++;
 			extra.println("You mine the vein and claim a sapphire!");
 			node.state = 1;
@@ -288,7 +288,7 @@ public class MineNode implements NodeType{
 	
 	private void goldVein1() {
 		if (node.state == 0) {
-			Networking.sendStrong("Achievement|ore1|");
+			Networking.unlockAchievement("ore1");
 			int mult1 = 0, mult2 = 0;
 			switch (node.storage1.toString()) {
 			case "gold": mult1 = 5; mult2 = 10;break;
@@ -360,7 +360,7 @@ public class MineNode implements NodeType{
 					Player.player.getPerson().addSkillPoint();;
 					Player.player.hasCult = true;
 					hasSkills = true;
-					Networking.sendStrong("Achievement|cult1|");
+					Networking.unlockAchievement("cult1");
 				};break;
 
 			case 2:

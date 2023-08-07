@@ -10,6 +10,7 @@ import trawel.Networking;
 import trawel.WorldGen;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
@@ -159,14 +160,14 @@ public class Altar extends Feature{
 			
 			if (Player.player.forceRewardCount == 0 && Player.player.forceRelation >= 5) {
 				Player.player.forceRewardCount++;
-				Player.player.getPerson().addSkill(Skill.SKY_BLESSING_1);//TODO
+				Player.player.getPerson().setPerk(Perk.SKY_BLESS_1);
 				extra.println("You feel blessed.");
 				specialInteraction = true;
 			}
 			
 			if (Player.player.forceRewardCount == 1 && Player.player.forceRelation >= 14) {
 				Player.player.forceRewardCount++;
-				Player.player.getPerson().addSkill(Skill.SKY_BLESSING_1);//TODO
+				Player.player.getPerson().setPerk(Perk.SKY_BLESS_2);
 				extra.println("You feel blessed.");
 				specialInteraction = true;
 			}

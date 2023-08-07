@@ -47,7 +47,7 @@ public class StoryDeathWalker extends Story{
 		extra.println("You can see " +killed.getName() +"'s face clearly now..." );
 		extra.println("1 wake up");
 		extra.inInt(1);
-		Networking.sendStrong("Achievement|die1|");
+		Networking.unlockAchievement("die1");
 		;break;
 		case 2: extra.println("Once again, your body hits the floor...");
 		extra.println("You've wasted your second chance...");

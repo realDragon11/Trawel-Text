@@ -421,4 +421,11 @@ public class Networking {
 		} catch (IOException e) {
 		}
 	}
+
+	public static void unlockAchievement(String string) {
+		if (!Player.player.getCheating()) {
+			sendStrong("Achievement|"+string+"|");
+		}
+		
+	}
 }

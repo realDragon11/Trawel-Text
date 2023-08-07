@@ -1309,6 +1309,7 @@ public class mainGame {
 				story = new StoryNone();
 				Player.addGold(1000);
 				Player.bag.addAether(100000);
+				Player.player.setCheating();
 			}
 			story.storyStart();
 			player.storyHold = story;

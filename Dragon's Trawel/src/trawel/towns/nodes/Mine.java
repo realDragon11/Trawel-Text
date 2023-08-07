@@ -47,7 +47,7 @@ public class Mine extends NodeFeature {
 	public void removeVein() {
 		veinsLeft--;
 		if (veinsLeft == 0 && shape.equals(Shape.NONE)) {
-			Networking.sendStrong("Achievement|mine1|");
+			Networking.unlockAchievement("mine1");
 		}
 	}
 	

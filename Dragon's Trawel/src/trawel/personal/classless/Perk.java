@@ -10,17 +10,24 @@ import trawel.personal.classless.Skill.Type;
 
 public enum Perk implements IHasSkills{
 	EMPTY("","",IHasSkills.emptySkillSet),
-	RACIAL_SHIFTS("Flexible","Prone to changing its defense patterns.",EnumSet.of(Skill.RACIAL_SHIFTS))
+	RACIAL_SHIFTS("Flexible","Prone to changing its defense patterns.",EnumSet.of(Skill.RACIAL_SHIFTS)),
+	SKY_BLESS_1("Leaf on the Wind","Has a minor blessing from the sky, granting them paranatural speed.",EnumSet.of(Skill.SPEEDDODGE,Skill.BLITZ)),
+	SKY_BLESS_2("Growing Storm","Has a blessing from the sky, granting them 5 dexterity and senses that heal them when used.",EnumSet.of(Skill.DODGEREF),0,5)
 	;
 	private final String name, desc;
 	private final Set<Skill> skills;
 	private final int strength, dexterity;
-	Perk(String _name, String description, Set<Skill> skillset){
+	
+	Perk(String _name, String description, Set<Skill> skillset, int str, int dex){
 		name = _name;
 		desc = description;
 		skills = skillset;
-		strength = 0;
-		dexterity = 0;
+		strength = str;
+		dexterity = dex;
+	}
+	
+	Perk(String _name, String description, Set<Skill> skillset){
+		this(_name,description,skillset,0,0);
 	}
 	
 	@Override
