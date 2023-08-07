@@ -98,7 +98,7 @@ public class Networking {
 			out = null;
 		}else {
 			ProcessBuilder builder = new ProcessBuilder(osTerm);
-			//FIXME: just do this in the other half
+			//MAYBELATER: just do this in the other half
 			//SEO has ruined java resources but I could just resort to sockets to pass stuff off again
 			//if there is no website willing to tell me how to pass off non-standard streams
 			builder.directory(null);//current directory

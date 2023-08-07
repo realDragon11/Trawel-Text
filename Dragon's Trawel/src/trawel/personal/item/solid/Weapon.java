@@ -4,8 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
@@ -42,16 +44,12 @@ public class Weapon extends Item {
 	
 	private Enchant enchant;
 
-	private WeaponType weap;//TODO: make this an enum or byte or something
+	private WeaponType weap;
 	private int material;
-	private int cost;//probably also remove cost and weight like I did for armor
-	//FIXME: needs to be changed to account for the aether/money divide
-	private int weight;
-
 	private int kills;
 	private float bsCon, bsIpt, bsAvg, bsWgt;//these don't need to update for internal weapons
 	
-	public List<WeaponQual> qualList = new ArrayList<WeaponQual>();
+	private Set<WeaponQual> qualList = EnumSet.noneOf(WeaponQual.class);
 	
 	public enum WeaponQual{
 		DESTRUCTIVE("Destructive","On Damage: Destroys 33% * percent of health damage dealt local armor."),
@@ -71,19 +69,55 @@ public class Weapon extends Item {
 		}
 	}
 	
+	public int numQual() {
+		return qualList.size();
+	}
+	
+	public boolean hasQual(WeaponQual qual) {
+		return qualList.contains(qual);
+	}
+	
+	public boolean equalQuals(Weapon w) {
+		return qualList.equals(w.qualList);//private bypassing lol
+	}
+	
 	public enum WeaponType{
-		LONGSWORD("longsword","longsword"),BROADSWORD("broadsword","broadsword"),MACE("mace","mace"),SPEAR("spear","spear"),AXE("axe","small_axe"),RAPIER("rapier","rapier")
-		,DAGGER("dagger","dagger"),CLAYMORE("claymore","claymore"),LANCE("spear","spear"),
-		SHOVEL("shovel","shovel"),TEETH_GENERIC("teeth",null),
-		REAVER_STANDING("clawed feet",null),
-		CLAWS_TEETH_GENERIC("teeth and claws",null), BRANCHES("branches",null), 
-		GENERIC_FISTS("fists",null), UNICORN_HORN("horn",null), TALONS_GENERIC("talons",null),
-		FISH_SPEAR("fishing spear","spear"), FISH_ANCHOR("anchor","claymore");
+		LONGSWORD("longsword","longsword",1,2,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		BROADSWORD("broadsword","broadsword",2,3,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		MACE("mace","mace",1,2,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED)),
+		SPEAR("spear","spear",1,2,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		AXE("axe","small_axe",1,2,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		RAPIER("rapier","rapier",2,3,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		DAGGER("dagger","dagger",.7f,1,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		CLAYMORE("claymore","claymore",3,5,EnumSet.of(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED)),
+		LANCE("spear","spear",2,3,EnumSet.of(WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		SHOVEL("shovel","shovel",.8f,2,EnumSet.of(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED)),
+		TEETH_GENERIC("teeth",null,0,0),
+		REAVER_STANDING("clawed feet",null,0,0),
+		CLAWS_TEETH_GENERIC("teeth and claws",null,0,0),
+		BRANCHES("branches",null,0,0), 
+		GENERIC_FISTS("fists",null,0,0),
+		UNICORN_HORN("horn",null,0,0),
+		TALONS_GENERIC("talons",null,0,0),
+		FISH_SPEAR("fishing spear","spear",.3f,1),
+		FISH_ANCHOR("anchor","claymore",1,5);
 		
 		private final String name, legacysprite;
-		WeaponType(String _name, String _legacysprite) {
+		private final float cost, weight;
+		private final Set<WeaponQual> qList;
+		WeaponType(String _name, String _legacysprite, float _cost, float _weight, Set<WeaponQual> _list) {
 			name = _name;
 			legacysprite = _legacysprite;
+			cost = _cost;
+			weight = _weight;
+			qList = _list;
+		}
+		WeaponType(String _name, String _legacysprite, float _cost, float _weight) {
+			name = _name;
+			legacysprite = _legacysprite;
+			cost = _cost;
+			weight = _weight;
+			qList = EnumSet.noneOf(WeaponQual.class);
 		}
 		
 		public String getName() {
@@ -102,108 +136,15 @@ public class Weapon extends Item {
 	public Weapon(int newLevel, Material materia, WeaponType weapon) {
 		material = materia.curNum;
 		level = newLevel;
-		weight *= materia.weight;
-		cost = (int) materia.cost;
 		//choosing the type of weapon
 		weap = weapon;
 		kills = 0;
 		
-		//DOLATER: convert to enum or some other method
-		switch (weap) {
-		case LONGSWORD:
-			cost *= 1;
-			weight *=2;
-			cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
-			;break;
-		case BROADSWORD:
-			cost *= 2;
-			weight *=3;
-			cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
-			;break;
-		case MACE:
-			cost *= 2;
-			weight *=3;
-			cost *= 1+ 0.1 * addQuals(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED);
-			;break;
-		case SPEAR:
-			cost *= 1;
-			weight *=2;
-			cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
-			;break;
-		case AXE:
-			cost *= 1;
-			weight *=2;
-			cost *= 1+ 0.1 * addQuals(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
-			;break;
-		case RAPIER:
-			cost *= 2;
-			weight *=3;//I think rapiers were heavy? The blunt damage doesn't really reflect this though.
-			cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
-			;break;
-		case DAGGER:
-			cost *= .7;
-			weight *=1;
-			cost *= 1+ 0.1 * addQuals(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
-			;break;
-		case CLAYMORE:
-			cost *= 3;
-			weight *=5;
-			cost *= 1+ 0.1 * addQuals(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED);
-			;break;
-		case LANCE:
-			cost *= 2;
-			weight *=3;
-			cost *= 1+ 0.1 * addQuals(WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE);
-			;break;
-		case SHOVEL:
-			cost *= .8;
-			weight *=2;
-			cost *= 1+ 0.1 * addQuals(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED);
-			;break;
-
-
-	//not normal weapons start
-		case TEETH_GENERIC:
-			cost *= 1;
-			weight *=0;
-			;break;
-		case REAVER_STANDING:
-			cost *= 1;
-			weight *=0;	
-			;break;
-		case CLAWS_TEETH_GENERIC:
-			cost *= 1;
-			weight *=0;	
-			;break;
-		case BRANCHES:
-			cost *= 1;
-			weight *=0;	
-			;break;
-		case GENERIC_FISTS:
-			cost *= 1;
-			weight *=0;
-			;break;
-		case UNICORN_HORN:
-			cost *= 3;
-			weight *=0;	
-			;break;
-		case TALONS_GENERIC:
-			cost *= 1;
-			weight *=0;	
-			;break;
-		case FISH_SPEAR:
-			cost *= .2f;
-			weight *=1;
-			;break;
-		case FISH_ANCHOR:
-			cost *= 1;
-			weight *=5;
-			;break;
-		}
+		addQuals(weap.qList);
 		//random chance, partially based on enchantment power, to enchant the weapon
 		if (getEnchantMult() > extra.randFloat()*3f) {
 			if (extra.chanceIn(2, 3)) {
-				enchant = EnchantConstant.makeEnchant(getEnchantMult(),cost);
+				enchant = EnchantConstant.makeEnchant(getEnchantMult(),getBaseCost());
 			}else {
 				enchant = new EnchantHit(getEnchantMult());
 			}
@@ -324,7 +265,7 @@ public class Weapon extends Item {
 	 * @return weight (int)
 	 */
 	public int getWeight() {
-		return (int) (weight*Inventory.TEMP_WEIGHT_MULT);
+		return (int) (getMat().weight*weap.weight*Inventory.TEMP_WEIGHT_MULT);
 	}
 	
 	/**
@@ -334,12 +275,12 @@ public class Weapon extends Item {
 	@Override
 	public int getAetherValue() {
 		if (this.isEnchantedConstant()) {
-			return (int) (level*cost * enchant.getGoldMult()+enchant.getGoldMod());
+			return (int) (getBaseCost() * enchant.getGoldMult()+enchant.getGoldMod());
 		}
 		if (this.isEnchantedHit()) {
-			return (int) (level*cost * enchant.getGoldMult());
+			return (int) (getBaseCost() * enchant.getGoldMult());
 		}
-		return cost*level;
+		return getBaseCost();
 	}
 	
 	/**
@@ -347,7 +288,7 @@ public class Weapon extends Item {
 	 * @return base cost (int)
 	 */
 	public int getBaseCost() {
-		return cost*level;
+		return (int) (getMat().cost*weap.cost*level * (1 + .1f *qualList.size()));
 	}
 
 	
@@ -365,7 +306,7 @@ public class Weapon extends Item {
 			return pastEnchant != enchant;
 		}else {
 			//IsEnchantedConstant = true;
-			enchant = EnchantConstant.makeEnchant(getEnchantMult(),cost);//new EnchantConstant(level*baseEnchant);
+			enchant = EnchantConstant.makeEnchant(getEnchantMult(),getBaseCost());//new EnchantConstant(level*baseEnchant);
 			//effectiveCost=(int) extra.zeroOut(cost * enchant.getGoldMult()+enchant.getGoldMod());
 			return true;
 		}
@@ -640,6 +581,24 @@ public class Weapon extends Item {
 			}
 			WeaponQual wq = extra.randList(wqs);
 			if (!this.qualList.contains(wq)) {
+				qualList.add(wq);
+				added++;
+			}
+		}
+		return added;
+	}
+	
+	private int addQuals(Set<WeaponQual> quals) {
+		if (quals.isEmpty()) {
+			return 0;
+		}
+		int added = 0;
+		for (int i = 0; i < 5;i++) {
+			if (added >= 3) {
+				return added;
+			}
+			WeaponQual wq = extra.randSet(quals);
+			if (!qualList.contains(wq)) {
 				qualList.add(wq);
 				added++;
 			}

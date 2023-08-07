@@ -1041,7 +1041,7 @@ public class TargetFactory {
 		 * used mostly for mapping to different parts
 		 * otherwise will just be counting from 0 to size-1
 		 */
-		private int[] map;//FIXME: do an int[][] where the first one is the actual map
+		private int[] map;//MAYBELATER???: do an int[][] where the first one is the actual map
 		//and the others are linked maps
 		//should probably compute chains at compile time to avoid recursion issues
 		//but in such a case the mapping would be useless and should be reduced anyway?

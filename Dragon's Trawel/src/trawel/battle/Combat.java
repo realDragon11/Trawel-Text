@@ -382,7 +382,7 @@ public class Combat {
 				quickest.removeEffect(Effect.CONFUSED_TARGET);
 				otherperson = getDefenderForConfusion(quickest);
 			}else {
-			if (defender.isAlive() && quickest.getBag().getHand().qualList.contains(Weapon.WeaponQual.DUELING)) {
+			if (defender.isAlive() && quickest.getBag().getHand().hasQual(Weapon.WeaponQual.DUELING)) {
 				otherperson = defender;
 			}else {
 				if (quickest.isPlayer() && Player.player.eaBox.markTarget != null) {
@@ -409,7 +409,7 @@ public class Combat {
 			}
 			setAttack(quickest,otherperson);
 			if (otherperson != defender && atr != null && (atr.code == ATK_ResultCode.MISS || atr.code == ATK_ResultCode.DODGE)
-					&& quickest.getBag().getHand().qualList.contains(WeaponQual.CARRYTHROUGH)) 
+					&& quickest.getBag().getHand().hasQual(WeaponQual.CARRYTHROUGH)) 
 			{
 				quickest.advanceTime(Math.min(10,quickest.getTime()-1));
 			}
@@ -744,7 +744,6 @@ public class Combat {
 		ImpairedAttack attack = attacker.getNextAttack();
 		AttackReturn atr = handleAttack(true,attack,defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
 		int damageDone = atr.damage;
-		//extra.println(damageDone + " " + defender.getHp()+"/"+defender.getMaxHp());//FIXME: probably turn damage responses into a better thing
 		String inlined_color = extra.PRE_WHITE;
 		this.handleAttackPart2(attack,defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender,damageDone);
 		//armor quality handling
@@ -1029,7 +1028,7 @@ public class Combat {
 
 			}
 			if (w != Wound.GRAZE)
-				if (attack.getWeapon() != null && attack.getWeapon().qualList.contains(Weapon.WeaponQual.DESTRUCTIVE)) {
+				if (attack.getWeapon() != null && attack.getWeapon().hasQual(Weapon.WeaponQual.DESTRUCTIVE)) {
 					defender2.getBag().burn((retu.damage/defender2.getMaxHp())/3, attack.getSlot());
 				}
 		}

@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+
 import com.github.tommyettinger.random.*;
 
 import derg.menus.MenuGenerator;
@@ -13,6 +15,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
+import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.people.Player;
 import trawel.towns.World;
 
@@ -889,6 +892,18 @@ public final class extra {
 		public static String spaceBuffer(int size) {
 			// TODO upgrade to java 11 with " ".repeat() and just do that everywhere this is used
 			return String.join("", Collections.nCopies(size," "));
+		}
+
+		public static <E> E randSet(Set<E> set) {
+			assert !set.isEmpty();
+			int i = extra.getRand().nextInt(set.size());
+			for (E e: set) {
+				if (i <= 0) {
+					return e;
+				}
+				i--;
+			}
+			throw new RuntimeException("Wrong randset size");
 		}
 		
 }

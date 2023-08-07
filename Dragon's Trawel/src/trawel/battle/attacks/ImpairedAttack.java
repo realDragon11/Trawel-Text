@@ -67,7 +67,7 @@ public class ImpairedAttack implements IAttack{
 				sMult *= _weapon.getMat().sharpMult;
 				bMult *= _weapon.getMat().bluntMult;
 				pMult *= _weapon.getMat().pierceMult;
-				hitMult *=_weapon.qualList.contains(Weapon.WeaponQual.ACCURATE) ? 1.1 : 1;
+				hitMult *=_weapon.hasQual(Weapon.WeaponQual.ACCURATE) ? 1.1 : 1;
 			}else {
 				if (_attacker != null) {
 					w_lvl = _attacker.getLevel();
@@ -335,7 +335,7 @@ public class ImpairedAttack implements IAttack{
 	}
 	
 	public boolean hasWeaponQual(WeaponQual qual) {
-		return weapon != null && weapon.qualList.contains(qual);
+		return weapon != null && weapon.hasQual(qual);
 	}
 	
 }

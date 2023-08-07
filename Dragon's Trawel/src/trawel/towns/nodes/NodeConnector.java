@@ -22,10 +22,6 @@ import trawel.towns.Feature;
 public class NodeConnector implements Serializable {
 
 	//used for connecting event nodes with bosses
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	protected ArrayList<NodeConnector> connects;
 	protected String name;//DOLATER: could probably generate these two Strings from the Objects
@@ -45,7 +41,7 @@ public class NodeConnector implements Serializable {
 	protected byte state;
 	protected Object storage1, storage2;
 	
-	public transient boolean passing;//FIXME: might have to init at false every time
+	public transient boolean passing;
 	protected transient NodeFeature parent;
 	
 	public static NodeConnector lastNode = null;

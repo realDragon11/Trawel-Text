@@ -552,9 +552,6 @@ public class WeaponAttackFactory {
 		return stanceMap.get(t);
 	}
 	
-	
-	//FIXME make a per attack metric that lists the average results (hit/miss, damage results for each vector, armor deflection) using unenchanted unqualitied
-	//weapons of the following materials: iron, tin, copper, bronze, steel, silver, gold, adamantine, solar gold
 	public static void weaponMetrics() throws FileNotFoundException {
 		/*
 		PrintWriter writer = new PrintWriter("wmetrics.csv");

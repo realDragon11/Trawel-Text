@@ -322,7 +322,7 @@ public class Attack implements IAttack{
 	
 	//.0f = float/double with no decimal places. Weird that it can't auto convert, but oh well
 	//UPDATE welp can't make them look nicer so just made them all ints anyways
-	public enum Wound{//FIXME: make sure the reworked wounds are fully in
+	public enum Wound{//TODO: make sure the reworked wounds are fully in
 		HAMSTRUNG("Hamstrung","Delays the next attack by %1$d instants.","Their leg is hamstrung!"), 
 		BLINDED("Blinded","The next attack will be %1$d%% less accurate.","They can't see!"),
 		CONFUSED("Confused","Forces the opponent to retarget.","They look confused!"), 

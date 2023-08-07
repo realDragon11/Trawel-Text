@@ -553,7 +553,6 @@ public class AIClass {
 			+ " " + extra.hardColorDelta1(toArm.getPierceResist(),hasArm.getPierceResist())
 			+ " " + priceDiffDisp(costDiff,costName,s)
 			);
-			//" dex: " + extra.format2(toArm.getDexMod()-hasArm.getDexMod()) +
 			if (hasItem.getEnchant() != null || toReplace.getEnchant()!= null) {
 				displayEnchantDiff(hasItem.getEnchant(),toReplace.getEnchant());
 			}
@@ -562,19 +561,17 @@ public class AIClass {
 				Weapon hasWeap = (Weapon)hasItem;
 				Weapon toWeap = (Weapon)toReplace;
 				if (Player.getTutorial()) {
-					//extra.println("hd = highest damage, ad = average damage, bs = battlescore, q = weapon qualities");
 					extra.println("ic = impact chance, ad = average damage, wa = weighted average damage");
 				}
-				//TODO: this will break if a qual is in it more than twice
-				boolean isQDiff = !toWeap.qualList.containsAll(hasWeap.qualList) && !hasWeap.qualList.containsAll(toWeap.qualList);
-				int qualDiff = isQDiff ? toWeap.qualList.size()-hasWeap.qualList.size() : 0;
+				boolean isQDiff = !toWeap.equalQuals(hasWeap);
+				int qualDiff = isQDiff ? toWeap.numQual()-hasWeap.numQual() : 0;
 				
 				extra.println(extra.PRE_MAGENTA+"Difference: ic/ad/wa: " 
 				+ (extra.hardColorDelta2(toWeap.scoreImpact(),hasWeap.scoreImpact()))
 				+ "/" + (extra.hardColorDelta2(toWeap.scoreAverage(),hasWeap.scoreAverage()))
 				+ "/" + (extra.hardColorDelta2(toWeap.scoreWeight(),hasWeap.scoreWeight()))
 				//if the qualities are the same, 'q=', if neither has any, do not display
-				+ (isQDiff ? " q " + extra.colorBaseZeroTimid(qualDiff) : (toWeap.qualList.size() > 0 ? (" q =") : ""))
+				+ (isQDiff ? " q " + extra.colorBaseZeroTimid(qualDiff) : (toWeap.numQual() > 0 ? (" q =") : ""))
 				+ " " + priceDiffDisp(costDiff,costName,s)
 				);
 				if (((Weapon)hasItem).getEnchant() != null || ((Weapon)toReplace).getEnchant()!= null) {
@@ -696,7 +693,6 @@ public class AIClass {
 	}
 	
 	public static ImpairedAttack chooseAttack(List<ImpairedAttack> attacks,Combat combat, Person attacker, Person defender) {
-		//FIXME: readd player choice
 		if (attacker.isPlayer()) {
 			int numb = 9;
 			while (numb == 9 || numb < 1) {
@@ -759,11 +755,24 @@ public class AIClass {
 		}
 		return AIClass.attackTest(attacks, 4, combat, attacker, defender);
 	}
-	
-	/*
-	public static void displayDifference(Item hasItem, Item toReplace) {
-		extra.println("Difference: " +(hasItem));
-	}*/
+
+	/**
+	 * find an item you can't sell
+	 */
+	public static void findItem(Item found, int smarts, boolean autosell, Person person) {
+		Item current = person.getBag().itemCounterpart(found);
+		if (AIClass.compareItem(current,found,smarts,autosell,person)) {
+			Item ret = person.getBag().swapItem(found);
+			if (ret != null) {
+				Services.aetherifyItem(ret,person.getBag());
+			}
+			if (person.isPlayer()) {
+				Networking.charUpdate();
+			}
+		}else {
+			Services.aetherifyItem(found,person.getBag());
+		}
+	}
 
 
 }

@@ -798,13 +798,7 @@ public class GroveNode implements NodeType{
 				node.state = 1;
 				node.name = "rock pieces";
 				node.interactString = "examine rock pieces";
-				if (AIClass.compareItem(Player.bag.getHand(),(Item)node.storage1,-1,false,Player.player.getPerson())) {
-					;
-					Services.sellItem(Player.bag.swapWeapon((Weapon)node.storage1),Player.bag,false);
-					Networking.charUpdate();
-				}else {
-					Services.sellItem((Weapon)node.storage1,Player.bag,false);
-				}
+				AIClass.findItem((Item)node.storage1,-1,false,Player.player.getPerson());
 			}else {
 				extra.println("You leave it alone.");
 			}
