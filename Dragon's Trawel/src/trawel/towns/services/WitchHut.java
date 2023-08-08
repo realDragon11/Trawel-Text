@@ -30,11 +30,11 @@ public class WitchHut extends Store{
 	private List<DrawBane> reagents = new ArrayList<DrawBane>();
 	private String storename;
 	
-	public WitchHut(Town t) {
+	public WitchHut(String _name, Town t) {
 		super(WitchHut.class);
 		tier = t.getTier();
 		storename = name;
-		name = "witch hut";
+		name = _name;
 		tutorialText = "A place to brew potions.";
 		town = t;
 	}

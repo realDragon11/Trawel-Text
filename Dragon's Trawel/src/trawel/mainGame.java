@@ -46,6 +46,7 @@ import trawel.personal.classless.Skill;
 import trawel.personal.item.Item;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.magic.EnchantConstant;
+import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
@@ -410,7 +411,7 @@ public class mainGame {
 	private static void baseSetup1() {
 		if (!basicSetup1) {
 			EnchantConstant.init();
-			
+			DrawBane.setup();
 			new MaterialFactory();
 			new RaceFactory();
 			new TargetFactory();

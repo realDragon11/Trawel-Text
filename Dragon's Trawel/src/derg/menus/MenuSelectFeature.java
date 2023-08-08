@@ -25,7 +25,7 @@ public class MenuSelectFeature implements MenuItem {
 				append += ((NodeFeature)feature).sizeDesc();
 			}
 		}
-		return feature.getColor() + extra.capFirst(feature.getName()) + append;
+		return feature.getColor() +feature.getName() + append;
 	}
 	
 	public MenuSelectFeature(Feature f) {

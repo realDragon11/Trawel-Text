@@ -10,6 +10,7 @@ import trawel.personal.people.Player;
 public class FBox implements java.io.Serializable{
 
 	private static final long serialVersionUID = 1L;
+	//DOLATER: maybe turn into an enum map?
 	private List<FSub> factions = new ArrayList<FSub>();
 	
 	public class FSub implements java.io.Serializable{

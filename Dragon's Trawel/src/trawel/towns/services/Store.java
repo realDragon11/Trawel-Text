@@ -81,6 +81,12 @@ public class Store extends Feature{
 		this.generate(tier, type);
 	}
 	
+	public Store(String name, int tier, int type) {
+		this();
+		this.generate(tier, type);
+		this.name = name;
+	}
+	
 	protected Store(Class<? extends Store> subtype) {//for witch hut
 		this();
 		if (subtype == WitchHut.class) {
@@ -106,19 +112,20 @@ public class Store extends Feature{
 		this.tier = tier;
 		type = newType;
 		switch (type) {
-		case 0: name = extra.choose("hat","headwear","heads and hair");break;
-		case 1: name = extra.choose("gloves","handwear","hand protection","mitten");break;
-		case 2: name = extra.choose("chestpiece","bodywear","chest protector");break;
-		case 3: name = extra.choose("pants","legwear","leg protector","trouser","pantaloon");break;
-		case 4: name = extra.choose("boot","footwear","cobbler","feet protection");break;
-		case 5: name = extra.choose("weapon","arms","armament","war");break;
-		case 6: name = extra.choose("general","flea","convenience","trading","super");break;
-		case 7: name = extra.choose("race","species");break;
-		case 8: name = extra.choose("drawbane");break;//misc
-		case 9: name = extra.choose("witch","potion");break;
-		case 10: name = extra.choose("food");break;
+		case 0: name = extra.choose("Hat","Headwear","Heads and Hair");break;
+		case 1: name = extra.choose("Gloves","Handwear","Hand protection","Mitten");break;
+		case 2: name = extra.choose("Chestpiece","Bodywear","Chest Protector");break;
+		case 3: name = extra.choose("Pants","Legwear","Leg Protector","Trouser","Pantaloon");break;
+		case 4: name = extra.choose("Boot","Footwear","Cobbler","Feet Protection");break;
+		case 5: name = extra.choose("Weapon","Arms","Armament","War");break;
+		case 6: name = extra.choose("General","Flea","Convenience","Trading","Super");break;
+		case 7: name = extra.choose("Race","Species");break;
+		case 8: name = extra.choose("Drawbane");break;//misc
+		case 9: name = extra.choose("Witch","Potion Material");break;
+		case 10: name = extra.choose("Food");break;
+		case 11: name = extra.choose("Oddity");break;//collector
 		}
-		name += " " + extra.choose("store","market","shop","post","boutique","emporium","outlet","center","mart","stand");
+		name += " " + extra.choose("Store","Market","Shop","Post","Boutique","Emporium","Outlet","Center","Mart","Stand");
 		if (type < 8) {
 			items = new ArrayList<Item>();
 			if (type < 5) {
@@ -551,6 +558,9 @@ public class Store extends Feature{
 				return;
 			case 10:
 				dbs.add(DrawBane.draw(DrawList.FOOD));
+				return;
+			case 11:
+				dbs.add(DrawBane.draw(DrawList.COLLECTOR));
 				return;
 			}
 			

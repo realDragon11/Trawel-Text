@@ -112,13 +112,13 @@ public class WorldGen {
 		plane = new Plane();
 		//Player.updateWorld(w);//we update player world in game start now
 		plane.addWorld(w);
-		Island pocket = new Island("pocket dimension",w);
+		Island pocket = new Island("Pocket Dimension",w);
 		
-		Island rona = new Island("rona",w);
-		Town homa = new Town("homa",1,rona,new Point(3,4));
+		Island rona = new Island("Rona",w);
+		Town homa = new Town("Homa",1,rona,new Point(3,4));
 		homa.addFeature(new Store(1,6));
-		homa.addFeature(new Arena("basena arena",1,1,24,1,476));
-		homa.addFeature(new Grove("the woody tangle",homa,30));
+		homa.addFeature(new Arena("Basena Arena",1,1,24,1,476));
+		homa.addFeature(new Grove("The Woody Tangle",homa,30));
 		homa.addFeature(new Champion(4));
 		w.setStartTown(homa);
 		homa.tTags.add(TownTag.SMALL_TOWN);
@@ -132,32 +132,31 @@ public class WorldGen {
 		});
 		
 		
-		Town unun = new Town("unun",2,rona,new Point(5,4));
+		Town unun = new Town("Unun",2,rona,new Point(5,4));
 		lynchPin = unun;
 		addConnection(homa,unun,"road","barrier way");
-		unun.addFeature(new Inn("trailblazer's tavern",2,unun,null));
+		unun.addFeature(new Inn("Trailblazer's Tavern",2,unun,null));
 		unun.addTravel();
-		unun.addFeature(new MerchantGuild("eoano's merchant guild (unun)"));
-		unun.addFeature(new Dungeon("tower of fate",unun,Dungeon.Shape.TOWER,0));
-		unun.addFeature(new Slum(unun,"unun slums",true));
+		unun.addFeature(new MerchantGuild("Eoano's Merchant Guild (Unun)"));
+		unun.addFeature(new Dungeon("Tower of Fate",unun,Dungeon.Shape.TOWER,0));
+		unun.addFeature(new Slum(unun,"The Ephemeral People's Quarter",true));
 		unun.tTags.add(TownTag.CITY);
 		unun.tTags.add(TownTag.ADVENTURE);
 		unun.tTags.add(TownTag.MERCHANT);
 		unun.setFirstPrinter(new PrintEvent(){
 			@Override
 			public void print() {
-				extra.println("The port city of unun is dominated by a large tower- the tower of fate. It's an ancient dungeon home to the fatespinner. Below, on the ground, a prominent inn stands next to the interplanar merchant guild headquarters for this world.");
+				extra.println("The port city of Unun is dominated by a large tower- the Tower of Fate. It's an ancient dungeon home to the mysterious Fatespinner, who seems to ignore the town. Below, on the ground, a prominent inn stands next to the interplanar merchant guild headquarters for this world.");
 			}
-			
 		});
 		
-		Town tevar = new Town("tevar",2,rona,new Point(4,5));
+		Town tevar = new Town("Tevar",2,rona,new Point(4,5));
 		tevar.addFeature(new Store(2));
-		tevar.addFeature(new Arena("epino arena",5,3,24*30,150,149));
+		tevar.addFeature(new Arena("Epino Arena",5,3,24*30,150,149));
 		addConnection(homa,tevar,"road","red road");
 		addConnection(tevar,unun,"road","blue road");
-		tevar.addFeature(new Forest("the forest of vicissitude",2));
-		tevar.addFeature(new Mine("old tevar mine",tevar,null,NodeFeature.Shape.NONE));
+		tevar.addFeature(new Forest("The Forest of Vicissitude",2));
+		tevar.addFeature(new Mine("Ole' Tevar Mine",tevar,null,NodeFeature.Shape.NONE));
 		tevar.setFirstPrinter(new PrintEvent(){
 			@Override
 			public void print() {
@@ -166,15 +165,15 @@ public class WorldGen {
 		});
 		
 		
-		Town hemo = new Town("hemo",2,rona,new Point(5,7));
+		Town hemo = new Town("Hemo",2,rona,new Point(5,7));
 		addConnection(hemo,tevar,"road","purple road");
 		addConnection(hemo,unun,"road","black valley");
 		Store s = new Store(1,6);
 		hemo.addFeature(s);
-		hemo.addFeature(new Grove("the odd grove",hemo,12));
+		hemo.addFeature(new Grove("The Odd Grove",hemo,12));
 		hemo.addFeature(new Blacksmith(1,s));
 		hemo.addFeature(new Garden(hemo));
-		hemo.addFeature(new WitchHut(hemo));
+		hemo.addFeature(new WitchHut("Esoteric Ingredients",hemo));
 		hemo.tTags.add(TownTag.DRUDIC);
 		hemo.tTags.add(TownTag.ALCHEMY);
 		hemo.setFirstPrinter(new PrintEvent(){
@@ -185,11 +184,11 @@ public class WorldGen {
 			
 		});
 		
-		Town tanak = new Town("tanak",5,rona,new Point(4,9));
+		Town tanak = new Town("Tanak",5,rona,new Point(4,9));
 		addConnection(hemo,tanak,"road","windy pass");
-		tanak.addFeature(new Arena("the gauntlet cirque below tanak",4,6,24*3,24*20,1));
+		tanak.addFeature(new Arena("The Gauntlet Cirque below Tanak",4,6,24*3,24*20,1));//lots of bouts
 		tanak.addFeature(new Store(4,6));
-		tanak.addFeature(new Inn("cloud comforts inn",5,tanak,null));
+		tanak.addFeature(new Inn("Cloud Comforts Inn",5,tanak,null));
 		tanak.addTravel();
 		tanak.addTravel();
 		tanak.addFeature(new Champion(10));
@@ -203,13 +202,13 @@ public class WorldGen {
 			
 		});
 		
-		Town lokan = new Town("lokan",3,rona,new Point(5,10));
+		Town lokan = new Town("Lokan",3,rona,new Point(5,10));
 		addConnection(lokan,tanak,"road","flat walk");
 		addConnection(lokan,unun,"ship","two way current");
-		lokan.addFeature(new Library("records of value", lokan));
-		lokan.addFeature(new Oracle("appraiser of fortune",3));
-		lokan.addFeature(new Appraiser("appraiser of steel"));
-		lokan.addFeature(new Doctor("appraiser of wellness",lokan));
+		lokan.addFeature(new Library("Records of Value", lokan));
+		lokan.addFeature(new Oracle("Appraiser of Fortune",3));
+		lokan.addFeature(new Appraiser("Appraiser of Steel"));
+		lokan.addFeature(new Doctor("Appraiser of Wellness",lokan));
 		lokan.addTravel();
 		lokan.addTravel();
 		lokan.tTags.add(TownTag.MYSTIC);
@@ -217,17 +216,15 @@ public class WorldGen {
 			@Override
 			public void print() {
 				extra.println("Lokan is an aberrant arrangement of minor services which cropped up around the oracles that settled here.");
-				
 			}
-			
 		});
 		
-		Town haka = new Town("haka",3,rona,new Point(1,10));
+		Town haka = new Town("Haka",3,rona,new Point(1,10));
 		addConnection(lokan,haka,"road","diamond way");
 		addConnection(tanak,haka,"road","circle road");
-		haka.addFeature(new Arena("grand colosseum (daily bout)",3,1,24,12,74));
-		haka.addFeature(new Arena("grand colosseum (weekly tourny)",3,4,24*7,24*7,30));
-		haka.addFeature(new Mountain("peerless mountain",3));
+		haka.addFeature(new Arena("Grand Colosseum (daily bout)",3,1,24,12,74));
+		haka.addFeature(new Arena("Grand Colosseum (weekly tourny)",3,4,24*7,24*7,30));
+		haka.addFeature(new Mountain("Peerless Mountain",3));
 		haka.setFirstPrinter(new PrintEvent(){
 
 			@Override
@@ -237,197 +234,112 @@ public class WorldGen {
 			}
 			
 		});
-		Town fortMerida = new Town("fort merida",4, rona,(byte) 1,(byte)11, null);
+		Town fortMerida = new Town("Fort Merida",4, rona,(byte) 1,(byte)11, null);
 		fortMerida.addFeature(new WizardTower(4));
 		addConnection(fortMerida,haka,"road","mountain pass");
 		
 		
-		Island apa = new Island("apa",w);
-		Town alhax = new Town("alhax",2,apa,new Point(5,2));
-		alhax.addFeature(new Arena("yenona arena",2,5,24*7,3,37));
+		Island apa = new Island("Apa",w);
+		Town alhax = new Town("Alhax",2,apa,new Point(5,2));
+		//alhax.addFeature(new Arena("yenona arena",2,5,24*7,3,37));
 		addConnection(alhax,unun,"ship","yellow passageway");
-		alhax.addFeature(new Inn("alhax bar",2,alhax,null));
+		alhax.addFeature(new Inn("Lockbox Pub",3,alhax,null));
+		alhax.addFeature(new Store("'A Cut Above'",4,5));//high level weapon store
+		alhax.addFeature(new Store("'Some of Everything'",3,6));
 		alhax.addFeature(new Store(2,4));
-		alhax.addFeature(new Store(2,5));
-		//alhax.addFeature(new Store(2,6));
+		alhax.addFeature(new Store(2,0));
 		alhax.tTags.add(TownTag.MERCHANT);
-		alhax.setGoPrinter(new PrintEvent(){
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void print() {
-				extra.println("Alhaxian merchant ships surround the port when you arrive.");
-				if (Player.player.merchantLevel > 5) {
-					extra.println("A few are flying your colors.");
-				}
-			}
-			
-		});
 		alhax.setFirstPrinter(new PrintEvent(){
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void print() {
-				extra.println("The port city of alhax links the three islands of the world together. It's island, apa, is home to many shops and stores.");
-				
+				extra.println("The port city of Alhax links the three islands of the world together. It's island, Apa, is home to many shops and stores. While the merchant's guild is in Unun, the true commerce center is here.");
 			}
-			
 		});
 		
-		Town revan = new Town("revan",3,apa,new Point(3,1));
+		Town revan = new Town("Revan",3,apa,new Point(3,1));
 		addConnection(revan,alhax,"ship","green passageway");
 		addConnection(revan,alhax,"road","the tops");
-		revan.addFeature(new Store(2,0));
+		revan.addFeature(new Store(2,5));
 		revan.addFeature(new Store(2,1));
 		revan.addFeature(new Store(2,2));
 		revan.addFeature(new Store(2,3));
 		revan.addFeature(new Altar());
 		addConnection(revan,tanak,"teleport","the red ritual");
 		revan.tTags.add(TownTag.MERCHANT);
-		revan.setGoPrinter(new PrintEvent(){
+		revan.tTags.add(TownTag.DRUDIC);
 
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void print() {
-				extra.println("You return to the altar town.");
-				
-			}
-			
-		});
 		revan.setFirstPrinter(new PrintEvent(){
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void print() {
-				extra.println("The town of revan is clustered around a great altar, made to glorify it's nature.");
-				
+				extra.println("The town of Revan is clustered around a great altar, which fell from the sky according to local lore.");
 			}
-			
 		});
 		
 		
-		Town arona = new Town("arona",10,pocket,new Point(1,1));
-		//s = new Store(2,7);
-		//arona.addFeature(s);
+		Town arona = new Town("Arona",10,pocket,new Point(1,1));
 		addConnection(revan,arona,"teleport","the polka-dot ritual");
-		//arona.addFeature(new Blacksmith(0,s));
 		arona.addFeature(new Champion(10));
-		arona.addFeature(new Store(4,8));
-		
-		arona.setGoPrinter(new PrintEvent(){
+		arona.addFeature(new Champion(7));
+		arona.addFeature(new Store(4,11));
+		arona.addFeature(new Store(3,11));
+		arona.tTags.add(TownTag.ARCANE);
 
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void print() {
-				extra.println("You return to the pocket dimension.");
-				
-			}
-			
-		});
 		arona.setFirstPrinter(new PrintEvent(){
-
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void print() {
-				extra.println("You've enter the town of arona, held in a wizard's pocket dimension.");
+				extra.println("You've enter the town of Arona, held in a wizard's pocket dimension. They employ powerful fighters as guards.");
 				
 			}
 			
 		});
 		
-		Island teran = new Island("teran",w);
-		Town yena = new Town("yena",4,teran,new Point(8,2));
+		Island teran = new Island("Teran",w);
+		Town yena = new Town("Yena",4,teran,new Point(8,2));
 		addConnection(revan,yena,"ship","blue sea");
 		addConnection(alhax,yena,"ship","blue sea");
-		//yena.addFeature(new Gambler("cup master","cups",1000));
-		//yena.addFeature(new Well("trinity well"));
 		yena.addFeature(new Dungeon("Dungeon of Fame", yena,NodeFeature.Shape.NONE,-1));
 		yena.addTravel();
 		yena.addTravel();
-		yena.addFeature(new HeroGuild("yena hero's guild"));
+		yena.addFeature(new HeroGuild("Third Hero's Guild"));
 		yena.addFeature(new Champion(4));
 		yena.tTags.add(TownTag.ADVENTURE);
 		
-		Town denok = new Town("denok",4,teran,new Point(12,1));
+		Town denok = new Town("Denok",4,teran,new Point(12,1));
 		addConnection(denok,yena,"road","apple road");
 		denok.addFeature(new Store(4,3));
 		denok.addFeature(new Store(5,5));
-		denok.addFeature(new Forest("the white forest",4));
-		denok.addFeature(new Grove("the white grove",denok));
-		denok.addFeature(new Mine("denok mine",denok,null,NodeFeature.Shape.NONE));
-		denok.addFeature(new Doctor("Shaman",denok));
+		denok.addFeature(new Forest("Outlaying Wilds",4));
+		denok.addFeature(new Grove("The Shaman's Clearing",denok,20));
+		denok.addFeature(new Doctor("The Shaman's Hut",denok));
+		denok.addFeature(new Mine("Denok's Mine",denok,null,NodeFeature.Shape.NONE));
+		
 		denok.addTravel();
 		denok.tTags.add(TownTag.DRUDIC);
 		
-		Town erin = new Town("erin",5,teran,new Point(10,4));
+		Town erin = new Town("Erin",5,teran,new Point(10,4));
 		addConnection(erin,yena,"road","pear road");
 		addConnection(erin,denok,"road","orange road");
-		erin.addFeature(new Arena("erin colosseum (daily bout)",5,1,24,12,39));
-		erin.addFeature(new Store(5,1));
-		erin.addFeature(new Inn("erin inn",5,erin,null));
-		erin.addFeature(new Library("erin library",erin));
-		erin.addFeature(new Mountain("the white mountain",5));
-		erin.addFeature(new Appraiser("erin appraiser"));
+		erin.addFeature(new Arena("Grandstander's Stands (daily bout)",5,1,24,12,39));
+		erin.addFeature(new Inn("Scholar's Respite",5,erin,null));
+		erin.addFeature(new Library("Alex's Library",erin));
+		erin.addFeature(new Mountain("A Very Large Hill",5));
+		erin.addFeature(new Appraiser("Material Patent Offices"));
 		erin.tTags.add(TownTag.ARCANE);
-		erin.setGoPrinter(new PrintEvent(){
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void print() {
-				extra.println("You return to erin, the library town.");
-				
-			}
-			
-		});
 		erin.setFirstPrinter(new PrintEvent(){
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void print() {
-				extra.println("Erin has the largest library in the world, and scholars from all over gather in it to debate the newest theories.");
+				extra.println("Erin has the largest library in this world, and scholars from all over gather in it to debate the newest theories.");
 				
 			}
 			
 		});
 		
 		
-		Town placka = new Town("placka",6,teran,new Point(13,3));
+		Town placka = new Town("Placka",6,teran,new Point(13,3));
 		addConnection(erin,placka,"road","peach road");
 		addConnection(placka,denok,"road","pineapple road");
-		placka.addFeature(new Forest("the white forest", 6));
-		//addConnection(alhax,placka,"ship","the yellow sea");
 		addConnection(yena,placka,"ship","the yellow sea");
 		placka.addTravel();
 		placka.addTravel();
@@ -435,17 +347,16 @@ public class WorldGen {
 		placka.addFeature(new Dungeon("The Dungeon of Woe",placka,NodeFeature.Shape.NONE,-1));
 		placka.tTags.add(TownTag.ADVENTURE);
 		
-		Town tunka = new Town("tunka",7,teran,new Point(12,5));
+		Town tunka = new Town("Tunka",7,teran,new Point(12,5));
 		addConnection(erin,tunka,"road","left-over road");
 		addConnection(placka,tunka,"road","diamond road");
-		tunka.addFeature(new Arena("tunka arena",7,1,50,17,21));
-		tunka.addFeature(new Graveyard("tunka graveyard", tunka));
-		tunka.addFeature(new Store(7,6));
-		tunka.addFeature(new RogueGuild("tunka rogue's guild"));
-		tunka.addFeature(new Slum(tunka,"tunka slums",false));
+		tunka.addFeature(new Graveyard("The Boneyard", tunka));
+		tunka.addFeature(new Store("'A Quick Find'",7,6));
+		tunka.addFeature(new RogueGuild("Society of Enterprising Nobles"));
+		tunka.addFeature(new Slum(tunka,"Forgettables District",false));
 		tunka.tTags.add(TownTag.LAWLESS);
 		
-		Town repa = new Town("repa",8,teran,new Point(14,6));
+		Town repa = new Town("Repa",8,teran,new Point(14,6));
 		addConnection(repa,tunka,"road","right-over road");
 		//add connection to a new world area
 		repa.addTravel();
@@ -453,7 +364,7 @@ public class WorldGen {
 		repa.addTravel();
 		repa.addTravel();
 		repa.addTravel();
-		repa.addFeature(new Inn("repa inn",8,erin,null));
+		repa.addFeature(new Inn("Repa's Rest",8,erin,null));
 		addConnection(repa,greap(),"teleport","world teleport (eonao-greap)");
 		
 		
@@ -467,11 +378,11 @@ public class WorldGen {
 	}
 	
 	public static Town greap() {
-		World w = new World(30,20,"greap",40f,-74f);
+		World w = new World(30,20,"Greap",40f,-74f);
 		fallBackWorld = w;
-		Island apen = new Island("apen",w);
+		Island apen = new Island("Apen",w);
 		plane.addWorld(w);
-		Town holik = new Town("holik", 9, apen, new Point(2,3));
+		Town holik = new Town("Holik", 9, apen, new Point(2,3));
 		holik.addFeature(new Oracle("holik oracle",9));
 		holik.addTravel();
 		holik.addTravel();
@@ -479,7 +390,7 @@ public class WorldGen {
 		w.setStartTown(holik);
 		holik.tTags.add(TownTag.MYSTIC);
 		
-		Town yonuen = new Town("yonuen", 9, apen, new Point(4,3));
+		Town yonuen = new Town("Yonuen", 9, apen, new Point(4,3));
 		addConnection(holik,yonuen,"road","bliz road");
 		yonuen.addFeature(new Store(9));
 		yonuen.addFeature(new Arena("yonuen arena",9,1,24,3,24));
@@ -488,7 +399,7 @@ public class WorldGen {
 		yonuen.addTravel();
 		yonuen.tTags.add(TownTag.ARCANE);
 		
-		Town unika = new Town("unika",10, apen, new Point(3,5));
+		Town unika = new Town("Unika",10, apen, new Point(3,5));
 		addConnection(holik,unika,"road","ren road");
 		addConnection(yonuen,unika,"road","tenka road");
 		unika.addFeature(new Grove("unika forest",unika));
@@ -496,7 +407,7 @@ public class WorldGen {
 		unika.addTravel();
 		unika.addFeature(new Inn("unika inn",10,unika,null));
 		
-		Town peana = new Town("peana",10, apen, new Point(2,7));
+		Town peana = new Town("Peana",10, apen, new Point(2,7));
 		addConnection(holik,peana,"road","blue road");
 		addConnection(unika,peana,"road","green road");
 		peana.addFeature(new Arena("peana arena",10,1,24,12,135));
@@ -504,21 +415,21 @@ public class WorldGen {
 		peana.addFeature(new Store(10,8));
 		peana.addFeature(new Mine("staircase to hell", peana, null,NodeFeature.Shape.ELEVATOR));
 		
-		Town inka = new Town("inka",10, apen, new Point(4,7));
+		Town inka = new Town("Inka",10, apen, new Point(4,7));
 		addConnection(unika,inka,"road","youn road");
 		addConnection(inka,peana,"road","era road");
-		inka.addFeature(new Mine("left mine", inka, null,NodeFeature.Shape.NONE));
-		inka.addFeature(new Mine("right mine", inka, null,NodeFeature.Shape.NONE));
-		inka.addFeature(new Slum(inka,"inka mining subtown",true));
-		inka.addTravel();
+		inka.addFeature(new Mine("First Striking Shaft", inka, null,NodeFeature.Shape.NONE));
+		inka.addFeature(new Mine("Motherload Mine", inka, null,NodeFeature.Shape.NONE));
+		inka.addFeature(new Mine("Deep Vein Dig", inka, null,NodeFeature.Shape.NONE));
+		inka.addFeature(new Slum(inka,"Miner's Subtown",true));
 		inka.addTravel();
 		inka.tTags.add(TownTag.CITY);
 		
-		Town pipa = new Town("pipa",11, apen, new Point(4,7));
+		Town pipa = new Town("Pipa",11, apen, new Point(4,7));
 		addConnection(inka,pipa,"road","mystery road");
-		inka.addFeature(new WitchHut(pipa));
+		inka.addFeature(new WitchHut("Oak Coven's Hut",pipa));
 		inka.addFeature(new Store(11,9));
-		pipa.addFeature(new Grove("witch forest",pipa));
+		pipa.addFeature(new Grove("Deciduous Sprawl",pipa));
 		pipa.tTags.add(TownTag.ALCHEMY);
 		
 		return holik;

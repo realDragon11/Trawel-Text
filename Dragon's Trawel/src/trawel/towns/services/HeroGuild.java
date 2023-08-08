@@ -76,6 +76,9 @@ public class HeroGuild extends Feature {
 								Player.player.hSpentOnKno += cost;
 								Player.player.factionSpent.addFactionRep(Faction.HEROIC,cost,0);
 								Player.bag.addNewDrawBane(DrawBane.KNOW_FRAG);
+							}else {
+								extra.println("You do not have enough spendable reputation.");
+								break;
 							}
 						}else {
 							break;
@@ -101,6 +104,9 @@ public class HeroGuild extends Feature {
 							if (cost <= spenda) {
 								Player.player.factionSpent.addFactionRep(Faction.HEROIC,cost,0);
 								Player.player.rubies++;
+							}else {
+								extra.println("You do not have enough spendable reputation.");
+								break;
 							}
 						}else {
 							break;
