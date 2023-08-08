@@ -68,4 +68,8 @@ public class SkillAttackConf {
 			return WeaponAttackFactory.rollAttack(source,attacker,defender);
 		}
 	}
+
+	public String getText() {
+		return skill.getName() + ": " + source.friendlyName();
+	}
 }

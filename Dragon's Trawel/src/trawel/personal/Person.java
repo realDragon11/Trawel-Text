@@ -42,6 +42,7 @@ import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
 import trawel.personal.classless.Skill.Type;
+import trawel.personal.classless.SkillAttackConf;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.body.Race.RaceType;
@@ -1446,7 +1447,8 @@ public class Person implements java.io.Serializable{
 		if (sp == null) {
 			return 0;
 		}
-		return sp.getSpecialAttacks().size();
+		SkillAttackConf[] list = sp.getSpecialAttacks();
+		return list != null ? list.length : 0;
 	}
 
 	public int attacksThisAttack() {

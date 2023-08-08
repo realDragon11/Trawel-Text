@@ -24,7 +24,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	private static final long serialVersionUID = 1L;
 	protected List<String> titleList = new ArrayList<String>();
 	private Town location;
-	protected List<SkillAttackConf> attConfs = new ArrayList<SkillAttackConf>();
+	protected SkillAttackConf[] attConfs = null;
 	
 	protected int featPicks = 0;
 	
@@ -74,7 +74,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 		return getPerson().isHumanoid();
 	}
 
-	public List<SkillAttackConf> getSpecialAttacks() {
+	public SkillAttackConf[] getSpecialAttacks() {
 		return attConfs;
 	}
 	
@@ -97,6 +97,9 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	}
 
 	public boolean configAttacks() {//is in a menu
+		if (attConfs == null) {
+			attConfs = new SkillAttackConf[6];
+		}
 		int max = maxSpecialAttacks();
 		extra.menuGo(new MenuGenerator() {
 
@@ -113,16 +116,23 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 						}
 						return "You have skills that grant attacks. You can have up to " + max + " configs here.";
 					}});
-				if (skills.size() > 0 && attConfs.size() < max) {
+				for (int i = 0; i < attConfs.length-1;i++) {
+					if (attConfs[i] == null) {
+						break;
+					}
+					list.add(new SkillConfiger(attConfs[i],i));
+				}
+				if (skills.size() > 0 && attConfs.length < max) {
 					list.add(new MenuSelect() {
 
 						@Override
 						public String title() {
-							return "Create attack config";
+							return "Create new attack config";
 						}
 
 						@Override
 						public boolean go() {
+							currentEditing = -1;
 							createConfig(skills);
 							return false;
 						}});
@@ -205,9 +215,14 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 					@Override
 					public boolean go() {
 						if (SuperPerson.currentEditing == -1) {
-							attConfs.add(new SkillAttackConf(s,hases.get(i),null));
+							for (int j = 0; j < attConfs.length;j++) {
+								if (attConfs[j] == null) {
+									attConfs[j] = new SkillAttackConf(s,hases.get(i),null);
+									break;
+								}
+							}
 						}else {
-							attConfs.get(i).update(s, hases.get(i), null);
+							attConfs[SuperPerson.currentEditing].update(s, hases.get(i), null);
 						}
 						return true;
 					}});
@@ -227,21 +242,42 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 			}});
 	}
 	
-	/*
+	
 	protected class SkillConfiger extends MenuSelect {
 		
-		private Skill skill;
-		public SkillConfiger(Skill _skill) {
-			skill = _skill;
+		private final SkillAttackConf config;
+		private final int index;
+		public SkillConfiger(SkillAttackConf _config,int i) {
+			config = _config;
+			index = i;
 		}
 		@Override
 		public String title() {
-			return skill.getName() + " configuration";
+			return config.getText() + " configuration";
 		}
 		@Override
 		public boolean go() {
-			// TODO Auto-generated method stub
+			currentEditing = index;
+			extra.println("Replace the " + config.getText() + " config?");
+			if (extra.yesNo()) {
+				List<Skill> skills = specialAttackSkills();
+				createConfig(skills);
+				return false;
+			}else {//so many nested menus, lets just yes/no
+				extra.println("Delete the " + config.getText() + " config?");
+				if (extra.yesNo()) {
+					for (int i = index;i < attConfs.length-1;i++) {
+						SkillAttackConf up = attConfs[i+1];
+						if (up != null) {
+							attConfs[i] = up;
+							continue;
+						}
+						break;
+					}
+					attConfs[attConfs.length-1] = null;
+				}
+			}
 			return false;
 		}
-	}*/
+	}
 }
