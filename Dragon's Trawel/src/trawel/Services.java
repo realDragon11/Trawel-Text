@@ -184,44 +184,4 @@ public class Services {
 		}
 		extra.println("The " + item.getName() + " dissolves into " + val + " aether." );
 	}
-	
-	/**
-	 * Generates a random amount of items ~level inputted, which are then browsed by an inventory
-	 * with intelligence smarts. Better items will be bought, selling the items that they already have.
-	 * @param inv (inventory) - the inventory of the browser
-	 * @param smarts (int)
-	 * @param level (int)
-	 */
-	@Deprecated
-	public static void storeFront(Inventory inv, int smarts, int level) {
-		level = Math.max(level+extra.getRand().nextInt(5)-2,1);
-		extra.println("");
-		extra.println(extra.choose("They start browsing a shop.","They come across a wandering merchant.","They take the chance to go to the nearest store."));
-		extra.println("They start with " + inv.getGold() + extra.choose(" gold."," gold pieces."," pieces of gold."));
-		int i = (int) (Math.random()*6);
-		while (i > 0) {
-			if (extra.chanceIn(1,3)) {
-				Weapon weap = new Weapon(extra.zeroOut(level + (int)(Math.random()*6)-3)+1);
-				if (weap.getAetherValue() <= inv.getGold() && AIClass.compareItem(inv.getHand(),weap, smarts, false,null) ) {
-					inv.addGold(inv.getGold()-weap.getAetherValue());
-					sellItem(inv.getHand(),inv, false);
-					inv.swapWeapon(weap);
-					extra.println(" They bought them for " + weap.getAetherValue() + extra.choose(" gold."," gold pieces."," pieces of gold."));
-				}
-			}else {
-				Armor arm = new Armor(extra.zeroOut(level + (int)(Math.random()*6)-3)+1);
-				int slot = arm.getArmorType();
-				if (arm.getAetherValue() <= inv.getGold() && AIClass.compareItem(inv.getArmorSlot(slot),arm, smarts, false,null)) {
-					inv.addGold(inv.getGold()-arm.getAetherValue());
-					sellItem(inv.getArmorSlot(slot),inv, false);
-					inv.swapArmorSlot(arm,slot);
-					extra.println(" They bought them for " + arm.getAetherValue() + extra.choose(" gold."," gold pieces."," pieces of gold."));
-				}
-			}
-			i--;
-		}
-		extra.println(extra.choose("They finish browsing.","They wrap up their shopping."));
-		extra.println("They end with " + inv.getGold() + extra.choose(" gold."," gold pieces."," pieces of gold."));
-		extra.println("");
-	}
 }

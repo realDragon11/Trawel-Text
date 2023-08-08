@@ -289,7 +289,7 @@ public class GraveyardNode implements NodeType{
 			extra.println("You loot the statue...");
 			Person p = RaceFactory.makeStatue(Math.min(Player.player.getPerson().getLevel(), node.level)); ;
 			p.getBag().graphicalDisplay(1,p);
-			AIClass.loot(p.getBag(),Player.bag,Player.player.getPerson().getIntellect(),true,Player.player.getPerson());
+			AIClass.loot(p.getBag(),Player.bag,true,Player.player.getPerson());
 			node.state = 1;
 			node.name = "looted statue";
 			node.interactString = "examine statue";

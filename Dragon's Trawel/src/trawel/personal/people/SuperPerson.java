@@ -29,7 +29,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	private Town location;
 	protected SkillAttackConf[] attConfs = null;
 	
-	protected int featPicks = 0;
+	protected int featPicks = 1;//start with 1 for player
 	protected byte sAttCount = 0;
 	
 	public List<Integer> moneys;
@@ -59,6 +59,9 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	}
 	public void setLocation(Town location) {
 		this.location = location;
+		if (Player.player == this) {
+			Player.updateWorld(location.getIsland().getWorld());
+		}
 	}
 	
 	public abstract Person getPerson();

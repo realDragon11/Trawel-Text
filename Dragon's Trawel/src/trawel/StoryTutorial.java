@@ -1,6 +1,7 @@
 package trawel;
 
 import trawel.personal.Person;
+import trawel.personal.classless.Archetype;
 import trawel.personal.people.Player;
 import trawel.towns.Feature;
 import trawel.towns.fight.Arena;
@@ -25,6 +26,10 @@ public class StoryTutorial extends Story{
 		extra.println("You resolve to find out where you are, to start your life anew- it's not like anyone would believe you back home in Oblask, anyway.");
 		extra.println("1 start Trawel");
 		extra.inInt(1);
+		for (Archetype a: Player.player.getPerson().getArchSet()) {
+			extra.println("Starting Archetype: " +a.getOwnText());
+		}
+		extra.println();
 		extra.println("You should head to the local arena. Your immortality will come in handy there.");
 		step = "gotoarena1";
 	}

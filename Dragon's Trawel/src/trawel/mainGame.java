@@ -968,7 +968,7 @@ public class mainGame {
 
 		if (!second_man.isPlayer() && first_man.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 			extra.println(first_man.getName() +" goes to loot " + second_man.getName() +".");
-			AIClass.loot(second_man.getBag(),first_man.getBag(),first_man.getIntellect(),true,first_man);
+			AIClass.loot(second_man.getBag(),first_man.getBag(),true,first_man);
 		}
 
 		if (second_man.isPlayer()) {
@@ -1144,7 +1144,7 @@ public class mainGame {
 					if (isPlayer) {
 						kill.getBag().graphicalDisplay(1,kill);
 					}
-					AIClass.loot(kill.getBag(),surv.getBag(),surv.getIntellect(),false,surv);
+					AIClass.loot(kill.getBag(),surv.getBag(),false,surv);
 				}
 				if (isPlayer) {
 					Networking.clearSide(1);
@@ -1269,17 +1269,17 @@ public class mainGame {
 				if (world == null) {
 					extra.println("Generating world...");
 					world = WorldGen.eoano();
+					extra.getThreadData().world = world;//init
 				}
 				manOne = RaceFactory.makePlayerValid();
-				Person manThree = manOne;
-				manTwo = RaceFactory.makePlayerValid();;
+				manTwo = RaceFactory.makePlayerValid();
 				if (!displayFight) {
 					extra.changePrint(true);
 				}
 				Combat c = CombatTwo(manOne,manTwo,null);
 				manOne = c.survivors.get(0);
 				story.setPerson(c.killed.get(0), 0);
-				story.setPerson(manTwo, 0);
+				//story.setPerson(manTwo, 0);
 				if (!displayFight) {
 					extra.changePrint(false);
 				}
@@ -1294,7 +1294,6 @@ public class mainGame {
 					}
 					manOne = null;
 				}
-				//manOne.displayStats();
 				Networking.clearSides();
 			}
 			Networking.clearSides();
@@ -1302,14 +1301,14 @@ public class mainGame {
 			manOne.setPlayer();
 			//Networking.send("Visual|Race|" + manOne.getBag().getRace().name+  "|");
 			Networking.charUpdate();
-			//player.getPerson().setSkillPoints(0);
-			//TODO: autopick for quickstart?
-			//Player.addSkill(Skill.BLOODTHIRSTY);
-			Player.player.getPerson().addFighterLevel();
+			assert player.getPerson().getFeatPoints() > 0;
+			if (!rerolls) {//autopick first archetype for quickstart?
+				player.getPerson().pickFeatRandom();
+			}
+			player.setLocation(world.getStartTown());//also sets the player world
 			if (cheaty) {
 				Player.player.setCheating();
 				Player.toggleTutorial();
-				player.getPerson().setPerk(Perk.SKY_BLESS_2);
 				story = new StoryNone();
 				player.getPerson().addXp(9999);
 				Player.player.addGold(1000);
@@ -1317,7 +1316,7 @@ public class mainGame {
 			}
 			story.storyStart();
 			player.storyHold = story;
-			player.setLocation(world.getStartTown());
+			
 			WorldGen.plane.setPlayer(player);
 			
 			multiCanRun = true;

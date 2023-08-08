@@ -260,7 +260,7 @@ public class GroveNode implements NodeType{
 		if (node.state == 0) {
 			extra.println("You find a rotting body... With their equipment intact!");
 			AIClass.loot(RaceFactory.makeLootBody(Math.min(node.level,Player.player.getPerson().getLevel())).getBag(),
-				Player.bag,Player.player.getPerson().getIntellect(),true,Player.player.getPerson());
+				Player.bag,true,Player.player.getPerson());
 			node.state = 1;
 		}else {
 			extra.println("You've already looted this corpse.");
@@ -791,7 +791,7 @@ public class GroveNode implements NodeType{
 				node.state = 1;
 				node.name = "rock pieces";
 				node.interactString = "examine rock pieces";
-				AIClass.findItem((Item)node.storage1,-1,false,Player.player.getPerson());
+				AIClass.findItem((Item)node.storage1,false,Player.player.getPerson());
 			}else {
 				extra.println("You leave it alone.");
 			}

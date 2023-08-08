@@ -108,7 +108,7 @@ public class WorldGen {
 		World w = new World(16,10,"eoano",41f,-72f);
 		fallBackWorld = w;
 		plane = new Plane();
-		Player.updateWorld(w);
+		//Player.updateWorld(w);//we update player world in game start now
 		plane.addWorld(w);
 		Island pocket = new Island("pocket dimension",w);
 		

@@ -572,7 +572,7 @@ public class Store extends Feature{
 			Item i = items.get(j);
 			Item counter = bag.itemCounterpart(i);
 			int delta = getDelta(counter,i,p);
-			if (a.getTotalBuyPower()+delta < 0 && AIClass.compareItem(bag,i,p.getIntellect(),false,p)) {
+			if (a.getTotalBuyPower()+delta < 0 && AIClass.compareItem(bag,i,false,p)) {
 				a.buyMoneyAmountRateInt(-delta,aetherPerMoney(p));
 				items.remove(i);
 				items.add(bag.swapItem(i));

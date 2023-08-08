@@ -376,7 +376,7 @@ public class DungeonNode implements NodeType{
 			extra.println("You loot the statue...");
 			Person p = (Person)node.storage1;
 			p.getBag().graphicalDisplay(1,p);
-			AIClass.loot(p.getBag(),Player.bag,Player.player.getPerson().getIntellect(),true,Player.player.getPerson());
+			AIClass.loot(p.getBag(),Player.bag,true,Player.player.getPerson());
 			node.state = 1;
 			node.storage1 = null;
 			node.name = "looted statue";

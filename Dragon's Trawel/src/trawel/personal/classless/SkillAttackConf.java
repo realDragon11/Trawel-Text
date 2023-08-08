@@ -1,5 +1,6 @@
 package trawel.personal.classless;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.WeaponAttackFactory;
 import trawel.personal.Person;
 
-public class SkillAttackConf {
+public class SkillAttackConf implements Serializable{
 
 	/**
 	 * what skill this conf is for

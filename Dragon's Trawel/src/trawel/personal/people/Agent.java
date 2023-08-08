@@ -7,6 +7,7 @@ import java.util.Set;
 import trawel.personal.Person;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
+import trawel.towns.World;
 
 /**
  * @author dragon
@@ -34,12 +35,16 @@ public class Agent extends SuperPerson{
 		behaviors = new ArrayList<Behavior>();
 		current = new WanderEndless();
 		goals = EnumSet.of(AgentGoal.NONE);
+		moneys = new ArrayList<Integer>();
+		moneymappings = new ArrayList<World>();
 	}
 	
 	public Agent(Person p, AgentGoal goal) {
 		setPerson(p);
 		goals = EnumSet.of(goal);
 		current = null;
+		moneys = new ArrayList<Integer>();
+		moneymappings = new ArrayList<World>();
 	}
 
 	@Override

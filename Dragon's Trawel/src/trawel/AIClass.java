@@ -9,6 +9,7 @@ import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.Stance;
 import trawel.earts.ASpell;
 import trawel.personal.Person;
+import trawel.personal.Person.PersonFlag;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;
@@ -328,15 +329,15 @@ public class AIClass {
 	 * @param smarts (int)
 	 * @param sellStuff if the items can be atom-smashed into aether
 	 */
-	public static void loot(Inventory loot, Inventory stash, int smarts, boolean sellStuff, Person p) {
+	public static void loot(Inventory loot, Inventory stash, boolean sellStuff, Person p) {
 		int i = 0;
 		boolean normalLoot = loot.getRace().racialType == Race.RaceType.HUMANOID;
-		if (normalLoot && smarts < 0 && Player.getTutorial()) {
+		if (normalLoot && p.isPlayer() && Player.getTutorial()) {
 			extra.println("You are now looting something! The first item presented will be the new item, the second, your current item, and finally, the difference will be shown. Some items may be autosold if all their visible stats are worse.");
 		}
 		if (normalLoot) {
 			while (i < 5) {
-				if (compareItem(stash.getArmorSlot(i),loot.getArmorSlot(i),smarts,true,p)) {
+				if (compareItem(stash.getArmorSlot(i),loot.getArmorSlot(i),true,p)) {
 					if (sellStuff) {
 							//Services.sellItem(stash.swapArmorSlot(loot.getArmorSlot(i),i),stash,false);
 							Services.aetherifyItem(stash.getArmorSlot(i),stash);
@@ -354,7 +355,7 @@ public class AIClass {
 				}
 
 
-				if (smarts < 0 && Networking.connected()) {
+				if (p.isPlayer() && Networking.connected()) {
 					Networking.charUpdate();
 					String depth = null;
 					switch (i) {
@@ -368,7 +369,7 @@ public class AIClass {
 				}
 				i++;
 			}
-			if (compareItem(stash.getHand(),loot.getHand(),smarts,true,p)) {
+			if (compareItem(stash.getHand(),loot.getHand(),true,p)) {
 				if (sellStuff) {
 						Services.sellItem(stash.swapWeapon(loot.getHand()),stash,false);
 						Services.aetherifyItem(stash.getHand(),stash);
@@ -399,7 +400,7 @@ public class AIClass {
 				}
 			}
 		}
-		if (smarts < 0) {
+		if (p.isPlayer()) {
 			Networking.charUpdate();
 			/*if (Player.hasSkill(Skill.LOOTER) && normalLoot) {
 				stash.addGold(10);
@@ -430,13 +431,14 @@ public class AIClass {
 	 * @param smarts (int)
 	 * @return if you should swap items (boolean)
 	 */
-	public static boolean compareItem(Item hasItem, Item toReplace,int smarts, boolean autosellOn, Person p) {
+	public static boolean compareItem(Item hasItem, Item toReplace, boolean autosell, Person p) {
 		//p is the person comparing it, and is used to apply skills and feats that modify stats
 		//for the player, the base stats should be the same, but the 'diff' should show the actual difference
 		//when swapped
+		autosell = p.getFlag(PersonFlag.AUTOLOOT) && autosell;
 		if (Armor.class.isInstance(hasItem)) {
-			if (autosellOn && worseArmor((Armor)hasItem,(Armor)toReplace)) {
-				if (smarts < 0) {
+			if (autosell && worseArmor((Armor)hasItem,(Armor)toReplace)) {
+				if (p.isPlayer()) {
 					extra.print(extra.PRE_YELLOW+"Automelted the ");
 					toReplace.display(1);
 					Networking.waitIfConnected(100L);
@@ -444,7 +446,7 @@ public class AIClass {
 				return false;
 			}
 		}
-		if (smarts < 0){
+		if (p.isPlayer()){
 			extra.println("Use the");
 			toReplace.display(1);
 			extra.println("instead of your");
@@ -455,7 +457,7 @@ public class AIClass {
 		if (!Weapon.class.isInstance(hasItem)){
 		return (toReplace.getAetherValue()>hasItem.getAetherValue());
 	}else {
-		if (smarts < 2) {
+		if (!p.getFlag(PersonFlag.SMART_COMPARE)) {
 			return (toReplace.getAetherValue()>hasItem.getAetherValue());
 			}
 		if (((Weapon)(toReplace)).scoreWeight() > ((Weapon)(hasItem)).scoreWeight()){
@@ -465,7 +467,7 @@ public class AIClass {
 		}
 	}
 	
-	public static boolean compareItem(Inventory bag, Item toReplace,int smarts, boolean autosellOn, Person p) {
+	public static boolean compareItem(Inventory bag, Item toReplace, boolean autosellOn, Person p) {
 		Item item = null;
 		if (Armor.class.isInstance(toReplace)) {
 			Armor a = (Armor)toReplace;
@@ -475,12 +477,12 @@ public class AIClass {
 				item = bag.getHand();
 			}
 		}
-		return compareItem(item,toReplace,smarts,autosellOn, p);
+		return compareItem(item,toReplace,autosellOn, p);
 	}
 	
 	public static boolean compareItem(Item current, Item next, Person p, Store s) {
 		if (!p.isPlayer()) {
-			return compareItem(current,next,2,false,p);
+			return compareItem(current,next,false,p);
 		}
 		extra.println("Buy the");
 		next.display(s,true);
@@ -537,7 +539,7 @@ public class AIClass {
 			costDiff = toReplace.getAetherValue() - hasItem.getAetherValue();
 		}else {
 			costName = s.getTown().getIsland().getWorld().moneyString();
-			costDiff = s.getDelta(hasItem,toReplace);
+			costDiff = s.getDelta(hasItem,toReplace,p);
 			//costDiff = (int) (Math.ceil(s.getMarkup()*toReplace.getMoneyValue()) - hasItem.getMoneyValue());//DOLATER match rounding across places
 		}
 		
@@ -717,7 +719,7 @@ public class AIClass {
 						}
 						if (mainGame.attackDisplayStyle == DispAttack.TWO_LINE1_WITH_KEY) {
 							extra.println("Attacks:   " + extra.CHAR_HITCHANCE + " hitchance; " +extra.CHAR_INSTANTS+" warmup -cooldown; "+
-									extra.EXPLAIN_SIMPLE_CHARS_DAMAGE +";");
+									ImpairedAttack.EXPLAIN_DAMAGE_TYPES());
 						}else {
 							extra.println("Attacks:");
 						}
@@ -759,9 +761,9 @@ public class AIClass {
 	/**
 	 * find an item you can't sell
 	 */
-	public static void findItem(Item found, int smarts, boolean autosell, Person person) {
+	public static void findItem(Item found, boolean autosell, Person person) {
 		Item current = person.getBag().itemCounterpart(found);
-		if (AIClass.compareItem(current,found,smarts,autosell,person)) {
+		if (AIClass.compareItem(current,found,autosell,person)) {
 			Item ret = person.getBag().swapItem(found);
 			if (ret != null) {
 				Services.aetherifyItem(ret,person.getBag());

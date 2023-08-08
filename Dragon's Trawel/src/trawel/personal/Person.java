@@ -34,6 +34,7 @@ import trawel.earts.EArtSkillMenu;
 import trawel.earts.PlayerSkillpointsLine;
 import trawel.factions.FBox;
 import trawel.factions.HostileTask;
+import trawel.personal.Person.PersonFlag;
 import trawel.personal.classless.Archetype;
 import trawel.personal.classless.AttributeBox;
 import trawel.personal.classless.Feat;
@@ -73,7 +74,6 @@ public class Person implements java.io.Serializable{
 	private transient ImpairedAttack attackNext;
 	private int xp;
 	private short level;
-	private byte intellect;
 	private transient double speedFill;
 	private transient boolean isWarmingUp;
 	private transient int hp, tempMaxHp;
@@ -84,6 +84,12 @@ public class Person implements java.io.Serializable{
 	 * bit 2 = angry (racist to non humanoids) (0b00000010) <br>
 	 */
 	private byte flags = 0b00000000;//used with bitmasking
+	
+	public enum PersonFlag{
+		RACIST, ANGRY,
+		AUTOLOOT, AUTOLEVEL,
+		ISPLAYER, SMART_COMPARE
+	}
 	//DOLATER: add a Set<Culture> that holds cultures. This can be used for advanced bigorty, cultural norms, etc etc
 	//this might also be used to hold a place of origin
 	//cultures won't have to be all of one type, so there might be a weaker 'world' culture
@@ -92,7 +98,6 @@ public class Person implements java.io.Serializable{
 	private String firstName,title;
 
 	private short featPoints;
-	private int fighterLevel= 0,traderLevel = 0,explorerLevel = 0, mageLevel = 0, magePow = 0, defenderLevel = 0, defPow = 0, fightPow = 0;
 	
 	public int lightArmorLevel = 0, heavyArmorLevel = 0, edrLevel = 0;
 	public boolean hasEnduranceTraining = false;
@@ -155,6 +160,9 @@ public class Person implements java.io.Serializable{
 		archSet = EnumSet.of(Archetype.EMPTY);*/
 		//FST has a problem saving enum sets if the enum has no element
 		
+		setFlag(PersonFlag.AUTOLOOT, true);
+		setFlag(PersonFlag.SMART_COMPARE, true);
+		
 		xp = 0;
 		
 		this.job = job;
@@ -162,9 +170,6 @@ public class Person implements java.io.Serializable{
 		if (level < 1) {
 			extra.println("non-fatal (until you run into the level zero person) exception: level is zero on someone");
 		}
-		//maxHp = 40*level;//doesn't get all the hp it would naturally get
-		//hp = maxHp;
-		intellect = 2;//advanced looting
 		
 		
 		bag = new Inventory(level,raceType,matType,job,race);
@@ -228,7 +233,13 @@ public class Person implements java.io.Serializable{
 		//this.magePow = bag.getRace().magicPower;
 		//this.defPow = bag.getRace().defPower;
 		if (isAI) {
-			//this.AILevelUp();
+			setFlag(PersonFlag.AUTOLEVEL, true);
+			while (featPoints > 0) {
+				if (!pickFeatRandom()) {
+					break;
+				}
+				updateSkills();//TODO: makes higher level people slower
+			}
 		}
 		//this.noAILevel = !isAI;
 		effects = new ArrayList<Effect>();
@@ -359,6 +370,15 @@ public class Person implements java.io.Serializable{
 	public void setSkillHas(IHasSkills has) {
 		if (has instanceof Feat) {
 			setFeat((Feat) has);
+			Feat fBase = (Feat)has;
+			switch (fBase) {
+			case NOT_PICKY:
+				if (isPlayer()) {//only applies to player
+					//not picky grants 2 extra picks on take (does not check to see if you already have)
+					getSuper().addFeatPick(2);
+				}
+				break;
+			}
 		}else {
 			if (has instanceof Archetype) {
 				setArch((Archetype) has);
@@ -609,6 +629,14 @@ public class Person implements java.io.Serializable{
 			if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 				BarkManager.getBoast(this, false);
 			}
+			addFeatPoint(levels);
+			if (getFlag(PersonFlag.AUTOLEVEL)) {
+				while (featPoints > 0) {
+					if (!pickFeatRandom()) {pickFeatRandom();//autoleveling doesn't consume picks
+						break;
+					}
+				}
+			}
 			if (this.isPlayer()) {
 				Networking.send("PlayDelay|sound_magelevel|1|");
 				Networking.leaderboard("Highest Level",level);
@@ -621,12 +649,7 @@ public class Person implements java.io.Serializable{
 					Networking.unlockAchievement("level10");
 				}
 				Player.player.addFeatPick(levels);//ai cannot delay leveling up, player can
-				addFeatPoint(levels);
 				playerSkillMenu();
-			}else {
-				//intellect+=levels;
-				//FIXME: ai needs to get feats and such as well
-				//this.AILevelUp();
 			}
 			level+=levels;
 	}
@@ -705,6 +728,22 @@ public class Person implements java.io.Serializable{
 							pickFeats(true);
 							return false;
 						}});
+				}else {
+					if (getFeatPoints() > 0) {
+						list.add(new MenuLine() {
+
+							@Override
+							public String title() {
+								return "You have " + getFeatPoints() + " feat points waiting for picking, but no picks left.";
+							}});
+					}else {
+						list.add(new MenuLine() {
+
+							@Override
+							public String title() {
+								return "No feat points or picks.";
+							}});
+					}
 				}
 				if (Player.getTutorial()) {
 					list.add(new MenuLine() {
@@ -780,6 +819,18 @@ public class Person implements java.io.Serializable{
 			}});
 		//extra.println("Classless backend is implemented, but both choosing new feats/archetypes and the actual feats/archetypes/perks did not make it into this beta release. Instead get 'The Tough'.");
 		//setFeat(Feat.TOUGH_COMMON);
+	}
+	/**
+	 * will return false if can't get a feat
+	 */
+	public boolean pickFeatRandom() {//does not consume pick
+		List<IHasSkills> hases = Archetype.getFeatChoices(this);
+		if (hases.isEmpty()) {
+			return false;
+		}
+		useFeatPoint();
+		setSkillHas(extra.randList(hases));
+		return true;
 	}
 	
 	public void pickFeats(boolean consumePick) {
@@ -874,17 +925,7 @@ public class Person implements java.io.Serializable{
 							picked = true;
 							pickFor.useFeatPoint();
 							pickFor.setSkillHas(base);
-							if (base instanceof Feat) {
-								Feat fBase = (Feat)base;
-								switch (fBase) {
-								case NOT_PICKY:
-									if (pickFor.isPlayer()) {
-										//not picky grants 2 extra picks on take
-										pickFor.getSuper().addFeatPick(2);
-									}
-									break;
-								}
-							}
+							
 							updateSkills();
 							return true;
 						}});
@@ -1178,32 +1219,17 @@ public class Person implements java.io.Serializable{
 		return placeOfBirth;
 	}*/
 
-
-	/**
-	 * @return the intellect (int)
-	 */
-	public byte getIntellect() {
-		return intellect;
-	}
-
-
-	/**
-	 * @param intellect (int) -  the intellect to set
-	 */
-	public void setIntellect(byte intellect) {
-		this.intellect = intellect;
-	}
-
 	public boolean isPlayer() {
-		return (intellect < 0);
+		return getFlag(PersonFlag.ISPLAYER);
 	}
 
 	public void setPlayer() {
-			intellect = -2;
+			//intellect = -2;
+			setFlag(PersonFlag.ISPLAYER,true);
 	}
 	
 	public void autoLootPlayer() {
-			intellect = -1;
+		setFlag(PersonFlag.AUTOLOOT,true);
 	}
 
 	public void displayStatsShort() {
@@ -1269,36 +1295,56 @@ public class Person implements java.io.Serializable{
 	public void addHp(int i) {
 		hp+=i;
 	}
-	public void addFighterLevel() {
-		fighterLevel++;
+	
+	//yayyyy standardizedish flags
+	//will work on ints and longs as well if need more flags
+	//got the idea from the concept of enumset
+	//this just avoids the object overhead plus byte is 1/8th of a long
+	
+	public boolean getFlag(PersonFlag flag) {
+		return Byte.toUnsignedInt((byte) (flags & (1 << flag.ordinal()))) > 0;
+	}
+	
+	public void setFlag(PersonFlag flag, boolean bool) {
+		if (bool) {
+			flags |= (1 << flag.ordinal());
+			return;
+		}
+		flags &= ~(1 << flag.ordinal());
 	}
 
 	public boolean isRacist() {
 		//unsure if best way, but I care more about memory storage than speed, so doesn't need to be fast rn
-		return Byte.toUnsignedInt((byte) (flags & (1 << 0))) > 0;
+		//return Byte.toUnsignedInt((byte) (flags & (1 << 0))) > 0;
+		return getFlag(PersonFlag.RACIST);
 	}
 	
 	public void setRacism(boolean bool) {
 		//at 0 index
+		/*
 		if (bool) {
 			flags |= (1 << 0);
 			return;
 		}
-		flags &= ~(1 << 0);
+		flags &= ~(1 << 0);*/
+		setFlag(PersonFlag.RACIST,bool);
 	}
 	
 	public boolean isAngry() {
+		return getFlag(PersonFlag.ANGRY);
 		//unsure if best way, but I care more about memory storage than speed, so doesn't need to be fast rn
-		return Byte.toUnsignedInt((byte) (flags & (1 << 1))) > 0;
+		//return Byte.toUnsignedInt((byte) (flags & (1 << 1))) > 0;
 	}
 	
 	public void setAngry(boolean bool) {
+		setFlag(PersonFlag.ANGRY,bool);
 		//at 1 index
+		/*
 		if (bool) {
 			flags |= (1 << 1);
 			return;
 		}
-		flags &= ~(1 << 1);
+		flags &= ~(1 << 1);*/
 	}
 
 	public void displayArmor() {

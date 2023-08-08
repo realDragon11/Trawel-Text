@@ -225,6 +225,14 @@ public class ImpairedAttack implements IAttack{
 			return 0;
 		}
 	}
+
+	public static String EXPLAIN_DAMAGE_TYPES() {
+		String str = "";
+		for (DamageType t: DamageType.values()) {
+			str += t.getDisp() + " " + t.getName()+ ", ";
+		}
+		return str;
+	}
 	
 	public static String getOtherDam(ImpairedAttack att) {
 		int amount = DamageType.IGNITE.getAmountFor(att);
@@ -521,5 +529,4 @@ public class ImpairedAttack implements IAttack{
 	public boolean hasWeaponQual(WeaponQual qual) {
 		return weapon != null && weapon.hasQual(qual);
 	}
-	
 }
