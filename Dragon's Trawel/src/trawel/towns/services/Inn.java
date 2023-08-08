@@ -114,7 +114,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "beer ("+tier+"gp)";
+						return "beer ("+getTown().getIsland().getWorld().moneyString(tier)+")";
 					}
 
 					@Override
@@ -166,7 +166,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "bathe (" +(tier*2)+" gp)";
+						return "bathe (" +getTown().getIsland().getWorld().moneyString(tier*2)+")";
 					}
 
 					@Override
@@ -444,7 +444,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 	}
 	
 	public void newCurAgent() {
-		curAgent = (Agent) town.getRandPersonableOccupant();
+		curAgent = town.getRandPersonableOccupant();
 	}
 
 }

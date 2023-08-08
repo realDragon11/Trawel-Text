@@ -561,7 +561,8 @@ public class Store extends Feature{
 		if (type == 8 || type == 9) {
 			return;
 		}
-		town.getPersonableOccupants().forEach(a-> doShop(a));
+		//needs to be in order to avoid changing the item list multiple times at once
+		town.getPersonableOccupants().sequential().forEach(a-> doShop(a));
 	}
 	
 	private void doShop(Agent a) {

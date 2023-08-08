@@ -910,11 +910,11 @@ public class Town extends TContextOwner{
 					switch (part1) {
 					case 0:
 						extra.print(extra.PRE_RED+p.getName() +" charges you out of nowhere! They're back for more, and this time they're not fighting fair! ");
-						p.setHasSkill(Skill.SPUNCH);
+						p.setSkillHas(Feat.AMBUSHER);
 						break;
 					case 1:
 						extra.print(extra.PRE_RED+p.getName() +" charges you, screaming bloody murder! Their thirst of blood has not yet been satiated! ");
-						p.setHasSkill(Skill.BLOODTHIRSTY);
+						p.setSkillHas(Feat.HEMOVORE);
 						break;
 
 					default:
@@ -930,7 +930,7 @@ public class Town extends TContextOwner{
 							extra.println("\"You may have broken my body, but not my spirit!\"");
 							p.setTitle(extra.choose(" the Unbroken"," the Unfettered"));
 						}
-						p.setFeat(Feat.COMMON_TOUGH);
+						p.setFeat(Feat.UNBREAKABLE);
 						p.setPersonType(PersonType.DEATHCHEATED);
 						break;
 					case 1:
@@ -955,7 +955,7 @@ public class Town extends TContextOwner{
 			}
 			if (!went && extra.chanceIn(1,10)) {
 				Agent sp = island.getWorld().getStalker();
-				//does not level up naturally
+				//does not level up automatically
 				if (sp != null) {
 					extra.println(extra.PRE_RED + sp.getPerson().getName() + " appears to haunt you!");
 					went = true;

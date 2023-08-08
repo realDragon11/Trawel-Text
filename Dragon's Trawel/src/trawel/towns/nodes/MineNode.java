@@ -6,6 +6,7 @@ import trawel.mainGame;
 import trawel.randomLists;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.Perk;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -336,11 +337,10 @@ public class MineNode implements NodeType{
 		p.getBag().graphicalDisplay(1, p);
 		int inInt = 2;
 		do {
-			boolean hasSkills = Player.player.hasCult;
+			boolean hasSkills = Player.player.getPerson().hasPerk(Perk.CULT_LEADER_BLOOD);
 			if (hasSkills) {
-				extra.println("The cultists welcome you and ask you how you are doing.");
+				extra.println("The blood cultists welcome you and ask you how you are doing.");
 				extra.println("1 chat");
-				hasSkills = true;
 			}else {
 				extra.println("The cultists offer to enhance you... if you sacrifice some blood.");
 				extra.println("1 accept offer");
@@ -357,15 +357,14 @@ public class MineNode implements NodeType{
 					mainGame.die("You rise from the altar!");
 					extra.println("The cultists praise you as the second coming of flagjaij!");
 					Player.player.getPerson().addEffect(Effect.CURSE);
-					//Player.player.getPerson().addSkillPoint();
-					//TODO: set perk
+					Player.player.getPerson().setPerk(Perk.CULT_LEADER_BLOOD);
 					Player.player.hasCult = true;
 					hasSkills = true;
 					Networking.unlockAchievement("cult1");
 				};break;
 
 			case 2:
-				node.name = "angry cultist leader";
+				node.name = "angry sect leader";
 				node.interactString = "ERROR";
 
 				node.forceGo = true;

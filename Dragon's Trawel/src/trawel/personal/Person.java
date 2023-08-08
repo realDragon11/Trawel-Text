@@ -107,8 +107,6 @@ public class Person implements java.io.Serializable{
 	public int lightArmorLevel = 0, heavyArmorLevel = 0, edrLevel = 0;
 	public boolean hasEnduranceTraining = false;
 	
-	//private List<Skill> skills = new ArrayList<Skill>();
-	//private List<Effect> effects;
 	private EnumMap<Effect,Integer> effects;//hash set not permitted
 	private RaceFlag rFlag;
 
@@ -331,9 +329,9 @@ public class Person implements java.io.Serializable{
 	}
 	
 	/**
-	 * this will be called automatically if the Person does not have one of the base things yet
-	 * but you should call it after you assemble them or update them, in case they got it built
-	 * while you weren't looking.
+	 * this will be called automatically if the Person does not have one of the base things yet.
+	 * <br>
+	 * Should be called if updating any skill haver directly outside of the wrapper functions setX()
 	 */
 	public Set<Skill> updateSkills() {
 		atrBox = new AttributeBox(this);
@@ -357,12 +355,18 @@ public class Person implements java.io.Serializable{
 	
 	public void setPerk(Perk p) {
 		perkSet.add(p);
+		updateSkills();//just update instantly now
+	}
+	public boolean hasPerk(Perk p) {
+		return perkSet.contains(p);
 	}
 	public void setFeat(Feat f) {
 		featSet.add(f);
+		updateSkills();//just update instantly now
 	}
 	public void setArch(Archetype a) {//did I actually misspell that
 		archSet.add(a);
+		updateSkills();//just update instantly now
 	}
 	
 	public Set<Perk> getPerkSet(){
@@ -940,7 +944,7 @@ public class Person implements java.io.Serializable{
 							pickFor.useFeatPoint();
 							pickFor.setSkillHas(base);
 							
-							updateSkills();
+							//updateSkills();
 							return true;
 						}});
 					list.add(new MenuBack("back (do not pick)"));
@@ -1467,11 +1471,6 @@ public class Person implements java.io.Serializable{
 			s.display();
 		}
 		
-	}
-
-	@Deprecated
-	public void addSkill(Skill skill) {
-		skillSet.add(skill);
 	}
 	
 	/**
