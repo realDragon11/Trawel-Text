@@ -782,7 +782,7 @@ public class WeaponAttackFactory {
 		}
 		
 		public static int[] distribute(float damage, float sharpW, float bluntW, float pierceW) {
-			int[] arr = new int[3];
+			int[] arr = new int[6];
 			float total = sharpW+bluntW+pierceW;
 			arr[0] = Math.round((sharpW/total)*damage);
 			arr[1] = Math.round((bluntW/total)*damage);

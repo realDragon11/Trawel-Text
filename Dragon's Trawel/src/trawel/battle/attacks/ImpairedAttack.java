@@ -80,6 +80,9 @@ public class ImpairedAttack implements IAttack{
 			vals[0] = damageRoll(DamageType.SHARP,sMult*damMult);
 			vals[1] = damageRoll(DamageType.BLUNT,bMult*damMult);
 			vals[2] = damageRoll(DamageType.PIERCE,pMult*damMult);
+			vals[3] = damageRoll(DamageType.IGNITE,attack.getIgnite()*damMult);
+			vals[4] = damageRoll(DamageType.FROST,attack.getFrost()*damMult);
+			vals[5] = damageRoll(DamageType.ELEC,attack.getElec()*damMult);
 
 			if (!alwaysWound && extra.randRange(1,10) == 1) {
 				this.wound = Attack.Wound.GRAZE;
@@ -128,7 +131,7 @@ public class ImpairedAttack implements IAttack{
 	}
 	
 	public enum DamageType{
-		SHARP, BLUNT, PIERCE, SHOCK, FIRE, FROST, DECAY
+		SHARP, BLUNT, PIERCE, IGNITE, FROST, ELEC, DECAY
 	}
 	
 	private int damageRoll(DamageType dt, double max) {
@@ -137,6 +140,17 @@ public class ImpairedAttack implements IAttack{
 			if (attacker != null) {
 				max*= attacker.getBag().getDam();//DOLATER make physical damage mult seperate;
 				max*= attacker.fetchAttributes().multStrength();//DOLATER see if working
+			}else {
+				if (weapon != null) {
+					if (weapon.getEnchant() != null) {
+						max*=weapon.getEnchant().getDamMod();//DOLATER make physical damage mult seperate
+					}	
+				}
+			}
+			return extra.randRange((int)(max*.7),(int)max);
+		case IGNITE: case FROST: case ELEC:
+			if (attacker != null) {
+				max*= attacker.getBag().getDam();//DOLATER make physical damage mult seperate;
 			}else {
 				if (weapon != null) {
 					if (weapon.getEnchant() != null) {
@@ -219,9 +233,8 @@ public class ImpairedAttack implements IAttack{
 		switch (attack.getType()) {
 		case FAKE_WEAPON:
 		case REAL_WEAPON:
-			return (int) (getPotencyMult()*IAttack.getSharpFromWeap(vals));
 		case SKILL:
-			break;
+			return (int) (getPotencyMult()*IAttack.getSharpFromWeap(vals));
 		}
 		return 0;
 	}
@@ -230,9 +243,8 @@ public class ImpairedAttack implements IAttack{
 		switch (attack.getType()) {
 		case FAKE_WEAPON:
 		case REAL_WEAPON:
-			return (int) (getPotencyMult()*IAttack.getBluntFromWeap(vals));
 		case SKILL:
-			break;
+			return (int) (getPotencyMult()*IAttack.getBluntFromWeap(vals));
 		}
 		return 0;
 	}
@@ -241,12 +253,45 @@ public class ImpairedAttack implements IAttack{
 		switch (attack.getType()) {
 		case FAKE_WEAPON:
 		case REAL_WEAPON:
-			return (int) (getPotencyMult()*IAttack.getPierceFromWeap(vals));
 		case SKILL:
-			break;
+			return (int) (getPotencyMult()*IAttack.getPierceFromWeap(vals));
 		}
 		return 0;
 	}
+	
+	@Override
+	public int getIgnite() {
+		switch (attack.getType()) {
+		case FAKE_WEAPON:
+		case REAL_WEAPON:
+		case SKILL:
+			return (int) (getPotencyMult()*IAttack.getIgniteFromWeap(vals));
+		}
+		return 0;
+	}
+	
+	@Override
+	public int getFrost() {
+		switch (attack.getType()) {
+		case FAKE_WEAPON:
+		case REAL_WEAPON:
+		case SKILL:
+			return (int) (getPotencyMult()*IAttack.getFrostFromWeap(vals));
+		}
+		return 0;
+	}
+	
+	@Override
+	public int getElec() {
+		switch (attack.getType()) {
+		case FAKE_WEAPON:
+		case REAL_WEAPON:
+		case SKILL:
+			return (int) (getPotencyMult()*IAttack.getElecFromWeap(vals));
+		}
+		return 0;
+	}
+	
 	@Override
 	public double getHitMult() {
 		return hitroll;

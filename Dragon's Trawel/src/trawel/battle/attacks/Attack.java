@@ -52,12 +52,11 @@ public class Attack implements IAttack{
 		this.intValues = intValues;
 		this.warmup = warmup;
 		this.cooldown = cooldown;
-	}
-	
-	public Attack(String name, String desc, String fluff, double hitMult, int sharp, int blunt, int pierce,
-			double warmup, double cooldown) {
-		this(name,desc,new SRInOrder(fluff),hitMult,AttackType.REAL_WEAPON,new int[] {sharp,blunt,pierce},warmup,cooldown);
 		
+		
+		int pierce = getPierce();
+		int sharp = getSharp();
+		int blunt = getBlunt();
 		//priority -> blunt > sharp > pierce
 		if (pierce > sharp) {
 			if (pierce > blunt) {
@@ -83,6 +82,13 @@ public class Attack implements IAttack{
 				soundStrength = 1;
 			}
 		}
+	}
+	
+	public Attack(String name, String desc, String fluff, double hitMult, int sharp, int blunt, int pierce,
+			double warmup, double cooldown) {
+		this(name,desc,new SRInOrder(fluff),hitMult,AttackType.REAL_WEAPON,new int[] {sharp,blunt,pierce,0,0,0},warmup,cooldown);
+		
+		
 		
 	}
 	//DOLATER entirely nonfunctional at this point, just remake the whole system
@@ -246,6 +252,18 @@ public class Attack implements IAttack{
 	@Override
 	public int getPierce() {
 		return IAttack.getPierceFromWeap(intValues);
+	}
+	@Override
+	public int getIgnite() {
+		return IAttack.getIgniteFromWeap(intValues);
+	}
+	@Override
+	public int getFrost() {
+		return IAttack.getFrostFromWeap(intValues);
+	}
+	@Override
+	public int getElec() {
+		return IAttack.getElecFromWeap(intValues);
 	}
 	/**
 	 * @return the desc (String)

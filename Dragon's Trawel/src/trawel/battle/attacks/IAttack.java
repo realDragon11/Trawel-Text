@@ -10,7 +10,7 @@ public interface IAttack {
 	public String getDesc();
 	public AttackType getType();
 	public enum AttackType{
-		REAL_WEAPON, FAKE_WEAPON, SKILL 
+		REAL_WEAPON, FAKE_WEAPON, SKILL
 	}
 	public int valueSize();
 	public String fluff(AttackReturn attret);
@@ -26,6 +26,19 @@ public interface IAttack {
 	 * @return 0 if not present or isn't physical
 	 */
 	public int getPierce();
+	//FIXME: make enchanthit weapons use these values! will solve the ai problem that I had when I first made those years ago
+	/**
+	 * @return 0 if not present or isn't elemental
+	 */
+	public int getIgnite();
+	/**
+	 * @return 0 if not present or isn't elemental
+	 */
+	public int getFrost();
+	/**
+	 * @return 0 if not present or isn't elemental
+	 */
+	public int getElec();
 	
 	public double getWarmup();
 	public double getCooldown();
@@ -47,6 +60,15 @@ public interface IAttack {
 	}
 	public static int getPierceFromWeap(int[] vals) {
 		return vals[2];
+	}
+	public static int getIgniteFromWeap(int[] vals) {
+		return vals[3];
+	}
+	public static int getFrostFromWeap(int[] vals) {
+		return vals[4];
+	}
+	public static int getElecFromWeap(int[] vals) {
+		return vals[5];
 	}
 
 	public int getTotalDam();

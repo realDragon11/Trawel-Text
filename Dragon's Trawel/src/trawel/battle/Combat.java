@@ -566,10 +566,7 @@ public class Combat {
 			return ret;
 		}
 		
-		double sharpA = def.getSharp(att)*armMod;
-		double bluntA = def.getBlunt(att)*armMod;
-		double pierceA= def.getPierce(att)*armMod;
-		ret = new AttackReturn(att.getSharp(),att.getBlunt(),att.getPierce(),sharpA,bluntA,pierceA,str,att);
+		ret = new AttackReturn(att,def,str);
 		if (isReal) {
 			Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getAttack().getSoundIntensity() + "|" +att.getAttack().getSoundType()+"|");
 			if (wasDead) {
@@ -627,30 +624,48 @@ public class Combat {
 		public ATK_ResultCode code;
 		public ATK_ResultType type;
 		private String notes;
-		public AttackReturn(int sdam,int bdam, int pdam, double sarm, double barm, double parm, String str, ImpairedAttack att) {
+		public AttackReturn(ImpairedAttack att, Inventory def, String str) {
+			int sdam = att.getSharp();
+			int bdam = att.getBlunt();
+			int pdam = att.getPierce();
+			int idam = att.getIgnite();
+			int fdam = att.getFrost();
+			int edam = att.getElec();
+			
+			double sarm = def.getSharp(att)*Armor.armorEffectiveness;
+			double barm = def.getBlunt(att)*Armor.armorEffectiveness;
+			double parm = def.getPierce(att)*Armor.armorEffectiveness;
+			
+			
+			boolean bypass = att.getAttack().getStance().elementBypass;
+			
 			stringer = str;
 			attack = att;
 			notes = null;
 			//MAYBELATER: can turn this into an array of damage types later if need be
-			double rawdam = sdam+bdam+pdam;
+			double rawdam = bypass ? idam+fdam+edam : sdam+bdam+pdam;
 			double rawarm =sarm+barm+parm;
 			double s_weight = sdam/rawdam;
 			double b_weight = bdam/rawdam;
 			double p_weight = pdam/rawdam;
-			double weight_arm = (s_weight*sarm)+(b_weight*barm)+(p_weight*parm);
+			double weight_arm = bypass ? rawarm/3 : (s_weight*sarm)+(b_weight*barm)+(p_weight*parm);
+			
+			double iarm = weight_arm*def.getIgniteMult(att.getSlot());
+			double farm = weight_arm*def.getFrostMult(att.getSlot());
+			double earm = weight_arm*def.getElecMult(att.getSlot());
+			
 			//double guess = ((rawdam+weight_arm)/weight_arm)-1;
 			double def_roll = Math.max(.05,extra.hrandom());
 			float att_roll = extra.lerp(.7f,1f,extra.hrandomFloat());
 			double global_roll = (att_roll*rawdam)/(def_roll*weight_arm);
 			if (global_roll < .4) {//if our random damage roll was less than 40% of the armor roll, negate
-				subDamage = new int[] {0,0,0};
+				subDamage = new int[] {0,0,0,0,0,0};
 				damage = 0;
 				code = ATK_ResultCode.ARMOR;
 				type = ATK_ResultType.NO_IMPACT;
 			}else {//TODO: new goal: % reductions based on relativeness with a chance to negate entirely if much higher?
 				//up to half the damage if the damage roll was less than the total weighted armor (without roll)
 				double reductMult = damageCompMult(.5f,1f,1f,att_roll*rawdam,def_roll*weight_arm,1f,1.5f);
-				//extra.lerp(1f,.5f,(float) (1f-Math.min(1,(att_roll*rawdam)/weight_arm)));
 				//each damage vector can be brought down to 20%, but this is cumulative so the armor has to be 4x higher
 				//to achieve that level of reduction
 				double s_reduct = damageCompMult(.2f,.9f,1f,sdam,sarm,2f,4f);
@@ -659,10 +674,21 @@ public class Combat {
 				int scomp = (int) (sdam*reductMult*s_reduct);
 				int bcomp = (int) (bdam*reductMult*b_reduct);
 				int pcomp = (int) (pdam*reductMult*p_reduct);
+				
+				double i_reduct = damageCompMult(.2f,.9f,1f,idam,iarm,2f,4f);
+				double f_reduct = damageCompMult(.2f,.9f,1f,fdam,farm,2f,4f);
+				double e_reduct = damageCompMult(.2f,.9f,1f,edam,earm,2f,4f);
+				
+				int icomp = (int) (idam*reductMult*i_reduct);
+				int fcomp = (int) (fdam*reductMult*f_reduct);
+				int ecomp = (int) (edam*reductMult*e_reduct);
 				//DOLATER: not sure if this is done yet
 				
-				subDamage = new int[] {scomp,bcomp,pcomp};
-				damage = Math.max(1,subDamage[0]+subDamage[1]+subDamage[2]);//deals a min of 1 damage
+				subDamage = new int[] {scomp,bcomp,pcomp,icomp,fcomp,ecomp};
+				for (int i = 0; i < subDamage.length; i++) {
+					damage += subDamage[i];
+				}
+				damage = Math.max(1,damage);//deals a min of 1 damage
 				code = ATK_ResultCode.DAMAGE;
 				type = ATK_ResultType.IMPACT;
 				if (att.getAttacker() != null) {
@@ -672,9 +698,11 @@ public class Combat {
 				}
 				
 				if (!extra.getPrint()) {
-					addNote("rawdam: " +rawdam +"("+sdam+"/"+bdam+"/"+pdam+")"+ " rawarm: " + rawarm + "("+sarm+"/"+barm+"/"+parm+")"+ " weight_a: " + weight_arm + " groll: " + global_roll 
-							+ " comps: " +subDamage[0] +"/"+subDamage[1]+"/"+subDamage[2]
-							+ " reduct: " + reductMult + " ("+s_reduct+"/"+b_reduct+"/"+p_reduct+")");
+					addNote("rawdam: " +rawdam +"("+sdam+"/"+bdam+"/"+pdam+ " " + idam+"/"+fdam+"/"+edam+")"
+				+ " rawarm: " + rawarm + "("+sarm+"/"+barm+"/"+parm+" " +iarm+"/"+farm+"/"+earm+")"
+							+ " weight_a: " + weight_arm + " groll: " + global_roll 
+							+ " comps: " +subDamage[0] +"/"+subDamage[1]+"/"+subDamage[2] + " " + subDamage[3] +"/"+subDamage[4]+"/"+subDamage[5]
+							+ " reduct: " + reductMult + " ("+s_reduct+"/"+b_reduct+"/"+p_reduct+" " +i_reduct+"/"+f_reduct+"/"+e_reduct +")");
 				}
 			}
 		}
@@ -784,11 +812,11 @@ public class Combat {
 		double percent = ((double)extra.zeroOut(damageDone))/((double)defender.getMaxHp());
 		if (off.getHand().isEnchantedHit() && !(att.getName().contains("examine"))) {
 			EnchantHit ehit = (EnchantHit)off.getHand().getEnchant();
-			def.burn(def.getFire(att.getSlot())*percent*ehit.getFireMod()/2,att.getSlot());
+			//def.burn(def.getFire(att.getSlot())*percent*ehit.getFireMod()/2,att.getSlot());
 			
-			defender.advanceTime(-(percent*defender.getTime()*ehit.getFreezeMod()*def.getFreeze(att.getSlot())));
+			//defender.advanceTime(-(percent*defender.getTime()*ehit.getFreezeMod()*def.getFreeze(att.getSlot())));
 			
-			defender.takeDamage((int)(percent*ehit.getShockMod()/3*def.getShock(att.getSlot())));
+			//defender.takeDamage((int)(percent*ehit.getShockMod()/3*def.getShock(att.getSlot())));
 		}
 	}
 	

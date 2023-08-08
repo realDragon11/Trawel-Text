@@ -713,7 +713,7 @@ public class MaterialFactory {
 		misc.pierceMult = 1;
 		misc.tier = 3;
 		misc.rarity = .2f;
-		misc.fireVul = 0;
+		misc.fireVul = 0.1f;
 		misc.shockVul = .5f;
 		misc.freezeVul = 2;
 		misc.palIndex = 4;

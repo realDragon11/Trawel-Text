@@ -630,7 +630,7 @@ public class Inventory implements java.io.Serializable{
 		return extra.zeroOut(retResist);
 	}
 	
-	public double getFire(int slot) {
+	public double getIgniteMult(int slot) {
 		int i = 0;
 		double mult;
 		double retResist = 0;
@@ -646,7 +646,7 @@ public class Inventory implements java.io.Serializable{
 		return extra.zeroOut(retResist/5);
 	}
 	
-	public double getShock(int slot) {
+	public double getElecMult(int slot) {
 		int i = 0;
 		double mult;
 		double retResist = 0;
@@ -662,7 +662,7 @@ public class Inventory implements java.io.Serializable{
 		return extra.zeroOut(retResist/5);
 	}
 	
-	public double getFreeze(int slot) {
+	public double getFrostMult(int slot) {
 		int i = 0;
 		double mult;
 		double retResist = 0;
