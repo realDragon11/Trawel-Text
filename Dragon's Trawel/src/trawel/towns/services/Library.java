@@ -38,7 +38,7 @@ public class Library extends Feature {
 	}
 	
 	public void setLibFlag(LibraryFlag flag, boolean bool) {
-		extra.setEnumByteFlag(flag.ordinal(),libFlags,bool);
+		libFlags = extra.setEnumByteFlag(flag.ordinal(),libFlags,bool);
 	}
 	
 	@Override

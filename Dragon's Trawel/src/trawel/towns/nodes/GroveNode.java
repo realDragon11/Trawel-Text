@@ -111,7 +111,7 @@ public class GroveNode implements NodeType{
 		made.storage1 = RaceFactory.getDueler(made.level);
 		break;
 		case 2: made.name = extra.choose("river","pond","lake","stream","brook"); made.interactString = "wash yourself";break;
-		case 3: made.name = randomLists.randomMuggerName(); made.interactString = "ERROR"; made.forceGo = true;
+		case 3: made.name = randomLists.randomMuggerName(); made.interactString = "ERROR"; made.setForceGo(true);
 		made.storage1 = RaceFactory.getMugger(made.level);break;
 		case 4: made.name = extra.choose("rotting","decaying") + " " +RaceFactory.randRace(Race.RaceType.HUMANOID).renderName(false) +" " + extra.choose("corpse","body"); made.interactString = "loot corpse";break;
 		case 5: made.name = "fairy circle"; made.interactString = "examine circle";break;
@@ -148,23 +148,23 @@ public class GroveNode implements NodeType{
 		made.name = "pack of wolves";
 		made.interactString = "ERROR";
 		made.storage1 = list;
-		made.forceGo = true;
+		made.setForceGo(true);
 		made.state = 0;
 		;break;
 		case 19:
-			made.name = extra.choose("shaman"); made.interactString = "approach the shaman"; made.forceGo = false;
+			made.name = extra.choose("shaman"); made.interactString = "approach the shaman"; made.setForceGo(false);
 			made.storage1 = RaceFactory.getShaman(made.level);
 			made.storage2 = made.storage1;break;
 		case 20:
 			made.name = extra.choose("collector");
 			made.interactString = "approach the " + made.name;
-			made.forceGo = false;
+			made.setForceGo(false);
 			made.storage1 = RaceFactory.makeCollector(made.level);
 			break;
 		case 21:
 			made.name = "bee hive";
 			made.interactString = "destroy hive";
-			made.forceGo = false;
+			made.setForceGo(false);
 			break;
 		}
 		//TODO: add lumberjacks and tending to tree
@@ -249,7 +249,7 @@ public class GroveNode implements NodeType{
 					node.storage1 = null;
 					node.name = "dead "+node.name;
 					node.interactString = "examine body";
-					node.forceGo = false;
+					node.setForceGo(false);
 				}
 		}else {randomLists.deadPerson();node.findBehind("body");}
 		
@@ -538,7 +538,7 @@ public class GroveNode implements NodeType{
 			node.interactString = "examine body";
 			*/
 		}else {
-			node.forceGo = true;
+			node.setForceGo(true);
 			node.eventNum = 3;
 			node.state = 0;
 			node.name = extra.choose("mugger","robber","thug","bandit","marauder","outlaw","desperado","cutthroat");
@@ -563,7 +563,7 @@ public class GroveNode implements NodeType{
 			node.interactString = "examine body";
 			*/
 		}else {
-			node.forceGo = true;
+			node.setForceGo(true);
 			node.eventNum = 9;
 			node.state = 1;
 			node.name = "dryad";
@@ -675,7 +675,7 @@ public class GroveNode implements NodeType{
 			switch (extra.inInt(3)) {
 			case 1: node.name = "angry " +node.name ; node.interactString = "ERROR";
 			node.storage1 = node.storage2;
-			node.forceGo = true;
+			node.setForceGo(true);
 			node.eventNum = 3;
 			bool = false;break;
 			case 2:
@@ -848,7 +848,7 @@ public class GroveNode implements NodeType{
 			switch (extra.inInt(3)) {
 			case 1: node.name = "angry " +node.name ; node.interactString = "ERROR";
 			//storage1 = storage2;
-			node.forceGo = true;
+			node.setForceGo(true);
 			node.eventNum = 3;
 			bool = false;
 			;break;
@@ -888,7 +888,7 @@ public class GroveNode implements NodeType{
 			List<Person> survivors = mainGame.HugeBattle(list,Player.list());
 
 			if (survivors.contains(Player.player.getPerson())) {
-				node.forceGo = false;
+				node.setForceGo(false);
 				node.interactString = "approach wolf corpses";
 				node.storage1 = null;
 				node.state = 1;

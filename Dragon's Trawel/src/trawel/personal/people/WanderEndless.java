@@ -6,10 +6,7 @@ import trawel.towns.Connection;
 import trawel.towns.Connection.ConnectType;
 
 public class WanderEndless extends Behavior implements java.io.Serializable{
-
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 
 	@Override

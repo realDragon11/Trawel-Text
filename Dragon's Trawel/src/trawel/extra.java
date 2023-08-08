@@ -794,6 +794,12 @@ public final class extra {
 		public static final String COLOR_BEEN = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f));
 		public static final String COLOR_OWN = inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f));
 		
+		public static final String VISIT_NEW = COLOR_NEW + "new! ";
+		public static final String VISIT_SEEN = COLOR_SEEN + "! ";
+		public static final String VISIT_BEEN = COLOR_BEEN;
+		public static final String VISIT_OWN = COLOR_OWN + "(owned) ";
+		public static final String VISIT_DONE = COLOR_OWN;
+		
 		/**
 		 * used for "it's a miss!" after the attack proper
 		 */
@@ -939,12 +945,13 @@ public final class extra {
 			return Byte.toUnsignedInt((byte) (flags & (1 << flag))) > 0;
 		}
 		
-		public static void setEnumByteFlag(int flag, byte flags, boolean bool) {
+		public static byte setEnumByteFlag(int flag, byte flags, boolean bool) {
 			if (bool) {
 				flags |= (1 << flag);
-				return;
+				return flags;
 			}
 			flags &= ~(1 << flag);
+			return flags;
 		}
 		
 }

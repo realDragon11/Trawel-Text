@@ -547,7 +547,7 @@ public class Store extends Feature{
 	public void addAnItem() {
 		if (type >= 8) {
 			if (dbs.size() >= invSize) {
-				dbs.remove(extra.randRange(0,dbs.size()));
+				dbs.remove(extra.randRange(0,dbs.size()-1));
 			}
 			switch (type) {
 			case 8:

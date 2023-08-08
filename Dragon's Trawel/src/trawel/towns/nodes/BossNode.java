@@ -74,7 +74,7 @@ public class BossNode implements NodeType {
 			List<Person> list = (List<Person>) node.storage1;
 			List<Person> survivors = mainGame.HugeBattle(list,Player.list());
 			if (survivors.contains(Player.player.getPerson())) {
-				node.forceGo = false;
+				node.setForceGo(false);
 				node.interactString = "approach the fatespinner's corpse";
 				node.storage1 = null;
 				node.state = 1;
@@ -99,7 +99,7 @@ public class BossNode implements NodeType {
 			List<Person> list = (List<Person>) node.storage1;
 			Person winner = mainGame.CombatTwo(Player.player.getPerson(),list.get(0));
 			if (winner == Player.player.getPerson()) {
-				node.forceGo = false;
+				node.setForceGo(false);
 				node.interactString = "approach the hell baron's corpse";
 				node.storage1 = null;
 				node.state = 1;

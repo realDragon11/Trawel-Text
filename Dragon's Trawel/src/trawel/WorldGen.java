@@ -70,7 +70,7 @@ public class WorldGen {
 	static{
 		conf.registerClass(String.class,//probably already built in
 				Armor.class,Weapon.class,Person.class,
-				NodeConnector.class//now there's only one of these :)
+				NodeConnector.class//now there's only one of these :) [I could also improve it further by making it gml style ds datastructures instead of actual objects]
 				);
 		//I think strings are already registered somehow
 		//conf.getClassRegistry().dragonDump();

@@ -102,9 +102,6 @@ public class Person implements java.io.Serializable{
 
 	private short featPoints;
 	
-	public int lightArmorLevel = 0, heavyArmorLevel = 0, edrLevel = 0;
-	public boolean hasEnduranceTraining = false;
-	
 	private EnumMap<Effect,Integer> effects;//hash set not permitted
 	private RaceFlag rFlag;
 
@@ -517,7 +514,7 @@ public class Person implements java.io.Serializable{
 	
 	public int getBase_HP() {
 		int total = 20+(50*level);
-		total+=(edrLevel*ENDURANCE_HP_BONUS)*( hasEnduranceTraining ? 2 :1);
+		//total+=(edrLevel*ENDURANCE_HP_BONUS)*( hasEnduranceTraining ? 2 :1);
 		total+=featPoints*SKILLPOINT_HP_BONUS;
 		return total;
 	}

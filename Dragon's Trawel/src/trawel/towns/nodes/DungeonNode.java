@@ -168,7 +168,7 @@ public class DungeonNode implements NodeType{
 		case -1:
 			made.name = extra.choose("stairs","ladder");
 			made.interactString = "traverse "+made.name;
-			made.forceGo = true;
+			made.setForceGo(true);
 			break;
 		case 1:
 			made.storage1 = extra.choose("old ","vibrant ","simple ","") + "chest";
@@ -178,13 +178,13 @@ public class DungeonNode implements NodeType{
 			break;
 		case 2: made.name = extra.choose("dungeon guard","gatekeeper","dungeon guard");
 		made.interactString = "ERROR";
-		made.forceGo = true;
+		made.setForceGo(true);
 		made.storage1 = RaceFactory.getDGuard(made.level);
 		break;
 		case 3:
 			made.name = extra.choose("locked door","barricaded door","padlocked door");
 			made.interactString = "examine broken door";
-			made.forceGo = true;break;
+			made.setForceGo(true);break;
 		case 4:
 			ArrayList<Person> list = new ArrayList<Person>();
 			list.add(RaceFactory.getDGuard(extra.zeroOut(made.level-3)+1));
@@ -192,7 +192,7 @@ public class DungeonNode implements NodeType{
 			made.name = "gate guards";
 			made.interactString = "ERROR";
 			made.storage1 = list;
-			made.forceGo = true;
+			made.setForceGo(true);
 			made.state = 0;
 		break;
 		case 5:
@@ -203,7 +203,7 @@ public class DungeonNode implements NodeType{
 		break;
 		case 6:
 			if (extra.chanceIn(1, 3)) {
-				made.forceGo = true;
+				made.setForceGo(true);
 			}
 		case 7:
 			made.storage1 =  RaceFactory.makeStatue(made.level);
@@ -220,9 +220,9 @@ public class DungeonNode implements NodeType{
 		case -1: Networking.sendStrong("PlayDelay|sound_footsteps|1|"); break;
 		case 1: chest();break;
 		case 2: mugger1(); if (node.state == 0) {return true;};break;
-		case 3: if (node.forceGo == true) {
+		case 3: if (node.isForceGo() == true) {
 			extra.println("You bash open the door.");
-			node.name = "broken door";node.forceGo = false;
+			node.name = "broken door";node.setForceGo(false);
 		}else {
 			extra.println("The door is broken.");
 		};break;
@@ -285,7 +285,7 @@ public class DungeonNode implements NodeType{
 					node.storage1 = null;
 					node.name = "dead "+node.name;
 					node.interactString = "examine body";
-					node.forceGo = false;
+					node.setForceGo(false);
 				}
 		}else {
 			randomLists.deadPerson();
@@ -303,7 +303,7 @@ public class DungeonNode implements NodeType{
 			
 			
 			if (survivors.contains(Player.player.getPerson())) {
-				node.forceGo = false;
+				node.setForceGo(false);
 				node.interactString = "approach bodies";
 				node.storage1 = null;
 				node.state = 1;
@@ -337,7 +337,7 @@ public class DungeonNode implements NodeType{
 					node.storage1 = null;
 					node.name = "dead mimic";
 					node.interactString = "examine body";
-					node.forceGo = false;
+					node.setForceGo(false);
 				}
 			}else {
 				extra.println("You decide not to open it.");
@@ -361,7 +361,7 @@ public class DungeonNode implements NodeType{
 				node.storage1 = null;
 				node.name = "destroyed "+node.name;
 				node.interactString = "examine destroyed statue";
-				node.forceGo = false;
+				node.setForceGo(false);
 			}
 		}else {
 			randomLists.deadPerson();
@@ -381,7 +381,7 @@ public class DungeonNode implements NodeType{
 			node.storage1 = null;
 			node.name = "looted statue";
 			node.interactString = "loot statue";
-			node.forceGo = false;
+			node.setForceGo(false);
 
 		}else {
 			extra.println("You already looted this statue!");

@@ -54,7 +54,7 @@ public class Player extends SuperPerson{
 	private Potion flask;
 	public float forceRelation = 0.0f;
 	public int forceRewardCount = 0;
-	public int merchantBookPrice = 1000;
+	public int merchantBookPrice = 100;
 	
 
 	

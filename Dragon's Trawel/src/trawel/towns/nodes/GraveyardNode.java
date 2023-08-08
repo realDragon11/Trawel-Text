@@ -74,7 +74,7 @@ public class GraveyardNode implements NodeType{
 	@Override
 	public void apply(NodeConnector made) {
 		switch (made.eventNum) {
-		case -1:made.name = extra.choose("stairs","ladder"); made.interactString = "traverse "+made.name;made.forceGo = true;break;
+		case -1:made.name = extra.choose("stairs","ladder"); made.interactString = "traverse "+made.name;made.setForceGo(true);break;
 		case 1: made.name = DEF_NAME; made.storage1 =  RaceFactory.getGravedigger(made.level); made.interactString = DEF_INTERACT;break;
 		case 2: made.name = DEF_NAME; made.interactString = DEF_INTERACT;made.storage1 = RaceFactory.getGraverobber(made.level);break;
 		
@@ -85,7 +85,7 @@ public class GraveyardNode implements NodeType{
 			made.name = "bats";
 			made.interactString = "ERROR";
 			made.storage1 = list;
-			made.forceGo = true;
+			made.setForceGo(true);
 			made.state = 0;
 		;break;
 		case 4: 
@@ -134,7 +134,7 @@ public class GraveyardNode implements NodeType{
 			List<Person> survivors = mainGame.HugeBattle(list,Player.list());
 			
 			if (survivors.contains(Player.player.getPerson())) {
-				node.forceGo = false;
+				node.setForceGo(false);
 				node.interactString = "approach bat corpses";
 				node.storage1 = null;
 				node.state = 1;
@@ -218,7 +218,7 @@ public class GraveyardNode implements NodeType{
 				node.storage1 = null;
 				node.name = "dead "+node.name;
 				node.interactString = "examine body";
-				node.forceGo = false;
+				node.setForceGo(false);
 			}
 		}else {
 			randomLists.deadPerson();node.findBehind("body");
@@ -243,7 +243,7 @@ public class GraveyardNode implements NodeType{
 				node.storage1 = null;
 				node.name = "dead "+node.name;
 				node.interactString = "examine body";
-				node.forceGo = false;
+				node.setForceGo(false);
 			}
 		}else {
 			randomLists.deadPerson();
@@ -270,7 +270,7 @@ public class GraveyardNode implements NodeType{
 					node.storage1 = null;
 					node.name = "destroyed "+node.name;
 					node.interactString = "examine destroyed statue";
-					node.forceGo = false;
+					node.setForceGo(false);
 				}
 		}else {
 			randomLists.deadPerson();
@@ -293,7 +293,7 @@ public class GraveyardNode implements NodeType{
 			node.state = 1;
 			node.name = "looted statue";
 			node.interactString = "examine statue";
-			node.forceGo = false;
+			node.setForceGo(false);
 				
 		}else {
 			extra.println("You already looted this statue!");

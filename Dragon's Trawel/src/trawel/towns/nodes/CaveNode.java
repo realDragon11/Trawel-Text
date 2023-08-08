@@ -76,12 +76,12 @@ public class CaveNode implements NodeType{
 		case -2:
 			made.name = "cave entrance";
 			made.interactString = "traverse "+made.name;
-			made.forceGo = true;
+			made.setForceGo(true);
 			break;
 		case 1:
 			made.name = "bear";
 			made.interactString = "ERROR";
-			made.forceGo = true;
+			made.setForceGo(true);
 			made.storage1 = RaceFactory.makeBear(made.level);
 			break;
 		case 2:
@@ -92,7 +92,7 @@ public class CaveNode implements NodeType{
 		case 3:
 			made.name = "bat";
 			made.interactString = "ERROR";
-			made.forceGo = true;
+			made.setForceGo(true);
 			made.storage1 = RaceFactory.makeBat(made.level);
 			break;
 		}
@@ -131,7 +131,7 @@ public class CaveNode implements NodeType{
 					node.storage1 = null;
 					node.name = "dead "+node.name;
 					node.interactString = "examine body";
-					node.forceGo = false;
+					node.setForceGo(false);
 				}
 		}else {
 			extra.println("The bear's corpse lays here.");
@@ -174,7 +174,7 @@ public class CaveNode implements NodeType{
 					node.storage1 = null;
 					node.name = "dead "+node.name;
 					node.interactString = "examine body";
-					node.forceGo = false;
+					node.setForceGo(false);
 				}
 		}else {
 			extra.println("The bat corpse lies here.");

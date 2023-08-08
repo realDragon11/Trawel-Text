@@ -2,10 +2,13 @@ package trawel;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
+import trawel.personal.people.Agent;
+import trawel.personal.people.Agent.AgentGoal;
 import trawel.quests.Quest.TriggerType;
 
 
@@ -94,12 +97,14 @@ public class BumperFactory {
 					Person p = RaceFactory.makeFellReaver(level);
 					
 					extra.println(extra.PRE_RED+"A fell reaver appears!");
-					mainGame.CombatTwo(Player.player.getPerson(),p);
-					
+					Combat c = Player.player.fightWith(p);
+					if (c.playerWon() < 0) {
+						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
+					}
 				}};
-			b.responses.add(new Response(DrawBane.MEAT,3));
-			b.responses.add(new Response(DrawBane.CEON_STONE,3));
-			b.minAreaLevel = 5;
+			b.responses.add(new Response(DrawBane.MEAT,2));
+			b.responses.add(new Response(DrawBane.CEON_STONE,4));
+			b.minAreaLevel = 4;
 			bumperList.add(b);
 		 b = new Bumper() {
 				
@@ -121,10 +126,12 @@ public class BumperFactory {
 					Person p = RaceFactory.makeVampire(level);
 					
 					extra.println(extra.PRE_RED+"A vampire jumps from the shadows!");
-					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
-							Player.player.questTrigger(TriggerType.CLEANSE,"vampire", 1);
-					}
-					
+					Combat c = Player.player.fightWith(p);
+					if (c.playerWon() < 0) {
+						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
+					}else {
+						Player.player.questTrigger(TriggerType.CLEANSE,"vampire", 1);
+					}					
 				}};
 			b.responses.add(new Response(DrawBane.BLOOD,3));
 			b.responses.add(new Response(DrawBane.GARLIC,-8));
@@ -138,9 +145,12 @@ public class BumperFactory {
 					Person p = RaceFactory.getMugger(level);
 					
 					extra.println(extra.PRE_RED+"A thief charges you!");
-					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+					Combat c = Player.player.fightWith(p);
+					if (c.playerWon() < 0) {
+						Player.player.getLocation().addOccupant(new Agent(p));
+					}else {
 						Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
-				}
+					}
 					
 				}};
 			b.responses.add(new Response(DrawBane.SILVER,1));
@@ -226,9 +236,12 @@ public class BumperFactory {
 					Person p = RaceFactory.getMugger(level);
 					
 					extra.println(extra.PRE_RED+"A pirate challenges you for your booty!");
-					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+					Combat c = Player.player.fightWith(p);
+					if (c.playerWon() < 0) {
+						Player.player.getLocation().addOccupant(new Agent(p));
+					}else {
 						Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
-				}
+					}
 					
 				}};
 			b.responses.add(new Response(DrawBane.SILVER,1));
@@ -242,7 +255,10 @@ public class BumperFactory {
 					Person p = RaceFactory.makeDrudgerStock(level);
 					
 					extra.println(extra.PRE_RED+"A drudger attacks your ship!");
-					mainGame.CombatTwo(Player.player.getPerson(),p);
+					Combat c = Player.player.fightWith(p);
+					if (c.playerWon() < 0) {
+						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
+					}
 					
 				}};
 			b.responses.add(new Response(DrawBane.MEAT,3));

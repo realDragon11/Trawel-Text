@@ -153,12 +153,12 @@ public class MineNode implements NodeType{
 		case 4:
 			made.name = randomLists.randomMuggerName();
 			made.interactString = "ERROR";
-			made.forceGo = true;
+			made.setForceGo(true);
 			made.storage1 = RaceFactory.getMugger(made.level);break;
 		case 5: 
 			made.name = extra.choose("locked door","barricaded door","padlocked door");
 			made.interactString = "unlock door";
-			made.forceGo = true;break;
+			made.setForceGo(true);break;
 		case 6:
 			made.interactString = "examine crystals";
 			made.storage1 = randomLists.randomColor();
@@ -166,7 +166,7 @@ public class MineNode implements NodeType{
 		case 7:
 			made.name = "minecart";
 			made.interactString = "examine minecart";break;
-		case 8: made.name = "ladder"; made.interactString = "traverse ladder"; made.forceGo = true; break;
+		case 8: made.name = "ladder"; made.interactString = "traverse ladder"; made.setForceGo(true); break;
 		case 9: made.name = "cultists"; made.interactString = "approach cultists";
 			made.storage1 = RaceFactory.getCultist(made.level);
 		break;
@@ -185,14 +185,14 @@ public class MineNode implements NodeType{
 		case 3: goldVein1();break;
 		case 4: mugger1(); if (node.state == 0) {return true;};break;
 		case 5: 
-			if (node.forceGo == true) {
+			if (node.isForceGo() == true) {
 				if (node.parent.getOwner() == Player.player) {
 					extra.println("You unlock and then relock the door.");
-					node.forceGo = false;
+					node.setForceGo(false);
 				}else {
 					extra.println("You bash open the door.");
 					node.interactString = "examine broken door";
-					node.name = "broken door";node.forceGo = false;
+					node.name = "broken door";node.setForceGo(false);
 				}
 			}else {
 				extra.println("The door is broken.");
@@ -321,7 +321,7 @@ public class MineNode implements NodeType{
 					node.storage1 = null;
 					node.name = "dead "+node.name;
 					node.interactString = "examine body";
-					node.forceGo = false;
+					node.setForceGo(false);
 				}
 		}else {
 			randomLists.deadPerson();
@@ -367,7 +367,7 @@ public class MineNode implements NodeType{
 				node.name = "angry sect leader";
 				node.interactString = "ERROR";
 
-				node.forceGo = true;
+				node.setForceGo(true);
 				node.eventNum = 4;
 				break;
 

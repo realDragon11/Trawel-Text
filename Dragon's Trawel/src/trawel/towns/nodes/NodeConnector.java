@@ -23,7 +23,7 @@ public class NodeConnector implements Serializable {
 
 	//used for connecting event nodes with bosses
 	private static final long serialVersionUID = 1L;
-	protected ArrayList<NodeConnector> connects;
+	protected List<NodeConnector> connects;
 	protected String name;//DOLATER: could probably generate these two Strings from the Objects
 	protected String interactString = "ERROR";
 	
@@ -31,10 +31,12 @@ public class NodeConnector implements Serializable {
 	
 	private short floor = 0;//DOLATER: make floor apply to all types as 'depth'. Floor needs to stay an int/short for spacing reasons
 	
-	protected boolean forceGo = false;//only needs one bit
-	private boolean isStair = false;//only needs one bit
+	private byte flags = extra.emptyByte;
 	
-	public byte visited = 0;//TODO: only needs 2 bits
+	public enum NodeFlag{
+		FORCEGO, STAIR,
+		VISIT_BIT1, VISIT_BIT2
+	}
 	
 	protected byte typeNum;
 	protected byte eventNum;
@@ -54,10 +56,18 @@ public class NodeConnector implements Serializable {
 		floor = -1;
 		typeNum = Byte.MIN_VALUE;
 		eventNum = Byte.MIN_VALUE;
-		forceGo = false;
+		setForceGo(false);
 	}
 	
-	public ArrayList<NodeConnector> getConnects() {
+	public boolean getFlag(NodeFlag f) {
+		return extra.getEnumByteFlag(f.ordinal(), flags);
+	}
+	
+	public void setFlag(NodeFlag f, boolean bool) {
+		flags = extra.setEnumByteFlag(f.ordinal(), flags, bool);
+	}
+	
+	public List<NodeConnector> getConnects() {
 		return connects;
 	}
 
@@ -108,8 +118,8 @@ public class NodeConnector implements Serializable {
 						break;
 					}
 				}
-				if (forceGo && !forceGoProtection) {
-					visited = 3;
+				if (isForceGo() && !forceGoProtection) {
+					setVisited(3);
 					forceGoProtection = true;
 					interactCode();
 					return null;//redo operation
@@ -149,11 +159,11 @@ public class NodeConnector implements Serializable {
 		@Override
 		public String title() {
 			String visitColor = extra.PRE_WHITE;
-			switch (owner.visited) {
-			case 0: visitColor = extra.COLOR_NEW; owner.visited = 2;break;
-			case 1: visitColor = extra.COLOR_SEEN; owner.visited = 2;break;
-			case 2: visitColor = extra.COLOR_BEEN;break;
-			case 3: visitColor = extra.COLOR_OWN;break;
+			switch (owner.getVisited()) {
+			case 0: visitColor = extra.VISIT_NEW; owner.setVisited(2);break;
+			case 1: visitColor = extra.VISIT_SEEN; owner.setVisited(2);break;
+			case 2: visitColor = extra.VISIT_BEEN;break;
+			case 3: visitColor = extra.VISIT_DONE;break;
 			}
 			return visitColor + owner.name;
 		}
@@ -186,7 +196,7 @@ public class NodeConnector implements Serializable {
 		@Override
 		public String title() {
 			String visitColor = extra.PRE_WHITE;
-			if (owner.visited != 3) {
+			if (owner.getVisited() != 3) {
 				visitColor = extra.TIMID_GREY;
 			}
 			return visitColor + owner.interactString;
@@ -194,7 +204,7 @@ public class NodeConnector implements Serializable {
 
 		@Override
 		public boolean go() {
-			owner.visited = 3;
+			owner.setVisited(3);
 			interactCode();
 			return true;
 		}
@@ -212,11 +222,11 @@ public class NodeConnector implements Serializable {
 		@Override
 		public String title() {
 			String visitColor = extra.PRE_WHITE;
-			switch (owner.visited) {
-			case 0: visitColor = extra.COLOR_NEW; owner.visited = 1;break;
-			case 1: visitColor = extra.COLOR_SEEN;break;
-			case 2: visitColor = extra.COLOR_BEEN;break;
-			case 3: visitColor = extra.COLOR_OWN;break;
+			switch (owner.getVisited()) {
+			case 0: visitColor = extra.VISIT_NEW; owner.setVisited(1);break;
+			case 1: visitColor = extra.VISIT_SEEN;break;
+			case 2: visitColor = extra.VISIT_BEEN;break;
+			case 3: visitColor = extra.VISIT_DONE;break;
 			}
 			String postText = "";
 			if (owner.isStair()) {
@@ -240,7 +250,7 @@ public class NodeConnector implements Serializable {
 			forceGoProtection = false;
 			NodeConnector.lastNode = NodeConnector.currentNode;
 			currentNode = owner;
-			owner.visited = 2;
+			owner.setVisited(2);
 			return true;//always return true to prevent recursive nesting issues
 		}
 		
@@ -329,7 +339,7 @@ public class NodeConnector implements Serializable {
 	}
 	
 	protected void setStair() {
-		isStair = true;
+		setFlag(NodeFlag.STAIR, true);
 	}
 
 	protected void setFloor(int b) {
@@ -337,11 +347,58 @@ public class NodeConnector implements Serializable {
 	}
 
 	public boolean isStair() {
-		return isStair;
+		return getFlag(NodeFlag.STAIR);
 	}
 
 	public int getFloor() {
 		return floor;
+	}
+
+	public boolean isForceGo() {
+		return getFlag(NodeFlag.FORCEGO);
+	}
+
+	public void setForceGo(boolean forceGo) {
+		setFlag(NodeFlag.FORCEGO,forceGo);
+	}
+
+	public byte getVisited() {
+		//we don't actually need to know the order since we look per bit
+		//but left is more significant in effect below
+		if (getFlag(NodeFlag.VISIT_BIT1)) {//1X
+			if (getFlag(NodeFlag.VISIT_BIT2)) {//11
+				return 3;
+			}else {//10
+				return 2;
+			}
+		}else {//0X
+			if (getFlag(NodeFlag.VISIT_BIT2)) {//01
+				return 1;
+			}else {//00
+				return 0;
+			}
+		}
+	}
+
+	public void setVisited(int visited) {
+		switch (visited) {
+		case 0:
+			setFlag(NodeFlag.VISIT_BIT1,false);
+			setFlag(NodeFlag.VISIT_BIT2,false);
+			break;
+		case 1:
+			setFlag(NodeFlag.VISIT_BIT1,false);
+			setFlag(NodeFlag.VISIT_BIT2,true);
+			break;
+		case 2:
+			setFlag(NodeFlag.VISIT_BIT1,true);
+			setFlag(NodeFlag.VISIT_BIT2,false);
+			break;
+		case 3:
+			setFlag(NodeFlag.VISIT_BIT1,true);
+			setFlag(NodeFlag.VISIT_BIT2,true);
+			break;
+		}
 	}
 	
 }

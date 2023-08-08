@@ -269,10 +269,10 @@ public class Town extends TContextOwner{
 		Player.player.lastTown = this;
 		String visitColor = extra.PRE_WHITE;
 		switch (visited) {
-		case 0: visitColor = extra.COLOR_NEW;break;
-		case 1: visitColor = extra.COLOR_SEEN;break;
-		case 2: visitColor = extra.COLOR_BEEN;break;
-		case 3: visitColor = extra.COLOR_OWN;break;
+		case 0: visitColor = extra.VISIT_NEW;break;
+		case 1: visitColor = extra.VISIT_SEEN;break;
+		case 2: visitColor = extra.VISIT_BEEN;break;
+		case 3: visitColor = extra.VISIT_DONE;break;
 		}
 		if (visited < 2) {
 			visited = 2;
