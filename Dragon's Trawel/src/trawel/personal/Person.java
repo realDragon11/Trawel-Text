@@ -480,10 +480,17 @@ public class Person implements java.io.Serializable{
 	public void battleSetup() {
 		
 		boolean isPlay = false;
+		Effect sipped = null;
 		if (this.isPlayer()) {
-			Player.player.doSip();
+			sipped = Player.player.doSip();
 			isPlay = true;
 		}
+		if (sipped == Effect.CURSE && hasSkill(Skill.TOXIC_BREWS)) {
+			for (int i = 0; i < 3;i++) {
+				addEffect(extra.randList(Effect.minorBuffEffects));
+			}
+		}
+		
 		bodystatus = new TargetHolder(bodyType);
 		tempMaxHp = getOOB_HP();
 		hp = tempMaxHp;

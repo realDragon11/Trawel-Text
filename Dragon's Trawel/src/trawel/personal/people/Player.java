@@ -6,6 +6,7 @@ import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
+import trawel.Effect;
 import trawel.Networking;
 import trawel.Story;
 import trawel.WorldGen;
@@ -163,18 +164,21 @@ public class Player extends SuperPerson{
 		}
 	}
 	
-	public void doSip() {
+	public Effect doSip() {
 		if (flask != null) {
 			extra.println("Take a sip of your potion? ("+flask.sips+" left)");
 			if (extra.yesNo()) {
+				Effect e = flask.effect;
 				flask.sip(person);
 				Networking.sendStrong("PlayDelay|sound_swallow"+extra.randRange(1,5)+"|1|");
 				Networking.unlockAchievement("potion1");
 				if (flask.sips <=0) {
 					flask = null;
 				}
+				return e;
 			}
 		}
+		return null;
 	}
 	public Potion getFlask() {
 		return flask;

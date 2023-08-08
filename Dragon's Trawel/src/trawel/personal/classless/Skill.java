@@ -116,8 +116,10 @@ public enum Skill{
 		DODGEREF("Refreshing Dodge","Gain hp equal to your attacker's level every time you dodge."
 				,"Caps at twice your level. Does not apply to misses."
 				,Type.DEFENSE),
-		P_BREWER("Brewer","Your created potions can be sipped two more times without running out",
-				"Stacks with normal filler ingredients.",Type.OTHER)
+		P_BREWER("Brewer","Your created potions can be sipped two more times before running out."
+				,"Stacks with normal filler ingredients.",Type.CRAFT),
+		TOXIC_BREWS("Toxic Brews","When drinking a cursed potion, gain up to 3 random minor positive potion effects. Your created potions can be sipped one more time."
+				,"Stacks with normal filler ingredients.",Type.CRAFT)
 		
 		;
 	    private String name,desc, longDesc;
@@ -131,6 +133,7 @@ public enum Skill{
 	    	MAGE,
 	    	DEFENDER,
 	    	//new set
+	    	CRAFT,
 	    	OTHER,
 	    	SPEED,//skills that tend to make you faster
 	    	DEFENSE,//skills that provide defensive benefits

@@ -14,7 +14,8 @@ public enum Feat implements IHasSkills{
 	COMMON_TOUGH("The Tough","They're tougher than they look. And they look tough.","",
 			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS),5,0),
 	MAGIC_WITCH("The Witch","Curses and potions are their forte.","",
-			1f,FeatType.MAGIC,EnumSet.of(Skill.CURSE_MAGE,Skill.P_BREWER),0,0)
+			1f,EnumSet.of(FeatType.POTIONS,FeatType.CURSES),null
+			,EnumSet.of(Skill.CURSE_MAGE,Skill.P_BREWER),0,0,null,null)
 	;
 
 	private final String name, desc, getDesc;
@@ -23,10 +24,10 @@ public enum Feat implements IHasSkills{
 	 * can set to 0 to make feat not spawn, or set FeatType to null
 	 */
 	public final float rarity;
-	public final List<FeatType> typesAll, typesAny;
+	public final Set<FeatType> typesAll, typesAny;
 	public final Set<IHasSkills> needsAll, needsOne;
 	private final int strength, dexterity;
-	Feat(String _name, String _desc, String _getDesc,float _rarity,List<FeatType> _typesAll,List<FeatType> _typesAny,Set<Skill> skillset,int stre, int dext
+	Feat(String _name, String _desc, String _getDesc,float _rarity,Set<FeatType> _typesAll,Set<FeatType> _typesAny,Set<Skill> skillset,int stre, int dext
 			,Set<IHasSkills> needsAllOf, Set<IHasSkills> needsOneOf){
 		name = _name;
 		desc = _desc;
@@ -42,7 +43,7 @@ public enum Feat implements IHasSkills{
 	}
 	
 	Feat(String _name, String _desc, String _getDesc,float _rarity,FeatType _type ,Set<Skill> skillset,int stre, int dext){
-		this(_name,_desc,_getDesc,_rarity,null,Collections.singletonList(_type),skillset,stre,dext,null,null);
+		this(_name,_desc,_getDesc,_rarity,null,EnumSet.of(_type),skillset,stre,dext,null,null);
 	}
 	
 	Feat(String _name, String _desc, String _getDesc,float _rarity,FeatType _type ,Set<Skill> skillset){
@@ -50,7 +51,7 @@ public enum Feat implements IHasSkills{
 	}
 	
 	public enum FeatType{
-		COMMON, MAGIC;
+		COMMON, MAGIC, POTIONS, CURSES;
 	}
 	
 	@Override

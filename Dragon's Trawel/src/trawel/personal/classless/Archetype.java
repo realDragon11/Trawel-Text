@@ -15,14 +15,16 @@ import trawel.personal.classless.Feat.FeatType;
 import trawel.personal.classless.Skill.Type;
 
 public enum Archetype implements IHasSkills{
-	EMPTY("","",AType.RACIAL,EnumSet.of(AGroup.STRENGTH),IHasSkills.emptySkillSet);
+	VIRAGO("virago","An expert on toxic incantations, salves, potions, and the like. Adept in supplemental spellcasting.",
+			AType.ENTRY,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT),EnumSet.of(FeatType.CURSES,FeatType.POTIONS),EnumSet.of(Skill.TOXIC_BREWS));
 	
 	private final String name, desc;
 	private final Set<Skill> skills;
 	private final int strength, dexterity;
 	private final AType type;
 	private final Set<AGroup> groups;
-	Archetype(String _name, String description, AType _type, Set<AGroup> _groups, Set<Skill> skillset){
+	private final Set<FeatType> fTypes;
+	Archetype(String _name, String description, AType _type, Set<AGroup> _groups,Set<FeatType> _fTypes, Set<Skill> skillset){
 		name = _name;
 		desc = description;
 		skills = skillset;
@@ -30,6 +32,7 @@ public enum Archetype implements IHasSkills{
 		dexterity = 0;
 		type = _type;
 		groups = _groups;
+		fTypes = _fTypes;
 	}
 	
 	public enum AType{
@@ -40,7 +43,7 @@ public enum Archetype implements IHasSkills{
 	
 	public enum AGroup{
 		DEXTERITY, STRENGTH,
-		MAGIC
+		MAGIC, CRAFT
 	}
 	
 	@Override
@@ -166,11 +169,19 @@ public enum Archetype implements IHasSkills{
 		}
 		Set<Feat> fset = EnumSet.copyOf(person.getFeatSet());
 		while (list.size() < 6) {
-			Feat f = Feat.randFeat(EnumSet.of(FeatType.COMMON),fset);//TODO: just commons for now when prototyping
+			Set<FeatType> allowSet = EnumSet.of(FeatType.COMMON);
+			for (Archetype a: pAs) {
+				allowSet.addAll(a.getFeatTypes());
+			}
+			Feat f = Feat.randFeat(allowSet,fset);//TODO: just commons for now when prototyping
 			list.add(f);
 			fset.add(f);
 		}
 		
 		return list;
+	}
+
+	public Set<FeatType> getFeatTypes() {
+		return fTypes;
 	}
 }

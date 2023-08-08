@@ -96,6 +96,9 @@ public class WitchHut extends Feature{
 				if (Player.hasSkill(Skill.P_BREWER)) {
 					filler+=2;
 				}
+				if (Player.hasSkill(Skill.TOXIC_BREWS)) {
+					filler+=1;
+				}
 				if (ents > 0 && meats > 1) {
 					mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getFleshGolem(town.getTier()));
 					return;
