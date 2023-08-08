@@ -7,17 +7,15 @@ import trawel.extra;
 public enum Skill{
 	
 	    BEER_BELLY("Beer Belly","Use two beers at once in battle!",true,Type.FIGHTER,1,"Gives you the beer health bonus twice- if you have two beers to drink."),
-	    BLOODTHIRSTY("Bloodthirsty","Gain some hp each time you attack!",true,Type.FIGHTER,1,""),
+	    
 	    
 		BEER_LOVER("Beer Lover","Endless beer. Never have to go to a tavern again.",true,Type.FIGHTER,2,""),
 		HPSENSE("Health Sense","Discern how much hp the defender has after each attack. Improves examine as well.",false,Type.FIGHTER,2,""),
-		KILLHEAL("Vampire","Gain a moderate amount of hp on a kill.",true,Type.FIGHTER,2,""),
 		
 		COUNTER("Counter","Attack slightly sooner after you are attacked.",true,Type.FIGHTER,3,""),
 		
 		BERSERKER("Berserker","Remove examine from possible attacks you can make.",true,Type.FIGHTER,4,""),
-		DSTRIKE("Decisive Strike","Instantly kill anyone you damage by more than 80% in one blow.",true,Type.FIGHTER,4,""),
-		SPUNCH("Sucker Punch","Your attacks slow down your foe.",true,Type.FIGHTER,4,""),
+		
 		
 		WAIT("Wait","Allows you to wait for a better opportunity.",false,Type.FIGHTER,5,""),
 		//LAST_STAND("Last Stand","When reduced to 0 hp or lower, stay alive at 1 hp.",Type.FIGHTER,3),
@@ -51,7 +49,6 @@ public enum Skill{
 		MAGE_TRAINING("Mage Training","Unlock your inner magic potential.",true,Type.MAGE,1,""),
 		LIFE_MAGE("Life Mage","Unlock healing magic spells.",true,Type.MAGE,1,""),//good for out of combat
 		MONEY_MAGE("Money Mage","Generate money slowly.",false,Type.MAGE,1,""),//good for out of combat
-		CURSE_MAGE("Witch","Your attacks curse the opponent.",true,Type.MAGE,1,""),
 		
 		ELEMENTAL_MAGE("Elemental Mage","Unlock elemental magic spells.",false,Type.MAGE,2,""),
 		DEATH_MAGE("Death Mage","Unlock necromantic magic spells.",true,Type.MAGE,2,""),
@@ -68,10 +65,9 @@ public enum Skill{
 		SHIELD("Shield","Gives you a shield.",true,Type.DEFENDER,1,""),
 		
 		
-		ARMORHEART("Armor Heart","Gain some hp every time your armor blocks an attack.",true,Type.DEFENDER,2,""),
 		
 		
-		ARMORSPEED("Glancing Blow","Attack sooner after your armor blocks an attack.",true,Type.DEFENDER,3,""),
+		
 		
 		GOOFFENSIVE("Go on the offensive","Allows you to attack with your defensive item.",true,Type.DEFENDER,4,""),
 		DEFENSIVE_TRAINING("Stay on the defensive","Unlocks your defensive potential.",true,Type.DEFENDER,4,""),
@@ -114,12 +110,40 @@ public enum Skill{
 				,"Applies to each dodge. Does not apply to misses."
 				,Type.SPEED),
 		DODGEREF("Refreshing Dodge","Gain hp equal to your attacker's level every time you dodge."
-				,"Caps at twice your level. Does not apply to misses."
+				,"Uncapped total HP gain. Caps at twice your level per activation. Does not apply to misses."
 				,Type.DEFENSE),
 		P_BREWER("Brewer","Your created potions can be sipped two more times before running out."
-				,"Stacks with normal filler ingredients.",Type.CRAFT),
+				,"Stacks with normal filler ingredients."
+				,Type.CRAFT),
 		TOXIC_BREWS("Toxic Brews","When drinking a cursed potion, gain up to 3 random minor positive potion effects. Your created potions can be sipped one more time."
-				,"Stacks with normal filler ingredients.",Type.CRAFT)
+				,"Stacks with normal filler ingredients."
+				,Type.CRAFT),
+		CURSE_MAGE("Curse Whisperer","Those who kill them are cursed, and start battles with less hp until cured."
+				,"Cure at a Shaman or Doctor. Lasts between battles."
+				, Type.OTHER),
+		KILLHEAL("Vampiric Spirit","Gain 5 x dead person level HP on a kill."
+				,"Caps at 10 x your own level. 'Kill' means being the last person to attack the target before they die."
+				,Type.OFFENSE),
+		SPUNCH("Sucker Punch","Your impactful attacks slow down your target's next action by 2% of their total time."
+				,extra.IMPACT_TIP
+				,Type.OFFENSE),
+		DSTRIKE("Decisive Strike","Instantly kill anyone you damage by more than 70% of their max HP in one blow."
+				,"Max HP is closely aligned to how much HP they start with. Must be part of an 'Impactful' action. (HP gained after battle start can go above this limit."
+				,Type.OFFENSE),
+		BLOODTHIRSTY("Bloodthirsty","Gain HP equal to the lower of your level and your target's level every time you make an impactful attack."
+				,extra.IMPACT_TIP
+				,Type.OFFENSE),
+		ARMOR_TUNING("Armor Tuning","Your armor is 20% stronger at the start of every battle."
+				,"Armor above 100% degrades half of how much it's above 100% whenever you complete an action."
+				,Type.DEFENSE),
+		ARMORSPEED("Glancing Blow","Attack 10 instants sooner after your armor blocks an attack."
+				,"Applies once per attack."
+				,Type.DEFENSE),//defense not speed, speed is more 'fast in mobility'
+		ARMORHEART("Armor Heart","Gain hp equal to your attacker's level every time your armor blocks an attack."
+				,"Uncapped total HP gain. Caps at twice your level per activation. Applies once per attack."
+				,Type.DEFENSE),
+		
+		
 		
 		;
 	    private String name,desc, longDesc;
@@ -133,6 +157,7 @@ public enum Skill{
 	    	MAGE,
 	    	DEFENDER,
 	    	//new set
+	    	OFFENSE,
 	    	CRAFT,
 	    	OTHER,
 	    	SPEED,//skills that tend to make you faster
@@ -160,6 +185,7 @@ public enum Skill{
 			level = 0;
 			AITake = false;
 		}
+		
 		
 		public String getName() {return name;}
 		public String getDesc() {return desc;}

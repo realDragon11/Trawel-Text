@@ -155,9 +155,7 @@ public class Combat {
 
 		extra.println(extra.choose("The dust settles...","The body drops to the floor.","Death has come.","The battle is over."));
 		extra.println(defender.getName() + extra.choose(" lies dead..."," walks the earth no more..."," has been slain."));
-		attacker.getBag().getHand().addKill();
-		attacker.addKillStuff();
-		FBox.repCalc(attacker,defender);
+		killData(attacker,defender);
 		survivors = Collections.singletonList(attacker);
 		killed = Collections.singletonList(defender);
 	}
@@ -482,6 +480,9 @@ public class Combat {
 		return changed;
 	}
 	
+	/**
+	 * wraps killRemovePerson and killData together for mass battles
+	 */
 	private boolean killWrapUp(Person dead, Person killer, boolean bledOut) {
 		boolean changed = killRemovePerson(dead);
 		if (changed) {
@@ -490,19 +491,30 @@ public class Combat {
 			}else {
 				extra.println(dead.getName() + " dies!");
 			}
-			dead.addDeath();
-			//can insert a null check here later if need be
-			//DOLATER: need null for starting bleeding, but for now null exceptions are needed
-			killer.addKillStuff();
-			killer.getBag().getHand().addKill();
-			if (dead.isPlayer()) {
-				killer.addPlayerKill();
-			}
-			if (killer.hasSkill(Skill.KILLHEAL)){
-				killer.addHp(5*killer.getLevel());
-			}
+			killData(dead,killer);
 		}
 		return changed;
+	}
+	
+	/**
+	 * use directly in 1v1s, mass battles should use killWrapUp
+	 */
+	private void killData(Person dead, Person killer) {
+		dead.addDeath();
+		if (dead.hasSkill(Skill.CURSE_MAGE)) {
+			killer.addEffect(Effect.CURSE);
+		}
+		//can insert a null check here later if need be
+		//DOLATER: need null for starting bleeding, but for now null exceptions are needed
+		killer.addKillStuff();
+		killer.getBag().getHand().addKill();
+		if (dead.isPlayer()) {
+			killer.addPlayerKill();
+		}
+		if (killer.hasSkill(Skill.KILLHEAL)){
+			killer.addHp(Math.min(10*killer.getLevel(),5*dead.getLevel()));
+		}
+		FBox.repCalc(killer,dead);
 	}
 	
 	/**
@@ -653,6 +665,11 @@ public class Combat {
 				damage = Math.max(1,subDamage[0]+subDamage[1]+subDamage[2]);//deals a min of 1 damage
 				code = ATK_ResultCode.DAMAGE;
 				type = ATK_ResultType.IMPACT;
+				if (att.getAttacker() != null) {
+					if (att.getAttacker().hasSkill(Skill.DSTRIKE) && (damage > att.getDefender().getMaxHp()*.7f)) {
+						code = ATK_ResultCode.KILL;
+					}
+				}
 				
 				if (!extra.getPrint()) {
 					addNote("rawdam: " +rawdam +"("+sdam+"/"+bdam+"/"+pdam+")"+ " rawarm: " + rawarm + "("+sarm+"/"+barm+"/"+parm+")"+ " weight_a: " + weight_arm + " groll: " + global_roll 
@@ -773,9 +790,6 @@ public class Combat {
 			
 			defender.takeDamage((int)(percent*ehit.getShockMod()/3*def.getShock(att.getSlot())));
 		}
-		if (attacker.hasSkill(Skill.DSTRIKE) && percent >= .80) {
-			defender.takeDamage((int) (((1-percent)*defender.getMaxHp())+10));
-		}
 	}
 	
 	/**
@@ -806,12 +820,6 @@ public class Combat {
 		}
 		if (defender.hasSkill(Skill.COUNTER)) {
 			defender.advanceTime(2);
-		}
-		if (attacker.hasSkill(Skill.SPUNCH)) {
-			defender.advanceTime(-2);
-		}
-		if (attacker.hasSkill(Skill.CURSE_MAGE)) {
-			defender.addEffect(Effect.CURSE);
 		}
 		if (defender.hasEffect(Effect.FORGED)) {
 			defender.getBag().restoreArmor(0.1);
@@ -878,8 +886,21 @@ public class Combat {
 			
 		//Wounds can now be inflicted even if not dealing damage
 		String woundstr = "";
-		if (atr.type == ATK_ResultType.IMPACT && atr.hasWound()) {
-			woundstr = inflictWound(attacker,defender,atr);
+		
+		if (atr.type == ATK_ResultType.IMPACT) {
+			if (attacker.hasSkill(Skill.SPUNCH)) {
+				defender.advanceTime(atr.attack.getTime()/50f);
+			}
+			if (atr.hasWound()) {
+				woundstr = inflictWound(attacker,defender,atr);
+			}
+			if (atr.code == ATK_ResultCode.KILL) {//if force kill
+				extra.println(attacker.getName() + " executes " + defender.getName() +"!");
+				defender.forceKill();
+			}
+			if (attacker.hasSkill(Skill.BLOODTHIRSTY)) {
+				attacker.addHp(Math.min(defender.getLevel(),attacker.getLevel()));
+			}
 		}
 		if (damageDone > 0) {
 			if (defender.takeDamage(damageDone)) {
@@ -925,7 +946,7 @@ public class Combat {
 				extra.print(inlined_color+atr.stringer.replace("[*]", inlined_color)+" "+randomLists.attackNegateFluff());
 			}
 			if (defender.hasSkill(Skill.ARMORHEART)) {
-				defender.addHp(attacker.getLevel());
+				defender.addHp(Math.min(defender.getLevel()*2,attacker.getLevel()));
 			}
 			if (defender.hasSkill(Skill.ARMORSPEED)) {
 				defender.applyDiscount(10);
@@ -971,9 +992,7 @@ public class Combat {
 			}
 		}
 		//}
-		if (attacker.hasSkill(Skill.BLOODTHIRSTY)) {
-			attacker.addHp(attacker.getLevel());
-		}
+		
 		if (attacker.hasSkill(Skill.HPSENSE) || defender.hasSkill(Skill.HPSENSE)) {
 			extra.println(defender.getHp()+"/" + defender.getMaxHp() );
 		}
@@ -1040,6 +1059,8 @@ public class Combat {
 					break;
 			}
 		}
+		
+		attacker.getBag().turnTick();//for now, just armor buff decay
 		
 		if (defender.getHp() <= 0) {
 			Networking.send("PlayDelay|sound_fallover1|35|");

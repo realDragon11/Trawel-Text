@@ -45,6 +45,9 @@ public final class extra {
 	private static boolean debugPrint = false;
 	private static int debugChunk = 0;
 	
+	public static final String IMPACT_TIP = "Impactful attacks are typically those that hit and deal damage without reliable forcing damage.";
+	
+	
 	private static final ThreadLocal<EnhancedRandom> localRands = new ThreadLocal<EnhancedRandom>() {
 		@Override protected EnhancedRandom initialValue() {
 			return new WhiskerRandom();
@@ -728,6 +731,11 @@ public final class extra {
 		public static final float lerp(float a, float b, float f) 
 		{
 		    return (a * (1.0f - f)) + (b * f);
+		}
+		
+		public static final double lerp(double a, double b, double f) 
+		{
+		    return (a * (1.0 - f)) + (b * f);
 		}
 
 		public static final Color colorMix(Color c1, Color c2, float f) {

@@ -12,10 +12,16 @@ import trawel.personal.classless.Skill.Type;
 public enum Feat implements IHasSkills{
 	EMPTY("","","",0f,null,IHasSkills.emptySkillSet),
 	COMMON_TOUGH("The Tough","They're tougher than they look. And they look tough.","",
-			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS),5,0),
+			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS),0,0),
 	MAGIC_WITCH("The Witch","Curses and potions are their forte.","",
 			1f,EnumSet.of(FeatType.POTIONS,FeatType.CURSES),null
 			,EnumSet.of(Skill.CURSE_MAGE,Skill.P_BREWER),0,0,null,null)
+	,HEMOVORE("Hemovore","Extracts life energy from fleeting mortality.","",
+			1f,EnumSet.of(FeatType.BATTLE),EnumSet.of(FeatType.CURSES,FeatType.MAGIC)
+			,EnumSet.of(Skill.BLOODTHIRSTY,Skill.KILLHEAL),0,0,null,null)
+	,UNBREAKABLE("Unbreakable","Nothing stops them.","",
+			1f,null,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)
+			,EnumSet.of(Skill.TA_NAILS,Skill.ARMORHEART),5,0,null,null)
 	;
 
 	private final String name, desc, getDesc;
@@ -51,7 +57,7 @@ public enum Feat implements IHasSkills{
 	}
 	
 	public enum FeatType{
-		COMMON, MAGIC, POTIONS, CURSES;
+		COMMON, MAGIC, POTIONS, CURSES, TRICKS, SOCIAL, BATTLE, SPIRIT;
 	}
 	
 	@Override

@@ -234,10 +234,25 @@ public class Armor extends Item {
 	 */
 	public void burn(double d) {
 		assert d >= 0;
-		burned = Math.min(1, Math.max(0, burned - Math.min(burned,1)*(1- (d*getFireMod())))) ;
+		double old_amount = burned;
+		burned = Math.min(old_amount, Math.max(0, burned - Math.min(burned,1)*(1- (d*getFireMod())))) ;
 	}
 	
+	/**
+	 * multiplier on effectiveness
+	 */
+	public void buff(double d) {
+		burned *=d;
+	}
 	
+	/**
+	 * half multiplier above 100%
+	 */
+	public void buffDecay() {
+		if (burned > 1) {
+			burned = extra.lerp(1,burned,.5);
+		}
+	}
 	
 	
 	/**
@@ -401,6 +416,9 @@ public class Armor extends Item {
 	}
 
 	public void restoreArmor(double d) {
+		if (burned > 1) {
+			return;//if above 100% it can stay that way
+		}
 		burned+=d;
 		burned = extra.clamp(burned,0,1);
 	}
@@ -430,6 +448,7 @@ public class Armor extends Item {
 	
 	public void armorQualDam(int dam) {
 		if (quals.contains(ArmorQuality.FRAGILE)) {
+			//TODO fix and update
 			burned = extra.clamp(burned-extra.lerp(0.05f,.5f, extra.clamp(dam,1,20)/20f),0,2);
 		}
 	}

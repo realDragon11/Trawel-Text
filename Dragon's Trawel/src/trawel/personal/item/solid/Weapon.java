@@ -16,6 +16,7 @@ import trawel.WorldGen;
 import trawel.extra;
 import trawel.battle.Combat;
 import trawel.battle.Combat.ATK_ResultCode;
+import trawel.battle.Combat.ATK_ResultType;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.Stance;
@@ -335,7 +336,7 @@ public class Weapon extends Item {
 							,WorldGen.getDummyInvs().get(j).atLevel(level)
 							,Armor.armorEffectiveness);
 					dam+= ret.damage/ret.attack.getTime();
-					if (ret.code == ATK_ResultCode.DAMAGE) {
+					if (ret.type == ATK_ResultType.IMPACT) {
 						impactChance++;
 					}
 				}

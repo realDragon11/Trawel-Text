@@ -15,8 +15,25 @@ import trawel.personal.classless.Feat.FeatType;
 import trawel.personal.classless.Skill.Type;
 
 public enum Archetype implements IHasSkills{
-	VIRAGO("virago","An expert on toxic incantations, salves, potions, and the like. Adept in supplemental spellcasting.",
-			AType.ENTRY,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT),EnumSet.of(FeatType.CURSES,FeatType.POTIONS),EnumSet.of(Skill.TOXIC_BREWS));
+	VIRAGO("virago","An expert on toxic incantations, salves, potions, and the like. Adept in supplemental curse spellcasting.",
+			AType.ENTRY
+			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT)
+			,EnumSet.of(FeatType.CURSES,FeatType.POTIONS)
+			,EnumSet.of(Skill.TOXIC_BREWS)
+			)
+	,GLADIATOR("gladiator","Attention seeking but no-nonsense physical fighter. Fighting dirty is part of the show."
+			,AType.ENTRY
+			,EnumSet.of(AGroup.DIRTY, AGroup.CHARISMA)
+			,EnumSet.of(FeatType.TRICKS,FeatType.SOCIAL,FeatType.BATTLE)
+			,EnumSet.of(Skill.DSTRIKE)
+			)
+	,ARMSMATER("armsmaster","TODO"
+			,AType.ENTRY
+			,EnumSet.of(AGroup.DIRECT_BATTLE,AGroup.CRAFT)
+			,EnumSet.of(FeatType.BATTLE)
+			,EnumSet.of(Skill.ARMOR_TUNING,Skill.ARMORSPEED)
+			)
+	;
 	
 	private final String name, desc;
 	private final Set<Skill> skills;
@@ -43,7 +60,9 @@ public enum Archetype implements IHasSkills{
 	
 	public enum AGroup{
 		DEXTERITY, STRENGTH,
-		MAGIC, CRAFT
+		MAGIC, CRAFT,
+		DIRTY, CHARISMA,
+		DIRECT_BATTLE
 	}
 	
 	@Override

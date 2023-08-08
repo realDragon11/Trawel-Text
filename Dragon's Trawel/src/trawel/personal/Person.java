@@ -531,6 +531,9 @@ public class Person implements java.io.Serializable{
 			}
 		}
 		bag.resetArmor(s,b,p);
+		if (hasSkill(Skill.ARMOR_TUNING)) {
+			bag.buffArmor(1.2f);
+		}
 		if (this.hasEffect(Effect.B_MARY)) {
 			this.addEffect(Effect.BLEED);
 		}
@@ -541,7 +544,7 @@ public class Person implements java.io.Serializable{
 	/**
 	 * Take damage. Return true if this caused a death.
 	 * @param dam (int)
-	 * @return if this caused the person to die. (boolean)
+	 * @return if this person is now dead. (boolean)
 	 */
 	public boolean takeDamage(int dam) {
 		hp-=dam;
@@ -1602,6 +1605,10 @@ public class Person implements java.io.Serializable{
 
 	public boolean isHumanoid() {
 		return bag.getRace().racialType == RaceType.HUMANOID;
+	}
+
+	public void forceKill() {
+		hp = 0;
 	}
 
 
