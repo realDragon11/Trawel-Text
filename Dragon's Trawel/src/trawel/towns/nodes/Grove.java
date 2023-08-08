@@ -7,14 +7,18 @@ public class Grove extends NodeFeature {
 
 	private static final long serialVersionUID = 1L;
 
-	public Grove(String name,Town t) {
+	public Grove(String name,Town t,int capacity) {
 		this.name = name;
 		town = t;
-		size = 50;//t.getTier()*10;
+		size = capacity;
 		tutorialText = "Explore groves to progress in level.";
 		generate();
 		background_area = "forest";
 		background_variant = 1;
+	}
+	
+	public Grove(String name,Town t) {
+		this(name,t,50);
 	}
 	
 	@Override

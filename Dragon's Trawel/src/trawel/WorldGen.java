@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.nustaq.serialization.FSTConfiguration;
 import org.nustaq.serialization.FSTObjectOutput;
@@ -34,6 +35,7 @@ import trawel.towns.fight.Forest;
 import trawel.towns.fight.Mountain;
 import trawel.towns.fight.Slum;
 import trawel.towns.fort.WizardTower;
+import trawel.towns.misc.Garden;
 import trawel.towns.nodes.Dungeon;
 import trawel.towns.nodes.Graveyard;
 import trawel.towns.nodes.Grove;
@@ -116,36 +118,15 @@ public class WorldGen {
 		Town homa = new Town("homa",1,rona,new Point(3,4));
 		homa.addFeature(new Store(1,6));
 		homa.addFeature(new Arena("basena arena",1,1,24,1,476));
-		//homa.addFeature(new Well("tiny well"));
-		homa.addFeature(new Grove("homa forest",homa));
-		//homa.addFeature(new Graveyard("testing graveyard",homa));
-		homa.addTravel();
+		homa.addFeature(new Grove("the woody tangle",homa,30));
 		homa.addFeature(new Champion(4));
 		w.setStartTown(homa);
 		homa.tTags.add(TownTag.SMALL_TOWN);
-		homa.setGoPrinter(new PrintEvent(){
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void print() {
-				extra.println("You return to homa, the birthplace of your new self.");
-			}
-			
-		});
 		homa.setFirstPrinter(new PrintEvent(){
 
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void print() {
-				extra.println("You enter the town of homa, a sober expression on your face. It's time to start your life anew.");
+				extra.println("Homa is a small quaint town, with a large maze-like forest. The perfect place to hide.");
 			}
 			
 		});
@@ -154,37 +135,18 @@ public class WorldGen {
 		Town unun = new Town("unun",2,rona,new Point(5,4));
 		lynchPin = unun;
 		addConnection(homa,unun,"road","barrier way");
-		unun.addFeature(new Inn("unun inn",2,unun,null));
+		unun.addFeature(new Inn("trailblazer's tavern",2,unun,null));
 		unun.addTravel();
-		unun.addFeature(new MerchantGuild("unun merchant guild"));
+		unun.addFeature(new MerchantGuild("eoano's merchant guild (unun)"));
 		unun.addFeature(new Dungeon("tower of fate",unun,Dungeon.Shape.TOWER,0));
 		unun.addFeature(new Slum(unun,"unun slums",true));
 		unun.tTags.add(TownTag.CITY);
 		unun.tTags.add(TownTag.ADVENTURE);
 		unun.tTags.add(TownTag.MERCHANT);
-		unun.setGoPrinter(new PrintEvent(){
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void print() {
-				extra.println("You return to unun, and the tower of fate.");
-			}
-			
-		});
 		unun.setFirstPrinter(new PrintEvent(){
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void print() {
-				extra.println("The port city of unun is dominated by a large tower- the tower of fate. It's an ancient dungeon home to the fatespinner. Below, on the ground, a prominent inn stands.");
+				extra.println("The port city of unun is dominated by a large tower- the tower of fate. It's an ancient dungeon home to the fatespinner. Below, on the ground, a prominent inn stands next to the interplanar merchant guild headquarters for this world.");
 			}
 			
 		});
@@ -194,33 +156,13 @@ public class WorldGen {
 		tevar.addFeature(new Arena("epino arena",5,3,24*30,150,149));
 		addConnection(homa,tevar,"road","red road");
 		addConnection(tevar,unun,"road","blue road");
-		tevar.addFeature(new Forest("the black forest",2));
-		tevar.addFeature(new Mine("tevar mine",tevar,null,NodeFeature.Shape.NONE));
-		tevar.setGoPrinter(new PrintEvent(){
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void print() {
-				extra.println("You return to the mining town of tevar.");
-			}
-			
-		});
+		tevar.addFeature(new Forest("the forest of vicissitude",2));
+		tevar.addFeature(new Mine("old tevar mine",tevar,null,NodeFeature.Shape.NONE));
 		tevar.setFirstPrinter(new PrintEvent(){
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void print() {
-				extra.println("Tevar has the most important mine on this island.");
+				extra.println("Tevar has the most important mine on this island, said to have been dug by the ancient's own ancestors. The forst of vicissitude engulfs the town, and fell reavers often appear nearby.");
 			}
-			
 		});
 		
 		
@@ -229,100 +171,52 @@ public class WorldGen {
 		addConnection(hemo,unun,"road","black valley");
 		Store s = new Store(1,6);
 		hemo.addFeature(s);
-		//hemo.addFeature(new Well("nearly dry well"));
-		hemo.addFeature(new Grove("the black forest",hemo));
+		hemo.addFeature(new Grove("the odd grove",hemo,12));
 		hemo.addFeature(new Blacksmith(1,s));
-		hemo.addFeature(new Champion(1,4,hemo));
+		hemo.addFeature(new Garden(hemo));
 		hemo.addFeature(new WitchHut(hemo));
 		hemo.tTags.add(TownTag.DRUDIC);
 		hemo.tTags.add(TownTag.ALCHEMY);
-		hemo.setGoPrinter(new PrintEvent(){
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
+		hemo.setFirstPrinter(new PrintEvent(){
 			@Override
 			public void print() {
-				extra.println("Hemo's forest looms ahead.");
+				extra.println("Hemo is infamous for the clearing near a witch hut, said to be the only place on the island of rona that can brew potions properly. Rumor has it the proximity to the forest of vicissitude would normally prevent any success, but a dark rite reversed the town's fortunes.");
 			}
 			
 		});
 		
 		Town tanak = new Town("tanak",5,rona,new Point(4,9));
 		addConnection(hemo,tanak,"road","windy pass");
-		tanak.addFeature(new Arena("tanak colosseum",4,6,24*3,24*20,1));
+		tanak.addFeature(new Arena("the gauntlet cirque below tanak",4,6,24*3,24*20,1));
 		tanak.addFeature(new Store(4,6));
-		tanak.addFeature(new Inn("tanak inn",5,tanak,null));
+		tanak.addFeature(new Inn("cloud comforts inn",5,tanak,null));
 		tanak.addTravel();
 		tanak.addTravel();
 		tanak.addFeature(new Champion(10));
 		tanak.tTags.add(TownTag.CITY);
-		tanak.setGoPrinter(new PrintEvent(){
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void print() {
-				extra.println("You look up at the city of the sky once more, and make your way to the teleport station.");
-				
-			}
-			
-		});
 		tanak.setFirstPrinter(new PrintEvent(){
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void print() {
-				extra.println("The city of the sky stands before you- a floating island looming over the terrain. Below lies a teleport station to arrive at the otherwise inaccessible location.");
+				extra.println("The city of the sky, Tanak, stands before you- a floating island looming over the terrain. Below lies a teleport station to arrive at the otherwise inaccessible location.");
 				
 			}
 			
 		});
 		
 		Town lokan = new Town("lokan",3,rona,new Point(5,10));
-		//lokan.addFeature(new Gambler("cup dealer","cups",300));
 		addConnection(lokan,tanak,"road","flat walk");
 		addConnection(lokan,unun,"ship","two way current");
-		lokan.addFeature(new Store(3));
-		lokan.addFeature(new Oracle("lokan oracle",3));
-		lokan.addFeature(new Appraiser("lokan appraiser"));
-		lokan.addFeature(new Doctor("Shaman",lokan));
+		lokan.addFeature(new Library("records of value", lokan));
+		lokan.addFeature(new Oracle("appraiser of fortune",3));
+		lokan.addFeature(new Appraiser("appraiser of steel"));
+		lokan.addFeature(new Doctor("appraiser of wellness",lokan));
 		lokan.addTravel();
 		lokan.addTravel();
 		lokan.tTags.add(TownTag.MYSTIC);
-		lokan.setGoPrinter(new PrintEvent(){
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void print() {
-				extra.println("The oracle in lokan awaits.");
-				
-			}
-			
-		});
 		lokan.setFirstPrinter(new PrintEvent(){
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void print() {
-				extra.println("The lokan oracle is famed throughout the land for their accuracy- if you pay them well.");
+				extra.println("Lokan is an aberrant arrangement of minor services which cropped up around the oracles that settled here.");
 				
 			}
 			
@@ -331,34 +225,14 @@ public class WorldGen {
 		Town haka = new Town("haka",3,rona,new Point(1,10));
 		addConnection(lokan,haka,"road","diamond way");
 		addConnection(tanak,haka,"road","circle road");
-		haka.addFeature(new Arena("haka colosseum (daily bout)",3,1,24,12,74));
-		haka.addFeature(new Arena("haka colosseum (weekly tourny)",3,4,24*7,24*7,30));
-		haka.addFeature(new Mountain("haka mountain",3));
-		
-		haka.setGoPrinter(new PrintEvent(){
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void print() {
-				extra.println("The mountain looms over you.");
-				
-			}
-			
-		});
+		haka.addFeature(new Arena("grand colosseum (daily bout)",3,1,24,12,74));
+		haka.addFeature(new Arena("grand colosseum (weekly tourny)",3,4,24*7,24*7,30));
+		haka.addFeature(new Mountain("peerless mountain",3));
 		haka.setFirstPrinter(new PrintEvent(){
 
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void print() {
-				extra.println("A giant mountain looms over the haka colosseum- the largest on this island.");
+				extra.println("A giant mountain looms over Haka's colosseum- both are the largest on this island.");
 				
 			}
 			

@@ -546,6 +546,12 @@ public class Store extends Feature{
 			case 8:
 				dbs.add(DrawBane.draw(DrawList.GENERIC_STORE));
 				return;
+			case 9:
+				dbs.add(DrawBane.draw(DrawList.WITCH_STORE));
+				return;
+			case 10:
+				dbs.add(DrawBane.draw(DrawList.FOOD));
+				return;
 			}
 			
 			return;

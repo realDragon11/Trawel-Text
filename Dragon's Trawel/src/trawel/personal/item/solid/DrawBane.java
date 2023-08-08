@@ -76,7 +76,7 @@ public enum DrawBane {
 	}
 	
 	public enum DrawList{
-		COLLECTOR, GENERIC_STORE, WITCH_STORE;
+		COLLECTOR, GENERIC_STORE, WITCH_STORE, FOOD;
 	}
 	
 	public static void setup() {
@@ -142,12 +142,58 @@ public enum DrawBane {
 			subLists[i] = list;
 			weightList[i] = new WeightedTable(weight);
 			break;
+		case WITCH_STORE:
+			weight = new float[10];
+			list = new DrawBane[10];
+			
+			weight[0] = 1f;
+			list[0] = MEAT;
+			weight[1] = 3f;
+			list[1] = BAT_WING;
+			weight[2] = 5f;
+			list[2] = APPLE;
+			weight[3] = 1f;
+			list[3] = CEON_STONE;
+			weight[4] = 2f;
+			list[4] = MIMIC_GUTS;
+			weight[5] = 1f;
+			list[5] = BLOOD;
+			weight[6] = 2f;
+			list[6] = WAX;
+			weight[7] = 2f;
+			list[7] = WOOD;
+			weight[8] = .3f;
+			list[8] = VIRGIN;
+			weight[9] = 1f;
+			list[9] = MIMIC_GUTS;
+			
+			subLists[i] = list;
+			weightList[i] = new WeightedTable(weight);
+			break;
+		case FOOD:
+			weight = new float[7];
+			list = new DrawBane[7];
+			
+			weight[0] = 20f;
+			list[0] = MEAT;
+			weight[1] = 20f;
+			list[1] = APPLE;
+			weight[2] = 7f;
+			list[2] = HONEY;
+			weight[3] = 10f;
+			list[3] = PUMPKIN;
+			weight[4] = 5f;
+			list[4] = EGGCORN;
+			weight[5] = 3f;
+			list[5] = TRUFFLE;
+			weight[6] = .1f;
+			list[6] = VIRGIN;
+			
+			subLists[i] = list;
+			weightList[i] = new WeightedTable(weight);
+			break;
 		}
 		}
-	}
-	
-	public static DrawBane randomPI() {
-		return extra.choose(DrawBane.MEAT,DrawBane.BAT_WING,DrawBane.APPLE,DrawBane.CEON_STONE,DrawBane.MIMIC_GUTS,DrawBane.BLOOD);
 	}
 	
 	public static DrawBane draw(DrawList list) {

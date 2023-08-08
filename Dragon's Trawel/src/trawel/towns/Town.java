@@ -133,9 +133,6 @@ public class Town extends TContextOwner{
 		getIsland().getWorld().addPrintEvent("g"+this.name,e);
 	}
 	public void setFirstPrinter(PrintEvent e) {
-		if (true) {
-			return;//DOLATER disabled for now
-		}
 		getIsland().getWorld().addPrintEvent("n"+this.name,e);
 	}
 	

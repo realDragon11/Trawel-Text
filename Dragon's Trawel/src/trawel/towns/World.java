@@ -312,6 +312,9 @@ public class World extends TContextOwner{
 	}
 
 	public boolean getAndPrint(String string) {
+		if (!Player.getTutorial() && string.startsWith("n")) {//we only see new if we're on the tutorial
+			return false;
+		}
 		PrintEvent printer = printerMap.getOrDefault(string, null);
 		if (printer !=null) {
 			printer.print();
