@@ -34,18 +34,18 @@ import trawel.towns.World;
 public class Store extends Feature{
 
 	private static final long serialVersionUID = 1L;
-	private int type;
-	private List<Item> items;
-	private List<DrawBane> dbs;
-	private double time;
+	protected int type;
+	protected List<Item> items;
+	protected List<DrawBane> dbs;
+	protected double time;
 	private int buys;
-	private float markup;
-	private float aetherRate;
-	private int invSize;
+	protected float markup;
+	protected float aetherRate;
+	protected int invSize;
 	
-	public static int INVENTORY_SIZE = 5;
+	public static final int INVENTORY_SIZE = 5;
 	
-	private static final float BASE_MARKUP = 1.5f;
+	public static final float BASE_MARKUP = 1.5f;
 
 	private Store() {
 		time = 0;
@@ -77,6 +77,14 @@ public class Store extends Feature{
 	public Store(int tier, int type) {
 		this();
 		this.generate(tier, type);
+	}
+	
+	protected Store(Class<? extends Store> subtype) {//for witch hut
+		this();
+		if (subtype == WitchHut.class) {
+			type = 9;
+			this.generate(tier, type);
+		}
 	}
 	
 	@Override

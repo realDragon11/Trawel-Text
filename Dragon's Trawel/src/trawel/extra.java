@@ -16,6 +16,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
+import trawel.personal.Person.PersonFlag;
 import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.people.Player;
 import trawel.towns.World;
@@ -933,6 +934,18 @@ public final class extra {
 			}
 			throw new RuntimeException("Wrong randset size");
 		}*/
+		
+		public static boolean getEnumByteFlag(int flag, byte flags) {
+			return Byte.toUnsignedInt((byte) (flags & (1 << flag))) > 0;
+		}
+		
+		public static void setEnumByteFlag(int flag, byte flags, boolean bool) {
+			if (bool) {
+				flags |= (1 << flag);
+				return;
+			}
+			flags &= ~(1 << flag);
+		}
 		
 }
 

@@ -3,44 +3,55 @@ package trawel.personal.item.solid;
 import trawel.extra;
 
 public enum DrawBane {
-	TEST("test","test",0,0),
-	GARLIC("garlic","Used to repel vampires.",20,.3),
-	SILVER("silver","A shiny metal.",100,2),
-	MEAT("meat","A cut of meat.",20,.5),
-	CEON_STONE("eon stone","A cracked stone with infinite choices.",100,3),
-	NOTHING("nothing","Empty slot.",0,0),
-	PROTECTIVE_WARD("protective ward","Used to repel monsters.",200,4),
-	ENT_CORE("ent core","The core of an ent tree.",50,2),
-	BLOOD("blood","A vial of blood.",40,.1),
-	REPEL("beast repellant","Repels wolves and bears.",100,1),
-	BAT_WING("bat wing","A witch's reagent.",10,.4),
-	MIMIC_GUTS("mimic guts","A witch's reagent.",50,.75),
-	CLEANER("cloth","Discard to clean blood off of your equipment.",5,0),
-	APPLE("apple","Used to increase potion thickness.",20,.3),
-	WOOD("wood","A good building resource.",30,.3),
-	HONEY("honey","A witch's reagent.",40,.5),
-	WAX("wax","A witch's reagent.",40,.5),
-	PUMPKIN("pumpkin","A hearty meal.",30,.6), 
-	BEATING_HEART("beating heart","Is it... still alive?!",100,1), 
-	EGGCORN("eggcorn","What is this plant?",50,.5),
-	TRUFFLE("truffle","A rare food.",200,2), 
-	GOLD("gold chunk","A shiny metal.",300,4),
-	UNICORN_HORN("unicorn horn","An impressive magic horn.",250,3),
-	VIRGIN("virgin","You have them tied up.",1000,.5),
-	UNDERLEVELED("nothing","Empty slot.",0,0),
-	KNOW_FRAG("knowledge fragment","Bring this to a library to gain skillpoints.",100,1),
-	LIVING_FLAME("living flame","A living flame, for a forge.",250,3), 
-	GRAVE_DIRT("grave dirt","A witch's reagent.",20,.25),
-	TELESCOPE("telescope","A large telescope.",200,2);
+	//values:
+	//1 = basic
+	//3 = decent value (repel)
+	//4 = decent value, often magical and uncommon
+	//5 = decent value, silver
+	//6 = rare magical (unicorn horn)
+	//8 = expensive (gold/virgin)
+	
+	TEST("test","test",0,0,false),
+	GARLIC("garlic","Used to repel vampires. Edible.",1,.3,true),
+	SILVER("silver","A shiny metal of decent value.",5,2,true),
+	MEAT("meat","A cut of meat. Slightly edible.",1,.5,true),
+	CEON_STONE("eon stone","A cracked stone with infinite choices- all are terrible.",4,3,true),
+	NOTHING("nothing","Empty slot.",0,0,false),
+	PROTECTIVE_WARD("protective ward","Used to ward off monsters and other maladies when on the roads.",5,4,false),
+	ENT_CORE("ent heartwood","The core of an ent tree.",4,2,true),
+	BLOOD("blood","A vial of blood.",1,.1,true),
+	REPEL("beast repellant","Repels wolves, bears, and other mostly mundane creates.",3,1,false),
+	BAT_WING("bat wing","A witch's reagent, useful in some potions.",1,.4,true),
+	MIMIC_GUTS("mimic guts","A witch's reagent. Has slight intrinsic value.",1,.75,true),
+	CLEANER("cloth","Discard to clean blood off of your equipment.",1,0,false),
+	APPLE("apple","Used to increase potion thickness. Edible.",1,.3,true),
+	WOOD("wood","A good building resource. Can be used to increase potion thickness, but risks ruining it.",1,.3,true),
+	HONEY("honey","Edible and quite tasty.",2,.5,true),
+	WAX("wax","Used to increase potion thickness.",1,.5,true),
+	PUMPKIN("pumpkin","A hearty meal. Edible.",1,.6,true), 
+	BEATING_HEART("beating heart","Is it... still alive?!",4,1,false), 
+	EGGCORN("eggcorn","What is this plant? Edible?",1,.5,true),
+	TRUFFLE("truffle","A prized mushroom. Edible",5,2,true), 
+	GOLD("gold chunk","A shiny metal of great value.",8,4,false),
+	UNICORN_HORN("unicorn horn","An impressive magic horn.",6,3,false),
+	VIRGIN("virgin","You have them tied up.",8,.5,true),
+	UNDERLEVELED("nothing","Empty slot.",0,0,false),
+	KNOW_FRAG("knowledge fragment","Bring this to a library to study, and gain feat points.",2,1,false),
+	LIVING_FLAME("living flame","A living flame, for a forge.",4,3,true), 
+	GRAVE_DIRT("grave dirt","A witch's reagent.",2,.25,true),
+	TELESCOPE("telescope","A large telescope.",4,2,true),
+	SINEW("mystic sinew","Slightly possessed flesh.",1,.1,false);
 	
 	private String name, flavorText;
 	private int value;
 	private double mVal;
-	DrawBane(String name, String flavorText,int val, double mVal) {
+	private boolean anyBrew;
+	DrawBane(String name, String flavorText,int val, double mVal, boolean _anyBrew) {
 		this.name = name;
 		this.flavorText = flavorText;
 		this.value = val;
 		this.mVal = mVal;
+		anyBrew = _anyBrew;
 	}
 	
 	public String getName() {
@@ -56,6 +67,10 @@ public enum DrawBane {
 	}
 	public double getMValue() {
 		return mVal;
+	}
+	
+	public boolean getCanBrew() {
+		return anyBrew;
 	}
 	
 	public static DrawBane forCollector() {

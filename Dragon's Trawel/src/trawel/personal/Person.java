@@ -82,10 +82,8 @@ public class Person implements java.io.Serializable{
 	
 	private PersonType personType;
 	private short beer;
-	/**
-	 * bit 1 = racism (0b00000001) <br>
-	 * bit 2 = angry (racist to non humanoids) (0b00000010) <br>
-	 */
+	
+	
 	private byte flags = 0b00000000;//used with bitmasking
 	
 	public enum PersonFlag{

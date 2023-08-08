@@ -311,8 +311,12 @@ public class Player extends SuperPerson{
 			knowledgeFragments-=fragmentReq;
 			Player.player.getPerson().addFeatPoint();
 			fragmentReq+=2;
-			extra.println("+1 skillpoint!");
+			extra.println("Your knowledge has gained you a feat point!");
 		}
+	}
+	
+	public String strKnowFrag() {
+		return (Player.player.knowledgeFragments + " of "+Player.player.fragmentReq + " to next knowledge level.");
 	}
 
 	
