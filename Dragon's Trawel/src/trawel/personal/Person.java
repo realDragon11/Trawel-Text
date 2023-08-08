@@ -666,13 +666,21 @@ public class Person implements java.io.Serializable{
 
 						@Override
 						public String title() {
-							return "You have " + getSuper().getFeatPicks() + " picks";
+							return "You have " + getSuper().getFeatPicks() + " picks to unlock " + getFeatPoints() + " feats.";
 						}
 
 						@Override
 						public boolean go() {
 							pickFeats(true);
 							return false;
+						}});
+				}
+				if (Player.getTutorial()) {
+					list.add(new MenuLine() {
+
+						@Override
+						public String title() {
+							return "You may choose to not unlock a feat, which will not consume the unlock. Every time you level up, you get another chance to unlock all the feats you haven't unlocked yet, but if you choose to delay, you stop picking any remaining unlocks. They will still be there the next picking opportunity.";
 						}});
 				}
 				list.add(new MenuSelect() {
@@ -760,7 +768,7 @@ public class Person implements java.io.Serializable{
 
 							@Override
 							public String title() {
-								return "You have no more feats to choose from.";
+								return "You have no more feats to unlock.";
 							}});
 						list.add(new MenuSelect() {
 

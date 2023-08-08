@@ -14,16 +14,20 @@ public enum Feat implements IHasSkills{
 			,1f,EnumSet.of(FeatType.COMMON),null,EnumSet.noneOf(Skill.class)
 			,5,5,null,null),//should grant a low level in every stat
 	COMMON_TOUGH("The Tough","They're tougher than they look. And they look tough.","",
-			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS),0,0),
+			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS),2,0),
 	MAGIC_WITCH("The Witch","Curses and potions are their forte.","",
 			1f,EnumSet.of(FeatType.POTIONS,FeatType.CURSES),null
-			,EnumSet.of(Skill.CURSE_MAGE,Skill.P_BREWER),0,0,null,null)
+			,EnumSet.of(Skill.CURSE_MAGE,Skill.P_BREWER),0,2,null,null)
 	,HEMOVORE("Hemovore","Extracts life energy from fleeting mortality.","",
 			1f,EnumSet.of(FeatType.BATTLE),EnumSet.of(FeatType.CURSES,FeatType.MAGIC)
-			,EnumSet.of(Skill.BLOODTHIRSTY,Skill.KILLHEAL),0,0,null,null)
+			,EnumSet.of(Skill.BLOODTHIRSTY,Skill.KILLHEAL),1,2,null,null)
 	,UNBREAKABLE("Unbreakable","Nothing stops them.","",
 			1f,null,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)
-			,EnumSet.of(Skill.TA_NAILS,Skill.ARMORHEART),5,0,null,null)
+			,EnumSet.of(Skill.TA_NAILS,Skill.ARMORHEART),4,0,null,null)
+	,UNDERHANDED("Underhanded","They'll do anything and everything to win.",""
+			,1f,EnumSet.of(FeatType.TRICKS),null
+			,EnumSet.of(Skill.SPUNCH)
+			,0,10,null,null)
 	;
 
 	private final String name, desc, getDesc;
@@ -80,6 +84,7 @@ public enum Feat implements IHasSkills{
 		double totalRarity = 0;
 		for (Feat f: Feat.values()){
 			if (f.rarity > 0 &&
+					!has.contains(f)&&
 					(f.typesAll == null || set.containsAll(f.typesAll))&&
 					(f.typesAny == null || !Collections.disjoint(f.typesAny, set))&&
 					(f.needsAll == null || has.containsAll(has)) &&
@@ -93,7 +98,7 @@ public enum Feat implements IHasSkills{
 		}
 		totalRarity *= extra.getRand().nextDouble();
 		Feat r = null;
-		for (Feat f: Feat.values()){
+		for (Feat f: copyList){
 			totalRarity-=f.rarity;
 			if (totalRarity <=0) {
 				return f;
