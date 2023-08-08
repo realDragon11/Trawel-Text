@@ -1301,7 +1301,8 @@ public class mainGame {
 			manOne.setPlayer();
 			//Networking.send("Visual|Race|" + manOne.getBag().getRace().name+  "|");
 			Networking.charUpdate();
-			player.getPerson().setSkillPoints(0);
+			//player.getPerson().setSkillPoints(0);
+			//TODO: autopick for quickstart?
 			//Player.addSkill(Skill.BLOODTHIRSTY);
 			Player.player.getPerson().addFighterLevel();
 			if (cheaty) {

@@ -1,10 +1,17 @@
 package trawel.personal.classless;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import derg.menus.MenuItem;
 import trawel.extra;
+import trawel.personal.Person;
+import trawel.personal.classless.Feat.FeatType;
 import trawel.personal.classless.Skill.Type;
 
 public enum Archetype implements IHasSkills{
@@ -59,31 +66,68 @@ public enum Archetype implements IHasSkills{
 	}
 	
 	/**
-	 * will attempt to return 6 values, containing Archtypes that give a good spread of starting stat choices
-	 * @return a size 6 array, possibly partially empty
+	 * used for the first set of archetypes, but also the 'not like the ones you have' in the set after
 	 */
-	public static Archetype[] getFirst() {
-		Archetype[] list = new Archetype[6];
-		Archetype[] vals = Archetype.values();
-		int has = 1;
-		list[0] = vals[extra.randRange(0,vals.length-1)];
-		for (int i = 0; i < vals.length;i++) {
-			Archetype local = vals[i];
-			if (local.type != AType.ENTRY) {
-				continue;
+	public static List<Archetype> getFirst(int desiredAmount, Set<Archetype> has) {
+		List<Archetype> list = new ArrayList<Archetype>();
+		List<Archetype> options = new ArrayList<Archetype>();
+		for (Archetype a: Archetype.values()) {
+			if (a.type == AType.ENTRY) {
+				options.add(a);
 			}
-			for (int j = 0; j < has;i++) {
-				if (!list[j].canFirstWith(local)) {
+		}
+		
+		for (int i = 0; i < 30 && list.size() < desiredAmount;i++) {
+			Archetype choice = extra.randList(options);
+			options.remove(choice);
+			for (Archetype blocker: list) {
+				if (!choice.canFirstWith(blocker)) {
 					continue;
 				}
-				list[has++] = local;
 			}
+			list.add(choice);
+		}
+		return list;
+	}
+	
+	/**
+	 * used for the 'more like this' in the second set of archetypes
+	 * <br>
+	 * only makes sense when 'more like this' is one archetype, if you have more pick a random one
+	 */
+	public static List<Archetype> getAfter(int desiredAmount, Archetype has) {
+		List<Archetype> list = new ArrayList<Archetype>();
+		List<Archetype> options = new ArrayList<Archetype>();
+		for (Archetype a: Archetype.values()) {
+			if (a.type == AType.ENTRY || a.type == AType.AFTER) {
+				options.add(a);
+			}
+		}
+		
+		for (int i = 0; i < 30 && list.size() < desiredAmount;i++) {
+			Archetype choice = extra.randList(options);
+			options.remove(choice);
+			for (Archetype blocker: list) {
+				if (!choice.doesAfterWith(blocker)) {
+					continue;
+				}
+			}
+			list.add(choice);
 		}
 		return list;
 	}
 	
 	public boolean canFirstWith(Archetype t) {
-		return !t.equals(this);//FIXME
+		if (t.equals(this) || t.groups.equals(groups)) {//if we have the same exact groups or are the same
+			return false;
+		}
+		//DOLATER: try to prevent overlap as well
+		return true;
+	}
+	
+	public boolean doesAfterWith(Archetype t) {
+		//if we're not equal and we share one element
+		return (!t.equals(this) && !Collections.disjoint(t.groups,groups));
 	}
 
 	@Override
@@ -105,5 +149,28 @@ public enum Archetype implements IHasSkills{
 	public boolean goMenuItem() {
 		extra.println("n/a");
 		return false;
+	}
+
+	public static List<IHasSkills> getFeatChoices(Person person) {
+		List<IHasSkills> list = new ArrayList<IHasSkills>();
+		Set<Archetype> pAs = person.getArchSet();
+		if (pAs.size() == 0) {
+			list.addAll(getFirst(6,pAs));
+			return list;
+		}
+		
+		if (pAs.size() == 1) {
+			list.addAll(getAfter(2,pAs.iterator().next()));
+			list.addAll(getFirst(2,pAs));
+			//fall through and fill the rest with normal feats
+		}
+		Set<Feat> fset = EnumSet.copyOf(person.getFeatSet());
+		while (list.size() < 6) {
+			Feat f = Feat.randFeat(EnumSet.of(FeatType.COMMON),fset);//TODO: just commons for now when prototyping
+			list.add(f);
+			fset.add(f);
+		}
+		
+		return list;
 	}
 }

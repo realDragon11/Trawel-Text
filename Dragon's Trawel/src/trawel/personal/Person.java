@@ -77,8 +77,7 @@ public class Person implements java.io.Serializable{
 	private transient boolean isWarmingUp;
 	private transient int hp, tempMaxHp;
 	private PersonType personType = extra.choose(PersonType.COWARDLY,PersonType.FEARLESS);
-	//private String placeOfBirth;
-	private int beer;
+	private short beer;
 	/**
 	 * bit 1 = racism (0b00000001) <br>
 	 * bit 2 = angry (racist to non humanoids) (0b00000010) <br>
@@ -91,7 +90,7 @@ public class Person implements java.io.Serializable{
 	
 	private String firstName,title;
 
-	private int skillPoints;
+	private short featPoints;
 	private int fighterLevel= 0,traderLevel = 0,explorerLevel = 0, mageLevel = 0, magePow = 0, defenderLevel = 0, defPow = 0, fightPow = 0;
 	
 	public int lightArmorLevel = 0, heavyArmorLevel = 0, edrLevel = 0;
@@ -214,7 +213,7 @@ public class Person implements java.io.Serializable{
 			this.scar = RaceFactory.scarFor(bag.getRace().raceID());
 		}
 		this.level = (short)level;
-		skillPoints = level-1;
+		featPoints = (short) (level-1);
 		if (extra.chanceIn(1,5)) {
 			this.setRacism(true);
 			if (extra.chanceIn(4,5)) {
@@ -228,7 +227,7 @@ public class Person implements java.io.Serializable{
 		//this.magePow = bag.getRace().magicPower;
 		//this.defPow = bag.getRace().defPower;
 		if (isAI) {
-			this.AILevelUp();
+			//this.AILevelUp();
 		}
 		//this.noAILevel = !isAI;
 		effects = new ArrayList<Effect>();
@@ -344,6 +343,32 @@ public class Person implements java.io.Serializable{
 		archSet.add(a);
 	}
 	
+	public Set<Perk> getPerkSet(){
+		return perkSet;
+	}
+	
+	public Set<Feat> getFeatSet(){
+		return featSet;
+	}
+	
+	public Set<Archetype> getArchSet(){
+		return archSet;
+	}
+	
+	public void setSkillHas(IHasSkills has) {
+		if (has instanceof Feat) {
+			setFeat((Feat) has);
+		}else {
+			if (has instanceof Archetype) {
+				setArch((Archetype) has);
+			}else {
+				if (has instanceof Perk) {
+					setPerk((Perk) has);
+				}
+			}
+		}
+	}
+	
 	public RaceFlag getRaceFlag() {
 		return rFlag;
 	}
@@ -445,7 +470,7 @@ public class Person implements java.io.Serializable{
 	public int getBase_HP() {
 		int total = 20+(50*level);
 		total+=(edrLevel*ENDURANCE_HP_BONUS)*( hasEnduranceTraining ? 2 :1);
-		total+=skillPoints*SKILLPOINT_HP_BONUS;
+		total+=featPoints*SKILLPOINT_HP_BONUS;
 		return total;
 	}
 	
@@ -554,7 +579,6 @@ public class Person implements java.io.Serializable{
 			if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 				BarkManager.getBoast(this, false);
 			}
-			setSkillPoints(getSkillPoints() + levels);
 			if (this.isPlayer()) {
 				Networking.send("PlayDelay|sound_magelevel|1|");
 				Networking.leaderboard("Highest Level",level);
@@ -566,10 +590,12 @@ public class Person implements java.io.Serializable{
 				if (level < 10 && level+levels >= 10) {
 					Networking.unlockAchievement("level10");
 				}
+				Player.player.addFeatPick(levels);//ai cannot delay leveling up, player can
 				playerSkillMenu();
 			}else {
 				//intellect+=levels;
-				this.AILevelUp();
+				//FIXME: ai needs to get feats and such as well
+				//this.AILevelUp();
 			}
 			level+=levels;
 	}
@@ -612,9 +638,6 @@ public class Person implements java.io.Serializable{
 		updateSkills();
 		if (Player.getTutorial()) {
 			extra.println("This is the skill overview menu.");
-			if (skillPoints == 0) {
-				extra.println("You don't have any skillpoints, and should probably exit this menu.");
-			}
 		}
 		extra.menuGo(new MenuGenerator() {
 
@@ -627,6 +650,20 @@ public class Person implements java.io.Serializable{
 					public String title() {
 						return "Classless Menu for " + getName();
 					}});
+				if (getSuper().getFeatPicks() > 0) {
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "You have " + getSuper().getFeatPicks() + " picks";
+						}
+
+						@Override
+						public boolean go() {
+							pickFeats(true);
+							return false;
+						}});
+				}
 				list.add(new MenuSelect() {
 
 					@Override
@@ -695,84 +732,106 @@ public class Person implements java.io.Serializable{
 		//setFeat(Feat.TOUGH_COMMON);
 	}
 	
-	@Deprecated
-	private void skillAdd(Skill s) {
-		skillSet.add(s);
-		skillPoints--;
-		switch (s.getType()) {
-		case FIGHTER: fighterLevel++;break;
-		case TRADER: traderLevel++;break;
-		case EXPLORER: explorerLevel++;break;
-		case MAGE: mageLevel++;break;
-		case DEFENDER: defenderLevel++;break;
+	public void pickFeats(boolean consumePick) {
+		if (consumePick) {
+			getSuper().addFeatPick(-1);
 		}
-		switch (s) {
-		case INHERIT:this.bag.addGold(500);break;
-		case EXPANDER:Store.INVENTORY_SIZE++;break;
-		case SKILLPLUS: skillPoints+=2;break;
-		case MAGE_TRAINING: magePow+=3;break;
-		case DEFENSIVE_TRAINING: defPow+=3;break;
-		case IDEF_TRAINING: defPow+=1; defenderLevel--;break;
-		case IOFF_TRAINING: fightPow+=1; fighterLevel--;break;
-		case IMAG_TRAINING: magePow+=1; mageLevel--;break;
-		case MAGE_POWER: magePow+=3;break;
-		case MAGE_FRUGAL: magePow-=2; fightPow+=2; defPow+=2;break;
-		default: break;
+		if (isPlayer()) {
+			extra.menuGo(new MenuGenerator() {
+
+				@Override
+				public List<MenuItem> gen() {
+					List<MenuItem> list = new ArrayList<MenuItem>();
+					if (featPoints == 0) {
+						list.add(new MenuLine() {
+
+							@Override
+							public String title() {
+								return "You have no more feats to choose from.";
+							}});
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "exit menu";
+							}
+
+							@Override
+							public boolean go() {
+								return true;
+							}});
+						return list;
+					}
+					if (Player.getTutorial()) {
+						list.add(new MenuLine() {
+
+							@Override
+							public String title() {
+								return "Pick a feat/archetype to gain. If you skip, you will be able to choose later, from an updated list. You may delay any number of times, and each level up grants one chance to pick your feats, which itself can also be delayed.";
+							}});
+					}
+					list.add(new MenuLine() {
+
+						@Override
+						public String title() {
+							return "You have " + featPoints + " remaining feats to choose.";
+						}});
+					Person p = getSuper().getPerson();
+					for (IHasSkills ihas: Archetype.getFeatChoices(p)) {
+						list.add(new FeatArchMenuPick(ihas,p));
+					}
+					list.add(new MenuBack("delay remaining " + featPoints));
+					return list;
+				}});
 		}
 	}
 	
-	@Deprecated
-	public void AILevelUp() {
-		if (skillPoints > 0) {
-			ArrayList<Skill> list = new ArrayList<Skill>();
-			
-			for (Skill s: Skill.values()) {
-				if (!s.getAITake()) {
-					continue;
-				}
-				switch (s.getType()) {
-				case DEFENDER:
-					if (s.getLevel() != defenderLevel+1) {
-						continue;
-					}
-					break;
-				case EXPLORER:
-					if (s.getLevel() != explorerLevel+1) {
-						continue;
-					}
-					break;
-				case FIGHTER:
-					if (s.getLevel() != fighterLevel+1) {
-						continue;
-					}
-					break;
-				case MAGE:
-					if (s.getLevel() != mageLevel+1) {
-						continue;
-					}
-					break;
-				case TRADER:
-					if (s.getLevel() != traderLevel+1) {
-						continue;
-					}
-					break;
-				}
-				list.add(s);
-			}
-			if (list.size() > 0) {
-				Skill s;
-				int i = 0;
-				do {
-					i++;
-				s = extra.randList(list);
-				}while((s.equals(Skill.KUNG_FU) && this.getBag().getRace().racialType != Race.RaceType.HUMANOID) && i < 99);
-			//skillAdd(s);
-			
-			
-			//AILevelUp();//recursive hack
-			}
+	public class FeatArchMenuPick extends MenuSelect {
+
+		private final IHasSkills base;
+		private boolean picked;
+		private final Person pickFor;
+		public FeatArchMenuPick(IHasSkills _base, Person p) {
+			base = _base;
+			pickFor = p;
 		}
+		
+		@Override
+		public String title() {
+			return base.getOwnText();
+		}
+
+		@Override
+		public boolean go() {
+			picked = false;
+			extra.menuGo(new MenuGenerator() {
+
+				@Override
+				public List<MenuItem> gen() {
+					List<MenuItem> list = new ArrayList<MenuItem>();
+					list.addAll(IHasSkills.viewMenuItems(base));
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "select " + base.friendlyName();
+						}
+
+						@Override
+						public boolean go() {
+							picked = true;
+							pickFor.featPoints--;
+							pickFor.setSkillHas(base);
+							return true;
+						}});
+					list.add(new MenuBack("back (do not pick)"));
+					return list;
+				}});
+			return picked;
+		}
+		
 	}
+
 	/*
 	private void eaSubMenu(EAType eat) {
 		extra.menuGo(new MenuGenerator() {
@@ -1121,19 +1180,15 @@ public class Person implements java.io.Serializable{
 		
 	}
 
-	public int getSkillPoints() {
-		return skillPoints;
-	}
-
-	public void setSkillPoints(int skillPoints) {
-		this.skillPoints = skillPoints;
+	public int getFeatPoints() {
+		return featPoints;
 	}
 	
-	public void useSkillPoint() {
-		skillPoints--;
+	public void useFeatPoint() {
+		featPoints--;
 	}
-	public void addSkillPoint() {
-		skillPoints++;
+	public void addFeatPoint() {
+		featPoints++;
 	}
 	
 	public boolean hasSkill(Skill o) {

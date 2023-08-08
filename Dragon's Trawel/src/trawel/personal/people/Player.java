@@ -306,7 +306,7 @@ public class Player extends SuperPerson{
 	public void addKnowFrag() {
 		if (++this.knowledgeFragments >= this.fragmentReq) {
 			knowledgeFragments-=fragmentReq;
-			Player.player.getPerson().addSkillPoint();;
+			Player.player.getPerson().addFeatPoint();
 			fragmentReq+=2;
 			extra.println("+1 skillpoint!");
 		}

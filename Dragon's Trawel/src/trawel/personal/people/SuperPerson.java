@@ -12,6 +12,9 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	private static final long serialVersionUID = 1L;
 	protected ArrayList<String> titleList = new ArrayList<String>();
 	private Town location;
+	
+	protected int featPicks = 0;
+	
 	public void addTitle(String title) {
 		titleList.add(title);
 	}
@@ -40,6 +43,14 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	public abstract void onlyGoal(AgentGoal goal);
 	public abstract boolean removeGoal(AgentGoal goal);
 	public abstract boolean hasGoal(AgentGoal goal);
+	
+	public void addFeatPick(int amount) {
+		featPicks+=amount;
+	}
+	
+	public int getFeatPicks() {
+		return featPicks;
+	}
 	
 	
 	public boolean isHumanoid() {

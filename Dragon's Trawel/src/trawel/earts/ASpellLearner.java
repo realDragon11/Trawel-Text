@@ -17,7 +17,7 @@ public class ASpellLearner extends MenuSelect {
 
 	@Override
 	public boolean go() {
-		Player.player.getPerson().useSkillPoint();
+		//Player.player.getPerson().useSkillPoint();
 		/*
 		Player.player.eaBox.aSpellPower+=.5;
 		Player.player.eaBox.aSpells.add(spell);
