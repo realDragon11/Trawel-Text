@@ -80,10 +80,6 @@ public enum Skill{
 		ENDSKILL("","",false,Type.FIGHTER,0,""),
 		//anything above should be removed and filtered out over time
 		
-		
-		//INTERNAL MARKER VALUES, KEEP
-		PLAYERSIDE(null,null,null,Type.INTERNAL_USE_ONLY),
-		
 		//new values, sorting by type because saves break without order changing anyway
 		RACIAL_SHIFTS("Flexible","Prone to changing its defense patterns."
 				,"Changes stances in combat, changing its target types, and possibly its attacks."

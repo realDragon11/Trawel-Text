@@ -91,7 +91,9 @@ public class Person implements java.io.Serializable{
 	public enum PersonFlag{
 		RACIST, ANGRY,
 		AUTOLOOT, AUTOLEVEL,
-		ISPLAYER, SMART_COMPARE
+		ISPLAYER, SMART_COMPARE,
+		PLAYER_SIDE//fighting alongside the player
+		//thats 7
 	}
 	//DOLATER: add a Set<Culture> that holds cultures. This can be used for advanced bigorty, cultural norms, etc etc
 	//this might also be used to hold a place of origin

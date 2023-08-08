@@ -23,6 +23,7 @@ import trawel.factions.FBox;
 import trawel.personal.DummyPerson;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory.RaceID;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Inventory;
@@ -191,7 +192,7 @@ public class Combat {
 				switch (sk.lSkill.skill) {
 				case DEATH:
 					for (Person p: totalList) {
-						if (!p.hasSkill(Skill.PLAYERSIDE)) {
+						if (!p.getFlag(PersonFlag.PLAYER_SIDE)) {
 							p.getNextAttack().multPotencyMult(Math.min(20,sk.lSkill.value)/100.0);
 							p.takeDamage(1);
 						}
@@ -199,7 +200,7 @@ public class Combat {
 					break;
 				case ELEMENTAL:
 					for (Person p: totalList) {
-						if (!p.hasSkill(Skill.PLAYERSIDE)) {
+						if (!p.getFlag(PersonFlag.PLAYER_SIDE)) {
 							p.takeDamage(Math.min(20,sk.lSkill.value));
 							p.getBag().burn(Math.min(20,sk.lSkill.value/2)/100.0, extra.randRange(0, 4));
 						}
@@ -207,14 +208,14 @@ public class Combat {
 					break;
 				case SCRYING:
 					for (Person p: totalList) {
-						if (p.hasSkill(Skill.PLAYERSIDE)) {
+						if (p.getFlag(PersonFlag.PLAYER_SIDE)) {
 							p.advanceTime(sk.lSkill.value/10.0f);
 						}
 					}
 					break;
 				case DEFENSE:
 					for (Person p: totalList) {
-						if (!p.hasSkill(Skill.PLAYERSIDE)) {
+						if (!p.getFlag(PersonFlag.PLAYER_SIDE)) {
 							p.advanceTime(-sk.lSkill.value);
 						}
 					}
@@ -436,6 +437,11 @@ public class Combat {
 			if (inSides.get(i).contains(quickest)) {
 				winSide  = i;
 				break;
+			}
+		}
+		for (List<Person> listoflist: inSides) {
+			for (Person p: listoflist) {
+				p.setFlag(PersonFlag.PLAYER_SIDE,false);
 			}
 		}
 		

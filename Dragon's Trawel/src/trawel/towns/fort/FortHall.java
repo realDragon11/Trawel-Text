@@ -12,6 +12,7 @@ import trawel.AIClass;
 import trawel.extra;
 import trawel.battle.Combat;
 import trawel.personal.Person;
+import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Inventory;
@@ -317,9 +318,9 @@ public class FortHall extends FortFeature {
 		extra.offPrintStack();
 		Combat c = new Combat(this.town.getIsland().getWorld(),this,people);
 		allies.clear();
-		if (c.survivors.get(0).hasSkill(Skill.PLAYERSIDE)) {
+		if (c.playerWon() > 0) {
 			c.survivors.remove(Player.player.getPerson());
-			allies.addAll(c.survivors);
+			c.survivors.stream().filter(p -> !p.isPlayer()).forEach(allies::add);
 			for (Person p: c.killed) {
 				this.aetherBank +=p.getBag().getWorth();
 			}
@@ -330,13 +331,8 @@ public class FortHall extends FortFeature {
 	}
 
 	private List<Person> getAllies() {
-		/*while (allies.size() < 10) {
-			allies.add(new Person(level));
-		}*/
 		for (Person a: allies) {
-			if (!a.hasSkill(Skill.PLAYERSIDE)) {
-				a.addSkill(Skill.PLAYERSIDE);
-			}
+			a.setFlag(PersonFlag.PLAYER_SIDE,true);
 		}
 		return allies;
 	}
