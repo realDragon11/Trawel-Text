@@ -601,6 +601,7 @@ public class Person implements java.io.Serializable{
 					Networking.unlockAchievement("level10");
 				}
 				Player.player.addFeatPick(levels);//ai cannot delay leveling up, player can
+				addFeatPoint(levels);
 				playerSkillMenu();
 			}else {
 				//intellect+=levels;
@@ -746,6 +747,8 @@ public class Person implements java.io.Serializable{
 		if (consumePick) {
 			getSuper().addFeatPick(-1);
 		}
+		Person p = this;
+		List<IHasSkills> iList = Archetype.getFeatChoices(p);
 		if (isPlayer()) {
 			extra.menuGo(new MenuGenerator() {
 
@@ -786,8 +789,8 @@ public class Person implements java.io.Serializable{
 						public String title() {
 							return "You have " + featPoints + " remaining feats to choose.";
 						}});
-					Person p = getSuper().getPerson();
-					for (IHasSkills ihas: Archetype.getFeatChoices(p)) {
+					
+					for (IHasSkills ihas: iList) {
 						list.add(new FeatArchMenuPick(ihas,p));
 					}
 					list.add(new MenuBack("delay remaining " + featPoints));
@@ -830,8 +833,19 @@ public class Person implements java.io.Serializable{
 						@Override
 						public boolean go() {
 							picked = true;
-							pickFor.featPoints--;
+							pickFor.useFeatPoint();
 							pickFor.setSkillHas(base);
+							if (base instanceof Feat) {
+								Feat fBase = (Feat)base;
+								switch (fBase) {
+								case NOT_PICKY:
+									if (pickFor.isPlayer()) {
+										//not picky grants 2 extra picks on take
+										pickFor.getSuper().addFeatPick(2);
+									}
+									break;
+								}
+							}
 							return true;
 						}});
 					list.add(new MenuBack("back (do not pick)"));
@@ -1200,6 +1214,9 @@ public class Person implements java.io.Serializable{
 	public void addFeatPoint() {
 		featPoints++;
 	}
+	public void addFeatPoint(int number) {
+		featPoints+=number;
+	}
 	
 	public boolean hasSkill(Skill o) {
 		return fetchSkills().contains(o);
@@ -1561,8 +1578,8 @@ public class Person implements java.io.Serializable{
 		speedFill-=time;
 	}
 
-	public double getConditionForPart() {
-		return bodystatus.getStatusOnMapping(TargetFactory.TORSO_MAPPING);
+	public double getConditionForPart(int mapping) {
+		return bodystatus.getStatusOnMapping(mapping);
 	}
 
 	public int getStrength() {

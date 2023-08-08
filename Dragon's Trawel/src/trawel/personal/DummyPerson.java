@@ -26,7 +26,7 @@ public class DummyPerson extends Person {
 	}
 	
 	@Override
-	public double getConditionForPart() {
+	public double getConditionForPart(int i) {
 		return 1;
 	}
 

@@ -1237,12 +1237,21 @@ public class TargetFactory {
 		}
 		
 		protected int getSlotByMappingNumber(int mapping,int variant) {
+			for (int i = 0;i < allTargets.size();i++) {
+				if (allTargets.get(i).mappingNumber == mapping) {
+					return map[i];//why did I even try to complicate it
+				}
+			}
+			return -1;//create issues
+			/*
 			int multIndex = multiNums.indexOf(mapping);
 			if (multIndex == -1) {
 				return -1;
 			}
+			return map[multIndex];
+			/*
 			int total = multiSum(multiNums.size()-1);
-			return (allTargets.size() - total)+multiSum(multIndex)+variant;
+			return (allTargets.size() - total)+multiSum(multIndex)+variant;*/
 		}
 		
 		protected int mapNumForAttach(int offset, int index, int combo) {

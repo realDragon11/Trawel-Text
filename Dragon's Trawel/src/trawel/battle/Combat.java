@@ -593,7 +593,7 @@ public class Combat {
 				}
 			}
 			if (defender.hasSkill(Skill.RAW_GUTS)) {
-				int maxGResist = (int) Math.ceil(defender.getLevel() * defender.getConditionForPart());
+				int maxGResist = (int) Math.ceil(defender.getLevel() * defender.getConditionForPart(TargetFactory.TORSO_MAPPING));
 				int gResisted = ret.damage;
 				ret.damage = Math.max(ret.damage/2,ret.damage-extra.randRange(0,maxGResist));
 				gResisted = gResisted-ret.damage;

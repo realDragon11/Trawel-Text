@@ -170,9 +170,11 @@ public class TargetHolder {
 	 * will return 0 if no mapping found
 	 */
 	public double getStatusOnMapping(int mapping) {
-		return 1;
-		//return condition[plan.getSlotByMappingNumber(mapping, getVariant())];
-		//FIXME: I don't have time for this bug right now, commenting out the feature instead
+		try {
+			return condition[plan.getSlotByMappingNumber(mapping, getVariant())];
+		}catch(Exception e) {
+			return 0;
+		}
 	}
 
 }

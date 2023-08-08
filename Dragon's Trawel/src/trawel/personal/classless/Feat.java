@@ -10,7 +10,9 @@ import trawel.extra;
 import trawel.personal.classless.Skill.Type;
 
 public enum Feat implements IHasSkills{
-	EMPTY("","","",0f,null,IHasSkills.emptySkillSet),
+	NOT_PICKY("Not Picky","Grants 2 additional feat picks. (Picks don't give you more feats, just more times to choose.)",""
+			,1f,EnumSet.of(FeatType.COMMON),null,EnumSet.noneOf(Skill.class)
+			,5,5,null,null),//should grant a low level in every stat
 	COMMON_TOUGH("The Tough","They're tougher than they look. And they look tough.","",
 			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS),0,0),
 	MAGIC_WITCH("The Witch","Curses and potions are their forte.","",

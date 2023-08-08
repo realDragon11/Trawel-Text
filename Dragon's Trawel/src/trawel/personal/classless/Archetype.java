@@ -27,10 +27,10 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(FeatType.TRICKS,FeatType.SOCIAL,FeatType.BATTLE)
 			,EnumSet.of(Skill.DSTRIKE)
 			)
-	,ARMSMATER("armsmaster","TODO"
+	,ARMORMASTER("armor master","A walking fortress, one with armor, two halves made whole."
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRECT_BATTLE,AGroup.CRAFT)
-			,EnumSet.of(FeatType.BATTLE)
+			,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)//TODO needs better types
 			,EnumSet.of(Skill.ARMOR_TUNING,Skill.ARMORSPEED)
 			)
 	;
@@ -100,6 +100,9 @@ public enum Archetype implements IHasSkills{
 		}
 		
 		for (int i = 0; i < 30 && list.size() < desiredAmount;i++) {
+			if (options.size() == 0) {
+				break;
+			}
 			Archetype choice = extra.randList(options);
 			options.remove(choice);
 			for (Archetype blocker: list) {
@@ -117,16 +120,21 @@ public enum Archetype implements IHasSkills{
 	 * <br>
 	 * only makes sense when 'more like this' is one archetype, if you have more pick a random one
 	 */
-	public static List<Archetype> getAfter(int desiredAmount, Archetype has) {
+	public static List<Archetype> getAfter(int desiredAmount, Archetype has, Set<Archetype> extendedHas) {
 		List<Archetype> list = new ArrayList<Archetype>();
 		List<Archetype> options = new ArrayList<Archetype>();
 		for (Archetype a: Archetype.values()) {
-			if (a.type == AType.ENTRY || a.type == AType.AFTER) {
-				options.add(a);
+			if ((a.type == AType.ENTRY || a.type == AType.AFTER) && !extendedHas.contains(a)) {
+				if (!Collections.disjoint(has.groups,a.groups)) {//if we have at least one thing in common
+					options.add(a);
+				}
 			}
 		}
 		
 		for (int i = 0; i < 30 && list.size() < desiredAmount;i++) {
+			if (options.size() == 0) {
+				break;
+			}
 			Archetype choice = extra.randList(options);
 			options.remove(choice);
 			for (Archetype blocker: list) {
@@ -182,8 +190,11 @@ public enum Archetype implements IHasSkills{
 		}
 		
 		if (pAs.size() == 1) {
-			list.addAll(getAfter(2,pAs.iterator().next()));
-			list.addAll(getFirst(2,pAs));
+			Set<Archetype> restrictSet = EnumSet.copyOf(pAs);
+			List<Archetype> newList = getFirst(2,restrictSet);//first moved up so that it doesn't get blocked by friends of friends basically
+			list.addAll(newList);
+			restrictSet.addAll(newList);
+			list.addAll(getAfter(2,pAs.iterator().next(),restrictSet));
 			//fall through and fill the rest with normal feats
 		}
 		Set<Feat> fset = EnumSet.copyOf(person.getFeatSet());
