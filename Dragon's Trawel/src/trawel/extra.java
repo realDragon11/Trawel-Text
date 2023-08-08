@@ -505,13 +505,15 @@ public final class extra {
 
 		public static <E> E randList(ArrayList<E> list) {
 			return list.get(getRand().nextInt(list.size()));
-			
 		}
 		
 		public static <E> E randList(List<E> list) {
 			return list.get(getRand().nextInt(list.size()));
-			
 		}
+		public static <E> E randList(E[] list) {
+			return list[getRand().nextInt(list.length)];
+		}
+		
 		public static final float clamp(float d, float min, float max) {
 			return Math.min(max, Math.max(d, min));
 		}

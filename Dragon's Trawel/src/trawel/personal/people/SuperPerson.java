@@ -40,4 +40,9 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	public abstract void onlyGoal(AgentGoal goal);
 	public abstract boolean removeGoal(AgentGoal goal);
 	public abstract boolean hasGoal(AgentGoal goal);
+	
+	
+	public boolean isHumanoid() {
+		return getPerson().isHumanoid();
+	}
 }

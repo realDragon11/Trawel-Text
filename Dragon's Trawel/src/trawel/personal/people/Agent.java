@@ -41,10 +41,6 @@ public class Agent extends SuperPerson{
 		goals = EnumSet.of(goal);
 		current = null;
 	}
-	
-	public boolean isHumanoid() {
-		return person.isHumanoid();
-	}
 
 	@Override
 	public Person getPerson() {

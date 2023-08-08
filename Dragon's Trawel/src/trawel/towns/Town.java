@@ -2,6 +2,7 @@ package trawel.towns;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
@@ -68,7 +69,7 @@ public class Town extends TContextOwner{
 	private double timePassed;
 	private List<Connection> connects;
 	private List<Feature> features;
-	private List<SuperPerson> occupants;
+	private List<Agent> occupants;
 	private List<Person> helpers = new ArrayList<Person>();
 	private double defenseTimer = 0;
 	public List<TownTag> tTags = new ArrayList<TownTag>();
@@ -81,7 +82,7 @@ public class Town extends TContextOwner{
 		this.name = name;
 		connects = new ArrayList<Connection>();
 		features = new ArrayList<Feature>();
-		occupants = new ArrayList<SuperPerson>();
+		occupants = new ArrayList<Agent>();
 	}
 	public Town(String name, int tier, Island island, byte x, byte y) {
 		this(name);
@@ -820,17 +821,45 @@ public class Town extends TContextOwner{
 		
 	}
 	
-	public List<SuperPerson> getOccupants() {
+	public List<Agent> getAllOccupants() {
 		return occupants;
 	}
 	
-	public SuperPerson popOccupant(SuperPerson occupant) {
+	public Stream<Agent> getPersonableOccupants() {
+		return occupants.stream().filter(SuperPerson::isHumanoid);
+	}
+	/**
+	 * note that, as per this stack overflow question, the iterable will only work once
+	 * <br>
+	 * https://stackoverflow.com/questions/59869486/make-a-stream-into-an-iterable/59873914#59873914
+	 */
+	public Iterable<Agent> getPersonableOccupantsPass() {
+		return (Iterable<Agent>) occupants.stream().filter(SuperPerson::isHumanoid).iterator();
+	}
+	
+	public Agent popAnyOccupant(Agent occupant) {
 		occupants.remove(occupant);
 		return occupant;
 	}
 	
-	public void addOccupant(SuperPerson occupant) {
+	public void addOccupant(Agent occupant) {
 		occupants.add(occupant);
+	}
+	
+	public boolean removeOccupant(Agent occupant) {
+		return occupants.remove(occupant);
+	}
+	
+	public void removeAllKilled(List<Person> killed) {
+		for (Person p: killed) {
+			if (p.getSuper() != null) {
+				occupants.remove(p.getSuper());
+			}
+		}
+	}
+	
+	public Agent getRandPersonableOccupant() {
+		return (Agent) extra.randList(getPersonableOccupants().toArray());
 	}
 	
 	/**
@@ -871,7 +900,7 @@ public class Town extends TContextOwner{
 			boolean went = Bumper.go(threshold,tier,0,this);
 			
 			if (!went && extra.chanceIn(1,3)) {
-				SuperPerson sp = island.getWorld().getDeathCheater();
+				Agent sp = island.getWorld().getDeathCheater();
 				if (sp != null) {
 					island.getWorld().removeReoccuringSuperPerson(sp);
 					Person p = sp.getPerson();
@@ -931,7 +960,7 @@ public class Town extends TContextOwner{
 				}
 			}
 			if (!went && extra.chanceIn(1,10)) {
-				SuperPerson sp = island.getWorld().getStalker();
+				Agent sp = island.getWorld().getStalker();
 				//does not level up naturally
 				if (sp != null) {
 					extra.println(extra.PRE_RED + sp.getPerson().getName() + " appears to haunt you!");
@@ -1040,4 +1069,5 @@ public class Town extends TContextOwner{
 	public ContextLevel contextLevel() {
 		return ContextLevel.TOWN;
 	}
+	
 }

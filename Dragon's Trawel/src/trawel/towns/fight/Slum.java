@@ -32,7 +32,7 @@ import trawel.towns.World;
 public class Slum extends Feature implements QuestBoardLocation{
 
 	private boolean removable;
-	public SuperPerson crimeLord;
+	public Agent crimeLord;
 	private double timePassed = 0;
 	private int crimeRating = 10;
 	private int wins = 0;
@@ -168,21 +168,21 @@ public class Slum extends Feature implements QuestBoardLocation{
 			if (canQuest) {this.generateSideQuest();}
 			if (crimeLord == null){
 				timePassed = 24;
-				if (town.getOccupants().size() == 0) {
+				if (town.getPersonableOccupants().count() == 0) {
 					return null;
 				}
-				crimeLord = extra.randList(town.getOccupants());
-				town.getOccupants().remove(crimeLord);
+				crimeLord = town.getRandPersonableOccupant();
+				town.removeOccupant(crimeLord);
 			}else {
 				timePassed = 24;
-				if (town.getOccupants().size() == 0) {
+				if (town.getPersonableOccupants().count() == 0) {
 					return null;
 				}
-				SuperPerson sp = extra.randList(town.getOccupants());
-				if (((Agent)sp).getPerson().getLevel() > ((Agent)crimeLord).getPerson().getLevel() && extra.chanceIn(1,3)) {
-					town.getOccupants().add(crimeLord);
+				Agent sp = town.getRandPersonableOccupant();
+				if (sp.getPerson().getLevel() > crimeLord.getPerson().getLevel() && extra.chanceIn(1,3)) {
+					town.addOccupant(crimeLord);
 					crimeLord = sp;
-					town.getOccupants().remove(sp);
+					town.removeOccupant(sp);
 				}else {
 					((Agent)crimeLord).getPerson().getBag().addGold(3*town.getTier());
 					crimeRating+=((Agent)crimeLord).getPerson().getLevel();

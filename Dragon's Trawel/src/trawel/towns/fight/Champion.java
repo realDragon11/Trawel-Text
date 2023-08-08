@@ -99,20 +99,20 @@ public class Champion  extends Feature{
 		if (person == null) {
 			timeElapsed+=time;
 			if (timeElapsed > extra.randRange(24, 60)) {
-				SuperPerson delete = null;
-				for (SuperPerson p: town.getOccupants()) {
-					Agent a = (Agent)p;
+				Agent delete = null;
+				for (Agent a: town.getPersonableOccupantsPass()) {
 					if (a.getPerson().getLevel() == town.getTier()) {
 						person = a.getPerson();
 						this.name = person.getName() + " (Level " + person.getLevel()+")" ;
 						tutorialText = "You should probably hold off on fighting champions until you're their level.";
 						//town.getOccupants().remove(p); // not sure if safe
-						delete = p;
+						delete = a;
 						break;
 					}
 				}
 				if (delete != null) {
-				town.getOccupants().remove(delete);}//TODO use events
+					town.removeOccupant(delete);
+				}//TODO use events
 				
 			}
 		}

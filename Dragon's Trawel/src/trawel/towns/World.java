@@ -38,7 +38,7 @@ public class World extends TContextOwner{
 	/**
 	 * superpeople that the player will run into again, maybe
 	 */
-	private List<SuperPerson> reoccuring;
+	private List<Agent> reoccuring;
 	/**
 	 * used for notable characters that either cheated death and didn't die in the rematch, or otherwise were notable but would
 	 * get lost
@@ -55,7 +55,7 @@ public class World extends TContextOwner{
 		ySize = y;
 		islands = new ArrayList<Island>();
 		//bardSongs = new ArrayList<BardSong>();
-		reoccuring = new ArrayList<SuperPerson>();
+		reoccuring = new ArrayList<Agent>();
 		name = _name;
 		this.minLata = minLata;
 		this.maxLata = minLata+y/WorldGen.unitsInLata;
@@ -155,14 +155,14 @@ public class World extends TContextOwner{
 	
 	public void addDeathCheater(Person p) {
 		p.getBag().regenNullEquips(p.getLevel());
-		SuperPerson sp = p.getSuper();
+		Agent sp = (Agent)p.getSuper();
 		if (sp == null) {
 			sp = new Agent(p,AgentGoal.DEATHCHEAT);
 		}
 		reoccuring.add(sp);
 	}
 
-	public void addReoccuring(SuperPerson sp) {
+	public void addReoccuring(Agent sp) {
 		reoccuring.add(sp);
 	}
 	
@@ -170,11 +170,11 @@ public class World extends TContextOwner{
 	 * removes all occurrences of this person in death cheaters
 	 * @param p
 	 */
-	public void removeReoccuringSuperPerson(SuperPerson p) {
+	public void removeReoccuringSuperPerson(Agent p) {
 		reoccuring.removeIf(Predicate.isEqual(p));
 	}
 	
-	public void deathCheaterToChar(SuperPerson p) {
+	public void deathCheaterToChar(Agent p) {
 		assert reoccuring.contains(p);
 		reoccuring.remove(p);
 		//characters.add(p);
@@ -184,8 +184,8 @@ public class World extends TContextOwner{
 		Player.player.getLocation().addOccupant(p);
 	}
 	
-	public SuperPerson getDeathCheater() {
-		List<SuperPerson> list = new ArrayList<SuperPerson>();
+	public Agent getDeathCheater() {
+		List<Agent> list = new ArrayList<Agent>();
 		reoccuring.stream().filter(p -> p.hasGoal(AgentGoal.DEATHCHEAT)).forEach(list::add);
 		if (list.size() == 0) {
 			return null;
@@ -193,8 +193,8 @@ public class World extends TContextOwner{
 		return extra.randList(list);
 	}
 	
-	public SuperPerson getStalker() {
-		List<SuperPerson> list = new ArrayList<SuperPerson>();
+	public Agent getStalker() {
+		List<Agent> list = new ArrayList<Agent>();
 		reoccuring.stream().filter(p -> p.hasGoal(AgentGoal.SPOOKY)).forEach(list::add);
 		if (list.size() == 0) {
 			return null;

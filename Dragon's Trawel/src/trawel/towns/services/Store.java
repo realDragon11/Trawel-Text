@@ -557,7 +557,7 @@ public class Store extends Feature{
 		if (type == 8 || type == 9) {
 			return;
 		}
-		for (SuperPerson peep: town.getOccupants()) {
+		for (SuperPerson peep: town.getPersonableOccupantsPass()) {
 			Agent a = (Agent)peep;
 			Inventory bag = a.getPerson().getBag();
 			ArrayList<Item> add = new ArrayList<Item>();

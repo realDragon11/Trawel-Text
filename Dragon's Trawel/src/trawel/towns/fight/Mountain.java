@@ -130,7 +130,7 @@ public class Mountain extends Feature{
 	}
 	
 	private void cleanTown() {
-		for (SuperPerson peep: town.getOccupants()) {
+		for (SuperPerson peep: town.getPersonableOccupantsPass()) {
 			Agent a = (Agent)peep;
 			a.getPerson().washAll();
 		}

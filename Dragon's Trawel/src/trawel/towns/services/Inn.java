@@ -175,7 +175,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 						return false;
 					}
 				});
-				if (town.getOccupants().size() >=2){
+				if (town.getPersonableOccupants().count() >=2){
 				mList.add(new MenuSelect() {
 
 					@Override
@@ -235,12 +235,15 @@ public class Inn extends Feature implements QuestBoardLocation{
 	}
 
 	private void occupantDuel(boolean playerwatching) {
-		if (town.getOccupants().size() >=2){
-			Agent agent1= ((Agent)town.getOccupants().get(0));
-			Agent agent2= ((Agent)town.getOccupants().get(1));
+		List<SuperPerson> spList = new ArrayList<SuperPerson>();
+		town.getPersonableOccupants().forEach(spList::add);
+		if (spList.size() >= 2){
+			SuperPerson sp1 = extra.randList(spList);
+			spList.remove(sp1);
+			SuperPerson sp2 = extra.randList(spList);
 			if (!playerwatching) { extra.offPrintStack();}
-			Combat c = mainGame.CombatTwo(agent1.getPerson(),agent2.getPerson(),town.getIsland().getWorld());
-			town.getOccupants().remove(c.killed.get(0).getSuper());
+			Combat c = mainGame.CombatTwo(sp1.getPerson(),sp2.getPerson(),town.getIsland().getWorld());
+			town.removeAllKilled(c.killed);
 			extra.changePrint(false);
 			if (!playerwatching) { extra.popPrintStack();}
 		}
@@ -252,7 +255,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 		case 2: goDancers();break;
 		case 3: goOracle();break;
 		default:
-			if (town.getOccupants().size() == 0){
+			if (town.getPersonableOccupants().count() == 0){
 				barFight();
 			}else {
 				goAgent(curAgent);
@@ -267,8 +270,8 @@ public class Inn extends Feature implements QuestBoardLocation{
 		case 2: return "resident: A group of dancers";
 		case 3: return "resident: An oracle.";
 		default:
-			if (curAgent == null || !town.getOccupants().contains(curAgent)){
-				if (town.getOccupants().size() == 0) {
+			if (curAgent == null || !town.getPersonableOccupants().anyMatch(a -> a == curAgent)){
+				if (town.getPersonableOccupants().count() == 0) {
 					return "resident: Open Bar";
 				}else {
 					newCurAgent();
@@ -302,7 +305,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 					public boolean go() {
 						Combat c = Player.fightWith(agent.getPerson());
 						if (c.playerWon() > 0) {
-							town.getOccupants().remove(agent);
+							town.removeOccupant(agent);
 							newCurAgent();
 						}
 						return true;
@@ -441,7 +444,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 	}
 	
 	public void newCurAgent() {
-		curAgent = (Agent)extra.randList(town.getOccupants());
+		curAgent = (Agent) town.getRandPersonableOccupant();
 	}
 
 }
