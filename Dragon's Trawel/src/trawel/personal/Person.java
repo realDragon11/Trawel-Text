@@ -461,7 +461,7 @@ public class Person implements java.io.Serializable{
 		int total = getBase_HP();
 		if (this.hasSkill(Skill.LIFE_MAGE)) {
 			//hp+=this.getMageLevel();
-			hp+=this.getDexterity();
+			hp+=this.getClarity();
 		}
 		total*=bag.getHealth();
 		return total;
@@ -516,9 +516,9 @@ public class Person implements java.io.Serializable{
 		
 		speedFill = -1;
 		isWarmingUp = false;
-		int s = this.hasSkill(Skill.ARMOR_MAGE) ? this.getDexterity()/60: 0;
-		int b = this.hasSkill(Skill.ARMOR_MAGE) ? this.getDexterity()/60: 0;
-		int p = this.hasSkill(Skill.ARMOR_MAGE) ?this.getDexterity()/60: 0;
+		int s = this.hasSkill(Skill.ARMOR_MAGE) ? this.getClarity()/60: 0;
+		int b = this.hasSkill(Skill.ARMOR_MAGE) ? this.getClarity()/60: 0;
+		int p = this.hasSkill(Skill.ARMOR_MAGE) ?this.getClarity()/60: 0;
 		int defLvl = this.getStrength()/60;
 		if (this.hasSkill(Skill.SHIELD)) {
 			s+=1*defLvl;
@@ -1598,6 +1598,14 @@ public class Person implements java.io.Serializable{
 		return (int) (getRawDexterity()* bag.getAgiPen());
 	}
 	
+	public int getClarity() {
+		return fetchAttributes().getClarity();
+	}
+	
+	public int getHighestAttribute() {
+		return Math.max(getStrength(),Math.max(getDexterity(),getClarity()));
+	}
+	
 	public int getRawDexterity() {
 		return fetchAttributes().getDexterity();
 	}
@@ -1617,6 +1625,7 @@ public class Person implements java.io.Serializable{
 	
 	public String attributeDesc() {
 		return "(raw) dex (" + getRawDexterity() +") " + getDexterity() + " cap/str " + bag.getCapacity() + "/"+getStrength()
+		+ " clarity: " + getClarity()
 		+ " (total) AMP (" + getTotalAgiPen() + ") " + getAttributeAgiPen();
 	}
 
@@ -1634,6 +1643,18 @@ public class Person implements java.io.Serializable{
 
 	public void forceKill() {
 		hp = 0;
+	}
+
+	//mostly just a method in case I want to plug 'any contested roll' skills in later
+	/**
+	 * make a contested roll against another person
+	 * <br>
+	 * typically, should use >= since engager wins ties
+	 */
+	public int contestedRoll(Person defender, int mynum, int theirnum) {
+		int myroll = extra.randRange(0,mynum);
+		int theirroll = extra.randRange(0,theirnum);
+		return myroll-theirroll;
 	}
 
 

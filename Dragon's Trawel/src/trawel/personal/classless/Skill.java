@@ -56,18 +56,12 @@ public enum Skill{
 		ILLUSION_MAGE("Illusion Mage","Unlocks the befuddle spell.",false,Type.MAGE,2,""),
 		
 		MAGE_POWER("Power Within","Replace one of your attacks with a spell and unlock your magic power.",false,Type.MAGE,3,""),//works with ai, bad choice tho
-		MAGE_FRUGAL("Power Without","Decrease your magic power but increase your offensive and defensive skills.",true,Type.MAGE,3,""),
 		
 		IMAG_TRAINING("Mage Training","Hone your magic skills.",true,Type.MAGE,4,""),
 		
 		
 		PARRY("Parry","Gives you a parrying dagger.",true,Type.DEFENDER,1,""),
 		SHIELD("Shield","Gives you a shield.",true,Type.DEFENDER,1,""),
-		
-		
-		
-		
-		
 		
 		GOOFFENSIVE("Go on the offensive","Allows you to attack with your defensive item.",true,Type.DEFENDER,4,""),
 		DEFENSIVE_TRAINING("Stay on the defensive","Unlocks your defensive potential.",true,Type.DEFENDER,4,""),
@@ -142,6 +136,16 @@ public enum Skill{
 		ARMORHEART("Armor Heart","Gain hp equal to your attacker's level every time your armor blocks an attack."
 				,"Uncapped total HP gain. Caps at twice your level per activation. Applies once per attack."
 				,Type.DEFENSE),
+		MESMER_ARMOR("Mesmer Armor","When attacked for no Impact, Roll a contested Clarity vs their highest attribute to confuse them."
+				,"Attacks with no impact typically are dodged, miss, or are blocked by armor. Confuse makes the target's next attack capable of friendly fire."
+				,Type.DEFENSE),
+		ARCANIST("Arcanist","Unlocks a magical swappable attack."
+				,"UNIMPLEMENTED. When done, will be similar to old arcanist exotic art."
+				,Type.ATTACK_TYPE),
+		MAGE_FRUGAL("Frugal Mage","Grants you a better deal of Aether to Currency conversions in shops.",
+				"Based on clarity. TODO"
+				,Type.SOCIAL),
+		
 		
 		
 		
@@ -159,6 +163,7 @@ public enum Skill{
 	    	//new set
 	    	OFFENSE,
 	    	CRAFT,
+	    	SOCIAL,
 	    	OTHER,
 	    	SPEED,//skills that tend to make you faster
 	    	DEFENSE,//skills that provide defensive benefits

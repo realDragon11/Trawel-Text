@@ -14,6 +14,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.extra;
+import trawel.personal.classless.Feat.FeatType;
 
 public interface IHasSkills {
 
@@ -29,6 +30,7 @@ public interface IHasSkills {
 	
 	public int getStrength();
 	public int getDexterity();
+	public int getClarity();
 	
 	public static Stream<Skill> combine(Stream<Skill>...streams) {
 		//https://stackoverflow.com/a/22741520
@@ -54,8 +56,22 @@ public interface IHasSkills {
 
 			@Override
 			public String title() {
-				return " Strength: " + has.getStrength() + " Dexterity: " + has.getDexterity();
+				return " Strength: " + has.getStrength() + " Dexterity: " + has.getDexterity() + " Clarity: " + has.getClarity();
 			}});
+		if (has instanceof Archetype) {
+			Archetype arch = (Archetype)has;
+			String str = " Unlocks:";
+			for (FeatType ft: arch.getFeatTypes()) {
+				str += " "+ft;
+			}
+			String ftstr = str;//this is hilariously dumb, effectively final
+			list.add(new MenuLine() {
+
+				@Override
+				public String title() {
+					return ftstr;
+				}});
+		}
 		has.collectSkills().forEach(skill -> list.add(skill.getMenuView()));
 		return list;
 	}

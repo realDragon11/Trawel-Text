@@ -418,6 +418,10 @@ public class Player extends SuperPerson{
 		return canBuyMoneyAmount(money,NORMAL_AETHER_RATE);
 	}
 	
+	public static int getTotalBuyPower(int aetherpermoney) {
+		return getGold()+(Player.bag.getAether()/aetherpermoney);
+	}
+	
 	public static int getTotalBuyPower(float aetherRate) {
 		return getGold()+ (int)(Player.bag.getAether()*aetherRate);
 	}

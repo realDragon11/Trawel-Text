@@ -193,7 +193,7 @@ public class Store extends Feature{
 			}
 			DrawBane db = dbs.get(index);
 			int buyGold = (int) Math.ceil(db.getValue() * markup);
-			if (Player.getTotalBuyPower() >= buyGold) {
+			if (Player.getTotalBuyPower(aetherPerMoney(Player.player.getPerson())) >= buyGold) {
 				extra.println("Buy the "+ db.getName() + "? (" + buyGold + " "+World.currentMoneyString()+")");//TODO: explain aether conversion
 				if (extra.yesNo()) {
 					DrawBane sellItem = bag.addNewDrawBane(db);
@@ -286,8 +286,12 @@ public class Store extends Feature{
 		}
 	}
 	
-	public int aetherPerMoney() {
-		return ((int)(1/aetherRate));
+	public int aetherPerMoney(Person shopper) {
+		Float effectiveRate = aetherRate;
+		if (shopper.hasSkill(Skill.MAGE_FRUGAL)) {
+			effectiveRate *= 1.1f+ Math.max(1,shopper.getClarity()/100f);
+		}
+		return ((int)(1/effectiveRate));
 	}
 	
 	public static int rateGuess(float base, float actual, boolean higherBetter) {
@@ -373,7 +377,7 @@ public class Store extends Feature{
 
 					@Override
 					public String title() {
-						return "They will exchange "+aetherPerMoney() + " aether for "
+						return "They will exchange "+aetherPerMoney(Player.player.getPerson()) + " aether for "
 					+ World.currentMoneyDisplay(1)
 					+" which is " +rateString(rateGuess(Player.NORMAL_AETHER_RATE,aetherRate,true)) + " rate."
 					+" Their prices seem " + priceRateString(rateGuess(BASE_MARKUP,markup,false)) +".";
@@ -383,7 +387,7 @@ public class Store extends Feature{
 
 					@Override
 					public String title() {
-						return "You have a total of "+(Player.getGold() + (int)(aetherRate*Player.bag.getAether())) +" buying power.";
+						return "You have a total of "+(Player.getGold() + (Player.bag.getAether()/aetherPerMoney(Player.player.getPerson()))) +" buying power.";
 					}});
 				
 				if (type != 8 && type != 9) {//normal items

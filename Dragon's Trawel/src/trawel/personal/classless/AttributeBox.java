@@ -7,7 +7,7 @@ public class AttributeBox {
 	
 	public final Person owner;
 	
-	private int strength, dexterity;
+	private int strength, dexterity, clarity;
 	
 	private int capacity;
 	
@@ -20,6 +20,7 @@ public class AttributeBox {
 	public void reset() {
 		strength = 100;
 		dexterity = 100;
+		clarity = 100;
 		capacity = 0;
 	}
 	
@@ -30,16 +31,19 @@ public class AttributeBox {
 	public void process(Feat f) {
 		strength += f.getStrength();
 		dexterity += f.getDexterity();
+		clarity += f.getClarity();
 	}
 	
 	public void process(Perk p) {
 		strength += p.getStrength();
 		dexterity += p.getDexterity();
+		clarity += p.getClarity();
 	}
 	
 	public void process(Archetype a) {
 		strength += a.getStrength();
 		dexterity += a.getDexterity();
+		clarity += a.getClarity();
 	}
 
 	public int getStrength() {
@@ -48,6 +52,10 @@ public class AttributeBox {
 
 	public int getDexterity() {
 		return dexterity;
+	}
+	
+	public int getClarity() {
+		return clarity;
 	}
 	
 	//NOTE

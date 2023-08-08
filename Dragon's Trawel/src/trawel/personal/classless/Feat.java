@@ -11,23 +11,31 @@ import trawel.personal.classless.Skill.Type;
 
 public enum Feat implements IHasSkills{
 	NOT_PICKY("Not Picky","Grants 2 additional feat picks. (Picks don't give you more feats, just more times to choose.)",""
-			,1f,EnumSet.of(FeatType.COMMON),null,EnumSet.noneOf(Skill.class)
-			,5,5,null,null),//should grant a low level in every stat
+			,1f,EnumSet.of(FeatType.COMMON),null
+			,EnumSet.noneOf(Skill.class),5,5,5//should grant a low level in every stat
+			,null,null),
 	COMMON_TOUGH("The Tough","They're tougher than they look. And they look tough.","",
 			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS),2,0),
-	MAGIC_WITCH("The Witch","Curses and potions are their forte.","",
+	WITCHY("Witchy Washy","Curses and potions are their forte.","",
 			1f,EnumSet.of(FeatType.POTIONS,FeatType.CURSES),null
-			,EnumSet.of(Skill.CURSE_MAGE,Skill.P_BREWER),0,2,null,null)
+			,EnumSet.of(Skill.CURSE_MAGE,Skill.P_BREWER),0,1,4
+			,null,null)
 	,HEMOVORE("Hemovore","Extracts life energy from fleeting mortality.","",
-			1f,EnumSet.of(FeatType.BATTLE),EnumSet.of(FeatType.CURSES,FeatType.MAGIC)
-			,EnumSet.of(Skill.BLOODTHIRSTY,Skill.KILLHEAL),1,2,null,null)
+			1f,EnumSet.of(FeatType.MYSTIC),EnumSet.of(FeatType.CURSES,FeatType.BATTLE,FeatType.POTIONS)
+			,EnumSet.of(Skill.BLOODTHIRSTY,Skill.KILLHEAL),1,1,3
+			,null,null)
 	,UNBREAKABLE("Unbreakable","Nothing stops them.","",
 			1f,null,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)
-			,EnumSet.of(Skill.TA_NAILS,Skill.ARMORHEART),4,0,null,null)
+			,EnumSet.of(Skill.TA_NAILS,Skill.ARMORHEART),4,0,0
+			,null,null)
 	,UNDERHANDED("Underhanded","They'll do anything and everything to win.",""
 			,1f,EnumSet.of(FeatType.TRICKS),null
-			,EnumSet.of(Skill.SPUNCH)
-			,0,10,null,null)
+			,EnumSet.of(Skill.SPUNCH),0,10,0
+			,null,null)
+	,ARMORPAINTER("Armor Painter","They paint their armor with magical dyes.",""
+			,1f,EnumSet.of(FeatType.MYSTIC),EnumSet.of(FeatType.SMITHS,FeatType.TRICKS)
+			,EnumSet.of(Skill.MESMER_ARMOR,Skill.ARMOR_MAGE),0,0,5
+			,null,null)
 	;
 
 	private final String name, desc, getDesc;
@@ -38,8 +46,9 @@ public enum Feat implements IHasSkills{
 	public final float rarity;
 	public final Set<FeatType> typesAll, typesAny;
 	public final Set<IHasSkills> needsAll, needsOne;
-	private final int strength, dexterity;
-	Feat(String _name, String _desc, String _getDesc,float _rarity,Set<FeatType> _typesAll,Set<FeatType> _typesAny,Set<Skill> skillset,int stre, int dext
+	private final int strength, dexterity, clarity;
+	Feat(String _name, String _desc, String _getDesc,float _rarity,Set<FeatType> _typesAll,Set<FeatType> _typesAny,Set<Skill> skillset
+			,int stre, int dext, int cla
 			,Set<IHasSkills> needsAllOf, Set<IHasSkills> needsOneOf){
 		name = _name;
 		desc = _desc;
@@ -52,10 +61,11 @@ public enum Feat implements IHasSkills{
 		dexterity = dext;
 		needsAll = needsAllOf;
 		needsOne = needsOneOf;
+		clarity = cla;
 	}
 	
 	Feat(String _name, String _desc, String _getDesc,float _rarity,FeatType _type ,Set<Skill> skillset,int stre, int dext){
-		this(_name,_desc,_getDesc,_rarity,null,EnumSet.of(_type),skillset,stre,dext,null,null);
+		this(_name,_desc,_getDesc,_rarity,null,EnumSet.of(_type),skillset,stre,dext,0,null,null);
 	}
 	
 	Feat(String _name, String _desc, String _getDesc,float _rarity,FeatType _type ,Set<Skill> skillset){
@@ -63,7 +73,11 @@ public enum Feat implements IHasSkills{
 	}
 	
 	public enum FeatType{
-		COMMON, MAGIC, POTIONS, CURSES, TRICKS, SOCIAL, BATTLE, SPIRIT;
+		COMMON,
+		MYSTIC,//should be granted if any of the following are granted:
+		ARCANE,CURSES
+		//end mystic sub classes
+		, POTIONS,TRICKS, SOCIAL, BATTLE, SPIRIT, SMITHS;
 	}
 	
 	@Override
@@ -143,6 +157,11 @@ public enum Feat implements IHasSkills{
 	public boolean goMenuItem() {
 		extra.println("n/a");
 		return false;
+	}
+
+	@Override
+	public int getClarity() {
+		return clarity;
 	}
 
 }

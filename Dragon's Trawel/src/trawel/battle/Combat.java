@@ -901,6 +901,13 @@ public class Combat {
 			if (attacker.hasSkill(Skill.BLOODTHIRSTY)) {
 				attacker.addHp(Math.min(defender.getLevel(),attacker.getLevel()));
 			}
+		}else {//no impact
+			if (defender.hasSkill(Skill.MESMER_ARMOR)) {
+				if (defender.contestedRoll(attacker,defender.getClarity(),attacker.getHighestAttribute()) >= 0){
+					attacker.addEffect(Effect.CONFUSED_TARGET);
+					extra.println(defender.getName()+ "'s illusory armor mesmerizes "+attacker.getName() +"...");
+				}
+			}
 		}
 		if (damageDone > 0) {
 			if (defender.takeDamage(damageDone)) {
@@ -1183,7 +1190,7 @@ public class Combat {
 		case CRUSHED:
 			return new Integer[] {(int)attack.getTotalDam()/10};
 		case SCALDED: case FROSTBITE:
-			return new Integer[] {attacker.getDexterity()/60};
+			return new Integer[] {attacker.getClarity()/20};
 		case BLINDED:
 			return new Integer[] {50};//50% less accurate
 		case HAMSTRUNG:

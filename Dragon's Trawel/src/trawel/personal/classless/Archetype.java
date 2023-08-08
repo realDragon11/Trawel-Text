@@ -18,7 +18,7 @@ public enum Archetype implements IHasSkills{
 	VIRAGO("virago","An expert on toxic incantations, salves, potions, and the like. Adept in supplemental curse spellcasting.",
 			AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT)
-			,EnumSet.of(FeatType.CURSES,FeatType.POTIONS)
+			,EnumSet.of(FeatType.MYSTIC,FeatType.CURSES,FeatType.POTIONS)
 			,EnumSet.of(Skill.TOXIC_BREWS)
 			)
 	,GLADIATOR("gladiator","Attention seeking but no-nonsense physical fighter. Fighting dirty is part of the show."
@@ -30,14 +30,20 @@ public enum Archetype implements IHasSkills{
 	,ARMORMASTER("armor master","A walking fortress, one with their armor, two halves made whole."
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRECT_BATTLE,AGroup.CRAFT)
-			,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)//TODO needs better types
+			,EnumSet.of(FeatType.BATTLE,FeatType.SMITHS)//TODO needs better types
 			,EnumSet.of(Skill.ARMOR_TUNING,Skill.ARMORSPEED)
+			)
+	,HEDGE_MAGE("hedge mage","A perpetual novice, hedge mages aren't content to restrict themselves to one school."
+			,AType.ENTRY
+			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT)
+			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.POTIONS,FeatType.TRICKS,FeatType.SOCIAL)
+			,EnumSet.of(Skill.MAGE_FRUGAL)
 			)
 	;
 	
 	private final String name, desc;
 	private final Set<Skill> skills;
-	private final int strength, dexterity;
+	private final int strength, dexterity, clarity;
 	private final AType type;
 	private final Set<AGroup> groups;
 	private final Set<FeatType> fTypes;
@@ -47,6 +53,7 @@ public enum Archetype implements IHasSkills{
 		skills = skillset;
 		strength = 0;
 		dexterity = 0;
+		clarity = 0;
 		type = _type;
 		groups = _groups;
 		fTypes = _fTypes;
@@ -183,6 +190,11 @@ public enum Archetype implements IHasSkills{
 	@Override
 	public int getDexterity() {
 		return dexterity;
+	}
+	
+	@Override
+	public int getClarity() {
+		return clarity;
 	}
 	
 	@Override
