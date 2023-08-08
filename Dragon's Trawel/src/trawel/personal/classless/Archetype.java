@@ -37,7 +37,7 @@ public enum Archetype implements IHasSkills{
 			,AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.POTIONS,FeatType.TRICKS,FeatType.SOCIAL)
-			,EnumSet.of(Skill.MAGE_FRUGAL)
+			,EnumSet.of(Skill.MAGE_FRUGAL,Skill.ARCANIST)
 			)
 	;
 	

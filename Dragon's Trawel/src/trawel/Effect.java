@@ -7,7 +7,7 @@ public enum Effect{
 	
 	BLEED("Bleeding","Take level damage after each of their attacks.",false,false),
 	MAJOR_BLEED("Major","Take 2*level damage after each of their attacks.",false,false),
-	DISARMED("Disamred","Their next turn will get one less weapon attack choice.",false,false),
+	DISARMED("Disarmed","Their next turn will get one less weapon attack choice. Doesn't stack.",false,false),
 	RECOVERING("Recovering","Will regain HP soon.",false,false),
 	I_BLEED("Bleeding Inside","Take level damage after each of their attacks.",false,true),
 	TORN("Torn","Decreased dodging.",false,true), 

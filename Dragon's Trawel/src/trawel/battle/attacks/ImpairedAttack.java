@@ -9,6 +9,7 @@ import trawel.battle.attacks.Attack.Wound;
 import trawel.battle.attacks.IAttack.AttackType;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 import trawel.personal.Person;
+import trawel.personal.classless.IHasSkills;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponQual;
@@ -69,8 +70,9 @@ public class ImpairedAttack implements IAttack{
 				bMult *= _weapon.getMat().bluntMult;
 				pMult *= _weapon.getMat().pierceMult;
 			}else {
-				if (_attacker != null) {
-					w_lvl = _attacker.getLevel();
+				IHasSkills attSource = attack.getSkillSource();
+				if (_attacker != null && attSource != null) {
+					w_lvl = attSource.getAttackLevel(_attacker);
 				}else {
 					throw new RuntimeException("invalid weapon resolved level for impaired attack");
 				}
@@ -81,7 +83,7 @@ public class ImpairedAttack implements IAttack{
 			vals[0] = damageRoll(DamageType.SHARP,sMult*damMult);
 			vals[1] = damageRoll(DamageType.BLUNT,bMult*damMult);
 			vals[2] = damageRoll(DamageType.PIERCE,pMult*damMult);
-			if (attack.getStance().elementBypass || !(_weapon != null && _weapon.isEnchantedHit())) {
+			if (attack.isBypass() || !(_weapon != null && _weapon.isEnchantedHit())) {
 				vals[3] = damageRoll(DamageType.IGNITE,attack.getIgnite()*damMult);
 				vals[4] = damageRoll(DamageType.FROST,attack.getFrost()*damMult);
 				vals[5] = damageRoll(DamageType.ELEC,attack.getElec()*damMult);
@@ -158,7 +160,90 @@ public class ImpairedAttack implements IAttack{
 	}
 	
 	public enum DamageType{
-		SHARP, BLUNT, PIERCE, IGNITE, FROST, ELEC, DECAY
+		SHARP("S","sharp","slashing, slicing, and cutting"),
+		BLUNT("B","blunt","bashing, slamming, and crushing"),
+		PIERCE("P","pierce","puncturing, piercing, and skewering"),
+		IGNITE("I","ignite","set aflame, fire, burning"),
+		FROST("F","frost","chilled, frozen, frostbite"),
+		ELEC("E","elec","zapped, shocked, electrocuted"),
+		DECAY("D","decay","withered, aged, decayed");
+		private final String disp;
+		private final String name, desc;
+		DamageType(String _disp, String _name, String _desc){
+			disp = _disp;
+			name = _name;
+			desc = _desc;
+		}
+		public String getDisp() {
+			return disp;
+		}
+		public String getName() {
+			return name;
+		}
+		public String getExplain() {
+			return name + "("+disp+"):" + desc;
+		}
+		
+		public String getDispFor(ImpairedAttack ia) {
+			/*switch (this) {
+			case BLUNT:
+				return disp + " " +ia.getBlunt();
+			case DECAY:
+				break;
+			case ELEC:
+				return disp + " " +ia.getElec();
+			case FROST:
+				return disp + " " +ia.getFrost();
+			case IGNITE:
+				return disp + " " +ia.getIgnite();
+			case PIERCE:
+				return disp + " " +ia.getPierce();
+			case SHARP:
+				return disp + " " +ia.getSharp();
+			}
+			return null;*/
+			return disp + " " + getAmountFor(ia);
+		}
+		
+		public int getAmountFor(ImpairedAttack ia) {
+			switch (this) {
+			case BLUNT:
+				return ia.getBlunt();
+			case DECAY:
+				break;
+			case ELEC:
+				return ia.getElec();
+			case FROST:
+				return ia.getFrost();
+			case IGNITE:
+				return ia.getIgnite();
+			case PIERCE:
+				return ia.getPierce();
+			case SHARP:
+				return ia.getSharp();
+			}
+			return 0;
+		}
+	}
+	
+	public static String getOtherDam(ImpairedAttack att) {
+		int amount = DamageType.IGNITE.getAmountFor(att);
+		if (amount > 0) {
+			return DamageType.IGNITE.getDispFor(att);
+		}
+		amount = DamageType.FROST.getAmountFor(att);
+		if (amount > 0) {
+			return DamageType.FROST.getDispFor(att);
+		}
+		amount = DamageType.ELEC.getAmountFor(att);
+		if (amount > 0) {
+			return DamageType.ELEC.getDispFor(att);
+		}
+		amount = DamageType.DECAY.getAmountFor(att);
+		if (amount > 0) {
+			return DamageType.DECAY.getDispFor(att);
+		}
+		return null;
 	}
 	
 	private int damageRoll(DamageType dt, double max) {
@@ -349,7 +434,7 @@ public class ImpairedAttack implements IAttack{
 	@Override
 	public int getTotalDam() {
 		// TODO add other damage types when they get added
-		return getSharp()+getBlunt()+getPierce();
+		return getSharp()+getBlunt()+getPierce()+getIgnite()+getFrost()+getElec();
 	}
 	
 	public float multiplyHit(float mult) {
@@ -378,11 +463,16 @@ public class ImpairedAttack implements IAttack{
 			in[3] = 9;
 			in[4] = 10;
 			in[5] = 6+4;
+			if (attack.isBypass()) {
+				extra.println("ELEMENTAL");
+				extra.specialPrint(in,getName() ,extra.format(getHitMult()) , extra.format(getWarmup()+getCooldown())  ,""+ (getIgnite())  ,""+(getFrost())  ,  ""+(getElec()));
+				break;
+			}
 			extra.specialPrint(in,getName() ,extra.format(getHitMult()) , extra.format(getWarmup()+getCooldown())  ,""+ (getSharp())  ,""+(getBlunt())  ,  ""+(getPierce()));
 			break;
 		case 2://two line 1
 			extra.println(getName());
-				in = new int[8];
+				in = new int[9];
 				in[0] = 9;//hitchance, should be %9.99 >= x > 0.00 | 9 gives a 2 spot gap to the times
 				in[1] = 4;//instants, should be _999 >= x > 0 | 4 because we're okay with pressing up against the next one
 				in[2] = 1;//warmup/cooldown seperator
@@ -394,10 +484,27 @@ public class ImpairedAttack implements IAttack{
 				in[5] = 6;
 				in[6] = 6;
 				in[7] = 6;
+				in[8] = 0;//bonus
+				String dam1, dam2, dam3, dam4;
+				if (attack.isBypass()) {
+					dam1 = DamageType.IGNITE.getDispFor(this);
+					dam2 = DamageType.FROST.getDispFor(this);
+					dam3 = DamageType.ELEC.getDispFor(this);
+					dam4 = null;
+				}else {
+					dam1 = DamageType.SHARP.getDispFor(this);
+					dam2 = DamageType.BLUNT.getDispFor(this);
+					dam3 = DamageType.PIERCE.getDispFor(this);
+					dam4 = getOtherDam(this);
+					if (dam4 != null) {
+						in[8] = 6;
+					}
+				}
+				
 				extra.specialPrint(in,"  "+extra.CHAR_HITCHANCE + extra.format(getHitMult()),
 						extra.CHAR_INSTANTS +extra.formatInt(getWarmup()),"-",extra.CHAR_INSTANTS+extra.formatInt(getCooldown()),
 						"=",
-						"S "+(getSharp()),"B "+(getBlunt()),"P "+(getPierce())//unsure if spacing messes up narrator
+						dam1,dam2,dam3,dam4//unsure if spacing messes up narrator
 						);
 			}
 			if (wound != null) {

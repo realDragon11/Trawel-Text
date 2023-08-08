@@ -14,6 +14,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.extra;
+import trawel.personal.Person;
 import trawel.personal.classless.Feat.FeatType;
 
 public interface IHasSkills {
@@ -114,6 +115,11 @@ public interface IHasSkills {
 	
 	public String friendlyName();
 	
-	public boolean goMenuItem();	
+	public boolean goMenuItem();
+	
+	//TODO: temp attack level for new skill attacks
+	public default int getAttackLevel(Person attacker) {
+		return Math.min(attacker.getClarity()/40,attacker.getLevel());
+	}
 
 }

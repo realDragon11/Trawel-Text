@@ -35,6 +35,7 @@ import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.item.solid.Armor.ArmorQuality;
 import trawel.personal.people.Player;
+import trawel.personal.people.SuperPerson;
 import trawel.towns.World;
 import trawel.towns.fort.FortHall;
 import trawel.towns.fort.LSkill;
@@ -637,7 +638,7 @@ public class Combat {
 			double parm = def.getPierce(att)*Armor.armorEffectiveness;
 			
 			
-			boolean bypass = att.getAttack().getStance().elementBypass;
+			boolean bypass = att.getAttack().isBypass();
 			
 			stringer = str;
 			attack = att;
@@ -1314,7 +1315,15 @@ public class Combat {
 	private void setAttack(Person attacker, Person defender) {
 		//manOne.setAttack(AIClass.chooseAttack(manOne.getStance().part(manOne, manTwo),manOne.getIntellect(),this,manOne,manTwo));
 		ImpairedAttack newAttack;
-		List<ImpairedAttack> atts = (attacker.getStance().randAtts(3,attacker.getBag().getHand(),attacker,defender));
+		int attCount = attacker.attacksThisAttack();
+		List<ImpairedAttack> atts = (attacker.getStance().randAtts(attCount,attacker.getBag().getHand(),attacker,defender));
+		if (attacker.getSuper() != null) {
+			SuperPerson sp = attacker.getSuper();
+			for (int i = 0; i < sp.getSAttCount();i++) {
+				atts.add(sp.getSpecialAttacks()[i].randAttack(attacker, defender));
+			}
+		}
+		
 		newAttack = AIClass.chooseAttack(atts,this,attacker,defender);
 		attacker.setAttack(newAttack);
 		newAttack.setDefender(defender);

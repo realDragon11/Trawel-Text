@@ -7,6 +7,7 @@ import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 import trawel.battle.attacks.WeaponAttackFactory.DamageTier;
 import trawel.personal.Person;
+import trawel.personal.classless.IHasSkills;
 import trawel.personal.item.solid.Weapon;
 
 /**
@@ -30,6 +31,17 @@ public class Attack implements IAttack{
 	private int soundStrength;
 	private String soundType;//shouldn't be a string
 	private AttackType type;
+	/**
+	 * if true, elemental damage occurs as if SBP damage wasn't there
+	 * <br>
+	 * if false, it's a rider
+	 * <br>
+	 * if true, it's the main course
+	 * <br>
+	 * <br>
+	 * note that this current system wouldn't be able to handle a rock and a magic rock in the same attack
+	 */
+	private boolean bypass;
 	
 	//constructor
 	/**
@@ -43,7 +55,7 @@ public class Attack implements IAttack{
 	 * @param cooldown
 	 */
 	public Attack(String name, String desc, StringResult fluffer, double hitMult, AttackType type, int[] intValues,
-			double warmup, double cooldown) {
+			double warmup, double cooldown, boolean _bypass) {
 		this.name = name;
 		this.desc = desc;
 		this.fluffer = fluffer;
@@ -52,23 +64,43 @@ public class Attack implements IAttack{
 		this.intValues = intValues;
 		this.warmup = warmup;
 		this.cooldown = cooldown;
+		bypass = _bypass;
 		
-		
-		int pierce = getPierce();
-		int sharp = getSharp();
-		int blunt = getBlunt();
-		//priority -> blunt > sharp > pierce
-		if (pierce > sharp) {
-			if (pierce > blunt) {
-				soundType = "pierce";
+		if (!_bypass) {
+			int pierce = getPierce();
+			int sharp = getSharp();
+			int blunt = getBlunt();
+			//priority -> blunt > sharp > pierce
+			if (pierce > sharp) {
+				if (pierce > blunt) {
+					soundType = "pierce";
+				}else {
+					soundType = "blunt";
+				}
 			}else {
-				soundType = "blunt";
+				if (sharp > blunt) {
+					soundType = "sharp";
+				}else {
+					soundType = "blunt";
+				}
 			}
 		}else {
-			if (sharp > blunt) {
-				soundType = "sharp";
+			int ignite = getIgnite();
+			int frost = getFrost();
+			int elec = getElec();
+			//priority -> blunt > sharp > pierce
+			if (frost > ignite) {
+				if (frost > elec) {
+					soundType = "freeze";
+				}else {
+					soundType = "shock";
+				}
 			}else {
-				soundType = "blunt";
+				if (ignite > elec) {
+					soundType = "fire";
+				}else {
+					soundType = "shock";
+				}
 			}
 		}
 		
@@ -84,13 +116,6 @@ public class Attack implements IAttack{
 		}
 	}
 	
-	public Attack(String name, String desc, String fluff, double hitMult, int sharp, int blunt, int pierce,
-			double warmup, double cooldown) {
-		this(name,desc,new SRInOrder(fluff),hitMult,AttackType.REAL_WEAPON,new int[] {sharp,blunt,pierce,0,0,0},warmup,cooldown);
-		
-		
-		
-	}
 	//DOLATER entirely nonfunctional at this point, just remake the whole system
 	/*
 	@Deprecated
@@ -405,7 +430,7 @@ public class Attack implements IAttack{
 
 	@Override
 	public boolean physicalDamage() {
-		return type != AttackType.SKILL;//DOLATER
+		return !bypass;//DOLATER
 	}
 
 	@Override
@@ -463,7 +488,15 @@ public class Attack implements IAttack{
 
 	//TODO: this will break in some circumstances, and not copy sound
 	public Attack copy() {
-		return new Attack(name, desc, fluffer, hitMult, type, intValues, warmup,cooldown);
+		return new Attack(name, desc, fluffer, hitMult, type, intValues, warmup,cooldown,bypass);
+	}
+
+	public boolean isBypass() {
+		return bypass;
+	}
+
+	public IHasSkills getSkillSource() {
+		return holdingStance.getSkillSource();
 	}
 	
 	

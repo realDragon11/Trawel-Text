@@ -27,6 +27,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	protected SkillAttackConf[] attConfs = null;
 	
 	protected int featPicks = 0;
+	protected byte sAttCount = 0;
 	
 	/**
 	 * used for the player swapping out configs
@@ -77,6 +78,9 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	public SkillAttackConf[] getSpecialAttacks() {
 		return attConfs;
 	}
+	public byte getSAttCount() {
+		return sAttCount;
+	}
 	
 	/**
 	 * each special attack skill can only be used for one, and there is a hard cap of 6 (which cuts into one weapon attack in average case)
@@ -116,13 +120,14 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 						}
 						return "You have skills that grant attacks. You can have up to " + max + " configs here.";
 					}});
-				for (int i = 0; i < attConfs.length-1;i++) {
+				int i = 0;
+				for (; i < attConfs.length-1;i++) {
 					if (attConfs[i] == null) {
 						break;
 					}
 					list.add(new SkillConfiger(attConfs[i],i));
 				}
-				if (skills.size() > 0 && attConfs.length < max) {
+				if (skills.size() > 0 && i < max) {
 					list.add(new MenuSelect() {
 
 						@Override
@@ -163,13 +168,6 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 					}
 				}
 				final String option = options;
-				/*list.add(new MenuLine() {
-
-					@Override
-					public String title() {
-						
-						return s.getName() + ": "+ option;
-					}});*/
 				list.add(new MenuSelect() {
 
 					@Override
@@ -218,6 +216,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 							for (int j = 0; j < attConfs.length;j++) {
 								if (attConfs[j] == null) {
 									attConfs[j] = new SkillAttackConf(s,hases.get(i),null);
+									sAttCount++;
 									break;
 								}
 							}
@@ -266,6 +265,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 			}else {//so many nested menus, lets just yes/no
 				extra.println("Delete the " + config.getText() + " config?");
 				if (extra.yesNo()) {
+					sAttCount--;
 					for (int i = index;i < attConfs.length-1;i++) {
 						SkillAttackConf up = attConfs[i+1];
 						if (up != null) {

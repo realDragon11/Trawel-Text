@@ -28,31 +28,19 @@ public class Stance{
 	private List<Float> rarities;
 	private WeightedTable roller;
 	private float totalWeight;
-	/**
-	 * if true, elemental damage occurs as if SBP damage wasn't there
-	 * <br>
-	 * if false, it's a rider
-	 * <br>
-	 * if true, it's the main course
-	 * <br>
-	 * <br>
-	 * note that this current system wouldn't be able to handle a rock and a magic rock in the same thing
-	 */
-	public final boolean elementBypass;
+
 	//constructor and initer
 	public Stance(WeaponType t) {
 		weap_source = t;
 		attacks = new ArrayList<Attack>();
 		rarities = new ArrayList<Float>();
-		elementBypass = false;
 	}
 	
-	public Stance(IHasSkills source, Skill _skill, boolean _elementBypass) {
+	public Stance(IHasSkills source, Skill _skill) {
 		skill_source = source;
 		skill_for = _skill;
 		attacks = new ArrayList<Attack>();
 		rarities = new ArrayList<Float>();
-		elementBypass = _elementBypass;
 	}
 	
 	public void finish() {

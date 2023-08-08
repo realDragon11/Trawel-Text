@@ -18,6 +18,7 @@ import trawel.battle.Combat.ATK_ResultType;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.IAttack.AttackType;
 import trawel.personal.Person;
+import trawel.personal.classless.Archetype;
 import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.Armor;
@@ -555,6 +556,39 @@ public class WeaponAttackFactory {
 		//FIXME:
 		copyStanceTo(WeaponType.MACE,WeaponType.FISH_ANCHOR);
 		copyStanceTo(WeaponType.SPEAR,WeaponType.FISH_SPEAR);
+		
+		//TODO: skill attack section
+		sta = new Stance(Archetype.HEDGE_MAGE,Skill.ARCANIST);
+		sta.addAttack(
+				make("sparks")
+				.setFluff("X` conjures sparks at Y`!")
+				.setRarity(1f)
+				.setAcc(1.4f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.08f)
+				.setElementalMix(1, 0, 2)
+				.setWarmupOfTotal(TimeTier.SLOW, TimeTier.SLOWER)
+				);
+		sta.addAttack(
+				make("candle")
+				.setFluff("X` shoots a small gout of flame at Y`!")
+				.setRarity(1f)
+				.setAcc(1f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.8f)
+				.setElementalMix(1, 0, 0)
+				.setWarmupOfTotal(TimeTier.SLOW, TimeTier.SLOWER)
+				);
+		sta.addAttack(
+				make("chill")
+				.setFluff("X` forces Y` to suffer through a deep chill!")
+				.setRarity(1f)
+				.setAcc(1.8f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.6f)
+				.setElementalMix(0, 1, 0)
+				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOW)
+				);
+		addStance(Archetype.HEDGE_MAGE,sta);
+		
+		assert skillStances.size() > 0;
 	}
 
 
@@ -781,12 +815,15 @@ public class WeaponAttackFactory {
 			return extra.lerp(start.damage,end.damage,lerp);
 		}
 		
-		public static int[] distribute(float damage, float sharpW, float bluntW, float pierceW) {
+		public static int[] distribute(float damage, float sharpW, float bluntW, float pierceW, float igniteW, float frostW, float elecW) {
 			int[] arr = new int[6];
-			float total = sharpW+bluntW+pierceW;
+			float total = sharpW+bluntW+pierceW+igniteW+frostW+elecW;
 			arr[0] = Math.round((sharpW/total)*damage);
 			arr[1] = Math.round((bluntW/total)*damage);
 			arr[2] = Math.round((pierceW/total)*damage);
+			arr[3] = Math.round((igniteW/total)*damage);
+			arr[4] = Math.round((frostW/total)*damage);
+			arr[5] = Math.round((elecW/total)*damage);
 			return arr;
 		}
 	}
@@ -807,8 +844,10 @@ public class WeaponAttackFactory {
 		private DamageTier start = DamageTier.AVERAGE, end = DamageTier.AVERAGE;
 		private TimeTier t_tier1 = TimeTier.NORMAL, t_tier2 = TimeTier.NORMAL;
 		private float slant = .5f, hitmult = 1f, timeSlant = 1f;
-		private float sharpW = 1f, bluntW = 1f, pierceW = 1f;
+		private float sharpW = 0f, bluntW = 0f, pierceW = 0f;
+		private float igniteW = 0f, frostW = 0f, elecW = 0f;
 		private float warmup = 50f, cooldown = 50f;
+		private boolean customWeight = false, magicbypass = false;
 		private String name, desc = "", fluff = "X` attacks Y` with their Z`!";
 		private StringResult fluffer;
 		
@@ -845,9 +884,21 @@ public class WeaponAttackFactory {
 		}
 		
 		public AttackMaker setMix(float sharp, float blunt, float pierce) {
+			assert customWeight == false;//no mixing mixes for now
 			sharpW = sharp;
 			bluntW = blunt;
 			pierceW = pierce;
+			customWeight = true;
+			return this;
+		}
+		
+		public AttackMaker setElementalMix(float ignite, float frost, float elec) {
+			assert customWeight == false;//no mixing mixes for now
+			igniteW = ignite;
+			frostW = frost;
+			elecW = elec;
+			customWeight = true;
+			magicbypass = true;
 			return this;
 		}
 		
@@ -907,11 +958,16 @@ public class WeaponAttackFactory {
 		}
 		
 		public Attack finish() {
-			int[] arr = DamageTier.distribute(DamageTier.totalDamage(start, end, slant),sharpW,bluntW,pierceW);
+			if (!customWeight) {
+				sharpW = 1f;
+				bluntW = 1f;
+				pierceW = 1f;
+			}
+			int[] arr = DamageTier.distribute(DamageTier.totalDamage(start, end, slant),sharpW,bluntW,pierceW,igniteW,frostW,elecW);
 			return new Attack(name, desc,
 					fluffer == null ? new SRInOrder(fluff) : fluffer,
 					hitmult, AttackType.REAL_WEAPON, arr,
-					warmup, cooldown);
+					warmup, cooldown,magicbypass);
 		}
 		
 		public AttackMaker setRarity(float rare) {
@@ -943,6 +999,7 @@ public class WeaponAttackFactory {
 		skillOwnerMap.put(iHas, s);
 		List<IHasSkills> list = skillStances.getOrDefault(s.getSkill(), new ArrayList<IHasSkills>());
 		list.add(iHas);
+		skillStances.put(s.getSkill(),list);//in case we created it
 	}
 	
 	

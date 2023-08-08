@@ -885,6 +885,7 @@ public class Person implements java.io.Serializable{
 									break;
 								}
 							}
+							updateSkills();
 							return true;
 						}});
 					list.add(new MenuBack("back (do not pick)"));
@@ -1458,7 +1459,7 @@ public class Person implements java.io.Serializable{
 			this.removeEffectAll(Effect.DISARMED);
 			i--;
 		}
-		for (int j = 0; i < cap;j++) {//max 5 attacks if no special attacks
+		for (;i < cap;) {//max 5 attacks if no special attacks
 			if (hasEffect(Effect.BONUS_WEAP_ATTACK)) {
 				i++;
 				removeEffect(Effect.BONUS_WEAP_ATTACK);
