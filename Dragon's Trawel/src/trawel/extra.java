@@ -3,6 +3,7 @@ package trawel;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +22,7 @@ import trawel.towns.World;
 
 import java.util.Stack;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Stream;
 
 public final class extra {
 /**
@@ -516,6 +518,21 @@ public final class extra {
 		public static <E> E randList(E[] list) {
 			return list[getRand().nextInt(list.length)];
 		}
+		/**
+		 * adapted from https://stackoverflow.com/a/68640122
+		 * <br>
+		 * will return null if couldn't find anything
+		 */
+		public static <E> E randCollection(Collection<E> collect) {
+			return collect.stream().skip(extra.getRand().nextInt(collect.size())).findAny().orElse(null);
+		}
+		
+		/**
+		 * in most cases you might want to implement a better way with size yourself
+		 */
+		public static <E> E randStream(Stream<E> stream, int size) {
+			return stream.skip(extra.getRand().nextInt(size)).findAny().orElse(null);
+		}
 		
 		public static final float clamp(float d, float min, float max) {
 			return Math.min(max, Math.max(d, min));
@@ -904,6 +921,7 @@ public final class extra {
 			return String.join("", Collections.nCopies(size," "));
 		}
 
+		/*
 		public static <E> E randSet(Set<E> set) {
 			assert !set.isEmpty();
 			int i = extra.getRand().nextInt(set.size());
@@ -914,7 +932,7 @@ public final class extra {
 				i--;
 			}
 			throw new RuntimeException("Wrong randset size");
-		}
+		}*/
 		
 }
 

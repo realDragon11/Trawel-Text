@@ -1,5 +1,6 @@
 package trawel.personal;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
@@ -77,7 +78,9 @@ public class Person implements java.io.Serializable{
 	private transient double speedFill;
 	private transient boolean isWarmingUp;
 	private transient int hp, tempMaxHp;
-	private PersonType personType = extra.choose(PersonType.COWARDLY,PersonType.FEARLESS);
+	
+	
+	private PersonType personType;
 	private short beer;
 	/**
 	 * bit 1 = racism (0b00000001) <br>
@@ -103,7 +106,8 @@ public class Person implements java.io.Serializable{
 	public boolean hasEnduranceTraining = false;
 	
 	//private List<Skill> skills = new ArrayList<Skill>();
-	private List<Effect> effects;
+	//private List<Effect> effects;
+	private EnumMap<Effect,Integer> effects;//hash set not permitted
 	private RaceFlag rFlag;
 
 	private TargetFactory.TargetType targetOverride = null;//DOLATER swap over
@@ -135,9 +139,12 @@ public class Person implements java.io.Serializable{
 		NONE, CRACKS, UNDEAD;
 	}
 	
+	
 	public enum PersonType{
 		COWARDLY,FEARLESS,GRIZZLED,DEATHCHEATED,LIFEKEEPER
-	}
+	}public final static Set<PersonType> RAND_PERSON_TYPES = EnumSet.of(
+			PersonType.COWARDLY,PersonType.FEARLESS
+			);
 	
 	 //= EnumSet.noneOf(Skill.class);//new EnumSet<trawel.personal.classless.Skill>();
 	private Set<Feat> featSet;//new EnumSet<trawel.personal.classless.Skill>();
@@ -175,6 +182,7 @@ public class Person implements java.io.Serializable{
 		bag = new Inventory(level,raceType,matType,job,race);
 		bag.owner = this;
 		if (raceType == RaceType.HUMANOID) {
+			personType = extra.randCollection(RAND_PERSON_TYPES);
 			firstName = randomLists.randomFirstName();
 			title = randomLists.randomLastName();
 			switch (raceFlag) {
@@ -242,7 +250,7 @@ public class Person implements java.io.Serializable{
 			}
 		}
 		//this.noAILevel = !isAI;
-		effects = new ArrayList<Effect>();
+		effects = new EnumMap<Effect,Integer>(Effect.class);
 		
 		
 		//atrBox = new AttributeBox(this);
@@ -526,6 +534,9 @@ public class Person implements java.io.Serializable{
 				addEffect(extra.randList(Effect.minorBuffEffects));
 			}
 		}
+		if (hasSkill(Skill.QUICK_START)) {
+			addEffect(Effect.ADVANTAGE_STACK);
+		}
 		
 		bodystatus = new TargetHolder(bodyType);
 		tempMaxHp = getOOB_HP();
@@ -574,9 +585,10 @@ public class Person implements java.io.Serializable{
 		if (hasSkill(Skill.ARMOR_TUNING)) {
 			bag.buffArmor(1.2f);
 		}
+		/*
 		if (this.hasEffect(Effect.B_MARY)) {
 			this.addEffect(Effect.BLEED);
-		}
+		}*/
 	}
 	
 
@@ -1380,9 +1392,7 @@ public class Person implements java.io.Serializable{
 	}*/
 	
 	public void removeEffectAll(Effect e) {
-		while (effects.contains(e)) {
-			effects.remove(e);
-		}
+		effects.put(e, 0);
 	}
 	
 	public void cureEffects() {
@@ -1394,57 +1404,57 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public void displayEffects() {
-		if (effects.isEmpty()) {
-			extra.println("You're perfectly healthy.");
+		
+		boolean found = false;
+		for (Effect e: effects.keySet()) {//listing is slower now
+			int num = effects.getOrDefault(e, 0);
+			if (num > 0) {
+				found = true;
+				if (num > 1) {
+					extra.println(e.name() + " x"+num+": "+ e.getDesc());
+				}else {
+					extra.println(e.name() + ": "+ e.getDesc());
+				}
+			}
+			
 		}
-		for (Effect e: effects) {
-			extra.println(e.name() + ": "+ e.getDesc());
+		if (!found) {
+			extra.println("They're perfectly healthy.");
 		}
 	}
 	
 	
 	public void addEffect(Effect e) {
 		if (e.stacks()) {
-			effects.add(e);
+			effects.put(e,1+effects.getOrDefault(e, 0));
 		}else {
-			if (!effects.contains(e)) {
-				effects.add(e);
-			}
+			effects.put(e,1);
 		}
 	}
 	
 	public boolean hasEffect(Effect e) {
-		return effects.contains(e);
+		return effects.getOrDefault(e, 0) > 0;
 	}
 	
-	/**
+	/** REMOVED because hasEffect with a map is fast and iteration is slow now
 	 * should only be used to iterate over the effects, instead of calling
 	 * hasEffect repeatedly.
-	 */
+	 *
 	public List<Effect> getEffects() {
 		return effects;
-	}
+	}*/
 	
 	public void clearBattleEffects() {
-		ArrayList<Effect> removeList = new ArrayList<Effect>();
-		for (Effect e: effects) {
+		//only goes over keyset because those are the ones it bothered to add
+		for (Effect e: effects.keySet()) {
 			if (!e.lasts()) {
-				removeList.add(e);
+				effects.put(e,0);
 			}
-		}
-		for (Effect e: removeList) {
-			this.removeEffectAll(e);
 		}
 	}
 	
 	private int burnouts() {
-		int i = 0;
-		for (Effect e: effects) {
-			if (e.equals(Effect.BURNOUT)) {
-				i++;
-			}
-		}
-		return i;
+		return effects.getOrDefault(Effect.BURNOUT, 0);
 	}
 
 	public void displaySkills() {
@@ -1516,23 +1526,26 @@ public class Person implements java.io.Serializable{
 		return Math.max(1,Math.min(5,i));
 	}
 
+	/**
+	 * removes a single stack
+	 */
 	public void removeEffect(Effect e) {
 		effects.remove(e);
-		
+		effects.put(e,Math.max(1,effects.getOrDefault(e, 0)-1));
+	}
+	
+	public int effectCount(Effect e) {
+		return effects.getOrDefault(e,0);
 	}
 
 	public double getTornCalc() {
-		double starter = 1;
-		int count = 0;
-		for (Effect e: effects) {
-			if (e.equals(Effect.TORN)) {
-				count++;
-			}
-		}
-		for (int i = 0; i < count;i++) {
+		//double starter = 1;
+		//int count = ;
+		return Math.pow(.9,effects.getOrDefault(Effect.TORN,0));
+		/*for (int i = 0; i < count;i++) {
 			starter*=.9;
-		}
-		return starter;
+		}*/
+		//return starter;
 	}
 	
 	public int bloodSeed = extra.randRange(0,2000);

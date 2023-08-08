@@ -573,22 +573,6 @@ public class Weapon extends Item {
 		return arr[0];*/
 	}
 	
-	private int addQuals(WeaponQual ...quals) {
-		List<WeaponQual> wqs = Arrays.asList(quals);
-		int added = 0;
-		for (int i = 0; i < 5;i++) {
-			if (added >= 3) {
-				return added;
-			}
-			WeaponQual wq = extra.randList(wqs);
-			if (!this.qualList.contains(wq)) {
-				qualList.add(wq);
-				added++;
-			}
-		}
-		return added;
-	}
-	
 	private int addQuals(Set<WeaponQual> quals) {
 		if (quals.isEmpty()) {
 			return 0;
@@ -598,7 +582,7 @@ public class Weapon extends Item {
 			if (added >= 3) {
 				return added;
 			}
-			WeaponQual wq = extra.randSet(quals);
+			WeaponQual wq = extra.randCollection(quals);
 			if (!qualList.contains(wq)) {
 				qualList.add(wq);
 				added++;

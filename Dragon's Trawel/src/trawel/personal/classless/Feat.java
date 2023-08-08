@@ -22,8 +22,9 @@ public enum Feat implements IHasSkills{
 			,null,null)
 	,HEMOVORE("Hemovore","Extracts life energy from fleeting mortality.","",
 			1f,EnumSet.of(FeatType.MYSTIC),EnumSet.of(FeatType.CURSES,FeatType.BATTLE,FeatType.POTIONS)
-			,EnumSet.of(Skill.BLOODTHIRSTY,Skill.KILLHEAL),1,1,3
-			,null,null)
+			,EnumSet.of(Skill.BLOODTHIRSTY,Skill.KILLHEAL,Skill.BLOODDRINKER),0,0,5
+			//needs at least one of the things it grants from some other source
+			,null,EnumSet.of(Skill.BLOODTHIRSTY,Skill.KILLHEAL,Skill.BLOODDRINKER))
 	,UNBREAKABLE("Unbreakable","Nothing stops them.","",
 			1f,null,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)
 			,EnumSet.of(Skill.TA_NAILS,Skill.ARMORHEART),4,0,0
@@ -36,6 +37,11 @@ public enum Feat implements IHasSkills{
 			,1f,EnumSet.of(FeatType.MYSTIC),EnumSet.of(FeatType.SMITHS,FeatType.TRICKS)
 			,EnumSet.of(Skill.MESMER_ARMOR,Skill.ARMOR_MAGE),0,0,5
 			,null,null)
+	,AMBUSHER("Ambusher","They know how to start a fight.",""
+			,1f,null,EnumSet.of(FeatType.BATTLE,FeatType.TRICKS)
+			,EnumSet.of(Skill.OPENING_MOVE,Skill.QUICK_START),0,5,0
+			,null,null
+			)
 	;
 
 	private final String name, desc, getDesc;
@@ -45,11 +51,11 @@ public enum Feat implements IHasSkills{
 	 */
 	public final float rarity;
 	public final Set<FeatType> typesAll, typesAny;
-	public final Set<IHasSkills> needsAll, needsOne;
+	public final Set<Skill> needsAll, needsOne;
 	private final int strength, dexterity, clarity;
 	Feat(String _name, String _desc, String _getDesc,float _rarity,Set<FeatType> _typesAll,Set<FeatType> _typesAny,Set<Skill> skillset
 			,int stre, int dext, int cla
-			,Set<IHasSkills> needsAllOf, Set<IHasSkills> needsOneOf){
+			,Set<Skill> needsAllOf, Set<Skill> needsOneOf){
 		name = _name;
 		desc = _desc;
 		getDesc = _getDesc;
@@ -93,7 +99,7 @@ public enum Feat implements IHasSkills{
 	 * @param has
 	 * @return
 	 */
-	public static Feat randFeat(Set<FeatType> set,Set<Feat> has) {
+	public static Feat randFeat(Set<FeatType> set,Set<Feat> has,Set<Skill> hasSkills) {
 		Set<Feat> copyList = EnumSet.noneOf(Feat.class);
 		double totalRarity = 0;
 		for (Feat f: Feat.values()){
@@ -101,8 +107,8 @@ public enum Feat implements IHasSkills{
 					!has.contains(f)&&
 					(f.typesAll == null || set.containsAll(f.typesAll))&&
 					(f.typesAny == null || !Collections.disjoint(f.typesAny, set))&&
-					(f.needsAll == null || has.containsAll(has)) &&
-					(f.needsOne == null || !Collections.disjoint(f.needsOne, has))//either disjoint or streams
+					(f.needsAll == null || hasSkills.containsAll(f.needsAll)) &&
+					(f.needsOne == null || !Collections.disjoint(f.needsOne, hasSkills))//either disjoint or streams
 				) {
 				//allll the predicate code time
 				//we don't use real predicates...yet

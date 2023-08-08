@@ -1,5 +1,6 @@
 package trawel.personal;
 
+import trawel.Effect;
 import trawel.battle.attacks.TargetFactory;
 import trawel.personal.classless.Skill;
 
@@ -28,6 +29,11 @@ public class DummyPerson extends Person {
 	@Override
 	public double getConditionForPart(int i) {
 		return 1;
+	}
+	
+	@Override
+	public boolean hasEffect(Effect e) {
+		return false;
 	}
 
 }

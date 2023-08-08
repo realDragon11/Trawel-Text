@@ -15,25 +15,25 @@ import trawel.personal.classless.Feat.FeatType;
 import trawel.personal.classless.Skill.Type;
 
 public enum Archetype implements IHasSkills{
-	VIRAGO("virago","An expert on toxic incantations, salves, potions, and the like. Adept in supplemental curse spellcasting.",
+	VIRAGO("Virago","An expert on toxic incantations, salves, potions, and the like. Adept in supplemental curse spellcasting.",
 			AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.CURSES,FeatType.POTIONS)
 			,EnumSet.of(Skill.TOXIC_BREWS)
 			)
-	,GLADIATOR("gladiator","Attention seeking but no-nonsense physical fighter. Fighting dirty is part of the show."
+	,GLADIATOR("Gladiator","Attention seeking but no-nonsense physical fighter. Fighting dirty is part of the show."
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRTY, AGroup.CHARISMA)
 			,EnumSet.of(FeatType.TRICKS,FeatType.SOCIAL,FeatType.BATTLE)
 			,EnumSet.of(Skill.DSTRIKE)
 			)
-	,ARMORMASTER("armor master","A walking fortress, one with their armor, two halves made whole."
+	,ARMORMASTER("Armor Paragon","A walking fortress, one with their armor, two halves made whole."
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRECT_BATTLE,AGroup.CRAFT)
 			,EnumSet.of(FeatType.BATTLE,FeatType.SMITHS)//TODO needs better types
 			,EnumSet.of(Skill.ARMOR_TUNING,Skill.ARMORSPEED)
 			)
-	,HEDGE_MAGE("hedge mage","A perpetual novice, hedge mages aren't content to restrict themselves to one school."
+	,HEDGE_MAGE("Hedge Mage","A perpetual novice, hedge mages aren't content to restrict themselves to one school."
 			,AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.POTIONS,FeatType.TRICKS,FeatType.SOCIAL)
@@ -228,8 +228,14 @@ public enum Archetype implements IHasSkills{
 		if (baseArch == 0 && pAs.size() >= 2) {
 			if (extra.chanceIn(1,3)) {//1 in 3 chance, but dupes just cause it to not go through
 				//this simulates decreasing as you get more
-				Archetype addA = (Archetype) extra.randList(ENTRY_LIST.toArray());
+				Archetype addA = extra.randCollection(AFTER_LIST);
 				if (!pAs.contains(addA)) {
+					list.add(addA);
+				}
+			}
+			if (extra.chanceIn(1,pAs.size())) {//get a similar archetype to a random one we have
+				Archetype addA = getAfter(1,extra.randCollection(pAs),pAs).stream().findFirst().orElse(null);
+				if (addA != null) {
 					list.add(addA);
 				}
 			}
@@ -240,7 +246,7 @@ public enum Archetype implements IHasSkills{
 			allowSet.addAll(a.getFeatTypes());
 		}
 		while (list.size() < 6) {
-			Feat f = Feat.randFeat(allowSet,fset);//TODO: just commons for now when prototyping
+			Feat f = Feat.randFeat(allowSet,fset,person.fetchSkills());//TODO: just commons for now when prototyping
 			if (f == null) {
 				break;
 			}

@@ -144,12 +144,19 @@ public class ImpairedAttack implements IAttack{
 			if (_attacker.hasEffect(Effect.DICE)) {
 				speedMult*=.9;//WET
 			}
+			
 		}
 		cooldown = (attack.getCooldown()*speedMult)+speedModDown;
 		warmup = (attack.getWarmup()*speedMult)+speedModUp;
 		
 		warmup = extra.clamp(warmup,10,400);
 		cooldown = extra.clamp(cooldown,10,400);
+		
+		if (_attacker != null) {
+			if (attacker.hasEffect(Effect.TELESCOPIC)) {
+				hitMult +=((warmup+cooldown)/100);
+			}
+		}
 
 		//
 		hitroll = extra.lerp(hitMult*.8f,hitMult*1.2f, extra.hrandomFloat());

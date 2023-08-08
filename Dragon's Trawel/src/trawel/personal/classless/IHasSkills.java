@@ -51,6 +51,15 @@ public interface IHasSkills {
 
 			@Override
 			public String title() {
+				if (has instanceof Feat) {
+					return "Feat: " +has.getOwnText();
+				}
+				if (has instanceof Archetype) {
+					return "Archetype: " +has.getOwnText();
+				}
+				if (has instanceof Perk) {
+					return "Perk: " +has.getOwnText();
+				}
 				return has.getOwnText();
 			}});
 		list.add(new MenuLine() {

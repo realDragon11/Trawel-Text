@@ -139,8 +139,8 @@ public enum Skill{
 		MESMER_ARMOR("Mesmer Armor","When attacked for no Impact, Roll a contested Clarity vs their highest attribute to confuse them."
 				,"Attacks with no impact typically are dodged, miss, or are blocked by armor. Confuse makes the target's next attack capable of friendly fire."
 				,Type.DEFENSE),
-		ARCANIST("Arcanist","Unlocks a magical swappable attack."
-				,"UNIMPLEMENTED. When done, will be similar to old arcanist exotic art."
+		ARCANIST("Arcanist","Unlocks a magical swappable attack option."
+				,"Use the skill attack config creator in the skills menu to select a source to stance your attacks from."
 				,Type.ATTACK_TYPE),
 		MAGE_FRUGAL("Frugal Mage","Grants you a better deal of Aether to Currency conversions in shops, starting at +10%.",
 				"For every 10 clarity past 100, get +10% more. No penalty for sub 100 clarity."
@@ -148,7 +148,15 @@ public enum Skill{
 		OPENING_MOVE("Opening Move","Grants two bonus weapon attack choices at the start of every battle.",
 				"You can have a max of 5 weapon attack choices at a time, stacks will only be consumed if they add attacks."
 				,Type.OFFENSE),
-		
+		QUICK_START("Quick Start","Grants a stack of Advantage at the start of every battle, confering a 20% to one hit or dodge roll."
+				,"Applies to only one attack, and is consumed on use, but stacks with other sources of Advantage."
+				,Type.SPEED),
+		PRESS_ADV("Press the Advantage","Grants two stacks of Advantage after each kill."
+				,"Advantage applies a +20% bonus to the first hit/dodge roll this Person makes, one stack per attack."
+				,Type.SPEED),
+		BLOODDRINKER("Blood Drinker","Those who attack you while bleeding heal you equal to their bleed damage."
+				,"Stacks with other sources of bleed healing"
+				,Type.DEFENSE),
 		
 		
 		
@@ -171,6 +179,7 @@ public enum Skill{
 	    	SPEED,//skills that tend to make you faster
 	    	DEFENSE,//skills that provide defensive benefits
 	    	ATTACK_TYPE,//skills that grant a new attack type, generally there should only be 5 of these total
+	    	//TODO: need to make a type that just aliases for another ATTACK_TYPE so you can have more than one
 	    	FEATURE,//skills that are 'part' of a person or thing. Should be only granted by perks
 	    	INTERNAL_USE_ONLY;//skills that should not be displayed
 	    }

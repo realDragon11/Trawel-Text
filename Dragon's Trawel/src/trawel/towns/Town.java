@@ -851,7 +851,9 @@ public class Town extends TContextOwner{
 	}
 	
 	public Agent getRandPersonableOccupant() {
-		return (Agent) extra.randList(getPersonableOccupants().toArray());
+		List<Agent> agentList = new ArrayList<Agent>();
+		occupants.stream().filter(SuperPerson::isHumanoid).forEach(agentList::add);
+		return extra.randList(agentList);
 	}
 	
 	/**

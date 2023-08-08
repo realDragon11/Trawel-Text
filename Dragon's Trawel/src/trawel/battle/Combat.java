@@ -515,6 +515,10 @@ public class Combat {
 		if (killer.hasSkill(Skill.KILLHEAL)){
 			killer.addHp(Math.min(10*killer.getLevel(),5*dead.getLevel()));
 		}
+		if (killer.hasSkill(Skill.PRESS_ADV)) {
+			killer.addEffect(Effect.ADVANTAGE_STACK);
+			killer.addEffect(Effect.ADVANTAGE_STACK);
+		}
 		FBox.repCalc(killer,dead);
 	}
 	
@@ -546,6 +550,16 @@ public class Combat {
 		
 		double dodgeRoll = dodgeBase*extra.getRand().nextDouble();
 		double hitRoll = hitBase*extra.getRand().nextDouble();
+		if (isReal) {
+			if (attacker.hasEffect(Effect.ADVANTAGE_STACK)) {
+				hitRoll*=1.2f;
+				attacker.removeEffect(Effect.ADVANTAGE_STACK);
+			}
+			if (defender.hasEffect(Effect.ADVANTAGE_STACK)) {
+				dodgeRoll*=1.2f;
+				defender.removeEffect(Effect.ADVANTAGE_STACK);
+			}
+		}
 		if (hitRoll < .05) {//missing now exists
 			ret= new AttackReturn(ATK_ResultCode.MISS,"",att);
 			if (isReal) {
@@ -853,6 +867,10 @@ public class Combat {
 		if (defender.hasEffect(Effect.FORGED)) {
 			defender.getBag().restoreArmor(0.1);
 		}
+		if (defender.hasEffect(Effect.B_MARY)) {
+			defender.addEffect(Effect.I_BLEED);
+			attacker.addEffect(Effect.I_BLEED);
+		}
 		if (attacker.getBag().getRace().racialType != Race.RaceType.BEAST && extra.chanceIn(1,4)) {
 			if (extra.chanceIn(1,3)) {
 					BarkManager.getBoast(attacker,true);//extra.println(attacker.getName() + " "+extra.choose("shouts","screams","boasts")+ " \"" + attacker.getTaunts().getBoast()+"\"");		
@@ -1072,28 +1090,30 @@ public class Combat {
 			}
 		}
 		//TODO: bleedout death quotes
-		boolean bMary = (defender.hasEffect(Effect.B_MARY));
-		for (Effect e: attacker.getEffects()) {
-			switch (e) {
-				case I_BLEED: case BLEED://only I_BLEED stacks, BLEED should only appear once
-					attacker.takeDamage(attacker.getLevel());
-					if (bMary) {
-						defender.addHp(attacker.getLevel());
-					}
-					break;
-				case MAJOR_BLEED://only I_BLEED stacks, others should only appear once
-					attacker.takeDamage(2*attacker.getLevel());
-					if (bMary) {
-						defender.addHp(2*attacker.getLevel());
-					}
-					break;
-				case BEES:
-					if (attacker.hasEffect(Effect.BEES) && extra.chanceIn(1,5)) {
-						extra.println("The bees sting "+attacker.getName()+"!");
-						attacker.takeDamage(extra.randRange(1,attacker.getLevel()*2));
-					}
-					break;
+		int leech = (defender.hasEffect(Effect.B_MARY) ? 2 : 0) + (defender.hasSkill(Skill.BLOODDRINKER) ? 1 : 0);
+		int baseBleedDam = attacker.getLevel();
+		if (attacker.hasEffect(Effect.BLEED)) {
+			attacker.takeDamage(baseBleedDam);
+			if (leech > 0) {
+				defender.addHp(baseBleedDam);
 			}
+		}
+		int effectCount = attacker.effectCount(Effect.I_BLEED);
+		if (effectCount > 0) {
+			attacker.takeDamage(effectCount*baseBleedDam);
+			if (leech > 0) {
+				defender.addHp(effectCount*baseBleedDam);
+			}
+		}
+		if (attacker.hasEffect(Effect.MAJOR_BLEED)) {
+			attacker.takeDamage(2*baseBleedDam);
+			if (leech > 0) {
+				defender.addHp(2*baseBleedDam);
+			}
+		}
+		if (attacker.hasEffect(Effect.BEES) && extra.chanceIn(1,5)) {
+			extra.println("The bees sting "+attacker.getName()+"!");
+			attacker.takeDamage(extra.randRange(1,attacker.getLevel()*2));
 		}
 		
 		attacker.getBag().turnTick();//for now, just armor buff decay
