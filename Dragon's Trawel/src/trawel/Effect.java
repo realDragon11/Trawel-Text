@@ -7,7 +7,7 @@ public enum Effect{
 	
 	BLEED("Bleeding","Take level damage after each of their attacks.",false,false),
 	MAJOR_BLEED("Major","Take 2*level damage after each of their attacks.",false,false),
-	DISARMED("Disamred","Have less attack options.",false,false),
+	DISARMED("Disamred","Their next turn will get one less weapon attack choice.",false,false),
 	RECOVERING("Recovering","Will regain HP soon.",false,false),
 	I_BLEED("Bleeding Inside","Take level damage after each of their attacks.",false,true),
 	TORN("Torn","Decreased dodging.",false,true), 
@@ -21,7 +21,8 @@ public enum Effect{
 	TELESCOPIC("Telescopic","Slow attacks gain an accuracy boost.",false,false),
 	SLICE("Slicing","Their next attack is 10% faster and accurate.",false,false),
 	DICE("Dicing","Their next attack is 10% faster and also 10 time units quicker.",false,false),
-	CONFUSED_TARGET("Confused","Their next attack will have a random defender from any side.",false,false)
+	CONFUSED_TARGET("Confused","Their next attack will have a random defender from any side.",false,false),
+	BONUS_WEAP_ATTACK("Bonus Attack","Their next turn will have an additional weapon attack to choose from.",false,true)
 	;
 	
 	private String name,desc;

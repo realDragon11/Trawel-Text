@@ -7,6 +7,7 @@ import com.github.yellowstonegames.core.WeightedTable;
 import trawel.extra;
 import trawel.battle.attacks.WeaponAttackFactory.AttackMaker;
 import trawel.personal.Person;
+import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponType;
@@ -21,6 +22,8 @@ import trawel.personal.item.solid.Weapon.WeaponType;
 public class Stance{
 	//instance variables
 	private WeaponType weap_source;
+	private Skill skill_for;
+	private IHasSkills skill_source;
 	private List<Attack> attacks;
 	private List<Float> rarities;
 	private WeightedTable roller;
@@ -28,6 +31,13 @@ public class Stance{
 	//constructor and initer
 	public Stance(WeaponType t) {
 		weap_source = t;
+		attacks = new ArrayList<Attack>();
+		rarities = new ArrayList<Float>();
+	}
+	
+	public Stance(IHasSkills source, Skill _skill) {
+		skill_source = source;
+		skill_for = _skill;
 		attacks = new ArrayList<Attack>();
 		rarities = new ArrayList<Float>();
 	}
@@ -55,16 +65,6 @@ public class Stance{
 	}
 	public void addAttack(AttackMaker newAttack) {
 		addAttack(newAttack.finish(),newAttack.getRarity());
-	}
-	//LEGACY
-	@Deprecated
-	public void addAttack(Attack newAttack) {
-		int index = attacks.indexOf(newAttack);
-		if (index == -1) {
-			addAttack(newAttack,1f);
-			return;
-		}
-		rarities.set(index, rarities.get(index)+1f);
 	}
 	/**
 	 * Returns the number of attacks in the stance.
@@ -121,6 +121,14 @@ public class Stance{
 
 	public float getRarity(Attack attack) {
 		return rarities.get(attacks.indexOf(attack))/totalWeight;
+	}
+
+	public Skill getSkill() {
+		return skill_for;
+	}
+	
+	public IHasSkills getSkillSource() {
+		return skill_source;
 	}
 	
 }

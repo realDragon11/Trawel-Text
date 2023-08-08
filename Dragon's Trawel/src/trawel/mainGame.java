@@ -69,6 +69,7 @@ public class mainGame {
 	public static final String VERSION_STRING = "v0.8.b__2";//__X is in development, _X is the actual release of that version
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
+			"b_2: attack backend changes became frontend changes for weapons, which now have different stat displays. This also made armor and dodging actual things again, before their average stats were a bit too low, now the forumlas have been re-tested and remade. 'classless' system (essentially multiclassing but with many multis has born fruit, you can now use the replacement system, although it still has a long ways to go.",
 			"b_1: base attack code reworked in basically every way. currency divided. threading added (nothreads is an arg), time passing redone. Node exploration mostly same but had entire backend update. Locational damage exists but does little at the moment."
 			,"End of current beta ingame changelog. Check the github for more."
 	};

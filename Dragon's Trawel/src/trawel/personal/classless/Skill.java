@@ -142,9 +142,12 @@ public enum Skill{
 		ARCANIST("Arcanist","Unlocks a magical swappable attack."
 				,"UNIMPLEMENTED. When done, will be similar to old arcanist exotic art."
 				,Type.ATTACK_TYPE),
-		MAGE_FRUGAL("Frugal Mage","Grants you a better deal of Aether to Currency conversions in shops.",
-				"Based on clarity. TODO"
+		MAGE_FRUGAL("Frugal Mage","Grants you a better deal of Aether to Currency conversions in shops, starting at +10%.",
+				"For every 10 clarity past 100, get +10% more. No penalty for sub 100 clarity."
 				,Type.SOCIAL),
+		OPENING_MOVE("Opening Move","Grants two bonus weapon attack choices at the start of every battle.",
+				"You can have a max of 5 weapon attack choices at a time, stacks will only be consumed if they add attacks."
+				,Type.OFFENSE),
 		
 		
 		

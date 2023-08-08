@@ -123,7 +123,7 @@ public class Person implements java.io.Serializable{
 	
 	public HostileTask hTask;
 	
-	private SuperPerson superperson; 
+	private SuperPerson superperson;
 	
 	public enum RaceFlag {
 		NONE, CRACKS, UNDEAD;
@@ -369,6 +369,21 @@ public class Person implements java.io.Serializable{
 		}
 	}
 	
+	public boolean hasSkillHas(IHasSkills has) {
+		if (has instanceof Feat) {
+			return featSet.contains(has);
+		}else {
+			if (has instanceof Archetype) {
+				return archSet.contains(has);
+			}else {
+				if (has instanceof Perk) {
+					return perkSet.contains(has);
+				}
+			}
+		}
+		return false;
+	}
+	
 	public RaceFlag getRaceFlag() {
 		return rFlag;
 	}
@@ -513,6 +528,10 @@ public class Person implements java.io.Serializable{
 			hp+=3*level;
 		}
 		
+		if (hasSkill(Skill.OPENING_MOVE)) {
+			addEffect(Effect.BONUS_WEAP_ATTACK);
+			addEffect(Effect.BONUS_WEAP_ATTACK);
+		}
 		
 		speedFill = -1;
 		isWarmingUp = false;
@@ -660,6 +679,17 @@ public class Person implements java.io.Serializable{
 					@Override
 					public String title() {
 						return "Classless Menu for " + getName();
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Configure skill attacks";
+					}
+
+					@Override
+					public boolean go() {
+						return getSuper().configAttacks();
 					}});
 				if (getSuper().getFeatPicks() > 0) {
 					list.add(new MenuSelect() {
@@ -1403,17 +1433,38 @@ public class Person implements java.io.Serializable{
 	public void setTitle(String s) {
 		title = s;
 	}
+	
+	/**
+	 * how many special attacks they have and are currently in use
+	 * <br>
+	 * 3 is the most that can be obtained without starting to eat into normal attack potential
+	 * <br>
+	 * but 5 is fine if they don't have any sources of bonus weapon attacks
+	 */
+	public int specialAttackNum() {
+		SuperPerson sp = getSuper();
+		if (sp == null) {
+			return 0;
+		}
+		return sp.getSpecialAttacks().size();
+	}
 
 	public int attacksThisAttack() {
 		int i = 3;
-		if (this.hasSkill(Skill.BONUSATTACK_BERSERKER)) {
-			i++;
-		}
+		int cap = Math.min(5, 8-specialAttackNum());
 		if (this.hasEffect(Effect.DISARMED)) {
 			this.removeEffectAll(Effect.DISARMED);
 			i--;
 		}
-		return Math.max(1,i);
+		for (int j = 0; i < cap;j++) {//max 5 attacks if no special attacks
+			if (hasEffect(Effect.BONUS_WEAP_ATTACK)) {
+				i++;
+				removeEffect(Effect.BONUS_WEAP_ATTACK);
+				continue;
+			}
+			break;
+		}
+		return Math.max(1,Math.min(5,i));
 	}
 
 	public void removeEffect(Effect e) {

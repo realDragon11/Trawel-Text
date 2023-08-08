@@ -17,6 +17,9 @@ import trawel.battle.Combat.ATK_ResultCode;
 import trawel.battle.Combat.ATK_ResultType;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.IAttack.AttackType;
+import trawel.personal.Person;
+import trawel.personal.classless.IHasSkills;
+import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
@@ -24,7 +27,13 @@ import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponType;
 
 public class WeaponAttackFactory {
-	private static Map<Weapon.WeaponType,Stance> stanceMap = new HashMap<Weapon.WeaponType,Stance>();
+	private static final Map<Weapon.WeaponType,Stance> stanceMap = new HashMap<Weapon.WeaponType,Stance>();
+	
+	private static final Map<IHasSkills,Stance> skillOwnerMap = new HashMap<IHasSkills,Stance>();
+	/**
+	 * so we can lookup what sources we have and select from them
+	 */
+	private static final Map<Skill,List<IHasSkills>> skillStances = new HashMap<Skill,List<IHasSkills>>();
 	
 	//FIXME: update stancemap to new weapon naming system, and also every attack
 	
@@ -42,7 +51,7 @@ public class WeaponAttackFactory {
 				.setMix(1,1,1)
 				.setTime(TimeTier.NORMAL,.5f)
 				);
-		addStance(null,sta);
+		addStance((WeaponType)null,sta);
 		//END TEMPLATE
 		
 		sta = new Stance(WeaponType.LONGSWORD);
@@ -926,6 +935,16 @@ public class WeaponAttackFactory {
 		stanceMap.put(t, s);
 	}
 	
+	public static void addStance(IHasSkills iHas, Stance s) {
+		assert !skillOwnerMap.containsKey(iHas);
+		assert !skillOwnerMap.containsValue(s);
+		assert s.getSkillSource() == iHas;
+		s.finish();
+		skillOwnerMap.put(iHas, s);
+		List<IHasSkills> list = skillStances.getOrDefault(s.getSkill(), new ArrayList<IHasSkills>());
+		list.add(iHas);
+	}
+	
 	
 	private void copyStanceTo(WeaponType from, WeaponType to) {
 		Stance a = getStance(from);
@@ -935,6 +954,23 @@ public class WeaponAttackFactory {
 			b.addAttack(list.get(i).copy(),a.getRarity(i));
 		}
 		addStance(to, b);
+	}
+
+
+	public static Stance getStance(IHasSkills source) {
+		return skillOwnerMap.get(source);
+	}
+	
+	public static List<IHasSkills> getSources(Skill s){
+		return skillStances.get(s);
+	}
+
+
+	public static ImpairedAttack rollAttack(IHasSkills source, IHasSkills source2, Person attacker, Person defender) {
+		return extra.randFloat() >= .5f ? getStance(source).randAtts(1, null, attacker, defender).get(0) : getStance(source2).randAtts(1, null, attacker, defender).get(0);
+	}
+	public static ImpairedAttack rollAttack(IHasSkills source, Person attacker, Person defender) {
+		return getStance(source).randAtts(1, null, attacker, defender).get(0);
 	}
 	
 	/*
