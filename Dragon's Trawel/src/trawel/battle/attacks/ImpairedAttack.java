@@ -9,6 +9,7 @@ import trawel.battle.attacks.Attack.Wound;
 import trawel.battle.attacks.IAttack.AttackType;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 import trawel.personal.Person;
+import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponQual;
 
@@ -80,14 +81,23 @@ public class ImpairedAttack implements IAttack{
 			vals[0] = damageRoll(DamageType.SHARP,sMult*damMult);
 			vals[1] = damageRoll(DamageType.BLUNT,bMult*damMult);
 			vals[2] = damageRoll(DamageType.PIERCE,pMult*damMult);
-			vals[3] = damageRoll(DamageType.IGNITE,attack.getIgnite()*damMult);
-			vals[4] = damageRoll(DamageType.FROST,attack.getFrost()*damMult);
-			vals[5] = damageRoll(DamageType.ELEC,attack.getElec()*damMult);
+			if (attack.getStance().elementBypass || !(_weapon != null && _weapon.isEnchantedHit())) {
+				vals[3] = damageRoll(DamageType.IGNITE,attack.getIgnite()*damMult);
+				vals[4] = damageRoll(DamageType.FROST,attack.getFrost()*damMult);
+				vals[5] = damageRoll(DamageType.ELEC,attack.getElec()*damMult);
+			}else {//enchant hit weapon with no bypass
+				int totalDam = attack.getTotalDam();
+				Enchant enc = _weapon.getEnchant();
+				vals[3] = damageRoll(DamageType.IGNITE,enc.getFireMod()*totalDam*damMult);
+				vals[4] = damageRoll(DamageType.FROST,enc.getFreezeMod()*totalDam*damMult);
+				vals[5] = damageRoll(DamageType.ELEC,enc.getShockMod()*totalDam*damMult);
+			}
+			
 
 			if (!alwaysWound && extra.randRange(1,10) == 1) {
 				this.wound = Attack.Wound.GRAZE;
 			}else {
-				double counter = extra.getRand().nextDouble() * (vals[0] + vals[1] + vals[2]);
+				double counter = extra.getRand().nextDouble() * (vals[0] + vals[1] + vals[2] + vals[3] + vals[4] + vals[5]);
 				counter-=vals[0];
 				if (counter<=0) {
 					this.wound = extra.randList(target.tar.slashWounds);
@@ -95,8 +105,25 @@ public class ImpairedAttack implements IAttack{
 					counter-=vals[2];
 					if (counter<=0) {
 						this.wound = extra.randList(target.tar.pierceWounds);
-					}else {//blunt is last now to be a default for rounding errors
-						this.wound = extra.randList(target.tar.bluntWounds);
+					}else {
+						counter-=vals[3];
+						if (counter<=0) {
+							this.wound = extra.randList(TargetFactory.fireWounds);
+						}else {
+							counter-=vals[4];
+							if (counter<=0) {
+								this.wound = extra.randList(TargetFactory.freezeWounds);
+							}else {
+								counter-=vals[5];
+								if (counter<=0) {
+									this.wound = extra.randList(TargetFactory.shockWounds);
+								}else {
+									//blunt is last to be a default for rounding errors
+									this.wound = extra.randList(target.tar.bluntWounds);
+								}
+							}
+						}
+						
 					}
 				}
 			}
