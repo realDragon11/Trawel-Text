@@ -60,7 +60,7 @@ public class Arena extends Feature{
 		Networking.setArea("arena");
 		if (owner == Player.player && moneyEarned > 0) {
 			extra.println("You take the " + moneyEarned + " in profits.");
-			Player.addGold(moneyEarned);
+			Player.player.addGold(moneyEarned);
 			moneyEarned = 0;
 		}
 		Networking.sendStrong("Discord|imagesmall|arena|Arena|");

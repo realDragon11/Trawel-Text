@@ -19,10 +19,10 @@ public abstract class FortFeature extends Feature {
 		int skillIndex = findLSkill(skill);
 		int cost = (int)(  Math.pow(skillIndex == -1 ? 1000 :(laborer.lSkills.get(skillIndex).value+1)*1000,valueMult));
 		
-		if (Player.getTotalBuyPower() >= cost) {
+		if (Player.player.getTotalBuyPower() >= cost) {
 			extra.println("This upgrade will cost " + cost + " "+World.currentMoneyString()+". Buy?");
 			if (extra.yesNo()) {
-				Player.buyMoneyAmount(cost);
+				Player.player.buyMoneyAmount(cost);
 				if (skillIndex == -1) {
 					laborer.lSkills.add(new LSkill(skill,1));
 				}else {

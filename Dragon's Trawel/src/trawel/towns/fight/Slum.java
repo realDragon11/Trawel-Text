@@ -144,9 +144,9 @@ public class Slum extends Feature implements QuestBoardLocation{
 		
 						@Override
 						public boolean go() {
-							if (Player.getGold() > removecost) {
+							if (Player.player.getGold() > removecost) {
 								extra.println("You pay for the reform programs.");
-								Player.addGold(-removecost);
+								Player.player.addGold(-removecost);
 								town.enqueneRemove(sl);//TODO: replace with like 'residental district'
 								return true;
 							}else {
@@ -236,11 +236,11 @@ public class Slum extends Feature implements QuestBoardLocation{
 						case 1:
 							extra.println("Buy a low-quality potion? ("+World.currentMoneyDisplay(potionCost)+")");
 							if (extra.yesNo()) {
-								if (Player.getGold() < potionCost) {
+								if (Player.player.getGold() < potionCost) {
 									extra.println("You cannot afford this. (You have "+Player.showGold()+".)");
 									return false;
 								}
-								Player.addGold(-potionCost);
+								Player.player.addGold(-potionCost);
 								if (extra.chanceIn(1, 3)) {
 									Player.player.setFlask(new Potion(Effect.CURSE,extra.randRange(2, 3)));
 								}else {
@@ -253,11 +253,11 @@ public class Slum extends Feature implements QuestBoardLocation{
 							potionCost *=2;
 							extra.println("Buy a medium-quality potion? ("+World.currentMoneyDisplay(potionCost)+")");
 							if (extra.yesNo()) {
-								if (Player.getGold() < potionCost) {
+								if (Player.player.getGold() < potionCost) {
 									extra.println("You cannot afford this. (You have "+Player.showGold()+".)");
 									return false;
 								}
-								Player.addGold(-potionCost);
+								Player.player.addGold(-potionCost);
 								if (extra.chanceIn(1, 4)) {
 									Player.player.setFlask(new Potion(Effect.CURSE,extra.randRange(3, 4)));
 								}else {
@@ -270,11 +270,11 @@ public class Slum extends Feature implements QuestBoardLocation{
 							potionCost *=4;
 							extra.println("Buy a high-quality potion? ("+World.currentMoneyDisplay(potionCost)+")");
 							if (extra.yesNo()) {
-								if (Player.getGold() < potionCost) {
+								if (Player.player.getGold() < potionCost) {
 									extra.println("You cannot afford this. (You have "+Player.showGold()+" gold.)");
 									return false;
 								}
-								Player.addGold(-potionCost);
+								Player.player.addGold(-potionCost);
 								if (extra.chanceIn(1, 6)) {
 									Player.player.setFlask(new Potion(Effect.CURSE,extra.randRange(3, 5)));
 								}else {

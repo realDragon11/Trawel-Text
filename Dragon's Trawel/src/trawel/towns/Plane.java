@@ -54,7 +54,7 @@ public class Plane extends TContextOwner{
 	public void advanceTime(double time) {
 		timepassive(time);
 		for (World t: worlds) {
-			if (t == Player.getWorld()) {
+			if (t == Player.player.getWorld()) {
 				timeScope.localEvents(t.contextTime(time,timeScope,true));
 			}else {
 				timeScope.localEvents(t.contextTime(time,timeScope,ContextType.BACKGROUND,false));
@@ -105,7 +105,7 @@ public class Plane extends TContextOwner{
 		int tasks = 0;
 		for(World w: worlds) {
 			if (w.hasDebt()) {
-				assert Player.getWorld() != w;
+				assert Player.player.getWorld() != w;
 				handler.execute(trawel.threads.FollowUp.createTask(w,FollowType.WORLD_TIME));
 				tasks++;
 			}

@@ -490,7 +490,7 @@ public class ImpairedAttack implements IAttack{
 					dam1 = DamageType.IGNITE.getDispFor(this);
 					dam2 = DamageType.FROST.getDispFor(this);
 					dam3 = DamageType.ELEC.getDispFor(this);
-					dam4 = null;
+					dam4 = "";
 				}else {
 					dam1 = DamageType.SHARP.getDispFor(this);
 					dam2 = DamageType.BLUNT.getDispFor(this);
@@ -498,6 +498,8 @@ public class ImpairedAttack implements IAttack{
 					dam4 = getOtherDam(this);
 					if (dam4 != null) {
 						in[8] = 6;
+					}else {
+						dam4 = "";
 					}
 				}
 				

@@ -255,7 +255,7 @@ public class DungeonNode implements NodeType{
 							extra.println("You open the " +node.storage1 + " and find a sapphire!");
 						}else {
 							int gold = extra.randRange(3,10)*node.level;
-							Player.addGold(gold);
+							Player.player.addGold(gold);
 							extra.println("You open the " +node.storage1 + " and find " + World.currentMoneyDisplay(gold) + ".");
 						}
 					}

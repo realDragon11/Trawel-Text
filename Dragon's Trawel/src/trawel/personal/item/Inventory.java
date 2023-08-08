@@ -21,6 +21,7 @@ import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Player;
+import trawel.personal.people.SuperPerson;
 import trawel.quests.Quest.TriggerType;
 import trawel.towns.World;
 
@@ -483,8 +484,9 @@ public class Inventory implements java.io.Serializable{
 	
 
 	public void addGold(int add) {
-		if (owner.isPlayer()) {
-			Player.addGold(add);
+		SuperPerson sp = owner.getSuper();
+		if (sp != null) {
+			sp.addGold(add);
 			return;
 		}
 		money += add;

@@ -286,7 +286,7 @@ public class Town extends TContextOwner{
 		Networking.setArea("main");
 		Networking.setBackground("main");
 		double[] p = Calender.lerpLocation(Player.player.lastTown);
-		float[] b = Player.getWorld().getCalender().getBackTime(p[0],p[1]);
+		float[] b = Player.player.getWorld().getCalender().getBackTime(p[0],p[1]);
 		Networking.sendStrong("Backvariant|"+"town"+background_variant+"|"+b[0]+"|"+b[1]+"|");
 		Networking.charUpdate();
 		if (isFort()) {
@@ -512,8 +512,8 @@ public class Town extends TContextOwner{
 		extra.println("Buy a lot? "+ cost + " "+moneyname+". You have "
 		+ Player.showGold());
 		if (extra.yesNo()) {
-			if (Player.getGold()> cost) {
-				Player.addGold(-cost);
+			if (Player.player.getGold()> cost) {
+				Player.player.addGold(-cost);
 				extra.println("You buy a lot.");
 				visited = 3;
 				Networking.unlockAchievement("buy_lot");
@@ -661,7 +661,7 @@ public class Town extends TContextOwner{
 				oallyList.add(Player.player.getPerson());
 				allyList.add(Player.player.getPerson());
 				foeList.add(RaceFactory.makeDrudgerTitan(tier));
-				List<Person> survivors = mainGame.HugeBattle(Player.getWorld(),foeList,allyList);
+				List<Person> survivors = mainGame.HugeBattle(Player.getPlayerWorld(),foeList,allyList);
 				boolean pass = false;
 				for (Person p: oallyList) {
 					if (survivors.contains(p)) {
@@ -674,7 +674,7 @@ public class Town extends TContextOwner{
 					helpers.addAll(survivors);
 					int reward = (10*tier)+extra.randRange(0,4);
 					extra.println("You take back the docks. They pay you with "+World.currentMoneyDisplay(reward)+".");
-					Player.addGold(reward);
+					Player.player.addGold(reward);
 					defenseTimer = 24*3;//3 days
 				}else {
 					defenseTimer = 12;//12 hours
@@ -826,15 +826,7 @@ public class Town extends TContextOwner{
 	}
 	
 	public Stream<Agent> getPersonableOccupants() {
-		return occupants.stream().filter(SuperPerson::isHumanoid);
-	}
-	/**
-	 * note that, as per this stack overflow question, the iterable will only work once
-	 * <br>
-	 * https://stackoverflow.com/questions/59869486/make-a-stream-into-an-iterable/59873914#59873914
-	 */
-	public Iterable<Agent> getPersonableOccupantsPass() {
-		return (Iterable<Agent>) occupants.stream().filter(SuperPerson::isHumanoid).iterator();
+		return occupants.parallelStream().filter(SuperPerson::isHumanoid);
 	}
 	
 	public Agent popAnyOccupant(Agent occupant) {
@@ -950,7 +942,7 @@ public class Town extends TContextOwner{
 						p.setPersonType(PersonType.LIFEKEEPER);
 						break;
 					}
-					Combat c = Player.fightWith(p);
+					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
 						//this.island.getWorld().removeDeathCheater(p);
 						//removed earlier, might get re-added in the combat above, which is fine
@@ -965,7 +957,7 @@ public class Town extends TContextOwner{
 				if (sp != null) {
 					extra.println(extra.PRE_RED + sp.getPerson().getName() + " appears to haunt you!");
 					went = true;
-					Combat c = Player.fightWith(sp.getPerson());
+					Combat c = Player.player.fightWith(sp.getPerson());
 					if (c.playerWon() > 0) {
 						island.getWorld().removeReoccuringSuperPerson(sp);
 					}//must be slain to get it to go away

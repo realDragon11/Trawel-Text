@@ -135,10 +135,10 @@ public class Oracle extends Feature{ //extends feature later
 	}
 
 	public void utterance() {
-		if (Player.getGold() >= tier*1) {
+		if (Player.player.getGold() >= tier*1) {
 			extra.println("Pay "+ tier*1 +" "+World.currentMoneyString()+" for an utterance?");
 			if (extra.yesNo()) {
-				Player.addGold(-tier*1);
+				Player.player.addGold(-tier*1);
 				tip("");
 				visits++;
 				Networking.unlockAchievement("oracle1");
@@ -158,10 +158,10 @@ public class Oracle extends Feature{ //extends feature later
 	}
 
 	public void utterance2() {
-		if (Player.getGold() >= tier*100) {
+		if (Player.player.getGold() >= tier*100) {
 			extra.println("Pay "+ tier*5 +" "+World.currentMoneyString()+" for a premium utterance?");
 			if (extra.yesNo()) {
-				Player.addGold(-tier*5);
+				Player.player.addGold(-tier*5);
 				tip("utter");
 				int oldVisits = visits;
 				visits+=4;

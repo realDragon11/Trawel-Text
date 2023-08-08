@@ -168,12 +168,12 @@ public class RogueGuild extends Feature {
 					public boolean go() {
 						while (true) {
 						int cost = 1000;
-						extra.println("Buy a launder credit? cost: " +cost + "/"+Player.getGold());
+						extra.println("Buy a launder credit? cost: " +cost + "/"+Player.player.getGold());
 						if (extra.yesNo()) {
-							if (cost <= Player.getGold()) {
+							if (cost <= Player.player.getGold()) {
 								Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
 								Player.player.launderCredits++;
-								Player.addGold(-cost);
+								Player.player.addGold(-cost);
 							}
 						}else {
 							break;
@@ -307,7 +307,7 @@ public class RogueGuild extends Feature {
 					public boolean go() {
 						if (Player.player.emeralds > 0) {
 							Player.player.emeralds--;
-							Player.addGold(750);
+							Player.player.addGold(750);
 							Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
 						}
 						return false;
@@ -376,7 +376,7 @@ public class RogueGuild extends Feature {
 					public boolean go() {
 						if (Player.player.rubies > 0) {
 							Player.player.rubies--;
-							Player.addGold(750);
+							Player.player.addGold(750);
 							Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
 						}
 						return false;
@@ -444,7 +444,7 @@ public class RogueGuild extends Feature {
 					public boolean go() {
 						if (Player.player.sapphires > 0) {
 							Player.player.sapphires--;
-							Player.addGold(750);
+							Player.player.addGold(750);
 							Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
 						}
 						return false;

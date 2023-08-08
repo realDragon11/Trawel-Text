@@ -1030,11 +1030,11 @@ public class mainGame {
 		 */
 		@Deprecated
 		public static Person CombatTwo(Person first_man,Person second_man) {
-			return CombatTwo( first_man, second_man,Player.getWorld()).survivors.get(0);
+			return CombatTwo( first_man, second_man,Player.player.getWorld()).survivors.get(0);
 		}
 		@Deprecated
 		public static List<Person> HugeBattle(List<Person>...people){
-			return HugeBattle(Player.getWorld(),Arrays.asList(people));
+			return HugeBattle(Player.player.getWorld(),Arrays.asList(people));
 		}
 		@Deprecated
 		public static List<Person> HugeBattle(World w,List<Person>...people){
@@ -1312,7 +1312,7 @@ public class mainGame {
 				player.getPerson().setPerk(Perk.SKY_BLESS_2);
 				story = new StoryNone();
 				player.getPerson().addXp(9999);
-				Player.addGold(1000);
+				Player.player.addGold(1000);
 				Player.bag.addAether(100000);
 			}
 			story.storyStart();

@@ -98,7 +98,7 @@ public class BasicSideQuest implements Quest{
 				@Override
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
-					Player.addGold(10);
+					Player.player.addGold(10);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,.1f, 0);
 					q.complete();
 					return false;
@@ -168,7 +168,7 @@ public class BasicSideQuest implements Quest{
 				@Override
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
-					Player.addGold(30);
+					Player.player.addGold(30);
 					q.complete();
 					return false;
 				}};
@@ -264,7 +264,7 @@ public class BasicSideQuest implements Quest{
 				@Override
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
-					Player.addGold(50);
+					Player.player.addGold(50);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,2,0);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
 					q.complete();
@@ -326,7 +326,7 @@ public class BasicSideQuest implements Quest{
 				@Override
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
-					Player.addGold(20);
+					Player.player.addGold(20);
 					Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,.1f, 0);
 					Player.player.addMPoints(.2f);
 					q.complete();
@@ -391,7 +391,7 @@ public class BasicSideQuest implements Quest{
 				@Override
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
-					Player.addGold(50);
+					Player.player.addGold(50);
 					Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,1,0);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
 					Player.player.addMPoints(.2f);
@@ -437,7 +437,7 @@ public class BasicSideQuest implements Quest{
 				@Override
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
-					Player.addGold(100);
+					Player.player.addGold(100);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,0, .05f);
 					q.complete();
 					return false;
@@ -504,7 +504,7 @@ public class BasicSideQuest implements Quest{
 				@Override
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
-					Player.addGold(50);
+					Player.player.addGold(50);
 					q.complete();
 					return false;
 				}};

@@ -36,7 +36,7 @@ public abstract class Feature extends TContextOwner{
 	}
 	public void sendBackVariant() {
 		double[] p = Calender.lerpLocation(town);
-		float[] b = Player.getWorld().getCalender().getBackTime(p[0],p[1]);
+		float[] b = Player.player.getWorld().getCalender().getBackTime(p[0],p[1]);
 		Networking.sendStrong("Backvariant|"+background_area+background_variant+"|"+b[0]+"|"+b[1]+"|");
 	}
 	

@@ -92,12 +92,12 @@ public class FortHall extends FortFeature {
 	public void go() {
 		if (this.getOwner() != Player.player) {
 			int cost = (this.level*2500)+(this.aetherBank*3);
-			extra.println("Buy this for fort for "+cost+" "+World.currentMoneyString()+"? (You have " + Player.getGold()+")");
+			extra.println("Buy this for fort for "+cost+" "+World.currentMoneyString()+"? (You have " + Player.player.getGold()+")");
 			if (extra.yesNo()) {
-				if (Player.getGold() < cost) {
+				if (Player.player.getGold() < cost) {
 					extra.println("You can't afford to buy this fort.");
 				}else {
-					Player.addGold(-cost);
+					Player.player.addGold(-cost);
 					for (Feature f: this.town.getFeatures()) {
 						f.setOwner(Player.player);
 					}
@@ -118,7 +118,7 @@ public class FortHall extends FortFeature {
 
 						@Override
 						public String title() {
-							return "You have " + allies.size() + " soldiers here and "+Player.getGold()+".";
+							return "You have " + allies.size() + " soldiers here and "+Player.player.getGold()+".";
 						}});
 					if (allies.size() < 10) {
 					mList.add(new MenuSelect() {
@@ -130,8 +130,8 @@ public class FortHall extends FortFeature {
 
 						@Override
 						public boolean go() {
-							if (Player.getGold() >= getSoldierCost()) {
-								Player.addGold(-getSoldierCost());
+							if (Player.player.getGold() >= getSoldierCost()) {
+								Player.player.addGold(-getSoldierCost());
 								allies.add(RaceFactory.getDueler(level));
 							}else {
 								extra.println("You can't afford another soldier.");
@@ -199,8 +199,8 @@ public class FortHall extends FortFeature {
 
 						@Override
 						public boolean go() {
-							if (Player.getGold() >= (level*1000)) {
-								Player.addGold(-(level*1000));
+							if (Player.player.getGold() >= (level*1000)) {
+								Player.player.addGold(-(level*1000));
 								town.enqueneAdd(new FortFoundation(3));
 							}else {
 								extra.println("You can't afford a new large foundation.");
@@ -219,8 +219,8 @@ public class FortHall extends FortFeature {
 
 						@Override
 						public boolean go() {
-							if (Player.getGold() >= (level*500)) {
-								Player.addGold(-(level*500));
+							if (Player.player.getGold() >= (level*500)) {
+								Player.player.addGold(-(level*500));
 								town.enqueneAdd(new FortFoundation(2));
 							}else {
 								extra.println("You can't afford a new medium foundation.");
@@ -239,8 +239,8 @@ public class FortHall extends FortFeature {
 
 						@Override
 						public boolean go() {
-							if (Player.getGold() >= (level*250)) {
-								Player.addGold(-(level*250));
+							if (Player.player.getGold() >= (level*250)) {
+								Player.player.addGold(-(level*250));
 								town.enqueneAdd(new FortFoundation(1));
 							}else {
 								extra.println("You can't afford a new small foundation.");

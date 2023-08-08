@@ -99,21 +99,15 @@ public class Champion  extends Feature{
 		if (person == null) {
 			timeElapsed+=time;
 			if (timeElapsed > extra.randRange(24, 60)) {
-				Agent delete = null;
-				for (Agent a: town.getPersonableOccupantsPass()) {
-					if (a.getPerson().getLevel() == town.getTier()) {
-						person = a.getPerson();
+				Agent delete = town.getPersonableOccupants()
+						.filter(a -> a.getPerson().getLevel() == town.getTier())
+						.findFirst().orElse(null);
+					if (delete != null) {
+						person = delete.getPerson();
 						this.name = person.getName() + " (Level " + person.getLevel()+")" ;
-						tutorialText = "You should probably hold off on fighting champions until you're their level.";
-						//town.getOccupants().remove(p); // not sure if safe
-						delete = a;
-						break;
-					}
-				}
-				if (delete != null) {
-					town.removeOccupant(delete);
-				}//TODO use events
-				
+						tutorialText = "New champions will emerge if a landed title is empty.";
+						town.removeOccupant(delete);//MAYBELATER use events?
+					}			
 			}
 		}
 		return null;

@@ -810,7 +810,7 @@ public class WorldGen {
 			 Player.bag = Player.player.getPerson().getBag();
 			 Player.passTime = 0;
 			 mainGame.story = Player.player.storyHold;
-			 extra.getThreadData().world = Player.getWorld();
+			 extra.getThreadData().world = Player.player.getWorld();
 			 //oos.close();
 			 fos.close();
 			 plane.reload();

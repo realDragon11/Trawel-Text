@@ -60,10 +60,10 @@ public class Lot extends Feature {
 
 			switch(extra.inInt(6)) {
 			case 1: 
-				if (Player.getCanBuy(a_inncost,inncost)) {
+				if (Player.player.getCanBuy(a_inncost,inncost)) {
 					extra.println("Build an inn here?");
 					if (extra.yesNo()) {	
-						Player.doCanBuy(a_inncost,inncost);
+						Player.player.doCanBuy(a_inncost,inncost);
 						construct = "inn";
 						constructTime = 24*3;
 						name = "inn under construction";
@@ -73,9 +73,9 @@ public class Lot extends Feature {
 				break;
 			case 2: 
 				extra.println("Build an arena here?");
-				if (Player.getCanBuy(a_arenacost,arenacost)) {
+				if (Player.player.getCanBuy(a_arenacost,arenacost)) {
 					if (extra.yesNo()) {
-						Player.doCanBuy(a_arenacost,arenacost);
+						Player.player.doCanBuy(a_arenacost,arenacost);
 						construct = "arena";
 						constructTime = 24*2;
 						name = "arena under construction";
@@ -88,10 +88,10 @@ public class Lot extends Feature {
 				}
 				break;
 			case 4: 
-				if (Player.getCanBuy(a_minecost,minecost)) {
+				if (Player.player.getCanBuy(a_minecost,minecost)) {
 					extra.println("Build a mine?");
 					if (extra.yesNo()) {
-						Player.doCanBuy(a_minecost,minecost);
+						Player.player.doCanBuy(a_minecost,minecost);
 						construct = "mine";
 						constructTime = 24*7;
 						name = "mine under construction";
@@ -99,10 +99,10 @@ public class Lot extends Feature {
 				}
 				break;
 			case 5:
-				if (Player.getCanBuy(a_gardencost,gardencost)) {
+				if (Player.player.getCanBuy(a_gardencost,gardencost)) {
 					extra.println("Build a garden?");
 					if (extra.yesNo()) {
-						Player.doCanBuy(a_gardencost,gardencost);
+						Player.player.doCanBuy(a_gardencost,gardencost);
 						construct = "garden";
 						constructTime = 24;
 						name = "garden under construction";

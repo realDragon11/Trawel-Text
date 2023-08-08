@@ -101,7 +101,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 		Networking.setArea("inn");
 		if (owner == Player.player && moneyEarned > 0) {
 			extra.println("You take the " + moneyEarned + " in profits.");
-			Player.addGold(moneyEarned);
+			Player.player.addGold(moneyEarned);
 			moneyEarned = 0;
 		}
 		Networking.sendStrong("Discord|imagesmall|inn|Inn|");
@@ -303,7 +303,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public boolean go() {
-						Combat c = Player.fightWith(agent.getPerson());
+						Combat c = Player.player.fightWith(agent.getPerson());
 						if (c.playerWon() > 0) {
 							town.removeOccupant(agent);
 							newCurAgent();
@@ -338,12 +338,12 @@ public class Inn extends Feature implements QuestBoardLocation{
 	}
 
 	private void buyBeer() {
-		if (Player.getGold() >= beerCost) {
+		if (Player.player.getGold() >= beerCost) {
 			extra.println("Pay "+World.currentMoneyDisplay(beerCost)+" for "+beerCount+" beers?");
 			if (extra.yesNo()) {
 				Player.player.getPerson().addBeer(beerCount);
 				moneyEarned +=beerCost;
-				Player.addGold(beerCost);
+				Player.player.addGold(beerCost);
 			}
 		}else {
 			extra.println("You can't afford that! ("+World.currentMoneyDisplay(beerCost)+")");
@@ -395,7 +395,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 	private void barFight() {
 		extra.println(extra.PRE_RED+"There is no resident, but there is room for a barfight... start one?");
 		if (extra.yesNo()) {
-			Combat c = Player.fightWith(RaceFactory.getDueler(tier));
+			Combat c = Player.player.fightWith(RaceFactory.getDueler(tier));
 			if (c.playerWon() > 0) {
 				wins++;
 			if (wins == 3) {
@@ -427,11 +427,11 @@ public class Inn extends Feature implements QuestBoardLocation{
 	}
 	
 	private void bathe() {
-		if (Player.getGold() >= (tier)) {
+		if (Player.player.getGold() >= (tier)) {
 			extra.println("Pay "+World.currentMoneyDisplay(tier)+" for a bath?");
 			if (extra.yesNo()) {
 				Player.player.getPerson().washAll();
-				Player.addGold(-(tier));
+				Player.player.addGold(-(tier));
 			}
 			}else {
 				extra.println("You can't afford that!");

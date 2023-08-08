@@ -111,7 +111,7 @@ public final class extra {
 			throw new RuntimeException("trying to main update a non main thread");
 		}
 		ThreadData temp = getThreadData();
-		temp.world = Player.getWorld();
+		temp.world = Player.player.getWorld();
 		return temp;
 	}
 

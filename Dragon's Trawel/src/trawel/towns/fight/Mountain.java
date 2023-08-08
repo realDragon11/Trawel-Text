@@ -123,17 +123,18 @@ public class Mountain extends Feature{
 		
 		this.time += time;
 		if (this.time > 12+(extra.getRand().nextInt(30))) {
-			cleanTown();
+			washSomeTown(5);
 			this.time = 0;
 		}
 		return null;
 	}
 	
 	private void cleanTown() {
-		for (SuperPerson peep: town.getPersonableOccupantsPass()) {
-			Agent a = (Agent)peep;
-			a.getPerson().washAll();
-		}
+		town.getPersonableOccupants().forEach(a -> a.getPerson().washAll());
+	}
+	
+	private void washSomeTown(int amount) {
+		town.getPersonableOccupants().limit(amount).forEach(a -> a.getPerson().washAll());
 	}
 	
 	public void explore(){
@@ -219,14 +220,14 @@ public class Mountain extends Feature{
 				if (winner == Player.player.getPerson()) {
 					int gold = extra.randRange(15,20)*tier;
 					extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
-					Player.addGold(gold);
+					Player.player.addGold(gold);
 				}else {
 					extra.println("They take the "+World.currentMoneyString()+" sack and leave you rolling down the mountain...");
 				}
 			}else {
 				int gold = extra.randRange(5,10)*tier;
 				extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
-				Player.addGold(gold);
+				Player.player.addGold(gold);
 			}
 		}else {
 			extra.println("You let the goat run away...");
@@ -254,7 +255,7 @@ public class Mountain extends Feature{
 		if (winner == Player.player.getPerson()) {
 			int gold = extra.randRange(tier,10*tier);
 			extra.println("They give you a reward of " +World.currentMoneyDisplay(gold) + " in thanks for saving them.");
-			Player.addGold(gold);
+			Player.player.addGold(gold);
 		}else {
 			extra.println("They steal from your bags as well!");
 			extra.println(Player.loseGold(50*tier,true));
@@ -278,10 +279,10 @@ public class Mountain extends Feature{
 			want*=extra.randRange(2,4);
 			want += extra.randRange(0,5);
 			extra.println("You find " + World.currentMoneyDisplay(want) + " in tolls.");
-			Player.addGold(want);
+			Player.player.addGold(want);
 		}else {
 			
-			int lost = Player.loseGold(want);
+			int lost = Player.player.loseGold(want);
 			if (lost == -1) {
 				extra.println("They mutter something about freeloaders.");
 			}else {

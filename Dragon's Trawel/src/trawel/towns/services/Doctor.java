@@ -32,23 +32,23 @@ public class Doctor extends Feature {
 		String mstr = World.currentMoneyString();
 		int dcost = tier*5;
 		int cost = 50*tier+(tier*Math.min(3,Player.player.getPerson().effectsSize())*30);
-		extra.println(mstr+": " +Player.getGold());
+		extra.println(mstr+": " +Player.player.getGold());
 		extra.println("1 diagnosis (" + dcost+" "+mstr+")");
 		extra.println("2 cure (" + cost+" "+mstr+")");
 		extra.println("3 exit");
 		switch (extra.inInt(3)) {
 		case 1:
-			if (Player.getGold() < dcost) {
+			if (Player.player.getGold() < dcost) {
 				extra.println("Not enough "+mstr+"!");break;
 			}
-			Player.addGold(-dcost);
+			Player.player.addGold(-dcost);
 			Player.player.getPerson().displayEffects();
 			break;
 		case 2:
-			if (Player.getGold() < cost) {
+			if (Player.player.getGold() < cost) {
 				extra.println("Not enough "+mstr+"!");break;
 			}
-			Player.addGold(-cost);
+			Player.player.addGold(-cost);
 			Player.player.getPerson().cureEffects();
 			break;
 		case 3: return;

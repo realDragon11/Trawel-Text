@@ -165,13 +165,13 @@ public class Store extends Feature{
 		serviceItem(items.indexOf(item));
 	}
 	/**
-	 * > 0 = gaining money from the trade (player selling something worth more)
-	 * < 0 = losing money from the trade (player selling something worth less)
+	 * > 0 = gaining money from the trade (person selling something worth more)
+	 * < 0 = losing money from the trade (person selling something worth less)
 	 * @param selling
 	 * @param buying
 	 * @return
 	 */
-	public int getDelta(Item selling, Item buying) {
+	public int getDelta(Item selling, Item buying, Person p) {
 		//the gold the item you are exchanging it for is worth
 		int sellGold = extra.zeroOut(selling.getMoneyValue());
 		double buyGold = Math.ceil(buying.getMoneyValue()*markup);
@@ -193,12 +193,12 @@ public class Store extends Feature{
 			}
 			DrawBane db = dbs.get(index);
 			int buyGold = (int) Math.ceil(db.getValue() * markup);
-			if (Player.getTotalBuyPower(aetherPerMoney(Player.player.getPerson())) >= buyGold) {
+			if (Player.player.getTotalBuyPower(aetherPerMoney(Player.player.getPerson())) >= buyGold) {
 				extra.println("Buy the "+ db.getName() + "? (" + buyGold + " "+World.currentMoneyString()+")");//TODO: explain aether conversion
 				if (extra.yesNo()) {
 					DrawBane sellItem = bag.addNewDrawBane(db);
 					if (sellItem != null) {
-						Player.buyMoneyAmount(sellItem.getValue()-buyGold);
+						Player.player.buyMoneyAmountRateInt(sellItem.getValue()-buyGold,aetherPerMoney(Player.player.getPerson()));
 					}
 					dbs.remove(index);
 				}
@@ -228,8 +228,8 @@ public class Store extends Feature{
 		default:
 			throw new RuntimeException("invalid store item type");
 		}
-		int delta = getDelta(sellItem,buyItem);
-		if (Player.getTotalBuyPower()+delta < 0) {
+		int delta = getDelta(sellItem,buyItem,Player.player.getPerson());
+		if (Player.player.getTotalBuyPower()+delta < 0) {
 			extra.println("You can't afford this item!");
 			return;
 		}
@@ -250,10 +250,10 @@ public class Store extends Feature{
 			break;	
 		}
 		if (delta < 0) {
-			int beforeMoney = Player.getGold();
+			int beforeMoney = Player.player.getGold();
 			int beforeAether = Player.bag.getAether();
-			Player.buyMoneyAmount(-delta);
-			int moneyDelta = beforeMoney-Player.getGold();
+			Player.player.buyMoneyAmountRateInt(-delta,aetherPerMoney(Player.player.getPerson()));
+			int moneyDelta = beforeMoney-Player.player.getGold();
 			int aetherDelta = beforeAether-Player.bag.getAether();
 			extra.println("You complete the trade."
 			+ (moneyDelta > 0 ? " Spent " +World.currentMoneyDisplay(moneyDelta) : "")
@@ -263,7 +263,7 @@ public class Store extends Feature{
 					);
 		}else {
 			if (delta > 0) {//we sold something more expensive
-				Player.addGold(delta);
+				Player.player.addGold(delta);
 				extra.println("You complete the trade, gaining " + World.currentMoneyDisplay(delta) +".");
 			}else {//equal value
 				extra.println("You complete the trade.");
@@ -371,7 +371,7 @@ public class Store extends Feature{
 
 					@Override
 					public String title() {
-						return "You have " + World.currentMoneyDisplay(Player.getGold()) + " and "+Player.bag.getAether() +" aether.";
+						return "You have " + World.currentMoneyDisplay(Player.player.getGold()) + " and "+Player.bag.getAether() +" aether.";
 					}});
 				list.add(new MenuLine() {
 
@@ -387,7 +387,7 @@ public class Store extends Feature{
 
 					@Override
 					public String title() {
-						return "You have a total of "+(Player.getGold() + (Player.bag.getAether()/aetherPerMoney(Player.player.getPerson()))) +" buying power.";
+						return "You have a total of "+(Player.player.getGold() + (Player.bag.getAether()/aetherPerMoney(Player.player.getPerson()))) +" buying power.";
 					}});
 				
 				if (type != 8 && type != 9) {//normal items
@@ -561,26 +561,21 @@ public class Store extends Feature{
 		if (type == 8 || type == 9) {
 			return;
 		}
-		for (SuperPerson peep: town.getPersonableOccupantsPass()) {
-			Agent a = (Agent)peep;
-			Inventory bag = a.getPerson().getBag();
-			ArrayList<Item> add = new ArrayList<Item>();
-			ArrayList<Item> remove = new ArrayList<Item>();
-			for (Item i: items) {
-				if (AIClass.compareItem(bag,i,a.getPerson().getIntellect(),false,a.getPerson())) {
-					int goldDiff = i.getMoneyValue()-bag.itemCounterpart(i).getMoneyValue();
-					if (goldDiff <= bag.getGold()){
-						bag.addGold(-goldDiff);
-						remove.add(i);
-						add.add(bag.swapItem(i));
-					}
-				}
-			}
-			for (Item i: add) {
-				items.add(i);
-			}
-			for (Item i: remove) {
+		town.getPersonableOccupants().forEach(a-> doShop(a));
+	}
+	
+	private void doShop(Agent a) {
+		Person p = a.getPerson();
+		Inventory bag = p.getBag();
+		
+		for (int j = items.size()-1;j>=0;j--) {
+			Item i = items.get(j);
+			Item counter = bag.itemCounterpart(i);
+			int delta = getDelta(counter,i,p);
+			if (a.getTotalBuyPower()+delta < 0 && AIClass.compareItem(bag,i,p.getIntellect(),false,p)) {
+				a.buyMoneyAmountRateInt(-delta,aetherPerMoney(p));
 				items.remove(i);
+				items.add(bag.swapItem(i));
 			}
 		}
 	}

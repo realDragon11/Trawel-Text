@@ -166,14 +166,14 @@ public class Forest extends Feature{
 				if (winner == Player.player.getPerson()) {
 					int gold = (2*tier)+extra.randRange(0,3);
 					extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
-					Player.addGold(gold);
+					Player.player.addGold(gold);
 				}else {
 					extra.println("They take the gold sack and leave you floating down the stream...");
 				}
 			}else {
 				int gold = (tier)+extra.randRange(0,2);
 				extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
-				Player.addGold(gold);
+				Player.player.addGold(gold);
 			}
 		}else {
 			extra.println("You let the bag drift out of sight...");
@@ -225,12 +225,12 @@ public class Forest extends Feature{
 			if (winner == Player.player.getPerson()) {
 				int gold = 2*extra.randRange(1,tier+1);
 				extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
-				Player.addGold(gold);
+				Player.player.addGold(gold);
 			}
 			}else {
 				int gold = extra.randRange(1,tier+1);
 				extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
-				Player.addGold(gold);
+				Player.player.addGold(gold);
 			};break;
 		case 4:
 			extra.println("You crush the mushroom under your heel.");
@@ -257,7 +257,7 @@ public class Forest extends Feature{
 		if (winner == Player.player.getPerson()) {
 			int gold = extra.randRange(2,10)*tier;
 			extra.println("They give you a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them.");
-			Player.addGold(gold);
+			Player.player.addGold(gold);
 		}else {
 			extra.println("They mugged you too!");
 			extra.println(Player.loseGold((20*tier)+extra.randRange(0,10),true));
@@ -287,7 +287,7 @@ public class Forest extends Feature{
 			break;
 		case 2:
 			extra.println(extra.PRE_RED+ "Something fell and horrible steps out of the hanged man's shadow!");
-			Combat c = Player.fightWith(RaceFactory.makeFellReaver(tier));
+			Combat c = Player.player.fightWith(RaceFactory.makeFellReaver(tier));
 			if (c.playerWon() > 0) {
 				extra.println("They say a predator is often blind to its own peril- at least there won't be any more men hanged here soon.");
 				//bonus heroism
@@ -348,7 +348,7 @@ public class Forest extends Feature{
 					int gold = extra.randRange(0,5)+ (tier*extra.randRange(1,4));
 					extra.println("They give you a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them.");
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
-					Player.addGold(gold);
+					Player.player.addGold(gold);
 				}
 			}
 		}else {
@@ -482,7 +482,7 @@ public class Forest extends Feature{
 		if (extra.yesNo()) {
 			switch (extra.randRange(1,2)) {
 			case 1: extra.println("You step in it. You find yourseslf jerked nowhere. Your surroundings change...");
-			Player.player.setLocation(Player.getWorld().getRandom(Player.player.getPerson().getLevel()));break;
+			Player.player.setLocation(Player.player.getWorld().getRandom(Player.player.getPerson().getLevel()));break;
 			case 2: extra.println("There is a log in the hut");oldFighter();break;
 			case 3: extra.println("There is a tree inside the hut."); lumerbjackDryad();break;
 			}

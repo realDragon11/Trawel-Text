@@ -41,14 +41,14 @@ public class Blacksmith extends Feature {
 		String mname = World.currentMoneyString();
 		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|blacksmith|Blacksmith|");
-		extra.println("You have " + World.currentMoneyDisplay(Player.getGold()) + " and "+Player.bag.getAether()+ " aether.");
+		extra.println("You have " + World.currentMoneyDisplay(Player.player.getGold()) + " and "+Player.bag.getAether()+ " aether.");
 		extra.println("1 forge item for store (" + tier*10 + " "+mname+")");
 		extra.println("2 improve item up to " + Item.getModiferNameColored(tier) +" quality");
 		extra.println("3 exit");
 		switch (extra.inInt(3)) {
 		case 1: 
-			if (Player.getTotalBuyPower() >= tier*10) {
-				Player.buyMoneyAmount(tier*10);
+			if (Player.player.getTotalBuyPower() >= tier*10) {
+				Player.player.buyMoneyAmount(tier*10);
 				store.addAnItem();
 				extra.println("An item has been forged and sent to " + store.getName() + "!");
 			}else {
@@ -67,13 +67,13 @@ public class Blacksmith extends Feature {
 				break;
 			}
 			int cost = item.getMoneyValue()+tier*20;//(int) (Math.pow(tier-item.getLevel(),2)*item.getAetherValue()+(tier*100));//want to encourage gradual leveling rather than drastic jumps in power
-			if (Player.getTotalBuyPower() < cost) {
+			if (Player.player.getTotalBuyPower() < cost) {
 				extra.println("You can't afford this! (" + cost + " "+mname+")");
 				break;
 			}
 			extra.println("Improve your item to " + Item.getModiferNameColored(item.getLevel()+1) + " quality for " +cost +" "+mname+"?");
 			if (extra.yesNo()) {
-				Player.buyMoneyAmount(cost);
+				Player.player.buyMoneyAmount(cost);
 				//while (item.getLevel() < tier) {
 				item.levelUp();
 				//}

@@ -369,7 +369,7 @@ public class GroveNode implements NodeType{
 					int gold = extra.randRange(0,5)+ (node.getLevel()*extra.randRange(1,4));
 					extra.println("They give you a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them.");
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
-					Player.addGold(gold);
+					Player.player.addGold(gold);
 				}
 			}
 		}else {
@@ -501,12 +501,12 @@ public class GroveNode implements NodeType{
 					if (winner == Player.player.getPerson()) {
 						int gold = 3*extra.randRange(1,node.level+1);
 						extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
-						Player.addGold(gold);
+						Player.player.addGold(gold);
 					}
 				}else {
 					int gold = extra.randRange(1,node.level+1);
 					extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
-					Player.addGold(gold);
+					Player.player.addGold(gold);
 				};break;
 			case 4:
 				extra.println("You crush the mushroom under your heel.");
@@ -589,7 +589,7 @@ public class GroveNode implements NodeType{
 				}else {
 					int g = extra.randRange(1,3)*node.level;
 					extra.println("You find " +World.currentMoneyDisplay(g) + "!");
-					Player.addGold(g);
+					Player.player.addGold(g);
 					node.state = 1;
 					if (extra.randRange(1,3) == 1) {
 						mushHelpRobber();
@@ -646,7 +646,7 @@ public class GroveNode implements NodeType{
 						if (winner == Player.player.getPerson()) {
 							int gold = extra.randRange(1,node.level);
 							extra.println("You sell the moss for " + World.currentMoneyDisplay(gold) + ".");
-							Player.addGold(gold);
+							Player.player.addGold(gold);
 						}
 					}else {
 						int gold = extra.randRange(0,Math.max(1,node.level/2));
@@ -655,7 +655,7 @@ public class GroveNode implements NodeType{
 							break;
 						}
 						extra.println("You sell the moss for " + World.currentMoneyDisplay(gold) + ".");
-						Player.addGold(gold);
+						Player.player.addGold(gold);
 					};break;
 				}
 			}else {
@@ -722,7 +722,7 @@ public class GroveNode implements NodeType{
 				bool = false;
 				break;
 				case 2:
-					if (Player.getGold() > rich.getBag().getGold()*4) {//now local class bigotry
+					if (Player.player.getGold() > rich.getBag().getGold()*4) {//now local class bigotry
 						String str = Oracle.tipString("racistPraise");
 						str = str.replaceAll(" an "," a ");
 						str = str.replaceAll("oracles","rich person");
@@ -862,11 +862,11 @@ public class GroveNode implements NodeType{
 					extra.println("3 return");
 
 					switch (extra.inInt(3)) {
-					case 1: if (Player.getGold() < cost) {
+					case 1: if (Player.player.getGold() < cost) {
 						extra.println("Not enough "+ World.currentMoneyString()+"! (You have " + Player.showGold() + ")");
 						break;
 					}
-					Player.addGold(-cost);
+					Player.player.addGold(-cost);
 					Player.player.getPerson().cureEffects();
 					extra.println("You feel better.");
 

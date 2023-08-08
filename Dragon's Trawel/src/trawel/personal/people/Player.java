@@ -56,8 +56,7 @@ public class Player extends SuperPerson{
 	public int forceRewardCount = 0;
 	public int merchantBookPrice = 1000;
 	
-	public List<Integer> moneys;
-	public List<World> moneymappings;
+
 	
 	public int knowledgeFragments = 0, fragmentReq = 5;
 	
@@ -90,7 +89,7 @@ public class Player extends SuperPerson{
 		
 		p.setSuper(this);
 	}
-	public static World getWorld() {
+	public static World getPlayerWorld() {
 		if (Player.player == null) {
 			return WorldGen.fallBackWorld;
 		}
@@ -101,7 +100,7 @@ public class Player extends SuperPerson{
 	 * @param world
 	 */
 	public static void updateWorld(World world) {
-		if (world != getWorld()) {
+		if (world != player.getWorld()) {
 			Player.player.world = world;
 			extra.mainThreadDataUpdate();
 		}
@@ -314,82 +313,8 @@ public class Player extends SuperPerson{
 			fragmentReq+=2;
 			extra.println("+1 skillpoint!");
 		}
-		
-		
 	}
-	public static int getGold() {
-		Player p = player;
-		World w = getWorld();
-		int index = p.moneymappings.indexOf(w);
-		if (index == -1) {
-			p.moneymappings.add(w);
-			p.moneys.add(0);
-			return 0;
-		}
-		return p.moneys.get(index);
-	}
-	
-	public static void addGold(int delta) {
-		Player p = player;
-		World w = getWorld();
-		int index = p.moneymappings.indexOf(w);
-		if (index == -1) {
-			p.moneymappings.add(w);
-			p.moneys.add(Math.max(0, delta));
-			return;
-		}
-		p.moneys.set(index, Math.max(0,p.moneys.get(index)+delta));
-	}
-	
-	/**
-	 * subtracts and prints failure for the caller
-	 * @param aether
-	 * @param money
-	 * @return if bought successfully
-	 */
-	public static boolean doCanBuy(int aether, int money) {
-		int hasMoney = getGold();
-		int hasAether = Player.bag.getAether();
-		if (hasAether > aether) {
-			if (hasMoney < money) {
-				extra.println("Not enough " + World.currentMoneyString()+"!");
-				return false;
-			}else {
-				addGold(-money);
-				Player.bag.addAether(aether);
-				return true;
-			}
-		}else {
-			if (hasMoney < money) {
-				extra.println("Not enough aether or " + World.currentMoneyString()+"!");
-				return false;
-			}else {
-				extra.println("Not enough aether!");
-				return false;
-			}
-		}
-	}
-	
-	public static boolean getCanBuy(int aether, int money) {
-		int hasMoney = getGold();
-		int hasAether = Player.bag.getAether();
-		if (hasAether > aether) {
-			if (hasMoney < money) {
-				extra.println("Not enough " + World.currentMoneyString()+"!");
-				return false;
-			}else {
-				return true;
-			}
-		}else {
-			if (hasMoney < money) {
-				extra.println("Not enough aether or " + World.currentMoneyString()+"!");
-				return false;
-			}else {
-				extra.println("Not enough aether!");
-				return false;
-			}
-		}
-	}
+
 	
 	/**
 	 * how much aether converts into normal money
@@ -408,68 +333,13 @@ public class Player extends SuperPerson{
 	 */
 	public static final float TRADE_VALUE_BONUS = 4f;
 	
-	public static boolean canBuyMoneyAmount(int money,float aetherRate) {
-		int hasMoney = getGold();
-		int hasAether = Player.bag.getAether();
-		return hasMoney+ (int)(hasAether*aetherRate) >= money;
-	}
-	
-	public static boolean canBuyMoneyAmount(int money) {
-		return canBuyMoneyAmount(money,NORMAL_AETHER_RATE);
-	}
-	
-	public static int getTotalBuyPower(int aetherpermoney) {
-		return getGold()+(Player.bag.getAether()/aetherpermoney);
-	}
-	
-	public static int getTotalBuyPower(float aetherRate) {
-		return getGold()+ (int)(Player.bag.getAether()*aetherRate);
-	}
-	public static int getTotalBuyPower() {
-		return getTotalBuyPower(NORMAL_AETHER_RATE);
-	}
-	
-	public static void buyMoneyAmount(int money,float aetherRate) {
-		int value = money;
-		int gold = getGold();
-		if (gold >= value) {
-			addGold(-value);
-			return;
-		}
-		value-=gold;
-		Player.bag.addAether( -((int)(value/aetherRate)));
-	}
-	
-	public static void buyMoneyAmount(int money) {
-		buyMoneyAmount(money,NORMAL_AETHER_RATE);
-	}
 	public static String showGold() {
-		int i = getGold();
-		return getWorld().moneyString(i);
-	}
-	/**
-	 * player will lose up to i gold, and this will return how much they lose
-	 * <br>
-	 * if they were broke will return -1
-	 * <br>
-	 * 0 will be returned if i == 0
-	 * @param i
-	 */
-	public static int loseGold(int i) {
-		if (i == 0) {
-			return 0;
-		}
-		int has = getGold();
-		if (has == 0) {
-			return -1;
-		}
-		int lose = Math.max(has,i);
-		addGold(-lose);
-		return lose;
+		int i = Player.player.getGold();
+		return player.getWorld().moneyString(i);
 	}
 	
 	public static String loseGold(int amount,boolean commentBroke) {
-		int lost = loseGold(amount);
+		int lost = Player.player.loseGold(amount);
 		if (lost == 0) {
 			return "";//no change
 		}
@@ -486,10 +356,10 @@ public class Player extends SuperPerson{
 	/**
 	 * for now this is a combattwo, but if you want to check victory conditions you should use the 'playerwon' function
 	 * <br>
-	 */
-	public static Combat fightWith(Person p) {
+	 *
+	public static Combat playerFightWith(Person p) {
 		return mainGame.CombatTwo(Player.player.getPerson(),p, Player.getWorld());
-	}
+	}*/
 	public void setCheating() {
 		cheating = true;
 	}

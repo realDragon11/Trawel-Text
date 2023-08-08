@@ -129,13 +129,13 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 					@Override
 					public boolean go() {
-						if (Player.getGold() < Player.player.merchantBookPrice) {
+						if (Player.player.getGold() < Player.player.merchantBookPrice) {
 							extra.println("You can't afford that many books!");
 							return false;
 						}
 						extra.println("Buying lots of books might increase your knowledge- buy?");
 						if (extra.yesNo()) {
-							Player.addGold(-Player.player.merchantBookPrice);
+							Player.player.addGold(-Player.player.merchantBookPrice);
 							if (extra.chanceIn(1, 2)) {
 								Player.player.merchantBookPrice*=1.5f;
 								Player.bag.addNewDrawBane(DrawBane.KNOW_FRAG);
@@ -155,13 +155,13 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 					@Override
 					public boolean go() {
-						if (Player.getGold() < Player.player.merchantBookPrice) {
+						if (Player.player.getGold() < Player.player.merchantBookPrice) {
 							extra.println("You can't afford that many beers!");
 							return false;
 						}
 						extra.println("Beer increases your hp in battle, one use per beer- buy 20 of them?");
 						if (extra.yesNo()) {
-							Player.addGold(-(100*(town.getTier())));
+							Player.player.addGold(-(100*(town.getTier())));
 							Player.player.getPerson().addBeer(20);
 						}
 						return false;

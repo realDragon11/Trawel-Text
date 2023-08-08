@@ -298,7 +298,7 @@ public class MineNode implements NodeType{
 			case "copper": mult1 = 1; mult2 = 3;break;
 			}
 			int gold = extra.randRange(0,2)+extra.randRange(mult1,mult2)*node.level;
-			Player.addGold(gold);
+			Player.player.addGold(gold);
 			extra.println("You mine the vein for "+node.storage1+" worth "+ World.currentMoneyDisplay(gold) + ".");
 			node.state = 1;
 			node.name = "empty "+node.storage1+" vein";

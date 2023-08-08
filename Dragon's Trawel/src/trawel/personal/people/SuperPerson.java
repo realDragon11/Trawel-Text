@@ -9,6 +9,8 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.extra;
+import trawel.mainGame;
+import trawel.battle.Combat;
 import trawel.battle.attacks.WeaponAttackFactory;
 import trawel.personal.Person;
 import trawel.personal.classless.IHasSkills;
@@ -18,6 +20,7 @@ import trawel.personal.classless.SkillAttackConf;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.time.CanPassTime;
 import trawel.towns.Town;
+import trawel.towns.World;
 
 public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 
@@ -28,6 +31,9 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	
 	protected int featPicks = 0;
 	protected byte sAttCount = 0;
+	
+	public List<Integer> moneys;
+	public List<World> moneymappings;
 	
 	/**
 	 * used for the player swapping out configs
@@ -279,5 +285,193 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 			}
 			return false;
 		}
+	}
+	
+	public int getGold() {
+		World w = getWorld();
+		if (w == null) {
+			return 0;
+		}
+		return getGold(w);
+	}
+	public void addGold(int delta) {
+		World w = getWorld();
+		if (w == null) {
+			throw new RuntimeException("invalid location for adding money in superperson");
+		}
+		addGold(delta,w);
+	}
+	
+	public int getGold(World w) {
+		int index = moneymappings.indexOf(w);
+		if (index == -1) {
+			moneymappings.add(w);
+			moneys.add(0);
+			return 0;
+		}
+		return moneys.get(index);
+	}
+	
+	public void addGold(int delta,World w) {
+		int index = moneymappings.indexOf(w);
+		if (index == -1) {
+			moneymappings.add(w);
+			moneys.add(Math.max(0, delta));
+			return;
+		}
+		moneys.set(index, Math.max(0,moneys.get(index)+delta));
+	}
+	
+	/**
+	 * subtracts and prints failure for the caller
+	 * @param aether
+	 * @param money
+	 * @return if bought successfully
+	 */
+	public boolean doCanBuy(int aether, int money) {
+		int hasMoney = getGold();
+		int hasAether = Player.bag.getAether();
+		Person p = getPerson();
+		if (hasAether >= aether) {
+			if (hasMoney < money) {
+				if (!p.isPlayer()) {
+					return false;
+				}
+				extra.println("Not enough " + World.currentMoneyString()+"!");
+				return false;
+			}else {
+				if (money > 0) {//if we're not in a place, gold = 0 so we don't run this
+					addGold(-money);
+				}
+				p.getBag().addAether(-aether);
+				return true;
+			}
+		}else {
+			if (hasMoney < money) {
+				if (!p.isPlayer()) {
+					return false;
+				}
+				extra.println("Not enough aether or " + World.currentMoneyString()+"!");
+				return false;
+			}else {
+				if (!p.isPlayer()) {
+					return false;
+				}
+				extra.println("Not enough aether!");
+				return false;
+			}
+		}
+	}
+	
+	public boolean getCanBuy(int aether, int money) {
+		int hasMoney = getGold();
+		Person p = getPerson();
+		int hasAether = p.getBag().getAether();
+		if (hasAether >= aether) {
+			if (hasMoney < money) {
+				if (!p.isPlayer()) {
+					return false;
+				}
+				extra.println("Not enough " + World.currentMoneyString()+"!");
+				return false;
+			}else {
+				return true;
+			}
+		}else {
+			if (hasMoney < money) {
+				if (!p.isPlayer()) {
+					return false;
+				}
+				extra.println("Not enough aether or " + World.currentMoneyString()+"!");
+				return false;
+			}else {
+				if (!p.isPlayer()) {
+					return false;
+				}
+				extra.println("Not enough aether!");
+				return false;
+			}
+		}
+	}
+	
+	public boolean canBuyMoneyAmount(int money,float aetherRate) {
+		int hasMoney = getGold();
+		int hasAether = Player.bag.getAether();
+		return hasMoney+ (int)(hasAether*aetherRate) >= money;
+	}
+	
+	public boolean canBuyMoneyAmount(int money) {
+		return canBuyMoneyAmount(money,Player.NORMAL_AETHER_RATE);
+	}
+	
+	public int getTotalBuyPower(int aetherpermoney) {
+		return getGold()+(Player.bag.getAether()/aetherpermoney);
+	}
+	
+	public int getTotalBuyPower(float aetherRate) {
+		return getGold()+ (int)(Player.bag.getAether()*aetherRate);
+	}
+	public int getTotalBuyPower() {
+		return getTotalBuyPower(Player.NORMAL_AETHER_RATE);
+	}
+	
+	public void buyMoneyAmountRateInt(int money,int aetherPer) {
+		int value = money;
+		int gold = getGold();
+		if (gold >= value) {
+			addGold(-value);//if we're not in a place, gold = 0 so we don't run this
+			return;
+		}
+		value-=gold;
+		getPerson().getBag().addAether( -value*aetherPer);
+	}
+	
+	public void buyMoneyAmount(int money,float aetherRate) {
+		int value = money;
+		int gold = getGold();
+		if (gold >= value) {
+			addGold(-value);//if we're not in a place, gold = 0 so we don't run this
+			return;
+		}
+		value-=gold;
+		getPerson().getBag().addAether( -((int)(value/aetherRate)));
+	}
+	public void buyMoneyAmount(int money) {
+		buyMoneyAmount(money,Player.NORMAL_AETHER_RATE);
+	}
+	
+	/**
+	 * superperson will lose up to i gold, and this will return how much they lose
+	 * <br>
+	 * if they were broke will return -1
+	 * <br>
+	 * 0 will be returned if i == 0
+	 * <BR>
+	 * WARNING: will throw if not in a location
+	 * @param i
+	 */
+	public int loseGold(int i) {
+		if (i == 0) {
+			return 0;
+		}
+		int has = getGold();
+		if (has == 0) {
+			return -1;
+		}
+		int lose = Math.max(has,i);
+		addGold(-lose);
+		return lose;
+	}
+	
+	public Combat fightWith(Person p) {
+		return mainGame.CombatTwo(getPerson(),p,getWorld());
+	}
+	
+	public World getWorld() {
+		Person p = getPerson();
+		if (p.isPlayer()) {
+			return Player.getPlayerWorld();
+		}
+		return location == null ? null : location.getIsland().getWorld();
 	}
 }
