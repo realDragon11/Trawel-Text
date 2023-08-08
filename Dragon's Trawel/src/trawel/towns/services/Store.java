@@ -22,6 +22,7 @@ import trawel.personal.item.body.Race;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Weapon;
+import trawel.personal.item.solid.DrawBane.DrawList;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
@@ -71,7 +72,8 @@ public class Store extends Feature{
 	
 	public Store(int tier) {
 		this();
-		type = extra.getRand().nextInt(7);//6 = general
+		//not set stores are now always general stores
+		type = 6;//extra.getRand().nextInt(7);//6 = general
 		this.generate(tier, type);
 	}
 	public Store(int tier, int type) {
@@ -112,8 +114,9 @@ public class Store extends Feature{
 		case 5: name = extra.choose("weapon","arms","armament","war");break;
 		case 6: name = extra.choose("general","flea","convenience","trading","super");break;
 		case 7: name = extra.choose("race","species");break;
-		case 8: name = extra.choose("drawbane","lure");break;
+		case 8: name = extra.choose("drawbane");break;//misc
 		case 9: name = extra.choose("witch","potion");break;
+		case 10: name = extra.choose("food");break;
 		}
 		name += " " + extra.choose("store","market","shop","post","boutique","emporium","outlet","center","mart","stand");
 		if (type < 8) {
@@ -145,25 +148,17 @@ public class Store extends Feature{
 			}
 		}
 		
-		if (type == 8) {
+		if (type >=8 ) {
 			dbs = new ArrayList<DrawBane>();
 			for (int j = 0;j < 5;j++) {
-				dbs.add(randomDB());
+				addAnItem();
 			}
-		}
-		if (type == 9) {
-			dbs = new ArrayList<DrawBane>();
-			for (int j = 0;j < 5;j++) {
-				dbs.add(randomPI());
-			}
+			
 		}
 	}
 	
 	//TODO put these in tables elsewhere TODO
 	
-	public static DrawBane randomDB() {
-		return extra.choose(DrawBane.MEAT,DrawBane.GARLIC,DrawBane.BLOOD,DrawBane.REPEL,DrawBane.CLEANER,extra.choose(DrawBane.PROTECTIVE_WARD,DrawBane.SILVER,extra.choose(DrawBane.SILVER,DrawBane.GOLD,DrawBane.VIRGIN)));
-	}
 	
 	public static DrawBane randomPI() {
 		return extra.choose(DrawBane.MEAT,DrawBane.BAT_WING,DrawBane.APPLE,DrawBane.CEON_STONE,DrawBane.MIMIC_GUTS,DrawBane.BLOOD);
@@ -528,24 +523,31 @@ public class Store extends Feature{
 	private void addBuy() {
 		this.buys +=1;
 		if (buys == 3) {
-			Player.player.addTitle(this.getName() + " shopper");
+			Player.player.addTitle(town.getName() + " "+ getStoreName() + " shopper");
 		}
 		if (buys == 10) {
-			Player.player.addTitle(this.getName() + " frequent shopper");
+			Player.player.addTitle(town.getName() + " "+getStoreName() + " frequent shopper");
 		}
 	}
 	
+	/**
+	 * substores override this
+	 */
+	protected String getStoreName() {
+		return name;
+	}
+	
 	public void addAnItem() {
-		if (type == 8) {
+		if (type >= 8) {
 			if (dbs.size() >= invSize) {
-				dbs.remove(extra.randList(dbs));}
-			dbs.add(randomDB());
-			return;
-		}
-		if (type == 9) {
-			if (dbs.size() >= invSize) {
-				dbs.remove(extra.randList(dbs));}
-			dbs.add(randomPI());
+				dbs.remove(extra.randRange(0,dbs.size()));
+			}
+			switch (type) {
+			case 8:
+				dbs.add(DrawBane.draw(DrawList.GENERIC_STORE));
+				return;
+			}
+			
 			return;
 		}
 		if (items.size() >= invSize) {

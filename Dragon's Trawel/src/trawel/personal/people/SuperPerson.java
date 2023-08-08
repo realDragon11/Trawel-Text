@@ -25,6 +25,11 @@ import trawel.towns.World;
 public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 
 	private static final long serialVersionUID = 1L;
+	/**
+	 * TODO: make not a list of strings, can have titles that are more dynamic
+	 * <br>
+	 * such as upgradable and things that can generate their names from existing things like features
+	 */
 	protected List<String> titleList = new ArrayList<String>();
 	private Town location;
 	protected SkillAttackConf[] attConfs = null;

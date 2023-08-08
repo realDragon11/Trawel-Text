@@ -40,6 +40,11 @@ public class WitchHut extends Store{
 	}
 	
 	@Override
+	protected String getStoreName() {
+		return storename;
+	}
+	
+	@Override
 	public String getColor() {
 		return extra.F_SERVICE_MAGIC;
 	}

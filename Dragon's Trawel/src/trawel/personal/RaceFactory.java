@@ -17,6 +17,7 @@ import trawel.personal.item.body.Race;
 import trawel.personal.item.body.SoundBox;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.DrawBane;
+import trawel.personal.item.solid.DrawBane.DrawList;
 import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponType;
@@ -1195,11 +1196,16 @@ public class RaceFactory {
 		Person w = new Person(level);
 		w.hTask = HostileTask.DUEL;
 		w.facRep.addFactionRep(Faction.MERCHANT,5*level,0);
-		w.getBag().getDrawBanes().add(DrawBane.forCollector());
-		w.getBag().getDrawBanes().add(DrawBane.forCollector());
+		List<DrawBane> dbs = w.getBag().getDrawBanes();
+		dbs.add(DrawBane.draw(DrawList.COLLECTOR));
+		if (extra.chanceIn(2,3)) {
+			dbs.add(DrawBane.draw(DrawList.COLLECTOR));
+		}
+		if (extra.chanceIn(2,4)) {
+			dbs.add(DrawBane.draw(DrawList.COLLECTOR));
+		}
 		extra.popPrintStack();
 		w.setTitle(randomLists.randomCollectorName());
-		//w.updateSkills();
 		return w;
 	}
 	public static Person getCultist(int level) {

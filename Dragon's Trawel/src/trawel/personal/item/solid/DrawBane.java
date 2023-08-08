@@ -1,5 +1,7 @@
 package trawel.personal.item.solid;
 
+import com.github.yellowstonegames.core.WeightedTable;
+
 import trawel.extra;
 
 public enum DrawBane {
@@ -73,9 +75,88 @@ public enum DrawBane {
 		return anyBrew;
 	}
 	
-	public static DrawBane forCollector() {
-		return extra.choose(REPEL,CEON_STONE,LIVING_FLAME,TELESCOPE,PROTECTIVE_WARD,SILVER,extra.choose(UNICORN_HORN,GOLD,VIRGIN,KNOW_FRAG));
+	public enum DrawList{
+		COLLECTOR, GENERIC_STORE, WITCH_STORE;
 	}
+	
+	public static void setup() {
+		DrawList[] vals = DrawList.values();
+		int size = vals.length;
+		weightList = new WeightedTable[size];
+		subLists = new DrawBane[size][];
+		for (int i = size-1; i >=0 ;i--) {
+			float[] weight;
+			DrawBane[] list;
+			switch (vals[i]) {
+			case COLLECTOR:
+				weight = new float[10];
+				list = new DrawBane[10];
+				
+				weight[0] = 2f;
+				list[0] = REPEL;
+				weight[1] = 1f;
+				list[1] = CEON_STONE;
+				weight[2] = 1f;
+				list[2] = LIVING_FLAME;
+				weight[3] = 4f;
+				list[3] = TELESCOPE;
+				weight[4] = 1.5f;
+				list[4] = PROTECTIVE_WARD;
+				weight[5] = 1f;
+				list[5] = SILVER;
+				weight[6] = .6f;
+				list[6] = UNICORN_HORN;
+				weight[7] = .3f;
+				list[7] = GOLD;
+				weight[8] = .1f;
+				list[8] = PUMPKIN;
+				weight[9] = .5f;
+				list[9] = KNOW_FRAG;
+				
+				subLists[i] = list;
+				weightList[i] = new WeightedTable(weight);
+				break;
+		case GENERIC_STORE:
+			weight = new float[9];
+			list = new DrawBane[9];
+			
+			weight[0] = 3f;
+			list[0] = MEAT;
+			weight[1] = 2f;
+			list[1] = GARLIC;
+			weight[2] = .5f;
+			list[2] = BLOOD;
+			weight[3] = 4f;
+			list[3] = REPEL;
+			weight[4] = 2f;
+			list[4] = CLEANER;
+			weight[5] = .7f;
+			list[5] = SILVER;
+			weight[6] = .5f;
+			list[6] = PROTECTIVE_WARD;
+			weight[7] = .1f;
+			list[7] = GOLD;
+			weight[8] = .1f;
+			list[8] = TRUFFLE;
+			
+			subLists[i] = list;
+			weightList[i] = new WeightedTable(weight);
+			break;
+		}
+		}
+	}
+	
+	public static DrawBane randomPI() {
+		return extra.choose(DrawBane.MEAT,DrawBane.BAT_WING,DrawBane.APPLE,DrawBane.CEON_STONE,DrawBane.MIMIC_GUTS,DrawBane.BLOOD);
+	}
+	
+	public static DrawBane draw(DrawList list) {
+		return subLists[list.ordinal()][weightList[list.ordinal()].random(extra.getRand())];
+	}
+	
+	
+	private static WeightedTable[] weightList;
+	private static DrawBane[][] subLists;
 	
 	
 }
