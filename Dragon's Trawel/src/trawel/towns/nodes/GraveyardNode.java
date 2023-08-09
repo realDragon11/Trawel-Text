@@ -83,7 +83,9 @@ public class GraveyardNode implements NodeType{
 	public void apply(NodeConnector holder,int madeNode) {
 		switch (holder.getEventNum(madeNode)) {
 		//case -1:made.name = extra.choose("stairs","ladder"); made.interactString = "traverse "+made.name;made.setForceGo(true);break;
-		case 1: made.name = DEF_NAME; made.storage1 =  RaceFactory.getGravedigger(made.level); made.interactString = DEF_INTERACT;break;
+		case 1: 
+			holder.setStorage(madeNode, RaceFactory.makeGravedigger(holder.getLevel(madeNode)));
+			break;
 		case 2: made.name = DEF_NAME; made.interactString = DEF_INTERACT;made.storage1 = RaceFactory.getGraverobber(made.level);break;
 		
 		case 3: ArrayList<Person> list = new ArrayList<Person>();
@@ -119,10 +121,9 @@ public class GraveyardNode implements NodeType{
 	}
 	
 	@Override
-	public boolean interact(NodeConnector node) {
-		this.node = node;
-		switch(node.eventNum) {
-		case -1: Networking.sendStrong("PlayDelay|sound_footsteps|1|"); break;
+	public boolean interact(NodeConnector holder, int node) {
+		switch(holder.getEventNum(node)) {
+		//case -1: Networking.sendStrong("PlayDelay|sound_footsteps|1|"); break;
 		case 1:graveDigger(); break;
 		case 2: mugger1(); if (node.state == 0) {return true;};break;
 		case 3: return packOfBats();

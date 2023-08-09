@@ -237,6 +237,7 @@ public class GenericNode implements NodeType {
 	protected static void applyGenericVein(NodeConnector holder,int node, int maxValueTier) {
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.VEIN_MINERAL.ordinal());
+		holder.addVein();//gem veins count now
 		String mineral = null;
 		if (maxValueTier > 0) {
 			if (extra.chanceIn(1, 6)) {

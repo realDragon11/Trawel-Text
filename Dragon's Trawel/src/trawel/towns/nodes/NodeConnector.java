@@ -588,5 +588,13 @@ public class NodeConnector implements Serializable {
 	public World getWorld() {
 		return parent.getTown().getIsland().getWorld();
 	}
+
+
+	public void addVein() {
+		assert parent != null;
+		if (parent instanceof Mine) {
+			((Mine)parent).addVein();
+		}
+	}
 	
 }

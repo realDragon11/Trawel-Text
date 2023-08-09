@@ -1172,8 +1172,11 @@ public class Person implements java.io.Serializable{
 	 * @return String - full name
 	 */
 	public String getName() {
-		if (title == "") {
+		if (title == "" || title == null) {
 			return firstName;
+		}
+		if (title.startsWith(",")) {
+			return firstName+title;
 		}
 		return firstName + " " + title;
 	}

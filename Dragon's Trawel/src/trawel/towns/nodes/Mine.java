@@ -1,6 +1,8 @@
 package trawel.towns.nodes;
 import trawel.Networking;
 import trawel.extra;
+import trawel.personal.classless.Perk;
+import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.towns.Town;
 
@@ -47,6 +49,7 @@ public class Mine extends NodeFeature {
 		veinsLeft--;
 		if (veinsLeft == 0 && shape.equals(Shape.NONE)) {
 			Networking.unlockAchievement("mine1");
+			Player.player.getPerson().setPerk(Perk.MINE_ALL_VEINS);
 		}
 	}
 	
@@ -59,7 +62,9 @@ public class Mine extends NodeFeature {
 	protected byte bossType() {
 		return 2;
 	}
-	
-
+	@Override
+	public String sizeDesc() {
+		return " S: " + start.getSize() + " V: " +veinsLeft;
+	}
 
 }

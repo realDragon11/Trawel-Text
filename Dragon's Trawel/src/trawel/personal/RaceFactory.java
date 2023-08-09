@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
+import trawel.Effect;
 import trawel.extra;
 import trawel.randomLists;
 import trawel.battle.attacks.TargetFactory;
@@ -1290,39 +1291,89 @@ public class RaceFactory {
 		return w;
 	}
 	
-	public static Person getGraverobber(int level) {
+	public static Person makeGraverobber(int level) {
 		extra.offPrintStack();
-		Person w = new Person(level,AIJob.GRAVER);
-		w.facRep.addFactionRep(Faction.ROGUE,extra.randRange(10,20)*level, 0);
-		w.facRep.addFactionRep(Faction.HEROIC,0, 10*level);
+		Person w;
+		List<DrawBane> list;
+		int rarityMult;
+		if (extra.chanceIn(3,4)) {
+			//comes here often
+			w = new Person(level,AIJob.GRAVER);
+			list = w.getBag().getDrawBanes();
+			w.setPerk(Perk.GRAVEYARD_SIGHT);
+			if (extra.chanceIn(1,3)) {
+				list.add(DrawBane.SILVER);
+			}else {
+				list.add(DrawBane.GRAVE_DIRT);
+			}
+			w.facRep.addFactionRep(Faction.ROGUE,15*level, 0);
+			rarityMult = 2;
+		}else {
+			//more generic robber
+			if (extra.chanceIn(1,2)) {
+				//higher cut of thief
+				w = new Person(level,AIJob.ROGUE);
+				w.facRep.addFactionRep(Faction.ROGUE,20*level, 0);
+				rarityMult = 3;
+			}else {//afraid of graveyard
+				w = new Person(level);
+				w.setPersonType(PersonType.COWARDLY);
+				w.addEffect(Effect.CURSE);
+				w.facRep.addFactionRep(Faction.ROGUE,10*level, 0);
+				rarityMult = 1;
+			}
+			list = w.getBag().getDrawBanes();
+		}
 		w.hTask = HostileTask.MUG;
-		if (extra.chanceIn(1,50)) {
-			w.getBag().getDrawBanes().add(DrawBane.GOLD);
-		}
-		if (extra.chanceIn(1,25)) {
-			w.getBag().getDrawBanes().add(DrawBane.SILVER);
-		}
-		if (extra.chanceIn(1,4)) {
-			w.getBag().getDrawBanes().add(DrawBane.GRAVE_DIRT);
+		w.facRep.addFactionRep(Faction.HEROIC,0, 10*level);
+		if (extra.chanceIn(rarityMult,8)) {
+			if (extra.chanceIn(rarityMult,20)) {
+				list.add(DrawBane.GOLD);
+			}else {
+				list.add(DrawBane.SILVER);
+			}
+			
 		}
 		extra.popPrintStack();
-		//w.updateSkills();
 		return w;
 	}
 	
-	public static Person getGravedigger(int level) {
+	public static Person makeGravedigger(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level,AIJob.GRAVER);
+		w.setPerk(Perk.GRAVEYARD_SIGHT);
 		w.hTask = HostileTask.PEACE;
-		w.getBag().getDrawBanes().add(DrawBane.GRAVE_DIRT);
-		if (extra.chanceIn(1,4)) {
-			w.getBag().getDrawBanes().add(DrawBane.GARLIC);
-		}
-		if (extra.chanceIn(1,8)) {
-			w.getBag().getDrawBanes().add(DrawBane.PROTECTIVE_WARD);
+		List<DrawBane> list = w.getBag().getDrawBanes();
+		list.add(DrawBane.GRAVE_DIRT);
+		if (extra.chanceIn(1,8)) {//can afford full protection
+			list.add(DrawBane.PROTECTIVE_WARD);
+			w.getBag().addGold(level);//extra money
+			w.facRep.addFactionRep(Faction.HUNTER,level,0);
+			w.facRep.addFactionRep(Faction.MERCHANT,level,0);
+			w.getBag().getHand().improveEnchantChance(level);//improve weapon enchant
+			w.setTitle(randomLists.randomCollectorName());
+		}else {
+			if (extra.chanceIn(3,4)) {//undead tool for protection
+				if (extra.chanceIn(1,3)) {
+					list.add(DrawBane.SILVER);
+					//combatative
+					w.addBlood(2);
+					w.facRep.addFactionRep(Faction.HUNTER,5*level,0);
+					w.facRep.addFactionRep(Faction.HEROIC,2*level,0);
+					w.getBag().getHand().transmuteWeapMat(MaterialFactory.getMat("silver"));
+					w.hTask = HostileTask.HUNT;
+					w.setTitle(randomLists.randomHunterTitle());
+				}else {
+					list.add(DrawBane.GARLIC);
+				}
+				if (extra.chanceIn(1,2)) {
+					list.add(DrawBane.GARLIC);//chance of more for either outcome
+				}
+			}else {
+				list.add(DrawBane.GRAVE_DIRT);//didn't get any, so just more grave dirt
+			}
 		}
 		extra.popPrintStack();
-		//w.updateSkills();
 		return w;
 	}
 

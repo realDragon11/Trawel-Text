@@ -9,5 +9,9 @@ public enum HostileTask{
 	ANIMAL,
 	DUEL,
 	REVENGE,
-	GUARD_DUNGEON, BOSS, LUMBER, LAW,
+	GUARD_DUNGEON,
+	BOSS,
+	LUMBER,
+	LAW,
+	HUNT
 }

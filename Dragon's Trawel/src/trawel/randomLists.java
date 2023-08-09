@@ -25,9 +25,11 @@ public class randomLists {
 	private static StringResult commonElements, rareElements, randMats = null, colorList, normalFirstNames, theTitles,
 			doerTitles, animals, wolfNames,bearNames,batNames, entNames, waterNames,
 			fighterTypes,muggerTypes,collectTypes,theAlphaTitles,theLargeTitles, attackMisses, attackNegates, attackDodges
-			//following have fallbacks if not loaded, and you can avoid filling them in for test purposes
-			
+			,hunterTitles,thingsToSlay,slayerTitleToSlay
 			;
+	/**
+	 * following have fallbacks if not loaded, and you can avoid filling them in for test purposes
+	 */
 	private static StringNum powerAdj = new SRInOrder(""), powerAdjFront = new SRInOrder("");
 	//NOTE: any =null means it should use a lazyloaded getter instead
 	public static void init() {
@@ -60,6 +62,9 @@ public class randomLists {
 		attackMisses = new SRPlainRandom("They miss!","It's a miss!","It's not even close!");
 		attackDodges = new SRPlainRandom("The attack is dodged!","It's sidestepped!","A narrow miss!");
 		attackNegates = new SRPlainRandom("But it is ineffective...","The armor deflects the blow!","However, the attack fails to deal damage through the armor.");
+		hunterTitles = new SRPlainRandom("the Hunter","the Slayer","the Tracker","the Trapper","the Exterminator",", Monster Hunter",", Seeker",", Exterminator for Hire");
+		thingsToSlay = new SRPlainRandom("Vampire","Vampire","Vampire","Wolf","Harpy","Drudger","Mimic","Reaver");
+		slayerTitleToSlay = new SRPlainRandom("Slayer","Hunter","Killer","Exterminator","Butcher","Decimator","Eradicator","Expunger");
 	}
 	
 	//our lazyloaded lists
@@ -212,5 +217,12 @@ public class randomLists {
 	
 	public static StringNum powerMightyAdj(boolean before) {
 		return before ? powerAdjFront : powerAdj;
+	}
+
+	public static String randomHunterTitle() {
+		if (extra.chanceIn(1,5)) {
+			return extra.choose(", "," the ")+ thingsToSlay.next() + " " +slayerTitleToSlay.next();
+		}
+		return hunterTitles.next();
 	}
 }
