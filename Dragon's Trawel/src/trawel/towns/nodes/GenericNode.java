@@ -7,8 +7,11 @@ import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceID;
 import trawel.personal.item.solid.DrawBane;
+import trawel.personal.item.solid.Material;
+import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
+import trawel.towns.World;
 import trawel.towns.nodes.NodeConnector.NodeFlag;
 
 public class GenericNode implements NodeType {
@@ -72,7 +75,7 @@ public class GenericNode implements NodeType {
 		case DEAD_STRING_TOTAL:
 			break;
 		case VEIN_MINERAL:
-			break;
+			return genericVein(holder, node);
 		}
 		return false;
 	}
@@ -120,6 +123,14 @@ public class GenericNode implements NodeType {
 			return "Examine body.";
 		case BASIC_DUEL_PERSON:
 			return holder.getStorageAsArray(node)[2].toString();
+		case VEIN_MINERAL:
+			int mstate = holder.getStateNum(node);
+			String vmatName = holder.getStorageFirstClass(node,String.class);
+			Material vmat = MaterialFactory.getMat(vmatName);
+			if (mstate == 0) {
+				return "Mine the " + vmat.color +vmatName+".";
+			}
+			return "Examine the vein.";
 		}
 		return null;
 	}
@@ -139,8 +150,13 @@ public class GenericNode implements NodeType {
 		case DEAD_STRING_TOTAL:
 			return holder.getStorageAsArray(node)[0].toString();
 		case VEIN_MINERAL:
-			//TODO
-			break;
+			int mstate = holder.getStateNum(node);
+			String vmatName = holder.getStorageFirstClass(node,String.class);
+			Material vmat = MaterialFactory.getMat(vmatName);
+			if (mstate == 0) {
+				return "Vein of " + vmat.color +vmatName;//needs to have the vein first so it can have the color applied to it
+			}
+			return "Mined Vein";
 		}
 		return null;
 	}
@@ -204,6 +220,106 @@ public class GenericNode implements NodeType {
 		String str = RaceID.values()[i].name;
 		extra.println(extra.choose("The " + str + " is dead.","The "+str+" lies here, dead."));//TODO use inserts in a global dead body fluffer
 		holder.findBehind(node,"body parts");
+		return false;
+	}
+	
+	/**
+	 * maxValueTier is 0 to 3
+	 * <br>
+	 * 0 tier is from tin to iron with a chance of tin to gold; it is the only tier that can't turn into gems
+	 * <br>
+	 * 1 tier is from tin to iron with a chance of tin to platinum
+	 * <br>
+	 * 2 tier is from tin to silver with a chance of iron to moonsilver
+	 * <br>
+	 * 3 tier is from tin to gold with a chance of tin to adamantine
+	 */
+	protected static void applyGenericVein(NodeConnector holder,int node, int maxValueTier) {
+		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
+		holder.setEventNum(node,Generic.VEIN_MINERAL.ordinal());
+		String mineral = null;
+		if (maxValueTier > 0) {
+			if (extra.chanceIn(1, 6)) {
+				mineral = extra.choose("emerald","ruby","sapphire");
+			}else {
+				switch (maxValueTier) {
+				case 1:
+					if (extra.chanceIn(1,3)) {
+						mineral = extra.choose("tin","copper","iron","silver","gold","platinum");
+					}else {
+						mineral = extra.choose("tin","copper","iron");
+					}
+					break;
+				case 2:
+					if (extra.chanceIn(1,3)) {
+						mineral = extra.choose("iron","silver","gold","platinum","moonsilver");
+					}else {
+						mineral = extra.choose("tin","copper","iron","silver");
+					}
+					break;
+				case 3:
+					if (extra.chanceIn(1,3)) {
+						mineral = extra.choose("silver","gold","platinum","moonsilver","mythril","adamantine");
+					}else {
+						mineral = extra.choose("tin","copper","iron","silver","gold");
+					}
+					break;
+				}
+			}
+		}else {
+			if (extra.chanceIn(1,3)) {
+				mineral = extra.choose("tin","copper","iron","silver","gold");
+			}else {
+				mineral = extra.choose("tin","copper","iron");
+			}
+		}
+		holder.setStorage(node, new Object[]{mineral});
+	}
+	
+	protected static void applyGenericGemVein(NodeConnector holder,int node) {
+		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
+		holder.setEventNum(node,Generic.VEIN_MINERAL.ordinal());
+		holder.setStorage(node, new Object[]{extra.choose("emerald","ruby","sapphire")});
+	}
+	
+	private boolean genericVein(NodeConnector holder,int node) {
+		String matName = holder.getStorageFirstClass(node,String.class);
+		Material m = MaterialFactory.getMat(matName);
+		if (holder.getStateNum(node) == 0) {
+			Networking.unlockAchievement("ore1");
+			int subType = 0;
+			switch (matName) {
+			case "emerald":
+				subType = 1;
+				Player.player.emeralds++;
+				extra.println("You mine the vein and claim an "+m.color+"emerald!");
+				break;
+			case "ruby":
+				Player.player.rubies++;
+				extra.println("You mine the vein and claim a "+m.color+"ruby!");
+				subType = 2;
+				break;
+			case "sapphire":
+				Player.player.sapphires++;
+				extra.println("You mine the vein and claim a "+m.color+"sapphire!");
+				subType = 3;
+				break;
+			default:
+				int reward = extra.randRange(0,1)+m.veinReward;
+				Player.player.addGold(reward);
+				extra.println("You mine the vein of "+ World.currentMoneyDisplay(reward)+ " worth of "+m.color+matName+".");
+				break;
+			}
+			holder.setStateNum(node,1);
+			/*
+			node.name = "empty "+node.storage1+" vein";
+			node.interactString = "examine empty "+node.storage1+" vein";*/
+			((Mine)holder.parent).removeVein();
+			holder.findBehind(node,"empty "+m.color+matName+"vein");//instant chance so they want to mine more
+		}else {
+			extra.println("The "+m.color+matName+" has already been mined.");
+			holder.findBehind(node,"empty "+m.color+matName+"vein");
+		}
 		return false;
 	}
 

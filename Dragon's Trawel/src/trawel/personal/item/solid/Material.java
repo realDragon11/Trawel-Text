@@ -19,6 +19,10 @@ public class Material{
 	public int palIndex;
 	public String soundType;
 	public String color = "";
+	/**
+	 * used for mined veins, don't set if not needed
+	 */
+	public int veinReward;
 	
 	/**
 	 * defaults to 1f

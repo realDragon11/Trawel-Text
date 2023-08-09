@@ -122,6 +122,7 @@ public class MaterialFactory {
 		misc.palIndex = 0;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(131,145,169));
+		misc.veinReward = 2;
 		register(misc);
 		
 		misc = new Material();//DOLATER: beta numbers
@@ -150,6 +151,7 @@ public class MaterialFactory {
 		misc.palIndex = 1;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(169,94,60));
+		misc.veinReward = 1;
 		register(misc);
 		
 		misc = new Material();//DOLATER: beta numbers
@@ -178,6 +180,7 @@ public class MaterialFactory {
 		misc.palIndex = 2;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(198,198,198));
+		misc.veinReward = 1;
 		register(misc);
 		
 		misc = new Material();//DOLATER: beta numbers
@@ -266,6 +269,7 @@ public class MaterialFactory {
 		misc.soundType = "metal";
 		misc.moneyMultTradeMult = .8f;
 		misc.color = extra.inlineColor(new Color(236,236,236));
+		misc.veinReward = 4;
 		register(misc);
 		
 		misc = new Material();
@@ -297,6 +301,7 @@ public class MaterialFactory {
 		misc.soundType = "metal";
 		misc.moneyMultTradeMult = .6f;
 		misc.color = extra.inlineColor(new Color(203,185,83));
+		misc.veinReward = 6;
 		register(misc);
 		
 		misc = new Material();
@@ -359,6 +364,7 @@ public class MaterialFactory {
 		misc.soundType = "metal";
 		misc.moneyMultTradeMult = .7f;
 		misc.color = extra.inlineColor(new Color(236,236,236));
+		misc.veinReward = 8;
 		register(misc);
 		
 		misc = new Material();
@@ -388,6 +394,7 @@ public class MaterialFactory {
 		misc.freezeVul = 1.5f;
 		misc.palIndex = 9;
 		misc.soundType = "metal";
+		misc.veinReward = 10;
 		misc.color = extra.inlineColor(new Color(151,131,169));
 		register(misc);
 		
@@ -426,6 +433,7 @@ public class MaterialFactory {
 		misc.freezeVul = 0;
 		misc.palIndex = 10;
 		misc.soundType = "metal";
+		misc.veinReward = 12;
 		misc.color = extra.inlineColor(new Color(160,182,255));
 		register(misc);
 		
@@ -512,6 +520,7 @@ public class MaterialFactory {
 		misc.freezeVul = 2;
 		misc.palIndex = 13;
 		misc.soundType = "metal";
+		misc.veinReward = 8;
 		misc.color = extra.inlineColor(new Color(255,255,255));
 		register(misc);
 		

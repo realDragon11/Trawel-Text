@@ -25,12 +25,12 @@ import trawel.towns.services.Oracle;
 
 public class MineNode implements NodeType{
 	
-	private static final int EVENT_NUMBER = 9;
+	private static final int EVENT_NUMBER = 10;
 	
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
-		int idNum =-1;
-		NodeConnector make = new NodeConnector();
+		//int idNum =-1;
+		/*
 		if (extra.chanceIn(1, 5)) {
 			if (extra.chanceIn(1, 30)) {
 				idNum = 1;//vein, generic'd
@@ -38,11 +38,11 @@ public class MineNode implements NodeType{
 				idNum = 2;//gem vein
 			}
 			
-		}
+		}*/
 		
-		if (idNum == -1) {
-			extra.randRange(1,EVENT_NUMBER);
-		}
+		//if (idNum == -1) {
+		int idNum = extra.randRange(1,EVENT_NUMBER);
+		//}
 		
 		
 		int ret = holder.newNode(NodeType.NodeTypeNum.MINE.ordinal(),idNum,tier);
@@ -151,14 +151,11 @@ public class MineNode implements NodeType{
 		case 2: 
 			holder.setStorage(madeNode, extra.choose("river","pond","lake","stream"));
 			break;
-		case 3: 
-			made.storage1 = extra.choose("silver","gold","platinum","iron","copper");
-			made.name = made.storage1+" vein";
-			made.interactString = "mine "+made.storage1;break;
-		case 4:
-			Person mugger = RaceFactory.makeMuggerWithTitle(holder.getLevel(madeNode));
-			String mugName = p.getTitle();
-			GenericNode.setBasicRagePerson(holder,madeNode, p,warName,extra.capFirst(mugName) + " attacks you!");
+		case 3: //common minerals
+			GenericNode.applyGenericVein(holder, madeNode,2);
+			break;
+		case 4: //rare also allowed
+			GenericNode.applyGenericVein(holder, madeNode,3);
 			break;
 		case 5:
 			holder.setStorage(madeNode,extra.choose("locked door","barricaded door","padlocked door"));
@@ -167,7 +164,7 @@ public class MineNode implements NodeType{
 			//made.interactString = "unlock door";
 			break;
 		case 6:
-			String cColor = randomLists.randomColor();
+			String cColor = randomLists.randomColor();//TODO: get color with color code attached to it
 			holder.setStorage(madeNode, cColor);
 			//made.interactString = "examine crystals";
 			//made.storage1 = randomLists.randomColor();
@@ -201,6 +198,11 @@ public class MineNode implements NodeType{
 			}
 			holder.setStorage(madeNode, cultPeeps);
 		break;
+		case 10:
+			Person mugger = RaceFactory.makeMuggerWithTitle(holder.getLevel(madeNode));
+			String mugName = mugger.getTitle();
+			GenericNode.setBasicRagePerson(holder,madeNode, mugger,mugName,extra.capFirst(mugName) + " attacks you!");
+			break;
 		}
 	}
 
@@ -270,122 +272,6 @@ public class MineNode implements NodeType{
 		Networking.clearSide(1);
 		return false;
 	}
-	
-	private void duelist() {
-		if (node.state == 0) {
-			Person p = (Person)node.storage1;
-			p.getBag().graphicalDisplay(1, p);
-			extra.println(extra.PRE_RED+"Challenge "+ p.getName() + "?");
-			if (extra.yesNo()){
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-				if (winner != p) {
-					node.state = 1;
-					node.storage1 = null;
-					node.name = "dead "+node.name;
-					node.interactString = "examine body";
-				}
-			}
-		}else {
-			randomLists.deadPerson();
-			node.findBehind("body");
-		}
-
-	}
-
-	private void emeralds1() {
-		if (node.state == 0) {
-			Networking.unlockAchievement("ore1");
-			Player.player.emeralds++;
-			extra.println("You mine the vein and claim an emerald!");
-			node.state = 1;
-			node.name = "empty vein";
-			node.interactString = "examine empty vein";
-			((Mine)node.parent).removeVein();
-			//to indicate you can find stuff
-			node.findBehind("empty vein");
-		}else {
-			extra.println("The emeralds have already been mined.");
-			node.findBehind("vein");
-		}
-	}
-
-	private void rubies1() {
-		if (node.state == 0) {
-			Networking.unlockAchievement("ore1");
-			Player.player.rubies++;
-			extra.println("You mine the vein and claim a ruby!");
-			node.state = 1;
-			node.name = "empty vein";
-			node.interactString = "examine empty vein";
-			((Mine)node.parent).removeVein();
-			//to indicate you can find stuff
-			node.findBehind("empty vein");
-		}else {
-			extra.println("The rubies have already been mined.");
-			node.findBehind("vein");
-		}
-	}
-
-	private void saph1() {
-		if (node.state == 0) {
-			Networking.unlockAchievement("ore1");
-			Player.player.sapphires++;
-			extra.println("You mine the vein and claim a sapphire!");
-			node.state = 1;
-			node.name = "empty vein";
-			node.interactString = "examine empty vein";
-			((Mine)node.parent).removeVein();
-			//to indicate you can find stuff
-			node.findBehind("empty vein");
-		}else {
-			extra.println("The sapphires have already been mined.");
-			node.findBehind("vein");
-		}
-	}
-	
-	private void goldVein1() {
-		if (node.state == 0) {
-			Networking.unlockAchievement("ore1");
-			int mult1 = 0, mult2 = 0;
-			switch (node.storage1.toString()) {
-			case "gold": mult1 = 5; mult2 = 10;break;
-			case "silver": mult1 = 3; mult2 = 7;break;
-			case "platinum": mult1 = 6; mult2 = 12;break;
-			case "iron": mult1 = 2; mult2 = 5;break;
-			case "copper": mult1 = 1; mult2 = 3;break;
-			}
-			int gold = extra.randRange(0,2)+extra.randRange(mult1,mult2)*node.level;
-			Player.player.addGold(gold);
-			extra.println("You mine the vein for "+node.storage1+" worth "+ World.currentMoneyDisplay(gold) + ".");
-			node.state = 1;
-			node.name = "empty "+node.storage1+" vein";
-			node.interactString = "examine empty "+node.storage1+" vein";
-			((Mine)node.parent).removeVein();
-			node.findBehind("empty "+node.storage1+"vein");//instant chance so they want to mine more
-		}else {
-			extra.println("The "+node.storage1+" has already been mined.");
-			node.findBehind("empty "+node.storage1+"vein");
-		}
-	}
-	
-	private void mugger1() {
-		if (node.state == 0) {
-			Person p = (Person)node.storage1;
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-				if (winner != p) {
-					node.state = 1;
-					node.storage1 = null;
-					node.name = "dead "+node.name;
-					node.interactString = "examine body";
-					node.setForceGo(false);
-				}
-		}else {
-			randomLists.deadPerson();
-			node.findBehind("body");
-		}
-		
-	}
-	
 
 	/* for Ryou Misaki (nico)*/
 	private boolean cultists1(NodeConnector holder,int node) {
@@ -590,9 +476,53 @@ public class MineNode implements NodeType{
 	}
 
 	@Override
-	public void passTime(NodeConnector node, double time, TimeContext calling) {
+	public void passTime(NodeConnector holder,int node, double time, TimeContext calling) {
 		// empty
 		
+	}
+
+
+	@Override
+	public String interactString(NodeConnector holder, int node) {
+		switch(holder.getEventNum(node)) {
+		case 2:
+			return "Wash yourself in the " +holder.getStorageFirstClass(node,String.class)+".";
+		case 5:
+			return "Look at the " + holder.getStorageFirstClass(node,String.class)+".";
+		case 6:
+			return "Examine the " + holder.getStorageFirstClass(node,String.class) + " Crystals.";
+		case 7:
+			return "Study the Minecart.";
+		case 8:
+			return "Climb Ladder!";
+		case 9:
+			if (holder.getVisited(node) < 2) {//if not visited
+				return "Enter?";
+			}
+			return "Enter Sanctum.";
+		}
+		return null;
+	}
+
+
+	@Override
+	public String nodeName(NodeConnector holder, int node) {
+		switch(holder.getEventNum(node)) {
+		case 2: case 5://cleaning water, locked door
+			return holder.getStorageFirstClass(node,String.class);
+		case 6:
+			return holder.getStorageFirstClass(node,String.class) + " Crystals";
+		case 7:
+			return "Minecart";
+		case 8:
+			return "Ladder";
+		case 9:
+			if (holder.getVisited(node) < 2) {//if not visited
+				return "Dark Chamber";
+			}
+			return "Blood Cult Sanctum";
+		}
+		return null;
 	}
 
 
