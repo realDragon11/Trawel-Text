@@ -378,27 +378,24 @@ public class Mountain extends Feature{
 		extra.println("You find a rotting body... With their equipment intact!");
 		AIClass.loot(RaceFactory.makeLootBody(tier).getBag(),Player.bag,true,Player.player.getPerson());
 	}
-	
+
 	private void vampireHunter() {
 		extra.println(extra.PRE_RED+"A vampire hunter is walking around. Mug them?");
-		Person robber = RaceFactory.getPeace(tier);
-		robber.getBag().getDrawBanes().add(DrawBane.SILVER);
-		robber.getBag().getDrawBanes().add(DrawBane.GARLIC);
-		robber.getBag().graphicalDisplay(1, robber);
+		Person robber = RaceFactory.makeHunter(tier);
 		Boolean help = extra.yesNo();
 		if (help) {
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);
-	
-		if (winner == Player.player.getPerson()) {
-			extra.println("You killed them.");
-		}else {
-			extra.println("They mutter something about vampire attacks.");
-		}
+			Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);
+
+			if (winner == Player.player.getPerson()) {
+				extra.println("You killed them.");
+			}else {
+				extra.println("They mutter something about vampire attacks.");
+			}
 		}else {
 			extra.println("You walk away. They warn you to be safe from vampire attacks.");
 		}
 	}
-	
+
 	private void dryMountain() {
 		extra.println("You don't find anything. You think you may have exhausted this mountain, for now. Maybe come back later?");
 	}

@@ -102,6 +102,11 @@ public class FBox implements java.io.Serializable{
 			manOne.facRep.addFactionRep(Faction.HEROIC,0,manTwo.getLevel());
 			manOne.facRep.addFactionRep(Faction.MERCHANT,0,manTwo.getLevel()/10.0f);
 			break;
+		case HUNT:
+			manOne.facRep.addFactionRep(Faction.HEROIC,0,manTwo.getLevel());
+			manOne.facRep.addFactionRep(Faction.HUNTER,0,manTwo.getLevel()*2);
+			manOne.facRep.addFactionRep(Faction.MERCHANT,0,manTwo.getLevel()/2);
+			break;
 		}
 		
 	}

@@ -1376,6 +1376,39 @@ public class RaceFactory {
 		extra.popPrintStack();
 		return w;
 	}
+	
+	public static Person makeHunter(int level) {
+		extra.offPrintStack();
+		Person w = new Person(level);
+		w.facRep.addFactionRep(Faction.HUNTER,10*level,0);
+		w.facRep.addFactionRep(Faction.HEROIC,5*level,0);
+		w.facRep.addFactionRep(Faction.MERCHANT,level,0);
+		w.hTask = HostileTask.HUNT;
+		w.setTitle(randomLists.randomHunterTitle());
+		List<DrawBane> list = w.getBag().getDrawBanes();
+		switch (extra.getRand().nextInt(6)) {
+		case 0: case 1:
+			list.add(DrawBane.SILVER);
+			list.add(DrawBane.GARLIC);
+			w.getBag().getHand().transmuteWeapMat(MaterialFactory.getMat("silver"));
+			break;
+		case 2: case 3:
+			list.add(DrawBane.REPEL);
+			break;
+		case 4:
+			w.addBlood(3);
+			w.getBag().getHand().transmuteWeapMat(MaterialFactory.getMat("silver"));
+			w.setPerk(Perk.GRAVEYARD_SIGHT);
+			list.add(DrawBane.SILVER);
+			list.add(DrawBane.GRAVE_DIRT);
+			break;
+		case 5:
+			list.add(DrawBane.PROTECTIVE_WARD);
+			w.getBag().getHand().improveEnchantChance(level);
+			break;
+		}
+		return w;
+	}
 
 	public static String scarFor(RaceID race) {
 		switch (race) {

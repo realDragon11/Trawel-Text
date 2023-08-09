@@ -63,7 +63,7 @@ public class Champion  extends Feature{
 			people.add(Collections.singletonList(RaceFactory.getDueler(level)));
 		}
 		
-		person = mainGame.HugeBattle(t.getIsland().getWorld(),people).get(0);
+		person = mainGame.HugeBattle(t.getIsland().getWorld(),people).survivors.get(0);
 		extra.popPrintStack();
 		this.name = person.getName() + " (Level " + person.getLevel()+")" ;
 		
