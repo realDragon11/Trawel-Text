@@ -35,6 +35,7 @@ public class GraveyardNode implements NodeType{
 	@Override
 	public int generate(NodeConnector holder,int from, int size, int tier) {
 		int made = getNode(holder,from,0,tier);
+		//TODO make the graveyard generator set the idnum of many of it's nodes to make a semi-sane progression into the graveyard
 		if (size <= 0) {
 			return made;
 		}
@@ -86,27 +87,33 @@ public class GraveyardNode implements NodeType{
 		case 1: 
 			holder.setStorage(madeNode, RaceFactory.makeGravedigger(holder.getLevel(madeNode)));
 			break;
-		case 2: made.name = DEF_NAME; made.interactString = DEF_INTERACT;made.storage1 = RaceFactory.getGraverobber(made.level);break;
-		
-		case 3: ArrayList<Person> list = new ArrayList<Person>();
-			for (int i = Math.min(extra.randRange(3,4),made.level);i >= 0 ;i--) {
-				list.add(RaceFactory.makeBat(extra.zeroOut(made.level-4)+1));
+		case 2:
+			holder.setStorage(madeNode, RaceFactory.makeGraverobber(holder.getLevel(madeNode)));
+			break;
+		case 3: 
+			int batLevel = holder.getLevel(madeNode);
+			int batAmount = 1;
+			while (batAmount < 6) {
+				if (batLevel > 3 && extra.chanceIn(3,4)) {
+					batAmount+=2;
+					batLevel--;
+				}else {
+					break;
+				}
 			}
-			made.name = "bats";
-			made.interactString = "ERROR";
-			made.storage1 = list;
-			made.setForceGo(true);
-			made.state = 0;
+			
+			List<Person> list = new ArrayList<Person>();
+			for (int i = 0;i < batAmount;i++) {
+				list.add(RaceFactory.makeBat(batLevel));
+			}
+			holder.setStorage(madeNode,list);
+			holder.setForceGo(madeNode, true);
 		;break;
-		case 4: 
-			made.name = DEF_NAME;
-			made.interactString = DEF_INTERACT;
-			made.storage1 = RaceFactory.makeVampire(made.level)
+		case 4:
+			holder.setStorage(madeNode, RaceFactory.makeVampire(holder.getLevel(madeNode)));
 			;break;
 		case 5:
-			made.name = DEF_NAME;
-			made.interactString = DEF_INTERACT;
-			made.storage1 = RaceFactory.makeCollector(made.level);
+			holder.setStorage(madeNode, RaceFactory.makeCollector(holder.getLevel(madeNode)));
 			break;
 		case 6:
 			made.storage1 = RaceFactory.makeStatue(made.level); 
@@ -377,7 +384,7 @@ public class GraveyardNode implements NodeType{
 	
 	@Override
 	public DrawBane[] dbFinds() {
-		return new DrawBane[] {DrawBane.GRAVE_DIRT,DrawBane.GARLIC,DrawBane.TELESCOPE};
+		return new DrawBane[] {DrawBane.GRAVE_DIRT,DrawBane.GRAVE_DUST,DrawBane.GARLIC,DrawBane.TELESCOPE};
 	}
 
 	@Override

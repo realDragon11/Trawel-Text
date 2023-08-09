@@ -509,10 +509,9 @@ public class Store extends Feature{
 	public List<TimeEvent> passTime(double addtime, TimeContext calling) {
 		time += addtime;
 		if (time > 12+(extra.getRand().nextInt(30))) {
-			if (type != 7) {
 			extra.offPrintStack();
 			goShopping();
-			extra.popPrintStack();}
+			extra.popPrintStack();
 			addAnItem();
 			time = 0;
 		}
@@ -584,7 +583,11 @@ public class Store extends Feature{
 			}
 	}
 	private void goShopping() {
-		if (type == 8 || type == 9) {
+		if (type == 9) {//potion shops apply some, and also refills
+			WitchHut.randomRefillsAtTown(town,tier);
+			return;
+		}
+		if (type >= 7) {//7 is speices store, maybe someday
 			return;
 		}
 		//needs to be in order to avoid changing the item list multiple times at once

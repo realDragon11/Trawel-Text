@@ -2,11 +2,11 @@ package trawel;
 
 public enum Effect{
 	
-	CURSE("Cursed","Start battles with 10x level less HP.",true,false),
+	CURSE("Curse","Start battles with 10x level less HP.",true,false),
 	BURNOUT("Burnout","Decreased skill.",false,true),
 	
 	BLEED("Bleeding","Take level damage after each of their attacks.",false,false),
-	MAJOR_BLEED("Major","Take 2*level damage after each of their attacks.",false,false),
+	MAJOR_BLEED("Major Bleeding","Take 2*level damage after each of their attacks.",false,false),
 	DISARMED("Disarmed","Their next turn will get one less weapon attack choice. Doesn't stack.",false,false),
 	RECOVERING("Recovering","Will regain 5x level HP soon.",false,false),
 	I_BLEED("Bleeding Inside","Take level damage after each of their attacks. Stacks.",false,true),
@@ -23,7 +23,9 @@ public enum Effect{
 	DICE("Dicing","Their next attack is 10% faster and also 10 time units quicker.",false,false),
 	CONFUSED_TARGET("Confused","Their next attack will have a random defender from any side.",false,false),
 	BONUS_WEAP_ATTACK("Bonus Attack","Their next turn will have an additional weapon attack to choose from. Stacks.",false,true),
-	ADVANTAGE_STACK("Advantage","The next hit or dodge roll involving them will gain a +20% bonus on their side. Stacks.",false,true)
+	ADVANTAGE_STACK("Advantage","The next hit or dodge roll involving them will gain a +20% bonus on their side. Stacks.",false,true),
+	CLOTTER("Clotting","They are immune to bleed effects from wounds. Magic and dedicated effects still apply.",false,false),
+	SUDDEN_START("Sudden Start","Applies Advantage and grants 2 Bonus Weapon Attacks at the start of battle.",false,false)
 	;
 	
 	private String name,desc;

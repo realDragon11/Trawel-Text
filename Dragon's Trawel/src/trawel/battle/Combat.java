@@ -1178,11 +1178,15 @@ public class Combat {
 				defender2.getNextAttack().multiplyHit(1-(nums[0]/10f));
 				break;	
 			case MAJOR_BLEED:
-				defender2.addEffect(Effect.BLEED);
-				defender2.addEffect(Effect.MAJOR_BLEED);
+				if (!defender2.hasEffect(Effect.CLOTTER)) {
+					defender2.addEffect(Effect.BLEED);
+					defender2.addEffect(Effect.MAJOR_BLEED);
+				}
 				break;
 			case BLEED:
-				defender2.addEffect(Effect.BLEED);
+				if (!defender2.hasEffect(Effect.CLOTTER)) {
+					defender2.addEffect(Effect.BLEED);
+				}
 				break;
 			case DISARMED: case SCREAMING:
 				defender2.addEffect(Effect.DISARMED);
@@ -1192,7 +1196,9 @@ public class Combat {
 				defender2.addEffect(Effect.RECOVERING);
 				break;
 			case I_BLEED:
-				defender2.addEffect(Effect.I_BLEED);
+				if (!defender2.hasEffect(Effect.CLOTTER)) {
+					defender2.addEffect(Effect.I_BLEED);
+				}
 				break;
 			case TEAR:
 				defender2.addEffect(Effect.TORN);

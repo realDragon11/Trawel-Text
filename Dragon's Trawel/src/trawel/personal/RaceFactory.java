@@ -981,13 +981,16 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = new Person(level,true, Race.RaceType.HUMANOID,MaterialFactory.getMat("flesh"),Person.RaceFlag.UNDEAD,false);
 		w.setScar(biteFor(w.getBag().getRace().raceID()));
-		if (extra.chanceIn(1,20)) {
+		w.getBag().getDrawBanes().add(DrawBane.GRAVE_DUST);
+		if (extra.chanceIn(1,10)) {
 			w.getBag().getDrawBanes().add(DrawBane.BLOOD);
+		}else {
+			if (extra.chanceIn(1,6)) {
+				w.getBag().getDrawBanes().add(DrawBane.GRAVE_DIRT);
+			}
 		}
 		extra.popPrintStack();
-		//w.targetOverride = TargetFactory.TargetType.UNDEAD_H;
 		w.hTask = HostileTask.MONSTER;
-		//w.updateSkills();
 		return w;
 	}
 	
@@ -1008,17 +1011,14 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_BAT, MaterialFactory.getMat("flesh"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
+		w.getBag().getDrawBanes().add(DrawBane.BAT_WING);
 		if (extra.chanceIn(1,7)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
-		}
-		if (extra.chanceIn(1,2)) {
-			w.getBag().getDrawBanes().add(DrawBane.BAT_WING);
 		}
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomBatName());
 		w.setTitle("");
 		w.hTask = HostileTask.ANIMAL;
-		//w.updateSkills();
 		return w;
 	}
 	
@@ -1356,6 +1356,7 @@ public class RaceFactory {
 			if (extra.chanceIn(3,4)) {//undead tool for protection
 				if (extra.chanceIn(1,3)) {
 					list.add(DrawBane.SILVER);
+					list.add(DrawBane.GRAVE_DUST);
 					//combatative
 					w.addBlood(2);
 					w.facRep.addFactionRep(Faction.HUNTER,5*level,0);
@@ -1400,7 +1401,7 @@ public class RaceFactory {
 			w.getBag().getHand().transmuteWeapMat(MaterialFactory.getMat("silver"));
 			w.setPerk(Perk.GRAVEYARD_SIGHT);
 			list.add(DrawBane.SILVER);
-			list.add(DrawBane.GRAVE_DIRT);
+			list.add(DrawBane.GRAVE_DUST);
 			break;
 		case 5:
 			list.add(DrawBane.PROTECTIVE_WARD);

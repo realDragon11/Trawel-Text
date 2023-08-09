@@ -8,6 +8,8 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
+import trawel.Effect;
+import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.battle.Combat;
@@ -16,6 +18,7 @@ import trawel.personal.Person;
 import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Skill;
 import trawel.personal.classless.Skill.Type;
+import trawel.personal.item.Potion;
 import trawel.personal.classless.SkillAttackConf;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.time.CanPassTime;
@@ -39,6 +42,8 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	
 	public List<Integer> moneys;
 	public List<World> moneymappings;
+	
+	protected Potion flask;
 	
 	/**
 	 * used for the player swapping out configs
@@ -481,5 +486,40 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 			return Player.getPlayerWorld();
 		}
 		return location == null ? null : location.getIsland().getWorld();
+	}
+	
+	public Effect doSip() {
+		if (flask != null) {
+			Effect e = flask.effect;
+			flask.sip(getPerson());
+			if (flask.sips <=0) {
+				flask = null;
+			}
+			return e;
+		}
+		return null;
+	}
+	
+	public boolean hasFlask() {
+		return flask != null;
+	}
+	
+	public Effect peekFlask() {
+		return flask.effect;
+	}
+	public int getFlashUses() {
+		return flask.sips;
+	}
+	
+	public void addFlaskUses(byte b) {
+		flask.sips= (byte) Math.max(20,flask.sips+b);
+	}
+	
+	public void spoilPotion() {
+		flask = new Potion(Effect.CURSE,flask.sips);
+	}
+	
+	public void setFlask(Potion pot) {
+		flask = pot;
 	}
 }

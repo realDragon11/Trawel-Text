@@ -111,4 +111,23 @@ public class Agent extends SuperPerson{
 		return goals.contains(goal);
 	}
 	
+	public boolean wantsRefill() {
+		if (hasFlask()) {
+			switch (peekFlask()) {
+			case CURSE:
+			case BEES:
+					return false;
+			}
+			return true;
+		}
+		return false;
+	}
+
+	public void refillWithPrice(int cost) {
+		do {
+			addFlaskUses((byte)3);
+			buyMoneyAmount(cost);
+		} while (getFlashUses() < 6 && canBuyMoneyAmount(cost));
+	}
+	
 }

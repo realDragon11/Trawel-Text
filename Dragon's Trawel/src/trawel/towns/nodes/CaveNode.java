@@ -74,14 +74,7 @@ public class CaveNode implements NodeType{
 			GenericNode.setBasicRagePerson(holder,madeNode,RaceFactory.makeBear(holder.getLevel(madeNode)),"Sleeping Bear","The bear here mauls you!");
 			break;
 		case 3:
-			//holder.setTypeNum(madeNode,NodeTypeNum.MINE.ordinal());
-			//holder.setEventNum(madeNode, MineNode.VEIN_NUM);
-			holder.setFlag(madeNode,NodeConnector.NodeFlag.GENERIC_OVERRIDE,true);
-			holder.setTypeNum(madeNode,Generic.VEIN_MINERAL.ordinal());
-			//made.storage1 = extra.choose("silver","gold","platinum","iron","copper");
-			//made.name = made.storage1+" vein";
-			//made.interactString = "mine "+made.storage1;
-			NodeType.NodeTypeNum.GENERIC.singleton.apply(holder, madeNode);
+			GenericNode.applyGenericVein(holder, madeNode, 1);
 			break;
 		case 4:
 			GenericNode.setBasicRagePerson(holder,madeNode,RaceFactory.makeBat(holder.getLevel(madeNode)),"Ceiling Bat","The bat swoops down to attack you!");

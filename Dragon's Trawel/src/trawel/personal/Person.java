@@ -561,6 +561,10 @@ public class Person implements java.io.Serializable{
 		if (this.hasEffect(Effect.HEARTY) || this.hasEffect(Effect.FORGED)) {
 			hp+=3*level;
 		}
+		if (hasEffect(Effect.SUDDEN_START)) {
+			addEffect(Effect.BONUS_WEAP_ATTACK);
+			addEffect(Effect.ADVANTAGE_STACK);
+		}
 		
 		if (hasSkill(Skill.OPENING_MOVE)) {
 			addEffect(Effect.BONUS_WEAP_ATTACK);

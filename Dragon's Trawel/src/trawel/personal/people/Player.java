@@ -51,7 +51,6 @@ public class Player extends SuperPerson{
 	public Town lastTown = null;
 	private double merchantPoints = 0;
 	public int emeralds = 0, rubies = 0, sapphires = 0;
-	private Potion flask;
 	public float forceRelation = 0.0f;
 	public int forceRewardCount = 0;
 	public int merchantBookPrice = 100;
@@ -60,7 +59,7 @@ public class Player extends SuperPerson{
 	
 	public int knowledgeFragments = 0, fragmentReq = 5;
 	
-	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
+	public List<Quest> sideQuests = new ArrayList<Quest>();
 	//public List<EArt> eArts = new ArrayList<EArt>();
 	//public EArtBox eaBox = new EArtBox();
 	public boolean hasCult = false;
@@ -163,6 +162,7 @@ public class Player extends SuperPerson{
 		}
 	}
 	
+	@Override
 	public Effect doSip() {
 		if (flask != null) {
 			extra.println("Take a sip of your potion? ("+flask.sips+" left)");
@@ -181,10 +181,6 @@ public class Player extends SuperPerson{
 	}
 	public Potion getFlask() {
 		return flask;
-	}
-	
-	public void setFlask(Potion p) {
-		flask = p;
 	}
 	public void showQuests() {
 		

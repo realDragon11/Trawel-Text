@@ -40,9 +40,10 @@ public enum DrawBane {
 	UNDERLEVELED("nothing","Empty slot.",0,0,false),
 	KNOW_FRAG("knowledge fragment","Bring this to a library to study, and gain feat points.",2,1,false),
 	LIVING_FLAME("living flame","A living flame, for a forge.",4,3,true), 
-	GRAVE_DIRT("grave dirt","A witch's reagent.",2,.25,true),
+	GRAVE_DIRT("grave dirt","A witch's reagent.",1,.2,false),//TODO: make potions for
 	TELESCOPE("telescope","A large telescope.",4,2,true),
-	SINEW("mystic sinew","Slightly possessed flesh.",1,.1,false);
+	SINEW("mystic sinew","Slightly possessed flesh.",1,.1,false),
+	GRAVE_DUST("grave dust","Not to be confused with grave dirt.",3,.9,false);//TODO: make potions for
 	
 	private String name, flavorText;
 	private int value;

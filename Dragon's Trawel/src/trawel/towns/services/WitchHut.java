@@ -12,12 +12,14 @@ import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.battle.Combat;
+import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Potion;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
+import trawel.personal.people.SuperPerson;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -27,8 +29,9 @@ import trawel.towns.Town;
 public class WitchHut extends Store{
 	
 	private static final long serialVersionUID = 1L;
-	private List<DrawBane> reagents = new ArrayList<DrawBane>();
+	private List<DrawBane> reagents = null;
 	private String storename;
+	private double timecounter;
 	
 	public WitchHut(String _name, Town t) {
 		super(WitchHut.class);
@@ -37,6 +40,14 @@ public class WitchHut extends Store{
 		name = _name;
 		tutorialText = "A place to brew potions.";
 		town = t;
+		timecounter = 0;
+	}
+	
+	public int playerPotSize() {
+		if (reagents == null) {
+			return 0;
+		}
+		return reagents.size();
 	}
 	
 	@Override
@@ -59,6 +70,9 @@ public class WitchHut extends Store{
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> list = new ArrayList<MenuItem>();
+				if (reagents == null) {
+					reagents = new ArrayList<DrawBane>();
+				}
 				list.add(new MenuSelect() {
 
 					@Override
@@ -83,6 +97,56 @@ public class WitchHut extends Store{
 						extra.menuGo(modernStoreFront());
 						return false;
 					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Bottle Potion Runoff";
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.player.hasFlask()) {
+							extra.println("Bottling will replace your current potion. It also likely won't be very high quality! Bottle potion runoff?");
+						}else {
+							extra.println("Potions made from brew waste will be of questionable content. Do it anyway?");
+						}
+						if (extra.yesNo()) {
+							Player.player.setFlask(new Potion(extra.randList(randomPotion),8));
+							extra.println("You scoop the strange mix of discarded fluid into a glass jar. At least there's a lot of it.");
+						}else {
+							extra.println("You look away from the goup.");
+						}
+						return false;
+					}});
+				if (Player.player.hasFlask() && Player.player.getFlashUses() < 8) {
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Mix In Potion ("+town.getIsland().getWorld().moneyString(tier)+")";
+						}
+
+						@Override
+						public boolean go() {
+							extra.println("You can attempt to have the witches here top up your potion, but there's a chance that will ruin it. It will also cost "+town.getIsland().getWorld().moneyString(tier)+". Pay?");
+							if (extra.yesNo()) {
+								if (Player.player.canBuyMoneyAmount(tier)) {
+									Player.player.buyMoneyAmount(tier);
+									Player.player.addFlaskUses((byte)3);
+									if (extra.chanceIn(1,3)) {
+										Player.player.spoilPotion();
+									}
+									extra.println("The potion bubbles freshly.");
+								}else {
+									extra.println("You can't afford a refill!");
+								}
+							}else {
+								extra.println("You decide against it.");
+							}
+							return false;
+						}});
+				}
 				list.add(new MenuBack("leave"));
 				return list;
 			}});
@@ -180,6 +244,9 @@ public class WitchHut extends Store{
 		meats += virgins*2;
 		int lflames =  (int) reagents.stream().filter(d -> d.equals(DrawBane.LIVING_FLAME)).count();
 		int telescopes =  (int) reagents.stream().filter(d -> d.equals(DrawBane.TELESCOPE)).count();
+		int gravedusts = (int) reagents.stream().filter(d -> d.equals(DrawBane.GRAVE_DIRT)).count();
+		int gravedirts = (int) reagents.stream().filter(d -> d.equals(DrawBane.GRAVE_DUST)).count();
+		int grave_subtance = gravedirts*2 + gravedusts;
 		int food = meats + apples + garlics + honeys + pumpkins + pumpkins + eggcorns+truffles + (virgins*2);//virgin counts 4x due to meat
 		int filler = apples + woods + waxs;
 		
@@ -243,6 +310,11 @@ public class WitchHut extends Store{
 			actualPotion();
 			return true;
 		}
+		if (bloods > 0 && grave_subtance > 1) {
+			Player.player.setFlask(new Potion(Effect.CLOTTER,lflames+food+filler));
+			actualPotion();
+			return true;
+		}
 		if (food >= 3) {
 			Player.player.setFlask(new Potion(Effect.HEARTY,food+filler));
 			actualPotion();
@@ -282,8 +354,26 @@ public class WitchHut extends Store{
 	
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		// TODO Auto-generated method stub
+		timecounter-=time;
+		if (timecounter <= 0) {
+			town.getPersonableOccupants().filter(a -> !a.hasFlask() && a.canBuyMoneyAmount(tier)).limit(4)
+			.forEach(a -> buyRandomPotion(a));
+			WitchHut.randomRefillsAtTown(town,tier);
+			
+			timecounter += extra.randRange(20,40);
+		}
 		return null;
+	}
+	
+	private void buyRandomPotion(SuperPerson p) {
+		p.buyMoneyAmount(tier);
+		p.setFlask(new Potion(extra.randList(randomPotion),5));
+	}
+	
+	public static final Effect[] randomPotion = new Effect[] {Effect.HEARTY,Effect.BEES,Effect.BEE_SHROUD,Effect.CURSE,Effect.FORGED,Effect.HASTE,Effect.CLOTTER,Effect.R_AIM,Effect.SUDDEN_START} ;
+	
+	public static void randomRefillsAtTown(Town t,int cost) {
+		t.getPersonableOccupants().filter(a -> a.wantsRefill() && a.canBuyMoneyAmount(cost)).limit(3).forEach(a -> a.refillWithPrice(cost));
 	}
 	
 
