@@ -398,6 +398,7 @@ public class MineNode implements NodeType{
 		 * 5 = wary (was angry, now is peaceful)
 		 * 6 = force attack (so you can attack wary without them instantly forgiving you)
 		 *   turns back into normal attack if you die
+		 * 7 = wary but don't want to talk anymore, reverts to 6 if you come back
 		 */
 		int state = holder.getStateNum(node);
 		List<Person> cultists = null;
@@ -418,17 +419,24 @@ public class MineNode implements NodeType{
 			Combat c = mainGame.HugeBattle(Player.player.getWorld(),Player.wrapForMassFight(cultists));
 			if (c.playerWon() > 0) {
 				state = 3;
+				holder.setStateNum(node,3);
 				holder.setStorage(node,null);
 				return false;
 			}else {
 				extra.println("They desecrate your corpse.");
 				state = 1;
+				holder.setStateNum(node,1);
 				return true;
 			}
 		}
 		if (state == 0) {
 			extra.println("The cultists welcome you to their private (friends welcome) altar of blood. It's small, but you sense a power here.");
 			state = 2;
+			holder.setStateNum(node,2);
+		}
+		if (state == 7) {
+			state = 6;
+			holder.setStateNum(node,6);
 		}
 		
 		extra.menuGo(new MenuGenerator() {
@@ -439,6 +447,7 @@ public class MineNode implements NodeType{
 				int substate = holder.getStateNum(node);//Effectively final!!!! somehow, somewhy, the java gods are smiling
 				switch (substate) {
 				case 2://peaceful
+				case 4://owned MAYBELATER: gifts?
 					list.add(new MenuSelect() {
 						@Override
 						public String title() {
@@ -450,6 +459,7 @@ public class MineNode implements NodeType{
 							Oracle.tip("cult");
 							return false;
 						}});
+					list.add(attackCultMenu(holder,node));
 					if (!partOfCult) {
 						list.add(new MenuSelect() {
 
@@ -471,6 +481,7 @@ public class MineNode implements NodeType{
 									Player.player.getPerson().setPerk(Perk.CULT_LEADER_BLOOD);
 									Player.player.hasCult = true;
 									Networking.unlockAchievement("cult1");
+									holder.setStateNum(node,4);
 								}
 								return false;
 							}});
@@ -479,11 +490,57 @@ public class MineNode implements NodeType{
 					}
 					break;
 				case 3://dead
-					
-					break;
-				case 4://owned
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Poke around the Altar";
+						}
+
+						@Override
+						public boolean go() {
+							if (!holder.findBehind(node,"altar")) {
+								extra.println("It's bloody, but not much else.");
+							}
+							return false;
+						}});
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Examine the dead Cultists";
+						}
+
+						@Override
+						public boolean go() {
+							if (!holder.findBehind(node,"scarred bodies")) {
+								extra.println("Their bodies show signs of scarification and bloodletting.");
+							}
+							return false;
+						}});
 					break;
 				case 5://wary (you are part of their cult but you attacked them, any order, can repeat)
+					list.add(new MenuSelect() {
+						@Override
+						public String title() {
+							return "Listen in on Blood Cult matters";
+						}
+
+						@Override
+						public boolean go() {
+							if (holder.getStateNum(node) == 7) {
+								extra.println("They are silent.");
+								return false;
+							}
+							if (extra.chanceIn(1,3)) {
+								extra.println("Their faces are sullen, and they do not speak much. Perhaps it is best for you to leave.");
+								holder.setStateNum(node,7);
+							}else {
+								Oracle.tip("cult");
+							}
+							return false;
+						}});
+					list.add(attackCultMenu(holder,node));
 					break;
 				}
 				//we can set force go and just back out, the node's state variable persists across local class lines
@@ -492,6 +549,39 @@ public class MineNode implements NodeType{
 			}});
 		
 		return false;//never kicks out, if attacking sets force go first, which forces you to see the above attack code
+	}
+	
+	protected MenuSelect attackCultMenu(NodeConnector holder,int node) {
+		return new MenuSelect() {
+
+			@Override
+			public String title() {
+				/*
+				List<Person> cultists = holder.getStorageFirstClass(node,List.class);
+				Person leader = extra.getNonAddOrFirst(cultists);
+				if (cultists.size() > 1) {
+					return extra.PRE_RED + "Attack " + leader.getName() +" and their acolytes?";
+				}
+				return extra.PRE_RED + "Attack " + leader.getName() +"?";
+				*/
+				return "Destroy Cult";
+			}
+
+			@Override
+			public boolean go() {
+				List<Person> cultists = holder.getStorageFirstClass(node,List.class);
+				Person leader = extra.getNonAddOrFirst(cultists);
+				if (cultists.size() > 1) {
+					extra.println(extra.PRE_RED + "Attack " + leader.getName() +" and their acolytes?");
+				}else {
+					extra.println(extra.PRE_RED + "Attack " + leader.getName() +"?");
+				}
+				if (extra.yesNo()) {
+					holder.setStateNum(node,1);//angy cultists are very madge
+					return true;
+				}
+				return false;
+			}};
 	}
 
 	@Override
