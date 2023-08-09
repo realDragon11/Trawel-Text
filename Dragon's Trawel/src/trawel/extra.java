@@ -17,6 +17,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
+import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.people.Player;
@@ -1091,6 +1092,18 @@ public final class extra {
 		    final long rightShifted = l >>> number_of_byte*16;
 		    final long mask = (1L << 16) - 1L;
 		    return (int) (rightShifted & mask);
+		}
+
+		/**
+		 * must be non empty
+		 */
+		public static Person getNonAddOrFirst(List<Person> peeps) {
+			for (Person p: peeps) {
+				if (!p.getFlag(PersonFlag.IS_ADD)) {
+					return p;
+				}
+			}
+			return peeps.get(0);
 		}
 
 		

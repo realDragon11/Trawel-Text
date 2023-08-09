@@ -387,5 +387,12 @@ public class Player extends SuperPerson{
 		return false;
 	}
 	
+	public static List<List<Person>> wrapForMassFight(List<Person> fightwith){
+		List<List<Person>> listlist = new ArrayList<List<Person>>();
+		listlist.add(Player.list());
+		listlist.add(fightwith);
+		return listlist;
+	}
+	
 	
 }

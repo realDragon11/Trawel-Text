@@ -2,13 +2,19 @@ package trawel.towns.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuBack;
+import derg.menus.MenuGenerator;
+import derg.menus.MenuItem;
+import derg.menus.MenuSelect;
 import trawel.Effect;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
+import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory.CultType;
 import trawel.personal.classless.Perk;
 import trawel.personal.item.solid.DrawBane;
@@ -189,16 +195,18 @@ public class MineNode implements NodeType{
 					cultPeeps.add(RaceFactory.makeCultistLeader(cultLevel+1,CultType.BLOOD));
 					continue;
 				}
-				cultPeeps.add(RaceFactory.makeCultist(cultLevel+1,CultType.BLOOD));
+				Person c = RaceFactory.makeCultist(cultLevel+1,CultType.BLOOD);
+				c.setFlag(PersonFlag.IS_ADD,true);
+				cultPeeps.add(c);
 			}
+			holder.setStorage(madeNode, cultPeeps);
 		break;
 		}
 	}
 
 	@Override
 	public boolean interact(NodeConnector holder,int node) {
-		this.node = node;
-		switch(node.eventNum) {
+		switch(holder.getEventNum(node)) {
 		//case -3: saph1();break;
 		//case -2: rubies1();break;
 		//case -1: emeralds1();break;
@@ -250,13 +258,14 @@ public class MineNode implements NodeType{
 			break;
 		case 7: 
 			extra.println("You examine the iron minecart. It is on the tracks that travel throughout the mine.");
-			node.findBehind("minecart");break;
-		case 8: 
-			extra.println("You traverse the ladder.");
-			Networking.sendStrong("PlayDelay|sound_footsteps|1|");
-			node.findBehind("ladder");
+			holder.findBehind(node,"minecart");
 			break;
-		case 9: cultists1();break;
+		case 8: 
+			extra.println("You traverse the ladder. This place is like a maze!");
+			Networking.sendStrong("PlayDelay|sound_footsteps|1|");
+			holder.findBehind(node,"ladder");
+			break;
+		case 9: return cultists1(holder,node);
 		}
 		Networking.clearSide(1);
 		return false;
@@ -379,50 +388,110 @@ public class MineNode implements NodeType{
 	
 
 	/* for Ryou Misaki (nico)*/
-	private void cultists1() {
-		Person p = (Person)node.storage1;
-		p.getBag().graphicalDisplay(1, p);
-		int inInt = 2;
-		do {
-			boolean hasSkills = Player.player.getPerson().hasPerk(Perk.CULT_LEADER_BLOOD);
-			if (hasSkills) {
-				extra.println("The blood cultists welcome you and ask you how you are doing.");
-				extra.println("1 chat");
+	private boolean cultists1(NodeConnector holder,int node) {
+		/**
+		 * 0 = just met, fresh
+		 * 1 = angry (will attack if not part of cult)
+		 * 2 = peaceful
+		 * 3 = dead
+		 * 4 = owned (you made the sacrifice here)
+		 * 5 = wary (was angry, now is peaceful)
+		 * 6 = force attack (so you can attack wary without them instantly forgiving you)
+		 *   turns back into normal attack if you die
+		 */
+		int state = holder.getStateNum(node);
+		List<Person> cultists = null;
+		Person leader = null;
+		boolean partOfCult = Player.player.getPerson().hasPerk(Perk.CULT_LEADER_BLOOD);
+		if (state != 3) {
+			cultists = holder.getStorageFirstClass(node,List.class);
+			leader = extra.getNonAddOrFirst(cultists);
+			leader.getBag().graphicalDisplay(1, leader);
+		}
+		if (state == 1 && partOfCult) {
+			extra.println("The cultists eye you warily, but they sense a kinship within you...");
+			holder.setForceGo(node,false);
+			holder.setStateNum(node,5);
+			state = 5;
+		}
+		if (state == 1 || state == 6) {
+			Combat c = mainGame.HugeBattle(Player.player.getWorld(),Player.wrapForMassFight(cultists));
+			if (c.playerWon() > 0) {
+				state = 3;
+				holder.setStorage(node,null);
+				return false;
 			}else {
-				extra.println("The cultists offer to enhance you... if you sacrifice some blood.");
-				extra.println("1 accept offer");
+				extra.println("They desecrate your corpse.");
+				state = 1;
+				return true;
 			}
-			extra.println("2 "+extra.PRE_RED+"attack");	
-			extra.println("3 leave");
-			inInt = extra.inInt(3);
-			switch (inInt) {
-			case 1: 
-				if (hasSkills) {
-					Oracle.tip("cult");
-				}else {
-					extra.println("You die!");
-					mainGame.die("You rise from the altar!");
-					extra.println("The cultists praise you as the second coming of flagjaij!");
-					Player.player.getPerson().addEffect(Effect.CURSE);
-					Player.player.getPerson().setPerk(Perk.CULT_LEADER_BLOOD);
-					Player.player.hasCult = true;
-					hasSkills = true;
-					Networking.unlockAchievement("cult1");
-				};break;
+		}
+		if (state == 0) {
+			extra.println("The cultists welcome you to their private (friends welcome) altar of blood. It's small, but you sense a power here.");
+			state = 2;
+		}
+		
+		extra.menuGo(new MenuGenerator() {
 
-			case 2:
-				node.name = "angry sect leader";
-				node.interactString = "ERROR";
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				int substate = holder.getStateNum(node);//Effectively final!!!! somehow, somewhy, the java gods are smiling
+				switch (substate) {
+				case 2://peaceful
+					list.add(new MenuSelect() {
+						@Override
+						public String title() {
+							return "Listen in on Blood Cult matters";
+						}
 
-				node.setForceGo(true);
-				node.eventNum = 4;
-				break;
+						@Override
+						public boolean go() {
+							Oracle.tip("cult");
+							return false;
+						}});
+					if (!partOfCult) {
+						list.add(new MenuSelect() {
 
-			case 3: extra.println("You leave them alone.");break;
+							@Override
+							public String title() {
+								return "Listen to Offer";
+							}
 
-			}
-		}while(inInt == 1);
-
+							@Override
+							public boolean go() {
+								List<Person> cultists = holder.getStorageFirstClass(node,List.class);
+								Person leader = extra.getNonAddOrFirst(cultists);
+								extra.println(leader.getName() +" exclaims: 'Just perform a small blood rite for us, and we can set you up good with our gods!'");
+								if (extra.yesNo()) {
+									extra.println("You are stabbed to death.");
+									mainGame.die("You rise from the altar!");
+									extra.println("The cultists praise you as the second coming of flagjaij! You feel sick, but powerful.");
+									Player.player.getPerson().addEffect(Effect.CURSE);
+									Player.player.getPerson().setPerk(Perk.CULT_LEADER_BLOOD);
+									Player.player.hasCult = true;
+									Networking.unlockAchievement("cult1");
+								}
+								return false;
+							}});
+					}else {
+						
+					}
+					break;
+				case 3://dead
+					
+					break;
+				case 4://owned
+					break;
+				case 5://wary (you are part of their cult but you attacked them, any order, can repeat)
+					break;
+				}
+				//we can set force go and just back out, the node's state variable persists across local class lines
+				list.add(new MenuBack("leave the altar area"));
+				return list;
+			}});
+		
+		return false;//never kicks out, if attacking sets force go first, which forces you to see the above attack code
 	}
 
 	@Override
