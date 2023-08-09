@@ -144,6 +144,10 @@ public class RaceFactory {
 		
 	}
 	
+	public enum CultType{
+		BLOOD;
+	}
+	
 	public RaceFactory() {
 		misc = new Race(RaceID.HUMAN);
 		misc.swears.add("thinskin");
@@ -1120,11 +1124,64 @@ public class RaceFactory {
 		//w.updateSkills();
 		return w;
 	}
+	
+	public static Person makeMuggerWithTitle(int level) {
+		Person w = getMugger(level);
+		w.setTitle("the " + extra.capFirst(randomLists.randomMuggerName()));
+		return w;
+	}
+	
+	
 	public static Person getDueler(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level);
 		w.facRep.addFactionRep(Faction.DUEL,extra.randRange(10,20)*level, 0);
 		w.hTask = HostileTask.DUEL;
+		extra.popPrintStack();
+		return w;
+	}
+	
+	public static Person makeDuelerWithTitle(int level) {
+		Person w = getDueler(level);
+		w.setTitle("the " + extra.capFirst(randomLists.randomWarrior()));
+		return w;
+	}
+	
+	public static Person makeCultistLeader(int level, CultType ct) {
+		extra.offPrintStack();
+		Person w = new Person(level);
+		w.hTask = HostileTask.GUARD_DUNGEON;
+		switch (ct) {
+		case BLOOD:
+			List<DrawBane> list = w.getBag().getDrawBanes();
+			if (extra.chanceIn(1,3)) {
+				list.add(DrawBane.BEATING_HEART);
+			}else {
+				list.add(DrawBane.SINEW);
+			}
+			list.add(DrawBane.BLOOD);
+			w.setTitle(extra.choose("the Blood Queen","Chosen by The Blood","Blood Champion"));
+			w.setPerk(Perk.CULT_LEADER_BLOOD);
+			break;		
+		}
+		extra.popPrintStack();
+		return w;
+	}
+	public static Person makeCultist(int level, CultType ct) {
+		extra.offPrintStack();
+		Person w = new Person(level);
+		w.hTask = HostileTask.GUARD_DUNGEON;
+		switch (ct) {
+		case BLOOD:
+			List<DrawBane> list = w.getBag().getDrawBanes();
+			if (extra.chanceIn(1,3)) {
+				list.add(DrawBane.SINEW);
+			}else {
+				list.add(DrawBane.BLOOD);
+			}
+			w.setTitle(extra.choose("Servant of Blood","the Bloodtender","","","Bloodguard"));
+			break;		
+		}
 		extra.popPrintStack();
 		return w;
 	}

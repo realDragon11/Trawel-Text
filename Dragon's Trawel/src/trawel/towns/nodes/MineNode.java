@@ -1,4 +1,7 @@
 package trawel.towns.nodes;
+import java.util.ArrayList;
+import java.util.List;
+
 import trawel.Effect;
 import trawel.Networking;
 import trawel.extra;
@@ -6,6 +9,7 @@ import trawel.mainGame;
 import trawel.randomLists;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.RaceFactory.CultType;
 import trawel.personal.classless.Perk;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
@@ -17,45 +21,39 @@ public class MineNode implements NodeType{
 	
 	private static final int EVENT_NUMBER = 9;
 	
-	private static final MineNode handler = new MineNode();
-
-	public static final int VEIN_NUM = 3;
-	
-	private NodeConnector node;
-	
-	public static MineNode getSingleton() {
-		return handler;
-	}
-	
 	@Override
-	public NodeConnector getNode(NodeFeature owner, int tier) {
-		int idNum = extra.randRange(1,EVENT_NUMBER);
+	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
+		int idNum =-1;
 		NodeConnector make = new NodeConnector();
 		if (extra.chanceIn(1, 5)) {
-			idNum = VEIN_NUM;//gold7
-		}
-		if (extra.chanceIn(1, 30)) {
-			idNum = extra.choose(-1,-2,-3);//emeralds
+			if (extra.chanceIn(1, 30)) {
+				idNum = 1;//vein, generic'd
+			}else {
+				idNum = 2;//gem vein
+			}
+			
 		}
 		
-		make.eventNum =(byte) idNum;
-		make.typeNum = 0;
-		make.level = tier;
-		return make;
+		if (idNum == -1) {
+			extra.randRange(1,EVENT_NUMBER);
+		}
+		
+		
+		int ret = holder.newNode(NodeType.NodeTypeNum.MINE.ordinal(),idNum,tier);
+		return ret;
 	}
 	
 
 	@Override
-	public NodeConnector generate(NodeFeature owner, int size, int tier) {
+	public int generate(NodeConnector holder, int from, int size, int tier) {
 		if (size < 3) {
-			return genShaft(owner,size,tier,10);
-			//shafts finalize themselves
-			//they will also auto terminate if they run out
+			return genShaft(holder,from,size,tier,10);
+			//shafts will also auto terminate if they run out
 		}
 		if (extra.chanceIn(1,3)) {//mineshaft splitting
-			return genShaft(owner,size,tier,extra.randRange(2,5));
+			return genShaft(holder,from,size,tier,extra.randRange(2,5));
 		}
-		NodeConnector made = getNode(owner,tier).finalize(owner);
+		int made = getNode(holder,from,0,tier);
 		size--;
 		int sizeLeft;
 		int[] split;
@@ -81,128 +79,175 @@ public class MineNode implements NodeType{
 			if (extra.chanceIn(1,20)) {//less likely to tier up without mineshafts
 				tempLevel++;
 			}
-			NodeConnector n = generate(owner,split[j],tempLevel);
-			made.connects.add(n);
-			n.getConnects().add(made);
-			n.finalize(owner);
+			int n = generate(holder,from,split[j],tempLevel);
+			holder.setMutualConnect(from,n);
 		}
 		return made;
 	}
 	
-	protected NodeConnector genShaft(NodeFeature owner, int size, int tier,int shaftLeft) {
-		if (size <= 0) {//ran out of resources
-			return getNode(owner,tier).finalize(owner);
+	protected int genShaft(NodeConnector holder, int from, int sizeLeft, int tier,int shaftLeft) {
+		if (sizeLeft <= 0) {//ran out of resources
+			return getNode(holder,from,0,tier);
 		}
-		if (shaftLeft > 1 || size < 3) {
+		//sizeleft means that if we don't have enough left we just burrow into a wall, so to speak
+		//this makes ends not 'frayed' as much
+		if (shaftLeft > 1 || sizeLeft < 3) {
 			//shaft always is same level
-			NodeConnector n = genShaft(owner, size-1, tier,shaftLeft-1);
-			NodeConnector me = getNode(owner,tier);
-			me.connects.add(n);
-			n.getConnects().add(me);
-			return me.finalize(owner);//shafts finalize themselves
-		}else {
+			int us = getNode(holder,from,0, tier);
+			int next = genShaft(holder,us,sizeLeft-1,tier,shaftLeft-1);
+			holder.setMutualConnect(us,next);
+			return us;
+		}else {//shaft ends normally
 			//always a tier up when ending shaft
-			return generate(owner,size-1,tier+1);
+			return generate(holder,from,sizeLeft-1,tier+1);
 		}
 	}
 
 	@Override
 	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
+		NodeConnector start = new NodeConnector();
+		start.parent = owner;
 		switch (owner.shape) {
 		case NONE: 
-			return generate(owner,size, tier).finalize(owner);
+			generate(start,0,size, tier);
+			return start;
 		case ELEVATOR:
-			NodeConnector start = getNode(owner,tier).finalize(owner);
-			NodeConnector lastNode = start;
-			NodeConnector newNode;
-			for (int i = 0;i < size;i++) {
-				newNode = getNode(owner, tier+(i/10)).finalize(owner);
-				newNode.setFloor(i+1);
-				lastNode.getConnects().add(newNode);
-				newNode.getConnects().add(lastNode);
-				lastNode.reverseConnections();
+			int lastNode = 1;
+			int newNode;
+			size++;
+			for (int i = 1;i < size;i++) {
+				newNode = getNode(start,lastNode,i,tier+(i/10));
+				start.setFloor(newNode,i);
+				start.setMutualConnect(newNode, lastNode);
 				lastNode = newNode;
 			}
-			NodeConnector b = BossNode.getSingleton().getNode(owner,1+tier+(int)Math.ceil(size/10));
-			lastNode.getConnects().add(b);
-			b.getConnects().add(lastNode);
-			b.setFloor(size+10);
-			lastNode.reverseConnections();
+			newNode = NodeType.NodeTypeNum.BOSS.singleton.getNode(start, lastNode,size+2, 1+tier+(int)Math.ceil(size/10));
+			start.setMutualConnect(newNode, lastNode);
+			start.setFloor(newNode,size+2);
 			return start;
 		}
 		throw new RuntimeException("Invalid mine");
 	}
 	
 	@Override
-	public void apply(NodeConnector made) {
-		switch (made.eventNum) {
+	public void apply(NodeConnector holder,int madeNode) {
+		switch (holder.getEventNum(madeNode)) {
+		/*
 		case -3: made.name = "sapphire cluster"; made.interactString = "mine sapphires";break;
 		case -2: made.name = "ruby cluster"; made.interactString = "mine rubies";break;
 		case -1: made.name = "emerald cluster"; made.interactString = "mine emeralds";break;
-		case 0: made.name = ""; made.interactString = "";break;
-		case 1: 
-			made.name = randomLists.randomWarrior();
-			made.interactString = "challenge " + made.name;
-			made.storage1 = RaceFactory.getDueler(made.level);
+		case 0: made.name = ""; made.interactString = "";break;*/
+		case 1:
+			Person p = RaceFactory.makeDuelerWithTitle(holder.getLevel(madeNode));
+			String warName = p.getTitle();
+			GenericNode.setSimpleDuelPerson(holder,madeNode, p,warName,"Challenge "+warName +"?");
 		break;
 		case 2: 
-			made.name = extra.choose("river","pond","lake","stream");
-			made.interactString = "wash yourself";break;
+			holder.setStorage(madeNode, extra.choose("river","pond","lake","stream"));
+			break;
 		case 3: 
 			made.storage1 = extra.choose("silver","gold","platinum","iron","copper");
 			made.name = made.storage1+" vein";
 			made.interactString = "mine "+made.storage1;break;
 		case 4:
-			made.name = randomLists.randomMuggerName();
-			made.interactString = "ERROR";
-			made.setForceGo(true);
-			made.storage1 = RaceFactory.getMugger(made.level);break;
-		case 5: 
-			made.name = extra.choose("locked door","barricaded door","padlocked door");
-			made.interactString = "unlock door";
-			made.setForceGo(true);break;
+			Person mugger = RaceFactory.makeMuggerWithTitle(holder.getLevel(madeNode));
+			String mugName = p.getTitle();
+			GenericNode.setBasicRagePerson(holder,madeNode, p,warName,extra.capFirst(mugName) + " attacks you!");
+			break;
+		case 5:
+			holder.setStorage(madeNode,extra.choose("locked door","barricaded door","padlocked door"));
+			//holder.setStateNum(madeNum,0);already at 0
+			holder.setForceGo(madeNode, true);
+			//made.interactString = "unlock door";
+			break;
 		case 6:
-			made.interactString = "examine crystals";
-			made.storage1 = randomLists.randomColor();
-			made.name = "weird " + (String)made.storage1 + " crystals";break;
-		case 7:
-			made.name = "minecart";
-			made.interactString = "examine minecart";break;
-		case 8: made.name = "ladder"; made.interactString = "traverse ladder"; made.setForceGo(true); break;
-		case 9: made.name = "cultists"; made.interactString = "approach cultists";
-			made.storage1 = RaceFactory.getCultist(made.level);
+			String cColor = randomLists.randomColor();
+			holder.setStorage(madeNode, cColor);
+			//made.interactString = "examine crystals";
+			//made.storage1 = randomLists.randomColor();
+			//made.name = "weird " + (String)made.storage1 + " crystals";break;
+		case 7://minecart
+			break;
+		case 8: 
+			holder.setForceGo(madeNode, true);
+			//made.name = "ladder"; made.interactString = "traverse ladder"; made.setForceGo(true)
+		break;
+		case 9: 
+			//made.name = "cultists"; made.interactString = "approach cultists";
+			//made.storage1 = RaceFactory.getCultist(made.level);
+			int cultLevel = holder.getLevel(madeNode);
+			int cultAmount = 1;
+			if (cultLevel > 3) {
+				if (extra.chanceIn(2,3)) {
+					cultAmount = 3;
+					cultLevel -=2;
+				}
+			}
+			List<Person> cultPeeps = new ArrayList<Person>();
+			for (int i = 0;i < cultAmount;i++) {
+				if (i == 0) {
+					cultPeeps.add(RaceFactory.makeCultistLeader(cultLevel+1,CultType.BLOOD));
+					continue;
+				}
+				cultPeeps.add(RaceFactory.makeCultist(cultLevel+1,CultType.BLOOD));
+			}
 		break;
 		}
 	}
 
 	@Override
-	public boolean interact(NodeConnector node) {
+	public boolean interact(NodeConnector holder,int node) {
 		this.node = node;
 		switch(node.eventNum) {
-		case -3: saph1();break;
-		case -2: rubies1();break;
-		case -1: emeralds1();break;
-		case 1: duelist();break;
-		case 2: extra.println("You wash yourself in the "+node.name+".");Player.player.getPerson().washAll();break;
-		case 3: goldVein1();break;
-		case 4: mugger1(); if (node.state == 0) {return true;};break;
+		//case -3: saph1();break;
+		//case -2: rubies1();break;
+		//case -1: emeralds1();break;
+		//case 1: duelist();break;//generic now, should probably do enums by now tbh
+		case 2:
+			extra.println("You wash yourself in the "+holder.getStorageFirstClass(node,String.class)+".");
+			Player.player.getPerson().washAll();break;
+		//case 3: goldVein1();break;
+		//case 4: mugger1(); if (node.state == 0) {return true;};break;
 		case 5: 
-			if (node.isForceGo() == true) {
-				if (node.parent.getOwner() == Player.player) {
-					extra.println("You unlock and then relock the door.");
-					node.setForceGo(false);
+			if (holder.isForceGo(node)) {
+				if (holder.parent.getOwner() == Player.player) {
+					extra.println("You find the keyhole and then unlock the "+holder.getStorageFirstClass(node,String.class)+".");
+					//holder.setForceGo(node, false);
+					holder.setStateNum(node,1);//unlocked once
+					//so they can change locks, check to make sure that there isn't an infinite loop on this still
+					holder.findBehind(node,"unlocked door");
 				}else {
-					extra.println("You bash open the door.");
-					node.interactString = "examine broken door";
-					node.name = "broken door";node.setForceGo(false);
+					if (holder.getStateNum(node) == 1) {
+						extra.println("You bash open the "+holder.getStorageFirstClass(node,String.class)+".");
+					}else {
+						extra.println("Looks like they changed the locks! You bash open the door.");
+					}
+					
+					holder.setStateNum(node,2);//broken open
+					holder.setForceGo(node, false);
+					holder.findBehind(node,"broken door");
 				}
 			}else {
-				extra.println("The door is broken.");
-				node.findBehind("broken door");
-			};break;
+				if (holder.parent.getOwner() == Player.player) {
+					extra.println("You relock the door every time you go by it, but you know where the hole is now so that's easy.");
+				}else {
+					extra.println(
+							extra.choose(
+							"The door is broken."
+							,"The door is smashed to bits."
+							,"The metal on the door is hanging off the splinters."
+							,"The lock is intact. The rest of the door isn't."
+							)
+							);
+					holder.findBehind(node,"broken door");
+				}
+			};
+			break;
 		case 6: 
-			extra.println("You examine the " + ((String)node.storage1)+ " crystals. They are very pretty.");
-			node.findBehind(((String)node.storage1)+ " crystals");break;
+			String cColor = holder.getStorageFirstClass(node,String.class);
+			extra.println("You examine the " + cColor+ " crystals. They are very pretty.");
+			holder.findBehind(node,cColor+ " crystals");
+			break;
 		case 7: 
 			extra.println("You examine the iron minecart. It is on the tracks that travel throughout the mine.");
 			node.findBehind("minecart");break;

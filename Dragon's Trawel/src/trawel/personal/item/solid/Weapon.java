@@ -48,7 +48,8 @@ public class Weapon extends Item {
 	private WeaponType weap;
 	private int material;
 	private int kills;
-	private float bsCon, bsIpt, bsAvg, bsWgt;//these don't need to update for internal weapons
+	private float bsCon = -1, bsIpt, bsAvg, bsWgt;//these don't need to update for internal weapons
+	//is lazy inited again
 	
 	private Set<WeaponQual> qualList = EnumSet.noneOf(WeaponQual.class);
 	
@@ -150,9 +151,10 @@ public class Weapon extends Item {
 				enchant = new EnchantHit(getEnchantMult());
 			}
 		}
+		/*
 		if (materia != MaterialFactory.getMat("bone")) {
 			refreshBattleScore();//TODO: make a better way to realize we're not gonna need battlescore
-		}
+		}*/
 		
 	}
 	
@@ -380,17 +382,29 @@ public class Weapon extends Item {
 	}
 	
 	public double scoreHighestContribution() {
+		if (bsCon == -1) {
+			refreshBattleScore();
+		}
 		return this.bsCon;
 	}
 	
 	public double scoreImpact() {
+		if (bsCon == -1) {
+			refreshBattleScore();
+		}
 		return this.bsIpt;
 	}
 	
 	public double scoreWeight() {
+		if (bsCon == -1) {
+			refreshBattleScore();
+		}
 		return this.bsWgt;
 	}
 	public double scoreAverage() {
+		if (bsCon == -1) {
+			refreshBattleScore();
+		}
 		return this.bsAvg;
 	}
 

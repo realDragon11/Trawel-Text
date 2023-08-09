@@ -155,9 +155,12 @@ public class BossNode implements NodeType {
 		throw new RuntimeException("Invalid boss");
 	}
 	
+	public static DrawBane[] dblist = new DrawBane[] {DrawBane.VIRGIN};//welp
+	
 	@Override
 	public DrawBane[] dbFinds() {
-		return null;
+		//bosses can be present through generics, should honestly stop using boss nodes at this point
+		return dblist;
 	}
 
 	@Override

@@ -1767,5 +1767,9 @@ public class Person implements java.io.Serializable{
 		return myroll-theirroll;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
 
 }

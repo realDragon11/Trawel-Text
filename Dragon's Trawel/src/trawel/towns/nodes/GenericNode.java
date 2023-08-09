@@ -1,5 +1,6 @@
 package trawel.towns.nodes;
 
+import trawel.Networking;
 import trawel.extra;
 import trawel.battle.Combat;
 import trawel.personal.Person;
@@ -17,8 +18,14 @@ public class GenericNode implements NodeType {
 		,DEAD_STRING_TOTAL
 		,DEAD_RACE_INDEX
 		,BASIC_RAGE_PERSON
-		
+		,BASIC_DUEL_PERSON
 		,VEIN_MINERAL
+	}
+	
+	public static void setSimpleDuelPerson(NodeConnector holder,int node,Person p, String nodename, String interact) {
+		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
+		holder.setEventNum(node,Generic.BASIC_DUEL_PERSON.ordinal());
+		holder.setStorage(node, new Object[]{p,nodename,interact});
 	}
 	
 	public static void setSimpleDeadString(NodeConnector holder,int node, String bodyname) {
@@ -54,6 +61,8 @@ public class GenericNode implements NodeType {
 		switch (Generic.values()[holder.getTypeNum(node)]) {
 		case BASIC_RAGE_PERSON:
 			return basicRager(holder, node);
+		case BASIC_DUEL_PERSON:
+			return basicDueler(holder, node);
 		case DEAD_PERSON:
 			return simpleDeadPerson(holder, node);
 		case DEAD_RACE_INDEX:
@@ -109,6 +118,8 @@ public class GenericNode implements NodeType {
 		case DEAD_RACE_INDEX:
 		case DEAD_STRING_SIMPLE:
 			return "Examine body.";
+		case BASIC_DUEL_PERSON:
+			return holder.getStorageAsArray(node)[2].toString();
 		}
 		return null;
 	}
@@ -116,7 +127,7 @@ public class GenericNode implements NodeType {
 	@Override
 	public String nodeName(NodeConnector holder, int node) {
 		switch (Generic.values()[holder.getTypeNum(node)]) {
-		case BASIC_RAGE_PERSON:
+		case BASIC_RAGE_PERSON: case BASIC_DUEL_PERSON:
 			return holder.getStorageAsArray(node)[1].toString();
 		case DEAD_PERSON:
 			Person p = holder.getStorageFirstPerson(node);
@@ -148,6 +159,24 @@ public class GenericNode implements NodeType {
 				}
 		//}
 		//return false;
+	}
+	
+	private boolean basicDueler(NodeConnector holder,int node) {
+		Person p = holder.getStorageFirstPerson(node);
+		p.getBag().graphicalDisplay(1, p);
+		extra.println(extra.PRE_RED+holder.getStorageAsArray(node)[2]);
+		if (extra.yesNo()) {
+			Combat c = Player.player.fightWith(p);
+			if (c.playerWon() > 0) {
+				GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
+				holder.setForceGo(node,false);
+				return false;
+			}else {
+				return true;
+			}
+		}
+		Networking.clearSide(1);//clear the display
+		return false;
 	}
 	
 	private boolean simpleDeadString(NodeConnector holder,int node) {
