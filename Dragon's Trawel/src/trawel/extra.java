@@ -1036,8 +1036,8 @@ public final class extra {
 		 * <br>
 		 * b must be a short, int, or long, due to unsigned issues
 		 */
-		public static long setByteInLong(final long l,final long b, final int offset) {
-			return setXInLong(l,8,offset,b);
+		public static long setByteInLong(final long l,final long toset, final int offset) {
+			return setXInLong(l,8,offset,toset);
 		}
 		
 		/**
@@ -1045,8 +1045,8 @@ public final class extra {
 		 * <br>
 		 * b must be an int or long, due to unsigned issues
 		 */
-		public static long setShortInLong(final long l,final long b, final int offset) {
-			return setXInLong(l,16,offset,b);
+		public static long setShortInLong(final long l,final long toset, final int offset) {
+			return setXInLong(l,16,offset,toset);
 		}
 		
 		/**
@@ -1054,8 +1054,8 @@ public final class extra {
 		 * <br>
 		 * b must be a long, due to unsigned issues
 		 */
-		public static long setIntInLong(final long l,final long b, final int offset) {
-			return setXInLong(l,32,offset,b);
+		public static long setIntInLong(final long l,final long toset, final int offset) {
+			return setXInLong(l,32,offset,toset);
 		}
 		
 		/**
@@ -1063,10 +1063,34 @@ public final class extra {
 		 * <br>
 		 * b must be a short, int, or long, due to unsigned issues
 		 * <br>
-		 * 0 <= num <= 7
+		 * 0 <= num <= 7 (0 indexed)
 		 */
-		public static long setNthByteInLong(final long l,final long b, final int number_of_byte) {
-			return setXInLong(l,8,number_of_byte*8,b);
+		public static long setNthByteInLong(final long l,final long toset, final int number_of_byte) {
+			return setXInLong(l,8,number_of_byte*8,toset);
+		}
+		
+		/**
+		 * returns it as a NUMBER in an int. (0 indexed)
+		 * <br>
+		 * effectively reads the byte as unsigned
+		 */
+		public static int intGetNthByteFromLong(final long l, final int number_of_byte)
+		{
+		    final long rightShifted = l >>> number_of_byte*8;
+		    final long mask = (1L << 8) - 1L;
+		    return (int) (rightShifted & mask);
+		}
+		
+		/**
+		 * returns it as a NUMBER in an int. (0 indexed)
+		 * <br>
+		 * effectively reads the short as unsigned
+		 */
+		public static int intGetNthShortFromLong(final long l, final int number_of_byte)
+		{
+		    final long rightShifted = l >>> number_of_byte*16;
+		    final long mask = (1L << 16) - 1L;
+		    return (int) (rightShifted & mask);
 		}
 
 		

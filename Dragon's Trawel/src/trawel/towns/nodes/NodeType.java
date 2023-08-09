@@ -15,7 +15,7 @@ public interface NodeType{
 	 * @param time
 	 * @param calling
 	 */
-	void passTime(NodeConnector node, double time, TimeContext calling);
+	void passTime(NodeConnector holder,int node, double time, TimeContext calling);
 	
 	NodeConnector getNode(NodeFeature owner, int tier);
 	
