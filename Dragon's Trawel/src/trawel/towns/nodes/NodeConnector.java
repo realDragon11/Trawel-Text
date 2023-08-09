@@ -403,8 +403,13 @@ public class NodeConnector implements Serializable {
 	
 	//called in some passTime implementations to propagate it
 	public void spreadTime(double time, TimeContext calling) {
-		for (int i = 1; i < size+1;i++)
-		parent.numType(getTypeNum(i)).passTime(this,i, time, calling);
+		for (int i = 1; i < size+1;i++) {
+			if (getFlag(i,NodeFlag.GENERIC_OVERRIDE)) {
+				NodeType.NodeTypeNum.GENERIC.singleton.passTime(this, i, time, calling);
+			}else {
+				NodeType.getTypeEnum(getTypeNum(i)).singleton.passTime(this, i, time, calling);
+			}
+		}
 	}
 	
 	public List<TimeEvent> timeEvent(double time, TimeContext calling){
@@ -416,7 +421,7 @@ public class NodeConnector implements Serializable {
 		if (keeper.getFindTime() > 1 && Player.player.sideQuests.size() > 0) {
 			if (extra.randFloat() < odds) {
 				List<String> list = Player.player.allQTriggers();
-				for (DrawBane str: parent.numType(getTypeNum(node)).dbFinds()) {
+				for (DrawBane str: NodeType.getTypeEnum(getTypeNum(node)).singleton.dbFinds()) {
 					if (list.contains("db:"+str.name())) {
 						keeper.findCollect("db:"+str.name(), amount);
 						return str;

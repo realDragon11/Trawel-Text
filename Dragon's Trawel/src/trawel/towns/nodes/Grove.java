@@ -10,9 +10,8 @@ public class Grove extends NodeFeature {
 	public Grove(String name,Town t,int capacity) {
 		this.name = name;
 		town = t;
-		size = capacity;
 		tutorialText = "Explore groves to progress in level.";
-		generate();
+		generate(capacity);
 		background_area = "forest";
 		background_variant = 1;
 	}
@@ -31,20 +30,12 @@ public class Grove extends NodeFeature {
 		Networking.setArea("forest");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|grove|Grove|");
-		NodeConnector.enter(start);
+		start.start();
 	}
 	
 	@Override
-	protected void generate() {
-		start = GroveNode.getSingleton().getStart(this, size, getTown().getTier());//DOLATER: get actual level
-	}
-	@Override
-	public NodeType numType(int i) {
-		switch (i) {
-		case 0: return GroveNode.getSingleton();
-		case 1: return CaveNode.getSingleton();
-		}
-		throw new RuntimeException("invalid numtype");
+	protected void generate(int size) {
+		start = NodeType.NodeTypeNum.GROVE.singleton.getStart(this, size, getTown().getTier());//DOLATER: get actual level
 	}
 	@Override
 	protected byte bossType() {

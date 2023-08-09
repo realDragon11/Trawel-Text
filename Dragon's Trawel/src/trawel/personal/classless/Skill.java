@@ -153,7 +153,9 @@ public enum Skill{
 		BLOODDRINKER("Blood Drinker","Those who attack you while bleeding heal you equal to their bleed damage."
 				,"Stacks with other sources of bleed healing"
 				,Type.DEFENSE),
-		
+		NIGHTVISION("Nightvision","Lets you see objects in the dark."
+				,"Helps determine things in Graveyards."
+				, Type.OTHER),
 		
 		
 		;

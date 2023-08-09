@@ -26,8 +26,6 @@ public abstract class NodeFeature extends Feature {
 		return shape;
 	}
 	
-	public abstract NodeType numType(int i);
-	
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		if (spreadTime) {
@@ -46,7 +44,7 @@ public abstract class NodeFeature extends Feature {
 		findTime = 0;
 	}
 
-	protected abstract void generate();
+	protected abstract void generate(int size);
 
 	public void delayFind() {
 		if (findTime > 3) {

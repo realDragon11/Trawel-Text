@@ -10,10 +10,9 @@ public class Dungeon extends NodeFeature {
 	public Dungeon(String name,Town t,Shape s,int bossType) {
 		this.name = name;
 		town = t;
-		size = 50;//t.getTier()*10;
 		tutorialText = "Explore dungeons to find treasure.";
 		shape = s;
-		generate();
+		generate(50);
 		boss = bossType;
 		
 	}
@@ -27,20 +26,14 @@ public class Dungeon extends NodeFeature {
 		Networking.setArea("dungeon");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|dungeon|Dungeon|");
-		NodeConnector.enter(start);
+		start.start();
 	}
 	
 	@Override
-	protected void generate() {
-		start = DungeonNode.getSingleton().getStart(this, size, getTown().getTier());//DOLATER: get actual level
+	protected void generate(int size) {
+		start = NodeType.NodeTypeNum.DUNGEON.singleton.getStart(this, size, getTown().getTier());//DOLATER: get actual level
 	}
-	@Override
-	public NodeType numType(int i) {
-		switch (i) {
-		case 0: return DungeonNode.getSingleton();
-		}
-		return null;
-	}
+
 	
 	@Override
 	protected byte bossType() {

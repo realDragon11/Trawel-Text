@@ -9,6 +9,7 @@ import trawel.mainGame;
 import trawel.randomLists;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -17,33 +18,23 @@ import trawel.towns.services.Oracle;
 public class GraveyardNode implements NodeType{
 	private static final int EVENT_NUMBER =7;
 	
-	private static final GraveyardNode handler = new GraveyardNode();
-	
-	private NodeConnector node;
-	
-	public static GraveyardNode getSingleton() {
-		return handler;
-	}
-
-	
 	@Override
-	public NodeConnector getNode(NodeFeature owner, int tier) {
-		byte idNum = (byte) extra.randRange(1,EVENT_NUMBER);
-		NodeConnector make = new NodeConnector();
-		make.eventNum = idNum;
-		make.typeNum = 0;
-		make.level = tier;
-		return make;
+	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
+		int idNum =extra.randRange(1,EVENT_NUMBER);
+		int ret = holder.newNode(NodeType.NodeTypeNum.CAVE.ordinal(),idNum,tier);
+		return ret;
 	}
 	
 	@Override
 	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
-		return generate(owner,size,tier).finalize(owner);
+		NodeConnector start = new NodeConnector();
+		generate(start,0,size,tier);
+		return start.complete(owner);
 	}
 	
 	@Override
-	public NodeConnector generate(NodeFeature owner, int size, int tier) {
-		NodeConnector made = getNode(owner,tier);
+	public int generate(NodeConnector holder,int from, int size, int tier) {
+		int made = getNode(holder,from,0,tier);
 		if (size <= 0) {
 			return made;
 		}
@@ -61,20 +52,37 @@ public class GraveyardNode implements NodeType{
 			if (extra.chanceIn(1,10)) {
 				tempLevel++;
 			}
-			NodeConnector n = generate(owner,dist[i],tempLevel);
-			made.connects.add(n);
-			n.getConnects().add(made);
-			n.finalize(owner);
+			int n = generate(holder,from,dist[i],tempLevel);
+			holder.setMutualConnect(made, n);
 			i++;
 		}
 		return made;
 	}
-	private static final String DEF_INTERACT = "Approach Shadowy Figure", DEF_NAME = "Shadowy Figure";
-	//DOLATER: maybe some nightvision mechanic
+	private static final String 
+			STR_SHADOW_FIGURE_ACT = "Approach Shadowy Figure",
+			STR_SHADOW_FIGURE_NAME = "Shadowy Figure",
+			STR_SHADOW_OBJECT_ACT = "Approach Shadowy Object",
+			STR_SHADOW_OBJECT_NAME = "Shadowy Object"
+			;
+	/**
+	 * if should display 'shadowy figure' instead of it's normal text
+	 * <br>
+	 * NORMAL STATES SHOULD BE >=10 IN GRAVEYARD
+	 */
+	private static final int STATE_SHADOW_FIGURE = 0;
+	/**
+	 * if should display 'shadowy object' instead of it's normal text
+	 * <br>
+	 * NORMAL STATES SHOULD BE >=10 IN GRAVEYARD
+	 */
+	private static final int STATE_SHADOW_OBJECT = 1;
+	
+	//note that you can't use generic nodes if you want shadowy behavior
+	
 	@Override
-	public void apply(NodeConnector made) {
-		switch (made.eventNum) {
-		case -1:made.name = extra.choose("stairs","ladder"); made.interactString = "traverse "+made.name;made.setForceGo(true);break;
+	public void apply(NodeConnector holder,int madeNode) {
+		switch (holder.getEventNum(madeNode)) {
+		//case -1:made.name = extra.choose("stairs","ladder"); made.interactString = "traverse "+made.name;made.setForceGo(true);break;
 		case 1: made.name = DEF_NAME; made.storage1 =  RaceFactory.getGravedigger(made.level); made.interactString = DEF_INTERACT;break;
 		case 2: made.name = DEF_NAME; made.interactString = DEF_INTERACT;made.storage1 = RaceFactory.getGraverobber(made.level);break;
 		
@@ -124,6 +132,42 @@ public class GraveyardNode implements NodeType{
 		case 7: statueLoot();break;
 		}
 		return false;
+	}
+	
+	@Override
+	public String interactString(NodeConnector holder, int node) {
+		int state = holder.getStateNum(node);
+		if (state < 10 && !Player.player.getPerson().hasSkill(Skill.NIGHTVISION)) {
+			if (state == STATE_SHADOW_FIGURE) {
+				return STR_SHADOW_FIGURE_NAME;
+			}
+			if (state == STATE_SHADOW_OBJECT) {
+				return STR_SHADOW_OBJECT_NAME;
+			}
+		}
+		switch(holder.getEventNum(node)) {
+		case 1:
+			return "examine entryway";
+		}
+		return null;
+	}
+
+	@Override
+	public String nodeName(NodeConnector holder, int node) {
+		int state = holder.getStateNum(node);
+		if (state < 10 && !Player.player.getPerson().hasSkill(Skill.NIGHTVISION)) {
+			if (state == STATE_SHADOW_FIGURE) {
+				return STR_SHADOW_FIGURE_NAME;
+			}
+			if (state == STATE_SHADOW_OBJECT) {
+				return STR_SHADOW_OBJECT_NAME;
+			}
+		}
+		switch(holder.getEventNum(node)) {
+		case 1:
+			return "cave entrance";
+		}
+		return null;
 	}
 	
 	private boolean packOfBats() {

@@ -12,11 +12,10 @@ public class Mine extends NodeFeature {
 	public Mine(String name,Town t, SuperPerson owner,Shape s) {
 		this.name = name;
 		town = t;
-		size = 50;//t.getTier()*10;
 		tutorialText = "Mines have minerals for you to make profit off of.";
 		this.owner = owner;
 		shape = s;
-		generate();
+		generate(50);
 		background_area = "mine";
 	}
 	
@@ -33,7 +32,7 @@ public class Mine extends NodeFeature {
 		Networking.addMultiLight(80,471);
 		Networking.addMultiLight(486,360);
 		Networking.addMultiLight(1012,353);
-		NodeConnector.enter(start);
+		start.start();
 		Networking.clearLights();
 	}
 	@Override
@@ -52,16 +51,10 @@ public class Mine extends NodeFeature {
 	}
 	
 	@Override
-	protected void generate() {
-		start = MineNode.getSingleton().getStart(this, size, getTown().getTier());//DOLATER: get actual level
+	protected void generate(int size) {
+		start = NodeType.NodeTypeNum.MINE.singleton.getStart(this, size, getTown().getTier());//DOLATER: get actual level
 	}
-	@Override
-	public NodeType numType(int i) {
-		switch (i) {
-		case 0: return MineNode.getSingleton();
-		}
-		return null;
-	}
+	
 	@Override
 	protected byte bossType() {
 		return 2;

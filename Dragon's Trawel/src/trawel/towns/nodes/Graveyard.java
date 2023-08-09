@@ -9,9 +9,8 @@ public class Graveyard extends NodeFeature {
 	public Graveyard(String name,Town t) {
 		this.name = name;
 		town = t;
-		size = 40;
 		tutorialText = "Graveyards are teeming with undead.";
-		generate();
+		generate(40);
 	}
 	
 	@Override
@@ -24,21 +23,14 @@ public class Graveyard extends NodeFeature {
 		Networking.setArea("dungeon");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|dungeon|Dungeon|");
-		NodeConnector.enter(start);
+		start.start();
 	}
 
 	@Override
-	protected void generate() {
-		start = GraveyardNode.getSingleton().getStart(this, size, getTown().getTier());//DOLATER: get actual level
+	protected void generate(int size) {
+		start = NodeType.NodeTypeNum.GRAVEYARD.singleton.getStart(this, size, getTown().getTier());//DOLATER: get actual level
 	}
-	
-	@Override
-	public NodeType numType(int i) {
-		switch (i) {
-		case 0: return GraveyardNode.getSingleton();
-		}
-		return null;
-	}
+
 	@Override
 	protected byte bossType() {
 		return -1;
