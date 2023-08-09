@@ -41,12 +41,12 @@ public class GenericNode implements NodeType {
 	/**
 	 * pass null as attackstring to get 'The <p racename> attacks you!'
 	 */
-	public static void setBasicRagePerson(NodeConnector holder,int node, Person p, String attackString) {
+	public static void setBasicRagePerson(NodeConnector holder,int node, Person p, String nodename,String attackString) {
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.BASIC_RAGE_PERSON.ordinal());
 		holder.setForceGo(node,true);
 		//should never see interactstring
-		holder.setStorage(node,new Object[] {p,attackString});
+		holder.setStorage(node,new Object[] {p,nodename,attackString});
 	}
 	
 	@Override
@@ -98,25 +98,45 @@ public class GenericNode implements NodeType {
 
 	@Override
 	public void apply(NodeConnector holder, int madeNode) {
-		// can run, for example mines and caves call this
-
+		// cannot run, instead apply directly through an override method which will set everything
 	}
 
 	@Override
 	public String interactString(NodeConnector holder, int node) {
 		// TODO Auto-generated method stub
+		switch (Generic.values()[holder.getTypeNum(node)]) {
+		case DEAD_PERSON:
+		case DEAD_RACE_INDEX:
+		case DEAD_STRING_SIMPLE:
+			return "Examine body.";
+		}
 		return null;
 	}
 
 	@Override
 	public String nodeName(NodeConnector holder, int node) {
-		// TODO Auto-generated method stub
+		switch (Generic.values()[holder.getTypeNum(node)]) {
+		case BASIC_RAGE_PERSON:
+			return holder.getStorageAsArray(node)[1].toString();
+		case DEAD_PERSON:
+			Person p = holder.getStorageFirstPerson(node);
+			return p.getName() +"'s corpse";
+		case DEAD_RACE_INDEX:
+			return "Dead "+RaceID.values()[holder.getStorageFirstClass(node, Integer.class)].name;
+		case DEAD_STRING_SIMPLE:
+			return "Dead " +holder.getStorageFirstClass(node, String.class);
+		case DEAD_STRING_TOTAL:
+			return holder.getStorageAsArray(node)[0].toString();
+		case VEIN_MINERAL:
+			//TODO
+			break;
+		}
 		return null;
 	}
 	
 	private boolean basicRager(NodeConnector holder,int node) {
 		//if (holder.getStateNum(node) == 0) {
-			extra.println(extra.PRE_RED+holder.getStorageFirstClass(node,String.class));
+			extra.println(extra.PRE_RED+holder.getStorageAsArray(node)[2]);
 			Person p = holder.getStorageFirstPerson(node);
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() > 0) {
@@ -143,8 +163,8 @@ public class GenericNode implements NodeType {
 		holder.findBehind(node,p.getName() +"'s corpse");
 		return false;
 	}
-	private boolean deadString(NodeConnector holder,int node) {
-		String str = holder.getStorageFirstClass(node, String.class);
+	private boolean deadStringTotal(NodeConnector holder,int node) {
+		String str = holder.getStorageAsArray(node)[1].toString();//second
 		extra.println(str);
 		holder.findBehind(node,"body parts");
 		return false;

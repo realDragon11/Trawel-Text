@@ -71,7 +71,7 @@ public class CaveNode implements NodeType{
 			holder.setForceGo(madeNode,true);
 			break;
 		case 2:
-			GenericNode.setBasicRagePerson(holder,madeNode,RaceFactory.makeBear(holder.getLevel(madeNode)),"The bear here mauls you!");
+			GenericNode.setBasicRagePerson(holder,madeNode,RaceFactory.makeBear(holder.getLevel(madeNode)),"Sleeping Bear","The bear here mauls you!");
 			break;
 		case 3:
 			//holder.setTypeNum(madeNode,NodeTypeNum.MINE.ordinal());
@@ -84,7 +84,7 @@ public class CaveNode implements NodeType{
 			NodeType.NodeTypeNum.GENERIC.singleton.apply(holder, madeNode);
 			break;
 		case 4:
-			GenericNode.setBasicRagePerson(holder,madeNode,RaceFactory.makeBat(holder.getLevel(madeNode)),"A bat swoops down to attack you!");
+			GenericNode.setBasicRagePerson(holder,madeNode,RaceFactory.makeBat(holder.getLevel(madeNode)),"Ceiling Bat","The bat swoops down to attack you!");
 			break;
 		}
 	}
@@ -95,11 +95,6 @@ public class CaveNode implements NodeType{
 		case 1: //TODO: if need to change backgrounds, do it here instead of by typenum
 			extra.println("The cave entrance is damp.");
 			Networking.unlockAchievement("cave1");break;
-		case 2: return bear1(holder,node);
-				;break;
-		//case 3: goldVein1();break;
-		case 4: return  bat1(holder,node)
-				;break;
 		}
 		return false;
 	}
@@ -110,8 +105,26 @@ public class CaveNode implements NodeType{
 	}
 
 	@Override
-	public void passTime(NodeConnector node, double time, TimeContext calling){
+	public void passTime(NodeConnector holder,int node, double time, TimeContext calling){
 		//none for now
+	}
+
+	@Override
+	public String interactString(NodeConnector holder, int node) {
+		switch(holder.getEventNum(node)) {
+		case 1:
+			return "examine entryway";
+		}
+		return null;
+	}
+
+	@Override
+	public String nodeName(NodeConnector holder, int node) {
+		switch(holder.getEventNum(node)) {
+		case 1:
+			return "cave entrance";
+		}
+		return null;
 	}
 	
 	/*

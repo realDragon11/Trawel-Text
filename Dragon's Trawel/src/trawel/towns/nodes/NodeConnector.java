@@ -207,11 +207,19 @@ public class NodeConnector implements Serializable {
 	}
 	
 	public String getName(int node) {
-		return "index: " +node + " num: " + getEventNum(node);//FIXME: maybe have it be able to check the first object in storage is a string if the eventnum tells it to
+		//return "index: " +node + " num: " + getEventNum(node);//maybe have it be able to check the first object in storage is a string if the eventnum tells it to
+		if (getFlag(node,NodeFlag.GENERIC_OVERRIDE)) {
+			return NodeType.NodeTypeNum.GENERIC.singleton.nodeName(this, node);
+		}
+		return NodeType.getTypeEnum(getTypeNum(node)).singleton.nodeName(this, node);
 	}
 	
 	public String getInteractString(int node) {
-		return "type: " + getTypeNum(node) + " num: " + getEventNum(node);//FIXME
+		//return "type: " + getTypeNum(node) + " num: " + getEventNum(node);
+		if (getFlag(node,NodeFlag.GENERIC_OVERRIDE)) {
+			return NodeType.NodeTypeNum.GENERIC.singleton.interactString(this, node);
+		}
+		return NodeType.getTypeEnum(getTypeNum(node)).singleton.interactString(this, node);
 	}
 
 	public void start() {
