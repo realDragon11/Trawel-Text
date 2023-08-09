@@ -1002,6 +1002,14 @@ public final class extra {
 		 * always remember to set what this returns! (l parameter) it can't know where to put it!
 		 */
 		public static long setXInLong(final long l,final int length,final int start_offset, final long toSet) {
+			final long allon = ~(0b0);
+			return  ((~((allon << start_offset) & (allon >>> (64-(start_offset+length)))) & l) | (toSet) << (start_offset));
+		}
+		
+		/**
+		 * with my insane commentary
+		 */
+		public static long setXInLongVerbose(final long l,final int length,final int start_offset, final long toSet) {
 			//starting point at https://stackoverflow.com/a/22664554
 		    //"""return (UINT_MAX >> (CHAR_BIT*sizeof(int)-to)) & (UINT_MAX << (from-1));"""
 			//it's really unfortunate that I couldn't find any remotely decent java resources on this, and only bad ones for other languages
@@ -1015,18 +1023,20 @@ public final class extra {
 			final long flipoff = ~(offBottom & offTop);
 			final long set = (toSet) << (start_offset);//need to cast to long so if it runs up against the end of the bits it doesn't become negative
 			final long prep = (flipoff & l);
+			
 			System.out.println("in"+UnitAssertions.pad(l)+" all" + UnitAssertions.pad(allon));
 			System.out.println("top"+UnitAssertions.pad(offTop)+" bot" + UnitAssertions.pad(offBottom));
 			System.out.println("off"+UnitAssertions.pad(flipoff));
 			System.out.println("prep"+ UnitAssertions.pad(prep)+" set"+UnitAssertions.pad(set));
 			return  (prep | set);
 		}
+		
 		/**
 		 * see disclaimers in 'setXInLong', this just wraps that
 		 * <br>
 		 * b must be a short, int, or long, due to unsigned issues
 		 */
-		public static long setByteInLong(final long l,final short b, final int offset) {
+		public static long setByteInLong(final long l,final long b, final int offset) {
 			return setXInLong(l,8,offset,b);
 		}
 		
@@ -1035,7 +1045,7 @@ public final class extra {
 		 * <br>
 		 * b must be an int or long, due to unsigned issues
 		 */
-		public static long setShortInLong(final long l,final int b, final int offset) {
+		public static long setShortInLong(final long l,final long b, final int offset) {
 			return setXInLong(l,16,offset,b);
 		}
 		
@@ -1055,7 +1065,7 @@ public final class extra {
 		 * <br>
 		 * 0 <= num <= 7
 		 */
-		public static long setNthByteInLong(final long l,final short b, final int number_of_byte) {
+		public static long setNthByteInLong(final long l,final long b, final int number_of_byte) {
 			return setXInLong(l,8,number_of_byte*8,b);
 		}
 

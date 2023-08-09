@@ -56,6 +56,18 @@ public class NodeConnector implements Serializable {
 	 * passing could be removed entirely and just iterate over it instead of recurse over it
 	 * parent would be single per thing, which is nice
 	 */
+	/**
+	 * (8) typeNum
+	 * (8) eventNum
+	 * (8) state
+	 * (8)
+	 * <br>
+	 * -next 32-
+	 * <br>
+	 * (16) level
+	 * (16) floor
+	 */
+	protected long dataContainer;
 	
 	public transient boolean passing;
 	protected transient NodeFeature parent;
