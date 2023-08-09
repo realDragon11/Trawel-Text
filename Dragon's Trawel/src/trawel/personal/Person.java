@@ -91,7 +91,8 @@ public class Person implements java.io.Serializable{
 		AUTOLOOT, AUTOLEVEL,
 		ISPLAYER, SMART_COMPARE,
 		PLAYER_SIDE//fighting alongside the player
-		//thats 7
+		,IS_ADD//used to indicate less importance- in current cases, boss 'adds'
+		//thats 8, can't hold any more rn, might need to make another set
 	}
 	//DOLATER: add a Set<Culture> that holds cultures. This can be used for advanced bigorty, cultural norms, etc etc
 	//this might also be used to hold a place of origin

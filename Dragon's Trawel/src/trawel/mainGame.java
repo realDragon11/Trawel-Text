@@ -1035,15 +1035,15 @@ public class mainGame {
 		}
 		@Deprecated
 		public static List<Person> HugeBattle(List<Person>...people){
-			return HugeBattle(Player.player.getWorld(),Arrays.asList(people));
+			return HugeBattle(Player.player.getWorld(),Arrays.asList(people)).survivors;
 		}
 		@Deprecated
 		public static List<Person> HugeBattle(World w,List<Person>...people){
-			return HugeBattle(w,Arrays.asList(people));
+			return HugeBattle(w,Arrays.asList(people)).survivors;
 		}
 		
-		@Deprecated
-		public static List<Person> HugeBattle(World w, List<List<Person>> people){
+		
+		public static Combat HugeBattle(World w, List<List<Person>> people){
 			Combat battle = new Combat(w, people);
 			Comparator<Person> levelSorter = new Comparator<Person>(){//sort in descending order
 				@Override
@@ -1220,7 +1220,7 @@ public class mainGame {
 			}
 			
 			
-			return battle.survivors;
+			return battle;
 		}
 		
 		public static void adventureBody() {

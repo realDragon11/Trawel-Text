@@ -12,36 +12,36 @@ import derg.menus.MenuSelect;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.personal.Person;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
+import trawel.towns.World;
 
 public class NodeConnector implements Serializable {
 
 	//used for connecting event nodes with bosses
 	private static final long serialVersionUID = 1L;
-	protected List<NodeConnector> connects;
-	protected String name;//DOLATER: could probably generate these two Strings from the Objects
-	protected String interactString = "ERROR";
+	//protected List<NodeConnector> connects;
+	//protected String name;//DOLATER: could probably generate these two Strings from the Objects
+	//protected String interactString = "ERROR";
 	
-	protected int level;
+	//protected int level;
 	
-	private short floor = 0;//DOLATER: make floor apply to all types as 'depth'. Floor needs to stay an int/short for spacing reasons
+	//DOLATER: make floor apply to all types as 'depth'. Floor needs to stay an int/short for spacing reasons
 	
-	private byte flags = extra.emptyByte;
-	
-	public enum NodeFlag{
+	public enum NodeFlag{//flag with up to 8 values
 		FORCEGO, STAIR,
 		VISIT_BIT1, VISIT_BIT2
 	}
 	
-	protected byte typeNum;
-	protected byte eventNum;
-	protected byte state;
-	protected Object storage1, storage2;
+	//protected byte typeNum;
+	//protected byte eventNum;
+	//protected byte state;
+	//protected Object storage1, storage2;
 	/**
 	 * "turn everything into arrays plan"
 	 * 
@@ -85,7 +85,6 @@ public class NodeConnector implements Serializable {
 	 */
 	private int deepest = 1;
 	
-	public transient boolean passing;
 	protected transient NodeFeature parent;
 	
 	public static int lastNode = 1;
@@ -172,17 +171,12 @@ public class NodeConnector implements Serializable {
 		connections[node] = sub;
 	}
 	
-	public String getName() {
-		return name;
-	}
-
-
-	public void setName(String name) {
-		this.name = name;
+	public String getName(int node) {
+		return "index: " +node + " num: " + getEventNum(node);//FIXME: maybe have it be able to check the first object in storage is a string if the eventnum tells it to
 	}
 	
-	public int getLevel() {
-		return level;
+	public String getInteractString(int node) {
+		return "type: " + getTypeNum(node) + " num: " + getEventNum(node);//FIXME
 	}
 
 	public void start() {
@@ -221,7 +215,7 @@ public class NodeConnector implements Serializable {
 				if (isForceGo(node) && !forceGoProtection) {
 					setVisited(node,3);
 					forceGoProtection = true;
-					interactCode();
+					interactCode(node);
 					return null;//redo operation
 				}
 				mList.add(new NodeMenuTitle(node));
@@ -270,18 +264,18 @@ public class NodeConnector implements Serializable {
 		
 	}
 	
-	protected void interactCode() {
-		if (typeNum < 0) {
-			switch (typeNum) {
+	protected void interactCode(int node) {
+		if (getTypeNum(node) < 0) {
+			switch (getTypeNum(node)) {
 			case -1:
-				if (BossNode.getSingleton().interact(this)) {
+				if (BossNode.getSingleton().interact(this,node)) {
 					currentNode = 0;//kicked out
 				}
 				break;
 			}
 			return;
 		}
-		if (parent.numType(typeNum).interact(this)) {
+		if (parent.numType(getTypeNum(node)).interact(this,node)) {
 			currentNode = 0;//kicked out
 		}
 	}
@@ -297,7 +291,7 @@ public class NodeConnector implements Serializable {
 		public String title() {
 			String visitColor = extra.PRE_WHITE;
 			if (getVisited(node) != 3) {
-				visitColor = extra.TIMID_GREY;
+				visitColor = extra.TIMID_GREY;//may be overridden by the node itself by just changing the color right back
 			}
 			return visitColor + getInteractString(node);
 		}
@@ -305,7 +299,7 @@ public class NodeConnector implements Serializable {
 		@Override
 		public boolean go() {
 			setVisited(node,3);
-			interactCode();
+			interactCode(node);
 			return true;
 		}
 		
@@ -364,37 +358,23 @@ public class NodeConnector implements Serializable {
 		}
 		setConnects(node,replace);
 	}
-	public void endPass() {
-		passing = false;
-		for (NodeConnector n: connects) {
-			if (n.passing) {
-				n.endPass();
-			}
-		}
-	}
 	
 	//called in some passTime implementations to propagate it
 	public void spreadTime(double time, TimeContext calling) {
-		passing = true;
-		for (int i = 0; i < size;i++)
-		parent.numType(typeNum).passTime(this,i, time, calling);
-		for (NodeConnector n: connects) {
-			if (!n.passing) {
-				n.spreadTime(time,calling);
-			}
-		}
+		for (int i = 1; i < size+1;i++)
+		parent.numType(getTypeNum(i)).passTime(this,i, time, calling);
 	}
 	
 	public List<TimeEvent> timeEvent(double time, TimeContext calling){
 		return null;
 	}
 	
-	protected DrawBane attemptCollectAll(float odds,int amount) {
+	protected DrawBane attemptCollectAll(int node,float odds,int amount) {
 		NodeFeature keeper = parent;
 		if (keeper.getFindTime() > 1 && Player.player.sideQuests.size() > 0) {
 			if (extra.randFloat() < odds) {
 				List<String> list = Player.player.allQTriggers();
-				for (DrawBane str: parent.numType(typeNum).dbFinds()) {
+				for (DrawBane str: parent.numType(getTypeNum(node)).dbFinds()) {
 					if (list.contains("db:"+str.name())) {
 						keeper.findCollect("db:"+str.name(), amount);
 						return str;
@@ -406,8 +386,8 @@ public class NodeConnector implements Serializable {
 		return null;
 	}
 	
-	protected boolean findBehind(String behind) {
-		DrawBane db = this.attemptCollectAll(.2f,1);
+	protected boolean findBehind(int node,String behind) {
+		DrawBane db = this.attemptCollectAll(node,.2f,1);
 		if (db == null) {return false;}
 		extra.println("Hey, there's some "+ db.getName() +" pieces behind that "+ behind+"!");
 		return true;
@@ -416,7 +396,6 @@ public class NodeConnector implements Serializable {
 
 	protected void reset(NodeFeature p) {
 		parent = p;
-		p.size = size;
 		deepest = 0;
 		for (int i = 1; i < size+1;i++) {//first node is for us and not a node
 			deepest= Math.max(deepest,getFloor(i));
@@ -426,15 +405,17 @@ public class NodeConnector implements Serializable {
 	protected void finalize(int node,NodeFeature owner) {
 		int typeNum = getTypeNum(node);
 		int eventNum = getEventNum(node);
-		if (typeNum < 0) {
-			switch (typeNum) {
-			case -1:
-				BossNode.getSingleton().apply(this);
+		if (typeNum > NodeType.GENERIC_CUTOFF) {
+			switch (NodeType.getReservedTypeEnum(typeNum)) {
+			case BOSS_TYPE:
+				BossNode.getSingleton().apply(this,node);
+				break;
+			case GENERIC_TYPE:
 				break;
 			}
 			return;
 		}
-		owner.numType(typeNum).apply(this);
+		owner.numType(typeNum).apply(this,node);
 		if (eventNum == 3) {
 			if (owner instanceof Mine) {
 				((Mine) owner).addVein();
@@ -508,6 +489,46 @@ public class NodeConnector implements Serializable {
 			setFlag(node,NodeFlag.VISIT_BIT2,true);
 			break;
 		}
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setStorage(int node, Object object) {
+		storage[node] = object;
+	}
+	
+	public Object getStorage(int node) {
+		return storage[node];
+	}
+	
+	public Object[] getStorageAsArray(int node) {
+		return (Object[])storage[node];
+	}
+	
+	public Person getStorageFirstPerson(int node) {
+		Object[] arr = getStorageAsArray(node);
+		for (int i = 0; i < arr.length;i++) {
+			if (arr[i] instanceof Person) {
+				return (Person)arr[i];
+			}
+		}
+		return null;
+	}
+	
+	public <T> T getStorageFirstClass(int node, Class<T> clazz){
+		Object[] arr = getStorageAsArray(node);
+		for (int i = 0; i < arr.length;i++) {
+			if (clazz.isInstance(arr[i])) {
+				return clazz.cast(arr[i]);
+			}
+		}
+		return null;
+	}
+
+	public World getWorld() {
+		return parent.getTown().getIsland().getWorld();
 	}
 	
 }

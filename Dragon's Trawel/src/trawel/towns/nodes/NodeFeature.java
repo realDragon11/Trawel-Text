@@ -12,10 +12,8 @@ import trawel.towns.Feature;
 public abstract class NodeFeature extends Feature {
 
 	protected NodeConnector start;
-	protected transient int size;
 	protected double findTime = 0;
 	protected boolean spreadTime = false;
-	protected transient short deepest;
 	
 	//protected List<NodeType> typeList = new ArrayList<NodeType>();
 	
@@ -34,7 +32,6 @@ public abstract class NodeFeature extends Feature {
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		if (spreadTime) {
 			start.spreadTime(time, calling);
-			start.endPass();
 		}
 		findTime += time;
 		return timeScope.pop(this);
@@ -62,23 +59,15 @@ public abstract class NodeFeature extends Feature {
 	@Override
 	public void reload() {
 		super.reload();
-		size = 0;
-		deepest = 0;
-		start.parentChain(this);
-		start.endPass();
 		if (mainGame.debug) {
-			System.out.println(this.size +" size of " + this.getName());
+			System.out.println(start.getSize() +" size of " + this.getName());
 		}
 	}
 
 	protected abstract byte bossType();
 
 	public String sizeDesc() {
-		return " S: " + size;
-	}
-	
-	public boolean isDeepest(NodeConnector n) {
-		return n.getFloor() == deepest;
+		return " S: " + start.getSize();
 	}
 
 }
