@@ -42,6 +42,20 @@ public class NodeConnector implements Serializable {
 	protected byte eventNum;
 	protected byte state;
 	protected Object storage1, storage2;
+	/**
+	 * "turn everything into arrays plan"
+	 * 
+	 * typeNum + eventNum + state + flags = 32 bits (4 bytes)
+	 * level + floor = 32 bits (2 shorts)
+	 * make interactstring and name generate?
+	 * connections needs addresses, but I can cap it
+	 * 
+	 * storage1 and storage2 would still exist as Object[] storage1, storage2
+	 * which would be 64 bits per slot likely due to refs
+	 * 
+	 * passing could be removed entirely and just iterate over it instead of recurse over it
+	 * parent would be single per thing, which is nice
+	 */
 	
 	public transient boolean passing;
 	protected transient NodeFeature parent;

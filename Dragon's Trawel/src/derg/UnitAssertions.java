@@ -71,8 +71,40 @@ public class UnitAssertions {
 		
 		EnchantConstant.testAsserts();
 		
+		System.out.println("  -  ");
+		long l = 0;
+		/*
+		System.out.println("long : " +l 
+				+" off: "+ pad(extra.setByteInLong(l,0b00000000,8))
+				+" on: "+ pad(extra.setByteInLong(l,0b11111111,16))
+				+" on then off"+pad(extra.setByteInLong(extra.setByteInLong(l,0b11111111,16),0b00000000,16)));*/
+		for (int i = 0;i < 64;i+=8) {
+			System.out.println("at " +i);
+			long off = extra.setByteInLong(l,0b000000000,i);
+			long parton = extra.setByteInLong(l,0b010101010,i);
+			long thenoff = extra.setByteInLong(parton,0b000000000,i);
+			System.out.println("long : " +l
+					+"\n off: "+ pad(off)
+					+"\n part on: "+ pad(parton)
+					+"\n on then off"+ pad(thenoff));
+			assert parton != 0;
+			assert off == 0;
+			assert thenoff == 0;	
+		}
 		System.out.println("An assertion will now error to make sure you have those on.");
 		assert false == true;
+	}
+	
+	public static String pad(Long l) {
+		return pad(Long.toBinaryString(l),"0",64);
+	}
+	
+	public static String pad(String str,String chara, int places) {
+		StringBuilder builder = new StringBuilder(str);
+		while (builder.length() < places) {
+			builder.insert(0,chara);
+		}
+		return builder.toString();
 	}
 
 }
