@@ -37,6 +37,7 @@ public class NodeConnector implements Serializable {
 		FORCEGO, STAIR,
 		VISIT_BIT1, VISIT_BIT2
 		,GENERIC_OVERRIDE//allows nodes to use generic behavior without overriding their typenum
+		,SILENT_FORCEGO_POSSIBLE
 	}
 	
 	//protected byte typeNum;
@@ -91,6 +92,8 @@ public class NodeConnector implements Serializable {
 	public static int lastNode = 1;
 	protected static int currentNode = 1;
 	protected static boolean forceGoProtection = false;
+	
+	private static boolean isForceGoIng;
 	
 	protected NodeConnector() {
 		//NOTE: the first node (index 0) can be used to store data for the entire nodeconnector, it is never referenced otherwise
@@ -226,6 +229,7 @@ public class NodeConnector implements Serializable {
 		Feature.atFeatureForHeader.goHeader();
 		lastNode = 1;
 		currentNode = 1;
+		isForceGoIng = false;
 		while (currentNode != 0) {
 			enter(currentNode);
 		}
@@ -256,11 +260,15 @@ public class NodeConnector implements Serializable {
 					}
 				}
 				if (isForceGo(node) && !forceGoProtection) {
-					setVisited(node,3);
+					isForceGoIng = true;
+					if (!getFlag(node,NodeFlag.SILENT_FORCEGO_POSSIBLE)) {
+						setVisited(node,3);
+					}
 					forceGoProtection = true;
 					interactCode(node);
 					return null;//redo operation
 				}
+				isForceGoIng = false;
 				mList.add(new NodeMenuTitle(node));
 				mList.add(new NodeMenuInteract(node));
 				for (int n: getConnects(node)) {
@@ -595,6 +603,10 @@ public class NodeConnector implements Serializable {
 		if (parent instanceof Mine) {
 			((Mine)parent).addVein();
 		}
+	}
+	
+	public boolean isForced() {
+		return isForceGoIng;
 	}
 	
 }

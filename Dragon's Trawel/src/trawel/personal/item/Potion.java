@@ -65,8 +65,8 @@ public class Potion implements java.io.Serializable{
 					}
 					overwrite = true;
 					extra.println(" " +effect.getName() + ": " +effect.getDesc());
-					extra.println(" " +Effect.ADVANTAGE_STACK.getName() + ": " +Effect.ADVANTAGE_STACK.getDesc());
-					extra.println(" " +Effect.BONUS_WEAP_ATTACK.getName() + ": " +Effect.BONUS_WEAP_ATTACK.getDesc());
+					extra.println("  " +Effect.ADVANTAGE_STACK.getName() + ": " +Effect.ADVANTAGE_STACK.getDesc());
+					extra.println("  " +Effect.BONUS_WEAP_ATTACK.getName() + ": " +Effect.BONUS_WEAP_ATTACK.getDesc());
 					break;
 				default:
 					uncork(p,personal);
