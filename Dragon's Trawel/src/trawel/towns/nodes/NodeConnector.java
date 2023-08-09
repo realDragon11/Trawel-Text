@@ -36,6 +36,7 @@ public class NodeConnector implements Serializable {
 	public enum NodeFlag{//flag with up to 8 values
 		FORCEGO, STAIR,
 		VISIT_BIT1, VISIT_BIT2
+		,GENERIC_OVERRIDE//allows nodes to use generic behavior without overriding their typenum
 	}
 	
 	//protected byte typeNum;
@@ -85,7 +86,7 @@ public class NodeConnector implements Serializable {
 	 */
 	private int deepest = 1;
 	
-	protected transient NodeFeature parent;
+	protected NodeFeature parent;
 	
 	public static int lastNode = 1;
 	protected static int currentNode = 1;
@@ -98,14 +99,26 @@ public class NodeConnector implements Serializable {
 		storage = new Object[256];//NOTE THAT THESE WILL ALMOST ALWAYS BE ARRAYS OF MORE OBJECTS, it's just Object[][] is unneeded
 	}
 	
-	//FIXME: make a constructor
+	
 	public int newNode() {
 		size++;
 		connections[size] = 0b0;//can't set yet
-		dataContainer[size] =0b0;//TODO
-		storage[size] = new Object[2];//for now we just assume we need to, can trim later compiletime
+		dataContainer[size] =0b0;
+		storage[size] = null;//new Object[2];//for now we just assume we need to, can trim later compiletime
 		return size;
 	}
+	public int newNode(int typeNum, int eventNum,int level) {
+		size++;
+		connections[size] = 0b0;//can't set yet
+		dataContainer[size] =  extra.setShortInLong
+				(extra.setNthByteInLong(
+				extra.setNthByteInLong(0b0, typeNum, 3)
+				,eventNum,1)
+				,level,32);
+		storage[size] = null;//new Object[2];//for now we just assume we need to, can trim later compiletime
+		return size;
+	}
+	//FIXME: might need more constructors
 	
 	public void trim() {
 		//FIXME: makes all arrays only as long as they need to be, because we make them max size in generator step
@@ -169,6 +182,28 @@ public class NodeConnector implements Serializable {
 			sub = extra.setNthByteInLong(sub, (byte)(places[i]-Byte.MAX_VALUE),i);
 		}
 		connections[node] = sub;
+	}
+	
+	protected void addConnect(int node, int tonode) {
+		long sub = connections[node];
+		List<Integer> list = new ArrayList<Integer>();
+		for (int i = 0; i < 8;i++) {
+			int ret = extra.intGetNthByteFromLong(sub,i);
+			assert ret >= 0;
+			if (ret == 0) {
+				connections[node] = extra.setNthByteInLong(sub,tonode,i);
+				return;
+			}
+		}
+		throw new RuntimeException("not enough room for node connection!");
+	}
+	
+	/**
+	 * does not check to see if node already has connection, that's caller's job
+	 */
+	protected void setMutualConnect(int node1, int node2) {
+		addConnect(node1,node2);
+		addConnect(node2,node1);
 	}
 	
 	public String getName(int node) {
@@ -265,17 +300,13 @@ public class NodeConnector implements Serializable {
 	}
 	
 	protected void interactCode(int node) {
-		if (getTypeNum(node) < 0) {
-			switch (getTypeNum(node)) {
-			case -1:
-				if (BossNode.getSingleton().interact(this,node)) {
-					currentNode = 0;//kicked out
-				}
-				break;
+		if (getFlag(node,NodeFlag.GENERIC_OVERRIDE)) {
+			if (NodeType.NodeTypeNum.GENERIC.singleton.interact(this, node)) {
+				currentNode = 0;//kicked out
 			}
 			return;
 		}
-		if (parent.numType(getTypeNum(node)).interact(this,node)) {
+		if (NodeType.getTypeEnum(getTypeNum(node)).singleton.interact(this,node)) {
 			currentNode = 0;//kicked out
 		}
 	}
@@ -359,6 +390,9 @@ public class NodeConnector implements Serializable {
 		setConnects(node,replace);
 	}
 	
+	//TODO: an 'order connections' thing that just orders them by number so it can handle 'go back'
+	//or maybe just move the lowest number node to the bottom with a single swap?
+	
 	//called in some passTime implementations to propagate it
 	public void spreadTime(double time, TimeContext calling) {
 		for (int i = 1; i < size+1;i++)
@@ -402,26 +436,37 @@ public class NodeConnector implements Serializable {
 		}
 	}
 	
-	protected void finalize(int node,NodeFeature owner) {
-		int typeNum = getTypeNum(node);
-		int eventNum = getEventNum(node);
-		if (typeNum > NodeType.GENERIC_CUTOFF) {
-			switch (NodeType.getReservedTypeEnum(typeNum)) {
-			case BOSS_TYPE:
-				BossNode.getSingleton().apply(this,node);
-				break;
-			case GENERIC_TYPE:
-				break;
-			}
-			return;
+	private void finishNode(int node) {
+		//can just get parent/eventnum themselves now
+		
+		//owner.numType(typeNum).apply(this,node);
+		//int eventNum = getEventNum(node);
+		/*
+		switch (NodeType.getTypeEnum(typeNum)) {
+		case BOSS:
+			BossNode.getSingleton().apply(this,node);
+			break;
+		case GENERIC:
+			break;
 		}
-		owner.numType(typeNum).apply(this,node);
+		return;
 		if (eventNum == 3) {
 			if (owner instanceof Mine) {
 				((Mine) owner).addVein();
 			}
 		}
 		return;
+		*/
+	}
+	
+	protected NodeConnector complete(NodeFeature owner) {
+		parent = owner;
+		trim();
+		assert size == storage.length;
+		for (int i = 0; i < size;i++) {
+			NodeType.getTypeEnum(getTypeNum(i)).singleton.apply(this, i);
+		}
+		return this;
 	}
 	
 	protected void setStair(int node) {

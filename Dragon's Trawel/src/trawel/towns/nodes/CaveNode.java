@@ -2,33 +2,24 @@ package trawel.towns.nodes;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.towns.World;
+import trawel.towns.nodes.GenericNode.Generic;
 
 public class CaveNode implements NodeType{
 	
-	private static final int EVENT_NUMBER =3;
-	
-	private static final CaveNode handler = new CaveNode();
-	
-	private NodeConnector node;
-	
-	public static CaveNode getSingleton() {
-		return handler;
-	}
+	private static final int EVENT_NUMBER =4;
 	
 	@Override
-	public NodeConnector getNode(NodeFeature owner, int tier) {
-		byte idNum = (byte) extra.randRange(1,EVENT_NUMBER);
-		NodeConnector make = new NodeConnector();
-		make.eventNum = idNum;
-		make.typeNum = 1;
-		make.level = tier;
-		return make;
+	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
+		int idNum =extra.randRange(1,EVENT_NUMBER);
+		int ret = holder.newNode(NodeType.NodeTypeNum.CAVE.ordinal(),idNum,tier);
+		return ret;
 	}
 	
 	//NOTE: idNum = -1 is reserved by GroveNode
@@ -41,13 +32,15 @@ public class CaveNode implements NodeType{
 	
 	@Override
 	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
-		return generate(owner,size,tier).finalize(owner);
+		NodeConnector start = new NodeConnector();
+		generate(start,0,size,tier);
+		return start.complete(owner);
 	}
 	
 	@Override
-	public NodeConnector generate(NodeFeature owner, int size, int tier) {
+	public int generate(NodeConnector holder,int from, int size, int tier) {
 		size--;
-		NodeConnector made = getNode(owner,tier);
+		int made = getNode(holder,from,0,tier);
 		int split;
 		int sizePer;
 		if (size < 5) {
@@ -62,50 +55,51 @@ public class CaveNode implements NodeType{
 			if (extra.chanceIn(1,5)) {//much higher chance to level up
 				tempLevel++;
 			}
-			NodeConnector n = generate(owner,sizePer,tempLevel);
-			made.connects.add(n);
-			n.getConnects().add(made);
-			n.finalize(owner);
+			int n = generate(holder,made,sizePer,tempLevel);
+			holder.setMutualConnect(n,made);
 		}
 		return made;
 	}
 
 	@Override
-	public void apply(NodeConnector made) {
-		switch (made.eventNum) {
-		case -2:
-			made.name = "cave entrance";
-			made.interactString = "traverse "+made.name;
-			made.setForceGo(true);
-			break;
+	public void apply(NodeConnector holder,int madeNode) {
+		switch (holder.getEventNum(madeNode)) {
 		case 1:
-			made.name = "bear";
-			made.interactString = "ERROR";
-			made.setForceGo(true);
-			made.storage1 = RaceFactory.makeBear(made.level);
+			//made.name = "cave entrance";
+			//made.interactString = "traverse "+made.name;
+			//made.setForceGo(true);
+			holder.setForceGo(madeNode,true);
 			break;
 		case 2:
-			made.storage1 = extra.choose("silver","gold","platinum","iron","copper");
-			made.name = made.storage1+" vein";
-			made.interactString = "mine "+made.storage1;
+			GenericNode.setBasicRagePerson(holder,madeNode,RaceFactory.makeBear(holder.getLevel(madeNode)),"The bear here mauls you!");
 			break;
 		case 3:
-			made.name = "bat";
-			made.interactString = "ERROR";
-			made.setForceGo(true);
-			made.storage1 = RaceFactory.makeBat(made.level);
+			//holder.setTypeNum(madeNode,NodeTypeNum.MINE.ordinal());
+			//holder.setEventNum(madeNode, MineNode.VEIN_NUM);
+			holder.setFlag(madeNode,NodeConnector.NodeFlag.GENERIC_OVERRIDE,true);
+			holder.setTypeNum(madeNode,Generic.VEIN_MINERAL.ordinal());
+			//made.storage1 = extra.choose("silver","gold","platinum","iron","copper");
+			//made.name = made.storage1+" vein";
+			//made.interactString = "mine "+made.storage1;
+			NodeType.NodeTypeNum.GENERIC.singleton.apply(holder, madeNode);
+			break;
+		case 4:
+			GenericNode.setBasicRagePerson(holder,madeNode,RaceFactory.makeBat(holder.getLevel(madeNode)),"A bat swoops down to attack you!");
 			break;
 		}
 	}
 	
 	@Override
-	public boolean interact(NodeConnector node) {
-		this.node = node;
-		switch(node.eventNum) {
-		case -2: Networking.unlockAchievement("cave1");break;
-		case 1: bear1(); if (node.state == 0) {return true;};break;
-		case 2: goldVein1();break;
-		case 3: bat1(); if (node.state == 0) {return true;};break;
+	public boolean interact(NodeConnector holder,int node) {
+		switch(holder.getEventNum(node)) {
+		case 1: //TODO: if need to change backgrounds, do it here instead of by typenum
+			extra.println("The cave entrance is damp.");
+			Networking.unlockAchievement("cave1");break;
+		case 2: return bear1(holder,node);
+				;break;
+		//case 3: goldVein1();break;
+		case 4: return  bat1(holder,node)
+				;break;
 		}
 		return false;
 	}
@@ -120,24 +114,20 @@ public class CaveNode implements NodeType{
 		//none for now
 	}
 	
-	
-	private void bear1() {
-		if (node.state == 0) {
+	/*
+	private boolean bear1(NodeConnector holder,int node) {
+		if (holder.getStateNum(node) == 0) {
 			extra.println(extra.PRE_RED+"The bear attacks you!");
-			Person p = (Person)node.storage1;
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-				if (winner != p) {
-					node.state = 1;
-					node.storage1 = null;
-					node.name = "dead "+node.name;
-					node.interactString = "examine body";
-					node.setForceGo(false);
+			Person p = holder.getStorageFirstPerson(node);
+				Combat c = Player.player.fightWith(p);
+				if (c.playerWon() > 0) {
+					GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
+					holder.setForceGo(node,false);
+				}else {
+					return true;
 				}
-		}else {
-			extra.println("The bear's corpse lays here.");
-			node.findBehind("dead bear");	
 		}
-		
+		return false;
 	}
 
 
@@ -181,7 +171,7 @@ public class CaveNode implements NodeType{
 			//too small for now
 		}
 		
-	}
+	}*/
 	
 
 }

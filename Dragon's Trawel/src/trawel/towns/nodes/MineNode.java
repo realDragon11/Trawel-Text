@@ -18,6 +18,8 @@ public class MineNode implements NodeType{
 	private static final int EVENT_NUMBER = 9;
 	
 	private static final MineNode handler = new MineNode();
+
+	public static final int VEIN_NUM = 3;
 	
 	private NodeConnector node;
 	
@@ -30,7 +32,7 @@ public class MineNode implements NodeType{
 		int idNum = extra.randRange(1,EVENT_NUMBER);
 		NodeConnector make = new NodeConnector();
 		if (extra.chanceIn(1, 5)) {
-			idNum = 3;//gold7
+			idNum = VEIN_NUM;//gold7
 		}
 		if (extra.chanceIn(1, 30)) {
 			idNum = extra.choose(-1,-2,-3);//emeralds

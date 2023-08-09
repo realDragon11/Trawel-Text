@@ -12,22 +12,17 @@ import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
+import trawel.towns.nodes.NodeConnector.NodeFlag;
 
 public class BossNode implements NodeType {
 	
-	private static final BossNode handler = new BossNode();
-	
-	public static BossNode getSingleton() {
-		return handler;
-	}
-	
 	@Override
-	public int getNode(NodeConnector owner, int guessDepth, int tier){
-		int node = owner.newNode();
-		owner.setEventNum(node,owner.parent.bossType());
-		owner.setTypeNum(node,NodeType.ReservedType.BOSS_TYPE.num);
-		owner.setLevel(node, tier);
-		owner.setStorage(node,new Object[] {"",new ArrayList<Person>()});
+	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier){
+		int node = holder.newNode();
+		holder.setEventNum(node,holder.parent.bossType());
+		holder.setTypeNum(node,NodeType.NodeTypeNum.BOSS.ordinal());
+		holder.setLevel(node, tier);
+		holder.setStorage(node,new Object[] {"",new ArrayList<Person>()});
 		return node;
 	}
 	
@@ -37,8 +32,8 @@ public class BossNode implements NodeType {
 	}
 	
 	@Override
-	public NodeConnector generate(NodeFeature owner, int size, int tier) {
-		return null;//MAYBELATER
+	public int generate(NodeConnector holder, int from, int sizeLeft, int tier) {
+		return -1;//MAYBELATER
 	}
 	
 	@Override
@@ -77,12 +72,15 @@ public class BossNode implements NodeType {
 	}
 	
 	private void setGenericCorpse(NodeConnector holder,int node, Person body) {
-		holder.setStateNum(node,0);
-		holder.setTypeNum(node,NodeType.ReservedType.GENERIC_TYPE.num);
-		holder.setEventNum(node,1);//FIXME GENERIC CORPSE LOOKING with person as only storage.
+		GenericNode.setSimpleDeadPerson(holder, node, body);
+		//holder.setStateNum(node,0);
+		//holder.setTypeNum(node,NodeType.NodeTypeNum.GENERIC.ordinal());
+		//holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
+		//holder.setEventNum(node,GenericNode.Generic.DEAD_PERSON.ordinal());
+		//FIXME GENERIC CORPSE LOOKING with person as only storage.
 		//also make variant with just a string instead of a person
 		//and another variant that doesn't have either, just using the state number for 'wolves' or 'person', etc
-		holder.setStorage(node, body);
+		//holder.setStorage(node, body);
 	}
 	
 	private boolean fatespinner(NodeConnector holder,int node) {
