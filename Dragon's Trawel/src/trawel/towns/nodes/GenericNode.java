@@ -1,7 +1,17 @@
 package trawel.towns.nodes;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import derg.menus.MenuBack;
+import derg.menus.MenuGenerator;
+import derg.menus.MenuItem;
+import derg.menus.MenuLine;
+import derg.menus.MenuSelect;
 import trawel.Networking;
 import trawel.extra;
+import trawel.mainGame;
+import trawel.randomLists;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -13,6 +23,7 @@ import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.towns.World;
 import trawel.towns.nodes.NodeConnector.NodeFlag;
+import trawel.towns.services.Oracle;
 
 public class GenericNode implements NodeType {
 
@@ -23,6 +34,7 @@ public class GenericNode implements NodeType {
 		,BASIC_RAGE_PERSON
 		,BASIC_DUEL_PERSON
 		,VEIN_MINERAL
+		,COLLECTOR
 	}
 	
 	public static void setSimpleDuelPerson(NodeConnector holder,int node,Person p, String nodename, String interact) {
@@ -148,6 +160,8 @@ public class GenericNode implements NodeType {
 			return "Examine the vein.";
 		case DEAD_STRING_TOTAL:
 			return holder.getStorageAsArray(node)[1].toString();
+		case COLLECTOR:
+			return "Approach " +holder.getStorageFirstPerson(node).getName();
 		}
 		return null;
 	}
@@ -174,6 +188,8 @@ public class GenericNode implements NodeType {
 				return "Vein of " + vmat.color +vmatName;//needs to have the vein first so it can have the color applied to it
 			}
 			return "Mined Vein";
+		case COLLECTOR:
+			return holder.getStorageFirstPerson(node).getName();
 		}
 		return null;
 	}
@@ -341,6 +357,66 @@ public class GenericNode implements NodeType {
 			extra.println("The "+m.color+matName+" has already been mined.");
 			holder.findBehind(node,"empty "+m.color+matName+"vein");
 		}
+		return false;
+	}
+	
+	public static void applyCollector(NodeConnector holder,int node) {
+		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
+		holder.setEventNum(node,Generic.COLLECTOR.ordinal());
+		holder.setStorage(node, RaceFactory.makeCollector(holder.getLevel(node)));
+	}
+	
+	public static boolean goCollector(NodeConnector holder,int node) {
+		Person p = holder.getStorageFirstPerson(node);
+		p.getBag().graphicalDisplay(1, p);
+		extra.menuGo(new MenuGenerator() {
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuLine() {
+					@Override
+					public String title() {
+						return p.getName() + " is sifting through the area, looking for collectables.";
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Attempt to talk to them.";
+					}
+
+					@Override
+					public boolean go() {
+						if (extra.chanceIn(1,30)) {
+							extra.println(extra.PRE_RED +"\"Enough of your games!\"");
+							setBasicRagePerson(holder, node, p, "A very angry "+extra.PRE_RED+p.getName(),extra.PRE_RED+p.getName() + " attacks you!");
+							return false;
+						}
+						if (extra.chanceIn(1,3)) {
+							Oracle.tip("old");
+						}
+						extra.println("They ignore you.");
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return extra.PRE_RED+"Attack";
+					}
+
+					@Override
+					public boolean go() {
+						extra.println("Really attack " +p.getName()+"?");
+						if (extra.yesNo()) {
+							setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_RED+p.getName(),extra.PRE_RED+p.getName() + " attacks you!");
+						}
+						return false;
+					}});
+				list.add(new MenuBack("leave"));
+				return list;
+			}});
+		Networking.clearSide(1);
 		return false;
 	}
 

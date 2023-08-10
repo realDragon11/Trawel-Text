@@ -124,8 +124,11 @@ public class GraveyardNode implements NodeType{
 			holder.setStateNum(madeNode, STATE_SHADOW_FIGURE);
 			;break;
 		case 5:
-			holder.setStorage(madeNode, RaceFactory.makeCollector(holder.getLevel(madeNode)));
+			//holder.setStorage(madeNode, RaceFactory.makeCollector(holder.getLevel(madeNode)));
+			GenericNode.applyCollector(holder, madeNode);
+			holder.setFlag(madeNode,NodeFlag.GENERIC_OVERRIDE,false);//we call it ourselves
 			holder.setStateNum(madeNode, STATE_SHADOW_FIGURE);
+			holder.setEventNum(madeNode, 5);//set event back from generic's, since we call it ourselves
 			break;
 		case 6://will set the state to the times it is seen until it will attack +10 after seen once
 			//will attack instantly if attempting to loot
@@ -144,8 +147,8 @@ public class GraveyardNode implements NodeType{
 		case 1: return graveDigger(holder,node);
 		case 2: return graveRobber(holder,node);
 		case 3: return packOfBats(holder,node);
-		case 4: vampire1(); if (node.state == 0) {return true;};break;
-		case 5:	collector();break;
+		case 4: return vampire1(holder,node);
+		case 5:	return collector(holder,node);
 		case 6: return statue(holder,node);
 		case 7: return statueLoot(holder,node);
 		}
@@ -161,7 +164,12 @@ public class GraveyardNode implements NodeType{
 		}
 		switch(holder.getEventNum(node)) {
 		case 1:
-			return "examine entryway";
+			return "Approach Gravedigger";
+		case 2:
+			return "Approach Graverobber";
+			//3 is bats, 4 is vampire, neither have interact strings
+		case 5://collector
+			return "Approach " +holder.getStorageFirstPerson(node).getName();
 		case 6://attacking statue
 			Person attStatue = holder.getStorageFirstPerson(node);
 			String attName = extra.capFirst(attStatue.getBag().getRace().renderName(false));
@@ -204,8 +212,14 @@ public class GraveyardNode implements NodeType{
 			}
 		}
 		switch(holder.getEventNum(node)) {
-		case 1:
-			return "cave entrance";
+		case 2:
+			return "A Graverobber";
+		case 5: case 1://collector, gravedigger
+			return holder.getStorageFirstPerson(node).getName();
+		case 3:
+			return "Swarm of Bats";
+		case 4:
+			return "Vampire's Lair";
 		case 6://attacking statue
 			Person attStatue = holder.getStorageFirstPerson(node);
 			String attName = extra.capFirst(attStatue.getBag().getRace().renderName(false));
@@ -408,33 +422,34 @@ public class GraveyardNode implements NodeType{
 		if (c.playerWon() > 0) {
 			//the graveyard takes their face, unlike the gravedigger which still gets their normal body
 			GenericNode.setSimpleDeadRaceID(holder, node,p.getBag().getRaceID());
+			return false;
 		}else {
+			extra.println("You wake up later. " + Player.loseGold(p.getLevel()*3,true));
 			return true;
 		}
 	}
 
-	private void vampire1() {
-		extra.println("Approach the "+ node.name+"?");
-		if (!extra.yesNo()) {
-			return;
-		}
-		if (node.state == 0) {
-			extra.print(extra.PRE_RED);
-			extra.println("The vampire attacks you!");
-			node.name = "Vampire";
-			node.interactString = "Approach the "+node.name;
-			Person p = (Person)node.storage1;
-			Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-			if (winner != p) {
-				node.state = 1;
-				node.storage1 = null;
-				node.name = "dead "+node.name;
-				node.interactString = "examine body";
-				node.setForceGo(false);
+	private boolean vampire1(NodeConnector holder,int node) {
+		int state = holder.getStateNum(node);
+		String str = interactStringState(holder,node,state);
+		if (str != null) {
+			extra.println(str);
+			if (!extra.yesNo()) {
+				return false;
 			}
+			holder.setStateNum(node,10);
+			extra.println("A vampire eyes you from a perch on a tombstone.");
+			holder.setForceGo(node, true);
+		}
+		extra.println(extra.PRE_RED+"Shouldn't have come to this graveyard, mortal!");
+		Combat c = mainGame.HugeBattle(holder.getWorld(),Player.wrapForMassFight(holder.getStorageFirstClass(node,List.class)));
+		
+		if (c.playerWon() > 0) {
+			holder.setForceGo(node, false);
+			GenericNode.setTotalDeadString(holder, node,"Vampire Coffin","Examine motes of Grave Dust","There isn't enough here to gather.","coffin");
+			return false;
 		}else {
-			randomLists.deadPerson();
-			node.findBehind("dust");
+			return true;
 		}
 
 	}
@@ -579,32 +594,18 @@ public class GraveyardNode implements NodeType{
 		return false;
 	}
 
-	private void collector() {
-		extra.println("Approach the "+ node.name+"?");
-		if (!extra.yesNo()) {
-			return;
-		}
-		if (node.state == 0) {
-			Person p = (Person)node.storage1;
-			node.name = p.getName();
-			node.interactString = "Approach "+ node.name;
-			p.getBag().graphicalDisplay(1, p);
-			extra.print(extra.PRE_RED);
-			extra.println("Challenge "+ p.getName() + "?");
-			if (extra.yesNo()){
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-				if (winner != p) {
-					node.state = 1;
-					node.storage1 = null;
-					node.name = "dead "+node.name;
-					node.interactString = "examine body";
-				}
+	private boolean collector(NodeConnector holder,int node) {
+		int state = holder.getStateNum(node);
+		String str = interactStringState(holder,node,state);
+		if (str != null) {
+			extra.println(str);
+			if (!extra.yesNo()) {
+				return false;
 			}
-		}else {
-			randomLists.deadPerson();
-			node.findBehind("body");
+			holder.setStateNum(node,10);
+			extra.println("An antiquarian is navigating amongst old urns.");
 		}
-
+		return GenericNode.goCollector(holder, node);
 	}
 	
 	@Override
