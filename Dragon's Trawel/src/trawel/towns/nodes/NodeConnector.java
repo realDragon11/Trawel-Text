@@ -1,6 +1,7 @@
 package trawel.towns.nodes;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -124,7 +125,11 @@ public class NodeConnector implements Serializable {
 	//FIXME: might need more constructors
 	
 	public void trim() {
-		//FIXME: makes all arrays only as long as they need to be, because we make them max size in generator step
+		//makes all arrays only as long as they need to be, because we make them max size in generator step
+		//to avoid the 'add one vs double' problem, which we would rather not add and then reduce
+		connections = Arrays.copyOf(connections, size+1);
+		dataContainer = Arrays.copyOf(dataContainer, size+1);
+		storage = Arrays.copyOf(storage, size+1);
 	}
 	
 	public boolean getFlag(int node,NodeFlag f) {
@@ -483,8 +488,8 @@ public class NodeConnector implements Serializable {
 	protected NodeConnector complete(NodeFeature owner) {
 		parent = owner;
 		trim();
-		assert size == storage.length;
-		for (int i = 0; i < size;i++) {
+		assert size == storage.length-1;
+		for (int i = 0; i < size+1;i++) {
 			NodeType.getTypeEnum(getTypeNum(i)).singleton.apply(this, i);
 		}
 		return this;
@@ -574,7 +579,11 @@ public class NodeConnector implements Serializable {
 	}
 	
 	public Person getStorageFirstPerson(int node) {
-		Object[] arr = getStorageAsArray(node);
+		Object o = storage[node];
+		if (o instanceof Person) {
+			return (Person)o;
+		}
+		Object[] arr = (Object[])(o);
 		for (int i = 0; i < arr.length;i++) {
 			if (arr[i] instanceof Person) {
 				return (Person)arr[i];

@@ -22,6 +22,7 @@ import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.towns.World;
+import trawel.towns.misc.PlantSpot;
 import trawel.towns.nodes.NodeConnector.NodeFlag;
 import trawel.towns.services.Oracle;
 
@@ -36,12 +37,13 @@ public class GenericNode implements NodeType {
 		,VEIN_MINERAL
 		,COLLECTOR
 		,LOCKDOOR
+		,PLANT_SPOT
 	}
 	
-	public static void setSimpleDuelPerson(NodeConnector holder,int node,Person p, String nodename, String interact) {
+	public static void setSimpleDuelPerson(NodeConnector holder,int node,Person p, String nodename, String interactstring,String wantDuel) {
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.BASIC_DUEL_PERSON.ordinal());
-		holder.setStorage(node, new Object[]{p,nodename,interact});
+		holder.setStorage(node, new Object[]{p,nodename,interactstring,wantDuel});
 	}
 	
 	public static void setSimpleDeadString(NodeConnector holder,int node, String bodyname) {
@@ -106,6 +108,10 @@ public class GenericNode implements NodeType {
 			return genericVein(holder, node);
 		case LOCKDOOR:
 			return goLockedDoor(holder, node);
+		case PLANT_SPOT:
+			((PlantSpot)holder.getStorage(node)).go();
+			return false;
+			
 		}
 		return false;
 	}
@@ -117,8 +123,46 @@ public class GenericNode implements NodeType {
 
 	@Override
 	public void passTime(NodeConnector holder, int node, double time, TimeContext calling) {
-		// TODO Auto-generated method stub
-
+		switch (Generic.values()[holder.getTypeNum(node)]) {
+		case PLANT_SPOT:
+			PlantSpot pspot = ((PlantSpot)holder.getStorage(node));
+			if (pspot.timer > 40f) {
+				if (pspot.contains == "") {//if we have nothing
+					if (extra.chanceIn(1, 5)) {//add something
+						pspot.timer = 0;//reset timer
+						switch (NodeType.getTypeEnum(holder.getTypeNum(node))) {
+						case BOSS:
+							pspot.contains = "ent sapling";//virgin later?
+							break;
+						case CAVE:
+							pspot.contains = "truffle spores";
+							break;
+						case DUNGEON:
+							pspot.contains = "eggcorn seed";
+							break;
+						case GRAVEYARD:
+							pspot.contains = "garlic seed";
+							break;
+						case GROVE:
+							if (extra.chanceIn(1,15)) {
+								pspot.contains = "ent sapling";
+								break;
+							}
+							pspot.contains = extra.choose("bee larva","apple seed","apple seed","pumpkin seed");
+							break;
+						case MINE:
+							pspot.contains = "truffle spores";
+							break;
+						}
+					}else {
+						pspot.timer-=24;//don't check again for a day
+					}
+				}
+			}
+			calling.localEvents(pspot.passTime(time,calling));
+			break;
+		}
+		
 	}
 
 	@Override
@@ -167,6 +211,9 @@ public class GenericNode implements NodeType {
 			return "Approach " +holder.getStorageFirstPerson(node).getName();
 		case LOCKDOOR:
 			return "Look at the " + holder.getStorageFirstClass(node,String.class)+".";
+		case PLANT_SPOT:
+			return "Examine (" + ((PlantSpot)holder.getStorage(node)).contains+")";
+			
 		}
 		return null;
 	}
@@ -197,6 +244,9 @@ public class GenericNode implements NodeType {
 			return holder.getStorageFirstPerson(node).getName();
 		case LOCKDOOR:
 			holder.getStorageFirstClass(node,String.class);
+		case PLANT_SPOT:
+			String contains = ((PlantSpot)holder.getStorage(node)).contains;
+			return contains == "" ? "Plant Spot" : contains ;
 		}
 		return null;
 	}
@@ -220,7 +270,7 @@ public class GenericNode implements NodeType {
 	private boolean basicDueler(NodeConnector holder,int node) {
 		Person p = holder.getStorageFirstPerson(node);
 		p.getBag().graphicalDisplay(1, p);
-		extra.println(extra.PRE_RED+holder.getStorageAsArray(node)[2]);
+		extra.println(extra.PRE_RED+holder.getStorageAsArray(node)[3]);
 		if (extra.yesNo()) {
 			Combat c = Player.player.fightWith(p);
 			if (c.playerWon() > 0) {
@@ -228,7 +278,7 @@ public class GenericNode implements NodeType {
 				holder.setForceGo(node,false);
 				return false;
 			}else {
-				return true;
+				return false;//duelist doesn't kick you out
 			}
 		}
 		Networking.clearSide(1);//clear the display
@@ -467,6 +517,18 @@ public class GenericNode implements NodeType {
 			}
 		};
 		return false;
+	}
+	
+	/**
+	 * use null for random starting, `""` for nothing
+	 */
+	public static void setPlantSpot(NodeConnector holder,int node, String starting) {
+		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
+		holder.setEventNum(node,Generic.PLANT_SPOT.ordinal());
+		if (starting == null) {
+			starting = extra.choose("apple tree","bee hive","eggcorn");
+		}
+		holder.setStorage(node,new PlantSpot(holder.getLevel(node),starting));
 	}
 
 }

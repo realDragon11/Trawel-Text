@@ -86,7 +86,10 @@ public abstract class Item implements java.io.Serializable{
 		RACE, ARMOR, WEAPON
 	}
 	
-	public abstract void levelUp();
+	public void levelUp() {
+		level++;
+		updateStats();
+	}
 	
 	public int getLevel() {
 		return level;
@@ -119,4 +122,17 @@ public abstract class Item implements java.io.Serializable{
 	public abstract String getName();
 	public abstract String getNameNoTier();
 	public abstract String storeString(float markup, boolean canShow);
+	
+	protected void updateStats() {
+		
+	}
+	
+	protected boolean forceDownGradeIf(int lowerlevel) {
+		if (level > lowerlevel) {
+			level = lowerlevel;
+			updateStats();
+			return true;
+		}
+		return false;
+	}
 }

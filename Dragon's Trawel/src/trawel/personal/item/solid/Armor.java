@@ -318,9 +318,11 @@ public class Armor extends Item {
 			Enchant pastEnchant = enchantment;
 			enchantment = Services.improveEnchantChance(enchantment, level, getEnchantMult());
 			//effectiveCost=(int) extra.zeroOut(cost * enchantment.getGoldMult()+enchantment.getGoldMod());
+			updateStats();
 			return pastEnchant != enchantment;
 		}else {
 			enchantment = EnchantConstant.makeEnchant(getEnchantMult(), getAetherValue());
+			updateStats();
 			return enchantment != null;
 		}
 	}
@@ -422,11 +424,6 @@ public class Armor extends Item {
 		burned+=d;
 		burned = extra.clamp(burned,0,1);
 	}
-	
-	@Override
-	public void levelUp() {
-		level++;
-	}
 
 	public String getSoundType() {
 		if (getStyle().equals(ArmorStyle.MAIL)) {
@@ -440,6 +437,7 @@ public class Armor extends Item {
 	public void deEnchant() {
 		enchantment = null;
 		//isEnchanted = false;
+		updateStats();
 	}
 
 	public List<ArmorQuality> getQuals() {

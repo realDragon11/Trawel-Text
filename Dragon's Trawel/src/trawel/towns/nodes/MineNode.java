@@ -144,9 +144,10 @@ public class MineNode implements NodeType{
 		case -1: made.name = "emerald cluster"; made.interactString = "mine emeralds";break;
 		case 0: made.name = ""; made.interactString = "";break;*/
 		case 1:
-			Person p = RaceFactory.makeDuelerWithTitle(holder.getLevel(madeNode));
-			String warName = p.getTitle();
-			GenericNode.setSimpleDuelPerson(holder,madeNode, p,warName,"Challenge "+warName +"?");
+			Person p = RaceFactory.getDueler(holder.getLevel(madeNode));
+			String warName = extra.capFirst(randomLists.randomWarrior());
+			p.setTitle("the "+warName);
+			GenericNode.setSimpleDuelPerson(holder,madeNode, p,warName,"Approach " +p.getNameNoTitle() +".","Challenge the "+warName +"?");
 		break;
 		case 2: 
 			holder.setStorage(madeNode, extra.choose("river","pond","lake","stream"));

@@ -1032,4 +1032,14 @@ public class Inventory implements java.io.Serializable{
 		return mult;
 	}
 
+
+	public boolean forceDownGradeIf(int level) {
+		boolean downgraded = false;
+		for (Armor a: armorSlots) {
+			downgraded |= a.forceDownGradeIf(level);
+		}
+		downgraded |= hand.forceDownGradeIf(level);
+		return downgraded;
+	}
+
 }

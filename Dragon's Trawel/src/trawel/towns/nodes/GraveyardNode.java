@@ -29,7 +29,7 @@ public class GraveyardNode implements NodeType{
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
 		int idNum =extra.randRange(1,EVENT_NUMBER);
-		int ret = holder.newNode(NodeType.NodeTypeNum.CAVE.ordinal(),idNum,tier);
+		int ret = holder.newNode(NodeType.NodeTypeNum.GRAVEYARD.ordinal(),idNum,tier);
 		return ret;
 	}
 	

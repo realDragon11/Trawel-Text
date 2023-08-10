@@ -48,7 +48,7 @@ public class Race extends Item{
 	}
 	
 	public String renderName(boolean makePlural) {
-		return makePlural ? internalName.namePlural : internalName.name;
+		return extra.capFirst(makePlural ? internalName.namePlural : internalName.name);
 	}
 	
 	@Override

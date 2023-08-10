@@ -47,14 +47,13 @@ public class DungeonNode implements NodeType{
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
 		byte idNum = (byte) extra.randRange(1,EVENT_NUMBER);
 		//might be overwritten by shape but we do it as a backup/full rng
-		NodeConnector make = new NodeConnector();
 		/*if (extra.chanceIn(1,2)) {
 			idNum = GUARD_NUMBERS[dungeonGuardRoller.random(extra.getRand())];
 		}
 		if (extra.chanceIn(1,10)) {
 			idNum = 1;//chest	
 		}*/
-		int ret = holder.newNode(NodeType.NodeTypeNum.CAVE.ordinal(),idNum,tier);
+		int ret = holder.newNode(NodeType.NodeTypeNum.DUNGEON.ordinal(),idNum,tier);
 		return ret;
 	}
 

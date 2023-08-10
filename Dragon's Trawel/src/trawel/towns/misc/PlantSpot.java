@@ -22,15 +22,17 @@ import trawel.time.TimeEvent;
 
 public class PlantSpot implements java.io.Serializable, CanPassTime{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	public String contains = "";
+	public String contains;
 	public double timer = 0;
 	public int level;
 	public PlantSpot(int tier) {
 		level = tier;
+		contains = "";
+	}
+	public PlantSpot(int tier,String starting) {
+		level = tier;
+		contains = starting;
 	}
 	public void go() {
 		extra.menuGo(new MenuGenerator() {

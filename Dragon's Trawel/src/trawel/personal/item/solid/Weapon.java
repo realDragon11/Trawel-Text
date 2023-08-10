@@ -306,11 +306,13 @@ public class Weapon extends Item {
 			Enchant pastEnchant = enchant;
 			enchant = Services.improveEnchantChance(enchant, level, getEnchantMult());
 			//effectiveCost=(int) extra.zeroOut(cost * enchant.getGoldMult()+enchant.getGoldMod());
+			updateStats();
 			return pastEnchant != enchant;
 		}else {
 			//IsEnchantedConstant = true;
 			enchant = EnchantConstant.makeEnchant(getEnchantMult(),getBaseCost());//new EnchantConstant(level*baseEnchant);
 			//effectiveCost=(int) extra.zeroOut(cost * enchant.getGoldMult()+enchant.getGoldMod());
+			updateStats();
 			return true;
 		}
 	}
@@ -509,12 +511,6 @@ public class Weapon extends Item {
 		return MaterialFactory.getMat(material);
 	}
 	
-	@Override
-	public void levelUp() {
-		level++;
-		refreshBattleScore();
-	}
-	
 	public boolean isKeen() {
 		if (this.isEnchantedHit()) {
 			return ((EnchantHit)enchant).isKeen();
@@ -524,11 +520,12 @@ public class Weapon extends Item {
 	
 	public void deEnchant() {
 		enchant = null;
+		updateStats();
 	}
 
 	public void forceEnchantHit(int i) {
 		this.enchant = new EnchantHit(true,getEnchantMult());
-		
+		updateStats();
 	}
 
 	public static double getRarity(String str) {
@@ -608,14 +605,23 @@ public class Weapon extends Item {
 
 	public void transmuteWeapType(WeaponType newt) {
 		weap = newt;//MAYBELATER?
+		updateStats();
 	}
 	
 	public void transmuteWeapMat(Material m) {
 		material = m.curNum;
+		updateStats();
 	}
 	
 	public void transmuteWeapMat(int i) {
 		material = i;
+		updateStats();
+	}
+	
+	@Override
+	public void updateStats() {
+		super.updateStats();
+		refreshBattleScore();
 	}
 	
 	public static final String[] weaponTypes = new String[]{"longsword","broadsword","mace","spear","axe","rapier","dagger","claymore","lance","shovel"};
