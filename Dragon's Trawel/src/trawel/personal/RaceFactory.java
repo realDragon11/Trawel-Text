@@ -849,7 +849,7 @@ public class RaceFactory {
 		Person p = new Person(level);
 		p.hTask = HostileTask.DUEL;
 		extra.popPrintStack();
-		p.computeLevels(0);
+		p.finishGeneration();
 		return p;
 	}
 	
@@ -869,8 +869,8 @@ public class RaceFactory {
 		if (extra.chanceIn(1,5)) {
 			p.getBag().getDrawBanes().add(DrawBane.KNOW_FRAG);
 		}
-		p.setArch(Archetype.ARMORMASTER);
-		p.computeLevels(0);
+		p.liteSetSkillHas(Archetype.ARMORMASTER);
+		p.finishGeneration();
 		return p;
 	}
 	
@@ -878,8 +878,8 @@ public class RaceFactory {
 		Person p = new Person(level);
 		p.setPersonType(PersonType.GRIZZLED);
 		p.hTask = HostileTask.RICH;
-		p.setArch(Archetype.ARMORMASTER);
-		p.computeLevels(0);
+		p.liteSetSkillHas(Archetype.ARMORMASTER);
+		p.finishGeneration();
 		return p;
 	}
 	
@@ -893,7 +893,7 @@ public class RaceFactory {
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomWolfName());
 		w.hTask = HostileTask.ANIMAL;
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -908,7 +908,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomWolfName());
 		w.setTitle(randomLists.randomAlphaName());
 		w.hTask = HostileTask.ANIMAL;
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 
@@ -926,7 +926,7 @@ public class RaceFactory {
 		
 		extra.popPrintStack();
 		w.hTask = HostileTask.MONSTER;
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -938,7 +938,7 @@ public class RaceFactory {
 		}
 		extra.popPrintStack();
 		w.hTask = HostileTask.MONSTER;
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -950,7 +950,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomFirstName());
 		extra.popPrintStack();
 		w.hTask = HostileTask.MONSTER;
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 
@@ -961,7 +961,7 @@ public class RaceFactory {
 		extra.popPrintStack();
 		w.hTask = HostileTask.DUEL;
 		w.setArch(Archetype.HEDGE_MAGE);
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	public static Person makeEnt(int level) {
@@ -976,7 +976,7 @@ public class RaceFactory {
 		w.setTitle("");
 		w.hTask = HostileTask.ANIMAL;
 		w.updateSkills();
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -994,7 +994,7 @@ public class RaceFactory {
 		}
 		extra.popPrintStack();
 		w.hTask = HostileTask.MONSTER;
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -1007,7 +1007,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomBearName());
 		w.setTitle("");
 		w.hTask = HostileTask.ANIMAL;
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -1023,7 +1023,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomBatName());
 		w.setTitle("");
 		w.hTask = HostileTask.ANIMAL;
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -1036,7 +1036,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomFirstName());
 		//w.targetOverride = TargetFactory.TargetType.HUMANOID;
 		w.hTask = HostileTask.MONSTER;
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -1050,7 +1050,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomFirstName());
 		extra.popPrintStack();
 		w.hTask = HostileTask.ANIMAL;
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -1070,7 +1070,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomFirstName());
 		extra.popPrintStack();
 		w.hTask = HostileTask.MONSTER;
-		w.computeLevels(0);
+		w.finishGeneration();;
 		return w;
 	}
 	
@@ -1089,7 +1089,7 @@ public class RaceFactory {
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomWaterName());
 		w.hTask = HostileTask.MONSTER;
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	public static Person makeDrudgerTitan(int level) {
@@ -1105,7 +1105,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomWaterName());
 		w.setTitle("the "+randomLists.randomLargeName());
 		w.hTask = HostileTask.MONSTER;
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -1127,7 +1127,7 @@ public class RaceFactory {
 			w.getBag().getDrawBanes().add(DrawBane.SILVER);
 		}
 		extra.popPrintStack();
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -1144,7 +1144,7 @@ public class RaceFactory {
 		w.facRep.addFactionRep(Faction.DUEL,extra.randRange(10,20)*level, 0);
 		w.hTask = HostileTask.DUEL;
 		extra.popPrintStack();
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -1168,11 +1168,11 @@ public class RaceFactory {
 			}
 			list.add(DrawBane.BLOOD);
 			w.setTitle(extra.choose("the Blood Queen","Chosen by The Blood","Blood Champion"));
-			w.setPerk(Perk.CULT_LEADER_BLOOD);
+			w.liteSetSkillHas(Perk.CULT_LEADER_BLOOD);
 			break;		
 		}
 		extra.popPrintStack();
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	public static Person makeCultist(int level, CultType ct) {
@@ -1191,7 +1191,7 @@ public class RaceFactory {
 			break;		
 		}
 		extra.popPrintStack();
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -1201,7 +1201,7 @@ public class RaceFactory {
 		w.hTask = HostileTask.RACIST;
 		w.setRacism(true);
 		extra.popPrintStack();
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	public static Person getPeace(int level) {
@@ -1209,7 +1209,7 @@ public class RaceFactory {
 		Person w = new Person(level);
 		w.hTask = HostileTask.PEACE;
 		extra.popPrintStack();
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	public static Person getBoss(int level) {
@@ -1226,8 +1226,7 @@ public class RaceFactory {
 		w.hTask = HostileTask.ANIMAL;
 		w.facRep.addFactionRep(Faction.FOREST, level*15,0);
 		extra.popPrintStack();
-		//w.updateSkills();
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -1237,7 +1236,7 @@ public class RaceFactory {
 		w.setTitle(randomLists.randomDGuardTitle());
 		w.hTask = HostileTask.GUARD_DUNGEON;
 		extra.popPrintStack();
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -1247,8 +1246,7 @@ public class RaceFactory {
 		w.hTask = HostileTask.LUMBER;
 		w.facRep.addFactionRep(Faction.FOREST,0,100);
 		extra.popPrintStack();
-		//w.updateSkills();
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	public static Person getRich(int level) {
@@ -1257,7 +1255,7 @@ public class RaceFactory {
 		w.hTask = HostileTask.RICH;
 		w.facRep.addFactionRep(Faction.MERCHANT,10*level,0);
 		extra.popPrintStack();
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	public static Person makeCollector(int level) {
@@ -1275,7 +1273,7 @@ public class RaceFactory {
 		}
 		extra.popPrintStack();
 		w.setTitle(randomLists.randomCollectorName());
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -1285,7 +1283,7 @@ public class RaceFactory {
 		w.hTask = HostileTask.LAW_EVIL;
 		w.facRep.addFactionRep(Faction.HEROIC,5*level,0);
 		extra.popPrintStack();
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -1298,7 +1296,8 @@ public class RaceFactory {
 			//comes here often
 			w = new Person(level,AIJob.GRAVER);
 			list = w.getBag().getDrawBanes();
-			w.setPerk(Perk.GRAVEYARD_SIGHT);
+			w.cleanSetSkillHas(Perk.GRAVEYARD_SIGHT);//clean, doesn't count as a point
+			w.liteRefreshClassless();
 			if (extra.chanceIn(1,3)) {
 				list.add(DrawBane.SILVER);
 			}else {
@@ -1333,14 +1332,15 @@ public class RaceFactory {
 			
 		}
 		extra.popPrintStack();
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
 	public static Person makeGravedigger(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level,AIJob.GRAVER);
-		w.setPerk(Perk.GRAVEYARD_SIGHT);
+		w.cleanSetSkillHas(Perk.GRAVEYARD_SIGHT);//clean, doesn't count as a point
+		w.liteRefreshClassless();
 		w.hTask = HostileTask.PEACE;
 		List<DrawBane> list = w.getBag().getDrawBanes();
 		list.add(DrawBane.GRAVE_DIRT);
@@ -1374,7 +1374,7 @@ public class RaceFactory {
 			}
 		}
 		extra.popPrintStack();
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -1399,7 +1399,8 @@ public class RaceFactory {
 		case 4:
 			w.addBlood(3);
 			w.getBag().getHand().transmuteWeapMat(MaterialFactory.getMat("silver"));
-			w.setPerk(Perk.GRAVEYARD_SIGHT);
+			w.cleanSetSkillHas(Perk.GRAVEYARD_SIGHT);
+			w.liteRefreshClassless();
 			list.add(DrawBane.SILVER);
 			list.add(DrawBane.GRAVE_DUST);
 			break;
@@ -1408,7 +1409,7 @@ public class RaceFactory {
 			w.getBag().getHand().improveEnchantChance(level);
 			break;
 		}
-		w.computeLevels(0);
+		w.finishGeneration();
 		return w;
 	}
 

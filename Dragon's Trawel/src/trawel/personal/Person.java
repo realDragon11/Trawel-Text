@@ -317,6 +317,8 @@ public class Person implements java.io.Serializable{
 	 * this will be called automatically if the Person does not have one of the base things yet.
 	 * <br>
 	 * Should be called if updating any skill haver directly outside of the wrapper functions setX()
+	 * <br>
+	 * you can call it through 'finishgeneration' if you want to autolevel instead
 	 */
 	public Set<Skill> updateSkills() {
 		atrBox = new AttributeBox(this);
@@ -324,6 +326,63 @@ public class Person implements java.io.Serializable{
 		collectSkills().forEach(skillSet::add);
 		return skillSet;
 	}
+	
+	/**
+	 * as updateskills, except does not compute end result. Useful if you want to autolevel after
+	 * <br> in most cases you will want to use 'lite' adding instead of clean adding, making this useless
+	 */
+	public void liteRefreshClassless() {
+		skillSet = EnumSet.noneOf(Skill.class);
+		
+		for (Archetype a: archSet) {
+			skillSet.addAll(a.giveSet());
+		}
+		for (Perk p: perkSet) {
+			skillSet.addAll(p.giveSet());
+		}
+		for (Feat f: featSet) {
+			skillSet.addAll(f.giveSet());
+		}
+	}
+	
+	/**
+	 * autolevel if that is set, and update skills no matter what (ie, if autolevel didn't happen, still update)
+	 */
+	public void finishGeneration() {
+		if (!autoLevelIf()) {
+			updateSkills();
+		}
+	}
+	/**
+	 * attempts to decide all the character's remaining feat points, if they are set to autolevel
+	 * <br>
+	 * if returned false, didn't update list
+	 */
+	public boolean autoLevelIf() {
+		boolean autoLeveled = false;
+		if (featPoints > 0 && getFlag(PersonFlag.AUTOLEVEL)) {
+			if (featPoints == 1) {//only one
+				pickFeatRandom();
+				updateSkills();
+				autoLeveled = true;
+			}else {
+				while (featPoints > 0) {//autoleveling doesn't consume picks
+					IHasSkills gain = pickFeatRandom();
+					if (gain == null) 
+					{
+						break;
+					}
+					skillSet.addAll(gain.giveSet());//doesn't compute them fully, just enough to understand requirements
+				}
+				updateSkills();
+				autoLeveled = true;
+			}
+		}
+		return autoLeveled;
+	}
+	
+	
+	
 	public Set<Skill> fetchSkills() {
 		if (skillSet == null) {
 			updateSkills();
@@ -347,6 +406,14 @@ public class Person implements java.io.Serializable{
 	}
 	public void setFeat(Feat f) {
 		featSet.add(f);
+		switch (f) {
+		case NOT_PICKY:
+			if (isPlayer()) {//only applies to player
+				//not picky grants 2 extra picks on take (does not check to see if you already have)
+				getSuper().addFeatPick(2);
+			}
+			break;
+		}
 		updateSkills();//just update instantly now
 	}
 	public void setArch(Archetype a) {//did I actually misspell that
@@ -370,21 +437,54 @@ public class Person implements java.io.Serializable{
 	public void setSkillHas(IHasSkills has) {
 		if (has instanceof Feat) {
 			setFeat((Feat) has);
-			Feat fBase = (Feat)has;
-			switch (fBase) {
-			case NOT_PICKY:
-				if (isPlayer()) {//only applies to player
-					//not picky grants 2 extra picks on take (does not check to see if you already have)
-					getSuper().addFeatPick(2);
-				}
-				break;
-			}
 		}else {
 			if (has instanceof Archetype) {
 				setArch((Archetype) has);
 			}else {
 				if (has instanceof Perk) {
 					setPerk((Perk) has);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * sets a skillhas with no side effects. In most cases liteSetSkillHas is better
+	 */
+	public void cleanSetSkillHas(IHasSkills has) {
+		if (has instanceof Archetype) {
+			archSet.add((Archetype)has);
+		}else {
+			if (has instanceof Perk) {
+				perkSet.add((Perk)has);
+			}else {
+				if (has instanceof Feat) {
+					featSet.add((Feat)has);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * sets a skillhas, naively adding it's own skills to the skillset and also deducing a feat point
+	 * <br>
+	 * use for adding skillhases in worldgen, because the character will just not level their feats until they are positive again
+	 * <br>
+	 * should call finishGeneration after if want to level up any remainders, or updateskills directly if not
+	 */
+	public void liteSetSkillHas(IHasSkills has) {
+		featPoints--;//can go into negatives
+		if (has instanceof Archetype) {
+			archSet.add((Archetype)has);
+			skillSet.addAll(has.giveSet());
+		}else {
+			if (has instanceof Perk) {
+				perkSet.add((Perk)has);
+				skillSet.addAll(has.giveSet());
+			}else {
+				if (has instanceof Feat) {
+					featSet.add((Feat)has);
+					skillSet.addAll(has.giveSet());
 				}
 			}
 		}
@@ -639,8 +739,6 @@ public class Person implements java.io.Serializable{
 	
 	/**
 	 * call after leveling up
-	 * <br>
-	 * also gets called after making an npc if we want them to autolevel
 	 * @param levels
 	 */
 	public void computeLevels(int levels) {
@@ -649,23 +747,9 @@ public class Person implements java.io.Serializable{
 				BarkManager.getBoast(this, false);
 			}
 			addFeatPoint(levels);
-			if (featPoints > 0 && getFlag(PersonFlag.AUTOLEVEL)) {
-				if (featPoints == 1) {//only one
-					pickFeatRandom();
-					updateSkills();
-				}else {
-					while (featPoints > 0) {//autoleveling doesn't consume picks
-						IHasSkills gain =pickFeatRandom();
-						if (gain == null) 
-						{
-							break;
-						}
-						skillSet.addAll(gain.giveSet());//doesn't compute them fully, just enough to understand requirements
-					}
-					updateSkills();
-				}
-				
-			}
+			
+			autoLevelIf();
+			
 			if (this.isPlayer()) {
 				Networking.send("PlayDelay|sound_magelevel|1|");
 				Networking.leaderboard("Highest Level",level);
