@@ -1,9 +1,14 @@
 package trawel.towns.nodes;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
+import derg.menus.MenuBack;
+import derg.menus.MenuItem;
+import derg.menus.MenuSelect;
+import derg.menus.ScrollMenuGenerator;
 import trawel.AIClass;
 import trawel.Effect;
 import trawel.Networking;
@@ -29,10 +34,6 @@ public class GroveNode implements NodeType{
 
 	private static final int EVENT_NUMBER = 21;
 
-	
-	
-	
-	
 	private WeightedTable groveBasicRoller;
 	
 	public GroveNode() {
@@ -132,9 +133,19 @@ public class GroveNode implements NodeType{
 				                 
 				});
 			}
-		case 5: made.name = "fairy circle"; made.interactString = "examine circle";break;
-		case 6: made.name = "fairy circle"; made.interactString = "examine circle";break;
-		case 7: made.name = "old " + randomLists.randomWarrior(); made.interactString = "approach " + made.name;
+		case 5:
+			PlantSpot[] big_circle = new PlantSpot[extra.randRange(12,24)];
+			for (int i = Math.min(big_circle.length/2,holder.getLevel(madeNode)+2); i >=0;i--) {
+				int place = extra.randRange(0,big_circle.length-1);
+				PlantSpot check = big_circle[place];
+				while (check != null) {//fancy way of making them appear in 'stretches' slightly more often
+					place++;
+					check = big_circle[place%big_circle.length];
+				}
+				big_circle[place%big_circle.length] = new PlantSpot(1,"");
+			}
+			break;
+		case 6: made.name = "old " + randomLists.randomWarrior(); made.interactString = "approach " + made.name;
 		made.storage1 = RaceFactory.makeOld(made.level + 2);
 		if (extra.chanceIn(1, 4)) {
 		((Person)made.storage1).getBag().getDrawBanes().add(DrawBane.REPEL);}
@@ -203,12 +214,60 @@ public class GroveNode implements NodeType{
 			p.getBag().forceDownGradeIf(Player.player.getPerson().getLevel());
 			AIClass.loot(p.getBag(),
 				Player.bag,true,Player.player.getPerson());
-			holder.setStateNum(node,1);
-			node.findBehind("body");
+			holder.findBehind(node, "body");
 			GenericNode.setPlantSpot(holder, node, "");//might made corpse fungus?
 			break;
-		case 5: case 6: fairyCircle1();break;
-		case 7: oldFighter();break;
+		case 5: //fairy circle
+			extra.println("You enter the fairy circle.");
+			PlantSpot[] spots = (PlantSpot[])holder.getStorage(node);
+			extra.menuGo(new ScrollMenuGenerator(spots.length,"previous <> mushrooms", "next <> mushrooms") {
+
+				@Override
+				public List<MenuItem> forSlot(int i) {
+					List<MenuItem> list = new ArrayList<MenuItem>();
+					PlantSpot p = spots[i];
+					if (p == null) {
+						list.add(new MenuSelect(){
+
+							@Override
+							public String title() {
+								return "Mushroom?"+extra.choose("?","??","???");
+							}
+
+							@Override
+							public boolean go() {
+								extra.println("As you reach for this mushroom, it vanishes.");
+								return false;
+							}});
+					}else {
+						list.add(new MenuSelect(){
+
+							@Override
+							public String title() {
+								return "Mushroom?"+extra.choose("!","?!","??!");//this is so dumb and I love it
+							}
+
+							@Override
+							public boolean go() {
+								extra.println("As you reach for this mushroom, a planter appears in the ground!");
+								p.go();
+								return false;
+							}});
+					}
+					return list;
+				}
+
+				@Override
+				public List<MenuItem> header() {
+					return null;
+				}
+
+				@Override
+				public List<MenuItem> footer() {
+					return Collections.singletonList(new MenuBack("Leave this terrible place."));
+				}});
+			break;
+		case 6: oldFighter();break;
 		case 8: treeOnPerson();break;
 		case 9: dryad();break;
 		case 10: fallenTree();break;
@@ -236,7 +295,29 @@ public class GroveNode implements NodeType{
 	@Override
 	public void passTime(NodeConnector holder, int node, double time, TimeContext calling) {
 		// empty
-		
+		switch (holder.getEventNum(node)) {
+		case 5:
+			PlantSpot[] spots = (PlantSpot[])holder.getStorage(node);
+			//should probably find some way to not pass time as often
+			for (int i = 0; i < spots.length;i++) {
+				if (spots[i] != null) {
+					PlantSpot pspot = spots[i];
+					if (pspot.timer > 40f) {
+						if (pspot.contains == "") {//if we have nothing
+							if (extra.chanceIn(1, 5)) {//add something
+								pspot.contains = extra.choose("fairy dust","truffle spores");
+								pspot.timer = 0;
+							}else {
+								//delay
+								pspot.timer -= 30;
+							}
+						}
+					}
+					calling.localEvents(spots[i].passTime(time, calling));
+				}
+			}
+			break;
+		}
 	}
 	
 	

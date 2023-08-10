@@ -225,6 +225,12 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 			Player.bag.addNewDrawBane(DrawBane.TRUFFLE);
 		break;
 		case "truffle spores":;break;
+		case "fairy dust":
+			Player.bag.addNewDrawBane(DrawBane.GRAVE_DUST);//undead fairies?????
+			break;
+		case "unicorn horn":
+			Player.bag.addNewDrawBane(DrawBane.UNICORN_HORN);
+			break;
 		default: case "":extra.println("ERROR");break;
 		}
 		contains = "";
@@ -255,6 +261,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 		case "pumpkin seed": if (timer > 60) { contains = "pumpkin patch";timer = 0;}break;
 		case "eggcorn seed": if (timer > 33) { contains = "eggcorn";timer = 0;}break;
 		case "truffle spores": if (timer > 60) { contains = "truffle";timer = 0;}break;
+		case "fairy dust": if (timer > 60) { contains = "unicorn horn";timer = 0;}break;
 		
 		case "exhausted apple tree": if (timer >= 0) { contains = "apple tree";}break;
 		case "empty pumpkin patch": if (timer >= 0) { contains = "pumpkin patch";}break;
