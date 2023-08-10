@@ -158,10 +158,10 @@ public class MineNode implements NodeType{
 			GenericNode.applyGenericVein(holder, madeNode,3);
 			break;
 		case 5:
+			GenericNode.applyLockDoor(holder, madeNode);
+			/*
 			holder.setStorage(madeNode,extra.choose("locked door","barricaded door","padlocked door"));
-			//holder.setStateNum(madeNum,0);already at 0
-			holder.setForceGo(madeNode, true);
-			//made.interactString = "unlock door";
+			holder.setForceGo(madeNode, true);*/
 			break;
 		case 6:
 			String cColor = randomLists.randomColor();//TODO: get color with color code attached to it
@@ -218,7 +218,7 @@ public class MineNode implements NodeType{
 			Player.player.getPerson().washAll();break;
 		//case 3: goldVein1();break;
 		//case 4: mugger1(); if (node.state == 0) {return true;};break;
-		case 5: 
+		case 5: /*
 			if (holder.isForceGo(node)) {
 				if (holder.parent.getOwner() == Player.player) {
 					extra.println("You find the keyhole and then unlock the "+holder.getStorageFirstClass(node,String.class)+".");
@@ -252,7 +252,7 @@ public class MineNode implements NodeType{
 					holder.findBehind(node,"broken door");
 				}
 			};
-			break;
+			break;*/
 		case 6: 
 			String cColor = holder.getStorageFirstClass(node,String.class);
 			extra.println("You examine the " + cColor+ " crystals. They are very pretty.");

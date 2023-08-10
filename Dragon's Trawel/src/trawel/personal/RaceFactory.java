@@ -923,7 +923,6 @@ public class RaceFactory {
 		
 		extra.popPrintStack();
 		w.hTask = HostileTask.MONSTER;
-		//w.updateSkills();
 		return w;
 	}
 	
@@ -1228,6 +1227,15 @@ public class RaceFactory {
 		w.hTask = HostileTask.GUARD_DUNGEON;
 		extra.popPrintStack();
 		//w.updateSkills();
+		return w;
+	}
+	
+	public static Person makeDGuard(int level) {
+		extra.offPrintStack();
+		Person w = new Person(level);
+		w.setTitle(randomLists.randomDGuardTitle());
+		w.hTask = HostileTask.GUARD_DUNGEON;
+		extra.popPrintStack();
 		return w;
 	}
 	

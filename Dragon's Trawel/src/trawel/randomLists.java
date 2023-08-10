@@ -25,7 +25,7 @@ public class randomLists {
 	private static StringResult commonElements, rareElements, randMats = null, colorList, normalFirstNames, theTitles,
 			doerTitles, animals, wolfNames,bearNames,batNames, entNames, waterNames,
 			fighterTypes,muggerTypes,collectTypes,theAlphaTitles,theLargeTitles, attackMisses, attackNegates, attackDodges
-			,hunterTitles,thingsToSlay,slayerTitleToSlay
+			,hunterTitles,thingsToSlay,slayerTitleToSlay,dGuardTitles
 			;
 	/**
 	 * following have fallbacks if not loaded, and you can avoid filling them in for test purposes
@@ -65,6 +65,7 @@ public class randomLists {
 		hunterTitles = new SRPlainRandom("the Hunter","the Slayer","the Tracker","the Trapper","the Exterminator",", Monster Hunter",", Seeker",", Exterminator for Hire");
 		thingsToSlay = new SRPlainRandom("Vampire","Vampire","Vampire","Wolf","Harpy","Drudger","Mimic","Reaver");
 		slayerTitleToSlay = new SRPlainRandom("Slayer","Hunter","Killer","Exterminator","Butcher","Decimator","Eradicator","Expunger");
+		dGuardTitles = new SRPlainRandom(", Gatekeeper",", Guarder of the Gates",", Doorkeeper",", Lockmaster",", Dungeon Guard","the Guard","the Mook",", Henchman",", Big Bad Aspirant");
 	}
 	
 	//our lazyloaded lists
@@ -224,5 +225,9 @@ public class randomLists {
 			return extra.choose(", "," the ")+ thingsToSlay.next() + " " +slayerTitleToSlay.next();
 		}
 		return hunterTitles.next();
+	}
+
+	public static String randomDGuardTitle() {
+		return dGuardTitles.next();
 	}
 }

@@ -35,6 +35,7 @@ public class GenericNode implements NodeType {
 		,BASIC_DUEL_PERSON
 		,VEIN_MINERAL
 		,COLLECTOR
+		,LOCKDOOR
 	}
 	
 	public static void setSimpleDuelPerson(NodeConnector holder,int node,Person p, String nodename, String interact) {
@@ -103,6 +104,8 @@ public class GenericNode implements NodeType {
 			return deadStringTotal(holder, node);
 		case VEIN_MINERAL:
 			return genericVein(holder, node);
+		case LOCKDOOR:
+			return goLockedDoor(holder, node);
 		}
 		return false;
 	}
@@ -162,6 +165,8 @@ public class GenericNode implements NodeType {
 			return holder.getStorageAsArray(node)[1].toString();
 		case COLLECTOR:
 			return "Approach " +holder.getStorageFirstPerson(node).getName();
+		case LOCKDOOR:
+			return "Look at the " + holder.getStorageFirstClass(node,String.class)+".";
 		}
 		return null;
 	}
@@ -190,6 +195,8 @@ public class GenericNode implements NodeType {
 			return "Mined Vein";
 		case COLLECTOR:
 			return holder.getStorageFirstPerson(node).getName();
+		case LOCKDOOR:
+			holder.getStorageFirstClass(node,String.class);
 		}
 		return null;
 	}
@@ -417,6 +424,48 @@ public class GenericNode implements NodeType {
 				return list;
 			}});
 		Networking.clearSide(1);
+		return false;
+	}
+	
+	public static void applyLockDoor(NodeConnector holder,int node) {
+		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
+		holder.setEventNum(node,Generic.LOCKDOOR.ordinal());
+		holder.setStorage(node,extra.choose("locked door","barricaded door","padlocked door"));
+		holder.setForceGo(node, true);
+	}
+	
+	private boolean goLockedDoor(NodeConnector holder,int node) {
+		if (holder.isForceGo(node)) {
+			if (holder.parent.getOwner() == Player.player) {
+				extra.println("You find the keyhole and then unlock the "+holder.getStorageFirstClass(node,String.class)+".");
+				holder.setStateNum(node,1);//unlocked once
+				holder.findBehind(node,"unlocked door");
+			}else {
+				if (holder.getStateNum(node) == 1) {
+					extra.println("You bash open the "+holder.getStorageFirstClass(node,String.class)+".");
+				}else {
+					extra.println("Looks like they changed the locks! You bash open the door.");
+				}
+				
+				holder.setStateNum(node,2);//broken open
+				holder.setForceGo(node, false);
+				holder.findBehind(node,"broken door");
+			}
+		}else {
+			if (holder.parent.getOwner() == Player.player) {
+				extra.println("You relock the door every time you go by it, but you know where the hole is now so that's easy.");
+			}else {
+				extra.println(
+						extra.choose(
+						"The door is broken."
+						,"The door is smashed to bits."
+						,"The metal on the door is hanging off the splinters."
+						,"The lock is intact. The rest of the door isn't."
+						)
+						);
+				holder.findBehind(node,"broken door");
+			}
+		};
 		return false;
 	}
 

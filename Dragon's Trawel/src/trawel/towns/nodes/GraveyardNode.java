@@ -14,6 +14,7 @@ import trawel.mainGame;
 import trawel.randomLists;
 import trawel.battle.Combat;
 import trawel.personal.Person;
+import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.DrawBane;
@@ -120,7 +121,15 @@ public class GraveyardNode implements NodeType{
 			holder.setStateNum(madeNode,10);//smallest allowed state
 		;break;
 		case 4:
-			holder.setStorage(madeNode, RaceFactory.makeVampire(holder.getLevel(madeNode)));
+			List<Person> vampBats = new ArrayList<Person>();
+			vampBats.add(RaceFactory.makeVampire(holder.getLevel(madeNode)));
+			int vLevel = holder.getLevel(madeNode);
+			int bLevel = vLevel-1;
+			while (bLevel > 1) {
+				vampBats.add(RaceFactory.makeBat(bLevel));
+				bLevel/=2;
+			}
+			holder.setStorage(madeNode, vampBats);
 			holder.setStateNum(madeNode, STATE_SHADOW_FIGURE);
 			;break;
 		case 5:
@@ -449,6 +458,10 @@ public class GraveyardNode implements NodeType{
 			GenericNode.setTotalDeadString(holder, node,"Vampire Coffin","Examine motes of Grave Dust","There isn't enough here to gather.","coffin");
 			return false;
 		}else {
+			if (extra.getNonAddOrFirst(c.survivors).getFlag(PersonFlag.IS_ADD)) {
+				//if the vampire is dead, the bats don't revive, otherwise they do
+				holder.setStorage(node,c.survivors);
+			}
 			return true;
 		}
 

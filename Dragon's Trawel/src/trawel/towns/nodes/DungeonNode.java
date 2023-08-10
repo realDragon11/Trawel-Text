@@ -1,13 +1,17 @@
 package trawel.towns.nodes;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+
+import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.AIClass;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
+import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
@@ -19,36 +23,44 @@ public class DungeonNode implements NodeType{
 
 	private static final int EVENT_NUMBER =7;
 	
-	private static final DungeonNode handler = new DungeonNode();
 	
-	private NodeConnector node;
+	private WeightedTable dungeonGuardRoller, dungeonLootRoller;
 	
-	public static DungeonNode getSingleton() {
-		return handler;
+	/*
+	 * 2: single guard
+	 * 3: multi guard
+	 */
+	private static final byte[] GUARD_NUMBERS = new byte[] {2,3};
+	
+	/*
+	 * 5/6: chest/mimic
+	 * 7/8: statue/living statue
+	 */
+	private static final byte[] LOOT_NUMBERS = new byte[] {5,6,7,8};
+	
+	public DungeonNode() {
+		dungeonGuardRoller = new WeightedTable(new float[] {2f,1f});
+		dungeonLootRoller = new WeightedTable(new float[] {3f,1f,1.5f,.5f});
 	}
 	
 	@Override
-	public NodeConnector getNode(NodeFeature owner, int tier) {
+	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
 		byte idNum = (byte) extra.randRange(1,EVENT_NUMBER);
+		//might be overwritten by shape but we do it as a backup/full rng
 		NodeConnector make = new NodeConnector();
-		if (extra.chanceIn(1,2)) {
-			idNum = 2;//dungeon guard
-			if (extra.chanceIn(1,3)) {
-			idNum = 5;	
-			}
+		/*if (extra.chanceIn(1,2)) {
+			idNum = GUARD_NUMBERS[dungeonGuardRoller.random(extra.getRand())];
 		}
 		if (extra.chanceIn(1,10)) {
 			idNum = 1;//chest	
-		}
-		make.eventNum = idNum;
-		make.typeNum = 0;
-		make.level = tier;
-		return make;
+		}*/
+		int ret = holder.newNode(NodeType.NodeTypeNum.CAVE.ordinal(),idNum,tier);
+		return ret;
 	}
 
 	@Override
-	public NodeConnector generate(NodeFeature owner, int size, int tier) {
-		NodeConnector made = getNode(owner,tier);
+	public int generate(NodeConnector holder,int from, int size, int tier) {
+		int made = getNode(holder,from,0,tier);
 		if (size < 2) {
 			return made;
 		}
@@ -65,10 +77,8 @@ public class DungeonNode implements NodeType{
 			if (extra.chanceIn(1,10)) {
 				tempLevel++;
 			}
-			NodeConnector n = generate(owner,sizeRemove+baseSize,tempLevel);
-			made.connects.add(n);
-			n.getConnects().add(made);
-			n.finalize(owner);
+			int n = generate(holder,made,sizeRemove+baseSize,tempLevel);
+			holder.setMutualConnect(made, n);
 			i++;
 		}
 		return made;
@@ -76,50 +86,51 @@ public class DungeonNode implements NodeType{
 	
 	@Override
 	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
+		NodeConnector start_node = new NodeConnector();
 		switch (owner.shape) {
-		case NONE: 
-			return generate(owner,size, tier).finalize(owner);
+		case NONE: generate(start_node,0,size, tier);
+			return start_node.complete(owner);
 		case TOWER:
 			int curSize = 1;
-			List<List<NodeConnector>> floors = new ArrayList<List<NodeConnector>>();
-			List<NodeConnector> curFloor;
-			NodeConnector stair;
-			NodeConnector curStair;
-			NodeConnector start = getNode(owner,tier).finalize(owner);
-			start.setFloor(0);
+			List<List<Integer>> floors = new ArrayList<List<Integer>>();
+			List<Integer> curFloor;
+			int stair;
+			int curStair;
+			int start = getNode(start_node,0,0,tier);
+			start_node.setFloor(start,0);
 			stair = start;
 			int levelUp = 0;
 			int floor = 0;
-			NodeConnector lastNode;
-			NodeConnector lastNode2;
+			int lastNode;
+			int lastNode2;
 			//DOLATER: fix order of nodes if that is still an issue
 			while (curSize < size) {
 				floor++;
 				lastNode = stair;
-
+				int stair_level = start_node.getLevel(stair);
 				levelUp++;
-				curStair = getNode(owner,stair.getLevel()+levelUp%3);
-				curStair.setStair();
-				curStair.finalize(owner);
+				curStair = getNode(start_node,stair,0,stair_level+levelUp%3);//stair as from is tentative
+				start_node.setStair(curStair);
+				start_node.setEventNum(curStair, 1);
 				
-				curFloor = new ArrayList<NodeConnector>();
+				stair_level = start_node.getLevel(curStair);
+				
+				curFloor = new ArrayList<Integer>();
 				for (int j = 0; j < 2;j++) {
 					for (int i = 0;i <2; i++) {
 						floor++;
-						lastNode2 = getNode(owner,curStair.getLevel());
-						lastNode2.finalize(owner);
-						lastNode2.setFloor(floor);
-						lastNode.getConnects().add(lastNode2);
-						lastNode2.getConnects().add(lastNode);
-						lastNode.reverseConnections();
+						lastNode2 = getNode(start_node,0,0,stair_level);
+						start_node.setFloor(lastNode2, floor);
+						start_node.setMutualConnect(lastNode, lastNode2);
+						//lastNode.reverseConnections();
 						lastNode = lastNode2;
 						curFloor.add(lastNode);
 						if (i == 1) {
-							lastNode.getConnects().add(curStair);
+							start_node.setMutualConnect(lastNode, curStair);
 						}
 					}
 					floor-=2;
-					curStair.getConnects().add(lastNode);
+					//curStair.getConnects().add(lastNode);
 					
 					lastNode = stair;
 				}
@@ -128,150 +139,175 @@ public class DungeonNode implements NodeType{
 				floors.add(curFloor);
 				curSize +=curFloor.size();
 				//reverse order of stair connects
-				stair.reverseConnections();
-				curStair.setFloor(floor);
+				//stair.reverseConnections();
+				//curStair.setFloor(floor);
+				start_node.setFloor(curStair, floor);
 				//move onto next floor
 				stair = curStair;
 			}
-			NodeConnector b = BossNode.getSingleton().getNode(owner,(levelUp%3)+1);
-			b.getConnects().add(stair);
-			b.setFloor(floor+10);
-			b.finalize(owner);
+			floor+=10;
+			int b = NodeType.NodeTypeNum.BOSS.singleton.getNode(start_node, 0, floor, (levelUp%3)+1);
+			start_node.setMutualConnect(b, stair);
+			start_node.setFloor(b, floor);
+			/*
 			stair.reverseConnections();
 			stair.getConnects().add(b);
 			stair.reverseConnections();
-			//
-			for (List<NodeConnector> fl: floors) {
-				for (NodeConnector f: fl) {
-					f.getConnects().sort(new Comparator<NodeConnector>() {
+			*/
+			for (List<Integer> fl: floors) {
+				for (Integer f: fl) {
+					//sadly list conversion is probably easier than writing mergesort myself
+					//although with these sizes just use selection/insertion sort
+					List<Integer> connects = start_node.getConnects(f);
+					connects.sort(new Comparator<Integer>() {
 
 						@Override
-						public int compare(NodeConnector a0, NodeConnector a1) {
-							return (int) Math.signum(a0.getFloor()-a1.getFloor());
+						public int compare(Integer a0, Integer a1) {
+							return (int) Math.signum(
+									start_node.getFloor(a0)
+									-
+									start_node.getFloor(a1)
+									);
 						}});
-					f.reverseConnections();
+					int[] pass = new int[connects.size()];
+					Integer[] agh = connects.toArray(new Integer[0]);//at this point I regret not writing my own sort right away
+					for (int i = 0; i < connects.size();i++) {
+						pass[i] = agh[i];
+					}
+					start_node.setConnects(f,pass);
 				}
 				
 			}
-			return start;
+			return start_node.complete(owner);
 			
 		}
 		throw new RuntimeException("Invalid dungeon");
 	}
 	
 	@Override
-	public void apply(NodeConnector made) {
-		if (made.isStair()) {
-			made.eventNum = -1;
-		}
-		switch (made.eventNum) {
-		case -1:
-			made.name = extra.choose("stairs","ladder");
-			made.interactString = "traverse "+made.name;
-			made.setForceGo(true);
-			break;
+	public void apply(NodeConnector holder,int madeNode) {
+		switch (holder.getEventNum(madeNode)) {
 		case 1:
-			made.storage1 = extra.choose("old ","vibrant ","simple ","") + "chest";
-			made.name = (String) made.storage1;
-			made.interactString = "open "+made.name;
-			made.storage2 = RaceFactory.makeMimic(1);
+			holder.setForceGo(madeNode,true);
+			holder.setStorage(madeNode, extra.choose("stairs","ladder"));
 			break;
-		case 2: made.name = extra.choose("dungeon guard","gatekeeper","dungeon guard");
-		made.interactString = "ERROR";
-		made.setForceGo(true);
-		made.storage1 = RaceFactory.getDGuard(made.level);
+		case 5: case 6:
+			Person mimic = RaceFactory.makeMimic(holder.getLevel(madeNode));
+			holder.setStorage(madeNode, new Object[] {extra.choose("Old ","Vibrant ","Simple ","") + "Chest",mimic});
+			break;
+		case 2:
+			holder.setForceGo(madeNode, true);
+			holder.setStorage(madeNode, new Object[] {extra.choose("Checkpoint","Barricade","Guardpost")
+					,RaceFactory.getDGuard(holder.getLevel(madeNode))});
 		break;
 		case 3:
-			made.name = extra.choose("locked door","barricaded door","padlocked door");
-			made.interactString = "examine broken door";
-			made.setForceGo(true);break;
+			List<Person> list = new ArrayList<Person>();
+			int guardLevel = holder.getLevel(madeNode);
+			int guardAmount = 2;
+			while (guardAmount < 4) {
+				if (guardLevel > 3 && extra.chanceIn(3,4)) {
+					guardAmount+=1;
+					guardLevel--;
+				}else {
+					break;
+				}
+			}
+			for (int i = 0; i < guardAmount;i++) {
+				list.add(RaceFactory.getDGuard(guardLevel));
+			}
+			holder.setForceGo(madeNode, true);
+			holder.setStorage(madeNode, new Object[] {
+					extra.choose("Large ","Well Lit ","High Security ") +extra.choose("Checkpoint","Barricade","Guardpost")
+					,RaceFactory.getDGuard(holder.getLevel(madeNode))});
+		break;
 		case 4:
-			ArrayList<Person> list = new ArrayList<Person>();
-			list.add(RaceFactory.getDGuard(extra.zeroOut(made.level-3)+1));
-			list.add(RaceFactory.getDGuard(extra.zeroOut(made.level-3)+1));
-			made.name = "gate guards";
-			made.interactString = "ERROR";
-			made.storage1 = list;
-			made.setForceGo(true);
-			made.state = 0;
-		break;
-		case 5:
-			made.storage1 = extra.choose("old ","vibrant ","simple ","") + "chest";
-			made.name = (String) made.storage1;
-			made.interactString = "open "+made.name;
-			made.storage2 = RaceFactory.makeMimic(made.level);
-		break;
-		case 6:
+			GenericNode.applyLockDoor(holder, madeNode);
+			break;
+		case 8:
 			if (extra.chanceIn(1, 3)) {
-				made.setForceGo(true);
+				holder.setForceGo(madeNode, true);
 			}
 		case 7:
-			made.storage1 =  RaceFactory.makeStatue(made.level);
-			made.name = ((Person)made.storage1).getBag().getRace().renderName(false) + " statue";
-			made.interactString = "loot statue";
+			holder.setStorage(madeNode, RaceFactory.makeStatue(holder.getLevel(madeNode)));
 			break;
 		}
 	}
 	
 	@Override
-	public boolean interact(NodeConnector node) {
-		this.node = node;
-		switch(node.eventNum) {
-		case -1: Networking.sendStrong("PlayDelay|sound_footsteps|1|"); break;
-		case 1: chest();break;
-		case 2: mugger1(); if (node.state == 0) {return true;};break;
-		case 3: if (node.isForceGo() == true) {
-			extra.println("You bash open the door.");
-			node.name = "broken door";node.setForceGo(false);
-		}else {
-			extra.println("The door is broken.");
-		};break;
-		//case 4: extra.println("You traverse the ladder.");break;
+	public boolean interact(NodeConnector holder, int node) {
+		switch(holder.getEventNum(node)) {
+		case 1: Networking.sendStrong("PlayDelay|sound_footsteps|1|"); break;
+		case 2://single guard
+			Person guard = holder.getStorageFirstPerson(node);
+			Combat gc = Player.player.fightWith(guard);
+			if (gc.playerWon() > 0) {
+				holder.setForceGo(node,false);
+				GenericNode.setSimpleDeadRaceID(holder, node, guard.getBag().getRaceID());
+				return false;
+			}else {
+				return true;
+			}
+		case 3://multiguards
+			List<Person> guards = holder.getStorageFirstClass(node,List.class);
+			Combat bgc = mainGame.HugeBattle(holder.getWorld(),Player.wrapForMassFight(guards));
+			if (gc.playerWon() > 0) {
+				holder.setForceGo(node,false);
+				String wasname = holder.getStorageFirstClass(node,String.class);
+				GenericNode.setTotalDeadString(holder, node,"Wrecked " +wasname,"Examine Bodies","They are slowly rotting.", "pile of corpses");
+				GenericNode.setSimpleDeadRaceID(holder, node, guard.getBag().getRaceID());
+				return false;
+			}else {
+				holder.setStorage(node,gc.survivors);//they don't revive
+				return true;
+			}
 		case 4: return gateGuards();
-		case 5: mimic(); if (node.state == 0) {return true;};break;
-		case 6: statue(); if (node.state == 0) {return true;};break;
-		case 7: statueLoot();break;
+		case 5: return chest(holder, node);
+		case 6: return mimic(holder, node);
+		case 8: return statue(holder, node);
+		case 7: return statueLoot(holder, node);;
 		}
 		return false;
 	}
 
 
-	private void chest() {
-		if (node.state == 0) {
-			Person p = (Person)node.storage2;
-			p.getBag().graphicalDisplay(1,p);
-			extra.println("Really open the " + node.name + "?");
-			if (extra.yesNo()) {
-				if (extra.chanceIn(1, 10)) {
-					Player.player.emeralds++;
-					extra.println("You open the " +node.storage1 + " and find an emerald!");
-				}else {
-					if (extra.chanceIn(1, 10)) {
-						Player.player.rubies++;
-						extra.println("You open the " +node.storage1 + " and find a ruby!");
-					}else {
-						if (extra.chanceIn(1, 10)) {
-							Player.player.sapphires++;
-							extra.println("You open the " +node.storage1 + " and find a sapphire!");
-						}else {
-							int gold = extra.randRange(3,10)*node.level;
-							Player.player.addGold(gold);
-							extra.println("You open the " +node.storage1 + " and find " + World.currentMoneyDisplay(gold) + ".");
-						}
-					}
-				}
-				node.state = 1;
-				node.name = "empty " + node.storage1;
-				node.interactString = "examine empty " + node.storage1;
-			}else {
-				extra.println("You decide not to open it.");
-			}
-		}else {
-			extra.println("The "+node.storage1+" has already been opened.");
-			node.findBehind("chest");
+	private boolean chest(NodeConnector holder, int node) {
+		if (holder.getStateNum(node) != 0) {
+			extra.println("The "+holder.getStorageFirstClass(node,String.class)+" has already been opened.");
+			holder.findBehind(node,"chest");
+			return false;
 		}
-		Networking.clearSide(1);
-
+		Person p = holder.getStorageFirstPerson(node);
+		p.getBag().graphicalDisplay(1,p);
+		extra.println("Really open the " + holder.getStorageFirstClass(node,String.class) + "?");
+		if (extra.yesNo()) {
+			holder.setStateNum(node,1);
+			if (extra.chanceIn(5,6)) {
+				int gold = extra.randRange(0,2)+(extra.randRange(1,3)*holder.getLevel(node));
+				Player.player.addGold(gold);
+				extra.println("You open the " +holder.getStorageFirstClass(node,String.class) + " and find " + World.currentMoneyDisplay(gold) + ".");
+			}else {
+				switch (extra.randRange(1,3)) {
+				case 1:
+					Player.player.emeralds++;
+					extra.println("You open the " + holder.getStorageFirstClass(node,String.class) + " and find an emerald!");
+					break;
+				case 2:
+					Player.player.rubies++;
+					extra.println("You open the " + holder.getStorageFirstClass(node,String.class) + " and find a ruby!");
+					break;
+				case 3:
+					Player.player.sapphires++;
+					extra.println("You open the " + holder.getStorageFirstClass(node,String.class) + " and find a sapphire!");
+					break;
+				}
+			}
+			Networking.clearSide(1);
+			return false;
+		}else {
+			Networking.clearSide(1);
+			extra.println("You decide not to open it.");
+			return false;
+		}
 	}
 
 	private void mugger1() {
@@ -323,30 +359,25 @@ public class DungeonNode implements NodeType{
 		
 	}
 	
-	private void mimic() {
-		if (node.state == 0) {
-			Person p = (Person)node.storage2;
-			p.getBag().graphicalDisplay(1,p);
-			extra.println("Really open the " + node.name + "?");
-			if (extra.yesNo()) {
-				extra.print(extra.PRE_RED);
-				extra.println("The mimic attacks you!");
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-				if (winner != p) {
-					node.state = 1;
-					node.storage1 = null;
-					node.name = "dead mimic";
-					node.interactString = "examine body";
-					node.setForceGo(false);
-				}
+	private boolean mimic(NodeConnector holder, int node) {
+
+		Person p = holder.getStorageFirstPerson(node);
+		p.getBag().graphicalDisplay(1,p);
+		extra.println("Really open the " + holder.getStorageFirstClass(node,String.class) + "?");
+		if (extra.yesNo()) {
+			extra.println(extra.PRE_RED+"The mimic attacks you!");
+			Combat c = Player.player.fightWith(p);
+			if (c.playerWon() > 0) {
+				holder.setForceGo(node, false);
+				GenericNode.setSimpleDeadRaceID(holder, node,p.getBag().getRaceID());
+				return false;
 			}else {
-				extra.println("You decide not to open it.");
+				return true;
 			}
 		}else {
-			randomLists.deadPerson();
-			node.findBehind("mimic");
+			extra.println("You decide not to open it.");
+			return false;
 		}
-
 	}
 
 
