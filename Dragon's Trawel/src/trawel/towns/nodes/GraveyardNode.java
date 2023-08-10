@@ -88,9 +88,11 @@ public class GraveyardNode implements NodeType{
 		//case -1:made.name = extra.choose("stairs","ladder"); made.interactString = "traverse "+made.name;made.setForceGo(true);break;
 		case 1: 
 			holder.setStorage(madeNode, RaceFactory.makeGravedigger(holder.getLevel(madeNode)));
+			holder.setStateNum(madeNode, STATE_SHADOW_FIGURE);
 			break;
 		case 2:
 			holder.setStorage(madeNode, RaceFactory.makeGraverobber(holder.getLevel(madeNode)));
+			holder.setStateNum(madeNode, STATE_SHADOW_FIGURE);
 			break;
 		case 3: 
 			int batLevel = holder.getLevel(madeNode);
@@ -110,18 +112,22 @@ public class GraveyardNode implements NodeType{
 			}
 			holder.setStorage(madeNode,list);
 			holder.setForceGo(madeNode, true);
+			holder.setStateNum(madeNode,10);//smallest allowed state
 		;break;
 		case 4:
 			holder.setStorage(madeNode, RaceFactory.makeVampire(holder.getLevel(madeNode)));
+			holder.setStateNum(madeNode, STATE_SHADOW_FIGURE);
 			;break;
 		case 5:
 			holder.setStorage(madeNode, RaceFactory.makeCollector(holder.getLevel(madeNode)));
+			holder.setStateNum(madeNode, STATE_SHADOW_FIGURE);
 			break;
 		case 6://will set the state to the times it is seen until it will attack +10 after seen once
 			//will attack instantly if attempting to loot
 			holder.setFlag(madeNode,NodeFlag.SILENT_FORCEGO_POSSIBLE,true);
 		case 7: //non hostile statue which will show but never attack
 			holder.setStorage(madeNode, RaceFactory.makeStatue(holder.getLevel(madeNode)));
+			holder.setStateNum(madeNode, STATE_SHADOW_FIGURE);
 			break;
 		}
 	}
@@ -130,13 +136,13 @@ public class GraveyardNode implements NodeType{
 	public boolean interact(NodeConnector holder, int node) {
 		switch(holder.getEventNum(node)) {
 		//case -1: Networking.sendStrong("PlayDelay|sound_footsteps|1|"); break;
-		case 1:graveDigger(); break;
+		case 1: graveDigger(); break;
 		case 2: mugger1(); if (node.state == 0) {return true;};break;
-		case 3: return packOfBats();
+		case 3: return packOfBats(holder,node);
 		case 4: vampire1(); if (node.state == 0) {return true;};break;
 		case 5:	collector();break;
-		case 6: statue(); if (node.state == 0) {return true;};break;
-		case 7: statueLoot();break;
+		case 6: return statue(holder,node);
+		case 7: return statueLoot(holder,node);
 		}
 		return false;
 	}
@@ -144,10 +150,27 @@ public class GraveyardNode implements NodeType{
 	@Override
 	public String interactString(NodeConnector holder, int node) {
 		int state = holder.getStateNum(node);
-		interactStringState(holder,node,state);
+		String nightString = interactStringState(holder,node,state);
+		if (nightString != null) {
+			return nightString;
+		}
 		switch(holder.getEventNum(node)) {
 		case 1:
 			return "examine entryway";
+		case 6://attacking statue
+			Person attStatue = holder.getStorageFirstPerson(node);
+			String attName = extra.capFirst(attStatue.getBag().getRace().renderName(false));
+			if (state == 33) {//destroyed
+				return "Examine Destroyed " + attName + "Statue";
+			}
+			return "Loot " +attName + "Statue";
+		case 7://non attacking statue
+			Person quietStatue = holder.getStorageFirstPerson(node);
+			String quietName = extra.capFirst(quietStatue.getBag().getRace().renderName(false));
+			if (state == 13) {//destroyed
+				return "Examine Looted " + quietName + "Statue";
+			}
+			return "Loot " +quietName + "Statue";
 		}
 		return null;
 	}
@@ -178,32 +201,41 @@ public class GraveyardNode implements NodeType{
 		switch(holder.getEventNum(node)) {
 		case 1:
 			return "cave entrance";
+		case 6://attacking statue
+			Person attStatue = holder.getStorageFirstPerson(node);
+			String attName = extra.capFirst(attStatue.getBag().getRace().renderName(false));
+			if (state == 33) {//destroyed
+				return "Destroyed " + attName + "Statue";
+			}
+			if (state > 30) {
+				return "Hostile " + attName + "Statue";
+			}
+			return attName + "Statue";
+		case 7://non attacking statue
+			Person quietStatue = holder.getStorageFirstPerson(node);
+			String quietName = extra.capFirst(quietStatue.getBag().getRace().renderName(false));
+			if (state == 13) {//destroyed
+				return "Looted " + quietName + "Statue";
+			}
+			return quietName + "Statue";
 		}
 		return null;
 	}
 	
-	private boolean packOfBats() {
-		if (node.state == 0) {
-			extra.print(extra.PRE_RED);
-			extra.println("The bats descend upon you!");
-			List<Person> list = (List<Person>)node.storage1;
-			List<Person> survivors = mainGame.HugeBattle(list,Player.list());
+	private boolean packOfBats(NodeConnector holder,int node) {
+			extra.println(extra.PRE_RED+"The bats descend upon you!");
+			List<Person> list = holder.getStorageFirstClass(node, List.class);
+			Combat c = mainGame.HugeBattle(holder.getWorld(), Player.wrapForMassFight(list));
 			
-			if (survivors.contains(Player.player.getPerson())) {
-				node.setForceGo(false);
-				node.interactString = "approach bat corpses";
-				node.storage1 = null;
-				node.state = 1;
-				node.name = "dead swarm of bats";
-			return false;}else {
-				node.storage1 = survivors;
+			if (c.playerWon() > 0) {
+				GenericNode.setTotalDeadString(holder,node,"Bat Corpses","Examine dead Bats.","Some zombies seem to have taken a few bites.","Bat Bodies");
+				holder.setForceGo(node,false);
+				holder.setStorage(node,null);
+			return false;
+			}else {
+				holder.setStorage(node,c.survivors);//our get storage first can read this or an array
 				return true;
 			}
-		}else {
-			extra.println("There are a few bat corpses here.");
-			node.findBehind("corpses");
-			return false;
-		}
 	}
 
 
@@ -308,7 +340,6 @@ public class GraveyardNode implements NodeType{
 
 	}
 	
-	//will add even if we swapped tracks, make sure didn't set to a hit and then pass it
 	
 	/**
 	 * states <10 is normal hasn't visited
@@ -325,7 +356,6 @@ public class GraveyardNode implements NodeType{
 		//can have nightvision and not have interacted yet, in which case we need special dialogue
 		//will silently forcego to count the timer
 		boolean forced = holder.isForced();
-		boolean fresh = state < 21;//if fresh and not forced they're examining it
 		if (state == 20 || state == 30) {//will attack
 			state = 31;
 		}
@@ -358,7 +388,7 @@ public class GraveyardNode implements NodeType{
 		
 		Person p = holder.getStorageFirstPerson(node);
 		//now we can display them
-		p.getBag().graphicalDisplay(1, p);
+		
 		if (state == 33) {
 			//destroyed
 			extra.println("The destroyed statue slumps in the mud.");
@@ -369,8 +399,10 @@ public class GraveyardNode implements NodeType{
 		if (state != 31) {
 			String str = interactStringState(holder,node,STATE_SHADOW_FIGURE);
 			if (state > 20 || str == null) {//if has seen before or has nightvision
+				p.getBag().graphicalDisplay(1, p);
 				extra.println(statueLootAsk(p));
-				if (!extra.yesNo() || extra.chanceIn(1,4)) {//25% chance to attack instantly if ignored
+				if (!extra.yesNo() && extra.chanceIn(3,4)) {//25% chance to attack instantly if ignored
+					Networking.clearSide(1);
 					return false;
 				}
 			}else {
@@ -385,9 +417,11 @@ public class GraveyardNode implements NodeType{
 				}else {//if was close
 					state = extra.randRange(26, 28);
 				}
+				p.getBag().graphicalDisplay(1, p);
 				//they approached it, now we can ask to loot it for real
 				extra.println(statueLootAsk(p));
-				if (!extra.yesNo() || extra.chanceIn(1,4)) {//25% chance to attack instantly if ignored
+				if (!extra.yesNo() && extra.chanceIn(3,4)) {//25% chance to attack instantly if ignored
+					Networking.clearSide(1);
 					return false;
 				}
 			}
@@ -395,9 +429,12 @@ public class GraveyardNode implements NodeType{
 		}
 		
 		//if we get here, they want to loot it or it's attacking them
+		//it might also be displayed, but in that case the combat will clean it up for us
 		
-		if (state == 31) {//first fight
+		if (state <= 31) {//first fight
 			extra.println(extra.PRE_RED+"The statue springs to life and attacks you!");
+		}else {
+			extra.println(extra.PRE_RED+"The statue attacks you!");
 		}
 		Combat c = Player.player.fightWith(p);
 		if (c.playerWon() > 0) {
@@ -408,35 +445,39 @@ public class GraveyardNode implements NodeType{
 			holder.setStateNum(node,32);
 			return true;
 		}
-		
-		
 	}
 	
 	private String statueLootAsk(Person p) {
 		return ("The motionless statue of a " +p.getBag().getRace().renderName(false) + " overlooks a coffin. Loot it?");
 	}
 	
-	private void statueLoot() {
-		extra.println("Approach the "+ node.name+"?");
+	private boolean statueLoot(NodeConnector holder,int node) {
+		int state = holder.getStateNum(node);
+		Person p = holder.getStorageFirstPerson(node);
+		if (state < 11) {
+			String str = interactStringState(holder,node,state);
+			if (str != null) {
+				extra.println(str);//ask to approach
+				if (!extra.yesNo()) {
+					return false;
+				}
+			}
+		}
+		if (state == 13) {
+			extra.println("The " + p.getBag().getRace().renderName(false) + " statue has already been looted.");
+			holder.findBehind(node,"statue");
+			return false;
+		}
+		p.getBag().graphicalDisplay(1,p);
+		extra.println(statueLootAsk(p));
 		if (!extra.yesNo()) {
-			return;
+			Networking.clearSide(1);
+			return false;
 		}
-		if (node.state == 0) {
-			extra.print(extra.PRE_RED);
-			extra.println("You loot the statue...");
-			Person p = RaceFactory.makeStatue(Math.min(Player.player.getPerson().getLevel(), node.level)); ;
-			p.getBag().graphicalDisplay(1,p);
-			AIClass.loot(p.getBag(),Player.bag,true,Player.player.getPerson());
-			node.state = 1;
-			node.name = "looted statue";
-			node.interactString = "examine statue";
-			node.setForceGo(false);
-				
-		}else {
-			extra.println("You already looted this statue!");
-			node.findBehind("statue");
-		}
-		Networking.clearSide(1);
+		extra.println("You loot the statue...");
+		holder.setStateNum(node,13);
+		AIClass.loot(p.getBag(),Player.bag,true,Player.player.getPerson());
+		return false;
 	}
 
 	private void collector() {

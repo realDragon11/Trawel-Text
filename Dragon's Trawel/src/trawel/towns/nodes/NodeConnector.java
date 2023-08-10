@@ -584,6 +584,10 @@ public class NodeConnector implements Serializable {
 	}
 	
 	public <T> T getStorageFirstClass(int node, Class<T> clazz){
+		Object o = storage[node];
+		if (clazz.isInstance(o)) {
+			return clazz.cast(o);
+		}
 		Object[] arr = getStorageAsArray(node);
 		for (int i = 0; i < arr.length;i++) {
 			if (clazz.isInstance(arr[i])) {

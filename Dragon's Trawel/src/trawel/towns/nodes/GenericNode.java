@@ -49,6 +49,21 @@ public class GenericNode implements NodeType {
 	}
 	
 	/**
+	 * 
+	 * @param holder
+	 * @param node
+	 * @param nodename
+	 * @param interactstring
+	 * @param interactresult
+	 * @param findbody (can be null for no finding)
+	 */
+	public static void setTotalDeadString(NodeConnector holder,int node,String nodename,String interactstring,String interactresult,String findbody) {
+		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
+		holder.setEventNum(node,Generic.DEAD_STRING_TOTAL.ordinal());
+		holder.setStorage(node, new Object[] {nodename,interactstring,interactresult,findbody});
+	}
+	
+	/**
 	 * pass null as attackstring to get 'The <p racename> attacks you!'
 	 */
 	public static void setBasicRagePerson(NodeConnector holder,int node, Person p, String nodename,String attackString) {
@@ -73,7 +88,7 @@ public class GenericNode implements NodeType {
 		case DEAD_STRING_SIMPLE:
 			return simpleDeadString(holder, node);
 		case DEAD_STRING_TOTAL:
-			break;
+			return deadStringTotal(holder, node);
 		case VEIN_MINERAL:
 			return genericVein(holder, node);
 		}
@@ -131,6 +146,8 @@ public class GenericNode implements NodeType {
 				return "Mine the " + vmat.color +vmatName+".";
 			}
 			return "Examine the vein.";
+		case DEAD_STRING_TOTAL:
+			return holder.getStorageAsArray(node)[1].toString();
 		}
 		return null;
 	}
@@ -209,9 +226,12 @@ public class GenericNode implements NodeType {
 		return false;
 	}
 	private boolean deadStringTotal(NodeConnector holder,int node) {
-		String str = holder.getStorageAsArray(node)[1].toString();//second
+		Object[] objs = holder.getStorageAsArray(node);
+		String str = objs[2].toString();//third
 		extra.println(str);
-		holder.findBehind(node,"body parts");
+		if (objs[3] != null) {
+			holder.findBehind(node,objs[3].toString());
+		}
 		return false;
 	}
 	

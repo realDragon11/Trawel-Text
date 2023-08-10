@@ -327,9 +327,9 @@ public class AIClass {
 	 * @param loot (Inventory)
 	 * @param stash (Inventory)
 	 * @param smarts (int)
-	 * @param sellStuff if the items can be atom-smashed into aether
+	 * @param aetherStuff if the items can be atom-smashed into aether
 	 */
-	public static void loot(Inventory loot, Inventory stash, boolean sellStuff, Person p) {
+	public static void loot(Inventory loot, Inventory stash, boolean aetherStuff, Person p) {
 		int i = 0;
 		boolean normalLoot = loot.getRace().racialType == Race.RaceType.HUMANOID;
 		if (normalLoot && p.isPlayer() && Player.getTutorial()) {
@@ -338,7 +338,7 @@ public class AIClass {
 		if (normalLoot) {
 			while (i < 5) {
 				if (compareItem(stash.getArmorSlot(i),loot.getArmorSlot(i),true,p)) {
-					if (sellStuff) {
+					if (aetherStuff) {
 							//Services.sellItem(stash.swapArmorSlot(loot.getArmorSlot(i),i),stash,false);
 							Services.aetherifyItem(stash.getArmorSlot(i),stash);
 							stash.swapArmorSlot(loot.getArmorSlot(i),i);//we lose the ref to the thing we just deleted here
@@ -347,7 +347,7 @@ public class AIClass {
 							loot.swapArmorSlot(stash.swapArmorSlot(loot.getArmorSlot(i),i), i);
 						}
 				}else {
-					if (sellStuff) {
+					if (aetherStuff) {
 						//Services.sellItem(loot.getArmorSlot(i),loot,stash,false);}
 						Services.aetherifyItem(loot.getArmorSlot(i),stash);
 						loot.setArmorSlot(null,i);
@@ -370,8 +370,8 @@ public class AIClass {
 				i++;
 			}
 			if (compareItem(stash.getHand(),loot.getHand(),true,p)) {
-				if (sellStuff) {
-						Services.sellItem(stash.swapWeapon(loot.getHand()),stash,false);
+				if (aetherStuff) {
+						//Services.sellItem(stash.swapWeapon(loot.getHand()),stash,false);
 						Services.aetherifyItem(stash.getHand(),stash);
 						stash.swapWeapon(loot.getHand());//we lose the ref to the thing we just deleted here
 						loot.setWeapon(null);
@@ -379,14 +379,14 @@ public class AIClass {
 						loot.swapWeapon(stash.swapWeapon(loot.getHand()));
 					}
 			}else {
-				if (sellStuff) {
+				if (aetherStuff) {
 					Services.aetherifyItem(loot.getHand(), stash);
 					loot.setWeapon(null);
 				}
 			}
 			Networking.send("RemoveInv|1|2|");
 		}else {
-			if (sellStuff) {
+			if (aetherStuff) {
 				while (i < 5) {
 					if (loot.getArmorSlot(i).canAetherLoot()) {
 						Services.aetherifyItem(loot.getArmorSlot(i),stash);
@@ -412,7 +412,7 @@ public class AIClass {
 		}else {
 			//TODO drawbane taking ai
 		}
-		if (sellStuff) {
+		if (aetherStuff) {
 			int money = loot.getGold();
 			stash.addGold(money);
 			int aether = loot.getAether();
