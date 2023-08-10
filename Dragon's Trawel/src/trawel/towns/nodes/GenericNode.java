@@ -293,7 +293,14 @@ public class GenericNode implements NodeType {
 	}
 	
 	private boolean simpleDeadPerson(NodeConnector holder,int node) {
+		//TODO get if deathcheated
 		Person p = holder.getStorageFirstPerson(node);
+		if (p.getSuper() != null && p.getSuper().everDeathCheated()) {
+			extra.println("There was a body here, but now it's gone!");
+			return false;
+		}
+		
+		
 		extra.println(p.getName() + " is dead.");
 		holder.findBehind(node,p.getName() +"'s corpse");
 		return false;

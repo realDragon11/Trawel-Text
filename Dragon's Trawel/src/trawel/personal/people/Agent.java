@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import trawel.extra;
 import trawel.personal.Person;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -26,12 +27,19 @@ public class Agent extends SuperPerson{
 	
 	private Set<AgentGoal> goals;
 	
+	private byte flags = 0b0;
+	
 	public enum AgentGoal {
 		NONE, DEATHCHEAT, SPOOKY
 	}
 	
+	public enum AgentFlag{
+		DEATHCHEATED_EVER
+	}
+	
 	public Agent(Person p) {
-		setPerson(p);
+		person = p;
+		p.setSuper(this);
 		behaviors = new ArrayList<Behavior>();
 		current = new WanderEndless();
 		goals = EnumSet.of(AgentGoal.NONE);
@@ -40,21 +48,28 @@ public class Agent extends SuperPerson{
 	}
 	
 	public Agent(Person p, AgentGoal goal) {
-		setPerson(p);
+		person = p;
+		p.setSuper(this);
 		goals = EnumSet.of(goal);
 		current = null;
 		moneys = new ArrayList<Integer>();
 		moneymappings = new ArrayList<World>();
+		if (goal == AgentGoal.DEATHCHEAT) {
+			setFlag(AgentFlag.DEATHCHEATED_EVER,true);
+		}
 	}
 
 	@Override
 	public Person getPerson() {
 		return person;
 	}
-
-	public void setPerson(Person person) {
-		this.person = person;
-		person.setSuper(this);
+	
+	public void setFlag(AgentFlag flag, boolean bool) {
+		flags = extra.setEnumByteFlag(flag.ordinal(), flags, bool);
+	}
+	
+	public boolean getFlag(AgentFlag flag) {
+		return extra.getEnumByteFlag(flag.ordinal(), flags);
 	}
 
 	public List<Behavior> getBehaviors() {
@@ -93,11 +108,17 @@ public class Agent extends SuperPerson{
 
 	@Override
 	public void setGoal(AgentGoal goal) {
+		if (goal == AgentGoal.DEATHCHEAT) {
+			setFlag(AgentFlag.DEATHCHEATED_EVER,true);
+		}
 		goals.add(goal);
 	}
 
 	@Override
 	public void onlyGoal(AgentGoal goal) {
+		if (goal == AgentGoal.DEATHCHEAT) {
+			setFlag(AgentFlag.DEATHCHEATED_EVER,true);
+		}
 		goals = EnumSet.of(goal);
 	}
 
@@ -128,6 +149,11 @@ public class Agent extends SuperPerson{
 			addFlaskUses((byte)3);
 			buyMoneyAmount(cost);
 		} while (getFlashUses() < 6 && canBuyMoneyAmount(cost));
+	}
+
+	@Override
+	protected boolean everDeathCheated() {
+		return getFlag(AgentFlag.DEATHCHEATED_EVER);
 	}
 	
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import com.github.yellowstonegames.core.WeightedTable;
 
 import derg.menus.MenuBack;
+import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
@@ -16,6 +17,7 @@ import trawel.Services;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
+import trawel.battle.Combat;
 import trawel.factions.Faction;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -145,11 +147,14 @@ public class GroveNode implements NodeType{
 				big_circle[place%big_circle.length] = new PlantSpot(1,"");
 			}
 			break;
-		case 6: made.name = "old " + randomLists.randomWarrior(); made.interactString = "approach " + made.name;
-		made.storage1 = RaceFactory.makeOld(made.level + 2);
-		if (extra.chanceIn(1, 4)) {
-		((Person)made.storage1).getBag().getDrawBanes().add(DrawBane.REPEL);}
-		break;
+		case 6:
+			Person old = RaceFactory.makeOld(holder.getLevel(madeNode)+2);
+			if (extra.chanceIn(1,3)) {
+				old.getBag().getDrawBanes().add(DrawBane.REPEL);
+			}
+			holder.setStorage(madeNode, old);
+			break;
+		
 		case 8: made.name = "fallen tree"; made.interactString = "examine fallen tree";break;
 		case 9: made.name = "dryad"; made.interactString = "approach the " + made.name;
 		made.storage1 = RaceFactory.getDryad(made.level);
@@ -206,7 +211,7 @@ public class GroveNode implements NodeType{
 		case 2: 
 			extra.println("You wash yourself in the "+holder.getStorageFirstClass(node, String.class)+".");
 			Player.player.getPerson().washAll();
-		;break;
+			return false;
 		case 4:
 			int bstate = holder.getStateNum(node);
 			extra.println("You find a "+holder.getStorageFirstClass(node,String.class)+"... With their equipment intact!");
@@ -216,7 +221,7 @@ public class GroveNode implements NodeType{
 				Player.bag,true,Player.player.getPerson());
 			holder.findBehind(node, "body");
 			GenericNode.setPlantSpot(holder, node, "");//might made corpse fungus?
-			break;
+			return false;
 		case 5: //fairy circle
 			extra.println("You enter the fairy circle.");
 			PlantSpot[] spots = (PlantSpot[])holder.getStorage(node);
@@ -266,8 +271,64 @@ public class GroveNode implements NodeType{
 				public List<MenuItem> footer() {
 					return Collections.singletonList(new MenuBack("Leave this terrible place."));
 				}});
-			break;
-		case 6: oldFighter();break;
+			return false;
+		case 6: 
+			Person old = holder.getStorageFirstPerson(node);
+			int oldstate = holder.getStateNum(node);
+			if (oldstate == 0) {
+				extra.menuGo(new MenuGenerator() {
+					
+					@Override
+					public List<MenuItem> gen() {
+						List<MenuItem> list = new ArrayList<MenuItem>();
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Chat";
+							}
+
+							@Override
+							public boolean go() {
+								extra.println("\"We are in " + holder.parent.getName()
+								+ ". It is a Grove on the island of "+holder.parent.getTown().getIsland().getName()
+										+". Beware, danger lurks under these trees. If you wish to survive, heed my advice:\"");
+								Oracle.tip("old");
+								return false;
+							}});
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "End a Long Career";
+							}
+
+							@Override
+							public boolean go() {
+								extra.println("Before you can move, they speak up. "
+								+extra.TIMID_RED+"\"Hm, yes. Maybe you would be a fitting end to my story... or perhaps merely another part of it. But be warned, there is no going back.\""
+								+extra.PRE_RED+" Really attack " +old.getName()+"?");
+								if (extra.yesNo()) {
+									holder.setForceGo(node,true);
+									holder.setStateNum(node,1);
+									return true;
+								}
+								return false;
+							}});
+						list.add(new MenuBack("Let bygones be bygones."));//something something ready to move on
+						return list;
+					}
+				});
+			}else {//can combat forcego
+				extra.println(extra.TIMID_RED+p.getNameNoTitle()+" has had enough. One way or the other.");
+				Combat oldc = Player.player.fightWith(old);
+				if (oldc.playerWon() > 0) {
+					GenericNode.setSimpleDeadPerson(holder, node, old);//gets their own corpse
+				}else {
+					return true;
+				}
+			}
+			return false;
 		case 8: treeOnPerson();break;
 		case 9: dryad();break;
 		case 10: fallenTree();break;

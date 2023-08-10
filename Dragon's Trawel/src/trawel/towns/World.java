@@ -158,7 +158,10 @@ public class World extends TContextOwner{
 		Agent sp = (Agent)p.getSuper();
 		if (sp == null) {
 			sp = new Agent(p,AgentGoal.DEATHCHEAT);
+		}else {
+			sp.onlyGoal(AgentGoal.DEATHCHEAT);
 		}
+		
 		reoccuring.add(sp);
 	}
 

@@ -399,6 +399,10 @@ public class Player extends SuperPerson{
 		player.globalFindTime-=extra.randRange(10,30);//then minus
 		//so it doesn't get really high forever
 	}
+	@Override
+	protected boolean everDeathCheated() {
+		return true;//the player is the biggest deathcheater of them all
+	}
 	
 	
 }

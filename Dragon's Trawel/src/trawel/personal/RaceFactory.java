@@ -864,6 +864,7 @@ public class RaceFactory {
 	public static Person makeOld(int level) {
 		Person p = new Person(level);
 		p.setPersonType(PersonType.GRIZZLED);
+		p.setTitle(randomLists.randomOldTitle());
 		p.hTask = HostileTask.DUEL;
 		if (extra.chanceIn(1,5)) {
 			p.getBag().getDrawBanes().add(DrawBane.KNOW_FRAG);
