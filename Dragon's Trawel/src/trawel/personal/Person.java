@@ -394,16 +394,16 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public Set<Skill> fetchSkills() {
-		/*if (skillSet == null) {
+		if (skillSet == null) {
 			updateSkills();
-		}*/
+		}
 		return skillSet;
 	}
 	
 	public AttributeBox fetchAttributes() {
-		/*if (atrBox == null) {
+		if (atrBox == null) {
 			updateSkills();
-		}*/
+		}
 		return atrBox;
 	}
 	
