@@ -21,7 +21,7 @@ import trawel.towns.World;
 
 public class DungeonNode implements NodeType{
 
-	private static final int EVENT_NUMBER =7;
+	private static final int EVENT_NUMBER =8;
 	
 	
 	private WeightedTable dungeonGuardRoller, dungeonLootRoller;
@@ -128,6 +128,18 @@ public class DungeonNode implements NodeType{
 						if (i == 1) {
 							start_node.setMutualConnect(lastNode, curStair);
 						}
+						if (floors.size()%2==0) {//every other floor
+							//guard floor
+							if (extra.chanceIn(3,4)) {//linking nodes have a 3/4ths chance to become a guard of some sort
+								start_node.setEventNum(lastNode,GUARD_NUMBERS[dungeonGuardRoller.random(extra.getRand())]);
+							}
+						}else {
+							if (extra.chanceIn(1,2)) {//linking nodes have a 50% chance to become a loot of some sort
+								//might not be a safe loot
+								start_node.setEventNum(lastNode,LOOT_NUMBERS[dungeonLootRoller.random(extra.getRand())]);
+							}
+						}
+						
 					}
 					floor-=2;
 					//curStair.getConnects().add(lastNode);
@@ -142,6 +154,7 @@ public class DungeonNode implements NodeType{
 				//stair.reverseConnections();
 				//curStair.setFloor(floor);
 				start_node.setFloor(curStair, floor);
+				
 				//move onto next floor
 				stair = curStair;
 			}
@@ -250,21 +263,19 @@ public class DungeonNode implements NodeType{
 		case 3://multiguards
 			List<Person> guards = holder.getStorageFirstClass(node,List.class);
 			Combat bgc = mainGame.HugeBattle(holder.getWorld(),Player.wrapForMassFight(guards));
-			if (gc.playerWon() > 0) {
+			if (bgc.playerWon() > 0) {
 				holder.setForceGo(node,false);
 				String wasname = holder.getStorageFirstClass(node,String.class);
 				GenericNode.setTotalDeadString(holder, node,"Wrecked " +wasname,"Examine Bodies","They are slowly rotting.", "pile of corpses");
-				GenericNode.setSimpleDeadRaceID(holder, node, guard.getBag().getRaceID());
 				return false;
 			}else {
-				holder.setStorage(node,gc.survivors);//they don't revive
+				holder.setStorage(node,bgc.survivors);//they don't revive
 				return true;
 			}
-		case 4: return gateGuards();
 		case 5: return chest(holder, node);
 		case 6: return mimic(holder, node);
 		case 8: return statue(holder, node);
-		case 7: return statueLoot(holder, node);;
+		case 7: return statueLoot(holder, node);
 		}
 		return false;
 	}
@@ -309,55 +320,6 @@ public class DungeonNode implements NodeType{
 			return false;
 		}
 	}
-
-	private void mugger1() {
-		if (node.state == 0) {
-			extra.print(extra.PRE_RED);
-			extra.println("They attack you!");
-			Person p = (Person)node.storage1;
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-				if (winner != p) {
-					node.state = 1;
-					node.storage1 = null;
-					node.name = "dead "+node.name;
-					node.interactString = "examine body";
-					node.setForceGo(false);
-				}
-		}else {
-			randomLists.deadPerson();
-			node.findBehind("body");
-		}
-		
-	}
-	
-	private boolean gateGuards() {
-		if (node.state == 0) {
-			extra.print(extra.PRE_RED);
-			extra.println("They attack you!");
-			List<Person> list = (List<Person>)node.storage1;
-			List<Person> survivors = mainGame.HugeBattle(list,Player.list());
-			
-			
-			if (survivors.contains(Player.player.getPerson())) {
-				node.setForceGo(false);
-				node.interactString = "approach bodies";
-				node.storage1 = null;
-				node.state = 1;
-				node.name = "dead "+node.name;
-				return false;
-			}else {
-				node.storage1 = survivors;
-				return true;
-			}
-		}else {
-			randomLists.deadPerson();
-			randomLists.deadPerson();
-			node.findBehind("bodies");
-			return false;
-		}
-		
-		
-	}
 	
 	private boolean mimic(NodeConnector holder, int node) {
 
@@ -381,44 +343,55 @@ public class DungeonNode implements NodeType{
 	}
 
 
-	private void statue() {
-		if (node.state == 0) {
-			extra.print(extra.PRE_RED);
-			extra.println("The statue springs to life and attacks you!");
-			Person p = (Person)node.storage1;
-			Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-			if (winner != p) {
-				node.state = 1;
-				node.storage1 = null;
-				node.name = "destroyed "+node.name;
-				node.interactString = "examine destroyed statue";
-				node.setForceGo(false);
+	private boolean statue(NodeConnector holder, int node) {
+		int state = holder.getStateNum(node);
+		Person p = holder.getStorageFirstPerson(node);
+		if (state == 0 && !holder.isForced()) {
+			extra.println("Really loot the statue?");
+			p.getBag().graphicalDisplay(1, p);
+			if (!extra.yesNo() && extra.chanceIn(1,2)) {//half chance to attack you anyway
+				extra.println("You decide not to loot it.");
+				Networking.clearSide(1);
+				return false;
 			}
-		}else {
-			randomLists.deadPerson();
-			node.findBehind("destroyed statue");
+			extra.println(extra.PRE_RED+"The statue springs to life and attacks you!");
 		}
-
+		if (state == 0) {
+			holder.setStateNum(node,1);
+			holder.setForceGo(node,true);
+		}else {//already attacked
+			extra.println("The statue attacks you!");
+		}
+		
+		Combat c = Player.player.fightWith(p);
+		if (c.playerWon() > 0) {
+			holder.setForceGo(node,false);
+			GenericNode.setSimpleDeadString(holder, node, "Living Statue");
+			return false;
+		}else {
+			return true;
+		}
 	}
 
-	private void statueLoot() {
-		if (node.state == 0) {
-			extra.print(extra.PRE_RED);
+	private boolean statueLoot(NodeConnector holder, int node) {
+		int state = holder.getStateNum(node);
+		Person p = holder.getStorageFirstPerson(node);
+		if (state == 0) {
+			extra.println("Really loot the statue?");
+			p.getBag().graphicalDisplay(1, p);
+			if (!extra.yesNo()) {//half chance to attack you anyway
+				extra.println("You decide not to loot it.");
+				Networking.clearSide(1);
+				return false;
+			}
 			extra.println("You loot the statue...");
-			Person p = (Person)node.storage1;
-			p.getBag().graphicalDisplay(1,p);
 			AIClass.loot(p.getBag(),Player.bag,true,Player.player.getPerson());
-			node.state = 1;
-			node.storage1 = null;
-			node.name = "looted statue";
-			node.interactString = "loot statue";
-			node.setForceGo(false);
-
+			return false;
 		}else {
-			extra.println("You already looted this statue!");
-			node.findBehind("statue");
+			extra.println("The " + holder.getStorageFirstPerson(node).getBag().getRace().renderName(false) + " statue has already been looted.");
+			holder.findBehind(node,"statue");
+			return false;
 		}
-		Networking.clearSide(1);
 	}
 	
 	@Override
@@ -427,9 +400,55 @@ public class DungeonNode implements NodeType{
 	}
 
 	@Override
-	public void passTime(NodeConnector node, double time, TimeContext calling) {
+	public void passTime(NodeConnector holder, int node, double time, TimeContext calling) {
 		// empty
 		
+	}
+
+	@Override
+	public String interactString(NodeConnector holder, int node) {
+		switch(holder.getEventNum(node)) {
+		case 1:
+			return "Traverse " +holder.getStorageFirstClass(node,String.class)+".";
+		case 5: 
+			if (holder.getStateNum(node) != 0) {
+				return "Examine Opened " + holder.getStorageFirstClass(node,String.class);
+			}
+		case 6:
+			return "Open the " + holder.getStorageFirstClass(node,String.class);
+		case 7: 
+			if (holder.getStateNum(node) != 0) {
+				return "Looted " + extra.capFirst(holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)) + " Statue";
+			}
+		case 8:
+			return extra.capFirst(holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)) + " Statue";
+		}
+		return null;
+	}
+
+	@Override
+	public String nodeName(NodeConnector holder, int node) {
+		switch(holder.getEventNum(node)) {
+		case 1://ladder etc
+			return holder.getStorageFirstClass(node,String.class);
+		case 2://guard
+		case 3://guards
+			return holder.getStorageFirstClass(node,String.class);
+			//door is handled by genericnode
+		case 5:
+			if (holder.getStateNum(node) != 0) {
+				return "Opened " + holder.getStorageFirstClass(node,String.class);
+			}
+		 case 6:
+			return holder.getStorageFirstClass(node,String.class);
+		case 7: 
+			if (holder.getStateNum(node) != 0) {
+				return "Looted " + extra.capFirst(holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)) + " Statue";
+			}
+		case 8:
+			return extra.capFirst(holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)) + " Statue";
+		}
+		return null;
 	}
 	
 
