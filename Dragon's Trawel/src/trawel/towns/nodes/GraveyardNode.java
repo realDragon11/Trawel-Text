@@ -2,6 +2,11 @@ package trawel.towns.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuBack;
+import derg.menus.MenuGenerator;
+import derg.menus.MenuItem;
+import derg.menus.MenuLine;
+import derg.menus.MenuSelect;
 import trawel.AIClass;
 import trawel.Networking;
 import trawel.extra;
@@ -136,8 +141,8 @@ public class GraveyardNode implements NodeType{
 	public boolean interact(NodeConnector holder, int node) {
 		switch(holder.getEventNum(node)) {
 		//case -1: Networking.sendStrong("PlayDelay|sound_footsteps|1|"); break;
-		case 1: graveDigger(); break;
-		case 2: mugger1(); if (node.state == 0) {return true;};break;
+		case 1: return graveDigger(holder,node);
+		case 2: return graveRobber(holder,node);
 		case 3: return packOfBats(holder,node);
 		case 4: vampire1(); if (node.state == 0) {return true;};break;
 		case 5:	collector();break;
@@ -239,79 +244,173 @@ public class GraveyardNode implements NodeType{
 	}
 
 
-	private void graveDigger() {
-		extra.println("Approach the "+ node.name+"?");
-		if (!extra.yesNo()) {
-			return;
+	private boolean graveDigger(NodeConnector holder,int node) {
+		int state = holder.getStateNum(node);
+		String str = interactStringState(holder,node,state);
+		if (str != null) {
+			extra.println(str);
+			if (!extra.yesNo()) {
+				return false;
+			}
+			holder.setStateNum(node,10);
+			state = 10;
+			extra.println("You come across a weary gravedigger, warding against undead during a break.");
 		}
-		if (node.state == 0) {
-			while (true) {
-				Person p = (Person)node.storage1;
-				p.getBag().graphicalDisplay(1, p);
-				extra.println("You come across a weary gravedigger, warding against undead during a break.");
-				node.name = "Gravedigger";node.interactString = "Approach the "+node.name;
-				extra.println("1 Leave");//DOLATER: fix menu
-				extra.print(extra.PRE_RED);
-				extra.println("2 Mug them");
-				extra.println("3 Chat with them");
-				switch (extra.inInt(3)) {
-				default: case 1: extra.println("You leave the gravedigger alone.");return;
-				case 2: extra.println("You attack the "+node.name+"!");
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-				if (winner != p) {
-					node.state = 1;
-					node.storage1 = null;
-					node.name = "dead "+node.name;
-					node.interactString = "examine body";
-				}
-				;return;
-				case 3: extra.println("The " + node.name + " turns and answers your greeting.");
-				while (true) {
-					extra.println("What would you like to ask about?");
-					extra.println("1 tell them goodbye");
-					extra.println("2 ask for a tip");
-					extra.println("3 this graveyard");
-					int in = extra.inInt(3);
-					switch (in) {
-					case 1: extra.println("They wish you well.") ;break;
-					case 2: Oracle.tip("gravedigger");break;
-					case 3: extra.println("\"We are in " + node.parent.getName() + ". Beware, danger lurks everywhere.\"");break;
-					}
-					if (in == 1) {
-						break;
-					}
-				}
+		Person p = holder.getStorageFirstPerson(node);
+		p.getBag().graphicalDisplay(1, p);
+		if (state == 10) {//fine with
+			
+			extra.menuGo(new MenuGenerator() {
+
+				@Override
+				public List<MenuItem> gen() {
+					
+					List<MenuItem> list = new ArrayList<MenuItem>();
+					list.add(new MenuLine() {
+
+						@Override
+						public String title() {
+							return "This is " + p.getName();
+						}});
+					list.add(new MenuSelect(){
+
+						@Override
+						public String title() {
+							return "Chat";
+						}
+
+						@Override
+						public boolean go() {
+							extra.println(p.getName()+" looks up from the mud and answers your greeting.");
+							extra.menuGo(new MenuGenerator() {
+
+								@Override
+								public List<MenuItem> gen() {
+									List<MenuItem> list = new ArrayList<MenuItem>();
+									list.add(new MenuLine() {
+
+										@Override
+										public String title() {
+											return "What would you like to ask about?";
+										}});
+									list.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "Tips";
+										}
+
+										@Override
+										public boolean go() {
+											Oracle.tip("gravedigger");
+											return false;
+										}});
+									list.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "This Graveyard";
+										}
+
+										@Override
+										public boolean go() {
+											extra.println("\"We are in " + holder.parent.getName() + ". Beware, danger lurks everywhere.\"");
+											//tODO: maybe nodefeature lore eventually
+											return false;
+										}});
+									list.add(new MenuBack("goodbye"));
+									return list;
+								}});
+							return false;
+						}});
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return extra.PRE_RED+"Mug Them";
+						}
+
+						@Override
+						public boolean go() {
+							extra.println("Really attack the Gravedigger?");
+							if (extra.yesNo()) {
+								holder.setStateNum(node, 11);
+								return true;
+							}
+							return false;
+						}});
+					list.add(new MenuBack("Leave"));
+					return list;
+				}});
+			if (holder.getStateNum(node) == 11) {//angry now, could have been selected in above menu
+				if (state != 11) {//if just got made angry
+					extra.println("They scream bloody murder about vampire thralls!");
+					holder.setForceGo(node,true);
+				}else {
+					extra.println("The Gravedigger attacks you!");
 				}
 			}
-		}else {
-			randomLists.deadPerson();
-			node.findBehind("body");
+			//Person p = holder.getStorageFirstPerson(node);
+			Combat c = Player.player.fightWith(p);
+			if (c.playerWon() > 0) {
+				holder.setForceGo(node,false);
+				GenericNode.setSimpleDeadPerson(holder, node,p);
+				return false;
+			}else {
+				return true;
+			}
 		}
+		Networking.clearSide(1);
+		return false;
 	}
 	
-	private void mugger1() {
-		extra.println("Approach the "+ node.name+"?");
-		if (!extra.yesNo()) {
-			return;
-		}
-		if (node.state == 0) {
-			extra.print(extra.PRE_RED);
-			extra.println("The graverobber attacks you!");
-			node.name = "Graverobber";
-			node.interactString = "Approach the "+node.name;
-			Person p = (Person)node.storage1;
-			Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-			if (winner != p) {
-				node.state = 1;
-				node.storage1 = null;
-				node.name = "dead "+node.name;
-				node.interactString = "examine body";
-				node.setForceGo(false);
+	private boolean graveRobber(NodeConnector holder,int node) {
+		int state = holder.getStateNum(node);
+		String str = interactStringState(holder,node,state);
+		if (str != null) {
+			extra.println(str);
+			if (!extra.yesNo()) {
+				return false;
 			}
-		}else {
-			randomLists.deadPerson();node.findBehind("body");
+			holder.setStateNum(node,10);
+			state = 10;
+			extra.println("A Graverobber is poking around some headstones.");
 		}
-
+		Person p = holder.getStorageFirstPerson(node);
+		p.getBag().graphicalDisplay(1, p);
+		if (state == 10) {//might be fine with
+			int react = p.facRep.getReactionAgainst(p,Player.player.getPerson());
+			if (react > 0) {
+				extra.println("The Graverobber nods to you, but doesn't want to be disturbed. "+extra.PRE_RED+"Disturb them?");
+				if (!extra.yesNo()) {
+					Networking.clearSide(1);
+					return false;
+				}
+			}else {
+				if (react == 0) {
+					extra.println("The Graverobber tells you to leave. "+extra.PRE_RED+"Attack them?");
+					if (!extra.yesNo()) {
+						Networking.clearSide(1);
+						return false;
+					}
+				}
+			}
+			//we didn't leave while we still could, friend
+			holder.setStateNum(node,11);
+			extra.println(extra.PRE_RED+"\"Should have left it alone, friend!\"");
+		}else {
+			extra.println(extra.PRE_RED+"The Graverobber attacks you!");
+		}
+		//if we got here, we're fighting
+		//it doesn't forcego, however
+		
+		Combat c = Player.player.fightWith(p);
+		if (c.playerWon() > 0) {
+			//the graveyard takes their face, unlike the gravedigger which still gets their normal body
+			GenericNode.setSimpleDeadRaceID(holder, node,p.getBag().getRaceID());
+		}else {
+			return true;
+		}
 	}
 
 	private void vampire1() {

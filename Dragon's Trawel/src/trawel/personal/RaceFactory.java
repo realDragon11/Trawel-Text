@@ -1151,7 +1151,7 @@ public class RaceFactory {
 	public static Person makeCultistLeader(int level, CultType ct) {
 		extra.offPrintStack();
 		Person w = new Person(level);
-		w.hTask = HostileTask.GUARD_DUNGEON;
+		w.hTask = HostileTask.LAWLESS_NODE_GUARDS;
 		switch (ct) {
 		case BLOOD:
 			List<DrawBane> list = w.getBag().getDrawBanes();
@@ -1171,7 +1171,7 @@ public class RaceFactory {
 	public static Person makeCultist(int level, CultType ct) {
 		extra.offPrintStack();
 		Person w = new Person(level);
-		w.hTask = HostileTask.GUARD_DUNGEON;
+		w.hTask = HostileTask.LAWLESS_NODE_GUARDS;
 		switch (ct) {
 		case BLOOD:
 			List<DrawBane> list = w.getBag().getDrawBanes();
@@ -1266,25 +1266,11 @@ public class RaceFactory {
 		w.setTitle(randomLists.randomCollectorName());
 		return w;
 	}
-	public static Person getCultist(int level) {
-		extra.offPrintStack();
-		Person w = new Person(level);
-		w.hTask = HostileTask.GUARD_DUNGEON;
-		if (extra.chanceIn(1, 3)) {
-			w.getBag().getDrawBanes().add(DrawBane.BLOOD);
-		}
-		if (extra.chanceIn(1, 3)) {
-			w.getBag().getDrawBanes().add(DrawBane.BLOOD);
-		}
-		extra.popPrintStack();
-		//w.updateSkills();
-		return w;
-	}
 	
 	public static Person getLawman(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level);
-		w.hTask = HostileTask.LAW;
+		w.hTask = HostileTask.LAW_EVIL;
 		w.facRep.addFactionRep(Faction.HEROIC,5*level,0);
 		extra.popPrintStack();
 		//w.updateSkills();

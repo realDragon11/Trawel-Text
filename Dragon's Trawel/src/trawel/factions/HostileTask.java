@@ -12,6 +12,8 @@ public enum HostileTask{
 	GUARD_DUNGEON,
 	BOSS,
 	LUMBER,
-	LAW,
-	HUNT
+	LAW_GOOD,
+	LAW_EVIL,
+	HUNT,
+	LAWLESS_NODE_GUARDS
 }
