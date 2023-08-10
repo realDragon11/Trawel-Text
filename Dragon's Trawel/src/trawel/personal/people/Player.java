@@ -400,7 +400,7 @@ public class Player extends SuperPerson{
 		//so it doesn't get really high forever
 	}
 	@Override
-	protected boolean everDeathCheated() {
+	public boolean everDeathCheated() {
 		return true;//the player is the biggest deathcheater of them all
 	}
 	

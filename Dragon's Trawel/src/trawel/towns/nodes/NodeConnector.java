@@ -21,6 +21,7 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.World;
+import trawel.towns.misc.PlantSpot;
 
 public class NodeConnector implements Serializable {
 
@@ -39,6 +40,8 @@ public class NodeConnector implements Serializable {
 		VISIT_BIT1, VISIT_BIT2
 		,GENERIC_OVERRIDE//allows nodes to use generic behavior without overriding their typenum
 		,SILENT_FORCEGO_POSSIBLE
+		,REGROWN
+		//7th flag
 	}
 	
 	//protected byte typeNum;
@@ -87,6 +90,11 @@ public class NodeConnector implements Serializable {
 	 * store the highest floor in
 	 */
 	private int deepest = 1;
+	
+	/**
+	 * used for 'reset' actions that replace corpses
+	 */
+	protected double globalTimer = 0d;
 	
 	protected NodeFeature parent;
 	
@@ -369,10 +377,20 @@ public class NodeConnector implements Serializable {
 		public String title() {
 			String visitColor = extra.PRE_WHITE;
 			switch (getVisited(node)) {
-			case 0: visitColor = extra.VISIT_NEW; setVisited(node,1);break;
+			case 0: visitColor = extra.VISIT_NEW;
+			setVisited(node,1);
+			if (NodeConnector.this.getFlag(node,NodeFlag.REGROWN)) {
+				visitColor = extra.VISIT_REGROWN;
+			}
+			;break;
 			case 1: visitColor = extra.VISIT_SEEN;break;
 			case 2: visitColor = extra.VISIT_BEEN;break;
-			case 3: visitColor = extra.VISIT_DONE;break;
+			case 3: 
+				visitColor = extra.VISIT_DONE;
+				if (containsOwnable(node)) {
+					visitColor = extra.VISIT_OWN;
+				}
+			break;
 			}
 			String postText = "";
 			if (isStair(node)) {
@@ -414,8 +432,8 @@ public class NodeConnector implements Serializable {
 	//TODO: an 'order connections' thing that just orders them by number so it can handle 'go back'
 	//or maybe just move the lowest number node to the bottom with a single swap?
 	
-	//called in some passTime implementations to propagate it
 	public void spreadTime(double time, TimeContext calling) {
+		globalTimer += time;
 		for (int i = 1; i < size+1;i++) {
 			if (getFlag(i,NodeFlag.GENERIC_OVERRIDE)) {
 				NodeType.NodeTypeNum.GENERIC.singleton.passTime(this, i, time, calling);
@@ -604,6 +622,27 @@ public class NodeConnector implements Serializable {
 			}
 		}
 		return null;
+	}
+	
+	protected boolean containsOwnable(int node) {
+		Object o = storage[node];
+		if (o instanceof Object[]) {
+			Object[] os = (Object[]) o;
+			for (int i = 0; i < os.length;i++) {
+				if (isOwnable(os[i])) {
+					return true;
+				}
+			}
+			return false;
+		}else {
+			return isOwnable(o);
+		}
+	}
+	private boolean isOwnable(Object o) {
+		if (o instanceof PlantSpot) {
+			return true;
+		}
+		return false;
 	}
 
 	public World getWorld() {

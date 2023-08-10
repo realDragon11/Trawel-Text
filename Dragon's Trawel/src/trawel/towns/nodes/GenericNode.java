@@ -161,8 +161,56 @@ public class GenericNode implements NodeType {
 			}
 			calling.localEvents(pspot.passTime(time,calling));
 			break;
+		case DEAD_PERSON:
+		case DEAD_STRING_SIMPLE:
+		case DEAD_RACE_INDEX:
+			if (holder.globalTimer > 12) {
+				switch (NodeType.getTypeEnum(holder.getTypeNum(node))) {
+				case CAVE:
+					if (extra.chanceIn(1,3)) {
+						resetNode(holder,node,extra.choose(2,3,4));
+						holder.globalTimer-=10;
+					}
+					break;
+				case DUNGEON:
+					if (extra.chanceIn(1,3)) {
+						resetNode(holder,node,extra.choose(2,3));
+						holder.globalTimer-=10;
+					}
+					break;
+				case GRAVEYARD:
+					//can't, lifeless + shadowy stuff
+					break;
+				case GROVE:
+					if (extra.chanceIn(1,3)) {
+						resetNode(holder,node,extra.choose(4,5,6));
+						holder.globalTimer-=10;
+					}
+					break;
+				case MINE:
+					if (extra.chanceIn(1,3)) {
+						//veins can grow, but not regrow
+						resetNode(holder,node,extra.choose(1,1,3,3,3,4,6,7,8,9));
+						holder.globalTimer-=20;
+					}
+					break;
+				}
+				
+			}
+			break;
 		}
 		
+	}
+	
+	protected void resetNode(NodeConnector holder, int node,int eventNum) {
+		holder.setEventNum(node, eventNum);
+		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,false);
+		holder.setFlag(node,NodeFlag.SILENT_FORCEGO_POSSIBLE,false);
+		holder.setFlag(node,NodeFlag.FORCEGO,false);
+		holder.setStateNum(node,0);
+		holder.setVisited(node,0);//flush
+		holder.setFlag(node, NodeFlag.REGROWN,true);
+		NodeType.getTypeEnum(holder.getTypeNum(node)).singleton.apply(holder, node);
 	}
 
 	@Override

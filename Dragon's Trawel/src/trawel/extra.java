@@ -801,6 +801,7 @@ public final class extra {
 		public static final String VISIT_BEEN = COLOR_BEEN;
 		public static final String VISIT_OWN = COLOR_OWN + "(owned) ";
 		public static final String VISIT_DONE = COLOR_OWN;
+		public static final String VISIT_REGROWN = TIMID_MAGENTA + "new? ";
 		
 		/**
 		 * used for "it's a miss!" after the attack proper

@@ -523,5 +523,5 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 		flask = pot;
 	}
 
-	protected abstract boolean everDeathCheated();
+	public abstract boolean everDeathCheated();
 }

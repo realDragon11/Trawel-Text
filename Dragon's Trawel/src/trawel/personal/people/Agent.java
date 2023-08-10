@@ -152,7 +152,7 @@ public class Agent extends SuperPerson{
 	}
 
 	@Override
-	protected boolean everDeathCheated() {
+	public boolean everDeathCheated() {
 		return getFlag(AgentFlag.DEATHCHEATED_EVER);
 	}
 	
