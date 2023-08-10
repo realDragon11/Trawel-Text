@@ -158,10 +158,7 @@ public class Person implements java.io.Serializable{
 		featSet = EnumSet.noneOf(Feat.class);
 		perkSet = EnumSet.noneOf(Perk.class);
 		archSet = EnumSet.noneOf(Archetype.class);
-		/*featSet = EnumSet.of(Feat.EMPTY);
-		perkSet = EnumSet.of(Perk.EMPTY);
-		archSet = EnumSet.of(Archetype.EMPTY);*/
-		//FST has a problem saving enum sets if the enum has no element
+		skillSet = EnumSet.noneOf(Skill.class);
 		
 		setFlag(PersonFlag.AUTOLOOT, true);
 		setFlag(PersonFlag.SMART_COMPARE, true);
@@ -380,20 +377,29 @@ public class Person implements java.io.Serializable{
 		}
 		return autoLeveled;
 	}
-	
-	
+	/**
+	 * wipes the attribute box and skillset to lazyload them later
+	 * <Br>
+	 * not quite sure why you'd want this since most of the time you need the skillset to determine levelups,
+	 * but it could be useful if you set a ton and don't care
+	 */
+	@Deprecated
+	private void setClasslessDirty() {
+		skillSet = null;
+		atrBox = null;
+	}
 	
 	public Set<Skill> fetchSkills() {
-		if (skillSet == null) {
+		/*if (skillSet == null) {
 			updateSkills();
-		}
+		}*/
 		return skillSet;
 	}
 	
 	public AttributeBox fetchAttributes() {
-		if (atrBox == null) {
+		/*if (atrBox == null) {
 			updateSkills();
-		}
+		}*/
 		return atrBox;
 	}
 	
@@ -449,9 +455,12 @@ public class Person implements java.io.Serializable{
 	}
 	
 	/**
-	 * sets a skillhas with no side effects. In most cases liteSetSkillHas is better
+	 * sets a skillhas as with lite, except it doesn't consume a feat point.
+	 * <br>
+	 * useful for adding things that aren't class choices, such as perks
 	 */
 	public void cleanSetSkillHas(IHasSkills has) {
+		skillSet.addAll(has.giveSet());
 		if (has instanceof Archetype) {
 			archSet.add((Archetype)has);
 		}else {
@@ -474,17 +483,15 @@ public class Person implements java.io.Serializable{
 	 */
 	public void liteSetSkillHas(IHasSkills has) {
 		featPoints--;//can go into negatives
+		skillSet.addAll(has.giveSet());
 		if (has instanceof Archetype) {
 			archSet.add((Archetype)has);
-			skillSet.addAll(has.giveSet());
 		}else {
 			if (has instanceof Perk) {
 				perkSet.add((Perk)has);
-				skillSet.addAll(has.giveSet());
 			}else {
 				if (has instanceof Feat) {
 					featSet.add((Feat)has);
-					skillSet.addAll(has.giveSet());
 				}
 			}
 		}

@@ -1297,7 +1297,6 @@ public class RaceFactory {
 			w = new Person(level,AIJob.GRAVER);
 			list = w.getBag().getDrawBanes();
 			w.cleanSetSkillHas(Perk.GRAVEYARD_SIGHT);//clean, doesn't count as a point
-			w.liteRefreshClassless();
 			if (extra.chanceIn(1,3)) {
 				list.add(DrawBane.SILVER);
 			}else {
@@ -1340,7 +1339,6 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = new Person(level,AIJob.GRAVER);
 		w.cleanSetSkillHas(Perk.GRAVEYARD_SIGHT);//clean, doesn't count as a point
-		w.liteRefreshClassless();
 		w.hTask = HostileTask.PEACE;
 		List<DrawBane> list = w.getBag().getDrawBanes();
 		list.add(DrawBane.GRAVE_DIRT);
@@ -1400,7 +1398,6 @@ public class RaceFactory {
 			w.addBlood(3);
 			w.getBag().getHand().transmuteWeapMat(MaterialFactory.getMat("silver"));
 			w.cleanSetSkillHas(Perk.GRAVEYARD_SIGHT);
-			w.liteRefreshClassless();
 			list.add(DrawBane.SILVER);
 			list.add(DrawBane.GRAVE_DUST);
 			break;

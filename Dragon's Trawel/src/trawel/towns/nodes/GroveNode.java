@@ -21,6 +21,7 @@ import trawel.battle.Combat;
 import trawel.factions.Faction;
 import trawel.factions.HostileTask;
 import trawel.personal.Person;
+import trawel.personal.Person.PersonFlag;
 import trawel.personal.Person.PersonType;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.Item;
@@ -160,9 +161,31 @@ public class GroveNode implements NodeType{
 		case 8:
 			holder.setStorage(madeNode,false);//needs to be 'refilled' by time passing
 			;break;
-		case 9: made.name = "dryad"; made.interactString = "approach the " + made.name;
-		made.storage1 = RaceFactory.getDryad(made.level);
-		made.storage2 = extra.randRange(0,1);
+		case 9:
+			int dlevel = holder.getLevel(madeNode);
+			List<Person> entslist = new ArrayList<Person>();
+			switch(extra.randRange(0,3)) {
+			case 3:
+				//many ents
+				if (dlevel > 3) {
+					entslist.add(RaceFactory.getDryad(dlevel-1));
+					entslist.add(RaceFactory.makeEnt(dlevel-3));
+					entslist.add(RaceFactory.makeEnt(dlevel-3));
+					entslist.add(RaceFactory.makeEnt(dlevel-3));
+					break;
+				}//if we can't afford to make tons of ents, fall through to only one
+			case 2:
+				if (dlevel > 1) {
+					entslist.add(RaceFactory.getDryad(dlevel));
+					entslist.add(RaceFactory.makeEnt(dlevel-1));
+					break;
+				}//if we can't afford to make any ents, only add dryad
+			case 0:
+			case 1://only dryad
+				entslist.add(RaceFactory.getDryad(dlevel));
+				break;
+			}
+			holder.setStorage(madeNode, entslist);
 		break;
 		case 10: made.name = "fallen tree";made.interactString = "examine fallen tree";break;
 		case 11: made.name = randomLists.randomColor() + " mushroom";made.interactString = "approach mushroom";break;
@@ -311,7 +334,7 @@ public class GroveNode implements NodeType{
 							public boolean go() {
 								extra.println("Before you can move, they speak up. "
 								+extra.TIMID_RED+"\"Hm, yes. Maybe you would be a fitting end to my story... or perhaps merely another part of it. But be warned, there is no going back.\""
-								+extra.PRE_RED+" Really attack " +old.getName()+"?");
+								+extra.PRE_BATTLE+" Really attack " +old.getName()+"?");
 								if (extra.yesNo()) {
 									holder.setForceGo(node,true);
 									holder.setStateNum(node,1);
@@ -334,8 +357,7 @@ public class GroveNode implements NodeType{
 			}
 			return false;
 		case 8: return treeOfManyThings(holder,node);
-		case 9: dryad();break;
-		case 10: fallenTree();break;
+		case 9: return dryad(holder,node);
 		case 11: funkyMushroom();break;
 		case 12: funkyMoss();break;
 		case 13: break;
@@ -573,71 +595,150 @@ public class GroveNode implements NodeType{
 		return potential;
 	}
 
-	private void dryad() {
-		if (node.state == 0 || node.state == -1) {
-			while (true) {
-				Person p = (Person)node.storage1;
-				p.getBag().graphicalDisplay(1, p);
-				extra.println("You come across a dryad tending to a tree.");
-				extra.println("1 Leave");//DOLATER: fix menu
-				extra.print(extra.PRE_RED);
-				extra.println("2 Attack them.");
-				extra.println("3 Chat with them");
-				switch (extra.inInt(3)) {
-				default: case 1: extra.println("You leave the "+node.name+" alone");return;
-				case 2: extra.println("You attack the dryad!");
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-				if (winner != p) {
-					node.state = 1;
-					node.storage1 = null;
-					node.name = "dead "+node.name;
-					node.interactString = "examine body";
-				}
-				;return;
-				case 3: extra.println("The dryad turns and answers your greeting.");
-				while (true) {
-					extra.println("What would you like to ask about?");
-					extra.println("1 tell them goodbye");
-					extra.println("2 their tree");
-					extra.println("3 this forest");
-					int in = extra.inInt(3);
-					switch (in) {
-					case 1: extra.println("They wish you well.") ;break;
-					case 2: extra.println("They start describing their tree in intricate detail before finishing.");
-					if ((int)node.storage2 != -1) {
-						if ((int)node.storage2 == 1) {
-							extra.println("\"Would like your own tree?\"");
-							if (extra.yesNo()) {
-								extra.println("The dryad says to find a spot where a lumberjack has chopped down a tree and plant one there.");
-								node.storage2 = -1;
-								Player.bag.addSeed(Seed.ENT);
-							}
-						}else {
-							//when it's 0
-							node.storage2 = -1;
-							extra.println("The dryad says it's a shame that they don't have anything to offer such an intelligent "+Player.bag.getRace().renderName(false)+".");
+	private boolean dryad(NodeConnector holder,int node) {
+		int state = holder.getStateNum(node);
+		//don't need to add code if empty since would run genericnode interact instead
+		List<Person > peeps = holder.getStorageFirstClass(node,List.class);
+		Person p = extra.getNonAddOrFirst(peeps);//the ent is an add if present
+		if (state >=0 && state < 3) {//3 is angry, immediately killed force updates it with a generic
+			extra.println("You come across a dryad tending to a tree.");
+			p.getBag().graphicalDisplay(1, p);
+			extra.menuGo(new MenuGenerator() {
 
+				@Override
+				public List<MenuItem> gen() {
+					List<MenuItem> list = new ArrayList<MenuItem>();
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Ask about their Tree";
 						}
-					}else {
-						extra.println("They seem very passionate about it.");
-					}
-					break;
-					case 3: extra.println("\"We are in " + node.parent.getName() + ". I don't venture away from my tree.\"");
-					if (node.state == 0) {extra.println("\"Would you like a seed to help grow the forest?\"");
-					if (extra.yesNo()) {
-						node.state = -1;
-						Player.bag.addSeed(Seed.randSeed());
-					}
-					};break;
-					}
-					if (in == 1) {
-						break;
-					}
+
+						@Override
+						public boolean go() {
+							if (state != 2) {
+								if (state == 1 || extra.chanceIn(2,3)) {
+									extra.println("\"Would like your own tree?\"");
+									if (extra.yesNo()) {
+										extra.println("The dryad says to find a spot where a lumberjack has chopped down a tree and plant one there.");
+										Player.bag.addSeed(Seed.ENT);
+										holder.setStateNum(node,2);//can only get once, but can offer multiple times
+									}else {
+										holder.setStateNum(node,1);//set that they have it
+									}
+								}else {
+									extra.println("The dryad says it's a shame that they don't have anything to offer such an intelligent "+Player.bag.getRace().renderName(false)+".");
+									holder.setStateNum(node,2);//can only check once
+								}
+								
+							}else {
+								extra.println("They seem very passionate about it.");
+							}
+							return false;
+						}});
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Ask about this place";
+						}
+
+						@Override
+						public boolean go() {
+							extra.println("\"We are in " + holder.parent.getName() + ". I don't venture away from my tree. It is a dangerous place, and this tree needs protection.\"");
+							if (holder.globalTimer >= 6d) {//can offer seeds if the node hasn't refreshed stuff lately
+								extra.println("\"Would you like a seed to help grow the forest?\"");
+								if (extra.yesNo()) {
+									Player.bag.addSeed(Seed.randSeed());
+									holder.globalTimer-=6;
+									holder.globalTimer/=2;
+									//minus 6 (the time needed) and then div by 2 to avoid a large timer making it happen instantly forever
+								}
+							}
+							return false;
+						}
+					});
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return extra.PRE_BATTLE+"Attack them.";
+						}
+
+						@Override
+						public boolean go() {
+							extra.println(extra.PRE_BATTLE+"Really attack " + p.getName()+"?");
+							if (extra.yesNo()) {
+								if (peeps.size() == 1) {
+									Combat c = Player.player.fightWith(p);
+									if (c.playerWon() > 0) {
+										GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
+									}else {
+										holder.setStateNum(node,3);//angry
+										holder.setForceGo(node, true);
+										return true;
+									}
+								}else {
+									extra.println(extra.PRE_BATTLE+ "It looks like their tree has other friends!");
+									Combat c = mainGame.HugeBattle(holder.getWorld(),Player.wrapForMassFight(peeps));
+									if (c.playerWon() > 0) {
+										GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
+										//only one grave
+									}else {
+										holder.setStorage(node, c.survivors);//set survivors
+										holder.setStateNum(node,3);//angry
+										holder.setForceGo(node, true);
+										return true;
+									}
+								}
+								
+							}
+							return false;
+						}});
+					list.add(new MenuBack("Leave them alone."));
+					return list;
+				}}
+			);
+		}
+		if (holder.getStateNum(node) == 3) {
+			//if we're currently angry
+			if (state != 3) {//if we weren't angry, so the player died in a fight
+				Networking.clearSide(1);
+				return true;//kick out
+			}
+			//force go fighting usually
+			boolean hasdryad = p.getFlag(PersonFlag.IS_ADD);
+			
+			if (peeps.size() == 1) {
+				extra.println(extra.PRE_BATTLE+ (hasdryad ? p.getName() + " protects their tree!" : "The trees move to avenge their caretaker!"));
+				Combat c = Player.player.fightWith(p);
+				if (c.playerWon() > 0) {
+					holder.setForceGo(node,false);//clean up our force go
+					GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
+				}else {
+					return true;//kick out
 				}
+			}else {
+				extra.println(extra.PRE_BATTLE+ (hasdryad ? p.getName() + " protects their tree, and their tree has friends!" : "The trees move to avenge their caretaker!"));
+				Combat c = mainGame.HugeBattle(holder.getWorld(),Player.wrapForMassFight(peeps));
+				if (c.playerWon() > 0) {
+					holder.setForceGo(node,false);//clean up our force go
+					GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
+					//only one grave, which could be an ent at this point
+				}else {
+					holder.setStorage(node, c.survivors);//set survivors
+					return true;//kick out
 				}
 			}
+			Combat c = Player.player.fightWith(p);
+			if (c.playerWon() > 0) {
+				
+				GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
+			}
 		}else {
-			randomLists.deadPerson();node.findBehind("body");
+			Networking.clearSide(1);
+			return false;
 		}
 	}
 
