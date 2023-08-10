@@ -314,6 +314,9 @@ public class Armor extends Item {
 	 * @return changed enchantment? (boolean)
 	 */
 	public boolean improveEnchantChance(int level) {
+		if (getEnchantMult() == 0) {
+			return false;
+		}
 		if (isEnchanted()) {
 			Enchant pastEnchant = enchantment;
 			enchantment = Services.improveEnchantChance(enchantment, level, getEnchantMult());

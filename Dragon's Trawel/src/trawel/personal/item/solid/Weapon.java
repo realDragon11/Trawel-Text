@@ -302,6 +302,9 @@ public class Weapon extends Item {
 	 * @return changed enchantment? (boolean)
 	 */
 	public boolean improveEnchantChance(int level) {
+		if (getEnchantMult() == 0) {
+			return false;
+		}
 		if (this.isEnchantedConstant()) {
 			Enchant pastEnchant = enchant;
 			enchant = Services.improveEnchantChance(enchant, level, getEnchantMult());

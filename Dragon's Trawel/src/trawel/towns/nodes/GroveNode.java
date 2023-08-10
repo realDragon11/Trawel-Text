@@ -49,21 +49,34 @@ public class GroveNode implements NodeType{
 				2f,//mugger
 				1f,//free loot body
 				1f,//fairy circle
+				//slot 6 next
 				1f,//old person
+				1f,//collector
 				2f,//fallen tree TODO: refalls on things?
-				1f,//mushroom/
+				1.5f,//dryad
+				//10 next
+				2f,//casual
+				1f,//mushroom
+				1f,//moss
+				1.5f,//rich and bodyguard
+				.5f,//weapon stone
+				//15
+				2f,//wolves
+				1f,//shaman
+				1f//bee hive
 				});
 	}
 	
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
-		int ret = holder.newNode(NodeType.NodeTypeNum.GROVE.ordinal(),groveBasicRoller.random(extra.getRand()),tier);
+		int ret = holder.newNode(NodeType.NodeTypeNum.GROVE.ordinal(),1+groveBasicRoller.random(extra.getRand()),tier);
 		return ret;
 	}
 	
 	@Override
 	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
-		NodeConnector start = new NodeConnector();
+		NodeConnector start = new NodeConnector(owner);
+		generate(start,0,size,tier);
 		return start.complete(owner);
 	}
 
@@ -354,9 +367,9 @@ public class GroveNode implements NodeType{
 		case 11: return funkyMushroom(holder,node);
 		case 12: return funkyMoss(holder,node);
 		case 14: return weapStone(holder,node);
-		case 18: return packOfWolves(holder,node);
-		case 19: return shaman(holder,node);
-		case 21: return beeHive(holder,node);
+		case 15: return packOfWolves(holder,node);
+		case 16: return shaman(holder,node);
+		case 17: return beeHive(holder,node);
 		}
 		return false;
 	}
@@ -600,6 +613,7 @@ public class GroveNode implements NodeType{
 									Combat c = Player.player.fightWith(p);
 									if (c.playerWon() > 0) {
 										GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
+										return true;
 									}else {
 										holder.setStateNum(node,3);//angry
 										holder.setForceGo(node, true);
@@ -611,6 +625,7 @@ public class GroveNode implements NodeType{
 									if (c.playerWon() > 0) {
 										GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
 										//only one grave
+										return true;
 									}else {
 										holder.setStorage(node, c.survivors);//set survivors
 										holder.setStateNum(node,3);//angry
@@ -690,7 +705,7 @@ public class GroveNode implements NodeType{
 						@Override
 						public boolean go() {
 							holder.setStateNum(node,1);
-							return false;
+							return true;
 						}});
 					list.add(new MenuSelect() {
 
@@ -702,7 +717,7 @@ public class GroveNode implements NodeType{
 						@Override
 						public boolean go() {
 							holder.setStateNum(node,2);
-							return false;
+							return true;
 						}});
 					list.add(new MenuSelect() {
 
@@ -715,8 +730,9 @@ public class GroveNode implements NodeType{
 						public boolean go() {
 							holder.setStateNum(node,3);
 							extra.println("You crush the mushroom under your heel.");
-							return false;
+							return true;
 						}});
+					list.add(new MenuBack("Perhaps not."));
 					return list;
 				}});
 		}
@@ -1048,7 +1064,7 @@ public class GroveNode implements NodeType{
 		case 11://mushroom, colored
 			return "Examine the " + holder.getStorageFirstClass(node, String.class) + " mushroom"+extra.PRE_WHITE+".";
 		case 12://moss, colored
-			return "Examine the " + holder.getStorageFirstClass(node, String.class) + " moss" + " mushroom"+extra.PRE_WHITE+".";
+			return "Examine the " + holder.getStorageFirstClass(node, String.class) + " moss"+extra.PRE_WHITE+".";
 		case 14: //weapon stone
 			if (holder.getStateNum(node) == 0) {
 				Weapon w = holder.getStorageFirstClass(node, Weapon.class);

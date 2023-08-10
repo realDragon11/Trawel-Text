@@ -86,7 +86,7 @@ public class MineNode implements NodeType{
 				tempLevel++;
 			}
 			int n = generate(holder,from,split[j],tempLevel);
-			holder.setMutualConnect(from,n);
+			holder.setMutualConnect(made,n);
 		}
 		return made;
 	}
@@ -111,7 +111,7 @@ public class MineNode implements NodeType{
 
 	@Override
 	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
-		NodeConnector start = new NodeConnector();
+		NodeConnector start = new NodeConnector(owner);
 		start.parent = owner;
 		switch (owner.shape) {
 		case NONE: 

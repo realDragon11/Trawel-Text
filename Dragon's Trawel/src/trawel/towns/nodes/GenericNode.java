@@ -128,7 +128,7 @@ public class GenericNode implements NodeType {
 	
 	@Override
 	public boolean interact(NodeConnector holder, int node) {
-		switch (Generic.values()[holder.getTypeNum(node)]) {
+		switch (Generic.values()[holder.getEventNum(node)]) {
 		case BASIC_RAGE_PERSON:
 			return basicRager(holder, node);
 		case BASIC_DUEL_PERSON:
@@ -166,7 +166,7 @@ public class GenericNode implements NodeType {
 
 	@Override
 	public void passTime(NodeConnector holder, int node, double time, TimeContext calling) {
-		switch (Generic.values()[holder.getTypeNum(node)]) {
+		switch (Generic.values()[holder.getEventNum(node)]) {
 		case PLANT_SPOT:
 			PlantSpot pspot = ((PlantSpot)holder.getStorage(node));
 			if (pspot.timer > 40f) {
@@ -282,7 +282,7 @@ public class GenericNode implements NodeType {
 	@Override
 	public String interactString(NodeConnector holder, int node) {
 		// TODO Auto-generated method stub
-		switch (Generic.values()[holder.getTypeNum(node)]) {
+		switch (Generic.values()[holder.getEventNum(node)]) {
 		case DEAD_PERSON:
 		case DEAD_RACE_INDEX:
 		case DEAD_STRING_SIMPLE:
@@ -317,7 +317,7 @@ public class GenericNode implements NodeType {
 
 	@Override
 	public String nodeName(NodeConnector holder, int node) {
-		switch (Generic.values()[holder.getTypeNum(node)]) {
+		switch (Generic.values()[holder.getEventNum(node)]) {
 		case BASIC_RAGE_PERSON: case BASIC_DUEL_PERSON:
 			return holder.getStorageAsArray(node)[1].toString();
 		case DEAD_PERSON:

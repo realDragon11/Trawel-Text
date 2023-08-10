@@ -32,7 +32,7 @@ public class CaveNode implements NodeType{
 	
 	@Override
 	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
-		NodeConnector start = new NodeConnector();
+		NodeConnector start = new NodeConnector(owner);
 		generate(start,0,size,tier);
 		return start.complete(owner);
 	}

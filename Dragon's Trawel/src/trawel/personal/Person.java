@@ -207,6 +207,10 @@ public class Person implements java.io.Serializable{
 			case HUMANOID:
 				bodyType = TypeBody.HUMAN_LIKE;
 				break;
+			case STATUE:
+				//directly used for ents
+				bodyType = TypeBody.STATUE;
+				break;
 			default:
 				throw new RuntimeException("invalid target type and flag");
 			}
@@ -1845,6 +1849,9 @@ public class Person implements java.io.Serializable{
 		superperson = p;
 	}
 
+	/**
+	 * if they can loot, speak, trade, etc etc
+	 */
 	public boolean isHumanoid() {
 		return bag.getRace().racialType == RaceType.HUMANOID;
 	}

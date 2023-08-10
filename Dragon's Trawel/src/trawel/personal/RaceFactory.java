@@ -858,6 +858,7 @@ public class RaceFactory {
 		Person p = new Person(1,false,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
 		p.hTask = HostileTask.DUEL;
 		extra.popPrintStack();
+		p.updateSkills();
 		return p;
 	}
 	

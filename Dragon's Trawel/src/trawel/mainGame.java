@@ -1142,7 +1142,13 @@ public class mainGame {
 					Networking.setBattle(Networking.BattleType.NONE);
 				}
 				surv.addXp(subReward);
+				if (!surv.isHumanoid()) {
+					continue;//skip
+				}
 				for (Person kill: battle.killed) {
+					if (kill.isPlayer()) {
+						continue;//skip
+					}
 					if (isPlayer) {
 						kill.getBag().graphicalDisplay(1,kill);
 					}

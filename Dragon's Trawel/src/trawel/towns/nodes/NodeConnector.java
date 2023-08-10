@@ -104,7 +104,8 @@ public class NodeConnector implements Serializable {
 	
 	private static boolean isForceGoIng;
 	
-	protected NodeConnector() {
+	protected NodeConnector(NodeFeature haver) {
+		parent = haver;
 		//NOTE: the first node (index 0) can be used to store data for the entire nodeconnector, it is never referenced otherwise
 		connections = new long[256];
 		dataContainer = new long[256];
@@ -127,6 +128,10 @@ public class NodeConnector implements Serializable {
 				extra.setNthByteInLong(0b0, typeNum, 3)
 				,eventNum,1)
 				,level,32);
+		assert extra.intGetNthByteFromLong(dataContainer[size], 1) == eventNum;
+		assert extra.intGetNthByteFromLong(dataContainer[size], 3) == typeNum;
+		assert extra.intGetNthShortFromLong(dataContainer[size], 2) == level;
+		assert getFlag(size,NodeFlag.GENERIC_OVERRIDE) == false;
 		storage[size] = null;//new Object[2];//for now we just assume we need to, can trim later compiletime
 		return size;
 	}
@@ -192,6 +197,7 @@ public class NodeConnector implements Serializable {
 	}
 
 	protected void setConnects(int node,int...places) {
+		assert node != 0;
 		long sub = 0b0;
 		for (int i = 0; i < places.length-1;i++) {
 			//I think I have to do this so it doesn't delete info
@@ -201,6 +207,8 @@ public class NodeConnector implements Serializable {
 	}
 	
 	protected void addConnect(int node, int tonode) {
+		assert node != 0;
+		assert tonode != 0;
 		long sub = connections[node];
 		List<Integer> list = new ArrayList<Integer>();
 		for (int i = 0; i < 8;i++) {
@@ -218,6 +226,8 @@ public class NodeConnector implements Serializable {
 	 * does not check to see if node already has connection, that's caller's job
 	 */
 	protected void setMutualConnect(int node1, int node2) {
+		assert node1 != 0;
+		assert node2 != 0;
 		addConnect(node1,node2);
 		addConnect(node2,node1);
 	}

@@ -85,7 +85,7 @@ public class DungeonNode implements NodeType{
 	
 	@Override
 	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
-		NodeConnector start_node = new NodeConnector();
+		NodeConnector start_node = new NodeConnector(owner);
 		switch (owner.shape) {
 		case NONE: generate(start_node,0,size, tier);
 			return start_node.complete(owner);
