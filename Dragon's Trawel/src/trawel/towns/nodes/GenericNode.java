@@ -16,6 +16,7 @@ import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceID;
+import trawel.personal.item.body.Race;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
@@ -37,7 +38,8 @@ public class GenericNode implements NodeType {
 		,VEIN_MINERAL
 		,COLLECTOR
 		,LOCKDOOR
-		,PLANT_SPOT
+		,PLANT_SPOT,
+		CASUAL_PERSON
 	}
 	
 	public static void setSimpleDuelPerson(NodeConnector holder,int node,Person p, String nodename, String interactstring,String wantDuel) {
@@ -89,6 +91,17 @@ public class GenericNode implements NodeType {
 		holder.setStorage(node,new Object[] {p,nodename,attackString});
 	}
 	
+	/**
+	 * used for modern racism, autodetects if the person is racist
+	 * <br>
+	 * if not racist they're really nice
+	 */
+	public static void setBasicCasual(NodeConnector holder,int node, Person p) {
+		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
+		holder.setEventNum(node,Generic.CASUAL_PERSON.ordinal());
+		holder.setStorage(node, p);
+	}
+	
 	@Override
 	public boolean interact(NodeConnector holder, int node) {
 		switch (Generic.values()[holder.getTypeNum(node)]) {
@@ -111,6 +124,10 @@ public class GenericNode implements NodeType {
 		case PLANT_SPOT:
 			((PlantSpot)holder.getStorage(node)).go();
 			return false;
+		case CASUAL_PERSON:
+			return goCasualPerson(holder, node);
+		case COLLECTOR:
+			return goCollector(holder, node);
 			
 		}
 		return false;
@@ -256,12 +273,13 @@ public class GenericNode implements NodeType {
 		case DEAD_STRING_TOTAL:
 			return holder.getStorageAsArray(node)[1].toString();
 		case COLLECTOR:
-			return "Approach " +holder.getStorageFirstPerson(node).getName();
+			return "Approach " +holder.getStorageFirstPerson(node).getName()+".";
 		case LOCKDOOR:
 			return "Look at the " + holder.getStorageFirstClass(node,String.class)+".";
 		case PLANT_SPOT:
 			return "Examine (" + ((PlantSpot)holder.getStorage(node)).contains+")";
-			
+		case CASUAL_PERSON:
+			return "Approach the " + holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)+".";
 		}
 		return null;
 	}
@@ -295,6 +313,8 @@ public class GenericNode implements NodeType {
 		case PLANT_SPOT:
 			String contains = ((PlantSpot)holder.getStorage(node)).contains;
 			return contains == "" ? "Plant Spot" : contains ;
+		case CASUAL_PERSON:
+			return holder.getStorageFirstPerson(node).getBag().getRace().renderName(false);
 		}
 		return null;
 	}
@@ -502,7 +522,7 @@ public class GenericNode implements NodeType {
 						if (extra.chanceIn(1,30)) {
 							extra.println(extra.PRE_RED +"\"Enough of your games!\"");
 							setBasicRagePerson(holder, node, p, "A very angry "+extra.PRE_RED+p.getName(),extra.PRE_RED+p.getName() + " attacks you!");
-							return false;
+							return true;//out of menu
 						}
 						if (extra.chanceIn(1,3)) {
 							Oracle.tip("old");
@@ -522,6 +542,7 @@ public class GenericNode implements NodeType {
 						extra.println("Really attack " +p.getName()+"?");
 						if (extra.yesNo()) {
 							setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_RED+p.getName(),extra.PRE_RED+p.getName() + " attacks you!");
+							return true;//out of menu
 						}
 						return false;
 					}});
@@ -584,6 +605,96 @@ public class GenericNode implements NodeType {
 			starting = extra.choose("apple tree","bee hive","eggcorn");
 		}
 		holder.setStorage(node,new PlantSpot(holder.getLevel(node),starting));
+	}
+	
+	public static boolean goCasualPerson(NodeConnector holder,int node) {
+		Person p = holder.getStorageFirstPerson(node);
+		p.getBag().graphicalDisplay(1, p);
+		boolean racist = p.isRacist();
+		extra.menuGo(new MenuGenerator() {
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuLine() {
+					@Override
+					public String title() {
+						return p.getName() + " wandering around.";
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Attempt to talk to them.";
+					}
+
+					@Override
+					public boolean go() {
+						if (racist) {
+							RaceID r = p.getBag().getRaceID();
+							if (r == Player.bag.getRaceID()) {
+								String str = Oracle.tipString("racistPraise");
+								str = str.replaceAll("oracles",r.namePlural);
+								str = str.replaceAll("oracle",r.namePlural);
+								extra.println("\"" +extra.capFirst(str)+"\"");
+							}else {
+								if (extra.chanceIn(4,5)) {
+									String str = Oracle.tipString(extra.choose("racistShun","racistPraise"));
+									str = str.replaceAll("not-oracle",Player.bag.getRace().randomSwear());
+									str = str.replaceAll("oracles",r.namePlural);
+									str = str.replaceAll("oracle",r.namePlural);
+									extra.println("\"" +extra.capFirst(str)+"\"");	
+								}else {
+									extra.println("\"" + Player.bag.getRace().randomInsult() +"\"");
+								}
+							}
+						}else {
+							if (p.isAngry()) {
+								extra.println("They seem really mad about everything.");
+							}else {
+								extra.println("They seem nice, but have nothing of substance to talk about.");
+							}
+						}
+						return false;
+					}}
+				);
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return extra.PRE_BATTLE+"Attack";
+					}
+
+					@Override
+					public boolean go() {
+						extra.println("Really attack " +p.getName()+"?");
+						if (extra.yesNo()) {
+							RaceID r = p.getBag().getRaceID();
+							boolean racistToYou = (racist && r == Player.bag.getRaceID());
+							String name = extra.capFirst(r.namePlural);
+							if (racistToYou) {
+								setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_BATTLE +name,extra.PRE_BATTLE+"The racist "+name + " attacks you!");
+								return true;//out of menu, not area
+							}else {
+								if (p.isAngry()) {
+									setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_BATTLE +name,extra.PRE_BATTLE+"The "+name + " attacks you!");
+									return true;//out of menu, not area
+								}else {//will not hold it against you
+									Combat c = Player.player.fightWith(p);
+									if (c.playerWon() > 0) {
+										setSimpleDeadRaceID(holder, node, r);
+									}
+									return true;//out of menu, not area
+								}
+							}
+							
+						}
+						return false;
+					}});
+				list.add(new MenuBack("leave"));
+				return list;
+			}});
+		Networking.clearSide(1);
+		return false;
 	}
 
 }

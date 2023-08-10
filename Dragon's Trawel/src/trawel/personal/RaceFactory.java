@@ -1195,6 +1195,24 @@ public class RaceFactory {
 		return w;
 	}
 	
+	public static Person makeMaybeRacist(int level) {
+		extra.offPrintStack();
+		Person w = new Person(level);
+		
+		if (w.isRacist()) {
+			w.hTask = HostileTask.RACIST;
+		}else {
+			if (w.isAngry()) {
+				w.hTask = HostileTask.DUEL;
+			}else {
+				w.hTask = HostileTask.PEACE;
+			}
+		}
+		extra.popPrintStack();
+		w.finishGeneration();
+		return w;
+	}
+	
 	public static Person getRacist(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level);

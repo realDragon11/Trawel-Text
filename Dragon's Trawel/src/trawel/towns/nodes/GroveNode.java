@@ -157,8 +157,10 @@ public class GroveNode implements NodeType{
 			}
 			holder.setStorage(madeNode, old);
 			break;
-		
-		case 8:
+		case 7://collector
+			GenericNode.applyCollector(holder,madeNode);
+			break;
+		case 8://tree of many things
 			holder.setStorage(madeNode,false);//needs to be 'refilled' by time passing
 			;break;
 		case 9:
@@ -187,10 +189,11 @@ public class GroveNode implements NodeType{
 			}
 			holder.setStorage(madeNode, entslist);
 		break;
-		case 10: made.name = "fallen tree";made.interactString = "examine fallen tree";break;
+		case 10://casual people, racist, angry, or not
+			GenericNode.setBasicCasual(holder,madeNode,RaceFactory.makeMaybeRacist(holder.getLevel(madeNode)));
+			break;
 		case 11: made.name = randomLists.randomColor() + " mushroom";made.interactString = "approach mushroom";break;
 		case 12: made.name = "moss"; made.interactString = "approach moss"; made.state = (byte) extra.randRange(0,1);break;
-		case 13: made.name = "grey hole";made.interactString = "approach hole";break;
 		case 14:
 			made.storage2 = RaceFactory.getRacist(made.level); 
 			//storage1 = ((Person)storage2).getBag().getRace();
@@ -952,44 +955,6 @@ public class GroveNode implements NodeType{
 				}
 			}else {
 				extra.println("There was some moss here.");
-			}
-		}
-	}
-
-	private void racist1() {
-		boolean bool = true;
-		while (bool) {
-			extra.print(extra.PRE_RED);
-			((Person)node.storage2).getBag().graphicalDisplay(1, (Person)node.storage2);
-			extra.println("1 attack");
-			extra.println("2 chat");
-			extra.println("3 leave");
-			switch (extra.inInt(3)) {
-			case 1: node.name = "angry " +node.name ; node.interactString = "ERROR";
-			node.storage1 = node.storage2;
-			node.setForceGo(true);
-			node.eventNum = 3;
-			bool = false;break;
-			case 2:
-				Race r = ((Person)node.storage2).getBag().getRace();
-				if (r == Player.bag.getRace()) {
-					String str = Oracle.tipString("racistPraise");
-					str = str.replaceAll("oracles",r.renderName(true));
-					str = str.replaceAll("oracle",r.renderName(false));
-					extra.println("\"" +extra.capFirst(str)+"\"");
-				}else {
-					if (extra.chanceIn(4,5)) {
-						String str = Oracle.tipString(extra.choose("racistShun","racistPraise"));
-						str = str.replaceAll("not-oracle",Player.bag.getRace().randomSwear());
-						str = str.replaceAll("oracles",r.renderName(true));
-						str = str.replaceAll("oracle",r.renderName(false));
-						extra.println("\"" +extra.capFirst(str)+"\"");	
-					}else {
-						extra.println("\"" + Player.bag.getRace().randomInsult() +"\"");
-					}
-				};break;
-
-			case 3:bool = false;break;
 			}
 		}
 	}
