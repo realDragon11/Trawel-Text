@@ -41,6 +41,7 @@ import trawel.factions.HostileTask;
 import trawel.personal.DummyPerson;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.Archetype;
 import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Item;
@@ -474,7 +475,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Trawel Slowstart (base game)";
+						return "Trawel Slowstart (base game, rerolling character creator)";
 					}
 
 					@Override
@@ -1305,6 +1306,8 @@ public class mainGame {
 			assert player.getPerson().getFeatPoints() > 0;
 			if (!rerolls) {//autopick first archetype for quickstart?
 				player.getPerson().pickFeatRandom();
+			}else {
+				Archetype.menuChooseFirstArchetype(manOne);
 			}
 			player.setLocation(world.getStartTown());//also sets the player world
 			if (cheaty) {

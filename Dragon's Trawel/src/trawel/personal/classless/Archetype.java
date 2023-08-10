@@ -9,8 +9,11 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import derg.menus.MenuItem;
+import derg.menus.MenuSelect;
+import derg.menus.ScrollMenuGenerator;
 import trawel.extra;
 import trawel.personal.Person;
+import trawel.personal.Person.FeatArchMenuPick;
 import trawel.personal.classless.Feat.FeatType;
 import trawel.personal.classless.Skill.Type;
 
@@ -264,5 +267,31 @@ public enum Archetype implements IHasSkills{
 	@Override
 	public Set<Skill> giveSet() {
 		return skills;
+	}
+	
+	public static void menuChooseFirstArchetype(Person person) {
+		List<Archetype> alist = new ArrayList<Archetype>();
+		alist.addAll(ENTRY_LIST);
+		//int start_points = person.getFeatPoints();
+		extra.menuGo(new ScrollMenuGenerator(alist.size(),"previous <> Archetypes","next <> Archetypes") {
+			
+			@Override
+			public List<MenuItem> header() {
+				return null;
+			}
+			
+			@Override
+			public List<MenuItem> forSlot(int i) {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new FeatArchMenuPick(alist.get(i),person));
+				//should return if picked, so we don't even need to check anything
+				return list;
+			}
+			
+			@Override
+			public List<MenuItem> footer() {
+				return null;
+			}
+		});
 	}
 }

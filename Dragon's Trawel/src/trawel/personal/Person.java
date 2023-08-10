@@ -919,7 +919,7 @@ public class Person implements java.io.Serializable{
 		}
 	}
 	
-	public class FeatArchMenuPick extends MenuSelect {
+	public static class FeatArchMenuPick extends MenuSelect {
 
 		private final IHasSkills base;
 		private boolean picked;
