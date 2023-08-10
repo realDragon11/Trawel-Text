@@ -165,7 +165,7 @@ public class MineNode implements NodeType{
 			holder.setForceGo(madeNode, true);*/
 			break;
 		case 6:
-			String cColor = randomLists.randomColor();//TODO: get color with color code attached to it
+			String cColor = randomLists.randomPrintableColor();
 			holder.setStorage(madeNode, cColor);
 			//made.interactString = "examine crystals";
 			//made.storage1 = randomLists.randomColor();

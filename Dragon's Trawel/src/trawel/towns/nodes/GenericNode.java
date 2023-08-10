@@ -14,6 +14,7 @@ import trawel.mainGame;
 import trawel.randomLists;
 import trawel.battle.Combat;
 import trawel.personal.Person;
+import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceID;
 import trawel.personal.item.body.Race;
@@ -40,6 +41,7 @@ public class GenericNode implements NodeType {
 		,LOCKDOOR
 		,PLANT_SPOT,
 		CASUAL_PERSON
+		,RICH_GUARD
 	}
 	
 	public static void setSimpleDuelPerson(NodeConnector holder,int node,Person p, String nodename, String interactstring,String wantDuel) {
@@ -102,6 +104,28 @@ public class GenericNode implements NodeType {
 		holder.setStorage(node, p);
 	}
 	
+	public static void setBasicRichAndGuard(NodeConnector holder,int node) {
+		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
+		holder.setEventNum(node,Generic.RICH_GUARD.ordinal());
+		List<Person> list = new ArrayList<Person>();
+		int level = holder.getLevel(node);
+		if (level == 1) {
+			Person p = RaceFactory.makeRich(level);//no guard
+			list.add(p);
+		}else {
+			Person p = RaceFactory.makeRich(level-1);
+			list.add(p);
+			p = RaceFactory.makeQuarterMaster(level+2);
+			p.setFlag(PersonFlag.IS_ADD,true);
+			//used so the bodyguard gets converted into a world person if the rich is killed
+			//create an 'avenger' type which is deathcheater without dying
+			list.add(p);
+		}
+		
+		
+		holder.setStorage(node, list);
+	}
+	
 	@Override
 	public boolean interact(NodeConnector holder, int node) {
 		switch (Generic.values()[holder.getTypeNum(node)]) {
@@ -128,6 +152,8 @@ public class GenericNode implements NodeType {
 			return goCasualPerson(holder, node);
 		case COLLECTOR:
 			return goCollector(holder, node);
+		case RICH_GUARD:
+			return goRichGuard(holder,node);
 			
 		}
 		return false;
@@ -280,6 +306,10 @@ public class GenericNode implements NodeType {
 			return "Examine (" + ((PlantSpot)holder.getStorage(node)).contains+")";
 		case CASUAL_PERSON:
 			return "Approach the " + holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)+".";
+		case RICH_GUARD:
+			List<Person> rplist = holder.getStorageFirstClass(node,List.class);
+			Person rich = extra.getNonAddOrFirst(rplist);
+			return "Approach the " + rich.getBag().getRace().renderName(false)+".";
 		}
 		return null;
 	}
@@ -315,6 +345,10 @@ public class GenericNode implements NodeType {
 			return contains == "" ? "Plant Spot" : contains ;
 		case CASUAL_PERSON:
 			return holder.getStorageFirstPerson(node).getBag().getRace().renderName(false);
+		case RICH_GUARD:
+			List<Person> rplist = holder.getStorageFirstClass(node,List.class);
+			Person rich = extra.getNonAddOrFirst(rplist);
+			return rich.getBag().getRace().renderName(false);
 		}
 		return null;
 	}
@@ -618,7 +652,7 @@ public class GenericNode implements NodeType {
 				list.add(new MenuLine() {
 					@Override
 					public String title() {
-						return p.getName() + " wandering around.";
+						return p.getName() + " is wandering around.";
 					}});
 				list.add(new MenuSelect() {
 
@@ -695,6 +729,102 @@ public class GenericNode implements NodeType {
 			}});
 		Networking.clearSide(1);
 		return false;
+	}
+	
+	public static boolean goRichGuard(NodeConnector holder,int node) {
+		List<Person> peeps = holder.getStorageFirstClass(node, List.class);
+		int state = holder.getStateNum(node);
+		final Person leader = extra.getNonAddOrFirst(peeps);
+		if (state > 1) {//if attacking by default
+			if (leader.getFlag(PersonFlag.IS_ADD)) {
+				extra.println(extra.PRE_BATTLE+"The bodyguard attacks you!");
+			}else {
+				if (peeps.size() > 1) {
+					extra.println(extra.PRE_BATTLE+"Their bodyguard swoops in to assist!");
+				}else {
+					extra.println(extra.PRE_BATTLE+"They attack without backup!");
+				}
+				
+			}
+			Combat c = mainGame.HugeBattle(holder.getWorld(),Player.wrapForMassFight(peeps));
+			if (c.playerWon() > 0) {
+				holder.setForceGo(node,false);//clean up any force go
+				//leader might be the guard now, we don't care
+				GenericNode.setSimpleDeadRaceID(holder, node, leader.getBag().getRaceID());
+				return false;
+			}else {
+				Person aleader = extra.getNonAddOrFirst(c.survivors);//need to keep leader effectively final sadly
+				if (aleader.getFlag(PersonFlag.IS_ADD) && extra.chanceIn(1,3)) {
+					//if rich is dead, 33% chance to leave
+					GenericNode.setSimpleDeadString(holder, node,"body");
+				}else {
+					holder.setStorage(node,c.survivors);
+				}
+				return true;//kick out
+			}
+		}
+		//if we can talk
+		leader.getBag().graphicalDisplay(1,leader);
+		assert !leader.getFlag(PersonFlag.IS_ADD);
+		//boolean is_add = leader.getFlag(PersonFlag.IS_ADD);//can't be an add at this point
+		extra.menuGo(new MenuGenerator() {
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuLine() {
+					@Override
+					public String title() {
+						return leader.getName() + " is wandering around.";
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Attempt to talk to them.";
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.player.getGold() > leader.getBag().getGold()*4) {//you're so much richer than them that they see you as part of their bigotry
+							String str = Oracle.tipString("racistPraise");
+							str = str.replaceAll(" an "," a ");
+							str = str.replaceAll("oracles","rich person");
+							str = str.replaceAll("oracle","rich people");
+							extra.println("\"" +extra.capFirst(str)+"\"");
+						}else {
+							String str = Oracle.tipString(extra.choose("racistShun","racistPraise"));
+							str = str.replaceAll(" an "," a ");
+							str = str.replaceAll("not-oracle","poor person");
+							str = str.replaceAll("oracles","rich people");
+							str = str.replaceAll("oracle","rich person");
+							extra.println("\"" +extra.capFirst(str)+"\"");	
+						};
+						return false;
+					}
+					});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return extra.PRE_BATTLE+"Attack";
+					}
+
+					@Override
+					public boolean go() {
+						extra.println("Really attack " +leader.getName()+"?");
+						if (extra.yesNo()) {
+							holder.setStateNum(node,2);
+							holder.setForceGo(node,true);
+							return true;//out of menu
+						}
+						return false;
+					}
+				});
+				list.add(new MenuBack("leave"));
+				return list;
+			}
+		});
+		return false;//forcego or not
 	}
 
 }

@@ -36,7 +36,11 @@ public class Race extends Item{
 	public float minPitch = 1, maxPitch = 1;
 	
 	public enum RaceType{
-		HUMANOID, BEAST;
+		/**
+		 * actually a misnomer, only applies to 'personable' things that have full people power, not things that are monsters like drudgers
+		 */
+		HUMANOID,
+		BEAST;
 	}
 	
 	public Race(RaceFactory.RaceID internalName) {

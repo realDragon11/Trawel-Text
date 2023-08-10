@@ -37,7 +37,7 @@ import trawel.towns.services.Oracle;
 
 public class GroveNode implements NodeType{
 
-	private static final int EVENT_NUMBER = 21;
+	private static final int EVENT_NUMBER = 18;
 
 	private WeightedTable groveBasicRoller;
 	
@@ -192,43 +192,35 @@ public class GroveNode implements NodeType{
 		case 10://casual people, racist, angry, or not
 			GenericNode.setBasicCasual(holder,madeNode,RaceFactory.makeMaybeRacist(holder.getLevel(madeNode)));
 			break;
-		case 11: made.name = randomLists.randomColor() + " mushroom";made.interactString = "approach mushroom";break;
-		case 12: made.name = "moss"; made.interactString = "approach moss"; made.state = (byte) extra.randRange(0,1);break;
-		case 14:
-			made.storage2 = RaceFactory.getRacist(made.level); 
-			//storage1 = ((Person)storage2).getBag().getRace();
-			made.name = ((Person)made.storage2).getBag().getRace().renderName(false);
-			made.interactString = "approach " + made.name;break;
-		case 15: made.storage1 = RaceFactory.getRich(made.level); made.storage2 = RaceFactory.getRich(made.level+1);
-		made.name = ((Person)made.storage1).getBag().getRace().renderName(false); made.interactString = "approach " + made.name; 
-		((Person)made.storage1).getBag().addGold(made.level*100);break;
-		case 16: made.storage1 = new Weapon(made.level); made.name = ((Weapon)made.storage1).getBaseName() + " in a rock"; made.interactString = "pull on " +((Weapon)made.storage1).getBaseName(); break;
-		case 17: made.storage1 = RaceFactory.getPeace(made.level); ((Person)made.storage1).setRacism(false);
-		made.name = ((Person)made.storage1).getBag().getRace().renderName(false); made.interactString = "approach " + made.name;break;
-		case 18: ArrayList<Person> list = new ArrayList<Person>();
-		for (int i = Math.min(made.level, extra.randRange(3,4));i > 0 ;i--) {
-			list.add(RaceFactory.makeWolf(extra.zeroOut(made.level-3)+1));
-			}
-		made.name = "pack of wolves";
-		made.interactString = "ERROR";
-		made.storage1 = list;
-		made.setForceGo(true);
-		made.state = 0;
-		;break;
-		case 19:
-			made.name = extra.choose("shaman"); made.interactString = "approach the shaman"; made.setForceGo(false);
-			made.storage1 = RaceFactory.getShaman(made.level);
-			made.storage2 = made.storage1;break;
-		case 20:
-			made.name = extra.choose("collector");
-			made.interactString = "approach the " + made.name;
-			made.setForceGo(false);
-			made.storage1 = RaceFactory.makeCollector(made.level);
+		case 11://mushroom
+			holder.setStorage(madeNode, randomLists.randomPrintableColor());
 			break;
-		case 21:
-			made.name = "bee hive";
-			made.interactString = "destroy hive";
-			made.setForceGo(false);
+		 case 12://moss
+			holder.setStorage(madeNode, randomLists.randomPrintableColor());
+			holder.setStateNum(madeNode, extra.choose(0,1));//50% chance of having something under it
+			break;
+		case 13://rich and bodyguard
+			GenericNode.setBasicRichAndGuard(holder, madeNode);
+			break;
+		case 14: 
+			holder.setStorage(madeNode, new Weapon(holder.getLevel(madeNode)));
+			break;
+		case 15:
+			List<Person> wolves = new ArrayList<Person>();
+			int wolflevel = holder.getLevel(madeNode);
+			for (int i = Math.min(wolflevel, extra.randRange(3,4));i > 0 ;i--) {
+				wolves.add(RaceFactory.makeWolf(extra.zeroOut(wolflevel-3)+1));
+			}
+			holder.setForceGo(madeNode,true);
+			holder.setStorage(madeNode,wolves);
+		;break;
+		case 16:
+			holder.setStorage(madeNode, RaceFactory.getShaman(holder.getLevel(madeNode)));
+			break;
+		case 17:
+			GenericNode.applyCollector(holder, madeNode);
+			break;
+		case 18://bee hive, turns into plant spot
 			break;
 		}
 		//TODO: add lumberjacks and tending to tree
@@ -350,7 +342,7 @@ public class GroveNode implements NodeType{
 					}
 				});
 			}else {//can combat forcego
-				extra.println(extra.TIMID_RED+p.getNameNoTitle()+" has had enough. One way or the other.");
+				extra.println(extra.TIMID_RED+old.getNameNoTitle()+" has had enough. One way or the other.");
 				Combat oldc = Player.player.fightWith(old);
 				if (oldc.playerWon() > 0) {
 					GenericNode.setSimpleDeadPerson(holder, node, old);//gets their own corpse
@@ -363,14 +355,9 @@ public class GroveNode implements NodeType{
 		case 9: return dryad(holder,node);
 		case 11: funkyMushroom();break;
 		case 12: funkyMoss();break;
-		case 13: break;
-		case 14: racist1();break;
-		case 15: rich1();break;
-		case 16: weapStone();break;
-		case 17: equal1();break;
+		case 14: return weapStone(holder,node);
 		case 18: return packOfWolves();
 		case 19: shaman();break;
-		case 20: collector();break;
 		case 21: beeHive();break;
 		}
 		return false;
@@ -416,28 +403,7 @@ public class GroveNode implements NodeType{
 			break;
 		}
 	}
-	
-	
-	private void findEquip() {
-		if (node.state == 0) {
-			extra.println("You find a rotting body... With their equipment intact!");
-			AIClass.loot(RaceFactory.makeLootBody(Math.min(node.level,Player.player.getPerson().getLevel())).getBag(),
-				Player.bag,true,Player.player.getPerson());
-			node.state = 1;
-		}else {
-			extra.println("You've already looted this corpse.");
-			node.findBehind("body");
-		}
-	}
-	
-	private void fairyCircle1() {
-		extra.println("You find a fairy circle of mushrooms. Step in it?");
-		if (extra.yesNo()) {
-			extra.println("You step in it. Nothing happens.");
-		}else {
-			extra.println("You stay away from the circle.");
-		}
-	}
+
 	
 	/*//DOLATER: make the 'I'm lost' mechanic again
 	private boolean fairyCircle2() {
@@ -468,47 +434,6 @@ public class GroveNode implements NodeType{
 			return false;
 		}
 	}*/
-
-	private void oldFighter() {
-		if (node.state == 0) {
-			while (true) {
-				Person p = (Person)node.storage1;
-				p.getBag().graphicalDisplay(1, p);
-				extra.println("You come across an " + node.name + ", resting on a log.");
-				extra.println("1 Leave");//DOLATER: fix menu
-				extra.println("2 "+extra.PRE_RED+"Attack them");
-				extra.println("3 Chat with them");
-				switch (extra.inInt(3)) {
-				default: case 1: extra.println("You leave the " + node.name + " alone");return;
-				case 2: extra.println("You attack the "+node.name+"!");
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-				if (winner != p) {
-					node.state = 1;
-					node.storage1 = null;
-					node.name = "dead "+node.name;
-					node.interactString = "examine body";
-				}
-				;return;
-				case 3: extra.println("The " + node.name + " turns and answers your greeting.");
-				while (true) {
-					extra.println("What would you like to ask about?");
-					extra.println("1 tell them goodbye");
-					extra.println("2 ask for a tip");
-					extra.println("3 this grove");
-					int in = extra.inInt(3);
-					switch (in) {
-					case 1: extra.println("They wish you well.") ;break;
-					case 2: Oracle.tip("old");break;
-					case 3: extra.println("\"We are in " + node.parent.getName() + ". Beware, danger lurks under these trees.\"");break;
-					}
-					if (in == 1) {
-						break;
-					}
-				}
-				}
-			}
-		}else {randomLists.deadPerson();}
-	}
 
 	private boolean treeOfManyThings(NodeConnector holder,int node) {
 		int state = holder.getStateNum(node);
@@ -738,14 +663,16 @@ public class GroveNode implements NodeType{
 			if (c.playerWon() > 0) {
 				
 				GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
+				return false;
 			}
+			return true;//kick out
 		}else {
 			Networking.clearSide(1);
 			return false;
 		}
 	}
 
-	private void funkyMushroom() {
+	private boolean funkyMushroom(NodeConnector holder,int node) {
 		if (node.state == 0) {
 			extra.println("You spot a glowing mushroom on the forest floor.");
 			extra.println("1 leave it");
@@ -958,104 +885,34 @@ public class GroveNode implements NodeType{
 			}
 		}
 	}
-
-	private void rich1() {
-		Person rich = (Person)node.storage1;
-		Person bodyguard = (Person)node.storage2;
-		rich.getBag().graphicalDisplay(1,rich);
-		if (node.state == 0) {
-			boolean bool = true;
-			while (bool) {
-				extra.println("1 "+extra.PRE_RED+"attack");
-				extra.println("2 chat");
-				extra.println("3 leave");
-				switch (extra.inInt(3)) {
-				case 1:
-					node.name = "angry " +node.name;
-					node.interactString = "approach " +node.name;
-					node.state = 2;
-				//forceGo = true;//can't do this without kicking them out
-				richHelper(bodyguard, rich);
-				bool = false;
-				break;
-				case 2:
-					if (Player.player.getGold() > rich.getBag().getGold()*4) {//now local class bigotry
-						String str = Oracle.tipString("racistPraise");
-						str = str.replaceAll(" an "," a ");
-						str = str.replaceAll("oracles","rich person");
-						str = str.replaceAll("oracle","rich people");
-						extra.println("\"" +extra.capFirst(str)+"\"");
-					}else {
-						String str = Oracle.tipString(extra.choose("racistShun","racistPraise"));
-						str = str.replaceAll(" an "," a ");
-						str = str.replaceAll("not-oracle","poor person");
-						str = str.replaceAll("oracles","rich people");
-						str = str.replaceAll("oracle","rich person");
-						extra.println("\"" +extra.capFirst(str)+"\"");	
-					};break;
-
-				case 3:bool = false;break;
-				}
-			}
-		}else {
-			if (node.state == 2) {
-				richHelper(bodyguard, rich);
-			}else {
-				randomLists.deadPerson();
-				node.findBehind("bodies");
-			}
-		}
-	}
-	private boolean richHelper(Person bodyguard, Person rich) {
-		Person winner;
-		if (bodyguard != null) {
-			extra.println(extra.PRE_RED+"Their bodyguard attacks you!");
-			winner = mainGame.CombatTwo(Player.player.getPerson(),bodyguard);
-			if (!winner.isPlayer()) {
-				return true;
-			}
-			node.storage2 = null;
-		}
-		if (rich != null) {
-			winner = mainGame.CombatTwo(Player.player.getPerson(),rich);
-			if (!winner.isPlayer()) {
-				return true;
-			}
-			
-		}
-		node.state = 3;
-		node.name = "dead "+ rich.getBag().getRace().getName();
-		node.storage1 = null;
-		node.interactString = "examine body";
-		return false;
-	}
 	
-	private void weapStone() {
-		if (node.state ==0) {
-			extra.println("There is a " + ((Weapon)node.storage1).getBaseName() + " embeded in the stone here. Try to take it?");
+	private boolean weapStone(NodeConnector holder,int node) {//TODO: maybe let this refill?
+		if (holder.getStateNum(node) == 0) {
+			Weapon w = holder.getStorageFirstClass(node, Weapon.class);
+			extra.println("There is a " + w.getBaseName() + " embeded in the stone here. Try to take it?");
 			if (extra.yesNo()) {
 				int lvl = Player.player.getPerson().getLevel();
-				if (lvl < node.level-1) {
-					extra.println("Try as you might, you can't pry lose the " + ((Weapon)node.storage1).getBaseName());
-					return;
+				int w_level = w.getLevel();
+				if (lvl < w_level-1) {
+					extra.println("Try as you might, you can't pry lose the " + w.getBaseName());
+					return false;
 				}
-				if (lvl > node.level + 1) {
+				if (lvl > w_level + 1) {
 					extra.println("As you pull on it, the stone crumbles to pieces!");
 				}else {
-					extra.println("As you pull on it, the "+((Weapon)node.storage1).getBaseName()+" slowly slips free, and the rock crumbles!");
+					extra.println("As you pull on it, the "+w.getBaseName()+" slowly slips free, and the rock crumbles!");
 				}
-				
-				node.state = 1;
-				node.name = "rock pieces";
-				node.interactString = "examine rock pieces";
-				AIClass.findItem((Item)node.storage1,false,Player.player.getPerson());
+				holder.setStateNum(node,1);
+				AIClass.findItem(w,false,Player.player.getPerson());
+				holder.setStorage(node,null);
 			}else {
 				extra.println("You leave it alone.");
 			}
 		}else {
 			extra.println("Crumbled rock lies on the forest floor.");
-			node.findBehind("rock fragments");
+			holder.findBehind(node,"rock fragments");
 		}
+		return false;
 	}
 	
 	private void equal1() {
@@ -1194,6 +1051,72 @@ public class GroveNode implements NodeType{
 		Player.bag.addSeed(Seed.BEE);
 		Player.player.getPerson().addEffect(Effect.BEES);
 		
+	}
+
+	@Override
+	public String interactString(NodeConnector holder, int node) {
+		switch(holder.getEventNum(node)) {
+		case 2://river
+			return "Wash yourself in the " +holder.getStorageFirstClass(node,String.class)+".";
+		case 4://looting body, turns into plantspot after
+			return "Loot " +holder.getStorageAsArray(node)[0].toString() +".";
+		case 5:
+			return "Enter Fairy Circle...";
+		case 6://old person, uses causal text
+			return "Approach the " + holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)+".";
+		case 8://tree of many things
+			return "Examine fallen tree.";
+		case 9://dryad
+			return "Approach the Dryad's tree.";
+		case 11://mushroom, colored
+			return "Examine the " + holder.getStorageFirstClass(node, String.class) + " mushroom"+extra.PRE_WHITE+".";
+		case 12://moss, colored
+			return "Examine the " + holder.getStorageFirstClass(node, String.class) + " moss" + " mushroom"+extra.PRE_WHITE+".";
+		case 14: //weapon stone
+			if (holder.getStateNum(node) == 0) {
+				Weapon w = holder.getStorageFirstClass(node, Weapon.class);
+				return "Attempt to take " + w.getBaseName();
+			}
+			return "Look at rock fragments.";
+		case 16://pack of wolves
+			return null;
+		case 17://shaman, uses causal text
+			return "Approach the " + holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)+".";
+		}
+		return null;
+	}
+
+	@Override
+	public String nodeName(NodeConnector holder, int node) {
+		switch(holder.getEventNum(node)) {
+		case 2://river
+			return holder.getStorageFirstClass(node,String.class);
+		case 4://looting body, turns into plantspot after
+			return holder.getStorageAsArray(node)[0].toString();
+		case 5:
+			return "Fairy Circle";
+		case 6://old person, uses causal text
+			return holder.getStorageFirstPerson(node).getBag().getRace().renderName(false);
+		case 8://tree of many things
+			return "Fallen Tree";
+		case 9://dryad
+			return "Dryad's Tree";
+		case 11://mushroom, colored
+			return "A single " +holder.getStorageFirstClass(node, String.class) + " mushroom";
+		case 12://moss, colored
+			return "A single piece of " +holder.getStorageFirstClass(node, String.class) + " moss";
+		case 14: //weapon stone
+			if (holder.getStateNum(node) == 0) {
+				Weapon w = holder.getStorageFirstClass(node, Weapon.class);
+				return w.getBaseName() +", stuck in a rock";
+			}
+			return "Rock Fragments";
+		case 16:
+			return "Pack of Wolves";
+		case 17://shaman, uses causal text
+			return holder.getStorageFirstPerson(node).getBag().getRace().renderName(false);
+		}
+		return null;
 	}
 
 }

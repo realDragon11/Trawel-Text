@@ -1267,11 +1267,12 @@ public class RaceFactory {
 		w.finishGeneration();
 		return w;
 	}
-	public static Person getRich(int level) {
+	public static Person makeRich(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level);
 		w.hTask = HostileTask.RICH;
 		w.facRep.addFactionRep(Faction.MERCHANT,10*level,0);
+		w.getBag().addGold(level*3+extra.randRange(0,3));
 		extra.popPrintStack();
 		w.finishGeneration();
 		return w;
