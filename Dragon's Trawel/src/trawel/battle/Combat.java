@@ -191,6 +191,9 @@ public class Combat {
 			for (;doTimes > 0; doTimes--) {
 				switch (sk.lSkill.skill) {
 				case DEATH:
+					if (!extra.getPrint()) {
+						extra.println("The battlefield starts to wither!");
+					}
 					for (Person p: totalList) {
 						if (!p.getFlag(PersonFlag.PLAYER_SIDE)) {
 							p.getNextAttack().multPotencyMult(Math.min(20,sk.lSkill.value)/100.0);
@@ -199,6 +202,9 @@ public class Combat {
 					}
 					break;
 				case ELEMENTAL:
+					if (!extra.getPrint()) {
+						extra.println("The very air beings to boil! Armor melts away!");
+					}
 					for (Person p: totalList) {
 						if (!p.getFlag(PersonFlag.PLAYER_SIDE)) {
 							p.takeDamage(Math.min(20,sk.lSkill.value));
@@ -207,6 +213,9 @@ public class Combat {
 					}
 					break;
 				case SCRYING:
+					if (!extra.getPrint()) {
+						extra.println("A path is seen!");
+					}
 					for (Person p: totalList) {
 						if (p.getFlag(PersonFlag.PLAYER_SIDE)) {
 							p.advanceTime(sk.lSkill.value/10.0f);
@@ -214,6 +223,9 @@ public class Combat {
 					}
 					break;
 				case DEFENSE:
+					if (!extra.getPrint()) {
+						extra.println("The barricades are holding!");
+					}
 					for (Person p: totalList) {
 						if (!p.getFlag(PersonFlag.PLAYER_SIDE)) {
 							p.advanceTime(-sk.lSkill.value);
@@ -354,12 +366,18 @@ public class Combat {
 							Person newDef = getDefenderForConfusion(defender);
 							if (defender.getNextAttack().getDefender().isSameTargets(newDef)) {
 								defender.getNextAttack().setDefender(newDef);
+								if (!extra.getPrint()) {
+									extra.println(defender + " confuses who they're attacking!");
+								}
 							}else {
 								//targets don't match, need new attack.
 								//get discount on next one
 								double discount = -Math.max(0,((defender.getTime()-defender.getNextAttack().getWarmup()))/2.0);
 								setAttack(defender,newDef);
 								defender.applyDiscount(discount);
+								if (!extra.getPrint()) {
+									extra.println(defender + " looks around for a new target in confusion!");
+								}
 							}
 						}
 					}
@@ -460,7 +478,7 @@ public class Combat {
 	private Person getDefenderForConfusion(Person attacker) {
 		//will attempt to target anyone, but if that fails and targets self, revert to old way
 		Person defender = extra.randList(totalList);
-		if (defender == attacker) {
+		if (defender == attacker || defender.hasSkill(Skill.PLOT_ARMOR)) {//plot armor (npcs for now but would work on player sorta) have a reduced chance to get targeted
 			return getDefenderFor(attacker);
 		}
 		return defender;
@@ -509,6 +527,9 @@ public class Combat {
 	private void killData(Person dead, Person killer) {
 		dead.addDeath();
 		if (dead.hasSkill(Skill.CURSE_MAGE)) {
+			if (!extra.getPrint()) {
+				extra.println(dead.getName() + " curses the name of " +killer.getNameNoTitle()+"!");
+			}
 			killer.addEffect(Effect.CURSE);
 		}
 		//can insert a null check here later if need be
@@ -519,11 +540,18 @@ public class Combat {
 			killer.addPlayerKill();
 		}
 		if (killer.hasSkill(Skill.KILLHEAL)){
-			killer.addHp(Math.min(10*killer.getLevel(),5*dead.getLevel()));
+			int restore = Math.min(10*killer.getLevel(),5*dead.getLevel());
+			killer.addHp(restore);
+			if (!extra.getPrint()) {
+				extra.println(killer.getName() + " heals " + restore+" from the kill!");
+			}
 		}
 		if (killer.hasSkill(Skill.PRESS_ADV)) {
 			killer.addEffect(Effect.ADVANTAGE_STACK);
 			killer.addEffect(Effect.ADVANTAGE_STACK);
+			if (!extra.getPrint()) {
+				extra.println(killer.getName() + " presses the advantage!");
+			}
 		}
 		FBox.repCalc(killer,dead);
 	}
@@ -954,6 +982,9 @@ public class Combat {
 			if (attacker.hasSkill(Skill.BLOODTHIRSTY)) {
 				attacker.addHp(Math.min(defender.getLevel(),attacker.getLevel()));
 			}
+			if (attacker.hasSkill(Skill.NPC_BURN_ARMOR)) {
+				defender.getBag().burn(Math.max(0.1f,1f-(percent*2)),atr.attack.getSlot());
+			}
 		}else {//no impact
 			if (defender.hasSkill(Skill.MESMER_ARMOR)) {
 				if (defender.contestedRoll(attacker,defender.getClarity(),attacker.getHighestAttribute()) >= 0){
@@ -989,9 +1020,12 @@ public class Combat {
 			if (atr.code == ATK_ResultCode.DODGE) {
 				if (defender.hasSkill(Skill.SPEEDDODGE)) {
 					defender.applyDiscount(10);
+					extra.print(" They dodge closer to the action!");
 				}
 				if (defender.hasSkill(Skill.DODGEREF)) {
-					defender.addHp(Math.min(defender.getLevel()*2,attacker.getLevel()));
+					int dodgeHeal = Math.min(defender.getLevel()*2,attacker.getLevel());
+					defender.addHp(dodgeHeal);
+					extra.print(" Refreshing Dodge heals " + dodgeHeal +"!");
 				}
 			}
 			
@@ -1006,10 +1040,13 @@ public class Combat {
 				extra.print(inlined_color+atr.stringer.replace("[*]", inlined_color)+" "+randomLists.attackNegateFluff());
 			}
 			if (defender.hasSkill(Skill.ARMORHEART)) {
-				defender.addHp(Math.min(defender.getLevel()*2,attacker.getLevel()));
+				int armorHeal = Math.min(defender.getLevel()*2,attacker.getLevel());
+				defender.addHp(armorHeal);
+				extra.print(" Armor Heart heals " + armorHeal +"!");
 			}
 			if (defender.hasSkill(Skill.ARMORSPEED)) {
 				defender.applyDiscount(10);
+				extra.print(" They advance closer to the action...");
 			}
 			break;
 		}
@@ -1024,38 +1061,45 @@ public class Combat {
 		Person p = defender;
 		float hpRatio = ((float)p.getHp())/(p.getMaxHp());
 		//extra.println(p.getHp() + p.getMaxHp() +" " + hpRatio);
-		int tval = extra.clamp((int)(extra.lerp(125,256,hpRatio)),100,255);
-		extra.print(extra.inlineColor(new Color(tval,tval,tval)));
-		if (hpRatio >= 1) {
-			extra.println(p.getName() + " is untouched.");
-		}else {
-			if (hpRatio > .9) {
-				extra.println(p.getName() + " looks barely scratched.");
+		if (!extra.getPrint()) {//should save computions in non player battles
+			int tval = extra.clamp((int)(extra.lerp(125,256,hpRatio)),100,255);
+			extra.print(extra.inlineColor(new Color(tval,tval,tval)));
+			if (hpRatio >= 1) {
+				extra.println(p.getName() + " is untouched.");
 			}else {
-				if (hpRatio > .7) {
-					extra.println(p.getName() + " looks a little hurt.");
+				if (hpRatio > .9) {
+					extra.println(p.getName() + " looks barely scratched.");
 				}else {
-					if (hpRatio > .5) {
-						extra.println(p.getName() + " looks a bit damaged.");
+					if (hpRatio > .7) {
+						extra.println(p.getName() + " looks a little hurt.");
 					}else {
-						if (hpRatio > .25) {
-							extra.println(p.getName() + " looks moderately damaged.");
+						if (hpRatio > .5) {
+							extra.println(p.getName() + " looks a bit damaged.");
 						}else {
-							if (hpRatio > .1) {
-								extra.println(p.getName() + " looks close to death.");
+							if (hpRatio > .25) {
+								extra.println(p.getName() + " looks moderately damaged.");
 							}else {
-								extra.println(p.getName() + " looks like they're dying.");
+								if (hpRatio > .15) {
+									extra.println(p.getName() + " looks close to death.");
+								}else {
+									if (hpRatio > .05) {
+										extra.println(p.getName() + " looks like they're dying.");
+									}else {
+										extra.println(p.getName() + " is at death's door.");
+									}
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-		//}
 		
+		
+		/*
 		if (attacker.hasSkill(Skill.HPSENSE) || defender.hasSkill(Skill.HPSENSE)) {
 			extra.println(defender.getHp()+"/" + defender.getMaxHp() );
-		}
+		}*/
 		if (defender.hasSkill(Skill.RACIAL_SHIFTS)) {
 			RaceID rid = defender.getBag().getRaceID();
 			switch (rid) {
@@ -1098,23 +1142,36 @@ public class Combat {
 		//TODO: bleedout death quotes
 		int leech = (defender.hasEffect(Effect.B_MARY) ? 2 : 0) + (defender.hasSkill(Skill.BLOODDRINKER) ? 1 : 0);
 		int baseBleedDam = attacker.getLevel();
+		int totalBleed = 0;
 		if (attacker.hasEffect(Effect.BLEED)) {
 			attacker.takeDamage(baseBleedDam);
+			totalBleed+=baseBleedDam;
 			if (leech > 0) {
-				defender.addHp(baseBleedDam);
+				defender.addHp(baseBleedDam*leech);
 			}
 		}
 		int effectCount = attacker.effectCount(Effect.I_BLEED);
 		if (effectCount > 0) {
 			attacker.takeDamage(effectCount*baseBleedDam);
+			totalBleed+=baseBleedDam*effectCount;
 			if (leech > 0) {
-				defender.addHp(effectCount*baseBleedDam);
+				defender.addHp(effectCount*baseBleedDam*leech);
 			}
 		}
 		if (attacker.hasEffect(Effect.MAJOR_BLEED)) {
 			attacker.takeDamage(2*baseBleedDam);
+			totalBleed+=2*baseBleedDam;
 			if (leech > 0) {
-				defender.addHp(2*baseBleedDam);
+				defender.addHp(2*baseBleedDam*leech);
+			}
+		}
+		if (totalBleed > 0 && !extra.getPrint()) {
+			if (leech > 0) {
+				extra.println(defender.getName() + " heals off of "
+				+ attacker.getNameNoTitle() + "'s blood, healing " + (totalBleed*leech) + " HP off of "
+				+ (totalBleed) + " damage!");
+			}else {
+				extra.println(attacker.getName() + " bleeds for " + totalBleed + " HP.");
 			}
 		}
 		if (attacker.hasEffect(Effect.BEES) && extra.chanceIn(1,5)) {

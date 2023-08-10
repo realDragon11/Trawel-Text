@@ -156,6 +156,12 @@ public enum Skill{
 		NIGHTVISION("Nightvision","Lets you see objects in the dark."
 				,"Helps determine things in Graveyards."
 				, Type.OTHER),
+		NPC_BURN_ARMOR("Flaming Strikes","Burns armor with every Impactful attack."
+				,"Attacks damage armor twice as much as percent HP damage."
+				,Type.FEATURE),
+		PLOT_ARMOR("Fated","Confused targets have a reduced chance to attack this Person."
+				,"Does not apply Confusion on its own."
+				,Type.DEFENSE),
 		
 		
 		;

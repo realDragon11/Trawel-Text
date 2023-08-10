@@ -937,7 +937,7 @@ public class Town extends TContextOwner{
 							extra.println("\"I fell, but they picked me back up! Now I stand beside life itself against you!\"");
 						}
 						p.setTitle(extra.choose(", ","the ") +extra.choose("Life ","Primal ")+extra.choose("Keeper","Defender","Servant","Judge"));
-						p.setHasSkill(Skill.LIFE_MAGE);
+						//p.setHasSkill(Skill.LIFE_MAGE);TODO
 						p.setPersonType(PersonType.LIFEKEEPER);
 						break;
 					}

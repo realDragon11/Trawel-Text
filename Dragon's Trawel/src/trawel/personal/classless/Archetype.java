@@ -260,4 +260,9 @@ public enum Archetype implements IHasSkills{
 	public Set<FeatType> getFeatTypes() {
 		return fTypes;
 	}
+
+	@Override
+	public Set<Skill> giveSet() {
+		return skills;
+	}
 }

@@ -90,7 +90,7 @@ public class Person implements java.io.Serializable{
 		RACIST, ANGRY,
 		AUTOLOOT, AUTOLEVEL,
 		ISPLAYER, SMART_COMPARE,
-		PLAYER_SIDE//fighting alongside the player
+		PLAYER_SIDE//used for forts to determine their side. Currently the player can't fight against forts, but that might change
 		,IS_ADD//used to indicate less importance- in current cases, boss 'adds'
 		//thats 8, can't hold any more rn, might need to make another set
 	}
@@ -238,12 +238,7 @@ public class Person implements java.io.Serializable{
 		//this.defPow = bag.getRace().defPower;
 		if (isAI) {
 			setFlag(PersonFlag.AUTOLEVEL, true);
-			while (featPoints > 0) {
-				if (!pickFeatRandom()) {
-					break;
-				}
-				updateSkills();//TODO: makes higher level people slower
-			}
+			//need to call computelevels 0 yourself if you want it done first thing
 		}
 		//this.noAILevel = !isAI;
 		effects = new EnumMap<Effect,Integer>(Effect.class);
@@ -295,15 +290,9 @@ public class Person implements java.io.Serializable{
 	
 	/**
 	 * do not use, use updateSkills instead
-	 * FIXME: see if can just put updateskills code here... might have some stream issues
 	 */
-	public Stream<Skill> collectSkills(){
-		//return Stream.concat(featSet.parallelStream(), perkSet.parallelStream(),archSet.parallelStream());
-		//return Stream.of(featSet.parallelStream(),perkSet.parallelStream(),archSet.parallelStream());
-		//return HasSkills.combine(featSet.stream().flatMap(s -> collectSkills()),
-		//		perkSet.stream().flatMap(s -> collectSkills()),
-		//		archSet.stream().flatMap(s -> collectSkills()));
-		
+	private Stream<Skill> collectSkills(){
+
 		//ugh need to process them for attributes anyway
 		atrBox.reset();
 		atrBox.setCapacity(bag.getCapacity());
@@ -376,7 +365,8 @@ public class Person implements java.io.Serializable{
 	public Set<Archetype> getArchSet(){
 		return archSet;
 	}
-	
+	//TODO: make a quiet version for racefactory to use
+	//still better to start the leveling manually so if I add archetypes they beat out random ones
 	public void setSkillHas(IHasSkills has) {
 		if (has instanceof Feat) {
 			setFeat((Feat) has);
@@ -532,6 +522,7 @@ public class Person implements java.io.Serializable{
 			isPlay = true;
 		}
 		if (sipped == Effect.CURSE && hasSkill(Skill.TOXIC_BREWS)) {
+			extra.println("Their face contorts in power!");
 			for (int i = 0; i < 3;i++) {
 				addEffect(extra.randList(Effect.minorBuffEffects));
 			}
@@ -548,6 +539,9 @@ public class Person implements java.io.Serializable{
 				Networking.unlockAchievement("drink_beer");
 			}
 			hp+=level*5;
+			if (!isPlay) {
+				extra.println(getNameNoTitle()+" looks drunk!");
+			}
 		}
 		
 		if (hasSkill(Skill.BEER_BELLY)) {
@@ -561,14 +555,20 @@ public class Person implements java.io.Serializable{
 		if (this.hasEffect(Effect.HEARTY) || this.hasEffect(Effect.FORGED)) {
 			hp+=3*level;
 		}
+		boolean wentFast = false;
 		if (hasEffect(Effect.SUDDEN_START)) {
 			addEffect(Effect.BONUS_WEAP_ATTACK);
 			addEffect(Effect.ADVANTAGE_STACK);
+			wentFast = true;
 		}
 		
 		if (hasSkill(Skill.OPENING_MOVE)) {
 			addEffect(Effect.BONUS_WEAP_ATTACK);
 			addEffect(Effect.BONUS_WEAP_ATTACK);
+			wentFast = true;
+		}
+		if (wentFast && !isPlay && !extra.getPrint()) {
+			extra.println(getNameNoTitle() + " springs their trap!");
 		}
 		
 		speedFill = -1;
@@ -639,21 +639,32 @@ public class Person implements java.io.Serializable{
 	
 	/**
 	 * call after leveling up
+	 * <br>
+	 * also gets called after making an npc if we want them to autolevel
 	 * @param levels
-	 * @return
 	 */
 	public void computeLevels(int levels) {
 			//maxHp+=50*levels;
-			if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
+			if (!extra.getPrint() && getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 				BarkManager.getBoast(this, false);
 			}
 			addFeatPoint(levels);
-			if (getFlag(PersonFlag.AUTOLEVEL)) {
-				while (featPoints > 0) {
-					if (!pickFeatRandom()) {pickFeatRandom();//autoleveling doesn't consume picks
-						break;
+			if (featPoints > 0 && getFlag(PersonFlag.AUTOLEVEL)) {
+				if (featPoints == 1) {//only one
+					pickFeatRandom();
+					updateSkills();
+				}else {
+					while (featPoints > 0) {//autoleveling doesn't consume picks
+						IHasSkills gain =pickFeatRandom();
+						if (gain == null) 
+						{
+							break;
+						}
+						skillSet.addAll(gain.giveSet());//doesn't compute them fully, just enough to understand requirements
 					}
+					updateSkills();
 				}
+				
 			}
 			if (this.isPlayer()) {
 				Networking.send("PlayDelay|sound_magelevel|1|");
@@ -841,14 +852,15 @@ public class Person implements java.io.Serializable{
 	/**
 	 * will return false if can't get a feat
 	 */
-	public boolean pickFeatRandom() {//does not consume pick
+	public IHasSkills pickFeatRandom() {//does not consume pick
 		List<IHasSkills> hases = Archetype.getFeatChoices(this);
 		if (hases.isEmpty()) {
-			return false;
+			return null;
 		}
 		useFeatPoint();
-		setSkillHas(extra.randList(hases));
-		return true;
+		IHasSkills gain = extra.randList(hases);
+		setSkillHas(gain);
+		return gain;
 	}
 	
 	public void pickFeats(boolean consumePick) {
@@ -1185,6 +1197,10 @@ public class Person implements java.io.Serializable{
 		return firstName + " " + title;
 	}
 	
+	public String getNameNoTitle() {
+		return firstName;
+	}
+	
 	public void setFirstName(String str) {
 		firstName = str;
 	}
@@ -1474,22 +1490,6 @@ public class Person implements java.io.Serializable{
 			s.display();
 		}
 		
-	}
-	
-	/**
-	 * due to code changes there is a max of one skill count anyway
-	 * <br>
-	 * in the future will need to use perks or feats mostly
-	 * @param skill
-	 * @return false if already has and no change
-	 */
-	@Deprecated
-	public boolean setHasSkill(Skill skill) {
-		if (hasSkill(skill)) {
-			return false;
-		}
-		skillSet.add(skill);
-		return true;
 	}
 
 	public void setTitle(String s) {

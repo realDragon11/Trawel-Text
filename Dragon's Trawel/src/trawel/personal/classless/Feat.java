@@ -169,5 +169,10 @@ public enum Feat implements IHasSkills{
 	public int getClarity() {
 		return clarity;
 	}
+	
+	@Override
+	public Set<Skill> giveSet() {
+		return skills;
+	}
 
 }

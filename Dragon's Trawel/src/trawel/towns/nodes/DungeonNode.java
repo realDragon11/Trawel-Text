@@ -211,7 +211,7 @@ public class DungeonNode implements NodeType{
 		case 2:
 			holder.setForceGo(madeNode, true);
 			holder.setStorage(madeNode, new Object[] {extra.choose("Checkpoint","Barricade","Guardpost")
-					,RaceFactory.getDGuard(holder.getLevel(madeNode))});
+					,RaceFactory.makeDGuard(holder.getLevel(madeNode))});
 		break;
 		case 3:
 			List<Person> list = new ArrayList<Person>();
@@ -226,12 +226,12 @@ public class DungeonNode implements NodeType{
 				}
 			}
 			for (int i = 0; i < guardAmount;i++) {
-				list.add(RaceFactory.getDGuard(guardLevel));
+				list.add(RaceFactory.makeDGuard(guardLevel));
 			}
 			holder.setForceGo(madeNode, true);
 			holder.setStorage(madeNode, new Object[] {
 					extra.choose("Large ","Well Lit ","High Security ") +extra.choose("Checkpoint","Barricade","Guardpost")
-					,RaceFactory.getDGuard(holder.getLevel(madeNode))});
+					,RaceFactory.makeDGuard(holder.getLevel(madeNode))});
 		break;
 		case 4:
 			GenericNode.applyLockDoor(holder, madeNode);

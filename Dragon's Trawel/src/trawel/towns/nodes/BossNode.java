@@ -8,6 +8,7 @@ import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
+import trawel.personal.classless.Perk;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
@@ -48,8 +49,10 @@ public class BossNode implements NodeType {
 			//made.interactString = "challenge The Fatespinner";
 			
 			p = RaceFactory.getBoss(level);
+			p.setPerk(Perk.FATESPINNER_NPC);
 			p.setTitle("The Fatespinner");
 			p.getBag().getDrawBanes().add(DrawBane.TELESCOPE);
+			p.computeLevels(0);
 			peeps.add(p);
 			p = (RaceFactory.makeMimic(extra.zeroOut(level-3)+1));
 			p.setFlag(PersonFlag.IS_ADD, true);
@@ -63,8 +66,10 @@ public class BossNode implements NodeType {
 			//made.name = "The Hell Baron (Boss)";
 			//made.interactString = "challenge The Hell Baron";
 			p = RaceFactory.getBoss(level);
+			p.setPerk(Perk.HELL_BARON_NPC);
 			p.setTitle("The Baron of Hell");
 			p.getBag().getDrawBanes().add(DrawBane.LIVING_FLAME);
+			p.computeLevels(0);
 			peeps.add(p);
 		break;
 		}
@@ -100,6 +105,7 @@ public class BossNode implements NodeType {
 				//node.state = 1;
 				//node.name = "The Fatespinner's corpse";
 				setGenericCorpse(holder,node, spinner);
+				Player.player.getPerson().setPerk(Perk.FATED);
 				Networking.unlockAchievement("boss1");
 				return false;
 			}else {
@@ -134,6 +140,7 @@ public class BossNode implements NodeType {
 				Person baron = list.stream().filter(p->!p.getFlag(PersonFlag.IS_ADD)).findAny().get();
 				setGenericCorpse(holder,node, baron);
 				Networking.unlockAchievement("boss2");
+				Player.player.getPerson().setPerk(Perk.HELL_BARONESS);
 				return false;
 			}else {
 				return true;//lost, kick out

@@ -1,6 +1,7 @@
 package trawel.personal.classless;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
@@ -130,5 +131,9 @@ public interface IHasSkills {
 	public default int getAttackLevel(Person attacker) {
 		return Math.min(attacker.getClarity()/40,attacker.getLevel());
 	}
+	/**
+	 * mostly useful if you don't need to add them fully and just need this to compute half of something so you can tidy up later
+	 */
+	public Set<Skill> giveSet();
 
 }
