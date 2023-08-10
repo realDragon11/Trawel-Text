@@ -36,11 +36,11 @@ public class Oracle extends Feature{ //extends feature later
 		return extra.F_SPECIAL;
 	}
 
-	public static void tip(String mask) {//public so it can be accessed in other stuff		
+	public static void tip(String mask) {		
 		extra.println("\""+ extra.randList(tips.get(mask)) + "\"");
 	}
 	
-	public static String tipString(String mask) {//public so it can be accessed in other stuff
+	public static String tipString(String mask) {
 		return extra.randList(tips.get(mask));
 	}
 	

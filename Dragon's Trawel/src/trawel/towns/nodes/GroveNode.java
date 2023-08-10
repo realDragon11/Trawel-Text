@@ -8,6 +8,7 @@ import com.github.yellowstonegames.core.WeightedTable;
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
+import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.AIClass;
@@ -319,7 +320,7 @@ public class GroveNode implements NodeType{
 
 							@Override
 							public String title() {
-								return "End a Long Career";
+								return extra.PRE_BATTLE+"End a Long Career";
 							}
 
 							@Override
@@ -351,11 +352,11 @@ public class GroveNode implements NodeType{
 		case 8: return treeOfManyThings(holder,node);
 		case 9: return dryad(holder,node);
 		case 11: return funkyMushroom(holder,node);
-		case 12: return funkyMoss(holder,node);break;
+		case 12: return funkyMoss(holder,node);
 		case 14: return weapStone(holder,node);
-		case 18: return packOfWolves();
-		case 19: shaman();break;
-		case 21: beeHive();break;
+		case 18: return packOfWolves(holder,node);
+		case 19: return shaman(holder,node);
+		case 21: return beeHive(holder,node);
 		}
 		return false;
 	}
@@ -453,7 +454,7 @@ public class GroveNode implements NodeType{
 				extra.println("You move the tree off of them.");
 				holder.setStateNum(node,1);
 				if (extra.randFloat() > .9f) {
-					extra.println(extra.PRE_RED+"Suddenly, they attack you!");
+					extra.println(extra.PRE_BATTLE+"Suddenly, they attack you!");
 					p.hTask = HostileTask.MUG;
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
@@ -707,7 +708,7 @@ public class GroveNode implements NodeType{
 
 						@Override
 						public String title() {
-							return "Crush.";
+							return extra.PRE_BATTLE+"Crush.";
 						}
 
 						@Override
@@ -768,7 +769,7 @@ public class GroveNode implements NodeType{
 				p = RaceFactory.getDryad(holder.getLevel(node));
 				String str = holder.getStorageFirstClass(node,String.class);
 				holder.setStorage(node, new Object[] {str,p});
-				extra.println(randomLists.randomViolateForestQuote());
+				extra.println(extra.PRE_BATTLE+randomLists.randomViolateForestQuote());
 			}else {
 				p = holder.getStorageFirstPerson(node);
 			}
@@ -791,7 +792,9 @@ public class GroveNode implements NodeType{
 					p = RaceFactory.makeMuggerWithTitle(holder.getLevel(node));
 					String str = holder.getStorageFirstClass(node,String.class);
 					holder.setStorage(node, new Object[] {str,p});
-					extra.println("\"That looked expensive!\"");
+					extra.println( extra.PRE_BATTLE+"\"That looked expensive!\"");
+				}else {
+					p = holder.getStorageFirstPerson(node);
 				}
 				//act on thief
 				Combat c = Player.player.fightWith(p);
@@ -844,7 +847,7 @@ public class GroveNode implements NodeType{
 			}else {
 				worth *= 2;
 			}
-			worth/=2;
+			worth = extra.randRange(worth/2,worth)+1;
 			extra.println("You sell the mushroom for " +World.currentMoneyDisplay(worth) + ".");
 			Player.player.addGold(worth);
 			plantstart = "";
@@ -863,146 +866,49 @@ public class GroveNode implements NodeType{
 		return false;
 	}
 
-	private Person mushHelpRobber() {
-		switch (extra.randRange(0, 1)) {
-		case 0: extra.println("\"Hey, I wanted that!\"");break;
-		case 1: extra.println("\"You dirty plant-thief!\"");break;
-		}
-		
-		Person p = RaceFactory.getMugger(node.level);
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-		if (winner != p) {//player won, now it can be a plant spot
-			/*
-			node.state = 1;
-			node.storage1 = null;
-			node.name = "dead "+name;
-			node.interactString = "examine body";
-			*/
-		}else {
-			node.setForceGo(true);
-			node.eventNum = 3;
-			node.state = 0;
-			node.name = extra.choose("mugger","robber","thug","bandit","marauder","outlaw","desperado","cutthroat");
-			node.interactString = "ERROR";
-			node.storage1 = p;
-		}
-		return winner;
-	}
-	private Person mushHelpDryad() {
-		switch (extra.randRange(0, 1)) {
-		case 0: extra.println("\"You dare violate the forest?!\"");break;
-		case 1: extra.println("\"That was sacred!\"");break;
-		}
-		
-		Person p = RaceFactory.getDryad(node.level);
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-		if (winner != p) {//player won, now it can be a plant spot
-			/*
-			node.state = 1;
-			node.storage1 = null;
-			node.name = "dead "+name;
-			node.interactString = "examine body";
-			*/
-		}else {
-			node.setForceGo(true);
-			node.eventNum = 9;
-			node.state = 1;
-			node.name = "dryad";
-			node.interactString = "ERROR";
-			node.storage1 = p;
-		}
-		return winner;
-	}
-
 
 	/*for  Albin Grahn */
-	private void funkyMoss() {
-		if (node.state == 0) {
-			extra.println("You see something shining under the moss!");
-			extra.println("1 take it");
-			extra.println("2 leave it alone");
-			switch (extra.inInt(2)) {
-			case 1: 
-				DrawBane db = node.attemptCollectAll(.7f, 3);
-				if (db != null) {
-					extra.println("Wow, there were a ton of "+ db.getName() +" pieces under the moss!");
-					node.state = 1;
-				}else {
-					int g = extra.randRange(1,3)*node.level;
-					extra.println("You find " +World.currentMoneyDisplay(g) + "!");
-					Player.player.addGold(g);
-					node.state = 1;
-					if (extra.randRange(1,3) == 1) {
-						mushHelpRobber();
-					}
-				}
-				//no break because moss remains
-			case 2: extra.println("You leave the moss alone.");break;
+	private boolean funkyMoss(NodeConnector holder,int node) {
+		int state = holder.getStateNum(node);
+		int startstate = state;
+		if (state == 0) {//under
+			extra.println("You see something shining under the moss! Get a closer look?");
+			if (!extra.yesNo()) {
+				extra.println("You leave it alone.");
+				return false;
 			}
-		}else {
-			if (node.state == 1) { 
-				extra.println("There is some moss here.");
-				extra.println("1 eat it");
-				extra.println("2 sell it");
-				extra.println("3 leave it alone");
-				int in = extra.inInt(3);
-				if (in < 3) {
-					node.state = 2;
-					node.name = "plant spot";
-					node.interactString = "approach plant spot";
-					node.eventNum = -1;
-					node.storage1 = new PlantSpot(extra.zeroOut(node.level-1));
-				}
-				switch (in) {
-				default: case 3: extra.println("You decide to leave it alone.");break;
-				case 1:
-					extra.println("You eat the moss...");
-					switch(extra.randRange(1,4)) {
-					case 1: extra.println("The moss is delicous!");//DOLATER: maybe something?
-					break;
-					case 2: case 4: extra.println("Eating the moss is very difficult... but you manage.");
-					Player.player.getPerson().addXp(node.level);break;
-					case 3: extra.println("You feel lightheaded.... you pass out!");
-					extra.println("When you wake up, you find that someone went through your stuff!");
-					extra.println(Player.loseGold(extra.randRange(1,5*node.level),true))
-					;break;
-					}
-					if (extra.randFloat() > .8f) {
-						extra.println(extra.PRE_RED + "As you eat the moss, you hear a voice cry out:");
-						switch(extra.randRange(1,2)) {
-						case 1: mushHelpDryad();break;
-						case 2: mushHelpRobber();break;}
-					}
-
-					;break;
-				case 2:
-					extra.println("You pick up the moss to sell it.");
-					if (extra.randFloat() > .8f) {
-						extra.println(extra.PRE_RED+"You hear someone cry out from behind you!");
-						Person winner = null;
-						switch(extra.randRange(1,2)) {
-						case 1: winner = mushHelpDryad() ;break;
-						case 2: winner = mushHelpRobber();break;
-						}
-						if (winner == Player.player.getPerson()) {
-							int gold = extra.randRange(1,node.level);
-							extra.println("You sell the moss for " + World.currentMoneyDisplay(gold) + ".");
-							Player.player.addGold(gold);
-						}
-					}else {
-						int gold = extra.randRange(0,Math.max(1,node.level/2));
-						if (gold == 0 || extra.chanceIn(1,1+node.level)) {
-							extra.println("The moss wasn't worth anything");
-							break;
-						}
-						extra.println("You sell the moss for " + World.currentMoneyDisplay(gold) + ".");
-						Player.player.addGold(gold);
-					};break;
-				}
+			//shiny stuff time
+			DrawBane db = holder.attemptCollectAll(node,.7f, 3);
+			if (db != null) {
+				extra.println("Wow, there were a ton of "+ db.getName() +" pieces under the moss!");
+				holder.setStateNum(node,1);
+				state = 1;
 			}else {
-				extra.println("There was some moss here.");
+				int worth = holder.getLevel(node);
+				boolean will_attack = extra.chanceIn(1,3);
+				if (will_attack) {
+					worth*=2;
+				}
+				worth = extra.randRange(worth/3,worth-1)+1;
+				extra.println("You find " +World.currentMoneyDisplay(worth) + " under the moss!");
+				Player.player.addGold(worth);
+				if (will_attack) {
+					GenericNode.setBasicRagePerson(holder, node,
+							RaceFactory.makeMuggerWithTitle(holder.getLevel(node))
+							,"Moss Thief","They still wanted what was under that moss!");
+					return false;//reset for forcego
+				}
+				//continue
+				holder.setStateNum(node,1);
+				state = 1;
 			}
 		}
+		if (state == 1) { 
+			extra.println("There is some moss here. It looks poisonous.");
+			return false;//TODO maybe make this have more behavior again
+			
+		}
+		return false;
 	}
 	
 	private boolean weapStone(NodeConnector holder,int node) {//TODO: maybe let this refill?
@@ -1034,112 +940,91 @@ public class GroveNode implements NodeType{
 		return false;
 	}
 
-	private void shaman() {
-		if (node.state == 1) {
-			randomLists.deadPerson();
-			node.findBehind("body");
-			return;
-		}
-		Person equal = (Person)node.storage1;
-		equal.getBag().graphicalDisplay(1,equal);
-		boolean bool = true;
-		while (bool) {
-			extra.print(extra.PRE_RED);
-			extra.println("1 attack");
-			extra.println("2 chat");
-			extra.println("3 leave");
-			switch (extra.inInt(3)) {
-			case 1: node.name = "angry " +node.name ; node.interactString = "ERROR";
-			//storage1 = storage2;
-			node.setForceGo(true);
-			node.eventNum = 3;
-			bool = false;
-			;break;
-			case 2:
-				boolean bool2 = true;
-				while (bool2) {
-					extra.println("They say that they are a shaman.");
-					int cost = node.level*50;
-					extra.println("1 Buy cleansing ("+World.currentMoneyDisplay(cost)+ ")");
-					extra.println("2 chat");
-					extra.println("3 return");
+	private boolean shaman(NodeConnector holder,int node) {
+		Person p = holder.getStorageFirstPerson(1);
+		p.getBag().graphicalDisplay(1,p);
+		int cost = holder.getLevel(node)*4;
+		extra.menuGo(new MenuGenerator() {
 
-					switch (extra.inInt(3)) {
-					case 1: if (Player.player.getGold() < cost) {
-						extra.println("Not enough "+ World.currentMoneyString()+"! (You have " + Player.showGold() + ")");
-						break;
-					}
-					Player.player.addGold(-cost);
-					Player.player.getPerson().cureEffects();
-					extra.println("You feel better.");
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuLine() {
 
-					break;
-					case 2: Oracle.tip("shaman");break;
-					case 3: bool2 = false;break;
+					@Override
+					public String title() {
+						return "\""+Oracle.tipString("shaman")+"\"";
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Buy Cleansing (" + World.currentMoneyDisplay(cost) +" of your "+Player.player.getGoldDisp()+ ")";
 					}
-				};break;
-			case 3:bool = false;break;
-			}
-		}
+
+					@Override
+					public boolean go() {
+						if (cost > Player.player.getGold()) {
+							extra.println("You can't afford that!");
+							return false;
+						}
+						extra.println("Really pay?");
+						if (extra.yesNo()) {
+							Player.player.addGold(-cost);
+							Player.player.getPerson().cureEffects();
+							extra.println("You feel better.");
+							return false;
+						}
+						extra.println("You decide to not.");
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return extra.PRE_BATTLE+"Attack";
+					}
+
+					@Override
+					public boolean go() {
+						extra.println(extra.PRE_BATTLE+" Really attack " +p.getName()+"?");
+						if (extra.yesNo()) {
+							GenericNode.setBasicRagePerson(holder, node, p,"Wary Shaman","The Shaman is ready for you!");
+							return true;
+						}
+						return false;
+					}});
+				return list;
+			}});
+		return false;
 	}
+	
+	private boolean packOfWolves(NodeConnector holder,int node) {
+		extra.print(extra.PRE_RED);
+		extra.println(extra.PRE_BATTLE+"The pack descends upon you!");
+		List<Person> list = holder.getStorageFirstClass(node,List.class);
+		Combat c = mainGame.HugeBattle(holder.getWorld(),Player.wrapForMassFight(list));
 
-	private boolean packOfWolves() {
-		if (node.state == 0) {
-			extra.print(extra.PRE_RED);
-			extra.println("The pack descends upon you!");
-			List<Person> list = (List<Person>)node.storage1;
-			List<Person> survivors = mainGame.HugeBattle(list,Player.list());
-
-			if (survivors.contains(Player.player.getPerson())) {
-				node.setForceGo(false);
-				node.interactString = "approach wolf corpses";
-				node.storage1 = null;
-				node.state = 1;
-				node.name = "dead wolves";
-				return false;
-			}else {
-				node.storage1 = survivors;
-				return true;
-			}
-		}else {
-			extra.println("There are a few wolf corpses here.");
-			node.findBehind("corpses");
+		if (c.playerWon() > 0) {
+			holder.setForceGo(node,false);
+			GenericNode.setSimpleDeadRaceID(holder, node, list.get(0).getBag().getRaceID());
 			return false;
-		}
-	}
-	
-	private void collector() {
-		if (node.state == 0) {
-			Person p = (Person)node.storage1;
-			p.getBag().graphicalDisplay(1, p);
-			extra.print(extra.PRE_RED);
-			extra.println("Challenge "+ p.getName() + "?");
-			if (extra.yesNo()){
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-				if (winner != p) {
-					node.state = 1;
-					node.storage1 = null;
-					node.name = "dead "+node.name;
-					node.interactString = "examine body";
-				}
-			}
-		}else {randomLists.deadPerson();
-		node.findBehind("body");
+		}else {
+			holder.setStorage(node,c.survivors);
+			return true;
 		}
 
 	}
-	
-	private void beeHive() {
-		node.name = "plant spot";
-		node.interactString = "approach plant spot";
-		node.eventNum = -1;
-		node.storage1 = new PlantSpot(node.level);
-		extra.println("You destroy the hive, angering the bees!");
+	private boolean beeHive(NodeConnector holder,int node) {
+		extra.print("You destroy the hive... ");
+		Player.player.getPerson().addEffect(Effect.BEES);//BEEEEEEEEEEEEEEEEEEEEEES
+		extra.println("The BEEEEEES!!!! They're angry!");
+		GenericNode.setPlantSpot(holder, node, "bee larva");
+		
 		Player.bag.addNewDrawBane(DrawBane.HONEY);
 		Player.bag.addNewDrawBane(DrawBane.WAX);
 		Player.bag.addSeed(Seed.BEE);
-		Player.player.getPerson().addEffect(Effect.BEES);
-		
+		return false;//could have them drive you out but that would be mean
 	}
 
 	@Override
@@ -1157,6 +1042,9 @@ public class GroveNode implements NodeType{
 			return "Examine fallen tree.";
 		case 9://dryad
 			return "Approach the Dryad's tree.";
+			
+			//thankfully the things below will auto take out of arrays
+			
 		case 11://mushroom, colored
 			return "Examine the " + holder.getStorageFirstClass(node, String.class) + " mushroom"+extra.PRE_WHITE+".";
 		case 12://moss, colored

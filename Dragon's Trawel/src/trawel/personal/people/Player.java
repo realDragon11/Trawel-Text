@@ -384,7 +384,8 @@ public class Player extends SuperPerson{
 	public boolean hasGoal(AgentGoal goal) {
 		return false;
 	}
-	
+	//TODO: both this and the other method would technically work fine with companions
+	//because both the fightWith and this either call a mass fight directly or don't call any fight directly
 	public static List<List<Person>> wrapForMassFight(List<Person> fightwith){
 		List<List<Person>> listlist = new ArrayList<List<Person>>();
 		listlist.add(Player.list());
