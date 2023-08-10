@@ -14,7 +14,6 @@ public class UnitAssertions {
 	//NOTE that you must use the vm arg "-ea" to enable assertions
 
 	public static void main(String[] args) {
-		
 		extra.setMainThread();
 		System.out.println("starting");
 		mainGame.unitTestSetup();

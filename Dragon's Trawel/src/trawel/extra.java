@@ -768,7 +768,9 @@ public final class extra {
 		
 		//NOTE: predefined color mixes inlined
 		public static final String PRE_WHITE = inlineColor(Color.WHITE);
+		@Deprecated
 		public static final String PRE_RED = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f));
+		public static final String PRE_BATTLE = PRE_RED;
 		public static final String PRE_ORANGE = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f));
 		public static final String PRE_YELLOW = inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f));
 		public static final String PRE_BLUE = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f));
@@ -1106,6 +1108,23 @@ public final class extra {
 			}
 			return peeps.get(0);
 		}
+		
+		//not static so noone will ever see it, the dumbest thing
+		//don't let your memes be dreams :DDDDD erase types
+		/*public static <E> void unTypeEraser(Object[] objects,Class<?> E) throws Exception, YESALLEXECPTIONS {
+			Class<E> c = (Class<E>)objects[1];
+			Object o = objects[0];
+			boolean BEHOLD = o.equals(c.cast(o));
+			boolean THE = c.newInstance().getClass().getCanonicalName().equals(o.getClass().getCanonicalName());
+			boolean MALIGNITY = o.hashCode() == c.cast(o).hashCode();
+			boolean OF =  !c.isInstance(objects);
+			boolean STARS = !c.isInstance("**********");
+			assert BEHOLD && THE && MALIGNITY && OF && THE && STARS;
+		}
+		
+		public class YESALLEXECPTIONS extends Exception{
+			
+		}*/
 
 		
 }

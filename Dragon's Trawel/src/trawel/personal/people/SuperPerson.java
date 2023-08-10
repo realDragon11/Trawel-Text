@@ -72,6 +72,8 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 		if (Player.player == this) {
 			Player.updateWorld(location.getIsland().getWorld());
 		}
+		
+		addGold(getPerson().getBag().surrenderRawMoney());
 	}
 	
 	public abstract Person getPerson();
@@ -303,10 +305,19 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	public int getGold() {
 		World w = getWorld();
 		if (w == null) {
-			return 0;
+			return getGold(Player.getPlayerWorld());
 		}
 		return getGold(w);
 	}
+	public String getGoldDisp() {
+		World w = getWorld();
+		if (w == null) {
+			w = Player.getPlayerWorld();
+		}
+		return w.moneyString(getGold(w));
+	}
+	
+	
 	public void addGold(int delta) {
 		World w = getWorld();
 		if (w == null) {

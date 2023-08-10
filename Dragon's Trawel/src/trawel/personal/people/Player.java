@@ -403,6 +403,9 @@ public class Player extends SuperPerson{
 	public boolean everDeathCheated() {
 		return true;//the player is the biggest deathcheater of them all
 	}
+	public static void placeAsOccupant(Person p) {
+		Player.player.getWorld().addReoccuring(new Agent(p));
+	}
 	
 	
 }

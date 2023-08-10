@@ -19,7 +19,9 @@ import trawel.mainGame;
 import trawel.randomLists;
 import trawel.battle.Combat;
 import trawel.factions.Faction;
+import trawel.factions.HostileTask;
 import trawel.personal.Person;
+import trawel.personal.Person.PersonType;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.Item;
 import trawel.personal.item.Seed;
@@ -155,7 +157,9 @@ public class GroveNode implements NodeType{
 			holder.setStorage(madeNode, old);
 			break;
 		
-		case 8: made.name = "fallen tree"; made.interactString = "examine fallen tree";break;
+		case 8:
+			holder.setStorage(madeNode,false);//needs to be 'refilled' by time passing
+			;break;
 		case 9: made.name = "dryad"; made.interactString = "approach the " + made.name;
 		made.storage1 = RaceFactory.getDryad(made.level);
 		made.storage2 = extra.randRange(0,1);
@@ -329,7 +333,7 @@ public class GroveNode implements NodeType{
 				}
 			}
 			return false;
-		case 8: treeOnPerson();break;
+		case 8: return treeOfManyThings(holder,node);
 		case 9: dryad();break;
 		case 10: fallenTree();break;
 		case 11: funkyMushroom();break;
@@ -344,7 +348,6 @@ public class GroveNode implements NodeType{
 		case 20: collector();break;
 		case 21: beeHive();break;
 		}
-		Networking.clearSide(1);
 		return false;
 	}
 	
@@ -357,6 +360,14 @@ public class GroveNode implements NodeType{
 	public void passTime(NodeConnector holder, int node, double time, TimeContext calling) {
 		// empty
 		switch (holder.getEventNum(node)) {
+		case 8:
+			if (holder.globalTimer > 1f) {
+				if (holder.getStorageFirstClass(node,Boolean.class)) {
+					holder.globalTimer-=.5f;
+					holder.setStorage(node, false);//refill
+				}
+			}
+			break;
 		case 5:
 			PlantSpot[] spots = (PlantSpot[])holder.getStorage(node);
 			//should probably find some way to not pass time as often
@@ -474,33 +485,92 @@ public class GroveNode implements NodeType{
 		}else {randomLists.deadPerson();}
 	}
 
-	private void treeOnPerson() {
-		if (node.state == 1) {
-			extra.println("You examine the fallen tree. It is very pretty.");
-			return;
+	private boolean treeOfManyThings(NodeConnector holder,int node) {
+		int state = holder.getStateNum(node);
+		if (holder.getStorageFirstClass(node,Boolean.class)) {
+			extra.println("The tree looks... hollow?");
+			holder.findBehind(node, "oddly hollow tree");
+			return false;
 		}
-		extra.println("There's a person stuck under the fallen tree! Help them?");
-		if (extra.yesNo()) {
-			extra.println("You move the tree off of them.");
-			node.state = 1;
-			if (Math.random() > .9) {
-				extra.print(extra.PRE_RED);
-				extra.println("Suddenly, they attack you!");
-				mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getMugger(node.level));
-			}else {
-				if (Math.random() < .3) {
-					extra.println("They scamper off...");
-					node.findBehind("tree");
+		//FIXME: many things! add a thing, and make it not happen if it was the last thing
+		switch (state) {
+		case 0://always starts in state 0
+			extra.println("You examine the fallen tree. It is very pretty... but something feels off.");
+			holder.findBehind(node, "fallen tree");
+			break;
+		case 1:
+			Person p = RaceFactory.makeGeneric(holder.getLevel(node));
+			p.getBag().graphicalDisplay(1, p);
+			extra.println("There's a person stuck under the fallen tree! Help them?");
+			if (extra.yesNo()) {
+				extra.println("You move the tree off of them.");
+				holder.setStateNum(node,1);
+				if (extra.randFloat() > .9f) {
+					extra.println(extra.PRE_RED+"Suddenly, they attack you!");
+					p.hTask = HostileTask.MUG;
+					Combat c = Player.player.fightWith(p);
+					if (c.playerWon() > 0) {
+					}else {
+						extra.println(Player.loseGold(p.getLevel(), true));
+						Player.placeAsOccupant(p);
+					}
 				}else {
-					int gold = extra.randRange(0,5)+ (node.getLevel()*extra.randRange(1,4));
-					extra.println("They give you a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them.");
-					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
-					Player.player.addGold(gold);
+					if (extra.randFloat() < .3f) {
+						p.hTask = HostileTask.PEACE;
+						p.setPersonType(PersonType.COWARDLY);
+						extra.println("They scamper off... "+extra.PRE_BATTLE+"Attack them?");
+						if (extra.yesNo()) {
+							Combat c = Player.player.fightWith(p);
+							if (c.playerWon() > 0) {
+							}else {
+								Player.placeAsOccupant(p);
+							}
+						}else {
+							extra.println("Well, that wasn't very rewarding...");
+							Networking.clearSide(1);
+							holder.findBehind(node,"tree");
+						}
+					}else {
+						int gold = extra.randRange(0,3)+ (holder.getLevel(node)*extra.randRange(1,3));
+						extra.println("They offer a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them. "+extra.PRE_BATTLE+"...But it looks like they might have more. Mug them?");
+						if (extra.yesNo()) {
+							p.getBag().addGold(gold);
+							p.hTask = HostileTask.PEACE;
+							Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,0,1);
+							Combat c = Player.player.fightWith(p);
+							if (c.playerWon() > 0) {
+							}else {
+								Player.placeAsOccupant(p);
+							}
+						}else {
+							Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
+							Player.player.addGold(gold);
+							extra.println("They walk off, leaving you with your reward.");
+						}
+					}
 				}
+			}else {
+				extra.println("You leave them alone to rot...");
 			}
-		}else {
-			extra.println("You leave them alone to rot...");
+			
+			break;
 		}
+		if (state != 0 && extra.chanceIn(1,3)) {
+			extra.println("What an odd tree.");
+		}
+		holder.setStateNum(node, treeRandNot(state));
+		holder.setStorage(node,true);//needs to be 'refilled' by time passing
+		
+		return false;
+	}
+	
+	public int treeRandNot(int not) {
+		int cap = 5;
+		int potential = extra.randRange(0,cap);
+		if (potential == not) {
+			potential = (potential+extra.randRange(0,cap/2))%cap;
+		}
+		return potential;
 	}
 
 	private void dryad() {
@@ -569,11 +639,6 @@ public class GroveNode implements NodeType{
 		}else {
 			randomLists.deadPerson();node.findBehind("body");
 		}
-	}
-
-	private void fallenTree() {
-		extra.println("You examine the fallen tree. It is very pretty.");
-		node.findBehind("tree");
 	}
 
 	private void funkyMushroom() {

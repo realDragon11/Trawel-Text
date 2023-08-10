@@ -377,8 +377,17 @@ public class Inventory implements java.io.Serializable{
 			tempStr += " "+ armorSlots[i].getName() + ",\n";
 			i++;
 		}
+		if (owner.getSuper()!= null) {
+				return tempStr + " and a " + hand.getName() + "\n as well as " 
+						+ 
+						owner.getSuper().getGoldDisp()
+						+".";
+		}
 		return tempStr + " and a " + hand.getName() + "\n as well as " 
-		+ World.currentMoneyDisplay(money)  +".";//There are way to many plurals to account for
+		+ 
+		World.currentMoneyDisplay(money)
+		+".";
+		//There are way to many plurals to account for
 	}//gold + " " + extra.choose("gold","gold pieces","pieces of gold")
 	
 	
@@ -414,7 +423,20 @@ public class Inventory implements java.io.Serializable{
 	 * @return the gold in the inventory (int)
 	 */
 	public int getGold() {
+		if (owner.getSuper() != null) {
+			World w = owner.getSuper().getWorld();
+			if (w == null) {
+				return owner.getSuper().getGold(Player.getPlayerWorld());
+			}
+			return owner.getSuper().getGold(w);
+		}
 		return money;
+	}
+	
+	public int surrenderRawMoney() {
+		int temp = money;
+		money = 0;
+		return temp;
 	}
 
 
@@ -433,7 +455,11 @@ public class Inventory implements java.io.Serializable{
 		hand.display(1);
 		hand.getMartialStance().display(1);
 	
-	extra.println( World.currentMoneyDisplay(money) +".");
+		if (owner.getSuper()!= null) {
+			extra.println( owner.getSuper().getGoldDisp() +".");
+		}else {
+			extra.println( World.currentMoneyDisplay(money) +".");
+		}
 	
 	}
 
