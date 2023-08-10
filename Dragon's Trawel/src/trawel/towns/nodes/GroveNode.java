@@ -37,7 +37,7 @@ import trawel.towns.services.Oracle;
 
 public class GroveNode implements NodeType{
 
-	private static final int EVENT_NUMBER = 18;
+	private static final int EVENT_NUMBER = 17;
 
 	private WeightedTable groveBasicRoller;
 	
@@ -217,10 +217,7 @@ public class GroveNode implements NodeType{
 		case 16:
 			holder.setStorage(madeNode, RaceFactory.getShaman(holder.getLevel(madeNode)));
 			break;
-		case 17:
-			GenericNode.applyCollector(holder, madeNode);
-			break;
-		case 18://bee hive, turns into plant spot
+		case 17://bee hive, turns into plant spot
 			break;
 		}
 		//TODO: add lumberjacks and tending to tree
@@ -353,8 +350,8 @@ public class GroveNode implements NodeType{
 			return false;
 		case 8: return treeOfManyThings(holder,node);
 		case 9: return dryad(holder,node);
-		case 11: funkyMushroom();break;
-		case 12: funkyMoss();break;
+		case 11: return funkyMushroom(holder,node);
+		case 12: return funkyMoss(holder,node);break;
 		case 14: return weapStone(holder,node);
 		case 18: return packOfWolves();
 		case 19: shaman();break;
@@ -673,75 +670,197 @@ public class GroveNode implements NodeType{
 	}
 
 	private boolean funkyMushroom(NodeConnector holder,int node) {
-		if (node.state == 0) {
-			extra.println("You spot a glowing mushroom on the forest floor.");
-			extra.println("1 leave it");
-			extra.println("2 eat it");
-			extra.println("3 sell it");
-			extra.println("4 crush it");
-			int in =  extra.inInt(4);
-			if (in > 1) {
-				node.name = "plant spot";
-				node.interactString = "approach plant spot";
-				node.eventNum = -1;
-				node.storage1 = new PlantSpot(node.level + (in == 4 ? 1 : 0));
-				node.state = 1;
-			}
-			switch (in) {
-			default: case 1: extra.println("You decide to leave it alone.");node.findBehind("mushroom");break;
-			case 2:
-				extra.println("You eat the mushroom...");
-				switch(extra.randRange(1,3)) {
-				case 1: extra.println("The mushroom is delicous!")//DOLATER: maybe something?
-				;break;
-				case 2: extra.println("Eating the mushroom is very difficult... but you manage.");
-				Player.player.getPerson().addXp(node.level*2);break;
-				case 3: extra.println("You feel lightheaded.... you pass out!");
-				extra.println("When you wake up, you notice someone went through your bags!");
-				extra.println(Player.loseGold(node.level*extra.randRange(5,10),true));
-				break;
-				}
-				if (Math.random() > .8) {
-					extra.println(extra.PRE_RED+"As you eat the mushroom, you hear a voice cry out:");
-					switch(extra.randRange(1,2)) {
-					case 1: mushHelpDryad();break;
-					case 2: mushHelpRobber();break;
-					}
-				}
+		int state = holder.getStateNum(node);
+		int startstate = state;
+		if (state == 0) {
+			extra.println("You spot a glowing "+holder.getStorageFirstClass(node, String.class)+"mushroom on the forest floor.");
+			extra.menuGo(new MenuGenerator() {
 
-				;break;
-			case 3:
-				extra.println("You pick up the mushroom to sell it.");
-				if (Math.random() > .8) {
-					extra.print(extra.PRE_RED);
-					extra.println("You hear someone cry out from behind you!");
-					Person winner = null;
-					switch(extra.randRange(1,2)) {
-					case 1: winner = mushHelpDryad() ;break;
-					case 2: winner = mushHelpRobber();break;
-					}
-					if (winner == Player.player.getPerson()) {
-						int gold = 3*extra.randRange(1,node.level+1);
-						extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
-						Player.player.addGold(gold);
-					}
-				}else {
-					int gold = extra.randRange(1,node.level+1);
-					extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
-					Player.player.addGold(gold);
-				};break;
-			case 4:
-				extra.println("You crush the mushroom under your heel.");
-				extra.println(extra.PRE_RED+"You hear someone cry out from behind you!");
-				switch(extra.randRange(1,2)) {
-				case 1: mushHelpDryad();break;
-				case 2: mushHelpRobber();break;
-				}
-				;break;
-			}
-		}else {
-			extra.println("There was a mushroom here.");//no longer happens
+				@Override
+				public List<MenuItem> gen() {
+					List<MenuItem> list = new ArrayList<MenuItem>();
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Eat it whole!";
+						}
+
+						@Override
+						public boolean go() {
+							holder.setStateNum(node,1);
+							return false;
+						}});
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Melt into Aether.";
+						}
+
+						@Override
+						public boolean go() {
+							holder.setStateNum(node,2);
+							return false;
+						}});
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Crush.";
+						}
+
+						@Override
+						public boolean go() {
+							holder.setStateNum(node,3);
+							extra.println("You crush the mushroom under your heel.");
+							return false;
+						}});
+					return list;
+				}});
 		}
+		state = holder.getStateNum(node);
+		if (state == 0) {//didn't interact
+			extra.println("You decide to leave it alone.");
+			holder.findBehind(node, "nearby rock");
+			return false;
+		}
+		switch (state) {
+		case 1://eat
+			if (extra.chanceIn(1, 4)) {//25% chance of anger
+				if (extra.chanceIn(1,5)) {
+					state = 22;//dryad takes offense
+				}else {
+					state = 32;//thief takes offense
+				}
+			}
+			break;
+		case 2://sell
+			if (extra.chanceIn(3, 4)) {//75% chance of anger
+				if (extra.chanceIn(1,3)) {
+					state = 22;//dryad takes offense
+				}else {
+					state = 32;//thief takes offense
+				}
+			}
+			break;
+		case 3://crush
+			if (extra.chanceIn(3,4)) {
+				state = 23;//dryad takes offense
+			}else {
+				state = 33;//thief takes offense
+			}
+			break;
+		case 4://extract
+			//not in yet
+			break;
+		}
+		holder.setStateNum(node, state);
+		//<10 = no issues
+		//10-19 = reserved for if "we had an issue but resolved it" becomes a valid case
+		//20-29 = dryad
+		//30-39 = thief
+		//use least significant digit to determine outcome after
+		if (state > 20 && state < 30) {//dryad
+			Person p;
+			if (startstate == 0) {//we chose an action this interaction, set stuff up
+				//make sure not to overwrite our color name!
+				p = RaceFactory.getDryad(holder.getLevel(node));
+				String str = holder.getStorageFirstClass(node,String.class);
+				holder.setStorage(node, new Object[] {str,p});
+				extra.println(randomLists.randomViolateForestQuote());
+			}else {
+				p = holder.getStorageFirstPerson(node);
+			}
+			//act on dryad
+			Combat c = Player.player.fightWith(p);
+			if (c.playerWon() > 0){
+				//deded
+				holder.setStorage(node, holder.getStorageAsArray(node)[0]);//clean up the person now instead of later
+			}else {
+				return true;//kick out
+			}
+			
+			//return true if player dead, otherwise cleanup then fall through
+			
+		}else {
+			Person p;
+			if (state > 30 && state < 40) {//thief
+				if (startstate == 0) {//we chose an action this interaction, set stuff up
+					//make sure not to overwrite our color name!
+					p = RaceFactory.makeMuggerWithTitle(holder.getLevel(node));
+					String str = holder.getStorageFirstClass(node,String.class);
+					holder.setStorage(node, new Object[] {str,p});
+					extra.println("\"That looked expensive!\"");
+				}
+				//act on thief
+				Combat c = Player.player.fightWith(p);
+				if (c.playerWon() > 0){
+					//deded
+					holder.setStorage(node, holder.getStorageAsArray(node)[0]);//clean up the person now instead of later
+				}else {
+					return true;//kick out
+				}
+				//return true if player dead, otherwise cleanup then fall through
+			}
+		}
+		String plantstart = null;//do not add
+		switch (state%10) {//now just the starting digit
+		case 1://eat
+			if (state < 10) {//if not interrupted
+				extra.print("You eat the mushroom... ");
+			}else {
+				extra.println("Resume eating the mushroom?");
+				if (!extra.yesNo()) {
+					return false;
+				}
+				extra.print("You return to your meal, and ");
+			}
+			//all paths replace with new plant spot
+			if (extra.chanceIn(1,3)) {
+				extra.println("it tastes delicous!");
+				plantstart = "truffle spores";
+			}else {
+				if (extra.chanceIn(1,3)) {
+					extra.println("you start to feel lightheaded.... you pass out!");
+					extra.println("When you wake up, you notice someone went through your bags!");
+					extra.println(
+							Player.loseGold(
+							holder.getLevel(node)*extra.randRange(3,5),true)
+						);
+					plantstart = "empty pumpkin patch";//TODO
+				}else {
+					extra.println("getting it down is very difficult... but you manage.");
+					int xpadd = Math.min(Player.player.getPerson().getLevel(),holder.getLevel(node));
+					Player.player.getPerson().addXp(xpadd);
+					plantstart = "";//add with nothing
+				}
+			}
+			break;
+		case 2://sell
+			int worth = holder.getLevel(node);
+			if (state < 10) {//if not interrupted is worth less
+				worth *= 3;
+			}else {
+				worth *= 2;
+			}
+			worth/=2;
+			extra.println("You sell the mushroom for " +World.currentMoneyDisplay(worth) + ".");
+			Player.player.addGold(worth);
+			plantstart = "";
+			break;
+		case 3://crush
+			//already did the fight
+			plantstart = "";
+			break;
+		}
+		
+		if (plantstart != null) {//can accept nulls be we use null to indicate we don't want to plant
+			//replace current contents
+			//this will clean up color data and any people that were still there
+			GenericNode.setPlantSpot(holder, node,plantstart);
+		}	
+		return false;
 	}
 
 	private Person mushHelpRobber() {
@@ -914,36 +1033,6 @@ public class GroveNode implements NodeType{
 		}
 		return false;
 	}
-	
-	private void equal1() {
-		if (node.state == 1) {
-			randomLists.deadPerson();
-			node.findBehind("body");
-			return;
-		}
-		Person equal = (Person)node.storage1;
-		equal.getBag().graphicalDisplay(1, equal);
-		boolean bool = true;
-		while (bool) {
-			extra.println("1 "+extra.PRE_RED+"attack");
-			extra.println("2 chat");
-			extra.println("3 leave");
-			switch (extra.inInt(3)) {
-			case 1: bool = false;
-			mainGame.CombatTwo(Player.player.getPerson(),equal);
-			if (equal.isAlive()) {break;}
-			node.state = 1;
-			node.name = "dead "+ node.name;
-			node.interactString = "examine body";
-
-			;break;
-			case 2:
-				Oracle.tip("equality");break;
-
-			case 3:bool = false;break;
-			}
-		}
-	}
 
 	private void shaman() {
 		if (node.state == 1) {
@@ -1078,10 +1167,12 @@ public class GroveNode implements NodeType{
 				return "Attempt to take " + w.getBaseName();
 			}
 			return "Look at rock fragments.";
-		case 16://pack of wolves
+		case 15://pack of wolves
 			return null;
-		case 17://shaman, uses causal text
+		case 16://shaman, uses causal text
 			return "Approach the " + holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)+".";
+		case 17://bee hive (to plant spot)
+			return "Gather honey?";
 		}
 		return null;
 	}
@@ -1111,10 +1202,12 @@ public class GroveNode implements NodeType{
 				return w.getBaseName() +", stuck in a rock";
 			}
 			return "Rock Fragments";
-		case 16:
+		case 15:
 			return "Pack of Wolves";
-		case 17://shaman, uses causal text
+		case 16://shaman, uses causal text
 			return holder.getStorageFirstPerson(node).getBag().getRace().renderName(false);
+		case 17:
+			return "Bee Hive";
 		}
 		return null;
 	}

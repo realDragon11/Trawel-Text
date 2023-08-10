@@ -225,9 +225,10 @@ public class GenericNode implements NodeType {
 					//can't, lifeless + shadowy stuff
 					break;
 				case GROVE:
-					if (extra.chanceIn(1,3)) {
-						resetNode(holder,node,extra.choose(4,5,6));
-						holder.globalTimer-=10;
+					if (extra.chanceIn(2,3)) {
+						//groves are meant to be living, so this only rolls stuff that can likely regrow (or turn into a plant spot)
+						resetNode(holder,node,extra.choose(1,3,4,6,7,9,10,11,12,13,16));
+						holder.globalTimer-=8;
 					}
 					break;
 				case MINE:

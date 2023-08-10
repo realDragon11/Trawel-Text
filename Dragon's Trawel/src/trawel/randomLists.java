@@ -25,7 +25,8 @@ public class randomLists {
 	private static StringResult commonElements, rareElements, randMats = null, colorList, normalFirstNames, theTitles,
 			doerTitles, animals, wolfNames,bearNames,batNames, entNames, waterNames,
 			fighterTypes,muggerTypes,collectTypes,theAlphaTitles,theLargeTitles, attackMisses, attackNegates, attackDodges
-			,hunterTitles,thingsToSlay,slayerTitleToSlay,dGuardTitles,oldTitles, colorListPrintable
+			,hunterTitles,thingsToSlay,slayerTitleToSlay,dGuardTitles,oldTitles, colorListPrintable,
+			violateForestQuote
 			;
 	/**
 	 * following have fallbacks if not loaded, and you can avoid filling them in for test purposes
@@ -87,6 +88,7 @@ public class randomLists {
 		slayerTitleToSlay = new SRPlainRandom("Slayer","Hunter","Killer","Exterminator","Butcher","Decimator","Eradicator","Expunger");
 		dGuardTitles = new SRPlainRandom(", Gatekeeper",", Guarder of the Gates",", Doorkeeper",", Lockmaster",", Dungeon Guard","the Guard","the Mook",", Henchman",", Big Bad Aspirant");
 		oldTitles = new SRPlainRandom(", Just Old",", the Elder",", Senior"," the Aging",", the Dubiously Mortal",", not Dead Yet",", Veteran"," the Whitehaired","the Elder");
+		violateForestQuote = new SRPlainRandom("You dare violate the forest?!","That was holy to the primal forces!","You have committed and unspeakable transgression!","The natural order has been perverted!");
 	}
 	
 	//our lazyloaded lists
@@ -258,5 +260,9 @@ public class randomLists {
 
 	public static String randomOldTitle() {
 		return oldTitles.next();
+	}
+
+	public static String randomViolateForestQuote() {
+		return "\""+violateForestQuote.next()+"\"";
 	}
 }

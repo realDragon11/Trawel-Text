@@ -253,7 +253,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 	@Override
 	public List<TimeEvent> passTime(double t, TimeContext tc) {
 		timer +=t;
-		switch (contains) {
+		switch (contains) {//ugh should probably convert to enums at some point
 		case "garlic seed": if (timer > 57) { contains = "garlic";timer = 0;}break;
 		case "apple seed": if (timer > 323) { contains = "apple tree";timer = 0;}break;
 		case "bee larva": if (timer > 98) { contains = "bee hive";timer = 0;}break;

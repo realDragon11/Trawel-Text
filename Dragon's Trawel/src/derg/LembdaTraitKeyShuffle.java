@@ -12,16 +12,23 @@ import java.util.Collections;
 public class LembdaTraitKeyShuffle implements CanLembdaUpdate{
 
 	private List<StringLembda> tree;
+	/**
+	 * amount of lembdas
+	 */
 	private int treeSize, 
-	depthChunk,//used as how many 'leaf' nodes exist. However, they do not have to be actual leaves
-	minRand;//minimum allowed randomness
-	//we just care about the bottom ones on the tree
+	/*
+	 * used as how many 'leaf' nodes exist. However, they do not have to be actual leaves,
+	 * we just care about the bottom ones on the tree
+	 */
+	depthChunk,
+	/**
+	 * minimum allowed randomness when using safeNext
+	 */
+	minRand;
 	
 	public LembdaTraitKeyShuffle() {
 		tree = new ArrayList<StringLembda>();
-		treeSize = tree.size();
-		depthChunk = (treeSize+1)/2;
-		minRand = 2;
+		minRand = 3;
 	}
 	
 	/**
@@ -35,6 +42,8 @@ public class LembdaTraitKeyShuffle implements CanLembdaUpdate{
 	}
 	
 	public void shuffle() {
+		treeSize = tree.size();
+		depthChunk = (treeSize+1)/2;
 		Collections.shuffle(tree);
 		for (int i = tree.size()-1; i >=0 ;i--) {
 			tree.get(i).users.put(this, i);
@@ -44,7 +53,7 @@ public class LembdaTraitKeyShuffle implements CanLembdaUpdate{
 	/**
 	 * @return
 	 */
-	public List<StringLembda> leafLayer(int forword){
+	private List<StringLembda> leafLayer(int forword){
 		List<StringLembda> results = new ArrayList<StringLembda>();
 		int num = 0;
 		for (int i = tree.size()-1; (num < minRand || i < depthChunk) && i >=0;i--) {//DOLATER: decide if num needs to be 2 or 3
@@ -76,7 +85,10 @@ public class LembdaTraitKeyShuffle implements CanLembdaUpdate{
 		System.err.println(this.tree.toString());
 	}
 
-	public String next(char forword) {
+	/**
+	 * use if not all lembdas have the forword you want in them
+	 */
+	public String safeNext(char forword) {
 		if (!extra.isMainThread()) {
 			throw new RuntimeException("Tried to trait shuffle outside of main thread.");
 		}
@@ -93,6 +105,16 @@ public class LembdaTraitKeyShuffle implements CanLembdaUpdate{
 		//maybe just get first 3
 		//after you find something, call the update function on it
 		//this will force yourself and other trees using it to put it to the top of the tree, and trickle down
+	}
+	
+	/**
+	 * better to use if entire shuffler has all lembdas as valid with the keyword you want
+	 */
+	public String next(char forword) {
+		assert extra.isMainThread();
+		StringLembda sl = tree.get(treeSize-extra.getRand().nextInt(depthChunk));
+		sl.updateAll();
+		return sl.variants.get((int)forword);
 	}
 
 	@Override
