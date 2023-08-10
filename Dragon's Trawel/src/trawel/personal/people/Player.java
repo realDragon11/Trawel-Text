@@ -55,6 +55,7 @@ public class Player extends SuperPerson{
 	public int forceRewardCount = 0;
 	public int merchantBookPrice = 100;
 	
+	public double globalFindTime = 0;
 
 	
 	public int knowledgeFragments = 0, fragmentReq = 5;
@@ -122,6 +123,7 @@ public class Player extends SuperPerson{
 	}
 	public static void addTime(double addTime) {
 		passTime +=addTime;
+		Player.player.globalFindTime+=addTime;
 	}
 	
 	@Override
@@ -388,6 +390,14 @@ public class Player extends SuperPerson{
 		listlist.add(Player.list());
 		listlist.add(fightwith);
 		return listlist;
+	}
+	public double getFindTime() {
+		return player.globalFindTime;
+	}
+	public void delayFind() {
+		player.globalFindTime/=2;//half
+		player.globalFindTime-=extra.randRange(10,30);//then minus
+		//so it doesn't get really high forever
 	}
 	
 	

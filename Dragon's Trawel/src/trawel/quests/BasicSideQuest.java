@@ -16,19 +16,20 @@ import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
+import trawel.quests.Quest.TriggerType;
 import trawel.quests.QuestReactionFactory.QKey;
 import trawel.towns.Feature;
 import trawel.towns.Town;
 import trawel.towns.fight.Slum;
 import trawel.towns.fort.FortHall;
+import trawel.towns.nodes.NodeFeature;
+import trawel.towns.nodes.NodeType;
 import trawel.towns.services.Inn;
 import trawel.towns.services.MerchantGuild;
+import trawel.towns.services.WitchHut;
 
 public class BasicSideQuest implements Quest{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	public QuestR giver, target;
@@ -633,19 +634,60 @@ public class BasicSideQuest implements Quest{
 				
 			};
 			q.trigger = "db:"+db.name();//could also use ordinal
-			switch (db) {
-			case LIVING_FLAME:
-				q.count = 12;
-				q.qKeywords.add(QKey.FIRE_ALIGN);
-				break;
-			case TELESCOPE:
-				q.count = 8;
-				q.qKeywords.add(QKey.KNOW_ALIGN);
-				break;
-			}
+			drawBaneCollecter(db,q);
 
 			q.name = q.giverName + "'s " + q.targetName;
 			q.desc = "Collect " + q.count + " more " + q.targetName + " pieces for " + q.giverName;
+		return q;
+	}
+	
+	public static BasicSideQuest getWitchCollectQuestPersonal(Town town,WitchHut hut,DrawBane db) {
+		BasicSideQuest q = new BasicSideQuest();
+		q.qKeywords.add(QKey.GIVE_WHUT);
+			q.giverName = hut.getName() + " (Personal Collection)";
+			q.targetName = db.getName();
+			q.qKeywords.add(QKey.COLLECT);
+			q.giver = new QuestR() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public String getName() {
+					return q.giverName;
+				}
+
+				@Override
+				public boolean go() {
+					extra.println("You assemble a whole " + q.targetName);
+					q.complete();
+					Player.bag.addNewDrawBane(DrawBane.getByName(q.targetName));
+					return false;
+				}};
+				q.giver.locationF = hut;
+				q.giver.locationT = town;
+				q.giver.overQuest = q;
+			q.target = new QuestR() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public String getName() {
+					return q.targetName;
+				}
+
+				@Override
+				public boolean go() {
+					
+					q.giver.locationF.addQR(q.giver);
+					q.desc = "Return to " + q.giver.locationF.getName() + " to assemble the " + q.targetName;
+					this.cleanup();
+					q.announceUpdate();
+					return false;
+				}
+				
+			};
+			q.trigger = "db:"+db.name();//could also use ordinal
+			drawBaneCollecter(db,q);
+			q.name = "Gather " + q.targetName + " (Personal)";
+			q.desc = "Collect " + q.count + " more " + q.targetName + " pieces";
 		return q;
 	}
 	
@@ -662,6 +704,71 @@ public class BasicSideQuest implements Quest{
 			break;
 		case SLUM:
 			this.qKeywords.add(QKey.DEST_SLUM);
+			break;
+		case WHUT:
+			this.qKeywords.add(QKey.DEST_WHUT);
+			break;
+		}
+	}
+	
+	public static final void drawBaneCollecter(DrawBane db, BasicSideQuest q) {
+		switch (db) {
+		case LIVING_FLAME:
+			q.count = 12;
+			q.qKeywords.add(QKey.FIRE_ALIGN);
+			break;
+		case TELESCOPE:
+			q.count = 8;
+			q.qKeywords.add(QKey.KNOW_ALIGN);
+			break;
+		case REPEL:
+			q.count = 4;
+			break;
+		case CEON_STONE:
+			q.count = 6;
+			break;
+		case PROTECTIVE_WARD:
+			q.count = 8;
+			break;
+		case SILVER:
+			q.count = 4;
+			break;
+		case GOLD:
+			q.count = 6;
+			break;
+		case UNICORN_HORN:
+			q.count = 8;
+			break;
+		case KNOW_FRAG:
+			q.count = 20;
+			q.qKeywords.add(QKey.KNOW_ALIGN);
+			break;
+		case PUMPKIN:
+			q.count = 3;
+			break;
+		case MEAT:
+			q.count = 2;
+			break;
+		case BAT_WING:
+			q.count = 2;
+			break;
+		case APPLE:
+			q.count = 2;
+			break;
+		case MIMIC_GUTS:
+			q.count = 3;
+			break;
+		case BLOOD:
+			q.count = 1;
+			break;
+		case WAX:
+			q.count = 2;
+			break;
+		case WOOD:
+			q.count = 2;
+			break;
+		case VIRGIN://lmao
+			q.count = 12;
 			break;
 		}
 	}
@@ -721,8 +828,35 @@ public class BasicSideQuest implements Quest{
 
 
 	@Override
-	public Collection<? extends String> triggers() {
+	public List<String> triggers() {
 		return Collections.singletonList(trigger);
+	}
+	
+	public static DrawBane attemptCollectAlign(QKey align,float odds,int amount) {
+		if (Player.player.getFindTime() > 1 && Player.player.sideQuests.size() > 0) {
+			if (extra.randFloat() < odds) {
+				List<Quest> list = new ArrayList<Quest>();
+				Player.player.sideQuests.stream().filter(q -> q.getKeys().contains(align)).forEach(list::add);
+				if (list.size() > 0) {
+					Quest q = extra.randList(list);
+					List<String> triggers = q.triggers();
+					for (String str: triggers) {
+						if (str.startsWith("db:")) {
+							Player.player.delayFind();//unlike nodes, will only prevent if actually finds
+							Player.player.questTrigger(TriggerType.COLLECT, str, amount);//ehhh I guess just add to all instead of this one?
+							return DrawBane.getByName(str.substring(2));
+						}
+					}
+				}				
+			}
+		}
+		return null;
+	}
+
+
+	@Override
+	public List<QKey> getKeys() {
+		return qKeywords;
 	}
 }
 

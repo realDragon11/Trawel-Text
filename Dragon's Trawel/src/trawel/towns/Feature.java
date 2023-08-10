@@ -72,7 +72,7 @@ public abstract class Feature extends TContextOwner{
 	}
 	
 	public enum QRType{
-		NONE, MOUNTAIN, FOREST, INN, SLUM;
+		NONE, MOUNTAIN, FOREST, INN, SLUM, WHUT;
 	}
 	
 	public void addQR(QuestR qr) {

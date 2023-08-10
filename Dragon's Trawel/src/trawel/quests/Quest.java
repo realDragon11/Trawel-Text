@@ -2,6 +2,9 @@ package trawel.quests;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
+
+import trawel.quests.QuestReactionFactory.QKey;
 
 public interface Quest extends Serializable {
 
@@ -23,6 +26,8 @@ public interface Quest extends Serializable {
 		CLEANSE,COLLECT
 	}
 
-	public Collection<? extends String> triggers();
+	public List<String> triggers();
+
+	public List<QKey> getKeys();
 	
 }

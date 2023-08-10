@@ -11,6 +11,8 @@ import trawel.extra;
 import trawel.earts.EArt;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
+import trawel.quests.BasicSideQuest;
+import trawel.quests.QuestReactionFactory.QKey;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
@@ -139,14 +141,19 @@ public class Library extends Feature {
 								return false;
 							}
 							List<DrawBane> dbs = Player.bag.getDrawBanes();
+							int got = 0;
 							for (int i = dbs.size()-1;i >= 0;i--) {
 								if (dbs.get(i).equals(DrawBane.KNOW_FRAG)) {
 									Player.player.addKnowFrag();
 								}
 								dbs.remove(i);
+								got++;
 							}
 							extra.println("You are now " + Player.player.strKnowFrag());
-							
+							DrawBane gain = BasicSideQuest.attemptCollectAlign(QKey.KNOW_ALIGN,got*.5f,3+got);
+							if (gain != null) {
+								extra.println("You find "+(3+got)+" " + gain.getName() + " pieces while studying!");
+							}
 							return false;
 						}
 						

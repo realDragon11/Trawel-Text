@@ -204,6 +204,15 @@ public enum DrawBane {
 	
 	private static WeightedTable[] weightList;
 	private static DrawBane[][] subLists;
+	public static DrawBane getByName(String targetName) {
+		DrawBane[] dbs = DrawBane.values();
+		for (int i = dbs.length-1; i >=0; i--) {
+			if (dbs[i].getName() == targetName) {
+				return dbs[i];
+			}
+		}
+		return null;
+	}
 	
 	
 }

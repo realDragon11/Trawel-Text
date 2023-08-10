@@ -17,21 +17,32 @@ import trawel.personal.RaceFactory;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Potion;
 import trawel.personal.item.solid.DrawBane;
+import trawel.personal.item.solid.DrawBane.DrawList;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.personal.people.Agent.AgentGoal;
+import trawel.quests.BasicSideQuest;
+import trawel.quests.QBMenuItem;
+import trawel.quests.QRMenuItem;
+import trawel.quests.Quest;
+import trawel.quests.QuestBoardLocation;
+import trawel.quests.QuestR;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.Town;
 
-public class WitchHut extends Store{
+public class WitchHut extends Store implements QuestBoardLocation{
 	
 	private static final long serialVersionUID = 1L;
 	private List<DrawBane> reagents = null;
 	private String storename;
 	private double timecounter;
+	
+	private boolean canQuest = true;
+	
+	private List<Quest> sideQuests = new ArrayList<Quest>();
 	
 	public WitchHut(String _name, Town t) {
 		super(WitchHut.class);
@@ -95,6 +106,18 @@ public class WitchHut extends Store{
 					@Override
 					public boolean go() {
 						extra.menuGo(modernStoreFront());
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Enter Coven Common Room";
+					}
+
+					@Override
+					public boolean go() {
+						backroom();
 						return false;
 					}});
 				list.add(new MenuSelect() {
@@ -353,13 +376,25 @@ public class WitchHut extends Store{
 	}
 	
 	@Override
+	public void init() {
+		super.init();
+		try {
+			while (sideQuests.size() < 3) {
+				generateSideQuest();
+			}
+			}catch (Exception e) {
+				canQuest = false;
+			}
+	}
+	
+	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		timecounter-=time;
 		if (timecounter <= 0) {
 			town.getPersonableOccupants().filter(a -> !a.hasFlask() && a.canBuyMoneyAmount(tier)).limit(4)
 			.forEach(a -> buyRandomPotion(a));
 			WitchHut.randomRefillsAtTown(town,tier);
-			
+			if (canQuest) {generateSideQuest();}
 			timecounter += extra.randRange(20,40);
 		}
 		return null;
@@ -374,6 +409,41 @@ public class WitchHut extends Store{
 	
 	public static void randomRefillsAtTown(Town t,int cost) {
 		t.getPersonableOccupants().filter(a -> a.wantsRefill() && a.canBuyMoneyAmount(cost)).limit(3).forEach(a -> a.refillWithPrice(cost));
+	}
+	
+	private void backroom() {
+		WitchHut hut = this;
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
+				
+				for (Quest q: sideQuests) {
+					mList.add(new QBMenuItem(q,hut));
+				}
+				for (QuestR qr: qrList) {
+					mList.add(new QRMenuItem(qr));
+				}
+				mList.add(new MenuBack());
+				return mList;
+			}});
+		
+	}
+	
+	private void generateSideQuest() {
+		if (sideQuests.size() >= 3) {
+			sideQuests.remove(extra.randList(sideQuests));
+		}
+		BasicSideQuest bsq = BasicSideQuest.getWitchCollectQuestPersonal(this.getTown(), this, DrawBane.draw(DrawList.WITCH_STORE));
+		if (bsq != null) {
+		sideQuests.add(bsq);
+		}
+	}
+	
+	@Override
+	public void removeSideQuest(Quest q) {
+		sideQuests.remove(q);
 	}
 	
 
