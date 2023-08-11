@@ -75,10 +75,10 @@ public class Connection implements java.io.Serializable{
 		Town ot = otherTown(town1);
 		String visitColor = extra.PRE_WHITE;
 		switch (ot.visited) {
-		case 0: visitColor = extra.COLOR_NEW; ot.visited = 1;break;
-		case 1: visitColor = extra.COLOR_SEEN;break;
-		case 2: visitColor = extra.COLOR_BEEN;break;
-		case 3: visitColor = extra.COLOR_OWN;break;
+		case 0: visitColor = extra.VISIT_NEW; ot.visited = 1;break;
+		case 1: visitColor = extra.VISIT_SEEN;break;
+		case 2: visitColor = extra.VISIT_BEEN;break;
+		case 3: visitColor = extra.VISIT_OWN;break;
 		}
 		extra.println(visitColor + getName() + " to " + ot.getName() + " {Level: "+ot.getTier()+"} ("+dir(town1,ot)+")");
 		if (Player.hasSkill(Skill.TOWNSENSE)) {
@@ -127,10 +127,10 @@ public class Connection implements java.io.Serializable{
 		Town ot = otherTown(from);
 		String visitColor = extra.PRE_WHITE;
 		switch (ot.visited) {
-		case 0: visitColor = extra.COLOR_NEW; ot.visited = 1;break;
-		case 1: visitColor = extra.COLOR_SEEN;break;
-		case 2: visitColor = extra.COLOR_BEEN;break;
-		case 3: visitColor = extra.COLOR_OWN;break;
+		case 0: visitColor = extra.VISIT_NEW; ot.visited = 1;break;
+		case 1: visitColor = extra.VISIT_SEEN;break;
+		case 2: visitColor = extra.VISIT_BEEN;break;
+		case 3: visitColor = extra.VISIT_OWN;break;
 		}
 		return visitColor +getName() + " to " + ot.getName()
 		+ " {Level: "+ot.getTier()+"} ("+dir(from,ot)+")"

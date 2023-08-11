@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import derg.menus.MenuBack;
-import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
@@ -19,6 +18,7 @@ import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.Person.PersonFlag;
+import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
@@ -40,7 +40,7 @@ public class Docks extends Feature {
 	/**
 	 * will be an npc or drudger
 	 */
-	public SuperPerson leader;
+	public Agent leader;
 	
 	/**
 	 * townspeople
@@ -54,24 +54,90 @@ public class Docks extends Feature {
 	
 	public double fightCooldownTimer = 0d;
 	
-	public Docks(Town t) {
+	public Docks(String name,Town t) {
 		town = t;
+		this.name = name;
+		tier = Math.min(2,1+t.getTier());//min level of 2, but tries to be one higher
+		old_defenders = new ArrayList<Person>();
+		old_attackers = new ArrayList<Person>();
+	}
+	
+	@Override
+	public String getTutorialText() {
+		return "Docks are large ports, able to transport you across water. You can also defend them or travel to far-flung ports.";
 	}
 	
 	@Override
 	public boolean canShow() {
 		return false;//displayed higher in the menu another way
 	}
+	
+	@Override
+	public String getColor() {
+		return extra.PRE_SHIP;
+	}
 
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		fightCooldownTimer-=time;
-		// TODO Auto-generated method stub
 		//TODO: defenders and attackers that get too high level should start wandering around instead
 		//should probably also apply to town leaders, but not drudger leaders
 		//both for flavor and because the player can't fight town leaders rn so they'll get stuck
 		if (fightCooldownTimer < -24*6) {//if it's been 6 days, starts happening automatically
 			battle(null,null);
+			int leaderLevel = leader == null ? 0 :leader.getPerson().getLevel();
+			for (int i = old_attackers.size()-1;i>=0;i--) {
+				int mylevel = old_attackers.get(i).getLevel();
+				if (mylevel >= tier+2) {//if more than two levels higher
+					if (!townOwned) {//if drudgers (current loop) owns
+						if (mylevel > leaderLevel) {//can take over
+							//always attempt to now
+							if (leader == null) {
+								leaderLevel = mylevel;
+								leader = old_attackers.get(i).setOrMakeAgentGoal(AgentGoal.OWN_SOMETHING);
+								continue;
+							}else {
+								Person me = old_attackers.remove(i);
+								Combat c = leader.fightWith(me);
+								leader = c.getNonSummonSurvivors().get(0).setOrMakeAgentGoal(AgentGoal.OWN_SOMETHING);
+								//may the best drudger lead!
+								continue;
+							}
+						}
+						//fall through
+					}
+					Person me = old_attackers.remove(i);
+					town.addOccupant(me.getMakeAgent(AgentGoal.NONE));
+				}
+			}
+			Person potentialLeader = null;
+			if (townOwned) {
+				if (leader != null) {
+					potentialLeader = leader.getPerson();
+					if (potentialLeader.getLevel() >= tier+2) {//less likely to leave than non-leader townies
+						//we know this has a superperson, but we want to set the agent goal, and this wraps that fluently
+						town.addOccupant(potentialLeader.setOrMakeAgentGoal(AgentGoal.NONE));
+						potentialLeader = null;
+					}
+				}
+			}
+			for (int i = old_defenders.size()-1;i>=0;i--) {
+				int mylevel = old_defenders.get(i).getLevel();
+				if (mylevel >= tier+1 && extra.chanceIn(1,3)) {
+					Person me = old_defenders.remove(i);
+					town.addOccupant(me.getMakeAgent(AgentGoal.NONE));
+					continue;
+				}
+				if (potentialLeader == null || mylevel > potentialLeader.getLevel()) {
+					potentialLeader = old_defenders.get(0);
+				}
+			}
+			if (townOwned && potentialLeader != null) {
+				if (leader == null || potentialLeader != leader.getPerson()) {
+					old_defenders.remove(potentialLeader);//remove if present
+					leader = potentialLeader.setOrMakeAgentGoal(AgentGoal.OWN_SOMETHING);
+				}
+			}
 		}
 		return null;
 	}
@@ -86,6 +152,49 @@ public class Docks extends Feature {
 			@Override
 			public List<MenuItem> header() {
 				List<MenuItem> list = new ArrayList<MenuItem>();
+				
+				
+				if (leader != null) {
+					list.add(new MenuLine() {
+
+						@Override
+						public String title() {
+							return "Owner: " + leader.getPerson().getName();
+						}});
+				}
+				
+				//on top so it's consistent
+				
+				ScrollMenuGenerator gen = farConnectsMenu();
+				
+				if (gen != null) {
+					if (townOwned) {
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Travel to Far Flung Ports";
+						}
+
+						@Override
+						public boolean go() {
+							extra.menuGo(gen);
+							if (Player.player.getLocation() != town) {
+								return true;//if we moved
+							}
+							return false;
+						}});
+					}else {
+						list.add(new MenuLine() {
+
+							@Override
+							public String title() {
+								return "The docks are Blockaded, and you cannot take a long route.";
+							}});
+					}//annoying that this will make the first option not far flung, but meh
+				}
+				
+				//variable defenses
 				if (fightCooldownTimer > 0) {
 					if (townOwned) {
 						//no need to defend
@@ -152,9 +261,6 @@ public class Docks extends Feature {
 							}});
 					}
 				}
-				
-				
-				
 				return list;
 			}
 
@@ -172,7 +278,12 @@ public class Docks extends Feature {
 
 					@Override
 					public boolean go() {
+						
 						Player.player.setLocation(c.otherTown(town));
+						c.otherTown(town).dockWander(false);//do it at where we're going
+						//this makes traveling to a higher level area likely to have higher encounters
+						//but if the player is fast traveling back to a lower one, they aren't punished for
+						//being in a high level area now
 						return true;//return so we go somewhere
 					}});
 				return list;
@@ -196,7 +307,15 @@ public class Docks extends Feature {
 		List<Town> openSet = new ArrayList<Town>();
 		Set<Town> closedSet = new HashSet<Town>();
 		
-		openSet.add(town);
+		town.getConnects().stream().forEachOrdered(c -> openSet.add(c.otherTown(town)));
+		//tList.addAll(openSet);
+		//we could add all adjacent towns to possible locations, but this makes seeing if we found any easier if
+		//we decide that we won't show close-flung ports
+		//openSet.add(town);//add this town to
+		closedSet.add(town);//add our town to what we explored
+		//int localSize = openSet.size();//this is why we don't just start from our town, we want to know if we actually
+		//found any non-far-flung ports to bother with
+		
 		while (openSet.size() > 0) {
 			Town cur = openSet.remove(0);
 			for (Connection c: cur.getConnects()) {
@@ -204,12 +323,18 @@ public class Docks extends Feature {
 					continue;//not our type
 				}
 				Town other = c.otherTown(cur);
-				if (!closedSet.contains(other)) {
+				if (!openSet.contains(other) && !closedSet.contains(other)) {
 					tList.add(other);
 					openSet.add(other);
 				}
 			}
+			closedSet.add(cur);
 		}
+		//assert localSize <= closedSet.size();
+		if (tList.size() == 0) {
+			return null;//no far flung ports
+		}
+		
 		final List<Town> finishedList = tList;
 		return new ScrollMenuGenerator(finishedList.size(),"previous <> ports","next <> ports") {
 			
@@ -244,6 +369,7 @@ public class Docks extends Feature {
 							return false;
 						}
 						Player.player.setLocation(t);
+						town.dockWander(true);
 						return true;
 					}});
 				return list;
@@ -256,12 +382,6 @@ public class Docks extends Feature {
 				return list;
 			}
 		};
-	}
-
-	@Override
-	public String getColor() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	private List<Person> popTownie() {
@@ -286,41 +406,46 @@ public class Docks extends Feature {
 	 */
 	public boolean defend() {
 		if (fightCooldownTimer > 0) {
-			boolean oldOwned = townOwned;
-			if (oldOwned) {
+			if (townOwned) {
 				extra.println("The port isn't going to be attacked soon.");
 			}else {
 				extra.println("The port is too overrun right now to take back.");
 			}
-			battle(Player.player.getAllies(),null);
-			if (townOwned) {
-				
+			return false;
+		}
+		if (Player.player.getPerson().getLevel() >= tier) {
+			boolean oldOwned = townOwned;
+			if (oldOwned) {
+				extra.println("You help defend the port against the drudger onslaught.");
 			}else {
+				extra.println("You help defend try to take back the port from the drudger occupying army.");
+			}
+			battle(Player.player.getAllies(),null);
+			Player.addTime(3);//3 hour battle
+			if (townOwned) {
 				if (oldOwned == townOwned) {
-					
+					extra.println(extra.RESULT_NO_CHANGE_GOOD+"The docks are safe.");
+				}else {
+					extra.println(extra.RESULT_GOOD+"You took back the docks!");
+				}
+				int reward = (10*tier)+extra.randRange(0,4);
+				extra.println("They pay you with "+World.currentMoneyDisplay(reward)+".");
+				Player.player.addGold(reward);
+			}else {
+				if (!oldOwned) {
+					extra.println(extra.RESULT_NO_CHANGE_BAD+"The docks remain under drudger control...");
 				}else {
 					if (leader != null) {
-						extra.println(leader.getPerson().getName() +"'s drudger army takes over the docks!");
+						extra.println(extra.RESULT_BAD+leader.getPerson().getName() +"'s drudger army takes over the docks!");
 					}else {
-						extra.println("The docks are overrun by the drudger force.");
+						extra.println(extra.RESULT_BAD+"The docks are overrun by the drudger force.");
 					}
 				}
 			}
-			
-			int reward = (10*tier)+extra.randRange(0,4);
-			extra.println("You take back the docks. They pay you with "+World.currentMoneyDisplay(reward)+".");
-			Player.player.addGold(reward);
 			return false;
 		}else {
-			if (Player.player.getPerson().getLevel() >= tier) {
-				extra.println("You help defend the port against the drudger onslaught.");
-				
-				Player.addTime(3);//3 hour battle
-				return true;
-			}else {
-				extra.println("They don't think you capable of helping.");
-				return false;
-			}
+			extra.println("They don't think you capable of helping.");
+			return false;
 		}
 	}
 	

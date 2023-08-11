@@ -712,8 +712,14 @@ public class Inventory implements java.io.Serializable{
 			a.resetArmor(s, b, p);
 		}
 	}
+	
+	public void burnArmor(double percent) {
+		for (Armor a: armorSlots) {
+			a.burn(percent);
+		}
+	}
 
-	public void burn(double percent, int slot) {
+	public void burnArmor(double percent, int slot) {
 		int i = 0;
 		double mult;
 		while (i < 5) {//should never be null
@@ -723,6 +729,20 @@ public class Inventory implements java.io.Serializable{
 				mult = .75;
 			}
 			armorSlots[i].burn(mult * percent);
+			i++;
+		}
+	}
+	
+	public void damageArmor(double percent, int slot) {
+		int i = 0;
+		double mult;
+		while (i < 5) {//should never be null
+			if (slot == i) {
+				mult = 2;
+			}else {
+				mult = .75;
+			}
+			armorSlots[i].damage(mult * percent);
 			i++;
 		}
 	}
@@ -837,7 +857,7 @@ public class Inventory implements java.io.Serializable{
 		if (in == (dbMax+ 2) ) {
 			return null;
 		}
-		DrawBane b = dbs.get(in-1);
+		DrawBane b = dbs.remove(in-1);
 		if (!selling) {
 			if (Player.player.hasTrigger("db:"+b.name())) {
 				Player.player.questTrigger(TriggerType.CLEANSE,"db:"+b.name(),15);
@@ -849,7 +869,7 @@ public class Inventory implements java.io.Serializable{
 			}
 			return null;
 		}
-		return dbs.remove(in-1);
+		return b;
 	}
 
 

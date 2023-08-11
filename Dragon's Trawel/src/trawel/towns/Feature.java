@@ -60,9 +60,7 @@ public abstract class Feature extends TContextOwner{
 	}
 	
 	public void printTutorial() {
-		//if (tutorialText != null) {
-			extra.println(tutorialText);
-		//}
+		extra.println(getTutorialText());
 	}
 
 	public abstract String getColor();

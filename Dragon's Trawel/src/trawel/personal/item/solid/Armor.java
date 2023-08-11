@@ -35,7 +35,7 @@ public class Armor extends Item {
 	private int fluff;//stores the fluff of the style
 	private Enchant enchantment;
 	
-	private transient double burned;
+	private transient double condition;
 	private transient float sharpActive, bluntActive, pierceActive;
 	
 	private List<ArmorQuality> quals = new ArrayList<ArmorQuality>();
@@ -178,7 +178,7 @@ public class Armor extends Item {
 		sharpActive = getSharpResist()+s;
 		bluntActive = getBluntResist()+b;
 		pierceActive = getPierceResist()+p;
-		burned = 1;
+		condition = 1;
 	}
 	
 	
@@ -204,15 +204,15 @@ public class Armor extends Item {
 	}
 	
 	public double getPierce() {
-		return extra.zeroOut((pierceActive)*burned);
+		return extra.zeroOut((pierceActive)*condition);
 	}
 	
 	public double getBlunt() {
-		return extra.zeroOut((bluntActive)*burned);
+		return extra.zeroOut((bluntActive)*condition);
 	}
 	
 	public double getSharp() {
-		return extra.zeroOut((sharpActive)*burned);
+		return extra.zeroOut((sharpActive)*condition);
 	}
 	
 	public double getFireMod() {
@@ -228,29 +228,40 @@ public class Armor extends Item {
 	}
 	
 	/**
-	 * reduces armor by the provided double, scaled against fireMod and with diminishing returns as burned approaches 0
-	 * bigger burns at once will ignore part of the diminishing returns
-	 * @param d
+	 * damage, but times by firemod first
 	 */
 	public void burn(double d) {
+		damage(d*getFireMod());
+	}
+	
+	/**
+	 * as with burn but without applying fire mod
+	 * <br>
+	 * pass the % decrease in armor.
+	 * <br>
+	 * the decrease is diminishing, but not continuously dimminishing, so large damages at once will have more effect 
+	 * <br>
+	 * will attempt to not let condition reach 0 entirely, minimum of 5% overall and
+	 * max 70% reduction in one hit
+	 */
+	public void damage(double d) {
 		assert d >= 0;
-		double old_amount = burned;
-		burned = Math.min(old_amount, Math.max(0, burned - Math.min(burned,1)*(1- (d*getFireMod())))) ;
+		condition = Math.max(.05, condition-(condition*extra.clamp(d,0,.7)));
 	}
 	
 	/**
 	 * multiplier on effectiveness
 	 */
 	public void buff(double d) {
-		burned *=d;
+		condition *=d;
 	}
 	
 	/**
 	 * half multiplier above 100%
 	 */
 	public void buffDecay() {
-		if (burned > 1) {
-			burned = extra.lerp(1,burned,.5);
+		if (condition > 1) {
+			condition = extra.lerp(1,condition,.5);
 		}
 	}
 	
@@ -423,11 +434,11 @@ public class Armor extends Item {
 	}
 
 	public void restoreArmor(double d) {
-		if (burned > 1) {
+		if (condition > 1) {
 			return;//if above 100% it can stay that way
 		}
-		burned+=d;
-		burned = extra.clamp(burned,0,1);
+		condition+=d;
+		condition = extra.clamp(condition,0,1);
 	}
 
 	public String getSoundType() {
@@ -452,7 +463,7 @@ public class Armor extends Item {
 	public void armorQualDam(int dam) {
 		if (quals.contains(ArmorQuality.FRAGILE)) {
 			//TODO fix and update
-			burned = extra.clamp(burned-extra.lerp(0.05f,.5f, extra.clamp(dam,1,20)/20f),0,2);
+			condition = extra.clamp(condition-extra.lerp(0.05f,.5f, extra.clamp(dam,1,20)/20f),0,2);
 		}
 	}
 

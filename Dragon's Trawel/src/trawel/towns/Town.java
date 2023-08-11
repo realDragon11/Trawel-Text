@@ -347,7 +347,11 @@ public class Town extends TContextOwner{
 					}
 				}
 				if (hasPort()) {
-					Docks d = (Docks) features.stream().filter(f -> f instanceof Docks).findAny().orElseGet(null);
+					Docks d =
+							Docks.class.cast(
+								features.stream().filter(f -> f instanceof Docks)
+								.findAny().orElse(null)
+							);
 					if (d == null) {
 						mList.add(new MenuSelect() {
 
@@ -361,17 +365,16 @@ public class Town extends TContextOwner{
 								goPort();
 								return true;
 							}});
+						if (Player.getTutorial()) {
+							mList.add(new MenuLine() {
+
+								@Override
+								public String title() {
+									return " Ports will take you through sea routes to other towns.";
+								}});
+						}
 					}else {
 						mList.add(new MenuSelectFeature(d));
-					}
-					
-					if (Player.getTutorial()) {
-						mList.add(new MenuLine() {
-
-							@Override
-							public String title() {
-								return " Ports will take you through sea routes to other towns.";
-							}});
 					}
 				}
 				
@@ -648,7 +651,7 @@ public class Town extends TContextOwner{
 		}
 		extra.println(i + " exit");i++;
 		int j = extra.inInt(i-1);
-		if (j == -10) {
+		if (j == -10) {//soft out for now FIXME full remove later
 			if (defenseTimer > 0) {
 				extra.println("The port can't be defended right now.");
 			}else {
@@ -847,7 +850,7 @@ public class Town extends TContextOwner{
 		return occupant;
 	}
 	
-	public void addOccupant(Agent occupant) {
+	public void addOccupant(Agent occupant) {//MAYBELATER: a time based variant add 'laterAddOccupant'
 		occupants.add(occupant);
 	}
 	
@@ -985,6 +988,12 @@ public class Town extends TContextOwner{
 			Networking.setArea("port");
 			return Bumper.go(d,tier,1,this);
 	}
+	/**
+	 * use force to indicate that you should always have a wander if possible, ie if far flung traveling
+	 */
+	public boolean dockWander(boolean force) {
+		return wanderShip(force ? 0 : 3);
+	}
 	
 	private boolean wanderForConnect(Connection c) {
 		switch (c.getType()) {
@@ -1086,10 +1095,10 @@ public class Town extends TContextOwner{
 	public String displayLine(Town from) {
 		String visitColor = extra.PRE_WHITE;
 		switch (visited) {
-		case 0: visitColor = extra.COLOR_NEW;break;
-		case 1: visitColor = extra.COLOR_SEEN;break;
-		case 2: visitColor = extra.COLOR_BEEN;break;
-		case 3: visitColor = extra.COLOR_OWN;break;
+		case 0: visitColor = extra.VISIT_NEW;break;
+		case 1: visitColor = extra.VISIT_SEEN;break;
+		case 2: visitColor = extra.VISIT_BEEN;break;
+		case 3: visitColor = extra.VISIT_OWN;break;
 		}
 		String dirString = "";
 		if (from != null) {

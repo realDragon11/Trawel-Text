@@ -209,7 +209,7 @@ public class Combat {
 					for (Person p: totalList) {
 						if (!p.getFlag(PersonFlag.PLAYER_SIDE)) {
 							p.takeDamage(Math.min(20,sk.lSkill.value));
-							p.getBag().burn(Math.min(20,sk.lSkill.value/2)/100.0, extra.randRange(0, 4));
+							p.getBag().burnArmor(Math.min(20,sk.lSkill.value*3)/100.0);
 						}
 					}
 					break;
@@ -364,7 +364,7 @@ public class Combat {
 							if (defender.getNextAttack().getDefender().isSameTargets(newDef)) {
 								defender.getNextAttack().setDefender(newDef);
 								if (!extra.getPrint()) {
-									extra.println(defender + " confuses who they're attacking!");
+									extra.println(defender.getNameNoTitle() + " confuses who they're attacking!");
 								}
 							}else {
 								//targets don't match, need new attack.
@@ -373,7 +373,7 @@ public class Combat {
 								setAttack(defender,newDef);
 								defender.applyDiscount(discount);
 								if (!extra.getPrint()) {
-									extra.println(defender + " looks around for a new target in confusion!");
+									extra.println(defender.getNameNoTitle() + " looks around for a new target in confusion!");
 								}
 							}
 						}
@@ -970,7 +970,8 @@ public class Combat {
 				attacker.addHp(Math.min(defender.getLevel(),attacker.getLevel()));
 			}
 			if (attacker.hasSkill(Skill.NPC_BURN_ARMOR)) {
-				defender.getBag().burn(Math.max(0.1f,1f-(percent*2)),atr.attack.getSlot());
+				//always burns at least 5% before diminishing
+				defender.getBag().burnArmor(Math.max(0.05f,(percent*2)),atr.attack.getSlot());
 			}
 		}else {//no impact
 			if (defender.hasSkill(Skill.MESMER_ARMOR)) {
@@ -1258,7 +1259,7 @@ public class Combat {
 			}
 			if (w != Wound.GRAZE)
 				if (attack.getWeapon() != null && attack.getWeapon().hasQual(Weapon.WeaponQual.DESTRUCTIVE)) {
-					defender2.getBag().burn((retu.damage/defender2.getMaxHp())/3, attack.getSlot());
+					defender2.getBag().damageArmor((retu.damage/defender2.getMaxHp())/3f, attack.getSlot());
 				}
 		}
 		return (" " +attacker2.getNextAttack().getWound().active);

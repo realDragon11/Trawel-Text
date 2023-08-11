@@ -392,11 +392,11 @@ public class AIClass {
 						Services.aetherifyItem(loot.getArmorSlot(i),stash);
 						loot.setArmorSlot(null,i);
 					}
-					if (loot.getHand().canAetherLoot()) {
-						Services.aetherifyItem(loot.getHand(), stash);
-						loot.setWeapon(null);
-					}
 					i++;
+				}
+				if (loot.getHand().canAetherLoot()) {
+					Services.aetherifyItem(loot.getHand(), stash);
+					loot.setWeapon(null);
 				}
 			}
 		}

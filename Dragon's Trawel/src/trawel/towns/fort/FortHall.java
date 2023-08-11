@@ -317,7 +317,13 @@ public class FortHall extends FortFeature {
 	public void defenseFight(List<Person> attackers) {
 		extra.offPrintStack();
 		List<List<Person>> listlist = new ArrayList<List<Person>>();
-		listlist.add(getAllies());
+		List<Person> allies = getAllies();
+		if (allies.size() == 0) {
+			aetherBank = 0;
+			extra.popPrintStack();
+			return;
+		}
+		listlist.add(allies);
 		List<Person> fullattackers = new ArrayList<Person>();
 		attackers.stream().flatMap(p -> p.getSelfOrAllies().stream()).distinct().forEach(fullattackers::add);
 		Combat c = new Combat(this.town.getIsland().getWorld(),this,listlist);

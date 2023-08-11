@@ -792,6 +792,13 @@ public final class extra {
 		//not directly used yet
 		public static final String TIMID_BLUE = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.8f));
 		public static final String TIMID_MAGENTA = inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.8f));
+		public static final String TIMID_ORANGE = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.8f));
+		
+		public static final String RESULT_NO_CHANGE_GOOD = TIMID_BLUE;
+		public static final String RESULT_NO_CHANGE_BAD = TIMID_ORANGE;
+		public static final String RESULT_NO_CHANGE_NONE = TIMID_GREY;
+		public static final String RESULT_GOOD = TIMID_GREEN;
+		public static final String RESULT_BAD = TIMID_RED;
 		
 		public static final String COLOR_NEW = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f));
 		public static final String COLOR_SEEN = inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f));

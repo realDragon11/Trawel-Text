@@ -1,5 +1,6 @@
 package trawel;
 import java.util.ArrayList;
+import java.util.List;
 
 import trawel.personal.item.Inventory;
 import trawel.personal.people.Player;
@@ -7,17 +8,23 @@ import trawel.towns.Town;
 
 public abstract class Bumper {
 	
-	public ArrayList<BumperFactory.Response> responses = new ArrayList<BumperFactory.Response>();
+	public List<BumperFactory.Response> responses = new ArrayList<BumperFactory.Response>();
 	public int minAreaLevel = 0;
 	
 
-	public static boolean go(double threshold, int level, int i,Town t) {
+	/**
+	 * types:<br>
+	 * default: bumperList
+	 * <br>
+	 * 1: shipList
+	 */
+	public static boolean go(double threshold, int level, int type,Town t) {
 		//calculate which enemy to fight
 		double highest = -999;
 		double d = 0;
 		Bumper highestB = null;
 		ArrayList<Bumper> bumps;
-		switch (i) {
+		switch (type) {
 		default: bumps = BumperFactory.bumperList;
 		break;
 		case 1: bumps= BumperFactory.shipList;

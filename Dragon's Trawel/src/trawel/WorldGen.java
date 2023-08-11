@@ -7,8 +7,13 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +40,7 @@ import trawel.towns.fight.Forest;
 import trawel.towns.fight.Mountain;
 import trawel.towns.fight.Slum;
 import trawel.towns.fort.WizardTower;
+import trawel.towns.misc.Docks;
 import trawel.towns.misc.Garden;
 import trawel.towns.nodes.Dungeon;
 import trawel.towns.nodes.Graveyard;
@@ -135,6 +141,7 @@ public class WorldGen {
 		Town unun = new Town("Unun",2,rona,new Point(5,4));
 		lynchPin = unun;
 		addConnection(homa,unun,"road","barrier way");
+		unun.addFeature(new Docks("Trade Port (Shipyard)",unun));
 		unun.addFeature(new Inn("Trailblazer's Tavern",2,unun,null));
 		unun.addTravel();
 		unun.addFeature(new MerchantGuild("Eoano's Merchant Guild (Unun)"));
@@ -243,6 +250,7 @@ public class WorldGen {
 		Town alhax = new Town("Alhax",2,apa,new Point(5,2));
 		//alhax.addFeature(new Arena("yenona arena",2,5,24*7,3,37));
 		addConnection(alhax,unun,"ship","yellow passageway");
+		alhax.addFeature(new Docks("Central Shiphub (Shipyard)",alhax));
 		alhax.addFeature(new Inn("Lockbox Pub",3,alhax,null));
 		alhax.addFeature(new Store("'A Cut Above'",4,5));//high level weapon store
 		alhax.addFeature(new Store("'Some of Everything'",3,6));
@@ -341,6 +349,7 @@ public class WorldGen {
 		addConnection(erin,placka,"road","peach road");
 		addConnection(placka,denok,"road","pineapple road");
 		addConnection(yena,placka,"ship","the yellow sea");
+		placka.addFeature(new Docks("The Old Docks (Shipyard)",placka));
 		placka.addTravel();
 		placka.addTravel();
 		placka.addFeature(new Champion(6));
@@ -493,12 +502,15 @@ public class WorldGen {
 	
 	public static void save(String str) {
 		plane.prepareSave();
-		   FileOutputStream fos;
-		try {
-			fos = new FileOutputStream("trawel"+str+".save");//Player.player.getPerson().getName()
-			PrintWriter pws =new PrintWriter(fos);
-			 pws.write(Player.player.getPerson().getName() +", level " + Player.player.getPerson().getLevel()+" "+mainGame.VERSION_STRING+"\0");
-			 FSTObjectOutput oos = conf.getObjectOutput();
+		try (FileOutputStream fos = new FileOutputStream("trawel"+str+".save");
+				PrintWriter pws =new PrintWriter(fos);
+				FSTObjectOutput oos = conf.getObjectOutput()
+				){//try with resources
+			 pws.write(Player.player.getPerson().getName()
+					 +", level " + Player.player.getPerson().getLevel()
+					 + ": " +DateFormat.getDateInstance().format(Date.from(Instant.now()))
+					 +" "+mainGame.VERSION_STRING+"\0");
+			 ;
 			 oos.writeObject(plane);
 			 pws.write(oos.getWritten()+"\0");
 			 extra.println(oos.getWritten()+" bytes");
@@ -508,11 +520,7 @@ public class WorldGen {
 			 fos.flush();
 			 //oos.flush();
 		     //oos.close();
-		     fos.close();
-		     pws.close();
 		     extra.println("Saved!");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

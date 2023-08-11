@@ -7,9 +7,6 @@ import trawel.towns.World;
 
 public abstract class FortFeature extends Feature {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	public abstract int getSize();
 	public abstract int getDefenceRating();
@@ -17,7 +14,7 @@ public abstract class FortFeature extends Feature {
 	public Laborer laborer;
 	public void improveSkill(SubSkill skill, float valueMult) {
 		int skillIndex = findLSkill(skill);
-		int cost = (int)(  Math.pow(skillIndex == -1 ? 1000 :(laborer.lSkills.get(skillIndex).value+1)*1000,valueMult));
+		int cost = (int)(  Math.pow(skillIndex == -1 ? 200 :(laborer.lSkills.get(skillIndex).value+1)*200,valueMult));
 		
 		if (Player.player.getTotalBuyPower() >= cost) {
 			extra.println("This upgrade will cost " + cost + " "+World.currentMoneyString()+". Buy?");
