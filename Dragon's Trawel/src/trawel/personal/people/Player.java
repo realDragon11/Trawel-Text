@@ -152,11 +152,7 @@ public class Player extends SuperPerson{
 		if (player == null) {return false;}
 		return player.tutorial;
 	}
-	public static ArrayList<Person> list() {
-		ArrayList<Person> list = new ArrayList<Person>();
-		list.add(Player.player.getPerson());
-		return list;
-	}
+
 	public void addMPoints(double mValue) {
 		merchantPoints+=mValue;
 		if (merchantPoints >= merchantLevel*merchantLevel) {
@@ -385,14 +381,6 @@ public class Player extends SuperPerson{
 	@Override
 	public boolean hasGoal(AgentGoal goal) {
 		return false;
-	}
-	//TODO: both this and the other method would technically work fine with companions
-	//because both the fightWith and this either call a mass fight directly or don't call any fight directly
-	public static List<List<Person>> wrapForMassFight(List<Person> fightwith){
-		List<List<Person>> listlist = new ArrayList<List<Person>>();
-		listlist.add(Player.list());
-		listlist.add(fightwith);
-		return listlist;
 	}
 	public double getFindTime() {
 		return player.globalFindTime;

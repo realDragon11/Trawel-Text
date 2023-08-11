@@ -1,5 +1,6 @@
 package trawel.personal.people;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import derg.menus.MenuBack;
@@ -487,8 +488,49 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 		return lose;
 	}
 	
+	/**
+	 * includes the person and their current traveling friends
+	 */
+	public List<Person> getAllies(){
+		return Collections.singletonList(getPerson());
+	}
+	
+	public boolean hasAllies() {
+		return false;
+	}
+	
 	public Combat fightWith(Person p) {
+		if (p.getSuper() != null) {
+			return fightWith(p.getSuper());
+		}
+		if (hasAllies()) {
+			List<List<Person>> listlist = new ArrayList<List<Person>>();
+			listlist.add(getAllies());
+			listlist.add(Collections.singletonList(p));
+			return mainGame.HugeBattle(getWorld(), listlist);
+		}
 		return mainGame.CombatTwo(getPerson(),p,getWorld());
+	}
+	
+	public Combat fightWith(SuperPerson p) {
+		if (hasAllies() || p.hasAllies()) {
+			List<List<Person>> listlist = new ArrayList<List<Person>>();
+			listlist.add(getAllies());
+			listlist.add(p.getAllies());
+			return mainGame.HugeBattle(getWorld(), listlist);
+		}
+		return mainGame.CombatTwo(getPerson(),p.getPerson(),getWorld());
+	}
+	
+	public Combat massFightWith(List<Person> others) {
+		//right now this person can't have allies
+		if (others.size() == 1) {
+			return mainGame.CombatTwo(getPerson(),others.get(0),getWorld());
+		}
+		List<List<Person>> listlist = new ArrayList<List<Person>>();
+		listlist.add(Collections.singletonList(getPerson()));
+		listlist.add(others);
+		return mainGame.HugeBattle(getWorld(), listlist);
 	}
 	
 	public World getWorld() {

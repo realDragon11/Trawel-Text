@@ -621,13 +621,13 @@ public class GroveNode implements NodeType{
 									}
 								}else {
 									extra.println(extra.PRE_BATTLE+ "It looks like their tree has other friends!");
-									Combat c = mainGame.HugeBattle(holder.getWorld(),Player.wrapForMassFight(peeps));
+									Combat c = Player.player.massFightWith(peeps);
 									if (c.playerWon() > 0) {
 										GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
 										//only one grave
 										return true;
 									}else {
-										holder.setStorage(node, c.survivors);//set survivors
+										holder.setStorage(node, c.getNonSummonSurvivors());//set survivors
 										holder.setStateNum(node,3);//angry
 										holder.setForceGo(node, true);
 										return true;
@@ -649,7 +649,7 @@ public class GroveNode implements NodeType{
 				return true;//kick out
 			}
 			//force go fighting usually
-			boolean hasdryad = p.getFlag(PersonFlag.IS_ADD);
+			boolean hasdryad = p.getFlag(PersonFlag.IS_MOOK);
 			
 			if (peeps.size() == 1) {
 				extra.println(extra.PRE_BATTLE+ (hasdryad ? p.getName() + " protects their tree!" : "The trees move to avenge their caretaker!"));
@@ -662,13 +662,13 @@ public class GroveNode implements NodeType{
 				}
 			}else {
 				extra.println(extra.PRE_BATTLE+ (hasdryad ? p.getName() + " protects their tree, and their tree has friends!" : "The trees move to avenge their caretaker!"));
-				Combat c = mainGame.HugeBattle(holder.getWorld(),Player.wrapForMassFight(peeps));
+				Combat c = Player.player.massFightWith(peeps);
 				if (c.playerWon() > 0) {
 					holder.setForceGo(node,false);//clean up our force go
 					GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
 					//only one grave, which could be an ent at this point
 				}else {
-					holder.setStorage(node, c.survivors);//set survivors
+					holder.setStorage(node, c.getNonSummonSurvivors());//set survivors
 					return true;//kick out
 				}
 			}
@@ -1019,14 +1019,14 @@ public class GroveNode implements NodeType{
 		extra.print(extra.PRE_RED);
 		extra.println(extra.PRE_BATTLE+"The pack descends upon you!");
 		List<Person> list = holder.getStorageFirstClass(node,List.class);
-		Combat c = mainGame.HugeBattle(holder.getWorld(),Player.wrapForMassFight(list));
+		Combat c = Player.player.massFightWith(list);
 
 		if (c.playerWon() > 0) {
 			holder.setForceGo(node,false);
 			GenericNode.setSimpleDeadRaceID(holder, node, list.get(0).getBag().getRaceID());
 			return false;
 		}else {
-			holder.setStorage(node,c.survivors);
+			holder.setStorage(node,c.getNonSummonSurvivors());
 			return true;
 		}
 

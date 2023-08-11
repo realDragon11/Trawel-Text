@@ -287,14 +287,15 @@ public class Forest extends Feature{
 			break;
 		case 2:
 			extra.println(extra.PRE_RED+ "Something fell and horrible steps out of the hanged man's shadow!");
-			Combat c = Player.player.fightWith(RaceFactory.makeFellReaver(tier));
+			Person reaver = RaceFactory.makeFellReaver(tier);
+			Combat c = Player.player.fightWith(reaver);
 			if (c.playerWon() > 0) {
 				extra.println("They say a predator is often blind to its own peril- at least there won't be any more men hanged here soon.");
 				//bonus heroism
 				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC, (tier/5f),0);
 			}else {
 				extra.println("You wake up elsewhere, striken with nightmares of claw, teeth, sinew, and bone. You feel an evil presence watching you...");
-				town.getIsland().getWorld().addReoccuring(new Agent(c.survivors.get(0),AgentGoal.SPOOKY));
+				town.getIsland().getWorld().addReoccuring(new Agent(reaver,AgentGoal.SPOOKY));
 			}
 			break;
 		}

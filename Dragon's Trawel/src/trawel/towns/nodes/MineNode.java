@@ -194,7 +194,7 @@ public class MineNode implements NodeType{
 					continue;
 				}
 				Person c = RaceFactory.makeCultist(cultLevel+1,CultType.BLOOD);
-				c.setFlag(PersonFlag.IS_ADD,true);
+				c.setFlag(PersonFlag.IS_MOOK,true);
 				cultPeeps.add(c);
 			}
 			holder.setStorage(madeNode, cultPeeps);
@@ -303,7 +303,7 @@ public class MineNode implements NodeType{
 			state = 5;
 		}
 		if (state == 1 || state == 6) {
-			Combat c = mainGame.HugeBattle(Player.player.getWorld(),Player.wrapForMassFight(cultists));
+			Combat c = Player.player.massFightWith(cultists);
 			if (c.playerWon() > 0) {
 				state = 3;
 				holder.setStateNum(node,3);

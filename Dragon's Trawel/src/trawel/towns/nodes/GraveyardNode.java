@@ -253,15 +253,14 @@ public class GraveyardNode implements NodeType{
 	private boolean packOfBats(NodeConnector holder,int node) {
 			extra.println(extra.PRE_RED+"The bats descend upon you!");
 			List<Person> list = holder.getStorageFirstClass(node, List.class);
-			Combat c = mainGame.HugeBattle(holder.getWorld(), Player.wrapForMassFight(list));
-			
+			Combat c = Player.player.massFightWith(list);
 			if (c.playerWon() > 0) {
 				GenericNode.setTotalDeadString(holder,node,"Bat Corpses","Examine dead Bats.","Some zombies seem to have taken a few bites.","Bat Bodies");
 				holder.setForceGo(node,false);
 				holder.setStorage(node,null);
 			return false;
 			}else {
-				holder.setStorage(node,c.survivors);//our get storage first can read this or an array
+				holder.setStorage(node,c.getNonSummonSurvivors());//our get storage first can read this or an array
 				return true;
 			}
 	}
@@ -451,16 +450,16 @@ public class GraveyardNode implements NodeType{
 			holder.setForceGo(node, true);
 		}
 		extra.println(extra.PRE_RED+"Shouldn't have come to this graveyard, mortal!");
-		Combat c = mainGame.HugeBattle(holder.getWorld(),Player.wrapForMassFight(holder.getStorageFirstClass(node,List.class)));
+		Combat c = Player.player.massFightWith(holder.getStorageFirstClass(node,List.class));
 		
 		if (c.playerWon() > 0) {
 			holder.setForceGo(node, false);
 			GenericNode.setTotalDeadString(holder, node,"Vampire Coffin","Examine motes of Grave Dust","There isn't enough here to gather.","coffin");
 			return false;
 		}else {
-			if (extra.getNonAddOrFirst(c.survivors).getFlag(PersonFlag.IS_ADD)) {
+			if (extra.getNonAddOrFirst(c.getNonSummonSurvivors()).getFlag(PersonFlag.IS_MOOK)) {
 				//if the vampire is dead, the bats don't revive, otherwise they do
-				holder.setStorage(node,c.survivors);
+				holder.setStorage(node,c.getNonSummonSurvivors());
 			}
 			return true;
 		}

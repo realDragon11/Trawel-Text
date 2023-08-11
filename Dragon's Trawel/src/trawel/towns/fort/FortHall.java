@@ -293,7 +293,7 @@ public class FortHall extends FortFeature {
 			while (people.size() < 5) {
 				people.add(RaceFactory.getMugger(level));
 			}
-			Fight(this.getAllies(),people);
+			defenseFight(people);
 		}
 		return null;
 	}
@@ -314,13 +314,16 @@ public class FortHall extends FortFeature {
 		return i;
 	}
 	
-	public void Fight(List<Person>... people) {
+	public void defenseFight(List<Person> attackers) {
 		extra.offPrintStack();
-		Combat c = new Combat(this.town.getIsland().getWorld(),this,people);
+		List<List<Person>> listlist = new ArrayList<List<Person>>();
+		listlist.add(getAllies());
+		List<Person> fullattackers = new ArrayList<Person>();
+		attackers.stream().flatMap(p -> p.getSelfOrAllies().stream()).distinct().forEach(fullattackers::add);
+		Combat c = new Combat(this.town.getIsland().getWorld(),this,listlist);
 		allies.clear();
 		if (c.playerWon() > 0) {
-			c.survivors.remove(Player.player.getPerson());
-			c.survivors.stream().filter(p -> !p.isPlayer()).forEach(allies::add);
+			c.getNonSummonSurvivors().stream().filter(p -> !p.isPlayer()).forEach(allies::add);
 			for (Person p: c.killed) {
 				this.aetherBank +=p.getBag().getWorth();
 			}

@@ -409,7 +409,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 			}
 			
 		}else {
-			Person p = c.survivors.get(0);
+			Person p = c.getNonSummonSurvivors().get(0);
 			Agent a = new Agent(p);
 			town.addOccupant(a);
 		}

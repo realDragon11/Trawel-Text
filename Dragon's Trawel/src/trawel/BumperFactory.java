@@ -38,8 +38,8 @@ public class BumperFactory {
 					}
 
 					extra.println(extra.PRE_RED+"A large pack of wolves ambush you!");
-					List<Person> survivors = mainGame.HugeBattle(list,Player.list());
-					if (survivors.contains(Player.player.getPerson())) {
+					Combat c = Player.player.massFightWith(list);
+					if (c.playerWon() > 0) {
 						Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 4);
 					}
 				}else {
@@ -51,15 +51,16 @@ public class BumperFactory {
 						}
 	
 						extra.println(extra.PRE_RED+"A pack of wolves descend upon you!");
-						List<Person> survivors = mainGame.HugeBattle(list,Player.list());
-						if (survivors.contains(Player.player.getPerson())) {
+						Combat c = Player.player.massFightWith(list);
+						if (c.playerWon() > 0) {
 							Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 3);
 						}
 					}else {
 						Person p = RaceFactory.makeWolf(level);
 	
 						extra.println(extra.PRE_RED+"A wolf attacks you!");
-						if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+						Combat c = Player.player.fightWith(p);
+						if (c.playerWon() > 0) {
 							Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 1);
 						}
 					}
@@ -78,7 +79,8 @@ public class BumperFactory {
 					Person p = RaceFactory.makeWolf(level);
 
 					extra.println(extra.PRE_RED+"A wolf attacks you!");
-					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+					Combat c = Player.player.fightWith(p);
+					if (c.playerWon() > 0) {
 						Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 1);
 					}
 
@@ -113,7 +115,7 @@ public class BumperFactory {
 					Person p = RaceFactory.makeEnt(level);
 					
 					extra.println(extra.PRE_RED+"An ent appears!");
-					mainGame.CombatTwo(Player.player.getPerson(),p);
+					Player.player.fightWith(p);
 					
 				}};
 			b.responses.add(new Response(DrawBane.ENT_CORE,5));
@@ -163,11 +165,13 @@ public class BumperFactory {
 					Person p = RaceFactory.makeBear(level);
 					
 					extra.println(extra.PRE_RED+"A bear attacks you!");
-					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+					Combat c = Player.player.fightWith(p);
+					if (c.playerWon() > 0) {
 						Player.player.questTrigger(TriggerType.CLEANSE,"bear", 1);
+					}
 				}
-					
-				}};
+
+			};
 			b.responses.add(new Response(DrawBane.MEAT,4));
 			b.responses.add(new Response(DrawBane.NOTHING,.5));
 			b.responses.add(new Response(DrawBane.HONEY,.7));
@@ -181,7 +185,10 @@ public class BumperFactory {
 					Person p = RaceFactory.makeBat(level);
 					
 					extra.println(extra.PRE_RED+"A bat attacks you!");
-					mainGame.CombatTwo(Player.player.getPerson(),p);
+					Combat c = Player.player.fightWith(p);
+					if (c.playerWon() > 0) {
+						Player.player.questTrigger(TriggerType.CLEANSE,"bat", 1);
+					}
 					
 				}};
 			b.responses.add(new Response(DrawBane.MEAT,3));
@@ -196,8 +203,9 @@ public class BumperFactory {
 					Person p = RaceFactory.makeUnicorn(level);
 					
 					extra.println(extra.PRE_RED+"A unicorn accosts you for holding the virgin captive!");
-					if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
-							Player.player.questTrigger(TriggerType.CLEANSE,"unicorn", 1);
+					Combat c = Player.player.fightWith(p);
+					if (c.playerWon() > 0) {
+						Player.player.questTrigger(TriggerType.CLEANSE,"unicorn", 1);
 					}
 					
 				}};
@@ -214,8 +222,8 @@ public class BumperFactory {
 					for (int i = 0;i < count;i++) {
 						list.add(RaceFactory.makeHarpy(extra.zeroOut(level-4)+1));}
 					extra.println(extra.PRE_RED+"A flock of harpies attack!");
-					List<Person> survivors = mainGame.HugeBattle(list,Player.list());
-					if (survivors.contains(Player.player.getPerson())) {
+					Combat c = Player.player.massFightWith(list);
+					if (c.playerWon() > 0) {
 						Player.player.questTrigger(TriggerType.CLEANSE,"harpy", count);
 					}
 					

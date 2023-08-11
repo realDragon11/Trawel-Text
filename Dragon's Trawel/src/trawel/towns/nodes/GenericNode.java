@@ -116,7 +116,7 @@ public class GenericNode implements NodeType {
 			Person p = RaceFactory.makeRich(level-1);
 			list.add(p);
 			p = RaceFactory.makeQuarterMaster(level+2);
-			p.setFlag(PersonFlag.IS_ADD,true);
+			p.setFlag(PersonFlag.IS_MOOK,true);
 			//used so the bodyguard gets converted into a world person if the rich is killed
 			//create an 'avenger' type which is deathcheater without dying
 			list.add(p);
@@ -737,7 +737,7 @@ public class GenericNode implements NodeType {
 		int state = holder.getStateNum(node);
 		final Person leader = extra.getNonAddOrFirst(peeps);
 		if (state > 1) {//if attacking by default
-			if (leader.getFlag(PersonFlag.IS_ADD)) {
+			if (leader.getFlag(PersonFlag.IS_MOOK)) {
 				extra.println(extra.PRE_BATTLE+"The bodyguard attacks you!");
 			}else {
 				if (peeps.size() > 1) {
@@ -747,26 +747,26 @@ public class GenericNode implements NodeType {
 				}
 				
 			}
-			Combat c = mainGame.HugeBattle(holder.getWorld(),Player.wrapForMassFight(peeps));
+			Combat c = Player.player.massFightWith(peeps);
 			if (c.playerWon() > 0) {
 				holder.setForceGo(node,false);//clean up any force go
 				//leader might be the guard now, we don't care
 				GenericNode.setSimpleDeadRaceID(holder, node, leader.getBag().getRaceID());
 				return false;
 			}else {
-				Person aleader = extra.getNonAddOrFirst(c.survivors);//need to keep leader effectively final sadly
-				if (aleader.getFlag(PersonFlag.IS_ADD) && extra.chanceIn(1,3)) {
+				Person aleader = extra.getNonAddOrFirst(c.getNonSummonSurvivors());//need to keep leader effectively final sadly
+				if (aleader.getFlag(PersonFlag.IS_MOOK) && extra.chanceIn(1,3)) {
 					//if rich is dead, 33% chance to leave
 					GenericNode.setSimpleDeadString(holder, node,"body");
 				}else {
-					holder.setStorage(node,c.survivors);
+					holder.setStorage(node,c.getNonSummonSurvivors());
 				}
 				return true;//kick out
 			}
 		}
 		//if we can talk
 		leader.getBag().graphicalDisplay(1,leader);
-		assert !leader.getFlag(PersonFlag.IS_ADD);
+		assert !leader.getFlag(PersonFlag.IS_MOOK);
 		//boolean is_add = leader.getFlag(PersonFlag.IS_ADD);//can't be an add at this point
 		extra.menuGo(new MenuGenerator() {
 			@Override

@@ -959,6 +959,19 @@ public final class extra {
 			return flags;
 		}
 		
+		public static boolean getEnumShortFlag(int flag, short flags) {
+			return Short.toUnsignedInt((short) (flags & (1 << flag))) > 0;
+		}
+		
+		public static short setEnumShortFlag(int flag, short flags, boolean bool) {
+			if (bool) {
+				flags |= (1 << flag);
+				return flags;
+			}
+			flags &= ~(1 << flag);
+			return flags;
+		}
+		
 		/**
 		 * adapted from
 		 * https://stackoverflow.com/a/18083093
@@ -1102,7 +1115,7 @@ public final class extra {
 		 */
 		public static Person getNonAddOrFirst(List<Person> peeps) {
 			for (Person p: peeps) {
-				if (!p.getFlag(PersonFlag.IS_ADD)) {
+				if (!p.getFlag(PersonFlag.IS_MOOK)) {
 					return p;
 				}
 			}

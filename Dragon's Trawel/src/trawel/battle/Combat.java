@@ -49,7 +49,7 @@ import trawel.towns.fort.SubSkill;
 
 public class Combat {
 	//instance variables
-	public List<Person> survivors;
+	private List<Person> survivors;
 	public List<Person> killed;
 	public long turns = 0;
 	public int totalFighters = 2;
@@ -236,10 +236,6 @@ public class Combat {
 			}
 			
 		}
-	}
-	
-	public Combat(World w, FortHall hall,List<Person>... people) {
-		this(w,hall, Arrays.asList(people));
 	}
 	public Combat(World w,List<List<Person>> people) {
 		this(w,null,people);
@@ -1429,6 +1425,12 @@ public class Combat {
 		}else {
 			return -2;
 		}
+	}
+	
+	public List<Person> getNonSummonSurvivors(){
+		List<Person> list = new ArrayList<Person>();
+		survivors.stream().filter(s -> !s.getFlag(PersonFlag.IS_SUMMON)).forEach(list::add);
+		return list;
 	}
 	
 		

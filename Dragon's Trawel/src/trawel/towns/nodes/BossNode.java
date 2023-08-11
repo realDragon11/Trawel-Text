@@ -56,10 +56,10 @@ public class BossNode implements NodeType {
 			p.finishGeneration();
 			peeps.add(p);
 			p = (RaceFactory.makeMimic(extra.zeroOut(level-3)+1));
-			p.setFlag(PersonFlag.IS_ADD, true);
+			p.setFlag(PersonFlag.IS_MOOK, true);
 			peeps.add(p);
 			p = (RaceFactory.makeMimic(extra.zeroOut(level-3)+1));
-			p.setFlag(PersonFlag.IS_ADD, true);
+			p.setFlag(PersonFlag.IS_MOOK, true);
 			peeps.add(p);
 			
 		break;
@@ -94,16 +94,13 @@ public class BossNode implements NodeType {
 		//if (holder.getEventNum(node) == 0) {
 			extra.println(extra.PRE_RED+"You challenge the fatespinner!");
 			List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
-			List<List<Person>> listlist = new ArrayList<List<Person>>();
-			listlist.add(Player.list());
-			listlist.add(list);
-			Combat c = mainGame.HugeBattle(holder.getWorld(),listlist);
+			Combat c = Player.player.massFightWith(list);
 			if (c.playerWon() > 0) {
 				holder.setForceGo(node,false);
 				//node.interactString = "approach the fatespinner's corpse";
 				//node.storage1 = null;
 				
-				Person spinner = list.stream().filter(p->!p.getFlag(PersonFlag.IS_ADD)).findAny().get();//throw if can't find
+				Person spinner = list.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();//throw if can't find
 				//node.state = 1;
 				//node.name = "The Fatespinner's corpse";
 				setGenericCorpse(holder,node, spinner);
@@ -128,10 +125,7 @@ public class BossNode implements NodeType {
 		//if (node.state == 0) {
 			extra.println(extra.PRE_RED+"You challenge the Hell Baron!");
 			List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
-			List<List<Person>> listlist = new ArrayList<List<Person>>();
-			listlist.add(Player.list());
-			listlist.add(list);
-			Combat c = mainGame.HugeBattle(holder.getWorld(),listlist);
+			Combat c = Player.player.massFightWith(list);
 			if (c.playerWon() > 0) {
 				holder.setForceGo(node,false);
 				//node.interactString = "approach the hell baron's corpse";
@@ -139,7 +133,7 @@ public class BossNode implements NodeType {
 				//node.state = 1;
 				//node.name = "The Hell Baron's corpse";
 				//just in case I want to add adds later
-				Person baron = list.stream().filter(p->!p.getFlag(PersonFlag.IS_ADD)).findAny().get();
+				Person baron = list.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();
 				setGenericCorpse(holder,node, baron);
 				Networking.unlockAchievement("boss2");
 				Player.player.getPerson().setPerk(Perk.HELL_BARONESS);

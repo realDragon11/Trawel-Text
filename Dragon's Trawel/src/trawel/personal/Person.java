@@ -1,5 +1,6 @@
 package trawel.personal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -80,15 +81,15 @@ public class Person implements java.io.Serializable{
 	private transient int hp, tempMaxHp;
 	private PersonType personType;
 	
-	private byte flags = 0b00000000;//used with bitmasking
+	private short flags = 0b0;//used with bitmasking, starts empty
 	
-	public enum PersonFlag{
+	public enum PersonFlag{//current capacity= 16 (short)
 		RACIST, ANGRY,
 		AUTOLOOT, AUTOLEVEL,
 		ISPLAYER, SMART_COMPARE,
 		PLAYER_SIDE//used for forts to determine their side. Currently the player can't fight against forts, but that might change
-		,IS_ADD//used to indicate less importance- in current cases, boss 'adds'
-		//thats 8, can't hold any more rn, might need to make another set
+		,IS_MOOK//used to indicate less importance- in current cases, boss 'adds'
+		,IS_SUMMON//not part of main list, added by the wrapper functions to add traveling friends
 	}
 	//DOLATER: add a Set<Culture> that holds cultures. This can be used for advanced bigorty, cultural norms, etc etc
 	//this might also be used to hold a place of origin
@@ -1432,15 +1433,18 @@ public class Person implements java.io.Serializable{
 	//this just avoids the object overhead plus byte is 1/8th of a long
 	
 	public boolean getFlag(PersonFlag flag) {
-		return Byte.toUnsignedInt((byte) (flags & (1 << flag.ordinal()))) > 0;
+		return extra.getEnumShortFlag(flag.ordinal(), flags);
+		//return Byte.toUnsignedInt((byte) (flags & (1 << flag.ordinal()))) > 0;
 	}
 	
 	public void setFlag(PersonFlag flag, boolean bool) {
+		flags = extra.setEnumShortFlag(flag.ordinal(), flags, bool);
+		/*
 		if (bool) {
 			flags |= (1 << flag.ordinal());
 			return;
 		}
-		flags &= ~(1 << flag.ordinal());
+		flags &= ~(1 << flag.ordinal());*/
 	}
 
 	public boolean isRacist() {
@@ -1864,6 +1868,13 @@ public class Person implements java.io.Serializable{
 
 	public String getTitle() {
 		return title;
+	}
+	
+	public List<Person> getSelfOrAllies(){
+		if (superperson != null) {
+			return superperson.getAllies();
+		}
+		return Collections.singletonList(this);
 	}
 
 }

@@ -954,7 +954,7 @@ public class mainGame {
 			story.startFight(false);
 		}
 		Combat c = new Combat(first_man,second_man, w);//////
-		if (c.survivors.contains(second_man)) {
+		if (c.getNonSummonSurvivors().contains(second_man)) {
 			holdPerson = second_man;
 			second_man = first_man;
 			first_man = holdPerson;
@@ -1032,17 +1032,16 @@ public class mainGame {
 		 */
 		@Deprecated
 		public static Person CombatTwo(Person first_man,Person second_man) {
-			return CombatTwo( first_man, second_man,Player.player.getWorld()).survivors.get(0);
+			return CombatTwo( first_man, second_man,Player.player.getWorld()).getNonSummonSurvivors().get(0);
 		}
 		@Deprecated
 		public static List<Person> HugeBattle(List<Person>...people){
-			return HugeBattle(Player.player.getWorld(),Arrays.asList(people)).survivors;
+			return HugeBattle(Player.player.getWorld(),Arrays.asList(people)).getNonSummonSurvivors();
 		}
 		@Deprecated
 		public static List<Person> HugeBattle(World w,List<Person>...people){
-			return HugeBattle(w,Arrays.asList(people)).survivors;
+			return HugeBattle(w,Arrays.asList(people)).getNonSummonSurvivors();
 		}
-		
 		
 		public static Combat HugeBattle(World w, List<List<Person>> people){
 			Combat battle = new Combat(w, people);
@@ -1067,8 +1066,9 @@ public class mainGame {
 				}
 				
 			};
+			List<Person> lives = battle.getNonSummonSurvivors();
 			battle.killed.sort(levelSorter);
-			battle.survivors.sort(levelSorter);
+			lives.sort(levelSorter);
 			
 			
 			int killLevelTotal = 0;
@@ -1085,7 +1085,7 @@ public class mainGame {
 			for (int i = people.size()-1;i >=0;i--) {
 				xpTotalList[i] = 0;
 				xpDeadList[i] = 0;
-				if (people.get(i).contains(battle.survivors.get(0))) {
+				if (people.get(i).contains(lives.get(0))) {
 					winSide = i;
 				}
 				for (Person p: people.get(i)) {
@@ -1131,7 +1131,7 @@ public class mainGame {
 			
 			//NOTE: player does not get first pick unless they were highest level, they do win ties
 			
-			for (Person surv: battle.survivors){
+			for (Person surv: lives){
 				surv.clearBattleEffects();
 				int subReward = xpReward;
 				if (!bypassLevelCap && subReward > surv.getLevel()) {
@@ -1186,16 +1186,16 @@ public class mainGame {
 			}
 			
 			
-			if (battle.survivors.size() > 1) {
-				int giveGold = gold/battle.survivors.size();
-				int giveAether = aether/battle.survivors.size();
+			if (lives.size() > 1) {
+				int giveGold = gold/lives.size();
+				int giveAether = aether/lives.size();
 				if (giveGold > 0) {
 					extra.println("The remaining " +World.currentMoneyDisplay(gold) +" is divvied up, "+giveGold +" each.");
 				}
 				if (giveAether > 0) {
 					extra.println("The remaining " + aether +" aether is divvied up, "+giveAether +" each.");
 				}
-				for (Person surv: battle.survivors){
+				for (Person surv: lives){
 					if (giveGold > 0) {
 						surv.getBag().addGold(giveGold);
 					}
@@ -1209,7 +1209,7 @@ public class mainGame {
 					}
 				}
 			}else {
-				Person looter = battle.survivors.get(0);
+				Person looter = lives.get(0);
 				if (gold > 0) {
 					extra.println(looter.getName() + " claims the remaining " +World.currentMoneyDisplay(gold) +".");
 					looter.getBag().addGold(gold);
@@ -1285,7 +1285,7 @@ public class mainGame {
 					extra.changePrint(true);
 				}
 				Combat c = CombatTwo(manOne,manTwo,null);
-				manOne = c.survivors.get(0);
+				manOne = c.getNonSummonSurvivors().get(0);
 				story.setPerson(c.killed.get(0), 0);
 				//story.setPerson(manTwo, 0);
 				if (!displayFight) {

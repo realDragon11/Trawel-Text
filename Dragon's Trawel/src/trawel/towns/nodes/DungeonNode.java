@@ -261,14 +261,14 @@ public class DungeonNode implements NodeType{
 			}
 		case 3://multiguards
 			List<Person> guards = holder.getStorageFirstClass(node,List.class);
-			Combat bgc = mainGame.HugeBattle(holder.getWorld(),Player.wrapForMassFight(guards));
+			Combat bgc = Player.player.massFightWith(guards);
 			if (bgc.playerWon() > 0) {
 				holder.setForceGo(node,false);
 				String wasname = holder.getStorageFirstClass(node,String.class);
 				GenericNode.setTotalDeadString(holder, node,"Wrecked " +wasname,"Examine Bodies","They are slowly rotting.", "pile of corpses");
 				return false;
 			}else {
-				holder.setStorage(node,bgc.survivors);//they don't revive
+				holder.setStorage(node,bgc.getNonSummonSurvivors());//they don't revive
 				return true;
 			}
 		case 5: return chest(holder, node);

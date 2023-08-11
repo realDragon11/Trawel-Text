@@ -280,12 +280,13 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			filler+=1;
 		}
 		if (ents > 0 && meats > 1) {
-			Combat c = Player.player.fightWith(RaceFactory.getFleshGolem(
+			Person fGolem = RaceFactory.getFleshGolem(
 					(Player.player.getPerson().getLevel()+town.getTier())/2//near the player and town level
-					));
+					);
+			Combat c = Player.player.fightWith(fGolem);
 			if (c.playerWon() < 0) {//if player lost
 				//player gets a fleshy friend now :D
-				getTown().getIsland().getWorld().addReoccuring(new Agent(c.survivors.get(0),AgentGoal.SPOOKY));
+				getTown().getIsland().getWorld().addReoccuring(new Agent(fGolem,AgentGoal.SPOOKY));
 			}else {
 				Player.bag.addNewDrawBane(DrawBane.SINEW);
 			}
