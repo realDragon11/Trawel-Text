@@ -115,10 +115,28 @@ public class Connection implements java.io.Serializable{
 				}
 			}
 			if (doIt) {
-			extra.println(ot.getName() + " has a shop.");
+			extra.println(ot.getName() + " has an arena.");
 			}
 		}
 	}
+	
+	/**
+	 * note that this does count as directly seeing the town
+	 */
+	public String displayLine(Town from) {
+		Town ot = otherTown(from);
+		String visitColor = extra.PRE_WHITE;
+		switch (ot.visited) {
+		case 0: visitColor = extra.COLOR_NEW; ot.visited = 1;break;
+		case 1: visitColor = extra.COLOR_SEEN;break;
+		case 2: visitColor = extra.COLOR_BEEN;break;
+		case 3: visitColor = extra.COLOR_OWN;break;
+		}
+		return visitColor +getName() + " to " + ot.getName()
+		+ " {Level: "+ot.getTier()+"} ("+dir(from,ot)+")"
+		+ (Player.hasSkill(Skill.TOWNSENSE) ? ot.getName() + " has " + ot.getConnects().size() + " connections." : "");
+	}
+	
 	public static String dir(Town t1, Town t2) {
 		//vectors: int angle = (int) Math.atan2((t1.getLocation().x*t2.getLocation().y)-(t1.getLocation().y*t2.getLocation().x),(t1.getLocation().x*t2.getLocation().x)+(t1.getLocation().y*t2.getLocation().y));
 		int angle = (int) Math.toDegrees(Math.atan2(t2.getLocationX()-t1.getLocationX(),t2.getLocationY()-t1.getLocationY()))-90;
@@ -166,4 +184,5 @@ public class Connection implements java.io.Serializable{
 	public String getName() {
 		return nameString;
 	}
+	
 }

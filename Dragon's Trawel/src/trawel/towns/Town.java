@@ -43,6 +43,7 @@ import trawel.towns.events.TownFlavorFactory;
 import trawel.towns.events.TownTag;
 import trawel.towns.fort.FortFeature;
 import trawel.towns.fort.FortHall;
+import trawel.towns.misc.Docks;
 
 /**
  * 
@@ -346,18 +347,24 @@ public class Town extends TContextOwner{
 					}
 				}
 				if (hasPort()) {
-					mList.add(new MenuSelect() {
+					Docks d = (Docks) features.stream().filter(f -> f instanceof Docks).findAny().orElseGet(null);
+					if (d == null) {
+						mList.add(new MenuSelect() {
 
-						@Override
-						public String title() {
-							return extra.PRE_SHIP+"Shipyard";
-						}
+							@Override
+							public String title() {
+								return extra.PRE_SHIP+"Shipyard";
+							}
 
-						@Override
-						public boolean go() {
-							goPort();
-							return true;
-						}});
+							@Override
+							public boolean go() {
+								goPort();
+								return true;
+							}});
+					}else {
+						mList.add(new MenuSelectFeature(d));
+					}
+					
 					if (Player.getTutorial()) {
 						mList.add(new MenuLine() {
 
@@ -630,7 +637,7 @@ public class Town extends TContextOwner{
 
 	private void goPort() {
 		extra.println("1 "+extra.PRE_BATTLE+"protect the port");
-		int i = 2;
+		int i = 1;
 		Networking.setArea("port");
 		for (Connection c: connects) {
 			if (c.getType() == ConnectType.SHIP){
@@ -641,7 +648,7 @@ public class Town extends TContextOwner{
 		}
 		extra.println(i + " exit");i++;
 		int j = extra.inInt(i-1);
-		if (j == 1) {
+		if (j == -10) {
 			if (defenseTimer > 0) {
 				extra.println("The port can't be defended right now.");
 			}else {
@@ -692,7 +699,7 @@ public class Town extends TContextOwner{
 			}
 			}
 		}
-		i = 2;
+		i = 1;
 		for (Connection c: connects) {
 			if (c.getType() == ConnectType.SHIP){//ships are free for now
 			if (i == j) {

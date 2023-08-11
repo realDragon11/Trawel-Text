@@ -1,6 +1,7 @@
 package trawel.towns.misc;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,6 +12,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
+import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.battle.Combat;
@@ -23,6 +25,7 @@ import trawel.personal.people.SuperPerson;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Connection;
+import trawel.towns.Connection.ConnectType;
 import trawel.towns.Feature;
 import trawel.towns.Town;
 import trawel.towns.World;
@@ -54,6 +57,11 @@ public class Docks extends Feature {
 	public Docks(Town t) {
 		town = t;
 	}
+	
+	@Override
+	public boolean canShow() {
+		return false;//displayed higher in the menu another way
+	}
 
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
@@ -70,12 +78,109 @@ public class Docks extends Feature {
 
 	@Override
 	public void go() {
-		extra.menuGo(new MenuGenerator() {
+		Networking.setArea("port");
+		List<Connection> connects = new ArrayList<Connection>();
+		town.getConnects().stream().filter(c -> c.getType() == ConnectType.SHIP).forEach(connects::add);
+		extra.menuGo(new ScrollMenuGenerator(connects.size(),"n/a","n/a") {
 
 			@Override
-			public List<MenuItem> gen() {
-				// TODO Auto-generated method stub
-				return null;
+			public List<MenuItem> header() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				if (fightCooldownTimer > 0) {
+					if (townOwned) {
+						//no need to defend
+						list.add(new MenuLine() {
+
+							@Override
+							public String title() {
+								return "The Docks are currently clear of invaders.";
+							}});
+					}else {
+						//can't defend yet
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return extra.PRE_BATTLE
+										+"Wait and then Take Back Port ("
+										+extra.F_TWO_TRAILING.format(fightCooldownTimer+1)+" hours)";
+							}
+
+							@Override
+							public boolean go() {
+								Player.addTime(fightCooldownTimer+1);
+								mainGame.globalPassTime();
+								defend();
+								if (!townOwned) {
+									return true;//kick out, like nodes
+								}
+								return false;
+							}});
+					}
+				}else {
+					if (townOwned) {
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return extra.PRE_BATTLE+"Defend Port";
+							}
+
+							@Override
+							public boolean go() {
+								defend();
+								if (!townOwned) {
+									return true;//kick out, like nodes
+								}
+								return false;
+							}});
+					}else {
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return extra.PRE_BATTLE+"Reclaim Port";
+							}
+
+							@Override
+							public boolean go() {
+								defend();
+								if (!townOwned) {
+									return true;//kick out, like nodes
+								}
+								return false;
+							}});
+					}
+				}
+				
+				
+				
+				return list;
+			}
+
+			@Override
+			public List<MenuItem> forSlot(int i) {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				//used for nodes since this is a lot easier
+				Connection c = connects.get(i);
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return c.displayLine(town);
+					}
+
+					@Override
+					public boolean go() {
+						Player.player.setLocation(c.otherTown(town));
+						return true;//return so we go somewhere
+					}});
+				return list;
+			}
+
+			@Override
+			public List<MenuItem> footer() {
+				return Collections.singletonList(new MenuBack());
 			}});
 	}
 	
@@ -83,6 +188,8 @@ public class Docks extends Feature {
 	 * lets the player skip along if they are high enough level to get somewhere
 	 * <br>
 	 * after leaving menu, always check to see if you're still in the same town
+	 * <br>
+	 * note that getting back might take more effort if the place doesn't have docks, only ports
 	 */
 	private ScrollMenuGenerator farConnectsMenu() {
 		List<Town> tList = new ArrayList<Town>();
@@ -93,6 +200,9 @@ public class Docks extends Feature {
 		while (openSet.size() > 0) {
 			Town cur = openSet.remove(0);
 			for (Connection c: cur.getConnects()) {
+				if (c.getType() != ConnectType.SHIP) {
+					continue;//not our type
+				}
 				Town other = c.otherTown(cur);
 				if (!closedSet.contains(other)) {
 					tList.add(other);
