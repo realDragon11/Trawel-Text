@@ -25,7 +25,8 @@ public enum Effect{
 	BONUS_WEAP_ATTACK("Bonus Attack","Their next turn will have an additional weapon attack to choose from. Stacks.",false,true),
 	ADVANTAGE_STACK("Advantage","The next hit or dodge roll involving them will gain a +20% bonus on their side. Stacks.",false,true),
 	CLOTTER("Clotting","They are immune to bleed effects from wounds. Magic and dedicated effects still apply.",false,false),
-	SUDDEN_START("Sudden Start","Applies Advantage and grants 2 Bonus Weapon Attacks at the start of battle.",false,false)
+	SUDDEN_START("Sudden Start","Applies Advantage and grants 2 Bonus Weapon Attacks at the start of battle.",false,false),
+	STERN_STUFF("Sterner Stuff","Chance to resist death once per battle.",false,false)
 	;
 	
 	private String name,desc;

@@ -46,13 +46,19 @@ public enum Archetype implements IHasSkills{
 			,AType.RACIAL
 			,EnumSet.of(AGroup.MAGIC)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.CURSES)
-			,EnumSet.of(Skill.ARCANIST)
+			,EnumSet.of(Skill.ARCANIST,Skill.ELEMENTALIST,Skill.M_CRYO,Skill.M_AERO,Skill.PLOT_ARMOR)
 			)
 	,SEA_SAGE("Sea Sage","Tempered by a still calm, they can call forth the Sea's wrath if provoked."
 			,AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE)
 			,EnumSet.of(Skill.DODGEREF,Skill.ARCANIST)
+			)
+	,FISH_TALL("Torrental Titan","A raging force deep-sea bent on proving their conquest of land is inevitable."
+			,AType.RACIAL
+			,EnumSet.of(AGroup.DIRECT_BATTLE)
+			,EnumSet.of(FeatType.BATTLE)
+			,EnumSet.of(Skill.STERN_STUFF,Skill.RAW_GUTS,Skill.DSTRIKE)
 			)
 	;
 	

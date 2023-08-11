@@ -1940,4 +1940,9 @@ public class Person implements java.io.Serializable{
 		return a;
 	}
 
+	public void resistDeath(float percentheal) {
+		hp = (int) (getMaxHp()*percentheal);
+		hp = Math.max(1,hp);
+	}
+
 }

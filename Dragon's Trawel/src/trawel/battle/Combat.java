@@ -955,7 +955,7 @@ public class Combat {
 			
 		//Wounds can now be inflicted even if not dealing damage
 		String woundstr = "";
-		
+		boolean forceKilled = false;
 		if (atr.type == ATK_ResultType.IMPACT) {
 			if (attacker.hasSkill(Skill.SPUNCH)) {
 				defender.advanceTime(atr.attack.getTime()/50f);
@@ -966,6 +966,8 @@ public class Combat {
 			if (atr.code == ATK_ResultCode.KILL) {//if force kill
 				extra.println(attacker.getName() + " executes " + defender.getName() +"!");
 				defender.forceKill();
+				forceKilled = true;
+				//might not actually be final death, but this is fine to say
 			}
 			if (attacker.hasSkill(Skill.BLOODTHIRSTY)) {
 				attacker.addHp(Math.min(defender.getLevel(),attacker.getLevel()));
@@ -982,10 +984,22 @@ public class Combat {
 				}
 			}
 		}
-		if (damageDone > 0) {
-			if (defender.takeDamage(damageDone)) {
+		if (damageDone > 0 || forceKilled) {
+			if (defender.takeDamage(Math.max(1,damageDone))) {
 				//extra.print(" " + extra.choose("Striking them down!"," They are struck down."));
-				if (!extra.getPrint()) {
+				boolean deathResist = false;
+				if (defender.hasEffect(Effect.STERN_STUFF)) {
+					defender.removeEffectAll(Effect.STERN_STUFF);
+					if (forceKilled || defender.contestedRoll(attacker, 
+							defender.getStrength(), attacker.getHighestAttribute())>=0) {
+						deathResist = true;
+						defender.resistDeath(0f);
+						if (!extra.getPrint()) {
+							extra.println(extra.ATTACK_DAMAGED+atr.stringer.replace("[*]", inlined_color)+woundstr +" But they're made of sterner stuff!");
+						}
+					}
+				}
+				if (deathResist && !extra.getPrint()) {
 					inlined_color=extra.ATTACK_KILL;
 					extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color)+woundstr);
 				}

@@ -1097,6 +1097,8 @@ public class RaceFactory {
 	public static Person makeDrudgerTitan(int level) {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_DRUDGER_TITAN, MaterialFactory.getMat("flesh"), false);
+		w.liteSetSkillHas(Archetype.FISH_TALL);
+		w.cleanSetSkillHas(Perk.STAND_TALL);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","iron")),WeaponType.FISH_ANCHOR));
 		w.getBag().swapArmorSlot(new Armor(level,(byte)2,MaterialFactory.getMat("rusty iron"),null),2);
 		w.getBag().getDrawBanes().add(DrawBane.MEAT);
@@ -1114,6 +1116,7 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_DRUDGER_STOCK, MaterialFactory.getMat("flesh"), false);
 		w.liteSetSkillHas(Archetype.FISH_MONSOON);
+		w.addFeatPoint(level/2);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("rusty iron"),WeaponType.NULL_WAND));//not a weapon
 		w.getBag().swapArmorSlot(new Armor(level,(byte)0,ArmorStyle.GEM.getMatFor(),ArmorStyle.GEM),0);//gem helmet for some reason
 		for (byte i=1;i<5;i++) {

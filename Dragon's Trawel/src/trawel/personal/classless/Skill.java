@@ -183,6 +183,9 @@ public enum Skill{
 		M_AERO("Aeromantic","25% chance to convert a Graze wound into a random Elec wound on any attack."
 				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 75%."
 				,Type.OFFENSE),
+		STERN_STUFF("Sterner Stuff","The first time each battle you would die, roll a contested Strength check vs their highest attribute to survive at 1 HP."
+				,"Applies on instant kill effects, but you will still be left with 1 HP.",
+				Type.DEFENSE),
 		
 		
 		;
