@@ -1070,4 +1070,25 @@ public class Town extends TContextOwner{
 		return ContextLevel.TOWN;
 	}
 	
+	
+	/**
+	 * does not count as directly seeing, for port reasons
+	 * <br>
+	 * a watered down connection
+	 */
+	public String displayLine(Town from) {
+		String visitColor = extra.PRE_WHITE;
+		switch (visited) {
+		case 0: visitColor = extra.COLOR_NEW;break;
+		case 1: visitColor = extra.COLOR_SEEN;break;
+		case 2: visitColor = extra.COLOR_BEEN;break;
+		case 3: visitColor = extra.COLOR_OWN;break;
+		}
+		String dirString = "";
+		if (from != null) {
+			dirString = " ("+Connection.dir(from,this)+")";
+		}
+		return visitColor + getName() + " {Level: "+getTier()+"}"+dirString;
+	}
+	
 }

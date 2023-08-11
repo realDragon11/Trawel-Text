@@ -1436,6 +1436,9 @@ public class Combat {
 	public Stream<Person> streamAllSurvivors(){
 		return survivors.stream();
 	}
+	public int getVictorySide() {
+		return winSide;
+	}
 	
 		
 }

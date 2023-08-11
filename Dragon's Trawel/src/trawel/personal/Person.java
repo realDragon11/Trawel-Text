@@ -85,12 +85,41 @@ public class Person implements java.io.Serializable{
 	private short flags = 0b0;//used with bitmasking, starts empty
 	
 	public enum PersonFlag{//current capacity= 16 (short)
-		RACIST, ANGRY,
+		/**
+		 * says slurs
+		 */
+		RACIST,
+		/**
+		 * effectively racist to things that can't talk
+		 */
+		ANGRY,
 		AUTOLOOT, AUTOLEVEL,
-		ISPLAYER, SMART_COMPARE,
-		PLAYER_SIDE//used for forts to determine their side. Currently the player can't fight against forts, but that might change
-		,IS_MOOK//used to indicate less importance- in current cases, boss 'adds'
-		,IS_SUMMON//not part of main list, added by the wrapper functions to add traveling friends
+		ISPLAYER,
+		/*
+		 * if off, they assess by value instead of by quality
+		 */
+		SMART_COMPARE,
+		/**
+		 * used for forts to determine their side. Currently the player can't fight against forts, but that might change
+		 */
+		PLAYER_SIDE
+		/*
+		 * used to indicate less importance- in current cases, boss 'adds'. This is not a summon, however
+		 * just a persistent non-leader
+		 */
+		,IS_MOOK
+		/**
+		 * not part of main list, added by the wrapper functions to add traveling friends
+		 */
+		,IS_SUMMON
+		/**
+		 *can learn archetypes when autoleveling, otherwise can only get feats they can already get
+		 *this essentially prevents wolves from learning how to be good at armor unless they already know armor
+		 *via it getting set in their makeWolf thing
+		 *<br>
+		 *note that 'common' feats will still be accessible
+		 */
+		,CAN_LEARN
 	}
 	//DOLATER: add a Set<Culture> that holds cultures. This can be used for advanced bigorty, cultural norms, etc etc
 	//this might also be used to hold a place of origin
@@ -231,6 +260,7 @@ public class Person implements java.io.Serializable{
 			setFlag(PersonFlag.AUTOLEVEL, true);
 		}
 		effects = new EnumMap<Effect,Integer>(Effect.class);
+		setFlag(PersonFlag.CAN_LEARN,isHumanoid());//can be overwritten by caller if need be
 	}
 	
 	/**
@@ -1878,12 +1908,30 @@ public class Person implements java.io.Serializable{
 		return Collections.singletonList(this);
 	}
 
+	/**
+	 * get the agent, or if doesn't exist, create a new one with the defined goal
+	 * <br>
+	 * does not set the goal if already existing agent
+	 */
 	public Agent getMakeAgent(AgentGoal goal) {
 		if (superperson == null) {
 			return new Agent(this,goal);//agent sets our own superperson value
 		}
 		assert superperson instanceof Agent;
 		return (Agent) superperson;
+	}
+	
+	/**
+	 * sets the agent goal to only be this goal, and creates a superperson if need be
+	 */
+	public Agent setOrMakeAgentGoal(AgentGoal goal) {
+		if (superperson == null) {
+			return new Agent(this,goal);//agent sets our own superperson value
+		}
+		assert superperson instanceof Agent;
+		Agent a = (Agent) superperson;
+		a.onlyGoal(goal);
+		return a;
 	}
 
 }
