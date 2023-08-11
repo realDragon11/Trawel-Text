@@ -242,6 +242,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 			spList.remove(sp1);
 			SuperPerson sp2 = extra.randList(spList);
 			if (!playerwatching) { extra.offPrintStack();}
+			//summons not allowed
 			Combat c = mainGame.CombatTwo(sp1.getPerson(),sp2.getPerson(),town.getIsland().getWorld());
 			town.removeAllKilled(c.killed);
 			extra.changePrint(false);

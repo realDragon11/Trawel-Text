@@ -937,10 +937,8 @@ public class mainGame {
 
 
 	/**
-	 * The advanced combat, incorporating weapons and armors.
-	 * @param first_man (Person)
-	 * @param second_man (Person)
-	 * @return winner (Person)
+	 * should only call in the wild if you want a duel with no adds or summons
+	 * @return combat
 	 */
 	public static Combat CombatTwo(Person first_man,Person second_man, World w) {
 		Person holdPerson;
@@ -1033,14 +1031,6 @@ public class mainGame {
 		@Deprecated
 		public static Person CombatTwo(Person first_man,Person second_man) {
 			return CombatTwo( first_man, second_man,Player.player.getWorld()).getNonSummonSurvivors().get(0);
-		}
-		@Deprecated
-		public static List<Person> HugeBattle(List<Person>...people){
-			return HugeBattle(Player.player.getWorld(),Arrays.asList(people)).getNonSummonSurvivors();
-		}
-		@Deprecated
-		public static List<Person> HugeBattle(World w,List<Person>...people){
-			return HugeBattle(w,Arrays.asList(people)).getNonSummonSurvivors();
 		}
 		
 		public static Combat HugeBattle(World w, List<List<Person>> people){

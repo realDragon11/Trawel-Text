@@ -21,6 +21,7 @@ import trawel.mainGame;
 import trawel.randomLists;
 import trawel.battle.Combat;
 import trawel.personal.Person;
+import trawel.personal.Person.PersonFlag;
 import trawel.personal.Person.PersonType;
 import trawel.personal.classless.Feat;
 import trawel.personal.classless.Skill;
@@ -628,7 +629,7 @@ public class Town extends TContextOwner{
 	}
 
 	private void goPort() {
-		extra.println("1 protect the port");
+		extra.println("1 "+extra.PRE_BATTLE+"protect the port");
 		int i = 2;
 		Networking.setArea("port");
 		for (Connection c: connects) {
@@ -647,35 +648,43 @@ public class Town extends TContextOwner{
 			if (Player.player.getPerson().getLevel() >= tier) {
 				extra.println("You help defend the port against the drudger onslaught.");
 				int eSize = extra.randRange(2,3);
-				List<Person> oallyList = new ArrayList<Person>();
 				List<Person> allyList = new ArrayList<Person>();
 				List<Person> foeList = new ArrayList<Person>();
 				for (int o = 0;o < eSize;o++) {
-					oallyList.add(popHelper());
 					allyList.add(popHelper());
-					foeList.add(RaceFactory.makeDrudgerStock(tier-1));
+					Person stock = RaceFactory.makeDrudgerStock(tier-1);
+					stock.setFlag(PersonFlag.IS_MOOK,true);
+					foeList.add(stock);
 				}
-				oallyList.add(Player.player.getPerson());
 				allyList.add(Player.player.getPerson());
 				foeList.add(RaceFactory.makeDrudgerTitan(tier));
-				List<Person> survivors = mainGame.HugeBattle(Player.getPlayerWorld(),foeList,allyList);
-				boolean pass = false;
-				for (Person p: oallyList) {
-					if (survivors.contains(p)) {
-						pass = true;
-						break;
-					}
-				}
+				
+				List<List<Person>> listlist = new ArrayList<List<Person>>();
+				listlist.add(allyList);
+				listlist.add(foeList);
+				
+				Combat c = mainGame.HugeBattle(getIsland().getWorld(), listlist);
+				boolean pass = c.playerWon() > 0;
+				
 				if (pass) {
-					survivors.remove(Player.player.getPerson());
-					helpers.addAll(survivors);
+					c.getNonSummonSurvivors().stream().filter(p -> !p.isPlayer()).forEach(helpers::add);
 					int reward = (10*tier)+extra.randRange(0,4);
 					extra.println("You take back the docks. They pay you with "+World.currentMoneyDisplay(reward)+".");
 					Player.player.addGold(reward);
 					defenseTimer = 24*3;//3 days
 				}else {
-					defenseTimer = 12;//12 hours
-					extra.println("The docks are overrun.");//FIXME add consequence
+					Person leader = c.streamAllSurvivors()
+							.filter(p -> !p.getFlag(PersonFlag.IS_MOOK) && !p.getFlag(PersonFlag.IS_SUMMON))
+							.findAny().orElse(null);
+					if (leader == null) {
+						defenseTimer = 24;//1 day
+						extra.println("The docks are overrun by the drudger force.");
+					}else {
+						//TODO: create a docks feature that can also handle shipyard transport
+						defenseTimer = 12;//12 hours
+						extra.println(leader.getName() +"'s armor takes over the docks!");
+					}
+					
 				}
 				Player.addTime(3);//3 hour battle
 			}else {

@@ -56,6 +56,7 @@ import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponType;
 import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Agent;
+import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.towns.services.Store;
@@ -1875,6 +1876,14 @@ public class Person implements java.io.Serializable{
 			return superperson.getAllies();
 		}
 		return Collections.singletonList(this);
+	}
+
+	public Agent getMakeAgent(AgentGoal goal) {
+		if (superperson == null) {
+			return new Agent(this,goal);//agent sets our own superperson value
+		}
+		assert superperson instanceof Agent;
+		return (Agent) superperson;
 	}
 
 }

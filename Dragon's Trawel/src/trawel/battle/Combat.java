@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import trawel.AIClass;
 import trawel.Effect;
@@ -1431,6 +1432,9 @@ public class Combat {
 		List<Person> list = new ArrayList<Person>();
 		survivors.stream().filter(s -> !s.getFlag(PersonFlag.IS_SUMMON)).forEach(list::add);
 		return list;
+	}
+	public Stream<Person> streamAllSurvivors(){
+		return survivors.stream();
 	}
 	
 		

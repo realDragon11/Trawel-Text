@@ -149,9 +149,9 @@ public class GroveNode implements NodeType{
 						extra.choose("Corpse","Body")
 						,
 						body
-				                 
 				});
 			}
+			break;
 		case 5:
 			PlantSpot[] big_circle = new PlantSpot[extra.randRange(12,24)];
 			for (int i = Math.min(big_circle.length/2,holder.getLevel(madeNode)+2); i >=0;i--) {
@@ -163,6 +163,7 @@ public class GroveNode implements NodeType{
 				}
 				big_circle[place%big_circle.length] = new PlantSpot(1,"");
 			}
+			holder.setStorage(madeNode, big_circle);
 			break;
 		case 6:
 			Person old = RaceFactory.makeOld(holder.getLevel(madeNode)+2);
