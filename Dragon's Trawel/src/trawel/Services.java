@@ -27,6 +27,9 @@ public class Services {
 	 */
 	public static Enchant improveEnchantChance(Enchant theEnchant, int level, float mod) {
 		Enchant newEnchant = EnchantConstant.makeEnchant(1.2f*mod,5);
+		if (newEnchant == null) {
+			return theEnchant;
+		}
 		if (newEnchant.getGoldMod() > theEnchant.getGoldMod()) {
 			return newEnchant;
 		}else {

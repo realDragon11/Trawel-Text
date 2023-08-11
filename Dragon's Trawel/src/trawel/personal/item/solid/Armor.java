@@ -334,7 +334,9 @@ public class Armor extends Item {
 	 * @return the dexMod (float)
 	 */
 	public float getAgiPenMult() {
-		//FIXME: I don't know what the ultimate impact of this agipen formula is, but the goal is that if the style has no penalty, there is less impact from the material, but if it has a penalty, the material matters more
+		//FIXME: I don't know what the ultimate impact of this agipen formula is,
+		//but the goal is that if the style has no penalty, there is less impact from the material,
+		//but if it has a penalty, the material matters more
 		return extra.lerp(getMat().dexMod*getStyle().dexMultBase,1f,getStyle().dexMultBase);
 	}
 	

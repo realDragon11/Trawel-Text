@@ -54,7 +54,7 @@ public class Weapon extends Item {
 	private Set<WeaponQual> qualList = EnumSet.noneOf(WeaponQual.class);
 	
 	public enum WeaponQual{
-		DESTRUCTIVE("Destructive","On Damage: Destroys 33% * percent of health damage dealt local armor."),
+		DESTRUCTIVE("Destructive","On Damage: Damages local armor by 1/3rd of total percent HP dealt."),
 		PENETRATIVE("Penetrative","Attack: The locally attacked armor counts for 3/5ths as much."),
 		PINPOINT("Pinpoint","Attack: Armor not in slots you are attacking counts for 2/3rds as much."),
 		RELIABLE("Reliable","On Armor Block: Deals damage equal to the weapon level instead. Counts as being blocked by armor."), 
@@ -62,7 +62,7 @@ public class Weapon extends Item {
 		WEIGHTED("Weighted","On Damage: Less accurate attacks deal more damage."),
 		REFINED("Refined","On Damage: Deals bonus damage equal to weapon level."),
 		ACCURATE("Accurate","Attack: Flat +%.10 accuracy bonus to all attacks after all modifiers."),
-		CARRYTHROUGH("Carrythrough","On Miss/Dodge: Your next attack on another target is 10% quicker."),
+		CARRYTHROUGH("Carrythrough","On Miss/Dodge: Your next attack on another target is 20% quicker."),
 		;
 		public String name, desc;
 		WeaponQual(String name,String desc) {
@@ -173,8 +173,8 @@ public class Weapon extends Item {
 	public Weapon(int newLevel) {
 		this(newLevel,MaterialFactory.randWeapMat(),randWeapType());
 	}
-	public Weapon(int newLevel, String weaponName) {
-		this(newLevel,MaterialFactory.randWeapMat(),randWeapType());
+	public Weapon(int newLevel, WeaponType type) {
+		this(newLevel,MaterialFactory.randWeapMat(),type);
 	}
 	
 	/***
@@ -546,29 +546,6 @@ public class Weapon extends Item {
 		arr[2] = new Weapon(newLevel);
 		arr[1] = new Weapon(newLevel);
 		arr[0] = new Weapon(newLevel);
-		double highest = 0;
-		double lowest = 99999;
-		for (Weapon w: arr) {
-			if (w.score() > highest) {
-				highest = w.score();
-			}
-			if (w.score() < lowest) {
-				lowest = w.score();
-			}
-		}
-		for (Weapon w: arr) {
-			if (w.score() != highest && w.score()  != lowest) {
-				return w;
-			}
-		}
-		return arr[0];*/
-	}
-	public static Weapon genMidWeapon(int newLevel,String name) {
-		return new Weapon(newLevel,name);
-		/*Weapon[] arr = new Weapon[3];
-		arr[2] = new Weapon(newLevel,name);
-		arr[1] = new Weapon(newLevel,name);
-		arr[0] = new Weapon(newLevel,name);
 		double highest = 0;
 		double lowest = 99999;
 		for (Weapon w: arr) {

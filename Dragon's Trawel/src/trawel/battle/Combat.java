@@ -389,56 +389,46 @@ public class Combat {
 			if (!quickest.isAlive()) {
 				killWrapUp(quickest,dataMap.get(quickest).lastAttacker,true);
 			}
-			
+
 			int sidesLeft = 0;
 			for (List<Person> list: liveLists) {
 				if (list.size() > 0) {
 					sidesLeft++;
 				}
 			}
-			
+
 			if (sidesLeft <= 1) {
 				break;//end battle
 			}
-		
+
 			if (!quickest.isAttacking()) {
-			Person otherperson = null;
-			if (quickest.hasEffect(Effect.CONFUSED_TARGET)) {
-				quickest.removeEffect(Effect.CONFUSED_TARGET);
-				otherperson = getDefenderForConfusion(quickest);
-			}else {
-			if (defender.isAlive() && quickest.getBag().getHand().hasQual(Weapon.WeaponQual.DUELING)) {
-				otherperson = defender;
-			}else {
-				/*
-				if (quickest.isPlayer() && Player.player.eaBox.markTarget != null) {
-					if (totalList.contains(Player.player.eaBox.markTarget)) {
-						otherperson = Player.player.eaBox.markTarget;
+				Person otherperson = null;
+				if (quickest.hasEffect(Effect.CONFUSED_TARGET)) {
+					quickest.removeEffect(Effect.CONFUSED_TARGET);
+					otherperson = getDefenderForConfusion(quickest);
+				}else {
+					if (defender.isAlive() && quickest.getBag().getHand().hasQual(Weapon.WeaponQual.DUELING)) {
+						otherperson = defender;
 					}else {
-						Player.player.eaBox.markTarget = null;
+						otherperson = getDefenderFor(quickest);
 					}
 				}
-				if (otherperson == null) {*/
-					otherperson = getDefenderFor(quickest);
-				//}
-			}
-			}
-			if (quickest.isPlayer()) {
-				otherperson.displayStatsShort();
-				quickest.getBag().graphicalDisplay(-1,quickest);
-				otherperson.getBag().graphicalDisplay(1,otherperson);
-			}else {
-				if (playerIsInBattle) {
-					quickest.getBag().graphicalDisplay(1,quickest);
-					Player.player.getPerson().getBag().graphicalDisplay(-1,Player.player.getPerson());
+				if (quickest.isPlayer()) {
+					otherperson.displayStatsShort();
+					quickest.getBag().graphicalDisplay(-1,quickest);
+					otherperson.getBag().graphicalDisplay(1,otherperson);
+				}else {
+					if (playerIsInBattle) {
+						quickest.getBag().graphicalDisplay(1,quickest);
+						Player.player.getPerson().getBag().graphicalDisplay(-1,Player.player.getPerson());
+					}
 				}
-			}
-			setAttack(quickest,otherperson);
-			if (otherperson != defender && atr != null && (atr.code == ATK_ResultCode.MISS || atr.code == ATK_ResultCode.DODGE)
-					&& quickest.getBag().getHand().hasQual(WeaponQual.CARRYTHROUGH)) 
-			{
-				quickest.advanceTime(Math.min(10,quickest.getTime()-1));
-			}
+				setAttack(quickest,otherperson);
+				if (otherperson != defender && (atr.code == ATK_ResultCode.MISS || atr.code == ATK_ResultCode.DODGE)
+						&& quickest.getBag().getHand().hasQual(WeaponQual.CARRYTHROUGH)) 
+				{
+					quickest.applyDiscount(quickest.getTime()*.2f);//20% time discount
+				}
 			}
 		}
 		

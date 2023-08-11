@@ -807,7 +807,7 @@ public class mainGame {
 		Person manOne;
 		manOne = RaceFactory.makeOld(2);//new Person(starting_level,false,Race.RaceType.HUMANOID,null);
 			 new Player(manOne);
-			 Player.bag.swapWeapon(new Weapon(1,"shovel"));
+			 Player.bag.swapWeapon(new Weapon(1,WeaponType.AXE));
 			 //Player.bag.getHand().forceEnchantHit(0);
 			 /*
 			 player.bag.swapArmorSlot(new Armor(1,0,MaterialFactory.getMat("emerald")),0);

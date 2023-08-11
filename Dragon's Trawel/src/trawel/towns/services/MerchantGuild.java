@@ -150,19 +150,19 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 					@Override
 					public String title() {
-						return "buy a shipment of cheap beer ("+(20*(town.getTier()));
+						return "buy a shipment of cheap beer ("+(20*(town.getTier())) +")";
 					}
 
 					@Override
 					public boolean go() {
-						if (Player.player.getGold() < Player.player.merchantBookPrice) {
+						if (Player.player.getGold() < 20*(town.getTier())) {
 							extra.println("You can't afford that many beers!");
 							return false;
 						}
 						extra.println("Beer increases your hp in battle, one use per beer- buy 20 of them?");
 						if (extra.yesNo()) {
-							Player.player.addGold(-(100*(town.getTier())));
-							Player.player.getPerson().addBeer(20);
+							Player.player.addGold(-(20*(town.getTier())));
+							Player.player.beer+=20;
 						}
 						return false;
 					}

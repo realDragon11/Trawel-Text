@@ -341,7 +341,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 		if (Player.player.getGold() >= beerCost) {
 			extra.println("Pay "+World.currentMoneyDisplay(beerCost)+" for "+beerCount+" beers?");
 			if (extra.yesNo()) {
-				Player.player.getPerson().addBeer(beerCount);
+				Player.player.beer += beerCount;
 				moneyEarned +=beerCost;
 				Player.player.addGold(beerCost);
 			}

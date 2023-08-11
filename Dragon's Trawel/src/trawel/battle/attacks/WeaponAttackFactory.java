@@ -878,8 +878,12 @@ public class WeaponAttackFactory {
 			return this;
 		}
 		
+		/**
+		 * note that this gets +.5f base added to it, to make hitting happen more often
+		 * a .5+.5 = 1 = ~50% chance to hit against a dodge 1x
+		 */
 		public AttackMaker setAcc(float acc) {
-			hitmult = acc;
+			hitmult = acc+.5f;
 			return this;
 		}
 		

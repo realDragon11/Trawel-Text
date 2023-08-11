@@ -162,6 +162,27 @@ public enum Skill{
 		PLOT_ARMOR("Fated","Confused targets have a reduced chance to attack this Person."
 				,"Does not apply Confusion on its own."
 				,Type.DEFENSE),
+		ELEMENTALIST("Elementalist","Skill attacks deal +10% Ignite, Frost, and Elec damage."
+				,"Does not apply to normal weapon attacks."
+				,Type.OFFENSE),
+		/**
+		 * NOTE: do not grant without ELEMENTALIST
+		 */
+		M_PYRO("Pyromantic","25% chance to convert a Graze wound into a random Ignite wound on any attack."
+				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 75%."
+				,Type.OFFENSE),
+		/**
+		 * NOTE: do not grant without ELEMENTALIST
+		 */
+		M_CRYO("Cryomantic","25% chance to convert a Graze wound into a random Frost wound on any attack."
+				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 75%."
+				,Type.OFFENSE),
+		/**
+		 * NOTE: do not grant without ELEMENTALIST
+		 */
+		M_AERO("Aeromantic","25% chance to convert a Graze wound into a random Elec wound on any attack."
+				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 75%."
+				,Type.OFFENSE),
 		
 		
 		;

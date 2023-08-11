@@ -75,7 +75,7 @@ public class Inventory implements java.io.Serializable{
 				armorSlots[3] = new Armor(level,(byte) 3,MaterialFactory.randMatByType(matType2),matType2);
 				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
 				armorSlots[4] = new Armor(level,(byte) 4,MaterialFactory.randMatByType(matType2),matType2);
-				hand = Weapon.genMidWeapon(level,job.weapType[extra.randRange(0,job.weapType.length-1)]);
+				hand = new Weapon(level,job.randWeap());
 			}else {
 				
 				if (isDummy && matType != null) {
@@ -1048,14 +1048,14 @@ public class Inventory implements java.io.Serializable{
 
 
 	public float getAgiPen() {
-		float mult = 1;
+		float mult = 0;
 		for (int i = 0; i < 5; i++) {
 			if (armorSlots[i] == null) {
 				continue;
 			}
-			mult *= armorSlots[i].getAgiPenMult();
+			mult += armorSlots[i].getAgiPenMult();
 		}
-		return mult;
+		return mult/5f;
 	}
 
 

@@ -10,6 +10,7 @@ import trawel.battle.attacks.IAttack.AttackType;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 import trawel.personal.Person;
 import trawel.personal.classless.IHasSkills;
+import trawel.personal.classless.Skill;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponQual;
@@ -51,11 +52,14 @@ public class ImpairedAttack implements IAttack{
 		double speedMult = _style.speed;
 		double speedModUp = extra.randRange(0,10);
 		double speedModDown = extra.randRange(-5,5);
-		float hitMult = (float) (_style.hit*t.hit);
+		float hitMult = (float) (_style.hit*t.hit*_attack.getHitMult());
+		
+		double elementalDamMult = 1;
 		
 		switch (getType()) {
 		case FAKE_WEAPON:
 		case REAL_WEAPON:
+		case SKILL:
 			assert !(_weapon == null && _attacker == null);//only one can be null
 			double sMult = attack.getSharp()*t.sharp;
 			double bMult = attack.getBlunt()*t.blunt;
@@ -73,6 +77,9 @@ public class ImpairedAttack implements IAttack{
 				IHasSkills attSource = attack.getSkillSource();
 				if (_attacker != null && attSource != null) {
 					w_lvl = attSource.getAttackLevel(_attacker);
+					if (_attacker.hasSkill(Skill.ELEMENTALIST)) {
+						elementalDamMult*=1.1;//10% more elemental damage
+					}
 				}else {
 					throw new RuntimeException("invalid weapon resolved level for impaired attack");
 				}
@@ -84,15 +91,15 @@ public class ImpairedAttack implements IAttack{
 			vals[1] = damageRoll(DamageType.BLUNT,bMult*damMult);
 			vals[2] = damageRoll(DamageType.PIERCE,pMult*damMult);
 			if (attack.isBypass() || !(_weapon != null && _weapon.isEnchantedHit())) {
-				vals[3] = damageRoll(DamageType.IGNITE,attack.getIgnite()*damMult);
-				vals[4] = damageRoll(DamageType.FROST,attack.getFrost()*damMult);
-				vals[5] = damageRoll(DamageType.ELEC,attack.getElec()*damMult);
+				vals[3] = damageRoll(DamageType.IGNITE,attack.getIgnite()*damMult*elementalDamMult);
+				vals[4] = damageRoll(DamageType.FROST,attack.getFrost()*damMult*elementalDamMult);
+				vals[5] = damageRoll(DamageType.ELEC,attack.getElec()*damMult*elementalDamMult);
 			}else {//enchant hit weapon with no bypass
 				int totalDam = attack.getTotalDam();
 				Enchant enc = _weapon.getEnchant();
-				vals[3] = damageRoll(DamageType.IGNITE,enc.getFireMod()*totalDam*damMult);
-				vals[4] = damageRoll(DamageType.FROST,enc.getFreezeMod()*totalDam*damMult);
-				vals[5] = damageRoll(DamageType.ELEC,enc.getShockMod()*totalDam*damMult);
+				vals[3] = damageRoll(DamageType.IGNITE,enc.getFireMod()*totalDam*damMult*elementalDamMult);
+				vals[4] = damageRoll(DamageType.FROST,enc.getFreezeMod()*totalDam*damMult*elementalDamMult);
+				vals[5] = damageRoll(DamageType.ELEC,enc.getShockMod()*totalDam*damMult*elementalDamMult);
 			}
 			
 
@@ -132,10 +139,28 @@ public class ImpairedAttack implements IAttack{
 			
 			level = w_lvl;
 			break;
-		case SKILL:
-			break;
 		}
 		if (_attacker != null) {
+			if (wound == Attack.Wound.GRAZE && _attacker.hasSkill(Skill.ELEMENTALIST)){
+				switch (extra.randRange(0, 3)) {//0 is a hard fail, 1-3 depends on if they have the subskills
+				case 1:
+					if(_attacker.hasSkill(Skill.M_PYRO)) {
+						wound = extra.randList(TargetFactory.fireWounds);
+					} 
+					break;
+				case 2:
+					if(_attacker.hasSkill(Skill.M_CRYO)) {
+						wound = extra.randList(TargetFactory.freezeWounds);
+					} 
+					break;
+				case 3:
+					if(_attacker.hasSkill(Skill.M_AERO)) {
+						wound = extra.randList(TargetFactory.shockWounds);
+					} 
+					break;
+				}
+			}
+			
 			speedMult *= _attacker.getSpeed();
 			if (_attacker.hasEffect(Effect.SLICE)) {
 				hitMult*=1.1;//WET

@@ -876,7 +876,7 @@ public class RaceFactory {
 	}
 	
 	public static Person makeQuarterMaster(int level) {
-		Person p = new Person(level);
+		Person p = new Person(level,AIJob.KNIGHT);
 		p.setPersonType(PersonType.GRIZZLED);
 		p.hTask = HostileTask.RICH;
 		p.liteSetSkillHas(Archetype.ARMORMASTER);

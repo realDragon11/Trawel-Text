@@ -33,6 +33,22 @@ public class TargetHolder {
 		}
 	}
 	
+	/**
+	 * returns true if it was unable, false indicates the all clear
+	 * <br>
+	 * so consider a 'true' an error code
+	 */
+	public boolean resetToReuse(TypeBody type) {
+		if (type != plan) {
+			return true;
+		}
+		config = null;
+		for (int i = condition.length-1;i >= 0;i--) {
+			condition[i] = 1;
+		}
+		return false;
+	}
+	
 	public int getVariant() {
 		if (config == null) {
 			return 0;

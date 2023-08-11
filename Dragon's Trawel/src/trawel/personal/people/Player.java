@@ -56,6 +56,8 @@ public class Player extends SuperPerson{
 	public int merchantBookPrice = 100;
 	
 	public double globalFindTime = 0;
+	
+	public short beer;
 
 	
 	public int knowledgeFragments = 0, fragmentReq = 5;

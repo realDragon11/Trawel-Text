@@ -43,12 +43,12 @@ public class StoryTutorial extends Story{
 			extra.println("Higher numbers are better, except in the case of delay!");
 			extra.println("Delay is how long an action takes- it determines turn order and skipping.");
 			extra.println("For example, two 30 delay actions would go through before one 100 delay action, and then still have 40 instants left.");
-			extra.println("Delay is shown as both a warmup and a cooldown. The first number is the warmup- how long until the attack goes through. The second number is the cooldown- how long after that until you can choose another attack.");
+			extra.println("Delay on abilities is shown as both a warmup and a cooldown. The first number is the warmup- how long until the attack goes through. The second number is the cooldown- how long after that until you can choose another attack.");
 			extra.println(
 					massFight ?
-					"sbp stands for sharp blunt pierce- the three damage types. Your opponents also have sbp-based armor. Yeah, you got a mass fight for your first battle. Good luck."
+					"sbp stands for sharp blunt pierce- the three main damage types. Your opponents also have sbp-based armor. Yeah, you got a mass fight for your first battle. Good luck."
 					:
-					"sbp stands for sharp blunt pierce- the three damage types. Your opponent also has sbp-based armor."
+					"sbp stands for sharp blunt pierce- the three main damage types. Your opponent also has sbp-based armor."
 					);
 			extra.println("Hitpoints only matter in combat- you steel yourself fully before each battle, restoring to your current maximum.");
 			switch (mainGame.attackDisplayStyle) {
@@ -60,13 +60,14 @@ public class StoryTutorial extends Story{
 			case TWO_LINE1:
 				extra.println("You have modern display on (at least, the current modern for this verison),"
 						+" and will see attacks in a hybrid table/label format.");
-				extra.println("Instead of table headers, each cell is labeled. "
+				extra.println("Instead of only table headers, each cell is labeled. "
 						+extra.CHAR_HITCHANCE+" is hitchance. "
 						+extra.CHAR_INSTANTS+" is 'instants' (warmup and cooldown time.) "
 						+ "S is sharp damage, B is blunt damage, and P is pierce damage.");
 				//will have to describe esoteric attacks when those get added
 				break;
 			}
+			extra.println("Displayed hit isn't a flat percent to hit- when the attack happens, it is a multiplier on your 'hit roll'- just like the enemies' dodge. Whoever rolls the higher number wins. Thus, if your total aim equals their total dodge, you have a 50% chance to hit. Most enemies will have a dodge multiplier of less than one.");
 			extra.println("Attacks might also come with wounds, which have special effects. Good luck!");
 		}
 	}

@@ -78,11 +78,7 @@ public class Person implements java.io.Serializable{
 	private transient double speedFill;
 	private transient boolean isWarmingUp;
 	private transient int hp, tempMaxHp;
-	
-	
 	private PersonType personType;
-	private short beer;
-	
 	
 	private byte flags = 0b00000000;//used with bitmasking
 	
@@ -104,10 +100,8 @@ public class Person implements java.io.Serializable{
 	private short featPoints;
 	
 	private EnumMap<Effect,Integer> effects;//hash set not permitted
-	private RaceFlag rFlag;
+	//private RaceFlag rFlag;
 
-	private TargetFactory.TargetType targetOverride = null;//DOLATER swap over
-	
 	//need to make either this or raceflag not a thing
 	//if removing this, raceflag needs to override
 	//if removing raceflag, idk
@@ -121,7 +115,7 @@ public class Person implements java.io.Serializable{
 	
 	private float pitch = 0;
 	
-	private int pKills = 0, deaths = 0;
+	private short pKills = 0, deaths = 0;
 	
 	private AIJob job;
 	
@@ -138,7 +132,8 @@ public class Person implements java.io.Serializable{
 	
 	public enum PersonType{
 		COWARDLY,FEARLESS,GRIZZLED,DEATHCHEATED,LIFEKEEPER
-	}public final static Set<PersonType> RAND_PERSON_TYPES = EnumSet.of(
+	}
+	public final static Set<PersonType> RAND_PERSON_TYPES = EnumSet.of(
 			PersonType.COWARDLY,PersonType.FEARLESS
 			);
 	
@@ -166,11 +161,7 @@ public class Person implements java.io.Serializable{
 		xp = 0;
 		
 		this.job = job;
-		rFlag = raceFlag;
-		if (level < 1) {
-			extra.println("non-fatal (until you run into the level zero person) exception: level is zero on someone");
-		}
-		
+		assert level >= 1;
 		
 		bag = new Inventory(level,raceType,matType,job,race);
 		bag.owner = this;
@@ -188,7 +179,6 @@ public class Person implements java.io.Serializable{
 			default:
 				bodyType = TypeBody.HUMAN_LIKE;
 				break;
-			
 			}
 		}else {
 			switch (race.targetType) {
@@ -235,17 +225,10 @@ public class Person implements java.io.Serializable{
 				this.setAngry(true);
 			}
 		}
-		//this.magePow = bag.getRace().magicPower;
-		//this.defPow = bag.getRace().defPower;
 		if (isAI) {
 			setFlag(PersonFlag.AUTOLEVEL, true);
-			//need to call computelevels 0 yourself if you want it done first thing
 		}
-		//this.noAILevel = !isAI;
 		effects = new EnumMap<Effect,Integer>(Effect.class);
-		
-		
-		//atrBox = new AttributeBox(this);
 	}
 	
 	/**
@@ -274,16 +257,28 @@ public class Person implements java.io.Serializable{
 
 	public enum AIJob{
 		KNIGHT(new ArmorStyle[] {ArmorStyle.PLATE,ArmorStyle.PLATE,ArmorStyle.MAIL},
-				new String[] {"longsword","mace","axe","lance"}),
-		ROGUE(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},new String[] {"rapier","dagger"}), 
-		LUMBERJACK(new ArmorStyle[] {ArmorStyle.FABRIC},new String[] {"axe"}), 
-		GRAVER(new ArmorStyle[] {ArmorStyle.FABRIC},new String[] {"shovel"});
+				new WeaponType[] {
+					WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.MACE,WeaponType.AXE,WeaponType.LANCE
+					,WeaponType.CLAYMORE
+				}
+		),
+		ROGUE(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},
+				new WeaponType[] {
+						WeaponType.RAPIER,WeaponType.DAGGER,WeaponType.SPEAR,WeaponType.MACE,WeaponType.SHOVEL
+					}
+		), 
+		LUMBERJACK(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},new WeaponType[] {WeaponType.SHOVEL}), 
+		GRAVER(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},new WeaponType[] {WeaponType.SHOVEL});
 		
 		public ArmorStyle[] amatType;
-		public String[] weapType;
-		AIJob(ArmorStyle[] amatType, String[] weapType) {
+		public WeaponType[] weapType;
+		AIJob(ArmorStyle[] amatType, WeaponType[] weapType) {
 			this.amatType = amatType;
 			this.weapType = weapType;
+		}
+		public WeaponType randWeap() {
+			return extra.randList(weapType);
+			//for now no weighted table
 		}
 	}
 	
@@ -517,7 +512,13 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public RaceFlag getRaceFlag() {
-		return rFlag;
+		switch (bodyType) {
+		case STATUE:
+			return RaceFlag.CRACKS;
+		case UNDEAD:
+			return RaceFlag.UNDEAD;
+		}
+		return RaceFlag.NONE;
 	}
 	
 	public TargetReturn randTarget() {
@@ -641,8 +642,9 @@ public class Person implements java.io.Serializable{
 		if (hasSkill(Skill.QUICK_START)) {
 			addEffect(Effect.ADVANTAGE_STACK);
 		}
-		
-		bodystatus = new TargetHolder(bodyType);
+		if (bodystatus == null || bodystatus.resetToReuse(bodyType)) {
+			bodystatus = new TargetHolder(bodyType);//now reused
+		}
 		tempMaxHp = getOOB_HP();
 		hp = tempMaxHp;
 		if (takeBeer()) {
@@ -1321,7 +1323,7 @@ public class Person implements java.io.Serializable{
 		
 		if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 		extra.println("Their inventory includes " + bag.nameInventory());
-		if (beer > 0 || hasSkill(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
+		if (hasSkill(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
 		if (hasSkill(Skill.PARRY)) {extra.println("They have a parrying dagger.");}
 		if (hasSkill(Skill.SHIELD)) {extra.println("They have a shield.");}}
 	}
@@ -1368,25 +1370,21 @@ public class Person implements java.io.Serializable{
 		extra.println("This is " + this.getName() +". They are a level " + this.getLevel() +" " + this.getBag().getRace().renderName(false)+".");
 		if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 		extra.println("Their inventory includes: \n " + bag.nameInventory()); 
-		if (beer > 0 || hasSkill(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
+		if (hasSkill(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
 		if (hasSkill(Skill.PARRY)) {extra.println("They have a parrying dagger.");}
 		if (hasSkill(Skill.SHIELD)) {extra.println("They have a shield.");}}
 	}
 	
-	public void addBeer() {
-		beer++;
-	}
-	public void addBeer(int i) {
-		beer+=i;
-	}
-	
 	public boolean takeBeer() {
-		if (beer > 0 || hasSkill(Skill.BEER_LOVER)) {
-		beer--;
-		return true;
-		}else {
-			return false;
+		if (hasSkill(Skill.BEER_LOVER)) {
+			return true;
 		}
+		
+		if (isPlayer() && Player.player.beer > 0) {
+			Player.player.beer--;
+			return true;
+		}
+		return false;
 	}
 
 	public void displayXp() {
@@ -1719,14 +1717,6 @@ public class Person implements java.io.Serializable{
 			//Player.player.eaBox.exeKillLevel += .3;
 		//}
 		
-	}
-
-	public boolean hasBeer() {
-		return beer > 0;
-	}
-
-	public void consumeBeer() {
-		beer--;
 	}
 
 	public void forceLevelUp(int endLevel) {
