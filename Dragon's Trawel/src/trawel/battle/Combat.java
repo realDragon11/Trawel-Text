@@ -27,6 +27,7 @@ import trawel.personal.RaceFactory;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory.RaceID;
 import trawel.personal.classless.Skill;
+import trawel.personal.classless.SkillAttackConf;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.body.SoundBox;
@@ -1392,12 +1393,19 @@ public class Combat {
 	private void setAttack(Person attacker, Person defender) {
 		//manOne.setAttack(AIClass.chooseAttack(manOne.getStance().part(manOne, manTwo),manOne.getIntellect(),this,manOne,manTwo));
 		ImpairedAttack newAttack;
-		int attCount = attacker.attacksThisAttack();
+		int attCount = attacker.nextWeaponAttacksCount();
 		List<ImpairedAttack> atts = (attacker.getStance().randAtts(attCount,attacker.getBag().getHand(),attacker,defender));
 		if (attacker.getSuper() != null) {
 			SuperPerson sp = attacker.getSuper();
-			for (int i = 0; i < sp.getSAttCount();i++) {
-				atts.add(sp.getSpecialAttacks()[i].randAttack(attacker, defender));
+			int cap = sp.getSAttCount();
+			int count = attacker.specialAttackNum();
+			SkillAttackConf[] conf = sp.getSpecialAttacks();
+			//cap to not being more than our base attacks
+			count = Math.min(count,attCount-cap);
+			//hard cap to 7 total attacks
+			count = Math.min(count,7-atts.size());
+			for (int i = 0; i < count;i++) {
+				atts.add(conf[i%cap].randAttack(attacker, defender));
 			}
 		}
 		

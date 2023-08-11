@@ -23,6 +23,7 @@ import trawel.personal.item.solid.DrawBane.DrawList;
 import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponType;
+import trawel.personal.item.solid.variants.ArmorStyle;
 
 @SuppressWarnings("deprecation")
 public class RaceFactory {
@@ -762,7 +763,7 @@ public class RaceFactory {
 		misc.insultList.add("Drudger!");
 		misc.insultList.add("Die pond scum!");
 		misc.baseMap = "flesh_golem";
-		misc.raceMaps.add("0");;
+		misc.raceMaps.add("0");
 		misc.magicPower = 0;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
@@ -785,7 +786,7 @@ public class RaceFactory {
 		misc.rarity = 1;
 		misc.insultList.add("Drudger!");
 		misc.baseMap = "flesh_golem";
-		misc.raceMaps.add("0");;
+		misc.raceMaps.add("0");
 		misc.magicPower = 0;
 		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
@@ -1105,6 +1106,25 @@ public class RaceFactory {
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomWaterName());
 		w.setTitle("the "+randomLists.randomLargeName());
+		w.hTask = HostileTask.MONSTER;
+		w.finishGeneration();
+		return w;
+	}
+	public static Person makeDrudgerMage(int level) {
+		extra.offPrintStack();
+		Person w = Person.animal(level, RaceID.B_DRUDGER_STOCK, MaterialFactory.getMat("flesh"), false);
+		w.liteSetSkillHas(Archetype.FISH_MONSOON);
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("rusty iron"),WeaponType.NULL_WAND));//not a weapon
+		w.getBag().swapArmorSlot(new Armor(level,(byte)0,ArmorStyle.GEM.getMatFor(),ArmorStyle.GEM),0);//gem helmet for some reason
+		for (byte i=1;i<5;i++) {
+			if (extra.chanceIn(1,2)) {
+				w.getBag().swapArmorSlot(new Armor(level,i,ArmorStyle.FABRIC.getMatFor(),ArmorStyle.FABRIC),i);
+			}
+		}
+		w.getBag().getDrawBanes().add(DrawBane.UNICORN_HORN);//maybe to represent wand?
+		extra.popPrintStack();
+		w.setFirstName(randomLists.randomWaterName());
+		w.setTitle("scion of "+randomLists.randomWaterName());
 		w.hTask = HostileTask.MONSTER;
 		w.finishGeneration();
 		return w;

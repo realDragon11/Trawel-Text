@@ -42,6 +42,18 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.POTIONS,FeatType.TRICKS,FeatType.SOCIAL)
 			,EnumSet.of(Skill.MAGE_FRUGAL,Skill.ARCANIST)
 			)
+	,FISH_MONSOON("Monsoon Maker","Calls up malicious magic that assails the land-people's domain."
+			,AType.RACIAL
+			,EnumSet.of(AGroup.MAGIC)
+			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.CURSES)
+			,EnumSet.of(Skill.ARCANIST)
+			)
+	,SEA_SAGE("Sea Sage","Tempered by a still calm, they can call forth the Sea's wrath if provoked."
+			,AType.ENTRY
+			,EnumSet.of(AGroup.MAGIC)
+			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE)
+			,EnumSet.of(Skill.DODGEREF,Skill.ARCANIST)
+			)
 	;
 	
 	private final String name, desc;

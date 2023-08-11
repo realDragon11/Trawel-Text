@@ -1636,13 +1636,19 @@ public class Person implements java.io.Serializable{
 		if (sp == null) {
 			return 0;
 		}
-		SkillAttackConf[] list = sp.getSpecialAttacks();
-		return list != null ? list.length : 0;
+		//SkillAttackConf[] list = sp.getSpecialAttacks();
+		int count = sp.getSAttCount();
+		return count > 0 ? 
+				(count)+bag.getHand().getMartialStance().getBonusSkillAttacks()
+				: 0;
 	}
 
-	public int attacksThisAttack() {
-		int i = 3;
-		int cap = Math.min(5, 8-specialAttackNum());
+	public int nextWeaponAttacksCount() {
+		int i = bag.getHand().getMartialStance().getBaseAttacks();//default 3
+		if (i == 0) {
+			return 0;//we don't have any base, null wand
+		}
+		int cap = Math.min(5, 7-specialAttackNum());//max 7 attacks overall
 		if (this.hasEffect(Effect.DISARMED)) {
 			this.removeEffectAll(Effect.DISARMED);
 			i--;

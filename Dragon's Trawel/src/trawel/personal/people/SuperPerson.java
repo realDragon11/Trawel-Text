@@ -181,12 +181,12 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 				Skill s = skills.get(i);
 				//list.add(new SkillConfiger(s));
 				String options = "";
-				List<IHasSkills> hases = WeaponAttackFactory.getSources(s);
-				for (IHasSkills has: hases) {
+				List<IHasSkills> base = WeaponAttackFactory.getSources(s);
+				List<IHasSkills> hases  = new ArrayList<IHasSkills>();
+				for (IHasSkills has: base) {
 					if (getPerson().hasSkillHas(has)) {
 						options += has.friendlyName() +" ";
-					}else {
-						hases.remove(has);
+						hases.add(has);
 					}
 				}
 				final String option = options;

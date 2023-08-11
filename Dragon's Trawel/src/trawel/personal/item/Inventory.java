@@ -378,7 +378,7 @@ public class Inventory implements java.io.Serializable{
 			i++;
 		}
 		if (owner.getSuper()!= null) {
-				return tempStr + " and a " + hand.getName() + "\n as well as " 
+				return tempStr + ( hand.canDisplay() ? " and a " + hand.getName() : "") + "\n as well as " 
 						+ 
 						owner.getSuper().getGoldDisp()
 						+".";
@@ -941,6 +941,7 @@ public class Inventory implements java.io.Serializable{
 
 	public Seed getSeed() {
 		if (seeds.size() == 0) {
+			extra.println("You don't have any seeds!");
 			return null;
 		}
 		this.displaySeeds();

@@ -14,7 +14,7 @@ import trawel.personal.item.solid.Weapon.WeaponType;
 
 /**
  *
- * @author Brian Malone
+ * @author dragon
  * before 2/11/2018
  * A stance holds different attack instances.
  * Should only be used to hold the attacks of one weapon instance.
@@ -28,12 +28,22 @@ public class Stance{
 	private List<Float> rarities;
 	private WeightedTable roller;
 	private float totalWeight;
+	/**
+	 * how many attacks the weapon starts with (if bonus skill attacks > 0, this won't equal the number of weapon attacks)
+	 */
+	private int baseAttacks;
+	/**
+	 * how many attacks are bonus attacks of skills instead of a real attack
+	 */
+	private int bonusSkillAttacks;
 
 	//constructor and initer
 	public Stance(WeaponType t) {
 		weap_source = t;
 		attacks = new ArrayList<Attack>();
 		rarities = new ArrayList<Float>();
+		baseAttacks = 3;
+		bonusSkillAttacks = 0;
 	}
 	
 	public Stance(IHasSkills source, Skill _skill) {
@@ -41,9 +51,14 @@ public class Stance{
 		skill_for = _skill;
 		attacks = new ArrayList<Attack>();
 		rarities = new ArrayList<Float>();
+		baseAttacks = 0;
+		bonusSkillAttacks = 0;
 	}
 	
 	public void finish() {
+		if (rarities.size() == 0) {
+			return;//empty, null wand
+		}
 		totalWeight = 0;
 		float[] rares = new float[rarities.size()];
 		for (int i = 0; i < rares.length;i++) {
@@ -130,6 +145,28 @@ public class Stance{
 	
 	public IHasSkills getSkillSource() {
 		return skill_source;
+	}
+
+	public int getBaseAttacks() {
+		return baseAttacks;
+	}
+
+	public int getBonusSkillAttacks() {
+		return bonusSkillAttacks;
+	}
+	/**
+	 * default is 3
+	 */
+	public Stance setBaseAttacks(int set) {
+		baseAttacks = set;
+		return this;
+	}
+	/**
+	 * is BONUS, takes part of base attacks and tries to give them to skill attacks in order
+	 */
+	public Stance setBonusSkillAttacks(int set) {
+		bonusSkillAttacks = set;
+		return this;
 	}
 	
 }

@@ -102,7 +102,9 @@ public class Weapon extends Item {
 		UNICORN_HORN("horn",null,0,0,EnumSet.of(WeaponQual.PENETRATIVE,WeaponQual.PINPOINT)),
 		TALONS_GENERIC("talons",null,0,0,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.PENETRATIVE,WeaponQual.PINPOINT,Weapon.WeaponQual.ACCURATE,WeaponQual.CARRYTHROUGH)),
 		FISH_SPEAR("fishing spear","spear",.3f,1),
-		FISH_ANCHOR("anchor","claymore",1,5,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,WeaponQual.CARRYTHROUGH));
+		FISH_ANCHOR("anchor","claymore",1,5,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,WeaponQual.CARRYTHROUGH)),
+		NULL_WAND("WAND",null,0,0)
+		;
 		
 		private final String name, legacysprite;
 		private final float cost, weight;
@@ -202,6 +204,7 @@ public class Weapon extends Item {
 		case TALONS_GENERIC: return false;
 		case FISH_SPEAR: return true;
 		case FISH_ANCHOR: return true;
+		case NULL_WAND: return false;
 		default: return true;//normal weapons
 		}
 	}
@@ -730,6 +733,10 @@ public class Weapon extends Item {
 		extra.println("---");
 		MaterialFactory.materialWeapDiag();
 		*/
+	}
+
+	public boolean canDisplay() {
+		return weap != WeaponType.NULL_WAND;
 	}
 
 	

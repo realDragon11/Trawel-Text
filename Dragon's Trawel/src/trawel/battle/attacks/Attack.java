@@ -486,9 +486,12 @@ public class Attack implements IAttack{
 		this.holdingStance = holdingStance;
 	}
 
-	//TODO: this will break in some circumstances, and not copy sound
+	//TODO: this will break in some circumstances
 	public Attack copy() {
-		return new Attack(name, desc, fluffer, hitMult, type, intValues, warmup,cooldown,bypass);
+		Attack a = new Attack(name, desc, fluffer, hitMult, type, intValues, warmup,cooldown,bypass);
+		a.soundStrength = soundStrength;
+		a.soundType = soundType;
+		return a;
 	}
 
 	public boolean isBypass() {

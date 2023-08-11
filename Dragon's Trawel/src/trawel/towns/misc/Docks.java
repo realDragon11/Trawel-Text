@@ -399,6 +399,17 @@ public class Docks extends Feature {
 		stock.setFlag(PersonFlag.IS_MOOK,true);
 		return stock.getSelfOrAllies();
 	}
+	
+	private List<Person> makeDrudgerLeader() {
+		if (old_defenders.size() > 0) {
+			return old_defenders.remove(0).getSelfOrAllies();
+		}
+		if (extra.chanceIn(1,3)) {
+			return RaceFactory.makeDrudgerMage(tier).getSelfOrAllies();
+		}else {
+			return RaceFactory.makeDrudgerTitan(tier).getSelfOrAllies();
+		}
+	}
 
 	/**
 	 * 
@@ -473,7 +484,7 @@ public class Docks extends Feature {
 			}
 		}
 		if (addOwnAttackLeader) {
-			foeList.add(RaceFactory.makeDrudgerTitan(tier));
+			foeList.addAll(makeDrudgerLeader());
 		}
 		//minimum adds
 		for (int i = addSize-1;i>=0;i--) {

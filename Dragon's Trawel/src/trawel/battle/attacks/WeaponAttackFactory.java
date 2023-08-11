@@ -468,7 +468,7 @@ public class WeaponAttackFactory {
 		
 		sta = new Stance(WeaponType.BRANCHES);
 		sta.addAttack(
-				make("")
+				make("rake")
 				.setFluff(new SRInOrder("X` rakes Y`!","X` rakes Y` with their branches!"))
 				.setRarity(1f)
 				.setAcc(1f)
@@ -477,7 +477,7 @@ public class WeaponAttackFactory {
 				.setTime(TimeTier.SLOW,.4f)
 				);
 		sta.addAttack(
-				make("")
+				make("bash")
 				.setFluff(new SRInOrder("X` bashes Y`!","X` bashes Y` with their branches!"))
 				.setRarity(1f)
 				.setAcc(1f)
@@ -587,6 +587,45 @@ public class WeaponAttackFactory {
 				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOW)
 				);
 		addStance(Archetype.HEDGE_MAGE,sta);
+		
+		sta = new Stance(Archetype.SEA_SAGE,Skill.ARCANIST);
+		sta.addAttack(
+				make("sudden squall")
+				.setFluff("X` quickly forces a squall to form around Y`!")
+				.setRarity(2f)
+				.setAcc(.7f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.05f)
+				.setElementalMix(0, 2, 0)
+				.setWarmupOfTotal(TimeTier.FASTEST,TimeTier.FASTER)
+				);
+		sta.addAttack(
+				make("brackish burst")
+				.setFluff("X` buffets Y` with cold salty water!")
+				.setRarity(2f)
+				.setAcc(0.9f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.2f)
+				.setMix(0,1,0)
+				.setElementalRider(.3f,0,1,0)
+				.setTime(TimeTier.FAST,.6f)
+				);
+		sta.addAttack(
+				make("stormy swell")
+				.setFluff("X` conjures a localized coldfront, whips it into a storm, shocking and freezing Y`!")
+				.setRarity(.7f)
+				.setAcc(1.5f)
+				.setDamage(DamageTier.HIGH,DamageTier.ASTOUNDING,.5f)
+				.setElementalMix(0, 2, 3)
+				.setWarmupOfTotal(TimeTier.SLOW, TimeTier.SLOWEST)
+				);
+		addStance(Archetype.SEA_SAGE,sta);
+		//drudger/monster version
+		copyStanceTo(Skill.ARCANIST,Archetype.SEA_SAGE,Archetype.FISH_MONSOON);
+
+		
+		
+		sta = new Stance(WeaponType.NULL_WAND);
+		sta.setBonusSkillAttacks(8);//attempt to turn all attacks into bonus attacks
+		addStance(WeaponType.NULL_WAND,sta);
 		
 		assert skillStances.size() > 0;
 	}
@@ -829,7 +868,11 @@ public class WeaponAttackFactory {
 	}
 	
 	public enum TimeTier{
-		SLOWEST(160),SLOWER(140),SLOW(120),NORMAL(100),FAST(80),FASTER(65), FASTEST(55);
+		SLOWEST(160),SLOWER(140),SLOW(120),NORMAL(100),FAST(80),FASTER(65), FASTEST(55)
+		,
+		//used for 
+		HALF_FASTEST(TimeTier.FASTEST.time),HALF_FAST(TimeTier.FAST.time)
+		;
 		public final float time;
 		TimeTier(float t){
 			time = t;
@@ -847,9 +890,10 @@ public class WeaponAttackFactory {
 		private float sharpW = 0f, bluntW = 0f, pierceW = 0f;
 		private float igniteW = 0f, frostW = 0f, elecW = 0f;
 		private float warmup = 50f, cooldown = 50f;
-		private boolean customWeight = false, magicbypass = false;
+		private boolean customWeight = false, magicbypass = false, magicRider = false;
 		private String name, desc = "", fluff = "X` attacks Y` with their Z`!";
 		private StringResult fluffer;
+		private float percentAsRider = 0f;
 		
 		private float rarity = 1f;
 		
@@ -903,6 +947,17 @@ public class WeaponAttackFactory {
 			elecW = elec;
 			customWeight = true;
 			magicbypass = true;
+			return this;
+		}
+		public AttackMaker setElementalRider(float _percentAsRider,float ignite, float frost, float elec) {
+			assert customWeight == true;
+			assert magicbypass == false;
+			percentAsRider = _percentAsRider;
+			igniteW = ignite;
+			frostW = frost;
+			elecW = elec;
+			customWeight = true;
+			magicRider = true;
 			return this;
 		}
 		
@@ -967,6 +1022,19 @@ public class WeaponAttackFactory {
 				bluntW = 1f;
 				pierceW = 1f;
 			}
+			if (magicRider) {//distribute the distribution :D
+				float totalBaseWeight = sharpW+bluntW+pierceW;
+				float totalRiderWeight = igniteW+frostW+elecW;
+				float totalTotalWeight = totalBaseWeight+totalRiderWeight;
+				float baseAdjust = totalBaseWeight/totalTotalWeight;
+				float riderAdjust = totalRiderWeight/totalTotalWeight;
+				sharpW*=baseAdjust;
+				bluntW*=baseAdjust;
+				pierceW*=baseAdjust;
+				igniteW*=riderAdjust;
+				frostW*=riderAdjust;
+				elecW*=riderAdjust;
+			}
 			int[] arr = DamageTier.distribute(DamageTier.totalDamage(start, end, slant),sharpW,bluntW,pierceW,igniteW,frostW,elecW);
 			return new Attack(name, desc,
 					fluffer == null ? new SRInOrder(fluff) : fluffer,
@@ -1010,6 +1078,16 @@ public class WeaponAttackFactory {
 	private void copyStanceTo(WeaponType from, WeaponType to) {
 		Stance a = getStance(from);
 		Stance b = new Stance(to);
+		List<Attack> list = a.giveList();
+		for (int i = 0; i < list.size(); i++) {
+			b.addAttack(list.get(i).copy(),a.getRarity(i));
+		}
+		addStance(to, b);
+	}
+	
+	private void copyStanceTo(Skill skill,IHasSkills from, IHasSkills to) {
+		Stance a = getStance(from);
+		Stance b = new Stance(to,skill);
 		List<Attack> list = a.giveList();
 		for (int i = 0; i < list.size(); i++) {
 			b.addAttack(list.get(i).copy(),a.getRarity(i));
