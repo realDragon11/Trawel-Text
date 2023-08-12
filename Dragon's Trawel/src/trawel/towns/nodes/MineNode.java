@@ -348,7 +348,8 @@ public class MineNode implements NodeType{
 							return false;
 						}});
 					list.add(attackCultMenu(holder,node));
-					if (!partOfCult) {
+					boolean nowOfCult = Player.player.getPerson().hasPerk(Perk.CULT_LEADER_BLOOD);
+					if (!nowOfCult) {
 						list.add(new MenuSelect() {
 
 							@Override

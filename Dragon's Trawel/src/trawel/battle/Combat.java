@@ -923,7 +923,6 @@ public class Combat {
 		ImpairedAttack attack = attacker.getNextAttack();
 		AttackReturn atr = handleAttack(true,attack,defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
 		int damageDone = atr.damage;
-		String inlined_color = extra.PRE_WHITE;
 		this.handleAttackPart2(attack,defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender,damageDone);
 		//armor quality handling
 		//FIXME: apply new attack result code system where needed
@@ -1018,32 +1017,34 @@ public class Combat {
 				}
 			}
 		}
-		float hpRatio = ((float)defender.getHp())/(defender.getMaxHp());
+		boolean didDisplay = false;
 		if (damageDone > 0 || forceKilled) {
 			defender.takeDamage(Math.max(1,damageDone));
-			float newRatio = ((float)defender.getHp())/(defender.getMaxHp());
 			if (!defender.isAlive()) {
-				//extra.print(" " + extra.choose("Striking them down!"," They are struck down."));
-				boolean deathResist = false;
 				if (defender.hasEffect(Effect.STERN_STUFF)) {
 					defender.removeEffectAll(Effect.STERN_STUFF);
 					if (forceKilled || defender.contestedRoll(attacker, 
 							defender.getStrength(), attacker.getHighestAttribute())>=0) {
-						deathResist = true;
 						defender.resistDeath(0f);
 						if (!extra.getPrint()) {
-							prettyHPColors(atr.stringer +woundstr+" But they're made of sterner stuff!"
-									, extra.ATTACK_DAMAGED, attacker, defender);
+							extra.print(prettyHPColors(atr.stringer +woundstr+" But they're made of sterner stuff!"
+									, extra.ATTACK_DAMAGED, attacker, defender));
+							didDisplay = true;
 						}
 					}
 				}
-				if (!deathResist && !extra.getPrint()) {
-					prettyHPColors(atr.stringer +woundstr,extra.ATTACK_KILL, attacker, defender);
+				if (!didDisplay && !extra.getPrint()) {
+					extra.print(prettyHPColors(atr.stringer +woundstr,extra.ATTACK_KILL, attacker, defender));
+					didDisplay = true;
 				}
 			}else {
 				if (!extra.getPrint()) {
-					extra.print(prettyHPColors(atr.stringer+prettyHPDamage(hpRatio-newRatio, defender)+" {"+damageDone+" damage}[C]"+woundstr
-							,extra.ATTACK_DAMAGED,attacker,defender));
+					
+					extra.print(prettyHPColors(atr.stringer+prettyHPDamage(percent, defender)+" {"+damageDone+" damage}[C]"+woundstr
+							,
+							atr.code == ATK_ResultCode.ARMOR ? extra.ATTACK_DAMAGED_WITH_ARMOR : extra.ATTACK_DAMAGED
+							,attacker,defender));
+					didDisplay = true;
 				}
 			}
 		}
@@ -1051,7 +1052,7 @@ public class Combat {
 		//impact is now more directly if wounds/special effects happen
 		switch (atr.code) {
 		case DODGE: case MISS:
-			if (!extra.getPrint()) {
+			if (!extra.getPrint() && !didDisplay) {
 				extra.print(prettyHPColors(atr.stringer +woundstr,extra.ATTACK_MISS, attacker, defender));
 				Networking.sendStrong("PlayMiss|" + "todo" + "|");
 				extra.print(" "+extra.AFTER_ATTACK_MISS+randomLists.attackMissFluff(atr.code)+extra.ATTACK_MISS);
@@ -1074,7 +1075,7 @@ public class Combat {
 			}
 			break;
 		case ARMOR:
-			if (!extra.getPrint()) {
+			if (!extra.getPrint() && !didDisplay) {
 				extra.print(prettyHPColors(atr.stringer +woundstr,extra.ATTACK_BLOCKED, attacker, defender));
 				extra.print(extra.AFTER_ATTACK_BLOCKED+" "+randomLists.attackNegateFluff()+extra.ATTACK_BLOCKED);
 			}
@@ -1097,7 +1098,7 @@ public class Combat {
 
 		extra.println("");
 
-		hpRatio = ((float)defender.getHp())/(defender.getMaxHp());
+		float hpRatio = ((float)defender.getHp())/(defender.getMaxHp());
 		//float hpRatio = ((float)p.getHp())/(p.getMaxHp());
 		//extra.println(p.getHp() + p.getMaxHp() +" " + hpRatio);
 		/*if (!extra.getPrint()) {//should save computions in non player battles

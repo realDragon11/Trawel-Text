@@ -822,6 +822,8 @@ public final class extra {
 		public static final String ATTACK_BLOCKED = PRE_BLUE;
 		public static final String AFTER_ATTACK_BLOCKED = extra.inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.3f));
 		public static final String ATTACK_MISS = PRE_YELLOW;
+		public static final String ATTACK_DAMAGED_WITH_ARMOR = 
+				extra.inlineColor(extra.colorMix(Color.orange,extra.colorMix(Color.BLUE,Color.WHITE,.3f),.9f));
 		
 		public static final String F_SPECIAL = PRE_MAGENTA;
 		public static final String F_SERVICE = PRE_BLUE;

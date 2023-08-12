@@ -536,19 +536,18 @@ public class Town extends TContextOwner{
 
 	}
 	private void you() {
-		extra.println("1 Stats");
+		extra.println("1 Skills (Character Menu)");
 		extra.println("2 Inventory + Compass");
 		extra.println("3 Titles and Faction Rep");
 		extra.println("4 Quests");
-		extra.println("5 Skills");
+		extra.println("5 Raw Stats");
 		extra.println("6 Main Menu");
 		extra.println("7 Save");
 		extra.println("8 Toggle Tutorial " + ( Player.getTutorial() ? "Off" : "On"));
-		extra.println("9 Return");
-		
+		extra.println("9 Return to " + getName());
 		
 		switch (extra.inInt(9)) {
-		case 1:Player.player.getPerson().displayStats(false);break;
+		case 5:Player.player.getPerson().displayStats(false);break;
 		case 2:
 			extra.println("1 View in More Depth");
 			extra.println("2 Drawbanes");
@@ -593,7 +592,7 @@ public class Town extends TContextOwner{
 		case 4:
 			Player.player.showQuests();
 			break;
-		case 5: Player.player.getPerson().playerSkillMenu();break;
+		case 1: Player.player.getPerson().playerSkillMenu();break;
 		case 6: 
 			extra.println("Really quit? Your progress will not be saved.");
 			if (extra.yesNo()) {

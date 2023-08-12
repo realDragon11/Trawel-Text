@@ -253,13 +253,12 @@ public class GraveyardNode implements NodeType{
 	}
 	
 	private boolean packOfBats(NodeConnector holder,int node) {
-			extra.println(extra.PRE_RED+"The bats descend upon you!");
+			extra.println(extra.PRE_BATTLE+"The bats descend upon you!");
 			List<Person> list = holder.getStorageFirstClass(node, List.class);
 			Combat c = Player.player.massFightWith(list);
 			if (c.playerWon() > 0) {
 				GenericNode.setTotalDeadString(holder,node,"Bat Corpses","Examine dead Bats.","Some zombies seem to have taken a few bites.","Bat Bodies");
 				holder.setForceGo(node,false);
-				holder.setStorage(node,null);
 			return false;
 			}else {
 				holder.setStorage(node,c.getNonSummonSurvivors());//our get storage first can read this or an array

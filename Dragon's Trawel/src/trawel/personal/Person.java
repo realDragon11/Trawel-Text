@@ -862,7 +862,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 					public boolean go() {
 						return getSuper().configAttacks();
 					}});
-				if (getSuper().getFeatPicks() > 0) {
+				if (getSuper().getFeatPicks() > 0 && featPoints > 0) {
 					list.add(new MenuSelect() {
 
 						@Override

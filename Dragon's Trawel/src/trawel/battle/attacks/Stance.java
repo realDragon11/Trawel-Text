@@ -100,11 +100,9 @@ public class Stance{
 
 	public void display(int style) {
 		if (style == 1) {
-			//extra.println("     name\thit\tdelay\tsharp\tblunt\tpierce");
-			extra.println("     name                hit    delay    sharp    blunt     pierce");
 			for(Attack i: attacks) {
-				extra.print("-    ");
-				i.display(1);
+				extra.print("-");
+				i.display(0);
 			}
 		}
 		
