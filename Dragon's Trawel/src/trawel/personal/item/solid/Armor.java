@@ -141,8 +141,9 @@ public class Armor extends Item implements IEffectiveLevel{
 		Material mat = getMat();
 		if (enchantment != null){
 			EnchantConstant enchant = (EnchantConstant)enchantment; 
-		return (enchant.getBeforeName() +mat.color + mat.name+"[c_white]" + " " + getBaseName() + enchant.getAfterName());}
-			return (mat.color + mat.name+"[c_white]"  + " " +  getBaseName());
+			return (enchant.getBeforeName() +mat.color + mat.name+extra.PRE_WHITE + " " + getBaseName() + enchant.getAfterName());
+		}
+		return (mat.color + mat.name+extra.PRE_WHITE  + " " +  getBaseName());
 	}
 	
 	@Override

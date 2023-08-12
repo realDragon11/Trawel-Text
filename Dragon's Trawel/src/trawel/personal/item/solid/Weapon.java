@@ -238,7 +238,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 		Material mat = MaterialFactory.getMat(material);
 		if (this.isEnchantedConstant()){
 			EnchantConstant conste = ((EnchantConstant)enchant);
-		return (getModiferName() + " " +conste.getBeforeName() +mat.color+ mat.name + "[c_white] " +  weapName + conste.getAfterName());}
+		return (conste.getBeforeName() +mat.color+ mat.name + "[c_white] " +  weapName + conste.getAfterName());}
 		if (this.isEnchantedHit()){
 			;
 			if (isKeen()) {

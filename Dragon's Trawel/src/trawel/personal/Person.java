@@ -855,7 +855,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 
 					@Override
 					public String title() {
-						return "Configure skill attacks";
+						return "Configure Skill Attacks";
 					}
 
 					@Override
@@ -1349,22 +1349,37 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 	
 	public void displayStats(boolean inCombat) {
-		extra.println("This is " + this.getName() +". They are a level " + this.getLevel() +" " + this.getBag().getRace().renderName(false)+".");
-		if (inCombat) {
-			extra.println("They have " + this.getHp() +"/"+ tempMaxHp + " hp. Their health modifier is " + extra.format(bag.getHealth()) + "x.");
-		}else {
-			extra.println("They have " + getBase_HP() + " base hp. Their health modifier is " + extra.format(bag.getHealth()) + "x. Their expected hp is "+getOOB_HP() +".");
-		}
-		extra.println("They have " + extra.format(bag.getAim()) + "x aiming, " +  extra.format(bag.getDam()) + "x damage, and "+extra.format(bag.getSpeed()) + "x speed.");
-		extra.println("They have " + extra.format(bag.getDodge()) + "x dodging, " + extra.format(bag.getBluntResist()) + " blunt resistance, " +
-		extra.format(bag.getSharpResist()) + " sharp resistance, and "+ extra.format(bag.getPierceResist()) + " pierce resistance.");
-		extra.println("They have " + xp + "/" + level*level + " xp toward level " + (level+1) + ".");
 		
-		if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
-		extra.println("Their inventory includes " + bag.nameInventory());
-		if (hasSkill(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
-		if (hasSkill(Skill.PARRY)) {extra.println("They have a parrying dagger.");}
-		if (hasSkill(Skill.SHIELD)) {extra.println("They have a shield.");}}
+		if (inCombat) {
+			extra.println(getName() +": LvL " + this.getLevel() +" " + this.getBag().getRace().renderName(false)+".");
+			extra.println(" "+getHp() +"/"+ tempMaxHp + " HP.");
+			extra.println(" "
+			+extra.format(bag.getHealth()) + "x hpm, "
+			+extra.format(bag.getAim()) + "x aim, "
+			+extra.format(bag.getDam()) + "x dam, "
+			+extra.format(bag.getSpeed()) + "x spd,"
+			+extra.format(bag.getDodge()) + "x dodge, "
+			+"S/B/P: "+ extra.F_WHOLE.format(bag.getSharpResist())+"/"+extra.F_WHOLE.format(bag.getBluntResist())+"/"+extra.F_WHOLE.format(bag.getPierceResist())
+					);
+			extra.println(bag.quickInventory());
+		}else {
+			extra.println("This is " + this.getName() +". They are a level " + this.getLevel() +" " + this.getBag().getRace().renderName(false)+".");
+			extra.println("They have " + getBase_HP() + " base hp. Their health modifier is " + extra.format(bag.getHealth()) + "x. Their expected hp is "+getOOB_HP() +".");
+			extra.println("They have " + extra.format(bag.getAim()) + "x aiming, " +  extra.format(bag.getDam()) + "x damage, and "+extra.format(bag.getSpeed()) + "x speed.");
+			extra.println("They have " + extra.format(bag.getDodge()) + "x dodging, " + extra.format(bag.getSharpResist()) + " sharp resistance, " +
+			extra.format(bag.getBluntResist()) + " blunt resistance, and "+ extra.format(bag.getPierceResist()) + " pierce resistance.");
+			extra.println("They have " + xp + "/" + level*level + " xp toward level " + (level+1) + ".");
+			if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
+				extra.println("Their inventory includes " + bag.nameInventory());
+				if (hasSkill(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
+				if (hasSkill(Skill.PARRY)) {extra.println("They have a parrying dagger.");}
+				if (hasSkill(Skill.SHIELD)) {extra.println("They have a shield.");}
+				attributeDescLongPrint();
+			}
+		}
+		
+		
+		
 	}
 	
 	/**
@@ -1403,15 +1418,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	
 	public void autoLootPlayer() {
 		setFlag(PersonFlag.AUTOLOOT,true);
-	}
-
-	public void displayStatsShort() {
-		extra.println("This is " + this.getName() +". They are a level " + this.getLevel() +" " + this.getBag().getRace().renderName(false)+".");
-		if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
-		extra.println("Their inventory includes: \n " + bag.nameInventory()); 
-		if (hasSkill(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
-		if (hasSkill(Skill.PARRY)) {extra.println("They have a parrying dagger.");}
-		if (hasSkill(Skill.SHIELD)) {extra.println("They have a shield.");}}
 	}
 	
 	public boolean takeBeer() {
@@ -1845,7 +1851,11 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 
 	public int getDexterity() {
-		return (int) (getRawDexterity()*bag.getAgiPen()*atrBox.getCapAgiPen());
+		return (int) (getRawDexterity()*getAgiPenAgainstDex());
+	}
+	
+	public float getAgiPenAgainstDex() {
+		return (bag.getAgiPen()*atrBox.getCapAgiPen());
 	}
 	
 	public int getClarity() {
@@ -1873,11 +1883,67 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		return getAttributeAgiPen() * bag.getAgiPen();
 	}
 	
+	public float attMultStr() {
+		int strength = getStrength();
+		if (strength < 100) {
+			return extra.lerp(.5f,1, strength/100f);
+		}
+		return 1f+((strength-100)/1000f);
+	}
+	/**
+	 * note: in most cases you will want to use the agility multiplier penalty instead if you
+	 * want to engage with dex < 100
+	 * <br>
+	 * this formula will return 1x for sub 100 and thus is only fit for benefits
+	 * @return
+	 */
+	public float attMultDex() {
+		int dexterity = getDexterity();
+		if (dexterity < 100) {
+			return 1f;
+		}
+		return 1f+((dexterity-100)/1000f);
+	}
+	
+	public float attMultCla() {
+		int clarity = getClarity();
+		if (clarity < 100) {
+			return extra.lerp(.5f,1, clarity/100f);
+		}
+		return 1f+((clarity-100)/1000f);
+	}
+	
+	//mostly just a method in case I want to plug 'any contested roll' skills in later
+	/**
+	 * make a contested roll against another person
+	 * <br>
+	 * typically, should use >= since engager wins ties
+	 */
+	public int contestedRoll(Person defender, int mynum, int theirnum) {
+		int myroll = extra.randRange(0,mynum);
+		int theirroll = extra.randRange(0,theirnum);
+		return myroll-theirroll;
+	}
+	
 	public String attributeDesc() {
-		return "(raw) dex (" + getRawDexterity() +") " + getDexterity()
-		+ "; cap/str " + bag.getCapacity() + "/"+getStrength()
-		+ "; clarity: " + getClarity()
+		return "(raw) dex (" + getRawDexterity() +") " + getDexterity()+ ", "+ extra.F_TWO_TRAILING.format(attMultDex())+"x"
+		+ "; cap/str " + bag.getCapacity() + "/"+getStrength()+ ", "+ extra.F_TWO_TRAILING.format(attMultStr())+"x"
+		+ "; clarity: " + getClarity() +", " + extra.F_TWO_TRAILING.format(attMultCla())+"x"
 		+ "; (total) AMP (" + getTotalAgiPen() + ") " + getAttributeAgiPen();
+	}
+	
+	public void attributeDescLongPrint() {
+		if (Player.getTutorial()) {
+			extra.println("Your attributes include Strength, Dexterity, and Clarity. Strength lets you carry more stuff. If you can't carry your stuff, you suffer penalities to Dexterity. Dexterity influences your dodge when factoring in your restrictive equipment.");
+			extra.println("Attributes below 100 have penalties, above 100 have bonuses. This is typically a 50% penalty at 0, and +10% bonus for every 100 above 100. Dexterity is more involved for dodge, but non-dodge applications of dexterity don't have penalties for sub 100 numbers.");
+			extra.println("Strength mult applies to physical damage from weapons, Dexterity mult applies to hit chance.");
+		}
+		extra.println("Strength: "+getStrength() + ", weight: "+bag.getCapacity() +" used capacity: "+((float)getStrength())/bag.getCapacity()+", multiplier: "+ extra.F_TWO_TRAILING.format(attMultStr())+"x");
+		extra.println(" Dexterity Penalty Cap: " + atrBox.getCapAgiPen());
+		extra.println("Dexterity: Raw="+getRawDexterity()+", Effective: " +getDexterity() + " multiplier: "+ extra.F_TWO_TRAILING.format(attMultDex())+"x");
+		extra.println(" Agility Multiplier Penalty: "
+		+ getTotalAgiPen() + ", Applied to Dex: "+getAgiPenAgainstDex() + " of capacity " + atrBox.getCapAgiPen() + " and equip " +bag.getAgiPen() + "; Raw Attribute AMP: "+getAttributeAgiPen());
+		extra.println("Clarity: "+getClarity()+", " + extra.F_TWO_TRAILING.format(attMultCla())+"x");
 	}
 
 	public SuperPerson getSuper() {
@@ -1899,17 +1965,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		hp = 0;
 	}
 
-	//mostly just a method in case I want to plug 'any contested roll' skills in later
-	/**
-	 * make a contested roll against another person
-	 * <br>
-	 * typically, should use >= since engager wins ties
-	 */
-	public int contestedRoll(Person defender, int mynum, int theirnum) {
-		int myroll = extra.randRange(0,mynum);
-		int theirroll = extra.randRange(0,theirnum);
-		return myroll-theirroll;
-	}
+	
 
 	public String getTitle() {
 		return title;

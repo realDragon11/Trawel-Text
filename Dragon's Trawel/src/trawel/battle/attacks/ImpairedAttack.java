@@ -56,6 +56,7 @@ public class ImpairedAttack implements IAttack{
 		float hitMult = (float) (_style.hit*t.hit*_attack.getHitMult());
 		
 		double elementalDamMult = 1;
+		double physicalDamMult = 1;
 		
 		switch (getType()) {
 		case FAKE_WEAPON:
@@ -74,6 +75,9 @@ public class ImpairedAttack implements IAttack{
 				sMult *= _weapon.getMat().sharpMult;
 				bMult *= _weapon.getMat().bluntMult;
 				pMult *= _weapon.getMat().pierceMult;
+				if (_attacker != null) {
+					physicalDamMult *= _attacker.attMultStr();
+				}
 			}else {
 				IHasSkills attSource = attack.getSkillSource();
 				if (_attacker != null && attSource != null) {
@@ -171,7 +175,7 @@ public class ImpairedAttack implements IAttack{
 			if (_attacker.hasEffect(Effect.DICE)) {
 				speedMult*=.9;//WET
 			}
-			
+			hitMult *= _attacker.attMultDex()*_attacker.getBag().getAim();
 		}
 		cooldown = (attack.getCooldown()*speedMult)+speedModDown;
 		warmup = (attack.getWarmup()*speedMult)+speedModUp;
@@ -183,9 +187,6 @@ public class ImpairedAttack implements IAttack{
 			if (attacker.hasEffect(Effect.TELESCOPIC)) {
 				hitMult +=((warmup+cooldown)/100);
 			}
-		}
-		if (_attacker != null) {
-			hitMult*=_attacker.getBag().getAim();
 		}
 		hitroll = extra.lerp(hitMult*.8f,hitMult*1.2f, extra.hrandomFloat());
 		if (_weapon != null) {

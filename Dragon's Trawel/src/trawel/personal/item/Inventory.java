@@ -198,7 +198,7 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	/**
-	 * Get the sum of the sharp resistance of the inventory.
+	 * Get the average of the sharp resistance of the inventory.
 	 * @return (double) - sharp resistance
 	 */
 	public double getSharpResist() {
@@ -207,11 +207,11 @@ public class Inventory implements java.io.Serializable{
 		for (Armor a: getArmor()) {
 			retResist += a.getSharpResist();
 		}
-		return extra.zeroOut(retResist);
+		return extra.zeroOut(retResist/5f);
 	}
 	
 	/**
-	 * Get the sum of the blunt resistance of the inventory.
+	 * Get the average of the blunt resistance of the inventory.
 	 * @return (double) - blunt resistance
 	 */
 	public double getBluntResist() {
@@ -220,11 +220,11 @@ public class Inventory implements java.io.Serializable{
 		for (Armor a: getArmor()) {
 			retResist += a.getBluntResist();
 		}
-		return extra.zeroOut(retResist);
+		return extra.zeroOut(retResist/5f);
 	}
 	
 	/**
-	 * Get the sum of the piercing resistance of the inventory.
+	 * Get the average of the piercing resistance of the inventory.
 	 * @return (double) - piercing resistance
 	 */
 	public double getPierceResist() {
@@ -233,7 +233,7 @@ public class Inventory implements java.io.Serializable{
 		for (Armor a: getArmor()) {
 			retResist += a.getPierceResist();
 		}
-		return extra.zeroOut(retResist);
+		return extra.zeroOut(retResist/5f);
 	}
 	
 	/**
@@ -389,7 +389,24 @@ public class Inventory implements java.io.Serializable{
 		+".";
 		//There are way to many plurals to account for
 	}//gold + " " + extra.choose("gold","gold pieces","pieces of gold")
-	
+	public String quickInventory() {
+		String tempStr = "";
+		for (Armor a: armorSlots) {
+			if (tempStr != "") {
+				tempStr+=", ";
+			}
+			if (a.canAetherLoot()) {//use this to determine to display
+				tempStr+= a.getName();
+			}
+		}
+		if (hand.canAetherLoot()) {
+			if (tempStr != "") {
+				tempStr+=", ";
+			}
+			tempStr+= hand.getName()+".";
+		}
+		return tempStr;
+	}
 	
 	/**
 	 * Swaps out a new weapon.
