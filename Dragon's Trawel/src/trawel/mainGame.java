@@ -893,8 +893,7 @@ public class mainGame {
 			System.out.println("There was an error when setting up Trawel.");
 			e.printStackTrace();
 			
-			extra.println("[jitter]Trawel has encountered an exception. Please report to realDragon. More details can be found on the command prompt.");
-			extra.println("PREVIEW, SEE ABOVE IN TEXT FOR FULL MESSAGE: "+ (e.getMessage() != null ? (e.getMessage()) :"null" + e.getStackTrace()));
+			errorHandle(e);
 			System.out.println("Press enter to quit.");
 			extra.inString();
 		}
@@ -905,7 +904,7 @@ public class mainGame {
 				mainMenu();
 			}catch (Exception e) {
 				try {
-					mainGame.log(e.getMessage());
+					
 					errorHandle(e);
 				}catch(Exception fatal) {
 					System.out.println("Error was fatal. Press enter to close.");
@@ -925,9 +924,11 @@ public class mainGame {
 	}
 	
 	private static void errorHandle(Exception e) {
+		mainGame.log(e.getMessage());
 		System.out.println("Error Stacktrace:");
 		e.printStackTrace();
-		extra.println("[jitter]Trawel has encountered an exception. Please report to realDragon. More details can be found on the command prompt.");
+		extra.println(extra.PRE_RED+"Trawel has encountered an exception. Please report to realDragon. More details can be found in log.txt.");
+		extra.println("PREVIEW, SEE ABOVE IN TEXT FOR FULL MESSAGE: "+ (e.getMessage() != null ? (e.getMessage()) :"null" + e.getStackTrace()));
 		extra.println((e.getMessage() != null ? (e.getMessage()) :"null" + e.getStackTrace()));
 	}
 
@@ -1325,7 +1326,7 @@ public class mainGame {
 				Player.player.setCheating();
 				Player.toggleTutorial();
 				story = new StoryNone();
-				player.getPerson().addXp(9999);
+				//player.getPerson().addXp(9999);
 				Player.player.addGold(1000);
 				Player.bag.addAether(100000);
 			}

@@ -201,7 +201,8 @@ public class NodeConnector implements Serializable {
 		long sub = 0b0;
 		for (int i = 0; i < places.length-1;i++) {
 			//I think I have to do this so it doesn't delete info
-			sub = extra.setNthByteInLong(sub, (byte)(places[i]-Byte.MAX_VALUE),i);
+			assert places[i] <= size;
+			sub = extra.setNthByteInLong(sub,places[i],i);
 		}
 		connections[node] = sub;
 	}
@@ -253,6 +254,7 @@ public class NodeConnector implements Serializable {
 		lastNode = 1;
 		currentNode = 1;
 		isForceGoIng = false;
+		forceGoProtection = false;
 		while (currentNode != 0) {
 			enter(currentNode);
 		}
@@ -629,7 +631,7 @@ public class NodeConnector implements Serializable {
 		if (clazz.isInstance(o)) {
 			return clazz.cast(o);
 		}
-		Object[] arr = getStorageAsArray(node);
+		Object[] arr = (Object[]) o;
 		for (int i = 0; i < arr.length;i++) {
 			if (clazz.isInstance(arr[i])) {
 				return clazz.cast(arr[i]);

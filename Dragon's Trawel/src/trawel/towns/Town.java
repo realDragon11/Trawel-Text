@@ -547,7 +547,7 @@ public class Town extends TContextOwner{
 		
 		
 		switch (extra.inInt(9)) {
-		case 1:Player.player.getPerson().displayStats();break;
+		case 1:Player.player.getPerson().displayStats(false);break;
 		case 2:
 			extra.println("1 View in More Depth");
 			extra.println("2 Drawbanes");
@@ -558,13 +558,32 @@ public class Town extends TContextOwner{
 				extra.println("You have " + Player.player.emeralds + " emeralds, " + Player.player.rubies +" rubies, and " + Player.player.sapphires +" sapphires.");
 				;break;
 				case 2: Player.player.getPerson().getBag().discardDrawBanes(false);break;
-				case 3: WorldGen.pathToUnun();break;
+				case 3: WorldGen.pathToUnun();
+				if (Player.player.getCheating()) {
+					extra.println("Advance time a lot?");
+					if (extra.yesNo()) {
+						Player.addTime(24*30*365);
+					}
+				}
+				break;
 			}
 			
 			
 			break;
 		case 3:Player.player.displayTitles();
 		Player.player.getPerson().facRep.display();
+		if (Player.player.getCheating()) {
+			extra.println("Get swole?");
+			if (extra.yesNo()) {
+				Player.player.getPerson().setFlag(PersonFlag.AUTOLEVEL, true);
+				Player.player.getPerson().addXp(99999);
+			}else {
+				extra.println("At least work out?");
+				if (extra.yesNo()) {
+					Player.player.getPerson().addXp(9999);
+				}
+			}
+		}
 		break;
 		case 4:
 			Player.player.showQuests();

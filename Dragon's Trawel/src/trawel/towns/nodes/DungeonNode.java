@@ -168,23 +168,26 @@ public class DungeonNode implements NodeType{
 			*/
 			for (List<Integer> fl: floors) {
 				for (Integer f: fl) {
-					//sadly list conversion is probably easier than writing mergesort myself
-					//although with these sizes just use selection/insertion sort
 					List<Integer> connects = start_node.getConnects(f);
-					connects.sort(new Comparator<Integer>() {
-
-						@Override
-						public int compare(Integer a0, Integer a1) {
-							return (int) Math.signum(
-									start_node.getFloor(a0)
-									-
-									start_node.getFloor(a1)
-									);
-						}});
+					//I looked up better ways to sort this but couldn't really find any sadly
+					//backwards sort because why not BD (I am going insane from so much staring at code, let me have this)
+					for (int i = connects.size()-1; i >=0 ;i--) {
+						int lookingat = connects.get(i);
+						int lowest = lookingat;
+						int swapat = i;
+						for (int j = i; j >=0;j--) {
+							int cur = connects.get(j);
+							if (lowest > cur) {
+								swapat = j;
+								lowest = cur;
+							}
+						}
+						connects.set(swapat, lookingat);
+						connects.set(i, lowest);
+					}
 					int[] pass = new int[connects.size()];
-					Integer[] agh = connects.toArray(new Integer[0]);//at this point I regret not writing my own sort right away
-					for (int i = 0; i < connects.size();i++) {
-						pass[i] = agh[i];
+					for (int i = connects.size()-1; i >=0 ;i--) {
+						pass[i] = connects.get(i);
 					}
 					start_node.setConnects(f,pass);
 				}
@@ -262,13 +265,14 @@ public class DungeonNode implements NodeType{
 		case 3://multiguards
 			List<Person> guards = holder.getStorageFirstClass(node,List.class);
 			Combat bgc = Player.player.massFightWith(guards);
+			String wasname = holder.getStorageFirstClass(node,String.class);
 			if (bgc.playerWon() > 0) {
 				holder.setForceGo(node,false);
-				String wasname = holder.getStorageFirstClass(node,String.class);
+				
 				GenericNode.setTotalDeadString(holder, node,"Wrecked " +wasname,"Examine Bodies","They are slowly rotting.", "pile of corpses");
 				return false;
 			}else {
-				holder.setStorage(node,bgc.getNonSummonSurvivors());//they don't revive
+				holder.setStorage(node,new Object[] {wasname,bgc.getNonSummonSurvivors()});//they don't revive
 				return true;
 			}
 		case 5: return chest(holder, node);

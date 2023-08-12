@@ -14,7 +14,6 @@ import trawel.personal.Person.AIJob;
 import trawel.personal.Person.PersonType;
 import trawel.personal.classless.Archetype;
 import trawel.personal.classless.Perk;
-import trawel.personal.classless.Skill;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.body.SoundBox;
 import trawel.personal.item.solid.Armor;
@@ -25,7 +24,6 @@ import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponType;
 import trawel.personal.item.solid.variants.ArmorStyle;
 
-@SuppressWarnings("deprecation")
 public class RaceFactory {
 	public static Race misc = new Race(RaceID.EMPTY);
 	public static List<Race> raceList = new ArrayList<Race>();
@@ -916,7 +914,7 @@ public class RaceFactory {
 
 	public static Person makeMimic(int level) {
 		extra.offPrintStack();
-		Person w = Person.animal(level, RaceID.B_MIMIC_OPEN, MaterialFactory.getMat("wood"), false);
+		Person w = Person.animal(level, RaceID.B_MIMIC_CLOSED, MaterialFactory.getMat("wood"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
 		w.getBag().swapArmorSlot(new Armor(level,0,MaterialFactory.getMat("flesh")),0);
 		//w.getBag().swapRace(RaceFactory.getRace("hiding-mimic"));

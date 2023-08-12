@@ -602,7 +602,7 @@ public class GenericNode implements NodeType {
 				holder.setStateNum(node,1);//unlocked once
 				holder.findBehind(node,"unlocked door");
 			}else {
-				if (holder.getStateNum(node) == 1) {
+				if (holder.getStateNum(node) == 0) {
 					extra.println("You bash open the "+holder.getStorageFirstClass(node,String.class)+".");
 				}else {
 					extra.println("Looks like they changed the locks! You bash open the door.");

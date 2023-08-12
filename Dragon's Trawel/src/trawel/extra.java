@@ -770,8 +770,8 @@ public final class extra {
 		public static final String PRE_WHITE = inlineColor(Color.WHITE);
 		@Deprecated
 		public static final String PRE_RED = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f));
-		public static final String PRE_BATTLE = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.6f));
-		public static final String PRE_MAYBE_BATTLE = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.3f));
+		public static final String PRE_BATTLE = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.4f));
+		public static final String PRE_MAYBE_BATTLE = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.6f));
 		public static final String PRE_ORANGE = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f));
 		public static final String PRE_YELLOW = inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f));
 		public static final String PRE_BLUE = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f));
@@ -1090,7 +1090,12 @@ public final class extra {
 		 * <br>
 		 * 0 <= num <= 7 (0 indexed)
 		 */
-		public static long setNthByteInLong(final long l,final long toset, final int number_of_byte) {
+		public static long setNthByteInLong(final long l,long toset, final int number_of_byte) {
+			assert toset <= 255;
+			assert toset >= 0;
+			/*if (toset > Byte.MAX_VALUE) {
+				toset-=Byte.MAX_VALUE;
+			}*/
 			return setXInLong(l,8,number_of_byte*8,toset);
 		}
 		

@@ -116,7 +116,7 @@ public class MineNode implements NodeType{
 		switch (owner.shape) {
 		case NONE: 
 			generate(start,0,size, tier);
-			return start;
+			return start.complete(owner);
 		case ELEVATOR:
 			int lastNode = 1;
 			int newNode;
@@ -130,7 +130,7 @@ public class MineNode implements NodeType{
 			newNode = NodeType.NodeTypeNum.BOSS.singleton.getNode(start, lastNode,size+2, 1+tier+(int)Math.ceil(size/10));
 			start.setMutualConnect(newNode, lastNode);
 			start.setFloor(newNode,size+2);
-			return start;
+			return start.complete(owner);
 		}
 		throw new RuntimeException("Invalid mine");
 	}
@@ -170,6 +170,7 @@ public class MineNode implements NodeType{
 			//made.interactString = "examine crystals";
 			//made.storage1 = randomLists.randomColor();
 			//made.name = "weird " + (String)made.storage1 + " crystals";break;
+			break;
 		case 7://minecart
 			break;
 		case 8: 
@@ -509,7 +510,7 @@ public class MineNode implements NodeType{
 	@Override
 	public String nodeName(NodeConnector holder, int node) {
 		switch(holder.getEventNum(node)) {
-		case 2: case 5://cleaning water, locked door
+		case 2://cleaning water, locked door
 			return holder.getStorageFirstClass(node,String.class);
 		case 6:
 			return holder.getStorageFirstClass(node,String.class) + " Crystals";

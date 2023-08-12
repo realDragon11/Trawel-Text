@@ -63,12 +63,6 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 		}
 		extra.println();
 		}
-		if (Player.player.getCheating()) {
-			extra.println("Advance time a lot?");
-			if (extra.yesNo()) {
-				Player.addTime(24*30*365);
-			}
-		}
 	}
 	
 	public Town getLocation() {
