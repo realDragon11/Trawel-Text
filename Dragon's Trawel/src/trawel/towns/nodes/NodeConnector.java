@@ -261,6 +261,15 @@ public class NodeConnector implements Serializable {
 	public void enter(int node) {
 		Player.addTime(.1);
 		mainGame.globalPassTime();
+		if (isForceGo(node) && !forceGoProtection) {
+			isForceGoIng = true;
+			if (!getFlag(node,NodeFlag.SILENT_FORCEGO_POSSIBLE)) {
+				setVisited(node,3);
+			}
+			forceGoProtection = true;
+			interactCode(node);
+			return;//redo operation
+		}
 		extra.menuGo(menuGen(currentNode));
 	}
 	
@@ -281,15 +290,6 @@ public class NodeConnector implements Serializable {
 						}
 						break;
 					}
-				}
-				if (isForceGo(node) && !forceGoProtection) {
-					isForceGoIng = true;
-					if (!getFlag(node,NodeFlag.SILENT_FORCEGO_POSSIBLE)) {
-						setVisited(node,3);
-					}
-					forceGoProtection = true;
-					interactCode(node);
-					return null;//redo operation
 				}
 				isForceGoIng = false;
 				mList.add(new NodeMenuTitle(node));
