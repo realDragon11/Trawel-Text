@@ -602,15 +602,18 @@ public class GenericNode implements NodeType {
 				holder.setStateNum(node,1);//unlocked once
 				holder.findBehind(node,"unlocked door");
 			}else {
+				String name = holder.getStorageFirstClass(node,String.class);
 				if (holder.getStateNum(node) == 0) {
-					extra.println("You bash open the "+holder.getStorageFirstClass(node,String.class)+".");
+					extra.println("You bash open the "+name+".");
 				}else {
-					extra.println("Looks like they changed the locks! You bash open the door.");
+					extra.println("Looks like they changed the locks! You bash open the "+name+".");
 				}
 				
 				holder.setStateNum(node,2);//broken open
 				holder.setForceGo(node, false);
-				holder.findBehind(node,"broken door");
+				name = "broken " +name;
+				holder.findBehind(node,name);
+				holder.setStorage(node,name);
 			}
 		}else {
 			if (holder.parent.getOwner() == Player.player) {

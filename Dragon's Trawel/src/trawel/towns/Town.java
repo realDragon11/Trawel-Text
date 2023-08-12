@@ -30,6 +30,7 @@ import trawel.personal.RaceFactory;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.solid.DrawBane;
+import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
@@ -577,6 +578,10 @@ public class Town extends TContextOwner{
 			if (extra.yesNo()) {
 				Player.player.getPerson().setFlag(PersonFlag.AUTOLEVEL, true);
 				Player.player.getPerson().addXp(99999);
+				Weapon w = Player.bag.getHand();
+				for (int i = 0; i < 50;i++) {
+					w.levelUp();
+				}
 			}else {
 				extra.println("At least work out?");
 				if (extra.yesNo()) {
@@ -663,7 +668,7 @@ public class Town extends TContextOwner{
 			public List<MenuItem> gen() {
 				List<MenuItem> list = new ArrayList<MenuItem>();
 				for (Connection c: connects) {
-					if (c.getType() == ConnectType.ROAD){
+					if (c.getType() == type){
 						list.add(getConnectMenu(c));
 					}
 				}

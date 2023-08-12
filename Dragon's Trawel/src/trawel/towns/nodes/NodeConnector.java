@@ -199,7 +199,7 @@ public class NodeConnector implements Serializable {
 	protected void setConnects(int node,int...places) {
 		assert node != 0;
 		long sub = 0b0;
-		for (int i = 0; i < places.length-1;i++) {
+		for (int i = 0; i < places.length;i++) {
 			//I think I have to do this so it doesn't delete info
 			assert places[i] <= size;
 			sub = extra.setNthByteInLong(sub,places[i],i);
@@ -211,10 +211,10 @@ public class NodeConnector implements Serializable {
 		assert node != 0;
 		assert tonode != 0;
 		long sub = connections[node];
-		List<Integer> list = new ArrayList<Integer>();
 		for (int i = 0; i < 8;i++) {
 			int ret = extra.intGetNthByteFromLong(sub,i);
 			assert ret >= 0;
+			assert ret <= 255;
 			if (ret == 0) {
 				connections[node] = extra.setNthByteInLong(sub,tonode,i);
 				return;

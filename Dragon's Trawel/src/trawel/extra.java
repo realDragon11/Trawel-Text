@@ -1116,9 +1116,9 @@ public final class extra {
 		 * <br>
 		 * effectively reads the short as unsigned
 		 */
-		public static int intGetNthShortFromLong(final long l, final int number_of_byte)
+		public static int intGetNthShortFromLong(final long l, final int number_of_short)
 		{
-		    final long rightShifted = l >>> number_of_byte*16;
+		    final long rightShifted = l >>> number_of_short*16;
 		    final long mask = (1L << 16) - 1L;
 		    return (int) (rightShifted & mask);
 		}

@@ -178,7 +178,7 @@ public class World extends TContextOwner{
 	}
 	
 	public void deathCheaterToChar(Agent p) {
-		assert reoccuring.contains(p);
+		//assert reoccuring.contains(p);
 		reoccuring.remove(p);
 		//characters.add(p);
 		p.getPerson().hTask = HostileTask.DUEL;

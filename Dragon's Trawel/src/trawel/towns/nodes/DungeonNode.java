@@ -45,7 +45,7 @@ public class DungeonNode implements NodeType{
 	
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
-		byte idNum = (byte) extra.randRange(1,EVENT_NUMBER);
+		byte idNum = (byte) extra.randRange(2,EVENT_NUMBER);//1 is ladder
 		//might be overwritten by shape but we do it as a backup/full rng
 		/*if (extra.chanceIn(1,2)) {
 			idNum = GUARD_NUMBERS[dungeonGuardRoller.random(extra.getRand())];
@@ -101,7 +101,7 @@ public class DungeonNode implements NodeType{
 			int levelUp = 0;
 			int floor = 0;
 			int lastNode;
-			int lastNode2;
+			int curNode;
 			//DOLATER: fix order of nodes if that is still an issue
 			while (curSize < size) {
 				floor++;
@@ -118,11 +118,11 @@ public class DungeonNode implements NodeType{
 				for (int j = 0; j < 2;j++) {
 					for (int i = 0;i <2; i++) {
 						floor++;
-						lastNode2 = getNode(start_node,0,0,stair_level);
-						start_node.setFloor(lastNode2, floor);
-						start_node.setMutualConnect(lastNode, lastNode2);
+						curNode = getNode(start_node,0,0,stair_level);
+						start_node.setFloor(curNode, floor);
+						start_node.setMutualConnect(lastNode, curNode);
 						//lastNode.reverseConnections();
-						lastNode = lastNode2;
+						lastNode = curNode;
 						curFloor.add(lastNode);
 						if (i == 1) {
 							start_node.setMutualConnect(lastNode, curStair);
@@ -169,25 +169,27 @@ public class DungeonNode implements NodeType{
 			for (List<Integer> fl: floors) {
 				for (Integer f: fl) {
 					List<Integer> connects = start_node.getConnects(f);
-					//I looked up better ways to sort this but couldn't really find any sadly
-					//backwards sort because why not BD (I am going insane from so much staring at code, let me have this)
-					for (int i = connects.size()-1; i >=0 ;i--) {
-						int lookingat = connects.get(i);
-						int lowest = lookingat;
-						int swapat = i;
-						for (int j = i; j >=0;j--) {
+					int isize = connects.size()-1;
+					int[] pass = new int[isize+1];
+					for (int i = isize; i >=0 ;i--) {
+						int lowest = 256;
+						int erasespot = -1;
+						int low_loc = -1;
+						for (int j = isize; j >=0;j--) {
 							int cur = connects.get(j);
-							if (lowest > cur) {
-								swapat = j;
-								lowest = cur;
+							if (cur == 256) {
+								continue;
+							}
+							int cur_num = start_node.getFloor(cur);
+							if (lowest > cur_num) {
+								low_loc = cur;
+								lowest = cur_num;
+								erasespot = j;
 							}
 						}
-						connects.set(swapat, lookingat);
-						connects.set(i, lowest);
-					}
-					int[] pass = new int[connects.size()];
-					for (int i = connects.size()-1; i >=0 ;i--) {
-						pass[i] = connects.get(i);
+						assert low_loc > 0;
+						pass[i] = low_loc;
+						connects.set(erasespot, 256);
 					}
 					start_node.setConnects(f,pass);
 				}
@@ -433,6 +435,11 @@ public class DungeonNode implements NodeType{
 	public String nodeName(NodeConnector holder, int node) {
 		switch(holder.getEventNum(node)) {
 		case 1://ladder etc
+			/*if (NodeConnector.currentNode != node) {
+				return holder.getStorageFirstClass(node,String.class) + ( 
+						holder.getFloor(node) > holder.getFloor(NodeConnector.currentNode)
+						? " {up}" : " down");
+			}*/
 			return holder.getStorageFirstClass(node,String.class);
 		case 2://guard
 		case 3://guards
