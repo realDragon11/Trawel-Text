@@ -544,7 +544,7 @@ public class Inventory implements java.io.Serializable{
 
 	
 
-	public double getSharpResist(int slot) {
+	public double getSharpResistOOB(int slot) {
 		int i = 0;
 		double mult;
 		double retResist = 0;
@@ -559,7 +559,7 @@ public class Inventory implements java.io.Serializable{
 		}
 		return extra.zeroOut(retResist);
 	}
-	public double getBluntResist(int slot) {
+	public double getBluntResistOOB(int slot) {
 		int i = 0;
 		double mult;
 		double retResist = 0;
@@ -574,7 +574,7 @@ public class Inventory implements java.io.Serializable{
 		}
 		return extra.zeroOut(retResist);
 	}
-	public double getPierceResist(int slot) {
+	public double getPierceResistOOB(int slot) {
 		int i = 0;
 		double mult;
 		double retResist = 0;
@@ -611,7 +611,7 @@ public class Inventory implements java.io.Serializable{
 			retResist += (armorSlots[i].getSharp())*mult;
 			i++;
 		}
-		return extra.zeroOut(retResist);
+		return extra.zeroOut(retResist/5f);//slots?
 	}
 	
 	public double getBlunt(ImpairedAttack att) {
@@ -634,7 +634,7 @@ public class Inventory implements java.io.Serializable{
 			retResist += (armorSlots[i].getBlunt())*mult;
 			i++;
 		}
-		return extra.zeroOut(retResist);
+		return extra.zeroOut(retResist/5f);//slots?
 	}
 	public double getPierce(ImpairedAttack att) {
 		int slot = att.getSlot();
@@ -656,7 +656,7 @@ public class Inventory implements java.io.Serializable{
 			retResist += (armorSlots[i].getPierce())*mult;
 			i++;
 		}
-		return extra.zeroOut(retResist);
+		return extra.zeroOut(retResist/5f);//slots?
 	}
 	
 	public double getIgniteMult(int slot) {
@@ -672,7 +672,7 @@ public class Inventory implements java.io.Serializable{
 			retResist += (armorSlots[i].getFireMod())*mult;
 			i++;
 		}
-		return extra.zeroOut(retResist/5);
+		return extra.zeroOut(retResist/5f);//slots?
 	}
 	
 	public double getElecMult(int slot) {
@@ -688,7 +688,7 @@ public class Inventory implements java.io.Serializable{
 			retResist += (armorSlots[i].getShockMod())*mult;
 			i++;
 		}
-		return extra.zeroOut(retResist/5);
+		return extra.zeroOut(retResist/5f);//slots?
 	}
 	
 	public double getFrostMult(int slot) {
@@ -704,7 +704,7 @@ public class Inventory implements java.io.Serializable{
 			retResist += (armorSlots[i].getFreezeMod())*mult;
 			i++;
 		}
-		return extra.zeroOut(retResist/5);
+		return extra.zeroOut(retResist/5f);//slots?
 	}
 	
 	

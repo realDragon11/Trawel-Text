@@ -26,7 +26,7 @@ public class Armor extends Item implements IEffectiveLevel{
 
 	private static final long serialVersionUID = 1L;
 	
-	public static final double armorEffectiveness = 1;//5 armor slots
+	public static final double armorEffectiveness = 8;//5 armor slots
 	
 	
 	//instance variables
@@ -186,10 +186,10 @@ public class Armor extends Item implements IEffectiveLevel{
 	//MAYBELATER: for now, all are the same
 	//either fix, or make certain armor bits count more for global armor
 	private float baseResist() {
-		return IEffectiveLevel.unEffective(
-				1.5f*getEffectiveLevel()*ArmorStyle.fetch(style).totalMult
+		return IEffectiveLevel.unEffective(getEffectiveLevel())*
+				1.5f*ArmorStyle.fetch(style).totalMult
 				*MaterialFactory.getMat(material).baseResist
-				);
+				;
 		/*
 		switch (slot) {
 		case 0://helm

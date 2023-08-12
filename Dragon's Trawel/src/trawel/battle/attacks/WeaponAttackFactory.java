@@ -728,7 +728,7 @@ public class WeaponAttackFactory {
 		*/
 	}
 	
-	public static final void dispTestWeapon(WeaponType t, List<Material> mats) {
+	public static final void dispTestWeapon(int level,WeaponType t, List<Material> mats) {
 		int tests = 1000;
 		int totalTests = tests*WorldGen.getDummyInvs().size();
 		
@@ -740,7 +740,7 @@ public class WeaponAttackFactory {
 			List<AttackMetric> metrics = new ArrayList<AttackMetric>();
 			
 			double totalDPS = 0;
-			Weapon w = new Weapon(10,m,t);
+			Weapon w = new Weapon(level,m,t);
 			
 			
 			int i = 0;

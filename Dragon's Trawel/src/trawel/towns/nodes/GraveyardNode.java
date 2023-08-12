@@ -372,6 +372,8 @@ public class GraveyardNode implements NodeType{
 				}else {
 					extra.println("The Gravedigger attacks you!");
 				}
+			}else {
+				return false;
 			}
 			//Person p = holder.getStorageFirstPerson(node);
 			Combat c = Player.player.fightWith(p);

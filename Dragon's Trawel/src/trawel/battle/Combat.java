@@ -580,7 +580,7 @@ public class Combat {
 		}
 		//TODO unsure if should add attacker's aim at impairment phase
 		double dodgeBase = def.getDodge()*defender.getTornCalc();
-		double hitBase = att.getHitMult()*off.getAim();
+		double hitBase = att.getHitMult();
 		
 		double dodgeRoll = dodgeBase*extra.getRand().nextDouble();
 		double hitRoll = hitBase*extra.getRand().nextDouble();
@@ -714,6 +714,9 @@ public class Combat {
 				damage = 0;
 				code = ATK_ResultCode.ARMOR;
 				type = ATK_ResultType.NO_IMPACT;
+				/*if (att.getWeapon() != null && att.getWeapon().getLevel() > 50) {
+					extra.println(global_roll+"");
+				}*/
 			}else {//TODO: new goal: % reductions based on relativeness with a chance to negate entirely if much higher?
 				//up to half the damage if the damage roll was less than the total weighted armor (without roll)
 				double reductMult = damageCompMult(.5f,1f,1f,att_roll*rawdam,def_roll*weight_arm,1f,1.5f);
@@ -1034,7 +1037,7 @@ public class Combat {
 					}
 				}
 				if (!didDisplay && !extra.getPrint()) {
-					extra.print(prettyHPColors(atr.stringer +woundstr,extra.ATTACK_KILL, attacker, defender));
+					extra.print(prettyHPColors(atr.stringer+prettyHPDamage(percent, defender)+" {"+damageDone+" damage}[C]"+woundstr,extra.ATTACK_KILL, attacker, defender));
 					didDisplay = true;
 				}
 			}else {

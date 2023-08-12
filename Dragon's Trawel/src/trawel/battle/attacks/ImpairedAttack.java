@@ -67,10 +67,10 @@ public class ImpairedAttack implements IAttack{
 			double pMult = attack.getPierce()*t.pierce;
 			int w_lvl;
 			boolean alwaysWound = (_weapon != null && _weapon.isKeen());
-			boolean isAttackTest = defender == null;
+			//boolean isAttackTest = defender == null;
 			
 			if (_weapon != null) {
-				w_lvl = isAttackTest ? 10 :_weapon.getLevel();
+				w_lvl = _weapon.getLevel();//wow I was going crazy due to setting it to 10 here
 				sMult *= _weapon.getMat().sharpMult;
 				bMult *= _weapon.getMat().bluntMult;
 				pMult *= _weapon.getMat().pierceMult;
@@ -184,12 +184,14 @@ public class ImpairedAttack implements IAttack{
 				hitMult +=((warmup+cooldown)/100);
 			}
 		}
-
-		//
+		if (_attacker != null) {
+			hitMult*=_attacker.getBag().getAim();
+		}
 		hitroll = extra.lerp(hitMult*.8f,hitMult*1.2f, extra.hrandomFloat());
 		if (_weapon != null) {
 			hitroll +=_weapon.hasQual(Weapon.WeaponQual.ACCURATE) ? .1 : 0;
 		}
+		
 		
 	}
 	

@@ -1466,7 +1466,9 @@ public class mainGame {
 
 						@Override
 						public boolean go() {
-							WeaponAttackFactory.dispTestWeapon(WeaponType.values()[i],weaponMatTesterList);
+							WeaponAttackFactory.dispTestWeapon(1,WeaponType.values()[i],weaponMatTesterList);
+							WeaponAttackFactory.dispTestWeapon(10,WeaponType.values()[i],weaponMatTesterList);
+							WeaponAttackFactory.dispTestWeapon(100,WeaponType.values()[i],weaponMatTesterList);
 							return false;
 						}});
 					return list;

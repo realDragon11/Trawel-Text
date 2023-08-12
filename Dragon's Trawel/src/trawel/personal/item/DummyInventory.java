@@ -88,7 +88,7 @@ public class DummyInventory extends Inventory {
 		if (ret != null) {
 			return ret;
 		}
-		ret = super.getSharp(att);
+		ret = super.getBlunt(att);
 		savedResults[1][slot][combo] = ret;
 		return ret;
 	}
@@ -111,7 +111,7 @@ public class DummyInventory extends Inventory {
 		if (ret != null) {
 			return ret;
 		}
-		ret = super.getSharp(att);
+		ret = super.getPierce(att);
 		savedResults[2][slot][combo] = ret;
 		return ret;
 	}

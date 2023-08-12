@@ -525,36 +525,6 @@ public class MaterialFactory {
 		register(misc);
 		
 		misc = new Material();
-		misc.name = "wood";
-		misc.typeList.add(ArmorStyle.PLATE);
-		misc.typeList.add(ArmorStyle.PLATE);
-		misc.typeList.add(ArmorStyle.PLATE);
-		misc.typeList.add(ArmorStyle.PLATE);
-		misc.typeList.add(ArmorStyle.MAIL);
-		misc.armor = true;
-		misc.weapon = true;
-		misc.weight = 4;
-		misc.cost = 3;
-		misc.baseEnchant = 0;
-		misc.baseResist = 2;
-		misc.sharpResist = 1;
-		misc.bluntResist = 1.5f;
-		misc.pierceResist = 1;
-		misc.dexMod = .9f;
-		misc.sharpMult = .2f;
-		misc.bluntMult = .8f;
-		misc.pierceMult = .3f;
-		misc.tier = 0;
-		misc.rarity = .1f;
-		misc.fireVul = 2;
-		misc.shockVul = 0;
-		misc.freezeVul = .5f;
-		misc.palIndex = 8;
-		misc.soundType = "wood";
-		misc.color = extra.inlineColor(new Color(131,94,35));
-		register(misc);
-		
-		misc = new Material();
 		misc.name = "solar gold";
 		misc.typeList.add(ArmorStyle.PLATE);
 		misc.typeList.add(ArmorStyle.PLATE);
@@ -798,7 +768,7 @@ public class MaterialFactory {
 		misc.weight = 20;
 		misc.cost = 30;
 		misc.baseEnchant = 0;
-		misc.baseResist = 6;
+		misc.baseResist = 5;
 		misc.sharpResist = .75f;
 		misc.bluntResist = 1;
 		misc.pierceResist = .9f;
@@ -839,6 +809,32 @@ public class MaterialFactory {
 		misc.freezeVul = 1;
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
+		register(misc);
+		
+		misc = new Material();
+		misc.name = "wood";//now only mimic bodywood
+		misc.typeList.add(ArmorStyle.BODY);
+		misc.armor = true;
+		misc.weapon = true;
+		misc.weight = 2;
+		misc.cost = 3;
+		misc.baseEnchant = 0;
+		misc.baseResist = 6;
+		misc.sharpResist = 1;
+		misc.bluntResist = 1.5f;
+		misc.pierceResist = 1;
+		misc.dexMod = .9f;
+		misc.sharpMult = .2f;
+		misc.bluntMult = .8f;
+		misc.pierceMult = .3f;
+		misc.tier = 0;
+		misc.rarity = 0f;
+		misc.fireVul = 2;
+		misc.shockVul = 0;
+		misc.freezeVul = .5f;
+		misc.palIndex = 8;
+		misc.soundType = "wood";
+		misc.color = extra.inlineColor(new Color(131,94,35));
 		register(misc);
 		
 		misc = new Material();//used for drudgers right now
