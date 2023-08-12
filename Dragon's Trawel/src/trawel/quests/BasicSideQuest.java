@@ -682,7 +682,6 @@ public class BasicSideQuest implements Quest{
 					q.announceUpdate();
 					return false;
 				}
-				
 			};
 			q.trigger = "db:"+db.name();//could also use ordinal
 			drawBaneCollecter(db,q);
@@ -785,8 +784,9 @@ public class BasicSideQuest implements Quest{
 
 	@Override
 	public void take() {
-		if (target != null) {
-		target.locationF.addQR(target);}
+		if (target != null && target.locationF != null) {
+			target.locationF.addQR(target);
+		}
 		announceUpdate();
 	}
 

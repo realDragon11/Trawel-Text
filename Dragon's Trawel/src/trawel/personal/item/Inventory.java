@@ -475,11 +475,12 @@ public class Inventory implements java.io.Serializable{
 		}
 		if (r_race.racialType == Race.RaceType.HUMANOID) {
 			for (Armor a: armorSlots) {
-				if (a == null) {
+				if (a == null || a.getStyle() == ArmorStyle.BODY) {
 					continue;
 				}
-				String str = "AddInv|"+side+"|" +a.getBaseName().replace(' ','_') +"|"+a.getBaseMap()+"|"+a.getMat().palIndex+"|"+a.bloodSeed + "|" + a.getBloodCount() + "|" +(a.getEnchant() != null ? a.getEnchant().enchantstyle :0 )+"|";
-				switch (a.getArmorType()) {
+				int slot = a.getArmorType();
+				String str = "AddInv|"+side+"|" +a.getStyle().legacyName[slot] +"|"+a.getBaseMap()+"|"+a.getMat().palIndex+"|"+a.bloodSeed + "|" + a.getBloodCount() + "|" +(a.getEnchant() != null ? a.getEnchant().enchantstyle :0 )+"|";
+				switch (slot) {
 				case 0:str+= "-6|";break; //head
 				case 1:str+= "-3|";break; //arms
 				case 2:str+= "-5|";break; //chest

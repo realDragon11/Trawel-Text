@@ -32,6 +32,7 @@ public enum ArmorStyle {
 	public RestrictType restrictType;
 	public boolean[] bannedSlots = new boolean[] {false,false,false,false,false};
 	public WeightedTable matTable;
+	public String[] legacyName;
 	
 	//FIXME: if not using global pallete swapping, also needs ids
 	ArmorStyle(){
@@ -57,6 +58,7 @@ public enum ArmorStyle {
 		PLATE.genner[2] = new NameStyleNum("plate chestplate");
 		PLATE.genner[3] = new NameStyleNum("plate greaves");
 		PLATE.genner[4] = new NameStyleNum("plate boots");
+		PLATE.legacyName = new String[] {"plackan_helm","plackan_gauntlets","plackan_chestplate","plackan_greaves","plackan_boots"};
 		
 		MAIL.sharpMult = 1.5f;
 		MAIL.bluntMult = 1f;
@@ -71,6 +73,7 @@ public enum ArmorStyle {
 		MAIL.genner[2] = new NameStyleNum("mail shirt");
 		MAIL.genner[3] = new NameStyleNum("mail skirt");
 		MAIL.genner[4] = new NameStyleNum("mail boots");
+		MAIL.legacyName = new String[] {"mail_hood","mail_gloves","mail_shirt","mail_pants","mail_boots"};
 		
 		FABRIC.sharpMult = 1f;
 		FABRIC.bluntMult = 1f;
@@ -85,6 +88,7 @@ public enum ArmorStyle {
 		FABRIC.genner[2] = new NameStyleNum("shirt");
 		FABRIC.genner[3] = new NameStyleNum("trousers");
 		FABRIC.genner[4] = new NameStyleNum("shoes");
+		FABRIC.legacyName = new String[] {"homan_hat","homan_gloves","homan_tunic","homan_pants","homan_boots"};
 		
 		//https://en.wikipedia.org/wiki/Gambeson
 		SEWN.sharpMult = 1f;
@@ -100,6 +104,7 @@ public enum ArmorStyle {
 		SEWN.genner[2] = new NameStyleNum("gambeson");
 		SEWN.genner[3] = new NameStyleNum("pants");//???
 		SEWN.genner[4] = new NameStyleNum("boots");//???
+		SEWN.legacyName = new String[] {"homan_hat","homan_gloves","homan_tunic","homan_pants","homan_boots"};
 		
 		GEM.sharpMult = 1.2f;
 		GEM.bluntMult = .8f;
@@ -114,6 +119,7 @@ public enum ArmorStyle {
 		GEM.genner[2] = new NameStyleNum("gemplate");
 		GEM.genner[3] = new NameStyleNum("gemgreaves");
 		GEM.genner[4] = new NameStyleNum("gemboots");
+		GEM.legacyName = new String[] {"tevaran_helmet","tevaran_bracers","tevaran_breastplate","tevaran_pants","tevaran_boots"};
 		
 		BODY.sharpMult = 1f;
 		BODY.bluntMult = 1f;

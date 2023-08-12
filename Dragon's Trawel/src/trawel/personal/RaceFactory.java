@@ -120,9 +120,9 @@ public class RaceFactory {
 			}
 			switch (id) {
 			case B_MIMIC_OPEN: case B_REAVER_SHORT:
-				return "open-mimic";
+				return "open_mimic";
 			case B_MIMIC_CLOSED: case B_REAVER_TALL:
-				return "hiding-mimic";
+				return "hiding_mimic";
 			}
 			
 			return null;

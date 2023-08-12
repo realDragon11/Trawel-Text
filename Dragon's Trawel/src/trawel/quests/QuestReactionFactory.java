@@ -12,9 +12,11 @@ import trawel.Networking;
 import trawel.WorldGen;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Player;
+import trawel.personal.people.Agent.AgentGoal;
 import trawel.towns.Town;
 
 public class QuestReactionFactory {
@@ -61,7 +63,7 @@ public class QuestReactionFactory {
 
 							@Override
 							public boolean go() {
-								if (q.target.locationT != null) {
+								if (q.target != null && q.target.locationT != null) {
 									WorldGen.pathToTown(q.target.locationT);
 								}else {
 									extra.println("They cannot seem to say the instructions.");
@@ -78,10 +80,12 @@ public class QuestReactionFactory {
 
 							@Override
 							public boolean go() {
-								if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+								Combat c = Player.player.fightWith(p);
+								if (c.playerWon() >= 0) {
 									
 								}else {
 									extra.println(p.getName() +" wanders off, regreting their helpfulness.");
+									bumperLocation.addOccupant(p.getMakeAgent(AgentGoal.NONE));
 								}
 								
 								return true;
@@ -98,10 +102,12 @@ public class QuestReactionFactory {
 				Person p = RaceFactory.getDueler(bumperLocation.getTier());
 				extra.println(Networking.AGGRO +p.getName() + " appears, claiming that they were hired to defend " + q.targetName +"!");
 				
-				if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+				Combat c = Player.player.fightWith(p);
+				if (c.playerWon() >= 0) {
 					
 				}else {
 					extra.println(p.getName() +" wanders off, job well done.");
+					bumperLocation.addOccupant(p.getMakeAgent(AgentGoal.NONE));
 				}
 			}}) );
 		reactions.add(new QuestReaction(new QKey[] {QKey.KILL,QKey.EVIL},new QKey[] {}, new QuestTriggerEvent() {
@@ -111,10 +117,12 @@ public class QuestReactionFactory {
 				Person p = RaceFactory.getLawman(bumperLocation.getTier());
 				extra.println(Networking.AGGRO +p.getName() + " attacks you for traveling to murder " + q.targetName +"!");
 				
-				if (mainGame.CombatTwo(Player.player.getPerson(),p).equals(Player.player.getPerson())) {
+				Combat c = Player.player.fightWith(p);
+				if (c.playerWon() >= 0) {
 					
 				}else {
 					extra.println(p.getName() +" wanders off, job well done.");
+					bumperLocation.addOccupant(p.getMakeAgent(AgentGoal.NONE));
 				}
 			}}) );
 		
