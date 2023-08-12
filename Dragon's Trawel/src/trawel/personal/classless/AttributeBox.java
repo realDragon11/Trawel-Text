@@ -61,12 +61,12 @@ public class AttributeBox {
 	//NOTE
 	//can insert skill stuff here since we have a link to the person!
 	
-	public float getTotalAgiPen(float capOver,float agiPenToDex) {
+	public float getAttributeAgiPenWithPen(float capOver,float agiPenToDex) {
 		return getCapAgiPen(capOver)*multDex(capOver,agiPenToDex*dexterity);
 	}
 	
-	public float getTotalAgiPen(float agiPenToDex) {
-		return getTotalAgiPen(getNaiveStrCap(capacity),agiPenToDex);
+	public float getAttributeAgiPenWithPen(float agiPenToDex) {
+		return getAttributeAgiPenWithPen(getNaiveStrCap(capacity),agiPenToDex);
 	}
 	
 	/**

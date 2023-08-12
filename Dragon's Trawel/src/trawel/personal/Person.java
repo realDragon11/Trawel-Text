@@ -1845,7 +1845,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 
 	public int getDexterity() {
-		return (int) (getRawDexterity()* bag.getAgiPen());
+		return (int) (getRawDexterity()*bag.getAgiPen()*atrBox.getCapAgiPen());
 	}
 	
 	public int getClarity() {
@@ -1865,7 +1865,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (atrBox == null) {
 			updateSkills();
 		}
-		return atrBox.getTotalAgiPen(bag.getAgiPen());
+		return atrBox.getAttributeAgiPenWithPen(bag.getAgiPen());
 	}
 	
 	public float getTotalAgiPen() {
@@ -1874,9 +1874,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 	
 	public String attributeDesc() {
-		return "(raw) dex (" + getRawDexterity() +") " + getDexterity() + " cap/str " + bag.getCapacity() + "/"+getStrength()
-		+ " clarity: " + getClarity()
-		+ " (total) AMP (" + getTotalAgiPen() + ") " + getAttributeAgiPen();
+		return "(raw) dex (" + getRawDexterity() +") " + getDexterity()
+		+ "; cap/str " + bag.getCapacity() + "/"+getStrength()
+		+ "; clarity: " + getClarity()
+		+ "; (total) AMP (" + getTotalAgiPen() + ") " + getAttributeAgiPen();
 	}
 
 	public SuperPerson getSuper() {

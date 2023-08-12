@@ -293,7 +293,7 @@ public class MaterialFactory {
 		misc.bluntMult = 3;
 		misc.pierceMult = .1f;
 		misc.tier = 3;
-		misc.rarity = 1.5f;
+		misc.rarity = .5f;
 		misc.fireVul = .8f;
 		misc.shockVul = 2;
 		misc.freezeVul = 2;
@@ -356,7 +356,7 @@ public class MaterialFactory {
 		misc.bluntMult = 2.2f;
 		misc.pierceMult = 1;
 		misc.tier = 3;
-		misc.rarity = .5f;
+		misc.rarity = .2f;
 		misc.fireVul = .8f;
 		misc.shockVul = 1.6f;//??
 		misc.freezeVul = 2;

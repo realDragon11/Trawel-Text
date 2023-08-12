@@ -1077,6 +1077,7 @@ public class Inventory implements java.io.Serializable{
 			}
 			mult += armorSlots[i].getAgiPenMult();
 		}
+		assert mult <= 5.1f;
 		return mult/5f;
 	}
 
