@@ -820,6 +820,7 @@ public final class extra {
 		public static final String ATTACK_DAMAGED = PRE_ORANGE;
 		public static final String ATTACK_KILL = PRE_RED;
 		public static final String ATTACK_BLOCKED = PRE_BLUE;
+		public static final String AFTER_ATTACK_BLOCKED = extra.inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.3f));
 		public static final String ATTACK_MISS = PRE_YELLOW;
 		
 		public static final String F_SPECIAL = PRE_MAGENTA;

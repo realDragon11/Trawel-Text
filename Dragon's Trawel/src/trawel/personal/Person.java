@@ -1,4 +1,5 @@
 package trawel.personal;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
@@ -1956,6 +1957,11 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	 */
 	public List<Wound> processBodyStatus() {
 		return bodystatus.processEffectUpdates();
+	}
+
+	public String inlineHPColor() {
+		int tval = extra.clamp((int)(extra.lerp(125,256,((float)this.getHp())/(this.getMaxHp()))),100,255);
+		return extra.inlineColor(new Color(tval,tval,tval));
 	}
 
 }

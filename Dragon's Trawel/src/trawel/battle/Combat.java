@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import trawel.AIClass;
@@ -1017,8 +1018,11 @@ public class Combat {
 				}
 			}
 		}
+		float hpRatio = ((float)defender.getHp())/(defender.getMaxHp());
 		if (damageDone > 0 || forceKilled) {
-			if (defender.takeDamage(Math.max(1,damageDone))) {
+			defender.takeDamage(Math.max(1,damageDone));
+			float newRatio = ((float)defender.getHp())/(defender.getMaxHp());
+			if (!defender.isAlive()) {
 				//extra.print(" " + extra.choose("Striking them down!"," They are struck down."));
 				boolean deathResist = false;
 				if (defender.hasEffect(Effect.STERN_STUFF)) {
@@ -1028,23 +1032,18 @@ public class Combat {
 						deathResist = true;
 						defender.resistDeath(0f);
 						if (!extra.getPrint()) {
-							extra.println(extra.ATTACK_DAMAGED+atr.stringer.replace("[*]", inlined_color)+woundstr +" But they're made of sterner stuff!");
+							prettyHPColors(atr.stringer +woundstr+" But they're made of sterner stuff!"
+									, extra.ATTACK_DAMAGED, attacker, defender);
 						}
 					}
 				}
 				if (!deathResist && !extra.getPrint()) {
-					inlined_color=extra.ATTACK_KILL;
-					extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color)+woundstr);
+					prettyHPColors(atr.stringer +woundstr,extra.ATTACK_KILL, attacker, defender);
 				}
 			}else {
 				if (!extra.getPrint()) {
-					int tval = extra.clamp((int)(extra.lerp(125,256,((float)defender.getHp())/(defender.getMaxHp()))),100,255);
-					inlined_color = extra.inlineColor(new Color(tval,tval,tval));
-					//inlined_color=extra.ATTACK_DAMAGED;
-					//only use the 'total hp percent' damage code on the damage number
-					extra.print(extra.ATTACK_DAMAGED +atr.stringer.replace("[*]", extra.ATTACK_DAMAGED)
-						+inlined_color+" {"+damageDone+" damage}"+extra.ATTACK_DAMAGED+woundstr);
-					inlined_color = extra.ATTACK_DAMAGED;
+					extra.print(prettyHPColors(atr.stringer+prettyHPDamage(hpRatio-newRatio, defender)+" {"+damageDone+" damage}[C]"+woundstr
+							,extra.ATTACK_DAMAGED,attacker,defender));
 				}
 			}
 		}
@@ -1053,10 +1052,9 @@ public class Combat {
 		switch (atr.code) {
 		case DODGE: case MISS:
 			if (!extra.getPrint()) {
-				inlined_color= extra.PRE_YELLOW;
-				extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color));
+				extra.print(prettyHPColors(atr.stringer +woundstr,extra.ATTACK_MISS, attacker, defender));
 				Networking.sendStrong("PlayMiss|" + "todo" + "|");
-				extra.print(" "+extra.AFTER_ATTACK_MISS+randomLists.attackMissFluff(atr.code));
+				extra.print(" "+extra.AFTER_ATTACK_MISS+randomLists.attackMissFluff(atr.code)+extra.ATTACK_MISS);
 			}
 			if (atr.code == ATK_ResultCode.DODGE) {
 				if (defender.hasSkill(Skill.SPEEDDODGE)) {
@@ -1077,8 +1075,8 @@ public class Combat {
 			break;
 		case ARMOR:
 			if (!extra.getPrint()) {
-				inlined_color = extra.ATTACK_BLOCKED;
-				extra.print(inlined_color+atr.stringer.replace("[*]", inlined_color)+" "+randomLists.attackNegateFluff());
+				extra.print(prettyHPColors(atr.stringer +woundstr,extra.ATTACK_BLOCKED, attacker, defender));
+				extra.print(extra.AFTER_ATTACK_BLOCKED+" "+randomLists.attackNegateFluff()+extra.ATTACK_BLOCKED);
 			}
 			if (defender.hasSkill(Skill.ARMORHEART)) {
 				int armorHeal = Math.min(defender.getLevel()*2,attacker.getLevel());
@@ -1099,8 +1097,8 @@ public class Combat {
 
 		extra.println("");
 
-		Person p = defender;
-		float hpRatio = ((float)p.getHp())/(p.getMaxHp());
+		hpRatio = ((float)defender.getHp())/(defender.getMaxHp());
+		//float hpRatio = ((float)p.getHp())/(p.getMaxHp());
 		//extra.println(p.getHp() + p.getMaxHp() +" " + hpRatio);
 		/*if (!extra.getPrint()) {//should save computions in non player battles
 			int tval = extra.clamp((int)(extra.lerp(125,256,hpRatio)),100,255);
@@ -1513,6 +1511,26 @@ public class Combat {
 	}
 	public List<Person> getAllSurvivors() {
 		return survivors;
+	}
+	
+	public static final String tagDefenderHP = "[HD]";
+	public static final String tagAttackerHP = "[HA]";
+	public static final String tagDefaultColor = "[C]";
+	
+	public static final String quotedDefenderHP = Pattern.quote("[HD]");
+	public static final String quotedAttackerHP = Pattern.quote("[HA]");
+	public static final String quotedDefaultColor = Pattern.quote("[C]");
+	
+	public String prettyHPColors(String baseString, String normalColor, Person attacker,Person defender) {
+		return normalColor 
+				+ baseString
+				.replaceAll(quotedDefenderHP,defender.inlineHPColor())
+				.replaceAll(quotedAttackerHP, attacker.inlineHPColor())
+				.replaceAll(quotedDefaultColor, normalColor);
+	}
+	
+	public String prettyHPDamage(float damagePerOfMax, Person defender) {
+		return extra.inlineColor(extra.colorMix(Color.white, Color.red,extra.clamp(damagePerOfMax,0,1f)));
 	}
 	
 		
