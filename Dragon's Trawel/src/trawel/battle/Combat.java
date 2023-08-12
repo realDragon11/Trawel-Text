@@ -1182,7 +1182,13 @@ public class Combat {
 		}
 		//TODO: bleedout death quotes
 		int leech = (defender.hasEffect(Effect.B_MARY) ? 2 : 0) + (defender.hasSkill(Skill.BLOODDRINKER) ? 1 : 0);
-		int baseBleedDam = attacker.getLevel();
+		int baseBleedDam = 
+				Math.min
+				(
+				attacker.getLevel(),
+				defender.getLevel()*3
+				)
+				;
 		int totalBleed = 0;
 		if (attacker.hasEffect(Effect.BLEED)) {
 			attacker.takeDamage(baseBleedDam);
