@@ -237,12 +237,18 @@ public class Inn extends Feature implements QuestBoardLocation{
 	private void occupantDuel(boolean playerwatching) {
 		List<SuperPerson> spList = new ArrayList<SuperPerson>();
 		town.getPersonableOccupants().forEach(spList::add);
-		if (spList.size() >= 2){
+		if (spList.size() >= 3){
 			SuperPerson sp1 = extra.randList(spList);
 			spList.remove(sp1);
 			SuperPerson sp2 = extra.randList(spList);
 			if (!playerwatching) { extra.offPrintStack();}
 			//summons not allowed
+			if (sp1 == null || sp2 == null) {
+				return;//FIXME: fix root cause
+			}
+			assert sp1 != null;
+			assert sp2 != null;
+			
 			Combat c = mainGame.CombatTwo(sp1.getPerson(),sp2.getPerson(),town.getIsland().getWorld());
 			town.removeAllKilled(c.killed);
 			extra.changePrint(false);

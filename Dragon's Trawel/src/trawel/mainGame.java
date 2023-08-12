@@ -54,6 +54,7 @@ import trawel.quests.QuestReactionFactory;
 import trawel.towns.Calender;
 import trawel.towns.World;
 import trawel.towns.events.TownFlavorFactory;
+import trawel.towns.fort.FortHall;
 import trawel.towns.services.BookFactory;
 import trawel.towns.services.Oracle;
 /**
@@ -1030,9 +1031,12 @@ public class mainGame {
 		public static Person CombatTwo(Person first_man,Person second_man) {
 			return CombatTwo( first_man, second_man,Player.player.getWorld()).getNonSummonSurvivors().get(0);
 		}
-		
 		public static Combat HugeBattle(World w, List<List<Person>> people){
-			Combat battle = new Combat(w, people);
+			return HugeBattle(w,null,people);
+		}
+		
+		public static Combat HugeBattle(World w,FortHall hall, List<List<Person>> people){
+			Combat battle = new Combat(w,hall,people);
 			Comparator<Person> levelSorter = new Comparator<Person>(){//sort in descending order
 				@Override
 				public int compare(Person arg0, Person arg1) {
@@ -1054,7 +1058,7 @@ public class mainGame {
 				}
 				
 			};
-			List<Person> lives = battle.getNonSummonSurvivors();
+			List<Person> lives = battle.getAllSurvivors();
 			battle.killed.sort(levelSorter);
 			lives.sort(levelSorter);
 			
@@ -1118,7 +1122,7 @@ public class mainGame {
 			}
 			
 			//NOTE: player does not get first pick unless they were highest level, they do win ties
-			
+			lives = battle.getNonSummonSurvivors();//summons count for xp but not loot
 			for (Person surv: lives){
 				surv.clearBattleEffects();
 				int subReward = xpReward;
@@ -1133,14 +1137,16 @@ public class mainGame {
 				if (!surv.isHumanoid()) {
 					continue;//skip
 				}
-				for (Person kill: battle.killed) {
-					if (kill.isPlayer()) {
-						continue;//skip
+				if (hall == null) {
+					for (Person kill: battle.killed) {
+						if (kill.isPlayer()) {
+							continue;//skip
+						}
+						if (isPlayer) {
+							kill.getBag().graphicalDisplay(1,kill);
+						}
+						AIClass.loot(kill.getBag(),surv.getBag(),false,surv);
 					}
-					if (isPlayer) {
-						kill.getBag().graphicalDisplay(1,kill);
-					}
-					AIClass.loot(kill.getBag(),surv.getBag(),false,surv);
 				}
 				if (isPlayer) {
 					Networking.clearSide(1);
@@ -1173,48 +1179,50 @@ public class mainGame {
 				//DOLATER: none of these people have their aether, money or items taken because it is assumed they won't be used again
 			}
 			
-			
-			if (lives.size() > 1) {
-				int giveGold = gold/lives.size();
-				int giveAether = aether/lives.size();
-				if (giveGold > 0) {
-					extra.println("The remaining " +World.currentMoneyDisplay(gold) +" is divvied up, "+giveGold +" each.");
-				}
-				if (giveAether > 0) {
-					extra.println("The remaining " + aether +" aether is divvied up, "+giveAether +" each.");
-				}
-				for (Person surv: lives){
+			if (hall != null){
+				if (lives.size() > 1) {
+					int giveGold = gold/lives.size();
+					int giveAether = aether/lives.size();
 					if (giveGold > 0) {
-						surv.getBag().addGold(giveGold);
+						extra.println("The remaining " +World.currentMoneyDisplay(gold) +" is divvied up, "+giveGold +" each.");
 					}
 					if (giveAether > 0) {
-						surv.getBag().addAether(giveAether);
+						extra.println("The remaining " + aether +" aether is divvied up, "+giveAether +" each.");
 					}
-					if (surv.isPlayer()) {
+					for (Person surv: lives){
+						if (giveGold > 0) {
+							surv.getBag().addGold(giveGold);
+						}
+						if (giveAether > 0) {
+							surv.getBag().addAether(giveAether);
+						}
+						if (surv.isPlayer()) {
+							Networking.setBattle(Networking.BattleType.NONE);
+							Networking.clearSide(1);
+							mainGame.story.winFight(true);
+						}
+					}
+				}else {
+					//FIXME: will crash if summon is only one left alive
+					Person looter = lives.get(0);
+					if (gold > 0) {
+						extra.println(looter.getName() + " claims the remaining " +World.currentMoneyDisplay(gold) +".");
+						looter.getBag().addGold(gold);
+					}
+					if (aether > 0) {
+						extra.println(looter.getName() + " claims the remaining " +aether +" aether.");
+						looter.getBag().addAether(aether);
+					}
+					
+					if (looter.isPlayer()) {
 						Networking.setBattle(Networking.BattleType.NONE);
 						Networking.clearSide(1);
 						mainGame.story.winFight(true);
 					}
 				}
-			}else {
-				Person looter = lives.get(0);
-				if (gold > 0) {
-					extra.println(looter.getName() + " claims the remaining " +World.currentMoneyDisplay(gold) +".");
-					looter.getBag().addGold(gold);
-				}
-				if (aether > 0) {
-					extra.println(looter.getName() + " claims the remaining " +aether +" aether.");
-					looter.getBag().addAether(aether);
-				}
-				
-				if (looter.isPlayer()) {
-					Networking.setBattle(Networking.BattleType.NONE);
-					Networking.clearSide(1);
-					mainGame.story.winFight(true);
-				}
 			}
 			
-			
+			battle.endaether = aether + (100 *gold);
 			return battle;
 		}
 		

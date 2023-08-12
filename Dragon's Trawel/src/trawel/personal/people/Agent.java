@@ -91,6 +91,9 @@ public class Agent extends SuperPerson{
 
 	@Override
 	public List<TimeEvent> passTime(double d, TimeContext calling) {
+		if (current == null) {
+			return null;
+		}
 		//will need to look at connections and features
 		//a* pathing?
 		while(current.getTimeTo() < d) {

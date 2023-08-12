@@ -62,6 +62,9 @@ public class Combat {
 	public static Combat testCombat = new Combat();
 	
 	public static int longBattleLength = 20;
+	
+	public int endaether;
+	
 	//constructor
 	/**
 	 * Holds a fight to the death, between two people.
@@ -431,6 +434,7 @@ public class Combat {
 		}
 		
 		if (totalList.size() == 0) {//no survivors, last actor wins
+			//FIXME: fails on summons
 			totalList.add(quickest);
 			killList.remove(quickest);
 		}else {
@@ -453,6 +457,8 @@ public class Combat {
 		
 		survivors = totalList;
 		killed = killList;
+		
+		assert survivors.size() > 0;
 	}
 	
 	public Combat() {
@@ -514,7 +520,7 @@ public class Combat {
 	 */
 	private void killData(Person dead, Person killer) {
 		dead.addDeath();
-		if (dead.hasSkill(Skill.CURSE_MAGE)) {
+		if (killer != null && dead.hasSkill(Skill.CURSE_MAGE)) {
 			if (!extra.getPrint()) {
 				extra.println(dead.getName() + " curses the name of " +killer.getNameNoTitle()+"!");
 			}
@@ -522,6 +528,10 @@ public class Combat {
 		}
 		//can insert a null check here later if need be
 		//DOLATER: need null for starting bleeding, but for now null exceptions are needed
+		if (killer == null) {
+			return;
+		}
+		
 		killer.addKillStuff();
 		killer.getBag().getHand().addKill();
 		if (dead.isPlayer()) {
@@ -1227,6 +1237,9 @@ public class Combat {
 	
 	private String inflictWound(Person attacker2, Person defender2, AttackReturn retu, Wound w) {
 			ImpairedAttack attack = attacker2.getNextAttack();
+			if (defender2.getNextAttack() == null) {//FIXME: should probably fix a root cause
+				return "no attack!!!";
+			}
 			Integer[] nums = woundNums(attack,attacker2,defender2,retu);
 			boolean notFromAttack = false;
 			if (w == null) {
@@ -1237,6 +1250,7 @@ public class Combat {
 			if (w == null) {
 				throw new RuntimeException("inflicting null wound");
 			}
+			assert defender2 != null;
 			switch (w) {
 			case CONFUSED:
 				attacker2.addEffect(Effect.CONFUSED_TARGET);
@@ -1487,6 +1501,9 @@ public class Combat {
 	}
 	public int getVictorySide() {
 		return winSide;
+	}
+	public List<Person> getAllSurvivors() {
+		return survivors;
 	}
 	
 		

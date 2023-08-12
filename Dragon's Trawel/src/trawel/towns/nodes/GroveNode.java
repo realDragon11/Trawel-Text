@@ -140,7 +140,7 @@ public class GroveNode implements NodeType{
 		case 4:
 			int blevel = holder.getLevel(madeNode)-2;
 			if (blevel < 1) {
-				
+				GenericNode.setSimpleDeadString(holder, madeNode, "defaced corpse");
 			}else {
 				Person body = RaceFactory.makeLootBody(blevel);
 				holder.setStorage(madeNode, new Object[]{

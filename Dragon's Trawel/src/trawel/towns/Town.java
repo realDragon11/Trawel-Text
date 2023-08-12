@@ -842,7 +842,7 @@ public class Town extends TContextOwner{
 	}
 	
 	public Stream<Agent> getPersonableOccupants() {
-		return occupants.parallelStream().filter(SuperPerson::isHumanoid);
+		return occupants.stream().filter(SuperPerson::isHumanoid);
 	}
 	
 	public Agent popAnyOccupant(Agent occupant) {
@@ -851,6 +851,7 @@ public class Town extends TContextOwner{
 	}
 	
 	public void addOccupant(Agent occupant) {//MAYBELATER: a time based variant add 'laterAddOccupant'
+		assert occupant != null;
 		occupants.add(occupant);
 	}
 	

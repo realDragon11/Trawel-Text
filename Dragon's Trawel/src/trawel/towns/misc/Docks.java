@@ -461,6 +461,11 @@ public class Docks extends Feature {
 	}
 	
 	public void battle(List<Person> addForTown, List<Person> addForDrudger) {
+		boolean playerin = true;
+		if (addForTown == null || !addForTown.contains(Player.player.getPerson())) {
+			playerin = false;
+			extra.offPrintStack();
+		}
 		int addSize = extra.randRange(1,2);
 		/*int addTownSize = addSize;
 		int addSeaSize = addSize;*/
@@ -524,6 +529,7 @@ public class Docks extends Feature {
 			}
 			if (highest != null) {
 				leader = highest.getMakeAgent(AgentGoal.OWN_SOMETHING);
+				old_defenders.remove(highest);
 			}
 			if (!townOwned) {//reclaimed
 				townOwned = true;
@@ -553,6 +559,9 @@ public class Docks extends Feature {
 				}
 			}
 
+		}
+		if (playerin == false) {
+			extra.popPrintStack();
 		}
 	}
 }

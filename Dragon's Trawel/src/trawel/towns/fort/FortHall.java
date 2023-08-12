@@ -10,6 +10,7 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.AIClass;
 import trawel.extra;
+import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
@@ -326,13 +327,17 @@ public class FortHall extends FortFeature {
 		listlist.add(allies);
 		List<Person> fullattackers = new ArrayList<Person>();
 		attackers.stream().flatMap(p -> p.getSelfOrAllies().stream()).distinct().forEach(fullattackers::add);
-		Combat c = new Combat(this.town.getIsland().getWorld(),this,listlist);
+		listlist.add(fullattackers);
+		
+		Combat c = mainGame.HugeBattle(this.town.getIsland().getWorld(), this,listlist);
+		//Combat c = new Combat(,this,listlist);
 		allies.clear();
 		if (c.playerWon() > 0) {
 			c.getNonSummonSurvivors().stream().filter(p -> !p.isPlayer()).forEach(allies::add);
-			for (Person p: c.killed) {
+			aetherBank+=c.endaether;
+			/*for (Person p: c.killed) {
 				this.aetherBank +=p.getBag().getWorth();
-			}
+			}*/
 		}else {
 			this.aetherBank = 0;
 		}
