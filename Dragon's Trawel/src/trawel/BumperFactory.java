@@ -29,36 +29,35 @@ public class BumperFactory {
 
 			@Override
 			public void activate(int level) {
-				if (level >= 5 && extra.chanceIn(2,5)) {
+				int canLevelMax = RaceFactory.addAdjustLevel(level, 3);
+				int canLevel = RaceFactory.addAdjustLevel(level, 1);
+				if (level > 2 && canLevelMax >= 1 && extra.chanceIn(2,5)) {
 					List<Person> list = new ArrayList<Person>();
-					//int count = extra.randRange(1,3);
-					list.add(RaceFactory.makeAlphaWolf(extra.zeroOut(level-1)+1));
+					list.add(RaceFactory.makeAlphaWolf(level-1));
 					for (int i = 0;i < 3;i++) {
-						list.add(RaceFactory.makeWolf(extra.zeroOut(level-3)+1));
+						list.add(RaceFactory.makeWolf(canLevelMax));
 					}
 
-					extra.println(extra.PRE_RED+"A large pack of wolves ambush you!");
+					extra.println(extra.PRE_BATTLE+"A large pack of wolves ambush you!");
 					Combat c = Player.player.massFightWith(list);
 					if (c.playerWon() > 0) {
 						Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 4);
 					}
 				}else {
-					if (level >= 3) {
+					if (canLevel >= 1) {
 						List<Person> list = new ArrayList<Person>();
-						//int count = extra.randRange(1,3);
-						for (int i = 0;i < 3;i++) {
-							list.add(RaceFactory.makeWolf(extra.zeroOut(level-3)+1));
+						for (int i = 0;i < 2;i++) {
+							list.add(RaceFactory.makeWolf(canLevel));
 						}
 	
-						extra.println(extra.PRE_RED+"A pack of wolves descend upon you!");
+						extra.println(extra.PRE_BATTLE+"A pack of wolves descend upon you!");
 						Combat c = Player.player.massFightWith(list);
 						if (c.playerWon() > 0) {
 							Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 3);
 						}
 					}else {
 						Person p = RaceFactory.makeWolf(level);
-	
-						extra.println(extra.PRE_RED+"A wolf attacks you!");
+						extra.println(extra.PRE_BATTLE+"A wolf attacks you!");
 						Combat c = Player.player.fightWith(p);
 						if (c.playerWon() > 0) {
 							Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 1);

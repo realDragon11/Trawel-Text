@@ -219,16 +219,30 @@ public class DungeonNode implements NodeType{
 		break;
 		case 3:
 			List<Person> list = new ArrayList<Person>();
-			int guardLevel = holder.getLevel(madeNode);
+			int baseLevel = holder.getLevel(madeNode);
+			int guardLevel = baseLevel;
+			int testLevel = RaceFactory.addAdjustLevel(guardLevel, 1);
 			int guardAmount = 2;
-			while (guardAmount < 4) {
-				if (guardLevel > 3 && extra.chanceIn(3,4)) {
-					guardAmount+=1;
-					guardLevel--;
-				}else {
-					break;
+			if (testLevel <= 0) {
+				guardAmount = 1;
+				guardLevel+=2;
+				//we can't fit two guards, so add one stronger guard
+			}else {
+				guardLevel = testLevel;
+				while (guardAmount < 4) {
+					if (testLevel > 1 && extra.chanceIn(3,4)) {
+						testLevel = RaceFactory.addAdjustLevel(baseLevel,guardAmount);
+						if (testLevel <= 0) {
+							break;
+						}
+						guardAmount+=1;
+						guardLevel = testLevel;
+					}else {
+						break;
+					}
 				}
 			}
+			
 			for (int i = 0; i < guardAmount;i++) {
 				list.add(RaceFactory.makeDGuard(guardLevel));
 			}

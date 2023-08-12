@@ -69,6 +69,7 @@ public class RaceFactory {
 		B_HARPY("harpy","harpy","harpies",null),
 		B_DRUDGER_STOCK("","drudger","stock-drudgers",null),
 		B_DRUDGER_TITAN("","drudger titan","titan-drudgers",null),
+		B_SWARMBAT("bat","bat","bats",null)
 		
 		
 		;
@@ -657,6 +658,7 @@ public class RaceFactory {
 		
 		misc = new Race(RaceID.B_BAT);
 		misc.swears.add("bat");
+		misc.swears.add("big flying rat");
 		misc.aimMod = 1;
 		misc.damMod = .8;
 		misc.dodgeMod = 1.4;
@@ -666,6 +668,35 @@ public class RaceFactory {
 		misc.rarity = 1;
 		misc.insultList.add("Die, you bat!");
 		misc.insultList.add("Die, bat!");
+		misc.insultList.add("Die, you rat!");
+		misc.insultList.add("Die, rat!");
+		misc.baseMap = "bat";
+		misc.raceMaps.add("0");
+		misc.magicPower = 0;
+		misc.defPower = 0;
+		misc.racialType = Race.RaceType.BEAST;
+		misc.targetType = TargetFactory.TargetType.FLY;
+		misc.emitsBlood = true;
+		misc.voice = SoundBox.Voice.BAT;
+		misc.minPitch = audioSteps(-5);
+		misc.maxPitch = audioSteps(5);
+		misc.raceClass = RaceClass.UNDONE_BEAST;
+		raceList.add(misc);
+		
+		misc = new Race(RaceID.B_SWARMBAT);
+		misc.swears.add("bat");
+		misc.swears.add("flying rat");
+		misc.aimMod = 1;
+		misc.damMod = .3;
+		misc.dodgeMod = 1.4;
+		misc.hpMod = .3;
+		misc.speedMod = 1.1;
+		misc.tradeMod = 1;
+		misc.rarity = 1;
+		misc.insultList.add("Die, you bat!");
+		misc.insultList.add("Die, bat!");
+		misc.insultList.add("Die, you rat!");
+		misc.insultList.add("Die, rat!");
 		misc.baseMap = "bat";
 		misc.raceMaps.add("0");
 		misc.magicPower = 0;
@@ -1021,7 +1052,22 @@ public class RaceFactory {
 		}
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomBatName());
-		w.setTitle("");
+		//w.setTitle("");
+		w.hTask = HostileTask.ANIMAL;
+		w.finishGeneration();
+		return w;
+	}
+	
+	public static Person makeSwarmBat(int level) {
+		extra.offPrintStack();
+		Person w = Person.animal(level, RaceID.B_SWARMBAT, MaterialFactory.getMat("flesh"), false);
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
+		if (extra.chanceIn(1,2)) {
+			w.getBag().getDrawBanes().add(DrawBane.BAT_WING);
+		}
+		extra.popPrintStack();
+		w.setFirstName(randomLists.randomBatName());
+		//w.setTitle("");
 		w.hTask = HostileTask.ANIMAL;
 		w.finishGeneration();
 		return w;
@@ -1470,7 +1516,15 @@ public class RaceFactory {
 		return "";
 	}
 
-	
+	/**
+	 * if this returns <=0, you should not add the add
+	 */
+	public static int addAdjustLevel(int inLevel,int downSwing) {
+		if (downSwing <=0) {
+			return inLevel;
+		}
+		return inLevel/(downSwing+1);
+	}
 
 	
 	

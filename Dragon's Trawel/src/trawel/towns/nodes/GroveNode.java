@@ -181,20 +181,22 @@ public class GroveNode implements NodeType{
 		case 9:
 			int dlevel = holder.getLevel(madeNode);
 			List<Person> entslist = new ArrayList<Person>();
+			int testLevel = RaceFactory.addAdjustLevel(dlevel,3);
 			switch(extra.randRange(0,3)) {
 			case 3:
 				//many ents
 				if (dlevel > 3) {
 					entslist.add(RaceFactory.getDryad(dlevel-1));
-					entslist.add(RaceFactory.makeEnt(dlevel-3));
-					entslist.add(RaceFactory.makeEnt(dlevel-3));
-					entslist.add(RaceFactory.makeEnt(dlevel-3));
+					entslist.add(RaceFactory.makeEnt(testLevel));
+					entslist.add(RaceFactory.makeEnt(testLevel));
+					entslist.add(RaceFactory.makeEnt(testLevel));
 					break;
 				}//if we can't afford to make tons of ents, fall through to only one
 			case 2:
+				testLevel = RaceFactory.addAdjustLevel(dlevel,1);
 				if (dlevel > 1) {
-					entslist.add(RaceFactory.getDryad(dlevel));
-					entslist.add(RaceFactory.makeEnt(dlevel-1));
+					entslist.add(RaceFactory.getDryad(testLevel));
+					entslist.add(RaceFactory.makeEnt(testLevel));
 					break;
 				}//if we can't afford to make any ents, only add dryad
 			case 0:

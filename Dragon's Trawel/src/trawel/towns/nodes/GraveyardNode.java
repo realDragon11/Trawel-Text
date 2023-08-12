@@ -101,20 +101,22 @@ public class GraveyardNode implements NodeType{
 			holder.setStateNum(madeNode, STATE_SHADOW_FIGURE);
 			break;
 		case 3: 
-			int batLevel = holder.getLevel(madeNode);
-			int batAmount = 1;
-			while (batAmount < 6) {
+			int startBLevel = holder.getLevel(madeNode);
+			int batLevel = startBLevel;
+			int batAmount = 2;
+			while (batAmount < 7) {
 				if (batLevel > 3 && extra.chanceIn(3,4)) {
 					batAmount+=2;
-					batLevel--;
+					batLevel = (int) (startBLevel*(2f/batAmount));
 				}else {
 					break;
 				}
 			}
+			batLevel = Math.max(1,batLevel);
 			
 			List<Person> list = new ArrayList<Person>();
 			for (int i = 0;i < batAmount;i++) {
-				list.add(RaceFactory.makeBat(batLevel));
+				list.add(RaceFactory.makeSwarmBat(batLevel));
 			}
 			holder.setStorage(madeNode,list);
 			holder.setForceGo(madeNode, true);
