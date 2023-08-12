@@ -485,9 +485,9 @@ public class WorldGen {
 		case ROAD:
 			return pointDistance(t1,t2)/footTravelPerHour;
 		case SHIP:
-			return pointDistance(t1,t2)/shipTravelPerHour;
+			return 1+pointDistance(t1,t2)/shipTravelPerHour;//ships have 1 hour of starting and ending time
 		case TELE:
-			return pointDistance(t1,t2)/teleTravelPerHour;
+			return 3+(pointDistance(t1,t2)/teleTravelPerHour);//teleporters have 3 hours of rituals + a distance modifier on that
 		}
 		//fallback
 		return pointDistance(t1,t2);
@@ -618,15 +618,17 @@ public class WorldGen {
 
 	public static void pathToTown(Town dest) {
 		try {
-		List<Connection> connects = WorldGen.aStarTown(dest);
-		Town curTown = Player.player.getLocation();
-		int i = 0;
-		while (curTown != dest) {
-			Town nextTown = connects.get(i).otherTown(curTown);
-			extra.println(curTown.getName() + "->" + nextTown.getName() + " (" + connects.get(i).getType().desc() + ": " +connects.get(i).getName()+")");
-			curTown = nextTown;
-			i++;
-		}}catch (Exception e) {
+			Town curTown = Player.player.getLocation();
+			List<Connection> connects = WorldGen.aStarTown(curTown,dest);
+			
+			int i = 0;
+			while (curTown != dest) {
+				Town nextTown = connects.get(i).otherTown(curTown);
+				extra.println(curTown.getName() + "->" + nextTown.getName() + " (" + connects.get(i).getType().desc() + ": " +connects.get(i).getName()+")");
+				curTown = nextTown;
+				i++;
+			}
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -644,14 +646,14 @@ public class WorldGen {
 			t = town;
 		}
 	}
-	public static List<Connection> aStarTown(Town dest) {
+	public static List<Connection> aStarTown(Town from, Town dest) {
 		List<Town> towns = plane.getTowns();
 		WorldGen wg = new WorldGen();
 		List<PathTown> nodeList = new ArrayList<PathTown>();
 		PathTown start = null;
 		for (Town t: towns) {
 			nodeList.add(wg.new PathTown(t));
-			if (t.equals(Player.player.getLocation())) {
+			if (t.equals(from)) {
 				start = nodeList.get(nodeList.size()-1);
 			}
 		}
@@ -749,7 +751,8 @@ public class WorldGen {
 	}
 	
 	private static int heuristic_cost_estimate(PathTown cur, Town dest) {
-		
+		//could also use connect time so it would likely return the shorter of two equal paths?
+		//or idk
 		return Math.abs((cur.t.getLocationX()-dest.getLocationX())) + Math.abs((cur.t.getLocationY()-dest.getLocationY()));
 	}
 }

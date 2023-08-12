@@ -295,7 +295,11 @@ public class NodeConnector implements Serializable {
 				mList.add(new NodeMenuTitle(node));
 				mList.add(new NodeMenuInteract(node));
 				for (int n: getConnects(node)) {
-					mList.add(new NodeMenuItem(n));
+					if (n > size) {//not >= because we have a 0 node at 0
+						System.err.println("node too high: " +n +"/"+size);
+					}else {
+						mList.add(new NodeMenuItem(n));
+					}
 				}
 				mList.add(new MenuLast() {
 

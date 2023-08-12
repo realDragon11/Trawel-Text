@@ -106,7 +106,7 @@ public class RaceFactory {
 		private String mapname;
 		private int maps;
 		private LegacyType(String spritename, int maps, String mapname) {
-			this.mapname = mapname;
+			this.spritename = spritename;
 			this.maps = maps;
 			this.mapname = mapname;
 		}

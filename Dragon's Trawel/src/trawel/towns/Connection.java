@@ -52,6 +52,23 @@ public class Connection implements java.io.Serializable{
 		return WorldGen.distanceBetweenTowns(townA,townB,getType());
 	}
 	
+	public String getTimeDisp() {
+		return displayTime(getTime());
+	}
+	
+	public static String displayTime(double time) {
+		if (time < 1) {
+			return "<1 hours";
+		}
+		if (time < 3) {
+			return "<"+((int)time+1)+" hours";
+		}
+		if (time < 30) {
+			return "~"+((int)time) + " hours";
+		}
+		return "~"+((int)Math.round(time/24)) + " days";
+	}
+	
 	public enum ConnectType {
 		ROAD("road"),SHIP("ship"),TELE("tele");
 
@@ -69,7 +86,7 @@ public class Connection implements java.io.Serializable{
 	}
 
 	/**
-	 * check Town's displayLine if seeing indirectly
+	 * check Town's displayLine if seeing indirectly, use this or connection's displayLine otherwise
 	 */
 	public void display(int style,Town town1) {
 		Town ot = otherTown(town1);
@@ -121,7 +138,7 @@ public class Connection implements java.io.Serializable{
 	}
 	
 	/**
-	 * note that this does count as directly seeing the town
+	 * note that this DOES count as directly seeing the town
 	 */
 	public String displayLine(Town from) {
 		Town ot = otherTown(from);
@@ -133,8 +150,8 @@ public class Connection implements java.io.Serializable{
 		case 3: visitColor = extra.VISIT_OWN;break;
 		}
 		return visitColor +getName() + " to " + ot.getName()
-		+ " {Level: "+ot.getTier()+"} ("+dir(from,ot)+")"
-		+ (Player.hasSkill(Skill.TOWNSENSE) ? ot.getName() + " has " + ot.getConnects().size() + " connections." : "");
+		+ " {Level: "+ot.getTier()+"} ("+dir(from,ot)+", "+getTimeDisp()+")"
+		+ (Player.hasSkill(Skill.TOWNSENSE) ? " " +ot.getName() + " has " + ot.getConnects().size() + " connections." : "");
 	}
 	
 	public static String dir(Town t1, Town t2) {

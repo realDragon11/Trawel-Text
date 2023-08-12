@@ -12,12 +12,14 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.Networking;
+import trawel.WorldGen;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.Person.PersonFlag;
+import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
@@ -268,24 +270,7 @@ public class Docks extends Feature {
 			public List<MenuItem> forSlot(int i) {
 				List<MenuItem> list = new ArrayList<MenuItem>();
 				//used for nodes since this is a lot easier
-				Connection c = connects.get(i);
-				list.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return c.displayLine(town);
-					}
-
-					@Override
-					public boolean go() {
-						
-						Player.player.setLocation(c.otherTown(town));
-						c.otherTown(town).dockWander(false);//do it at where we're going
-						//this makes traveling to a higher level area likely to have higher encounters
-						//but if the player is fast traveling back to a lower one, they aren't punished for
-						//being in a high level area now
-						return true;//return so we go somewhere
-					}});
+				list.add(town.getConnectMenu(connects.get(i)));
 				return list;
 			}
 
@@ -335,8 +320,18 @@ public class Docks extends Feature {
 			return null;//no far flung ports
 		}
 		
-		final List<Town> finishedList = tList;
-		return new ScrollMenuGenerator(finishedList.size(),"previous <> ports","next <> ports") {
+		List<Double> timeList = new ArrayList<Double>();
+		for (Town t: tList) {
+			List<Connection> moves = WorldGen.aStarTown(town,t);
+			double total = 0;
+			for (Connection c: moves) {
+				total += c.getTime();
+			}
+			timeList.add(total);
+		}
+			
+		
+		return new ScrollMenuGenerator(tList.size(),"previous <> ports","next <> ports") {
 			
 			@Override
 			public List<MenuItem> header() {
@@ -353,12 +348,12 @@ public class Docks extends Feature {
 			@Override
 			public List<MenuItem> forSlot(int i) {
 				List<MenuItem> list = new ArrayList<MenuItem>();
-				Town t = finishedList.get(i);
+				Town t = tList.get(i);
 				list.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return t.displayLine(Docks.this.town) + (t.getTier() > Player.player.getPerson().getLevel() ? " ("+extra.TIMID_RED+"Out of Scope)" : "");
+						return t.displayLine(Docks.this.town) + " ("+(t.getTier() > Player.player.getPerson().getLevel() ? ""+extra.TIMID_RED+"Out of Scope" : Connection.displayTime(timeList.get(i))) + ")";
 					}
 
 					@Override
@@ -368,6 +363,9 @@ public class Docks extends Feature {
 							extra.println("Too high level!");
 							return false;
 						}
+						//can either take naive time or use a*
+						
+						Player.addTime(timeList.get(i));
 						Player.player.setLocation(t);
 						town.dockWander(true);
 						return true;

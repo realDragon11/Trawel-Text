@@ -230,7 +230,7 @@ public class DungeonNode implements NodeType{
 			holder.setForceGo(madeNode, true);
 			holder.setStorage(madeNode, new Object[] {
 					extra.choose("Large ","Well Lit ","High Security ") +extra.choose("Checkpoint","Barricade","Guardpost")
-					,RaceFactory.makeDGuard(holder.getLevel(madeNode))});
+					,list});
 		break;
 		case 4:
 			GenericNode.applyLockDoor(holder, madeNode);

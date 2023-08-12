@@ -770,7 +770,8 @@ public final class extra {
 		public static final String PRE_WHITE = inlineColor(Color.WHITE);
 		@Deprecated
 		public static final String PRE_RED = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f));
-		public static final String PRE_BATTLE = PRE_RED;
+		public static final String PRE_BATTLE = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.6f));
+		public static final String PRE_MAYBE_BATTLE = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.3f));
 		public static final String PRE_ORANGE = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f));
 		public static final String PRE_YELLOW = inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f));
 		public static final String PRE_BLUE = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f));

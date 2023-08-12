@@ -1041,7 +1041,10 @@ public class Combat {
 					int tval = extra.clamp((int)(extra.lerp(125,256,((float)defender.getHp())/(defender.getMaxHp()))),100,255);
 					inlined_color = extra.inlineColor(new Color(tval,tval,tval));
 					//inlined_color=extra.ATTACK_DAMAGED;
-					extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color)+" {"+damageDone+" damage}"+woundstr);
+					//only use the 'total hp percent' damage code on the damage number
+					extra.print(extra.ATTACK_DAMAGED +atr.stringer.replace("[*]", extra.ATTACK_DAMAGED)
+						+inlined_color+" {"+damageDone+" damage}"+extra.ATTACK_DAMAGED+woundstr);
+					inlined_color = extra.ATTACK_DAMAGED;
 				}
 			}
 		}

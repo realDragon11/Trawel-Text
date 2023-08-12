@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLast;
@@ -312,7 +313,7 @@ public class Town extends TContextOwner{
 
 						@Override
 						public boolean go() {
-							goRoads();
+							goConnects(ConnectType.ROAD);
 							return true;
 						}});
 					if (Player.getTutorial()) {
@@ -334,7 +335,7 @@ public class Town extends TContextOwner{
 
 						@Override
 						public boolean go() {
-							goTeleporters();
+							goConnects(ConnectType.TELE);
 							return true;
 						}});
 					if (Player.getTutorial()) {
@@ -342,7 +343,7 @@ public class Town extends TContextOwner{
 
 							@Override
 							public String title() {
-								return " Teleporters are like roads, but don't require physical connection.";
+								return " Teleporters are like roads, but don't require physical connection. Telport rituals also tend to be much quicker than traveling by foot.";
 							}});
 					}
 				}
@@ -362,7 +363,7 @@ public class Town extends TContextOwner{
 
 							@Override
 							public boolean go() {
-								goPort();
+								goConnects(ConnectType.SHIP);
 								return true;
 							}});
 						if (Player.getTutorial()) {
@@ -595,144 +596,98 @@ public class Town extends TContextOwner{
 		}
 		this.you();
 	}
-	private void goRoads() {
-		int i = 1;
-		for (Connection c: connects) {
-			if (c.getType() == ConnectType.ROAD){
-			extra.print(i + " ");
-			c.display(1,this);
-			i++;}
-		}
-		extra.println(i + " wander around");
-		i++;
-		extra.println(i + " exit");i++;
-		int j = extra.inInt(i-1);
-		i = 1;
-		for (Connection c: connects) {
-			if (c.getType() == ConnectType.ROAD){
-			if (i == j) {
-			//extra.print(i + " ");
-			Town t = c.otherTown(this);
-			extra.println("You start to travel to " + t.getName());
-			if (extra.chanceIn(4,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
-				wander(3);
-			}
-			Player.addTime(c.getTime());
-			extra.println("You arrive in " + t.getName());
-			Player.player.setLocation(t);
-			return;}
-			i++;
-			}
-		}
-		if (i == j) {
-			if (!wander(.5)) {
-				extra.println("Nothing interesting happens.");
-			}
-			return;
-		}
-		i++;
-		if (i == j) {
-			return;//exit to town
-		}
-		extra.println("Please enter one of the above numbers, ie '1'");
-		goRoads();
-	}
-
-	private void goPort() {
-		extra.println("1 "+extra.PRE_BATTLE+"protect the port");
-		int i = 1;
-		Networking.setArea("port");
-		for (Connection c: connects) {
-			if (c.getType() == ConnectType.SHIP){
-				extra.print(i + " ");
-				c.display(1,this);
-				i++;
-			}
-		}
-		extra.println(i + " exit");i++;
-		int j = extra.inInt(i-1);
-		if (j == -10) {//soft out for now FIXME full remove later
-			if (defenseTimer > 0) {
-				extra.println("The port can't be defended right now.");
-			}else {
-			if (Player.player.getPerson().getLevel() >= tier) {
-				extra.println("You help defend the port against the drudger onslaught.");
-				int eSize = extra.randRange(2,3);
-				List<Person> allyList = new ArrayList<Person>();
-				List<Person> foeList = new ArrayList<Person>();
-				for (int o = 0;o < eSize;o++) {
-					allyList.add(popHelper());
-					Person stock = RaceFactory.makeDrudgerStock(tier-1);
-					stock.setFlag(PersonFlag.IS_MOOK,true);
-					foeList.add(stock);
-				}
-				allyList.add(Player.player.getPerson());
-				foeList.add(RaceFactory.makeDrudgerTitan(tier));
-				
-				List<List<Person>> listlist = new ArrayList<List<Person>>();
-				listlist.add(allyList);
-				listlist.add(foeList);
-				
-				Combat c = mainGame.HugeBattle(getIsland().getWorld(), listlist);
-				boolean pass = c.playerWon() > 0;
-				
-				if (pass) {
-					c.getNonSummonSurvivors().stream().filter(p -> !p.isPlayer()).forEach(helpers::add);
-					int reward = (10*tier)+extra.randRange(0,4);
-					extra.println("You take back the docks. They pay you with "+World.currentMoneyDisplay(reward)+".");
-					Player.player.addGold(reward);
-					defenseTimer = 24*3;//3 days
-				}else {
-					Person leader = c.streamAllSurvivors()
-							.filter(p -> !p.getFlag(PersonFlag.IS_MOOK) && !p.getFlag(PersonFlag.IS_SUMMON))
-							.findAny().orElse(null);
-					if (leader == null) {
-						defenseTimer = 24;//1 day
-						extra.println("The docks are overrun by the drudger force.");
-					}else {
-						//TODO: create a docks feature that can also handle shipyard transport
-						defenseTimer = 12;//12 hours
-						extra.println(leader.getName() +"'s armor takes over the docks!");
-					}
-					
-				}
-				Player.addTime(3);//3 hour battle
-			}else {
-				extra.println("They size you up and then turn you away.");
-			}
-			}
-		}
-		i = 1;
-		for (Connection c: connects) {
-			if (c.getType() == ConnectType.SHIP){//ships are free for now
-			if (i == j) {
-			//extra.print(i + " ");
-			Town t = c.otherTown(this);
-			Player.addTime(c.getTime());
-			extra.println("You travel to " + t.getName());
-			if (extra.chanceIn(4,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
-				wanderShip(3);
-			}
-			Player.player.setLocation(t);
-			return;
-			}i++;
-			}
-		}
-		if (i == j) {
-			return;//exit to town
-		}
-		extra.println("Please enter one of the above numbers, ie '1'");
-		goPort();
-		
-	}
-
 	
-	private Person popHelper() {
-		if (helpers.size() > 0) {
-		return helpers.remove(0);
-		}
-		return RaceFactory.getDueler(tier-1);
+	public MenuItem getConnectMenu(Connection c) {
+		return new MenuSelect() {
+
+			@Override
+			public String title() {
+				return c.displayLine(Town.this);
+			}
+
+			@Override
+			public boolean go() {
+				Town t = c.otherTown(Town.this);
+				switch (c.getType()) {
+				case ROAD:
+					extra.print("You start to travel to " + t.getName()+"... ");
+					if (extra.chanceIn(4,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
+						wander(3);
+					}
+					Player.addTime(c.getTime());
+					extra.println("You arrive in " + t.getName()+".");
+					break;
+				case SHIP:
+					extra.print("You start to sail to " + t.getName() +"... ");
+					if (extra.chanceIn(4,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
+						wanderShip(3);
+					}
+					Player.addTime(c.getTime());
+					extra.println("You arrive in " + t.getName()+".");
+					break;
+				case TELE:
+					extra.println("You teleport to " + t.getName()+".");
+					Networking.sendStrong("PlayDelay|sound_teleport|1|");
+					Player.addTime(c.getTime());
+					break;
+
+				}
+				Player.player.setLocation(t);
+				return true;
+			}};
 	}
+	
+	private void goConnects(ConnectType type) {
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				for (Connection c: connects) {
+					if (c.getType() == ConnectType.ROAD){
+						list.add(getConnectMenu(c));
+					}
+				}
+				switch (type) {
+				case ROAD:
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return extra.PRE_MAYBE_BATTLE+"Wander Around";
+						}
+
+						@Override
+						public boolean go() {
+							if (!wander(.5)) {
+								extra.println("Nothing interesting happens.");
+							}
+							return false;
+						}});
+					break;
+				case SHIP:
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return extra.PRE_MAYBE_BATTLE+"Sail Aimlessly";
+						}
+
+						@Override
+						public boolean go() {
+							if (!wanderShip(1)) {
+								extra.println("Nothing interesting happens.");
+							}
+							return false;
+						}});
+					break;
+				}
+				
+				list.add(new MenuBack("Back to "+Town.this.getName()));
+				return list;
+			}});
+	}
+
 	private void goTeleporters() {
 		int i = 1;
 		for (Connection c: connects) {

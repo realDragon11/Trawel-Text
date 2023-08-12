@@ -340,7 +340,7 @@ public class GenericNode implements NodeType {
 		case COLLECTOR:
 			return holder.getStorageFirstPerson(node).getName();
 		case LOCKDOOR:
-			holder.getStorageFirstClass(node,String.class);
+			return holder.getStorageFirstClass(node,String.class);
 		case PLANT_SPOT:
 			String contains = ((PlantSpot)holder.getStorage(node)).contains;
 			return contains == "" ? "Plant Spot" : contains ;
