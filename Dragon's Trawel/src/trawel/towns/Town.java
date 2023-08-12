@@ -525,7 +525,7 @@ public class Town extends TContextOwner{
 				extra.println("You buy a lot.");
 				visited = 3;
 				Networking.unlockAchievement("buy_lot");
-				this.enqueneAdd(new Lot(this));
+				this.laterAdd(new Lot(this));
 			}else {
 				extra.println("Not enough "+moneyname+".");
 			}
@@ -801,15 +801,15 @@ public class Town extends TContextOwner{
 		return null;//uses local events
 	}
 	
-	public void enqueneRemove(Feature f) {
+	public void laterRemove(Feature f) {
 		eventsModified = true;
 		timeScope.addEvent(new StructuralFeatureEvent(f,false));
 	}
-	public void enqueneAdd(Feature f) {
+	public void laterAdd(Feature f) {
 		eventsModified = true;
 		timeScope.addEvent(new StructuralFeatureEvent(f,true));
 	}
-	public void enqueneReplace(Feature replaceThis, Feature with) {
+	public void laterReplace(Feature replaceThis, Feature with) {
 		eventsModified = true;
 		timeScope.addEvent(new StructuralFeatureEvent(with,replaceThis));
 	}

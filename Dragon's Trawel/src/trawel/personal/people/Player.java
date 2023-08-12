@@ -38,7 +38,7 @@ public class Player extends SuperPerson{
 	public static Player player;
 	public static double passTime;
 	public static Inventory bag;
-	public static String lastAttackStringer;
+	public static transient String lastAttackStringer;
 	public int wins = 0;
 	public boolean cheating = false;
 	/**

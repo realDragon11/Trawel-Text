@@ -3,7 +3,9 @@ package trawel.battle.attacks;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.Effect;
 import trawel.extra;
+import trawel.battle.attacks.Attack.Wound;
 import trawel.battle.attacks.TargetFactory.TargetType;
 import trawel.battle.attacks.TargetFactory.TypeBody;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
@@ -14,6 +16,11 @@ public class TargetHolder {
 	 * a list of %'s on how damaged a part is
 	 */
 	private double[] condition;
+	
+	/**
+	 * can check to see last condition for triggers
+	 */
+	private boolean[] hastriggered;
 
 	/**
 	 * if this is null, then there are no restrictions
@@ -28,6 +35,7 @@ public class TargetHolder {
 		config = null;
 		
 		condition = new double[plan.getUniqueParts()];
+		hastriggered = new boolean[plan.getUniqueParts()];
 		for (int i = condition.length-1;i >= 0;i--) {
 			condition[i] = 1;
 		}
@@ -45,6 +53,7 @@ public class TargetHolder {
 		config = null;
 		for (int i = condition.length-1;i >= 0;i--) {
 			condition[i] = 1;
+			hastriggered[i] = false;
 		}
 		return false;
 	}
@@ -191,6 +200,31 @@ public class TargetHolder {
 		}catch(Exception e) {
 			return 0;
 		}
+	}
+	
+	/**
+	 * 
+	 * @return can be null, but not have null elements
+	 */
+	public List<Wound> processEffectUpdates(){
+		List<Wound> list = null;
+		for (int i = condition.length-1;i>=0;i--) {
+			if (hastriggered[i]) {
+				continue;
+			}
+			if (condition.length < .5) {
+				hastriggered[i] = true;
+				Wound w = plan.condWounds[i];
+				if (w == null) {
+					continue;
+				}
+				if (list == null) {
+					list = new ArrayList<Wound>();
+				}
+				list.add(w);
+			}
+		}
+		return list;
 	}
 
 }

@@ -703,6 +703,7 @@ public class AIClass {
 					switch (mainGame.attackDisplayStyle) {
 					case CLASSIC:
 						if (combat.turns > 0) {
+							extra.println();
 							extra.println(Player.lastAttackStringer);
 						}
 						extra.println("     name                hit    delay    sharp    blunt     pierce");
@@ -715,6 +716,7 @@ public class AIClass {
 					case TWO_LINE1_WITH_KEY:
 					case TWO_LINE1:
 						if (combat.turns > 0) {
+							extra.println();
 							extra.println(Player.lastAttackStringer);
 						}
 						if (mainGame.attackDisplayStyle == DispAttack.TWO_LINE1_WITH_KEY) {
@@ -730,7 +732,7 @@ public class AIClass {
 						}
 						break;
 					}
-					extra.println("9 debug examine");
+					extra.println("9 full examine");
 					numb = extra.inInt(attacks.size(),true);
 				}else {
 					numb = -numb;//restore attack choice

@@ -1,10 +1,8 @@
 package trawel;
 import java.awt.Desktop;
-import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -42,8 +40,6 @@ import trawel.personal.DummyPerson;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.Archetype;
-import trawel.personal.classless.Perk;
-import trawel.personal.classless.Skill;
 import trawel.personal.item.Item;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.magic.EnchantConstant;
@@ -107,7 +103,7 @@ public class mainGame {
 	
 	//FIXME: need saved prefs
 	public static DispAttack attackDisplayStyle = DispAttack.TWO_LINE1_WITH_KEY;
-	public static boolean advancedCombatDisplay = true;
+	public static boolean advancedCombatDisplay = false;
 	public static boolean doAutoSave = true;
 	public static PrintStream logStream;
 	

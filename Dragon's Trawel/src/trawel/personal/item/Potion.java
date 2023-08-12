@@ -3,6 +3,9 @@ package trawel.personal.item;
 import trawel.Effect;
 import trawel.extra;
 import trawel.personal.Person;
+
+import java.util.regex.Pattern;
+
 import derg.SRPlainRandom;
 import derg.StringResult;
 
@@ -88,9 +91,9 @@ public class Potion implements java.io.Serializable{
 		String str = uncorkNormalFluff.next();
 		if (!personal) {
 			str = str.replaceAll("You",p.getName());
-			str = str.replaceAll("(s)","s");
+			str = str.replaceAll(Pattern.quote("(s)"),"s");
 		}else {
-			str = str.replaceAll("(s)","");
+			str = str.replaceAll(Pattern.quote("(s)"),"");
 		}
 		extra.println(str);
 	}

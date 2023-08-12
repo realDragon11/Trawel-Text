@@ -130,7 +130,7 @@ public class Lot extends Feature {
 			case "mine": add = (new Mine("your mine (" + town.getName() + ")",town,Player.player,NodeFeature.Shape.NONE));break;
 			case "garden": add = (new Garden(town));
 			}
-			town.enqueneReplace(this,add);
+			town.laterReplace(this,add);
 			constructTime = -2;
 		}
 		}

@@ -92,6 +92,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.DIZZY);
 		t.pierceWounds.add(Attack.Wound.BLINDED);
 		t.mappingNumber = 1;
+		t.condWound = Wound.KO;//for now, KO. In the future should mostly rely on long term crippling to fit the cond theme more
 		targetList.add(t);
 		
 		t = new Target();
@@ -131,6 +132,7 @@ public class TargetFactory {
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.TAT);
 		t.mappingNumber = TORSO_MAPPING;
+		t.condWound = Wound.I_BLEED;
 		targetList.add(t);
 		
 		t = new Target();
@@ -165,6 +167,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.DISARMED);
 		t.pierceWounds.add(Attack.Wound.DISARMED);
 		t.attachNumber = 2;
+		t.condWound = Wound.DISARMED;//temp, should be perm
 		targetList.add(t);
 		
 		t = new Target();
@@ -196,6 +199,7 @@ public class TargetFactory {
 		t.type = TargetType.HUMANOID;
 		addLeg_LimbWounds(t,null);
 		t.mappingNumber = 4;
+		t.condWound = Wound.HAMSTRUNG;//temp, should be perm
 		targetList.add(t);
 		
 		t = new Target();
@@ -223,6 +227,7 @@ public class TargetFactory {
 		t.type = TargetType.HUMANOID;
 		add_eye_Bloody(t);
 		t.attachNumber = 1;
+		t.condWound = Wound.BLOODY;
 		targetList.add(t);
 		
 		t = new Target();
@@ -353,6 +358,7 @@ public class TargetFactory {
 		t.type = TargetType.OPEN_MIMIC;
 		add_IBleed_MBleed(t);
 		t.mappingNumber = 3;
+		t.condWound = Wound.I_BLEED;
 		targetList.add(t);
 		
 		
@@ -379,6 +385,7 @@ public class TargetFactory {
 		t.pierceWounds.add(Attack.Wound.BLINDED);
 		t.pierceWounds.add(Attack.Wound.DISARMED);
 		t.mappingNumber = 1;
+		t.condWound = Wound.KO;
 		targetList.add(t);
 		
 		t = new Target();
@@ -417,6 +424,7 @@ public class TargetFactory {
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.TAT);
 		t.mappingNumber = 2;
+		t.condWound = Wound.I_BLEED;
 		targetList.add(t);
 		
 		t = new Target();
@@ -431,6 +439,7 @@ public class TargetFactory {
 		t.type = TargetType.QUAD;
 		addLeg_LimbWounds(t,null);
 		t.mappingNumber = 4;
+		t.condWound = Wound.HAMSTRUNG;
 		targetList.add(t);
 		
 		t = new Target();
@@ -458,6 +467,7 @@ public class TargetFactory {
 		t.type = TargetType.QUAD;
 		add_eye_Bloody(t);
 		t.attachNumber = 1;
+		t.condWound = Wound.BLINDED;//not bloody
 		targetList.add(t);
 		
 		t = new Target();
@@ -604,6 +614,7 @@ public class TargetFactory {
 		t.type = TargetType.S_REAVER;
 		addLeg_LimbWounds(t,null);
 		t.mappingNumber = 4;
+		t.condWound = Wound.HAMSTRUNG;
 		targetList.add(t);
 		
 		//fell reaver crouched
@@ -624,6 +635,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.DIZZY);
 		t.pierceWounds.add(Attack.Wound.BLINDED);
 		t.mappingNumber = 1;
+		t.condWound = Wound.KO;
 		targetList.add(t);
 		
 		t = new Target();
@@ -681,6 +693,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.DISARMED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		t.mappingNumber = 2;
+		t.condWound = Wound.DISARMED;
 		targetList.add(t);
 		
 		t = new Target();
@@ -695,6 +708,7 @@ public class TargetFactory {
 		t.type = TargetType.C_REAVER;
 		addLeg_LimbWounds(t,null);
 		t.mappingNumber = 4;
+		t.condWound = Wound.HAMSTRUNG;
 		targetList.add(t);
 		
 		t = new Target();
@@ -709,6 +723,7 @@ public class TargetFactory {
 		t.type = TargetType.C_REAVER;
 		add_eye_Bloody(t);
 		t.attachNumber = 1;
+		t.condWound = Wound.BLOODY;
 		targetList.add(t);
 		
 		//undead
@@ -727,6 +742,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.DIZZY);
 		t.pierceWounds.add(Attack.Wound.BLINDED);
 		t.mappingNumber = 1;
+		t.condWound = Wound.SCALDED;
 		targetList.add(t);
 		
 		t = new Target();
@@ -761,6 +777,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.TAT);
 		t.mappingNumber = 3;
+		t.condWound = Wound.SCALDED;
 		targetList.add(t);
 		
 		t = new Target();
@@ -778,6 +795,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.DISARMED);
 		t.pierceWounds.add(Attack.Wound.GRAZE);
 		t.mappingNumber = 2;
+		t.condWound = Wound.SCALDED;
 		targetList.add(t);
 		
 		t = new Target();
@@ -792,6 +810,7 @@ public class TargetFactory {
 		t.type = TargetType.UNDEAD_H;
 		addLeg_LimbWounds(t,Wound.GRAZE);
 		t.mappingNumber = 4;
+		t.condWound = Wound.SCALDED;
 		targetList.add(t);
 		
 		t = new Target();
@@ -847,6 +866,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.DISARMED);
 		t.pierceWounds.add(Attack.Wound.BLINDED);
 		t.mappingNumber = 1;
+		t.condWound = Wound.KO;
 		targetList.add(t);
 		
 		t = new Target();
@@ -868,6 +888,7 @@ public class TargetFactory {
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		t.pierceWounds.add(Attack.Wound.TAT);
 		t.mappingNumber = 3;
+		t.condWound = Wound.I_BLEED;
 		targetList.add(t);
 		
 		t = new Target();
@@ -884,6 +905,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.TEAR);
 		t.pierceWounds.add(Attack.Wound.TEAR);
 		t.mappingNumber = 2;
+		t.condWound = Wound.TEAR;
 		targetList.add(t);
 		
 		t = new Target();
@@ -901,6 +923,7 @@ public class TargetFactory {
 		t.bluntWounds.add(Attack.Wound.CRUSHED);
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		t.mappingNumber = 4;
+		t.condWound = Wound.TEAR;
 		targetList.add(t);
 		
 		t = new Target();
@@ -915,6 +938,7 @@ public class TargetFactory {
 		t.type = TargetType.FLY;
 		add_eye_Bloody(t);
 		t.attachNumber = 1;
+		t.condWound = Wound.BLOODY;
 		targetList.add(t);
 		
 		t = new Target();
@@ -1047,6 +1071,8 @@ public class TargetFactory {
 		//but in such a case the mapping would be useless and should be reduced anyway?
 		private int[] attached;
 		
+		protected Wound[] condWounds;
+		
 		TypeBody(BodyPlan plan, BloodType blood, TargetType... types){
 			this.plan = plan;
 			this.blood = blood;
@@ -1120,6 +1146,7 @@ public class TargetFactory {
 			//uniqueParts = offset + multiSum(multiNums.size())+1;//DOLATER off by one error???
 			map = new int[allTargets.size()];
 			attached = new int[allTargets.size()];
+			
 			//the maps converts an alltarget number to a condition arr number
 			//the outcome numbers don't matter as long as they're consistent, so we make them here
 			for (int i = 0;i < map.length;i++) {
@@ -1150,8 +1177,14 @@ public class TargetFactory {
 				}
 			}
 			//two pass makes this much easier to write from this point, probably could have done it better
+			
+			condWounds = new Wound[uniqueParts];
+			
 			for (int i = 0;i < attached.length;i++) {
 				Target t = allTargets.get(i);
+				if (t.condWound != null && condWounds[map[i]] == null) {//just get the first one at this point
+					condWounds[map[i]] = t.condWound;
+				}
 				if (t.attachNumber == 0) {
 					attached[i] = -1;
 					//tRets.add(new TargetReturn(t,allVariants.get(i),map[i],i,-1));

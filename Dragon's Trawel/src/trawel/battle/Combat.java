@@ -552,18 +552,19 @@ public class Combat {
 		AttackReturn ret;
 		boolean wasDead = false;
 		int wLevel = att.getLevel();
+		boolean canDisp = isReal && !extra.getPrint();
 		if (defender == null) {
 			defender = DummyPerson.single;
 		}
 		if (off == null) {
 			off = WorldGen.getDummyInvs().get(0);//attacking only
 		}
-		if (isReal) {
+		if (canDisp) {
 			if (extra.chanceIn(1, 5)) {
 				Networking.send("PlayDelayPitch|"+SoundBox.getSound(off.getRace().voice,SoundBox.Type.SWING) + "|1|" +attacker.getPitch() +"|");
 			}
 			if (!defender.isAlive()) {
-				wasDead = true;
+				wasDead = true;//note, can move out if need be
 			}
 		}
 		//TODO unsure if should add attacker's aim at impairment phase
@@ -584,8 +585,9 @@ public class Combat {
 		}
 		if (hitRoll < .05) {//missing now exists
 			ret= new AttackReturn(ATK_ResultCode.MISS,"",att);
-			if (isReal) {
+			if (canDisp) {
 				ret.stringer = att.fluff(ret);
+				ret.putPlayerFeedback(ret);
 				if (wasDead) {
 					ret.addNote("They missed a corpse!");
 				}
@@ -594,8 +596,9 @@ public class Combat {
 		}
 		if (dodgeRoll > hitRoll){
 			ret= new AttackReturn(ATK_ResultCode.DODGE,"",att);
-			if (isReal) {
+			if (canDisp) {
 				ret.stringer = att.fluff(ret);
+				ret.putPlayerFeedback(ret);
 				if (wasDead) {
 					ret.addNote("What a dodgy corpse!");
 				}
@@ -604,7 +607,7 @@ public class Combat {
 		}
 		
 		ret = new AttackReturn(att,def,str);
-		if (isReal) {
+		if (canDisp) {
 			Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getAttack().getSoundIntensity() + "|" +att.getAttack().getSoundType()+"|");
 			if (wasDead) {
 				ret.addNote("Beating their corpse!");
@@ -623,7 +626,7 @@ public class Combat {
 					ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitMult()*10))));
 					weightBonus = ret.damage-weightBonus;
 					ret.bonus += weightBonus;
-					if (isReal) {ret.addNote("Weighted Bonus: " + weightBonus);}
+					if (canDisp) {ret.addNote("Weighted Bonus: " + weightBonus);}
 				}
 			}
 			if (defender.hasSkill(Skill.RAW_GUTS)) {
@@ -631,18 +634,18 @@ public class Combat {
 				int gResisted = ret.damage;
 				ret.damage = Math.max(ret.damage/2,ret.damage-extra.randRange(0,maxGResist));
 				gResisted = gResisted-ret.damage;
-				if (isReal) {ret.addNote("Raw Guts Resisted: " + gResisted);}
+				if (canDisp) {ret.addNote("Raw Guts Resisted: " + gResisted);}
 			}
 		}
 		if (att.hasWeaponQual(WeaponQual.RELIABLE) && ret.damage <= wLevel) 
 		{
 			ret.damage = wLevel;
 			ret.bonus = wLevel;
-			if (isReal) {ret.addNote("Reliable Damage: "+wLevel);}
+			if (canDisp) {ret.addNote("Reliable Damage: "+wLevel);}
 		}
-		if (isReal) {
+		if (canDisp) {
 			ret.stringer = str + att.fluff(ret);
-			ret.putPlayerFeedback();
+			ret.putPlayerFeedback(ret);
 		}
 		return ret;
 	}
@@ -786,27 +789,28 @@ public class Combat {
 			return notes;
 		}
 		
-		public void putPlayerFeedback() {
-			if (attack == null) {
+		public void putPlayerFeedback(AttackReturn atr) {
+			/*if (attack == null) {
 				extra.getPrint();
-			}
+			}*/
+			Player.lastAttackStringer = atr.attack.getName()+": ";
 			if (attack.getAttacker().isPlayer()) {
 				switch (code) {
 				case ARMOR:
-					Player.lastAttackStringer = "\nYou hit "+attack.getDefender().getName() + 
+					Player.lastAttackStringer += "You hit "+attack.getDefender().getName() + 
 					" but their armor held!";
 					break;
 				case DAMAGE: case KILL:
-					Player.lastAttackStringer = "\nYou hit "+attack.getDefender().getName() + 
+					Player.lastAttackStringer += "You hit "+attack.getDefender().getName() + 
 					" dealing "+ damage+" damage!";
 					break;
 				case DODGE:
 				case MISS:
-					Player.lastAttackStringer = "\nYou missed "+attack.getDefender().getName() + 
+					Player.lastAttackStringer += "You missed "+attack.getDefender().getName() + 
 					(damage > 0 ? " but dealt " + damage+" damage!" : "!");
 					break;
 				case NOT_ATTACK:
-					
+					//Player.lastAttackStringer = "";
 					break;
 				}
 			}
@@ -961,7 +965,19 @@ public class Combat {
 				defender.advanceTime(atr.attack.getTime()/50f);
 			}
 			if (atr.hasWound()) {
-				woundstr = inflictWound(attacker,defender,atr);
+				//|| damage == 0//wounds no longer hit if dam=0, if this needs to change, fix woundstring printing as well
+				//DOLATER: fix that?
+				//although they'll still not usually apply if damage == 0
+				if (atr.code == ATK_ResultCode.ARMOR) {
+					woundstr = " The armor deflects the wound.";
+				}else {
+					if (((defender.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 ))) {
+						woundstr = " They shrug off the blow!";
+					}else {
+						woundstr = inflictWound(attacker,defender,atr,null);
+					}
+				}
+				
 			}
 			if (atr.code == ATK_ResultCode.KILL) {//if force kill
 				extra.println(attacker.getName() + " executes " + defender.getName() +"!");
@@ -975,6 +991,13 @@ public class Combat {
 			if (attacker.hasSkill(Skill.NPC_BURN_ARMOR)) {
 				//always burns at least 5% before diminishing
 				defender.getBag().burnArmor(Math.max(0.05f,(percent*2)),atr.attack.getSlot());
+			}
+			//only processes on an impactful attack, to be consistent with wounds (plus make code easier)
+			List<Wound> wounds = defender.processBodyStatus();
+			if (wounds != null) {
+				for (Wound wo: wounds) {
+					woundstr += inflictWound(attacker,defender,atr,wo);
+				}
 			}
 		}else {//no impact
 			if (defender.hasSkill(Skill.MESMER_ARMOR)) {
@@ -999,14 +1022,16 @@ public class Combat {
 						}
 					}
 				}
-				if (deathResist && !extra.getPrint()) {
+				if (!deathResist && !extra.getPrint()) {
 					inlined_color=extra.ATTACK_KILL;
 					extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color)+woundstr);
 				}
 			}else {
 				if (!extra.getPrint()) {
-					inlined_color=extra.ATTACK_DAMAGED;
-					extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color)+woundstr);
+					int tval = extra.clamp((int)(extra.lerp(125,256,((float)defender.getHp())/(defender.getMaxHp()))),100,255);
+					inlined_color = extra.inlineColor(new Color(tval,tval,tval));
+					//inlined_color=extra.ATTACK_DAMAGED;
+					extra.print(inlined_color +atr.stringer.replace("[*]", inlined_color)+" {"+damageDone+" damage}"+woundstr);
 				}
 			}
 		}
@@ -1064,7 +1089,7 @@ public class Combat {
 		Person p = defender;
 		float hpRatio = ((float)p.getHp())/(p.getMaxHp());
 		//extra.println(p.getHp() + p.getMaxHp() +" " + hpRatio);
-		if (!extra.getPrint()) {//should save computions in non player battles
+		/*if (!extra.getPrint()) {//should save computions in non player battles
 			int tval = extra.clamp((int)(extra.lerp(125,256,hpRatio)),100,255);
 			extra.print(extra.inlineColor(new Color(tval,tval,tval)));
 			if (hpRatio >= 1) {
@@ -1096,7 +1121,7 @@ public class Combat {
 					}
 				}
 			}
-		}
+		}*/
 		
 		
 		/*
@@ -1199,19 +1224,16 @@ public class Combat {
 		
 		return atr;
 	}
-	private String inflictWound(Person attacker2, Person defender2, AttackReturn retu) {
-		if (retu.code == ATK_ResultCode.ARMOR) {
-			return " The armor deflects the wound.";//reliable/other armor hits don't inflict wound effects
-		}
-		if ((defender2.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 )) {
-			//|| damage == 0//wounds no longer hit if dam=0, if this needs to change, fix woundstring printing as well
-			//DOLATER: fix that?
-			//although they'll still not usually apply if damage == 0
-			return (" They shrug off the blow!");
-		}else {
+	
+	private String inflictWound(Person attacker2, Person defender2, AttackReturn retu, Wound w) {
 			ImpairedAttack attack = attacker2.getNextAttack();
 			Integer[] nums = woundNums(attack,attacker2,defender2,retu);
-			Wound w = attack.getWound();
+			boolean notFromAttack = false;
+			if (w == null) {
+				w = attack.getWound();
+			}else {
+				notFromAttack = true;//still uses attack's damage and such to apply
+			}
 			if (w == null) {
 				throw new RuntimeException("inflicting null wound");
 			}
@@ -1234,7 +1256,10 @@ public class Combat {
 			case HAMSTRUNG: case WINDED: case TRIPPED:
 				defender2.advanceTime(-nums[0]);
 				break;
-			case DIZZY: case FROSTED: case BLINDED:
+			case FROSTED:
+				defender2.applyDiscount(-Math.min(50,defender2.getTime()*(nums[0]/100f)));
+				break;
+			case DIZZY: case BLINDED:
 				defender2.getNextAttack().multiplyHit(1-(nums[0]/10f));
 				break;	
 			case MAJOR_BLEED:
@@ -1272,12 +1297,12 @@ public class Combat {
 				break;
 
 			}
-			if (w != Wound.GRAZE)
+			if (w != Wound.GRAZE && !notFromAttack) {
 				if (attack.getWeapon() != null && attack.getWeapon().hasQual(Weapon.WeaponQual.DESTRUCTIVE)) {
 					defender2.getBag().damageArmor((retu.damage/defender2.getMaxHp())/3f, attack.getSlot());
 				}
-		}
-		return (" " +attacker2.getNextAttack().getWound().active);
+			}
+			return (" " +w.active);
 	}
 	
 	//had to convert from double to Double to Integer
@@ -1291,9 +1316,9 @@ public class Combat {
 	 */
 	public static Integer[] woundNums(ImpairedAttack attack, Person attacker, Person defender, AttackReturn result) {
 		switch (attack.getWound()) {
-		case CONFUSED:
+		case CONFUSED: case SCREAMING: case GRAZE: case DISARMED:
 			//nothing
-			break;
+			return new Integer[0];
 		case SLICE:
 			return new Integer[] {10,10};//10% faster, 10% more accurate
 		 case DICE:
@@ -1309,15 +1334,16 @@ public class Combat {
 			}
 			return new Integer[] {(int)(result.subDamage[2] *extra.clamp(attack.getHitMult(),.5f,3f)/3f)};
 		case CRUSHED:
-			return new Integer[] {(int)attack.getTotalDam()/10};
 		case SCALDED: case FROSTBITE:
-			return new Integer[] {attacker.getClarity()/20};
+			return new Integer[] {(int)attack.getTotalDam()/10};
 		case BLINDED:
 			return new Integer[] {50};//50% less accurate
 		case HAMSTRUNG:
 			return new Integer[] {8};//-8 time units
-		case DIZZY: case FROSTED:
+		case DIZZY:
 			return new Integer[] {25};//25% less accurate
+		case FROSTED:
+			return new Integer[] {30,50};//takes 30% longer of current time, cap of +50
 		case WINDED:
 			return new Integer[] {16};//-16 time units
 		case TRIPPED:

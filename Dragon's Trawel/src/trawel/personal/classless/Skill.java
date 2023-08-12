@@ -118,7 +118,7 @@ public enum Skill{
 				,extra.IMPACT_TIP
 				,Type.OFFENSE),
 		DSTRIKE("Decisive Strike","Instantly kill anyone you damage by more than 70% of their max HP in one blow."
-				,"Max HP is closely aligned to how much HP they start with. Must be part of an 'Impactful' action. (HP gained after battle start can go above this limit."
+				,"Max HP is closely aligned to how much HP they start with, but can go higher. Must be part of an 'Impactful' action."
 				,Type.OFFENSE),
 		BLOODTHIRSTY("Bloodthirsty","Gain HP equal to the lower of your level and your target's level every time you make an impactful attack."
 				,extra.IMPACT_TIP

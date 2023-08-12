@@ -7,6 +7,7 @@ import org.nustaq.serialization.annotations.OneOf;
 
 import trawel.Services;
 import trawel.extra;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;
 import trawel.personal.item.magic.Enchant;
@@ -21,7 +22,7 @@ import trawel.personal.item.solid.variants.ArmorStyle;
  * 2/5/2018
  *
  */
-public class Armor extends Item {
+public class Armor extends Item implements IEffectiveLevel{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -185,7 +186,10 @@ public class Armor extends Item {
 	//MAYBELATER: for now, all are the same
 	//either fix, or make certain armor bits count more for global armor
 	private float baseResist() {
-		return 1.5f*level*ArmorStyle.fetch(style).totalMult*MaterialFactory.getMat(material).baseResist;
+		return IEffectiveLevel.unEffective(
+				1.5f*getEffectiveLevel()*ArmorStyle.fetch(style).totalMult
+				*MaterialFactory.getMat(material).baseResist
+				);
 		/*
 		switch (slot) {
 		case 0://helm

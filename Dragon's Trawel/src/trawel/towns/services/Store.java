@@ -70,6 +70,11 @@ public class Store extends Feature{
 		this.generate(tier, type);
 	}
 	
+	public Store(Town t, String appendname) {
+		this(t.getTier());
+		name +=appendname;
+	}
+	
 	public Store(int tier) {
 		this();
 		//not set stores are now always general stores

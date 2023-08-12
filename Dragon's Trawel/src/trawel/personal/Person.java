@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -11,9 +10,9 @@ import java.util.stream.Stream;
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
+import derg.menus.MenuLast;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
-import derg.menus.MenuSelectTitled;
 import derg.menus.ScrollMenuGenerator;
 import trawel.Effect;
 import trawel.Networking;
@@ -21,45 +20,35 @@ import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
 import trawel.battle.BarkManager;
-import trawel.battle.attacks.Attack;
+import trawel.battle.attacks.Attack.Wound;
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.Stance;
-import trawel.battle.attacks.TargetFactory;
 import trawel.battle.attacks.TargetFactory.BloodType;
-import trawel.battle.attacks.TargetFactory.TargetType;
 import trawel.battle.attacks.TargetFactory.TypeBody;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 import trawel.battle.attacks.TargetHolder;
-import trawel.earts.EAType;
-import trawel.earts.EArt;
-import trawel.earts.EArtSkillMenu;
-import trawel.earts.PlayerSkillpointsLine;
 import trawel.factions.FBox;
 import trawel.factions.HostileTask;
-import trawel.personal.Person.PersonFlag;
 import trawel.personal.classless.Archetype;
 import trawel.personal.classless.AttributeBox;
 import trawel.personal.classless.Feat;
-import trawel.personal.classless.HasSkillsClassless;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
 import trawel.personal.classless.Skill.Type;
-import trawel.personal.classless.SkillAttackConf;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.body.Race.RaceType;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
-import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponType;
 import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
-import trawel.towns.services.Store;
 
 /**
  * 
@@ -67,7 +56,7 @@ import trawel.towns.services.Store;
  * 2/5/2018
  * A collection of stats, attributes, and an inventory.
  */
-public class Person implements java.io.Serializable{
+public class Person implements java.io.Serializable, IEffectiveLevel{
 
 	private static final long serialVersionUID = 2L;
 
@@ -635,12 +624,11 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public static final int ENDURANCE_HP_BONUS = 6;
-	public static final int SKILLPOINT_HP_BONUS = 3;
+	public static final int SKILLPOINT_HP_BONUS = 5;
 	
 	public int getOOB_HP() {
 		int total = getBase_HP();
 		if (this.hasSkill(Skill.LIFE_MAGE)) {
-			//hp+=this.getMageLevel();
 			hp+=this.getClarity();
 		}
 		total*=bag.getHealth();
@@ -648,8 +636,8 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public int getBase_HP() {
-		int total = 20+(50*level);
-		//total+=(edrLevel*ENDURANCE_HP_BONUS)*( hasEnduranceTraining ? 2 :1);
+		int total = getEffectiveLevel()*10;
+		//int total = 20+(50*level);
 		total+=featPoints*SKILLPOINT_HP_BONUS;
 		return total;
 	}
@@ -860,7 +848,7 @@ public class Person implements java.io.Serializable{
 
 					@Override
 					public String title() {
-						return "Classless Menu for " + getName();
+						return "Classless Menu for " + getName() +": " +attributeDesc();
 					}});
 				list.add(new MenuSelect() {
 
@@ -993,13 +981,16 @@ public class Person implements java.io.Serializable{
 	}
 	
 	public void pickFeats(boolean consumePick) {
+		assert isPlayer();
 		if (consumePick) {
 			getSuper().addFeatPick(-1);
 		}
 		Person p = this;
-		List<IHasSkills> iList = Archetype.getFeatChoices(p);
+		
 		if (isPlayer()) {
-			extra.menuGo(new MenuGenerator() {
+			while (featPoints > 0) {
+				List<IHasSkills> iList = Archetype.getFeatChoices(p);
+				extra.menuGo(new MenuGenerator() {
 
 				@Override
 				public List<MenuItem> gen() {
@@ -1042,9 +1033,23 @@ public class Person implements java.io.Serializable{
 					for (IHasSkills ihas: iList) {
 						list.add(new FeatArchMenuPick(ihas,p));
 					}
-					list.add(new MenuBack("delay remaining " + featPoints));
+					list.add(new MenuLast() {
+
+						@Override
+						public String title() {
+							return "delay remaining " + featPoints;
+						}
+
+						@Override
+						public boolean go() {
+							featPoints *= -1;//easy escape
+							return true;
+						}});
 					return list;
 				}});
+			}
+			featPoints *= -1;//we set it to *=-1 to easily get out, now unset it
+			//if they ran out, -0 = 0 for us
 		}
 	}
 	
@@ -1308,6 +1313,7 @@ public class Person implements java.io.Serializable{
 	 * Get the level of the person
 	 * @return level (int)
 	 */
+	@Override
 	public int getLevel() {
 		return level;
 	}
@@ -1943,6 +1949,13 @@ public class Person implements java.io.Serializable{
 	public void resistDeath(float percentheal) {
 		hp = (int) (getMaxHp()*percentheal);
 		hp = Math.max(1,hp);
+	}
+	/**
+	 * 
+	 * @return can be null, but not have null elements
+	 */
+	public List<Wound> processBodyStatus() {
+		return bodystatus.processEffectUpdates();
 	}
 
 }

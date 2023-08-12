@@ -28,6 +28,9 @@ import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.Town;
 import trawel.towns.World;
+import trawel.towns.services.Doctor;
+import trawel.towns.services.Store;
+import trawel.towns.services.WitchHut;
 
 public class Slum extends Feature implements QuestBoardLocation{
 
@@ -39,7 +42,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	
 	private boolean canQuest = true;
 	
-	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
+	public List<Quest> sideQuests = new ArrayList<Quest>();
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -85,7 +88,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	public void go() {
 		Networking.setArea("dungeon");
 		Slum sl = this;
-		int removecost = Math.max(100, (crimeRating*50)+(town.getTier()*1000));
+		int removecost = (crimeRating*5)+(town.getTier()*10);
 		extra.menuGo(new MenuGenerator() {
 
 			@Override
@@ -139,7 +142,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 						
 						@Override
 						public String title() {
-							return "pay to remove slum ("+removecost+" gold)";
+							return "pay to remove slum ("+World.currentMoneyDisplay(removecost)+")";
 						}
 		
 						@Override
@@ -147,10 +150,22 @@ public class Slum extends Feature implements QuestBoardLocation{
 							if (Player.player.getGold() > removecost) {
 								extra.println("You pay for the reform programs.");
 								Player.player.addGold(-removecost);
-								town.enqueneRemove(sl);//TODO: replace with like 'residental district'
+								//town.enqueneRemove(sl);//TODO: replace with like 'residental district'
+								String formerly = " (formerly '"+sl.getName()+"')";
+								switch (extra.randRange(0,3)) {
+								case 0: case 1:
+									town.laterReplace(sl,new WitchHut("Chemist Business"+formerly,sl.town));
+									break;
+								case 2:
+									town.laterReplace(sl,new Store(sl.town,formerly));
+									break;
+								case 3:
+									town.laterReplace(sl,new Doctor("Medical Clinic"+formerly,sl.town));
+									break;
+								}
 								return true;
 							}else {
-								extra.println("You can't afford to uplift the slum out of poverty.");
+								extra.println("You can't afford to uplift the slum out of poverty, and no one else who could seems to care.");
 							}
 							return false;
 						}
@@ -229,7 +244,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 
 					@Override
 					public boolean go() {
-						int potionCost = 50*town.getTier();
+						int potionCost = town.getTier();
 						extra.println(Player.player.getFlask() != null ? "You already have a potion, buying one will replace it." : "Quality not assured.");
 						extra.println("You have "+Player.showGold()+".");
 						switch (extra.randRange(1, 3)) {

@@ -383,14 +383,11 @@ public class Attack implements IAttack{
 		TAT("Punctured","Deals up to %1$d bonus damage, based on final pierce damage and to-hit.","The blow goes right through them!"),
 		I_BLEED("Internal Bleeding","Applies a stacking %1$d bleed.","Their insides get crushed."),
 		CRUSHED("Crushed","Deals %1$d armor piercing damage, repeating the attack's damage once more.","They are crushed!"),
-		ERROR("Error","error","ERROR"),
-		SCALDED("Scalded","Deals bonus damage through armor.","They are scalded by the flames!"),//TODO: the other wound types
+		SCALDED("Scalded","Deals %1$d armor piercing damage, repeating the attack's damage once more.","They are scalded by the flames!"),//TODO: the other wound types
 		SCREAMING("Screaming","Removes one attack choice.","They scream!"),
-		FROSTED("Frosted","Decreases their next attack's to-hit.","They are frozen over..."),
-		FROSTBITE("Frostbite","Deals bonus damage through armor.","Their flesh is frozen!"),
+		FROSTED("Frosted","The next attack will take %1$%d%% longer on the current time, up to %2$d instants increase.","They are frozen over..."),
+		FROSTBITE("Frostbite","Deals %1$d armor piercing damage, repeating the attack's damage once more.","Their flesh is frozen!"),
 		TEAR("Tear","Decreases dodge by %1$%d%%, stacking.","Their wing is torn!"), //see if need to add a '%'
-		EXE_WOUND("Execute","Kills low health targets.",""),
-		DRINK("Drink","Heals and provides a random potion effect.",""),
 		MANGLED("Mangled","Halves the condition of the body part.","Their body is mangled!"),//FIXME
 		BLOODY("Bloody","The next attack will be %1$d%% less accurate. Applies %2$d bleed.","Blood wells around their eyes!"),
 		;

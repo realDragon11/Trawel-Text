@@ -9,6 +9,7 @@ import trawel.battle.attacks.Attack.Wound;
 import trawel.battle.attacks.IAttack.AttackType;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 import trawel.personal.Person;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.magic.Enchant;
@@ -85,7 +86,8 @@ public class ImpairedAttack implements IAttack{
 				}
 
 			}
-			double damMult = w_lvl*_style.damage;
+			double effectiveLevel = IEffectiveLevel.unEffective(IEffectiveLevel.effective(w_lvl));
+			double damMult = effectiveLevel*_style.damage;
 
 			vals[0] = damageRoll(DamageType.SHARP,sMult*damMult);
 			vals[1] = damageRoll(DamageType.BLUNT,bMult*damMult);

@@ -1,30 +1,20 @@
 package trawel.personal.item.solid;
 
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.FutureTask;
-
 import trawel.Services;
 import trawel.WorldGen;
 import trawel.extra;
 import trawel.battle.Combat;
-import trawel.battle.Combat.ATK_ResultCode;
 import trawel.battle.Combat.ATK_ResultType;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.Stance;
 import trawel.battle.attacks.WeaponAttackFactory;
-import trawel.battle.attacks.TargetFactory.TargetType;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;
-import trawel.personal.item.Item.ItemType;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.magic.EnchantConstant;
 import trawel.personal.item.magic.EnchantHit;
@@ -39,7 +29,7 @@ import trawel.personal.item.magic.EnchantHit;
  * are stored in the weapon's stance elsewhere.
  */
 
-public class Weapon extends Item {
+public class Weapon extends Item implements IEffectiveLevel {
 
 	private static final long serialVersionUID = 1L;
 	

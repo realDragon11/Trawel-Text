@@ -2,6 +2,8 @@ package trawel.battle.attacks;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.battle.attacks.Attack.Wound;
+
 public class Target{
 
 	public String name;
@@ -63,4 +65,12 @@ public class Target{
 	 * only applies to attachNumber things
 	 */
 	public boolean passthrough = false;
+	/**
+	 * what wound the part should do when it's condition drops below 100%
+	 * parts that don't have wounds may do null, but note that all of the same final slot parts
+	 * (ie, passthrough attaches or shared maps) must have the same wound or else it might not do the one you want
+	 * <br>
+	 * in the future these should be 'crippling' wounds, for now they're just the normal mostly temp ones
+	 */
+	public Wound condWound;
 }
