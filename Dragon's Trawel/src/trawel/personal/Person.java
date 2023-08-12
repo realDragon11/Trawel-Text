@@ -1939,7 +1939,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			extra.println("Strength mult applies to physical damage from weapons, Dexterity mult applies to hit chance.");
 		}
 		extra.println("Strength: "+getStrength() + ", weight: "+bag.getCapacity() +" used capacity: "+((float)getStrength())/bag.getCapacity()+", multiplier: "+ extra.F_TWO_TRAILING.format(attMultStr())+"x");
-		extra.println(" Dexterity Penalty Cap: " + atrBox.getCapAgiPen());
+		extra.println(" Dexterity Penalty Cap: " + atrBox.getDexPen());
 		extra.println("Dexterity: Raw="+getRawDexterity()+", Effective: " +getDexterity() + " multiplier: "+ extra.F_TWO_TRAILING.format(attMultDex())+"x");
 		extra.println(" Agility Multiplier Penalty: "
 		+ getTotalAgiPen() + ", Applied to Dex: "+getAgiPenAgainstDex() + " of capacity " + atrBox.getCapAgiPen() + " and equip " +bag.getAgiPen() + "; Raw Attribute AMP: "+getAttributeAgiPen());

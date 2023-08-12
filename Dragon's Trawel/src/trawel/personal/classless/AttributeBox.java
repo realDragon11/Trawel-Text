@@ -115,7 +115,9 @@ public class AttributeBox {
 	public float getNaiveStrCap(int capacity) {
 		return capacity/(float)strength;
 	}
-	
+	public float getDexPen() {
+		return getDexPen(getNaiveStrCap(capacity));
+	}
 	/**
 	 * not a pen to dex, how much dex can pen AMP for being negative dex
 	 */

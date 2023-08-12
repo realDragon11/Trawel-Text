@@ -323,7 +323,7 @@ public class MineNode implements NodeType{
 			holder.setStateNum(node,2);
 		}
 		if (state == 7) {
-			state = 6;
+			state = 1;
 			holder.setStateNum(node,6);
 		}
 		
@@ -466,7 +466,7 @@ public class MineNode implements NodeType{
 					extra.println(extra.PRE_RED + "Attack " + leader.getName() +"?");
 				}
 				if (extra.yesNo()) {
-					holder.setStateNum(node,1);//angy cultists are very madge
+					holder.setStateNum(node,6);//angy cultists are very madge
 					return true;
 				}
 				return false;
