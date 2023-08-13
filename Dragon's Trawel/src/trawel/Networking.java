@@ -430,7 +430,8 @@ public class Networking {
 	}
 
 	public static void leaderboard(String string, int stat) {
-		Networking.sendStrong("Leaderboard|"+string+"|" + stat+ "|");
-		
+		if (!Player.player.getCheating()) {
+			Networking.sendStrong("Leaderboard|"+string+"|" + stat+ "|");
+		}
 	}
 }
