@@ -47,8 +47,8 @@ public abstract class Item implements java.io.Serializable{
 	
 	public abstract void display(int style);
 	public abstract void display(int style,float markup);
-	public void display(Store s, boolean markedUp) {
-		display(3,markedUp ? s.getMarkup() : 1f);
+	public void display(Store s, boolean markedUp,int style) {
+		display(style,markedUp ? s.getMarkup() : 1f);
 	}
 	
 	/**

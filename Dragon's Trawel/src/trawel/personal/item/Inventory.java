@@ -467,9 +467,9 @@ public class Inventory implements java.io.Serializable{
 	public void display(int i) {
 		
 		for (Armor a: getArmors()) {
-			a.display(1);
+			a.display(2);
 		}
-		hand.display(1);
+		hand.display(2);
 		hand.getMartialStance().display(1);
 	
 		if (owner.getSuper()!= null) {

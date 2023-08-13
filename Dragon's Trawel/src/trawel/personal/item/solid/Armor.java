@@ -13,6 +13,7 @@ import trawel.personal.item.Item;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.magic.EnchantConstant;
 import trawel.personal.item.solid.variants.ArmorStyle;
+import trawel.personal.people.Player;
 
 /***
  * An extension of Item, an armor has varying stats that can effect a person, and possibly and enchantment.
@@ -374,16 +375,30 @@ public class Armor extends Item implements IEffectiveLevel{
 	@Override
 	public void display(int style,float markup) {
 		switch (style) {
-		case 1:
+		case 0:
+			//for quick store overviews use storestring instead
+			break;
+		case 1://comparing
+		case 3:
 			extra.println(this.getName() + " sbp:" + extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
-			 + " aether: " + (int)(this.getAetherValue()*markup));
+			+ (Player.player.caresAboutCapacity() ? " weight: "+getWeight() : "")
+			+ (Player.player.caresAboutAMP() ? " AMP: "+ extra.F_TWO_TRAILING.format(getAgiPenMult())+"x" : "")
+			+(style == 1 ?
+					" aether: " + (int)(getAetherValue()*markup) :
+						" value: "+extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup)))
+					);
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
 			;break;	
-		case 2:
+		case 2://full examine
 			extra.println(this.getName() + " sbp:" + extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
-			+ " agi: "+ getAgiPenMult() + " flame: "+ this.getFireMod() + " shock: "+ this.getShockMod() + " frost: "+ this.getFreezeMod() + " aether: " + (int)(this.getAetherValue()*markup));
+			+ (Player.player.caresAboutCapacity() ? " weight: "+getWeight() : "")
+			+ " AMP: "+ extra.F_TWO_TRAILING.format(getAgiPenMult())+"x"
+			+ " ignite: "+ extra.F_TWO_TRAILING.format(getFireMod())+"x"
+			+ " freeze: "+ extra.F_TWO_TRAILING.format(getFreezeMod())+"x"
+			+ " elec: "+ extra.F_TWO_TRAILING.format(getShockMod())+"x"
+			+ " aether: " + (int)(this.getAetherValue()*markup));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
@@ -391,7 +406,7 @@ public class Armor extends Item implements IEffectiveLevel{
 				extra.println(aq.name + ": " + aq.desc);
 			}
 			;break;
-		case 3://for stores
+		case 20://for store overviews
 			extra.println(this.getName() + " sbp:" + extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
 			 + " value: " + extra.F_WHOLE.format(Math.ceil(this.getMoneyValue()*markup)));
 			if (this.getEnchant() != null) {
@@ -410,9 +425,9 @@ public class Armor extends Item implements IEffectiveLevel{
 	public String storeString(float markup, boolean canShow) {
 		if (canShow) {
 			return this.getName() 
-				+ " S " + extra.F_WHOLE.format(this.getSharpResist())
-				+ " B " + extra.F_WHOLE.format(this.getBluntResist())
-				+ " P " + extra.F_WHOLE.format(this.getPierceResist())
+				+ " S" + extra.F_WHOLE.format(this.getSharpResist())
+				+ " B" + extra.F_WHOLE.format(this.getBluntResist())
+				+ " P" + extra.F_WHOLE.format(this.getPierceResist())
 				+ " cost: " +  extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
 				;
 		}

@@ -75,6 +75,8 @@ public class Player extends SuperPerson{
 	
 	public Story storyHold;
 	
+	private boolean caresAboutCapacity = true, caresAboutAMP = true;
+	
 	public Player(Person p) {
 		person = p;
 		flask = null;
@@ -396,6 +398,18 @@ public class Player extends SuperPerson{
 	}
 	public static void placeAsOccupant(Person p) {
 		Player.player.getWorld().addReoccuring(new Agent(p));
+	}
+	public boolean caresAboutCapacity() {
+		return caresAboutCapacity;
+	}
+	public void setCaresAboutCapacity(boolean caresAboutCapacity) {
+		this.caresAboutCapacity = caresAboutCapacity;
+	}
+	public boolean caresAboutAMP() {
+		return caresAboutAMP;
+	}
+	public void setCaresAboutAMP(boolean caresAboutAMP) {
+		this.caresAboutAMP = caresAboutAMP;
 	}
 	
 	

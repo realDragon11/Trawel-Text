@@ -18,6 +18,7 @@ import trawel.personal.item.Item;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.magic.EnchantConstant;
 import trawel.personal.item.magic.EnchantHit;
+import trawel.personal.people.Player;
 
 /**
  * 
@@ -409,14 +410,20 @@ public class Weapon extends Item implements IEffectiveLevel {
 	@Override
 	public void display(int style,float markup) {
 		switch (style) {
+		//0 is quick for store quickview, not used, use storestring
 		case 0: extra.println(getMaterialName() +" "+getBaseName()+":"+extra.format(this.scoreWeight()));
 		break;
-		case 1:
+		case 1://used for comparing and in stores
+		case 3:
 			extra.println(this.getName()
 			+ " ic/ad/wa: " + extra.formatPerSubOne(this.scoreImpact())
 			+ "/" + extra.format(this.scoreAverage())
 			+"/"+extra.format(this.scoreWeight())
-			+" aether: " + (int)(this.getAetherValue()*markup));
+			+ (Player.player.caresAboutCapacity() ? " weight: "+getWeight() : "")
+			+(style == 1 ?
+					" aether: " + (int)(this.getAetherValue()*markup) :
+						" value: "+extra.F_WHOLE.format(Math.ceil(this.getMoneyValue()*markup)))
+			);
 			
 			if (this.isEnchantedConstant()) {
 				this.getEnchant().display(1);
@@ -428,7 +435,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 				extra.println(" " +wq.name + ": "+wq.desc);
 			}
 			;break;
-		case 2:
+		case 2://Appraiser/full self on stat
 			extra.println(this.getName()
 			+ " highest contribution: " + extra.formatPerSubOne(this.scoreHighestContribution())
 			+ " impact chance: " + extra.formatPerSubOne(this.scoreImpact())
@@ -447,12 +454,12 @@ public class Weapon extends Item implements IEffectiveLevel {
 				extra.println(" " +wq.name + ": "+wq.desc);
 			}
 			;break;
-		case 3://for stores in depth
+		case 20://for stores in depth
 			extra.println(this.getName()
 					+ " ic/ad/wa: " + extra.formatPerSubOne(this.scoreImpact())
 					+ "/" + extra.format(this.scoreAverage())
-					+"/"+extra.format(this.scoreWeight())
-					+" value: " + extra.F_WHOLE.format(Math.ceil(this.getMoneyValue()*markup)));
+					+"/"+extra.format(this.scoreWeight()));
+					
 					
 					if (this.isEnchantedConstant()) {
 						this.getEnchant().display(1);
@@ -475,8 +482,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 	public String storeString(float markup, boolean canShow) {//for stores brief overview
 		if (canShow) {
 			return this.getName() 
-					+ " ic/ad/rw: " + extra.formatPerSubOne(this.scoreImpact())
-					+ "/" + extra.format(this.scoreAverage())
+					+ " ic/wa: " + extra.formatPerSubOne(this.scoreImpact())
 					+"/"+extra.format(this.scoreWeight())
 				+ " cost: " +  extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
 				;

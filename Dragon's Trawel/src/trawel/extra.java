@@ -882,6 +882,18 @@ public final class extra {
 			}
 			return extra.PRE_RED+"-"+format2.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
 		}
+		/**
+		 * this variant will display a white = is equal, and nothing else
+		 */
+		public static final String hardColorDelta2Elide(double to, double was) {
+			if (to > was) {
+				return extra.PRE_GREEN+"+"+format2.format(to-was);
+			}
+			if (to == was) {
+				return extra.PRE_WHITE+"=";
+			}
+			return extra.PRE_RED+"-"+format2.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
+		}
 		
 		/**
 		 * 
@@ -897,6 +909,48 @@ public final class extra {
 				return extra.PRE_WHITE+"=0.0";
 			}
 			return extra.PRE_RED+"-"+format1.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
+		}
+		/**
+		 * this variant will display a white = is equal, and nothing else
+		 */
+		public static final String hardColorDelta1Elide(double to, double was) {
+			if (to > was) {
+				return extra.PRE_GREEN+"+"+format1.format(to-was);
+			}
+			if (to == was) {
+				return extra.PRE_WHITE+"=";
+			}
+			return extra.PRE_RED+"-"+format1.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
+		}
+		/**
+		 * integer,
+		 * @param to the number moving into, is green if better
+		 * @param was the old number, is red if better
+		 * @return +/-/= timid green/timid red/white 0
+		 */
+		public static final String softColorDelta0(double to, double was) {
+			if (to > was) {
+				return extra.TIMID_GREEN+"+"+(int)(to-was);//round towards 0
+			}
+			if (to == was) {
+				return extra.PRE_WHITE+"=";
+			}//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
+			return extra.TIMID_RED +"-"+(int)(was-to);//round towards 0 because we add - ourselves
+		}
+		/**
+		 * integer, Reversed from normal, so positive is bad and negative is good
+		 * @param to the number moving into, is green if better
+		 * @param was the old number, is red if better
+		 * @return +/-/= timid red/timid green/white 0
+		 */
+		public static final String softColorDelta0Reversed(double to, double was) {
+			if (to > was) {
+				return extra.TIMID_RED+"+"+(int)(to-was);//round towards 0
+			}
+			if (to == was) {
+				return extra.PRE_WHITE+"=";
+			}//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
+			return extra.TIMID_GREEN +"-"+(int)(was-to);//round towards 0 because we add - ourselves
 		}
 		
 		/**
