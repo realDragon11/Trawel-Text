@@ -424,7 +424,7 @@ public class mainGame {
 			new WeaponAttackFactory();
 			new TownFlavorFactory();
 			new QuestReactionFactory();
-			WorldGen.initDummyInvs();
+			//WorldGen.initDummyInvs();
 			story = new StoryNone();
 			DummyPerson.init();
 			

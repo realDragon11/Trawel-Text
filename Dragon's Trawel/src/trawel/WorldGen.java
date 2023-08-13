@@ -92,10 +92,9 @@ public class WorldGen {
 	public static final float unitsInLata = (float) (milesInLata/distanceScale);
 	public static final float unitsInLonga = (float) (milesInLonga/distanceScale);
 	
-	private static List<DummyInventory> dumInvs = new ArrayList<DummyInventory>();
 	
-	
-	public static void initDummyInvs() {
+	public static List<DummyInventory> initDummyInvs() {
+		List<DummyInventory> dumInvs = new ArrayList<DummyInventory>();
 		//11 preset armor sets
 		for (int j = 0; j < 12;j++) {
 			dumInvs.add(new DummyInventory(j));
@@ -106,10 +105,11 @@ public class WorldGen {
 			dumInvs.add(new DummyInventory());
 			dumInvs.get(dumInvs.size()-1).resetArmor(0, 0, 0);
 		}
+		return dumInvs;
 	}
 	
 	public static List<DummyInventory> getDummyInvs() {
-		return dumInvs;
+		return extra.getDumInvs();
 	}
 	
 	public static World eoano() {

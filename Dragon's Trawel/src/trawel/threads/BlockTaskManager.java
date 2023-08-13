@@ -55,7 +55,7 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	 * tasks should also be very brief to avoid noticeable lag
 	 */
 	public BlockTaskManager() {
-		super(2, 24, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(), new TrawelTaskThreadFactory());
+		super(2, 24, 60, TimeUnit.MINUTES, new LinkedBlockingQueue<Runnable>(), new TrawelTaskThreadFactory());
 		
 		handler = this;
 	}

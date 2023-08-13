@@ -19,6 +19,7 @@ import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
+import trawel.personal.item.DummyInventory;
 import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.people.Player;
 import trawel.towns.World;
@@ -67,6 +68,17 @@ public final class extra {
 	
 	public static final class ThreadData {
 		public World world;
+	}
+	
+	
+	private static final ThreadLocal<List<DummyInventory>> localDumInvs = new ThreadLocal<List<DummyInventory>>() {
+		@Override protected List<DummyInventory> initialValue() {
+			return WorldGen.initDummyInvs();
+		}
+	};
+	
+	public static final List<DummyInventory> getDumInvs() {
+		return localDumInvs.get();
 	}
 	
 	//static methods
