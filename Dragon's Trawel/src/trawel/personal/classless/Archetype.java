@@ -281,13 +281,8 @@ public enum Archetype implements IHasSkills{
 		for (Archetype a: pAs) {
 			allowSet.addAll(a.getFeatTypes());
 		}
-		while (list.size() < 6) {
-			Feat f = Feat.randFeat(allowSet,fset,person.fetchSkills());//TODO: just commons for now when prototyping
-			if (f == null) {
-				break;
-			}
-			list.add(f);
-			fset.add(f);
+		if (list.size() < 6) {
+			list.addAll(Feat.randFeat(6-list.size(),allowSet,fset,person.fetchSkills())); 
 		}
 		
 		return list;

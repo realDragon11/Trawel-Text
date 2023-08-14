@@ -811,16 +811,18 @@ public class Combat {
 			if (attack.getAttacker().isPlayer()) {
 				switch (code) {
 				case ARMOR:
-					Player.lastAttackStringer += "You hit "+attack.getDefender().getName() + 
-					" but their armor held!";
+					Player.lastAttackStringer += extra.ATTACK_BLOCKED+"You hit "+attack.getDefender().getName() + 
+					extra.AFTER_ATTACK_BLOCKED+" but their armor held!"
+					+
+					(damage > 0 ? extra.ATTACK_DAMAGED_WITH_ARMOR+" but dealt " + damage+" damage!" : "!");
 					break;
 				case DAMAGE: case KILL:
-					Player.lastAttackStringer += "You hit "+attack.getDefender().getName() + 
-					" dealing "+ damage+" damage!";
+					Player.lastAttackStringer += extra.ATTACK_DAMAGED+"You hit "+attack.getDefender().getName() +
+					" dealing "+prettyHPDamage(attack.getTotalDam(),attack.getDefender())+ damage+" damage!";
 					break;
 				case DODGE:
 				case MISS:
-					Player.lastAttackStringer += "You missed "+attack.getDefender().getName() + 
+					Player.lastAttackStringer += extra.AFTER_ATTACK_MISS+"You missed "+extra.ATTACK_MISS+attack.getDefender().getName() + 
 					(damage > 0 ? " but dealt " + damage+" damage!" : "!");
 					break;
 				case NOT_ATTACK:
@@ -1030,20 +1032,21 @@ public class Combat {
 							defender.getStrength(), attacker.getHighestAttribute())>=0) {
 						defender.resistDeath(0f);
 						if (!extra.getPrint()) {
-							extra.print(prettyHPColors(atr.stringer +woundstr+" But they're made of sterner stuff!"
+							extra.print(prettyHPColors(atr.stringer+prettyHPDamage(percent)+" {"+damageDone+" damage}[C]"
+										+woundstr+" But they're made of sterner stuff!"
 									, extra.ATTACK_DAMAGED, attacker, defender));
 							didDisplay = true;
 						}
 					}
 				}
 				if (!didDisplay && !extra.getPrint()) {
-					extra.print(prettyHPColors(atr.stringer+prettyHPDamage(percent, defender)+" {"+damageDone+" damage}[C]"+woundstr,extra.ATTACK_KILL, attacker, defender));
+					extra.print(prettyHPColors(atr.stringer+prettyHPDamage(percent)+" {"+damageDone+" damage}[C]"+woundstr,extra.ATTACK_KILL, attacker, defender));
 					didDisplay = true;
 				}
 			}else {
 				if (!extra.getPrint()) {
 					
-					extra.print(prettyHPColors(atr.stringer+prettyHPDamage(percent, defender)+" {"+damageDone+" damage}[C]"+woundstr
+					extra.print(prettyHPColors(atr.stringer+prettyHPDamage(percent)+" {"+damageDone+" damage}[C]"+woundstr
 							,
 							atr.code == ATK_ResultCode.ARMOR ? extra.ATTACK_DAMAGED_WITH_ARMOR : extra.ATTACK_DAMAGED
 							,attacker,defender));
@@ -1537,8 +1540,11 @@ public class Combat {
 				.replaceAll(quotedDefaultColor, normalColor);
 	}
 	
-	public String prettyHPDamage(float damagePerOfMax, Person defender) {
+	public String prettyHPDamage(float damagePerOfMax) {
 		return extra.inlineColor(extra.colorMix(Color.white, Color.red,extra.clamp(damagePerOfMax,0,1f)));
+	}
+	public String prettyHPDamage(float damage, Person defender) {
+		return prettyHPDamage(damage/defender.getMaxHp());
 	}
 	
 		

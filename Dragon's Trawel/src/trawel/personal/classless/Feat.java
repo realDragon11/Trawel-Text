@@ -121,7 +121,7 @@ public enum Feat implements IHasSkills{
 	 * @param has
 	 * @return
 	 */
-	public static Feat randFeat(Set<FeatType> set,Set<Feat> has,Set<Skill> hasSkills) {
+	public static List<Feat> randFeat(int amount, Set<FeatType> set,Set<Feat> has,Set<Skill> hasSkills) {
 		List<Feat> copyList = new ArrayList<Feat>();
 		List<Float> weightList = new ArrayList<Float>();
 		double totalRarity = 0;
@@ -146,16 +146,29 @@ public enum Feat implements IHasSkills{
 				totalRarity +=rarity;
 			}
 		}//FIXME: could optimize this to return multiple rolls now that it's more costly
-		totalRarity *= extra.getRand().nextDouble();
-		Feat f = null;
-		for (int i = 0; i < copyList.size();i--) {
-			totalRarity-=weightList.get(i);
-			f = copyList.get(i);//in case of rounding errors
-			if (totalRarity <=0) {
-				return f;
+		List<Feat> retList = new ArrayList<Feat>();
+		//totalRarity
+		for (int j = 0; j < amount && totalRarity > .1;j++) {//for rounding errors
+			double rarityRoll = totalRarity*extra.getRand().nextDouble();
+			Feat f = null;
+			int i = 0;
+			for (i = 0; i < copyList.size();i++) {
+				rarityRoll-=weightList.get(i);
+				f = copyList.get(i);//in case of rounding errors
+				if (rarityRoll <=0) {
+					break;
+				}
 			}
+			//i--;//i is incremented before the max check, which is why the max check works
+			retList.add(f);
+			/*if (copyList.size() == 0) {
+				assert totalRarity < .1;
+			}*/
+			assert copyList.get(i) == f;
+			copyList.remove(i);
+			totalRarity -= weightList.remove(i);
 		}
-		return f;
+		return retList;
 	}
 
 	@Override
