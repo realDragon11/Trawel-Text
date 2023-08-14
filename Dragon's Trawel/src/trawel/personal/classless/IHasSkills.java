@@ -135,5 +135,25 @@ public interface IHasSkills {
 	 * mostly useful if you don't need to add them fully and just need this to compute half of something so you can tidy up later
 	 */
 	public Set<Skill> giveSet();
+	
+	public static int inCommon(Set<Skill> a, Set<Skill> b) {
+		//they're enum sets so this could probably be faster actually?
+		int common = 0;
+		if (a.size() >= b.size()) {
+			for (Skill s: b) {
+				if (a.contains(s)) {
+					common++;
+				}
+			}
+		}else {
+			for (Skill s: a) {
+				if (b.contains(s)) {
+					common++;
+				}
+			}
+		}
+		
+		return common;
+	}
 
 }

@@ -1,5 +1,6 @@
 package trawel.personal.classless;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
@@ -25,7 +26,8 @@ public enum Feat implements IHasSkills{
 			,EnumSet.of(Skill.BLOODTHIRSTY,Skill.KILLHEAL,Skill.BLOODDRINKER),0,0,5
 			//needs at least one of the things it grants from some other source
 			,null,EnumSet.of(Skill.BLOODTHIRSTY,Skill.KILLHEAL,Skill.BLOODDRINKER))
-	,UNBREAKABLE("Unbreakable","Nothing stops them.","",
+	,UNBREAKABLE("Unbreakable","Beaten, battered, bent, even broken- their spirit may be checked, but it can not be kept down."
+			,"They may be beaten, battered, bent, even broken. But their spirit burns with an unquenchable flame. They'll be back.",
 			1f,null,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)
 			,EnumSet.of(Skill.TA_NAILS,Skill.ARMORHEART),4,0,0
 			,null,null)
@@ -120,7 +122,8 @@ public enum Feat implements IHasSkills{
 	 * @return
 	 */
 	public static Feat randFeat(Set<FeatType> set,Set<Feat> has,Set<Skill> hasSkills) {
-		Set<Feat> copyList = EnumSet.noneOf(Feat.class);
+		List<Feat> copyList = new ArrayList<Feat>();
+		List<Float> weightList = new ArrayList<Float>();
 		double totalRarity = 0;
 		for (Feat f: Feat.values()){
 			if (f.rarity > 0 &&
@@ -133,19 +136,26 @@ public enum Feat implements IHasSkills{
 				//allll the predicate code time
 				//we don't use real predicates...yet
 				copyList.add(f);
-				totalRarity +=f.rarity;
+				int common = IHasSkills.inCommon(hasSkills,f.skills);
+				float rarity = f.rarity;
+				while (common > 0) {
+					rarity *= .7;
+					common--;
+				}
+				weightList.add(rarity);
+				totalRarity +=rarity;
 			}
-		}
+		}//FIXME: could optimize this to return multiple rolls now that it's more costly
 		totalRarity *= extra.getRand().nextDouble();
-		Feat r = null;
-		for (Feat f: copyList){
-			totalRarity-=f.rarity;
+		Feat f = null;
+		for (int i = 0; i < copyList.size();i--) {
+			totalRarity-=weightList.get(i);
+			f = copyList.get(i);//in case of rounding errors
 			if (totalRarity <=0) {
 				return f;
 			}
-			r = f;//in case of rounding errors
 		}
-		return r;
+		return f;
 	}
 
 	@Override
