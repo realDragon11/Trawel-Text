@@ -663,6 +663,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (hasSkill(Skill.QUICK_START)) {
 			addEffect(Effect.ADVANTAGE_STACK);
 		}
+		if (hasSkill(Skill.STERN_STUFF)) {
+			addEffect(Effect.STERN_STUFF);
+		}
 		if (bodystatus == null || bodystatus.resetToReuse(bodyType)) {
 			bodystatus = new TargetHolder(bodyType);//now reused
 		}
@@ -2007,6 +2010,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public void resistDeath(float percentheal) {
 		hp = (int) (getMaxHp()*percentheal);
 		hp = Math.max(1,hp);
+	}
+	
+	public void setNearDeath() {
+		hp = 1;
 	}
 	/**
 	 * 

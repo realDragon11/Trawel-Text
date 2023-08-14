@@ -184,18 +184,20 @@ public enum Skill{
 				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 75%."
 				,Type.OFFENSE),
 		STERN_STUFF("Sterner Stuff","The first time each battle you would die, roll a contested Strength check vs their highest attribute to survive at 1 HP."
-				,"Applies on instant kill effects, but you will still be left with 1 HP.",
+				,"Instant kill attacks that wouldn't deal enough damage to kill you otherwise do not roll, but still leave you at 1 HP.",
 				Type.DEFENSE),
 		REACTIVE_DODGE("Reactive Dodge","Grants one stack of Advantage after each dodge."
 				,"Does not apply to misses. Advantage applies a +20% bonus to the first hit/dodge roll this Person makes, one stack per attack."
 				,Type.SPEED),
+		ARCANIST_2("Multi-Magical","Grants another Arcanist skill attack configuration."
+				,""
+				,Type.ATTACK_TYPE, Skill.ARCANIST),
 		
 		
 		;
 	    private String name,desc, longDesc;
 	    private Type type;
-	    private int level;
-	    private boolean AITake;
+	    private Skill aliasFor;
 	    public enum Type{
 	    	TRADER,
 	    	EXPLORER,
@@ -210,36 +212,38 @@ public enum Skill{
 	    	SPEED,//skills that tend to make you faster
 	    	DEFENSE,//skills that provide defensive benefits
 	    	ATTACK_TYPE,//skills that grant a new attack type, generally there should only be 5 of these total
-	    	//TODO: need to make a type that just aliases for another ATTACK_TYPE so you can have more than one
+	    	//ATTACK_ALIAS,
+	    	//need to make a type that just aliases for another ATTACK_TYPE so you can have more than one
 	    	FEATURE,//skills that are 'part' of a person or thing. Should be only granted by perks
 	    	INTERNAL_USE_ONLY;//skills that should not be displayed
 	    }
-		Skill(String name,String desc,boolean AITake, Type t, int lvl, String longDesc){
-			this.name = name;
-			this.desc = desc;
-			type = t;
-			level = lvl;
-			this.AITake = AITake;
-			this.longDesc = longDesc;
-		}
-		//new skills
+
 		Skill(String name,String desc, String mechanicDesc,Type type){
 			this.name = name;
 			this.desc = desc;
 			this.longDesc = mechanicDesc;
 			this.type = type;
-			
-			//REMOVE LATER:
-			level = 0;
-			AITake = false;
+		}
+		
+		Skill(String name,String desc, String mechanicDesc,Type type, Skill alias){
+			this.name = name;
+			this.desc = desc;
+			this.longDesc = mechanicDesc;
+			this.type = type;
+			this.aliasFor = alias;
+		}
+		
+		Skill(String name,String desc,boolean a, Type type, int num, String mechanicDesc){
+			this.name = name;
+			this.desc = desc;
+			this.longDesc = mechanicDesc;
+			this.type = type;
 		}
 		
 		
 		public String getName() {return name;}
 		public String getDesc() {return desc;}
 		public Type getType() {return type;}
-		public int getLevel() {return level;}
-		public boolean getAITake() {return AITake;}
 
 		public void display() {
 			extra.println(name + ": " + desc);
@@ -253,6 +257,10 @@ public enum Skill{
 			return longDesc;
 		}
 		
+		public Skill getAliasFor() {
+			return aliasFor;
+		}
+
 		public String explain() {
 			return (name + ": " + desc + "\n " + " " + longDesc);
 		}

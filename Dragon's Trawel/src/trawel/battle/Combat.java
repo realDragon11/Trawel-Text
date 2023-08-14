@@ -975,6 +975,7 @@ public class Combat {
 		//Wounds can now be inflicted even if not dealing damage
 		String woundstr = "";
 		boolean forceKilled = false;
+		boolean doForceKill = false;
 		if (atr.type == ATK_ResultType.IMPACT) {
 			if (attacker.hasSkill(Skill.SPUNCH)) {
 				defender.advanceTime(atr.attack.getTime()/50f);
@@ -995,10 +996,13 @@ public class Combat {
 				
 			}
 			if (atr.code == ATK_ResultCode.KILL) {//if force kill
-				extra.println(attacker.getName() + " executes " + defender.getName() +"!");
-				defender.forceKill();
-				forceKilled = true;
 				//might not actually be final death, but this is fine to say
+				doForceKill = true;
+				extra.println(attacker.getName() + " executes " + defender.getName() +"!");
+				if (damageDone < defender.getHp()) {//if they won't be able to kill them
+					defender.forceKill();
+					forceKilled = true;
+				}
 			}
 			if (attacker.hasSkill(Skill.BLOODTHIRSTY)) {
 				attacker.addHp(Math.min(defender.getLevel(),attacker.getLevel()));
@@ -1023,13 +1027,16 @@ public class Combat {
 			}
 		}
 		boolean didDisplay = false;
-		if (damageDone > 0 || forceKilled) {
+		if (damageDone > 0 || doForceKill) {
 			defender.takeDamage(Math.max(1,damageDone));
 			if (!defender.isAlive()) {
 				if (defender.hasEffect(Effect.STERN_STUFF)) {
 					defender.removeEffectAll(Effect.STERN_STUFF);
-					if (forceKilled || defender.contestedRoll(attacker, 
-							defender.getStrength(), attacker.getHighestAttribute())>=0) {
+					if (
+							doForceKill && //if they wouldn't have died otherwise, they don't need to roll
+							(forceKilled || defender.contestedRoll(attacker, 
+							defender.getStrength(), attacker.getHighestAttribute())>=0)
+							){
 						defender.resistDeath(0f);
 						if (!extra.getPrint()) {
 							extra.print(prettyHPColors(atr.stringer+prettyHPDamage(percent)+" {"+damageDone+" damage}[C]"

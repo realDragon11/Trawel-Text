@@ -49,20 +49,29 @@ public enum Feat implements IHasSkills{
 			,EnumSet.of(Skill.REACTIVE_DODGE,Skill.SPEEDDODGE),0,5,0
 			,null,null
 			)
+	
+	//TODO: needs skill attacks
 	,FLAME_WARDEN("Flamewarden","Wields fire fiercly, fueling their defense.",""
 			,.7f,null,null
-			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_PYRO,Skill.ARMORHEART),0,0,4
+			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_PYRO,Skill.ARMORHEART),0,0,5
 			,EnumSet.of(Skill.ARCANIST),null
 			)
+	//TODO: needs skill attacks
 	,FROST_WARDEN("Frostwarden","Uses ice to bolster their armor.",""
 			,.7f,null,null
-			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_CRYO,Skill.ARMOR_TUNING),0,0,4
+			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_CRYO,Skill.ARMOR_TUNING,Skill.ARCANIST),1,0,4
 			,EnumSet.of(Skill.ARCANIST),null
 			)
+	//TODO: needs skill attacks
 	,SHOCK_SAVANT("Shock-Savant","Shocks their foes with static constantly, increasing the damage wrought by their charges.",""
 			,.7f,null,null
-			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_AERO,Skill.SPUNCH),0,0,4
+			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_AERO,Skill.SPUNCH,Skill.ARCANIST),0,1,4
 			,EnumSet.of(Skill.ARCANIST),null
+			)
+	,ARCHMAGE("Archmage","Weaving spells has become as easy as breathing.","Grants no spells, but gives another slot."
+			,4f,null,null//high weight
+			,EnumSet.of(Skill.ARCANIST_2),0,0,10
+			,EnumSet.of(Skill.ARCANIST,Skill.ELEMENTALIST),null
 			)
 	;
 
