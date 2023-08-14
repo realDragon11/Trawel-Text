@@ -1070,6 +1070,10 @@ public class Combat {
 					defender.addHp(dodgeHeal);
 					extra.print(" Refreshing Dodge heals " + dodgeHeal +"!");
 				}
+				if (defender.hasSkill(Skill.REACTIVE_DODGE)) {
+					defender.addEffect(Effect.ADVANTAGE_STACK);
+					extra.print(" They roll to a better position!");
+				}
 			}
 			
 			if (defender.hasEffect(Effect.BEE_SHROUD)) {

@@ -186,6 +186,9 @@ public enum Skill{
 		STERN_STUFF("Sterner Stuff","The first time each battle you would die, roll a contested Strength check vs their highest attribute to survive at 1 HP."
 				,"Applies on instant kill effects, but you will still be left with 1 HP.",
 				Type.DEFENSE),
+		REACTIVE_DODGE("Reactive Dodge","Grants one stack of Advantage after each dodge."
+				,"Does not apply to misses. Advantage applies a +20% bonus to the first hit/dodge roll this Person makes, one stack per attack."
+				,Type.SPEED),
 		
 		
 		;

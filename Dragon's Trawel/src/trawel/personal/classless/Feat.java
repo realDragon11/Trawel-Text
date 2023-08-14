@@ -10,13 +10,13 @@ import trawel.extra;
 import trawel.personal.classless.Skill.Type;
 
 public enum Feat implements IHasSkills{
-	NOT_PICKY("Not Picky","Grants 2 additional feat picks. (Picks don't give you more feats, just more times to choose.)",""
+	NOT_PICKY("Not-Picky","Grants 2 additional feat picks. (Picks don't give you more feats, just more times to choose.)",""
 			,1f,EnumSet.of(FeatType.COMMON),null
 			,EnumSet.noneOf(Skill.class),5,5,5//should grant a low level in every stat
 			,null,null),
-	COMMON_TOUGH("The Tough","They're tougher than they look. And they look tough.","",
-			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS),2,0),
-	WITCHY("Witchy Washy","Curses and potions are their forte.","",
+	COMMON_TOUGH("Tough","They're tougher than they look. And they look tough.","",
+			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS),2,0,0),
+	WITCHY("Witchy","Curses and potions are their forte.","",// Washy
 			1f,EnumSet.of(FeatType.POTIONS,FeatType.CURSES),null
 			,EnumSet.of(Skill.CURSE_MAGE,Skill.P_BREWER),0,1,4
 			,null,null)
@@ -33,7 +33,7 @@ public enum Feat implements IHasSkills{
 			,1f,EnumSet.of(FeatType.TRICKS),null
 			,EnumSet.of(Skill.SPUNCH),0,10,0
 			,null,null)
-	,ARMORPAINTER("Armor Painter","They paint their armor with magical dyes.",""
+	,ARMORPAINTER("Painter","They paint their armor with magical dyes.",""
 			,1f,EnumSet.of(FeatType.MYSTIC),EnumSet.of(FeatType.SMITHS,FeatType.TRICKS)
 			,EnumSet.of(Skill.MESMER_ARMOR,Skill.ARMOR_MAGE),0,0,5
 			,null,null)
@@ -41,6 +41,26 @@ public enum Feat implements IHasSkills{
 			,1f,null,EnumSet.of(FeatType.BATTLE,FeatType.TRICKS)
 			,EnumSet.of(Skill.OPENING_MOVE,Skill.QUICK_START),0,5,0
 			,null,null
+			)
+	,ACROBAT("Acrobat","To them, a battle is a playful dance, just with higher stakes.",""
+			,1f,EnumSet.of(FeatType.AGILITY),EnumSet.of(FeatType.TRICKS,FeatType.SPIRIT)
+			,EnumSet.of(Skill.REACTIVE_DODGE,Skill.SPEEDDODGE),0,5,0
+			,null,null
+			)
+	,FLAME_WARDEN("Flamewarden","Wields fire fiercly, fueling their defense.",""
+			,.7f,null,null
+			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_PYRO,Skill.ARMORHEART),0,0,4
+			,EnumSet.of(Skill.ARCANIST),null
+			)
+	,FROST_WARDEN("Frostwarden","Uses ice to bolster their armor.",""
+			,.7f,null,null
+			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_CRYO,Skill.ARMOR_TUNING),0,0,4
+			,EnumSet.of(Skill.ARCANIST),null
+			)
+	,SHOCK_SAVANT("Shock-Savant","Shocks their foes with static constantly, increasing the damage wrought by their charges.",""
+			,.7f,null,null
+			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_AERO,Skill.SPUNCH),0,0,4
+			,EnumSet.of(Skill.ARCANIST),null
 			)
 	;
 
@@ -70,12 +90,12 @@ public enum Feat implements IHasSkills{
 		clarity = cla;
 	}
 	
-	Feat(String _name, String _desc, String _getDesc,float _rarity,FeatType _type ,Set<Skill> skillset,int stre, int dext){
-		this(_name,_desc,_getDesc,_rarity,null,EnumSet.of(_type),skillset,stre,dext,0,null,null);
+	Feat(String _name, String _desc, String _getDesc,float _rarity,FeatType _type ,Set<Skill> skillset,int stre, int dext, int cla){
+		this(_name,_desc,_getDesc,_rarity,null,EnumSet.of(_type),skillset,stre,dext,cla,null,null);
 	}
 	
 	Feat(String _name, String _desc, String _getDesc,float _rarity,FeatType _type ,Set<Skill> skillset){
-		this(_name,_desc,_getDesc,_rarity,_type,skillset,0,0);
+		this(_name,_desc,_getDesc,_rarity,_type,skillset,0,0,0);
 	}
 	
 	public enum FeatType{
@@ -83,7 +103,7 @@ public enum Feat implements IHasSkills{
 		MYSTIC,//should be granted if any of the following are granted:
 		ARCANE,CURSES
 		//end mystic sub classes
-		, POTIONS,TRICKS, SOCIAL, BATTLE, SPIRIT, SMITHS;
+		, POTIONS,TRICKS, SOCIAL, BATTLE, SPIRIT, SMITHS, AGILITY;
 	}
 	
 	@Override

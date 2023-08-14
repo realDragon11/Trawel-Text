@@ -18,24 +18,30 @@ import trawel.personal.classless.Feat.FeatType;
 import trawel.personal.classless.Skill.Type;
 
 public enum Archetype implements IHasSkills{
-	VIRAGO("Virago","An expert on toxic incantations, salves, potions, and the like. Adept in supplemental curse spellcasting.",
+	/**
+	 * somewhat inspired by dd1 enemy
+	 */
+	VIRAGO("Venomous Virago","An expert on toxic incantations, salves, potions, and the like. Adept in supplemental curse spellcasting.",
 			AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.CURSES,FeatType.POTIONS)
 			,EnumSet.of(Skill.TOXIC_BREWS)
 			)
-	,GLADIATOR("Gladiator","Attention seeking but no-nonsense physical fighter. Fighting dirty is part of the show."
+	,GLADIATOR("Glitzy Gladiator","Attention seeking but no-nonsense physical fighter. Fighting dirty is part of the show."
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRTY, AGroup.CHARISMA)
-			,EnumSet.of(FeatType.TRICKS,FeatType.SOCIAL,FeatType.BATTLE)
+			,EnumSet.of(FeatType.TRICKS,FeatType.SPIRIT,FeatType.BATTLE,FeatType.SOCIAL)
 			,EnumSet.of(Skill.DSTRIKE)
 			)
-	,ARMORMASTER("Armor Paragon","A walking fortress, one with their armor, two halves made whole."
+	,ARMORMASTER("Armor Artisan","A walking fortress, one with their armor, two halves made whole."
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRECT_BATTLE,AGroup.CRAFT)
 			,EnumSet.of(FeatType.BATTLE,FeatType.SMITHS)//TODO needs better types
 			,EnumSet.of(Skill.ARMOR_TUNING,Skill.ARMORSPEED)
 			)
+	/**
+	 * inspired by a lot of ttrpgs I used to talk about with some friends
+	 */
 	,HEDGE_MAGE("Hedge Mage","A perpetual novice, hedge mages aren't content to restrict themselves to one school."
 			,AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT)
@@ -51,7 +57,7 @@ public enum Archetype implements IHasSkills{
 	,SEA_SAGE("Sea Sage","Tempered by a still calm, they can call forth the Sea's wrath if provoked."
 			,AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC)
-			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE)
+			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.SPIRIT)
 			,EnumSet.of(Skill.DODGEREF,Skill.ARCANIST)
 			)
 	,FISH_TALL("Torrental Titan","A raging force deep-sea bent on proving their conquest of land is inevitable."
@@ -59,6 +65,15 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(AGroup.DIRECT_BATTLE)
 			,EnumSet.of(FeatType.BATTLE)
 			,EnumSet.of(Skill.STERN_STUFF,Skill.RAW_GUTS,Skill.DSTRIKE)
+			)
+	/**
+	 * reference to Litheness in dragon quest 9
+	 */
+	,ACRO_DAREDEVIL("Dauntless Daredevil","Acrobatical prowess untempered by fright and funneled forth into fighting is a fearsome force."
+			,AType.ENTRY
+			,EnumSet.of(AGroup.DEXTERITY)
+			,EnumSet.of(FeatType.BATTLE,FeatType.AGILITY,FeatType.SPIRIT)//not tricks
+			,EnumSet.of(Skill.BLITZ,Skill.DODGEREF)
 			)
 	;
 	
