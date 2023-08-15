@@ -168,73 +168,144 @@ public class Combat {
 		killed = Collections.singletonList(defender);
 	}
 	
-	public class SkillCon {
-		public LSkill lSkill;
-		public float timer, timeTo;
-		public SkillCon(LSkill l, int timer, int reset) {
-			lSkill = l;
-			this.timer = timer;
-			timeTo = reset;
+	public static class SkillCon {
+		public SkillBase base;
+		public float power;
+		public float timer, resetTime;
+		public int sideSource;
+		public SkillCon(SkillBase _base,float _power, int _timer, int _resetTime, int _side) {
+			base = _base;
+			power = _power;
+			timer = _timer;
+			resetTime = _resetTime;
+			sideSource = _side;
+		}
+		
+		public SkillCon(SubSkill skill, float _power, int side) {
+			power = _power;
+			switch (skill) {
+			case DEATH:
+				base = SkillBase.WITHER;
+				timer = 50;
+				resetTime = 50;
+				break;
+			case DEFENSE:
+				base = SkillBase.BLOCKADE;
+				timer = 0;
+				resetTime = -1;
+				break;
+			case ELEMENTAL:
+				base = SkillBase.FIREBALLS;
+				timer = 100;
+				resetTime = 200;
+				break;
+			case ENCHANTING:
+				base = null;
+				break;
+			case SCRYING:
+				base = SkillBase.SCRY;
+				timer = 100;
+				resetTime = 500;
+				break;
+			case SMITHING:
+				base = null;
+				break;
+			case WATCH:
+				base = null;
+				break;
+			}
+			sideSource = side;
+		}
+		
+		public SkillCon setSide(int i) {
+			sideSource = i;
+			return this;
 		}
 	}
 	
-	public void handleSkillCons(List<SkillCon> cons, List<Person> totalList,double timePassed) {
+	public enum SkillBase{
+		FIREBALLS, WITHER, SCRY, BLOCKADE
+	}
+	
+	public static List<SkillCon> numberSkillConLists(List<List<SkillCon>> cons){
+		List<SkillCon> ret = new ArrayList<Combat.SkillCon>();
+		for (int i = 0; i < cons.size();i++) {
+			for (SkillCon c: cons.get(i)) {
+				ret.add(c.setSide(i));
+			}
+		}
+		return ret;
+	}
+	
+	public void handleSkillCons(List<SkillCon> cons, List<List<Person>> peoples,double timePassed) {
 		for (SkillCon sk: cons) {
 			int doTimes = 0;
-			if (sk.timeTo <= 0 && sk.timer >= 0) {
+			if (sk.resetTime <= 0 && sk.timer >= 0) {
 				sk.timer-=timePassed;
 				if (sk.timer < 0) {
 					doTimes = 1;
 				}
 			}
-			if (sk.timeTo > 0) {
+			if (sk.resetTime > 0) {
 				sk.timer-=timePassed;
 				while (sk.timer <= 0) {
-					sk.timer += sk.timeTo*extra.lerp(.8f,1.2f,extra.randFloat());//intentionally not perfect times
+					sk.timer += sk.resetTime*extra.lerp(.8f,1.2f,extra.randFloat());//intentionally not perfect times
 					doTimes++;
 				}	
 			}
 			for (;doTimes > 0; doTimes--) {
-				switch (sk.lSkill.skill) {
-				case DEATH:
+				switch (sk.base) {
+				case WITHER:
 					if (!extra.getPrint()) {
 						extra.println("The battlefield starts to wither!");
 					}
-					for (Person p: totalList) {
-						if (!p.getFlag(PersonFlag.PLAYER_SIDE)) {
-							p.getNextAttack().multPotencyMult(Math.min(20,sk.lSkill.value)/100.0);
+					for (int i = 0; i < peoples.size();i++) {
+						if (i == sk.sideSource) {
+							continue;
+						}
+						for (Person p: peoples.get(i)) {
+							p.getNextAttack().multPotencyMult(Math.min(20,sk.power)/100.0);
 							p.takeDamage(1);
 						}
 					}
 					break;
-				case ELEMENTAL:
+				case FIREBALLS:
 					if (!extra.getPrint()) {
 						extra.println("The very air beings to boil! Armor melts away!");
 					}
-					for (Person p: totalList) {
-						if (!p.getFlag(PersonFlag.PLAYER_SIDE)) {
-							p.takeDamage(Math.min(20,sk.lSkill.value));
-							p.getBag().burnArmor(Math.min(20,sk.lSkill.value*3)/100.0);
+					for (int i = 0; i < peoples.size();i++) {
+						if (i == sk.sideSource) {
+							continue;
+						}
+						for (Person p: peoples.get(i)) {
+							p.takeDamage((int) Math.min(20,sk.power));
+							p.getBag().burnArmor(Math.min(20,sk.power*3)/100.0);
 						}
 					}
 					break;
-				case SCRYING:
+				case SCRY:
 					if (!extra.getPrint()) {
 						extra.println("A path is seen!");
 					}
-					for (Person p: totalList) {
-						if (p.getFlag(PersonFlag.PLAYER_SIDE)) {
-							p.advanceTime(sk.lSkill.value/10.0f);
+					for (int i = 0; i < peoples.size();i++) {
+						if (i != sk.sideSource) {
+							continue;
+						}
+						for (Person p: peoples.get(i)) {
+							p.advanceTime(sk.power/10.0f);
 						}
 					}
 					break;
-				case DEFENSE:
+				case BLOCKADE:
 					if (!extra.getPrint()) {
 						extra.println("The barricades are holding!");
 					}
-					for (Person p: totalList) {
-						if (!p.getFlag(PersonFlag.PLAYER_SIDE)) {
-							p.advanceTime(-sk.lSkill.value);
+					for (int i = 0; i < peoples.size();i++) {
+						if (i == sk.sideSource) {
+							continue;
+						}
+						for (Person p: peoples.get(i)) {
+							p.advanceTime(-sk.power);
 						}
 					}
 					break; 
@@ -258,8 +329,12 @@ public class Combat {
 		public int side;
 		public Person lastAttacker = null;
 	}
+	/*
+	public Combat(World w,boolean typeErasure, List<List<SkillCon>> cons_lists,List<List<Person>> people) {
+		this(w,numberSkillConLists(cons_lists),people);
+	}*/
 	
-	public Combat(World w, FortHall hall,List<List<Person>> people) {
+	public Combat(World w, List<SkillCon> cons,List<List<Person>> people) {
 		inSides = people;
 		int size = people.size();
 		sides = size;
@@ -292,6 +367,7 @@ public class Combat {
 		}
 		
 		boolean playerIsInBattle = false;
+		/*
 		List<SkillCon> cons = new ArrayList<SkillCon>();
 		if (hall != null) {
 			int temp = hall.getSkillCount(SubSkill.DEATH);
@@ -311,6 +387,7 @@ public class Combat {
 				cons.add(new SkillCon(new LSkill(SubSkill.SCRYING,temp),100,500));
 			}
 		}
+		*/
 		for (List<Person> peoples: liveLists) {
 			for (Person p: peoples) {
 				if (p.isPlayer()) {
@@ -351,7 +428,9 @@ public class Combat {
 				p.advanceTime(lowestDelay);
 			}
 
-			this.handleSkillCons(cons, totalList, lowestDelay);
+			if (cons != null) {
+				this.handleSkillCons(cons, liveLists, lowestDelay);
+			}
 
 			Person defender = quickest.getNextAttack().getDefender();
 			boolean wasAlive = defender.isAlive();

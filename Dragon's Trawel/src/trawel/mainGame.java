@@ -32,6 +32,7 @@ import scimech.units.mechs.Swashbuckler;
 import trawel.Networking.ConnectType;
 import trawel.battle.Combat;
 import trawel.battle.TauntsFactory;
+import trawel.battle.Combat.SkillCon;
 import trawel.battle.attacks.StyleFactory;
 import trawel.battle.attacks.TargetFactory;
 import trawel.battle.attacks.WeaponAttackFactory;
@@ -1033,11 +1034,11 @@ public class mainGame {
 			return CombatTwo( first_man, second_man,Player.player.getWorld()).getNonSummonSurvivors().get(0);
 		}
 		public static Combat HugeBattle(World w, List<List<Person>> people){
-			return HugeBattle(w,null,people);
+			return HugeBattle(w,null,people,true);
 		}
 		
-		public static Combat HugeBattle(World w,FortHall hall, List<List<Person>> people){
-			Combat battle = new Combat(w,hall,people);
+		public static Combat HugeBattle(World w,List<SkillCon> cons, List<List<Person>> people, boolean canLoot){
+			Combat battle = new Combat(w,cons,people);
 			Comparator<Person> levelSorter = new Comparator<Person>(){//sort in descending order
 				@Override
 				public int compare(Person arg0, Person arg1) {
@@ -1138,7 +1139,7 @@ public class mainGame {
 				if (!surv.isHumanoid()) {
 					continue;//skip
 				}
-				if (hall == null) {
+				if (canLoot) {
 					for (Person kill: battle.killed) {
 						if (kill.isPlayer()) {
 							continue;//skip
@@ -1180,7 +1181,7 @@ public class mainGame {
 				//DOLATER: none of these people have their aether, money or items taken because it is assumed they won't be used again
 			}
 			
-			if (hall != null){
+			if (canLoot){
 				if (lives.size() > 1) {
 					int giveGold = gold/lives.size();
 					int giveAether = aether/lives.size();

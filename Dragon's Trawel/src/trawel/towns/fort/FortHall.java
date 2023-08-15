@@ -1,7 +1,10 @@
 package trawel.towns.fort;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
@@ -12,6 +15,7 @@ import trawel.AIClass;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.battle.Combat;
+import trawel.battle.Combat.SkillCon;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
@@ -33,9 +37,6 @@ import trawel.towns.World;
  */
 public class FortHall extends FortFeature {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	public int level;
 	public ArrayList<Person> allies = new ArrayList<Person>();
@@ -308,6 +309,27 @@ public class FortHall extends FortFeature {
 		return i;
 	}
 	
+	public EnumMap<SubSkill,Float> compileSkills(){
+		EnumMap<SubSkill,Float> totalMap = new EnumMap<SubSkill, Float>(SubSkill.class);
+		/*List<LSkill> list = new ArrayList<LSkill>();
+		Set<SubSkill> hasSet = EnumSet.noneOf(SubSkill.class);*/
+		for (Feature f: town.getFeatures()) {
+			FortFeature ff = (FortFeature)f;
+			for (LSkill labor: ff.laborer.lSkills) {
+				/*if (!hasSet.contains(labor.skill)) {
+					
+				}*/
+				Float cur = totalMap.get(labor.skill);
+				if (cur == null) {
+					totalMap.put(labor.skill, new Float(labor.value));
+				}else {
+					totalMap.put(labor.skill,cur+labor.value);
+				}
+			}
+		}
+		return totalMap;
+	}
+	
 	public int getWatchScore() {
 		int i = 0;
 		i+=getSkillCount(SubSkill.SCRYING)*3;
@@ -329,10 +351,19 @@ public class FortHall extends FortFeature {
 		attackers.stream().flatMap(p -> p.getSelfOrAllies().stream()).distinct().forEach(fullattackers::add);
 		listlist.add(fullattackers);
 		
-		Combat c = mainGame.HugeBattle(this.town.getIsland().getWorld(), this,listlist);
+		List<SkillCon> cons = new ArrayList<SkillCon>();
+		EnumMap<SubSkill,Float> ssmap = compileSkills();
+		for (SubSkill ss: ssmap.keySet()) {
+			SkillCon madeCon = new SkillCon(ss,ssmap.get(ss),0);
+			if (madeCon.base != null) {
+				cons.add(madeCon);
+			}
+		}
+		
+		Combat c = mainGame.HugeBattle(this.town.getIsland().getWorld(), cons,listlist,false);
 		//Combat c = new Combat(,this,listlist);
 		allies.clear();
-		if (c.playerWon() > 0) {
+		if (c.getVictorySide() == 0) {
 			c.getNonSummonSurvivors().stream().filter(p -> !p.isPlayer()).forEach(allies::add);
 			aetherBank+=c.endaether;
 			/*for (Person p: c.killed) {
