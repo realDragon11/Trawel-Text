@@ -283,6 +283,11 @@ public final class extra {
 	public static String HP_I_SOME = "░";
 	public static String HP_I_DEAD = "┼";
 	
+	public static String DAM_I_NONE = "·";
+	public static String DAM_I_SOME = "¦";
+	public static String DAM_I_HEAVY = "■";
+	public static String DAM_I_KILL = "█";
+	
 	public static final String[] EXPLAIN_CHARS_DAMAGE = new String[]{
 			CHAR_SHARP + " sharp",
 			CHAR_BLUNT + " blunt",
@@ -328,6 +333,10 @@ public final class extra {
 		HP_I_HALF = "▒";
 		HP_I_SOME = "░";
 		HP_I_DEAD = "┼";//"ø";
+		DAM_I_NONE = "·";
+		DAM_I_SOME = "¦";
+		DAM_I_HEAVY = "■";
+		DAM_I_KILL = "█";
 		current_display_style = "visual";
 	}
 	
@@ -350,6 +359,10 @@ public final class extra {
 		CHAR_FROST = "F";
 		CHAR_ELEC = "E";
 		CHAR_DECAY = "D";
+		DAM_I_NONE = "¼";
+		DAM_I_SOME = "½";
+		DAM_I_HEAVY = "¾";
+		DAM_I_KILL = "Ø";
 		current_display_style = "narrator";
 	}
 	
@@ -358,8 +371,8 @@ public final class extra {
 		CHAR_INSTANTS = "⌛";
 		CHAR_HITCHANCE = "◎";
 		CHAR_SHARP = "⚔";
-		CHAR_BLUNT = "♣";
-		CHAR_PIERCE = "♆";
+		CHAR_BLUNT = "🔨";
+		CHAR_PIERCE = "➴";//⇫♆➳➹➴
 		CHAR_IGNITE = "🔥";
 		CHAR_FROST = "❄";
 		CHAR_ELEC = "🗲";
@@ -373,6 +386,10 @@ public final class extra {
 		HP_I_HALF = "💓";
 		HP_I_SOME = "💔";
 		HP_I_DEAD = "💀";
+		DAM_I_NONE = "▫";
+		DAM_I_SOME = "▪";
+		DAM_I_HEAVY = "◼";
+		DAM_I_KILL = "💀";
 		current_display_style = "unicode";
 		//⛊⛨☠♨
 	}

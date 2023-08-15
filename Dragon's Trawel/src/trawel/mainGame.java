@@ -387,11 +387,21 @@ public class mainGame {
 									@Override
 									public String title() {
 										return "more than 75% HP: " +extra.HP_I_FULL
-												+ " more than 50% HP: " + extra.HP_I_MOSTLY
-												+ " more than 25% HP: " +extra.HP_I_HALF
-												+ " more than 0% HP: " + extra.HP_I_SOME
-												+ " dead: " + extra.HP_I_DEAD
+												+ "; more than 50% HP: " + extra.HP_I_MOSTLY
+												+ "; more than 25% HP: " +extra.HP_I_HALF
+												+ "; more than 0% HP: " + extra.HP_I_SOME
+												+ "; dead: " + extra.HP_I_DEAD
 												;
+									}});
+								list.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return ">= 75% damage: " +extra.DAM_I_KILL
+												+ "; >= 50% damage: " + extra.DAM_I_HEAVY
+												+ "; >= 25% damage: " +extra.DAM_I_SOME
+												+ "; <25% damage: " + extra.DAM_I_NONE;
+												
 									}});
 								list.add(new MenuSelect() {
 

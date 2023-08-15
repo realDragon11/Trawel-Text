@@ -1643,19 +1643,16 @@ public class Combat {
 		String res;
 		switch ((int)Math.ceil((damagePerOfMax*100)/25)) {
 		case 0:
-			res = extra.HP_I_FULL;
+			res = extra.DAM_I_NONE;
 			break;
 		case 1: 
-			res = extra.HP_I_MOSTLY;
+			res = extra.DAM_I_SOME;
 			break;
-		case 2: 
-			res = extra.HP_I_HALF;
-			break;
-		case 3: 
-			res = extra.HP_I_SOME;
+		case 2:
+			res = extra.DAM_I_HEAVY;
 			break;
 		default: 
-			res = extra.HP_I_DEAD;
+			res = extra.DAM_I_KILL;
 			break;
 		}
 		return extra.inlineColor(extra.colorMix(Color.white, Color.red,extra.clamp(damagePerOfMax,0,1f)))+res;

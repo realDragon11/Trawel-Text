@@ -720,7 +720,8 @@ public class AIClass {
 					switch (mainGame.attackDisplayStyle) {
 					case CLASSIC:
 						if (combat.turns > 0) {
-							extra.println();
+							extra.println(" ");
+							extra.println(attacker.inlineHPColor()+"You are "+attacker.getNameNoTitle()+".");
 							extra.println(
 									combat.prettyHPIndex(Player.lastAttackStringer)
 									);
@@ -735,7 +736,8 @@ public class AIClass {
 					case TWO_LINE1_WITH_KEY:
 					case TWO_LINE1:
 						if (combat.turns > 0) {
-							extra.println();
+							extra.println(" ");
+							extra.println(attacker.inlineHPColor()+"You are "+attacker.getNameNoTitle()+".");
 							extra.println(
 									combat.prettyHPIndex(Player.lastAttackStringer)
 									);
