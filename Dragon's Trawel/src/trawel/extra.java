@@ -265,6 +265,10 @@ public final class extra {
 	public static String CHAR_SHARP = "S";
 	public static String CHAR_BLUNT = "B";
 	public static String CHAR_PIERCE = "P";
+	public static String CHAR_IGNITE = "I";
+	public static String CHAR_FROST = "F";
+	public static String CHAR_ELEC = "E";
+	public static String CHAR_DECAY = "D";
 	
 	public static String DISP_WEIGHT = "weight";
 	public static String DISP_AETHER = "aether";
@@ -309,6 +313,10 @@ public final class extra {
 		CHAR_SHARP = "S";
 		CHAR_BLUNT = "B";
 		CHAR_PIERCE = "P";
+		CHAR_IGNITE = "I";
+		CHAR_FROST = "F";
+		CHAR_ELEC = "E";
+		CHAR_DECAY = "D";
 		DISP_WEIGHT = "weight";
 		DISP_AETHER = "aether";
 		DISP_AMP = "AMP";
@@ -330,22 +338,31 @@ public final class extra {
 		DISP_AETHER = "a";
 		DISP_AMP = "AMP";
 		DISP_QUALS = "q";
-		HP_I_FULL = "F";
+		HP_I_FULL = "";
 		HP_I_MOSTLY = "¾";
 		HP_I_HALF = "½";
 		HP_I_SOME = "¼";
 		HP_I_DEAD = "Ø";//make sure it says this sanely
+		CHAR_IGNITE = "I";
+		CHAR_FROST = "F";
+		CHAR_ELEC = "E";
+		CHAR_DECAY = "D";
 	}
 	
 	public static void charSwitchEmote() {
+		//https://www.compart.com/en/unicode/search godly resource
 		CHAR_INSTANTS = "⌛";
 		CHAR_HITCHANCE = "◎";
 		CHAR_SHARP = "⚔";
 		CHAR_BLUNT = "♣";
 		CHAR_PIERCE = "♆";
+		CHAR_IGNITE = "🔥";
+		CHAR_FROST = "❄";
+		CHAR_ELEC = "🗲";
+		CHAR_DECAY = "🕱";
 		DISP_WEIGHT = "𐄷";
 		DISP_AETHER = "¤";//currency, of a sort
-		DISP_AMP = "❅";//tight?
+		DISP_AMP = "𝧧";//https://www.compart.com/en/unicode/search?q=movement#characters
 		DISP_QUALS = "🎖";
 		HP_I_FULL = "💖";
 		HP_I_MOSTLY = "💗";

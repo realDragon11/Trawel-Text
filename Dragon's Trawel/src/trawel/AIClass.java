@@ -736,7 +736,9 @@ public class AIClass {
 					case TWO_LINE1:
 						if (combat.turns > 0) {
 							extra.println();
-							extra.println(Player.lastAttackStringer);
+							extra.println(
+									combat.prettyHPIndex(Player.lastAttackStringer)
+									);
 						}
 						if (mainGame.attackDisplayStyle == DispAttack.TWO_LINE1_WITH_KEY) {
 							extra.println("Attacks:   " + extra.CHAR_HITCHANCE + " hitchance; " +extra.CHAR_INSTANTS+" warmup -cooldown; "+

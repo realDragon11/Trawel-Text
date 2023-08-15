@@ -33,6 +33,7 @@ import trawel.Networking.ConnectType;
 import trawel.battle.Combat;
 import trawel.battle.TauntsFactory;
 import trawel.battle.Combat.SkillCon;
+import trawel.battle.attacks.ImpairedAttack.DamageType;
 import trawel.battle.attacks.StyleFactory;
 import trawel.battle.attacks.TargetFactory;
 import trawel.battle.attacks.WeaponAttackFactory;
@@ -348,7 +349,12 @@ public class mainGame {
 
 									@Override
 									public String title() {
-										return "Sharp: " +extra.CHAR_SHARP + " Blunt: " + extra.CHAR_BLUNT + " Pierce: "+extra.CHAR_PIERCE;
+										String dams = "";
+										for (DamageType dt: DamageType.values()) {
+											dams += dt.getExplain() +"; "; 
+										}
+										return dams;
+										//return "Sharp: " +extra.CHAR_SHARP + " Blunt: " + extra.CHAR_BLUNT + " Pierce: "+extra.CHAR_PIERCE;
 									}});
 								list.add(new MenuLine() {
 

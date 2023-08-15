@@ -1360,7 +1360,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			+extra.format(bag.getHealth()) + "x hpm, "
 			+extra.format(bag.getAim()) + "x aim, "
 			+extra.format(bag.getDam()) + "x dam, "
-			+extra.format(bag.getSpeed()) + "x spd,"
+			+extra.format(bag.getSpeed()) + "x spd, "
 			+extra.format(bag.getDodge()) + "x dodge, "
 			+"S/B/P: "+ extra.F_WHOLE.format(bag.getSharpResist())+"/"+extra.F_WHOLE.format(bag.getBluntResist())+"/"+extra.F_WHOLE.format(bag.getPierceResist())
 					);
@@ -2024,8 +2024,27 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 
 	public String inlineHPColor() {
-		int tval = extra.clamp((int)(extra.lerp(125,256,((float)this.getHp())/(this.getMaxHp()))),100,255);
-		return extra.inlineColor(new Color(tval,tval,tval));
+		float per = ((float)this.getHp())/(this.getMaxHp());
+		String res;
+		switch ((int)Math.ceil(((int)(per*100))/25)) {
+		case 0:
+			res = extra.HP_I_DEAD;
+			break;
+		case 1: 
+			res = extra.HP_I_SOME;
+			break;
+		case 2: 
+			res = extra.HP_I_HALF;
+			break;
+		case 3: 
+			res = extra.HP_I_MOSTLY;
+			break;
+		default: 
+			res = extra.HP_I_FULL;
+			break;
+		}
+		int tval = extra.clamp((int)(extra.lerp(125,256,per)),100,255);
+		return extra.inlineColor(new Color(tval,tval,tval))+res;
 	}
 
 }

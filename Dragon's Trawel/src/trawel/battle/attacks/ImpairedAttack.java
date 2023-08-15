@@ -1,5 +1,9 @@
 package trawel.battle.attacks;
 
+import java.util.concurrent.Callable;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import trawel.Effect;
 import trawel.extra;
 import trawel.mainGame;
@@ -197,28 +201,47 @@ public class ImpairedAttack implements IAttack{
 	}
 	
 	public enum DamageType{
-		SHARP("S","sharp","slashing, slicing, and cutting"),
-		BLUNT("B","blunt","bashing, slamming, and crushing"),
-		PIERCE("P","pierce","puncturing, piercing, and skewering"),
-		IGNITE("I","ignite","set aflame, fire, burning"),
-		FROST("F","frost","chilled, frozen, frostbite"),
-		ELEC("E","elec","zapped, shocked, electrocuted"),
-		DECAY("D","decay","withered, aged, decayed");
+		SHARP("S","sharp","slashing, slicing, and cutting",
+				()-> (extra.CHAR_SHARP)
+				),
+		BLUNT("B","blunt","bashing, slamming, and crushing",
+				()-> (extra.CHAR_BLUNT)
+				),
+		PIERCE("P","pierce","puncturing, piercing, and skewering",
+				()-> (extra.CHAR_PIERCE)
+				),
+		IGNITE("I","ignite","set aflame, fire, burning",
+				()-> (extra.CHAR_IGNITE)),
+		FROST("F","frost","chilled, frozen, frostbite",
+				()-> (extra.CHAR_FROST)),
+		ELEC("E","elec","zapped, shocked, electrocuted",
+				()-> (extra.CHAR_ELEC)),
+		DECAY("D","decay","withered, aged, decayed",
+				()-> (extra.CHAR_DECAY));
 		private final String disp;
 		private final String name, desc;
-		DamageType(String _disp, String _name, String _desc){
+		private final Supplier<String> getCode;
+		DamageType(String _disp, String _name, String _desc, Supplier<String> _code){
 			disp = _disp;
 			name = _name;
 			desc = _desc;
+			getCode = _code;
 		}
 		public String getDisp() {
+			return getCode.get();
+		}
+		public String getStaticDisp() {
 			return disp;
 		}
 		public String getName() {
 			return name;
 		}
-		public String getExplain() {
+		public String getStaticExplain() {
 			return name + "("+disp+"):" + desc;
+		}
+		
+		public String getExplain() {
+			return name + "("+getDisp()+"):" + desc;
 		}
 		
 		public String getDispFor(ImpairedAttack ia) {
@@ -239,7 +262,7 @@ public class ImpairedAttack implements IAttack{
 				return disp + " " +ia.getSharp();
 			}
 			return null;*/
-			return disp + " " + getAmountFor(ia);
+			return getDisp() + " " + getAmountFor(ia);
 		}
 		
 		public int getAmountFor(ImpairedAttack ia) {

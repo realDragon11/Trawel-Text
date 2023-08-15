@@ -1648,10 +1648,9 @@ public class Combat {
 		for(;;) {
 			int index = builder.indexOf("[HPT");//don't need regex maybe
 			if (index > 0) {
-				index += 4;
-				int subindex = builder.indexOf("]", index);
-				int spot = Integer.parseInt(builder.substring(index, subindex));
-				builder.replace(index, subindex,totalList.get(spot).inlineHPColor());
+				int subindex = builder.indexOf("]", index+4);
+				int spot = Integer.parseInt(builder.substring(index+4, subindex));
+				builder.replace(index, subindex+1,totalList.get(spot).inlineHPColor());
 			}else {
 				break;
 			}
