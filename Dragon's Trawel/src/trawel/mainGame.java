@@ -303,7 +303,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return advancedCombatDisplay +" Advanced Combat Display (HP per attack, attack result notes)";
+						return advancedCombatDisplay +" Debug Combat Display (HP per attack, attack result notes)";
 					}
 
 					@Override
@@ -321,6 +321,100 @@ public class mainGame {
 					@Override
 					public boolean go() {
 						attackDisplayStyle = DispAttack.values()[(attackDisplayStyle.ordinal()+1)%DispAttack.values().length];
+						return false;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Change display Chars (% to h)";
+					}
+
+					@Override
+					public boolean go() {
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> list = new ArrayList<MenuItem>();
+								list.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "Accuracy Hit: " +extra.CHAR_HITCHANCE
+												+ " Time Instants: " + extra.CHAR_INSTANTS;
+									}});
+								list.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "Sharp: " +extra.CHAR_SHARP + " Blunt: " + extra.CHAR_BLUNT + " Pierce: "+extra.CHAR_PIERCE;
+									}});
+								list.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "Weight: " +extra.DISP_WEIGHT
+												+ " Aether: " + extra.DISP_AETHER
+												+ " Agility Multiplier Penalty: " +extra.DISP_AMP
+												+ " Qualities: " + extra.DISP_QUALS;
+									}});
+								list.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "more than 75% HP: " +extra.HP_I_FULL
+												+ " more than 50% HP: " + extra.HP_I_MOSTLY
+												+ " more than 25% HP: " +extra.HP_I_HALF
+												+ " more than 0% HP: " + extra.HP_I_SOME
+												+ " dead: " + extra.HP_I_DEAD
+												;
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Visual (Full ASCII)";
+									}
+
+									@Override
+									public boolean go() {
+										extra.charSwitchVisual();
+										return false;
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Narrator (Narrator friendly ASCII only)";
+									}
+
+									@Override
+									public boolean go() {
+										extra.charSwitchNarrator();
+										return false;
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Emote (Unicode)";
+									}
+
+									@Override
+									public boolean go() {
+										extra.charSwitchEmote();
+										return false;
+									}});
+								list.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "In the future there will also be an option that reads from a file.";
+									}});
+								list.add(new MenuBack());
+								return list;
+							}});
 						return false;
 					}});
 				mList.add(new MenuLine() {

@@ -66,6 +66,8 @@ public class Combat {
 	
 	public int endaether;
 	
+	private List<Person> totalList, killList;
+	
 	//constructor
 	/**
 	 * Holds a fight to the death, between two people.
@@ -73,6 +75,9 @@ public class Combat {
 	 * @param manTwo (Person)
 	 */
 	public Combat(Person manOne, Person manTwo,World w) {
+		totalList = new ArrayList<Person>();
+		totalList.add(manOne);
+		totalList.add(manTwo);
 		Person attacker;
 		Person defender;
 		//Setup
@@ -160,12 +165,13 @@ public class Combat {
 				winSide = 0;
 			}
 		}
-
+		
 		extra.println(extra.choose("The dust settles...","The body drops to the floor.","Death has come.","The battle is over."));
 		extra.println(defender.getName() + extra.choose(" lies dead..."," walks the earth no more..."," has been slain."));
 		killData(attacker,defender);
 		survivors = Collections.singletonList(attacker);
 		killed = Collections.singletonList(defender);
+		killList = killed;
 	}
 	
 	public static class SkillCon {
@@ -322,7 +328,6 @@ public class Combat {
 	private List<List<Person>> targetLists;
 	private List<List<Person>> inSides;
 	private Map<Person,BattleData> dataMap;
-	private List<Person> totalList, killList;
 	private int sides;
 	
 	private class BattleData{
@@ -886,10 +891,10 @@ public class Combat {
 			/*if (attack == null) {
 				extra.getPrint();
 			}*/
+			if (attack.getAttacker().isPlayer() && attack.getDefender() != null) {
 			Player.lastAttackStringer = atr.attack.getName()+": ";
 			Person def = attack.getDefender();
 			int index = totalList.indexOf(def);
-			if (attack.getAttacker().isPlayer()) {
 				switch (code) {
 				case ARMOR:
 					Player.lastAttackStringer += extra.ATTACK_BLOCKED+"You hit "+

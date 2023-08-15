@@ -253,18 +253,29 @@ public final class extra {
 	 * before then
 	 */
 	
-	public static final String CHAR_INSTANTS = "_";
+	public static String CHAR_INSTANTS = "_";
 	//was having trouble finding something that narrator read 
 	//should probably make instants display an actual icon in the graphical with an insert sprite code
 	//should handle replacement on gms2.3 side for compat + brevity
 	
-	public static final String CHAR_HITCHANCE = "%";
+	public static String CHAR_HITCHANCE = "%";
 	//also probably something better out there
 	
 	//TODO: make some better global DRY damage code system
-	public static final String CHAR_SHARP = "S";
-	public static final String CHAR_BLUNT = "B";
-	public static final String CHAR_PIERCE = "P";
+	public static String CHAR_SHARP = "S";
+	public static String CHAR_BLUNT = "B";
+	public static String CHAR_PIERCE = "P";
+	
+	public static String DISP_WEIGHT = "weight";
+	public static String DISP_AETHER = "aether";
+	public static String DISP_AMP = "AMP";
+	public static String DISP_QUALS = "q";
+	
+	public static String HP_I_FULL = "█";
+	public static String HP_I_MOSTLY = "▓";
+	public static String HP_I_HALF = "▒";
+	public static String HP_I_SOME = "░";
+	public static String HP_I_DEAD = "";
 	
 	public static final String[] EXPLAIN_CHARS_DAMAGE = new String[]{
 			CHAR_SHARP + " sharp",
@@ -287,6 +298,62 @@ public final class extra {
 	}
 	
 	public static final String EXPLAIN_SIMPLE_CHARS_DAMAGE = stringBuilder;
+	
+	public static String explainDam() {
+		return CHAR_SHARP+" sharp, " + CHAR_BLUNT + " blunt, " +CHAR_PIERCE +" pierce.";
+	}
+	
+	public static void charSwitchVisual() {
+		CHAR_INSTANTS = "_";
+		CHAR_HITCHANCE = "%";
+		CHAR_SHARP = "S";
+		CHAR_BLUNT = "B";
+		CHAR_PIERCE = "P";
+		DISP_WEIGHT = "weight";
+		DISP_AETHER = "aether";
+		DISP_AMP = "AMP";
+		DISP_QUALS = "q";
+		HP_I_FULL = "█";
+		HP_I_MOSTLY = "▓";
+		HP_I_HALF = "▒";
+		HP_I_SOME = "░";
+		HP_I_DEAD = "ø";
+	}
+	
+	public static void charSwitchNarrator() {
+		CHAR_INSTANTS = "t";
+		CHAR_HITCHANCE = "h";
+		CHAR_SHARP = "S";
+		CHAR_BLUNT = "B";
+		CHAR_PIERCE = "P";
+		DISP_WEIGHT = "w";
+		DISP_AETHER = "a";
+		DISP_AMP = "AMP";
+		DISP_QUALS = "q";
+		HP_I_FULL = "F";
+		HP_I_MOSTLY = "¾";
+		HP_I_HALF = "½";
+		HP_I_SOME = "¼";
+		HP_I_DEAD = "Ø";//make sure it says this sanely
+	}
+	
+	public static void charSwitchEmote() {
+		CHAR_INSTANTS = "⌛";
+		CHAR_HITCHANCE = "◎";
+		CHAR_SHARP = "⚔";
+		CHAR_BLUNT = "♣";
+		CHAR_PIERCE = "♆";
+		DISP_WEIGHT = "𐄷";
+		DISP_AETHER = "¤";//currency, of a sort
+		DISP_AMP = "❅";//tight?
+		DISP_QUALS = "🎖";
+		HP_I_FULL = "💖";
+		HP_I_MOSTLY = "💗";
+		HP_I_HALF = "💓";
+		HP_I_SOME = "💔";
+		HP_I_DEAD = "💀";
+		//⛊⛨☠♨
+	}
 	
 	/**
 	 * Formats a double into a string that looks nicer.

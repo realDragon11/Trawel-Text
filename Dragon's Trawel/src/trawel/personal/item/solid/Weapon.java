@@ -419,9 +419,9 @@ public class Weapon extends Item implements IEffectiveLevel {
 			+ " ic/ad/wa: " + extra.formatPerSubOne(this.scoreImpact())
 			+ "/" + extra.format(this.scoreAverage())
 			+"/"+extra.format(this.scoreWeight())
-			+ (Player.player.caresAboutCapacity() ? " weight: "+getWeight() : "")
+			+ (Player.player.caresAboutCapacity() ? " "+extra.DISP_WEIGHT+": "+getWeight() : "")
 			+(style == 1 ?
-					" aether: " + (int)(this.getAetherValue()*markup) :
+					" "+extra.DISP_AETHER+": " + (int)(this.getAetherValue()*markup) :
 						" value: "+extra.F_WHOLE.format(Math.ceil(this.getMoneyValue()*markup)))
 			);
 			

@@ -549,16 +549,19 @@ public class AIClass {
 			if (Player.getTutorial()) {
 				extra.println("SBP = sharp, blunt, pierce");
 			}
-			extra.println(extra.PRE_MAGENTA+"Difference: " 
-			+ extra.TIMID_BLUE+"S "+extra.hardColorDelta1Elide(toArm.getSharpResist(),hasArm.getSharpResist())
+			extra.println(extra.PRE_MAGENTA+"Difference: "
+			+ extra.TIMID_BLUE+extra.CHAR_SHARP
+			+" "+extra.hardColorDelta1Elide(toArm.getSharpResist(),hasArm.getSharpResist())
 			+ extra.PRE_WHITE+" / "
-			+ extra.TIMID_BLUE+"B " + extra.hardColorDelta1Elide(toArm.getBluntResist(),hasArm.getBluntResist())
+			+ extra.TIMID_BLUE+extra.CHAR_BLUNT
+			+ extra.hardColorDelta1Elide(toArm.getBluntResist(),hasArm.getBluntResist())
 			+ extra.PRE_WHITE+" / "
-			+ extra.TIMID_BLUE+"P " + extra.hardColorDelta1Elide(toArm.getPierceResist(),hasArm.getPierceResist())
+			+ extra.TIMID_BLUE+extra.CHAR_PIERCE
+			+ extra.hardColorDelta1Elide(toArm.getPierceResist(),hasArm.getPierceResist())
 			//weight is an int anyway
-			+ (Player.player.caresAboutCapacity() ? extra.TIMID_BLUE+ " weight: "+extra.softColorDelta0Reversed(toArm.getWeight(),hasArm.getWeight()) : "")
+			+ (Player.player.caresAboutCapacity() ? extra.TIMID_BLUE+ " "+extra.DISP_WEIGHT+": "+extra.softColorDelta0Reversed(toArm.getWeight(),hasArm.getWeight()) : "")
 			//amp is not, but we want it to display hard anyway
-			+ (Player.player.caresAboutAMP() ? extra.TIMID_BLUE+ " AMP: "+ extra.hardColorDelta2(toArm.getAgiPenMult(),hasArm.getAgiPenMult()) : "")
+			+ (Player.player.caresAboutAMP() ? extra.TIMID_BLUE+ " "+extra.DISP_AMP+": "+ extra.hardColorDelta2(toArm.getAgiPenMult(),hasArm.getAgiPenMult()) : "")
 			+ " " + priceDiffDisp(costDiff,costName,s)
 			);
 			if (hasItem.getEnchant() != null || toReplace.getEnchant() != null) {
@@ -582,8 +585,9 @@ public class AIClass {
 				+ (extra.hardColorDelta2Elide(toWeap.scoreWeight(),hasWeap.scoreWeight()))
 				//if the qualities are the same, 'q=', if neither has any, do not display
 				+extra.TIMID_MAGENTA
-				+ (isQDiff ? " q " + extra.colorBaseZeroTimid(qualDiff) : (toWeap.numQual() > 0 ? (" q =") : ""))
-				+ (Player.player.caresAboutCapacity() ? " weight: "+extra.softColorDelta0Reversed(toWeap.getWeight(),hasWeap.getWeight()) : "")
+				+ (isQDiff ? " "+extra.DISP_QUALS+" "
+				+ extra.colorBaseZeroTimid(qualDiff) : (toWeap.numQual() > 0 ? (" "+extra.DISP_QUALS+" =") : ""))
+				+ (Player.player.caresAboutCapacity() ? " "+extra.DISP_WEIGHT+": "+extra.softColorDelta0Reversed(toWeap.getWeight(),hasWeap.getWeight()) : "")
 				+ " " + priceDiffDisp(costDiff,costName,s)
 				);
 				if (((Weapon)hasItem).getEnchant() != null || ((Weapon)toReplace).getEnchant()!= null) {
@@ -609,6 +613,9 @@ public class AIClass {
 	 */
 	public static String priceDiffDisp(int delta,String name, Store s) {
 		if (s == null) {
+			if (name == "aether") {
+				name = extra.DISP_AETHER;
+			}
 			return extra.TIMID_MAGENTA+name+": " + (delta != 0 ? extra.colorBaseZeroTimid(delta) : "=");
 		}
 		if (delta < 0) {//costs less, might be gaining money

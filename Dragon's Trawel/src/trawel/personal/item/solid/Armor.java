@@ -380,11 +380,14 @@ public class Armor extends Item implements IEffectiveLevel{
 			break;
 		case 1://comparing
 		case 3:
-			extra.println(this.getName() + " sbp:" + extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
-			+ (Player.player.caresAboutCapacity() ? " weight: "+getWeight() : "")
-			+ (Player.player.caresAboutAMP() ? " AMP: "+ extra.F_TWO_TRAILING.format(getAgiPenMult())+"x" : "")
+			extra.println(this.getName() + ":"
+			+ " " + extra.CHAR_SHARP+extra.format(this.getSharpResist())
+			+ " " + extra.CHAR_BLUNT+extra.format(this.getBluntResist())
+			+ " " + extra.CHAR_PIERCE+extra.format(this.getPierceResist())
+			+ (Player.player.caresAboutCapacity() ? " "+extra.DISP_WEIGHT+": "+getWeight() : "")
+			+ (Player.player.caresAboutAMP() ? " "+extra.DISP_AMP+": "+ extra.F_TWO_TRAILING.format(getAgiPenMult())+"x" : "")
 			+(style == 1 ?
-					" aether: " + (int)(getAetherValue()*markup) :
+					" "+extra.DISP_AETHER+": " + (int)(getAetherValue()*markup) :
 						" value: "+extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup)))
 					);
 			if (this.getEnchant() != null) {
@@ -425,9 +428,9 @@ public class Armor extends Item implements IEffectiveLevel{
 	public String storeString(float markup, boolean canShow) {
 		if (canShow) {
 			return this.getName() 
-				+ " S" + extra.F_WHOLE.format(this.getSharpResist())
-				+ " B" + extra.F_WHOLE.format(this.getBluntResist())
-				+ " P" + extra.F_WHOLE.format(this.getPierceResist())
+				+ " "+extra.CHAR_SHARP + extra.F_WHOLE.format(this.getSharpResist())
+				+ " "+extra.CHAR_BLUNT + extra.F_WHOLE.format(this.getBluntResist())
+				+ " "+extra.CHAR_PIERCE + extra.F_WHOLE.format(this.getPierceResist())
 				+ " cost: " +  extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
 				;
 		}
