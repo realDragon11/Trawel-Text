@@ -1362,7 +1362,8 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			+extra.format(bag.getDam()) + "x dam, "
 			+extra.format(bag.getSpeed()) + "x spd, "
 			+extra.format(bag.getDodge()) + "x dodge, "
-			+"S/B/P: "+ extra.F_WHOLE.format(bag.getSharpResist())+"/"+extra.F_WHOLE.format(bag.getBluntResist())+"/"+extra.F_WHOLE.format(bag.getPierceResist())
+			+extra.CHAR_SHARP+"/"+extra.CHAR_PIERCE+"/"+extra.CHAR_BLUNT+
+			": "+ extra.F_WHOLE.format(bag.getSharpResist())+"/"+extra.F_WHOLE.format(bag.getBluntResist())+"/"+extra.F_WHOLE.format(bag.getPierceResist())
 					);
 			extra.println(bag.quickInventory());
 		}else {
@@ -1941,7 +1942,8 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			extra.println("Attributes below 100 have penalties, above 100 have bonuses. This is typically a 50% penalty at 0, and +10% bonus for every 100 above 100. Dexterity is more involved for dodge, but non-dodge applications of dexterity don't have penalties for sub 100 numbers.");
 			extra.println("Strength mult applies to physical damage from weapons, Dexterity mult applies to hit chance.");
 		}
-		extra.println("Strength: "+getStrength() + ", weight: "+bag.getCapacity() +" used capacity: "+((float)getStrength())/bag.getCapacity()+", multiplier: "+ extra.F_TWO_TRAILING.format(attMultStr())+"x");
+		extra.println("Strength: "+getStrength() + ", weight: "+bag.getCapacity()
+		+" used capacity: "+(100*getStrength())/(100*bag.getCapacity())+"%, multiplier: "+ extra.F_TWO_TRAILING.format(attMultStr())+"x");
 		extra.println(" Dexterity Penalty Cap: " + atrBox.getDexPen());
 		extra.println("Dexterity: Raw="+getRawDexterity()+", Effective: " +getDexterity() + " multiplier: "+ extra.F_TWO_TRAILING.format(attMultDex())+"x");
 		extra.println(" Agility Multiplier Penalty: "

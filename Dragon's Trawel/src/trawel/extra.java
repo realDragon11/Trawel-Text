@@ -253,6 +253,8 @@ public final class extra {
 	 * before then
 	 */
 	
+	public static String current_display_style = "visual";
+	
 	public static String CHAR_INSTANTS = "_";
 	//was having trouble finding something that narrator read 
 	//should probably make instants display an actual icon in the graphical with an insert sprite code
@@ -326,6 +328,7 @@ public final class extra {
 		HP_I_HALF = "▒";
 		HP_I_SOME = "░";
 		HP_I_DEAD = "ø";
+		current_display_style = "visual";
 	}
 	
 	public static void charSwitchNarrator() {
@@ -347,6 +350,7 @@ public final class extra {
 		CHAR_FROST = "F";
 		CHAR_ELEC = "E";
 		CHAR_DECAY = "D";
+		current_display_style = "narrator";
 	}
 	
 	public static void charSwitchEmote() {
@@ -369,6 +373,7 @@ public final class extra {
 		HP_I_HALF = "💓";
 		HP_I_SOME = "💔";
 		HP_I_DEAD = "💀";
+		current_display_style = "unicode";
 		//⛊⛨☠♨
 	}
 	

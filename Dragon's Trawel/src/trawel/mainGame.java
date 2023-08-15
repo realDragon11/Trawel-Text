@@ -67,9 +67,10 @@ import trawel.towns.services.Oracle;
  */
 public class mainGame {
 
-	public static final String VERSION_STRING = "v0.8.b_2";//__X is in development, _X is the actual release of that version
+	public static final String VERSION_STRING = "v0.8.b__3";//__X is in development, _X is the actual release of that version
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
+			"b__3: Multiple display option improvements, subtle changes to battle conditions.",
 			"b_2: {part 1/3} Attack backend changes became frontend changes for weapons, which now have different stat displays. This also made armor and dodging actual things again, before their average stats were a bit too low, now the forumlas have been re-tested and remade. 'classless' system (essentially multiclassing but with many multis) has born fruit, you can now use the replacement system, although it still has a long ways to go.",
 			"b_2: {part 2/3} If you want to pick your own Archetype to start with, use slowstart, otherwise it will pick a random one. Note that some require additional setup of their magic attacks. Nodes areas and ports also received complete overhauls, and much of the update development time was spent making Trawel run again after breaking nodes to improve them. Various small features, including witch huts, slums, and world generation also got less major updates and fixes.",
 			"b_2: {part 3/3} Some changes were made but not enough to have anything to show, for example summons should work, (which is a far cry from Trawel in 2019, where the concept of a 3 person fight was unthinkable) but there are no skills that summon any creatures yet.",
@@ -187,7 +188,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Changelog, press multiple times to cycle\n";
+						return "Changelog, press multiple times to cycle";
 					}
 
 					@Override
@@ -195,6 +196,12 @@ public class mainGame {
 						extra.println(changelog[changelogViewer++]);
 						changelogViewer%=changelog.length;
 						return false;
+					}});
+				mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return " ";
 					}});
 				mList.add(new MenuSelect() {
 
@@ -230,7 +237,18 @@ public class mainGame {
 						extra.println("-realDragon");
 						return false;
 					}});
-				
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Display Options";
+					}
+
+					@Override
+					public boolean go() {
+						advancedDisplayOptions();
+						return false;
+					}});
 				mList.add(new MenuSelect() {
 
 					@Override
@@ -243,7 +261,12 @@ public class mainGame {
 						credits();
 						return false;
 					}});
-				
+				mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return " ";
+					}});
 				mList.add(new MenuSelect() {
 
 					@Override
@@ -265,9 +288,14 @@ public class mainGame {
 
 					@Override
 					public boolean go() {
-						//TODO: just reconnecting for now, need to have accessibility options later
 						advancedOptions();
 						return false;
+					}});
+				mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return " ";
 					}});
 				mList.add(new MenuLast() {
 
@@ -287,7 +315,7 @@ public class mainGame {
 		});
 	}
 	
-	private static void advancedOptions() {
+	private static void advancedDisplayOptions() {
 		extra.menuGo(new MenuGenerator(){
 
 			@Override
@@ -300,18 +328,7 @@ public class mainGame {
 						return "Here are some display options. They currently do not save per run, although they are planned to later after prefs get made bigger.";
 					}}
 				);
-				mList.add(new MenuSelect() {
 
-					@Override
-					public String title() {
-						return advancedCombatDisplay +" Debug Combat Display (HP per attack, attack result notes)";
-					}
-
-					@Override
-					public boolean go() {
-						advancedCombatDisplay = !advancedCombatDisplay;
-						return false;
-					}});
 				mList.add(new MenuSelect() {
 
 					@Override
@@ -328,7 +345,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Change display Chars (% to h)";
+						return "Change display Chars ("+extra.current_display_style+")";
 					}
 
 					@Override
@@ -423,11 +440,36 @@ public class mainGame {
 							}});
 						return false;
 					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return advancedCombatDisplay +" Debug Combat Display (HP per attack, attack result notes)";
+					}
+
+					@Override
+					public boolean go() {
+						advancedCombatDisplay = !advancedCombatDisplay;
+						return false;
+					}});
+
+				mList.add(new MenuBack());
+				return mList;
+			}
+		});
+	}
+	
+	private static void advancedOptions() {
+		extra.menuGo(new MenuGenerator(){
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> mList = new ArrayList<MenuItem>();
 				mList.add(new MenuLine() {
 
 					@Override
 					public String title() {
-						return "\nThese options deal with reconnecting to Trawel Graphical, and only apply to the Steam version. They only work on the command line, otherwise you may have to restart or use the command line to finish reconnecting.";
+						return "These options deal with reconnecting to Trawel Graphical, and only apply to the Steam version. They only work on the command line, otherwise you may have to restart or use the command line to finish reconnecting.";
 					}}
 				);
 				mList.add(new MenuSelect() {
@@ -446,7 +488,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Full Reconnect\n";
+						return "Full Reconnect";
 					}
 
 					@Override

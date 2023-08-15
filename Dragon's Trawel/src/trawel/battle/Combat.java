@@ -1128,7 +1128,8 @@ public class Combat {
 							){
 						defender.resistDeath(0f);
 						if (!extra.getPrint()) {
-							extra.print(prettyHPColors(atr.stringer+prettyHPDamage(percent)+" {"+damageDone+" damage}[C]"
+							extra.print(
+									prettyHPColors(atr.stringer+"[C] {"+prettyHPDamage(percent)+" "+damageDone+" damage[C]}"
 										+woundstr+" But they're made of sterner stuff!"
 									, extra.ATTACK_DAMAGED, attacker, defender));
 							didDisplay = true;
@@ -1136,13 +1137,15 @@ public class Combat {
 					}
 				}
 				if (!didDisplay && !extra.getPrint()) {
-					extra.print(prettyHPColors(atr.stringer+prettyHPDamage(percent)+" {"+damageDone+" damage}[C]"+woundstr,extra.ATTACK_KILL, attacker, defender));
+					extra.print(
+							prettyHPColors(atr.stringer+"[C] {"+prettyHPDamage(percent)+" "+damageDone+" damage[C]}"
+							+woundstr,extra.ATTACK_KILL, attacker, defender));
 					didDisplay = true;
 				}
 			}else {
 				if (!extra.getPrint()) {
 					
-					extra.print(prettyHPColors(atr.stringer+prettyHPDamage(percent)+" {"+damageDone+" damage}[C]"+woundstr
+					extra.print(prettyHPColors(atr.stringer+" {"+prettyHPDamage(percent)+" "+damageDone+" damage[C]}"+woundstr
 							,
 							atr.code == ATK_ResultCode.ARMOR ? extra.ATTACK_DAMAGED_WITH_ARMOR : extra.ATTACK_DAMAGED
 							,attacker,defender));
@@ -1637,7 +1640,25 @@ public class Combat {
 	}
 	
 	public static String prettyHPDamage(float damagePerOfMax) {
-		return extra.inlineColor(extra.colorMix(Color.white, Color.red,extra.clamp(damagePerOfMax,0,1f)));
+		String res;
+		switch ((int)Math.ceil(((int)(damagePerOfMax*100))/25)) {
+		case 0:
+			res = extra.HP_I_FULL;
+			break;
+		case 1: 
+			res = extra.HP_I_MOSTLY;
+			break;
+		case 2: 
+			res = extra.HP_I_HALF;
+			break;
+		case 3: 
+			res = extra.HP_I_SOME;
+			break;
+		default: 
+			res = extra.HP_I_DEAD;
+			break;
+		}
+		return extra.inlineColor(extra.colorMix(Color.white, Color.red,extra.clamp(damagePerOfMax,0,1f)))+res;
 	}
 	public static String prettyHPDamage(float damage, Person defender) {
 		return prettyHPDamage(damage/defender.getMaxHp());
