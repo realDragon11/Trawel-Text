@@ -126,13 +126,13 @@ public class AttributeBox {
 			return .75f;
 		}
 		if (capacityPercent <= 1.5f) {
-			return extra.lerp(.75f,.5f,capacityPercent/1.5f);
+			return extra.lerp(.75f,.5f,capacityPercent-1f);
 		}
 		if (capacityPercent <= 2f) {
-			return extra.lerp(.5f,.25f,capacityPercent/2f);
+			return extra.lerp(.5f,.25f,capacityPercent-1.5f);
 		}
 		if (capacityPercent <= 3f) {
-			return extra.lerp(.25f,.1f,capacityPercent/3f);
+			return extra.lerp(.25f,.1f,capacityPercent-2f);
 		}
 		return .1f;
 	}
