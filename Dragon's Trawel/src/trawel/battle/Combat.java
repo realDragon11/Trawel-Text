@@ -887,21 +887,26 @@ public class Combat {
 				extra.getPrint();
 			}*/
 			Player.lastAttackStringer = atr.attack.getName()+": ";
+			Person def = attack.getDefender();
+			int index = totalList.indexOf(def);
 			if (attack.getAttacker().isPlayer()) {
 				switch (code) {
 				case ARMOR:
-					Player.lastAttackStringer += extra.ATTACK_BLOCKED+"You hit "+attack.getDefender().getName() + 
+					Player.lastAttackStringer += extra.ATTACK_BLOCKED+"You hit "+
+					"[HPT"+index+"]"+def.getName() + 
 					extra.AFTER_ATTACK_BLOCKED+" but their armor held!"
 					+
 					(damage > 0 ? extra.ATTACK_DAMAGED_WITH_ARMOR+" but dealt " + damage+" damage!" : "!");
 					break;
 				case DAMAGE: case KILL:
-					Player.lastAttackStringer += extra.ATTACK_DAMAGED+"You hit "+attack.getDefender().getName() +
+					Player.lastAttackStringer += extra.ATTACK_DAMAGED+"You hit "+
+					"[HPT"+index+"]"+def.getName() + extra.ATTACK_DAMAGED+
 					" dealing "+prettyHPDamage(attack.getTotalDam(),attack.getDefender())+ damage+" damage!";
 					break;
 				case DODGE:
 				case MISS:
-					Player.lastAttackStringer += extra.AFTER_ATTACK_MISS+"You missed "+extra.ATTACK_MISS+attack.getDefender().getName() + 
+					Player.lastAttackStringer += extra.AFTER_ATTACK_MISS+"You missed "+
+					"[HPT"+index+"]"+def.getName() + extra.ATTACK_MISS+
 					(damage > 0 ? " but dealt " + damage+" damage!" : "!");
 					break;
 				case NOT_ATTACK:
@@ -1618,7 +1623,7 @@ public class Combat {
 	public static final String quotedAttackerHP = Pattern.quote("[HA]");
 	public static final String quotedDefaultColor = Pattern.quote("[C]");
 	
-	public String prettyHPColors(String baseString, String normalColor, Person attacker,Person defender) {
+	public static String prettyHPColors(String baseString, String normalColor, Person attacker,Person defender) {
 		return normalColor 
 				+ baseString
 				.replaceAll(quotedDefenderHP,defender.inlineHPColor())
@@ -1626,11 +1631,27 @@ public class Combat {
 				.replaceAll(quotedDefaultColor, normalColor);
 	}
 	
-	public String prettyHPDamage(float damagePerOfMax) {
+	public static String prettyHPDamage(float damagePerOfMax) {
 		return extra.inlineColor(extra.colorMix(Color.white, Color.red,extra.clamp(damagePerOfMax,0,1f)));
 	}
-	public String prettyHPDamage(float damage, Person defender) {
+	public static String prettyHPDamage(float damage, Person defender) {
 		return prettyHPDamage(damage/defender.getMaxHp());
+	}
+	
+	public String prettyHPIndex(String str) {
+		StringBuilder builder = new StringBuilder(str);
+		for(;;) {
+			int index = builder.indexOf("[HPT");//don't need regex maybe
+			if (index > 0) {
+				index += 4;
+				int subindex = builder.indexOf("]", index);
+				int spot = Integer.parseInt(builder.substring(index, subindex));
+				builder.replace(index, subindex,totalList.get(spot).inlineHPColor());
+			}else {
+				break;
+			}
+		}
+		return builder.toString();
 	}
 	
 		

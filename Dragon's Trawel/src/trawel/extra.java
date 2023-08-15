@@ -795,17 +795,17 @@ public final class extra {
 		public static final String PRE_TELE = PRE_GREEN;
 		
 		//timid colors that are slight, used for bad and good hinting
-		public static final String TIMID_GREEN = inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.8f));
-		public static final String TIMID_RED = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.8f));
+		public static final String TIMID_GREEN = inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.7f));
+		public static final String TIMID_RED = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.7f));
 		/** 
 		 * do not use for no change whatsoever, use white for that- this is a change that might be bad or good but is a net 0 to this stat
 		 */
 		public static final String TIMID_GREY = inlineColor(extra.colorMix(Color.BLACK,Color.WHITE,.95f));
 		
 		//not directly used yet
-		public static final String TIMID_BLUE = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.8f));
+		public static final String TIMID_BLUE = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.7f));
 		public static final String TIMID_MAGENTA = inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.8f));
-		public static final String TIMID_ORANGE = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.8f));
+		public static final String TIMID_ORANGE = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.7f));
 		
 		public static final String RESULT_NO_CHANGE_GOOD = TIMID_BLUE;
 		public static final String RESULT_NO_CHANGE_BAD = TIMID_ORANGE;
@@ -948,6 +948,16 @@ public final class extra {
 				return extra.PRE_WHITE+"=";
 			}//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
 			return extra.TIMID_RED +"-"+(int)(was-to);//round towards 0 because we add - ourselves
+		}
+		
+		public static final String softColorDelta2Elide(double to, double was) {
+			if (to > was) {
+				return extra.TIMID_GREEN+"+"+format2.format(to-was);
+			}
+			if (to == was) {
+				return extra.PRE_WHITE+"=";
+			}
+			return extra.TIMID_RED+"-"+format2.format(was-to);
 		}
 		/**
 		 * integer, Reversed from normal, so positive is bad and negative is good

@@ -550,13 +550,15 @@ public class AIClass {
 				extra.println("SBP = sharp, blunt, pierce");
 			}
 			extra.println(extra.PRE_MAGENTA+"Difference: " 
-			+ "S "+extra.hardColorDelta1Elide(toArm.getSharpResist(),hasArm.getSharpResist())
-			+ "/B " + extra.hardColorDelta1Elide(toArm.getBluntResist(),hasArm.getBluntResist())
-			+ "/P " + extra.hardColorDelta1Elide(toArm.getPierceResist(),hasArm.getPierceResist())
+			+ extra.TIMID_BLUE+"S "+extra.hardColorDelta1Elide(toArm.getSharpResist(),hasArm.getSharpResist())
+			+ extra.PRE_WHITE+" / "
+			+ extra.TIMID_BLUE+"B " + extra.hardColorDelta1Elide(toArm.getBluntResist(),hasArm.getBluntResist())
+			+ extra.PRE_WHITE+" / "
+			+ extra.TIMID_BLUE+"P " + extra.hardColorDelta1Elide(toArm.getPierceResist(),hasArm.getPierceResist())
 			//weight is an int anyway
-			+ (Player.player.caresAboutCapacity() ? " weight: "+extra.softColorDelta0Reversed(toArm.getWeight(),hasArm.getWeight()) : "")
+			+ (Player.player.caresAboutCapacity() ? extra.TIMID_BLUE+ " weight: "+extra.softColorDelta0Reversed(toArm.getWeight(),hasArm.getWeight()) : "")
 			//amp is not, but we want it to display hard anyway
-			+ (Player.player.caresAboutAMP() ? " AMP: "+ extra.hardColorDelta2(toArm.getAgiPenMult(),hasArm.getAgiPenMult()) : "")
+			+ (Player.player.caresAboutAMP() ? extra.TIMID_BLUE+ " AMP: "+ extra.hardColorDelta2(toArm.getAgiPenMult(),hasArm.getAgiPenMult()) : "")
 			+ " " + priceDiffDisp(costDiff,costName,s)
 			);
 			if (hasItem.getEnchant() != null || toReplace.getEnchant() != null) {
@@ -573,10 +575,13 @@ public class AIClass {
 				int qualDiff = isQDiff ? toWeap.numQual()-hasWeap.numQual() : 0;
 				
 				extra.println(extra.PRE_MAGENTA+"Difference: ic/ad/wa: " 
-				+ (extra.hardColorDelta2Elide(toWeap.scoreImpact(),hasWeap.scoreImpact()))
-				+ "/" + (extra.hardColorDelta2Elide(toWeap.scoreAverage(),hasWeap.scoreAverage()))
-				+ "/" + (extra.hardColorDelta2Elide(toWeap.scoreWeight(),hasWeap.scoreWeight()))
+				+ (extra.softColorDelta2Elide(toWeap.scoreImpact(),hasWeap.scoreImpact()))
+				+ extra.PRE_WHITE+"/"
+				+ (extra.hardColorDelta2Elide(toWeap.scoreAverage(),hasWeap.scoreAverage()))
+				+ extra.PRE_WHITE+"/"
+				+ (extra.hardColorDelta2Elide(toWeap.scoreWeight(),hasWeap.scoreWeight()))
 				//if the qualities are the same, 'q=', if neither has any, do not display
+				+extra.TIMID_MAGENTA
 				+ (isQDiff ? " q " + extra.colorBaseZeroTimid(qualDiff) : (toWeap.numQual() > 0 ? (" q =") : ""))
 				+ (Player.player.caresAboutCapacity() ? " weight: "+extra.softColorDelta0Reversed(toWeap.getWeight(),hasWeap.getWeight()) : "")
 				+ " " + priceDiffDisp(costDiff,costName,s)
@@ -604,7 +609,7 @@ public class AIClass {
 	 */
 	public static String priceDiffDisp(int delta,String name, Store s) {
 		if (s == null) {
-			return extra.PRE_WHITE+name+": " + (delta != 0 ? extra.colorBaseZeroTimid(delta) : "=");
+			return extra.TIMID_MAGENTA+name+": " + (delta != 0 ? extra.colorBaseZeroTimid(delta) : "=");
 		}
 		if (delta < 0) {//costs less, might be gaining money
 			return extra.TIMID_BLUE + "requires " +  Math.abs(delta) + " buy value";
@@ -709,7 +714,9 @@ public class AIClass {
 					case CLASSIC:
 						if (combat.turns > 0) {
 							extra.println();
-							extra.println(Player.lastAttackStringer);
+							extra.println(
+									combat.prettyHPIndex(Player.lastAttackStringer)
+									);
 						}
 						extra.println("     name                hit    delay    sharp    blunt     pierce");
 						for(ImpairedAttack a: attacks) {
@@ -753,7 +760,7 @@ public class AIClass {
 					defender.displayArmor();
 					defender.displayHp();
 					//new debug examine code
-					extra.println("Press 9 to repeat attacks.");
+					extra.println("9 to repeat attacks.");
 					numb = extra.inInt(attacks.size(),true);
 					if (numb != 9) {
 						numb = -numb;//store attack choice
