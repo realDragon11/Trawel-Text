@@ -1943,12 +1943,17 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			extra.println("Strength mult applies to physical damage from weapons, Dexterity mult applies to hit chance.");
 		}
 		extra.println("Strength: "+getStrength() + ", weight: "+bag.getCapacity()
-		+" used capacity: "+(100*getStrength())/(100*bag.getCapacity())+"%, multiplier: "+ extra.F_TWO_TRAILING.format(attMultStr())+"x");
-		extra.println(" Dexterity Penalty Cap: " + atrBox.getDexPen());
-		extra.println("Dexterity: Raw="+getRawDexterity()+", Effective: " +getDexterity() + " multiplier: "+ extra.F_TWO_TRAILING.format(attMultDex())+"x");
+		+" used capacity: "+extra.F_WHOLE.format(100f*(bag.getCapacity())/(getStrength()))
+			+"%, multiplier: "+ extra.F_TWO_TRAILING.format(attMultStr())+"x");
+		extra.println(" Dexterity Penalty Cap: " + extra.F_TWO_TRAILING.format(atrBox.getDexPen()));
+		extra.println("Dexterity: Raw="+getRawDexterity()+", Effective: " +getDexterity() + ", multiplier: "+ extra.F_TWO_TRAILING.format(attMultDex())+"x");
 		extra.println(" Agility Multiplier Penalty: "
-		+ getTotalAgiPen() + ", Applied to Dex: "+getAgiPenAgainstDex() + " of capacity " + atrBox.getCapAgiPen() + " and equip " +bag.getAgiPen() + "; Raw Attribute AMP: "+getAttributeAgiPen());
-		extra.println("Clarity: "+getClarity()+", " + extra.F_TWO_TRAILING.format(attMultCla())+"x");
+		+ extra.F_TWO_TRAILING.format(getTotalAgiPen())
+		+ ", Applied to Dex: "+extra.F_TWO_TRAILING.format(getAgiPenAgainstDex()) 
+		+ "x of capacity " + extra.F_TWO_TRAILING.format(atrBox.getCapAgiPen())
+		+ "x and equip " +extra.F_TWO_TRAILING.format(bag.getAgiPen())
+		+ "; Raw Attribute AMP: "+extra.F_TWO_TRAILING.format(getAttributeAgiPen())+"x");
+		extra.println("Clarity: "+getClarity()+", multiplier: " + extra.F_TWO_TRAILING.format(attMultCla())+"x");
 	}
 
 	public SuperPerson getSuper() {
@@ -2028,7 +2033,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public String inlineHPColor() {
 		float per = ((float)this.getHp())/(this.getMaxHp());
 		String res;
-		switch ((int)Math.ceil(((int)(per*100))/25)) {
+		switch (Math.max(0,(int)Math.ceil((per*100)/25))) {
 		case 0:
 			res = extra.HP_I_DEAD;
 			break;

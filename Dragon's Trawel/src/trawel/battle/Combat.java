@@ -1641,7 +1641,7 @@ public class Combat {
 	
 	public static String prettyHPDamage(float damagePerOfMax) {
 		String res;
-		switch ((int)Math.ceil(((int)(damagePerOfMax*100))/25)) {
+		switch ((int)Math.ceil((damagePerOfMax*100)/25)) {
 		case 0:
 			res = extra.HP_I_FULL;
 			break;

@@ -281,7 +281,7 @@ public final class extra {
 	public static String HP_I_MOSTLY = "▓";
 	public static String HP_I_HALF = "▒";
 	public static String HP_I_SOME = "░";
-	public static String HP_I_DEAD = "";
+	public static String HP_I_DEAD = "┼";
 	
 	public static final String[] EXPLAIN_CHARS_DAMAGE = new String[]{
 			CHAR_SHARP + " sharp",
@@ -327,7 +327,7 @@ public final class extra {
 		HP_I_MOSTLY = "▓";
 		HP_I_HALF = "▒";
 		HP_I_SOME = "░";
-		HP_I_DEAD = "ø";
+		HP_I_DEAD = "┼";//"ø";
 		current_display_style = "visual";
 	}
 	
