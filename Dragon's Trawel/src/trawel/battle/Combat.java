@@ -27,6 +27,7 @@ import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory.RaceID;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.Skill;
 import trawel.personal.classless.SkillAttackConf;
 import trawel.personal.item.Inventory;
@@ -1290,13 +1291,7 @@ public class Combat {
 		}
 		//TODO: bleedout death quotes
 		int leech = (defender.hasEffect(Effect.B_MARY) ? 2 : 0) + (defender.hasSkill(Skill.BLOODDRINKER) ? 1 : 0);
-		int baseBleedDam = 
-				Math.min
-				(
-				attacker.getLevel(),
-				defender.getLevel()*3
-				)
-				;
+		int baseBleedDam = bleedDam(attacker,defender);
 		int totalBleed = 0;
 		if (attacker.hasEffect(Effect.BLEED)) {
 			attacker.takeDamage(baseBleedDam);
@@ -1350,6 +1345,17 @@ public class Combat {
 		}
 		
 		return atr;
+	}
+	
+	public static int bleedDam(Person attacker2, Person defender2) {
+		if (attacker2 == null) {
+			return (int)Math.ceil(IEffectiveLevel.effective(defender2.getLevel())/2f);
+		}
+		return //hp is effective level * 10
+				//here we want 5% damage per bleed unit at max
+				//so we don't times it by 10 and instead divide by 2
+				(int)//cast to int
+				Math.ceil(IEffectiveLevel.effective(Math.min(attacker2.getLevel(),defender2.getLevel()*2))/2f);
 	}
 	
 	private String inflictWound(Person attacker2, Person defender2, AttackReturn retu, Wound w) {
@@ -1482,9 +1488,10 @@ public class Combat {
 		case KO:
 			return new Integer[] {5*defender.getLevel()};
 		case BLEED: case I_BLEED://bleeds aren't synced, WET :(
-			return new Integer[] {defender.getLevel()};
+			return new Integer[] {bleedDam(attacker,defender),bleedDam(null,defender)};//can take null attacker
 		case MAJOR_BLEED:
-			return new Integer[] {2*defender.getLevel(),defender.getLevel()};
+			//shows combined with base bleed that is applied at the same time, it's a 2x and a 1x
+			return new Integer[] {3*bleedDam(attacker,defender),3*bleedDam(null,defender)};//can take null attacker
 		case TEAR://WET
 			return new Integer[] {10};// %, multiplicative dodge mult penalty
 		case MANGLED:

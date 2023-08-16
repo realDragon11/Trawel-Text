@@ -395,10 +395,10 @@ public final class extra {
 	public static void charSwitchEmote() {
 		//https://www.compart.com/en/unicode/search godly resource
 		//https://www.amp-what.com/unicode/search/knife
-		CHAR_INSTANTS = "🮚";//🮚⌛
-		CHAR_HITCHANCE = "◎";//ʘ◎
-		CHAR_SHARP = "🔪";//✂⚔🔪🪒💇
-		CHAR_BLUNT = "🔨";
+		CHAR_INSTANTS = "⧗";//🮚⌛⧗
+		CHAR_HITCHANCE = "🎯";//ʘ◎🎯◉⦿
+		CHAR_SHARP = "🟆";//✂⚔🔪🪒💇🗡️⸸⸷🞣🟆
+		CHAR_BLUNT = "●";//🔨⚒️🪨🛞●
 		CHAR_PIERCE = "▲";//⇫♆➳➹➴♂➴⚩➛▲
 		CHAR_IGNITE = "🔥";
 		CHAR_FROST = "❄";//❄❄️❆🧊🥶
