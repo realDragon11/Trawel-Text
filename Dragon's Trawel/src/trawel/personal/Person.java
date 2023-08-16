@@ -1951,7 +1951,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		+ extra.F_TWO_TRAILING.format(getTotalAgiPen())
 		+ ", Applied to Dex: "+extra.F_TWO_TRAILING.format(getAgiPenAgainstDex()) 
 		+ "x of capacity " + extra.F_TWO_TRAILING.format(atrBox.getCapAgiPen())
-		+ "x and equip " +extra.F_TWO_TRAILING.format(bag.getAgiPen())
+		+ "x and equip " +extra.F_TWO_TRAILING.format(bag.getAgiPen()) +"x"
 		+ "; Raw Attribute AMP: "+extra.F_TWO_TRAILING.format(getAttributeAgiPen())+"x");
 		extra.println("Clarity: "+getClarity()+", multiplier: " + extra.F_TWO_TRAILING.format(attMultCla())+"x");
 	}

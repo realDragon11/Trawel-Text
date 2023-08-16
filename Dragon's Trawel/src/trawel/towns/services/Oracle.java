@@ -133,6 +133,21 @@ public class Oracle extends Feature{ //extends feature later
 		
 		
 	}
+	
+	public void utterance0() {
+		tip("");
+		visits++;
+		Networking.unlockAchievement("oracle1");
+		if (visits == 5) {
+			Player.player.addTitle(this.getName() + " vistor");
+		}
+		if (visits == 10) {
+			Player.player.addTitle(this.getName() + " listener");
+		}
+		if (visits == 50) {
+			Player.player.addTitle(this.getName() + " consulter");
+		}
+	}
 
 	public void utterance() {
 		if (Player.player.getGold() >= tier*1) {
@@ -211,7 +226,7 @@ public class Oracle extends Feature{ //extends feature later
 		case 3: 
 			extra.println("After enough waiting, the oracles start rambling.");
 			Player.addTime(extra.randFloat()*5);
-			utterance();
+			utterance0();
 			break;
 			case 4: return;
 		}

@@ -9,6 +9,7 @@ import trawel.AIClass;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
@@ -150,7 +151,7 @@ public class Mountain extends Feature{
 			Player.player.addTitle(this.getName() + " guide");
 		}
 		if (exhaust > 10) {
-			if (!extra.chanceIn(1,(int)(exhaust/3))) {
+			if (!extra.chanceIn(1,exhaust/3)) {
 				dryMountain();
 				return;
 			}
@@ -215,9 +216,9 @@ public class Mountain extends Feature{
 		extra.linebreak();
 		if (result) {
 			if (Math.random() > .5) {
-				extra.println(extra.PRE_RED+"A fighter runs up and calls you a thief before launching into battle!");
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getMugger(tier));
-				if (winner == Player.player.getPerson()) {
+				extra.println(extra.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");
+				Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
+				if (c.playerWon() > 0) {
 					int gold = extra.randRange(15,20)*tier;
 					extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
 					Player.player.addGold(gold);
@@ -235,47 +236,44 @@ public class Mountain extends Feature{
 	}
 	
 	private void mugger2() {
-		extra.println(extra.PRE_RED+"You see a mugger charge at you! Prepare for battle!");
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
-		if (winner == Player.player.getPerson()) {
+		extra.println(extra.PRE_BATTLE+"You see a mugger charge at you! Prepare for battle!");
+		Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
+		if (c.playerWon() > 0) {
+			
 		}else {
 			extra.println("They fumble through your bags!");
 			extra.println(Player.loseGold(50*tier,true));
 		}
 	}
-	
+
 	private void mugger1() {
-		extra.println(extra.PRE_RED+"You see someone being robbed! Help?");
+		extra.println(extra.PRE_BATTLE+"You see someone being robbed! Help?");
 		Person robber =  RaceFactory.getMugger(tier);
 		robber.getBag().graphicalDisplay(1, robber);
-		Boolean help = extra.yesNo();
-		if (help) {
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(),robber);
-	
-		if (winner == Player.player.getPerson()) {
-			int gold = extra.randRange(tier,10*tier);
-			extra.println("They give you a reward of " +World.currentMoneyDisplay(gold) + " in thanks for saving them.");
-			Player.player.addGold(gold);
-		}else {
-			extra.println("They steal from your bags as well!");
-			extra.println(Player.loseGold(50*tier,true));
-		}
+		if (extra.yesNo()) {
+			Combat c = Player.player.fightWith(robber);
+			if (c.playerWon() > 0) {
+				int gold = extra.randRange(tier,10*tier);
+				extra.println("They give you a reward of " +World.currentMoneyDisplay(gold) + " in thanks for saving them.");
+				Player.player.addGold(gold);
+			}else {
+				extra.println("They steal from your bags as well!");
+				extra.println(Player.loseGold(50*tier,true));
+			}
 		}else {
 			extra.println("You walk away.");
 		}
 	}
-	
+
 	
 	private void mugger3() {
-		
-		extra.println(extra.PRE_RED+"You see a toll road keeper. Mug them for their gold?");
-		Person robber = RaceFactory.getPeace(tier);
-		robber.getBag().graphicalDisplay(1, robber);
-		Boolean help = extra.yesNo();
-		if (help) {
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);
+		extra.println(extra.PRE_BATTLE+"You see a toll road keeper. Mug them for their gold?");
+		Person toller = RaceFactory.getPeace(tier);
+		toller.getBag().graphicalDisplay(1, toller);
+		if (extra.yesNo()) {
 		int want = tier*5 + extra.randRange(0,5);
-		if (winner == Player.player.getPerson()) {
+		Combat c = Player.player.fightWith(toller);
+		if (c.playerWon() > 0) {
 			want*=extra.randRange(2,4);
 			want += extra.randRange(0,5);
 			extra.println("You find " + World.currentMoneyDisplay(want) + " in tolls.");
@@ -297,54 +295,63 @@ public class Mountain extends Feature{
 			extra.println("You walk away.");
 		}
 	}
-	
+
 	private void wanderingDuelist() {
-		extra.println(extra.PRE_RED+"A duelist approaches and challenges you to a duel. Accept?");
-		Person robber = RaceFactory.getDueler(tier+1);
-		robber.getBag().graphicalDisplay(1, robber);
-		Boolean help = extra.yesNo();
-		if (help) {
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);
-	
-		if (winner == Player.player.getPerson()) {
-			extra.println("You have won the duel!");
-		}else {
-			extra.println("They mutter a poem for your death.");
-		}
+		extra.println(extra.PRE_BATTLE+"A duelist approaches and challenges you to a duel. Accept?");
+		Person dueler = RaceFactory.getDueler(tier+1);
+		dueler.getBag().graphicalDisplay(1, dueler);
+		if (extra.yesNo()) {
+			Combat c = Player.player.fightWith(dueler);
+			if (c.playerWon() > 0) {
+				extra.println("You have won the duel!");
+			}else {
+				extra.println("They mutter a poem for your death.");
+			}
 		}else {
 			extra.println("You walk away. They sigh.");
 		}
 	}
-	
+
 	private void oldFighter() {
-		Person robber = RaceFactory.makeOld(tier+2);
-		robber.getBag().graphicalDisplay(1, robber);
+		Person old = RaceFactory.makeOld(tier+2);
+		old.getBag().graphicalDisplay(1, old);
 		while (true) {
-		extra.println("You come across an old fighter, resting on a rock.");
-		extra.println("1 Leave");//DOLATER: fix menu
-		extra.println("2 "+extra.PRE_RED+"Attack them.");
-		extra.println("3 Chat with them");
-		switch (extra.inInt(3)) {
-		default: case 1: extra.println("You leave the fighter alone");return;
-		case 2: extra.println("You attack the fighter!");mainGame.CombatTwo(Player.player.getPerson(), robber);return;
-		case 3: extra.println("The old fighter turns and answers your greeting.");
-		while (true) {
-		extra.println("What would you like to ask about?");
-		extra.println("1 tell them goodbye");
-		extra.println("2 ask for a tip");
-		extra.println("3 this mountain");
-		int in = extra.inInt(3);
-		switch (in) {
-			case 1: extra.println("They wish you well.") ;break;
-			case 2: Oracle.tip("old");;break;
-			case 3: extra.println("\"We are on " + this.getName() + ". Beware, danger lurks on these slopes.\"");break;
+			extra.println("You come across an old fighter, resting on a rock.");
+			extra.println("1 Leave");//DOLATER: fix menu
+			extra.println("2 "+extra.PRE_BATTLE+"Attack them.");
+			extra.println("3 Chat with them");
+			switch (extra.inInt(3)) {
+			default: case 1: extra.println("You leave the fighter alone");return;
+			case 2: 
+				extra.println(extra.PRE_BATTLE+"Really attack them?");
+				if (!extra.yesNo()) {
+					break;
+				}
+				extra.println("You attack the fighter!");
+				Combat c = Player.player.fightWith(old);
+				if (c.playerWon() > 0) {
+
+				}
+				return;
+			case 3: extra.println("The old fighter turns and answers your greeting.");
+			while (true) {
+				extra.println("What would you like to ask about?");
+				extra.println("1 tell them goodbye");
+				extra.println("2 ask for a tip");
+				extra.println("3 this mountain");
+				int in = extra.inInt(3);
+				switch (in) {
+				case 1: extra.println("They wish you well.") ;break;
+				case 2: Oracle.tip("old");;break;
+				case 3: extra.println("\"We are on " + this.getName() + ". Beware, danger lurks on these slopes.\"");break;
+				}
+				if (in == 1) {
+					break;
+				}
+			}
+			}
 		}
-		if (in == 1) {
-			break;
-		}
-		}
-		}
-	}}
+	}
 	
 	private void goldRock() {
 		extra.println("You spot a solidified aether rock rolling down the mountain. Chase it?");
@@ -352,9 +359,9 @@ public class Mountain extends Feature{
 		extra.linebreak();
 		if (result) {
 			if (Math.random() > .5) {
-				extra.println(extra.PRE_RED+"A fighter runs up and calls you a thief before launching into battle!");
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
-				if (winner == Player.player.getPerson()) {
+				extra.println(extra.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");
+				Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
+				if (c.playerWon() > 0) {
 					int aether = 100+extra.randRange(150*tier,300*tier);
 					extra.println("You pick up " + aether + " aether!");
 					Player.bag.addAether(aether);
@@ -380,13 +387,11 @@ public class Mountain extends Feature{
 	}
 
 	private void vampireHunter() {
-		extra.println(extra.PRE_RED+"A vampire hunter is walking around. Mug them?");
-		Person robber = RaceFactory.makeHunter(tier);
-		Boolean help = extra.yesNo();
-		if (help) {
-			Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);
-
-			if (winner == Player.player.getPerson()) {
+		extra.println(extra.PRE_BATTLE+"A vampire hunter is walking around. Mug them?");
+		Person hunter = RaceFactory.makeHunter(tier);
+		if (extra.yesNo()) {
+			Combat c = Player.player.fightWith(hunter);
+			if (c.playerWon() > 0) {
 				extra.println("You killed them.");
 			}else {
 				extra.println("They mutter something about vampire attacks.");

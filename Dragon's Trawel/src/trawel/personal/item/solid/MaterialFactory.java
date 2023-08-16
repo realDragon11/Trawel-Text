@@ -206,6 +206,7 @@ public class MaterialFactory {
 		misc.rarity = 2.5f;
 		misc.fireVul = .8f;
 		misc.freezeVul = 2;
+		misc.shockVul = 1.5f;
 		misc.palIndex = 3;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(169,94,60));
