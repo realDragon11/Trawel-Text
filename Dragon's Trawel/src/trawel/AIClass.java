@@ -554,10 +554,10 @@ public class AIClass {
 			+" "+extra.hardColorDelta1Elide(toArm.getSharpResist(),hasArm.getSharpResist())
 			+ extra.PRE_WHITE+" / "
 			+ extra.TIMID_BLUE+extra.CHAR_BLUNT
-			+ extra.hardColorDelta1Elide(toArm.getBluntResist(),hasArm.getBluntResist())
+			+" "+extra.hardColorDelta1Elide(toArm.getBluntResist(),hasArm.getBluntResist())
 			+ extra.PRE_WHITE+" / "
 			+ extra.TIMID_BLUE+extra.CHAR_PIERCE
-			+ extra.hardColorDelta1Elide(toArm.getPierceResist(),hasArm.getPierceResist())
+			+" "+extra.hardColorDelta1Elide(toArm.getPierceResist(),hasArm.getPierceResist())
 			//weight is an int anyway
 			+ (Player.player.caresAboutCapacity() ? extra.TIMID_BLUE+ " "+extra.DISP_WEIGHT+": "+extra.softColorDelta0Reversed(toArm.getWeight(),hasArm.getWeight()) : "")
 			//amp is not, but we want it to display hard anyway

@@ -385,7 +385,7 @@ public class Attack implements IAttack{
 		CRUSHED("Crushed","Deals %1$d armor piercing damage, repeating the attack's damage once more.","They are crushed!"),
 		SCALDED("Scalded","Deals %1$d armor piercing damage, repeating the attack's damage once more.","They are scalded by the flames!"),//TODO: the other wound types
 		SCREAMING("Screaming","Removes one attack choice.","They scream!"),
-		FROSTED("Frosted","The next attack will take %1$%d%% longer on the current time, up to %2$d instants increase.","They are frozen over..."),
+		FROSTED("Frosted","The next attack will take %1$d%% longer on the current time, up to %2$d instants increase.","They are frozen over..."),
 		FROSTBITE("Frostbite","Deals %1$d armor piercing damage, repeating the attack's damage once more.","Their flesh is frozen!"),
 		TEAR("Tear","Decreases dodge by %1$%d%%, stacking.","Their wing is torn!"), //see if need to add a '%'
 		MANGLED("Mangled","Halves the condition of the body part.","Their body is mangled!"),//FIXME

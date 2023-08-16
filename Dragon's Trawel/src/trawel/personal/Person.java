@@ -1646,7 +1646,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	 * <br>
 	 * 3 is the most that can be obtained without starting to eat into normal attack potential
 	 * <br>
-	 * but 5 is fine if they don't have any sources of bonus weapon attacks
+	 * but 4 is fine if they don't have any sources of bonus weapon attacks
 	 */
 	public int specialAttackNum() {
 		SuperPerson sp = getSuper();

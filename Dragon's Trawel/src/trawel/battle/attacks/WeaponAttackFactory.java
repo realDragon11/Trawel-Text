@@ -19,6 +19,7 @@ import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.IAttack.AttackType;
 import trawel.personal.Person;
 import trawel.personal.classless.Archetype;
+import trawel.personal.classless.Feat;
 import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.Armor;
@@ -622,7 +623,7 @@ public class WeaponAttackFactory {
 		copyStanceTo(Skill.ARCANIST,Archetype.SEA_SAGE,Archetype.FISH_MONSOON);
 
 		
-		
+		//TODO: skill attack metric tester, fix needing to cast fist
 		sta = new Stance(WeaponType.NULL_WAND);
 		sta.addAttack(//too troublesome to track down this error rn, fix entirely in next release
 				make("fast")
@@ -635,6 +636,109 @@ public class WeaponAttackFactory {
 				);
 		sta.setBonusSkillAttacks(8);//attempt to turn all attacks into bonus attacks
 		addStance(WeaponType.NULL_WAND,sta);
+		
+		sta = new Stance(Feat.FLAME_WARDEN,Skill.ARCANIST);//slow, powerful attacks
+		sta.addAttack(
+				make("fireball")
+				.setFluff("X` conjures a fireball and hurls it at Y`!")
+				.setRarity(1f)
+				.setAcc(2f)
+				.setDamage(DamageTier.HIGH,DamageTier.ASTOUNDING,.4f)
+				.setElementalMix(1,0,0)
+				.setWarmupOfTotal(TimeTier.SLOWER, TimeTier.SLOWEST)
+				);
+		sta.addAttack(
+				make("kindle")
+				.setFluff("X` conjures sparks at Y`!")
+				.setRarity(1f)
+				.setAcc(1.4f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.2f)
+				.setElementalMix(2, 0, 3)
+				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOWER)
+				);
+		sta.addAttack(
+				make("flame blast")
+				.setFluff("X` shoots a gout of flame at Y`!")
+				.setRarity(1f)
+				.setAcc(.8f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.8f)
+				.setElementalMix(1, 0, 0)
+				.setWarmupOfTotal(TimeTier.FASTER, TimeTier.SLOW)
+				);
+		addStance(Feat.FLAME_WARDEN,sta);
+		
+		sta = new Stance(Feat.FROST_WARDEN,Skill.ARCANIST);//mix of attacks, usually fairly accurate
+		sta.addAttack(//accurate
+				make("chill")
+				.setFluff("X` forces Y` to suffer through a deep chill!")
+				.setRarity(1f)
+				.setAcc(2.2f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.6f)
+				.setElementalMix(0, 1, 0)
+				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOW)
+				);
+		sta.addAttack(//powerful
+				make("frostbite")
+				.setFluff("X` quickly cools the air Y`, forcing them to endure the cold!")
+				.setRarity(1f)
+				.setAcc(1.3f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.8f)
+				.setElementalMix(0, 1, 0)
+				.setWarmupOfTotal(TimeTier.FAST, TimeTier.SLOWER)
+				);
+		sta.addAttack(
+				make("icicle")
+				.setFluff("X` conjures a spear of ice and hurls it at Y`!")
+				.setRarity(.5f)
+				.setAcc(1.2f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.3f)
+				.setMix(0,1,6)
+				.setElementalRider(.3f,0,1,0)
+				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOWER)
+				);
+		sta.addAttack(
+				make("iceball")
+				.setFluff("X` forms a ball of ice and shatters it on Y`!")
+				.setRarity(.5f)
+				.setAcc(1f)//lowest accuracy
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.1f)
+				.setMix(1,10,0)
+				.setElementalRider(.3f,0,1,0)
+				.setWarmupOfTotal(TimeTier.FASTER, TimeTier.NORMAL)
+				);
+		addStance(Feat.FROST_WARDEN,sta);
+		
+		//attacks are erratic, one is insanely accurate but slower and low damage, another is middling
+		//and a final one is insanely fast but below average accuracy and damage
+		sta = new Stance(Feat.SHOCK_SAVANT,Skill.ARCANIST);
+		sta.addAttack(//lower accuracy but higher damage than hedge mage version
+				make("sparks")
+				.setFluff("X` conjures sparks at Y`!")
+				.setRarity(1f)
+				.setAcc(1.2f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.45f)
+				.setElementalMix(1, 0, 3)//more shock inclined
+				.setWarmupOfTotal(TimeTier.SLOW, TimeTier.SLOWER)
+				);
+		sta.addAttack(//very high accuracy
+				make("zap")
+				.setFluff("X` zaps Y` with ambient charge!")
+				.setRarity(1f)
+				.setAcc(4f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.6f)
+				.setElementalMix(0, 0, 1)
+				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOW)
+				);
+		sta.addAttack(//very fast
+				make("bolt")
+				.setFluff("X` casts bolts of lightning around Y`!")
+				.setRarity(1f)
+				.setAcc(.8f)
+				.setDamage(DamageTier.LOW,DamageTier.WEAK,.1f)
+				.setElementalMix(0, 0, 1)
+				.setWarmupOfTotal(TimeTier.HALF_FASTEST, TimeTier.FASTEST)
+				);
+		addStance(Feat.SHOCK_SAVANT,sta);
 		
 		assert skillStances.size() > 0;
 	}

@@ -1568,11 +1568,10 @@ public class Combat {
 		List<ImpairedAttack> atts = (attacker.getStance().randAtts(attCount,attacker.getBag().getHand(),attacker,defender));
 		if (attacker.getSuper() != null) {
 			SuperPerson sp = attacker.getSuper();
-			int cap = sp.getSAttCount();
-			int count = attacker.specialAttackNum();
+			int cap = sp.getSAttCount();//how many skill configs they have
+			int count = attacker.specialAttackNum();//how many attacks they get
 			SkillAttackConf[] conf = sp.getSpecialAttacks();
-			//cap to not being more than our base attacks
-			count = Math.min(count,attCount-cap);
+			//we currently allow them to potentially fill more attacks this way if disarmed
 			//hard cap to 7 total attacks
 			count = Math.min(count,7-atts.size());
 			for (int i = 0; i < count;i++) {
