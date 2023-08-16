@@ -549,6 +549,12 @@ public class mainGame {
 
 					@Override
 					public boolean go() {
+						if (autoConnect) {
+							extra.println(extra.PRE_ORANGE+"This option will break your connection! Really continue?");
+							if (!extra.yesNo()) {
+								return false;
+							}
+						}
 						Networking.connect(6510); 
 						return true;
 					}});
@@ -561,7 +567,14 @@ public class mainGame {
 
 					@Override
 					public boolean go() {
-							extra.println("Port?"); Networking.connect(extra.inInt(65535)); 
+						if (autoConnect) {
+							extra.println(extra.PRE_ORANGE+"This option will break your connection! Really continue?");
+							if (!extra.yesNo()) {
+								return false;
+							}
+						}
+						extra.println("Port?");
+						Networking.connect(extra.inInt(65535)); 
 						return true;
 					}});
 				mList.add(new MenuBack());
