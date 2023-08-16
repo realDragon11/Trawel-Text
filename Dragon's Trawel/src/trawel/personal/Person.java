@@ -289,8 +289,27 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 						WeaponType.RAPIER,WeaponType.DAGGER,WeaponType.SPEAR,WeaponType.MACE,WeaponType.SHOVEL
 					}
 		), 
-		LUMBERJACK(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},new WeaponType[] {WeaponType.SHOVEL}), 
-		GRAVER(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},new WeaponType[] {WeaponType.SHOVEL});
+		LUMBERJACK(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},new WeaponType[] {WeaponType.AXE}), 
+		GRAVER(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},new WeaponType[] {WeaponType.SHOVEL})
+		, CULTIST_WORSHIPER(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN}
+				,new WeaponType[] {
+						WeaponType.DAGGER,WeaponType.SHOVEL,WeaponType.SPEAR,WeaponType.MACE//tools of the trade
+				})
+		,COLLECTOR(new ArmorStyle[] {ArmorStyle.GEM,ArmorStyle.PLATE},
+				new WeaponType[] {
+						WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.MACE,WeaponType.AXE,WeaponType.SPEAR
+						,WeaponType.SHOVEL,WeaponType.RAPIER
+					}
+				)
+		,DUELER(new ArmorStyle[] {ArmorStyle.PLATE,ArmorStyle.PLATE,ArmorStyle.PLATE,ArmorStyle.SEWN},
+				new WeaponType[] {
+						WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.MACE,WeaponType.AXE,WeaponType.SPEAR
+					})
+		,DUELIST_ONLY(new ArmorStyle[] {ArmorStyle.SEWN,ArmorStyle.FABRIC},
+				new WeaponType[] {
+						WeaponType.RAPIER
+					})
+		;
 		
 		public ArmorStyle[] amatType;
 		public WeaponType[] weapType;

@@ -1208,7 +1208,7 @@ public class RaceFactory {
 	
 	public static Person getDueler(int level) {
 		extra.offPrintStack();
-		Person w = new Person(level);
+		Person w = new Person(level,AIJob.DUELER);
 		w.facRep.addFactionRep(Faction.DUEL,extra.randRange(10,20)*level, 0);
 		w.hTask = HostileTask.DUEL;
 		extra.popPrintStack();
@@ -1224,10 +1224,11 @@ public class RaceFactory {
 	
 	public static Person makeCultistLeader(int level, CultType ct) {
 		extra.offPrintStack();
-		Person w = new Person(level);
-		w.hTask = HostileTask.LAWLESS_NODE_GUARDS;
+		Person w = null;
 		switch (ct) {
 		case BLOOD:
+			w = new Person(level,AIJob.KNIGHT);//blood for the blood queen
+			w.hTask = HostileTask.LAWLESS_NODE_GUARDS;
 			List<DrawBane> list = w.getBag().getDrawBanes();
 			if (extra.chanceIn(1,3)) {
 				list.add(DrawBane.BEATING_HEART);
@@ -1245,7 +1246,7 @@ public class RaceFactory {
 	}
 	public static Person makeCultist(int level, CultType ct) {
 		extra.offPrintStack();
-		Person w = new Person(level);
+		Person w = new Person(level,AIJob.CULTIST_WORSHIPER);
 		w.hTask = HostileTask.LAWLESS_NODE_GUARDS;
 		switch (ct) {
 		case BLOOD:
@@ -1347,7 +1348,7 @@ public class RaceFactory {
 	}
 	public static Person makeCollector(int level) {
 		extra.offPrintStack();
-		Person w = new Person(level);
+		Person w = new Person(level,AIJob.COLLECTOR);
 		w.hTask = HostileTask.DUEL;
 		w.facRep.addFactionRep(Faction.MERCHANT,5*level,0);
 		List<DrawBane> dbs = w.getBag().getDrawBanes();

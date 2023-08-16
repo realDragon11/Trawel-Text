@@ -901,7 +901,7 @@ public class Combat {
 					"[HPT"+index+"]"+def.getName() + 
 					extra.AFTER_ATTACK_BLOCKED+" but their armor held!"
 					+
-					(damage > 0 ? extra.ATTACK_DAMAGED_WITH_ARMOR+" but dealt " + damage+" damage!" : "!");
+					(damage > 0 ? extra.ATTACK_DAMAGED_WITH_ARMOR+" and dealt " + damage+" damage!" : "");
 					break;
 				case DAMAGE: case KILL:
 					Player.lastAttackStringer += extra.ATTACK_DAMAGED+"You hit "+
