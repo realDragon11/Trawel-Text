@@ -616,7 +616,7 @@ public class Town extends TContextOwner{
 				WorldGen.save(in+"");
 				
 			} break;
-		case 8: Player.toggleTutorial();break;
+		case 8: mainGame.advancedDisplayOptions();break;
 		}
 		this.you();
 	}

@@ -146,13 +146,14 @@ public class Player extends SuperPerson{
 		return animalName;
 	}
 	
+	/*
 	public static void toggleTutorial() {
 		player.tutorial = !player.tutorial;
-	}
+	}*/
 	
 	public static boolean getTutorial() {
 		if (player == null) {return false;}
-		return player.tutorial;
+		return mainGame.doTutorial;
 	}
 
 	public void addMPoints(double mValue) {

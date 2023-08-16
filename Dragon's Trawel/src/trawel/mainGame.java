@@ -1,5 +1,8 @@
 package trawel;
 import java.awt.Desktop;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -7,6 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.Scanner;
 
 import derg.menus.MenuBack;
@@ -111,8 +115,13 @@ public class mainGame {
 	//FIXME: need saved prefs
 	public static DispAttack attackDisplayStyle = DispAttack.TWO_LINE1_WITH_KEY;
 	public static boolean advancedCombatDisplay = false;
+	public static boolean doTutorial;
+	
 	public static boolean doAutoSave = true;
 	public static PrintStream logStream;
+	
+	public static Properties prefs;
+	public static File prefFile;
 	
 	public enum DispAttack{
 		CLASSIC("Classic simple table, delay instead of cooldown and warmup"),
@@ -127,6 +136,16 @@ public class mainGame {
 		public String desc() {
 			return desc;
 		}
+		
+	}
+	
+	public static DispAttack dispAttackLookup(String str) {
+		for (DispAttack da: DispAttack.values()) {
+			if (da.name().equals(str)) {
+				return da;
+			}
+		}
+		return null;
 	}
 	
 	public static void mainMenu() {
@@ -316,7 +335,8 @@ public class mainGame {
 		});
 	}
 	
-	private static void advancedDisplayOptions() {
+	//MAYBELATER: for now, options are only global and there is no 'per save' override
+	public static void advancedDisplayOptions() {
 		extra.menuGo(new MenuGenerator(){
 
 			@Override
@@ -326,9 +346,22 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Here are some display options. They currently do not save per run, although they are planned to later after prefs get made bigger.";
+						return "Changing these display options will change them for all saves.";
 					}}
 				);
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return doTutorial +" Tutorial. (Does not impact story tutorial)";
+					}
+
+					@Override
+					public boolean go() {
+						doTutorial = !doTutorial;
+						prefs.setProperty("tutorial",doTutorial+"");
+						return false;
+					}});
 
 				mList.add(new MenuSelect() {
 
@@ -340,6 +373,7 @@ public class mainGame {
 					@Override
 					public boolean go() {
 						attackDisplayStyle = DispAttack.values()[(attackDisplayStyle.ordinal()+1)%DispAttack.values().length];
+						prefs.setProperty("attack_display",attackDisplayStyle.name());
 						return false;
 					}});
 				mList.add(new MenuSelect() {
@@ -414,6 +448,7 @@ public class mainGame {
 									@Override
 									public boolean go() {
 										extra.charSwitchVisual();
+										prefs.setProperty("char_style","visual");
 										return false;
 									}});
 								list.add(new MenuSelect() {
@@ -426,6 +461,7 @@ public class mainGame {
 									@Override
 									public boolean go() {
 										extra.charSwitchNarrator();
+										prefs.setProperty("char_style","narrator");
 										return false;
 									}});
 								list.add(new MenuSelect() {
@@ -438,6 +474,7 @@ public class mainGame {
 									@Override
 									public boolean go() {
 										extra.charSwitchEmote();
+										prefs.setProperty("char_style","emote");
 										return false;
 									}});
 								list.add(new MenuLine() {
@@ -461,6 +498,7 @@ public class mainGame {
 					@Override
 					public boolean go() {
 						advancedCombatDisplay = !advancedCombatDisplay;
+						prefs.setProperty("debug_attacks",advancedCombatDisplay+"");
 						return false;
 					}});
 
@@ -468,6 +506,12 @@ public class mainGame {
 				return mList;
 			}
 		});
+		try (FileWriter fw = new FileWriter(prefFile)){
+			prefs.store(fw, null);
+		} catch (Exception e) {
+			extra.println("Was not able to save options.");
+		}
+		
 	}
 	
 	private static void advancedOptions() {
@@ -1037,6 +1081,37 @@ public class mainGame {
 			
 		}
 		new Networking();
+		
+		prefs = new Properties();
+		prefFile = new File("trawel_prefs.properties");//FIXME: properties
+		FileReader prefReader = new FileReader(prefFile);
+		prefs.load(prefReader);
+		prefReader.close();
+		
+		String charStyle = prefs.getProperty("char_style");
+		if (charStyle == null) {
+			if (autoConnect) {
+				charStyle = "emote";
+			}else {
+				charStyle = "narrator";
+			}
+		}
+		
+		switch (charStyle) {
+		case "visual":
+			extra.charSwitchVisual();
+			break;
+		case "narrator":
+			extra.charSwitchNarrator();
+			break;
+		case "emote":
+			extra.charSwitchEmote();
+			break;
+		}
+		advancedCombatDisplay = Boolean.parseBoolean(prefs.getProperty("debug_attacks","FALSE"));
+		doTutorial = Boolean.parseBoolean(prefs.getProperty("tutorial","TRUE"));
+		attackDisplayStyle = dispAttackLookup(prefs.getProperty("attack_display",DispAttack.TWO_LINE1_WITH_KEY.name()));
+		
 		if (autoConnect) {
 			System.out.println("Please wait for the graphical to load...");
 			Networking.handleAnyConnection(legacyConnect ? ConnectType.LEGACY : ConnectType.GDX);
@@ -1478,7 +1553,6 @@ public class mainGame {
 			player.setLocation(world.getStartTown());//also sets the player world
 			if (cheaty) {
 				Player.player.setCheating();
-				Player.toggleTutorial();
 				story = new StoryNone();
 				//player.getPerson().addXp(9999);
 				Player.player.addGold(1000);
