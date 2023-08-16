@@ -1,13 +1,13 @@
 # Trawel-Text
 An open world text adventure rpg.
 
-Currently undergoing a massive rewrite in August 2023 to prepare for a new major version.
+Currently undergoing a massive rewrite in August 2023 to prepare for a new major version. Release of version 0.8 is expected September 9th at the earliest.
 
 If you are vision impaired and using a screenreader for this text, the following portions have inline links. You can find a compiled version at "[real.itch.io/trawel](https://real.itch.io/trawel)", but that might be out of date.      <br>  <br>
 
   
-Trawel can be found on [Steam](https://store.steampowered.com/app/992240/Trawel/) for ~$5 USD, which also includes a graphical, which isn't in this repository.
-<br> Steam also has a free ($0) demo, which is the same as the compiled jar found on [Itch.io](https://real.itch.io/trawel).
+Trawel can be found on [Steam](https://store.steampowered.com/app/992240/Trawel/) for ~$5 USD, including a graphical GUI, not hosted in this repository.
+<br> Steam also has a free ($0) demo, the same as the identically priced compiled jar found at [Itch.io](https://real.itch.io/trawel).
 
 If you wish to try the game out and don't mind the [cli](https://en.wikipedia.org/wiki/Command-line_interface), Itch or the Steam Demo are probably your best bet, since they will have compiled jars. (The Steam demo also comes with both a jre and .batch/.shell files to boot the program easier.)
 
