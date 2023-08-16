@@ -394,17 +394,18 @@ public final class extra {
 	
 	public static void charSwitchEmote() {
 		//https://www.compart.com/en/unicode/search godly resource
-		CHAR_INSTANTS = "⌛";
-		CHAR_HITCHANCE = "◎";
-		CHAR_SHARP = "⚔";
+		//https://www.amp-what.com/unicode/search/knife
+		CHAR_INSTANTS = "🮚";//🮚⌛
+		CHAR_HITCHANCE = "◎";//ʘ◎
+		CHAR_SHARP = "🔪";//✂⚔🔪🪒💇
 		CHAR_BLUNT = "🔨";
-		CHAR_PIERCE = "➴";//⇫♆➳➹➴
+		CHAR_PIERCE = "▲";//⇫♆➳➹➴♂➴⚩➛▲
 		CHAR_IGNITE = "🔥";
-		CHAR_FROST = "❄";
-		CHAR_ELEC = "🗲";
-		CHAR_DECAY = "🕱";
-		DISP_WEIGHT = "𐄷";
-		DISP_AETHER = "¤";//currency, of a sort
+		CHAR_FROST = "❄";//❄❄️❆🧊🥶
+		CHAR_ELEC = "🗲";//⚡🗲🌩
+		CHAR_DECAY = "🕱";//⛤🕱
+		DISP_WEIGHT = "🏋";//🏋𐄷⚖
+		DISP_AETHER = "🜀";//🜀¤⚖ //currency, of a sort
 		DISP_AMP = "𝧧";//https://www.compart.com/en/unicode/search?q=movement#characters
 		DISP_QUALS = "🎖";
 		HP_I_FULL = "💖";
@@ -412,12 +413,12 @@ public final class extra {
 		HP_I_HALF = "💓";
 		HP_I_SOME = "💔";
 		HP_I_DEAD = "💀";
-		DAM_I_NONE = "▫";
-		DAM_I_SOME = "▪";
-		DAM_I_HEAVY = "◼";
-		DAM_I_KILL = "💀";
+		DAM_I_NONE = "🞌";//🞍🞌▫
+		DAM_I_SOME = "🞍";//▪🞍
+		DAM_I_HEAVY = "◼";//◼◾◼️
+		DAM_I_KILL = "⬛";//💀☠☠️ ⬛
 		current_display_style = "unicode";
-		//⛊⛨☠♨
+		//⛊⛨☠♨☥⛧⚚⛏⚀⸸
 	}
 	
 	/**
