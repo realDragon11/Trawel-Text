@@ -1129,7 +1129,7 @@ public class Combat {
 						defender.resistDeath(0f);
 						if (!extra.getPrint()) {
 							extra.print(
-									prettyHPColors(atr.stringer+"[C] {"+prettyHPDamage(percent)+" "+damageDone+" damage[C]}"
+									prettyHPColors(atr.stringer+"[C] {"+extra.padIf(prettyHPDamage(percent))+damageDone+" damage[C]}"
 										+woundstr+" But they're made of sterner stuff!"
 									, extra.ATTACK_DAMAGED, attacker, defender));
 							didDisplay = true;
@@ -1138,14 +1138,14 @@ public class Combat {
 				}
 				if (!didDisplay && !extra.getPrint()) {
 					extra.print(
-							prettyHPColors(atr.stringer+"[C] {"+prettyHPDamage(percent)+" "+damageDone+" damage[C]}"
+							prettyHPColors(atr.stringer+"[C] {"+extra.padIf(prettyHPDamage(percent))+damageDone+" damage[C]}"
 							+woundstr,extra.ATTACK_KILL, attacker, defender));
 					didDisplay = true;
 				}
 			}else {
 				if (!extra.getPrint()) {
 					
-					extra.print(prettyHPColors(atr.stringer+" {"+prettyHPDamage(percent)+" "+damageDone+" damage[C]}"+woundstr
+					extra.print(prettyHPColors(atr.stringer+" {"+extra.padIf(prettyHPDamage(percent))+damageDone+" damage[C]}"+woundstr
 							,
 							atr.code == ATK_ResultCode.ARMOR ? extra.ATTACK_DAMAGED_WITH_ARMOR : extra.ATTACK_DAMAGED
 							,attacker,defender));

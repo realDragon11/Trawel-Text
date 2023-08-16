@@ -477,6 +477,19 @@ public class mainGame {
 										prefs.setProperty("char_style","emote");
 										return false;
 									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "None (Visual without HP/Damage Indicators)";
+									}
+
+									@Override
+									public boolean go() {
+										extra.charSwitchNone();
+										prefs.setProperty("char_style","none");
+										return false;
+									}});
 								list.add(new MenuLine() {
 
 									@Override
@@ -1096,7 +1109,7 @@ public class mainGame {
 		String charStyle = prefs.getProperty("char_style");
 		if (charStyle == null) {
 			if (autoConnect) {
-				charStyle = "emote";
+				charStyle = "none";
 			}else {
 				charStyle = "narrator";
 			}
@@ -1111,6 +1124,9 @@ public class mainGame {
 			break;
 		case "emote":
 			extra.charSwitchEmote();
+			break;
+		case "none":
+			extra.charSwitchNone();
 			break;
 		}
 		advancedCombatDisplay = Boolean.parseBoolean(prefs.getProperty("debug_attacks","FALSE"));

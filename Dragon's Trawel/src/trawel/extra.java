@@ -314,6 +314,32 @@ public final class extra {
 		return CHAR_SHARP+" sharp, " + CHAR_BLUNT + " blunt, " +CHAR_PIERCE +" pierce.";
 	}
 	
+	public static void charSwitchNone() {
+		CHAR_INSTANTS = "_";
+		CHAR_HITCHANCE = "%";
+		CHAR_SHARP = "S";
+		CHAR_BLUNT = "B";
+		CHAR_PIERCE = "P";
+		CHAR_IGNITE = "I";
+		CHAR_FROST = "F";
+		CHAR_ELEC = "E";
+		CHAR_DECAY = "D";
+		DISP_WEIGHT = "weight";
+		DISP_AETHER = "aether";
+		DISP_AMP = "AMP";
+		DISP_QUALS = "q";
+		HP_I_FULL = "";
+		HP_I_MOSTLY = "";
+		HP_I_HALF = "";
+		HP_I_SOME = "";
+		HP_I_DEAD = "";
+		DAM_I_NONE = "";
+		DAM_I_SOME = "";
+		DAM_I_HEAVY = "";
+		DAM_I_KILL = "";
+		current_display_style = "none";
+	}
+	
 	public static void charSwitchVisual() {
 		CHAR_INSTANTS = "_";
 		CHAR_HITCHANCE = "%";
@@ -1318,6 +1344,13 @@ public final class extra {
 				}
 			}
 			return peeps.get(0);
+		}
+		
+		public static String padIf(String str) {
+			if (str != "") {
+				return str+" ";
+			}
+			return str;
 		}
 		
 		//not static so noone will ever see it, the dumbest thing
