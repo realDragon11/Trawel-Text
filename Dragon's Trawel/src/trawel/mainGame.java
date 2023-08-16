@@ -1084,9 +1084,14 @@ public class mainGame {
 		
 		prefs = new Properties();
 		prefFile = new File("trawel_prefs.properties");//FIXME: properties
-		FileReader prefReader = new FileReader(prefFile);
-		prefs.load(prefReader);
-		prefReader.close();
+		prefFile.createNewFile();
+		try (FileReader prefReader = new FileReader(prefFile)){
+			prefs.load(prefReader);
+			prefReader.close();
+		}catch (Exception e) {
+			throw e;
+		}
+		
 		
 		String charStyle = prefs.getProperty("char_style");
 		if (charStyle == null) {

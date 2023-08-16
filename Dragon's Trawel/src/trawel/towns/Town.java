@@ -543,7 +543,7 @@ public class Town extends TContextOwner{
 		extra.println("5 Raw Stats");
 		extra.println("6 Main Menu");
 		extra.println("7 Save");
-		extra.println("8 Toggle Tutorial " + ( Player.getTutorial() ? "Off" : "On"));
+		extra.println("8 Display Options");
 		extra.println("9 Return to " + getName());
 		
 		switch (extra.inInt(9)) {

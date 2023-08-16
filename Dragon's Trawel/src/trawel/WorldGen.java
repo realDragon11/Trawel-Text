@@ -527,11 +527,8 @@ public class WorldGen {
 	}
 	
 	public static String checkNameInFile(String str) {
-		FileReader fr;
 		String ret = "";
-		try {
-			fr = new FileReader("trawel"+str+".save");
-			BufferedReader br = new BufferedReader(fr);
+		try (FileReader fr = new FileReader("trawel"+str+".save"); BufferedReader br = new BufferedReader(fr);){
 			ArrayList<Integer> values = new ArrayList<Integer>();
 			while (true) {
 				int red = br.read();
@@ -557,10 +554,8 @@ public class WorldGen {
 	
 	
 	public static void load(String str) {
-		FileInputStream fos;
 		int len;
-		try {
-			fos = new FileInputStream("trawel"+str+".save");
+		try (FileInputStream fos = new FileInputStream("trawel"+str+".save");){
 			while (true) {
 			String ret = "";
 			
