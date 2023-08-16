@@ -39,7 +39,7 @@ public class Potion implements java.io.Serializable{
 					if (personal) {
 						extra.println("You uncork your potion, but it was filled with BEEEEEEEEEEES!!!");
 					}else {
-						extra.println(p.getName() + " uncorks their potion, but only angry bees pours out!");
+						extra.println(p.getName() + " uncorks their potion, but only angry bees pour out!");
 					}
 					break;
 				case HASTE:
@@ -61,8 +61,7 @@ public class Potion implements java.io.Serializable{
 				case SUDDEN_START:
 					uncork(p,personal);
 					if (personal) {
-						extra.println(""
-								+ "You feel like you can take on the world!");
+						extra.println("You feel like you can take on the world!");
 					}else {
 						extra.println(p.getName() + " surges forward, filled with purpose!");
 					}
@@ -70,6 +69,22 @@ public class Potion implements java.io.Serializable{
 					extra.println(" " +effect.getName() + ": " +effect.getDesc());
 					extra.println("  " +Effect.ADVANTAGE_STACK.getName() + ": " +Effect.ADVANTAGE_STACK.getDesc());
 					extra.println("  " +Effect.BONUS_WEAP_ATTACK.getName() + ": " +Effect.BONUS_WEAP_ATTACK.getDesc());
+					break;
+				case BLEED:
+					uncork(p,personal);
+					if (personal) {
+						extra.println("Your skin starts to bleed!");
+					}else {
+						extra.println(p.getName() + "'s skin starts bleeding...");
+					}
+					break;
+				case MAJOR_BLEED:
+					uncork(p,personal);
+					if (personal) {
+						extra.println("Lacerations appear on your body that weren't there before!");
+					}else {
+						extra.println(p.getName() + " is suddenly covered with intense lacerations!");
+					}
 					break;
 				default:
 					uncork(p,personal);

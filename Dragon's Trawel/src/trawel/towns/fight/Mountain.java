@@ -26,14 +26,11 @@ import trawel.towns.services.Oracle;
 
 public class Mountain extends Feature{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private int tier;
 	private int explores;
 	private int exhaust;
 	private int time;
+	private boolean exhausted;
 	
 	@Override
 	public QRType getQRType() {
@@ -45,9 +42,19 @@ public class Mountain extends Feature{
 		this.name = name;
 		explores = 0;
 		exhaust = 0;
-		this.tutorialText = "This is a mountain.";
+		exhausted = false;
 		background_area = "mountain";
 		background_variant = 1;
+	}
+	
+	@Override
+	public String getTitle() {
+		return getName() + (exhausted ? " (Empty)" :"");
+	}
+	
+	@Override
+	public String getTutorialText() {
+		return "Mountains can be explored, but do not have persistence. They have a fixed number of explores that restores over time.";
 	}
 	
 	@Override
@@ -120,6 +127,9 @@ public class Mountain extends Feature{
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		if (exhaust > 0) {
 			exhaust--;
+			if (exhaust == 0) {
+				exhausted = false;
+			}
 		}
 		
 		this.time += time;
@@ -150,9 +160,10 @@ public class Mountain extends Feature{
 		if (explores == 100) {
 			Player.player.addTitle(this.getName() + " guide");
 		}
-		if (exhaust > 10) {
-			if (!extra.chanceIn(1,exhaust/3)) {
+		if (exhaust > 10 || exhausted) {
+			if (exhausted || !extra.chanceIn(1,exhaust/3)) {
 				dryMountain();
+				exhausted = true;
 				return;
 			}
 		}

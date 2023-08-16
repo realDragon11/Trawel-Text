@@ -53,6 +53,11 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		town = t;
 		timecounter = 0;
 	}
+	@Override
+	public String getTitle() {
+		int amount = playerPotSize();
+		return getName() + (amount > 0 ? " ("+amount+" in pot)" : "");
+	}
 	
 	public int playerPotSize() {
 		if (reagents == null) {
@@ -135,7 +140,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 							extra.println("Potions made from brew waste will be of questionable content. Do it anyway?");
 						}
 						if (extra.yesNo()) {
-							Player.player.setFlask(new Potion(extra.randList(randomPotion),8));
+							Player.player.setFlask(new Potion(extra.randList(randomQuestionablePotion),8));
 							extra.println("You scoop the strange mix of discarded fluid into a glass jar. At least there's a lot of it.");
 						}else {
 							extra.println("You look away from the goup.");
@@ -407,6 +412,12 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	}
 	
 	public static final Effect[] randomPotion = new Effect[] {Effect.HEARTY,Effect.BEES,Effect.BEE_SHROUD,Effect.CURSE,Effect.FORGED,Effect.HASTE,Effect.CLOTTER,Effect.R_AIM,Effect.SUDDEN_START} ;
+	
+	public static final Effect[] randomQuestionablePotion = new Effect[] {
+			Effect.CURSE,Effect.CURSE,Effect.BEES,Effect.BLEED,Effect.MAJOR_BLEED,
+			Effect.HEARTY,Effect.BEE_SHROUD,Effect.FORGED,Effect.HASTE,
+			Effect.CLOTTER,Effect.R_AIM,Effect.SUDDEN_START} ;
+	
 	
 	public static void randomRefillsAtTown(Town t,int cost) {
 		t.getPersonableOccupants().filter(a -> a.wantsRefill() && a.canBuyMoneyAmount(cost)).limit(3).forEach(a -> a.refillWithPrice(cost));

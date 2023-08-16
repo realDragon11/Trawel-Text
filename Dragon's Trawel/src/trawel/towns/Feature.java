@@ -46,6 +46,10 @@ public abstract class Feature extends TContextOwner{
 	public String getName() {
 		return name;
 	}
+	
+	public String getTitle() {
+		return getName();
+	}
 
 	public void setName(String name) {
 		this.name = name;

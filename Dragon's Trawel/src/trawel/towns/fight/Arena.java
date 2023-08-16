@@ -18,7 +18,7 @@ public class Arena extends Feature{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int tier, rounds;
+	private int rounds;
 	private double interval, timeLeft;
 	private int timesDone;
 	private ArrayList<Person> winners;
@@ -65,7 +65,7 @@ public class Arena extends Feature{
 		}
 		Networking.sendStrong("Discord|imagesmall|arena|Arena|");
 		getRematch();
-		extra.println("1 Participate in the " +  this.getTitle() + " tournament in " + extra.format(this.getTimeLeft()) + " hours.");
+		extra.println("1 Participate in the " +  this.getRewardTitle() + " tournament in " + extra.format(this.getTimeLeft()) + " hours.");
 		if (rematcher != null) {
 		extra.println("2 rematch (" +rematcher.getName()+" level " +rematcher.getLevel() +")");}else {
 			extra.println("2 No Rematch Open");
@@ -128,7 +128,7 @@ public class Arena extends Feature{
 			if (winner == Player.player.getPerson()) {
 				if (i == rounds) {
 					extra.println("You win the tournment!");
-					Player.player.addTitle(this.getTitle());
+					Player.player.addTitle(this.getRewardTitle());
 				}else {
 					extra.println("You move on to the next round of the tournament.");
 				}
@@ -140,7 +140,7 @@ public class Arena extends Feature{
 		Player.addTime(1);
 	}
 	
-	public String getTitle() {
+	public String getRewardTitle() {
 		return timesDone + " " + name;
 	}
 	

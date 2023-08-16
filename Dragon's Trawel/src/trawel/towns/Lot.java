@@ -31,6 +31,11 @@ public class Lot extends Feature {
 	}
 	
 	@Override
+	public String getTitle() {
+		return getName() + (construct != null ? " ("+construct+" in "+extra.F_WHOLE.format(getConstructTime())+" hours)":"");
+	}
+	
+	@Override
 	public String getColor() {
 		return extra.F_BUILDABLE;
 	}

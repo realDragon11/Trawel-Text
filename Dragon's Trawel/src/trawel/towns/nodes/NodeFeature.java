@@ -15,8 +15,6 @@ public abstract class NodeFeature extends Feature {
 	protected double findTime = 0;
 	protected boolean spreadTime = false;
 	
-	//protected List<NodeType> typeList = new ArrayList<NodeType>();
-	
 	public enum Shape{
 		NONE, TOWER, ELEVATOR;
 	}
@@ -66,6 +64,11 @@ public abstract class NodeFeature extends Feature {
 
 	public String sizeDesc() {
 		return " S: " + start.getSize();
+	}
+	
+	@Override
+	public String getTitle() {
+		return getName() + sizeDesc();
 	}
 
 }
