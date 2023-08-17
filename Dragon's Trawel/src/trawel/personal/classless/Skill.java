@@ -100,7 +100,7 @@ public enum Skill{
 				,"Applies to each dodge. Does not apply to misses."
 				,Type.SPEED),
 		DODGEREF("Refreshing Dodge","Gain 1% of attacker's LHP every time you dodge."
-				,"Uncapped total HP gain. Caps at 2% of your own LHP each activation. Does not apply to misses."
+				,"Uncapped total HP gain. Attacker's LHP caps at 2 levels higher than your own. Does not apply to misses."
 				,Type.DEFENSE),
 		P_BREWER("Brewer","Your created potions can be sipped two more times before running out."
 				,"Stacks with normal filler ingredients."
@@ -112,7 +112,7 @@ public enum Skill{
 				,"Cure at a Shaman or Doctor. Lasts between battles."
 				, Type.OTHER),
 		KILLHEAL("Vampiric Spirit","Gain 5% dead LHP on a kill."
-				,"Caps at 10% of your LHP. 'Kill' means being the last person to attack the target before they die."
+				,"Dead LHP caps at 2 levels higher than your own. 'Kill' means being the last person to attack the target before they die."
 				,Type.OFFENSE),
 		SPUNCH("Sucker Punch","Your impactful attacks slow down your target's next action by 2% of their total time."
 				,extra.IMPACT_TIP
@@ -130,7 +130,7 @@ public enum Skill{
 				,"Applies once per attack."
 				,Type.DEFENSE),//defense not speed, speed is more 'fast in mobility'
 		ARMORHEART("Armor Heart","Gain 2% of attacker's LHP every time your armor blocks an attack."
-				,"Uncapped total HP gain. Caps at 5% of your own LHP each activation. Applies once per attack."
+				,"Uncapped total HP gain. Attacker's LHP caps at 4 levels higher than your own. Applies once per attack."
 				,Type.DEFENSE),
 		MESMER_ARMOR("Mesmer Armor","When attacked for no Impact, Roll a contested Clarity vs their highest attribute to confuse them."
 				,"Attacks with no impact typically are dodged, miss, or are blocked by armor. Confuse makes the target's next attack capable of friendly fire."

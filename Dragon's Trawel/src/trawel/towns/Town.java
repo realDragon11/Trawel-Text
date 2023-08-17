@@ -613,7 +613,7 @@ public class Town extends TContextOwner{
 					extra.println(i+ " slot:"+WorldGen.checkNameInFile(""+i));
 				}
 				int in = extra.inInt(8);
-				extra.println("Saving... (this used to take a while)");
+				extra.println("Saving...");
 				WorldGen.plane.prepareSave();
 				WorldGen.save(in+"");
 				

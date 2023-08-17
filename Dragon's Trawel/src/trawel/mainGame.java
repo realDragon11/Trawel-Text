@@ -259,6 +259,7 @@ public class mainGame {
 						extra.println("Pay close attention to hit, warmup/cooldown, and sbp (sharp, blunt, pierce) damage.");
 						extra.println("More simply: Higher is better, except in the case of delay (warmup and cooldown).");
 						extra.println("Leveling Terms: WELVL is weapon effective level this starts at 10 and goes up from the Crude tier. LHP is Leveled HP. This is 100 at level 0, and goes up by 10 every level.");
+						extra.println("Bleed lists a % of LHP. It also caps out at two levels higher than your own, like many other leveled mechanics.");
 						extra.println("Well, you made it through bootcamp. Have fun!");
 						extra.println("-realDragon");
 						return false;
@@ -612,8 +613,9 @@ public class mainGame {
 		});
 		try (FileWriter fw = new FileWriter(prefFile)){
 			prefs.store(fw, null);
+			extra.println("Prefs saved.");
 		} catch (Exception e) {
-			extra.println("Was not able to save options.");
+			extra.println("Was not able to save prefs.");
 		}
 		
 	}

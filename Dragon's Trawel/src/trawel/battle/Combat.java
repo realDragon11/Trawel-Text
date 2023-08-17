@@ -634,7 +634,7 @@ public class Combat {
 			killer.addPlayerKill();
 		}
 		if (killer.hasSkill(Skill.KILLHEAL)){
-			int restore = IEffectiveLevel.cleanLHP(Math.min(2*killer.getLevel(),dead.getLevel()),.05);
+			int restore = IEffectiveLevel.cleanLHP(Math.min(2+killer.getLevel(),dead.getLevel()),.05);
 			killer.addHp(restore);
 			if (!extra.getPrint()) {
 				extra.println(killer.getName() + " heals " + restore+" from the kill!");
@@ -1188,7 +1188,7 @@ public class Combat {
 					extra.print(" They dodge closer to the action!");
 				}
 				if (defender.hasSkill(Skill.DODGEREF)) {
-					int dodgeHeal = IEffectiveLevel.cleanLHP(Math.min(defender.getLevel()*2,attacker.getLevel()),.01);
+					int dodgeHeal = IEffectiveLevel.cleanLHP(Math.min(defender.getLevel()+2,attacker.getLevel()),.01);
 					defender.addHp(dodgeHeal);
 					extra.print(" Refreshing Dodge heals " + dodgeHeal +"!");
 				}
@@ -1209,7 +1209,7 @@ public class Combat {
 				extra.print(extra.AFTER_ATTACK_BLOCKED+" "+randomLists.attackNegateFluff()+extra.ATTACK_BLOCKED);
 			}
 			if (defender.hasSkill(Skill.ARMORHEART)) {
-				int armorHeal = IEffectiveLevel.cleanLHP(Math.min(defender.getLevel()*2.5f,attacker.getLevel()),.02);
+				int armorHeal = IEffectiveLevel.cleanLHP(Math.min(defender.getLevel()+4,attacker.getLevel()),.02);
 				defender.addHp(armorHeal);
 				extra.print(" Armor Heart heals " + armorHeal +"!");
 			}
@@ -1371,13 +1371,15 @@ public class Combat {
 	
 	public static int bleedDam(Person attacker2, Person defender2) {
 		if (attacker2 == null) {
-			return (int)Math.ceil(IEffectiveLevel.effective(defender2.getLevel())/2f);
+			return IEffectiveLevel.cleanLHP(defender2.getLevel(),.02);
 		}
+		return IEffectiveLevel.cleanLHP(Math.min(defender2.getLevel(),attacker2.getLevel()+2),.02);
+		/*
 		return //hp is effective level * 10
 				//here we want 5% damage per bleed unit at max
 				//so we don't times it by 10 and instead divide by 2
 				(int)//cast to int
-				Math.ceil(IEffectiveLevel.effective(Math.min(attacker2.getLevel(),defender2.getLevel()*2))/2f);
+				Math.ceil(IEffectiveLevel.effective(Math.min(attacker2.getLevel(),defender2.getLevel()*2))/2f);*/
 	}
 	
 	private String inflictWound(Person attacker2, Person defender2, AttackReturn retu, Wound w) {
