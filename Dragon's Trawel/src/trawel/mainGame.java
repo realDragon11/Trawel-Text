@@ -116,6 +116,11 @@ public class mainGame {
 	public static DispAttack attackDisplayStyle = DispAttack.TWO_LINE1_WITH_KEY;
 	public static boolean advancedCombatDisplay = false;
 	public static boolean doTutorial;
+	public static boolean displayTravelText;
+	public static boolean displayFlavorText;
+	public static boolean displayLocationalText;
+	public static boolean displayOwnName;
+	public static boolean displayOtherCombat;
 	
 	public static boolean doAutoSave = true;
 	public static PrintStream logStream;
@@ -497,6 +502,91 @@ public class mainGame {
 									public String title() {
 										return "In the future there will also be an option that reads from a file.";
 									}});
+								list.add(new MenuBack());
+								return list;
+							}});
+						return false;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Reduce Flavor and Indicator Text";
+					}
+
+					@Override
+					public boolean go() {
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> list = new ArrayList<MenuItem>();
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Flavor Text " + displayFlavorText + " (Covers random town flavor, 'first arrival' flavor, and random taunting/boasting)";
+									}
+
+									@Override
+									public boolean go() {
+										displayFlavorText = !displayFlavorText;
+										prefs.setProperty("flavor_text", displayFlavorText+"");
+										return false;
+									}});
+									list.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "Travel Text " + displayTravelText+ " (covers 'You start to travel to X' and the arrival message.)";
+										}
+
+										@Override
+										public boolean go() {
+											displayTravelText = !displayTravelText;
+											prefs.setProperty("travel_text", displayTravelText+"");
+											return false;
+										}});
+									list.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "Locational Text " + displayLocationalText + " (covers 'You are in X' and date.)";
+										}
+
+										@Override
+										public boolean go() {
+											displayLocationalText = !displayLocationalText;
+											prefs.setProperty("locational_text", displayLocationalText+"");
+											return false;
+										}});
+									list.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "Own Name " + displayOwnName + " (If disabled, 'you' will be used whenever your character's name, title, or fullname would be used. This will not make sense, but might help clarity.)";
+										}
+
+										@Override
+										public boolean go() {
+											displayOwnName = !displayOwnName;
+											prefs.setProperty("ownname_text", displayOwnName+"");
+											return false;
+										}});
+									list.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "Other Combat Text " + displayOtherCombat + " (If disabled, no text will be displayed on Person turns that do not include you as an attacker or defender. Does not disable Combat Conditions text, and does disable death messages.)";
+										}
+
+										@Override
+										public boolean go() {
+											displayOtherCombat = !displayOtherCombat;
+											prefs.setProperty("othercombat_text", displayOtherCombat+"");
+											return false;
+										}});
+									
 								list.add(new MenuBack());
 								return list;
 							}});
@@ -1146,6 +1236,11 @@ public class mainGame {
 		advancedCombatDisplay = Boolean.parseBoolean(prefs.getProperty("debug_attacks","FALSE"));
 		doTutorial = Boolean.parseBoolean(prefs.getProperty("tutorial","TRUE"));
 		attackDisplayStyle = dispAttackLookup(prefs.getProperty("attack_display",DispAttack.TWO_LINE1_WITH_KEY.name()));
+		displayTravelText = Boolean.parseBoolean(prefs.getProperty("travel_text","TRUE"));
+		displayFlavorText = Boolean.parseBoolean(prefs.getProperty("flavor_text","TRUE"));
+		displayLocationalText = Boolean.parseBoolean(prefs.getProperty("locational_text","TRUE"));
+		displayOwnName = Boolean.parseBoolean(prefs.getProperty("ownname_text","TRUE"));
+		displayOtherCombat = Boolean.parseBoolean(prefs.getProperty("othercombat_text","TRUE"));
 		
 		if (autoConnect) {
 			System.out.println("Please wait for the graphical to load...");

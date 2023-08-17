@@ -805,7 +805,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	 */
 	public void computeLevels(int levels) {
 			//maxHp+=50*levels;
-			if (!extra.getPrint() && getBag().getRace().racialType == Race.RaceType.HUMANOID) {
+			if (!extra.getPrint() && mainGame.displayFlavorText && getBag().getRace().racialType == Race.RaceType.HUMANOID) {
 				BarkManager.getBoast(this, false);
 			}
 			addFeatPoint(levels);
@@ -1352,6 +1352,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	 * @return String - full name
 	 */
 	public String getName() {
+		if (!mainGame.displayOwnName && isPlayer()) {
+			return "you";
+		}
 		if (title == "" || title == null) {
 			return firstName;
 		}
@@ -1362,6 +1365,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 	
 	public String getNameNoTitle() {
+		if (!mainGame.displayOwnName && isPlayer()) {
+			return "you";
+		}
 		return firstName;
 	}
 	
@@ -2011,6 +2017,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	
 
 	public String getTitle() {
+		if (!mainGame.displayOwnName && isPlayer()) {
+			return "you";
+		}
 		return title;
 	}
 	

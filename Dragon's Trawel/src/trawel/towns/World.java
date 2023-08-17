@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 import trawel.PrintEvent;
 import trawel.WorldGen;
 import trawel.extra;
+import trawel.mainGame;
 import trawel.factions.HostileTask;
 import trawel.personal.Person;
 import trawel.personal.people.Agent;
@@ -315,7 +316,7 @@ public class World extends TContextOwner{
 	}
 
 	public boolean getAndPrint(String string) {
-		if (!Player.getTutorial() && string.startsWith("n")) {//we only see new if we're on the tutorial
+		if (!mainGame.displayFlavorText && string.startsWith("n")) {
 			return false;
 		}
 		PrintEvent printer = printerMap.getOrDefault(string, null);

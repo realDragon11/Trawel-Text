@@ -67,7 +67,7 @@ public class Combat {
 	
 	public int endaether;
 	
-	private List<Person> totalList, killList;
+	private List<Person> completeList, killList;
 	
 	//constructor
 	/**
@@ -76,9 +76,9 @@ public class Combat {
 	 * @param manTwo (Person)
 	 */
 	public Combat(Person manOne, Person manTwo,World w) {
-		totalList = new ArrayList<Person>();
-		totalList.add(manOne);
-		totalList.add(manTwo);
+		completeList = new ArrayList<Person>();
+		completeList.add(manOne);
+		completeList.add(manTwo);
 		Person attacker;
 		Person defender;
 		//Setup
@@ -325,6 +325,7 @@ public class Combat {
 		this(w,null,people);
 	}
 	
+	private List<Person> tempList;
 	private List<List<Person>> liveLists;
 	private List<List<Person>> targetLists;
 	private List<List<Person>> inSides;
@@ -344,7 +345,8 @@ public class Combat {
 		inSides = people;
 		int size = people.size();
 		sides = size;
-		totalList = new ArrayList<Person>();
+		completeList = new ArrayList<Person>();
+		tempList = new ArrayList<Person>();
 		killList = new ArrayList<Person>();
 		liveLists = new ArrayList<List<Person>>();
 		targetLists = new ArrayList<List<Person>>();
@@ -402,10 +404,11 @@ public class Combat {
 					mainGame.story.startFight(true);
 				}
 				p.battleSetup();
-				totalList.add(p);
+				tempList.add(p);
+				completeList.add(p);
 			}
 		}
-		for (Person p: totalList) {
+		for (Person p: completeList) {
 			Person otherperson = getDefenderFor(p);
 			if (p.isPlayer()) {
 				otherperson.displayStats(true);
@@ -414,11 +417,11 @@ public class Combat {
 			}
 			setAttack(p,otherperson);
 		}
-		totalFighters = totalList.size();
+		totalFighters = completeList.size();
 		Person quickest = null;//moved out so we can have a default last actor to default as alive
 		while(true) {
 			double lowestDelay = Double.MAX_VALUE;
-			for (Person p: totalList) {
+			for (Person p: tempList) {
 				if (lowestDelay > p.getTime()) {
 					lowestDelay = p.getTime();
 					quickest = p;
@@ -430,7 +433,7 @@ public class Combat {
 			}
 			
 			
-			for (Person p: totalList) {
+			for (Person p: tempList) {
 				p.advanceTime(lowestDelay);
 			}
 
@@ -439,6 +442,9 @@ public class Combat {
 			}
 
 			Person defender = quickest.getNextAttack().getDefender();
+			if (!mainGame.displayOtherCombat && !(quickest.isPlayer() || defender.isPlayer())) {
+				extra.offPrintStack();
+			}
 			boolean wasAlive = defender.isAlive();
 			dataMap.get(defender).lastAttacker = quickest;
 			AttackReturn atr = handleTurn(quickest,defender,playerIsInBattle,lowestDelay);
@@ -475,6 +481,10 @@ public class Combat {
 			//if the attacker is dead, through bleeding or otherwise, they are force removed- they would not have acted if they were already removed
 			if (!quickest.isAlive()) {
 				killWrapUp(quickest,dataMap.get(quickest).lastAttacker,true);
+			}
+			
+			if (!mainGame.displayOtherCombat && !(quickest.isPlayer() || defender.isPlayer())) {
+				extra.popPrintStack();
 			}
 
 			int sidesLeft = 0;
@@ -519,13 +529,13 @@ public class Combat {
 			}
 		}
 		
-		if (totalList.size() == 0) {//no survivors, last actor wins
+		if (tempList.size() == 0) {//no survivors, last actor wins
 			//FIXME: fails on summons
-			totalList.add(quickest);
+			tempList.add(quickest);
 			killList.remove(quickest);
 		}else {
-			if (!totalList.contains(quickest)) {//if the last actor died some other way
-				quickest = totalList.get(0);
+			if (!tempList.contains(quickest)) {//if the last actor died some other way
+				quickest = tempList.get(0);//get first living Person
 			}
 		}
 		
@@ -541,7 +551,7 @@ public class Combat {
 			}
 		}
 		
-		survivors = totalList;
+		survivors = tempList;
 		killed = killList;
 		
 		assert survivors.size() > 0;
@@ -557,7 +567,7 @@ public class Combat {
 	
 	private Person getDefenderForConfusion(Person attacker) {
 		//will attempt to target anyone, but if that fails and targets self, revert to old way
-		Person defender = extra.randList(totalList);
+		Person defender = extra.randList(tempList);
 		if (defender == attacker || defender.hasSkill(Skill.PLOT_ARMOR)) {//plot armor (npcs for now but would work on player sorta) have a reduced chance to get targeted
 			return getDefenderFor(attacker);
 		}
@@ -577,7 +587,7 @@ public class Combat {
 			}
 			changed = targetLists.get(i).remove(dead) ? true : changed ;
 		}
-		changed = totalList.remove(dead) ? true : changed ;
+		changed = tempList.remove(dead) ? true : changed ;
 		if (!killList.contains(dead)) {
 			changed = true;
 			killList.add(dead);
@@ -895,7 +905,7 @@ public class Combat {
 			if (attack.getAttacker().isPlayer() && attack.getDefender() != null) {
 			Player.lastAttackStringer = atr.attack.getName()+": ";
 			Person def = attack.getDefender();
-			int index = totalList.indexOf(def);
+			int index = completeList.indexOf(def);
 				switch (code) {
 				case ARMOR:
 					Player.lastAttackStringer += extra.ATTACK_BLOCKED+"You hit "+
@@ -1005,7 +1015,7 @@ public class Combat {
 			defender.addEffect(Effect.I_BLEED);
 			attacker.addEffect(Effect.I_BLEED);
 		}
-		if (attacker.getBag().getRace().racialType != Race.RaceType.BEAST && extra.chanceIn(1,4)) {
+		if (!extra.getPrint() && mainGame.displayFlavorText && attacker.getBag().getRace().racialType != Race.RaceType.BEAST && extra.chanceIn(1,4)) {
 			if (extra.chanceIn(1,3)) {
 					BarkManager.getBoast(attacker,true);//extra.println(attacker.getName() + " "+extra.choose("shouts","screams","boasts")+ " \"" + attacker.getTaunts().getBoast()+"\"");		
 			}else {
@@ -1686,7 +1696,7 @@ public class Combat {
 			if (index > 0) {
 				int subindex = builder.indexOf("]", index+4);
 				int spot = Integer.parseInt(builder.substring(index+4, subindex));
-				builder.replace(index, subindex+1,totalList.get(spot).inlineHPColor());
+				builder.replace(index, subindex+1,completeList.get(spot).inlineHPColor());
 			}else {
 				break;
 			}

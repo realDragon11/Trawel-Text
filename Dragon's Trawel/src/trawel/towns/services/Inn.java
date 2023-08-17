@@ -326,6 +326,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public boolean go() {
+						//these boasts and taunts are not considered reduced flavor, because they are the reason to do this
 						if (extra.chanceIn(2,3)) {
 							BarkManager.getBoast(Player.player.getPerson(),true);
 						}else {

@@ -281,7 +281,9 @@ public class Town extends TContextOwner{
 		if (visited < 2) {
 			visited = 2;
 		}
-		extra.println(visitColor+"You are in " + extra.capFirst(name) + ", on the " +island.getWorld().getCalender().dateName() + ".");
+		if (mainGame.displayLocationalText) {
+			extra.println(visitColor+"You are in " + extra.capFirst(name) + ", on the " +island.getWorld().getCalender().dateName() + ".");
+		}
 		Networking.sendStrong("Discord|desc|Adventuring in " + name +"|");
 		Networking.sendStrong("Discord|imagesmall|town|Town|");
 		Networking.setArea("main");
@@ -294,7 +296,7 @@ public class Town extends TContextOwner{
 			doFort();
 			return;
 		}
-		if (Player.player.townEventTimer <=0 && extra.chanceIn(2,3)) {
+		if (mainGame.displayFlavorText && Player.player.townEventTimer <=0 && extra.chanceIn(2,3)) {
 			if (TownFlavorFactory.go(.5,this.getTier(),this)) {//TODO: look into town flavor again
 			Player.player.townEventTimer = extra.randRange(18,24*5);
 			}
@@ -634,23 +636,33 @@ public class Town extends TContextOwner{
 				Town t = c.otherTown(Town.this);
 				switch (c.getType()) {
 				case ROAD:
-					extra.print("You start to travel to " + t.getName()+"... ");
+					if (mainGame.displayTravelText) {
+						extra.print("You start to travel to " + t.getName()+"... ");
+					}
 					if (extra.chanceIn(4,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
 						wander(3);
 					}
 					Player.addTime(c.getTime());
-					extra.println("You arrive in " + t.getName()+".");
+					if (mainGame.displayTravelText) {
+						extra.println("You arrive in " + t.getName()+".");
+					}
 					break;
 				case SHIP:
-					extra.print("You start to sail to " + t.getName() +"... ");
+					if (mainGame.displayTravelText) {
+						extra.print("You start to sail to " + t.getName() +"... ");
+					}
 					if (extra.chanceIn(4,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
 						wanderShip(3);
 					}
 					Player.addTime(c.getTime());
-					extra.println("You arrive in " + t.getName()+".");
+					if (mainGame.displayTravelText) {
+						extra.println("You arrive in " + t.getName()+".");
+					}
 					break;
 				case TELE:
-					extra.println("You teleport to " + t.getName()+".");
+					if (mainGame.displayTravelText) {
+						extra.println("You teleport to " + t.getName()+".");
+					}
 					Networking.sendStrong("PlayDelay|sound_teleport|1|");
 					Player.addTime(c.getTime());
 					break;
