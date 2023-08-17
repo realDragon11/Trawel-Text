@@ -121,7 +121,7 @@ public abstract class Item implements java.io.Serializable{
 	
 	public abstract String getName();
 	public abstract String getNameNoTier();
-	public abstract String storeString(float markup, boolean canShow);
+	public abstract String storeString(float markup, int canShow);
 	
 	protected void updateStats() {
 		

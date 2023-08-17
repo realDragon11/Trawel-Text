@@ -425,14 +425,14 @@ public class Armor extends Item implements IEffectiveLevel{
 	}
 	
 	@Override
-	public String storeString(float markup, boolean canShow) {
-		if (canShow) {
+	public String storeString(float markup, int canShow) {
+		if (canShow > 0) {
 			return this.getName() 
 				+ " "+extra.CHAR_SHARP + extra.F_WHOLE.format(this.getSharpResist())
 				+ " "+extra.CHAR_BLUNT + extra.F_WHOLE.format(this.getBluntResist())
 				+ " "+extra.CHAR_PIERCE + extra.F_WHOLE.format(this.getPierceResist())
 				+ " cost: " +  extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
-				;
+				+ (canShow == 1 ? " (raw deal)" : "");
 		}
 		String base = getBaseName();
 		return "  They refuse to show you something you think " + extra.pluralIsA(base) + " "+base+".";

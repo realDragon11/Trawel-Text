@@ -539,7 +539,7 @@ public class AIClass {
 			costDiff = toReplace.getAetherValue() - hasItem.getAetherValue();
 		}else {
 			costName = s.getTown().getIsland().getWorld().moneyString();
-			costDiff = s.getDelta(hasItem,toReplace,p);
+			costDiff = s.getDelta(hasItem,toReplace,p.getSuper());//just crash if doesn't have super, shouldn't be shopping
 			//costDiff = (int) (Math.ceil(s.getMarkup()*toReplace.getMoneyValue()) - hasItem.getMoneyValue());//DOLATER match rounding across places
 		}
 		

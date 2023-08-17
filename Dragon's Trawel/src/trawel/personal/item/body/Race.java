@@ -145,7 +145,7 @@ public class Race extends Item{
 	}
 	
 	@Override
-	public String storeString(float markup, boolean canShow) {
+	public String storeString(float markup, int canShow) {
 		return this.getName() 
 				+ " cost: " +  extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
 				;

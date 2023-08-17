@@ -480,13 +480,13 @@ public class Weapon extends Item implements IEffectiveLevel {
 	}
 	
 	@Override
-	public String storeString(float markup, boolean canShow) {//for stores brief overview
-		if (canShow) {
+	public String storeString(float markup, int canShow) {//for stores brief overview
+		if (canShow > 0) {
 			return this.getName() 
 					+ " ic/wa: " + extra.formatPerSubOne(this.scoreImpact())
 					+"/"+extra.format(this.scoreWeight())
 				+ " cost: " +  extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
-				;
+				+ (canShow == 1 ? " (raw deal)" : "");
 		}
 		String base = getBaseName();
 		return "  They refuse to show you something you think " + extra.pluralIsA(base) + " "+base+".";

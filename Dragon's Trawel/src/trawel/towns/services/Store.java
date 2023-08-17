@@ -181,15 +181,17 @@ public class Store extends Feature{
 	}
 	/**
 	 * > 0 = gaining money from the trade (person selling something worth more)
+	 * <br>
 	 * < 0 = losing money from the trade (person selling something worth less)
+	 * <br>
 	 * @param selling
 	 * @param buying
 	 * @return
 	 */
-	public int getDelta(Item selling, Item buying, Person p) {
+	public int getDelta(Item selling, Item buying, SuperPerson p) {
 		//the gold the item you are exchanging it for is worth
 		int sellGold = extra.zeroOut(selling.getMoneyValue());
-		double buyGold = Math.ceil(buying.getMoneyValue()*markup);
+		double buyGold = Math.ceil(buying.getMoneyValue()*getScaledMarkup(p,buying));
 		double raw_delta = sellGold-buyGold;// > 0 = earning money, < 0 = spending money
 		return (int) (raw_delta > 0 ? Math.floor(raw_delta) : Math.ceil(raw_delta));
 	}
@@ -223,7 +225,7 @@ public class Store extends Feature{
 			return;
 		}
 		Item buyItem = items.get(index);
-		if (!canSee(buyItem)) {
+		if (canSee(buyItem) <= 0) {
 			return;
 		}
 		ItemType itemType = buyItem.getType();
@@ -243,7 +245,7 @@ public class Store extends Feature{
 		default:
 			throw new RuntimeException("invalid store item type");
 		}
-		int delta = getDelta(sellItem,buyItem,Player.player.getPerson());
+		int delta = getDelta(sellItem,buyItem,Player.player);
 		if (Player.player.getTotalBuyPower()+delta < 0) {
 			extra.println("You can't afford this item!");
 			return;
@@ -293,11 +295,22 @@ public class Store extends Feature{
 		items.add(i);
 	}
 	
-	public static boolean canSee(Item i) {
-		if (Player.player.merchantLevel >= i.getLevel() || Player.player.getPerson().getLevel() > i.getLevel()) {
-			return true;
+	/**
+	 * 2 = can see, normal markup
+	 * <br>
+	 * 1 = can see but is marked up more than normal
+	 * <br>
+	 * 0 = cannot see
+	 */
+	public int canSee(Item i) {
+		double scaled = getScaledMarkup(Player.player,i);
+		if (scaled  < 4d) {
+			if (scaled == markup) {
+				return 2;
+			}
+			return 1;
 		}else {
-			return false;
+			return 0;
 		}
 	}
 	
@@ -453,7 +466,7 @@ public class Store extends Feature{
 
 		@Override
 		public boolean canClick() {
-			return canSee(item);
+			return canSee(item) > 0;
 		}
 
 		@Override
@@ -605,8 +618,11 @@ public class Store extends Feature{
 		
 		for (int j = items.size()-1;j>=0;j--) {
 			Item i = items.get(j);
+			if (i.getLevel() > p.getLevel()) {
+				continue;//ai hard capped to not be able to buy better items than its level
+			}
 			Item counter = bag.itemCounterpart(i);
-			int delta = getDelta(counter,i,p);
+			int delta = getDelta(counter,i,a);
 			if (a.getTotalBuyPower()+delta < 0 && AIClass.compareItem(bag,i,false,p)) {
 				a.buyMoneyAmountRateInt(-delta,aetherPerMoney(p));
 				items.remove(i);
@@ -617,5 +633,18 @@ public class Store extends Feature{
 
 	public float getMarkup() {
 		return markup;
+	}
+	
+	public double getScaledMarkup(SuperPerson buyer, Item i) {
+		int itemLevel = i.getLevel();
+		int ePLevel = buyer.getPerson().getLevel();
+		if (buyer.getPerson().isPlayer()) {
+			ePLevel = Math.max(Player.player.merchantLevel, ePLevel);
+		}
+		if (ePLevel >= itemLevel) {
+			return markup;
+		}
+		assert markup > 1f;//must be a real markup
+		return Math.pow(markup,itemLevel-ePLevel);//every overleveled adds the markup again
 	}
 }
