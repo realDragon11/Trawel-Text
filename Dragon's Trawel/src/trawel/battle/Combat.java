@@ -545,11 +545,12 @@ public class Combat {
 				break;
 			}
 		}
+		/*
 		for (List<Person> listoflist: inSides) {
 			for (Person p: listoflist) {
 				p.setFlag(PersonFlag.PLAYER_SIDE,false);
 			}
-		}
+		}*/
 		
 		survivors = tempList;
 		killed = killList;

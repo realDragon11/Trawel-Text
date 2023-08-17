@@ -90,9 +90,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		 */
 		SMART_COMPARE,
 		/**
-		 * used for forts to determine their side. Currently the player can't fight against forts, but that might change
+		 * if this is set to true, allows non-personable races to accumulate wealth, not just aether,
+		 * through looting
 		 */
-		PLAYER_SIDE
+		HAS_WEALTH
 		/*
 		 * used to indicate less importance- in current cases, boss 'adds'. This is not a summon, however
 		 * just a persistent non-leader
@@ -186,7 +187,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		
 		bag = new Inventory(level,raceType,matType,job,race);
 		bag.owner = this;
-		if (raceType == RaceType.HUMANOID) {
+		if (raceType == RaceType.PERSONABLE) {
 			personType = extra.randCollection(RAND_PERSON_TYPES);
 			firstName = randomLists.randomFirstName();
 			title = randomLists.randomLastName();
@@ -261,7 +262,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 	
 	protected Person(int level) {
-		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true);
+		this(level,true,Race.RaceType.PERSONABLE,null,Person.RaceFlag.NONE,true);
 	}
 	
 	protected Person(int level, boolean aiLevel, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar) {
@@ -269,7 +270,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 	
 	protected Person(int level,AIJob job) {
-		this(level,true,Race.RaceType.HUMANOID,null,Person.RaceFlag.NONE,true,job,null);
+		this(level,true,Race.RaceType.PERSONABLE,null,Person.RaceFlag.NONE,true,job,null);
 	}
 	
 	protected static Person animal(int level,RaceFactory.RaceID race,Material matType,boolean giveScar){
@@ -805,7 +806,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	 */
 	public void computeLevels(int levels) {
 			//maxHp+=50*levels;
-			if (!extra.getPrint() && mainGame.displayFlavorText && getBag().getRace().racialType == Race.RaceType.HUMANOID) {
+			if (!extra.getPrint() && mainGame.displayFlavorText && getBag().getRace().racialType == Race.RaceType.PERSONABLE) {
 				BarkManager.getBoast(this, false);
 			}
 			addFeatPoint(levels);
@@ -1404,7 +1405,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			extra.println("They have " + extra.format(bag.getDodge()) + "x dodging, " + extra.format(bag.getSharpResist()) + " sharp resistance, " +
 			extra.format(bag.getBluntResist()) + " blunt resistance, and "+ extra.format(bag.getPierceResist()) + " pierce resistance.");
 			extra.println("They have " + xp + "/" + level*level + " xp toward level " + (level+1) + ".");
-			if (this.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
+			if (this.getBag().getRace().racialType == Race.RaceType.PERSONABLE) {
 				extra.println("Their inventory includes " + bag.nameInventory());
 				if (hasSkill(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
 				if (hasSkill(Skill.PARRY)) {extra.println("They have a parrying dagger.");}
@@ -2008,7 +2009,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	 * if they can loot, speak, trade, etc etc
 	 */
 	public boolean isHumanoid() {
-		return bag.getRace().racialType == RaceType.HUMANOID;
+		return bag.getRace().racialType == RaceType.PERSONABLE;
 	}
 
 	public void forceKill() {

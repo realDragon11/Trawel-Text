@@ -581,4 +581,11 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	}
 
 	public abstract boolean everDeathCheated();
+
+	public void removeGold(World w) {
+		int index = moneymappings.indexOf(w);
+		if (index != -1) {
+			moneys.set(index,0);
+		}
+	}
 }

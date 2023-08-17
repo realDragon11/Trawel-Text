@@ -15,11 +15,11 @@ public class DummyInventory extends Inventory {
 	private double myDodge;
 
 	public DummyInventory() {
-		super(-1, Race.RaceType.HUMANOID, null, null, null);
+		super(-1, Race.RaceType.PERSONABLE, null, null, null);
 		myDodge = super.getDodge();
 	}
 	public DummyInventory(int i) {
-		super(-1, Race.RaceType.HUMANOID, presetSwitch(i), null, null);
+		super(-1, Race.RaceType.PERSONABLE, presetSwitch(i), null, null);
 		myDodge = super.getDodge();
 	}
 	

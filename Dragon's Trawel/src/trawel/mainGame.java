@@ -1327,7 +1327,7 @@ public class mainGame {
 
 		first_man.addXp(second_man.getLevel());
 
-		if (!second_man.isPlayer() && first_man.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
+		if (!second_man.isPlayer() && first_man.getBag().getRace().racialType == Race.RaceType.PERSONABLE) {
 			extra.println(first_man.getName() +" goes to loot " + second_man.getName() +".");
 			AIClass.loot(second_man.getBag(),first_man.getBag(),true,first_man);
 		}
@@ -1354,7 +1354,7 @@ public class mainGame {
 				Player.player.addTitle("master duelist");
 			}
 			second_man.addDeath();
-			if (second_man.getBag().getRace().racialType == Race.RaceType.HUMANOID) {
+			if (second_man.getBag().getRace().racialType == Race.RaceType.PERSONABLE) {
 				int deaths = second_man.getDeaths();
 				int pKills = second_man.getPlayerKills();
 				//max revive chance decreases the more they die, even if they have infinite kills on you, to reduce annoyance

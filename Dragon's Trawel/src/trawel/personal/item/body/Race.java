@@ -37,9 +37,13 @@ public class Race extends Item{
 	
 	public enum RaceType{
 		/**
-		 * actually a misnomer, only applies to 'personable' things that have full people power, not things that are monsters like drudgers
+		 * applies to 'personable' things that have full people power, not things that are monsters like drudgers
+		 * <br>
+		 * the same target map can be used for a personable and non personable creature
+		 * <br>
+		 * some creatures also selectively have select mechanics restored, notably the ability to loot world currency
 		 */
-		HUMANOID,
+		PERSONABLE,
 		BEAST;
 	}
 	

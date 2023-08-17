@@ -326,12 +326,11 @@ public class AIClass {
 	 * Take the inventory out of @param loot and put it, or any money gained by selling it, into @param stash
 	 * @param loot (Inventory)
 	 * @param stash (Inventory)
-	 * @param smarts (int)
 	 * @param aetherStuff if the items can be atom-smashed into aether
 	 */
 	public static void loot(Inventory loot, Inventory stash, boolean aetherStuff, Person p) {
 		int i = 0;
-		boolean normalLoot = loot.getRace().racialType == Race.RaceType.HUMANOID;
+		boolean normalLoot = loot.getRace().racialType == Race.RaceType.PERSONABLE;
 		if (normalLoot && p.isPlayer() && Player.getTutorial()) {
 			extra.println("You are now looting something! The first item presented will be the new item, the second, your current item, and finally, the difference will be shown. Some items may be autosold if all their visible stats are worse.");
 		}
@@ -413,13 +412,20 @@ public class AIClass {
 			//TODO drawbane taking ai
 		}
 		if (aetherStuff) {
-			int money = loot.getGold();
-			stash.addGold(money);
 			int aether = loot.getAether();
 			stash.addAether(aether);
-			loot.removeCurrency();
-			if (!extra.getPrint()) {
-				extra.println(p.getName() + " claims the " + aether + " aether and " + World.currentMoneyDisplay(money) + ".");
+			if (normalLoot || p.getFlag(PersonFlag.HAS_WEALTH)) {
+				int money = loot.getGold();
+				stash.addGold(money);
+				loot.removeAllCurrency();
+				if (!extra.getPrint()) {
+					extra.println(p.getName() + " claims the " + aether + " aether "+(money > 0 ? "and " + World.currentMoneyDisplay(money) + "." : "."));
+				}
+			}else {
+				loot.removeAether();
+				if (!extra.getPrint()) {
+					extra.println(p.getName() + " gains " + aether + " aether.");
+				}
 			}
 		}
 	}

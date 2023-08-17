@@ -155,7 +155,7 @@ public class Store extends Feature{
 			}
 			if (type == 7) {
 				for (int j = 0;j < 5;j++) {
-					items.add(RaceFactory.randRace(Race.RaceType.HUMANOID));
+					items.add(RaceFactory.randRace(Race.RaceType.PERSONABLE));
 				}
 			}
 		}

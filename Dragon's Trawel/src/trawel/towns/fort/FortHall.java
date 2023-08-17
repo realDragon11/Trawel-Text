@@ -275,7 +275,7 @@ public class FortHall extends FortFeature {
 		if (forgeTimer <=0) {
 			extra.offPrintStack();
 			forgeTimer = 24.0*7;
-			Inventory inv = new Inventory(tier, Race.RaceType.HUMANOID, null, null,null);//TODO probably make custom inv type
+			Inventory inv = new Inventory(tier, Race.RaceType.PERSONABLE, null, null,null);//TODO probably make custom inv type
 			inv.deEnchant();
 			for (Person p: allies) {
 				AIClass.loot(p.getBag(), inv, false,p);
@@ -380,9 +380,6 @@ public class FortHall extends FortFeature {
 	}
 
 	private List<Person> getAllies() {
-		for (Person a: allies) {
-			a.setFlag(PersonFlag.PLAYER_SIDE,true);
-		}
 		return allies;
 	}
 	

@@ -63,7 +63,7 @@ public class Inventory implements java.io.Serializable{
 			isDummy = true;
 			level = 10;
 		}
-		if (type == Race.RaceType.HUMANOID) {
+		if (type == Race.RaceType.PERSONABLE) {
 			if (job != null) {
 				ArmorStyle matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
 				armorSlots[0] = new Armor(level,(byte) 0,MaterialFactory.randMatByType(matType2),matType2);
@@ -465,7 +465,7 @@ public class Inventory implements java.io.Serializable{
 	/**
 	 * @param gold the gold to set (int)
 	 */
-	public void setGold(int gold) {
+	public void setLocalGold(int gold) {
 		this.money = gold;
 	}
 	
@@ -495,7 +495,7 @@ public class Inventory implements java.io.Serializable{
 		if (!p.getScar().equals("")) {
 			Networking.sendStrong("AddInv|"+side+"|" + p.getScar() +"|iron|0|" + p.bloodSeed + "|" + p.getBloodCount()+"|0|0|");
 		}
-		if (r_race.racialType == Race.RaceType.HUMANOID) {
+		if (r_race.racialType == Race.RaceType.PERSONABLE) {
 			for (Armor a: armorSlots) {
 				if (a == null || a.getStyle() == ArmorStyle.BODY) {
 					continue;
@@ -1060,8 +1060,20 @@ public class Inventory implements java.io.Serializable{
 		}
 	}
 
-	public void removeCurrency() {
+	public void removeAllCurrency() {
 		money = 0;
+		aether = 0;
+		if (owner.getSuper() != null) {
+			World w = owner.getSuper().getWorld();
+			if (w == null) {
+				owner.getSuper().removeGold(Player.getPlayerWorld());
+			}else {
+				owner.getSuper().removeGold(w);
+			}
+		}
+	}
+	
+	public void removeAether() {
 		aether = 0;
 	}
 	
