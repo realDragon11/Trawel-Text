@@ -91,7 +91,7 @@ public enum Skill{
 				,"Can only resist up to half the base damage of an attack. Only applies to hit attacks. Amount is random."
 				,Type.DEFENSE),
 		KUNG_FU("Unarmed Attacks","Gain martial arts attacks."
-				,"Adds one attack option per turn, which is based on strength and dexterity, but capped to weapon level."
+				,"Adds one attack option per turn, which is based on strength and dexterity, TODO."//TODO
 				,Type.ATTACK_TYPE),
 		BLITZ("Blitz","You actions take 3 less instants to complete than expected."
 				,"Does not allow you to act sooner in order- but does impact how much time passes when you do get to act."

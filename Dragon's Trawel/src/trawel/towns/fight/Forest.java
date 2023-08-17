@@ -481,7 +481,7 @@ public class Forest extends Feature{
 	private void abandonedHut() {
 		extra.println("You find an abandoned hut. Enter?");
 		if (extra.yesNo()) {
-			switch (extra.randRange(1,2)) {
+			switch (extra.randRange(2,3)) {
 			case 1: extra.println("You step in it. You find yourseslf jerked nowhere. Your surroundings change...");
 			Player.player.setLocation(Player.player.getWorld().getRandom(Player.player.getPerson().getLevel()));break;
 			case 2: extra.println("There is a log in the hut");oldFighter();break;

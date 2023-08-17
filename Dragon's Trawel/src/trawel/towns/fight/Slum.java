@@ -11,10 +11,14 @@ import trawel.Effect;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.battle.Combat;
+import trawel.factions.HostileTask;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.Potion;
 import trawel.personal.people.Agent;
+import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.quests.BasicSideQuest;
@@ -37,7 +41,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	private boolean removable;
 	public Agent crimeLord;
 	private double timePassed = 0;
-	private int crimeRating = 10;
+	private float crimeRating = 10;
 	private int wins = 0;
 	
 	private boolean canQuest = true;
@@ -88,7 +92,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	public void go() {
 		Networking.setArea("dungeon");
 		Slum sl = this;
-		int removecost = (crimeRating*5)+(town.getTier()*10);
+		int removecost = (int) (((crimeRating*5)+(town.getTier()*10))/2f);
 		extra.menuGo(new MenuGenerator() {
 
 			@Override
@@ -142,7 +146,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 						
 						@Override
 						public String title() {
-							return "pay to remove slum ("+World.currentMoneyDisplay(removecost)+")";
+							return "pay to reform slum ("+World.currentMoneyDisplay(removecost)+")";
 						}
 		
 						@Override
@@ -150,7 +154,6 @@ public class Slum extends Feature implements QuestBoardLocation{
 							if (Player.player.getGold() > removecost) {
 								extra.println("You pay for the reform programs.");
 								Player.player.addGold(-removecost);
-								//town.enqueneRemove(sl);//TODO: replace with like 'residental district'
 								String formerly = " (formerly '"+sl.getName()+"')";
 								switch (extra.randRange(0,3)) {
 								case 0: case 1:
@@ -181,27 +184,35 @@ public class Slum extends Feature implements QuestBoardLocation{
 		timePassed-=time;
 		if (timePassed < 0) {
 			if (canQuest) {this.generateSideQuest();}
-			if (crimeLord == null){
-				timePassed = 24;
+			if (crimeLord == null){//replacing crime lord does not let them do much
+				timePassed = 48;
 				if (town.getPersonableOccupants().count() == 0) {
 					return null;
 				}
 				crimeLord = town.getRandPersonableOccupant();
 				town.removeOccupant(crimeLord);
+				crimeLord.onlyGoal(AgentGoal.OWN_SOMETHING);
 			}else {
-				timePassed = 24;
+				//if has crime lord
+				timePassed = 12+(extra.randFloat()*24);
 				if (town.getPersonableOccupants().count() == 0) {
 					return null;
 				}
 				Agent sp = town.getRandPersonableOccupant();
-				if (sp.getPerson().getLevel() > crimeLord.getPerson().getLevel() && extra.chanceIn(1,3)) {
+				if (sp.getPerson().hTask == HostileTask.MUG && sp.getPerson().getLevel() > crimeLord.getPerson().getLevel() && extra.chanceIn(1,3)) {
+					//replace crime lord
 					town.addOccupant(crimeLord);
 					crimeLord = sp;
 					town.removeOccupant(sp);
+					crimeLord.onlyGoal(AgentGoal.NONE);
 				}else {
-					((Agent)crimeLord).getPerson().getBag().addGold(3*town.getTier());
-					crimeRating+=((Agent)crimeLord).getPerson().getLevel();
+					//if not replaced, make money
+					crimeLord.getPerson().getBag().addGold(town.getTier());
 				}
+				//increase crime, replaced or not
+				capCrimeToLord();
+				//add after floorcapping to new crime level
+				crimeRating+=IEffectiveLevel.unEffective(crimeLord.getPerson().getEffectiveLevel());
 			}
 			
 		}
@@ -315,10 +326,12 @@ public class Slum extends Feature implements QuestBoardLocation{
 						public boolean go() {
 							extra.println("You wait around and find a mugger.");
 							Player.addTime(2);
-							
-							if (mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getMugger(town.getTier())).equals(Player.player.getPerson())) {
-							//crime rating go down
-								crimeRating-=town.getTier();
+							Combat c = Player.player.fightWith(RaceFactory.getMugger(town.getTier()));
+							if (c.playerWon() > 0) {
+								//crime rating go down
+								crimeRating-= IEffectiveLevel.unEffective(Player.player.getPerson().getEffectiveLevel());
+								//cap reduction on crime lord if they're still alive
+								capCrimeToLord();
 							}
 							return false;
 						}
@@ -335,10 +348,10 @@ public class Slum extends Feature implements QuestBoardLocation{
 					public boolean go() {
 						extra.println("You wait around and find someone to rob.");
 						Player.addTime(1);
-						
-						if (mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getPeace(town.getTier())).equals(Player.player.getPerson())) {
-						//crime rating go down
-							crimeRating+=Player.player.getPerson().getLevel();
+						Combat c = Player.player.fightWith(RaceFactory.getPeace(town.getTier()));
+						if (c.playerWon() > 0) {
+							//crime rating go up
+							crimeRating+=1;
 						}
 						return false;
 					}
@@ -351,20 +364,29 @@ public class Slum extends Feature implements QuestBoardLocation{
 	}
 	
 	private void killCrime() {
-		Person p = ((Agent)crimeLord).getPerson();
+		Person p = crimeLord.getPerson();
 		extra.println(Networking.AGGRO +"Attack " + p.getName() + "?");
 		if (extra.yesNo()) {
 			Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
 			if (winner == Player.player.getPerson()) {
 				extra.println("You kill the crime lord!");
 				wins++;
-				crimeRating -=  ((Agent)crimeLord).getPerson().getLevel()*3;
+				//reduce crime by 3x crimelord eLevel and 1x player eLevel, compared to only 1x player eLevel of mugger
+				crimeRating -= 3*IEffectiveLevel.unEffective(crimeLord.getPerson().getEffectiveLevel());
+				crimeRating -= IEffectiveLevel.unEffective(Player.player.getPerson().getEffectiveLevel());
 				crimeLord = null;
 			}else {
 				extra.println("The crime lord kills you.");
 			}
 		}
 		
+	}
+	
+	public void capCrimeToLord() {
+		if (crimeLord == null) {
+			return;
+		}
+		crimeRating = Math.max(crimeRating,IEffectiveLevel.unEffective(crimeLord.getPerson().getEffectiveLevel()));
 	}
 
 	@Override

@@ -152,15 +152,15 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 						@Override
 						public String title() {
-							return "Mix In Potion ("+town.getIsland().getWorld().moneyString(tier)+")";
+							return "Mix In Potion ("+town.getIsland().getWorld().moneyString(topUpPrice())+")";
 						}
 
 						@Override
 						public boolean go() {
-							extra.println("You can attempt to have the witches here top up your potion, but there's a chance that will ruin it. It will also cost "+town.getIsland().getWorld().moneyString(tier)+". Pay?");
+							extra.println("You can attempt to have the witches here top up your potion, but there's a chance that will ruin it. It will also cost "+town.getIsland().getWorld().moneyString(topUpPrice())+". Pay?");
 							if (extra.yesNo()) {
-								if (Player.player.canBuyMoneyAmount(tier)) {
-									Player.player.buyMoneyAmount(tier);
+								if (Player.player.canBuyMoneyAmount(topUpPrice())) {
+									Player.player.buyMoneyAmount(topUpPrice());
 									Player.player.addFlaskUses((byte)3);
 									if (extra.chanceIn(1,3)) {
 										Player.player.spoilPotion();
@@ -178,6 +178,10 @@ public class WitchHut extends Store implements QuestBoardLocation{
 				list.add(new MenuBack("leave"));
 				return list;
 			}});
+	}
+	
+	private int topUpPrice() {
+		return (int) getUnEffectiveLevel();
 	}
 
 	private void brew() {
@@ -397,8 +401,9 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		timecounter-=time;
 		if (timecounter <= 0) {
-			town.getPersonableOccupants().filter(a -> !a.hasFlask() && a.canBuyMoneyAmount(tier)).limit(4)
-			.forEach(a -> buyRandomPotion(a));
+			int price = npcPotPrice();
+			town.getPersonableOccupants().filter(a -> !a.hasFlask() && a.canBuyMoneyAmount(price)).limit(4)
+			.forEach(a -> buyRandomPotion(a,price));
 			WitchHut.randomRefillsAtTown(town,tier);
 			if (canQuest) {generateSideQuest();}
 			timecounter += extra.randRange(20,40);
@@ -406,8 +411,12 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		return null;
 	}
 	
-	private void buyRandomPotion(SuperPerson p) {
-		p.buyMoneyAmount(tier);
+	private int npcPotPrice() {
+		return (int) (getUnEffectiveLevel()*3);
+	}
+	
+	private void buyRandomPotion(SuperPerson p,int price) {
+		p.buyMoneyAmount(price);
 		p.setFlask(new Potion(extra.randList(randomPotion),5));
 	}
 	
@@ -416,7 +425,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	public static final Effect[] randomQuestionablePotion = new Effect[] {
 			Effect.CURSE,Effect.CURSE,Effect.BEES,Effect.BLEED,Effect.MAJOR_BLEED,
 			Effect.HEARTY,Effect.BEE_SHROUD,Effect.FORGED,Effect.HASTE,
-			Effect.CLOTTER,Effect.R_AIM,Effect.SUDDEN_START} ;
+			Effect.CLOTTER,Effect.R_AIM,Effect.SUDDEN_START};
 	
 	
 	public static void randomRefillsAtTown(Town t,int cost) {

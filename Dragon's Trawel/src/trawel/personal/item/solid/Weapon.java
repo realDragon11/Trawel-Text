@@ -356,9 +356,10 @@ public class Weapon extends Item implements IEffectiveLevel {
 		
 		int subTests = battleTests*WorldGen.getDummyInvs().size();
 		int totalTests = size*subTests;
-		double levelAdjust = level;
-		//the above battlescore assumes level 10 power weapon on level 10 armor
-		//so we put the real level in now
+		double levelAdjust = IEffectiveLevel.unEffective(IEffectiveLevel.effective(level));//DOLATER: test
+		//the above battlescore assumes equal armor
+		//so we put the effective level in now to make it higher
+		//TODO: unsure if the natural allowed damage increase will be enough to signal a weapon as better to a player/AI
 		this.bsCon = (float)(highest);//(float) (high*level);
 		this.bsAvg = (float)((levelAdjust*total)/totalTests);//(float) (average*level);
 		this.bsIpt = impactChance/(float)totalTests;

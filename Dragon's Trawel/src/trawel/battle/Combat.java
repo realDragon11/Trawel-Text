@@ -802,9 +802,6 @@ public class Combat {
 				damage = 0;
 				code = ATK_ResultCode.ARMOR;
 				type = ATK_ResultType.NO_IMPACT;
-				/*if (att.getWeapon() != null && att.getWeapon().getLevel() > 50) {
-					extra.println(global_roll+"");
-				}*/
 			}else {//TODO: new goal: % reductions based on relativeness with a chance to negate entirely if much higher?
 				//up to half the damage if the damage roll was less than the total weighted armor (without roll)
 				double reductMult = damageCompMult(.5f,1f,1f,att_roll*rawdam,def_roll*weight_arm,1f,1.5f);
@@ -1501,7 +1498,7 @@ public class Combat {
 		case TRIPPED:
 			return new Integer[] {20};//-20 time units
 		case KO:
-			return new Integer[] {5*defender.getLevel()};
+			return new Integer[] {IEffectiveLevel.cleanLHP(defender.getLevel(),.05)};
 		case BLEED: case I_BLEED://bleeds aren't synced, WET :(
 			return new Integer[] {bleedDam(attacker,defender),bleedDam(null,defender)};//can take null attacker
 		case MAJOR_BLEED:
@@ -1512,7 +1509,7 @@ public class Combat {
 		case MANGLED:
 			return new Integer[] {50};//50% reduction in condition
 		case BLOODY://bleeds aren't synced, WET :(
-			return new Integer[] {50,defender.getLevel()};//bloody blind
+			return new Integer[] {50,bleedDam(attacker,defender),bleedDam(null,defender)};//bloody blind
 		}
 		return new Integer[0];
 	}

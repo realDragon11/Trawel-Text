@@ -437,7 +437,7 @@ public class Docks extends Feature {
 				}else {
 					extra.println(extra.RESULT_GOOD+"You took back the docks!");
 				}
-				int reward = (10*tier)+extra.randRange(0,4);
+				int reward = (int) ((10*getUnEffectiveLevel())+extra.randRange(0,4));
 				extra.println("They pay you with "+World.currentMoneyDisplay(reward)+".");
 				Player.player.addGold(reward);
 			}else {

@@ -156,10 +156,6 @@ public class Arena extends Feature{
 		return j;
 	}
 
-	public int getTier() {
-		return tier;
-	}
-
 	public void setTier(int tier) {
 		this.tier = tier;
 	}

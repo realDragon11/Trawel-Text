@@ -150,10 +150,10 @@ public class Oracle extends Feature{ //extends feature later
 	}
 
 	public void utterance() {
-		if (Player.player.getGold() >= tier*1) {
-			extra.println("Pay "+ tier*1 +" "+World.currentMoneyString()+" for an utterance?");
+		if (Player.player.getGold() >= cheapUtterPrice()) {
+			extra.println("Pay "+ cheapUtterPrice() +" "+World.currentMoneyString()+" for an utterance?");
 			if (extra.yesNo()) {
-				Player.player.addGold(-tier*1);
+				Player.player.addGold(-cheapUtterPrice());
 				tip("");
 				visits++;
 				Networking.unlockAchievement("oracle1");
@@ -173,10 +173,10 @@ public class Oracle extends Feature{ //extends feature later
 	}
 
 	public void utterance2() {
-		if (Player.player.getGold() >= tier*100) {
-			extra.println("Pay "+ tier*5 +" "+World.currentMoneyString()+" for a premium utterance?");
+		if (Player.player.getGold() >= cheapUtterPrice()*5) {
+			extra.println("Pay "+ (cheapUtterPrice()*5) +" "+World.currentMoneyString()+" for a premium utterance?");
 			if (extra.yesNo()) {
-				Player.player.addGold(-tier*5);
+				Player.player.addGold(-cheapUtterPrice()*5);
 				tip("utter");
 				int oldVisits = visits;
 				visits+=4;
@@ -216,8 +216,8 @@ public class Oracle extends Feature{ //extends feature later
 	
 	private void goDelphi() {
 		while (true) {
-		extra.println("1 buy an utterance ("+tier*1+" "+World.currentMoneyString()+")");
-		extra.println("2 buy a premium utterance ("+tier*5+" "+World.currentMoneyString()+")");
+		extra.println("1 buy an utterance ("+cheapUtterPrice()+" "+World.currentMoneyString()+")");
+		extra.println("2 buy a premium utterance ("+(cheapUtterPrice()*5)+" "+World.currentMoneyString()+")");
 		extra.println("3 sit around and wait for them to talk to you");
 		extra.println("4 leave");
 		switch (extra.inInt(4)) {
@@ -231,5 +231,9 @@ public class Oracle extends Feature{ //extends feature later
 			case 4: return;
 		}
 		}
+	}
+	
+	private int cheapUtterPrice() {
+		return (int) getUnEffectiveLevel();
 	}
 }

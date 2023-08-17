@@ -4,6 +4,7 @@ import java.util.List;
 
 import trawel.Networking;
 import trawel.extra;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.quests.QuestR;
@@ -13,7 +14,7 @@ import trawel.time.TContextOwner;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 
-public abstract class Feature extends TContextOwner{
+public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	
 	private static final long serialVersionUID = 7285785408935895233L;
 	protected String name;
@@ -127,6 +128,12 @@ public abstract class Feature extends TContextOwner{
 	}
 	public String getTutorialText() {
 		return tutorialText;
+	}
+	
+	@Override
+	public int getLevel() {
+		return tier;
+		
 	}
 	
 }

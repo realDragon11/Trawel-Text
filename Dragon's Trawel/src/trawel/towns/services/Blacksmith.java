@@ -42,13 +42,14 @@ public class Blacksmith extends Feature {
 		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|blacksmith|Blacksmith|");
 		extra.println("You have " + World.currentMoneyDisplay(Player.player.getGold()) + " and "+Player.bag.getAether()+ " aether.");
-		extra.println("1 forge item for store (" + tier*10 + " "+mname+")");
+		int forgePrice = (int) Math.ceil(getUnEffectiveLevel());
+		extra.println("1 forge item for store (" + forgePrice + " "+mname+")");
 		extra.println("2 improve item up to " + Item.getModiferNameColored(tier) +" quality");
 		extra.println("3 exit");
 		switch (extra.inInt(3)) {
 		case 1: 
-			if (Player.player.getTotalBuyPower() >= tier*10) {
-				Player.player.buyMoneyAmount(tier*10);
+			if (Player.player.getTotalBuyPower() >= forgePrice) {
+				Player.player.buyMoneyAmount(forgePrice);
 				store.addAnItem();
 				extra.println("An item has been forged and sent to " + store.getName() + "!");
 			}else {
@@ -66,7 +67,7 @@ public class Blacksmith extends Feature {
 				extra.println("This item is too high in quality to improve here!");
 				break;
 			}
-			int cost = item.getMoneyValue()+tier*20;//(int) (Math.pow(tier-item.getLevel(),2)*item.getAetherValue()+(tier*100));//want to encourage gradual leveling rather than drastic jumps in power
+			int cost = (int) (item.getMoneyValue()+getUnEffectiveLevel()*2);//(int) (Math.pow(tier-item.getLevel(),2)*item.getAetherValue()+(tier*100));//want to encourage gradual leveling rather than drastic jumps in power
 			if (Player.player.getTotalBuyPower() < cost) {
 				extra.println("You can't afford this! (" + cost + " "+mname+")");
 				break;

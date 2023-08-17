@@ -30,8 +30,8 @@ public class Doctor extends Feature {
 		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|doctor|Doctor|");
 		String mstr = World.currentMoneyString();
-		int dcost = tier*5;
-		int cost = 50*tier+(tier*Math.min(3,Player.player.getPerson().effectsSize())*30);
+		int dcost = (int) (getUnEffectiveLevel());
+		int cost = (int) (getUnEffectiveLevel()*Math.min(3,Player.player.getPerson().effectsSize())*3);
 		extra.println(mstr+": " +Player.player.getGold());
 		extra.println("1 diagnosis (" + dcost+" "+mstr+")");
 		extra.println("2 cure (" + cost+" "+mstr+")");

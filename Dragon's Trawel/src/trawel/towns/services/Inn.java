@@ -67,7 +67,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 		tutorialText = "Inns are a great place to buy beer and have various residents.";
 		this.owner = owner;
 		beerCount = extra.randRange(2,4);
-		beerCost = tier +extra.randRange(0,2);
+		beerCost = (int) (getUnEffectiveLevel() +extra.randRange(0,2));
 	}
 	
 	@Override
@@ -114,7 +114,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "beer ("+getTown().getIsland().getWorld().moneyString(tier)+")";
+						return "beer ("+getTown().getIsland().getWorld().moneyString(beerCost)+")";
 					}
 
 					@Override
@@ -166,7 +166,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "bathe (" +getTown().getIsland().getWorld().moneyString(tier*2)+")";
+						return "bathe (" +getTown().getIsland().getWorld().moneyString(bathPrice())+")";
 					}
 
 					@Override
@@ -433,12 +433,16 @@ public class Inn extends Feature implements QuestBoardLocation{
 		this.town = town;
 	}
 	
+	private int bathPrice() {
+		return (int) Math.ceil(2*getUnEffectiveLevel());
+	}
+	
 	private void bathe() {
-		if (Player.player.getGold() >= (tier)) {
-			extra.println("Pay "+World.currentMoneyDisplay(tier)+" for a bath?");
+		if (Player.player.getGold() >= (bathPrice())) {
+			extra.println("Pay "+World.currentMoneyDisplay(bathPrice())+" for a bath?");
 			if (extra.yesNo()) {
 				Player.player.getPerson().washAll();
-				Player.player.addGold(-(tier));
+				Player.player.addGold(-bathPrice());
 			}
 			}else {
 				extra.println("You can't afford that!");

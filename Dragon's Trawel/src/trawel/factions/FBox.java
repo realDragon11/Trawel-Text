@@ -5,6 +5,7 @@ import java.util.List;
 
 import trawel.extra;
 import trawel.personal.Person;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
 
 public class FBox implements java.io.Serializable{
@@ -56,86 +57,87 @@ public class FBox implements java.io.Serializable{
 	}
 	
 	public static void repCalc(Person manOne, Person manTwo) {
+		float iLevel = IEffectiveLevel.unEffective(manTwo.getEffectiveLevel());
 		switch (manTwo.hTask) {
 		case ANIMAL:
-			manOne.facRep.addFactionRep(Faction.HUNTER,manTwo.getLevel()/25.0f,0);
-			manOne.facRep.addFactionRep(Faction.MERCHANT,manTwo.getLevel()/30.0f,0);
-			manOne.facRep.addFactionRep(Faction.FOREST,0,manTwo.getLevel()/20.0f);
-			manOne.facRep.addFactionRep(Faction.LAW_EVIL,manTwo.getLevel()/25f,0);
-			Player.player.addMPoints(manTwo.getLevel()/80.0);
+			manOne.facRep.addFactionRep(Faction.HUNTER,iLevel/25.0f,0);
+			manOne.facRep.addFactionRep(Faction.MERCHANT,iLevel/30.0f,0);
+			manOne.facRep.addFactionRep(Faction.FOREST,0,iLevel/20.0f);
+			manOne.facRep.addFactionRep(Faction.LAW_EVIL,iLevel/25f,0);
+			Player.player.addMPoints(iLevel/80.0);
 			break;
 		case DUEL:
-			manOne.facRep.addFactionRep(Faction.DUEL,manTwo.getLevel()/10.0f,0);
+			manOne.facRep.addFactionRep(Faction.DUEL,iLevel/10.0f,0);
 			break;
 		case MONSTER:
-			manOne.facRep.addFactionRep(Faction.HUNTER,manTwo.getLevel()/6.0f,0);
-			manOne.facRep.addFactionRep(Faction.HEROIC,manTwo.getLevel()/10.0f,0);
-			manOne.facRep.addFactionRep(Faction.LAW_EVIL,manTwo.getLevel()/15f,0);
-			manOne.facRep.addFactionRep(Faction.LAW_GOOD,manTwo.getLevel()/10f,0);
-			manOne.facRep.addFactionRep(Faction.MERCHANT,manTwo.getLevel()/30.0f,0);
-			manOne.facRep.addFactionRep(Faction.FOREST,manTwo.getLevel()/20.0f,0);
-			Player.player.addMPoints(manTwo.getLevel()/80.0);
+			manOne.facRep.addFactionRep(Faction.HUNTER,iLevel/6.0f,0);
+			manOne.facRep.addFactionRep(Faction.HEROIC,iLevel/10.0f,0);
+			manOne.facRep.addFactionRep(Faction.LAW_EVIL,iLevel/15f,0);
+			manOne.facRep.addFactionRep(Faction.LAW_GOOD,iLevel/10f,0);
+			manOne.facRep.addFactionRep(Faction.MERCHANT,iLevel/30.0f,0);
+			manOne.facRep.addFactionRep(Faction.FOREST,iLevel/20.0f,0);
+			Player.player.addMPoints(iLevel/80.0);
 			break;
 		case MUG:
-			manOne.facRep.addFactionRep(Faction.MERCHANT,manTwo.getLevel()/10.0f,0);
-			manOne.facRep.addFactionRep(Faction.HEROIC,manTwo.getLevel()/8f,0);
-			manOne.facRep.addFactionRep(Faction.LAW_EVIL,manTwo.getLevel()/4f,0);
-			manOne.facRep.addFactionRep(Faction.LAW_GOOD,manTwo.getLevel()/4f,0);
-			Player.player.addMPoints(manTwo.getLevel()/20.0);
+			manOne.facRep.addFactionRep(Faction.MERCHANT,iLevel/10.0f,0);
+			manOne.facRep.addFactionRep(Faction.HEROIC,iLevel/8f,0);
+			manOne.facRep.addFactionRep(Faction.LAW_EVIL,iLevel/4f,0);
+			manOne.facRep.addFactionRep(Faction.LAW_GOOD,iLevel/4f,0);
+			Player.player.addMPoints(iLevel/20.0);
 			break;
 		case PEACE:
-			manOne.facRep.addFactionRep(Faction.HEROIC,0,manTwo.getLevel()/10f);
-			manOne.facRep.addFactionRep(Faction.LAW_EVIL,0,manTwo.getLevel()/2f);
-			manOne.facRep.addFactionRep(Faction.LAW_GOOD,0,manTwo.getLevel()*2f);
+			manOne.facRep.addFactionRep(Faction.HEROIC,0,iLevel/10f);
+			manOne.facRep.addFactionRep(Faction.LAW_EVIL,0,iLevel/2f);
+			manOne.facRep.addFactionRep(Faction.LAW_GOOD,0,iLevel*2f);
 			break;
 		case RACIST:
-			manOne.facRep.addFactionRep(Faction.LAW_EVIL,0,manTwo.getLevel());
+			manOne.facRep.addFactionRep(Faction.LAW_EVIL,0,iLevel);
 			break;
 		case RICH:
-			manOne.facRep.addFactionRep(Faction.MERCHANT,0,manTwo.getLevel()/5.0f);
-			manOne.facRep.addFactionRep(Faction.LAW_EVIL,0,manTwo.getLevel());
-			manOne.facRep.addFactionRep(Faction.LAW_GOOD,0,manTwo.getLevel()/3f);
+			manOne.facRep.addFactionRep(Faction.MERCHANT,0,iLevel/5.0f);
+			manOne.facRep.addFactionRep(Faction.LAW_EVIL,0,iLevel);
+			manOne.facRep.addFactionRep(Faction.LAW_GOOD,0,iLevel/3f);
 			break;
 		case BOSS:
-			manOne.facRep.addFactionRep(Faction.HUNTER,manTwo.getLevel()/10.0f,0);
-			manOne.facRep.addFactionRep(Faction.HEROIC,manTwo.getLevel()*3f,0);
+			manOne.facRep.addFactionRep(Faction.HUNTER,iLevel/10.0f,0);
+			manOne.facRep.addFactionRep(Faction.HEROIC,iLevel*3f,0);
 			break;
 		case GUARD_DUNGEON://Neutral dungeon
-			manOne.facRep.addFactionRep(Faction.HEROIC,manTwo.getLevel()/13.0f,0);
+			manOne.facRep.addFactionRep(Faction.HEROIC,iLevel/13.0f,0);
 			break;
 		case LAWLESS_NODE_GUARDS:
-			manOne.facRep.addFactionRep(Faction.HEROIC,manTwo.getLevel()/13.0f,0);
-			manOne.facRep.addFactionRep(Faction.LAW_EVIL,manTwo.getLevel()/5f,0);
-			manOne.facRep.addFactionRep(Faction.LAW_GOOD,manTwo.getLevel()/6f,0);
+			manOne.facRep.addFactionRep(Faction.HEROIC,iLevel/13.0f,0);
+			manOne.facRep.addFactionRep(Faction.LAW_EVIL,iLevel/5f,0);
+			manOne.facRep.addFactionRep(Faction.LAW_GOOD,iLevel/6f,0);
 			break;
 		case LUMBER:
-			manOne.facRep.addFactionRep(Faction.FOREST,manTwo.getLevel(),0);
-			manOne.facRep.addFactionRep(Faction.LAW_EVIL,0,manTwo.getLevel()/5f);
-			manOne.facRep.addFactionRep(Faction.LAW_GOOD,0,manTwo.getLevel()/10f);
+			manOne.facRep.addFactionRep(Faction.FOREST,iLevel,0);
+			manOne.facRep.addFactionRep(Faction.LAW_EVIL,0,iLevel/5f);
+			manOne.facRep.addFactionRep(Faction.LAW_GOOD,0,iLevel/10f);
 			break;
 		case REVENGE:
-			manOne.facRep.addFactionRep(Faction.DUEL,manTwo.getLevel()/2.0f,0);
+			manOne.facRep.addFactionRep(Faction.DUEL,iLevel/2.0f,0);
 			break;
 		case LAW_GOOD:
-			manOne.facRep.addFactionRep(Faction.ROGUE, manTwo.getLevel()/25.0f, 0);
-			manOne.facRep.addFactionRep(Faction.HEROIC,0,manTwo.getLevel()/15f);
-			manOne.facRep.addFactionRep(Faction.MERCHANT,0,manTwo.getLevel()/10.0f);
-			manOne.facRep.addFactionRep(Faction.LAW_EVIL,0,manTwo.getLevel());
-			manOne.facRep.addFactionRep(Faction.LAW_GOOD,0,manTwo.getLevel());
+			manOne.facRep.addFactionRep(Faction.ROGUE, iLevel/25.0f, 0);
+			manOne.facRep.addFactionRep(Faction.HEROIC,0,iLevel/15f);
+			manOne.facRep.addFactionRep(Faction.MERCHANT,0,iLevel/10.0f);
+			manOne.facRep.addFactionRep(Faction.LAW_EVIL,0,iLevel);
+			manOne.facRep.addFactionRep(Faction.LAW_GOOD,0,iLevel);
 			break;
 		case LAW_EVIL:
-			manOne.facRep.addFactionRep(Faction.ROGUE, manTwo.getLevel()/25.0f, 0);
-			manOne.facRep.addFactionRep(Faction.HEROIC,0,manTwo.getLevel()/15f);
-			manOne.facRep.addFactionRep(Faction.MERCHANT,0,manTwo.getLevel()/10.0f);
-			manOne.facRep.addFactionRep(Faction.LAW_EVIL,0,manTwo.getLevel());
-			manOne.facRep.addFactionRep(Faction.LAW_GOOD,0,manTwo.getLevel());
+			manOne.facRep.addFactionRep(Faction.ROGUE, iLevel/25.0f, 0);
+			manOne.facRep.addFactionRep(Faction.HEROIC,0,iLevel/15f);
+			manOne.facRep.addFactionRep(Faction.MERCHANT,0,iLevel/10.0f);
+			manOne.facRep.addFactionRep(Faction.LAW_EVIL,0,iLevel);
+			manOne.facRep.addFactionRep(Faction.LAW_GOOD,0,iLevel);
 			break;
 		case HUNT:
-			manOne.facRep.addFactionRep(Faction.HEROIC,0,manTwo.getLevel()/1.5f);
-			manOne.facRep.addFactionRep(Faction.HUNTER,0,manTwo.getLevel()*2);
-			manOne.facRep.addFactionRep(Faction.MERCHANT,0,manTwo.getLevel()/2);
-			manOne.facRep.addFactionRep(Faction.LAW_EVIL,0,manTwo.getLevel());
-			manOne.facRep.addFactionRep(Faction.LAW_GOOD,0,manTwo.getLevel());
+			manOne.facRep.addFactionRep(Faction.HEROIC,0,iLevel/1.5f);
+			manOne.facRep.addFactionRep(Faction.HUNTER,0,iLevel*2);
+			manOne.facRep.addFactionRep(Faction.MERCHANT,0,iLevel/2);
+			manOne.facRep.addFactionRep(Faction.LAW_EVIL,0,iLevel);
+			manOne.facRep.addFactionRep(Faction.LAW_GOOD,0,iLevel);
 			break;
 		}
 		

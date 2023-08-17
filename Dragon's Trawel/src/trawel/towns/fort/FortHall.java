@@ -19,6 +19,7 @@ import trawel.battle.Combat.SkillCon;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race;
@@ -38,7 +39,6 @@ import trawel.towns.World;
 public class FortHall extends FortFeature {
 
 	private static final long serialVersionUID = 1L;
-	public int level;
 	public ArrayList<Person> allies = new ArrayList<Person>();
 	
 	public double forgeTimer = 24.0*7;
@@ -51,7 +51,7 @@ public class FortHall extends FortFeature {
 	public FortHall(int tier, Town town) {
 		this.name = "Fort Hall";
 		this.town = town;
-		this.level = tier;
+		this.tier = tier;
 		laborer = new Laborer(LaborType.CHIEF);
 	}
 	
@@ -94,7 +94,8 @@ public class FortHall extends FortFeature {
 	@Override
 	public void go() {
 		if (this.getOwner() != Player.player) {
-			int cost = (this.level*2500)+(this.aetherBank*3);
+			final float levelMult = getUnEffectiveLevel();
+			int cost = (int) ((250*levelMult)+(aetherBank*Player.NORMAL_AETHER_RATE));
 			extra.println("Buy this for fort for "+cost+" "+World.currentMoneyString()+"? (You have " + Player.player.getGold()+")");
 			if (extra.yesNo()) {
 				if (Player.player.getGold() < cost) {
@@ -106,7 +107,7 @@ public class FortHall extends FortFeature {
 					}
 					this.town.visited=3;
 					while (allies.size() < 5) {
-						allies.add(RaceFactory.getDueler(level));
+						allies.add(RaceFactory.getDueler(tier));
 					}
 				}
 			}
@@ -135,7 +136,7 @@ public class FortHall extends FortFeature {
 						public boolean go() {
 							if (Player.player.getGold() >= getSoldierCost()) {
 								Player.player.addGold(-getSoldierCost());
-								allies.add(RaceFactory.getDueler(level));
+								allies.add(RaceFactory.getDueler(tier));
 							}else {
 								extra.println("You can't afford another soldier.");
 							}
@@ -182,6 +183,10 @@ public class FortHall extends FortFeature {
 	}
 	
 	public void constructionFoundations() {
+		final float levelMult = getUnEffectiveLevel();
+		final int expensive = (int) (levelMult * 50);
+		final int medium = (int) (levelMult * 30);
+		final int cheap = (int) (levelMult * 20);
 		extra.menuGo(new MenuGenerator() {
 			@Override
 			public List<MenuItem> gen() {
@@ -197,13 +202,13 @@ public class FortHall extends FortFeature {
 
 						@Override
 						public String title() {
-							return "Build a Large Foundation ("+(level*1000)+")";
+							return "Build a Large Foundation ("+expensive+")";
 						}
 
 						@Override
 						public boolean go() {
-							if (Player.player.getGold() >= (level*1000)) {
-								Player.player.addGold(-(level*1000));
+							if (Player.player.getGold() >= expensive) {
+								Player.player.addGold(-expensive);
 								town.laterAdd(new FortFoundation(3));
 							}else {
 								extra.println("You can't afford a new large foundation.");
@@ -217,13 +222,13 @@ public class FortHall extends FortFeature {
 
 						@Override
 						public String title() {
-							return "Build a Medium Foundation ("+(level*500)+")";
+							return "Build a Medium Foundation ("+medium+")";
 						}
 
 						@Override
 						public boolean go() {
-							if (Player.player.getGold() >= (level*500)) {
-								Player.player.addGold(-(level*500));
+							if (Player.player.getGold() >= medium) {
+								Player.player.addGold(-medium);
 								town.laterAdd(new FortFoundation(2));
 							}else {
 								extra.println("You can't afford a new medium foundation.");
@@ -237,13 +242,13 @@ public class FortHall extends FortFeature {
 
 						@Override
 						public String title() {
-							return "Build a Small Foundation ("+(level*250)+")";
+							return "Build a Small Foundation ("+cheap+")";
 						}
 
 						@Override
 						public boolean go() {
-							if (Player.player.getGold() >= (level*250)) {
-								Player.player.addGold(-(level*250));
+							if (Player.player.getGold() >= cheap) {
+								Player.player.addGold(-cheap);
 								town.laterAdd(new FortFoundation(1));
 							}else {
 								extra.println("You can't afford a new small foundation.");
@@ -263,14 +268,14 @@ public class FortHall extends FortFeature {
 		forgeTimer -= (time);
 		while (offenseTimer <= 0) {
 			offenseTimer += 12.0;
-			aetherBank+=this.getTotalOffenseRating()*this.level;
+			aetherBank+=getTotalOffenseRating()*getUnEffectiveLevel();//why is it not making me cast?
 		}
 		
 		forgeTimer -= (time*getSkillCount(SubSkill.SMITHING))/10.0;
 		if (forgeTimer <=0) {
 			extra.offPrintStack();
 			forgeTimer = 24.0*7;
-			Inventory inv = new Inventory(level, Race.RaceType.HUMANOID, null, null,null);//TODO probably make custom inv type
+			Inventory inv = new Inventory(tier, Race.RaceType.HUMANOID, null, null,null);//TODO probably make custom inv type
 			inv.deEnchant();
 			for (Person p: allies) {
 				AIClass.loot(p.getBag(), inv, false,p);
@@ -280,11 +285,11 @@ public class FortHall extends FortFeature {
 		enchantTimer -= (time*getSkillCount(SubSkill.ENCHANTING))/2.0;
 		if (enchantTimer <=0 && allies.size() > 0) {
 			enchantTimer = 24.0*7;
-			allies.get(extra.randRange(0,allies.size()-1)).getBag().getArmorSlot(extra.randRange(0,4)).improveEnchantChance(this.level);
+			allies.get(extra.randRange(0,allies.size()-1)).getBag().getArmorSlot(extra.randRange(0,4)).improveEnchantChance(tier);
 		}
 		if (owner != Player.player) {
 			while (allies.size() < 5) {
-				allies.add(RaceFactory.getDueler(level));
+				allies.add(RaceFactory.getDueler(tier));
 			}
 		}
 		fightTimer -= (time);
@@ -293,7 +298,7 @@ public class FortHall extends FortFeature {
 			List<Person> people = new ArrayList<Person>();
 			
 			while (people.size() < 5) {
-				people.add(RaceFactory.getMugger(level));
+				people.add(RaceFactory.getMugger(tier));
 			}
 			defenseFight(people);
 		}
@@ -361,7 +366,6 @@ public class FortHall extends FortFeature {
 		}
 		
 		Combat c = mainGame.HugeBattle(this.town.getIsland().getWorld(), cons,listlist,false);
-		//Combat c = new Combat(,this,listlist);
 		allies.clear();
 		if (c.getVictorySide() == 0) {
 			c.getNonSummonSurvivors().stream().filter(p -> !p.isPlayer()).forEach(allies::add);
@@ -383,7 +387,7 @@ public class FortHall extends FortFeature {
 	}
 	
 	public int getSoldierCost() {
-		return 50*level*Math.max(allies.size(),5);
+		return (int) (5*getUnEffectiveLevel()*Math.max(allies.size(),5));
 	}
 
 }

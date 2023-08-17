@@ -295,7 +295,7 @@ public class Town extends TContextOwner{
 			return;
 		}
 		if (Player.player.townEventTimer <=0 && extra.chanceIn(2,3)) {
-			if (TownFlavorFactory.go(.5,this.getTier(),this)) {
+			if (TownFlavorFactory.go(.5,this.getTier(),this)) {//TODO: look into town flavor again
 			Player.player.townEventTimer = extra.randRange(18,24*5);
 			}
 		}

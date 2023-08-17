@@ -389,7 +389,7 @@ public class Attack implements IAttack{
 		FROSTBITE("Frostbite","Deals %1$d armor piercing damage, repeating the attack's damage once more.","Their flesh is frozen!"),
 		TEAR("Tear","Decreases dodge by %1$%d%%, stacking.","Their wing is torn!"), //see if need to add a '%'
 		MANGLED("Mangled","Halves the condition of the body part.","Their body is mangled!"),//FIXME
-		BLOODY("Bloody","The next attack will be %1$d%% less accurate. Applies %2$d bleed.","Blood wells around their eyes!"),
+		BLOODY("Bloody","The next attack will be %1$d%% less accurate. Applies up to %2$d bleed, expected %3$d.","Blood wells around their eyes!"),
 		;
 		//done line
 		public String name, desc, active;

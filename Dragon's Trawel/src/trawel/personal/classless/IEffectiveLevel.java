@@ -7,6 +7,10 @@ public interface IEffectiveLevel {
 	default int getEffectiveLevel() {
 		return getLevel()+10;
 	}
+	
+	default float getUnEffectiveLevel() {
+		return unEffective(getEffectiveLevel());
+	}
 
 	public static float effective(int w_lvl) {
 		return w_lvl+10;
