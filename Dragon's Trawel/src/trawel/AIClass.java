@@ -743,7 +743,7 @@ public class AIClass {
 									);
 						}
 						if (mainGame.attackDisplayStyle == DispAttack.TWO_LINE1_WITH_KEY) {
-							extra.println("Attacks:   " + extra.CHAR_HITCHANCE + " hitchance; " +extra.CHAR_INSTANTS+" warmup -cooldown; "+
+							extra.println("Attacks: " + extra.CHAR_HITCHANCE + " hitmult; " +extra.CHAR_INSTANTS+" warmup -cooldown; "+
 									ImpairedAttack.EXPLAIN_DAMAGE_TYPES());
 						}else {
 							extra.println("Attacks:");

@@ -104,7 +104,7 @@ public class BossNode implements NodeType {
 				//node.state = 1;
 				//node.name = "The Fatespinner's corpse";
 				setGenericCorpse(holder,node, spinner);
-				Player.player.getPerson().setPerk(Perk.FATED);
+				Player.unlockPerk(Perk.FATED);
 				Networking.unlockAchievement("boss1");
 				return false;
 			}else {
@@ -136,7 +136,7 @@ public class BossNode implements NodeType {
 				Person baron = list.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();
 				setGenericCorpse(holder,node, baron);
 				Networking.unlockAchievement("boss2");
-				Player.player.getPerson().setPerk(Perk.HELL_BARONESS);
+				Player.unlockPerk(Perk.HELL_BARONESS);
 				return false;
 			}else {
 				return true;//lost, kick out

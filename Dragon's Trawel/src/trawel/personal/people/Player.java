@@ -18,6 +18,7 @@ import trawel.earts.EArt;
 import trawel.earts.EArtBox;
 import trawel.factions.FBox;
 import trawel.personal.Person;
+import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Potion;
@@ -411,6 +412,10 @@ public class Player extends SuperPerson{
 	}
 	public void setCaresAboutAMP(boolean caresAboutAMP) {
 		this.caresAboutAMP = caresAboutAMP;
+	}
+	public static void unlockPerk(Perk perk) {
+		Player.player.storyHold.perkTrigger(perk);
+		Player.player.getPerson().setPerk(perk);
 	}
 	
 	

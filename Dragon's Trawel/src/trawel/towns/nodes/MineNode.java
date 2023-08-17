@@ -367,7 +367,7 @@ public class MineNode implements NodeType{
 									mainGame.die("You rise from the altar!");
 									extra.println("The cultists praise you as the second coming of flagjaij! You feel sick, but powerful.");
 									Player.player.getPerson().addEffect(Effect.CURSE);
-									Player.player.getPerson().setPerk(Perk.CULT_LEADER_BLOOD);
+									Player.unlockPerk(Perk.CULT_LEADER_BLOOD);
 									Player.player.hasCult = true;
 									Networking.unlockAchievement("cult1");
 									holder.setStateNum(node,4);

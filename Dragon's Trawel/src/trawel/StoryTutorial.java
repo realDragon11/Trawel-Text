@@ -1,7 +1,10 @@
 package trawel;
 
+import java.util.EnumSet;
+
 import trawel.personal.Person;
 import trawel.personal.classless.Archetype;
+import trawel.personal.classless.Perk;
 import trawel.personal.people.Player;
 import trawel.towns.Feature;
 import trawel.towns.fight.Arena;
@@ -9,9 +12,14 @@ import trawel.towns.services.Inn;
 
 public class StoryTutorial extends Story{
 
-	public Person killed;
-	public int deaths = 0;
-	public String step;
+	private Person killed;
+	private int deaths = 0;
+	private String step;
+	
+	private int battleFam;//0 none, 1 fought but didn't win, 2 won a fight
+	
+	private EnumSet<Perk> bossPerkTriggers = EnumSet.of(Perk.HELL_BARONESS,Perk.FATED);
+	private EnumSet<Perk> worldPerkTriggers = EnumSet.of(Perk.MINE_ALL_VEINS,Perk.CULT_LEADER_BLOOD);
 	
 	@Override
 	public void setPerson(Person p, int index) {
@@ -20,6 +28,7 @@ public class StoryTutorial extends Story{
 	
 	@Override
 	public void storyStart() {
+		battleFam = 0;
 		extra.println("You are now " + Player.player.getPerson().getName() +".");
 		extra.println("You come to your senses. Your student, " + killed.getName() + " is dead.");
 		extra.println("A wizard cast a curse on them, sending anyone who saw them into a blinding rage. But you are not where you were when you were afflicted...");
@@ -36,47 +45,73 @@ public class StoryTutorial extends Story{
 	
 	@Override
 	public void startFight(boolean massFight) {
-		if (step == "anyfight1") {
-			extra.println("Oh jeez, it's been a while since you've fought a stranger, you feel weird.");
-			extra.println("A mysterious voice is telling you to \"Choose your attack below\"???");
-			extra.println("...");
-			extra.println("Higher numbers are better, except in the case of delay!");
-			extra.println("Delay is how long an action takes- it determines turn order and skipping.");
-			extra.println("For example, two 30 delay actions would go through before one 100 delay action, and then still have 40 instants left.");
-			extra.println("Delay on abilities is shown as both a warmup and a cooldown. The first number is the warmup- how long until the attack goes through. The second number is the cooldown- how long after that until you can choose another attack.");
-			extra.println(
-					massFight ?
-					"sbp stands for sharp blunt pierce- the three main damage types. Your opponents also have sbp-based armor. Yeah, you got a mass fight for your first battle. Good luck."
-					:
-					"sbp stands for sharp blunt pierce- the three main damage types. Your opponent also has sbp-based armor."
-					);
-			extra.println("Hitpoints only matter in combat- you steel yourself fully before each battle, restoring to your current maximum.");
-			switch (mainGame.attackDisplayStyle) {
-			case CLASSIC:
-				extra.println("You have classic display mode on, and will show attacks as if they were plain tables.");
-				extra.println("     name                hit    delay    sharp    blunt     pierce");
-				extra.println("Classic mode doesn't show you cooldown and warmup- just the combined delay.");
-				break;
-			case TWO_LINE1:
-				extra.println("You have modern display on (at least, the current modern for this verison),"
-						+" and will see attacks in a hybrid table/label format.");
-				extra.println("Instead of only table headers, each cell is labeled. "
-						+extra.CHAR_HITCHANCE+" is hitchance. "
-						+extra.CHAR_INSTANTS+" is 'instants' (warmup and cooldown time.) "
-						+ "S is sharp damage, B is blunt damage, and P is pierce damage.");
-				//will have to describe esoteric attacks when those get added
-				break;
+		if (battleFam < 2) {
+			boolean disp = battleFam == 0;
+			if (disp) {
+				extra.println("Oh jeez, it's been a while since you've fought a stranger, you feel weird.");
+				extra.println("A mysterious voice is telling you to \"Choose your attack below\"???");
+				extra.println("...");
 			}
-			extra.println("Displayed hit isn't a flat percent to hit- when the attack happens, it is a multiplier on your 'hit roll'- just like the enemies' dodge. Whoever rolls the higher number wins. Thus, if your total aim equals their total dodge, you have a 50% chance to hit. Most enemies will have a dodge multiplier of less than one.");
-			extra.println("Attacks might also come with wounds, which have special effects. Good luck!");
+			if (battleFam == 1) {
+				extra.println("Display the combat tutorial again?");
+				disp = extra.yesNo();
+			}
+			if (disp) {
+				extra.println("Higher numbers are better, except in the case of delay.");
+				extra.println("Delay is how long an action takes- it determines turn order and skipping.");
+				extra.println("For example, two 30 delay actions would go through before one 100 delay action, and then still have 40 instants left.");
+				extra.println("Delay on abilities is combined from a warmup and a cooldown. The first number is the warmup- how long until the attack goes through. The second number is the cooldown- how long after that until you can choose another attack.");
+				extra.println(
+						massFight ?
+								extra.CHAR_SHARP+extra.CHAR_BLUNT+extra.CHAR_PIERCE+" stands for sharp blunt pierce- the three main damage types. Your opponents also have sbp-based armor. Yeah, you got a mass fight for your first battle. Good luck."
+								:
+									extra.CHAR_SHARP+extra.CHAR_BLUNT+extra.CHAR_PIERCE+" stands for sharp blunt pierce- the three main damage types. Your opponent also has sbp-based armor."
+						);
+				extra.println("Hitpoints only matter in combat- you steel yourself fully before each battle, restoring to your current maximum. Very few things can reduce this maximum, the most notable being the CURSE status effect.");
+				switch (mainGame.attackDisplayStyle) {
+				case CLASSIC:
+					extra.println("You have classic display mode on, and will show attacks as if they were plain tables.");
+					extra.println("     name                hit    delay    sharp    blunt     pierce");
+					extra.println("Classic mode doesn't show you cooldown and warmup- just the combined delay.");
+					break;
+				case TWO_LINE1: 
+					extra.println("You have modern display on (at least, the current modern for this verison),"
+							+" and will see attacks in a hybrid table/label format.");
+					extra.println("Instead of only table headers, each cell is labeled. "
+							+extra.CHAR_HITCHANCE+" is hitmult. "
+							+extra.CHAR_INSTANTS+" is 'instants' (warmup and cooldown time.) "
+							+ extra.CHAR_SHARP+" is sharp damage, "
+							+extra.CHAR_BLUNT+" is blunt damage, and "
+							+extra.CHAR_PIERCE+" is pierce damage.");
+					extra.println("There are more damage types, such as elemental, but those are beyond the scope of this tutorial.");
+					break;
+				case TWO_LINE1_WITH_KEY:
+					extra.println("You have modern display on with a key/legend (at least, the current modern for this verison),"
+							+" and will see attacks in a hybrid table/label format.");
+					extra.println("This display style will provide instructions on how to read the table at the top of each instance.");
+					break;
+				}
+				extra.println("Displayed hit mult isn't a flat percent to hit- when the attack happens, it is a multiplier on your 'hit roll'- just like the enemies' dodge. Whoever rolls the higher number wins. Thus, if your total hit mult equals their total dodge, you have a 50% chance to hit. Most enemies will have a dodge multiplier of less than one.");
+				extra.println("Attacks might also come with wounds, which have special effects. Good luck!");
+				battleFam = 1;
+			}
 		}
 	}
 	
 	@Override
 	public void winFight(boolean massFight) {
+		if (step == "gotoinn1") {
+			return;
+		}
 		if (step == "anyfight1") {
-			extra.println("Congratulations! You killed something. Now you should ingest questionable substances at an inn. Compass (which is basically mapquest), in the 'You' menu, will take you to 'Unun', a town with an inn.");
+			extra.print("Congratulations! You killed something.");
 			step = "gotoinn1";
+		}
+		if (step == "gotoarena1") {
+			extra.print("Well, looks like you managed to kill something without having gone to an arena. Arenas are fairly easy, but as you've learned, there's a lot of Combat to be had in Trawel!");
+		}
+		if (step == "gotoinn1") {
+			extra.println(" Next you should ingest questionable substances at an inn. Compass (which is basically mapquest), in the 'You' menu, can take you to 'Unun', a town with an inn.");
 		}
 	}
 
@@ -89,10 +124,13 @@ public class StoryTutorial extends Story{
 			extra.println("Welcome to your first death! You continue as normal. If you're in an exploration area, you got kicked out of it, otherwise not much changed... except maybe the thing that killed you leveled up.");
 			Networking.unlockAchievement("die1");
 		;break;
+		default: 
+			if (battleFam >=2) {
+				extra.println("Rest in pieces.");
+			}
 		case 5:
 			extra.println("If you're having trouble, it's often best to come back with better gear and more levels than to challenge-spam someone. At least, for your own time investment.");
-		;break;
-		default: extra.println("Rest in pieces.");break;
+			break;
 		}
 		
 	}
@@ -113,19 +151,21 @@ public class StoryTutorial extends Story{
 	public void enterFeature(Feature f) {
 		switch(step) {
 		case "gotoarena1":
-			if (! (f instanceof Arena)) {
+			if (!(f instanceof Arena)) {
 				return;
 			}
 			extra.println("It looks like there's a fight about to take place here. You could wait to participate in it. Winner gets the loser's stuff, apparently.");
 			step = "anyfight1";
 			break;
 		case "gotoinn1":
-			if (! (f instanceof Inn)) {
+			if (!(f instanceof Inn)) {
 				return;
 			}
 			extra.println("The inn has 'beer' (you hope its actually beer) which can raise your HP for as many fights as you buy beer for... but somewhat more importantly, random side quests.");
 			extra.println("Browse the backrooms, and see if any quests suit your fancy. In general, its much more fun to explore, but sidequests can help you if you're having trouble justifying going into the scary wider world.");
-			extra.println("There's no main quest in this version of Trawel, so good luck. If you make it to >10 level, you've essentially beaten the game.");
+			extra.println("Witch Huts and a few other locations can also provide quests- and even more can be quest locations, like mountains and forests.");
+			extra.println("There are also areas meant for sub-exploration, such as Groves, Mines, Dungeons, and Graveyards. The Tower of Fate in Unun and the Staircase to Hell in another world entirely also have bosses.");
+			extra.println("If you make it to >10 level, you've essentially beaten the game. Those bosses mentioned earlier and some other world events will be tracked by this tutorial- but there's no main quest in this version of Trawel, so good luck.");
 			step = "end";
 			break;
 		default: break;
@@ -146,8 +186,46 @@ public class StoryTutorial extends Story{
 			case 15:
 				extra.println("You're so high level you could slay a dragon! ...there are no dragons :(");
 				break;
+			case 20:
+				extra.println("A winner is you?");
+				break;
+			case 25:
+				extra.println("A master is you?");
+				break;
 			}
 		}
+	}
+	
+	@Override
+	public void perkTrigger(Perk perk) {
+		if (bossPerkTriggers.remove(perk)) {
+			switch (perk) {
+			case FATED:
+				if (bossPerkTriggers.contains(Perk.HELL_BARONESS)) {
+					extra.println("You've slain the Fatespinner and gotten their Fated perk... but can you Beat the Baron? Travel to the world of Greap through the teleporter in Repa, then seek out the Staircase to Hell.");
+				}else {
+					extra.println("You've slain the Fatespinner and gained the Fated perk!");
+				}
+				break;
+			case HELL_BARONESS:
+				extra.println("You've slain the Hell Baron and gained their throne perk!");
+				break;
+			}
+			if (bossPerkTriggers.isEmpty()) {
+				extra.println("You've obtained all tracked boss perks in this version of Trawel!");
+			}
+		}
+		if (worldPerkTriggers.remove(perk)) {
+			switch (perk) {
+			default: extra.println("You gained the " +perk.friendlyName() + " world perk!");
+			break;
+			}
+			if (worldPerkTriggers.isEmpty()) {
+				extra.println("You've obtained all tracked world perks in this version of Trawel!");
+			}
+		}
+		
+		
 	}
 	
 }

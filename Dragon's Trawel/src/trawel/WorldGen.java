@@ -422,7 +422,7 @@ public class WorldGen {
 		peana.addFeature(new Arena("peana arena",10,1,24,12,135));
 		peana.addFeature(new Appraiser("peana appraiser"));
 		peana.addFeature(new Store(10,8));
-		peana.addFeature(new Mine("staircase to hell", peana, null,NodeFeature.Shape.ELEVATOR));
+		peana.addFeature(new Mine("Staircase to Hell", peana, null,NodeFeature.Shape.ELEVATOR));
 		
 		Town inka = new Town("Inka",10, apen, new Point(4,7));
 		addConnection(unika,inka,"road","youn road");

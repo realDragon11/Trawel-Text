@@ -49,7 +49,7 @@ public class Mine extends NodeFeature {
 		veinsLeft--;
 		if (veinsLeft == 0 && shape.equals(Shape.NONE)) {
 			Networking.unlockAchievement("mine1");
-			Player.player.getPerson().setPerk(Perk.MINE_ALL_VEINS);
+			Player.unlockPerk(Perk.MINE_ALL_VEINS);
 		}
 	}
 	
