@@ -455,7 +455,7 @@ public class Store extends Feature{
 
 		@Override
 		public String title() {
-			return item.storeString(markup,canSee(item));
+			return item.storeString(getScaledMarkup(Player.player,item),canSee(item));
 		}
 
 		@Override

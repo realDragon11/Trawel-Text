@@ -425,7 +425,7 @@ public class Armor extends Item implements IEffectiveLevel{
 	}
 	
 	@Override
-	public String storeString(float markup, int canShow) {
+	public String storeString(double markup, int canShow) {
 		if (canShow > 0) {
 			return this.getName() 
 				+ " "+extra.CHAR_SHARP + extra.F_WHOLE.format(this.getSharpResist())
