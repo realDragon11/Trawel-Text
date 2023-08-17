@@ -6,7 +6,7 @@ import trawel.extra;
 
 public enum Skill{
 	
-	    BEER_BELLY("Beer Belly","Use two beers at once in battle!",true,Type.FIGHTER,1,"Gives you the beer health bonus twice- if you have two beers to drink."),
+	    BEER_BELLY("Beer Belly bROken","Use two beers at once in battle!",true,Type.FIGHTER,1,"Gives you the beer health bonus twice- if you have two beers to drink."),
 	    
 	    
 		BEER_LOVER("Beer Lover","Endless beer. Never have to go to a tavern again.",true,Type.FIGHTER,2,""),

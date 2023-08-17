@@ -649,9 +649,12 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public int getOOB_HP() {
 		int total = getBase_HP();
 		if (this.hasSkill(Skill.LIFE_MAGE)) {
-			hp+=this.getClarity();
+			total+=this.getClarity();
 		}
 		total*=bag.getHealth();
+		if (this.hasEffect(Effect.CURSE)) {
+			total/=2;
+		}
 		return total;
 	}
 	
@@ -688,29 +691,32 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (bodystatus == null || bodystatus.resetToReuse(bodyType)) {
 			bodystatus = new TargetHolder(bodyType);//now reused
 		}
+		
+		//HP calculations
 		tempMaxHp = getOOB_HP();
+		if (this.hasEffect(Effect.HEARTY) || this.hasEffect(Effect.FORGED)) {
+			hp+= IEffectiveLevel.cleanLHP(level, 0.05);
+		}
+		
 		hp = tempMaxHp;
+		//all calculations that impact HP below this point do not change max hp
+		
 		if (takeBeer()) {
 			if (isPlay) {
 				Networking.unlockAchievement("drink_beer");
 			}
-			hp+=level*5;
+			hp+=IEffectiveLevel.cleanLHP(level, 0.05);
 			if (!isPlay) {
 				extra.println(getNameNoTitle()+" looks drunk!");
 			}
 		}
-		
+		/*
 		if (hasSkill(Skill.BEER_BELLY)) {
 			if (takeBeer()) {
 				hp+=level*5;
 			}
-		}
-		if (this.hasEffect(Effect.CURSE)) {
-			hp-=10*level;
-		}
-		if (this.hasEffect(Effect.HEARTY) || this.hasEffect(Effect.FORGED)) {
-			hp+=3*level;
-		}
+		}*/
+		
 		boolean wentFast = false;
 		if (hasEffect(Effect.SUDDEN_START)) {
 			addEffect(Effect.BONUS_WEAP_ATTACK);
@@ -731,7 +737,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		isWarmingUp = false;
 		int s = this.hasSkill(Skill.ARMOR_MAGE) ? this.getClarity()/60: 0;
 		int b = this.hasSkill(Skill.ARMOR_MAGE) ? this.getClarity()/60: 0;
-		int p = this.hasSkill(Skill.ARMOR_MAGE) ?this.getClarity()/60: 0;
+		int p = this.hasSkill(Skill.ARMOR_MAGE) ? this.getClarity()/60: 0;
 		int defLvl = this.getStrength()/60;
 		if (this.hasSkill(Skill.SHIELD)) {
 			s+=1*defLvl;

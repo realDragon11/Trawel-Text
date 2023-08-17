@@ -994,7 +994,9 @@ public class Combat {
 		}
 		if (attacker.hasEffect(Effect.RECOVERING)) {
 			attacker.removeEffect(Effect.RECOVERING);
-			attacker.addHp(attacker.getLevel()*5);
+			attacker.healHP(
+					IEffectiveLevel.cleanLHP(attacker.getLevel(), .05)
+					);
 		}
 		if (defender.hasSkill(Skill.COUNTER)) {
 			defender.advanceTime(2);
@@ -1335,8 +1337,11 @@ public class Combat {
 			}
 		}
 		if (attacker.hasEffect(Effect.BEES) && extra.chanceIn(1,5)) {
-			extra.println("The bees sting "+attacker.getName()+"!");
-			attacker.takeDamage(extra.randRange(1,attacker.getLevel()*2));
+			int bee_damage = extra.randRange(1,IEffectiveLevel.cleanLHP(attacker.getLevel(), .04));
+			if (!extra.getPrint()) {
+				extra.println("The bees sting "+attacker.getName()+" for "+bee_damage+"!");
+			}
+			attacker.takeDamage(bee_damage);
 		}
 		
 		attacker.getBag().turnTick();//for now, just armor buff decay

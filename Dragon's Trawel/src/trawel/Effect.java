@@ -2,22 +2,22 @@ package trawel;
 
 public enum Effect{
 	
-	CURSE("Curse","Start battles with 10x level less HP.",true,false),
+	CURSE("Curse","Base HP is decreased by half.",true,false),
 	BURNOUT("Burnout","Decreased skill.",false,true),
 	
 	BLEED("Bleeding","Take up to 5% LHP damage after each of their attacks. Doesn't stack.",false,false),
 	MAJOR_BLEED("Major Bleeding","Take 10% LHP damage after each of their attacks. Doesn't stack.",false,false),
 	DISARMED("Disarmed","Their next turn will get one less weapon attack choice. Doesn't stack.",false,false),
-	RECOVERING("Recovering","Will regain 5x level HP soon.",false,false),
+	RECOVERING("Recovering","Will regain 5% LHP as healing soon.",false,false),
 	I_BLEED("Bleeding Inside","Takes 5% LHP damage after each of their attacks. Stacks.",false,true),
 	TORN("Torn","Decreases dodging by 10% compounding per stack.",false,true), 
 	HASTE("Haste","+10% speed stat.",false,false), 
-	HEARTY("Hearty","+3x level hp at battle start. Doesn't stack with Forged.",false,false), 
-	R_AIM("Reactive Aim","Upon taking attack damage, if currently attacking, their attack gains a percent bonus to hit roll equal to the percent of HP they lost.",false,false),
-	BEES("BEEEES","Bees sting them occasionally, dealing random damage between 1 and twice their level.",true,false),
+	HEARTY("Hearty","+5% LHP at battle start. Doesn't stack with Forged.",false,false), 
+	R_AIM("Reactive Aim","Upon taking attack damage, if currently attacking, their attack gains a percent bonus to hit roll equal to the percent of MHP they lost.",false,false),
+	BEES("BEEEES","Bees sting them occasionally, dealing random damage between 1 flat and 4% LHP.",true,false),
 	BEE_SHROUD("Bee Shroud","1.1x dodge. When they dodge an attack or are missed, bees sting their attacker for 1 damage.",false,false),
 	B_MARY("Bloody Mary","Whenever attacked, add a stack of internal bleeding to themselves and their attacker. Attacker's bleeding heals them 2x the amount they bleed for.",false,false),
-	FORGED("Forged","+3x level hp at battle start. Every defense, restore a flat 10% of their armor before the attack, up to 100% quality.",false,false),
+	FORGED("Forged","+5% LHP at battle start. Every defense, restore a flat 10% of their armor before the attack, up to 100% quality.",false,false),
 	TELESCOPIC("Telescopic","Attacks longer than 100 instants gain +1% additive hit mult for every instant longer than 100. Applied when choosing attack.",false,false),
 	SLICE("Slicing","Their next attack is 10% faster and accurate.",false,false),
 	DICE("Dicing","Their next attack is 10% faster and also 10 time units quicker.",false,false),
