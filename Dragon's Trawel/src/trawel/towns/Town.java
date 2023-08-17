@@ -565,7 +565,7 @@ public class Town extends TContextOwner{
 				if (Player.player.getCheating()) {
 					extra.println("Advance time a lot?");
 					if (extra.yesNo()) {
-						Player.addTime(24*30*365);
+						Player.addTime(24*30*365);//30 years
 					}
 				}
 				break;

@@ -8,6 +8,7 @@ import trawel.personal.classless.Perk;
 import trawel.personal.people.Player;
 import trawel.towns.Feature;
 import trawel.towns.fight.Arena;
+import trawel.towns.nodes.NodeFeature;
 import trawel.towns.services.Inn;
 
 public class StoryTutorial extends Story{
@@ -180,9 +181,21 @@ public class StoryTutorial extends Story{
 			}
 			extra.println("The inn has 'beer' (you hope its actually beer) which can raise your HP for as many fights as you buy beer for... but somewhat more importantly, random side quests.");
 			extra.println("Browse the backrooms, and see if any quests suit your fancy. In general, its much more fun to explore, but sidequests can help you if you're having trouble justifying going into the scary wider world.");
-			extra.println("Witch Huts and a few other locations can also provide quests- and even more can be quest locations, like mountains and forests.");
-			extra.println("There are also areas meant for sub-exploration, such as Groves, Mines, Dungeons, and Graveyards. The Tower of Fate in Unun and the Staircase to Hell in another world entirely also have bosses.");
-			extra.println("If you make it to >10 level, you've essentially beaten the game. Those bosses mentioned earlier and some other world events will be tracked by this tutorial- but there's no main quest in this version of Trawel, so good luck.");
+			extra.println("Merchant Guilds, Witch Huts, and a few other locations can also provide similar sidequests- and even more can be quest locations, like mountains and forests.");
+			extra.println("There are also areas meant for sub-exploration, such as Groves, Mines, Dungeons, and Graveyards. The Tower of Fate in Unun and the Staircase to Hell in another world entirely also have bosses. Try to enter one such feature next.");
+			step = "gotonode1";
+			break;
+		case "gotonode1":
+			if (!(f instanceof NodeFeature)) {
+				return;
+			}
+			extra.println("These areas have a variable number of nodes, seen below. Each node has a link to other nodes, and the ability to 'interact' with it. Nodes can be {"
+			+extra.VISIT_NEW+"} unseen, {"+extra.VISIT_SEEN+"}seen, {"+extra.VISIT_BEEN + "}been, {" +extra.VISIT_DONE + "}done, "
+					+extra.VISIT_OWN + "owned (usually used to indicate you've done an action that will change with time), "
+					+extra.PRE_WHITE+"and {"+extra.VISIT_REGROWN+ "}regrown,"+extra.PRE_WHITE+" which means that they got replaced since you last visited them.");
+			extra.println("The order of nodes presented is often erratic, but the last node you were in will be marked by '(back)'. Some areas will also place nodes that are 'deeper' or 'higher' on the top. One such instance is the Tower of Fate in Unun, which loops back in on itself, but picking the highest choice will always take to up the tower until you reach the top floor.");
+			extra.println("While interacting, you might find yourself in a sub-menu, otherwise you can always leave the area by selecting the last option.");
+			extra.println("You have completed the tutorial section of this story. If you make it to >10 level, you've essentially beaten the game. Those bosses mentioned earlier and some other world events will be tracked by this tutorial- but there's no main quest in this version of Trawel, so good luck.");
 			step = "end";
 			break;
 		default: break;
