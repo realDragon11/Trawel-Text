@@ -251,7 +251,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			setFlag(PersonFlag.AUTOLEVEL, true);
 		}
 		effects = new EnumMap<Effect,Integer>(Effect.class);
-		setFlag(PersonFlag.CAN_LEARN,isHumanoid());//can be overwritten by caller if need be
+		setFlag(PersonFlag.CAN_LEARN,isPersonable());//can be overwritten by caller if need be
 	}
 	
 	/**
@@ -2008,7 +2008,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	/**
 	 * if they can loot, speak, trade, etc etc
 	 */
-	public boolean isHumanoid() {
+	public boolean isPersonable() {
 		return bag.getRace().racialType == RaceType.PERSONABLE;
 	}
 

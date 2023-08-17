@@ -93,8 +93,8 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	}
 	
 	
-	public boolean isHumanoid() {
-		return getPerson().isHumanoid();
+	public boolean isPersonable() {
+		return getPerson().isPersonable();
 	}
 
 	public SkillAttackConf[] getSpecialAttacks() {

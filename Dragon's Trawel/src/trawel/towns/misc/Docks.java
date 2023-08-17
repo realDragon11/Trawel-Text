@@ -123,6 +123,7 @@ public class Docks extends Feature {
 						//we know this has a superperson, but we want to set the agent goal, and this wraps that fluently
 						town.addOccupant(potentialLeader.setOrMakeAgentGoal(AgentGoal.NONE));
 						potentialLeader = null;
+						leader = null;
 					}
 				}
 			}
@@ -139,6 +140,9 @@ public class Docks extends Feature {
 			}
 			if (townOwned && potentialLeader != null) {
 				if (leader == null || potentialLeader != leader.getPerson()) {
+					if (leader != null) {
+						town.addOccupant(leader);
+					}
 					old_defenders.remove(potentialLeader);//remove if present
 					leader = potentialLeader.setOrMakeAgentGoal(AgentGoal.OWN_SOMETHING);
 				}
@@ -517,6 +521,8 @@ public class Docks extends Feature {
 		listlist.add(allyList);
 		listlist.add(foeList);
 
+		leader = null;//to prevent a leader from swapping sides or other oddness where they die
+		
 		Combat c = mainGame.HugeBattle(town.getIsland().getWorld(), listlist);
 		boolean townWon = c.getVictorySide() == 0;
 

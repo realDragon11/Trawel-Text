@@ -190,7 +190,7 @@ public class Store extends Feature{
 	 */
 	public int getDelta(Item selling, Item buying, SuperPerson p) {
 		//the gold the item you are exchanging it for is worth
-		int sellGold = extra.zeroOut(selling.getMoneyValue());
+		int sellGold = selling != null ? extra.zeroOut(selling.getMoneyValue()) : 0;
 		double buyGold = Math.ceil(buying.getMoneyValue()*getScaledMarkup(p,buying));
 		double raw_delta = sellGold-buyGold;// > 0 = earning money, < 0 = spending money
 		return (int) (raw_delta > 0 ? Math.floor(raw_delta) : Math.ceil(raw_delta));
@@ -616,12 +616,16 @@ public class Store extends Feature{
 		Person p = a.getPerson();
 		Inventory bag = p.getBag();
 		
+		assert a.isPersonable();
+		
 		for (int j = items.size()-1;j>=0;j--) {
 			Item i = items.get(j);
 			if (i.getLevel() > p.getLevel()) {
 				continue;//ai hard capped to not be able to buy better items than its level
 			}
 			Item counter = bag.itemCounterpart(i);
+			//for some reason counter can be null, which shouldn't be allowed under current circumstances
+			//however future behavior will be fine with it, so allowing that now
 			int delta = getDelta(counter,i,a);
 			if (a.getTotalBuyPower()+delta < 0 && AIClass.compareItem(bag,i,false,p)) {
 				a.buyMoneyAmountRateInt(-delta,aetherPerMoney(p));

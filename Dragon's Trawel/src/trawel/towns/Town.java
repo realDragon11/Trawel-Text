@@ -75,7 +75,6 @@ public class Town extends TContextOwner{
 	private List<Connection> connects;
 	private List<Feature> features;
 	private List<Agent> occupants;
-	private List<Person> helpers = new ArrayList<Person>();
 	private double defenseTimer = 0;
 	public List<TownTag> tTags = new ArrayList<TownTag>();
 	public int visited = 0;
@@ -834,7 +833,7 @@ public class Town extends TContextOwner{
 	}
 	
 	public Stream<Agent> getPersonableOccupants() {
-		return occupants.stream().filter(SuperPerson::isHumanoid);
+		return occupants.stream().filter(SuperPerson::isPersonable);
 	}
 	
 	public Agent popAnyOccupant(Agent occupant) {
@@ -862,7 +861,7 @@ public class Town extends TContextOwner{
 	
 	public Agent getRandPersonableOccupant() {
 		List<Agent> agentList = new ArrayList<Agent>();
-		occupants.stream().filter(SuperPerson::isHumanoid).forEach(agentList::add);
+		occupants.stream().filter(SuperPerson::isPersonable).forEach(agentList::add);
 		return extra.randList(agentList);
 	}
 	

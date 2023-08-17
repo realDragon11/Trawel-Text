@@ -44,6 +44,7 @@ import trawel.battle.attacks.WeaponAttackFactory;
 import trawel.factions.HostileTask;
 import trawel.personal.DummyPerson;
 import trawel.personal.Person;
+import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.Archetype;
 import trawel.personal.item.Item;
@@ -1354,7 +1355,8 @@ public class mainGame {
 				Player.player.addTitle("master duelist");
 			}
 			second_man.addDeath();
-			if (second_man.getBag().getRace().racialType == Race.RaceType.PERSONABLE) {
+			if (first_man.isPlayer() && second_man.getBag().getRace().racialType == Race.RaceType.PERSONABLE) {
+				//don't cheat death against not-player killers
 				int deaths = second_man.getDeaths();
 				int pKills = second_man.getPlayerKills();
 				//max revive chance decreases the more they die, even if they have infinite kills on you, to reduce annoyance
@@ -1496,7 +1498,7 @@ public class mainGame {
 					Networking.setBattle(Networking.BattleType.NONE);
 				}
 				surv.addXp(subReward);
-				if (!surv.isHumanoid()) {
+				if (!surv.isPersonable()) {
 					continue;//skip
 				}
 				if (canLoot) {
@@ -1543,7 +1545,13 @@ public class mainGame {
 			
 			if (canLoot){
 				if (lives.size() > 1) {
-					int giveGold = gold/lives.size();
+					List<Person> moneyLootList = new ArrayList<Person>();
+					for (Person p: lives) {
+						if (p.isPersonable() || p.getFlag(PersonFlag.HAS_WEALTH)) {
+							moneyLootList.add(p);
+						}
+					}
+					int giveGold = moneyLootList.size() > 0 ? gold/moneyLootList.size() : 0;
 					int giveAether = aether/lives.size();
 					if (giveGold > 0) {
 						extra.println("The remaining " +World.currentMoneyDisplay(gold) +" is divvied up, "+giveGold +" each.");
@@ -1552,7 +1560,7 @@ public class mainGame {
 						extra.println("The remaining " + aether +" aether is divvied up, "+giveAether +" each.");
 					}
 					for (Person surv: lives){
-						if (giveGold > 0) {
+						if (giveGold > 0 && (surv.isPersonable() || surv.getFlag(PersonFlag.HAS_WEALTH))) {
 							surv.getBag().addGold(giveGold);
 						}
 						if (giveAether > 0) {
@@ -1565,22 +1573,24 @@ public class mainGame {
 						}
 					}
 				}else {
-					//FIXME: will crash if summon is only one left alive
-					Person looter = lives.get(0);
-					if (gold > 0) {
-						extra.println(looter.getName() + " claims the remaining " +World.currentMoneyDisplay(gold) +".");
-						looter.getBag().addGold(gold);
+					if (lives.size() > 0) {
+						Person looter = lives.get(0);
+						if (gold > 0 && (looter.isPersonable() || looter.getFlag(PersonFlag.HAS_WEALTH))) {
+							extra.println(looter.getName() + " claims the remaining " +World.currentMoneyDisplay(gold) +".");
+							looter.getBag().addGold(gold);
+						}
+						if (aether > 0) {
+							extra.println(looter.getName() + " claims the remaining " +aether +" aether.");
+							looter.getBag().addAether(aether);
+						}
+						
+						if (looter.isPlayer()) {
+							Networking.setBattle(Networking.BattleType.NONE);
+							Networking.clearSide(1);
+							mainGame.story.winFight(true);
+						}
 					}
-					if (aether > 0) {
-						extra.println(looter.getName() + " claims the remaining " +aether +" aether.");
-						looter.getBag().addAether(aether);
-					}
-					
-					if (looter.isPlayer()) {
-						Networking.setBattle(Networking.BattleType.NONE);
-						Networking.clearSide(1);
-						mainGame.story.winFight(true);
-					}
+					//MAYBELATER: all that loot will get atom smashed for now
 				}
 			}
 			
