@@ -309,7 +309,7 @@ public class Armor extends Item implements IEffectiveLevel{
 	 * @return base cost (int)
 	 */
 	public int getBaseCost() {
-		return (int) (MaterialFactory.getMat(material).cost*ArmorStyle.fetch(style).costMult*slotImpact()*level);
+		return (int) (MaterialFactory.getMat(material).cost*ArmorStyle.fetch(style).costMult*slotImpact()*getUnEffectiveLevel());
 	}
 	
 	public float getEnchantMult() {

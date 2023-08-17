@@ -285,7 +285,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 	 * @return base cost (int)
 	 */
 	public int getBaseCost() {
-		return (int) (getMat().cost*weap.cost*level * (1 + .1f *qualList.size()));
+		return (int) (getMat().cost*weap.cost* getUnEffectiveLevel() * (1 + .1f *qualList.size()));
 	}
 
 	
