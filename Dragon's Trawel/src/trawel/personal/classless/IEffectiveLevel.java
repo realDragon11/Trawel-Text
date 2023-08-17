@@ -19,6 +19,10 @@ public interface IEffectiveLevel {
 	public static float unEffective(float eLevel) {
 		return eLevel/10;
 	}
+	
+	public static float unclean(int in) {
+		return unEffective(effective(in));
+	}
 
 	public static int clean(int in) {
 		return (int) unEffective(effective(in));

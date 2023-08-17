@@ -74,62 +74,61 @@ public class StoryTutorial extends Story{
 	
 	@Override
 	public void startFight(boolean massFight) {
-		if (battleFam < 2) {
-			boolean disp = battleFam == 0;
-			if (disp) {
-				extra.println("Oh jeez, it's been a while since you've fought a stranger, you feel weird.");
-				extra.println("A mysterious voice is telling you to \"Choose your attack below\"???");
-				extra.println("...");
+		boolean disp = battleFam == 0;
+		if (disp) {
+			extra.println("Oh jeez, it's been a while since you've fought a stranger, you feel weird.");
+			extra.println("A mysterious voice is telling you to \"Choose your attack below\"???");
+			extra.println("...");
+		}
+		if (!disp && offerCombatTutorial()) {
+			extra.println("Display the combat tutorial again?");
+			disp = extra.yesNo();
+		}
+		if (disp) {
+			extra.println("Higher numbers are better, except in the case of delay.");
+			extra.println("Delay is how long an action takes- it determines turn order and skipping.");
+			extra.println("For example, two 30 delay actions would go through before one 100 delay action, and then still have 40 instants left.");
+			extra.println("Delay on abilities is combined from a warmup and a cooldown. The first number is the warmup- how long until the attack goes through. The second number is the cooldown- how long after that until you can choose another attack.");
+			extra.println(
+					massFight ?
+							extra.CHAR_SHARP+extra.CHAR_BLUNT+extra.CHAR_PIERCE+" stands for sharp blunt pierce- the three main damage types. Your opponents also have sbp-based armor. Yeah, you got a mass fight for your first battle. Good luck."
+							:
+								extra.CHAR_SHARP+extra.CHAR_BLUNT+extra.CHAR_PIERCE+" stands for sharp blunt pierce- the three main damage types. Your opponent also has sbp-based armor."
+					);
+			extra.println("Hitpoints only matter in combat- you steel yourself fully before each battle, restoring to your current maximum. Very few things can reduce this maximum, the most notable being the CURSE status effect.");
+			switch (mainGame.attackDisplayStyle) {
+			case CLASSIC:
+				extra.println("You have classic display mode on, and will show attacks as if they were plain tables.");
+				extra.println("     name                hit    delay    sharp    blunt     pierce");
+				extra.println("Classic mode doesn't show you cooldown and warmup- just the combined delay.");
+				break;
+			case TWO_LINE1: 
+				extra.println("You have modern display on (at least, the current modern for this verison),"
+						+" and will see attacks in a hybrid table/label format.");
+				extra.println("Instead of only table headers, each cell is labeled. "
+						+extra.CHAR_HITCHANCE+" is hitmult. "
+						+extra.CHAR_INSTANTS+" is 'instants' (warmup and cooldown time.) "
+						+ extra.CHAR_SHARP+" is sharp damage, "
+						+extra.CHAR_BLUNT+" is blunt damage, and "
+						+extra.CHAR_PIERCE+" is pierce damage.");
+				extra.println("There are more damage types, such as elemental, but those are beyond the scope of this tutorial.");
+				break;
+			case TWO_LINE1_WITH_KEY:
+				extra.println("You have modern display on with a key/legend (at least, the current modern for this verison),"
+						+" and will see attacks in a hybrid table/label format.");
+				extra.println("This display style will provide instructions on how to read the table at the top of each instance.");
+				break;
 			}
-			if (!disp && offerCombatTutorial()) {
-				extra.println("Display the combat tutorial again?");
-				disp = extra.yesNo();
-			}
-			if (disp) {
-				extra.println("Higher numbers are better, except in the case of delay.");
-				extra.println("Delay is how long an action takes- it determines turn order and skipping.");
-				extra.println("For example, two 30 delay actions would go through before one 100 delay action, and then still have 40 instants left.");
-				extra.println("Delay on abilities is combined from a warmup and a cooldown. The first number is the warmup- how long until the attack goes through. The second number is the cooldown- how long after that until you can choose another attack.");
-				extra.println(
-						massFight ?
-								extra.CHAR_SHARP+extra.CHAR_BLUNT+extra.CHAR_PIERCE+" stands for sharp blunt pierce- the three main damage types. Your opponents also have sbp-based armor. Yeah, you got a mass fight for your first battle. Good luck."
-								:
-									extra.CHAR_SHARP+extra.CHAR_BLUNT+extra.CHAR_PIERCE+" stands for sharp blunt pierce- the three main damage types. Your opponent also has sbp-based armor."
-						);
-				extra.println("Hitpoints only matter in combat- you steel yourself fully before each battle, restoring to your current maximum. Very few things can reduce this maximum, the most notable being the CURSE status effect.");
-				switch (mainGame.attackDisplayStyle) {
-				case CLASSIC:
-					extra.println("You have classic display mode on, and will show attacks as if they were plain tables.");
-					extra.println("     name                hit    delay    sharp    blunt     pierce");
-					extra.println("Classic mode doesn't show you cooldown and warmup- just the combined delay.");
-					break;
-				case TWO_LINE1: 
-					extra.println("You have modern display on (at least, the current modern for this verison),"
-							+" and will see attacks in a hybrid table/label format.");
-					extra.println("Instead of only table headers, each cell is labeled. "
-							+extra.CHAR_HITCHANCE+" is hitmult. "
-							+extra.CHAR_INSTANTS+" is 'instants' (warmup and cooldown time.) "
-							+ extra.CHAR_SHARP+" is sharp damage, "
-							+extra.CHAR_BLUNT+" is blunt damage, and "
-							+extra.CHAR_PIERCE+" is pierce damage.");
-					extra.println("There are more damage types, such as elemental, but those are beyond the scope of this tutorial.");
-					break;
-				case TWO_LINE1_WITH_KEY:
-					extra.println("You have modern display on with a key/legend (at least, the current modern for this verison),"
-							+" and will see attacks in a hybrid table/label format.");
-					extra.println("This display style will provide instructions on how to read the table at the top of each instance.");
-					break;
-				}
-				extra.println("Displayed hit mult isn't a flat percent to hit- when the attack happens, it is a multiplier on your 'hit roll'- just like the enemies' dodge. Whoever rolls the higher number wins. Thus, if your total hit mult equals their total dodge, you have a 50% chance to hit. Most enemies will have a dodge multiplier of less than one.");
-				extra.println("Attacks might also come with wounds, which have special effects. Good luck!");
-				battleFam = 1;
-			}
+			extra.println("Displayed hit mult isn't a flat percent to hit- when the attack happens, it is a multiplier on your 'hit roll'- just like the enemies' dodge. Whoever rolls the higher number wins. Thus, if your total hit mult equals their total dodge, you have a 50% chance to hit. Most enemies will have a dodge multiplier of less than one.");
+			extra.println("Attacks might also come with wounds, which have special effects. Good luck!");
+			battleFam = 1;
 		}
 		combats++;
 	}
 	
 	@Override
 	public void winFight(boolean massFight) {
+		battleFam =2;
 		wins++;
 		if (step == "gotoinn1") {
 			return;
@@ -195,14 +194,14 @@ public class StoryTutorial extends Story{
 		switch(step) {
 		case "gotoarena1":
 			if (!(f instanceof Arena)) {
-				return;
+				break;
 			}
 			extra.println("It looks like there's a fight about to take place here. You could wait to participate in it. Winner gets the loser's stuff, apparently.");
 			step = "anyfight1";
 			return;//we will explain arenas again if they re-enter
 		case "gotoinn1":
 			if (!(f instanceof Inn)) {
-				return;
+				break;
 			}
 			extra.println("The inn has 'beer' (you hope its actually beer) which can raise your HP for as many fights as you buy beer for... but somewhat more importantly, random side quests.");
 			extra.println("Browse the backrooms, and see if any quests suit your fancy. In general, its much more fun to explore, but sidequests can help you if you're having trouble justifying going into the scary wider world.");
@@ -212,7 +211,7 @@ public class StoryTutorial extends Story{
 			return;//we will explain inns again if they re-enter
 		case "gotonode1":
 			if (!(f instanceof NodeFeature)) {
-				return;
+				break;
 			}
 			extra.println("These areas have a variable number of nodes, seen below. Each node has a link to other nodes, and the ability to 'interact' with it. Nodes can be {"
 			+extra.VISIT_NEW+"} unseen, {"+extra.VISIT_SEEN+"}seen, {"+extra.VISIT_BEEN + "}been, {" +extra.VISIT_DONE + "}done, "
@@ -230,6 +229,10 @@ public class StoryTutorial extends Story{
 			
 			if (f instanceof Lot) {
 				extra.println("A 'Lot' is a piece of owned, undeveloped land. You can pay both world currency and Aether to build something on that land.");
+				return;
+			}
+			if (f instanceof WitchHut) {//must be above store, which it extends
+				extra.println("Witch Huts let you brew potions with 'DrawBanes'. They also sell them, and host collection quests where you can find DrawBanes for yourself.");
 				return;
 			}
 			if (f instanceof Store) {
@@ -295,10 +298,7 @@ public class StoryTutorial extends Story{
 				extra.println("Some Towns have stalls for outsiders to set up. They might make a faux-arena, a store, an 'inn' that is just a couple of people with beer, or something else.");
 				return;
 			}
-			if (f instanceof WitchHut) {
-				extra.println("Witch Huts let you brew potions with 'DrawBanes'. They also sell them, and host collection quests where you can find DrawBanes for yourself.");
-				return;
-			}
+			
 			if (f instanceof Grove) {
 				if (!explainedNodes) {
 					extra.println("This is a Node Exploration Feature, continue the main tutorial to learn more.");

@@ -25,6 +25,7 @@ import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.Person.PersonType;
 import trawel.personal.classless.Feat;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.Skill;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.Inventory;
@@ -519,7 +520,7 @@ public class Town extends TContextOwner{
 		if (Player.getTutorial()) {
 			extra.println("You can build buildings on lots you own, extending the facilities of the town.");	
 		}
-		int cost = this.getTier()*250;
+		int cost = (int) (IEffectiveLevel.unclean(getTier())*150);
 		String moneyname = World.currentMoneyString();
 		extra.println("Buy a lot? "+ cost + " "+moneyname+". You have "
 		+ Player.showGold());

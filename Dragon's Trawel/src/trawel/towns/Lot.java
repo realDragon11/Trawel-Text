@@ -4,6 +4,7 @@ import java.util.List;
 
 import trawel.Networking;
 import trawel.extra;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -53,17 +54,19 @@ public class Lot extends Feature {
 		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|lot|Lot|");
 		if (construct == null) {
-			int inncost = tier*200;
-			int arenacost = tier*40;
-			int minecost = tier*200;
-			int gardencost = tier*5;
+			
+			float costMult = IEffectiveLevel.unclean(tier);
+			int inncost = (int) (costMult*300);
+			int arenacost = (int) (costMult*100);
+			int minecost = (int) (costMult*300);
+			int gardencost = (int) (costMult*20);
 
-			int a_inncost = tier*1000;
-			int a_arenacost = tier*700;
-			int a_minecost = tier*3000;
-			int a_gardencost = tier*200;
+			int a_inncost = (int) (costMult*2500);
+			int a_arenacost = (int) (costMult*1000);
+			int a_minecost = (int) (costMult*5000);
+			int a_gardencost = (int) (costMult*500);
 
-			extra.println("What do you want to build? You have "+Player.bag.getAether() + " aether and " + Player.showGold() + " .");
+			extra.println("What do you want to build? You have "+Player.bag.getAether() + " aether and " + Player.showGold() + ".");
 			extra.println("1 inn "+a_inncost + " aether, " + inncost + " "+World.currentMoneyString());
 			extra.println("2 arena "+a_arenacost + " aether, " + arenacost + " "+World.currentMoneyString());
 			extra.println("3 donate to town");
