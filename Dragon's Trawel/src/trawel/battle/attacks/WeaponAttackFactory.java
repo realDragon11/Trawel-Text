@@ -627,7 +627,7 @@ public class WeaponAttackFactory {
 		sta = new Stance(WeaponType.NULL_WAND);
 		sta.addAttack(//too troublesome to track down this error rn, fix entirely in next release
 				make("fast")
-				.setFluff("X`casts fist on Y`!")
+				.setFluff("X` casts fist on Y`!")
 				.setRarity(1f)
 				.setAcc(1f)
 				.setDamage(DamageTier.AVERAGE,DamageTier.AVERAGE,.5f)

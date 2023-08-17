@@ -1593,26 +1593,29 @@ public class Combat {
 	private void setAttack(Person attacker, Person defender) {
 		//manOne.setAttack(AIClass.chooseAttack(manOne.getStance().part(manOne, manTwo),manOne.getIntellect(),this,manOne,manTwo));
 		ImpairedAttack newAttack;
-		int attCount = attacker.nextWeaponAttacksCount();
-		List<ImpairedAttack> atts = (attacker.getStance().randAtts(attCount,attacker.getBag().getHand(),attacker,defender));
+		int weapAttCount = attacker.nextWeaponAttacksCount();
+		int skillAttCount = attacker.specialAttackNum();
+		int totalAttCount = weapAttCount+skillAttCount;
+		totalAttCount = Math.min(7, totalAttCount);
+		int conversions = Math.min(weapAttCount,attacker.getBag().getHand().getMartialStance().getBonusSkillAttacks());
+		weapAttCount-=conversions;
+		skillAttCount+=conversions;
+		List<ImpairedAttack> atts = (attacker.getStance().randAtts(weapAttCount,attacker.getBag().getHand(),attacker,defender));
 		if (attacker.getSuper() != null) {
 			SuperPerson sp = attacker.getSuper();
 			int cap = sp.getSAttCount();//how many skill configs they have
-			int count = attacker.specialAttackNum();//how many attacks they get
-			SkillAttackConf[] conf = sp.getSpecialAttacks();
-			//we currently allow them to potentially fill more attacks this way if disarmed
-			//hard cap to 7 total attacks
-			count = Math.min(count,7-atts.size());
-			for (int i = 0; i < count;i++) {
-				atts.add(conf[i%cap].randAttack(attacker, defender));
+			if (cap > 0) {
+				SkillAttackConf[] conf = sp.getSpecialAttacks();
+				//we currently allow them to potentially fill more attacks this way if disarmed
+				for (int i = 0; i < skillAttCount;i++) {
+					atts.add(conf[i%cap].randAttack(attacker, defender));
+				}
 			}
 		}
 		
 		newAttack = AIClass.chooseAttack(atts,this,attacker,defender);
 		attacker.setAttack(newAttack);
 		newAttack.setDefender(defender);
-		//manOne.getNextAttack().blind(1 + manOne.getNextAttack().getSpeed()/1000.0);
-		//this blind was here to simulate quicker attacks being harder to dodge, it has been removed
 	}
 	
 	/**

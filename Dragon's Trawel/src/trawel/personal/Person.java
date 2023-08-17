@@ -1681,7 +1681,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 	
 	/**
-	 * how many special attacks they have and are currently in use
+	 * how many special attacks they have and are currently in use. Does not include weapon attacks converted
 	 * <br>
 	 * 3 is the most that can be obtained without starting to eat into normal attack potential
 	 * <br>
@@ -1694,9 +1694,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		}
 		//SkillAttackConf[] list = sp.getSpecialAttacks();
 		int count = sp.getSAttCount();
-		return count > 0 ? 
+		return count;
+		/*return count > 0 ? 
 				(count)+bag.getHand().getMartialStance().getBonusSkillAttacks()
-				: 0;
+				: 0;*/
 	}
 
 	public int nextWeaponAttacksCount() {

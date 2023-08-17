@@ -392,11 +392,16 @@ public class Inventory implements java.io.Serializable{
 	public String quickInventory() {
 		String tempStr = "";
 		for (Armor a: armorSlots) {
-			if (tempStr != "") {
-				tempStr+=", ";
-			}
+			String name = null;
 			if (a.canAetherLoot()) {//use this to determine to display
-				tempStr+= a.getName();
+				name = a.getName();
+			}
+			if (name != null) {
+				if (tempStr != "") {
+					tempStr+=name+", ";
+				}else {
+					tempStr += name;
+				}
 			}
 		}
 		if (hand.canAetherLoot()) {
