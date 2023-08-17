@@ -14,6 +14,9 @@ public class StoryTutorial extends Story{
 
 	private Person killed;
 	private int deaths = 0;
+	private int wins = 0;
+	private int combats = 0;
+	private int levelReminders = 0;
 	private String step;
 	
 	private int battleFam;//0 none, 1 fought but didn't win, 2 won a fight
@@ -52,7 +55,7 @@ public class StoryTutorial extends Story{
 				extra.println("A mysterious voice is telling you to \"Choose your attack below\"???");
 				extra.println("...");
 			}
-			if (battleFam == 1) {
+			if (!disp && offerCombatTutorial()) {
 				extra.println("Display the combat tutorial again?");
 				disp = extra.yesNo();
 			}
@@ -96,10 +99,12 @@ public class StoryTutorial extends Story{
 				battleFam = 1;
 			}
 		}
+		combats++;
 	}
 	
 	@Override
 	public void winFight(boolean massFight) {
+		wins++;
 		if (step == "gotoinn1") {
 			return;
 		}
@@ -124,12 +129,24 @@ public class StoryTutorial extends Story{
 			extra.println("Welcome to your first death! You continue as normal. If you're in an exploration area, you got kicked out of it, otherwise not much changed... except maybe the thing that killed you leveled up.");
 			Networking.unlockAchievement("die1");
 		;break;
-		default: 
-			if (battleFam >=2) {
-				extra.println("Rest in pieces.");
+		default:
+			boolean doReminder = false;
+			if (levelReminders <= 2) {
+				if (deaths == 5 && levelReminders == 0) {
+					doReminder = true;
+				}else {
+					if (extra.chanceIn(deaths,wins+deaths+combats)) {//you can die outside of combat
+						doReminder = true;
+					}
+				}
 			}
-		case 5:
+			if (!doReminder) {
+				extra.println("Rest in pieces.");
+				break;
+			}
+
 			extra.println("If you're having trouble, it's often best to come back with better gear and more levels than to challenge-spam someone. At least, for your own time investment.");
+			levelReminders++;
 			break;
 		}
 		
@@ -224,8 +241,10 @@ public class StoryTutorial extends Story{
 				extra.println("You've obtained all tracked world perks in this version of Trawel!");
 			}
 		}
-		
-		
+	}
+	
+	private boolean offerCombatTutorial() {
+		return combats < 3 || battleFam < 2;
 	}
 	
 }

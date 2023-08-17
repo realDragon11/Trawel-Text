@@ -1596,17 +1596,19 @@ public class Combat {
 		//manOne.setAttack(AIClass.chooseAttack(manOne.getStance().part(manOne, manTwo),manOne.getIntellect(),this,manOne,manTwo));
 		ImpairedAttack newAttack;
 		int weapAttCount = attacker.nextWeaponAttacksCount();
-		int skillAttCount = attacker.specialAttackNum();
-		int totalAttCount = weapAttCount+skillAttCount;
-		totalAttCount = Math.min(7, totalAttCount);
-		int conversions = Math.min(weapAttCount,attacker.getBag().getHand().getMartialStance().getBonusSkillAttacks());
-		weapAttCount-=conversions;
-		skillAttCount+=conversions;
-		List<ImpairedAttack> atts = (attacker.getStance().randAtts(weapAttCount,attacker.getBag().getHand(),attacker,defender));
+		int totalAttCount = weapAttCount;
+		List<ImpairedAttack> atts =null;
 		if (attacker.getSuper() != null) {
 			SuperPerson sp = attacker.getSuper();
 			int cap = sp.getSAttCount();//how many skill configs they have
 			if (cap > 0) {
+				int skillAttCount = attacker.specialAttackNum();
+				totalAttCount+=skillAttCount;
+				totalAttCount = Math.min(7, totalAttCount);
+				int conversions = Math.min(weapAttCount,attacker.getBag().getHand().getMartialStance().getBonusSkillAttacks());
+				weapAttCount-=conversions;
+				skillAttCount+=conversions;
+				atts = (attacker.getStance().randAtts(weapAttCount,attacker.getBag().getHand(),attacker,defender));
 				SkillAttackConf[] conf = sp.getSpecialAttacks();
 				//we currently allow them to potentially fill more attacks this way if disarmed
 				for (int i = 0; i < skillAttCount;i++) {
@@ -1614,6 +1616,10 @@ public class Combat {
 				}
 			}
 		}
+		if (atts == null) {
+			atts = (attacker.getStance().randAtts(totalAttCount,attacker.getBag().getHand(),attacker,defender));
+		}
+			
 		
 		newAttack = AIClass.chooseAttack(atts,this,attacker,defender);
 		attacker.setAttack(newAttack);
