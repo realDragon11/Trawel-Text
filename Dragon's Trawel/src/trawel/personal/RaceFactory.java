@@ -154,20 +154,19 @@ public class RaceFactory {
 	public RaceFactory() {
 		misc = new Race(RaceID.HUMAN);
 		misc.swears.add("thinskin");
+		misc.swears.add("dominator");
 		misc.aimMod = 1.05;
 		misc.damMod = 1;
 		misc.dodgeMod = 1;
 		misc.hpMod = 1;
 		misc.speedMod = 1.05;
-		misc.tradeMod = 1.2;
-		misc.rarity = 3;
+		//+.1 total
+		misc.rarity = 2;
 		misc.insultList.add("Your skin is as thin as your brain!");
 		misc.baseMap = "human";
 		misc.raceMaps.add("0");
 		misc.raceMaps.add("1");
 		misc.raceMaps.add("2");
-		misc.magicPower = 1;
-		misc.defPower = 2;
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -179,18 +178,17 @@ public class RaceFactory {
 		
 		misc = new Race(RaceID.ORC);
 		misc.swears.add("greenskin");
-		misc.aimMod = .9;
-		misc.damMod = 1.2;
-		misc.dodgeMod = 1.1;
-		misc.hpMod = 1.2;
-		misc.speedMod = .9;
-		misc.tradeMod = .8;
+		misc.swears.add("blockhead");//idk what insults do people use that could be fantasy slurs
+		misc.aimMod = .95;
+		misc.damMod = 1.10;
+		misc.dodgeMod = 1.05;
+		misc.hpMod = 1.05;
+		misc.speedMod = .95;
+		//+.1 total
 		misc.rarity = 1;
 		misc.insultList.add("They say 'as dumb as an orc' for a reason!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
-		misc.magicPower = 0;
-		misc.defPower = 2;
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -203,18 +201,17 @@ public class RaceFactory {
 		misc = new Race(RaceID.LIZARDFOLK);
 		misc.swears.add("lizard");
 		misc.swears.add("reptile");
-		misc.aimMod = 1.2;
+		misc.swears.add("walking belt");
+		misc.aimMod = 1.1;
 		misc.damMod = 1;
-		misc.dodgeMod = 1.1;
+		misc.dodgeMod = 1;
 		misc.hpMod = 1;
 		misc.speedMod = 1;
-		misc.tradeMod = .9;
+		//+.1 total
 		misc.rarity = 1;
 		misc.insultList.add("What do you want, lizard?");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
-		misc.magicPower = 1;
-		misc.defPower = 1;
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -226,19 +223,18 @@ public class RaceFactory {
 		
 		misc = new Race(RaceID.HIGH_ELF);
 		misc.swears.add("pointy-ear");
-		misc.aimMod = 1.2;
+		misc.swears.add("pretentious elf");
+		misc.aimMod = 1.10;
 		misc.damMod = 1;
-		misc.dodgeMod = 1.1;
-		misc.hpMod = .7;
-		misc.speedMod = 1.1;
-		misc.tradeMod = 1;
+		misc.dodgeMod = 1.10;
+		misc.hpMod = .85;
+		misc.speedMod = 1.05;
+		//+.1 total
 		misc.rarity = .5;
 		misc.insultList.add("Have you heard of the 'high' elves?");
 		misc.insultList.add("What are you going to do, stab me with your ears?");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
-		misc.magicPower = 2;
-		misc.defPower = 0;
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -253,19 +249,17 @@ public class RaceFactory {
 		misc.swears.add("pointy-ear");
 		misc.swears.add("hippie");
 		misc.swears.add("low-elf");
-		misc.aimMod = 1.1;
-		misc.damMod = 1;
-		misc.dodgeMod = 1.3;
-		misc.hpMod = .75;
-		misc.speedMod = 1.1;
-		misc.tradeMod = 1;
+		misc.aimMod = 1.05;
+		misc.damMod = .95;
+		misc.dodgeMod = 1.1;
+		misc.hpMod = .95;
+		misc.speedMod = 1.05;
+		//+.1 total
 		misc.rarity = .5;
 		misc.insultList.add("Go, hug a tree!");
 		misc.insultList.add("What are you going to do, stab me with your ears?");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
-		misc.magicPower = 1;
-		misc.defPower = 0;
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -277,19 +271,23 @@ public class RaceFactory {
 		
 		misc = new Race(RaceID.WOLF_ANTHRO);
 		misc.swears.add("dog");
+		misc.swears.add("mutt");
+		misc.swears.add("howler");
 		misc.aimMod = 1;
-		misc.damMod = .9;
-		misc.dodgeMod = 1.2;
-		misc.hpMod = .9;
-		misc.speedMod = 1.1;
-		misc.tradeMod = 1;
-		misc.rarity = .25;
+		misc.damMod = 1.1;
+		misc.dodgeMod = 1.05;
+		misc.hpMod = .95;
+		misc.speedMod = 1;
+		//+.1 total
+		misc.rarity = .5;
 		misc.insultList.add("Go fetch, dog!");
 		misc.insultList.add("Howl somewhere else, dog!");
-		misc.baseMap = "nada";
-		misc.raceMaps.add("-1");
-		misc.magicPower = 0;
-		misc.defPower = 1;
+		//needs cat maps for now
+		misc.baseMap = "cat";
+		misc.raceMaps.add("0");
+		misc.raceMaps.add("2");
+		misc.raceMaps.add("3");
+		misc.raceMaps.add("4");
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -301,18 +299,17 @@ public class RaceFactory {
 		
 		misc = new Race(RaceID.TURTLE_ANTHRO);
 		misc.swears.add("shelly");
-		misc.aimMod = 1;
+		misc.swears.add("slowpoke");
+		misc.aimMod = 1.1;
 		misc.damMod = 1;
 		misc.dodgeMod = 1;
-		misc.hpMod = 1.5;
-		misc.speedMod = .7;
-		misc.tradeMod = 1;
+		misc.hpMod = 1.2;
+		misc.speedMod = .8;
+		//+.1 total
 		misc.rarity = .25;
 		misc.insultList.add("I'll rip that shell right off!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
-		misc.magicPower = 1;
-		misc.defPower = 3;
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -325,23 +322,24 @@ public class RaceFactory {
 		misc = new Race(RaceID.CAT_ANTHRO);//also maybe make nekos for funny reasons
 		misc.swears.add("fleabag");
 		misc.swears.add("hairball");
-		misc.aimMod = 1.2;
-		misc.damMod = 1;
-		misc.dodgeMod = 1;
-		misc.hpMod = 1;
+		misc.swears.add("kitten");
+		misc.swears.add("curious cat");
+		misc.aimMod = 1.1;
+		misc.damMod = .95;
+		misc.dodgeMod = 1.1;
+		misc.hpMod = .95;
 		misc.speedMod = 1;
-		misc.tradeMod = 1;
-		misc.rarity = .25;
+		//+.1 total
+		misc.rarity = 1;
 		misc.insultList.add("Stay away, I don't want fleas!");
 		misc.insultList.add("Go meow somewhere else!");
 		misc.insultList.add("You'd make a nice rug, cat.");
+		misc.insultList.add("Curiosity isn't all that's gonna kill you, cat!");
 		misc.baseMap = "cat";
 		misc.raceMaps.add("0");
 		misc.raceMaps.add("2");
 		misc.raceMaps.add("3");
 		misc.raceMaps.add("4");
-		misc.magicPower = 0;
-		misc.defPower = 1;
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -353,18 +351,17 @@ public class RaceFactory {
 		
 		misc = new Race(RaceID.SLUG_ANTHRO);
 		misc.swears.add("slowpoke");
-		misc.aimMod = 2;
-		misc.damMod = 1;
-		misc.dodgeMod = .5;
-		misc.hpMod = 1.2;
-		misc.speedMod = .6;
-		misc.tradeMod = 1.2;
+		misc.swears.add("sluggy");
+		misc.aimMod = 1.2;
+		misc.damMod = 1.1;
+		misc.dodgeMod = .9;
+		misc.hpMod = 1;
+		misc.speedMod = .9;
+		//+.1 total
 		misc.rarity = .2;
 		misc.insultList.add("Clean up after your trail!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
-		misc.magicPower = 2;
-		misc.defPower = 1;
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -377,17 +374,15 @@ public class RaceFactory {
 		misc = new Race(RaceID.TENDERHEART);
 		misc.swears.add("exposed");
 		misc.aimMod = 1;
-		misc.damMod = .7;
-		misc.dodgeMod = 1.3;
-		misc.hpMod = 1.1;
+		misc.damMod = .8;
+		misc.dodgeMod = 1.15;
+		misc.hpMod = 1.15;
 		misc.speedMod = 1;
-		misc.tradeMod = 1.2;
+		//+.1 total
 		misc.rarity = .2;
 		misc.insultList.add("Look, your heart's hanging out!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
-		misc.magicPower = 2;
-		misc.defPower = 0;
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -399,18 +394,16 @@ public class RaceFactory {
 		
 		misc = new Race(RaceID.SKELETON_NON_BEASTLY);
 		misc.swears.add("boneman");
-		misc.aimMod = 1;
+		misc.aimMod = 1.05;
 		misc.damMod = 1;
-		misc.dodgeMod = 1.3;
-		misc.hpMod = .5;
-		misc.speedMod = 1.3;
-		misc.tradeMod = 1;
-		misc.rarity = .2;
+		misc.dodgeMod = 1.05;
+		misc.hpMod = .8;
+		misc.speedMod = 1.2;
+		//+.1 total
+		misc.rarity = .4;
 		misc.insultList.add("Rattle your bones somewhere else!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
-		misc.magicPower = 0;
-		misc.defPower = 0;
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = false;
@@ -423,40 +416,37 @@ public class RaceFactory {
 		misc = new Race(RaceID.ZAP_PEOPLE);
 		misc.swears.add("sparky");
 		misc.aimMod = .9;
-		misc.damMod = 1.2;
-		misc.dodgeMod = 1.2;
+		misc.damMod = 1.1;
+		misc.dodgeMod = 1.1;
 		misc.hpMod = .9;
 		misc.speedMod = 1.1;
-		misc.tradeMod = 1;
+		//+.1 total
 		misc.rarity = .2;
 		misc.insultList.add("Oh good, I needed a firestarter!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
-		misc.magicPower = 2;
-		misc.defPower = 0;
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = false;
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(0);
 		misc.maxPitch = audioSteps(10);
-		misc.raceClass = RaceClass.HUMAN_LIKE;
+		misc.raceClass = RaceClass.ANTHRO_FUR;//doing this with -1 map and nada makes you glow yellow so that's good
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.FUGUE);
 		misc.swears.add("reclaimer");
-		misc.aimMod = 1;
-		misc.damMod = 1;
-		misc.dodgeMod = 1;
-		misc.hpMod = 1;
-		misc.speedMod = 1;
-		misc.tradeMod = 1;
+		misc.swears.add("sad and lost woman");
+		misc.aimMod = 1.025;
+		misc.damMod = 1.025;
+		misc.dodgeMod = 1.025;
+		misc.hpMod = 1.025;
+		misc.speedMod = 1.025;
+		//+.1 total
 		misc.rarity = .2;
 		misc.insultList.add("You won't be reclaiming this!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
-		misc.magicPower = 1;
-		misc.defPower = 1;
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -468,18 +458,16 @@ public class RaceFactory {
 		
 		misc = new Race(RaceID.FISHFOLK);
 		misc.swears.add("fish");
-		misc.aimMod = 1;
+		misc.aimMod = 1.05;
 		misc.damMod = 1;
-		misc.dodgeMod = 1.2;
+		misc.dodgeMod = 1.05;
 		misc.hpMod = 1;
-		misc.speedMod = 1.01;
-		misc.tradeMod = .9;
+		misc.speedMod = 1;
+		//+.1 total
 		misc.rarity = .7;
 		misc.insultList.add("Go, swim away!");
 		misc.baseMap = "mermaid";
 		misc.raceMaps.add("-1");
-		misc.magicPower = 1;
-		misc.defPower = 1;
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -1077,7 +1065,7 @@ public class RaceFactory {
 	}
 	
 	public static Person getFleshGolem(int level) {
-		extra.offPrintStack();
+		extra.offPrintStack(); 
 		Person w = Person.animal(level, RaceID.B_FLESH_GOLEM, MaterialFactory.getMat("flesh"), false);
 		//uses a weak armor type
 		//cannot get wealth
