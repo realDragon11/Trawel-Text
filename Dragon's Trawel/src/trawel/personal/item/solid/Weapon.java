@@ -48,10 +48,10 @@ public class Weapon extends Item implements IEffectiveLevel {
 		DESTRUCTIVE("Destructive","On Damage: Damages local armor by 1/3rd of total percent HP dealt."),
 		PENETRATIVE("Penetrative","Attack: The locally attacked armor counts for 3/5ths as much."),
 		PINPOINT("Pinpoint","Attack: Armor not in slots you are attacking counts for 2/3rds as much."),
-		RELIABLE("Reliable","On Armor Block: Deals damage equal to the weapon level instead. Counts as being blocked by armor."), 
+		RELIABLE("Reliable","On Armor Reduction/Block: Minimum damage equal to 1/2th WELVL. If blocked, does not become Impactful."), 
 		DUELING("Dueling","Attack: In large fights, attack the same opponent repeatedly."),
 		WEIGHTED("Weighted","On Damage: Less accurate attacks deal more damage."),
-		REFINED("Refined","On Damage: Deals bonus damage equal to weapon level."),
+		REFINED("Refined","On Damage: Deals bonus damage equal to 1/2th WELVL."),
 		ACCURATE("Accurate","Attack: Flat +%.10 accuracy bonus to all attacks after all modifiers."),
 		CARRYTHROUGH("Carrythrough","On Miss/Dodge: Your next attack on another target is 20% quicker."),
 		;

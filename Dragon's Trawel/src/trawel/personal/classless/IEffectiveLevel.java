@@ -15,4 +15,12 @@ public interface IEffectiveLevel {
 	public static float unEffective(float eLevel) {
 		return eLevel/10;
 	}
+
+	public static int clean(int in) {
+		return (int) unEffective(effective(in));
+	}
+	public static int cleanLHP(double in, double percent) {
+		//10f*((in+10))
+		return (int) Math.ceil((in+10)*10f*percent);
+	}
 }

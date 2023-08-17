@@ -1493,6 +1493,14 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public void addHp(int i) {
 		hp+=i;
 	}
+	public int healHP(int i) {
+		if (hp >= tempMaxHp) {
+			return 0;
+		}
+		int healing = Math.min(tempMaxHp-hp, i);
+		hp = hp+healing;
+		return healing;
+	}
 	
 	//yayyyy standardizedish flags
 	//will work on ints and longs as well if need more flags

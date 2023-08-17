@@ -253,6 +253,7 @@ public class mainGame {
 						extra.println("When in combat, you will be given 3 (by default, skills and circumstance may change this) random attacks ('opportunities') to use your weapon.");
 						extra.println("Pay close attention to hit, warmup/cooldown, and sbp (sharp, blunt, pierce) damage.");
 						extra.println("More simply: Higher is better, except in the case of delay (warmup and cooldown).");
+						extra.println("Leveling Terms: WELVL is weapon effective level this starts at 10 and goes up from the Crude tier. LHP is Leveled HP. This is 100 at level 0, and goes up by 10 every level.");
 						extra.println("Well, you made it through bootcamp. Have fun!");
 						extra.println("-realDragon");
 						return false;

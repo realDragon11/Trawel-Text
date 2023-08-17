@@ -624,7 +624,7 @@ public class Combat {
 			killer.addPlayerKill();
 		}
 		if (killer.hasSkill(Skill.KILLHEAL)){
-			int restore = Math.min(10*killer.getLevel(),5*dead.getLevel());
+			int restore = IEffectiveLevel.cleanLHP(Math.min(2*killer.getLevel(),dead.getLevel()),.05);
 			killer.addHp(restore);
 			if (!extra.getPrint()) {
 				extra.println(killer.getName() + " heals " + restore+" from the kill!");
@@ -709,11 +709,12 @@ public class Combat {
 				ret.addNote("Beating their corpse!");
 			}
 		}
+		int eHalfLevel = (int) (IEffectiveLevel.effective(wLevel)/2);
 		if (ret.type == ATK_ResultType.IMPACT) {//normal damage and killing
 			if (att.hasWeaponQual(WeaponQual.REFINED)) {
-				ret.damage += wLevel;
-				ret.bonus += wLevel;
-				ret.addNote("Refined Bonus: " + wLevel);
+				ret.damage += eHalfLevel;
+				ret.bonus += eHalfLevel;
+				if (canDisp) {ret.addNote("Refined Bonus: " + eHalfLevel);}
 			}
 			if (att.hasWeaponQual(Weapon.WeaponQual.WEIGHTED)) {
 				if (att.getHitMult() < 1.5) {
@@ -726,18 +727,20 @@ public class Combat {
 				}
 			}
 			if (defender.hasSkill(Skill.RAW_GUTS)) {
-				int maxGResist = (int) Math.ceil(defender.getLevel() * defender.getConditionForPart(TargetFactory.TORSO_MAPPING));
+				int maxGResist = IEffectiveLevel.cleanLHP(
+						Math.ceil(defender.getLevel() * defender.getConditionForPart(TargetFactory.TORSO_MAPPING))
+						,.03);
 				int gResisted = ret.damage;
 				ret.damage = Math.max(ret.damage/2,ret.damage-extra.randRange(0,maxGResist));
 				gResisted = gResisted-ret.damage;
 				if (canDisp) {ret.addNote("Raw Guts Resisted: " + gResisted);}
 			}
 		}
-		if (att.hasWeaponQual(WeaponQual.RELIABLE) && ret.damage <= wLevel) 
+		if (att.hasWeaponQual(WeaponQual.RELIABLE) && ret.damage < eHalfLevel) 
 		{
-			ret.damage = wLevel;
-			ret.bonus = wLevel;
-			if (canDisp) {ret.addNote("Reliable Damage: "+wLevel);}
+			ret.bonus = eHalfLevel-ret.damage;
+			ret.damage = eHalfLevel;
+			if (canDisp) {ret.addNote("Reliable Damage: "+eHalfLevel);}
 		}
 		if (canDisp) {
 			ret.stringer = str + att.fluff(ret);
@@ -1095,7 +1098,12 @@ public class Combat {
 				}
 			}
 			if (attacker.hasSkill(Skill.BLOODTHIRSTY)) {
-				attacker.addHp(Math.min(defender.getLevel(),attacker.getLevel()));
+				;
+				int blood_heal = attacker.healHP(
+						IEffectiveLevel.cleanLHP(Math.min(defender.getLevel(),attacker.getLevel()),.01));
+				if (!extra.getPrint()) {
+					extra.println(attacker.getName()+ " heals " + blood_heal + " from their bloodthirst!");
+				}
 			}
 			if (attacker.hasSkill(Skill.NPC_BURN_ARMOR)) {
 				//always burns at least 5% before diminishing
@@ -1112,7 +1120,9 @@ public class Combat {
 			if (defender.hasSkill(Skill.MESMER_ARMOR)) {
 				if (defender.contestedRoll(attacker,defender.getClarity(),attacker.getHighestAttribute()) >= 0){
 					attacker.addEffect(Effect.CONFUSED_TARGET);
-					extra.println(defender.getName()+ "'s illusory armor mesmerizes "+attacker.getName() +"...");
+					if (!extra.getPrint()) {
+						extra.println(defender.getName()+ "'s illusory armor mesmerizes "+attacker.getName() +"...");
+					}
 				}
 			}
 		}
@@ -1169,7 +1179,7 @@ public class Combat {
 					extra.print(" They dodge closer to the action!");
 				}
 				if (defender.hasSkill(Skill.DODGEREF)) {
-					int dodgeHeal = Math.min(defender.getLevel()*2,attacker.getLevel());
+					int dodgeHeal = IEffectiveLevel.cleanLHP(Math.min(defender.getLevel()*2,attacker.getLevel()),.01);
 					defender.addHp(dodgeHeal);
 					extra.print(" Refreshing Dodge heals " + dodgeHeal +"!");
 				}
@@ -1190,7 +1200,7 @@ public class Combat {
 				extra.print(extra.AFTER_ATTACK_BLOCKED+" "+randomLists.attackNegateFluff()+extra.ATTACK_BLOCKED);
 			}
 			if (defender.hasSkill(Skill.ARMORHEART)) {
-				int armorHeal = Math.min(defender.getLevel()*2,attacker.getLevel());
+				int armorHeal = IEffectiveLevel.cleanLHP(Math.min(defender.getLevel()*2.5f,attacker.getLevel()),.02);
 				defender.addHp(armorHeal);
 				extra.print(" Armor Heart heals " + armorHeal +"!");
 			}

@@ -87,7 +87,7 @@ public enum Skill{
 		TA_NAILS("Tough as Nails","Grants a 20% chance to ignore incoming wounds."
 				,"Can apply to any wound inflicted on them, completely negating it.",
 				Type.DEFENSE),
-		RAW_GUTS("Raw Guts","Resist damage up to level, by Torso condition."
+		RAW_GUTS("Raw Guts","Resist damage up to 3% LHP, by Torso condition."
 				,"Can only resist up to half the base damage of an attack. Only applies to hit attacks. Amount is random."
 				,Type.DEFENSE),
 		KUNG_FU("Unarmed Attacks","Gain martial arts attacks."
@@ -99,8 +99,8 @@ public enum Skill{
 		SPEEDDODGE("Speed Dodge","Attack 10 instants sooner after you dodge."
 				,"Applies to each dodge. Does not apply to misses."
 				,Type.SPEED),
-		DODGEREF("Refreshing Dodge","Gain hp equal to your attacker's level every time you dodge."
-				,"Uncapped total HP gain. Caps at twice your level per activation. Does not apply to misses."
+		DODGEREF("Refreshing Dodge","Gain 1% of attacker's LHP every time you dodge."
+				,"Uncapped total HP gain. Caps at 2% of your own LHP each activation. Does not apply to misses."
 				,Type.DEFENSE),
 		P_BREWER("Brewer","Your created potions can be sipped two more times before running out."
 				,"Stacks with normal filler ingredients."
@@ -111,8 +111,8 @@ public enum Skill{
 		CURSE_MAGE("Curse Whisperer","Those who kill them are cursed, and start battles with less hp until cured."
 				,"Cure at a Shaman or Doctor. Lasts between battles."
 				, Type.OTHER),
-		KILLHEAL("Vampiric Spirit","Gain 5 x dead person level HP on a kill."
-				,"Caps at 10 x your own level. 'Kill' means being the last person to attack the target before they die."
+		KILLHEAL("Vampiric Spirit","Gain 5% dead LHP on a kill."
+				,"Caps at 10% of your LHP. 'Kill' means being the last person to attack the target before they die."
 				,Type.OFFENSE),
 		SPUNCH("Sucker Punch","Your impactful attacks slow down your target's next action by 2% of their total time."
 				,extra.IMPACT_TIP
@@ -120,8 +120,8 @@ public enum Skill{
 		DSTRIKE("Decisive Strike","Instantly kill anyone you damage by more than 70% of their max HP in one blow."
 				,"Max HP is closely aligned to how much HP they start with, but can go higher. Must be part of an 'Impactful' action."
 				,Type.OFFENSE),
-		BLOODTHIRSTY("Bloodthirsty","Gain HP equal to the lower of your level and your target's level every time you make an impactful attack."
-				,extra.IMPACT_TIP
+		BLOODTHIRSTY("Bloodthirsty","Heal HP equal to the lower of 1% your LHP and their LHP every time you make an impactful attack."
+				,"Cannot bring you above your MHP."
 				,Type.OFFENSE),
 		ARMOR_TUNING("Armor Tuning","Your armor is 20% stronger at the start of every battle."
 				,"Armor above 100% degrades half of how much it's above 100% whenever you complete an action."
@@ -129,8 +129,8 @@ public enum Skill{
 		ARMORSPEED("Glancing Blow","Attack 10 instants sooner after your armor blocks an attack."
 				,"Applies once per attack."
 				,Type.DEFENSE),//defense not speed, speed is more 'fast in mobility'
-		ARMORHEART("Armor Heart","Gain hp equal to your attacker's level every time your armor blocks an attack."
-				,"Uncapped total HP gain. Caps at twice your level per activation. Applies once per attack."
+		ARMORHEART("Armor Heart","Gain 2% of attacker's LHP every time your armor blocks an attack."
+				,"Uncapped total HP gain. Caps at 5% of your own LHP each activation. Applies once per attack."
 				,Type.DEFENSE),
 		MESMER_ARMOR("Mesmer Armor","When attacked for no Impact, Roll a contested Clarity vs their highest attribute to confuse them."
 				,"Attacks with no impact typically are dodged, miss, or are blocked by armor. Confuse makes the target's next attack capable of friendly fire."
