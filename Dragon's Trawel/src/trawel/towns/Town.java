@@ -843,6 +843,7 @@ public class Town extends TContextOwner{
 	
 	public void addOccupant(Agent occupant) {//MAYBELATER: a time based variant add 'laterAddOccupant'
 		assert occupant != null;
+		occupant.setLocation(this);
 		occupants.add(occupant);
 	}
 	
