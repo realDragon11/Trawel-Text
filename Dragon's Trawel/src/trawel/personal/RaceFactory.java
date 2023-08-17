@@ -917,7 +917,7 @@ public class RaceFactory {
 	
 	public static Person makeWolf(int level) {
 		extra.offPrintStack();
-		Person w = Person.animal(level, RaceID.B_WOLF, MaterialFactory.getMat("flesh"), false);
+		Person w = Person.animal(level, RaceID.B_WOLF, MaterialFactory.getMat("hide"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
 		if (extra.chanceIn(1,5)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
@@ -931,7 +931,7 @@ public class RaceFactory {
 	
 	public static Person makeAlphaWolf(int level) {
 		extra.offPrintStack();
-		Person w = Person.animal(level, RaceID.B_WOLF, MaterialFactory.getMat("flesh"), false);
+		Person w = Person.animal(level, RaceID.B_WOLF, MaterialFactory.getMat("hide"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
 		if (extra.chanceIn(4,5)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
@@ -965,7 +965,7 @@ public class RaceFactory {
 	
 	public static Person makeStatue(int level) {
 		extra.offPrintStack();
-		Person w = new Person(level,true, Race.RaceType.PERSONABLE,MaterialFactory.getMat("flesh"),Person.RaceFlag.CRACKS,false);
+		Person w = new Person(level,true, Race.RaceType.PERSONABLE,null,Person.RaceFlag.CRACKS,false);
 		if (extra.chanceIn(1,2)) {
 			w.getBag().getDrawBanes().add(DrawBane.CEON_STONE);
 		}
@@ -977,7 +977,7 @@ public class RaceFactory {
 	
 	public static Person makeFellReaver(int level) {
 		extra.offPrintStack();
-		Person w = Person.animal(level, RaceID.B_REAVER_TALL, MaterialFactory.getMat("flesh"), false);//DOLATER change flesh type
+		Person w = Person.animal(level, RaceID.B_REAVER_TALL, MaterialFactory.getMat("hide"), false);//DOLATER change flesh type
 		w.setFlag(PersonFlag.HAS_WEALTH,true);//unsure if would care
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("flesh"),WeaponType.REAVER_STANDING));
 		w.setPerk(Perk.RACIAL_SHIFTS);
@@ -1016,7 +1016,7 @@ public class RaceFactory {
 	
 	public static Person makeVampire(int level) {
 		extra.offPrintStack();
-		Person w = new Person(level,true, Race.RaceType.PERSONABLE,MaterialFactory.getMat("flesh"),Person.RaceFlag.UNDEAD,false);
+		Person w = new Person(level,true, Race.RaceType.PERSONABLE,null,Person.RaceFlag.UNDEAD,false);
 		w.setScar(biteFor(w.getBag().getRace().raceID()));
 		w.getBag().getDrawBanes().add(DrawBane.GRAVE_DUST);
 		if (extra.chanceIn(1,10)) {
@@ -1034,7 +1034,7 @@ public class RaceFactory {
 	
 	public static Person makeBear(int level) {
 		extra.offPrintStack();
-		Person w = Person.animal(level, RaceID.B_BEAR, MaterialFactory.getMat("flesh"), false);
+		Person w = Person.animal(level, RaceID.B_BEAR, MaterialFactory.getMat("hide"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.CLAWS_TEETH_GENERIC));
 		w.getBag().getDrawBanes().add(DrawBane.MEAT);
 		extra.popPrintStack();
@@ -1047,7 +1047,7 @@ public class RaceFactory {
 	
 	public static Person makeBat(int level) {
 		extra.offPrintStack();
-		Person w = Person.animal(level, RaceID.B_BAT, MaterialFactory.getMat("flesh"), false);
+		Person w = Person.animal(level, RaceID.B_BAT, MaterialFactory.getMat("hide"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
 		w.getBag().getDrawBanes().add(DrawBane.BAT_WING);
 		if (extra.chanceIn(1,7)) {
@@ -1063,7 +1063,7 @@ public class RaceFactory {
 	
 	public static Person makeSwarmBat(int level) {
 		extra.offPrintStack();
-		Person w = Person.animal(level, RaceID.B_SWARMBAT, MaterialFactory.getMat("flesh"), false);
+		Person w = Person.animal(level, RaceID.B_SWARMBAT, MaterialFactory.getMat("hide"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
 		if (extra.chanceIn(1,2)) {
 			w.getBag().getDrawBanes().add(DrawBane.BAT_WING);
@@ -1079,6 +1079,7 @@ public class RaceFactory {
 	public static Person getFleshGolem(int level) {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_FLESH_GOLEM, MaterialFactory.getMat("flesh"), false);
+		//uses a weak armor type
 		//cannot get wealth
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("flesh"),WeaponType.GENERIC_FISTS));
 		w.getBag().getDrawBanes().add(DrawBane.BEATING_HEART);
@@ -1092,7 +1093,7 @@ public class RaceFactory {
 	
 	public static Person makeUnicorn(int level) {
 		extra.offPrintStack();
-		Person w = Person.animal(level, RaceID.B_UNICORN, MaterialFactory.getMat("flesh"), false);
+		Person w = Person.animal(level, RaceID.B_UNICORN, MaterialFactory.getMat("hide"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.UNICORN_HORN));
 		if (extra.chanceIn(1,3)) {
 			w.getBag().getDrawBanes().add(DrawBane.UNICORN_HORN);
@@ -1106,7 +1107,7 @@ public class RaceFactory {
 	
 	public static Person makeHarpy(int level) {
 		extra.offPrintStack();
-		Person w = Person.animal(level, RaceID.B_HARPY, MaterialFactory.getMat("flesh"), false);
+		Person w = Person.animal(level, RaceID.B_HARPY, MaterialFactory.getMat("hide"), false);
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TALONS_GENERIC));
 		if (extra.chanceIn(1,6)) {
@@ -1127,7 +1128,7 @@ public class RaceFactory {
 	
 	public static Person makeDrudgerStock(int level) {
 		extra.offPrintStack();
-		Person w = Person.animal(level, RaceID.B_DRUDGER_STOCK, MaterialFactory.getMat("flesh"), false);
+		Person w = Person.animal(level, RaceID.B_DRUDGER_STOCK, MaterialFactory.getMat("fishscales"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","rusty iron","iron")),WeaponType.FISH_SPEAR));
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
 		for (byte i=0;i<5;i++) {
@@ -1146,7 +1147,7 @@ public class RaceFactory {
 	}
 	public static Person makeDrudgerTitan(int level) {
 		extra.offPrintStack();
-		Person w = Person.animal(level, RaceID.B_DRUDGER_TITAN, MaterialFactory.getMat("flesh"), false);
+		Person w = Person.animal(level, RaceID.B_DRUDGER_TITAN, MaterialFactory.getMat("fishscales"), false);
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
 		w.liteSetSkillHas(Archetype.FISH_TALL);
 		w.cleanSetSkillHas(Perk.STAND_TALL);
@@ -1165,7 +1166,7 @@ public class RaceFactory {
 	}
 	public static Person makeDrudgerMage(int level) {
 		extra.offPrintStack();
-		Person w = Person.animal(level, RaceID.B_DRUDGER_STOCK, MaterialFactory.getMat("flesh"), false);
+		Person w = Person.animal(level, RaceID.B_DRUDGER_STOCK, MaterialFactory.getMat("fishscales"), false);
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
 		w.liteSetSkillHas(Archetype.FISH_MONSOON);
 		w.addFeatPoint(level/2);
