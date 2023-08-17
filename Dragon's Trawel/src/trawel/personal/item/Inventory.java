@@ -398,7 +398,7 @@ public class Inventory implements java.io.Serializable{
 			}
 			if (name != null) {
 				if (tempStr != "") {
-					tempStr+=name+", ";
+					tempStr+=", "+name;
 				}else {
 					tempStr += name;
 				}
@@ -409,6 +409,8 @@ public class Inventory implements java.io.Serializable{
 				tempStr+=", ";
 			}
 			tempStr+= hand.getName()+".";
+		}else {
+			tempStr +=".";
 		}
 		return tempStr;
 	}
