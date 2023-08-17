@@ -38,7 +38,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	
 	public MerchantGuild(String name){
 		this.name = name;
-		tutorialText = "Merchant quests will make stores willing to sell items higher than your level.";
+		tutorialText = "Merchant's Guild.";
 		timePassed = extra.randRange(1,30);
 		nextReset = extra.randRange(4,30);
 	}

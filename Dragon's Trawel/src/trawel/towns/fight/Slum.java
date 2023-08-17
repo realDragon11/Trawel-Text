@@ -58,7 +58,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	public Slum(Town t, String name,boolean removable) {
 		town = t;
 		this.name = name;
-		tutorialText = "Slums house crime lords.";
+		tutorialText = "Slum.";
 		this.removable = removable;
 	}
 	

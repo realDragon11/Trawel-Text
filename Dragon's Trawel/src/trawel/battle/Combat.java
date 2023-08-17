@@ -1650,6 +1650,7 @@ public class Combat {
 	public List<Person> getNonSummonSurvivors(){
 		List<Person> list = new ArrayList<Person>();
 		survivors.stream().filter(s -> !s.getFlag(PersonFlag.IS_SUMMON)).forEach(list::add);
+		assert Combat.hasNonNullBag(list);
 		return list;
 	}
 	public Stream<Person> streamAllSurvivors(){
@@ -1713,6 +1714,22 @@ public class Combat {
 			}
 		}
 		return builder.toString();
+	}
+
+	public static boolean hasNonNullBag(List<Person> people) {
+		for (Person p: people) {
+			Inventory bag = p.getBag();
+			if (bag.getHand() == null) {
+				throw new RuntimeException(p.getName() + " missing weapon");
+			}
+			for (int i = 0; i < 5;i++) {
+				Armor a = bag.getArmor()[i];
+				if (a == null) {
+					throw new RuntimeException(p.getName() + " missing armor in slot "+i);
+				}
+			}
+		}
+		return true;
 	}
 	
 		

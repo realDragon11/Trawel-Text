@@ -10,7 +10,7 @@ public class Grove extends NodeFeature {
 	public Grove(String name,Town t,int capacity) {
 		this.name = name;
 		town = t;
-		tutorialText = "Explore groves to progress in level.";
+		tutorialText = "Grove.";
 		generate(capacity);
 		background_area = "forest";
 		background_variant = 1;

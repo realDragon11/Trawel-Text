@@ -29,7 +29,7 @@ public class Library extends Feature {
 		start();
 		name = _name;
 		town = _town;
-		tutorialText = "Libraries hold knowledge from all worlds.";
+		tutorialText = "Library.";
 	}
 	public enum LibraryFlag{
 		HAS_BONUS_FEAT_PICKED

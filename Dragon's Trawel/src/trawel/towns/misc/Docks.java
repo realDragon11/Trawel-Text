@@ -18,6 +18,8 @@ import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.Archetype;
+import trawel.personal.classless.Perk;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Agent;
@@ -66,7 +68,8 @@ public class Docks extends Feature {
 	
 	@Override
 	public String getTutorialText() {
-		return "Docks are large ports, able to transport you across water. You can also defend them or travel to far-flung ports.";
+		return "Docks.";
+		//return "Docks are large ports, able to transport you across water. You can also defend them or travel to far-flung ports.";
 	}
 	
 	@Override
@@ -400,7 +403,10 @@ public class Docks extends Feature {
 	
 	private List<Person> makeDrudgerLeader() {
 		if (old_defenders.size() > 0) {
-			return old_defenders.remove(0).getSelfOrAllies();
+			Person p = old_defenders.remove(0);
+			p.setFlag(PersonFlag.IS_MOOK, false);
+			p.setArch(Archetype.PROMOTED);
+			return p.getSelfOrAllies();
 		}
 		if (extra.chanceIn(1,3)) {
 			return RaceFactory.makeDrudgerMage(tier).getSelfOrAllies();
@@ -516,7 +522,6 @@ public class Docks extends Feature {
 
 		if (townWon) {
 			c.getNonSummonSurvivors().stream().filter(p -> !p.isPlayer()).forEach(old_defenders::add);
-			
 			fightCooldownTimer = extra.getRand().nextDouble(100,130);//over 4 days roughly
 			
 			Person highest = null;
@@ -546,7 +551,7 @@ public class Docks extends Feature {
 					
 				}
 			}else {
-				fightCooldownTimer = extra.getRand().nextDouble(20,28);//2 days roughly
+				fightCooldownTimer = extra.getRand().nextDouble(36,48);//1.5-2 days roughly
 				leader = wleader.setOrMakeAgentGoal(AgentGoal.OWN_SOMETHING);
 				alive.remove(wleader);
 				old_attackers.addAll(alive);
@@ -556,8 +561,11 @@ public class Docks extends Feature {
 					
 				}
 			}
-
+			
 		}
+		/*
+		assert Combat.hasNonNullBag(old_defenders);
+		assert Combat.hasNonNullBag(old_attackers);*/
 		if (playerin == false) {
 			extra.popPrintStack();
 		}

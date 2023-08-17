@@ -14,7 +14,7 @@ public class Appraiser extends Feature {
 
 	public Appraiser(String name) {
 		this.name = name;
-		tutorialText = "Appraisers will tell you more about your items.";
+		tutorialText = "Appraisers will tell you more about your items.";//TODO: needs better overhaul
 	}
 	
 	@Override

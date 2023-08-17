@@ -18,7 +18,7 @@ public class Doctor extends Feature {
 		this.name = name;
 		town = t;
 		tier = t.getTier();
-		tutorialText = "Doctors can cure your ailments.";
+		tutorialText = "Doctor.";
 	}
 	@Override
 	public String getColor() {

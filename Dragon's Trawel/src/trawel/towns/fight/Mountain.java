@@ -54,7 +54,8 @@ public class Mountain extends Feature{
 	
 	@Override
 	public String getTutorialText() {
-		return "Mountains can be explored, but do not have persistence. They have a fixed number of explores that restores over time.";
+		return "Mountain.";
+		//return "Mountains can be explored, but do not have persistence. They have a fixed number of explores that restores over time.";
 	}
 	
 	@Override

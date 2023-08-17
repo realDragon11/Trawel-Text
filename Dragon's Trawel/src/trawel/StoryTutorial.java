@@ -1,15 +1,37 @@
 package trawel;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 import trawel.personal.Person;
 import trawel.personal.classless.Archetype;
 import trawel.personal.classless.Perk;
 import trawel.personal.people.Player;
 import trawel.towns.Feature;
+import trawel.towns.Lot;
+import trawel.towns.TravelingFeature;
 import trawel.towns.fight.Arena;
+import trawel.towns.fight.Forest;
+import trawel.towns.fight.Mountain;
+import trawel.towns.misc.Docks;
+import trawel.towns.misc.Garden;
+import trawel.towns.nodes.Dungeon;
+import trawel.towns.nodes.Graveyard;
+import trawel.towns.nodes.Grove;
+import trawel.towns.nodes.Mine;
 import trawel.towns.nodes.NodeFeature;
+import trawel.towns.services.Altar;
+import trawel.towns.services.Blacksmith;
+import trawel.towns.services.Doctor;
+import trawel.towns.services.HeroGuild;
 import trawel.towns.services.Inn;
+import trawel.towns.services.Library;
+import trawel.towns.services.MerchantGuild;
+import trawel.towns.services.Oracle;
+import trawel.towns.services.RogueGuild;
+import trawel.towns.services.Store;
+import trawel.towns.services.WitchHut;
 
 public class StoryTutorial extends Story{
 
@@ -19,11 +41,14 @@ public class StoryTutorial extends Story{
 	private int combats = 0;
 	private int levelReminders = 0;
 	private String step;
+	private boolean explainedNodes = false;
 	
 	private int battleFam;//0 none, 1 fought but didn't win, 2 won a fight
 	
 	private EnumSet<Perk> bossPerkTriggers = EnumSet.of(Perk.HELL_BARONESS,Perk.FATED);
 	private EnumSet<Perk> worldPerkTriggers = EnumSet.of(Perk.MINE_ALL_VEINS,Perk.CULT_LEADER_BLOOD);
+	
+	private List<Class<? extends Feature>> explained = new ArrayList<>();
 	
 	@Override
 	public void setPerson(Person p, int index) {
@@ -174,17 +199,17 @@ public class StoryTutorial extends Story{
 			}
 			extra.println("It looks like there's a fight about to take place here. You could wait to participate in it. Winner gets the loser's stuff, apparently.");
 			step = "anyfight1";
-			break;
+			return;//we will explain arenas again if they re-enter
 		case "gotoinn1":
 			if (!(f instanceof Inn)) {
 				return;
 			}
 			extra.println("The inn has 'beer' (you hope its actually beer) which can raise your HP for as many fights as you buy beer for... but somewhat more importantly, random side quests.");
 			extra.println("Browse the backrooms, and see if any quests suit your fancy. In general, its much more fun to explore, but sidequests can help you if you're having trouble justifying going into the scary wider world.");
-			extra.println("Merchant Guilds, Witch Huts, and a few other locations can also provide similar sidequests- and even more can be quest locations, like mountains and forests.");
+			extra.println("Merchant Guilds, Witch Huts, Slums, and a few other locations can also provide similar sidequests- and even more can be quest locations, like mountains and forests.");
 			extra.println("There are also areas meant for sub-exploration, such as Groves, Mines, Dungeons, and Graveyards. The Tower of Fate in Unun and the Staircase to Hell in another world entirely also have bosses. Try to enter one such feature next.");
 			step = "gotonode1";
-			break;
+			return;//we will explain inns again if they re-enter
 		case "gotonode1":
 			if (!(f instanceof NodeFeature)) {
 				return;
@@ -197,8 +222,122 @@ public class StoryTutorial extends Story{
 			extra.println("While interacting, you might find yourself in a sub-menu, otherwise you can always leave the area by selecting the last option.");
 			extra.println("You have completed the tutorial section of this story. If you make it to >10 level, you've essentially beaten the game. Those bosses mentioned earlier and some other world events will be tracked by this tutorial- but there's no main quest in this version of Trawel, so good luck.");
 			step = "end";
-			break;
+			return;//we explain the subtypes differently if they re-enter
 		default: break;
+		}
+		if (!explained.contains(f.getClass())) {
+			explained.add(f.getClass());
+			
+			if (f instanceof Lot) {
+				extra.println("A 'Lot' is a piece of owned, undeveloped land. You can pay both world currency and Aether to build something on that land.");
+				return;
+			}
+			if (f instanceof Store) {
+				extra.println("Stores will sell equipment. They'll want world currency, but will convert Aether into it at a worse rate if you don't have enough world currency. They will increase their markup if they think the item is too good for you, but gaining the favor of merchants will increase how 'good' they think you are. If an item is considerably marked up, they might refuse to show it at all.");
+				return;
+			}
+			if (f instanceof Arena) {
+				extra.println("Arenas let you wait to fight- which could take a while in-game waiting wise, and also rematch against anyone you've lost to that is still hanging out in the arena.");
+				return;
+			}
+			if (f instanceof Docks) {
+				extra.println("Docks are Ports- they have water connections to other Towns. They are also assaulted by Drudger armies, which might take temporary control from the Townsfolk. If the Town owns the Docks, they can be used to travel to distant shores much quicker.");
+				return;
+			}
+			if (f instanceof MerchantGuild) {
+				extra.println("Merchant Guilds have sidequests, a donation area to get Stores to give you better deals, and some 'buy in bulk' options. Their guild gem of choice is the Emerald.");
+				return;
+			}
+			if (f instanceof HeroGuild) {
+				extra.println("Hero Guilds will let you buy Knowledge Fragments with Heroic Reputation. Use these at libraries. Their guild gem of choice is the Ruby.");
+				return;//TODO: add heroic quests
+			}
+			if (f instanceof RogueGuild) {
+				extra.println("Rogue Guilds will let you launder gems into different gems, for a fee. Their guild gem of choice is the Sapphire.");
+				return;//TODO: add lawless quests
+			}
+			if (f instanceof Library) {
+				extra.println("At a Library, you can turn in any DrawBane Knowledge Fragments you hold to progress on a free Feat Point. If you have 2 or less Feat Picks, you can gain another for free, once per Library.");
+				return;
+			}
+			if (f instanceof Oracle) {
+				extra.println("Oracles are in tune with the world, and will mumble on about what someone else is trying to say. This frequently has them repeat utter nonsense, since the Oracle has no context for the message. If you pay them well enough, they will attempt to be helpful by breaking the 4th wall.");
+				return;
+			}
+			if (f instanceof Doctor) {
+				extra.println("Doctors can diagnose and cure long-term ailments, most notably the CURSE effect.");
+				return;
+			}
+			if (f instanceof Altar) {
+				extra.println("Altars worship a divine force. Sacrificing DrawBanes might please this force- but different forces will want different things.");
+				return;
+			}
+			if (f instanceof Garden) {
+				extra.println("Gardens hold multiple plant spots to plant in.");
+				return;
+			}
+			if (f instanceof Blacksmith) {
+				extra.println("Blacksmith's can create new items for stores, and improve items that you carry.");
+				return;
+			}
+			if (f instanceof Mountain) {
+				extra.println("Mountains can be explored, but do not have persistence. They have a fixed number of explores that restores over time.");
+				return;
+			}
+			if (f instanceof Forest) {
+				extra.println("Forests can be explored, but do not have persistence. They have a fixed number of explores that restores over time.");
+				return;
+			}
+			
+			//TODO: appraiser
+			
+			if (f instanceof TravelingFeature) {
+				extra.println("Some Towns have stalls for outsiders to set up. They might make a faux-arena, a store, an 'inn' that is just a couple of people with beer, or something else.");
+				return;
+			}
+			if (f instanceof WitchHut) {
+				extra.println("Witch Huts let you brew potions with 'DrawBanes'. They also sell them, and host collection quests where you can find DrawBanes for yourself.");
+				return;
+			}
+			if (f instanceof Grove) {
+				if (!explainedNodes) {
+					extra.println("This is a Node Exploration Feature, continue the main tutorial to learn more.");
+				}
+				extra.println("Groves have explorable sub-areas. They are the most living type with subareas, and after you explore one, you might find things regrown when you next visit.");
+				return;
+			}
+			if (f instanceof Mine) {
+				if (!explainedNodes) {
+					extra.println("This is a Node Exploration Feature, continue the main tutorial to learn more.");
+				}
+				extra.println("Mines have explorable sub-areas. The veins present often provide an ample source of world currency.");
+				return;
+			}
+			if (f instanceof Dungeon) {
+				if (!explainedNodes) {
+					extra.println("This is a Node Exploration Feature, continue the main tutorial to learn more.");
+				}
+				extra.println("Dungeons have explorable sub-areas. They often have treasure and many guards.");
+				return;
+			}
+			if (f instanceof Graveyard) {
+				if (!explainedNodes) {
+					extra.println("This is a Node Exploration Feature, continue the main tutorial to learn more.");
+				}
+				extra.println("Graveyards have explorable sub-areas. The darkness will make it hard to see if you don't have the Nightvison Skill.");
+				return;
+			}
+			
+			
+			//for not covered by a subclass
+			if (f instanceof NodeFeature) {
+				if (explainedNodes) {
+					extra.println("This Node Exploration Feature has no tutorial beyond the basic one.");
+				}else {
+					extra.println("This is a Node Exploration Feature, continue the main tutorial to learn more.");
+				}
+				return;
+			}
 		}
 		
 	}

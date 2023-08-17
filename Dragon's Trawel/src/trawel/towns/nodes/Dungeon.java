@@ -10,7 +10,7 @@ public class Dungeon extends NodeFeature {
 	public Dungeon(String name,Town t,Shape s,int bossType) {
 		this.name = name;
 		town = t;
-		tutorialText = "Explore dungeons to find treasure.";
+		tutorialText = "Dungeon.";
 		shape = s;
 		generate(50);
 		boss = bossType;

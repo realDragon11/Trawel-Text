@@ -48,7 +48,7 @@ public class Forest extends Feature{
 		this.name = name;
 		explores = 0;
 		exhaust = 0;
-		tutorialText = "Explore forests to progress in level.";
+		tutorialText = "Forest.";
 		background_area = "forest";
 		background_variant = 1;
 	}

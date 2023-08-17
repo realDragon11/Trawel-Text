@@ -27,7 +27,15 @@ public class Lot extends Feature {
 		this.town = town;
 		tier = town.getTier();
 		name = "lot";
-		tutorialText = "This is a lot you own. \n Go to it to decide what you want to build.";
+		//tutorialText = "This is a lot you own. \n Go to it to decide what you want to build.";
+	}
+	
+	@Override
+	public String getTutorialText() {
+		if (construct == null) {
+			return "Owned Lot, waiting for build order.";
+		}
+		return "Owned Lot (Constructing).";
 	}
 	
 	@Override

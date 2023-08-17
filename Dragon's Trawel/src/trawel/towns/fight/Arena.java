@@ -32,7 +32,7 @@ public class Arena extends Feature{
 		this.timeLeft = timeLeft;
 		this.timesDone = timesDone;
 		winners = new ArrayList<Person>();
-		tutorialText = "Arenas are a great place to get started.";
+		tutorialText = "Arena.";
 		this.owner = owner;
 	}
 	

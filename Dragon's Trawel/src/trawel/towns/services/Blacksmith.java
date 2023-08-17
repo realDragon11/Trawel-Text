@@ -21,14 +21,14 @@ public class Blacksmith extends Feature {
 		this.name = name;
 		this.tier = tier;
 		this.store = s;
-		tutorialText = "Blacksmith's add new items to stores, and can improve items.";
+		tutorialText = "Blacksmith.";
 	}
 	
 	public Blacksmith(int tier, Store s){
 		this.tier = tier;
 		this.store = s;
 		name = store.getName() +" " + extra.choose("smith","blacksmith","smithy","forge");
-		tutorialText = "Blacksmith's add new items to stores, and can improve items.";
+		tutorialText = "Blacksmith.";
 	}
 	
 	@Override

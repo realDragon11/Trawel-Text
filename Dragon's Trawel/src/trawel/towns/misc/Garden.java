@@ -22,7 +22,7 @@ public class Garden extends Feature {
 		this.tier = town.getTier();
 		tier = town.getTier();
 		name = "garden";
-		tutorialText = "Gardens can grow plants.";
+		tutorialText = "Garden.";
 		for (int i = 0; i < 4;i++) {
 		plants.add(new PlantSpot(tier));}
 		background_area = "forest";

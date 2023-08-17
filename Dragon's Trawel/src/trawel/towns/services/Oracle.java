@@ -23,7 +23,7 @@ public class Oracle extends Feature{ //extends feature later
 	public Oracle(String string, int level) {
 		name = string;
 		tier = level;
-		tutorialText = "Oracles can provide guidance.";
+		tutorialText = "Oracle.";
 	}
 
 	public Oracle() {

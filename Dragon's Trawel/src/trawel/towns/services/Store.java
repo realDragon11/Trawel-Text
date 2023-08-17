@@ -50,7 +50,7 @@ public class Store extends Feature{
 
 	private Store() {
 		time = 0;
-		tutorialText = "This is a store. You can buy stuff here.";
+		tutorialText = "Store.";
 		markup= extra.lerp(BASE_MARKUP,BASE_MARKUP*extra.choose(.9f,.95f,1.2f,1.3f,1.5f),extra.randFloat());
 		aetherRate = Player.NORMAL_AETHER_RATE;
 		if (extra.chanceIn(3,4)) {

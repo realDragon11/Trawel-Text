@@ -9,6 +9,7 @@ import trawel.mainGame;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Agent;
+import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.time.TimeContext;
@@ -28,13 +29,14 @@ public class Champion  extends Feature{
 	public Champion(int level){
 		person = RaceFactory.getDueler(level);
 		this.name = person.getName() + " (Level " + person.getLevel()+")" ;
-		tutorialText = "You should probably hold off on fighting champions until you're their level- explore the world and come back later.";
+		tutorialText = "Champion.";
+		//tutorialText = "You should probably hold off on fighting champions until you're their level- explore the world and come back later.";
 		timeElapsed=0;
 	}
 	
 	public Champion(int level,int battleSize, Town t) {
-		
-		tutorialText = "Battleforged champions fought in a pit fight to survive.";
+		tutorialText = "Battleforged Champion.";
+		//tutorialText = "Battleforged champions fought in a pit fight to survive.";
 		timeElapsed=0;/*
 		List<Person> people = new ArrayList<Person>();
 		while(people.size() < battleSize) {
@@ -90,6 +92,9 @@ public class Champion  extends Feature{
 				this.name = person.getName() + " (Level " + person.getLevel()+")" ;
 				extra.println("You lose the bout. Perhaps you should explore other towns to level up before fighting them?");
 				Networking.unlockAchievement("die_to_champion");
+				if (tutorialText == "Champion (Taken Title)") {
+					tutorialText = "Champion.";
+				}
 			}
 		}
 	}
@@ -104,8 +109,10 @@ public class Champion  extends Feature{
 						.findFirst().orElse(null);
 					if (delete != null) {
 						person = delete.getPerson();
+						delete.onlyGoal(AgentGoal.OWN_SOMETHING);
 						this.name = person.getName() + " (Level " + person.getLevel()+")" ;
-						tutorialText = "New champions will emerge if a landed title is empty.";
+						//tutorialText = "New champions will emerge if a landed title is empty.";
+						tutorialText = "Champion (Taken Title)";
 						town.removeOccupant(delete);//MAYBELATER use events?
 					}			
 			}

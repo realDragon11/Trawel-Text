@@ -49,7 +49,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		tier = t.getTier();
 		storename = name;
 		name = _name;
-		tutorialText = "A place to brew potions.";
+		tutorialText = "Witch Hut";
 		town = t;
 		timecounter = 0;
 	}

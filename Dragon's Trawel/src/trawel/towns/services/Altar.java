@@ -26,8 +26,8 @@ public class Altar extends Feature{
 	private static final long serialVersionUID = 1L;
 
 	public Altar() {
-		name = "sky altar";
-		tutorialText = "OwO what's this?";
+		name = "Sky Slab";
+		tutorialText = "Altar";
 	}
 	
 	@Override

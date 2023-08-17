@@ -9,7 +9,7 @@ public class Graveyard extends NodeFeature {
 	public Graveyard(String name,Town t) {
 		this.name = name;
 		town = t;
-		tutorialText = "Graveyards are teeming with undead.";
+		tutorialText = "Graveyard.";
 		generate(40);
 	}
 	

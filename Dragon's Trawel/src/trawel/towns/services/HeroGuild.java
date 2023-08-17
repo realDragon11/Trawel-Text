@@ -25,7 +25,7 @@ public class HeroGuild extends Feature {
 
 	public HeroGuild(String name){
 		this.name = name;
-		tutorialText = "The heroes guild allows you to spend your fame on knowledge.";
+		tutorialText = "Hero's Guild.";
 	}
 	
 	@Override

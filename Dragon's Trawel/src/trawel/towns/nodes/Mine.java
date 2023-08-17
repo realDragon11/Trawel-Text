@@ -14,7 +14,7 @@ public class Mine extends NodeFeature {
 	public Mine(String name,Town t, SuperPerson owner,Shape s) {
 		this.name = name;
 		town = t;
-		tutorialText = "Mines have minerals for you to make profit off of.";
+		tutorialText = "Mine.";
 		this.owner = owner;
 		shape = s;
 		generate(50);
