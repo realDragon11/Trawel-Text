@@ -397,8 +397,8 @@ public class Docks extends Feature {
 	}
 	
 	private List<Person> popDrudger() {
-		if (old_defenders.size() > 0) {
-			return old_defenders.remove(0).getSelfOrAllies();
+		if (old_attackers.size() > 0) {
+			return old_attackers.remove(0).getSelfOrAllies();
 		}
 		Person stock = RaceFactory.makeDrudgerStock(tier-1);
 		stock.setFlag(PersonFlag.IS_MOOK,true);
@@ -406,8 +406,8 @@ public class Docks extends Feature {
 	}
 	
 	private List<Person> makeDrudgerLeader() {
-		if (old_defenders.size() > 0) {
-			Person p = old_defenders.remove(0);
+		if (old_attackers.size() > 0) {
+			Person p = old_attackers.remove(0);
 			p.setFlag(PersonFlag.IS_MOOK, false);
 			p.setArch(Archetype.PROMOTED);
 			return p.getSelfOrAllies();
@@ -543,6 +543,7 @@ public class Docks extends Feature {
 			if (!townOwned) {//reclaimed
 				townOwned = true;
 			}//else just defended
+			assert leader == null || leader.isPersonable();
 		}else {//drudger victory
 			List<Person> alive = c.getNonSummonSurvivors();
 			Person wleader = alive.stream()
@@ -567,7 +568,7 @@ public class Docks extends Feature {
 					
 				}
 			}
-			
+			assert leader == null || !leader.isPersonable();
 		}
 		/*
 		assert Combat.hasNonNullBag(old_defenders);

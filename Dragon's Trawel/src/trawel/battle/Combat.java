@@ -530,7 +530,7 @@ public class Combat {
 		}
 		
 		if (tempList.size() == 0) {//no survivors, last actor wins
-			//FIXME: fails on summons
+			//MAYBELATER: undesirable behavior on summons
 			tempList.add(quickest);
 			killList.remove(quickest);
 		}else {
@@ -541,7 +541,7 @@ public class Combat {
 		
 		for (int i = 0; i < sides;i++) {
 			if (inSides.get(i).contains(quickest)) {
-				winSide  = i;
+				winSide = i;
 				break;
 			}
 		}
