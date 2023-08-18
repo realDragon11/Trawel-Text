@@ -653,11 +653,16 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public int getOOB_HP() {
 		int total = getBase_HP();
 		if (this.hasSkill(Skill.LIFE_MAGE)) {
-			total+=this.getClarity();
+			total+=this.getClarity()/20;
 		}
 		total*=bag.getHealth();
 		if (this.hasEffect(Effect.CURSE)) {
-			total/=2;
+			if (hasSkill(Skill.TOXIC_BREWS)) {
+				total*=.8f;
+			}else {
+				total/=2;
+			}
+			
 		}
 		return total;
 	}

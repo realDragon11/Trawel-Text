@@ -85,6 +85,7 @@ public class Potion implements java.io.Serializable{
 					}else {
 						extra.println(p.getName() + " is suddenly covered with intense lacerations!");
 					}
+					p.addEffect(Effect.BLEED);//also need to inflict normal bleed
 					break;
 				default:
 					uncork(p,personal);

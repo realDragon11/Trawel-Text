@@ -14,9 +14,6 @@ public enum Skill{
 		
 		COUNTER("Counter","Attack slightly sooner after you are attacked.",true,Type.FIGHTER,3,""),
 		
-		BERSERKER("Berserker","Remove examine from possible attacks you can make.",true,Type.FIGHTER,4,""),
-		
-		
 		WAIT("Wait","Allows you to wait for a better opportunity.",false,Type.FIGHTER,5,""),
 		//LAST_STAND("Last Stand","When reduced to 0 hp or lower, stay alive at 1 hp.",Type.FIGHTER,3),
 		
@@ -44,10 +41,8 @@ public enum Skill{
 		SHOPSENSE("Shop Sense","Tell if towns have at least one shop.",false,Type.EXPLORER,3,""),
 		ARENASENSE("Arena Sense","Tell if towns have at least one arena.",false,Type.EXPLORER,3,""),
 		
-		
-		//move to esoteric art- Arcanist
 		MAGE_TRAINING("Mage Training","Unlock your inner magic potential.",true,Type.MAGE,1,""),
-		LIFE_MAGE("Life Mage","Unlock healing magic spells.",true,Type.MAGE,1,""),//good for out of combat
+		LIFE_MAGE("Life Mage","+5% clarity as MHP.",true,Type.MAGE,1,""),//good for out of combat
 		MONEY_MAGE("Money Mage","Generate money slowly.",false,Type.MAGE,1,""),//good for out of combat
 		
 		ELEMENTAL_MAGE("Elemental Mage","Unlock elemental magic spells.",false,Type.MAGE,2,""),
@@ -94,7 +89,7 @@ public enum Skill{
 				,"Adds one attack option per turn, which is based on strength and dexterity, TODO."//TODO
 				,Type.ATTACK_TYPE),
 		BLITZ("Blitz","You actions take 3 less instants to complete than expected."
-				,"Does not allow you to act sooner in order- but does impact how much time passes when you do get to act."
+				,"Does not allow you to act sooner in order- but does change how much time passes when you do get to act."
 				,Type.SPEED),
 		SPEEDDODGE("Speed Dodge","Attack 10 instants sooner after you dodge."
 				,"Applies to each dodge. Does not apply to misses."
@@ -105,10 +100,10 @@ public enum Skill{
 		P_BREWER("Brewer","Your created potions can be sipped two more times before running out."
 				,"Stacks with normal filler ingredients."
 				,Type.CRAFT),
-		TOXIC_BREWS("Toxic Brews","When drinking a cursed potion, gain up to 3 random minor positive potion effects. Your created potions can be sipped one more time."
+		TOXIC_BREWS("Toxic Brews","When drinking a cursed potion, gain up to 3 random minor positive potion effects. Curse reduces MHP by 20% instead of 50%. Your created potions can be sipped one more time."
 				,"Stacks with normal filler ingredients."
 				,Type.CRAFT),
-		CURSE_MAGE("Curse Whisperer","Those who kill them are cursed, and start battles with less hp until cured."
+		CURSE_MAGE("Curse Whisperer","Those who kill them are cursed, and start battles with half base MHP until cured."
 				,"Cure at a Shaman or Doctor. Lasts between battles."
 				, Type.OTHER),
 		KILLHEAL("Vampiric Spirit","Gain 5% dead LHP on a kill."
@@ -117,7 +112,7 @@ public enum Skill{
 		SPUNCH("Sucker Punch","Your impactful attacks slow down your target's next action by 2% of their total time."
 				,extra.IMPACT_TIP
 				,Type.OFFENSE),
-		DSTRIKE("Decisive Strike","Instantly kill anyone you damage by more than 70% of their max HP in one blow."
+		DSTRIKE("Decisive Strike","Instantly kill anyone you damage by more than 70% of their MHP in one blow."
 				,"Max HP is closely aligned to how much HP they start with, but can go higher. Must be part of an 'Impactful' action."
 				,Type.OFFENSE),
 		BLOODTHIRSTY("Bloodthirsty","Heal HP equal to the lower of 1% your LHP and their LHP every time you make an impactful attack."
@@ -139,7 +134,7 @@ public enum Skill{
 				,"Use the skill attack config creator in the skills menu to select a source to stance your attacks from."
 				,Type.ATTACK_TYPE),
 		MAGE_FRUGAL("Frugal Mage","Grants you a better deal of Aether to Currency conversions in shops, starting at +10%.",
-				"For every 10 clarity past 100, get +10% more. No penalty for sub 100 clarity."
+				"For every 1 clarity past 100, get +1% more. No penalty for sub 100 clarity."
 				,Type.SOCIAL),
 		OPENING_MOVE("Opening Move","Grants two bonus weapon attack choices at the start of every battle.",
 				"You can have a max of 5 weapon attack choices at a time, stacks will only be consumed if they add attacks."
@@ -150,8 +145,8 @@ public enum Skill{
 		PRESS_ADV("Press the Advantage","Grants two stacks of Advantage after each kill."
 				,"Advantage applies a +20% bonus to the first hit/dodge roll this Person makes, one stack per attack."
 				,Type.SPEED),
-		BLOODDRINKER("Blood Drinker","Those who attack you while bleeding heal you equal to their bleed damage."
-				,"Stacks with other sources of bleed healing"
+		BLOODDRINKER("Blood Drinker","Those who attack you while bleeding give you HP equal to half their bleed damage."
+				,"Stacks with other sources of bleed healing. Not capped by your MHP."
 				,Type.DEFENSE),
 		NIGHTVISION("Nightvision","Lets you see objects in the dark."
 				,"Helps determine things in Graveyards."
