@@ -15,6 +15,7 @@ import trawel.randomLists;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
+import trawel.personal.RaceFactory.RaceID;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.DrawBane;
@@ -102,6 +103,7 @@ public class GraveyardNode implements NodeType{
 			break;
 		case 3: 
 			int startBLevel = holder.getLevel(madeNode);
+			/*
 			int batLevel = startBLevel;
 			int batAmount = 2;
 			while (batAmount < 7) {
@@ -117,20 +119,33 @@ public class GraveyardNode implements NodeType{
 			List<Person> list = new ArrayList<Person>();
 			for (int i = 0;i < batAmount;i++) {
 				list.add(RaceFactory.makeSwarmBat(batLevel));
-			}
-			holder.setStorage(madeNode,list);
+			}*/
+			holder.setStorage(madeNode,RaceFactory.makeGroupOrDefault(startBLevel,3, 8,
+					RaceFactory.getMakerForID(RaceID.B_SWARMBAT), RaceFactory.getMakerForID(RaceID.B_BAT)));
 			holder.setForceGo(madeNode, true);
 			holder.setStateNum(madeNode,10);//smallest allowed state
 		;break;
 		case 4:
-			List<Person> vampBats = new ArrayList<Person>();
+			int level = holder.getLevel(madeNode);
+			float spare = 0;
+			if (level > 4) {
+				//vamp = base level, bats = 1.5f
+				spare = 1.5f;
+			}else {
+				spare = 1;
+				//vamp = base level, bats = 1
+			}
+			Person vamp = RaceFactory.makeVampire(level);
+			List<Person> vampBats = RaceFactory.wrapMakeGroupForLeader(vamp,
+					RaceFactory.getMakerForID(RaceID.B_SWARMBAT),spare, 1, 4);
+			/*new ArrayList<Person>();
 			vampBats.add(RaceFactory.makeVampire(holder.getLevel(madeNode)));
 			int vLevel = holder.getLevel(madeNode);
 			int bLevel = vLevel-1;
 			while (bLevel > 1) {
 				vampBats.add(RaceFactory.makeBat(bLevel));
 				bLevel/=2;
-			}
+			}*/
 			holder.setStorage(madeNode, vampBats);
 			holder.setStateNum(madeNode, STATE_SHADOW_FIGURE);
 			;break;

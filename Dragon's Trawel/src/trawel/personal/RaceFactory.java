@@ -1,7 +1,9 @@
 package trawel.personal;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.HashMap;
 
 import trawel.Effect;
@@ -32,6 +34,7 @@ public class RaceFactory {
 	public static Race misc = new Race(RaceID.EMPTY);
 	public static List<Race> raceList = new ArrayList<Race>();
 	public static Map<String,Race> raceMap = new HashMap<String,Race>();
+	private static Map<RaceID,PersonMaker> mookMakerIDMap = new EnumMap<RaceID,PersonMaker>(RaceID.class);
 	
 	public static float audioSteps(int steps) {
 		/*if (steps < 0) {
@@ -676,15 +679,14 @@ public class RaceFactory {
 		misc.raceClass = RaceClass.UNDONE_BEAST;
 		raceList.add(misc);
 		
-		misc = new Race(RaceID.B_SWARMBAT);
+		misc = new Race(RaceID.B_SWARMBAT);//1/4th level power is the goal for this worth
 		misc.swears.add("bat");
 		misc.swears.add("flying rat");
 		misc.aimMod = 1;
-		misc.damMod = .3;
+		misc.damMod = .2;
 		misc.dodgeMod = 1.4;
-		misc.hpMod = .3;
+		misc.hpMod = .15;
 		misc.speedMod = 1.1;
-		misc.tradeMod = 1;
 		misc.rarity = 1;
 		misc.insultList.add("Die, you bat!");
 		misc.insultList.add("Die, bat!");
@@ -692,8 +694,6 @@ public class RaceFactory {
 		misc.insultList.add("Die, rat!");
 		misc.baseMap = "bat";
 		misc.raceMaps.add("0");
-		misc.magicPower = 0;
-		misc.defPower = 0;
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.FLY;
 		misc.emitsBlood = true;
@@ -823,6 +823,29 @@ public class RaceFactory {
 		for (Race r: raceList) {
 			raceMap.put(r.raceID().name(), r);
 		}
+		
+		mookMakerIDMap.put(RaceID.B_SWARMBAT, new PersonMaker() {
+
+			@Override
+			public Person make(int level) {
+				return makeSwarmBat(level);
+			}
+
+			@Override
+			public float worth() {
+				return .25f;
+			}});
+		mookMakerIDMap.put(RaceID.B_BAT, new PersonMaker() {
+
+			@Override
+			public Person make(int level) {
+				return RaceFactory.makeBat(level);
+			}
+
+			@Override
+			public float worth() {
+				return 1;
+			}});
 		
 	}
 	
@@ -1573,7 +1596,52 @@ public class RaceFactory {
 		p.getBag().setLocalGold(p.getBag().getLocalGold()+gold);
 		return gold;
 	}
-
 	
+	public static List<Person> fillForLeaderLevelAtLevel(float base_level, float leaderWorth,int minMooks, int maxMooks, float mookWorthMult,PersonMaker mookMaker){
+		float levelLeft = base_level-leaderWorth;
+		int minNumLevel = (int) (levelLeft/(mookWorthMult*minMooks)); 
+		if (minNumLevel < 1) {//if we can't allocate enough level to make the min number
+			return null;
+		}
+		int maxNumLevel = (int) Math.max(1,levelLeft/(mookWorthMult*maxMooks));//don't let us make so many mooks they fall under the threshold
+		int levelRoll = extra.randRange(minNumLevel,maxNumLevel);
+		//now we need to round the level roll to the nearest mook amount that fits it
+		int amount = Math.round((mookWorthMult*levelRoll)/levelLeft);
+		levelRoll = (int) (levelLeft/(mookWorthMult*amount));
+		List<Person> people = new ArrayList<Person>();
+		for (int i =0; i < amount;i++) {
+			Person p = mookMaker.make(levelRoll);
+			p.setFlag(PersonFlag.IS_MOOK,true);
+			people.add(p);
+		}
+		return people;
+	}
+	
+	public static interface PersonMaker{
+		Person make(int level);
+		float worth();
+	}
+	
+	public static List<Person> wrapMakeGroupForLeader(Person leader,PersonMaker mookMaker,float remainingPower,int minMooks,int maxMooks){
+		List<Person> people = fillForLeaderLevelAtLevel(remainingPower,0,minMooks,maxMooks,mookMaker.worth(),mookMaker);
+		if (people == null) {
+			people = new ArrayList<Person>();
+		}
+		people.add(leader);
+		return people;
+	}
+	
+	public static List<Person> makeGroupOrDefault(float power, int minMooks, int maxMooks, PersonMaker mookMaker, PersonMaker elseDefault){
+		List<Person> people = fillForLeaderLevelAtLevel(power,0,minMooks,maxMooks,mookMaker.worth(),mookMaker);
+		if (people == null) {
+			people = new ArrayList<Person>();
+			people.add(elseDefault.make(Math.round(power)));
+		}
+		return people;
+	}
+	
+	public static PersonMaker getMakerForID(RaceID id) {
+		return mookMakerIDMap.get(id);
+	}
 	
 }
