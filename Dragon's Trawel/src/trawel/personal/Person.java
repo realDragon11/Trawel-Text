@@ -406,6 +406,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				pickFeatRandom();
 				updateSkills();
 				autoLeveled = true;
+				if (superperson != null && !isPlayer()) {
+					superperson.fillSkillConfigs();
+				}
 			}else {
 				while (featPoints > 0) {//autoleveling doesn't consume picks
 					IHasSkills gain = pickFeatRandom();
@@ -417,6 +420,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				}
 				updateSkills();
 				autoLeveled = true;
+				if (superperson != null && !isPlayer()) {
+					superperson.fillSkillConfigs();
+				}
 			}
 		}
 		return autoLeveled;

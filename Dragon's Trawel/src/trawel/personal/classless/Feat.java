@@ -11,42 +11,51 @@ import trawel.extra;
 import trawel.personal.classless.Skill.Type;
 
 public enum Feat implements IHasSkills{
-	NOT_PICKY("Not-Picky","Grants 2 additional feat picks. (Picks don't give you more feats, just more times to choose.)",""
+	/*
+	 * how many attributes should be granted with each on average:
+	 * 3 normal skills ~= 5
+	 * 2 normal skills ~= 15
+	 * 1 normal skills ~= 30
+	 * 0 normal skills = unique, but 30-45?
+	 */
+	
+	
+	NOT_PICKY("Conditioning","Grants attributes and 2 additional feat picks.","Picks don't give you more feats, just more times to choose."
 			,1f,EnumSet.of(FeatType.COMMON),null
-			,EnumSet.noneOf(Skill.class),5,5,5//should grant a low level in every stat
+			,EnumSet.noneOf(Skill.class),15,15,15//should grant a decent amount of every stat
 			,null,null),
 	COMMON_TOUGH("Tough","They're tougher than they look. And they look tough.","",
-			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS),2,0,0),
+			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS),15,0,0),
 	WITCHY("Witchy","Curses and potions are their forte.","",// Washy
 			1f,EnumSet.of(FeatType.POTIONS,FeatType.CURSES),null
-			,EnumSet.of(Skill.CURSE_MAGE,Skill.P_BREWER),0,1,4
+			,EnumSet.of(Skill.CURSE_MAGE,Skill.P_BREWER),0,5,10
 			,null,null)
 	,HEMOVORE("Hemovore","Extracts life energy from fleeting mortality.","",
 			1f,EnumSet.of(FeatType.MYSTIC),EnumSet.of(FeatType.CURSES,FeatType.BATTLE,FeatType.POTIONS)
-			,EnumSet.of(Skill.BLOODTHIRSTY,Skill.KILLHEAL,Skill.BLOODDRINKER),0,0,5
+			,EnumSet.of(Skill.BLOODTHIRSTY,Skill.KILLHEAL,Skill.BLOODDRINKER),3,2,10
 			//needs at least one of the things it grants from some other source
 			,null,EnumSet.of(Skill.BLOODTHIRSTY,Skill.KILLHEAL,Skill.BLOODDRINKER))
 	,UNBREAKABLE("Unbreakable","Beaten, battered, bent, even broken- their spirit may be checked, but it can not be kept down."
 			,"They may be beaten, battered, bent, even broken. But their spirit burns with an unquenchable flame. They'll be back.",
 			1f,null,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)
-			,EnumSet.of(Skill.TA_NAILS,Skill.STERN_STUFF),4,0,0
+			,EnumSet.of(Skill.NO_HOSTILE_CURSE,Skill.STERN_STUFF),10,0,5
 			,null,null)
 	,UNDERHANDED("Underhanded","They'll do anything and everything to win.",""
 			,1f,EnumSet.of(FeatType.TRICKS),null
-			,EnumSet.of(Skill.SPUNCH),0,10,0
+			,EnumSet.of(Skill.SPUNCH),0,20,10
 			,null,null)
 	,ARMORPAINTER("Painter","They paint their armor with magical dyes.",""
 			,1f,EnumSet.of(FeatType.MYSTIC),EnumSet.of(FeatType.SMITHS,FeatType.TRICKS)
-			,EnumSet.of(Skill.MESMER_ARMOR,Skill.ARMOR_MAGE),0,0,5
+			,EnumSet.of(Skill.MESMER_ARMOR,Skill.ARMOR_MAGE),2,3,10
 			,null,null)
 	,AMBUSHER("Ambusher","They know how to start a fight.",""
 			,1f,null,EnumSet.of(FeatType.BATTLE,FeatType.TRICKS)
-			,EnumSet.of(Skill.OPENING_MOVE,Skill.QUICK_START),0,5,0
+			,EnumSet.of(Skill.OPENING_MOVE,Skill.QUICK_START),0,5,10
 			,null,null
 			)
 	,ACROBAT("Acrobat","To them, a battle is a playful dance, just with higher stakes.",""
 			,1f,EnumSet.of(FeatType.AGILITY),EnumSet.of(FeatType.TRICKS,FeatType.SPIRIT)
-			,EnumSet.of(Skill.REACTIVE_DODGE,Skill.SPEEDDODGE),0,5,0
+			,EnumSet.of(Skill.REACTIVE_DODGE,Skill.SPEEDDODGE),0,15,0
 			,null,null
 			)
 	
@@ -65,9 +74,9 @@ public enum Feat implements IHasSkills{
 			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_AERO,Skill.SPUNCH,Skill.ARCANIST),0,1,4
 			,EnumSet.of(Skill.ARCANIST),null
 			)
-	,ARCHMAGE("Archmage","Weaving spells has become as easy as breathing.","Grants no spells, but gives another slot."
+	,ARCHMAGE("Archmage","Weaving spells has become as easy as breathing.","Grants no spells, but gives another skill config slot."
 			,4f,null,null//high weight
-			,EnumSet.of(Skill.ARCANIST_2),0,0,10
+			,EnumSet.of(Skill.ARCANIST_2),0,0,25//less increase than normal
 			,EnumSet.of(Skill.ARCANIST,Skill.ELEMENTALIST),null
 			)
 	;
@@ -191,7 +200,7 @@ public enum Feat implements IHasSkills{
 	
 	@Override
 	public String getOwnText() {
-		return name + ": "+desc;
+		return name + ": "+desc + (getDesc != "" ? "("+getDesc+")" : "");
 	}
 	@Override
 	public int getStrength() {

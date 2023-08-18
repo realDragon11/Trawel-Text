@@ -190,6 +190,9 @@ public enum Skill{
 		CONDEMN_SOUL("Condemner","Curses those they kill, forcing them start battles with half base MHP until cured."
 				,"Cure at a Shaman or Doctor. Lasts between battles."
 				, Type.OTHER),
+		NO_HOSTILE_CURSE("Indomitable Spirit","Immune to the CURSE status by hostile Persons."
+				,"Does not apply to self-inflicted curses or outside of battle."
+				,Type.SOCIAL)
 		
 		
 		;
@@ -268,7 +271,7 @@ public enum Skill{
 
 				@Override
 				public String title() {
-					return " " + name + ": " + desc + " ("+longDesc+")";
+					return " " + name + ": " + desc+ (longDesc != "" ? "("+longDesc+")" : "");
 				}};
 			
 		}

@@ -1689,6 +1689,7 @@ public class mainGame {
 			assert player.getPerson().getFeatPoints() > 0;
 			if (!rerolls) {//autopick first archetype for quickstart?
 				player.getPerson().pickFeatRandom();
+				player.fillSkillConfigs();//fill any skill configs
 			}else {
 				Archetype.menuChooseFirstArchetype(manOne);
 			}

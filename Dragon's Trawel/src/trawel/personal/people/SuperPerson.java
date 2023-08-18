@@ -588,4 +588,23 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 			moneys.set(index,0);
 		}
 	}
+	
+
+	public void fillSkillConfigs() {
+		if (attConfs == null) {
+			attConfs = new SkillAttackConf[6];
+		}
+		sAttCount = 0;
+		for (int i = 0; i < 6;i++) {
+			attConfs[i] = null;
+		}
+		//needs sequential stream
+		getPerson().fetchSkills().stream().filter(s -> s.getType() == Type.ATTACK_TYPE).limit(6).forEach(this::addSkillConfig);
+	}
+	
+	protected void addSkillConfig(Skill skill) {
+		List<IHasSkills> base = WeaponAttackFactory.getSources(skill);
+		attConfs[sAttCount] = new SkillAttackConf(skill,extra.randList(base),null);
+		sAttCount++;
+	}
 }

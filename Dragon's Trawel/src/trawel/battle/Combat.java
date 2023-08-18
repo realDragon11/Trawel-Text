@@ -623,16 +623,28 @@ public class Combat {
 			return;
 		}
 		if (dead.hasSkill(Skill.CURSE_MAGE)) {
-			if (!extra.getPrint()) {
-				extra.println(dead.getName() + " curses the name of " +killer.getNameNoTitle()+"!");
+			if (killer.hasSkill(Skill.NO_HOSTILE_CURSE)) {
+				if (!extra.getPrint()) {
+					extra.println(dead.getName() + " curses the name of " +killer.getNameNoTitle()+", but they seem unaffected.");
+				}
+			}else {
+				if (!extra.getPrint()) {
+					extra.println(dead.getName() + " curses the name of " +killer.getNameNoTitle()+"!");
+				}
+				killer.addEffect(Effect.CURSE);
 			}
-			killer.addEffect(Effect.CURSE);
 		}
 		if (killer.hasSkill(Skill.CONDEMN_SOUL)) {
-			if (!extra.getPrint()) {
-				extra.println(killer.getName() + " condemns the soul of " +dead.getNameNoTitle()+"!");
+			if (dead.hasSkill(Skill.NO_HOSTILE_CURSE)) {
+				if (!extra.getPrint()) {
+					extra.println(killer.getName() + " condemns the soul of " +dead.getNameNoTitle()+", but they seem unaffected.");
+				}
+			}else {
+				if (!extra.getPrint()) {
+					extra.println(killer.getName() + " condemns the soul of " +dead.getNameNoTitle()+"!");
+				}
+				dead.addEffect(Effect.CURSE);
 			}
-			dead.addEffect(Effect.CURSE);
 		}
 		
 		killer.addKillStuff();

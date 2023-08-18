@@ -79,7 +79,7 @@ public enum Archetype implements IHasSkills{
 			,AType.RACIAL
 			,EnumSet.of(AGroup.DIRECT_BATTLE)
 			,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)
-			,EnumSet.of(Skill.TA_NAILS,Skill.STERN_STUFF, Skill.PLOT_ARMOR)
+			,EnumSet.of(Skill.TA_NAILS,Skill.STERN_STUFF, Skill.PLOT_ARMOR,Skill.NO_HOSTILE_CURSE)
 			)
 	;
 	

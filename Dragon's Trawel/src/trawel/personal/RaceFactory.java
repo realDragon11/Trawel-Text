@@ -24,6 +24,8 @@ import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponType;
 import trawel.personal.item.solid.variants.ArmorStyle;
+import trawel.personal.people.Agent;
+import trawel.personal.people.Agent.AgentGoal;
 
 public class RaceFactory {
 	public static Race misc = new Race(RaceID.EMPTY);
@@ -985,7 +987,9 @@ public class RaceFactory {
 		extra.popPrintStack();
 		w.hTask = HostileTask.DUEL;
 		w.setArch(Archetype.HEDGE_MAGE);
+		Agent a = new Agent(w);//is assigned in the agent code, required for archetype skill configs
 		w.finishGeneration();
+		//a.fillSkillConfigs(); included in finish generation, just need to make an agent for it
 		return w;
 	}
 	public static Person makeEnt(int level) {
@@ -1163,6 +1167,7 @@ public class RaceFactory {
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
 		w.setPersonType(PersonType.DRUDGER_GENERIC);
 		w.liteSetSkillHas(Archetype.FISH_MONSOON);
+		Agent a = new Agent(w);//is assigned in the agent code, required for archetype skill configs
 		w.addFeatPoint(level/2);//bonus feat points for magic
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("rusty iron"),WeaponType.NULL_WAND));//not a weapon
 		w.getBag().swapArmorSlot(new Armor(level,(byte)0,ArmorStyle.GEM.getMatFor(),ArmorStyle.GEM),0);//gem helmet for some reason
@@ -1306,6 +1311,7 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = new Person(level);
 		w.hTask = HostileTask.BOSS;
+		Agent a = new Agent(w,AgentGoal.OWN_SOMETHING);//should have an agent
 		extra.popPrintStack();
 		return w;
 	}
