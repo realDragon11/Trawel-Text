@@ -1654,14 +1654,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		return effects.getOrDefault(e, 0) > 0;
 	}
 	
-	/** REMOVED because hasEffect with a map is fast and iteration is slow now
-	 * should only be used to iterate over the effects, instead of calling
-	 * hasEffect repeatedly.
-	 *
-	public List<Effect> getEffects() {
-		return effects;
-	}*/
-	
 	public void clearBattleEffects() {
 		//only goes over keyset because those are the ones it bothered to add
 		for (Effect e: effects.keySet()) {

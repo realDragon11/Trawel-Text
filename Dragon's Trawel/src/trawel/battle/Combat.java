@@ -618,16 +618,21 @@ public class Combat {
 	 */
 	private void killData(Person dead, Person killer) {
 		dead.addDeath();
-		if (killer != null && dead.hasSkill(Skill.CURSE_MAGE)) {
+		
+		if (killer == null) {
+			return;
+		}
+		if (dead.hasSkill(Skill.CURSE_MAGE)) {
 			if (!extra.getPrint()) {
 				extra.println(dead.getName() + " curses the name of " +killer.getNameNoTitle()+"!");
 			}
 			killer.addEffect(Effect.CURSE);
 		}
-		//can insert a null check here later if need be
-		//DOLATER: need null for starting bleeding, but for now null exceptions are needed
-		if (killer == null) {
-			return;
+		if (killer.hasSkill(Skill.CONDEMN_SOUL)) {
+			if (!extra.getPrint()) {
+				extra.println(killer.getName() + " condemns the soul of " +dead.getNameNoTitle()+"!");
+			}
+			dead.addEffect(Effect.CURSE);
 		}
 		
 		killer.addKillStuff();

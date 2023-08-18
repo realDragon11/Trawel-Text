@@ -156,13 +156,8 @@ public class World extends TContextOwner{
 	
 	public void addDeathCheater(Person p) {
 		p.getBag().regenNullEquips(p.getLevel());
-		Agent sp = (Agent)p.getSuper();
-		if (sp == null) {
-			sp = new Agent(p,AgentGoal.DEATHCHEAT);
-		}else {
-			sp.onlyGoal(AgentGoal.DEATHCHEAT);
-		}
-		
+		p.cureEffects();
+		Agent sp = p.setOrMakeAgentGoal(AgentGoal.DEATHCHEAT);
 		reoccuring.add(sp);
 	}
 

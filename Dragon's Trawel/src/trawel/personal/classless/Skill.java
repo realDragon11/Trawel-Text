@@ -154,7 +154,7 @@ public enum Skill{
 		NPC_BURN_ARMOR("Flaming Strikes","Burns armor with every Impactful attack."
 				,"Attacks damage armor twice as much as percent HP damage."
 				,Type.FEATURE),
-		PLOT_ARMOR("Fated","Confused targets have a reduced chance to attack this Person."
+		PLOT_ARMOR("Plot Armor","Confused targets have a reduced chance to attack this Person."
 				,"Does not apply Confusion on its own."
 				,Type.DEFENSE),
 		ELEMENTALIST("Elementalist","Skill attacks deal +10% Ignite, Frost, and Elec damage."
@@ -187,6 +187,9 @@ public enum Skill{
 		ARCANIST_2("Multi-Magical","Grants another Arcanist skill attack configuration."
 				,""
 				,Type.ATTACK_TYPE, Skill.ARCANIST),
+		CONDEMN_SOUL("Condemner","Curses those they kill, forcing them start battles with half base MHP until cured."
+				,"Cure at a Shaman or Doctor. Lasts between battles."
+				, Type.OTHER),
 		
 		
 		;
