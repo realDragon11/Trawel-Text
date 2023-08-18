@@ -26,6 +26,7 @@ import trawel.personal.DummyPerson;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.Person.PersonFlag;
+import trawel.personal.Person.PersonType;
 import trawel.personal.RaceFactory.RaceID;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.Skill;
@@ -1016,11 +1017,12 @@ public class Combat {
 			defender.addEffect(Effect.I_BLEED);
 			attacker.addEffect(Effect.I_BLEED);
 		}
-		if (!extra.getPrint() && mainGame.displayFlavorText && attacker.getBag().getRace().racialType != Race.RaceType.BEAST && extra.chanceIn(1,4)) {
+		if (!extra.getPrint() && mainGame.displayFlavorText && attacker.getPersonType() != PersonType.NO_SPEAK && extra.chanceIn(1,4)) {
 			if (extra.chanceIn(1,3)) {
 					BarkManager.getBoast(attacker,true);//extra.println(attacker.getName() + " "+extra.choose("shouts","screams","boasts")+ " \"" + attacker.getTaunts().getBoast()+"\"");		
 			}else {
-				if (((attacker.isAngry() && defender.getBag().getRace().racialType == RaceType.BEAST) || (attacker.isRacist() && !attacker.getBag().getRace().equals(defender.getBag().getRace()))) && extra.chanceIn(1,3)) 
+				if (attacker.isPersonable() && //must but fully personable to be racist for now
+						((attacker.isAngry() && defender.getBag().getRace().racialType == RaceType.BEAST) || (attacker.isRacist() && !attacker.getBag().getRace().equals(defender.getBag().getRace()))) && extra.chanceIn(1,3)) 
 				{
 					extra.println(attacker.getName() + " "+extra.choose("shouts","screams","taunts")+ " \"" +defender.getBag().getRace().randomInsult()+"\"");
 				}else {

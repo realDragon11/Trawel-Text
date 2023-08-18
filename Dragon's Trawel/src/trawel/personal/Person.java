@@ -153,7 +153,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	
 	
 	public enum PersonType{
-		COWARDLY,FEARLESS,GRIZZLED,DEATHCHEATED,LIFEKEEPER
+		NO_SPEAK,
+		COWARDLY,FEARLESS,GRIZZLED,DEATHCHEATED,LIFEKEEPER,
+		DRUDGER_GENERIC, FELL_MONSTER, HARPY_GENERIC
 	}
 	public final static Set<PersonType> RAND_PERSON_TYPES = EnumSet.of(
 			PersonType.COWARDLY,PersonType.FEARLESS
@@ -203,6 +205,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				break;
 			}
 		}else {
+			personType = PersonType.NO_SPEAK;
 			switch (race.targetType) {
 			case C_REAVER: case S_REAVER:
 				bodyType = TypeBody.REAVER;

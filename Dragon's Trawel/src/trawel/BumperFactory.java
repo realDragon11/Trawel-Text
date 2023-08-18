@@ -217,19 +217,33 @@ public class BumperFactory {
 				@Override
 				public void activate(int level) {
 					List<Person> list = new ArrayList<Person>();
-					int count = 5;//extra.randRange(4,5);
-					for (int i = 0;i < count;i++) {
-						list.add(RaceFactory.makeHarpy(extra.zeroOut(level-4)+1));}
-					extra.println(extra.PRE_RED+"A flock of harpies attack!");
-					Combat c = Player.player.massFightWith(list);
-					if (c.playerWon() > 0) {
-						Player.player.questTrigger(TriggerType.CLEANSE,"harpy", count);
+					int count = extra.randRange(2, 4);
+					int addLevel = RaceFactory.addAdjustLevel(level, count-1);
+					if (addLevel > 0) {
+						for (int i = 0;i < count;i++) {
+							list.add(RaceFactory.makeHarpy(addLevel));
+						}
+						extra.println(extra.PRE_BATTLE+"A flock of harpies attack!");
+						Combat c = Player.player.massFightWith(list);
+						if (c.playerWon() > 0) {
+							Player.player.questTrigger(TriggerType.CLEANSE,"harpy", count);
+						}
+					}else {
+						Person p = RaceFactory.makeHarpy(level);
+						extra.println(extra.PRE_BATTLE+"A harpy nestmother attacks!");
+						Combat c = Player.player.fightWith(p);
+						if (c.playerWon() > 0) {
+							Player.player.questTrigger(TriggerType.CLEANSE,"harpy", 1);
+						}else {
+							Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
+						}
 					}
+					
 					
 				}};
 			b.responses.add(new Response(DrawBane.MEAT,1.25));
-			b.responses.add(new Response(DrawBane.SILVER,1.25));
-			b.responses.add(new Response(DrawBane.GOLD,1.25));
+			b.responses.add(new Response(DrawBane.SILVER,1.4));
+			b.responses.add(new Response(DrawBane.GOLD,1.4));
 			b.responses.add(new Response(DrawBane.REPEL,-1));
 			b.minAreaLevel = 6;
 			bumperList.add(b);

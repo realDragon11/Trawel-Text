@@ -66,6 +66,19 @@ public class BarkManager {
 					}
 			}
 			break;
+		case DRUDGER_GENERIC:
+			extra.println(drudgerTaunt(p));
+			break;
+		case FELL_MONSTER:
+			extra.println(fellTaunt(p));
+			break;
+		case HARPY_GENERIC:
+			if (hpPercent > .4 || extra.chanceIn(2,3)) {
+				extra.println(harpyTaunt(p));
+			}else {
+				extra.println(cowardTaunt(p));
+			}
+			break;
 		}
 		
 	}
@@ -89,6 +102,15 @@ public class BarkManager {
 		case LIFEKEEPER:
 			extra.println(lifeKeeperBoast(p));
 			break;
+		case DRUDGER_GENERIC:
+			extra.println(drudgerBoast(p));
+			break;
+		case FELL_MONSTER:
+			extra.println(fellBoast(p));
+			break;
+		case HARPY_GENERIC:
+			extra.println(harpyBoast(p));
+			break;
 		}
 	}
 
@@ -104,8 +126,67 @@ public class BarkManager {
 		list.add("I am death!");
 		list.add("I am become death!");
 		list.add("I am the reaper of souls!");
-		list.add("How many men, have fallen before me!");
+		list.add("How many folk, have fallen before me!");
 		return p.getName() + " " + extra.choose("screams","shouts","boasts")+  " \""+ extra.randList(list) +"\"";
+	}
+	
+	private static String harpyBoast(Person p) {
+		List<String> list = new ArrayList<String>();
+		list.add("So many shiny treasures today!");
+		list.add("What an interesting series of events to ponder...");
+		list.add("This isn't the best haul, but the best in a while!");
+		list.add("Baubles and trinkets, all mine to keep!");
+		return p.getName() + " " + extra.choose("shrills","screeches","ruminates","murmurs")+  " \""+ extra.randList(list) + "\"";
+	}
+	
+	private static String harpyTaunt(Person p) {
+		List<String> list = new ArrayList<String>();
+		list.add("Another corpse to feed the nest!");
+		list.add("I hope you have some really shiny loot!");
+		list.add("Your stuff better not be a waste of my time!");
+		list.add("At least you look like you have some good gear to take!");
+		return p.getName() + " " + extra.choose("shrills","screeches","wails","cries")+  " \""+ extra.randList(list) + "\"";
+	}
+	
+	private static String fellBoast(Person p) {//can't really be used in personable things, but that is fine. For a fully personable fell creature make another list
+		List<String> list = new ArrayList<String>();
+		list.add(" looks around, and their vision falls on a corpse.");
+		list.add(" scans the area menacingly, pondering their next move.");
+		list.add(" lets loose a discordant howl!");
+		list.add(" takes a trophy from the minds of the dead.");
+		return p.getName() + extra.randList(list);
+	}
+	private static String fellTaunt(Person p) {
+		List<String> list = new ArrayList<String>();
+		list.add(" gazes horribly.");
+		list.add(" stares through your bones, your body, into your soul. You feel a chill...");
+		list.add(" is looking at someone else... or are they? You don't quite understand how... that can't be!");
+		list.add(" contorts and you feel an intense sense of wrongness.");
+		list.add(" mocks your fragile sanity silently.");
+		list.add(" knows too much!");
+		list.add(" is something truly evil!");//woh reference, yes
+		return p.getName() + extra.randList(list);
+	}
+	
+	private static String drudgerBoast(Person p) {
+		List<String> list = new ArrayList<String>();
+		list.add("The ocean prevails!");
+		list.add("The sea sees all!");
+		list.add("Our kingdom will not be limited to the sea alone!");
+		list.add("Visions of briny depths spur me onwards in this accursed dry hell, they shall expand here!");
+		list.add("From the depths to the peaks, the ocean owns all!");
+		return p.getName() + " " + extra.choose("gurgles","babbles","bubbles","murmurs","hisses")+  " \""+ extra.randList(list) + "\"";
+	}
+	
+	private static String drudgerTaunt(Person p) {
+		List<String> list = new ArrayList<String>();
+		list.add("The bottom-feeders will love your corpse!");
+		list.add("Your bloated body will make a fine gift to those still at home!");
+		list.add("Landfolk are always so hardy- yet so much easier to kill.");
+		list.add("Ocean claim you!");
+		list.add("Sea swallow you!");
+		list.add("From the the depths I come, to the depths you shall go!");
+		return p.getName() + " " + extra.choose("gurgles","babbles","bubbles","murmurs","hisses")+  " \""+ extra.randList(list) + "\"";
 	}
 	
 	private static String lifeKeeperBoast(Person p) {

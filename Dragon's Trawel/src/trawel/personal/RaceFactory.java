@@ -967,6 +967,7 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_REAVER_TALL, MaterialFactory.getMat("hide"), false);//DOLATER change flesh type
 		w.setFlag(PersonFlag.HAS_WEALTH,true);//unsure if would care
+		w.setPersonType(PersonType.FELL_MONSTER);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("flesh"),WeaponType.REAVER_STANDING));
 		w.setPerk(Perk.RACIAL_SHIFTS);
 		w.setFirstName(randomLists.randomFirstName());
@@ -1066,10 +1067,10 @@ public class RaceFactory {
 	
 	public static Person getFleshGolem(int level) {
 		extra.offPrintStack(); 
-		Person w = Person.animal(level, RaceID.B_FLESH_GOLEM, MaterialFactory.getMat("flesh"), false);
-		//uses a weak armor type
+		Person w = Person.animal(level, RaceID.B_FLESH_GOLEM, MaterialFactory.getMat("hide"), false);
+		//uses hide because it always turns into re-occuring on player loss so we don't need to worry about it being rare and vanishing after a win
 		//cannot get wealth
-		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("flesh"),WeaponType.GENERIC_FISTS));
+		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.GENERIC_FISTS));
 		w.getBag().getDrawBanes().add(DrawBane.BEATING_HEART);
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomFirstName());
@@ -1097,6 +1098,7 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_HARPY, MaterialFactory.getMat("hide"), false);
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
+		w.setPersonType(PersonType.HARPY_GENERIC);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TALONS_GENERIC));
 		if (extra.chanceIn(1,6)) {
 			w.getBag().getDrawBanes().add(DrawBane.MEAT);
@@ -1119,6 +1121,7 @@ public class RaceFactory {
 		Person w = Person.animal(level, RaceID.B_DRUDGER_STOCK, MaterialFactory.getMat("fishscales"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","rusty iron","iron")),WeaponType.FISH_SPEAR));
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
+		w.setPersonType(PersonType.DRUDGER_GENERIC);
 		for (byte i=0;i<5;i++) {
 			if (extra.chanceIn(1,8)) {
 				w.getBag().swapArmorSlot(new Armor(level,i,MaterialFactory.getMat("rusty iron"),null),i);
@@ -1137,6 +1140,7 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_DRUDGER_TITAN, MaterialFactory.getMat("fishscales"), false);
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
+		w.setPersonType(PersonType.DRUDGER_GENERIC);
 		w.liteSetSkillHas(Archetype.FISH_TALL);
 		w.cleanSetSkillHas(Perk.STAND_TALL);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","iron")),WeaponType.FISH_ANCHOR));
@@ -1156,8 +1160,9 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_DRUDGER_STOCK, MaterialFactory.getMat("fishscales"), false);
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
+		w.setPersonType(PersonType.DRUDGER_GENERIC);
 		w.liteSetSkillHas(Archetype.FISH_MONSOON);
-		w.addFeatPoint(level/2);
+		w.addFeatPoint(level/2);//bonus feat points for magic
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("rusty iron"),WeaponType.NULL_WAND));//not a weapon
 		w.getBag().swapArmorSlot(new Armor(level,(byte)0,ArmorStyle.GEM.getMatFor(),ArmorStyle.GEM),0);//gem helmet for some reason
 		for (byte i=1;i<5;i++) {

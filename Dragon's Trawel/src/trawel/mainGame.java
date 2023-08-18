@@ -736,8 +736,8 @@ public class mainGame {
 			new StyleFactory();
 			ArmorStyle.init();
 			new Oracle().load();
-			new TauntsFactory();
-			new BookFactory();
+			//new TauntsFactory();
+			//new BookFactory();
 			new BumperFactory();
 			new WeaponAttackFactory();
 			new TownFlavorFactory();
