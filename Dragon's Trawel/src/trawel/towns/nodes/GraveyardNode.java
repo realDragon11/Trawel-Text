@@ -126,14 +126,22 @@ public class GraveyardNode implements NodeType{
 			holder.setStateNum(madeNode,10);//smallest allowed state
 		;break;
 		case 4:
-			int level = holder.getLevel(madeNode);
+			int level = holder.getLevel(madeNode)+1;
+			holder.setLevel(madeNode, level);//now increases node level
 			float spare = 0;
-			if (level > 4) {
-				//vamp = base level, bats = 1.5f
-				spare = 1.5f;
+			if (level > 3) {
+				//FIXME: idk how to use this properly yet, plus it needs to be fixed
+				if (extra.chanceIn(1,3)) {
+					//bat master
+					spare = level/1.2f;
+					level = level-2;
+				}else {
+					///level is same
+					spare = level/2f;
+				}
 			}else {
-				spare = 1;
-				//vamp = base level, bats = 1
+				spare = 0;
+				//vamp = base level, no bats
 			}
 			Person vamp = RaceFactory.makeVampire(level);
 			List<Person> vampBats = RaceFactory.wrapMakeGroupForLeader(vamp,

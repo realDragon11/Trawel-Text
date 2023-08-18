@@ -1597,17 +1597,16 @@ public class RaceFactory {
 		return gold;
 	}
 	
-	public static List<Person> fillForLeaderLevelAtLevel(float base_level, float leaderWorth,int minMooks, int maxMooks, float mookWorthMult,PersonMaker mookMaker){
-		float levelLeft = base_level-leaderWorth;
-		int minNumLevel = (int) (levelLeft/(mookWorthMult*minMooks)); 
+	private static List<Person> groupMakeWithMooks(float power,int minMooks, int maxMooks, float mookWorthMult,PersonMaker mookMaker){
+		int minNumLevel = (int) (power/(mookWorthMult*minMooks)); 
 		if (minNumLevel < 1) {//if we can't allocate enough level to make the min number
 			return null;
-		}
-		int maxNumLevel = (int) Math.max(1,levelLeft/(mookWorthMult*maxMooks));//don't let us make so many mooks they fall under the threshold
+		}//FIXME: this is still making bad assumptions about level being worth one person, but it should still be better than the old ways
+		int maxNumLevel = (int) Math.max(1,power/(mookWorthMult*maxMooks));//don't let us make so many mooks they fall under the threshold
 		int levelRoll = extra.randRange(minNumLevel,maxNumLevel);
 		//now we need to round the level roll to the nearest mook amount that fits it
-		int amount = Math.round((mookWorthMult*levelRoll)/levelLeft);
-		levelRoll = (int) (levelLeft/(mookWorthMult*amount));
+		int amount = Math.round((mookWorthMult*levelRoll)/power);
+		levelRoll = (int) (power/(mookWorthMult*amount));
 		List<Person> people = new ArrayList<Person>();
 		for (int i =0; i < amount;i++) {
 			Person p = mookMaker.make(levelRoll);
@@ -1622,8 +1621,13 @@ public class RaceFactory {
 		float worth();
 	}
 	
-	public static List<Person> wrapMakeGroupForLeader(Person leader,PersonMaker mookMaker,float remainingPower,int minMooks,int maxMooks){
-		List<Person> people = fillForLeaderLevelAtLevel(remainingPower,0,minMooks,maxMooks,mookMaker.worth(),mookMaker);
+	/**
+	 * note that group power does not go 1 to 1 with level power
+	 * <br>
+	 * suggested behavior is treating the fight as a 1v2 against the player??? TODO needs math thinking
+	 */
+	public static List<Person> wrapMakeGroupForLeader(Person leader,PersonMaker mookMaker,float mookPower,int minMooks,int maxMooks){
+		List<Person> people = groupMakeWithMooks(mookPower,minMooks,maxMooks,mookMaker.worth(),mookMaker);
 		if (people == null) {
 			people = new ArrayList<Person>();
 		}
@@ -1632,7 +1636,7 @@ public class RaceFactory {
 	}
 	
 	public static List<Person> makeGroupOrDefault(float power, int minMooks, int maxMooks, PersonMaker mookMaker, PersonMaker elseDefault){
-		List<Person> people = fillForLeaderLevelAtLevel(power,0,minMooks,maxMooks,mookMaker.worth(),mookMaker);
+		List<Person> people = groupMakeWithMooks(power,minMooks,maxMooks,mookMaker.worth(),mookMaker);
 		if (people == null) {
 			people = new ArrayList<Person>();
 			people.add(elseDefault.make(Math.round(power)));
