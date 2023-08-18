@@ -5,11 +5,12 @@ import java.util.List;
 
 import trawel.extra;
 import trawel.personal.Person;
+import trawel.personal.RaceFactory.RaceClass;
 
 public class BarkManager {
 
 	
-	public static void getTaunt(Person p) {
+	public static void getTaunt(Person p,Person target) {
 		if (extra.getPrint()) {
 			return;
 		}
@@ -67,10 +68,10 @@ public class BarkManager {
 			}
 			break;
 		case DRUDGER_GENERIC:
-			extra.println(drudgerTaunt(p));
+			extra.println(drudgerTaunt(p,target));
 			break;
 		case FELL_MONSTER:
-			extra.println(fellTaunt(p));
+			extra.println(fellTaunt(p,target));
 			break;
 		case HARPY_GENERIC:
 			if (hpPercent > .4 || extra.chanceIn(2,3)) {
@@ -156,16 +157,21 @@ public class BarkManager {
 		list.add(" takes a trophy from the minds of the dead.");
 		return p.getName() + extra.randList(list);
 	}
-	private static String fellTaunt(Person p) {
+	private static String fellTaunt(Person p,Person target) {
 		List<String> list = new ArrayList<String>();
-		list.add(" gazes horribly.");
-		list.add(" stares through your bones, your body, into your soul. You feel a chill...");
-		list.add(" is looking at someone else... or are they? You don't quite understand how... that can't be!");
-		list.add(" contorts and you feel an intense sense of wrongness.");
-		list.add(" mocks your fragile sanity silently.");
-		list.add(" knows too much!");
-		list.add(" is something truly evil!");//woh reference, yes
-		return p.getName() + extra.randList(list);
+		if (extra.chanceIn(3,4)) {
+			list.add(" gazes horribly.");
+			list.add(" stares through your bones, your body, into your soul. You feel a chill...");
+			list.add(" is looking at someone else... or are they? You don't quite understand how... that can't be!");
+			list.add(" contorts and you feel an intense sense of wrongness.");
+			list.add(" mocks your fragile sanity silently.");
+			list.add(" knows too much!");
+			list.add(" is something truly evil!");//woh reference, yes
+			return p.getName() + extra.randList(list);
+		}else {
+			return "\""+target.getNameNoTitle()+"...\" Did "+p.getName() +" just say your name?!";
+		}
+		
 	}
 	
 	private static String drudgerBoast(Person p) {
@@ -178,14 +184,19 @@ public class BarkManager {
 		return p.getName() + " " + extra.choose("gurgles","babbles","bubbles","murmurs","hisses")+  " \""+ extra.randList(list) + "\"";
 	}
 	
-	private static String drudgerTaunt(Person p) {
+	private static String drudgerTaunt(Person p, Person target) {
 		List<String> list = new ArrayList<String>();
 		list.add("The bottom-feeders will love your corpse!");
 		list.add("Your bloated body will make a fine gift to those still at home!");
-		list.add("Landfolk are always so hardy- yet so much easier to kill.");
+		
+		if (target.getBag().getRace().raceClass != RaceClass.DRUDGER) {//for drudger on drudger rebel action in the future
+			list.add("Landfolk are always so hardy- yet so much easier to kill.");
+			list.add("From the the depths I come, to the depths you shall go!");
+		}
+		
 		list.add("Ocean claim you!");
 		list.add("Sea swallow you!");
-		list.add("From the the depths I come, to the depths you shall go!");
+		
 		return p.getName() + " " + extra.choose("gurgles","babbles","bubbles","murmurs","hisses")+  " \""+ extra.randList(list) + "\"";
 	}
 	

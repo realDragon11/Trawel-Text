@@ -29,7 +29,7 @@ public enum Feat implements IHasSkills{
 	,UNBREAKABLE("Unbreakable","Beaten, battered, bent, even broken- their spirit may be checked, but it can not be kept down."
 			,"They may be beaten, battered, bent, even broken. But their spirit burns with an unquenchable flame. They'll be back.",
 			1f,null,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)
-			,EnumSet.of(Skill.TA_NAILS,Skill.ARMORHEART),4,0,0
+			,EnumSet.of(Skill.TA_NAILS,Skill.STERN_STUFF),4,0,0
 			,null,null)
 	,UNDERHANDED("Underhanded","They'll do anything and everything to win.",""
 			,1f,EnumSet.of(FeatType.TRICKS),null
@@ -50,19 +50,16 @@ public enum Feat implements IHasSkills{
 			,null,null
 			)
 	
-	//TODO: needs skill attacks
 	,FLAME_WARDEN("Flamewarden","Wields fire fiercly, fueling their defense.",""
 			,.7f,null,null
 			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_PYRO,Skill.ARMORHEART),0,0,5
 			,EnumSet.of(Skill.ARCANIST),null
 			)
-	//TODO: needs skill attacks
 	,FROST_WARDEN("Frostwarden","Uses ice to bolster their armor.",""
 			,.7f,null,null
 			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_CRYO,Skill.ARMOR_TUNING,Skill.ARCANIST),1,0,4
 			,EnumSet.of(Skill.ARCANIST),null
 			)
-	//TODO: needs skill attacks
 	,SHOCK_SAVANT("Shock-Savant","Shocks their foes with static constantly, increasing the damage wrought by their charges.",""
 			,.7f,null,null
 			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_AERO,Skill.SPUNCH,Skill.ARCANIST),0,1,4

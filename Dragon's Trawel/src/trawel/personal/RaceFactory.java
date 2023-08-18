@@ -88,7 +88,8 @@ public class RaceFactory {
 		HUMAN_LIKE(LegacyType.HUMAN), ELF(LegacyType.ORC), ANTHRO_FUR(LegacyType.CAT),
 		ANTHRO_REPTILE(LegacyType.MERMAID), SKELETON(LegacyType.SKELETON),
 		OTHER(LegacyType.NONE),VARIES(LegacyType.VARIES), GOLEM(LegacyType.GOLEM),
-		WOLF(LegacyType.WOLF), BEAR(LegacyType.BEAR), UNDONE_BEAST(LegacyType.WOLF);
+		WOLF(LegacyType.WOLF), BEAR(LegacyType.BEAR), UNDONE_BEAST(LegacyType.WOLF),
+		DRUDGER(LegacyType.MERMAID);
 		private LegacyType ltype;
 		RaceClass(LegacyType _ltype) {
 			ltype = _ltype;
@@ -790,7 +791,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.F_GOLEM;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
-		misc.raceClass = RaceClass.ANTHRO_REPTILE;
+		misc.raceClass = RaceClass.DRUDGER;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_DRUDGER_TITAN);
@@ -813,7 +814,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.F_GOLEM;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
-		misc.raceClass = RaceClass.ANTHRO_REPTILE;
+		misc.raceClass = RaceClass.DRUDGER;
 		raceList.add(misc);
 		
 		for (Race r: raceList) {

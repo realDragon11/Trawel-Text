@@ -24,8 +24,10 @@ import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.Person.PersonType;
+import trawel.personal.classless.Archetype;
 import trawel.personal.classless.Feat;
 import trawel.personal.classless.IEffectiveLevel;
+import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.Inventory;
@@ -918,16 +920,15 @@ public class Town extends TContextOwner{
 					int part1 = extra.randRange(0, 1);
 					switch (part1) {
 					case 0:
-						extra.print(extra.PRE_RED+p.getName() +" charges you out of nowhere! They're back for more, and this time they're not fighting fair! ");
+						extra.print(extra.PRE_BATTLE+p.getName() +" charges you out of nowhere! They're back for more, and this time they're not fighting fair! ");
 						p.setSkillHas(Feat.AMBUSHER);
 						break;
 					case 1:
-						extra.print(extra.PRE_RED+p.getName() +" charges you, screaming bloody murder! Their thirst of blood has not yet been satiated! ");
+						extra.print(extra.PRE_BATTLE+p.getName() +" charges you, screaming bloody murder! Their thirst for blood has not yet been satiated! ");
 						p.setSkillHas(Feat.HEMOVORE);
 						break;
-
 					default:
-						extra.print(extra.PRE_RED+p.getName() + " is back!");
+						extra.print(extra.PRE_BATTLE+p.getName() + " is back!");
 						break;
 					}
 					switch (extra.randRange(0, 1)) {
@@ -949,7 +950,7 @@ public class Town extends TContextOwner{
 							extra.println("\"I fell, but they picked me back up! Now I stand beside life itself against you!\"");
 						}
 						p.setTitle(extra.choose(", ","the ") +extra.choose("Life ","Primal ")+extra.choose("Keeper","Defender","Servant","Judge"));
-						//p.setHasSkill(Skill.LIFE_MAGE);TODO
+						p.setPerk(Perk.NPC_PRIMAL_MOUNTAIN);//MAYBELATER: more primal types
 						p.setPersonType(PersonType.LIFEKEEPER);
 						break;
 					}

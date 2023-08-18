@@ -331,12 +331,12 @@ public class Inn extends Feature implements QuestBoardLocation{
 						if (extra.chanceIn(2,3)) {
 							BarkManager.getBoast(Player.player.getPerson(),true);
 						}else {
-							BarkManager.getTaunt(Player.player.getPerson());
+							BarkManager.getTaunt(Player.player.getPerson(),agent.getPerson());
 						}
 						if (extra.chanceIn(2,3)) {
 							BarkManager.getBoast(agent.getPerson(), true);	
 						}else {
-							BarkManager.getTaunt(agent.getPerson());
+							BarkManager.getTaunt(agent.getPerson(),Player.player.getPerson());
 						} 
 						return false;
 					}});
