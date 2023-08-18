@@ -603,7 +603,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	}
 	
 	protected void addSkillConfig(Skill skill) {
-		List<IHasSkills> base = WeaponAttackFactory.getSources(skill);
+		List<IHasSkills> base = WeaponAttackFactory.getSources(skill.getAliasOrSelf());
 		attConfs[sAttCount] = new SkillAttackConf(skill,extra.randList(base),null);
 		sAttCount++;
 	}

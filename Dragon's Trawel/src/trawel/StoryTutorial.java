@@ -139,6 +139,7 @@ public class StoryTutorial extends Story{
 		}
 		if (step == "gotoarena1") {
 			extra.print("Well, looks like you managed to kill something without having gone to an arena. Arenas are fairly easy, but as you've learned, there's a lot of Combat to be had in Trawel!");
+			step = "gotoinn1";
 		}
 		if (step == "gotoinn1") {
 			extra.println(" Next you should ingest questionable substances at an inn. Compass (which is basically mapquest), in the 'You' menu, can take you to 'Unun', a town with an inn.");

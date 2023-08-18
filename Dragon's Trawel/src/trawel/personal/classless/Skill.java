@@ -261,6 +261,13 @@ public enum Skill{
 		public Skill getAliasFor() {
 			return aliasFor;
 		}
+		
+		public Skill getAliasOrSelf() {
+			if (aliasFor == null) {
+				return this;
+			}
+			return aliasFor;
+		}
 
 		public String explain() {
 			return (name + ": " + desc + "\n " + " " + longDesc);

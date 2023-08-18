@@ -450,7 +450,15 @@ public class Inventory implements java.io.Serializable{
 		if (owner.getSuper() != null) {
 			World w = owner.getSuper().getWorld();
 			if (w == null) {
+				if (money > 0) {
+					owner.getSuper().addGold(money, Player.getPlayerWorld());
+					money = 0;
+				}
 				return owner.getSuper().getGold(Player.getPlayerWorld());
+			}
+			if (money > 0) {
+				owner.getSuper().addGold(money,w);
+				money = 0;
 			}
 			return owner.getSuper().getGold(w);
 		}
@@ -469,6 +477,10 @@ public class Inventory implements java.io.Serializable{
 	 */
 	public void setLocalGold(int gold) {
 		this.money = gold;
+	}
+	
+	public int getLocalGold() {
+		return money;
 	}
 	
 	public void display(int i) {
@@ -537,6 +549,19 @@ public class Inventory implements java.io.Serializable{
 	public void addGold(int add) {
 		SuperPerson sp = owner.getSuper();
 		if (sp != null) {
+			sp.addGold(add);
+			return;
+		}
+		money += add;
+		money = Math.max(money,0);
+	}
+	
+	/**
+	 * will add local gold if world gold wouldn't be added due to no super person or no world set
+	 */
+	public void addLocalGoldIf(int add) {
+		SuperPerson sp = owner.getSuper();
+		if (sp != null && sp.getWorld() == null) {
 			sp.addGold(add);
 			return;
 		}

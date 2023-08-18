@@ -168,7 +168,7 @@ public class Docks extends Feature {
 
 						@Override
 						public String title() {
-							return "Owner: " + leader.getPerson().getName();
+							return "Owner: " + leader.getPerson().getName() + " ("+leader.getPerson().getLevel()+")";
 						}});
 				}
 				
@@ -393,7 +393,9 @@ public class Docks extends Feature {
 		if (old_defenders.size() > 0) {
 			return old_defenders.remove(0).getSelfOrAllies();
 		}
-		return RaceFactory.getDueler(tier-1).getSelfOrAllies();
+		Person p = RaceFactory.getDueler(tier-1);
+		p.getBag().addLocalGoldIf(2);//so looting always has enough gold to divide up, must be 2 because of player
+		return p.getSelfOrAllies();
 	}
 	
 	private List<Person> popDrudger() {
@@ -439,7 +441,7 @@ public class Docks extends Feature {
 			}else {
 				extra.println("You help defend try to take back the port from the drudger occupying army.");
 			}
-			battle(Player.player.getAllies(),null);
+			Combat c = battle(Player.player.getAllies(),null);
 			Player.addTime(3);//3 hour battle
 			if (townOwned) {
 				if (oldOwned == townOwned) {
@@ -447,9 +449,11 @@ public class Docks extends Feature {
 				}else {
 					extra.println(extra.RESULT_GOOD+"You took back the docks!");
 				}
-				int reward = (int) ((10*getUnEffectiveLevel())+extra.randRange(0,4));
-				extra.println("They pay you with "+World.currentMoneyDisplay(reward)+".");
-				Player.player.addGold(reward);
+				if (c.playerWon() > 1) {//you must survive to get paid
+					int reward = (int) ((8*getUnEffectiveLevel())+extra.randRange(0,4));
+					extra.println("They pay you with "+World.currentMoneyDisplay(reward)+".");
+					Player.player.addGold(reward);
+				}
 			}else {
 				if (!oldOwned) {
 					extra.println(extra.RESULT_NO_CHANGE_BAD+"The docks remain under drudger control...");
@@ -468,13 +472,13 @@ public class Docks extends Feature {
 		}
 	}
 	
-	public void battle(List<Person> addForTown, List<Person> addForDrudger) {
+	public Combat battle(List<Person> addForTown, List<Person> addForDrudger) {
 		boolean playerin = true;
 		if (addForTown == null || !addForTown.contains(Player.player.getPerson())) {
 			playerin = false;
 			extra.offPrintStack();
 		}
-		int addSize = extra.randRange(1,2);
+		int addSize = extra.randRange(1,3);
 		/*int addTownSize = addSize;
 		int addSeaSize = addSize;*/
 		List<Person> allyList = new ArrayList<Person>();
@@ -499,6 +503,8 @@ public class Docks extends Feature {
 		if (addOwnAttackLeader) {
 			foeList.addAll(makeDrudgerLeader());
 		}
+		
+		addSize = Math.max(addSize,3-Math.max(foeList.size(),allyList.size()));//minimum of 3 people on each side
 		//minimum adds
 		for (int i = addSize-1;i>=0;i--) {
 			allyList.addAll(popTownie());
@@ -576,5 +582,6 @@ public class Docks extends Feature {
 		if (playerin == false) {
 			extra.popPrintStack();
 		}
+		return c;
 	}
 }
