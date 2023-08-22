@@ -80,7 +80,7 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(AGroup.DIRECT_BATTLE)
 			,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)
 			,EnumSet.of(Skill.TA_NAILS,Skill.STERN_STUFF, Skill.PLOT_ARMOR,Skill.NO_HOSTILE_CURSE)
-			)
+			)//should probably make a non-archetype owner version, idk what to call it, but the 'no hostile curse' is kinda important
 	;
 	
 	private final String name, desc;

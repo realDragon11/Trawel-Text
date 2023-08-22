@@ -255,32 +255,101 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			extra.println("You need at least 3 reagents to finish your brew!");
 			return false;
 		}
+		int batWings = 0;
+		int mGuts = 0;
+		int apples = 0;
+		int meats = 0;
 		
-		int batWings = (int) reagents.stream().filter(d -> d.equals(DrawBane.BAT_WING)).count();
-		int mGuts = (int) reagents.stream().filter(d -> d.equals(DrawBane.MIMIC_GUTS)).count();
-		int apples = (int) reagents.stream().filter(d -> d.equals(DrawBane.APPLE)).count();
-		int meats = (int) reagents.stream().filter(d -> d.equals(DrawBane.MEAT)).count();
+		int garlics = 0;
+		int woods = 0;
+		int honeys = 0;
+		int pumpkins = 0;
+		int ents = 0;
+		int waxs = 0;
+		int eggcorns = 0;
+		int truffles = 0;
+		int eons = 0;
+		int silvers = 0;
+		int bloods = 0;
+		int virgins = 0;
 		
-		int garlics = (int) reagents.stream().filter(d -> d.equals(DrawBane.GARLIC)).count();
-		int woods = (int) reagents.stream().filter(d -> d.equals(DrawBane.WOOD)).count();
-		int honeys = (int) reagents.stream().filter(d -> d.equals(DrawBane.HONEY)).count();
-		int pumpkins = (int) reagents.stream().filter(d -> d.equals(DrawBane.PUMPKIN)).count();
-		int ents = (int) reagents.stream().filter(d -> d.equals(DrawBane.ENT_CORE)).count();
-		int waxs = (int) reagents.stream().filter(d -> d.equals(DrawBane.WAX)).count();
-		int eggcorns = (int) reagents.stream().filter(d -> d.equals(DrawBane.EGGCORN)).count();
-		int truffles = (int) reagents.stream().filter(d -> d.equals(DrawBane.TRUFFLE)).count();
-		int eons = (int) reagents.stream().filter(d -> d.equals(DrawBane.CEON_STONE)).count();
-		int silvers = (int) reagents.stream().filter(d -> d.equals(DrawBane.SILVER)).count();
-		int bloods = (int) reagents.stream().filter(d -> d.equals(DrawBane.BLOOD)).count();
-		int virgins = (int) reagents.stream().filter(d -> d.equals(DrawBane.VIRGIN)).count();
-		meats += virgins*2;
-		int lflames =  (int) reagents.stream().filter(d -> d.equals(DrawBane.LIVING_FLAME)).count();
-		int telescopes =  (int) reagents.stream().filter(d -> d.equals(DrawBane.TELESCOPE)).count();
-		int gravedusts = (int) reagents.stream().filter(d -> d.equals(DrawBane.GRAVE_DIRT)).count();
-		int gravedirts = (int) reagents.stream().filter(d -> d.equals(DrawBane.GRAVE_DUST)).count();
-		int grave_subtance = gravedirts*2 + gravedusts;
-		int food = meats + apples + garlics + honeys + pumpkins + pumpkins + eggcorns+truffles + (virgins*2);//virgin counts 4x due to meat
+		int lflames =  0;
+		int telescopes = 0;
+		int gravedusts = 0;
+		int gravedirts = 0;
+		for (DrawBane d: reagents) {
+			switch (d) {
+			case BAT_WING:
+				batWings++;
+				break;
+			case MIMIC_GUTS:
+				mGuts++;
+				break;
+			case APPLE:
+				apples++;
+				break;
+			case MEAT:
+				meats++;
+				break;
+			case GARLIC:
+				garlics++;
+				break;
+			case WOOD:
+				woods++;
+				break;
+			case HONEY:
+				honeys++;
+				break;
+			case PUMPKIN:
+				pumpkins++;
+				break;
+			case ENT_CORE:
+				ents++;
+				break;
+			case WAX:
+				waxs++;
+				break;
+			case EGGCORN:
+				eggcorns++;
+				break;
+			case TRUFFLE:
+				truffles++;
+				break;
+			case CEON_STONE:
+				eons++;
+				break;
+			case SILVER:
+				silvers++;
+				break;
+			case BLOOD:
+				bloods++;
+				break;
+			case VIRGIN:
+				virgins++;
+				break;
+			case LIVING_FLAME:
+				lflames++;
+				break;
+			case TELESCOPE:
+				telescopes++;
+				break;
+			case GRAVE_DIRT:
+				gravedirts++;
+				break;
+			case GRAVE_DUST:
+				gravedusts++;
+				break;
+			}
+		}
+		
+		
+		meats += virgins*3;
+		int botch = woods;
 		int filler = apples + woods + waxs;
+		woods += ents;//ent core doesn't add botch/filler but does add normal wood
+		int grave_subtance = gravedirts*2 + gravedusts;
+		int food = meats + apples + garlics + honeys + (3*pumpkins) + eggcorns+truffles + virgins;//virgin counts 4x due to meat
+		int total = reagents.size();
 		
 		if (Player.hasSkill(Skill.P_BREWER)) {
 			filler+=2;
@@ -288,6 +357,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		if (Player.hasSkill(Skill.TOXIC_BREWS)) {
 			filler+=1;
 		}
+		//section used for transmutation
 		if (ents > 0 && meats > 1) {
 			Person fGolem = RaceFactory.getFleshGolem(
 					(Player.player.getPerson().getLevel()+town.getTier())/2//near the player and town level
@@ -318,16 +388,33 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			transmute(DrawBane.WOOD,DrawBane.ENT_CORE,1);
 			return true;
 		}
-		if (extra.chanceIn(woods, 10)) {
+		//transmutation ended, roll botching
+		if (extra.chanceIn(botch, 10)) {
 			Player.player.setFlask(new Potion(Effect.CURSE,1+filler));
 			actualPotion();
 			return true;
 		}
+		
+		//this section is for normal potions which have food ingredients, which should bypass the 'stew chance'
 		if (waxs > 0 && honeys > 0) {
 			Player.player.setFlask(new Potion(Effect.BEE_SHROUD,honeys+filler));
 			actualPotion();
 			return true;
 		}
+		if (lflames > 0 && food >=1) {
+			Player.player.setFlask(new Potion(Effect.FORGED,lflames+food+filler));
+			actualPotion();
+			return true;
+		}
+		//'stew chance', any potion with food as an ingredient that isn't above
+		//might turn into HEARTY even if it would be something else
+		if (food >= 1 && extra.chanceIn(food,20)) {
+			Player.player.setFlask(new Potion(Effect.HEARTY,total+food+filler));
+			actualPotion();
+			return true;
+		}
+		
+		//section used for normal potions
 		if (mGuts > 0 && telescopes >0) {
 			Player.player.setFlask(new Potion(Effect.TELESCOPIC,mGuts+telescopes+filler));
 			actualPotion();
@@ -338,18 +425,9 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			actualPotion();
 			return true;
 		}
-		if (lflames > 0 && food >=1) {
-			Player.player.setFlask(new Potion(Effect.FORGED,lflames+food+filler));
-			actualPotion();
-			return true;
-		}
+		
 		if (bloods > 0 && grave_subtance > 1) {
 			Player.player.setFlask(new Potion(Effect.CLOTTER,lflames+food+filler));
-			actualPotion();
-			return true;
-		}
-		if (food >= 3) {
-			Player.player.setFlask(new Potion(Effect.HEARTY,food+filler));
 			actualPotion();
 			return true;
 		}
@@ -358,6 +436,15 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			actualPotion();
 			return true;
 		}
+		
+		//final chance for a normal stew
+		if (food >= 3 || extra.chanceIn(food,5)) {//chance of stew working even if not enough 'foods'
+			Player.player.setFlask(new Potion(Effect.HEARTY,total+food+filler));
+			actualPotion();
+			return true;
+		}
+		
+		//failed all, so curse
 		Player.player.setFlask(new Potion(Effect.CURSE,1+filler));
 		actualPotion();
 		return true;
