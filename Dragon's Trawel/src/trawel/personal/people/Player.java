@@ -47,7 +47,6 @@ public class Player extends SuperPerson{
 	 */
 	private World world;
 	private String animalName;
-	private boolean tutorial;
 	public int merchantLevel = 1;
 	public Town lastTown = null;
 	private double merchantPoints = 0;
@@ -86,9 +85,6 @@ public class Player extends SuperPerson{
 		bag = p.getBag();
 		passTime = 0;
 		animalName = randomLists.randomAnimal();
-		//rpts = 0;
-		tutorial = true;
-		
 		moneys = new ArrayList<Integer>();
 		moneymappings = new ArrayList<World>();
 		
@@ -169,8 +165,13 @@ public class Player extends SuperPerson{
 	@Override
 	public Effect doSip() {
 		if (flask != null) {
-			extra.println("Take a sip of your potion? ("+flask.sips+" left)");
+			if (knowsFlask) {
+				extra.println("Take a sip of your "+flask.effect.getName()+" potion? ("+flask.sips+" left)");
+			}else {
+				extra.println("Take a sip of your potion? ("+flask.sips+" left)");
+			}
 			if (extra.yesNo()) {
+				knowsFlask = true;
 				Effect e = flask.effect;
 				flask.sip(person);
 				Networking.sendStrong("PlayDelay|sound_swallow"+extra.randRange(1,5)+"|1|");

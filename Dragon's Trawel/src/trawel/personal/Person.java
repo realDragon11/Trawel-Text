@@ -690,6 +690,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (this.isPlayer()) {
 			sipped = Player.player.doSip();
 			isPlay = true;
+		}else {
+			if (superperson != null) {
+				sipped = superperson.doSip();
+			}
 		}
 		if (sipped == Effect.CURSE && hasSkill(Skill.TOXIC_BREWS)) {
 			extra.println("Their face contorts in power!");

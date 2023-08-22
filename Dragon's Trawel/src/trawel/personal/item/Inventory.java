@@ -491,7 +491,7 @@ public class Inventory implements java.io.Serializable{
 		return money;
 	}
 	
-	public void display(int i) {
+	public void deepDisplay() {
 		
 		for (Armor a: getArmors()) {
 			a.display(2);
@@ -499,8 +499,15 @@ public class Inventory implements java.io.Serializable{
 		hand.display(2);
 		hand.getMartialStance().display(1);
 	
-		if (owner.getSuper()!= null) {
+		if (owner.getSuper() != null) {
 			extra.println( owner.getSuper().getGoldDisp() +".");
+			if (owner.getSuper().hasFlask()) {
+				if (owner.getSuper().knowsPotion()) {
+					extra.println(owner.getSuper().peekFlask().getName()+" potion with " + owner.getSuper().getFlaskUses() + " uses left.");
+				}else {
+					extra.println("Potion with " + owner.getSuper().getFlaskUses() + " uses left.");
+				}
+			}
 		}else {
 			extra.println( World.currentMoneyDisplay(money) +".");
 		}

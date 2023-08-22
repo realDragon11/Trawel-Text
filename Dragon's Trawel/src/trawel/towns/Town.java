@@ -559,7 +559,7 @@ public class Town extends TContextOwner{
 			extra.println("4 Back");
 			switch (extra.inInt(4)){
 				case 1:
-					Player.player.getPerson().getBag().display(1);
+					Player.player.getPerson().getBag().deepDisplay();
 				extra.println("You have " + Player.player.emeralds + " emeralds, " + Player.player.rubies +" rubies, and " + Player.player.sapphires +" sapphires.");
 				;break;
 				case 2: Player.player.getPerson().getBag().playerDiscardDrawBane();break;

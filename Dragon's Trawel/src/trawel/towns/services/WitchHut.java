@@ -148,7 +148,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 						}
 						return false;
 					}});
-				if (Player.player.hasFlask() && Player.player.getFlashUses() < 8) {
+				if (Player.player.hasFlask() && Player.player.getFlaskUses() < 8) {
 					list.add(new MenuSelect() {
 
 						@Override
@@ -165,6 +165,8 @@ public class WitchHut extends Store implements QuestBoardLocation{
 									Player.player.addFlaskUses((byte)3);
 									if (extra.chanceIn(1,3)) {
 										Player.player.spoilPotion();
+									}else {
+										Player.player.muddyPotion();//don't spoil, but they can't tell
 									}
 									extra.println("The potion bubbles freshly.");
 								}else {
@@ -239,7 +241,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 							reagents.clear();
 							//to make it harder to figure out what you just made without trying it out or with a skill
 							//mess up the count of how many charges you have slightly
-							if (Player.player.getFlashUses() < 3) {
+							if (Player.player.getFlaskUses() < 3) {
 								Player.player.addFlaskUses((byte) extra.randRange(1,3));
 							}else {
 								Player.player.addFlaskUses((byte) extra.randRange(-1,4));

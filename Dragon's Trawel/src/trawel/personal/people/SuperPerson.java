@@ -45,6 +45,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	public List<World> moneymappings;
 	
 	protected Potion flask;
+	protected boolean knowsFlask;
 	
 	/**
 	 * used for the player swapping out configs
@@ -547,6 +548,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	
 	public Effect doSip() {
 		if (flask != null) {
+			knowsFlask = true;
 			Effect e = flask.effect;
 			flask.sip(getPerson());
 			if (flask.sips <=0) {
@@ -564,7 +566,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	public Effect peekFlask() {
 		return flask.effect;
 	}
-	public int getFlashUses() {
+	public int getFlaskUses() {
 		return flask.sips;
 	}
 	
@@ -573,10 +575,19 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	}
 	
 	public void spoilPotion() {
+		knowsFlask = false;
 		flask = new Potion(Effect.CURSE,flask.sips);
+	}
+	public void muddyPotion() {
+		knowsFlask = false;
+	}
+	
+	public boolean knowsPotion() {
+		return knowsFlask;
 	}
 	
 	public void setFlask(Potion pot) {
+		knowsFlask = false;
 		flask = pot;
 	}
 

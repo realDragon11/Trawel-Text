@@ -148,10 +148,12 @@ public class Agent extends SuperPerson{
 	
 	public boolean wantsRefill() {
 		if (hasFlask()) {
-			switch (peekFlask()) {
-			case CURSE:
-			case BEES:
-					return false;
+			if (knowsPotion()) {//if they don't know what's in it, they always want a refill
+				switch (peekFlask()) {
+				case CURSE:
+				case BEES:
+						return false;
+				}
 			}
 			return true;
 		}
@@ -162,7 +164,7 @@ public class Agent extends SuperPerson{
 		do {
 			addFlaskUses((byte)3);
 			buyMoneyAmount(cost);
-		} while (getFlashUses() < 6 && canBuyMoneyAmount(cost));
+		} while (getFlaskUses() < 6 && canBuyMoneyAmount(cost));
 	}
 
 	@Override
