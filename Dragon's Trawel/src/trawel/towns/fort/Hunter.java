@@ -11,14 +11,7 @@ import trawel.time.TimeEvent;
 public class Hunter extends FortFeature {
 
 	private static final long serialVersionUID = 1L;
-
-	public int tier;
-	
-	public SubSkill downTimeSkill;
-	public SubSkill battleSkill;
 	private int size;
-	
-	public List<SubSkill> pickList = new ArrayList<SubSkill>();
 	
 	public Hunter(int tier,int size) {
 		this.tier = tier;

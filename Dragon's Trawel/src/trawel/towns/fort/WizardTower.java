@@ -17,18 +17,10 @@ import trawel.towns.fort.SubSkill.Type;
 
 public class WizardTower extends FortFeature {
 
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
-	public int tier;
 	
 	public SubSkill downTimeSkill;
 	public SubSkill battleSkill;
-	
-	public List<SubSkill> pickList = new ArrayList<SubSkill>();
 	
 	public WizardTower(int tier) {
 		this.tier = tier;
@@ -101,18 +93,7 @@ public class WizardTower extends FortFeature {
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> mList = new ArrayList<MenuItem>();
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "exit";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}
-				});
+				mList.add(getPlayerBuyPower());
 				if (downTimeSkill != null) {
 				mList.add(new MenuSelect() {
 
@@ -169,6 +150,7 @@ public class WizardTower extends FortFeature {
 							}
 						});
 					}
+				mList.add(new MenuBack());
 				return mList;
 			}
 			
@@ -183,7 +165,7 @@ public class WizardTower extends FortFeature {
 			if (downTimeSkill != null) {
 				return mList;
 			}
-			pickList.clear();
+			List<SubSkill> pickList = new ArrayList<SubSkill>();
 			for (SubSkill s: SubSkill.values()) {
 				if (s.act.equals(Active.DOWNTIME) && s.type.equals(Type.WIZARD)) {
 					pickList.add(s);
@@ -224,7 +206,7 @@ public class WizardTower extends FortFeature {
 			if (battleSkill != null) {
 				return mList;
 			}
-			pickList.clear();
+			List<SubSkill> pickList = new ArrayList<SubSkill>();
 			for (SubSkill s: SubSkill.values()) {
 				if (s.act.equals(Active.BATTLE) && s.type.equals(Type.WIZARD)) {
 					pickList.add(s);

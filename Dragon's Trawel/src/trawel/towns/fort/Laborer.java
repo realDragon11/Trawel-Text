@@ -7,9 +7,6 @@ import trawel.randomLists;
 
 public class Laborer implements java.io.Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	public String name;
 	public LaborType type;

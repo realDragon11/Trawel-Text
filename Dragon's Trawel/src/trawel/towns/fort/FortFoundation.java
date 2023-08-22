@@ -15,9 +15,6 @@ import trawel.time.TimeEvent;
 
 public class FortFoundation extends FortFeature {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private int size;
 	private double timeLeft = -1;

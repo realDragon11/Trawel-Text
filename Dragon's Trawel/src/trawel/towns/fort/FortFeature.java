@@ -1,5 +1,6 @@
 package trawel.towns.fort;
 
+import derg.menus.MenuLine;
 import trawel.extra;
 import trawel.personal.people.Player;
 import trawel.towns.Feature;
@@ -14,7 +15,8 @@ public abstract class FortFeature extends Feature {
 	public Laborer laborer;
 	public void improveSkill(SubSkill skill, float valueMult) {
 		int skillIndex = findLSkill(skill);
-		int cost = (int)(  Math.pow(skillIndex == -1 ? 200 :(laborer.lSkills.get(skillIndex).value+1)*200,valueMult));
+		int baseValue = 100;//was 200
+		int cost = (int) (baseValue*Math.pow((skillIndex == -1 ? 1 : laborer.lSkills.get(skillIndex).value+1),valueMult));
 		
 		if (Player.player.getTotalBuyPower() >= cost) {
 			extra.println("This upgrade will cost " + cost + " "+World.currentMoneyString()+". Buy?");
@@ -37,5 +39,14 @@ public abstract class FortFeature extends Feature {
 			}
 		}
 		return -1;
+	}
+	
+	public static MenuLine getPlayerBuyPower() {
+		return new MenuLine() {
+
+			@Override
+			public String title() {
+				return "You have " +Player.showGold() + " and " + Player.bag.getAether() + " aether for " + Player.player.getTotalBuyPower() + " buying power.";
+			}};
 	}
 }

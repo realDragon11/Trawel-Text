@@ -9,17 +9,8 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 
 public class Watchtower extends FortFeature {
-
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
-	public int tier;
 	
-	public SubSkill downTimeSkill;
-	public SubSkill battleSkill;
 	private int size;
 	
 	public List<SubSkill> pickList = new ArrayList<SubSkill>();

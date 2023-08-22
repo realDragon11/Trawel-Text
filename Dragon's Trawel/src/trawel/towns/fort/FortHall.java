@@ -39,7 +39,7 @@ import trawel.towns.World;
 public class FortHall extends FortFeature {
 
 	private static final long serialVersionUID = 1L;
-	public ArrayList<Person> allies = new ArrayList<Person>();
+	public List<Person> allies = new ArrayList<Person>();
 	
 	public double forgeTimer = 24.0*7;
 	public double fightTimer = 24.0*14;
@@ -95,7 +95,7 @@ public class FortHall extends FortFeature {
 	public void go() {
 		if (this.getOwner() != Player.player) {
 			final float levelMult = getUnEffectiveLevel();
-			int cost = (int) ((250*levelMult)+(aetherBank*Player.NORMAL_AETHER_RATE));
+			int cost = (int) ((1000*levelMult)+(aetherBank*Player.NORMAL_AETHER_RATE));
 			extra.println("Buy this for fort for "+cost+" "+World.currentMoneyString()+"? (You have " + Player.player.getGold()+")");
 			if (extra.yesNo()) {
 				if (Player.player.getGold() < cost) {
@@ -122,14 +122,14 @@ public class FortHall extends FortFeature {
 
 						@Override
 						public String title() {
-							return "You have " + allies.size() + " soldiers here and "+Player.player.getGold()+".";
+							return "You have " + allies.size() + " soldiers here and "+Player.showGold()+".";
 						}});
 					if (allies.size() < 10) {
 					mList.add(new MenuSelect() {
 
 						@Override
 						public String title() {
-							return "Buy a soldier ("+getSoldierCost()+")";
+							return "Buy a soldier ("+World.currentMoneyDisplay(getSoldierCost())+")";
 						}
 
 						@Override
@@ -282,7 +282,7 @@ public class FortHall extends FortFeature {
 			}
 			extra.popPrintStack();
 		}
-		enchantTimer -= (time*getSkillCount(SubSkill.ENCHANTING))/2.0;
+		enchantTimer -= (time*getSkillCount(SubSkill.ENCHANTING))/3.0;
 		if (enchantTimer <=0 && allies.size() > 0) {
 			enchantTimer = 24.0*7;
 			allies.get(extra.randRange(0,allies.size()-1)).getBag().getArmorSlot(extra.randRange(0,4)).improveEnchantChance(tier);
@@ -297,7 +297,7 @@ public class FortHall extends FortFeature {
 			fightTimer = 24.0*7;
 			List<Person> people = new ArrayList<Person>();
 			
-			while (people.size() < 5) {
+			while (people.size() < Math.max(4, allies.size())) {
 				people.add(RaceFactory.getMugger(tier));
 			}
 			defenseFight(people);
