@@ -1219,8 +1219,16 @@ public class Combat {
 			}
 			
 			if (defender.hasEffect(Effect.BEE_SHROUD)) {
-				extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.2f))+"The bees sting back!");
-				attacker.takeDamage(1);
+				if (attacker.hasEffect(Effect.BEES)) {
+					if (!extra.getPrint()) {
+						extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.2f))+"The bees buzz back!");
+					}
+				}else {
+					attacker.addEffect(Effect.BEES);
+					if (!extra.getPrint()) {
+						extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.2f))+"The bees swarm "+attacker.getName()+"!");
+					}
+				}
 			}
 			break;
 		case ARMOR:
