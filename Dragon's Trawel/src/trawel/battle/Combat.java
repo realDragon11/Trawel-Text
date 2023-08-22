@@ -272,7 +272,9 @@ public class Combat {
 							continue;
 						}
 						for (Person p: peoples.get(i)) {
-							p.getNextAttack().multPotencyMult(Math.min(20,sk.power)/100.0);
+							if (p.isAttacking()) {
+								p.getNextAttack().multPotencyMult(Math.min(20,sk.power)/100.0);
+							}
 							p.takeDamage(1);
 						}
 					}
@@ -455,7 +457,7 @@ public class Combat {
 				}else {
 					if (defender.hasEffect(Effect.CONFUSED_TARGET)) {
 						//the defender has been befuddled or confused
-						if (!defender.isOnCooldown()) {//if on cooldown, the effect will apply to the next attack instead
+						if (!defender.isOnCooldown() && defender.isAttacking()) {//if on cooldown or not attacking, the effect will apply to the next attack instead
 							defender.removeEffect(Effect.CONFUSED_TARGET);
 							Person newDef = getDefenderForConfusion(defender);
 							if (defender.getNextAttack().getDefender().isSameTargets(newDef)) {
@@ -1079,7 +1081,7 @@ public class Combat {
 			
 			defender.debug_print_status(damageDone);
 			
-			if (defender.hasEffect(Effect.R_AIM)) {
+			if (defender.isAttacking() && defender.hasEffect(Effect.R_AIM)) {
 				defender.getNextAttack().multiplyHit(1 + (percent));
 			}
 			
@@ -1413,9 +1415,6 @@ public class Combat {
 	
 	private String inflictWound(Person attacker2, Person defender2, AttackReturn retu, Wound w) {
 			ImpairedAttack attack = attacker2.getNextAttack();
-			if (defender2.getNextAttack() == null) {//FIXME: should probably fix a root cause
-				return "no attack!!!";
-			}
 			Integer[] nums = woundNums(attack,attacker2,defender2,retu);
 			boolean notFromAttack = false;
 			if (w == null) {
@@ -1450,7 +1449,9 @@ public class Combat {
 				defender2.applyDiscount(-Math.min(50,defender2.getTime()*(nums[0]/100f)));
 				break;
 			case DIZZY: case BLINDED:
-				defender2.getNextAttack().multiplyHit(1-(nums[0]/10f));
+				if (defender2.isAttacking()) {
+					defender2.getNextAttack().multiplyHit(1-(nums[0]/10f));
+				}
 				break;	
 			case MAJOR_BLEED:
 				if (!defender2.hasEffect(Effect.CLOTTER)) {
@@ -1480,7 +1481,9 @@ public class Combat {
 				break;
 			case BLOODY:
 				defender2.addEffect(Effect.BLEED);
-				defender2.getNextAttack().multiplyHit(1-(nums[0]/10f));
+				if (defender2.isAttacking()) {
+					defender2.getNextAttack().multiplyHit(1-(nums[0]/10f));
+				}
 				break;
 			case MANGLED:
 				defender2.multBodyStatus(attack.getTargetSpot(), 1-(nums[0]/10f));
