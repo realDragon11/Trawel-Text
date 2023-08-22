@@ -16,6 +16,7 @@ import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Potion;
+import trawel.personal.item.Seed;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.DrawBane.DrawList;
 import trawel.personal.people.Agent;
@@ -277,6 +278,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		int telescopes = 0;
 		int gravedusts = 0;
 		int gravedirts = 0;
+		int uhorns = 0;
 		for (DrawBane d: reagents) {
 			switch (d) {
 			case BAT_WING:
@@ -339,6 +341,9 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			case GRAVE_DUST:
 				gravedusts++;
 				break;
+			case UNICORN_HORN:
+				uhorns++;
+				break;
 			}
 		}
 		
@@ -359,7 +364,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			filler+=1;
 		}
 		//section used for transmutation
-		if (ents > 0 && meats >= 2) {
+		if ((ents > 0 && meats >= 2) || (eons > 0 && virgins > 0)) {//kinda even more horrifying now
 			Person fGolem = RaceFactory.getFleshGolem(
 					(Player.player.getPerson().getLevel()+town.getTier())/2//near the player and town level
 					);
@@ -373,18 +378,71 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			}
 			return true;
 		}
-		if (eons > 0 && silvers > 0) {
-			transmute(DrawBane.SILVER,DrawBane.GOLD,silvers);
-			for (int i = 0; i < silvers;i++) {
-				Player.bag.addNewDrawBanePlayer(DrawBane.GOLD);
+		if (eons > 0) {
+			if (ents > 0 && uhorns > 0) {
+				int make_pwards = Math.min(ents,uhorns);
+				transmute("materials",DrawBane.PROTECTIVE_WARD,make_pwards);
+				for (int i = 0; i < make_pwards;i++) {
+					Player.bag.addNewDrawBanePlayer(DrawBane.PROTECTIVE_WARD);
+				}
+				return true;
 			}
-			return true;
+			if (silvers > 0) {
+				transmute(DrawBane.SILVER,DrawBane.GOLD,silvers);
+				for (int i = 0; i < silvers;i++) {
+					Player.bag.addNewDrawBanePlayer(DrawBane.GOLD);
+				}
+				return true;
+			}
+			if (woods >= 2) {
+				transmute(DrawBane.WOOD,DrawBane.ENT_CORE,1);
+				Player.bag.addNewDrawBanePlayer(DrawBane.ENT_CORE);
+				return true;
+			}
+			if (food >= 2) {
+				extra.println("The food morphs!");
+				for (int left = food-1; left >= 0 ; left--) {
+					if (extra.chanceIn(3,4)) {//make a seeded plant
+						switch (extra.randRange(0,3)) {
+						case 0:
+							//can only make pumpkin with 2 'value', otherwise makes an apple
+							if (left > 0) {
+								Player.bag.addNewDrawBanePlayer(DrawBane.PUMPKIN);
+								Player.bag.addSeed(Seed.PUMPKIN);
+								left--;
+								break;
+							}
+						case 1:
+							Player.bag.addNewDrawBanePlayer(DrawBane.APPLE);
+							Player.bag.addSeed(Seed.APPLE);
+							break;
+						case 2:
+							Player.bag.addNewDrawBanePlayer(DrawBane.GARLIC);
+							Player.bag.addSeed(Seed.GARLIC);
+							break;
+						case 3:
+							Player.bag.addNewDrawBanePlayer(DrawBane.EGGCORN);
+							Player.bag.addSeed(Seed.EGGCORN);
+							break;
+						case 4:
+							Player.bag.addNewDrawBanePlayer(DrawBane.TRUFFLE);
+							Player.bag.addSeed(Seed.TRUFFLE);
+							break;
+						}
+					}else {
+						if (extra.chanceIn(1,4)) {//make a bee with honey
+							Player.bag.addNewDrawBanePlayer(DrawBane.HONEY);
+							Player.bag.addSeed(Seed.BEE);
+						}else {
+							//else, make meat
+							Player.bag.addNewDrawBanePlayer(DrawBane.MEAT);
+						}
+					}
+				}
+				return true;
+			}
 		}
-		if (eons > 0 && woods >= 2) {
-			transmute(DrawBane.WOOD,DrawBane.ENT_CORE,1);
-			Player.bag.addNewDrawBanePlayer(DrawBane.ENT_CORE);
-			return true;
-		}
+		
 		//transmutation ended, roll botching
 		if (extra.chanceIn(botch, 10)) {
 			Player.player.setFlask(new Potion(Effect.CURSE,1+filler));
@@ -393,7 +451,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		}
 		
 		//priority potions
-		if (bloods > 0 && virgins > 0) {
+		if (bloods > 0 && virgins > 0) {//note that a ceon stone will prevent this because virgins are food, not friends :D
 			Player.player.setFlask(new Potion(Effect.B_MARY,bloods+virgins+filler));
 			actualPotion();
 			return true;
@@ -446,8 +504,16 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		}
 		
 		//final chance for a normal stew
-		if (food >= 3 || extra.chanceIn(food,5)) {//chance of stew working even if not enough 'foods'
+		//if not all reagents are food, chance of failure, unless the ones that are food are the 'heavier' foods
+		if (food > 0 && extra.chanceIn(food,total)) {
 			Player.player.setFlask(new Potion(Effect.HEARTY,total+food+filler));
+			actualPotion();
+			return true;
+		}
+		
+		//but your stew was actually BEEEEES
+		if (honeys > 0) {
+			Player.player.setFlask(new Potion(Effect.BEES,total+food+filler));
 			actualPotion();
 			return true;
 		}
@@ -461,11 +527,14 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	public void actualPotion() {
 		Networking.sendStrong("PlayDelay|sound_potiondone|1|");
 		Networking.unlockAchievement("brew1");
-		extra.println("You finish brewing your potion, and put it in your flask... time to test it out!");
+		extra.println("You finish brewing your potion, and put it in your flask... now to test it out!");
 	}
 	
 	public void transmute(DrawBane from, DrawBane into,int count) {
 		extra.println("You manage to turn the "+from.getName()+" into " + (count > 1 ? count + " " : "") + into.getName()+"!");
+	}
+	public void transmute(String from, DrawBane into,int count) {
+		extra.println("You manage to turn the "+from+" into " + (count > 1 ? count + " " : "") + into.getName()+"!");
 	}
 	
 	public String listReagents() {
