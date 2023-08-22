@@ -168,7 +168,7 @@ public class GroveNode implements NodeType{
 		case 6:
 			Person old = RaceFactory.makeOld(holder.getLevel(madeNode)+2);
 			if (extra.chanceIn(1,3)) {
-				old.getBag().getDrawBanes().add(DrawBane.REPEL);
+				old.getBag().npcDrawBane(DrawBane.TELESCOPE);
 			}
 			holder.setStorage(madeNode, old);
 			break;

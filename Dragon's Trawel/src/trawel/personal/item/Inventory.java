@@ -27,12 +27,12 @@ import trawel.towns.World;
 
 /**
  * 
- * @author Brian Malone
+ * @author dragon
  * 2/8/2018
  * 
  * An inventory, which holds 5 armors, and a weapon, as wells as some money and aether.
  *
- * Must have all it's slot's filled, or else it will cause errors.
+ * Must have all it's slots filled when in personal use, or else it will cause errors.
  */
 public class Inventory implements java.io.Serializable{
 	
@@ -46,9 +46,12 @@ public class Inventory implements java.io.Serializable{
 	private Weapon hand;
 	private RaceID race;
 	private int raceMap;
+	/**
+	 * this list includes both drops (body flesh, parts) and held things, so only player can really use it
+	 */
 	private List<DrawBane> dbs = new ArrayList<DrawBane>();
-	private List<Seed> seeds = new ArrayList<Seed>();
-	public int dbMax = 3;
+	private List<Seed> seeds = null;
+	public static final int dbMax = 3;
 	public Person owner;
 	
 	//constructors
@@ -851,6 +854,22 @@ public class Inventory implements java.io.Serializable{
 		return dbs;
 	}
 	
+	public boolean hasDrawBane(DrawBane d) {
+		return dbs.contains(d);
+	}
+	
+	public List<DrawBane> getNothingPaddedDrawBanes() {
+		List<DrawBane> list = new ArrayList<DrawBane>();
+		while (list.size() < 3) {
+			list.add(DrawBane.NOTHING);
+		}
+		return list;
+	}
+	
+	public void npcDrawBane(DrawBane d) {
+		dbs.add(d);
+	}
+	
 	public DrawBane addNewDrawBane(DrawBane d) {
 		extra.println("You found - " + d.getName() + ": " + d.getFlavor());
 		if (Player.player.hasTrigger("db:"+d.name())) {
@@ -885,9 +904,7 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	public void displayDrawBanes() {
-		while (dbs.size() < dbMax) {
-			dbs.add(DrawBane.NOTHING);
-		}
+		
 		int i = 1;
 		for (DrawBane b: dbs) {
 			extra.println(i + " " + b.getName() + ": " + b.getFlavor());
@@ -974,23 +991,18 @@ public class Inventory implements java.io.Serializable{
 			return 0;
 		}
 		
-		
-		while (dbs.size() < (dbMax+ 1) ) {
-			dbs.add(DrawBane.NOTHING);
-		}
 		for (DrawBane db: dbs) {
 			if (db.equals(d)) {
 				i++;
 			}
 		}
-		//TODO: make ai nothings different
 		return i;
 		
 	}
 
 
 	public Seed getSeed() {
-		if (seeds.size() == 0) {
+		if (seeds == null || seeds.size() == 0) {
 			extra.println("You don't have any seeds!");
 			return null;
 		}
@@ -1006,6 +1018,9 @@ public class Inventory implements java.io.Serializable{
 
 
 	public void displaySeeds() {
+		if (seeds == null) {
+			return;
+		}
 		for (int i = 0; i < seeds.size(); i++) {
 			extra.println((i+1) + " " + seeds.get(i).toString().toLowerCase());
 		}
@@ -1014,7 +1029,16 @@ public class Inventory implements java.io.Serializable{
 
 
 	public void addSeed(Seed e) {
+		if (seeds == null) {
+			seeds = new ArrayList<Seed>();
+		}
 		seeds.add(e);
+		if (!owner.isPlayer()) {
+			if (seeds.size() > 6) {
+				seeds.remove(0);
+			}
+			return;
+		}
 		extra.println("You got the " + e.toString().toLowerCase() + "!");
 		while (seeds.size() > 6) {
 			extra.println("You have too many seeds. Choose one to remove!");

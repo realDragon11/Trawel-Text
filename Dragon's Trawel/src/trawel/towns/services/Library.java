@@ -124,7 +124,7 @@ public class Library extends Feature {
 						
 					});
 				}*/
-				if (Player.bag.getDrawBanes().contains(DrawBane.KNOW_FRAG)) {
+				if (Player.bag.hasDrawBane(DrawBane.KNOW_FRAG)) {
 					int frag_count = (int) Player.bag.getDrawBanes().stream().filter(db -> db == DrawBane.KNOW_FRAG).count();
 					list.add(new MenuSelect(){
 

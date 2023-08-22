@@ -34,13 +34,13 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	private double timePassed;
 	private int nextReset;
 	
-	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
+	public List<Quest> sideQuests = new ArrayList<Quest>();
 	
 	public MerchantGuild(String name){
 		this.name = name;
 		tutorialText = "Merchant's Guild.";
 		timePassed = extra.randRange(1,30);
-		nextReset = extra.randRange(4,30);
+		nextReset = extra.randRange(8,30);
 	}
 	
 	@Override
@@ -52,60 +52,106 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	public void go() {
 		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|store|Merchant Guild|");
-		DrawBane b = null;
-		extra.println("(current reputation: " + Player.player.merchantLevel+ ")");
-		extra.println("1 Donate Drawbanes.");
-		extra.println("2 Donate emerald. (You have " + Player.player.emeralds + ")");
-		extra.println("3 buy shipments with "+World.currentMoneyString());
-		extra.println("4 quest board");
-		extra.println("5 leave");
-		switch (extra.inInt(5)) {
-		case 2:
-			if (Player.player.emeralds > 0) {
-			Player.player.addMPoints(10);
-			extra.println("You donate an emerald.");
-			Player.player.emeralds--;
-			}else {
-				extra.println("You have no emeralds to donate.");
-			}
-			go();
-			break;
-		case 1: do {
-		extra.println("The merchants are willing to take supplies to increase your reputation. (current reputation: " + Player.player.merchantLevel+ ")");
-		b = Player.bag.discardDrawBanes(true);
-		if (b != null && b != DrawBane.NOTHING) {
-			Player.player.addMPoints(b.getMValue());
-		}else {
-			b = null;
-		}
-		}while (b != null);
-		go();
-		break;
-		case 3:
-			buyGShip();
-			go();
-			break;
-		case 4:
-			MerchantGuild mguild = this;
-			extra.menuGo(new MenuGenerator() {
+		
+		extra.menuGo(new MenuGenerator() {
 
-				@Override
-				public List<MenuItem> gen() {
-					List<MenuItem> mList = new ArrayList<MenuItem>();
-					
-					for (Quest q: sideQuests) {
-						mList.add(new QBMenuItem(q,mguild));
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return "Current Mechant Reputation: " + Player.player.merchantLevel+ ".";
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						int dCount = Player.bag.getDrawBanes().size();
+						return "Donate Drawbanes. (" +(dCount == 0 ? "none)" : dCount+")" );
 					}
-					for (QuestR qr: qrList) {
-						mList.add(new QRMenuItem(qr));
+
+					@Override
+					public boolean go() {
+						if (Player.bag.getDrawBanes().isEmpty()) {
+							extra.println("You have no drawbanes to donate!");
+							return false;
+						}
+						DrawBane b = null;
+						do{
+							extra.println("The merchants are willing to take supplies to increase your reputation. (current reputation: " + Player.player.merchantLevel+ ")");
+							b = Player.bag.discardDrawBanes(true);
+							if (b != null && b != DrawBane.NOTHING) {
+								Player.player.addMPoints(b.getMValue());
+							}else {
+								b = null;
+							}
+						}while (b != null);
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						if (Player.player.emeralds == 0) {
+							return "Donate Emerald. (none)";
+						}
+						return "Donate Emerald. ("+Player.player.emeralds+")";
 					}
-					mList.add(new MenuBack());
-					return mList;
-				}});
-			go();
-			break;
-		case 5: break; 
-		}
+
+					@Override
+					public boolean go() {
+						if (Player.player.emeralds > 0) {
+							Player.player.addMPoints(10);
+							extra.println("You donate an emerald.");
+							Player.player.emeralds--;
+						}else {
+							extra.println("You have no emeralds to donate.");
+						}
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Buy shipments with "+World.currentMoneyString()+".";
+					}
+
+					@Override
+					public boolean go() {
+						buyGShip();
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Quest Board.";
+					}
+
+					@Override
+					public boolean go() {
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> mList = new ArrayList<MenuItem>();
+								
+								for (Quest q: sideQuests) {
+									mList.add(new QBMenuItem(q,MerchantGuild.this));
+								}
+								for (QuestR qr: qrList) {
+									mList.add(new QRMenuItem(qr));
+								}
+								mList.add(new MenuBack());
+								return mList;
+							}});
+						return false;
+					}});
+				list.add(new MenuBack("leave"));
+				return list;
+			}});
 	}
 
 	private void buyGShip() {
@@ -120,24 +166,28 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 					public String title() {
 						return "You have " + Player.showGold();
 					}});
+				int passes = Player.player.merchantBookPasses;
+				//Exponential increase in price, starting at 10, then going to 15, then to 30, then to 55
+				int merchantBookPrice = 10+(5*(passes + passes));
 				mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "buy a shipment of books ("+World.currentMoneyDisplay(Player.player.merchantBookPrice)+")";
+						return "buy a shipment of books ("+World.currentMoneyDisplay(merchantBookPrice)+")";
 					}
 
 					@Override
 					public boolean go() {
-						if (Player.player.getGold() < Player.player.merchantBookPrice) {
+						if (Player.player.getGold() < merchantBookPrice) {
 							extra.println("You can't afford that many books!");
 							return false;
 						}
 						extra.println("Buying lots of books might find you a feat fragment- buy?");
 						if (extra.yesNo()) {
-							Player.player.addGold(-Player.player.merchantBookPrice);
-							if (extra.chanceIn(1, 2)) {
-								Player.player.merchantBookPrice*=1.5f;
+							Player.player.addGold(-merchantBookPrice);
+							//chance of success declines from 3/5ths to 1/2th as the number of passes approaches infinity
+							if (passes < 3 || extra.chanceIn(3+passes,5+(2*passes))) {
+								Player.player.merchantBookPasses++;
 								Player.bag.addNewDrawBane(DrawBane.KNOW_FRAG);
 							}else {
 								extra.println("There was nothing interesting in this batch.");
@@ -146,22 +196,23 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 						return false;
 					}
 				});
+				int bShipmentCost = (int) getUnEffectiveLevel()*2;
 				mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "buy a shipment of cheap beer ("+(20*(town.getTier())) +")";
+						return "buy a shipment of cheap beer ("+World.currentMoneyDisplay(bShipmentCost) +")";
 					}
 
 					@Override
 					public boolean go() {
-						if (Player.player.getGold() < 20*(town.getTier())) {
+						if (Player.player.getGold() < bShipmentCost) {
 							extra.println("You can't afford that many beers!");
 							return false;
 						}
-						extra.println("Beer increases your hp in battle, one use per beer- buy 20 of them?");
+						extra.println("Beer increases your starting HP in battle, one use per beer- buy 20 of them?");
 						if (extra.yesNo()) {
-							Player.player.addGold(-(20*(town.getTier())));
+							Player.player.addGold(-bShipmentCost);
 							Player.player.beer+=20;
 						}
 						return false;
@@ -189,7 +240,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 		timePassed += time;
 		if (timePassed > nextReset) {
 			timePassed = 0;
-			nextReset = extra.randRange(4,30);
+			nextReset = extra.randRange(8,30);
 			if (canQuest) {this.generateSideQuest();}
 		}
 		return null;

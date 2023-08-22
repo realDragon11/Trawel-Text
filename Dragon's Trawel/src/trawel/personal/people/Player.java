@@ -54,7 +54,7 @@ public class Player extends SuperPerson{
 	public int emeralds = 0, rubies = 0, sapphires = 0;
 	public float forceRelation = 0.0f;
 	public int forceRewardCount = 0;
-	public int merchantBookPrice = 100;
+	public int merchantBookPasses = 0;
 	
 	public double globalFindTime = 0;
 	

@@ -452,13 +452,10 @@ public class Forest extends Feature{
 				extra.print(extra.PRE_RED);
 				extra.println("A lumberjack is chopping down a tree! Attack them?");
 			}
-		/*}else {
-			
-		}*/
 			Person robber = RaceFactory.getLumberjack(tier);
 			robber.getBag().graphicalDisplay(1, robber);
 			if (extra.chanceIn(1, 3)) {
-			robber.getBag().getDrawBanes().add(DrawBane.ENT_CORE);}
+			robber.getBag().npcDrawBane(DrawBane.ENT_CORE);}
 		
 			extra.print(extra.PRE_RED);
 		if (extra.yesNo()) {
