@@ -1627,6 +1627,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		effects.clear();//will need to be more complex if there ever are positive longterm effects
 	}
 	
+	/**
+	 * currently includes all effects, even removed ones, since last clear
+	 */
 	public int effectsSize() {
 		return effects.size(); 
 	}

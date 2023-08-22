@@ -14,15 +14,21 @@ public class Doctor extends Feature {
 
 	private static final long serialVersionUID = 1L;
 
+	private double timecounter;
 	public Doctor(String name,Town t) {
+		timecounter = extra.randRange(5,10);
 		this.name = name;
 		town = t;
 		tier = t.getTier();
-		tutorialText = "Doctor.";
 	}
 	@Override
 	public String getColor() {
 		return extra.F_SERVICE;
+	}
+	
+	@Override
+	public String getTutorialText() {
+		return "Doctor.";
 	}
 	
 	@Override
@@ -31,7 +37,9 @@ public class Doctor extends Feature {
 		Networking.sendStrong("Discord|imagesmall|doctor|Doctor|");
 		String mstr = World.currentMoneyString();
 		int dcost = (int) (getUnEffectiveLevel());
-		int cost = (int) (getUnEffectiveLevel()*Math.min(3,Player.player.getPerson().effectsSize())*3);
+		//includes effects that already wore off, which simulates a 'checkup' mechanic vaguely
+		int effectGuess = extra.clamp(Player.player.getPerson().effectsSize(), 3, 6);
+		int cost = 1+(int) (getUnEffectiveLevel()*(effectGuess*3));
 		extra.println(mstr+": " +Player.player.getGold());
 		extra.println("1 diagnosis (" + dcost+" "+mstr+")");
 		extra.println("2 cure (" + cost+" "+mstr+")");
@@ -58,6 +66,14 @@ public class Doctor extends Feature {
 
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
+		timecounter-=time;
+		if (timecounter <= 0) {
+			int price = (int) (2*getUnEffectiveLevel());
+			//must have been afflicted by at least one effect since last doctor visit/creation
+			town.getPersonableOccupants().filter(a -> a.getPerson().effectsSize() > 0 && a.canBuyMoneyAmount(price)).limit(3)
+			.forEach(a -> a.getPerson().cureEffects());
+			timecounter += extra.randRange(20,40);
+		}
 		return null;
 	}
 
