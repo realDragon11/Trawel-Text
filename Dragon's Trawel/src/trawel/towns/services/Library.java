@@ -130,7 +130,7 @@ public class Library extends Feature {
 
 						@Override
 						public String title() {
-							return "study knowledge fragments (have: "+frag_count+")";
+							return "study feat fragments (have: "+frag_count+")";
 						}
 
 						@Override
@@ -150,9 +150,9 @@ public class Library extends Feature {
 								got++;
 							}
 							extra.println("You are now " + Player.player.strKnowFrag());
-							DrawBane gain = BasicSideQuest.attemptCollectAlign(QKey.KNOW_ALIGN,got*.5f,3+got);
+							DrawBane gain = BasicSideQuest.attemptCollectAlign(QKey.KNOW_ALIGN,got*.5f,2*got);
 							if (gain != null) {
-								extra.println("You find "+(3+got)+" " + gain.getName() + " pieces while studying!");
+								extra.println("You find "+(2*got)+" " + gain.getName() + " pieces while studying!");
 							}
 							return false;
 						}

@@ -740,7 +740,7 @@ public class BasicSideQuest implements Quest{
 			break;
 		case KNOW_FRAG:
 			q.count = 20;
-			q.qKeywords.add(QKey.KNOW_ALIGN);
+			q.qKeywords.add(QKey.KNOW_ALIGN);//can get this from turning in fragments, but not that many
 			break;
 		case PUMPKIN:
 			q.count = 3;

@@ -133,7 +133,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 							extra.println("You can't afford that many books!");
 							return false;
 						}
-						extra.println("Buying lots of books might increase your knowledge- buy?");
+						extra.println("Buying lots of books might find you a feat fragment- buy?");
 						if (extra.yesNo()) {
 							Player.player.addGold(-Player.player.merchantBookPrice);
 							if (extra.chanceIn(1, 2)) {
