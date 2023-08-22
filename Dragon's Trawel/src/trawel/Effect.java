@@ -11,7 +11,7 @@ public enum Effect{
 	RECOVERING("Recovering","Will regain 5% LHP as healing soon.",false,false),
 	I_BLEED("Bleeding Inside","Takes up to 2% LHP damage after each of their attacks. Stacks.",false,true),
 	TORN("Torn","Decreases dodging by 10% compounding per stack.",false,true), 
-	HASTE("Haste","+10% speed stat.",false,false), 
+	HASTE("Haste","+5% speed stat.",false,false), 
 	HEARTY("Hearty","+5% LHP at battle start. Doesn't stack with Forged.",false,false), 
 	R_AIM("Reactive Aim","Upon taking attack damage, if currently attacking, their attack gains a percent bonus to hit roll equal to the percent of MHP they lost.",false,false),
 	BEES("BEEEES","Bees sting them occasionally, dealing random damage between 1 flat and 4% LHP.",true,false),

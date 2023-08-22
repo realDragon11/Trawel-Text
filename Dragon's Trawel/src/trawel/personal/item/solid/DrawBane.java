@@ -17,14 +17,16 @@ public enum DrawBane {
 	GARLIC("garlic","Used to repel vampires. Edible.",1,.3,true),
 	SILVER("silver","A shiny metal of decent value. Alchemists have given up trying to transmute other metals into gold.",5,2,true),
 	MEAT("meat","A cut of meat. Slightly edible.",1,.5,true),
-	CEON_STONE("eon stone","A cracked stone with infinite choices- all are terrible.",4,3,true),
+	CEON_STONE("eon stone","A cracked stone with infinite choices- all are terrible. Useful for transmutation.",4,3,true),
 	NOTHING("nothing","Empty slot.",0,0,false),
 	PROTECTIVE_WARD("protective ward","Used to ward off monsters and other maladies when on the roads.",5,4,false),
 	ENT_CORE("ent heartwood","The central core of a living tree. Brew it!",4,2,true),
 	BLOOD("blood","A vial of blood. Brew it!",1,.1,true),
 	REPEL("beast repellant","Repels wolves, bears, and other mostly mundane creatures.",3,1,false),
+	//bat wing not edible
 	BAT_WING("bat wing","A flappy appendage torn from a bat. Brew it!",1,.4,true),
-	MIMIC_GUTS("mimic guts","A witch's reagent. Has slight intrinsic value.",1,.75,true),
+	//mimic guts not edible
+	MIMIC_GUTS("mimic guts","An alternative reward from a treasure chest. Brew it!",1,.75,true),
 	CLEANER("cloth","Discard to clean blood off of your equipment.",1,0,false),
 	APPLE("apple","Used to increase potion thickness, but might turn it into a stew instead. Edible.",1,.3,true),
 	WOOD("wood","A good building resource. Can be used to build potion thickness, but risks a botch.",1,.3,true),

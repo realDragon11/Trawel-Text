@@ -344,6 +344,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		
 		
 		meats += virgins*3;
+		bloods += meats;
 		int botch = woods;
 		int filler = apples + woods + waxs;
 		woods += ents;//ent core doesn't add botch/filler but does add normal wood
@@ -358,7 +359,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			filler+=1;
 		}
 		//section used for transmutation
-		if (ents > 0 && meats > 1) {
+		if (ents > 0 && meats >= 2) {
 			Person fGolem = RaceFactory.getFleshGolem(
 					(Player.player.getPerson().getLevel()+town.getTier())/2//near the player and town level
 					);
@@ -368,29 +369,32 @@ public class WitchHut extends Store implements QuestBoardLocation{
 				getTown().getIsland().getWorld().addReoccuring(new Agent(fGolem,AgentGoal.SPOOKY));
 			}else {
 				Player.bag.addNewDrawBanePlayer(DrawBane.SINEW);
+				//you get sinew even if you lose. Note that the golem has a beating heart drawbane always
 			}
-			return true;
-		}
-		if (bloods > 0 && virgins > 0) {
-			Player.player.setFlask(new Potion(Effect.B_MARY,bloods+virgins+filler));
-			actualPotion();
 			return true;
 		}
 		if (eons > 0 && silvers > 0) {
+			transmute(DrawBane.SILVER,DrawBane.GOLD,silvers);
 			for (int i = 0; i < silvers;i++) {
 				Player.bag.addNewDrawBanePlayer(DrawBane.GOLD);
 			}
-			transmute(DrawBane.SILVER,DrawBane.GOLD,silvers);
 			return true;
 		}
-		if (eons > 0 && woods > 1) {
-			Player.bag.addNewDrawBanePlayer(DrawBane.ENT_CORE);
+		if (eons > 0 && woods >= 2) {
 			transmute(DrawBane.WOOD,DrawBane.ENT_CORE,1);
+			Player.bag.addNewDrawBanePlayer(DrawBane.ENT_CORE);
 			return true;
 		}
 		//transmutation ended, roll botching
 		if (extra.chanceIn(botch, 10)) {
 			Player.player.setFlask(new Potion(Effect.CURSE,1+filler));
+			actualPotion();
+			return true;
+		}
+		
+		//priority potions
+		if (bloods > 0 && virgins > 0) {
+			Player.player.setFlask(new Potion(Effect.B_MARY,bloods+virgins+filler));
 			actualPotion();
 			return true;
 		}
@@ -415,19 +419,23 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		}
 		
 		//section used for normal potions
-		if (mGuts > 0 && telescopes >0) {
-			Player.player.setFlask(new Potion(Effect.TELESCOPIC,mGuts+telescopes+filler));
-			actualPotion();
-			return true;
-		}
-		if (mGuts > 0 && batWings >0) {
-			Player.player.setFlask(new Potion(Effect.R_AIM,batWings+mGuts+filler));
-			actualPotion();
-			return true;
-		}
-		
-		if (bloods > 0 && grave_subtance > 1) {
+		if (bloods > 0 && grave_subtance >= 2) {
 			Player.player.setFlask(new Potion(Effect.CLOTTER,lflames+food+filler));
+			actualPotion();
+			return true;
+		}
+		if (batWings > 0 && telescopes >0) {
+			Player.player.setFlask(new Potion(Effect.TELESCOPIC,batWings+telescopes+filler));
+			actualPotion();
+			return true;
+		}
+		if (mGuts > 0 && telescopes >0) {
+			Player.player.setFlask(new Potion(Effect.R_AIM,telescopes+mGuts+filler));
+			actualPotion();
+			return true;
+		}
+		if (mGuts > 0 && batWings > 0) {
+			Player.player.setFlask(new Potion(Effect.SUDDEN_START,mGuts+batWings+filler));
 			actualPotion();
 			return true;
 		}

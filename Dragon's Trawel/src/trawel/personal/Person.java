@@ -1831,7 +1831,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 
 	public double getSpeed() {
-		return getBag().getSpeed() + (hasEffect(Effect.HASTE) ? 0.1 : 0 );
+		return getBag().getSpeed() + (hasEffect(Effect.HASTE) ? 0.05 : 0 );
 	}
 
 	public TypeBody getBodyType() {

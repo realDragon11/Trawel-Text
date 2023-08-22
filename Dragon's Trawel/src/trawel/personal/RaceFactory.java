@@ -1106,6 +1106,7 @@ public class RaceFactory {
 		//cannot get wealth
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.GENERIC_FISTS));
 		w.getBag().addDrawBaneSilently(DrawBane.BEATING_HEART);
+		w.getBag().addDrawBaneSilently(DrawBane.SINEW);
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomFirstName());
 		//w.targetOverride = TargetFactory.TargetType.HUMANOID;
