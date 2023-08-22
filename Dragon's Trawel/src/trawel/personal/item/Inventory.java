@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import derg.menus.MenuItem;
+import derg.menus.MenuLast;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
@@ -867,10 +868,10 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	public DrawBane addNewDrawBanePlayer(DrawBane d) {
-		return handleDrawBane(d,false,"discard");
+		return handleDrawBane(d,false,"replace");
 	}
 	
-	private DrawBane handleDrawBane(DrawBane d, boolean offering, String offerText) {
+	private DrawBane handleDrawBane(DrawBane d, boolean offering, String text) {
 		int oldSize = dbs.size();
 		if (d != null) {
 			extra.println("You found - " + d.getName() + ": " + d.getFlavor());
@@ -890,7 +891,7 @@ public class Inventory implements java.io.Serializable{
 
 					@Override
 					public String title() {
-						return extra.capFirst(offerText)+" " +b.getName() + ": " + b.getFlavor();
+						return extra.capFirst(text)+" " +b.getName() + ": " + b.getFlavor();
 					}
 
 					@Override
@@ -903,7 +904,22 @@ public class Inventory implements java.io.Serializable{
 
 			@Override
 			public List<MenuItem> header() {
-				return null;
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				if (d != null && oldSize < dbMax) {//we have the new element already
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Take "+d.getName()+".";
+						}
+
+						@Override
+						public boolean go() {
+							//already added
+							return true;
+						}});
+				}
+				return list;
 			}
 
 			@Override
@@ -915,15 +931,15 @@ public class Inventory implements java.io.Serializable{
 
 							@Override
 							public String title() {
-								return "You have no DrawBanes to "+offerText+".";
+								return "You have no DrawBanes to "+text+".";
 							}});
 					}
 					
-					list.add(new MenuSelect() {
+					list.add(new MenuLast() {
 						
 						@Override
 						public String title() {
-							return extra.capFirst(offerText)+" nothing.";
+							return extra.capFirst(text)+" nothing.";
 						}
 
 						@Override
@@ -931,25 +947,12 @@ public class Inventory implements java.io.Serializable{
 							return true;
 						}});
 				}else {
-					if (oldSize < dbMax) {//we have the new element already
-						list.add(new MenuSelect() {
-	
-							@Override
-							public String title() {
-								return "Keep all.";
-							}
-	
-							@Override
-							public boolean go() {
-								//already added
-								return true;
-							}});
-					}
-					list.add(new MenuSelect() {
+					list.add(new MenuLast() {
 	
 						@Override
 						public String title() {
-							return "Discard new " + d.getName()+".";
+							return (offering ? extra.capFirst(text) : "Discard")
+									+" new " + d.getName()+".";
 						}
 	
 						@Override
@@ -983,6 +986,9 @@ public class Inventory implements java.io.Serializable{
 	 * @paremt rejection text, use %s to replace. null permitted
 	 */
 	public void giveBackDrawBane(DrawBane d,String rejectText) {
+		if (d == null) {
+			return;
+		}
 		if (rejectText != null) {
 			extra.println(String.format(rejectText,d.getName()));
 		}
@@ -997,7 +1003,7 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	public DrawBane playerOfferDrawBane(String offerText) {
-		return handleDrawBane(null,false,offerText);
+		return handleDrawBane(null,true,offerText);
 	}
 
 
