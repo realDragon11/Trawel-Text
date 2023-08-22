@@ -81,7 +81,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 						DrawBane b = null;
 						do{
 							extra.println("The merchants are willing to take supplies to increase your reputation. (current reputation: " + Player.player.merchantLevel+ ")");
-							b = Player.bag.playerDiscardDrawBanes(true);
+							b = Player.bag.playerOfferDrawBane("donate");
 							if (b != null && b != DrawBane.NOTHING) {
 								Player.player.addMPoints(b.getMValue());
 							}else {

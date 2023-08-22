@@ -71,7 +71,7 @@ public class FortFoundation extends FortFeature {
 
 					@Override
 					public boolean go() {
-						DrawBane db = Player.bag.playerDiscardDrawBanes(true);
+						DrawBane db = Player.bag.playerOfferDrawBane("use");
 						switch(db) {
 						case CEON_STONE:
 							if (size == 3) {

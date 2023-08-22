@@ -207,12 +207,12 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 						@Override
 						public boolean go() {
-							DrawBane inter = Player.bag.playerDiscardDrawBanes(true);
+							DrawBane inter = Player.bag.playerOfferDrawBane("mix in");
 							if (inter != null && inter.getCanBrew()) {
 								reagents.add(inter);
 								Networking.sendStrong("PlayDelay|sound_potionmake"+extra.randRange(1,2)+"|1|");
 							}else {
-								extra.println("You can't add that!");
+								Player.bag.giveBackDrawBane(inter,"%s isn't brewable!");
 							}
 							return false;
 						}});

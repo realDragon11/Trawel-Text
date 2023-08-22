@@ -106,7 +106,7 @@ public class Altar extends Feature{
 	}
 	
 	private void sacrifice() {
-		DrawBane inter = Player.bag.playerDiscardDrawBanes(true);
+		DrawBane inter = Player.bag.playerOfferDrawBane("sacrifice");
 		boolean specialInteraction = false;
 		if (inter != null && !inter.equals(DrawBane.NOTHING)) {
 			switch (inter) {

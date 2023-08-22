@@ -3,6 +3,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import derg.menus.MenuItem;
+import derg.menus.MenuLine;
+import derg.menus.MenuSelect;
+import derg.menus.ScrollMenuGenerator;
 import trawel.Effect;
 import trawel.Networking;
 import trawel.extra;
@@ -51,7 +55,7 @@ public class Inventory implements java.io.Serializable{
 	 */
 	private List<DrawBane> dbs = new ArrayList<DrawBane>();
 	private List<Seed> seeds = null;
-	public static final int dbMax = 3;
+	public static final int dbMax = 4;
 	public Person owner;
 	
 	//constructors
@@ -863,29 +867,119 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	public DrawBane addNewDrawBanePlayer(DrawBane d) {
-		extra.println("You found - " + d.getName() + ": " + d.getFlavor());
-		if (Player.player.hasTrigger("db:"+d.name())) {
-			extra.println("You have a quest for this DrawBane, discarding it will grant progress.");
+		return handleDrawBane(d,false,"discard");
+	}
+	
+	private DrawBane handleDrawBane(DrawBane d, boolean offering, String offerText) {
+		int oldSize = dbs.size();
+		if (d != null) {
+			extra.println("You found - " + d.getName() + ": " + d.getFlavor());
+			if (Player.player.hasTrigger("db:"+d.name())) {
+				extra.println("You have a quest for this DrawBane, discarding it will grant progress.");
+			}
+			dbs.add(d);//add immediately
 		}
-		this.displayDrawBanes();
-		extra.println((dbMax+ 2) +" discard.");
-		int in = extra.inInt((dbMax+ 2));
-		if (in == (dbMax+ 2)) {
-			Player.player.questTrigger(TriggerType.CLEANSE,"db:"+d.name(),15);
-			return null;
-		}
-		dbs.add(d);
-		DrawBane b = dbs.remove(in-1);
-		if (Player.player.hasTrigger("db:"+b.name())) {
-			Player.player.questTrigger(TriggerType.CLEANSE,"db:"+b.name(),15);
+		final DrawBane[] ret = new DrawBane[] {null};
+		extra.menuGo(new ScrollMenuGenerator(oldSize, "previous <> drawbanes", "next <> drawbanes") {
+
+			@Override
+			public List<MenuItem> forSlot(int i) {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				DrawBane b = dbs.get(i);
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return extra.capFirst(offerText)+" " +b.getName() + ": " + b.getFlavor();
+					}
+
+					@Override
+					public boolean go() {
+						ret[0] = dbs.remove(i);
+						return true;
+					}});
+				return list;
+			}
+
+			@Override
+			public List<MenuItem> header() {
+				return null;
+			}
+
+			@Override
+			public List<MenuItem> footer() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				if (d == null) {
+					if (oldSize == 0) {
+						list.add(new MenuLine() {
+
+							@Override
+							public String title() {
+								return "You have no DrawBanes to "+offerText+".";
+							}});
+					}
+					
+					list.add(new MenuSelect() {
+						
+						@Override
+						public String title() {
+							return extra.capFirst(offerText)+" nothing.";
+						}
+
+						@Override
+						public boolean go() {
+							return true;
+						}});
+				}else {
+					if (oldSize < dbMax) {//we have the new element already
+						list.add(new MenuSelect() {
+	
+							@Override
+							public String title() {
+								return "Keep all.";
+							}
+	
+							@Override
+							public boolean go() {
+								//already added
+								return true;
+							}});
+					}
+					list.add(new MenuSelect() {
+	
+						@Override
+						public String title() {
+							return "Discard new " + d.getName()+".";
+						}
+	
+						@Override
+						public boolean go() {
+							ret[0] = dbs.remove(dbs.size()-1);
+							return true;
+						}});
+				}
+				return list;
+			}});
+		DrawBane b = ret[0];
+		if (b != null && !offering) {
+			playerDiscardDrawBaneCleanup(b);
 			return null;
 		}
 		return b;
 	}
 	
+	private void playerDiscardDrawBaneCleanup(DrawBane d) {
+		if (Player.player.hasTrigger("db:"+d.name())) {
+			Player.player.questTrigger(TriggerType.CLEANSE,"db:"+d.name(),15);
+		}
+		if (d == DrawBane.CLEANER) {
+			washAll();
+		}
+	}
+	
 	/**
 	 * used only for when a player presents a drawbane, and it isn't wanted
-	 * @param db
+	 * @param d
 	 * @paremt rejection text, use %s to replace. null permitted
 	 */
 	public void giveBackDrawBane(DrawBane d,String rejectText) {
@@ -895,39 +989,15 @@ public class Inventory implements java.io.Serializable{
 		dbs.add(d);
 	}
 	
-	public void displayDrawBanes() {
-		int i = 1;
-		for (DrawBane b: dbs) {
-			extra.println(i + " " + b.getName() + ": " + b.getFlavor());
-			i++;
-		}
-		
-	}
 	/**
-	 * selling is when it's not getting thrown away, but used
-	 * @param selling
-	 * @return
+	 * use when not offering to something else
 	 */
-	public DrawBane playerDiscardDrawBanes(boolean selling) {
-		this.displayDrawBanes();
-		extra.println((dbMax+ 2)+" keep");
-		int in = extra.inInt((dbMax+ 2) );
-		if (in == (dbMax+ 2) ) {
-			return null;
-		}
-		DrawBane b = dbs.remove(in-1);
-		if (!selling) {
-			if (Player.player.hasTrigger("db:"+b.name())) {
-				Player.player.questTrigger(TriggerType.CLEANSE,"db:"+b.name(),15);
-				return null;
-			}
-			
-			if (b == DrawBane.CLEANER) {
-				this.washAll();
-			}
-			return null;
-		}
-		return b;
+	public DrawBane playerDiscardDrawBane() {
+		return handleDrawBane(null,false,"discard");
+	}
+	
+	public DrawBane playerOfferDrawBane(String offerText) {
+		return handleDrawBane(null,false,offerText);
 	}
 
 

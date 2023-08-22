@@ -201,7 +201,7 @@ public class Store extends Feature{
 		Inventory bag = p.getBag();
 		if (type == 8 || type == 9) {
 			if (index == -1) {
-				DrawBane sellItem = bag.playerDiscardDrawBanes(true);
+				DrawBane sellItem = bag.playerOfferDrawBane("sell");
 				if (sellItem != null) {
 					Services.sellItem(sellItem, bag);
 				}
