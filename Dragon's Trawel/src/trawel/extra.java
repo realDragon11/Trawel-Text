@@ -1242,6 +1242,19 @@ public final class extra {
 			final long allon = ~(0b0);
 			return  ((~((allon << start_offset) & (allon >>> (64-(start_offset+length)))) & l) | (toSet) << (start_offset));
 		}
+		/**
+		 * see setXInLong for more details
+		 * <BR>
+		 * WARNING: if you use a binary literal to create the int,
+		 * it MUST have the first bit be a 0. If it is a 1,
+		 * just pad it with a leading 0,
+		 * <br>
+		 * always remember to set what this returns! (l parameter) it can't know where to put it!
+		 */
+		public static int setXInInt(final int l,final int length,final int start_offset, final int toSet) {
+			final int allon = ~(0b0);
+			return  ((~((allon << start_offset) & (allon >>> (32-(start_offset+length)))) & l) | (toSet) << (start_offset));
+		}
 		
 		/**
 		 * with my insane commentary
@@ -1310,6 +1323,21 @@ public final class extra {
 			}*/
 			return setXInLong(l,8,number_of_byte*8,toset);
 		}
+		/**
+		 * see disclaimers in 'setXInLong', this just wraps setXInInt through setByteInInt
+		 * <br>
+		 * b must be a short, int, or long, due to unsigned issues
+		 * <br>
+		 * 0 <= num <= 7 (0 indexed)
+		 */
+		public static int setNthByteInInt(final int l,final int toset, final int number_of_byte) {
+			assert toset <= 255;
+			assert toset >= 0;
+			/*if (toset > Byte.MAX_VALUE) {
+				toset-=Byte.MAX_VALUE;
+			}*/
+			return setXInInt(l,8,number_of_byte*8,toset);
+		}
 		
 		/**
 		 * returns it as a NUMBER in an int. (0 indexed)
@@ -1321,6 +1349,16 @@ public final class extra {
 		    final long rightShifted = l >>> number_of_byte*8;
 		    final long mask = (1L << 8) - 1L;
 		    return (int) (rightShifted & mask);
+		}
+		
+		/**
+		 * returns it as a NUMBER in an int. (0 indexed)
+		 * <br>
+		 * effectively reads the byte as unsigned
+		 */
+		public static int intGetNthByteFromInt(final int l, final int number_of_byte)
+		{//doesn't need to be different
+			return intGetNthByteFromLong(l,number_of_byte);
 		}
 		
 		/**

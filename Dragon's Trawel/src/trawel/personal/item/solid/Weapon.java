@@ -39,7 +39,15 @@ public class Weapon extends Item implements IEffectiveLevel {
 	private WeaponType weap;
 	private int material;
 	private int kills;
-	private float bsCon = -1, bsIpt, bsAvg, bsWgt;//these don't need to update for internal weapons
+	private float bsIpt = -1, bsAvg, bsWgt;//these don't need to update for internal weapons
+	/**
+	 * packed int
+	 * <br>
+	 * 1st byte = average, unused
+	 * 2nd byte = highest
+	 * 3rd byte = lowest
+	 */
+	private int bsCon = 0;
 	//is lazy inited again
 	
 	private Set<WeaponQual> qualList = EnumSet.noneOf(WeaponQual.class);
@@ -346,13 +354,19 @@ public class Weapon extends Item implements IEffectiveLevel {
 			total += dam;
 			weighted += dam*stance.getWeight(i);
 		}
+		//double average = 0;
 		double highest = 0;
+		double lowest = 1;//100%
 		for (int h = size-1; h >= 0 ;h--) {
-			if (highest < contributions[h]) {
-				highest = contributions[h];
+			double normed = contributions[h]/total;
+			//average += normed;
+			if (highest < normed) {
+				highest = normed;
+			}
+			if (lowest > normed) {
+				lowest = normed;
 			}
 		}
-		highest /= total;
 		
 		int subTests = battleTests*WorldGen.getDummyInvs().size();
 		int totalTests = size*subTests;
@@ -360,7 +374,11 @@ public class Weapon extends Item implements IEffectiveLevel {
 		//the above battlescore assumes equal armor
 		//so we put the effective level in now to make it higher
 		//TODO: unsure if the natural allowed damage increase will be enough to signal a weapon as better to a player/AI
-		this.bsCon = (float)(highest);//(float) (high*level);
+		//int conAssembler = extra.setNthByteInInt(0b0, (int)(average*(100)), 0);
+		int conAssembler = extra.setNthByteInInt(0b0, (int)(highest*(100)), 1);
+		conAssembler = extra.setNthByteInInt(conAssembler, (int)(lowest*(100)), 2);
+		
+		this.bsCon = conAssembler;//(float) (high*level);
 		this.bsAvg = (float)((levelAdjust*total)/totalTests);//(float) (average*level);
 		this.bsIpt = impactChance/(float)totalTests;
 		this.bsWgt = (float) ((levelAdjust*weighted)/subTests);
@@ -381,28 +399,40 @@ public class Weapon extends Item implements IEffectiveLevel {
 		}
 	}
 	
-	public double scoreHighestContribution() {
-		if (bsCon == -1) {
+	/**
+	 * 0-100
+	 */
+	public int scoreHighestContribution() {
+		if (bsIpt == -1) {
 			refreshBattleScore();
 		}
-		return this.bsCon;
+		return extra.intGetNthByteFromInt(bsCon, 1);
+	}
+	/**
+	 * 0-100
+	 */
+	public int scoreLowestContribution() {
+		if (bsIpt == -1) {
+			refreshBattleScore();
+		}
+		return extra.intGetNthByteFromInt(bsCon, 2);
 	}
 	
 	public double scoreImpact() {
-		if (bsCon == -1) {
+		if (bsIpt == -1) {
 			refreshBattleScore();
 		}
 		return this.bsIpt;
 	}
 	
 	public double scoreWeight() {
-		if (bsCon == -1) {
+		if (bsIpt == -1) {
 			refreshBattleScore();
 		}
 		return this.bsWgt;
 	}
 	public double scoreAverage() {
-		if (bsCon == -1) {
+		if (bsIpt == -1) {
 			refreshBattleScore();
 		}
 		return this.bsAvg;
@@ -437,13 +467,16 @@ public class Weapon extends Item implements IEffectiveLevel {
 			}
 			;break;
 		case 2://Appraiser/full self on stat
-			extra.println(this.getName()
-			+ " highest contribution: " + extra.formatPerSubOne(this.scoreHighestContribution())
+			//by dividing it later we implicitly mult it by 100x to get it to display as a whole number
+			float expectedAverage = (1f/getMartialStance().getAttackCount());
+			extra.println(this.getName() +"="
+			+ " highest contribution: " +extra.F_WHOLE.format(scoreHighestContribution()/expectedAverage) +"% of equity"
+			+ " lowest contribution: " +extra.F_WHOLE.format(scoreLowestContribution()/expectedAverage) +"% of equity"
 			+ " impact chance: " + extra.formatPerSubOne(this.scoreImpact())
 			+ " average damage: " + extra.format(this.scoreAverage())
 			+ " weighted average damage: " + extra.format(this.scoreWeight())
 			+" aether: " + (int)(this.getAetherValue()*markup)
-			+ " kills: " +this.getKills());
+			+ " infused kills: " +this.getKills());
 			
 			if (this.isEnchantedConstant()) {
 				this.getEnchant().display(2);
