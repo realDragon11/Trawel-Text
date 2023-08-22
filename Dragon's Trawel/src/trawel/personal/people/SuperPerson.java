@@ -569,7 +569,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	}
 	
 	public void addFlaskUses(byte b) {
-		flask.sips= (byte) Math.max(20,flask.sips+b);
+		flask.sips= (byte) Math.min(20,flask.sips+b);
 	}
 	
 	public void spoilPotion() {

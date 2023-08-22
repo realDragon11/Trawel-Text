@@ -237,6 +237,13 @@ public class WitchHut extends Store implements QuestBoardLocation{
 						boolean ret = finishBrew();
 						if (ret) {
 							reagents.clear();
+							//to make it harder to figure out what you just made without trying it out or with a skill
+							//mess up the count of how many charges you have slightly
+							if (Player.player.getFlashUses() < 3) {
+								Player.player.addFlaskUses((byte) extra.randRange(1,3));
+							}else {
+								Player.player.addFlaskUses((byte) extra.randRange(-1,4));
+							}
 						}
 						return ret;
 					}});
@@ -352,9 +359,10 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		bloods += meats;
 		int botch = woods;
 		int filler = apples + woods + waxs;
+		int foodless_filler = woods + waxs;//does not add in filler that are food, to inflate food sizes less
 		woods += ents;//ent core doesn't add botch/filler but does add normal wood
 		int grave_subtance = gravedirts*2 + gravedusts;
-		int food = meats + apples + garlics + honeys + (3*pumpkins) + eggcorns+truffles + virgins;//virgin counts 4x due to meat
+		int food = meats + apples + garlics + honeys + (2*pumpkins) + eggcorns+truffles + virgins;//virgin counts 4x due to meat
 		int total = reagents.size();
 		
 		if (Player.hasSkill(Skill.P_BREWER)) {
@@ -471,7 +479,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		//'stew chance', any potion with food as an ingredient that isn't above
 		//might turn into HEARTY even if it would be something else
 		if (food >= 1 && extra.chanceIn(food,20)) {
-			Player.player.setFlask(new Potion(Effect.HEARTY,total+food+filler));
+			Player.player.setFlask(new Potion(Effect.HEARTY,total+food+foodless_filler));
 			actualPotion();
 			return true;
 		}
@@ -506,20 +514,20 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		//final chance for a normal stew
 		//if not all reagents are food, chance of failure, unless the ones that are food are the 'heavier' foods
 		if (food > 0 && extra.chanceIn(food,total)) {
-			Player.player.setFlask(new Potion(Effect.HEARTY,total+food+filler));
+			Player.player.setFlask(new Potion(Effect.HEARTY,total+food+foodless_filler));
 			actualPotion();
 			return true;
 		}
 		
 		//but your stew was actually BEEEEES
 		if (honeys > 0) {
-			Player.player.setFlask(new Potion(Effect.BEES,total+food+filler));
+			Player.player.setFlask(new Potion(Effect.BEES,total+food+foodless_filler));
 			actualPotion();
 			return true;
 		}
 		
 		//failed all, so curse
-		Player.player.setFlask(new Potion(Effect.CURSE,1+filler));
+		Player.player.setFlask(new Potion(Effect.CURSE,1+total+filler));
 		actualPotion();
 		return true;
 	}
