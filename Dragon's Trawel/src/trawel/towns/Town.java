@@ -562,7 +562,7 @@ public class Town extends TContextOwner{
 					Player.player.getPerson().getBag().display(1);
 				extra.println("You have " + Player.player.emeralds + " emeralds, " + Player.player.rubies +" rubies, and " + Player.player.sapphires +" sapphires.");
 				;break;
-				case 2: Player.player.getPerson().getBag().discardDrawBanes(false);break;
+				case 2: Player.player.getPerson().getBag().playerDiscardDrawBanes(false);break;
 				case 3: WorldGen.pathToUnun();
 				if (Player.player.getCheating()) {
 					extra.println("Advance time a lot?");

@@ -75,7 +75,7 @@ public class HeroGuild extends Feature {
 							if (cost <= spenda) {
 								Player.player.hSpentOnKno += cost;
 								Player.player.factionSpent.addFactionRep(Faction.HEROIC,cost,0);
-								Player.bag.addNewDrawBane(DrawBane.KNOW_FRAG);
+								Player.bag.addNewDrawBanePlayer(DrawBane.KNOW_FRAG);
 							}else {
 								extra.println("You do not have enough spendable reputation.");
 								break;

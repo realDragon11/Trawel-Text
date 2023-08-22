@@ -915,7 +915,7 @@ public class RaceFactory {
 		p.setTitle(randomLists.randomOldTitle());
 		p.hTask = HostileTask.DUEL;
 		if (extra.chanceIn(1,8)) {
-			p.getBag().npcDrawBane(DrawBane.KNOW_FRAG);
+			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
 		}
 		p.liteSetSkillHas(Archetype.ARMORMASTER);
 		p.finishGeneration();
@@ -937,7 +937,7 @@ public class RaceFactory {
 		Person w = Person.animal(level, RaceID.B_WOLF, MaterialFactory.getMat("hide"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
 		if (extra.chanceIn(1,5)) {
-			w.getBag().npcDrawBane(DrawBane.MEAT);
+			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		}
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomWolfName());
@@ -951,7 +951,7 @@ public class RaceFactory {
 		Person w = Person.animal(level, RaceID.B_WOLF, MaterialFactory.getMat("hide"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
 		if (extra.chanceIn(4,5)) {
-			w.getBag().npcDrawBane(DrawBane.MEAT);
+			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		}
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomWolfName());
@@ -971,7 +971,7 @@ public class RaceFactory {
 		//w.getBag().swapRace(RaceFactory.getRace("hiding-mimic"));
 		w.setPerk(Perk.RACIAL_SHIFTS);
 		if (extra.chanceIn(1,3)) {
-			w.getBag().npcDrawBane(DrawBane.MIMIC_GUTS);
+			w.getBag().addDrawBaneSilently(DrawBane.MIMIC_GUTS);
 		}
 		w.setFirstName(randomLists.randomFirstName());
 		
@@ -986,7 +986,7 @@ public class RaceFactory {
 		Person w = new Person(level,true, Race.RaceType.PERSONABLE,null,Person.RaceFlag.CRACKS,false);
 		//currently doesn't need the HAS_WEALTH flag, if that would ever come up, because is personable
 		if (extra.chanceIn(1,2)) {
-			w.getBag().npcDrawBane(DrawBane.CEON_STONE);
+			w.getBag().addDrawBaneSilently(DrawBane.CEON_STONE);
 		}
 		extra.popPrintStack();
 		w.hTask = HostileTask.MONSTER;
@@ -1012,7 +1012,7 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = new Person(level);
 		addWealth(2f, w);
-		w.getBag().npcDrawBane(DrawBane.PROTECTIVE_WARD);
+		w.getBag().addDrawBaneSilently(DrawBane.PROTECTIVE_WARD);
 		extra.popPrintStack();
 		w.hTask = HostileTask.DUEL;
 		w.setArch(Archetype.HEDGE_MAGE);
@@ -1026,7 +1026,7 @@ public class RaceFactory {
 		Person w = Person.animal(level, RaceID.B_ENT, MaterialFactory.getMat("wood"), false);
 		//Person w = new Person(level,true, Race.RaceType.BEAST,MaterialFactory.getMat("wood"),Person.RaceFlag.NONE,false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("wood"),WeaponType.BRANCHES));
-		w.getBag().npcDrawBane(DrawBane.ENT_CORE);
+		w.getBag().addDrawBaneSilently(DrawBane.ENT_CORE);
 		//w.getBag().swapRace(RaceFactory.getRace("ent"));
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomEntName());
@@ -1042,12 +1042,12 @@ public class RaceFactory {
 		Person w = new Person(level,true, Race.RaceType.PERSONABLE,null,Person.RaceFlag.UNDEAD,false);
 		addWealth(1f, w);
 		w.setScar(biteFor(w.getBag().getRace().raceID()));
-		w.getBag().npcDrawBane(DrawBane.GRAVE_DUST);
+		w.getBag().addDrawBaneSilently(DrawBane.GRAVE_DUST);
 		if (extra.chanceIn(1,10)) {
-			w.getBag().npcDrawBane(DrawBane.BLOOD);
+			w.getBag().addDrawBaneSilently(DrawBane.BLOOD);
 		}else {
 			if (extra.chanceIn(1,6)) {
-				w.getBag().npcDrawBane(DrawBane.GRAVE_DIRT);
+				w.getBag().addDrawBaneSilently(DrawBane.GRAVE_DIRT);
 			}
 		}
 		extra.popPrintStack();
@@ -1060,7 +1060,7 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_BEAR, MaterialFactory.getMat("hide"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.CLAWS_TEETH_GENERIC));
-		w.getBag().npcDrawBane(DrawBane.MEAT);
+		w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomBearName());
 		w.setTitle("");
@@ -1073,9 +1073,9 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_BAT, MaterialFactory.getMat("hide"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
-		w.getBag().npcDrawBane(DrawBane.BAT_WING);
+		w.getBag().addDrawBaneSilently(DrawBane.BAT_WING);
 		if (extra.chanceIn(1,7)) {
-			w.getBag().npcDrawBane(DrawBane.MEAT);
+			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		}
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomBatName());
@@ -1090,7 +1090,7 @@ public class RaceFactory {
 		Person w = Person.animal(level, RaceID.B_SWARMBAT, MaterialFactory.getMat("hide"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
 		if (extra.chanceIn(1,3)) {
-			w.getBag().npcDrawBane(DrawBane.BAT_WING);
+			w.getBag().addDrawBaneSilently(DrawBane.BAT_WING);
 		}
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomBatName());
@@ -1105,7 +1105,7 @@ public class RaceFactory {
 		//uses hide because it always turns into re-occuring on player loss so we don't need to worry about it being rare and vanishing after a win
 		//cannot get wealth
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.GENERIC_FISTS));
-		w.getBag().npcDrawBane(DrawBane.BEATING_HEART);
+		w.getBag().addDrawBaneSilently(DrawBane.BEATING_HEART);
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomFirstName());
 		//w.targetOverride = TargetFactory.TargetType.HUMANOID;
@@ -1118,7 +1118,7 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_UNICORN, MaterialFactory.getMat("hide"), false);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.UNICORN_HORN));
-		w.getBag().npcDrawBane(DrawBane.UNICORN_HORN);
+		w.getBag().addDrawBaneSilently(DrawBane.UNICORN_HORN);
 		w.setFirstName(randomLists.randomFirstName());
 		extra.popPrintStack();
 		w.hTask = HostileTask.ANIMAL;
@@ -1134,13 +1134,13 @@ public class RaceFactory {
 		w.setPersonType(PersonType.HARPY_GENERIC);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TALONS_GENERIC));
 		if (extra.chanceIn(1,6)) {
-			w.getBag().npcDrawBane(DrawBane.MEAT);
+			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		}
 		if (extra.chanceIn(1,50)) {
-			w.getBag().npcDrawBane(DrawBane.GOLD);
+			w.getBag().addDrawBaneSilently(DrawBane.GOLD);
 		}
 		if (extra.chanceIn(1,20)) {
-			w.getBag().npcDrawBane(DrawBane.SILVER);
+			w.getBag().addDrawBaneSilently(DrawBane.SILVER);
 		}
 		w.setFirstName(randomLists.randomFirstName());
 		extra.popPrintStack();
@@ -1161,7 +1161,7 @@ public class RaceFactory {
 			}
 		}
 		if (extra.chanceIn(1,6)) {
-			w.getBag().npcDrawBane(DrawBane.MEAT);
+			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		}
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomWaterName());
@@ -1178,9 +1178,9 @@ public class RaceFactory {
 		w.cleanSetSkillHas(Perk.STAND_TALL);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","iron")),WeaponType.FISH_ANCHOR));
 		w.getBag().swapArmorSlot(new Armor(level,(byte)2,MaterialFactory.getMat("rusty iron"),null),2);
-		w.getBag().npcDrawBane(DrawBane.MEAT);
+		w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		if (extra.chanceIn(1,2)) {
-			w.getBag().npcDrawBane(DrawBane.MEAT);
+			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		}
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomWaterName());
@@ -1205,7 +1205,7 @@ public class RaceFactory {
 				w.getBag().swapArmorSlot(new Armor(level,i,ArmorStyle.FABRIC.getMatFor(),ArmorStyle.FABRIC),i);
 			}
 		}
-		w.getBag().npcDrawBane(DrawBane.UNICORN_HORN);//maybe to represent wand?
+		w.getBag().addDrawBaneSilently(DrawBane.UNICORN_HORN);//maybe to represent wand?
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomWaterName());
 		w.setTitle("scion of "+randomLists.randomWaterName());
@@ -1227,11 +1227,11 @@ public class RaceFactory {
 		w.facRep.addFactionRep(Faction.HEROIC,0, 10*level);
 		w.hTask = HostileTask.MUG;
 		if (extra.chanceIn(1,100)) {
-			w.getBag().npcDrawBane(DrawBane.GOLD);
+			w.getBag().addDrawBaneSilently(DrawBane.GOLD);
 			addWealth(2f, w);
 		}
 		if (extra.chanceIn(1,50)) {
-			w.getBag().npcDrawBane(DrawBane.SILVER);
+			w.getBag().addDrawBaneSilently(DrawBane.SILVER);
 			addWealth(1f, w);
 		}
 		extra.popPrintStack();

@@ -858,19 +858,11 @@ public class Inventory implements java.io.Serializable{
 		return dbs.contains(d);
 	}
 	
-	public List<DrawBane> getNothingPaddedDrawBanes() {
-		List<DrawBane> list = new ArrayList<DrawBane>();
-		while (list.size() < 3) {
-			list.add(DrawBane.NOTHING);
-		}
-		return list;
-	}
-	
-	public void npcDrawBane(DrawBane d) {
+	public void addDrawBaneSilently(DrawBane d) {
 		dbs.add(d);
 	}
 	
-	public DrawBane addNewDrawBane(DrawBane d) {
+	public DrawBane addNewDrawBanePlayer(DrawBane d) {
 		extra.println("You found - " + d.getName() + ": " + d.getFlavor());
 		if (Player.player.hasTrigger("db:"+d.name())) {
 			extra.println("You have a quest for this DrawBane, discarding it will grant progress.");
@@ -904,7 +896,6 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	public void displayDrawBanes() {
-		
 		int i = 1;
 		for (DrawBane b: dbs) {
 			extra.println(i + " " + b.getName() + ": " + b.getFlavor());
@@ -917,7 +908,7 @@ public class Inventory implements java.io.Serializable{
 	 * @param selling
 	 * @return
 	 */
-	public DrawBane discardDrawBanes(boolean selling) {
+	public DrawBane playerDiscardDrawBanes(boolean selling) {
 		this.displayDrawBanes();
 		extra.println((dbMax+ 2)+" keep");
 		int in = extra.inInt((dbMax+ 2) );
@@ -1048,7 +1039,7 @@ public class Inventory implements java.io.Serializable{
 	}
 
 
-	public void removeDrawBanes() {
+	public void clearDrawBanes() {
 		this.dbs.clear();
 		
 	}

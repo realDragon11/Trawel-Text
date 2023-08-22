@@ -168,7 +168,7 @@ public class GroveNode implements NodeType{
 		case 6:
 			Person old = RaceFactory.makeOld(holder.getLevel(madeNode)+2);
 			if (extra.chanceIn(1,3)) {
-				old.getBag().npcDrawBane(DrawBane.TELESCOPE);
+				old.getBag().addDrawBaneSilently(DrawBane.TELESCOPE);
 			}
 			holder.setStorage(madeNode, old);
 			break;
@@ -1041,8 +1041,8 @@ public class GroveNode implements NodeType{
 		extra.println("The BEEEEEES!!!! They're angry!");
 		GenericNode.setPlantSpot(holder, node, "bee larva");
 		
-		Player.bag.addNewDrawBane(DrawBane.HONEY);
-		Player.bag.addNewDrawBane(DrawBane.WAX);
+		Player.bag.addNewDrawBanePlayer(DrawBane.HONEY);
+		Player.bag.addNewDrawBanePlayer(DrawBane.WAX);
 		Player.bag.addSeed(Seed.BEE);
 		return false;//could have them drive you out but that would be mean
 	}

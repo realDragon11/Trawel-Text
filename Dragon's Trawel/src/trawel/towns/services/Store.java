@@ -201,7 +201,7 @@ public class Store extends Feature{
 		Inventory bag = p.getBag();
 		if (type == 8 || type == 9) {
 			if (index == -1) {
-				DrawBane sellItem = bag.discardDrawBanes(true);
+				DrawBane sellItem = bag.playerDiscardDrawBanes(true);
 				if (sellItem != null) {
 					Services.sellItem(sellItem, bag);
 				}
@@ -213,7 +213,7 @@ public class Store extends Feature{
 			if (Player.player.getTotalBuyPower(aetherPerMoney(Player.player.getPerson())) >= buyGold) {
 				extra.println("Buy the "+ db.getName() + "? (" + buyGold + " "+World.currentMoneyString()+")");//TODO: explain aether conversion
 				if (extra.yesNo()) {
-					DrawBane sellItem = bag.addNewDrawBane(db);
+					DrawBane sellItem = bag.addNewDrawBanePlayer(db);
 					if (sellItem != null) {
 						Player.player.buyMoneyAmountRateInt(sellItem.getValue()-buyGold,aetherPerMoney(Player.player.getPerson()));
 					}

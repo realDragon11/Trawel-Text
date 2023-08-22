@@ -51,7 +51,7 @@ public class BossNode implements NodeType {
 			p = RaceFactory.getBoss(level);
 			p.cleanSetSkillHas(Perk.FATESPINNER_NPC);
 			p.setTitle("The Fatespinner");
-			p.getBag().npcDrawBane(DrawBane.TELESCOPE);
+			p.getBag().addDrawBaneSilently(DrawBane.TELESCOPE);
 			p.liteRefreshClassless();
 			p.finishGeneration();
 			peeps.add(p);
@@ -69,7 +69,7 @@ public class BossNode implements NodeType {
 			p = RaceFactory.getBoss(level);
 			p.cleanSetSkillHas(Perk.HELL_BARON_NPC);
 			p.setTitle("The Baron of Hell");
-			p.getBag().npcDrawBane(DrawBane.LIVING_FLAME);
+			p.getBag().addDrawBaneSilently(DrawBane.LIVING_FLAME);
 			p.liteRefreshClassless();
 			p.finishGeneration();
 			peeps.add(p);

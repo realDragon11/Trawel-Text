@@ -106,7 +106,7 @@ public class Altar extends Feature{
 	}
 	
 	private void sacrifice() {
-		DrawBane inter = Player.bag.discardDrawBanes(true);
+		DrawBane inter = Player.bag.playerDiscardDrawBanes(true);
 		boolean specialInteraction = false;
 		if (inter != null && !inter.equals(DrawBane.NOTHING)) {
 			switch (inter) {
@@ -145,7 +145,7 @@ public class Altar extends Feature{
 				Player.player.forceRelation += 4;
 				extra.println("You spend hours preparing your great sacrifice, and stab the innocent when the time is right. The Sky gives a gift back... but the unspoken message that it would accept this gift for itself lingers in your mind.");
 				Player.addTime(24);
-				Player.bag.addNewDrawBane(DrawBane.BEATING_HEART);
+				Player.bag.addNewDrawBanePlayer(DrawBane.BEATING_HEART);
 				specialInteraction = true;
 				break;
 			case WAX: case WOOD:

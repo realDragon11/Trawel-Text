@@ -207,7 +207,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 						@Override
 						public boolean go() {
-							DrawBane inter = Player.bag.discardDrawBanes(true);
+							DrawBane inter = Player.bag.playerDiscardDrawBanes(true);
 							if (inter != null && inter.getCanBrew()) {
 								reagents.add(inter);
 								Networking.sendStrong("PlayDelay|sound_potionmake"+extra.randRange(1,2)+"|1|");
@@ -367,7 +367,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 				//player gets a fleshy friend now :D
 				getTown().getIsland().getWorld().addReoccuring(new Agent(fGolem,AgentGoal.SPOOKY));
 			}else {
-				Player.bag.addNewDrawBane(DrawBane.SINEW);
+				Player.bag.addNewDrawBanePlayer(DrawBane.SINEW);
 			}
 			return true;
 		}
@@ -378,13 +378,13 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		}
 		if (eons > 0 && silvers > 0) {
 			for (int i = 0; i < silvers;i++) {
-				Player.bag.addNewDrawBane(DrawBane.GOLD);
+				Player.bag.addNewDrawBanePlayer(DrawBane.GOLD);
 			}
 			transmute(DrawBane.SILVER,DrawBane.GOLD,silvers);
 			return true;
 		}
 		if (eons > 0 && woods > 1) {
-			Player.bag.addNewDrawBane(DrawBane.ENT_CORE);
+			Player.bag.addNewDrawBanePlayer(DrawBane.ENT_CORE);
 			transmute(DrawBane.WOOD,DrawBane.ENT_CORE,1);
 			return true;
 		}

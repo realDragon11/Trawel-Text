@@ -76,7 +76,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 							@Override
 							public boolean go() {
 								timer-=20;
-								Player.bag.addNewDrawBane(DrawBane.APPLE);
+								Player.bag.addNewDrawBanePlayer(DrawBane.APPLE);
 								if (extra.chanceIn(1,3)) {
 									Player.bag.addSeed(Seed.APPLE);
 								}
@@ -99,7 +99,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 							@Override
 							public boolean go() {
 								timer-=35;
-								Player.bag.addNewDrawBane(DrawBane.PUMPKIN);
+								Player.bag.addNewDrawBanePlayer(DrawBane.PUMPKIN);
 								if (extra.chanceIn(1,3)) {
 									Player.bag.addSeed(Seed.PUMPKIN);
 								}
@@ -131,18 +131,18 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 									extra.println("You escape unscathed but with wounded pride.");
 									break;
 								case 3:
-									Player.bag.addNewDrawBane(DrawBane.WAX);
+									Player.bag.addNewDrawBanePlayer(DrawBane.WAX);
 									break;
 								case 4:
-									Player.bag.addNewDrawBane(DrawBane.HONEY);
+									Player.bag.addNewDrawBanePlayer(DrawBane.HONEY);
 									break;
 								case 5:
-									Player.bag.addNewDrawBane(DrawBane.HONEY);
-									Player.bag.addNewDrawBane(DrawBane.WAX);
+									Player.bag.addNewDrawBanePlayer(DrawBane.HONEY);
+									Player.bag.addNewDrawBanePlayer(DrawBane.WAX);
 									break;
 								case 6:
 									Player.bag.addSeed(Seed.BEE);
-									Player.bag.addNewDrawBane(DrawBane.HONEY);
+									Player.bag.addNewDrawBanePlayer(DrawBane.HONEY);
 									break;
 								}
 								contains = "angry bee hive";
@@ -181,23 +181,23 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 	private void take() {
 		switch (contains) {
 		case "garlic": 
-			Player.bag.addNewDrawBane(DrawBane.GARLIC);
+			Player.bag.addNewDrawBanePlayer(DrawBane.GARLIC);
 			Player.bag.addSeed(Seed.GARLIC);
 			break;
 		case "apple tree": 
-			Player.bag.addNewDrawBane(DrawBane.APPLE);
-			Player.bag.addNewDrawBane(DrawBane.APPLE);
-			Player.bag.addNewDrawBane(DrawBane.WOOD);
+			Player.bag.addNewDrawBanePlayer(DrawBane.APPLE);
+			Player.bag.addNewDrawBanePlayer(DrawBane.APPLE);
+			Player.bag.addNewDrawBanePlayer(DrawBane.WOOD);
 			Player.bag.addSeed(Seed.APPLE);
 		break;
 		case "exhausted apple tree":
-			Player.bag.addNewDrawBane(DrawBane.WOOD);
+			Player.bag.addNewDrawBanePlayer(DrawBane.WOOD);
 			break;
 		case "garlic seed": Player.bag.addSeed(Seed.GARLIC);break;
 		case "apple seed": Player.bag.addSeed(Seed.APPLE);break;
 		case "bee hive": 
-			Player.bag.addNewDrawBane(DrawBane.HONEY);
-			Player.bag.addNewDrawBane(DrawBane.WAX);
+			Player.bag.addNewDrawBanePlayer(DrawBane.HONEY);
+			Player.bag.addNewDrawBanePlayer(DrawBane.WAX);
 			Player.bag.addSeed(Seed.BEE);
 		break;
 		case "bee larva": Player.bag.addSeed(Seed.BEE);break;
@@ -208,7 +208,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 		break;
 		case "ent sapling": Player.bag.addSeed(Seed.ENT);break;
 		case "pumpkin patch": 
-			Player.bag.addNewDrawBane(DrawBane.PUMPKIN);
+			Player.bag.addNewDrawBanePlayer(DrawBane.PUMPKIN);
 			Player.bag.addSeed(Seed.PUMPKIN);
 			Player.bag.addSeed(Seed.PUMPKIN);
 		break;
@@ -217,19 +217,19 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 		break;
 		case "pumpkin seed": Player.bag.addSeed(Seed.PUMPKIN);break;
 		case "eggcorn": 
-			Player.bag.addNewDrawBane(DrawBane.EGGCORN);
+			Player.bag.addNewDrawBanePlayer(DrawBane.EGGCORN);
 			Player.bag.addSeed(Seed.EGGCORN);
 		break;
 		case "eggcorn seed": Player.bag.addSeed(Seed.EGGCORN);break;
 		case "truffle": 
-			Player.bag.addNewDrawBane(DrawBane.TRUFFLE);
+			Player.bag.addNewDrawBanePlayer(DrawBane.TRUFFLE);
 		break;
 		case "truffle spores":;break;
 		case "fairy dust":
-			Player.bag.addNewDrawBane(DrawBane.GRAVE_DUST);//undead fairies?????
+			Player.bag.addNewDrawBanePlayer(DrawBane.GRAVE_DUST);//undead fairies?????
 			break;
 		case "unicorn horn":
-			Player.bag.addNewDrawBane(DrawBane.UNICORN_HORN);
+			Player.bag.addNewDrawBanePlayer(DrawBane.UNICORN_HORN);
 			break;
 		default: case "":extra.println("ERROR");break;
 		}

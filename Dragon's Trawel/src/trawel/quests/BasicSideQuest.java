@@ -659,7 +659,7 @@ public class BasicSideQuest implements Quest{
 				public boolean go() {
 					extra.println("You assemble a whole " + q.targetName);
 					q.complete();
-					Player.bag.addNewDrawBane(DrawBane.getByName(q.targetName));
+					Player.bag.addNewDrawBanePlayer(DrawBane.getByName(q.targetName));
 					return false;
 				}};
 				q.giver.locationF = hut;

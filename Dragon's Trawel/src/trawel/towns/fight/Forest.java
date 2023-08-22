@@ -455,7 +455,7 @@ public class Forest extends Feature{
 			Person robber = RaceFactory.getLumberjack(tier);
 			robber.getBag().graphicalDisplay(1, robber);
 			if (extra.chanceIn(1, 3)) {
-			robber.getBag().npcDrawBane(DrawBane.ENT_CORE);}
+			robber.getBag().addDrawBaneSilently(DrawBane.ENT_CORE);}
 		
 			extra.print(extra.PRE_RED);
 		if (extra.yesNo()) {

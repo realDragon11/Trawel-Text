@@ -81,7 +81,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 						DrawBane b = null;
 						do{
 							extra.println("The merchants are willing to take supplies to increase your reputation. (current reputation: " + Player.player.merchantLevel+ ")");
-							b = Player.bag.discardDrawBanes(true);
+							b = Player.bag.playerDiscardDrawBanes(true);
 							if (b != null && b != DrawBane.NOTHING) {
 								Player.player.addMPoints(b.getMValue());
 							}else {
@@ -188,7 +188,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 							//chance of success declines from 3/5ths to 1/2th as the number of passes approaches infinity
 							if (passes < 3 || extra.chanceIn(3+passes,5+(2*passes))) {
 								Player.player.merchantBookPasses++;
-								Player.bag.addNewDrawBane(DrawBane.KNOW_FRAG);
+								Player.bag.addNewDrawBanePlayer(DrawBane.KNOW_FRAG);
 							}else {
 								extra.println("There was nothing interesting in this batch.");
 							}
