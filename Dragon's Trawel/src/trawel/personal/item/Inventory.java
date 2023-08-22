@@ -492,7 +492,6 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	public void deepDisplay() {
-		
 		for (Armor a: getArmors()) {
 			a.display(2);
 		}
@@ -562,13 +561,14 @@ public class Inventory implements java.io.Serializable{
 	
 
 	public void addGold(int add) {
-		SuperPerson sp = owner.getSuper();
+		/*SuperPerson sp = owner.getSuper();
 		if (sp != null) {
 			sp.addGold(add);
 			return;
 		}
 		money += add;
-		money = Math.max(money,0);
+		money = Math.max(money,0);*/
+		addLocalGoldIf(add);
 	}
 	
 	/**
@@ -576,7 +576,7 @@ public class Inventory implements java.io.Serializable{
 	 */
 	public void addLocalGoldIf(int add) {
 		SuperPerson sp = owner.getSuper();
-		if (sp != null && sp.getWorld() == null) {
+		if (sp != null && sp.getWorld() != null) {
 			sp.addGold(add);
 			return;
 		}
