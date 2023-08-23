@@ -444,20 +444,20 @@ public class AIClass {
 		}
 		
 		if (normalLoot) {
-			for (Armor a: loot.getArmor()) {
+			for (int slot = 0; slot < 5; slot++) {
+				Armor a = loot.getArmorSlot(slot);
 				Item replaceArmor = playerLootCompareItem(a, canAtomSmash);
-				int slot = a.getSlot();
+				//int slot = a.getSlot();
 				if (replaceArmor != a) {
 					if (replaceArmor == null) {
 						extra.println("You swap for the " + a.getName() + ".");
 					}else {
 						if (canAtomSmash) {
-							Services.aetherifyItem(Player.bag.getArmorSlot(slot),Player.bag);
+							Services.aetherifyItem(replaceArmor,Player.bag);
 							extra.println("You swap for the " + a.getName() + ".");
-							Player.bag.swapArmorSlot(a,slot);
 							loot.setArmorSlot(null,a.getSlot());
 						}else {
-							loot.swapArmorSlot(Player.bag.swapArmorSlot(a,slot), slot);
+							//loot.swapArmorSlot(Player.bag.swapArmorSlot(a,slot), slot);
 						}
 					}
 				}else {
@@ -479,87 +479,54 @@ public class AIClass {
 					Networking.send("RemoveInv|1|" + depth);
 				}
 			}
-			while (i < 5) {
-				if (compareItem(stash.getArmorSlot(i),loot.getArmorSlot(i),true,p)) {
-					if (aetherStuff) {
-							//Services.sellItem(stash.swapArmorSlot(loot.getArmorSlot(i),i),stash,false);
-							Services.aetherifyItem(stash.getArmorSlot(i),stash);
-							extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + loot.getArmorSlot(i).getName() + ".");
-							stash.swapArmorSlot(loot.getArmorSlot(i),i);//we lose the ref to the thing we just deleted here
-							loot.setArmorSlot(null,i);
-						}else {
-							loot.swapArmorSlot(stash.swapArmorSlot(loot.getArmorSlot(i),i), i);
-						}
-				}else {
-					if (aetherStuff) {
-						//Services.sellItem(loot.getArmorSlot(i),loot,stash,false);}
-						Services.aetherifyItem(loot.getArmorSlot(i),stash);
-						loot.setArmorSlot(null,i);
-					}
-				}
-
-
-				
-				i++;
-			}
-			if (compareItem(stash.getHand(),loot.getHand(),true,p)) {
-				if (aetherStuff) {
-						//Services.sellItem(stash.swapWeapon(loot.getHand()),stash,false);
-						Services.aetherifyItem(stash.getHand(),stash);
-						extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + loot.getHand().getName() + ".");
-						stash.swapWeapon(loot.getHand());//we lose the ref to the thing we just deleted here
-						loot.setWeapon(null);
-					}else {
-						loot.swapWeapon(stash.swapWeapon(loot.getHand()));
-					}
+			Weapon weap = loot.getHand();
+			Item replaceWeap = playerLootCompareItem(weap, canAtomSmash);
+			if (replaceWeap == null) {
+				extra.println("You swap for the " + weap.getName() + ".");
 			}else {
-				if (aetherStuff) {
-					Services.aetherifyItem(loot.getHand(), stash);
-					loot.setWeapon(null);
+				if (canAtomSmash) {
+					Services.aetherifyItem(replaceWeap,Player.bag);
+					extra.println("You swap for the " + weap.getName() + ".");
 				}
 			}
 			Networking.send("RemoveInv|1|2|");
 		}else {
-			if (aetherStuff) {
-				while (i < 5) {
-					if (loot.getArmorSlot(i).canAetherLoot()) {
-						Services.aetherifyItem(loot.getArmorSlot(i),stash);
-						loot.setArmorSlot(null,i);
+			if (canAtomSmash) {
+				for (int slot = 0; slot < 5; slot++) {
+					Armor a = loot.getArmorSlot(slot);
+					if (!a.canAetherLoot()) {
+						continue;
 					}
-					i++;
+					Services.aetherifyItem(a,Player.bag);
+					loot.setArmorSlot(null,slot);
 				}
 				if (loot.getHand().canAetherLoot()) {
-					Services.aetherifyItem(loot.getHand(), stash);
+					Services.aetherifyItem(loot.getHand(),Player.bag);
 					loot.setWeapon(null);
 				}
 			}
 		}
-		if (p.isPlayer()) {
-			Networking.charUpdate();
-			/*if (Player.hasSkill(Skill.LOOTER) && normalLoot) {
-				stash.addGold(10);
-				extra.println("You take the extra coins they had stored away in their " + extra.choose("spleen","appendix","imagination","lower left thigh","no-no place","closed eyes") + ". +10 gold");
-			}*/
-			for (DrawBane db: loot.getDrawBanes()) {
-				stash.addNewDrawBanePlayer(db);
-			}
-		}else {
-			//TODO drawbane taking ai
+		Networking.charUpdate();
+		for (DrawBane db: loot.getDrawBanes()) {
+			Player.bag.addNewDrawBanePlayer(db);
 		}
-		if (aetherStuff) {
+		loot.clearDrawBanes();
+		if (canAtomSmash) {
 			int aether = loot.getAether();
-			stash.addAether(aether);
-			if (normalLoot || p.getFlag(PersonFlag.HAS_WEALTH)) {
-				int money = loot.getGold();
-				stash.addGold(money);
+			Player.bag.addAether(aether);
+			int money = loot.getGold();
+			if (loot.owner.getSuper() != null) {
+				Player.player.takeGold(loot.owner.getSuper());
+				extra.println("You claim the " + aether + " aether"+(money > 0 ? " and " + World.currentMoneyDisplay(money) + "." : ".") +" And also any other world currency.");
 				loot.removeAllCurrency();
-				if (!extra.getPrint()) {
-					extra.println(p.getName() + " claims the " + aether + " aether"+(money > 0 ? " and " + World.currentMoneyDisplay(money) + "." : "."));
-				}
 			}else {
-				loot.removeAether();
-				if (!extra.getPrint()) {
-					extra.println(p.getName() + " gains " + aether + " aether.");
+				if (money > 0) {
+					Player.bag.addGold(money);
+					loot.removeAllCurrency();
+					extra.println("You claim the " + aether + " aether"+(money > 0 ? " and " + World.currentMoneyDisplay(money) + "." : "."));
+				}else {
+					loot.removeAether();
+					extra.println("You gain " + aether + " aether.");
 				}
 			}
 		}
@@ -623,8 +590,7 @@ public class AIClass {
 		int delta = store.getDelta(swap,next,Player.player);
 		if (Player.player.getTotalBuyPower(store.aetherPerMoney(Player.player.getPerson()))+delta < 0) {
 			//should not occur, this is a failsafe
-			extra.println("You can't afford this item!");
-			return next;
+			throw new RuntimeException("You can't afford this item!");
 		}
 		if (delta < 0) {
 			int beforeMoney = Player.player.getGold();

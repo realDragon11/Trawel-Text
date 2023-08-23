@@ -504,6 +504,14 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 		addGold(-lose);
 		return lose;
 	}
+	/*
+	 * does not remove their gold, just adds it to this one
+	 */
+	public void takeGold(SuperPerson other) {
+		for (int i = 0; i < other.moneymappings.size();i++) {
+			addGold(other.moneys.get(i),other.moneymappings.get(i));
+		}
+	}
 	
 	/**
 	 * includes the person and their current traveling friends
