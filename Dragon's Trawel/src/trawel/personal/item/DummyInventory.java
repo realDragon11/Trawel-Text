@@ -26,7 +26,7 @@ public class DummyInventory extends Inventory {
 	private static final Material presetSwitch(int i) {
 		switch (i) {
 		case 0: case 1:
-			return MaterialFactory.getMat("cloth");
+			return MaterialFactory.getMat("patchwork");
 		case 2: case 3:
 			return MaterialFactory.getMat("iron");
 		case 4:

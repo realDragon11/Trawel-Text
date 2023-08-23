@@ -42,17 +42,16 @@ public class MaterialFactory {
 		//baseEnchant > rand*3f, so any baseEnchant >=3f will always enchant
 		
 		Material misc = new Material();
-		misc.name = "cloth";//TODO: wool and linen
+		misc.name = "patchwork";//mostly combined cotton and linen
 		misc.typeList.add(ArmorStyle.FABRIC);
-		misc.typeList.add(ArmorStyle.SEWN);
 		misc.typeList.add(ArmorStyle.SEWN);
 		misc.typeList.add(ArmorStyle.SEWN);
 		misc.armor = true;
 		misc.weapon = false;
-		misc.weight = 2;
-		misc.cost = 2;
-		misc.baseEnchant = 1;
-		misc.baseResist = 2;
+		misc.weight = 10;//heavy for a cloth
+		misc.cost = 3;
+		misc.baseEnchant = .8f;
+		misc.baseResist = 3;
 		misc.sharpResist = .5f;
 		misc.bluntResist = 1;
 		misc.pierceResist = .5f;
@@ -67,7 +66,126 @@ public class MaterialFactory {
 		misc.freezeVul = .2f;
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
+		misc.color = extra.inlineColor(Color.LIGHT_GRAY);
+		register(misc);
+		
+		misc = new Material();
+		misc.name = "wool";//https://en.wikipedia.org/wiki/Wool
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.SEWN);
+		misc.typeList.add(ArmorStyle.SEWN);
+		misc.typeList.add(ArmorStyle.SEWN);
+		misc.armor = true;
+		misc.weapon = false;
+		misc.weight = 7;
+		misc.cost = 10;
+		misc.baseEnchant = .7f;
+		misc.baseResist = 4;
+		misc.sharpResist = 1f;
+		misc.bluntResist = 1f;
+		misc.pierceResist = 1f;
+		misc.dexMod = .95f;//mostly for balance
+		misc.sharpMult = 0;
+		misc.bluntMult = 0;
+		misc.pierceMult = 0;
+		misc.tier = 0;
+		misc.rarity = .5f;
+		misc.fireVul = .3f;//highly resistant compared to other mats, neither conductive nor truly flammable
+		misc.shockVul = .2f;
+		misc.freezeVul = .2f;
+		misc.palIndex = 0;
+		misc.soundType = "flesh";
 		misc.color = extra.inlineColor(Color.WHITE);
+		register(misc);
+		
+		
+		//https://en.wikipedia.org/wiki/Cotton
+		misc = new Material();
+		misc.name = "cotton";
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.SEWN);
+		misc.armor = true;
+		misc.weapon = false;
+		misc.weight = 5;
+		misc.cost = 4;
+		misc.baseEnchant = .9f;
+		misc.baseResist = 2.5f;
+		misc.sharpResist = .5f;
+		misc.bluntResist = 1;
+		misc.pierceResist = .5f;
+		misc.dexMod = 1f;
+		misc.sharpMult = 0;
+		misc.bluntMult = 0;
+		misc.pierceMult = 0;
+		misc.tier = 0;
+		misc.rarity = .1f;
+		misc.fireVul = 2;//flammable
+		misc.shockVul = .2f;
+		misc.freezeVul = .3f;//not as effective alone
+		misc.palIndex = 0;
+		misc.soundType = "flesh";
+		misc.color = extra.inlineColor(Color.WHITE);
+		register(misc);
+		
+		//https://en.wikipedia.org/wiki/Linen
+		misc = new Material();
+		misc.name = "linen";
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.SEWN);
+		misc.armor = true;
+		misc.weapon = false;
+		misc.weight = 3;
+		misc.cost = 4;
+		misc.baseEnchant = 1.2f;
+		misc.baseResist = 2;
+		misc.sharpResist = .5f;
+		misc.bluntResist = 1;
+		misc.pierceResist = .5f;
+		misc.dexMod = 1f;
+		misc.sharpMult = 0;
+		misc.bluntMult = 0;
+		misc.pierceMult = 0;
+		misc.tier = 0;
+		misc.rarity = .1f;
+		misc.fireVul = 1.5f;
+		misc.shockVul = .3f;
+		misc.freezeVul = 1f;//apparently kinda conductive
+		misc.palIndex = 0;
+		misc.soundType = "flesh";
+		misc.color = extra.inlineColor(Color.WHITE);
+		register(misc);
+		
+		misc = new Material();
+		misc.name = "silk";
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.FABRIC);
+		misc.typeList.add(ArmorStyle.SEWN);
+		misc.armor = true;
+		misc.weapon = false;
+		misc.weight = 2;
+		misc.cost = 20;
+		misc.baseEnchant = 2.5f;
+		misc.baseResist = 0.5f;
+		misc.sharpResist = 1f;
+		misc.bluntResist = 1;
+		misc.pierceResist = 1f;
+		misc.dexMod = 1f;
+		misc.sharpMult = 0;
+		misc.bluntMult = 0;
+		misc.pierceMult = 0;
+		misc.tier = 1;
+		misc.rarity = .2f;
+		misc.fireVul = 2;
+		misc.shockVul = .6f;
+		misc.freezeVul = .6f;
+		misc.palIndex = 1;
+		misc.soundType = "flesh";
+		misc.color = extra.inlineColor(extra.colorMix(Color.red,Color.white,.4f));
 		register(misc);
 		
 		/*TODO readd leather
@@ -303,37 +421,6 @@ public class MaterialFactory {
 		misc.moneyMultTradeMult = .6f;
 		misc.color = extra.inlineColor(new Color(203,185,83));
 		misc.veinReward = 6;
-		register(misc);
-		
-		misc = new Material();
-		misc.name = "silk";
-		misc.typeList.add(ArmorStyle.FABRIC);
-		misc.typeList.add(ArmorStyle.FABRIC);
-		misc.typeList.add(ArmorStyle.FABRIC);
-		misc.typeList.add(ArmorStyle.FABRIC);
-		misc.typeList.add(ArmorStyle.FABRIC);
-		misc.typeList.add(ArmorStyle.SEWN);
-		misc.armor = true;
-		misc.weapon = false;
-		misc.weight = 2;
-		misc.cost = 20;
-		misc.baseEnchant = 2.3f;
-		misc.baseResist = 1f;
-		misc.sharpResist = 0;
-		misc.bluntResist = 1;
-		misc.pierceResist = 0;
-		misc.dexMod = 1f;
-		misc.sharpMult = 0;
-		misc.bluntMult = 0;
-		misc.pierceMult = 0;
-		misc.tier = 1;
-		misc.rarity = 1.5f;
-		misc.fireVul = 2;
-		misc.shockVul = .6f;
-		misc.freezeVul = .6f;
-		misc.palIndex = 1;
-		misc.soundType = "flesh";
-		misc.color = extra.inlineColor(Color.LIGHT_GRAY);
 		register(misc);
 		
 		misc = new Material();
