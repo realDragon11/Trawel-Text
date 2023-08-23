@@ -725,6 +725,23 @@ public class AIClass {
 								ret[0] = null;
 								return Player.player.addPouch(thinking);
 							}});
+						list.add(new MenuSelect() {
+							//1+2+3+2+1 limit so should be exact
+							@Override
+							public String title() {
+								return "Take and Put "+current.getName()+" in Bag.";
+							}
+
+							@Override
+							public boolean go() {
+								if (!fCanSwap) {
+									extra.println("You cannot afford that trade.");
+									return false;
+								}
+								ret[0] = null;
+								Player.bag.swapItem(thinking);
+								return Player.player.addPouch(current);
+							}});
 					}else {
 						if (Player.player.getPouchesAgainst(thinking).size() == 0) {
 							//FIXME: allow discarding other items if can't fit

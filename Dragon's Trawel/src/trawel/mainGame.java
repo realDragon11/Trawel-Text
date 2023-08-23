@@ -1608,7 +1608,8 @@ public class mainGame {
 			if (Player.player.atFeature != null) {
 				Player.player.atFeature.go();
 			}
-			while(Player.player.isAlive()) {
+			Player.isPlaying = true;
+			while(Player.isPlaying) {
 				if (doAutoSave && (new Date().getTime()-lastAutoSave.getTime() > 1000*60*2)) {
 					extra.println("Autosaving...");
 					WorldGen.plane.prepareSave();;

@@ -253,7 +253,7 @@ public class NodeConnector implements Serializable {
 		}
 		isForceGoIng = false;
 		setForceGoProtection(false);
-		while (getCurrentNode() != 0) {
+		while (getCurrentNode() != 0 && Player.isPlaying) {
 			enter(getCurrentNode());
 		}
 		setLastNode(0);
@@ -326,7 +326,7 @@ public class NodeConnector implements Serializable {
 					@Override
 					public boolean go() {
 						Player.player.youMenu();
-						return false;
+						return true;
 					}});
 				return mList;
 			}

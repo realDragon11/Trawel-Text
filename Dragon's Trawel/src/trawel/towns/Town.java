@@ -429,12 +429,12 @@ public class Town extends TContextOwner{
 
 					@Override
 					public String title() {
-						return "you";
+						return "Player Menu";
 					}
 
 					@Override
 					public boolean go() {
-						you();
+						Player.player.youMenu();
 						return true;
 					}
 				});
@@ -443,7 +443,7 @@ public class Town extends TContextOwner{
 
 						@Override
 						public String title() {
-							return " The 'you' menu includes options and your stats.";
+							return " Includes options, saving, and exiting.";
 						}});
 				}
 				return mList;

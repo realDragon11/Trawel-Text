@@ -43,11 +43,12 @@ public class Player extends SuperPerson{
 
 	private static final long serialVersionUID = 1L;
 	private Person person;
-	private Boolean isAlive;
+	private boolean isAlive;
 	public static Player player;
 	public static double passTime;
 	public static Inventory bag;
 	public static transient String lastAttackStringer;
+	public static boolean isPlaying = true;
 	public int wins = 0;
 	public boolean cheating = false;
 	/**
@@ -737,7 +738,7 @@ public class Player extends SuperPerson{
 					public boolean go() {
 						extra.println("Really quit? Your progress might not be saved.");
 						if (extra.yesNo()) {
-							Player.player.kill();
+							Player.isPlaying  = false;
 							return true;
 						}
 						return false;
