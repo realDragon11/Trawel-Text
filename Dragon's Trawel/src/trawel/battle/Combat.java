@@ -167,10 +167,11 @@ public class Combat {
 				winSide = 0;
 			}
 		}
+		killData(defender,attacker);
 		
 		extra.println(extra.choose("The dust settles...","The body drops to the floor.","Death has come.","The battle is over."));
 		extra.println(defender.getName() + extra.choose(" lies dead..."," walks the earth no more..."," has been slain."));
-		killData(attacker,defender);
+		
 		survivors = Collections.singletonList(attacker);
 		killed = Collections.singletonList(defender);
 		killList = killed;

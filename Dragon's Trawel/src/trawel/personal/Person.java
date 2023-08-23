@@ -193,15 +193,22 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			personType = extra.randCollection(RAND_PERSON_TYPES);
 			firstName = randomLists.randomFirstName();
 			title = randomLists.randomLastName();
-			switch (raceFlag) {
-			case CRACKS:
-				bodyType = TypeBody.STATUE;
-				break;
-			case UNDEAD:
-				bodyType = TypeBody.UNDEAD;
+			switch (bag.getRace().targetType) {
+			case DEMON:
+				bodyType = TypeBody.DEMON;
 				break;
 			default:
-				bodyType = TypeBody.HUMAN_LIKE;
+				switch (raceFlag) {
+					case CRACKS:
+						bodyType = TypeBody.STATUE;
+						break;
+					case UNDEAD:
+						bodyType = TypeBody.UNDEAD;
+						break;
+					default:
+						bodyType = TypeBody.HUMAN_LIKE;
+						break;
+				}
 				break;
 			}
 		}else {

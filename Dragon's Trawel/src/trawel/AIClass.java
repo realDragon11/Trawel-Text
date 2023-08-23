@@ -419,7 +419,7 @@ public class AIClass {
 				stash.addGold(money);
 				loot.removeAllCurrency();
 				if (!extra.getPrint()) {
-					extra.println(p.getName() + " claims the " + aether + " aether "+(money > 0 ? "and " + World.currentMoneyDisplay(money) + "." : "."));
+					extra.println(p.getName() + " claims the " + aether + " aether"+(money > 0 ? " and " + World.currentMoneyDisplay(money) + "." : "."));
 				}
 			}else {
 				loot.removeAether();

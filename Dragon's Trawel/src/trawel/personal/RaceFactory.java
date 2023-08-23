@@ -15,6 +15,7 @@ import trawel.factions.HostileTask;
 import trawel.personal.Person.AIJob;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.Person.PersonType;
+import trawel.personal.Person.RaceFlag;
 import trawel.personal.classless.Archetype;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.Perk;
@@ -1375,7 +1376,7 @@ public class RaceFactory {
 	
 	public static Person makeDemonOverlord(int level) {
 		extra.offPrintStack();
-		Person w = new Person(level,true, Race.RaceType.PERSONABLE,null,null,false,AIJob.KNIGHT,RaceFactory.getRace(RaceID.MAJOR_DEMON));
+		Person w = new Person(level,true, Race.RaceType.PERSONABLE,null,RaceFlag.NONE,false,AIJob.KNIGHT,RaceFactory.getRace(RaceID.MAJOR_DEMON));
 		w.getBag().addDrawBaneSilently(DrawBane.VIRGIN);
 		w.setPerk(Perk.HELL_BARON_NPC);
 		extra.popPrintStack();
