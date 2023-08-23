@@ -16,7 +16,11 @@ public abstract class NodeFeature extends Feature {
 	protected boolean spreadTime = false;
 	
 	public enum Shape{
-		NONE, TOWER, ELEVATOR, RIGGED_DUNGEON;
+		NONE, TOWER, ELEVATOR,
+		/**
+		 * requires a bosstype of 3 to work properly, and DungeonNode
+		 */
+		RIGGED_DUNGEON;
 	}
 	protected Shape shape;
 	

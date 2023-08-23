@@ -93,6 +93,8 @@ public class BossNode implements NodeType {
 			p.setFlag(PersonFlag.IS_MOOK, true);
 			peeps.add(p);
 		break;
+		default:
+			throw new RuntimeException("invalid boss " +holder.getEventNum(madeNode) + " in " + holder.parent.getName() + " in " + holder.parent.getTown().getName());
 		}
 		//we don't need to put the list back since we have a ref to it
 	}

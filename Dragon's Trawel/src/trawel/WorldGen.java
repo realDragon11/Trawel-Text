@@ -141,7 +141,7 @@ public class WorldGen {
 		unun.addFeature(new Inn("Trailblazer's Tavern",2,unun,null));
 		unun.addTravel();
 		unun.addFeature(new MerchantGuild("Eoano's Merchant Guild (Unun)"));
-		unun.addFeature(new Dungeon("Tower of Fate",unun,Dungeon.Shape.TOWER,0));
+		unun.addFeature(new Dungeon("Tower of Fate",unun,Dungeon.Shape.TOWER,1));
 		unun.addFeature(new Slum(unun,"The Ephemeral People's Quarter",true));
 		unun.tTags.add(TownTag.CITY);
 		unun.tTags.add(TownTag.ADVENTURE);
@@ -153,7 +153,7 @@ public class WorldGen {
 			}
 		});
 		
-		Town tevar = new Town("Tevar",2,rona,new Point(4,5));
+		Town tevar = new Town("Tevar",3,rona,new Point(4,5));
 		tevar.addFeature(new Store(2));
 		tevar.addFeature(new Arena("Epino Arena",5,3,24*30,150,149));
 		addConnection(homa,tevar,"road","red road");
@@ -168,7 +168,7 @@ public class WorldGen {
 		});
 		
 		
-		Town hemo = new Town("Hemo",2,rona,new Point(5,7));
+		Town hemo = new Town("Hemo",3,rona,new Point(5,7));
 		addConnection(hemo,tevar,"road","purple road");
 		addConnection(hemo,unun,"road","black valley");
 		Store s = new Store(1,6);
@@ -205,7 +205,7 @@ public class WorldGen {
 			
 		});
 		
-		Town lokan = new Town("Lokan",3,rona,new Point(5,10));
+		Town lokan = new Town("Lokan",4,rona,new Point(5,10));
 		addConnection(lokan,tanak,"road","flat walk");
 		addConnection(lokan,unun,"ship","two way current");
 		lokan.addFeature(new Library("Records of Value", lokan));
@@ -222,7 +222,7 @@ public class WorldGen {
 			}
 		});
 		
-		Town haka = new Town("Haka",3,rona,new Point(1,10));
+		Town haka = new Town("Haka",4,rona,new Point(1,10));
 		addConnection(lokan,haka,"road","diamond way");
 		addConnection(tanak,haka,"road","circle road");
 		haka.addFeature(new Arena("Grand Colosseum (daily bout)",3,1,24,12,74));
@@ -237,7 +237,7 @@ public class WorldGen {
 			}
 			
 		});
-		Town fortMerida = new Town("Fort Merida",4, rona,(byte) 1,(byte)11, null);
+		Town fortMerida = new Town("Fort Merida",5, rona,(byte) 1,(byte)11, null);
 		fortMerida.addFeature(new WizardTower(4));
 		addConnection(fortMerida,haka,"road","mountain pass");
 		
@@ -260,7 +260,7 @@ public class WorldGen {
 			}
 		});
 		
-		Town revan = new Town("Revan",3,apa,new Point(3,1));
+		Town revan = new Town("Revan",4,apa,new Point(3,1));
 		addConnection(revan,alhax,"ship","green passageway");
 		addConnection(revan,alhax,"road","the tops");
 		revan.addFeature(new Store(2,5));
@@ -300,17 +300,17 @@ public class WorldGen {
 		});
 		
 		Island teran = new Island("Teran",w);
-		Town yena = new Town("Yena",4,teran,new Point(8,2));
+		Town yena = new Town("Yena",5,teran,new Point(8,2));
 		addConnection(revan,yena,"ship","blue sea");
 		addConnection(alhax,yena,"ship","blue sea");
-		yena.addFeature(new Dungeon("Dungeon of Fame", yena,NodeFeature.Shape.NONE,-1));
+		yena.addFeature(new Dungeon("Dungeon of Fame", yena,NodeFeature.Shape.RIGGED_DUNGEON,3));
 		yena.addTravel();
 		yena.addTravel();
 		yena.addFeature(new HeroGuild("Third Hero's Guild"));
 		yena.addFeature(new Champion(4));
 		yena.tTags.add(TownTag.ADVENTURE);
 		
-		Town denok = new Town("Denok",4,teran,new Point(12,1));
+		Town denok = new Town("Denok",5,teran,new Point(12,1));
 		addConnection(denok,yena,"road","apple road");
 		denok.addFeature(new Store(4,3));
 		denok.addFeature(new Store(5,5));
@@ -322,7 +322,7 @@ public class WorldGen {
 		denok.addTravel();
 		denok.tTags.add(TownTag.DRUDIC);
 		
-		Town erin = new Town("Erin",5,teran,new Point(10,4));
+		Town erin = new Town("Erin",6,teran,new Point(10,4));
 		addConnection(erin,yena,"road","pear road");
 		addConnection(erin,denok,"road","orange road");
 		erin.addFeature(new Arena("Grandstander's Stands (daily bout)",5,1,24,12,39));
@@ -341,7 +341,7 @@ public class WorldGen {
 		});
 		
 		
-		Town placka = new Town("Placka",6,teran,new Point(13,3));
+		Town placka = new Town("Placka",7,teran,new Point(13,3));
 		addConnection(erin,placka,"road","peach road");
 		addConnection(placka,denok,"road","pineapple road");
 		addConnection(yena,placka,"ship","the yellow sea");
@@ -352,7 +352,7 @@ public class WorldGen {
 		placka.addFeature(new Dungeon("The Dungeon of Woe",placka,NodeFeature.Shape.NONE,-1));
 		placka.tTags.add(TownTag.ADVENTURE);
 		
-		Town tunka = new Town("Tunka",7,teran,new Point(12,5));
+		Town tunka = new Town("Tunka",8,teran,new Point(12,5));
 		addConnection(erin,tunka,"road","left-over road");
 		addConnection(placka,tunka,"road","diamond road");
 		tunka.addFeature(new Graveyard("The Boneyard", tunka));
@@ -361,7 +361,7 @@ public class WorldGen {
 		tunka.addFeature(new Slum(tunka,"Forgettables District",false));
 		tunka.tTags.add(TownTag.LAWLESS);
 		
-		Town repa = new Town("Repa",8,teran,new Point(14,6));
+		Town repa = new Town("Repa",10,teran,new Point(14,6));
 		addConnection(repa,tunka,"road","right-over road");
 		//add connection to a new world area
 		repa.addTravel();
@@ -387,7 +387,7 @@ public class WorldGen {
 		fallBackWorld = w;
 		Island apen = new Island("Apen",w);
 		plane.addWorld(w);
-		Town holik = new Town("Holik", 9, apen, new Point(2,3));
+		Town holik = new Town("Holik", 10, apen, new Point(2,3));
 		holik.addFeature(new Oracle("holik oracle",9));
 		holik.addTravel();
 		holik.addTravel();
@@ -395,7 +395,7 @@ public class WorldGen {
 		w.setStartTown(holik);
 		holik.tTags.add(TownTag.MYSTIC);
 		
-		Town yonuen = new Town("Yonuen", 9, apen, new Point(4,3));
+		Town yonuen = new Town("Yonuen",11, apen, new Point(4,3));
 		addConnection(holik,yonuen,"road","bliz road");
 		yonuen.addFeature(new Store(9));
 		yonuen.addFeature(new Arena("yonuen arena",9,1,24,3,24));
@@ -404,7 +404,7 @@ public class WorldGen {
 		yonuen.addTravel();
 		yonuen.tTags.add(TownTag.ARCANE);
 		
-		Town unika = new Town("Unika",10, apen, new Point(3,5));
+		Town unika = new Town("Unika",12, apen, new Point(3,5));
 		addConnection(holik,unika,"road","ren road");
 		addConnection(yonuen,unika,"road","tenka road");
 		unika.addFeature(new Grove("unika forest",unika));
@@ -412,7 +412,7 @@ public class WorldGen {
 		unika.addTravel();
 		unika.addFeature(new Inn("unika inn",10,unika,null));
 		
-		Town peana = new Town("Peana",10, apen, new Point(2,7));
+		Town peana = new Town("Peana",12, apen, new Point(2,7));
 		addConnection(holik,peana,"road","blue road");
 		addConnection(unika,peana,"road","green road");
 		peana.addFeature(new Arena("peana arena",10,1,24,12,135));
@@ -420,7 +420,7 @@ public class WorldGen {
 		peana.addFeature(new Store(10,8));
 		peana.addFeature(new Mine("Staircase to Hell", peana, null,NodeFeature.Shape.ELEVATOR));
 		
-		Town inka = new Town("Inka",10, apen, new Point(4,7));
+		Town inka = new Town("Inka",12, apen, new Point(4,7));
 		addConnection(unika,inka,"road","youn road");
 		addConnection(inka,peana,"road","era road");
 		inka.addFeature(new Mine("First Striking Shaft", inka, null,NodeFeature.Shape.NONE));
@@ -430,7 +430,7 @@ public class WorldGen {
 		inka.addTravel();
 		inka.tTags.add(TownTag.CITY);
 		
-		Town pipa = new Town("Pipa",11, apen, new Point(4,7));
+		Town pipa = new Town("Pipa",13, apen, new Point(4,7));
 		addConnection(inka,pipa,"road","mystery road");
 		inka.addFeature(new WitchHut("Oak Coven's Hut",pipa));
 		inka.addFeature(new Store(11,9));

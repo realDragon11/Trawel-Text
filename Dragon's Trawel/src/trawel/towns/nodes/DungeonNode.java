@@ -206,13 +206,14 @@ public class DungeonNode implements NodeType{
 			int weak_end_level = (int) (tier*1.5f);
 			int path_length_tough = 4;
 			int tough_end_level = tier*2;
-			int fight_room = getNode(start_node, 0, 0, max_level);
+			int fight_room = NodeType.NodeTypeNum.BOSS.singleton.getNode(start_node, 0, 0, max_level);
 			Dungeon keeper = (Dungeon) owner;
-			List<SkillCon> skillcon_list = new ArrayList<SkillCon>();
-			//side 1 should be the not-player side
-			skillcon_list.add(new SkillCon(SubSkill.SCRYING, 10f, 1));
-			skillcon_list.add(new SkillCon(SubSkill.DEATH, 10f, 1));
-			skillcon_list.add(new SkillCon(SubSkill.ELEMENTAL, 10f, 1));
+			keeper.setupBattleCons();
+			List<SubSkill> skillcon_list = new ArrayList<SubSkill>();
+			
+			skillcon_list.add(SubSkill.SCRYING);
+			skillcon_list.add(SubSkill.DEATH);
+			skillcon_list.add(SubSkill.ELEMENTAL);
 			Collections.shuffle(skillcon_list);//random order
 			while (!skillcon_list.isEmpty()) {
 				int last_node = fight_room;

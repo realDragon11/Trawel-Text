@@ -6,21 +6,21 @@ import trawel.Networking;
 import trawel.extra;
 import trawel.battle.Combat.SkillCon;
 import trawel.towns.Town;
+import trawel.towns.fort.SubSkill;
 
 public class Dungeon extends NodeFeature {
 
 	private static final long serialVersionUID = 1L;
 	private byte boss;
-	private List<SkillCon> skill_cons;
+	private List<SubSkill> skill_cons;
 	private List<Integer> skill_nodes;
 	public Dungeon(String name,Town t,Shape s,int bossType) {
 		this.name = name;
 		town = t;
 		tutorialText = "Dungeon.";
 		shape = s;
-		generate(50);
-		boss = (byte) bossType;
-		
+		boss = (byte) bossType;	
+		generate(50);	
 	}
 	@Override
 	public String getColor() {
@@ -39,7 +39,6 @@ public class Dungeon extends NodeFeature {
 	protected void generate(int size) {
 		start = NodeType.NodeTypeNum.DUNGEON.singleton.getStart(this, size, getTown().getTier());//DOLATER: get actual level
 	}
-
 	
 	@Override
 	protected byte bossType() {
@@ -47,15 +46,19 @@ public class Dungeon extends NodeFeature {
 	}
 	
 	public List<SkillCon> getBattleCons(){
-		return skill_cons;
+		List<SkillCon> list = new ArrayList<SkillCon>();
+		for (SubSkill s: skill_cons) {
+			list.add(new SkillCon(s,tier,1));//side 1 should be the not-player side
+		}
+		return list;
 	}
 	
 	public void setupBattleCons() {
-		skill_cons = new ArrayList<SkillCon>();
+		skill_cons = new ArrayList<SubSkill>();
 		skill_nodes = new ArrayList<Integer>();
 	}
 	
-	public void registerBattleConWithNode(SkillCon c, int node) {
+	public void registerBattleConWithNode(SubSkill c, int node) {
 		skill_cons.add(c);
 		skill_nodes.add(node);
 	}

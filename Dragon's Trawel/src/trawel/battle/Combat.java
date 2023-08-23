@@ -458,7 +458,7 @@ public class Combat {
 					if (defender.hasEffect(Effect.CONFUSED_TARGET)) {
 						//the defender has been befuddled or confused
 						if (!defender.isOnCooldown() && defender.isAttacking()) {//if on cooldown or not attacking, the effect will apply to the next attack instead
-							defender.removeEffect(Effect.CONFUSED_TARGET);
+							defender.removeEffectAll(Effect.CONFUSED_TARGET);
 							Person newDef = getDefenderForConfusion(defender);
 							if (defender.getNextAttack().getDefender().isSameTargets(newDef)) {
 								defender.getNextAttack().setDefender(newDef);
