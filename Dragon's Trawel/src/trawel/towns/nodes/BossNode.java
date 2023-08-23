@@ -78,7 +78,7 @@ public class BossNode implements NodeType {
 		case 3:
 			level = Math.max(6,level);
 			p = RaceFactory.getBoss(level);
-			p.cleanSetSkillHas(Perk.FATESPINNER_NPC);
+			p.cleanSetSkillHas(Perk.YORE_NPC);
 			p.setFirstName("Yore");
 			p.setTitle("");
 			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
@@ -170,12 +170,11 @@ public class BossNode implements NodeType {
 			battleList.add(list);
 			List<SkillCon> cons = ((Dungeon)(holder.parent)).getBattleCons();
 			Combat c = mainGame.HugeBattle(holder.getWorld(), cons,battleList, true);
-					Player.player.massFightWith(list);
 			if (c.playerWon() > 0) {
 				holder.setForceGo(node,false);
 				Person yore = list.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();//throw if can't find
 				setGenericCorpse(holder,node, yore);
-				Player.unlockPerk(Perk.FATED);
+				Player.unlockPerk(Perk.STORYTELLER);
 				Networking.unlockAchievement("boss3");
 				return false;
 			}else {
