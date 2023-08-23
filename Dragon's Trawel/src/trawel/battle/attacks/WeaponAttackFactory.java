@@ -1198,6 +1198,7 @@ public class WeaponAttackFactory {
 		List<IHasSkills> list = skillStances.getOrDefault(s.getSkill(), new ArrayList<IHasSkills>());
 		list.add(iHas);
 		skillStances.put(s.getSkill(),list);//in case we created it
+		assert list.size() > 0;
 	}
 	
 	
@@ -1226,6 +1227,9 @@ public class WeaponAttackFactory {
 		return skillOwnerMap.get(source);
 	}
 	
+	/**
+	 * do not modify, contains backing info
+	 */
 	public static List<IHasSkills> getSources(Skill s){
 		return skillStances.get(s);
 	}

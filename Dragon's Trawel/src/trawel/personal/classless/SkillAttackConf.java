@@ -19,23 +19,17 @@ public class SkillAttackConf implements Serializable{
 	 * the stance source
 	 */
 	private IHasSkills source;
-	/**
-	 * sometimes more than one source is allowed
-	 */
-	private IHasSkills source2;
 	
 	private transient List<Attack> attList;
 	
-	public SkillAttackConf(Skill _skill, IHasSkills _source, IHasSkills _source2) {
+	public SkillAttackConf(Skill _skill, IHasSkills _source) {
 		skill = _skill;
 		source = _source;
-		source2 = _source2;
 	}
 	
-	public void update(Skill _skill, IHasSkills _source, IHasSkills _source2) {
+	public void update(Skill _skill, IHasSkills _source) {
 		skill = _skill;
 		source = _source;
-		source2 = _source2;
 	}
 	
 	/**
@@ -45,29 +39,14 @@ public class SkillAttackConf implements Serializable{
 		if (attList != null) {
 			return attList;
 		}
-		if (source2 == null) {
-			attList = WeaponAttackFactory.getStance(source).giveList();
-			return attList;
-		}else {
-			List<Attack> list = new ArrayList<Attack>();
-			list.addAll(WeaponAttackFactory.getStance(source).giveList());
-			list.addAll(WeaponAttackFactory.getStance(source2).giveList());
-			//don't put it in object list yet in case of threading
-			//this way even if there's a race condition nothing changes
-			//the race doesn't impact the final list contents
-			attList = list;
-			return list;
-		}
+		attList = WeaponAttackFactory.getStance(source).giveList();
+		return attList;
 	}
 	/**
 	 * only gives one at a time, you should need 2-3 max
 	 */
 	public ImpairedAttack randAttack(Person attacker, Person defender) {
-		if (source2 != null) {
-			return WeaponAttackFactory.rollAttack(source,source2,attacker,defender);
-		}else {
-			return WeaponAttackFactory.rollAttack(source,attacker,defender);
-		}
+		return WeaponAttackFactory.rollAttack(source,attacker,defender);
 	}
 
 	public String getText() {

@@ -120,7 +120,8 @@ public class TargetFactory {
 		t.pierce = 5;
 		t.rarity = .1;
 		t.slot = 0;
-		t.condWound = Wound.BLOODY;//should overwrite for non-bleeding plans
+		//t.condWound = Wound.BLOODY;//should overwrite for non-bleeding plans
+		//the eye itself already has this and the skull has a condwound, tripling up looks weird
 	}
 	
 	private void set_as_heart(Target t) {

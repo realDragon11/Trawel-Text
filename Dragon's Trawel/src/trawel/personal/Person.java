@@ -1,6 +1,7 @@
 package trawel.personal;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
@@ -452,6 +453,16 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			updateSkills();
 		}
 		return skillSet;
+	}
+	
+	public List<IHasSkills> fetchSkillSources() {
+		List<IHasSkills> list = new ArrayList<IHasSkills>();
+		//could have been a set, but an enumset wouldn't work, and this is mostly used for iteration
+		//so the better lookup of a hashset is actually negative
+		list.addAll(archSet);
+		list.addAll(featSet);
+		list.addAll(perkSet);
+		return list;
 	}
 	
 	public AttributeBox fetchAttributes() {

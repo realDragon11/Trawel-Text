@@ -242,13 +242,13 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 						if (SuperPerson.currentEditing == -1) {
 							for (int j = 0; j < attConfs.length;j++) {
 								if (attConfs[j] == null) {
-									attConfs[j] = new SkillAttackConf(s,hases.get(i),null);
+									attConfs[j] = new SkillAttackConf(s,hases.get(i));
 									sAttCount++;
 									break;
 								}
 							}
 						}else {
-							attConfs[SuperPerson.currentEditing].update(s, hases.get(i), null);
+							attConfs[SuperPerson.currentEditing].update(s, hases.get(i));
 						}
 						return true;
 					}});
@@ -626,8 +626,11 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	}
 	
 	protected void addSkillConfig(Skill skill) {
-		List<IHasSkills> base = WeaponAttackFactory.getSources(skill.getAliasOrSelf());
-		attConfs[sAttCount] = new SkillAttackConf(skill,extra.randList(base),null);
+		List<IHasSkills> base = getPerson().fetchSkillSources();
+		//need to retain all on the person's list, even though this likely results in more iteration, because
+		//the getSources we aren't allowed to modify, and copying stuff would take even more time
+		base.retainAll(WeaponAttackFactory.getSources(skill.getAliasOrSelf()));
+		attConfs[sAttCount] = new SkillAttackConf(skill,extra.randList(base));
 		sAttCount++;
 	}
 }
