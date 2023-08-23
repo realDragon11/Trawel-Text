@@ -365,6 +365,7 @@ public class Attack implements IAttack{
 	
 	//.0f = float/double with no decimal places. Weird that it can't auto convert, but oh well
 	//UPDATE welp can't make them look nicer so just made them all ints anyways
+	//MAYBELATER: display the actual wound name every time, but also have a stringfluffer describe it
 	public enum Wound{//TODO: make sure the reworked wounds are fully in
 		HAMSTRUNG("Hamstrung","Delays the next attack by %1$d instants.","Their leg is hamstrung!"), 
 		BLINDED("Blinded","The next attack will be %1$d%% less accurate.","They can't see!"),
@@ -394,7 +395,8 @@ public class Attack implements IAttack{
 		//perma 'condition loss' wounds
 		DEPOWER("Depower","Removes special abilities.","Depowered!"),
 		MAIMED("Maimed","Removes one attack choice each attack. Doesn't stack with Disarmed.","Maimed!"),
-		CRIPPLED("Crippled","Set to 80% of dodge mult. Stacks.","Crippled!")
+		CRIPPLED("Crippled","Set to 80% of dodge mult. Stacks.","Crippled!"),
+		HIT_VITALS("Damaged Vitals","Takes double condition damage, and parts with low condition cause another wound to be inflicted.","Sundered and broken, their lifeforce wanes..")//the unholy matrimony of dd1 and weaverdice wounds
 		;
 		//done line
 		public String name, desc, active;

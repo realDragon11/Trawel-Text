@@ -150,7 +150,7 @@ public class TargetFactory {
 		t.rarity = 1.5;
 		t.slot = 2;
 		t.mappingNumber = TORSO_MAPPING;
-		t.condWound = Wound.I_BLEED;//should overwrite for non-bleeding plans
+		t.condWound = Wound.HIT_VITALS;
 	}
 	
 	
@@ -834,6 +834,9 @@ public class TargetFactory {
 		t.pierceWounds.add(Attack.Wound.BLEED);
 		targetList.add(t);
 		
+		
+		//demon
+		
 		t = new Target();
 		t.name = "head";
 		set_as_head(t);
@@ -870,7 +873,7 @@ public class TargetFactory {
 		t.sharp = .5;
 		t.blunt = 2;
 		t.pierce = .5;
-		t.rarity = .8;
+		t.rarity = 1;
 		t.slot = 1;
 		t.type = TargetType.DEMON;
 		addMangled_Wounds(t);//used to damage skull and inflict the depower wound

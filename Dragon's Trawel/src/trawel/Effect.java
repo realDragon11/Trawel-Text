@@ -31,6 +31,7 @@ public enum Effect{
 	DEPOWERED("Depowered","Unable to use some special abilities.",false,false),
 	MAIMED("Maimed","Loses one weapon attack choice per attack. Doesn't stack with Disarmed.",false,false),
 	CRIPPLED("Crippled","Dodge reduced to 80%. Stacks.",false,true),
+	HIT_VITALS("Damaged Vitals","Takes double condition damage. When attacking a part with no condition, roll another wound.",false,false),
 	;
 	
 	private String name,desc;

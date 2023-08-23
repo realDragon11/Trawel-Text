@@ -1059,7 +1059,16 @@ public class Combat {
 				}
 			}
 			//condition damage
-			defender.addBodyStatus(atr.attack.getTargetSpot(),-percent);
+			double condDamage = percent;
+			if (defender.hasEffect(Effect.HIT_VITALS)) {
+				condDamage*=2;
+				//if this was an impactful attack, and the cond left is nearly 0
+				if (atr.type == ATK_ResultType.IMPACT && defender.getBodyStatus(attack.getTargetSpot()) < .01) {
+					//roll a bonus wound
+					inflictWound(attacker, defender, atr,defender.getAnyWoundForTargetSpot(attack.getTargetSpot()));
+				}
+			}
+			defender.addBodyStatus(atr.attack.getTargetSpot(),-condDamage);
 			
 			defender.debug_print_status(damageDone);
 			
@@ -1478,6 +1487,11 @@ public class Combat {
 			case CRIPPLED:
 				defender2.addEffect(Effect.CRIPPLED);
 				break;
+			case HIT_VITALS:
+				defender2.addEffect(Effect.HIT_VITALS);
+				break;
+			case GRAZE://no effect
+				break;
 			}
 			if (w != Wound.GRAZE && !notFromAttack) {
 				if (attack.getWeapon() != null && attack.getWeapon().hasQual(Weapon.WeaponQual.DESTRUCTIVE)) {
@@ -1499,6 +1513,7 @@ public class Combat {
 	public static Integer[] woundNums(ImpairedAttack attack, Person attacker, Person defender, AttackReturn result) {
 		switch (attack.getWound()) {
 		case CONFUSED: case SCREAMING: case GRAZE: case DISARMED: case DEPOWER: case MAIMED: case CRIPPLED:
+		case HIT_VITALS:
 			//nothing
 			return new Integer[0];
 		case SLICE:
