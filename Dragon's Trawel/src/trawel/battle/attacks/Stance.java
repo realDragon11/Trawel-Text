@@ -107,6 +107,11 @@ public class Stance{
 		}
 		
 	}
+	public void display(Weapon w) {
+			for(Attack a: attacks) {
+				a.display(w);
+			}
+	}
 	
 
 	public List<ImpairedAttack> randAtts(int count, Weapon weapon, Person attacker, Person defender) {

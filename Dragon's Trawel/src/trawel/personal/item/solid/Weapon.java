@@ -458,6 +458,9 @@ public class Weapon extends Item implements IEffectiveLevel {
 				extra.println(" " +wq.name + ": "+wq.desc);
 			}
 			;break;
+		case 4:
+		case 5:
+			//extra examine
 		case 2://Appraiser/full self on stat
 			//by dividing it later we implicitly mult it by 100x to get it to display as a whole number
 			float expectedAverage = (1f/getMartialStance().getAttackCount());
@@ -467,7 +470,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 			+ " impact chance: " + extra.formatPerSubOne(this.scoreImpact())
 			+ " average damage: " + extra.format(this.scoreAverage())
 			+ " weighted average damage: " + extra.format(this.scoreWeight())
-			+" aether: " + (int)(this.getAetherValue()*markup)
+			+" aether value: " + (int)(this.getAetherValue()*markup)
 			+ " infused kills: " +this.getKills());
 			
 			if (this.isEnchantedConstant()) {
@@ -479,6 +482,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 			for (WeaponQual wq: qualList) {
 				extra.println(" " +wq.name + ": "+wq.desc);
 			}
+			WeaponAttackFactory.getStance(this.weap).display(this);
 			;break;
 		case 20://for stores in depth
 			extra.println(this.getName()

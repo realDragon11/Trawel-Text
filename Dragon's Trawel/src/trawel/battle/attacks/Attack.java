@@ -7,6 +7,7 @@ import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 import trawel.battle.attacks.WeaponAttackFactory.DamageTier;
 import trawel.personal.Person;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.IHasSkills;
 import trawel.personal.item.solid.Weapon;
 
@@ -339,6 +340,37 @@ public class Attack implements IAttack{
 			extra.println(this.toString());
 			break;
 		}
+		
+	}
+	
+	public void display(Weapon w) {
+		float damMult = w.getUnEffectiveLevel();
+		int totalDam = getTotalDam();
+		float ignite = getIgnite();
+		float frost = 0;
+		float elec = 0;
+		if (w.isEnchantedHit()) {
+			ignite += w.getEnchant().getFireMod()*totalDam;
+			frost += w.getEnchant().getFreezeMod()*totalDam;
+			elec += w.getEnchant().getShockMod()*totalDam;
+		}
+		extra.println(
+			name +"= "
+			+" Rarity: " + extra.formatPerSubOne(holdingStance.getRarity(this))
+			+" Base Accuracy: " + extra.format(hitMult)
+			+" Warmup: " + extra.F_WHOLE.format(warmup)
+			+" Cooldown: " + extra.F_WHOLE.format(cooldown)
+			+" Total Delay: " + extra.F_WHOLE.format(warmup+cooldown)
+			+" Base Damage: "
+			+(getSharp() > 0 ? " Sharp: " + extra.F_WHOLE.format(damMult*getSharp()*w.getMat().sharpMult) : "")
+			+(getBlunt() > 0 ? " Blunt: " + extra.F_WHOLE.format(damMult*getBlunt()*w.getMat().bluntMult) : "")
+			+(getPierce() > 0 ? " Pierce: " + extra.F_WHOLE.format(damMult*getPierce()*w.getMat().pierceMult) : "")
+			
+			+(ignite > 0 ? " Ignite: " + extra.F_WHOLE.format(damMult*ignite) : "")
+			+(frost > 0 ? " Pierce: " + extra.F_WHOLE.format(damMult*frost) : "")
+			+(elec > 0 ? " Pierce: " + extra.F_WHOLE.format(damMult*elec) : "")
+			
+			);
 		
 	}
 	

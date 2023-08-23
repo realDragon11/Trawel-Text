@@ -650,7 +650,7 @@ public class AIClass {
 					thinking.display(1);
 					extra.println("instead of your");
 					current.display(1);
-					displayChange(thinking,current, Player.player.getPerson());
+					displayChange(current,thinking, Player.player.getPerson());
 				}
 				
 				final boolean fCanSwap = canSwap;
@@ -682,9 +682,11 @@ public class AIClass {
 					public boolean go() {
 						if (store == null) {
 							thinking.display(4);
+							extra.inputContinue();
 							return false;
 						}
 						thinking.display(store,true,5);
+						extra.inputContinue();
 						return false;
 					}});
 				list.add(new MenuSelect() {
@@ -698,29 +700,39 @@ public class AIClass {
 					public boolean go() {
 						if (store == null) {
 							current.display(4);
+							extra.inputContinue();
 							return false;
 						}
 						current.display(store,false,5);
+						extra.inputContinue();
 						return false;
 					}});
-				if (Player.player.canAddPouch() && allowedNotGiveBack) {
-					list.add(new MenuSelect() {
+				if (allowedNotGiveBack) {
+					if (Player.player.canAddPouch()) {
+						list.add(new MenuSelect() {
 
-						@Override
-						public String title() {
-							return "Put in bag.";
-						}
-
-						@Override
-						public boolean go() {
-							if (!fCanSwap) {
-								extra.println("You cannot afford that trade.");
-								return false;
+							@Override
+							public String title() {
+								return "Put in bag.";
 							}
-							ret[0] = null;
-							return Player.player.addPouch(thinking);
-						}});
+
+							@Override
+							public boolean go() {
+								if (!fCanSwap) {
+									extra.println("You cannot afford that trade.");
+									return false;
+								}
+								ret[0] = null;
+								return Player.player.addPouch(thinking);
+							}});
+					}else {
+						if (Player.player.getPouchesAgainst(thinking).size() == 0) {
+							//FIXME: allow discarding other items if can't fit
+						}
+					}
+					
 				}
+				//MAYBELATER: with shops, let you swap out any item, not just 'against' items
 				list.addAll(Player.player.getPouchesAgainst(thinking));
 				list.add(new MenuBack() {
 

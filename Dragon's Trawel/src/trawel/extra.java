@@ -573,6 +573,11 @@ public final class extra {
 		public static String inString() {
 			return mainGame.scanner.nextLine().toLowerCase();
 		}
+		
+		public static void inputContinue() {
+			extra.println("1 continue");
+			extra.inInt(1);
+		}
 
 		/**
 		 * true = do not print
