@@ -1418,7 +1418,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			extra.println(bag.quickInventory());
 		}else {
 			extra.println("This is " + this.getName() +". They are a level " + this.getLevel() +" " + this.getBag().getRace().renderName(false)+".");
-			extra.println("They have " + getBase_HP() + " base hp. Their health modifier is " + extra.format(bag.getHealth()) + "x. Their expected hp is "+getOOB_HP() +".");
+			extra.println("They have " + getBase_HP() + " LHP. Their health modifier is " + extra.format(bag.getHealth()) + "x. Their expected hp is "+getOOB_HP() +".");
 			extra.println("They have " + extra.format(bag.getAim()) + "x aiming, " +  extra.format(bag.getDam()) + "x damage, and "+extra.format(bag.getSpeed()) + "x speed.");
 			extra.println("They have " + extra.format(bag.getDodge()) + "x dodging, " + extra.format(bag.getSharpResist()) + " sharp resistance, " +
 			extra.format(bag.getBluntResist()) + " blunt resistance, and "+ extra.format(bag.getPierceResist()) + " pierce resistance.");

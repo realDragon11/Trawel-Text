@@ -327,7 +327,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 		String ret = null;
 		for (int i = 0; i < moneymappings.size(); i++) {
 			if (ret == null) {
-				ret += moneymappings.get(i).moneyString(moneys.get(i));
+				ret = moneymappings.get(i).moneyString(moneys.get(i));
 			}else {
 				ret += ", " +moneymappings.get(i).moneyString(moneys.get(i));
 			}
