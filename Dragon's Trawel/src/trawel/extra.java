@@ -950,6 +950,7 @@ public final class extra {
 		public static final String COLOR_SEEN = inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f));
 		public static final String COLOR_BEEN = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f));
 		public static final String COLOR_OWN = inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f));
+		public static final String COLOR_REGROWN = inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.8f));
 		
 		public static final String VISIT_NEW = COLOR_NEW + "new! ";
 		public static final String VISIT_SEEN = COLOR_SEEN + "! ";

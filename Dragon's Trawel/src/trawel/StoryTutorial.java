@@ -214,10 +214,14 @@ public class StoryTutorial extends Story{
 			if (!(f instanceof NodeFeature)) {
 				break;
 			}
-			extra.println("These areas have a variable number of nodes, seen below. Each node has a link to other nodes, and the ability to 'interact' with it. Nodes can be {"
-			+extra.VISIT_NEW+"} unseen, {"+extra.VISIT_SEEN+"}seen, {"+extra.VISIT_BEEN + "}been, {" +extra.VISIT_DONE + "}done, "
-					+extra.VISIT_OWN + "owned (usually used to indicate you've done an action that will change with time), "
-					+extra.PRE_WHITE+"and {"+extra.VISIT_REGROWN+ "}regrown,"+extra.PRE_WHITE+" which means that they got replaced since you last visited them.");
+			extra.println("These areas have a variable number of nodes, seen below. Each node has a link to other nodes, and the ability to 'interact' with it. Nodes can be "
+					
+			+extra.COLOR_NEW+"{"+extra.VISIT_NEW+"} unseen,"+extra.PRE_WHITE
+			+extra.COLOR_SEEN+" {"+extra.VISIT_SEEN+"} seen,"+extra.PRE_WHITE
+			+extra.COLOR_BEEN+" {"+extra.VISIT_BEEN + "} been,"+extra.PRE_WHITE
+			+extra.COLOR_OWN+" {" +extra.VISIT_DONE + "} done, "+extra.PRE_WHITE
+			+extra.COLOR_OWN+" {"+extra.VISIT_OWN + "} owned, "+extra.PRE_WHITE+ "(usually used to indicate you've done an action that will change with time), "
+			+extra.PRE_WHITE+" and "+extra.COLOR_REGROWN+"{"+extra.VISIT_REGROWN+ "}regrown,"+extra.PRE_WHITE+" which means that they got replaced since you last visited them.");
 			extra.println("The order of nodes presented is often erratic, but the last node you were in will be marked by '(back)'. Some areas will also place nodes that are 'deeper' or 'higher' on the top. One such instance is the Tower of Fate in Unun, which loops back in on itself, but picking the highest choice will always take to up the tower until you reach the top floor.");
 			extra.println("While interacting, you might find yourself in a sub-menu, otherwise you can always leave the area by selecting the last option.");
 			extra.println("You have completed the tutorial section of this story. If you make it to >10 level, you've essentially beaten the game. Those bosses mentioned earlier and some other world events will be tracked by this tutorial- but there's no main quest in this version of Trawel, so good luck.");

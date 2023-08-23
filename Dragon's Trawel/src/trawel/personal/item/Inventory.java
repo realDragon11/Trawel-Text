@@ -499,7 +499,7 @@ public class Inventory implements java.io.Serializable{
 		hand.getMartialStance().display(1);
 	
 		if (owner.getSuper() != null) {
-			extra.println( owner.getSuper().getGoldDisp() +".");
+			extra.println("Local Currency: "+ owner.getSuper().getGoldDisp() +". All: " + owner.getSuper().allGoldDisp()+".");
 			if (owner.getSuper().hasFlask()) {
 				if (owner.getSuper().knowsPotion()) {
 					extra.println(owner.getSuper().peekFlask().getName()+" potion with " + owner.getSuper().getFlaskUses() + " uses left.");
@@ -508,7 +508,7 @@ public class Inventory implements java.io.Serializable{
 				}
 			}
 		}else {
-			extra.println( World.currentMoneyDisplay(money) +".");
+			extra.println("Local Currency: "+ World.currentMoneyDisplay(money) +".");
 		}
 	
 	}
