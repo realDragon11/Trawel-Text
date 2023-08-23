@@ -42,6 +42,7 @@ public class GenericNode implements NodeType {
 		,PLANT_SPOT,
 		CASUAL_PERSON
 		,RICH_GUARD
+		,EMPTY_FOR_REGROW
 	}
 	
 	public static void setSimpleDuelPerson(NodeConnector holder,int node,Person p, String nodename, String interactstring,String wantDuel) {
@@ -154,7 +155,9 @@ public class GenericNode implements NodeType {
 			return goCollector(holder, node);
 		case RICH_GUARD:
 			return goRichGuard(holder,node);
-			
+		case EMPTY_FOR_REGROW:
+			extra.println("There is nothing here.");
+			return false;
 		}
 		return false;
 	}
@@ -171,7 +174,7 @@ public class GenericNode implements NodeType {
 			PlantSpot pspot = ((PlantSpot)holder.getStorage(node));
 			if (pspot.timer > 40f) {
 				if (pspot.contains == "") {//if we have nothing
-					if (extra.chanceIn(1, 5)) {//add something
+					if (extra.chanceIn(2, 5)) {//add something
 						pspot.timer = 0;//reset timer
 						switch (NodeType.getTypeEnum(holder.getTypeNum(node))) {
 						case BOSS:
@@ -191,6 +194,9 @@ public class GenericNode implements NodeType {
 								pspot.contains = "ent sapling";
 								break;
 							}
+							if (extra.chanceIn(1,6)) {//remove plantspot instead to keep the grove in flux
+								emptyANode(holder,node);
+							}
 							pspot.contains = extra.choose("bee larva","apple seed","apple seed","pumpkin seed");
 							break;
 						case MINE:
@@ -204,6 +210,7 @@ public class GenericNode implements NodeType {
 			}
 			calling.localEvents(pspot.passTime(time,calling));
 			break;
+		case EMPTY_FOR_REGROW:
 		case DEAD_PERSON:
 		case DEAD_STRING_SIMPLE:
 		case DEAD_RACE_INDEX:
@@ -246,7 +253,7 @@ public class GenericNode implements NodeType {
 		
 	}
 	
-	protected void resetNode(NodeConnector holder, int node,int eventNum) {
+	protected static void resetNode(NodeConnector holder, int node,int eventNum) {
 		holder.setEventNum(node, eventNum);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,false);
 		holder.setFlag(node,NodeFlag.SILENT_FORCEGO_POSSIBLE,false);
@@ -255,6 +262,16 @@ public class GenericNode implements NodeType {
 		holder.setVisited(node,0);//flush
 		holder.setFlag(node, NodeFlag.REGROWN,true);
 		NodeType.getTypeEnum(holder.getTypeNum(node)).singleton.apply(holder, node);
+	}
+	
+	protected static void emptyANode(NodeConnector holder, int node) {
+		holder.setEventNum(node,Generic.EMPTY_FOR_REGROW.ordinal());
+		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
+		holder.setFlag(node,NodeFlag.SILENT_FORCEGO_POSSIBLE,false);
+		holder.setFlag(node,NodeFlag.FORCEGO,false);
+		holder.setStateNum(node,0);
+		holder.setVisited(node,0);//flush
+		holder.setFlag(node, NodeFlag.REGROWN,true);
 	}
 
 	@Override
@@ -310,6 +327,8 @@ public class GenericNode implements NodeType {
 			List<Person> rplist = holder.getStorageFirstClass(node,List.class);
 			Person rich = extra.getNonAddOrFirst(rplist);
 			return "Approach the " + rich.getBag().getRace().renderName(false)+".";
+		case EMPTY_FOR_REGROW:
+			return "Examine empty space.";
 		}
 		return null;
 	}
@@ -349,6 +368,8 @@ public class GenericNode implements NodeType {
 			List<Person> rplist = holder.getStorageFirstClass(node,List.class);
 			Person rich = extra.getNonAddOrFirst(rplist);
 			return rich.getBag().getRace().renderName(false);
+		case EMPTY_FOR_REGROW:
+			return "Empty Space";
 		}
 		return null;
 	}

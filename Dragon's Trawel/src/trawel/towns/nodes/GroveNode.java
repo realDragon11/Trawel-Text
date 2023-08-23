@@ -386,6 +386,12 @@ public class GroveNode implements NodeType{
 	public void passTime(NodeConnector holder, int node, double time, TimeContext calling) {
 		// empty
 		switch (holder.getEventNum(node)) {
+		case 12://moss
+			if (holder.globalTimer > 6 && holder.getStateNum(node) == 2) {
+				holder.globalTimer-=2;
+				GenericNode.emptyANode(holder,node);
+			}
+			break;
 		case 8:
 			if (holder.globalTimer > 1f) {
 				if (holder.getStorageFirstClass(node,Boolean.class)) {
@@ -922,8 +928,9 @@ public class GroveNode implements NodeType{
 				state = 1;
 			}
 		}
-		if (state == 1) { 
+		if (state == 1 || state == 2) {
 			extra.println("There is some moss here. It looks poisonous.");
+			holder.setStateNum(node,2);
 			return false;//TODO maybe make this have more behavior again
 			
 		}
