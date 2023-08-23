@@ -272,10 +272,12 @@ public class Inventory implements java.io.Serializable{
 		}else {
 			retMod *= getAgiPen();
 		}
-		
-		if ((owner != null ? owner.hasEffect(Effect.BEE_SHROUD) : false )) {
-			retMod*=1.1;
+		if (owner != null) {
+			if (owner.hasEffect(Effect.BEE_SHROUD)) {
+				retMod*=1.1;
+			}
 		}
+		
 		
 		return extra.zeroOut(retMod);
 	}

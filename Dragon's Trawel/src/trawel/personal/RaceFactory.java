@@ -76,7 +76,8 @@ public class RaceFactory {
 		B_HARPY("harpy","harpy","harpies",null),
 		B_DRUDGER_STOCK("","drudger","stock-drudgers",null),
 		B_DRUDGER_TITAN("","drudger titan","titan-drudgers",null),
-		B_SWARMBAT("bat","bat","bats",null)
+		B_SWARMBAT("bat","bat","bats",null),
+		MAJOR_DEMON("","demon","demons","demonic")
 		
 		
 		;
@@ -95,7 +96,8 @@ public class RaceFactory {
 		ANTHRO_REPTILE(LegacyType.MERMAID), SKELETON(LegacyType.SKELETON),
 		OTHER(LegacyType.NONE),VARIES(LegacyType.VARIES), GOLEM(LegacyType.GOLEM),
 		WOLF(LegacyType.WOLF), BEAR(LegacyType.BEAR), UNDONE_BEAST(LegacyType.WOLF),
-		DRUDGER(LegacyType.MERMAID);
+		DRUDGER(LegacyType.MERMAID)
+		,DEMON(LegacyType.GOLEM);
 		private LegacyType ltype;
 		RaceClass(LegacyType _ltype) {
 			ltype = _ltype;
@@ -820,6 +822,23 @@ public class RaceFactory {
 		misc.raceClass = RaceClass.DRUDGER;
 		raceList.add(misc);
 		
+		misc = new Race(RaceID.MAJOR_DEMON);
+		misc.swears.add("demon");
+		misc.aimMod = 1.1;
+		misc.damMod = 1.1;
+		misc.dodgeMod = .9;
+		misc.hpMod = 1.1;
+		misc.speedMod = 1;
+		misc.rarity = 0;
+		misc.insultList.add("Die, you scum!");
+		misc.baseMap = "flesh_golem";
+		misc.raceMaps.add("0");
+		misc.racialType = Race.RaceType.PERSONABLE;
+		misc.targetType = TargetFactory.TargetType.DEMON;
+		misc.emitsBlood = true;
+		misc.raceClass = RaceClass.DEMON;
+		raceList.add(misc);
+		
 		for (Race r: raceList) {
 			raceMap.put(r.raceID().name(), r);
 		}
@@ -1351,6 +1370,18 @@ public class RaceFactory {
 		w.hTask = HostileTask.BOSS;
 		Agent a = new Agent(w,AgentGoal.OWN_SOMETHING);//should have an agent
 		extra.popPrintStack();
+		return w;
+	}
+	
+	public static Person makeDemonOverlord(int level) {
+		extra.offPrintStack();
+		Person w = new Person(level,true, Race.RaceType.PERSONABLE,null,null,false,AIJob.KNIGHT,RaceFactory.getRace(RaceID.MAJOR_DEMON));
+		w.getBag().addDrawBaneSilently(DrawBane.VIRGIN);
+		w.setPerk(Perk.HELL_BARON_NPC);
+		extra.popPrintStack();
+		w.hTask = HostileTask.BOSS;
+		Agent a = new Agent(w,AgentGoal.OWN_SOMETHING);//should have an agent
+		w.finishGeneration();
 		return w;
 	}
 	

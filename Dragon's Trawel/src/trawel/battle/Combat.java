@@ -467,7 +467,7 @@ public class Combat {
 								}
 							}else {
 								//targets don't match, need new attack.
-								//get discount on next one
+								//get discount on next one 
 								double discount = -Math.max(0,((defender.getTime()-defender.getNextAttack().getWarmup()))/2.0);
 								setAttack(defender,newDef);
 								defender.applyDiscount(discount);
@@ -695,7 +695,7 @@ public class Combat {
 			}
 		}
 		//TODO unsure if should add attacker's aim at impairment phase
-		double dodgeBase = def.getDodge()*defender.getTornCalc();
+		double dodgeBase = def.getDodge()*defender.getWoundDodgeCalc();
 		double hitBase = att.getHitMult();
 		
 		double dodgeRoll = dodgeBase*extra.getRand().nextDouble();
@@ -1117,7 +1117,7 @@ public class Combat {
 					extra.println(attacker.getName()+ " heals " + blood_heal + " from their bloodthirst!");
 				}
 			}
-			if (attacker.hasSkill(Skill.NPC_BURN_ARMOR)) {
+			if (attacker.hasSkill(Skill.NPC_BURN_ARMOR) && !attacker.hasEffect(Effect.DEPOWERED)) {
 				//always burns at least 5% before diminishing
 				defender.getBag().burnArmor(Math.max(0.05f,(percent*2)),atr.attack.getSlot());
 			}
@@ -1468,7 +1468,15 @@ public class Combat {
 			case MANGLED:
 				defender2.multBodyStatus(attack.getTargetSpot(), 1-(nums[0]/10f));
 				break;
-
+			case DEPOWER:
+				defender2.addEffect(Effect.DEPOWERED);
+				break;
+			case MAIMED:
+				defender2.addEffect(Effect.MAIMED);
+				break;
+			case CRIPPLED:
+				defender2.addEffect(Effect.CRIPPLED);
+				break;
 			}
 			if (w != Wound.GRAZE && !notFromAttack) {
 				if (attack.getWeapon() != null && attack.getWeapon().hasQual(Weapon.WeaponQual.DESTRUCTIVE)) {
@@ -1489,7 +1497,7 @@ public class Combat {
 	 */
 	public static Integer[] woundNums(ImpairedAttack attack, Person attacker, Person defender, AttackReturn result) {
 		switch (attack.getWound()) {
-		case CONFUSED: case SCREAMING: case GRAZE: case DISARMED:
+		case CONFUSED: case SCREAMING: case GRAZE: case DISARMED: case DEPOWER: case MAIMED: case CRIPPLED:
 			//nothing
 			return new Integer[0];
 		case SLICE:

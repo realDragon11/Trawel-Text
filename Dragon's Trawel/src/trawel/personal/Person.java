@@ -1632,8 +1632,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		return effects.size(); 
 	}
 	
-	public void displayEffects() {
-		
+	public void displayEffects() {	
 		boolean found = false;
 		for (Effect e: effects.keySet()) {//listing is slower now
 			int num = effects.getOrDefault(e, 0);
@@ -1672,10 +1671,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				effects.put(e,0);
 			}
 		}
-	}
-	
-	private int burnouts() {
-		return effects.getOrDefault(Effect.BURNOUT, 0);
 	}
 
 	public void displaySkills() {
@@ -1718,7 +1713,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			return 0;//we don't have any base, null wand
 		}
 		int cap = Math.min(5, 7-specialAttackNum());//max 7 attacks overall
-		if (this.hasEffect(Effect.DISARMED)) {
+		if (this.hasEffect(Effect.DISARMED) || hasEffect(Effect.MAIMED)) {
 			this.removeEffectAll(Effect.DISARMED);
 			i--;
 		}
@@ -1745,14 +1740,12 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		return effects.getOrDefault(e,0);
 	}
 
-	public double getTornCalc() {
-		//double starter = 1;
-		//int count = ;
-		return Math.pow(.9,effects.getOrDefault(Effect.TORN,0));
-		/*for (int i = 0; i < count;i++) {
-			starter*=.9;
-		}*/
-		//return starter;
+	public double getWoundDodgeCalc() {
+		int torn = effects.getOrDefault(Effect.TORN,0);//torn builds up quickly
+		int crippled = effects.getOrDefault(Effect.CRIPPLED,0);//crippled is only a condwound
+		return 
+				(crippled == 0 ? 1 : Math.pow(.8,crippled))
+				*(torn == 0 ? 1 : Math.pow(.9,torn));
 	}
 	
 	public int bloodSeed = extra.randRange(0,2000);
@@ -1884,7 +1877,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public int guessBodyHP(int spot) {
 		return (int) (bodystatus.getRootStatus(spot)*getMaxHp());
 	}
-
+	//TODO: could make it detect if the body types are the same
+	//naively, an array .equals should probably work, but there's probably a more performant way by using the
+	//otherwise unused BodyPlan variable
 	public boolean isSameTargets(Person other) {
 		return bodyType == other.internalBType();
 	}

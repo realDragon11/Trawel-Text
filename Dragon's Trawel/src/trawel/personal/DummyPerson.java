@@ -17,7 +17,7 @@ public class DummyPerson extends Person {
 	}
 	
 	@Override
-	public double getTornCalc() {
+	public double getWoundDodgeCalc() {
 		return 1;
 	}
 	

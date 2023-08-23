@@ -67,7 +67,7 @@ public class BossNode implements NodeType {
 		case 2:
 			//made.name = "The Hell Baron (Boss)";
 			//made.interactString = "challenge The Hell Baron";
-			p = RaceFactory.getBoss(level);
+			p = RaceFactory.makeDemonOverlord(level);
 			p.cleanSetSkillHas(Perk.HELL_BARON_NPC);
 			p.setTitle(", Baron of Hell");
 			p.getBag().addDrawBaneSilently(DrawBane.LIVING_FLAME);

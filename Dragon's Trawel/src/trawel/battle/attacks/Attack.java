@@ -376,7 +376,7 @@ public class Attack implements IAttack{
 		BLEED("Bleed","Applies up to %1$d bleed, %2$d expected.","They bleed..."),
 		MAJOR_BLEED("Cut Artery","Applies up to %1$d of bleed twice, expected total %2$d.","An artery is cut!"),
 		I_BLEED("Internal Bleeding","Applies a stacking %1$d bleed, expected %2$d for this stack.","Their insides get crushed."),
-		DISARMED("Disarm","Removes one attack choice.","Their attack is put off-kilter!"),		
+		DISARMED("Disarm","Removes one attack choice on next attack.","Their attack is put off-kilter!"),		
 		TRIPPED("Tripped","The next attack will take %1$d instants longer.","They are tripped!"),
 		GRAZE("Grazed","No effect.","The blow's a graze..."),
 		KO("Knockout","Deals %1$d bonus damage, but heals after their next attack.","It's a knockout!"),
@@ -390,6 +390,11 @@ public class Attack implements IAttack{
 		TEAR("Tear","Decreases dodge by %1$%d%%, stacking.","Their wing is torn!"), //see if need to add a '%'
 		MANGLED("Mangled","Halves the condition of the body part.","Their body is mangled!"),//FIXME
 		BLOODY("Bloody","The next attack will be %1$d%% less accurate. Applies up to %2$d bleed, expected %3$d.","Blood wells around their eyes!"),
+		
+		//perma 'condition loss' wounds
+		DEPOWER("Depower","Removes special abilities.","Depowered!"),
+		MAIMED("Maimed","Removes one attack choice each attack. Doesn't stack with Disarmed.","Maimed!"),
+		CRIPPLED("Crippled","Set to 80% of dodge mult. Stacks.","Crippled!")
 		;
 		//done line
 		public String name, desc, active;

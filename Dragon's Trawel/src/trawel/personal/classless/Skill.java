@@ -151,6 +151,7 @@ public enum Skill{
 		NIGHTVISION("Nightvision","Lets you see objects in the dark."
 				,"Helps determine things in Graveyards."
 				, Type.OTHER),
+		//can be depowered
 		NPC_BURN_ARMOR("Flaming Strikes","Burns armor with every Impactful attack."
 				,"Attacks damage armor twice as much as percent HP damage."
 				,Type.FEATURE),
