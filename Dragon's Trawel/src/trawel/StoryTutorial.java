@@ -45,7 +45,7 @@ public class StoryTutorial extends Story{
 	
 	private int battleFam;//0 none, 1 fought but didn't win, 2 won a fight
 	
-	private EnumSet<Perk> bossPerkTriggers = EnumSet.of(Perk.HELL_BARONESS,Perk.FATED);
+	private EnumSet<Perk> bossPerkTriggers = EnumSet.of(Perk.HELL_BARONESS,Perk.FATED,Perk.STORYTELLER);
 	private EnumSet<Perk> worldPerkTriggers = EnumSet.of(Perk.MINE_ALL_VEINS,Perk.CULT_LEADER_BLOOD);
 	
 	private List<Class<? extends Feature>> explained = new ArrayList<>();
@@ -376,7 +376,7 @@ public class StoryTutorial extends Story{
 			switch (perk) {
 			case FATED:
 				if (bossPerkTriggers.contains(Perk.HELL_BARONESS)) {
-					extra.println("You've slain the Fatespinner and gotten their Fated perk... but can you Beat the Baron? Travel to the world of Greap through the teleporter in Repa, then seek out the Staircase to Hell.");
+					extra.println("You've slain the Fatespinner and gotten a Fated perk... but can you Beat the Baron? Travel to the world of Greap through the teleporter in Repa, then seek out the Staircase to Hell.");
 				}else {
 					extra.println("You've slain the Fatespinner and gained the Fated perk!");
 				}
@@ -384,9 +384,14 @@ public class StoryTutorial extends Story{
 			case HELL_BARONESS:
 				extra.println("You've slain the Hell Baron and gained their throne perk!");
 				break;
+			case STORYTELLER:
+				extra.println("You've lived out a legend and gained a Storyteller perk!");
+				break;
 			}
 			if (bossPerkTriggers.isEmpty()) {
 				extra.println("You've obtained all tracked boss perks in this version of Trawel!");
+			}else {
+				extra.println("There are " +bossPerkTriggers.size() + " boss perks left!");
 			}
 		}
 		if (worldPerkTriggers.remove(perk)) {
@@ -396,6 +401,8 @@ public class StoryTutorial extends Story{
 			}
 			if (worldPerkTriggers.isEmpty()) {
 				extra.println("You've obtained all tracked world perks in this version of Trawel!");
+			}else {
+				extra.println("There are " +worldPerkTriggers.size() + " world perks left!");
 			}
 		}
 	}
