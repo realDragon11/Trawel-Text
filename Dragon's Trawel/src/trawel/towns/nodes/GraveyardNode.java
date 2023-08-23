@@ -628,7 +628,7 @@ public class GraveyardNode implements NodeType{
 		}
 		extra.println("You loot the statue...");
 		holder.setStateNum(node,13);
-		AIClass.loot(p.getBag(),Player.bag,true,Player.player.getPerson());
+		AIClass.playerLoot(p.getBag(),true);
 		return false;
 	}
 

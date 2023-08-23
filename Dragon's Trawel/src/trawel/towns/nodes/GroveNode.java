@@ -253,8 +253,7 @@ public class GroveNode implements NodeType{
 			extra.println("You find a "+holder.getStorageFirstClass(node,String.class)+"... With their equipment intact!");
 			Person p = holder.getStorageFirstPerson(node);
 			p.getBag().forceDownGradeIf(Player.player.getPerson().getLevel());
-			AIClass.loot(p.getBag(),
-				Player.bag,true,Player.player.getPerson());
+			AIClass.playerLoot(p.getBag(),true);
 			holder.findBehind(node, "body");
 			GenericNode.setPlantSpot(holder, node, "");//might made corpse fungus?
 			return false;

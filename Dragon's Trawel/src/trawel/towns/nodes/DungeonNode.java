@@ -469,7 +469,7 @@ public class DungeonNode implements NodeType{
 				return false;
 			}
 			extra.println("You loot the statue...");
-			AIClass.loot(p.getBag(),Player.bag,true,Player.player.getPerson());
+			AIClass.playerLoot(p.getBag(),true);
 			return false;
 		}else {
 			extra.println("The " + holder.getStorageFirstPerson(node).getBag().getRace().renderName(false) + " statue has already been looted.");

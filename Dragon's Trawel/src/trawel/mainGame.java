@@ -1329,9 +1329,13 @@ public class mainGame {
 
 		first_man.addXp(second_man.getLevel());
 
-		if (!second_man.isPlayer() && first_man.getBag().getRace().racialType == Race.RaceType.PERSONABLE) {
+		if (!second_man.isPlayer()) {
 			extra.println(first_man.getName() +" goes to loot " + second_man.getName() +".");
-			AIClass.loot(second_man.getBag(),first_man.getBag(),true,first_man);
+			if (first_man.isPlayer()) {
+				AIClass.playerLoot(second_man.getBag(), true);
+			}else {
+				AIClass.loot(second_man.getBag(), first_man.getBag(), true,first_man);
+			}
 		}
 
 		if (second_man.isPlayer()) {
@@ -1499,9 +1503,9 @@ public class mainGame {
 					Networking.setBattle(Networking.BattleType.NONE);
 				}
 				surv.addXp(subReward);
-				if (!surv.isPersonable()) {
+				/*if (!surv.isPersonable()) {
 					continue;//skip
-				}
+				}*/
 				if (canLoot) {
 					for (Person kill: battle.killed) {
 						if (kill.isPlayer()) {
@@ -1509,12 +1513,12 @@ public class mainGame {
 						}
 						if (isPlayer) {
 							kill.getBag().graphicalDisplay(1,kill);
+							AIClass.playerLoot(kill.getBag(), false);
+							Networking.clearSide(1);
+						}else {
+							AIClass.loot(kill.getBag(),surv.getBag(),false,surv);
 						}
-						AIClass.loot(kill.getBag(),surv.getBag(),false,surv);
 					}
-				}
-				if (isPlayer) {
-					Networking.clearSide(1);
 				}
 			}
 			

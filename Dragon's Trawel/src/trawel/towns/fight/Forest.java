@@ -472,7 +472,7 @@ public class Forest extends Feature{
 	
 	private void findEquip() {
 		extra.println("You find a rotting body... With their equipment intact!");
-		AIClass.loot(RaceFactory.makeLootBody(tier).getBag(),Player.bag,true,Player.player.getPerson());
+		AIClass.playerLoot(RaceFactory.makeLootBody(tier).getBag(),true);
 	}
 	
 	private void abandonedHut() {

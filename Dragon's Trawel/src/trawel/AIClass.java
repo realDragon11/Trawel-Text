@@ -515,7 +515,7 @@ public class AIClass {
 			int aether = loot.getAether();
 			Player.bag.addAether(aether);
 			int money = loot.getGold();
-			if (loot.owner.getSuper() != null) {
+			if (loot.owner != null && loot.owner.getSuper() != null) {
 				Player.player.takeGold(loot.owner.getSuper());
 				extra.println("You claim the " + aether + " aether"+(money > 0 ? " and " + World.currentMoneyDisplay(money) + "." : ".") +" And also any other world currency.");
 				loot.removeAllCurrency();
@@ -639,8 +639,9 @@ public class AIClass {
 					thinking.display(store,true,3);
 					extra.println("replacing your");
 					current.display(store,false,3);
+					displayChange(current,thinking,Player.player.getPerson(),store);
 					int buyPower = Player.player.getTotalBuyPower(store.aetherPerMoney(Player.player.getPerson()));
-					extra.println("Buy Value Needed: " +delta + "/"+buyPower);
+					extra.println("Buy Value Needed: " +-delta + "/"+buyPower);
 					if (buyPower < delta) {
 						canSwap = false;
 					}
@@ -653,7 +654,6 @@ public class AIClass {
 				}
 				
 				final boolean fCanSwap = canSwap;
-				displayChange(current,thinking,Player.player.getPerson(),store);
 				list.add(new MenuSelect() {
 
 					@Override
