@@ -5,6 +5,7 @@ import java.util.List;
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
+import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.mainGame.DispAttack;
 import trawel.battle.Combat;
@@ -436,11 +437,138 @@ public class AIClass {
 		}
 	}
 	
+	public static void playerLoot(Inventory loot, boolean canAtomSmash) {
+		boolean normalLoot = loot.getRace().racialType == Race.RaceType.PERSONABLE;
+		if (normalLoot && Player.getTutorial()) {
+			extra.println("You are now looting something! The first item presented will be the new item, the second, your current item, and finally, the difference will be shown. Some items may be autosold if all their visible stats are worse.");
+		}
+		
+		if (normalLoot) {
+			for (Armor a: loot.getArmor()) {
+				Item replaceArmor = playerLootCompareItem(a, canAtomSmash);
+				int slot = a.getSlot();
+				if (replaceArmor != a) {
+					if (replaceArmor == null) {
+						extra.println("You swap for the " + a.getName() + ".");
+					}else {
+						if (canAtomSmash) {
+							Services.aetherifyItem(Player.bag.getArmorSlot(slot),Player.bag);
+							extra.println("You swap for the " + a.getName() + ".");
+							Player.bag.swapArmorSlot(a,slot);
+							loot.setArmorSlot(null,a.getSlot());
+						}else {
+							loot.swapArmorSlot(Player.bag.swapArmorSlot(a,slot), slot);
+						}
+					}
+				}else {
+					if (canAtomSmash) {
+						Services.aetherifyItem(a,Player.bag);
+						loot.setArmorSlot(null,slot);
+					}
+				}
+				if (Networking.connected()) {
+					Networking.charUpdate();
+					String depth = null;
+					switch (a.getSlot()) {
+					case 0:depth= "-6|";break; //head
+					case 1:depth= "-3|";break; //arms
+					case 2:depth= "-5|";break; //chest
+					case 3:depth= "-1|";break; //legs
+					case 4:depth= "-2|";break; //feet
+					}
+					Networking.send("RemoveInv|1|" + depth);
+				}
+			}
+			while (i < 5) {
+				if (compareItem(stash.getArmorSlot(i),loot.getArmorSlot(i),true,p)) {
+					if (aetherStuff) {
+							//Services.sellItem(stash.swapArmorSlot(loot.getArmorSlot(i),i),stash,false);
+							Services.aetherifyItem(stash.getArmorSlot(i),stash);
+							extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + loot.getArmorSlot(i).getName() + ".");
+							stash.swapArmorSlot(loot.getArmorSlot(i),i);//we lose the ref to the thing we just deleted here
+							loot.setArmorSlot(null,i);
+						}else {
+							loot.swapArmorSlot(stash.swapArmorSlot(loot.getArmorSlot(i),i), i);
+						}
+				}else {
+					if (aetherStuff) {
+						//Services.sellItem(loot.getArmorSlot(i),loot,stash,false);}
+						Services.aetherifyItem(loot.getArmorSlot(i),stash);
+						loot.setArmorSlot(null,i);
+					}
+				}
+
+
+				
+				i++;
+			}
+			if (compareItem(stash.getHand(),loot.getHand(),true,p)) {
+				if (aetherStuff) {
+						//Services.sellItem(stash.swapWeapon(loot.getHand()),stash,false);
+						Services.aetherifyItem(stash.getHand(),stash);
+						extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + loot.getHand().getName() + ".");
+						stash.swapWeapon(loot.getHand());//we lose the ref to the thing we just deleted here
+						loot.setWeapon(null);
+					}else {
+						loot.swapWeapon(stash.swapWeapon(loot.getHand()));
+					}
+			}else {
+				if (aetherStuff) {
+					Services.aetherifyItem(loot.getHand(), stash);
+					loot.setWeapon(null);
+				}
+			}
+			Networking.send("RemoveInv|1|2|");
+		}else {
+			if (aetherStuff) {
+				while (i < 5) {
+					if (loot.getArmorSlot(i).canAetherLoot()) {
+						Services.aetherifyItem(loot.getArmorSlot(i),stash);
+						loot.setArmorSlot(null,i);
+					}
+					i++;
+				}
+				if (loot.getHand().canAetherLoot()) {
+					Services.aetherifyItem(loot.getHand(), stash);
+					loot.setWeapon(null);
+				}
+			}
+		}
+		if (p.isPlayer()) {
+			Networking.charUpdate();
+			/*if (Player.hasSkill(Skill.LOOTER) && normalLoot) {
+				stash.addGold(10);
+				extra.println("You take the extra coins they had stored away in their " + extra.choose("spleen","appendix","imagination","lower left thigh","no-no place","closed eyes") + ". +10 gold");
+			}*/
+			for (DrawBane db: loot.getDrawBanes()) {
+				stash.addNewDrawBanePlayer(db);
+			}
+		}else {
+			//TODO drawbane taking ai
+		}
+		if (aetherStuff) {
+			int aether = loot.getAether();
+			stash.addAether(aether);
+			if (normalLoot || p.getFlag(PersonFlag.HAS_WEALTH)) {
+				int money = loot.getGold();
+				stash.addGold(money);
+				loot.removeAllCurrency();
+				if (!extra.getPrint()) {
+					extra.println(p.getName() + " claims the " + aether + " aether"+(money > 0 ? " and " + World.currentMoneyDisplay(money) + "." : "."));
+				}
+			}else {
+				loot.removeAether();
+				if (!extra.getPrint()) {
+					extra.println(p.getName() + " gains " + aether + " aether.");
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Returns true if they want to replace it
 	 * @param hasItem (Item)
 	 * @param toReplace (Item)
-	 * @param smarts (int)
 	 * @return if you should swap items (boolean)
 	 */
 	public static boolean compareItem(Item hasItem, Item toReplace, boolean autosell, Person p) {
@@ -480,48 +608,117 @@ public class AIClass {
 	}
 	
 	public static boolean compareItem(Item current, Item next, Person p, Store s) {
-		if (!p.isPlayer()) {
-			return compareItem(current,next,false,p);
-		}
-		extra.println("Buy the");
-		next.display(s,true,3);
-		extra.println("replacing your");
-		current.display(s,false,3);
-		displayChange(current,next, p,s);
-		return extra.yesNo();
+		assert !p.isPlayer();
+		return compareItem(current,next,false,p);
+	}
+	public static Item playerLootCompareItem(Item next,boolean canPouch) {
+		return askDoSwap(next,null,canPouch);
 	}
 	
-	public static int askDoSwap(Item current, Item next, Store store) {
-		int i = extra.menuGo(new MenuGenerator() {
+	public static Item storeBuyCompareItem(Item next, Store store) {
+		Item swap = askDoSwap(next,store,true);
+		if (swap == next) {
+			return next;
+		}
+		int delta = store.getDelta(swap,next,Player.player);
+		if (Player.player.getTotalBuyPower(store.aetherPerMoney(Player.player.getPerson()))+delta < 0) {
+			//should not occur, this is a failsafe
+			extra.println("You can't afford this item!");
+			return next;
+		}
+		if (delta < 0) {
+			int beforeMoney = Player.player.getGold();
+			int beforeAether = Player.bag.getAether();
+			Player.player.buyMoneyAmountRateInt(-delta,store.aetherPerMoney(Player.player.getPerson()));
+			int moneyDelta = beforeMoney-Player.player.getGold();
+			int aetherDelta = beforeAether-Player.bag.getAether();
+			extra.println("You complete the trade."
+			+ (moneyDelta > 0 ? " Spent " +World.currentMoneyDisplay(moneyDelta) : "")
+			+ (moneyDelta > 0 && aetherDelta > 0 ? " and" : (aetherDelta > 0 ? " Spent" : ""))
+			+ (aetherDelta > 0 ? " " +aetherDelta +" aether" : "")
+			+ "."
+			);
+		}else {
+			if (delta > 0) {//we sold something more expensive
+				Player.player.addGold(delta);
+				extra.println("You complete the trade, gaining " + World.currentMoneyDisplay(delta) +".");
+			}else {//equal value
+				extra.println("You complete the trade.");
+			}
+		}
+		
+		return swap;
+	}
+	/**
+	 * allows player to move their pouch items around. will return what the item is being replaced with
+	 * <br>
+	 * NOTE: stores are allowed to 'unpouch' the item if the replacement doesn't let the player afford it
+	 * <br>
+	 * <br>
+	 * if they reject the item, it will return 'next'.
+	 */
+	public static Item askDoSwap(Item thinking, Store store, boolean allowedNotGiveBack) {
+		Item[] ret = new Item[1];
+		extra.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> list = new ArrayList<MenuItem>();
+				Item current = Player.bag.itemCounterpart(thinking);
+				//FIXME: this is technically working menugenerator behavior, but it's icky
+				boolean canSwap = true;
+				if (store != null) {
+					int delta = store.getDelta(current,thinking,Player.player);
+					extra.println("Buy the");
+					thinking.display(store,true,3);
+					extra.println("replacing your");
+					current.display(store,false,3);
+					int buyPower = Player.player.getTotalBuyPower(store.aetherPerMoney(Player.player.getPerson()));
+					extra.println("Buy Value Needed: " +delta + "/"+buyPower);
+					if (buyPower < delta) {
+						canSwap = false;
+					}
+				}else {
+					extra.println("Use the");
+					thinking.display(1);
+					extra.println("instead of your");
+					current.display(1);
+					displayChange(thinking,current, Player.player.getPerson());
+				}
+				
+				final boolean fCanSwap = canSwap;
+				displayChange(current,thinking,Player.player.getPerson(),store);
 				list.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "Take " + next.getName()+".";
+						return "Take " + thinking.getName()+".";
 					}
 
 					@Override
 					public boolean go() {
+						if (!fCanSwap) {
+							extra.println("You cannot afford that trade.");
+							return false;
+						}
+						ret[0] = current;
+						Player.bag.swapItem(thinking);
 						return true;
 					}});
 				list.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "Examine " + next.getName() +".";
+						return "Examine " + thinking.getName() +".";
 					}
 
 					@Override
 					public boolean go() {
 						if (store == null) {
-							next.display(4);
+							thinking.display(4);
 							return false;
 						}
-						next.display(store,true,5);
+						thinking.display(store,true,5);
 						return false;
 					}});
 				list.add(new MenuSelect() {
@@ -540,7 +737,7 @@ public class AIClass {
 						current.display(store,false,5);
 						return false;
 					}});
-				if (Player.player.canAddPouch()) {
+				if (Player.player.canAddPouch() && allowedNotGiveBack) {
 					list.add(new MenuSelect() {
 
 						@Override
@@ -550,20 +747,30 @@ public class AIClass {
 
 						@Override
 						public boolean go() {
-							return Player.player.addPouch(next);
+							if (!fCanSwap) {
+								extra.println("You cannot afford that trade.");
+								return false;
+							}
+							ret[0] = null;
+							return Player.player.addPouch(thinking);
 						}});
 				}
-				list.addAll(Player.player.getPouchesAgainst(next));
-				list.add(new MenuBack("no"));
+				list.addAll(Player.player.getPouchesAgainst(thinking));
+				list.add(new MenuBack() {
+
+					@Override
+					public String title() {
+						return "Reject " + thinking.getName() +".";
+					}
+
+					@Override
+					public boolean go() {
+						ret[0] = thinking;
+						return true;
+					}});
 				return list;
 			}});
-		if (i == 1) {
-			return 2;//do the swap
-		}
-		if (i == 9) {
-			return 0;//sell/smash the item
-		}
-		return 1;//was put in pouch
+		return ret[0];
 	}
 	public static boolean compareItem(Inventory bag, Item toReplace, boolean autosellOn, Person p) {
 		Item item = null;

@@ -452,6 +452,10 @@ public class Player extends SuperPerson{
 		return pouch.size() < 3;
 	}
 	
+	public Item retconLastPouch() {
+		return pouch.remove(pouch.size()-1);
+	}
+	
 	public class PouchMenuItem extends MenuSelect{
 		
 		private int slot;

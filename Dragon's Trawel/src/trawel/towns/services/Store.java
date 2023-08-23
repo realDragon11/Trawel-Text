@@ -228,45 +228,30 @@ public class Store extends Feature{
 			return;
 		}
 		ItemType itemType = buyItem.getType();
-		Item sellItem = null;
-		int slot = -1;
-		switch (itemType) {
-		case ARMOR:
-			slot = ((Armor)buyItem).getSlot();
-			sellItem = bag.getArmorSlot(slot);
-			break;
-		case RACE:
-			sellItem = bag.getRace();
-			break;
-		case WEAPON:
-			sellItem = bag.getHand();
-			break;
-		default:
-			throw new RuntimeException("invalid store item type");
-		}
-		int delta = getDelta(sellItem,buyItem,Player.player);
-		if (Player.player.getTotalBuyPower()+delta < 0) {
-			extra.println("You can't afford this item!");
-			return;
-		}
-		if (!AIClass.compareItem(sellItem,buyItem,p,this)) {
+		Item result = AIClass.storeBuyCompareItem(buyItem, this);
+		if (result == buyItem) {
 			extra.println("You decide not to buy the item.");
 			return;
 		}
+		if (result != null) {
+			items.set(items.indexOf(buyItem),result);
+		}
+		
 		this.addBuy();
 		switch (itemType) {
 		case ARMOR:
 			extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + buyItem.getName() + ".");
-			arraySwap(bag.swapArmorSlot((Armor)buyItem, slot),buyItem);
+			//arraySwap(bag.swapArmorSlot((Armor)buyItem, slot),buyItem);
 			break;
 		case RACE:
-			arraySwap(bag.swapRace((Race)buyItem),buyItem);
+			//arraySwap(bag.swapRace((Race)buyItem),buyItem);
 			break;
 		case WEAPON:
 			extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + buyItem.getName() + ".");
-			arraySwap(bag.swapWeapon((Weapon)buyItem),buyItem);
+			//arraySwap(bag.swapWeapon((Weapon)buyItem),buyItem);
 			break;	
 		}
+		/*
 		if (delta < 0) {
 			int beforeMoney = Player.player.getGold();
 			int beforeAether = Player.bag.getAether();
@@ -287,6 +272,7 @@ public class Store extends Feature{
 				extra.println("You complete the trade.");
 			}
 		}
+		*/
 		
 		
 	}
