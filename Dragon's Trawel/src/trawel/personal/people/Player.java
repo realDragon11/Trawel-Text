@@ -18,6 +18,7 @@ import trawel.earts.EArt;
 import trawel.earts.EArtBox;
 import trawel.factions.FBox;
 import trawel.personal.Person;
+import trawel.personal.Person.PersonFlag;
 import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Inventory;
@@ -25,6 +26,7 @@ import trawel.personal.item.Item;
 import trawel.personal.item.Item.ItemType;
 import trawel.personal.item.Potion;
 import trawel.personal.item.solid.Armor;
+import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.quests.BasicSideQuest;
 import trawel.quests.Quest;
@@ -495,6 +497,148 @@ public class Player extends SuperPerson{
 			}
 		}
 		return list;
+	}
+	
+	private void youMenu() {
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Character";
+					}
+
+					@Override
+					public boolean go() {
+						Player.player.getPerson().playerSkillMenu();
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Inventory";
+					}
+
+					@Override
+					public boolean go() {
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> invList = new ArrayList<MenuItem>();
+								invList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Equipment Overview";
+									}
+
+									@Override
+									public boolean go() {
+										Player.player.getPerson().getBag().deepDisplay();
+										extra.println("You have " + Player.player.emeralds + " emeralds, " + Player.player.rubies +" rubies, and " + Player.player.sapphires +" sapphires.");
+										return false;
+									}});
+								invList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "DrawBanes Menu (Discard?)";
+									}
+
+									@Override
+									public boolean go() {
+										while (Player.player.getPerson().getBag().playerDiscardDrawBane() != null);
+										return false;
+									}});
+								invList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Compass";
+									}
+
+									@Override
+									public boolean go() {
+										//TODO: add a scroll menu that lets the player find a path to any town they have previously visited
+										//don't track this manually, instead have a list of visited worlds and then scroll through that
+										//then let them pick any town that has it's visit flag set from there
+										WorldGen.pathToUnun();
+										return false;
+									}});
+								invList.add(new MenuBack());
+								return invList;
+							}});
+						return false;
+					}});
+				list.add(new MenuBack("Exit Menu."));
+				return list;
+			}});
+		extra.println("1 Skills (Character Menu)");
+		extra.println("2 Inventory + Compass");
+		extra.println("3 Titles and Faction Rep");
+		extra.println("4 Quests");
+		extra.println("5 Raw Stats");
+		extra.println("6 Main Menu");
+		extra.println("7 Save");
+		extra.println("8 Display Options");
+		extra.println("9 Return to " + getName());
+		
+		switch (extra.inInt(9)) {
+		case 5:Player.player.getPerson().displayStats(false);break;
+		case 3:Player.player.displayTitles();
+		Player.player.getPerson().facRep.display();
+		if (Player.player.getCheating()) {
+			extra.println("Get swole?");
+			if (extra.yesNo()) {
+				Player.player.getPerson().setFlag(PersonFlag.AUTOLEVEL, true);
+				Player.player.getPerson().addXp(99999);
+				Weapon w = Player.bag.getHand();
+				for (int i = 0; i < 50;i++) {
+					w.levelUp();
+				}
+			}else {
+				extra.println("At least work out?");
+				if (extra.yesNo()) {
+					Player.player.getPerson().addXp(9999);
+				}
+			}
+		}
+		break;
+		case 4:
+			Player.player.showQuests();
+			break;
+		case 1: break;
+		case 6: 
+			extra.println("Really quit? Your progress will not be saved.");
+			if (extra.yesNo()) {
+				Player.player.kill();
+				return;
+			}
+			break;
+		case 9: return;
+		case 7:
+			extra.println("Really save?");
+			extra.println(extra.PRE_RED+"SAVES ARE NOT COMPATIBLE ACROSS VERSIONS");
+			if (extra.yesNo()) {
+				extra.println("Save to which slot?");
+				for (int i = 1; i < 9;i++) {
+					extra.println(i+ " slot:"+WorldGen.checkNameInFile(""+i));
+				}
+				int in = extra.inInt(8);
+				extra.println("Saving...");
+				WorldGen.plane.prepareSave();
+				WorldGen.save(in+"");
+				
+			} break;
+		case 8: mainGame.advancedDisplayOptions();break;
+		}
+		this.you();
 	}
 	
 }
