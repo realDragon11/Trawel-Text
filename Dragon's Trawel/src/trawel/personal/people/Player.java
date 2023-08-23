@@ -509,6 +509,18 @@ public class Player extends SuperPerson{
 
 					@Override
 					public String title() {
+						return "Display Options";
+					}
+
+					@Override
+					public boolean go() {
+						mainGame.advancedDisplayOptions();
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
 						return "Character";
 					}
 
@@ -576,69 +588,196 @@ public class Player extends SuperPerson{
 							}});
 						return false;
 					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Society";
+					}
+
+					@Override
+					public boolean go() {
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> socList = new ArrayList<MenuItem>();
+								socList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Quests";
+									}
+
+									@Override
+									public boolean go() {
+										Player.player.showQuests();
+										return false;
+									}});
+								socList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Reputation";
+									}
+
+									@Override
+									public boolean go() {
+										Player.player.getPerson().facRep.display();
+										return false;
+									}});
+								socList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Titles";
+									}
+
+									@Override
+									public boolean go() {
+										Player.player.displayTitles();
+										return false;
+									}});
+								socList.add(new MenuBack());
+								return socList;
+							}});
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Save";
+					}
+
+					@Override
+					public boolean go() {
+						extra.println("Really save?");
+						extra.println(extra.PRE_RED+"SAVES ARE NOT COMPATIBLE ACROSS VERSIONS");
+						if (extra.yesNo()) {
+							extra.println("Save to which slot?");
+							for (int i = 1; i < 9;i++) {
+								extra.println(i+ " slot:"+WorldGen.checkNameInFile(""+i));
+							}
+							int in = extra.inInt(8);
+							extra.println("Saving...");
+							WorldGen.plane.prepareSave();
+							WorldGen.save(in+"");
+							
+						}
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Raw Stats";
+					}
+
+					@Override
+					public boolean go() {
+						Player.player.getPerson().displayStats(false);
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Quit to Main Menu";
+					}
+
+					@Override
+					public boolean go() {
+						extra.println("Really quit? Your progress might not be saved.");
+						if (extra.yesNo()) {
+							Player.player.kill();
+							return true;
+						}
+						return false;
+					}});
+				if (Player.player.getCheating()) {
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Cheats";
+						}
+
+						@Override
+						public boolean go() {
+							extra.menuGo(new MenuGenerator() {
+
+								@Override
+								public List<MenuItem> gen() {
+									List<MenuItem> hackList = new ArrayList<MenuItem>();
+									hackList.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "Fast Powerlevel";
+										}
+
+										@Override
+										public boolean go() {
+											//where we're going, level choices are no longer things...
+											Player.player.getPerson().setFlag(PersonFlag.AUTOLEVEL, true);
+											Player.player.getPerson().addXp(99999);
+											Weapon w = Player.bag.getHand();
+											for (int i = 0; i < 50;i++) {
+												w.levelUp();
+											}
+											return true;
+										}});
+									hackList.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "XP and Money";
+										}
+
+										@Override
+										public boolean go() {
+											Player.player.getPerson().addXp(9999);
+											Player.bag.addAether(999999);
+											Player.bag.addGold(999999);
+											return true;
+										}});
+									hackList.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "Queue One Year";
+										}
+
+										@Override
+										public boolean go() {
+											Player.addTime(365*24);
+											return true;
+										}});
+									hackList.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "Queue One Hundred Years";
+										}
+
+										@Override
+										public boolean go() {
+											if (!extra.yesNo()){
+												return false;
+											}
+											Player.addTime(100*365*24);
+											return true;
+										}});
+									hackList.add(new MenuBack());
+									return hackList;
+								}});
+							return false;
+						}});
+				}
 				list.add(new MenuBack("Exit Menu."));
 				return list;
 			}});
-		extra.println("1 Skills (Character Menu)");
-		extra.println("2 Inventory + Compass");
-		extra.println("3 Titles and Faction Rep");
-		extra.println("4 Quests");
-		extra.println("5 Raw Stats");
-		extra.println("6 Main Menu");
-		extra.println("7 Save");
-		extra.println("8 Display Options");
-		extra.println("9 Return to " + getName());
-		
-		switch (extra.inInt(9)) {
-		case 5:Player.player.getPerson().displayStats(false);break;
-		case 3:Player.player.displayTitles();
-		Player.player.getPerson().facRep.display();
-		if (Player.player.getCheating()) {
-			extra.println("Get swole?");
-			if (extra.yesNo()) {
-				Player.player.getPerson().setFlag(PersonFlag.AUTOLEVEL, true);
-				Player.player.getPerson().addXp(99999);
-				Weapon w = Player.bag.getHand();
-				for (int i = 0; i < 50;i++) {
-					w.levelUp();
-				}
-			}else {
-				extra.println("At least work out?");
-				if (extra.yesNo()) {
-					Player.player.getPerson().addXp(9999);
-				}
-			}
-		}
-		break;
-		case 4:
-			Player.player.showQuests();
-			break;
-		case 1: break;
-		case 6: 
-			extra.println("Really quit? Your progress will not be saved.");
-			if (extra.yesNo()) {
-				Player.player.kill();
-				return;
-			}
-			break;
-		case 9: return;
-		case 7:
-			extra.println("Really save?");
-			extra.println(extra.PRE_RED+"SAVES ARE NOT COMPATIBLE ACROSS VERSIONS");
-			if (extra.yesNo()) {
-				extra.println("Save to which slot?");
-				for (int i = 1; i < 9;i++) {
-					extra.println(i+ " slot:"+WorldGen.checkNameInFile(""+i));
-				}
-				int in = extra.inInt(8);
-				extra.println("Saving...");
-				WorldGen.plane.prepareSave();
-				WorldGen.save(in+"");
-				
-			} break;
-		case 8: mainGame.advancedDisplayOptions();break;
-		}
-		this.you();
 	}
 	
 }
