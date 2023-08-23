@@ -212,7 +212,7 @@ public class TargetHolder {
 			if (hastriggered[i]) {
 				continue;
 			}
-			if (condition.length < .5) {
+			if (condition[i] < .5) {
 				hastriggered[i] = true;
 				Wound w = plan.condWounds[i];
 				if (w == null) {

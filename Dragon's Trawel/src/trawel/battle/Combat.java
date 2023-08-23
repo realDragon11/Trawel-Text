@@ -1105,7 +1105,7 @@ public class Combat {
 					if (((defender.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 ))) {
 						woundstr = " They shrug off the blow!";
 					}else {
-						woundstr = inflictWound(attacker,defender,atr,null);
+						woundstr = inflictWound(attacker,defender,atr,atr.attack.getWound());
 					}
 				}
 				
@@ -1405,7 +1405,7 @@ public class Combat {
 	
 	private String inflictWound(Person attacker2, Person defender2, AttackReturn retu, Wound w) {
 			ImpairedAttack attack = attacker2.getNextAttack();
-			Integer[] nums = woundNums(attack,attacker2,defender2,retu);
+			Integer[] nums = woundNums(attack,attacker2,defender2,retu,w);
 			boolean notFromAttack = false;
 			if (w == null) {
 				w = attack.getWound();
@@ -1516,8 +1516,8 @@ public class Combat {
 	 * @param result (null if attack didn't happen yet)
 	 * @return array of doubles, you can round them if needed
 	 */
-	public static Integer[] woundNums(ImpairedAttack attack, Person attacker, Person defender, AttackReturn result) {
-		switch (attack.getWound()) {
+	public static Integer[] woundNums(ImpairedAttack attack, Person attacker, Person defender, AttackReturn result, Wound w) {
+		switch (w) {
 		case CONFUSED: case SCREAMING: case GRAZE: case DISARMED: case DEPOWER: case MAIMED: case CRIPPLED:
 		case HIT_VITALS:
 			//nothing

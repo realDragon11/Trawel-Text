@@ -574,7 +574,7 @@ public class ImpairedAttack implements IAttack{
 						);
 			}
 			if (wound != null) {
-				extra.println("  "+this.wound.name + " - " + String.format(this.wound.desc,(Object[])Combat.woundNums(this,attacker,defender,null)));
+				extra.println("  "+this.wound.name + " - " + String.format(this.wound.desc,(Object[])Combat.woundNums(this,attacker,defender,null,wound)));
 			}
 		}
 
