@@ -1,6 +1,7 @@
 package trawel.towns.nodes;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -12,12 +13,14 @@ import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
 import trawel.battle.Combat;
+import trawel.battle.Combat.SkillCon;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.towns.World;
+import trawel.towns.fort.SubSkill;
 
 public class DungeonNode implements NodeType{
 
@@ -196,7 +199,37 @@ public class DungeonNode implements NodeType{
 				
 			}
 			return start_node.complete(owner);
-			
+		case RIGGED_DUNGEON:
+			int max_level = tier*2;
+			int start_level = tier;
+			int path_length_weak = 10;
+			int weak_end_level = (int) (tier*1.5f);
+			int path_length_tough = 4;
+			int tough_end_level = tier*2;
+			int fight_room = getNode(start_node, 0, 0, max_level);
+			Dungeon keeper = (Dungeon) owner;
+			List<SkillCon> skillcon_list = new ArrayList<SkillCon>();
+			//side 1 should be the not-player side
+			skillcon_list.add(new SkillCon(SubSkill.SCRYING, 10f, 1));
+			skillcon_list.add(new SkillCon(SubSkill.DEATH, 10f, 1));
+			skillcon_list.add(new SkillCon(SubSkill.ELEMENTAL, 10f, 1));
+			Collections.shuffle(skillcon_list);//random order
+			while (!skillcon_list.isEmpty()) {
+				int last_node = fight_room;
+				boolean tough = extra.randRange(0, 1) == 0;
+				int this_length = tough ? path_length_tough : path_length_weak;
+				int this_end_level = tough ? tough_end_level : weak_end_level;
+				for (int i = 0; i < this_length;i++) {
+					int cur_node = getNode(start_node,fight_room,i,(int)extra.lerp(start_level, this_end_level, ((float)(i))/this_length));
+					start_node.setMutualConnect(last_node, cur_node);
+					if (i == this_length-1) {
+						start_node.setEventNum(cur_node, 100);
+						keeper.registerBattleConWithNode(skillcon_list.remove(0), cur_node);
+					}
+					last_node = cur_node;
+				}
+			}
+			return start_node.complete(owner);
 		}
 		throw new RuntimeException("Invalid dungeon");
 	}
@@ -262,6 +295,8 @@ public class DungeonNode implements NodeType{
 		case 7:
 			holder.setStorage(madeNode, RaceFactory.makeStatue(holder.getLevel(madeNode)));
 			break;
+		case 100://skillcon holder
+			break;
 		}
 	}
 	
@@ -296,6 +331,17 @@ public class DungeonNode implements NodeType{
 		case 6: return mimic(holder, node);
 		case 8: return statue(holder, node);
 		case 7: return statueLoot(holder, node);
+		
+		case 100://skillcon holder
+			if (holder.getStateNum(node) == 0) {
+				extra.println("You smash the orb of power.");
+				holder.setStateNum(node,1);
+				((Dungeon)holder.parent).requestRemoveBattleCon(node);
+			}else {
+				extra.println("The orb is broken into jagged fragments.");
+				holder.findBehind(node,"broken orb");
+			}
+			return false;
 		}
 		return false;
 	}
@@ -442,6 +488,12 @@ public class DungeonNode implements NodeType{
 			}
 		case 8:
 			return extra.capFirst(holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)) + " Statue";
+		case 100:
+			if (holder.getStateNum(node) != 0) {
+				return "Examine broken orb.";
+			}else {
+				return "Break orb of power.";
+			}
 		}
 		return null;
 	}
@@ -472,6 +524,12 @@ public class DungeonNode implements NodeType{
 			}
 		case 8:
 			return extra.capFirst(holder.getStorageFirstPerson(node).getBag().getRace().renderName(false)) + " Statue";
+		case 100:
+			if (holder.getStateNum(node) != 0) {
+				return "Destroyed Orb of Power";
+			}else {
+				return "Orb of Power";
+			}
 		}
 		return null;
 	}

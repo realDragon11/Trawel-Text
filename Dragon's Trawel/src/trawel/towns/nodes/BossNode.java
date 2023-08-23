@@ -6,6 +6,7 @@ import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.battle.Combat;
+import trawel.battle.Combat.SkillCon;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.classless.Perk;
@@ -50,7 +51,7 @@ public class BossNode implements NodeType {
 			
 			p = RaceFactory.getBoss(level);
 			p.cleanSetSkillHas(Perk.FATESPINNER_NPC);
-			p.setTitle("The Fatespinner");
+			p.setTitle(", the Fatespinner");
 			p.getBag().addDrawBaneSilently(DrawBane.TELESCOPE);
 			p.liteRefreshClassless();
 			p.finishGeneration();
@@ -68,10 +69,28 @@ public class BossNode implements NodeType {
 			//made.interactString = "challenge The Hell Baron";
 			p = RaceFactory.getBoss(level);
 			p.cleanSetSkillHas(Perk.HELL_BARON_NPC);
-			p.setTitle("The Baron of Hell");
+			p.setTitle(", Baron of Hell");
 			p.getBag().addDrawBaneSilently(DrawBane.LIVING_FLAME);
 			p.liteRefreshClassless();
 			p.finishGeneration();
+			peeps.add(p);
+		break;
+		case 3:
+			level = Math.max(6,level);
+			p = RaceFactory.getBoss(level);
+			p.cleanSetSkillHas(Perk.FATESPINNER_NPC);
+			p.setFirstName("Yore");
+			p.setTitle("");
+			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
+			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
+			p.liteRefreshClassless();
+			p.finishGeneration();
+			peeps.add(p);
+			p = RaceFactory.makeFellReaver(level-3);
+			p.setFlag(PersonFlag.IS_MOOK, true);
+			peeps.add(p);
+			p = (RaceFactory.makeFellReaver(level-3));
+			p.setFlag(PersonFlag.IS_MOOK, true);
 			peeps.add(p);
 		break;
 		}
@@ -140,12 +159,34 @@ public class BossNode implements NodeType {
 		
 		
 	}
+	
+	private boolean yore(NodeConnector holder,int node) {
+			extra.println(extra.PRE_BATTLE+"You challenge a legend!");
+			List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
+			List<List<Person>> battleList = new ArrayList<List<Person>>();
+			battleList.add(Player.player.getAllies());
+			battleList.add(list);
+			List<SkillCon> cons = ((Dungeon)(holder.parent)).getBattleCons();
+			Combat c = mainGame.HugeBattle(holder.getWorld(), cons,battleList, true);
+					Player.player.massFightWith(list);
+			if (c.playerWon() > 0) {
+				holder.setForceGo(node,false);
+				Person yore = list.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();//throw if can't find
+				setGenericCorpse(holder,node, yore);
+				Player.unlockPerk(Perk.FATED);
+				Networking.unlockAchievement("boss3");
+				return false;
+			}else {
+				return true;//lost, kick out
+			}
+	}
 
 	@Override
 	public boolean interact(NodeConnector holder,int node) {
 		switch(holder.getEventNum(node)) {
 		case 1: return fatespinner(holder,node);
 		case 2: return hellbaron(holder,node);
+		case 3: return yore(holder,node);
 		}
 		throw new RuntimeException("Invalid boss");
 	}
@@ -168,6 +209,7 @@ public class BossNode implements NodeType {
 		switch(holder.getEventNum(node)) {
 		case 1: return extra.PRE_RED+"reject Fate";
 		case 2: return extra.PRE_RED+"become the Baroness";
+		case 3: return extra.PRE_RED+"stall a Story";
 		}
 		throw new RuntimeException("Invalid boss");
 	}
@@ -177,6 +219,7 @@ public class BossNode implements NodeType {
 		switch(holder.getEventNum(node)) {
 		case 1: return "Fatespinner's Observatory";
 		case 2: return "A Minor Throne of Hell";
+		case 3: return "A Rigged Arena";
 		}
 		throw new RuntimeException("Invalid boss");
 	}

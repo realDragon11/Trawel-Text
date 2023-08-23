@@ -16,7 +16,7 @@ public abstract class NodeFeature extends Feature {
 	protected boolean spreadTime = false;
 	
 	public enum Shape{
-		NONE, TOWER, ELEVATOR;
+		NONE, TOWER, ELEVATOR, RIGGED_DUNGEON;
 	}
 	protected Shape shape;
 	

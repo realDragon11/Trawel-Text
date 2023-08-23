@@ -1,19 +1,25 @@
 package trawel.towns.nodes;
+import java.util.ArrayList;
+import java.util.List;
+
 import trawel.Networking;
 import trawel.extra;
+import trawel.battle.Combat.SkillCon;
 import trawel.towns.Town;
 
 public class Dungeon extends NodeFeature {
 
 	private static final long serialVersionUID = 1L;
-	private int boss;
+	private byte boss;
+	private List<SkillCon> skill_cons;
+	private List<Integer> skill_nodes;
 	public Dungeon(String name,Town t,Shape s,int bossType) {
 		this.name = name;
 		town = t;
 		tutorialText = "Dungeon.";
 		shape = s;
 		generate(50);
-		boss = bossType;
+		boss = (byte) bossType;
 		
 	}
 	@Override
@@ -37,8 +43,27 @@ public class Dungeon extends NodeFeature {
 	
 	@Override
 	protected byte bossType() {
-		return 1;
+		return boss;
 	}
-
+	
+	public List<SkillCon> getBattleCons(){
+		return skill_cons;
+	}
+	
+	public void setupBattleCons() {
+		skill_cons = new ArrayList<SkillCon>();
+		skill_nodes = new ArrayList<Integer>();
+	}
+	
+	public void registerBattleConWithNode(SkillCon c, int node) {
+		skill_cons.add(c);
+		skill_nodes.add(node);
+	}
+	
+	public void requestRemoveBattleCon(int node) {
+		int index = skill_nodes.indexOf(node);
+		skill_nodes.remove(index);
+		skill_cons.remove(index);
+	}
 
 }
