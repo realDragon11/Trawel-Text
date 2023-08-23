@@ -18,9 +18,10 @@ public class TimeContext {
 	private boolean didUpdate = false;
 	private double trackedTime = 0;
 	
-	//TODO: for now, timecontext itself is not thread safe, but the rest of the program
+	//timecontext itself is not thread safe, but the rest of the program
 	//is expected to only ever access it in a thread safe way
-	//likely, this will be by only accessing global contexts from the main thread, and local contexts do not access each other
+	//likely, this will be by only accessing global contexts from the main thread,
+	//and local contexts do not access each other
 	//but are instead resolved by the global context they are in
 	
 	public TimeContext(ContextType type, CanPassTime scope) {

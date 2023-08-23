@@ -20,7 +20,7 @@ public class Potion implements java.io.Serializable{
 		sips = (byte)s;
 	}
 	
-	public boolean sip(Person p) {//FIXME: give ai superpeople potions
+	public boolean sip(Person p) {
 		if (sips > 0) {
 			p.addEffect(effect);
 			sips--;

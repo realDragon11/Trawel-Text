@@ -127,7 +127,7 @@ public interface IHasSkills {
 	
 	public boolean goMenuItem();
 	
-	//FIXME: temp attack level for new skill attacks
+	//FIXME: temp attack level for new skill attacks, better formula should be stored in stance somehow
 	public default int getAttackLevel(Person attacker) {
 		return Math.min(attacker.getClarity()/40,attacker.getLevel());
 	}

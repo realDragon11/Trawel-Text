@@ -236,7 +236,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	}
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		//TODO: make certain drawbanes give more depending on what the guild needs
+		//DOLATER: make certain drawbanes give more depending on what the guild needs
 		timePassed += time;
 		if (timePassed > nextReset) {
 			timePassed = 0;

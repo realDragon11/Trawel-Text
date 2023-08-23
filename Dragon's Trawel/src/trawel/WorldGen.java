@@ -2,7 +2,6 @@ package trawel;
 import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,19 +9,15 @@ import java.io.PrintWriter;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
-
 import org.nustaq.serialization.FSTConfiguration;
 import org.nustaq.serialization.FSTObjectOutput;
 
+import trawel.factions.FBox.FSub;
 import trawel.personal.Person;
 import trawel.personal.item.DummyInventory;
-import trawel.personal.item.Inventory;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Player;
@@ -76,7 +71,8 @@ public class WorldGen {
 	static{
 		conf.registerClass(String.class,//probably already built in
 				Armor.class,Weapon.class,Person.class,
-				NodeConnector.class//now there's only one of these :) [I could also improve it further by making it gml style ds datastructures instead of actual objects]
+				NodeConnector.class
+				,FSub.class
 				);
 		//I think strings are already registered somehow
 		//conf.getClassRegistry().dragonDump();

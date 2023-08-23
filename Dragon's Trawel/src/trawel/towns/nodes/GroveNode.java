@@ -456,7 +456,7 @@ public class GroveNode implements NodeType{
 			holder.findBehind(node, "oddly hollow tree");
 			return false;
 		}
-		//FIXME: many things! add a thing, and make it not happen if it was the last thing
+		//TODO: many things! add a thing, and make it not happen if it was the last thing
 		switch (state) {
 		case 0://always starts in state 0
 			extra.println("You examine the fallen tree. It is very pretty... but something feels off.");
@@ -529,10 +529,10 @@ public class GroveNode implements NodeType{
 	}
 	
 	public int treeRandNot(int not) {
-		int cap = 5;
+		int cap = 1;
 		int potential = extra.randRange(0,cap);
 		if (potential == not) {
-			potential = (potential+extra.randRange(0,cap/2))%cap;
+			potential = (potential+extra.randRange(1,Math.round(cap/2f)))%cap;
 		}
 		return potential;
 	}

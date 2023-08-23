@@ -85,7 +85,7 @@ public class Docks extends Feature {
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		fightCooldownTimer-=time;
-		//TODO: defenders and attackers that get too high level should start wandering around instead
+		//defenders and attackers that get too high level should start wandering around instead
 		//should probably also apply to town leaders, but not drudger leaders
 		//both for flavor and because the player can't fight town leaders rn so they'll get stuck
 		if (fightCooldownTimer < -24*6) {//if it's been 6 days, starts happening automatically

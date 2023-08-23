@@ -38,8 +38,6 @@ public interface NodeType{
 	
 	String nodeName(NodeConnector holder,int node);
 	
-	//FIXME: provide some 'generic handlers' which can handle basic nodes (like combat with a person who won't see reason anymore)
-
 	public static int GENERIC_CUTOFF = Byte.SIZE-50;
 	public enum NodeTypeNum{
 		GENERIC(new GenericNode()),

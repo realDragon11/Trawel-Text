@@ -3,6 +3,9 @@ package trawel.personal.item.solid;
 import java.io.FileNotFoundException;
 import java.util.EnumSet;
 import java.util.Set;
+
+import com.github.yellowstonegames.core.WeightedTable;
+
 import trawel.Services;
 import trawel.WorldGen;
 import trawel.extra;
@@ -83,44 +86,46 @@ public class Weapon extends Item implements IEffectiveLevel {
 	}
 	
 	public enum WeaponType{
-		LONGSWORD("longsword","longsword",3f,2,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		BROADSWORD("broadsword","broadsword",3.5f,3,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		MACE("mace","mace",3f,2,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,WeaponQual.CARRYTHROUGH)),
-		SPEAR("spear","spear",2.5f,2,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		AXE("axe","small_axe",2.5f,2,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		RAPIER("rapier","rapier",4f,3,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		DAGGER("dagger","dagger",1.8f,1,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		CLAYMORE("claymore","claymore",4f,5,EnumSet.of(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED)),
-		LANCE("spear","spear",4f,3,EnumSet.of(WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		SHOVEL("shovel","shovel",2.2f,2,EnumSet.of(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,WeaponQual.CARRYTHROUGH)),
-		TEETH_GENERIC("teeth",null,0,0,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.PENETRATIVE,WeaponQual.DUELING,Weapon.WeaponQual.ACCURATE)),
-		REAVER_STANDING("clawed feet",null,0,0),
-		CLAWS_TEETH_GENERIC("teeth and claws",null,0,0,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		BRANCHES("branches",null,0,0),
-		GENERIC_FISTS("fists",null,0,0),
-		UNICORN_HORN("horn",null,0,0,EnumSet.of(WeaponQual.PENETRATIVE,WeaponQual.PINPOINT)),
-		TALONS_GENERIC("talons",null,0,0,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.PENETRATIVE,WeaponQual.PINPOINT,Weapon.WeaponQual.ACCURATE,WeaponQual.CARRYTHROUGH)),
-		FISH_SPEAR("fishing spear","spear",.5f,1),
-		FISH_ANCHOR("anchor","claymore",1f,5,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,WeaponQual.CARRYTHROUGH)),
-		NULL_WAND("WAND",null,0,0)
+		LONGSWORD("longsword","longsword",3f,2,1f,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		BROADSWORD("broadsword","broadsword",3.5f,3,1f,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		MACE("mace","mace",3f,2,1f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,WeaponQual.CARRYTHROUGH)),
+		SPEAR("spear","spear",2.5f,2,1f,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		AXE("axe","small_axe",2.5f,2,1f,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		RAPIER("rapier","rapier",4f,3,.8f,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		DAGGER("dagger","dagger",1.8f,1,.8f,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		CLAYMORE("claymore","claymore",4f,5,.3f,EnumSet.of(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED)),
+		LANCE("spear","spear",4f,3,.2f,EnumSet.of(WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		SHOVEL("shovel","shovel",2.2f,2,.1f,EnumSet.of(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,WeaponQual.CARRYTHROUGH)),
+		TEETH_GENERIC("teeth",null,0,0,0f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.PENETRATIVE,WeaponQual.DUELING,Weapon.WeaponQual.ACCURATE)),
+		REAVER_STANDING("clawed feet",null,0,0,0f),
+		CLAWS_TEETH_GENERIC("teeth and claws",null,0,0,0f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		BRANCHES("branches",null,0,0,0f),
+		GENERIC_FISTS("fists",null,0,0,0f),
+		UNICORN_HORN("horn",null,0,0,0f,EnumSet.of(WeaponQual.PENETRATIVE,WeaponQual.PINPOINT)),
+		TALONS_GENERIC("talons",null,0,0,0f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.PENETRATIVE,WeaponQual.PINPOINT,Weapon.WeaponQual.ACCURATE,WeaponQual.CARRYTHROUGH)),
+		FISH_SPEAR("fishing spear","spear",.5f,1,0f),
+		FISH_ANCHOR("anchor","claymore",1f,5,0f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,WeaponQual.CARRYTHROUGH)),
+		NULL_WAND("WAND",null,0,0,0f)
 		;
 		
 		private final String name, legacysprite;
-		private final float cost, weight;
+		private final float cost, weight, rarity;
 		private final Set<WeaponQual> qList;
-		WeaponType(String _name, String _legacysprite, float _cost, float _weight, Set<WeaponQual> _list) {
+		WeaponType(String _name, String _legacysprite, float _cost, float _weight, float _rarity, Set<WeaponQual> _list) {
 			name = _name;
 			legacysprite = _legacysprite;
 			cost = _cost;
 			weight = _weight;
 			qList = _list;
+			rarity = _rarity;
 		}
-		WeaponType(String _name, String _legacysprite, float _cost, float _weight) {
+		WeaponType(String _name, String _legacysprite, float _cost, float _weight, float _rarity) {
 			name = _name;
 			legacysprite = _legacysprite;
 			cost = _cost;
 			weight = _weight;
 			qList = EnumSet.noneOf(WeaponQual.class);
+			rarity = _rarity;
 		}
 		
 		public String getName() {
@@ -128,6 +133,9 @@ public class Weapon extends Item implements IEffectiveLevel {
 		}
 		public String getLegacy() {
 			return legacysprite;
+		}
+		public float getRarity() {
+			return rarity;
 		}
 	}
 	
@@ -152,27 +160,11 @@ public class Weapon extends Item implements IEffectiveLevel {
 				enchant = new EnchantHit(getEnchantMult());
 			}
 		}
-		/*
-		if (materia != MaterialFactory.getMat("bone")) {
-			refreshBattleScore();//TODO: make a better way to realize we're not gonna need battlescore
-		}*/
 		
 	}
 	
-	public static WeaponType randWeapType() {
-		//FIXME needs better generation anyway, should be full stack
-		return extra.choose(WeaponType.LONGSWORD,
-				WeaponType.BROADSWORD,
-				WeaponType.MACE,
-				WeaponType.SPEAR,
-				WeaponType.AXE,
-				WeaponType.RAPIER,
-				WeaponType.DAGGER,
-				extra.choose(WeaponType.CLAYMORE,WeaponType.LANCE,WeaponType.SHOVEL));
-	}
-	
 	public Weapon(int newLevel) {
-		this(newLevel,MaterialFactory.randWeapMat(),randWeapType());
+		this(newLevel,MaterialFactory.randWeapMat(),WeaponAttackFactory.randWeapType());
 	}
 	public Weapon(int newLevel, WeaponType type) {
 		this(newLevel,MaterialFactory.randWeapMat(),type);
@@ -182,7 +174,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 	 * used for testing
 	 */
 	public Weapon(boolean useSquid) {
-		this(1,MaterialFactory.randWeapMat(),randWeapType());
+		this(1,MaterialFactory.randWeapMat(),WeaponAttackFactory.randWeapType());
 	}
 
 	//instance methods

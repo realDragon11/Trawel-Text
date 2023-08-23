@@ -142,7 +142,7 @@ public abstract class ScrollMenuGenerator implements MenuGenerator {
 	 * <br>
 	 * TODO: make it return the item slot if menuscrollgoing
 	 */
-	public abstract  List<MenuItem> forSlot(int i);
+	public abstract List<MenuItem> forSlot(int i);
 	
 	/**
 	 * can be null

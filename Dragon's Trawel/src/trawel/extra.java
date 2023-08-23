@@ -828,7 +828,7 @@ public final class extra {
 									return false;
 								}});
 							count++; j++;
-							if (true == true) {//TODO: figure out a last page condition
+							if (true == true) {//figure out a last page condition
 								mList.add(j,new MenuSelect() {
 
 									@Override

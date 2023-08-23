@@ -418,7 +418,7 @@ public class Attack implements IAttack{
 	@Override
 	public int getTotalDam() {
 		// TODO add other damage types when they get added
-		return getSharp()+getBlunt()+getPierce();
+		return getSharp()+getBlunt()+getPierce()+getIgnite()+getFrost()+getElec();
 	}
 	
 	public double getTotalDam(double sMult, double bMult, double pMult) {

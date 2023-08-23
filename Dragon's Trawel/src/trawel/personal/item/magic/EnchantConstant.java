@@ -407,7 +407,7 @@ public class EnchantConstant extends Enchant {
 	protected static boolean hasMighty(int b) {
 		return (b & 0b10000000) > 0;
 	}
-	//TODO: maybe cache this in something trasient the first time it gets loaded
+	//maybe cache this in something trasient the first time it gets loaded
 	//don't need to worry about threading or anything like that since it will always be the same
 	
 	/**

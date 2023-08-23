@@ -29,19 +29,26 @@ public class Target{
 	 * attach number makes a variant set spawn for all variants on the attached parts in mapping number
 	 * the attached part must have the same number of variants on all mapping numbers
 	 * it will attempt to learn the number of variants by finding the first target with that mapping number
-	 * attached also generate's it's own condition, but it is linked with the base? //TODO: maybe not do this, idk
-	 * 
+	 * attached also generate's it's own condition, but it is linked with the base.
+	 * <br>
+	 * The 'passthrough' variable makes it not have it's own condition, but otherwise be the same.
+	 * <br>
+	 * <br>
 	 * most mapping system behavior can be made with attach behavior, but mapping is simpler
-	 * 
+	 * <br>
+	 * <br>
 	 * name format is: [base part variant name]'s [variant name or normal name]
 	 * if there are no base variants it just displays as if it were freestanding
-	 * 
+	 * <br>
+	 * <br>
 	 * zero is reserved. Will offset by 100000 internally, so limit numbers to abs(num) < 100
 	 * 100_000 is the base offset, and then 1_000 more is used every time a duplicate of that offset is encounted
-	 * 
+	 * <br>
+	 * <br>
 	 * if negative, is attached to another attach
 	 * if positive, attached to a mapping number
-	 * 
+	 * <br>
+	 * <br>
 	 * there must always be a base mapping number
 	 */
 	public int attachNumber = 0;

@@ -1,7 +1,5 @@
 package trawel.battle.attacks;
 
-import java.util.concurrent.Callable;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import trawel.Effect;
@@ -10,7 +8,6 @@ import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.Attack.Wound;
-import trawel.battle.attacks.IAttack.AttackType;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 import trawel.personal.Person;
 import trawel.personal.classless.IEffectiveLevel;
@@ -405,7 +402,6 @@ public class ImpairedAttack implements IAttack{
 	}
 	@Override
 	public String fluff(AttackReturn attret) {
-		// TODO Auto-generated method stub
 		return attack.fluff(attret) + (mainGame.advancedCombatDisplay ? attret.getNotes() : "");
 	}
 	@Override

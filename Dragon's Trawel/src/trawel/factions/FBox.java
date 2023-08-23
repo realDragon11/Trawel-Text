@@ -14,7 +14,7 @@ public class FBox implements java.io.Serializable{
 	//TODO: turn into an enum map of float[2] to avoid a lot of object overhead
 	private List<FSub> factions = new ArrayList<FSub>();
 	
-	//FIXME: if don't put in a tri/duo enum map, put FSub in FST written classes
+	//if don't put in a tri/duo enum map, put FSub in FST written classes
 	public class FSub implements java.io.Serializable{
 		private static final long serialVersionUID = 1L;
 		public Faction name;

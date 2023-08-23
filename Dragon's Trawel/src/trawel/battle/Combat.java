@@ -981,24 +981,6 @@ public class Combat {
 	}
 	
 	/**
-	 * does stuff that can't go in handleAttack because it's permanent and handleAttack is used in ai stuff.
-	 * handles elemental damage
-	 * should scale of off % of hp damaged or something to avoid confusing the ai
-	 */
-	//FIXME: should probably move this to attack returns or something??? and the 'handle turn' code
-	public void handleAttackPart2(ImpairedAttack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender, int damageDone) {
-		double percent = ((double)extra.zeroOut(damageDone))/((double)defender.getMaxHp());
-		if (off.getHand().isEnchantedHit() && !(att.getName().contains("examine"))) {
-			EnchantHit ehit = (EnchantHit)off.getHand().getEnchant();
-			//def.burn(def.getFire(att.getSlot())*percent*ehit.getFireMod()/2,att.getSlot());
-			
-			//defender.advanceTime(-(percent*defender.getTime()*ehit.getFreezeMod()*def.getFreeze(att.getSlot())));
-			
-			//defender.takeDamage((int)(percent*ehit.getShockMod()/3*def.getShock(att.getSlot())));
-		}
-	}
-	
-	/**
 	 * 
 	 * @param attacker
 	 * @param defender
@@ -1052,7 +1034,6 @@ public class Combat {
 		ImpairedAttack attack = attacker.getNextAttack();
 		AttackReturn atr = handleAttack(true,attack,defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
 		int damageDone = atr.damage;
-		this.handleAttackPart2(attack,defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender,damageDone);
 		//armor quality handling
 		//FIXME: apply new attack result code system where needed
 		defender.getBag().armorQualDam(damageDone);
@@ -1338,7 +1319,6 @@ public class Combat {
 				break;
 			}
 		}
-		//TODO: bleedout death quotes
 		float leech = (defender.hasEffect(Effect.B_MARY) ? 2 : 0) + (defender.hasSkill(Skill.BLOODDRINKER) ? 0.5f : 0);
 		int baseBleedDam = bleedDam(attacker,defender);
 		int leechNum = (int)(leech * baseBleedDam);

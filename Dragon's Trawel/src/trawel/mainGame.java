@@ -108,14 +108,13 @@ public class mainGame {
 	
 	public static boolean logStreamIsErr = false;
 	
-	public static boolean delayWaits = false;//DOLATER maybe turn back on TODO: seems to apply anyway???
+	public static boolean delayWaits = false;//TODO: add this back in as an option, it adds extra delay to simulate the cooldown/warmup delay in irl time, not just game time
 	
 	private static boolean finalSetup1 = false;
 	private static boolean basicSetup1 = false;
 	
 	public static boolean multiCanRun = false;
 	
-	//FIXME: need saved prefs
 	public static DispAttack attackDisplayStyle = DispAttack.TWO_LINE1_WITH_KEY;
 	public static boolean advancedCombatDisplay = false;
 	public static boolean doTutorial;
@@ -1205,7 +1204,7 @@ public class mainGame {
 		new Networking();
 		
 		prefs = new Properties();
-		prefFile = new File("trawel_prefs.properties");//FIXME: properties
+		prefFile = new File("trawel_prefs.properties");
 		prefFile.createNewFile();
 		try (FileReader prefReader = new FileReader(prefFile)){
 			prefs.load(prefReader);

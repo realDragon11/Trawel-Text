@@ -160,7 +160,7 @@ public enum Feat implements IHasSkills{
 				weightList.add(rarity);
 				totalRarity +=rarity;
 			}
-		}//FIXME: could optimize this to return multiple rolls now that it's more costly
+		}
 		List<Feat> retList = new ArrayList<Feat>();
 		//totalRarity
 		for (int j = 0; j < amount && totalRarity > .1;j++) {//for rounding errors

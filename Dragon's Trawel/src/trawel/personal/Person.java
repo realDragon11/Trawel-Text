@@ -488,8 +488,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public Set<Archetype> getArchSet(){
 		return archSet;
 	}
-	//TODO: make a quiet version for racefactory to use
-	//still better to start the leveling manually so if I add archetypes they beat out random ones
 	public void setSkillHas(IHasSkills has) {
 		if (has instanceof Feat) {
 			setFeat((Feat) has);
@@ -1894,8 +1892,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	protected TypeBody internalBType() {
 		return bodyType;
 	}
-	
-	//TODO: should probably declare this to the player
 	public void applyDiscount(double time) {
 		speedFill-=time;
 	}

@@ -1134,8 +1134,8 @@ public class Inventory implements java.io.Serializable{
 		hand.deEnchant();
 	}
 
-	//FIXME: naive aether money
-	public int getWorth() {
+	//MAYBELATER: naive aether money
+	private int getWorth() {
 		int value = this.getAether();
 		for (Armor a: getArmors()) {
 			value += a.getAetherValue();

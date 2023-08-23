@@ -171,7 +171,6 @@ public class StringFluffer {
 	private String processInternal(String str) {
 		realOperation = false;//we didn't complete a command yet
 		String working = str;
-		// TODO Auto-generated method stub
 		//process should operate backwards to avoid replacement issues, but matcher doesn't seem to allow that, so we store the results instead
 		List<String> befores = new ArrayList<String>();
 		List<String> afters = new ArrayList<String>();

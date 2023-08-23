@@ -80,14 +80,6 @@ public class BossNode implements NodeType {
 	
 	private void setGenericCorpse(NodeConnector holder,int node, Person body) {
 		GenericNode.setSimpleDeadPerson(holder, node, body);
-		//holder.setStateNum(node,0);
-		//holder.setTypeNum(node,NodeType.NodeTypeNum.GENERIC.ordinal());
-		//holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
-		//holder.setEventNum(node,GenericNode.Generic.DEAD_PERSON.ordinal());
-		//FIXME GENERIC CORPSE LOOKING with person as only storage.
-		//also make variant with just a string instead of a person
-		//and another variant that doesn't have either, just using the state number for 'wolves' or 'person', etc
-		//holder.setStorage(node, body);
 	}
 	
 	private boolean fatespinner(NodeConnector holder,int node) {

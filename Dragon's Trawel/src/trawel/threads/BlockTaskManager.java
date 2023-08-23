@@ -71,7 +71,7 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	    		synchronized (handler){
 	    			handler.notifyAll();
 	    		}
-	    		throw new InterruptedException();//TODO
+	    		throw new InterruptedException();
 	    	}
 	    } catch (InterruptedException ie) {
 	    	t.interrupt();

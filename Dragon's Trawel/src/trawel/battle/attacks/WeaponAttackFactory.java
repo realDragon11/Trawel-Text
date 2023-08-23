@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.github.yellowstonegames.core.WeightedTable;
+
 import derg.SRInOrder;
 import derg.StringResult;
 import trawel.WorldGen;
@@ -37,9 +39,20 @@ public class WeaponAttackFactory {
 	 */
 	private static final Map<Skill,List<IHasSkills>> skillStances = new HashMap<Skill,List<IHasSkills>>();
 	
-	//FIXME: update stancemap to new weapon naming system, and also every attack
+	private static WeightedTable weapTypeTable;
+	
+	public static WeaponType randWeapType() {
+		return WeaponType.values()[weapTypeTable.random(extra.getRand())];
+	}
 	
 	public WeaponAttackFactory() {
+		int weapTypesSize = WeaponType.values().length;
+		float[] weapTypeWeights = new float[weapTypesSize];
+		for (int i = 0; i < weapTypesSize;i++) {
+			weapTypeWeights[i] = WeaponType.values()[i].getRarity();
+		}
+		weapTypeTable = new WeightedTable(weapTypeWeights);
+		
 		Stance sta;
 		
 		//TEMPLATE SECTION
@@ -558,7 +571,7 @@ public class WeaponAttackFactory {
 		copyStanceTo(WeaponType.MACE,WeaponType.FISH_ANCHOR);
 		copyStanceTo(WeaponType.SPEAR,WeaponType.FISH_SPEAR);
 		
-		//TODO: skill attack section
+		//skill attack section
 		sta = new Stance(Archetype.HEDGE_MAGE,Skill.ARCANIST);
 		sta.addAttack(
 				make("sparks")

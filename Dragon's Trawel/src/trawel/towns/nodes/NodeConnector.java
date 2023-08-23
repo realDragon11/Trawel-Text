@@ -135,7 +135,7 @@ public class NodeConnector implements Serializable {
 		storage[size] = null;//new Object[2];//for now we just assume we need to, can trim later compiletime
 		return size;
 	}
-	//FIXME: might need more constructors
+	//MAYBELATER: might need more constructors
 	
 	public void trim() {
 		//makes all arrays only as long as they need to be, because we make them max size in generator step

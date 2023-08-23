@@ -281,7 +281,6 @@ public class GenericNode implements NodeType {
 
 	@Override
 	public String interactString(NodeConnector holder, int node) {
-		// TODO Auto-generated method stub
 		switch (Generic.values()[holder.getEventNum(node)]) {
 		case DEAD_PERSON:
 		case DEAD_RACE_INDEX:
@@ -396,7 +395,6 @@ public class GenericNode implements NodeType {
 	}
 	
 	private boolean simpleDeadPerson(NodeConnector holder,int node) {
-		//TODO get if deathcheated
 		Person p = holder.getStorageFirstPerson(node);
 		if (p.getSuper() != null && p.getSuper().everDeathCheated()) {
 			extra.println("There was a body here, but now it's gone!");

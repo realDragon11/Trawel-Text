@@ -169,8 +169,7 @@ public class Store extends Feature{
 		}
 	}
 	
-	//TODO put these in tables elsewhere TODO
-	
+	//TODO put these in tables elsewhere
 	
 	public static DrawBane randomPI() {
 		return extra.choose(DrawBane.MEAT,DrawBane.BAT_WING,DrawBane.APPLE,DrawBane.CEON_STONE,DrawBane.MIMIC_GUTS,DrawBane.BLOOD);

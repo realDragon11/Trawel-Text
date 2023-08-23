@@ -140,7 +140,7 @@ public class Lot extends Feature {
 			constructTime-=time;
 		if (construct != null && constructTime <= 0) {
 			Feature add = null;
-			switch (construct) {//TODO: enquene add might be better off in time events
+			switch (construct) {
 			case "inn": add = (new Inn("your inn (" + town.getName() + ")",tier,town,Player.player));break;
 			case "arena":add = (new Arena("your arena (" + town.getName() + ")",tier,1,24,200,1,Player.player));break;
 			case "mine": add = (new Mine("your mine (" + town.getName() + ")",town,Player.player,NodeFeature.Shape.NONE));break;

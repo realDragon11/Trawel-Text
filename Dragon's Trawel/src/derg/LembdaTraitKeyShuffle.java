@@ -99,7 +99,7 @@ public class LembdaTraitKeyShuffle implements CanLembdaUpdate{
 		StringLembda sl = extra.randList(list);
 		sl.updateAll();
 		return sl.variants.get((int)forword);
-		//FIXME: search the tree from bottom to top, trying to get 3 choices to choose from in each layer
+		//search the tree from bottom to top, trying to get 3 choices to choose from in each layer
 		//if have to go to next layer, just choose from the ones you have
 		//note that this will probably perform poorly if the tree is too small
 		//maybe just get first 3

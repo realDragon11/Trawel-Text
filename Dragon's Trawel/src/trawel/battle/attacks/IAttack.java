@@ -26,7 +26,6 @@ public interface IAttack {
 	 * @return 0 if not present or isn't physical
 	 */
 	public int getPierce();
-	//FIXME: make enchanthit weapons use these values! will solve the ai problem that I had when I first made those years ago
 	/**
 	 * @return 0 if not present or isn't elemental
 	 */
