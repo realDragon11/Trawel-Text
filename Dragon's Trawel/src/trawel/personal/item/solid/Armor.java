@@ -394,13 +394,20 @@ public class Armor extends Item implements IEffectiveLevel{
 				this.getEnchant().display(1);
 			}
 			;break;	
+		case 4:
+		case 5:
+			//extra examine
 		case 2://full examine
-			extra.println(this.getName() + " sbp:" + extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
-			+ (Player.player.caresAboutCapacity() ? " weight: "+getWeight() : "")
-			+ " AMP: "+ extra.F_TWO_TRAILING.format(getAgiPenMult())+"x"
-			+ " ignite: "+ extra.F_TWO_TRAILING.format(getFireMod())+"x"
-			+ " freeze: "+ extra.F_TWO_TRAILING.format(getFreezeMod())+"x"
-			+ " elec: "+ extra.F_TWO_TRAILING.format(getShockMod())+"x"
+			extra.println(
+			this.getName()
+			+ " " + extra.CHAR_SHARP+extra.format(this.getSharpResist())
+			+ " " + extra.CHAR_BLUNT+extra.format(this.getBluntResist())
+			+ " " + extra.CHAR_PIERCE+extra.format(this.getPierceResist())
+			+ " "+extra.DISP_WEIGHT+": "+getWeight()
+			+ " "+extra.DISP_AMP+": "+ extra.F_TWO_TRAILING.format(getAgiPenMult())+"x"
+			+ " ignite mult: "+ extra.F_TWO_TRAILING.format(getFireMod())+"x"
+			+ " frost mult: "+ extra.F_TWO_TRAILING.format(getFreezeMod())+"x"
+			+ " elec mult: "+ extra.F_TWO_TRAILING.format(getShockMod())+"x"
 			+ " aether: " + (int)(this.getAetherValue()*markup));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);

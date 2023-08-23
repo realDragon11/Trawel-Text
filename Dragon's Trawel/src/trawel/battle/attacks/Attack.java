@@ -367,8 +367,8 @@ public class Attack implements IAttack{
 			+(getPierce() > 0 ? " Pierce: " + extra.F_WHOLE.format(damMult*getPierce()*w.getMat().pierceMult) : "")
 			
 			+(ignite > 0 ? " Ignite: " + extra.F_WHOLE.format(damMult*ignite) : "")
-			+(frost > 0 ? " Pierce: " + extra.F_WHOLE.format(damMult*frost) : "")
-			+(elec > 0 ? " Pierce: " + extra.F_WHOLE.format(damMult*elec) : "")
+			+(frost > 0 ? " Frost: " + extra.F_WHOLE.format(damMult*frost) : "")
+			+(elec > 0 ? " Elec: " + extra.F_WHOLE.format(damMult*elec) : "")
 			
 			);
 		

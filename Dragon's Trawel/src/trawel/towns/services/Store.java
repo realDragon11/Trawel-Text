@@ -235,6 +235,8 @@ public class Store extends Feature{
 		}
 		if (result != null) {
 			items.set(items.indexOf(buyItem),result);
+		}else {
+			items.remove(buyItem);
 		}
 		
 		this.addBuy();
