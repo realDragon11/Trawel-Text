@@ -1459,7 +1459,9 @@ public class Combat {
 				break;
 			case KO:
 				defender2.takeDamage(nums[0]);
-				defender2.addEffect(Effect.RECOVERING);
+				if (!defender2.hasEffect(Effect.BRAINED)) {
+					defender2.addEffect(Effect.RECOVERING);
+				}
 				break;
 			case I_BLEED:
 				if (!defender2.hasEffect(Effect.CLOTTER)) {
@@ -1490,6 +1492,10 @@ public class Combat {
 			case HIT_VITALS:
 				defender2.addEffect(Effect.HIT_VITALS);
 				break;
+			 case BRAINED:
+				 defender2.addEffect(Effect.BRAINED);
+				 inflictWound(attacker2,defender2,retu,Wound.KO);
+				 break;
 			case GRAZE://no effect
 				break;
 			}
@@ -1545,7 +1551,8 @@ public class Combat {
 			return new Integer[] {16};//-16 time units
 		case TRIPPED:
 			return new Integer[] {20};//-20 time units
-		case KO:
+		case KO: case BRAINED:
+			//this does fixed damage on defender because it needs to recover, plus that's part of it's gimmick of felling mighty foes
 			return new Integer[] {IEffectiveLevel.cleanLHP(defender.getLevel(),.05)};
 		case BLEED: case I_BLEED://bleeds aren't synced, WET :(
 			return new Integer[] {bleedDam(attacker,defender),bleedDam(null,defender)};//can take null attacker

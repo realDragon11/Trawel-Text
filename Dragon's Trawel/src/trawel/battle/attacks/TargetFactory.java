@@ -88,6 +88,7 @@ public class TargetFactory {
 		t.rarity = .6;
 		t.slot = 0;
 		t.mappingNumber = 1;
+		t.condWound = Wound.BRAINED;
 	}
 	
 	private void set_as_arm(Target t) {
