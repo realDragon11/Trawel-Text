@@ -63,10 +63,10 @@ public class Dungeon extends NodeFeature {
 		skill_nodes.add(node);
 	}
 	
-	public void requestRemoveBattleCon(int node) {
+	public SubSkill requestRemoveBattleCon(int node) {
 		int index = skill_nodes.indexOf(node);
 		skill_nodes.remove(index);
-		skill_cons.remove(index);
+		return skill_cons.remove(index);
 	}
 
 }

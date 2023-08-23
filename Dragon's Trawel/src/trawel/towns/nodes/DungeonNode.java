@@ -226,6 +226,10 @@ public class DungeonNode implements NodeType{
 					if (i == this_length-1) {
 						start_node.setEventNum(cur_node, 100);
 						keeper.registerBattleConWithNode(skillcon_list.remove(0), cur_node);
+					}else {
+						if (i == this_length-2) {
+							start_node.setEventNum(cur_node, 3);//improved guard post
+						}
 					}
 					last_node = cur_node;
 				}
@@ -335,9 +339,22 @@ public class DungeonNode implements NodeType{
 		
 		case 100://skillcon holder
 			if (holder.getStateNum(node) == 0) {
-				extra.println("You smash the orb of power.");
 				holder.setStateNum(node,1);
-				((Dungeon)holder.parent).requestRemoveBattleCon(node);
+				switch (((Dungeon)holder.parent).requestRemoveBattleCon(node)) {
+				default:
+					extra.println("You smash the orb of power.");
+					break;
+				case DEATH:
+					extra.println("You smash the orb of power, and the screams of the dead thank you.");
+					break;
+				case ELEMENTAL:
+					extra.println("You smash the orb of power, and the room is briefly brought to a boil.");
+					break;
+				case SCRYING:
+					extra.println("You smash the orb of power, and a vision of an arena flashes in your mind.");
+					break;
+				}
+				
 			}else {
 				extra.println("The orb is broken into jagged fragments.");
 				holder.findBehind(node,"broken orb");
