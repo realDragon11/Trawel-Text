@@ -256,12 +256,14 @@ public class Store extends Feature{
 		this.addBuy();
 		switch (itemType) {
 		case ARMOR:
+			extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + buyItem.getName() + ".");
 			arraySwap(bag.swapArmorSlot((Armor)buyItem, slot),buyItem);
 			break;
 		case RACE:
 			arraySwap(bag.swapRace((Race)buyItem),buyItem);
 			break;
 		case WEAPON:
+			extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + buyItem.getName() + ".");
 			arraySwap(bag.swapWeapon((Weapon)buyItem),buyItem);
 			break;	
 		}

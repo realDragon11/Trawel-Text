@@ -2,6 +2,10 @@ package trawel;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuBack;
+import derg.menus.MenuGenerator;
+import derg.menus.MenuItem;
+import derg.menus.MenuSelect;
 import trawel.mainGame.DispAttack;
 import trawel.battle.Combat;
 import trawel.battle.attacks.Attack;
@@ -340,6 +344,7 @@ public class AIClass {
 					if (aetherStuff) {
 							//Services.sellItem(stash.swapArmorSlot(loot.getArmorSlot(i),i),stash,false);
 							Services.aetherifyItem(stash.getArmorSlot(i),stash);
+							extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + loot.getArmorSlot(i).getName() + ".");
 							stash.swapArmorSlot(loot.getArmorSlot(i),i);//we lose the ref to the thing we just deleted here
 							loot.setArmorSlot(null,i);
 						}else {
@@ -372,6 +377,7 @@ public class AIClass {
 				if (aetherStuff) {
 						//Services.sellItem(stash.swapWeapon(loot.getHand()),stash,false);
 						Services.aetherifyItem(stash.getHand(),stash);
+						extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + loot.getHand().getName() + ".");
 						stash.swapWeapon(loot.getHand());//we lose the ref to the thing we just deleted here
 						loot.setWeapon(null);
 					}else {
@@ -473,6 +479,92 @@ public class AIClass {
 		}
 	}
 	
+	public static boolean compareItem(Item current, Item next, Person p, Store s) {
+		if (!p.isPlayer()) {
+			return compareItem(current,next,false,p);
+		}
+		extra.println("Buy the");
+		next.display(s,true,3);
+		extra.println("replacing your");
+		current.display(s,false,3);
+		displayChange(current,next, p,s);
+		return extra.yesNo();
+	}
+	
+	public static int askDoSwap(Item current, Item next, Store store) {
+		int i = extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Take " + next.getName()+".";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Examine " + next.getName() +".";
+					}
+
+					@Override
+					public boolean go() {
+						if (store == null) {
+							next.display(4);
+							return false;
+						}
+						next.display(store,true,5);
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Examine " + current.getName() +".";
+					}
+
+					@Override
+					public boolean go() {
+						if (store == null) {
+							current.display(4);
+							return false;
+						}
+						current.display(store,false,5);
+						return false;
+					}});
+				if (Player.player.canAddPouch()) {
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Put in bag.";
+						}
+
+						@Override
+						public boolean go() {
+							return Player.player.addPouch(next);
+						}});
+				}
+				list.addAll(Player.player.getPouchesAgainst(next));
+				list.add(new MenuBack("no"));
+				return list;
+			}});
+		if (i == 1) {
+			return 2;//do the swap
+		}
+		if (i == 9) {
+			return 0;//sell/smash the item
+		}
+		return 1;//was put in pouch
+	}
 	public static boolean compareItem(Inventory bag, Item toReplace, boolean autosellOn, Person p) {
 		Item item = null;
 		if (Armor.class.isInstance(toReplace)) {
@@ -484,18 +576,6 @@ public class AIClass {
 			}
 		}
 		return compareItem(item,toReplace,autosellOn, p);
-	}
-	
-	public static boolean compareItem(Item current, Item next, Person p, Store s) {
-		if (!p.isPlayer()) {
-			return compareItem(current,next,false,p);
-		}
-		extra.println("Buy the");
-		next.display(s,true,3);
-		extra.println("replacing your");
-		current.display(s,false,3);
-		displayChange(current,next, p,s);
-		return extra.yesNo();
 	}
 
 	private static boolean worseArmor(Armor hasItem, Armor toReplace) {

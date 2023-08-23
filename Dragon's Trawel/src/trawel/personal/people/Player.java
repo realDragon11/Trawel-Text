@@ -21,7 +21,10 @@ import trawel.personal.Person;
 import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Inventory;
+import trawel.personal.item.Item;
+import trawel.personal.item.Item.ItemType;
 import trawel.personal.item.Potion;
+import trawel.personal.item.solid.Armor;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.quests.BasicSideQuest;
 import trawel.quests.Quest;
@@ -76,6 +79,8 @@ public class Player extends SuperPerson{
 	public Story storyHold;
 	
 	private boolean caresAboutCapacity = true, caresAboutAMP = true;
+	
+	private List<Item> pouch = new ArrayList<Item>();
 	
 	public Player(Person p) {
 		person = p;
@@ -419,5 +424,73 @@ public class Player extends SuperPerson{
 		Player.player.getPerson().setPerk(perk);
 	}
 	
+	public void swapPouch(int slot) {
+		Item was = pouch.get(slot);
+		pouch.set(slot,Player.bag.swapItem(was));
+		extra.println("You use the " + was.getName() + " and put the " + pouch.get(slot).getName() + " in your bag.");
+	}
+	
+	public Item peekPouch(int slot) {
+		return pouch.get(slot);
+	}
+	public Item popPouch(int slot) {
+		return pouch.get(slot);
+	}
+	
+	/**
+	 * returns false if was not able to add
+	 */
+	public boolean addPouch(Item i) {
+		if (pouch.size() < 3) {
+			pouch.add(i);
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean canAddPouch() {
+		return pouch.size() < 3;
+	}
+	
+	public class PouchMenuItem extends MenuSelect{
+		
+		private int slot;
+		public PouchMenuItem(int i) {
+			slot = i;
+		}
+
+		@Override
+		public String title() {
+			return "Compare against " + peekPouch(slot).getName();
+		}
+
+		@Override
+		public boolean go() {
+			swapPouch(slot);
+			return false;
+		}
+		
+	}
+	
+	public List<PouchMenuItem> getPouchesAgainst(Item against){
+		List<PouchMenuItem> list = new ArrayList<PouchMenuItem>();
+		for (int i = 0; i < pouch.size();i++) {
+			Item e = pouch.get(i);
+			if (against.getType() == ItemType.ARMOR) {
+				if (e.getType() == ItemType.ARMOR) {
+					if (((Armor)e).getSlot() == ((Armor)against).getSlot()) {
+						list.add(new PouchMenuItem(i));
+					}
+				}
+			}else {
+				if (against.getType() == ItemType.WEAPON) {
+					if (e.getType() == ItemType.WEAPON) {
+						list.add(new PouchMenuItem(i));
+					}
+				}
+			}
+		}
+		return list;
+	}
 	
 }

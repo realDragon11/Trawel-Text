@@ -188,7 +188,6 @@ public class Inventory implements java.io.Serializable{
 	 * @return old armor (Armor)
 	 */
 	public Armor swapArmorSlot(Armor newArmor, int slot) {
-		extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + newArmor.getName() + ".");
 		Armor tempArm = armorSlots[slot];
 		armorSlots[slot] = newArmor;
 		return tempArm;
@@ -433,7 +432,6 @@ public class Inventory implements java.io.Serializable{
 	 * @return old weapon (Weapon)
 	 */
 	public Weapon swapWeapon(Weapon newWeap) {
-		extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + newWeap.getName() + ".");
 		Weapon tempWeap = hand;
 		hand = newWeap;
 		return tempWeap;
