@@ -5,7 +5,9 @@ import java.util.List;
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
+import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import trawel.AIClass;
 import trawel.Effect;
 import trawel.Networking;
 import trawel.Story;
@@ -33,6 +35,7 @@ import trawel.quests.Quest;
 import trawel.quests.Quest.TriggerType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
+import trawel.towns.Feature;
 import trawel.towns.Town;
 import trawel.towns.World;
 
@@ -83,6 +86,10 @@ public class Player extends SuperPerson{
 	private boolean caresAboutCapacity = true, caresAboutAMP = true;
 	
 	private List<Item> pouch = new ArrayList<Item>();
+	public int lastNode;
+	public int currentNode;
+	public Feature atFeature;
+	public boolean forceGoProtection;
 	
 	public Player(Person p) {
 		person = p;
@@ -499,7 +506,7 @@ public class Player extends SuperPerson{
 		return list;
 	}
 	
-	private void youMenu() {
+	public void youMenu() {
 		extra.menuGo(new MenuGenerator() {
 
 			@Override
@@ -554,6 +561,46 @@ public class Player extends SuperPerson{
 									public boolean go() {
 										Player.player.getPerson().getBag().deepDisplay();
 										extra.println("You have " + Player.player.emeralds + " emeralds, " + Player.player.rubies +" rubies, and " + Player.player.sapphires +" sapphires.");
+										return false;
+									}});
+								invList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Extended Bag";
+									}
+
+									@Override
+									public boolean go() {
+										//TODO: add item aetherification on the spot
+										extra.menuGo(new MenuGenerator() {
+
+											@Override
+											public List<MenuItem> gen() {
+												List<MenuItem> extList = new ArrayList<MenuItem>();
+												extList.add(new MenuLine() {
+
+													@Override
+													public String title() {
+														return "Pouch Size Limit: 3 Items";
+													}});
+												for (int i = 0; i < pouch.size();i++) {
+													final int slot = i;//love that this is truly final
+													extList.add(new MenuSelect() {
+														@Override
+														public String title() {
+															return "Use " +peekPouch(slot).getName();
+														}
+
+														@Override
+														public boolean go() {
+															Player.player.swapPouch(slot);
+															return false;
+														}});
+												}
+												extList.add(new MenuBack());
+												return extList;
+											}});
 										return false;
 									}});
 								invList.add(new MenuSelect() {

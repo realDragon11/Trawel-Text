@@ -492,6 +492,7 @@ public class Town extends TContextOwner{
 						@Override
 						public boolean go() {
 							features.get(number).go();
+							Player.player.atFeature = null;
 							return true;
 						}
 					});
@@ -502,12 +503,12 @@ public class Town extends TContextOwner{
 
 					@Override
 					public String title() {
-						return "you";
+						return "Player Menu";
 					}
 
 					@Override
 					public boolean go() {
-						you();
+						Player.player.youMenu();
 						return true;
 					}
 				});

@@ -1605,6 +1605,9 @@ public class mainGame {
 		
 		public static void adventureBody() {
 			lastAutoSave = new Date();
+			if (Player.player.atFeature != null) {
+				Player.player.atFeature.go();
+			}
 			while(Player.player.isAlive()) {
 				if (doAutoSave && (new Date().getTime()-lastAutoSave.getTime() > 1000*60*2)) {
 					extra.println("Autosaving...");

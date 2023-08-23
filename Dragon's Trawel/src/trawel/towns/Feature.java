@@ -34,6 +34,7 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 		Networking.setBackground(background_area);
 		this.sendBackVariant();
 		atFeatureForHeader = this;
+		Player.player.atFeature = this;
 	}
 	public void sendBackVariant() {
 		double[] p = Calender.lerpLocation(town);

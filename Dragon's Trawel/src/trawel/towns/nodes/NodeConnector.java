@@ -98,10 +98,6 @@ public class NodeConnector implements Serializable {
 	
 	protected NodeFeature parent;
 	
-	public static int lastNode = 1;
-	protected static int currentNode = 1;
-	protected static boolean forceGoProtection = false;
-	
 	private static boolean isForceGoIng;
 	
 	protected NodeConnector(NodeFeature haver) {
@@ -251,28 +247,31 @@ public class NodeConnector implements Serializable {
 
 	public void start() {
 		Feature.atFeatureForHeader.goHeader();
-		lastNode = 1;
-		currentNode = 1;
-		isForceGoIng = false;
-		forceGoProtection = false;
-		while (currentNode != 0) {
-			enter(currentNode);
+		if (getCurrentNode() == 0) {//since player can save inside of them now
+			setLastNode(1);
+			setCurrentNode(1);
 		}
-		
+		isForceGoIng = false;
+		setForceGoProtection(false);
+		while (getCurrentNode() != 0) {
+			enter(getCurrentNode());
+		}
+		setLastNode(0);
+		setCurrentNode(0);
 	}
 	public void enter(int node) {
 		Player.addTime(.1);
 		mainGame.globalPassTime();
-		if (isForceGo(node) && !forceGoProtection) {
+		if (isForceGo(node) && !isForceGoProtection()) {
 			isForceGoIng = true;
 			if (!getFlag(node,NodeFlag.SILENT_FORCEGO_POSSIBLE)) {
 				setVisited(node,3);
 			}
-			forceGoProtection = true;
+			setForceGoProtection(true);
 			interactCode(node);
 			return;//redo operation
 		}
-		extra.menuGo(menuGen(currentNode));
+		extra.menuGo(menuGen(getCurrentNode()));
 	}
 	
 	public MenuGenerator menuGen(int node) {
@@ -303,20 +302,32 @@ public class NodeConnector implements Serializable {
 						mList.add(new NodeMenuItem(n));
 					}
 				}
-				mList.add(new MenuLast() {
+				mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return extra.TIMID_RED + "exit " + parent.getName();//TODO: fix parent name
+						return extra.TIMID_RED + "exit " + parent.getName();
 					}
 
 					@Override
 					public boolean go() {
-						NodeConnector.currentNode = 0;//kick out
+						NodeConnector.setCurrentNode(0);//kick out
 						return true;
 					}
 					
 				});
+				mList.add(new MenuLast() {
+
+					@Override
+					public String title() {
+						return "Player Menu";
+					}
+
+					@Override
+					public boolean go() {
+						Player.player.youMenu();
+						return false;
+					}});
 				return mList;
 			}
 		};
@@ -347,12 +358,12 @@ public class NodeConnector implements Serializable {
 	protected void interactCode(int node) {
 		if (getFlag(node,NodeFlag.GENERIC_OVERRIDE)) {
 			if (NodeType.NodeTypeNum.GENERIC.singleton.interact(this, node)) {
-				currentNode = 0;//kicked out
+				setCurrentNode(0);//kicked out
 			}
 			return;
 		}
 		if (NodeType.getTypeEnum(getTypeNum(node)).singleton.interact(this,node)) {
-			currentNode = 0;//kicked out
+			setCurrentNode(0);//kicked out
 		}
 	}
 	protected class NodeMenuInteract extends MenuSelect{
@@ -410,7 +421,7 @@ public class NodeConnector implements Serializable {
 			}
 			String postText = "";
 			if (isStair(node)) {
-				if (getFloor(node) < getFloor(NodeConnector.currentNode)) {
+				if (getFloor(node) < getFloor(NodeConnector.getCurrentNode())) {
 					postText = " down";
 				}else {
 					postText = " up";
@@ -422,14 +433,14 @@ public class NodeConnector implements Serializable {
 			if (Player.hasSkill(Skill.TOWNSENSE)) {
 				postText +=" C: " + getConnects(node).size();
 			}
-			return visitColor + getName(node) +postText+ (node == NodeConnector.lastNode ? extra.PRE_WHITE+" (back)" : "");
+			return visitColor + getName(node) +postText+ (node == NodeConnector.getLastNode() ? extra.PRE_WHITE+" (back)" : "");
 		}
 
 		@Override
 		public boolean go() {
-			forceGoProtection = false;
-			NodeConnector.lastNode = NodeConnector.currentNode;
-			currentNode = node;
+			setForceGoProtection(false);
+			NodeConnector.setLastNode(NodeConnector.getCurrentNode());
+			setCurrentNode(node);
 			setVisited(node,2);
 			return true;//always return true to prevent recursive nesting issues
 		}
@@ -494,29 +505,6 @@ public class NodeConnector implements Serializable {
 		for (int i = 1; i < size+1;i++) {//first node is for us and not a node
 			deepest= Math.max(deepest,getFloor(i));
 		}
-	}
-	
-	private void finishNode(int node) {
-		//can just get parent/eventnum themselves now
-		
-		//owner.numType(typeNum).apply(this,node);
-		//int eventNum = getEventNum(node);
-		/*
-		switch (NodeType.getTypeEnum(typeNum)) {
-		case BOSS:
-			BossNode.getSingleton().apply(this,node);
-			break;
-		case GENERIC:
-			break;
-		}
-		return;
-		if (eventNum == 3) {
-			if (owner instanceof Mine) {
-				((Mine) owner).addVein();
-			}
-		}
-		return;
-		*/
 	}
 	
 	protected NodeConnector complete(NodeFeature owner) {
@@ -675,6 +663,36 @@ public class NodeConnector implements Serializable {
 	
 	public boolean isForced() {
 		return isForceGoIng;
+	}
+
+
+	public static int getLastNode() {
+		return Player.player.lastNode;
+	}
+
+
+	public static void setLastNode(int lastNode) {
+		Player.player.lastNode = lastNode;
+	}
+
+
+	protected static int getCurrentNode() {
+		return Player.player.currentNode;
+	}
+
+
+	protected static void setCurrentNode(int currentNode) {
+		Player.player.currentNode = currentNode;
+	}
+
+
+	protected static boolean isForceGoProtection() {
+		return Player.player.forceGoProtection;
+	}
+
+
+	protected static void setForceGoProtection(boolean forceGoProtection) {
+		Player.player.forceGoProtection = forceGoProtection;
 	}
 	
 }

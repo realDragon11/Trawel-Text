@@ -23,6 +23,7 @@ public class MenuSelectFeature implements MenuItem {
 	public boolean go() {
 		Player.player.storyHold.enterFeature(feature);
 		feature.go();
+		Player.player.atFeature = null;
 		return true;
 	}
 	
