@@ -448,6 +448,7 @@ public class TargetFactory {
 		targetList.add(t);
 		
 		t = new Target();
+		t.name = "trunk";//iirc this is quad torso
 		set_as_torso(t);
 		t.type = TargetType.QUAD;
 		t.slashWounds.add(Attack.Wound.SLICE);

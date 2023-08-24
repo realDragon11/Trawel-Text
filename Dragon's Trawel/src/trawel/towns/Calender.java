@@ -155,16 +155,20 @@ public class Calender implements Serializable, CanPassTime {
 		double rise = noon-(hour/(360));
 		double set = noon+(hour/360);
 		//TODO: test this
-		noon%=24;
+		/*noon%=24;
 		rise%=24;
-		set%=24;
+		set%=24;*/
 		double[] ret = {rise,noon,set};
 		return ret;
 	}
 	
 	public static double getLocalTime(double time1, double longa) {
 		double timeZone =(longa >0 ? 1 : -1)*(extra.lerp(0, 1/2f,(float)Math.abs(longa)/180));
-		return ((time1)+2+(timeZone))%24;//TODO: why is there a +2, also had to change a %1 to a %24
+		return ((time1)+2+(timeZone))%1;
+	}
+	
+	public double getLocalTimeHour(double longa) {
+		return getLocalTime(timeCounter/24, longa)*24;
 	}
 	
 	public static double getTimeZone(double longa) {
@@ -175,8 +179,8 @@ public class Calender implements Serializable, CanPassTime {
 	public static final double sunsetRadius = 1/(double)38;//1/(double)48;//half hour in 1 = 1 day
 	
 	public float[] getBackTime(double lata, double longa) {
-		double hourOfDay = getLocalTime((timeCounter*timeMult),longa);//(%24)/24; // /24
-		double unwrappedHour = timeCounter*timeMult;// /24
+		double hourOfDay = getLocalTime((timeCounter/24),longa);
+		double unwrappedHour = timeCounter/24;
 		//DOLATER: why is it /24, time is in hours
 		double[] rns = this.getSunTime(timeCounter,lata,longa);
 		double sunRise = getLocalTime(rns[0],longa);
@@ -273,7 +277,7 @@ public class Calender implements Serializable, CanPassTime {
 	public static final java.text.DecimalFormat F_MINUTES = new java.text.DecimalFormat("00");
 
 	public String stringLocalTime(Town town) {
-		double time = getLocalTime(timeCounter,Calender.lerpLocation(town)[1]);
+		double time = getLocalTimeHour(Calender.lerpLocation(town)[1]);
 		int hour = (int) time;
 		int minutes = (int) ((time*60)%60);
 		if (time < 12) {

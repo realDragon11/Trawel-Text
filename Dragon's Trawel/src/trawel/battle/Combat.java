@@ -1306,7 +1306,7 @@ public class Combat {
 		//}
 
 		if (canWait && mainGame.delayWaits) {
-			Networking.waitIfConnected((long)delay*2);
+			Networking.waitIfConnected((long)delay*80);
 		}
 
 		extra.println("");
@@ -1444,7 +1444,7 @@ public class Combat {
 			Networking.send("PlayDelay|sound_fallover1|35|");
 		}
 		if (canWait && !attacker.isPlayer() && mainGame.combatWaits) {
-			if (defender.isPlayer()) {
+			if (defender.isPlayer() && totalFighters > 2) {
 				Networking.waitIfConnected(800L);//was 500L
 			}else {
 				Networking.waitIfConnected(500L);//was 300L
