@@ -292,7 +292,7 @@ public class Town extends TContextOwner{
 			visited = 2;
 		}
 		if (mainGame.displayLocationalText) {
-			extra.println(visitColor+"You are in " + extra.capFirst(name) + ", on the " +island.getWorld().getCalender().dateName() + ".");
+			extra.println(visitColor+"You are in " + extra.capFirst(name) + ", on the " +island.getWorld().getCalender().dateName() + ". " + island.getWorld().getCalender().stringLocalTime(this)+".");
 		}
 		Networking.sendStrong("Discord|desc|Adventuring in " + name +"|");
 		Networking.sendStrong("Discord|imagesmall|town|Town|");

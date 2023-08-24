@@ -73,7 +73,7 @@ import trawel.towns.services.Oracle;
 public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
-	public static final String VERSION_STRING = "v0.8.b_3 updated Aug 22nd 2023";
+	public static final String VERSION_STRING = "v0.8.b__4 updated Aug 23nd 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			"b_3: {part 1/3} Tutorial mostly moved from 'feature text' to 'story'. Added saveable display options. Known issues: combat town Features need another cleanup with the new currency, mass battles have some balancing issues if they have an un-even number of fighters.",
@@ -1641,7 +1641,7 @@ public class mainGame {
 		 * note that some events, like the player generating gold, ignore normal restrictions
 		 */
 		public static void globalPassTime() {
-			if (showLargeTimePassing) {
+			if (showLargeTimePassing && Networking.connected()) {
 				while (Player.peekTime() > 0) {
 					globalPassTimeUpTo(.5);
 					if (Player.player.atFeature != null) {

@@ -139,20 +139,25 @@ public class Calender implements Serializable, CanPassTime {
 	/**
 	 * Won't sync up to year exactly
 	 * https://en.wikipedia.org/wiki/Sunrise_equation
-	 * @param time
-	 * @param riseOrSet
+	 * did someone add a python code example after I made this lmao
 	 * @return
 	 */
 	public double[] getSunTime(double timeCounter, double lata, double longa) {
-		double j = ((int)((timeCounter)*timeMult))-(longa/360);
-		double m = Math.toRadians((357.5291 + 0.98560028 * j)%360);
-		double c = 1.9148*Math.sin(m)+0.02*Math.sin(2*m)+0.0003*Math.sin(3*m);
-		double l = Math.toRadians((Math.toDegrees(m)+c+180+102.9372)%360);
-		double noon = j+0.0053*Math.sin(m)-0.0069*Math.sin(2*l)/*testing:*/+.5;
+		double j = ((int)((timeCounter)/24))-(longa/360);//days since epoch, mean solar time?
+		double m = Math.toRadians((357.5291 + 0.98560028 * j)%360);//solar mean anomaly
+		double c = 1.9148*Math.sin(m)+0.02*Math.sin(2*m)+0.0003*Math.sin(3*m);//equation of the center
+		double l = Math.toRadians((Math.toDegrees(m)+c+180+102.9372)%360);//ecliptic longitude
+		double noon = j+0.0053*Math.sin(m)-0.0069*Math.sin(2*l)+.5;
+		//declination of the Sun
 		double d = Math.asin(Math.sin(l)*Math.sin(Math.toRadians(23.44)));
+		//hour angle
 		double hour = Math.toDegrees(Math.acos(Math.sin(Math.toRadians(-0.83))-Math.sin(Math.toRadians(lata))*Math.sin(d))/(Math.cos(Math.toRadians(lata))*Math.cos(d)));
 		double rise = noon-(hour/(360));
 		double set = noon+(hour/360);
+		//TODO: test this
+		noon%=24;
+		rise%=24;
+		set%=24;
 		double[] ret = {rise,noon,set};
 		return ret;
 	}
@@ -264,15 +269,17 @@ public class Calender implements Serializable, CanPassTime {
 		timeCounter +=time;
 		return null;//TODO: use for holidays
 	}
+	
+	public static final java.text.DecimalFormat F_MINUTES = new java.text.DecimalFormat("00");
 
 	public String stringLocalTime(Town town) {
 		double time = getLocalTime(timeCounter,Calender.lerpLocation(town)[1]);
 		int hour = (int) time;
 		int minutes = (int) ((time*60)%60);
 		if (time < 12) {
-			return hour +":"+minutes+"am";
+			return hour +":"+F_MINUTES.format(minutes)+"am";
 		}else {
-			return (hour-12) +":"+minutes+"pm";
+			return (hour-12) +":"+F_MINUTES.format(minutes)+"pm";
 		}
 	}
 	
