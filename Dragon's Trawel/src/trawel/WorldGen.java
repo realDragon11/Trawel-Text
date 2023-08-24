@@ -111,7 +111,7 @@ public class WorldGen {
 	}
 	
 	public static World eoano() {
-		World w = new World(16,10,"eoano",41f,-72f);
+		World w = new World(16,10,"Eoano",41f,-72f);//welcome to new england
 		fallBackWorld = w;
 		plane = new Plane();
 		//Player.updateWorld(w);//we update player world in game start now
@@ -169,6 +169,7 @@ public class WorldGen {
 		addConnection(tevar,unun,"road","blue road");
 		tevar.addFeature(new Forest("The Forest of Vicissitude",2));
 		tevar.addFeature(new Mine("Ole' Tevar Mine",tevar,null,NodeFeature.Shape.NONE));
+		tevar.tTags.add(TownTag.MINERALS);
 		tevar.setFirstPrinter(new PrintEvent(){
 			@Override
 			public void print() {
@@ -262,6 +263,8 @@ public class WorldGen {
 		alhax.addFeature(new Store(2,4));
 		alhax.addFeature(new Store(2,0));
 		alhax.tTags.add(TownTag.MERCHANT);
+		alhax.tTags.add(TownTag.RICH);
+		alhax.tTags.add(TownTag.LAW);
 		alhax.setFirstPrinter(new PrintEvent(){
 			@Override
 			public void print() {
@@ -280,7 +283,6 @@ public class WorldGen {
 		addConnection(revan,tanak,"teleport","the red ritual");
 		revan.tTags.add(TownTag.MERCHANT);
 		revan.tTags.add(TownTag.DRUDIC);
-
 		revan.setFirstPrinter(new PrintEvent(){
 			@Override
 			public void print() {
@@ -302,7 +304,7 @@ public class WorldGen {
 
 			@Override
 			public void print() {
-				extra.println("You've enter the town of Arona, held in a wizard's pocket dimension. They employ powerful fighters as guards.");
+				extra.println("The 'town' of Arona, held in a wizard's pocket dimension, employs powerful fighters as guards.");
 				
 			}
 			
@@ -327,7 +329,6 @@ public class WorldGen {
 		denok.addFeature(new Grove("The Shaman's Clearing",denok,20));
 		denok.addFeature(new Doctor("The Shaman's Hut",denok));
 		denok.addFeature(new Mine("Denok's Mine",denok,null,NodeFeature.Shape.NONE));
-		
 		denok.addTravel();
 		denok.tTags.add(TownTag.DRUDIC);
 		
@@ -346,7 +347,6 @@ public class WorldGen {
 				extra.println("Erin has the largest library in this world, and scholars from all over gather in it to debate the newest theories.");
 				
 			}
-			
 		});
 		
 		
@@ -392,7 +392,14 @@ public class WorldGen {
 	}
 	
 	public static Town greap() {
-		World w = new World(30,20,"Greap",40f,-74f);
+		/**
+		 * 
+		 * welcome to uhhhh Australia?
+		 * <br>
+		Paruku (Lake Gregory) Indigenous Protected Area
+		Landmark in Sturt Creek, Australia
+		 */
+		World w = new World(30,20,"Greap",-20f,127.5f);//
 		fallBackWorld = w;
 		Island apen = new Island("Apen",w);
 		plane.addWorld(w);
@@ -428,6 +435,15 @@ public class WorldGen {
 		peana.addFeature(new Appraiser("peana appraiser"));
 		peana.addFeature(new Store(10,8));
 		peana.addFeature(new Mine("Staircase to Hell", peana, null,NodeFeature.Shape.ELEVATOR));
+		peana.tTags.add(TownTag.HELLISH);
+		
+		peana.setFirstPrinter(new PrintEvent(){
+			@Override
+			public void print() {
+				extra.println("Peana is the site of a large Mine with a singular purpose: to breach into hell. Those who completed this task have since long been lost to the ages- but their work remains, and a Throne of Hell was established there.");
+				
+			}
+		});
 		
 		Town inka = new Town("Inka",12, apen, new Point(4,7));
 		addConnection(unika,inka,"road","youn road");
@@ -438,6 +454,7 @@ public class WorldGen {
 		inka.addFeature(new Slum(inka,"Miner's Subtown",true));
 		inka.addTravel();
 		inka.tTags.add(TownTag.CITY);
+		inka.tTags.add(TownTag.MINERALS);
 		
 		Town pipa = new Town("Pipa",13, apen, new Point(4,7));
 		addConnection(inka,pipa,"road","mystery road");

@@ -16,6 +16,8 @@ public class Calender implements Serializable, CanPassTime {
 	private static final long serialVersionUID = 1L;
 	public double timeCounter = 30;//extra.randRange(0,3640)/10.0;
 	
+	private static final double timeMult = 1.0;//can do 1/24.0 if need to go back to old behavior
+	
 	/*public enum LunarPhase{//not nearly as exact as the sun
 		NEW_MOON(0f),
 		WAX_CRESCENT(0.05f),FIRST_QUARTER(0.1f),WAX_GIBBOUS(0.15f),
@@ -142,7 +144,7 @@ public class Calender implements Serializable, CanPassTime {
 	 * @return
 	 */
 	public double[] getSunTime(double timeCounter, double lata, double longa) {
-		double j = ((int)((timeCounter)/24))-(longa/360);
+		double j = ((int)((timeCounter)*timeMult))-(longa/360);
 		double m = Math.toRadians((357.5291 + 0.98560028 * j)%360);
 		double c = 1.9148*Math.sin(m)+0.02*Math.sin(2*m)+0.0003*Math.sin(3*m);
 		double l = Math.toRadians((Math.toDegrees(m)+c+180+102.9372)%360);
@@ -157,7 +159,7 @@ public class Calender implements Serializable, CanPassTime {
 	
 	public static double getLocalTime(double time1, double longa) {
 		double timeZone =(longa >0 ? 1 : -1)*(extra.lerp(0, 1/2f,(float)Math.abs(longa)/180));
-		return ((time1)+2+(timeZone))%1;
+		return ((time1)+2+(timeZone))%24;//TODO: why is there a +2, also had to change a %1 to a %24
 	}
 	
 	public static double getTimeZone(double longa) {
@@ -168,8 +170,9 @@ public class Calender implements Serializable, CanPassTime {
 	public static final double sunsetRadius = 1/(double)38;//1/(double)48;//half hour in 1 = 1 day
 	
 	public float[] getBackTime(double lata, double longa) {
-		double hourOfDay = getLocalTime((timeCounter)/24,longa);//(%24)/24;
-		double unwrappedHour = timeCounter/24;
+		double hourOfDay = getLocalTime((timeCounter*timeMult),longa);//(%24)/24; // /24
+		double unwrappedHour = timeCounter*timeMult;// /24
+		//DOLATER: why is it /24, time is in hours
 		double[] rns = this.getSunTime(timeCounter,lata,longa);
 		double sunRise = getLocalTime(rns[0],longa);
 		double sunSet = getLocalTime(rns[2],longa);
@@ -260,6 +263,17 @@ public class Calender implements Serializable, CanPassTime {
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		timeCounter +=time;
 		return null;//TODO: use for holidays
+	}
+
+	public String stringLocalTime(Town town) {
+		double time = getLocalTime(timeCounter,Calender.lerpLocation(town)[1]);
+		int hour = (int) time;
+		int minutes = (int) ((time*60)%60);
+		if (time < 12) {
+			return hour +":"+minutes+"am";
+		}else {
+			return (hour-12) +":"+minutes+"pm";
+		}
 	}
 	
 

@@ -41,11 +41,6 @@ public class World extends TContextOwner{
 	 * superpeople that the player will run into again, maybe
 	 */
 	private List<Agent> reoccuring;
-	/**
-	 * used for notable characters that either cheated death and didn't die in the rematch, or otherwise were notable but would
-	 * get lost
-	 */
-	//private List<Person> characters;
 	private Calender calender = new Calender();
 	private float minLata, maxLata, minLonga, maxLonga;
 	private String moneyname;

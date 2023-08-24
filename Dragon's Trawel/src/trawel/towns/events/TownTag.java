@@ -11,8 +11,10 @@ public enum TownTag {
 	MYSTIC("Mystic","rumored leylines"),
 	SMALL_TOWN("Small Town","rural community"),
 	CITY("City","bustling urban developments"),
+	HELLISH("Hellish","hellish energies"),
+	MINERALS("Mineral Abundance","vast mineral abundance"),
 	RICH("Wealthy","wealth"),
-	HIDDEN("Hidden","obscure location");
+	HIDDEN("Hidden","obscure location"),;
 	
 	
 	public final String name, desc;

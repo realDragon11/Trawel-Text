@@ -37,6 +37,7 @@ import trawel.quests.Quest;
 import trawel.quests.Quest.TriggerType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
+import trawel.towns.Calender;
 import trawel.towns.Connection;
 import trawel.towns.Feature;
 import trawel.towns.Town;
@@ -797,6 +798,23 @@ public class Player extends SuperPerson{
 
 										@Override
 										public String title() {
+											return "Reveal All Towns";
+										}
+
+										@Override
+										public boolean go() {
+											for (World w: WorldGen.plane.worlds()) {
+												w.setVisited();
+											}
+											for (Town t: WorldGen.plane.getTowns()) {
+												t.visited = Math.max(2,t.visited);
+											}
+											return true;
+										}});
+									hackList.add(new MenuSelect() {
+
+										@Override
+										public String title() {
 											return "Queue One Year";
 										}
 
@@ -905,7 +923,9 @@ public class Player extends SuperPerson{
 
 													@Override
 													public boolean go() {
-														w.getAndPrintLore(t.getName());
+														 if (!w.getAndPrintLore(t.getName())) {
+															 extra.println("There are no stories about " + t.getName()+".");
+														 }
 														return false;
 													}});
 												list.add(new MenuSelect() {
@@ -918,8 +938,11 @@ public class Player extends SuperPerson{
 													@Override
 													public boolean go() {
 														extra.println(t.getName() + " is a tier " +t.getTier() + " "
-																+ (t.isFort() ? "fort" : "town") + "."
+																+ (t.isFort() ? "fort" : "town") + " located on the Island of " +t.getIsland().getName()+", which has "+t.getIsland().getTowns().size()+" regions in it."
 																);
+														extra.println("It has around " +t.getFeatures().size() + " things to do and around " + t.getAllOccupants().size() + " occupants.");
+														double[] loc = Calender.lerpLocation(t);
+														extra.println("In "+w.getName() +", it is around "+ extra.F_WHOLE.format(loc[0]) +" latitude and "+extra.F_WHOLE.format(loc[1]) +" longitude. It is about " +w.getCalender().stringLocalTime(t) + " there.");
 														if (t.tTags.size() > 0) {
 															String tagFluff = "It is known for its ";
 															if (t.tTags.size() == 2) {
