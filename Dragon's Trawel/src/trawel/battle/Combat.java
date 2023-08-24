@@ -1443,7 +1443,7 @@ public class Combat {
 		if (attacker.getHp() <= 0) {
 			Networking.send("PlayDelay|sound_fallover1|35|");
 		}
-		if (canWait && !attacker.isPlayer()) {
+		if (canWait && !attacker.isPlayer() && mainGame.combatWaits) {
 			if (defender.isPlayer()) {
 				Networking.waitIfConnected(500L);//was 500L
 			}else {

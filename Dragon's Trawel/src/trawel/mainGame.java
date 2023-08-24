@@ -108,7 +108,6 @@ public class mainGame {
 	
 	public static boolean logStreamIsErr = false;
 	
-	public static boolean delayWaits = false;//TODO: add this back in as an option, it adds extra delay to simulate the cooldown/warmup delay in irl time, not just game time
 	
 	private static boolean finalSetup1 = false;
 	private static boolean basicSetup1 = false;
@@ -124,6 +123,8 @@ public class mainGame {
 	public static boolean displayOwnName;
 	public static boolean displayOtherCombat;
 	public static boolean showLargeTimePassing;
+	public static boolean delayWaits;
+	public static boolean combatWaits;
 	
 	public static boolean doAutoSave = true;
 	public static PrintStream logStream;
@@ -613,15 +614,67 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Realtime waiting for World time: " +showLargeTimePassing;
+						return "Graphical only Realtime Displays";
 					}
 
 					@Override
 					public boolean go() {
-						showLargeTimePassing = !showLargeTimePassing;
-						prefs.setProperty("largetime_wait",showLargeTimePassing+"");
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> list = new ArrayList<MenuItem>();
+								list.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "These options will wait time in real life after time 'passes' in game, before continuing with the displays.";
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Realtime waiting for World time: " +showLargeTimePassing;
+									}
+
+									@Override
+									public boolean go() {
+										showLargeTimePassing = !showLargeTimePassing;
+										prefs.setProperty("largetime_wait",showLargeTimePassing+"");
+										return false;
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Realtime waiting for Combat Delay: " +delayWaits;
+									}
+
+									@Override
+									public boolean go() {
+										delayWaits = !delayWaits;
+										prefs.setProperty("combattime_wait",delayWaits+"");
+										return false;
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Combat Action Pausing: " +combatWaits;
+									}
+
+									@Override
+									public boolean go() {
+										combatWaits = !combatWaits;
+										prefs.setProperty("combataction_wait",combatWaits+"");
+										return false;
+									}});
+								list.add(new MenuBack());
+								return list;
+							}});
 						return false;
 					}});
+
 				mList.add(new MenuBack());
 				return mList;
 			}
@@ -1258,7 +1311,9 @@ public class mainGame {
 		displayLocationalText = Boolean.parseBoolean(prefs.getProperty("locational_text","TRUE"));
 		displayOwnName = Boolean.parseBoolean(prefs.getProperty("ownname_text","TRUE"));
 		displayOtherCombat = Boolean.parseBoolean(prefs.getProperty("othercombat_text","TRUE"));
-		showLargeTimePassing= Boolean.parseBoolean(prefs.getProperty("largetime_wait","FALSE"));
+		showLargeTimePassing= Boolean.parseBoolean(prefs.getProperty("largetime_wait","TRUE"));
+		delayWaits = Boolean.parseBoolean(prefs.getProperty("combattime_wait","TRUE"));
+		combatWaits = Boolean.parseBoolean(prefs.getProperty("combataction_wait","TRUE"));
 		
 		if (autoConnect) {
 			System.out.println("Please wait for the graphical to load...");
