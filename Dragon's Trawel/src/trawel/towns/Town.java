@@ -267,7 +267,7 @@ public class Town extends TContextOwner{
 	public void sendBackVariant() {
 		double[] p = Calender.lerpLocation(Player.player.lastTown);
 		float[] b = Player.player.getWorld().getCalender().getBackTime(p[0],p[1]);
-		Networking.sendStrong("Backvariant|"+"town"+background_variant+"|"+b[0]+"|"+b[1]+"|");
+		Networking.sendStrong("Backvariant|"+"forest"+background_variant+"|"+b[0]+"|"+b[1]+"|");
 	}
 
 	public void atTown() {

@@ -1330,7 +1330,7 @@ public class mainGame {
 		displayOwnName = Boolean.parseBoolean(prefs.getProperty("ownname_text","TRUE"));
 		displayOtherCombat = Boolean.parseBoolean(prefs.getProperty("othercombat_text","TRUE"));
 		showLargeTimePassing= Boolean.parseBoolean(prefs.getProperty("largetime_wait","TRUE"));
-		delayWaits = Boolean.parseBoolean(prefs.getProperty("combattime_wait","TRUE"));
+		delayWaits = Boolean.parseBoolean(prefs.getProperty("combattime_wait","FALSE"));//probably will perform poorly in mass battles
 		combatWaits = Boolean.parseBoolean(prefs.getProperty("combataction_wait","TRUE"));
 		
 		if (autoConnect) {
