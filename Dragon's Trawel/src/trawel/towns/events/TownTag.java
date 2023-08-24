@@ -1,12 +1,18 @@
 package trawel.towns.events;
 
 public enum TownTag {
-	MERCHANT, ADVENTURE,
-	LAW, LAWLESS,
-	ARCANE, DRUDIC, ALCHEMY, MYSTIC,
-	SMALL_TOWN, CITY,
-	RICH("Wealthy","Has more wealth to spend, but more prone to attacks."),
-	HIDDEN("Hidden","Much less prone to attack.");
+	MERCHANT("Merchant Location","merchants"),
+	ADVENTURE("Adventure Location","adventurers"),
+	LAW("Lawful","strict laws"),
+	LAWLESS("Lawless","nigh-absence of laws"),
+	ARCANE("Arcane","arcane lore"),
+	DRUDIC("Drudic","primal vistas"),
+	ALCHEMY("Alchemy","brewed potions"),
+	MYSTIC("Mystic","rumored leylines"),
+	SMALL_TOWN("Small Town","rural community"),
+	CITY("City","bustling urban developments"),
+	RICH("Wealthy","wealth"),
+	HIDDEN("Hidden","obscure location");
 	
 	
 	public final String name, desc;

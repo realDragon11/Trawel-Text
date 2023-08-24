@@ -617,8 +617,13 @@ public class WorldGen {
 	}
 
 	public static void pathToTown(Town dest) {
+		
 		try {
 			Town curTown = Player.player.getLocation();
+			if (curTown == dest) {
+				extra.println("You are already in " + dest.getName()+".");
+				return;
+			}
 			List<Connection> connects = WorldGen.aStarTown(curTown,dest);
 			
 			int i = 0;

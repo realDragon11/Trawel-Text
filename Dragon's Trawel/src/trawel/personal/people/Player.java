@@ -37,9 +37,11 @@ import trawel.quests.Quest;
 import trawel.quests.Quest.TriggerType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
+import trawel.towns.Connection;
 import trawel.towns.Feature;
 import trawel.towns.Town;
 import trawel.towns.World;
+import trawel.towns.misc.Docks;
 
 public class Player extends SuperPerson{
 
@@ -628,10 +630,7 @@ public class Player extends SuperPerson{
 
 									@Override
 									public boolean go() {
-										//TODO: add a scroll menu that lets the player find a path to any town they have previously visited
-										//don't track this manually, instead have a list of visited worlds and then scroll through that
-										//then let them pick any town that has it's visit flag set from there
-										//WorldGen.pathToUnun();
+										extra.println("You take out your personal map of known towns.");
 										mapScrollMenu();
 										return false;
 									}});
@@ -883,7 +882,7 @@ public class Player extends SuperPerson{
 
 													@Override
 													public String title() {
-														return t.getName()+":";
+														return t.getName()+": tier " +t.getTier();
 													}});
 												list.add(new MenuSelect() {
 
@@ -901,12 +900,81 @@ public class Player extends SuperPerson{
 
 													@Override
 													public String title() {
-														return "Arrival Lore";
+														return "Lore";
 													}
 
 													@Override
 													public boolean go() {
 														w.getAndPrintLore(t.getName());
+														return false;
+													}});
+												list.add(new MenuSelect() {
+
+													@Override
+													public String title() {
+														return "Details";
+													}
+
+													@Override
+													public boolean go() {
+														extra.println(t.getName() + " is a tier " +t.getTier() + " "
+																+ (t.isFort() ? "fort" : "town") + "."
+																);
+														if (t.tTags.size() > 0) {
+															String tagFluff = "It is known for its ";
+															if (t.tTags.size() == 2) {
+																tagFluff += t.tTags.get(0).desc + " and " + t.tTags.get(1).desc;
+															}else {
+																for (int i = 0; i < t.tTags.size();i++) {
+																	if (i == 0) {
+																		tagFluff += t.tTags.get(i).desc;
+																	}else {
+																		if (i == t.tTags.size()-1) {
+																			tagFluff += ", and " +t.tTags.get(i).desc;
+																		}else {
+																			tagFluff += ", " +t.tTags.get(i).desc;
+																		}
+																	}
+																}
+															}
+															extra.println(tagFluff+".");
+														}
+														int road = 0;
+														int ship = 0;
+														int tele = 0;
+														for (Connection c: t.getConnects()) {
+															switch (c.getType()) {
+															case ROAD:
+																road++;
+																break;
+															case SHIP:
+																ship++;
+																break;
+															case TELE:
+																tele++;
+																break;
+															}
+														}
+														boolean hasDocks = false;
+														for (Feature f: t.getFeatures()) {
+															if (f instanceof Docks) {
+																hasDocks = true;
+															}
+														}
+														if (road > 0) {
+															extra.println("Has " + road + " land routes.");
+														}
+														if (tele > 0) {
+															extra.println("Has "+tele+" teleport rituals.");
+														}
+														if (hasDocks) {
+															extra.println("Has Docks with " + ship + " direct routes.");
+														}else {
+															if (ship > 0) {
+																extra.println("Has "+ship+" locations from their port.");
+															}
+														}
+														extra.println();
 														return false;
 													}});
 												list.add(new MenuBack());

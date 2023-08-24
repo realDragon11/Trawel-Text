@@ -97,7 +97,7 @@ public class Connection implements java.io.Serializable{
 		case 2: visitColor = extra.VISIT_BEEN;break;
 		case 3: visitColor = extra.VISIT_OWN;break;
 		}
-		extra.println(visitColor + getName() + " to " + ot.getName() + " {Level: "+ot.getTier()+"} ("+dir(town1,ot)+")");
+		extra.println(visitColor + getName() + " to " + ot.getName() + " {Tier: "+ot.getTier()+"} ("+dir(town1,ot)+")");
 		if (Player.hasSkill(Skill.TOWNSENSE)) {
 			extra.println(ot.getName() + " has " + ot.getConnects().size() + " connections.");
 		}
@@ -155,6 +155,9 @@ public class Connection implements java.io.Serializable{
 	}
 	
 	public static String dir(Town t1, Town t2) {
+		if (t1.getIsland().getWorld() != t2.getIsland().getWorld()) {
+			return "?";
+		}
 		//vectors: int angle = (int) Math.atan2((t1.getLocation().x*t2.getLocation().y)-(t1.getLocation().y*t2.getLocation().x),(t1.getLocation().x*t2.getLocation().x)+(t1.getLocation().y*t2.getLocation().y));
 		int angle = (int) Math.toDegrees(Math.atan2(t2.getLocationX()-t1.getLocationX(),t2.getLocationY()-t1.getLocationY()))-90;
 		while(angle <0) {
