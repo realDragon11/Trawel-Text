@@ -263,6 +263,12 @@ public class Town extends TContextOwner{
 		//System.err.println("at town processing");
 		timeScope.processEvents(this);
 	}
+	
+	public void sendBackVariant() {
+		double[] p = Calender.lerpLocation(Player.player.lastTown);
+		float[] b = Player.player.getWorld().getCalender().getBackTime(p[0],p[1]);
+		Networking.sendStrong("Backvariant|"+"town"+background_variant+"|"+b[0]+"|"+b[1]+"|");
+	}
 
 	public void atTown() {
 		World w = island.getWorld();
@@ -292,9 +298,7 @@ public class Town extends TContextOwner{
 		Networking.sendStrong("Discord|imagesmall|town|Town|");
 		Networking.setArea("main");
 		Networking.setBackground("main");
-		double[] p = Calender.lerpLocation(Player.player.lastTown);
-		float[] b = Player.player.getWorld().getCalender().getBackTime(p[0],p[1]);
-		Networking.sendStrong("Backvariant|"+"town"+background_variant+"|"+b[0]+"|"+b[1]+"|");
+		sendBackVariant();
 		Networking.charUpdate();
 		if (isFort()) {
 			doFort();

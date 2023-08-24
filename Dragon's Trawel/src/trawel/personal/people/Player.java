@@ -137,11 +137,22 @@ public class Player extends SuperPerson{
 	public void kill() {
 		isAlive = false;
 	}
+	public static double peekTime() {
+		return passTime;
+	}
 	public static double popTime() {
 		double temp = passTime;
 		passTime = 0;
 		Player.player.townEventTimer-=temp;
 		return temp;
+	}
+	public static double takeTime(double limit) {
+		if (passTime < limit) {
+			return popTime();
+		}
+		passTime -=limit;
+		Player.player.townEventTimer-=limit;
+		return limit;
 	}
 	public static void addTime(double addTime) {
 		passTime +=addTime;

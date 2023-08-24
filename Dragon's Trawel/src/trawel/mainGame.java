@@ -123,6 +123,7 @@ public class mainGame {
 	public static boolean displayLocationalText;
 	public static boolean displayOwnName;
 	public static boolean displayOtherCombat;
+	public static boolean showLargeTimePassing;
 	
 	public static boolean doAutoSave = true;
 	public static PrintStream logStream;
@@ -608,7 +609,19 @@ public class mainGame {
 						prefs.setProperty("debug_attacks",advancedCombatDisplay+"");
 						return false;
 					}});
+				mList.add(new MenuSelect() {
 
+					@Override
+					public String title() {
+						return "Realtime waiting for World time: " +showLargeTimePassing;
+					}
+
+					@Override
+					public boolean go() {
+						showLargeTimePassing = !showLargeTimePassing;
+						prefs.setProperty("largetime_wait",showLargeTimePassing+"");
+						return false;
+					}});
 				mList.add(new MenuBack());
 				return mList;
 			}
@@ -1245,6 +1258,7 @@ public class mainGame {
 		displayLocationalText = Boolean.parseBoolean(prefs.getProperty("locational_text","TRUE"));
 		displayOwnName = Boolean.parseBoolean(prefs.getProperty("ownname_text","TRUE"));
 		displayOtherCombat = Boolean.parseBoolean(prefs.getProperty("othercombat_text","TRUE"));
+		showLargeTimePassing= Boolean.parseBoolean(prefs.getProperty("largetime_wait","FALSE"));
 		
 		if (autoConnect) {
 			System.out.println("Please wait for the graphical to load...");
@@ -1627,7 +1641,32 @@ public class mainGame {
 		 * note that some events, like the player generating gold, ignore normal restrictions
 		 */
 		public static void globalPassTime() {
+			if (showLargeTimePassing) {
+				while (Player.peekTime() > 0) {
+					globalPassTimeUpTo(.5);
+					if (Player.player.atFeature != null) {
+						Player.player.atFeature.sendBackVariant();
+					}else {
+						Player.player.getLocation().sendBackVariant();
+					}
+					
+					Networking.waitIfConnected(84);//1 second should be around 6 hours
+				}
+			}else {
+				globalTimeCatchUp();
+			}
+			
+		}
+		
+		public static void globalTimeCatchUp() {
 			double time = Player.popTime();
+			if (time > 0) {
+				WorldGen.plane.advanceTime(time);
+			}
+		}
+		
+		public static void globalPassTimeUpTo(double limit) {
+			double time = Player.takeTime(limit);
 			if (time > 0) {
 				WorldGen.plane.advanceTime(time);
 			}
