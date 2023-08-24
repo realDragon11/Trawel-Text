@@ -8,7 +8,6 @@ import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import trawel.Networking;
 import trawel.extra;
-import trawel.earts.EArt;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.quests.BasicSideQuest;

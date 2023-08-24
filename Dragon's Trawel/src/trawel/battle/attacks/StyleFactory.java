@@ -1,5 +1,6 @@
 package trawel.battle.attacks;
 import java.util.ArrayList;
+
 import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.extra;

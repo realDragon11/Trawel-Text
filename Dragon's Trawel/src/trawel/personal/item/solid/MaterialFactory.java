@@ -1,9 +1,9 @@
 package trawel.personal.item.solid;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.github.yellowstonegames.core.WeightedTable;
 

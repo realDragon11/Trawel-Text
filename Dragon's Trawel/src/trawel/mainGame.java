@@ -35,7 +35,6 @@ import scimech.units.mechs.Pyro;
 import scimech.units.mechs.Swashbuckler;
 import trawel.Networking.ConnectType;
 import trawel.battle.Combat;
-import trawel.battle.TauntsFactory;
 import trawel.battle.Combat.SkillCon;
 import trawel.battle.attacks.ImpairedAttack.DamageType;
 import trawel.battle.attacks.StyleFactory;
@@ -61,8 +60,6 @@ import trawel.quests.QuestReactionFactory;
 import trawel.towns.Calender;
 import trawel.towns.World;
 import trawel.towns.events.TownFlavorFactory;
-import trawel.towns.fort.FortHall;
-import trawel.towns.services.BookFactory;
 import trawel.towns.services.Oracle;
 /**
  * 

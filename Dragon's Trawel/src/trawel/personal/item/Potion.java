@@ -1,13 +1,12 @@
 package trawel.personal.item;
 
-import trawel.Effect;
-import trawel.extra;
-import trawel.personal.Person;
-
 import java.util.regex.Pattern;
 
 import derg.SRPlainRandom;
 import derg.StringResult;
+import trawel.Effect;
+import trawel.extra;
+import trawel.personal.Person;
 
 public class Potion implements java.io.Serializable{
 

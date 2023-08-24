@@ -10,7 +10,6 @@ import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceClass;
 import trawel.personal.RaceFactory.RaceID;
 import trawel.personal.item.Item;
-import trawel.personal.item.Item.ItemType;
 import trawel.personal.item.magic.EnchantConstant;
 
 

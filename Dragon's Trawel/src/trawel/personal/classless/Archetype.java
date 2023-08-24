@@ -1,7 +1,6 @@
 package trawel.personal.classless;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import derg.menus.MenuItem;
-import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.extra;
 import trawel.personal.Person;

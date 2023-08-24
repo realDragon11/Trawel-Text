@@ -5,12 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import trawel.extra;
-import trawel.battle.attacks.WeaponAttackFactory;
 import trawel.personal.Person;
-import trawel.personal.classless.IHasSkills;
-import trawel.personal.classless.Skill;
-import trawel.personal.classless.SkillAttackConf;
-import trawel.personal.classless.Skill.Type;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.World;

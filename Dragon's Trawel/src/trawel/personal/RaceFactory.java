@@ -1,10 +1,9 @@
 package trawel.personal;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
-import java.util.HashMap;
 
 import trawel.Effect;
 import trawel.extra;
@@ -17,7 +16,6 @@ import trawel.personal.Person.PersonFlag;
 import trawel.personal.Person.PersonType;
 import trawel.personal.Person.RaceFlag;
 import trawel.personal.classless.Archetype;
-import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.Perk;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.body.SoundBox;

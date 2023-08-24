@@ -1,7 +1,6 @@
 package trawel.personal.classless;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import trawel.battle.attacks.Attack;

@@ -6,12 +6,13 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.text.DateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
 import org.nustaq.serialization.FSTConfiguration;
 import org.nustaq.serialization.FSTObjectOutput;
 
@@ -23,12 +24,12 @@ import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Player;
 import trawel.towns.Connection;
+import trawel.towns.Connection.ConnectType;
 import trawel.towns.Feature;
 import trawel.towns.Island;
 import trawel.towns.Plane;
 import trawel.towns.Town;
 import trawel.towns.World;
-import trawel.towns.Connection.ConnectType;
 import trawel.towns.events.TownTag;
 import trawel.towns.fight.Arena;
 import trawel.towns.fight.Champion;

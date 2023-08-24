@@ -2,9 +2,7 @@ package trawel.towns.fort;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
 
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
@@ -17,10 +15,7 @@ import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.battle.Combat.SkillCon;
 import trawel.personal.Person;
-import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
-import trawel.personal.classless.IEffectiveLevel;
-import trawel.personal.classless.Skill;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race;
 import trawel.personal.people.Player;

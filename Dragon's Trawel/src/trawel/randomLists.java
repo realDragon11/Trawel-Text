@@ -1,16 +1,15 @@
 package trawel;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
 
 import derg.SRGapShuffle;
 import derg.SRInOrder;
 import derg.SRPlainRandom;
-import derg.StringResult;
 import derg.StringNum;
+import derg.StringResult;
 import trawel.battle.Combat.ATK_ResultCode;
-import trawel.battle.Combat.AttackReturn;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
 

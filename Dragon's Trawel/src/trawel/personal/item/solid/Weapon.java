@@ -4,8 +4,6 @@ import java.io.FileNotFoundException;
 import java.util.EnumSet;
 import java.util.Set;
 
-import com.github.yellowstonegames.core.WeightedTable;
-
 import trawel.Services;
 import trawel.WorldGen;
 import trawel.extra;

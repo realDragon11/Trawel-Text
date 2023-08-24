@@ -5,7 +5,6 @@ import java.awt.Color;
 import trawel.extra;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.solid.Material;
-import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.people.Player;
 import trawel.towns.services.Store;
 

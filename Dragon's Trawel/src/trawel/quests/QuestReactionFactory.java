@@ -11,12 +11,11 @@ import derg.menus.MenuSelect;
 import trawel.Networking;
 import trawel.WorldGen;
 import trawel.extra;
-import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
-import trawel.personal.people.Player;
 import trawel.personal.people.Agent.AgentGoal;
+import trawel.personal.people.Player;
 import trawel.towns.Town;
 
 public class QuestReactionFactory {

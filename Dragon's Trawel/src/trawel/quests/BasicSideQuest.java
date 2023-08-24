@@ -1,7 +1,6 @@
 package trawel.quests;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,14 +15,11 @@ import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
-import trawel.quests.Quest.TriggerType;
 import trawel.quests.QuestReactionFactory.QKey;
 import trawel.towns.Feature;
 import trawel.towns.Town;
 import trawel.towns.fight.Slum;
 import trawel.towns.fort.FortHall;
-import trawel.towns.nodes.NodeFeature;
-import trawel.towns.nodes.NodeType;
 import trawel.towns.services.Inn;
 import trawel.towns.services.MerchantGuild;
 import trawel.towns.services.WitchHut;

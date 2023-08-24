@@ -3,8 +3,6 @@ package trawel.time;
 import java.util.ArrayList;
 import java.util.List;
 
-import trawel.towns.Town.StructuralFeatureEvent;
-
 public class TimeContext {
 
 	public final ContextType owntype;

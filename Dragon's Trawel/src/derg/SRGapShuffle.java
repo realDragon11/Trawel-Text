@@ -1,7 +1,7 @@
 package derg;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.github.yellowstonegames.core.GapShuffler;
 

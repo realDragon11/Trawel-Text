@@ -6,9 +6,9 @@ import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
-import trawel.personal.people.Player;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
+import trawel.personal.people.Player;
 import trawel.quests.Quest.TriggerType;
 
 

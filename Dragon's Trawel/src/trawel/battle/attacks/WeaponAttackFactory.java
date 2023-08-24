@@ -1,9 +1,7 @@
 package trawel.battle.attacks;
 
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +24,6 @@ import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Material;
-import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponType;
 

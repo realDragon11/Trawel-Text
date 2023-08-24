@@ -3,7 +3,6 @@ package trawel.battle.attacks;
 import java.util.ArrayList;
 import java.util.List;
 
-import trawel.Effect;
 import trawel.extra;
 import trawel.battle.attacks.Attack.Wound;
 import trawel.battle.attacks.TargetFactory.TargetType;

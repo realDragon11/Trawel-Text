@@ -10,7 +10,6 @@ import derg.menus.MenuSelect;
 import trawel.Effect;
 import trawel.Networking;
 import trawel.extra;
-import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -20,9 +19,9 @@ import trawel.personal.item.Seed;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.DrawBane.DrawList;
 import trawel.personal.people.Agent;
+import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
-import trawel.personal.people.Agent.AgentGoal;
 import trawel.quests.BasicSideQuest;
 import trawel.quests.QBMenuItem;
 import trawel.quests.QRMenuItem;
@@ -31,7 +30,6 @@ import trawel.quests.QuestBoardLocation;
 import trawel.quests.QuestR;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
-import trawel.towns.Feature;
 import trawel.towns.Town;
 
 public class WitchHut extends Store implements QuestBoardLocation{

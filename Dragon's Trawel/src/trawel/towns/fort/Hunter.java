@@ -1,6 +1,5 @@
 package trawel.towns.fort;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import trawel.extra;

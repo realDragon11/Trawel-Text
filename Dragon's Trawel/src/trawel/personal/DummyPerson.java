@@ -1,7 +1,6 @@
 package trawel.personal;
 
 import trawel.Effect;
-import trawel.battle.attacks.TargetFactory;
 import trawel.personal.classless.Skill;
 
 public class DummyPerson extends Person {

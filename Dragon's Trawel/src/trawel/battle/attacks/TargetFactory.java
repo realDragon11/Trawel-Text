@@ -1,9 +1,7 @@
 package trawel.battle.attacks;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -11,8 +9,6 @@ import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.extra;
 import trawel.battle.attacks.Attack.Wound;
-import trawel.battle.attacks.TargetFactory.TargetType;
-import trawel.battle.attacks.TargetFactory.TypeBody;
 
 public class TargetFactory {
 

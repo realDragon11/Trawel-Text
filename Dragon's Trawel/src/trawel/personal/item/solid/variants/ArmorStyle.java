@@ -1,9 +1,7 @@
 package trawel.personal.item.solid.variants;
 
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
 
 import com.github.yellowstonegames.core.WeightedTable;
 

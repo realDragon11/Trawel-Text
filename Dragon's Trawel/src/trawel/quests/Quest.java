@@ -1,7 +1,6 @@
 package trawel.quests;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 
 import trawel.quests.QuestReactionFactory.QKey;

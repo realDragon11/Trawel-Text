@@ -4,9 +4,9 @@ import java.util.List;
 
 import trawel.extra;
 import trawel.factions.FBox.FSub;
+import trawel.factions.Faction;
 import trawel.personal.people.Player;
 import trawel.towns.Town;
-import trawel.factions.Faction;
 
 
 public class TownFlavorFactory {

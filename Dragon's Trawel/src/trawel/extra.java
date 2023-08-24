@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
+import java.util.Stack;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Stream;
 
-import com.github.tommyettinger.random.*;
+import com.github.tommyettinger.random.EnhancedRandom;
+import com.github.tommyettinger.random.WhiskerRandom;
 
 import derg.UnitAssertions;
 import derg.menus.MenuGenerator;
@@ -20,13 +23,8 @@ import derg.menus.ScrollMenuGenerator;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.item.DummyInventory;
-import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.people.Player;
 import trawel.towns.World;
-
-import java.util.Stack;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.stream.Stream;
 
 public final class extra {
 /**

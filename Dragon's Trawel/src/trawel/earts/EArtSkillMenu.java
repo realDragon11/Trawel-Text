@@ -1,16 +1,6 @@
 package trawel.earts;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import derg.menus.MenuBack;
-import derg.menus.MenuGenerator;
-import derg.menus.MenuItem;
-import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
-import trawel.extra;
-import trawel.personal.classless.Skill;
-import trawel.personal.people.Player;
 
 public abstract class EArtSkillMenu extends MenuSelect{
 	

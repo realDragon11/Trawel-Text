@@ -1,13 +1,11 @@
 package trawel.battle.attacks;
 
-import derg.SRInOrder;
 import derg.StringResult;
 import trawel.extra;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 import trawel.battle.attacks.WeaponAttackFactory.DamageTier;
 import trawel.personal.Person;
-import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.IHasSkills;
 import trawel.personal.item.solid.Weapon;
 

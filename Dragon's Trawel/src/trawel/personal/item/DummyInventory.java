@@ -1,13 +1,10 @@
 package trawel.personal.item;
 
-import java.util.List;
-
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
-import trawel.personal.item.solid.Weapon.WeaponQual;
 
 public class DummyInventory extends Inventory {
 	

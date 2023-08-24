@@ -1,7 +1,6 @@
 package trawel.towns.services;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
@@ -12,8 +11,8 @@ import trawel.Networking;
 import trawel.extra;
 import trawel.factions.FBox;
 import trawel.factions.FBox.FSub;
-import trawel.personal.people.Player;
 import trawel.factions.Faction;
+import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;

@@ -1,7 +1,6 @@
 package trawel.earts;
 
 import derg.menus.MenuLine;
-import trawel.personal.people.Player;
 
 public class PlayerSkillpointsLine extends MenuLine {
 
