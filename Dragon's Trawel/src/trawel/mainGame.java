@@ -643,6 +643,12 @@ public class mainGame {
 										prefs.setProperty("largetime_wait",showLargeTimePassing+"");
 										return false;
 									}});
+								list.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "World Time is the time that passes in the game world. If this option is on, the game will attempt to show 6 hours every second as it catches up instead of catching up as fast as it can compute. Note that the game doesn't always catch up right away.";
+									}});
 								list.add(new MenuSelect() {
 
 									@Override
@@ -656,6 +662,12 @@ public class mainGame {
 										prefs.setProperty("combattime_wait",delayWaits+"");
 										return false;
 									}});
+								list.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "Waiting for Combat Delay will attempt to show 100 instants as 1 second of real world time. It is suggested to have either this or the next option on, but not both.";
+									}});
 								list.add(new MenuSelect() {
 
 									@Override
@@ -668,6 +680,12 @@ public class mainGame {
 										combatWaits = !combatWaits;
 										prefs.setProperty("combataction_wait",combatWaits+"");
 										return false;
+									}});
+								list.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "Combat Action pausing will wait after displaying a combat attack. It will wait half a second normally, but if you're in a mass battle, it will attempt to wait 4/5ths of a second when you're being attacked. Unlike delay based timing, it doesn't consider your own attacks valid things to wait on. It is suggested to have either this or the previous option on, but not both.";
 									}});
 								list.add(new MenuBack());
 								return list;

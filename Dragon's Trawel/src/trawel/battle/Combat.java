@@ -1306,7 +1306,7 @@ public class Combat {
 		//}
 
 		if (canWait && mainGame.delayWaits) {
-			Networking.waitIfConnected((long)delay*80);
+			Networking.waitIfConnected((long)delay*10);
 		}
 
 		extra.println("");
