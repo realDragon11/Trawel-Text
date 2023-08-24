@@ -1751,7 +1751,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	 * removes a single stack
 	 */
 	public void removeEffect(Effect e) {
-		effects.remove(e);
 		effects.put(e,Math.max(1,effects.getOrDefault(e, 0)-1));
 	}
 	

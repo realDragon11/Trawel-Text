@@ -70,6 +70,8 @@ public class Combat {
 	
 	private List<Person> completeList, killList;
 	
+	public static String indent = " ";
+	
 	//constructor
 	/**
 	 * Holds a fight to the death, between two people.
@@ -550,7 +552,7 @@ public class Combat {
 			if (!quickest.isAttacking()) {
 				Person otherperson = null;
 				if (quickest.hasEffect(Effect.CONFUSED_TARGET)) {
-					quickest.removeEffect(Effect.CONFUSED_TARGET);
+					quickest.removeEffectAll(Effect.CONFUSED_TARGET);
 					otherperson = getDefenderForConfusion(quickest);
 				}else {
 					if (defender.isAlive() && quickest.getBag().getHand().hasQual(Weapon.WeaponQual.DUELING)) {
@@ -1034,7 +1036,22 @@ public class Combat {
 	 */
 	public AttackReturn handleTurn(Person attacker, Person defender,boolean canWait, double delay) {
 		if (attacker.isOnCooldown()) {
+			if (attacker.hasEffect(Effect.RECOVERING)) {//recovering doesn't stack, but there should only be one at a time
+				attacker.removeEffect(Effect.RECOVERING);
+				int recover_amount = IEffectiveLevel.cleanLHP(attacker.getLevel(), .05);
+				attacker.healHP(recover_amount);
+				if (!extra.getPrint()) {
+					extra.println(indent +attacker.getName() + " recovers "+ recover_amount +" HP.");
+				}
+			}
 			attacker.finishTurn();
+			if (attacker.hasEffect(Effect.BREATHING)) {//only uses one at a time
+				attacker.removeEffect(Effect.BREATHING);
+				attacker.addEffect(Effect.RECOVERING);
+				if (!extra.getPrint()) {
+					extra.println(indent +attacker.getName() + " is breathing heavily...");
+				}
+			}
 			return new AttackReturn();
 		}
 		attacker.finishWarmup();
@@ -1048,12 +1065,7 @@ public class Combat {
 				battleIsLong = true;
 			}
 		}
-		if (attacker.hasEffect(Effect.RECOVERING)) {
-			attacker.removeEffect(Effect.RECOVERING);
-			attacker.healHP(
-					IEffectiveLevel.cleanLHP(attacker.getLevel(), .05)
-					);
-		}
+		
 		if (defender.hasSkill(Skill.COUNTER)) {
 			defender.advanceTime(2);
 		}
@@ -1066,14 +1078,20 @@ public class Combat {
 		}
 		if (!extra.getPrint() && mainGame.displayFlavorText && attacker.getPersonType() != PersonType.NO_SPEAK && extra.chanceIn(1,4)) {
 			if (extra.chanceIn(1,3)) {
-					BarkManager.getBoast(attacker,true);//extra.println(attacker.getName() + " "+extra.choose("shouts","screams","boasts")+ " \"" + attacker.getTaunts().getBoast()+"\"");		
+					String bark = BarkManager.getBoast(attacker,true);
+					if (bark != null) {
+						extra.println(indent+bark);
+					}
 			}else {
 				if (attacker.isPersonable() && //must but fully personable to be racist for now
 						((attacker.isAngry() && defender.getBag().getRace().racialType == RaceType.BEAST) || (attacker.isRacist() && !attacker.getBag().getRace().equals(defender.getBag().getRace()))) && extra.chanceIn(1,3)) 
 				{
-					extra.println(attacker.getName() + " "+extra.choose("shouts","screams","taunts")+ " \"" +defender.getBag().getRace().randomInsult()+"\"");
+					extra.println(indent+attacker.getName() + " "+extra.choose("shouts","screams","taunts")+ " \"" +defender.getBag().getRace().randomInsult()+"\"");
 				}else {
-					BarkManager.getTaunt(attacker,defender);//extra.println(attacker.getName() + " "+extra.choose("shouts","screams","taunts")+ " \"" + attacker.getTaunts().getTaunt()+"\"");
+					String bark = BarkManager.getTaunt(attacker,defender);
+					if (bark != null) {
+						extra.println(indent+bark);
+					}
 				}				
 			}
 		}
@@ -1188,7 +1206,7 @@ public class Combat {
 				if (defender.contestedRoll(attacker,defender.getClarity(),attacker.getHighestAttribute()) >= 0){
 					attacker.addEffect(Effect.CONFUSED_TARGET);
 					if (!extra.getPrint()) {
-						extra.println(defender.getName()+ "'s illusory armor mesmerizes "+attacker.getName() +"...");
+						extra.println(indent+defender.getName()+ "'s illusory armor mesmerizes "+attacker.getName() +"...");
 					}
 				}
 			}
@@ -1402,17 +1420,17 @@ public class Combat {
 		}
 		if (totalBleed > 0 && !extra.getPrint()) {
 			if (leech > 0) {
-				extra.println(defender.getName() + " heals off of "
+				extra.println(indent+defender.getName() + " heals off of "
 				+ attacker.getNameNoTitle() + "'s blood, healing " + (totalBleed*leech) + " HP off of "
 				+ (totalBleed) + " damage!");
 			}else {
-				extra.println(attacker.getName() + " bleeds for " + totalBleed + " HP.");
+				extra.println(indent+attacker.getName() + " bleeds for " + totalBleed + " HP.");
 			}
 		}
 		if (attacker.hasEffect(Effect.BEES) && extra.chanceIn(1,5)) {
 			int bee_damage = extra.randRange(1,IEffectiveLevel.cleanLHP(attacker.getLevel(), .04));
 			if (!extra.getPrint()) {
-				extra.println("The bees sting "+attacker.getName()+" for "+bee_damage+"!");
+				extra.println(indent+"The bees sting "+attacker.getName()+" for "+bee_damage+"!");
 			}
 			attacker.takeDamage(bee_damage);
 		}
@@ -1505,7 +1523,7 @@ public class Combat {
 			case KO:
 				defender2.takeDamage(nums[0]);
 				if (!defender2.hasEffect(Effect.BRAINED)) {
-					defender2.addEffect(Effect.RECOVERING);
+					defender2.addEffect(Effect.BREATHING);
 				}
 				break;
 			case I_BLEED:

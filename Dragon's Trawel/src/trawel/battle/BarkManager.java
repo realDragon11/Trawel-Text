@@ -10,109 +10,96 @@ import trawel.personal.RaceFactory.RaceClass;
 public class BarkManager {
 
 	
-	public static void getTaunt(Person p,Person target) {
+	public static String getTaunt(Person p,Person target) {
 		if (extra.getPrint()) {
-			return;
+			return null;
 		}
 		double hpPercent = ((double)p.getHp())/p.getMaxHp();
 		switch (p.getPersonType()) {
 		case COWARDLY:
 			if (hpPercent > .4) {
-				extra.println(genericTaunt(p));
+				return (genericTaunt(p));
 			}else {
-				extra.println(cowardTaunt(p));
+				return (cowardTaunt(p));
 			}
-			break;
 		case FEARLESS:
 			if (hpPercent > .3) {
-				extra.println(genericTaunt(p));
+				return(genericTaunt(p));
 			}else {
 				if (extra.randRange(1,2) == 1) {
-				extra.println(resolveTaunt(p));
+					return (resolveTaunt(p));
 				}else {
-					extra.println(genericTaunt(p));
+					return (genericTaunt(p));
 				}
 			}
-			break;
 		case GRIZZLED:
 			if (hpPercent > .3) {
-				extra.println(genericTaunt(p));
+				return (genericTaunt(p));
 			}else {
 				if (extra.randRange(1,2) == 1) {
-				extra.println(grizzleTaunt(p));
+					return (grizzleTaunt(p));
 				}else {
-					extra.println(genericTaunt(p));
+					return (genericTaunt(p));
 				}
 			}
-			break;
 		case DEATHCHEATED:
 			if (hpPercent > .33) {
-				extra.println(genericTaunt(p));
+				return (genericTaunt(p));
 			}else {
 				if (extra.randRange(1,2) == 1) {
-				extra.println(deathCheaterTaunt(p));
+					return (deathCheaterTaunt(p));
 				}else {
-					extra.println(genericTaunt(p));
+					return (genericTaunt(p));
 				}
 			}
-			break;
 		case LIFEKEEPER:
 			if (hpPercent > .33) {
-				extra.println(lifeKeeperTaunt(p));
+				return (lifeKeeperTaunt(p));
 			}else {
 				if (extra.randRange(1,2) == 1) {
-					extra.println(lifeKeeperTaunt(p));
+					return (lifeKeeperTaunt(p));
 					}else {
-						extra.println(lifeKeeperTauntLow(p));
+						return (lifeKeeperTauntLow(p));
 					}
 			}
-			break;
 		case DRUDGER_GENERIC:
-			extra.println(drudgerTaunt(p,target));
-			break;
+			return (drudgerTaunt(p,target));
 		case FELL_MONSTER:
-			extra.println(fellTaunt(p,target));
-			break;
+			return (fellTaunt(p,target));
 		case HARPY_GENERIC:
 			if (hpPercent > .4 || extra.chanceIn(2,3)) {
-				extra.println(harpyTaunt(p));
+				return (harpyTaunt(p));
 			}else {
-				extra.println(cowardTaunt(p));
+				return (cowardTaunt(p));
 			}
-			break;
 		}
-		
+		return null;
 	}
 	
-	public static void getBoast(Person p, boolean opposed) {
+	public static String getBoast(Person p, boolean opposed) {
 		if (extra.getPrint()) {
-			return;
+			return null;
 		}
 		double hpPercent = ((double)p.getHp())/p.getMaxHp();
 		switch (p.getPersonType()) {
 		case COWARDLY:
 			if (hpPercent > .4) {
-				extra.println(genericBoast(p,opposed));
+				return (genericBoast(p,opposed));
 			}else {
-				return;
+				return null;
 			}
-			break;
 		case FEARLESS: case GRIZZLED: case DEATHCHEATED:
-			extra.println(genericBoast(p,opposed));
-			break;
+			return (genericBoast(p,opposed));
 		case LIFEKEEPER:
-			extra.println(lifeKeeperBoast(p));
-			break;
+			return (lifeKeeperBoast(p));
 		case DRUDGER_GENERIC:
-			extra.println(drudgerBoast(p));
-			break;
+			return (drudgerBoast(p));
 		case FELL_MONSTER:
-			extra.println(fellBoast(p));
-			break;
+			return (fellBoast(p));
 		case HARPY_GENERIC:
-			extra.println(harpyBoast(p));
-			break;
+			return (harpyBoast(p));
 		}
+		return null;
 	}
 
 	private static String genericBoast(Person p, boolean opposed) {
