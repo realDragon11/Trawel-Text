@@ -496,7 +496,7 @@ public class Inventory implements java.io.Serializable{
 			a.display(2);
 		}
 		hand.display(2);
-		hand.getMartialStance().display(1);
+		//hand.getMartialStance().display(1);
 	
 		if (owner.getSuper() != null) {
 			extra.println("Local Currency: "+ owner.getSuper().getGoldDisp() +". All: " + owner.getSuper().allGoldDisp()+".");

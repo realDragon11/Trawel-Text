@@ -450,7 +450,7 @@ public class WorldGen {
 	}
 	
 	private static void townFinal(World w) {
-		for (Island i: w.getislands()) {
+		for (Island i: w.getIslands()) {
 			for (Town t: i.getTowns()) {
 				t.detectConnectTypes();
 				for (Feature f: t.getFeatures()) {

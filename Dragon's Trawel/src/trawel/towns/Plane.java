@@ -35,7 +35,7 @@ public class Plane extends TContextOwner{
 	public List<Town> getTowns() {
 		List<Town> list = new ArrayList<Town>();
 		for(World w: worlds) {
-			for(Island i: w.getislands()) {
+			for(Island i: w.getIslands()) {
 				list.addAll(i.getTowns());
 			}
 		}

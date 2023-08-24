@@ -35,6 +35,7 @@ public class World extends TContextOwner{
 	private transient Map<String,PrintEvent> printerMap;
 	private List<String> printerLabels;
 	private List<PrintEvent> printers;
+	private boolean visited = false;
 
 	/**
 	 * superpeople that the player will run into again, maybe
@@ -72,7 +73,7 @@ public class World extends TContextOwner{
 		islands.add(t);
 	}
 
-	public ArrayList<Island> getislands() {
+	public List<Island> getIslands() {
 		return islands;
 	}
 	
@@ -321,6 +322,26 @@ public class World extends TContextOwner{
 		}
 		return false;
 	}
+	
+	/**
+	 * will attempt to print the "l" lore option, but will resort to the "n" new option if can't find an l option
+	 * <br>
+	 * ignores display prefs, only use from menus
+	 */
+	public boolean getAndPrintLore(String string) {
+		PrintEvent printer = printerMap.getOrDefault("l"+string, null);
+		if (printer !=null) {
+			printer.print();
+			return true;
+		}else {
+			printer = printerMap.getOrDefault("n"+string, null);
+			if (printer !=null) {
+				printer.print();
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public static String currentMoneyDisplay(int money) {
 		return extra.getThreadData().world.moneyString(money);
@@ -336,6 +357,18 @@ public class World extends TContextOwner{
 	
 	public String moneyString() {
 		return moneyname;//for now always plural
+	}
+
+	public boolean hasVisited() {
+		return visited;
+	}
+
+	public void setVisited() {
+		this.visited = true;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 }

@@ -1,5 +1,6 @@
 package trawel.personal.people;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import derg.menus.MenuBack;
@@ -7,6 +8,7 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import derg.menus.ScrollMenuGenerator;
 import trawel.AIClass;
 import trawel.Effect;
 import trawel.Networking;
@@ -118,6 +120,7 @@ public class Player extends SuperPerson{
 	public static void updateWorld(World world) {
 		if (world != player.getWorld()) {
 			Player.player.world = world;
+			world.setVisited();
 			extra.mainThreadDataUpdate();
 		}
 	}
@@ -620,7 +623,7 @@ public class Player extends SuperPerson{
 
 									@Override
 									public String title() {
-										return "Compass";
+										return "Map";
 									}
 
 									@Override
@@ -628,7 +631,8 @@ public class Player extends SuperPerson{
 										//TODO: add a scroll menu that lets the player find a path to any town they have previously visited
 										//don't track this manually, instead have a list of visited worlds and then scroll through that
 										//then let them pick any town that has it's visit flag set from there
-										WorldGen.pathToUnun();
+										//WorldGen.pathToUnun();
+										mapScrollMenu();
 										return false;
 									}});
 								invList.add(new MenuBack());
@@ -701,7 +705,7 @@ public class Player extends SuperPerson{
 					@Override
 					public boolean go() {
 						extra.println("Really save?");
-						extra.println(extra.PRE_RED+"SAVES ARE NOT COMPATIBLE ACROSS VERSIONS");
+						extra.println(extra.PRE_ORANGE+"SAVES ARE NOT COMPATIBLE ACROSS VERSIONS");
 						if (extra.yesNo()) {
 							extra.println("Save to which slot?");
 							for (int i = 1; i < 9;i++) {
@@ -826,6 +830,112 @@ public class Player extends SuperPerson{
 				list.add(new MenuBack("Exit Menu."));
 				return list;
 			}});
+	}
+	
+	private void mapScrollMenu() {
+		final List<World> vistedWorlds = new ArrayList<World>();
+		WorldGen.plane.worlds().stream().filter(w -> w.hasVisited()).forEach(vistedWorlds::add);
+		extra.menuGo(new ScrollMenuGenerator(vistedWorlds.size(),"prior <> worlds","next <> worlds") {
+			
+			@Override
+			public List<MenuItem> header() {
+				return null;
+			}
+			
+			@Override
+			public List<MenuItem> forSlot(int i) {
+				return Collections.singletonList(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return vistedWorlds.get(i).getName();
+					}
+
+					@Override
+					public boolean go() {
+						final World w = vistedWorlds.get(i);
+						final List<Town> visitedTowns = new ArrayList<Town>();
+						w.getIslands().stream().forEach(is -> is.getTowns().stream().filter(t -> t.visited > 1).forEach(visitedTowns::add));
+						if (w == WorldGen.lynchPin.getIsland().getWorld() && !visitedTowns.contains(WorldGen.lynchPin)) {
+							//always have a path to unun if you've been to that world
+							visitedTowns.add(WorldGen.lynchPin);
+						}
+						extra.menuGo(new ScrollMenuGenerator(visitedTowns.size(),"prior <> towns","next <> towns") {
+
+							@Override
+							public List<MenuItem> forSlot(int i) {
+								return Collections.singletonList(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return visitedTowns.get(i).displayLine(Player.player.lastTown);
+									}
+
+									@Override
+									public boolean go() {
+										final Town t = visitedTowns.get(i);
+										extra.menuGo(new MenuGenerator() {
+
+											@Override
+											public List<MenuItem> gen() {
+												List<MenuItem> list = new ArrayList<MenuItem>();
+												list.add(new MenuLine() {
+
+													@Override
+													public String title() {
+														return t.getName()+":";
+													}});
+												list.add(new MenuSelect() {
+
+													@Override
+													public String title() {
+														return "Compass";
+													}
+
+													@Override
+													public boolean go() {
+														WorldGen.pathToTown(t);
+														return false;
+													}});
+												list.add(new MenuSelect() {
+
+													@Override
+													public String title() {
+														return "Arrival Lore";
+													}
+
+													@Override
+													public boolean go() {
+														w.getAndPrintLore(t.getName());
+														return false;
+													}});
+												list.add(new MenuBack());
+												return list;
+											}});
+										return false;
+									}
+									
+								});
+							}
+
+							@Override
+							public List<MenuItem> header() {
+								return null;
+							}
+
+							@Override
+							public List<MenuItem> footer() {
+								return Collections.singletonList(new MenuBack());
+							}});
+						return false;
+					}});
+			}
+			
+			@Override
+			public List<MenuItem> footer() {
+				return Collections.singletonList(new MenuBack("Cancel"));
+			}
+		});
 	}
 	
 }
