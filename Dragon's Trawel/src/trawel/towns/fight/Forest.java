@@ -28,12 +28,8 @@ import trawel.towns.World;
 import trawel.towns.services.Oracle;
 
 public class Forest extends Feature{
-
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
-	private int tier;
 	private int explores;
 	private int dryadQuest;
 	private int exhaust;

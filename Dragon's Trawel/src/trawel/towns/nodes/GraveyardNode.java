@@ -10,8 +10,6 @@ import derg.menus.MenuSelect;
 import trawel.AIClass;
 import trawel.Networking;
 import trawel.extra;
-import trawel.mainGame;
-import trawel.randomLists;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;

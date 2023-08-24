@@ -14,9 +14,7 @@ import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 
 public class Arena extends Feature{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private int rounds;
 	private double interval, timeLeft;

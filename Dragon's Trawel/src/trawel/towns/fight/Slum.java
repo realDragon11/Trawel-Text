@@ -20,7 +20,6 @@ import trawel.personal.item.Potion;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
-import trawel.personal.people.SuperPerson;
 import trawel.quests.BasicSideQuest;
 import trawel.quests.QBMenuItem;
 import trawel.quests.QRMenuItem;

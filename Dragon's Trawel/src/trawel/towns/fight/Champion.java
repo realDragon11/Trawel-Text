@@ -11,7 +11,6 @@ import trawel.personal.RaceFactory;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
-import trawel.personal.people.SuperPerson;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
@@ -19,9 +18,6 @@ import trawel.towns.Town;
 
 public class Champion  extends Feature{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	Person person;
 	double timeElapsed;

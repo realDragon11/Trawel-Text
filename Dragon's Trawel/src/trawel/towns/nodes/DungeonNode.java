@@ -1,8 +1,6 @@
 package trawel.towns.nodes;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import com.github.yellowstonegames.core.WeightedTable;
@@ -10,10 +8,7 @@ import com.github.yellowstonegames.core.WeightedTable;
 import trawel.AIClass;
 import trawel.Networking;
 import trawel.extra;
-import trawel.mainGame;
-import trawel.randomLists;
 import trawel.battle.Combat;
-import trawel.battle.Combat.SkillCon;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;

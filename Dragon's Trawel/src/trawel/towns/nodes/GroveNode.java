@@ -966,7 +966,7 @@ public class GroveNode implements NodeType{
 	}
 
 	private boolean shaman(NodeConnector holder,int node) {
-		Person p = holder.getStorageFirstPerson(1);
+		Person p = holder.getStorageFirstPerson(node);
 		p.getBag().graphicalDisplay(1,p);
 		int cost = holder.getLevel(node)*4;
 		extra.menuGo(new MenuGenerator() {

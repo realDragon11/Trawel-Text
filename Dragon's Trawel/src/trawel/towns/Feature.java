@@ -32,7 +32,7 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	public abstract void go();
 	public void goHeader() {
 		Networking.setBackground(background_area);
-		this.sendBackVariant();
+		sendBackVariant();
 		atFeatureForHeader = this;
 		Player.player.atFeature = this;
 	}

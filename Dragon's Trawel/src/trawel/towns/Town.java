@@ -82,7 +82,7 @@ public class Town extends TContextOwner{
 	private double defenseTimer = 0;
 	public List<TownTag> tTags = new ArrayList<TownTag>();
 	public int visited = 0;
-	public int background_variant = extra.randRange(1,3);
+	public int background_variant = 1;
 	
 	//private transient List<TimeEvent> events;
 	
@@ -265,9 +265,10 @@ public class Town extends TContextOwner{
 	}
 	
 	public void sendBackVariant() {
+		Networking.setBackground("forest");
 		double[] p = Calender.lerpLocation(Player.player.lastTown);
 		float[] b = Player.player.getWorld().getCalender().getBackTime(p[0],p[1]);
-		Networking.sendStrong("Backvariant|"+"forest"+background_variant+"|"+b[0]+"|"+b[1]+"|");
+		Networking.sendStrong("Backvariant|forest"+background_variant+"|"+b[0]+"|"+b[1]+"|");
 	}
 
 	public void atTown() {

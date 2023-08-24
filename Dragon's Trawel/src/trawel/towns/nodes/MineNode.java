@@ -20,7 +20,6 @@ import trawel.personal.classless.Perk;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
-import trawel.towns.World;
 import trawel.towns.services.Oracle;
 
 public class MineNode implements NodeType{
