@@ -478,6 +478,7 @@ public class Town extends TContextOwner{
 						Town t = c.otherTown(features.get(0).getTown());
 						extra.println("You return to " + t.getName());
 						Player.addTime(c.getTime());
+						mainGame.globalPassTime();
 						if (extra.chanceIn(1,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
 							wanderForConnect(c);
 						}
@@ -546,91 +547,6 @@ public class Town extends TContextOwner{
 		}
 
 	}
-	private void you() {
-		extra.println("1 Skills (Character Menu)");
-		extra.println("2 Inventory + Compass");
-		extra.println("3 Titles and Faction Rep");
-		extra.println("4 Quests");
-		extra.println("5 Raw Stats");
-		extra.println("6 Main Menu");
-		extra.println("7 Save");
-		extra.println("8 Display Options");
-		extra.println("9 Return to " + getName());
-		
-		switch (extra.inInt(9)) {
-		case 5:Player.player.getPerson().displayStats(false);break;
-		case 2:
-			extra.println("1 View in More Depth");
-			extra.println("2 Show/Discard Drawbanes");
-			extra.println("3 Path to Unun");
-			extra.println("4 Back");
-			switch (extra.inInt(4)){
-				case 1:
-					Player.player.getPerson().getBag().deepDisplay();
-				extra.println("You have " + Player.player.emeralds + " emeralds, " + Player.player.rubies +" rubies, and " + Player.player.sapphires +" sapphires.");
-				;break;
-				case 2: Player.player.getPerson().getBag().playerDiscardDrawBane();break;
-				case 3: WorldGen.pathToUnun();
-				if (Player.player.getCheating()) {
-					extra.println("Advance time a lot?");
-					if (extra.yesNo()) {
-						Player.addTime(24*30*365);//30 years
-					}
-				}
-				break;
-			}
-			
-			
-			break;
-		case 3:Player.player.displayTitles();
-		Player.player.getPerson().facRep.display();
-		if (Player.player.getCheating()) {
-			extra.println("Get swole?");
-			if (extra.yesNo()) {
-				Player.player.getPerson().setFlag(PersonFlag.AUTOLEVEL, true);
-				Player.player.getPerson().addXp(99999);
-				Weapon w = Player.bag.getHand();
-				for (int i = 0; i < 50;i++) {
-					w.levelUp();
-				}
-			}else {
-				extra.println("At least work out?");
-				if (extra.yesNo()) {
-					Player.player.getPerson().addXp(9999);
-				}
-			}
-		}
-		break;
-		case 4:
-			Player.player.showQuests();
-			break;
-		case 1: Player.player.getPerson().playerSkillMenu();break;
-		case 6: 
-			extra.println("Really quit? Your progress will not be saved.");
-			if (extra.yesNo()) {
-				Player.player.kill();
-				return;
-			}
-			break;
-		case 9: return;
-		case 7:
-			extra.println("Really save?");
-			extra.println(extra.PRE_RED+"SAVES ARE NOT COMPATIBLE ACROSS VERSIONS");
-			if (extra.yesNo()) {
-				extra.println("Save to which slot?");
-				for (int i = 1; i < 9;i++) {
-					extra.println(i+ " slot:"+WorldGen.checkNameInFile(""+i));
-				}
-				int in = extra.inInt(8);
-				extra.println("Saving...");
-				WorldGen.plane.prepareSave();
-				WorldGen.save(in+"");
-				
-			} break;
-		case 8: mainGame.advancedDisplayOptions();break;
-		}
-		this.you();
-	}
 	
 	public MenuItem getConnectMenu(Connection c) {
 		return new MenuSelect() {
@@ -652,6 +568,7 @@ public class Town extends TContextOwner{
 						wander(3);
 					}
 					Player.addTime(c.getTime());
+					mainGame.globalPassTime();
 					if (mainGame.displayTravelText) {
 						extra.println("You arrive in " + t.getName()+".");
 					}
@@ -664,6 +581,7 @@ public class Town extends TContextOwner{
 						wanderShip(3);
 					}
 					Player.addTime(c.getTime());
+					mainGame.globalPassTime();
 					if (mainGame.displayTravelText) {
 						extra.println("You arrive in " + t.getName()+".");
 					}
@@ -674,6 +592,7 @@ public class Town extends TContextOwner{
 					}
 					Networking.sendStrong("PlayDelay|sound_teleport|1|");
 					Player.addTime(c.getTime());
+					mainGame.globalPassTime();
 					break;
 
 				}
@@ -731,37 +650,6 @@ public class Town extends TContextOwner{
 				list.add(new MenuBack("Back to "+Town.this.getName()));
 				return list;
 			}});
-	}
-
-	private void goTeleporters() {
-		int i = 1;
-		for (Connection c: connects) {
-			if (c.getType() == ConnectType.TELE){
-			extra.print(i + " ");
-			c.display(1,this);
-			i++;}
-		}
-		extra.println(i + " exit");i++;
-		int j = extra.inInt(i-1);
-		i = 1;
-		for (Connection c: connects) {
-			if (c.getType()  == ConnectType.TELE){//teles are free for now
-			if (i == j) {
-			//extra.print(i + " ");
-			Town t = c.otherTown(this);
-			Player.addTime(c.getTime());
-			extra.println("You teleport to " + t.getName());
-			Networking.sendStrong("PlayDelay|sound_teleport|1|");
-			Player.player.setLocation(t);
-			return;}i++;
-			}
-		}
-		if (i == j) {
-			return;//exit to town
-		}
-		extra.println("Please enter one of the above numbers, ie '1'");
-		goTeleporters();
-		
 	}
 
 	public List<Feature> getFeatures() {

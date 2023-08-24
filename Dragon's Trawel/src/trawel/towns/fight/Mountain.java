@@ -182,6 +182,7 @@ public class Mountain extends Feature{
 		case 11: vampireHunter();break;
 		}
 		Player.addTime(.5);
+		mainGame.globalPassTime();
 		Networking.clearSide(1);
 	}
 	

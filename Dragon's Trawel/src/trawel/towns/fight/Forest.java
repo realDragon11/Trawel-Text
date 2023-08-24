@@ -143,6 +143,7 @@ public class Forest extends Feature{
 		case 20: abandonedHut();break;
 		}
 		Player.addTime(.5);
+		mainGame.globalPassTime();
 		Networking.clearSide(1);
 	}
 

@@ -85,6 +85,7 @@ public class Arena extends Feature{
 		}
 		if (input == 1) {
 			Player.addTime(this.getTimeLeft()+.1);
+			mainGame.globalPassTime();
 			this.doTournyPlayer();
 			return;
 		}

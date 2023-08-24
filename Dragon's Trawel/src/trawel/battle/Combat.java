@@ -1306,7 +1306,7 @@ public class Combat {
 		//}
 
 		if (canWait && mainGame.delayWaits) {
-			Networking.waitIfConnected(100L+(long)delay*2);
+			Networking.waitIfConnected((long)delay*2);
 		}
 
 		extra.println("");
@@ -1445,9 +1445,10 @@ public class Combat {
 		}
 		if (canWait && !attacker.isPlayer() && mainGame.combatWaits) {
 			if (defender.isPlayer()) {
-				Networking.waitIfConnected(500L);//was 500L
+				Networking.waitIfConnected(800L);//was 500L
 			}else {
-			Networking.waitIfConnected(300L);}
+				Networking.waitIfConnected(500L);//was 300L
+			}
 		}
 		
 		return atr;

@@ -374,6 +374,7 @@ public class Docks extends Feature {
 						//can either take naive time or use a*
 						
 						Player.addTime(timeList.get(i));
+						mainGame.globalPassTime();
 						Player.player.setLocation(t);
 						town.dockWander(true);
 						return true;

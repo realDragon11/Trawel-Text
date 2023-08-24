@@ -326,6 +326,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 						public boolean go() {
 							extra.println("You wait around and find a mugger.");
 							Player.addTime(2);
+							mainGame.globalPassTime();
 							Combat c = Player.player.fightWith(RaceFactory.getMugger(town.getTier()));
 							if (c.playerWon() > 0) {
 								//crime rating go down
@@ -348,6 +349,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 					public boolean go() {
 						extra.println("You wait around and find someone to rob.");
 						Player.addTime(1);
+						mainGame.globalPassTime();
 						Combat c = Player.player.fightWith(RaceFactory.getPeace(town.getTier()));
 						if (c.playerWon() > 0) {
 							//crime rating go up

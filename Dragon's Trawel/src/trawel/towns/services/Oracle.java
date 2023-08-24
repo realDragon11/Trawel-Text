@@ -226,6 +226,7 @@ public class Oracle extends Feature{ //extends feature later
 		case 3: 
 			extra.println("After enough waiting, the oracles start rambling.");
 			Player.addTime(extra.randFloat()*5);
+			mainGame.globalPassTime();
 			utterance0();
 			break;
 			case 4: return;

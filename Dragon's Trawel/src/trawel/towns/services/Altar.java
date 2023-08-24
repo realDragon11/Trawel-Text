@@ -72,6 +72,7 @@ public class Altar extends Feature{
 					public boolean go() {
 						extra.println("Nothing happens. Nothing ever could happen. You spend an hour staring at your hands, lost in thought.");
 						Player.addTime(1);
+						mainGame.globalPassTime();
 						return false;
 					}
 				});
@@ -157,6 +158,8 @@ public class Altar extends Feature{
 				Player.bag.giveBackDrawBane(inter, "The alter rejects your %.");
 				return;
 			}
+			
+			mainGame.globalPassTime();
 			
 			if (Player.player.forceRewardCount == 0 && Player.player.forceRelation >= 5) {
 				Player.player.forceRewardCount++;
