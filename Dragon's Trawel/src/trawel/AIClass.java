@@ -334,6 +334,7 @@ public class AIClass {
 	 * @param aetherStuff if the items can be atom-smashed into aether
 	 */
 	public static void loot(Inventory loot, Inventory stash, boolean aetherStuff, Person p) {
+		//FIXME: convert to ai-only version since players must use the other one now
 		int i = 0;
 		boolean normalLoot = loot.getRace().racialType == Race.RaceType.PERSONABLE;
 		if (normalLoot && p.isPlayer() && Player.getTutorial()) {

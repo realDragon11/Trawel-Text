@@ -1,6 +1,7 @@
 package trawel.towns;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -21,6 +22,7 @@ import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
 import trawel.battle.Combat;
+import trawel.battle.Combat.SkillCon;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.Person.PersonType;
@@ -1100,6 +1102,10 @@ public class Town extends TContextOwner{
 			dirString = " ("+Connection.dir(from,this)+")";
 		}
 		return visitColor + getName() + " {Level: "+getTier()+"}"+dirString;
+	}
+	public List<SkillCon> getPassiveSkillCons(int forside) {
+		//passive skill cons, overridden
+		return Collections.emptyList();
 	}
 	
 }

@@ -179,24 +179,27 @@ public class Combat {
 	
 	public static class SkillCon {
 		public SkillBase base;
-		public float power;
+		/**
+		 * power should range from 1 to 100, hard caps at 100
+		 */
+		public final float power;
 		public float timer, resetTime;
 		public int sideSource;
 		public SkillCon(SkillBase _base,float _power, int _timer, int _resetTime, int _side) {
 			base = _base;
-			power = _power;
+			power = Math.min(100,_power);
 			timer = _timer;
 			resetTime = _resetTime;
 			sideSource = _side;
 		}
 		
 		public SkillCon(SubSkill skill, float _power, int side) {
-			power = _power;
+			power = Math.min(100,_power);
 			switch (skill) {
 			case DEATH:
 				base = SkillBase.WITHER;
 				timer = 50;
-				resetTime = 50;
+				resetTime = 100;
 				break;
 			case DEFENSE:
 				base = SkillBase.BLOCKADE;
@@ -212,15 +215,22 @@ public class Combat {
 				base = null;
 				break;
 			case SCRYING:
-				base = SkillBase.SCRY;
+				base = SkillBase.SCRY_OR_WATCH;
 				timer = 100;
-				resetTime = 500;
+				resetTime = 250;
 				break;
 			case SMITHING:
 				base = null;
 				break;
-			case WATCH:
-				base = null;
+			case WATCH://cheaper to get, first time happens sooner but doesn't repeat as much
+				base = SkillBase.SCRY_OR_WATCH;
+				timer = 50;
+				resetTime = 1000;
+				break;
+			case FATE:
+				base = SkillBase.FATED;
+				timer = 50;
+				resetTime = 110;
 				break;
 			}
 			sideSource = side;
@@ -233,7 +243,7 @@ public class Combat {
 	}
 	
 	public enum SkillBase{
-		FIREBALLS, WITHER, SCRY, BLOCKADE
+		FIREBALLS, WITHER, SCRY_OR_WATCH, BLOCKADE, FATED
 	}
 	
 	public static List<SkillCon> numberSkillConLists(List<List<SkillCon>> cons){
@@ -246,7 +256,7 @@ public class Combat {
 		return ret;
 	}
 	
-	public void handleSkillCons(List<SkillCon> cons, List<List<Person>> peoples,double timePassed) {
+	public void handleSkillCons(List<SkillCon> cons,double timePassed) {
 		for (SkillCon sk: cons) {
 			int doTimes = 0;
 			if (sk.resetTime <= 0 && sk.timer >= 0) {
@@ -268,15 +278,21 @@ public class Combat {
 					if (!extra.getPrint()) {
 						extra.println("The battlefield starts to wither!");
 					}
-					for (int i = 0; i < peoples.size();i++) {
+					float mult;
+					if (sk.power > 50) {
+						mult = extra.lerp(.7f,.5f,(sk.power-50f)/50f);
+					}else {
+						mult = extra.lerp(1f,.7f,sk.power/50f);
+					}
+					for (int i = 0; i < liveLists.size();i++) {
 						if (i == sk.sideSource) {
 							continue;
 						}
-						for (Person p: peoples.get(i)) {
+						for (Person p: liveLists.get(i)) {
 							if (p.isAttacking()) {
-								p.getNextAttack().multPotencyMult(Math.min(20,sk.power)/100.0);
+								p.getNextAttack().multPotencyMult(mult);
 							}
-							p.takeDamage(1);
+							p.takeDamage(IEffectiveLevel.cleanLHP(p.getLevel(),.01));
 						}
 					}
 					break;
@@ -284,42 +300,71 @@ public class Combat {
 					if (!extra.getPrint()) {
 						extra.println("The very air beings to boil! Armor melts away!");
 					}
-					for (int i = 0; i < peoples.size();i++) {
+					float burnMult;
+					if (sk.power > 50) {
+						burnMult = extra.lerp(.2f,.3f,(sk.power-50f)/50f);
+					}else {
+						burnMult = extra.lerp(0,.2f,sk.power/50f);
+					}
+					for (int i = 0; i < liveLists.size();i++) {
 						if (i == sk.sideSource) {
 							continue;
 						}
-						for (Person p: peoples.get(i)) {
-							p.takeDamage((int) Math.min(20,sk.power));
-							p.getBag().burnArmor(Math.min(20,sk.power*3)/100.0);
+						for (Person p: liveLists.get(i)) {
+							p.takeDamage(IEffectiveLevel.cleanLHP(p.getLevel(),.02));
+							p.getBag().burnArmor(burnMult);
 						}
 					}
 					break;
-				case SCRY:
+				case SCRY_OR_WATCH:
 					if (!extra.getPrint()) {
 						extra.println("A path is seen!");
 					}
-					for (int i = 0; i < peoples.size();i++) {
-						if (i != sk.sideSource) {
-							continue;
-						}
-						for (Person p: peoples.get(i)) {
-							p.advanceTime(sk.power/10.0f);
-						}
+					float timeDiscount;
+					if (sk.power > 50) {
+						timeDiscount = extra.lerp(20f,30f,(sk.power-50f)/50f);
+					}else {
+						timeDiscount = extra.lerp(0f,20f,sk.power/50f);
+					}
+					for (Person p: liveLists.get(sk.sideSource)) {
+						p.applyDiscount(timeDiscount);
 					}
 					break;
 				case BLOCKADE:
 					if (!extra.getPrint()) {
 						extra.println("The barricades are holding!");
 					}
-					for (int i = 0; i < peoples.size();i++) {
+					float holdTime;
+					if (sk.power > 50) {
+						holdTime = extra.lerp(80f,120f,(sk.power-50f)/50f);
+					}else {
+						holdTime = extra.lerp(10f,80f,sk.power/50f);
+					}
+					for (int i = 0; i < liveLists.size();i++) {
 						if (i == sk.sideSource) {
 							continue;
 						}
-						for (Person p: peoples.get(i)) {
-							p.advanceTime(-sk.power);
+						for (Person p: liveLists.get(i)) {
+							p.applyDiscount(-holdTime);
 						}
 					}
-					break; 
+					break;
+				case FATED:
+					List<Person> list = liveLists.get(sk.sideSource);
+					if (!list.isEmpty()) {
+						float fateTime;
+						if (sk.power > 50) {
+							fateTime = extra.lerp(35f,50f,(sk.power-50f)/50f);
+						}else {
+							fateTime = extra.lerp(5f,35f,sk.power/50f);
+						}
+						Person p = extra.randList(list);
+						if (!extra.getPrint()) {
+							extra.println("It looks like fate is on " + p.getNameNoTitle()+"'s side!");
+						}
+						p.advanceTime(fateTime);
+						p.addEffect(Effect.ADVANTAGE_STACK);//stack of advantage
+					}
 				}
 			}
 			
@@ -442,7 +487,7 @@ public class Combat {
 			}
 
 			if (cons != null) {
-				this.handleSkillCons(cons, liveLists, lowestDelay);
+				this.handleSkillCons(cons, lowestDelay);
 			}
 
 			Person defender = quickest.getNextAttack().getDefender();

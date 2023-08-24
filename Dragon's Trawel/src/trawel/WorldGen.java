@@ -15,6 +15,7 @@ import java.util.List;
 import org.nustaq.serialization.FSTConfiguration;
 import org.nustaq.serialization.FSTObjectOutput;
 
+import trawel.battle.Combat.SkillCon;
 import trawel.factions.FBox.FSub;
 import trawel.personal.Person;
 import trawel.personal.item.DummyInventory;
@@ -34,6 +35,7 @@ import trawel.towns.fight.Champion;
 import trawel.towns.fight.Forest;
 import trawel.towns.fight.Mountain;
 import trawel.towns.fight.Slum;
+import trawel.towns.fort.SubSkill;
 import trawel.towns.fort.WizardTower;
 import trawel.towns.misc.Docks;
 import trawel.towns.misc.Garden;
@@ -134,7 +136,14 @@ public class WorldGen {
 		});
 		
 		
-		Town unun = new Town("Unun",2,rona,new Point(5,4));
+		Town unun = new Town("Unun",2,rona,new Point(5,4)){
+			@Override
+			public List<SkillCon> getPassiveSkillCons(int i){
+				List<SkillCon> list = new ArrayList<SkillCon>();
+				list.add(new SkillCon(SubSkill.FATE,20, i));
+				return list;
+			}
+		};
 		lynchPin = unun;
 		addConnection(homa,unun,"road","barrier way");
 		unun.addFeature(new Docks("Trade Port (Shipyard)",unun));

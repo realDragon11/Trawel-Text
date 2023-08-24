@@ -16,6 +16,7 @@ import trawel.WorldGen;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.battle.Combat;
+import trawel.battle.Combat.SkillCon;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.Archetype;
@@ -529,7 +530,9 @@ public class Docks extends Feature {
 
 		leader = null;//to prevent a leader from swapping sides or other oddness where they die
 		
-		Combat c = mainGame.HugeBattle(town.getIsland().getWorld(), listlist);
+		List<List<SkillCon>> skillconlistlist = new ArrayList<List<SkillCon>>();
+		Combat.numberSkillConLists(skillconlistlist);
+		Combat c = mainGame.HugeBattle(town.getIsland().getWorld(),town.getPassiveSkillCons(0),listlist,true);
 		boolean townWon = c.getVictorySide() == 0;
 
 		if (townWon) {

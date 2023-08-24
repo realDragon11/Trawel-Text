@@ -7,7 +7,9 @@ public enum SubSkill{
 	ELEMENTAL("Elementalism","Impair and expose attackers with elemental spells.",Active.BATTLE,Type.WIZARD,1.1f),
 	SMITHING("Smithing","Increase weapon and armor production speed.",Active.DOWNTIME,Type.BLACKSMITH,1.1f),
 	WATCH("Watching","CAN'T LEVEL NORMALLY",Active.DOWNTIME,Type.WATCH,1.0f),
-	DEFENSE("Defensive Rating","CAN'T LEVEL NORMALLY",Active.BATTLE,Type.WATCH,1.0f),;
+	DEFENSE("Defensive Rating","CAN'T LEVEL NORMALLY",Active.BATTLE,Type.WATCH,1.0f),
+	FATE("Tower of Fate Bonus","CAN'T LEVEL NORMALLY",Active.BATTLE,Type.WATCH,1.0f),
+	;
 	
 	public String name, desc;
 	public Active act;
