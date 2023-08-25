@@ -6,13 +6,16 @@ import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
+import derg.menus.ScrollMenuGenerator;
 import trawel.mainGame.DispAttack;
 import trawel.battle.Combat;
 import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.Stance;
+import trawel.battle.attacks.WeaponAttackFactory;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
+import trawel.personal.classless.Skill;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;
 import trawel.personal.item.body.Race;
@@ -1040,6 +1043,9 @@ public class AIClass {
 						}
 						break;
 					}
+					if (Player.player.hasTactics()) {
+						extra.println(j++ + " tactics");
+					}
 					extra.println("9 full examine");
 					numb = extra.inInt(attacks.size(),true);
 				}else {
@@ -1061,8 +1067,53 @@ public class AIClass {
 					if (numb != 9) {
 						numb = -numb;//store attack choice
 					}
+				}else {
+					if (numb > attacks.size()) {//if past the list, which is already one behind, go to tactics screen
+						List<Skill> tactics = Player.player.listOfTactics();
+						ImpairedAttack[] tacticPick = new ImpairedAttack[1];
+						extra.menuGo(new ScrollMenuGenerator(tactics.size(),"last <> tactics","next <> tactics") {
+
+							@Override
+							public List<MenuItem> forSlot(int i) {
+								List<MenuItem> list = new ArrayList<MenuItem>();
+								final Skill skill = tactics.get(i);
+								final Attack a = WeaponAttackFactory.getTactic(skill);
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										//TODO: perhaps standardize display
+										return a.getName() +", delay of "+a.getSpeed()+": " +a.getDesc();
+									}
+
+									@Override
+									public boolean go() {
+										tacticPick[0] = a.impairTactic(attacker, defender);
+										return true;
+									}});
+								return list;
+							}
+
+							@Override
+							public List<MenuItem> header() {
+								return null;
+							}
+
+							@Override
+							public List<MenuItem> footer() {
+								List<MenuItem> list = new ArrayList<MenuItem>();
+								list.add(new MenuBack("back"));
+								return list;
+							}});
+						if (tacticPick[0] == null) {
+							numb = 9;//redisplay
+						}else {
+							return tacticPick[0];
+						}
+					}
 				}
 			}
+			
 			return attacks.get(numb-1);
 		}
 		return AIClass.attackTest(attacks, 4, combat, attacker, defender);

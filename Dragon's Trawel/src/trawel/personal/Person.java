@@ -338,7 +338,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	//instance methods
 	
 	/**
-	 * do not use, use updateSkills instead
+	 * do not use directly, use updateSkills instead
 	 */
 	private Stream<Skill> collectSkills(){
 
@@ -358,7 +358,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			atrBox.process(f);
 			s = Stream.concat(s,f.collectSkills());
 		}
-		
 		return s;
 	}
 	
@@ -373,6 +372,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		atrBox = new AttributeBox(this);
 		skillSet = EnumSet.noneOf(Skill.class);
 		collectSkills().forEach(skillSet::add);
+		if (isPlayer()) {
+			Player.player.skillUpdate();
+		}
 		return skillSet;
 	}
 	

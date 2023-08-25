@@ -21,6 +21,7 @@ import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
+import trawel.personal.classless.Skill.Type;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;
 import trawel.personal.item.Item.ItemType;
@@ -93,6 +94,8 @@ public class Player extends SuperPerson{
 	public Feature atFeature;
 	public boolean forceGoProtection;
 	
+	private transient List<Skill> tacticSkills;
+	
 	public Player(Person p) {
 		person = p;
 		flask = null;
@@ -123,6 +126,21 @@ public class Player extends SuperPerson{
 			extra.mainThreadDataUpdate();
 		}
 	}
+	/**
+	 * must call on player load and skill updates
+	 */
+	public void skillUpdate() {
+		if (tacticSkills == null ) {tacticSkills = new ArrayList<Skill>();}
+		getPerson().fetchSkills().stream().filter(s -> s.getType() == Type.TACTIC_TYPE).forEach(tacticSkills::add);
+	}
+	
+	public List<Skill> listOfTactics() {
+		return tacticSkills;
+	}
+	public boolean hasTactics() {
+		return tacticSkills.size() > 0;
+	}
+	
 	@Override
 	public Person getPerson() {
 		return person;

@@ -619,6 +619,7 @@ public class WorldGen {
 			 Player.player = plane.getPlayer();
 			 //World worlda = world;
 			 Player.bag = Player.player.getPerson().getBag();
+			 Player.player.skillUpdate();
 			 Player.passTime = 0;
 			 mainGame.story = Player.player.storyHold;
 			 extra.getThreadData().world = Player.player.getWorld();
