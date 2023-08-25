@@ -1055,9 +1055,12 @@ public class AIClass {
 				if (numb == 9) {
 					extra.print("You have ");
 					attacker.displayHp();
+					attacker.displayEffects();
+					
 					defender.displayStats();
 					
 					defender.displaySkills();
+					defender.displayEffects();
 					defender.debug_print_status(0);
 					
 					defender.displayArmor();

@@ -117,19 +117,16 @@ public class Combat {
 			double delay = attacker.getTime();
 			defender.advanceTime(delay);
 			attacker.advanceTime(delay);
-			if (!attacker.isOnCooldown()) {
-				handleTurn(attacker, defender, playerIsInBattle, delay);
-				if (playerIsInBattle) {
-					manTwo.getBag().graphicalDisplay(1,manTwo);
-					Player.player.getPerson().getBag().graphicalDisplay(-1,Player.player.getPerson());
-				}
+			
+			handleTurn(attacker, defender, playerIsInBattle, delay);
+			if (playerIsInBattle) {
+				manTwo.getBag().graphicalDisplay(1,manTwo);
+				Player.player.getPerson().getBag().graphicalDisplay(-1,Player.player.getPerson());
 			}
 
 			if (manOne.isAlive() && manTwo.isAlive()) {
 				if (!attacker.isAttacking()){
 					setAttack(attacker,defender);
-				}else {
-					attacker.finishTurn();
 				}
 
 			}
