@@ -94,8 +94,6 @@ public class Player extends SuperPerson{
 	public Feature atFeature;
 	public boolean forceGoProtection;
 	
-	private transient List<Skill> tacticSkills;
-	
 	public Player(Person p) {
 		person = p;
 		flask = null;
@@ -130,15 +128,16 @@ public class Player extends SuperPerson{
 	 * must call on player load and skill updates
 	 */
 	public void skillUpdate() {
-		if (tacticSkills == null ) {tacticSkills = new ArrayList<Skill>();}
-		getPerson().fetchSkills().stream().filter(s -> s.getType() == Type.TACTIC_TYPE).forEach(tacticSkills::add);
+		
 	}
 	
+	/**
+	 * generated on the fly, only use for player input/display related tasks
+	 */
 	public List<Skill> listOfTactics() {
+		List<Skill> tacticSkills = new ArrayList<Skill>();
+		getPerson().fetchSkills().stream().filter(s -> s.getType() == Type.TACTIC_TYPE).forEach(tacticSkills::add);
 		return tacticSkills;
-	}
-	public boolean hasTactics() {
-		return tacticSkills.size() > 0;
 	}
 	
 	@Override

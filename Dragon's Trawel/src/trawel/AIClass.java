@@ -1001,6 +1001,7 @@ public class AIClass {
 	
 	public static ImpairedAttack chooseAttack(List<ImpairedAttack> attacks,Combat combat, Person attacker, Person defender) {
 		if (attacker.isPlayer()) {
+			List<Skill> tactics = Player.player.listOfTactics();
 			int numb = 9;
 			while (numb == 9 || numb < 1) {
 				if (numb == 9) {
@@ -1043,7 +1044,7 @@ public class AIClass {
 						}
 						break;
 					}
-					if (Player.player.hasTactics()) {
+					if (tactics.size() > 0) {
 						extra.println(j++ + " tactics");
 					}
 					extra.println("9 full examine");
@@ -1069,7 +1070,7 @@ public class AIClass {
 					}
 				}else {
 					if (numb > attacks.size()) {//if past the list, which is already one behind, go to tactics screen
-						List<Skill> tactics = Player.player.listOfTactics();
+						assert tactics.size() > 0;
 						ImpairedAttack[] tacticPick = new ImpairedAttack[1];
 						extra.menuGo(new ScrollMenuGenerator(tactics.size(),"last <> tactics","next <> tactics") {
 

@@ -759,6 +759,25 @@ public class WeaponAttackFactory {
 				.finish().setSkill_for(Skill.TACTIC_TEST)
 				);
 		
+		tacticMap.put(Skill.TACTIC_DUCK_ROLL,
+				make("duck 'n roll")
+				.setFluff("X` does a tactical roll towards Y`!")
+				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOW)
+				.finish().setSkill_for(Skill.TACTIC_DUCK_ROLL)
+				);
+		
+		sta = new Stance(Archetype.ACRO_DAREDEVIL,Skill.OPPORTUNIST);
+		sta.addTactic(
+				make("rough tumble")//Minstrel DQ9
+				.setFluff("X` tumbles towards Y`, attempting to bodycheck them!")
+				.setRarity(1f)
+				.setAcc(1f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.8f)
+				.setMix(0, 1, 0)
+				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOW)
+				,Skill.TACTIC_DUCK_ROLL);
+		addStance(Archetype.ACRO_DAREDEVIL,sta);
+		
 		assert skillStances.size() > 0;
 	}
 
@@ -1003,7 +1022,8 @@ public class WeaponAttackFactory {
 		SLOWEST(160),SLOWER(140),SLOW(120),NORMAL(100),FAST(80),FASTER(65), FASTEST(55)
 		,
 		//used for 
-		HALF_FASTEST(TimeTier.FASTEST.time),HALF_FAST(TimeTier.FAST.time)
+		HALF_FASTEST(TimeTier.FASTEST.time),HALF_FAST(TimeTier.FAST.time),
+		INSTANT(0)
 		;
 		public final float time;
 		TimeTier(float t){

@@ -82,6 +82,9 @@ public class Stance{
 	public void addAttack(AttackMaker newAttack) {
 		addAttack(newAttack.finish(),newAttack.getRarity());
 	}
+	public void addTactic(AttackMaker newAttack, Skill tactic) {
+		addAttack(newAttack.finish().setSkill_for(tactic),newAttack.getRarity());
+	}
 	/**
 	 * Returns the number of attacks in the stance.
 	 * @return number of attacks in the stance (int)

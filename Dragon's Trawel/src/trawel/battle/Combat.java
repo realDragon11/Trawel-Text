@@ -378,6 +378,7 @@ public class Combat {
 	private class BattleData{
 		public int side;
 		public Person lastAttacker = null;
+		public Person nextTarget = null;
 	}
 	/*
 	public Combat(World w,boolean typeErasure, List<List<SkillCon>> cons_lists,List<List<Person>> people) {
@@ -606,7 +607,13 @@ public class Combat {
 	}
 	
 	private Person getDefenderFor(Person attacker) {
-		return extra.randList(targetLists.get(dataMap.get(attacker).side));
+		BattleData data = dataMap.get(attacker);
+		if (data.nextTarget != null) {
+			Person t = data.nextTarget;
+			data.nextTarget = null;
+			return t;
+		}
+		return extra.randList(targetLists.get(data.side));
 	}
 	
 	private Person getDefenderForConfusion(Person attacker) {
@@ -734,12 +741,15 @@ public class Combat {
 				wasDead = true;//note, can move out if need be
 			}
 		}
-		//TODO unsure if should add attacker's aim at impairment phase
 		double dodgeBase = def.getDodge()*defender.getWoundDodgeCalc();
 		double hitBase = att.getHitMult();
 		
 		double dodgeRoll = dodgeBase*extra.getRand().nextDouble();
 		double hitRoll = hitBase*extra.getRand().nextDouble();
+		
+		if (defender.hasEffect(Effect.DUCKING) || defender.hasEffect(Effect.ROLLING)) {
+			dodgeRoll+=0.2;
+		}
 		if (isReal) {
 			if (attacker.hasEffect(Effect.ADVANTAGE_STACK)) {
 				hitRoll*=1.2f;
@@ -1036,7 +1046,27 @@ public class Combat {
 					extra.println(indent +attacker.getName() + " recovers "+ recover_amount +" HP.");
 				}
 			}
+			if (attacker.hasEffect(Effect.EXHAUSTED)) {
+				attacker.removeEffect(Effect.EXHAUSTED);
+			}
+			if (attacker.hasEffect(Effect.ROLLING)) {
+				attacker.removeEffectAll(Effect.ROLLING);
+				attacker.addEffect(Effect.EXHAUSTED);
+				if (!extra.getPrint()) {
+					extra.println(indent+attacker.getName()+" finishes their roll.");
+				}
+			}
+			if (attacker.hasEffect(Effect.DUCKING)) {
+				attacker.removeEffectAll(Effect.DUCKING);
+				attacker.addEffect(Effect.ROLLING);
+				attacker.addEffect(Effect.BRISK);
+				if (!extra.getPrint()) {
+					extra.println(indent+attacker.getName()+" starts to roll.");
+				}
+			}
+			
 			attacker.finishTurn();
+			
 			if (attacker.hasEffect(Effect.BREATHING)) {//only uses one at a time
 				attacker.removeEffect(Effect.BREATHING);
 				attacker.addEffect(Effect.RECOVERING);
@@ -1295,7 +1325,6 @@ public class Combat {
 			}
 			break;
 		}
-		//}
 
 		if (canWait && mainGame.delayWaits) {
 			Networking.waitIfConnected((long)delay*10);
@@ -1338,12 +1367,6 @@ public class Combat {
 					}
 				}
 			}
-		}*/
-		
-		
-		/*
-		if (attacker.hasSkill(Skill.HPSENSE) || defender.hasSkill(Skill.HPSENSE)) {
-			extra.println(defender.getHp()+"/" + defender.getMaxHp() );
 		}*/
 		if (defender.hasSkill(Skill.RACIAL_SHIFTS)) {
 			RaceID rid = defender.getBag().getRaceID();
@@ -1425,6 +1448,23 @@ public class Combat {
 				extra.println(indent+"The bees sting "+attacker.getName()+" for "+bee_damage+"!");
 			}
 			attacker.takeDamage(bee_damage);
+		}
+		
+		
+		//skill processing for finished tactic
+		/*if (attack.getAttack().getSkill_for() != null) {
+			switch (attack.getAttack().getSkill_for()) {
+				default://most won't have cases
+				case TACTIC_SINGLE_OUT:
+					break;
+				case TACTIC_DUCK_ROLL:
+					attacker.addEffect(Effect.ROLLING);
+					break;
+			}
+		}*/
+		
+		if (defender.hasEffect(Effect.SINGLED_OUT) && defender.isAlive() && dataMap.get(attacker).side != dataMap.get(defender).side && extra.chanceIn(2,3)) {
+			dataMap.get(attacker).nextTarget = defender;
 		}
 		
 		attacker.getBag().turnTick();//for now, just armor buff decay
@@ -1719,11 +1759,26 @@ public class Combat {
 		if (atts == null) {
 			atts = (attacker.getStance().randAtts(totalAttCount,attacker.getBag().getHand(),attacker,defender));
 		}
-			
+		//faster to not check and just put most likely
+		attacker.removeEffectAll(Effect.BRISK);
 		
 		newAttack = AIClass.chooseAttack(atts,this,attacker,defender);
 		attacker.setAttack(newAttack);
 		newAttack.setDefender(defender);
+		//note that attacks can be retargeted, so the following code might not run with the final defender
+		if (newAttack.getAttack().getSkill_for() != null) {
+			switch (newAttack.getAttack().getSkill_for()) {
+				default://most won't have cases
+					break;
+				case TACTIC_DUCK_ROLL:
+					break;
+				case TACTIC_SINGLE_OUT:
+					//always applies to the first target even if redirected, which will reduce player frustration
+					//and also is just easier to code
+					defender.addEffect(Effect.SINGLED_OUT);
+					break;
+			}
+		}
 	}
 	
 	/**

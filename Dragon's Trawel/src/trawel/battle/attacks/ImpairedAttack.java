@@ -188,6 +188,13 @@ public class ImpairedAttack implements IAttack{
 			if (attacker.hasEffect(Effect.TELESCOPIC)) {
 				hitMult +=((warmup+cooldown)/100);
 			}
+			if (attacker.hasEffect(Effect.BRISK)) {
+				if (warmup+cooldown < 100) {
+					hitMult*=extra.lerp(2,1,(warmup+cooldown)/100);
+				}
+				warmup/=2;
+				cooldown/=2;
+			}
 		}
 		hitroll = extra.lerp(hitMult*.8f,hitMult*1.2f, extra.hrandomFloat());
 		if (_weapon != null) {

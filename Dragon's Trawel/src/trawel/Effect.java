@@ -33,7 +33,12 @@ public enum Effect{
 	MAIMED("Maimed","Loses one weapon attack choice per attack. Doesn't stack with Disarmed.",false,false),
 	CRIPPLED("Crippled","Dodge reduced to 80%. Stacks.",false,true),
 	HIT_VITALS("Damaged Vitals","Takes double condition damage. When attacking a part with no condition, roll another wound.",false,false),
-	BRAINED("Split Skull","Does not recover from further KO wounds.",false,false)
+	BRAINED("Split Skull","Does not recover from further KO wounds.",false,false),
+	SINGLED_OUT("Singled Out","Those who attack this Person have a 2/3rds chance to attack them again afterwards.",false,false),
+	DUCKING("Ducking","Gains +0.2 flat dodge roll (not mult), but will be exhausted after the next attack after this attack completes.",false,false),
+	ROLLING("Rolling","Gains +0.2 flat dodge roll (not mult), but will be exhausted after their attack completes.",false,false),
+	EXHAUSTED("Exhausted","Halves dodge mult until they next complete an attack cooldown.",false,false),
+	BRISK("Brisk","Halves attack time, and increases hit mult based on amount of time before reduction, with attacks under 100 total instants getting a 1x-2x multiplier the closer they are to 0 instants. Only applies to one set of attacks.",false,false)
 	;
 	
 	private String name,desc;

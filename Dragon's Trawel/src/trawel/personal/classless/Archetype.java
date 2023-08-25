@@ -71,7 +71,7 @@ public enum Archetype implements IHasSkills{
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DEXTERITY)
 			,EnumSet.of(FeatType.BATTLE,FeatType.AGILITY,FeatType.SPIRIT)//not tricks
-			,EnumSet.of(Skill.BLITZ,Skill.DODGEREF)
+			,EnumSet.of(Skill.BLITZ,Skill.DODGEREF,Skill.OPPORTUNIST,Skill.TACTIC_DUCK_ROLL)
 			)
 	,PROMOTED("Promoted","They made it big."
 			,AType.RACIAL

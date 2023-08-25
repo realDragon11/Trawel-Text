@@ -1762,7 +1762,11 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public double getWoundDodgeCalc() {
 		int torn = effects.getOrDefault(Effect.TORN,0);//torn builds up quickly
 		int crippled = effects.getOrDefault(Effect.CRIPPLED,0);//crippled is only a condwound
-		return 
+		double mult = 1;
+		if (hasEffect(Effect.EXHAUSTED)) {
+			mult *=.5;
+		}
+		return mult*
 				(crippled == 0 ? 1 : Math.pow(.8,crippled))
 				*(torn == 0 ? 1 : Math.pow(.9,torn));
 	}

@@ -548,10 +548,11 @@ public class Attack implements IAttack{
 	}
 
 	public Skill getSkill_for() {
-		if (holdingStance != null) {
-			return holdingStance.getSkill();
+		//secondary tactics in stances overwrite their skill_fors
+		if (skill_for != null) {
+			return skill_for;
 		}
-		return skill_for;
+		return holdingStance.getSkill();
 	}
 	//fluent
 	public Attack setSkill_for(Skill skill_for) {
