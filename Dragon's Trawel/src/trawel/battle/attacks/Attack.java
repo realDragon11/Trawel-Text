@@ -7,6 +7,7 @@ import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 import trawel.battle.attacks.WeaponAttackFactory.DamageTier;
 import trawel.personal.Person;
 import trawel.personal.classless.IHasSkills;
+import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.Weapon;
 
 /**
@@ -30,6 +31,10 @@ public class Attack implements IAttack{
 	private int soundStrength;
 	private String soundType;//shouldn't be a string
 	private AttackType type;
+	/**
+	 * most of the time, stored in stance instead, but tactics are different
+	 */
+	private Skill skill_for;
 	/**
 	 * if true, elemental damage occurs as if SBP damage wasn't there
 	 * <br>
@@ -372,7 +377,7 @@ public class Attack implements IAttack{
 		
 	}
 	
-	public ImpairedAttack impair( Person attacker, Weapon weap, Person defender) {
+	public ImpairedAttack impair(Person attacker, Weapon weap, Person defender) {
 		TargetReturn rtar;
 		if (defender == null) {
 			rtar = TargetFactory.TypeBody.HUMAN_LIKE.randTarget(null);//empty config
@@ -383,6 +388,10 @@ public class Attack implements IAttack{
 		Style s = StyleFactory.randStyle();
 		
 		return new ImpairedAttack(this,rtar,s,weap,attacker,defender);
+	}
+	
+	public ImpairedAttack impairTactic(Person attacker, Person defender) {
+		return new ImpairedAttack(this,attacker,defender);
 	}
 
 	public int getSoundIntensity() {
@@ -526,6 +535,7 @@ public class Attack implements IAttack{
 		Attack a = new Attack(name, desc, fluffer, hitMult, type, intValues, warmup,cooldown,bypass);
 		a.soundStrength = soundStrength;
 		a.soundType = soundType;
+		a.skill_for = skill_for;
 		return a;
 	}
 
@@ -535,6 +545,18 @@ public class Attack implements IAttack{
 
 	public IHasSkills getSkillSource() {
 		return holdingStance.getSkillSource();
+	}
+
+	public Skill getSkill_for() {
+		if (holdingStance != null) {
+			return holdingStance.getSkill();
+		}
+		return skill_for;
+	}
+	//fluent
+	public Attack setSkill_for(Skill skill_for) {
+		this.skill_for = skill_for;
+		return this;
 	}
 	
 	

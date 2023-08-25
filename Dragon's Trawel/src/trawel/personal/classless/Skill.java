@@ -193,7 +193,13 @@ public enum Skill{
 				, Type.OTHER),
 		NO_HOSTILE_CURSE("Indomitable Spirit","Immune to the CURSE status by hostile Persons."
 				,"Does not apply to self-inflicted curses or outside of battle."
-				,Type.SOCIAL)
+				,Type.SOCIAL),
+		TACTIC_TEST("examine test","test"
+				,"test"
+				,Type.TACTIC_TYPE),
+		TACTIC_SINGLE_OUT("Single Out","Grants use of a tactic that makes the hit target more likely to be chosen again by any Person that attacks it."
+				,"This does not make it more likely that it is chosen in the first place."
+				,Type.TACTIC_TYPE)
 		
 		
 		;
@@ -214,6 +220,11 @@ public enum Skill{
 	    	SPEED,//skills that tend to make you faster
 	    	DEFENSE,//skills that provide defensive benefits
 	    	ATTACK_TYPE,//skills that grant a new attack type, generally there should only be 5 of these total
+	    	//grants a person a 'generic tactic' attack that they can get, with no secondary effects
+	    	//these tend to be granted from a source that also grants one ATTACK_TYPE skill, for generating random tactics
+	    	//these just represent the 'safe reliable' tactic variant
+	    	//only the player uses the 'reliable' variants, the ai might choose to do the unreliable secondary effect one, though 
+	    	TACTIC_TYPE,
 	    	//ATTACK_ALIAS,
 	    	//need to make a type that just aliases for another ATTACK_TYPE so you can have more than one
 	    	FEATURE,//skills that are 'part' of a person or thing. Should be only granted by perks

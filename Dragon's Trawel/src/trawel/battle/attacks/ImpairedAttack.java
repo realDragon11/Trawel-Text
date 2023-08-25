@@ -193,8 +193,27 @@ public class ImpairedAttack implements IAttack{
 		if (_weapon != null) {
 			hitroll +=_weapon.hasQual(Weapon.WeaponQual.ACCURATE) ? .1 : 0;
 		}
+	}
+	/**
+	 * variant used for generic tactics with no secondary effects or deviation
+	 */
+	public ImpairedAttack(Attack _attack, Person _attacker, Person _defender) {
+		attack = _attack;
 		
+		target = null;
+		style = null;
+		weapon = null;
+		attacker = _attacker;
+		defender = _defender;
 		
+		//none
+		vals = new int[attack.valueSize()];
+		hitroll = 10;
+		potencyMult = 0;
+		wound = null;
+		level = _attacker.getLevel();
+		cooldown = attack.getCooldown();
+		warmup = attack.getWarmup();
 	}
 	
 	public enum DamageType{

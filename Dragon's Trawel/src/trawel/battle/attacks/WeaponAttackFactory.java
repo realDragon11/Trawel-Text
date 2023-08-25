@@ -36,6 +36,8 @@ public class WeaponAttackFactory {
 	 */
 	private static final Map<Skill,List<IHasSkills>> skillStances = new HashMap<Skill,List<IHasSkills>>();
 	
+	private static final Map<Skill,Attack> tacticMap = new HashMap<Skill,Attack>();
+	
 	private static WeightedTable weapTypeTable;
 	
 	public static WeaponType randWeapType() {
@@ -750,6 +752,13 @@ public class WeaponAttackFactory {
 				);
 		addStance(Feat.SHOCK_SAVANT,sta);
 		
+		tacticMap.put(Skill.TACTIC_TEST,
+				make("test tactic")
+				.setFluff("X` examines Y`!")
+				.setWarmupOfTotal(TimeTier.HALF_FAST, TimeTier.FAST)
+				.finish().setSkill_for(Skill.TACTIC_TEST)
+				);
+		
 		assert skillStances.size() > 0;
 	}
 
@@ -1237,6 +1246,14 @@ public class WeaponAttackFactory {
 	}
 	public static ImpairedAttack rollAttack(IHasSkills source, Person attacker, Person defender) {
 		return getStance(source).randAtts(1, null, attacker, defender).get(0);
+	}
+	
+	public static Attack getTactic(Skill skill) {
+		return tacticMap.get(skill);
+	}
+	
+	public static ImpairedAttack getFinalTactic(Skill skill, Person attacker, Person defender) {
+		return tacticMap.get(skill).impairTactic(attacker, defender);
 	}
 	
 	/*
