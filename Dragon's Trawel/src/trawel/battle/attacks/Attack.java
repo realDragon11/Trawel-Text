@@ -486,6 +486,7 @@ public class Attack implements IAttack{
 		tempStr = tempStr.replace("X`","[HA]"+attret.attack.getAttacker().getName()+"[C]");
 		tempStr = tempStr.replace("Y`","[HD]"+attret.attack.getDefender().getName() + "'s[C] " +
 		(attret.attack.getTarget() != null ? attret.attack.getTarget().getName() : ""));
+		tempStr = tempStr.replace("V`","[HD]"+attret.attack.getDefender().getName() + "[C]");
 		tempStr = tempStr.replace("Z`",(attret.attack.getWeapon() != null ? attret.attack.getWeapon().getBaseName() : "fists" )+"[C]");//technically if you were to look upwards you could find the weapon, but I'm gonna put it in this way
 		return tempStr;
 	}

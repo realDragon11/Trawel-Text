@@ -80,6 +80,15 @@ public class Combat {
 		manOne.battleSetup();
 		//extra.println("");
 		manTwo.battleSetup();
+		
+		BattleData data = new BattleData();
+		
+		dataMap = new HashMap<Person,BattleData>();
+		data.side = 0;
+		dataMap.put(manOne,data);
+		data = new BattleData();
+		data.side = 1;
+		dataMap.put(manTwo,data);
 
 		attacker = manOne;
 		defender = manTwo;
@@ -721,9 +730,20 @@ public class Combat {
 	public AttackReturn handleAttack(boolean isReal, ImpairedAttack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
 		String str = "";
 		AttackReturn ret;
+		
 		boolean wasDead = false;
 		int wLevel = att.getLevel();
 		boolean canDisp = isReal && !extra.getPrint();
+		
+		if (att.isTacticOnly()) {
+			ret= new AttackReturn(ATK_ResultCode.NOT_ATTACK,"",att);
+			if (canDisp) {
+				ret.stringer = att.fluff(ret);
+				ret.putPlayerFeedback(ret);
+			}
+			return ret;
+		}
+		
 		if (defender == null) {
 			defender = DummyPerson.single;
 		}
@@ -738,48 +758,46 @@ public class Combat {
 				wasDead = true;//note, can move out if need be
 			}
 		}
-		if (!att.isTacticOnly()) {
-			double dodgeBase = def.getDodge()*defender.getWoundDodgeCalc();
-			double hitBase = att.getHitMult();
-			
-			double dodgeRoll = dodgeBase*extra.getRand().nextDouble();
-			double hitRoll = hitBase*extra.getRand().nextDouble();
-			
-			if (defender.hasEffect(Effect.DUCKING) || defender.hasEffect(Effect.ROLLING)) {
-				dodgeRoll+=0.2;
+		double dodgeBase = def.getDodge()*defender.getWoundDodgeCalc();
+		double hitBase = att.getHitMult();
+		
+		double dodgeRoll = dodgeBase*extra.getRand().nextDouble();
+		double hitRoll = hitBase*extra.getRand().nextDouble();
+		
+		if (defender.hasEffect(Effect.DUCKING) || defender.hasEffect(Effect.ROLLING)) {
+			dodgeRoll+=0.2;
+		}
+		if (isReal) {
+			if (attacker.hasEffect(Effect.ADVANTAGE_STACK)) {
+				hitRoll*=1.2f;
+				attacker.removeEffect(Effect.ADVANTAGE_STACK);
 			}
-			if (isReal) {
-				if (attacker.hasEffect(Effect.ADVANTAGE_STACK)) {
-					hitRoll*=1.2f;
-					attacker.removeEffect(Effect.ADVANTAGE_STACK);
-				}
-				if (defender.hasEffect(Effect.ADVANTAGE_STACK)) {
-					dodgeRoll*=1.2f;
-					defender.removeEffect(Effect.ADVANTAGE_STACK);
+			if (defender.hasEffect(Effect.ADVANTAGE_STACK)) {
+				dodgeRoll*=1.2f;
+				defender.removeEffect(Effect.ADVANTAGE_STACK);
+			}
+		}
+		if (hitRoll < .05) {//missing now exists
+			ret= new AttackReturn(ATK_ResultCode.MISS,"",att);
+			if (canDisp) {
+				ret.stringer = att.fluff(ret);
+				ret.putPlayerFeedback(ret);
+				if (wasDead) {
+					ret.addNote("They missed a corpse!");
 				}
 			}
-			if (hitRoll < .05) {//missing now exists
-				ret= new AttackReturn(ATK_ResultCode.MISS,"",att);
-				if (canDisp) {
-					ret.stringer = att.fluff(ret);
-					ret.putPlayerFeedback(ret);
-					if (wasDead) {
-						ret.addNote("They missed a corpse!");
-					}
+			return ret;
+		}
+		if (dodgeRoll > hitRoll){
+			ret= new AttackReturn(ATK_ResultCode.DODGE,"",att);
+			if (canDisp) {
+				ret.stringer = att.fluff(ret);
+				ret.putPlayerFeedback(ret);
+				if (wasDead) {
+					ret.addNote("What a dodgy corpse!");
 				}
-				return ret;
 			}
-			if (dodgeRoll > hitRoll){
-				ret= new AttackReturn(ATK_ResultCode.DODGE,"",att);
-				if (canDisp) {
-					ret.stringer = att.fluff(ret);
-					ret.putPlayerFeedback(ret);
-					if (wasDead) {
-						ret.addNote("What a dodgy corpse!");
-					}
-				}
-				return ret;
-			}
+			return ret;
 		}
 		
 		ret = new AttackReturn(att,def,str);
@@ -1007,6 +1025,7 @@ public class Combat {
 					break;
 				case NOT_ATTACK:
 					//Player.lastAttackStringer = "";
+					Player.lastAttackStringer += "other";
 					break;
 				}
 			}
@@ -1283,6 +1302,11 @@ public class Combat {
 		//if (atr.type == ATK_ResultType.NO_IMPACT) {
 		//impact is now more directly if wounds/special effects happen
 		switch (atr.code) {
+		case NOT_ATTACK:
+			if (!extra.getPrint() && !didDisplay) {
+				extra.print(prettyHPColors(atr.stringer +woundstr,extra.TIMID_MAGENTA, attacker, defender));
+			}
+			break;
 		case DODGE: case MISS:
 			if (!extra.getPrint() && !didDisplay) {
 				extra.print(prettyHPColors(atr.stringer +woundstr,extra.ATTACK_MISS, attacker, defender));

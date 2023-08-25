@@ -6,7 +6,7 @@ public enum Effect{
 	BURNOUT("Burnout","Decreased skill.",false,true),
 	
 	BLEED("Bleeding","Take up to 2% LHP damage after each of their attacks. Doesn't stack.",false,false),
-	MAJOR_BLEED("Major Bleeding","Take up to 2% x2 LHP damage after each of their attacks. Doesn't stack.",false,false),
+	MAJOR_BLEED("Major Bleeding","Take up to 2% LHP damage after each of their attacks. Doesn't stack. Distinct from normal bleeding.",false,false),
 	DISARMED("Disarmed","Their next turn will get one less weapon attack choice. Doesn't stack.",false,false),
 	BREATHING("Breathing","Will regain 5% LHP as healing next turn. Stacks, but only one applies per turn.",false,true),
 	RECOVERING("Recovering","Will regain 5% LHP as healing at the end of this turn.",false,false),

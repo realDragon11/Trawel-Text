@@ -754,20 +754,20 @@ public class WeaponAttackFactory {
 		
 		tacticMap.put(Skill.TACTIC_TEST,
 				make("test tactic")
-				.setFluff("X` examines Y`!")
+				.setFluff("X` examines V`!")
 				.setWarmupOfTotal(TimeTier.HALF_FAST, TimeTier.FAST)
 				.finish().setSkill_for(Skill.TACTIC_TEST)
 				);
 		
 		tacticMap.put(Skill.TACTIC_DUCK_ROLL,
 				make("duck 'n roll")
-				.setFluff("X` prepares for a tactical roll towards Y`!")
+				.setFluff("X` prepares for a tactical roll towards V`!")
 				.setWarmupOfTotal(TimeTier.HALF_NORMAL, TimeTier.NORMAL)
 				.finish().setSkill_for(Skill.TACTIC_DUCK_ROLL)
 				);
 		tacticMap.put(Skill.TACTIC_SINGLE_OUT,
 				make("single out")
-				.setFluff("X` singles out Y`!")
+				.setFluff("X` singles out V`!")
 				.setWarmupOfTotal(TimeTier.INSTANT, TimeTier.FASTEST)
 				.finish().setSkill_for(Skill.TACTIC_SINGLE_OUT)
 				);

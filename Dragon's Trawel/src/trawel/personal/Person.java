@@ -1657,17 +1657,20 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		for (Effect e: effects.keySet()) {//listing is slower now
 			int num = effects.getOrDefault(e, 0);
 			if (num > 0) {
-				found = true;
+				if (!found) {
+					extra.println("Effects:");
+					found = true;
+				}
 				if (num > 1) {
-					extra.println(e.name() + " x"+num+": "+ e.getDesc());
+					extra.println(" " +e.getName() + " x"+num+": "+ e.getDesc());
 				}else {
-					extra.println(e.name() + ": "+ e.getDesc());
+					extra.println(" " +e.getName() + ": "+ e.getDesc());
 				}
 			}
 			
 		}
 		if (!found) {
-			extra.println("They're perfectly healthy.");
+			extra.println("No Effects.");
 		}
 	}
 	
