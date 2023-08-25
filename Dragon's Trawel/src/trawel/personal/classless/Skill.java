@@ -200,8 +200,8 @@ public enum Skill{
 		TACTIC_SINGLE_OUT("Tactic: Single Out","Grants use of a tactic that makes the target more likely to be chosen again by any Person that attacks it, with a 2/3rds chance to force them to attack again."
 				,"This does not make it more likely that it is chosen in the first place. Does not apply if was attacked by an ally."
 				,Type.TACTIC_TYPE),
-		TACTIC_DUCK_ROLL("Tactic: Duck 'n Roll","Grants use of a tactic that enhances dodge roll by a flat +0.2 and makes the next attack half the duration and more accurate, at the cost of half dodge during the attack following that."
-				,"Shorter attacks gain more accuracy, but longer attacks get more benefit from the delay reduction. Dodge bonus applies after normal dodge is rolled."
+		TACTIC_DUCK_ROLL("Tactic: Duck 'n Roll","Grants use of a tactic that enhances dodge roll by a flat +0.2 and makes the next attack half the duration and more accurate, at the cost of half dodge during the attack following the attack that benefits."
+				,"Quicker attacks gain 1x-2x accuracy based on un-reduced duration below 100 instants, but slower attacks get more benefit from the delay reduction. Dodge bonus applies after normal dodge is rolled."
 				,Type.TACTIC_TYPE),
 		OPPORTUNIST("Opportunist","Grants a skill configuration to put active tactics in.",
 				""
@@ -296,7 +296,7 @@ public enum Skill{
 
 				@Override
 				public String title() {
-					return " " + name + ": " + desc+ (longDesc != "" ? "("+longDesc+")" : "");
+					return " " + name + ": " + desc+ (longDesc != "" ? " ("+longDesc+")" : "");
 				}};
 			
 		}

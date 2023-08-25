@@ -420,6 +420,9 @@ public class ImpairedAttack implements IAttack{
 	}
 	@Override
 	public String getName() {
+		if (isTacticOnly()) {
+			return attack.getName();
+		}
 		return style.name + attack.getName() + " " + target.getName();
 	}
 	@Override
@@ -610,5 +613,9 @@ public class ImpairedAttack implements IAttack{
 	
 	public boolean hasWeaponQual(WeaponQual qual) {
 		return weapon != null && weapon.hasQual(qual);
+	}
+	
+	public boolean isTacticOnly() {
+		return target == null;
 	}
 }

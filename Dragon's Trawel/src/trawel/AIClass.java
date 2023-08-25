@@ -1048,7 +1048,7 @@ public class AIClass {
 						extra.println(j++ + " tactics");
 					}
 					extra.println("9 full examine");
-					numb = extra.inInt(attacks.size(),true);
+					numb = extra.inInt(j,true);
 				}else {
 					numb = -numb;//restore attack choice
 				}

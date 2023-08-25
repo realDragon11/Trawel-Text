@@ -761,9 +761,15 @@ public class WeaponAttackFactory {
 		
 		tacticMap.put(Skill.TACTIC_DUCK_ROLL,
 				make("duck 'n roll")
-				.setFluff("X` does a tactical roll towards Y`!")
-				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOW)
+				.setFluff("X` prepares for a tactical roll towards Y`!")
+				.setWarmupOfTotal(TimeTier.HALF_NORMAL, TimeTier.NORMAL)
 				.finish().setSkill_for(Skill.TACTIC_DUCK_ROLL)
+				);
+		tacticMap.put(Skill.TACTIC_SINGLE_OUT,
+				make("single out")
+				.setFluff("X` singles out Y`!")
+				.setWarmupOfTotal(TimeTier.INSTANT, TimeTier.FASTEST)
+				.finish().setSkill_for(Skill.TACTIC_SINGLE_OUT)
 				);
 		
 		sta = new Stance(Archetype.ACRO_DAREDEVIL,Skill.OPPORTUNIST);
@@ -772,9 +778,9 @@ public class WeaponAttackFactory {
 				.setFluff("X` tumbles towards Y`, attempting to bodycheck them!")
 				.setRarity(1f)
 				.setAcc(1f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.8f)
+				.setDamage(DamageTier.LOW,DamageTier.WEAK,.5f)
 				.setMix(0, 1, 0)
-				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOW)
+				.setWarmupOfTotal(TimeTier.HALF_NORMAL, TimeTier.SLOW)
 				,Skill.TACTIC_DUCK_ROLL);
 		addStance(Archetype.ACRO_DAREDEVIL,sta);
 		
@@ -1022,7 +1028,8 @@ public class WeaponAttackFactory {
 		SLOWEST(160),SLOWER(140),SLOW(120),NORMAL(100),FAST(80),FASTER(65), FASTEST(55)
 		,
 		//used for 
-		HALF_FASTEST(TimeTier.FASTEST.time),HALF_FAST(TimeTier.FAST.time),
+		HALF_FASTEST(TimeTier.FASTEST.time/2),HALF_FAST(TimeTier.FAST.time/2),
+		HALF_NORMAL(TimeTier.NORMAL.time/2),
 		INSTANT(0)
 		;
 		public final float time;

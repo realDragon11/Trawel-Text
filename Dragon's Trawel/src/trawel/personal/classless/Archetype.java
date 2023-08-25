@@ -16,6 +16,8 @@ import trawel.personal.classless.Feat.FeatType;
 import trawel.personal.classless.Skill.Type;
 
 public enum Archetype implements IHasSkills{
+	//TODO: making archetypes have more skills and generally be more impactful across the board, might need to reduce how often you get them offered
+	//after the first 2 levels
 	/**
 	 * somewhat inspired by dd1 enemy
 	 */
@@ -23,13 +25,13 @@ public enum Archetype implements IHasSkills{
 			AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.CURSES,FeatType.POTIONS)
-			,EnumSet.of(Skill.TOXIC_BREWS)
+			,EnumSet.of(Skill.TOXIC_BREWS)//TODO
 			)
 	,GLADIATOR("Glitzy Gladiator","Attention seeking but no-nonsense physical fighter. Fighting dirty is part of the show."
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRTY, AGroup.CHARISMA)
 			,EnumSet.of(FeatType.TRICKS,FeatType.SPIRIT,FeatType.BATTLE,FeatType.SOCIAL)
-			,EnumSet.of(Skill.DSTRIKE)
+			,EnumSet.of(Skill.DSTRIKE,Skill.TACTIC_SINGLE_OUT)
 			)
 	,ARMORMASTER("Armor Artisan","A walking fortress, one with their armor, two halves made whole."
 			,AType.ENTRY

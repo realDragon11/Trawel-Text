@@ -30,6 +30,9 @@ public class Attack implements IAttack{
 	private Stance holdingStance;//will be used for some shared data
 	private int soundStrength;
 	private String soundType;//shouldn't be a string
+	/**
+	 * TODO: this ended up not actually being used, and should get removed
+	 */
 	private AttackType type;
 	/**
 	 * most of the time, stored in stance instead, but tactics are different
@@ -482,7 +485,7 @@ public class Attack implements IAttack{
 		String tempStr = fluffer.next();
 		tempStr = tempStr.replace("X`","[HA]"+attret.attack.getAttacker().getName()+"[C]");
 		tempStr = tempStr.replace("Y`","[HD]"+attret.attack.getDefender().getName() + "'s[C] " +
-		(attret.attack.getTarget() != null ? attret.attack.getTarget().getName() : "!!"));
+		(attret.attack.getTarget() != null ? attret.attack.getTarget().getName() : ""));
 		tempStr = tempStr.replace("Z`",(attret.attack.getWeapon() != null ? attret.attack.getWeapon().getBaseName() : "fists" )+"[C]");//technically if you were to look upwards you could find the weapon, but I'm gonna put it in this way
 		return tempStr;
 	}

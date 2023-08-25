@@ -741,50 +741,52 @@ public class Combat {
 				wasDead = true;//note, can move out if need be
 			}
 		}
-		double dodgeBase = def.getDodge()*defender.getWoundDodgeCalc();
-		double hitBase = att.getHitMult();
-		
-		double dodgeRoll = dodgeBase*extra.getRand().nextDouble();
-		double hitRoll = hitBase*extra.getRand().nextDouble();
-		
-		if (defender.hasEffect(Effect.DUCKING) || defender.hasEffect(Effect.ROLLING)) {
-			dodgeRoll+=0.2;
-		}
-		if (isReal) {
-			if (attacker.hasEffect(Effect.ADVANTAGE_STACK)) {
-				hitRoll*=1.2f;
-				attacker.removeEffect(Effect.ADVANTAGE_STACK);
+		if (!att.isTacticOnly()) {
+			double dodgeBase = def.getDodge()*defender.getWoundDodgeCalc();
+			double hitBase = att.getHitMult();
+			
+			double dodgeRoll = dodgeBase*extra.getRand().nextDouble();
+			double hitRoll = hitBase*extra.getRand().nextDouble();
+			
+			if (defender.hasEffect(Effect.DUCKING) || defender.hasEffect(Effect.ROLLING)) {
+				dodgeRoll+=0.2;
 			}
-			if (defender.hasEffect(Effect.ADVANTAGE_STACK)) {
-				dodgeRoll*=1.2f;
-				defender.removeEffect(Effect.ADVANTAGE_STACK);
-			}
-		}
-		if (hitRoll < .05) {//missing now exists
-			ret= new AttackReturn(ATK_ResultCode.MISS,"",att);
-			if (canDisp) {
-				ret.stringer = att.fluff(ret);
-				ret.putPlayerFeedback(ret);
-				if (wasDead) {
-					ret.addNote("They missed a corpse!");
+			if (isReal) {
+				if (attacker.hasEffect(Effect.ADVANTAGE_STACK)) {
+					hitRoll*=1.2f;
+					attacker.removeEffect(Effect.ADVANTAGE_STACK);
+				}
+				if (defender.hasEffect(Effect.ADVANTAGE_STACK)) {
+					dodgeRoll*=1.2f;
+					defender.removeEffect(Effect.ADVANTAGE_STACK);
 				}
 			}
-			return ret;
-		}
-		if (dodgeRoll > hitRoll){
-			ret= new AttackReturn(ATK_ResultCode.DODGE,"",att);
-			if (canDisp) {
-				ret.stringer = att.fluff(ret);
-				ret.putPlayerFeedback(ret);
-				if (wasDead) {
-					ret.addNote("What a dodgy corpse!");
+			if (hitRoll < .05) {//missing now exists
+				ret= new AttackReturn(ATK_ResultCode.MISS,"",att);
+				if (canDisp) {
+					ret.stringer = att.fluff(ret);
+					ret.putPlayerFeedback(ret);
+					if (wasDead) {
+						ret.addNote("They missed a corpse!");
+					}
 				}
+				return ret;
 			}
-			return ret;
+			if (dodgeRoll > hitRoll){
+				ret= new AttackReturn(ATK_ResultCode.DODGE,"",att);
+				if (canDisp) {
+					ret.stringer = att.fluff(ret);
+					ret.putPlayerFeedback(ret);
+					if (wasDead) {
+						ret.addNote("What a dodgy corpse!");
+					}
+				}
+				return ret;
+			}
 		}
 		
 		ret = new AttackReturn(att,def,str);
-		if (canDisp) {
+		if (canDisp && (ret.code != ATK_ResultCode.MISS) && ret.code != ATK_ResultCode.DODGE && ret.code != ATK_ResultCode.NOT_ATTACK) {
 			Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getAttack().getSoundIntensity() + "|" +att.getAttack().getSoundType()+"|");
 			if (wasDead) {
 				ret.addNote("Beating their corpse!");
@@ -845,6 +847,16 @@ public class Combat {
 		public ATK_ResultType type;
 		private String notes;
 		public AttackReturn(ImpairedAttack att, Inventory def, String str) {
+			if (att.isTacticOnly()) {//doesn't have true attack components
+				stringer = str;
+				attack = att;
+				notes = null;
+				subDamage = new int[] {0,0,0,0,0,0};
+				damage = 0;
+				code = ATK_ResultCode.NOT_ATTACK;
+				type = ATK_ResultType.NO_IMPACT;
+				return;
+			}
 			int sdam = att.getSharp();
 			int bdam = att.getBlunt();
 			int pdam = att.getPierce();
@@ -1771,6 +1783,7 @@ public class Combat {
 				default://most won't have cases
 					break;
 				case TACTIC_DUCK_ROLL:
+					attacker.addEffect(Effect.DUCKING);
 					break;
 				case TACTIC_SINGLE_OUT:
 					//always applies to the first target even if redirected, which will reduce player frustration
