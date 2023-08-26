@@ -26,6 +26,7 @@ public interface IHasSkills {
 	public static final Set<Skill> emptySkillSet = EnumSet.noneOf(Skill.class);
 	
 	public String getText();
+	public String getBriefText();
 	public String getOwnText();
 	
 	public int getStrength();
@@ -125,10 +126,6 @@ public interface IHasSkills {
 	
 	public boolean goMenuItem();
 	
-	//FIXME: temp attack level for new skill attacks, better formula should be stored in stance somehow
-	public default int getAttackLevel(Person attacker) {
-		return Math.min(attacker.getClarity()/40,attacker.getLevel());
-	}
 	/**
 	 * mostly useful if you don't need to add them fully and just need this to compute half of something so you can tidy up later
 	 */

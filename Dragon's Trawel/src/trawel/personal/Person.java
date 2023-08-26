@@ -1133,7 +1133,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		
 		@Override
 		public String title() {
-			return base.getOwnText();
+			return base.getBriefText();
 		}
 
 		@Override

@@ -57,6 +57,43 @@ public class AttributeBox {
 	public int getClarity() {
 		return clarity;
 	}
+	/**
+	 * can average out attributes if you want to use multiple
+	 * <br>
+	 * returns an effective level >=1, but likely > 10
+	 */
+	public int getEffectiveAttributeLevel(int attributeAverage) {
+		int level = owner.getEffectiveLevel();
+		int aLevel = Math.round((attributeAverage-100)/5f);
+		int offset = aLevel-level;
+		int aOffset = Math.abs(offset);
+		int sign = offset/aOffset;//dumb but there's no math.signnum for ints
+		switch (aOffset) {
+		default:
+			return Math.max(1, sign*4);//max is 4
+		case 3: case 4:
+			return Math.max(1, sign*3);//3-4 is 3
+		case 2:
+			return Math.max(1, sign*2);
+		case 1:
+			return Math.max(1, sign);
+		}
+		/*
+		if (aOffset >= 5) {
+			return Math.max(1, sign*4);//max is 4
+		}
+		if (aOffset >= 3) {
+			return Math.max(1, sign*3);//3-4 is 3
+		}
+		if (aOffset >= 2) {//could be ==
+			return Math.max(1, sign*2);//3-4 is 3
+		}
+		
+		if (aOffset >= 1) {//could be ==
+			return Math.max(1, sign*2);//3-4 is 3
+		}
+		return level;*/
+	}
 	
 	//NOTE
 	//can insert skill stuff here since we have a link to the person!

@@ -21,20 +21,26 @@ public enum Archetype implements IHasSkills{
 	/**
 	 * somewhat inspired by dd1 enemy
 	 */
-	VIRAGO("Venomous Virago","An expert on toxic incantations, salves, potions, and the like. Adept in supplemental curse spellcasting.",
-			AType.ENTRY
+	VIRAGO("Venomous Virago"
+			,"An expert on toxic incantations, salves, potions, and the like. Adept in supplemental curse spellcasting."
+			,null
+			,AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.CURSES,FeatType.POTIONS)
 			,EnumSet.of(Skill.TOXIC_BREWS)//TODO
 			)
-	,GLADIATOR("Glitzy Gladiator","Attention seeking but no-nonsense physical fighter. Fighting dirty is part of the show."
+	,GLADIATOR("Glitzy Gladiator"
+			,"Attention seeking but no-nonsense physical fighter. Fighting dirty is part of the show."
+			,null
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRTY, AGroup.CHARISMA)
 			,EnumSet.of(FeatType.TRICKS,FeatType.SPIRIT,FeatType.BATTLE)
 			//TODO: Skill.OPPORTUNIST maybe?
 			,EnumSet.of(Skill.DSTRIKE,Skill.TACTIC_DUCK_ROLL,Skill.TACTIC_SINGLE_OUT,Skill.TACTIC_CHALLENGE)
 			)
-	,ARMORMASTER("Armor Artisan","A walking fortress, one with their armor, two halves made whole."
+	,ARMORMASTER("Armor Artisan"
+			,"A walking fortress, one with their armor, two halves made whole."
+			,null
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRECT_BATTLE,AGroup.CRAFT)
 			,EnumSet.of(FeatType.BATTLE,FeatType.SMITHS)//TODO needs better types
@@ -43,25 +49,33 @@ public enum Archetype implements IHasSkills{
 	/**
 	 * inspired by a lot of ttrpgs I used to talk about with some friends
 	 */
-	,HEDGE_MAGE("Hedge Mage","A perpetual novice, hedge mages aren't content to restrict themselves to one school."
+	,HEDGE_MAGE("Hedge Mage"
+			,"A perpetual novice, hedge mages aren't content to restrict themselves to one school."
+			,"Grants basic arcane magic based on clarity."
 			,AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.POTIONS,FeatType.TRICKS,FeatType.SOCIAL)
 			,EnumSet.of(Skill.MAGE_FRUGAL,Skill.ARCANIST)
 			)
-	,FISH_MONSOON("Monsoon Maker","Calls up malicious magic that assails the land-people's domain."
+	,FISH_MONSOON("Monsoon Maker"
+			,"Calls up malicious magic that assails the land-people's domain."
+			,"Grants oceanic occultisms that use clarity."
 			,AType.RACIAL
 			,EnumSet.of(AGroup.MAGIC)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.CURSES)
 			,EnumSet.of(Skill.ARCANIST,Skill.ELEMENTALIST,Skill.M_CRYO,Skill.M_AERO,Skill.PLOT_ARMOR)
 			)
-	,SEA_SAGE("Sea Sage","Tempered by a still calm, they can call forth the Sea's wrath if provoked."
+	,SEA_SAGE("Sea Sage"
+			,"Tempered by a still calm, they can call forth the Sea's wrath if provoked."
+			,"Grants oceanic occultisms that use clarity."
 			,AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.SPIRIT)
 			,EnumSet.of(Skill.DODGEREF,Skill.ARCANIST)
 			)
-	,FISH_TALL("Torrental Titan","A raging force deep-sea bent on proving their conquest of land is inevitable."
+	,FISH_TALL("Torrental Titan"
+			,"A raging force deep-sea bent on proving their conquest of land is inevitable."
+			,null
 			,AType.RACIAL
 			,EnumSet.of(AGroup.DIRECT_BATTLE)
 			,EnumSet.of(FeatType.BATTLE)
@@ -70,14 +84,16 @@ public enum Archetype implements IHasSkills{
 	/**
 	 * reference to Litheness in dragon quest 9
 	 */
-	,ACRO_DAREDEVIL("Dauntless Daredevil","Acrobatical prowess untempered by fright and funneled forth into fighting is a fearsome force."
+	,ACRO_DAREDEVIL("Dauntless Daredevil"
+			,"Acrobatical prowess untempered by fright and funneled forth into fighting is a fearsome force."
+			,"Grants opportunistic attacks that use the higher of strength or dexterity."
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DEXTERITY)
 			,EnumSet.of(FeatType.BATTLE,FeatType.AGILITY,FeatType.SPIRIT)//not tricks
 			//doesn't have tactics, just random opportunities, to fit the theme
 			,EnumSet.of(Skill.BLITZ,Skill.DODGEREF,Skill.OPPORTUNIST)
 			)
-	,PROMOTED("Promoted","They made it big."
+	,PROMOTED("Promoted","They made it big.",null
 			,AType.RACIAL
 			,EnumSet.of(AGroup.DIRECT_BATTLE)
 			,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)
@@ -85,13 +101,13 @@ public enum Archetype implements IHasSkills{
 			)//should probably make a non-archetype owner version, idk what to call it, but the 'no hostile curse' is kinda important
 	;
 	
-	private final String name, desc;
+	private final String name, desc, stanceDesc;
 	private final Set<Skill> skills;
 	private final int strength, dexterity, clarity;
 	private final AType type;
 	private final Set<AGroup> groups;
 	private final Set<FeatType> fTypes;
-	Archetype(String _name, String description, AType _type, Set<AGroup> _groups,Set<FeatType> _fTypes, Set<Skill> skillset){
+	Archetype(String _name, String description,String _stanceDesc, AType _type, Set<AGroup> _groups,Set<FeatType> _fTypes, Set<Skill> skillset){
 		name = _name;
 		desc = description;
 		skills = skillset;
@@ -101,6 +117,7 @@ public enum Archetype implements IHasSkills{
 		type = _type;
 		groups = _groups;
 		fTypes = _fTypes;
+		stanceDesc = _stanceDesc;
 	}
 	
 	public enum AType{
@@ -150,6 +167,11 @@ public enum Archetype implements IHasSkills{
 	
 	@Override
 	public String getOwnText() {
+		return name + ": "+desc + (stanceDesc != null ? " ("+stanceDesc+")" : "");
+	}
+	
+	@Override
+	public String getBriefText() {
 		return name + ": "+desc;
 	}
 	

@@ -59,6 +59,8 @@ public class ImpairedAttack implements IAttack{
 		double elementalDamMult = 1;
 		double physicalDamMult = 1;
 		
+		double effectiveLevel;
+		
 		switch (getType()) {
 		case FAKE_WEAPON:
 		case REAL_WEAPON:
@@ -73,6 +75,7 @@ public class ImpairedAttack implements IAttack{
 			
 			if (_weapon != null) {
 				w_lvl = _weapon.getLevel();//wow I was going crazy due to setting it to 10 here
+				effectiveLevel = IEffectiveLevel.unEffective(IEffectiveLevel.effective(w_lvl));
 				sMult *= _weapon.getMat().sharpMult;
 				bMult *= _weapon.getMat().bluntMult;
 				pMult *= _weapon.getMat().pierceMult;
@@ -82,7 +85,9 @@ public class ImpairedAttack implements IAttack{
 			}else {
 				IHasSkills attSource = attack.getSkillSource();
 				if (_attacker != null && attSource != null) {
-					w_lvl = attSource.getAttackLevel(_attacker);
+					w_lvl = attack.getStance().getEffectiveLevelFor(_attacker);
+					effectiveLevel = IEffectiveLevel.unEffective(w_lvl);
+					w_lvl-=10;
 					if (_attacker.hasSkill(Skill.ELEMENTALIST)) {
 						elementalDamMult*=1.1;//10% more elemental damage
 					}
@@ -91,7 +96,7 @@ public class ImpairedAttack implements IAttack{
 				}
 
 			}
-			double effectiveLevel = IEffectiveLevel.unEffective(IEffectiveLevel.effective(w_lvl));
+			
 			double damMult = effectiveLevel*_style.damage;
 			
 			if (_attacker != null) {

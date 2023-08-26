@@ -65,6 +65,11 @@ public enum Perk implements IHasSkills{
 	}
 	
 	@Override
+	public String getBriefText() {
+		return name + ": "+desc;
+	}
+	
+	@Override
 	public int getStrength() {
 		return strength;
 	}

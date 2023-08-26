@@ -28,6 +28,13 @@ public class Stance{
 	private List<Float> rarities;
 	private WeightedTable roller;
 	private float totalWeight;
+	private AttackLevel leveler;
+	
+	static interface AttackLevel {
+		
+		public int getEffectiveLevel(Person p);
+	}
+	
 	/**
 	 * how many attacks the weapon starts with (if bonus skill attacks > 0, this won't equal the number of weapon attacks)
 	 */
@@ -173,6 +180,18 @@ public class Stance{
 	public Stance setBonusSkillAttacks(int set) {
 		bonusSkillAttacks = set;
 		return this;
+	}
+	
+	public int getEffectiveLevelFor(Person p) {
+		return leveler.getEffectiveLevel(p);
+	}
+	
+	public void setLeveler(AttackLevel level) {
+		leveler = level;
+	}
+
+	protected AttackLevel getLeveler() {
+		return leveler;
 	}
 	
 }

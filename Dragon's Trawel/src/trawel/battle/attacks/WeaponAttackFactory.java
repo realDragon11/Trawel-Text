@@ -17,8 +17,10 @@ import trawel.battle.Combat.ATK_ResultCode;
 import trawel.battle.Combat.ATK_ResultType;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.IAttack.AttackType;
+import trawel.battle.attacks.Stance.AttackLevel;
 import trawel.personal.Person;
 import trawel.personal.classless.Archetype;
+import trawel.personal.classless.AttributeBox;
 import trawel.personal.classless.Feat;
 import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Skill;
@@ -599,7 +601,14 @@ public class WeaponAttackFactory {
 				.setElementalMix(0, 1, 0)
 				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOW)
 				);
-		addStance(Archetype.HEDGE_MAGE,sta);
+		addStance(Archetype.HEDGE_MAGE,sta, new AttackLevel() {
+			
+			@Override
+			public int getEffectiveLevel(Person p) {
+				AttributeBox a = p.fetchAttributes();
+				return a.getEffectiveAttributeLevel(a.getClarity());
+			}
+		});
 		
 		sta = new Stance(Archetype.SEA_SAGE,Skill.ARCANIST);
 		sta.addAttack(
@@ -630,7 +639,14 @@ public class WeaponAttackFactory {
 				.setElementalMix(0, 2, 3)
 				.setWarmupOfTotal(TimeTier.SLOW, TimeTier.SLOWEST)
 				);
-		addStance(Archetype.SEA_SAGE,sta);
+		addStance(Archetype.SEA_SAGE,sta, new AttackLevel() {
+			
+			@Override
+			public int getEffectiveLevel(Person p) {
+				AttributeBox a = p.fetchAttributes();
+				return a.getEffectiveAttributeLevel(a.getClarity());
+			}
+		});
 		//drudger/monster version
 		copyStanceTo(Skill.ARCANIST,Archetype.SEA_SAGE,Archetype.FISH_MONSOON);
 
@@ -677,7 +693,14 @@ public class WeaponAttackFactory {
 				.setElementalMix(1, 0, 0)
 				.setWarmupOfTotal(TimeTier.FASTER, TimeTier.SLOW)
 				);
-		addStance(Feat.FLAME_WARDEN,sta);
+		addStance(Feat.FLAME_WARDEN,sta, new AttackLevel() {
+			
+			@Override
+			public int getEffectiveLevel(Person p) {
+				AttributeBox a = p.fetchAttributes();
+				return a.getEffectiveAttributeLevel((a.getClarity()+a.getStrength())/2);
+			}
+		});
 		
 		sta = new Stance(Feat.FROST_WARDEN,Skill.ARCANIST);//mix of attacks, usually fairly accurate
 		sta.addAttack(//accurate
@@ -718,7 +741,14 @@ public class WeaponAttackFactory {
 				.setElementalRider(.3f,0,1,0)
 				.setWarmupOfTotal(TimeTier.FASTER, TimeTier.NORMAL)
 				);
-		addStance(Feat.FROST_WARDEN,sta);
+		addStance(Feat.FROST_WARDEN,sta, new AttackLevel() {
+			
+			@Override
+			public int getEffectiveLevel(Person p) {
+				AttributeBox a = p.fetchAttributes();
+				return a.getEffectiveAttributeLevel((a.getClarity()+a.getStrength())/2);
+			}
+		});
 		
 		//attacks are erratic, one is insanely accurate but slower and low damage, another is middling
 		//and a final one is insanely fast but below average accuracy and damage
@@ -750,7 +780,14 @@ public class WeaponAttackFactory {
 				.setElementalMix(0, 0, 1)
 				.setWarmupOfTotal(TimeTier.HALF_FASTEST, TimeTier.FASTEST)
 				);
-		addStance(Feat.SHOCK_SAVANT,sta);
+		addStance(Feat.SHOCK_SAVANT,sta, new AttackLevel() {
+			
+			@Override
+			public int getEffectiveLevel(Person p) {
+				AttributeBox a = p.fetchAttributes();
+				return a.getEffectiveAttributeLevel((a.getClarity()+a.getDexterity())/2);
+			}
+		});
 		
 		tacticMap.put(Skill.TACTIC_TEST,
 				make("test tactic")
@@ -797,7 +834,14 @@ public class WeaponAttackFactory {
 				.setMix(0, 1, 0)
 				.setWarmupOfTotal(TimeTier.HALF_FASTEST, TimeTier.FASTER)
 				,Skill.TACTIC_CHALLENGE);
-		addStance(Archetype.ACRO_DAREDEVIL,sta);
+		addStance(Archetype.ACRO_DAREDEVIL,sta, new AttackLevel() {
+			
+			@Override
+			public int getEffectiveLevel(Person p) {
+				AttributeBox a = p.fetchAttributes();
+				return a.getEffectiveAttributeLevel(Math.max(a.getStrength(),a.getDexterity()));
+			}
+		});
 		
 		assert skillStances.size() > 0;
 	}
@@ -1237,10 +1281,11 @@ public class WeaponAttackFactory {
 		stanceMap.put(t, s);
 	}
 	
-	public static void addStance(IHasSkills iHas, Stance s) {
+	public static void addStance(IHasSkills iHas, Stance s,AttackLevel leveler) {
 		assert !skillOwnerMap.containsKey(iHas);
 		assert !skillOwnerMap.containsValue(s);
 		assert s.getSkillSource() == iHas;
+		s.setLeveler(leveler);
 		s.finish();
 		skillOwnerMap.put(iHas, s);
 		List<IHasSkills> list = skillStances.getOrDefault(s.getSkill(), new ArrayList<IHasSkills>());
@@ -1267,7 +1312,7 @@ public class WeaponAttackFactory {
 		for (int i = 0; i < list.size(); i++) {
 			b.addAttack(list.get(i).copy(),a.getRarity(i));
 		}
-		addStance(to, b);
+		addStance(to, b,a.getLeveler());
 	}
 
 

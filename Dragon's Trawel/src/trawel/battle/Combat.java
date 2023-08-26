@@ -381,7 +381,7 @@ public class Combat {
 	private Map<Person,BattleData> dataMap;
 	private int sides;
 	
-	private class BattleData{
+	private class BattleData{//TODO: it'd probably be better to move battle data to a transient variable in people
 		public int side;
 		public Person lastAttacker = null;
 		public Person nextTarget = null;
