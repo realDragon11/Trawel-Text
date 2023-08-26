@@ -1339,7 +1339,7 @@ public class Combat {
 				}
 				if (defender.hasSkill(Skill.REACTIVE_DODGE)) {
 					defender.addEffect(Effect.ADVANTAGE_STACK);
-					extra.print(" They roll to a better position!");
+					extra.print(" They dance to a better position!");
 				}
 			}
 			

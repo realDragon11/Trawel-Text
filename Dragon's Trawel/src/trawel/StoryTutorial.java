@@ -60,18 +60,18 @@ public class StoryTutorial extends Story{
 	public void storyStart() {
 		battleFam = 0;
 		extra.println("You are now " + Player.player.getPerson().getName() +".");
+		for (Archetype a: Player.player.getPerson().getArchSet()) {
+			extra.println("Starting Archetype: " +a.getBriefText());
+		}
+		for (Feat a: Player.player.getPerson().getFeatSet()) {
+			extra.println("Starting Feat: " +a.getBriefText());
+		}
+		extra.println();
 		extra.println("You come to your senses. Your student, " + killed.getName() + " is dead.");
 		extra.println("A wizard cast a curse on them, sending anyone who saw them into a blinding rage. But you are not where you were when you were afflicted...");
 		extra.println("You resolve to find out where you are, to start your life anew- it's not like anyone would believe you back home in Oblask, anyway.");
 		extra.println("1 start Trawel");
 		extra.inInt(1);
-		for (Archetype a: Player.player.getPerson().getArchSet()) {
-			extra.println("Starting Archetype: " +a.getOwnText());
-		}
-		for (Feat a: Player.player.getPerson().getFeatSet()) {
-			extra.println("Starting Feat: " +a.getOwnText());
-		}
-		extra.println();
 		extra.println("You should head to the local arena. Your immortality will come in handy there.");
 		step = "gotoarena1";
 	}
@@ -84,10 +84,16 @@ public class StoryTutorial extends Story{
 			extra.println("A mysterious voice is telling you to \"Choose your attack below\"???");
 			extra.println("...");
 		}
-		if (!disp && offerCombatTutorial()) {
-			extra.println("Display the combat tutorial again?");
+		if (disp) {
+			extra.println("Show the full tutorial?");
 			disp = extra.yesNo();
+		}else {
+			if (offerCombatTutorial()) {
+				extra.println("Display the combat tutorial again?");
+				disp = extra.yesNo();
+			}
 		}
+		
 		if (disp) {
 			extra.println("Higher numbers are better, except in the case of delay.");
 			extra.println("Delay is how long an action takes- it determines turn order and skipping.");
@@ -146,7 +152,7 @@ public class StoryTutorial extends Story{
 			step = "gotoinn1";
 		}
 		if (step == "gotoinn1") {
-			extra.println(" Next you should ingest questionable substances at an inn. Compass (which is basically mapquest), in the Player Menu under 'Inventory', can take you to 'Unun', a town with an inn.");
+			extra.println(" Next you should ingest questionable substances at an inn. Compass (which is basically mapquest), in the Player Menu under 'Inventory->Map', can take you to 'Unun', a town with an inn.");
 		}
 	}
 
@@ -156,7 +162,7 @@ public class StoryTutorial extends Story{
 		deaths++;
 		switch (deaths) {
 		case 1:
-			extra.println("Welcome to your first death! You continue as normal. If you're in an exploration area, you got kicked out of it, otherwise not much changed... except maybe the thing that killed you leveled up.");
+			extra.println("Welcome to your first death! You continue as normal. If you're in an exploration area, you likely got kicked out of it, otherwise not much changed... except maybe the thing that killed you leveled up.");
 			Networking.unlockAchievement("die1");
 		;break;
 		default:
@@ -175,7 +181,7 @@ public class StoryTutorial extends Story{
 				break;
 			}
 
-			extra.println("If you're having trouble, it's often best to come back with better gear and more levels than to challenge-spam someone. At least, for your own time investment.");
+			extra.println("If you're having trouble, it's often best to come back with better gear and more levels than to challenge-spam someone. At least, for your own time investment and sanity.");
 			levelReminders++;
 			break;
 		}
@@ -359,7 +365,7 @@ public class StoryTutorial extends Story{
 				extra.println("You have leveled up! You can spend skillpoints in this menu. You likely will want to select an 'Exotic Art' and then back out of that selection screen, to spend the skillpoint in the art you just unlocked.");
 				break;
 			case 10:
-				extra.println("You're very high level! You can probably beat 80% of current Trawel content. If you're really ambitious, try to get to level 15.");
+				extra.println("You're very high level! You can probably beat 80% of current Trawel content if you put your mind to it. If you're really ambitious, try to get to level 15.");
 				break;
 			case 15:
 				extra.println("You're so high level you could slay a dragon! ...there are no dragons :(");
@@ -369,6 +375,9 @@ public class StoryTutorial extends Story{
 				break;
 			case 25:
 				extra.println("A master is you?");
+				break;
+			case 100:
+				extra.println("I'd ask why, but you'd probably say\"because it was there\".");
 				break;
 			}
 		}
@@ -380,7 +389,7 @@ public class StoryTutorial extends Story{
 			switch (perk) {
 			case FATED:
 				if (bossPerkTriggers.contains(Perk.HELL_BARONESS)) {
-					extra.println("You've slain the Fatespinner and gotten a Fated perk... but can you Beat the Baron? Travel to the world of Greap through the teleporter in Repa, then seek out the Staircase to Hell.");
+					extra.println("You've slain the Fatespinner and gotten the Fated perk... but can you Beat the Baron? Travel to the world of Greap through the teleporter in Repa, then seek out the Staircase to Hell.");
 				}else {
 					extra.println("You've slain the Fatespinner and gained the Fated perk!");
 				}
@@ -389,7 +398,7 @@ public class StoryTutorial extends Story{
 				extra.println("You've slain the Hell Baron and gained their throne perk!");
 				break;
 			case STORYTELLER:
-				extra.println("You've lived out a legend and gained a Storyteller perk!");
+				extra.println("You've outlived out a legend and gained the Storyteller perk!");
 				break;
 			}
 			if (bossPerkTriggers.isEmpty()) {
