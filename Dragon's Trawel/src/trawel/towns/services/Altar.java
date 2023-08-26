@@ -37,17 +37,16 @@ public class Altar extends Feature{
 	public void go() {
 		Networking.sendStrong("Discord|imagesmall|altar|Altar|");
 		Networking.setArea("mountain");
-		MenuGenerator mGen = new MenuGenerator() {
+		extra.menuGo(new MenuGenerator() {
 
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> mList = new ArrayList<MenuItem>();
-				mainGame.globalPassTime();
 				mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "examine the altar";
+						return "Examine the Altar.";
 					}
 
 					@Override
@@ -63,7 +62,7 @@ public class Altar extends Feature{
 
 					@Override
 					public String title() {
-						return "stand on the altar";
+						return "Stand on the altar.";
 					}
 
 					@Override
@@ -78,7 +77,7 @@ public class Altar extends Feature{
 
 					@Override
 					public String title() {
-						return "sacrifice something";
+						return "Sacrifice something.";
 					}
 
 					@Override
@@ -89,8 +88,13 @@ public class Altar extends Feature{
 				});
 				mList.add(new MenuBack("leave"));
 				return mList;
-			}};
-			extra.menuGo(mGen);
+			}
+			@Override
+			public void onRefresh() {
+				mainGame.globalPassTime();
+			}
+			
+		});
 	}
 
 

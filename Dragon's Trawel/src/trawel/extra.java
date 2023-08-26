@@ -750,6 +750,7 @@ public final class extra {
 			boolean canBack;
 			List<MenuItem> subList;
 			while (true) {
+				mGen.onRefresh();
 				mList = mGen.gen();
 				if (mList == null) {
 					return -1;//used for nodes so they can force interactions cleanly
