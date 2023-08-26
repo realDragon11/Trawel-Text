@@ -77,11 +77,6 @@ public enum Feat implements IHasSkills{
 			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_AERO,Skill.SPUNCH,Skill.ARCANIST),0,1,4
 			,EnumSet.of(Skill.ARCANIST),null
 			)
-	,ARCHMAGE("Archmage","Weaving spells has become as easy as breathing.","Grants no spells, but gives another skill config slot."
-			,4f,null,null//high weight
-			,EnumSet.of(Skill.ARCANIST_2),0,0,25//lot of clarity
-			,EnumSet.of(Skill.ARCANIST,Skill.ELEMENTALIST),null
-			)
 	;
 
 	private final String name, desc, getDesc;

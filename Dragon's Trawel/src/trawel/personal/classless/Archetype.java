@@ -53,7 +53,7 @@ public enum Archetype implements IHasSkills{
 			,"A perpetual novice, hedge mages aren't content to restrict themselves to one school."
 			,"Grants basic arcane magic based on clarity."
 			,AType.ENTRY
-			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT)
+			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT,AGroup.GRANTED_ARCANIST)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.POTIONS,FeatType.TRICKS,FeatType.SOCIAL)
 			,EnumSet.of(Skill.MAGE_FRUGAL,Skill.ARCANIST)
 			)
@@ -61,7 +61,7 @@ public enum Archetype implements IHasSkills{
 			,"Calls up malicious magic that assails the land-people's domain."
 			,"Grants oceanic occultisms that use clarity."
 			,AType.RACIAL
-			,EnumSet.of(AGroup.MAGIC)
+			,EnumSet.of(AGroup.MAGIC,AGroup.GRANTED_ARCANIST)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.CURSES)
 			,EnumSet.of(Skill.ARCANIST,Skill.ELEMENTALIST,Skill.M_CRYO,Skill.M_AERO,Skill.PLOT_ARMOR)
 			)
@@ -69,7 +69,7 @@ public enum Archetype implements IHasSkills{
 			,"Tempered by a still calm, they can call forth the Sea's wrath if provoked."
 			,"Grants oceanic occultisms that use clarity."
 			,AType.ENTRY
-			,EnumSet.of(AGroup.MAGIC)
+			,EnumSet.of(AGroup.MAGIC,AGroup.GRANTED_ARCANIST)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.SPIRIT)
 			,EnumSet.of(Skill.DODGEREF,Skill.ARCANIST)
 			)
@@ -115,6 +115,14 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(FeatType.CURSES)
 			,EnumSet.of(Skill.RACIAL_SHIFTS,Skill.CONDEMN_SOUL)
 			)
+	,ARCHMAGE("Archmage"//now an AFTER archetype
+			,"Weaving spells has become as easy as breathing."
+			,"Grants no spells, but gives another skill config slot."
+			,AType.AFTER
+			,EnumSet.of(AGroup.GRANTED_ARCANIST)//do not change or add to unless adding skill requirements to archetypes
+			,EnumSet.of(FeatType.ARCANE)
+			,EnumSet.of(Skill.ARCANIST_2),0,0,25//lot of clarity
+			)
 	;
 	
 	private final String name, desc, stanceDesc;
@@ -135,6 +143,20 @@ public enum Archetype implements IHasSkills{
 		fTypes = _fTypes;
 		stanceDesc = _stanceDesc;
 	}
+	Archetype(String _name, String description,String _stanceDesc, AType _type, Set<AGroup> _groups,Set<FeatType> _fTypes, Set<Skill> skillset
+			,int _strength, int _dexterity, int _clarity){
+		name = _name;
+		desc = description;
+		skills = skillset;
+		type = _type;
+		groups = _groups;
+		fTypes = _fTypes;
+		stanceDesc = _stanceDesc;
+		strength = _strength;
+		dexterity = _dexterity;
+		clarity = _clarity;
+		//ugh final fields make chained constructors annoying
+	}
 	
 	public enum AType{
 		RACIAL,//race archetypes
@@ -147,7 +169,11 @@ public enum Archetype implements IHasSkills{
 		DEXTERITY, STRENGTH,
 		MAGIC, CRAFT,
 		DIRTY, CHARISMA,
-		DIRECT_BATTLE
+		DIRECT_BATTLE,
+		/**
+		 * implicit way to gate archmage, by using the disjoint.
+		 */
+		GRANTED_ARCANIST
 	}
 	private static final Set<Archetype> ENTRY_LIST = EnumSet.noneOf(Archetype.class);
 	private static final Set<Archetype> AFTER_LIST = EnumSet.noneOf(Archetype.class);
