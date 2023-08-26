@@ -51,4 +51,8 @@ public class SkillAttackConf implements Serializable{
 	public String getText() {
 		return skill.getName() + ": " + source.friendlyName();
 	}
+	
+	public IHasSkills getSource() {
+		return source;
+	}
 }

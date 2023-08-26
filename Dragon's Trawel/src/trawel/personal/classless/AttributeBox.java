@@ -64,19 +64,19 @@ public class AttributeBox {
 	 */
 	public int getEffectiveAttributeLevel(int attributeAverage) {
 		int level = owner.getEffectiveLevel();
-		int aLevel = Math.round((attributeAverage-100)/5f);
+		int aLevel = Math.round(attributeAverage/10f)+1;
 		int offset = aLevel-level;
 		int aOffset = Math.abs(offset);
 		int sign = offset/aOffset;//dumb but there's no math.signnum for ints
 		switch (aOffset) {
 		default:
-			return Math.max(1, sign*4);//max is 4
+			return Math.max(1,level+(sign*4));//max is 4
 		case 3: case 4:
-			return Math.max(1, sign*3);//3-4 is 3
+			return Math.max(1, level+(sign*3));//3-4 is 3
 		case 2:
-			return Math.max(1, sign*2);
+			return Math.max(1, level+(sign*2));
 		case 1:
-			return Math.max(1, sign);
+			return Math.max(1, level+sign);
 		}
 		/*
 		if (aOffset >= 5) {

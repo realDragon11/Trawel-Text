@@ -13,6 +13,7 @@ import trawel.Effect;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.battle.Combat;
+import trawel.battle.attacks.Stance;
 import trawel.battle.attacks.WeaponAttackFactory;
 import trawel.personal.Person;
 import trawel.personal.classless.IHasSkills;
@@ -222,6 +223,10 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 			}});
 	}
 	
+	public String expectedSkillSourceLevel(IHasSkills source) {
+		return ""+(WeaponAttackFactory.getStance(source).getEffectiveLevelFor(getPerson())-10);
+	}
+	
 	//TODO: only one source allowed for now
 	protected void setupConfig(Skill s, List<IHasSkills> hases) {
 		extra.menuGo(new ScrollMenuGenerator(hases.size(),"previous <> sources","next <> sources") {
@@ -233,7 +238,8 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 
 					@Override
 					public String title() {
-						return hases.get(i).getOwnText();
+						IHasSkills source = hases.get(i);
+						return source.getOwnText() + " Expected Level: "+expectedSkillSourceLevel(source)+".";
 					}
 
 					@Override
@@ -278,7 +284,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 		}
 		@Override
 		public String title() {
-			return config.getText() + " configuration";
+			return config.getText() + " configuration, Expected Level: "+expectedSkillSourceLevel(config.getSource())+".";
 		}
 		@Override
 		public boolean go() {
