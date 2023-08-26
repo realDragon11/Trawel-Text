@@ -378,8 +378,10 @@ public enum Archetype implements IHasSkills{
 		Archetype starting = person.getArchSet().stream().findAny().get();
 		extra.println("Please choose a second Archetype to go with "+starting.friendlyName()+".");
 		List<Archetype> alist = new ArrayList<Archetype>();
-		AFTER_LIST.stream().filter(a -> a.doesAfterWith(starting)).forEach(alist::add);;
-		alist.addAll(AFTER_LIST);
+		
+		AFTER_LIST.stream().filter(a -> a.doesAfterWith(starting)).forEach(alist::add);
+		ENTRY_LIST.stream().filter(a -> !alist.contains(a)).forEach(alist::add);
+		alist.remove(starting);
 		//int start_points = person.getFeatPoints();
 		extra.menuGo(new ScrollMenuGenerator(alist.size(),"previous <> Archetypes","next <> Archetypes") {
 			

@@ -828,6 +828,7 @@ public class RaceFactory {
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
 		misc.raceClass = RaceClass.DRUDGER;
+		misc.archetype = Archetype.FISH_TALL;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.MAJOR_DEMON);
@@ -945,7 +946,7 @@ public class RaceFactory {
 		if (extra.chanceIn(1,8)) {
 			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
 		}
-		p.liteSetSkillHas(Archetype.ARMORMASTER);
+		p.liteSetSkillHas(Archetype.ARMORMASTER);//might already have
 		p.finishGeneration();
 		return p;
 	}
@@ -955,7 +956,7 @@ public class RaceFactory {
 		addWealth(4f, p);
 		p.setPersonType(PersonType.GRIZZLED);
 		p.hTask = HostileTask.RICH;
-		p.liteSetSkillHas(Archetype.ARMORMASTER);
+		p.liteSetSkillHas(Archetype.ARMORMASTER);//might already have
 		p.finishGeneration();
 		return p;
 	}
@@ -1043,7 +1044,7 @@ public class RaceFactory {
 		w.getBag().addDrawBaneSilently(DrawBane.PROTECTIVE_WARD);
 		extra.popPrintStack();
 		w.hTask = HostileTask.DUEL;
-		w.setArch(Archetype.HEDGE_MAGE);
+		w.setArch(Archetype.HEDGE_MAGE);//might already have
 		Agent a = new Agent(w);//is assigned in the agent code, required for archetype skill configs
 		w.finishGeneration();
 		//a.fillSkillConfigs(); included in finish generation, just need to make an agent for it
@@ -1203,8 +1204,7 @@ public class RaceFactory {
 		Person w = Person.animal(level, RaceID.B_DRUDGER_TITAN, MaterialFactory.getMat("fishscales"), false);
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
 		w.setPersonType(PersonType.DRUDGER_GENERIC);
-		w.liteSetSkillHas(Archetype.FISH_TALL);
-		w.cleanSetSkillHas(Perk.STAND_TALL);
+		w.cleanSetSkillHas(Perk.STAND_TALL);//added to their 'fish tall' so they have some base strength, since archetypes don't add stats normally
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","iron")),WeaponType.FISH_ANCHOR));
 		w.getBag().swapArmorSlot(new Armor(level,(byte)2,MaterialFactory.getMat("rusty iron"),null),2);
 		w.getBag().addDrawBaneSilently(DrawBane.MEAT);
