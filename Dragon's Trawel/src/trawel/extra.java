@@ -450,7 +450,7 @@ public final class extra {
 				extra.println("1 yes");
 				extra.println("9 no");
 				Networking.sendStrong("Entry|yesno|");//need to add this coloring behavior to normal inputs
-				if ((Networking.connected() && mainGame.GUIInput)  || Networking.autoconnectSilence) {
+				//if ((Networking.connected() && mainGame.GUIInput)  || Networking.autoconnectSilence) {
 					//while(true) {
 					int ini = Networking.nextInt();
 					while(ini != 1 && ini != 9) {
@@ -475,7 +475,7 @@ public final class extra {
 					trawel.threads.BlockTaskManager.halt();
 					return ini == 1;
 
-				}else {
+					/*}else {
 					
 					str = mainGame.scanner.next();
 					extra.linebreak();
@@ -491,7 +491,7 @@ public final class extra {
 					}
 					extra.println("Yes or No?");
 
-				}
+				}*/
 			}
 		}
 		public static final int randRange(int i, int j) {
