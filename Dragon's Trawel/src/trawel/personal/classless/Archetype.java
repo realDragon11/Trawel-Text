@@ -30,14 +30,15 @@ public enum Archetype implements IHasSkills{
 	,GLADIATOR("Glitzy Gladiator","Attention seeking but no-nonsense physical fighter. Fighting dirty is part of the show."
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRTY, AGroup.CHARISMA)
-			,EnumSet.of(FeatType.TRICKS,FeatType.SPIRIT,FeatType.BATTLE,FeatType.SOCIAL)
-			,EnumSet.of(Skill.DSTRIKE,Skill.TACTIC_SINGLE_OUT)
+			,EnumSet.of(FeatType.TRICKS,FeatType.SPIRIT,FeatType.BATTLE)
+			//TODO: Skill.OPPORTUNIST maybe?
+			,EnumSet.of(Skill.DSTRIKE,Skill.TACTIC_DUCK_ROLL,Skill.TACTIC_SINGLE_OUT,Skill.TACTIC_CHALLENGE)
 			)
 	,ARMORMASTER("Armor Artisan","A walking fortress, one with their armor, two halves made whole."
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRECT_BATTLE,AGroup.CRAFT)
 			,EnumSet.of(FeatType.BATTLE,FeatType.SMITHS)//TODO needs better types
-			,EnumSet.of(Skill.ARMOR_TUNING,Skill.ARMORSPEED)
+			,EnumSet.of(Skill.ARMOR_TUNING,Skill.ARMORSPEED,Skill.TACTIC_CHALLENGE)
 			)
 	/**
 	 * inspired by a lot of ttrpgs I used to talk about with some friends
@@ -73,7 +74,8 @@ public enum Archetype implements IHasSkills{
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DEXTERITY)
 			,EnumSet.of(FeatType.BATTLE,FeatType.AGILITY,FeatType.SPIRIT)//not tricks
-			,EnumSet.of(Skill.BLITZ,Skill.DODGEREF,Skill.OPPORTUNIST,Skill.TACTIC_DUCK_ROLL)
+			//doesn't have tactics, just random opportunities, to fit the theme
+			,EnumSet.of(Skill.BLITZ,Skill.DODGEREF,Skill.OPPORTUNIST)
 			)
 	,PROMOTED("Promoted","They made it big."
 			,AType.RACIAL

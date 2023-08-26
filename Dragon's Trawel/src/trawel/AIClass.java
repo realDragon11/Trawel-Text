@@ -1090,7 +1090,7 @@ public class AIClass {
 									@Override
 									public String title() {
 										//TODO: perhaps standardize display
-										return a.getName() +", delay of "+a.getSpeed()+": " +a.getDesc();
+										return a.getName() +", delay of "+a.getSpeed()+": " +skill.explainEffect();
 									}
 
 									@Override

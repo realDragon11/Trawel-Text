@@ -1296,10 +1296,11 @@ public class Combat {
 				}
 			}else {
 				if (!extra.getPrint()) {
-					
+					boolean armorDamage = atr.code == ATK_ResultCode.ARMOR;
 					extra.print(prettyHPColors(atr.stringer+" {"+prettyHPDamage(percent)+damageDone+" damage[C]}"+woundstr
+							+ (armorDamage ? " The armor curbs the blow!": "")
 							,
-							atr.code == ATK_ResultCode.ARMOR ? extra.ATTACK_DAMAGED_WITH_ARMOR : extra.ATTACK_DAMAGED
+							armorDamage ? extra.ATTACK_DAMAGED_WITH_ARMOR : extra.ATTACK_DAMAGED
 							,attacker,defender));
 					didDisplay = true;
 				}
@@ -1845,11 +1846,23 @@ public class Combat {
 					break;
 				case TACTIC_DUCK_ROLL:
 					attacker.addEffect(Effect.DUCKING);
+					if (!extra.getPrint()) {
+						extra.println(prettyHPPerson("[HP]"+attacker.getNameNoTitle()+" ducks!",extra.TIMID_MAGENTA, attacker));
+					}
 					break;
 				case TACTIC_SINGLE_OUT:
 					//always applies to the first target even if redirected, which will reduce player frustration
 					//and also is just easier to code
+					
+					//tactic applies before the message displays, and the redirection could be weird
+					//but the defualt tactic is 'instant' so it's unlikely display confusion will happen,
+					//and any actual damage should apply to the redirected target
 					defender.addEffect(Effect.SINGLED_OUT);
+					
+					/*
+					if (!extra.getPrint()) {
+						extra.println(prettyHPColors("[HA]"+attacker.getNameNoTitle()+" singles out [HD]"+defender.getNameNoTitle()+"...", extra.TIMID_MAGENTA, attacker, defender));
+					}*/
 					break;
 			}
 		}
@@ -1899,6 +1912,7 @@ public class Combat {
 	public static final String quotedDefenderHP = Pattern.quote("[HD]");
 	public static final String quotedAttackerHP = Pattern.quote("[HA]");
 	public static final String quotedDefaultColor = Pattern.quote("[C]");
+	public static final String quotedHP = Pattern.quote("[HP]");
 	
 	public static String prettyHPColors(String baseString, String normalColor, Person attacker,Person defender) {
 		return normalColor 
@@ -1943,6 +1957,13 @@ public class Combat {
 			}
 		}
 		return builder.toString();
+	}
+	
+	public String prettyHPPerson(String baseString,String normalColor,Person person) {
+		return normalColor 
+				+ baseString
+				.replaceAll(quotedHP,person.inlineHPColor())
+				.replaceAll(quotedDefaultColor, normalColor);
 	}
 
 	public static boolean hasNonNullBag(List<Person> people) {

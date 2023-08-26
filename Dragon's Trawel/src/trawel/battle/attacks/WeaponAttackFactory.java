@@ -771,6 +771,12 @@ public class WeaponAttackFactory {
 				.setWarmupOfTotal(TimeTier.INSTANT, TimeTier.FASTEST)
 				.finish().setSkill_for(Skill.TACTIC_SINGLE_OUT)
 				);
+		tacticMap.put(Skill.TACTIC_CHALLENGE,
+				make("challenge")
+				.setFluff("X` challenges V`!")
+				.setWarmupOfTotal(TimeTier.INSTANT, TimeTier.FASTEST)
+				.finish().setSkill_for(Skill.TACTIC_CHALLENGE)
+				);
 		
 		sta = new Stance(Archetype.ACRO_DAREDEVIL,Skill.OPPORTUNIST);
 		sta.addTactic(
@@ -782,6 +788,15 @@ public class WeaponAttackFactory {
 				.setMix(0, 1, 0)
 				.setWarmupOfTotal(TimeTier.HALF_NORMAL, TimeTier.SLOW)
 				,Skill.TACTIC_DUCK_ROLL);
+		sta.addTactic(
+				make("daring dive")
+				.setFluff("X` dives into Y`, leaving themselves open!")
+				.setRarity(1f)
+				.setAcc(.8f)
+				.setDamage(DamageTier.LOW,DamageTier.WEAK,.5f)
+				.setMix(0, 1, 0)
+				.setWarmupOfTotal(TimeTier.HALF_FASTEST, TimeTier.FASTER)
+				,Skill.TACTIC_CHALLENGE);
 		addStance(Archetype.ACRO_DAREDEVIL,sta);
 		
 		assert skillStances.size() > 0;
