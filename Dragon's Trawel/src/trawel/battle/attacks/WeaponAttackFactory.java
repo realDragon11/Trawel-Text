@@ -174,7 +174,7 @@ public class WeaponAttackFactory {
 				make("smash")
 				.setFluff("X` smashes Y` with their Z`!")
 				.setRarity(1.5f)
-				.setAcc(.8f)
+				.setAcc(.7f)
 				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.3f)
 				.setMix(3,20,6)
 				.setTimeTiers(TimeTier.NORMAL,TimeTier.FAST,.2f)

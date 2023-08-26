@@ -1032,10 +1032,10 @@ public class AIClass {
 									);
 						}
 						if (mainGame.attackDisplayStyle == DispAttack.TWO_LINE1_WITH_KEY) {
-							extra.println("Attacks: " + extra.CHAR_HITCHANCE + " hitmult; " +extra.CHAR_INSTANTS+" warmup -cooldown; "+
+							extra.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),extra.PRE_WHITE, defender)+": " + extra.CHAR_HITCHANCE + " hitmult; " +extra.CHAR_INSTANTS+" warmup -cooldown; "+
 									ImpairedAttack.EXPLAIN_DAMAGE_TYPES());
 						}else {
-							extra.println("Attacks:");
+							extra.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),extra.PRE_WHITE, defender)+": ");
 						}
 						for(ImpairedAttack a: attacks) {
 							extra.print(j + " ");
