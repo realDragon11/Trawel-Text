@@ -73,6 +73,7 @@ public class mainGame {
 	public static final String VERSION_STRING = "v0.8.b__4 updated Aug 23nd 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
+			"b__4: {part 1/?} Added 'back out' option to terminal (graphical will get it when it gets other updates). Added a few new display options, check the reduced indicator menu again. Added 'tactics' which are persistent action options in combat that don't deal damage (requires skills), and also some skill stances which apply a tactic effect and also a normal attack.",
 			"b_3: {part 1/3} Tutorial mostly moved from 'feature text' to 'story'. Added saveable display options. Known issues: combat town Features need another cleanup with the new currency, mass battles have some balancing issues if they have an un-even number of fighters.",
 			"b_3: {part 2/3} Subtle changes to battle conditions. Effective level added, so level 2 is only a flat +10% better, not 2x better, which each further level being another +10% (level 3 is 1.3x mult, because level 1 is 1.1x). Stat tweaks on most species, some non-'personable' creatures now have barks and can loot money.",
 			"b_3: {part 3/3} Many town Feature mechanics had small tweaks, Brewing being the most visible in regards to how DrawBanes are talked about, and once again Merchant Guild prices, Fort Hall prices, and the more one-off Doctor prices. 'Highest Contribution' battlescore stat got split into the more sensible 'highest and lowest % deviation from average', which can show the extremes in attack balance a weapon has, for example a gold weapon being good at slapping but nothing else.",
@@ -234,36 +235,18 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Infodump Tutorial (partly outdated)";
+						return "Menu Tutorial";
 					}
 
 					@Override
 					public boolean go() {
-						extra.println("Thanks for playing Trawel! Here's a few tips about learning how to play:");
-						extra.println("All of Trawel proper, and most of the side games, only require inputing a number between 1 and 9.");
-						extra.println();
-						extra.println("There are a few games in Trawel, but the one simply called 'Trawel' has the following advice:");
-						extra.println("Always be on the lookout for better gear than you currently have. Your power level is largely determined by how powerful your gear is- not just it's level.");
-						extra.println("There are three primary attack and defense types, sharp, blunt, and pierce.");
-						extra.println("Sharp is edged and cutting. Swords are good at it, and chainmail is good at defending from it. Some materials are softer, like Gold, and thus bad at it.");
-						extra.println("Blunt is heavy and crushing. Maces are good at it, and gold is good at defending from it- and also dealing it.");
-						extra.println("Pierce is pointy and puncturing. Spears are good at it, and metals are better at defending from it.");
-						extra.println("If you're feeling tactical, you can read your opponent's equipment to try to determine which type they are weak to.");
-						extra.println("As you play the game, you'll get a grasp of the strengths and weaknesses of varying materials and weapons. It's part of the fun of the game!");
-						extra.println("Attacks have a delay amount (further broken down into warmup/cooldown) and a hitchance, along with damage types.");
-						extra.println("Delay is how long it takes for the attack to happen- it can be thought of how 'slow' the attack is, so lower is better. Warmup is the period before you act, and Cooldown is the period after- but you can't choose another action until both elapse.");
-						extra.println("Hitchance is the opposite- higher is more accurate. However, it is not a percent chance to hit, as it does not account for the opponent's dodge, which can change over time.");
-						extra.println("Enchantments can be both good and bad, so keep an eye out for gear that has low stats but boosts overall stats a high amount- or gear that makes you much weaker!");
-						extra.println("When looting equipment, you are shown the new item, then your current item, and then the stat changes between the two- plus for stat increases, minus for stat decreases. The difference will not show stats that remain the same.");
-						extra.println("Value can be a good rough indicator of quality, but it does not account for the actual effectiveness of the item, just the rarity and tier.");
-						extra.println("For example, gold (a soft metal) sharp/piercing weapons are expensive but ineffective.");
-						extra.println("When in combat, you will be given 3 (by default, skills and circumstance may change this) random attacks ('opportunities') to use your weapon.");
-						extra.println("Pay close attention to hit, warmup/cooldown, and sbp (sharp, blunt, pierce) damage.");
-						extra.println("More simply: Higher is better, except in the case of delay (warmup and cooldown).");
-						extra.println("Leveling Terms: WELVL is weapon effective level this starts at 10 and goes up from the Crude tier. LHP is Leveled HP. This is 100 at level 0, and goes up by 10 every level.");
-						extra.println("Bleed lists a % of LHP. It also caps out at two levels higher than your own, like many other leveled mechanics.");
-						extra.println("Well, you made it through bootcamp. Have fun!");
-						extra.println("-realDragon");
+						extra.println("In Trawel, you navigate the game world, and make choices, with numbered menu lists.");
+						extra.println("In Trawel proper (some subgames differ), there will never be an option presented that is greater than 9 or less than 1. Some newer menus have scrolling, but they will only ever show a max of 9 options at a time.");
+						extra.println("If you're playing from Steam, you can click these options, press a number key (numpad or number row), or even use a controller. If you're using the terminal, you'll have to input the number and then press enter.");
+						extra.println("Terminal Only: Currently, the terminal also lets you input 0 to attempt to leave the current menu, and 10 to attempt to leave up to 10 menus. This will only work if there is a 'pinned' back option, and that option isn't considered to lead in circles. Usually you'll end up at the town screen, but older menus might not have a pinned back out, some don't have backing out by design, and others wouldn't make sense to back out of. It will also 'break' the backing out if the state changes, for example after you finish looting, it won't back you out of where you're looting.");
+						extra.println("Graphical Only: The graphical client has a few bonus features not immediately evident. You can press the scroll wheel to automatically scroll to the bottom. The 'Jump' option lets you have the game scroll, print new text without scrolling, or jump instantly on new text. 'Fancy' mode disables some rendering that might bug on certain hardware, and is generally less intensive. You can use the arrow keys to scroll, but more importantly, controllers have their 'dpads' rigged up with their 'a' and 'b' type buttons.");
+						extra.println("Tips: Menus in Trawel are increasingly being designed so that as many options as possible occupy the same number each time you enter them. In some menus, the options change so much that this isn't possible, or there is an edge case where it doesn't work. But the Player menu is very stable within a version, so you can navigate that without needing to read (or listen to) the contents.");
+						extra.println("Many older menus do not behave like this, and are slowly being converted.");
 						return false;
 					}});
 				mList.add(new MenuSelect() {

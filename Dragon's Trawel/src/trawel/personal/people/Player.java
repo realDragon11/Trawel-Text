@@ -867,6 +867,43 @@ public class Player extends SuperPerson{
 								}});
 							return false;
 						}});
+				}else {
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Infodump Tutorial (partly outdated)";
+						}
+
+						@Override
+						public boolean go() {
+							extra.println("Thanks for playing Trawel! Here's a few tips about learning how to play:");
+							extra.println("All of Trawel proper, and most of the side games, only require inputing a number between 1 and 9.");
+							extra.println();
+							extra.println("There are a few games in Trawel, but the one simply called 'Trawel' has the following advice:");
+							extra.println("Always be on the lookout for better gear than you currently have. Your power level is largely determined by how powerful your gear is- not just it's level.");
+							extra.println("There are three primary attack and defense types, sharp, blunt, and pierce.");
+							extra.println("Sharp is edged and cutting. Swords are good at it, and chainmail is good at defending from it. Some materials are softer, like Gold, and thus bad at it.");
+							extra.println("Blunt is heavy and crushing. Maces are good at it, and gold is good at defending from it- and also dealing it.");
+							extra.println("Pierce is pointy and puncturing. Spears are good at it, and metals are better at defending from it.");
+							extra.println("If you're feeling tactical, you can read your opponent's equipment to try to determine which type they are weak to.");
+							extra.println("As you play the game, you'll get a grasp of the strengths and weaknesses of varying materials and weapons. It's part of the fun of the game!");
+							extra.println("Attacks have a delay amount (further broken down into warmup/cooldown) and a hitchance, along with damage types.");
+							extra.println("Delay is how long it takes for the attack to happen- it can be thought of how 'slow' the attack is, so lower is better. Warmup is the period before you act, and Cooldown is the period after- but you can't choose another action until both elapse.");
+							extra.println("Hitchance is the opposite- higher is more accurate. However, it is not a percent chance to hit, as it does not account for the opponent's dodge, which can change over time.");
+							extra.println("Enchantments can be both good and bad, so keep an eye out for gear that has low stats but boosts overall stats a high amount- or gear that makes you much weaker!");
+							extra.println("When looting equipment, you are shown the new item, then your current item, and then the stat changes between the two- plus for stat increases, minus for stat decreases. The difference will not show stats that remain the same.");
+							extra.println("Value can be a good rough indicator of quality, but it does not account for the actual effectiveness of the item, just the rarity and tier.");
+							extra.println("For example, gold (a soft metal) sharp/piercing weapons are expensive but ineffective.");
+							extra.println("When in combat, you will be given 3 (by default, skills and circumstance may change this) random attacks ('opportunities') to use your weapon.");
+							extra.println("Pay close attention to hit, warmup/cooldown, and sbp (sharp, blunt, pierce) damage.");
+							extra.println("More simply: Higher is better, except in the case of delay (warmup and cooldown).");
+							extra.println("Leveling Terms: WELVL is weapon effective level this starts at 10 and goes up from the Crude tier. LHP is Leveled HP. This is 100 at level 0, and goes up by 10 every level.");
+							extra.println("Bleed lists a % of LHP. It also caps out at two levels higher than your own, like many other leveled mechanics.");
+							extra.println("Well, you made it through bootcamp. Have fun!");
+							extra.println("-realDragon");
+							return false;
+						}});
 				}
 				list.add(new MenuBack("Exit Menu."));
 				return list;
