@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import derg.menus.MenuBack;
 import derg.menus.MenuItem;
 import derg.menus.MenuLast;
 import derg.menus.MenuLine;
@@ -950,19 +951,10 @@ public class Inventory implements java.io.Serializable{
 							}});
 					}
 					
-					list.add(new MenuLast() {
-						
-						@Override
-						public String title() {
-							return extra.capFirst(text)+" nothing.";
-						}
-
-						@Override
-						public boolean go() {
-							return true;
-						}});
+					list.add(new MenuBack(extra.capFirst(text)+" nothing."));
 				}else {
-					list.add(new MenuLast() {
+					//clear the back queue if what the player is looking at changes
+					list.add(new MenuBack() {
 	
 						@Override
 						public String title() {

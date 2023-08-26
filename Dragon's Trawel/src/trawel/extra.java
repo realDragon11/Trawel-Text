@@ -48,6 +48,7 @@ public final class extra {
 	private static final int debugChunkPer = 10;
 	private static boolean debugPrint = false;
 	private static int debugChunk = 0;
+	private static int backingQueue = 0;
 	
 	public static final String IMPACT_TIP = "Impactful attacks are typically those that hit and deal damage without reliable forcing damage.";
 	
@@ -439,6 +440,10 @@ public final class extra {
 		}
 		
 		public static final boolean yesNo() {
+			if (backingQueue > 0) {
+				backingQueue--;
+				return false;
+			}
 			String str;
 			trawel.threads.BlockTaskManager.start();
 			while (true) {
@@ -449,6 +454,13 @@ public final class extra {
 					//while(true) {
 					int ini = Networking.nextInt();
 					while(ini != 1 && ini != 9) {
+						if (ini == 0) {
+							return false;
+						}
+						if (ini == 10) {
+							backingQueue = 10;
+							return false;
+						}
 						extra.println("Please type 1 or 9.");
 						extra.println("1 yes");
 						extra.println("9 no");
@@ -488,18 +500,48 @@ public final class extra {
 		}
 		
 		public static final int inInt(int max) {
-			return inInt(max,false);
+			return inInt(max,false,false);
+		}
+		
+		/**
+		 * prevents the player from automatically backing out from one case to another
+		 * <br>
+		 * example: player might want to back out of drawbane selection, inventory selection, etc manually
+		 */
+		public static final void endBackingSegment() {
+			backingQueue = 0;
 		}
 
-		public static final int inInt(int max, boolean alwaysNine) {
+		public static final int inInt(int max, boolean alwaysNine, boolean canBack) {
+			if (backingQueue > 0) {
+				if (canBack) {
+					backingQueue--;
+					return 9;
+				}else {
+					backingQueue = 0;
+				}
+			}
 			Networking.sendStrong("Entry|Activate|" + max + "|");
 			trawel.threads.BlockTaskManager.start();
 			int ini=  Networking.nextInt();
-			while(!(alwaysNine && ini == 9) && (ini < 1 || ini > max)) {
+			while((ini < 1 || ini > max)) {
+				if (alwaysNine && ini == 9) {
+					break;
+				}
+				if (canBack && ini == 10) {
+					backingQueue = 10;
+					ini = 9;
+					break;
+				}
+				if (canBack && ini == 0) {
+					ini = 9;
+					break;
+				}
 				if (ini != -2) {//silent loading
 					extra.println("Please type a number from 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
 				}
-				ini= Networking.nextInt();
+				ini = Networking.nextInt();
+				
 				if (ini == -99) {
 					Networking.unConnect();
 					throw new RuntimeException("invalid input stream error");
@@ -705,6 +747,7 @@ public final class extra {
 			List<MenuItem> mList = new ArrayList<MenuItem>();
 			int v;
 			boolean forceLast;
+			boolean canBack;
 			List<MenuItem> subList;
 			while (true) {
 				mList = mGen.gen();
@@ -713,12 +756,14 @@ public final class extra {
 				}
 				v = 1;
 				forceLast = false;
+				canBack = false;
 				subList = new ArrayList<MenuItem>();
 				for (MenuItem m: mList) {
 					if (m.forceLast()) {
 						subList.add(m);
 						extra.println("9 " + m.title());
 						forceLast = true;
+						canBack = m.canBack();
 						//force last must be last, and pickable
 						//UPDATE: it works with other labels after it now
 						continue;
@@ -739,7 +784,7 @@ public final class extra {
 				if (!forceLast) {
 					val = extra.inInt(subList.size())-1;
 				}else {
-					val = extra.inInt(subList.size()-1,true)-1;
+					val = extra.inInt(subList.size()-1,true,canBack)-1;
 				}
 				boolean ret;
 				if (val < subList.size()) {

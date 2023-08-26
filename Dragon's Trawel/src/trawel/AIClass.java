@@ -438,6 +438,7 @@ public class AIClass {
 	}
 	
 	public static void playerLoot(Inventory loot, boolean canAtomSmash) {
+		extra.endBackingSegment();
 		boolean normalLoot = loot.getRace().racialType == Race.RaceType.PERSONABLE;
 		if (normalLoot && Player.getTutorial()) {
 			extra.println("You are now looting something! The first item presented will be the new item, the second, your current item, and finally, the difference will be shown. Some items may be autosold if all their visible stats are worse.");
@@ -507,9 +508,11 @@ public class AIClass {
 			}
 		}
 		Networking.charUpdate();
+		extra.endBackingSegment();
 		for (DrawBane db: loot.getDrawBanes()) {
 			Player.bag.addNewDrawBanePlayer(db);
 		}
+		extra.endBackingSegment();
 		loot.clearDrawBanes();
 		if (canAtomSmash) {
 			int aether = loot.getAether();
@@ -1051,7 +1054,7 @@ public class AIClass {
 						extra.println(j++ + " tactics");
 					}
 					extra.println("9 full examine");
-					numb = extra.inInt(j,true);
+					numb = extra.inInt(j,true,false);
 				}else {
 					numb = -numb;//restore attack choice
 				}
@@ -1070,7 +1073,7 @@ public class AIClass {
 					defender.displayHp();
 					//new debug examine code
 					extra.println("9 to repeat attacks.");
-					numb = extra.inInt(attacks.size(),true);
+					numb = extra.inInt(attacks.size(),true,false);
 					if (numb != 9) {
 						numb = -numb;//store attack choice
 					}

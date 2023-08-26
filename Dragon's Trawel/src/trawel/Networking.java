@@ -207,7 +207,7 @@ public class Networking {
 			try {
 				return Math.max(0,Integer.parseInt(in.nextLine()));
 			}catch(NumberFormatException e) {
-				return 0;
+				return -3;
 			}
 		}
 	}

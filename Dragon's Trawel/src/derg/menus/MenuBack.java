@@ -21,5 +21,10 @@ public class MenuBack extends MenuLast {
 	public boolean go() {
 		return true;
 	}
+	
+	@Override
+	public boolean canBack() {
+		return true;
+	}
 
 }

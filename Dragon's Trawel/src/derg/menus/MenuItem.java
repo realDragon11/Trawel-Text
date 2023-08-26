@@ -13,4 +13,8 @@ public interface MenuItem {
 	public boolean canClick();
 	
 	public boolean forceLast();
+	
+	public default boolean canBack() {
+		return false;
+	}
 }
