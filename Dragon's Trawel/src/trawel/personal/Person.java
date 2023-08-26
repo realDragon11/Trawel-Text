@@ -989,7 +989,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 
 					@Override
 					public boolean go() {
-						extra.println("not in yet");
+						extra.println("Display a dump of all skills granted?");
+						if (extra.yesNo()) {
+							fetchSkills().stream().forEach(s -> extra.println(s.explain()));
+						}
 						return false;
 					}});
 				list.add(new MenuSelect() {

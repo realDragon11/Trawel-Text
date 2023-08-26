@@ -291,7 +291,7 @@ public enum Skill{
 		}
 
 		public String explain() {
-			return (name + ": " + desc + "\n " + " " + longDesc);
+			return name + ": " + desc+ (longDesc != "" ? " ("+longDesc+")" : "");
 		}
 		
 		public MenuItem getMenuView() {
