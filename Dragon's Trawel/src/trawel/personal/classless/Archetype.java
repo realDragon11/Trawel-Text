@@ -75,11 +75,11 @@ public enum Archetype implements IHasSkills{
 			)
 	,FISH_TALL("Torrental Titan"
 			,"A raging force deep-sea bent on proving their conquest of land is inevitable."
-			,null
+			,"Grants disrespectful attacks that scale on strength."
 			,AType.RACIAL
 			,EnumSet.of(AGroup.DIRECT_BATTLE)
 			,EnumSet.of(FeatType.BATTLE)
-			,EnumSet.of(Skill.STERN_STUFF,Skill.RAW_GUTS,Skill.DSTRIKE)
+			,EnumSet.of(Skill.STERN_STUFF,Skill.RAW_GUTS,Skill.DSTRIKE,Skill.OPPORTUNIST)
 			)
 	/**
 	 * reference to Litheness in dragon quest 9
@@ -117,7 +117,7 @@ public enum Archetype implements IHasSkills{
 			)
 	,ARCHMAGE("Archmage"//now an AFTER archetype
 			,"Weaving spells has become as easy as breathing."
-			,"Grants no spells, but gives another skill config slot."
+			,"Grants no spells, but gives another arcany config slot."
 			,AType.AFTER
 			,EnumSet.of(AGroup.GRANTED_ARCANIST)//do not change or add to unless adding skill requirements to archetypes
 			,EnumSet.of(FeatType.ARCANE)

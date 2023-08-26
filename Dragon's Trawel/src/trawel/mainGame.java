@@ -1807,6 +1807,8 @@ public class mainGame {
 			assert player.getPerson().getFeatPoints() > 0;
 			if (!rerolls) {
 				//if they didn't get assigned one by the racial system, pick them randomly now
+				//note that this might pick a feat instead of an archetype, which is fine
+				//this will let the player actually get to see the 'second archetype' pick system in action
 				while (player.getPerson().getFeatPoints() > 0) {
 					player.getPerson().pickFeatRandom();
 				}

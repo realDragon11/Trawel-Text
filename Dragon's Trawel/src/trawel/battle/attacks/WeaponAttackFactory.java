@@ -842,6 +842,33 @@ public class WeaponAttackFactory {
 				return a.getEffectiveAttributeLevel(Math.max(a.getStrength(),a.getDexterity()));
 			}
 		});
+		sta = new Stance(Archetype.FISH_TALL,Skill.OPPORTUNIST);
+		sta.addTactic(
+				make("bitch slap")//idk the proper name for disrespectful slapping
+				.setFluff("X` slaps Y`!")
+				.setRarity(1f)
+				.setAcc(1.5f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.1f)
+				.setMix(0, 1, 0)
+				.setWarmupOfTotal(TimeTier.HALF_FAST, TimeTier.NORMAL)
+				,Skill.TACTIC_CHALLENGE);
+		sta.addTactic(
+				make("bitch hand")
+				.setFluff("X` backhands Y` and leaves their army to it!")
+				.setRarity(3f)//worse and more common so they aren't always slapping
+				.setAcc(1.2f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.5f)
+				.setMix(0, 1, 0)
+				.setWarmupOfTotal(TimeTier.HALF_NORMAL, TimeTier.SLOW)
+				,Skill.TACTIC_SINGLE_OUT);
+		addStance(Archetype.FISH_TALL,sta, new AttackLevel() {
+			
+			@Override
+			public int getEffectiveLevel(Person p) {
+				AttributeBox a = p.fetchAttributes();
+				return a.getEffectiveAttributeLevel(a.getDexterity());
+			}
+		});
 		
 		assert skillStances.size() > 0;
 	}

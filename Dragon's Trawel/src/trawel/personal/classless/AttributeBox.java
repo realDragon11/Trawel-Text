@@ -67,7 +67,16 @@ public class AttributeBox {
 		int aLevel = Math.round(attributeAverage/10f)+1;
 		int offset = aLevel-level;
 		int aOffset = Math.abs(offset);
-		int sign = offset/aOffset;//dumb but there's no math.signnum for ints
+		int sign;
+		if (offset > 0) {
+			sign = 1;
+		}else {
+			if (offset == 0) {
+				return level;
+			}else {
+				sign = -1;
+			}
+		}
 		switch (aOffset) {
 		default:
 			return Math.max(1,level+(sign*4));//max is 4
