@@ -593,16 +593,25 @@ public class Inventory implements java.io.Serializable{
 	
 	public Race swapRace(Race newRace) {
 		Race r = RaceFactory.getRace(race);
-		race = newRace.raceID();
+		setRace(newRace.raceID());
 		return r;
 	}
 	
 	public void setRace(RaceID race) {
+		/**
+		 * personable races don't quite have 'features' like beast-ish things might
+		 */
+		if (RaceFactory.getRace(race).racialType != Race.RaceType.PERSONABLE) {
+			if (RaceFactory.getRace(this.race).archetype != RaceFactory.getRace(race).archetype) {
+				owner.updateRaceArch();
+			}
+			owner.updateRaceWeapon();
+		}
 		this.race = race;
 	}
 
 	public void setRace(Race race) {
-		this.race = race.raceID();
+		setRace(race.raceID());
 	}
 
 	

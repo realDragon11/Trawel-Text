@@ -94,11 +94,27 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(Skill.BLITZ,Skill.DODGEREF,Skill.OPPORTUNIST)
 			)
 	,PROMOTED("Promoted","They made it big.",null
-			,AType.RACIAL
+			,AType.ADDED
 			,EnumSet.of(AGroup.DIRECT_BATTLE)
 			,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)
 			,EnumSet.of(Skill.TA_NAILS,Skill.STERN_STUFF, Skill.PLOT_ARMOR,Skill.NO_HOSTILE_CURSE)
 			)//should probably make a non-archetype owner version, idk what to call it, but the 'no hostile curse' is kinda important
+	,MIMIC("Mimic"
+			,"TODO"
+			,null
+			,AType.RACIAL
+			,EnumSet.of(AGroup.CRAFT)
+			,EnumSet.of(FeatType.TRICKS)
+			,EnumSet.of(Skill.RACIAL_SHIFTS)
+			)
+	,FELL_REAVER("Fell Reaver"
+			,"TODO"
+			,null
+			,AType.RACIAL
+			,EnumSet.of(AGroup.MAGIC)
+			,EnumSet.of(FeatType.CURSES)
+			,EnumSet.of(Skill.RACIAL_SHIFTS,Skill.CONDEMN_SOUL)
+			)
 	;
 	
 	private final String name, desc, stanceDesc;
@@ -123,7 +139,8 @@ public enum Archetype implements IHasSkills{
 	public enum AType{
 		RACIAL,//race archetypes
 		ENTRY,//can appear as first archetype choice, also later on
-		AFTER//can't appear as first choice, but can appear after first choice
+		AFTER,//can't appear as first choice, but can appear after first choice
+		ADDED//similar to perk, but mostly for npcs
 	}
 	
 	public enum AGroup{
@@ -277,12 +294,14 @@ public enum Archetype implements IHasSkills{
 	public static List<IHasSkills> getFeatChoices(Person person) {
 		List<IHasSkills> list = new ArrayList<IHasSkills>();
 		Set<Archetype> pAs = person.getArchSet();
-		if (pAs.size() == 0) {
-			list.addAll(getFirst(6,pAs));
+		int nonRacialAs = (int) pAs.stream().filter(a -> a.type != AType.RACIAL).count();
+		if (nonRacialAs == 0) {
+			list.addAll(getFirst(6,pAs));//current game never actually has this matter because the player gets it randomly chosen, or they get to pick it from the entire list
 			return list;
 		}
 		
-		if (pAs.size() == 1) {
+		//now tries to get you to have 2 + floor(level/5) archetypes
+		if (nonRacialAs < 2+Math.floor(person.getLevel()/5)) {
 			Set<Archetype> restrictSet = EnumSet.copyOf(pAs);
 			List<Archetype> newList = getFirst(2,restrictSet);//first moved up so that it doesn't get blocked by friends of friends basically
 			list.addAll(newList);
@@ -290,8 +309,9 @@ public enum Archetype implements IHasSkills{
 			list.addAll(getAfter(2,pAs.iterator().next(),restrictSet));
 			//fall through and fill the rest with normal feats
 		}
-		int baseArch = list.size();
-		if (baseArch == 0 && pAs.size() >= 2) {
+		/*int baseArch = list.size();
+		
+		if (baseArch == 0 && nonRacialAs >= 2) {
 			if (extra.chanceIn(1,3)) {//1 in 3 chance, but dupes just cause it to not go through
 				//this simulates decreasing as you get more
 				Archetype addA = extra.randCollection(AFTER_LIST);
@@ -305,14 +325,14 @@ public enum Archetype implements IHasSkills{
 					list.add(addA);
 				}
 			}
-		}
+		}*/
 		Set<Feat> fset = EnumSet.copyOf(person.getFeatSet());
 		Set<FeatType> allowSet = EnumSet.of(FeatType.COMMON);
 		for (Archetype a: pAs) {
 			allowSet.addAll(a.getFeatTypes());
 		}
-		if (list.size() < 6) {
-			list.addAll(Feat.randFeat(6-list.size(),allowSet,fset,person.fetchSkills())); 
+		if (list.size() < 8) {
+			list.addAll(Feat.randFeat(8-list.size(),allowSet,fset,person.fetchSkills())); 
 		}
 		
 		return list;
@@ -328,6 +348,7 @@ public enum Archetype implements IHasSkills{
 	}
 	
 	public static void menuChooseFirstArchetype(Person person) {
+		extra.println("Please choose a starting Archetype.");
 		List<Archetype> alist = new ArrayList<Archetype>();
 		alist.addAll(ENTRY_LIST);
 		//int start_points = person.getFeatPoints();
@@ -351,5 +372,38 @@ public enum Archetype implements IHasSkills{
 				return null;
 			}
 		});
+	}
+	
+	public static void menuChooseSecondArchetype(Person person) {
+		Archetype starting = person.getArchSet().stream().findAny().get();
+		extra.println("Please choose a second Archetype to go with "+starting.friendlyName()+".");
+		List<Archetype> alist = new ArrayList<Archetype>();
+		AFTER_LIST.stream().filter(a -> a.doesAfterWith(starting)).forEach(alist::add);;
+		alist.addAll(AFTER_LIST);
+		//int start_points = person.getFeatPoints();
+		extra.menuGo(new ScrollMenuGenerator(alist.size(),"previous <> Archetypes","next <> Archetypes") {
+			
+			@Override
+			public List<MenuItem> header() {
+				return null;
+			}
+			
+			@Override
+			public List<MenuItem> forSlot(int i) {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new FeatArchMenuPick(alist.get(i),person));
+				//should return if picked, so we don't even need to check anything
+				return list;
+			}
+			
+			@Override
+			public List<MenuItem> footer() {
+				return null;
+			}
+		});
+	}
+
+	public AType getType() {
+		return type;
 	}
 }

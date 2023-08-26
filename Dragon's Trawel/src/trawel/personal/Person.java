@@ -38,6 +38,7 @@ import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
+import trawel.personal.classless.Archetype.AType;
 import trawel.personal.classless.Skill.Type;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race;
@@ -174,7 +175,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	//private boolean isPlayer;
 	
 	//Constructor
-	protected Person(int level, boolean isAI, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar,AIJob job,Race race) {
+	protected Person(int level, boolean autolevel, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar,AIJob job,Race race) {
 		featSet = EnumSet.noneOf(Feat.class);
 		perkSet = EnumSet.noneOf(Perk.class);
 		archSet = EnumSet.noneOf(Archetype.class);
@@ -239,15 +240,27 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			}
 			title = "";
 		}
-		//placeOfBirth = extra.capFirst((String)extra.choose(randomLists.randomElement(),randomLists.randomColor()))+ " " +extra.choose("Kingdom","Kingdom","Colony","Domain","Realm");
 		
-		//brag = new Taunts(bag.getRace());
-		
-		if (giveScar) {
-			this.scar = RaceFactory.scarFor(bag.getRace().raceID());
-		}
 		this.level = (short)level;
-		featPoints = (short) (level-1);
+		featPoints = (short) (level);//now just straight up level
+		
+		
+		Race tRace = bag.getRace();
+		if (tRace.archetype != null && autolevel) {
+			archSet.add(tRace.archetype);
+			if (tRace.archetype.getType() != AType.RACIAL) {
+				featPoints--;
+				//if not racial, counts as their starting archetype.
+				//SlowStart now effectively grants a choice of the second archetype
+				//if this is set, and only the first if it isn't
+				//but the player will level up immediately, and will get to choose their second archetype from that menu
+				//when they please to do so
+			}
+		}
+		if (giveScar) {
+			this.scar = RaceFactory.scarFor(tRace.raceID());
+		}
+		
 		if (extra.chanceIn(1,5)) {
 			this.setRacism(true);
 			if (extra.chanceIn(4,5)) {
@@ -258,7 +271,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				this.setAngry(true);
 			}
 		}
-		if (isAI) {
+		if (autolevel) {
 			setFlag(PersonFlag.AUTOLEVEL, true);
 		}
 		effects = new EnumMap<Effect,Integer>(Effect.class);
@@ -276,8 +289,8 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		this(level,true,Race.RaceType.PERSONABLE,null,Person.RaceFlag.NONE,true);
 	}
 	
-	protected Person(int level, boolean aiLevel, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar) {
-		this(level,aiLevel,raceType,matType,raceFlag,giveScar,null,null);
+	protected Person(int level, boolean autolevel, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar) {
+		this(level,autolevel,raceType,matType,raceFlag,giveScar,null,null);
 	}
 	
 	protected Person(int level,AIJob job) {
@@ -1876,7 +1889,14 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			
 			break;
 		}
-		
+	}
+	
+	public void updateRaceArch() {
+		archSet.removeIf(a -> a.getType() == Archetype.AType.RACIAL);
+		Race tRace = bag.getRace();
+		if (tRace.archetype != null) {
+			archSet.add(tRace.archetype);
+		}
 	}
 
 	public void debug_print_status(int damageDone) {

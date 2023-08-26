@@ -9,6 +9,7 @@ import trawel.battle.attacks.TargetFactory;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceClass;
 import trawel.personal.RaceFactory.RaceID;
+import trawel.personal.classless.Archetype;
 import trawel.personal.item.Item;
 import trawel.personal.item.magic.EnchantConstant;
 
@@ -30,6 +31,14 @@ public class Race extends Item{
 	public TargetFactory.TargetType targetType;
 	public boolean emitsBlood;
 	public RaceClass raceClass;
+	
+	/**
+	 * note that you don't have to add this, and sometimes it will be better to set the racial archetype manually
+	 * in the RaceFactory generation code, for example not all drudger stock are mages
+	 * <br>
+	 * this will likely get removed if the race changes, but only if the archetype is flaged as racial
+	 */
+	public Archetype archetype;
 	
 	public SoundBox.Voice voice = SoundBox.Voice.NONE;
 	public float minPitch = 1, maxPitch = 1;

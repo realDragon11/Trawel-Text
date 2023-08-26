@@ -30,7 +30,6 @@ import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 
 public class RaceFactory {
-	public static Race misc = new Race(RaceID.EMPTY);
 	public static List<Race> raceList = new ArrayList<Race>();
 	public static Map<String,Race> raceMap = new HashMap<String,Race>();
 	private static Map<RaceID,PersonMaker> mookMakerIDMap = new EnumMap<RaceID,PersonMaker>(RaceID.class);
@@ -160,6 +159,7 @@ public class RaceFactory {
 	}
 	
 	public RaceFactory() {
+		Race misc;
 		misc = new Race(RaceID.HUMAN);
 		misc.swears.add("thinskin");
 		misc.swears.add("dominator");
@@ -325,6 +325,7 @@ public class RaceFactory {
 		misc.minPitch = audioSteps(-8);
 		misc.maxPitch = audioSteps(2);
 		misc.raceClass = RaceClass.ANTHRO_REPTILE;
+		misc.archetype = Archetype.ARMORMASTER;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.CAT_ANTHRO);//also maybe make nekos for funny reasons
@@ -355,6 +356,7 @@ public class RaceFactory {
 		misc.minPitch = audioSteps(2);
 		misc.maxPitch = audioSteps(8);
 		misc.raceClass = RaceClass.ANTHRO_FUR;
+		misc.archetype = Archetype.ACRO_DAREDEVIL;//temp
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.SLUG_ANTHRO);
@@ -440,6 +442,7 @@ public class RaceFactory {
 		misc.minPitch = audioSteps(0);
 		misc.maxPitch = audioSteps(10);
 		misc.raceClass = RaceClass.ANTHRO_FUR;//doing this with -1 map and nada makes you glow yellow so that's good
+		misc.archetype = Archetype.HEDGE_MAGE;//temp?
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.FUGUE);
@@ -483,6 +486,7 @@ public class RaceFactory {
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
 		misc.raceClass = RaceClass.ANTHRO_REPTILE;
+		misc.archetype = Archetype.SEA_SAGE;
 		raceList.add(misc);
 		
 		
@@ -538,6 +542,7 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.OPEN_MIMIC;
 		misc.emitsBlood = true;
 		misc.raceClass = RaceClass.VARIES;
+		misc.archetype = Archetype.MIMIC;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_MIMIC_CLOSED);
@@ -562,6 +567,7 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.MIMIC;
 		misc.emitsBlood = false;
 		misc.raceClass = RaceClass.VARIES;
+		misc.archetype = Archetype.MIMIC;
 		raceList.add(misc);
 		
 		
@@ -583,6 +589,7 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.S_REAVER;
 		misc.emitsBlood = true;
 		misc.raceClass = RaceClass.VARIES;
+		misc.archetype = Archetype.FELL_REAVER;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_REAVER_SHORT);
@@ -604,6 +611,7 @@ public class RaceFactory {
 		misc.emitsBlood = true;
 		misc.voice = SoundBox.Voice.MONSTER1;
 		misc.raceClass = RaceClass.VARIES;
+		misc.archetype = Archetype.FELL_REAVER;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_ENT);
@@ -748,6 +756,7 @@ public class RaceFactory {
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
 		misc.raceClass = RaceClass.UNDONE_BEAST;
+		misc.archetype = Archetype.HEDGE_MAGE;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_HARPY);
@@ -917,9 +926,10 @@ public class RaceFactory {
 		return p;
 	}
 	
-	public static Person makePlayerValid() {
+	public static Person makePlayerValid(boolean startingLevel) {
 		extra.offPrintStack();
-		Person p = new Person(1,false,Race.RaceType.PERSONABLE,null,Person.RaceFlag.NONE,true);
+		Person p = new Person(1,startingLevel,Race.RaceType.PERSONABLE,null,Person.RaceFlag.NONE,true);
+		p.setFlag(PersonFlag.AUTOLEVEL,false);
 		p.hTask = HostileTask.DUEL;
 		extra.popPrintStack();
 		p.updateSkills();

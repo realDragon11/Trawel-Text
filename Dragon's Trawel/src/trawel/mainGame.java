@@ -1774,8 +1774,8 @@ public class mainGame {
 					world = WorldGen.eoano();
 					extra.getThreadData().world = world;//init
 				}
-				manOne = RaceFactory.makePlayerValid();
-				manTwo = RaceFactory.makePlayerValid();
+				manOne = RaceFactory.makePlayerValid(!rerolls);
+				manTwo = RaceFactory.makePlayerValid(!rerolls);
 				if (!displayFight) {
 					extra.changePrint(true);
 				}
@@ -1805,11 +1805,16 @@ public class mainGame {
 			//Networking.send("Visual|Race|" + manOne.getBag().getRace().name+  "|");
 			Networking.charUpdate();
 			assert player.getPerson().getFeatPoints() > 0;
-			if (!rerolls) {//autopick first archetype for quickstart?
-				player.getPerson().pickFeatRandom();
+			if (!rerolls) {
+				//if they didn't get assigned one by the racial system, pick them randomly now
+				while (player.getPerson().getFeatPoints() > 0) {
+					player.getPerson().pickFeatRandom();
+				}
 				player.fillSkillConfigs();//fill any skill configs
 			}else {
 				Archetype.menuChooseFirstArchetype(manOne);
+				//now they get to pick a second one, because slowstart doesn't care about racial sterotypes
+				Archetype.menuChooseSecondArchetype(manOne);
 			}
 			player.setLocation(world.getStartTown());//also sets the player world
 			if (cheaty) {
