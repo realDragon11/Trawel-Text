@@ -32,7 +32,7 @@ public enum Effect{
 	DEPOWERED("Depowered","Unable to use some special abilities.",false,false),
 	MAIMED("Maimed","Loses one weapon attack choice per attack. Doesn't stack with Disarmed.",false,false),
 	CRIPPLED("Crippled","Dodge reduced to 80%. Stacks.",false,true),
-	HIT_VITALS("Damaged Vitals","Takes double condition damage. When attacking a part with no condition, roll another wound.",false,false),
+	HIT_VITALS("Shattered","Takes double condition damage. When attacking a part with no condition, roll another wound.",false,false),
 	BRAINED("Split Skull","Does not recover from further KO wounds.",false,false),
 	SINGLED_OUT("Singled Out","Those who attack this Person have a 2/3rds chance to attack them again afterwards.",false,false),
 	DUCKING("Ducking","Gains +0.2 flat dodge roll (not mult), but will be exhausted after the next attack after this attack completes.",false,false),

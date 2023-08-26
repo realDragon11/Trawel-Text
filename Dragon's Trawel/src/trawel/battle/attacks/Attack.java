@@ -435,11 +435,11 @@ public class Attack implements IAttack{
 		BLOODY("Bloody","The next attack will be %1$d%% less accurate. Applies up to %2$d bleed, expected %3$d.","Blood wells around their eyes!"),
 		
 		//perma 'condition loss' wounds
-		DEPOWER("Depower","Removes special abilities.","Depowered!"),
-		MAIMED("Maimed","Removes one attack choice each attack. Doesn't stack with Disarmed.","Maimed!"),
-		CRIPPLED("Crippled","Set to 80% of dodge mult. Stacks.","Crippled!"),
-		HIT_VITALS("Damaged Vitals","Takes double condition damage, and parts with low condition cause another wound to be inflicted.","Sundered and broken, their lifeforce wanes.."),//the unholy matrimony of dd1 and weaverdice wounds
-		BRAINED("Brained","KO wounds no longer heal. Also inflicts KO at %1$d.","Their skull is split!")
+		DEPOWER("Depower","Injury: Removes special abilities.","Depowered!"),
+		MAIMED("Maimed","Injury: Removes one attack choice each attack. Doesn't stack with Disarmed.","Maimed!"),
+		CRIPPLED("Crippled","Injury: Set to 80% of dodge mult. Stacks.","Crippled!"),
+		HIT_VITALS("Damaged Vitals","Injury: Takes double condition damage, and parts with low condition cause another wound to be inflicted.","Shattered!"),//the unholy matrimony of dd1 and weaverdice wounds
+		BRAINED("Brained","Injury: KO wounds no longer heal. Also inflicts KO at %1$d.","Split skull!")
 		;
 		//done line
 		public String name, desc, active;
