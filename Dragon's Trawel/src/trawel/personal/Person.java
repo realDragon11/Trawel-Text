@@ -641,6 +641,8 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	
 	public void finishWarmup() {
 		isWarmingUp = false;
+		//FIXME: did I REALLY not include this by accident?
+		speedFill += attackNext.getCooldown();
 	}
 	
 	public void finishTurn() {
@@ -1929,6 +1931,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	protected TypeBody internalBType() {
 		return bodyType;
 	}
+	/**
+	 * can apply negative discounts- use this to signal that the time didn't actually pass, we're just changing how long it takes
+	 */
 	public void applyDiscount(double time) {
 		speedFill-=time;
 	}

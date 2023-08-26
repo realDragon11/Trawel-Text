@@ -197,15 +197,18 @@ public enum Skill{
 		TACTIC_TEST("examine test","test"
 				,"test"
 				,Type.TACTIC_TYPE),
-		TACTIC_SINGLE_OUT("Tactic: Single Out","Grants use of a tactic that makes the target more likely to be chosen again by any Person that attacks it, with a 2/3rds chance to force them to attack again."
+		TACTIC_SINGLE_OUT("Tactic: Single Out","On use: Makes the target more likely to be chosen again by any Person that attacks it, with a 2/3rds chance to force them to attack again."
 				,"This does not make it more likely that it is chosen in the first place. Does not apply if was attacked by an ally."
 				,Type.TACTIC_TYPE),
-		TACTIC_DUCK_ROLL("Tactic: Duck 'n Roll","Grants use of a tactic that enhances dodge roll by a flat +0.2 and makes the next attack half the duration and more accurate, at the cost of half dodge during the attack following the attack that benefits."
+		TACTIC_DUCK_ROLL("Tactic: Duck 'n Roll","On use: Enhances dodge roll by a flat +0.2 and makes the next attack half the duration and more accurate, at the cost of half dodge during the attack following the attack that benefits."
 				,"Quicker attacks gain 1x-2x accuracy based on un-reduced duration below 100 instants, but slower attacks get more benefit from the delay reduction. Dodge bonus applies after normal dodge is rolled."
 				,Type.TACTIC_TYPE),
 		OPPORTUNIST("Opportunist","Grants a skill configuration to put active tactics in.",
 				""
-				,Type.ATTACK_TYPE)
+				,Type.ATTACK_TYPE),
+		TACTIC_CHALLENGE("Tactic: Challenge","On use: Forces your target to attack you: their current action is interrupted and they take an attack on you immediately, but they suffer an extended cooldown, you can negate an impactful wound if they hit, and you will attack them again with +20% damage if you not use the wound negation after the attack."
+				,"The extended cooldown is the normal cooldown plus twice the warmup of their attack, and reduced by the time spent on their canceled attack, down to a minimum of the normal cooldown. Fails if the target is using a tactic."
+				,Type.TACTIC_TYPE),
 		
 		
 		;
@@ -299,5 +302,18 @@ public enum Skill{
 					return " " + name + ": " + desc+ (longDesc != "" ? " ("+longDesc+")" : "");
 				}};
 			
+		}
+
+		public String explainEffect() {
+			switch (this) {
+			//tactic full mechanic descriptions are included elsewhere, this is just a quick overview
+			case TACTIC_CHALLENGE:
+				return "Tactic (Challenge): Force opponent to attack you, then attack them back.";
+			case TACTIC_DUCK_ROLL:
+				return "Tactic (Roll): Gain a dodge bonus for this attack and the next, and an accuracy bonus, but suffer from a half dodge after.";
+			case TACTIC_SINGLE_OUT:
+				return "Tactic (Single): Make attacks on this target likely to repeat.";
+			}
+			return "ERROR";
 		}
 }

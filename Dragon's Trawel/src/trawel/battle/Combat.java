@@ -1212,15 +1212,21 @@ public class Combat {
 				//|| damage == 0//wounds no longer hit if dam=0, if this needs to change, fix woundstring printing as well
 				//DOLATER: fix that?
 				//although they'll still not usually apply if damage == 0
-				if (atr.code == ATK_ResultCode.ARMOR) {
-					woundstr = " The armor deflects the wound.";
+				if (defender.hasEffect(Effect.CHALLENGE_BACK)) {
+					woundstr = " They stand strong with temerity!";
+					defender.removeEffectAll(Effect.CHALLENGE_BACK);
 				}else {
-					if (((defender.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 ))) {
-						woundstr = " They shrug off the blow!";
+					if (atr.code == ATK_ResultCode.ARMOR) {
+						woundstr = " The armor deflects the wound.";
 					}else {
-						woundstr = inflictWound(attacker,defender,atr,atr.attack.getWound());
+						if (((defender.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 ))) {
+							woundstr = " They shrug off the blow!";
+						}else {
+							woundstr = inflictWound(attacker,defender,atr,atr.attack.getWound());
+						}
 					}
 				}
+				
 				
 			}
 			if (atr.code == ATK_ResultCode.KILL) {//if force kill
@@ -1306,6 +1312,7 @@ public class Combat {
 			if (!extra.getPrint() && !didDisplay) {
 				extra.print(prettyHPColors(atr.stringer +woundstr,extra.TIMID_MAGENTA, attacker, defender));
 			}
+			
 			break;
 		case DODGE: case MISS:
 			if (!extra.getPrint() && !didDisplay) {
@@ -1513,6 +1520,37 @@ public class Combat {
 				Networking.waitIfConnected(800L);//was 500L
 			}else {
 				Networking.waitIfConnected(500L);//was 300L
+			}
+		}
+		//END TURN TRIGGERS
+		if (atr.attack.getAttack().getSkill_for() != null) {
+			switch (atr.attack.getAttack().getSkill_for()) {
+			case TACTIC_CHALLENGE:
+				//doesn't work on tactics
+				if (defender.isAttacking() && defender.getNextAttack().isTacticOnly()) {
+					if (!extra.getPrint() && !didDisplay) {
+						extra.print(" But they were using a tactic so it didn't work...");
+					}
+					break;
+				}
+				double discount =0;
+				if (defender.isAttacking() && !defender.isOnCooldown()) {
+					discount = Math.max(0,((defender.getTime()-defender.getNextAttack().getWarmup())));
+				}
+				setAttack(defender,attacker);
+				//the previous method adds time
+				//we could set it to 0 first, but it's less steps to just
+				//get the warmup directly since we already account for how much they get discounted
+				double cost = defender.getNextAttack().getWarmup();
+				//we set that we're going to attack them immediately, so if they confuse us, it might stick
+				dataMap.get(attacker).nextTarget = defender;
+				//apply our effect which softens the blow or enhances our attack
+				attacker.addEffect(Effect.CHALLENGE_BACK);
+				//their turn happens now
+				handleTurn(defender, attacker,canWait,0);
+				//they suffer a cost penalty to their cooldown
+				defender.applyDiscount(-((cost*2)-discount));
+				break;
 			}
 		}
 		
@@ -1794,6 +1832,7 @@ public class Combat {
 		}
 		//faster to not check and just put most likely
 		attacker.removeEffectAll(Effect.BRISK);
+		attacker.removeEffectAll(Effect.CHALLENGE_BACK);
 		
 		newAttack = AIClass.chooseAttack(atts,this,attacker,defender);
 		attacker.setAttack(newAttack);
@@ -1802,6 +1841,7 @@ public class Combat {
 		if (newAttack.getAttack().getSkill_for() != null) {
 			switch (newAttack.getAttack().getSkill_for()) {
 				default://most won't have cases
+				case TACTIC_CHALLENGE://handled later to avoid faux 'race' conditions
 					break;
 				case TACTIC_DUCK_ROLL:
 					attacker.addEffect(Effect.DUCKING);

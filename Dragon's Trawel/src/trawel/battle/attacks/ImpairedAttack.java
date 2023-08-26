@@ -93,10 +93,16 @@ public class ImpairedAttack implements IAttack{
 			}
 			double effectiveLevel = IEffectiveLevel.unEffective(IEffectiveLevel.effective(w_lvl));
 			double damMult = effectiveLevel*_style.damage;
+			
+			if (_attacker != null) {
+				if (attacker.hasEffect(Effect.CHALLENGE_BACK)) {
+					damMult*=1.2;
+				}
+			}
 
-			vals[0] = damageRoll(DamageType.SHARP,sMult*damMult);
-			vals[1] = damageRoll(DamageType.BLUNT,bMult*damMult);
-			vals[2] = damageRoll(DamageType.PIERCE,pMult*damMult);
+			vals[0] = damageRoll(DamageType.SHARP,sMult*damMult*physicalDamMult);
+			vals[1] = damageRoll(DamageType.BLUNT,bMult*damMult*physicalDamMult);
+			vals[2] = damageRoll(DamageType.PIERCE,pMult*damMult*physicalDamMult);
 			if (attack.isBypass() || !(_weapon != null && _weapon.isEnchantedHit())) {
 				vals[3] = damageRoll(DamageType.IGNITE,attack.getIgnite()*damMult*elementalDamMult);
 				vals[4] = damageRoll(DamageType.FROST,attack.getFrost()*damMult*elementalDamMult);
@@ -617,5 +623,9 @@ public class ImpairedAttack implements IAttack{
 	
 	public boolean isTacticOnly() {
 		return target == null;
+	}
+	
+	public boolean hasBonusEffect() {
+		return  attack.getSkill_for() != null && attack.getSkill_for() != attack.getStance().getSkill();
 	}
 }

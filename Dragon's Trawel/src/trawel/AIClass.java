@@ -1040,6 +1040,9 @@ public class AIClass {
 						for(ImpairedAttack a: attacks) {
 							extra.print(j + " ");
 							a.display(2);
+							if (a.hasBonusEffect()) {
+								extra.println("  "+a.getAttack().getSkill_for().explainEffect());
+							}
 							j++;
 						}
 						break;
