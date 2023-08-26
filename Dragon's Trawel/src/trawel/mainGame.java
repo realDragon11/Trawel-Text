@@ -122,6 +122,7 @@ public class mainGame {
 	public static boolean showLargeTimePassing;
 	public static boolean delayWaits;
 	public static boolean combatWaits;
+	public static boolean displayTargetSummary;
 	
 	public static boolean doAutoSave = true;
 	public static PrintStream logStream;
@@ -588,6 +589,21 @@ public class mainGame {
 											prefs.setProperty("othercombat_text", displayOtherCombat+"");
 											return false;
 										}});
+									list.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "Target Summary " + displayTargetSummary + " (If disabled, will not print target's stats in 1v1s or before attacking in mass battles.)";
+										}
+
+										@Override
+										public boolean go() {
+											displayTargetSummary = !displayTargetSummary;
+											prefs.setProperty("targetsummary_text", displayTargetSummary+"");
+											return false;
+										}});
+									
+									
 									
 								list.add(new MenuBack());
 								return list;
@@ -1329,6 +1345,7 @@ public class mainGame {
 		showLargeTimePassing= Boolean.parseBoolean(prefs.getProperty("largetime_wait","TRUE"));
 		delayWaits = Boolean.parseBoolean(prefs.getProperty("combattime_wait","FALSE"));//probably will perform poorly in mass battles
 		combatWaits = Boolean.parseBoolean(prefs.getProperty("combataction_wait","TRUE"));
+		displayTargetSummary = Boolean.parseBoolean(prefs.getProperty("targetsummary_text","TRUE"));
 		
 		if (autoConnect) {
 			System.out.println("Please wait for the graphical to load...");
