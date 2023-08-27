@@ -159,8 +159,8 @@ public class Forest extends Feature{
 		if (result) {
 			if (Math.random() > .5) {
 				extra.println("A fighter runs up and calls you a thief before launching into battle!");
-				Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
-				if (winner == Player.player.getPerson()) {
+				Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
+				if (c.playerWon() > 0) {
 					int gold = (2*tier)+extra.randRange(0,3);
 					extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
 					Player.player.addGold(gold);
@@ -198,13 +198,23 @@ public class Forest extends Feature{
 			break;
 			}
 			if (Math.random() > .8) {
-			extra.println("As you eat the mushroom, you hear a voice cry out:");
-			extra.print(extra.PRE_RED);
-			switch(extra.randRange(1,3)) {
-			case 1: extra.println("\"You dare violate the forest?!\"");break;
-			case 2: extra.println("\"Hey, I wanted that!\"");break;
-			case 3: extra.println("\"You dirty plant-thief!\"");break;}
-			mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getDryad(tier));
+				extra.println("As you eat the mushroom, you hear a voice cry out:");
+				extra.print(extra.PRE_BATTLE);
+				switch(extra.randRange(1,3)) {
+				case 1: 
+					extra.println("\"You dare violate the forest?!\"");
+					Player.player.fightWith(RaceFactory.getDryad(tier));
+					break;
+				case 2:
+					extra.println("\"Hey, I wanted that!\"");
+					Player.player.fightWith(RaceFactory.getMugger(tier));
+					break;
+				case 3:
+					extra.println("\"You dirty plant-thief!\"");
+					Player.player.fightWith(RaceFactory.getMugger(tier));
+					break;
+				}
+			
 			}
 			
 			;break;
@@ -212,14 +222,23 @@ public class Forest extends Feature{
 			extra.println("You pick up the mushroom to sell it.");
 			if (Math.random() > .8) {
 			extra.println("You hear someone cry out from behind you!");
-			extra.print(extra.PRE_RED);
+			extra.print(extra.PRE_BATTLE);
+			Combat c;
 			switch(extra.randRange(1,3)) {
-			case 1: extra.println("\"You dare violate the forest?!\"");break;
-			case 2: extra.println("\"Hey, I wanted that!\"");break;
-			case 3: extra.println("\"You dirty plant-thief!\"");break;
+			default:
+				extra.println("\"You dare violate the forest?!\"");
+				c = Player.player.fightWith(RaceFactory.getDryad(tier));
+				break;
+			case 2:
+				extra.println("\"Hey, I wanted that!\"");
+				c = Player.player.fightWith(RaceFactory.getMugger(tier));
+				break;
+			case 3:
+				extra.println("\"You dirty plant-thief!\"");
+				c = Player.player.fightWith(RaceFactory.getMugger(tier));
+				break;
 			}
-			Person winner = mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getDryad(tier));
-			if (winner == Player.player.getPerson()) {
+			if (c.playerWon() > 0) {
 				int gold = 2*extra.randRange(1,tier+1);
 				extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
 				Player.player.addGold(gold);
@@ -232,13 +251,21 @@ public class Forest extends Feature{
 		case 4:
 			extra.println("You crush the mushroom under your heel.");
 			extra.println("You hear someone cry out from behind you!");
-			extra.print(extra.PRE_RED);
+			extra.print(extra.PRE_BATTLE);
 			switch(extra.randRange(1,3)) {
-			case 1: extra.println("\"You dare violate the forest?!\"");break;
-			case 2: extra.println("\"Hey, I wanted that!\"");break;
-			case 3: extra.println("\"You dirty plant-crusher!\"");break;
+			case 1: 
+				extra.println("\"You dare violate the forest?!\"");
+				Player.player.fightWith(RaceFactory.getDryad(tier));
+				break;
+			case 2:
+				extra.println("\"Hey, I wanted that!\"");
+				Player.player.fightWith(RaceFactory.getMugger(tier));
+				break;
+			case 3:
+				extra.println("\"You dirty plant-crusher!\"");
+				Player.player.fightWith(RaceFactory.getMugger(tier));
+				break;
 			}
-			mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getDryad(tier));break;
 		}
 		
 	}
@@ -249,26 +276,24 @@ public class Forest extends Feature{
 		Person robber = RaceFactory.getMugger(tier);
 		robber.getBag().graphicalDisplay(1, robber);
 		if (help) {
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(), robber);
-	
-		if (winner == Player.player.getPerson()) {
-			int gold = extra.randRange(2,10)*tier;
-			extra.println("They give you a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them.");
-			Player.player.addGold(gold);
-		}else {
-			extra.println("They mugged you too!");
-			extra.println(Player.loseGold((20*tier)+extra.randRange(0,10),true));
-		}
+			Combat c = Player.player.fightWith(robber);
+			if (c.playerWon() > 0) {
+				int gold = extra.randRange(2,10)*tier;
+				extra.println("They give you a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them.");
+				Player.player.addGold(gold);
+			}else {
+				extra.println("They mugged you too!");
+				extra.println(Player.loseGold((20*tier)+extra.randRange(0,10),true));
+			}
 		}else {
 			extra.println("You walk away.");
 		}
 	}
 	
 	private void mugger2() {
-		extra.print(extra.PRE_RED);
-		extra.println("You see a mugger charge at you! Prepare for battle!");
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(),  RaceFactory.getMugger(tier));
-		if (winner == Player.player.getPerson()) {
+		extra.println(extra.PRE_BATTLE+"You see a mugger charge at you!");
+		Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
+		if (c.playerWon() > 0) {
 		}else {
 			extra.println("They rifle through your bags!");
 			extra.println(Player.loseGold((30*tier)+extra.randRange(0,20),true));
@@ -283,7 +308,7 @@ public class Forest extends Feature{
 		case 1: extra.println("There's something off about the corpse... You feel like you need to leave, so you do.");
 			break;
 		case 2:
-			extra.println(extra.PRE_RED+ "Something fell and horrible steps out of the hanged man's shadow!");
+			extra.println(extra.PRE_BATTLE+ "Something fell and horrible steps out of the hanged man's shadow!");
 			Person reaver = RaceFactory.makeFellReaver(tier);
 			Combat c = Player.player.fightWith(reaver);
 			if (c.playerWon() > 0) {
@@ -305,12 +330,14 @@ public class Forest extends Feature{
 		while (true) {
 		extra.println("You come across a dryad tending to a tree.");
 		extra.println("1 Leave");//DOLATER: fix menu
-		extra.print(extra.PRE_RED);
-		extra.println("2 Attack them.");
+		extra.println(extra.PRE_BATTLE+"2 Attack them.");
 		extra.println("3 Chat with them");
 		switch (extra.inInt(3)) {
 		default: case 1: extra.println("You leave the dryad alone");return;
-		case 2: extra.println("You attack the dryad!");mainGame.CombatTwo(Player.player.getPerson(), robber);return;
+		case 2: 
+			extra.println("You attack the dryad!");
+			Player.player.fightWith(robber);
+		return;
 		case 3: extra.println("The dryad turns and answers your greeting.");
 		while (true) {
 		extra.println("What would you like to ask about?");
@@ -332,13 +359,14 @@ public class Forest extends Feature{
 	}}
 	
 	private void treeOnPerson() {
+		Person p = RaceFactory.getMugger(tier);
+		p.getBag().graphicalDisplay(1, p);
 		extra.println("You stumble upon a person stuck under a fallen tree. Help them?");
 		if (extra.yesNo()) {
 			extra.println("You move the tree off of them.");
 			if (Math.random() > .9) {
-				extra.print(extra.PRE_RED);
-				extra.println("Suddenly, they attack you!");
-				mainGame.CombatTwo(Player.player.getPerson(), RaceFactory.getMugger(tier));
+				extra.println(extra.PRE_BATTLE+"Suddenly, they attack you!");
+				Player.player.fightWith(p);
 			}else {
 				if (Math.random() < .3) {
 					extra.println("They scamper off...");
@@ -368,12 +396,14 @@ public class Forest extends Feature{
 		while (true) {
 		extra.println("You come across an old fighter, resting on a log.");
 		extra.println("1 Leave");//DOLATER: fix menu
-		extra.print(extra.PRE_RED);
-		extra.println("2 Attack them.");
+		extra.println(extra.PRE_BATTLE+"2 Attack them.");
 		extra.println("3 Chat with them");
 		switch (extra.inInt(3)) {
 		default: case 1: extra.println("You leave the fighter alone");return;
-		case 2: extra.println("You attack the fighter!");mainGame.CombatTwo(Player.player.getPerson(), robber);return;
+		case 2: 
+			extra.println("You attack the fighter!");
+			Player.player.fightWith(robber);
+			;return;
 		case 3: extra.println("The old fighter turns and answers your greeting.");
 		while (true) {
 		extra.println("What would you like to ask about?");
@@ -402,19 +432,6 @@ public class Forest extends Feature{
 		}
 	}
 	
-	/*
-	private boolean fairyCircle2() {
-		extra.println("You find a fairy circle of mushrooms. Step in it?");
-		if (extra.yesNo()) {
-			extra.println("You step in it. You find yourseslf jerked nowhere. Your surroundings change...");
-			Player.player.setLocation(Player.world.getRandom(Player.player.getPerson().getLevel()));
-			return true;
-		}else {
-			extra.println("You stay away from the circle.");
-			return false;
-		}
-	}*/
-	
 	private void fairyCircle3() {
 		extra.println("You find a fairy circle of mushrooms. Step in it?");
 		if (extra.yesNo()) {
@@ -440,19 +457,71 @@ public class Forest extends Feature{
 	}
 	
 	private void lumerbjackDryad() {
-		//if (extra.chanceIn(1,2) ) {
+		Person robber = RaceFactory.getLumberjack(tier);
+		if (extra.chanceIn(1,3)) {
 			LocalDateTime t = LocalDateTime.now();
-			if (t.getMonth() == Month.DECEMBER && t.getDayOfMonth() > 14 && t.getDayOfMonth() < 25 ) {
-				extra.print(extra.PRE_RED);
-				extra.println("A person is chopping down a christmas tree! Attack them?");
-			}else {
-				extra.print(extra.PRE_RED);
-				extra.println("A lumberjack is chopping down a tree! Attack them?");
+			switch (t.getMonth()) {//lmao alphabetically ordered months
+			//enums are ordinal ordered, why does eclipse do this
+			case APRIL:
+				//idk how to describe medieval april fools day
+				extra.println(extra.PRE_BATTLE+"A person is chopping down tree covered in mud! Attack them?");
+				break;
+			case AUGUST:
+				//trawel v0.8 haha
+				extra.println(extra.PRE_BATTLE+"A person is chopping down a tree with the symbols 'v.8' carved into it! Attack them?");
+				break;
+			case DECEMBER:
+				//t.getDayOfMonth() > 14 && t.getDayOfMonth() < 25
+				extra.println(extra.PRE_BATTLE+"A person is chopping down a christmas tree! Attack them?");
+				break;
+			case FEBRUARY:
+				//valentines day
+				extra.println(extra.PRE_BATTLE+"A lumberjack is chopping down a tree with many hearts and initials carved into it! Attack them?");
+				break;
+			case JANUARY:
+				extra.println(extra.PRE_BATTLE+"A wannabe lumberjack has resolved to cut down more trees this year! Attack them?");
+				break;
+			case JULY:
+				//canada's independence day isn't pog enough to celebrate, so we celebrate
+				//https://www.holidayinsights.com/moreholidays/july/iforgotday.htm
+				extra.println("What were you doing again? There's a lumberjack here, should you attack them?");
+				break;
+			case JUNE:
+				//Emancipation Day, D day
+				robber.setRacism(true);//assigned racist at tree
+				extra.println(extra.PRE_BATTLE+"A racist is chopping down a tree. Attack them?");
+				break;
+			case MARCH:
+				//daylight savings, trawel doesn't have that lmao
+				//trawel has perfect years, but ironically it DOES have different rise and set times
+				extra.println(extra.PRE_BATTLE+"A lumberjack is chopping down a tree, apparently they need more paper for calender... clocks? You feel kinda bad, should you attack them?");
+				break;
+			case MAY:
+				//lot of war days, cinco de mayo included
+				extra.println(extra.PRE_BATTLE+"A lumberjack is chopping down a tree planted over a grave! Attack them?");
+				//lumberjacks truly have no chill in Trawel
+				break;
+			case NOVEMBER:
+				//truly sad business day has is rough being around cyber monday, black friday, and american thanksgiving
+				//https://www.holidayinsights.com/moreholidays/november/small-business-saturday.htm
+				extra.println(extra.PRE_BATTLE+"A lumberjack is fueling society's green! Attack them?");
+				break;
+			case OCTOBER:
+				//movie
+				extra.println(extra.PRE_BATTLE+"A person is chopping down a christmas tree?! Attack them?");
+				break;
+			case SEPTEMBER:
+				//american enough to choose labor day in september, not american enough to choose 9/11 as my sad holiday over june and may's
+				extra.println(extra.PRE_BATTLE+"A strikebreaker lumberjack is chopping down a tree without a permit! Attack them?");
+				break;	
 			}
-			Person robber = RaceFactory.getLumberjack(tier);
-			robber.getBag().graphicalDisplay(1, robber);
-			if (extra.chanceIn(1, 3)) {
-			robber.getBag().addDrawBaneSilently(DrawBane.ENT_CORE);}
+		}else {
+			extra.println(extra.PRE_BATTLE+"A lumberjack is chopping down a tree! Attack them?");
+		}
+		
+		robber.getBag().graphicalDisplay(1, robber);
+		if (extra.chanceIn(1, 3)) {
+		robber.getBag().addDrawBaneSilently(DrawBane.ENT_CORE);}
 		
 			extra.print(extra.PRE_RED);
 		if (extra.yesNo()) {

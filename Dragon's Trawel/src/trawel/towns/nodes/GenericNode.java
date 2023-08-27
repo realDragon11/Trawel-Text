@@ -372,25 +372,22 @@ public class GenericNode implements NodeType {
 	}
 	
 	private boolean basicRager(NodeConnector holder,int node) {
-		//if (holder.getStateNum(node) == 0) {
-			extra.println(extra.PRE_RED+holder.getStorageAsArray(node)[2]);
-			Person p = holder.getStorageFirstPerson(node);
-				Combat c = Player.player.fightWith(p);
-				if (c.playerWon() > 0) {
-					GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
-					holder.setForceGo(node,false);
-					return false;
-				}else {
-					return true;
-				}
-		//}
-		//return false;
+		extra.println(extra.PRE_RED+holder.getStorageAsArray(node)[2]);
+		Person p = holder.getStorageFirstPerson(node);
+		Combat c = Player.player.fightWith(p);
+		if (c.playerWon() > 0) {
+			GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
+			holder.setForceGo(node,false);
+			return false;
+		}else {
+			return true;
+		}
 	}
 	
 	private boolean basicDueler(NodeConnector holder,int node) {
 		Person p = holder.getStorageFirstPerson(node);
 		p.getBag().graphicalDisplay(1, p);
-		extra.println(extra.PRE_RED+holder.getStorageAsArray(node)[3]);
+		extra.println(extra.PRE_BATTLE+holder.getStorageAsArray(node)[3]);
 		if (extra.yesNo()) {
 			Combat c = Player.player.fightWith(p);
 			if (c.playerWon() > 0) {

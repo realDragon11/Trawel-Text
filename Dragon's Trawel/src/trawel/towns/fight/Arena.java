@@ -5,6 +5,7 @@ import java.util.List;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Player;
@@ -93,8 +94,8 @@ public class Arena extends Feature{
 	
 	private void doRematch() {
 		Player.addTime(.1);
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(),rematcher);
-		if (winner.isPlayer()) {
+		Combat c = Player.player.fightWith(rematcher);
+		if (c.playerWon() > 0) {
 			winners.remove(rematcher);
 		}
 	}
@@ -123,8 +124,8 @@ public class Arena extends Feature{
 			extra.println("It's round " + i + "...");
 			Person fighter = RaceFactory.getDueler(tier);
 			fighter.addXp(notFact(i));
-			Person winner = mainGame.CombatTwo(Player.player.getPerson(),fighter);
-			if (winner == Player.player.getPerson()) {
+			Combat c = Player.player.fightWith(fighter);
+			if (c.playerWon() > 0) {
 				if (i == rounds) {
 					extra.println("You win the tournment!");
 					Player.player.addTitle(this.getRewardTitle());

@@ -661,7 +661,7 @@ public class WorldGen {
 		pathToTown(lynchPin);
 	}
 	
-	public class PathTown {
+	public static class PathTown {
 		public Town t;
 		public int gScore = Integer.MAX_VALUE;
 		public int fScore = Integer.MAX_VALUE;
@@ -672,11 +672,10 @@ public class WorldGen {
 	}
 	public static List<Connection> aStarTown(Town from, Town dest) {
 		List<Town> towns = plane.getTowns();
-		WorldGen wg = new WorldGen();
 		List<PathTown> nodeList = new ArrayList<PathTown>();
 		PathTown start = null;
 		for (Town t: towns) {
-			nodeList.add(wg.new PathTown(t));
+			nodeList.add(new PathTown(t));
 			if (t.equals(from)) {
 				start = nodeList.get(nodeList.size()-1);
 			}

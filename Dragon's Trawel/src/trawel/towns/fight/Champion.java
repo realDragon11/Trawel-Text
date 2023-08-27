@@ -6,6 +6,7 @@ import java.util.List;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Agent;
@@ -78,8 +79,8 @@ public class Champion  extends Feature{
 		Networking.sendStrong("Discord|imagesmall|champion|Champion|");
 		extra.println(extra.PRE_RED+"Challenge " + person.getName() + "?");
 		if (extra.yesNo()) {
-			Person winner = mainGame.CombatTwo(Player.player.getPerson(),this.person);
-			if (winner == Player.player.getPerson()) {
+			Combat c = Player.player.fightWith(person);
+			if (c.playerWon() > 0) {
 				extra.println("You defeat the champion!");
 				Player.player.addTitle(person.getName() + " " + extra.choose("slayer","killer","champion-killer","champion"));
 				person = null;

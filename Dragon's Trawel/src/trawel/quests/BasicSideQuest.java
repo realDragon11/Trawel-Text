@@ -10,6 +10,7 @@ import derg.menus.MenuSelect;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
+import trawel.battle.Combat;
 import trawel.factions.Faction;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -200,7 +201,9 @@ public class BasicSideQuest implements Quest{
 
 								@Override
 								public boolean go() {
-									if (mainGame.CombatTwo(Player.player.getPerson(), q.targetPerson).equals(Player.player.getPerson())) {
+									
+									Combat c = Player.player.fightWith(q.targetPerson);
+									if (c.playerWon() > 0) {
 										//Player.player.eaBox.exeKillLevel += 1;
 										q.giver.locationF.addQR(q.giver);
 										q.desc = "Return to " + q.giverName + " at " + q.giver.locationF.getName() + " in " + q.giver.locationT.getName();
@@ -509,10 +512,6 @@ public class BasicSideQuest implements Quest{
 				q.giver.locationT = loc;
 				q.giver.overQuest = q;
 			q.target = new QuestR() {
-
-				/**
-				 * 
-				 */
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -536,8 +535,8 @@ public class BasicSideQuest implements Quest{
 
 								@Override
 								public boolean go() {
-									if (mainGame.CombatTwo(Player.player.getPerson(), q.targetPerson).equals(Player.player.getPerson())) {
-										//Player.player.eaBox.exeKillLevel += 1;
+									Combat c = Player.player.fightWith(q.targetPerson);
+									if (c.playerWon() > 0) {
 										q.giver.locationF.addQR(q.giver);
 										q.desc = "Return to " + q.giverName + " at " + q.giver.locationF.getName() + " in " + q.giver.locationT.getName();
 										cleanup();

@@ -279,11 +279,6 @@ public class Store extends Feature{
 		
 	}
 	
-	private void arraySwap(Item i,Item i2) {
-		items.remove(i2);
-		items.add(i);
-	}
-	
 	/**
 	 * 2 = can see, normal markup
 	 * <br>

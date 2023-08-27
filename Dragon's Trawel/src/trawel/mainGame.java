@@ -75,7 +75,7 @@ public class mainGame {
 			//add to front, changeviewer cycles to older ones when used
 			"b_4: {part 1/4} Added 'back out' option to terminal (graphical will get it when it gets other updates). Added a few new display options, check the reduced indicator menu again, and also various 'realtime waiting' options. Added 'tactics' which are persistent action options in combat that don't deal damage (requires skills), and also some skill stances which apply a tactic effect and also a normal attack.",
 			"b_4: {part 2/4} Changed up condition wounds a fair bit, turning them into an injury system to constrast the typically short-lived nature of normal wounds in combat. Getting brained or shattered can hurt quite a bit. A boss, 'Yore' was also added to the Dungeon of Fate, with a new battle condition-based dungeon mechanic. Baron of Hell also got a demon bodytype, and cloth was turned into patchwork, linen, and cotton.",
-			"b_4: {part 3/4} Added a 'pouch/bag' feature to store equipment, currently works quite well outside of making room for things you're not currently comparing. You menu reforged into 'Player' menu, which can save in Nodes now.",
+			"b_4: {part 3/4} Added a 'pouch/bag' feature to store equipment, currently works quite well outside of making room for things you're not currently comparing. You menu reforged into 'Player' menu, which can save in Nodes now. Includes character-exclusive settings like autolevel, autoloot, and autobattle.",
 			"b_4: {part 4/4} Enchanced compass into a full map, with directions to any visited town (and always Unun), and also town flavor in that menu, in addition to population and feature counts, timezone, etc. Display current time in hours and minutes in town menu.",
 			"b_3: {part 1/3} Tutorial mostly moved from 'feature text' to 'story'. Added saveable display options. Known issues: combat town Features need another cleanup with the new currency, mass battles have some balancing issues if they have an un-even number of fighters.",
 			"b_3: {part 2/3} Subtle changes to battle conditions. Effective level added, so level 2 is only a flat +10% better, not 2x better, which each further level being another +10% (level 3 is 1.3x mult, because level 1 is 1.1x). Stat tweaks on most species, some non-'personable' creatures now have barks and can loot money.",
@@ -1249,13 +1249,10 @@ public class mainGame {
 		try {
 		System.out.println(headerText());
 		extra.setMainThread();
-		new WorldGen();
 		logStream = new PrintStream("log.txt");
 		for (String a: args) {
 			if (a.toLowerCase().equals("autoconnect")){
 				autoConnect = true;
-				//extra.println("Please wait for the graphical to load...");
-				//Networking.autoConnect();
 			}
 			if (a.toLowerCase().equals("noguiinput")){
 				GUIInput = false;
