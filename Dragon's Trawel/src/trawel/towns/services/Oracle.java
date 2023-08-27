@@ -32,7 +32,7 @@ public class Oracle extends Feature{ //extends feature later
 	
 	private static List<String> emptyList = Collections.singletonList("tips not loaded!");
 	//FIXME: either need to distribute tips with game, or unpack them, or find a workaround to my jar loading issues with path redirections
-
+	//witness hell: https://stackoverflow.com/a/6247181
 	public Oracle(String string, int level) {
 		name = string;
 		tier = level;
