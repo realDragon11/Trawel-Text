@@ -23,6 +23,7 @@ import trawel.randomLists;
 import trawel.battle.BarkManager;
 import trawel.battle.attacks.Attack.Wound;
 import trawel.battle.attacks.ImpairedAttack;
+import trawel.battle.attacks.ImpairedAttack.DamageType;
 import trawel.battle.attacks.Stance;
 import trawel.battle.attacks.Target;
 import trawel.battle.attacks.TargetFactory.BloodType;
@@ -1937,11 +1938,11 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		Target t =bodystatus.getTargetReturn(spot).tar;
 		switch (extra.randRange(0,2)) {
 		case 0 :
-			return extra.randList(t.slashWounds);
+			return t.rollWound(DamageType.SHARP);
 		case 1: default:
-			return extra.randList(t.bluntWounds);
+			return t.rollWound(DamageType.BLUNT);
 		case 2 :
-			return extra.randList(t.pierceWounds);
+			return t.rollWound(DamageType.PIERCE);
 		}
 	}
 	

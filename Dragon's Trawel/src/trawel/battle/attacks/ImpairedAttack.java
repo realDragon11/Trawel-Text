@@ -127,26 +127,26 @@ public class ImpairedAttack implements IAttack{
 				double counter = extra.getRand().nextDouble() * (vals[0] + vals[1] + vals[2] + vals[3] + vals[4] + vals[5]);
 				counter-=vals[0];
 				if (counter<=0) {
-					this.wound = extra.randList(target.tar.slashWounds);
+					this.wound = target.tar.rollWound(DamageType.SHARP);
 				}else {
 					counter-=vals[2];
 					if (counter<=0) {
-						this.wound = extra.randList(target.tar.pierceWounds);
+						this.wound = target.tar.rollWound(DamageType.PIERCE);
 					}else {
 						counter-=vals[3];
 						if (counter<=0) {
-							this.wound = extra.randList(TargetFactory.fireWounds);
+							this.wound = target.tar.rollWound(DamageType.IGNITE);
 						}else {
 							counter-=vals[4];
 							if (counter<=0) {
-								this.wound = extra.randList(TargetFactory.freezeWounds);
+								this.wound = target.tar.rollWound(DamageType.FROST);
 							}else {
 								counter-=vals[5];
 								if (counter<=0) {
-									this.wound = extra.randList(TargetFactory.shockWounds);
+									this.wound = target.tar.rollWound(DamageType.ELEC);
 								}else {
 									//blunt is last to be a default for rounding errors
-									this.wound = extra.randList(target.tar.bluntWounds);
+									this.wound = target.tar.rollWound(DamageType.BLUNT);
 								}
 							}
 						}
