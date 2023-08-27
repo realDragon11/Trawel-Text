@@ -362,7 +362,7 @@ public class StoryTutorial extends Story{
 			lastKnownLevel++;
 			switch(lastKnownLevel) {
 			case 1:
-				extra.println("You have leveled up! You can spend skillpoints in this menu. You likely will want to select an 'Exotic Art' and then back out of that selection screen, to spend the skillpoint in the art you just unlocked.");
+				extra.println("You have leveled up! You can spend Feat Points in the Character menu through Feat Picks.");
 				break;
 			case 10:
 				extra.println("You're very high level! You can probably beat 80% of current Trawel content if you put your mind to it. If you're really ambitious, try to get to level 15.");

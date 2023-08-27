@@ -428,7 +428,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		boolean autoLeveled = false;
 		if (featPoints > 0 && getFlag(PersonFlag.AUTOLEVEL)) {
 			if (featPoints == 1) {//only one
-				pickFeatRandom();
+				IHasSkills gain = pickFeatRandom();
+				if (isPlayer()) {
+					extra.println(gain.getOwnText());
+				}
 				updateSkills();
 				autoLeveled = true;
 				if (superperson != null) {
@@ -440,6 +443,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 					if (gain == null) 
 					{
 						break;
+					}
+					if (isPlayer()) {
+						extra.println(gain.getOwnText());
 					}
 					skillSet.addAll(gain.giveSet());//doesn't compute them fully, just enough to understand requirements
 				}
@@ -864,7 +870,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			}
 			addFeatPoint(levels);
 			
-			autoLevelIf();
+			boolean autod = autoLevelIf();
 			
 			if (this.isPlayer()) {
 				Networking.send("PlayDelay|sound_magelevel|1|");
@@ -877,8 +883,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				if (level < 10 && level+levels >= 10) {
 					Networking.unlockAchievement("level10");
 				}
-				Player.player.addFeatPick(levels);//ai cannot delay leveling up, player can
-				playerSkillMenu();
+				if (!autod) {
+					Player.player.addFeatPick(levels);//ai cannot delay leveling up, player can
+					playerSkillMenu();
+				}
 			}
 			level+=levels;
 	}
