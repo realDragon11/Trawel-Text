@@ -53,6 +53,10 @@ public class Player extends SuperPerson{
 	private static final long serialVersionUID = 1L;
 	private Person person;
 	private boolean isAlive;
+	
+	public static Armor[] aLootArmors = new Armor[5];
+	public static Weapon aLootHand;
+	public static int aLootAether, aLootLocal;
 	public static Player player;
 	public static double passTime;
 	public static Inventory bag;

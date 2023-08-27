@@ -332,13 +332,11 @@ public class AIClass {
 	 * @param stash (Inventory)
 	 * @param aetherStuff if the items can be atom-smashed into aether
 	 */
-	public static void loot(Inventory loot, Inventory stash, boolean aetherStuff, Person p) {
+	public static void loot(Inventory loot, Inventory stash, boolean aetherStuff, Person p,boolean canEverDisplay) {
+		boolean display = canEverDisplay && !extra.getPrint();
 		//FIXME: convert to ai-only version since players must use the other one now
 		int i = 0;
 		boolean normalLoot = loot.getRace().racialType == Race.RaceType.PERSONABLE;
-		if (normalLoot && p.isPlayer() && Player.getTutorial()) {
-			extra.println("You are now looting something! The first item presented will be the new item, the second, your current item, and finally, the difference will be shown. Some items may be autosold if all their visible stats are worse.");
-		}
 		if (normalLoot) {
 			while (i < 5) {
 				if (compareItem(stash.getArmorSlot(i),loot.getArmorSlot(i),true,p)) {
@@ -436,10 +434,54 @@ public class AIClass {
 			}
 		}
 	}
+	/**
+	 * stores the current player inventory loot so we can display only the autoloot changes that stick
+	 */
+	public static void playerStashOldItems() {
+		Player.aLootHand = Player.bag.getHand();
+		for (int i = 0; i < 5;i++) {
+			Player.aLootArmors[i] = Player.bag.getArmorSlot(i);
+		}
+		Player.aLootAether = Player.bag.getAether();
+		Player.aLootLocal = Player.bag.getGold();
+	}
+	/**
+	 * NOTE: does not display non-local world currency changes
+	 */
+	public static void playerDispLootChanges() {
+		if (Player.aLootHand != Player.bag.getHand()) {
+			extra.println("AutoLoot: " + Player.aLootHand.getName() + " -> " + Player.bag.getHand().getName());
+		}
+		for (int i = 0; i < 5;i++) {
+			if (Player.aLootArmors[i] != Player.bag.getArmorSlot(i)) {
+				extra.println("AutoLoot: " + Player.aLootArmors[i].getName() + " -> " + Player.bag.getArmorSlot(i).getName());
+			}
+		}
+		if (Player.aLootAether != Player.bag.getAether()) {
+			extra.println("Aether: " + (Player.bag.getAether()-Player.aLootAether));
+		}
+		if (Player.aLootLocal != Player.bag.getGold()) {
+			extra.println("Local ("+World.currentMoneyString()+"): " + (Player.bag.getGold()-Player.aLootLocal));
+		}
+	}
 	
 	public static void playerLoot(Inventory loot, boolean canAtomSmash) {
-		extra.endBackingSegment();
 		boolean normalLoot = loot.getRace().racialType == Race.RaceType.PERSONABLE;
+		if (Player.player.getPerson().getFlag(PersonFlag.AUTOLOOT)) {
+			//TODO: we can use canAtomSmash to decide to display the updates here or if they're managed by a greater
+			//looting function, as with mass battles
+			if (canAtomSmash) {
+				playerStashOldItems();
+			}
+			loot(loot,Player.bag, canAtomSmash,Player.player.getPerson(), false);
+			if (canAtomSmash) {
+				playerDispLootChanges();
+			}
+			return;
+		}
+		
+		extra.endBackingSegment();
+		
 		if (normalLoot && Player.getTutorial()) {
 			extra.println("You are now looting something! The first item presented will be the new item, the second, your current item, and finally, the difference will be shown. Some items may be autosold if all their visible stats are worse.");
 		}

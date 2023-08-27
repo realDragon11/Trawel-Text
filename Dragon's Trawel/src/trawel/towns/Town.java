@@ -805,7 +805,7 @@ public class Town extends TContextOwner{
 					if (p.getLevel() < pLevel) {
 						extra.offPrintStack();
 						p.forceLevelUp(pLevel);
-						AIClass.loot(p.getBag(), new Inventory(pLevel, Race.RaceType.PERSONABLE, null, null, null), false,p);
+						AIClass.loot(p.getBag(), new Inventory(pLevel, Race.RaceType.PERSONABLE, null, null, null), false,p,false);
 						extra.popPrintStack();
 					}
 					int part1 = extra.randRange(0, 1);

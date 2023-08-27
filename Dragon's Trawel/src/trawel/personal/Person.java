@@ -114,6 +114,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		 *note that 'common' feats will still be accessible
 		 */
 		,CAN_LEARN
+		,AUTOBATTLE
 	}
 	//DOLATER: add a Set<Culture> that holds cultures. This can be used for advanced bigorty, cultural norms, etc etc
 	//this might also be used to hold a place of origin
@@ -1488,27 +1489,13 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public void setPersonType(PersonType pt) {
 		personType = pt;
 	}
-	
-	/**
-	 * Get's the string of where this person is 'from'
-	 * @return (String) - place of birth
-	 */
-	/*
-	public String whereFrom() {
-		return placeOfBirth;
-	}*/
 
 	public boolean isPlayer() {
 		return getFlag(PersonFlag.ISPLAYER);
 	}
 
 	public void setPlayer() {
-			//intellect = -2;
 			setFlag(PersonFlag.ISPLAYER,true);
-	}
-	
-	public void autoLootPlayer() {
-		setFlag(PersonFlag.AUTOLOOT,true);
 	}
 	
 	public boolean takeBeer() {

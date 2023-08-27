@@ -1421,7 +1421,7 @@ public class mainGame {
 			if (first_man.isPlayer()) {
 				AIClass.playerLoot(second_man.getBag(), true);
 			}else {
-				AIClass.loot(second_man.getBag(), first_man.getBag(), true,first_man);
+				AIClass.loot(second_man.getBag(), first_man.getBag(), true,first_man,true);
 			}
 		}
 
@@ -1588,6 +1588,7 @@ public class mainGame {
 				boolean isPlayer = surv.isPlayer();
 				if (isPlayer) {
 					Networking.setBattle(Networking.BattleType.NONE);
+					AIClass.playerStashOldItems();
 				}
 				surv.addXp(subReward);
 				/*if (!surv.isPersonable()) {
@@ -1598,15 +1599,19 @@ public class mainGame {
 						if (kill.isPlayer()) {
 							continue;//skip
 						}
-						if (isPlayer) {
+						if (isPlayer) {//if the surv examining this kill is the player
 							kill.getBag().graphicalDisplay(1,kill);
 							AIClass.playerLoot(kill.getBag(), false);
 							Networking.clearSide(1);
 						}else {
-							AIClass.loot(kill.getBag(),surv.getBag(),false,surv);
+							AIClass.loot(kill.getBag(),surv.getBag(),false,surv,true);
 						}
 					}
+					if (isPlayer) {
+						AIClass.playerDispLootChanges();
+					}
 				}
+				
 			}
 			
 			int gold = 0;
