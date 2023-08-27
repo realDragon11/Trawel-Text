@@ -345,7 +345,7 @@ public class AIClass {
 						extra.println(p.getNameNoTitle()+": Take " + loot.getArmorSlot(i).getName() + " over " + stash.getArmorSlot(i).getName()+".");
 					}
 					if (aetherStuff) {
-						Services.aetherifyItem(stash.getArmorSlot(i),stash);
+						Services.aetherifyItem(stash.getArmorSlot(i),stash,display);
 						stash.swapArmorSlot(loot.getArmorSlot(i),i);//we lose the ref to the thing we just deleted here
 						loot.setArmorSlot(null,i);
 					}else {
@@ -366,7 +366,7 @@ public class AIClass {
 					}
 				}else {
 					if (aetherStuff) {
-						Services.aetherifyItem(loot.getArmorSlot(i),stash);
+						Services.aetherifyItem(loot.getArmorSlot(i),stash,display);
 						loot.setArmorSlot(null,i);
 					}
 					if (graphicalDisplay) {//reject
@@ -395,7 +395,7 @@ public class AIClass {
 					extra.println(p.getNameNoTitle()+": Take " + loot.getHand().getName() + " over " + stash.getHand().getName()+".");
 				}
 				if (aetherStuff) {
-					Services.aetherifyItem(stash.getHand(),stash);
+					Services.aetherifyItem(stash.getHand(),stash,display);
 					stash.swapWeapon(loot.getHand());//we lose the ref to the thing we just deleted here
 					loot.setWeapon(null);
 				}else {
@@ -407,7 +407,7 @@ public class AIClass {
 					//no wait
 				}
 				if (aetherStuff) {
-					Services.aetherifyItem(loot.getHand(), stash);
+					Services.aetherifyItem(loot.getHand(), stash,display);
 					loot.setWeapon(null);
 				}
 			}
@@ -416,13 +416,13 @@ public class AIClass {
 			if (aetherStuff) {
 				while (i < 5) {
 					if (loot.getArmorSlot(i).canAetherLoot()) {
-						Services.aetherifyItem(loot.getArmorSlot(i),stash);
+						Services.aetherifyItem(loot.getArmorSlot(i),stash,display);
 						loot.setArmorSlot(null,i);
 					}
 					i++;
 				}
 				if (loot.getHand().canAetherLoot()) {
-					Services.aetherifyItem(loot.getHand(), stash);
+					Services.aetherifyItem(loot.getHand(), stash,display);
 					loot.setWeapon(null);
 				}
 			}
@@ -433,7 +433,7 @@ public class AIClass {
 				stash.addNewDrawBanePlayer(db);
 			}
 		}else {
-			//TODO drawbane taking ai
+			//MAYBELATER drawbane taking ai
 		}
 		if (aetherStuff) {
 			int aether = loot.getAether();
@@ -469,11 +469,11 @@ public class AIClass {
 	 */
 	public static void playerDispLootChanges() {
 		if (Player.aLootHand != Player.bag.getHand()) {
-			extra.println("AutoLoot: " + Player.aLootHand.getName() + " -> " + Player.bag.getHand().getName());
+			extra.println("AutoLoot: Take " + Player.bag.getHand().getName() + " over " + Player.aLootHand.getName()+".");
 		}
 		for (int i = 0; i < 5;i++) {
 			if (Player.aLootArmors[i] != Player.bag.getArmorSlot(i)) {
-				extra.println("AutoLoot: " + Player.aLootArmors[i].getName() + " -> " + Player.bag.getArmorSlot(i).getName());
+				extra.println("AutoLoot: Take " + Player.bag.getArmorSlot(i).getName() + " over " + Player.aLootArmors[i].getName()+".");
 			}
 		}
 		if (Player.aLootAether != Player.bag.getAether()) {
@@ -515,7 +515,7 @@ public class AIClass {
 						extra.println("You swap for the " + a.getName() + ".");
 					}else {
 						if (canAtomSmash) {
-							Services.aetherifyItem(replaceArmor,Player.bag);
+							Services.aetherifyItem(replaceArmor,Player.bag,true);
 							extra.println("You swap for the " + a.getName() + ".");
 							loot.setArmorSlot(null,a.getSlot());
 						}else {
@@ -524,7 +524,7 @@ public class AIClass {
 					}
 				}else {
 					if (canAtomSmash) {
-						Services.aetherifyItem(a,Player.bag);
+						Services.aetherifyItem(a,Player.bag,true);
 						loot.setArmorSlot(null,slot);
 					}
 				}
@@ -547,7 +547,7 @@ public class AIClass {
 				extra.println("You swap for the " + weap.getName() + ".");
 			}else {
 				if (canAtomSmash) {
-					Services.aetherifyItem(replaceWeap,Player.bag);
+					Services.aetherifyItem(replaceWeap,Player.bag,true);
 					extra.println("You swap for the " + weap.getName() + ".");
 				}
 			}
@@ -559,11 +559,11 @@ public class AIClass {
 					if (!a.canAetherLoot()) {
 						continue;
 					}
-					Services.aetherifyItem(a,Player.bag);
+					Services.aetherifyItem(a,Player.bag,true);
 					loot.setArmorSlot(null,slot);
 				}
 				if (loot.getHand().canAetherLoot()) {
-					Services.aetherifyItem(loot.getHand(),Player.bag);
+					Services.aetherifyItem(loot.getHand(),Player.bag,true);
 					loot.setWeapon(null);
 				}
 			}
@@ -1046,6 +1046,21 @@ public class AIClass {
 	
 	public static ImpairedAttack chooseAttack(List<ImpairedAttack> attacks,Combat combat, Person attacker, Person defender) {
 		if (attacker.isPlayer()) {
+			if (attacker.getFlag(PersonFlag.AUTOBATTLE)) {
+				ImpairedAttack att = AIClass.attackTest(attacks, 4, combat, attacker, defender);
+				extra.menuGo(new MenuGenerator() {
+
+					@Override
+					public List<MenuItem> gen() {
+						List<MenuItem> list = new ArrayList<MenuItem>();
+						list.add(new MenuBack("continue"));
+						//used so player can use 10 back out code instead of
+						//having to mash 1 if they want
+						return list;
+					}});
+				return att;
+			}
+			
 			List<Skill> tactics = Player.player.listOfTactics();
 			int numb = 9;
 			while (numb == 9 || numb < 1) {
@@ -1179,13 +1194,13 @@ public class AIClass {
 		if (AIClass.compareItem(current,found,person)) {
 			Item ret = person.getBag().swapItem(found);
 			if (ret != null) {
-				Services.aetherifyItem(ret,person.getBag());
+				Services.aetherifyItem(ret,person.getBag(),true);
 			}
 			if (person.isPlayer()) {
 				Networking.charUpdate();
 			}
 		}else {
-			Services.aetherifyItem(found,person.getBag());
+			Services.aetherifyItem(found,person.getBag(),true);
 		}
 	}
 

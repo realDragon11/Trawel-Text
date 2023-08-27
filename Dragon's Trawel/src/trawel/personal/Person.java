@@ -183,7 +183,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		archSet = EnumSet.noneOf(Archetype.class);
 		skillSet = EnumSet.noneOf(Skill.class);
 		
-		setFlag(PersonFlag.AUTOLOOT, true);
+		setFlag(PersonFlag.AUTOLOOT, false);//only applies to players anyway
 		setFlag(PersonFlag.SMART_COMPARE, true);
 		
 		xp = 0;
@@ -431,7 +431,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				pickFeatRandom();
 				updateSkills();
 				autoLeveled = true;
-				if (superperson != null && !isPlayer()) {
+				if (superperson != null) {
 					superperson.fillSkillConfigs();
 				}
 			}else {
@@ -445,7 +445,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				}
 				updateSkills();
 				autoLeveled = true;
-				if (superperson != null && !isPlayer()) {
+				if (superperson != null) {
 					superperson.fillSkillConfigs();
 				}
 			}

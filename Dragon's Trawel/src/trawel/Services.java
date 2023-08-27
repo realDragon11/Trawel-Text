@@ -103,10 +103,10 @@ public class Services {
 	 * @param item
 	 * @param dest
 	 */
-	public static void aetherifyItem(Item item, Inventory dest) {
+	public static void aetherifyItem(Item item, Inventory dest,boolean disp) {
 		int val = item.getAetherValue();
 		dest.addAether(val);
-		if (extra.getPrint()) {
+		if (!disp) {
 			return;
 		}
 		extra.println("The " + item.getName() + " dissolves into " + val + " aether." );

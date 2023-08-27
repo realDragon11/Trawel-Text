@@ -547,7 +547,9 @@ public class Player extends SuperPerson{
 		}
 		return list;
 	}
-	
+	/**
+	 * note that this uses the player it's called on when it can, not just the global player
+	 */
 	public void youMenu() {
 		extra.menuGo(new MenuGenerator() {
 
@@ -558,12 +560,104 @@ public class Player extends SuperPerson{
 
 					@Override
 					public String title() {
-						return "Display Options";
+						return "Settings";
 					}
 
 					@Override
 					public boolean go() {
-						mainGame.advancedDisplayOptions();
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> list = new ArrayList<MenuItem>();
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Display Options";
+									}
+
+									@Override
+									public boolean go() {
+										mainGame.advancedDisplayOptions();
+										return false;
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Character Options";
+									}
+
+									@Override
+									public boolean go() {
+										extra.menuGo(new MenuGenerator() {
+
+											@Override
+											public List<MenuItem> gen() {
+												List<MenuItem> list = new ArrayList<MenuItem>();
+												list.add(new MenuLine() {
+
+													@Override
+													public String title() {
+														return "AutoLoot will make the game use the NPC looting choices instead of your own for weapons and armor. Other choices are not affected, such as DrawBanes. It will only display changes. NPCs tend to understand how to compare weapons better than armor.";
+													}});
+												list.add(new MenuSelect() {
+
+													@Override
+													public String title() {
+														return " AutoLoot: " + person.getFlag(PersonFlag.AUTOLOOT);
+													}
+
+													@Override
+													public boolean go() {
+														person.setFlag(PersonFlag.AUTOLOOT, !person.getFlag(PersonFlag.AUTOLOOT));
+														return false;
+													}});
+												list.add(new MenuLine() {
+
+													@Override
+													public String title() {
+														return "AutoLevel will make the game pick Archetypes/Feats randomly from the selected choices each level up. It will also make it reconfigure your Skill Configs every time.";
+													}});
+												list.add(new MenuSelect() {
+
+													@Override
+													public String title() {
+														return " AutoLevel: " + person.getFlag(PersonFlag.AUTOLEVEL);
+													}
+
+													@Override
+													public boolean go() {
+														person.setFlag(PersonFlag.AUTOLEVEL, !person.getFlag(PersonFlag.AUTOLEVEL));
+														return false;
+													}});
+												list.add(new MenuLine() {
+
+													@Override
+													public String title() {
+														return "AutoBattle will make the game use NPC logic to pick which attacks to use instead of displaying them to you. You must still advance the combat, but the 'back out' option works.";
+													}});
+												list.add(new MenuSelect() {
+
+													@Override
+													public String title() {
+														return " AutoBattle: " + person.getFlag(PersonFlag.AUTOBATTLE);
+													}
+
+													@Override
+													public boolean go() {
+														person.setFlag(PersonFlag.AUTOBATTLE, !person.getFlag(PersonFlag.AUTOBATTLE));
+														return false;
+													}});
+												list.add(new MenuBack());
+												return list;
+											}});
+										return false;
+									}});
+								list.add(new MenuBack());
+								return list;
+							}});
 						return false;
 					}});
 				list.add(new MenuSelect() {
@@ -602,7 +696,7 @@ public class Player extends SuperPerson{
 									@Override
 									public boolean go() {
 										Player.player.getPerson().getBag().deepDisplay();
-										extra.println("You have " + Player.player.emeralds + " emeralds, " + Player.player.rubies +" rubies, and " + Player.player.sapphires +" sapphires.");
+										extra.println("You have " + emeralds + " emeralds, " + rubies +" rubies, and " + sapphires +" sapphires.");
 										return false;
 									}});
 								invList.add(new MenuSelect() {
@@ -636,7 +730,7 @@ public class Player extends SuperPerson{
 
 														@Override
 														public boolean go() {
-															Player.player.swapPouch(slot);
+															swapPouch(slot);
 															return false;
 														}});
 												}
@@ -654,7 +748,7 @@ public class Player extends SuperPerson{
 
 									@Override
 									public boolean go() {
-										while (Player.player.getPerson().getBag().playerDiscardDrawBane() != null);
+										while (person.getBag().playerDiscardDrawBane() != null);
 										return false;
 									}});
 								invList.add(new MenuSelect() {
@@ -710,7 +804,7 @@ public class Player extends SuperPerson{
 
 									@Override
 									public boolean go() {
-										Player.player.getPerson().facRep.display();
+										person.facRep.display();
 										return false;
 									}});
 								socList.add(new MenuSelect() {
@@ -722,7 +816,7 @@ public class Player extends SuperPerson{
 
 									@Override
 									public boolean go() {
-										Player.player.displayTitles();
+										displayTitles();
 										return false;
 									}});
 								socList.add(new MenuBack());
@@ -763,7 +857,7 @@ public class Player extends SuperPerson{
 
 					@Override
 					public boolean go() {
-						Player.player.getPerson().displayStats(false);
+						person.displayStats(false);
 						return false;
 					}});
 				list.add(new MenuSelect() {
@@ -807,9 +901,9 @@ public class Player extends SuperPerson{
 										@Override
 										public boolean go() {
 											//where we're going, level choices are no longer things...
-											Player.player.getPerson().setFlag(PersonFlag.AUTOLEVEL, true);
-											Player.player.getPerson().addXp(99999);
-											Weapon w = Player.bag.getHand();
+											person.setFlag(PersonFlag.AUTOLEVEL, true);
+											person.addXp(99999);
+											Weapon w = person.getBag().getHand();
 											for (int i = 0; i < 50;i++) {
 												w.levelUp();
 											}
@@ -824,9 +918,9 @@ public class Player extends SuperPerson{
 
 										@Override
 										public boolean go() {
-											Player.player.getPerson().addXp(9999);
-											Player.bag.addAether(999999);
-											Player.bag.addGold(999999);
+											person.addXp(9999);
+											person.getBag().addAether(999999);
+											person.getBag().addGold(999999);
 											return true;
 										}});
 									hackList.add(new MenuSelect() {
