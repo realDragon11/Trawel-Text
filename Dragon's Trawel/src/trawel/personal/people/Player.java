@@ -19,6 +19,9 @@ import trawel.randomLists;
 import trawel.factions.FBox;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
+import trawel.personal.classless.Archetype;
+import trawel.personal.classless.Feat;
+import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
 import trawel.personal.classless.Skill.Type;
@@ -872,42 +875,230 @@ public class Player extends SuperPerson{
 
 						@Override
 						public String title() {
-							return "Infodump Tutorial (partly outdated)";
+							return "Manual";
 						}
 
 						@Override
 						public boolean go() {
-							extra.println("Thanks for playing Trawel! Here's a few tips about learning how to play:");
-							extra.println("All of Trawel proper, and most of the side games, only require inputing a number between 1 and 9.");
-							extra.println();
-							extra.println("There are a few games in Trawel, but the one simply called 'Trawel' has the following advice:");
-							extra.println("Always be on the lookout for better gear than you currently have. Your power level is largely determined by how powerful your gear is- not just it's level.");
-							extra.println("There are three primary attack and defense types, sharp, blunt, and pierce.");
-							extra.println("Sharp is edged and cutting. Swords are good at it, and chainmail is good at defending from it. Some materials are softer, like Gold, and thus bad at it.");
-							extra.println("Blunt is heavy and crushing. Maces are good at it, and gold is good at defending from it- and also dealing it.");
-							extra.println("Pierce is pointy and puncturing. Spears are good at it, and metals are better at defending from it.");
-							extra.println("If you're feeling tactical, you can read your opponent's equipment to try to determine which type they are weak to.");
-							extra.println("As you play the game, you'll get a grasp of the strengths and weaknesses of varying materials and weapons. It's part of the fun of the game!");
-							extra.println("Attacks have a delay amount (further broken down into warmup/cooldown) and a hitchance, along with damage types.");
-							extra.println("Delay is how long it takes for the attack to happen- it can be thought of how 'slow' the attack is, so lower is better. Warmup is the period before you act, and Cooldown is the period after- but you can't choose another action until both elapse.");
-							extra.println("Hitchance is the opposite- higher is more accurate. However, it is not a percent chance to hit, as it does not account for the opponent's dodge, which can change over time.");
-							extra.println("Enchantments can be both good and bad, so keep an eye out for gear that has low stats but boosts overall stats a high amount- or gear that makes you much weaker!");
-							extra.println("When looting equipment, you are shown the new item, then your current item, and then the stat changes between the two- plus for stat increases, minus for stat decreases. The difference will not show stats that remain the same.");
-							extra.println("Value can be a good rough indicator of quality, but it does not account for the actual effectiveness of the item, just the rarity and tier.");
-							extra.println("For example, gold (a soft metal) sharp/piercing weapons are expensive but ineffective.");
-							extra.println("When in combat, you will be given 3 (by default, skills and circumstance may change this) random attacks ('opportunities') to use your weapon.");
-							extra.println("Pay close attention to hit, warmup/cooldown, and sbp (sharp, blunt, pierce) damage.");
-							extra.println("More simply: Higher is better, except in the case of delay (warmup and cooldown).");
-							extra.println("Leveling Terms: WELVL is weapon effective level this starts at 10 and goes up from the Crude tier. LHP is Leveled HP. This is 100 at level 0, and goes up by 10 every level.");
-							extra.println("Bleed lists a % of LHP. It also caps out at two levels higher than your own, like many other leveled mechanics.");
-							extra.println("Well, you made it through bootcamp. Have fun!");
-							extra.println("-realDragon");
+							extra.menuGo(new MenuGenerator() {
+
+								@Override
+								public List<MenuItem> gen() {
+									List<MenuItem> list = new ArrayList<MenuItem>();
+									list.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "Glossarys";
+										}
+
+										@Override
+										public boolean go() {
+											List<MenuItem> slist = new ArrayList<MenuItem>();
+											slist.add(new MenuSelect() {
+
+												@Override
+												public String title() {
+													return "Skills";
+												}
+
+												@Override
+												public boolean go() {
+													extra.println("Skills are abilities, typically conditional, that add things that your character can do. Most of them apply automatically, some give you more options, and others must be set up.");
+													extra.println("There are a lot of skills, but having a skill is a binary state- if you get it from another skill source, you still 'only' have it once. Simply put, skills don't stack with themselves.");
+													extra.println();
+													extra.println("Would you like to see a list of skills?");
+													if (extra.yesNo()) {
+														for (Skill s: Skill.values()) {
+															extra.println(s.explain());
+														}
+													}
+													return false;
+												}});
+											slist.add(new MenuSelect() {
+
+												@Override
+												public String title() {
+													return "Archetypes";
+												}
+
+												@Override
+												public boolean go() {
+													extra.println("Archetypes are a skill source, and uniquely unlock Feat Types that you can pick Feats from when you level up. Some archetypes also require similar archetypes to be obtained before they can be picked.");
+													extra.println("The game encourages you to have 2 + 1 for every 5 levels archetypes, but you are only required to unlock one before you can start picking Feats instead.");
+													extra.println();
+													extra.println("Would you like to see a list of archetypes?");
+													List<MenuItem> alist = new ArrayList<MenuItem>();
+													if (extra.yesNo()) {
+														for (Archetype a: Archetype.values()) {
+															alist.addAll(IHasSkills.dispMenuItem(a));
+														}
+													}
+													extra.menuGo(new ScrollMenuGenerator(alist.size(), "previous <> archetypes", "next <> archetypes") {
+
+														@Override
+														public List<MenuItem> forSlot(int i) {
+															return Collections.singletonList(alist.get(i));
+														}
+
+														@Override
+														public List<MenuItem> header() {
+															return null;
+														}
+
+														@Override
+														public List<MenuItem> footer() {
+															return Collections.singletonList(new MenuBack());
+														}});
+													return false;
+												}});
+											slist.add(new MenuSelect() {
+
+												@Override
+												public String title() {
+													return "Feats";
+												}
+
+												@Override
+												public boolean go() {
+													extra.println("Feats are a skill source, meaning they grant skills, might grant a skill config action to use, and attributes. Unlike other skill sources, feats tend to give 5 , 15, or 30 attribute points if they give a normal amount of skills.");
+													extra.println("All level up skill sources that aren't Archetypes are Feats.");
+													extra.println();
+													extra.println("Would you like to see a list of feats?");
+													List<MenuItem> alist = new ArrayList<MenuItem>();
+													if (extra.yesNo()) {
+														for (Feat a: Feat.values()) {
+															alist.addAll(IHasSkills.dispMenuItem(a));
+														}
+													}
+													extra.menuGo(new ScrollMenuGenerator(alist.size(), "previous <> archetypes", "next <> archetypes") {
+
+														@Override
+														public List<MenuItem> forSlot(int i) {
+															return Collections.singletonList(alist.get(i));
+														}
+
+														@Override
+														public List<MenuItem> header() {
+															return null;
+														}
+
+														@Override
+														public List<MenuItem> footer() {
+															return Collections.singletonList(new MenuBack());
+														}});
+													return false;
+												}});
+											slist.add(new MenuSelect() {
+
+												@Override
+												public String title() {
+													return "Perks";
+												}
+
+												@Override
+												public boolean go() {
+													extra.println("Perks are a skill source, granting skills and attributes.");
+													extra.println("Unlike Feats and Archetypes, you get Perks from doing stuff, like killing bosses, instead of by leveling up.");
+													extra.println();
+													extra.println("Would you like to see a list of perks?");
+													List<MenuItem> alist = new ArrayList<MenuItem>();
+													if (extra.yesNo()) {
+														for (Perk a: Perk.values()) {
+															alist.addAll(IHasSkills.dispMenuItem(a));
+														}
+													}
+													extra.menuGo(new ScrollMenuGenerator(alist.size(), "previous <> archetypes", "next <> archetypes") {
+
+														@Override
+														public List<MenuItem> forSlot(int i) {
+															return Collections.singletonList(alist.get(i));
+														}
+
+														@Override
+														public List<MenuItem> header() {
+															return null;
+														}
+
+														@Override
+														public List<MenuItem> footer() {
+															return Collections.singletonList(new MenuBack());
+														}});
+													return false;
+												}});
+											extra.menuGo(new ScrollMenuGenerator(slist.size(), "next <> terms", "previous <> terms"){
+
+												@Override
+												public List<MenuItem> forSlot(int i) {
+													return Collections.singletonList(slist.get(i));
+												}
+
+												@Override
+												public List<MenuItem> header() {
+													return Collections.singletonList(new MenuLine() {
+
+														@Override
+														public String title() {
+															return "Some terms include a total list of all their contents. These are typically quite long, and may include internal information that does not show up otherwise.";
+														}});
+												}
+
+												@Override
+												public List<MenuItem> footer() {
+													return Collections.singletonList(new MenuBack());
+												}
+												
+											});
+											return false;
+										}
+									});
+									list.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "Infodump Tutorial (partly outdated)";
+										}
+
+										@Override
+										public boolean go() {
+											extra.println("Thanks for playing Trawel! Here's a few tips about learning how to play:");
+											extra.println("All of Trawel proper, and most of the side games, only require inputing a number between 1 and 9.");
+											extra.println();
+											extra.println("There are a few games in Trawel, but the one simply called 'Trawel' has the following advice:");
+											extra.println("Always be on the lookout for better gear than you currently have. Your power level is largely determined by how powerful your gear is- not just it's level.");
+											extra.println("There are three primary attack and defense types, sharp, blunt, and pierce.");
+											extra.println("Sharp is edged and cutting. Swords are good at it, and chainmail is good at defending from it. Some materials are softer, like Gold, and thus bad at it.");
+											extra.println("Blunt is heavy and crushing. Maces are good at it, and gold is good at defending from it- and also dealing it.");
+											extra.println("Pierce is pointy and puncturing. Spears are good at it, and metals are better at defending from it.");
+											extra.println("If you're feeling tactical, you can read your opponent's equipment to try to determine which type they are weak to.");
+											extra.println("As you play the game, you'll get a grasp of the strengths and weaknesses of varying materials and weapons. It's part of the fun of the game!");
+											extra.println("Attacks have a delay amount (further broken down into warmup/cooldown) and a hitchance, along with damage types.");
+											extra.println("Delay is how long it takes for the attack to happen- it can be thought of how 'slow' the attack is, so lower is better. Warmup is the period before you act, and Cooldown is the period after- but you can't choose another action until both elapse.");
+											extra.println("Hitchance is the opposite- higher is more accurate. However, it is not a percent chance to hit, as it does not account for the opponent's dodge, which can change over time.");
+											extra.println("Enchantments can be both good and bad, so keep an eye out for gear that has low stats but boosts overall stats a high amount- or gear that makes you much weaker!");
+											extra.println("When looting equipment, you are shown the new item, then your current item, and then the stat changes between the two- plus for stat increases, minus for stat decreases. The difference will not show stats that remain the same.");
+											extra.println("Value can be a good rough indicator of quality, but it does not account for the actual effectiveness of the item, just the rarity and tier.");
+											extra.println("For example, gold (a soft metal) sharp/piercing weapons are expensive but ineffective.");
+											extra.println("When in combat, you will be given 3 (by default, skills and circumstance may change this) random attacks ('opportunities') to use your weapon.");
+											extra.println("Pay close attention to hit, warmup/cooldown, and sbp (sharp, blunt, pierce) damage.");
+											extra.println("More simply: Higher is better, except in the case of delay (warmup and cooldown).");
+											extra.println("Leveling Terms: WELVL is weapon effective level this starts at 10 and goes up from the Crude tier. LHP is Leveled HP. This is 100 at level 0, and goes up by 10 every level.");
+											extra.println("Bleed lists a % of LHP. It also caps out at two levels higher than your own, like many other leveled mechanics.");
+											extra.println("Well, you made it through bootcamp. Have fun!");
+											extra.println("-realDragon");
+											return false;
+										}});
+									list.add(new MenuBack());
+									return list;
+								}});
 							return false;
 						}});
-				}
+					};
+		
 				list.add(new MenuBack("Exit Menu."));
 				return list;
 			}});
+		
 	}
 	
 	private void mapScrollMenu() {
