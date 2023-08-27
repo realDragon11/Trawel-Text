@@ -89,7 +89,7 @@ public class Target{
 	public void addWound(DamageType dt, Wound wound, float rarity) {
 		List<WoundRarityTuple> list = tupleLists.getOrDefault(dt,null);
 		if (list == null) {
-			list = new ArrayList<Target.WoundRarityTuple>();
+			list = new ArrayList<WoundRarityTuple>();
 			tupleLists.put(dt, list);
 		}
 		list.add(new WoundRarityTuple(wound,rarity));
@@ -161,6 +161,7 @@ public class Target{
 			float[] fls = new float[size];
 			for (int i = 0; i < size;i++) {
 				fls[i] = list.get(i).rarity;
+				assert list.get(i).wound != null;
 			}
 			
 			woundTables.put(dt,new WeightedTable(fls));

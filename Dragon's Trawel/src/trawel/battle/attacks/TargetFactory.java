@@ -29,7 +29,7 @@ public class TargetFactory {
 	 * 3 slash 1 blunt 1 pierce
 	 */
 	private void addLeg_LimbWounds(Target t,Wound bleedReplace, float weightMult, float replaceRarity) {
-		if (bleedReplace == null) {
+		if (bleedReplace != null) {
 			if (replaceRarity > 0f) {
 				t.addWound(DamageType.SHARP, bleedReplace, replaceRarity);
 				t.addWound(DamageType.BLUNT, bleedReplace, replaceRarity);
@@ -45,7 +45,7 @@ public class TargetFactory {
 	}
 	
 	private void addArm_LimbWounds(Target t,Wound bleedReplace, float weightMult, float replaceRarity) {
-		if (bleedReplace == null) {
+		if (bleedReplace != null) {
 			if (replaceRarity > 0f) {
 				t.addWound(DamageType.SHARP, bleedReplace, replaceRarity);
 				t.addWound(DamageType.BLUNT, bleedReplace, replaceRarity);

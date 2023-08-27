@@ -1228,12 +1228,15 @@ public class Combat {
 						if (((defender.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 ))) {
 							woundstr = " They shrug off the blow!";
 						}else {
-							woundstr = inflictWound(attacker,defender,atr,atr.attack.getWound());
+							woundstr = inflictWound(attacker,defender,atr,attack.getWound());
+							if (attack.getWound() != Wound.GRAZE) {
+								if (attack.getWeapon() != null && attack.getWeapon().hasQual(Weapon.WeaponQual.DESTRUCTIVE)) {
+									defender.getBag().damageArmor(percent/3f, attack.getSlot());
+								}
+							}
 						}
 					}
 				}
-				
-				
 			}
 			if (atr.code == ATK_ResultCode.KILL) {//if force kill
 				//might not actually be final death, but this is fine to say
@@ -1579,12 +1582,6 @@ public class Combat {
 	private String inflictWound(Person attacker2, Person defender2, AttackReturn retu, Wound w) {
 			ImpairedAttack attack = attacker2.getNextAttack();
 			Integer[] nums = woundNums(attack,attacker2,defender2,retu,w);
-			boolean notFromAttack = false;
-			if (w == null) {
-				w = attack.getWound();
-			}else {
-				notFromAttack = true;//still uses attack's damage and such to apply
-			}
 			if (w == null) {
 				return "";//fails safely now
 			}
@@ -1675,11 +1672,6 @@ public class Combat {
 				 break;
 			case GRAZE://no effect
 				break;
-			}
-			if (!notFromAttack) {//grazes now still count for this
-				if (attack.getWeapon() != null && attack.getWeapon().hasQual(Weapon.WeaponQual.DESTRUCTIVE)) {
-					defender2.getBag().damageArmor((retu.damage/defender2.getMaxHp())/3f, attack.getSlot());
-				}
 			}
 			return (" " +w.active);
 	}

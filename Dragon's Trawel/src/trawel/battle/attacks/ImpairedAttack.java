@@ -60,102 +60,95 @@ public class ImpairedAttack implements IAttack{
 		double physicalDamMult = 1;
 		
 		double effectiveLevel;
+		assert !(_weapon == null && _attacker == null);//only one can be null
+		double sMult = attack.getSharp()*t.sharp;
+		double bMult = attack.getBlunt()*t.blunt;
+		double pMult = attack.getPierce()*t.pierce;
+		int w_lvl;
+		boolean alwaysWound = (_weapon != null && _weapon.isKeen());
+		//boolean isAttackTest = defender == null;
 		
-		switch (getType()) {
-		case FAKE_WEAPON:
-		case REAL_WEAPON:
-		case SKILL:
-			assert !(_weapon == null && _attacker == null);//only one can be null
-			double sMult = attack.getSharp()*t.sharp;
-			double bMult = attack.getBlunt()*t.blunt;
-			double pMult = attack.getPierce()*t.pierce;
-			int w_lvl;
-			boolean alwaysWound = (_weapon != null && _weapon.isKeen());
-			//boolean isAttackTest = defender == null;
-			
-			if (_weapon != null) {
-				w_lvl = _weapon.getLevel();//wow I was going crazy due to setting it to 10 here
-				effectiveLevel = IEffectiveLevel.unEffective(IEffectiveLevel.effective(w_lvl));
-				sMult *= _weapon.getMat().sharpMult;
-				bMult *= _weapon.getMat().bluntMult;
-				pMult *= _weapon.getMat().pierceMult;
-				if (_attacker != null) {
-					physicalDamMult *= _attacker.attMultStr();
-				}
-			}else {
-				IHasSkills attSource = attack.getSkillSource();
-				if (_attacker != null && attSource != null) {
-					w_lvl = attack.getStance().getEffectiveLevelFor(_attacker);
-					effectiveLevel = IEffectiveLevel.unEffective(w_lvl);
-					w_lvl-=10;
-					if (_attacker.hasSkill(Skill.ELEMENTALIST)) {
-						elementalDamMult*=1.1;//10% more elemental damage
-					}
-				}else {
-					throw new RuntimeException("invalid weapon resolved level for impaired attack");
-				}
-
-			}
-			
-			double damMult = effectiveLevel*_style.damage;
-			
+		if (_weapon != null) {
+			w_lvl = _weapon.getLevel();//wow I was going crazy due to setting it to 10 here
+			effectiveLevel = IEffectiveLevel.unEffective(IEffectiveLevel.effective(w_lvl));
+			sMult *= _weapon.getMat().sharpMult;
+			bMult *= _weapon.getMat().bluntMult;
+			pMult *= _weapon.getMat().pierceMult;
 			if (_attacker != null) {
-				if (attacker.hasEffect(Effect.CHALLENGE_BACK)) {
-					damMult*=1.2;
+				physicalDamMult *= _attacker.attMultStr();
+			}
+		}else {
+			IHasSkills attSource = attack.getSkillSource();
+			if (_attacker != null && attSource != null) {
+				w_lvl = attack.getStance().getEffectiveLevelFor(_attacker);
+				effectiveLevel = IEffectiveLevel.unEffective(w_lvl);
+				w_lvl-=10;
+				if (_attacker.hasSkill(Skill.ELEMENTALIST)) {
+					elementalDamMult*=1.1;//10% more elemental damage
 				}
+			}else {
+				throw new RuntimeException("invalid weapon resolved level for impaired attack");
 			}
 
-			vals[0] = damageRoll(DamageType.SHARP,sMult*damMult*physicalDamMult);
-			vals[1] = damageRoll(DamageType.BLUNT,bMult*damMult*physicalDamMult);
-			vals[2] = damageRoll(DamageType.PIERCE,pMult*damMult*physicalDamMult);
-			if (attack.isBypass() || !(_weapon != null && _weapon.isEnchantedHit())) {
-				vals[3] = damageRoll(DamageType.IGNITE,attack.getIgnite()*damMult*elementalDamMult);
-				vals[4] = damageRoll(DamageType.FROST,attack.getFrost()*damMult*elementalDamMult);
-				vals[5] = damageRoll(DamageType.ELEC,attack.getElec()*damMult*elementalDamMult);
-			}else {//enchant hit weapon with no bypass
-				int totalDam = attack.getTotalDam();
-				Enchant enc = _weapon.getEnchant();
-				vals[3] = damageRoll(DamageType.IGNITE,enc.getFireMod()*totalDam*damMult*elementalDamMult);
-				vals[4] = damageRoll(DamageType.FROST,enc.getFreezeMod()*totalDam*damMult*elementalDamMult);
-				vals[5] = damageRoll(DamageType.ELEC,enc.getShockMod()*totalDam*damMult*elementalDamMult);
+		}
+		
+		double damMult = effectiveLevel*_style.damage;
+		
+		if (_attacker != null) {
+			if (attacker.hasEffect(Effect.CHALLENGE_BACK)) {
+				damMult*=1.2;
 			}
-			
-			double counter = extra.getRand().nextDouble() * (vals[0] + vals[1] + vals[2] + vals[3] + vals[4] + vals[5]);
-			counter-=vals[0];
+		}
+
+		vals[0] = damageRoll(DamageType.SHARP,sMult*damMult*physicalDamMult);
+		vals[1] = damageRoll(DamageType.BLUNT,bMult*damMult*physicalDamMult);
+		vals[2] = damageRoll(DamageType.PIERCE,pMult*damMult*physicalDamMult);
+		if (attack.isBypass() || !(_weapon != null && _weapon.isEnchantedHit())) {
+			vals[3] = damageRoll(DamageType.IGNITE,attack.getIgnite()*damMult*elementalDamMult);
+			vals[4] = damageRoll(DamageType.FROST,attack.getFrost()*damMult*elementalDamMult);
+			vals[5] = damageRoll(DamageType.ELEC,attack.getElec()*damMult*elementalDamMult);
+		}else {//enchant hit weapon with no bypass
+			int totalDam = attack.getTotalDam();
+			Enchant enc = _weapon.getEnchant();
+			vals[3] = damageRoll(DamageType.IGNITE,enc.getFireMod()*totalDam*damMult*elementalDamMult);
+			vals[4] = damageRoll(DamageType.FROST,enc.getFreezeMod()*totalDam*damMult*elementalDamMult);
+			vals[5] = damageRoll(DamageType.ELEC,enc.getShockMod()*totalDam*damMult*elementalDamMult);
+		}
+		
+		double counter = extra.getRand().nextDouble() * (vals[0] + vals[1] + vals[2] + vals[3] + vals[4] + vals[5]);
+		counter-=vals[0];
+		if (counter<=0) {
+			this.wound = target.tar.rollWound(DamageType.SHARP);
+		}else {
+			counter-=vals[2];
 			if (counter<=0) {
-				this.wound = target.tar.rollWound(DamageType.SHARP);
+				this.wound = target.tar.rollWound(DamageType.PIERCE);
 			}else {
-				counter-=vals[2];
+				counter-=vals[3];
 				if (counter<=0) {
-					this.wound = target.tar.rollWound(DamageType.PIERCE);
+					this.wound = target.tar.rollWound(DamageType.IGNITE);
 				}else {
-					counter-=vals[3];
+					counter-=vals[4];
 					if (counter<=0) {
-						this.wound = target.tar.rollWound(DamageType.IGNITE);
+						this.wound = target.tar.rollWound(DamageType.FROST);
 					}else {
-						counter-=vals[4];
+						counter-=vals[5];
 						if (counter<=0) {
-							this.wound = target.tar.rollWound(DamageType.FROST);
+							this.wound = target.tar.rollWound(DamageType.ELEC);
 						}else {
-							counter-=vals[5];
-							if (counter<=0) {
-								this.wound = target.tar.rollWound(DamageType.ELEC);
-							}else {
-								//blunt is last to be a default for rounding errors
-								this.wound = target.tar.rollWound(DamageType.BLUNT);
-							}
+							//blunt is last to be a default for rounding errors
+							this.wound = target.tar.rollWound(DamageType.BLUNT);
 						}
 					}
-					
 				}
+				
 			}
-			if (!alwaysWound && wound != Wound.GRAZE && extra.randRange(1,10) == 1) {
-				this.wound = null;//null is not different from grazing, grazing is a dedicated 'ineffective'
-			}
-			
-			level = w_lvl;
-			break;
 		}
+		if (!alwaysWound && wound != Wound.GRAZE && extra.randRange(1,10) == 1) {
+			this.wound = null;//null is not different from grazing, grazing is a dedicated 'ineffective'
+		}
+		
+		level = w_lvl;
 		if (_attacker != null) {
 			if (wound == null && _attacker.hasSkill(Skill.ELEMENTALIST)){
 				switch (extra.randRange(0, 3)) {//0 is a hard fail, 1-3 depends on if they have the subskills

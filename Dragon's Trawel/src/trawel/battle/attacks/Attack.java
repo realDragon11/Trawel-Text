@@ -423,7 +423,7 @@ public class Attack implements IAttack{
 		I_BLEED_WEAK("Trauma","Applies a stacking %2$d bleed, expected %1$d for this stack against you.","Their insides get smashed."),
 		DISARMED("Disarm","Removes one attack choice on next attack.","Their attack is put off-kilter!"),		
 		TRIPPED("Tripped","The next attack will take %1$d instants longer.","They are tripped!"),
-		GRAZE("Grazed","No effect.","The blow's a graze..."),
+		GRAZE("Grazed","No effect, and doesn't apply some mechanics.","The blow's a graze..."),
 		KO("Knockout","Deals %1$d bonus damage, but heals after their next attack.","It's a knockout!"),
 		HACK("Hack","Deals up to %1$d bonus damage based on unblocked damage.","It's a wicked hack!"),
 		TAT("Punctured","Deals up to %1$d bonus damage, based on final pierce damage and to-hit.","The blow goes right through them!"),
