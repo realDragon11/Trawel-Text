@@ -16,6 +16,7 @@ import trawel.WorldGen;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
+import trawel.battle.attacks.Attack.Wound;
 import trawel.factions.FBox;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
@@ -899,6 +900,21 @@ public class Player extends SuperPerson{
 
 												@Override
 												public String title() {
+													return "Level, Feat Points, Feat Picks";
+												}
+
+												@Override
+												public boolean go() {
+													extra.println("Every Person in Trawel has a level. This starts at 1 and goes up. They also have an Effective Level, which is usually 10+ their actual level. This effective level is used so that a level 2 person isn't twice as good as a level 1 person- often effectiveness (damage, armor, etc) is multiplied by effective level divided by 10.");
+													extra.println("Every time any Person levels up, they gain a Feat Point. As a player, you can use this in your character screen, if you have a Feat Pick. You get one Feat Pick per level up. Each Feat Point can buy one Feat or Archetype, from a list of up to 8 options. If you don't like your choices, you can choose to delay spending a point.");
+													extra.println("When you use a Pick, you actually get to keep choosing until you run out of Points or reject a choice. When you choose, the options are generated on the fly, however, with the exception of the 'discourage repeat skills' mechanic if you get a Perk, delaying will not change the odds or actual pool of choices you have.");
+													extra.println("Thus, waiting does let you save your Picks if you want to have more chances to reroll, but this is minor and will not change the potential outcomes on it's own. You will usually want to pick as soon as you can. There are also ways to get extra picks, such as libraries.");
+													return false;
+												}});
+											slist.add(new MenuSelect() {
+
+												@Override
+												public String title() {
 													return "Skills";
 												}
 
@@ -1024,6 +1040,29 @@ public class Player extends SuperPerson{
 														public List<MenuItem> footer() {
 															return Collections.singletonList(new MenuBack());
 														}});
+													return false;
+												}});
+											slist.add(new MenuSelect() {
+
+												@Override
+												public String title() {
+													return "Wounds";
+												}
+
+												@Override
+												public boolean go() {
+													extra.println("Wounds are ailments caused by an attack. They can be further divided into two categories: normal wounds and condition wounds.");
+													extra.println("Normal wounds have a 90% chance to occur on all attacks, and are chosen based on the attack's damage types and the body part that is being attacked.");
+													extra.println("These wounds typically have instant or short-term effects. They also can be inflicted through skills.");
+													extra.println("Condition wounds occur automatically when a body part reaches 50% 'condition'. They tend to be long lasting effects that highlight the downward spiral of combat.");
+													extra.println("There is no actual difference between these wounds mechanically, this is just a classification to help you understand how they are used. Condition wounds are also often called Injuries.");
+													extra.println();
+													extra.println("Would you like to see a list of wounds? Values will not display.");
+													if (extra.yesNo()) {
+														for (Wound w: Wound.values()) {
+															extra.println(w.name + ": " + w.desc + "("+w.active+")");
+														}
+													}
 													return false;
 												}});
 											extra.menuGo(new ScrollMenuGenerator(slist.size(), "next <> terms", "previous <> terms"){
