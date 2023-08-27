@@ -133,7 +133,7 @@ public class World extends TContextOwner{
 	}
 
 	public Town getRandom(int level) {
-		ArrayList<Town> list = new ArrayList<Town>();
+		List<Town> list = new ArrayList<Town>();
 		for(Island i: islands) {
 			for (Town t: i.getTowns()) {
 				if (t.getTier() == level) {
@@ -143,9 +143,41 @@ public class World extends TContextOwner{
 				}
 			}
 		if (list.size() > 0) {
-		return extra.randList(list);}else {
+			return extra.randList(list);
+		}else {
 			if (level > 0) {
-			return getRandom(level-1);}else {return startTown;}
+				return getRandom(level-1);//maybe should add variance
+			}else {
+				return startTown;
+			}
+		}
+	}
+	public Town getRandom(int levelWant, int levelCap) {
+		
+		int levelWantMax = Math.min(levelCap, levelWant);
+		int levelWantMin = levelWantMax;
+		List<Town> list = new ArrayList<Town>();
+		List<Town> openSet = new ArrayList<Town>();
+		islands.stream().forEach(i -> i.getTowns().stream()
+				//.filter(t -> t.getTier() <=levelWantMax && t.getTier() >= levelWantMin && !list.contains(t))
+				.forEach(openSet::add)
+				);
+		do {
+			if (openSet.size() == 0) {
+				break;
+			}
+			for (int i = openSet.size()-1; i >=0;i--) {
+				Town t = openSet.get(i);
+				if (t.getTier() <=levelWantMax && t.getTier() >= levelWantMin) {
+					list.add(t);
+					openSet.remove(i);
+				}
+			}
+		}while ((list.size() < 2) && levelWantMin > 0);
+		if (list.size() > 0) {
+			return extra.randList(list);
+		}else {
+			return startTown;
 		}
 	}
 	

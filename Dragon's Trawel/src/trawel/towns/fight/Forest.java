@@ -458,7 +458,7 @@ public class Forest extends Feature{
 	
 	private void lumerbjackDryad() {
 		Person robber = RaceFactory.getLumberjack(tier);
-		if (extra.chanceIn(1,3)) {
+		if (extra.chanceIn(1,3)) {//TODO: make this much rarer and use ingame holidays/months instead
 			LocalDateTime t = LocalDateTime.now();
 			switch (t.getMonth()) {//lmao alphabetically ordered months
 			//enums are ordinal ordered, why does eclipse do this
@@ -521,12 +521,15 @@ public class Forest extends Feature{
 		
 		robber.getBag().graphicalDisplay(1, robber);
 		if (extra.chanceIn(1, 3)) {
-		robber.getBag().addDrawBaneSilently(DrawBane.ENT_CORE);}
+			robber.getBag().addDrawBaneSilently(DrawBane.ENT_CORE);
+		}else {
+			robber.getBag().addDrawBaneSilently(DrawBane.WOOD);
+		}
 		
-			extra.print(extra.PRE_RED);
+		extra.print(extra.PRE_BATTLE);
 		if (extra.yesNo()) {
-		Person winner = mainGame.CombatTwo(Player.player.getPerson(),robber);
-		if (winner == Player.player.getPerson()) {
+		Combat c = Player.player.fightWith(robber);
+		if (c.playerWon() > 0) {
 			dryadQuest++;
 			if (dryadQuest == 4) {
 				extra.println("You feel a connection to the forest.");
@@ -538,15 +541,27 @@ public class Forest extends Feature{
 	
 	private void findEquip() {
 		extra.println("You find a rotting body... With their equipment intact!");
-		AIClass.playerLoot(RaceFactory.makeLootBody(tier).getBag(),true);
+		AIClass.playerLoot(RaceFactory.makeLootBody(extra.clamp(tier-1, 1,Player.player.getPerson().getLevel())).getBag(),true);
 	}
 	
 	private void abandonedHut() {
 		extra.println("You find an abandoned hut. Enter?");
 		if (extra.yesNo()) {
 			switch (extra.randRange(2,3)) {
-			case 1: extra.println("You step in it. You find yourseslf jerked nowhere. Your surroundings change...");
-			Player.player.setLocation(Player.player.getWorld().getRandom(Player.player.getPerson().getLevel()));break;
+			case 1:
+				extra.println("You feel yourself being jerked nowhere, some strange force is attempting to teleport you. Let it?");
+				if (extra.yesNo()) {
+					Player.player.setLocation(Player.player.getWorld().getRandom(tier,Player.player.getPerson().getLevel()+1));
+					if (Player.player.getLocation() != town) {
+						extra.println("The skyline outside of the forest changes... Checking your map, it looks like you've found a temporary liminal connection to "+Player.player.getLocation().getName()+".");
+					}else {
+						extra.println("You find yourself in a different part of the forest.");
+					}
+					
+				}else {
+					extra.println("You resist the unknown force.");
+				}
+				break;
 			case 2: extra.println("There is a log in the hut");oldFighter();break;
 			case 3: extra.println("There is a tree inside the hut."); lumerbjackDryad();break;
 			}
