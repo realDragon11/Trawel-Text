@@ -504,7 +504,9 @@ public class Forest extends Feature{
 			case NOVEMBER:
 				//truly sad business day has is rough being around cyber monday, black friday, and american thanksgiving
 				//https://www.holidayinsights.com/moreholidays/november/small-business-saturday.htm
-				extra.println(extra.PRE_BATTLE+"A lumberjack is fueling society's green! Attack them?");
+				//https://en.wikipedia.org/wiki/Lumber_Cartel
+				//https://en.wikipedia.org/wiki/Timber_mafia
+				extra.println(extra.PRE_BATTLE+"An agent of the timber mafia is trying to strongarm someone into the lumber cartel! Attack them?");
 				break;
 			case OCTOBER:
 				//movie
