@@ -1116,7 +1116,7 @@ public class Player extends SuperPerson{
 													extra.println("Effects don't store any information in themselves other how many a Person has.");
 													extra.println("Some effects persist after battle, and through death, which means they need to be cured at a Doctor or by a Shaman.");
 													extra.println();
-													extra.println("Would you like to see a list of Effects");
+													extra.println("Would you like to see a list of Effects?");
 													if (extra.yesNo()) {
 														for (Effect e: Effect.values()) {
 															extra.println(e.getName() + ": " + e.getDesc() + " Persists: " + e.lasts() + " Stacks: " +e.stacks());
