@@ -120,46 +120,44 @@ public class ImpairedAttack implements IAttack{
 				vals[5] = damageRoll(DamageType.ELEC,enc.getShockMod()*totalDam*damMult*elementalDamMult);
 			}
 			
-
-			if (!alwaysWound && extra.randRange(1,10) == 1) {
-				this.wound = Attack.Wound.GRAZE;
+			double counter = extra.getRand().nextDouble() * (vals[0] + vals[1] + vals[2] + vals[3] + vals[4] + vals[5]);
+			counter-=vals[0];
+			if (counter<=0) {
+				this.wound = target.tar.rollWound(DamageType.SHARP);
 			}else {
-				double counter = extra.getRand().nextDouble() * (vals[0] + vals[1] + vals[2] + vals[3] + vals[4] + vals[5]);
-				counter-=vals[0];
+				counter-=vals[2];
 				if (counter<=0) {
-					this.wound = target.tar.rollWound(DamageType.SHARP);
+					this.wound = target.tar.rollWound(DamageType.PIERCE);
 				}else {
-					counter-=vals[2];
+					counter-=vals[3];
 					if (counter<=0) {
-						this.wound = target.tar.rollWound(DamageType.PIERCE);
+						this.wound = target.tar.rollWound(DamageType.IGNITE);
 					}else {
-						counter-=vals[3];
+						counter-=vals[4];
 						if (counter<=0) {
-							this.wound = target.tar.rollWound(DamageType.IGNITE);
+							this.wound = target.tar.rollWound(DamageType.FROST);
 						}else {
-							counter-=vals[4];
+							counter-=vals[5];
 							if (counter<=0) {
-								this.wound = target.tar.rollWound(DamageType.FROST);
+								this.wound = target.tar.rollWound(DamageType.ELEC);
 							}else {
-								counter-=vals[5];
-								if (counter<=0) {
-									this.wound = target.tar.rollWound(DamageType.ELEC);
-								}else {
-									//blunt is last to be a default for rounding errors
-									this.wound = target.tar.rollWound(DamageType.BLUNT);
-								}
+								//blunt is last to be a default for rounding errors
+								this.wound = target.tar.rollWound(DamageType.BLUNT);
 							}
 						}
-						
 					}
+					
 				}
+			}
+			if (!alwaysWound && wound != Wound.GRAZE && extra.randRange(1,10) == 1) {
+				this.wound = null;//null is not different from grazing, grazing is a dedicated 'ineffective'
 			}
 			
 			level = w_lvl;
 			break;
 		}
 		if (_attacker != null) {
-			if (wound == Attack.Wound.GRAZE && _attacker.hasSkill(Skill.ELEMENTALIST)){
+			if (wound == null && _attacker.hasSkill(Skill.ELEMENTALIST)){
 				switch (extra.randRange(0, 3)) {//0 is a hard fail, 1-3 depends on if they have the subskills
 				case 1:
 					if(_attacker.hasSkill(Skill.M_PYRO)) {

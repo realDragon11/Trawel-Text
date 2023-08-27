@@ -32,8 +32,8 @@ public class TargetFactory {
 	private void addLeg_LimbWounds(Target t,Wound bleedReplace, float weightMult, float replaceRarity) {
 		if (bleedReplace == null) {
 			if (replaceRarity > 0f) {
-				t.addWound(DamageType.BLUNT, bleedReplace, replaceRarity);
 				t.addWound(DamageType.SHARP, bleedReplace, replaceRarity);
+				t.addWound(DamageType.BLUNT, bleedReplace, replaceRarity);
 				t.addWound(DamageType.PIERCE, bleedReplace, replaceRarity);
 			}
 		}else {
@@ -42,13 +42,14 @@ public class TargetFactory {
 		t.addWound(DamageType.SHARP, Wound.DICE, weightMult);
 		t.addWound(DamageType.SHARP, Wound.HAMSTRUNG, weightMult);
 		t.addWound(DamageType.BLUNT, Wound.TRIPPED, weightMult);
+		t.addWound(DamageType.PIERCE, Wound.TAT, .1f);
 	}
 	
 	private void addArm_LimbWounds(Target t,Wound bleedReplace, float weightMult, float replaceRarity) {
 		if (bleedReplace == null) {
 			if (replaceRarity > 0f) {
-				t.addWound(DamageType.BLUNT, bleedReplace, replaceRarity);
 				t.addWound(DamageType.SHARP, bleedReplace, replaceRarity);
+				t.addWound(DamageType.BLUNT, bleedReplace, replaceRarity);
 				t.addWound(DamageType.PIERCE, bleedReplace, replaceRarity);
 			}
 		}else {
@@ -295,7 +296,7 @@ public class TargetFactory {
 		add_head_Knockout(t, 1);
 		t.type = TargetType.HUMANOID;
 		
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "neck";
@@ -309,7 +310,7 @@ public class TargetFactory {
 		add_neck_Bleeds(t, 1);
 		add_neck_Winded(t, 1);
 		t.mappingNumber = 1;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "chest";
@@ -317,7 +318,7 @@ public class TargetFactory {
 		t.type = TargetType.HUMANOID;
 		addChestGeneric(t, 1);
 		addChestBleeds(t, 1);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "arm";
@@ -325,7 +326,7 @@ public class TargetFactory {
 		set_as_arm(t);
 		t.type = TargetType.HUMANOID;
 		addArm_LimbWounds(t,null,1,1);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "hand";
@@ -341,7 +342,7 @@ public class TargetFactory {
 		addHandBleeds(t, 1);
 		t.attachNumber = 2;
 		//maimed is handled by arm
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "finger";//might be able to?
@@ -356,7 +357,7 @@ public class TargetFactory {
 		addMangled_Wounds(t,1);
 		t.attachNumber = -2;
 		t.passthrough = true;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "leg";
@@ -364,7 +365,7 @@ public class TargetFactory {
 		set_as_leg(t);
 		t.type = TargetType.HUMANOID;
 		addLeg_LimbWounds(t,null,1,1);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "foot";
@@ -377,7 +378,7 @@ public class TargetFactory {
 		t.type = TargetType.HUMANOID;
 		addLeg_LimbWounds(t,null,1,1);
 		t.attachNumber = 4;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "eye";
@@ -386,14 +387,14 @@ public class TargetFactory {
 		t.type = TargetType.HUMANOID;
 		add_eye_Bloody(t,1);
 		t.attachNumber = 1;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "heart";
 		set_as_heart(t);
 		t.type = TargetType.HUMANOID;
 		addMajorBleed(t, 1);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "guts";
@@ -401,7 +402,7 @@ public class TargetFactory {
 		t.type = TargetType.HUMANOID;
 		addGutsGeneric(t, 1);
 		addGutsGeneric(t, 1);
-		targetList.add(t);
+		t.finish();
 		
 		
 		t = new Target();
@@ -413,7 +414,7 @@ public class TargetFactory {
 		t.rarity = 0;
 		t.slot = -1;
 		t.type = TargetType.NONE;
-		targetList.add(t);
+		t.finish();
 		noTarget = t;
 		
 		
@@ -430,7 +431,7 @@ public class TargetFactory {
 		addMimicLid(t, 1, 2, 1);
 		t.mappingNumber = 0;
 		t.condWound = Wound.MAIMED;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "body";
@@ -443,7 +444,7 @@ public class TargetFactory {
 		t.type = TargetType.OPEN_MIMIC;
 		addMimicLid(t, 3, 2, 1);
 		t.mappingNumber = 1;
-		targetList.add(t);
+		t.finish();
 		
 		
 		//open mimic
@@ -459,7 +460,7 @@ public class TargetFactory {
 		addMimicLid(t, .5f, 2, 1);
 		t.mappingNumber = 0;
 		t.condWound = Wound.MAIMED;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "body";
@@ -473,7 +474,7 @@ public class TargetFactory {
 		addMimicLid(t, 1, 2, 1);
 		t.mappingNumber = 1;
 		t.condWound = Wound.CRIPPLED;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "tongue";
@@ -487,7 +488,7 @@ public class TargetFactory {
 		addMajorBleed(t, 1);
 		t.mappingNumber = 3;
 		t.condWound = Wound.I_BLEED;
-		targetList.add(t);
+		t.finish();
 		
 		
 		
@@ -501,7 +502,7 @@ public class TargetFactory {
 		t.type = TargetType.QUAD;
 		add_head_Knockout(t, 1);
 		add_head_Knockout(t, 1);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "neck";
@@ -515,7 +516,7 @@ public class TargetFactory {
 		add_neck_Winded(t, 1);
 		add_neck_Bleeds(t, 1);
 		t.mappingNumber = 1;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "trunk";//iirc this is quad torso
@@ -523,7 +524,7 @@ public class TargetFactory {
 		t.type = TargetType.QUAD;
 		addChestBleeds(t, 1);
 		addChestGeneric(t, 1);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.variants = new String[] {"right fore{}","left fore{}","right hind{}","left hind{}"};
@@ -532,7 +533,7 @@ public class TargetFactory {
 		t.rarity = 2;
 		t.type = TargetType.QUAD;
 		addLeg_LimbWounds(t,null,1,1);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "paw";
@@ -545,7 +546,7 @@ public class TargetFactory {
 		t.type = TargetType.QUAD;
 		addMangled_Wounds(t,1);
 		t.attachNumber = 4;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "eye";
@@ -554,14 +555,14 @@ public class TargetFactory {
 		t.type = TargetType.QUAD;
 		add_eye_Bloody(t,1);
 		t.attachNumber = 1;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "heart";
 		set_as_heart(t);
 		t.type = TargetType.QUAD;
 		addMajorBleed(t, 1);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "guts";
@@ -569,7 +570,7 @@ public class TargetFactory {
 		t.type = TargetType.QUAD;
 		addGutsGeneric(t, 1);
 		addGutsBleeds(t, 1);
-		targetList.add(t);
+		t.finish();
 		
 		
 		//statue
@@ -582,7 +583,7 @@ public class TargetFactory {
 		t.type = TargetType.STATUE;
 		addStatueWounds(t);
 		t.mappingNumber = 1;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "neck";
@@ -595,7 +596,7 @@ public class TargetFactory {
 		t.type = TargetType.STATUE;
 		addStatueWounds(t);
 		t.mappingNumber = 1;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "chest";
@@ -603,7 +604,7 @@ public class TargetFactory {
 		t.condWound = null;
 		t.type = TargetType.STATUE;
 		addStatueWounds(t);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "arm";
@@ -612,7 +613,7 @@ public class TargetFactory {
 		t.condWound = null;
 		t.type = TargetType.STATUE;
 		addStatueWounds(t);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "leg";
@@ -621,7 +622,7 @@ public class TargetFactory {
 		t.condWound = null;
 		t.type = TargetType.STATUE;
 		addStatueWounds(t);
-		targetList.add(t);
+		t.finish();
 		
 		//fell reaver standing
 		
@@ -631,7 +632,7 @@ public class TargetFactory {
 		set_as_leg(t);
 		t.type = TargetType.S_REAVER;
 		addLeg_LimbWounds(t,null,1,1);
-		targetList.add(t);
+		t.finish();
 		
 		//fell reaver crouched
 		
@@ -641,7 +642,7 @@ public class TargetFactory {
 		t.type = TargetType.C_REAVER;
 		add_head_Knockout(t, 1);
 		add_head_Bleeds(t, 0.5f);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "neck";
@@ -655,7 +656,7 @@ public class TargetFactory {
 		add_neck_Winded(t, 1);
 		add_neck_Bleeds(t, .5f);
 		t.mappingNumber = 1;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "chest";
@@ -663,7 +664,7 @@ public class TargetFactory {
 		t.type = TargetType.C_REAVER;
 		addChestGeneric(t, 1);
 		addChestBleeds(t, 0.5f);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "arm";
@@ -671,7 +672,7 @@ public class TargetFactory {
 		set_as_arm(t);
 		t.type = TargetType.C_REAVER;
 		addArm_LimbWounds(t, null, 1, 1);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "leg";
@@ -679,7 +680,7 @@ public class TargetFactory {
 		set_as_leg(t);
 		t.type = TargetType.C_REAVER;
 		addArm_LimbWounds(t, null, 1, 1);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "eye";
@@ -688,7 +689,7 @@ public class TargetFactory {
 		t.type = TargetType.C_REAVER;
 		add_eye_Bloody(t,1);
 		t.attachNumber = 1;
-		targetList.add(t);
+		t.finish();
 		
 		//undead
 		t = new Target();
@@ -697,7 +698,7 @@ public class TargetFactory {
 		t.condWound = Wound.SCALDED;
 		t.type = TargetType.UNDEAD_H;
 		add_head_Knockout(t, 1);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "neck";
@@ -710,7 +711,7 @@ public class TargetFactory {
 		t.type = TargetType.UNDEAD_H;
 		add_neck_Winded(t, 1);
 		t.mappingNumber = 1;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "chest";
@@ -718,7 +719,7 @@ public class TargetFactory {
 		t.condWound = Wound.SCALDED;
 		t.type = TargetType.UNDEAD_H;
 		addChestGeneric(t, 1);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "arm";
@@ -727,7 +728,7 @@ public class TargetFactory {
 		t.condWound = Wound.SCREAMING;
 		t.type = TargetType.UNDEAD_H;
 		addArm_LimbWounds(t, Wound.GRAZE, 1, .1f);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "leg";
@@ -736,7 +737,7 @@ public class TargetFactory {
 		t.condWound = Wound.SCREAMING;
 		t.type = TargetType.UNDEAD_H;
 		addLeg_LimbWounds(t,Wound.GRAZE, 1, .1f);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "eye";
@@ -745,7 +746,7 @@ public class TargetFactory {
 		t.condWound = Wound.SCREAMING;
 		t.type = TargetType.UNDEAD_H;
 		addEyeBlinds(t,1);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "guts";
@@ -753,7 +754,7 @@ public class TargetFactory {
 		t.condWound = Wound.SCALDED;
 		t.type = TargetType.UNDEAD_H;
 		addGutsGeneric(t, 1);
-		targetList.add(t);
+		t.finish();
 		
 		//flying
 		t = new Target();
@@ -762,7 +763,7 @@ public class TargetFactory {
 		t.type = TargetType.FLY;
 		add_head_Knockout(t, 1);
 		add_head_Bleeds(t, 1);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "chest";
@@ -770,7 +771,7 @@ public class TargetFactory {
 		t.type = TargetType.FLY;
 		addChestGeneric(t, 1);
 		addChestBleeds(t, 1);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "wing";
@@ -785,7 +786,7 @@ public class TargetFactory {
 		addWingTears(t,1);
 		t.mappingNumber = 2;
 		t.condWound = Wound.CRIPPLED;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "leg";
@@ -798,7 +799,7 @@ public class TargetFactory {
 		t.addWound(DamageType.SHARP, Wound.DICE, 1f);
 		t.addWound(DamageType.BLUNT, Wound.CRUSHED, 1f);
 		t.addWound(DamageType.PIERCE, Wound.TAT, 1f);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "eye";
@@ -807,14 +808,14 @@ public class TargetFactory {
 		t.type = TargetType.FLY;
 		add_eye_Bloody(t,1);
 		t.attachNumber = 1;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "heart";
 		set_as_heart(t);
 		t.type = TargetType.FLY;
 		addMajorBleed(t, 1);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "guts";
@@ -822,7 +823,7 @@ public class TargetFactory {
 		t.type = TargetType.FLY;
 		addGutsGeneric(t, 1);
 		addGutsBleeds(t, 1);
-		targetList.add(t);
+		t.finish();
 		
 		
 		//demon
@@ -832,7 +833,7 @@ public class TargetFactory {
 		set_as_head(t);
 		t.type = TargetType.DEMON;
 		add_head_Knockout(t, 1);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "skull";
@@ -846,7 +847,7 @@ public class TargetFactory {
 		t.pierce = 1;
 		t.slot = 0;
 		t.attachNumber = 1;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "horn";
@@ -861,7 +862,7 @@ public class TargetFactory {
 		addMangled_Wounds(t,1);//used to damage skull and inflict the depower wound
 		t.attachNumber = -1;
 		t.passthrough = true;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "torso";
@@ -869,7 +870,7 @@ public class TargetFactory {
 		t.type = TargetType.DEMON;
 		addChestGeneric(t, 1);
 		addChestBleeds(t, .5f);//troso is one of the few places demons can bleed from
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "arm";
@@ -877,7 +878,7 @@ public class TargetFactory {
 		set_as_arm(t);
 		t.type = TargetType.DEMON;
 		addArm_LimbWounds(t,Wound.DISARMED, 1, 0);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "claw";
@@ -891,7 +892,7 @@ public class TargetFactory {
 		addHandGeneric(t, 1);
 		t.attachNumber = 2;
 		//maimed is handled by arm
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "leg";
@@ -899,7 +900,7 @@ public class TargetFactory {
 		set_as_leg(t);
 		t.type = TargetType.DEMON;
 		addLeg_LimbWounds(t,Wound.HAMSTRUNG,1,0);
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "hoof";
@@ -912,7 +913,7 @@ public class TargetFactory {
 		t.type = TargetType.DEMON;
 		addLeg_LimbWounds(t,Wound.HAMSTRUNG,1,0);
 		t.attachNumber = 4;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "eye";
@@ -922,14 +923,14 @@ public class TargetFactory {
 		add_eye_Bloody(t, 1);
 		//can bleed from eyes
 		t.attachNumber = 1;
-		targetList.add(t);
+		t.finish();
 		
 		t = new Target();
 		t.name = "darkness";//equal to heart
 		set_as_heart(t);
 		t.type = TargetType.DEMON;
 		addMajorBleed(t, 1);
-		targetList.add(t);
+		t.finish();
 		
 		
 		for (Target ta: targetList) {
@@ -1622,5 +1623,11 @@ public class TargetFactory {
 	//package visibility
 	static List<Target> tList(){
 		return handler.targetList;
+	}
+	
+	public static void finishTarget(Target t) {
+		if (!handler.targetList.contains(t)) {
+			handler.targetList.add(t);
+		}
 	}
 }

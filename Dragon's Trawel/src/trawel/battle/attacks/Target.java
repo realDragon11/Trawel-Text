@@ -134,12 +134,13 @@ public class Target{
 				woundTables.put(dt,new WeightedTable(fls));
 			}
 		}
+		TargetFactory.finishTarget(this);
 	}
 	
 	public Wound rollWound(DamageType dt) {
 		WeightedTable t = woundTables.getOrDefault(dt, null);
 		if (t == null) {
-			return null;//TODO
+			return Wound.ERROR;//TODO
 		}else {
 			return tupleLists.get(dt).get(t.random(extra.getRand())).wound;
 		}

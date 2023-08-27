@@ -409,6 +409,7 @@ public class Attack implements IAttack{
 	//UPDATE welp can't make them look nicer so just made them all ints anyways
 	//MAYBELATER: display the actual wound name every time, but also have a stringfluffer describe it
 	public enum Wound{//TODO: make sure the reworked wounds are fully in
+		ERROR("ERROR","ERROR","ERROR"),
 		HAMSTRUNG("Hamstrung","Delays the next attack by %1$d instants.","Their leg is hamstrung!"), 
 		BLINDED("Blinded","The next attack will be %1$d%% less accurate.","They can't see!"),
 		CONFUSED("Confused","Forces the opponent to retarget.","They look confused!"), 

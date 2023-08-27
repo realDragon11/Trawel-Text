@@ -1586,7 +1586,7 @@ public class Combat {
 				notFromAttack = true;//still uses attack's damage and such to apply
 			}
 			if (w == null) {
-				throw new RuntimeException("inflicting null wound");
+				return "";//fails safely now
 			}
 			assert defender2 != null;
 			switch (w) {
@@ -1676,7 +1676,7 @@ public class Combat {
 			case GRAZE://no effect
 				break;
 			}
-			if (w != Wound.GRAZE && !notFromAttack) {
+			if (!notFromAttack) {//grazes now still count for this
 				if (attack.getWeapon() != null && attack.getWeapon().hasQual(Weapon.WeaponQual.DESTRUCTIVE)) {
 					defender2.getBag().damageArmor((retu.damage/defender2.getMaxHp())/3f, attack.getSlot());
 				}

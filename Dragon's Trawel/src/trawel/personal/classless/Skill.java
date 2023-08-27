@@ -79,8 +79,8 @@ public enum Skill{
 		RACIAL_SHIFTS("Flexible","Prone to changing its defense patterns."
 				,"Changes stances in combat, changing its target types, and possibly its attacks."
 				,Type.FEATURE),
-		TA_NAILS("Tough as Nails","Grants a 20% chance to ignore incoming wounds."
-				,"Can apply to any wound inflicted on them, completely negating it.",
+		TA_NAILS("Tough as Nails","Grants a 20% chance to negate incoming wounds."
+				,"Can apply to any wound inflicted on them, preventing it from processing entirely.",
 				Type.DEFENSE),
 		RAW_GUTS("Raw Guts","Resist damage up to 3% LHP, by Torso condition."
 				,"Can only resist up to half the base damage of an attack. Only applies to hit attacks. Amount is random."
@@ -164,19 +164,19 @@ public enum Skill{
 		/**
 		 * NOTE: do not grant without ELEMENTALIST
 		 */
-		M_PYRO("Pyromantic","25% chance to convert a Graze wound into a random Ignite wound on any attack."
+		M_PYRO("Pyromantic","25% chance to convert failed wounds into a random Ignite wound on any attack."
 				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 75%."
 				,Type.OFFENSE),
 		/**
 		 * NOTE: do not grant without ELEMENTALIST
 		 */
-		M_CRYO("Cryomantic","25% chance to convert a Graze wound into a random Frost wound on any attack."
+		M_CRYO("Cryomantic","25% chance to convert failed wounds into a random Frost wound on any attack."
 				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 75%."
 				,Type.OFFENSE),
 		/**
 		 * NOTE: do not grant without ELEMENTALIST
 		 */
-		M_AERO("Aeromantic","25% chance to convert a Graze wound into a random Elec wound on any attack."
+		M_AERO("Aeromantic","25% chance to convert failed wounds into a random Elec wound on any attack."
 				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 75%."
 				,Type.OFFENSE),
 		STERN_STUFF("Sterner Stuff","The first time each battle you would die, roll a contested Strength check vs their highest attribute to survive at 1 HP."
