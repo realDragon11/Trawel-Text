@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,9 @@ public class Oracle extends Feature{ //extends feature later
 	private static final long serialVersionUID = 1L;
 	private static Map<String,List<String>> tips = new HashMap<String,List<String>>();
 	private int visits = 0;
+	
+	private static List<String> emptyList = Collections.singletonList("tips not loaded!");
+	//FIXME: either need to distribute tips with game, or unpack them, or find a workaround to my jar loading issues with path redirections
 
 	public Oracle(String string, int level) {
 		name = string;
@@ -46,7 +50,7 @@ public class Oracle extends Feature{ //extends feature later
 	}
 
 	public static void tip(String mask) {
-		extra.println("\""+ extra.randList(tips.get(mask)) + "\"");
+		extra.println("\""+ extra.randList(tips.getOrDefault(mask, emptyList)) + "\"");
 	}
 	
 	public static String tipString(String mask) {
