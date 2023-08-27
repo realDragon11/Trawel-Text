@@ -69,7 +69,7 @@ public class AIClass {
 	/**
 	 * Choose which attack in a stance to use. Supply with an intellect level for varying levels of 
 	 * smarts
-	 * @param theStance - (Stance) the stance from which to take the attack
+	 * @param theStance - (Stance) the stance from which to  the attack
 	 * @param smarts - (int) intellect, how smart the attacker is 
 	 * @return an attack (Attack)
 	 /
@@ -342,7 +342,7 @@ public class AIClass {
 			while (i < 5) {
 				if (compareItem(stash.getArmorSlot(i),loot.getArmorSlot(i),p)) {
 					if (display) {
-						extra.println(p.getNameNoTitle()+": Take " + loot.getArmorSlot(i).getName() + " over " + stash.getArmorSlot(i).getName()+".");
+						extra.println(p.getNameNoTitle()+": Took " + loot.getArmorSlot(i).getName() + " over " + stash.getArmorSlot(i).getName()+".");
 					}
 					if (aetherStuff) {
 						Services.aetherifyItem(stash.getArmorSlot(i),stash,display);
@@ -392,7 +392,7 @@ public class AIClass {
 					Networking.waitIfConnected(200L);
 				}
 				if (display) {
-					extra.println(p.getNameNoTitle()+": Take " + loot.getHand().getName() + " over " + stash.getHand().getName()+".");
+					extra.println(p.getNameNoTitle()+": Took " + loot.getHand().getName() + " over " + stash.getHand().getName()+".");
 				}
 				if (aetherStuff) {
 					Services.aetherifyItem(stash.getHand(),stash,display);
@@ -469,11 +469,11 @@ public class AIClass {
 	 */
 	public static void playerDispLootChanges() {
 		if (Player.aLootHand != Player.bag.getHand()) {
-			extra.println("AutoLoot: Take " + Player.bag.getHand().getName() + " over " + Player.aLootHand.getName()+".");
+			extra.println("AutoLoot: TOOK " + Player.bag.getHand().getName() + " OVER " + Player.aLootHand.getName()+".");
 		}
 		for (int i = 0; i < 5;i++) {
 			if (Player.aLootArmors[i] != Player.bag.getArmorSlot(i)) {
-				extra.println("AutoLoot: Take " + Player.bag.getArmorSlot(i).getName() + " over " + Player.aLootArmors[i].getName()+".");
+				extra.println("AutoLoot: TOOK " + Player.bag.getArmorSlot(i).getName() + " OVER " + Player.aLootArmors[i].getName()+".");
 			}
 		}
 		if (Player.aLootAether != Player.bag.getAether()) {
@@ -1053,7 +1053,7 @@ public class AIClass {
 					@Override
 					public List<MenuItem> gen() {
 						List<MenuItem> list = new ArrayList<MenuItem>();
-						list.add(new MenuBack("continue"));
+						list.add(new MenuBack("AI chose "+att.getName()+"."));
 						//used so player can use 10 back out code instead of
 						//having to mash 1 if they want
 						return list;
