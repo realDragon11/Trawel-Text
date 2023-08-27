@@ -616,7 +616,7 @@ public class Store extends Feature{
 			//for some reason counter can be null, which shouldn't be allowed under current circumstances
 			//however future behavior will be fine with it, so allowing that now
 			int delta = getDelta(counter,i,a);
-			if (a.getTotalBuyPower()+delta < 0 && AIClass.compareItem(bag,i,false,p)) {
+			if (a.getTotalBuyPower()+delta < 0 && AIClass.compareItem(bag,i,p)) {
 				a.buyMoneyAmountRateInt(-delta,aetherPerMoney(p));
 				items.remove(i);
 				items.add(bag.swapItem(i));

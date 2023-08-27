@@ -949,7 +949,7 @@ public class GroveNode implements NodeType{
 					extra.println("As you pull on it, the "+w.getBaseName()+" slowly slips free, and the rock crumbles!");
 				}
 				holder.setStateNum(node,1);
-				AIClass.findItem(w,false,Player.player.getPerson());
+				AIClass.findItem(w,Player.player.getPerson());
 				holder.setStorage(node,null);
 			}else {
 				extra.println("You leave it alone.");

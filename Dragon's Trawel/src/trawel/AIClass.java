@@ -334,61 +334,84 @@ public class AIClass {
 	 */
 	public static void loot(Inventory loot, Inventory stash, boolean aetherStuff, Person p,boolean canEverDisplay) {
 		boolean display = canEverDisplay && !extra.getPrint();
-		//FIXME: convert to ai-only version since players must use the other one now
+		//still do graphical display quickly for the player if connected
+		boolean graphicalDisplay = p.isPlayer() && Networking.connected();
 		int i = 0;
 		boolean normalLoot = loot.getRace().racialType == Race.RaceType.PERSONABLE;
 		if (normalLoot) {
 			while (i < 5) {
-				if (compareItem(stash.getArmorSlot(i),loot.getArmorSlot(i),true,p)) {
+				if (compareItem(stash.getArmorSlot(i),loot.getArmorSlot(i),p)) {
+					if (display) {
+						extra.println(p.getNameNoTitle()+": Take " + loot.getArmorSlot(i).getName() + " over " + stash.getArmorSlot(i).getName()+".");
+					}
 					if (aetherStuff) {
-							//Services.sellItem(stash.swapArmorSlot(loot.getArmorSlot(i),i),stash,false);
-							Services.aetherifyItem(stash.getArmorSlot(i),stash);
-							extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + loot.getArmorSlot(i).getName() + ".");
-							stash.swapArmorSlot(loot.getArmorSlot(i),i);//we lose the ref to the thing we just deleted here
-							loot.setArmorSlot(null,i);
-						}else {
-							loot.swapArmorSlot(stash.swapArmorSlot(loot.getArmorSlot(i),i), i);
+						Services.aetherifyItem(stash.getArmorSlot(i),stash);
+						stash.swapArmorSlot(loot.getArmorSlot(i),i);//we lose the ref to the thing we just deleted here
+						loot.setArmorSlot(null,i);
+					}else {
+						loot.swapArmorSlot(stash.swapArmorSlot(loot.getArmorSlot(i),i), i);
+					}
+					if (graphicalDisplay) {//take
+						Networking.charUpdate();
+						String depth = null;
+						switch (i) {
+						case 0:depth= "-6|";break; //head
+						case 1:depth= "-3|";break; //arms
+						case 2:depth= "-5|";break; //chest
+						case 3:depth= "-1|";break; //legs
+						case 4:depth= "-2|";break; //feet
 						}
+						Networking.send("RemoveInv|1|" + depth);
+						Networking.waitIfConnected(200L);
+					}
 				}else {
 					if (aetherStuff) {
-						//Services.sellItem(loot.getArmorSlot(i),loot,stash,false);}
 						Services.aetherifyItem(loot.getArmorSlot(i),stash);
 						loot.setArmorSlot(null,i);
 					}
-				}
-
-
-				if (p.isPlayer() && Networking.connected()) {
-					Networking.charUpdate();
-					String depth = null;
-					switch (i) {
-					case 0:depth= "-6|";break; //head
-					case 1:depth= "-3|";break; //arms
-					case 2:depth= "-5|";break; //chest
-					case 3:depth= "-1|";break; //legs
-					case 4:depth= "-2|";break; //feet
+					if (graphicalDisplay) {//reject
+						Networking.charUpdate();
+						String depth = null;
+						switch (i) {
+						case 0:depth= "-6|";break; //head
+						case 1:depth= "-3|";break; //arms
+						case 2:depth= "-5|";break; //chest
+						case 3:depth= "-1|";break; //legs
+						case 4:depth= "-2|";break; //feet
+						}
+						Networking.send("RemoveInv|1|" + depth);
+						//no wait time
 					}
-					Networking.send("RemoveInv|1|" + depth);
 				}
+				
 				i++;
 			}
-			if (compareItem(stash.getHand(),loot.getHand(),true,p)) {
+			if (compareItem(stash.getHand(),loot.getHand(),p)) {
+				if (graphicalDisplay) {
+					Networking.send("RemoveInv|1|2|");
+					Networking.waitIfConnected(200L);
+				}
+				if (display) {
+					extra.println(p.getNameNoTitle()+": Take " + loot.getHand().getName() + " over " + stash.getHand().getName()+".");
+				}
 				if (aetherStuff) {
-						//Services.sellItem(stash.swapWeapon(loot.getHand()),stash,false);
-						Services.aetherifyItem(stash.getHand(),stash);
-						extra.println("They "+extra.choose("take","pick up","claim","swap for")+" the " + loot.getHand().getName() + ".");
-						stash.swapWeapon(loot.getHand());//we lose the ref to the thing we just deleted here
-						loot.setWeapon(null);
-					}else {
-						loot.swapWeapon(stash.swapWeapon(loot.getHand()));
-					}
+					Services.aetherifyItem(stash.getHand(),stash);
+					stash.swapWeapon(loot.getHand());//we lose the ref to the thing we just deleted here
+					loot.setWeapon(null);
+				}else {
+					loot.swapWeapon(stash.swapWeapon(loot.getHand()));
+				}
 			}else {
+				if (graphicalDisplay) {
+					Networking.send("RemoveInv|1|2|");
+					//no wait
+				}
 				if (aetherStuff) {
 					Services.aetherifyItem(loot.getHand(), stash);
 					loot.setWeapon(null);
 				}
 			}
-			Networking.send("RemoveInv|1|2|");
+			
 		}else {
 			if (aetherStuff) {
 				while (i < 5) {
@@ -404,12 +427,8 @@ public class AIClass {
 				}
 			}
 		}
-		if (p.isPlayer()) {
+		if (p.isPlayer()) {//player must still loot drawbanes normally
 			Networking.charUpdate();
-			/*if (Player.hasSkill(Skill.LOOTER) && normalLoot) {
-				stash.addGold(10);
-				extra.println("You take the extra coins they had stored away in their " + extra.choose("spleen","appendix","imagination","lower left thigh","no-no place","closed eyes") + ". +10 gold");
-			}*/
 			for (DrawBane db: loot.getDrawBanes()) {
 				stash.addNewDrawBanePlayer(db);
 			}
@@ -423,12 +442,12 @@ public class AIClass {
 				int money = loot.getGold();
 				stash.addGold(money);
 				loot.removeAllCurrency();
-				if (!extra.getPrint()) {
+				if (display) {
 					extra.println(p.getName() + " claims the " + aether + " aether"+(money > 0 ? " and " + World.currentMoneyDisplay(money) + "." : "."));
 				}
 			}else {
 				loot.removeAether();
-				if (!extra.getPrint()) {
+				if (display) {
 					extra.println(p.getName() + " gains " + aether + " aether.");
 				}
 			}
@@ -468,7 +487,7 @@ public class AIClass {
 	public static void playerLoot(Inventory loot, boolean canAtomSmash) {
 		boolean normalLoot = loot.getRace().racialType == Race.RaceType.PERSONABLE;
 		if (Player.player.getPerson().getFlag(PersonFlag.AUTOLOOT)) {
-			//TODO: we can use canAtomSmash to decide to display the updates here or if they're managed by a greater
+			//we can use canAtomSmash to decide to display the updates here or if they're managed by a greater
 			//looting function, as with mass battles
 			if (canAtomSmash) {
 				playerStashOldItems();
@@ -579,33 +598,15 @@ public class AIClass {
 	
 	/**
 	 * Returns true if they want to replace it
-	 * @param hasItem (Item)
-	 * @param toReplace (Item)
+	 * <br>
+	 * do not call for the player unless the player is autolooting
+	 * @param hasItem (Item that they have)
+	 * @param toReplace (Item that we're looking at)
 	 * @return if you should swap items (boolean)
 	 */
-	public static boolean compareItem(Item hasItem, Item toReplace, boolean autosell, Person p) {
+	public static boolean compareItem(Item hasItem, Item toReplace, Person p) {
 		//p is the person comparing it, and is used to apply skills and feats that modify stats
 		//for the player, the base stats should be the same, but the 'diff' should show the actual difference
-		//when swapped
-		autosell = p.getFlag(PersonFlag.AUTOLOOT) && autosell;
-		if (Armor.class.isInstance(hasItem)) {
-			if (autosell && worseArmor((Armor)hasItem,(Armor)toReplace)) {
-				if (p.isPlayer()) {
-					extra.print(extra.PRE_YELLOW+"Automelted the ");
-					toReplace.display(1);
-					Networking.waitIfConnected(100L);
-				}
-				return false;
-			}
-		}
-		if (p.isPlayer()){
-			extra.println("Use the");
-			toReplace.display(1);
-			extra.println("instead of your");
-			hasItem.display(1);
-			displayChange(hasItem,toReplace, p);
-			return extra.yesNo();
-		}
 		if (!Weapon.class.isInstance(hasItem)){
 		return (toReplace.getAetherValue()>hasItem.getAetherValue());
 	}else {
@@ -620,8 +621,7 @@ public class AIClass {
 	}
 	
 	public static boolean compareItem(Item current, Item next, Person p, Store s) {
-		assert !p.isPlayer();
-		return compareItem(current,next,false,p);
+		return compareItem(current,next,p);
 	}
 	public static Item playerLootCompareItem(Item next,boolean canPouch) {
 		return askDoSwap(next,null,canPouch);
@@ -812,7 +812,7 @@ public class AIClass {
 			}});
 		return ret[0];
 	}
-	public static boolean compareItem(Inventory bag, Item toReplace, boolean autosellOn, Person p) {
+	public static boolean compareItem(Inventory bag, Item toReplace, Person p) {
 		Item item = null;
 		if (Armor.class.isInstance(toReplace)) {
 			Armor a = (Armor)toReplace;
@@ -822,7 +822,7 @@ public class AIClass {
 				item = bag.getHand();
 			}
 		}
-		return compareItem(item,toReplace,autosellOn, p);
+		return compareItem(item,toReplace, p);
 	}
 
 	private static boolean worseArmor(Armor hasItem, Armor toReplace) {
@@ -1174,9 +1174,9 @@ public class AIClass {
 	/**
 	 * find an item you can't sell
 	 */
-	public static void findItem(Item found, boolean autosell, Person person) {
+	public static void findItem(Item found, Person person) {
 		Item current = person.getBag().itemCounterpart(found);
-		if (AIClass.compareItem(current,found,autosell,person)) {
+		if (AIClass.compareItem(current,found,person)) {
 			Item ret = person.getBag().swapItem(found);
 			if (ret != null) {
 				Services.aetherifyItem(ret,person.getBag());
