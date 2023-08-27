@@ -74,7 +74,7 @@ public class QuestReactionFactory {
 
 							@Override
 							public String title() {
-								return Networking.AGGRO + "attack them";
+								return extra.PRE_BATTLE + "Attack them.";
 							}
 
 							@Override
@@ -99,7 +99,7 @@ public class QuestReactionFactory {
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
 				Person p = RaceFactory.getDueler(bumperLocation.getTier());
-				extra.println(Networking.AGGRO +p.getName() + " appears, claiming that they were hired to defend " + q.targetName +"!");
+				extra.println(extra.PRE_BATTLE +p.getName() + " appears, claiming that they were hired to defend " + q.targetName +"!");
 				
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() >= 0) {
@@ -114,7 +114,7 @@ public class QuestReactionFactory {
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
 				Person p = RaceFactory.getLawman(bumperLocation.getTier());
-				extra.println(Networking.AGGRO +p.getName() + " attacks you for traveling to murder " + q.targetName +"!");
+				extra.println(extra.PRE_BATTLE +p.getName() + " attacks you for traveling to murder " + q.targetName +"!");
 				
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() >= 0) {

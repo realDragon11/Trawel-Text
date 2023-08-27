@@ -10,13 +10,8 @@ import trawel.time.TimeEvent;
 
 public class Calender implements Serializable, CanPassTime {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	public double timeCounter = 30;//extra.randRange(0,3640)/10.0;
-	
-	private static final double timeMult = 1.0;//can do 1/24.0 if need to go back to old behavior
 	
 	/*public enum LunarPhase{//not nearly as exact as the sun
 		NEW_MOON(0f),

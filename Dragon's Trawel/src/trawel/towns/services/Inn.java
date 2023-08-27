@@ -301,7 +301,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return extra.PRE_RED+"fight";
+						return extra.PRE_BATTLE+"Fight";
 					}
 
 					@Override
@@ -317,7 +317,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "chat";
+						return "Chat";
 					}
 
 					@Override
@@ -367,7 +367,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 			extra.println("1 tell them goodbye");
 			extra.println("2 ask for a tip");
 			extra.println("3 this inn");
-			extra.println("4 "+extra.PRE_RED+" a duel");
+			extra.println("4 "+extra.PRE_BATTLE+" a duel");
 			int in = extra.inInt(4);
 			switch (in) {
 				case 1: extra.println("They wish you well.") ;break;
@@ -376,7 +376,8 @@ public class Inn extends Feature implements QuestBoardLocation{
 				case 4: extra.println("You challenge the fighter!");
 				Person p = RaceFactory.makeOld(tier+2);
 				p.getBag().clearDrawBanes();
-				mainGame.CombatTwo(Player.player.getPerson(),p);return;
+				Player.player.fightWith(p);
+				return;
 			}
 			if (in == 1) {
 				break;
@@ -397,7 +398,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 	}
 	
 	private void barFight() {
-		extra.println(extra.PRE_RED+"There is no resident, but there is room for a barfight... start one?");
+		extra.println(extra.PRE_BATTLE+"There is no resident, but there is room for a barfight... start one?");
 		if (extra.yesNo()) {
 			Combat c = Player.player.fightWith(RaceFactory.getDueler(tier));
 			if (c.playerWon() > 0) {

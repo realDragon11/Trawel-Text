@@ -1268,17 +1268,32 @@ public class WeaponAttackFactory {
 				pierceW = 1f;
 			}
 			if (magicRider) {//distribute the distribution :D
-				float totalBaseWeight = sharpW+bluntW+pierceW;
-				float totalRiderWeight = igniteW+frostW+elecW;
-				float totalTotalWeight = totalBaseWeight+totalRiderWeight;
-				float baseAdjust = totalBaseWeight/totalTotalWeight;
-				float riderAdjust = totalRiderWeight/totalTotalWeight;
-				sharpW*=baseAdjust;
-				bluntW*=baseAdjust;
-				pierceW*=baseAdjust;
-				igniteW*=riderAdjust;
-				frostW*=riderAdjust;
-				elecW*=riderAdjust;
+				if (percentAsRider == 1) {
+					float totalBaseWeight = sharpW+bluntW+pierceW;
+					float totalRiderWeight = igniteW+frostW+elecW;
+					float totalTotalWeight = totalBaseWeight+totalRiderWeight;
+					float baseAdjust = totalBaseWeight/totalTotalWeight;
+					float riderAdjust = totalRiderWeight/totalTotalWeight;
+					sharpW*=baseAdjust;
+					bluntW*=baseAdjust;
+					pierceW*=baseAdjust;
+					igniteW*=riderAdjust;
+					frostW*=riderAdjust;
+					elecW*=riderAdjust;
+				}else {
+					float totalBaseWeight = (1-percentAsRider)*(sharpW+bluntW+pierceW);
+					float totalRiderWeight = percentAsRider*(igniteW+frostW+elecW);
+					float totalTotalWeight = totalBaseWeight+totalRiderWeight;
+					float baseAdjust = totalBaseWeight/totalTotalWeight;
+					float riderAdjust = totalRiderWeight/totalTotalWeight;
+					sharpW*=baseAdjust;
+					bluntW*=baseAdjust;
+					pierceW*=baseAdjust;
+					igniteW*=riderAdjust;
+					frostW*=riderAdjust;
+					elecW*=riderAdjust;
+				}
+				
 			}
 			int[] arr = DamageTier.distribute(DamageTier.totalDamage(start, end, slant),sharpW,bluntW,pierceW,igniteW,frostW,elecW);
 			return new Attack(name, desc,

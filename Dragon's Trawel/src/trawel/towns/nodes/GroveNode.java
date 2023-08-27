@@ -245,7 +245,6 @@ public class GroveNode implements NodeType{
 			Player.player.getPerson().washAll();
 			return false;
 		case 4:
-			int bstate = holder.getStateNum(node);
 			extra.println("You find a "+holder.getStorageFirstClass(node,String.class)+"... With their equipment intact!");
 			Person p = holder.getStorageFirstPerson(node);
 			p.getBag().forceDownGradeIf(Player.player.getPerson().getLevel());
@@ -890,7 +889,7 @@ public class GroveNode implements NodeType{
 	/*for  Albin Grahn */
 	private boolean funkyMoss(NodeConnector holder,int node) {
 		int state = holder.getStateNum(node);
-		int startstate = state;
+		//int startstate = state;
 		if (state == 0) {//under
 			extra.println("You see something shining under the moss! Get a closer look?");
 			if (!extra.yesNo()) {
@@ -1022,7 +1021,6 @@ public class GroveNode implements NodeType{
 	}
 	
 	private boolean packOfWolves(NodeConnector holder,int node) {
-		extra.print(extra.PRE_RED);
 		extra.println(extra.PRE_BATTLE+"The pack descends upon you!");
 		List<Person> list = holder.getStorageFirstClass(node,List.class);
 		Combat c = Player.player.massFightWith(list);

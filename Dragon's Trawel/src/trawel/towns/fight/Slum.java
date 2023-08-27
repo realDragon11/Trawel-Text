@@ -128,7 +128,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 						
 						@Override
 						public String title() {
-							return Networking.AGGRO +"attack crime lord";
+							return extra.PRE_BATTLE +"Attack crime lord.";
 						}
 		
 						@Override
@@ -318,7 +318,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	
 						@Override
 						public String title() {
-							return Networking.AGGRO +"go vigilante";
+							return extra.PRE_BATTLE +"Go vigilante.";
 						}
 	
 						@Override
@@ -341,7 +341,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 					
 					@Override
 					public String title() {
-						return Networking.AGGRO +"mug someone";
+						return extra.PRE_BATTLE +"Mug someone.";
 					}
 
 					@Override
@@ -366,10 +366,10 @@ public class Slum extends Feature implements QuestBoardLocation{
 	
 	private void killCrime() {
 		Person p = crimeLord.getPerson();
-		extra.println(Networking.AGGRO +"Attack " + p.getName() + "?");
+		extra.println(extra.PRE_BATTLE +"Attack " + p.getName() + "?");
 		if (extra.yesNo()) {
-			Person winner = mainGame.CombatTwo(Player.player.getPerson(),p);
-			if (winner == Player.player.getPerson()) {
+			Combat c = Player.player.fightWith(p);
+			if (c.playerWon() > 0) {
 				extra.println("You kill the crime lord!");
 				wins++;
 				//reduce crime by 3x crimelord eLevel and 1x player eLevel, compared to only 1x player eLevel of mugger

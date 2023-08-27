@@ -372,7 +372,7 @@ public class GenericNode implements NodeType {
 	}
 	
 	private boolean basicRager(NodeConnector holder,int node) {
-		extra.println(extra.PRE_RED+holder.getStorageAsArray(node)[2]);
+		extra.println(extra.PRE_BATTLE+holder.getStorageAsArray(node)[2]);
 		Person p = holder.getStorageFirstPerson(node);
 		Combat c = Player.player.fightWith(p);
 		if (c.playerWon() > 0) {
@@ -568,8 +568,8 @@ public class GenericNode implements NodeType {
 					@Override
 					public boolean go() {
 						if (extra.chanceIn(1,30)) {
-							extra.println(extra.PRE_RED +"\"Enough of your games!\"");
-							setBasicRagePerson(holder, node, p, "A very angry "+extra.PRE_RED+p.getName(),extra.PRE_RED+p.getName() + " attacks you!");
+							extra.println(extra.PRE_BATTLE +"\"Enough of your games!\"");
+							setBasicRagePerson(holder, node, p, "A very angry "+extra.PRE_BATTLE+p.getName(),extra.PRE_BATTLE+p.getName() + " attacks you!");
 							return true;//out of menu
 						}
 						if (extra.chanceIn(1,3)) {
@@ -582,14 +582,14 @@ public class GenericNode implements NodeType {
 
 					@Override
 					public String title() {
-						return extra.PRE_RED+"Attack";
+						return extra.PRE_BATTLE+"Attack.";
 					}
 
 					@Override
 					public boolean go() {
 						extra.println("Really attack " +p.getName()+"?");
 						if (extra.yesNo()) {
-							setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_RED+p.getName(),extra.PRE_RED+p.getName() + " attacks you!");
+							setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_BATTLE+p.getName(),extra.PRE_BATTLE+p.getName() + " attacks you!");
 							return true;//out of menu
 						}
 						return false;

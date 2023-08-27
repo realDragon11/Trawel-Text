@@ -858,7 +858,7 @@ public class Town extends TContextOwner{
 				Agent sp = island.getWorld().getStalker();
 				//does not level up automatically
 				if (sp != null) {
-					extra.println(extra.PRE_RED + sp.getPerson().getName() + " appears to haunt you!");
+					extra.println(extra.PRE_BATTLE + sp.getPerson().getName() + " appears to haunt you!");
 					went = true;
 					Combat c = Player.player.fightWith(sp.getPerson());
 					if (c.playerWon() > 0) {

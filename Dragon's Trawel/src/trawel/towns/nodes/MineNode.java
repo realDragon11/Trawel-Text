@@ -460,9 +460,9 @@ public class MineNode implements NodeType{
 				List<Person> cultists = holder.getStorageFirstClass(node,List.class);
 				Person leader = extra.getNonAddOrFirst(cultists);
 				if (cultists.size() > 1) {
-					extra.println(extra.PRE_RED + "Attack " + leader.getName() +" and their acolytes?");
+					extra.println(extra.PRE_BATTLE + "Attack " + leader.getName() +" and their acolytes?");
 				}else {
-					extra.println(extra.PRE_RED + "Attack " + leader.getName() +"?");
+					extra.println(extra.PRE_BATTLE + "Attack " + leader.getName() +"?");
 				}
 				if (extra.yesNo()) {
 					holder.setStateNum(node,6);//angy cultists are very madge

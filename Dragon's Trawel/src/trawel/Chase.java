@@ -37,7 +37,7 @@ public class Chase {
 		if (timer >= 10) {
 			return target;
 		}
-		extra.println(extra.PRE_RED+"You have caught up to " + target.getName() +"!");
+		extra.println(extra.PRE_BATTLE+"You have caught up to " + target.getName() +"!");
 		return mainGame.CombatTwo(chaser,target);
 	}
 

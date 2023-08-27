@@ -209,7 +209,6 @@ public class Inventory implements java.io.Serializable{
 	 * @return (double) - sharp resistance
 	 */
 	public double getSharpResist() {
-		int i = 0;
 		double retResist = 0;
 		for (Armor a: getArmor()) {
 			retResist += a.getSharpResist();
@@ -222,7 +221,6 @@ public class Inventory implements java.io.Serializable{
 	 * @return (double) - blunt resistance
 	 */
 	public double getBluntResist() {
-		int i = 0;
 		double retResist = 0;
 		for (Armor a: getArmor()) {
 			retResist += a.getBluntResist();
@@ -235,7 +233,6 @@ public class Inventory implements java.io.Serializable{
 	 * @return (double) - piercing resistance
 	 */
 	public double getPierceResist() {
-		int i = 0;
 		double retResist = 0;
 		for (Armor a: getArmor()) {
 			retResist += a.getPierceResist();
@@ -286,7 +283,6 @@ public class Inventory implements java.io.Serializable{
 	 * @return (double) - aim
 	 */
 	public double getAim() {
-		int i = 0;
 		double retMod = 1;
 		for (Armor a: getArmors()) {
 			if (a.isEnchanted()) {
@@ -305,7 +301,6 @@ public class Inventory implements java.io.Serializable{
 	 * @return (double) - damage mod
 	 */
 	public double getDam() {
-		int i = 0;
 		double retMod = 1;
 		for (Armor a: getArmors()) {
 			if (a.isEnchanted()) {
@@ -325,7 +320,6 @@ public class Inventory implements java.io.Serializable{
 	 * @return (double) - health mod
 	 */
 	public double getHealth() {
-		int i = 0;
 		double retMod = 1;
 		for (Armor a: getArmors()) {
 			if (a.isEnchanted()) {
@@ -344,7 +338,6 @@ public class Inventory implements java.io.Serializable{
 	 * @return (double) - dodge mod
 	 */
 	public double getSpeed() {
-		int i = 0;
 		double retMod = 1;
 		for (Armor a: getArmors()) {
 			if (a.isEnchanted()) {

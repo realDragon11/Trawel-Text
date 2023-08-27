@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.nustaq.serialization.FSTConfiguration;
+import org.nustaq.serialization.FSTObjectInput;
 import org.nustaq.serialization.FSTObjectOutput;
 
 import trawel.battle.Combat.SkillCon;
@@ -574,14 +575,14 @@ public class WorldGen {
 		}
 		return ret;
 	}
-	
-	
+
+
 	public static void load(String str) {
 		int len;
 		try (FileInputStream fos = new FileInputStream("trawel"+str+".save");){
 			while (true) {
-			String ret = "";
-			
+				String ret = "";
+
 				ArrayList<Integer> values = new ArrayList<Integer>();
 				while (true) {
 					int red = fos.read();
@@ -598,41 +599,36 @@ public class WorldGen {
 					ret+=(char)(int)values.get(i);
 				}
 				try {
-				 len = Integer.parseInt(ret);
-				 break;
+					len = Integer.parseInt(ret);
+					break;
 				}catch(NumberFormatException e) {
-					
+
 				}
 			}
-			
-			 //FSTObjectInput oos = conf.getObjectInput();
-			// while (oos.readChar() != '\n') {
-				 //should automagically work
-			 //}
-			 //when it opens the same file again it crashes?
-			 extra.println(""+len);
-			 byte buffer[] = new byte[len];
-	            while (len > 0) {
-	                len -= fos.read(buffer, buffer.length - len, len);}
-			 
-			 plane = (Plane) conf.getObjectInput(buffer).readObject();//plane = (Plane) oos.readObject();
-			 Player.player = plane.getPlayer();
-			 //World worlda = world;
-			 Player.bag = Player.player.getPerson().getBag();
-			 Player.player.skillUpdate();
-			 Player.passTime = 0;
-			 mainGame.story = Player.player.storyHold;
-			 extra.getThreadData().world = Player.player.getWorld();
-			 //oos.close();
-			 fos.close();
-			 plane.reload();
+			extra.println(""+len);
+			byte buffer[] = new byte[len];
+			while (len > 0) {
+				len -= fos.read(buffer, buffer.length - len, len);}
+			try (FSTObjectInput oos = conf.getObjectInput(buffer)){//with resources
+				plane = (Plane) oos.readObject();
+			} catch (Exception e) {
+				throw e;//throw upchain
+			}
+			Player.player = plane.getPlayer();
+			Player.bag = Player.player.getPerson().getBag();
+			Player.player.skillUpdate();
+			Player.passTime = 0;
+			mainGame.story = Player.player.storyHold;
+			extra.getThreadData().world = Player.player.getWorld();
+			fos.close();
+			plane.reload();
 		} catch (ClassNotFoundException | IOException e) {
 			if (!mainGame.logStreamIsErr) {
 				e.printStackTrace();
 			}
 			extra.println("Invalid load. Either no save file was found or it was outdated.");
 		}
-		
+
 	}
 
 	public static void pathToTown(Town dest) {

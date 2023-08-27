@@ -1,4 +1,13 @@
 package trawel.towns.services;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +45,7 @@ public class Oracle extends Feature{ //extends feature later
 		return extra.F_SPECIAL;
 	}
 
-	public static void tip(String mask) {		
+	public static void tip(String mask) {
 		extra.println("\""+ extra.randList(tips.get(mask)) + "\"");
 	}
 	
@@ -51,11 +60,65 @@ public class Oracle extends Feature{ //extends feature later
 		return "/resc/resource/";
 	}
 	
+	/*
+	public void loadTipAt(String mask, String loc) {
+		try (Scanner fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+loc+".txt"))){
+			List<String> list = new ArrayList<String>();
+			while (fileInput.hasNextLine()) {
+				list.add(fileInput.nextLine());
+			}
+			tips.put(mask, list);
+		}
+	}*/
+	
+	public void loadTipAt(File loc) {
+		try (Scanner fileInput = new Scanner (loc)){
+			List<String> list = new ArrayList<String>();
+			List<String> all = tips.get("");
+			//would be much easier to remove things from the utter list now
+			while (fileInput.hasNextLine()) {
+				String line = fileInput.nextLine();
+				list.add(line);
+				all.add(line);
+			}
+			tips.put(loc.getName().replace("Tips.txt",""), list);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void load() {
 		tips.clear();
+		tips.put("",new ArrayList<String>());
+		Path path;
+		try {
+			path = Paths.get(Oracle.class.getResource(rescLocation()).toURI());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			return;
+		}
+		assert !Files.notExists(path);//can be false if unsure?
+		assert Files.exists(path);
+		//File f = new File(Oracle.class.getResource(rescLocation()).getFile());//idk why this doesn't work but
+		File f = path.toFile();
+		assert f.exists();
+		assert f.isDirectory();
+		File[] files = f.listFiles(new FilenameFilter() {
+
+			@Override
+			public boolean accept(File arg0, String arg1) {
+				if (arg1.contains("Tips.txt")) {
+					return true;
+				}
+				return false;
+			}});
+		for (File file: files) {
+			loadTipAt(file);
+		}
 		
+		/*
+		loadTipAt("old","oldTips");
 		
-		//System.out.println(new File(".").getAbsolutePath());
 		Scanner fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+"oldTips.txt"));
 		
 		List<String> list = new ArrayList<String>();
@@ -130,7 +193,7 @@ public class Oracle extends Feature{ //extends feature later
 		tips.put("gravedigger", list);
 		
 		fileInput.close();
-		
+		*/
 		
 	}
 	

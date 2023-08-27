@@ -1511,7 +1511,6 @@ public class TargetFactory {
 					}
 					
 				}else {
-					int j = 0;
 					for (int i = 0; i < t.variants.length;i++) {
 						targets.add(t);
 						variants.add(new VariantResolver(i,t.variants[i].replaceAll(Pattern.quote("[]"),t.name).replaceAll(Pattern.quote("{}"),t.name)));

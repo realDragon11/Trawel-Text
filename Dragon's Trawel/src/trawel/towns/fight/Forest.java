@@ -557,7 +557,6 @@ public class Forest extends Feature{
 					}else {
 						extra.println("You find yourself in a different part of the forest.");
 					}
-					
 				}else {
 					extra.println("You resist the unknown force.");
 				}

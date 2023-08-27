@@ -77,7 +77,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeWolf(level);
 
-					extra.println(extra.PRE_RED+"A wolf attacks you!");
+					extra.println(extra.PRE_BATTLE+"A wolf attacks you!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
 						Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 1);
@@ -97,7 +97,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeFellReaver(level);
 					
-					extra.println(extra.PRE_RED+"A fell reaver appears!");
+					extra.println(extra.PRE_BATTLE+"A fell reaver appears!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
 						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
@@ -113,7 +113,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeEnt(level);
 					
-					extra.println(extra.PRE_RED+"An ent appears!");
+					extra.println(extra.PRE_BATTLE+"An ent appears!");
 					Player.player.fightWith(p);
 					
 				}};
@@ -126,7 +126,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeVampire(level);
 					
-					extra.println(extra.PRE_RED+"A vampire jumps from the shadows!");
+					extra.println(extra.PRE_BATTLE+"A vampire jumps from the shadows!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
 						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
@@ -145,7 +145,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.getMugger(level);
 					
-					extra.println(extra.PRE_RED+"A thief charges you!");
+					extra.println(extra.PRE_BATTLE+"A thief charges you!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
 						Player.player.getLocation().addOccupant(new Agent(p));
@@ -163,7 +163,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeBear(level);
 					
-					extra.println(extra.PRE_RED+"A bear attacks you!");
+					extra.println(extra.PRE_BATTLE+"A bear attacks you!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
 						Player.player.questTrigger(TriggerType.CLEANSE,"bear", 1);
@@ -183,7 +183,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeBat(level);
 					
-					extra.println(extra.PRE_RED+"A bat attacks you!");
+					extra.println(extra.PRE_BATTLE+"A bat attacks you!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
 						Player.player.questTrigger(TriggerType.CLEANSE,"bat", 1);
@@ -201,7 +201,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeUnicorn(level);
 					
-					extra.println(extra.PRE_RED+"A unicorn accosts you for holding the virgin captive!");
+					extra.println(extra.PRE_BATTLE+"A unicorn accosts you for holding the virgin captive!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
 						Player.player.questTrigger(TriggerType.CLEANSE,"unicorn", 1);
@@ -256,7 +256,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.getMugger(level);
 					
-					extra.println(extra.PRE_RED+"A pirate challenges you for your booty!");
+					extra.println(extra.PRE_BATTLE+"A pirate challenges you for your booty!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
 						Player.player.getLocation().addOccupant(new Agent(p));
@@ -275,7 +275,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeDrudgerStock(level);
 					
-					extra.println(extra.PRE_RED+"A drudger attacks your ship!");
+					extra.println(extra.PRE_BATTLE+"A drudger attacks your ship!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
 						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));

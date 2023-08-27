@@ -104,7 +104,7 @@ public class BossNode implements NodeType {
 	
 	private boolean fatespinner(NodeConnector holder,int node) {
 		//if (holder.getEventNum(node) == 0) {
-			extra.println(extra.PRE_RED+"You challenge the fatespinner!");
+			extra.println(extra.PRE_BATTLE+"You challenge the fatespinner!");
 			List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
 			Combat c = Player.player.massFightWith(list);
 			if (c.playerWon() > 0) {
@@ -135,7 +135,7 @@ public class BossNode implements NodeType {
 	
 	private boolean hellbaron(NodeConnector holder,int node) {
 		//if (node.state == 0) {
-			extra.println(extra.PRE_RED+"You challenge the Hell Baron!");
+			extra.println(extra.PRE_BATTLE+"You challenge the Hell Baron!");
 			List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
 			Combat c = Player.player.massFightWith(list);
 			if (c.playerWon() > 0) {
@@ -207,9 +207,9 @@ public class BossNode implements NodeType {
 	@Override
 	public String interactString(NodeConnector holder, int node) {
 		switch(holder.getEventNum(node)) {
-		case 1: return extra.PRE_RED+"reject Fate";
-		case 2: return extra.PRE_RED+"become the Baroness";
-		case 3: return extra.PRE_RED+"stall a Story";
+		case 1: return extra.PRE_BATTLE+"reject Fate";
+		case 2: return extra.PRE_BATTLE+"become the Baroness";
+		case 3: return extra.PRE_BATTLE+"stall a Story";
 		}
 		throw new RuntimeException("Invalid boss");
 	}

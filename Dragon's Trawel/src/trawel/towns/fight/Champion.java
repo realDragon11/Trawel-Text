@@ -77,7 +77,7 @@ public class Champion  extends Feature{
 	public void go() {
 		Networking.setArea("champ");
 		Networking.sendStrong("Discord|imagesmall|champion|Champion|");
-		extra.println(extra.PRE_RED+"Challenge " + person.getName() + "?");
+		extra.println(extra.PRE_BATTLE+"Challenge " + person.getName() + "?");
 		if (extra.yesNo()) {
 			Combat c = Player.player.fightWith(person);
 			if (c.playerWon() > 0) {

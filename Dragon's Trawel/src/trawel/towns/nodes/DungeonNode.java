@@ -406,7 +406,7 @@ public class DungeonNode implements NodeType{
 		p.getBag().graphicalDisplay(1,p);
 		extra.println("Really open the " + holder.getStorageFirstClass(node,String.class) + "?");
 		if (extra.yesNo()) {
-			extra.println(extra.PRE_RED+"The mimic attacks you!");
+			extra.println(extra.PRE_BATTLE+"The mimic attacks you!");
 			Combat c = Player.player.fightWith(p);
 			if (c.playerWon() > 0) {
 				holder.setForceGo(node, false);
@@ -433,7 +433,7 @@ public class DungeonNode implements NodeType{
 				Networking.clearSide(1);
 				return false;
 			}
-			extra.println(extra.PRE_RED+"The statue springs to life and attacks you!");
+			extra.println(extra.PRE_BATTLE+"The statue springs to life and attacks you!");
 		}
 		if (state == 0) {
 			holder.setStateNum(node,1);

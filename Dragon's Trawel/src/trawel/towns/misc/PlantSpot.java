@@ -12,9 +12,12 @@ import trawel.Effect;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.battle.Combat;
+import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.Seed;
 import trawel.personal.item.solid.DrawBane;
+import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.time.CanPassTime;
 import trawel.time.TimeContext;
@@ -204,7 +207,17 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 		case "angry bee hive":Player.bag.addSeed(Seed.BEE); break;
 		case "ent": 
 			Networking.send("PlayDelay|sound_entmake|1|");
-			mainGame.CombatTwo(Player.player.getPerson(),RaceFactory.makeEnt(level));
+			Combat c = Player.player.fightWith(RaceFactory.makeEnt(level));
+			if (c.playerWon() > 0) {
+				Player.bag.addNewDrawBanePlayer(DrawBane.WOOD);//in addition to normal loot
+			}else {
+				List<Person> list = c.getNonSummonSurvivors();//don't add ent if they died
+				if (list.size() > 0) {
+					for (Person p: list) {//should only be one, but
+						Player.getPlayerWorld().addReoccuring(p.setOrMakeAgentGoal(AgentGoal.SPOOKY));
+					}
+				}
+			}
 		break;
 		case "ent sapling": Player.bag.addSeed(Seed.ENT);break;
 		case "pumpkin patch": 

@@ -444,7 +444,6 @@ public final class extra {
 				backingQueue--;
 				return false;
 			}
-			String str;
 			trawel.threads.BlockTaskManager.start();
 			while (true) {
 				extra.println("1 yes");
@@ -962,7 +961,6 @@ public final class extra {
 		
 		//NOTE: predefined color mixes inlined
 		public static final String PRE_WHITE = inlineColor(Color.WHITE);
-		@Deprecated
 		public static final String PRE_RED = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f));
 		public static final String PRE_BATTLE = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.4f));
 		public static final String PRE_MAYBE_BATTLE = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.6f));
