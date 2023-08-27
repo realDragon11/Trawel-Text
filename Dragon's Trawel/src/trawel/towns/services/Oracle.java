@@ -60,6 +60,22 @@ public class Oracle extends Feature{ //extends feature later
 		return "/resc/resource/";
 	}
 	
+	public static Path rescPath() {
+		if (mainGame.inEclipse) {
+			try {
+				return Paths.get(Oracle.class.getResource(rescLocation()).toURI());
+			} catch (URISyntaxException e) {
+				throw new RuntimeException("invalid ide resc path");
+			}
+		}
+		//have to put these outside so I can access them sanely, jarinjar loader moment???
+		return Paths.get("resource/");
+	}
+	
+	public static void unloadResc() {
+		//TODO: should do this automatically
+	}
+	
 	/*
 	public void loadTipAt(String mask, String loc) {
 		try (Scanner fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+loc+".txt"))){
@@ -90,13 +106,7 @@ public class Oracle extends Feature{ //extends feature later
 	public void load() {
 		tips.clear();
 		tips.put("",new ArrayList<String>());
-		Path path;
-		try {
-			path = Paths.get(Oracle.class.getResource(rescLocation()).toURI());
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-			return;
-		}
+		Path path = rescPath();
 		assert !Files.notExists(path);//can be false if unsure?
 		assert Files.exists(path);
 		//File f = new File(Oracle.class.getResource(rescLocation()).getFile());//idk why this doesn't work but
