@@ -1454,34 +1454,25 @@ public class Combat {
 				break;
 			}
 		}
-		float leech = (defender.hasEffect(Effect.B_MARY) ? 2 : 0) + (defender.hasSkill(Skill.BLOODDRINKER) ? 0.5f : 0);
-		int baseBleedDam = bleedDam(attacker,defender);
-		int leechNum = (int)(leech * baseBleedDam);
-		int totalBleed = 0;
+		
+		float bleed = 0;
 		if (attacker.hasEffect(Effect.BLEED)) {
-			attacker.takeDamage(baseBleedDam);
-			totalBleed+=baseBleedDam;
-			if (leech > 0) {
-				defender.addHp(leechNum);
+			int baseBleeds = attacker.effectCount(Effect.BLEED);
+			bleed+= bleedStackDam(defender,baseBleeds);
+			if (!attacker.hasEffect(Effect.MAJOR_BLEED)) {
+				attacker.setEffectCount(Effect.BLEED,(int) Math.ceil(baseBleeds/2f));
 			}
 		}
 		int effectCount = attacker.effectCount(Effect.I_BLEED);
 		if (effectCount > 0) {
-			attacker.takeDamage(effectCount*baseBleedDam);
-			totalBleed+=baseBleedDam*effectCount;
-			if (leech > 0) {
-				defender.addHp(effectCount*leechNum);
-			}
+			bleed += bleedDam(attacker,defender)*effectCount;
 		}
-		if (attacker.hasEffect(Effect.MAJOR_BLEED)) {
-			attacker.takeDamage(baseBleedDam);
-			totalBleed+=baseBleedDam;
+		if (bleed > 0 && !extra.getPrint()) {
+			int totalBleed = (int) Math.ceil(bleed);
+			attacker.takeDamage(totalBleed);
+			float leech = (defender.hasEffect(Effect.B_MARY) ? 2 : 0) + (defender.hasSkill(Skill.BLOODDRINKER) ? 0.5f : 0);
 			if (leech > 0) {
-				defender.addHp(leechNum);
-			}
-		}
-		if (totalBleed > 0 && !extra.getPrint()) {
-			if (leech > 0) {
+				defender.addHp(Math.round(totalBleed*leech));
 				extra.println(indent+defender.getName() + " heals off of "
 				+ attacker.getNameNoTitle() + "'s blood, healing " + (totalBleed*leech) + " HP off of "
 				+ (totalBleed) + " damage!");
@@ -1566,15 +1557,23 @@ public class Combat {
 	
 	public static int bleedDam(Person attacker2, Person defender2) {
 		if (attacker2 == null) {
-			return IEffectiveLevel.cleanLHP(defender2.getLevel(),.02);
+			return IEffectiveLevel.cleanLHP(defender2.getLevel(),.01);
 		}
-		return IEffectiveLevel.cleanLHP(Math.min(defender2.getLevel(),attacker2.getLevel()+2),.02);
-		/*
-		return //hp is effective level * 10
-				//here we want 5% damage per bleed unit at max
-				//so we don't times it by 10 and instead divide by 2
-				(int)//cast to int
-				Math.ceil(IEffectiveLevel.effective(Math.min(attacker2.getLevel(),defender2.getLevel()*2))/2f);*/
+		return IEffectiveLevel.cleanLHP(Math.min(defender2.getLevel(),attacker2.getLevel()+2),.01);
+	}
+	
+	public static float bleedStackDam(Person target, int stacks) {
+		return (float) IEffectiveLevel.uncleanLHP(target.getLevel(), stacks/200f);
+	}
+	
+	/**
+	 * gets how many stacks of bleed to apply
+	 */
+	public static int bleedStackAmount(Person attacker,Person defender) {
+		if (attacker == null) {
+			return 10;
+		}
+		return Math.round(10 * extra.clamp(attacker.getEffectiveLevel()/defender.getEffectiveLevel(),.2f,2f));
 	}
 	
 	private String inflictWound(Person attacker2, Person defender2, AttackReturn retu, Wound w) {
@@ -1618,14 +1617,10 @@ public class Combat {
 				}
 				break;	
 			case MAJOR_BLEED:
+				defender2.addEffect(Effect.MAJOR_BLEED);//don't need to be clotted
+				case BLEED:
 				if (!defender2.hasEffect(Effect.CLOTTER)) {
-					defender2.addEffect(Effect.BLEED);
-					defender2.addEffect(Effect.MAJOR_BLEED);//never inflicted without also inflicting normal bleed
-				}
-				break;
-			case BLEED:
-				if (!defender2.hasEffect(Effect.CLOTTER)) {
-					defender2.addEffect(Effect.BLEED);
+					defender2.setEffectCount(Effect.BLEED,defender2.effectCount(Effect.BLEED)+nums[0]);
 				}
 				break;
 			case DISARMED: case SCREAMING:
@@ -1638,6 +1633,12 @@ public class Combat {
 				}
 				break;
 			case I_BLEED:
+				if (!defender2.hasEffect(Effect.CLOTTER)) {
+					defender2.addEffect(Effect.I_BLEED);
+					defender2.addEffect(Effect.I_BLEED);
+				}
+				break;
+			case I_BLEED_WEAK:
 				if (!defender2.hasEffect(Effect.CLOTTER)) {
 					defender2.addEffect(Effect.I_BLEED);
 				}
@@ -1728,12 +1729,14 @@ public class Combat {
 		case KO: case BRAINED:
 			//this does fixed damage on defender because it needs to recover, plus that's part of it's gimmick of felling mighty foes
 			return new Integer[] {IEffectiveLevel.cleanLHP(defender.getLevel(),.05)};
-		case BLEED: case I_BLEED://bleeds aren't synced, WET :(
+		case I_BLEED://bleeds aren't synced, WET :(
+			return new Integer[] {2*bleedDam(attacker,defender),2*bleedDam(null,defender)};//can take null attacker
+		case I_BLEED_WEAK:
 			return new Integer[] {bleedDam(attacker,defender),bleedDam(null,defender)};//can take null attacker
 		case MAJOR_BLEED:
-			//shows combined with base bleed that is applied at the same time
-			//first number shows base value, second shows expected total
-			return new Integer[] {bleedDam(attacker,defender),2*bleedDam(null,defender)};//can take null attacker
+		case BLEED:
+			int stacks = bleedStackAmount(attacker, defender);//can take null attacker
+			return new Integer[] {stacks,Math.round(bleedStackDam(defender, stacks))};
 		case TEAR://WET
 			return new Integer[] {10};// %, multiplicative dodge mult penalty
 		case MANGLED:

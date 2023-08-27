@@ -1,8 +1,14 @@
 package trawel.battle.attacks;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumMap;
 import java.util.List;
 
+import com.github.yellowstonegames.core.WeightedTable;
+
+import trawel.extra;
 import trawel.battle.attacks.Attack.Wound;
+import trawel.battle.attacks.ImpairedAttack.DamageType;
 
 public class Target{
 
@@ -53,9 +59,42 @@ public class Target{
 	 */
 	public int attachNumber = 0;
 	public TargetFactory.TargetType type;
-	public List<Attack.Wound> slashWounds = new ArrayList<Attack.Wound>();
-	public List<Attack.Wound> bluntWounds = new ArrayList<Attack.Wound>();
-	public List<Attack.Wound> pierceWounds = new ArrayList<Attack.Wound>();
+	/*
+	private List<Wound> sharpWounds = new ArrayList<Wound>();
+	private List<Float> sharpWeights = new ArrayList<Float>();
+	private List<Wound> bluntWounds = new ArrayList<Wound>();
+	private List<Float> bluntWeights = new ArrayList<Float>();
+	private List<Wound> pierceWounds = new ArrayList<Wound>();
+	private List<Float> pierceWeights = new ArrayList<Float>();
+	
+	private List<Wound> igniteWounds = new ArrayList<Wound>();
+	private List<Float> igniteWeights = new ArrayList<Float>();
+	private List<Wound> frostWounds = new ArrayList<Wound>();
+	private List<Float> frostWeights = new ArrayList<Float>();
+	private List<Wound> elecWounds = new ArrayList<Wound>();
+	private List<Float> elecWeights = new ArrayList<Float>();*/
+
+	private static class WoundRarityTuple{
+		public final Wound wound;
+		public final float rarity;
+		
+		public WoundRarityTuple(Wound _wound, float _rarity) {
+			wound = _wound;
+			rarity = _rarity;
+		}
+	}
+	
+	public EnumMap<DamageType,List<WoundRarityTuple>> tupleLists = new EnumMap<DamageType,List<WoundRarityTuple>>(DamageType.class); 
+	
+	public void addWound(DamageType dt, Wound wound, float rarity) {
+		List<WoundRarityTuple> list = tupleLists.getOrDefault(dt,null);
+		if (list == null) {
+			list = new ArrayList<Target.WoundRarityTuple>();
+			tupleLists.put(dt, list);
+		}
+		list.add(new WoundRarityTuple(wound,rarity));
+	}
+	
 	/**
 	 * for mapped parts, variants must be in same order
 	 * supports inserting
@@ -80,4 +119,29 @@ public class Target{
 	 * in the future these should be 'crippling' wounds, for now they're just the normal mostly temp ones
 	 */
 	public Wound condWound;
+	
+	private EnumMap<DamageType,WeightedTable> woundTables = new EnumMap<DamageType, WeightedTable>(DamageType.class);
+	
+	public void finish() {
+		for (DamageType dt: DamageType.values()) {
+			List<WoundRarityTuple> list = tupleLists.getOrDefault(dt,null);
+			if (list != null) {
+				int size = list.size();
+				float[] fls = new float[size];
+				for (int i = 0; i < size;i++) {
+					fls[i] = list.get(i).rarity;
+				}
+				woundTables.put(dt,new WeightedTable(fls));
+			}
+		}
+	}
+	
+	public Wound rollWound(DamageType dt) {
+		WeightedTable t = woundTables.getOrDefault(dt, null);
+		if (t == null) {
+			return null;//TODO
+		}else {
+			return tupleLists.get(dt).get(t.random(extra.getRand())).wound;
+		}
+	}
 }

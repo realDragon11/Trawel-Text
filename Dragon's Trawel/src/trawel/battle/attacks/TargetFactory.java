@@ -30,20 +30,24 @@ public class TargetFactory {
 	 */
 	private void addLeg_LimbWounds(Target t,Wound bleedReplace) {
 		if (bleedReplace == null) {
-			bleedReplace = Wound.BLEED;
+			t.slashWounds.add(bleedReplace);
+			t.bluntWounds.add(bleedReplace);
+			t.pierceWounds.add(bleedReplace);
+		}else {
+			addMinorBleed(t);
 		}
 		t.slashWounds.add(Attack.Wound.DICE);
 		t.slashWounds.add(Attack.Wound.HAMSTRUNG);
-		t.slashWounds.add(bleedReplace);
 		t.bluntWounds.add(Attack.Wound.TRIPPED);
-		t.pierceWounds.add(bleedReplace);
+		
 	}
 	
 	/**
-	 * 1 slash 1 pierce
+	 * 1 slash 1 blunt 1 pierce
 	 */
 	private void addMinorBleed(Target t) {
 		t.slashWounds.add(Attack.Wound.BLEED);
+		t.bluntWounds.add(Attack.Wound.I_BLEED_WEAK);
 		t.pierceWounds.add(Attack.Wound.BLEED);
 	}
 	/**
@@ -53,6 +57,11 @@ public class TargetFactory {
 		t.slashWounds.add(Attack.Wound.MAJOR_BLEED);
 		t.bluntWounds.add(Attack.Wound.I_BLEED);
 		t.pierceWounds.add(Attack.Wound.MAJOR_BLEED);
+	}
+	
+	private void addBleeds(Target t) {
+		addMinorBleed(t);
+		add_IBleed_MBleed(t);
 	}
 	
 	private void add_eye_Bloody(Target t) {
@@ -213,11 +222,10 @@ public class TargetFactory {
 		t.variants = new String[] {"right {}","left {}"};
 		set_as_arm(t);
 		t.type = TargetType.HUMANOID;
+		addMinorBleed(t);
 		t.slashWounds.add(Attack.Wound.DICE);
 		t.slashWounds.add(Attack.Wound.DISARMED);
-		t.slashWounds.add(Attack.Wound.BLEED);
 		t.bluntWounds.add(Attack.Wound.DISARMED);
-		t.pierceWounds.add(Attack.Wound.BLEED);
 		targetList.add(t);
 		
 		t = new Target();
@@ -286,7 +294,7 @@ public class TargetFactory {
 		t.name = "heart";
 		set_as_heart(t);
 		t.type = TargetType.HUMANOID;
-		add_IBleed_MBleed(t);
+		add_IBleed_MBleed(t);//major only
 		t.bluntWounds.add(Attack.Wound.KO);
 		targetList.add(t);
 		

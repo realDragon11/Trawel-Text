@@ -31,4 +31,8 @@ public interface IEffectiveLevel {
 		//10f*((in+10))
 		return (int) Math.ceil((in+10)*10f*percent);
 	}
+	public static double uncleanLHP(double in, double percent) {
+		//10f*((in+10))
+		return (in+10)*10f*percent;
+	}
 }
