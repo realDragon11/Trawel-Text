@@ -903,6 +903,24 @@ public class Player extends SuperPerson{
 
 												@Override
 												public String title() {
+													return "Aether and Currency";
+												}
+
+												@Override
+												public boolean go() {
+													extra.println("Aether is a magical substance infused into many objects to increase their potency. When infused into items, it can be freed with a basic spell all Personable creatures are capable of.");
+													extra.println("When infused in people or animals, it cannot be freed this way, however, it does build up.");
+													extra.println("In both these cases, this results in a level. Improving items is an arduous process, but even a bat can level up by fighting other creatures. The conflict itself also generates some aether from the souls of the participants, but the bulk of the aether comes from creatures being slain.");
+													extra.println("Aether is a universal currency, however it is not particularly easy to transfer outside of breaking things down and conflict, so stores use 'World Currency' as their preferred trade item.");
+													extra.println("Most stores that sell items will permit paying in Aether, but the rates at which they convert Aether to their currencies vary, and many places use this as a chance to take advantage of customers.");
+													extra.println("World Currency, as the name implies, is only good for the world that it's issued in. Other worlds will not accept it, and while many are valuable for their materials, this is never worth the effort of selling compared to how much time it would take to find a buyer.");
+													extra.println("World Currencies are also needed to buy land and forts. Both Aether and World Currencies are needed to build on land, but forts often have better connections once the initial hurdle of obtaining the deed is passed.");
+													return false;
+												}});
+											slist.add(new MenuSelect() {
+
+												@Override
+												public String title() {
 													return "Level, Feat Points, Feat Picks";
 												}
 
