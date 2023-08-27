@@ -32,6 +32,7 @@ import trawel.personal.item.Item.ItemType;
 import trawel.personal.item.Potion;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Weapon;
+import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.quests.BasicSideQuest;
 import trawel.quests.Quest;
@@ -915,6 +916,41 @@ public class Player extends SuperPerson{
 
 												@Override
 												public String title() {
+													return "Armor";
+												}
+
+												@Override
+												public boolean go() {
+													extra.println("Armors are items, and thus have a value, although most of the time you will melt them into Aether.");
+													extra.println("The main three properties of an Armor are how well it defends against physical damage types. This is a result of it's effective level, material, and style.");
+													extra.println("Armors also influence your agility multiplier penalty, have a weight which can weigh you down if you can't fit all your used equipment in your capacity, and have elemental damage multipliers.");
+													return false;
+												}});
+											slist.add(new MenuSelect() {
+
+												@Override
+												public String title() {
+													return "Weapons";
+												}
+
+												@Override
+												public boolean go() {
+													extra.println("Weapons are items, and thus have a value, although most of the time you will melt them into Aether.");
+													extra.println("The main importance of weapons are for their attacks- every weapon type has a set, and the final numbers are determined by it's effective level and material.");
+													extra.println("Weapons also tend to have weapon qualities. This glossary does not include a list of all weapon attacks, but you can browse them in a format that tests their effectiveness from one of the main menu tests.");
+													extra.println();
+													extra.println("Would you like to see a list of weapon qualities?");
+													if (extra.yesNo()) {
+														for (WeaponQual q: WeaponQual.values()) {
+															extra.println(q.name +": " + q.desc);
+														}
+													}
+													return false;
+												}});
+											slist.add(new MenuSelect() {
+
+												@Override
+												public String title() {
 													return "Skills";
 												}
 
@@ -1061,6 +1097,27 @@ public class Player extends SuperPerson{
 													if (extra.yesNo()) {
 														for (Wound w: Wound.values()) {
 															extra.println(w.name + ": " + w.desc + "("+w.active+")");
+														}
+													}
+													return false;
+												}});
+											slist.add(new MenuSelect() {
+
+												@Override
+												public String title() {
+													return "Effects";
+												}
+
+												@Override
+												public boolean go() {
+													extra.println("Effects are temporary status effects. They are all counters, although many have that counter limited to 1.");
+													extra.println("Effects don't store any information in themselves other how many a Person has.");
+													extra.println("Some effects persist after battle, and through death, which means they need to be cured at a Doctor or by a Shaman.");
+													extra.println();
+													extra.println("Would you like to see a list of Effects");
+													if (extra.yesNo()) {
+														for (Effect e: Effect.values()) {
+															extra.println(e.getName() + ": " + e.getDesc() + " Persists: " + e.lasts() + " Stacks: " +e.stacks());
 														}
 													}
 													return false;
