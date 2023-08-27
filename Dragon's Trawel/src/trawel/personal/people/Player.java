@@ -30,7 +30,9 @@ import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;
 import trawel.personal.item.Item.ItemType;
 import trawel.personal.item.Potion;
+import trawel.personal.item.Seed;
 import trawel.personal.item.solid.Armor;
+import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.people.Agent.AgentGoal;
@@ -1122,7 +1124,49 @@ public class Player extends SuperPerson{
 													}
 													return false;
 												}});
-											extra.menuGo(new ScrollMenuGenerator(slist.size(), "next <> terms", "previous <> terms"){
+											slist.add(new MenuSelect() {
+
+												@Override
+												public String title() {
+													return "DrawBanes";
+												}
+
+												@Override
+												public boolean go() {
+													extra.println("DrawBanes are minor inventory items. Many can be used as potion reagents, some can be used to build for features, and they can be sold or donated to merchants.");
+													extra.println("DrawBanes, true to their name, can also attract or repel random encounters. For example, meat attracts wolves and bears, gold attracts thieves, some magic items attract fell reavers, and virgins attract unicorns.");
+													extra.println("You can discard DrawBanes from your inventory using the Player menu, which you might want to do to stop getting accosted by animals.");
+													extra.println("You also have a limited amount of space to store them. Note that some drawbanes will also be attracted to other aspects of your character, such as vampires attacking you if you're soaked in blood.");
+													extra.println();
+													extra.println("Would you like to see a list of DrawBanes?");
+													if (extra.yesNo()) {
+														for (DrawBane d: DrawBane.values()) {
+															extra.println(d.getName()+":" + d.getFlavor() + " Brewable: "+ d.getCanBrew() + " Value: " + d.getValue() + " Merchant Value: " + extra.F_TWO_TRAILING.format(d.getMValue()));
+														}
+													}
+													return false;
+												}});
+											slist.add(new MenuSelect() {
+
+												@Override
+												public String title() {
+													return "Seeds";
+												}
+
+												@Override
+												public boolean go() {
+													extra.println("Seeds can be planted in Plant Spots, either in Node Exploration town Features, or Garden town Features. They will then grow as time passes. Some seeds grow into items that can be harvested, while others can only be taken.");
+													extra.println("Seeds have a limited inventory space, but are quite rare, so it is a bit harder to reach that cap. They can't be used for anything else, but often can be used to grow DrawBanes.");
+													extra.println();
+													extra.println("Would you like to see a list of Seeds?");
+													if (extra.yesNo()) {
+														for (Seed d: Seed.values()) {
+															extra.println(d.toString());
+														}
+													}
+													return false;
+												}});
+											extra.menuGo(new ScrollMenuGenerator(slist.size(), "previous <> terms", "next <> terms"){
 
 												@Override
 												public List<MenuItem> forSlot(int i) {
