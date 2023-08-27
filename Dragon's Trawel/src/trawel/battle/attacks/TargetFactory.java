@@ -30,10 +30,12 @@ public class TargetFactory {
 	 * 3 slash 1 blunt 1 pierce
 	 */
 	private void addLeg_LimbWounds(Target t,Wound bleedReplace, float weightMult, float replaceRarity) {
-		if (bleedReplace == null && replaceRarity > 0f) {
-			t.addWound(DamageType.BLUNT, bleedReplace, replaceRarity);
-			t.addWound(DamageType.SHARP, bleedReplace, replaceRarity);
-			t.addWound(DamageType.PIERCE, bleedReplace, replaceRarity);
+		if (bleedReplace == null) {
+			if (replaceRarity > 0f) {
+				t.addWound(DamageType.BLUNT, bleedReplace, replaceRarity);
+				t.addWound(DamageType.SHARP, bleedReplace, replaceRarity);
+				t.addWound(DamageType.PIERCE, bleedReplace, replaceRarity);
+			}
 		}else {
 			addMinorBleed(t,weightMult*.6f);
 		}
@@ -43,10 +45,12 @@ public class TargetFactory {
 	}
 	
 	private void addArm_LimbWounds(Target t,Wound bleedReplace, float weightMult, float replaceRarity) {
-		if (bleedReplace == null && replaceRarity > 0f) {
-			t.addWound(DamageType.BLUNT, bleedReplace, replaceRarity);
-			t.addWound(DamageType.SHARP, bleedReplace, replaceRarity);
-			t.addWound(DamageType.PIERCE, bleedReplace, replaceRarity);
+		if (bleedReplace == null) {
+			if (replaceRarity > 0f) {
+				t.addWound(DamageType.BLUNT, bleedReplace, replaceRarity);
+				t.addWound(DamageType.SHARP, bleedReplace, replaceRarity);
+				t.addWound(DamageType.PIERCE, bleedReplace, replaceRarity);
+			}
 		}else {
 			addMinorBleed(t,weightMult*.6f);
 		}
@@ -83,6 +87,12 @@ public class TargetFactory {
 		t.addWound(DamageType.SHARP, Wound.BLINDED, weightMult);
 		t.addWound(DamageType.BLUNT, Wound.BLINDED, weightMult);
 		t.addWound(DamageType.PIERCE, Wound.BLINDED, weightMult);
+	}
+	
+	private void addWingTears(Target t, float weightMult) {
+		t.addWound(DamageType.SHARP, Wound.TEAR, weightMult);
+		t.addWound(DamageType.BLUNT, Wound.TEAR, weightMult);
+		t.addWound(DamageType.PIERCE, Wound.TEAR, weightMult);
 	}
 	
 	private void addStatueWounds(Target t) {
@@ -742,12 +752,7 @@ public class TargetFactory {
 		set_as_guts(t);
 		t.condWound = Wound.SCALDED;
 		t.type = TargetType.UNDEAD_H;
-		t.slashWounds.add(Attack.Wound.SLICE);
-		t.slashWounds.add(Attack.Wound.DICE);
-		t.slashWounds.add(Attack.Wound.HACK);
-		t.bluntWounds.add(Attack.Wound.WINDED);
-		t.bluntWounds.add(Attack.Wound.CRUSHED);
-		t.pierceWounds.add(Attack.Wound.TAT);
+		addGutsGeneric(t, 1);
 		targetList.add(t);
 		
 		//flying
@@ -755,29 +760,16 @@ public class TargetFactory {
 		t.name = "head";
 		set_as_head(t);
 		t.type = TargetType.FLY;
-		t.slashWounds.add(Attack.Wound.DISARMED);
-		t.slashWounds.add(Attack.Wound.BLINDED);
-		t.slashWounds.add(Attack.Wound.DICE);
-		t.bluntWounds.add(Attack.Wound.CONFUSED);
-		t.bluntWounds.add(Attack.Wound.KO);
-		t.bluntWounds.add(Attack.Wound.DIZZY);		
-		t.bluntWounds.add(Attack.Wound.DISARMED);
-		t.pierceWounds.add(Attack.Wound.BLINDED);
+		add_head_Knockout(t, 1);
+		add_head_Bleeds(t, 1);
 		targetList.add(t);
 		
 		t = new Target();
 		t.name = "chest";
 		set_as_torso(t);
 		t.type = TargetType.FLY;
-		t.slashWounds.add(Attack.Wound.SLICE);
-		t.slashWounds.add(Attack.Wound.DICE);
-		t.slashWounds.add(Attack.Wound.BLEED);
-		t.slashWounds.add(Attack.Wound.HACK);
-		t.bluntWounds.add(Attack.Wound.WINDED);
-		t.bluntWounds.add(Attack.Wound.I_BLEED);
-		t.bluntWounds.add(Attack.Wound.CRUSHED);
-		t.pierceWounds.add(Attack.Wound.BLEED);
-		t.pierceWounds.add(Attack.Wound.TAT);
+		addChestGeneric(t, 1);
+		addChestBleeds(t, 1);
 		targetList.add(t);
 		
 		t = new Target();
@@ -790,9 +782,7 @@ public class TargetFactory {
 		t.rarity = 1.5;
 		t.slot = 1;
 		t.type = TargetType.FLY;
-		t.slashWounds.add(Attack.Wound.TEAR);
-		t.bluntWounds.add(Attack.Wound.TEAR);
-		t.pierceWounds.add(Attack.Wound.TEAR);
+		addWingTears(t,1);
 		t.mappingNumber = 2;
 		t.condWound = Wound.CRIPPLED;
 		targetList.add(t);
@@ -803,10 +793,11 @@ public class TargetFactory {
 		set_as_leg(t);
 		t.condWound = Wound.TEAR;
 		t.type = TargetType.FLY;
-		t.slashWounds.add(Attack.Wound.DICE);
-		t.slashWounds.add(Attack.Wound.BLEED);
-		t.bluntWounds.add(Attack.Wound.CRUSHED);
-		t.pierceWounds.add(Attack.Wound.BLEED);
+		addMinorBleed(t, .5f);
+		addWingTears(t,.2f);
+		t.addWound(DamageType.SHARP, Wound.DICE, 1f);
+		t.addWound(DamageType.BLUNT, Wound.CRUSHED, 1f);
+		t.addWound(DamageType.PIERCE, Wound.TAT, 1f);
 		targetList.add(t);
 		
 		t = new Target();
@@ -814,7 +805,7 @@ public class TargetFactory {
 		t.variants = new String[] {"right {}","left {}"};
 		set_as_eye(t);
 		t.type = TargetType.FLY;
-		add_eye_Bloody(t);
+		add_eye_Bloody(t,1);
 		t.attachNumber = 1;
 		targetList.add(t);
 		
@@ -822,22 +813,15 @@ public class TargetFactory {
 		t.name = "heart";
 		set_as_heart(t);
 		t.type = TargetType.FLY;
-		add_IBleed_MBleed(t);
-		t.bluntWounds.add(Attack.Wound.KO);
+		addMajorBleed(t, 1);
 		targetList.add(t);
 		
 		t = new Target();
 		t.name = "guts";
 		set_as_guts(t);
 		t.type = TargetType.FLY;
-		t.slashWounds.add(Attack.Wound.SLICE);
-		t.slashWounds.add(Attack.Wound.DICE);
-		t.slashWounds.add(Attack.Wound.BLEED);
-		t.slashWounds.add(Attack.Wound.HACK);
-		t.bluntWounds.add(Attack.Wound.WINDED);
-		t.bluntWounds.add(Attack.Wound.CRUSHED);
-		t.pierceWounds.add(Attack.Wound.TAT);
-		t.pierceWounds.add(Attack.Wound.BLEED);
+		addGutsGeneric(t, 1);
+		addGutsBleeds(t, 1);
 		targetList.add(t);
 		
 		
@@ -847,12 +831,7 @@ public class TargetFactory {
 		t.name = "head";
 		set_as_head(t);
 		t.type = TargetType.DEMON;
-		t.slashWounds.add(Attack.Wound.BLINDED);
-		t.slashWounds.add(Attack.Wound.DICE);
-		t.bluntWounds.add(Attack.Wound.CONFUSED);
-		t.bluntWounds.add(Attack.Wound.KO);
-		t.bluntWounds.add(Attack.Wound.DIZZY);
-		t.pierceWounds.add(Attack.Wound.BLINDED);
+		add_head_Knockout(t, 1);
 		targetList.add(t);
 		
 		t = new Target();
@@ -866,9 +845,6 @@ public class TargetFactory {
 		t.blunt = 1;
 		t.pierce = 1;
 		t.slot = 0;
-		t.slashWounds.add(Wound.DICE);
-		t.bluntWounds.add(Wound.DIZZY);
-		t.pierceWounds.add(Wound.TAT);
 		t.attachNumber = 1;
 		targetList.add(t);
 		
@@ -882,7 +858,7 @@ public class TargetFactory {
 		t.rarity = 1;
 		t.slot = 1;
 		t.type = TargetType.DEMON;
-		addMangled_Wounds(t);//used to damage skull and inflict the depower wound
+		addMangled_Wounds(t,1);//used to damage skull and inflict the depower wound
 		t.attachNumber = -1;
 		t.passthrough = true;
 		targetList.add(t);
@@ -891,15 +867,8 @@ public class TargetFactory {
 		t.name = "torso";
 		set_as_torso(t);
 		t.type = TargetType.DEMON;
-		t.slashWounds.add(Attack.Wound.SLICE);
-		t.slashWounds.add(Attack.Wound.DICE);
-		t.slashWounds.add(Attack.Wound.BLEED);
-		t.slashWounds.add(Attack.Wound.HACK);
-		t.bluntWounds.add(Attack.Wound.WINDED);
-		t.bluntWounds.add(Attack.Wound.I_BLEED);
-		t.bluntWounds.add(Attack.Wound.CRUSHED);
-		t.pierceWounds.add(Attack.Wound.BLEED);
-		t.pierceWounds.add(Attack.Wound.TAT);
+		addChestGeneric(t, 1);
+		addChestBleeds(t, .5f);//troso is one of the few places demons can bleed from
 		targetList.add(t);
 		
 		t = new Target();
@@ -907,11 +876,7 @@ public class TargetFactory {
 		t.variants = new String[] {"right {}","left {}"};
 		set_as_arm(t);
 		t.type = TargetType.DEMON;
-		t.slashWounds.add(Attack.Wound.DICE);
-		t.slashWounds.add(Attack.Wound.DISARMED);
-		t.slashWounds.add(Attack.Wound.BLEED);
-		t.bluntWounds.add(Attack.Wound.DISARMED);
-		t.pierceWounds.add(Attack.Wound.BLEED);
+		addArm_LimbWounds(t,Wound.DISARMED, 1, 0);
 		targetList.add(t);
 		
 		t = new Target();
@@ -923,9 +888,7 @@ public class TargetFactory {
 		t.rarity = .3;
 		t.slot = 1;
 		t.type = TargetType.DEMON;
-		t.slashWounds.add(Attack.Wound.DISARMED);
-		t.bluntWounds.add(Attack.Wound.DISARMED);
-		t.pierceWounds.add(Attack.Wound.DISARMED);
+		addHandGeneric(t, 1);
 		t.attachNumber = 2;
 		//maimed is handled by arm
 		targetList.add(t);
@@ -935,7 +898,7 @@ public class TargetFactory {
 		t.variants = new String[] {"right {}","left {}"};
 		set_as_leg(t);
 		t.type = TargetType.DEMON;
-		addLeg_LimbWounds(t,null);
+		addLeg_LimbWounds(t,Wound.HAMSTRUNG,1,0);
 		targetList.add(t);
 		
 		t = new Target();
@@ -947,7 +910,7 @@ public class TargetFactory {
 		t.rarity = .2;
 		t.slot = 4;//slot is different than attached part
 		t.type = TargetType.DEMON;
-		addLeg_LimbWounds(t,null);
+		addLeg_LimbWounds(t,Wound.HAMSTRUNG,1,0);
 		t.attachNumber = 4;
 		targetList.add(t);
 		
@@ -956,16 +919,16 @@ public class TargetFactory {
 		t.variants = new String[] {"right []","left []"};
 		set_as_eye(t);
 		t.type = TargetType.DEMON;
-		add_eye_Bloody(t);
+		add_eye_Bloody(t, 1);
+		//can bleed from eyes
 		t.attachNumber = 1;
 		targetList.add(t);
 		
 		t = new Target();
-		t.name = "darkness";
+		t.name = "darkness";//equal to heart
 		set_as_heart(t);
 		t.type = TargetType.DEMON;
-		add_IBleed_MBleed(t);
-		t.bluntWounds.add(Attack.Wound.KO);
+		addMajorBleed(t, 1);
 		targetList.add(t);
 		
 		

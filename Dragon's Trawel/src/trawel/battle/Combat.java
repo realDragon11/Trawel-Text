@@ -1647,7 +1647,9 @@ public class Combat {
 				defender2.addEffect(Effect.TORN);
 				break;
 			case BLOODY:
-				defender2.addEffect(Effect.BLEED);
+				if (!defender2.hasEffect(Effect.CLOTTER)) {
+					defender2.setEffectCount(Effect.BLEED,defender2.effectCount(Effect.BLEED)+nums[1]);
+				}
 				if (defender2.isAttacking()) {
 					defender2.getNextAttack().multiplyHit(1-(nums[0]/10f));
 				}
@@ -1742,7 +1744,8 @@ public class Combat {
 		case MANGLED:
 			return new Integer[] {50};//50% reduction in condition
 		case BLOODY://bleeds aren't synced, WET :(
-			return new Integer[] {50,bleedDam(attacker,defender),bleedDam(null,defender)};//bloody blind
+			int bstacks = bleedStackAmount(attacker, defender);//can take null attacker
+			return new Integer[] {50,bstacks,Math.round(bleedStackDam(defender, bstacks))};//bloody blind
 		}
 		return new Integer[0];
 	}
