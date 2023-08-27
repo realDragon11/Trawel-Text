@@ -15,7 +15,6 @@ public class TargetFactory {
 
 	private List<Target> targetList = new ArrayList<Target>();
 	private static TargetFactory handler;
-	public static Target noTarget;
 	public static List<Attack.Wound> fireWounds = new ArrayList<Attack.Wound>();
 	public static List<Attack.Wound> shockWounds = new ArrayList<Attack.Wound>();
 	public static List<Attack.Wound> freezeWounds = new ArrayList<Attack.Wound>();
@@ -295,7 +294,6 @@ public class TargetFactory {
 		add_head_Bleeds(t, 1);
 		add_head_Knockout(t, 1);
 		t.type = TargetType.HUMANOID;
-		
 		t.finish();
 		
 		t = new Target();
@@ -403,20 +401,6 @@ public class TargetFactory {
 		addGutsGeneric(t, 1);
 		addGutsGeneric(t, 1);
 		t.finish();
-		
-		
-		t = new Target();
-		t.name = "ERROR NO TARGET";
-		t.hit = 1;
-		t.sharp = 1;
-		t.blunt = 1;
-		t.pierce = 1;
-		t.rarity = 0;
-		t.slot = -1;
-		t.type = TargetType.NONE;
-		t.finish();
-		noTarget = t;
-		
 		
 		//mimic
 		t = new Target();
@@ -841,6 +825,7 @@ public class TargetFactory {
 		t.condWound = Wound.DEPOWER;
 		t.type = TargetType.DEMON;
 		//mostly unused
+		addMangled_Wounds(t,1);
 		t.hit = 1;
 		t.sharp = 1;
 		t.blunt = 1;

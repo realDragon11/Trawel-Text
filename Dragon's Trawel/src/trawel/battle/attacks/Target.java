@@ -125,14 +125,45 @@ public class Target{
 	public void finish() {
 		for (DamageType dt: DamageType.values()) {
 			List<WoundRarityTuple> list = tupleLists.getOrDefault(dt,null);
-			if (list != null) {
-				int size = list.size();
-				float[] fls = new float[size];
-				for (int i = 0; i < size;i++) {
-					fls[i] = list.get(i).rarity;
-				}
-				woundTables.put(dt,new WeightedTable(fls));
+			if (list == null) {
+					switch (dt) {
+					case IGNITE:
+						list = new ArrayList<WoundRarityTuple>();
+						for (Wound w: TargetFactory.fireWounds) {
+							list.add( new WoundRarityTuple(w, 1));
+						}
+						tupleLists.put(dt,list);
+						break;
+					case FROST:
+						list = new ArrayList<WoundRarityTuple>();
+						for (Wound w: TargetFactory.freezeWounds) {
+							list.add( new WoundRarityTuple(w, 1));
+						}
+						tupleLists.put(dt,list);
+						break;
+					case ELEC:
+						list = new ArrayList<WoundRarityTuple>();
+						for (Wound w: TargetFactory.shockWounds) {
+							list.add( new WoundRarityTuple(w, 1));
+						}
+						tupleLists.put(dt,list);
+						break;
+					case DECAY:
+						break;
+					default:
+						throw new RuntimeException("invalid empty target wound list for " + name + " " + type + dt);
+					}
 			}
+			if (list == null) {
+				break;//no list needed
+			}
+			int size = list.size();
+			float[] fls = new float[size];
+			for (int i = 0; i < size;i++) {
+				fls[i] = list.get(i).rarity;
+			}
+			
+			woundTables.put(dt,new WeightedTable(fls));
 		}
 		TargetFactory.finishTarget(this);
 	}
