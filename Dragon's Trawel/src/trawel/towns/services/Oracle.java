@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -31,8 +32,11 @@ public class Oracle extends Feature{ //extends feature later
 	private int visits = 0;
 	
 	private static List<String> emptyList = Collections.singletonList("tips not loaded!");
-	//FIXME: either need to distribute tips with game, or unpack them, or find a workaround to my jar loading issues with path redirections
+	//MAYBELATER: either need to distribute tips with game, or unpack them, or find a workaround to my jar loading issues with path redirections
 	//witness hell: https://stackoverflow.com/a/6247181
+	public static String[] tipLocs = new String[] {"utter","cult","equality","gravedigger","old","racistPraise","racistShun","shaman"};
+	public static List<String> tipLocsList = Arrays.asList(tipLocs);
+	
 	public Oracle(String string, int level) {
 		name = string;
 		tier = level;
@@ -90,6 +94,18 @@ public class Oracle extends Feature{ //extends feature later
 			tips.put(mask, list);
 		}
 	}*/
+	public void loadTipInJar(String mask) {
+		try (Scanner fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+mask+"Tips.txt"))){
+			List<String> list = new ArrayList<String>();
+			List<String> all = tips.get("");
+			while (fileInput.hasNextLine()) {
+				String line = fileInput.nextLine();
+				list.add(line);
+				all.add(line);
+			}
+			tips.put(mask, list);
+		}
+	}
 	
 	public void loadTipAt(File loc) {
 		try (Scanner fileInput = new Scanner (loc)){
@@ -101,7 +117,9 @@ public class Oracle extends Feature{ //extends feature later
 				list.add(line);
 				all.add(line);
 			}
-			tips.put(loc.getName().replace("Tips.txt",""), list);
+			String mask = loc.getName().replace("Tips.txt","");
+			assert tipLocsList.contains(mask);//so I don't forget when making a new mask in ide
+			tips.put(mask, list);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -110,127 +128,61 @@ public class Oracle extends Feature{ //extends feature later
 	public void load() {
 		tips.clear();
 		tips.put("",new ArrayList<String>());
-		Path path = rescPath();
-		assert !Files.notExists(path);//can be false if unsure?
-		assert Files.exists(path);
-		//File f = new File(Oracle.class.getResource(rescLocation()).getFile());//idk why this doesn't work but
-		File f = path.toFile();
-		assert f.exists();
-		assert f.isDirectory();
-		File[] files = f.listFiles(new FilenameFilter() {
+		if (mainGame.inEclipse) {
+			Path path = rescPath();
+			assert !Files.notExists(path);//can be false if unsure?
+			assert Files.exists(path);
+			File f = path.toFile();
+			assert f.exists();
+			assert f.isDirectory();
+			File[] files = f.listFiles(new FilenameFilter() {
 
-			@Override
-			public boolean accept(File arg0, String arg1) {
-				if (arg1.contains("Tips.txt")) {
-					return true;
-				}
-				return false;
-			}});
-		for (File file: files) {
-			loadTipAt(file);
+				@Override
+				public boolean accept(File arg0, String arg1) {
+					if (arg1.contains("Tips.txt")) {
+						return true;
+					}
+					return false;
+				}});
+			for (File file: files) {
+				loadTipAt(file);
+			}
+		}else {
+			//FIXME: probably should make a manifest or extractor or anything
+			//note that Hell: witness hell: https://stackoverflow.com/a/6247181
+			for (String str: tipLocsList) {
+				loadTipInJar(str);
+			}
 		}
-		
-		/*
-		loadTipAt("old","oldTips");
-		
-		Scanner fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+"oldTips.txt"));
-		
-		List<String> list = new ArrayList<String>();
-		while (fileInput.hasNextLine()) {
-			list.add(fileInput.nextLine());
-		}
-		tips.put("old", list);
-		fileInput.close();
-		
-		fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+"utterTips.txt"));
-		
-		list = new ArrayList<String>();
-		while (fileInput.hasNextLine()) {
-			list.add(fileInput.nextLine());
-		}
-		tips.put("utter", list);
-		fileInput.close();
-		//
-		fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+"cultTips.txt"));
-		
-		list = new ArrayList<String>();
-		while (fileInput.hasNextLine()) {
-			list.add(fileInput.nextLine());
-		}
-		tips.put("cult", list);
-		fileInput.close();
-		
-		fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+"racistPraiseTips.txt"));
-		
-		list = new ArrayList<String>();
-		while (fileInput.hasNextLine()) {
-			list.add(fileInput.nextLine());
-		}
-		tips.put("racistPraise", list);
-		fileInput.close();
-		
-		fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+"racistShunTips.txt"));
-		
-		list = new ArrayList<String>();
-		while (fileInput.hasNextLine()) {
-			list.add(fileInput.nextLine());
-		}
-		tips.put("racistShun", list);
-		fileInput.close();
-		
-		fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+"equalityTips.txt"));
-		
-		list = new ArrayList<String>();
-		while (fileInput.hasNextLine()) {
-			list.add(fileInput.nextLine());
-		}
-		tips.put("equality", list);
-		
-		fileInput.close();
-		
-		fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+"shamanTips.txt"));
-		
-		list = new ArrayList<String>();
-		while (fileInput.hasNextLine()) {
-			list.add(fileInput.nextLine());
-		}
-		tips.put("shaman", list);
-		
-		fileInput.close();
-		
-		fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+"gravediggerTips.txt"));
-		
-		list = new ArrayList<String>();
-		while (fileInput.hasNextLine()) {
-			list.add(fileInput.nextLine());
-		}
-		tips.put("gravedigger", list);
-		
-		fileInput.close();
-		*/
-		
 	}
 	
 	public void utterance0() {
 		tip("");
 		visits++;
 		Networking.unlockAchievement("oracle1");
+		//has different titles if you just listen in
+		if (visits == 2) {
+			Player.player.addTitle(this.getName() + " groupie");
+		}
 		if (visits == 5) {
-			Player.player.addTitle(this.getName() + " vistor");
+			Player.player.addTitle(this.getName() + " seeker");
 		}
 		if (visits == 10) {
-			Player.player.addTitle(this.getName() + " listener");
+			Player.player.addTitle(this.getName() + " believer");
 		}
 		if (visits == 50) {
-			Player.player.addTitle(this.getName() + " consulter");
+			Player.player.addTitle(this.getName() + " adherent");
+		}
+		if (visits == 100) {
+			Player.player.addTitle(this.getName() + " acolyte");
 		}
 	}
 
 	public void utterance() {
-		if (Player.player.getGold() >= cheapUtterPrice()) {
-			extra.println("Pay "+ cheapUtterPrice() +" "+World.currentMoneyString()+" for an utterance?");
+		if (Player.bag.getAether() >= cheapUtterPrice()) {
+			extra.println("Pay "+ cheapUtterPrice() +" aether for an utterance?");
 			if (extra.yesNo()) {
-				Player.player.addGold(-cheapUtterPrice());
+				Player.bag.addAether(-cheapUtterPrice());
 				tip("");
 				visits++;
 				Networking.unlockAchievement("oracle1");
@@ -250,10 +202,10 @@ public class Oracle extends Feature{ //extends feature later
 	}
 
 	public void utterance2() {
-		if (Player.player.getGold() >= cheapUtterPrice()*5) {
-			extra.println("Pay "+ (cheapUtterPrice()*5) +" "+World.currentMoneyString()+" for a premium utterance?");
+		if (Player.player.getGold() >= utterPrice()) {
+			extra.println("Pay "+ (utterPrice()) +" "+World.currentMoneyString()+" for a premium utterance?");
 			if (extra.yesNo()) {
-				Player.player.addGold(-cheapUtterPrice()*5);
+				Player.player.addGold(-utterPrice());
 				tip("utter");
 				int oldVisits = visits;
 				visits+=4;
@@ -293,8 +245,8 @@ public class Oracle extends Feature{ //extends feature later
 	
 	private void goDelphi() {
 		while (true) {
-		extra.println("1 buy an utterance ("+cheapUtterPrice()+" "+World.currentMoneyString()+")");
-		extra.println("2 buy a premium utterance ("+(cheapUtterPrice()*5)+" "+World.currentMoneyString()+")");
+		extra.println("1 buy an utterance ("+cheapUtterPrice()+" aether)");
+		extra.println("2 buy a premium utterance ("+(utterPrice())+" "+World.currentMoneyString()+")");
 		extra.println("3 sit around and wait for them to talk to you");
 		extra.println("4 leave");
 		switch (extra.inInt(4)) {
@@ -311,7 +263,11 @@ public class Oracle extends Feature{ //extends feature later
 		}
 	}
 	
-	private int cheapUtterPrice() {
+	private int utterPrice() {
 		return (int) getUnEffectiveLevel();
+	}
+	
+	private int cheapUtterPrice() {
+		return getEffectiveLevel();
 	}
 }

@@ -1,8 +1,10 @@
 package trawel.personal.people;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import derg.TwinListMap;
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
@@ -105,6 +107,8 @@ public class Player extends SuperPerson{
 	public Feature atFeature;
 	public boolean forceGoProtection;
 	
+	private TwinListMap<Serializable,String> achieveMap = new TwinListMap<Serializable,String>();
+	
 	public Player(Person p) {
 		person = p;
 		flask = null;
@@ -135,6 +139,24 @@ public class Player extends SuperPerson{
 			extra.mainThreadDataUpdate();
 		}
 	}
+	
+	@Override
+	public void addAchieve(Serializable key, String title) {
+		achieveMap.put(key, title);
+	}
+	
+	@Override
+	public void displayAchieve() {
+		if (achieveMap.size() == 0) {
+			extra.println(person.getName()+" has no accomplishments.");
+		}else {
+			extra.println(person.getName()+"'s Accolades:");
+			for (String title: achieveMap.values()) {
+				extra.println(" "+title);
+			}
+		}
+	}
+	
 	/**
 	 * must call on player load and skill updates
 	 */
@@ -816,7 +838,7 @@ public class Player extends SuperPerson{
 
 									@Override
 									public boolean go() {
-										displayTitles();
+										displayAchieve();
 										return false;
 									}});
 								socList.add(new MenuBack());

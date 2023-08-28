@@ -1,4 +1,5 @@
 package trawel.personal.people;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,12 +30,6 @@ import trawel.towns.World;
 public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 
 	private static final long serialVersionUID = 1L;
-	/**
-	 * TODO: make not a list of strings, can have titles that are more dynamic
-	 * <br>
-	 * such as upgradable and things that can generate their names from existing things like features
-	 */
-	protected List<String> titleList = new ArrayList<String>();
 	private Town location;
 	protected SkillAttackConf[] attConfs = null;
 	
@@ -52,18 +47,12 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	 */
 	private static int currentEditing = -1;
 	
-	public void addTitle(String title) {
-		titleList.add(title);
+	public void addAchieve(Serializable key, String title) {
+		//null for npcs
 	}
 	
-	public void displayTitles() {
-		if (titleList.isEmpty()) {extra.println("They have no titles.");}else {
-		extra.println("They have the following titles:");
-		for (String str: titleList) {
-			extra.print(str+",");
-		}
-		extra.println();
-		}
+	public void displayAchieve() {
+		extra.println("They have no accomplishments.");
 	}
 	
 	public Town getLocation() {

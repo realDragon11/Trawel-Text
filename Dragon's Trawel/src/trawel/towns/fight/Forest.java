@@ -1,4 +1,5 @@
 package trawel.towns.fight;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
@@ -530,15 +531,16 @@ public class Forest extends Feature{
 		
 		extra.print(extra.PRE_BATTLE);
 		if (extra.yesNo()) {
-		Combat c = Player.player.fightWith(robber);
-		if (c.playerWon() > 0) {
-			dryadQuest++;
-			if (dryadQuest == 4) {
-				extra.println("You feel a connection to the forest.");
-				Player.addXp(tier);
-				Player.player.addTitle("dryad of " + this.name);
-			} 
-		}}
+			Combat c = Player.player.fightWith(robber);
+			if (c.playerWon() > 0) {
+				dryadQuest++;
+				if (dryadQuest == 4) {
+					extra.println("You feel a connection to the forest.");
+					Player.addXp(tier);
+					Player.player.addAchieve(this, "Dryad of " + this.name);
+				} 
+			}
+		}
 	}
 	
 	private void findEquip() {
