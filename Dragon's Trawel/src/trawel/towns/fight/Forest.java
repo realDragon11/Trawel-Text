@@ -104,13 +104,13 @@ public class Forest extends Feature{
 		exhaust++;
 		explores++;
 		if (explores == 10) {
-			Player.player.addTitle(this.getName() + " wanderer");
+			Player.player.addAchieve(this, this.getName() + " wanderer");
 		}
 		if (explores == 50) {
-			Player.player.addTitle(this.getName() + " explorer");
+			Player.player.addAchieve(this, this.getName() + " explorer");
 		}
 		if (explores == 100) {
-			Player.player.addTitle(this.getName() + " guide");
+			Player.player.addAchieve(this, this.getName() + " guide");
 		}
 		if (dryadQuest > 0 && dryadQuest < 5 && Math.random() > .5) {
 			lumerbjackDryad();return;

@@ -150,13 +150,13 @@ public class Mountain extends Feature{
 		explores++;
 		exhaust++;
 		if (explores == 10) {
-			Player.player.addTitle(this.getName() + " wanderer");
+			Player.player.addAchieve(this, this.getName() + " wanderer");
 		}
 		if (explores == 50) {
-			Player.player.addTitle(this.getName() + " explorer");
+			Player.player.addAchieve(this, this.getName() + " explorer");
 		}
 		if (explores == 100) {
-			Player.player.addTitle(this.getName() + " guide");
+			Player.player.addAchieve(this, this.getName() + " guide");
 		}
 		if (exhaust > 10 || exhausted) {
 			if (exhausted || !extra.chanceIn(1,exhaust/3)) {

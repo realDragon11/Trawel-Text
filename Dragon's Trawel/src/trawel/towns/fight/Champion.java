@@ -82,7 +82,9 @@ public class Champion  extends Feature{
 			Combat c = Player.player.fightWith(person);
 			if (c.playerWon() > 0) {
 				extra.println("You defeat the champion!");
-				Player.player.addTitle(person.getName() + " " + extra.choose("slayer","killer","champion-killer","champion"));
+				//we don't want to store the person for real, they can get deleted
+				//we're also fine with this getting overwritten if two people share the same name
+				Player.player.addAchieve(person.getName(), person.getName() + " " + extra.choose("slayer","killer","champion-killer","champion"));
 				person = null;
 				Networking.unlockAchievement("beat_champion");
 			}else {

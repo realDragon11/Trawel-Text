@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import derg.TwinListMap;
 import derg.menus.MenuBack;
@@ -146,11 +147,29 @@ public class Player extends SuperPerson{
 	}
 	
 	@Override
+	public void addGroupedAchieve(Serializable key, String category, String instance) {
+		String str = achieveMap.get(key);
+		if (str == null) {
+			achieveMap.put(key,category +": "+instance);
+		}else {
+			String[] others = str.split(Pattern.quote(": "))[1].split(", ");
+			String build = category +": ";
+			for (int i = 0; i < others.length;i++) {
+				build += others[i] +", ";
+			}
+			//since we add to end, we don't need to deal with any fancy knowing when to not add a comma logic
+			build += instance;
+			achieveMap.put(key,build);
+		}
+	}
+	
+	@Override
 	public void displayAchieve() {
 		if (achieveMap.size() == 0) {
 			extra.println(person.getName()+" has no accomplishments.");
 		}else {
 			extra.println(person.getName()+"'s Accolades:");
+			//interestingly this will likely show them in added order, which is a neat side effect
 			for (String title: achieveMap.values()) {
 				extra.println(" "+title);
 			}

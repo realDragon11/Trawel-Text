@@ -531,10 +531,10 @@ public class Store extends Feature{
 	private void addBuy() {
 		this.buys +=1;
 		if (buys == 3) {
-			Player.player.addTitle(town.getName() + " "+ getStoreName() + " shopper");
+			Player.player.addAchieve(this, getStoreName() + " customer");
 		}
 		if (buys == 10) {
-			Player.player.addTitle(town.getName() + " "+getStoreName() + " frequent shopper");
+			Player.player.addAchieve(this, "Valued " + getStoreName() + " customer");
 		}
 	}
 	

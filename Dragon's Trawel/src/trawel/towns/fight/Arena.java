@@ -128,7 +128,7 @@ public class Arena extends Feature{
 			if (c.playerWon() > 0) {
 				if (i == rounds) {
 					extra.println("You win the tournment!");
-					Player.player.addTitle(this.getRewardTitle());
+					Player.player.addGroupedAchieve(this, getName(), ""+timesDone);
 				}else {
 					extra.println("You move on to the next round of the tournament.");
 				}

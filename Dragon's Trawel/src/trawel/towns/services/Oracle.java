@@ -162,19 +162,19 @@ public class Oracle extends Feature{ //extends feature later
 		Networking.unlockAchievement("oracle1");
 		//has different titles if you just listen in
 		if (visits == 2) {
-			Player.player.addTitle(this.getName() + " groupie");
+			Player.player.addAchieve(this, this.getName() + " groupie");
 		}
 		if (visits == 5) {
-			Player.player.addTitle(this.getName() + " seeker");
+			Player.player.addAchieve(this, this.getName() + " seeker");
 		}
 		if (visits == 10) {
-			Player.player.addTitle(this.getName() + " believer");
+			Player.player.addAchieve(this, this.getName() + " believer");
 		}
 		if (visits == 50) {
-			Player.player.addTitle(this.getName() + " adherent");
+			Player.player.addAchieve(this, this.getName() + " adherent");
 		}
 		if (visits == 100) {
-			Player.player.addTitle(this.getName() + " acolyte");
+			Player.player.addAchieve(this, this.getName() + " acolyte");
 		}
 	}
 
@@ -187,13 +187,13 @@ public class Oracle extends Feature{ //extends feature later
 				visits++;
 				Networking.unlockAchievement("oracle1");
 				if (visits == 5) {
-					Player.player.addTitle(this.getName() + " vistor");
+					Player.player.addAchieve(this, this.getName() + " vistor");
 				}
 				if (visits == 10) {
-					Player.player.addTitle(this.getName() + " listener");
+					Player.player.addAchieve(this, this.getName() + " listener");
 				}
 				if (visits == 50) {
-					Player.player.addTitle(this.getName() + " consulter");
+					Player.player.addAchieve(this, this.getName() + " consulter");
 				}
 			}
 		}else {
@@ -208,16 +208,16 @@ public class Oracle extends Feature{ //extends feature later
 				Player.player.addGold(-utterPrice());
 				tip("utter");
 				int oldVisits = visits;
-				visits+=4;
+				visits+=5;
 				Networking.unlockAchievement("oracle1");
 				if (oldVisits < 5 && visits >= 5) {
-					Player.player.addTitle(this.getName() + " vistor");
+					Player.player.addAchieve(this, this.getName() + " vistor");
 				}
 				if (oldVisits < 10 && visits >= 10) {
-					Player.player.addTitle(this.getName() + " listener");
+					Player.player.addAchieve(this, this.getName() + " listener");
 				}
 				if (oldVisits < 50 && visits >= 50) {
-					Player.player.addTitle(this.getName() + " consulter");
+					Player.player.addAchieve(this, this.getName() + " consulter");
 				}
 			}
 		}else {

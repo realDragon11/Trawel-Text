@@ -403,21 +403,20 @@ public class Inn extends Feature implements QuestBoardLocation{
 			Combat c = Player.player.fightWith(RaceFactory.getDueler(tier));
 			if (c.playerWon() > 0) {
 				wins++;
-			if (wins == 3) {
-				Player.player.addTitle(this.getName() + " barfighter");
+				if (wins == 10) {
+					Player.player.addAchieve(this, this.getName() + " barfighter");
+				}
+				if (wins == 50) {
+					Player.player.addAchieve(this, this.getName() + " barbrewer");
+				}
+				if (wins == 100) {
+					Player.player.addAchieve(this, this.getName() + " barmaster");
+				}
+			}else {
+				Person p = c.getNonSummonSurvivors().get(0);
+				Agent a = new Agent(p);
+				town.addOccupant(a);
 			}
-			if (wins == 5) {
-				Player.player.addTitle(this.getName() + " barbrewer");
-			}
-			if (wins == 10) {
-				Player.player.addTitle(this.getName() + " barmaster");
-			}
-			
-		}else {
-			Person p = c.getNonSummonSurvivors().get(0);
-			Agent a = new Agent(p);
-			town.addOccupant(a);
-		}
 			
 		}
 	}

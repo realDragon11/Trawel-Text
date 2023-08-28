@@ -50,6 +50,13 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	public void addAchieve(Serializable key, String title) {
 		//null for npcs
 	}
+	/*
+	 * does not permit ":" in either category or instance, and also overwrites the category each update
+	 * (which lets you change the name of the place)
+	 */
+	public void addGroupedAchieve(Serializable key, String category, String instance) {
+		
+	}
 	
 	public void displayAchieve() {
 		extra.println("They have no accomplishments.");

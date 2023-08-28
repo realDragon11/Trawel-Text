@@ -1432,16 +1432,16 @@ public class mainGame {
 		if (first_man.isPlayer()) {
 			Player.player.wins++;
 			if (Player.player.wins == 10) {
-				Player.player.addTitle("duelist");
+				Player.player.addAchieve("dueling", "Duelist");
 			}
 			if (Player.player.wins == 50) {
-				Player.player.addTitle("fighter");
+				Player.player.addAchieve("dueling", "Veteran Duelist");
 			}
 			if (Player.player.wins == 100) {
-				Player.player.addTitle("warrior");
+				Player.player.addAchieve("dueling", "Master Duelist");
 			}
 			if (Player.player.wins == 1000) {
-				Player.player.addTitle("master duelist");
+				Player.player.addAchieve("dueling", "Grandmaster Duelist");
 			}
 			second_man.addDeath();
 			if (first_man.isPlayer() && second_man.getBag().getRace().racialType == Race.RaceType.PERSONABLE) {
