@@ -38,7 +38,7 @@ public class Chase {
 			return target;
 		}
 		extra.println(extra.PRE_BATTLE+"You have caught up to " + target.getName() +"!");
-		return mainGame.CombatTwo(chaser,target);
+		return null;
 	}
 
 	public void tMomMod(double d) {
