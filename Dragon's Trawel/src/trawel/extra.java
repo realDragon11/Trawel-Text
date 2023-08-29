@@ -685,6 +685,42 @@ public final class extra {
 			extra.println();
 		}
 		
+		public static String cutPadLenFront(int len, String str) {
+			if (len > str.length()) {
+				while (len > str.length()) {
+					str= str+" ";
+				}
+				return str;
+			}else {
+				return str.substring(0, len);
+			}
+		}
+		
+		public static String cutPadLen(int len, String str) {
+			if (len > str.length()) {
+				while (len > str.length()) {
+					str= " "+str;//java 8 sadness, I think the better ways to do this without a stringbuilder are later
+				}
+				return str;
+			}else {
+				return str.substring(0, len);
+			}
+		}
+		public static String cutPadLenError(int len, String str) {
+			if (len == str.length()) {
+				return str;
+			}
+			if (len > str.length()) {
+				while (len > str.length()) {
+					str= " "+str;//java 8 sadness, I think the better ways to do this without a stringbuilder are later
+				}
+				return str;
+			}else {
+				str= "C"+str;//show that it's been cut
+				return str.substring(0, len);
+			}
+		}
+		
 		public static void offPrintStack() {
 			if (!isMainThread()){
 				return;

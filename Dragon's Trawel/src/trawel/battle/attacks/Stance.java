@@ -1,5 +1,6 @@
 package trawel.battle.attacks;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import com.github.yellowstonegames.core.WeightedTable;
@@ -118,9 +119,16 @@ public class Stance{
 		
 	}
 	public void display(Weapon w) {
-			for(Attack a: attacks) {
-				a.display(w);
-			}
+		List<Attack> sortedDPIList = new ArrayList<Attack>();
+		sortedDPIList.addAll(attacks);
+		sortedDPIList.sort(new Comparator<Attack>() {
+			@Override
+			public int compare(Attack o1, Attack o2) {
+				return (int)Math.signum(o2.getDPI()-o1.getDPI());
+			}});
+		for(Attack a: sortedDPIList) {
+			a.display(w);
+		}
 	}
 	
 

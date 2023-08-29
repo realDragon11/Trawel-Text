@@ -462,24 +462,33 @@ public class Weapon extends Item implements IEffectiveLevel {
 		case 2://Appraiser/full self on stat
 			//by dividing it later we implicitly mult it by 100x to get it to display as a whole number
 			float expectedAverage = (1f/getMartialStance().getAttackCount());
-			extra.println(this.getName() +"="
-			+ " highest contribution: " +extra.F_WHOLE.format(scoreHighestContribution()/expectedAverage) +"% of equity"
-			+ " lowest contribution: " +extra.F_WHOLE.format(scoreLowestContribution()/expectedAverage) +"% of equity"
-			+ " impact chance: " + extra.formatPerSubOne(this.scoreImpact())
-			+ " average damage: " + extra.format(this.scoreAverage())
-			+ " weighted average damage: " + extra.format(this.scoreWeight())
-			+" aether value: " + (int)(this.getAetherValue()*markup)
-			+ " infused kills: " +this.getKills());
+			extra.println(getName() +":");
+			extra.println("Tested Stats:");
+			extra.println(" Impact Chance: " + extra.formatPerSubOne(scoreImpact()));
+			extra.println(" Rarity Independent DPI (ad): " + extra.format(scoreAverage()));
+			extra.println(" Weighted DPI (wa): " + extra.format(scoreWeight()));
+			extra.println("Value and Usage:");
+			extra.println(" Aether: " + (int)(getAetherValue()*markup));
+			extra.println(" Infused kills: " +getKills());
 			
-			if (this.isEnchantedConstant()) {
-				this.getEnchant().display(2);
+			if (isEnchantedConstant()) {
+				extra.println("Constant Enchantment:");
+				getEnchant().display(2);
 			}
-			if (this.isEnchantedHit()) {
-				this.getEnchant().display(2);
+			if (isEnchantedHit()) {
+				extra.println("On-Hit Enchantment:");
+				getEnchant().display(2);
 			}
-			for (WeaponQual wq: qualList) {
-				extra.println(" " +wq.name + ": "+wq.desc);
+			if (qualList.size() > 0) {
+				extra.println("Qualities:");
+				for (WeaponQual wq: qualList) {
+					extra.println(" " +wq.name + ": "+wq.desc);
+				}
 			}
+			extra.println("Tested Equity DPI:");
+			extra.println(" Highest: " +extra.F_WHOLE.format(scoreHighestContribution()/expectedAverage) +"% of perfect equity");
+			extra.println(" Lowest: " +extra.F_WHOLE.format(scoreLowestContribution()/expectedAverage) +"% of perfect equity");
+			extra.println("Raw Untested Attacks:" + (isEnchantedHit() ? "(Enchant Hit not in Raw DPI)" : ""));
 			WeaponAttackFactory.getStance(this.weap).display(this);
 			;break;
 		case 20://for stores in depth

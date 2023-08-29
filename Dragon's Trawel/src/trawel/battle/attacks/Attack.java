@@ -349,6 +349,10 @@ public class Attack implements IAttack{
 		
 	}
 	
+	public double getDPI() {
+		return getTotalDam()/getSpeed();
+	}
+	
 	public void display(Weapon w) {
 		float damMult = w.getUnEffectiveLevel();
 		int totalDam = getTotalDam();
@@ -361,22 +365,25 @@ public class Attack implements IAttack{
 			elec += w.getEnchant().getShockMod()*totalDam;
 		}
 		extra.println(
-			name +"= "
-			+" Rarity: " + extra.formatPerSubOne(holdingStance.getRarity(this))
-			+" Base Accuracy: " + extra.format(hitMult)
-			+" Warmup: " + extra.F_WHOLE.format(warmup)
-			+" Cooldown: " + extra.F_WHOLE.format(cooldown)
-			+" Total Delay: " + extra.F_WHOLE.format(warmup+cooldown)
-			+" Base Damage: "
-			+(getSharp() > 0 ? " Sharp: " + extra.F_WHOLE.format(damMult*getSharp()*w.getMat().sharpMult) : "")
-			+(getBlunt() > 0 ? " Blunt: " + extra.F_WHOLE.format(damMult*getBlunt()*w.getMat().bluntMult) : "")
-			+(getPierce() > 0 ? " Pierce: " + extra.F_WHOLE.format(damMult*getPierce()*w.getMat().pierceMult) : "")
-			
-			+(ignite > 0 ? " Ignite: " + extra.F_WHOLE.format(damMult*ignite) : "")
-			+(frost > 0 ? " Frost: " + extra.F_WHOLE.format(damMult*frost) : "")
-			+(elec > 0 ? " Elec: " + extra.F_WHOLE.format(damMult*elec) : "")
-			
+			" "+extra.cutPadLenFront(8,name)+"="
+			+" Raw DPI:" + extra.cutPadLenError(5, extra.F_TWO_TRAILING.format(getDPI()*damMult)) 
+			//+" Against Equity DPI: " + extra.F_WHOLE.format(dpi/expectedAverage)
+			+" Rarity:" + extra.cutPadLenError(5, extra.formatPerSubOne(holdingStance.getRarity(this)))
+			+" Base Accuracy:" +  extra.cutPadLenError(5, extra.format(hitMult))
+			+" Warmup:" +  extra.cutPadLenError(3, extra.F_WHOLE.format(warmup))
+			+" Cooldown:" + extra.cutPadLenError(3, extra.F_WHOLE.format(cooldown))
+			+" Total Delay:" + extra.cutPadLenError(4, extra.F_WHOLE.format(warmup+cooldown))
 			);
+		extra.println(
+				"  Base Damage="
+				+(getSharp() > 0 ? " Sharp: " + extra.F_WHOLE.format(damMult*getSharp()*w.getMat().sharpMult) : "")
+				+(getBlunt() > 0 ? " Blunt: " + extra.F_WHOLE.format(damMult*getBlunt()*w.getMat().bluntMult) : "")
+				+(getPierce() > 0 ? " Pierce: " + extra.F_WHOLE.format(damMult*getPierce()*w.getMat().pierceMult) : "")
+				
+				+(ignite > 0 ? " Ignite: " + extra.F_WHOLE.format(damMult*ignite) : "")
+				+(frost > 0 ? " Frost: " + extra.F_WHOLE.format(damMult*frost) : "")
+				+(elec > 0 ? " Elec: " + extra.F_WHOLE.format(damMult*elec) : "")
+				);
 		
 	}
 	
