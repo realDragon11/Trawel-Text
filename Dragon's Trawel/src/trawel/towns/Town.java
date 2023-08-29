@@ -267,6 +267,12 @@ public class Town extends TContextOwner{
 	}
 
 	public void atTown() {
+		if (Player.player.atFeature != null) {//for loading inside of features
+			//doesn't trigger entering code since the player saved inside of it
+			Player.player.atFeature.go();
+			Player.player.atFeature = null;
+			return;
+		}
 		World w = island.getWorld();
 		Player.updateWorld(w);
 		if (Player.player.lastTown != this) { 
