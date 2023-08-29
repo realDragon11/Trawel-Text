@@ -1182,7 +1182,7 @@ public class Player extends SuperPerson{
 															alist.addAll(IHasSkills.dispMenuItem(a));
 														}
 													}
-													extra.menuGo(new ScrollMenuGenerator(alist.size(), "previous <> archetypes", "next <> archetypes") {
+													extra.menuGo(new ScrollMenuGenerator(alist.size(), "previous <> feats", "next <> feats") {
 
 														@Override
 														public List<MenuItem> forSlot(int i) {
@@ -1219,7 +1219,7 @@ public class Player extends SuperPerson{
 															alist.addAll(IHasSkills.dispMenuItem(a));
 														}
 													}
-													extra.menuGo(new ScrollMenuGenerator(alist.size(), "previous <> archetypes", "next <> archetypes") {
+													extra.menuGo(new ScrollMenuGenerator(alist.size(), "previous <> perks", "next <> perks") {
 
 														@Override
 														public List<MenuItem> forSlot(int i) {
