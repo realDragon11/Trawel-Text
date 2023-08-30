@@ -19,6 +19,7 @@ import trawel.WorldGen;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
+import trawel.battle.Combat;
 import trawel.battle.attacks.Attack.Wound;
 import trawel.factions.FBox;
 import trawel.personal.Person;
@@ -1253,10 +1254,14 @@ public class Player extends SuperPerson{
 													extra.println("Condition wounds occur automatically when a body part reaches 50% 'condition'. They tend to be long lasting effects that highlight the downward spiral of combat.");
 													extra.println("There is no actual difference between these wounds mechanically, this is just a classification to help you understand how they are used. Condition wounds are also often called Injuries.");
 													extra.println();
-													extra.println("Would you like to see a list of wounds? Values will not display.");
+													extra.println("Would you like to see a list of wounds? Values will not display if they vary.");
 													if (extra.yesNo()) {
 														for (Wound w: Wound.values()) {
-															extra.println(w.name + ": " + w.desc + "("+w.active+")");
+															try {
+																extra.println(w.name + " - " + String.format(w.desc,(Object[])Combat.woundNums(null,null,null,null,w)) + " ("+w.active+")");
+															}catch (Exception e) {
+																extra.println(w.name + ": " + w.desc + " ("+w.active+")");
+															}
 														}
 													}
 													return false;

@@ -7,6 +7,8 @@ import trawel.personal.Person;
 
 public enum Skill{
 	
+		UNIMPLEMENTED("Unimplemented","Skills after this point and before the next heading are old skills that haven't been updated."
+				,true,Type.INTERNAL_USE_ONLY,1,""),
 	    BEER_BELLY("Beer Belly bROken","Use two beers at once in battle!",true,Type.FIGHTER,1,"Gives you the beer health bonus twice- if you have two beers to drink."),
 	    
 	    
@@ -73,7 +75,7 @@ public enum Skill{
 		BLOOD_SURGE("BS","Internal",false,Type.FEATURE,0,""),
 		BLOOD_HARVEST("BH","Internal",false,Type.FEATURE,0,""),
 		SKY_BLESSING_1("Sky Blessing I","Internal",false,Type.FEATURE,0,""),
-		ENDSKILL("","",false,Type.FIGHTER,0,""),
+		ENDSKILL("New System Heading","Skills after this point are in the current game.",false,Type.INTERNAL_USE_ONLY,0,""),
 		//anything above should be removed and filtered out over time
 		
 		//new values, sorting by type because saves break without order changing anyway
