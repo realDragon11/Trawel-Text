@@ -599,6 +599,10 @@ public class Town extends TContextOwner{
 
 				}
 				Player.player.setLocation(t);
+				//need to pass time again since we might in a new world which would be behind
+				mainGame.globalTimeCatchUp();
+				//this is only really an issue in teleport shops, but other connections technically can do this
+				//so it's not bad to be robust. note that this doesn't work in docks or forts right now
 				return true;
 			}};
 	}

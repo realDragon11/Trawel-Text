@@ -1705,8 +1705,17 @@ public class mainGame {
 	 */
 	public static void globalPassTime() {
 		if (showLargeTimePassing && Networking.connected()) {
+			boolean largeTimePassing = false;
+			if (Player.peekTime() > 24) {
+				largeTimePassing = true;
+				extra.println("Passing "+extra.F_WHOLE.format(Player.peekTime())+" hours.");
+			}
+			double passAmount = .5;
 			while (Player.peekTime() > 0) {
-				globalPassTimeUpTo(.5);
+				globalPassTimeUpTo(passAmount);
+				if (largeTimePassing) {
+					passAmount+=.005;
+				}
 				if (Player.player.atFeature != null) {
 					Player.player.atFeature.sendBackVariant();
 				}else {
@@ -1716,16 +1725,16 @@ public class mainGame {
 				Networking.waitIfConnected(84);//1 second should be around 6 hours
 			}
 		}else {
-			globalTimeCatchUp();
+			if (Player.peekTime() > 0) {
+				globalTimeCatchUp();
+			}
 		}
 
 	}
 
 	public static void globalTimeCatchUp() {
 		double time = Player.popTime();
-		if (time > 0) {
-			WorldGen.plane.advanceTime(time);
-		}
+		WorldGen.plane.advanceTime(time);
 	}
 
 	public static void globalPassTimeUpTo(double limit) {

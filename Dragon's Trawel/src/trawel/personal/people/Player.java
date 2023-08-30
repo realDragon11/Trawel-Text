@@ -1422,9 +1422,9 @@ public class Player extends SuperPerson{
 						final World w = vistedWorlds.get(i);
 						final List<Town> visitedTowns = new ArrayList<Town>();
 						w.getIslands().stream().forEach(is -> is.getTowns().stream().filter(t -> t.visited > 1).forEach(visitedTowns::add));
-						if (!visitedTowns.contains(Player.getPlayerWorld().getStartTown())) {
-							//always have a path to unun if you've been to that world
-							visitedTowns.add(Player.getPlayerWorld().getStartTown());
+						if (!visitedTowns.contains(w.getStartTown())) {
+							//always have a path to the starting town in your current world
+							visitedTowns.add(w.getStartTown());
 						}
 						extra.menuGo(new ScrollMenuGenerator(visitedTowns.size(),"prior <> towns","next <> towns") {
 
