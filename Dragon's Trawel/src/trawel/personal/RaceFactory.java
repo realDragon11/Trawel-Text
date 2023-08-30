@@ -106,11 +106,14 @@ public class RaceFactory {
 		}
 	}
 	public enum LegacyType{
-		HUMAN("human",3,"human"), ORC("orc",0,null), MERMAID("mermaid",0,null), CAT("cat_kin",5,"cat"),
-		WOLF("wolf",5,"wolf"), BEAR("bear",0,null), NONE(null,0,null),
-		SKELETON("skeleton",0, null), VARIES(null,5,"mimic"), GOLEM("flesh_golem",0,"flesh_golem");
+		HUMAN("human",2,"human"), ORC("orc",0,null), MERMAID("mermaid",0,null), CAT("cat_kin",4,"cat"),
+		WOLF("wolf",4,"wolf"), BEAR("bear",0,null), NONE(null,0,null),
+		SKELETON("skeleton",0, null), VARIES(null,4,"mimic"), GOLEM("flesh_golem",0,"flesh_golem");
 		private String spritename;
 		private String mapname;
+		/**
+		 * is used to modulo, and is zero indexed how many maps there are
+		 */
 		private int maps;
 		private LegacyType(String spritename, int maps, String mapname) {
 			this.spritename = spritename;
