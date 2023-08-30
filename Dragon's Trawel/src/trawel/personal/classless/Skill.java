@@ -310,7 +310,7 @@ public enum Skill{
 			case TACTIC_CHALLENGE:
 				return "Tactic (Challenge): Force opponent to attack you, then attack them back.";
 			case TACTIC_DUCK_ROLL:
-				return "Tactic (Roll): Gain a dodge bonus for this attack and the next, and an accuracy bonus, but suffer from a half dodge after.";
+				return "Tactic (Roll): Gain a dodge bonus for this attack and the next, and an accuracy bonus, but suffer from half dodge after.";
 			case TACTIC_SINGLE_OUT:
 				return "Tactic (Single): Make attacks on this target likely to repeat.";
 			}

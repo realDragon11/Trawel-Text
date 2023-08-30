@@ -721,7 +721,7 @@ public class GenericNode implements NodeType {
 						if (extra.yesNo()) {
 							RaceID r = p.getBag().getRaceID();
 							boolean racistToYou = (racist && r == Player.bag.getRaceID());
-							String name = extra.capFirst(r.namePlural);
+							String name = extra.capFirst(r.name);
 							if (racistToYou) {
 								setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_BATTLE +name,extra.PRE_BATTLE+"The racist "+name + " attacks you!");
 								return true;//out of menu, not area

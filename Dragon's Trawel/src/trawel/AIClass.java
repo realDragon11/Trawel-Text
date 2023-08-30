@@ -666,7 +666,7 @@ public class AIClass {
 	 * NOTE: stores are allowed to 'unpouch' the item if the replacement doesn't let the player afford it
 	 * <br>
 	 * <br>
-	 * if they reject the item, it will return 'next'.
+	 * if they reject the item, it will return 'thinking'.
 	 */
 	public static Item askDoSwap(Item thinking, Store store, boolean allowedNotGiveBack) {
 		Item[] ret = new Item[1];
@@ -1187,21 +1187,15 @@ public class AIClass {
 	}
 
 	/**
-	 * find an item you can't sell
+	 * find an item you can't sell, player only
 	 */
 	public static void findItem(Item found, Person person) {
-		Item current = person.getBag().itemCounterpart(found);
-		if (AIClass.compareItem(current,found,person)) {
-			Item ret = person.getBag().swapItem(found);
-			if (ret != null) {
-				Services.aetherifyItem(ret,person.getBag(),true);
-			}
-			if (person.isPlayer()) {
-				Networking.charUpdate();
-			}
-		}else {
-			Services.aetherifyItem(found,person.getBag(),true);
+		//Item current = person.getBag().itemCounterpart(found);
+		Item done = askDoSwap(found,null,true);
+		if (done != null) {
+			Services.aetherifyItem(done,person.getBag(),true);
 		}
+		Networking.charUpdate();
 	}
 
 
