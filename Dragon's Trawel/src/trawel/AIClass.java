@@ -679,14 +679,14 @@ public class AIClass {
 				//FIXME: this is technically working menugenerator behavior, but it's icky
 				boolean canSwap = true;
 				if (store != null) {
-					int delta = store.getDelta(current,thinking,Player.player);
+					int delta = -store.getDelta(current,thinking,Player.player);
 					extra.println("Buy the");
 					thinking.display(store,true,3);
 					extra.println("replacing your");
 					current.display(store,false,3);
 					displayChange(current,thinking,Player.player.getPerson(),store);
 					int buyPower = Player.player.getTotalBuyPower(store.aetherPerMoney(Player.player.getPerson()));
-					extra.println("Buy Value Needed: " +-delta + "/"+buyPower);
+					extra.println("Buy Value Needed: " +delta + "/"+buyPower);
 					if (buyPower < delta) {
 						canSwap = false;
 					}

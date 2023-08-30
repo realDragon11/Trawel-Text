@@ -113,9 +113,16 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	/**
 	 * should only be used to help set up attConfs outside of battle
 	 */
-	public List<Skill> specialAttackSkills(){
+	public List<Skill> unusedSpecialAttackSkills(){
 		List<Skill> list = new ArrayList<Skill>();
 		getPerson().fetchSkills().stream().filter(s -> s.getType() == Type.ATTACK_TYPE).forEach(list::add);
+		if (attConfs != null) {
+			for (SkillAttackConf s: attConfs) {
+				if (s != null) {
+					list.remove(s.getSkill());
+				}
+			}
+		}
 		return list;
 	}
 
@@ -129,7 +136,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> list = new ArrayList<MenuItem>();
-				List<Skill> skills = specialAttackSkills();
+				List<Skill> skills = unusedSpecialAttackSkills();
 				list.add(new MenuLine() {
 
 					@Override
@@ -287,7 +294,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 			currentEditing = index;
 			extra.println("Replace the " + config.getText() + " config?");
 			if (extra.yesNo()) {
-				List<Skill> skills = specialAttackSkills();
+				List<Skill> skills = unusedSpecialAttackSkills();
 				createConfig(skills);
 				return false;
 			}else {//so many nested menus, lets just yes/no

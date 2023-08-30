@@ -198,13 +198,12 @@ public class Store extends Feature{
 	private void serviceItem(int index) {
 		Person p = Player.player.getPerson();
 		Inventory bag = p.getBag();
-		if (type == 8 || type == 9) {
+		if (type >= 8) {
 			if (index == -1) {
 				DrawBane sellItem = bag.playerOfferDrawBane("sell");
 				if (sellItem != null) {
 					Services.sellItem(sellItem, bag);
 				}
-				
 				return;
 			}
 			DrawBane db = dbs.get(index);
@@ -402,7 +401,7 @@ public class Store extends Feature{
 						return "You have a total of "+(Player.player.getGold() + (Player.bag.getAether()/aetherPerMoney(Player.player.getPerson()))) +" buying power.";
 					}});
 				
-				if (type != 8 && type != 9) {//normal items
+				if (type < 8) {//normal items
 					for (Item i: items) {
 						list.add(new StoreMenuItem(i));
 					}

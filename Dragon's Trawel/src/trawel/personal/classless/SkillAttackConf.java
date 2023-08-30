@@ -55,4 +55,7 @@ public class SkillAttackConf implements Serializable{
 	public IHasSkills getSource() {
 		return source;
 	}
+	public Skill getSkill() {
+		return skill;
+	}
 }
