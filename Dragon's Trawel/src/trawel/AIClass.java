@@ -929,7 +929,7 @@ public class AIClass {
 				+extra.TIMID_MAGENTA
 				+ (isQDiff ? " "+extra.DISP_QUALS+" "
 				+ extra.colorBaseZeroTimid(qualDiff) : (toWeap.numQual() > 0 ? (" "+extra.DISP_QUALS+" =") : ""))
-				+ (Player.player.caresAboutCapacity() ? " "+extra.DISP_WEIGHT+": "+extra.softColorDelta0Reversed(toWeap.getWeight(),hasWeap.getWeight()) : "")
+				+ (Player.player.caresAboutCapacity() ? extra.TIMID_BLUE+" "+extra.DISP_WEIGHT+": "+extra.softColorDelta0Reversed(toWeap.getWeight(),hasWeap.getWeight()) : "")
 				+ " " + priceDiffDisp(costDiff,costName,s)
 				);
 				if (((Weapon)hasItem).getEnchant() != null || ((Weapon)toReplace).getEnchant()!= null) {
@@ -978,6 +978,9 @@ public class AIClass {
 			enchantDiff(0,toReplace.getFireMod(),"fire");
 			enchantDiff(0,toReplace.getShockMod(),"shock");
 			enchantDiff(0,toReplace.getFreezeMod(),"frost");
+			if (toReplace.isKeen()) {
+				extra.println(extra.PRE_GREEN+" +Keen");
+			}
 		}else {
 			if (toReplace == null) {
 				enchantDiff(hasItem.getAimMod(),1,"aim");
@@ -988,6 +991,9 @@ public class AIClass {
 				enchantDiff(hasItem.getFireMod(),0,"fire");
 				enchantDiff(hasItem.getShockMod(),0,"shock");
 				enchantDiff(hasItem.getFreezeMod(),0,"frost");
+				if (hasItem.isKeen()) {
+					extra.println(extra.PRE_RED+" -Keen");
+				}
 			}else {
 				enchantDiff(hasItem.getAimMod(),toReplace.getAimMod(),"aim");
 				enchantDiff(hasItem.getDamMod(),toReplace.getDamMod(),"damage");
@@ -998,53 +1004,18 @@ public class AIClass {
 				enchantDiff(hasItem.getShockMod(),toReplace.getShockMod(),"shock");
 				enchantDiff(hasItem.getFreezeMod(),toReplace.getFreezeMod(),"frost");
 				//enchantDiff(hasItem,toReplace,"aim");
+				if (hasItem.isKeen()) {
+					if (!toReplace.isKeen()) {
+						extra.println(extra.PRE_RED+" -Keen");
+					}
+				}else {
+					if (toReplace.isKeen()) {
+						extra.println(extra.PRE_GREEN+" +Keen");
+					}
+				}
 			}
 		}
 		
-	}
-	
-	private static void displayEnchantDiff(EnchantConstant hasItem, EnchantConstant toReplace) {
-		if (hasItem == null) {
-			enchantDiff(1,toReplace.getAimMod(),"aim");
-			enchantDiff(1,toReplace.getDamMod(),"damage");
-			enchantDiff(1,toReplace.getDodgeMod(),"dodge");
-			enchantDiff(1,toReplace.getHealthMod(),"health");
-			enchantDiff(1,toReplace.getSpeedMod(),"speed");
-		}else {
-			if (toReplace == null) {
-				enchantDiff(hasItem.getAimMod(),1,"aim");
-				enchantDiff(hasItem.getDamMod(),1,"damage");
-				enchantDiff(hasItem.getDodgeMod(),1,"dodge");
-				enchantDiff(hasItem.getHealthMod(),1,"health");
-				enchantDiff(hasItem.getSpeedMod(),1,"speed");
-			}else {
-				enchantDiff(hasItem.getAimMod(),toReplace.getAimMod(),"aim");
-				enchantDiff(hasItem.getDamMod(),toReplace.getDamMod(),"damage");
-				enchantDiff(hasItem.getDodgeMod(),toReplace.getDodgeMod(),"dodge");
-				enchantDiff(hasItem.getHealthMod(),toReplace.getHealthMod(),"health");
-				enchantDiff(hasItem.getSpeedMod(),toReplace.getSpeedMod(),"speed");
-				//enchantDiff(hasItem,toReplace,"aim");
-			}
-		}
-		
-	}
-	
-	private static void displayEnchantDiff(EnchantHit hasItem, EnchantHit toReplace) {
-		if (hasItem == null) {
-			enchantDiff(0,toReplace.getFireMod(),"fire");
-			enchantDiff(0,toReplace.getShockMod(),"shock");
-			enchantDiff(0,toReplace.getFreezeMod(),"frost");
-		}else {
-			if (toReplace == null) {
-				enchantDiff(hasItem.getFireMod(),0,"fire");
-				enchantDiff(hasItem.getShockMod(),0,"shock");
-				enchantDiff(hasItem.getFreezeMod(),0,"frost");
-			}else {
-				enchantDiff(hasItem.getFireMod(),toReplace.getFireMod(),"fire");
-				enchantDiff(hasItem.getShockMod(),toReplace.getShockMod(),"shock");
-				enchantDiff(hasItem.getFreezeMod(),toReplace.getFreezeMod(),"frost");
-			}
-		}
 	}
 	
 	private static void enchantDiff(float has, float get, String name) {

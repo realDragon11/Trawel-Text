@@ -49,5 +49,9 @@ public abstract class Enchant implements java.io.Serializable{
 	public float getFreezeMod() {
 		return 0;
 	}
+	
+	public boolean isKeen() {
+		return false;
+	}
 
 }

@@ -67,7 +67,10 @@ public class EnchantHit extends Enchant {
 
 	@Override
 	public void display(int i) {
-		double d = 2;
+		if (isKeen) {
+			extra.println(" Keen");
+		}
+		double d = 0;
 		String str = null;
 		for (int j = 0; j < 3;j++) {
 		switch (j) {
@@ -113,6 +116,7 @@ public class EnchantHit extends Enchant {
 		return goldMult;
 	}
 	
+	@Override
 	public boolean isKeen() {
 		return isKeen;
 	}
