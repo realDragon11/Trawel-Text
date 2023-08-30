@@ -1248,7 +1248,8 @@ public class Player extends SuperPerson{
 												public boolean go() {
 													extra.println("Wounds are ailments caused by an attack. They can be further divided into two categories: normal wounds and condition wounds.");
 													extra.println("Normal wounds have a 90% chance to occur on all attacks, and are chosen based on the attack's damage types and the body part that is being attacked.");
-													extra.println("These wounds typically have instant or short-term effects. They also can be inflicted through skills.");
+													extra.println("Keen weapons always roll wounds on their attacks, bypassing the normal 10% chance of failure. This does not change the result of a 'Graze', which is a wound signifying an attack that hits but isn't very effective outside of the damage.");
+													extra.println("Rolled wounds typically have instant or short-term effects. They also can be inflicted through skills.");
 													extra.println("Condition wounds occur automatically when a body part reaches 50% 'condition'. They tend to be long lasting effects that highlight the downward spiral of combat.");
 													extra.println("There is no actual difference between these wounds mechanically, this is just a classification to help you understand how they are used. Condition wounds are also often called Injuries.");
 													extra.println();

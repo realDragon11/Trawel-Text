@@ -53,5 +53,9 @@ public abstract class Enchant implements java.io.Serializable{
 	public boolean isKeen() {
 		return false;
 	}
+	
+	public abstract String getBeforeName();
+	
+	public abstract String getAfterName();
 
 }

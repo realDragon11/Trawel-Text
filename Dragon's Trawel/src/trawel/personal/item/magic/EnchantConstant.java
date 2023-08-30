@@ -495,6 +495,7 @@ public class EnchantConstant extends Enchant {
 	/**
 	 * @return the beforeName (String)
 	 */
+	@Override
 	public String getBeforeName() {
 		return inameResolver(true,beforeName);
 	}
@@ -503,6 +504,7 @@ public class EnchantConstant extends Enchant {
 	/**
 	 * @return the afterName (String)
 	 */
+	@Override
 	public String getAfterName() {
 		return inameResolver(false,afterName);
 	}

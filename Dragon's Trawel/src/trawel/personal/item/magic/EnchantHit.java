@@ -104,9 +104,18 @@ public class EnchantHit extends Enchant {
 		return freezeMod;
 	}
 	
-	public String getName() {
+	@Override
+	public String getBeforeName() {
 		if (isKeen) {
 			return colorSaved+name + "[c_white] ";
+		}
+		return "";
+	}
+	
+	@Override
+	public String getAfterName() {
+		if (isKeen) {
+			return "";
 		}
 		return " of " +colorSaved+ name+"[c_white]";
 	}

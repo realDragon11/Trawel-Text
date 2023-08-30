@@ -235,18 +235,10 @@ public class Weapon extends Item implements IEffectiveLevel {
 	public String getNameNoTier() {
 		String weapName = weap.getName();
 		Material mat = MaterialFactory.getMat(material);
-		if (this.isEnchantedConstant()){
-			EnchantConstant conste = ((EnchantConstant)enchant);
-		return (conste.getBeforeName() +mat.color+ mat.name + "[c_white] " +  weapName + conste.getAfterName());}
-		if (this.isEnchantedHit()){
-			;
-			if (isKeen()) {
-				return (((EnchantHit)enchant).getName() + mat.color+mat.name  + "[c_white] " + weapName);
-			}else {
-			return (mat.color+ mat.name + "[c_white] " +  weapName + ((EnchantHit)enchant).getName());}
-			
+		if (enchant != null) {
+			return (enchant.getBeforeName() +mat.color+ mat.name + "[c_white] " +  weapName + enchant.getAfterName());
 		}
-			return (mat.color+ mat.name  + "[c_white] " + weapName);
+		return (mat.color+ mat.name  + "[c_white] " + weapName);		
 	}
 	
 	@Override
@@ -551,8 +543,8 @@ public class Weapon extends Item implements IEffectiveLevel {
 	}
 	
 	public boolean isKeen() {
-		if (this.isEnchantedHit()) {
-			return ((EnchantHit)enchant).isKeen();
+		if (enchant != null) {
+			return enchant.isKeen();
 		}
 		return false;
 	}
