@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -530,7 +531,7 @@ public class WorldGen {
 				){//try with resources
 			 pws.write(Player.player.getPerson().getName()
 					 +", level " + Player.player.getPerson().getLevel()
-					 + ": " +DateFormat.getDateInstance().format(Date.from(Instant.now()))
+					 + ": " +Timestamp.from(Instant.now())
 					 +" "+mainGame.VERSION_STRING+"\0");
 			 ;
 			 oos.writeObject(plane);
