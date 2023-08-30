@@ -6,6 +6,8 @@ import java.util.Set;
 
 import trawel.extra;
 import trawel.personal.Person;
+import trawel.personal.people.behaviors.AbandonPostBehavior;
+import trawel.personal.people.behaviors.WanderEndless;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.World;
@@ -42,9 +44,10 @@ public class Agent extends SuperPerson{
 		p.setSuper(this);
 		behaviors = new ArrayList<Behavior>();
 		current = new WanderEndless();
-		goals = EnumSet.of(AgentGoal.NONE);
+		//goals = EnumSet.of(AgentGoal.NONE);
 		moneys = new ArrayList<Integer>();
 		moneymappings = new ArrayList<World>();
+		onlyGoal(AgentGoal.NONE);
 	}
 	
 	public Agent(Person p, AgentGoal goal) {
@@ -122,7 +125,6 @@ public class Agent extends SuperPerson{
 		current = null;
 		switch (goal) {
 		case DEATHCHEAT:
-			
 			setFlag(AgentFlag.DEATHCHEATED_EVER,true);
 			break;
 		case OWN_SOMETHING://if we ONLY own something we should stop moving around
@@ -130,6 +132,11 @@ public class Agent extends SuperPerson{
 		case NONE:
 			behaviors.clear();
 			current = new WanderEndless();
+			break;
+		case DELVE_HELP:
+			current = new AbandonPostBehavior();
+			//one week and then potentially 2 more days
+			current.setTimeTo((24*7)+(extra.randFloat()*48));
 			break;
 		}
 		goals = EnumSet.of(goal);

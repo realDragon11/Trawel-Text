@@ -11,6 +11,7 @@ public class AbandonPostBehavior extends Behavior{
 		boolean removed = user.getLocation().removeAgentFromFeatures(user);
 		assert removed;
 		user.onlyGoal(AgentGoal.NONE);
+		user.getLocation().addOccupant(user);
 	}
 
 }

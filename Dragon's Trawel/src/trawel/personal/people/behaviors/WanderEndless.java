@@ -1,7 +1,9 @@
-package trawel.personal.people;
+package trawel.personal.people.behaviors;
 import java.util.List;
 
 import trawel.extra;
+import trawel.personal.people.Agent;
+import trawel.personal.people.Behavior;
 import trawel.towns.Connection;
 import trawel.towns.Town;
 import trawel.towns.Connection.ConnectType;
