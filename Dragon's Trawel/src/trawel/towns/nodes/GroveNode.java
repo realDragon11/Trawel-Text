@@ -66,6 +66,7 @@ public class GroveNode implements NodeType{
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
 		int ret = holder.newNode(NodeType.NodeTypeNum.GROVE.ordinal(),1+groveBasicRoller.random(extra.getRand()),tier);
+		holder.setFloor(ret, guessDepth);
 		return ret;
 	}
 	
@@ -78,7 +79,7 @@ public class GroveNode implements NodeType{
 
 	@Override
 	public int generate(NodeConnector holder,int from, int size, int tier) {
-		int made = getNode(holder,from,0,tier);
+		int made = getNode(holder,from,from == 0 ? 0 : holder.getFloor(from)+1,tier);
 		if (size <= 1) {
 			return made;
 		}
@@ -100,10 +101,12 @@ public class GroveNode implements NodeType{
 			int tempLevel = tier;
 			int n;
 			int sizeFor = baseSize+sizeRemove;
-			if (sizeLeft >= 2 && size < 4 && extra.chanceIn(1,5)) {
+			if (sizeFor < 4 && holder.getFloor(made) > 3 && extra.chanceIn(1,5)) {
 				//caves always level up
 				n = NodeType.NodeTypeNum.CAVE.singleton.generate(holder, made,sizeFor, tempLevel+1);
-				holder.setEventNum(n, 1);//entrance
+				if (sizeFor >= 2 && extra.chanceIn(2,3)) {//cannot generate entrance if not enough space
+					holder.setEventNum(n, 1);//entrance
+				}
 			}else {
 				if (extra.chanceIn(1,10)) {
 					tempLevel++;

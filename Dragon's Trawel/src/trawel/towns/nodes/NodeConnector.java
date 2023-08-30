@@ -270,6 +270,9 @@ public class NodeConnector implements Serializable {
 			break;
 		case CAVE:
 			Networking.setArea(Area.CAVE);
+			if (parent instanceof Grove) {
+				Networking.unlockAchievement("cave1");
+			}
 			break;
 		case DUNGEON:
 			Networking.setArea(Area.DUNGEON);

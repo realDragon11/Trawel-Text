@@ -3,6 +3,7 @@ import trawel.Networking;
 import trawel.extra;
 import trawel.Networking.Area;
 import trawel.towns.Town;
+import trawel.towns.nodes.NodeFeature.Shape;
 
 public class Graveyard extends NodeFeature {
 
@@ -28,6 +29,7 @@ public class Graveyard extends NodeFeature {
 
 	@Override
 	protected void generate(int size) {
+		shape = Shape.NONE;
 		start = NodeType.NodeTypeNum.GRAVEYARD.singleton.getStart(this, size, getTown().getTier());//DOLATER: get actual level
 	}
 

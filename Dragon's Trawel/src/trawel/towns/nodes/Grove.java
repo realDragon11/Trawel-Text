@@ -35,6 +35,7 @@ public class Grove extends NodeFeature {
 	
 	@Override
 	protected void generate(int size) {
+		shape = Shape.NONE;
 		start = NodeType.NodeTypeNum.GROVE.singleton.getStart(this, size, getTown().getTier());//DOLATER: get actual level
 	}
 	@Override

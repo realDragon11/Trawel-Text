@@ -13,6 +13,7 @@ public class CaveNode implements NodeType{
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
 		int idNum =extra.randRange(1,EVENT_NUMBER);
 		int ret = holder.newNode(NodeType.NodeTypeNum.CAVE.ordinal(),idNum,tier);
+		holder.setFloor(ret, guessDepth);
 		return ret;
 	}
 	
@@ -34,7 +35,7 @@ public class CaveNode implements NodeType{
 	@Override
 	public int generate(NodeConnector holder,int from, int size, int tier) {
 		size--;
-		int made = getNode(holder,from,0,tier);
+		int made = getNode(holder,from,from == 0 ? 0 : holder.getFloor(from)+1,tier);
 		int split;
 		int sizePer;
 		if (size < 5) {
@@ -81,7 +82,7 @@ public class CaveNode implements NodeType{
 		switch(holder.getEventNum(node)) {
 		case 1:
 			extra.println("The cave entrance is damp.");
-			Networking.unlockAchievement("cave1");break;
+			break;
 		}
 		return false;
 	}
