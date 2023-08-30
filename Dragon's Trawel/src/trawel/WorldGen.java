@@ -10,9 +10,13 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import org.nustaq.serialization.FSTConfiguration;
 import org.nustaq.serialization.FSTObjectInput;
@@ -386,10 +390,11 @@ public class WorldGen {
 		for (World wor: plane.worlds()) {
 			townFinal(wor);
 		}
+		alignConnectFlowsToInns(w);
+		
 		plane.reload();
 		
 		return w;
-	
 	}
 	
 	public static Town greap() {
@@ -768,5 +773,157 @@ public class WorldGen {
 		//could also use connect time so it would likely return the shorter of two equal paths?
 		//or idk
 		return Math.abs((cur.t.getLocationX()-dest.getLocationX())) + Math.abs((cur.t.getLocationY()-dest.getLocationY()));
+	}
+	
+	private static class EdgeConnection {
+		public final Connection connect;
+		public double gScore = Double.MAX_VALUE;
+		public double fScore = Double.MAX_VALUE;
+		public EdgeConnection from;
+		public EdgeConnection(Connection c, EdgeConnection _from) {
+			connect = c;
+			from = _from;
+			if (_from == null) {
+				gScore = c.getTime();
+			}else {
+				gScore = _from.gScore+c.getTime();
+			}
+		}
+	}
+	
+	private static void alignConnectFlowsToInns(World w) {
+		Predicate<Town> innCheck = new Predicate<Town>() {
+			@Override
+			public boolean test(Town town) {
+				for (Feature f: town.getFeatures()) {
+					if (f instanceof Inn) {
+						return true;
+					}
+				}
+				return false;
+			}};
+		Predicate<Connection> eitherCheck = new Predicate<Connection>() {
+			
+			@Override
+			public boolean test(Connection c) {
+				for (Town t: c.getTowns()) {
+					if (innCheck.test(t)) {
+						return true;
+					}
+				}
+				return false;
+			}
+		};
+		for (Island is: w.getIslands()) {
+			for (Town t: is.getTowns()) {
+				if (innCheck.test(t)) {
+					continue;//has an inn already
+				}
+				//honestly should probably use hashing or something, idk
+				List<EdgeConnection> openSet = new ArrayList<EdgeConnection>();
+				//closed set is things we looked at, so we don't repeatedly create edgeconnection holders
+				//and also to store our path
+				List<EdgeConnection> closedSet = new ArrayList<EdgeConnection>();
+				for (Connection c: t.getConnects()) {
+					if (!c.isWorldConnection()) {
+						EdgeConnection ec = new EdgeConnection(c,null);
+						ec.gScore = 0;
+						ec.fScore = c.getTime();
+						openSet.add(ec);
+					}
+				}
+				
+				while (openSet.size() > 0) {
+					EdgeConnection current = getLowestEdge(openSet);
+					if (eitherCheck.test(current.connect)) {
+						EdgeConnection last = null;
+						while (current != null) {
+							last = current;
+							current = current.from;
+						}
+						t.setConnectFlow(last.connect);
+						break;
+					}
+					openSet.remove(current);
+					closedSet.add(current);
+					current.fScore = current.gScore+current.connect.getTime();
+					Iterator<Connection> it =getAdjacent(current.connect).iterator();
+					while (it.hasNext()) {
+						Connection c = it.next();
+						EdgeConnection e = getOrCreateConnection(c,current,openSet,closedSet);
+						if (e.from == null) {
+							continue;//this connection is a base connection, ie a source
+						}
+						double gMaybe = current.fScore + c.getTime();
+						if (e.gScore < gMaybe) {
+							e.from = current;
+							e.gScore = gMaybe;
+							e.fScore = gMaybe + 0;//heuristic, we don't use one rn
+							if (!openSet.contains(e)) {
+								openSet.add(e);
+								//we don't care if this fails
+								closedSet.remove(e);
+							}
+						}
+					}
+					
+				}
+				assert t.getConnectFlow() != null;
+				//that we're not looping back
+				assert !t.getConnectFlow().otherTown(t).hasConnectFlow() || t.getConnectFlow().otherTown(t).getConnectFlow() != t.getConnectFlow();
+			}
+		}
+	}
+	
+	private static void addToSets(Town t,List<EdgeConnection> openSet,List<EdgeConnection> closedSet,EdgeConnection from) {
+		for (Connection c: t.getConnects()) {
+			if (!hasConnection(c,openSet) && !hasConnection(c,closedSet)) {
+				Town a = c.getTowns()[0];
+				Town b = c.getTowns()[1];
+				if (a.getIsland().getWorld() != b.getIsland().getWorld()) {
+					continue;
+				}
+				openSet.add(new EdgeConnection(c,from));
+			}
+		}
+	}
+	
+	private static Stream<Connection> getAdjacent(Connection eFor){
+		//c -> c != eFor.connect
+		return Arrays.asList(eFor.getTowns()).stream().flatMap(t -> t.getConnects().stream()).filter(c -> c != eFor);
+	}
+	
+	private static EdgeConnection getLowestEdge(List<EdgeConnection> list) {
+		double lowestValue = Double.MAX_VALUE;
+		EdgeConnection best = null;
+		for(EdgeConnection e: list) {
+			if (e.fScore < lowestValue) {
+				best = e;
+				lowestValue = e.fScore;
+			}
+		}
+		return best;
+	}
+	private static EdgeConnection getOrCreateConnection(Connection c, EdgeConnection from,List<EdgeConnection> openSet,List<EdgeConnection> closedSet) {
+		for (EdgeConnection e: openSet) {
+			if (e.connect == c) {
+				return e;
+			}
+		}
+		for (EdgeConnection e: closedSet) {
+			if (e.connect == c) {
+				return e;
+			}
+		}
+		return new EdgeConnection(c,from);
+	}
+	
+	private static boolean hasConnection(Connection c,List<EdgeConnection> set) {
+		for (EdgeConnection e: set) {
+			if (e.connect == c) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

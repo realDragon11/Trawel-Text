@@ -80,6 +80,12 @@ public class Town extends TContextOwner{
 	public List<TownTag> tTags = new ArrayList<TownTag>();
 	public int visited = 0;
 	public int background_variant = 1;
+	/**
+	 * index of connections that ai people will naturally attempt to 'flow' along.
+	 * <br>
+	 * -1 for none
+	 */
+	public int connectFlow = -1;
 	
 	//private transient List<TimeEvent> events;
 	
@@ -1026,6 +1032,17 @@ public class Town extends TContextOwner{
 	public List<SkillCon> getPassiveSkillCons(int forside) {
 		//passive skill cons, overridden
 		return Collections.emptyList();
+	}
+	public boolean hasConnectFlow() {
+		return connectFlow != -1;
+	}
+	
+	public Connection getConnectFlow() {
+		return connects.get(connectFlow);
+	}
+	
+	public void setConnectFlow(Connection c) {
+		connectFlow = connects.indexOf(c);//handles 'doesn't have' very nicely
 	}
 	
 }

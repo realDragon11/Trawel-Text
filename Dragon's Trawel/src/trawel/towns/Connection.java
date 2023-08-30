@@ -205,4 +205,8 @@ public class Connection implements java.io.Serializable{
 		return nameString;
 	}
 	
+	public boolean isWorldConnection() {
+		return townA.getIsland().getWorld() != townB.getIsland().getWorld();
+	}
+	
 }

@@ -18,10 +18,10 @@ public class TravelingFeature extends Feature{
 	private Feature feature;
 	private double timePassed = 30;
 	@Override
-	public void go() {
+	public void enter() {
 		this.feature.enter();
 	}
-	protected int tier, curTier;
+	protected int curTier;
 	
 	public TravelingFeature(Town town) {
 		this.town = town;
@@ -71,6 +71,11 @@ public class TravelingFeature extends Feature{
 			name = feature.getName();
 			feature.setTownInternal(town);
 		}
+	}
+
+	@Override
+	protected void go() {
+		throw new UnsupportedOperationException("Traveling features can only be entered, not go'd");
 	}
 
 }

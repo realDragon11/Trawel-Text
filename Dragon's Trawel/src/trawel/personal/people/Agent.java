@@ -207,5 +207,9 @@ public class Agent extends SuperPerson{
 		}
 		return false;
 	}
+
+	public boolean isCurrentBehaviorClass(Class<? extends Behavior> clazz) {
+		return current != null && clazz.isInstance(current);
+	}
 	
 }

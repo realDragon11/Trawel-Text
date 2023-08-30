@@ -37,12 +37,16 @@ public class WanderEndless extends Behavior{
 	}
 	
 	public static Connection destination(Agent user) {
-		List<Connection> connects = user.getLocation().getConnects();
+		Town current = user.getLocation();
+		if (current.hasConnectFlow() && extra.chanceIn(2, 5)) {
+			return current.getConnectFlow();
+		}
+		List<Connection> connects = current.getConnects();
 		Connection c = connects.get(extra.randRange(0,connects.size()-1));
-		Town other = c.otherTown(user.getLocation());
+		Town other = c.otherTown(current);
 		if (
 				//if would be an interworld teleport
-				other.getIsland().getWorld() != user.getLocation().getIsland().getWorld()
+				other.getIsland().getWorld() != current.getIsland().getWorld()
 				//and only 50% chance it not a road
 				|| (c.getType() != ConnectType.ROAD && extra.chanceIn(1,2))) {
 			return null;

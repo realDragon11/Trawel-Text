@@ -21,6 +21,7 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
+import trawel.personal.people.behaviors.AbandonPostBehavior;
 import trawel.towns.Feature;
 import trawel.towns.Town;
 import trawel.towns.World;
@@ -444,7 +445,13 @@ public class Dungeon extends NodeFeature {
 		for (Person p: retain) {
 			SuperPerson s = p.getSuper();
 			if (s != null && s instanceof Agent) {
-				agents.add((Agent) s);
+				Agent a = (Agent) s;
+				if (a.isCurrentBehaviorClass(AbandonPostBehavior.class)) {
+					a.setActionTimeMin(2*24*7);//2 weeks on use
+				}else {
+					System.err.println(p.getName() + "'s current behavior isn't abandoning post for dungeon " + getName());
+				}
+				agents.add(a);
 			}
 		}
 		delve_helpers.retainAll(agents);

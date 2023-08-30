@@ -337,7 +337,7 @@ public class AIClass {
 		//still do graphical display quickly for the player if connected
 		boolean graphicalDisplay = p.isPlayer() && Networking.connected();
 		int i = 0;
-		boolean normalLoot = loot.getRace().racialType == Race.RaceType.PERSONABLE;
+		boolean normalLoot = loot.getRace().racialType == Race.RaceType.PERSONABLE && p.isPersonable();
 		if (normalLoot) {
 			while (i < 5) {
 				if (compareItem(stash.getArmorSlot(i),loot.getArmorSlot(i),p)) {
