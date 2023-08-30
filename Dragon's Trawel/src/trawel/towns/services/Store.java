@@ -12,6 +12,7 @@ import trawel.AIClass;
 import trawel.Networking;
 import trawel.Services;
 import trawel.extra;
+import trawel.Networking.Area;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.Skill;
@@ -62,6 +63,7 @@ public class Store extends Feature{
 			markup *= .95;
 		}
 		markup = Math.max(1.1f,markup);
+		area_type = Area.SHOP;
 	}
 	
 	public Store(Town t, int tier, int type) {
@@ -500,7 +502,6 @@ public class Store extends Feature{
 	
 	@Override
 	public void go() {
-		Networking.setArea("shop");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|store|Store|");
 		extra.menuGo(modernStoreFront());

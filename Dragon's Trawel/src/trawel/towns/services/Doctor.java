@@ -3,6 +3,7 @@ import java.util.List;
 
 import trawel.Networking;
 import trawel.extra;
+import trawel.Networking.Area;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -20,6 +21,7 @@ public class Doctor extends Feature {
 		this.name = name;
 		town = t;
 		tier = t.getTier();
+		area_type = Area.MISC_SERVICE;
 	}
 	@Override
 	public String getColor() {
@@ -33,7 +35,6 @@ public class Doctor extends Feature {
 	
 	@Override
 	public void go() {
-		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|doctor|Doctor|");
 		String mstr = World.currentMoneyString();
 		int dcost = (int) (getUnEffectiveLevel());

@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.Networking;
+import trawel.Networking.Area;
 import trawel.extra;
 import trawel.battle.Combat.SkillCon;
 import trawel.towns.Town;
@@ -20,7 +21,8 @@ public class Dungeon extends NodeFeature {
 		tutorialText = "Dungeon.";
 		shape = s;
 		boss = (byte) bossType;	
-		generate(50);	
+		generate(50);
+		area_type = Area.DUNGEON;
 	}
 	@Override
 	public String getColor() {
@@ -29,7 +31,6 @@ public class Dungeon extends NodeFeature {
 	
 	@Override
 	public void go() {
-		Networking.setArea("dungeon");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|dungeon|Dungeon|");
 		start.start();

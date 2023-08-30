@@ -11,6 +11,7 @@ import derg.menus.MenuSelect;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.Networking.Area;
 import trawel.battle.BarkManager;
 import trawel.battle.Combat;
 import trawel.personal.Person;
@@ -68,6 +69,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 		this.owner = owner;
 		beerCount = extra.randRange(2,4);
 		beerCost = (int) (getUnEffectiveLevel() +extra.randRange(0,2));
+		area_type = Area.INN;
 	}
 	
 	@Override
@@ -98,7 +100,6 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 	@Override
 	public void go() {
-		Networking.setArea("inn");
 		if (owner == Player.player && moneyEarned > 0) {
 			extra.println("You take the " + moneyEarned + " in profits.");
 			Player.player.addGold(moneyEarned);

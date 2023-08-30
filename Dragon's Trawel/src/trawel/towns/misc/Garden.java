@@ -7,6 +7,7 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import trawel.Networking;
 import trawel.extra;
+import trawel.Networking.Area;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
@@ -27,6 +28,7 @@ public class Garden extends Feature {
 		plants.add(new PlantSpot(tier));}
 		background_area = "forest";
 		background_variant = 1;
+		area_type = Area.GARDEN;
 	}
 	
 	@Override
@@ -36,7 +38,6 @@ public class Garden extends Feature {
 
 	@Override
 	public void go() {
-		Networking.setArea("shop");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|garden|Garden|");
 		extra.menuGo(new MenuGenerator() {

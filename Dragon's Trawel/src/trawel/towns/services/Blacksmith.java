@@ -4,6 +4,7 @@ import java.util.List;
 
 import trawel.Networking;
 import trawel.extra;
+import trawel.Networking.Area;
 import trawel.personal.item.Item;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -22,6 +23,7 @@ public class Blacksmith extends Feature {
 		this.tier = tier;
 		this.store = s;
 		tutorialText = "Blacksmith.";
+		area_type = Area.MISC_SERVICE;
 	}
 	
 	public Blacksmith(int tier, Store s){
@@ -29,6 +31,7 @@ public class Blacksmith extends Feature {
 		this.store = s;
 		name = store.getName() +" " + extra.choose("smith","blacksmith","smithy","forge");
 		tutorialText = "Blacksmith.";
+		area_type = Area.MISC_SERVICE;
 	}
 	
 	@Override
@@ -39,7 +42,6 @@ public class Blacksmith extends Feature {
 	@Override
 	public void go() {
 		String mname = World.currentMoneyString();
-		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|blacksmith|Blacksmith|");
 		extra.println("You have " + World.currentMoneyDisplay(Player.player.getGold()) + " and "+Player.bag.getAether()+ " aether.");
 		int forgePrice = (int) Math.ceil(getUnEffectiveLevel());

@@ -12,6 +12,7 @@ import derg.menus.MenuSelect;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.Networking.Area;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.DrawBane;
@@ -259,6 +260,32 @@ public class NodeConnector implements Serializable {
 		setCurrentNode(0);
 	}
 	public void enter(int node) {
+		//generic nodes still have their base typenum, they just have an override flag
+		switch (NodeType.getTypeEnum(getTypeNum(node))) {
+		case BOSS:
+			//Networking.setArea(Area.CHAMPION);
+			//do not change area
+			//Networking.updateTime();//time gets updated in a tiny bit
+			//and unlike the others we don't care to update the background if needed
+			break;
+		case CAVE:
+			Networking.setArea(Area.CAVE);
+			break;
+		case DUNGEON:
+			Networking.setArea(Area.DUNGEON);
+			break;
+		case GENERIC:
+			throw new RuntimeException("invalid true area: should not be generic");
+		case GRAVEYARD:
+			Networking.setArea(Area.GRAVEYARD);
+			break;
+		case GROVE:
+			Networking.setArea(Area.FOREST);
+			break;
+		case MINE:
+			Networking.setArea(Area.MINE);
+			break;
+		}
 		Player.addTime(.1);
 		mainGame.globalPassTime();
 		if (isForceGo(node) && !isForceGoProtection()) {

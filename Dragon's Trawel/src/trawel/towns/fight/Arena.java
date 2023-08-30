@@ -5,6 +5,7 @@ import java.util.List;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.Networking.Area;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -33,6 +34,7 @@ public class Arena extends Feature{
 		winners = new ArrayList<Person>();
 		tutorialText = "Arena.";
 		this.owner = owner;
+		area_type = Area.ARENA;
 	}
 	
 	@Override
@@ -56,7 +58,6 @@ public class Arena extends Feature{
 
 	@Override
 	public void go() {
-		Networking.setArea("arena");
 		if (owner == Player.player && moneyEarned > 0) {
 			extra.println("You take the " + moneyEarned + " in profits.");
 			Player.player.addGold(moneyEarned);

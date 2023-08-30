@@ -10,6 +10,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import trawel.personal.people.Player;
+import trawel.towns.Calender;
 
 public class Networking {
 
@@ -19,7 +20,7 @@ public class Networking {
 	public static Socket socket;
 	private static boolean connected = false;
 	private static BattleType inBattle = BattleType.NONE;
-	private static String songType = "main", backtype = "main";
+	private static String songType = "main";
 	public static boolean autoconnectSilence = false;
 	
 	private static InputStream netIn;
@@ -242,10 +243,46 @@ public class Networking {
 		}
 	}
 	
-	public static void setArea(String area) {
-		if (!songType.equals(area)) {
-			songType = area;
-			if (area.equals("port")) {
+	public enum Area{
+		TOWN("main","forest"),
+		ARENA("arena","forest"),
+		CHAMPION("champ","mountain"),
+		FOREST("forest","forest"),
+		MINE("mine","mine"),
+		CAVE("mine","mine"),
+		MOUNTAIN("mountain","mountain"),
+		PORT("port","forest"),
+		SLUM("dungeon","mine"),
+		LOT("shop","forest"),
+		GARDEN("shop","forest"),
+		SHOP("shop","mine"),
+		ALTAR("mountain","mountain"),
+		MISC_SERVICE("shop","forest"),
+		ORACLE("mountain","forest"),
+		DUNGEON("dungeon","mine"),
+		GRAVEYARD("dungeon","forest"),
+		INN("inn","forest")
+		;
+		public final String musicName, backName;
+		Area(String _musicName, String _backName) {
+			musicName = _musicName;
+			backName = _backName;
+		}
+	}
+	
+	public static Area current_area;
+	public static String current_background;
+	public static String current_background_variant;
+	
+	public static void setArea(Area area_type) {
+		if (!current_background.equals(area_type.backName)) {
+			current_background = area_type.backName;
+			Networking.sendStrong("Background|"+current_background+"|");
+			current_background_variant = "0";
+		}
+		if (!songType.equals(area_type.musicName)) {
+			songType = area_type.musicName;
+			if (songType.equals("port")) {
 				Networking.sendStrong("PlaySong|sound_port|");
 				return;
 			}
@@ -254,13 +291,13 @@ public class Networking {
 			}else {
 			Networking.sendStrong("PlaySong|" + songType + (inBattle == BattleType.NORMAL ? "_fight" : "_explore")  + "|");}
 		}
+		updateTime();
 	}
 	
-	public static void setBackground(String background) {
-		if (!background.equals(backtype)) {
-			backtype = background;
-			Networking.sendStrong("Background|"+background+"|");
-		}
+	public static void updateTime() {
+		double[] p = Calender.lerpLocation(Player.player.getLocation());
+		float[] b = Player.player.getWorld().getCalender().getBackTime(p[0],p[1]);
+		Networking.sendStrong("Backvariant|"+current_background+current_background_variant+"|"+b[0]+"|"+b[1]+"|");
 	}
 	
 	public static void waitIfConnected(long d) {
@@ -431,4 +468,6 @@ public class Networking {
 			Networking.sendStrong("Leaderboard|"+string+"|" + stat+ "|");
 		}
 	}
+	
+	
 }

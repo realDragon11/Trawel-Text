@@ -6,6 +6,7 @@ import java.util.List;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.Networking.Area;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -29,9 +30,11 @@ public class Champion  extends Feature{
 		tutorialText = "Champion.";
 		//tutorialText = "You should probably hold off on fighting champions until you're their level- explore the world and come back later.";
 		timeElapsed=0;
+		area_type = Area.CHAMPION;
 	}
 	
 	public Champion(int level,int battleSize, Town t) {
+		area_type = Area.CHAMPION;
 		tutorialText = "Battleforged Champion.";
 		//tutorialText = "Battleforged champions fought in a pit fight to survive.";
 		timeElapsed=0;/*
@@ -75,7 +78,6 @@ public class Champion  extends Feature{
 	
 	@Override
 	public void go() {
-		Networking.setArea("champ");
 		Networking.sendStrong("Discord|imagesmall|champion|Champion|");
 		extra.println(extra.PRE_BATTLE+"Challenge " + person.getName() + "?");
 		if (extra.yesNo()) {

@@ -7,6 +7,7 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import trawel.Networking;
+import trawel.Networking.Area;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.personal.classless.Perk;
@@ -26,6 +27,7 @@ public class Altar extends Feature{
 	public Altar() {
 		name = "Sky Slab";
 		tutorialText = "Altar";
+		area_type = Area.ALTAR;
 	}
 	
 	@Override
@@ -36,7 +38,6 @@ public class Altar extends Feature{
 	@Override
 	public void go() {
 		Networking.sendStrong("Discord|imagesmall|altar|Altar|");
-		Networking.setArea("mountain");
 		extra.menuGo(new MenuGenerator() {
 
 			@Override

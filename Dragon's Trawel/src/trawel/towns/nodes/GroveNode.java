@@ -98,16 +98,17 @@ public class GroveNode implements NodeType{
 			int sizeRemove = extra.zeroOut(extra.randRange(sizeLeft/2,sizeLeft)-1);
 			sizeLeft-=sizeRemove;
 			int tempLevel = tier;
-			if (extra.chanceIn(1,10)) {
-				tempLevel++;
-			}
 			int n;
-			if (size < 4 && extra.chanceIn(1,5)) {
+			int sizeFor = baseSize+sizeRemove;
+			if (sizeLeft >= 2 && size < 4 && extra.chanceIn(1,5)) {
 				//caves always level up
-				n = NodeType.NodeTypeNum.CAVE.singleton.generate(holder, made, baseSize+sizeRemove, tempLevel+1);
+				n = NodeType.NodeTypeNum.CAVE.singleton.generate(holder, made,sizeFor, tempLevel+1);
 				holder.setEventNum(n, 1);//entrance
 			}else {
-				n = generate(holder,made,baseSize+sizeRemove,tempLevel);
+				if (extra.chanceIn(1,10)) {
+					tempLevel++;
+				}
+				n = generate(holder,made,sizeFor,tempLevel);
 			}
 			holder.setMutualConnect(made,n);
 			i++;

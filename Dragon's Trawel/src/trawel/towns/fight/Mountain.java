@@ -7,6 +7,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import trawel.AIClass;
 import trawel.Networking;
+import trawel.Networking.Area;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.battle.Combat;
@@ -42,6 +43,7 @@ public class Mountain extends Feature{
 		exhausted = false;
 		background_area = "mountain";
 		background_variant = 1;
+		area_type = Area.MOUNTAIN;
 	}
 	
 	@Override
@@ -62,7 +64,6 @@ public class Mountain extends Feature{
 	
 	@Override
 	public void go() {
-		Networking.setArea("mountain");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|mountain|Mountain|");
 		MenuGenerator mGen = new MenuGenerator() {

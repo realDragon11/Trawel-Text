@@ -15,6 +15,7 @@ import trawel.Networking;
 import trawel.WorldGen;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.Networking.Area;
 import trawel.battle.Combat;
 import trawel.battle.Combat.SkillCon;
 import trawel.personal.Person;
@@ -62,6 +63,7 @@ public class Docks extends Feature {
 		tier = Math.min(2,1+t.getTier());//min level of 2, but tries to be one higher
 		old_defenders = new ArrayList<Person>();
 		old_attackers = new ArrayList<Person>();
+		area_type = Area.PORT;
 	}
 	
 	@Override
@@ -151,7 +153,6 @@ public class Docks extends Feature {
 
 	@Override
 	public void go() {
-		Networking.setArea("port");
 		List<Connection> connects = new ArrayList<Connection>();
 		town.getConnects().stream().filter(c -> c.getType() == ConnectType.SHIP).forEach(connects::add);
 		extra.menuGo(new ScrollMenuGenerator(connects.size(),"n/a","n/a") {

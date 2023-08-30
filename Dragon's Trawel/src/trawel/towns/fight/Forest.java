@@ -12,6 +12,7 @@ import trawel.AIClass;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.Networking.Area;
 import trawel.battle.Combat;
 import trawel.factions.Faction;
 import trawel.personal.Person;
@@ -48,6 +49,7 @@ public class Forest extends Feature{
 		tutorialText = "Forest.";
 		background_area = "forest";
 		background_variant = 1;
+		area_type = Area.FOREST;
 	}
 	
 	@Override
@@ -57,7 +59,6 @@ public class Forest extends Feature{
 	
 	@Override
 	public void go() {
-		Networking.setArea("forest");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|forest|Forest|");
 		

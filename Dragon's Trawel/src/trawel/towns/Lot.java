@@ -4,6 +4,7 @@ import java.util.List;
 
 import trawel.Networking;
 import trawel.extra;
+import trawel.Networking.Area;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -29,6 +30,7 @@ public class Lot extends Feature {
 		tier = town.getTier();
 		name = "lot";
 		//tutorialText = "This is a lot you own. \n Go to it to decide what you want to build.";
+		area_type = Area.LOT;
 	}
 	
 	@Override
@@ -51,7 +53,6 @@ public class Lot extends Feature {
 
 	@Override
 	public void go() {
-		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|lot|Lot|");
 		if (construct == null) {
 			

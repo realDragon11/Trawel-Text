@@ -11,6 +11,7 @@ import trawel.Effect;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.Networking.Area;
 import trawel.battle.Combat;
 import trawel.factions.HostileTask;
 import trawel.personal.Person;
@@ -59,6 +60,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 		this.name = name;
 		tutorialText = "Slum.";
 		this.removable = removable;
+		area_type = Area.SLUM;
 	}
 	
 	@Override
@@ -89,7 +91,6 @@ public class Slum extends Feature implements QuestBoardLocation{
 	
 	@Override
 	public void go() {
-		Networking.setArea("dungeon");
 		Slum sl = this;
 		int removecost = (int) (((crimeRating*5)+(town.getTier()*10))/2f);
 		extra.menuGo(new MenuGenerator() {

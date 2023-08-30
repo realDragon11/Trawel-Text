@@ -1,6 +1,7 @@
 package trawel.towns.nodes;
 import trawel.Networking;
 import trawel.extra;
+import trawel.Networking.Area;
 import trawel.towns.Town;
 
 public class Graveyard extends NodeFeature {
@@ -11,6 +12,7 @@ public class Graveyard extends NodeFeature {
 		town = t;
 		tutorialText = "Graveyard.";
 		generate(40);
+		area_type = Area.GRAVEYARD;
 	}
 	
 	@Override
@@ -20,7 +22,6 @@ public class Graveyard extends NodeFeature {
 	
 	@Override
 	public void go() {
-		Networking.setArea("dungeon");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|dungeon|Dungeon|");
 		start.start();

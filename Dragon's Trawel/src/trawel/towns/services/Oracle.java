@@ -19,6 +19,7 @@ import java.util.Scanner;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.Networking.Area;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -41,11 +42,13 @@ public class Oracle extends Feature{ //extends feature later
 		name = string;
 		tier = level;
 		tutorialText = "Oracle.";
+		area_type = Area.ORACLE;
 	}
 
 	public Oracle() {
 		//just for non-static single commands
 		tutorialText = "Oracles can provide guidance.";
+		area_type = Area.ORACLE;
 	}
 	
 	@Override
@@ -227,7 +230,6 @@ public class Oracle extends Feature{ //extends feature later
 
 	@Override
 	public void go() {
-		Networking.setArea("shop");
 		//TODO types of oracles
 		//differnt oracles are for different quests
 		Networking.sendStrong("Discord|imagesmall|oracle|Oracle|");

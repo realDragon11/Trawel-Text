@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import trawel.Networking;
+import trawel.Networking.Area;
 import trawel.extra;
 import trawel.time.CanPassTime;
 import trawel.time.TimeContext;
@@ -237,7 +238,7 @@ public class Calender implements Serializable, CanPassTime {
 		//extra.println(sunsetRadius+"");
 		test.timeCounter = 24*12+24*28*3;
 		//int longa = -72;
-		Networking.setBackground("mountain");
+		Networking.setArea(Area.MOUNTAIN);
 		for (int i = 0;i < 99999999;i++) {
 			//float[] back = test.getBackTime(30,longa);
 			//extra.println(back[0]+""+back[1]);

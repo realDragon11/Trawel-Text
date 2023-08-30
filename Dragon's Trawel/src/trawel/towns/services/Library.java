@@ -8,6 +8,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import trawel.Networking;
 import trawel.extra;
+import trawel.Networking.Area;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.quests.BasicSideQuest;
@@ -29,6 +30,7 @@ public class Library extends Feature {
 		name = _name;
 		town = _town;
 		tutorialText = "Library.";
+		area_type = Area.MISC_SERVICE;
 	}
 	public enum LibraryFlag{
 		HAS_BONUS_FEAT_PICKED
@@ -49,7 +51,6 @@ public class Library extends Feature {
 
 	@Override
 	public void go() {
-		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|library|Library|");
 		extra.menuGo(new MenuGenerator() {
 

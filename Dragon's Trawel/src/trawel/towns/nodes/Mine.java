@@ -1,6 +1,7 @@
 package trawel.towns.nodes;
 import trawel.Networking;
 import trawel.extra;
+import trawel.Networking.Area;
 import trawel.personal.classless.Perk;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
@@ -19,6 +20,7 @@ public class Mine extends NodeFeature {
 		shape = s;
 		generate(50);
 		background_area = "mine";
+		area_type = Area.MINE;
 	}
 	
 	@Override
@@ -28,7 +30,6 @@ public class Mine extends NodeFeature {
 	
 	@Override
 	public void go() {
-		Networking.setArea("mine");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|mine|Mine|");
 		Networking.addMultiLight(80,471);

@@ -4,6 +4,7 @@ import java.util.List;
 
 import trawel.Networking;
 import trawel.extra;
+import trawel.Networking.Area;
 import trawel.personal.item.Inventory;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -21,6 +22,7 @@ public class Gambler extends Feature{
 		this.name = name;
 		this.gold = gold;
 		tutorialText = "Lose money at gambling halls.";
+		area_type = Area.MISC_SERVICE;
 	}
 	
 	@Override
@@ -30,7 +32,6 @@ public class Gambler extends Feature{
 	
 	@Override
 	public void go() {
-		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|icon|Gambler|");
 		extra.println("1 play " +type);
 		extra.println("2 leave");

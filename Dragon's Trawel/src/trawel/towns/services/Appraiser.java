@@ -3,6 +3,7 @@ import java.util.List;
 
 import trawel.Networking;
 import trawel.extra;
+import trawel.Networking.Area;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -15,6 +16,7 @@ public class Appraiser extends Feature {
 	public Appraiser(String name) {
 		this.name = name;
 		tutorialText = "Appraisers will tell you more about your items.";//TODO: needs better overhaul
+		area_type = Area.MISC_SERVICE;
 	}
 	
 	@Override
@@ -25,7 +27,6 @@ public class Appraiser extends Feature {
 	@Override
 	public void go() {
 		Networking.sendStrong("Discord|imagesmall|appraiser|Appraiser|");
-		Networking.setArea("shop");
 		int in = 0;
 		while (in != 7) {
 		extra.println("1 head");

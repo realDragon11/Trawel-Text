@@ -9,6 +9,7 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.Networking;
 import trawel.extra;
+import trawel.Networking.Area;
 import trawel.factions.FBox;
 import trawel.factions.FBox.FSub;
 import trawel.factions.Faction;
@@ -26,6 +27,7 @@ public class HeroGuild extends Feature {
 	public HeroGuild(String name){
 		this.name = name;
 		tutorialText = "Hero's Guild.";
+		area_type = Area.MISC_SERVICE;
 	}
 	
 	@Override
@@ -35,7 +37,6 @@ public class HeroGuild extends Feature {
 	
 	@Override
 	public void go() {
-		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|store|Hero's Guild|");
 		
 		extra.menuGo(new MenuGenerator() {

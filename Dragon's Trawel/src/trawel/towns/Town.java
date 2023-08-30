@@ -20,6 +20,7 @@ import trawel.PrintEvent;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
+import trawel.Networking.Area;
 import trawel.battle.Combat;
 import trawel.battle.Combat.SkillCon;
 import trawel.personal.Person;
@@ -258,13 +259,13 @@ public class Town extends TContextOwner{
 		//System.err.println("at town processing");
 		timeScope.processEvents(this);
 	}
-	
+	/*
 	public void sendBackVariant() {
 		Networking.setBackground("forest");
 		double[] p = Calender.lerpLocation(Player.player.lastTown);
 		float[] b = Player.player.getWorld().getCalender().getBackTime(p[0],p[1]);
 		Networking.sendStrong("Backvariant|forest"+background_variant+"|"+b[0]+"|"+b[1]+"|");
-	}
+	}*/
 
 	public void atTown() {
 		if (Player.player.atFeature != null) {//for loading inside of features
@@ -298,9 +299,8 @@ public class Town extends TContextOwner{
 		}
 		Networking.sendStrong("Discord|desc|Adventuring in " + name +"|");
 		Networking.sendStrong("Discord|imagesmall|town|Town|");
-		Networking.setArea("main");
-		Networking.setBackground("main");
-		sendBackVariant();
+		Networking.setArea(Networking.Area.TOWN);
+		Networking.updateTime();
 		Networking.charUpdate();
 		if (isFort()) {
 			doFort();
@@ -795,7 +795,7 @@ public class Town extends TContextOwner{
 	}
 	
 	public boolean wander(double threshold) {
-			Networking.setArea("forest");
+			Networking.setArea(Area.FOREST);
 			Networking.sendStrong("Discord|imagesmall|grove|Grove|");
 			
 			//Quest bumpers
@@ -880,8 +880,8 @@ public class Town extends TContextOwner{
 	}
 	
 	private boolean wanderShip(double d) {
-			Networking.setArea("port");
-			return Bumper.go(d,tier,1,this);
+		Networking.setArea(Area.PORT);
+		return Bumper.go(d,tier,1,this);
 	}
 	/**
 	 * use force to indicate that you should always have a wander if possible, ie if far flung traveling

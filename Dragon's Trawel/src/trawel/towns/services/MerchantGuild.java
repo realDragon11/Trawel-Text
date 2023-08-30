@@ -9,6 +9,7 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.Networking;
 import trawel.extra;
+import trawel.Networking.Area;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
@@ -41,6 +42,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 		tutorialText = "Merchant's Guild.";
 		timePassed = extra.randRange(1,30);
 		nextReset = extra.randRange(8,30);
+		area_type = Area.MISC_SERVICE;
 	}
 	
 	@Override
@@ -50,7 +52,6 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	
 	@Override
 	public void go() {
-		Networking.setArea("shop");
 		Networking.sendStrong("Discord|imagesmall|store|Merchant Guild|");
 		
 		extra.menuGo(new MenuGenerator() {

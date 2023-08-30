@@ -28,11 +28,13 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	protected String background_area = "main";
 	public static Feature atFeatureForHeader = null;
 	protected int tier;
+	protected Networking.Area area_type;
 	
 	public abstract void go();
 	public void goHeader() {
-		Networking.setBackground(background_area);
-		sendBackVariant();
+		Networking.setArea(area_type);
+		//Networking.setBackground(background_area);
+		//sendBackVariant();
 		atFeatureForHeader = this;
 		Player.player.atFeature = this;
 	}
@@ -40,6 +42,9 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 		double[] p = Calender.lerpLocation(town);
 		float[] b = Player.player.getWorld().getCalender().getBackTime(p[0],p[1]);
 		Networking.sendStrong("Backvariant|"+background_area+background_variant+"|"+b[0]+"|"+b[1]+"|");
+	}
+	public void sendBackVariantOf(String background) {
+		
 	}
 	
 	public void init() {

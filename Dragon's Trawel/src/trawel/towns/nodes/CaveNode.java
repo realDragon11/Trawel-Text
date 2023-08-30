@@ -79,7 +79,7 @@ public class CaveNode implements NodeType{
 	@Override
 	public boolean interact(NodeConnector holder,int node) {
 		switch(holder.getEventNum(node)) {
-		case 1: //TODO: if need to change backgrounds, do it here instead of by typenum
+		case 1:
 			extra.println("The cave entrance is damp.");
 			Networking.unlockAchievement("cave1");break;
 		}

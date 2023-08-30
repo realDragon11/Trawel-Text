@@ -10,6 +10,7 @@ import derg.menus.MenuSelect;
 import trawel.Effect;
 import trawel.Networking;
 import trawel.extra;
+import trawel.Networking.Area;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -51,6 +52,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		tutorialText = "Witch Hut";
 		town = t;
 		timecounter = 0;
+		area_type = Area.MISC_SERVICE;
 	}
 	@Override
 	public String getTitle() {
@@ -78,7 +80,6 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	@Override
 	public void go() {
 		Networking.sendStrong("Discord|imagesmall|hut|Witch Hut|");
-		Networking.setArea("shop");
 		super.goHeader();
 		extra.menuGo(new MenuGenerator() {
 

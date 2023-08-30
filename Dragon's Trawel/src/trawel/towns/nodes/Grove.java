@@ -1,6 +1,7 @@
 package trawel.towns.nodes;
 import trawel.Networking;
 import trawel.extra;
+import trawel.Networking.Area;
 import trawel.towns.Town;
 
 public class Grove extends NodeFeature {
@@ -14,6 +15,7 @@ public class Grove extends NodeFeature {
 		generate(capacity);
 		background_area = "forest";
 		background_variant = 1;
+		area_type = Area.FOREST;
 	}
 	
 	public Grove(String name,Town t) {
@@ -27,7 +29,6 @@ public class Grove extends NodeFeature {
 	
 	@Override
 	public void go() {
-		Networking.setArea("forest");
 		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|grove|Grove|");
 		start.start();

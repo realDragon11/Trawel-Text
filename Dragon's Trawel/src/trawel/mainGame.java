@@ -1717,17 +1717,20 @@ public class mainGame {
 				if (largeTimePassing) {
 					passAmount+=.005;
 				}
+				/*
 				if (Player.player.atFeature != null) {
+					Networking.updateTime();
 					Player.player.atFeature.sendBackVariant();
 				}else {
 					Player.player.getLocation().sendBackVariant();
-				}
-
+				}*/
+				Networking.updateTime();
 				Networking.waitIfConnected(84);//1 second should be around 6 hours
 			}
 		}else {
 			if (Player.peekTime() > 0) {
 				globalTimeCatchUp();
+				Networking.updateTime();
 			}
 		}
 
