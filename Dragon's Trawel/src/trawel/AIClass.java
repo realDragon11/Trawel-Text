@@ -705,6 +705,7 @@ public class AIClass {
 					current.display(1);
 					displayChange(current,thinking, Player.player.getPerson());
 				}
+				extra.println("Current Capacity: " + Player.player.getPerson().capacityDesc());
 				
 				final boolean fCanSwap = canSwap;
 				list.add(new MenuSelect() {

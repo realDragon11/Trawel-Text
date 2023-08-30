@@ -2044,6 +2044,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		return myroll-theirroll;
 	}
 	
+	public String capacityDesc() {
+		return bag.getCapacity() + "/"+getStrength();
+	}
+	
 	public String attributeDesc() {
 		return "(raw) dex (" + getRawDexterity() +") " + getDexterity()+ ", "+ extra.F_TWO_TRAILING.format(attMultDex())+"x"
 		+ "; cap/str " + bag.getCapacity() + "/"+getStrength()+ ", "+ extra.F_TWO_TRAILING.format(attMultStr())+"x"

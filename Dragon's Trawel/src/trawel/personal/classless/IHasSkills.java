@@ -92,7 +92,7 @@ public interface IHasSkills {
 
 			@Override
 			public String title() {
-				return has.friendlyName();
+				return has.menuName();
 			}
 
 			@Override
@@ -123,6 +123,10 @@ public interface IHasSkills {
 	}
 	
 	public String friendlyName();
+	
+	public default String menuName() {
+		return friendlyName();
+	}
 	
 	public boolean goMenuItem();
 	

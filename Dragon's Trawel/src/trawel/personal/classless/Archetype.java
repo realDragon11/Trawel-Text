@@ -310,6 +310,20 @@ public enum Archetype implements IHasSkills{
 	public String friendlyName() {
 		return name;
 	}
+	
+	@Override
+	public String menuName() {
+		switch (type) {
+		default:
+		case AFTER:
+		case ENTRY:
+			return friendlyName();
+		case ADDED:
+			return friendlyName() + " (Added Only)";
+		case RACIAL:
+			return friendlyName() + " (Species Only)";
+		}
+	}
 
 	@Override
 	public boolean goMenuItem() {
