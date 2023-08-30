@@ -64,7 +64,6 @@ public class WorldGen {
 
 	
 	public static Plane plane;
-	public static Town lynchPin;
 	
 	/**
 	 * used mostly for world generation pre character creation
@@ -146,7 +145,6 @@ public class WorldGen {
 				return list;
 			}
 		};
-		lynchPin = unun;
 		addConnection(homa,unun,"road","barrier way");
 		unun.addFeature(new Docks("Trade Port (Shipyard)",unun));
 		unun.addFeature(new Inn("Trailblazer's Tavern",2,unun,null));
@@ -651,10 +649,6 @@ public class WorldGen {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public static void pathToUnun() {
-		pathToTown(lynchPin);
 	}
 	
 	public static class PathTown {

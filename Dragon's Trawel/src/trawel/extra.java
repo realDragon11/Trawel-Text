@@ -315,7 +315,7 @@ public final class extra {
 	
 	public static void charSwitchNone() {
 		CHAR_INSTANTS = "_";
-		CHAR_HITCHANCE = "%";
+		CHAR_HITCHANCE = ">";
 		CHAR_SHARP = "S";
 		CHAR_BLUNT = "B";
 		CHAR_PIERCE = "P";

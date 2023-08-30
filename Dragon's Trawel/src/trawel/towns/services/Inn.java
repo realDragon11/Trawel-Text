@@ -279,10 +279,9 @@ public class Inn extends Feature implements QuestBoardLocation{
 				}else {
 					newCurAgent();
 				}
-				return "resident: " + curAgent.getPerson().getName()+ " (" +curAgent.getPerson().getLevel() +")";			
 			}
+			return "resident: " + curAgent.getPerson().getName()+ " (" +curAgent.getPerson().getLevel() +")";	
 		}
-		return "ERROR";
 	}
 	
 	private void goAgent(Agent agent) {

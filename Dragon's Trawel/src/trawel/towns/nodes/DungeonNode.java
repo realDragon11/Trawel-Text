@@ -465,6 +465,7 @@ public class DungeonNode implements NodeType{
 			}
 			extra.println("You loot the statue...");
 			AIClass.playerLoot(p.getBag(),true);
+			holder.setStateNum(node,1);
 			return false;
 		}else {
 			extra.println("The " + holder.getStorageFirstPerson(node).getBag().getRace().renderName(false) + " statue has already been looted.");
