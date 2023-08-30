@@ -30,7 +30,7 @@ public class Agent extends SuperPerson{
 	private byte flags = 0b0;
 	
 	public enum AgentGoal {
-		NONE, DEATHCHEAT, SPOOKY, OWN_SOMETHING
+		NONE, DEATHCHEAT, SPOOKY, OWN_SOMETHING, DELVE_HELP
 	}
 	
 	public enum AgentFlag{
@@ -101,8 +101,8 @@ public class Agent extends SuperPerson{
 			current.action(this);
 			current = popBehave();
 		}
-			current.passTime(d, calling);
-			return null;
+		current.passTime(d, calling);
+		return null;
 	}
 
 	public void enqueueBehavior(Behavior b) {
@@ -138,6 +138,12 @@ public class Agent extends SuperPerson{
 	
 	@Override
 	public boolean hasGoal(AgentGoal goal) {
+		if (goal == AgentGoal.NONE) {
+			if (goals.size() > 1) {
+				return false;
+			}
+			//fall through
+		}
 		return goals.contains(goal);
 	}
 	
