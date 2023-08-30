@@ -16,7 +16,6 @@ import trawel.towns.Town;
 public class Garden extends Feature {
 
 	private static final long serialVersionUID = 1L;
-	private int tier;
 	private ArrayList<PlantSpot> plants = new ArrayList<PlantSpot>();
 	public Garden(Town town) {
 		this.town = town;
@@ -38,7 +37,6 @@ public class Garden extends Feature {
 
 	@Override
 	public void go() {
-		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|garden|Garden|");
 		extra.menuGo(new MenuGenerator() {
 			@Override

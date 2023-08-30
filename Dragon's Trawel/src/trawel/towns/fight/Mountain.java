@@ -64,7 +64,6 @@ public class Mountain extends Feature{
 	
 	@Override
 	public void go() {
-		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|mountain|Mountain|");
 		MenuGenerator mGen = new MenuGenerator() {
 

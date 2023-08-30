@@ -30,8 +30,8 @@ public class Mine extends NodeFeature {
 	
 	@Override
 	public void go() {
-		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|mine|Mine|");
+		//FIXME: lights will persist
 		Networking.addMultiLight(80,471);
 		Networking.addMultiLight(486,360);
 		Networking.addMultiLight(1012,353);

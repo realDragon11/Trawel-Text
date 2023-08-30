@@ -80,7 +80,6 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	@Override
 	public void go() {
 		Networking.sendStrong("Discord|imagesmall|hut|Witch Hut|");
-		super.goHeader();
 		extra.menuGo(new MenuGenerator() {
 
 			@Override

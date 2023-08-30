@@ -269,8 +269,8 @@ public class Town extends TContextOwner{
 
 	public void atTown() {
 		if (Player.player.atFeature != null) {//for loading inside of features
-			//doesn't trigger entering code since the player saved inside of it
-			Player.player.atFeature.go();
+			//doesn't trigger all entering code since the player saved inside of it
+			Player.player.atFeature.enter();
 			Player.player.atFeature = null;
 			return;
 		}
@@ -479,6 +479,7 @@ public class Town extends TContextOwner{
 						Connection c = connects.get(0);
 						Town t = c.otherTown(features.get(0).getTown());
 						extra.println("You return to " + t.getName());
+						Networking.setArea(Area.ROADS);//MAYBELATER: fix if connection is port
 						Player.addTime(c.getTime());
 						mainGame.globalPassTime();
 						if (extra.chanceIn(1,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
@@ -500,7 +501,7 @@ public class Town extends TContextOwner{
 
 						@Override
 						public boolean go() {
-							features.get(number).go();
+							features.get(number).enter();
 							Player.player.atFeature = null;
 							return true;
 						}
@@ -608,6 +609,17 @@ public class Town extends TContextOwner{
 	}
 	
 	private void goConnects(ConnectType type) {
+		switch (type) {
+		case ROAD:
+			Networking.setArea(Area.ROADS);
+			break;
+		case SHIP:
+			Networking.setArea(Area.PORT);
+			break;
+		case TELE:
+			Networking.setArea(Area.MISC_SERVICE);
+			break;
+		}
 		extra.menuGo(new MenuGenerator() {
 
 			@Override
@@ -795,7 +807,6 @@ public class Town extends TContextOwner{
 	}
 	
 	public boolean wander(double threshold) {
-			Networking.setArea(Area.FOREST);
 			Networking.sendStrong("Discord|imagesmall|grove|Grove|");
 			
 			//Quest bumpers
@@ -880,7 +891,7 @@ public class Town extends TContextOwner{
 	}
 	
 	private boolean wanderShip(double d) {
-		Networking.setArea(Area.PORT);
+		//Networking.setArea(Area.PORT);
 		return Bumper.go(d,tier,1,this);
 	}
 	/**

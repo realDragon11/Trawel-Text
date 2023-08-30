@@ -13,6 +13,12 @@ public abstract class FortFeature extends Feature {
 	public abstract int getDefenceRating();
 	public abstract int getOffenseRating();
 	public Laborer laborer;
+	
+	@Override
+	public void goHeader() {
+		Player.player.atFeature = this;
+	}
+	
 	public void improveSkill(SubSkill skill, float valueMult) {
 		int skillIndex = findLSkill(skill);
 		int baseValue = 100;//was 200

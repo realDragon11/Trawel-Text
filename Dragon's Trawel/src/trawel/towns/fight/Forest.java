@@ -59,7 +59,6 @@ public class Forest extends Feature{
 	
 	@Override
 	public void go() {
-		super.goHeader();
 		Networking.sendStrong("Discord|imagesmall|forest|Forest|");
 		
 		extra.menuGo(new MenuGenerator() {

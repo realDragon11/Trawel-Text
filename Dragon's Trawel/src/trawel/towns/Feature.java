@@ -26,16 +26,14 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	protected ArrayList<QuestR> qrRemoveList = new ArrayList<QuestR>();
 	protected int background_variant = extra.randRange(1, 3);
 	protected String background_area = "main";
-	public static Feature atFeatureForHeader = null;
 	protected int tier;
 	protected Networking.Area area_type;
 	
-	public abstract void go();
-	public void goHeader() {
+	protected abstract void go();
+	protected void goHeader() {
 		Networking.setArea(area_type);
 		//Networking.setBackground(background_area);
 		//sendBackVariant();
-		atFeatureForHeader = this;
 		Player.player.atFeature = this;
 	}
 	public void sendBackVariant() {
@@ -138,8 +136,16 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	
 	@Override
 	public int getLevel() {
-		return tier;
-		
+		return tier;	
 	}
 	
+	/**
+	 * provides the feature header and the go
+	 * <br>
+	 * does not include local town code and story updating
+	 */
+	public void enter() {
+		goHeader();
+		go();
+	}
 }

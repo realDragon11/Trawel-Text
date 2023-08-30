@@ -246,7 +246,7 @@ public class NodeConnector implements Serializable {
 	}
 
 	public void start() {
-		Feature.atFeatureForHeader.goHeader();
+		//Feature.atFeatureForHeader.goHeader();
 		if (getCurrentNode() == 0) {//since player can save inside of them now
 			setLastNode(1);
 			setCurrentNode(1);

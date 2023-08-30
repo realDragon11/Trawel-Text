@@ -8,10 +8,7 @@ import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 
 public class Well extends Feature{
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	public Well(String name) {

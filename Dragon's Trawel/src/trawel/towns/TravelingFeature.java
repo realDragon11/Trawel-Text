@@ -13,16 +13,13 @@ import trawel.towns.services.Store;
 
 public class TravelingFeature extends Feature{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	public boolean hasSomething  = false;
 	private Feature feature;
 	private double timePassed = 30;
 	@Override
 	public void go() {
-		this.feature.go();
+		this.feature.enter();
 	}
 	protected int tier, curTier;
 	

@@ -20,7 +20,6 @@ public class Networking {
 	public static Socket socket;
 	private static boolean connected = false;
 	private static BattleType inBattle = BattleType.NONE;
-	private static String songType = "main";
 	public static boolean autoconnectSilence = false;
 	
 	private static InputStream netIn;
@@ -261,7 +260,8 @@ public class Networking {
 		ORACLE("mountain","forest"),
 		DUNGEON("dungeon","mine"),
 		GRAVEYARD("dungeon","forest"),
-		INN("inn","forest")
+		INN("inn","forest"),
+		ROADS("main","forest")
 		;
 		public final String musicName, backName;
 		Area(String _musicName, String _backName) {
@@ -270,9 +270,10 @@ public class Networking {
 		}
 	}
 	
-	public static Area current_area;
-	public static String current_background;
-	public static String current_background_variant;
+	private static Area current_area;
+	private static String current_background = "";
+	private static String current_background_variant = "";
+	private static String songType = "";
 	
 	public static void setArea(Area area_type) {
 		if (!current_background.equals(area_type.backName)) {
@@ -292,6 +293,7 @@ public class Networking {
 			Networking.sendStrong("PlaySong|" + songType + (inBattle == BattleType.NORMAL ? "_fight" : "_explore")  + "|");}
 		}
 		updateTime();
+		current_area = area_type;
 	}
 	
 	public static void updateTime() {
