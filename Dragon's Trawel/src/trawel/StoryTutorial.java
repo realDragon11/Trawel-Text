@@ -152,7 +152,7 @@ public class StoryTutorial extends Story{
 			step = "gotoinn1";
 		}
 		if (step == "gotoinn1") {
-			extra.println(" Next you should ingest questionable substances at an inn. Compass (which is basically mapquest), in the Player Menu under 'Inventory->Map', can take you to 'Unun', a town with an inn.");
+			extra.println(" Next you should ingest questionable substances at an inn. Compass (which is basically mapquest), in the Player Menu under 'Player->Inventory->Map', can take you to 'Homa', the town you started in. 'Unun' is just a few hours walk from there, and it has an inn.");
 		}
 	}
 
