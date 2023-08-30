@@ -6,7 +6,7 @@ import trawel.time.CanPassTime;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 
-public abstract class Behavior implements CanPassTime{
+public abstract class Behavior implements CanPassTime, java.io.Serializable{
 	private double timeTo;
 
 	public double getTimeTo() {
@@ -18,7 +18,7 @@ public abstract class Behavior implements CanPassTime{
 	}
 	
 	
-	public abstract void action(Agent user);
+	public abstract List<TimeEvent> action(Agent user);
 
 	@Override
 	public List<TimeEvent> passTime(double d, TimeContext calling) {

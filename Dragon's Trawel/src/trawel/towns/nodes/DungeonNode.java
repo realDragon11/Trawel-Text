@@ -8,6 +8,7 @@ import com.github.yellowstonegames.core.WeightedTable;
 import trawel.AIClass;
 import trawel.Networking;
 import trawel.extra;
+import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -22,7 +23,7 @@ public class DungeonNode implements NodeType{
 	private static final int EVENT_NUMBER =8;
 	
 	
-	private WeightedTable dungeonGuardRoller, dungeonLootRoller;
+	private WeightedTable dungeonGuardRoller, dungeonLootRoller, dungeonNoneRoller;
 	
 	/*
 	 * 2: single guard
@@ -39,11 +40,21 @@ public class DungeonNode implements NodeType{
 	public DungeonNode() {
 		dungeonGuardRoller = new WeightedTable(new float[] {2f,1f});
 		dungeonLootRoller = new WeightedTable(new float[] {3f,1f,1.5f,.5f});
+		dungeonNoneRoller = new WeightedTable(new float[] {
+				0f,//1 ladder
+				2f,//2 single guard
+				0f,//3 multi guard
+				.5f,//4 door
+				.5f,//5 chest
+				.5f,//6 mimic
+				.1f,//7 statue
+				.5f,//8 living statue
+		});
 	}
 	
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
-		byte idNum = (byte) extra.randRange(2,EVENT_NUMBER);//1 is ladder
+		byte idNum = (byte) dungeonNoneRoller.random(extra.getRand());//1 is ladder
 		//might be overwritten by shape but we do it as a backup/full rng
 		/*if (extra.chanceIn(1,2)) {
 			idNum = GUARD_NUMBERS[dungeonGuardRoller.random(extra.getRand())];
@@ -252,33 +263,33 @@ public class DungeonNode implements NodeType{
 		break;
 		case 3:
 			List<Person> list = new ArrayList<Person>();
-			int baseLevel = holder.getLevel(madeNode)+3;
+			int baseLevel = holder.getLevel(madeNode)+1;
 			holder.setLevel(madeNode, baseLevel);//now increases node level
 			int guardLevel = baseLevel;
 			int testLevel = RaceFactory.addAdjustLevel(guardLevel, 1);
-			int guardAmount = 2;
-			if (testLevel <= 0) {
-				guardAmount = 1;
-				guardLevel = baseLevel;
-				//we can't fit two guards, so add one stronger guard
+			int guardAmount = 4;
+			if (extra.chanceIn(1,4)) {//less, but eliter guards
+				guardAmount--;
+				for (int i = 0; i < guardAmount;i++) {
+					list.add(RaceFactory.makeDGuard(guardLevel+extra.randRange(1,4)));
+				}
 			}else {
-				guardLevel = testLevel;
-				while (guardAmount < 4) {
-					if (testLevel > 1 && extra.chanceIn(3,4)) {
-						testLevel = RaceFactory.addAdjustLevel(baseLevel,guardAmount);
-						if (testLevel <= 0) {
-							break;
-						}
-						guardAmount+=1;
-						guardLevel = testLevel;
-					}else {
-						break;
+				int manyCost = 5;
+				if (guardLevel > manyCost && extra.chanceIn(1,6)) {//more weaker guards
+					do {
+						guardLevel-=manyCost;
+						guardAmount++;
+					}while (guardLevel > manyCost && guardAmount < 6 && extra.chanceIn(2,3));
+					//populate our list
+					for (int i = 0; i < guardAmount;i++) {
+						list.add(RaceFactory.makeDGuard(guardLevel));
+					}
+				}else {
+					//no modifiers
+					for (int i = 0; i < guardAmount;i++) {
+						list.add(RaceFactory.makeDGuard(guardLevel));
 					}
 				}
-			}
-			
-			for (int i = 0; i < guardAmount;i++) {
-				list.add(RaceFactory.makeDGuard(guardLevel));
 			}
 			holder.setForceGo(madeNode, true);
 			holder.setStorage(madeNode, new Object[] {
@@ -316,15 +327,22 @@ public class DungeonNode implements NodeType{
 			}
 		case 3://multiguards
 			List<Person> guards = holder.getStorageFirstClass(node,List.class);
-			Combat bgc = Player.player.massFightWith(guards);
+			List<Person> playerSide = holder.parent.getHelpFighters();
+			playerSide.addAll(Player.player.getAllies());
+			List<List<Person>> people = new ArrayList<List<Person>>();
+			people.add(playerSide);
+			people.add(guards);
+			Combat bgc = mainGame.HugeBattle(holder.getWorld(), people);
 			String wasname = holder.getStorageFirstClass(node,String.class);
 			if (bgc.playerWon() > 0) {
 				holder.setForceGo(node,false);
-				
 				GenericNode.setTotalDeadString(holder, node,"Wrecked " +wasname,"Examine Bodies","They are slowly rotting.", "pile of corpses");
+				holder.parent.retainAliveFighters(bgc.getNonSummonSurvivors());
 				return false;
 			}else {
-				holder.setStorage(node,new Object[] {wasname,bgc.getNonSummonSurvivors()});//they don't revive
+				List<Person> survivors = bgc.getNonSummonSurvivors();
+				holder.parent.retainAliveFighters(survivors);//will empty it
+				holder.setStorage(node,new Object[] {wasname,survivors});//they don't revive
 				return true;
 			}
 		case 5: return chest(holder, node);

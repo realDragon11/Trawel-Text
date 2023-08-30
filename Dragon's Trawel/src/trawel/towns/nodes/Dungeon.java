@@ -17,8 +17,11 @@ import trawel.battle.Combat.SkillCon;
 import trawel.personal.Person;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
+import trawel.time.TimeContext;
+import trawel.time.TimeEvent;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
+import trawel.towns.Feature;
 import trawel.towns.Town;
 import trawel.towns.World;
 import trawel.towns.fort.SubSkill;
@@ -57,15 +60,13 @@ public class Dungeon extends NodeFeature {
 	}
 	
 	@Override
-	public boolean removeAgent(Agent a) {
+	public RemoveAgentFromFeatureEvent laterRemoveAgent(Agent a) {
 		if (hasHelpers()) {
 			if (delve_helpers.contains(a)) {
-				delve_helpers.remove(a);
-				left_helpers.add(a.getPerson().getName() + " ("+a.getPerson().getLevel()+")");
-				return true;
+				return new RemoveAgentFromFeatureEvent(a,this,true);
 			}
 		}
-		return false;
+		return null;
 	}
 	
 	@Override
@@ -77,6 +78,9 @@ public class Dungeon extends NodeFeature {
 				while (!left_helpers.isEmpty()) {
 					extra.println(left_helpers.remove(0));
 				}
+			}
+			for (Agent a: delve_helpers) {
+				a.setActionTimeMin(48);//if you check they will wait at least two more days
 			}
 			extra.menuGo(new MenuGenerator() {
 
@@ -248,11 +252,12 @@ public class Dungeon extends NodeFeature {
 																						p.displayStats(false);
 																						return false;
 																					}});
+																				final int cost = p.getLevel();
 																				list.add(new MenuSelect() {
 
 																					@Override
 																					public String title() {
-																						return "Recruit for "+ World.currentMoneyDisplay(p.getLevel())+ " of your " +Player.player.getGoldDisp();
+																						return "Recruit for "+ World.currentMoneyDisplay(cost)+ " of your " +Player.player.getGoldDisp();
 																					}
 
 																					@Override
@@ -263,7 +268,9 @@ public class Dungeon extends NodeFeature {
 																						}
 																						extra.println("Really recruit?");
 																						if (extra.yesNo()) {
+																							Player.player.addGold(-cost);
 																							Agent a = people.get(i);
+																							a.addGold(cost);//hehe
 																							a.onlyGoal(AgentGoal.DELVE_HELP);
 																							town.removeOccupant(a);
 																							delve_helpers.add(a);
@@ -315,6 +322,9 @@ public class Dungeon extends NodeFeature {
 														str+=", " +p.getPerson().getName();
 													}
 												}
+												if (str == null) {
+													str = "You have no party.";
+												}
 												return str;
 											}});
 										return list;
@@ -334,6 +344,7 @@ public class Dungeon extends NodeFeature {
 							}
 							return false;
 						}});
+					list.add(new MenuBack("leave"));
 					return list;
 				}});
 		}else {
@@ -344,10 +355,11 @@ public class Dungeon extends NodeFeature {
 	@Override
 	protected void generate(int size) {
 		switch (shape) {
-		case RIGGED_DUNGEON: case TOWER:
+		case TOWER:
 			delve_helpers = new ArrayList<Agent>();
+			left_helpers = new ArrayList<String>();
 			break;
-		default:
+		default:case RIGGED_DUNGEON: //unsure on rigged
 			break;
 		}
 		start = NodeType.NodeTypeNum.DUNGEON.singleton.getStart(this, size, getTown().getTier());//DOLATER: get actual level
@@ -380,6 +392,62 @@ public class Dungeon extends NodeFeature {
 		int index = skill_nodes.indexOf(node);
 		skill_nodes.remove(index);
 		return skill_cons.remove(index);
+	}
+	
+	@Override
+	public List<TimeEvent> passTime(double time, TimeContext calling) {
+		List<TimeEvent> list = super.passTime(time, calling);
+		if (hasHelpers()) {
+			for (Agent a: delve_helpers) {//I could go through this backwards, but it should be in time events anyways
+				List<TimeEvent> sublist = a.passTime(time, calling);
+				if (sublist != null) {
+					if (list == null) {
+						list = new ArrayList<TimeEvent>();
+					}
+					list.addAll(sublist);
+				}
+			}
+			if (list != null) {
+				for (int i = list.size()-1; i >=0;i--) {
+					TimeEvent e = list.get(i);
+					if (e instanceof Feature.RemoveAgentFromFeatureEvent) {
+						RemoveAgentFromFeatureEvent rem = (RemoveAgentFromFeatureEvent)e;
+						if (rem.feature == this) {
+							if (delve_helpers.remove(rem.agent)) {
+								//removed properly
+								list.remove(i);
+								left_helpers.add(rem.agent.getPerson().getName() + " ("+rem.agent.getPerson().getLevel()+")");
+								if (rem.putInTown) {
+									town.addOccupant(rem.agent);//can be instant
+								}
+							}else {
+								throw new RuntimeException("Trying to remove " + rem.agent + " from " + rem.feature +" in dungeon party, but they weren't there!");
+							}
+						}
+					}
+				}
+			}
+		}
+		return list;
+	}
+	
+	@Override
+	public List<Person> getHelpFighters(){
+		List<Person> people = new ArrayList<Person>();
+		delve_helpers.stream().forEach(p -> people.addAll(p.getAllies()));
+		return people;
+	}
+	
+	@Override
+	public void retainAliveFighters(List<Person> retain){
+		List<Agent> agents = new ArrayList<Agent>();
+		for (Person p: retain) {
+			SuperPerson s = p.getSuper();
+			if (s != null && s instanceof Agent) {
+				agents.add((Agent) s);
+			}
+		}
+		delve_helpers.retainAll(agents);
 	}
 
 }

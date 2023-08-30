@@ -150,7 +150,20 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 		go();
 	}
 	
-	public boolean removeAgent(Agent a) {
-		return false;
+	public RemoveAgentFromFeatureEvent laterRemoveAgent(Agent a) {
+		return null;
+	}
+	
+	public static class RemoveAgentFromFeatureEvent extends TimeEvent{
+		public final Agent agent;
+		public final Feature feature;
+		public final boolean putInTown;
+		
+		public RemoveAgentFromFeatureEvent(Agent _agent, Feature _feature, boolean _putInTown) {
+			agent = _agent;
+			feature = _feature;
+			putInTown = _putInTown;
+			context = ContextLevel.FEATURE;
+		}
 	}
 }

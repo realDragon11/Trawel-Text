@@ -4,31 +4,36 @@ import java.util.List;
 import trawel.extra;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Behavior;
+import trawel.time.TimeEvent;
 import trawel.towns.Connection;
 import trawel.towns.Town;
 import trawel.towns.Connection.ConnectType;
 
-public class WanderEndless extends Behavior implements java.io.Serializable{
-	
-	private static final long serialVersionUID = 1L;
-	
+public class WanderEndless extends Behavior{
+		
 	private Connection connect;
 	
 	public WanderEndless(Connection c) {
-		connect = c;
-		setTimeTo(c.getTime()+(extra.randFloat()*60));
+		if (c == null) {
+			connect = null;
+			setTimeTo(24);//wait a bit longer before retrying
+		}else {
+			connect = c;
+			setTimeTo(c.getTime()+(extra.randFloat()*60));
+		}
 	}
 	public WanderEndless() {
 		connect = null;
-		setTimeTo(extra.randFloat()*5);
+		setTimeTo(extra.randFloat()*5);//random awakeness after start to prevent grouping
 	}
 
 	@Override
-	public void action(Agent user) {
+	public List<TimeEvent> action(Agent user) {
 		if (connect != null) {
 			user.setLocation(connect.otherTown(user.getLocation()));
 		}
 		user.enqueueBehavior(new WanderEndless(destination(user)));
+		return null;
 	}
 	
 	public static Connection destination(Agent user) {

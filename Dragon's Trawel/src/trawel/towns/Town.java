@@ -42,6 +42,7 @@ import trawel.time.TContextOwner;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Connection.ConnectType;
+import trawel.towns.Feature.RemoveAgentFromFeatureEvent;
 import trawel.towns.events.TownFlavorFactory;
 import trawel.towns.events.TownTag;
 import trawel.towns.fort.FortFeature;
@@ -766,12 +767,14 @@ public class Town extends TContextOwner{
 		return occupants.remove(occupant);
 	}
 	
-	public boolean removeAgentFromFeatures(Agent a) {
-		boolean bool = false;
+	public RemoveAgentFromFeatureEvent laterRemoveAgentAnyFeature(Agent a) {
 		for (Feature f: features) {
-			bool = f.removeAgent(a) ? true : bool;
+			RemoveAgentFromFeatureEvent e = f.laterRemoveAgent(a);
+			if (e != null) {
+				return e;
+			}
 		}
-		return bool;
+		return null;
 	}
 	
 	public void removeAllKilled(List<Person> killed) {

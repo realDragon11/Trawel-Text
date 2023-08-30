@@ -1,8 +1,10 @@
 package trawel.towns.nodes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import trawel.mainGame;
+import trawel.personal.Person;
 import trawel.personal.people.Player;
 import trawel.quests.Quest.TriggerType;
 import trawel.time.TimeContext;
@@ -73,6 +75,14 @@ public abstract class NodeFeature extends Feature {
 	@Override
 	public String getTitle() {
 		return getName() + sizeDesc();
+	}
+	
+	public List<Person> getHelpFighters(){
+		throw new UnsupportedOperationException("This node feature " + getName() + " of " + this.getClass() + " does not have helpers!");
+	}
+	
+	public void retainAliveFighters(List<Person> retain){
+	
 	}
 
 }

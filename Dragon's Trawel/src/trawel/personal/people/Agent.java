@@ -84,7 +84,7 @@ public class Agent extends SuperPerson{
 	}
 	
 	public Behavior popBehave() {
-		if (behaviors == null) {
+		if (behaviors == null || behaviors.size() == 0) {
 			return null;
 		}
 		Behavior b = behaviors.get(0);
@@ -99,13 +99,23 @@ public class Agent extends SuperPerson{
 		}
 		//will need to look at connections and features
 		//a* pathing?
+		List<TimeEvent> list = null;
 		while(current.getTimeTo() < d) {
 			d-=current.getTimeTo();
-			current.action(this);
+			List<TimeEvent> subList = current.action(this);
+			if (subList != null) {
+				if (list == null) {
+					list = new ArrayList<TimeEvent>();
+				}
+				list.addAll(subList);
+			}
 			current = popBehave();
+			if (current == null) {
+				return list;
+			}
 		}
 		current.passTime(d, calling);
-		return null;
+		return list;
 	}
 
 	public void enqueueBehavior(Behavior b) {
@@ -182,6 +192,20 @@ public class Agent extends SuperPerson{
 	@Override
 	public boolean everDeathCheated() {
 		return getFlag(AgentFlag.DEATHCHEATED_EVER);
+	}
+
+	/**
+	 * returns true if this did anything
+	 */
+	public boolean setActionTimeMin(double time) {
+		if (current == null) {
+			return false;
+		}
+		if (current.getTimeTo() < time) {
+			current.setTimeTo(time);
+			return true;
+		}
+		return false;
 	}
 	
 }

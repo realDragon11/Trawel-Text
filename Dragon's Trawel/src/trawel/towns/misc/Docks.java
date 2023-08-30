@@ -103,7 +103,9 @@ public class Docks extends Feature {
 								continue;
 							}else {
 								Person me = old_attackers.remove(i);
+								extra.offPrintStack();
 								Combat c = leader.fightWith(me);
+								extra.popPrintStack();
 								leader = c.getNonSummonSurvivors().get(0).setOrMakeAgentGoal(AgentGoal.OWN_SOMETHING);
 								//may the best drudger lead!
 								continue;

@@ -1596,7 +1596,7 @@ public class mainGame {
 						AIClass.loot(kill.getBag(),surv.getBag(),false,surv,true);
 					}
 				}
-				if (isPlayer) {
+				if (isPlayer && Player.player.getPerson().getFlag(PersonFlag.AUTOLOOT)) {
 					AIClass.playerDispLootChanges();
 				}
 			}
