@@ -1675,7 +1675,7 @@ public class RaceFactory {
 	
 	public static List<Person> makeGroupOrDefault(float power, int minMooks, int maxMooks, PersonMaker mookMaker, PersonMaker elseDefault){
 		List<Person> people = groupMakeWithMooks(power,minMooks,maxMooks,mookMaker.worth(),mookMaker);
-		if (people == null) {
+		if (people == null || people.size() == 0) {//FIXME: shouldn't really be size 0 but I need to redo entirely anyway
 			people = new ArrayList<Person>();
 			people.add(elseDefault.make(Math.round(power)));
 		}
