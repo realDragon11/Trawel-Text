@@ -56,11 +56,13 @@ public class Dungeon extends NodeFeature {
 		return extra.F_NODE;
 	}
 	
-	public boolean removeDelver(Agent a) {
+	@Override
+	public boolean removeAgent(Agent a) {
 		if (hasHelpers()) {
 			if (delve_helpers.contains(a)) {
 				delve_helpers.remove(a);
 				left_helpers.add(a.getPerson().getName() + " ("+a.getPerson().getLevel()+")");
+				return true;
 			}
 		}
 		return false;

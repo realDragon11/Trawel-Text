@@ -119,13 +119,17 @@ public class Agent extends SuperPerson{
 
 	@Override
 	public void onlyGoal(AgentGoal goal) {
+		current = null;
 		switch (goal) {
 		case DEATHCHEAT:
-			current = null;
+			
 			setFlag(AgentFlag.DEATHCHEATED_EVER,true);
 			break;
 		case OWN_SOMETHING://if we ONLY own something we should stop moving around
-			current = null;
+			break;
+		case NONE:
+			behaviors.clear();
+			current = new WanderEndless();
 			break;
 		}
 		goals = EnumSet.of(goal);

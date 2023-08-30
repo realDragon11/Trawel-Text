@@ -3,37 +3,44 @@ import java.util.List;
 
 import trawel.extra;
 import trawel.towns.Connection;
+import trawel.towns.Town;
 import trawel.towns.Connection.ConnectType;
 
 public class WanderEndless extends Behavior implements java.io.Serializable{
 	
 	private static final long serialVersionUID = 1L;
+	
+	private Connection connect;
+	
+	public WanderEndless(Connection c) {
+		connect = c;
+		setTimeTo(c.getTime()+(extra.randFloat()*60));
+	}
+	public WanderEndless() {
+		connect = null;
+		setTimeTo(extra.randFloat()*5);
+	}
 
 	@Override
 	public void action(Agent user) {
+		if (connect != null) {
+			user.setLocation(connect.otherTown(user.getLocation()));
+		}
+		user.enqueueBehavior(new WanderEndless(destination(user)));
+	}
+	
+	public static Connection destination(Agent user) {
 		List<Connection> connects = user.getLocation().getConnects();
-		Boolean bool = false;
-		Connection c;
-		int i = 0;
-		do {
-		c = connects.get(extra.randRange(0,connects.size()-1));
-		i++;
-		if (i > 3) {
-			Behavior b = new WanderEndless();
-			b.setTimeTo(extra.randRange(6,200));
-			user.enqueueBehavior(b);
-			return;
+		Connection c = connects.get(extra.randRange(0,connects.size()-1));
+		Town other = c.otherTown(user.getLocation());
+		if (
+				//if would be an interworld teleport
+				other.getIsland().getWorld() != user.getLocation().getIsland().getWorld()
+				//and only 50% chance it not a road
+				|| (c.getType() != ConnectType.ROAD && extra.chanceIn(1,2))) {
+			return null;
 		}
-		if (c.getType() != ConnectType.ROAD && extra.chanceIn(1,2)) {
-			bool = true;
-		}else {
-			bool = false;
-		}
-		}while(bool);
-		user.setLocation(c.otherTown(user.getLocation()));
-		Behavior b = new WanderEndless();
-		b.setTimeTo(extra.randRange(6,200));
-		user.enqueueBehavior(b);
+		return c;
 	}
 
 }

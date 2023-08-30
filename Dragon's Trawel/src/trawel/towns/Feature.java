@@ -5,6 +5,7 @@ import java.util.List;
 import trawel.Networking;
 import trawel.extra;
 import trawel.personal.classless.IEffectiveLevel;
+import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.quests.QuestR;
@@ -147,5 +148,9 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	public void enter() {
 		goHeader();
 		go();
+	}
+	
+	public boolean removeAgent(Agent a) {
+		return false;
 	}
 }

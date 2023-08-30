@@ -766,6 +766,14 @@ public class Town extends TContextOwner{
 		return occupants.remove(occupant);
 	}
 	
+	public boolean removeAgentFromFeatures(Agent a) {
+		boolean bool = false;
+		for (Feature f: features) {
+			bool = f.removeAgent(a) ? true : bool;
+		}
+		return bool;
+	}
+	
 	public void removeAllKilled(List<Person> killed) {
 		for (Person p: killed) {
 			if (p.getSuper() != null) {
