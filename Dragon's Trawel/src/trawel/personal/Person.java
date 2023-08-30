@@ -1170,7 +1170,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				@Override
 				public List<MenuItem> gen() {
 					List<MenuItem> list = new ArrayList<MenuItem>();
-					list.addAll(IHasSkills.viewMenuItems(base));
+					list.addAll(IHasSkills.viewMenuItems(base,pickFor));
 					list.add(new MenuSelect() {
 
 						@Override

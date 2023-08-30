@@ -45,7 +45,7 @@ public interface IHasSkills {
 		return input.replaceAll(Pattern.quote("\n"),"\n ");
 	}
 	
-	public static List<MenuItem> viewMenuItems(IHasSkills has) {
+	public static List<MenuItem> viewMenuItems(IHasSkills has, Person person) {
 		List<MenuItem> list = new ArrayList<MenuItem>();
 		list.add(new MenuLine() {
 
@@ -102,7 +102,7 @@ public interface IHasSkills {
 					@Override
 					public List<MenuItem> gen() {
 						List<MenuItem> list = new ArrayList<MenuItem>();
-						list.addAll(viewMenuItems(has));
+						list.addAll(viewMenuItems(has,null));
 						list.add(new MenuSelect() {
 
 							@Override

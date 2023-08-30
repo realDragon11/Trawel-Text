@@ -203,10 +203,20 @@ public class TargetFactory {
 		addMinorBleed(t, weightMult*.5f);
 	}
 	
+	private void set_as_neck(Target t) {
+		t.hit = .5;
+		t.sharp = 2.5;
+		t.blunt = .5;
+		t.pierce = 2.5;
+		t.rarity = .4;
+		t.slot = 0;
+		t.mappingNumber = 1;
+	}
+	
 	private void set_as_head(Target t) {
 		t.hit = .8;
 		t.sharp = .6;
-		t.blunt = 3;
+		t.blunt = 2.5;
 		t.pierce = 1;
 		t.rarity = .6;
 		t.slot = 0;
@@ -298,16 +308,10 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "neck";
-		t.hit = .5;
-		t.sharp = 3;
-		t.blunt = .5;
-		t.pierce = 3;
-		t.rarity = .4;
-		t.slot = 0;
+		set_as_neck(t);
 		t.type = TargetType.HUMANOID;
 		add_neck_Bleeds(t, 1);
 		add_neck_Winded(t, 1);
-		t.mappingNumber = 1;
 		t.finish();
 		
 		t = new Target();
@@ -349,7 +353,7 @@ public class TargetFactory {
 		t.sharp = 1;
 		t.blunt = 1;
 		t.pierce = 1;
-		t.rarity = .01;
+		t.rarity = .05;
 		t.slot = 1;
 		t.type = TargetType.HUMANOID;
 		addMangled_Wounds(t,1);
@@ -490,16 +494,10 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "neck";
-		t.hit = .5;
-		t.sharp = 3;
-		t.blunt = .5;
-		t.pierce = 3;
-		t.rarity = .4;
-		t.slot = 0;
+		set_as_neck(t);
 		t.type = TargetType.QUAD;
 		add_neck_Winded(t, 1);
 		add_neck_Bleeds(t, 1);
-		t.mappingNumber = 1;
 		t.finish();
 		
 		t = new Target();

@@ -2,6 +2,7 @@ package trawel.personal.item;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import derg.menus.MenuBack;
 import derg.menus.MenuItem;
@@ -994,7 +995,7 @@ public class Inventory implements java.io.Serializable{
 			return;
 		}
 		if (rejectText != null) {
-			extra.println(String.format(rejectText,d.getName()));
+			extra.println(rejectText.replaceAll(Pattern.quote("%"),d.getName()));
 		}
 		dbs.add(d);
 	}

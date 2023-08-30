@@ -3,6 +3,7 @@ package trawel.personal.classless;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import trawel.extra;
+import trawel.personal.Person;
 
 public enum Skill{
 	
@@ -300,6 +301,16 @@ public enum Skill{
 				@Override
 				public String title() {
 					return " " + name + ": " + desc+ (longDesc != "" ? " ("+longDesc+")" : "");
+				}};
+			
+		}
+		
+		public MenuItem getMenuViewForPerson(Person p) {
+			return new MenuLine() {
+
+				@Override
+				public String title() {
+					return " " + (p.hasSkill(Skill.this) ? "HAVE: " : "") + name + ": " + desc+ (longDesc != "" ? " ("+longDesc+")" : "");
 				}};
 			
 		}
