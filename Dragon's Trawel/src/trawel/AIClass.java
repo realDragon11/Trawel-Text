@@ -543,14 +543,22 @@ public class AIClass {
 			}
 			Weapon weap = loot.getHand();
 			Item replaceWeap = playerLootCompareItem(weap, canAtomSmash);
-			if (replaceWeap == null) {
-				extra.println("You swap for the " + weap.getName() + ".");
+			if (replaceWeap != weap) {
+				if (replaceWeap == null) {
+					extra.println("You swap for the " + weap.getName() + ".");
+				}else {
+					if (canAtomSmash) {
+						Services.aetherifyItem(replaceWeap,Player.bag,true);
+						extra.println("You swap for the " + weap.getName() + ".");
+					}
+				}
 			}else {
 				if (canAtomSmash) {
-					Services.aetherifyItem(replaceWeap,Player.bag,true);
-					extra.println("You swap for the " + weap.getName() + ".");
+					Services.aetherifyItem(weap,Player.bag,true);
+					loot.setWeapon(null);
 				}
 			}
+			
 			Networking.send("RemoveInv|1|2|");
 		}else {
 			if (canAtomSmash) {
@@ -1092,7 +1100,7 @@ public class AIClass {
 									);
 						}
 						if (mainGame.attackDisplayStyle == DispAttack.TWO_LINE1_WITH_KEY) {
-							extra.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),extra.PRE_WHITE, defender)+": " + extra.CHAR_HITCHANCE + " hitmult; " +extra.CHAR_INSTANTS+" warmup -cooldown; "+
+							extra.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),extra.PRE_WHITE, defender)+": " + extra.CHAR_HITCHANCE + " hitmult; " +extra.CHAR_INSTANTS+" warmup cooldown; "+
 									ImpairedAttack.EXPLAIN_DAMAGE_TYPES());
 						}else {
 							extra.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),extra.PRE_WHITE, defender)+": ");

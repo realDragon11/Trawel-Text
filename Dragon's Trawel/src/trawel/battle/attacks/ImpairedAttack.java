@@ -599,7 +599,7 @@ public class ImpairedAttack implements IAttack{
 				}
 				
 				extra.specialPrint(in,"  "+extra.CHAR_HITCHANCE + extra.format(getHitMult()),
-						extra.CHAR_INSTANTS +extra.formatInt(getWarmup()),"-",extra.CHAR_INSTANTS+extra.formatInt(getCooldown()),
+						extra.CHAR_INSTANTS +extra.formatInt(getWarmup())," ",extra.CHAR_INSTANTS+extra.formatInt(getCooldown()),
 						"=",
 						dam1,dam2,dam3,dam4//unsure if spacing messes up narrator
 						);
