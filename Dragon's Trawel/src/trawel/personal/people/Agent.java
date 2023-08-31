@@ -55,13 +55,10 @@ public class Agent extends SuperPerson{
 		person = p;
 		p.setSuper(this);
 		behaviors = new ArrayList<Behavior>();
-		goals = EnumSet.of(goal);
 		current = null;
 		moneys = new ArrayList<Integer>();
 		moneymappings = new ArrayList<World>();
-		if (goal == AgentGoal.DEATHCHEAT) {
-			setFlag(AgentFlag.DEATHCHEATED_EVER,true);
-		}
+		onlyGoal(goal);
 	}
 
 	@Override

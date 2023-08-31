@@ -222,7 +222,7 @@ public class Connection implements java.io.Serializable{
 	}
 	
 	public double getAIWanderAppeal(Town from) {
-		return baseTypeAppeal()*(from.occupantNeed()/dupeNum());
+		return baseTypeAppeal()*(otherTown(from).occupantNeed()/dupeNum());
 	}
 	
 	public double baseTypeAppeal() {

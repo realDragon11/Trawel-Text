@@ -99,16 +99,16 @@ public class Town extends TContextOwner{
 		connects = new ArrayList<Connection>();
 		features = new ArrayList<Feature>();
 		occupants = new ArrayList<Agent>();
-		occupantDesire = 10;
 	}
 	public Town(String name, int tier, Island island, byte x, byte y) {
 		this(name);
+		occupantDesire = 10;
 		this.tier = tier;
 		this.island = island;
 		locationX = x;
 		locationY = y;
 		timePassed = 0;
-		int j = extra.randRange(2, 5);
+		int j = (int) (occupantDesire+extra.randRange(-3,3));
 		int i = 0;
 		while (i < j) {
 			addPerson();
@@ -130,6 +130,7 @@ public class Town extends TContextOwner{
 		//this.leaveTown = lTown;
 		timePassed = 0;
 		features.add(new FortHall(tier,this));
+		occupantDesire = 1;
 		island.addTown(this);
 	}
 	
@@ -138,7 +139,7 @@ public class Town extends TContextOwner{
 	}
 	
 	protected void updateOccupantNeed() {
-		flowNeed = occupants.size()/occupantDesire;
+		flowNeed = Math.max(0,1-(occupants.size()/occupantDesire));
 	}
 	
 	@Override
@@ -720,9 +721,11 @@ public class Town extends TContextOwner{
 		if (defenseTimer < 0) {
 			defenseTimer = 0;
 		}
-		if (timePassed >= extra.randRange(100,1000)){
+		if (timePassed >= extra.randFloat()*100){
 			timePassed = 0;
-			this.addPerson();
+			if (occupants.size() < occupantDesire) {
+				addPerson();
+			}
 		}
 		for (Feature f: features) {
 			timeScope.localEvents(f.contextTime(time,calling));
