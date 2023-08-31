@@ -21,6 +21,7 @@ import trawel.personal.RaceFactory.RaceID;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.solid.Armor;
+import trawel.personal.item.solid.Armor.ArmorQuality;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
@@ -662,69 +663,46 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	//TO BE USED IN COMBAT
-	public double getSharp(ImpairedAttack att) {
-		int slot = att.getSlot();
-		int i = 0;
+	public double slotMult(ImpairedAttack att, Armor arm) {
 		double mult;
+		if (att.getSlot() == arm.getSlot()) {
+			mult = 2;
+			if (att.hasWeaponQual(Weapon.WeaponQual.PENETRATIVE) && !arm.hasArmorQual(ArmorQuality.DEFLECTING)) {
+				mult-=0.25;
+			}
+		}else {
+			mult = .75;
+			if (att.hasWeaponQual(Weapon.WeaponQual.PINPOINT) && !arm.hasArmorQual(ArmorQuality.DEFLECTING)) {
+				mult-=0.25;
+			}
+		}
+		return mult;
+	}
+	
+	public double getSharp(ImpairedAttack att) {
+		int i = 0;
 		double retResist = 0;
 		while (i < 5) {//should never be null
-			if (slot == i) {
-				mult = 2;
-				if (att.hasWeaponQual(Weapon.WeaponQual.PENETRATIVE)) {
-					mult-=0.25;
-				}
-			}else {
-				mult = .75;
-				if (att.hasWeaponQual(Weapon.WeaponQual.PINPOINT)) {
-					mult-=0.25;
-				}
-			}
-			retResist += (armorSlots[i].getSharp())*mult;
+			retResist += (armorSlots[i].getSharp())*slotMult(att,armorSlots[i]);
 			i++;
 		}
 		return extra.zeroOut(retResist/5f);//slots?
 	}
 	
 	public double getBlunt(ImpairedAttack att) {
-		int slot = att.getSlot();
 		int i = 0;
-		double mult;
 		double retResist = 0;
 		while (i < 5) {//should never be null
-			if (slot == i) {
-				mult = 2;
-				if (att.hasWeaponQual(Weapon.WeaponQual.PENETRATIVE)) {
-					mult-=0.25;
-				}
-			}else {
-				mult = .75;
-				if (att.hasWeaponQual(Weapon.WeaponQual.PINPOINT)) {
-					mult-=0.25;
-				}
-			}
-			retResist += (armorSlots[i].getBlunt())*mult;
+			retResist += (armorSlots[i].getBlunt())*slotMult(att,armorSlots[i]);
 			i++;
 		}
 		return extra.zeroOut(retResist/5f);//slots?
 	}
 	public double getPierce(ImpairedAttack att) {
-		int slot = att.getSlot();
 		int i = 0;
-		double mult;
 		double retResist = 0;
 		while (i < 5) {//should never be null
-			if (slot == i) {
-				mult = 2;
-				if (att.hasWeaponQual(Weapon.WeaponQual.PENETRATIVE)) {
-					mult-=0.25;
-				}
-			}else {
-				mult = .75;
-				if (att.hasWeaponQual(Weapon.WeaponQual.PINPOINT)) {
-					mult-=0.25;
-				}
-			}
-			retResist += (armorSlots[i].getPierce())*mult;
+			retResist += (armorSlots[i].getPierce())*slotMult(att,armorSlots[i]);
 			i++;
 		}
 		return extra.zeroOut(retResist/5f);//slots?

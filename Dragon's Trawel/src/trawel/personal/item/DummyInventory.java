@@ -2,6 +2,7 @@ package trawel.personal.item;
 
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.personal.item.body.Race;
+import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
@@ -12,12 +13,14 @@ public class DummyInventory extends Inventory {
 	private double myDodge;
 
 	public DummyInventory() {
-		super(-1, Race.RaceType.PERSONABLE, null, null, null);
-		myDodge = super.getDodge();
+		this(-1);
 	}
 	public DummyInventory(int i) {
-		super(-1, Race.RaceType.PERSONABLE, presetSwitch(i), null, null);
+		super(-1, Race.RaceType.PERSONABLE,i == -1 ? null : presetSwitch(i), null, null);
 		myDodge = super.getDodge();
+		for (Armor a: armorSlots) {
+			a.getQuals().clear();//clear qualities so they don't influence the tests
+		}
 	}
 	
 	private static final Material presetSwitch(int i) {
@@ -46,71 +49,15 @@ public class DummyInventory extends Inventory {
 		throw new RuntimeException("not a valid dummy inv preset");
 	}
 	
-	
-	public double getSharp10(ImpairedAttack att) {
-		int slot = att.getSlot();
-		int combo = 0;
-		if (att.hasWeaponQual(Weapon.WeaponQual.PINPOINT)) {
-			combo =1;
-		}
-		if (att.hasWeaponQual(Weapon.WeaponQual.PENETRATIVE)) {
-			combo = combo == 1 ? 3 : 2;
-		}
-		Double ret = savedResults[0][slot][combo];
-		if (ret != null) {
-			return ret;
-		}
-		ret = super.getSharp(att);
-		savedResults[0][slot][combo] = ret;
-		return ret;
-	}
-	
 	@Override
 	public double getSharp(ImpairedAttack att) {
 		return super.getSharp(att);
 	}
 	
 	
-	
-	public double getBlunt10(ImpairedAttack att) {
-		int slot = att.getSlot();
-		int combo = 0;
-		if (att.hasWeaponQual(Weapon.WeaponQual.PINPOINT)) {
-			combo =1;
-		}
-		if (att.hasWeaponQual(Weapon.WeaponQual.PENETRATIVE)) {
-			combo = combo == 1 ? 3 : 2;
-		}
-		Double ret = savedResults[1][slot][combo];
-		if (ret != null) {
-			return ret;
-		}
-		ret = super.getBlunt(att);
-		savedResults[1][slot][combo] = ret;
-		return ret;
-	}
-	
 	@Override
 	public double getBlunt(ImpairedAttack att) {
 		return super.getBlunt(att);
-	}
-	
-	public double getPierce10(ImpairedAttack att) {
-		int slot = att.getSlot();
-		int combo = 0;
-		if (att.hasWeaponQual(Weapon.WeaponQual.PINPOINT)) {
-			combo =1;
-		}
-		if (att.hasWeaponQual(Weapon.WeaponQual.PENETRATIVE)) {
-			combo = combo == 1 ? 3 : 2;
-		}
-		Double ret = savedResults[2][slot][combo];
-		if (ret != null) {
-			return ret;
-		}
-		ret = super.getPierce(att);
-		savedResults[2][slot][combo] = ret;
-		return ret;
 	}
 	
 	@Override

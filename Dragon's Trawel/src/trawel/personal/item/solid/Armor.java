@@ -56,10 +56,11 @@ public class Armor extends Item implements IEffectiveLevel{
 	
 	public enum ArmorQuality {
 		/**
-		 * fragile also comes with a 
+		 * fragile also comes with a base resist bonus
 		 */
 		FRAGILE("Fragile","Loses condition on taking attack damage to any body part, equal to 50% of LHP percent lost.",-1),
-		HAUNTED("Haunted","Chance to turn any hit on you into a miss.",1);
+		DEFLECTING("Deflecting","Provides immunity to the Penetrative and Pinpoint Weapon Quals on this armor.",1),
+		HAUNTED("Haunted","Chance to turn any hit on you into a miss.",1), ;
 		
 		public final String name, desc;
 		private final int goodNegNeut;
@@ -152,6 +153,16 @@ public class Armor extends Item implements IEffectiveLevel{
 		}
 		
 		switch (ArmorStyle.fetch(style)) {
+		case PLATE:
+			if (extra.chanceIn(1,6)) {
+				quals.add(ArmorQuality.DEFLECTING);
+			}
+			break;
+		case MAIL:
+			if (extra.chanceIn(1,4)) {
+				quals.add(ArmorQuality.DEFLECTING);
+			}
+			break;
 		case GEM:
 			if (extra.chanceIn(2,3)) {
 				quals.add(ArmorQuality.FRAGILE);
@@ -557,13 +568,24 @@ public class Armor extends Item implements IEffectiveLevel{
 	
 	public float fitness() {
 		float mult = 1f;
-		if (quals.contains(ArmorQuality.FRAGILE)) {
-			mult *=.6f;
+		for (ArmorQuality q: quals) {
+			switch (q) {
+			case DEFLECTING:
+				mult *= 1.1f;
+				break;
+			case FRAGILE:
+				mult *=.6f;//base resist is higher for it
+				break;
+			}
 		}
 		if (isEnchanted()) {
 			mult *= enchantment.fitness();
 		}
 		return mult*(getBluntResist()+getPierceResist()+getSharpResist());
+	}
+
+	public boolean hasArmorQual(ArmorQuality qual) {
+		return quals.contains(qual);
 	}
 	
 }
