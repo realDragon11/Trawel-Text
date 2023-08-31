@@ -19,6 +19,7 @@ import trawel.personal.RaceFactory;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
+import trawel.personal.people.Agent.AgentGoal;
 import trawel.quests.BasicSideQuest;
 import trawel.quests.QBMenuItem;
 import trawel.quests.QRMenuItem;
@@ -428,24 +429,32 @@ public class Inn extends Feature implements QuestBoardLocation{
 	}
 	
 	private void barFight() {
+		if (Player.player.getPerson().getLevel()+1 < tier) {//to prevent higher up loot
+			extra.println("You try to start a barfight, but get knocked out easily.");
+			return;
+		}
 		extra.println(extra.PRE_BATTLE+"There is no resident, but there is room for a barfight... start one?");
 		if (extra.yesNo()) {
-			Combat c = Player.player.fightWith(RaceFactory.getDueler(tier));
+			List<List<Person>> list = new ArrayList<List<Person>>();
+			list.add(Player.player.getAllies());
+			for (int i = 0; i < 3; i++) {
+				list.add(RaceFactory.getDueler(tier).getSelfOrAllies());
+			}
+			Combat c = mainGame.HugeBattle(town.getIsland().getWorld(),list);
 			if (c.playerWon() > 0) {
 				wins++;
-				if (wins == 10) {
+				if (wins == 1) {
 					Player.player.addAchieve(this, this.getName() + " barfighter");
 				}
-				if (wins == 50) {
+				if (wins == 5) {
 					Player.player.addAchieve(this, this.getName() + " barbrewer");
 				}
-				if (wins == 100) {
+				if (wins == 10) {
 					Player.player.addAchieve(this, this.getName() + " barmaster");
 				}
 			}else {
 				Person p = c.getNonSummonSurvivors().get(0);
-				Agent a = new Agent(p);
-				town.addOccupant(a);
+				town.addOccupant(p.setOrMakeAgentGoal(AgentGoal.NONE));
 			}
 			
 		}

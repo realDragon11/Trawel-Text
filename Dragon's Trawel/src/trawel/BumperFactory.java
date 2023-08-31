@@ -148,7 +148,7 @@ public class BumperFactory {
 					extra.println(extra.PRE_BATTLE+"A thief charges you!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
-						Player.player.getLocation().addOccupant(new Agent(p));
+						Player.player.getLocation().addOccupant(p.setOrMakeAgentGoal(AgentGoal.NONE));
 					}else {
 						Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
 					}
@@ -259,7 +259,7 @@ public class BumperFactory {
 					extra.println(extra.PRE_BATTLE+"A pirate challenges you for your booty!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
-						Player.player.getLocation().addOccupant(new Agent(p));
+						Player.player.getLocation().addOccupant(p.setOrMakeAgentGoal(AgentGoal.NONE));
 					}else {
 						Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
 					}

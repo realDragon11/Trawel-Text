@@ -143,6 +143,7 @@ public class Docks extends Feature {
 			if (townOwned && potentialLeader != null) {
 				if (leader == null || potentialLeader != leader.getPerson()) {
 					if (leader != null) {
+						leader.onlyGoal(AgentGoal.NONE);
 						town.addOccupant(leader);
 					}
 					old_defenders.remove(potentialLeader);//remove if present

@@ -201,10 +201,10 @@ public class Slum extends Feature implements QuestBoardLocation{
 				Agent sp = town.getRandPersonableOccupant();
 				if (sp.getPerson().hTask == HostileTask.MUG && sp.getPerson().getLevel() > crimeLord.getPerson().getLevel() && extra.chanceIn(1,3)) {
 					//replace crime lord
+					crimeLord.onlyGoal(AgentGoal.NONE);
 					town.addOccupant(crimeLord);
 					crimeLord = sp;
 					town.removeOccupant(sp);
-					crimeLord.onlyGoal(AgentGoal.NONE);
 				}else {
 					//if not replaced, make money
 					crimeLord.getPerson().getBag().addGold(town.getTier());

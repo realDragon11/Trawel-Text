@@ -36,6 +36,7 @@ import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
+import trawel.personal.people.Agent.AgentGoal;
 import trawel.quests.QuestReactionFactory;
 import trawel.time.ContextLevel;
 import trawel.time.ContextType;
@@ -162,7 +163,7 @@ public class Town extends TContextOwner{
 	}
 	
 	public void addPerson() {
-		Agent o = new Agent(RaceFactory.getDueler(this.getTier()));
+		Agent o = RaceFactory.getDueler(this.getTier()).setOrMakeAgentGoal(AgentGoal.NONE);
 		addOccupant(o);
 	}
 	
