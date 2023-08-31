@@ -1700,6 +1700,7 @@ public class mainGame {
 	public static void adventureBody() {
 		lastAutoSave = new Date();
 		Player.isPlaying = true;
+		extra.mainThreadDataUpdate();
 		while(Player.isPlaying) {
 			if (doAutoSave && (new Date().getTime()-lastAutoSave.getTime() > 1000*60*2)) {
 				extra.println("Autosaving...");

@@ -203,7 +203,7 @@ public class Armor extends Item implements IEffectiveLevel{
 	
 	@Override
 	public String getName() {
-		return getModiferName() + " " + getNameNoTier();
+		return getQualityName(quals.size())+getLevelName() + " " + getNameNoTier();
 	}
 	
 

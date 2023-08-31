@@ -61,6 +61,23 @@ public abstract class Item implements java.io.Serializable{
 		return getModiferNameColored(level);
 	}
 	
+	public String getQualityName(int amount) {
+		switch (amount) {
+		case 0:
+			return getModiferNameColored(1);
+		case 1:
+			return getModiferNameColored(3);
+		case 2:
+			return getModiferNameColored(5);
+		default://starts at good and goes up
+			return getModiferNameColored(Math.min(11,3+amount));
+		}
+	}
+	
+	public String getLevelName() {
+		return "+"+level;
+	}
+	
 	public static String getModiferNameColored(int inlevel) {
 		switch (inlevel) {
 		case 0: return extra.inlineColor(new Color(60,60,60))+"broken[c_white]";

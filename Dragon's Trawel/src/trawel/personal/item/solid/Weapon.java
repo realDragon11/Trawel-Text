@@ -243,7 +243,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 	
 	@Override
 	public String getName() {
-		return getModiferName() + " " + getNameNoTier();
+		return getQualityName(qualList.size())+getLevelName() + " " + getNameNoTier();
 	}
 	
 	
