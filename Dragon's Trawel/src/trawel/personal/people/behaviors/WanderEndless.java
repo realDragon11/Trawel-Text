@@ -47,8 +47,6 @@ public class WanderEndless extends Behavior{
 			c -> 
 			//if would be an interworld teleport
 			!c.isWorldConnection()
-			//and only 50% chance it not a road
-			&& (c.getType() == ConnectType.ROAD || extra.chanceIn(1,2))
 			).forEach(connects::add);
 		if (connects.size() == 0) {
 			//System.err.println(user.getLocation().getName() + " has no valid connects");
@@ -58,11 +56,11 @@ public class WanderEndless extends Behavior{
 		float total = 0;
 		//we add +.2 so there is a baseline chance of moving even if everywhere has it's needs filled
 		for (Connection c: connects) {
-			total += c.otherTown(current).occupantNeed()+.2;
+			total += c.getAIWanderAppeal(current)+.2;
 		}
 		total *= extra.randFloat();
 		for (Connection c: connects) {
-			total -= c.otherTown(current).occupantNeed()+.2;
+			total -= c.getAIWanderAppeal(current)+.2;
 			if (total <= 0) {
 				return c;
 			}

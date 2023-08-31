@@ -39,7 +39,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 	private byte resident;
 	private double timePassed;
 	private int wins = 0;
-	private int nextReset;
+	private double nextReset;
 	
 	private int beerCount;
 	private int beerCost;
@@ -49,9 +49,13 @@ public class Inn extends Feature implements QuestBoardLocation{
 	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
 	
 	private transient Agent curAgent;
-
 	
 	private final static int RES_COUNT = 8;
+	
+	/**
+	 * if the player is watching an inn duel, it will be here
+	 */
+	private static Inn playerWatching;
 
 	@Override
 	public QRType getQRType() {
@@ -176,7 +180,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 						return false;
 					}
 				});
-				if (town.getPersonableOccupants().count() >=2){
+				if (town.getPersonableOccupants().limit(2).count() >=2){
 				mList.add(new MenuSelect() {
 
 					@Override
@@ -186,9 +190,11 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public boolean go() {
-						occupantDuel(true);
+						//occupantDuel(true);//now stored elsewhere
+						playerWatching = Inn.this;
 						Player.addTime((nextReset-timePassed+1));
 						mainGame.globalPassTime();
+						playerWatching = null;
 						return false;
 					}
 				});
@@ -223,18 +229,23 @@ public class Inn extends Feature implements QuestBoardLocation{
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		timePassed += time;
-		
 		if (timePassed > nextReset) {
-			moneyEarned +=tier*(nextReset/12);
-			timePassed = 0;
-			occupantDuel(false);
-			resident = (byte)extra.randRange(1,RES_COUNT);
-			nextReset = (extra.randRange(1,3)*12)+extra.randRange(0,5);
-			if (canQuest) {this.generateSideQuest();}
+			occupantDuel(playerWatching == this);
+			collectTimeStorage();
 		}
-		return null;//TODO make inn time matter more
+		return null;
 	}
-
+	
+	protected double nextDuelTime() {
+		//limit of 20 acts as both our cap on reduction and also our sanity cap on iteration
+		double mult = Math.max(5,town.getPersonableOccupants().limit(20).count())/5.0;
+		//if <=5 people, occurs at normal rate, otherwise frequency increases, up to 4x
+		//minimum of 4 hours, then 24-48 hours that does get hit by the mult, so final band of 10 to 52 between duels
+		return 4 + ((24 +extra.getRand().nextDouble(24))/mult);
+	}
+	/**
+	 * a duel requires that time pass
+	 */
 	private void occupantDuel(boolean playerwatching) {
 		List<SuperPerson> spList = new ArrayList<SuperPerson>();
 		town.getPersonableOccupants().forEach(spList::add);
@@ -248,9 +259,20 @@ public class Inn extends Feature implements QuestBoardLocation{
 			assert sp2 != null;			
 			Combat c = mainGame.CombatTwo(sp1.getPerson(),sp2.getPerson(),town.getIsland().getWorld());
 			town.removeAllKilled(c.killed);
-			extra.changePrint(false);
 			if (!playerwatching) { extra.popPrintStack();}
+		}else {
+			if (playerwatching) {
+				extra.println("But no one came.");
+			}
 		}
+	}
+	
+	private void collectTimeStorage() {
+		moneyEarned +=tier*(timePassed/12);
+		resident = (byte)extra.randRange(1,RES_COUNT);
+		if (canQuest) {this.generateSideQuest();}
+		nextReset = nextDuelTime();
+		timePassed = 0;
 	}
 
 	private void goResident() {

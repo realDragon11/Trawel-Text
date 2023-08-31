@@ -17,6 +17,7 @@ public class Connection implements java.io.Serializable{
 	private Town townA, townB;
 	private final byte type;
 	private final String nameString;
+	private int dupeNum = -1;
 	
 	//DOLATER: refactor to always use the other constructor instead of this old one
 	public Connection(String name, Town t1, Town t2,double time, String typeS) {
@@ -207,6 +208,33 @@ public class Connection implements java.io.Serializable{
 	
 	public boolean isWorldConnection() {
 		return townA.getIsland().getWorld() != townB.getIsland().getWorld();
+	}
+	
+	/**
+	 * number of connections that have the same towns as the two links
+	 */
+	public int dupeNum() {
+		return dupeNum;
+	}
+	
+	public void setDupeNum(int i) {
+		dupeNum = i;
+	}
+	
+	public double getAIWanderAppeal(Town from) {
+		return baseTypeAppeal()*(from.occupantNeed()/dupeNum());
+	}
+	
+	public double baseTypeAppeal() {
+		switch (getType()) {
+		case ROAD:
+			return 1;
+		case SHIP:
+			return .6;
+		case TELE:
+			return .2;
+		}
+		throw new RuntimeException("invalid connect type for appeal");
 	}
 	
 }

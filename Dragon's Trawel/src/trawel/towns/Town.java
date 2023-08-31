@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
+import derg.TwinListMap;
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
@@ -187,8 +188,10 @@ public class Town extends TContextOwner{
 		boolean hasRoads = false;
 		boolean hasPort = false;
 		boolean hasTele = false;
-		
+		TwinListMap<Town,Integer> listMap = new TwinListMap<Town, Integer>();
 		for (Connection c: connects) {
+			Town other = c.otherTown(this);
+			listMap.put(other, listMap.getOrDefault(other,0)+1);
 			switch (c.getType()) {
 			case ROAD:
 				hasRoads = true;
@@ -200,6 +203,9 @@ public class Town extends TContextOwner{
 				hasTele = true;
 				break;
 			}
+		}
+		for (Connection c: connects) {
+			c.setDupeNum(listMap.get(c.otherTown(this)));
 		}
 		
 		hasFlags = (byte) (hasRoads ? hasFlags | (1 << 0) : hasFlags & ~(1 << 0));

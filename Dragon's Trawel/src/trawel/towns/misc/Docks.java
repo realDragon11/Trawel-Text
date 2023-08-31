@@ -114,7 +114,7 @@ public class Docks extends Feature {
 						//fall through
 					}
 					Person me = old_attackers.remove(i);
-					town.addOccupant(me.getMakeAgent(AgentGoal.NONE));
+					town.addOccupant(me.setOrMakeAgentGoal(AgentGoal.NONE));
 				}
 			}
 			Person potentialLeader = null;
@@ -133,7 +133,7 @@ public class Docks extends Feature {
 				int mylevel = old_defenders.get(i).getLevel();
 				if (mylevel >= tier+1 && extra.chanceIn(1,3)) {
 					Person me = old_defenders.remove(i);
-					town.addOccupant(me.getMakeAgent(AgentGoal.NONE));
+					town.addOccupant(me.setOrMakeAgentGoal(AgentGoal.NONE));
 					continue;
 				}
 				if (potentialLeader == null || mylevel > potentialLeader.getLevel()) {
