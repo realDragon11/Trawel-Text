@@ -1639,12 +1639,15 @@ public class mainGame {
 				}
 				int giveGold = moneyLootList.size() > 0 ? gold/moneyLootList.size() : 0;
 				int giveAether = aether/lives.size();
-				if (giveGold > 0) {
-					extra.println("The remaining " +World.currentMoneyDisplay(gold) +" is divvied up, "+giveGold +" each.");
+				if (!extra.getPrint()) {
+					if (giveGold > 0) {
+						extra.println("The remaining " +World.currentMoneyDisplay(gold) +" is divvied up, "+giveGold +" each.");
+					}
+					if (giveAether > 0) {
+						extra.println("The remaining " + aether +" aether is divvied up, "+giveAether +" each.");
+					}
 				}
-				if (giveAether > 0) {
-					extra.println("The remaining " + aether +" aether is divvied up, "+giveAether +" each.");
-				}
+				
 				for (Person surv: lives){
 					if (giveGold > 0 && (surv.isPersonable() || surv.getFlag(PersonFlag.HAS_WEALTH))) {
 						surv.getBag().addGold(giveGold);

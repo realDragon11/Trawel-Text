@@ -10,6 +10,7 @@ import trawel.personal.people.behaviors.AbandonPostBehavior;
 import trawel.personal.people.behaviors.WanderEndless;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
+import trawel.towns.Town;
 import trawel.towns.World;
 
 /**
@@ -53,6 +54,7 @@ public class Agent extends SuperPerson{
 	public Agent(Person p, AgentGoal goal) {
 		person = p;
 		p.setSuper(this);
+		behaviors = new ArrayList<Behavior>();
 		goals = EnumSet.of(goal);
 		current = null;
 		moneys = new ArrayList<Integer>();
@@ -210,6 +212,20 @@ public class Agent extends SuperPerson{
 
 	public boolean isCurrentBehaviorClass(Class<? extends Behavior> clazz) {
 		return current != null && clazz.isInstance(current);
+	}
+	
+	/**
+	 * if setting location to a town, use addOccupant instead
+	 * <br>
+	 * this will remove any occupancy when used
+	 */
+	@Override
+	public void setLocation(Town location) {
+		Town old = getLocation();
+		if (old != null && old != location) {
+			old.removeOccupant(this);
+		}
+		super.setLocation(location);
 	}
 	
 }

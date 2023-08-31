@@ -124,6 +124,13 @@ public class Player extends SuperPerson{
 		
 		p.setSuper(this);
 	}
+	@Override
+	public void setLocation(Town location) {
+		//must call beforehand so the location is the old location with world
+		Player.updateWorld(location.getIsland().getWorld());
+		super.setLocation(location);
+	}
+	
 	public static World getPlayerWorld() {
 		if (Player.player == null) {
 			return WorldGen.fallBackWorld;

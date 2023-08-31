@@ -1,4 +1,5 @@
 package trawel.personal.people.behaviors;
+import java.util.ArrayList;
 import java.util.List;
 
 import trawel.extra;
@@ -30,28 +31,42 @@ public class WanderEndless extends Behavior{
 	@Override
 	public List<TimeEvent> action(Agent user) {
 		if (connect != null) {
-			user.setLocation(connect.otherTown(user.getLocation()));
-		}
+			connect.otherTown(user.getLocation()).addOccupant(user);
+		}	
 		user.enqueueBehavior(new WanderEndless(destination(user)));
 		return null;
 	}
 	
 	public static Connection destination(Agent user) {
 		Town current = user.getLocation();
-		if (current.hasConnectFlow() && extra.chanceIn(2, 5)) {
+		if (current.hasConnectFlow() && extra.chanceIn(1, 5)) {//1/5th chance to follow natural flow
 			return current.getConnectFlow();
 		}
-		List<Connection> connects = current.getConnects();
-		Connection c = connects.get(extra.randRange(0,connects.size()-1));
-		Town other = c.otherTown(current);
-		if (
-				//if would be an interworld teleport
-				other.getIsland().getWorld() != current.getIsland().getWorld()
-				//and only 50% chance it not a road
-				|| (c.getType() != ConnectType.ROAD && extra.chanceIn(1,2))) {
+		List<Connection> connects = new ArrayList<Connection>();
+		current.getConnects().stream().filter(
+			c -> 
+			//if would be an interworld teleport
+			c.isWorldConnection()
+			//and only 50% chance it not a road
+			|| (c.getType() != ConnectType.ROAD && extra.chanceIn(1,2))
+			).forEach(connects::add);
+		if (connects.size() == 0) {
 			return null;
 		}
-		return c;
+		//MAYBELATER: if there's two connections to the same location (ie port AND roads), it is twice as likely
+		float total = 0;
+		//we add +.2 so there is a baseline chance of moving even if everywhere has it's needs filled
+		for (Connection c: connects) {
+			total += c.otherTown(current).occupantNeed()+.2;
+		}
+		total *= extra.randFloat();
+		for (Connection c: connects) {
+			total -= c.otherTown(current).occupantNeed()+.2;
+			if (total <= 0) {
+				return c;
+			}
+		}
+		throw new RuntimeException("ran of of weight for random wander " + user.getPerson().getName() + " in " + current.getName());
 	}
 
 }

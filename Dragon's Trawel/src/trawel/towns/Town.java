@@ -85,7 +85,10 @@ public class Town extends TContextOwner{
 	 * <br>
 	 * -1 for none
 	 */
-	public int connectFlow = -1;
+	private int connectFlow = -1;
+	
+	private transient float flowNeed;
+	private float occupantDesire;
 	
 	//private transient List<TimeEvent> events;
 	
@@ -94,6 +97,7 @@ public class Town extends TContextOwner{
 		connects = new ArrayList<Connection>();
 		features = new ArrayList<Feature>();
 		occupants = new ArrayList<Agent>();
+		occupantDesire = 10;
 	}
 	public Town(String name, int tier, Island island, byte x, byte y) {
 		this(name);
@@ -127,10 +131,19 @@ public class Town extends TContextOwner{
 		island.addTown(this);
 	}
 	
+	public float occupantNeed() {
+		return flowNeed;
+	}
+	
+	protected void updateOccupantNeed() {
+		flowNeed = occupants.size()/occupantDesire;
+	}
+	
 	@Override
 	public void reload() {
 		timeScope = new TimeContext(ContextType.LOCAL,this);
 		timeSetup();
+		updateOccupantNeed();
 		//events = new ArrayList<TimeEvent>();
 		for (Feature f: features) {
 			f.reload();
@@ -149,8 +162,7 @@ public class Town extends TContextOwner{
 	
 	public void addPerson() {
 		Agent o = new Agent(RaceFactory.getDueler(this.getTier()));
-		occupants.add(o);
-		o.setLocation(this);
+		addOccupant(o);
 	}
 	
 	public boolean isFort() {
@@ -259,7 +271,7 @@ public class Town extends TContextOwner{
 		return connects;
 	}
 	public void addConnection(Connection c) {
-		this.connects.add(c);
+		connects.add(c);
 	}
 	
 	public void townProcess() {
@@ -708,8 +720,8 @@ public class Town extends TContextOwner{
 		for (Feature f: features) {
 			timeScope.localEvents(f.contextTime(time,calling));
 		}
-		for (SuperPerson a: occupants) {
-			a.passTime(time,calling);
+		for (int i = occupants.size()-1; i >=0;i-- ) {
+			timeScope.localEvents(occupants.get(i).passTime(time, calling));
 		}
 		return null;//uses local events
 	}
@@ -766,11 +778,20 @@ public class Town extends TContextOwner{
 	public void addOccupant(Agent occupant) {//MAYBELATER: a time based variant add 'laterAddOccupant'
 		assert occupant != null;
 		occupant.setLocation(this);
+		//must add after since set location removes
 		occupants.add(occupant);
+		updateOccupantNeed();
 	}
 	
 	public boolean removeOccupant(Agent occupant) {
-		return occupants.remove(occupant);
+		boolean bool = occupants.remove(occupant);
+		if (bool) {
+			updateOccupantNeed();
+			if (occupant.getLocation() == this) {
+				occupant.setLocation(null);
+			}
+		}
+		return bool;
 	}
 	
 	public RemoveAgentFromFeatureEvent laterRemoveAgentAnyFeature(Agent a) {
@@ -1043,6 +1064,7 @@ public class Town extends TContextOwner{
 	
 	public void setConnectFlow(Connection c) {
 		connectFlow = connects.indexOf(c);//handles 'doesn't have' very nicely
+		assert connectFlow < connects.size();
 	}
 	
 }

@@ -2,6 +2,7 @@ package trawel.towns;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.extra;
 import trawel.personal.people.Player;
 import trawel.threads.BlockTaskManager;
 import trawel.threads.FollowUp.FollowType;
@@ -53,12 +54,15 @@ public class Plane extends TContextOwner{
 	public void advanceTime(double time) {
 		timepassive(time);
 		for (World t: worlds) {
+			//need to set world in thread data now
+			extra.getThreadData().world = t;
 			if (t == Player.player.getWorld()) {
 				timeScope.localEvents(t.contextTime(time,timeScope,true));
 			}else {
 				timeScope.localEvents(t.contextTime(time,timeScope,ContextType.BACKGROUND,false));
 			}
 		}
+		extra.getThreadData().world = Player.getPlayerWorld();
 	}
 	
 	/**
