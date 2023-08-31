@@ -716,15 +716,28 @@ public class Town extends TContextOwner{
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		//events.clear();
-		timePassed+=time;
+		timePassed-=time;
+		/*
 		defenseTimer-=time;
 		if (defenseTimer < 0) {
 			defenseTimer = 0;
-		}
-		if (timePassed >= extra.randFloat()*100){
-			timePassed = 0;
+		}*/
+		if (timePassed <= 0){
+			
 			if (occupants.size() < occupantDesire) {
-				addPerson();
+				//at less than half capacity, will always add
+				if (extra.randFloat() < occupantNeed()+.5) {
+					addPerson();
+				}
+				//check in 0-100 hours
+				timePassed = extra.randFloat()*100;
+			}else {
+				//will potentially fill to double but not more, 50% chance at 1
+				if (extra.randFloat() < occupantNeed()*2) {
+					addPerson();
+				}
+				//check in 24-124 hours
+				timePassed = 24+(extra.randFloat()*100);
 			}
 		}
 		for (Feature f: features) {
