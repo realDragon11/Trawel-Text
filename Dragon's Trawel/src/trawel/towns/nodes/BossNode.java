@@ -1,5 +1,6 @@
 package trawel.towns.nodes;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import trawel.Networking;
@@ -14,6 +15,7 @@ import trawel.personal.classless.Perk;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
+import trawel.towns.fort.SubSkill;
 
 public class BossNode implements NodeType {
 	
@@ -49,19 +51,14 @@ public class BossNode implements NodeType {
 			//made.interactString = "challenge The Fatespinner";
 			
 			p = RaceFactory.getBoss(level);
+			p.setFlag(PersonFlag.PLAYER_LOOT_ONLY,true);
 			p.cleanSetSkillHas(Perk.FATESPINNER_NPC);
 			p.setTitle(", the Fatespinner");
 			p.getBag().addDrawBaneSilently(DrawBane.TELESCOPE);
 			p.liteRefreshClassless();
 			p.finishGeneration();
 			peeps.add(p);
-			p = (RaceFactory.makeMimic(extra.zeroOut(level-3)+1));
-			p.setFlag(PersonFlag.IS_MOOK, true);
-			peeps.add(p);
-			p = (RaceFactory.makeMimic(extra.zeroOut(level-3)+1));
-			p.setFlag(PersonFlag.IS_MOOK, true);
-			peeps.add(p);
-			
+			refillFatespinnerList(peeps,null,level);	
 		break;
 		case 2:
 			//made.name = "The Hell Baron (Boss)";
@@ -102,35 +99,68 @@ public class BossNode implements NodeType {
 		GenericNode.setSimpleDeadPerson(holder, node, body);
 	}
 	
+	/**
+	 * if peeps is the list that is already stored, you will not need to re-store it
+	 */
+	private void refillFatespinnerList(List<Person> peeps, List<Person> keep, int nodeLevel) {
+		if (keep != null) {
+			peeps.removeIf(p -> p.getFlag(PersonFlag.IS_MOOK) && !keep.contains(p));
+		}
+		while (peeps.size() < 4) {
+			Person p = (RaceFactory.makeMimic(extra.zeroOut(nodeLevel-3)+1));
+			p.setFlag(PersonFlag.IS_MOOK, true);
+			peeps.add(p);
+		}
+		
+	}
+	
 	private boolean fatespinner(NodeConnector holder,int node) {
 		//if (holder.getEventNum(node) == 0) {
 			extra.println(extra.PRE_BATTLE+"You challenge the fatespinner!");
-			List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
-			Combat c = Player.player.massFightWith(list);
+			List<Person> fated = (List<Person>) holder.getStorageFirstClass(node,List.class);
+			List<Person> playerSide = holder.parent.getHelpFighters();
+			playerSide.addAll(Player.player.getAllies());
+			List<List<Person>> people = new ArrayList<List<Person>>();
+			people.add(playerSide);
+			people.add(fated);
+			//fatespinner can scry
+			List<SkillCon> cons = Collections.singletonList(new SkillCon(SubSkill.SCRYING,50,1));
+			Combat c = mainGame.HugeBattle(holder.getWorld(), cons, people, true);
+			
+			Person spinner = fated.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();//throw if can't find
+			
+			List<Person> survs = c.getNonSummonSurvivors();
+			holder.parent.retainAliveFighters(survs);
 			if (c.playerWon() > 0) {
-				holder.setForceGo(node,false);
-				//node.interactString = "approach the fatespinner's corpse";
-				//node.storage1 = null;
-				
-				Person spinner = list.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();//throw if can't find
-				//node.state = 1;
-				//node.name = "The Fatespinner's corpse";
-				setGenericCorpse(holder,node, spinner);
-				Player.unlockPerk(Perk.FATED);
-				Networking.unlockAchievement("boss1");
-				return false;
+				if (c.playerWon() < 2) {
+					//player must survive battle for it to stick
+					extra.println("Fate will not allow this... It seems like the Fatespinner's thread winds on.");
+					extra.println("You wake up at the base of the tower, a storm passing by overhead.");
+					//this is the list that is already stored
+					refillFatespinnerList(fated,survs,holder.getLevel(node));
+					return true;
+				}else {
+					holder.setForceGo(node,false);
+					setGenericCorpse(holder,node, spinner);
+					Player.unlockPerk(Perk.FATED);
+					Networking.unlockAchievement("boss1");
+					return false;
+				}
 			}else {
 				//now they need to be killed all at once, could also sort out the adds if dead
-				//node.storage1 = survivors;
+				if (survs.size() != fated.size()) {
+					if (!survs.contains(spinner)) {
+						extra.println("The Spinner's Fate is not so easily changed. You have the sinking feeling you haven't seen the last of them.");
+					}else {
+						extra.println("The Spinner admires good help. The mimics slain are likely already replaced.");
+					}
+				}else {
+					extra.println("The Spinner cannot weave you fate, but it seems they are still in control of their own.");
+				}
+				//this is the list that is already stored
+				refillFatespinnerList(fated,survs,holder.getLevel(node));
 				return true;//lost, kick out
 			}
-			/*
-		}else {
-			extra.println("Here lies the body of the fatespinner...");
-			return false;
-		}*/
-		
-		
 	}
 	
 	private boolean hellbaron(NodeConnector holder,int node) {

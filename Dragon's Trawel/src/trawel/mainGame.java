@@ -1553,6 +1553,8 @@ public class mainGame {
 
 		int xpReward = xpHighestKill;//by default it's just the highest level of the killed list
 		boolean bypassLevelCap = false;
+		boolean playerIsLooting = false;
+		
 		if (people.size() == 2) {//if a XvX battle
 			assert xpSideHigh == xpSideLow;
 			if (people.get(winSide).size() == 1) {// if it was a 1vX
@@ -1578,14 +1580,15 @@ public class mainGame {
 			if (isPlayer) {
 				Networking.setBattle(Networking.BattleType.NONE);
 				AIClass.playerStashOldItems();
+				playerIsLooting = true;
 			}
 			surv.addXp(subReward);
-			/*if (!surv.isPersonable()) {
-					continue;//skip
-				}*/
 			if (canLoot) {
 				for (Person kill: battle.killed) {
 					if (kill.isPlayer()) {
+						continue;//skip
+					}
+					if (kill.getFlag(PersonFlag.PLAYER_LOOT_ONLY) && !isPlayer) {
 						continue;//skip
 					}
 					if (isPlayer) {//if the surv examining this kill is the player
@@ -1613,6 +1616,9 @@ public class mainGame {
 				Networking.clearSide(1);
 				die();
 				continue;
+			}
+			if (kill.getFlag(PersonFlag.PLAYER_LOOT_ONLY) && !playerIsLooting) {
+				continue;//skip
 			}
 			gold += kill.getBag().getGold();
 			aether += kill.getBag().getAether();
