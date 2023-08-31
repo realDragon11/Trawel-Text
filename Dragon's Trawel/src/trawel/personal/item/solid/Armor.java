@@ -63,6 +63,9 @@ public class Armor extends Item implements IEffectiveLevel{
 		HAUNTED("Haunted","Chance to turn any hit on you into a miss.",1), ;
 		
 		public final String name, desc;
+		/**
+		 * can be any negative or positive number, or even zero
+		 */
 		private final int goodNegNeut;
 		ArmorQuality(String nam, String des,int _goodNegNeut){
 			name = nam;
@@ -72,24 +75,24 @@ public class Armor extends Item implements IEffectiveLevel{
 		
 		public String removeColor() {
 			if (goodNegNeut == 0) {
-				return extra.TIMID_GREY;
+				return extra.TIMID_GREY+"Trait: ";
 			}
 			if (goodNegNeut < 0) {
-				return extra.TIMID_GREEN;
+				return extra.TIMID_GREEN+"Qual: ";
 			}
 			//if (goodNegNeut > 0) {
-				return extra.TIMID_RED;
+				return extra.TIMID_RED+"Flaw: ";
 			//}
 		}
 		public String addColor() {
 			if (goodNegNeut == 0) {
-				return extra.TIMID_GREY;
+				return extra.TIMID_GREY+"Trait: ";
 			}
 			if (goodNegNeut < 0) {
-				return extra.TIMID_RED;
+				return extra.TIMID_RED+"Flaw: ";
 			}
 			//if (goodNegNeut > 0) {
-				return extra.TIMID_GREEN;
+				return extra.TIMID_GREEN+"Qual: ";
 			//}
 		}
 		
@@ -203,7 +206,18 @@ public class Armor extends Item implements IEffectiveLevel{
 	
 	@Override
 	public String getName() {
-		return getQualityName(quals.size())+getLevelName() + " " + getNameNoTier();
+		//traits are now positive and negative for armors
+		//this doesn't impact how the ai sees them, but a player won't quite understand
+		//that the same statline without fragile is better without indicators like this
+		return getModiferNameColored(extra.clamp(5+qualTraitSum(),0,11))+getLevelName() + " " + getNameNoTier();
+	}
+	
+	public int qualTraitSum() {
+		int sum = 0;
+		for (ArmorQuality q: quals) {
+			sum += q.goodNegNeut;
+		}
+		return sum;
 	}
 	
 
@@ -448,9 +462,7 @@ public class Armor extends Item implements IEffectiveLevel{
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
-			for (ArmorQuality aq: quals) {
-				extra.println(" "+aq.addColor()+aq.name + ": " + aq.desc);
-			}
+			printQuals();
 			;break;	
 		case 4:
 		case 5:
@@ -470,9 +482,7 @@ public class Armor extends Item implements IEffectiveLevel{
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
-			for (ArmorQuality aq: quals) {
-				extra.println(" "+aq.addText());
-			}
+			printQuals();
 			;break;
 		case 20://for store overviews
 			extra.println(this.getName() + " sbp:" + extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
@@ -487,6 +497,23 @@ public class Armor extends Item implements IEffectiveLevel{
 	@Override
 	public void display(int style) {
 		this.display(style, 1);
+	}
+	
+	public void printQuals() {
+		for (ArmorQuality aq: quals) {
+			extra.println(" "+aq.addText());
+			/*
+			if (aq.goodNegNeut < 0) {
+				extra.println(" Flaw: "+aq.addText());
+			}else {
+				if (aq.goodNegNeut > 0) {
+					extra.println(" Qual: "+aq.addText());
+				}else {
+					extra.println(" Trait: "+aq.addText());
+				}
+			}*/
+			
+		}
 	}
 	
 	@Override
