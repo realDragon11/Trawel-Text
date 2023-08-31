@@ -856,8 +856,8 @@ public class AIClass {
 			if (hasItem.getEnchant() != null || toReplace.getEnchant() != null) {
 				displayEnchantDiff(hasItem.getEnchant(),toReplace.getEnchant());
 			}
-			hasArm.getQuals().stream().filter(q -> !toArm.getQuals().contains(q)).forEach(q -> extra.println(" "+q.removeText()));
-			toArm.getQuals().stream().filter(q -> !hasArm.getQuals().contains(q)).forEach(q -> extra.println(" "+q.addText()));
+			hasArm.getQuals().stream().filter(q -> !toArm.getQuals().contains(q)).forEach(q -> extra.println(" -"+q.removeText()));
+			toArm.getQuals().stream().filter(q -> !hasArm.getQuals().contains(q)).forEach(q -> extra.println(" +"+q.addText()));
 		}else {
 			if (Weapon.class.isInstance(hasItem)) {
 				Weapon hasWeap = (Weapon)hasItem;

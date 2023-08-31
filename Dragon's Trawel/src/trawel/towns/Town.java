@@ -156,7 +156,7 @@ public class Town extends TContextOwner{
 	}
 	
 	public void addPerson() {
-		Agent o = RaceFactory.getDueler(this.getTier()).setOrMakeAgentGoal(AgentGoal.NONE);
+		Agent o = RaceFactory.getDueler(Math.max(1,getTier()+extra.randRange(-2,2))).setOrMakeAgentGoal(AgentGoal.NONE);
 		addOccupant(o);
 	}
 	
