@@ -39,7 +39,7 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(Skill.DSTRIKE,Skill.TACTIC_DUCK_ROLL,Skill.TACTIC_SINGLE_OUT,Skill.TACTIC_CHALLENGE)
 			)
 	,ARMORMASTER("Armor Artisan"
-			,"A walking fortress, one with their armor, two halves made whole."
+			,"A walking fortress, advancing steadily into the fray."
 			,null
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRECT_BATTLE,AGroup.CRAFT)
@@ -74,7 +74,7 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(Skill.DODGEREF,Skill.ARCANIST)
 			)
 	,FISH_TALL("Torrental Titan"
-			,"A raging force deep-sea bent on proving their conquest of land is inevitable."
+			,"A raging force of the deep-sea bent on proving their conquest of land is inevitable."
 			,"Grants disrespectful attacks that scale on strength."
 			,AType.RACIAL
 			,EnumSet.of(AGroup.DIRECT_BATTLE)

@@ -521,6 +521,11 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 	public void setArch(Archetype a) {//did I actually misspell that
 		archSet.add(a);
+		switch (a) {
+		case PROMOTED:
+			this.cureEffects();//cures effects, notably curse, which they just gained immunity to
+			break;
+		}
 		updateSkills();//just update instantly now
 	}
 	
