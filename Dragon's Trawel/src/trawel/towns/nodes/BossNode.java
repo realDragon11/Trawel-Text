@@ -47,26 +47,23 @@ public class BossNode implements NodeType {
 		int level = holder.getLevel(madeNode);
 		switch (holder.getEventNum(madeNode)) {
 		case 1:
-			//made.name = "The Fatespinner (Boss)";
-			//made.interactString = "challenge The Fatespinner";
-			
 			p = RaceFactory.getBoss(level);
 			p.setFlag(PersonFlag.PLAYER_LOOT_ONLY,true);
 			p.cleanSetSkillHas(Perk.FATESPINNER_NPC);
 			p.setTitle(", the Fatespinner");
 			p.getBag().addDrawBaneSilently(DrawBane.TELESCOPE);
+			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
 			p.liteRefreshClassless();
 			p.finishGeneration();
 			peeps.add(p);
 			refillFatespinnerList(peeps,null,level);	
 		break;
 		case 2:
-			//made.name = "The Hell Baron (Boss)";
-			//made.interactString = "challenge The Hell Baron";
 			p = RaceFactory.makeDemonOverlord(level);
 			p.cleanSetSkillHas(Perk.HELL_BARON_NPC);
 			p.setTitle(", Baron of Hell");
 			p.getBag().addDrawBaneSilently(DrawBane.LIVING_FLAME);
+			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
 			p.liteRefreshClassless();
 			p.finishGeneration();
 			peeps.add(p);
