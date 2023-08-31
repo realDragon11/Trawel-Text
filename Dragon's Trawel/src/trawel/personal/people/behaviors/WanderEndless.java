@@ -46,11 +46,12 @@ public class WanderEndless extends Behavior{
 		current.getConnects().stream().filter(
 			c -> 
 			//if would be an interworld teleport
-			c.isWorldConnection()
+			!c.isWorldConnection()
 			//and only 50% chance it not a road
-			|| (c.getType() != ConnectType.ROAD && extra.chanceIn(1,2))
+			&& (c.getType() == ConnectType.ROAD || extra.chanceIn(1,2))
 			).forEach(connects::add);
 		if (connects.size() == 0) {
+			//System.err.println(user.getLocation().getName() + " has no valid connects");
 			return null;
 		}
 		//MAYBELATER: if there's two connections to the same location (ie port AND roads), it is twice as likely
