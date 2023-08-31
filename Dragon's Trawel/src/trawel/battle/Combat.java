@@ -1154,13 +1154,11 @@ public class Combat {
 		ImpairedAttack attack = attacker.getNextAttack();
 		AttackReturn atr = handleAttack(true,attack,defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
 		int damageDone = atr.damage;
-		//armor quality handling
-		//FIXME: apply new attack result code system where needed
-		defender.getBag().armorQualDam(damageDone);
-		//message handling
 		float percent = 0f;
 		if (damageDone > 0) {
 			percent = damageDone/(float)defender.getMaxHp();
+			//armor quality handling
+			defender.getBag().armorQualDam(percent);
 			if (extra.chanceIn((int)(percent*100) + (defender.getHp() <= 0 ? 10 : 0), 120)) {
 				Networking.send("PlayDelayPitch|"+SoundBox.getSound(defender.getBag().getRace().voice,SoundBox.Type.GRUNT) + "|4|"+ defender.getPitch()+"|");
 			}

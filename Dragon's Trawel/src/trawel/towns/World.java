@@ -320,7 +320,6 @@ public class World extends TContextOwner{
 	
 	@Override
 	public List<TimeEvent> consumeEvents(List<TimeEvent> list) {
-		// TODO Auto-generated method stub
 		// FIXME: need to merge with plane properly elsewhere
 		return list;
 	}

@@ -1154,9 +1154,9 @@ public class Inventory implements java.io.Serializable{
 		return count;
 	}
 	
-	public void armorQualDam(int dam) {
+	public void armorQualDam(float hpPercent) {
 		for (Armor a: getArmors()) {
-			a.armorQualDam(dam);
+			a.armorQualDam(hpPercent);
 		}
 	}
 

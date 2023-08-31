@@ -786,8 +786,7 @@ public class Town extends TContextOwner{
 	}
 	
 	public Agent popAnyOccupant(Agent occupant) {
-		occupants.remove(occupant);
-		return occupant;
+		return occupants.remove(extra.randRange(0,occupants.size()-1));
 	}
 	
 	public void addOccupant(Agent occupant) {//MAYBELATER: a time based variant add 'laterAddOccupant'

@@ -1,6 +1,7 @@
 package trawel.personal.item.solid;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import org.nustaq.serialization.annotations.OneOf;
@@ -40,7 +41,7 @@ public class Armor extends Item implements IEffectiveLevel{
 	private transient double condition;
 	private transient float sharpActive, bluntActive, pierceActive;
 	
-	private List<ArmorQuality> quals = new ArrayList<ArmorQuality>();
+	private EnumSet<ArmorQuality> quals = EnumSet.noneOf(ArmorQuality.class);
 	
 	
 	//removable after armor style rework
@@ -54,14 +55,48 @@ public class Armor extends Item implements IEffectiveLevel{
 	//enums
 	
 	public enum ArmorQuality {
-		FRAGILE("Fragile","Loses power when hit."),
-		HAUNTED("Haunted","Chance to turn any hit on you into a miss.");
+		/**
+		 * fragile also comes with a 
+		 */
+		FRAGILE("Fragile","Loses condition on taking attack damage to any body part, equal to 50% of LHP percent lost.",-1),
+		HAUNTED("Haunted","Chance to turn any hit on you into a miss.",1);
 		
-		public String name, desc;
-		ArmorQuality(String nam, String des){
+		public final String name, desc;
+		private final int goodNegNeut;
+		ArmorQuality(String nam, String des,int _goodNegNeut){
 			name = nam;
 			desc = des;
-			
+			goodNegNeut = _goodNegNeut;
+		}
+		
+		public String removeColor() {
+			if (goodNegNeut == 0) {
+				return extra.TIMID_GREY;
+			}
+			if (goodNegNeut < 0) {
+				return extra.TIMID_GREEN;
+			}
+			//if (goodNegNeut > 0) {
+				return extra.TIMID_RED;
+			//}
+		}
+		public String addColor() {
+			if (goodNegNeut == 0) {
+				return extra.TIMID_GREY;
+			}
+			if (goodNegNeut < 0) {
+				return extra.TIMID_RED;
+			}
+			//if (goodNegNeut > 0) {
+				return extra.TIMID_GREEN;
+			//}
+		}
+		
+		public String addText() {
+			return (addColor()+name + ": " +desc);
+		}
+		public String removeText() {
+			return (removeColor()+name + ": " +desc);
 		}
 	}
 	
@@ -114,6 +149,14 @@ public class Armor extends Item implements IEffectiveLevel{
 		float baseEnchant = getEnchantMult();
 		if (baseEnchant > extra.randFloat()*3f) {
 			enchantment = EnchantConstant.makeEnchant(baseEnchant,getAetherValue());//used to include level in the mult, need a new rarity system
+		}
+		
+		switch (ArmorStyle.fetch(style)) {
+		case GEM:
+			if (extra.chanceIn(2,3)) {
+				quals.add(ArmorQuality.FRAGILE);
+			}
+			break;
 		}
 
 	}
@@ -191,6 +234,7 @@ public class Armor extends Item implements IEffectiveLevel{
 		return IEffectiveLevel.unEffective(getEffectiveLevel())*
 				1.5f*ArmorStyle.fetch(style).totalMult
 				*MaterialFactory.getMat(material).baseResist
+				*(quals.contains(ArmorQuality.FRAGILE) ? 1.5f : 1)
 				;
 		/*
 		switch (slot) {
@@ -393,6 +437,9 @@ public class Armor extends Item implements IEffectiveLevel{
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
+			for (ArmorQuality aq: quals) {
+				extra.println(" "+aq.addColor()+aq.name + ": " + aq.desc);
+			}
 			;break;	
 		case 4:
 		case 5:
@@ -413,7 +460,7 @@ public class Armor extends Item implements IEffectiveLevel{
 				this.getEnchant().display(1);
 			}
 			for (ArmorQuality aq: quals) {
-				extra.println(aq.name + ": " + aq.desc);
+				extra.println(" "+aq.addText());
 			}
 			;break;
 		case 20://for store overviews
@@ -486,14 +533,13 @@ public class Armor extends Item implements IEffectiveLevel{
 		updateStats();
 	}
 
-	public List<ArmorQuality> getQuals() {
+	public EnumSet<ArmorQuality> getQuals() {
 		return quals;
 	}
 	
-	public void armorQualDam(int dam) {
+	public void armorQualDam(float hpPercent) {
 		if (quals.contains(ArmorQuality.FRAGILE)) {
-			//TODO fix and update
-			condition = extra.clamp(condition-extra.lerp(0.05f,.5f, extra.clamp(dam,1,20)/20f),0,2);
+			damage(hpPercent*.5f);
 		}
 	}
 
