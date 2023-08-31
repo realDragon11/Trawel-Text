@@ -8,13 +8,10 @@ import trawel.randomLists;
 
 /**
  * A constant enchantment is one that is always active- it applies to the character's base stats.
- * @author Brian Malone
+ * @author dragon
  * 2/8/2018
  */
 public class EnchantConstant extends Enchant {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2L;
 	//instance variables
 	/**
@@ -603,6 +600,9 @@ public class EnchantConstant extends Enchant {
 		}
 	}
 
-
+	@Override
+	public float fitness() {
+		return goldMult;
+	}
 
 }

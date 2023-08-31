@@ -135,5 +135,10 @@ public class EnchantHit extends Enchant {
 		return 0;
 	}
 	
+	@Override
+	public float fitness() {
+		return goldMult;
+	}
+	
 
 }

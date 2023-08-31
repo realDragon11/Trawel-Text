@@ -262,70 +262,6 @@ public class AIClass {
 		return attacks.get(i);
 	}
 	
-	
-	
-	/**
-	 * Checks to see if there's any items in the inventory that cost zero gold.
-	 * Any that do probably make it (nigh) impossible to win, so
-	 * it discards them in favor of a level 1 item, randomly generated.
-	 * Also checks to see if the total modifier for the item is very low.
-	 * Returns true if an item was replaced this way.
-	 * 
-	 * NOTE: this function should be replaced with not handing out such items in the first place and relegated to a backup
-	 * 
-	 * @param inv (Inventory)
-	 */
-	@Deprecated
-	public static boolean checkCheap(Inventory inv) {
-		return false;
-		//local vars
-		/*
-		int i=0;
-		boolean soldSomething = false; //did we sell something yet?
-		Item hold; //the item we're currently looking at
-		EnchantConstant holdEnchant;
-		while (i < 5) {//check to see if an armor causes any zero's or is overwhelmingly negative
-			hold = inv.getArmorSlot(i);
-			if (hold.getEnchant() != null) {
-				holdEnchant = hold.getEnchant();
-			
-			if (hold.getCost() < 2 || (holdEnchant.getAimMod()*holdEnchant.getDamMod()*holdEnchant.getDodgeMod()*holdEnchant.getHealthMod()*holdEnchant.getSpeedMod()) < .5) {
-			Services.sellItem((Armor)hold,inv,true);
-			soldSomething = true;
-			}}
-			i++;
-		}//end while
-		hold = inv.getHand();
-		if (hold != null) {
-			if (hold.getEnchant() != null) {//if there's an enchant, check to see if the weapon causes any zero's or is overwhelmingly negative
-				holdEnchant = hold.getEnchant();
-			
-			if (hold.getCost() < 2 || (holdEnchant.getAimMod()*holdEnchant.getDamMod()*holdEnchant.getHealthMod()*holdEnchant.getSpeedMod()) < .5) {//*holdEnchant.getDodgeMod() //not being able to dodge isn't an instant loss
-				Services.sellItem((Weapon)hold,inv,true);
-				soldSomething = true;
-			}
-			}
-		}
-		return soldSomething;
-		*/
-		
-		//for now, this is done elsewhere again
-	}
-	
-	/**
-	 * Look over this person's equipment to make sure it doesn't render them impossible to win.
-	 * @param man (Person)
-	 */
-	@Deprecated
-	public static void checkYoSelf(Person man) {
-		//extra.println(man.getName() + " starts looking over their "+bpmFunctions.choose("equipment","gear","inventory","belongings")+".");
-		if (!man.isPlayer()) {
-			while (checkCheap(man.getBag()));
-		}
-		//extra.println(man.getName() + " has taken stock of their "+bpmFunctions.choose("equipment","gear","inventory","belongings")+".");
-		//man.displayStatsShort();
-	}
-	
 	/**
 	 * Take the inventory out of @param loot and put it, or any money gained by selling it, into @param stash
 	 * @param loot (Inventory)
@@ -615,17 +551,28 @@ public class AIClass {
 	public static boolean compareItem(Item hasItem, Item toReplace, Person p) {
 		//p is the person comparing it, and is used to apply skills and feats that modify stats
 		//for the player, the base stats should be the same, but the 'diff' should show the actual difference
-		if (!Weapon.class.isInstance(hasItem)){
-		return (toReplace.getAetherValue()>hasItem.getAetherValue());
-	}else {
-		if (!p.getFlag(PersonFlag.SMART_COMPARE)) {
-			return (toReplace.getAetherValue()>hasItem.getAetherValue());
+		assert hasItem.getType() == toReplace.getType();
+		switch (hasItem.getType()) {
+		case ARMOR:
+			if (!p.getFlag(PersonFlag.SMART_COMPARE)) {
+				return (toReplace.getAetherValue()>hasItem.getAetherValue());
 			}
-		if (((Weapon)(toReplace)).scoreWeight() > ((Weapon)(hasItem)).scoreWeight()){
-			return true;	
+			if (((Armor)(toReplace)).fitness() > ((Armor)(hasItem)).fitness()){
+				return true;	
 			}
-		return false;
+			return false;
+		case RACE:
+			return false;
+		case WEAPON:
+			if (!p.getFlag(PersonFlag.SMART_COMPARE)) {
+				return (toReplace.getAetherValue()>hasItem.getAetherValue());
+			}
+			if (((Weapon)(toReplace)).scoreWeight() > ((Weapon)(hasItem)).scoreWeight()){
+				return true;	
+			}
+			return false;
 		}
+		throw new RuntimeException("invalid item type to compare");
 	}
 	
 	public static boolean compareItem(Item current, Item next, Person p, Store s) {

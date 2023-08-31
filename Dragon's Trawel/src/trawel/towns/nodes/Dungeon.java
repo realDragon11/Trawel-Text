@@ -205,7 +205,7 @@ public class Dungeon extends NodeFeature {
 													if (extra.yesNo()) {
 														Player.addTime(2f+(extra.randFloat()*3f));
 														mainGame.globalPassTime();
-														people.removeIf(p -> !p.hasGoal(AgentGoal.NONE) && p.getPerson().getLevel()-1 > Player.player.getPerson().getLevel());
+														people.removeIf(p -> !p.hasGoal(AgentGoal.NONE) || p.getPerson().getLevel()-1 > Player.player.getPerson().getLevel());
 														Collections.shuffle(people);
 														if (people.size() == 0) {
 															extra.println("You could not find anyone willing to help you.");

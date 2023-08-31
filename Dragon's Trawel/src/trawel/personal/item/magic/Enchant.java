@@ -58,4 +58,6 @@ public abstract class Enchant implements java.io.Serializable{
 	
 	public abstract String getAfterName();
 
+	public abstract float fitness();
+
 }

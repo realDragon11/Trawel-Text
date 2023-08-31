@@ -555,4 +555,15 @@ public class Armor extends Item implements IEffectiveLevel{
 		return slot;
 	}
 	
+	public float fitness() {
+		float mult = 1f;
+		if (quals.contains(ArmorQuality.FRAGILE)) {
+			mult *=.6f;
+		}
+		if (isEnchanted()) {
+			mult *= enchantment.fitness();
+		}
+		return mult*(getBluntResist()+getPierceResist()+getSharpResist());
+	}
+	
 }
