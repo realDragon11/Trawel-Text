@@ -479,6 +479,7 @@ public class WorldGen {
 				for (Feature f: t.getFeatures()) {
 					f.init();
 				}
+				t.postFeatureSetup();
 			}
 		}
 		

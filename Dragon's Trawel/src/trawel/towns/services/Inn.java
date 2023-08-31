@@ -493,5 +493,10 @@ public class Inn extends Feature implements QuestBoardLocation{
 	public void newCurAgent() {
 		curAgent = town.getRandPersonableOccupant();
 	}
+	
+	@Override
+	public float occupantDesire() {
+		return 5f;
+	}
 
 }

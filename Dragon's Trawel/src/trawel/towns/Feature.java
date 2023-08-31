@@ -166,4 +166,8 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 			context = ContextLevel.FEATURE;
 		}
 	}
+	
+	public float occupantDesire() {
+		return .5f;
+	}
 }

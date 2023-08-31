@@ -456,5 +456,13 @@ public class Dungeon extends NodeFeature {
 		}
 		delve_helpers.retainAll(agents);
 	}
+	
+	@Override
+	public float occupantDesire() {
+		if (hasHelpers()) {
+			return 5;
+		}
+		return .5f;
+	}
 
 }

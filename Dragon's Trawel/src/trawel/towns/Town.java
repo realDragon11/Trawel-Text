@@ -102,18 +102,11 @@ public class Town extends TContextOwner{
 	}
 	public Town(String name, int tier, Island island, byte x, byte y) {
 		this(name);
-		occupantDesire = 10;
 		this.tier = tier;
 		this.island = island;
 		locationX = x;
 		locationY = y;
 		timePassed = 0;
-		int j = (int) (occupantDesire+extra.randRange(-3,3));
-		int i = 0;
-		while (i < j) {
-			addPerson();
-			i++;
-		}
 		island.addTown(this);
 	}
 	public Town(String name, int tier, Island island, Point location) {
@@ -130,7 +123,6 @@ public class Town extends TContextOwner{
 		//this.leaveTown = lTown;
 		timePassed = 0;
 		features.add(new FortHall(tier,this));
-		occupantDesire = 1;
 		island.addTown(this);
 	}
 	
@@ -1088,6 +1080,19 @@ public class Town extends TContextOwner{
 	public void setConnectFlow(Connection c) {
 		connectFlow = connects.indexOf(c);//handles 'doesn't have' very nicely
 		assert connectFlow < connects.size();
+	}
+	public void postFeatureSetup() {
+		occupantDesire = 10;
+		for (Feature f: features) {
+			occupantDesire+=f.occupantDesire();
+		}
+		
+		int j = (int) (occupantDesire+extra.randRange(-3,3));
+		int i = 0;
+		while (i < j) {
+			addPerson();
+			i++;
+		}
 	}
 	
 }

@@ -395,5 +395,10 @@ public class Slum extends Feature implements QuestBoardLocation{
 	public void removeSideQuest(Quest q) {
 		sideQuests.remove(q);
 	}
+	
+	@Override
+	public float occupantDesire() {
+		return 5f;
+	}
 
 }
