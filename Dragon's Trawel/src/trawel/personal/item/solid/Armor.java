@@ -63,7 +63,7 @@ public class Armor extends Item implements IEffectiveLevel{
 		DEFLECTING("Deflecting","Provides immunity to the Penetrative and Pinpoint Weapon Quals on this slot."
 				,null,1),
 		DISPLACING("Displacing","Increases hostile miss threshold by +.01."
-				,"Base miss threshold is .05.",1),
+				,"Base miss threshold is .05.",2),
 		STURDY("Sturdy","Takes half condition damage from all sources."
 				,null,1);
 		
@@ -242,7 +242,7 @@ public class Armor extends Item implements IEffectiveLevel{
 	 * @return the sharpResist (float)
 	 */
 	public float getSharpResist() {
-		return MaterialFactory.getMat(material).sharpResist*baseResist();
+		return ArmorStyle.fetch(style).sharpMult*MaterialFactory.getMat(material).sharpResist*baseResist();
 	}
 
 	/**
@@ -250,7 +250,7 @@ public class Armor extends Item implements IEffectiveLevel{
 	 * @return the bluntResist (float)
 	 */
 	public float getBluntResist() {
-		return MaterialFactory.getMat(material).bluntResist*baseResist();
+		return ArmorStyle.fetch(style).bluntMult*MaterialFactory.getMat(material).bluntResist*baseResist();
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class Armor extends Item implements IEffectiveLevel{
 	 * @return the pierceResist (float)
 	 */
 	public float getPierceResist() {
-		return MaterialFactory.getMat(material).pierceResist*baseResist();
+		return ArmorStyle.fetch(style).pierceMult*MaterialFactory.getMat(material).pierceResist*baseResist();
 	}
 	
 	public void resetArmor(int s, int b, int p) {
@@ -397,7 +397,7 @@ public class Armor extends Item implements IEffectiveLevel{
 	 * @return base cost (int)
 	 */
 	public int getBaseCost() {
-		return (int) (MaterialFactory.getMat(material).cost*ArmorStyle.fetch(style).costMult*slotImpact()*getUnEffectiveLevel());
+		return (int) (qualValueMult()*MaterialFactory.getMat(material).cost*ArmorStyle.fetch(style).costMult*slotImpact()*getUnEffectiveLevel());
 	}
 	
 	public float getEnchantMult() {
@@ -613,21 +613,29 @@ public class Armor extends Item implements IEffectiveLevel{
 	}
 	
 	public float fitness() {
-		float mult = 1f;
-		for (ArmorQuality q: quals) {
-			switch (q) {
-			case DEFLECTING:
-				mult *= 1.1f;
-				break;
-			case FRAGILE:
-				mult *=.6f;//base resist is higher for it
-				break;
-			}
-		}
+		float mult = qualValueMult();
 		if (isEnchanted()) {
 			mult *= enchantment.fitness();
 		}
 		return mult*(getBluntResist()+getPierceResist()+getSharpResist());
+	}
+	
+	public float qualValueMult() {
+		float mult = 1f;
+		for (ArmorQuality q: quals) {
+			switch (q) {
+			case DEFLECTING: case STURDY:
+				mult *= 1.1f;
+				break;
+			case DISPLACING:
+				mult *=1.2f;
+				break;
+			case FRAGILE:
+				mult *=.6f;//base resist is higher for it, for fitness, and for value it's fine to be off
+				break;
+			}
+		}
+		return mult;
 	}
 
 	public boolean hasArmorQual(ArmorQuality qual) {
