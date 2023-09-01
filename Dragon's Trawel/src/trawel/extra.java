@@ -20,6 +20,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
+import trawel.personal.DummyPerson;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.item.DummyInventory;
@@ -70,13 +71,13 @@ public final class extra {
 	}
 	
 	
-	private static final ThreadLocal<List<DummyInventory>> localDumInvs = new ThreadLocal<List<DummyInventory>>() {
-		@Override protected List<DummyInventory> initialValue() {
+	private static final ThreadLocal<List<DummyPerson>> localDumInvs = new ThreadLocal<List<DummyPerson>>() {
+		@Override protected List<DummyPerson> initialValue() {
 			return WorldGen.initDummyInvs();
 		}
 	};
 	
-	public static final List<DummyInventory> getDumInvs() {
+	public static final List<DummyPerson> getDumInvs() {
 		return localDumInvs.get();
 	}
 	

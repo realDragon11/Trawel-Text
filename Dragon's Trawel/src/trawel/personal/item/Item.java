@@ -57,10 +57,6 @@ public abstract class Item implements java.io.Serializable{
 		return null;
 	}
 	
-	public String getModiferName() {
-		return getModiferNameColored(level);
-	}
-	
 	public String getQualityName(int amount) {
 		switch (amount) {
 		case 0:
@@ -75,7 +71,8 @@ public abstract class Item implements java.io.Serializable{
 	}
 	
 	public String getLevelName() {
-		return "+"+level;
+		int val = Math.min(255,60+(level*10));
+		return extra.inlineColor(new Color(val,val,val))+"+"+level+"[c_white]";
 	}
 	
 	public static String getModiferNameColored(int inlevel) {

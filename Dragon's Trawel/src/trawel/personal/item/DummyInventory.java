@@ -11,6 +11,8 @@ public class DummyInventory extends Inventory {
 	
 	private Double[][][] savedResults = new Double[3][5][4];
 	private double myDodge;
+	
+	public static DummyInventory dummyAttackInv = null;
 
 	public DummyInventory() {
 		this(-1);

@@ -58,18 +58,24 @@ public class Armor extends Item implements IEffectiveLevel{
 		/**
 		 * fragile also comes with a base resist bonus
 		 */
-		FRAGILE("Fragile","Loses condition on taking attack damage to any body part, equal to 50% of LHP percent lost.",-1),
-		DEFLECTING("Deflecting","Provides immunity to the Penetrative and Pinpoint Weapon Quals on this armor.",1),
-		HAUNTED("Haunted","Chance to turn any hit on you into a miss.",1), ;
+		FRAGILE("Fragile","Loses condition on taking attack damage to any body part, equal to half of %LHP lost."
+				,"Even attacks that do not locally target the armor cause condition loss.",-1),
+		DEFLECTING("Deflecting","Provides immunity to the Penetrative and Pinpoint Weapon Quals on this slot."
+				,null,1),
+		DISPLACING("Displacing","Increases hostile miss threshold by +.01."
+				,"Base miss threshold is .05.",1),
+		STURDY("Sturdy","Takes half condition damage from all sources."
+				,null,1);
 		
-		public final String name, desc;
+		public final String name, desc, mechDesc;
 		/**
 		 * can be any negative or positive number, or even zero
 		 */
 		private final int goodNegNeut;
-		ArmorQuality(String nam, String des,int _goodNegNeut){
+		ArmorQuality(String nam, String des, String _mechDesc, int _goodNegNeut){
 			name = nam;
 			desc = des;
+			mechDesc = _mechDesc;
 			goodNegNeut = _goodNegNeut;
 		}
 		
@@ -78,10 +84,10 @@ public class Armor extends Item implements IEffectiveLevel{
 				return extra.TIMID_GREY+"Trait: ";
 			}
 			if (goodNegNeut < 0) {
-				return extra.TIMID_GREEN+"Qual: ";
+				return extra.TIMID_GREEN+"Flaw: ";
 			}
 			//if (goodNegNeut > 0) {
-				return extra.TIMID_RED+"Flaw: ";
+				return extra.TIMID_RED+"Qual: ";
 			//}
 		}
 		public String addColor() {
@@ -154,6 +160,13 @@ public class Armor extends Item implements IEffectiveLevel{
 		if (baseEnchant > extra.randFloat()*3f) {
 			enchantment = EnchantConstant.makeEnchant(baseEnchant,getAetherValue());//used to include level in the mult, need a new rarity system
 		}
+		//TODO: better quality generation code
+		if (extra.randFloat() < mati.sturdy) {
+			quals.add(ArmorQuality.STURDY);
+		}
+		if (extra.randFloat() < mati.shimmer) {
+			quals.add(ArmorQuality.DISPLACING);
+		}
 		
 		switch (ArmorStyle.fetch(style)) {
 		case PLATE:
@@ -167,8 +180,11 @@ public class Armor extends Item implements IEffectiveLevel{
 			}
 			break;
 		case GEM:
-			if (extra.chanceIn(2,3)) {
+			if (!quals.contains(ArmorQuality.STURDY) && extra.chanceIn(2,3)) {
 				quals.add(ArmorQuality.FRAGILE);
+			}
+			if (extra.chanceIn(1,3)) {
+				quals.add(ArmorQuality.DISPLACING);//can't stack, but fails without issue
 			}
 			break;
 		}
@@ -321,6 +337,9 @@ public class Armor extends Item implements IEffectiveLevel{
 	 */
 	public void damage(double d) {
 		assert d >= 0;
+		if (hasArmorQual(ArmorQuality.STURDY)) {
+			d*=.5;
+		}
 		condition = Math.max(.05, condition-(condition*extra.clamp(d,0,.7)));
 	}
 	

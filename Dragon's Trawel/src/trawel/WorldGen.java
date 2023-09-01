@@ -24,6 +24,7 @@ import org.nustaq.serialization.FSTObjectOutput;
 
 import trawel.battle.Combat.SkillCon;
 import trawel.factions.FBox.FSub;
+import trawel.personal.DummyPerson;
 import trawel.personal.Person;
 import trawel.personal.item.DummyInventory;
 import trawel.personal.item.solid.Armor;
@@ -97,23 +98,21 @@ public class WorldGen {
 	public static final float unitsInLonga = (float) (milesInLonga/distanceScale);
 	
 	
-	public static List<DummyInventory> initDummyInvs() {
-		List<DummyInventory> dumInvs = new ArrayList<DummyInventory>();
+	public static List<DummyPerson> initDummyInvs() {
+		List<DummyPerson> dumInvs = new ArrayList<DummyPerson>();
 		//11 preset armor sets
 		for (int j = 0; j < 12;j++) {
-			dumInvs.add(new DummyInventory(j));
-			dumInvs.get(dumInvs.size()-1).resetArmor(0, 0, 0);
+			DummyInventory di = new DummyInventory(j);
+			di.resetArmor(0,0,0);
+			dumInvs.add(new DummyPerson(di));
 		}
 		//random 9
 		for (int i = 0; i < 10;i++) {
-			dumInvs.add(new DummyInventory());
-			dumInvs.get(dumInvs.size()-1).resetArmor(0, 0, 0);
+			DummyInventory di = new DummyInventory();
+			di.resetArmor(0,0,0);
+			dumInvs.add(new DummyPerson(di));
 		}
 		return dumInvs;
-	}
-	
-	public static List<DummyInventory> getDummyInvs() {
-		return extra.getDumInvs();
 	}
 	
 	public static World eoano() {

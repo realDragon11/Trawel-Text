@@ -243,7 +243,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 	
 	@Override
 	public String getName() {
-		return getQualityName(qualList.size())+getLevelName() + " " + getNameNoTier();
+		return getQualityName(qualList.size())+getLevelName() + " " +getNameNoTier();
 	}
 	
 	
@@ -318,13 +318,14 @@ public class Weapon extends Item implements IEffectiveLevel {
 		Stance stance = this.getMartialStance();
 		int size = stance.getAttackCount();
 		double[] contributions = new double[size];//used for determining highest contribution
+		int testSize = extra.getDumInvs().size();
 		for (int i = size-1;i >=0;i--) {
 			Attack holdAttack = stance.getAttack(i);
 			double dam = 0;
-			for (int j = WorldGen.getDummyInvs().size()-1; j >=0;j--) {
+			for (int j = testSize-1; j >=0;j--) {
 				for (int ta = 0; ta < battleTests;ta++) {
 					AttackReturn ret = Combat.handleTestAttack(holdAttack.impair(null,this,null)
-							,WorldGen.getDummyInvs().get(j).atLevel(level)
+							,extra.getDumInvs().get(j).atLevel(level)
 							,Armor.armorEffectiveness);
 					dam+= ret.damage/ret.attack.getTime();
 					if (ret.type == ATK_ResultType.IMPACT) {
@@ -350,7 +351,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 			}
 		}
 		
-		int subTests = battleTests*WorldGen.getDummyInvs().size();
+		int subTests = battleTests*testSize;
 		int totalTests = size*subTests;
 		double levelAdjust = IEffectiveLevel.unEffective(IEffectiveLevel.effective(level));//DOLATER: test
 		//the above battlescore assumes equal armor

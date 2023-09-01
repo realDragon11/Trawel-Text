@@ -45,6 +45,7 @@ import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.body.Race.RaceType;
 import trawel.personal.item.solid.Armor;
+import trawel.personal.item.solid.Armor.ArmorQuality;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon.WeaponType;
@@ -65,7 +66,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	private static final long serialVersionUID = 2L;
 
 	//inst vars
-	private Inventory bag;
+	protected Inventory bag;
 	
 	private transient ImpairedAttack attackNext;
 	private int xp;
@@ -2185,6 +2186,16 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		}
 		int tval = extra.clamp((int)(extra.lerp(125,256,per)),100,255);
 		return extra.inlineColor(new Color(tval,tval,tval))+res;
+	}
+
+	public double getMissCalc() {
+		double val = .05;
+		for (Armor a: bag.getArmor()) {
+			if (a.hasArmorQual(ArmorQuality.DISPLACING)) {
+				val+=.01;
+			}
+		}
+		return val;
 	}
 
 }

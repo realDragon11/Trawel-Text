@@ -36,6 +36,7 @@ import trawel.personal.item.Item.ItemType;
 import trawel.personal.item.Potion;
 import trawel.personal.item.Seed;
 import trawel.personal.item.solid.Armor;
+import trawel.personal.item.solid.Armor.ArmorQuality;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponQual;
@@ -1091,6 +1092,14 @@ public class Player extends SuperPerson{
 													extra.println("Armors are items, and thus have a value, although most of the time you will melt them into Aether.");
 													extra.println("The main three properties of an Armor are how well it defends against physical damage types. This is a result of it's effective level, material, and style.");
 													extra.println("Armors also influence your agility multiplier penalty, have a weight which can weigh you down if you can't fit all your used equipment in your capacity, and have elemental damage multipliers.");
+													extra.println("Unlike weapons, armors have positive (Quality), negative (Flaw), and neutral (trait) traits.");
+													extra.println();
+													extra.println("Would you like to see a list of armor traits?");
+													if (extra.yesNo()) {
+														for (ArmorQuality q: Armor.ArmorQuality.values()) {
+															extra.println(q.addText() + (q.mechDesc != null ? " ("+q.mechDesc+")" : ""));
+														}
+													}
 													return false;
 												}});
 											slist.add(new MenuSelect() {

@@ -964,7 +964,7 @@ public class WeaponAttackFactory {
 	
 	public static final void dispTestWeapon(int level,WeaponType t, List<Material> mats) {
 		int tests = 1000;
-		int totalTests = tests*WorldGen.getDummyInvs().size();
+		int totalTests = tests*extra.getDumInvs().size();
 		
 		for (Attack a: WeaponAttackFactory.getStance(t).giveList()) {
 			a.display(0);
@@ -988,9 +988,9 @@ public class WeaponAttackFactory {
 				double hits = 0;
 				double fullhits = 0;
 				for (int ta = 0; ta < tests;ta++) {
-					for (int j = WorldGen.getDummyInvs().size()-1; j >=0;j--) {
+					for (int j = extra.getDumInvs().size()-1; j >=0;j--) {
 						AttackReturn ret = Combat.handleTestAttack(holdAttack.impair(null,w,null)
-								,WorldGen.getDummyInvs().get(j).atLevel(w.getLevel())
+								,extra.getDumInvs().get(j).atLevel(w.getLevel())
 								,Armor.armorEffectiveness);
 						damage += ret.damage;
 						if (ret.type == ATK_ResultType.IMPACT) {

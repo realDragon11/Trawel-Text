@@ -46,6 +46,7 @@ import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.Archetype;
+import trawel.personal.item.DummyInventory;
 import trawel.personal.item.Item;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.magic.EnchantConstant;
@@ -833,7 +834,7 @@ public class mainGame {
 			new QuestReactionFactory();
 			//WorldGen.initDummyInvs();
 			story = new StoryNone();
-			DummyPerson.init();
+			DummyInventory.dummyAttackInv = new DummyInventory();
 
 			basicSetup1 = true;
 		}

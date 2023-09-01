@@ -28,6 +28,7 @@ import trawel.personal.RaceFactory.RaceID;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.Skill;
 import trawel.personal.classless.SkillAttackConf;
+import trawel.personal.item.DummyInventory;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race.RaceType;
 import trawel.personal.item.body.SoundBox;
@@ -749,12 +750,8 @@ public class Combat {
 			}
 			return ret;
 		}
-		
-		if (defender == null) {
-			defender = DummyPerson.single;
-		}
 		if (off == null) {
-			off = WorldGen.getDummyInvs().get(0);//attacking only
+			off = DummyInventory.dummyAttackInv;
 		}
 		if (canDisp) {
 			if (extra.chanceIn(1, 5)) {
@@ -783,7 +780,7 @@ public class Combat {
 				defender.removeEffect(Effect.ADVANTAGE_STACK);
 			}
 		}
-		if (hitRoll < .05) {//missing now exists
+		if (hitRoll <= defender.getMissCalc()) {
 			ret= new AttackReturn(ATK_ResultCode.MISS,"",att);
 			if (canDisp) {
 				ret.stringer = att.fluff(ret);
@@ -794,6 +791,7 @@ public class Combat {
 			}
 			return ret;
 		}
+		//could move dodge rolls here, but would have to split advantage code
 		if (dodgeRoll > hitRoll){
 			ret= new AttackReturn(ATK_ResultCode.DODGE,"",att);
 			if (canDisp) {
@@ -853,8 +851,8 @@ public class Combat {
 		return ret;
 	}
 	
-	public static AttackReturn handleTestAttack(ImpairedAttack att, Inventory def, double armMod) {
-		return Combat.testCombat.handleAttack(false,att,def,null,armMod,null,null);	
+	public static AttackReturn handleTestAttack(ImpairedAttack att, Person p, double armMod) {
+		return Combat.testCombat.handleAttack(false,att,p.getBag(),null,armMod,null,p);	
 		
 	}
 	

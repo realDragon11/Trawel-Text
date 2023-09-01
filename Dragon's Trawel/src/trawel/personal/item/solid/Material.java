@@ -23,6 +23,24 @@ public class Material{
 	 * used for mined veins, don't set if not needed
 	 */
 	public int veinReward;
+	/**
+	 * chance to get the 'displacing' armor quality currently, 0 default
+	 * <br>
+	 * >=.5 for select magic metals and gems
+	 * <br>
+	 * .2 for common (silver/gold/plat/magic)
+	 * <br>
+	 * .05 for decent chance
+	 * <br>
+	 * .02 for lower chance
+	 */
+	public float shimmer = 0f;
+	/**
+	 * chance to get the 'sturdy' armor quality currently, .1 default
+	 * <br>
+	 * metals should have between .2 and .5
+	 */
+	public float sturdy = .1f;
 	
 	/**
 	 * defaults to 1f

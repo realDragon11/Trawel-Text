@@ -64,6 +64,7 @@ public class MaterialFactory {
 		misc.fireVul = 2;
 		misc.shockVul = .2f;
 		misc.freezeVul = .2f;
+		misc.shimmer = .05f;
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
 		misc.color = extra.inlineColor(Color.LIGHT_GRAY);
@@ -183,6 +184,7 @@ public class MaterialFactory {
 		misc.fireVul = 2;
 		misc.shockVul = .6f;
 		misc.freezeVul = .6f;
+		misc.shimmer = .05f;
 		misc.palIndex = 1;
 		misc.soundType = "flesh";
 		misc.color = extra.inlineColor(extra.colorMix(Color.red,Color.white,.4f));
@@ -237,6 +239,8 @@ public class MaterialFactory {
 		misc.fireVul = .8f;
 		misc.shockVul = 1.5f;
 		misc.freezeVul = 2;
+		misc.shimmer = .02f;
+		misc.sturdy = .3f;
 		misc.palIndex = 0;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(131,145,169));
@@ -266,6 +270,8 @@ public class MaterialFactory {
 		misc.fireVul = .8f;
 		misc.shockVul = 1.5f;
 		misc.freezeVul = 2;
+		misc.shimmer = .02f;
+		misc.sturdy = .3f;
 		misc.palIndex = 1;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(169,94,60));
@@ -295,6 +301,8 @@ public class MaterialFactory {
 		misc.fireVul = .8f;
 		misc.shockVul = 1.5f;
 		misc.freezeVul = 2;
+		misc.shimmer = .02f;
+		misc.sturdy = .3f;
 		misc.palIndex = 2;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(198,198,198));
@@ -325,6 +333,8 @@ public class MaterialFactory {
 		misc.fireVul = .8f;
 		misc.freezeVul = 2;
 		misc.shockVul = 1.5f;
+		misc.shimmer = .05f;
+		misc.sturdy = .4f;
 		misc.palIndex = 3;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(169,94,60));
@@ -354,6 +364,8 @@ public class MaterialFactory {
 		misc.fireVul = .8f;
 		misc.shockVul = 1.5f;
 		misc.freezeVul = 2f;
+		misc.shimmer = .02f;
+		misc.sturdy = .5f;
 		misc.palIndex = 4;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(204,204,204));
@@ -384,6 +396,8 @@ public class MaterialFactory {
 		misc.fireVul = .8f;
 		misc.shockVul = 1.8f;
 		misc.freezeVul = 2;
+		misc.shimmer = .2f;
+		misc.sturdy = .3f;
 		misc.palIndex = 5;
 		misc.soundType = "metal";
 		misc.moneyMultTradeMult = .8f;
@@ -416,6 +430,8 @@ public class MaterialFactory {
 		misc.fireVul = .8f;
 		misc.shockVul = 2;
 		misc.freezeVul = 2;
+		misc.shimmer = .2f;
+		misc.sturdy = .2f;
 		misc.palIndex = 6;
 		misc.soundType = "metal";
 		misc.moneyMultTradeMult = .6f;
@@ -448,6 +464,8 @@ public class MaterialFactory {
 		misc.fireVul = .8f;
 		misc.shockVul = 1.6f;//??
 		misc.freezeVul = 2;
+		misc.shimmer = .2f;
+		misc.sturdy = .2f;
 		misc.palIndex = 7;
 		misc.soundType = "metal";
 		misc.moneyMultTradeMult = .7f;
@@ -480,6 +498,8 @@ public class MaterialFactory {
 		misc.fireVul = .6f;
 		misc.shockVul = 1;
 		misc.freezeVul = 1.5f;
+		misc.shimmer = .2f;
+		misc.sturdy = .5f;
 		misc.palIndex = 9;
 		misc.soundType = "metal";
 		misc.veinReward = 10;
@@ -519,6 +539,8 @@ public class MaterialFactory {
 		misc.fireVul = .5f;
 		misc.shockVul = 0;
 		misc.freezeVul = 0;
+		misc.shimmer = .2f;
+		misc.sturdy = .5f;
 		misc.palIndex = 10;
 		misc.soundType = "metal";
 		misc.veinReward = 12;
@@ -550,6 +572,8 @@ public class MaterialFactory {
 		misc.fireVul = .8f;
 		misc.shockVul = 1.5f;
 		misc.freezeVul = 2;
+		misc.shimmer = .2f;
+		misc.sturdy = .5f;
 		misc.palIndex = 11;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(249,255,160));
@@ -576,6 +600,7 @@ public class MaterialFactory {
 		misc.fireVul = 2;
 		misc.shockVul = 1;
 		misc.freezeVul = 1;
+		misc.shimmer = .1f;//midrange
 		misc.palIndex = 10;
 		misc.soundType = "flesh";
 		misc.color = extra.inlineColor(Color.BLUE);
@@ -606,6 +631,8 @@ public class MaterialFactory {
 		misc.fireVul = .8f;
 		misc.shockVul = 1.8f;
 		misc.freezeVul = 2;
+		misc.shimmer = .6f;//extremely high chance
+		misc.sturdy = .3f;
 		misc.palIndex = 13;
 		misc.soundType = "metal";
 		misc.veinReward = 8;
@@ -637,6 +664,8 @@ public class MaterialFactory {
 		misc.fireVul = .8f;
 		misc.shockVul = 2;
 		misc.freezeVul = 2;
+		misc.shimmer = .8f;//extremely high chance
+		misc.sturdy = .2f;
 		misc.palIndex = 12;
 		misc.soundType = "metal";
 		misc.color = extra.inlineColor(new Color(255,210,73));
@@ -667,6 +696,7 @@ public class MaterialFactory {
 		misc.fireVul = 0;
 		misc.shockVul = .5f;
 		misc.freezeVul = .5f;
+		misc.shimmer = .5f;
 		misc.palIndex = 0;
 		misc.soundType = "crystal";
 		misc.color = extra.inlineColor(new Color(210,227,255));
@@ -696,6 +726,7 @@ public class MaterialFactory {
 		misc.fireVul = .5f;
 		misc.shockVul = 0;
 		misc.freezeVul = .5f;
+		misc.shimmer = .5f;
 		misc.palIndex = 1;
 		misc.soundType = "crystal";
 		misc.color = extra.inlineColor(new Color(210,255,216));
@@ -725,6 +756,7 @@ public class MaterialFactory {
 		misc.fireVul = 0;
 		misc.shockVul = .7f;
 		misc.freezeVul = .3f;
+		misc.shimmer = .5f;
 		misc.palIndex = 2;
 		misc.soundType = "crystal";
 		misc.color = extra.inlineColor(new Color(237,163,175));
@@ -754,6 +786,7 @@ public class MaterialFactory {
 		misc.fireVul = .5f;
 		misc.shockVul = .5f;
 		misc.freezeVul = 0;
+		misc.shimmer = .5f;
 		misc.palIndex = 3;
 		misc.soundType = "crystal";
 		misc.color = extra.inlineColor(new Color(158,184,228));
@@ -783,6 +816,7 @@ public class MaterialFactory {
 		misc.fireVul = 0.1f;
 		misc.shockVul = .5f;
 		misc.freezeVul = 2;
+		misc.shimmer = .5f;
 		misc.palIndex = 4;
 		misc.color = extra.inlineColor(new Color(229,238,255));
 		misc.soundType = "crystal";
@@ -812,6 +846,7 @@ public class MaterialFactory {
 		misc.fireVul = 0;
 		misc.shockVul = .7f;
 		misc.freezeVul = .3f;
+		misc.shimmer = .5f;
 		misc.palIndex = 5;
 		misc.soundType = "crystal";
 		misc.color = extra.inlineColor(new Color(255,226,210));
@@ -841,6 +876,7 @@ public class MaterialFactory {
 		misc.fireVul = .5f;
 		misc.shockVul = .5f;
 		misc.freezeVul = 0;
+		misc.shimmer = .5f;
 		misc.palIndex = 6;
 		misc.soundType = "crystal";
 		misc.color = extra.inlineColor(new Color(224,166,225));
@@ -895,6 +931,7 @@ public class MaterialFactory {
 		misc.fireVul = 1.1f;
 		misc.shockVul = 1.1f;
 		misc.freezeVul = 1.1f;
+		misc.sturdy = 1f;//always sturdy
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
 		misc.color = extra.inlineColor(new Color(212,89,107));
@@ -921,6 +958,7 @@ public class MaterialFactory {
 		misc.fireVul = .5f;
 		misc.shockVul = 2f;
 		misc.freezeVul = .7f;
+		misc.shimmer = .2f;//chance of shimmer on scales
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
 		misc.color = extra.inlineColor(new Color(212,89,107));

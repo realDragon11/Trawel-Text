@@ -2,17 +2,16 @@ package trawel.personal;
 
 import trawel.Effect;
 import trawel.personal.classless.Skill;
+import trawel.personal.item.DummyInventory;
 
 public class DummyPerson extends Person {
 	
-	public static DummyPerson single; 
+	private DummyInventory directRef;
 	
-	public static void init() {
-		single = new DummyPerson();
-	}
-	
-	protected DummyPerson() {
+	public DummyPerson(DummyInventory di) {
 		super();
+		bag = di;
+		directRef = di;
 	}
 	
 	@Override
@@ -33,6 +32,11 @@ public class DummyPerson extends Person {
 	@Override
 	public boolean hasEffect(Effect e) {
 		return false;
+	}
+
+	public Person atLevel(int level) {
+		directRef.atLevel(level);
+		return this;
 	}
 
 }
