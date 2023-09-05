@@ -266,12 +266,11 @@ public class DungeonNode implements NodeType{
 			int baseLevel = holder.getLevel(madeNode)+1;
 			holder.setLevel(madeNode, baseLevel);//now increases node level
 			int guardLevel = baseLevel;
-			int testLevel = RaceFactory.addAdjustLevel(guardLevel, 1);
 			int guardAmount = 4;
 			if (extra.chanceIn(1,4)) {//less, but eliter guards
 				guardAmount--;
 				for (int i = 0; i < guardAmount;i++) {
-					list.add(RaceFactory.makeDGuard(guardLevel+extra.randRange(1,4)));
+					list.add(RaceFactory.makeDGuard(guardLevel+extra.randRange(1,2)));
 				}
 			}else {
 				int manyCost = 5;
