@@ -563,6 +563,7 @@ public class GroveNode implements NodeType{
 
 						@Override
 						public boolean go() {
+							int state = holder.getStateNum(node);
 							if (state != 2) {
 								if (state == 1 || extra.chanceIn(2,3)) {
 									extra.println("\"Would like your own tree?\"");
@@ -574,12 +575,12 @@ public class GroveNode implements NodeType{
 										holder.setStateNum(node,1);//set that they have it
 									}
 								}else {
-									extra.println("The dryad says it's a shame that they don't have anything to offer such an intelligent "+Player.bag.getRace().renderName(false)+".");
+									extra.println("The dryad goes into great depth about their tree's history, then says it's a shame that they don't have anything to offer such an intelligent "+Player.bag.getRace().renderName(false)+".");
 									holder.setStateNum(node,2);//can only check once
 								}
 								
 							}else {
-								extra.println("They seem very passionate about it.");
+								extra.println("The dryad goes into great depth about their tree's history.");
 							}
 							return false;
 						}});
