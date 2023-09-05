@@ -61,8 +61,8 @@ public class Weapon extends Item implements IEffectiveLevel {
 		DUELING("Dueling","Attack: In large fights, attack the same opponent repeatedly.",1),
 		WEIGHTED("Weighted","On Damage: Less accurate attacks deal more damage.",1),
 		REFINED("Refined","On Damage: Deals bonus damage equal to 1/2th WELVL.",3),
-		ACCURATE("Accurate","Attack: Flat +%.10 accuracy bonus to all attacks after all modifiers.",2),
-		CARRYTHROUGH("Carrythrough","On Miss/Dodge: Your next attack on another target is 20% quicker.",2),
+		ACCURATE("Accurate","Attack: Flat +%.10 accuracy bonus to attacks after all modifiers.",2),
+		CARRYTHROUGH("Carrythrough","On Miss/Dodge: Your next attack on a different opponent is 20% quicker.",2),
 		;
 		public final String name, desc;
 		public final int goodNegNeut;
