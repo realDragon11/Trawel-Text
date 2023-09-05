@@ -159,29 +159,20 @@ public final class extra {
 	
 	/**
 	 * Makes sure that something isn't less than zero, else it returns 0
-	 * @param (int)
+	 * @param i (int)
 	 * @return (int)
 	 */
 	public static final int zeroOut(int i) {
 		return Math.max(i,0);
-		/*if (i > 0){
-			return i;
-		}
-		return 0;*/
 	}
 	
 	/**
 	 * Makes sure that something isn't less than zero, else it returns 0
-	 * @param (double)
+	 * @param i (double)
 	 * @return (double)
 	 */
 	public static final double zeroOut(double i) {
 		return Math.max(i,0);
-		/*
-		if (i > 0){
-			return i;
-		}
-		return 0;*/
 	}
 	/**
 	 * Has a (a) in (b) chance of returning true

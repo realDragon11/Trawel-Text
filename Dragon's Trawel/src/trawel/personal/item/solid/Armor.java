@@ -135,11 +135,11 @@ public class Armor extends Item implements IEffectiveLevel{
 	
 	/**
 	 * Make a new armor that is of newLevel level, will go in slot slot, and has a certain material.
-	 * This function should mostly be only used interally, but if you want a certain material and type to be generated, it will work.
+	 * This function should mostly be only used internally, but if you want a certain material and type to be generated, it will work.
 	 * @param newLevel (int)
 	 * @param slot (int)
 	 * @param mati (Material)
-	 * @param amatType (String)
+	 * @param styleType (ArmorStyle)
 	 */
 	public Armor(int newLevel, byte slot,Material mati,ArmorStyle styleType) {	
 		this.slot = slot;//type is equal to the array armor slot
