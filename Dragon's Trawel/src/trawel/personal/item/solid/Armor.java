@@ -190,7 +190,8 @@ public class Armor extends Item implements IEffectiveLevel{
 				}
 			}
 			if (extra.chanceIn(5,6)) {
-				while (quals.size() < 5 && extra.chanceIn(2,quals.size()+2)) {
+				int size = quals.size();
+				while (size < 5 && extra.chanceIn(2,size+2)) {
 					switch (extra.randRange(1,5)) {
 					case 1:
 						quals.add(ArmorQuality.BLOCKING);
@@ -208,6 +209,10 @@ public class Armor extends Item implements IEffectiveLevel{
 						quals.add(ArmorQuality.DEFLECTING);
 						break;
 					}
+					if (quals.size() == size) {
+						break;//did not add
+					}
+					size = quals.size();
 				}
 			}
 			break;

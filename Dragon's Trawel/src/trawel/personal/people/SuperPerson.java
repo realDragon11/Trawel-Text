@@ -465,19 +465,19 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 	public void buyMoneyAmountRateInt(int money,int aetherPer) {
 		int value = money;
 		int gold = getGold();
+		addGold(-value);
 		if (gold >= value) {
-			addGold(-value);//if we're not in a place, gold = 0 so we don't run this
 			return;
 		}
 		value-=gold;
-		getPerson().getBag().addAether( -value*aetherPer);
+		getPerson().getBag().addAether(-value*aetherPer);
 	}
 	
 	public void buyMoneyAmount(int money,float aetherRate) {
 		int value = money;
 		int gold = getGold();
+		addGold(-value);
 		if (gold >= value) {
-			addGold(-value);//if we're not in a place, gold = 0 so we don't run this
 			return;
 		}
 		value-=gold;
