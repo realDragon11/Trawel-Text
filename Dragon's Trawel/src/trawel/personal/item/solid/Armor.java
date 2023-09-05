@@ -28,7 +28,6 @@ public class Armor extends Item implements IEffectiveLevel{
 	
 	public static final double armorEffectiveness = 8;//5 armor slots
 	
-	
 	//instance variables
 	private byte slot;//The slot which the armor goes into
 	private int material;//what material the object is made from
@@ -40,17 +39,6 @@ public class Armor extends Item implements IEffectiveLevel{
 	private transient float sharpActive, bluntActive, pierceActive;
 	
 	private EnumSet<ArmorQuality> quals = EnumSet.noneOf(ArmorQuality.class);
-	
-	
-	//removable after armor style rework
-	private byte baseMap;//switched to offset, unsigned, but positives are normal
-	private static final String[] BASE_MAPS = new String[] {"iron","cloth","crystal"};
-	@OneOf({"heavy","light","chainmail","crystal","drudger"})
-	private String matType;//ie heavy, light, chainmail
-	
-	//end removable after
-	
-	//enums
 	
 	public enum ArmorQuality {
 		/**
@@ -157,8 +145,6 @@ public class Armor extends Item implements IEffectiveLevel{
 		this.slot = slot;//type is equal to the array armor slot
 		material = mati.curNum;
 		level = newLevel;
-		
-		baseMap = 0;//"iron";
 		
 		if (styleType == null) {
 			style = (short) extra.randList(mati.typeList).ordinal();
@@ -666,7 +652,19 @@ public class Armor extends Item implements IEffectiveLevel{
 	}
 
 	public String getBaseMap() {
-		return BASE_MAPS[Byte.toUnsignedInt(baseMap)];
+		switch (getStyle()) {
+		case BODY:
+			return "";
+		case FABRIC:
+		case SEWN:
+			return "cloth";
+		case GEM:
+			return "crystal";
+		case MAIL:
+		case PLATE:
+			return "iron";
+		}
+		return null;
 	}
 
 	@Override
