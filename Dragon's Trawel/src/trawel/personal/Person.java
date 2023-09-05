@@ -1942,7 +1942,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			extra.println(getHp() +" ("+damageDone+")->"+ (getHp()-damageDone) + "/" + getMaxHp());
 		}else {
 			bodystatus.debug_print(true);//testing, will have to redo both this and submethods if used for real
-			extra.println(Arrays.toString(attributeDesc()));
+			String[] attributes = attributeDesc();
+			for (int i = 0;i < attributes.length;i++) {
+				extra.println(attributes[i]);
+			}
 		}
 	}
 	
@@ -2092,7 +2095,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			"("+extra.ATT_TRUE+"base"+extra.PRE_WHITE+") "+extra.ATT_EFFECTIVE+"dex"+extra.PRE_WHITE
 			+": ("+extra.ATT_TRUE+getRawDexterity()+extra.PRE_WHITE+") "+extra.ATT_EFFECTIVE+getDexterity()
 				+extra.PRE_WHITE+ ", "+ extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(attMultDex())+"x"
-		,extra.ITEM_DESC_PROP+"weight/"+extra.ATT_TRUE+"str"+extra.PRE_WHITE+": "
+		,extra.ITEM_DESC_PROP+"weight"+extra.PRE_WHITE+"/"+extra.ATT_TRUE+"str"+extra.PRE_WHITE+": "
 			+extra.ITEM_WANT_LOWER + bag.getCapacity() +extra.PRE_WHITE+ "/"+extra.ATT_TRUE+getStrength()
 				+extra.PRE_WHITE+ ", "+ extra.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(attMultStr())+"x"
 		,extra.ATT_TRUE+"clarity"+extra.PRE_WHITE+": " +extra.ATT_TRUE+ getClarity()
@@ -2108,18 +2111,29 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			extra.println("Attributes below 100 have penalties, above 100 have bonuses. This is typically a 50% penalty at 0, and +10% bonus for every 100 above 100. Dexterity is more involved for dodge, but non-dodge applications of dexterity don't have penalties for sub 100 numbers.");
 			extra.println("Strength mult applies to physical damage from weapons, Dexterity mult applies to hit chance.");
 		}
-		extra.println("Strength: "+getStrength() + ", weight: "+bag.getCapacity()
-		+" used capacity: "+extra.F_WHOLE.format(100f*(bag.getCapacity())/(getStrength()))
-			+"%, multiplier: "+ extra.F_TWO_TRAILING.format(attMultStr())+"x");
-		extra.println(" Dexterity Penalty Cap: " + extra.F_TWO_TRAILING.format(atrBox.getDexPen()));
-		extra.println("Dexterity: Raw="+getRawDexterity()+", Effective: " +getDexterity() + ", multiplier: "+ extra.F_TWO_TRAILING.format(attMultDex())+"x");
-		extra.println(" Agility Multiplier Penalty: "
-		+ extra.F_TWO_TRAILING.format(getTotalAgiPen())
-		+ ", Applied to Dex: "+extra.F_TWO_TRAILING.format(getAgiPenAgainstDex()) 
-		+ "x of capacity " + extra.F_TWO_TRAILING.format(atrBox.getCapAgiPen())
-		+ "x and equip " +extra.F_TWO_TRAILING.format(bag.getAgiPen()) +"x"
-		+ "; Raw Attribute AMP: "+extra.F_TWO_TRAILING.format(getAttributeAgiPen())+"x");
-		extra.println("Clarity: "+getClarity()+", multiplier: " + extra.F_TWO_TRAILING.format(attMultCla())+"x");
+		//str section
+		extra.println(extra.ATT_TRUE+"Strength: "+getStrength());
+			extra.println(
+				" "+extra.ITEM_DESC_PROP+"Weight: "+extra.ITEM_WANT_LOWER+bag.getCapacity()
+				+extra.ITEM_DESC_PROP+" used capacity: "+extra.ITEM_WANT_LOWER+extra.F_WHOLE.format(100f*(bag.getCapacity())/(getStrength()))+"%");
+			extra.println(" "+extra.ITEM_DESC_PROP+"Multiplier: "+extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(attMultStr())+"x");
+		extra.println(
+				extra.ITEM_DESC_PROP+" Dexterity Penalty Cap: " +extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(atrBox.getDexPen()));
+		//dex section
+		extra.println(
+			extra.ITEM_DESC_PROP+"Dexterity"+extra.PRE_WHITE+":" +extra.ATT_TRUE +" Raw="+getRawDexterity()+extra.PRE_WHITE+", "
+				+extra.ATT_EFFECTIVE+"Effective=" +getDexterity() + extra.PRE_WHITE);
+		extra.println(extra.ITEM_DESC_PROP+" Multiplier"+extra.PRE_WHITE+": "+extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(attMultDex())+"x");
+		extra.println(
+				extra.ITEM_DESC_PROP+" Agility Multiplier Penalty: "
+				+extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(getTotalAgiPen())+extra.PRE_WHITE+", "
+				+extra.ITEM_DESC_PROP+"Applied to Dex: "+extra.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(getAgiPenAgainstDex()) 
+				+ "x"+extra.ITEM_DESC_PROP+" of capacity "+extra.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(atrBox.getCapAgiPen())
+				+ "x"+extra.ITEM_DESC_PROP+" and equip "+extra.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(bag.getAgiPen()) +"x"
+				+extra.PRE_WHITE+";"+extra.ITEM_DESC_PROP+" Raw Attribute AMP: "+extra.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(getAttributeAgiPen())+"x");
+		//cla section
+		extra.println(extra.ATT_TRUE+"Clarity: "+getClarity());
+		extra.println(extra.ITEM_DESC_PROP+" Multiplier: " +extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(attMultCla())+"x");
 	}
 
 	public SuperPerson getSuper() {
