@@ -1360,9 +1360,9 @@ public class Combat {
 				extra.print(prettyHPColors(atr.stringer +woundstr,extra.ATTACK_BLOCKED, attacker, defender));
 				extra.print(extra.AFTER_ATTACK_BLOCKED+" "+randomLists.attackNegateFluff()+extra.ATTACK_BLOCKED);
 			}
-			if (defender.hasSkill(Skill.ARMORHEART)) {
+			if (defender.hasSkill(Skill.ARMORHEART) && defender.getHp() < defender.getMaxHp()) {
 				int armorHeal = IEffectiveLevel.cleanLHP(Math.min(defender.getLevel()+4,attacker.getLevel()),.02);
-				defender.addHp(armorHeal);
+				defender.healHP(armorHeal);
 				extra.print(" Armor Heart heals " + armorHeal +"!");
 			}
 			if (defender.hasSkill(Skill.ARMORSPEED)) {

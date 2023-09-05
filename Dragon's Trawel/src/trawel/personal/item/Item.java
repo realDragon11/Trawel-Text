@@ -71,7 +71,8 @@ public abstract class Item implements java.io.Serializable{
 	}
 	
 	public String getLevelName() {
-		int val = Math.min(255,60+(level*10));
+		int val = (int) (255f * ((10f+level)/(20f+level)));
+		//int val = Math.min(255,140+(level*10));
 		return extra.inlineColor(new Color(val,val,val))+"+"+level+"[c_white]";
 	}
 	
