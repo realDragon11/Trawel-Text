@@ -10,7 +10,6 @@ import com.github.yellowstonegames.core.WeightedTable;
 
 import derg.SRInOrder;
 import derg.StringResult;
-import trawel.WorldGen;
 import trawel.extra;
 import trawel.battle.Combat;
 import trawel.battle.Combat.ATK_ResultCode;

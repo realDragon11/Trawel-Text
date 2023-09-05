@@ -8,7 +8,6 @@ import trawel.personal.people.Behavior;
 import trawel.time.TimeEvent;
 import trawel.towns.Connection;
 import trawel.towns.Town;
-import trawel.towns.Connection.ConnectType;
 
 public class WanderEndless extends Behavior{
 		

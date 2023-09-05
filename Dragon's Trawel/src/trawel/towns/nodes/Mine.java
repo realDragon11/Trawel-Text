@@ -1,7 +1,7 @@
 package trawel.towns.nodes;
 import trawel.Networking;
-import trawel.extra;
 import trawel.Networking.Area;
+import trawel.extra;
 import trawel.personal.classless.Perk;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;

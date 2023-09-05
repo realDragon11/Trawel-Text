@@ -1,6 +1,5 @@
 package trawel.battle.attacks;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 

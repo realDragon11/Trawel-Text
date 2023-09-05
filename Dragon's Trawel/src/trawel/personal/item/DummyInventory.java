@@ -5,7 +5,6 @@ import trawel.personal.item.body.Race;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
-import trawel.personal.item.solid.Weapon;
 
 public class DummyInventory extends Inventory {
 	

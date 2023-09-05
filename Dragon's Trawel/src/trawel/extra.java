@@ -23,7 +23,6 @@ import derg.menus.ScrollMenuGenerator;
 import trawel.personal.DummyPerson;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
-import trawel.personal.item.DummyInventory;
 import trawel.personal.people.Player;
 import trawel.towns.World;
 

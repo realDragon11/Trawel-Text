@@ -3,8 +3,8 @@ package trawel.towns;
 import java.util.List;
 
 import trawel.Networking;
-import trawel.extra;
 import trawel.Networking.Area;
+import trawel.extra;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;

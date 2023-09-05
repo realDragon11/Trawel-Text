@@ -8,7 +8,6 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import trawel.extra;
-import trawel.mainGame;
 import trawel.randomLists;
 import trawel.battle.Combat;
 import trawel.factions.Faction;

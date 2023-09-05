@@ -14,7 +14,6 @@ import trawel.Effect;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.battle.Combat;
-import trawel.battle.attacks.Stance;
 import trawel.battle.attacks.WeaponAttackFactory;
 import trawel.personal.Person;
 import trawel.personal.classless.IHasSkills;

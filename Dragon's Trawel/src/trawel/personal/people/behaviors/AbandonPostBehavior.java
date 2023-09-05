@@ -5,8 +5,8 @@ import java.util.List;
 
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
-import trawel.time.TimeEvent;
 import trawel.personal.people.Behavior;
+import trawel.time.TimeEvent;
 import trawel.towns.Feature.RemoveAgentFromFeatureEvent;
 
 public class AbandonPostBehavior extends Behavior{

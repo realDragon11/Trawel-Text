@@ -41,7 +41,6 @@ import trawel.battle.attacks.StyleFactory;
 import trawel.battle.attacks.TargetFactory;
 import trawel.battle.attacks.WeaponAttackFactory;
 import trawel.factions.HostileTask;
-import trawel.personal.DummyPerson;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
@@ -72,7 +71,7 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__5";
-	public static final String VERSION_DATE = " updated Aug 31th 2023";
+	public static final String VERSION_DATE = " updated Spet 4th 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			"b__5: {part 1/?} You can now recruit adventurers in certain dungeons. All other dungeons had their mass battles removed. In 'dangerous' dungeons, these adventurers will assist you in the 'high security' checkpoints, and against the boss. Currently this is just the Tower of Fate and the Fatespinner. They will get a share of the loot, and if higher level than you, might get first pick. They will not be interested in joining you if they are 2 or more levels higher. They will not revive on death, and will leave if you do not visit the dungeon for a while. Fighting with them will make them take longer to leave than just visiting will.",

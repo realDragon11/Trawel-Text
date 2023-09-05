@@ -5,7 +5,6 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import trawel.Services;
-import trawel.WorldGen;
 import trawel.extra;
 import trawel.battle.Combat;
 import trawel.battle.Combat.ATK_ResultType;

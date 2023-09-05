@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 
 import derg.menus.MenuBack;
 import derg.menus.MenuItem;
-import derg.menus.MenuLast;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;

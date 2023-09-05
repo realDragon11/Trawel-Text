@@ -11,7 +11,6 @@ import derg.menus.MenuSelect;
 import trawel.Effect;
 import trawel.Networking;
 import trawel.extra;
-import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;

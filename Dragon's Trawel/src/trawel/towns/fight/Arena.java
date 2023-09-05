@@ -3,9 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.Networking;
+import trawel.Networking.Area;
 import trawel.extra;
 import trawel.mainGame;
-import trawel.Networking.Area;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;

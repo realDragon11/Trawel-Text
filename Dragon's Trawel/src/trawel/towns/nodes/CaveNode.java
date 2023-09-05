@@ -1,5 +1,4 @@
 package trawel.towns.nodes;
-import trawel.Networking;
 import trawel.extra;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;

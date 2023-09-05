@@ -1,8 +1,6 @@
 package trawel.personal.item.solid;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 
 import org.nustaq.serialization.annotations.OneOf;
 

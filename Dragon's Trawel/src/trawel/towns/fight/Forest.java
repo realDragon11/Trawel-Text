@@ -1,7 +1,5 @@
 package trawel.towns.fight;
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +8,9 @@ import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import trawel.AIClass;
 import trawel.Networking;
+import trawel.Networking.Area;
 import trawel.extra;
 import trawel.mainGame;
-import trawel.Networking.Area;
 import trawel.battle.Combat;
 import trawel.factions.Faction;
 import trawel.personal.Person;

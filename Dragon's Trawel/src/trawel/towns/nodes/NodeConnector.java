@@ -10,16 +10,15 @@ import derg.menus.MenuLast;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.Networking;
+import trawel.Networking.Area;
 import trawel.extra;
 import trawel.mainGame;
-import trawel.Networking.Area;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
-import trawel.towns.Feature;
 import trawel.towns.World;
 import trawel.towns.misc.PlantSpot;
 
