@@ -69,8 +69,13 @@ public class Armor extends Item implements IEffectiveLevel{
 		LIGHT("Light","Weighs -10% as much."
 				,"Weight increase is relative to a normal armor of that type.",1),
 		PADDED("Padded","Has a 1/5th chance to resist each wound, one wound resisted per fight."
-				,"Stacks additively in chance, decreasing as wounds are resisted.",3)
-		
+				,"Stacks additively in chance, decreasing as wounds are resisted.",3),
+		REFINED("Refined","+10% condition at the start of each fight."
+				,"Condition above 100% degrades each action.",3),
+		BLOCKING("Blocking","Causes attacks to be fully blocked at +2% more percentage of armor mitigation."
+				,"Applies globally, stacking on the base value of 40%.",2),
+		RELIABLE("Reliable","+5% minimum armor roll."
+				,"Applies globally, stacking on base value of 5%.",2)
 		
 		;
 		
@@ -177,9 +182,6 @@ public class Armor extends Item implements IEffectiveLevel{
 		
 		switch (ArmorStyle.fetch(style)) {
 		case PLATE:
-			if (extra.chanceIn(1,4)) {//should probably be a higher chance?
-				quals.add(ArmorQuality.PADDED);
-			}
 			if (extra.chanceIn(1,4)) {
 				quals.add(ArmorQuality.DEFLECTING);
 			}
@@ -190,12 +192,38 @@ public class Armor extends Item implements IEffectiveLevel{
 					quals.add(ArmorQuality.LIGHT);
 				}
 			}
+			switch (extra.randRange(1,5)) {
+			case 1://nothing
+				break;
+			case 2:
+				quals.add(ArmorQuality.BLOCKING);
+				break;
+			case 3:
+				quals.add(ArmorQuality.RELIABLE);
+				break;
+			case 4:
+				quals.add(ArmorQuality.REFINED);
+				break;
+			case 5:
+				quals.add(ArmorQuality.PADDED);
+				break;
+			}
 			break;
 		case MAIL:
-			if (extra.chanceIn(1,4)) {
+			if (extra.chanceIn(1,3)) {
 				quals.add(ArmorQuality.DEFLECTING);
 			}
 			//not much room to make the chainmail heavier or lighter
+			switch (extra.randRange(1,3)) {
+			case 1://nothing
+				break;
+			case 2:
+				quals.add(ArmorQuality.RELIABLE);
+				break;
+			case 3:
+				quals.add(ArmorQuality.REFINED);
+				break;
+			}
 			break;
 		case GEM:
 			if (!quals.contains(ArmorQuality.STURDY) && extra.chanceIn(2,3)) {
@@ -211,11 +239,24 @@ public class Armor extends Item implements IEffectiveLevel{
 					quals.add(ArmorQuality.HEAVY);
 				}
 			}
+			switch (extra.randRange(1,3)) {
+			case 1://nothing
+				break;
+			case 2:
+				quals.add(ArmorQuality.BLOCKING);
+				break;
+			case 3:
+				quals.add(ArmorQuality.REFINED);
+				break;
+			}
 			break;
 		case BODY:
 			//n/a
 			break;
 		case FABRIC:
+			if (extra.chanceIn(1,3)) {
+				quals.add(ArmorQuality.DISPLACING);
+			}
 			if (extra.chanceIn(1,3)) {
 				quals.add(ArmorQuality.LIGHT);
 			}else {
@@ -225,6 +266,9 @@ public class Armor extends Item implements IEffectiveLevel{
 			}
 			break;
 		case SEWN:
+			if (extra.chanceIn(1,3)) {
+				quals.add(ArmorQuality.REFINED);
+			}
 			if (extra.chanceIn(2,3)) {
 				quals.add(ArmorQuality.PADDED);
 			}
@@ -314,7 +358,7 @@ public class Armor extends Item implements IEffectiveLevel{
 		sharpActive = getSharpResist()+s;
 		bluntActive = getBluntResist()+b;
 		pierceActive = getPierceResist()+p;
-		condition = 1;
+		condition = 1 + (hasArmorQual(ArmorQuality.REFINED) ? .1 : 0);
 	}
 	
 	
@@ -379,7 +423,7 @@ public class Armor extends Item implements IEffectiveLevel{
 	 * <br>
 	 * pass the % decrease in armor.
 	 * <br>
-	 * the decrease is diminishing, but not continuously dimminishing, so large damages at once will have more effect 
+	 * the decrease is diminishing, but not continuously diminishing, so large damages at once will have more effect 
 	 * <br>
 	 * will attempt to not let condition reach 0 entirely, minimum of 5% overall and
 	 * max 70% reduction in one hit

@@ -281,7 +281,7 @@ public class AIClass {
 					if (aetherStuff) {
 						Services.aetherifyItem(stash.getArmorSlot(i),stash,display);
 						stash.swapArmorSlot(loot.getArmorSlot(i),i);//we lose the ref to the thing we just deleted here
-						loot.setArmorSlot(null,i);
+						loot.nullArmorSlot(i);
 					}else {
 						loot.swapArmorSlot(stash.swapArmorSlot(loot.getArmorSlot(i),i), i);
 					}
@@ -301,7 +301,7 @@ public class AIClass {
 				}else {
 					if (aetherStuff) {
 						Services.aetherifyItem(loot.getArmorSlot(i),stash,display);
-						loot.setArmorSlot(null,i);
+						loot.nullArmorSlot(i);
 					}
 					if (graphicalDisplay) {//reject
 						Networking.charUpdate();
@@ -351,7 +351,7 @@ public class AIClass {
 				while (i < 5) {
 					if (loot.getArmorSlot(i).canAetherLoot()) {
 						Services.aetherifyItem(loot.getArmorSlot(i),stash,display);
-						loot.setArmorSlot(null,i);
+						loot.nullArmorSlot(i);
 					}
 					i++;
 				}
@@ -451,7 +451,7 @@ public class AIClass {
 						if (canAtomSmash) {
 							Services.aetherifyItem(replaceArmor,Player.bag,true);
 							extra.println("You swap for the " + a.getName() + ".");
-							loot.setArmorSlot(null,a.getSlot());
+							loot.nullArmorSlot(a.getSlot());
 						}else {
 							//loot.swapArmorSlot(Player.bag.swapArmorSlot(a,slot), slot);
 						}
@@ -459,7 +459,7 @@ public class AIClass {
 				}else {
 					if (canAtomSmash) {
 						Services.aetherifyItem(a,Player.bag,true);
-						loot.setArmorSlot(null,slot);
+						loot.nullArmorSlot(slot);
 					}
 				}
 				if (Networking.connected()) {
@@ -502,7 +502,7 @@ public class AIClass {
 						continue;
 					}
 					Services.aetherifyItem(a,Player.bag,true);
-					loot.setArmorSlot(null,slot);
+					loot.nullArmorSlot(slot);
 				}
 				if (loot.getHand().canAetherLoot()) {
 					Services.aetherifyItem(loot.getHand(),Player.bag,true);

@@ -821,6 +821,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				b+=1*(defLvl);
 			}
 		}
+		bag.resetQuals();//MAYBELATER: process qualities by calling the armor below on the inventory
 		for (int i = 0; i < 5; i++) {
 			Armor a = bag.getArmorSlot(i);
 			a.resetArmor(s, b, p);

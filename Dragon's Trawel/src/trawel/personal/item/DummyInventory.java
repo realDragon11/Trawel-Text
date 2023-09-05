@@ -5,6 +5,7 @@ import trawel.personal.item.body.Race;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
+import trawel.personal.item.solid.Armor.ArmorQuality;
 
 public class DummyInventory extends Inventory {
 	
@@ -82,6 +83,11 @@ public class DummyInventory extends Inventory {
 	@Override
 	public double getAim() {
 		return 1;
+	}
+	
+	@Override
+	public int qualityCount(ArmorQuality qual) {
+		return 0;
 	}
 
 }

@@ -24,13 +24,12 @@ public enum Effect{
 	B_MARY("Bloody Mary","Whenever attacked, add a stack of internal bleeding to themselves and their attacker. Attacker's bleeding heals them 2x the amount they bleed for.",false,false),
 	FORGED("Forged","+5% LHP at battle start. Every defense, restore a flat 10% of their armor before the attack, up to 100% quality.",false,false),
 	TELESCOPIC("Telescopic","Attacks longer than 100 instants gain +1% additive hit mult for every instant longer than 100. Applied when choosing attack.",false,false),
-	
+	CLOTTER("Clotting","They are immune to bleed effects from wounds. Magic and dedicated effects still apply.",false,false),
 	//other
 	
-	//skills
+	//mostly skills
 	BONUS_WEAP_ATTACK("Bonus Attack","Their next turn will have an additional weapon attack to choose from. Stacks.",false,true),
 	ADVANTAGE_STACK("Advantage","The next hit or dodge roll involving them will gain a +20% bonus on their side. Stacks.",false,true),
-	CLOTTER("Clotting","They are immune to bleed effects from wounds. Magic and dedicated effects still apply.",false,false),
 	SUDDEN_START("Sudden Start","Applies Advantage and grants 2 Bonus Weapon Attacks at the start of battle.",false,false),
 	STERN_STUFF("Sterner Stuff","Chance to resist death once per battle.",false,false),
 	//condwounds
@@ -46,8 +45,12 @@ public enum Effect{
 	EXHAUSTED("Exhausted","Halves dodge mult until they next complete an attack cooldown.",false,false),
 	BRISK("Brisk","Halves attack time, and increases hit mult based on amount of time before reduction, with attacks under 100 total instants getting a 1x-2x multiplier the closer they are to 0 instants. Only applies to one set of attacks.",false,false),
 	CHALLENGE_BACK("Temerity","Negates the next wound from a suffered Impactful attack, or adds +20% damage to the next attack choice, whichever comes first.",false,false),
-	//armor
-	PADDED("Padded","1/3rd chance of negating a wound per stack, once per stack.",false,true)
+	//armor and maybe skills
+	PADDED("Padded Armor","1/3rd chance of negating a wound per stack, once per stack.",false,true),
+	
+	//unused
+	ARMOR_BLOCKS("Blocking Armor","Increases block threshold by +2% per stack.",false,true),
+	ARMOR_RELIABLE("Reliable Armor","Increases minimum armor mitigation roll by 5% per stack.",false,true)
 	;
 	
 	private String name,desc;

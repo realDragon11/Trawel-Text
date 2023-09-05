@@ -1,5 +1,6 @@
 package trawel.personal.item;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -59,6 +60,8 @@ public class Inventory implements java.io.Serializable{
 	private List<Seed> seeds = null;
 	public static final int dbMax = 4;
 	public Person owner;
+	
+	private transient EnumMap<ArmorQuality,Integer> qualityCount = null;
 	
 	//constructors
 	/**
@@ -183,6 +186,8 @@ public class Inventory implements java.io.Serializable{
 	/**
 	 * Swaps out an armor for the one in the slot.
 	 * <br>
+	 * <br>
+	 * <br>
 	 * cannot accept nulls, but may return nulls
 	 * @param newArmor (Armor)
 	 * @param slot (int)
@@ -194,15 +199,11 @@ public class Inventory implements java.io.Serializable{
 		return tempArm;
 	}
 	/**
-	 * does not print anything, accepts nulls
-	 * @param newArmor
 	 * @param slot
-	 * @return what was in the slot, if any
 	 */
-	public Armor setArmorSlot(Armor newArmor, int slot) {
-		Armor tempArm = armorSlots[slot];
-		armorSlots[slot] = newArmor;
-		return tempArm;
+	public void nullArmorSlot(int slot) {
+		armorSlots[slot] = null;
+		qualityCount = null;
 	}
 	
 	/**
@@ -1225,6 +1226,33 @@ public class Inventory implements java.io.Serializable{
 		}
 		downgraded |= hand.forceDownGradeIf(level);
 		return downgraded;
+	}
+	
+	public int qualityCount(ArmorQuality qual) {
+		if (!qualityCount.containsKey(qual)) {
+			return 0;
+		}
+		return qualityCount.get(qual);
+	}
+	
+	/*
+	public void setQualsIfNot() {
+		if (qualityCount == null) {
+			resetQuals();
+		}
+	}*/
+	
+	public void resetQuals() {
+		if (qualityCount == null) {
+			qualityCount = new EnumMap<ArmorQuality,Integer>(ArmorQuality.class);
+		}else {
+			qualityCount.clear();
+		}
+		for (Armor a: armorSlots) {
+			for (ArmorQuality q: a.getQuals()) {
+				qualityCount.put(q, 1+qualityCount.getOrDefault(q, 0));
+			}
+		}
 	}
 
 }

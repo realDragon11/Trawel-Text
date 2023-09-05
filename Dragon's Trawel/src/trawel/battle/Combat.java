@@ -31,6 +31,7 @@ import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race.RaceType;
 import trawel.personal.item.body.SoundBox;
 import trawel.personal.item.solid.Armor;
+import trawel.personal.item.solid.Armor.ArmorQuality;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.people.Player;
@@ -904,10 +905,11 @@ public class Combat {
 			double earm = weight_arm*def.getElecMult(att.getSlot());
 			
 			//double guess = ((rawdam+weight_arm)/weight_arm)-1;
-			double def_roll = Math.max(.05,extra.hrandom());
+			float def_roll = Math.max(.05f+(.05f*def.qualityCount(ArmorQuality.RELIABLE)),extra.hrandomFloat());
 			float att_roll = extra.lerp(.7f,1f,extra.hrandomFloat());
 			double global_roll = (att_roll*rawdam)/(def_roll*weight_arm);
-			if (global_roll < .4) {//if our random damage roll was less than 40% of the armor roll, negate
+			//if our random damage roll was less than 40% of the armor roll, negate
+			if (global_roll < .4+(.02*def.qualityCount(ArmorQuality.BLOCKING))) {
 				subDamage = new int[] {0,0,0,0,0,0};
 				damage = 0;
 				code = ATK_ResultCode.ARMOR;

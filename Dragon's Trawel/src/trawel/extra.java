@@ -639,22 +639,20 @@ public final class extra {
 			}
 			return(str);
 		}
-
-		/*
-		public static final double hrandom() {
-			if (randRange(1,5) != 5) {
-			return  (((double)randRange(45,55))/100.0);}else {
-				return Math.random();
-			}
-		}*/
 		
+		/**
+		 * given by TEtt from squidsquad
+		 */
 		public static final double hrandom() {
 			   return ((Long.bitCount(getRand().nextLong()) - 32. + getRand().nextDouble() - getRand().nextDouble()) / 66.0 + 0.5);
-		}//given by TEtt from squidsquad
-		
+		}
+		/**
+		 * given by TEtt from squidsquad
+		 */
 		public static final float hrandomFloat() {
 			return ((Long.bitCount(getRand().nextLong()) - 32f + getRand().nextFloat() - getRand().nextFloat()) / 66f + 0.5f);
 		}
+		
 		//FIXME: make it so it strips out the data and sends the right text to the graphical and terminal
 		public static void specialPrint(int[] in,String...strs) {
 			int j = 0;
