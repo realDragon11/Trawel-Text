@@ -18,6 +18,7 @@ import trawel.personal.item.Item;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.magic.EnchantConstant;
 import trawel.personal.item.magic.EnchantHit;
+import trawel.personal.item.solid.Armor.ArmorQuality;
 import trawel.personal.people.Player;
 
 /**
@@ -53,20 +54,22 @@ public class Weapon extends Item implements IEffectiveLevel {
 	private Set<WeaponQual> qualList = EnumSet.noneOf(WeaponQual.class);
 	
 	public enum WeaponQual{
-		DESTRUCTIVE("Destructive","On Damage and Wound: Damages local armor by 1/3rd of total percent HP dealt."),
-		PENETRATIVE("Penetrative","Attack: The locally attacked armor counts for 3/5ths as much."),
-		PINPOINT("Pinpoint","Attack: Armor not in slots you are attacking counts for 2/3rds as much."),
-		RELIABLE("Reliable","On Armor Reduction/Block: Minimum damage equal to 1/2th WELVL. If blocked, does not become Impactful."), 
-		DUELING("Dueling","Attack: In large fights, attack the same opponent repeatedly."),
-		WEIGHTED("Weighted","On Damage: Less accurate attacks deal more damage."),
-		REFINED("Refined","On Damage: Deals bonus damage equal to 1/2th WELVL."),
-		ACCURATE("Accurate","Attack: Flat +%.10 accuracy bonus to all attacks after all modifiers."),
-		CARRYTHROUGH("Carrythrough","On Miss/Dodge: Your next attack on another target is 20% quicker."),
+		DESTRUCTIVE("Destructive","On Damage and Wound: Damages local armor by 1/3rd of total percent HP dealt.",2),
+		PENETRATIVE("Penetrative","Attack: The locally attacked armor counts for 3/5ths as much.",2),
+		PINPOINT("Pinpoint","Attack: Armor not in slots you are attacking counts for 2/3rds as much.",2),
+		RELIABLE("Reliable","On Armor Reduction/Block: Minimum damage equal to 1/2th WELVL. If blocked, does not become Impactful.",2), 
+		DUELING("Dueling","Attack: In large fights, attack the same opponent repeatedly.",1),
+		WEIGHTED("Weighted","On Damage: Less accurate attacks deal more damage.",1),
+		REFINED("Refined","On Damage: Deals bonus damage equal to 1/2th WELVL.",3),
+		ACCURATE("Accurate","Attack: Flat +%.10 accuracy bonus to all attacks after all modifiers.",2),
+		CARRYTHROUGH("Carrythrough","On Miss/Dodge: Your next attack on another target is 20% quicker.",2),
 		;
-		public String name, desc;
-		WeaponQual(String name,String desc) {
+		public final String name, desc;
+		public final int goodNegNeut;
+		WeaponQual(String name,String desc,int _goodNegNeut) {
 			this.name = name;
 			this.desc = desc;
+			goodNegNeut = _goodNegNeut;
 		}
 	}
 	
@@ -242,7 +245,18 @@ public class Weapon extends Item implements IEffectiveLevel {
 	
 	@Override
 	public String getName() {
-		return getQualityName(qualList.size())+getLevelName() + " " +getNameNoTier();
+		return getModiferNameColored(extra.clamp(qualTraitSum(), 0,12))+getLevelName() + " " +getNameNoTier();
+	}
+	
+	public int qualTraitSum() {
+		//quals tend to be 1-3 average 2
+		//so 2*3 = 6
+		//this means we can just take it directly since it'll hover around 5, which is 'no quality'
+		int sum = 0;
+		for (WeaponQual q: qualList) {
+			sum += q.goodNegNeut;
+		}
+		return sum;
 	}
 	
 	
