@@ -182,9 +182,6 @@ public class Armor extends Item implements IEffectiveLevel{
 		
 		switch (ArmorStyle.fetch(style)) {
 		case PLATE:
-			if (extra.chanceIn(1,4)) {
-				quals.add(ArmorQuality.DEFLECTING);
-			}
 			if (extra.chanceIn(2,5)) {//weight is base, but craftsmanship can make it worse
 				quals.add(ArmorQuality.HEAVY);
 			}else {
@@ -192,21 +189,26 @@ public class Armor extends Item implements IEffectiveLevel{
 					quals.add(ArmorQuality.LIGHT);
 				}
 			}
-			switch (extra.randRange(1,5)) {
-			case 1://nothing
-				break;
-			case 2:
-				quals.add(ArmorQuality.BLOCKING);
-				break;
-			case 3:
-				quals.add(ArmorQuality.RELIABLE);
-				break;
-			case 4:
-				quals.add(ArmorQuality.REFINED);
-				break;
-			case 5:
-				quals.add(ArmorQuality.PADDED);
-				break;
+			if (extra.chanceIn(5,6)) {
+				while (quals.size() < 5 && extra.chanceIn(2,quals.size()+2)) {
+					switch (extra.randRange(1,5)) {
+					case 1:
+						quals.add(ArmorQuality.BLOCKING);
+						break;
+					case 2:
+						quals.add(ArmorQuality.RELIABLE);
+						break;
+					case 3:
+						quals.add(ArmorQuality.REFINED);
+						break;
+					case 4:
+						quals.add(ArmorQuality.PADDED);
+						break;
+					case 5:
+						quals.add(ArmorQuality.DEFLECTING);
+						break;
+					}
+				}
 			}
 			break;
 		case MAIL:
