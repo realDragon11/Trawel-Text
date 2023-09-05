@@ -1058,6 +1058,7 @@ public final class extra {
 		public static final String ITEM_WANT_LOWER = inlineColor(extra.colorMix(Color.WHITE,extra.colorMix(Color.YELLOW,Color.ORANGE,.5f),.3f));
 		public static final String ITEM_DESC_PROP = TIMID_BLUE;
 		public static final String ITEM_VALUE = TIMID_MAGENTA;
+		public static final String STAT_HEADER = inlineColor(extra.colorMix(Color.WHITE,extra.colorMix(Color.BLUE,Color.MAGENTA,.5f),.6f));
 		
 		//attributes
 		public static final String ATT_TRUE = PRE_MAGENTA;

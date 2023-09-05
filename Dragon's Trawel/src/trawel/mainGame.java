@@ -417,7 +417,7 @@ public class mainGame {
 									public String title() {
 										return "Weight: " +extra.DISP_WEIGHT
 												+ " Aether: " + extra.DISP_AETHER
-												+ " Agility Multiplier Penalty: " +extra.DISP_AMP
+												+ " Restiction Agility Multiplier Penalty: " +extra.DISP_AMP
 												+ " Qualities: " + extra.DISP_QUALS;
 									}});
 								list.add(new MenuLine() {
