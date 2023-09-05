@@ -1580,6 +1580,10 @@ public class Combat {
 				return "";//fails safely now
 			}
 			assert defender2 != null;
+			if (defender2.hasEffect(Effect.PADDED) && extra.chanceIn(defender2.effectCount(Effect.PADDED),5)) {
+				defender2.removeEffect(Effect.PADDED);
+				return " The padding mitigates the wound!";
+			}
 			switch (w) {
 			case CONFUSED:
 				attacker2.addEffect(Effect.CONFUSED_TARGET);

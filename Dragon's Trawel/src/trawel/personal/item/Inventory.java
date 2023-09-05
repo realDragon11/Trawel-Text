@@ -755,7 +755,9 @@ public class Inventory implements java.io.Serializable{
 		return extra.zeroOut(retResist/5f);//slots?
 	}
 	
-	
+	/**
+	 * now not used for true battle setup, use each armor's reset manually in that case
+	 */
 	public void resetArmor(int s, int b, int p) {
 		for (Armor a: armorSlots) {//should never be null
 			a.resetArmor(s, b, p);

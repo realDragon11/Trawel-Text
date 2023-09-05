@@ -821,7 +821,13 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				b+=1*(defLvl);
 			}
 		}
-		bag.resetArmor(s,b,p);
+		for (int i = 0; i < 5; i++) {
+			Armor a = bag.getArmorSlot(i);
+			a.resetArmor(s, b, p);
+			if (a.hasArmorQual(ArmorQuality.PADDED)) {
+				addEffect(Effect.PADDED);
+			}
+		}
 		if (hasSkill(Skill.ARMOR_TUNING)) {
 			bag.buffArmor(1.2f);
 		}

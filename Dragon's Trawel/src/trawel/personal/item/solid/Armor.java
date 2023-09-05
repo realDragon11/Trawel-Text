@@ -57,13 +57,22 @@ public class Armor extends Item implements IEffectiveLevel{
 		 * fragile also comes with a base resist bonus
 		 */
 		FRAGILE("Fragile","Loses condition on taking attack damage to any body part, equal to half of %LHP lost."
-				,"Even attacks that do not locally target the armor cause condition loss.",-1),
+				,"Even attacks that do not locally target the armor cause condition loss.",-2),
 		DEFLECTING("Deflecting","Provides immunity to the Penetrative and Pinpoint Weapon Quals on this slot."
 				,null,1),
 		DISPLACING("Displacing","Increases hostile miss threshold by +.01."
 				,"Base miss threshold is .05.",2),
 		STURDY("Sturdy","Takes half condition damage from all sources."
-				,null,1);
+				,null,2),
+		HEAVY("Heavy","Weighs +20% as much."
+				,"Weight increase is relative to a normal armor of that type.",-1),
+		LIGHT("Light","Weighs -10% as much."
+				,"Weight increase is relative to a normal armor of that type.",1),
+		PADDED("Padded","Has a 1/5th chance to resist each wound, one wound resisted per fight."
+				,"Stacks additively in chance, decreasing as wounds are resisted.",3)
+		
+		
+		;
 		
 		public final String name, desc, mechDesc;
 		/**
@@ -168,14 +177,25 @@ public class Armor extends Item implements IEffectiveLevel{
 		
 		switch (ArmorStyle.fetch(style)) {
 		case PLATE:
-			if (extra.chanceIn(1,6)) {
+			if (extra.chanceIn(1,4)) {//should probably be a higher chance?
+				quals.add(ArmorQuality.PADDED);
+			}
+			if (extra.chanceIn(1,4)) {
 				quals.add(ArmorQuality.DEFLECTING);
+			}
+			if (extra.chanceIn(2,5)) {//weight is base, but craftsmanship can make it worse
+				quals.add(ArmorQuality.HEAVY);
+			}else {
+				if (extra.chanceIn(1,5)) {
+					quals.add(ArmorQuality.LIGHT);
+				}
 			}
 			break;
 		case MAIL:
 			if (extra.chanceIn(1,4)) {
 				quals.add(ArmorQuality.DEFLECTING);
 			}
+			//not much room to make the chainmail heavier or lighter
 			break;
 		case GEM:
 			if (!quals.contains(ArmorQuality.STURDY) && extra.chanceIn(2,3)) {
@@ -183,6 +203,37 @@ public class Armor extends Item implements IEffectiveLevel{
 			}
 			if (extra.chanceIn(1,3)) {
 				quals.add(ArmorQuality.DISPLACING);//can't stack, but fails without issue
+			}
+			if (extra.chanceIn(1,3)) {
+				quals.add(ArmorQuality.LIGHT);
+			}else {
+				if (extra.chanceIn(1,3)) {
+					quals.add(ArmorQuality.HEAVY);
+				}
+			}
+			break;
+		case BODY:
+			//n/a
+			break;
+		case FABRIC:
+			if (extra.chanceIn(1,3)) {
+				quals.add(ArmorQuality.LIGHT);
+			}else {
+				if (extra.chanceIn(1,3)) {
+					quals.add(ArmorQuality.HEAVY);
+				}
+			}
+			break;
+		case SEWN:
+			if (extra.chanceIn(2,3)) {
+				quals.add(ArmorQuality.PADDED);
+			}
+			if (extra.chanceIn(1,3)) {
+				quals.add(ArmorQuality.LIGHT);
+			}else {
+				if (extra.chanceIn(1,3)) {
+					quals.add(ArmorQuality.HEAVY);
+				}
 			}
 			break;
 		}
@@ -363,7 +414,14 @@ public class Armor extends Item implements IEffectiveLevel{
 	 * @return weight (int)
 	 */
 	public int getWeight() {
-		return (int) (Inventory.TEMP_WEIGHT_MULT*slotImpact()*MaterialFactory.getMat(material).weight*ArmorStyle.fetch(style).weightMult);
+		return (int) (
+				Inventory.TEMP_WEIGHT_MULT
+				*slotImpact()
+				*MaterialFactory.getMat(material).weight
+				*ArmorStyle.fetch(style).weightMult
+				* (hasArmorQual(ArmorQuality.HEAVY) ? 1.2f : 1f)
+				* (hasArmorQual(ArmorQuality.LIGHT) ? .9f : 1f)
+				);
 	}
 	
 	private int slotImpact() {
@@ -625,11 +683,17 @@ public class Armor extends Item implements IEffectiveLevel{
 			case DEFLECTING: case STURDY:
 				mult *= 1.1f;
 				break;
-			case DISPLACING:
+			case DISPLACING: case PADDED:
 				mult *=1.2f;
 				break;
 			case FRAGILE:
 				mult *=.6f;//base resist is higher for it, for fitness, and for value it's fine to be off
+				break;
+			case LIGHT:
+				mult *=1.05f;
+				break;
+			case HEAVY:
+				mult *=.95f;
 				break;
 			}
 		}
