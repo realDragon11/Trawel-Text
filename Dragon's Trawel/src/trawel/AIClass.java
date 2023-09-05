@@ -285,6 +285,7 @@ public class AIClass {
 					}else {
 						loot.swapArmorSlot(stash.swapArmorSlot(loot.getArmorSlot(i),i), i);
 					}
+					p.resetCapacity();
 					if (graphicalDisplay) {//take
 						Networking.charUpdate();
 						String depth = null;
@@ -335,6 +336,7 @@ public class AIClass {
 				}else {
 					loot.swapWeapon(stash.swapWeapon(loot.getHand()));
 				}
+				p.resetCapacity();
 			}else {
 				if (graphicalDisplay) {
 					Networking.send("RemoveInv|1|2|");

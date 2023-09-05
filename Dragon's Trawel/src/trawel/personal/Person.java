@@ -2204,5 +2204,14 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		}
 		return val;
 	}
+	
+	/**
+	 * does nothing if not loaded
+	 */
+	public void resetCapacity() {
+		if (atrBox != null) {
+			atrBox.setCapacity(bag.getCapacity());
+		}
+	}
 
 }

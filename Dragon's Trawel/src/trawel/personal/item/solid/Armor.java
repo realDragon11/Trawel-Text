@@ -725,9 +725,11 @@ public class Armor extends Item implements IEffectiveLevel{
 		for (ArmorQuality q: quals) {
 			switch (q) {
 			case DEFLECTING: case STURDY:
+			case RELIABLE: case BLOCKING:
 				mult *= 1.1f;
 				break;
 			case DISPLACING: case PADDED:
+			case REFINED:
 				mult *=1.2f;
 				break;
 			case FRAGILE:

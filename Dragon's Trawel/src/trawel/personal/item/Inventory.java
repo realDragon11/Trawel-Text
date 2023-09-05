@@ -186,7 +186,7 @@ public class Inventory implements java.io.Serializable{
 	/**
 	 * Swaps out an armor for the one in the slot.
 	 * <br>
-	 * <br>
+	 * if you call this directly, you are responsible for updating capacity in attribute boxes
 	 * <br>
 	 * cannot accept nulls, but may return nulls
 	 * @param newArmor (Armor)
@@ -818,11 +818,19 @@ public class Inventory implements java.io.Serializable{
 	public Item swapItem(Item i) {
 		if (Armor.class.isInstance(i)) {
 			Armor a = (Armor)i;
-			return this.swapArmorSlot(a,a.getArmorType());
+			a = swapArmorSlot(a,a.getArmorType());
+			if (owner != null) {
+				owner.resetCapacity();
+			}
+			return a;
 		}
 		if (Weapon.class.isInstance(i)) {
 			Weapon w = (Weapon)i;
-			return this.swapWeapon(w);
+			w = swapWeapon(w);
+			if (owner != null) {
+				owner.resetCapacity();
+			}
+			return w;
 		}
 		return null;
 	}
