@@ -1,6 +1,7 @@
 package trawel.personal;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.EnumSet;
@@ -958,8 +959,17 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 
 					@Override
 					public String title() {
-						return "Classless Menu for " + getName() +": " +attributeDesc();
+						return "Classless Menu for " + getName();
 					}});
+				String[] attributes = attributeDesc();
+				for (int i = 0; i < attributes.length;i++) {
+					final String disp = attributes[i];
+					list.add(new MenuLine() {
+						@Override
+						public String title() {
+							return disp;
+						}});
+				}
 				list.add(new MenuSelect() {
 
 					@Override
@@ -1932,7 +1942,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			extra.println(getHp() +" ("+damageDone+")->"+ (getHp()-damageDone) + "/" + getMaxHp());
 		}else {
 			bodystatus.debug_print(true);//testing, will have to redo both this and submethods if used for real
-			extra.println(attributeDesc());
+			extra.println(Arrays.toString(attributeDesc()));
 		}
 	}
 	
@@ -2064,14 +2074,32 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 	
 	public String capacityDesc() {
-		return bag.getCapacity() + "/"+getStrength();
+		float val = ((float)bag.getCapacity())/getStrength();
+		String frontCol;
+		if (val <= 1) {
+			int finalVal = (int) extra.lerp(255,120, 1-val);
+			frontCol = extra.inlineColor(new Color(finalVal,finalVal,finalVal));
+		}else {
+			//starts at half, reaches RED when val == 3
+			frontCol = extra.inlineColor(extra.colorMix(Color.WHITE,Color.RED,.5f+extra.clamp((val-1)/3,0,.5f)));
+		}
+		return frontCol+bag.getCapacity() + extra.PRE_WHITE+"/"+extra.ATT_TRUE+getStrength();
 	}
 	
-	public String attributeDesc() {
-		return "(raw) dex (" + getRawDexterity() +") " + getDexterity()+ ", "+ extra.F_TWO_TRAILING.format(attMultDex())+"x"
-		+ "; cap/str " + bag.getCapacity() + "/"+getStrength()+ ", "+ extra.F_TWO_TRAILING.format(attMultStr())+"x"
-		+ "; clarity: " + getClarity() +", " + extra.F_TWO_TRAILING.format(attMultCla())+"x"
-		+ "; (total) AMP (" + getTotalAgiPen() + ") " + getAttributeAgiPen();
+	public String[] attributeDesc() {
+		return 
+		new String[]{
+			"("+extra.ATT_TRUE+"base"+extra.PRE_WHITE+") "+extra.ATT_EFFECTIVE+"dex"+extra.PRE_WHITE
+			+": ("+extra.ATT_TRUE+getRawDexterity()+extra.PRE_WHITE+") "+extra.ATT_EFFECTIVE+getDexterity()
+				+extra.PRE_WHITE+ ", "+ extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(attMultDex())+"x"
+		,extra.ITEM_DESC_PROP+"weight/"+extra.ATT_TRUE+"str"+extra.PRE_WHITE+": "
+			+extra.ITEM_WANT_LOWER + bag.getCapacity() +extra.PRE_WHITE+ "/"+extra.ATT_TRUE+getStrength()
+				+extra.PRE_WHITE+ ", "+ extra.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(attMultStr())+"x"
+		,extra.ATT_TRUE+"clarity"+extra.PRE_WHITE+": " +extra.ATT_TRUE+ getClarity()
+			+extra.PRE_WHITE+", " +extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(attMultCla())+"x"
+		,"("+extra.ATT_TRUE+"base"+extra.PRE_WHITE+")"+extra.ATT_EFFECTIVE+" AMP "
+			+extra.PRE_WHITE+"("+extra.ITEM_WANT_HIGHER+getAttributeAgiPen()+extra.PRE_WHITE+") " +extra.ITEM_WANT_HIGHER+ getTotalAgiPen() 
+				};
 	}
 	
 	public void attributeDescLongPrint() {

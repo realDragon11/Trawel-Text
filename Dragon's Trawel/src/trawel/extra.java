@@ -1053,6 +1053,16 @@ public final class extra {
 		public static final String F_BUILDABLE = PRE_ORANGE;
 		public static final String F_GUILD = PRE_YELLOW;
 		
+		//item values
+		public static final String ITEM_WANT_HIGHER = inlineColor(extra.colorMix(Color.WHITE,extra.colorMix(Color.BLUE,Color.GREEN,.5f),.3f));
+		public static final String ITEM_WANT_LOWER = inlineColor(extra.colorMix(Color.WHITE,extra.colorMix(Color.YELLOW,Color.ORANGE,.5f),.3f));
+		public static final String ITEM_DESC_PROP = TIMID_BLUE;
+		public static final String ITEM_VALUE = TIMID_MAGENTA;
+		
+		//attributes
+		public static final String ATT_TRUE = PRE_MAGENTA;
+		public static final String ATT_EFFECTIVE = TIMID_MAGENTA;
+		
 		public static String colorBasedAtOne(double number, String plus, String minus, String empty) {
 			String str = format2.format(number);
 			if (number < 1) {

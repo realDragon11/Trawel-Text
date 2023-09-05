@@ -561,15 +561,16 @@ public class Armor extends Item implements IEffectiveLevel{
 			break;
 		case 1://comparing
 		case 3:
-			extra.println(this.getName() + ":"
-			+ " " + extra.CHAR_SHARP+extra.format(this.getSharpResist())
-			+ " " + extra.CHAR_BLUNT+extra.format(this.getBluntResist())
-			+ " " + extra.CHAR_PIERCE+extra.format(this.getPierceResist())
-			+ (Player.player.caresAboutCapacity() ? " "+extra.DISP_WEIGHT+": "+getWeight() : "")
-			+ (Player.player.caresAboutAMP() ? " "+extra.DISP_AMP+": "+ extra.F_TWO_TRAILING.format(getAgiPenMult())+"x" : "")
+			extra.println(this.getName() + ":");
+			extra.println(
+			" " +extra.ITEM_DESC_PROP+ extra.CHAR_SHARP+extra.ITEM_WANT_HIGHER+extra.format(this.getSharpResist())
+			+ " "+extra.ITEM_DESC_PROP + extra.CHAR_BLUNT+extra.ITEM_WANT_HIGHER+extra.format(this.getBluntResist())
+			+ " "+extra.ITEM_DESC_PROP + extra.CHAR_PIERCE+extra.ITEM_WANT_HIGHER+extra.format(this.getPierceResist())
+			+ (Player.player.caresAboutCapacity() ? " "+extra.ITEM_DESC_PROP+extra.DISP_WEIGHT+": "+extra.ITEM_WANT_LOWER+getWeight() : "")
+			+ (Player.player.caresAboutAMP() ? " "+extra.ITEM_DESC_PROP+extra.DISP_AMP+": "+extra.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(getAgiPenMult())+"x" : "")
 			+(style == 1 ?
-					" "+extra.DISP_AETHER+": " + (int)(getAetherValue()*markup) :
-						" value: "+extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup)))
+					" "+extra.ITEM_DESC_PROP+extra.DISP_AETHER+": " +extra.ITEM_VALUE+ (int)(getAetherValue()*markup) :
+						extra.ITEM_DESC_PROP+" value: "+extra.ITEM_VALUE+extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup)))
 					);
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
@@ -582,23 +583,24 @@ public class Armor extends Item implements IEffectiveLevel{
 		case 2://full examine
 			extra.println(
 			this.getName()
-			+ " " + extra.CHAR_SHARP+extra.format(this.getSharpResist())
-			+ " " + extra.CHAR_BLUNT+extra.format(this.getBluntResist())
-			+ " " + extra.CHAR_PIERCE+extra.format(this.getPierceResist())
-			+ " "+extra.DISP_WEIGHT+": "+getWeight()
-			+ " "+extra.DISP_AMP+": "+ extra.F_TWO_TRAILING.format(getAgiPenMult())+"x"
-			+ " ignite mult: "+ extra.F_TWO_TRAILING.format(getFireMod())+"x"
-			+ " frost mult: "+ extra.F_TWO_TRAILING.format(getFreezeMod())+"x"
-			+ " elec mult: "+ extra.F_TWO_TRAILING.format(getShockMod())+"x"
-			+ " aether: " + (int)(this.getAetherValue()*markup));
+			+ " " + extra.ITEM_DESC_PROP+extra.CHAR_SHARP+extra.ITEM_WANT_HIGHER+extra.format(this.getSharpResist())
+			+ " " + extra.ITEM_DESC_PROP+extra.CHAR_BLUNT+extra.ITEM_WANT_HIGHER+extra.format(this.getBluntResist())
+			+ " " + extra.ITEM_DESC_PROP+extra.CHAR_PIERCE+extra.ITEM_WANT_HIGHER+extra.format(this.getPierceResist())
+			+ " "+extra.ITEM_DESC_PROP+extra.DISP_WEIGHT+": "+extra.ITEM_WANT_LOWER+getWeight()
+			+ " "+extra.DISP_AMP+": "+extra.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(getAgiPenMult())+"x"
+			+extra.ITEM_DESC_PROP+ " ignite mult: "+extra.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(getFireMod())+"x"
+			+extra.ITEM_DESC_PROP+ " frost mult: "+extra.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(getFreezeMod())+"x"
+			+extra.ITEM_DESC_PROP+ " elec mult: "+extra.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(getShockMod())+"x"
+			+extra.ITEM_DESC_PROP+ " aether: " +extra.ITEM_VALUE+ (int)(this.getAetherValue()*markup));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
 			printQuals();
 			;break;
 		case 20://for store overviews
-			extra.println(this.getName() + " sbp:" + extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
-			 + " value: " + extra.F_WHOLE.format(Math.ceil(this.getMoneyValue()*markup)));
+			extra.println(this.getName() + extra.ITEM_DESC_PROP+" sbp:" +extra.ITEM_WANT_HIGHER
+			+extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
+			+extra.ITEM_DESC_PROP + " value: " + extra.ITEM_VALUE+extra.F_WHOLE.format(Math.ceil(this.getMoneyValue()*markup)));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
