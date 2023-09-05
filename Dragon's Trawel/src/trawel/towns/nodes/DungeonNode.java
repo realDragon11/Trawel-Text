@@ -54,14 +54,7 @@ public class DungeonNode implements NodeType{
 	
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
-		byte idNum = (byte) dungeonNoneRoller.random(extra.getRand());//1 is ladder
-		//might be overwritten by shape but we do it as a backup/full rng
-		/*if (extra.chanceIn(1,2)) {
-			idNum = GUARD_NUMBERS[dungeonGuardRoller.random(extra.getRand())];
-		}
-		if (extra.chanceIn(1,10)) {
-			idNum = 1;//chest	
-		}*/
+		byte idNum = (byte) (dungeonNoneRoller.random(extra.getRand())+1);//1 is ladder
 		int ret = holder.newNode(NodeType.NodeTypeNum.DUNGEON.ordinal(),idNum,tier);
 		return ret;
 	}
@@ -229,12 +222,13 @@ public class DungeonNode implements NodeType{
 				for (int i = 0; i < this_length;i++) {
 					int cur_node = getNode(start_node,fight_room,i,(int)extra.lerp(start_level, this_end_level, ((float)(i))/this_length));
 					start_node.setMutualConnect(last_node, cur_node);
-					if (i == this_length-1) {
+					if (i == this_length-1) {//battlecon orb
 						start_node.setEventNum(cur_node, 100);
 						keeper.registerBattleConWithNode(skillcon_list.remove(0), cur_node);
 					}else {
-						if (i == this_length-2) {
-							start_node.setEventNum(cur_node, 3);//improved guard post
+						if (i == this_length-2) {//improved guard post
+							start_node.setLevel(cur_node, start_node.getLevel(cur_node)+1);
+							start_node.setEventNum(cur_node, 2);
 						}
 					}
 					last_node = cur_node;

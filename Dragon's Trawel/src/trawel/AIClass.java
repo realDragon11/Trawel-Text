@@ -670,6 +670,7 @@ public class AIClass {
 						}
 						ret[0] = current;
 						Player.bag.swapItem(thinking);
+						Player.bag.graphicalDisplay(-1,Player.player.getPerson());
 						return true;
 					}});
 				list.add(new MenuSelect() {
