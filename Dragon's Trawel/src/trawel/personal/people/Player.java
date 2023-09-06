@@ -2,6 +2,7 @@ package trawel.personal.people;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -52,6 +53,7 @@ import trawel.towns.Feature;
 import trawel.towns.Town;
 import trawel.towns.World;
 import trawel.towns.misc.Docks;
+import trawel.towns.services.Altar.AltarForce;
 
 public class Player extends SuperPerson{
 
@@ -78,8 +80,9 @@ public class Player extends SuperPerson{
 	public Town lastTown = null;
 	private double merchantPoints = 0;
 	public int emeralds = 0, rubies = 0, sapphires = 0;
-	public float forceRelation = 0.0f;
-	public int forceRewardCount = 0;
+	
+	private EnumMap<AltarForce,Integer> forceRewards = new EnumMap<>(AltarForce.class);
+	private EnumMap<AltarForce,Float> forceRelations = new EnumMap<>(AltarForce.class);
 	public int merchantBookPasses = 0;
 	
 	public double globalFindTime = 0;
@@ -1598,6 +1601,19 @@ public class Player extends SuperPerson{
 				return Collections.singletonList(new MenuBack("Cancel"));
 			}
 		});
+	}
+	public int getForceReward(AltarForce key) {
+		return forceRewards.getOrDefault(key,0);
+	}
+	public void nextForceReward(AltarForce key) {
+		forceRewards.put(key,1+getForceReward(key));
+	}
+	
+	public float getForceRelation(AltarForce key) {
+		return forceRelations.getOrDefault(key,0f);
+	}
+	public void addForceRelation(AltarForce key,float value) {
+		forceRelations.put(key,value+getForceRelation(key));
 	}
 	
 }

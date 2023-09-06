@@ -464,5 +464,10 @@ public class Dungeon extends NodeFeature {
 		}
 		return .5f;
 	}
+	
+	@Override
+	public String sizeDesc() {
+		return super.sizeDesc() + (hasHelpers() ? " A: "+delve_helpers.size() : "");
+	}
 
 }

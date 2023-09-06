@@ -52,6 +52,7 @@ import trawel.towns.nodes.Mine;
 import trawel.towns.nodes.NodeConnector;
 import trawel.towns.nodes.NodeFeature;
 import trawel.towns.services.Altar;
+import trawel.towns.services.Altar.AltarForce;
 import trawel.towns.services.Appraiser;
 import trawel.towns.services.Blacksmith;
 import trawel.towns.services.Doctor;
@@ -194,7 +195,7 @@ public class WorldGen {
 		hemo.setFirstPrinter(new PrintEvent(){
 			@Override
 			public void print() {
-				extra.println("Hemo is infamous for the clearing near a witch hut, said to be the only place on the island of rona that can brew potions properly. Rumor has it the proximity to the forest of vicissitude would normally prevent any success, but a dark rite reversed the town's fortunes.");
+				extra.println("Hemo is infamous for the clearing near a witch hut, said to be the only place on the island of Rona that can brew potions properly. Rumor has it the proximity to the forest of vicissitude would normally prevent any success, but a dark rite reversed the town's fortunes.");
 			}
 			
 		});
@@ -281,7 +282,7 @@ public class WorldGen {
 		revan.addFeature(new Store(2,1));
 		revan.addFeature(new Store(2,2));
 		revan.addFeature(new Store(2,3));
-		revan.addFeature(new Altar());
+		revan.addFeature(new Altar("Sky Slab",AltarForce.SKY));
 		addConnection(revan,tanak,"teleport","the red ritual");
 		revan.tTags.add(TownTag.MERCHANT);
 		revan.tTags.add(TownTag.DRUDIC);
@@ -303,13 +304,10 @@ public class WorldGen {
 
 		arona.setFirstPrinter(new PrintEvent(){
 			private static final long serialVersionUID = 1L;
-
 			@Override
 			public void print() {
 				extra.println("The 'town' of Arona, held in a wizard's pocket dimension, employs powerful fighters as guards.");
-				
 			}
-			
 		});
 		
 		Island teran = new Island("Teran",w);
@@ -322,6 +320,12 @@ public class WorldGen {
 		yena.addFeature(new HeroGuild("Third Hero's Guild"));
 		yena.addFeature(new Champion(4));
 		yena.tTags.add(TownTag.ADVENTURE);
+		yena.setFirstPrinter(new PrintEvent() {
+
+			@Override
+			public void print() {
+				extra.println("Yena's ancient Dungeon of Fame is the dwelling place of the primordial being, Yore. The Hero's Guild has long since given up on slaying them, and keeps vigil nearby.");
+			}});
 		
 		Town denok = new Town("Denok",5,teran,new Point(12,1));
 		addConnection(denok,yena,"road","apple road");
@@ -426,17 +430,19 @@ public class WorldGen {
 		Town unika = new Town("Unika",12, apen, new Point(3,5));
 		addConnection(holik,unika,"road","ren road");
 		addConnection(yonuen,unika,"road","tenka road");
-		unika.addFeature(new Grove("unika forest",unika));
-		unika.addFeature(new Champion(10));
+		unika.addFeature(new Arena("'Lucky Break'",10,1,24,12,135));
+		unika.addFeature(new Grove("Unika's Backyard",unika));
+		unika.addFeature(new Champion(15));
 		unika.addTravel();
-		unika.addFeature(new Inn("unika inn",10,unika,null));
+		//unika.addFeature(new Inn("unika inn",10,unika,null));
 		
 		Town peana = new Town("Peana",12, apen, new Point(2,7));
 		addConnection(holik,peana,"road","blue road");
 		addConnection(unika,peana,"road","green road");
-		peana.addFeature(new Arena("peana arena",10,1,24,12,135));
-		peana.addFeature(new Appraiser("peana appraiser"));
-		peana.addFeature(new Store(10,8));
+		peana.addFeature(new Inn("'Dirges for the Damned'",12,peana,null));
+		peana.addFeature(new Store("'Tyrant's Treasures'",10,11));//oddity store
+		//peana.addFeature(new Arena("Deadsoul's Folly",10,1,24,12,135));
+		//peana.addFeature(new Appraiser("Peana Appraiser"));
 		peana.addFeature(new Mine("Staircase to Hell", peana, null,NodeFeature.Shape.ELEVATOR));
 		peana.tTags.add(TownTag.HELLISH);
 		
@@ -444,16 +450,15 @@ public class WorldGen {
 			@Override
 			public void print() {
 				extra.println("Peana is the site of a large Mine with a singular purpose: to breach into hell. Those who completed this task have since long been lost to the ages- but their work remains, and a Throne of Hell was established there.");
-				
 			}
 		});
 		
 		Town inka = new Town("Inka",12, apen, new Point(4,7));
 		addConnection(unika,inka,"road","youn road");
 		addConnection(inka,peana,"road","era road");
-		inka.addFeature(new Mine("First Striking Shaft", inka, null,NodeFeature.Shape.NONE));
-		inka.addFeature(new Mine("Motherload Mine", inka, null,NodeFeature.Shape.NONE));
-		inka.addFeature(new Mine("Deep Vein Dig", inka, null,NodeFeature.Shape.NONE));
+		inka.addFeature(new Mine("First Striking Shaft", inka,60,8,NodeFeature.Shape.NONE));
+		inka.addFeature(new Mine("Motherload Mine", inka,30,14,NodeFeature.Shape.NONE));
+		inka.addFeature(new Mine("Deep Vein Dig", inka,80,12,NodeFeature.Shape.NONE));
 		inka.addFeature(new Slum(inka,"Miner's Subtown",true));
 		inka.addTravel();
 		inka.tTags.add(TownTag.CITY);
@@ -461,10 +466,12 @@ public class WorldGen {
 		
 		Town pipa = new Town("Pipa",13, apen, new Point(4,7));
 		addConnection(inka,pipa,"road","mystery road");
-		inka.addFeature(new WitchHut("Oak Coven's Hut",pipa));
-		inka.addFeature(new Store(11,9));
+		pipa.addFeature(new WitchHut("Oak Coven's Hut",pipa));
 		pipa.addFeature(new Grove("Deciduous Sprawl",pipa));
+		pipa.addFeature(new Altar("Thorny Throne",AltarForce.FOREST));
 		pipa.tTags.add(TownTag.ALCHEMY);
+		pipa.tTags.add(TownTag.DRUDIC);
+		pipa.tTags.add(TownTag.HIDDEN);
 		
 		return holik;
 	}

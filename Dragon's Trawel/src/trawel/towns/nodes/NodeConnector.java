@@ -90,6 +90,8 @@ public class NodeConnector implements Serializable {
 	 */
 	private int deepest = 1;
 	
+	protected int highestLevel = 0, lowestLevel = 0;
+	
 	/**
 	 * used for 'reset' actions that replace corpses
 	 */
@@ -527,21 +529,26 @@ public class NodeConnector implements Serializable {
 	}
 
 
-	protected void reset(NodeFeature p) {
-		parent = p;
+	protected void reset(NodeFeature owner) {
+		parent = owner;
 		deepest = 0;
+		highestLevel = 0;
+		lowestLevel = Integer.MAX_VALUE;
 		for (int i = 1; i < size+1;i++) {//first node is for us and not a node
 			deepest= Math.max(deepest,getFloor(i));
+			int level = getLevel(i);
+			highestLevel = Math.max(highestLevel, level);
+			lowestLevel = Math.min(lowestLevel, level);
 		}
 	}
 	
 	protected NodeConnector complete(NodeFeature owner) {
-		parent = owner;
 		trim();
 		assert size == storage.length-1;
-		for (int i = 0; i < size+1;i++) {
+		for (int i = 1; i < size+1;i++) {
 			NodeType.getTypeEnum(getTypeNum(i)).singleton.apply(this, i);
 		}
+		reset(owner);
 		return this;
 	}
 	

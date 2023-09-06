@@ -11,16 +11,22 @@ public class Mine extends NodeFeature {
 
 	private static final long serialVersionUID = 1L;
 	private int veinsLeft = 0;
+	private int size;
 	
-	public Mine(String name,Town t, SuperPerson owner,Shape s) {
-		this.name = name;
-		town = t;
-		tutorialText = "Mine.";
-		this.owner = owner;
-		shape = s;
-		generate(50);
+	public Mine(String name,Town t, SuperPerson _owner,Shape s) {
+		this(name,t,50,t.getTier(),s);
+		owner = _owner;
+	}
+	public Mine(String _name,Town t,int _size, int _tier, Shape s) {
 		background_area = "mine";
+		tutorialText = "Mine.";
 		area_type = Area.MINE;
+		name = _name;
+		town = t;
+		tier = _tier;
+		size = _size;
+		shape = s;
+		generate(size);
 	}
 	
 	@Override
@@ -56,7 +62,7 @@ public class Mine extends NodeFeature {
 	
 	@Override
 	protected void generate(int size) {
-		start = NodeType.NodeTypeNum.MINE.singleton.getStart(this, size, getTown().getTier());//DOLATER: get actual level
+		start = NodeType.NodeTypeNum.MINE.singleton.getStart(this, size, tier);//DOLATER: get actual level
 	}
 	
 	@Override
@@ -65,7 +71,7 @@ public class Mine extends NodeFeature {
 	}
 	@Override
 	public String sizeDesc() {
-		return " S: " + start.getSize() + " V: " +veinsLeft;
+		return super.sizeDesc() + " V: " +veinsLeft;
 	}
 
 }

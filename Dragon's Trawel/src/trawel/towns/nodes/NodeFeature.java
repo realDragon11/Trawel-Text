@@ -68,7 +68,7 @@ public abstract class NodeFeature extends Feature {
 	protected abstract byte bossType();
 
 	public String sizeDesc() {
-		return " S: " + start.getSize();
+		return " S: " + start.getSize() + (start.highestLevel != 0 ? " L: "+start.lowestLevel+"-"+start.highestLevel : "");
 	}
 	
 	@Override
