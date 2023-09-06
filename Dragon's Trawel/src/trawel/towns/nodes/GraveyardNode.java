@@ -174,6 +174,10 @@ public class GraveyardNode implements NodeType{
 	
 	@Override
 	public boolean interact(NodeConnector holder, int node) {
+		if (Player.player.getPerson().hasSkill(Skill.NIGHTVISION)) {
+			//set new state on interact, in case of force go weirdness getting around the name
+			holder.setStateNum(node,10);
+		}
 		switch(holder.getEventNum(node)) {
 		//case -1: Networking.sendStrong("PlayDelay|sound_footsteps|1|"); break;
 		case 1: return graveDigger(holder,node);
@@ -200,6 +204,8 @@ public class GraveyardNode implements NodeType{
 		case 2:
 			return "Approach Graverobber";
 			//3 is bats, 4 is vampire, neither have interact strings
+		case 4://needs a string for nightvison, since it won't force go by default
+			return "Approach Lair";
 		case 5://collector
 			return "Approach " +holder.getStorageFirstPerson(node).getName();
 		case 6://attacking statue
@@ -221,7 +227,11 @@ public class GraveyardNode implements NodeType{
 	}
 	
 	public String interactStringState(NodeConnector holder, int node, int state) {
-		if (state < 10 && !Player.player.getPerson().hasSkill(Skill.NIGHTVISION)) {
+		/*if (Player.player.getPerson().hasSkill(Skill.NIGHTVISION)) {
+			holder.setStateNum(node,10);
+			return null;
+		}*/
+		if (state < 10) {
 			if (state == STATE_SHADOW_FIGURE) {
 				return STR_SHADOW_FIGURE_ACT;
 			}
@@ -235,12 +245,18 @@ public class GraveyardNode implements NodeType{
 	@Override
 	public String nodeName(NodeConnector holder, int node) {
 		int state = holder.getStateNum(node);
-		if (state < 10 && !Player.player.getPerson().hasSkill(Skill.NIGHTVISION)) {
-			if (state == STATE_SHADOW_FIGURE) {
-				return STR_SHADOW_FIGURE_NAME;
-			}
-			if (state == STATE_SHADOW_OBJECT) {
-				return STR_SHADOW_OBJECT_NAME;
+		if (state < 10) {
+			if (Player.player.getPerson().hasSkill(Skill.NIGHTVISION)) {
+				//set new state on sight
+				holder.setStateNum(node,10);
+				state = 10;
+			}else {
+				if (state == STATE_SHADOW_FIGURE) {
+					return STR_SHADOW_FIGURE_NAME;
+				}
+				if (state == STATE_SHADOW_OBJECT) {
+					return STR_SHADOW_OBJECT_NAME;
+				}
 			}
 		}
 		switch(holder.getEventNum(node)) {
@@ -261,14 +277,14 @@ public class GraveyardNode implements NodeType{
 			if (state > 30) {
 				return "Hostile " + attName + "Statue";
 			}
-			return attName + "Statue";
+			return attName + " Statue";
 		case 7://non attacking statue
 			Person quietStatue = holder.getStorageFirstPerson(node);
 			String quietName = extra.capFirst(quietStatue.getBag().getRace().renderName(false));
 			if (state == 13) {//destroyed
 				return "Looted " + quietName + "Statue";
 			}
-			return quietName + "Statue";
+			return quietName + " Statue";
 		}
 		return null;
 	}

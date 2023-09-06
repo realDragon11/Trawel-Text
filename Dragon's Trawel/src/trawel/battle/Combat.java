@@ -1471,9 +1471,10 @@ public class Combat {
 			attacker.takeDamage(totalBleed);
 			float leech = (defender.hasEffect(Effect.B_MARY) ? 2 : 0) + (defender.hasSkill(Skill.BLOODDRINKER) ? 0.5f : 0);
 			if (leech > 0) {
-				defender.addHp(Math.round(totalBleed*leech));
-				extra.println(indent+defender.getName() + " heals off of "
-				+ attacker.getNameNoTitle() + "'s blood, healing " + (totalBleed*leech) + " HP off of "
+				int final_blood = Math.round(totalBleed*leech);
+				defender.addHp(final_blood);
+				extra.println(indent+defender.getName() + " absorbs "
+				+ attacker.getNameNoTitle() + "'s blood, healing " + final_blood + " HP off of "
 				+ (totalBleed) + " damage!");
 			}else {
 				extra.println(indent+attacker.getName() + " bleeds for " + totalBleed + " HP.");

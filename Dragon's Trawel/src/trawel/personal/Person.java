@@ -1003,12 +1003,22 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 								return "You have " + getFeatPoints() + " feat points waiting for picking, but no picks left.";
 							}});
 					}else {
-						list.add(new MenuLine() {
+						if (getSuper().getFeatPicks() > 0) {
+							list.add(new MenuLine() {
 
-							@Override
-							public String title() {
-								return "No feat points or picks.";
-							}});
+								@Override
+								public String title() {
+									return "No feat points, "+getSuper().getFeatPicks()+ " picks.";
+								}});
+						}else {
+							list.add(new MenuLine() {
+
+								@Override
+								public String title() {
+									return "No feat points or picks.";
+								}});
+						}
+						
 					}
 				}
 				if (Player.getTutorial()) {

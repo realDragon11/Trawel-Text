@@ -463,7 +463,7 @@ public class Player extends SuperPerson{
 		if (lost < amount) {//now broke
 			return "They took all your " + World.currentMoneyString() +"! (lost "+lost+")";
 		}else {
-			return World.currentMoneyDisplay(lost) + " was stolen!";
+			return "Oh no, " +World.currentMoneyDisplay(lost) + " were stolen!";
 		}
 	}
 	
