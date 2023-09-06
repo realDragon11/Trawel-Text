@@ -68,18 +68,18 @@ public class EnchantHit extends Enchant {
 	@Override
 	public void display(int i) {
 		if (isKeen) {
-			extra.println(" Keen");
+			extra.println(extra.ITEM_WANT_HIGHER+" Keen");
 		}
 		double d = 0;
 		String str = null;
 		for (int j = 0; j < 3;j++) {
 		switch (j) {
-		case 0:	d = getFireMod(); str = "fire";break;
-		case 1:	d = getShockMod(); str = "shock";break;
-		case 2:	d = getFreezeMod(); str = "frost";break;
+		case 0:	d = getFireMod(); str = colorSaved+"fire";break;
+		case 1:	d = getShockMod(); str = colorSaved+"shock";break;
+		case 2:	d = getFreezeMod(); str = colorSaved+"frost";break;
 		}
 		if (d != 0) {
-			extra.println("  " +extra.format(d) + "x " + str);
+			extra.println("  "+extra.ITEM_WANT_HIGHER +extra.format(d) + "x " + str);
 		}
 		
 		}

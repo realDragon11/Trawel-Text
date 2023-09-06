@@ -1140,7 +1140,7 @@ public final class extra {
 			return extra.PRE_RED+"-"+format1.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
 		}
 		/**
-		 * this variant will display a white = is equal, and nothing else
+		 * this variant will display a white = if equal, and nothing else
 		 */
 		public static final String hardColorDelta1Elide(double to, double was) {
 			if (to > was) {

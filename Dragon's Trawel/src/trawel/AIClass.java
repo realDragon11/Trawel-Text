@@ -822,7 +822,7 @@ public class AIClass {
 	public static void displayChange(Item hasItem, Item toReplace, Person p, Store s) {
 		//p is used to display absolute stat changes instead of just raw stats like the non-diff
 		extra.println(" ");
-		extra.println(extra.STAT_HEADER+"Difference"+extra.PRE_WHITE+": "+extra.ITEM_DESC_PROP+"L" +extra.ITEM_WANT_HIGHER +(toReplace.getLevel()-hasItem.getLevel()));
+		extra.println(extra.STAT_HEADER+"Difference"+extra.PRE_WHITE+": "+extra.ITEM_DESC_PROP+"L " +extra.softColorDelta0(toReplace.getLevel(),hasItem.getLevel()));
 		int costDiff = 0;
 		String costName = null;
 		if (s == null) {
