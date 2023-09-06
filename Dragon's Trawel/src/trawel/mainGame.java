@@ -757,7 +757,8 @@ public class mainGame {
 								return false;
 							}
 						}
-						Networking.connect(6510); 
+						Networking.connect(6510);
+						extra.println("Test Connection!");
 						return true;
 					}});
 				mList.add(new MenuSelect() {
@@ -776,7 +777,8 @@ public class mainGame {
 							}
 						}
 						extra.println("Port?");
-						Networking.connect(extra.inInt(65535)); 
+						Networking.connect(extra.inInt(65535));
+						extra.println("Test Connection!");
 						return true;
 					}});
 				mList.add(new MenuBack());

@@ -821,7 +821,8 @@ public class AIClass {
 	
 	public static void displayChange(Item hasItem, Item toReplace, Person p, Store s) {
 		//p is used to display absolute stat changes instead of just raw stats like the non-diff
-		extra.println();
+		extra.println(" ");
+		extra.println(extra.STAT_HEADER+"Difference"+extra.PRE_WHITE+": "+extra.ITEM_DESC_PROP+"L" +extra.ITEM_WANT_HIGHER +(toReplace.getLevel()-hasItem.getLevel()));
 		int costDiff = 0;
 		String costName = null;
 		if (s == null) {
@@ -839,19 +840,19 @@ public class AIClass {
 			if (Player.getTutorial()) {
 				extra.println("SBP = sharp, blunt, pierce");
 			}
-			extra.println(extra.PRE_MAGENTA+"Difference: "
-			+ extra.TIMID_BLUE+extra.CHAR_SHARP
+			extra.println(" "+
+			extra.ITEM_DESC_PROP+extra.CHAR_SHARP
 			+" "+extra.hardColorDelta1Elide(toArm.getSharpResist(),hasArm.getSharpResist())
 			+ extra.PRE_WHITE+" / "
-			+ extra.TIMID_BLUE+extra.CHAR_BLUNT
+			+ extra.ITEM_DESC_PROP+extra.CHAR_BLUNT
 			+" "+extra.hardColorDelta1Elide(toArm.getBluntResist(),hasArm.getBluntResist())
 			+ extra.PRE_WHITE+" / "
-			+ extra.TIMID_BLUE+extra.CHAR_PIERCE
+			+ extra.ITEM_DESC_PROP+extra.CHAR_PIERCE
 			+" "+extra.hardColorDelta1Elide(toArm.getPierceResist(),hasArm.getPierceResist())
 			//weight is an int anyway
-			+ (Player.player.caresAboutCapacity() ? extra.TIMID_BLUE+ " "+extra.DISP_WEIGHT+": "+extra.softColorDelta0Reversed(toArm.getWeight(),hasArm.getWeight()) : "")
+			+ (Player.player.caresAboutCapacity() ? extra.ITEM_DESC_PROP+ " "+extra.DISP_WEIGHT+": "+extra.softColorDelta0Reversed(toArm.getWeight(),hasArm.getWeight()) : "")
 			//amp is not, but we want it to display hard anyway
-			+ (Player.player.caresAboutAMP() ? extra.TIMID_BLUE+ " "+extra.DISP_AMP+": "+ extra.hardColorDelta2(toArm.getAgiPenMult(),hasArm.getAgiPenMult()) : "")
+			+ (Player.player.caresAboutAMP() ? extra.ITEM_DESC_PROP+ " "+extra.DISP_AMP+": "+ extra.hardColorDelta2(toArm.getAgiPenMult(),hasArm.getAgiPenMult()) : "")
 			+ " " + priceDiffDisp(costDiff,costName,s)
 			);
 			if (hasItem.getEnchant() != null || toReplace.getEnchant() != null) {
@@ -869,17 +870,17 @@ public class AIClass {
 				boolean isQDiff = !toWeap.equalQuals(hasWeap);
 				int qualDiff = isQDiff ? toWeap.numQual()-hasWeap.numQual() : 0;
 				
-				extra.println(extra.PRE_MAGENTA+"Difference: ic/ad/wa: " 
+				extra.println(" "+extra.ITEM_DESC_PROP+" ic/ad/wa: " 
 				+ (extra.softColorDelta2Elide(toWeap.scoreImpact(),hasWeap.scoreImpact()))
 				+ extra.PRE_WHITE+"/"
 				+ (extra.hardColorDelta2Elide(toWeap.scoreAverage(),hasWeap.scoreAverage()))
 				+ extra.PRE_WHITE+"/"
 				+ (extra.hardColorDelta2Elide(toWeap.scoreWeight(),hasWeap.scoreWeight()))
 				//if the qualities are the same, 'q=', if neither has any, do not display
-				+extra.TIMID_MAGENTA
+				+extra.ITEM_DESC_PROP
 				+ (isQDiff ? " "+extra.DISP_QUALS+" "
 				+ extra.colorBaseZeroTimid(qualDiff) : (toWeap.numQual() > 0 ? (" "+extra.DISP_QUALS+" =") : ""))
-				+ (Player.player.caresAboutCapacity() ? extra.TIMID_BLUE+" "+extra.DISP_WEIGHT+": "+extra.softColorDelta0Reversed(toWeap.getWeight(),hasWeap.getWeight()) : "")
+				+ (Player.player.caresAboutCapacity() ? extra.ITEM_DESC_PROP+" "+extra.DISP_WEIGHT+": "+extra.softColorDelta0Reversed(toWeap.getWeight(),hasWeap.getWeight()) : "")
 				+ " " + priceDiffDisp(costDiff,costName,s)
 				);
 				if (((Weapon)hasItem).getEnchant() != null || ((Weapon)toReplace).getEnchant()!= null) {
@@ -908,12 +909,12 @@ public class AIClass {
 			if (name == "aether") {
 				name = extra.DISP_AETHER;
 			}
-			return extra.TIMID_MAGENTA+name+": " + (delta != 0 ? extra.colorBaseZeroTimid(delta) : "=");
+			return extra.ITEM_VALUE+name+": " + (delta != 0 ? extra.colorBaseZeroTimid(delta) : "=");
 		}
 		if (delta < 0) {//costs less, might be gaining money
-			return extra.TIMID_BLUE + "requires " +  Math.abs(delta) + " buy value";
+			return extra.ITEM_VALUE + "requires " +  Math.abs(delta) + " buy value";
 		}else {//costs more, losing money
-			return extra.TIMID_GREY + "will return " +delta + " " + name;
+			return extra.ITEM_VALUE + "will return " +delta + " " + name;
 		}
 	}
 	

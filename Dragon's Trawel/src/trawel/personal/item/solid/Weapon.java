@@ -443,13 +443,15 @@ public class Weapon extends Item implements IEffectiveLevel {
 		case 1://used for comparing and in stores
 		case 3:
 			extra.println(this.getName()
-			+ " ic/ad/wa: " + extra.formatPerSubOne(this.scoreImpact())
+			+ extra.ITEM_DESC_PROP+" ic/ad/wa"+extra.PRE_WHITE+": "
+			+extra.ITEM_WANT_HIGHER
+			+ extra.formatPerSubOne(this.scoreImpact())
 			+ "/" + extra.format(this.scoreAverage())
 			+"/"+extra.format(this.scoreWeight())
-			+ (Player.player.caresAboutCapacity() ? " "+extra.DISP_WEIGHT+": "+getWeight() : "")
+			+ (Player.player.caresAboutCapacity() ? " "+extra.ITEM_DESC_PROP+extra.DISP_WEIGHT+extra.PRE_WHITE+": "+extra.ITEM_WANT_LOWER+getWeight() : "")
 			+(style == 1 ?
-					" "+extra.DISP_AETHER+": " + (int)(this.getAetherValue()*markup) :
-						" value: "+extra.F_WHOLE.format(Math.ceil(this.getMoneyValue()*markup)))
+					" "+extra.ITEM_DESC_PROP+extra.DISP_AETHER+": " +extra.ITEM_VALUE+ (int)(this.getAetherValue()*markup) :
+						extra.ITEM_DESC_PROP+" value: "+extra.ITEM_VALUE+ extra.F_WHOLE.format(Math.ceil(this.getMoneyValue()*markup)))
 			);
 			
 			if (this.isEnchantedConstant()) {
@@ -459,7 +461,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 				this.getEnchant().display(1);
 			}
 			for (WeaponQual wq: qualList) {
-				extra.println(" " +wq.name + ": "+wq.desc);
+				extra.println(" " +extra.TIMID_GREEN+wq.name +extra.PRE_WHITE+": "+wq.desc);
 			}
 			;break;
 		case 4:
@@ -469,51 +471,34 @@ public class Weapon extends Item implements IEffectiveLevel {
 			//by dividing it later we implicitly mult it by 100x to get it to display as a whole number
 			float expectedAverage = (1f/getMartialStance().getAttackCount());
 			extra.println(getName() +":");
-			extra.println("Tested Stats:");
-			extra.println(" Impact Chance: " + extra.formatPerSubOne(scoreImpact()));
-			extra.println(" Rarity Independent DPI (ad): " + extra.format(scoreAverage()));
-			extra.println(" Weighted DPI (wa): " + extra.format(scoreWeight()));
-			extra.println("Value and Usage:");
-			extra.println(" Aether: " + (int)(getAetherValue()*markup));
-			extra.println(" Infused kills: " +getKills());
+			extra.println(extra.STAT_HEADER+"Tested Stats:");
+			extra.println(extra.ITEM_DESC_PROP+" Impact Chance (ic)"+extra.PRE_WHITE+": "+extra.ITEM_WANT_HIGHER+ extra.formatPerSubOne(scoreImpact()));
+			extra.println(extra.ITEM_DESC_PROP+" Rarity Independent DPI (ad)"+extra.PRE_WHITE+": "+extra.ITEM_WANT_HIGHER + extra.format(scoreAverage()));
+			extra.println(extra.ITEM_DESC_PROP+" Weighted DPI (wa)"+extra.PRE_WHITE+": "+extra.ITEM_WANT_HIGHER + extra.format(scoreWeight()));
+			extra.println(extra.STAT_HEADER+"Value and Usage:");
+			extra.println(extra.ITEM_DESC_PROP+" Aether"+extra.PRE_WHITE+": "+extra.ITEM_VALUE + (int)(getAetherValue()*markup));
+			extra.println(extra.ITEM_DESC_PROP+" Infused kills"+extra.PRE_WHITE+": " +getKills());
 			
 			if (isEnchantedConstant()) {
-				extra.println("Constant Enchantment:");
+				extra.println(extra.STAT_HEADER+"Constant Enchantment:");
 				getEnchant().display(2);
 			}
 			if (isEnchantedHit()) {
-				extra.println("On-Hit Enchantment:");
+				extra.println(extra.STAT_HEADER+"On-Hit Enchantment:");
 				getEnchant().display(2);
 			}
 			if (qualList.size() > 0) {
-				extra.println("Qualities:");
+				extra.println(extra.STAT_HEADER+"Qualities:");
 				for (WeaponQual wq: qualList) {
-					extra.println(" " +wq.name + ": "+wq.desc);
+					extra.println(" " +extra.TIMID_GREEN+wq.name +extra.PRE_WHITE+": "+wq.desc);
 				}
 			}
-			extra.println("Tested Equity DPI:");
-			extra.println(" Highest: " +extra.F_WHOLE.format(scoreHighestContribution()/expectedAverage) +"% of perfect equity");
-			extra.println(" Lowest: " +extra.F_WHOLE.format(scoreLowestContribution()/expectedAverage) +"% of perfect equity");
-			extra.println("Raw Untested Attacks:" + (isEnchantedHit() ? "(Enchant Hit not in Raw DPI)" : ""));
+			extra.println(extra.STAT_HEADER+"Tested Equity DPI:");
+			extra.println(extra.ITEM_DESC_PROP+" Highest"+extra.PRE_WHITE+": "+extra.ITEM_WANT_LOWER+extra.F_WHOLE.format(scoreHighestContribution()/expectedAverage)+extra.PRE_WHITE+"% of perfect equity");
+			extra.println(extra.ITEM_DESC_PROP+" Lowest"+extra.PRE_WHITE+": "+extra.ITEM_WANT_HIGHER+extra.F_WHOLE.format(scoreLowestContribution()/expectedAverage)+extra.PRE_WHITE+"% of perfect equity");
+			extra.println(extra.STAT_HEADER+"Raw Untested Attacks"+extra.PRE_WHITE+":" + (isEnchantedHit() ? "(Enchant Hit not in Raw DPI)" : ""));
 			WeaponAttackFactory.getStance(this.weap).display(this);
 			;break;
-		case 20://for stores in depth
-			extra.println(this.getName()
-					+ " ic/ad/wa: " + extra.formatPerSubOne(this.scoreImpact())
-					+ "/" + extra.format(this.scoreAverage())
-					+"/"+extra.format(this.scoreWeight()));
-					
-					
-					if (this.isEnchantedConstant()) {
-						this.getEnchant().display(1);
-					}
-					if (this.isEnchantedHit()) {
-						this.getEnchant().display(1);
-					}
-					for (WeaponQual wq: qualList) {
-						extra.println(" " +wq.name + ": "+wq.desc);
-					}
-			break;
 		}
 	}
 	@Override
@@ -525,13 +510,13 @@ public class Weapon extends Item implements IEffectiveLevel {
 	public String storeString(double markup, int canShow) {//for stores brief overview
 		if (canShow > 0) {
 			return this.getName() 
-					+ " ic/wa: " + extra.formatPerSubOne(this.scoreImpact())
+					+ extra.ITEM_DESC_PROP+" ic/wa"+extra.PRE_WHITE+": " +extra.ITEM_WANT_HIGHER+extra.formatPerSubOne(this.scoreImpact())
 					+"/"+extra.format(this.scoreWeight())
-				+ " cost: " +  extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
-				+ (canShow == 1 ? " (raw deal)" : "");
+					+ extra.ITEM_DESC_PROP+ " cost"+extra.PRE_WHITE+": " + extra.ITEM_VALUE+ extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
+						+ (canShow == 1 ? extra.TIMID_RED+" (raw deal)" : "");
 		}
 		String base = getBaseName();
-		return "  They refuse to show you something you think " + extra.pluralIsA(base) + " "+base+".";
+		return extra.TIMID_GREY+"  They refuse to show you something you think " + extra.pluralIsA(base) + " "+base+".";
 	}
 
 	@Override

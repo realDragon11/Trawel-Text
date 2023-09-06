@@ -634,14 +634,14 @@ public class Armor extends Item implements IEffectiveLevel{
 	public String storeString(double markup, int canShow) {
 		if (canShow > 0) {
 			return this.getName() 
-				+ " "+extra.CHAR_SHARP + extra.F_WHOLE.format(this.getSharpResist())
-				+ " "+extra.CHAR_BLUNT + extra.F_WHOLE.format(this.getBluntResist())
-				+ " "+extra.CHAR_PIERCE + extra.F_WHOLE.format(this.getPierceResist())
-				+ " cost: " +  extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
-				+ (canShow == 1 ? " (raw deal)" : "");
+				+ extra.ITEM_DESC_PROP+" "+extra.CHAR_SHARP + extra.F_WHOLE.format(this.getSharpResist())
+				+ extra.ITEM_DESC_PROP+" "+extra.CHAR_BLUNT + extra.F_WHOLE.format(this.getBluntResist())
+				+ extra.ITEM_DESC_PROP+" "+extra.CHAR_PIERCE + extra.F_WHOLE.format(this.getPierceResist())
+				+ extra.ITEM_DESC_PROP+" cost"+extra.PRE_WHITE+": " +extra.ITEM_VALUE+ extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
+				+ (canShow == 1 ?extra.TIMID_RED+" (raw deal)" : "");
 		}
 		String base = getBaseName();
-		return "  They refuse to show you something you think " + extra.pluralIsA(base) + " "+base+".";
+		return extra.TIMID_GREY+"  They refuse to show you something you think " + extra.pluralIsA(base) + " "+base+".";
 	}
 	
 	@Override

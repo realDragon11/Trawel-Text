@@ -364,25 +364,28 @@ public class Attack implements IAttack{
 			frost += w.getEnchant().getFreezeMod()*totalDam;
 			elec += w.getEnchant().getShockMod()*totalDam;
 		}
+		String p = extra.ITEM_DESC_PROP;
+		String g = extra.ITEM_WANT_HIGHER;
+		String b = extra.ITEM_WANT_LOWER;
 		extra.println(
-			" "+extra.cutPadLenFront(8,name)+"="
-			+" Raw DPI:" + extra.cutPadLenError(5, extra.F_TWO_TRAILING.format(getDPI()*damMult)) 
+			" "+extra.STAT_HEADER+extra.cutPadLenFront(8,name)+extra.PRE_WHITE+"="
+			+p+" Raw DPI:" +g+extra.cutPadLenError(5, extra.F_TWO_TRAILING.format(getDPI()*damMult)) 
 			//+" Against Equity DPI: " + extra.F_WHOLE.format(dpi/expectedAverage)
-			+" Rarity:" + extra.cutPadLenError(5, extra.formatPerSubOne(holdingStance.getRarity(this)))
-			+" Base Accuracy:" +  extra.cutPadLenError(5, extra.format(hitMult))
-			+" Warmup:" +  extra.cutPadLenError(3, extra.F_WHOLE.format(warmup))
-			+" Cooldown:" + extra.cutPadLenError(3, extra.F_WHOLE.format(cooldown))
-			+" Total Delay:" + extra.cutPadLenError(4, extra.F_WHOLE.format(warmup+cooldown))
+			+p+" Rarity:" +extra.ITEM_VALUE+ extra.cutPadLenError(5, extra.formatPerSubOne(holdingStance.getRarity(this)))
+			+p+" Base Accuracy:"+g+extra.cutPadLenError(5, extra.format(hitMult))
+			+p+" Warmup:"+b +extra.cutPadLenError(3, extra.F_WHOLE.format(warmup))
+			+p+" Cooldown:"+b + extra.cutPadLenError(3, extra.F_WHOLE.format(cooldown))
+			+p+" Total Delay:"+b + extra.cutPadLenError(4, extra.F_WHOLE.format(warmup+cooldown))
 			);
 		extra.println(
-				"  Base Damage="
-				+(getSharp() > 0 ? " Sharp: " + extra.F_WHOLE.format(damMult*getSharp()*w.getMat().sharpMult) : "")
-				+(getBlunt() > 0 ? " Blunt: " + extra.F_WHOLE.format(damMult*getBlunt()*w.getMat().bluntMult) : "")
-				+(getPierce() > 0 ? " Pierce: " + extra.F_WHOLE.format(damMult*getPierce()*w.getMat().pierceMult) : "")
+				extra.STAT_HEADER+"  Base Damage"+extra.PRE_WHITE+"="
+				+(getSharp() > 0 ? p+" Sharp: " +g+ extra.F_WHOLE.format(damMult*getSharp()*w.getMat().sharpMult) : "")
+				+(getBlunt() > 0 ? p+" Blunt: " +g+ extra.F_WHOLE.format(damMult*getBlunt()*w.getMat().bluntMult) : "")
+				+(getPierce() > 0 ? p+" Pierce: " +g+ extra.F_WHOLE.format(damMult*getPierce()*w.getMat().pierceMult) : "")
 				
-				+(ignite > 0 ? " Ignite: " + extra.F_WHOLE.format(damMult*ignite) : "")
-				+(frost > 0 ? " Frost: " + extra.F_WHOLE.format(damMult*frost) : "")
-				+(elec > 0 ? " Elec: " + extra.F_WHOLE.format(damMult*elec) : "")
+				+(ignite > 0 ? p+" Ignite: " +g+ extra.F_WHOLE.format(damMult*ignite) : "")
+				+(frost > 0 ? p+" Frost: " +g+ extra.F_WHOLE.format(damMult*frost) : "")
+				+(elec > 0 ? p+" Elec: " +g+ extra.F_WHOLE.format(damMult*elec) : "")
 				);
 		
 	}

@@ -127,7 +127,7 @@ public class Networking {
 		    netIn = socket.getInputStream();
 		    System.out.println("Connection.");
 		    connected = true;
-		    extra.println("Connected!");
+		    System.out.println("Connected!");
 		    return true;
 			}catch(Exception e) {
 				System.out.println("Connection failed.");
