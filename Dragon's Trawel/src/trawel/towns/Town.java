@@ -414,7 +414,7 @@ public class Town extends TContextOwner{
 				for (Feature f: features) {
 					if (f.canShow()) {
 						mList.add(new MenuSelectFeature(f));
-						if (Player.getTutorial() && f.getTutorialText() != null) {
+						if (mainGame.displayFeatureText && f.getTutorialText() != null) {
 							mList.add(new MenuSelectFeature(f) {
 	
 								@Override

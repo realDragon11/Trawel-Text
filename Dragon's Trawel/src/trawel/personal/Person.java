@@ -2107,8 +2107,8 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	
 	public void attributeDescLongPrint() {
 		if (Player.getTutorial()) {
-			extra.println("Your attributes include Strength, Dexterity, and Clarity. Strength lets you carry more stuff. If you can't carry your stuff, you suffer penalities to Dexterity. Dexterity influences your dodge when factoring in your restrictive equipment.");
-			extra.println("Attributes below 100 have penalties, above 100 have bonuses. This is typically a 50% penalty at 0, and +10% bonus for every 100 above 100. Dexterity is more involved for dodge, but non-dodge applications of dexterity don't have penalties for sub 100 numbers.");
+			extra.println("Your attributes include Strength, Dexterity, and Clarity. Strength lets you carry more stuff. If you can't carry your stuff, you suffer penalities to Dexterity. Dexterity influences your dodge when factoring in your restrictive equipment, which also impair your Dexterity.");
+			extra.println("Attributes above 100 have bonuses. This is a +10% bonus for every 100 above 100. Dexterity is more involved due to being restricted by equipment weight and load, but cannot have a penalty to its pure multiplier.");
 			extra.println("Strength mult applies to physical damage from weapons, Dexterity mult applies to hit roll.");
 		}
 		//str section

@@ -129,6 +129,7 @@ public class mainGame {
 	public static boolean displayTravelText;
 	public static boolean displayFlavorText;
 	public static boolean displayLocationalText;
+	public static boolean displayFeatureText;
 	public static boolean displayOwnName;
 	public static boolean displayOtherCombat;
 	public static boolean showLargeTimePassing;
@@ -356,7 +357,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return doTutorial +" Tutorial. (Does not impact story tutorial)";
+						return doTutorial +" extra Tutorial Text";
 					}
 
 					@Override
@@ -555,6 +556,19 @@ public class mainGame {
 									public boolean go() {
 										displayLocationalText = !displayLocationalText;
 										prefs.setProperty("locational_text", displayLocationalText+"");
+										return false;
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Feature Text " + displayFeatureText + " (diplays type of town feature under its name)";
+									}
+
+									@Override
+									public boolean go() {
+										displayFeatureText = !displayFeatureText;
+										prefs.setProperty("feature_text", displayFeatureText+"");
 										return false;
 									}});
 								list.add(new MenuSelect() {
@@ -1332,6 +1346,7 @@ public class mainGame {
 			displayTravelText = Boolean.parseBoolean(prefs.getProperty("travel_text","TRUE"));
 			displayFlavorText = Boolean.parseBoolean(prefs.getProperty("flavor_text","TRUE"));
 			displayLocationalText = Boolean.parseBoolean(prefs.getProperty("locational_text","TRUE"));
+			displayFeatureText = Boolean.parseBoolean(prefs.getProperty("feature_text","TRUE"));
 			displayOwnName = Boolean.parseBoolean(prefs.getProperty("ownname_text","TRUE"));
 			displayOtherCombat = Boolean.parseBoolean(prefs.getProperty("othercombat_text","TRUE"));
 			showLargeTimePassing= Boolean.parseBoolean(prefs.getProperty("largetime_wait","TRUE"));
