@@ -51,6 +51,7 @@ import trawel.towns.nodes.Grove;
 import trawel.towns.nodes.Mine;
 import trawel.towns.nodes.NodeConnector;
 import trawel.towns.nodes.NodeFeature;
+import trawel.towns.nodes.NodeFeature.Shape;
 import trawel.towns.services.Altar;
 import trawel.towns.services.Altar.AltarForce;
 import trawel.towns.services.Appraiser;
@@ -168,7 +169,7 @@ public class WorldGen {
 		Town tevar = new Town("Tevar",3,rona,new Point(4,5));
 		tevar.addFeature(new Store(2));
 		tevar.addFeature(new Arena("Epino Arena",5,3,24*30,150,149));
-		addConnection(homa,tevar,"road","red road");
+		//addConnection(homa,tevar,"road","red road");//now you must go through unun
 		addConnection(tevar,unun,"road","blue road");
 		tevar.addFeature(new Forest("The Forest of Vicissitude",2));
 		tevar.addFeature(new Mine("Ole' Tevar Mine",tevar,null,NodeFeature.Shape.NONE));
@@ -329,13 +330,12 @@ public class WorldGen {
 		
 		Town denok = new Town("Denok",5,teran,new Point(12,1));
 		addConnection(denok,yena,"road","apple road");
-		denok.addFeature(new Store(4,3));
+		denok.addFeature(new Store(4,6));
 		denok.addFeature(new Store(5,5));
 		denok.addFeature(new Forest("Outlaying Wilds",4));
 		denok.addFeature(new Grove("The Shaman's Clearing",denok,20));
 		denok.addFeature(new Doctor("The Shaman's Hut",denok));
 		denok.addFeature(new Mine("Denok's Mine",denok,null,NodeFeature.Shape.NONE));
-		denok.addTravel();
 		denok.tTags.add(TownTag.DRUDIC);
 		
 		Town erin = new Town("Erin",6,teran,new Point(10,4));
@@ -411,29 +411,33 @@ public class WorldGen {
 		Island apen = new Island("Apen",w);
 		plane.addWorld(w);
 		Town holik = new Town("Holik", 10, apen, new Point(2,3));
-		holik.addFeature(new Oracle("holik oracle",9));
+		holik.addFeature(new Oracle("The Worldgreeter",9));
+		holik.addFeature(new Doctor("'Universal Compassion'", holik));
 		holik.addTravel();
 		holik.addTravel();
 		holik.addTravel();
 		w.setStartTown(holik);
 		holik.tTags.add(TownTag.MYSTIC);
+		holik.tTags.add(TownTag.RICH);
 		
 		Town yonuen = new Town("Yonuen",11, apen, new Point(4,3));
 		addConnection(holik,yonuen,"road","bliz road");
 		yonuen.addFeature(new Store(9));
-		yonuen.addFeature(new Arena("yonuen arena",9,1,24,3,24));
-		yonuen.addFeature(new Library("yonuen library",yonuen));
+		yonuen.addFeature(new Store(9));
+		yonuen.addFeature(new Dungeon("Skysundering Tower", yonuen, Shape.TOWER, 1));
+		yonuen.addFeature(new RogueGuild("The Open Adventuring Guild"));
 		yonuen.addTravel();
-		yonuen.addTravel();
-		yonuen.tTags.add(TownTag.ARCANE);
+		yonuen.tTags.add(TownTag.ADVENTURE);
+		yonuen.tTags.add(TownTag.CITY);
+		yonuen.tTags.add(TownTag.LAWLESS);
 		
 		Town unika = new Town("Unika",12, apen, new Point(3,5));
 		addConnection(holik,unika,"road","ren road");
 		addConnection(yonuen,unika,"road","tenka road");
-		unika.addFeature(new Arena("'Lucky Break'",10,1,24,12,135));
+		unika.addFeature(new Arena("'Lucky Break'",12,1,24,12,135));
 		unika.addFeature(new Grove("Unika's Backyard",unika));
 		unika.addFeature(new Champion(15));
-		unika.addTravel();
+		unika.tTags.add(TownTag.SMALL_TOWN);
 		//unika.addFeature(new Inn("unika inn",10,unika,null));
 		
 		Town peana = new Town("Peana",12, apen, new Point(2,7));
@@ -460,6 +464,7 @@ public class WorldGen {
 		inka.addFeature(new Mine("Motherload Mine", inka,30,14,NodeFeature.Shape.NONE));
 		inka.addFeature(new Mine("Deep Vein Dig", inka,80,12,NodeFeature.Shape.NONE));
 		inka.addFeature(new Slum(inka,"Miner's Subtown",true));
+		inka.addFeature(new Store("M. Hardhat's Shop",12,0));
 		inka.addTravel();
 		inka.tTags.add(TownTag.CITY);
 		inka.tTags.add(TownTag.MINERALS);
@@ -469,9 +474,12 @@ public class WorldGen {
 		pipa.addFeature(new WitchHut("Oak Coven's Hut",pipa));
 		pipa.addFeature(new Grove("Deciduous Sprawl",pipa));
 		pipa.addFeature(new Altar("Thorny Throne",AltarForce.FOREST));
+		pipa.addFeature(new Library("'Primal Knowledge'", pipa));
 		pipa.tTags.add(TownTag.ALCHEMY);
 		pipa.tTags.add(TownTag.DRUDIC);
 		pipa.tTags.add(TownTag.HIDDEN);
+		
+		//TODO: need more islands
 		
 		return holik;
 	}
