@@ -179,21 +179,17 @@ public class MineNode implements NodeType{
 		case 9: 
 			//made.name = "cultists"; made.interactString = "approach cultists";
 			//made.storage1 = RaceFactory.getCultist(made.level);
-			int cultLevel = holder.getLevel(madeNode);
-			int cultAmount = 1;
-			if (cultLevel > 3) {
-				if (extra.chanceIn(2,3)) {
-					cultAmount = 3;
-					cultLevel -=2;
-				}
-			}
+			int cultLevel = holder.getLevel(madeNode)+2;
+			int mookLevel = Math.max(1,cultLevel-4);
+			holder.setLevel(madeNode, cultLevel);
+			int cultAmount = extra.randRange(3, 4);
 			List<Person> cultPeeps = new ArrayList<Person>();
 			for (int i = 0;i < cultAmount;i++) {
 				if (i == 0) {
-					cultPeeps.add(RaceFactory.makeCultistLeader(cultLevel+1,CultType.BLOOD));
+					cultPeeps.add(RaceFactory.makeCultistLeader(cultLevel,CultType.BLOOD));
 					continue;
 				}
-				Person c = RaceFactory.makeCultist(cultLevel+1,CultType.BLOOD);
+				Person c = RaceFactory.makeCultist(mookLevel,CultType.BLOOD);
 				c.setFlag(PersonFlag.IS_MOOK,true);
 				cultPeeps.add(c);
 			}
@@ -460,12 +456,13 @@ public class MineNode implements NodeType{
 				List<Person> cultists = holder.getStorageFirstClass(node,List.class);
 				Person leader = extra.getNonAddOrFirst(cultists);
 				if (cultists.size() > 1) {
-					extra.println(extra.PRE_BATTLE + "Attack " + leader.getName() +" and their acolytes?");
+					extra.println(extra.PRE_BATTLE + "Attack " + leader.getName() +" and their "+(cultists.size()-1)+" devout acolytes?");
 				}else {
 					extra.println(extra.PRE_BATTLE + "Attack " + leader.getName() +"?");
 				}
 				if (extra.yesNo()) {
 					holder.setStateNum(node,6);//angy cultists are very madge
+					holder.setForceGo(node, true);
 					return true;
 				}
 				return false;
