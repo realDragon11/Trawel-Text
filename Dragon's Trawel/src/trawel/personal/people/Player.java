@@ -1096,8 +1096,8 @@ public class Player extends SuperPerson{
 													extra.println("The main three properties of an Armor are how well it defends against physical damage types. This is a result of it's effective level, material, and style.");
 													extra.println("Armors also influence your agility multiplier penalty, have a weight which can weigh you down if you can't fit all your used equipment in your capacity, and have elemental damage multipliers.");
 													extra.println("Unlike weapons, armors have positive (Quality), negative (Flaw), and neutral (trait) traits.");
-													extra.println();
-													extra.println("Would you like to see a list of armor traits?");
+													extra.println(" ");
+													extra.println(extra.STAT_HEADER+"Would you like to see a list of armor traits?");
 													if (extra.yesNo()) {
 														for (ArmorQuality q: Armor.ArmorQuality.values()) {
 															extra.println(q.addText() + (q.mechDesc != null ? " ("+q.mechDesc+")" : ""));
@@ -1117,11 +1117,11 @@ public class Player extends SuperPerson{
 													extra.println("Weapons are items, and thus have a value, although most of the time you will melt them into Aether.");
 													extra.println("The main importance of weapons are for their attacks- every weapon type has a set, and the final numbers are determined by it's effective level and material.");
 													extra.println("Weapons also tend to have weapon qualities. This glossary does not include a list of all weapon attacks, but you can browse them in a format that tests their effectiveness from one of the main menu tests.");
-													extra.println();
-													extra.println("Would you like to see a list of weapon qualities?");
+													extra.println(" ");
+													extra.println(extra.STAT_HEADER+"Would you like to see a list of weapon qualities?");
 													if (extra.yesNo()) {
 														for (WeaponQual q: WeaponQual.values()) {
-															extra.println(q.name +": " + q.desc);
+															extra.println(extra.ITEM_WANT_HIGHER+q.name +extra.PRE_WHITE+": " + q.desc);
 														}
 													}
 													return false;
@@ -1137,8 +1137,8 @@ public class Player extends SuperPerson{
 												public boolean go() {
 													extra.println("Skills are abilities, typically conditional, that add things that your character can do. Most of them apply automatically, some give you more options, and others must be set up.");
 													extra.println("There are a lot of skills, but having a skill is a binary state- if you get it from another skill source, you still 'only' have it once. Simply put, skills don't stack with themselves.");
-													extra.println();
-													extra.println("Would you like to see a list of skills?");
+													extra.println(" ");
+													extra.println(extra.STAT_HEADER+"Would you like to see a list of skills?");
 													if (extra.yesNo()) {
 														for (Skill s: Skill.values()) {
 															extra.println(s.explain());
@@ -1157,13 +1157,14 @@ public class Player extends SuperPerson{
 												public boolean go() {
 													extra.println("Archetypes are a skill source, and uniquely unlock Feat Types that you can pick Feats from when you level up. Some archetypes also require similar archetypes to be obtained before they can be picked.");
 													extra.println("The game encourages you to have 2 + 1 for every 5 levels archetypes, but you are only required to unlock one before you can start picking Feats instead.");
-													extra.println();
-													extra.println("Would you like to see a list of archetypes?");
+													extra.println(" ");
+													extra.println(extra.STAT_HEADER+"Would you like to see a list of archetypes?");
 													List<MenuItem> alist = new ArrayList<MenuItem>();
-													if (extra.yesNo()) {
-														for (Archetype a: Archetype.values()) {
-															alist.addAll(IHasSkills.dispMenuItem(a));
-														}
+													if (!extra.yesNo()) {
+														return false;
+													}
+													for (Archetype a: Archetype.values()) {
+														alist.addAll(IHasSkills.dispMenuItem(a));
 													}
 													extra.menuGo(new ScrollMenuGenerator(alist.size(), "previous <> archetypes", "next <> archetypes") {
 
@@ -1194,13 +1195,14 @@ public class Player extends SuperPerson{
 												public boolean go() {
 													extra.println("Feats are a skill source, meaning they grant skills, might grant a skill config action to use, and attributes. Unlike other skill sources, feats tend to give 5 , 15, or 30 attribute points if they give a normal amount of skills.");
 													extra.println("All level up skill sources that aren't Archetypes are Feats.");
-													extra.println();
-													extra.println("Would you like to see a list of feats?");
+													extra.println(" ");
+													extra.println(extra.STAT_HEADER+"Would you like to see a list of feats?");
+													if (!extra.yesNo()) {
+														return false;
+													}
 													List<MenuItem> alist = new ArrayList<MenuItem>();
-													if (extra.yesNo()) {
-														for (Feat a: Feat.values()) {
-															alist.addAll(IHasSkills.dispMenuItem(a));
-														}
+													for (Feat a: Feat.values()) {
+														alist.addAll(IHasSkills.dispMenuItem(a));
 													}
 													extra.menuGo(new ScrollMenuGenerator(alist.size(), "previous <> feats", "next <> feats") {
 
@@ -1231,13 +1233,14 @@ public class Player extends SuperPerson{
 												public boolean go() {
 													extra.println("Perks are a skill source, granting skills and attributes.");
 													extra.println("Unlike Feats and Archetypes, you get Perks from doing stuff, like killing bosses, instead of by leveling up.");
-													extra.println();
-													extra.println("Would you like to see a list of perks?");
+													extra.println(" ");
+													extra.println(extra.STAT_HEADER+"Would you like to see a list of perks?");
+													if (!extra.yesNo()) {
+														return false;
+													}
 													List<MenuItem> alist = new ArrayList<MenuItem>();
-													if (extra.yesNo()) {
-														for (Perk a: Perk.values()) {
-															alist.addAll(IHasSkills.dispMenuItem(a));
-														}
+													for (Perk a: Perk.values()) {
+														alist.addAll(IHasSkills.dispMenuItem(a));
 													}
 													extra.menuGo(new ScrollMenuGenerator(alist.size(), "previous <> perks", "next <> perks") {
 
@@ -1272,14 +1275,14 @@ public class Player extends SuperPerson{
 													extra.println("Rolled wounds typically have instant or short-term effects. They also can be inflicted through skills.");
 													extra.println("Condition wounds occur automatically when a body part reaches 50% 'condition'. They tend to be long lasting effects that highlight the downward spiral of combat.");
 													extra.println("There is no actual difference between these wounds mechanically, this is just a classification to help you understand how they are used. Condition wounds are also often called Injuries.");
-													extra.println();
-													extra.println("Would you like to see a list of wounds? Values will not display if they vary.");
+													extra.println(" ");
+													extra.println(extra.STAT_HEADER+"Would you like to see a list of wounds? Values will not display if they vary.");
 													if (extra.yesNo()) {
 														for (Wound w: Wound.values()) {
 															try {
-																extra.println(w.name + " - " + String.format(w.desc,(Object[])Combat.woundNums(null,null,null,null,w)) + " ("+w.active+")");
+																extra.println(extra.TIMID_RED+w.name + extra.PRE_WHITE+ " - " + String.format(w.desc,(Object[])Combat.woundNums(null,null,null,null,w)) + " ("+w.active+")");
 															}catch (Exception e) {
-																extra.println(w.name + ": " + w.desc + " ("+w.active+")");
+																extra.println(extra.TIMID_RED+w.name + extra.PRE_WHITE+ ": " + w.desc + " ("+w.active+")");
 															}
 														}
 													}
@@ -1297,11 +1300,11 @@ public class Player extends SuperPerson{
 													extra.println("Effects are temporary status effects. They are all counters, although many have that counter limited to 1.");
 													extra.println("Effects don't store any information in themselves other how many a Person has.");
 													extra.println("Some effects persist after battle, and through death, which means they need to be cured at a Doctor or by a Shaman.");
-													extra.println();
-													extra.println("Would you like to see a list of Effects?");
+													extra.println(" ");
+													extra.println(extra.STAT_HEADER+"Would you like to see a list of Effects?");
 													if (extra.yesNo()) {
 														for (Effect e: Effect.values()) {
-															extra.println(e.getName() + ": " + e.getDesc() + " Persists: " + e.lasts() + " Stacks: " +e.stacks());
+															extra.println(extra.TIMID_MAGENTA+ e.getName()+extra.PRE_WHITE + ": " + e.getDesc() + " Persists: " + e.lasts() + " Stacks: " +e.stacks());
 														}
 													}
 													return false;
@@ -1319,11 +1322,14 @@ public class Player extends SuperPerson{
 													extra.println("DrawBanes, true to their name, can also attract or repel random encounters. For example, meat attracts wolves and bears, gold attracts thieves, some magic items attract fell reavers, and virgins attract unicorns.");
 													extra.println("You can discard DrawBanes from your inventory using the Player menu, which you might want to do to stop getting accosted by animals.");
 													extra.println("You also have a limited amount of space to store them. Note that some drawbanes will also be attracted to other aspects of your character, such as vampires attacking you if you're soaked in blood.");
-													extra.println();
-													extra.println("Would you like to see a list of DrawBanes?");
+													extra.println(" ");
+													extra.println(extra.STAT_HEADER+"Would you like to see a list of DrawBanes?");
 													if (extra.yesNo()) {
 														for (DrawBane d: DrawBane.values()) {
-															extra.println(d.getName()+":" + d.getFlavor() + " Brewable: "+ d.getCanBrew() + " Value: " + d.getValue() + " Merchant Value: " + extra.F_TWO_TRAILING.format(d.getMValue()));
+															extra.println(extra.TIMID_MAGENTA+d.getName()+extra.PRE_WHITE+":" + d.getFlavor()
+															+ extra.ITEM_DESC_PROP+" Brewable: "+extra.TIMID_MAGENTA+ d.getCanBrew()
+															+ extra.ITEM_DESC_PROP+" Value: "+extra.ITEM_VALUE+ d.getValue()
+															+ extra.ITEM_DESC_PROP+ " Merchant Value: "+extra.ITEM_VALUE + extra.F_TWO_TRAILING.format(d.getMValue()));
 														}
 													}
 													return false;
@@ -1339,8 +1345,8 @@ public class Player extends SuperPerson{
 												public boolean go() {
 													extra.println("Seeds can be planted in Plant Spots, either in Node Exploration town Features, or Garden town Features. They will then grow as time passes. Some seeds grow into items that can be harvested, while others can only be taken.");
 													extra.println("Seeds have a limited inventory space, but are quite rare, so it is a bit harder to reach that cap. They can't be used for anything else, but often can be used to grow DrawBanes.");
-													extra.println();
-													extra.println("Would you like to see a list of Seeds?");
+													extra.println(" ");
+													extra.println(extra.STAT_HEADER+"Would you like to see a list of Seeds?");
 													if (extra.yesNo()) {
 														for (Seed d: Seed.values()) {
 															extra.println(d.toString());
