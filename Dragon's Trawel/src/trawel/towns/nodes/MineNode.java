@@ -123,7 +123,9 @@ public class MineNode implements NodeType{
 			for (int i = 1;i < size;i++) {
 				newNode = getNode(start,lastNode,i,tier+(i/10));
 				start.setFloor(newNode,i);
-				start.setMutualConnect(newNode, lastNode);
+				if (i != 1) {
+					start.setMutualConnect(newNode, lastNode);
+				}
 				lastNode = newNode;
 			}
 			newNode = NodeType.NodeTypeNum.BOSS.singleton.getNode(start, lastNode,size+2, 1+tier+(int)Math.ceil(size/10));
