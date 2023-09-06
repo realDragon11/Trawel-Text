@@ -70,10 +70,12 @@ import trawel.towns.services.Oracle;
 public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
-	public static final String VERSION_STRING = "v0.8.b_5";
+	public static final String VERSION_STRING = "v0.8.b__6";
 	public static final String VERSION_DATE = " updated Sept 5th 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
+			"b_6: {part 1/?} Updated stat displays and item 'higher/lower is better' displays. Cleaned up Greap worldgen, although it is still not a complete world. Added Forest altar.",
+			
 			"b_5: {part 1/4} You can now recruit adventurers in certain dungeons. All other dungeons had their mass battles removed. In 'dangerous' dungeons, these adventurers will assist you in the 'high security' checkpoints, and against the boss. Currently this is just the Tower of Fate and the Fatespinner. They will get a share of the loot, and if higher level than you, might get first pick. They will not be interested in joining you if they are 2 or more levels higher. They will not revive on death, and will leave if you do not visit the dungeon for a while. Fighting with them will make them take longer to leave than just visiting will.",
 			"b_5: {part 2/4} Passive population migration has been fixed and tweaked, now if you play close attention you might be able to see persons moving from town to town. They have a slight preference to move towards towns with Inns, but also to not overcrowd a town past what its features can support.",
 			"b_5: {part 3/4} All Features and Nodes now have updated behavior to update the background in the legacy graphical, and often fall back to different art now, since not all of it was made. (Same as the treatment armor, people, and weapons got). The 'examine closely' for weapons has been improved, and armor qualities also appear in world again, with slightly different functionalities.",
@@ -1357,6 +1359,7 @@ public class mainGame {
 			if (autoConnect) {
 				System.out.println("Please wait for the graphical to load...");
 				Networking.handleAnyConnection(legacyConnect ? ConnectType.LEGACY : ConnectType.GDX);
+				extra.println("Trawel, Gameplay Version "+VERSION_STRING+VERSION_DATE);
 			}else {
 				Networking.handleAnyConnection(ConnectType.NONE);
 			}
