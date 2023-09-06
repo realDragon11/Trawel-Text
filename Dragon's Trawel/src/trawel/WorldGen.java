@@ -185,6 +185,7 @@ public class WorldGen {
 		Town hemo = new Town("Hemo",3,rona,new Point(5,7));
 		addConnection(hemo,tevar,"road","purple road");
 		addConnection(hemo,unun,"road","black valley");
+		addConnection(hemo,unun,"ship","neglected current");
 		Store s = new Store(1,6);
 		hemo.addFeature(s);
 		hemo.addFeature(new Grove("The Odd Grove",hemo,12));
@@ -200,6 +201,8 @@ public class WorldGen {
 			}
 			
 		});
+		
+		//TODO: town to the west of hemo that connects tevar and tanak from a landlocked route
 		
 		Town tanak = new Town("Tanak",5,rona,new Point(4,9));
 		addConnection(hemo,tanak,"road","windy pass");
@@ -221,7 +224,7 @@ public class WorldGen {
 		
 		Town lokan = new Town("Lokan",4,rona,new Point(5,10));
 		addConnection(lokan,tanak,"road","flat walk");
-		addConnection(lokan,unun,"ship","two way current");
+		addConnection(lokan,hemo,"ship","two way current");
 		lokan.addFeature(new Library("Records of Value", lokan));
 		lokan.addFeature(new Oracle("Appraiser of Fortune",3));
 		lokan.addFeature(new Appraiser("Appraiser of Steel"));
@@ -251,7 +254,7 @@ public class WorldGen {
 			}
 			
 		});
-		Town fortMerida = new Town("Fort Merida",5, rona,(byte) 1,(byte)11, null);
+		Town fortMerida = new Town("Fort Merida",5, rona,(byte) 2,(byte)10, null);
 		fortMerida.addFeature(new WizardTower(4));
 		addConnection(fortMerida,haka,"road","mountain pass");
 		
@@ -385,8 +388,12 @@ public class WorldGen {
 		repa.addTravel();
 		repa.addTravel();
 		repa.addFeature(new Inn("Repa's Rest",8,erin,null));
-		addConnection(repa,greap(),"teleport","world teleport (eonao-greap)");
+		repa.tTags.add(TownTag.TRAVEL);
 		
+		
+		//TODO: add island to the south of repa and to the east of tanak/lokan
+		
+		addConnection(repa,greap(),"teleport","world teleport (eonao-greap)");
 		
 		for (World wor: plane.worlds()) {
 			townFinal(wor);
@@ -419,6 +426,7 @@ public class WorldGen {
 		w.setStartTown(holik);
 		holik.tTags.add(TownTag.MYSTIC);
 		holik.tTags.add(TownTag.RICH);
+		holik.tTags.add(TownTag.TRAVEL);
 		
 		Town yonuen = new Town("Yonuen",11, apen, new Point(4,3));
 		addConnection(holik,yonuen,"road","bliz road");

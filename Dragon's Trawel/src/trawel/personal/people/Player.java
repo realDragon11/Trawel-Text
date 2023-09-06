@@ -1,6 +1,7 @@
 package trawel.personal.people;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
@@ -50,6 +51,7 @@ import trawel.time.TimeEvent;
 import trawel.towns.Calender;
 import trawel.towns.Connection;
 import trawel.towns.Feature;
+import trawel.towns.Island;
 import trawel.towns.Town;
 import trawel.towns.World;
 import trawel.towns.misc.Docks;
@@ -1580,6 +1582,55 @@ public class Player extends SuperPerson{
 														extra.println();
 														return false;
 													}});
+												if (Player.player.getCheating()) {
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Debug: Print Terminal Map";
+														}
+
+														@Override
+														public boolean go() {
+															char[][] map = new char[w.getXSize()][w.getYSize()];
+															
+															for (int i = 0; i < map.length; i++) {
+																Arrays.fill(map[i], ' ');
+															}
+															for(Island i: w.getIslands()) {
+																for (Town town: i.getTowns()) {
+																	if (t != town) {
+																		if (map[town.getLocationX()-1][town.getLocationY()-1] != ' ') {
+																			if (map[town.getLocationX()-1][town.getLocationY()-1] == 'x') {
+																				map[town.getLocationX()-1][town.getLocationY()-1] = 'y';
+																			}else {
+																				if (map[town.getLocationX()-1][town.getLocationY()-1] != 'y') {
+																					map[town.getLocationX()-1][town.getLocationY()-1] = 'v';
+																				}
+																			}
+																			break;
+																		}
+																		//radix explanation: https://stackoverflow.com/a/43035605
+																		map[town.getLocationX()-1][town.getLocationY()-1] = Character.forDigit(town.getTier()%10, 10);		
+																	}else {
+																		if (map[town.getLocationX()-1][town.getLocationY()-1] == ' ') {
+																			map[town.getLocationX()-1][town.getLocationY()-1] = 'x';
+																		}else {
+																			map[town.getLocationX()-1][town.getLocationY()-1] = 'y';
+																		}
+																	}
+																}
+															}
+															
+															for (int j = 0; j < w.getYSize(); j++) {
+																for (int i = 0; i < map.length; i++) {
+																	extra.print(""+map[i][j]);
+																}
+																extra.println();
+															}
+															return false;
+														}});
+												}
 												list.add(new MenuBack());
 												return list;
 											}});

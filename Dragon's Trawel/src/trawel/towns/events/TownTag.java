@@ -14,7 +14,8 @@ public enum TownTag {
 	HELLISH("Hellish","hellish energies"),
 	MINERALS("Mineral Abundance","vast mineral abundance"),
 	RICH("Wealthy","wealth"),
-	HIDDEN("Hidden","obscure location"),;
+	HIDDEN("Hidden","obscure location"),
+	TRAVEL("Travelers","many travelers");
 	
 	
 	public final String name, desc;
