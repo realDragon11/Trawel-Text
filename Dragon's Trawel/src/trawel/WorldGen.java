@@ -347,7 +347,6 @@ public class WorldGen {
 		erin.addFeature(new Arena("Grandstander's Stands (daily bout)",5,1,24,12,39));
 		erin.addFeature(new Inn("Scholar's Respite",5,erin,null));
 		erin.addFeature(new Library("Alex's Library",erin));
-		erin.addFeature(new Mountain("A Very Large Hill",5));
 		erin.addFeature(new Appraiser("Material Patent Offices"));
 		erin.tTags.add(TownTag.ARCANE);
 		erin.setFirstPrinter(new PrintEvent(){
@@ -382,7 +381,7 @@ public class WorldGen {
 		Town repa = new Town("Repa",10,teran,new Point(14,6));
 		addConnection(repa,tunka,"road","right-over road");
 		//add connection to a new world area
-		repa.addTravel();
+		erin.addFeature(new Mountain("Mountain Teleporter Brace",9));
 		repa.addTravel();
 		repa.addTravel();
 		repa.addTravel();
@@ -392,6 +391,43 @@ public class WorldGen {
 		
 		
 		//TODO: add island to the south of repa and to the east of tanak/lokan
+		
+		Island epan = new Island("Epan",w);
+		//note: all should be barren
+		
+		Town senal = new Town("Senal",6,epan,(byte)10,(byte)9);
+		addConnection(senal,tanak,"teleport","Sea Skip Ritual");
+		addConnection(senal,lokan,"ship","Bygone Current");
+		senal.tTags.add(TownTag.BARREN);
+		senal.setFirstPrinter(new PrintEvent() {
+
+			@Override
+			public void print() {
+				extra.println("A few Eras ago, Senal was used as a trade route. But the island of Epan had its land salted, and civilization moved north, to Alhax.");
+			}});
+		
+		Town quen = new Town("Quen",9,epan,(byte)12,(byte)10);
+		addConnection(quen,senal,"road","Ancient Path");
+		quen.tTags.add(TownTag.BARREN);
+		quen.tTags.add(TownTag.HISTORY);
+		quen.setFirstPrinter(new PrintEvent() {
+
+			@Override
+			public void print() {
+				extra.println("Quen was once the mighty city that all others aspired to. It first held that pedestal long before written history remains intact. But the countless wars over it eventually destroyed the island of Epan. And tyrants ceased caring over it a few Eras later.");
+			}});
+		
+		Town visan = new Town("Visan",8,epan,(byte)13,(byte)7);
+		addConnection(visan,repa,"teleporter","Barren Bounce");
+		addConnection(visan,senal,"teleporter","Through the Fog");
+		
+		visan.tTags.add(TownTag.BARREN);
+		visan.setFirstPrinter(new PrintEvent() {
+
+			@Override
+			public void print() {
+				extra.println("Like the other towns on the island of Epan, Visan's land is barren. It's current use is as a staging point to break through the magic fog and allow teleporting from Rona to Teran through Epan, but most traders prefer to take the shipping route to the north.");
+			}});
 		
 		addConnection(repa,greap(),"teleport","world teleport (eonao-greap)");
 		
