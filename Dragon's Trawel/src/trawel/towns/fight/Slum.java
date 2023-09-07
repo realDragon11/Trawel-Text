@@ -37,7 +37,7 @@ import trawel.towns.services.Doctor;
 import trawel.towns.services.Store;
 import trawel.towns.services.WitchHut;
 
-public class Slum extends Feature implements QuestBoardLocation{
+public class Slum extends Store implements QuestBoardLocation{
 
 	private boolean removable;
 	public Agent crimeLord;
@@ -45,6 +45,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	private float crimeRating = 10;
 	private int wins = 0;
 	private ReplaceFeatureInterface replacer;
+	private String storename;
 	
 	private boolean canQuest = true;
 	
@@ -74,23 +75,24 @@ public class Slum extends Feature implements QuestBoardLocation{
 		public void printReplaceText();
 	}
 	
-	public Slum() {
+	public Slum(int _tier) {
+		super(_tier,Slum.class);
+		storename = name;
+		tier = _tier;
 		tutorialText = "Slum.";
 		area_type = Area.SLUM;
 	}
 
 	public Slum(Town t, String name,boolean removable) {
-		this();
+		this(t.getTier());
 		town = t;
-		tier = t.getTier();
 		this.name = name;
 		this.removable = removable;
 	}
 	public Slum(Town t, String _name,int _tier,ReplaceFeatureInterface _replacer) {
-		this();
+		this(_tier);
 		name = _name;
 		town = t;
-		tier = _tier;
 		replacer = _replacer;
 		removable = true;
 	}
@@ -131,10 +133,22 @@ public class Slum extends Feature implements QuestBoardLocation{
 			public List<MenuItem> gen() {
 				List<MenuItem> mList = new ArrayList<MenuItem>();
 				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Shop at '"+storename+"'";
+					}
+
+					@Override
+					public boolean go() {
+						extra.menuGo(modernStoreFront());
+						return false;
+					}});
+				mList.add(new MenuSelect() {
 					
 					@Override
 					public String title() {
-						return "hang around (quests)";
+						return "Speak to Fixer (Sidequests)";
 					}
 	
 					@Override
@@ -147,7 +161,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 					
 					@Override
 					public String title() {
-						return "backalleys (crime)";
+						return "Enter Backalleys (Crime)";
 					}
 	
 					@Override
@@ -161,7 +175,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 						
 						@Override
 						public String title() {
-							return extra.PRE_BATTLE +"Attack crime lord.";
+							return extra.PRE_BATTLE +"Attack Crime Lord!";
 						}
 		
 						@Override
@@ -178,7 +192,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 						
 						@Override
 						public String title() {
-							return "Pay to reform slum ("+World.currentMoneyDisplay(removecost)+")";
+							return "Pay to reform district ("+World.currentMoneyDisplay(removecost)+")";
 						}
 		
 						@Override
@@ -221,6 +235,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		timePassed-=time;
 		if (timePassed < 0) {
+			addAnItem();
 			if (canQuest) {this.generateSideQuest();}
 			if (crimeLord == null){//replacing crime lord does not let them do much
 				timePassed = 48;

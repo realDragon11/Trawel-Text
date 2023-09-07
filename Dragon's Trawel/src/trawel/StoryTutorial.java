@@ -15,6 +15,7 @@ import trawel.towns.TravelingFeature;
 import trawel.towns.fight.Arena;
 import trawel.towns.fight.Forest;
 import trawel.towns.fight.Mountain;
+import trawel.towns.fight.Slum;
 import trawel.towns.misc.Docks;
 import trawel.towns.misc.Garden;
 import trawel.towns.nodes.Dungeon;
@@ -248,6 +249,10 @@ public class StoryTutorial extends Story{
 			}
 			if (f instanceof WitchHut) {//must be above store, which it extends
 				extra.println("Witch Huts let you brew potions with 'DrawBanes'. They also sell them, and host collection quests where you can find DrawBanes for yourself.");
+				return;
+			}
+			if (f instanceof Slum) {//must be above store, which it extends
+				extra.println("Districts hold sidequests, backalley vendors, and are often controlled by a Crime Lord. If the Crime Lord is removed, you might be able to pay for reform programs to enfranchise the people there. The cost of such programs will increase with the amount of crime still present.");
 				return;
 			}
 			if (f instanceof Store) {

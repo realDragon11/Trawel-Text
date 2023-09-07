@@ -45,7 +45,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	private List<Quest> sideQuests = new ArrayList<Quest>();
 	
 	public WitchHut(String _name, Town t) {
-		super(WitchHut.class);
+		super(t.getTier(),WitchHut.class);
 		tier = t.getTier();
 		storename = name;
 		name = _name;
@@ -579,6 +579,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			WitchHut.randomRefillsAtTown(town,tier);
 			if (canQuest) {generateSideQuest();}
 			timecounter += extra.randRange(20,40);
+			addAnItem();
 		}
 		return null;
 	}

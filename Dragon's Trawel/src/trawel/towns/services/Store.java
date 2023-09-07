@@ -32,6 +32,7 @@ import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.Town;
 import trawel.towns.World;
+import trawel.towns.fight.Slum;
 
 public class Store extends Feature{
 
@@ -44,6 +45,7 @@ public class Store extends Feature{
 	protected float markup;
 	protected float aetherRate;
 	protected int invSize;
+	protected int itemMinLevel = -1, itemMaxLevel = -1;
 	
 	public static final int INVENTORY_SIZE = 5;
 	
@@ -94,11 +96,29 @@ public class Store extends Feature{
 		this.name = name;
 	}
 	
-	protected Store(Class<? extends Store> subtype) {//for witch hut
+	/**
+	 * used by witch hut and slums
+	 * @param subtype
+	 */
+	protected Store(int tier,Class<? extends Store> subtype) {
 		this();
 		if (subtype == WitchHut.class) {
 			type = 9;
 			this.generate(tier, type);
+		}
+		if (subtype == Slum.class) {
+			itemMinLevel = Math.max(1,tier-6);
+			itemMaxLevel = tier;
+			type = 6;
+			//lower size
+			invSize = extra.randRange(2,4);
+			//move towards a bad aether rate
+			//to simulate lack of ability to deal with aether
+			float max_pen = Player.NORMAL_AETHER_RATE*.3f;
+			if (aetherRate > max_pen) {
+				aetherRate = extra.lerp(aetherRate,max_pen,.4f);
+			}
+			generate(tier, type);
 		}
 	}
 	
@@ -116,7 +136,16 @@ public class Store extends Feature{
 	}
 	
 	public void generate(int tier,int newType) {
-		this.tier = tier;
+		if (this.tier <= 0) {
+			this.tier = tier;//might be overwritten later in case of subclasses
+		}
+		if (itemMinLevel <= 0) {
+			itemMinLevel = Math.max(1,tier-2);
+		}
+		if (itemMaxLevel <= 0) {
+			itemMaxLevel = tier+2;
+		}
+		assert itemMinLevel <= itemMaxLevel;
 		type = newType;
 		switch (type) {
 		case 0: name = extra.choose("Hat","Headwear","Heads and Hair");break;
@@ -133,48 +162,15 @@ public class Store extends Feature{
 		case 11: name = extra.choose("Oddity");break;//collector
 		}
 		name += " " + extra.choose("Store","Market","Shop","Post","Boutique","Emporium","Outlet","Center","Mart","Stand");
-		if (type < 8) {
-			items = new ArrayList<Item>();
-			if (type < 5) {
-				for (int j = 0;j < 5;j++) {
-					items.add(new Armor(Math.max(tier+extra.getRand().nextInt(6)-2,1),type));
-				}
-			}
-			if (type == 5) {
-				for (int j = 0;j < 5;j++) {
-					items.add(Weapon.genMidWeapon(Math.max(tier+extra.getRand().nextInt(6)-2,1)));
-				}
-			}
-			if (type == 6) {
-				for (int j = 0;j < 5;j++) {
-					Random rand = extra.getRand();
-					if (rand.nextFloat() > .5f) {
-						items.add(Weapon.genMidWeapon(Math.max(tier+rand.nextInt(6)-2,1)));
-					}else {
-						items.add(new Armor(Math.max(tier+rand.nextInt(6)-2,1),rand.nextInt(5)));
-					}
-				}
-			}
-			if (type == 7) {
-				for (int j = 0;j < 5;j++) {
-					items.add(RaceFactory.randRace(Race.RaceType.PERSONABLE));
-				}
-			}
-		}
-		
-		if (type >=8 ) {
+
+		if (type >=8) {
 			dbs = new ArrayList<DrawBane>();
-			for (int j = 0;j < 5;j++) {
-				addAnItem();
-			}
-			
+		}else {
+			items = new ArrayList<Item>();
 		}
-	}
-	
-	//TODO put these in tables elsewhere
-	
-	public static DrawBane randomPI() {
-		return extra.choose(DrawBane.MEAT,DrawBane.BAT_WING,DrawBane.APPLE,DrawBane.CEON_STONE,DrawBane.MIMIC_GUTS,DrawBane.BLOOD);
+		for (int j = invSize-1;j >=0;j--) {
+			addAnItem();
+		}
 	}
 	
 	private void serviceItem(Item item) {
@@ -563,25 +559,32 @@ public class Store extends Feature{
 				dbs.add(DrawBane.draw(DrawList.COLLECTOR));
 				return;
 			}
-			
 			return;
 		}
 		if (items.size() >= invSize) {
-			items.remove(extra.randList(items));}
-			if (type < 5) {
-					items.add(new Armor(Math.max(tier+extra.getRand().nextInt(6)-2,1),type));
+			items.remove(extra.randRange(0,items.size()-1));
+		}
+		if (type < 5) {
+			items.add(new Armor(extra.randRange(itemMinLevel, itemMaxLevel),type));
+			return;
+		}
+		if (type == 5) {
+			items.add(Weapon.genMidWeapon(extra.randRange(itemMinLevel, itemMaxLevel)));
+			return;
+		}
+		if (type == 6) {
+			if (extra.randFloat() > .5f) {
+				items.add(Weapon.genMidWeapon(extra.randRange(itemMinLevel, itemMaxLevel)));
+				return;
+			}else {
+				items.add(new Armor(extra.randRange(itemMinLevel, itemMaxLevel)));
+				return;
 			}
-			if (type == 5) {
-					items.add(Weapon.genMidWeapon(Math.max(tier+extra.getRand().nextInt(6)-2,1)));
-			}
-			if (type == 6) {
-				Random rand = extra.getRand();
-				if (rand.nextFloat() > .5f) {
-					items.add(Weapon.genMidWeapon(Math.max(tier+rand.nextInt(6)-2,1)));
-				}else {
-					items.add(new Armor(Math.max(tier+rand.nextInt(6)-2,1),rand.nextInt(5)));
-				}
-			}
+		}
+		if (type == 7) {
+			items.add(RaceFactory.randRace(Race.RaceType.PERSONABLE));
+			return;
+		}
 	}
 	private void goShopping() {
 		if (type == 9) {//potion shops apply some, and also refills
