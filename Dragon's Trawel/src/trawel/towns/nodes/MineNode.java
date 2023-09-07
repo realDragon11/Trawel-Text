@@ -2,6 +2,8 @@ package trawel.towns.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.yellowstonegames.core.WeightedTable;
+
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
@@ -26,23 +28,73 @@ public class MineNode implements NodeType{
 	
 	private static final int EVENT_NUMBER = 10;
 	
+	/**
+	 * these are 0 indexed, and the actual event nums aren't
+	 * <br>
+	 * so +1
+	 */
+	private WeightedTable noneMineRoller, hellMineRoller;
+	
+	public MineNode() {
+		noneMineRoller = new WeightedTable(new float[] {
+				//duelist
+				1f,
+				//water
+				1f,
+				//vein
+				1.5f,
+				//rare possible vein
+				1f,
+				//door
+				.5f,
+				//crystals
+				.5f,
+				//minecart
+				.5f,
+				//ladder
+				.5f,
+				//cultists
+				1f,
+				//mugger
+				1.5f,
+		});
+		hellMineRoller = new WeightedTable(new float[] {
+				//duelist
+				1f,
+				//water
+				1f,
+				//vein
+				1.5f,
+				//rare possible vein
+				1f,
+				//door
+				.5f,
+				//crystals
+				.5f,
+				//minecart
+				.5f,
+				//ladder
+				.5f,
+				//cultists
+				1f,
+				//mugger
+				1.5f,
+		});
+		}
+	
+	private int getNodeTypeForParentShape(NodeConnector holder) {
+		switch (holder.parent.getShape()) {
+		case ELEVATOR:
+			return 1+hellMineRoller.random(extra.getRand());
+		default:
+		case NONE:
+			return 1+noneMineRoller.random(extra.getRand());
+		}
+	}
+	
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
-		//int idNum =-1;
-		/*
-		if (extra.chanceIn(1, 5)) {
-			if (extra.chanceIn(1, 30)) {
-				idNum = 1;//vein, generic'd
-			}else {
-				idNum = 2;//gem vein
-			}
-			
-		}*/
-		
-		//if (idNum == -1) {
-		int idNum = extra.randRange(1,EVENT_NUMBER);
-		//}
-		
+		int idNum = extra.randRange(1,getNodeTypeForParentShape(holder));
 		
 		int ret = holder.newNode(NodeType.NodeTypeNum.MINE.ordinal(),idNum,tier);
 		return ret;

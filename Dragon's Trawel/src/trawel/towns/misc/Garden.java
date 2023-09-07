@@ -230,16 +230,19 @@ public class Garden extends Feature {
 
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		reTimer += time;
-		if (reTimer > 120) {
-			for (PlantSpot p: plants) {
-				if (p.contains == "" && extra.chanceIn(1,3)) {
-					p.contains = filler.roll();
-					p.timer = -(50+(100*extra.randFloat()));
+		if (filler != PlantFill.NONE) {
+			reTimer += time;
+			if (reTimer > 120) {
+				for (PlantSpot p: plants) {
+					if (p.contains == "" && extra.chanceIn(1,3)) {
+						p.contains = filler.roll();
+						p.timer = -(50+(100*extra.randFloat()));
+					}
 				}
+				reTimer = 0;
 			}
-			reTimer = 0;
 		}
+		
 		time *= growMult;
 		for (PlantSpot p: plants) {
 			p.passTime(time,calling);
