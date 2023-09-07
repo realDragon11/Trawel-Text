@@ -154,6 +154,13 @@ public class RaceFactory {
 			}
 			return offset%maps;
 		}
+
+		public String friendlyName() {
+			if (spritename != null) {
+				return spritename;
+			}
+			return mapname;
+		}
 		
 	}
 	

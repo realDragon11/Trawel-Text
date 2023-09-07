@@ -15,6 +15,7 @@ import trawel.Services;
 import trawel.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.RaceFactory.RaceID;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;
@@ -39,6 +40,7 @@ public class Store extends Feature{
 	private static final long serialVersionUID = 1L;
 	protected int type;
 	protected List<Item> items;
+	protected List<RaceID> races;
 	protected List<DrawBane> dbs;
 	protected double time;
 	private int buys;
@@ -166,7 +168,11 @@ public class Store extends Feature{
 		if (type >=8) {
 			dbs = new ArrayList<DrawBane>();
 		}else {
-			items = new ArrayList<Item>();
+			if (type == 7) {
+				races = new ArrayList<RaceID>();
+			}else {
+				items = new ArrayList<Item>();
+			}
 		}
 		for (int j = invSize-1;j >=0;j--) {
 			addAnItem();
@@ -371,6 +377,12 @@ public class Store extends Feature{
 	}
 	
 	public MenuGenerator modernStoreFront() {
+		if (type == 7) {//generate item list on the fly, then delete in menu back
+			items = new ArrayList<Item>();
+			for (int i = 0; i < races.size();i++) {
+				items.add(RaceFactory.getRace(races.get(i)));
+			}
+		}
 		return new MenuGenerator() {
 
 			@Override
@@ -420,7 +432,17 @@ public class Store extends Feature{
 							return false;
 						}});
 				}
-				list.add(new MenuBack());
+				list.add(new MenuBack() {
+					
+					@Override
+					public boolean go() {
+						if (type == 7) {
+							//clean up temp item list
+							items = null;
+						}
+						return true;
+					}
+				});
 				return list;
 			}
 			
@@ -561,6 +583,13 @@ public class Store extends Feature{
 			}
 			return;
 		}
+		if (type == 7) {
+			if (races.size() >= invSize) {
+				races.remove(extra.randRange(0,items.size()-1));
+			}
+			races.add(RaceFactory.randRace(Race.RaceType.PERSONABLE).raceID());
+			return;
+		}
 		if (items.size() >= invSize) {
 			items.remove(extra.randRange(0,items.size()-1));
 		}
@@ -581,17 +610,13 @@ public class Store extends Feature{
 				return;
 			}
 		}
-		if (type == 7) {
-			items.add(RaceFactory.randRace(Race.RaceType.PERSONABLE));
-			return;
-		}
 	}
 	private void goShopping() {
 		if (type == 9) {//potion shops apply some, and also refills
 			WitchHut.randomRefillsAtTown(town,tier);
 			return;
 		}
-		if (type >= 7) {//7 is speices store, maybe someday
+		if (type >= 7) {//7 is species store, doesn't currently work for npcs due to needing to serialize differently
 			return;
 		}
 		//needs to be in order to avoid changing the item list multiple times at once

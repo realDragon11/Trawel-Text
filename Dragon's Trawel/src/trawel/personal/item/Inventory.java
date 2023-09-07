@@ -832,6 +832,9 @@ public class Inventory implements java.io.Serializable{
 			}
 			return w;
 		}
+		if (Race.class.isInstance(i)) {
+			return swapRace((Race)i);
+		}
 		return null;
 	}
 	
@@ -842,6 +845,9 @@ public class Inventory implements java.io.Serializable{
 		}
 		if (Weapon.class.isInstance(i)) {
 			return this.getHand();
+		}
+		if (Race.class.isInstance(i)) {
+			return this.getRace();
 		}
 		return null;
 	}

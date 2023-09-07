@@ -304,7 +304,7 @@ public class WorldGen {
 		arona.addFeature(new Champion(10));
 		arona.addFeature(new Champion(7));
 		arona.addFeature(new Store(4,11));
-		arona.addFeature(new Store(7,10));//sneak a species store in the middle
+		arona.addFeature(new Store(10,7));//sneak a species store in the middle
 		arona.addFeature(new Store(3,11));
 		arona.tTags.add(TownTag.ARCANE);
 

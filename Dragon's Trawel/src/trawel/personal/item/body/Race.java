@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import trawel.extra;
 import trawel.battle.attacks.TargetFactory;
@@ -22,9 +23,9 @@ public class Race extends Item{
 	//only extends item so I can have my secret hidden race store
 	private final RaceFactory.RaceID internalName;
 	public double tradeMod, aimMod, hpMod,dodgeMod, damMod, speedMod, rarity;
-	public ArrayList<String> insultList = new ArrayList<String>();
-	public ArrayList<String> swears = new ArrayList<String>();
-	public ArrayList<String> raceMaps = new ArrayList<String>();
+	public List<String> insultList = new ArrayList<String>();
+	public List<String> swears = new ArrayList<String>();
+	public List<String> raceMaps = new ArrayList<String>();
 	public String baseMap;
 	public int magicPower, defPower;
 	public RaceType racialType;
@@ -87,7 +88,42 @@ public class Race extends Item{
 	}
 	@Override
 	public void display(int style, float markup) {
-		extra.println(internalName.name);
+		extra.println(extra.STAT_HEADER+renderName(false));
+		extra.println(internalName.name +", "+internalName.namePlural + ", " +internalName.adjective );
+		extra.println("Type: " + racialType);
+		extra.println("Legacy Sprite: " + raceClass.getLegacy().friendlyName());
+		extra.println(extra.ITEM_DESC_PROP+"Blood: " + (emitsBlood ? extra.PRE_RED+"yes" : extra.PRE_WHITE +"no"));
+		extra.println("Rarity: " + extra.F_TWO_TRAILING.format(rarity));
+		extra.println(extra.ITEM_DESC_PROP+"Aiming: " +extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(aimMod));
+		extra.println(extra.ITEM_DESC_PROP+"Health: " +extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(hpMod));
+		extra.println(extra.ITEM_DESC_PROP+"Dodge: " +extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(dodgeMod));
+		extra.println(extra.ITEM_DESC_PROP+"Damage: " +extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(damMod));
+		extra.println(extra.ITEM_DESC_PROP+"Speed: " +extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(speedMod));
+		extra.println(extra.ITEM_DESC_PROP+"Sterotype: " + archetype.friendlyName());
+		//the funnier sounding the 'better'
+		extra.println(extra.ITEM_DESC_PROP+"Pitches: " +extra.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(minPitch)+ " " +extra.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(maxPitch));
+		String slurs = null;
+		for (String str: swears) {
+			if (slurs == null) {
+				slurs = str;
+			}else {
+				slurs +=", "+str;
+			}
+		}
+		if (slurs != null) {
+			extra.println("Slurs: " +slurs+".");
+		}
+		String phrases = null;
+		for (String str: insultList) {
+			if (phrases == null) {
+				phrases = str;
+			}else {
+				phrases +=", "+str;
+			}
+		}
+		if (phrases != null) {
+			extra.println("Racist Phrases: " +phrases+".");
+		}
 	}
 	@Override
 	public void display(int style) {

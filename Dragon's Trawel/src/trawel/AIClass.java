@@ -626,6 +626,10 @@ public class AIClass {
 	 * if they reject the item, it will return 'thinking'.
 	 */
 	public static Item askDoSwap(Item thinking, Store store, boolean allowedNotGiveBack) {
+		if (thinking instanceof Race) {
+			allowedNotGiveBack = false;
+		}
+		final boolean finalAllowedNotGiveBack = allowedNotGiveBack;
 		Item[] ret = new Item[1];
 		extra.menuGo(new MenuGenerator() {
 
@@ -711,7 +715,7 @@ public class AIClass {
 						extra.inputContinue();
 						return false;
 					}});
-				if (allowedNotGiveBack) {
+				if (finalAllowedNotGiveBack) {
 					if (Player.player.canAddPouch()) {
 						list.add(new MenuSelect() {
 
