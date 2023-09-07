@@ -186,6 +186,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 							if (Player.player.getGold() > removecost) {
 								Player.player.addGold(-removecost);
 								Networking.unlockAchievement("reform");
+								town.helpCommunity(20);
 								if (replacer != null) {
 									town.laterReplace(Slum.this,replacer.generate(Slum.this));
 									return true;

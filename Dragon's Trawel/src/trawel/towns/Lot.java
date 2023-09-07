@@ -84,9 +84,9 @@ public class Lot extends Feature {
 						construct = "inn";
 						constructTime = 24*3;
 						name = "inn under construction";
+						town.helpCommunity(1);
 					}
 				}
-
 				break;
 			case 2: 
 				extra.println("Build an arena here?");
@@ -96,12 +96,15 @@ public class Lot extends Feature {
 						construct = "arena";
 						constructTime = 24*2;
 						name = "arena under construction";
+						town.helpCommunity(1);
 					}
 				}break;
 			case 3: 
 				extra.println("Donate to the town?");
 				if (extra.yesNo()) {
 					town.replaceFeature(this,new TravelingFeature(this.town));
+					town.helpCommunity(3);
+					return;
 				}
 				break;
 			case 4: 
@@ -112,6 +115,7 @@ public class Lot extends Feature {
 						construct = "mine";
 						constructTime = 24*7;
 						name = "mine under construction";
+						town.helpCommunity(1);
 					}
 				}
 				break;
@@ -123,10 +127,12 @@ public class Lot extends Feature {
 						construct = "garden";
 						constructTime = 24;
 						name = "garden under construction";
+						town.helpCommunity(1);
 					}
 				}break;
 			case 6: return;
 			}
+			
 			if (construct != null) {
 				tutorialText = "Your " + construct + " is under construction.";
 			}

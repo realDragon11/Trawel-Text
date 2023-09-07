@@ -86,7 +86,7 @@ public class Champion  extends Feature{
 				extra.println("You defeat the champion!");
 				//we don't want to store the person for real, they can get deleted
 				//we're also fine with this getting overwritten if two people share the same name
-				Player.player.addGroupedAchieve(town.getName()+"_champs","Champions of "+town.getName()+": ", person.getName() + " " + extra.choose("slayer","killer","champion-killer","champion"));
+				Player.player.addGroupedAchieve(town.townHash()+"_champs","Champions of "+town.getName()+": ", person.getName() + " " + extra.choose("slayer","killer","champion-killer","champion"));
 				person = null;
 				Networking.unlockAchievement("beat_champion");
 			}else {

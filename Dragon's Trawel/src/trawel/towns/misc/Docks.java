@@ -468,6 +468,7 @@ public class Docks extends Feature {
 				}
 				if (c.playerWon() > 1) {//you must survive to get paid
 					Networking.unlockAchievement("docks_survive");
+					town.helpCommunity(1);
 					int reward = (int) ((8*getUnEffectiveLevel())+extra.randRange(0,4));
 					extra.println("They pay you with "+World.currentMoneyDisplay(reward)+".");
 					Player.player.addGold(reward);

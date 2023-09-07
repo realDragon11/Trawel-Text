@@ -93,6 +93,8 @@ public class Town extends TContextOwner{
 	private transient float flowNeed;
 	private float occupantDesire;
 	
+	private int community_helper = 0;
+	
 	//private transient List<TimeEvent> events;
 	
 	private Town(String name) {
@@ -566,7 +568,8 @@ public class Town extends TContextOwner{
 				extra.println("You buy a lot.");
 				visited = 3;
 				Networking.unlockAchievement("buy_lot");
-				this.laterAdd(new Lot(this));
+				laterAdd(new Lot(this));
+				helpCommunity(1);
 			}else {
 				extra.println("Not enough "+moneyname+".");
 			}
@@ -1114,6 +1117,48 @@ public class Town extends TContextOwner{
 			i++;
 		}
 		resetOpenSlots();
+	}
+	
+	/**
+	 * lower levels can be 'ownership', but higher levels should be only helping the community
+	 * <br>
+	 * <br>
+	 * examples:
+	 * <br>
+	 * lot ownership: +1
+	 * <br>
+	 * lot building: +1
+	 * <br>
+	 * lot donating to town: +3
+	 * <br>
+	 * slum reforming: +20
+	 * <br>
+	 * survive protecting docks: +1 each time
+	 */
+	public void helpCommunity(int amount) {
+		int old = community_helper;
+		community_helper+=amount;
+		if (old < 1 && community_helper >= 1) {
+			Player.player.addAchieve(townHash()+"_helper", getName() + " Member");
+		}
+		if (old < 5 && community_helper >= 5) {
+			Player.player.addAchieve(townHash()+"_helper", getName() + " Minded");
+		}
+		if (old < 10 && community_helper >= 10) {
+			Player.player.addAchieve(townHash()+"_helper", getName() + " Citizen");
+		}
+		if (old < 20 && community_helper >= 20) {
+			Player.player.addAchieve(townHash()+"_helper", getName() + " Community Organizer");
+		}
+		if (old < 50 && community_helper >= 50) {
+			Player.player.addAchieve(townHash()+"_helper", getName() + " Community Leader");
+		}
+		
+	}
+	
+	public String townHash() {
+		//TODO: could make the hash smaller by storing it as codepoints instead of directly to int digits
+		return getName()+hashCode();
 	}
 	
 }
