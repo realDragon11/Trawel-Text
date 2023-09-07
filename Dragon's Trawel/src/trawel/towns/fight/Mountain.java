@@ -399,6 +399,7 @@ public class Mountain extends Feature{
 	private void vampireHunter() {
 		extra.println(extra.PRE_BATTLE+"A vampire hunter is walking around. Mug them?");
 		Person hunter = RaceFactory.makeHunter(tier);
+		hunter.getBag().graphicalDisplay(1,hunter);
 		if (extra.yesNo()) {
 			Combat c = Player.player.fightWith(hunter);
 			if (c.playerWon() > 0) {

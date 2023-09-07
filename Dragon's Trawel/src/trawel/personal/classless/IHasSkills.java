@@ -82,7 +82,7 @@ public interface IHasSkills {
 					return ftstr;
 				}});
 		}
-		has.collectSkills().forEach(skill -> list.add(skill.getMenuView()));
+		has.collectSkills().forEach(skill -> list.add(skill.getMenuViewForPerson(person)));
 		return list;
 	}
 	

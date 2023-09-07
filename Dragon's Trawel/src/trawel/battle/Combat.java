@@ -1345,12 +1345,12 @@ public class Combat {
 			if (defender.hasEffect(Effect.BEE_SHROUD)) {
 				if (attacker.hasEffect(Effect.BEES)) {
 					if (!extra.getPrint()) {
-						extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.2f))+"The bees buzz back!");
+						extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.2f))+" The bees buzz back!");
 					}
 				}else {
 					attacker.addEffect(Effect.BEES);
 					if (!extra.getPrint()) {
-						extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.2f))+"The bees swarm "+attacker.getName()+"!");
+						extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.2f))+" The bees swarm "+attacker.getName()+"!");
 					}
 				}
 			}

@@ -18,6 +18,7 @@ import trawel.personal.people.Player;
 import trawel.quests.QuestReactionFactory.QKey;
 import trawel.towns.Feature;
 import trawel.towns.Town;
+import trawel.towns.World;
 import trawel.towns.fight.Slum;
 import trawel.towns.fort.FortHall;
 import trawel.towns.services.Inn;
@@ -95,7 +96,9 @@ public class BasicSideQuest implements Quest{
 				@Override
 				public boolean go() {
 					Player.player.getPerson().addXp(1);
-					Player.player.addGold(10);
+					Player.player.addGold(1);
+					extra.println("Gained "+World.currentMoneyDisplay(1)+".");
+					q.giver.locationT.helpCommunity(1);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,.1f, 0);
 					q.complete();
 					return false;
@@ -164,8 +167,13 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public boolean go() {
-					Player.player.getPerson().addXp(1);
-					Player.player.addGold(30);
+					int reward = Math.max(1,q.targetPerson.getLevel()/3);
+					Player.player.getPerson().addXp(reward);
+					Player.player.addGold(reward);
+					extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+					if (!murder) {
+						q.giver.locationT.helpCommunity(2);
+					}
 					q.complete();
 					return false;
 				}};
@@ -173,10 +181,6 @@ public class BasicSideQuest implements Quest{
 				q.giver.locationT = loc;
 				q.giver.overQuest = q;
 			q.target = new QuestR() {
-
-				/**
-				 * 
-				 */
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -262,10 +266,13 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public boolean go() {
-					Player.player.getPerson().addXp(1);
-					Player.player.addGold(50);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,2,0);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
+					int reward = 2;
+					Player.player.getPerson().addXp(reward);
+					Player.player.addGold(reward);
+					extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+					q.giver.locationT.helpCommunity(2);
 					q.complete();
 					return false;
 				}};
@@ -324,10 +331,15 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public boolean go() {
-					Player.player.getPerson().addXp(1);
-					Player.player.addGold(20);
 					Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,.1f, 0);
 					Player.player.addMPoints(.2f);
+					
+					Player.player.getPerson().addXp(1);
+					int reward = Math.min(1,q.giver.locationF.getLevel()/3);
+					Player.player.addGold(reward);
+					extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+					q.giver.locationT.helpCommunity(1);
+					
 					q.complete();
 					return false;
 				}};
@@ -335,10 +347,6 @@ public class BasicSideQuest implements Quest{
 				q.giver.locationT = loc;
 				q.giver.overQuest = q;
 			q.target = new QuestR() {
-
-				/**
-				 * 
-				 */
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -389,11 +397,15 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public boolean go() {
-					Player.player.getPerson().addXp(1);
-					Player.player.addGold(50);
 					Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,1,0);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
 					Player.player.addMPoints(.2f);
+					
+					Player.player.getPerson().addXp(2);
+					int reward = Math.min(1,q.giver.locationF.getLevel()/2);
+					Player.player.addGold(reward);
+					extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+					q.giver.locationT.helpCommunity(2);
 					q.complete();
 					return false;
 				}};
@@ -435,9 +447,11 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public boolean go() {
-					Player.player.getPerson().addXp(1);
-					Player.player.addGold(100);
+					int reward = Math.min(1,q.giver.locationF.getLevel());
+					Player.player.addGold(reward);
+					extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,0, .05f);
+					//doesn't help community
 					q.complete();
 					return false;
 				}};
@@ -502,8 +516,13 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public boolean go() {
-					Player.player.getPerson().addXp(1);
-					Player.player.addGold(50);
+					int reward = Math.max(1,q.targetPerson.getLevel()/3);
+					Player.player.getPerson().addXp(reward);
+					Player.player.addGold(reward);
+					extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+					if (!murder) {
+						q.giver.locationT.helpCommunity(2);
+					}
 					q.complete();
 					return false;
 				}};

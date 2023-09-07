@@ -1602,6 +1602,7 @@ public class RaceFactory {
 			w.getBag().getHand().improveEnchantChance(level);
 			break;
 		}
+		extra.popPrintStack();
 		w.finishGeneration();
 		return w;
 	}

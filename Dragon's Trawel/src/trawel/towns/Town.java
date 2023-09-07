@@ -1131,6 +1131,10 @@ public class Town extends TContextOwner{
 	 * <br>
 	 * lot donating to town: +3
 	 * <br>
+	 * most misc side quests: +1
+	 * <br>
+	 * 'helpful' cleanse/execute quests: +2
+	 * <br>
 	 * slum reforming: +20
 	 * <br>
 	 * survive protecting docks: +1 each time

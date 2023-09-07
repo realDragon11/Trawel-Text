@@ -308,6 +308,9 @@ public enum Skill{
 		}
 		
 		public MenuItem getMenuViewForPerson(Person p) {
+			if (p == null) {
+				return getMenuView();
+			}
 			return new MenuLine() {
 
 				@Override

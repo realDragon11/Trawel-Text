@@ -79,6 +79,7 @@ public class Champion  extends Feature{
 	@Override
 	public void go() {
 		Networking.sendStrong("Discord|imagesmall|champion|Champion|");
+		person.getBag().graphicalDisplay(1,person);
 		extra.println(extra.PRE_BATTLE+"Challenge " + person.getName() + "?");
 		if (extra.yesNo()) {
 			Combat c = Player.player.fightWith(person);
@@ -97,6 +98,8 @@ public class Champion  extends Feature{
 					tutorialText = "Champion.";
 				}
 			}
+		}else {
+			Networking.clearSide(1);
 		}
 	}
 
