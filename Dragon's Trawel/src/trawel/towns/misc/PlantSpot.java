@@ -72,11 +72,14 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 
 							@Override
 							public String title() {
-								return "harvest apples";
+								return "harvest apple";
 							}
 
 							@Override
 							public boolean go() {
+								if (timer > 110) {
+									timer = 110;//cap on how many can get stored
+								}
 								timer-=20;
 								Player.bag.addNewDrawBanePlayer(DrawBane.APPLE);
 								if (extra.chanceIn(1,3)) {
@@ -100,6 +103,9 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 
 							@Override
 							public boolean go() {
+								if (timer > 80) {
+									timer = 80;//cap on how many can get stored
+								}
 								timer-=35;
 								Player.bag.addNewDrawBanePlayer(DrawBane.PUMPKIN);
 								if (extra.chanceIn(1,3)) {

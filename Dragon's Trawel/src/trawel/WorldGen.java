@@ -46,6 +46,7 @@ import trawel.towns.fort.SubSkill;
 import trawel.towns.fort.WizardTower;
 import trawel.towns.misc.Docks;
 import trawel.towns.misc.Garden;
+import trawel.towns.misc.Garden.PlantFill;
 import trawel.towns.nodes.Dungeon;
 import trawel.towns.nodes.Graveyard;
 import trawel.towns.nodes.Grove;
@@ -191,7 +192,7 @@ public class WorldGen {
 		hemo.addFeature(s);
 		hemo.addFeature(new Grove("The Odd Grove",hemo,12,3));
 		hemo.addFeature(new Blacksmith(1,s));
-		hemo.addFeature(new Garden(hemo));
+		hemo.addFeature(new Garden(hemo,"Communal Garden",1.1f,PlantFill.WITCH));
 		hemo.addFeature(new WitchHut("Esoteric Ingredients",hemo));
 		hemo.tTags.add(TownTag.DRUDIC);
 		hemo.tTags.add(TownTag.ALCHEMY);
@@ -212,7 +213,7 @@ public class WorldGen {
 		tanak.addFeature(new Inn("Cloud Comforts Inn",5,tanak,null));
 		tanak.addTravel();
 		tanak.addTravel();
-		tanak.addFeature(new Champion(10));
+		tanak.addFeature(new Champion(8));
 		tanak.tTags.add(TownTag.CITY);
 		tanak.setFirstPrinter(new PrintEvent(){
 			@Override
@@ -324,7 +325,7 @@ public class WorldGen {
 		yena.addTravel();
 		yena.addTravel();
 		yena.addFeature(new HeroGuild("Third Hero's Guild"));
-		yena.addFeature(new Champion(4));
+		yena.addFeature(new Champion(6));
 		yena.tTags.add(TownTag.ADVENTURE);
 		yena.setFirstPrinter(new PrintEvent() {
 
@@ -367,7 +368,7 @@ public class WorldGen {
 		placka.addFeature(new Docks("The Old Docks (Shipyard)",placka));
 		placka.addTravel();
 		placka.addTravel();
-		placka.addFeature(new Champion(6));
+		placka.addFeature(new Champion(9));
 		placka.addFeature(new Dungeon("The Dungeon of Woe",placka,NodeFeature.Shape.NONE,-1));
 		placka.tTags.add(TownTag.ADVENTURE);
 		
@@ -406,6 +407,9 @@ public class WorldGen {
 		Town senal = new Town("Senal",6,epan,(byte)10,(byte)9);
 		addConnection(senal,tanak,ConnectType.TELE,"Sea Skip Ritual");
 		addConnection(senal,lokan,ConnectType.SHIP,"Bygone Current");
+		//keep mountain at *top* to give a sense of it blocking off the rest from the connections, which are always first
+		senal.addFeature(new Mountain("Ancient Ridges",8));
+		//the rest
 		senal.addFeature(new Slum(senal, "Better Futures Company Camp",6, new ReplaceFeatureInterface() {
 			
 			@Override
@@ -418,7 +422,8 @@ public class WorldGen {
 				return new MerchantGuild("Better Futures Central Office");
 			}
 		}));
-		senal.addFeature(new Mountain("Ancient Ridges",8));
+		senal.addFeature(new Garden(senal,"Desolate Fields",.2f,PlantFill.BAD_HARVEST));
+		
 		senal.tTags.add(TownTag.BARREN);
 		senal.setFirstPrinter(new PrintEvent() {
 
@@ -449,6 +454,7 @@ public class WorldGen {
 		addConnection(visan,senal,ConnectType.TELE,"Through the Fog");
 		addConnection(visan,owal,ConnectType.SHIP,"Forgotten Shipping Lane");
 		visan.addFeature(new Doctor("Foglung Cure Center", visan));
+		visan.addFeature(new Champion(10));
 		visan.tTags.add(TownTag.TRAVEL);
 		visan.tTags.add(TownTag.BARREN);
 		visan.setFirstPrinter(new PrintEvent() {

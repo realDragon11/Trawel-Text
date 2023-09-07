@@ -11,6 +11,7 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.fight.Arena;
 import trawel.towns.misc.Garden;
+import trawel.towns.misc.Garden.PlantFill;
 import trawel.towns.nodes.Mine;
 import trawel.towns.nodes.NodeFeature;
 import trawel.towns.services.Inn;
@@ -151,7 +152,7 @@ public class Lot extends Feature {
 			case "inn": add = (new Inn("your inn (" + town.getName() + ")",tier,town,Player.player));break;
 			case "arena":add = (new Arena("your arena (" + town.getName() + ")",tier,1,24,200,1,Player.player));break;
 			case "mine": add = (new Mine("your mine (" + town.getName() + ")",town,Player.player,NodeFeature.Shape.NONE));break;
-			case "garden": add = (new Garden(town));
+			case "garden": add = (new Garden(town,"your arena (" + town.getName() + ")",0,PlantFill.NONE));
 			}
 			town.laterReplace(this,add);
 			constructTime = -2;

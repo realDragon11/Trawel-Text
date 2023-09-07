@@ -1072,9 +1072,14 @@ public class Inventory implements java.io.Serializable{
 			extra.println("You don't have any seeds!");
 			return null;
 		}
-		this.displaySeeds();
-		extra.println(seeds.size()+1 + " keep");
-		int in = extra.inInt(seeds.size()+1);
+		displaySeeds();
+		int in;
+		if (seeds.size() <= 6) {
+			extra.println("9 keep");
+			in = extra.inInt(seeds.size(),true,true);
+		}else {
+			in = extra.inInt(seeds.size());
+		}
 		if (in == seeds.size()+1) {
 			return null;
 		}
