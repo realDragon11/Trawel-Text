@@ -1231,7 +1231,7 @@ public class mainGame {
 	}
 
 	private static void modelMode() {
-		baseSetup1();
+		forceSetup();
 		Person manOne;
 		manOne = RaceFactory.makeOld(2);//new Person(starting_level,false,Race.RaceType.HUMANOID,null);
 		new Player(manOne);
@@ -1246,6 +1246,7 @@ public class mainGame {
 		manOne.setPlayer();
 		Networking.sendStrong("Discord|desc|Character Select|");
 		Networking.charUpdate();
+		extra.yesNo();
 
 	}
 

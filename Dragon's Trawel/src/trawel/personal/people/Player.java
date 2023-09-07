@@ -1583,10 +1583,11 @@ public class Player extends SuperPerson{
 																break;
 															}
 														}
-														boolean hasDocks = false;
+														Docks docks = null;
 														for (Feature f: t.getFeatures()) {
 															if (f instanceof Docks) {
-																hasDocks = true;
+																docks = (Docks) f;
+																break;
 															}
 														}
 														extra.println(extra.STAT_HEADER+"Connections:");
@@ -1596,8 +1597,9 @@ public class Player extends SuperPerson{
 														if (tele > 0) {
 															extra.println(" Has "+tele+" teleport rituals.");
 														}
-														if (hasDocks) {
-															extra.println(" Has Docks with " + ship + " direct routes.");
+														if (docks != null) {
+															int farFlung = docks.farConnectsList().size();
+															extra.println(" Has Docks with " + ship + " direct routes" + (farFlung > 0 ? " and "+farFlung + " indirect destination"+(farFlung > 0 ? "s" : "")+"." : "."));
 														}else {
 															if (ship > 0) {
 																extra.println(" Has "+ship+" locations from their port.");

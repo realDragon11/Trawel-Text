@@ -310,14 +310,7 @@ public class Docks extends Feature {
 			}});
 	}
 	
-	/**
-	 * lets the player skip along if they are high enough level to get somewhere
-	 * <br>
-	 * after leaving menu, always check to see if you're still in the same town
-	 * <br>
-	 * note that getting back might take more effort if the place doesn't have docks, only ports
-	 */
-	private ScrollMenuGenerator farConnectsMenu() {
+	public List<Town> farConnectsList(){
 		List<Town> tList = new ArrayList<Town>();
 		List<Town> openSet = new ArrayList<Town>();
 		Set<Town> closedSet = new HashSet<Town>();
@@ -346,6 +339,18 @@ public class Docks extends Feature {
 			closedSet.add(cur);
 		}
 		//assert localSize <= closedSet.size();
+		return tList;
+	}
+	
+	/**
+	 * lets the player skip along if they are high enough level to get somewhere
+	 * <br>
+	 * after leaving menu, always check to see if you're still in the same town
+	 * <br>
+	 * note that getting back might take more effort if the place doesn't have docks, only ports
+	 */
+	private ScrollMenuGenerator farConnectsMenu() {
+		List<Town> tList = farConnectsList();
 		if (tList.size() == 0) {
 			return null;//no far flung ports
 		}
