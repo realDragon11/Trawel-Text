@@ -71,11 +71,13 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__6";
-	public static final String VERSION_DATE = " updated Sept 5th 2023";
+	public static final String VERSION_DATE = " updated Sept 7th 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
-			"b_6: {part 1/?} Updated stat displays and item 'higher/lower is better' displays. Cleaned up Greap worldgen, although it is still not a complete world. Added Forest altar.",
-			"b_6: {part 2/?} Added many new towns to the WorldGen process, and fluffed up the lore and flavor of existing towns as well. Most bosses are now non-unique in that you don't have only one option if you want their Perk.",
+			"b_6: {part 1/?} Updated stat displays and item 'higher/lower is better' displays. Tutorial text separated from 'feature description' text.",
+			"b_6: {part 2/?} Added many new towns to the Eoano WorldGen, and fluffed up the lore and flavor of existing towns as well. Species store re-added to Arona. Most bosses are now non-unique in that you don't have only one option if you want their Perk.",
+			"b_6: {part 3/?} Cleaned up Greap WorldGen, although it is still not a complete world. Added Forest Altar, making altars now be dedicated to different primal forces.",
+			"b_6: {part 4/?} Districts now can house sub-stores. Some titles were changed, others were added. Steam version gained several new leaderboards and achievements.",
 			
 			"b_5: {part 1/4} You can now recruit adventurers in certain dungeons. All other dungeons had their mass battles removed. In 'dangerous' dungeons, these adventurers will assist you in the 'high security' checkpoints, and against the boss. Currently this is just the Tower of Fate and the Fatespinner. They will get a share of the loot, and if higher level than you, might get first pick. They will not be interested in joining you if they are 2 or more levels higher. They will not revive on death, and will leave if you do not visit the dungeon for a while. Fighting with them will make them take longer to leave than just visiting will.",
 			"b_5: {part 2/4} Passive population migration has been fixed and tweaked, now if you play close attention you might be able to see persons moving from town to town. They have a slight preference to move towards towns with Inns, but also to not overcrowd a town past what its features can support.",
