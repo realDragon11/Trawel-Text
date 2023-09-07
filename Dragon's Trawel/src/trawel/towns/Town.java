@@ -704,14 +704,16 @@ public class Town extends TContextOwner{
 	public void addFeature(Feature feature) {
 		features.add(feature);
 		feature.setTownInternal(this);
-		resetOpenSlots();
+		feature.init();
+		postFeatureSetup();
 	}
 	
 	public void replaceFeature(Feature replaceThis, Feature with) {
 		features.add(features.indexOf(replaceThis),with);
 		features.remove(replaceThis);
 		with.setTownInternal(this);
-		resetOpenSlots();
+		with.init();
+		postFeatureSetup();
 	}
 
 
@@ -1094,6 +1096,15 @@ public class Town extends TContextOwner{
 		connectFlow = connects.indexOf(c);//handles 'doesn't have' very nicely
 		assert connectFlow < connects.size();
 	}
+	public void postInit() {
+		int j = Math.max(3,(int) (occupantDesire+extra.randRange(-3,3)));
+		int i = 0;
+		while (i < j) {
+			addPerson();
+			i++;
+		}
+	}
+	
 	public void postFeatureSetup() {
 		occupantDesire = 10;
 		
@@ -1109,12 +1120,6 @@ public class Town extends TContextOwner{
 		if (tTags.contains(TownTag.CITY)) {
 			occupantDesire*=1.2f;
 			occupantDesire+=4;
-		}
-		int j = Math.max(3,(int) (occupantDesire+extra.randRange(-3,3)));
-		int i = 0;
-		while (i < j) {
-			addPerson();
-			i++;
 		}
 		resetOpenSlots();
 	}

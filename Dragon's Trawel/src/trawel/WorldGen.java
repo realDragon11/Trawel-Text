@@ -565,6 +565,7 @@ public class WorldGen {
 					f.init();
 				}
 				t.postFeatureSetup();
+				t.postInit();
 			}
 		}
 		
