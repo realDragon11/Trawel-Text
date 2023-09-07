@@ -432,6 +432,7 @@ public class AIClass {
 			if (canAtomSmash) {
 				playerDispLootChanges();
 			}
+			Networking.leaderboard("highest_aether", Player.bag.getAether());
 			return;
 		}
 		
@@ -538,6 +539,7 @@ public class AIClass {
 				}
 			}
 		}
+		Networking.leaderboard("highest_aether", Player.bag.getAether());
 	}
 	
 	/**
@@ -1127,6 +1129,7 @@ public class AIClass {
 			Services.aetherifyItem(done,person.getBag(),true);
 		}
 		Networking.charUpdate();
+		Networking.leaderboard("highest_aether", Player.bag.getAether());
 	}
 
 

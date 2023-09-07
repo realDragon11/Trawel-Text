@@ -1458,21 +1458,22 @@ public class mainGame {
 
 
 		if (first_man.isPlayer()) {
-			Player.player.wins++;
+			Player.player.duel_wins++;
+			Networking.leaderboard("most_duel_wins", Player.player.duel_wins);
 			//only applies in true 1v1's
-			if (Player.player.wins == 1) {
+			if (Player.player.duel_wins == 1) {
 				Player.player.addAchieve("dueling", "Dueler");
 			}
-			if (Player.player.wins == 10) {
+			if (Player.player.duel_wins == 10) {
 				Player.player.addAchieve("dueling", "Duelist");
 			}
-			if (Player.player.wins == 50) {
+			if (Player.player.duel_wins == 50) {
 				Player.player.addAchieve("dueling", "Veteran Duelist");
 			}
-			if (Player.player.wins == 100) {
+			if (Player.player.duel_wins == 100) {
 				Player.player.addAchieve("dueling", "Master Duelist");
 			}
-			if (Player.player.wins == 1000) {
+			if (Player.player.duel_wins == 1000) {
 				Player.player.addAchieve("dueling", "Grandmaster Duelist");
 			}
 			second_man.addDeath();
@@ -1892,6 +1893,7 @@ public class mainGame {
 	}
 	public static void die(String deathMessage) {
 		Networking.sendStrong("StatUp|deaths|1|");
+		Networking.leaderboard("most_deaths",++Player.player.deaths);
 		story.onDeath();
 		extra.println(deathMessage);
 		story.onDeathPart2();

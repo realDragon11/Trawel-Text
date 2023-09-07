@@ -72,7 +72,8 @@ public class Player extends SuperPerson{
 	public static Inventory bag;
 	public static transient String lastAttackStringer;
 	public static boolean isPlaying = true;
-	public int wins = 0;
+	public int duel_wins = 0;
+	public int deaths;
 	public boolean cheating = false;
 	/**
 	 * the instance copy of the player's world
@@ -1692,6 +1693,12 @@ public class Player extends SuperPerson{
 	}
 	public void addForceRelation(AltarForce key,float value) {
 		forceRelations.put(key,value+getForceRelation(key));
+	}
+	
+	@Override
+	public void addGold(int delta,World w) {
+		super.addGold(delta,w);
+		Networking.leaderboard("highest_world_currency", getGold(w));
 	}
 	
 }
