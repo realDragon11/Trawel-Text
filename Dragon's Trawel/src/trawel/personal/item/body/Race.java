@@ -99,7 +99,9 @@ public class Race extends Item{
 		extra.println(extra.ITEM_DESC_PROP+"Dodge: " +extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(dodgeMod));
 		extra.println(extra.ITEM_DESC_PROP+"Damage: " +extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(damMod));
 		extra.println(extra.ITEM_DESC_PROP+"Speed: " +extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(speedMod));
-		extra.println(extra.ITEM_DESC_PROP+"Sterotype: " + archetype.friendlyName());
+		if (archetype != null) {
+			extra.println(extra.ITEM_DESC_PROP+"Sterotype: " + archetype.friendlyName());
+		}
 		//the funnier sounding the 'better'
 		extra.println(extra.ITEM_DESC_PROP+"Pitches: " +extra.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(minPitch)+ " " +extra.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(maxPitch));
 		String slurs = null;
@@ -118,11 +120,11 @@ public class Race extends Item{
 			if (phrases == null) {
 				phrases = str;
 			}else {
-				phrases +=", "+str;
+				phrases +=" "+str;
 			}
 		}
 		if (phrases != null) {
-			extra.println("Racist Phrases: " +phrases+".");
+			extra.println("Racist Phrases: " +phrases);
 		}
 	}
 	@Override
