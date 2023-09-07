@@ -13,6 +13,7 @@ public class Mine extends NodeFeature {
 	private int veinsLeft = 0;
 	private int size;
 	private byte bossType;
+	private int totalMined = 0;
 	
 	public Mine(String name,Town t, SuperPerson _owner,Shape s) {
 		this(name,t,50,t.getTier(),s,-1);
@@ -56,7 +57,8 @@ public class Mine extends NodeFeature {
 	}
 	public void removeVein() {
 		veinsLeft--;
-		if (veinsLeft == 0 && shape.equals(Shape.NONE)) {
+		totalMined++;
+		if (veinsLeft == 0 && totalMined > 10 && shape.equals(Shape.NONE)) {
 			Networking.unlockAchievement("mine1");
 			Player.unlockPerk(Perk.MINE_ALL_VEINS);
 		}
