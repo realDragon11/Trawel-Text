@@ -12,12 +12,13 @@ public class Mine extends NodeFeature {
 	private static final long serialVersionUID = 1L;
 	private int veinsLeft = 0;
 	private int size;
+	private byte bossType;
 	
 	public Mine(String name,Town t, SuperPerson _owner,Shape s) {
-		this(name,t,50,t.getTier(),s);
+		this(name,t,50,t.getTier(),s,-1);
 		owner = _owner;
 	}
-	public Mine(String _name,Town t,int _size, int _tier, Shape s) {
+	public Mine(String _name,Town t,int _size, int _tier, Shape s, int _bossType) {
 		background_area = "mine";
 		tutorialText = "Mine.";
 		area_type = Area.MINE;
@@ -26,6 +27,7 @@ public class Mine extends NodeFeature {
 		tier = _tier;
 		size = _size;
 		shape = s;
+		bossType = (byte) _bossType;
 		generate(size);
 	}
 	
@@ -67,7 +69,7 @@ public class Mine extends NodeFeature {
 	
 	@Override
 	protected byte bossType() {
-		return 2;
+		return bossType;
 	}
 	@Override
 	public String sizeDesc() {

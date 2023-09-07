@@ -41,6 +41,7 @@ import trawel.towns.fight.Champion;
 import trawel.towns.fight.Forest;
 import trawel.towns.fight.Mountain;
 import trawel.towns.fight.Slum;
+import trawel.towns.fight.Slum.ReplaceFeatureInterface;
 import trawel.towns.fort.SubSkill;
 import trawel.towns.fort.WizardTower;
 import trawel.towns.misc.Docks;
@@ -127,7 +128,7 @@ public class WorldGen {
 		Town homa = new Town("Homa",1,rona,new Point(3,4));
 		homa.addFeature(new Store(1,6));
 		homa.addFeature(new Arena("Basena Arena",1,1,24,1,476));
-		homa.addFeature(new Grove("The Woody Tangle",homa,30));
+		homa.addFeature(new Grove("The Woody Tangle",homa,30,1));
 		homa.addFeature(new Champion(4));
 		w.setStartTown(homa);
 		homa.tTags.add(TownTag.SMALL_TOWN);
@@ -188,7 +189,7 @@ public class WorldGen {
 		addConnection(hemo,unun,"ship","neglected current");
 		Store s = new Store(1,6);
 		hemo.addFeature(s);
-		hemo.addFeature(new Grove("The Odd Grove",hemo,12));
+		hemo.addFeature(new Grove("The Odd Grove",hemo,12,3));
 		hemo.addFeature(new Blacksmith(1,s));
 		hemo.addFeature(new Garden(hemo));
 		hemo.addFeature(new WitchHut("Esoteric Ingredients",hemo));
@@ -336,7 +337,7 @@ public class WorldGen {
 		denok.addFeature(new Store(4,6));
 		denok.addFeature(new Store(5,5));
 		denok.addFeature(new Forest("Outlaying Wilds",4));
-		denok.addFeature(new Grove("The Shaman's Clearing",denok,20));
+		denok.addFeature(new Grove("The Shaman's Clearing",denok,20,5));
 		denok.addFeature(new Doctor("The Shaman's Hut",denok));
 		denok.addFeature(new Mine("Denok's Mine",denok,null,NodeFeature.Shape.NONE));
 		denok.tTags.add(TownTag.DRUDIC);
@@ -404,6 +405,18 @@ public class WorldGen {
 		Town senal = new Town("Senal",6,epan,(byte)10,(byte)9);
 		addConnection(senal,tanak,ConnectType.TELE,"Sea Skip Ritual");
 		addConnection(senal,lokan,ConnectType.SHIP,"Bygone Current");
+		senal.addFeature(new Slum(senal, "Better Futures Company Camp",6, new ReplaceFeatureInterface() {
+			
+			@Override
+			public void printReplaceText() {
+				extra.println("You provide the funding needed for the Better Futures company to build a real headquarters.");
+			}
+			
+			@Override
+			public Feature generate(Slum from) {
+				return new MerchantGuild("Better Futures Central Office");
+			}
+		}));
 		senal.tTags.add(TownTag.BARREN);
 		senal.setFirstPrinter(new PrintEvent() {
 
@@ -417,8 +430,8 @@ public class WorldGen {
 		quen.addFeature(new Dungeon("Blasted Palace", quen,30,12, Shape.TOWER, 1));//TODO put some new boss here
 		quen.addFeature(new Library("Empire Records Bookstore", quen));
 		quen.addFeature(new Dungeon("Crumbling Fort", quen,40,10, Shape.NONE, -1));
-		quen.addFeature(new Mine("'The Last Ditch that Failed'", quen, 20,9, Shape.ELEVATOR));
-		quen.addFeature(new Dungeon("Dilapidated Hamlet", quen,100,8, Shape.NONE,-1));
+		quen.addFeature(new Mine("'The Last Ditch that Failed'", quen, 20,9, Shape.ELEVATOR,-1));
+		quen.addFeature(new Grove("Dilapidated Hamlet", quen,100,8));
 		quen.tTags.add(TownTag.BARREN);
 		quen.tTags.add(TownTag.HISTORY);
 		quen.setFirstPrinter(new PrintEvent() {
@@ -504,7 +517,7 @@ public class WorldGen {
 		peana.addFeature(new Store("'Tyrant's Treasures'",10,11));//oddity store
 		//peana.addFeature(new Arena("Deadsoul's Folly",10,1,24,12,135));
 		//peana.addFeature(new Appraiser("Peana Appraiser"));
-		peana.addFeature(new Mine("Staircase to Hell", peana, null,NodeFeature.Shape.ELEVATOR));
+		peana.addFeature(new Mine("Staircase to Hell", peana,75,10,NodeFeature.Shape.ELEVATOR,2));
 		peana.tTags.add(TownTag.HELLISH);
 		
 		peana.setFirstPrinter(new PrintEvent(){
@@ -517,9 +530,9 @@ public class WorldGen {
 		Town inka = new Town("Inka",12, apen, new Point(4,7));
 		addConnection(unika,inka,"road","youn road");
 		addConnection(inka,peana,"road","era road");
-		inka.addFeature(new Mine("First Striking Shaft", inka,60,8,NodeFeature.Shape.NONE));
-		inka.addFeature(new Mine("Motherload Mine", inka,30,14,NodeFeature.Shape.NONE));
-		inka.addFeature(new Mine("Deep Vein Dig", inka,80,12,NodeFeature.Shape.NONE));
+		inka.addFeature(new Mine("First Striking Shaft", inka,60,8,NodeFeature.Shape.NONE,-1));
+		inka.addFeature(new Mine("Motherload Mine", inka,30,14,NodeFeature.Shape.NONE,-1));
+		inka.addFeature(new Mine("Deep Vein Dig", inka,80,12,NodeFeature.Shape.NONE,-1));
 		inka.addFeature(new Slum(inka,"Miner's Subtown",true));
 		inka.addFeature(new Store("M. Hardhat's Shop",12,0));
 		inka.addTravel();

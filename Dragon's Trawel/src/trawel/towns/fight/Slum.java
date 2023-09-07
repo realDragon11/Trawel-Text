@@ -1,4 +1,5 @@
 package trawel.towns.fight;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,6 +43,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	private double timePassed = 0;
 	private float crimeRating = 10;
 	private int wins = 0;
+	private ReplaceFeatureInterface replacer;
 	
 	private boolean canQuest = true;
 	
@@ -53,13 +55,43 @@ public class Slum extends Feature implements QuestBoardLocation{
 	public QRType getQRType() {
 		return QRType.SLUM;
 	}
+	
+	/**
+	 * the general contract of this interface is that it will generate a Feature to replace the Slum
+	 * <br>
+	 * and that it is allowed to hold state between the generate call and the printReplaceText call,
+	 * but be reusable given that it is called again, if and only if there is no chance of 
+	 * generate race condition calling before printReplaceText does
+	 */
+	public static interface ReplaceFeatureInterface extends Serializable{
+		public Feature generate(Slum from);
+		/**
+		 * will be called right after generate, so you can store the Slum 'from' if you want to put special text there for it
+		 * <br>
+		 * must be provided, but for comparison, the non-custom version will print "You pay for the reform programs."
+		 */
+		public void printReplaceText();
+	}
+	
+	public Slum() {
+		tutorialText = "Slum.";
+		area_type = Area.SLUM;
+	}
 
 	public Slum(Town t, String name,boolean removable) {
+		this();
 		town = t;
+		tier = t.getTier();
 		this.name = name;
-		tutorialText = "Slum.";
 		this.removable = removable;
-		area_type = Area.SLUM;
+	}
+	public Slum(Town t, String _name,int _tier,ReplaceFeatureInterface _replacer) {
+		this();
+		name = _name;
+		town = t;
+		tier = _tier;
+		replacer = _replacer;
+		removable = true;
 	}
 	
 	@Override
@@ -91,7 +123,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 	@Override
 	public void go() {
 		Slum sl = this;
-		int removecost = (int) (((crimeRating*5)+(town.getTier()*10))/2f);
+		int removecost = (int) (((crimeRating*5)+(tier*10))/2f);
 		extra.menuGo(new MenuGenerator() {
 
 			@Override
@@ -145,14 +177,18 @@ public class Slum extends Feature implements QuestBoardLocation{
 						
 						@Override
 						public String title() {
-							return "pay to reform slum ("+World.currentMoneyDisplay(removecost)+")";
+							return "Pay to reform slum ("+World.currentMoneyDisplay(removecost)+")";
 						}
 		
 						@Override
 						public boolean go() {
 							if (Player.player.getGold() > removecost) {
-								extra.println("You pay for the reform programs.");
 								Player.player.addGold(-removecost);
+								if (replacer != null) {
+									town.laterReplace(Slum.this,replacer.generate(Slum.this));
+									return true;
+								}
+								extra.println("You pay for the reform programs.");
 								String formerly = " (formerly '"+sl.getName()+"')";
 								switch (extra.randRange(0,3)) {
 								case 0: case 1:
@@ -206,7 +242,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 					town.removeOccupant(sp);
 				}else {
 					//if not replaced, make money
-					crimeLord.getPerson().getBag().addGold(town.getTier());
+					crimeLord.getPerson().getBag().addGold(tier);
 				}
 				//increase crime, replaced or not
 				capCrimeToLord();
@@ -254,7 +290,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 
 					@Override
 					public boolean go() {
-						int potionCost = town.getTier();
+						int potionCost = tier;
 						extra.println(Player.player.getFlask() != null ? "You already have a potion, buying one will replace it." : "Quality not assured.");
 						extra.println("You have "+Player.showGold()+".");
 						switch (extra.randRange(1, 3)) {
@@ -326,7 +362,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 							extra.println("You wait around and find a mugger.");
 							Player.addTime(2);
 							mainGame.globalPassTime();
-							Combat c = Player.player.fightWith(RaceFactory.getMugger(town.getTier()));
+							Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
 							if (c.playerWon() > 0) {
 								//crime rating go down
 								crimeRating-= IEffectiveLevel.unEffective(Player.player.getPerson().getEffectiveLevel());
@@ -349,7 +385,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 						extra.println("You wait around and find someone to rob.");
 						Player.addTime(1);
 						mainGame.globalPassTime();
-						Combat c = Player.player.fightWith(RaceFactory.getPeace(town.getTier()));
+						Combat c = Player.player.fightWith(RaceFactory.getPeace(tier));
 						if (c.playerWon() > 0) {
 							//crime rating go up
 							crimeRating+=1;

@@ -8,9 +8,10 @@ public class Grove extends NodeFeature {
 
 	private static final long serialVersionUID = 1L;
 
-	public Grove(String name,Town t,int capacity) {
+	public Grove(String name,Town t,int capacity, int _tier) {
 		this.name = name;
 		town = t;
+		tier = _tier;
 		tutorialText = "Grove.";
 		generate(capacity);
 		background_area = "forest";
@@ -19,7 +20,7 @@ public class Grove extends NodeFeature {
 	}
 	
 	public Grove(String name,Town t) {
-		this(name,t,50);
+		this(name,t,50,t.getTier());
 	}
 	
 	@Override
@@ -36,7 +37,7 @@ public class Grove extends NodeFeature {
 	@Override
 	protected void generate(int size) {
 		shape = Shape.NONE;
-		start = NodeType.NodeTypeNum.GROVE.singleton.getStart(this, size, getTown().getTier());//DOLATER: get actual level
+		start = NodeType.NodeTypeNum.GROVE.singleton.getStart(this, size,tier);
 	}
 	@Override
 	protected byte bossType() {
