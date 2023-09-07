@@ -40,7 +40,7 @@ public class MineNode implements NodeType{
 				//duelist
 				1f,
 				//water
-				1f,
+				.7f,
 				//vein
 				1.5f,
 				//rare possible vein
@@ -60,25 +60,25 @@ public class MineNode implements NodeType{
 		});
 		hellMineRoller = new WeightedTable(new float[] {
 				//duelist
-				1f,
-				//water
-				1f,
-				//vein
 				1.5f,
+				//water
+				.3f,
+				//vein
+				1f,
 				//rare possible vein
 				1f,
 				//door
 				.5f,
 				//crystals
-				.5f,
+				.1f,
 				//minecart
-				.5f,
+				.1f,
 				//ladder
-				.5f,
+				.4f,
 				//cultists
 				1f,
 				//mugger
-				1.5f,
+				2.5f,
 		});
 		}
 	
