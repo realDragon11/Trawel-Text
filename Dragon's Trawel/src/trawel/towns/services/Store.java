@@ -154,14 +154,14 @@ public class Store extends Feature{
 		case 3: name = extra.choose("Pants","Legwear","Leg Protector","Trouser","Pantaloon");break;
 		case 4: name = extra.choose("Boot","Footwear","Cobbler","Feet Protection");break;
 		case 5: name = extra.choose("Weapon","Arms","Armament","War");break;
-		case 6: name = extra.choose("General","Flea","Convenience","Trading","Super");break;
-		case 7: name = extra.choose("Race","Species");break;
+		case 6: name = extra.choose("General","Flea","Convenience","Trading","Super","Tag","Jumble","Clearance","Retail");break;
+		case 7: name = extra.choose("Race","Species","Body","New You");break;
 		case 8: name = extra.choose("Drawbane");break;//misc
-		case 9: name = extra.choose("Witch","Potion Material");break;
-		case 10: name = extra.choose("Food");break;
-		case 11: name = extra.choose("Oddity");break;//collector
+		case 9: name = extra.choose("Witchery","Potion Material","Reagent","Catalyst","Reactant","Ingredient");break;
+		case 10: name = extra.choose("Food","Provision","Comestible","Edible","Commissariat");break;
+		case 11: name = extra.choose("Oddity","Bizarre","Peculiar","Curiosity","Souvenir","Trinket","Trophy");break;//collector
 		}
-		name += " " + extra.choose("Store","Market","Shop","Post","Boutique","Emporium","Outlet","Center","Mart","Stand");
+		name += " " + extra.choose("Store","Market","Shop","Post","Boutique","Emporium","Outlet","Center","Mart","Stand","Sale","Fair","Bazaar","Stall","Booth");
 
 		if (type >=8) {
 			dbs = new ArrayList<DrawBane>();
