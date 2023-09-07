@@ -1,4 +1,5 @@
 package trawel.personal.people;
+import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1522,9 +1523,28 @@ public class Player extends SuperPerson{
 														extra.println(t.getName() + " is a tier " +t.getTier() + " "
 																+ (t.isFort() ? "fort" : "town") + " located on the Island of " +t.getIsland().getName()+", which has "+t.getIsland().getTowns().size()+" regions in it."
 																);
-														extra.println("It has around " +t.getFeatures().size() + " things to do and around " + t.getAllOccupants().size() + " occupants.");
+														float per = t.getAllOccupants().size()/t.occupantGoal();
+														String occString = t.getAllOccupants().size()+extra.PRE_WHITE;
+														if (per < 1f) {
+															occString = extra.inlineColor(extra.colorMix(extra.colorMix(Color.BLACK,Color.WHITE,.8f),Color.WHITE,per))+occString;
+														}else {
+															//per > 1 so we don't need to subtract 1 and then add one for the first term of the mix
+															occString = extra.inlineColor(extra.colorMix(Color.WHITE,Color.RED,(per)/(per+10f)))+occString;
+														}
+														extra.println("It has around " +t.getFeatures().size() + " things to do and around " + occString + " occupants.");
+														if (Player.player.getCheating()) {
+															extra.println("Goal Desire: " +t.occupantGoal()+ " Need: " +t.occupantNeed());
+														}
+														if (!t.isFort() && t.openSlots() > 0) {
+															extra.println("There are " + t.openSlots() + " lots of land free.");
+														}
 														double[] loc = Calender.lerpLocation(t);
-														extra.println("In "+w.getName() +", it is around "+ extra.F_WHOLE.format(loc[0]) +" latitude and "+extra.F_WHOLE.format(loc[1]) +" longitude. It is about " +w.getCalender().stringLocalTime(t) + " there.");
+														extra.print("In "+w.getName() +", it is located at "+ extra.F_WHOLE.format(loc[0]) +" latitude and "+extra.F_WHOLE.format(loc[1]) +" longitude.");
+														if (w == Player.getPlayerWorld()) {
+															extra.println(" It is about " +w.getCalender().stringLocalTime(t) + " there.");
+														}else {
+															extra.println();//flush
+														}
 														if (t.tTags.size() > 0) {
 															String tagFluff = "It is known for its ";
 															if (t.tTags.size() == 2) {
@@ -1566,20 +1586,21 @@ public class Player extends SuperPerson{
 																hasDocks = true;
 															}
 														}
+														extra.println(extra.STAT_HEADER+"Connections:");
 														if (road > 0) {
-															extra.println("Has " + road + " land routes.");
+															extra.println(" Has " + road + " land routes.");
 														}
 														if (tele > 0) {
-															extra.println("Has "+tele+" teleport rituals.");
+															extra.println(" Has "+tele+" teleport rituals.");
 														}
 														if (hasDocks) {
-															extra.println("Has Docks with " + ship + " direct routes.");
+															extra.println(" Has Docks with " + ship + " direct routes.");
 														}else {
 															if (ship > 0) {
-																extra.println("Has "+ship+" locations from their port.");
+																extra.println(" Has "+ship+" locations from their port.");
 															}
 														}
-														extra.println();
+														extra.println(" ");
 														return false;
 													}});
 												if (Player.player.getCheating()) {

@@ -82,6 +82,7 @@ public class Town extends TContextOwner{
 	public List<TownTag> tTags = new ArrayList<TownTag>();
 	public int visited = 0;
 	public int background_variant = 1;
+	private int openSlots = -1;
 	/**
 	 * index of connections that ai people will naturally attempt to 'flow' along.
 	 * <br>
@@ -128,6 +129,10 @@ public class Town extends TContextOwner{
 	
 	public float occupantNeed() {
 		return flowNeed;
+	}
+	
+	public float occupantGoal() {
+		return occupantDesire;
 	}
 	
 	protected void updateOccupantNeed() {
@@ -696,12 +701,14 @@ public class Town extends TContextOwner{
 	public void addFeature(Feature feature) {
 		features.add(feature);
 		feature.setTownInternal(this);
+		resetOpenSlots();
 	}
 	
 	public void replaceFeature(Feature replaceThis, Feature with) {
 		features.add(features.indexOf(replaceThis),with);
 		features.remove(replaceThis);
 		with.setTownInternal(this);
+		resetOpenSlots();
 	}
 
 
@@ -832,23 +839,25 @@ public class Town extends TContextOwner{
 		return extra.randList(agentList);
 	}
 	
-	/**
-	 * 
-	 * @return open slots
-	 */
-	public int openSlots(){
+	public void resetOpenSlots(){
 		int i = 9-1;
 		if (this.hasTeleporters()) {i--;}
 		if (this.hasPort()) {i--;}
 		if (this.hasRoads()) {i--;}
-		/*
+		
 		for (Feature f: features) {
 			//like this so if I want to make it so it doesn't count certain features later
+			if ((f instanceof Docks) && (hasPort())) {//counted in ports
+				continue;
+			}
 			i--;
-		}*/
-		i-=features.size();
-		
-		return i;
+		}
+		assert i >= 0;
+		openSlots = i;
+	}
+	
+	public int openSlots(){
+		return openSlots;
 	}
 	
 	/**
@@ -1104,6 +1113,7 @@ public class Town extends TContextOwner{
 			addPerson();
 			i++;
 		}
+		resetOpenSlots();
 	}
 	
 }
