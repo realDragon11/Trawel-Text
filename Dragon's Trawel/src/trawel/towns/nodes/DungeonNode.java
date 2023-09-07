@@ -351,6 +351,7 @@ public class DungeonNode implements NodeType{
 		case 100://skillcon holder
 			if (holder.getStateNum(node) == 0) {
 				holder.setStateNum(node,1);
+				Networking.unlockAchievement("power_orb_smash");
 				switch (((Dungeon)holder.parent).requestRemoveBattleCon(node)) {
 				default:
 					extra.println("You smash the orb of power.");

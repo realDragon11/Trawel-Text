@@ -11,6 +11,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
+import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.WorldGen;
 import trawel.extra;
@@ -466,6 +467,7 @@ public class Docks extends Feature {
 					extra.println(extra.RESULT_GOOD+"You took back the docks!");
 				}
 				if (c.playerWon() > 1) {//you must survive to get paid
+					Networking.unlockAchievement("docks_survive");
 					int reward = (int) ((8*getUnEffectiveLevel())+extra.randRange(0,4));
 					extra.println("They pay you with "+World.currentMoneyDisplay(reward)+".");
 					Player.player.addGold(reward);

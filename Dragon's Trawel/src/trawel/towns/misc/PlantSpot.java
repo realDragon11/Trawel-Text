@@ -128,6 +128,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 								case 1:
 									extra.println("The bees sting!");
 									Player.player.getPerson().addEffect(Effect.BEES);
+									Networking.unlockAchievement("bees_hive");
 									break;
 								case 2:
 									extra.println("You escape unscathed but with wounded pride.");

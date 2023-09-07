@@ -897,10 +897,11 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				Networking.leaderboard("Highest Level",level);
 				
 				mainGame.story.levelUp(level+levels);
-				if (level < 5 && level+levels >= 5) {
+				Networking.unlockAchievement("level_any");
+				if (level < 5 && level+levels >= 5) {//requires starting level (of character) to be lower than 5
 					Networking.unlockAchievement("level5");
 				}
-				if (level < 10 && level+levels >= 10) {
+				if (level < 10 && level+levels >= 10) {//requires starting level (of character) to be lower than 10
 					Networking.unlockAchievement("level10");
 				}
 				if (!autod) {
@@ -1542,7 +1543,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 
 	public void setPlayer() {
-			setFlag(PersonFlag.ISPLAYER,true);
+		setFlag(PersonFlag.ISPLAYER,true);
 	}
 	
 	public boolean takeBeer() {

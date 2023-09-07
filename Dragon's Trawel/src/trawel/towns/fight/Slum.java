@@ -9,6 +9,7 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import trawel.Effect;
+import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.extra;
 import trawel.mainGame;
@@ -184,6 +185,7 @@ public class Slum extends Feature implements QuestBoardLocation{
 						public boolean go() {
 							if (Player.player.getGold() > removecost) {
 								Player.player.addGold(-removecost);
+								Networking.unlockAchievement("reform");
 								if (replacer != null) {
 									town.laterReplace(Slum.this,replacer.generate(Slum.this));
 									return true;

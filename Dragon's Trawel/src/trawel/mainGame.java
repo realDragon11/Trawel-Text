@@ -792,7 +792,7 @@ public class mainGame {
 	private static void credits() {
 		extra.println("Made by 'dragon' of realDragon");
 		extra.println("With thanks to many different discords across different programming languages and engines.");
-		extra.println("Achievement icons can be found on game-icons.net");
+		extra.println("Achievement icons can be found on game-icons.net, modified using their website. They are CC BY 3.0");
 		extra.println("Game-Icons.net list:\r\n"
 				+ "    Lorc, http://lorcblog.blogspot.com\r\n"
 				+ "    Delapouite, https://delapouite.com\r\n"
@@ -831,7 +831,7 @@ public class mainGame {
 				+ "");
 		extra.println("Music by manicInsomniac");
 		extra.println("Art:");
-		extra.println("Character, armor, and weapon art by SmashCooper and Duster. Background art by Damrok and he-who-shall-not-be-named");
+		extra.println("Character, armor, and weapon art by SmashCooper and Duster. Background art by Damrok, Splash Art by he-who-shall-not-be-named");
 		extra.println("Sounds:");
 		extra.println("Stock Media provided by Soundrangers / FxProSound / SoundIdeasCom / PrankAudio / hdaudio / agcnf_media / sounddogs / AbloomAudio / Yurikud / SoundMorph => through Pond5");
 	}
