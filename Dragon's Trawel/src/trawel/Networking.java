@@ -250,7 +250,7 @@ public class Networking {
 		MINE("mine","mine"),
 		CAVE("mine","mine"),
 		MOUNTAIN("mountain","mountain"),
-		PORT("port","forest"),
+		PORT("mountain","forest"),
 		SLUM("dungeon","mine"),
 		LOT("shop","forest"),
 		GARDEN("shop","forest"),
