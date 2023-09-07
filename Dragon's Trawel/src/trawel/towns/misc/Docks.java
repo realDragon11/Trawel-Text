@@ -108,6 +108,13 @@ public class Docks extends Feature {
 								extra.popPrintStack();
 								leader = c.getNonSummonSurvivors().get(0).setOrMakeAgentGoal(AgentGoal.OWN_SOMETHING);
 								//may the best drudger lead!
+								Person p = leader.getPerson();
+								//promote if was mook
+								if (p.getFlag(PersonFlag.IS_MOOK)) {
+									p.setArch(Archetype.PROMOTED);
+									p.setFlag(PersonFlag.IS_MOOK, false);
+								}
+								
 								continue;
 							}
 						}
