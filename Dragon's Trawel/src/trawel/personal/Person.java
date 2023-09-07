@@ -1712,7 +1712,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			int num = effects.getOrDefault(e, 0);
 			if (num > 0) {
 				if (!found) {
-					extra.println("Effects:");
+					extra.println(extra.STAT_HEADER+"Effects:");
 					found = true;
 				}
 				if (num > 1) {
