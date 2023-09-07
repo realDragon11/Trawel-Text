@@ -113,7 +113,7 @@ public class BossNode implements NodeType {
 	
 	private boolean fatespinner(NodeConnector holder,int node) {
 		//if (holder.getEventNum(node) == 0) {
-			extra.println(extra.PRE_BATTLE+"You challenge the fatespinner!");
+			extra.println(extra.PRE_BATTLE+"You challenge the Fatespinner!");
 			List<Person> fated = (List<Person>) holder.getStorageFirstClass(node,List.class);
 			List<Person> playerSide = holder.parent.getHelpFighters();
 			playerSide.addAll(Player.player.getAllies());
@@ -131,7 +131,7 @@ public class BossNode implements NodeType {
 			if (c.playerWon() > 0) {
 				if (c.playerWon() < 2) {
 					//player must survive battle for it to stick
-					extra.println("Fate will not allow this... It seems like the Fatespinner's thread winds on.");
+					extra.println("Fate will not allow this... It seems like this Fatespinner's thread winds on.");
 					extra.println("You wake up at the base of the tower, a storm passing by overhead.");
 					//this is the list that is already stored
 					refillFatespinnerList(fated,survs,holder.getLevel(node));
@@ -167,15 +167,10 @@ public class BossNode implements NodeType {
 			Combat c = Player.player.massFightWith(list);
 			if (c.playerWon() > 0) {
 				holder.setForceGo(node,false);
-				//node.interactString = "approach the hell baron's corpse";
-				//node.storage1 = null;
-				//node.state = 1;
-				//node.name = "The Hell Baron's corpse";
-				//just in case I want to add adds later
 				Person baron = list.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();
 				setGenericCorpse(holder,node, baron);
 				Networking.unlockAchievement("boss2");
-				Player.unlockPerk(Perk.HELL_BARONESS);
+				Player.unlockPerk(Perk.HELL_BARONESS_1);
 				return false;
 			}else {
 				return true;//lost, kick out

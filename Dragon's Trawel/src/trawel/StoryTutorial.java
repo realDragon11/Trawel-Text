@@ -46,7 +46,7 @@ public class StoryTutorial extends Story{
 	
 	private int battleFam;//0 none, 1 fought but didn't win, 2 won a fight
 	
-	private EnumSet<Perk> bossPerkTriggers = EnumSet.of(Perk.HELL_BARONESS,Perk.FATED,Perk.STORYTELLER);
+	private EnumSet<Perk> bossPerkTriggers = EnumSet.of(Perk.HELL_BARONESS_1,Perk.FATED,Perk.STORYTELLER);
 	private EnumSet<Perk> worldPerkTriggers = EnumSet.of(Perk.MINE_ALL_VEINS,Perk.CULT_LEADER_BLOOD);
 	
 	private List<Class<? extends Feature>> explained = new ArrayList<>();
@@ -388,14 +388,14 @@ public class StoryTutorial extends Story{
 		if (bossPerkTriggers.remove(perk)) {
 			switch (perk) {
 			case FATED:
-				if (bossPerkTriggers.contains(Perk.HELL_BARONESS)) {
-					extra.println("You've slain the Fatespinner and gotten the Fated perk... but can you Beat the Baron? Travel to the world of Greap through the teleporter in Repa, then seek out the Staircase to Hell.");
+				if (bossPerkTriggers.contains(Perk.HELL_BARONESS_1)) {
+					extra.println("You've slain a Fatespinner and gotten the Fated perk... but can you Beat the Baron? Travel to the world of Greap through the teleporter in Repa, then seek out the Staircase to Hell.");
 				}else {
-					extra.println("You've slain the Fatespinner and gained the Fated perk!");
+					extra.println("You've slain a Fatespinner and gained the Fated perk!");
 				}
 				break;
-			case HELL_BARONESS:
-				extra.println("You've slain the Hell Baron and gained their throne perk!");
+			case HELL_BARONESS_1:
+				extra.println("You've slain a Hell Baron and gained their throne perk!");
 				break;
 			case STORYTELLER:
 				extra.println("You've outlived out a legend and gained the Storyteller perk!");

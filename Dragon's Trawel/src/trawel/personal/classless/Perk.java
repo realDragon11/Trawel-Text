@@ -15,7 +15,7 @@ public enum Perk implements IHasSkills{
 	,CULT_LEADER_BLOOD("Cult Leader (Blood)","Chosen by the cult of blood.",EnumSet.of(Skill.BLOODTHIRSTY))//also used by npcs
 	,MINE_ALL_VEINS("Meticulous Miner","Know for their painstaking digging process.",EnumSet.of(Skill.NIGHTVISION))
 	,GRAVEYARD_SIGHT("Gravesight","Can see in the dark due to a lot of experience.",EnumSet.of(Skill.NIGHTVISION))
-	,HELL_BARONESS("Baroness of Hell","Has fiendish powers.",EnumSet.of(Skill.CURSE_MAGE,Skill.TA_NAILS),5,0,5)
+	,HELL_BARONESS_1("Baroness of Hell (Peana's Throne)","Has fiendish powers.",EnumSet.of(Skill.CURSE_MAGE,Skill.TA_NAILS),5,0,5)
 	,HELL_BARON_NPC("Baron of Hell","Has fiendish powers.",EnumSet.of(Skill.NPC_BURN_ARMOR,Skill.RAW_GUTS,Skill.TA_NAILS,Skill.SPUNCH,Skill.KILLHEAL,Skill.CONDEMN_SOUL,Skill.NO_HOSTILE_CURSE),50,0,20)
 	,FATESPINNER_NPC("Fated","Has preternatural intuition.",EnumSet.of(Skill.OPENING_MOVE,Skill.CURSE_MAGE,Skill.PRESS_ADV,Skill.SPEEDDODGE,Skill.MESMER_ARMOR,Skill.PLOT_ARMOR,Skill.NO_HOSTILE_CURSE),10,10,40)
 	,FATED("Fated","Has preternatural intuition.",EnumSet.of(Skill.OPENING_MOVE,Skill.SPEEDDODGE),0,0,10)
