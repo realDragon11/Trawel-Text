@@ -585,7 +585,7 @@ public class Store extends Feature{
 		}
 		if (type == 7) {
 			if (races.size() >= invSize) {
-				races.remove(extra.randRange(0,items.size()-1));
+				races.remove(extra.randRange(0,races.size()-1));
 			}
 			races.add(RaceFactory.randRace(Race.RaceType.PERSONABLE).raceID());
 			return;

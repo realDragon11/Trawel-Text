@@ -111,6 +111,8 @@ public abstract class ScrollMenuGenerator implements MenuGenerator {
 					botWindow = (contentslots-1);
 				}
 			}
+			//don't keep scrolling if come back
+			scrollDir = 0;
 		}
 		locationTop = topWindow;
 		locationBottom = botWindow;
