@@ -378,8 +378,14 @@ public class WorldGen {
 		tunka.addFeature(new Slum(tunka,"Forgettables District",false));
 		tunka.tTags.add(TownTag.LAWLESS);
 		
+		//todo port town that just leads to visan
+		Town owal = new Town("Owal",9,teran,(byte)13,(byte)7);
+		//connects added later
+		owal.addFeature(new Docks("The Great Bay", owal));
+		
 		Town repa = new Town("Repa",10,teran,new Point(14,6));
-		addConnection(repa,tunka,"road","right-over road");
+		addConnection(repa,tunka,ConnectType.ROAD,"right-over road");
+		addConnection(repa,owal,ConnectType.ROAD,"Former Glory Road");
 		//add connection to a new world area
 		erin.addFeature(new Mountain("Mountain Teleporter Brace",9));
 		repa.addTravel();
@@ -396,8 +402,8 @@ public class WorldGen {
 		//note: all should be barren
 		
 		Town senal = new Town("Senal",6,epan,(byte)10,(byte)9);
-		addConnection(senal,tanak,"teleport","Sea Skip Ritual");
-		addConnection(senal,lokan,"ship","Bygone Current");
+		addConnection(senal,tanak,ConnectType.TELE,"Sea Skip Ritual");
+		addConnection(senal,lokan,ConnectType.SHIP,"Bygone Current");
 		senal.tTags.add(TownTag.BARREN);
 		senal.setFirstPrinter(new PrintEvent() {
 
@@ -407,7 +413,12 @@ public class WorldGen {
 			}});
 		
 		Town quen = new Town("Quen",9,epan,(byte)12,(byte)10);
-		addConnection(quen,senal,"road","Ancient Path");
+		addConnection(quen,senal,ConnectType.ROAD,"Ancient Path");
+		quen.addFeature(new Dungeon("Blasted Palace", quen,30,12, Shape.TOWER, 1));//TODO put some new boss here
+		quen.addFeature(new Library("Empire Records Bookstore", quen));
+		quen.addFeature(new Dungeon("Crumbling Fort", quen,40,10, Shape.NONE, -1));
+		quen.addFeature(new Mine("'The Last Ditch that Failed'", quen, 20,9, Shape.ELEVATOR));
+		quen.addFeature(new Dungeon("Dilapidated Hamlet", quen,100,8, Shape.NONE,-1));
 		quen.tTags.add(TownTag.BARREN);
 		quen.tTags.add(TownTag.HISTORY);
 		quen.setFirstPrinter(new PrintEvent() {
@@ -417,10 +428,12 @@ public class WorldGen {
 				extra.println("Quen was once the mighty city that all others aspired to. It first held that pedestal long before written history remains intact. But the countless wars over it eventually destroyed the island of Epan. And tyrants ceased caring over it a few Eras later.");
 			}});
 		
-		Town visan = new Town("Visan",8,epan,(byte)13,(byte)7);
-		addConnection(visan,repa,"teleporter","Barren Bounce");
-		addConnection(visan,senal,"teleporter","Through the Fog");
-		
+		Town visan = new Town("Visan",8,epan,(byte)13,(byte)8);
+		addConnection(visan,repa,ConnectType.TELE,"Barren Bounce");
+		addConnection(visan,senal,ConnectType.TELE,"Through the Fog");
+		addConnection(visan,owal,ConnectType.SHIP,"Forgotten Shipping Lane");
+		visan.addFeature(new Doctor("Foglung Cure Center", visan));
+		visan.tTags.add(TownTag.TRAVEL);
 		visan.tTags.add(TownTag.BARREN);
 		visan.setFirstPrinter(new PrintEvent() {
 
@@ -429,7 +442,7 @@ public class WorldGen {
 				extra.println("Like the other towns on the island of Epan, Visan's land is barren. It's current use is as a staging point to break through the magic fog and allow teleporting from Rona to Teran through Epan, but most traders prefer to take the shipping route to the north.");
 			}});
 		
-		addConnection(repa,greap(),"teleport","world teleport (eonao-greap)");
+		addConnection(repa,greap(),ConnectType.TELE,"world teleport (eonao-greap)");
 		
 		for (World wor: plane.worlds()) {
 			townFinal(wor);

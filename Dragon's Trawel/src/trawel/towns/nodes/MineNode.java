@@ -119,8 +119,13 @@ public class MineNode implements NodeType{
 		case ELEVATOR:
 			int lastNode = 1;
 			int newNode;
+			int currentLevel = tier;
+			int expectedLevel = tier;
 			size++;
 			for (int i = 1;i < size;i++) {
+				expectedLevel = tier+(i/10);
+				//non linear growth, but will be force caught up and can't get too far ahead
+				currentLevel = extra.clamp(currentLevel+extra.randRange(0,1),expectedLevel-1,expectedLevel+2);
 				newNode = getNode(start,lastNode,i,tier+(i/10));
 				start.setFloor(newNode,i);
 				if (i != 1) {
@@ -128,9 +133,13 @@ public class MineNode implements NodeType{
 				}
 				lastNode = newNode;
 			}
-			newNode = NodeType.NodeTypeNum.BOSS.singleton.getNode(start, lastNode,size+2, 1+tier+(int)Math.ceil(size/10));
-			start.setMutualConnect(newNode, lastNode);
-			start.setFloor(newNode,size+2);
+			if (owner.bossType() > 0) {
+				currentLevel = Math.max(currentLevel+2, 3+(tier+(size/10)));
+				newNode = NodeType.NodeTypeNum.BOSS.singleton.getNode(start, lastNode,size+2,currentLevel);
+				start.setMutualConnect(newNode, lastNode);
+				start.setFloor(newNode,size+2);
+			}
+			
 			return start.complete(owner);
 		}
 		throw new RuntimeException("Invalid mine");

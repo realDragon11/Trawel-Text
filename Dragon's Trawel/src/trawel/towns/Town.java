@@ -1082,11 +1082,21 @@ public class Town extends TContextOwner{
 	}
 	public void postFeatureSetup() {
 		occupantDesire = 10;
+		
 		for (Feature f: features) {
 			occupantDesire+=f.occupantDesire();
 		}
-		
-		int j = (int) (occupantDesire+extra.randRange(-3,3));
+		if (tTags.contains(TownTag.RICH)) {
+			occupantDesire+=1;
+		}
+		if (tTags.contains(TownTag.SMALL_TOWN)) {
+			occupantDesire*=.5f;
+		}
+		if (tTags.contains(TownTag.CITY)) {
+			occupantDesire*=1.2f;
+			occupantDesire+=4;
+		}
+		int j = Math.max(3,(int) (occupantDesire+extra.randRange(-3,3)));
 		int i = 0;
 		while (i < j) {
 			addPerson();

@@ -42,13 +42,17 @@ public class Dungeon extends NodeFeature {
 	private transient boolean escapePartyMenu;
 	
 	public Dungeon(String name,Town t,Shape s,int bossType) {
-		this.name = name;
+		this(name,t,50,t.getTier(),s,bossType);
+	}
+	public Dungeon(String _name,Town t,int _size, int _tier,Shape s,int bossType) {
+		this.name = _name;
 		town = t;
+		tier = _tier;
 		tutorialText = "Dungeon.";
 		shape = s;
-		boss = (byte) bossType;	
-		generate(50);
+		boss = (byte) bossType;
 		area_type = Area.DUNGEON;
+		generate(_size);
 	}
 	
 	public boolean hasHelpers() {
@@ -363,7 +367,7 @@ public class Dungeon extends NodeFeature {
 		default:case RIGGED_DUNGEON: //unsure on rigged
 			break;
 		}
-		start = NodeType.NodeTypeNum.DUNGEON.singleton.getStart(this, size, getTown().getTier());//DOLATER: get actual level
+		start = NodeType.NodeTypeNum.DUNGEON.singleton.getStart(this, size, tier);//DOLATER: get actual level
 	}
 	
 	@Override
