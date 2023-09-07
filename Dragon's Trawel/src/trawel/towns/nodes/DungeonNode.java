@@ -26,6 +26,7 @@ public class DungeonNode implements NodeType{
 	private WeightedTable dungeonGuardRoller, dungeonLootRoller, dungeonNoneRoller;
 	
 	/*
+	 * FOR MULTIFIGHT DUNGEONS ONLY
 	 * 2: single guard
 	 * 3: multi guard
 	 */
@@ -38,7 +39,7 @@ public class DungeonNode implements NodeType{
 	private static final byte[] LOOT_NUMBERS = new byte[] {5,6,7,8};
 	
 	public DungeonNode() {
-		dungeonGuardRoller = new WeightedTable(new float[] {2f,1f});
+		dungeonGuardRoller = new WeightedTable(new float[] {1f,4f});
 		dungeonLootRoller = new WeightedTable(new float[] {3f,1f,1.5f,.5f});
 		dungeonNoneRoller = new WeightedTable(new float[] {
 				0f,//1 ladder
@@ -104,13 +105,17 @@ public class DungeonNode implements NodeType{
 			int floor = 0;
 			int lastNode;
 			int curNode;
+			int stair_level = -10;
 			//DOLATER: fix order of nodes if that is still an issue
 			while (curSize < size) {
 				floor++;
 				lastNode = stair;
-				int stair_level = start_node.getLevel(stair);
-				levelUp++;
-				curStair = getNode(start_node,stair,0,stair_level+levelUp%3);//stair as from is tentative
+				stair_level = start_node.getLevel(stair);
+				if (++levelUp >= 3) {
+					levelUp =0;
+					++stair_level;
+				}
+				curStair = getNode(start_node,stair,0,stair_level);//stair as from is tentative
 				start_node.setStair(curStair);
 				start_node.setEventNum(curStair, 1);
 				
@@ -160,7 +165,7 @@ public class DungeonNode implements NodeType{
 				stair = curStair;
 			}
 			floor+=10;
-			int b = NodeType.NodeTypeNum.BOSS.singleton.getNode(start_node, 0, floor, (levelUp%3)+1);
+			int b = NodeType.NodeTypeNum.BOSS.singleton.getNode(start_node, 0, floor, stair_level+2);
 			start_node.setMutualConnect(b, stair);
 			start_node.setFloor(b, floor);
 			/*

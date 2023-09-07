@@ -417,16 +417,17 @@ public class WorldGen {
 				return new MerchantGuild("Better Futures Central Office");
 			}
 		}));
+		senal.addFeature(new Mountain("Ancient Ridges",8));
 		senal.tTags.add(TownTag.BARREN);
 		senal.setFirstPrinter(new PrintEvent() {
 
 			@Override
 			public void print() {
-				extra.println("A few Eras ago, Senal was used as a trade route. But the island of Epan had its land salted, and civilization moved north, to Alhax.");
+				extra.println("A few Eras ago, Senal was used as a trade route. But the island of Epan had its land salted, and civilization moved north, to Alhax. The mountain pass to Quen is oft alleged to be untraversable, only to be proven usable by desperate migrants seeking the Better Futures company here.");
 			}});
 		
 		Town quen = new Town("Quen",9,epan,(byte)12,(byte)10);
-		addConnection(quen,senal,ConnectType.ROAD,"Ancient Path");
+		addConnection(quen,senal,ConnectType.ROAD,"Derelict Pass");
 		quen.addFeature(new Dungeon("Blasted Palace", quen,30,12, Shape.TOWER, 1));//TODO put some new boss here
 		quen.addFeature(new Library("Empire Records Bookstore", quen));
 		quen.addFeature(new Dungeon("Crumbling Fort", quen,40,10, Shape.NONE, -1));
@@ -442,6 +443,7 @@ public class WorldGen {
 			}});
 		
 		Town visan = new Town("Visan",8,epan,(byte)13,(byte)8);
+		addConnection(visan,quen,ConnectType.ROAD,"Desolate Plains");
 		addConnection(visan,repa,ConnectType.TELE,"Barren Bounce");
 		addConnection(visan,senal,ConnectType.TELE,"Through the Fog");
 		addConnection(visan,owal,ConnectType.SHIP,"Forgotten Shipping Lane");
