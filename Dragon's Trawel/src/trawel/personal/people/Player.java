@@ -160,6 +160,7 @@ public class Player extends SuperPerson{
 	@Override
 	public void addAchieve(Serializable key, String title) {
 		achieveMap.put(key, title);
+		Networking.leaderboard("most_titles", achieveMap.size());
 	}
 	
 	@Override
@@ -177,6 +178,7 @@ public class Player extends SuperPerson{
 			build += instance;
 			achieveMap.put(key,build);
 		}
+		Networking.leaderboard("most_titles", achieveMap.size());
 	}
 	
 	@Override
