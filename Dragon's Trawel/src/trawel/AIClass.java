@@ -1057,14 +1057,15 @@ public class AIClass {
 					attacker.displayHp();
 					attacker.displayEffects();
 					
+					extra.println("---");
+					
 					defender.displayStats();
+					defender.displayArmor();
 					
 					defender.displaySkills();
 					defender.displayEffects();
 					defender.debug_print_status(0);
 					
-					defender.displayArmor();
-					defender.displayHp();
 					//new debug examine code
 					extra.println("9 to repeat attacks.");
 					numb = extra.inInt(attacks.size(),true,false);

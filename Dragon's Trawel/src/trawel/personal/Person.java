@@ -1491,15 +1491,15 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		
 		if (inCombat) {
 			extra.println(getName() +": LvL " + this.getLevel() +" " + this.getBag().getRace().renderName(false)+".");
-			extra.println(" "+getHp() +"/"+ tempMaxHp + " HP.");
+			extra.println(" "+getHp() +"/"+ tempMaxHp +extra.ITEM_DESC_PROP+ " HP.");
 			extra.println(" "
-			+extra.format(bag.getHealth()) + "x hpm, "
-			+extra.format(bag.getAim()) + "x aim, "
-			+extra.format(bag.getDam()) + "x dam, "
-			+extra.format(bag.getSpeed()) + "x spd, "
-			+extra.format(bag.getDodge()) + "x dodge, "
-			+extra.CHAR_SHARP+"/"+extra.CHAR_PIERCE+"/"+extra.CHAR_BLUNT+
-			": "+ extra.F_WHOLE.format(bag.getSharpResist())+"/"+extra.F_WHOLE.format(bag.getBluntResist())+"/"+extra.F_WHOLE.format(bag.getPierceResist())
+			+extra.ITEM_WANT_HIGHER+extra.format(bag.getHealth()) + "x "+extra.ITEM_DESC_PROP+"hpm, "
+			+extra.ITEM_WANT_HIGHER+extra.format(bag.getAim()) + "x "+extra.ITEM_DESC_PROP+"aim, "
+			+extra.ITEM_WANT_HIGHER+extra.format(bag.getDam()) + "x "+extra.ITEM_DESC_PROP+"dam, "
+			+extra.ITEM_WANT_HIGHER+extra.format(bag.getSpeed()) + "x "+extra.ITEM_DESC_PROP+"spd, "
+			+extra.ITEM_WANT_HIGHER+extra.format(bag.getDodge()) + "x "+extra.ITEM_DESC_PROP+"dodge, "
+			+extra.ITEM_DESC_PROP+extra.CHAR_SHARP+"/"+extra.CHAR_PIERCE+"/"+extra.CHAR_BLUNT+
+			": "+extra.ITEM_WANT_HIGHER+extra.F_WHOLE.format(bag.getSharpResist())+"/"+extra.F_WHOLE.format(bag.getBluntResist())+"/"+extra.F_WHOLE.format(bag.getPierceResist())
 					);
 			extra.println(bag.quickInventory());
 		}else {
@@ -1670,9 +1670,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			bluntm += a.getBluntResist();
 			piercem += a.getPierceResist();
 		}
-		extra.println("Sharp: " + sharp + "/" +sharpm);
-		extra.println("Blunt: " + blunt + "/" +bluntm);
-		extra.println("Pierce: " + pierce + "/" +piercem);
+		extra.println(extra.ITEM_DESC_PROP+"Sharp: "+extra.ITEM_WANT_HIGHER+ sharp + "/" +sharpm);
+		extra.println(extra.ITEM_DESC_PROP+"Blunt: "+extra.ITEM_WANT_HIGHER+ blunt + "/" +bluntm);
+		extra.println(extra.ITEM_DESC_PROP+"Pierce: "+extra.ITEM_WANT_HIGHER+ pierce + "/" +piercem);
 	}
 
 	/*
