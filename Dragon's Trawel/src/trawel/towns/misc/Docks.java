@@ -174,6 +174,20 @@ public class Docks extends Feature {
 				}
 				
 				//on top so it's consistent
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return extra.PRE_MAYBE_BATTLE+"Sail Aimlessly";
+					}
+
+					@Override
+					public boolean go() {
+						if (!town.dockWander(false)) {
+							extra.println("Nothing interesting happens.");
+						}
+						return false;
+					}});
 				
 				ScrollMenuGenerator gen = farConnectsMenu();
 				

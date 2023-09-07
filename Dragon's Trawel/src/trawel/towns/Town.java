@@ -948,6 +948,8 @@ public class Town extends TContextOwner{
 	}
 	/**
 	 * use force to indicate that you should always have a wander if possible, ie if far flung traveling
+	 * <br>
+	 * or sailingly aimlessly
 	 */
 	public boolean dockWander(boolean force) {
 		return wanderShip(force ? 0 : 3);

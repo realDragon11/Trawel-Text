@@ -147,7 +147,7 @@ public class QuestReactionFactory {
 
 
 	public static boolean runMe(Town t) {
-		if (Player.player.sideQuests.size() == 0 || extra.chanceIn(1,3)) {
+		if (Player.player.sideQuests.size() == 0 || extra.chanceIn(2,3)) {
 			return false;
 		}
 		BasicSideQuest side = extra.randList(Player.player.sideQuests).reactionQuest();
