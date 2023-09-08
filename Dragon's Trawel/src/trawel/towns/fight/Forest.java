@@ -82,7 +82,13 @@ public class Forest extends ExploreFeature{
 			id = 10;
 		}
 		switch (id) {
-		case 1: goldStream();break;
+		case 1:
+		risky_gold(
+				"You spot a bag of "+World.currentMoneyString()+" floating down a stream! Chase it?",
+				"They take the "+World.currentMoneyString()+" sack and leave you floating down the stream...",
+				"You let the sack float away..."
+				);
+		break;
 		case 2: funkyMushroom();break;
 		case 3: mugger_other_person();break;
 		case 4: treeOnPerson();break;
@@ -125,56 +131,21 @@ public class Forest extends ExploreFeature{
 					1f,
 					//hut
 					1f
-					
 			});
 		}
 		return roller;
 	}
-
-
-
-	@Override
-	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		if (exhaust > 0 && time > .1) {
-			exhaust--;
-		}
-		return null;
-	}
-	
-	private void goldStream() {
-		extra.println("You spot a bag of "+World.currentMoneyString()+" floating down a stream! Chase it?");
-		Boolean result = extra.yesNo();
-		if (result) {
-			if (Math.random() > .5) {
-				extra.println("A fighter runs up and calls you a thief before launching into battle!");
-				Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
-				if (c.playerWon() > 0) {
-					int gold = (2*tier)+extra.randRange(0,3);
-					extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
-					Player.player.addGold(gold);
-				}else {
-					extra.println("They take the gold sack and leave you floating down the stream...");
-				}
-			}else {
-				int gold = (tier)+extra.randRange(0,2);
-				extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
-				Player.player.addGold(gold);
-			}
-		}else {
-			extra.println("You let the bag drift out of sight...");
-		}
-	}
 	
 	private void funkyMushroom() {
 		extra.println("You spot a glowing mushroom on the forest floor.");
-		extra.println("1 leave it");
-		extra.println("2 eat it");
-		extra.println("3 sell it");
-		extra.println("4 crush it");
-		int in =  extra.inInt(4);
+		extra.println("1 eat it");
+		extra.println("2 sell it");
+		extra.println("3 crush it");
+		extra.println("9 leave it");
+		int in =  extra.inInt(4,true,true);
 		switch (in) {
-		default: case 1: extra.println("You decide to leave it alone.");break;
-		case 2:
+		default: extra.println("You decide to leave it alone.");break;
+		case 1:
 			extra.println("You eat the mushroom...");
 			switch(extra.randRange(1,3)) {
 			case 1: extra.println("The mushroom is delicous!");break;
@@ -206,9 +177,9 @@ public class Forest extends ExploreFeature{
 			}
 			
 			;break;
-		case 3:
+		case 2:
 			extra.println("You pick up the mushroom to sell it.");
-			if (Math.random() > .8) {
+			if (Math.random() > .3) {
 			extra.println("You hear someone cry out from behind you!");
 			extra.print(extra.PRE_BATTLE);
 			Combat c;
@@ -219,39 +190,39 @@ public class Forest extends ExploreFeature{
 				break;
 			case 2:
 				extra.println("\"Hey, I wanted that!\"");
-				c = Player.player.fightWith(RaceFactory.getMugger(tier));
+				c = Player.player.fightWith(RaceFactory.makeCollector(tier));
 				break;
 			case 3:
 				extra.println("\"You dirty plant-thief!\"");
-				c = Player.player.fightWith(RaceFactory.getMugger(tier));
+				c = Player.player.fightWith(RaceFactory.getLawman(tier));
 				break;
 			}
 			if (c.playerWon() > 0) {
-				int gold = 2*extra.randRange(1,tier+1);
+				int gold = Math.round(extra.randRange(2f,3f)*getUnEffectiveLevel());
 				extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
 				Player.player.addGold(gold);
 			}
 			}else {
-				int gold = extra.randRange(1,tier+1);
+				int gold = Math.round(extra.randRange(0f,2f)*getUnEffectiveLevel());
 				extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
 				Player.player.addGold(gold);
 			};break;
-		case 4:
+		case 3:
 			extra.println("You crush the mushroom under your heel.");
 			extra.println("You hear someone cry out from behind you!");
 			extra.print(extra.PRE_BATTLE);
 			switch(extra.randRange(1,3)) {
 			case 1: 
 				extra.println("\"You dare violate the forest?!\"");
-				Player.player.fightWith(RaceFactory.getDryad(tier));
+				Player.player.fightWith(RaceFactory.getDryad(tier+1));
 				break;
 			case 2:
 				extra.println("\"Hey, I wanted that!\"");
-				Player.player.fightWith(RaceFactory.getMugger(tier));
+				Player.player.fightWith(RaceFactory.makeCollector(tier+1));
 				break;
 			case 3:
 				extra.println("\"You dirty plant-crusher!\"");
-				Player.player.fightWith(RaceFactory.getMugger(tier));
+				Player.player.fightWith(RaceFactory.getLawman(tier+1));
 				break;
 			}
 		}
@@ -331,7 +302,7 @@ public class Forest extends ExploreFeature{
 				if (Math.random() < .3) {
 					extra.println("They scamper off...");
 				}else {
-					int gold = extra.randRange(0,5)+ (tier*extra.randRange(1,4));
+					int gold = Math.round(extra.randRange(.5f,1.2f)*getUnEffectiveLevel());
 					extra.println("They give you a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them.");
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
 					Player.player.addGold(gold);
@@ -476,6 +447,7 @@ public class Forest extends ExploreFeature{
 		if (extra.yesNo()) {
 			switch (extra.randRange(2,3)) {
 			case 1:
+				//'jerked nowhere' is doomRL
 				extra.println("You feel yourself being jerked nowhere, some strange force is attempting to teleport you. Let it?");
 				if (extra.yesNo()) {
 					Player.player.setLocation(Player.player.getWorld().getRandom(tier,Player.player.getPerson().getLevel()+1));

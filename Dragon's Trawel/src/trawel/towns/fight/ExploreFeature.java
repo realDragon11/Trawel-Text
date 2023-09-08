@@ -280,5 +280,33 @@ public abstract class ExploreFeature extends Feature {
 			extra.println(Player.loseGold(lose,true));
 		}
 	}
+	
+	protected void risky_gold(String intro,String failText, String ignoreText) {
+		extra.println(intro);
+		Boolean result = extra.yesNo();
+		extra.linebreak();
+		if (result) {
+			if (Math.random() > .4) {
+				extra.println(extra.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");
+				Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
+				if (c.playerWon() > 0) {
+					if (c.playerWon() == 1) {
+						extra.println("You wake up and examine the loot...");
+					}
+					int gold = Math.round(extra.randRange(2f,3f)*getUnEffectiveLevel());
+					extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
+					Player.player.addGold(gold);
+				}else {
+					extra.println(failText);
+				}
+			}else {
+				int gold = Math.round(extra.randRange(0f,2f)*getUnEffectiveLevel());
+				extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
+				Player.player.addGold(gold);
+			}
+		}else {
+			extra.println(ignoreText);
+		}
+	}
 
 }

@@ -110,7 +110,11 @@ public class Mountain extends ExploreFeature{
 			;break;
 		case 1: rockSlide();break;
 		case 2: ropeBridge();break;
-		case 3: goldGoat() ;break;
+		case 3: risky_gold(
+				"You spot a bag of "+World.currentMoneyString()+" being carried by a mountain goat! Chase it?",
+				"They take the "+World.currentMoneyString()+" sack and leave you rolling down the mountain...",
+				"You let the goat run away..."
+				);break;
 		case 4: mugger_other_person();break;
 		case 5: mugger_ambush();break;
 		case 6: tollKeeper();break;
@@ -196,34 +200,6 @@ public class Mountain extends ExploreFeature{
 			extra.println("You cross the bridge.");
 		}else {
 			extra.println("You don't cross the bridge.");
-		}
-	}
-	
-	private void goldGoat() {
-		extra.println("You spot a bag of "+World.currentMoneyString()+" being carried by a mountain goat! Chase it?");
-		Boolean result = extra.yesNo();
-		extra.linebreak();
-		if (result) {
-			if (Math.random() > .5) {
-				extra.println(extra.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");
-				Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
-				if (c.playerWon() > 0) {
-					if (c.playerWon() == 1) {
-						extra.println("You wake up and examine the loot...");
-					}
-					int gold = Math.round(extra.randRange(2f,3f)*getUnEffectiveLevel());
-					extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
-					Player.player.addGold(gold);
-				}else {
-					extra.println("They take the "+World.currentMoneyString()+" sack and leave you rolling down the mountain...");
-				}
-			}else {
-				int gold = Math.round(extra.randRange(0f,2f)*getUnEffectiveLevel());
-				extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
-				Player.player.addGold(gold);
-			}
-		}else {
-			extra.println("You let the goat run away...");
 		}
 	}
 	
