@@ -9,21 +9,39 @@ import trawel.time.TimeEvent;
 
 /**
  * 
- * @author Brian Malone
+ * @author dragon
  * 5/30/2018
  */
 
 public class Island extends TContextOwner{
+	
 	private static final long serialVersionUID = 1L;
-	private ArrayList<Town> towns;
+	
+	private List<Town> towns;
 	private String name;
 	private World world;
+	private IslandType type;
 	
-	public Island(String name, World w) {
+	public enum IslandType{
+		ISLAND("island","on"),
+		POCKET("pocket dimension","in");
+		
+		public final String name, locDesc;
+		IslandType(String _name, String _locDesc){
+			name = _name;
+			locDesc = _locDesc;
+		}
+	}
+	
+	public Island(String _name, World w, IslandType _type) {
 		towns = new ArrayList<Town>();
-		this.name = name;
+		name = _name;
 		w.addIsland(this);
 		world = w;
+		type = _type;
+	}
+	public Island(String name, World w) {
+		this(name,w,IslandType.ISLAND);
 	}
 	/**
 	 * only for tests!
@@ -38,7 +56,7 @@ public class Island extends TContextOwner{
 		towns.add(t);
 	}
 
-	public ArrayList<Town> getTowns() {
+	public List<Town> getTowns() {
 		return towns;
 	}
 
@@ -85,6 +103,12 @@ public class Island extends TContextOwner{
 	@Override
 	public ContextLevel contextLevel() {
 		return ContextLevel.ISLAND;
+	}
+	public String getTypeName() {
+		return type.name;
+	}
+	public String getLocDesc() {
+		return type.locDesc;
 	}
 
 	

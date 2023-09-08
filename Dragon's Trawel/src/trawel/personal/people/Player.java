@@ -1523,8 +1523,9 @@ public class Player extends SuperPerson{
 
 													@Override
 													public boolean go() {
+														Island isle = t.getIsland();
 														extra.println(t.getName() + " is a tier " +t.getTier() + " "
-																+ (t.isFort() ? "fort" : "town") + " located on the Island of " +t.getIsland().getName()+", which has "+t.getIsland().getTowns().size()+" regions in it."
+																+ (t.isFort() ? "fort" : "town") + " located "+isle.getLocDesc()+" the "+isle.getTypeName()+" of " +isle.getName()+", which has "+isle.getTowns().size()+" regions in it."
 																);
 														float per = t.getAllOccupants().size()/t.occupantGoal();
 														String occString = t.getAllOccupants().size()+extra.PRE_WHITE;
