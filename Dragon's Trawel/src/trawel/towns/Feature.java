@@ -23,8 +23,9 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	protected String tutorialText = null;
 	protected Town town;
 	protected int moneyEarned;
-	protected ArrayList<QuestR> qrList = new ArrayList<QuestR>();
-	protected ArrayList<QuestR> qrRemoveList = new ArrayList<QuestR>();
+	//TODO: figure out if EVERY feature really needs these lists
+	protected List<QuestR> qrList = new ArrayList<QuestR>();
+	protected List<QuestR> qrRemoveList = new ArrayList<QuestR>();
 	protected int background_variant = extra.randRange(1, 3);
 	protected String background_area = "main";
 	protected int tier;
