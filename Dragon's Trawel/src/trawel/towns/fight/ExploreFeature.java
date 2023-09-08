@@ -8,15 +8,23 @@ import com.github.yellowstonegames.core.WeightedTable;
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
+import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import trawel.AIClass;
+import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.battle.Combat;
+import trawel.personal.Person;
+import trawel.personal.RaceFactory;
 import trawel.personal.people.Player;
 import trawel.quests.QRMenuItem;
 import trawel.quests.QuestR;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
+import trawel.towns.World;
+import trawel.towns.services.Oracle;
 
 public abstract class ExploreFeature extends Feature {
 
@@ -122,6 +130,155 @@ public abstract class ExploreFeature extends Feature {
 	}
 	public List<MenuItem> extraMenu(){
 		return null;
+	}
+	public abstract String nameOfType();
+	@Override
+	public String getTutorialText() {
+		return extra.capFirst(nameOfType())+".";
+	}
+	
+	protected void oldFighter(String restingOn, String warning) {
+		extra.println("You find an old fighter resting on "+restingOn+".");
+		Person old = RaceFactory.makeOld(getLevel()+4);
+		old.getBag().graphicalDisplay(1, old);
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return old.getName();
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Chat.";
+					}
+
+					@Override
+					public boolean go() {
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> list = new ArrayList<MenuItem>();
+								list.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "Greetings, " + Player.bag.getRaceID().name + ". What would you like to talk about?";
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Advice?";
+									}
+
+									@Override
+									public boolean go() {
+										Oracle.tip("old");
+										return false;
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "This "+nameOfType()+"?";
+									}
+
+									@Override
+									public boolean go() {
+										extra.println("\"We are at " + getName() + " in "+town.getName()+"."+warning+"\"");
+										return false;
+									}});
+								list.add(new MenuBack());
+								return list;
+							}});
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return extra.PRE_BATTLE+"Attack!";
+					}
+
+					@Override
+					public boolean go() {
+						if (old.reallyAttack()) {
+							Player.player.fightWith(old);
+							return true;
+						}else {
+							extra.println("You leave the fighter alone.");
+						}
+						return false;
+					}});
+				list.add(new MenuBack());
+				return list;
+			}});
+		Networking.clearSide(1);
+	}
+	
+	/**
+	 * @param calling
+	 * @param optionalWolfQualifier - set null to use nameOfType, empty string for no addition, should have a space in front
+	 */
+	protected void findEquip(String optionalWolfQualifier) {
+		if (optionalWolfQualifier == null) {
+			optionalWolfQualifier = " "+nameOfType();
+		}
+		extra.println("A"+optionalWolfQualifier+" wolf is poking over a dead corpse... and it looks like their equipment is intact!");
+		Person loot = RaceFactory.makeLootBody(getLevel());
+		loot.getBag().graphicalDisplay(1,loot);
+		extra.println(extra.PRE_BATTLE+"Fight the wolf for the body?");
+		if (!extra.yesNo()) {
+			Networking.clearSide(1);
+			return;
+		}
+		Combat c = Player.player.fightWith(RaceFactory.makeAlphaWolf(getLevel()));
+		if (c.playerWon() < 0) {
+			extra.println("The wolf drags the body away.");
+			return;
+		}
+		AIClass.playerLoot(loot.getBag(),true);
+	}
+	
+	protected void mugger_other_person() {
+		extra.println(extra.PRE_BATTLE+"You see someone being robbed! Help?");
+		Person robber =  RaceFactory.getMugger(getLevel());
+		robber.getBag().graphicalDisplay(1, robber);
+		if (extra.yesNo()) {
+			Combat c = Player.player.fightWith(robber);
+			if (c.playerWon() > 0) {
+				int gold = Math.round(extra.randRange(.5f,2.5f)*getUnEffectiveLevel());
+				extra.println("They give you a reward of " +World.currentMoneyDisplay(gold) + " in thanks for saving them.");
+				Player.player.addGold(gold);
+			}else {
+				extra.println("They steal from your bags as well!");
+				int lose = Math.round(extra.randRange(2f,3f)*getUnEffectiveLevel());
+				extra.println(Player.loseGold(lose,true));
+			}
+		}else {
+			extra.println("You walk away.");
+			Networking.clearSide(1);
+		}
+	}
+	
+	protected void mugger_ambush() {
+		extra.println(extra.PRE_BATTLE+"You see a mugger charge at you! Prepare for battle!");
+		Combat c = Player.player.fightWith(RaceFactory.getMugger(getLevel()));
+		if (c.playerWon() > 0) {
+			
+		}else {
+			extra.println("They rummage through your bags!");
+			int lose = Math.round(extra.randRange(2f,3f)*getUnEffectiveLevel());
+			extra.println(Player.loseGold(lose,true));
+		}
 	}
 
 }

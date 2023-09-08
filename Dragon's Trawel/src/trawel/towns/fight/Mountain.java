@@ -44,8 +44,8 @@ public class Mountain extends ExploreFeature{
 	}
 	
 	@Override
-	public String getTutorialText() {
-		return "Mountain.";
+	public String nameOfType() {
+		return "mountain";
 	}
 	
 	@Override
@@ -111,13 +111,13 @@ public class Mountain extends ExploreFeature{
 		case 1: rockSlide();break;
 		case 2: ropeBridge();break;
 		case 3: goldGoat() ;break;
-		case 4: mugger1();break;
-		case 5: mugger2();break;
+		case 4: mugger_other_person();break;
+		case 5: mugger_ambush();break;
 		case 6: tollKeeper();break;
 		case 7: wanderingDuelist();break;
-		case 8: oldFighter();break;
+		case 8: oldFighter("a rock"," Beware, danger lurks on these slopes.");break;
 		case 9: aetherRock();break;
-		case 10: findEquip();break;
+		case 10: findEquip(null);break;
 		case 11: vampireHunter();break;
 		}
 	}
@@ -227,40 +227,6 @@ public class Mountain extends ExploreFeature{
 		}
 	}
 	
-	private void mugger2() {
-		extra.println(extra.PRE_BATTLE+"You see a mugger charge at you! Prepare for battle!");
-		Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
-		if (c.playerWon() > 0) {
-			
-		}else {
-			extra.println("They rummage through your bags!");
-			int lose = Math.round(extra.randRange(2f,3f)*getUnEffectiveLevel());
-			extra.println(Player.loseGold(lose,true));
-		}
-	}
-
-	private void mugger1() {
-		extra.println(extra.PRE_BATTLE+"You see someone being robbed! Help?");
-		Person robber =  RaceFactory.getMugger(tier);
-		robber.getBag().graphicalDisplay(1, robber);
-		if (extra.yesNo()) {
-			Combat c = Player.player.fightWith(robber);
-			if (c.playerWon() > 0) {
-				int gold = Math.round(extra.randRange(.5f,2.5f)*getUnEffectiveLevel());
-				extra.println("They give you a reward of " +World.currentMoneyDisplay(gold) + " in thanks for saving them.");
-				Player.player.addGold(gold);
-			}else {
-				extra.println("They steal from your bags as well!");
-				int lose = Math.round(extra.randRange(2f,3f)*getUnEffectiveLevel());
-				extra.println(Player.loseGold(lose,true));
-			}
-		}else {
-			extra.println("You walk away.");
-			Networking.clearSide(1);
-		}
-	}
-
-	
 	private void tollKeeper() {
 		extra.println(extra.PRE_BATTLE+"You see a toll road keeper. Mug them for their "+World.currentMoneyString()+"?");
 		Person toller = RaceFactory.getPeace(tier);
@@ -306,92 +272,6 @@ public class Mountain extends ExploreFeature{
 		}
 	}
 
-	private void oldFighter() {
-		extra.println("You find an old fighter resting on a rock.");
-		Person old = RaceFactory.makeOld(tier+4);
-		old.getBag().graphicalDisplay(1, old);
-		extra.menuGo(new MenuGenerator() {
-
-			@Override
-			public List<MenuItem> gen() {
-				List<MenuItem> list = new ArrayList<MenuItem>();
-				list.add(new MenuLine() {
-
-					@Override
-					public String title() {
-						return old.getName();
-					}});
-				list.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "Chat.";
-					}
-
-					@Override
-					public boolean go() {
-						extra.menuGo(new MenuGenerator() {
-
-							@Override
-							public List<MenuItem> gen() {
-								List<MenuItem> list = new ArrayList<MenuItem>();
-								list.add(new MenuLine() {
-
-									@Override
-									public String title() {
-										return "Greetings, " + Player.bag.getRaceID().name + ". What would you like to talk about?";
-									}});
-								list.add(new MenuSelect() {
-
-									@Override
-									public String title() {
-										return "Advice?";
-									}
-
-									@Override
-									public boolean go() {
-										Oracle.tip("old");
-										return false;
-									}});
-								list.add(new MenuSelect() {
-
-									@Override
-									public String title() {
-										return "This mountain?";
-									}
-
-									@Override
-									public boolean go() {
-										extra.println("\"We are at " + Mountain.this.getName() + " in "+Mountain.this.town.getName()+". Beware, danger lurks on these slopes.\"");
-										return false;
-									}});
-								list.add(new MenuBack());
-								return list;
-							}});
-						return false;
-					}});
-				list.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return extra.PRE_BATTLE+"Attack!";
-					}
-
-					@Override
-					public boolean go() {
-						if (old.reallyAttack()) {
-							Player.player.fightWith(old);
-							return true;
-						}else {
-							extra.println("You leave the fighter alone");
-						}
-						return false;
-					}});
-				list.add(new MenuBack());
-				return list;
-			}});
-		Networking.clearSide(1);
-	}
 	
 	private void aetherRock() {
 		extra.println("You spot a solidified aether rock rolling down the mountain. Chase it?");
@@ -419,23 +299,6 @@ public class Mountain extends ExploreFeature{
 		if (Math.random() > .5) {
 			rockSlide();
 		}
-	}
-	
-	private void findEquip() {
-		extra.println("A mountain wolf is poking over a dead corpse... and it looks like their equipment is intact!");
-		Person loot = RaceFactory.makeLootBody(tier);
-		loot.getBag().graphicalDisplay(1,loot);
-		extra.println(extra.PRE_BATTLE+"Fight the wolf for the body?");
-		if (!extra.yesNo()) {
-			Networking.clearSide(1);
-			return;
-		}
-		Combat c = Player.player.fightWith(RaceFactory.makeAlphaWolf(tier));
-		if (c.playerWon() < 0) {
-			extra.println("The wolf drags the body away.");
-			return;
-		}
-		AIClass.playerLoot(loot.getBag(),true);
 	}
 
 	private void vampireHunter() {

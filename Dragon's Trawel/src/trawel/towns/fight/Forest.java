@@ -29,12 +29,11 @@ import trawel.towns.Feature;
 import trawel.towns.World;
 import trawel.towns.services.Oracle;
 
-public class Forest extends Feature{
+public class Forest extends ExploreFeature{
 	
 	private static final long serialVersionUID = 1L;
-	private int explores;
-	private int dryadQuest;
-	private int exhaust;
+	private int dryadQuest = 0;
+	private static WeightedTable roller;
 	
 	@Override
 	public QRType getQRType() {
@@ -44,104 +43,92 @@ public class Forest extends Feature{
 	public Forest(String name, int tier) {
 		this.tier = tier;
 		this.name = name;
-		explores = 0;
-		exhaust = 0;
-		tutorialText = "Forest.";
 		background_area = "forest";
 		background_variant = 1;
 		area_type = Area.FOREST;
 	}
-	
 	@Override
-	public String getColor() {
-		return extra.F_COMBAT;//unsure
+	public String nameOfType() {
+		return "forest";
 	}
 	
 	@Override
-	public void go() {
-		Networking.sendStrong("Discord|imagesmall|forest|Forest|");
-		
-		extra.menuGo(new MenuGenerator() {
-
-			@Override
-			public List<MenuItem> gen() {
-				List<MenuItem> mList = new ArrayList<MenuItem>();
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "explore";
-					}
-
-					@Override
-					public boolean go() {
-						explore();
-						return false;
-					}
-				});
-				for (QuestR qr: qrList) {
-					mList.add(new QRMenuItem(qr));
-				}
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "exit";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}
-				});
-				return mList;
-			}
-			
-		});
+	public void onExhaust() {
+		extra.println("You don't find anything. You think you may have exhausted this forest, for now. Maybe come back later?");
 	}
 	
-	public void explore() {
-		exhaust++;
-		explores++;
-		if (explores == 10) {
+	@Override
+	public void onNoGo() {
+		extra.println("The forest is barren.");
+	}
+	
+	@Override
+	public void subExplore(int id) {
+		//dryad quest overrides normal title chance
+		if (explores == 10 && dryadQuest < 4) {
 			Player.player.addAchieve(this, this.getName() + " wanderer");
 		}
-		if (explores == 50) {
+		if (explores == 50 && dryadQuest < 4) {
 			Player.player.addAchieve(this, this.getName() + " explorer");
 		}
-		if (explores == 100) {
+		if (explores == 100 && dryadQuest < 4) {
 			Player.player.addAchieve(this, this.getName() + " guide");
 		}
-		if (dryadQuest > 0 && dryadQuest < 5 && Math.random() > .5) {
-			lumerbjackDryad();return;
+		if (dryadQuest > 0 && dryadQuest < 4 && extra.chanceIn(1,3)) {
+			lumerbjackDryad();
+			return;
 		}
-		if (exhaust > 10) {
-			if (!extra.chanceIn(1,(int)(exhaust/3))) {
-				dryForest();
-				return;
-			}
+		if ((dryadQuest == 0 || dryadQuest == 4) && extra.chanceIn(1,6)) {
+			id = 10;
 		}
-		switch (extra.randRange(1,21)) {
+		switch (id) {
 		case 1: goldStream();break;
-		case 2: case 3: case 4: funkyMushroom();break;
-		case 5: case 6:  mugger1();break;
-		case 7: if (Math.random() > .5){
-			this.treeOnPerson();
-			}else {hangedMan();
-			}break;
-		case 8: case 9: mugger2();break;
-		case 10: case 11: dryad();break;
-		case 12: case 13: this.treeOnPerson();break;
-		case 14: case 15: this.oldFighter();break;
-		case 16: this.fairyCircle1();break;
-		case 17: case 21: //if (fairyCircle2()) {return;};break;
-		case 18: this.fairyCircle3();break;
-		case 19: findEquip();break;
-		case 20: abandonedHut();break;
+		case 2: funkyMushroom();break;
+		case 3: mugger_other_person();break;
+		case 4: treeOnPerson();break;
+		case 5: hangedMan();break;
+		case 6: mugger_ambush();break;
+		case 7: dryad();break;
+		case 8: oldFighter("a log"," Beware, danger lurks under these trees.");break;
+		case 9: fairyCircle1();break;
+		case 10: fairyCircle3();break;
+		case 11: findEquip("");break;
+		case 12: abandonedHut();break;
 		}
-		Player.addTime(.5);
-		mainGame.globalPassTime();
-		Networking.clearSide(1);
+	}
+	
+	@Override
+	protected WeightedTable roller() {
+		if (roller == null) {
+			roller = new WeightedTable(new float[] {
+					//gold in stream
+					1f,
+					//funky mushroom
+					1f,
+					//mugging interrupt
+					1f,
+					//fallen tree
+					1f,
+					//fell reaver hanged tree
+					1f,
+					//mugger attack
+					1f,
+					//dryad
+					1f,
+					//old fighter
+					1f,
+					//inert fairy circle
+					.5f,
+					//quest fairy circle, has a flat chance if quest not started every time
+					.5f,
+					//wolf body
+					1f,
+					//hut
+					1f
+					
+			});
+		}
+		return roller;
 	}
 
 
@@ -271,36 +258,6 @@ public class Forest extends Feature{
 		
 	}
 	
-	private void mugger1() {
-		extra.println("You see someone being robbed! Help?");
-		Boolean help = extra.yesNo();
-		Person robber = RaceFactory.getMugger(tier);
-		robber.getBag().graphicalDisplay(1, robber);
-		if (help) {
-			Combat c = Player.player.fightWith(robber);
-			if (c.playerWon() > 0) {
-				int gold = extra.randRange(2,10)*tier;
-				extra.println("They give you a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them.");
-				Player.player.addGold(gold);
-			}else {
-				extra.println("They mugged you too!");
-				extra.println(Player.loseGold((20*tier)+extra.randRange(0,10),true));
-			}
-		}else {
-			extra.println("You walk away.");
-		}
-	}
-	
-	private void mugger2() {
-		extra.println(extra.PRE_BATTLE+"You see a mugger charge at you!");
-		Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
-		if (c.playerWon() > 0) {
-		}else {
-			extra.println("They rifle through your bags!");
-			extra.println(Player.loseGold((30*tier)+extra.randRange(0,20),true));
-		}
-	}
-	
 	private void hangedMan() {
 		extra.println("You come across a man hanging from a tree.");
 		switch (extra.randRange(0,2)) {
@@ -313,10 +270,12 @@ public class Forest extends Feature{
 			Person reaver = RaceFactory.makeFellReaver(tier);
 			Combat c = Player.player.fightWith(reaver);
 			if (c.playerWon() > 0) {
+				//not a collector, but this is a dd1 quote ref
 				extra.println("They say a predator is often blind to its own peril- at least there won't be any more men hanged here soon.");
 				//bonus heroism
 				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC, (tier/5f),0);
 			}else {
+				//terraria ref, unsure if references like this are a bit much
 				extra.println("You wake up elsewhere, striken with nightmares of claw, teeth, sinew, and bone. You feel an evil presence watching you...");
 				town.getIsland().getWorld().addReoccuring(new Agent(reaver,AgentGoal.SPOOKY));
 			}
@@ -391,39 +350,6 @@ public class Forest extends Feature{
 		this.explores = explores;
 	}
 	
-	private void oldFighter() {
-		Person robber = RaceFactory.makeOld(tier+2);
-		robber.getBag().graphicalDisplay(1, robber);
-		while (true) {
-		extra.println("You come across an old fighter, resting on a log.");
-		extra.println("1 Leave");//DOLATER: fix menu
-		extra.println(extra.PRE_BATTLE+"2 Attack them.");
-		extra.println("3 Chat with them");
-		switch (extra.inInt(3)) {
-		default: case 1: extra.println("You leave the fighter alone");return;
-		case 2: 
-			extra.println("You attack the fighter!");
-			Player.player.fightWith(robber);
-			;return;
-		case 3: extra.println("The old fighter turns and answers your greeting.");
-		while (true) {
-		extra.println("What would you like to ask about?");
-		extra.println("1 tell them goodbye");
-		extra.println("2 ask for a tip");
-		extra.println("3 this forest");
-		int in = extra.inInt(3);
-		switch (in) {
-			case 1: extra.println("They wish you well.") ;break;
-			case 2: Oracle.tip("old");break;
-			case 3: extra.println("\"We are in " + this.getName() + ". Beware, danger lurks under these trees.\"");break;
-		}
-		if (in == 1) {
-			break;
-		}
-		}
-		}
-	}}
-	
 	private void fairyCircle1() {
 		extra.println("You find a fairy circle of mushrooms. Step in it?");
 		if (extra.yesNo()) {
@@ -446,7 +372,7 @@ public class Forest extends Feature{
 			}else {
 				if (dryadQuest == 4) {
 				extra.println("You feel the forest reward you! Whirlwinds of aether appear at your feet!");
-				int a_reward = (tier*(extra.randRange(400,500)));
+				int a_reward = Math.round(getUnEffectiveLevel()*extra.randRange(400f,500f));
 				extra.println("You gain " + a_reward + " aether!");
 				Player.bag.addAether(a_reward);
 				dryadQuest = 5;
@@ -532,20 +458,17 @@ public class Forest extends Feature{
 		extra.print(extra.PRE_BATTLE);
 		if (extra.yesNo()) {
 			Combat c = Player.player.fightWith(robber);
-			if (c.playerWon() > 0) {
+			//quest need not be started normally
+			//just not completed or in a negative state
+			if (c.playerWon() > 0 && dryadQuest >= 0 && dryadQuest < 4) {
 				dryadQuest++;
 				if (dryadQuest == 4) {
 					extra.println("You feel a connection to the forest.");
 					Player.addXp(tier);
-					Player.player.addAchieve(this, "Dryad of " + this.name);
-				} 
+					Player.player.addAchieve(this, "Dryad of " + getName());
+				}
 			}
 		}
-	}
-	
-	private void findEquip() {
-		extra.println("You find a rotting body... With their equipment intact!");
-		AIClass.playerLoot(RaceFactory.makeLootBody(extra.clamp(tier-1, 1,Player.player.getPerson().getLevel())).getBag(),true);
 	}
 	
 	private void abandonedHut() {
@@ -565,16 +488,17 @@ public class Forest extends Feature{
 					extra.println("You resist the unknown force.");
 				}
 				break;
-			case 2: extra.println("There is a log in the hut");oldFighter();break;
-			case 3: extra.println("There is a tree inside the hut."); lumerbjackDryad();break;
+			case 2:
+				oldFighter("a bench","Beware, some of these cabins are cursed.");
+				break;
+			case 3:
+				extra.println("There is a tree inside the hut.");
+				lumerbjackDryad();
+			break;
 			}
 		}else {
 			extra.println("You move away from the hut.");
 		}
-	}
-	
-	private void dryForest() {
-		extra.println("You don't find anything. You think you may have exhausted this forest, for now. Maybe come back later?");
 	}
 	
 
