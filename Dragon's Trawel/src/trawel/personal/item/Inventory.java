@@ -584,11 +584,11 @@ public class Inventory implements java.io.Serializable{
 	}
 	
 	public RaceID getRaceID() {
-		return  race;
+		return race;
 	}
 
 	public Race getRace() {
-		return  RaceFactory.getRace(race);
+		return RaceFactory.getRace(race);
 	}
 	
 	public Race swapRace(Race newRace) {

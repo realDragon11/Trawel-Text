@@ -55,7 +55,7 @@ public abstract class ExploreFeature extends Feature {
 
 					@Override
 					public String title() {
-						return "explore";
+						return "Explore!";
 					}
 
 					@Override

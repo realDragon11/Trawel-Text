@@ -1,10 +1,14 @@
 package trawel.towns.fight;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
+import derg.menus.MenuBack;
+import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
+import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.AIClass;
 import trawel.Networking;
@@ -50,7 +54,7 @@ public class Mountain extends ExploreFeature{
 
 					@Override
 					public String title() {
-						return "visit hot springs";
+						return "Visit hot springs.";
 					}
 
 					@Override
@@ -92,13 +96,13 @@ public class Mountain extends ExploreFeature{
 	@Override
 	public void subExplore(int id) {
 		if (explores == 10) {
-			Player.player.addAchieve(this, this.getName() + " wanderer");
+			Player.player.addAchieve(this, this.getName() + " Wanderer");
 		}
 		if (explores == 50) {
-			Player.player.addAchieve(this, this.getName() + " explorer");
+			Player.player.addAchieve(this, this.getName() + " Explorer");
 		}
 		if (explores == 100) {
-			Player.player.addAchieve(this, this.getName() + " guide");
+			Player.player.addAchieve(this, this.getName() + " Guide");
 		}
 		switch (id) {
 		case 0: 
@@ -125,9 +129,9 @@ public class Mountain extends ExploreFeature{
 					//nothing
 					.5f,
 					//rock slide
-					1f,
+					.7f,
 					//rope bridge
-					1f,
+					.3f,
 					//gold goat
 					1f,
 					//interrupt mugging
@@ -164,6 +168,7 @@ public class Mountain extends ExploreFeature{
 				extra.println("You survive the rockslide.");
 				Player.addXp(Math.max(1,tier/3));
 			}else {
+				extra.println("They rocks crush you!");
 				mainGame.die("You pull yourself out from under the rocks.");
 			}
 			;break;
@@ -172,10 +177,12 @@ public class Mountain extends ExploreFeature{
 				extra.println("You survive the rockslide.");
 				Player.addXp(1);
 			}else {
+				extra.println("They rocks crush you!");
 				mainGame.die("You pull yourself out from under the rocks.");
 			}
 			;break;
 		case 3:
+			extra.println("They rocks crush you!");
 			mainGame.die("You pull yourself out from under the rocks.");
 		break;
 		
@@ -204,14 +211,14 @@ public class Mountain extends ExploreFeature{
 					if (c.playerWon() == 1) {
 						extra.println("You wake up and examine the loot...");
 					}
-					int gold = Math.round(extra.randRange(2,3)*getUnEffectiveLevel());
+					int gold = Math.round(extra.randRange(2f,3f)*getUnEffectiveLevel());
 					extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
 					Player.player.addGold(gold);
 				}else {
 					extra.println("They take the "+World.currentMoneyString()+" sack and leave you rolling down the mountain...");
 				}
 			}else {
-				int gold = Math.round(extra.randRange(0,2)*getUnEffectiveLevel());
+				int gold = Math.round(extra.randRange(0f,2f)*getUnEffectiveLevel());
 				extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
 				Player.player.addGold(gold);
 			}
@@ -226,8 +233,9 @@ public class Mountain extends ExploreFeature{
 		if (c.playerWon() > 0) {
 			
 		}else {
-			extra.println("They fumble through your bags!");
-			extra.println(Player.loseGold(50*tier,true));
+			extra.println("They rummage through your bags!");
+			int lose = Math.round(extra.randRange(2f,3f)*getUnEffectiveLevel());
+			extra.println(Player.loseGold(lose,true));
 		}
 	}
 
@@ -238,12 +246,13 @@ public class Mountain extends ExploreFeature{
 		if (extra.yesNo()) {
 			Combat c = Player.player.fightWith(robber);
 			if (c.playerWon() > 0) {
-				int gold = extra.randRange(tier,10*tier);
+				int gold = Math.round(extra.randRange(.5f,2.5f)*getUnEffectiveLevel());
 				extra.println("They give you a reward of " +World.currentMoneyDisplay(gold) + " in thanks for saving them.");
 				Player.player.addGold(gold);
 			}else {
 				extra.println("They steal from your bags as well!");
-				extra.println(Player.loseGold(50*tier,true));
+				int lose = Math.round(extra.randRange(2f,3f)*getUnEffectiveLevel());
+				extra.println(Player.loseGold(lose,true));
 			}
 		}else {
 			extra.println("You walk away.");
@@ -282,10 +291,10 @@ public class Mountain extends ExploreFeature{
 	}
 
 	private void wanderingDuelist() {
-		extra.println(extra.PRE_BATTLE+"A duelist approaches and challenges you to a duel. Accept?");
+		extra.println(extra.PRE_BATTLE+"A duelist approaches and challenges you to a duel.");
 		Person dueler = RaceFactory.getDueler(tier+1);
 		dueler.getBag().graphicalDisplay(1, dueler);
-		if (extra.yesNo()) {
+		if (dueler.reallyFight("Accept a duel with")) {
 			Combat c = Player.player.fightWith(dueler);
 			if (c.playerWon() > 0) {
 				extra.println("You have won the duel!");
@@ -298,44 +307,90 @@ public class Mountain extends ExploreFeature{
 	}
 
 	private void oldFighter() {
-		Person old = RaceFactory.makeOld(tier+2);
+		extra.println("You find an old fighter resting on a rock.");
+		Person old = RaceFactory.makeOld(tier+4);
 		old.getBag().graphicalDisplay(1, old);
-		while (true) {
-			extra.println("You come across an old fighter, resting on a rock.");
-			extra.println("1 Leave");//DOLATER: fix menu
-			extra.println("2 "+extra.PRE_BATTLE+"Attack them.");
-			extra.println("3 Chat with them");
-			switch (extra.inInt(3)) {
-			default: case 1: extra.println("You leave the fighter alone");return;
-			case 2: 
-				extra.println(extra.PRE_BATTLE+"Really attack them?");
-				if (!extra.yesNo()) {
-					break;
-				}
-				extra.println("You attack the fighter!");
-				Combat c = Player.player.fightWith(old);
-				if (c.playerWon() > 0) {
+		extra.menuGo(new MenuGenerator() {
 
-				}
-				return;
-			case 3: extra.println("The old fighter turns and answers your greeting.");
-			while (true) {
-				extra.println("What would you like to ask about?");
-				extra.println("1 tell them goodbye");
-				extra.println("2 ask for a tip");
-				extra.println("3 this mountain");
-				int in = extra.inInt(3);
-				switch (in) {
-				case 1: extra.println("They wish you well.") ;break;
-				case 2: Oracle.tip("old");;break;
-				case 3: extra.println("\"We are on " + this.getName() + ". Beware, danger lurks on these slopes.\"");break;
-				}
-				if (in == 1) {
-					break;
-				}
-			}
-			}
-		}
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return old.getName();
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Chat.";
+					}
+
+					@Override
+					public boolean go() {
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> list = new ArrayList<MenuItem>();
+								list.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "Greetings, " + Player.bag.getRaceID().name + ". What would you like to talk about?";
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Advice?";
+									}
+
+									@Override
+									public boolean go() {
+										Oracle.tip("old");
+										return false;
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "This mountain?";
+									}
+
+									@Override
+									public boolean go() {
+										extra.println("\"We are at " + Mountain.this.getName() + " in "+Mountain.this.town.getName()+". Beware, danger lurks on these slopes.\"");
+										return false;
+									}});
+								list.add(new MenuBack());
+								return list;
+							}});
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return extra.PRE_BATTLE+"Attack!";
+					}
+
+					@Override
+					public boolean go() {
+						if (old.reallyAttack()) {
+							Player.player.fightWith(old);
+							return true;
+						}else {
+							extra.println("You leave the fighter alone");
+						}
+						return false;
+					}});
+				list.add(new MenuBack());
+				return list;
+			}});
+		Networking.clearSide(1);
 	}
 	
 	private void aetherRock() {
@@ -347,14 +402,14 @@ public class Mountain extends ExploreFeature{
 				extra.println(extra.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");
 				Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
 				if (c.playerWon() > 0) {
-					int aether = Math.round(100+(getUnEffectiveLevel()*extra.randRange(150f,300f)));
+					int aether = Math.round((getUnEffectiveLevel()*extra.randRange(200f,400f)));
 					extra.println("You pick up " + aether + " aether!");
 					Player.bag.addAether(aether);
 				}else {
 					extra.println("They take the aether rock and leave you rolling down the mountain...");
 				}
 			}else {
-				int aether = 100+extra.randRange(100*tier,200*tier);
+				int aether = Math.round((getUnEffectiveLevel()*extra.randRange(100f,200f)));
 				extra.println("You pick up " + aether + " aether!");
 				Player.bag.addAether(aether);
 			}
@@ -362,7 +417,7 @@ public class Mountain extends ExploreFeature{
 			extra.println("You let the rock roll away...");
 		}
 		if (Math.random() > .5) {
-			this.rockSlide();
+			rockSlide();
 		}
 	}
 	

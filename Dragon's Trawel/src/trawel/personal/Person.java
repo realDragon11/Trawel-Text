@@ -2267,4 +2267,13 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		}
 	}
 
+	//FIXME: use this instead, and add a display option to show the inventory of who you're attacking
+	public boolean reallyAttack() {
+		return reallyFight("Really attack");
+	}
+	public boolean reallyFight(String start) {
+		extra.println(start+" " + getName() + " level " + getLevel() + "?");
+		return extra.yesNo();
+	}
+
 }
