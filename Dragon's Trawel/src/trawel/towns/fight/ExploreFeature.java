@@ -11,6 +11,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.personal.people.Player;
 import trawel.quests.QRMenuItem;
 import trawel.quests.QuestR;
 import trawel.time.TimeContext;
@@ -102,6 +103,8 @@ public abstract class ExploreFeature extends Feature {
 				return;
 			}
 		}
+		Player.addTime(.1 + (extra.randFloat()*.5));
+		mainGame.globalPassTime();
 		subExplore(roll());
 	}
 	

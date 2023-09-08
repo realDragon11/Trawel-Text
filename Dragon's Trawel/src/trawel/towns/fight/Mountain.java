@@ -1,8 +1,9 @@
 package trawel.towns.fight;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import derg.menus.MenuGenerator;
+import com.github.yellowstonegames.core.WeightedTable;
+
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import trawel.AIClass;
@@ -14,21 +15,16 @@ import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Player;
-import trawel.quests.QRMenuItem;
-import trawel.quests.QuestR;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
-import trawel.towns.Feature;
 import trawel.towns.World;
 import trawel.towns.services.Oracle;
 
-public class Mountain extends Feature{
+public class Mountain extends ExploreFeature{
 
 	private static final long serialVersionUID = 1L;
-	private int explores;
-	private int exhaust;
-	private int time;
-	private boolean exhausted;
+	private double cleanTime;
+	private static WeightedTable roller;
 	
 	@Override
 	public QRType getQRType() {
@@ -38,55 +34,19 @@ public class Mountain extends Feature{
 	public Mountain(String name, int tier) {
 		this.tier = tier;
 		this.name = name;
-		explores = 0;
-		exhaust = 0;
-		exhausted = false;
 		background_area = "mountain";
 		background_variant = 1;
 		area_type = Area.MOUNTAIN;
 	}
 	
 	@Override
-	public String getTitle() {
-		return getName() + (exhausted ? " (Empty)" :"");
-	}
-	
-	@Override
 	public String getTutorialText() {
 		return "Mountain.";
-		//return "Mountains can be explored, but do not have persistence. They have a fixed number of explores that restores over time.";
 	}
 	
 	@Override
-	public String getColor() {
-		return extra.F_COMBAT;//unsure
-	}
-	
-	@Override
-	public void go() {
-		Networking.sendStrong("Discord|imagesmall|mountain|Mountain|");
-		MenuGenerator mGen = new MenuGenerator() {
-
-			@Override
-			public List<MenuItem> gen() {
-				List<MenuItem> mList = new ArrayList<MenuItem>();
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "explore";
-					}
-
-					@Override
-					public boolean go() {
-						explore();
-						return false;
-					}
-				});
-				for (QuestR qr: qrList) {
-					mList.add(new QRMenuItem(qr));
-				}
-				mList.add(new MenuSelect() {
+	public List<MenuItem> extraMenu(){
+		return Collections.singletonList(new MenuSelect() {
 
 					@Override
 					public String title() {
@@ -101,54 +61,36 @@ public class Mountain extends Feature{
 						return false;
 					}
 				});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "exit";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}
-				});
-				return mList;
-			}};
-		
-		
-		extra.menuGo(mGen);
-			
 	}
 
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		if (exhaust > 0) {
-			exhaust--;
-			if (exhaust == 0) {
-				exhausted = false;
-			}
-		}
+		super.passTime(time, calling);
 		
-		this.time += time;
-		if (this.time > 12+(extra.getRand().nextInt(30))) {
-			washSomeTown(5);
-			this.time = 0;
+		cleanTime -= time;
+		if (cleanTime < 0) {
+			cleanEntireTown();
+			cleanTime = 12+(24*extra.randFloat());
 		}
 		return null;
 	}
 	
-	private void cleanTown() {
+	private void cleanEntireTown() {
 		town.getPersonableOccupants().forEach(a -> a.getPerson().washAll());
 	}
 	
-	private void washSomeTown(int amount) {
-		town.getPersonableOccupants().limit(amount).forEach(a -> a.getPerson().washAll());
+	@Override
+	public void onExhaust() {
+		extra.println("You don't find anything. You think you may have exhausted this mountain, for now. Maybe come back later?");
 	}
 	
-	public void explore(){
-		explores++;
-		exhaust++;
+	@Override
+	public void onNoGo() {
+		extra.println("The mountain is barren.");
+	}
+	
+	@Override
+	public void subExplore(int id) {
 		if (explores == 10) {
 			Player.player.addAchieve(this, this.getName() + " wanderer");
 		}
@@ -158,54 +100,84 @@ public class Mountain extends Feature{
 		if (explores == 100) {
 			Player.player.addAchieve(this, this.getName() + " guide");
 		}
-		if (exhaust > 10 || exhausted) {
-			if (exhausted || !extra.chanceIn(1,exhaust/3)) {
-				dryMountain();
-				exhausted = true;
-				return;
-			}
-		}
-		switch (extra.randRange(1,11)) {
-		case 1: rockSlide() ;break;
-		case 2: ropeBridge() ;break;
+		switch (id) {
+		case 0: 
+			extra.println("You couldn't find anything interesting.");
+			;break;
+		case 1: rockSlide();break;
+		case 2: ropeBridge();break;
 		case 3: goldGoat() ;break;
 		case 4: mugger1();break;
 		case 5: mugger2();break;
-		case 6: mugger3();break;
+		case 6: tollKeeper();break;
 		case 7: wanderingDuelist();break;
 		case 8: oldFighter();break;
-		case 9: goldRock();break;
+		case 9: aetherRock();break;
 		case 10: findEquip();break;
 		case 11: vampireHunter();break;
 		}
-		Player.addTime(.5);
-		mainGame.globalPassTime();
-		Networking.clearSide(1);
+	}
+	
+	@Override
+	protected WeightedTable roller() {
+		if (roller == null) {
+			roller = new WeightedTable(new float[] {
+					//nothing
+					.5f,
+					//rock slide
+					1f,
+					//rope bridge
+					1f,
+					//gold goat
+					1f,
+					//interrupt mugging
+					1f,
+					//get mugged
+					2f,
+					//toll
+					1f,
+					//duelist
+					1f,
+					//old fighter
+					.5f,
+					//aether rock
+					1f,
+					//find equip with wolf fight
+					1f,
+					//vampire hunter
+					1f
+					
+			});
+		}
+		return roller;
 	}
 	
 	private void rockSlide() {
 		extra.println("Some rocks start falling down the mountain!");
 		extra.println("1 duck and cover");
 		extra.println("2 dodge");
-		extra.println("3 do nothing");
-		switch (extra.inInt(3)) {
-		case 1: 
-			if (Player.bag.getBluntResist() > tier * 30) {
+		extra.println("9 do nothing");
+		switch (extra.inInt(2,true,true)) {
+		case 1:
+			//MAYBELATER: find expected blunt resist
+			if (Player.bag.getBluntResist()*extra.randFloat() > 7 * getUnEffectiveLevel()) {
 				extra.println("You survive the rockslide.");
-				Player.addXp(tier);
+				Player.addXp(Math.max(1,tier/3));
 			}else {
-				mainGame.die();
+				mainGame.die("You pull yourself out from under the rocks.");
 			}
 			;break;
 		case 2: 
-			if (Player.bag.getDodge() > 1) {
+			if (Player.bag.getDodge()*extra.randFloat() > .5f) {
 				extra.println("You survive the rockslide.");
-				Player.addXp(tier);
+				Player.addXp(1);
 			}else {
-				mainGame.die();
+				mainGame.die("You pull yourself out from under the rocks.");
 			}
 			;break;
-		case 3:mainGame.die();break;
+		case 3:
+			mainGame.die("You pull yourself out from under the rocks.");
+		break;
 		
 		}
 	}
@@ -229,14 +201,17 @@ public class Mountain extends Feature{
 				extra.println(extra.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");
 				Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
 				if (c.playerWon() > 0) {
-					int gold = extra.randRange(15,20)*tier;
+					if (c.playerWon() == 1) {
+						extra.println("You wake up and examine the loot...");
+					}
+					int gold = Math.round(extra.randRange(2,3)*getUnEffectiveLevel());
 					extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
 					Player.player.addGold(gold);
 				}else {
 					extra.println("They take the "+World.currentMoneyString()+" sack and leave you rolling down the mountain...");
 				}
 			}else {
-				int gold = extra.randRange(5,10)*tier;
+				int gold = Math.round(extra.randRange(0,2)*getUnEffectiveLevel());
 				extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
 				Player.player.addGold(gold);
 			}
@@ -272,24 +247,23 @@ public class Mountain extends Feature{
 			}
 		}else {
 			extra.println("You walk away.");
+			Networking.clearSide(1);
 		}
 	}
 
 	
-	private void mugger3() {
-		extra.println(extra.PRE_BATTLE+"You see a toll road keeper. Mug them for their gold?");
+	private void tollKeeper() {
+		extra.println(extra.PRE_BATTLE+"You see a toll road keeper. Mug them for their "+World.currentMoneyString()+"?");
 		Person toller = RaceFactory.getPeace(tier);
+		int want = Math.round((1f+(extra.randFloat()*2f)*getUnEffectiveLevel()) + extra.randRange(1,3));
+		toller.getBag().addLocalGoldIf(extra.randRange(0,3)+(want*extra.randRange(2,4)));
 		toller.getBag().graphicalDisplay(1, toller);
 		if (extra.yesNo()) {
-		int want = tier*5 + extra.randRange(0,5);
+		
 		Combat c = Player.player.fightWith(toller);
 		if (c.playerWon() > 0) {
-			want*=extra.randRange(2,4);
-			want += extra.randRange(0,5);
-			extra.println("You find " + World.currentMoneyDisplay(want) + " in tolls.");
-			Player.player.addGold(want);
+			//have gold base now
 		}else {
-			
 			int lost = Player.player.loseGold(want);
 			if (lost == -1) {
 				extra.println("They mutter something about freeloaders.");
@@ -303,6 +277,7 @@ public class Mountain extends Feature{
 		}
 		}else {
 			extra.println("You walk away.");
+			Networking.clearSide(1);
 		}
 	}
 
@@ -363,7 +338,7 @@ public class Mountain extends Feature{
 		}
 	}
 	
-	private void goldRock() {
+	private void aetherRock() {
 		extra.println("You spot a solidified aether rock rolling down the mountain. Chase it?");
 		Boolean result = extra.yesNo();
 		extra.linebreak();
@@ -372,7 +347,7 @@ public class Mountain extends Feature{
 				extra.println(extra.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");
 				Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
 				if (c.playerWon() > 0) {
-					int aether = 100+extra.randRange(150*tier,300*tier);
+					int aether = Math.round(100+(getUnEffectiveLevel()*extra.randRange(150f,300f)));
 					extra.println("You pick up " + aether + " aether!");
 					Player.bag.addAether(aether);
 				}else {
@@ -392,8 +367,20 @@ public class Mountain extends Feature{
 	}
 	
 	private void findEquip() {
-		extra.println("You find a rotting body... With their equipment intact!");
-		AIClass.playerLoot(RaceFactory.makeLootBody(tier).getBag(),true);
+		extra.println("A mountain wolf is poking over a dead corpse... and it looks like their equipment is intact!");
+		Person loot = RaceFactory.makeLootBody(tier);
+		loot.getBag().graphicalDisplay(1,loot);
+		extra.println(extra.PRE_BATTLE+"Fight the wolf for the body?");
+		if (!extra.yesNo()) {
+			Networking.clearSide(1);
+			return;
+		}
+		Combat c = Player.player.fightWith(RaceFactory.makeAlphaWolf(tier));
+		if (c.playerWon() < 0) {
+			extra.println("The wolf drags the body away.");
+			return;
+		}
+		AIClass.playerLoot(loot.getBag(),true);
 	}
 
 	private void vampireHunter() {
@@ -403,16 +390,13 @@ public class Mountain extends Feature{
 		if (extra.yesNo()) {
 			Combat c = Player.player.fightWith(hunter);
 			if (c.playerWon() > 0) {
-				extra.println("You killed them.");
+				extra.println("One less thing for the vampires to worry about.");
 			}else {
 				extra.println("They mutter something about vampire attacks.");
 			}
 		}else {
 			extra.println("You walk away. They warn you to be safe from vampire attacks.");
+			Networking.clearSide(1);
 		}
-	}
-
-	private void dryMountain() {
-		extra.println("You don't find anything. You think you may have exhausted this mountain, for now. Maybe come back later?");
 	}
 }

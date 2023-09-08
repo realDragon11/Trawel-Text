@@ -1457,7 +1457,7 @@ public class mainGame {
 		if (second_man.isPlayer()) {
 			first_man.addPlayerKill();
 			Player.addXp(extra.zeroOut((int) (first_man.getLevel()*Math.floor((first_man.getMaxHp()-first_man.getHp())/(first_man.getMaxHp())))));
-			die();
+			dieFight();
 		}
 
 
@@ -1647,7 +1647,7 @@ public class mainGame {
 			if (kill.isPlayer()) {
 				Networking.setBattle(Networking.BattleType.NONE);
 				Networking.clearSide(1);
-				die();
+				dieFight();
 				continue;
 			}
 			if (kill.getFlag(PersonFlag.PLAYER_LOOT_ONLY) && !playerIsLooting) {
@@ -1903,8 +1903,16 @@ public class mainGame {
 		story.onDeathPart2();
 	}
 
-	public static void die() {
+	public static void dieMisc() {
 		die(extra.choose("You rise from death...","You return to life.","You walk again!","You rise from the grave!","Death releases its hold on you."));
+	}
+	
+	public static void dieFight() {
+		if (extra.chanceIn(1,3)) {
+			dieMisc();
+			return;
+		}
+		die(extra.choose("You revive after the battle.","You right your repaired body.","You stand after your corpse pulls itself together."));
 	}
 
 	public static void scrollTest() {

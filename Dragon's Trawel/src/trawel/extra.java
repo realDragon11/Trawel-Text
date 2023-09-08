@@ -488,6 +488,9 @@ public final class extra {
 			//return (int)(Math.random()*(j+1-i))+i;
 			return getRand().nextInt((j+1)-i)+i;
 		}
+		public static final float randRange(float i, float j) {
+			return getRand().nextInclusiveFloat((j)-i)+i;
+		}
 		
 		public static final int inInt(int max) {
 			return inInt(max,false,false);
