@@ -201,7 +201,19 @@ public class GenericNode implements NodeType {
 							break;
 						}
 					}else {
-						pspot.timer-=24;//don't check again for a day
+						if (extra.chanceIn(1, 5)) {
+							//small chance to reroll into another node so plant spots aren't perma
+							//note: only happens if empty, and they have a larger chance to refill
+							//than to be removed
+							//so a player will likely have to prune them
+							pspot.timer = -300;
+							//setting timer to negative makes it cost less to have to keep
+							//rechecking while still allowing retries
+							//force because we already did the randomness check
+							regenNode(holder,node,true);
+						}else {
+							pspot.timer-=24;//don't check again for a day
+						}
 					}
 				}
 			}
@@ -212,42 +224,55 @@ public class GenericNode implements NodeType {
 		case DEAD_STRING_SIMPLE:
 		case DEAD_RACE_INDEX:
 			if (holder.globalTimer > 12) {
-				switch (NodeType.getTypeEnum(holder.getTypeNum(node))) {
-				case CAVE:
-					if (extra.chanceIn(1,3)) {
-						resetNode(holder,node,extra.choose(2,3,4));
-						holder.globalTimer-=10;
-					}
-					break;
-				case DUNGEON:
-					if (extra.chanceIn(1,3)) {
-						resetNode(holder,node,extra.choose(2,3));
-						holder.globalTimer-=10;
-					}
-					break;
-				case GRAVEYARD:
-					//can't, lifeless + shadowy stuff
-					break;
-				case GROVE:
-					if (extra.chanceIn(2,3)) {
-						//groves are meant to be living, so this only rolls stuff that can likely regrow (or turn into a plant spot)
-						resetNode(holder,node,extra.choose(1,3,4,6,7,9,10,11,12,13,16));
-						holder.globalTimer-=8;
-					}
-					break;
-				case MINE:
-					if (extra.chanceIn(1,3)) {
-						//veins can grow, but not regrow
-						resetNode(holder,node,extra.choose(1,1,3,3,3,4,6,7,8,9));
-						holder.globalTimer-=20;
-					}
-					break;
-				}
-				
+				regenNode(holder,node,false);
 			}
 			break;
 		}
-		
+	}
+	
+	/**
+	 * may or may not successfully regenerate node
+	 * based on the node type
+	 * @param force if shouldn't roll for chance and always attempt to reset 
+	 * @return false if did not regenerate
+	 */
+	protected static boolean regenNode(NodeConnector holder, int node, boolean force) {
+		switch (NodeType.getTypeEnum(holder.getTypeNum(node))) {
+		case CAVE:
+			if (force || extra.chanceIn(1,3)) {
+				resetNode(holder,node,extra.choose(2,3,4));
+				holder.globalTimer-=10;
+				return true;
+			}
+			break;
+		case DUNGEON:
+			if (force || extra.chanceIn(1,3)) {
+				resetNode(holder,node,extra.choose(2,3));
+				holder.globalTimer-=10;
+				return true;
+			}
+			break;
+		case GRAVEYARD:
+			//can't easily, lifeless + shadowy stuff
+			return false;
+		case GROVE:
+			if (force || extra.chanceIn(2,3)) {
+				//groves are meant to be living, so this only rolls stuff that can likely regrow (or turn into a plant spot)
+				resetNode(holder,node,extra.choose(1,3,4,6,7,9,10,11,12,13,16));
+				holder.globalTimer-=8;
+				return true;
+			}
+			break;
+		case MINE:
+			if (force || extra.chanceIn(1,3)) {
+				//veins can grow, but not regrow
+				resetNode(holder,node,extra.choose(1,1,3,3,3,4,6,7,8,9));
+				holder.globalTimer-=20;
+				return true;
+			}
+			break;
+		}
+		return false;
 	}
 	
 	protected static void resetNode(NodeConnector holder, int node,int eventNum) {

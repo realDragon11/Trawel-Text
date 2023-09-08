@@ -123,7 +123,7 @@ public class WorldGen {
 		plane = new Plane();
 		//Player.updateWorld(w);//we update player world in game start now
 		plane.addWorld(w);
-		Island pocket = new Island("Pocket Dimension",w,Island.IslandType.POCKET);
+		Island pocket = new Island("Eureka",w,Island.IslandType.POCKET);
 		
 		Island rona = new Island("Rona",w);
 		Town homa = new Town("Homa",1,rona,new Point(3,4));
