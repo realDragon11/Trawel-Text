@@ -12,7 +12,7 @@ public class Grove extends NodeFeature {
 		this.name = name;
 		town = t;
 		tier = _tier;
-		tutorialText = "Grove.";
+		tutorialText = "Grove";
 		generate(capacity);
 		background_area = "forest";
 		background_variant = 1;

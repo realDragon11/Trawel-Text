@@ -30,7 +30,7 @@ public class Watchtower extends FortFeature {
 		default: this.name = "Watchtower";break;
 		
 		}
-		tutorialText = "";
+		tutorialText = "Watchtower";
 	}
 	
 	@Override

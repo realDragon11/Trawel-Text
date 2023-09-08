@@ -29,7 +29,7 @@ public class Library extends Feature {
 		start();
 		name = _name;
 		town = _town;
-		tutorialText = "Library.";
+		tutorialText = "Library";
 		area_type = Area.MISC_SERVICE;
 	}
 	public enum LibraryFlag{

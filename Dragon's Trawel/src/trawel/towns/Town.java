@@ -421,19 +421,6 @@ public class Town extends TContextOwner{
 				for (Feature f: features) {
 					if (f.canShow()) {
 						mList.add(new MenuSelectFeature(f));
-						if (mainGame.displayFeatureText && f.getTutorialText() != null) {
-							mList.add(new MenuSelectFeature(f) {
-	
-								@Override
-								public String title() {
-									return " "+feature.getTutorialText();
-								}
-								@Override
-								public boolean canClick() {
-									return false;
-								}
-							});
-						}
 					}
 				}
 				if (openSlots() > 0 ) {

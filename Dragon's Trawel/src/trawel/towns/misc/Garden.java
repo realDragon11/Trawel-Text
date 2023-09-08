@@ -195,7 +195,7 @@ public class Garden extends Feature {
 		}
 		tier = town.getTier();
 		name = _name;
-		tutorialText = "Garden.";
+		tutorialText = "Garden";
 		for (int i = 0; i < 6;i++) {
 			plants.add(new PlantSpot(tier));
 			plants.get(i).contains = defaultFill.roll();

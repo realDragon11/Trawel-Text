@@ -10,7 +10,7 @@ public class Graveyard extends NodeFeature {
 	public Graveyard(String name,Town t) {
 		this.name = name;
 		town = t;
-		tutorialText = "Graveyard.";
+		tutorialText = "Graveyard";
 		generate(40);
 		area_type = Area.GRAVEYARD;
 	}

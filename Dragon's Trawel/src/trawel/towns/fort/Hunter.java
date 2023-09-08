@@ -26,7 +26,7 @@ public class Hunter extends FortFeature {
 		default: this.name = "Hunter's Den";break;
 		
 		}
-		tutorialText = "";
+		tutorialText = "Hunter";
 	}
 	
 	@Override

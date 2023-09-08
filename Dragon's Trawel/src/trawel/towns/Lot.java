@@ -135,7 +135,7 @@ public class Lot extends Feature {
 			}
 			
 			if (construct != null) {
-				tutorialText = "Your " + construct + " is under construction.";
+				tutorialText = "Lot: " + construct + " under construction.";
 			}
 		}else {
 			extra.println("Your " + construct + " is being built.");

@@ -30,7 +30,7 @@ public class Doctor extends Feature {
 	
 	@Override
 	public String getTutorialText() {
-		return "Doctor.";
+		return "Doctor";
 	}
 	
 	@Override

@@ -70,7 +70,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 		timePassed = extra.randRange(1,30);
 		resident = (byte) extra.randRange(1,RES_COUNT);
 		nextReset = extra.randRange(4,30);
-		tutorialText = "Inn.";
+		tutorialText = "Inn";
 		this.owner = owner;
 		beerCount = extra.randRange(2,4);
 		beerCost = (int) (getUnEffectiveLevel() +extra.randRange(0,2));

@@ -23,7 +23,7 @@ public class Forge extends FortFeature {
 	public Forge(int tier) {
 		this.tier = tier;
 		this.name = "Blacksmith";
-		tutorialText = "";
+		tutorialText = "Blacksmith";
 		laborer = new Laborer(LaborType.BLACKSMITH);
 	}
 	

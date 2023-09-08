@@ -25,7 +25,7 @@ public class WizardTower extends FortFeature {
 	public WizardTower(int tier) {
 		this.tier = tier;
 		this.name = "Wizard Tower";
-		tutorialText = "";
+		tutorialText = "Wizard Tower";
 		laborer = new Laborer(LaborType.WIZARD);
 	}
 	

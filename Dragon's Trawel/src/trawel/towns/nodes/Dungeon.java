@@ -48,7 +48,7 @@ public class Dungeon extends NodeFeature {
 		this.name = _name;
 		town = t;
 		tier = _tier;
-		tutorialText = "Dungeon.";
+		tutorialText = "Dungeon";
 		shape = s;
 		boss = (byte) bossType;
 		area_type = Area.DUNGEON;

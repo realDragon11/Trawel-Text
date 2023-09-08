@@ -27,7 +27,7 @@ public class Champion  extends Feature{
 	public Champion(int level){
 		person = RaceFactory.getDueler(level);
 		this.name = person.getName() + " (Level " + person.getLevel()+")" ;
-		tutorialText = "Champion.";
+		tutorialText = "Champion";
 		//tutorialText = "You should probably hold off on fighting champions until you're their level- explore the world and come back later.";
 		timeElapsed=0;
 		area_type = Area.CHAMPION;
@@ -35,7 +35,7 @@ public class Champion  extends Feature{
 	
 	public Champion(int level,int battleSize, Town t) {
 		area_type = Area.CHAMPION;
-		tutorialText = "Battleforged Champion.";
+		tutorialText = "Battleforged Champion";
 		//tutorialText = "Battleforged champions fought in a pit fight to survive.";
 		timeElapsed=0;/*
 		List<Person> people = new ArrayList<Person>();
@@ -94,8 +94,8 @@ public class Champion  extends Feature{
 				this.name = person.getName() + " (Level " + person.getLevel()+")" ;
 				extra.println("You lose the bout. Perhaps you should explore other towns to level up before fighting them?");
 				Networking.unlockAchievement("die_to_champion");
-				if (tutorialText == "Champion (Taken Title)") {
-					tutorialText = "Champion.";
+				if (tutorialText == "Champion {Taken Title}") {
+					tutorialText = "Champion";
 				}
 			}
 		}else {
@@ -116,7 +116,7 @@ public class Champion  extends Feature{
 						delete.onlyGoal(AgentGoal.OWN_SOMETHING);
 						this.name = person.getName() + " (Level " + person.getLevel()+")" ;
 						//tutorialText = "New champions will emerge if a landed title is empty.";
-						tutorialText = "Champion (Taken Title)";
+						tutorialText = "Champion {Taken Title}";
 						town.removeOccupant(delete);//MAYBELATER use events?
 					}			
 			}

@@ -26,7 +26,7 @@ public class TravelingFeature extends Feature{
 	public TravelingFeature(Town town) {
 		this.town = town;
 		this.tier = town.getTier();
-		tutorialText = "Traveling features and celebrations can be host to a wide array of things.";
+		tutorialText = "Varies";
 	}
 	
 	@Override

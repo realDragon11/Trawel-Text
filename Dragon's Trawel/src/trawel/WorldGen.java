@@ -152,7 +152,7 @@ public class WorldGen {
 			}
 		};
 		addConnection(homa,unun,"road","barrier way");
-		unun.addFeature(new Docks("Trade Port (Shipyard)",unun));
+		unun.addFeature(new Docks("Trade Port",unun));
 		unun.addFeature(new Inn("Trailblazer's Tavern",2,unun,null));
 		unun.addTravel();
 		unun.addFeature(new MerchantGuild("Eoano's Merchant Guild (Unun)"));
@@ -265,7 +265,7 @@ public class WorldGen {
 		Town alhax = new Town("Alhax",2,apa,new Point(5,2));
 		//alhax.addFeature(new Arena("yenona arena",2,5,24*7,3,37));
 		addConnection(alhax,unun,"ship","yellow passageway");
-		alhax.addFeature(new Docks("Central Shiphub (Shipyard)",alhax));
+		alhax.addFeature(new Docks("Central Shiphub",alhax));
 		alhax.addFeature(new Inn("Lockbox Pub",3,alhax,null));
 		alhax.addFeature(new Store("'A Cut Above'",4,5));//high level weapon store
 		alhax.addFeature(new Store("'Some of Everything'",3,6));
@@ -365,7 +365,7 @@ public class WorldGen {
 		addConnection(erin,placka,"road","peach road");
 		addConnection(placka,denok,"road","pineapple road");
 		addConnection(yena,placka,"ship","the yellow sea");
-		placka.addFeature(new Docks("The Old Docks (Shipyard)",placka));
+		placka.addFeature(new Docks("The Old Docks",placka));
 		placka.addTravel();
 		placka.addTravel();
 		placka.addFeature(new Champion(9));

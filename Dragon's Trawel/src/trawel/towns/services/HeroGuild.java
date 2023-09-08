@@ -26,7 +26,7 @@ public class HeroGuild extends Feature {
 
 	public HeroGuild(String name){
 		this.name = name;
-		tutorialText = "Hero's Guild.";
+		tutorialText = "Hero's Guild";
 		area_type = Area.MISC_SERVICE;
 	}
 	

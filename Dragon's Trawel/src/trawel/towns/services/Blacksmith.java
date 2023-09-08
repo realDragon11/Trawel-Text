@@ -22,7 +22,7 @@ public class Blacksmith extends Feature {
 		this.name = name;
 		this.tier = tier;
 		this.store = s;
-		tutorialText = "Blacksmith.";
+		tutorialText = "Blacksmith";
 		area_type = Area.MISC_SERVICE;
 	}
 	
@@ -30,7 +30,7 @@ public class Blacksmith extends Feature {
 		this.tier = tier;
 		this.store = s;
 		name = store.getName() +" " + extra.choose("smith","blacksmith","smithy","forge");
-		tutorialText = "Blacksmith.";
+		tutorialText = "Blacksmith";
 		area_type = Area.MISC_SERVICE;
 	}
 	

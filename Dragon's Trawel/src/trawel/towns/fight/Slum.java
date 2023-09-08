@@ -79,7 +79,7 @@ public class Slum extends Store implements QuestBoardLocation{
 		super(_tier,Slum.class);
 		storename = name;
 		tier = _tier;
-		tutorialText = "Slum.";
+		tutorialText = "District";
 		area_type = Area.SLUM;
 	}
 

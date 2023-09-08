@@ -1,5 +1,6 @@
 package derg.menus;
 
+import trawel.extra;
 import trawel.personal.people.Player;
 import trawel.towns.Feature;
 
@@ -9,7 +10,10 @@ public class MenuSelectFeature implements MenuItem {
 
 	@Override
 	public String title() {
-		return feature.getColor()+feature.getTitle();
+		String tut = feature.getTutorialText();
+		return feature.getColor()+feature.getTitle()
+		+ (tut != null ? extra.TIMID_MAGENTA+" ("+tut+")" : "")
+		;
 	}
 	
 	public MenuSelectFeature(Feature f) {

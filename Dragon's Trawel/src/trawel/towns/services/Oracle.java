@@ -39,13 +39,13 @@ public class Oracle extends Feature{ //extends feature later
 	public Oracle(String string, int level) {
 		name = string;
 		tier = level;
-		tutorialText = "Oracle.";
+		tutorialText = "Oracle";
 		area_type = Area.ORACLE;
 	}
 
 	public Oracle() {
 		//just for non-static single commands
-		tutorialText = "Oracles can provide guidance.";
+		tutorialText = "Oracles";
 		area_type = Area.ORACLE;
 	}
 	

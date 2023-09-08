@@ -68,7 +68,7 @@ public class Docks extends Feature {
 	
 	@Override
 	public String getTutorialText() {
-		return "Docks.";
+		return "Docks";
 		//return "Docks are large ports, able to transport you across water. You can also defend them or travel to far-flung ports.";
 	}
 	

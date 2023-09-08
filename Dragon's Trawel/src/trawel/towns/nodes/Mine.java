@@ -21,7 +21,7 @@ public class Mine extends NodeFeature {
 	}
 	public Mine(String _name,Town t,int _size, int _tier, Shape s, int _bossType) {
 		background_area = "mine";
-		tutorialText = "Mine.";
+		tutorialText = "Mine";
 		area_type = Area.MINE;
 		name = _name;
 		town = t;

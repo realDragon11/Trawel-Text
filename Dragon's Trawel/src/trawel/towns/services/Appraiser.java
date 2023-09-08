@@ -15,7 +15,8 @@ public class Appraiser extends Feature {
 
 	public Appraiser(String name) {
 		this.name = name;
-		tutorialText = "Appraisers will tell you more about your items.";//TODO: needs better overhaul
+		tutorialText = "Appraiser";
+		//TODO: needs better overhaul
 		area_type = Area.MISC_SERVICE;
 	}
 	
