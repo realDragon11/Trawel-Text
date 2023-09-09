@@ -839,6 +839,7 @@ public class mainGame {
 		extra.println(extra.ITEM_DESC_PROP+" Character, armor, and Weapon Art:");
 		extra.println("  SmashCooper");
 		extra.println("  Duster");
+		extra.println("  Jacobs");
 		extra.println(extra.ITEM_DESC_PROP+" Background Art:");
 		extra.println("  Damrok");
 		extra.println(extra.ITEM_DESC_PROP+" Concept/Splash Art:");
