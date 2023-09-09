@@ -22,7 +22,6 @@ public class Graveyard extends NodeFeature {
 	
 	@Override
 	public void go() {
-		Networking.sendStrong("Discord|imagesmall|dungeon|Dungeon|");
 		start.start();
 	}
 

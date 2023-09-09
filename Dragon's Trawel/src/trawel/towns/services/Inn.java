@@ -110,7 +110,6 @@ public class Inn extends Feature implements QuestBoardLocation{
 			Player.player.addGold(moneyEarned);
 			moneyEarned = 0;
 		}
-		Networking.sendStrong("Discord|imagesmall|inn|Inn|");
 		extra.menuGo(new MenuGenerator() {
 
 			@Override

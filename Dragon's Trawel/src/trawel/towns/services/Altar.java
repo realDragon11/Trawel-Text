@@ -40,7 +40,6 @@ public class Altar extends Feature{
 	
 	@Override
 	public void go() {
-		Networking.sendStrong("Discord|imagesmall|altar|Altar|");
 		extra.menuGo(new MenuGenerator() {
 
 			@Override

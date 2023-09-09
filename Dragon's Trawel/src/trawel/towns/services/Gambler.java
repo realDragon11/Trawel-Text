@@ -32,7 +32,6 @@ public class Gambler extends Feature{
 	
 	@Override
 	public void go() {
-		Networking.sendStrong("Discord|imagesmall|icon|Gambler|");
 		extra.println("1 play " +type);
 		extra.println("2 leave");
 		int input =  extra.inInt(2);

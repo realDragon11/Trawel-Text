@@ -1,16 +1,11 @@
 package trawel.towns.fight;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
-import derg.menus.MenuBack;
-import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
-import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
-import trawel.AIClass;
 import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.extra;
@@ -22,7 +17,6 @@ import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.World;
-import trawel.towns.services.Oracle;
 
 public class Mountain extends ExploreFeature{
 

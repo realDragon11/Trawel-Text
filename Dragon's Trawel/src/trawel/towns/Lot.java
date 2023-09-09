@@ -54,7 +54,6 @@ public class Lot extends Feature {
 
 	@Override
 	public void go() {
-		Networking.sendStrong("Discord|imagesmall|lot|Lot|");
 		if (construct == null) {
 			
 			float costMult = IEffectiveLevel.unclean(tier);

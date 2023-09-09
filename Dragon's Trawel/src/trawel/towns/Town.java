@@ -323,8 +323,7 @@ public class Town extends TContextOwner{
 		if (mainGame.displayLocationalText) {
 			extra.println(visitColor+"You are in " + extra.capFirst(name) + ", on the " +island.getWorld().getCalender().dateName() + ". " + island.getWorld().getCalender().stringLocalTime(this)+".");
 		}
-		Networking.sendStrong("Discord|desc|Adventuring in " + name +"|");
-		Networking.sendStrong("Discord|imagesmall|town|Town|");
+		Networking.richDesc("Adventuring in " + name);
 		Networking.setArea(Networking.Area.TOWN);
 		Networking.updateTime();
 		Networking.charUpdate();
@@ -860,8 +859,6 @@ public class Town extends TContextOwner{
 	}
 	
 	public boolean wander(double threshold) {
-			Networking.sendStrong("Discord|imagesmall|grove|Grove|");
-			
 			//Quest bumpers
 			if (QuestReactionFactory.runMe(this)) {
 				return true;

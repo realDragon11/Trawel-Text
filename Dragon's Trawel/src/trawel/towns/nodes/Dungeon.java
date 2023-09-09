@@ -76,7 +76,6 @@ public class Dungeon extends NodeFeature {
 	
 	@Override
 	public void go() {
-		Networking.sendStrong("Discord|imagesmall|dungeon|Dungeon|");
 		if (hasHelpers()) {
 			if (left_helpers.size() > 0) {
 				extra.println("While you were away, the following party members left:");

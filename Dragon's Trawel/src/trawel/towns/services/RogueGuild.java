@@ -35,8 +35,6 @@ public class RogueGuild extends Feature {
 	
 	@Override
 	public void go() {
-		Networking.sendStrong("Discord|imagesmall|store|Rogue's Guild|");
-		
 		extra.menuGo(new MenuGenerator() {
 
 			@Override

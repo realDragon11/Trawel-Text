@@ -35,7 +35,6 @@ public class Doctor extends Feature {
 	
 	@Override
 	public void go() {
-		Networking.sendStrong("Discord|imagesmall|doctor|Doctor|");
 		String mstr = World.currentMoneyString();
 		int dcost = (int) (getUnEffectiveLevel());
 		//includes effects that already wore off, which simulates a 'checkup' mechanic vaguely

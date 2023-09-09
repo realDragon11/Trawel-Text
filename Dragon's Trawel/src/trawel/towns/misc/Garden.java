@@ -214,7 +214,6 @@ public class Garden extends Feature {
 
 	@Override
 	public void go() {
-		Networking.sendStrong("Discord|imagesmall|garden|Garden|");
 		extra.menuGo(new MenuGenerator() {
 			@Override
 			public List<MenuItem> gen() {

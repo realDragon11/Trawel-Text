@@ -37,8 +37,6 @@ public class HeroGuild extends Feature {
 	
 	@Override
 	public void go() {
-		Networking.sendStrong("Discord|imagesmall|store|Hero's Guild|");
-		
 		extra.menuGo(new MenuGenerator() {
 
 			@Override

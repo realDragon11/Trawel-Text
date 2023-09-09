@@ -51,7 +51,6 @@ public class Library extends Feature {
 
 	@Override
 	public void go() {
-		Networking.sendStrong("Discord|imagesmall|library|Library|");
 		extra.menuGo(new MenuGenerator() {
 
 			@Override

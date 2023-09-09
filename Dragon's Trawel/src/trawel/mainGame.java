@@ -183,7 +183,7 @@ public class mainGame {
 				//log("gen main menu 1");
 				extra.changePrint(false);
 				//log("gen main menu 2");
-				Networking.sendStrong("Discord|desc|Main Menu|");
+				Networking.richDesc("Character Select");
 				Networking.sendStrong("Visual|MainMenu|");
 
 				//log("gen main menu 3");
@@ -796,8 +796,9 @@ public class mainGame {
 		extra.println("Made by 'dragon' of realDragon");
 		extra.println("With thanks to many different discords across different programming languages and engines.");
 		extra.println("Achievement icons can be found on game-icons.net, modified using their website. They are CC BY 3.0");
-		extra.println("Game-Icons.net list:\r\n"
-				+ "    Lorc, http://lorcblog.blogspot.com\r\n"
+		extra.println(extra.STAT_HEADER+"Game-Icons.net list:");
+		extra.println(
+				"    Lorc, http://lorcblog.blogspot.com\r\n"
 				+ "    Delapouite, https://delapouite.com\r\n"
 				+ "    John Colburn, http://ninmunanmu.com\r\n"
 				+ "    Felbrigg, http://blackdogofdoom.blogspot.co.uk\r\n"
@@ -832,11 +833,19 @@ public class mainGame {
 				+ "    Pierre Leducq\r\n"
 				+ "    Caro Asercion\r\n"
 				+ "");
-		extra.println("Music by manicInsomniac");
-		extra.println("Art:");
-		extra.println("Character, armor, and weapon art by SmashCooper and Duster. Background art by Damrok, Splash Art by he-who-shall-not-be-named");
-		extra.println("Sounds:");
-		extra.println("Stock Media provided by Soundrangers / FxProSound / SoundIdeasCom / PrankAudio / hdaudio / agcnf_media / sounddogs / AbloomAudio / Yurikud / SoundMorph => through Pond5");
+		extra.println(extra.STAT_HEADER+"Music:");
+		extra.println(" manicInsomniac");
+		extra.println(extra.STAT_HEADER+"Art:");
+		extra.println(extra.ITEM_DESC_PROP+" Character, armor, and Weapon Art:");
+		extra.println("  SmashCooper");
+		extra.println("  Duster");
+		extra.println(extra.ITEM_DESC_PROP+" Background Art:");
+		extra.println("  Damrok");
+		extra.println(extra.ITEM_DESC_PROP+" Concept/Splash Art:");
+		extra.println("  he-who-might-not-want-to-be-named");
+		extra.println(extra.STAT_HEADER+"Sounds:");
+		extra.println(" Stock Media provided by Soundrangers / FxProSound / SoundIdeasCom / PrankAudio / hdaudio / agcnf_media / sounddogs / AbloomAudio / Yurikud / SoundMorph => through Pond5");
+		extra.println(" Metal sounds by Bluezone");
 	}
 
 	@SuppressWarnings("unused")
@@ -1247,7 +1256,6 @@ public class mainGame {
 			 player.bag.swapArmorSlot(new Armor(1,3,MaterialFactory.getMat("emerald")),3);
 			 player.bag.swapArmorSlot(new Armor(1,4,MaterialFactory.getMat("emerald")),4);*/
 		manOne.setPlayer();
-		Networking.sendStrong("Discord|desc|Character Select|");
 		Networking.charUpdate();
 		extra.yesNo();
 
@@ -1798,7 +1806,7 @@ public class mainGame {
 			randomLists.init();
 			finalSetup1 = true;
 		}
-		Networking.sendStrong("Discord|desc|Character Select|");
+		Networking.richDesc("Character Select");
 		World world = null;//WorldGen.eoano();
 		if (cheaty || rerolls) {
 			if (cheaty) {

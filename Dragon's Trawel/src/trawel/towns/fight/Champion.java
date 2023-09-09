@@ -78,7 +78,6 @@ public class Champion  extends Feature{
 	
 	@Override
 	public void go() {
-		Networking.sendStrong("Discord|imagesmall|champion|Champion|");
 		person.getBag().graphicalDisplay(1,person);
 		extra.println(extra.PRE_BATTLE+"Challenge " + person.getName() + "?");
 		if (extra.yesNo()) {

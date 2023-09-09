@@ -230,7 +230,6 @@ public class Oracle extends Feature{ //extends feature later
 	public void go() {
 		//TODO types of oracles
 		//differnt oracles are for different quests
-		Networking.sendStrong("Discord|imagesmall|oracle|Oracle|");
 		goDelphi();
 		
 	}

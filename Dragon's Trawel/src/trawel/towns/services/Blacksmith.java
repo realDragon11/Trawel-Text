@@ -42,7 +42,6 @@ public class Blacksmith extends Feature {
 	@Override
 	public void go() {
 		String mname = World.currentMoneyString();
-		Networking.sendStrong("Discord|imagesmall|blacksmith|Blacksmith|");
 		extra.println("You have " + World.currentMoneyDisplay(Player.player.getGold()) + " and "+Player.bag.getAether()+ " aether.");
 		int forgePrice = (int) Math.ceil(getUnEffectiveLevel());
 		extra.println("1 forge item for store (" + forgePrice + " "+mname+")");

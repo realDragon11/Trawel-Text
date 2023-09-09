@@ -520,7 +520,6 @@ public class Store extends Feature{
 	
 	@Override
 	public void go() {
-		Networking.sendStrong("Discord|imagesmall|store|Store|");
 		extra.menuGo(modernStoreFront());
 	}
 	

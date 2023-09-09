@@ -30,7 +30,6 @@ public class Grove extends NodeFeature {
 	
 	@Override
 	public void go() {
-		Networking.sendStrong("Discord|imagesmall|grove|Grove|");
 		start.start();
 	}
 	

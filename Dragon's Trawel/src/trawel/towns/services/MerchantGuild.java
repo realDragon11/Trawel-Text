@@ -52,8 +52,6 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	
 	@Override
 	public void go() {
-		Networking.sendStrong("Discord|imagesmall|store|Merchant Guild|");
-		
 		extra.menuGo(new MenuGenerator() {
 
 			@Override

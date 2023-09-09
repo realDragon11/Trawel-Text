@@ -232,6 +232,10 @@ public class Networking {
 		Networking.sendStrong("ClearInv|"+i+"|");
 	}
 	
+	public static void richDesc(String desc) {
+		Networking.sendStrong("Discord|desc|"+desc+"|");
+	}
+	
 	public static void setBattle(BattleType battle) {
 		if (inBattle != battle) {
 			inBattle = battle;
@@ -243,30 +247,31 @@ public class Networking {
 	}
 	
 	public enum Area{
-		TOWN("main","forest"),
-		ARENA("arena","forest"),
-		CHAMPION("champ","mountain"),
-		FOREST("forest","forest"),
-		MINE("mine","mine"),
-		CAVE("mine","mine"),
-		MOUNTAIN("mountain","mountain"),
-		PORT("mountain","forest"),
-		SLUM("dungeon","mine"),
-		LOT("shop","forest"),
-		GARDEN("shop","forest"),
-		SHOP("shop","mine"),
-		ALTAR("mountain","mountain"),
-		MISC_SERVICE("shop","forest"),
-		ORACLE("mountain","forest"),
-		DUNGEON("dungeon","mine"),
-		GRAVEYARD("dungeon","forest"),
-		INN("inn","forest"),
-		ROADS("main","forest")
+		TOWN("main","forest","town"),
+		ARENA("arena","forest","arena"),
+		CHAMPION("champ","mountain","champion"),
+		FOREST("forest","forest","grove"),
+		MINE("mine","mine","mine"),
+		CAVE("mine","mine","grove"),
+		MOUNTAIN("mountain","mountain","mountain"),
+		PORT("mountain","forest","town"),
+		SLUM("dungeon","mine","store"),
+		LOT("shop","forest","lot"),
+		GARDEN("shop","forest","garden"),
+		SHOP("shop","mine","store"),
+		ALTAR("mountain","mountain","altar"),
+		MISC_SERVICE("shop","forest","store"),
+		ORACLE("mountain","forest","oracle"),
+		DUNGEON("dungeon","mine","dungeon"),
+		GRAVEYARD("dungeon","forest","dungeon"),
+		INN("inn","forest","inn"),
+		ROADS("main","forest","grove")
 		;
-		public final String musicName, backName;
-		Area(String _musicName, String _backName) {
+		public final String musicName, backName, discordImageSmall;
+		Area(String _musicName, String _backName,String _imageSmall) {
 			musicName = _musicName;
 			backName = _backName;
+			discordImageSmall = _imageSmall;
 		}
 	}
 	
@@ -293,6 +298,9 @@ public class Networking {
 			Networking.sendStrong("PlaySong|" + songType + (inBattle == BattleType.NORMAL ? "_fight" : "_explore")  + "|");}
 		}
 		updateTime();
+		if (current_area != area_type && Player.player.atFeature != null) {
+			Networking.sendStrong("Discord|imagesmall|store|"+Player.player.atFeature.getName()+"|");
+		}
 		current_area = area_type;
 	}
 	
