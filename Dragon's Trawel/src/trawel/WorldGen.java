@@ -473,6 +473,8 @@ public class WorldGen {
 		
 		plane.reload();
 		
+		fallBackWorld = null;
+		
 		return w;
 	}
 	
