@@ -6,7 +6,7 @@ public enum TownTag {
 	LAW("Lawful","strict laws"),
 	LAWLESS("Lawless","nigh-absence of laws"),
 	ARCANE("Arcane","arcane lore"),
-	DRUDIC("Drudic","primal vistas"),
+	DRUDIC("Drudic","primal connection"),
 	ALCHEMY("Alchemy","brewed potions"),
 	MYSTIC("Mystic","rumored leylines"),
 	SMALL_TOWN("Small Town","rural community"),
@@ -19,7 +19,12 @@ public enum TownTag {
 	HISTORY("History","rich history"),
 	BARREN("Barren Fields","barren fields"),
 	LIVESTOCK("Livestock","hearty livestock"),
-	FARMS("Farms","abundant farms");
+	FARMS("Farms","abundant farms"),
+	SERVICES("Services","reliable services"),
+	VISTAS("Vistas","stunning vistas"),
+	DISPARITY("Disparity","class divisions"),
+	UNSETTLING("Unsettling","unnerving airs"),
+	DETERMINED("Determined","tenacious residents");
 	
 	
 	public final String name, desc;

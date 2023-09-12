@@ -176,10 +176,11 @@ public class WorldGen {
 		tevar.addFeature(new Forest("The Forest of Vicissitude",2));
 		tevar.addFeature(new Mine("Ole' Tevar Mine",tevar,null,NodeFeature.Shape.NONE));
 		tevar.tTags.add(TownTag.MINERALS);
+		tevar.tTags.add(TownTag.UNSETTLING);
 		tevar.setFirstPrinter(new PrintEvent(){
 			@Override
 			public void print() {
-				extra.println("Tevar has the most important mine on this island, said to have been dug by the ancient's own ancestors. The forst of vicissitude engulfs the town, and fell reavers often appear nearby.");
+				extra.println("Tevar has the most important mine on this island, said to have been dug by the ancient's own ancestors. The Forest of Vicissitude engulfs the town, and fell reavers often appear nearby.");
 			}
 		});
 		
@@ -208,11 +209,12 @@ public class WorldGen {
 		
 		Town beal = new Town("Beal",4,rona,(byte)3,(byte)7);
 		addConnection(tevar,beal,ConnectType.ROAD,"Deadlocked Desert");
-		beal.addFeature(new Store(4,10));
+		beal.addFeature(new Store("Nomad's Market",4,10));
 		//put mountain in middle
 		beal.addFeature(new Mountain("Rolling Slopes", 3));
+		beal.addFeature(new Store("Plain Plains Treaders",4,4));
 		beal.addFeature(new Arena("Makeshift Ring",2,1,12,6,3));
-		
+		beal.addTravel();
 		beal.tTags.add(TownTag.SMALL_TOWN);
 		beal.tTags.add(TownTag.LIVESTOCK);
 		beal.setFirstPrinter(new PrintEvent() {
@@ -226,12 +228,14 @@ public class WorldGen {
 		addConnection(hemo,tanak,ConnectType.ROAD,"'Round the Mountain");
 		addConnection(beal,tanak,ConnectType.ROAD,"Wildering Plain");
 		tanak.addFeature(new Arena("The Gauntlet Cirque below Tanak",4,6,24*3,24*20,1));//lots of bouts
-		tanak.addFeature(new Store(4,6));
+		tanak.addFeature(new HeroGuild("Chantry of Boundless Heroism"));
+		tanak.addFeature(new Store(5,6));
 		tanak.addFeature(new Inn("Cloud Comforts Inn",5,tanak,null));
 		tanak.addTravel();
 		tanak.addTravel();
-		tanak.addFeature(new Champion(8));
+		//tanak.addFeature(new Champion(8));
 		tanak.tTags.add(TownTag.CITY);
+		tanak.tTags.add(TownTag.ARCANE);
 		tanak.setFirstPrinter(new PrintEvent(){
 			@Override
 			public void print() {
@@ -251,6 +255,7 @@ public class WorldGen {
 		lokan.addTravel();
 		lokan.addTravel();
 		lokan.tTags.add(TownTag.MYSTIC);
+		lokan.tTags.add(TownTag.SERVICES);
 		lokan.setFirstPrinter(new PrintEvent(){
 			@Override
 			public void print() {
@@ -258,12 +263,13 @@ public class WorldGen {
 			}
 		});
 		
-		Town haka = new Town("Haka",4,rona,new Point(1,10));
+		Town haka = new Town("Haka",6,rona,new Point(1,10));
 		addConnection(lokan,haka,"road","diamond way");
 		addConnection(tanak,haka,"road","circle road");
-		haka.addFeature(new Arena("Grand Colosseum (daily bout)",3,1,24,12,74));
-		haka.addFeature(new Arena("Grand Colosseum (weekly tourny)",3,4,24*7,24*7,30));
-		haka.addFeature(new Mountain("Peerless Mountain",5));
+		haka.addFeature(new Arena("Grand Colosseum (daily bout)",4,1,24,12,74));
+		haka.addFeature(new Arena("Grand Colosseum (weekly tourny)",5,4,24*7,24*7,30));
+		haka.addFeature(new Mountain("Peerless Mountain",6));
+		haka.tTags.add(TownTag.VISTAS);
 		haka.setFirstPrinter(new PrintEvent(){
 
 			@Override
@@ -273,9 +279,10 @@ public class WorldGen {
 			}
 			
 		});
-		Town fortMerida = new Town("Fort Merida",5, rona,(byte) 2,(byte)10, null);
-		fortMerida.addFeature(new WizardTower(4));
+		Town fortMerida = new Town("Fort Merida",6, rona,(byte) 2,(byte)10, null);
 		addConnection(fortMerida,haka,"road","mountain pass");
+		fortMerida.addFeature(new WizardTower(6));
+		fortMerida.tTags.add(TownTag.HIDDEN);
 		
 		
 		Island apa = new Island("Apa",w);
@@ -290,6 +297,7 @@ public class WorldGen {
 		alhax.addFeature(new Store(2,0));
 		alhax.tTags.add(TownTag.MERCHANT);
 		alhax.tTags.add(TownTag.RICH);
+		alhax.tTags.add(TownTag.CITY);
 		alhax.tTags.add(TownTag.LAW);
 		alhax.setFirstPrinter(new PrintEvent(){
 			@Override
@@ -344,6 +352,7 @@ public class WorldGen {
 		yena.addFeature(new HeroGuild("Third Hero's Guild"));
 		yena.addFeature(new Champion(6));
 		yena.tTags.add(TownTag.ADVENTURE);
+		yena.tTags.add(TownTag.HISTORY);
 		yena.setFirstPrinter(new PrintEvent() {
 
 			@Override
@@ -388,6 +397,7 @@ public class WorldGen {
 		placka.addFeature(new Champion(9));
 		placka.addFeature(new Dungeon("The Dungeon of Woe",placka,NodeFeature.Shape.NONE,-1));
 		placka.tTags.add(TownTag.ADVENTURE);
+		placka.tTags.add(TownTag.HISTORY);//a nameless name, an unrecorded history
 		
 		Town tunka = new Town("Tunka",8,teran,new Point(12,5));
 		addConnection(erin,tunka,"road","left-over road");
@@ -397,11 +407,21 @@ public class WorldGen {
 		tunka.addFeature(new RogueGuild("Society of Enterprising Nobles"));
 		tunka.addFeature(new Slum(tunka,"Forgettables District",false));
 		tunka.tTags.add(TownTag.LAWLESS);
+		tunka.tTags.add(TownTag.DISPARITY);
 		
-		//todo port town that just leads to visan
+		//TODO port town that just leads to visan
 		Town owal = new Town("Owal",9,teran,(byte)13,(byte)7);
 		//connects added later
 		owal.addFeature(new Docks("The Great Bay", owal));
+		owal.addFeature(new Store(10,6));
+		owal.addFeature(new Garden(owal,"Overworked Fields",1.1f,PlantFill.FOOD));
+		owal.tTags.add(TownTag.FARMS);//exports food south
+		owal.setFirstPrinter(new PrintEvent() {
+
+			@Override
+			public void print() {
+				extra.println("Newer in the grand scheme of Eoano, Owal was formed to provide food for the now-unsuitable island of Epan south of it.");
+			}});
 		
 		Town repa = new Town("Repa",10,teran,new Point(14,6));
 		addConnection(repa,tunka,ConnectType.ROAD,"right-over road");
@@ -440,8 +460,8 @@ public class WorldGen {
 			}
 		}));
 		senal.addFeature(new Garden(senal,"Desolate Fields",.2f,PlantFill.BAD_HARVEST));
-		
 		senal.tTags.add(TownTag.BARREN);
+		senal.tTags.add(TownTag.DETERMINED);
 		senal.setFirstPrinter(new PrintEvent() {
 
 			@Override
@@ -472,8 +492,10 @@ public class WorldGen {
 		addConnection(visan,owal,ConnectType.SHIP,"Forgotten Shipping Lane");
 		visan.addFeature(new Doctor("Foglung Cure Center", visan));
 		visan.addFeature(new Champion(10));
-		visan.tTags.add(TownTag.TRAVEL);
+		visan.addFeature(new Store(7,6));
+		visan.addTravel();
 		visan.tTags.add(TownTag.BARREN);
+		visan.tTags.add(TownTag.TRAVEL);
 		visan.setFirstPrinter(new PrintEvent() {
 
 			@Override
@@ -485,8 +507,8 @@ public class WorldGen {
 		
 		for (World wor: plane.worlds()) {
 			townFinal(wor);
+			alignConnectFlowsToInns(wor);
 		}
-		alignConnectFlowsToInns(w);
 		
 		plane.reload();
 		
