@@ -26,7 +26,6 @@ public class TravelingFeature extends Feature{
 	public TravelingFeature(Town town) {
 		this.town = town;
 		this.tier = town.getTier();
-		tutorialText = "Varies";
 	}
 	
 	@Override
@@ -37,6 +36,11 @@ public class TravelingFeature extends Feature{
 	@Override
 	public boolean canShow() {
 		return hasSomething;
+	}
+	
+	@Override
+	public String getTutorialText() {
+		return "Varies: " + feature.getTutorialText();
 	}
 
 	@Override
