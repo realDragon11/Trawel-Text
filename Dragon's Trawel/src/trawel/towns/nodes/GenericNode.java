@@ -641,11 +641,17 @@ public class GenericNode implements NodeType {
 				holder.findBehind(node,"unlocked door");
 			}else {
 				String name = holder.getStorageFirstClass(node,String.class);
-				if (holder.getStateNum(node) == 0) {
-					extra.println("You bash open the "+name+".");
+				if (holder.getStateNum(node) == 0){
+					extra.println("The "+name+" is locked.");
 				}else {
-					extra.println("Looks like they changed the locks! You bash open the "+name+".");
+					extra.println("Looks like they changed the locks!");
 				}
+				extra.println("Break down the "+name+"?");
+				if (!extra.yesNo()) {
+					NodeConnector.setKickGate();
+					return false;
+				}
+				extra.println("You bash open the "+name+".");
 				
 				holder.setStateNum(node,2);//broken open
 				holder.setForceGo(node, false);

@@ -24,13 +24,8 @@ import trawel.towns.misc.PlantSpot;
 
 public class NodeConnector implements Serializable {
 
-	//used for connecting event nodes with bosses
 	private static final long serialVersionUID = 1L;
-	//protected List<NodeConnector> connects;
-	//protected String name;//DOLATER: could probably generate these two Strings from the Objects
-	//protected String interactString = "ERROR";
 	
-	//protected int level;
 	
 	//DOLATER: make floor apply to all types as 'depth'. Floor needs to stay an int/short for spacing reasons
 	
@@ -43,13 +38,7 @@ public class NodeConnector implements Serializable {
 		//7th flag
 	}
 	
-	//protected byte typeNum;
-	//protected byte eventNum;
-	//protected byte state;
-	//protected Object storage1, storage2;
 	/**
-	 * "turn everything into arrays plan"
-	 * 
 	 * typeNum + eventNum + state + flags = 32 bits (4 bytes)
 	 * level + floor = 32 bits (2 shorts)
 	 * make interactstring and name generate?
@@ -99,7 +88,8 @@ public class NodeConnector implements Serializable {
 	
 	protected NodeFeature parent;
 	
-	private static boolean isForceGoIng;
+	private static boolean isForceGoIng = false;
+	private static boolean gateKickBack = false;
 	
 	protected NodeConnector(NodeFeature haver) {
 		parent = haver;
@@ -255,7 +245,20 @@ public class NodeConnector implements Serializable {
 		isForceGoIng = false;
 		setForceGoProtection(false);
 		while (getCurrentNode() != 0 && Player.isPlaying) {
+			boolean wasKicked = false;
+			if (gateKickBack) {
+				wasKicked = true;
+				gateKickBack = false;
+				setForceGoProtection(false);//can be forced to go to the node they got kicked back into
+				if (getCurrentNode() == getLastNode()) {
+					break;//exit area since we got gated at start
+				}
+				setCurrentNode(getLastNode());//set to last node
+			}
 			enter(getCurrentNode());
+			if (gateKickBack == true && wasKicked) {
+				break;//kick out since we're stuck in a gateKickBack loop
+			}
 		}
 		setLastNode(0);
 		setCurrentNode(0);
@@ -469,7 +472,7 @@ public class NodeConnector implements Serializable {
 		@Override
 		public boolean go() {
 			setForceGoProtection(false);
-			NodeConnector.setLastNode(NodeConnector.getCurrentNode());
+			setLastNode(getCurrentNode());
 			setCurrentNode(node);
 			setVisited(node,2);
 			return true;//always return true to prevent recursive nesting issues
@@ -728,6 +731,11 @@ public class NodeConnector implements Serializable {
 
 	protected static void setForceGoProtection(boolean forceGoProtection) {
 		Player.player.forceGoProtection = forceGoProtection;
+	}
+
+
+	public static void setKickGate() {
+		gateKickBack = true;
 	}
 	
 }
