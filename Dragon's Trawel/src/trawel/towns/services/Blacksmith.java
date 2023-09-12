@@ -41,11 +41,10 @@ public class Blacksmith extends Feature {
 	
 	@Override
 	public void go() {
-		String mname = World.currentMoneyString();
 		extra.println("You have " + World.currentMoneyDisplay(Player.player.getGold()) + " and "+Player.bag.getAether()+ " aether.");
 		int forgePrice = (int) Math.ceil(getUnEffectiveLevel());
-		extra.println("1 forge item for store (" + forgePrice + " "+mname+")");
-		extra.println("2 improve item up to " + Item.getModiferNameColored(tier) +" quality");
+		extra.println("1 forge item for store (" + World.currentMoneyDisplay(forgePrice)+")");
+		extra.println("2 improve item up to +" + tier +" level.");
 		extra.println("3 exit");
 		switch (extra.inInt(3)) {
 		case 1: 
@@ -65,20 +64,25 @@ public class Blacksmith extends Feature {
 				item = Player.bag.getHand();
 			}
 			if (item.getLevel() >= tier) {
-				extra.println("This item is too high in quality to improve here!");
+				extra.println("This item is too high in level to improve here!");
 				break;
 			}
-			int cost = (int) (item.getMoneyValue()+getUnEffectiveLevel()*2);//(int) (Math.pow(tier-item.getLevel(),2)*item.getAetherValue()+(tier*100));//want to encourage gradual leveling rather than drastic jumps in power
-			if (Player.player.getTotalBuyPower() < cost) {
-				extra.println("You can't afford this! (" + cost + " "+mname+")");
+			int mcost = (int) (item.getMoneyValue()+getUnEffectiveLevel()*2);
+			int acost = (item.getAetherValue());
+			String costString = World.currentMoneyDisplay(mcost) + " and " +acost + " aether";
+			if (Player.player.getTotalBuyPower() < mcost) {
+				extra.println("You can't afford this! ("+costString+")");
 				break;
 			}
-			extra.println("Improve your item to " + Item.getModiferNameColored(item.getLevel()+1) + " quality for " +cost +" "+mname+"?");
+			if (Player.player.getTotalBuyPower() < acost) {
+				extra.println("You can't afford this! ("+costString+")");
+				break;
+			}
+			extra.println("Improve your item to " + Item.getModiferNameColored(item.getLevel()+1) + " quality for "+costString+"?");
 			if (extra.yesNo()) {
-				Player.player.buyMoneyAmount(cost);
-				//while (item.getLevel() < tier) {
+				Player.player.loseGold(mcost);
+				Player.bag.addAether(-acost);
 				item.levelUp();
-				//}
 			}
 			;break;
 		case 3: return;
