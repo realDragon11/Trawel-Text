@@ -505,7 +505,7 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 		if (has == 0) {
 			return -1;
 		}
-		int lose = Math.max(has,i);
+		int lose = Math.min(has,i);
 		addGold(-lose);
 		return lose;
 	}

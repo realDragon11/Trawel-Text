@@ -11,6 +11,7 @@ import derg.menus.MenuSelect;
 import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.extra;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.Item;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -35,7 +36,7 @@ public class Blacksmith extends Feature {
 	public Blacksmith(int tier, Store s){
 		this.tier = tier;
 		this.store = s;
-		name = store.getName() +" " + extra.choose("smith","blacksmith","smithy","forge");
+		name = store.getName() +" " + extra.choose("Smith","Blacksmith","Smithy","Forge");
 		tutorialText = "Blacksmith";
 		area_type = Area.MISC_SERVICE;
 	}
@@ -85,7 +86,7 @@ public class Blacksmith extends Feature {
 
 					@Override
 					public String title() {
-						return "improve item up to +" + tier +" level.";
+						return "Improve any equipment up to +" + tier +" level.";
 					}
 
 					@Override
@@ -104,19 +105,24 @@ public class Blacksmith extends Feature {
 							extra.println("This item is too high in level to improve here!");
 							return false;
 						}
-						int mcost = (int) (item.getMoneyValue()+getUnEffectiveLevel()*2);
-						int acost = (item.getAetherValue());
+						int mcost = item.getMoneyValue();
+						int acost = (int) ((mcost * 100f)*(IEffectiveLevel.unclean(item.getLevel()+1)));
 						String costString = World.currentMoneyDisplay(mcost) + " and " +acost + " aether";
-						if (Player.player.getTotalBuyPower() < mcost) {
-							extra.println("You can't afford this! ("+costString+")");
+						if (Player.player.getGold() < mcost) {
+							if (Player.bag.getAether() < acost) {
+								extra.println("You can't afford to improve '"+item.getName()+"'. ("+costString+")");
+							}else {
+								extra.println("You can't afford to pay the blacksmith to improve '"+item.getName()+"'. ("+costString+")");
+							}
 							return false;
 						}
-						if (Player.player.getTotalBuyPower() < acost) {
-							extra.println("You can't afford this! ("+costString+")");
+						if (Player.bag.getAether() < acost) {
+							extra.println("You don't have enough aether to improve '"+item.getName()+"'. ("+costString+")");
 							return false;
 						}
-						extra.println("Improve your item to " + Item.getModiferNameColored(item.getLevel()+1) + " quality for "+costString+"?");
+						extra.println("Improve your item to +" + (item.getLevel()+1) + " for "+costString+"?");
 						if (extra.yesNo()) {
+							extra.println("Item improved.");
 							Player.player.loseGold(mcost);
 							Player.bag.addAether(-acost);
 							item.levelUp();
