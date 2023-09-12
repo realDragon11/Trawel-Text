@@ -128,7 +128,7 @@ public class WorldGen {
 		Island rona = new Island("Rona",w);
 		Town homa = new Town("Homa",1,rona,new Point(3,4));
 		homa.addFeature(new Store(1,6));
-		homa.addFeature(new Arena("Basena Arena",1,1,24,1,476));
+		homa.addFeature(new Arena("Basena Arena",1,1,24,2,476));
 		homa.addFeature(new Grove("The Woody Tangle",homa,30,1));
 		homa.addFeature(new Champion(4));
 		w.setStartTown(homa);
@@ -169,10 +169,10 @@ public class WorldGen {
 		});
 		
 		Town tevar = new Town("Tevar",3,rona,new Point(4,5));
-		tevar.addFeature(new Store(2));
-		tevar.addFeature(new Arena("Epino Arena",5,3,24*30,150,149));
-		//addConnection(homa,tevar,"road","red road");//now you must go through unun
 		addConnection(tevar,unun,"road","blue road");
+		tevar.addFeature(new Store(2,6));
+		//tevar.addFeature(new Arena("Epino Arena",5,3,24*30,150,149));
+		//addConnection(homa,tevar,"road","red road");//now you must go through unun
 		tevar.addFeature(new Forest("The Forest of Vicissitude",2));
 		tevar.addFeature(new Mine("Ole' Tevar Mine",tevar,null,NodeFeature.Shape.NONE));
 		tevar.tTags.add(TownTag.MINERALS);
@@ -185,13 +185,13 @@ public class WorldGen {
 		
 		
 		Town hemo = new Town("Hemo",3,rona,new Point(5,7));
-		addConnection(hemo,tevar,"road","purple road");
-		addConnection(hemo,unun,"road","black valley");
+		addConnection(hemo,tevar,ConnectType.ROAD,"purple road");
+		addConnection(hemo,unun,ConnectType.ROAD,"black valley");
 		addConnection(hemo,unun,"ship","neglected current");
-		Store s = new Store(1,6);
+		Store s = new Store(3,6);
 		hemo.addFeature(s);
+		hemo.addFeature(new Blacksmith(3,s));
 		hemo.addFeature(new Grove("The Odd Grove",hemo,12,3));
-		hemo.addFeature(new Blacksmith(1,s));
 		hemo.addFeature(new Garden(hemo,"Communal Garden",1.1f,PlantFill.WITCH));
 		hemo.addFeature(new WitchHut("Esoteric Ingredients",hemo));
 		hemo.tTags.add(TownTag.DRUDIC);
@@ -206,8 +206,25 @@ public class WorldGen {
 		
 		//TODO: town to the west of hemo that connects tevar and tanak from a landlocked route
 		
+		Town beal = new Town("Beal",4,rona,(byte)3,(byte)7);
+		addConnection(tevar,beal,ConnectType.ROAD,"Deadlocked Desert");
+		beal.addFeature(new Store(4,10));
+		//put mountain in middle
+		beal.addFeature(new Mountain("Rolling Slopes", 3));
+		beal.addFeature(new Arena("Makeshift Ring",2,1,12,6,3));
+		
+		beal.tTags.add(TownTag.SMALL_TOWN);
+		beal.tTags.add(TownTag.LIVESTOCK);
+		beal.setFirstPrinter(new PrintEvent() {
+
+			@Override
+			public void print() {
+				extra.println("More an outpost for the nomadic people who rear their livestock nearby, Beal lies between a desert and a verdant plain, isolated from the nearby coastal town of Hemo by a wall of small but harsh mountains.");
+			}});
+		
 		Town tanak = new Town("Tanak",5,rona,new Point(4,9));
-		addConnection(hemo,tanak,"road","windy pass");
+		addConnection(hemo,tanak,ConnectType.ROAD,"'Round the Mountain");
+		addConnection(beal,tanak,ConnectType.ROAD,"Wildering Plain");
 		tanak.addFeature(new Arena("The Gauntlet Cirque below Tanak",4,6,24*3,24*20,1));//lots of bouts
 		tanak.addFeature(new Store(4,6));
 		tanak.addFeature(new Inn("Cloud Comforts Inn",5,tanak,null));
@@ -246,7 +263,7 @@ public class WorldGen {
 		addConnection(tanak,haka,"road","circle road");
 		haka.addFeature(new Arena("Grand Colosseum (daily bout)",3,1,24,12,74));
 		haka.addFeature(new Arena("Grand Colosseum (weekly tourny)",3,4,24*7,24*7,30));
-		haka.addFeature(new Mountain("Peerless Mountain",3));
+		haka.addFeature(new Mountain("Peerless Mountain",5));
 		haka.setFirstPrinter(new PrintEvent(){
 
 			@Override

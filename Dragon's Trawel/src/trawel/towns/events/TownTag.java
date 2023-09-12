@@ -17,7 +17,9 @@ public enum TownTag {
 	HIDDEN("Hidden","obscure location"),
 	TRAVEL("Travelers","many travelers"),
 	HISTORY("History","rich history"),
-	BARREN("Barren Fields","barren fields");
+	BARREN("Barren Fields","barren fields"),
+	LIVESTOCK("Livestock","hearty livestock"),
+	FARMS("Farms","abundant farms");
 	
 	
 	public final String name, desc;
