@@ -507,7 +507,12 @@ public class WorldGen {
 		
 		for (World wor: plane.worlds()) {
 			townFinal(wor);
-			alignConnectFlowsToInns(wor);
+			try {
+				alignConnectFlowsToInns(wor);
+			}catch (Exception e) {
+				mainGame.log("WorldGen Align Fail: " +e.getMessage());
+			}
+			
 		}
 		
 		plane.reload();

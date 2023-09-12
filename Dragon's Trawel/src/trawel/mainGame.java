@@ -71,7 +71,7 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__6";
-	public static final String VERSION_DATE = " updated Sept 10th 2023";
+	public static final String VERSION_DATE = " updated Sept 11th 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			"b_6: {part 1/?} Updated stat displays and item 'higher/lower is better' displays. Tutorial text separated from 'feature description' text.",
@@ -1394,7 +1394,6 @@ public class mainGame {
 				mainMenu();
 			}catch (Exception e) {
 				try {
-
 					errorHandle(e);
 				}catch(Exception fatal) {
 					System.out.println("Error was fatal. Press enter to close.");

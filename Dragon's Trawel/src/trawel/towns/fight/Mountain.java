@@ -35,7 +35,11 @@ public class Mountain extends ExploreFeature{
 		background_area = "mountain";
 		background_variant = 1;
 		area_type = Area.MOUNTAIN;
-		tutorialText = "Mountain";
+	}
+	
+	@Override
+	public String getTutorialText() {
+		return "Mountain";
 	}
 	
 	@Override

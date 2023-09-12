@@ -150,18 +150,42 @@ public class Store extends Feature{
 		assert itemMinLevel <= itemMaxLevel;
 		type = newType;
 		switch (type) {
-		case 0: name = extra.choose("Hat","Headwear","Heads and Hair");break;
-		case 1: name = extra.choose("Gloves","Handwear","Hand protection","Mitten");break;
-		case 2: name = extra.choose("Chestpiece","Bodywear","Chest Protector");break;
-		case 3: name = extra.choose("Pants","Legwear","Leg Protector","Trouser","Pantaloon");break;
-		case 4: name = extra.choose("Boot","Footwear","Cobbler","Feet Protection");break;
-		case 5: name = extra.choose("Weapon","Arms","Armament","War");break;
-		case 6: name = extra.choose("General","Flea","Convenience","Trading","Super","Tag","Jumble","Clearance","Retail");break;
-		case 7: name = extra.choose("Race","Species","Body","New You");break;
-		case 8: name = extra.choose("Drawbane");break;//misc
-		case 9: name = extra.choose("Witchery","Potion Material","Reagent","Catalyst","Reactant","Ingredient");break;
-		case 10: name = extra.choose("Food","Provision","Comestible","Edible","Commissariat");break;
-		case 11: name = extra.choose("Oddity","Bizarre","Peculiar","Curiosity","Souvenir","Trinket","Trophy");break;//collector
+		case 0: name = extra.choose("Hat","Headwear","Heads and Hair");
+			tutorialText = "Helmet Store";
+		break;
+		case 1: name = extra.choose("Gloves","Handwear","Hand Protection","Mitten");
+		tutorialText = "Armbands Store";
+		break;
+		case 2: name = extra.choose("Chestpiece","Bodywear","Chest Protector");
+			tutorialText = "Chestpiece Store";
+		break;
+		case 3: name = extra.choose("Pants","Legwear","Leg Protector","Trouser","Pantaloon");
+		tutorialText = "Pants Store";
+		break;
+		case 4: name = extra.choose("Boot","Footwear","Cobbler","Feet Protection");
+		tutorialText = "Boots Store";
+		break;
+		case 5: name = extra.choose("Weapon","Arms","Armament","War");
+		tutorialText = "Weapon Store";
+		break;
+		case 6: name = extra.choose("General","Flea","Convenience","Trading","Super","Tag","Jumble","Clearance","Retail");
+		tutorialText = "Equipment Store";
+		break;
+		case 7: name = extra.choose("Race","Species","Body","New You");
+		tutorialText = "Species Store";
+		break;
+		case 8: name = extra.choose("Drawbane");
+			tutorialText = "Drawbane Store";
+		break;//misc
+		case 9: name = extra.choose("Witchery","Potion Material","Reagent","Catalyst","Reactant","Ingredient");
+		tutorialText = "Reagent Store";
+		break;
+		case 10: name = extra.choose("Food","Provision","Comestible","Edible","Commissariat");
+			tutorialText = "Food Store";
+		break;
+		case 11: name = extra.choose("Oddity","Bizarre","Peculiar","Curiosity","Souvenir","Trinket","Trophy");
+			tutorialText = "Oddity Store";
+		break;//collector
 		}
 		name += " " + extra.choose("Store","Market","Shop","Post","Boutique","Emporium","Outlet","Center","Mart","Stand","Sale","Fair","Bazaar","Stall","Booth");
 
