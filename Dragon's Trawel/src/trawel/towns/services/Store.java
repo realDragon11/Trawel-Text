@@ -585,7 +585,12 @@ public class Store extends Feature{
 		return name;
 	}
 	
-	public void addAnItem() {
+	/**
+	 * will return null if added a drawbane
+	 * <br>
+	 * note that if the item is a race, those get saved differently with ids
+	 */
+	public Item addAnItem() {
 		if (type >= 8) {
 			if (dbs.size() >= invSize) {
 				dbs.remove(extra.randRange(0,dbs.size()-1));
@@ -593,46 +598,52 @@ public class Store extends Feature{
 			switch (type) {
 			case 8:
 				dbs.add(DrawBane.draw(DrawList.GENERIC_STORE));
-				return;
+				return null;
 			case 9:
 				dbs.add(DrawBane.draw(DrawList.WITCH_STORE));
-				return;
+				return null;
 			case 10:
 				dbs.add(DrawBane.draw(DrawList.FOOD));
-				return;
+				return null;
 			case 11:
 				dbs.add(DrawBane.draw(DrawList.COLLECTOR));
-				return;
+				return null;
 			}
-			return;
+			return null;
 		}
 		if (type == 7) {
 			if (races.size() >= invSize) {
 				races.remove(extra.randRange(0,races.size()-1));
 			}
-			races.add(RaceFactory.randRace(Race.RaceType.PERSONABLE).raceID());
-			return;
+			Race addRace = RaceFactory.randRace(Race.RaceType.PERSONABLE);
+			races.add(addRace.raceID());
+			return addRace;
 		}
 		if (items.size() >= invSize) {
 			items.remove(extra.randRange(0,items.size()-1));
 		}
 		if (type < 5) {
-			items.add(new Armor(extra.randRange(itemMinLevel, itemMaxLevel),type));
-			return;
+			Armor a = new Armor(extra.randRange(itemMinLevel, itemMaxLevel),type);
+			items.add(a);
+			return a;
 		}
 		if (type == 5) {
-			items.add(Weapon.genMidWeapon(extra.randRange(itemMinLevel, itemMaxLevel)));
-			return;
+			Weapon w = Weapon.genMidWeapon(extra.randRange(itemMinLevel, itemMaxLevel));
+			items.add(w);
+			return w;
 		}
 		if (type == 6) {
 			if (extra.randFloat() > .5f) {
-				items.add(Weapon.genMidWeapon(extra.randRange(itemMinLevel, itemMaxLevel)));
-				return;
+				Weapon w = Weapon.genMidWeapon(extra.randRange(itemMinLevel, itemMaxLevel));
+				items.add(w);
+				return w;
 			}else {
-				items.add(new Armor(extra.randRange(itemMinLevel, itemMaxLevel)));
-				return;
+				Armor a = new Armor(extra.randRange(itemMinLevel, itemMaxLevel));
+				items.add(a);
+				return a;
 			}
 		}
+		throw new RuntimeException("Cannot add item to store " + getName() + " with type " + type);
 	}
 	private void goShopping() {
 		if (type == 9) {//potion shops apply some, and also refills

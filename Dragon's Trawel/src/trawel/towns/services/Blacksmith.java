@@ -1,7 +1,13 @@
 package trawel.towns.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuBack;
+import derg.menus.MenuGenerator;
+import derg.menus.MenuItem;
+import derg.menus.MenuLine;
+import derg.menus.MenuSelect;
 import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.extra;
@@ -15,7 +21,7 @@ import trawel.towns.World;
 public class Blacksmith extends Feature {
 	
 	private static final long serialVersionUID = 1L;
-	private double time = 0;
+	private double time = 10.;
 	private Store store;
 	
 	public Blacksmith(String name,int tier, Store s){
@@ -41,61 +47,93 @@ public class Blacksmith extends Feature {
 	
 	@Override
 	public void go() {
-		extra.println("You have " + World.currentMoneyDisplay(Player.player.getGold()) + " and "+Player.bag.getAether()+ " aether.");
-		int forgePrice = (int) Math.ceil(getUnEffectiveLevel());
-		extra.println("1 forge item for store (" + World.currentMoneyDisplay(forgePrice)+")");
-		extra.println("2 improve item up to +" + tier +" level.");
-		extra.println("3 exit");
-		switch (extra.inInt(3)) {
-		case 1: 
-			if (Player.player.getTotalBuyPower() >= forgePrice) {
-				Player.player.buyMoneyAmount(forgePrice);
-				store.addAnItem();
-				extra.println("An item has been forged and sent to " + store.getName() + "!");
-			}else {
-				extra.println("You can't afford that!");
-			}break;
-		case 2:
-			int in = askSlot();
-			Item item;
-			if (in <=5) {
-				item = Player.bag.getArmorSlot(in-1);
-			}else {
-				item = Player.bag.getHand();
-			}
-			if (item.getLevel() >= tier) {
-				extra.println("This item is too high in level to improve here!");
-				break;
-			}
-			int mcost = (int) (item.getMoneyValue()+getUnEffectiveLevel()*2);
-			int acost = (item.getAetherValue());
-			String costString = World.currentMoneyDisplay(mcost) + " and " +acost + " aether";
-			if (Player.player.getTotalBuyPower() < mcost) {
-				extra.println("You can't afford this! ("+costString+")");
-				break;
-			}
-			if (Player.player.getTotalBuyPower() < acost) {
-				extra.println("You can't afford this! ("+costString+")");
-				break;
-			}
-			extra.println("Improve your item to " + Item.getModiferNameColored(item.getLevel()+1) + " quality for "+costString+"?");
-			if (extra.yesNo()) {
-				Player.player.loseGold(mcost);
-				Player.bag.addAether(-acost);
-				item.levelUp();
-			}
-			;break;
-		case 3: return;
-		}
-		go();
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return "You have " + World.currentMoneyDisplay(Player.player.getGold()) + " and "+Player.bag.getAether()+ " aether.";
+					}});
+				int forgePrice = (int) Math.ceil(getUnEffectiveLevel());
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Forge +"+tier+" item for "+store.getName()+" (" + World.currentMoneyDisplay(forgePrice)+")";
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.player.getGold() >= forgePrice) {
+							Player.player.loseGold(forgePrice);
+							Item i = store.addAnItem();
+							if (i == null) {
+								extra.println("An item has been forged and sent to " + store.getName() + "!");
+							}else {
+								extra.println(i.getName() + " was created and put on sale in " + store.getName()+"!");
+							}
+						}else {
+							extra.println("You can't afford that!");
+						}
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "improve item up to +" + tier +" level.";
+					}
+
+					@Override
+					public boolean go() {
+						int in = askSlot();
+						if (in == 9) {
+							return false;
+						}
+						Item item;
+						if (in <=5) {
+							item = Player.bag.getArmorSlot(in-1);
+						}else {
+							item = Player.bag.getHand();
+						}
+						if (item.getLevel() >= tier) {
+							extra.println("This item is too high in level to improve here!");
+							return false;
+						}
+						int mcost = (int) (item.getMoneyValue()+getUnEffectiveLevel()*2);
+						int acost = (item.getAetherValue());
+						String costString = World.currentMoneyDisplay(mcost) + " and " +acost + " aether";
+						if (Player.player.getTotalBuyPower() < mcost) {
+							extra.println("You can't afford this! ("+costString+")");
+							return false;
+						}
+						if (Player.player.getTotalBuyPower() < acost) {
+							extra.println("You can't afford this! ("+costString+")");
+							return false;
+						}
+						extra.println("Improve your item to " + Item.getModiferNameColored(item.getLevel()+1) + " quality for "+costString+"?");
+						if (extra.yesNo()) {
+							Player.player.loseGold(mcost);
+							Player.bag.addAether(-acost);
+							item.levelUp();
+						}
+						return false;
+					}});
+				list.add(new MenuBack("leave"));
+				return list;
+			}});
 	}
 
 	@Override
 	public List<TimeEvent> passTime(double addtime, TimeContext calling) {
-		this.time += addtime;
-		if (time > 12+(extra.getRand().nextInt(30))) {
+		time -= addtime;
+		if (time <= 0) {
 			store.addAnItem();//TODO: should probably add in event?
-			time = 0;
+			time = 12+(extra.randFloat()*30);
 		}
 		return null;
 	}
@@ -107,7 +145,8 @@ public class Blacksmith extends Feature {
 		extra.println("4 legs");
 		extra.println("5 feet");
 		extra.println("6 weapon");
-		return extra.inInt(6);
+		extra.println("9 cancel");
+		return extra.inInt(6,true,true);
 	}
 
 }
