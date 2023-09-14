@@ -284,7 +284,6 @@ public abstract class ExploreFeature extends Feature {
 	protected void risky_gold(String intro,String failText, String ignoreText) {
 		extra.println(intro);
 		Boolean result = extra.yesNo();
-		extra.linebreak();
 		if (result) {
 			if (Math.random() > .4) {
 				extra.println(extra.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");

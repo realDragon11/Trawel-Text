@@ -71,7 +71,6 @@ public class Arena extends Feature{
 		}
 		extra.println("3 leave");
 		int input = extra.inInt(3);
-		extra.linebreak();
 		if (input == 3){
 			return;
 		}

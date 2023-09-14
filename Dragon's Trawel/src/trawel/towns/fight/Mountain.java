@@ -251,7 +251,6 @@ public class Mountain extends ExploreFeature{
 	private void aetherRock() {
 		extra.println("You spot a solidified aether rock rolling down the mountain. Chase it?");
 		Boolean result = extra.yesNo();
-		extra.linebreak();
 		if (result) {
 			if (Math.random() > .5) {
 				extra.println(extra.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");
