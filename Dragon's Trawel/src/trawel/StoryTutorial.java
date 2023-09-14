@@ -47,7 +47,7 @@ public class StoryTutorial extends Story{
 	
 	private int battleFam;//0 none, 1 fought but didn't win, 2 won a fight
 	
-	private EnumSet<Perk> bossPerkTriggers = EnumSet.of(Perk.HELL_BARONESS_1,Perk.FATED,Perk.STORYTELLER);
+	private EnumSet<Perk> bossPerkTriggers = EnumSet.of(Perk.HELL_BARONESS_1,Perk.FATED,Perk.STORYTELLER,Perk.QUEENSLAYER);
 	private EnumSet<Perk> worldPerkTriggers = EnumSet.of(Perk.MINE_ALL_VEINS,Perk.CULT_LEADER_BLOOD);
 	
 	private List<Class<? extends Feature>> explained = new ArrayList<>();
@@ -404,6 +404,9 @@ public class StoryTutorial extends Story{
 				break;
 			case STORYTELLER:
 				extra.println("You've outlived out a legend and gained the Storyteller perk!");
+				break;
+			case QUEENSLAYER:
+				extra.println("You've slain an ancient evil empress and gained the Queenslayer perk!");
 				break;
 			}
 			if (bossPerkTriggers.isEmpty()) {
