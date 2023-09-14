@@ -1254,7 +1254,7 @@ public final class extra {
 		}*/
 		
 		public static boolean getEnumByteFlag(int flag, byte flags) {
-			return Byte.toUnsignedInt((byte) (flags & (1 << flag))) > 0;
+			return (byte) (flags & (1 << flag)) != 0b0;
 		}
 		
 		public static byte setEnumByteFlag(int flag, byte flags, boolean bool) {
@@ -1267,7 +1267,7 @@ public final class extra {
 		}
 		
 		public static boolean getEnumShortFlag(int flag, short flags) {
-			return Short.toUnsignedInt((short) (flags & (1 << flag))) > 0;
+			return (short) (flags & (1 << flag)) != 0b0;
 		}
 		
 		public static short setEnumShortFlag(int flag, short flags, boolean bool) {
@@ -1285,9 +1285,9 @@ public final class extra {
 		 */
 		public static byte extractByteFromInt(final int in, final int offset)
 		{
-		    final int rightShifted = in >>> offset;
-		    final int mask = (1 << 8) - 1;
-		    return (byte) (rightShifted & mask);
+		    //final int rightShifted = in >>> offset;
+		    //final int mask = (1 << 8) - 1;
+		    return (byte) ((in >>> offset) & ((1 << 8) - 1));
 		}
 		
 		/**
@@ -1296,20 +1296,19 @@ public final class extra {
 		 */
 		public static int extractIntFromLong(final long l, final int offset)
 		{
-		    final long rightShifted = l >>> offset;
-		    final long mask = (1L << 32) - 1L;
-		    return (int) (rightShifted & mask);
+		    //final long rightShifted = l >>> offset;
+		    //final long mask = (1L << 32) - 1L;
+		    return (int) ((l >>> offset) & ((1L << 32) - 1L));
 		}
 		
 		/**
 		 * adapted from
 		 * https://stackoverflow.com/a/18083093
 		 */
-		public static byte extractByteFromLong(final long l, final int offset)
-		{
-		    final long rightShifted = l >>> offset;
-		    final long mask = (1L << 8) - 1L;
-		    return (byte) (rightShifted & mask);
+		public static byte extractByteFromLong(final long l, final int offset){
+			//final long rightShifted = l >>> offset;
+		    //final long mask = (1L << 8) - 1L;
+		    return (byte) ((l >>> offset) & ((1L << 8) - 1L));
 		}
 		/**
 		 * must be passed an UNSIGNED number,
@@ -1433,9 +1432,9 @@ public final class extra {
 		 */
 		public static int intGetNthByteFromLong(final long l, final int number_of_byte)
 		{
-		    final long rightShifted = l >>> number_of_byte*8;
-		    final long mask = (1L << 8) - 1L;
-		    return (int) (rightShifted & mask);
+		    //final long rightShifted = l >>> number_of_byte*8;
+		    //final long mask = (1L << 8) - 1L;
+		    return (int) ((l >>> number_of_byte*8) & ((1L << 8) - 1L));
 		}
 		
 		/**
@@ -1455,9 +1454,9 @@ public final class extra {
 		 */
 		public static int intGetNthShortFromLong(final long l, final int number_of_short)
 		{
-		    final long rightShifted = l >>> number_of_short*16;
-		    final long mask = (1L << 16) - 1L;
-		    return (int) (rightShifted & mask);
+		    //final long rightShifted = l >>> number_of_short*16;
+		    //final long mask = (1L << 16) - 1L;
+		    return (int) ((l >>> number_of_short*16) & ((1L << 16) - 1L));
 		}
 
 		/**
