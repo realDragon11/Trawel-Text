@@ -466,7 +466,18 @@ public class NodeConnector implements Serializable {
 			if (Player.hasSkill(Skill.TOWNSENSE)) {
 				postText +=" C: " + getConnects(node).size();
 			}
-			return visitColor + getName(node) +postText+ (node == NodeConnector.getLastNode() ? extra.PRE_WHITE+" (back)" : "");
+			if (mainGame.displayNodeDeeper) {
+				int fromFloor = getFloor(getCurrentNode());
+				int toFloor = getFloor(node);
+				if (toFloor < fromFloor) {
+					postText += " (Outward)";
+				}else {
+					if (toFloor > fromFloor) {
+						postText += " (Inward)";
+					}
+				}
+			}
+			return (node == NodeConnector.getLastNode() ? extra.PRE_WHITE+"Back: " : "")+visitColor + getName(node) +postText;
 		}
 
 		@Override

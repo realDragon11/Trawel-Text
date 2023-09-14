@@ -70,7 +70,7 @@ import trawel.towns.services.Oracle;
 public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
-	public static final String VERSION_STRING = "v0.8.b_6";
+	public static final String VERSION_STRING = "v0.8.b__7";
 	public static final String VERSION_DATE = " updated Sept 14th 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
@@ -142,6 +142,7 @@ public class mainGame {
 	public static boolean delayWaits;
 	public static boolean combatWaits;
 	public static boolean displayTargetSummary;
+	public static boolean displayNodeDeeper;
 
 	private static boolean doAutoSave = true;
 	private static PrintStream logStream;
@@ -520,107 +521,125 @@ public class mainGame {
 
 					@Override
 					public boolean go() {
-						extra.menuGo(new MenuGenerator() {
+						List<MenuItem> list = new ArrayList<MenuItem>();
+						list.add(new MenuSelect() {
 
 							@Override
-							public List<MenuItem> gen() {
-								List<MenuItem> list = new ArrayList<MenuItem>();
-								list.add(new MenuSelect() {
+							public String title() {
+								return "Flavor Text " + displayFlavorText + " (Covers random town flavor, 'first arrival' flavor, and random taunting/boasting)";
+							}
 
-									@Override
-									public String title() {
-										return "Flavor Text " + displayFlavorText + " (Covers random town flavor, 'first arrival' flavor, and random taunting/boasting)";
-									}
+							@Override
+							public boolean go() {
+								displayFlavorText = !displayFlavorText;
+								prefs.setProperty("flavor_text", displayFlavorText+"");
+								return false;
+							}});
+						list.add(new MenuSelect() {
 
-									@Override
-									public boolean go() {
-										displayFlavorText = !displayFlavorText;
-										prefs.setProperty("flavor_text", displayFlavorText+"");
-										return false;
-									}});
-								list.add(new MenuSelect() {
+							@Override
+							public String title() {
+								return "Travel Text " + displayTravelText+ " (covers 'You start to travel to X' and the arrival message.)";
+							}
 
-									@Override
-									public String title() {
-										return "Travel Text " + displayTravelText+ " (covers 'You start to travel to X' and the arrival message.)";
-									}
+							@Override
+							public boolean go() {
+								displayTravelText = !displayTravelText;
+								prefs.setProperty("travel_text", displayTravelText+"");
+								return false;
+							}});
+						list.add(new MenuSelect() {
 
-									@Override
-									public boolean go() {
-										displayTravelText = !displayTravelText;
-										prefs.setProperty("travel_text", displayTravelText+"");
-										return false;
-									}});
-								list.add(new MenuSelect() {
+							@Override
+							public String title() {
+								return "Locational Text " + displayLocationalText + " (covers 'You are in X' and date.)";
+							}
 
-									@Override
-									public String title() {
-										return "Locational Text " + displayLocationalText + " (covers 'You are in X' and date.)";
-									}
+							@Override
+							public boolean go() {
+								displayLocationalText = !displayLocationalText;
+								prefs.setProperty("locational_text", displayLocationalText+"");
+								return false;
+							}});
+						list.add(new MenuSelect() {
 
-									@Override
-									public boolean go() {
-										displayLocationalText = !displayLocationalText;
-										prefs.setProperty("locational_text", displayLocationalText+"");
-										return false;
-									}});
-								list.add(new MenuSelect() {
+							@Override
+							public String title() {
+								return "Feature Text " + displayFeatureText + " (diplays type of town feature under its name)";
+							}
 
-									@Override
-									public String title() {
-										return "Feature Text " + displayFeatureText + " (diplays type of town feature under its name)";
-									}
+							@Override
+							public boolean go() {
+								displayFeatureText = !displayFeatureText;
+								prefs.setProperty("feature_text", displayFeatureText+"");
+								return false;
+							}});
+						list.add(new MenuSelect() {
 
-									@Override
-									public boolean go() {
-										displayFeatureText = !displayFeatureText;
-										prefs.setProperty("feature_text", displayFeatureText+"");
-										return false;
-									}});
-								list.add(new MenuSelect() {
+							@Override
+							public String title() {
+								return "Own Name " + displayOwnName + " (If disabled, 'you' will be used whenever your character's name, title, or fullname would be used. This will not make sense, but might help clarity.)";
+							}
 
-									@Override
-									public String title() {
-										return "Own Name " + displayOwnName + " (If disabled, 'you' will be used whenever your character's name, title, or fullname would be used. This will not make sense, but might help clarity.)";
-									}
+							@Override
+							public boolean go() {
+								displayOwnName = !displayOwnName;
+								prefs.setProperty("ownname_text", displayOwnName+"");
+								return false;
+							}});
+						list.add(new MenuSelect() {
 
-									@Override
-									public boolean go() {
-										displayOwnName = !displayOwnName;
-										prefs.setProperty("ownname_text", displayOwnName+"");
-										return false;
-									}});
-								list.add(new MenuSelect() {
+							@Override
+							public String title() {
+								return "Other Combat Text " + displayOtherCombat + " (If disabled, no text will be displayed on Person turns that do not include you as an attacker or defender. Does not disable Combat Conditions text, and does disable death messages.)";
+							}
 
-									@Override
-									public String title() {
-										return "Other Combat Text " + displayOtherCombat + " (If disabled, no text will be displayed on Person turns that do not include you as an attacker or defender. Does not disable Combat Conditions text, and does disable death messages.)";
-									}
+							@Override
+							public boolean go() {
+								displayOtherCombat = !displayOtherCombat;
+								prefs.setProperty("othercombat_text", displayOtherCombat+"");
+								return false;
+							}});
+						list.add(new MenuSelect() {
 
-									@Override
-									public boolean go() {
-										displayOtherCombat = !displayOtherCombat;
-										prefs.setProperty("othercombat_text", displayOtherCombat+"");
-										return false;
-									}});
-								list.add(new MenuSelect() {
+							@Override
+							public String title() {
+								return "Target Summary " + displayTargetSummary + " (If disabled, will not print target's stats in 1v1s or before attacking in mass battles.)";
+							}
 
-									@Override
-									public String title() {
-										return "Target Summary " + displayTargetSummary + " (If disabled, will not print target's stats in 1v1s or before attacking in mass battles.)";
-									}
+							@Override
+							public boolean go() {
+								displayTargetSummary = !displayTargetSummary;
+								prefs.setProperty("targetsummary_text", displayTargetSummary+"");
+								return false;
+							}});
+						list.add(new MenuSelect() {
 
-									@Override
-									public boolean go() {
-										displayTargetSummary = !displayTargetSummary;
-										prefs.setProperty("targetsummary_text", displayTargetSummary+"");
-										return false;
-									}});
+							@Override
+							public String title() {
+								return "Node Deeper " + displayNodeDeeper + " (Inward and Outward in Node Features.)";
+							}
 
+							@Override
+							public boolean go() {
+								displayNodeDeeper = !displayNodeDeeper;
+								prefs.setProperty("nodedeeper_text", displayNodeDeeper+"");
+								return false;
+							}});
+						extra.menuGo(new ScrollMenuGenerator(list.size(), "last <> options", "next <> options") {
+							@Override
+							public List<MenuItem> forSlot(int i) {
+								return Collections.singletonList(list.get(i));
+							}
 
+							@Override
+							public List<MenuItem> header() {
+								return null;
+							}
 
-								list.add(new MenuBack());
-								return list;
+							@Override
+							public List<MenuItem> footer() {
+								return Collections.singletonList(new MenuBack());
 							}});
 						return false;
 					}});
@@ -1371,6 +1390,7 @@ public class mainGame {
 			delayWaits = Boolean.parseBoolean(prefs.getProperty("combattime_wait","FALSE"));//probably will perform poorly in mass battles
 			combatWaits = Boolean.parseBoolean(prefs.getProperty("combataction_wait","TRUE"));
 			displayTargetSummary = Boolean.parseBoolean(prefs.getProperty("targetsummary_text","TRUE"));
+			displayNodeDeeper = Boolean.parseBoolean(prefs.getProperty("nodedeeper_text","TRUE"));
 
 			if (autoConnect) {
 				System.out.println("Please wait for the graphical to load...");

@@ -46,7 +46,10 @@ public class Forest extends ExploreFeature{
 		background_area = "forest";
 		background_variant = 1;
 		area_type = Area.FOREST;
-		tutorialText = "Forest";
+	}
+	@Override
+	public String getTutorialText() {
+		return "Forest";
 	}
 	@Override
 	public String nameOfType() {

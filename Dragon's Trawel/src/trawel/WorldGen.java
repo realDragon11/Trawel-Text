@@ -436,9 +436,6 @@ public class WorldGen {
 		repa.addFeature(new Inn("Repa's Rest",8,erin,null));
 		repa.tTags.add(TownTag.TRAVEL);
 		
-		
-		//TODO: add island to the south of repa and to the east of tanak/lokan
-		
 		Island epan = new Island("Epan",w);
 		//note: all should be barren
 		

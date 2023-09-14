@@ -96,8 +96,8 @@ public class MineNode implements NodeType{
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
 		int idNum = extra.randRange(1,getNodeTypeForParentShape(holder));
-		
 		int ret = holder.newNode(NodeType.NodeTypeNum.MINE.ordinal(),idNum,tier);
+		holder.setFloor(ret, guessDepth);
 		return ret;
 	}
 	
@@ -111,7 +111,7 @@ public class MineNode implements NodeType{
 		if (extra.chanceIn(1,3)) {//mineshaft splitting
 			return genShaft(holder,from,size,tier,extra.randRange(2,5));
 		}
-		int made = getNode(holder,from,0,tier);
+		int made = getNode(holder,from,from == 0 ? 0 : holder.getFloor(from)+1,tier);
 		size--;
 		int sizeLeft;
 		int[] split;
@@ -137,7 +137,7 @@ public class MineNode implements NodeType{
 			if (extra.chanceIn(1,20)) {//less likely to tier up without mineshafts
 				tempLevel++;
 			}
-			int n = generate(holder,from,split[j],tempLevel);
+			int n = generate(holder,made,split[j],tempLevel);
 			holder.setMutualConnect(made,n);
 		}
 		return made;
@@ -145,17 +145,17 @@ public class MineNode implements NodeType{
 	
 	protected int genShaft(NodeConnector holder, int from, int sizeLeft, int tier,int shaftLeft) {
 		if (sizeLeft <= 0) {//ran out of resources
-			return getNode(holder,from,0,tier);
+			return getNode(holder,from,from == 0 ? 0 : holder.getFloor(from)+1,tier);
 		}
 		//sizeleft means that if we don't have enough left we just burrow into a wall, so to speak
 		//this makes ends not 'frayed' as much
 		if (shaftLeft > 1 || sizeLeft < 3) {
 			//shaft always is same level
-			int us = getNode(holder,from,0, tier);
+			int us = getNode(holder,from,from == 0 ? 0 : holder.getFloor(from)+1, tier);
 			int next = genShaft(holder,us,sizeLeft-1,tier,shaftLeft-1);
 			holder.setMutualConnect(us,next);
 			return us;
-		}else {//shaft ends normally
+		}else {//shaft ends normally and we generate a normal node instead
 			//always a tier up when ending shaft
 			return generate(holder,from,sizeLeft-1,tier+1);
 		}

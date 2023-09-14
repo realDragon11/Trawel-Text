@@ -29,6 +29,7 @@ public class GraveyardNode implements NodeType{
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
 		int idNum =extra.randRange(1,EVENT_NUMBER);
 		int ret = holder.newNode(NodeType.NodeTypeNum.GRAVEYARD.ordinal(),idNum,tier);
+		holder.setFloor(ret, guessDepth);
 		return ret;
 	}
 	
@@ -41,7 +42,7 @@ public class GraveyardNode implements NodeType{
 	
 	@Override
 	public int generate(NodeConnector holder,int from, int size, int tier) {
-		int made = getNode(holder,from,0,tier);
+		int made = getNode(holder,from,from == 0 ? 0 : holder.getFloor(from)+1,tier);
 		//TODO make the graveyard generator set the idnum of many of it's nodes to make a semi-sane progression into the graveyard
 		if (size <= 0) {
 			return made;
@@ -60,7 +61,7 @@ public class GraveyardNode implements NodeType{
 			if (extra.chanceIn(1,10)) {
 				tempLevel++;
 			}
-			int n = generate(holder,from,dist[i],tempLevel);
+			int n = generate(holder,made,dist[i],tempLevel);
 			holder.setMutualConnect(made, n);
 			i++;
 		}

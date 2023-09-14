@@ -57,12 +57,13 @@ public class DungeonNode implements NodeType{
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
 		byte idNum = (byte) (dungeonNoneRoller.random(extra.getRand())+1);//1 is ladder
 		int ret = holder.newNode(NodeType.NodeTypeNum.DUNGEON.ordinal(),idNum,tier);
+		holder.setFloor(ret, guessDepth);
 		return ret;
 	}
 
 	@Override
 	public int generate(NodeConnector holder,int from, int size, int tier) {
-		int made = getNode(holder,from,0,tier);
+		int made = getNode(holder,from,from == 0 ? 0 : holder.getFloor(from)+1,tier);
 		if (size < 2) {
 			return made;
 		}
@@ -225,6 +226,7 @@ public class DungeonNode implements NodeType{
 				int this_length = tough ? path_length_tough : path_length_weak;
 				int this_end_level = tough ? tough_end_level : weak_end_level;
 				for (int i = 0; i < this_length;i++) {
+					//since i starts at 0, the first node in each will be equal floor to the arena, which is kinda cool
 					int cur_node = getNode(start_node,fight_room,i,(int)extra.lerp(start_level, this_end_level, ((float)(i))/this_length));
 					start_node.setMutualConnect(last_node, cur_node);
 					if (i == this_length-1) {//battlecon orb
