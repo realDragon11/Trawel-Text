@@ -26,11 +26,12 @@ import trawel.towns.Feature;
 import trawel.towns.Town;
 import trawel.towns.World;
 import trawel.towns.fort.SubSkill;
+import trawel.towns.nodes.BossNode.BossType;
 
 public class Dungeon extends NodeFeature {
 
 	private static final long serialVersionUID = 1L;
-	private byte boss;
+	private BossType boss;
 	private List<SubSkill> skill_cons;
 	private List<Integer> skill_nodes;
 	/**
@@ -41,16 +42,16 @@ public class Dungeon extends NodeFeature {
 	private int helper_cap = 3;
 	private transient boolean escapePartyMenu;
 	
-	public Dungeon(String name,Town t,Shape s,int bossType) {
+	public Dungeon(String name,Town t,Shape s,BossType bossType) {
 		this(name,t,50,t.getTier(),s,bossType);
 	}
-	public Dungeon(String _name,Town t,int _size, int _tier,Shape s,int bossType) {
+	public Dungeon(String _name,Town t,int _size, int _tier,Shape s,BossType bossType) {
 		this.name = _name;
 		town = t;
 		tier = _tier;
 		tutorialText = "Dungeon";
 		shape = s;
-		boss = (byte) bossType;
+		boss = bossType;
 		area_type = Area.DUNGEON;
 		generate(_size);
 	}
@@ -370,7 +371,7 @@ public class Dungeon extends NodeFeature {
 	}
 	
 	@Override
-	protected byte bossType() {
+	protected BossType bossType() {
 		return boss;
 	}
 	

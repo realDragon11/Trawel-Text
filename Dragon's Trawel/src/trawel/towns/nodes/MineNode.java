@@ -22,6 +22,7 @@ import trawel.personal.classless.Perk;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
+import trawel.towns.nodes.BossNode.BossType;
 import trawel.towns.services.Oracle;
 
 public class MineNode implements NodeType{
@@ -185,7 +186,7 @@ public class MineNode implements NodeType{
 				}
 				lastNode = newNode;
 			}
-			if (owner.bossType() > 0) {
+			if (owner.bossType() != BossType.NONE) {
 				currentLevel = Math.max(currentLevel+2, 3+(tier+(size/10)));
 				newNode = NodeType.NodeTypeNum.BOSS.singleton.getNode(start, lastNode,size+2,currentLevel);
 				start.setMutualConnect(newNode, lastNode);

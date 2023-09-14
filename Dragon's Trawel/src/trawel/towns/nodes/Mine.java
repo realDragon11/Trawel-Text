@@ -6,20 +6,21 @@ import trawel.personal.classless.Perk;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.towns.Town;
+import trawel.towns.nodes.BossNode.BossType;
 
 public class Mine extends NodeFeature {
 
 	private static final long serialVersionUID = 1L;
 	private int veinsLeft = 0;
 	private int size;
-	private byte bossType;
+	private BossType bossType;
 	private int totalMined = 0;
 	
 	public Mine(String name,Town t, SuperPerson _owner,Shape s) {
-		this(name,t,50,t.getTier(),s,-1);
+		this(name,t,50,t.getTier(),s,BossType.NONE);
 		owner = _owner;
 	}
-	public Mine(String _name,Town t,int _size, int _tier, Shape s, int _bossType) {
+	public Mine(String _name,Town t,int _size, int _tier, Shape s, BossType _bossType) {
 		background_area = "mine";
 		tutorialText = "Mine";
 		area_type = Area.MINE;
@@ -28,7 +29,7 @@ public class Mine extends NodeFeature {
 		tier = _tier;
 		size = _size;
 		shape = s;
-		bossType = (byte) _bossType;
+		bossType = _bossType;
 		generate(size);
 	}
 	
@@ -69,7 +70,7 @@ public class Mine extends NodeFeature {
 	}
 	
 	@Override
-	protected byte bossType() {
+	protected BossType bossType() {
 		return bossType;
 	}
 	@Override

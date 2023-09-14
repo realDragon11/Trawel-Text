@@ -9,6 +9,7 @@ import trawel.quests.Quest.TriggerType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
+import trawel.towns.nodes.BossNode.BossType;
 
 public abstract class NodeFeature extends Feature {
 
@@ -65,7 +66,9 @@ public abstract class NodeFeature extends Feature {
 		}
 	}
 
-	protected abstract byte bossType();
+	protected BossType bossType() {
+		return BossType.NONE;
+	}
 
 	public String sizeDesc() {
 		return " S: " + start.getSize() + (start.highestLevel != 0 ? " L: "+start.lowestLevel+"-"+start.highestLevel : "");

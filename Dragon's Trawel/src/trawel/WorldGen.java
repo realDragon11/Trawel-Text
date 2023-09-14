@@ -47,6 +47,7 @@ import trawel.towns.fort.WizardTower;
 import trawel.towns.misc.Docks;
 import trawel.towns.misc.Garden;
 import trawel.towns.misc.Garden.PlantFill;
+import trawel.towns.nodes.BossNode.BossType;
 import trawel.towns.nodes.Dungeon;
 import trawel.towns.nodes.Graveyard;
 import trawel.towns.nodes.Grove;
@@ -154,10 +155,10 @@ public class WorldGen {
 		addConnection(homa,unun,"road","barrier way");
 		unun.addFeature(new Docks("Trade Port",unun));
 		unun.addFeature(new Inn("Trailblazer's Tavern",2,unun,null));
-		unun.addTravel();
 		unun.addFeature(new MerchantGuild("Eoano's Merchant Guild (Unun)"));
-		unun.addFeature(new Dungeon("Tower of Fate",unun,Dungeon.Shape.TOWER,1));
+		unun.addFeature(new Dungeon("Tower of Fate",unun,Dungeon.Shape.TOWER,BossType.FATESPINNER));
 		unun.addFeature(new Slum(unun,"The Ephemeral People's Quarter",true));
+		unun.addTravel();
 		unun.tTags.add(TownTag.CITY);
 		unun.tTags.add(TownTag.ADVENTURE);
 		unun.tTags.add(TownTag.MERCHANT);
@@ -346,7 +347,7 @@ public class WorldGen {
 		Town yena = new Town("Yena",5,teran,new Point(8,2));
 		addConnection(revan,yena,"ship","blue sea");
 		addConnection(alhax,yena,"ship","blue sea");
-		yena.addFeature(new Dungeon("Dungeon of Fame", yena,NodeFeature.Shape.RIGGED_DUNGEON,3));
+		yena.addFeature(new Dungeon("Dungeon of Fame", yena,NodeFeature.Shape.RIGGED_DUNGEON,BossType.YORE));
 		yena.addTravel();
 		yena.addTravel();
 		yena.addFeature(new HeroGuild("Third Hero's Guild"));
@@ -395,7 +396,7 @@ public class WorldGen {
 		placka.addTravel();
 		placka.addTravel();
 		placka.addFeature(new Champion(9));
-		placka.addFeature(new Dungeon("The Dungeon of Woe",placka,NodeFeature.Shape.NONE,-1));
+		placka.addFeature(new Dungeon("The Dungeon of Woe",placka,NodeFeature.Shape.NONE,BossType.NONE));
 		placka.tTags.add(TownTag.ADVENTURE);
 		placka.tTags.add(TownTag.HISTORY);//a nameless name, an unrecorded history
 		
@@ -409,12 +410,12 @@ public class WorldGen {
 		tunka.tTags.add(TownTag.LAWLESS);
 		tunka.tTags.add(TownTag.DISPARITY);
 		
-		//TODO port town that just leads to visan
 		Town owal = new Town("Owal",9,teran,(byte)13,(byte)7);
 		//connects added later
 		owal.addFeature(new Docks("The Great Bay", owal));
 		owal.addFeature(new Store(10,6));
 		owal.addFeature(new Garden(owal,"Overworked Fields",1.1f,PlantFill.FOOD));
+		owal.addTravel();
 		owal.tTags.add(TownTag.FARMS);//exports food south
 		owal.setFirstPrinter(new PrintEvent() {
 
@@ -471,10 +472,10 @@ public class WorldGen {
 		
 		Town quen = new Town("Quen",9,epan,(byte)12,(byte)10);
 		addConnection(quen,senal,ConnectType.ROAD,"Derelict Pass");
-		quen.addFeature(new Dungeon("Blasted Palace", quen,30,12, Shape.TOWER, 1));//TODO put some new boss here
+		quen.addFeature(new Dungeon("Blasted Palace", quen,30,12, Shape.TOWER,BossType.OLD_QUEEN));
 		quen.addFeature(new Library("Empire Records Bookstore", quen));
-		quen.addFeature(new Dungeon("Crumbling Fort", quen,40,10, Shape.NONE, -1));
-		quen.addFeature(new Mine("'The Last Ditch that Failed'", quen, 20,9, Shape.ELEVATOR,-1));
+		quen.addFeature(new Dungeon("Crumbling Fort", quen,40,10, Shape.NONE, BossType.NONE));
+		quen.addFeature(new Mine("'The Last Ditch that Failed'", quen, 20,9, Shape.ELEVATOR,BossType.NONE));
 		quen.addFeature(new Grove("Dilapidated Hamlet", quen,100,8));
 		quen.tTags.add(TownTag.BARREN);
 		quen.tTags.add(TownTag.HISTORY);
@@ -549,7 +550,7 @@ public class WorldGen {
 		addConnection(holik,yonuen,"road","bliz road");
 		yonuen.addFeature(new Store(9));
 		yonuen.addFeature(new Store(9));
-		yonuen.addFeature(new Dungeon("Sky-Sundering Tower", yonuen, Shape.TOWER, 1));
+		yonuen.addFeature(new Dungeon("Sky-Sundering Tower", yonuen, Shape.TOWER,BossType.FATESPINNER));
 		yonuen.addFeature(new RogueGuild("The Open Adventuring Guild"));
 		yonuen.addTravel();
 		yonuen.tTags.add(TownTag.ADVENTURE);
@@ -572,7 +573,7 @@ public class WorldGen {
 		peana.addFeature(new Store("'Tyrant's Treasures'",10,11));//oddity store
 		//peana.addFeature(new Arena("Deadsoul's Folly",10,1,24,12,135));
 		//peana.addFeature(new Appraiser("Peana Appraiser"));
-		peana.addFeature(new Mine("Staircase to Hell", peana,75,10,NodeFeature.Shape.ELEVATOR,2));
+		peana.addFeature(new Mine("Staircase to Hell", peana,75,10,NodeFeature.Shape.ELEVATOR,BossType.GENERIC_DEMON_OVERLORD));
 		peana.tTags.add(TownTag.HELLISH);
 		
 		peana.setFirstPrinter(new PrintEvent(){
@@ -585,9 +586,9 @@ public class WorldGen {
 		Town inka = new Town("Inka",12, apen, new Point(4,7));
 		addConnection(unika,inka,"road","youn road");
 		addConnection(inka,peana,"road","era road");
-		inka.addFeature(new Mine("First Striking Shaft", inka,60,8,NodeFeature.Shape.NONE,-1));
-		inka.addFeature(new Mine("Motherload Mine", inka,30,14,NodeFeature.Shape.NONE,-1));
-		inka.addFeature(new Mine("Deep Vein Dig", inka,80,12,NodeFeature.Shape.NONE,-1));
+		inka.addFeature(new Mine("First Striking Shaft", inka,60,8,NodeFeature.Shape.NONE,BossType.NONE));
+		inka.addFeature(new Mine("Motherload Mine", inka,30,14,NodeFeature.Shape.NONE,BossType.NONE));
+		inka.addFeature(new Mine("Deep Vein Dig", inka,80,12,NodeFeature.Shape.NONE,BossType.NONE));
 		inka.addFeature(new Slum(inka,"Miner's Subtown",true));
 		inka.addFeature(new Store("M. Hardhat's Shop",12,0));
 		inka.addTravel();

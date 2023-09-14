@@ -24,7 +24,9 @@ public enum Perk implements IHasSkills{
 			,EnumSet.of(Skill.LIFE_MAGE,Skill.TA_NAILS,Skill.RAW_GUTS,Skill.STERN_STUFF),20,0,10
 			)
 	, YORE_NPC("Mythic","Is a living story.",EnumSet.of(Skill.PLOT_ARMOR,Skill.RAW_GUTS,Skill.NO_HOSTILE_CURSE),50,50,50)
-	,STORYTELLER("Storyteller","Has lived through an epic narrative.",EnumSet.of(Skill.PLOT_ARMOR,Skill.STERN_STUFF),0,0,5);
+	,STORYTELLER("Storyteller","Has lived through an epic narrative.",EnumSet.of(Skill.PLOT_ARMOR,Skill.STERN_STUFF),0,0,5)
+	,ANCIENT("Ancient","Older than history.",EnumSet.of(Skill.NO_HOSTILE_CURSE),10,10,10)
+	,QUEENSLAYER("Queenslayer","Committed an important regicide.",EnumSet.of(Skill.DSTRIKE,Skill.KILLHEAL),3,3,3);
 	private final String name, desc;
 	private final Set<Skill> skills;
 	private final int strength, dexterity, clarity;

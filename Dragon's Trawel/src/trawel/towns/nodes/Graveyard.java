@@ -1,5 +1,4 @@
 package trawel.towns.nodes;
-import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.extra;
 import trawel.towns.Town;
@@ -29,11 +28,6 @@ public class Graveyard extends NodeFeature {
 	protected void generate(int size) {
 		shape = Shape.NONE;
 		start = NodeType.NodeTypeNum.GRAVEYARD.singleton.getStart(this, size, getTown().getTier());//DOLATER: get actual level
-	}
-
-	@Override
-	protected byte bossType() {
-		return -1;
 	}
 
 }

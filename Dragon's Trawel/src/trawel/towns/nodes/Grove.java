@@ -38,9 +38,5 @@ public class Grove extends NodeFeature {
 		shape = Shape.NONE;
 		start = NodeType.NodeTypeNum.GROVE.singleton.getStart(this, size,tier);
 	}
-	@Override
-	protected byte bossType() {
-		return 0;
-	}
 
 }
