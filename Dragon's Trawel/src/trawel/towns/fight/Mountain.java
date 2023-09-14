@@ -118,7 +118,7 @@ public class Mountain extends ExploreFeature{
 		case 5: mugger_ambush();break;
 		case 6: tollKeeper();break;
 		case 7: wanderingDuelist();break;
-		case 8: oldFighter("a rock"," Beware, danger lurks on these slopes.");break;
+		case 8: oldFighter("a rock"," Beware, danger lurks on these slopes.",this);break;
 		case 9: aetherRock();break;
 		case 10: findEquip(null);break;
 		case 11: vampireHunter();break;

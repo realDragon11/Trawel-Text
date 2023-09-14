@@ -936,7 +936,7 @@ public class GroveNode implements NodeType{
 		return false;
 	}
 	
-	private boolean weapStone(NodeConnector holder,int node) {//TODO: maybe let this refill?
+	private boolean weapStone(NodeConnector holder,int node) {
 		if (holder.getStateNum(node) == 0) {
 			Weapon w = holder.getStorageFirstClass(node, Weapon.class);
 			extra.println("There is a " + w.getBaseName() + " embeded in the stone here. Try to take it?");
@@ -954,7 +954,7 @@ public class GroveNode implements NodeType{
 				}
 				holder.setStateNum(node,1);
 				AIClass.findItem(w,Player.player.getPerson());
-				holder.setStorage(node,null);
+				GenericNode.setMiscText(holder, node,"Rock Fragments", "Look at rock fragments.", "Crumbled rock lies on the forest floor.", "rock fragments");
 			}else {
 				extra.println("You leave it alone.");
 			}
@@ -1080,7 +1080,7 @@ public class GroveNode implements NodeType{
 				Weapon w = holder.getStorageFirstClass(node, Weapon.class);
 				return "Attempt to take " + w.getBaseName();
 			}
-			return "Look at rock fragments.";
+			return "ERROR";
 		case 15://pack of wolves
 			return null;
 		case 16://shaman, uses causal text
@@ -1115,7 +1115,7 @@ public class GroveNode implements NodeType{
 				Weapon w = holder.getStorageFirstClass(node, Weapon.class);
 				return w.getBaseName() +", stuck in a rock";
 			}
-			return "Rock Fragments";
+			return "ERROR";
 		case 15:
 			return "Pack of Wolves";
 		case 16://shaman, uses causal text

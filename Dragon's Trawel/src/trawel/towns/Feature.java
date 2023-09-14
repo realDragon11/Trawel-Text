@@ -172,4 +172,7 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	public float occupantDesire() {
 		return .5f;
 	}
+	public String nameOfType() {
+		return this.getClass().getTypeName();
+	}
 }

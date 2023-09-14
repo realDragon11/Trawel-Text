@@ -40,6 +40,7 @@ public class GenericNode implements NodeType {
 		CASUAL_PERSON
 		,RICH_GUARD
 		,EMPTY_FOR_REGROW
+		,MISC_TEXT_WITH_REGEN
 	}
 	
 	public static void setSimpleDuelPerson(NodeConnector holder,int node,Person p, String nodename, String interactstring,String wantDuel) {
@@ -78,6 +79,12 @@ public class GenericNode implements NodeType {
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.DEAD_STRING_TOTAL.ordinal());
 		holder.setStorage(node, new Object[] {nodename,interactstring,interactresult,findbody});
+	}
+	
+	public static void setMiscText(NodeConnector holder,int node,String nodename,String interactstring,String interactresult,String findText) {
+		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
+		holder.setEventNum(node,Generic.MISC_TEXT_WITH_REGEN.ordinal());
+		holder.setStorage(node, new Object[] {nodename,interactstring,interactresult,findText});
 	}
 	
 	/**
@@ -138,7 +145,8 @@ public class GenericNode implements NodeType {
 		case DEAD_STRING_SIMPLE:
 			return simpleDeadString(holder, node);
 		case DEAD_STRING_TOTAL:
-			return deadStringTotal(holder, node);
+		case MISC_TEXT_WITH_REGEN:
+			return miscStringTotal(holder, node);
 		case VEIN_MINERAL:
 			return genericVein(holder, node);
 		case LOCKDOOR:
@@ -223,6 +231,8 @@ public class GenericNode implements NodeType {
 		case DEAD_PERSON:
 		case DEAD_STRING_SIMPLE:
 		case DEAD_RACE_INDEX:
+		case MISC_TEXT_WITH_REGEN:
+		case DEAD_STRING_TOTAL:
 			if (holder.globalTimer > 12) {
 				regenNode(holder,node,false);
 			}
@@ -336,6 +346,7 @@ public class GenericNode implements NodeType {
 			}
 			return "Examine the vein.";
 		case DEAD_STRING_TOTAL:
+		case MISC_TEXT_WITH_REGEN:
 			return holder.getStorageAsArray(node)[1].toString();
 		case COLLECTOR:
 			return "Approach " +holder.getStorageFirstPerson(node).getName()+".";
@@ -368,6 +379,7 @@ public class GenericNode implements NodeType {
 		case DEAD_STRING_SIMPLE:
 			return "Dead " +holder.getStorageFirstClass(node, String.class);
 		case DEAD_STRING_TOTAL:
+		case MISC_TEXT_WITH_REGEN:
 			return holder.getStorageAsArray(node)[0].toString();
 		case VEIN_MINERAL:
 			int mstate = holder.getStateNum(node);
@@ -441,12 +453,14 @@ public class GenericNode implements NodeType {
 			return false;
 		}
 		
-		
 		extra.println(p.getName() + " is dead.");
 		holder.findBehind(node,p.getName() +"'s corpse");
 		return false;
 	}
-	private boolean deadStringTotal(NodeConnector holder,int node) {
+	/**
+	 * also used for dead body total
+	 */
+	private boolean miscStringTotal(NodeConnector holder,int node) {
 		Object[] objs = holder.getStorageAsArray(node);
 		String str = objs[2].toString();//third
 		extra.println(str);

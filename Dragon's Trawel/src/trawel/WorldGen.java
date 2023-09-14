@@ -206,8 +206,6 @@ public class WorldGen {
 			
 		});
 		
-		//TODO: town to the west of hemo that connects tevar and tanak from a landlocked route
-		
 		Town beal = new Town("Beal",4,rona,(byte)3,(byte)7);
 		addConnection(tevar,beal,ConnectType.ROAD,"Deadlocked Desert");
 		beal.addFeature(new Store("Nomad's Market",4,10));

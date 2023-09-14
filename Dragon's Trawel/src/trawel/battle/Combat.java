@@ -914,7 +914,7 @@ public class Combat {
 				damage = 0;
 				code = ATK_ResultCode.ARMOR;
 				type = ATK_ResultType.NO_IMPACT;
-			}else {//TODO: new goal: % reductions based on relativeness with a chance to negate entirely if much higher?
+			}else {//MAYBELATER: new goal: % reductions based on relativeness with a chance to negate entirely if much higher?
 				//up to half the damage if the damage roll was less than the total weighted armor (without roll)
 				double reductMult = damageCompMult(.5f,1f,1f,att_roll*rawdam,def_roll*weight_arm,1f,1.5f);
 				//each damage vector can be brought down to 20%, but this is cumulative so the armor has to be 4x higher

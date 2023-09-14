@@ -227,7 +227,6 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 		return ""+(WeaponAttackFactory.getStance(source).getEffectiveLevelFor(getPerson())-10);
 	}
 	
-	//TODO: only one source allowed for now
 	protected void setupConfig(Skill s, List<IHasSkills> hases) {
 		extra.menuGo(new ScrollMenuGenerator(hases.size(),"previous <> sources","next <> sources") {
 

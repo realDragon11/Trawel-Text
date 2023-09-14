@@ -131,15 +131,24 @@ public abstract class ExploreFeature extends Feature {
 	public List<MenuItem> extraMenu(){
 		return null;
 	}
+	@Override
 	public abstract String nameOfType();
 	@Override
 	public String getTutorialText() {
 		return extra.capFirst(nameOfType())+".";
 	}
 	
-	protected void oldFighter(String restingOn, String warning) {
+	/**
+	 * 
+	 * @param restingOn
+	 * @param warning
+	 * @param location
+	 * @return 0 if no fight happened or the player victory number if it did
+	 */
+	public static int oldFighter(String restingOn, String warning, Feature location) {
+		int[] ret = new int[] {0};
 		extra.println("You find an old fighter resting on "+restingOn+".");
-		Person old = RaceFactory.makeOld(getLevel()+4);
+		Person old = RaceFactory.makeOld(location.getLevel()+4);
 		old.getBag().graphicalDisplay(1, old);
 		extra.menuGo(new MenuGenerator() {
 
@@ -188,12 +197,12 @@ public abstract class ExploreFeature extends Feature {
 
 									@Override
 									public String title() {
-										return "This "+nameOfType()+"?";
+										return "This "+location.nameOfType()+"?";
 									}
 
 									@Override
 									public boolean go() {
-										extra.println("\"We are at " + getName() + " in "+town.getName()+"."+warning+"\"");
+										extra.println("\"We are at " + location.getName() + " in "+location.getTown().getName()+"."+warning+"\"");
 										return false;
 									}});
 								list.add(new MenuBack());
@@ -211,7 +220,8 @@ public abstract class ExploreFeature extends Feature {
 					@Override
 					public boolean go() {
 						if (old.reallyAttack()) {
-							Player.player.fightWith(old);
+							Combat c = Player.player.fightWith(old);
+							ret[0] = c.playerWon();
 							return true;
 						}else {
 							extra.println("You leave the fighter alone.");
@@ -222,6 +232,7 @@ public abstract class ExploreFeature extends Feature {
 				return list;
 			}});
 		Networking.clearSide(1);
+		return ret[0];
 	}
 	
 	/**

@@ -99,7 +99,7 @@ public class Forest extends ExploreFeature{
 		case 5: hangedMan();break;
 		case 6: mugger_ambush();break;
 		case 7: dryad();break;
-		case 8: oldFighter("a log"," Beware, danger lurks under these trees.");break;
+		case 8: oldFighter("a log"," Beware, danger lurks under these trees.",this);break;
 		case 9: fairyCircle1();break;
 		case 10: fairyCircle3();break;
 		case 11: findEquip("");break;
@@ -465,7 +465,7 @@ public class Forest extends ExploreFeature{
 				}
 				break;
 			case 2:
-				oldFighter("a bench","Beware, some of these cabins are cursed.");
+				oldFighter("a bench","Beware, some of these cabins are cursed.",this);
 				break;
 			case 3:
 				extra.println("There is a tree inside the hut.");

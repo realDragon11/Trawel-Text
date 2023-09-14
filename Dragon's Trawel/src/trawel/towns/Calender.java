@@ -150,10 +150,6 @@ public class Calender implements Serializable, CanPassTime {
 		double hour = Math.toDegrees(Math.acos(Math.sin(Math.toRadians(-0.83))-Math.sin(Math.toRadians(lata))*Math.sin(d))/(Math.cos(Math.toRadians(lata))*Math.cos(d)));
 		double rise = noon-(hour/(360));
 		double set = noon+(hour/360);
-		//TODO: test this
-		/*noon%=24;
-		rise%=24;
-		set%=24;*/
 		double[] ret = {rise,noon,set};
 		return ret;
 	}

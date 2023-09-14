@@ -31,6 +31,7 @@ import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.Town;
 import trawel.towns.World;
+import trawel.towns.fight.ExploreFeature;
 
 //sells booze which increases temp hp for a few fights,
 //has a resident which changes with time
@@ -47,11 +48,18 @@ public class Inn extends Feature implements QuestBoardLocation{
 	
 	private boolean canQuest = true;
 	
-	public ArrayList<Quest> sideQuests = new ArrayList<Quest>();
+	public List<Quest> sideQuests = new ArrayList<Quest>();
 	
 	private transient Agent curAgent;
 	
-	private final static int RES_COUNT = 8;
+	/**
+	 * 0 = removed resident
+	 * 1 = old fighters
+	 * 2 = oracle
+	 * 3 = dancers
+	 * default and 0: town occupant
+	 */
+	private final static int RES_COUNT = 6;
 	
 	/**
 	 * if the player is watching an inn duel, it will be here
@@ -75,6 +83,11 @@ public class Inn extends Feature implements QuestBoardLocation{
 		beerCount = extra.randRange(2,4);
 		beerCost = (int) (getUnEffectiveLevel() +extra.randRange(0,2));
 		area_type = Area.INN;
+	}
+	
+	@Override
+	public String nameOfType() {
+		return "tavern";
 	}
 	
 	@Override
@@ -385,35 +398,10 @@ public class Inn extends Feature implements QuestBoardLocation{
 	}
 	
 	private void goOldFighter() {
-		while (true) {
-			extra.println("There's an old fighter here, at the inn.");
-			extra.println("1 Leave");//DOLATER: fix menu
-			extra.println("2 Chat with them");
-			switch (extra.inInt(2)) {
-			default: case 1: extra.println("You leave the fighter");return;
-			case 2: extra.println("The old fighter turns and answers your greeting.");
-			while (true) {
-			extra.println("What would you like to ask about?");
-			extra.println("1 tell them goodbye");
-			extra.println("2 ask for a tip");
-			extra.println("3 this inn");
-			extra.println("4 "+extra.PRE_BATTLE+" a duel");
-			int in = extra.inInt(4);
-			switch (in) {
-				case 1: extra.println("They wish you well.") ;break;
-				case 2: Oracle.tip("old");;break;
-				case 3: extra.println("\"We are in " + this.getName() + ". It is pleasant here.\"");break;
-				case 4: extra.println("You challenge the fighter!");
-				Person p = RaceFactory.makeOld(tier+2);
-				p.getBag().clearDrawBanes();
-				Player.player.fightWith(p);
-				return;
-			}
-			if (in == 1) {
-				break;
-			}
-			}
-			}
+		int playerWon = ExploreFeature.oldFighter("a bench"," It is pleasant here.",this);
+		if (playerWon > 0) {//only remove if they won
+			extra.println("The old fighters leave.");
+			resident = 0;//so they can't farm feat fragments
 		}
 	}
 	

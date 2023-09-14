@@ -119,7 +119,7 @@ public class TownFlavorFactory {
 					return;
 				}
 				if (total > 0) {
-					extra.println("Some merchants look at you before carrying on their business.");
+					extra.println("Some merchants look at you before carrying on with their business.");
 					return;
 				}
 				extra.println("Some merchants eye you warily.");
@@ -144,14 +144,15 @@ public class TownFlavorFactory {
 			}
 		}
 		if (d > threshold) {
-		highestB.activate(level);
-		return true;}
+			highestB.activate(level);
+			return true;
+		}
 		return false;
 	}
 				
-		public abstract class TownFlavor {
-		
-		public ArrayList<Response> responses = new ArrayList<Response>();
+	public abstract class TownFlavor {
+	
+		private List<Response> responses = new ArrayList<Response>();
 		
 		public double calculate(Town t) {
 			double total = 0;
@@ -162,7 +163,5 @@ public class TownFlavorFactory {
 		}
 		
 		public abstract void activate(int level);
-		
-
 	}
 }
