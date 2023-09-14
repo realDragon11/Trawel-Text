@@ -164,13 +164,13 @@ public class Player extends SuperPerson{
 	}
 	
 	@Override
-	public void addGroupedAchieve(Serializable key, String category, String instance) {
+	public void addGroupedAchieve(Serializable key, String foreword, String instance) {
 		String str = achieveMap.get(key);
 		if (str == null) {
-			achieveMap.put(key,category +": "+instance);
+			achieveMap.put(key,foreword +": "+instance);
 		}else {
 			String[] others = str.split(Pattern.quote(": "))[1].split(", ");
-			String build = category +": ";
+			String build = foreword +": ";
 			for (int i = 0; i < others.length;i++) {
 				build += others[i] +", ";
 			}

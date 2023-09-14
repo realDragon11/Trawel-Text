@@ -180,6 +180,8 @@ public class BossNode implements NodeType {
 					setGenericCorpse(holder,node, spinner);
 					Player.unlockPerk(Perk.FATED);
 					Networking.unlockAchievement("boss1");
+					setBossKilled(spinner.getName());
+					Player.player.addAchieve("fatespinner","Owner of Their Own Fate");
 					return false;
 				}
 			}else {
@@ -210,6 +212,8 @@ public class BossNode implements NodeType {
 				setGenericCorpse(holder,node, baron);
 				Networking.unlockAchievement("boss2");
 				Player.unlockPerk(Perk.HELL_BARONESS_1);
+				setBossKilled(baron.getName());
+				Player.player.addAchieve("hell_baron","Hell Baroness");
 				return false;
 			}else {
 				return true;//lost, kick out
@@ -236,6 +240,8 @@ public class BossNode implements NodeType {
 				setGenericCorpse(holder,node, yore);
 				Player.unlockPerk(Perk.STORYTELLER);
 				Networking.unlockAchievement("boss3");
+				setBossKilled(yore.getName());
+				Player.player.addAchieve("yore","Story Slayer");
 				return false;
 			}else {
 				return true;//lost, kick out
@@ -268,6 +274,8 @@ public class BossNode implements NodeType {
 				setGenericCorpse(holder,node, queen);
 				Player.unlockPerk(Perk.QUEENSLAYER);
 				Networking.unlockAchievement("boss4");
+				setBossKilled(queen.getName());
+				Player.player.addAchieve("old_queen","Ancient Queen Slayer");
 				return false;
 			}
 		}else {
@@ -330,6 +338,10 @@ public class BossNode implements NodeType {
 		case OLD_QUEEN: return "Prehistoric Throne";
 		}
 		throw new RuntimeException("Invalid boss");
+	}
+	
+	public static void setBossKilled(String bossname) {
+		Player.player.addGroupedAchieve("boss","Bosses",bossname);
 	}
 
 }
