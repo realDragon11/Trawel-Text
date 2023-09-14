@@ -1706,7 +1706,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		return effects.size(); 
 	}
 	
-	public void displayEffects() {	
+	public boolean displayEffects() {	
 		boolean found = false;
 		for (Effect e: effects.keySet()) {//listing is slower now
 			int num = effects.getOrDefault(e, 0);
@@ -1726,6 +1726,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (!found) {
 			extra.println("No Effects.");
 		}
+		return found;
 	}
 	
 	

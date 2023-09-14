@@ -130,7 +130,7 @@ public class WorldGen {
 		homa.addFeature(new Store(1,6));
 		homa.addFeature(new Arena("Basena Arena",1,1,24,2,476));
 		homa.addFeature(new Grove("The Woody Tangle",homa,30,1));
-		homa.addFeature(new Champion(4));
+		homa.addFeature(new Doctor("Melissa's Clinic",homa));
 		w.setStartTown(homa);
 		homa.tTags.add(TownTag.SMALL_TOWN);
 		homa.setFirstPrinter(new PrintEvent(){
@@ -549,7 +549,7 @@ public class WorldGen {
 		addConnection(holik,yonuen,"road","bliz road");
 		yonuen.addFeature(new Store(9));
 		yonuen.addFeature(new Store(9));
-		yonuen.addFeature(new Dungeon("Skysundering Tower", yonuen, Shape.TOWER, 1));
+		yonuen.addFeature(new Dungeon("Sky-Sundering Tower", yonuen, Shape.TOWER, 1));
 		yonuen.addFeature(new RogueGuild("The Open Adventuring Guild"));
 		yonuen.addTravel();
 		yonuen.tTags.add(TownTag.ADVENTURE);

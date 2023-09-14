@@ -1,7 +1,11 @@
 package trawel.towns.services;
+import java.util.ArrayList;
 import java.util.List;
 
-import trawel.Networking;
+import derg.menus.MenuBack;
+import derg.menus.MenuGenerator;
+import derg.menus.MenuItem;
+import derg.menus.MenuSelect;
 import trawel.Networking.Area;
 import trawel.extra;
 import trawel.personal.people.Player;
@@ -35,33 +39,55 @@ public class Doctor extends Feature {
 	
 	@Override
 	public void go() {
-		String mstr = World.currentMoneyString();
-		int dcost = (int) (getUnEffectiveLevel());
-		//includes effects that already wore off, which simulates a 'checkup' mechanic vaguely
-		int effectGuess = extra.clamp(Player.player.getPerson().effectsSize(), 3, 6);
-		int cost = 1+(int) (getUnEffectiveLevel()*(effectGuess*3));
-		extra.println(mstr+": " +Player.player.getGold());
-		extra.println("1 diagnosis (" + dcost+" "+mstr+")");
-		extra.println("2 cure (" + cost+" "+mstr+")");
-		extra.println("3 exit");
-		switch (extra.inInt(3)) {
-		case 1:
-			if (Player.player.getGold() < dcost) {
-				extra.println("Not enough "+mstr+"!");break;
-			}
-			Player.player.addGold(-dcost);
-			Player.player.getPerson().displayEffects();
-			break;
-		case 2:
-			if (Player.player.getGold() < cost) {
-				extra.println("Not enough "+mstr+"!");break;
-			}
-			Player.player.addGold(-cost);
-			Player.player.getPerson().cureEffects();
-			break;
-		case 3: return;
-		}
-		go();
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuMoney());
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Diagnosis";
+					}
+
+					@Override
+					public boolean go() {
+						Player.player.getPerson().displayEffects();
+						return false;
+					}});
+				//includes effects that already wore off, which simulates a 'checkup' mechanic vaguely
+				int effectGuess = extra.clamp(Player.player.getPerson().effectsSize(), 3, 6);
+				int cost = Math.round(getUnEffectiveLevel()*(effectGuess/1.5f));
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Cure ("+World.currentMoneyDisplay(cost)+")";
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.player.getGold() < cost) {
+							extra.println("Not enough "+World.currentMoneyString()+"!");
+							return false;
+						}
+						boolean any = Player.player.getPerson().displayEffects();
+						if (any) {
+							extra.println("Cure the above effects?");
+						}else {
+							extra.println("You have no effects to cure, pay for a check up?");
+						}
+						if (extra.yesNo()) {
+							Player.player.addGold(-cost);
+							Player.player.getPerson().cureEffects();
+						}
+						return false;
+					}});
+				list.add(new MenuBack("leave"));
+				return list;
+			}});
 	}
 
 	@Override
