@@ -49,11 +49,23 @@ public class Dungeon extends NodeFeature {
 		this.name = _name;
 		town = t;
 		tier = _tier;
-		tutorialText = "Dungeon";
 		shape = s;
 		boss = bossType;
 		area_type = Area.DUNGEON;
 		generate(_size);
+	}
+	
+	@Override
+	public String getTutorialText() {
+		switch (shape) {
+		case NONE:
+			return "Dungeon";
+		case RIGGED_DUNGEON:
+			return "Rigged Dungeon";
+		case TOWER:
+			return "Tower Dungeon";
+		}
+		return "Dungeon?";
 	}
 	
 	public boolean hasHelpers() {

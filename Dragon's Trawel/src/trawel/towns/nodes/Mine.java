@@ -34,6 +34,17 @@ public class Mine extends NodeFeature {
 	}
 	
 	@Override
+	public String getTutorialText() {
+		switch (shape) {
+		case ELEVATOR:
+			return "Hellevator Mine";
+		case NONE:
+			return "Mine";
+		}
+		return "Mine?";
+	}
+	
+	@Override
 	public String getColor() {
 		return extra.F_NODE;
 	}
