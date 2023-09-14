@@ -1150,8 +1150,11 @@ public class Town extends TContextOwner{
 	}
 	
 	public String townHash() {
-		//TODO: could make the hash smaller by storing it as codepoints instead of directly to int digits
-		return getName()+hashCode();
+		//MAYBELATER: for prng generated towns, will need to use an actual hash
+		//for these can just use worldname+islandname+name or even just name
+		//to dont: could make the hash smaller by storing it as codepoints instead of directly to int digits
+		//return getName()+hashCode();
+		return island.getName()+getName();
 	}
 	
 }
