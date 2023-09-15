@@ -19,25 +19,6 @@ public class Connection implements java.io.Serializable{
 	private final String nameString;
 	private int dupeNum = -1;
 	
-	//DOLATER: refactor to always use the other constructor instead of this old one
-	public Connection(String name, Town t1, Town t2,double time, String typeS) {
-		townA = t1;
-		townB = t2;
-		switch (typeS) {
-		case "road":
-			type = 0;
-			break;
-		case "ship":
-			type = 1;
-			break;
-		case "teleport":
-			type = 2;
-			break;
-		default:
-			throw new RuntimeException("invalid connect type");
-		}
-		nameString = name;
-	}
 	public Connection(String name, Town t1, Town t2, ConnectType connectType) {
 		townA = t1;
 		townB = t2;

@@ -51,7 +51,7 @@ public class WanderEndless extends Behavior{
 			//System.err.println(user.getLocation().getName() + " has no valid connects");
 			return null;
 		}
-		//MAYBELATER: if there's two connections to the same location (ie port AND roads), it is twice as likely
+		//dupe connects have their own system to reduce likelyhood, and also type plays a role
 		float total = 0;
 		//we add +.2 so there is a baseline chance of moving even if everywhere has it's needs filled
 		for (Connection c: connects) {

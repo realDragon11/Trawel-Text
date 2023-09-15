@@ -77,7 +77,7 @@ public class Mine extends NodeFeature {
 	
 	@Override
 	protected void generate(int size) {
-		start = NodeType.NodeTypeNum.MINE.singleton.getStart(this, size, tier);//DOLATER: get actual level
+		start = NodeType.NodeTypeNum.MINE.singleton.getStart(this, size, tier);
 	}
 	
 	@Override

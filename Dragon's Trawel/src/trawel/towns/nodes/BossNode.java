@@ -36,7 +36,7 @@ public class BossNode implements NodeType {
 	
 	@Override
 	public int generate(NodeConnector holder, int from, int sizeLeft, int tier) {
-		return -1;//MAYBELATER
+		return -1;
 	}
 	
 	public enum BossType{
@@ -315,7 +315,6 @@ public class BossNode implements NodeType {
 
 	@Override
 	public void passTime(NodeConnector holder, int node, double time, TimeContext calling) {
-		// MAYBELATER Auto-generated method stub
 	}
 
 	@Override

@@ -172,8 +172,7 @@ public class Calender implements Serializable, CanPassTime {
 	
 	public float[] getBackTime(double lata, double longa) {
 		double hourOfDay = getLocalTime((timeCounter/24),longa);
-		double unwrappedHour = timeCounter/24;
-		//DOLATER: why is it /24, time is in hours
+		double unwrappedHour = timeCounter/24;//is /24 since our formula itself is in days
 		double[] rns = this.getSunTime(timeCounter,lata,longa);
 		double sunRise = getLocalTime(rns[0],longa);
 		double sunSet = getLocalTime(rns[2],longa);

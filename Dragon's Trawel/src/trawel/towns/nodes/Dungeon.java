@@ -379,7 +379,7 @@ public class Dungeon extends NodeFeature {
 		default:case RIGGED_DUNGEON: //unsure on rigged
 			break;
 		}
-		start = NodeType.NodeTypeNum.DUNGEON.singleton.getStart(this, size, tier);//DOLATER: get actual level
+		start = NodeType.NodeTypeNum.DUNGEON.singleton.getStart(this, size, tier);
 	}
 	
 	@Override

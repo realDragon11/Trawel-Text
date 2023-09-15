@@ -491,10 +491,20 @@ public class Town extends TContextOwner{
 						Connection c = connects.get(0);
 						Town t = c.otherTown(features.get(0).getTown());
 						extra.println("You return to " + t.getName());
-						Networking.setArea(Area.ROADS);//MAYBELATER: fix if connection is port
+						switch (c.getType()) {
+						case ROAD:
+							Networking.setArea(Area.ROADS);
+							break;
+						case SHIP:
+							Networking.setArea(Area.PORT);
+							break;
+						case TELE:
+							Networking.setArea(Area.TOWN);
+							break;
+						}
 						Player.addTime(c.getTime());
 						mainGame.globalPassTime();
-						if (extra.chanceIn(1,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
+						if (c.getType() != ConnectType.TELE && extra.chanceIn(1,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
 							wanderForConnect(c);
 						}
 						Player.player.setLocation(t);

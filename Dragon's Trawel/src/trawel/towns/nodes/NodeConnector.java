@@ -26,9 +26,6 @@ public class NodeConnector implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	
-	//DOLATER: make floor apply to all types as 'depth'. Floor needs to stay an int/short for spacing reasons
-	
 	public enum NodeFlag{//flag with up to 8 values
 		FORCEGO, STAIR,
 		VISIT_BIT1, VISIT_BIT2
