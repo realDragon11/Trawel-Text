@@ -124,7 +124,6 @@ public class WorldGen {
 		plane = new Plane();
 		//Player.updateWorld(w);//we update player world in game start now
 		plane.addWorld(w);
-		Island pocket = new Island("Eureka",w,Island.IslandType.POCKET);
 		
 		Island rona = new Island("Rona",w);
 		Town homa = new Town("Homa",1,rona,new Point(3,4));
@@ -135,14 +134,11 @@ public class WorldGen {
 		w.setStartTown(homa);
 		homa.tTags.add(TownTag.SMALL_TOWN);
 		homa.setFirstPrinter(new PrintEvent(){
-
 			@Override
 			public void print() {
 				extra.println("Homa is a small quaint town, with a large maze-like forest. The perfect place to hide.");
 			}
-			
 		});
-		
 		
 		Town unun = new Town("Unun",2,rona,new Point(5,4)){
 			@Override
@@ -239,9 +235,7 @@ public class WorldGen {
 			@Override
 			public void print() {
 				extra.println("The city of the sky, Tanak, stands before you- a floating island looming over the terrain. Below lies a teleport station to arrive at the otherwise inaccessible location.");
-				
 			}
-			
 		});
 		
 		Town lokan = new Town("Lokan",4,rona,new Point(5,10));
@@ -282,6 +276,12 @@ public class WorldGen {
 		addConnection(fortMerida,haka,"road","mountain pass");
 		fortMerida.addFeature(new WizardTower(6));
 		fortMerida.tTags.add(TownTag.HIDDEN);
+		fortMerida.setFirstPrinter(new PrintEvent() {
+
+			@Override
+			public void print() {
+				extra.println("While one of the most well-known forts in the recent years, Fort Merida leverages its annoying location as much as it can.");
+			}});
 		
 		
 		Island apa = new Island("Apa",w);
@@ -323,7 +323,7 @@ public class WorldGen {
 			}
 		});
 		
-		
+		Island pocket = new Island("Eureka",w,Island.IslandType.POCKET);
 		Town arona = new Town("Arona",10,pocket,new Point(1,1));
 		addConnection(revan,arona,"teleport","the polka-dot ritual");
 		arona.addFeature(new Champion(10));
@@ -368,6 +368,12 @@ public class WorldGen {
 		denok.addFeature(new Doctor("The Shaman's Hut",denok));
 		denok.addFeature(new Mine("Denok's Mine",denok,null,NodeFeature.Shape.NONE));
 		denok.tTags.add(TownTag.DRUDIC);
+		denok.setFirstPrinter(new PrintEvent() {
+
+			@Override
+			public void print() {
+				extra.println("While Denok's forest may not be notable to most worldly people, this very fact is what let it grow into such a landmark to those with drudic inclinations. It is mostly unmarred by mortal attention, yet close enough to civilization to stand with them against the forces of darkness.");
+			}});
 		
 		Town erin = new Town("Erin",6,teran,new Point(10,4));
 		addConnection(erin,yena,"road","pear road");
@@ -397,6 +403,7 @@ public class WorldGen {
 		placka.addFeature(new Dungeon("The Dungeon of Woe",placka,NodeFeature.Shape.NONE,BossType.NONE));
 		placka.tTags.add(TownTag.ADVENTURE);
 		placka.tTags.add(TownTag.HISTORY);//a nameless name, an unrecorded history
+		//no lore on purpose
 		
 		Town tunka = new Town("Tunka",8,teran,new Point(12,5));
 		addConnection(erin,tunka,"road","left-over road");
@@ -407,11 +414,18 @@ public class WorldGen {
 		tunka.addFeature(new Slum(tunka,"Forgettables District",false));
 		tunka.tTags.add(TownTag.LAWLESS);
 		tunka.tTags.add(TownTag.DISPARITY);
+		tunka.setFirstPrinter(new PrintEvent() {
+
+			@Override
+			public void print() {
+				extra.println("Tunka is notable for being the only place in Eoano willing to maintain a full graveyard, and for its Rouge's Guild, which seem to take particular glee in robbing the downtrodden of what little they have left.");
+			}});
 		
 		Town owal = new Town("Owal",9,teran,(byte)13,(byte)7);
 		//connects added later
 		owal.addFeature(new Docks("The Great Bay", owal));
-		owal.addFeature(new Store(10,6));
+		owal.addFeature(new Store("Edible Exports",8,10));
+		owal.addFeature(new Store(owal,"Equipment Imports",10,6,3));//general store with reduced size
 		owal.addFeature(new Garden(owal,"Overworked Fields",1.1f,PlantFill.FOOD));
 		owal.addTravel();
 		owal.tTags.add(TownTag.FARMS);//exports food south
@@ -433,6 +447,11 @@ public class WorldGen {
 		repa.addTravel();
 		repa.addFeature(new Inn("Repa's Rest",8,erin,null));
 		repa.tTags.add(TownTag.TRAVEL);
+		repa.setFirstPrinter(new PrintEvent() {
+			@Override
+			public void print() {
+				extra.println("Repa's giant teleporter brace- once a normal mountain- looms over the ragtag tents here. It teleports to another world entirely, they say.");
+			}});
 		
 		Island epan = new Island("Epan",w);
 		//note: all should be barren
@@ -517,15 +536,14 @@ public class WorldGen {
 		
 		return w;
 	}
-	
+	/**
+	 * 
+	 * welcome to uhhhh Australia?
+	 * <br>
+	Paruku (Lake Gregory) Indigenous Protected Area
+	Landmark in Sturt Creek, Australia
+	 */
 	public static Town greap() {
-		/**
-		 * 
-		 * welcome to uhhhh Australia?
-		 * <br>
-		Paruku (Lake Gregory) Indigenous Protected Area
-		Landmark in Sturt Creek, Australia
-		 */
 		World w = new World(30,20,"Greap",-20f,127.5f);//
 		fallBackWorld = w;
 		Island apen = new Island("Apen",w);

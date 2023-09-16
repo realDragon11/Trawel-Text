@@ -76,6 +76,14 @@ public class Store extends Feature{
 		this.generate(tier, type);
 	}
 	
+	public Store(Town t, String _name, int tier, int type,int _invSize) {
+		this();
+		town = t;
+		_invSize = invSize;
+		generate(tier, type);
+		name = _name;
+	}
+	
 	public Store(Town t, String appendname) {
 		this(t.getTier());
 		name +=appendname;
