@@ -14,7 +14,7 @@ import trawel.time.TimeEvent;
 
 public class Plane extends TContextOwner{
 	private static final long serialVersionUID = 1L;
-	private ArrayList<World> worlds = new ArrayList<World>();
+	private List<World> worlds = new ArrayList<World>();
 	private Player player;
 	
 	public void addWorld(World w) {

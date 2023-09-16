@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -16,10 +17,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import org.nustaq.serialization.FSTConfiguration;
-import org.nustaq.serialization.FSTObjectInput;
-import org.nustaq.serialization.FSTObjectOutput;
-
+import save.KyroManager;
 import trawel.battle.Combat.SkillCon;
 import trawel.factions.FBox.FSub;
 import trawel.personal.DummyPerson;
@@ -79,18 +77,6 @@ public class WorldGen {
 	 */
 	public static World fallBackWorld;
 	
-	static final FSTConfiguration conf = FSTConfiguration.createDefaultConfiguration(); //.createDefaultConfiguration();
-	static{
-		conf.registerClass(String.class,//probably already built in
-				Armor.class,Weapon.class,Person.class,
-				NodeConnector.class
-				,FSub.class
-				);
-		//I think strings are already registered somehow
-		//conf.getClassRegistry().dragonDump();
-		//could do something with enums where it writes their names to a list and the ordinal uses the SAVED list
-		//unsure how FST truly does it but there was a comment about a TCP full name version
-	}
 	public static final double distanceScale = 2;//average distance between towns is like 1-3 units
 	public static final double footTravelPerHour = 3/distanceScale;
 	public static final double shipTravelPerHour =  9/distanceScale;
@@ -685,20 +671,22 @@ public class WorldGen {
 		plane.prepareSave();
 		try (FileOutputStream fos = new FileOutputStream("trawel"+str+".save");
 				PrintWriter pws =new PrintWriter(fos);
-				FSTObjectOutput oos = conf.getObjectOutput()
-				){//try with resources
-			 pws.write(Player.player.getPerson().getName()
+				){
+			 /*pws.write(Player.player.getPerson().getName()
 					 +", level " + Player.player.getPerson().getLevel()
 					 + ": " +Timestamp.from(Instant.now())
 					 +" "+mainGame.VERSION_STRING+"\0");
 			 ;
-			 oos.writeObject(plane);
+			 pws.flush();*/
+			 KyroManager.savePlane(plane,fos);
+			 /*
 			 pws.write(oos.getWritten()+"\0");
 			 extra.println(oos.getWritten()+" bytes");
 			 pws.flush();
 			 fos.flush();
 			 fos.write(oos.getBuffer(), 0,oos.getWritten());
-			 fos.flush();
+			 */
+			 //fos.flush();
 			 //oos.flush();
 		     //oos.close();
 		     extra.println("Saved!");
@@ -737,6 +725,7 @@ public class WorldGen {
 	public static void load(String str) {
 		int len;
 		try (FileInputStream fos = new FileInputStream("trawel"+str+".save");){
+			/*
 			while (true) {
 				String ret = "";
 
@@ -765,12 +754,9 @@ public class WorldGen {
 			extra.println(""+len);
 			byte buffer[] = new byte[len];
 			while (len > 0) {
-				len -= fos.read(buffer, buffer.length - len, len);}
-			try (FSTObjectInput oos = conf.getObjectInput(buffer)){//with resources
-				plane = (Plane) oos.readObject();
-			} catch (Exception e) {
-				throw e;//throw upchain
-			}
+				len -= fos.read(buffer, buffer.length - len, len);
+			}*/
+			plane = KyroManager.readPlane(fos);
 			Player.player = plane.getPlayer();
 			Player.bag = Player.player.getPerson().getBag();
 			Player.player.skillUpdate();
@@ -779,7 +765,7 @@ public class WorldGen {
 			extra.getThreadData().world = Player.player.getWorld();
 			fos.close();
 			plane.reload();
-		} catch (ClassNotFoundException | IOException e) {
+		} catch (IOException e) {
 			if (!mainGame.logStreamIsErr) {
 				e.printStackTrace();
 			}

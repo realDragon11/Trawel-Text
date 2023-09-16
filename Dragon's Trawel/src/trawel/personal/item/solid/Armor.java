@@ -2,8 +2,6 @@ package trawel.personal.item.solid;
 
 import java.util.EnumSet;
 
-import org.nustaq.serialization.annotations.OneOf;
-
 import trawel.Services;
 import trawel.extra;
 import trawel.personal.classless.IEffectiveLevel;

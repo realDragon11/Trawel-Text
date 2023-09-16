@@ -4,19 +4,23 @@
   <artifactId>DragonsTrawel</artifactId>
   <version>0.0.1-SNAPSHOT</version>
     <dependencies>
-      <dependency>
-    <groupId>de.ruedigermoeller</groupId>
-    <artifactId>fst</artifactId>
-    <version>2.56</version>
-	</dependency>
 	<!-- https://mvnrepository.com/artifact/com.squidpony/SquidCore -->
 	<dependency>
 	    <groupId>com.squidpony</groupId>
 	    <artifactId>SquidCore</artifactId>
 	    <version>4.0.0-alpha3</version>
 	</dependency>
-
-    </dependencies>
+	<dependency>
+	   <groupId>com.esotericsoftware</groupId>
+	   <artifactId>kryo</artifactId>
+	   <version>5.5.0</version>
+	</dependency>
+	<dependency>
+	    <groupId>de.javakaffee</groupId>
+	    <artifactId>kryo-serializers</artifactId>
+	    <version>0.45</version>
+	</dependency>
+	</dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
