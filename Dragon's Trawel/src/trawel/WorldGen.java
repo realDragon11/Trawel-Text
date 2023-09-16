@@ -672,23 +672,13 @@ public class WorldGen {
 		try (FileOutputStream fos = new FileOutputStream("trawel"+str+".save");
 				PrintWriter pws =new PrintWriter(fos);
 				){
-			 /*pws.write(Player.player.getPerson().getName()
+			 pws.write(Player.player.getPerson().getName()
 					 +", level " + Player.player.getPerson().getLevel()
 					 + ": " +Timestamp.from(Instant.now())
 					 +" "+mainGame.VERSION_STRING+"\0");
 			 ;
-			 pws.flush();*/
-			 KyroManager.savePlane(plane,fos);
-			 /*
-			 pws.write(oos.getWritten()+"\0");
-			 extra.println(oos.getWritten()+" bytes");
 			 pws.flush();
-			 fos.flush();
-			 fos.write(oos.getBuffer(), 0,oos.getWritten());
-			 */
-			 //fos.flush();
-			 //oos.flush();
-		     //oos.close();
+			 KyroManager.savePlane(plane,fos);
 		     extra.println("Saved!");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -725,37 +715,7 @@ public class WorldGen {
 	public static void load(String str) {
 		int len;
 		try (FileInputStream fos = new FileInputStream("trawel"+str+".save");){
-			/*
-			while (true) {
-				String ret = "";
-
-				ArrayList<Integer> values = new ArrayList<Integer>();
-				while (true) {
-					int red = fos.read();
-					if (red == 0) {
-						break;
-					}
-					if (red == -1) {
-						extra.println("Invaild file.");
-						break;
-					}
-					values.add(red);
-				}
-				for (int i = 0; i < values.size();i++) {
-					ret+=(char)(int)values.get(i);
-				}
-				try {
-					len = Integer.parseInt(ret);
-					break;
-				}catch(NumberFormatException e) {
-
-				}
-			}
-			extra.println(""+len);
-			byte buffer[] = new byte[len];
-			while (len > 0) {
-				len -= fos.read(buffer, buffer.length - len, len);
-			}*/
+			while (fos.read() != '\0');
 			plane = KyroManager.readPlane(fos);
 			Player.player = plane.getPlayer();
 			Player.bag = Player.player.getPerson().getBag();
