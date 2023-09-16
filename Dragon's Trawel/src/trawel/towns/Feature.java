@@ -9,6 +9,7 @@ import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.quests.QuestR;
+import trawel.quests.QuestReactionFactory.QKey;
 import trawel.time.ContextLevel;
 import trawel.time.ContextType;
 import trawel.time.TContextOwner;
@@ -82,7 +83,19 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	}
 	
 	public enum QRType{
-		NONE, MOUNTAIN, FOREST, INN, SLUM, WHUT;
+		NONE(new QKey[0]),
+		MOUNTAIN(new QKey[] {QKey.DEST_MOUNTAIN}),
+		FOREST(new QKey[] {QKey.DEST_WOODS}),
+		INN(new QKey[] {QKey.DEST_INN}),
+		SLUM(new QKey[] {QKey.DEST_SLUM}),
+		WHUT(new QKey[] {QKey.DEST_WHUT}),
+		MGUILD(new QKey[] {QKey.DEST_GUILD}),
+		RGUILD(new QKey[] {QKey.DEST_GUILD}),
+		HGUILD(new QKey[] {QKey.DEST_GUILD});
+		public final QKey[] dests;
+		QRType(QKey[] _dests){
+			dests = _dests;
+		}
 	}
 	
 	public void addQR(QuestR qr) {

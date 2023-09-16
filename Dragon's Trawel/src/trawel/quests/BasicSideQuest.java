@@ -704,22 +704,8 @@ public class BasicSideQuest implements Quest{
 	}
 	
 	private void resolveDest(Feature locationF) {
-		switch (locationF.getQRType()) {
-		case FOREST:
-			this.qKeywords.add(QKey.DEST_WOODS);
-			break;
-		case INN:
-			this.qKeywords.add(QKey.DEST_INN);
-			break;
-		case MOUNTAIN:
-			this.qKeywords.add(QKey.DEST_MOUNTAIN);
-			break;
-		case SLUM:
-			this.qKeywords.add(QKey.DEST_SLUM);
-			break;
-		case WHUT:
-			this.qKeywords.add(QKey.DEST_WHUT);
-			break;
+		for (QKey qk: locationF.getQRType().dests) {
+			qKeywords.add(qk);
 		}
 	}
 	

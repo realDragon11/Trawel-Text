@@ -18,6 +18,7 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.World;
+import trawel.towns.Feature.QRType;
 
 public class RogueGuild extends Feature {
 	
@@ -26,6 +27,11 @@ public class RogueGuild extends Feature {
 		this.name = name;
 		tutorialText = "Rogue's Guild";
 		area_type = Area.MISC_SERVICE;
+	}
+	
+	@Override
+	public QRType getQRType() {
+		return QRType.RGUILD;
 	}
 	
 	@Override

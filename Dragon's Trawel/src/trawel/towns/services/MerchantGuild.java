@@ -24,6 +24,7 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.World;
+import trawel.towns.Feature.QRType;
 
 public class MerchantGuild extends Feature implements QuestBoardLocation {
 
@@ -43,6 +44,11 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 		timePassed = extra.randRange(1,30);
 		nextReset = extra.randRange(8,30);
 		area_type = Area.MISC_SERVICE;
+	}
+	
+	@Override
+	public QRType getQRType() {
+		return QRType.MGUILD;
 	}
 	
 	@Override
