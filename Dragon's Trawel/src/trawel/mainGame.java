@@ -72,10 +72,11 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__7";
-	public static final String VERSION_DATE = " updated Sept 15th 2023";
+	public static final String VERSION_DATE = " updated Sept 16th 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			"b_7: {part 1/?} Nodes display inward/outward to indicate going deeper or closer to the entrance (in most cases, ultimately its merely a 'floor' counter).",
+			"b_7: {part 2/?} Updated from Java 8 to Java 17, and to Kryo serialization.",
 			
 			"b_6: {part 1/5} Updated stat displays and item 'higher/lower is better' displays. Tutorial text separated from 'feature description' text.",
 			"b_6: {part 2/5} Added many new towns to the Eoano WorldGen, and fluffed up the lore and flavor of existing towns as well. Species store re-added to Arona. Most bosses are now non-unique in that you don't have only one option if you want their Perk. Ancient Queen boss added to new island.",

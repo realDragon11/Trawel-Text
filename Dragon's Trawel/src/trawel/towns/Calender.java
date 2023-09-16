@@ -132,6 +132,10 @@ public class Calender implements Serializable, CanPassTime {
 		return str;
 	}
 	
+	public String dateYear() {
+		return ((int)getYear()) + "RC";
+	}
+	
 	/**
 	 * Won't sync up to year exactly
 	 * https://en.wikipedia.org/wiki/Sunrise_equation

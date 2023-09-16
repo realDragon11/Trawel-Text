@@ -5,9 +5,10 @@ import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import de.javakaffee.kryoserializers.*;
-
 import trawel.extra;
+import trawel.personal.Person;
 import trawel.towns.Plane;
+import trawel.towns.World;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -54,6 +55,10 @@ public class KyroManager {
 	public static final Plane readPlane(FileInputStream file) {
 		Input in = new Input(file);
 		Plane p = trawelKryo.readObject(in,Plane.class);
+		Person per = p.getPlayer().getPerson();
+		World w = p.getPlayer().getWorld();
+		extra.println(per.getName() +": Level " + per.getLevel() + ", "+per.xpString() + " XP");
+		extra.println(w.getName() + ": Year " +w.getCalender().dateYear());
 		//trawelKryo.reset();
 		return p;
 	}
