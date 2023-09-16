@@ -675,7 +675,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	
 	public void finishWarmup() {
 		isWarmingUp = false;
-		//FIXME: did I REALLY not include this by accident?
 		speedFill += attackNext.getCooldown();
 	}
 	
