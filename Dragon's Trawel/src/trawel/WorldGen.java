@@ -182,7 +182,7 @@ public class WorldGen {
 		});
 		
 		
-		Town hemo = new Town("Hemo",3,rona,new Point(5,7));
+		Town hemo = new Town("Hemo",3,rona,new Point(6,6));
 		addConnection(hemo,tevar,ConnectType.ROAD,"purple road");
 		addConnection(hemo,unun,ConnectType.ROAD,"black valley");
 		addConnection(hemo,unun,"ship","neglected current");
@@ -192,7 +192,7 @@ public class WorldGen {
 		hemo.addFeature(new Grove("The Odd Grove",hemo,12,3));
 		hemo.addFeature(new Garden(hemo,"Communal Garden",1.1f,PlantFill.WITCH));
 		hemo.addFeature(new WitchHut("Esoteric Ingredients",hemo));
-		hemo.tTags.add(TownTag.DRUDIC);
+		hemo.tTags.add(TownTag.DRUIDIC);
 		hemo.tTags.add(TownTag.ALCHEMY);
 		hemo.setFirstPrinter(new PrintEvent(){
 			@Override
@@ -202,7 +202,7 @@ public class WorldGen {
 			
 		});
 		
-		Town beal = new Town("Beal",4,rona,(byte)3,(byte)7);
+		Town beal = new Town("Beal",4,rona,(byte)2,(byte)7);
 		addConnection(tevar,beal,ConnectType.ROAD,"Deadlocked Desert");
 		beal.addFeature(new Store("Nomad's Market",4,10));
 		//put mountain in middle
@@ -315,7 +315,7 @@ public class WorldGen {
 		revan.addFeature(new Altar("Sky Slab",AltarForce.SKY));
 		addConnection(revan,tanak,"teleport","the red ritual");
 		revan.tTags.add(TownTag.MERCHANT);
-		revan.tTags.add(TownTag.DRUDIC);
+		revan.tTags.add(TownTag.DRUIDIC);
 		revan.setFirstPrinter(new PrintEvent(){
 			@Override
 			public void print() {
@@ -329,7 +329,7 @@ public class WorldGen {
 		arona.addFeature(new Champion(10));
 		arona.addFeature(new Champion(7));
 		arona.addFeature(new Store(4,11));
-		arona.addFeature(new Store(10,7));//sneak a species store in the middle
+		arona.addFeature(new Store("'kNew You'",10,7));//sneak a species store in the middle 'They Knew You, but not the New You.'
 		arona.addFeature(new Store(3,11));
 		arona.tTags.add(TownTag.ARCANE);
 
@@ -367,12 +367,12 @@ public class WorldGen {
 		denok.addFeature(new Grove("The Shaman's Clearing",denok,20,5));
 		denok.addFeature(new Doctor("The Shaman's Hut",denok));
 		denok.addFeature(new Mine("Denok's Mine",denok,null,NodeFeature.Shape.NONE));
-		denok.tTags.add(TownTag.DRUDIC);
+		denok.tTags.add(TownTag.DRUIDIC);
 		denok.setFirstPrinter(new PrintEvent() {
 
 			@Override
 			public void print() {
-				extra.println("While Denok's forest may not be notable to most worldly people, this very fact is what let it grow into such a landmark to those with drudic inclinations. It is mostly unmarred by mortal attention, yet close enough to civilization to stand with them against the forces of darkness.");
+				extra.println("While Denok's forest may not be notable to most worldly people, this very fact is what let it grow into such a landmark to those with druidic inclinations. It is mostly unmarred by mortal attention, yet close enough to civilization to stand with them against the forces of darkness.");
 			}});
 		
 		Town erin = new Town("Erin",6,teran,new Point(10,4));
@@ -415,7 +415,6 @@ public class WorldGen {
 		tunka.tTags.add(TownTag.LAWLESS);
 		tunka.tTags.add(TownTag.DISPARITY);
 		tunka.setFirstPrinter(new PrintEvent() {
-
 			@Override
 			public void print() {
 				extra.println("Tunka is notable for being the only place in Eoano willing to maintain a full graveyard, and for its Rouge's Guild, which seem to take particular glee in robbing the downtrodden of what little they have left.");
@@ -520,20 +519,7 @@ public class WorldGen {
 		
 		addConnection(repa,greap(),ConnectType.TELE,"world teleport (eonao-greap)");
 		
-		for (World wor: plane.worlds()) {
-			townFinal(wor);
-			try {
-				alignConnectFlowsToInns(wor);
-			}catch (Exception e) {
-				mainGame.log("WorldGen Align Fail: " +e.getMessage());
-			}
-			
-		}
-		
-		plane.reload();
-		
 		fallBackWorld = null;
-		
 		return w;
 	}
 	/**
@@ -615,12 +601,26 @@ public class WorldGen {
 		pipa.addFeature(new Altar("Thorny Throne",AltarForce.FOREST));
 		pipa.addFeature(new Library("'Primal Knowledge'", pipa));
 		pipa.tTags.add(TownTag.ALCHEMY);
-		pipa.tTags.add(TownTag.DRUDIC);
+		pipa.tTags.add(TownTag.DRUIDIC);
 		pipa.tTags.add(TownTag.HIDDEN);
 		
 		//TODO: need more islands
 		
 		return holik;
+	}
+	
+	public static void finishPlane(Plane p) {
+		for (World wor: p.worlds()) {
+			townFinal(wor);
+			try {
+				alignConnectFlowsToInns(wor);
+			}catch (Exception e) {
+				mainGame.log("WorldGen Align Fail: " +e.getMessage());
+			}
+			
+		}
+		
+		p.reload();
 	}
 	
 	private static void townFinal(World w) {

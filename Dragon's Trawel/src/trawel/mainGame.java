@@ -1136,23 +1136,6 @@ public class mainGame {
 		});
 	}
 
-	private static void saveTest() {
-		baseSetup1();
-		for (int j = 0;j < 10;j++) {
-			extra.println("try: "+j);
-			for (int i = 1;i<9;i++ ) {
-				extra.println("slot: "+i);
-				WorldGen.eoano();
-				Person p = RaceFactory.makeGeneric(1);
-				p.setPlayer();
-				WorldGen.plane.setPlayer(new Player(p));
-				WorldGen.save(i+"");
-				WorldGen.load(1+"");
-			}
-			//WorldGen.conf.getClassRegistry().dragonDump();
-		}
-	}
-
 	private static List<Mech> curMechs;
 
 
@@ -1851,6 +1834,7 @@ public class mainGame {
 			if (world == null) {
 				extra.println("Generating world...");
 				world = WorldGen.eoano();
+				WorldGen.finishPlane(WorldGen.plane);
 				extra.getThreadData().world = world;//init
 			}
 			manOne = RaceFactory.makePlayerValid(!rerolls);

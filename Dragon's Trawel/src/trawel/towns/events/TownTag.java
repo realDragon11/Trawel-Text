@@ -6,7 +6,7 @@ public enum TownTag {
 	LAW("Lawful","strict laws"),
 	LAWLESS("Lawless","nigh-absence of laws"),
 	ARCANE("Arcane","arcane lore"),
-	DRUDIC("Drudic","primal connection"),
+	DRUIDIC("Druidic","primal connection"),
 	ALCHEMY("Alchemy","brewed potions"),
 	MYSTIC("Mystic","rumored leylines"),
 	SMALL_TOWN("Small Town","rural community"),
