@@ -1,7 +1,6 @@
 package save;
 
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.KryoException;
 import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
@@ -10,7 +9,8 @@ import de.javakaffee.kryoserializers.*;
 import trawel.extra;
 import trawel.towns.Plane;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.EnumMap;
 import java.util.EnumSet;
 
@@ -47,7 +47,6 @@ public class KyroManager {
 	public static final void savePlane(Plane plane, FileOutputStream file) {
 		Output out = new Output(file);
 		trawelKryo.writeObject(out, plane);
-		extra.println("Depth: " +trawelKryo.getDepth());
 		out.flush();
 		//trawelKryo.reset();
 	}

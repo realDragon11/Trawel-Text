@@ -1,6 +1,7 @@
 package trawel;
 import java.awt.Point;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -680,6 +681,8 @@ public class WorldGen {
 			 pws.flush();
 			 KyroManager.savePlane(plane,fos);
 		     extra.println("Saved!");
+		     File f = new File("trawel"+str+".save");
+		     extra.println("Slot "+str + ": "+f.length() + " bytes.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
