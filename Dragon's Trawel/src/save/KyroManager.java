@@ -2,6 +2,7 @@ package save;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.Serializer;
+import com.esotericsoftware.kryo.serializers.FieldSerializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import de.javakaffee.kryoserializers.*;
@@ -39,6 +40,7 @@ public class KyroManager {
 		    }
 		};
 		trawelKryo.setRegistrationRequired(false);
+		trawelKryo.register(derg.TwinListMap.class, new FieldSerializer<derg.TwinListMap>(trawelKryo, derg.TwinListMap.class));
 		trawelKryo.setReferences(true);
 		trawelKryo.setInstantiatorStrategy(new SerializingInstantiatorStrategy());
 		
