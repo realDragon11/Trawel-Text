@@ -12,7 +12,7 @@ public enum Effect{
 	BREATHING("Breathing","Will regain 5% LHP as healing next turn. Stacks, but only one applies per turn.",false,true,1),
 	RECOVERING("Recovering","Will regain 5% LHP as healing at the end of this turn.",false,false,1),
 	I_BLEED("Internal Bleeding","Takes 2% LHP damage after each of their actions, or less if their target is more than 2 levels lower than them, per action. Stacks.",false,true,-3),
-	TORN("Torn","Decreases dodging by 10% compounding per stack.",false,true,-2), 
+	TORN("Torn","Decreases dodge by 10% compounding per stack.",false,true,-2), 
 	SLICE("Slicing","Their next attack is 10% faster and accurate.",false,false,2),
 	DICE("Dicing","Their next attack is 10% faster and also 10 time units quicker.",false,false,2),
 	//potions
@@ -29,7 +29,7 @@ public enum Effect{
 	
 	//mostly skills
 	BONUS_WEAP_ATTACK("Bonus Attack","Their next turn will have an additional weapon attack to choose from. Stacks.",false,true,2),
-	ADVANTAGE_STACK("Advantage","The next hit or dodge roll involving them will gain a +20% bonus on their side. Stacks.",false,true,2),
+	ADVANTAGE_STACK("Advantage","Their next to hit or dodge roll will gain a +20% bonus. Stacks.",false,true,2),
 	SUDDEN_START("Sudden Start","Applies Advantage and grants 2 Bonus Weapon Attacks at the start of battle.",false,false,2),
 	STERN_STUFF("Sterner Stuff","Chance to resist death once per battle.",false,false,3),
 	//condwounds

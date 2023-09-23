@@ -71,8 +71,8 @@ import trawel.towns.services.Oracle;
 public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
-	public static final String VERSION_STRING = "v0.8.b_7";
-	public static final String VERSION_DATE = " updated Sept 22nd 2023";
+	public static final String VERSION_STRING = "v0.8.b__8";
+	public static final String VERSION_DATE = " updated Sept 23rd 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			"b_7: {part 1/2} Nodes display inward/outward to indicate going deeper or closer to the entrance (in most cases, ultimately its merely a 'floor' counter).",
