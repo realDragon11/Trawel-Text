@@ -19,6 +19,7 @@ import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
+import trawel.towns.Calender;
 import trawel.towns.Feature;
 import trawel.towns.World;
 
@@ -110,13 +111,14 @@ public class Arena extends Feature{
 
 					@Override
 					public String title() {
-						return "Hang around for 24 hours.";
+						return "Hang around for a day.";
 					}
 
 					@Override
 					public boolean go() {
-						Player.addTime(24d);
+						Player.addTime(23d+extra.randRange(.5f,2.5f));
 						mainGame.globalPassTime();
+						extra.println("It is " +Calender.dateFull(town)+".");
 						return false;
 					}});
 				//now also includes people who won when you weren't involved
@@ -178,7 +180,7 @@ public class Arena extends Feature{
 		Person other = RaceFactory.getDueler(tier);
 		World w = town.getIsland().getWorld();
 		for (int i = 1;i <= rounds;i++) {
-			if (fore.isPlayer() && rounds > 1) {
+			if (fore.isPlayer() && i > 1) {
 				extra.popPrintStack();//turned off below
 			}
 			Combat c = mainGame.CombatTwo(fore, other,w);
@@ -190,8 +192,8 @@ public class Arena extends Feature{
 				}
 				//get the other branch on this part of the tree
 				other = RaceFactory.getDueler(tier);
-				Person sub = RaceFactory.getDueler(tier);
 				for (int j = 1; j <= i;j++) {
+					Person sub = RaceFactory.getDueler(tier);
 					Combat c2 = mainGame.CombatTwo(other, sub,w);
 					other = c2.getNonSummonSurvivors().get(0);
 				}

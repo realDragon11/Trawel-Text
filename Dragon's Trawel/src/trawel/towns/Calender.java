@@ -282,5 +282,10 @@ public class Calender implements Serializable, CanPassTime {
 		}
 	}
 	
+	public static String dateFull(Town t) {
+		Calender c = t.getIsland().getWorld().getCalender();
+		return c.stringLocalTime(t) + " " + c.dateName();
+	}
+	
 
 }
