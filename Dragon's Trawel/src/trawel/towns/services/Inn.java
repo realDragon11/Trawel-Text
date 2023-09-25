@@ -118,11 +118,6 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 	@Override
 	public void go() {
-		if (owner == Player.player && moneyEarned > 0) {
-			extra.println("You take the " + moneyEarned + " in profits.");
-			Player.player.addGold(moneyEarned);
-			moneyEarned = 0;
-		}
 		extra.menuGo(new MenuGenerator() {
 
 			@Override
@@ -281,7 +276,8 @@ public class Inn extends Feature implements QuestBoardLocation{
 	}
 	
 	private void collectTimeStorage() {
-		moneyEarned +=tier*(timePassed/12);
+		//one currency per 6 hours times uneffective, better than arena
+		moneyEarned +=getUnEffectiveLevel()*(timePassed/6d);
 		resident = (byte)extra.randRange(1,RES_COUNT);
 		if (canQuest) {this.generateSideQuest();}
 		nextReset = nextDuelTime();
@@ -389,7 +385,6 @@ public class Inn extends Feature implements QuestBoardLocation{
 			extra.println("Pay "+World.currentMoneyDisplay(beerCost)+" for "+beerCount+" beers?");
 			if (extra.yesNo()) {
 				Player.player.beer += beerCount;
-				moneyEarned +=beerCost;
 				Player.player.addGold(beerCost);
 			}
 		}else {

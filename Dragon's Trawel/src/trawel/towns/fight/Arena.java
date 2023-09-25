@@ -2,6 +2,11 @@ package trawel.towns.fight;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.menus.MenuBack;
+import derg.menus.MenuGenerator;
+import derg.menus.MenuItem;
+import derg.menus.MenuLine;
+import derg.menus.MenuSelect;
 import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.extra;
@@ -9,11 +14,13 @@ import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
+import trawel.towns.World;
 
 public class Arena extends Feature{
 
@@ -58,41 +65,83 @@ public class Arena extends Feature{
 
 	@Override
 	public void go() {
-		if (owner == Player.player && moneyEarned > 0) {
-			extra.println("You take the " + moneyEarned + " in profits.");
-			Player.player.addGold(moneyEarned);
-			moneyEarned = 0;
-		}
 		getRematch();
-		extra.println("1 Participate in the " +  this.getRewardTitle() + " tournament in " + extra.format(this.getTimeLeft()) + " hours.");
-		if (rematcher != null) {
-		extra.println("2 rematch (" +rematcher.getName()+" level " +rematcher.getLevel() +")");}else {
-			extra.println("2 No Rematch Open");
-		}
-		extra.println("3 leave");
-		int input = extra.inInt(3);
-		if (input == 3){
-			return;
-		}
-		if (input == 2){
-			if (rematcher != null) {
-			doRematch();}else {
-				extra.println("No Rematch Open");
-			}
-			return;
-		}
-		if (input == 1) {
-			Player.addTime(this.getTimeLeft()+.1);
-			mainGame.globalPassTime();
-			this.doTournyPlayer();
-			return;
-		}
-		mainGame.globalPassTime();
-		go();
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				
+				if (getTimeLeft() < 32d) {
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return extra.PRE_BATTLE+"Participate in the " + getRewardTitle() + " tournament in " + extra.format(getTimeLeft()) + " hours.";
+						}
+
+						@Override
+						public boolean go() {
+							Player.addTime(getTimeLeft()+.1);
+							mainGame.globalPassTime();
+							Person winner = doTourny(Player.player.getPerson());
+							if (winner == Player.player.getPerson()) {
+								extra.println("You win the tournment!");
+								Player.player.addGroupedAchieve(Arena.this, getName(), ""+timesDone);
+							}
+							Player.addTime(1);
+							mainGame.globalPassTime();
+							return false;
+						}});
+					
+				}else {
+					list.add(new MenuLine() {
+
+						@Override
+						public String title() {
+							return "Upcoming " +getRewardTitle() + " tournament is "+extra.format(getTimeLeft()) + " hours away." ;
+						}});
+				}
+				//this will be 2 or 1, so mashing 1 will start fights either way
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Hang around for 24 hours.";
+					}
+
+					@Override
+					public boolean go() {
+						Player.addTime(24d);
+						mainGame.globalPassTime();
+						return false;
+					}});
+				if (rematcher != null) {
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return extra.PRE_BATTLE+"Rematch with " + rematcher.getName() +", Level " +rematcher.getLevel()+".";
+						}
+
+						@Override
+						public boolean go() {
+							doRematch();
+							mainGame.globalPassTime();
+							getRematch();
+							return false;
+						}});
+				}
+				//will not display rematch if noone is there
+				
+				list.add(new MenuBack("Leave"));
+				return list;
+			}});
+		rematcher = null;//free up
 	}
 	
 	private void doRematch() {
-		Player.addTime(.1);
+		Player.addTime(.5);
 		Combat c = Player.player.fightWith(rematcher);
 		if (c.playerWon() > 0) {
 			winners.remove(rematcher);
@@ -117,26 +166,34 @@ public class Arena extends Feature{
 			return null;
 		}
 	}
-
-	public void doTournyPlayer() {
+	
+	protected Person doTourny(Person added) {
+		Person fore = added;
+		if (fore == null) {
+			fore = RaceFactory.getDueler(tier);
+		}
+		Person other = RaceFactory.getDueler(tier);
+		World w = town.getIsland().getWorld();
 		for (int i = 1;i <= rounds;i++) {
-			extra.println("It's round " + i + "...");
-			Person fighter = RaceFactory.getDueler(tier);
-			fighter.addXp(notFact(i));
-			Combat c = Player.player.fightWith(fighter);
-			if (c.playerWon() > 0) {
-				if (i == rounds) {
-					extra.println("You win the tournment!");
-					Player.player.addGroupedAchieve(this, getName(), ""+timesDone);
-				}else {
+			Combat c = mainGame.CombatTwo(fore, other,w);
+			fore = c.getNonSummonSurvivors().get(0);
+			if (i <= rounds) {
+				if (fore.isPlayer()) {
 					extra.println("You move on to the next round of the tournament.");
 				}
-			}else {
-				winners.add(fighter);
-				extra.println("You lose the tourny.");break;
+				//get the other branch on this part of the tree
+				other = RaceFactory.getDueler(tier);
+				Person sub = RaceFactory.getDueler(tier);
+				for (int j = 1; j <= i;j++) {
+					Combat c2 = mainGame.CombatTwo(other, sub,w);
+					other = c2.getNonSummonSurvivors().get(0);
+				}
 			}
 		}
-		Player.addTime(1);
+		if (!fore.isPlayer()) {
+			winners.add(fore);
+		}
+		return fore;
 	}
 	
 	public String getRewardTitle() {
@@ -193,8 +250,18 @@ public class Arena extends Feature{
 			}else {
 				time -=timeLeft;
 				timesDone++;
-				moneyEarned +=tier*2*(timeLeft/100);
+				//one currency per 8 hours times uneffective
+				moneyEarned +=getUnEffectiveLevel()*(interval/8d);
 				timeLeft = interval;
+				doTourny(null);
+				//look into freeing winners
+				for (int i = winners.size()-1;i >= 0;i--) {
+					Person p = winners.get(i);
+					if (extra.chanceIn(1,3)) {
+						winners.remove(i);
+						town.addOccupant(p.setOrMakeAgentGoal(AgentGoal.NONE));
+					}
+				}
 			}
 		}//TODO: perhaps actual fights get recorded?
 		return null;

@@ -162,6 +162,11 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	 */
 	public void enter() {
 		goHeader();
+		if (owner == Player.player && moneyEarned > 0) {
+			extra.println("You take the " + moneyEarned + " in profits.");
+			Player.player.addGold(moneyEarned);
+			moneyEarned = 0;
+		}
 		go();
 	}
 	
