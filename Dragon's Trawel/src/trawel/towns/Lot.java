@@ -8,7 +8,6 @@ import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import derg.menus.MenuLine;
 import derg.menus.ScrollMenuGenerator;
-import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.extra;
 import trawel.personal.classless.IEffectiveLevel;
@@ -19,7 +18,6 @@ import trawel.towns.fight.Arena;
 import trawel.towns.misc.Garden;
 import trawel.towns.misc.Garden.PlantFill;
 import trawel.towns.nodes.Mine;
-import trawel.towns.nodes.NodeFeature;
 import trawel.towns.nodes.BossNode.BossType;
 import trawel.towns.nodes.NodeFeature.Shape;
 import trawel.towns.services.Inn;
@@ -50,7 +48,7 @@ public class Lot extends Feature {
 	
 	@Override
 	public String getTitle() {
-		return getName() + (construct != null ? " ("+construct+" in "+extra.F_WHOLE.format(getConstructTime())+" hours)":"");
+		return getName() + (construct != null ? " ("+construct.realName+" in "+extra.F_WHOLE.format(getConstructTime())+" hours)":"");
 	}
 	
 	@Override
@@ -112,7 +110,7 @@ public class Lot extends Feature {
 			public int constructTime() {
 				return 24;
 			}})
-		,TRAVEL("Stall","a Community Stall",0,0,null,new LotCreateFunctionInstant() {
+		,TRAVEL("Community Stall","a Community Stall",0,0,null,new LotCreateFunctionInstant() {
 
 			@Override
 			public Feature makeFeature(Lot from) {
@@ -146,6 +144,13 @@ public class Lot extends Feature {
 			if (blockingType != null) {
 				Town t = lot.town;
 				for (Feature f: t.getFeatures()) {
+					if (f instanceof Lot) {
+						Lot la = (Lot)f;
+						if (la.construct != null && la.construct == this) {
+							extra.println("You already have "+nameString+" underway in "+t.getName()+"!");
+							return false;
+						}
+					}
 					if (f.owner == Player.player && blockingType.isInstance(f)) {
 						extra.println("You already have "+nameString+" in "+t.getName()+"!");
 						return false;
@@ -233,6 +238,12 @@ public class Lot extends Feature {
 	private void assemble(LotType type) {
 		construct = type;
 		type.create.doNow(this);
+		if (constructTime > 0) {
+			extra.println("Your "+type.realName + " will be built in " + extra.F_TWO_TRAILING.format(constructTime) + " hours.");
+		}else {
+			extra.println("Built: " + type.realName);
+		}
+		
 	}
 
 	@Override
@@ -249,7 +260,7 @@ public class Lot extends Feature {
 							return "What do you want to build? You have "+Player.bag.getAether() + " aether and " + Player.showGold() + ".";
 						}});
 				}
-				
+
 				@Override
 				public List<MenuItem> forSlot(int i) {
 					final LotType type = LotType.values()[i];
@@ -268,22 +279,23 @@ public class Lot extends Feature {
 
 								@Override
 								public boolean go() {
-									if (type.checkDo(Lot.this)) {
+									if (!type.checkDo(Lot.this)) {
 										return false;
 									}
 									assemble(type);
 									return true;
-								}}
+								}
+							}
 							);
 				}
-				
+
 				@Override
 				public List<MenuItem> footer() {
 					return Collections.singletonList(new MenuBack("Leave"));
 				}
 			});
 		}else {
-			extra.println("Your " + construct + " is being built.");
+			extra.println("Your " + construct.realName + " is being built. "+extra.F_TWO_TRAILING.format(constructTime)+" hours remain.");
 		}
 	}
 
