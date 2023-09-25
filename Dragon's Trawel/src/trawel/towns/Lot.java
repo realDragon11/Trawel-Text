@@ -1,7 +1,12 @@
 package trawel.towns;
 
+import java.util.Collections;
 import java.util.List;
 
+import derg.menus.MenuBack;
+import derg.menus.MenuItem;
+import derg.menus.MenuSelect;
+import derg.menus.ScrollMenuGenerator;
 import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.extra;
@@ -19,13 +24,12 @@ import trawel.towns.services.Inn;
 public class Lot extends Feature {
 
 	private static final long serialVersionUID = 1L;
-	private int tier;
 	/**
 	 * -1 = can add
 	 * -2 = added
 	 */
 	private double constructTime = -1;
-	private String construct;
+	private LotType construct;
 	public Lot(Town town) {
 		this.town = town;
 		tier = town.getTier();
@@ -52,49 +56,175 @@ public class Lot extends Feature {
 	}
 	
 	private enum LotType{
-		INN("Inn",);
+		INN("Inn","an Inn",300,2500,Inn.class,new LotCreateFunctionLater() {
+
+			@Override
+			public Feature makeFeature(Lot from) {
+				from.getTown().helpCommunity(1);
+				return new Inn(Player.player.getPerson().getNameNoTitle()+"'s Inn in " + from.getTown().getName(),from.getLevel(),from.getTown(),Player.player);
+			}
+
+			@Override
+			public int constructTime() {
+				return 24*3;
+			}});
 		
-		public final String makeName;
-		public final LotMoneyFunction mCost, aCost;
+		public final String realName, nameString;
+		public final int mCost, aCost;
 		public final LotCreateFunction create;
-		LotType(String _name, LotMoneyFunction _mCost, LotMoneyFunction _aCost, LotCreateFunction _create){
-			makeName = _name;
+		public final Class<? extends Feature> blockingType;
+		LotType(String _name,String _nameString, int _mCost, int _aCost, Class<? extends Feature> _block,LotCreateFunction _create){
+			realName = _name;
+			nameString = _nameString;
 			mCost = _mCost;
 			aCost = _aCost;
 			create = _create;
+			blockingType = _block;
 		}
 		
-		private boolean checkDo(int tier) {
-			if (mCost != null) {
-				if (aCost != null) {
-					if (!Player.player.getCanBuy(mCost.cost(tier),aCost.cost(tier))) {
+		private int getACost(int tier) {
+			return Math.round(IEffectiveLevel.unclean(tier)*aCost);
+		}
+		private int getMCost(int tier) {
+			return Math.round(IEffectiveLevel.unclean(tier)*mCost);
+		}
+		
+		private boolean checkDo(Lot lot) {
+			int tier = lot.tier;
+			if (blockingType != null) {
+				Town t = lot.town;
+				for (Feature f: t.getFeatures()) {
+					if (f.owner == Player.player && blockingType.isInstance(f)) {
+						extra.println("You already have "+nameString+" in "+t.getName()+"!");
 						return false;
 					}
 				}
-			}else {
-				if (aCost != null) {
-					int aether = aCost.cost(tier);
-					if (Player.bag.getAether() < aether) {
+			}
+			if (mCost != 0) {
+				if (aCost != 0) {
+					int money = getMCost(tier);
+					int aether = getACost(tier);
+					if (!Player.player.getCanBuy(aether,money)) {
 						return false;
 					}
-					extra.println();
-				}//else is free
+					extra.println("Build "+nameString +" for "+aether + " Aether and "+World.currentMoneyDisplay(money)+"?");
+				}else {
+					//just money no aether
+					int money = getMCost(tier);
+					if (Player.bag.getGold() < money) {
+						extra.println("Not Enough "+World.currentMoneyString() + ", have only " +Player.bag.getGold()+".");
+						return false;
+					}
+					extra.println("Build "+nameString +" for "+World.currentMoneyDisplay(money)+"?");
+				}
+			}else {
+				if (aCost != 0) {//just aether no money
+					int aether = getACost(tier);
+					if (Player.bag.getAether() < aether) {
+						extra.println("Not enough Aether, have only " + Player.bag.getAether()+".");
+						return false;
+					}
+					extra.println("Build "+nameString +" for "+aether + " Aether?");
+				}else {
+					//is free
+					extra.println("Build "+nameString+"?");
+				}
+				
 			}
-			return true;
+			//displayed question prior
+			return extra.yesNo();
 		}
 	}
 	
-	private static interface LotMoneyFunction{
-		public int cost(int tier);
+	private static interface LotCreateFunction{
+		/**
+		 * contains code to make the feature and award side effect progress
+		 */
+		public Feature makeFeature(Lot from);
+		/**
+		 * default implementation includes buying
+		 */
+		public default void doNow(Lot from) {
+			//the type is contained in from.construct for passing ease
+			boolean passed = Player.player.doCanBuy(from.construct.getACost(from.getLevel()), from.construct.getMCost(from.getLevel()));
+			if (!passed) {
+				throw new RuntimeException("Couldn't afford lot!");
+			}
+		}
+		public void doLater(Lot from);
+	}
+	private static interface LotCreateFunctionInstant extends LotCreateFunction{
+		@Override
+		public default void doNow(Lot from) {
+			LotCreateFunction.super.doNow(from);
+			from.town.replaceFeature(from,makeFeature(from));
+		}
+		@Override
+		public default void doLater(Lot from) {
+			//empty
+		}
+	}
+	private static interface LotCreateFunctionLater extends LotCreateFunction{
+		@Override
+		public default void doNow(Lot from) {
+			LotCreateFunction.super.doNow(from);
+			from.constructTime = constructTime();
+		}
+		@Override
+		public default void doLater(Lot from) {
+			from.getTown().laterReplace(from,makeFeature(from));
+			from.constructTime = -2;
+		}
+		public int constructTime();
 	}
 	
-	private static interface LotCreateFunction{
-		
+	private void assemble(LotType type) {
+		construct = type;
+		type.create.doNow(this);
 	}
 
 	@Override
 	public void go() {
 		if (construct == null) {
+			extra.menuGo(new ScrollMenuGenerator(LotType.values().length, "last <>", "next <>") {
+				
+				@Override
+				public List<MenuItem> header() {
+					return null;
+				}
+				
+				@Override
+				public List<MenuItem> forSlot(int i) {
+					final LotType type = LotType.values()[i];
+					return Collections.singletonList(
+							new MenuSelect() {
+
+								@Override
+								public String title() {
+									int aether = type.getACost(tier);
+									int money = type.getMCost(tier);
+									return "Build "+type.nameString
+											+ (aether > 0 ? " "+aether +" Aether" :"")
+											+ (money > 0 ? " "+World.currentMoneyDisplay(money) :"")
+											+".";
+								}
+
+								@Override
+								public boolean go() {
+									if (type.checkDo(Lot.this)) {
+										return false;
+									}
+									assemble(type);
+									return true;
+								}}
+							);
+				}
+				
+				@Override
+				public List<MenuItem> footer() {
+					return Collections.singletonList(new MenuBack("Leave"));
+				}
+			});
 			
 			float costMult = IEffectiveLevel.unclean(tier);
 			int inncost = (int) (costMult*300);
@@ -117,15 +247,10 @@ public class Lot extends Feature {
 
 			switch(extra.inInt(6)) {
 			case 1:
-				for (Feature f: town.getFeatures()) {
-					if (f.owner == Player.player && f instanceof Inn) {
-						extra.println("You already have an Inn in this town!");
-						break;
-					}
-				}
+				
 				if (Player.player.getCanBuy(a_inncost,inncost)) {
 					extra.println("Build an inn here?");
-					if (extra.yesNo()) {	
+					if (extra.yesNo()) {
 						Player.player.doCanBuy(a_inncost,inncost);
 						construct = "inn";
 						constructTime = 24*3;
