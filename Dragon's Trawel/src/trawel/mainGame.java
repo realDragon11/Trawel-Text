@@ -72,9 +72,12 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__8";
-	public static final String VERSION_DATE = " updated Sept 23rd 2023";
+	public static final String VERSION_DATE = " updated Sept 25th 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
+			"b_8: {part 1/?} Added a wait option to Arenas and prevented giant time chunks by accident, made Arenas fight without the player and have the winners move on after enough training. Players always get a new fighter in their first round (so entirely for 1 round titles), but more rounds are done entirely naturally now.",
+			"b_8: {part 2/?} Updated Lot menu, standardized collecting earned money from built Features.",
+			
 			"b_7: {part 1/2} Nodes display inward/outward to indicate going deeper or closer to the entrance (in most cases, ultimately its merely a 'floor' counter).",
 			"b_7: {part 2/2} Updated from Java 8 to Java 17, and to Kryo serialization.",
 			
@@ -103,7 +106,7 @@ public class mainGame {
 			"b_2: {part 3/3} Some changes were made but not enough to have anything to show, for example summons should work, (which is a far cry from Trawel in 2019, where the concept of a 3 person fight was unthinkable) but there are no skills that summon any creatures yet.",
 			
 			"b_1: base attack code reworked in basically every way. currency divided. threading added (nothreads is an arg), time passing redone. Node exploration mostly same but had entire backend update. Locational damage exists but does little at the moment."
-			,"End of current beta ingame changelog. Check the github for more."
+			,"End of current beta ingame changelog. Check the Github and Steam for prior updates and more detailed notes."
 	};
 	public static int changelogViewer = 0;
 
@@ -1126,11 +1129,11 @@ public class mainGame {
 										saveTest();
 										return true;
 									}});*/
-								mList.add(new MenuBack());
+								mList.add(new MenuBack("Back to Main Menu"));
 								return mList;
 							}
 						});
-						return false;
+						return true;
 					}});
 				mList.add(new MenuBack());
 				return mList;
