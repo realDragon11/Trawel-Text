@@ -6,6 +6,7 @@ import java.util.List;
 import derg.menus.MenuBack;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
+import derg.menus.MenuLine;
 import derg.menus.ScrollMenuGenerator;
 import trawel.Networking;
 import trawel.Networking.Area;
@@ -19,6 +20,8 @@ import trawel.towns.misc.Garden;
 import trawel.towns.misc.Garden.PlantFill;
 import trawel.towns.nodes.Mine;
 import trawel.towns.nodes.NodeFeature;
+import trawel.towns.nodes.BossNode.BossType;
+import trawel.towns.nodes.NodeFeature.Shape;
 import trawel.towns.services.Inn;
 
 public class Lot extends Feature {
@@ -66,8 +69,57 @@ public class Lot extends Feature {
 
 			@Override
 			public int constructTime() {
-				return 24*3;
-			}});
+				return 24*4;
+			}})
+		,ARENA("Arena","an Arena",100,1000,Arena.class,new LotCreateFunctionLater() {
+
+			@Override
+			public Feature makeFeature(Lot from) {
+				from.getTown().helpCommunity(1);
+				return new Arena(Player.player.getPerson().getNameNoTitle()+"'s Arena in " + from.getTown().getName(),from.getLevel(),1,24d,0d,0,Player.player);
+			}
+
+			@Override
+			public int constructTime() {
+				return 24*2;
+			}})
+		,MINE("Mine","a Mine",300,5000,Mine.class,new LotCreateFunctionLater() {
+
+			@Override
+			public Feature makeFeature(Lot from) {
+				from.getTown().helpCommunity(1);
+				Mine m = new Mine(Player.player.getPerson().getNameNoTitle()+"'s Mine in " + from.getTown().getName(), from.getTown()
+						,40,from.getLevel(),Shape.NONE,BossType.NONE);
+				m.owner = Player.player;
+				return m;
+			}
+
+			@Override
+			public int constructTime() {
+				return 24*7;
+			}})
+		,GARDEN("Garden","a Garden",20,500,Garden.class,new LotCreateFunctionLater() {
+
+			@Override
+			public Feature makeFeature(Lot from) {
+				from.getTown().helpCommunity(1);
+				Garden g = new Garden(from.town,Player.player.getPerson().getNameNoTitle()+"'s Garden in " + from.getTown().getName(),0,PlantFill.NONE);
+				g.owner = Player.player;
+				return g;
+			}
+
+			@Override
+			public int constructTime() {
+				return 24;
+			}})
+		,TRAVEL("Stall","a Community Stall",0,0,null,new LotCreateFunctionInstant() {
+
+			@Override
+			public Feature makeFeature(Lot from) {
+				from.getTown().helpCommunity(3);
+				return new TravelingFeature(from.getTown());
+			}})
+		;
 		
 		public final String realName, nameString;
 		public final int mCost, aCost;
@@ -190,7 +242,12 @@ public class Lot extends Feature {
 				
 				@Override
 				public List<MenuItem> header() {
-					return null;
+					return Collections.singletonList(new MenuLine() {
+
+						@Override
+						public String title() {
+							return "What do you want to build? You have "+Player.bag.getAether() + " aether and " + Player.showGold() + ".";
+						}});
 				}
 				
 				@Override
@@ -225,106 +282,6 @@ public class Lot extends Feature {
 					return Collections.singletonList(new MenuBack("Leave"));
 				}
 			});
-			
-			float costMult = IEffectiveLevel.unclean(tier);
-			int inncost = (int) (costMult*300);
-			int arenacost = (int) (costMult*100);
-			int minecost = (int) (costMult*300);
-			int gardencost = (int) (costMult*20);
-
-			int a_inncost = (int) (costMult*2500);
-			int a_arenacost = (int) (costMult*1000);
-			int a_minecost = (int) (costMult*5000);
-			int a_gardencost = (int) (costMult*500);
-
-			extra.println("What do you want to build? You have "+Player.bag.getAether() + " aether and " + Player.showGold() + ".");
-			extra.println("1 inn "+a_inncost + " aether, " + inncost + " "+World.currentMoneyString());
-			extra.println("2 arena "+a_arenacost + " aether, " + arenacost + " "+World.currentMoneyString());
-			extra.println("3 donate to town");
-			extra.println("4 mine "+a_minecost + " aether, " + minecost + " "+World.currentMoneyString());
-			extra.println("5 garden "+a_gardencost + " aether, " + gardencost + " "+World.currentMoneyString());
-			extra.println("6 exit");
-
-			switch(extra.inInt(6)) {
-			case 1:
-				
-				if (Player.player.getCanBuy(a_inncost,inncost)) {
-					extra.println("Build an inn here?");
-					if (extra.yesNo()) {
-						Player.player.doCanBuy(a_inncost,inncost);
-						construct = "inn";
-						constructTime = 24*3;
-						name = "inn under construction";
-						town.helpCommunity(1);
-					}
-				}
-				break;
-			case 2:
-				for (Feature f: town.getFeatures()) {
-					if (f.owner == Player.player && f instanceof Arena) {
-						extra.println("You already have an Arena in this town!");
-						break;
-					}
-				}
-				extra.println("Build an arena here?");
-				if (Player.player.getCanBuy(a_arenacost,arenacost)) {
-					if (extra.yesNo()) {
-						Player.player.doCanBuy(a_arenacost,arenacost);
-						construct = "arena";
-						constructTime = 24*2;
-						name = "arena under construction";
-						town.helpCommunity(1);
-					}
-				}break;
-			case 3:
-				extra.println("Donate to the town?");
-				if (extra.yesNo()) {
-					town.replaceFeature(this,new TravelingFeature(this.town));
-					town.helpCommunity(3);
-					return;
-				}
-				break;
-			case 4:
-				for (Feature f: town.getFeatures()) {
-					if (f.owner == Player.player && f instanceof Mine) {
-						extra.println("You already have a Mine in this town!");
-						break;
-					}
-				}
-				if (Player.player.getCanBuy(a_minecost,minecost)) {
-					extra.println("Build a mine?");
-					if (extra.yesNo()) {
-						Player.player.doCanBuy(a_minecost,minecost);
-						construct = "mine";
-						constructTime = 24*7;
-						name = "mine under construction";
-						town.helpCommunity(1);
-					}
-				}
-				break;
-			case 5:
-				for (Feature f: town.getFeatures()) {
-					if (f.owner == Player.player && f instanceof Garden) {
-						extra.println("You already have a Garden in this town!");
-						break;
-					}
-				}
-				if (Player.player.getCanBuy(a_gardencost,gardencost)) {
-					extra.println("Build a garden?");
-					if (extra.yesNo()) {
-						Player.player.doCanBuy(a_gardencost,gardencost);
-						construct = "garden";
-						constructTime = 24;
-						name = "garden under construction";
-						town.helpCommunity(1);
-					}
-				}break;
-			case 6: return;
-			}
-			
-			if (construct != null) {
-				tutorialText = "Lot: " + construct + " under construction.";
-			}
 		}else {
 			extra.println("Your " + construct + " is being built.");
 		}
@@ -334,20 +291,10 @@ public class Lot extends Feature {
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
 		if (constructTime >= 0) {
 			constructTime-=time;
-		if (construct != null && constructTime <= 0) {
-			Feature add = null;
-			String name = Player.player.getPerson().getNameNoTitle()+"'s ";
-			switch (construct) {
-			case "inn": add = (new Inn(name+"Inn in " + town.getName(),tier,town,Player.player));break;
-			case "arena":add = (new Arena(name+"Arena in " + town.getName(),tier,1,24,200,1,Player.player));break;
-			case "mine": add = (new Mine(name+"Mine in " + town.getName(),town,Player.player,NodeFeature.Shape.NONE));break;
-			case "garden":
-				add = (new Garden(town,name+"Garden in " + town.getName(),0,PlantFill.NONE));
-				add.owner = Player.player;
+			if (construct != null && constructTime <= 0) {
+				construct.create.doLater(this);
+				constructTime = -2;
 			}
-			town.laterReplace(this,add);
-			constructTime = -2;
-		}
 		}
 		return null;
 	}
