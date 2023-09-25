@@ -28,8 +28,8 @@ public class Arena extends Feature{
 	private int rounds;
 	private double interval, timeLeft;
 	private int timesDone;
-	private ArrayList<Person> winners;
-	private Person rematcher;
+	private List<Person> winners;
+	private boolean playerActive;
 	
 	public Arena(String name,int tier,int rounds, double interval, double timeLeft,int timesDone, SuperPerson owner) {
 		this.name = name;
@@ -82,6 +82,7 @@ public class Arena extends Feature{
 
 						@Override
 						public boolean go() {
+							playerActive = true;
 							Player.addTime(getTimeLeft()+.1);
 							mainGame.globalPassTime();
 							Person winner = doTourny(Player.player.getPerson());
@@ -89,8 +90,10 @@ public class Arena extends Feature{
 								extra.println("You win the tournment!");
 								Player.player.addGroupedAchieve(Arena.this, getName(), ""+timesDone);
 							}
+							playerActive = false;
 							Player.addTime(1);
 							mainGame.globalPassTime();
+							getRematch();
 							return false;
 						}});
 					
@@ -116,19 +119,20 @@ public class Arena extends Feature{
 						mainGame.globalPassTime();
 						return false;
 					}});
+				//now also includes people who won when you weren't involved
+				Person rematcher = getRematch();
 				if (rematcher != null) {
 					list.add(new MenuSelect() {
 
 						@Override
 						public String title() {
-							return extra.PRE_BATTLE+"Rematch with " + rematcher.getName() +", Level " +rematcher.getLevel()+".";
+							return extra.PRE_BATTLE+"Fight with " + rematcher.getName() +", Level " +rematcher.getLevel()+".";
 						}
 
 						@Override
 						public boolean go() {
-							doRematch();
+							doRematch(rematcher);
 							mainGame.globalPassTime();
-							getRematch();
 							return false;
 						}});
 				}
@@ -137,18 +141,17 @@ public class Arena extends Feature{
 				list.add(new MenuBack("Leave"));
 				return list;
 			}});
-		rematcher = null;//free up
 	}
 	
-	private void doRematch() {
+	private void doRematch(Person p) {
 		Player.addTime(.5);
-		Combat c = Player.player.fightWith(rematcher);
+		Combat c = Player.player.fightWith(p);
 		if (c.playerWon() > 0) {
-			winners.remove(rematcher);
+			winners.remove(p);
 		}
 	}
 
-	private void getRematch() {
+	private Person getRematch() {
 		Person p = null;
 		int level = Integer.MAX_VALUE;
 		for (Person s: winners) {
@@ -156,7 +159,7 @@ public class Arena extends Feature{
 				p = s;
 			}
 		}
-		rematcher = p;
+		return p;
 	}
 	
 	public Person popWinner() {
@@ -175,11 +178,15 @@ public class Arena extends Feature{
 		Person other = RaceFactory.getDueler(tier);
 		World w = town.getIsland().getWorld();
 		for (int i = 1;i <= rounds;i++) {
+			if (fore.isPlayer() && rounds > 1) {
+				extra.popPrintStack();//turned off below
+			}
 			Combat c = mainGame.CombatTwo(fore, other,w);
 			fore = c.getNonSummonSurvivors().get(0);
-			if (i <= rounds) {
+			if (i < rounds) {
 				if (fore.isPlayer()) {
 					extra.println("You move on to the next round of the tournament.");
+					extra.offPrintStack();
 				}
 				//get the other branch on this part of the tree
 				other = RaceFactory.getDueler(tier);
@@ -193,6 +200,11 @@ public class Arena extends Feature{
 		if (!fore.isPlayer()) {
 			winners.add(fore);
 		}
+		//used via time passing, if the player is fighting the player code will call this function instead of pass time
+		timesDone++;
+		//one currency per 8 hours times uneffective
+		moneyEarned +=getUnEffectiveLevel()*(interval/8d);
+		timeLeft = interval;
 		return fore;
 	}
 	
@@ -242,28 +254,29 @@ public class Arena extends Feature{
 
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		
-		while (time > 0) {
-			if (time < timeLeft) {
-				timeLeft-=time;
-				time = 0;
-			}else {
-				time -=timeLeft;
-				timesDone++;
-				//one currency per 8 hours times uneffective
-				moneyEarned +=getUnEffectiveLevel()*(interval/8d);
-				timeLeft = interval;
-				doTourny(null);
-				//look into freeing winners
-				for (int i = winners.size()-1;i >= 0;i--) {
-					Person p = winners.get(i);
-					if (extra.chanceIn(1,3)) {
-						winners.remove(i);
-						town.addOccupant(p.setOrMakeAgentGoal(AgentGoal.NONE));
+		//active set means the player is fighting
+		if (!playerActive) {
+			while (time > 0) {
+				if (time < timeLeft) {
+					timeLeft-=time;
+					time = 0;
+				}else {
+					time -=timeLeft;
+
+					extra.offPrintStack();
+					doTourny(null);
+					extra.popPrintStack();
+					//look into freeing winners
+					for (int i = winners.size()-1;i >= 0;i--) {
+						Person p = winners.get(i);
+						if (extra.chanceIn(1,3)) {
+							winners.remove(i);
+							town.addOccupant(p.setOrMakeAgentGoal(AgentGoal.NONE));
+						}
 					}
 				}
 			}
-		}//TODO: perhaps actual fights get recorded?
+		}
 		return null;
 	}
 }
