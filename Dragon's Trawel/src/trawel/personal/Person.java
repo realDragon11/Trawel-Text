@@ -874,7 +874,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			extra.println(this.getName() + " leveled up " + (pluslevel-level) + " times and is now level " + (pluslevel) + ".");
 			computeLevels(pluslevel-level);
 		}
-		extra.println(this.getName() + " has " + xp + "/" + level*level + " xp toward level " + (level+1) + ". +" + x + "xp.");
+		if (!extra.getPrint()) {
+			extra.println(this.getName() + " has " + xp + "/" + level*level + " xp toward level " + (level+1) + ". +" + x + "xp.");
+		}
 		return pluslevel > level;
 	}
 	

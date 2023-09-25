@@ -153,11 +153,13 @@ public class Arena extends Feature{
 		}
 	}
 
+	/**
+	 * returns the lowest level winner
+	 */
 	private Person getRematch() {
 		Person p = null;
-		int level = Integer.MAX_VALUE;
 		for (Person s: winners) {
-			if (s.getLevel() < level) {
+			if (p == null || s.getLevel() < p.getLevel()) {
 				p = s;
 			}
 		}
@@ -172,12 +174,30 @@ public class Arena extends Feature{
 		}
 	}
 	
+	private Person getOrGen(int tier) {
+		if (winners.size() > 2) {
+			Person p = winners.remove(extra.getRand().nextInt(winners.size()));
+			//only allow one tier higher
+			if (p.getLevel() > tier+1) {
+				town.addOccupant(p.setOrMakeAgentGoal(AgentGoal.NONE));
+			}else {
+				return p;
+			}
+		}
+		return RaceFactory.getDueler(tier);
+	}
+	
 	protected Person doTourny(Person added) {
 		Person fore = added;
 		if (fore == null) {
-			fore = RaceFactory.getDueler(tier);
+			fore = getOrGen(tier);
 		}
-		Person other = RaceFactory.getDueler(tier);
+		Person other;
+		if (playerActive) {//if the player is fighting and it is the first round, force the fighter to be new to avoid higher levels
+			other = RaceFactory.getDueler(tier);
+		}else {
+			other = getOrGen(tier);
+		}
 		World w = town.getIsland().getWorld();
 		for (int i = 1;i <= rounds;i++) {
 			if (fore.isPlayer() && i > 1) {
@@ -191,12 +211,7 @@ public class Arena extends Feature{
 					extra.offPrintStack();
 				}
 				//get the other branch on this part of the tree
-				other = RaceFactory.getDueler(tier);
-				for (int j = 1; j <= i;j++) {
-					Person sub = RaceFactory.getDueler(tier);
-					Combat c2 = mainGame.CombatTwo(other, sub,w);
-					other = c2.getNonSummonSurvivors().get(0);
-				}
+				other = doBranch(i,w);
 			}
 		}
 		if (!fore.isPlayer()) {
@@ -208,6 +223,19 @@ public class Arena extends Feature{
 		moneyEarned +=getUnEffectiveLevel()*(interval/8d);
 		timeLeft = interval;
 		return fore;
+	}
+	
+	protected Person doBranch(int round,World w) {
+		Person a, b;
+		if (round != 1) {
+			a = doBranch(round-1,w);
+			b = doBranch(round-1,w);
+		}else {
+			a = getOrGen(tier);
+			b = getOrGen(tier);
+		}
+		Combat c = mainGame.CombatTwo(a,b,w);
+		return c.getNonSummonSurvivors().get(0);
 	}
 	
 	public String getRewardTitle() {
@@ -264,18 +292,20 @@ public class Arena extends Feature{
 					time = 0;
 				}else {
 					time -=timeLeft;
-
 					extra.offPrintStack();
 					doTourny(null);
-					extra.popPrintStack();
 					//look into freeing winners
 					for (int i = winners.size()-1;i >= 0;i--) {
 						Person p = winners.get(i);
-						if (extra.chanceIn(1,3)) {
+						if (p.getLevel() > tier+1) {
 							winners.remove(i);
 							town.addOccupant(p.setOrMakeAgentGoal(AgentGoal.NONE));
+						}else {
+							//they train
+							winners.get(i).addXp(tier/2);
 						}
 					}
+					extra.popPrintStack();
 				}
 			}
 		}
