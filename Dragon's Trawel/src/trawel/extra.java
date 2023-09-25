@@ -1478,23 +1478,5 @@ public final class extra {
 		return str;
 	}
 
-	//not static so noone will ever see it, the dumbest thing
-	//don't let your memes be dreams :DDDDD erase types
-	/*public static <E> void unTypeEraser(Object[] objects,Class<?> E) throws Exception, YESALLEXECPTIONS {
-			Class<E> c = (Class<E>)objects[1];
-			Object o = objects[0];
-			boolean BEHOLD = o.equals(c.cast(o));
-			boolean THE = c.newInstance().getClass().getCanonicalName().equals(o.getClass().getCanonicalName());
-			boolean MALIGNITY = o.hashCode() == c.cast(o).hashCode();
-			boolean OF =  !c.isInstance(objects);
-			boolean STARS = !c.isInstance("**********");
-			assert BEHOLD && THE && MALIGNITY && OF && THE && STARS;
-		}
-
-		public class YESALLEXECPTIONS extends Exception{
-
-		}*/
-
-
 }
 

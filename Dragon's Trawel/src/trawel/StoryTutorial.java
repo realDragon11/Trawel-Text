@@ -382,7 +382,7 @@ public class StoryTutorial extends Story{
 				extra.println("A master is you?");
 				break;
 			case 100:
-				extra.println("I'd ask why, but you'd probably say\"because it was there\".");
+				extra.println("I'd ask why, but you'd probably say \"because it was there\".");
 				break;
 			}
 		}

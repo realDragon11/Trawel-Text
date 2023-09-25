@@ -57,7 +57,7 @@ public class BarkManager {
 				return (lifeKeeperTaunt(p));
 			}else {
 				if (extra.randRange(1,2) == 1) {
-					return (lifeKeeperTaunt(p));
+						return (lifeKeeperTaunt(p));
 					}else {
 						return (lifeKeeperTauntLow(p));
 					}

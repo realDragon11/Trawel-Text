@@ -30,7 +30,6 @@ public class Lot extends Feature {
 		this.town = town;
 		tier = town.getTier();
 		name = "lot";
-		//tutorialText = "This is a lot you own. \n Go to it to decide what you want to build.";
 		area_type = Area.LOT;
 	}
 	
@@ -50,6 +49,47 @@ public class Lot extends Feature {
 	@Override
 	public String getColor() {
 		return extra.F_BUILDABLE;
+	}
+	
+	private enum LotType{
+		INN("Inn",);
+		
+		public final String makeName;
+		public final LotMoneyFunction mCost, aCost;
+		public final LotCreateFunction create;
+		LotType(String _name, LotMoneyFunction _mCost, LotMoneyFunction _aCost, LotCreateFunction _create){
+			makeName = _name;
+			mCost = _mCost;
+			aCost = _aCost;
+			create = _create;
+		}
+		
+		private boolean checkDo(int tier) {
+			if (mCost != null) {
+				if (aCost != null) {
+					if (!Player.player.getCanBuy(mCost.cost(tier),aCost.cost(tier))) {
+						return false;
+					}
+				}
+			}else {
+				if (aCost != null) {
+					int aether = aCost.cost(tier);
+					if (Player.bag.getAether() < aether) {
+						return false;
+					}
+					extra.println();
+				}//else is free
+			}
+			return true;
+		}
+	}
+	
+	private static interface LotMoneyFunction{
+		public int cost(int tier);
+	}
+	
+	private static interface LotCreateFunction{
+		
 	}
 
 	@Override
@@ -76,7 +116,13 @@ public class Lot extends Feature {
 			extra.println("6 exit");
 
 			switch(extra.inInt(6)) {
-			case 1: 
+			case 1:
+				for (Feature f: town.getFeatures()) {
+					if (f.owner == Player.player && f instanceof Inn) {
+						extra.println("You already have an Inn in this town!");
+						break;
+					}
+				}
 				if (Player.player.getCanBuy(a_inncost,inncost)) {
 					extra.println("Build an inn here?");
 					if (extra.yesNo()) {	
@@ -88,7 +134,13 @@ public class Lot extends Feature {
 					}
 				}
 				break;
-			case 2: 
+			case 2:
+				for (Feature f: town.getFeatures()) {
+					if (f.owner == Player.player && f instanceof Arena) {
+						extra.println("You already have an Arena in this town!");
+						break;
+					}
+				}
 				extra.println("Build an arena here?");
 				if (Player.player.getCanBuy(a_arenacost,arenacost)) {
 					if (extra.yesNo()) {
@@ -99,7 +151,7 @@ public class Lot extends Feature {
 						town.helpCommunity(1);
 					}
 				}break;
-			case 3: 
+			case 3:
 				extra.println("Donate to the town?");
 				if (extra.yesNo()) {
 					town.replaceFeature(this,new TravelingFeature(this.town));
@@ -107,7 +159,13 @@ public class Lot extends Feature {
 					return;
 				}
 				break;
-			case 4: 
+			case 4:
+				for (Feature f: town.getFeatures()) {
+					if (f.owner == Player.player && f instanceof Mine) {
+						extra.println("You already have a Mine in this town!");
+						break;
+					}
+				}
 				if (Player.player.getCanBuy(a_minecost,minecost)) {
 					extra.println("Build a mine?");
 					if (extra.yesNo()) {
@@ -120,6 +178,12 @@ public class Lot extends Feature {
 				}
 				break;
 			case 5:
+				for (Feature f: town.getFeatures()) {
+					if (f.owner == Player.player && f instanceof Garden) {
+						extra.println("You already have a Garden in this town!");
+						break;
+					}
+				}
 				if (Player.player.getCanBuy(a_gardencost,gardencost)) {
 					extra.println("Build a garden?");
 					if (extra.yesNo()) {
@@ -147,11 +211,14 @@ public class Lot extends Feature {
 			constructTime-=time;
 		if (construct != null && constructTime <= 0) {
 			Feature add = null;
+			String name = Player.player.getPerson().getNameNoTitle()+"'s ";
 			switch (construct) {
-			case "inn": add = (new Inn("your inn (" + town.getName() + ")",tier,town,Player.player));break;
-			case "arena":add = (new Arena("your arena (" + town.getName() + ")",tier,1,24,200,1,Player.player));break;
-			case "mine": add = (new Mine("your mine (" + town.getName() + ")",town,Player.player,NodeFeature.Shape.NONE));break;
-			case "garden": add = (new Garden(town,"your arena (" + town.getName() + ")",0,PlantFill.NONE));
+			case "inn": add = (new Inn(name+"Inn in " + town.getName(),tier,town,Player.player));break;
+			case "arena":add = (new Arena(name+"Arena in " + town.getName(),tier,1,24,200,1,Player.player));break;
+			case "mine": add = (new Mine(name+"Mine in " + town.getName(),town,Player.player,NodeFeature.Shape.NONE));break;
+			case "garden":
+				add = (new Garden(town,name+"Garden in " + town.getName(),0,PlantFill.NONE));
+				add.owner = Player.player;
 			}
 			town.laterReplace(this,add);
 			constructTime = -2;
