@@ -1361,6 +1361,10 @@ public class WeaponAttackFactory {
 		return skillOwnerMap.get(source);
 	}
 	
+	public static boolean hasStance(IHasSkills source) {
+		return skillOwnerMap.containsKey(source);
+	}
+	
 	/**
 	 * do not modify, contains backing info
 	 */

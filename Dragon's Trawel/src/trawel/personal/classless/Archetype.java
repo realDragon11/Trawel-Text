@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import derg.menus.MenuItem;
 import derg.menus.ScrollMenuGenerator;
 import trawel.extra;
+import trawel.battle.attacks.WeaponAttackFactory;
 import trawel.personal.Person;
 import trawel.personal.Person.FeatArchMenuPick;
 import trawel.personal.classless.Feat.FeatType;
@@ -210,12 +211,20 @@ public enum Archetype implements IHasSkills{
 	
 	@Override
 	public String getOwnText() {
-		return name + ": "+desc + (stanceDesc != null ? " ("+stanceDesc+")" : "");
+		return extra.ITEM_VALUE+ name +extra.PRE_WHITE+ ": "+desc;
 	}
 	
 	@Override
 	public String getBriefText() {
-		return name + ": "+desc;
+		return extra.ITEM_VALUE+ name +extra.PRE_WHITE + ": "+desc;
+	}
+	
+	@Override
+	public String getStanceText() {
+		if (WeaponAttackFactory.hasStance(this)) {
+			return stanceDesc;
+		}
+		return null;
 	}
 	
 	/**

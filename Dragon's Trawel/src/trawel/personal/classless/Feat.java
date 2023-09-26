@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import trawel.extra;
+import trawel.battle.attacks.WeaponAttackFactory;
 import trawel.personal.classless.Skill.Type;
 
 public enum Feat implements IHasSkills{
@@ -58,7 +59,7 @@ public enum Feat implements IHasSkills{
 			,EnumSet.of(Skill.REACTIVE_DODGE,Skill.SPEEDDODGE),0,15,0
 			,null,null
 			)
-	//these three require arcanist, so they don't need to grant it
+	//these three require arcanist, so they don't need to grant it, it is signaled where the stance is made
 	,FLAME_WARDEN("Flamewarden","Wields fire fiercly, fueling their defense."
 			,"Grants ignite-focused arcany that uses a blend of strength and clarity."
 			,.7f,null,null
@@ -198,12 +199,21 @@ public enum Feat implements IHasSkills{
 	
 	@Override
 	public String getOwnText() {
-		return name + ": "+desc + (getDesc != "" ? " ("+getDesc+")" : "");
+		//MAYBELATER: the non stance getDescs might need support again
+		return extra.ITEM_VALUE+ name +extra.PRE_WHITE + ": "+desc;
 	}
 	
 	@Override
 	public String getBriefText() {
-		return name + ": "+desc;
+		return extra.ITEM_VALUE+ name +extra.PRE_WHITE + ": "+desc;
+	}
+	
+	@Override
+	public String getStanceText() {
+		if (WeaponAttackFactory.hasStance(this)) {
+			return getDesc;
+		}
+		return null;
 	}
 	
 	@Override

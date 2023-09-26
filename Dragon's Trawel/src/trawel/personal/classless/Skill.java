@@ -315,7 +315,7 @@ public enum Skill{
 
 				@Override
 				public String title() {
-					return " " + (p.hasSkill(Skill.this) ? "HAVE: " : "") + name + ": " + desc+ (longDesc != "" ? " ("+longDesc+")" : "");
+					return " " + (p.hasSkill(Skill.this) ?extra.TIMID_RED+"HAVE: " : "") + extra.ITEM_VALUE+ name+extra.PRE_WHITE + ": " + desc+ (longDesc != "" ? " ("+longDesc+")" : "");
 				}};
 			
 		}

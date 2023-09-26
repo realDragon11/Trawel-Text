@@ -28,6 +28,7 @@ public interface IHasSkills {
 	public String getText();
 	public String getBriefText();
 	public String getOwnText();
+	public String getStanceText();
 	
 	public int getStrength();
 	public int getDexterity();
@@ -52,13 +53,13 @@ public interface IHasSkills {
 			@Override
 			public String title() {
 				if (has instanceof Feat) {
-					return "Feat: " +has.getOwnText();
+					return extra.ITEM_DESC_PROP+"Feat: " +has.getOwnText();
 				}
 				if (has instanceof Archetype) {
-					return "Archetype: " +has.getOwnText();
+					return extra.ITEM_DESC_PROP+"Archetype: " +has.getOwnText();
 				}
 				if (has instanceof Perk) {
-					return "Perk: " +has.getOwnText();
+					return extra.ITEM_DESC_PROP+"Perk: " +has.getOwnText();
 				}
 				return has.getOwnText();
 			}});
@@ -66,11 +67,13 @@ public interface IHasSkills {
 
 			@Override
 			public String title() {
-				return " Strength: " + has.getStrength() + " Dexterity: " + has.getDexterity() + " Clarity: " + has.getClarity();
+				return  extra.ITEM_DESC_PROP+" Strength: "+extra.ITEM_WANT_HIGHER + has.getStrength()+
+						extra.ITEM_DESC_PROP+" Dexterity: "+extra.ITEM_WANT_HIGHER+ has.getDexterity()+
+						extra.ITEM_DESC_PROP+ " Clarity: " +extra.ITEM_WANT_HIGHER+ has.getClarity();
 			}});
 		if (has instanceof Archetype) {
 			Archetype arch = (Archetype)has;
-			String str = " Unlocks:";
+			String str = extra.STAT_HEADER+" Unlocks:"+extra.ITEM_DESC_PROP;
 			for (FeatType ft: arch.getFeatTypes()) {
 				str += " "+ft;
 			}
@@ -82,6 +85,22 @@ public interface IHasSkills {
 					return ftstr;
 				}});
 		}
+		String stanceDesc = has.getStanceText();
+		if (stanceDesc != null) {
+			list.add(new MenuLine() {
+
+				@Override
+				public String title() {
+					return extra.ITEM_DESC_PROP+" Stance: "+extra.PRE_WHITE+stanceDesc;
+				}});
+		}
+		//MAYBELATER: will display this even if there aren't any skills granted
+		list.add(new MenuLine() {
+
+			@Override
+			public String title() {
+				return extra.STAT_HEADER+"Skills:";
+			}});
 		has.collectSkills().forEach(skill -> list.add(skill.getMenuViewForPerson(person)));
 		return list;
 	}

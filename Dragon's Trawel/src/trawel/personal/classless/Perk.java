@@ -63,12 +63,17 @@ public enum Perk implements IHasSkills{
 	
 	@Override
 	public String getOwnText() {
-		return name + ": "+desc;
+		return extra.ITEM_VALUE+ name +extra.PRE_WHITE + ": "+desc;
 	}
 	
 	@Override
 	public String getBriefText() {
-		return name + ": "+desc;
+		return extra.ITEM_VALUE+ name +extra.PRE_WHITE + ": "+desc;
+	}
+	
+	@Override
+	public String getStanceText() {
+		return null;
 	}
 	
 	@Override
