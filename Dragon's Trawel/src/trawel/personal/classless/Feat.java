@@ -58,7 +58,7 @@ public enum Feat implements IHasSkills{
 			,EnumSet.of(Skill.REACTIVE_DODGE,Skill.SPEEDDODGE),0,15,0
 			,null,null
 			)
-	
+	//these three require arcanist, so they don't need to grant it
 	,FLAME_WARDEN("Flamewarden","Wields fire fiercly, fueling their defense."
 			,"Grants ignite-focused arcany that uses a blend of strength and clarity."
 			,.7f,null,null
@@ -68,13 +68,13 @@ public enum Feat implements IHasSkills{
 	,FROST_WARDEN("Frostwarden","Uses ice to bolster their armor."
 			,"Grants frost-focused arcany that uses a blend of strength and clarity."
 			,.7f,null,null
-			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_CRYO,Skill.ARMOR_TUNING,Skill.ARCANIST),1,0,4
+			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_CRYO,Skill.ARMOR_TUNING),1,0,4
 			,EnumSet.of(Skill.ARCANIST),null
 			)
 	,SHOCK_SAVANT("Shock-Savant","Shocks their foes with static constantly, increasing the damage wrought by their charges."
 			,"Grants elec-focused arcany that uses a blend of dexterity and clarity."
 			,.7f,null,null
-			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_AERO,Skill.SPUNCH,Skill.ARCANIST),0,1,4
+			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_AERO,Skill.SPUNCH),0,1,4
 			,EnumSet.of(Skill.ARCANIST),null
 			)
 	;
