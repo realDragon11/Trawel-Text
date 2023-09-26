@@ -65,9 +65,9 @@ public class Potion implements java.io.Serializable{
 						extra.println(p.getName() + " surges forward, filled with purpose!");
 					}
 					overwrite = true;
-					extra.println(" " +effect.getName() + ": " +effect.getDesc());
-					extra.println("  " +Effect.ADVANTAGE_STACK.getName() + ": " +Effect.ADVANTAGE_STACK.getDesc());
-					extra.println("  " +Effect.BONUS_WEAP_ATTACK.getName() + ": " +Effect.BONUS_WEAP_ATTACK.getDesc());
+					extra.println(" " +effect.getName() + extra.PRE_WHITE+": " +effect.getDesc());
+					extra.println("  " +Effect.ADVANTAGE_STACK.getName() +extra.PRE_WHITE+ ": " +Effect.ADVANTAGE_STACK.getDesc());
+					extra.println("  " +Effect.BONUS_WEAP_ATTACK.getName() +extra.PRE_WHITE+ ": " +Effect.BONUS_WEAP_ATTACK.getDesc());
 					break;
 				case BLEED:
 					uncork(p,personal);
@@ -88,11 +88,12 @@ public class Potion implements java.io.Serializable{
 					break;
 				default:
 					uncork(p,personal);
-					extra.println(personal ? "Your potion applied the " + effect.getName() + " effect to you!" : "The potion applied the " +effect.getName() + " effect to "+p.getName()+"!");
+					extra.println(personal ? "Your potion applied the " + effect.getName() +extra.PRE_WHITE+ " effect to you!"
+							: "The potion applied the " +effect.getName() +extra.PRE_WHITE+ " effect to "+p.getName()+"!");
 					break;
 				}
 				if (!overwrite) {
-					extra.println(" " +effect.getName() + ": " +effect.getDesc());
+					extra.println(" " +effect.getName() +extra.PRE_WHITE+ ": " +effect.getDesc());
 				}
 				
 				

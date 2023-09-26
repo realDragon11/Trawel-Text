@@ -497,9 +497,9 @@ public class Inventory implements java.io.Serializable{
 			extra.println("Local Currency: "+ owner.getSuper().getGoldDisp() +". All: " + owner.getSuper().allGoldDisp()+".");
 			if (owner.getSuper().hasFlask()) {
 				if (owner.getSuper().knowsPotion()) {
-					extra.println(owner.getSuper().peekFlask().getName()+" potion with " + owner.getSuper().getFlaskUses() + " uses left.");
+					extra.println(owner.getSuper().peekFlask().getName()+extra.PRE_WHITE+" potion with " +extra.ITEM_WANT_HIGHER+ owner.getSuper().getFlaskUses() +extra.PRE_WHITE+ " uses left.");
 				}else {
-					extra.println("Potion with " + owner.getSuper().getFlaskUses() + " uses left.");
+					extra.println("Potion with " +extra.ITEM_WANT_HIGHER+ owner.getSuper().getFlaskUses() +extra.PRE_WHITE+ " uses left.");
 				}
 			}
 		}else {

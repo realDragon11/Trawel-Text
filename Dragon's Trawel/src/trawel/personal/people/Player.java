@@ -1310,7 +1310,7 @@ public class Player extends SuperPerson{
 													extra.println(extra.STAT_HEADER+"Would you like to see a list of Effects?");
 													if (extra.yesNo()) {
 														for (Effect e: Effect.values()) {
-															extra.println(extra.TIMID_MAGENTA+ e.getName()+extra.PRE_WHITE + ": " + e.getDesc() + " Persists: " + e.lasts() + " Stacks: " +e.stacks());
+															extra.println(e.getName()+extra.PRE_WHITE + ": " + e.getDesc() + " Persists: " + e.lasts() + " Stacks: " +e.stacks());
 														}
 													}
 													return false;

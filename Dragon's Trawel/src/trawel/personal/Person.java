@@ -958,10 +958,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			public List<MenuItem> gen() {
 				List<MenuItem> list = new ArrayList<MenuItem>();
 				list.add(new MenuLine() {
-
 					@Override
 					public String title() {
-						return "Classless Menu for " + getName();
+						return extra.STAT_HEADER+"Classless Menu for "+extra.ITEM_DESC_PROP + getName();
 					}});
 				String[] attributes = attributeDesc();
 				for (int i = 0; i < attributes.length;i++) {
@@ -1721,9 +1720,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 					found = true;
 				}
 				if (num > 1) {
-					extra.println(" " +e.getName() + " x"+num+": "+ e.getDesc());
+					extra.println(" " +e.getName() +extra.PRE_WHITE+ " x"+num+": "+ e.getDesc());
 				}else {
-					extra.println(" " +e.getName() + ": "+ e.getDesc());
+					extra.println(" " +e.getName() +extra.PRE_WHITE+ ": "+ e.getDesc());
 				}
 			}
 			
@@ -2109,6 +2108,8 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public String[] attributeDesc() {
 		return 
 		new String[]{
+				extra.ITEM_DESC_PROP+"LvL: "+extra.PRE_WHITE+getLevel()+", "+xpString()+" xp"
+				,
 				extra.ITEM_DESC_PROP+extra.DISP_WEIGHT+extra.PRE_WHITE+"/"+extra.ATT_TRUE+"Str"+extra.PRE_WHITE+": "
 						+extra.ITEM_WANT_LOWER + bag.getCapacity() +extra.PRE_WHITE+ "/"+extra.ATT_TRUE+getStrength()
 							+extra.PRE_WHITE+ ", "+ extra.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(attMultStr())+"x"
