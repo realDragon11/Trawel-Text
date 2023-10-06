@@ -13,27 +13,7 @@ public enum Skill{
 	    
 	    
 		BEER_LOVER("Beer Lover","Endless beer. Never have to go to a tavern again.",true,Type.FIGHTER,2,""),
-		HPSENSE("Health Sense","Discern how much hp the defender has after each attack. Improves examine as well.",false,Type.FIGHTER,2,""),
-		
 		COUNTER("Counter","Attack slightly sooner after you are attacked.",true,Type.FIGHTER,3,""),
-		
-		WAIT("Wait","Allows you to wait for a better opportunity.",false,Type.FIGHTER,5,""),
-		//LAST_STAND("Last Stand","When reduced to 0 hp or lower, stay alive at 1 hp.",Type.FIGHTER,3),
-		
-		IOFF_TRAINING("Offensive Training","Hone your combat skills.",true,Type.FIGHTER,6,""),
-		
-		
-		
-		
-		RESTOCK("Restocker","Can pay for stores to restock.",false,Type.TRADER,1,""),
-		EXPANDER("Expander","All stores gain an additional item.",false,Type.TRADER,1,""),
-		
-		SKILLPLUS("SP Master","Gain 2 skill points.",false,Type.TRADER,2,""),
-		INHERIT("Inheriter","Gain 500 gold.",false,Type.TRADER,2,""),
-		
-		LOOTER("Expert Looter","Gain some gold each time you loot a corpse.",false,Type.TRADER,3,""),
-		
-		
 		
 		TOWNSENSE("Connection Sense","Tell how many connections a town has.",false,Type.EXPLORER,1,""),
 		TIERSENSE("Tier Sense","Tell what tier a town belongs to.",false,Type.EXPLORER,1,""),
@@ -60,21 +40,7 @@ public enum Skill{
 		
 		PARRY("Parry","Gives you a parrying dagger.",true,Type.DEFENDER,1,""),
 		SHIELD("Shield","Gives you a shield.",true,Type.DEFENDER,1,""),
-		
-		GOOFFENSIVE("Go on the offensive","Allows you to attack with your defensive item.",true,Type.DEFENDER,4,""),
-		DEFENSIVE_TRAINING("Stay on the defensive","Unlocks your defensive potential.",true,Type.DEFENDER,4,""),
-		
-		
-		
-		IDEF_TRAINING("Defensive Training","Hone your defensive skills.",true,Type.DEFENDER,6,""),
-		
-		EXECUTE_ATTACK("EXEATTACK","Internal",false,Type.FEATURE,0,""),
-		DRUNK_DRINK("DRUNKDRINK","Internal",false,Type.FEATURE,0,""),
-		BONUSATTACK_BERSERKER("BABER","Internal",false,Type.FEATURE,0,""),
-		MARK_ATTACK("Mark","Internal",false,Type.FEATURE,0,""),
-		BLOOD_SURGE("BS","Internal",false,Type.FEATURE,0,""),
-		BLOOD_HARVEST("BH","Internal",false,Type.FEATURE,0,""),
-		SKY_BLESSING_1("Sky Blessing I","Internal",false,Type.FEATURE,0,""),
+
 		ENDSKILL("New System Heading","Skills after this point are in the current game.",false,Type.INTERNAL_USE_ONLY,0,""),
 		//anything above should be removed and filtered out over time
 		
