@@ -569,7 +569,45 @@ public class WeaponAttackFactory {
 		
 		//FIXME:
 		copyStanceTo(WeaponType.MACE,WeaponType.FISH_ANCHOR);
-		copyStanceTo(WeaponType.SPEAR,WeaponType.FISH_SPEAR);
+		
+		sta = new Stance(WeaponType.FISH_SPEAR);
+		sta.addAttack(
+				make("jab")
+				.setFluff("X` jabs at Y` with their Z`!")
+				.setRarity(3f)
+				.setAcc(3f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.25f)
+				.setMix(6,0,30)
+				.setWarmupOfTotal(TimeTier.HALF_FAST, TimeTier.NORMAL)
+				);
+		sta.addAttack(
+				make("harpoon")
+				.setFluff("X` throws their Z` at Y` and reels it back!")
+				.setRarity(2f)
+				.setAcc(1.2f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.18f)
+				.setMix(20,10,45)
+				.setWarmupOfTotal(TimeTier.FAST, TimeTier.SLOWER)
+				);
+		sta.addAttack(
+				make("hook")
+				.setFluff("X` hooks Y` with the blade of their Z`!")
+				.setRarity(3f)
+				.setAcc(1.5f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.08f)
+				.setMix(1,0,0)
+				.setWarmupOfTotal(TimeTier.HALF_NORMAL,TimeTier.FAST)
+				);
+		sta.addAttack(
+				make("smack")
+				.setFluff("X` smacks Y` with the pole of their Z`!")
+				.setRarity(.5f)
+				.setAcc(.9f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.38f)
+				.setMix(0,1,0)
+				.setWarmupOfTotal(TimeTier.HALF_NORMAL,TimeTier.NORMAL)
+				);
+		addStance(WeaponType.FISH_SPEAR,sta);
 		
 		//skill attack section
 		sta = new Stance(Archetype.HEDGE_MAGE,Skill.ARCANIST);
