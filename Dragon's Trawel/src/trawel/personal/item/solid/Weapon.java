@@ -18,7 +18,6 @@ import trawel.personal.item.Item;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.magic.EnchantConstant;
 import trawel.personal.item.magic.EnchantHit;
-import trawel.personal.item.solid.Armor.ArmorQuality;
 import trawel.personal.people.Player;
 
 /**
@@ -103,7 +102,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 		GENERIC_FISTS("fists",null,0,0,0f),
 		UNICORN_HORN("horn",null,0,0,0f,EnumSet.of(WeaponQual.PENETRATIVE,WeaponQual.PINPOINT)),
 		TALONS_GENERIC("talons",null,0,0,0f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.PENETRATIVE,WeaponQual.PINPOINT,Weapon.WeaponQual.ACCURATE,WeaponQual.CARRYTHROUGH)),
-		FISH_SPEAR("fishing bill","spear",.5f,1,0f),//bill is a type of hook polearm and 'hook spear' doesn't quite sound right. I think bills are probably a bit too curved tho?
+		FISH_SPEAR("fishing bill","spear",.5f,1,0f,EnumSet.of(WeaponQual.ACCURATE,WeaponQual.PENETRATIVE,WeaponQual.PINPOINT,WeaponQual.DUELING)),//bill is a type of hook polearm and 'hook spear' doesn't quite sound right. I think bills are probably a bit too curved tho?
 		FISH_ANCHOR("anchor","claymore",1f,5,0f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,WeaponQual.CARRYTHROUGH)),
 		NULL_WAND("WAND",null,0,0,0f)
 		;
