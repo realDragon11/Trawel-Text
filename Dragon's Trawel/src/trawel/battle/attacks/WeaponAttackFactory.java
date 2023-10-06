@@ -551,24 +551,44 @@ public class WeaponAttackFactory {
 				);
 		addStance(WeaponType.TALONS_GENERIC,sta);
 		
-		/*
-		martialStance = new Stance();
-		martialStance.addAttack(new Attack("skewer",1,100.0,1,2,45,"X` skewers Y` with their rusty fishing spear!",1,"pierce"));	
-		martialStance.addAttack(new Attack("thrust",.3,50.0,1,2,30,"X` thrusts at Y` with their rusty fishing spear!",2,"pierce"));
-		martialStance.addAttack(new Attack("pole",.6,110.0,0,8,0,"X` hits Y` with the pole of their rusty fishing spear!",1,"blunt"));
-		martialStance.finish();
-		stanceMap.put("fishing spear", martialStance);*/
-		
-		/*
-		martialStance = new Stance();
-		martialStance.addAttack(new Attack("slam",.5,300.0,0,40,0,"X` hits Y` with their rusty anchor!",0,"blunt"));
-		martialStance.addAttack(new Attack("slap",1.3,200.0,0,30,0,"X` slaps Y` with the side of their rusty anchor!",1,"blunt"));
-		martialStance.addAttack(new Attack("power",.9,400.0,100,50,0,"X` lifts their rusty anchor over their head, and then brings it down on Y`!",2,"sharp"));
-		martialStance.finish();
-		stanceMap.put("anchor", martialStance);*/
-		
-		//FIXME:
-		copyStanceTo(WeaponType.MACE,WeaponType.FISH_ANCHOR);
+		sta = new Stance(WeaponType.FISH_ANCHOR);
+		sta.addAttack(
+				make("bash")
+				.setFluff("X` bashes Y` with their Z`!")
+				.setRarity(4f)
+				.setAcc(1.3f)
+				.setDamage(DamageTier.HIGH,DamageTier.ASTOUNDING,.33f)
+				.setMix(2,20,4)
+				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOWER)
+				);
+		sta.addAttack(
+				make("smash")
+				.setFluff("X` smashes the ground near Y` with their Z`, sending barbs into the air!")
+				.setRarity(2f)
+				.setAcc(3.5f)//insanely accurate
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.4f)
+				.setMix(4,10,5)
+				.setWarmupOfTotal(TimeTier.HALF_NORMAL, TimeTier.FAST)
+				);
+		sta.addAttack(
+				make("spray")
+				.setFluff("X` swings their Z` in an arc, spraying barbs at Y`!")
+				.setRarity(1f)
+				.setAcc(2f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.44f)
+				.setMix(4,0,10)
+				.setWarmupOfTotal(TimeTier.HALF_NORMAL, TimeTier.SLOW)
+				);
+		sta.addAttack(
+				make("power")
+				.setFluff("X` prepares their Z`, then brings it down on Y` with a furious swing!")
+				.setRarity(1f)
+				.setAcc(1.8f)
+				.setDamage(DamageTier.HIGH,DamageTier.ASTOUNDING,.95f)
+				.setMix(2,20,4)
+				.setWarmupOfTotal(TimeTier.SLOW, TimeTier.SLOWEST)
+				);
+		addStance(WeaponType.FISH_ANCHOR,sta);
 		
 		sta = new Stance(WeaponType.FISH_SPEAR);
 		sta.addAttack(
