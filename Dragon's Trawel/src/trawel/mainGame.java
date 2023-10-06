@@ -72,11 +72,12 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__8";
-	public static final String VERSION_DATE = " updated Sept 25th 2023";
+	public static final String VERSION_DATE = " updated Oct 6th 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			"b_8: {part 1/?} Added a wait option to Arenas and prevented giant time chunks by accident, made Arenas fight without the player and have the winners move on after enough training. Players always get a new fighter in their first round (so entirely for 1 round titles), but more rounds are done entirely naturally now.",
 			"b_8: {part 2/?} Updated Lot menu, standardized collecting earned money from built Features.",
+			"b_8: {part 3/?} Created unique stances for Fish Anchor, Fish Spear TODO, which all used other weapon stances as placeholders since the weapon updates.",
 			
 			"b_7: {part 1/2} Nodes display inward/outward to indicate going deeper or closer to the entrance (in most cases, ultimately its merely a 'floor' counter).",
 			"b_7: {part 2/2} Updated from Java 8 to Java 17, and to Kryo serialization.",
