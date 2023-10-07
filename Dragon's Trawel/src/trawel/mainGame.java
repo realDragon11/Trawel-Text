@@ -72,12 +72,13 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__8";
-	public static final String VERSION_DATE = " updated Oct 6th 2023";
+	public static final String VERSION_DATE = " updated Oct 7th 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			"b_8: {part 1/?} Added a wait option to Arenas and prevented giant time chunks by accident, made Arenas fight without the player and have the winners move on after enough training. Players always get a new fighter in their first round (so entirely for 1 round titles), but more rounds are done entirely naturally now.",
 			"b_8: {part 2/?} Updated Lot menu, standardized collecting earned money from built Features.",
 			"b_8: {part 3/?} Created unique stances for Fish Anchor, Fish Spear TODO, which all used other weapon stances as placeholders since the weapon updates.",
+			"b_8: {part 4/?} Cleaned up Wound/Effect/Tactic text and code, added the Takedown tactic and new Skills.",
 			
 			"b_7: {part 1/2} Nodes display inward/outward to indicate going deeper or closer to the entrance (in most cases, ultimately its merely a 'floor' counter).",
 			"b_7: {part 2/2} Updated from Java 8 to Java 17, and to Kryo serialization.",
@@ -151,6 +152,7 @@ public class mainGame {
 	public static boolean combatWaits;
 	public static boolean displayTargetSummary;
 	public static boolean displayNodeDeeper;
+	public static boolean displayFeatureFluff;
 
 	private static boolean doAutoSave = true;
 	private static PrintStream logStream;
@@ -573,7 +575,7 @@ public class mainGame {
 
 							@Override
 							public String title() {
-								return "Feature Text " + displayFeatureText + " (diplays type of town feature under its name)";
+								return "Feature Text " + displayFeatureText + " (Diplays type of town Feature after its name.)";
 							}
 
 							@Override
@@ -634,6 +636,20 @@ public class mainGame {
 								prefs.setProperty("nodedeeper_text", displayNodeDeeper+"");
 								return false;
 							}});
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Feature Fluff " + displayFeatureFluff + " (Such as entering and exiting stores with sayings.)";
+							}
+
+							@Override
+							public boolean go() {
+								displayFeatureFluff = !displayFeatureFluff;
+								prefs.setProperty("featurefluff_text", displayFeatureFluff+"");
+								return false;
+							}
+						});
 						extra.menuGo(new ScrollMenuGenerator(list.size(), "last <> options", "next <> options") {
 							@Override
 							public List<MenuItem> forSlot(int i) {
@@ -1375,6 +1391,7 @@ public class mainGame {
 			displayFlavorText = Boolean.parseBoolean(prefs.getProperty("flavor_text","TRUE"));
 			displayLocationalText = Boolean.parseBoolean(prefs.getProperty("locational_text","TRUE"));
 			displayFeatureText = Boolean.parseBoolean(prefs.getProperty("feature_text","TRUE"));
+			displayFeatureFluff = Boolean.parseBoolean(prefs.getProperty("featurefluff_text","TRUE"));
 			displayOwnName = Boolean.parseBoolean(prefs.getProperty("ownname_text","TRUE"));
 			displayOtherCombat = Boolean.parseBoolean(prefs.getProperty("othercombat_text","TRUE"));
 			showLargeTimePassing= Boolean.parseBoolean(prefs.getProperty("largetime_wait","TRUE"));

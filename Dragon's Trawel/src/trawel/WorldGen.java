@@ -321,7 +321,6 @@ public class WorldGen {
 		arona.tTags.add(TownTag.ARCANE);
 
 		arona.setFirstPrinter(new PrintEvent(){
-			private static final long serialVersionUID = 1L;
 			@Override
 			public void print() {
 				extra.println("The 'town' of Arona, held in a wizard's pocket dimension, employs powerful fighters as guards.");
@@ -340,7 +339,6 @@ public class WorldGen {
 		yena.tTags.add(TownTag.ADVENTURE);
 		yena.tTags.add(TownTag.HISTORY);
 		yena.setFirstPrinter(new PrintEvent() {
-
 			@Override
 			public void print() {
 				extra.println("Yena's ancient Dungeon of Fame is the dwelling place of the primordial being, Yore. The Hero's Guild has long since given up on slaying them, and keeps vigil nearby.");
@@ -404,7 +402,7 @@ public class WorldGen {
 		tunka.setFirstPrinter(new PrintEvent() {
 			@Override
 			public void print() {
-				extra.println("Tunka is notable for being the only place in Eoano willing to maintain a full graveyard, and for its Rouge's Guild, which seem to take particular glee in robbing the downtrodden of what little they have left.");
+				extra.println("Tunka is notable for being the only place in Eoano willing to maintain a full graveyard, and for its Rogue's Guild, which seem to take particular glee in robbing the downtrodden of what little they have left.");
 			}});
 		
 		Town owal = new Town("Owal",9,teran,(byte)13,(byte)7);

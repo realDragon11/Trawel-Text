@@ -13,6 +13,7 @@ import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.Services;
 import trawel.extra;
+import trawel.mainGame;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceID;
@@ -48,6 +49,7 @@ public class Store extends Feature{
 	protected float aetherRate;
 	protected int invSize;
 	protected int itemMinLevel = -1, itemMaxLevel = -1;
+	protected String intro, outro;
 	
 	public static final int INVENTORY_SIZE = 5;
 	
@@ -130,6 +132,15 @@ public class Store extends Feature{
 			}
 			generate(tier, type);
 		}
+	}
+	
+	public Store setIntro(String _saying) {
+		intro = _saying;
+		return this;
+	}
+	public Store setOutro(String _saying) {
+		outro = _saying;
+		return this;
 	}
 	
 	@Override
@@ -552,7 +563,13 @@ public class Store extends Feature{
 	
 	@Override
 	public void go() {
+		if (intro != null && mainGame.displayFeatureFluff) {
+			extra.println(intro);
+		}
 		extra.menuGo(modernStoreFront());
+		if (outro != null && mainGame.displayFeatureFluff) {
+			extra.println(outro);
+		}
 	}
 	
 	@Override

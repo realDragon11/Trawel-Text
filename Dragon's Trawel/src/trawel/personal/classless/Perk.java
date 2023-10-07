@@ -13,7 +13,7 @@ public enum Perk implements IHasSkills{
 	SKY_BLESS_1("Leaf on the Wind","Has a minor blessing from the sky, granting them paranatural speed.",EnumSet.of(Skill.SPEEDDODGE,Skill.BLITZ)),
 	SKY_BLESS_2("Growing Storm","Has a blessing from the sky, granting acute vision and senses that heal them when used.",EnumSet.of(Skill.DODGEREF,Skill.NIGHTVISION),0,4,1)
 	,CULT_LEADER_BLOOD("Cult Leader (Blood)","Chosen by the cult of blood.",EnumSet.of(Skill.BLOODTHIRSTY))//also used by npcs
-	,MINE_ALL_VEINS("Meticulous Miner","Know for their painstaking digging process.",EnumSet.of(Skill.NIGHTVISION))
+	,MINE_ALL_VEINS("Meticulous Miner","Known for their painstaking digging process.",EnumSet.of(Skill.NIGHTVISION))
 	,GRAVEYARD_SIGHT("Gravesight","Can see in the dark due to a lot of experience.",EnumSet.of(Skill.NIGHTVISION))
 	,HELL_BARONESS_1("Baroness of Hell (Peana's Throne)","Has fiendish powers.",EnumSet.of(Skill.CURSE_MAGE,Skill.TA_NAILS),5,0,5)
 	,HELL_BARON_NPC("Baron of Hell","Has fiendish powers.",EnumSet.of(Skill.NPC_BURN_ARMOR,Skill.RAW_GUTS,Skill.TA_NAILS,Skill.SPUNCH,Skill.KILLHEAL,Skill.CONDEMN_SOUL,Skill.NO_HOSTILE_CURSE),50,0,20)
