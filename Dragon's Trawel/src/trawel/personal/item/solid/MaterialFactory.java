@@ -537,8 +537,8 @@ public class MaterialFactory {
 		misc.tier = 4;
 		misc.rarity = .1f;
 		misc.fireVul = .5f;
-		misc.shockVul = 0;
-		misc.freezeVul = 0;
+		misc.shockVul = .5f;
+		misc.freezeVul = .5f;
 		misc.shimmer = .2f;
 		misc.sturdy = .5f;
 		misc.palIndex = 10;
@@ -693,7 +693,7 @@ public class MaterialFactory {
 		misc.pierceMult = 1;
 		misc.tier = 4;
 		misc.rarity = .05f;
-		misc.fireVul = 0;
+		misc.fireVul = 0.05f;
 		misc.shockVul = .5f;
 		misc.freezeVul = .5f;
 		misc.shimmer = .5f;
@@ -724,7 +724,7 @@ public class MaterialFactory {
 		misc.tier = 4;
 		misc.rarity = .1f;
 		misc.fireVul = .5f;
-		misc.shockVul = 0;
+		misc.shockVul = 0.05f;
 		misc.freezeVul = .5f;
 		misc.shimmer = .5f;
 		misc.palIndex = 1;
@@ -753,7 +753,7 @@ public class MaterialFactory {
 		misc.pierceMult = 1;
 		misc.tier = 4;
 		misc.rarity = .1f;
-		misc.fireVul = 0;
+		misc.fireVul = 0.05f;
 		misc.shockVul = .7f;
 		misc.freezeVul = .3f;
 		misc.shimmer = .5f;
@@ -785,7 +785,7 @@ public class MaterialFactory {
 		misc.rarity = .1f;
 		misc.fireVul = .5f;
 		misc.shockVul = .5f;
-		misc.freezeVul = 0;
+		misc.freezeVul = 0.05f;
 		misc.shimmer = .5f;
 		misc.palIndex = 3;
 		misc.soundType = "crystal";
@@ -843,7 +843,7 @@ public class MaterialFactory {
 		misc.pierceMult = 1;
 		misc.tier = 4;
 		misc.rarity = .1f;
-		misc.fireVul = 0;
+		misc.fireVul = 0.05f;
 		misc.shockVul = .7f;
 		misc.freezeVul = .3f;
 		misc.shimmer = .5f;
@@ -875,7 +875,7 @@ public class MaterialFactory {
 		misc.rarity = .1f;
 		misc.fireVul = .5f;
 		misc.shockVul = .5f;
-		misc.freezeVul = 0;
+		misc.freezeVul = 0.05f;
 		misc.shimmer = .5f;
 		misc.palIndex = 6;
 		misc.soundType = "crystal";
@@ -1008,7 +1008,7 @@ public class MaterialFactory {
 		misc.tier = 0;
 		misc.rarity = 0f;
 		misc.fireVul = 2;
-		misc.shockVul = 0;
+		misc.shockVul = 0.05f;
 		misc.freezeVul = .5f;
 		misc.palIndex = 8;
 		misc.soundType = "wood";
