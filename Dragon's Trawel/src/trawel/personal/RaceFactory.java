@@ -747,6 +747,9 @@ public class RaceFactory {
 		
 		misc = new Race(RaceID.B_UNICORN);
 		misc.swears.add("horsey");
+		misc.swears.add("freak of nature");
+		misc.swears.add("preposterous pony");
+		misc.swears.add("unreal ungulate");//this means cloven hoof I think
 		misc.aimMod = 1.3;
 		misc.damMod = .9;
 		misc.dodgeMod = .8;
@@ -755,6 +758,8 @@ public class RaceFactory {
 		misc.tradeMod = 1;
 		misc.rarity = 1;
 		misc.insultList.add("Die, stupid horse!");
+		misc.insultList.add("Bet your horn will fetch a high price!");
+		misc.insultList.add("I'll be beating you for hours yet!");
 		misc.baseMap = "unicorn";
 		misc.raceMaps.add("0");
 		misc.magicPower = 3;
@@ -770,7 +775,18 @@ public class RaceFactory {
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_HARPY);
-		misc.swears.add("harpy");
+		misc.swears.add("windbag");
+		misc.swears.add("hussy");//lmao
+		misc.swears.add("muckraker");
+		misc.swears.add("cuckoo");
+		misc.swears.add("featherbrain");
+		misc.swears.add("birdbrain");
+		misc.swears.add("silly goose");
+		misc.swears.add("flying dodo");
+		misc.swears.add("fusspot");
+		misc.swears.add("calumniator");
+		misc.swears.add("buzzard");
+		misc.swears.add("vulture");
 		misc.aimMod = 1;
 		misc.damMod = 1.1;
 		misc.dodgeMod = 1.25;
@@ -779,6 +795,8 @@ public class RaceFactory {
 		misc.tradeMod = 1;
 		misc.rarity = 1;
 		misc.insultList.add("Die, you feathery fiend!");
+		misc.insultList.add("Aren't birds supposed to sing?");
+		misc.insultList.add("Your greed is almost as bad as your voice!");
 		misc.baseMap = "harpy";
 		misc.raceMaps.add("0");
 		misc.magicPower = 0;
@@ -802,7 +820,7 @@ public class RaceFactory {
 		misc.speedMod = 1;
 		misc.tradeMod = .5;
 		misc.rarity = 1;
-		misc.insultList.add("Drudger!");
+		misc.insultList.add("Die drudger!");
 		misc.insultList.add("Die pond scum!");
 		misc.baseMap = "flesh_golem";
 		misc.raceMaps.add("0");
@@ -826,7 +844,7 @@ public class RaceFactory {
 		misc.speedMod = .5;
 		misc.tradeMod = .5;
 		misc.rarity = 1;
-		misc.insultList.add("Drudger!");
+		misc.insultList.add("Die drudger!");
 		misc.baseMap = "flesh_golem";
 		misc.raceMaps.add("0");
 		misc.magicPower = 0;

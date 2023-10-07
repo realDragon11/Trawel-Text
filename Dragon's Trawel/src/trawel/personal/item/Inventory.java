@@ -78,15 +78,15 @@ public class Inventory implements java.io.Serializable{
 		if (type == Race.RaceType.PERSONABLE) {
 			if (job != null) {
 				ArmorStyle matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
-				armorSlots[0] = new Armor(level,(byte) 0,MaterialFactory.randMatByType(matType2),matType2);
+				armorSlots[0] = new Armor(level,(byte) 0,null,matType2);
 				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
-				armorSlots[1] = new Armor(level,(byte) 1,MaterialFactory.randMatByType(matType2),matType2);
+				armorSlots[1] = new Armor(level,(byte) 1,null,matType2);
 				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
-				armorSlots[2] = new Armor(level,(byte) 2,MaterialFactory.randMatByType(matType2),matType2);
+				armorSlots[2] = new Armor(level,(byte) 2,null,matType2);
 				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
-				armorSlots[3] = new Armor(level,(byte) 3,MaterialFactory.randMatByType(matType2),matType2);
+				armorSlots[3] = new Armor(level,(byte) 3,null,matType2);
 				matType2 = job.amatType[extra.randRange(0,job.amatType.length-1)];
-				armorSlots[4] = new Armor(level,(byte) 4,MaterialFactory.randMatByType(matType2),matType2);
+				armorSlots[4] = new Armor(level,(byte) 4,null,matType2);
 				hand = new Weapon(level,job.randWeap());
 			}else {
 				

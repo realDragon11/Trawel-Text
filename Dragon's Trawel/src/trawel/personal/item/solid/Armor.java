@@ -141,14 +141,20 @@ public class Armor extends Item implements IEffectiveLevel{
 	 */
 	public Armor(int newLevel, byte slot,Material mati,ArmorStyle styleType) {	
 		this.slot = slot;//type is equal to the array armor slot
-		material = mati.curNum;
+		
 		level = newLevel;
 		
 		if (styleType == null) {
+			assert mati != null;
 			style = (short) extra.randList(mati.typeList).ordinal();
 		}else {
 			style = (short) styleType.ordinal();
+			if (mati == null) {
+				mati = styleType.getMatFor();
+			}
 		}
+		
+		material = mati.curNum;
 
 		fluff = ArmorStyle.fetch(style).genner[slot].generate();
 

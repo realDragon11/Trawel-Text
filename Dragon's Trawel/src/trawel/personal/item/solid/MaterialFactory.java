@@ -1072,68 +1072,13 @@ public class MaterialFactory {
 		return matList.get(weapMats.random(extra.getRand()));
 	}
 	
-	@Deprecated
-	public static Material randMat(Boolean armor, Boolean weapon) {
-		ArrayList<Material> copyList = new ArrayList<Material>();
-		double totalRarity = 0;
-		for (Material mat: matList){
-			if ((mat.armor == true && armor == true)||(mat.weapon == true && weapon == true)) {
-			copyList.add(mat);
-			totalRarity +=mat.rarity;
-			}
-		}
-		totalRarity *= extra.getRand().nextDouble();
-		int i = 0;
-		while (true) {
-			totalRarity-=copyList.get(i).rarity;//out of bounds exception serves as a built in error to warn
-			if (totalRarity <=0) {//equals unneeded
-				return copyList.get(i);
-			}
-			i++;
-		}
-	}
-
-
-	
-
-	public static Material randMatByType(ArmorStyle matType) {
-		ArrayList<Material> copyList = new ArrayList<Material>();
-		ArrayList<Material> copyList2 = new ArrayList<Material>();
-		for (Material mat: matList){
-			if (mat.typeList.contains(matType)) {
-				copyList.add(mat);
-			}
-		}
-		double totalRarity = 0;
-		Material mat;
-		do {
-			mat = extra.randList(copyList);
-			copyList2.add(mat);
-			totalRarity += mat.rarity;
-			copyList.remove(mat);
-		}while(!copyList.isEmpty());
-		totalRarity*= extra.getRand().nextDouble();
-		do {
-			mat = copyList2.get(0);
-			if (totalRarity > mat.rarity) {
-				totalRarity-=mat.rarity;
-				copyList2.remove(0);
-			}else {
-				totalRarity = 0;
-			} 
-				
-				
-		}while(totalRarity > 0);
-		return mat;
-	}
-	
 	public static void materialWeapDiag() {
 		ArrayList<Material> copyList = new ArrayList<Material>();
 		double totalRarity = 0;
 		for (Material mat: matList){
 			if (mat.weapon == true) {
-			copyList.add(mat);
-			totalRarity +=mat.rarity;
+				copyList.add(mat);
+				totalRarity +=mat.rarity;
 			}
 		}
 		for (int i = 0; i < copyList.size();i++) {
