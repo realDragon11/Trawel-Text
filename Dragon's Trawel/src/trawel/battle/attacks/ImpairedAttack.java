@@ -145,7 +145,7 @@ public class ImpairedAttack implements IAttack{
 				
 			}
 		}
-		if (!alwaysWound && wound != Wound.GRAZE && extra.randRange(1,10) == 1) {
+		if (!alwaysWound && wound != Wound.NEGATED && extra.randRange(1,10) == 1) {
 			this.wound = null;//null is not different from grazing, grazing is a dedicated 'ineffective'
 		}
 		
@@ -568,47 +568,53 @@ public class ImpairedAttack implements IAttack{
 			break;
 		case 2://two line 1
 			extra.println(getName());
-				in = new int[9];
-				in[0] = 9;//hitchance, should be %9.99 >= x > 0.00 | 9 gives a 2 spot gap to the times
-				in[1] = 4;//instants, should be _999 >= x > 0 | 4 because we're okay with pressing up against the next one
-				in[2] = 1;//warmup/cooldown seperator
-				in[3] = 5;//instants, should be _999 >= x > 0 | 5 because we want to give the next a one-two spot gap
-				//
-				in[4] = 2;//details seperator
-				//sbp 6 should be fine for 3 digits, 7 for 4
-				//these can vary based on the attack
-				in[5] = 6;
-				in[6] = 6;
-				in[7] = 6;
-				in[8] = 0;//bonus
-				String dam1, dam2, dam3, dam4;
-				if (attack.isBypass()) {
-					dam1 = DamageType.IGNITE.getDispFor(this);
-					dam2 = DamageType.FROST.getDispFor(this);
-					dam3 = DamageType.ELEC.getDispFor(this);
-					dam4 = "";
+			in = new int[9];
+			in[0] = 9;//hitchance, should be %9.99 >= x > 0.00 | 9 gives a 2 spot gap to the times
+			in[1] = 4;//instants, should be _999 >= x > 0 | 4 because we're okay with pressing up against the next one
+			in[2] = 1;//warmup/cooldown seperator
+			in[3] = 5;//instants, should be _999 >= x > 0 | 5 because we want to give the next a one-two spot gap
+			//
+			in[4] = 2;//details seperator
+			//sbp 6 should be fine for 3 digits, 7 for 4
+			//these can vary based on the attack
+			in[5] = 6;
+			in[6] = 6;
+			in[7] = 6;
+			in[8] = 0;//bonus
+			String dam1, dam2, dam3, dam4;
+			if (attack.isBypass()) {
+				dam1 = DamageType.IGNITE.getDispFor(this);
+				dam2 = DamageType.FROST.getDispFor(this);
+				dam3 = DamageType.ELEC.getDispFor(this);
+				dam4 = "";
+			}else {
+				dam1 = DamageType.SHARP.getDispFor(this);
+				dam2 = DamageType.BLUNT.getDispFor(this);
+				dam3 = DamageType.PIERCE.getDispFor(this);
+				dam4 = getOtherDam(this);
+				if (dam4 != null) {
+					in[8] = 6;
 				}else {
-					dam1 = DamageType.SHARP.getDispFor(this);
-					dam2 = DamageType.BLUNT.getDispFor(this);
-					dam3 = DamageType.PIERCE.getDispFor(this);
-					dam4 = getOtherDam(this);
-					if (dam4 != null) {
-						in[8] = 6;
-					}else {
-						dam4 = "";
-					}
+					dam4 = "";
 				}
-				
-				extra.specialPrint(in,"  "+extra.CHAR_HITCHANCE + extra.format(getHitMult()),
-						extra.CHAR_INSTANTS +extra.formatInt(getWarmup())," ",extra.CHAR_INSTANTS+extra.formatInt(getCooldown()),
-						"=",
-						dam1,dam2,dam3,dam4//unsure if spacing messes up narrator
-						);
 			}
-			if (wound != null) {
-				extra.println("  "+extra.ATK_WOUND+wound.name + extra.PRE_WHITE+ " - " + String.format(this.wound.desc,(Object[])Combat.woundNums(this,attacker,defender,null,wound)));
-			}
+
+			extra.specialPrint(in,"  "+extra.CHAR_HITCHANCE + extra.format(getHitMult()),
+					extra.CHAR_INSTANTS +extra.formatInt(getWarmup())," ",extra.CHAR_INSTANTS+extra.formatInt(getCooldown()),
+					"=",
+					dam1,dam2,dam3,dam4//unsure if spacing messes up narrator
+					);
 		}
+		Wound aWound = wound;
+		if (aWound == null) {
+			aWound = Wound.EMPTY;
+		}
+		extra.println("  "+aWound.getColor()+aWound.name + extra.PRE_WHITE+ " - " + String.format(aWound.desc,(Object[])Combat.woundNums(this,attacker,defender,null,aWound)));
+		if (hasBonusEffect()) {
+			AttackBonus ab = getAttack().getRider();
+			extra.println("  "+extra.ATK_BONUS+ab.label +extra.PRE_WHITE+": " + ab.desc);
+		}
+	}
 
 	public int getLevel() {
 		return level;

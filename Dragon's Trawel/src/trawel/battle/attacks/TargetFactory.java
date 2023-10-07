@@ -97,9 +97,9 @@ public class TargetFactory {
 	
 	private void addStatueWounds(Target t) {
 		
-		t.addWound(DamageType.SHARP, Wound.GRAZE, 3);
-		t.addWound(DamageType.BLUNT, Wound.GRAZE, 3);
-		t.addWound(DamageType.PIERCE, Wound.GRAZE, 3);
+		t.addWound(DamageType.SHARP, Wound.NEGATED, 3);
+		t.addWound(DamageType.BLUNT, Wound.NEGATED, 3);
+		t.addWound(DamageType.PIERCE, Wound.NEGATED, 3);
 		
 		t.addWound(DamageType.SHARP, Wound.CRUSHED, 1);
 		t.addWound(DamageType.BLUNT, Wound.CRUSHED, 1);
@@ -158,9 +158,9 @@ public class TargetFactory {
 	}
 	
 	private void addMimicLid(Target t, float grazeMult, float windedMult, float crushedMult) {
-		t.addWound(DamageType.SHARP, Wound.GRAZE, grazeMult);
-		t.addWound(DamageType.BLUNT, Wound.GRAZE, grazeMult);
-		t.addWound(DamageType.PIERCE, Wound.GRAZE, grazeMult);
+		t.addWound(DamageType.SHARP, Wound.NEGATED, grazeMult);
+		t.addWound(DamageType.BLUNT, Wound.NEGATED, grazeMult);
+		t.addWound(DamageType.PIERCE, Wound.NEGATED, grazeMult);
 		
 		t.addWound(DamageType.SHARP, Wound.WINDED, windedMult);
 		t.addWound(DamageType.BLUNT, Wound.WINDED, windedMult);
@@ -709,7 +709,7 @@ public class TargetFactory {
 		set_as_arm(t);
 		t.condWound = Wound.SCREAMING;
 		t.type = TargetType.UNDEAD_H;
-		addArm_LimbWounds(t, Wound.GRAZE, 1, .1f);
+		addArm_LimbWounds(t, Wound.NEGATED, 1, .1f);
 		t.finish();
 		
 		t = new Target();
@@ -718,7 +718,7 @@ public class TargetFactory {
 		set_as_leg(t);
 		t.condWound = Wound.SCREAMING;
 		t.type = TargetType.UNDEAD_H;
-		addLeg_LimbWounds(t,Wound.GRAZE, 1, .1f);
+		addLeg_LimbWounds(t,Wound.NEGATED, 1, .1f);
 		t.finish();
 		
 		t = new Target();

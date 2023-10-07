@@ -1069,7 +1069,9 @@ public final class extra {
 	
 	//attack picking
 	public static final String ATK_BONUS = STAT_HEADER;
-	public static final String ATK_WOUND = ITEM_DESC_PROP;
+	public static final String ATK_WOUND_NORMAL = ITEM_DESC_PROP;
+	public static final String ATK_WOUND_NEGATE = PRE_RED;
+	public static final String ATK_WOUND_GRAZE = TIMID_RED;
 
 	public static String colorBasedAtOne(double number, String plus, String minus, String empty) {
 		String str = format2.format(number);

@@ -422,7 +422,11 @@ public class Attack implements IAttack{
 	//UPDATE welp can't make them look nicer so just made them all ints anyways
 	//MAYBELATER: display the actual wound name every time, but also have a stringfluffer describe it
 	public enum Wound{//TODO: make sure the reworked wounds are fully in
+		//special
 		ERROR("ERROR","ERROR","ERROR"),
+		NEGATED("Negated","No effect, resists.","Negated..."),
+		EMPTY("Grazed","No bonus.","The blow's a graze..."),
+		//normal wound start
 		HAMSTRUNG("Hamstrung","Delays the next attack by %1$d instants.","Their leg is hamstrung!"), 
 		BLINDED("Blinded","The next attack will be %1$d%% less accurate.","They can't see!"),
 		CONFUSED("Confused","Forces the opponent to retarget.","They look confused!"), 
@@ -436,17 +440,18 @@ public class Attack implements IAttack{
 		I_BLEED_WEAK("Trauma","Applies a stacking %2$d bleed, expected %1$d for this stack against you.","Their insides get smashed."),
 		DISARMED("Disarm","Removes one attack choice on next attack.","Their attack is put off-kilter!"),		
 		TRIPPED("Tripped","The next attack will take %1$d instants longer.","They are tripped!"),
-		GRAZE("Grazed","No effect, and doesn't apply some mechanics.","The blow's a graze..."),
 		KO("Knockout","Deals %1$d bonus damage, but heals after their next attack.","It's a knockout!"),
 		HACK("Hack","Deals up to %1$d bonus damage based on unblocked damage.","It's a wicked hack!"),
 		TAT("Punctured","Deals up to %1$d bonus damage, based on final pierce damage and to-hit.","The blow goes right through them!"),
 		CRUSHED("Crushed","Deals %1$d bonus armor piercing damage.","They are crushed!"),
 		
+		//elemental
 		SCALDED("Scalded","Deals %1$d bonus armor piercing damage.","They are scalded by the flames!"),//TODO: more elemental wounds
 		SCREAMING("Screaming","Removes one attack choice.","They scream!"),
 		FROSTED("Frosted","The next attack will take %1$d%% longer on the current time, up to %2$d instants increase.","They are frozen over..."),
 		FROSTBITE("Frostbite","Deals %1$d bonus armor piercing damage.","Their flesh is frozen!"),
 		
+		//exotic
 		TEAR("Tear","Decreases dodge by %1$%d%%, stacking.","Their wing is torn!"), //see if need to add a '%'
 		MANGLED("Mangled","Halves the condition of the body part.","Their body is mangled!"),
 		BLOODY("Bloody","The next attack will be %1$d%% less accurate. Applies %2$d stacks of bleed, around %3$d damage per tick.","Blood wells around their eyes!"),
@@ -464,6 +469,17 @@ public class Attack implements IAttack{
 			name = iName;
 			desc = iDesc;
 			active = activeDesc;
+		}
+		
+		public String getColor() {
+			switch (this) {
+			case NEGATED:
+				return extra.ATK_WOUND_NEGATE;
+			case EMPTY:
+				return extra.ATK_WOUND_GRAZE;
+			default://MAYBELATER cond wounds aren't displayed to the player like this, otherwise they'd need their own color
+				return extra.ATK_WOUND_NORMAL;
+			}
 		}
 	}
 

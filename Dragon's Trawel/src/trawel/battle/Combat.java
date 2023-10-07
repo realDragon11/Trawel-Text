@@ -1225,7 +1225,7 @@ public class Combat {
 							woundstr = " They shrug off the blow!";
 						}else {
 							woundstr = inflictWound(attacker,defender,atr,attack.getWound());
-							if (attack.getWound() != Wound.GRAZE) {
+							if (attack.getWound() != Wound.NEGATED) {
 								if (attack.getWeapon() != null && attack.getWeapon().hasQual(Weapon.WeaponQual.DESTRUCTIVE)) {
 									defender.getBag().damageArmor(percent/3f, attack.getSlot());
 								}
@@ -1671,7 +1671,7 @@ public class Combat {
 				 defender2.addEffect(Effect.BRAINED);
 				 inflictWound(attacker2,defender2,retu,Wound.KO);
 				 break;
-			case GRAZE://no effect
+			case NEGATED://no effect
 				break;
 			}
 			return (" " +w.active);
@@ -1688,7 +1688,7 @@ public class Combat {
 	 */
 	public static Integer[] woundNums(ImpairedAttack attack, Person attacker, Person defender, AttackReturn result, Wound w) {
 		switch (w) {
-		case CONFUSED: case SCREAMING: case GRAZE: case DISARMED: case DEPOWER: case MAIMED: case CRIPPLED:
+		case CONFUSED: case SCREAMING: case NEGATED: case DISARMED: case DEPOWER: case MAIMED: case CRIPPLED:
 		case HIT_VITALS:
 			//nothing
 			return new Integer[0];

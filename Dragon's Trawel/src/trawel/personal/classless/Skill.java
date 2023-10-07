@@ -134,19 +134,19 @@ public enum Skill{
 		/**
 		 * NOTE: do not grant without ELEMENTALIST
 		 */
-		M_PYRO("Pyromantic","25% chance to convert failed wounds into a random Ignite wound on any attack."
+		M_PYRO("Pyromantic","25% chance to convert 'Grazed' into a random Ignite wound on any attack."
 				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 75%."
 				,Type.OFFENSE),
 		/**
 		 * NOTE: do not grant without ELEMENTALIST
 		 */
-		M_CRYO("Cryomantic","25% chance to convert failed wounds into a random Frost wound on any attack."
+		M_CRYO("Cryomantic","25% chance to convert 'Grazed' into a random Frost wound on any attack."
 				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 75%."
 				,Type.OFFENSE),
 		/**
 		 * NOTE: do not grant without ELEMENTALIST
 		 */
-		M_AERO("Aeromantic","25% chance to convert failed wounds into a random Elec wound on any attack."
+		M_AERO("Aeromantic","25% chance to convert 'Grazed' into a random Elec wound on any attack."
 				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 75%."
 				,Type.OFFENSE),
 		STERN_STUFF("Sterner Stuff","The first time each battle you would die, roll a contested Strength check vs their highest attribute to survive at 1 HP."

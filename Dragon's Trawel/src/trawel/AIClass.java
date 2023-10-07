@@ -1038,10 +1038,6 @@ public class AIClass {
 						for(ImpairedAttack a: attacks) {
 							extra.print(j + " ");
 							a.display(2);
-							if (a.hasBonusEffect()) {
-								AttackBonus ab = a.getAttack().getRider();
-								extra.println("  "+extra.ATK_BONUS+ab.label +extra.PRE_WHITE+": " + ab.desc);
-							}
 							j++;
 						}
 						break;
