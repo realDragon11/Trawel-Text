@@ -117,7 +117,7 @@ public class WorldGen {
 		homa.addFeature(new Store(1,6));
 		homa.addFeature(new Arena("Basena Arena",1,1,24,2,476));
 		homa.addFeature(new Grove("The Woody Tangle",homa,30,1));
-		homa.addFeature(new Doctor("Melissa's Clinic",homa));
+		homa.addFeature(new Doctor("Melissa's Clinic",homa).setIntro("Melissa greets you, 'Don't get many customers not from the Arena, but if you've got something more exotic like a curse, I can fix that.'"));
 		w.setStartTown(homa);
 		homa.tTags.add(TownTag.SMALL_TOWN);
 		homa.setFirstPrinter(new PrintEvent(){
@@ -138,7 +138,7 @@ public class WorldGen {
 		addConnection(homa,unun,"road","barrier way");
 		unun.addFeature(new Docks("Trade Port",unun));
 		unun.addFeature(new Inn("Trailblazer's Tavern",2,unun,null));
-		unun.addFeature(new MerchantGuild("Eoano's Merchant Guild (Unun)"));
+		unun.addFeature(new MerchantGuild("Eoano's Merchant Guild Headquarters"));
 		unun.addFeature(new Dungeon("Tower of Fate",unun,Dungeon.Shape.TOWER,BossType.FATESPINNER));
 		unun.addFeature(new Slum(unun,"The Ephemeral People's Quarter",true));
 		unun.addTravel();
@@ -177,7 +177,7 @@ public class WorldGen {
 		hemo.addFeature(s);
 		hemo.addFeature(new Blacksmith(3,s));
 		hemo.addFeature(new Grove("The Odd Grove",hemo,12,3));
-		hemo.addFeature(new Garden(hemo,"Communal Garden",1.1f,PlantFill.WITCH));
+		hemo.addFeature(new Garden(hemo,"Communal Garden",1.1f,PlantFill.WITCH).setIntro("A sign reads, 'Please replant any materials you harvest here.'"));
 		hemo.addFeature(new WitchHut("Esoteric Ingredients",hemo));
 		hemo.tTags.add(TownTag.DRUIDIC);
 		hemo.tTags.add(TownTag.ALCHEMY);
@@ -191,11 +191,11 @@ public class WorldGen {
 		
 		Town beal = new Town("Beal",4,rona,(byte)2,(byte)7);
 		addConnection(tevar,beal,ConnectType.ROAD,"Deadlocked Desert");
-		beal.addFeature(new Store("Nomad's Market",4,10));
+		beal.addFeature(new Store("Nomad's Market",4,10).setIntro("A well dressed man who looks different from the rest approaches you, 'Welcome to the market, the herders will trade with anyone, but their customs do not permit haggling. We have aether conversion services in the back.'"));
 		//put mountain in middle
 		beal.addFeature(new Mountain("Rolling Slopes", 3));
 		beal.addFeature(new Store("Plain Plains Treaders",4,4));
-		beal.addFeature(new Arena("Makeshift Ring",2,1,12,6,3));
+		beal.addFeature(new Arena("Makeshift Ring",2,1,12,6,3).setIntro("A crude ring is drawn in the dirt, where some nomads are watching two drunk townspeople wail on each other."));
 		beal.addTravel();
 		beal.tTags.add(TownTag.SMALL_TOWN);
 		beal.tTags.add(TownTag.LIVESTOCK);
@@ -210,9 +210,9 @@ public class WorldGen {
 		addConnection(hemo,tanak,ConnectType.ROAD,"'Round the Mountain");
 		addConnection(beal,tanak,ConnectType.ROAD,"Wildering Plain");
 		tanak.addFeature(new Arena("The Gauntlet Cirque below Tanak",4,6,24*3,24*20,1));//lots of bouts
-		tanak.addFeature(new HeroGuild("Chantry of Boundless Heroism"));
+		tanak.addFeature(new HeroGuild("Chantry of Boundless Heroism").setIntro("The building looks more like a church than a guild, but the heavy armor and lack of robes on the people here belie its true intent."));
 		tanak.addFeature(new Store(5,6));
-		tanak.addFeature(new Inn("Cloud Comforts Inn",5,tanak,null));
+		tanak.addFeature(new Inn("Cloud Comforts Inn",5,tanak,null).setIntro("'Welcome to Cloud Comforts, the Tavern at the top!'").setOutro("'Thank you for coming to Cloud Comforts, we hope you enjoy your stay in Tanak.'"));
 		tanak.addTravel();
 		tanak.addTravel();
 		//tanak.addFeature(new Champion(8));
@@ -230,7 +230,7 @@ public class WorldGen {
 		addConnection(lokan,hemo,"ship","two way current");
 		lokan.addFeature(new Library("Records of Value", lokan));
 		lokan.addFeature(new Oracle("Appraiser of Fortune",3));
-		lokan.addFeature(new Appraiser("Appraiser of Steel"));
+		lokan.addFeature(new Appraiser("Appraiser of Steel").setIntro("A clerk raises their head to greet you, 'This place is mostly for sentimental reasons, my mentors have spread their teachings well. We can take over your gear, but I doubt we'll find anything new.'"));
 		lokan.addFeature(new Doctor("Appraiser of Wellness",lokan));
 		lokan.addTravel();
 		lokan.addTravel();
@@ -276,9 +276,9 @@ public class WorldGen {
 		//alhax.addFeature(new Arena("yenona arena",2,5,24*7,3,37));
 		addConnection(alhax,unun,"ship","yellow passageway");
 		alhax.addFeature(new Docks("Central Shiphub",alhax));
-		alhax.addFeature(new Inn("Lockbox Pub",3,alhax,null));
+		alhax.addFeature(new Inn("Lockbox Pub",3,alhax,null).setIntro("'Welcome to Lockbox! All rooms have a safe, and the key is different from your room key.'"));
 		alhax.addFeature(new Store("'A Cut Above'",4,5));//high level weapon store
-		alhax.addFeature(new Store("'Some of Everything'",3,6));
+		alhax.addFeature(new Store("'Some of Everything'",3,6).setIntro("'We might not have what you want, but I'm certain we have something you'll need.'"));
 		alhax.addFeature(new Store(2,4));
 		alhax.addFeature(new Store(2,0));
 		alhax.tTags.add(TownTag.MERCHANT);
@@ -370,13 +370,12 @@ public class WorldGen {
 		erin.addFeature(new Arena("Grandstander's Stands (daily bout)",5,1,24,12,39));
 		erin.addFeature(new Inn("Scholar's Respite",5,erin,null));
 		erin.addFeature(new Library("Alex's Library",erin));
-		erin.addFeature(new Appraiser("Material Patent Offices"));
+		erin.addFeature(new Appraiser("Material Patent Offices").setIntro("'We only handle physical patents, if you have new spells or magicks, head to Alex's.'"));
 		erin.tTags.add(TownTag.ARCANE);
 		erin.setFirstPrinter(new PrintEvent(){
 			@Override
 			public void print() {
 				extra.println("Erin has the largest library in this world, and scholars from all over gather in it to debate the newest theories.");
-				
 			}
 		});
 		
@@ -389,7 +388,7 @@ public class WorldGen {
 		placka.addTravel();
 		placka.addTravel();
 		placka.addFeature(new Champion(9));
-		placka.addFeature(new Dungeon("The Dungeon of Woe",placka,NodeFeature.Shape.NONE,BossType.NONE));
+		placka.addFeature(new Dungeon("The Dungeon of Woe",placka,NodeFeature.Shape.NONE,BossType.NONE).setOutro("You feel like something was trying to say goodbye..."));
 		placka.tTags.add(TownTag.ADVENTURE);
 		placka.tTags.add(TownTag.HISTORY);//a nameless name, an unrecorded history
 		//no lore on purpose
@@ -398,9 +397,9 @@ public class WorldGen {
 		addConnection(erin,tunka,"road","left-over road");
 		addConnection(placka,tunka,"road","diamond road");
 		tunka.addFeature(new Graveyard("The Boneyard", tunka));
-		tunka.addFeature(new Store("'A Quick Find'",7,6));
+		tunka.addFeature(new Store("'A Quick Find'",7,6).setIntro("'If you can't find anything you like, I'm sure I can put in a request with the Society.'").setOutro("'Bring back some good stuff for me, eh?''"));
 		tunka.addFeature(new RogueGuild("Society of Enterprising Nobles"));
-		tunka.addFeature(new Slum(tunka,"Forgettables District",false));
+		tunka.addFeature(new Slum(tunka,"Forgettables District",false).setOutro("As you leave, you notice a few hooded figures eyeing you from the rooftops."));
 		tunka.tTags.add(TownTag.LAWLESS);
 		tunka.tTags.add(TownTag.DISPARITY);
 		tunka.setFirstPrinter(new PrintEvent() {
@@ -428,7 +427,7 @@ public class WorldGen {
 		addConnection(repa,tunka,ConnectType.ROAD,"right-over road");
 		addConnection(repa,owal,ConnectType.ROAD,"Former Glory Road");
 		//add connection to a new world area
-		erin.addFeature(new Mountain("Mountain Teleporter Brace",9));
+		erin.addFeature(new Mountain("Mountain Teleporter Brace",9).setIntro("The mountain thrums with arcane energy."));
 		repa.addTravel();
 		repa.addTravel();
 		repa.addTravel();
@@ -459,9 +458,10 @@ public class WorldGen {
 			
 			@Override
 			public Feature generate(Slum from) {
-				return new MerchantGuild("Better Futures Central Office");
+				//MAYBELATER: make a custom anon merchant guild class that says "oh its you" and thanks you for paying to get it built
+				return new MerchantGuild("Better Futures Central Office").setIntro("'Welcome to Better Futures! We can assign a caseworker, if you'd like?'");
 			}
-		}));
+		}).setIntro("'We don't have much work, but if you need food, you can always try to wring life from these barren lands.'"));
 		senal.addFeature(new Garden(senal,"Desolate Fields",.2f,PlantFill.BAD_HARVEST));
 		senal.tTags.add(TownTag.BARREN);
 		senal.tTags.add(TownTag.DETERMINED);
@@ -475,7 +475,7 @@ public class WorldGen {
 		Town quen = new Town("Quen",9,epan,(byte)12,(byte)10);
 		addConnection(quen,senal,ConnectType.ROAD,"Derelict Pass");
 		quen.addFeature(new Dungeon("Blasted Palace", quen,30,12, Shape.TOWER,BossType.OLD_QUEEN));
-		quen.addFeature(new Library("Empire Records Bookstore", quen));
+		quen.addFeature(new Library("Empire Records Bookstore", quen).setIntro("'While all our books may be copies, they came straight from the source. Some of which are still cursed to never leave the Blasted Palace.'"));
 		quen.addFeature(new Dungeon("Crumbling Fort", quen,40,10, Shape.NONE, BossType.NONE));
 		quen.addFeature(new Mine("'The Last Ditch that Failed'", quen, 20,9, Shape.ELEVATOR,BossType.NONE));
 		quen.addFeature(new Grove("Dilapidated Hamlet", quen,100,8));
@@ -493,9 +493,9 @@ public class WorldGen {
 		addConnection(visan,repa,ConnectType.TELE,"Barren Bounce");
 		addConnection(visan,senal,ConnectType.TELE,"Through the Fog");
 		addConnection(visan,owal,ConnectType.SHIP,"Forgotten Shipping Lane");
-		visan.addFeature(new Doctor("Foglung Cure Center", visan));
+		visan.addFeature(new Doctor("Foglung Cure Center", visan).setIntro("As you enter, the doctor enters a coughing fit before responding, 'Don't worry, Foglung is curable, if you catch it soon enough. Check in every few weeks, or else you'll end up like me- stuck sleeping with a magic breathing aid.'"));
 		visan.addFeature(new Champion(10));
-		visan.addFeature(new Store(7,6));
+		visan.addFeature(new Store(7,6).setIntro("'Do you have any news about the monthly shipment route? Over the last year the lateness has added up to weeks!'"));
 		visan.addTravel();
 		visan.tTags.add(TownTag.BARREN);
 		visan.tTags.add(TownTag.TRAVEL);
@@ -524,7 +524,7 @@ public class WorldGen {
 		Island apen = new Island("Apen",w);
 		plane.addWorld(w);
 		Town holik = new Town("Holik", 10, apen, new Point(2,3));
-		holik.addFeature(new Oracle("The Worldgreeter",9));
+		holik.addFeature(new Oracle("The Worldgreeter",9).setIntro("A greeter answers you, 'Welcome to Greap! If you're from Repa that is. The oracles don't come out much, but rest assured they watch over their flock, no matter if they're from Eoano, Greap, or elsewhere.'"));
 		holik.addFeature(new Doctor("'Universal Compassion'", holik));
 		holik.addTravel();
 		holik.addTravel();
@@ -539,7 +539,7 @@ public class WorldGen {
 		yonuen.addFeature(new Store(9));
 		yonuen.addFeature(new Store(9));
 		yonuen.addFeature(new Dungeon("Sky-Sundering Tower", yonuen, Shape.TOWER,BossType.FATESPINNER));
-		yonuen.addFeature(new RogueGuild("The Open Adventuring Guild"));
+		yonuen.addFeature(new RogueGuild("The Open Adventuring Guild").setIntro("Outside the Guild, there is an overly long manifesto full of errors about how the other hero guilds aren't willing to take the biggest adventures, but they are."));
 		yonuen.addTravel();
 		yonuen.tTags.add(TownTag.ADVENTURE);
 		yonuen.tTags.add(TownTag.CITY);
@@ -557,8 +557,9 @@ public class WorldGen {
 		Town peana = new Town("Peana",12, apen, new Point(2,7));
 		addConnection(holik,peana,"road","blue road");
 		addConnection(unika,peana,"road","green road");
-		peana.addFeature(new Inn("'Dirges for the Damned'",12,peana,null));
-		peana.addFeature(new Store("'Tyrant's Treasures'",10,11));//oddity store
+		//trying to make a slight reference to death/hell metal music
+		peana.addFeature(new Inn("'Dirges for the Damned'",12,peana,null).setIntro("A bard is playing a loud and harsh magical lute.").setOutro("You leave before the music can grow on you."));
+		peana.addFeature(new Store("'Tyrant's Treasures'",10,11).setIntro("'Before you ask, most of this isn't from Hell. But some of it is, and a lot of treasure meant for Hell ends up here instead!'"));//oddity store
 		//peana.addFeature(new Arena("Deadsoul's Folly",10,1,24,12,135));
 		//peana.addFeature(new Appraiser("Peana Appraiser"));
 		peana.addFeature(new Mine("Staircase to Hell", peana,75,10,NodeFeature.Shape.ELEVATOR,BossType.GENERIC_DEMON_OVERLORD));
@@ -578,7 +579,7 @@ public class WorldGen {
 		inka.addFeature(new Mine("Motherload Mine", inka,30,14,NodeFeature.Shape.NONE,BossType.NONE));
 		inka.addFeature(new Mine("Deep Vein Dig", inka,80,12,NodeFeature.Shape.NONE,BossType.NONE));
 		inka.addFeature(new Slum(inka,"Miner's Subtown",true));
-		inka.addFeature(new Store("M. Hardhat's Shop",12,0));
+		inka.addFeature(new Store("M. Hardhat's Shop",12,0).setIntro("'Here at M. Hardhats, we offer a wide selection of brainbuckets to protect your noggin!'"));
 		inka.addTravel();
 		inka.tTags.add(TownTag.CITY);
 		inka.tTags.add(TownTag.MINERALS);
@@ -588,7 +589,7 @@ public class WorldGen {
 		pipa.addFeature(new WitchHut("Oak Coven's Hut",pipa));
 		pipa.addFeature(new Grove("Deciduous Sprawl",pipa));
 		pipa.addFeature(new Altar("Thorny Throne",AltarForce.FOREST));
-		pipa.addFeature(new Library("'Primal Knowledge'", pipa));
+		pipa.addFeature(new Library("'Primal Knowledge'", pipa).setIntro("You enter the hut and find yourself face to face with a giant plant lifting countless books. Most are faintly glowing from their paper."));
 		pipa.tTags.add(TownTag.ALCHEMY);
 		pipa.tTags.add(TownTag.DRUIDIC);
 		pipa.tTags.add(TownTag.HIDDEN);

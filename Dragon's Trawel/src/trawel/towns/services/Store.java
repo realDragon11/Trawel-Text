@@ -133,15 +133,6 @@ public class Store extends Feature{
 		}
 	}
 	
-	public Store setIntro(String _saying) {
-		intro = _saying;
-		return this;
-	}
-	public Store setOutro(String _saying) {
-		outro = _saying;
-		return this;
-	}
-	
 	@Override
 	public String getColor() {
 		return extra.F_SERVICE;

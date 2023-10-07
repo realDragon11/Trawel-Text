@@ -16,6 +16,7 @@ import trawel.time.ContextType;
 import trawel.time.TContextOwner;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
+import trawel.towns.services.Store;
 
 public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	
@@ -178,6 +179,15 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 		if (text != null && mainGame.displayFeatureFluff) {
 			extra.println(text);
 		}
+	}
+	
+	public Feature setIntro(String _saying) {
+		intro = _saying;
+		return this;
+	}
+	public Feature setOutro(String _saying) {
+		outro = _saying;
+		return this;
 	}
 	
 	/**
