@@ -1824,6 +1824,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public void setEffectCount(Effect e, int count) {
 		effects.put(e, count);
 	}
+	
+	public void addEffectCount(Effect e, int count) {
+		effects.put(e, effects.getOrDefault(e,0)+count);
+	}
 
 	public double getWoundDodgeCalc() {
 		int torn = effects.getOrDefault(Effect.TORN,0);//torn builds up quickly

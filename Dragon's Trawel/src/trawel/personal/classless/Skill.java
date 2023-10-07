@@ -179,7 +179,12 @@ public enum Skill{
 		TACTIC_CHALLENGE("Tactic: Challenge","Grants access to the Challenge tactic at all times."
 				,WeaponAttackFactory.AttackBonus.CHALLENGE.desc
 				,Type.TACTIC_TYPE),
-		
+		TACTIC_TAKEDOWN("Tactic: Planned Takedown","Grants access to the Takedown tactic at all times."
+				,WeaponAttackFactory.AttackBonus.TAKEDOWN.desc
+				,Type.TACTIC_TYPE),
+		TWINNED_TAKEDOWN("Twinned Takedown","Grants the Takedown effect on kill."
+				,"Takedown applies Knockout on your next impactful attack. It stacks in duration."
+				,Type.OFFENSE)
 		
 		;
 	    private String name,desc, longDesc;

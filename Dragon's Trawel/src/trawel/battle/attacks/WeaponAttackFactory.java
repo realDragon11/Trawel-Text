@@ -55,7 +55,10 @@ public class WeaponAttackFactory {
 				,"The extended cooldown is the normal cooldown plus twice the warmup of their attack, and reduced by the time spent on their canceled attack, down to a minimum of the normal cooldown. Fails if the target is using a tactic.")
 		,SINGLE_OUT("Single Out","Make attacks on this target likely to repeat"
 				,"On use: Makes the target more likely to be chosen again by any Person that attacks it, with a 2/3rds chance to force them to attack again."
-				,"This does not make it more likely that it is chosen in the first place. Does not apply if was attacked by an ally.");
+				,"This does not make it more likely that it is chosen in the first place. Does not apply if was attacked by an ally."),
+		TAKEDOWN("Takedown","Your next impactful attack will inflict the Knockout Wound as a bonus."
+				,"On use: Grants next impactful attack a bonus Knockout Wound infliction."
+				,"Stacks in duration.");
 		public final String label, desc, mech, deep;
 		AttackBonus(String _label, String _desc, String _mech, String _deep) {
 			label = _label;
@@ -890,6 +893,12 @@ public class WeaponAttackFactory {
 				.setFluff("X` challenges V`!")
 				.setWarmupOfTotal(TimeTier.INSTANT, TimeTier.FASTEST)
 				.finish().setSkill_for(Skill.TACTIC_CHALLENGE).setRider(AttackBonus.CHALLENGE)
+				);
+		tacticMap.put(Skill.TACTIC_TAKEDOWN,
+				make("planned takedown")
+				.setFluff("X` sizes up `V and plans a takedown!")
+				.setWarmupOfTotal(TimeTier.INSTANT, TimeTier.FAST)
+				.finish().setSkill_for(Skill.TACTIC_TAKEDOWN).setRider(AttackBonus.TAKEDOWN)
 				);
 		
 		sta = new Stance(Archetype.ACRO_DAREDEVIL,Skill.OPPORTUNIST);

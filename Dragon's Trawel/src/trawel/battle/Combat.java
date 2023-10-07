@@ -721,10 +721,15 @@ public class Combat {
 			}
 		}
 		if (killer.hasSkill(Skill.PRESS_ADV)) {
-			killer.addEffect(Effect.ADVANTAGE_STACK);
-			killer.addEffect(Effect.ADVANTAGE_STACK);
+			killer.addEffectCount(Effect.ADVANTAGE_STACK,2);
 			if (!extra.getPrint()) {
 				extra.println(killer.getName() + " presses the advantage!");
+			}
+		}
+		if (killer.hasSkill(Skill.TWINNED_TAKEDOWN)) {
+			killer.addEffect(Effect.PLANNED_TAKEDOWN);
+			if (!extra.getPrint()) {
+				extra.println(killer.getName() + " plans a twin takedown!");
 			}
 		}
 		FBox.repCalc(killer,dead);
@@ -1211,9 +1216,6 @@ public class Combat {
 				defender.advanceTime(atr.attack.getTime()/50f);
 			}
 			if (atr.hasWound()) {
-				//|| damage == 0//wounds no longer hit if dam=0, if this needs to change, fix woundstring printing as well
-				//DOLATER: fix that?
-				//although they'll still not usually apply if damage == 0
 				if (defender.hasEffect(Effect.CHALLENGE_BACK)) {
 					woundstr = " They stand strong with temerity!";
 					defender.removeEffectAll(Effect.CHALLENGE_BACK);
@@ -1233,6 +1235,11 @@ public class Combat {
 						}
 					}
 				}
+			}
+			if (attacker.hasEffect(Effect.PLANNED_TAKEDOWN)) {
+				attacker.removeEffect(Effect.PLANNED_TAKEDOWN);
+				//knockout
+				woundstr += inflictWound(attacker,defender,atr,Wound.KO);
 			}
 			if (atr.code == ATK_ResultCode.KILL) {//if force kill
 				//might not actually be final death, but this is fine to say
@@ -1618,7 +1625,7 @@ public class Combat {
 				defender2.addEffect(Effect.MAJOR_BLEED);//don't need to be clotted
 				case BLEED:
 				if (!defender2.hasEffect(Effect.CLOTTER)) {
-					defender2.setEffectCount(Effect.BLEED,defender2.effectCount(Effect.BLEED)+nums[0]);
+					defender2.addEffectCount(Effect.BLEED,nums[0]);
 				}
 				break;
 			case DISARMED: case SCREAMING:
@@ -1646,7 +1653,7 @@ public class Combat {
 				break;
 			case BLOODY:
 				if (!defender2.hasEffect(Effect.CLOTTER)) {
-					defender2.setEffectCount(Effect.BLEED,defender2.effectCount(Effect.BLEED)+nums[1]);
+					defender2.addEffectCount(Effect.BLEED,nums[1]);
 				}
 				if (defender2.isAttacking()) {
 					defender2.getNextAttack().multiplyHit(1-(nums[0]/10f));
@@ -1803,6 +1810,9 @@ public class Combat {
 					if (!extra.getPrint()) {
 						extra.println(prettyHPColors("[HA]"+attacker.getNameNoTitle()+" singles out [HD]"+defender.getNameNoTitle()+"...", extra.TIMID_MAGENTA, attacker, defender));
 					}*/
+					break;
+				case TAKEDOWN:
+					attacker.addEffect(Effect.PLANNED_TAKEDOWN);
 					break;
 			}
 		}

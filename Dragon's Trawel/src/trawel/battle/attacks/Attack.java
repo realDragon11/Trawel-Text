@@ -440,16 +440,16 @@ public class Attack implements IAttack{
 		I_BLEED_WEAK("Trauma","Applies a stacking %2$d bleed, expected %1$d for this stack against you.","Their insides get smashed."),
 		DISARMED("Disarm","Removes one attack choice on next attack.","Their attack is put off-kilter!"),		
 		TRIPPED("Tripped","The next attack will take %1$d instants longer.","They are tripped!"),
-		KO("Knockout","Deals %1$d bonus damage, but heals after their next attack.","It's a knockout!"),
-		HACK("Hack","Deals up to %1$d bonus damage based on unblocked damage.","It's a wicked hack!"),
-		TAT("Punctured","Deals up to %1$d bonus damage, based on final pierce damage and to-hit.","The blow goes right through them!"),
-		CRUSHED("Crushed","Deals %1$d bonus armor piercing damage.","They are crushed!"),
+		KO("Knockout","Deals %1$d direct damage, but heals after their next attack.","It's a knockout!"),
+		HACK("Hack","Deals up to %1$d direct damage based on unblocked damage.","It's a wicked hack!"),
+		TAT("Punctured","Deals up to %1$d direct damage, based on final pierce damage and to-hit.","The blow goes right through them!"),
+		CRUSHED("Crushed","Deals %1$d direct damage.","They are crushed!"),
 		
 		//elemental
-		SCALDED("Scalded","Deals %1$d bonus armor piercing damage.","They are scalded by the flames!"),//TODO: more elemental wounds
+		SCALDED("Scalded","Deals %1$d direct damage.","They are scalded by the flames!"),//TODO: more elemental wounds
 		SCREAMING("Screaming","Removes one attack choice.","They scream!"),
 		FROSTED("Frosted","The next attack will take %1$d%% longer on the current time, up to %2$d instants increase.","They are frozen over..."),
-		FROSTBITE("Frostbite","Deals %1$d bonus armor piercing damage.","Their flesh is frozen!"),
+		FROSTBITE("Frostbite","Deals %1$d direct damage.","Their flesh is frozen!"),
 		
 		//exotic
 		TEAR("Tear","Decreases dodge by %1$%d%%, stacking.","Their wing is torn!"), //see if need to add a '%'
