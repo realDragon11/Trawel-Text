@@ -6,6 +6,7 @@ import java.util.List;
 import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.extra;
+import trawel.battle.attacks.WeaponAttackFactory.AttackBonus;
 import trawel.battle.attacks.WeaponAttackFactory.AttackMaker;
 import trawel.personal.Person;
 import trawel.personal.classless.IHasSkills;
@@ -90,8 +91,8 @@ public class Stance{
 	public void addAttack(AttackMaker newAttack) {
 		addAttack(newAttack.finish(),newAttack.getRarity());
 	}
-	public void addTactic(AttackMaker newAttack, Skill tactic) {
-		addAttack(newAttack.finish().setSkill_for(tactic),newAttack.getRarity());
+	public void addAttack(AttackMaker newAttack,AttackBonus _rider) {
+		addAttack(newAttack.finish().setRider(_rider),newAttack.getRarity());
 	}
 	/**
 	 * Returns the number of attacks in the stance.

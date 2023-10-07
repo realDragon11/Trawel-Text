@@ -45,6 +45,26 @@ public class WeaponAttackFactory {
 		return WeaponType.values()[weapTypeTable.random(extra.getRand())];
 	}
 	
+	public enum AttackBonus{
+		ROLL("Roll","Gain a temporary dodge bonus then an accuracy/speed bonus on the attack after, before having to recover."
+				,"On use: Enhances dodge roll by a flat +0.2 and makes the next attack half the duration and more accurate, at the cost of half dodge during the attack following the attack that benefits."
+				,"Quicker attacks gain 1x-2x accuracy based on un-reduced duration below 100 instants, but slower attacks get more benefit from the delay reduction. Dodge bonus applies after normal dodge is rolled."
+				)
+		,CHALLENGE("Challenge","Force opponent to attack you, then attack them back"
+				,"On use: Forces your target to attack you: their current action is interrupted and they take an attack on you immediately, but they suffer an extended cooldown, you can negate an impactful wound if they hit, and you will attack them again with +20% damage if you not use the wound negation after the attack."
+				,"The extended cooldown is the normal cooldown plus twice the warmup of their attack, and reduced by the time spent on their canceled attack, down to a minimum of the normal cooldown. Fails if the target is using a tactic.")
+		,SINGLE_OUT("Single Out","Make attacks on this target likely to repeat"
+				,"On use: Makes the target more likely to be chosen again by any Person that attacks it, with a 2/3rds chance to force them to attack again."
+				,"This does not make it more likely that it is chosen in the first place. Does not apply if was attacked by an ally.");
+		public final String label, desc, mech, deep;
+		AttackBonus(String _label, String _desc, String _mech, String _deep) {
+			label = _label;
+			desc = _desc;
+			mech = _mech;
+			deep = _deep;
+		}
+	}
+	
 	public WeaponAttackFactory() {
 		int weapTypesSize = WeaponType.values().length;
 		float[] weapTypeWeights = new float[weapTypesSize];
@@ -850,30 +870,30 @@ public class WeaponAttackFactory {
 				make("test tactic")
 				.setFluff("X` examines V`!")
 				.setWarmupOfTotal(TimeTier.HALF_FAST, TimeTier.FAST)
-				.finish().setSkill_for(Skill.TACTIC_TEST)
+				.finish().setSkill_for(Skill.TACTIC_TEST).setRider(AttackBonus.ROLL)
 				);
 		
 		tacticMap.put(Skill.TACTIC_DUCK_ROLL,
 				make("duck 'n roll")
 				.setFluff("X` prepares for a tactical roll towards V`!")
 				.setWarmupOfTotal(TimeTier.HALF_NORMAL, TimeTier.NORMAL)
-				.finish().setSkill_for(Skill.TACTIC_DUCK_ROLL)
+				.finish().setSkill_for(Skill.TACTIC_DUCK_ROLL).setRider(AttackBonus.ROLL)
 				);
 		tacticMap.put(Skill.TACTIC_SINGLE_OUT,
 				make("single out")
 				.setFluff("X` singles out V`!")
 				.setWarmupOfTotal(TimeTier.INSTANT, TimeTier.FASTEST)
-				.finish().setSkill_for(Skill.TACTIC_SINGLE_OUT)
+				.finish().setSkill_for(Skill.TACTIC_SINGLE_OUT).setRider(AttackBonus.SINGLE_OUT)
 				);
 		tacticMap.put(Skill.TACTIC_CHALLENGE,
 				make("challenge")
 				.setFluff("X` challenges V`!")
 				.setWarmupOfTotal(TimeTier.INSTANT, TimeTier.FASTEST)
-				.finish().setSkill_for(Skill.TACTIC_CHALLENGE)
+				.finish().setSkill_for(Skill.TACTIC_CHALLENGE).setRider(AttackBonus.CHALLENGE)
 				);
 		
 		sta = new Stance(Archetype.ACRO_DAREDEVIL,Skill.OPPORTUNIST);
-		sta.addTactic(
+		sta.addAttack(
 				make("rough tumble")//Minstrel DQ9
 				.setFluff("X` tumbles towards Y`, attempting to bodycheck them!")
 				.setRarity(1f)
@@ -881,8 +901,8 @@ public class WeaponAttackFactory {
 				.setDamage(DamageTier.LOW,DamageTier.WEAK,.5f)
 				.setMix(0, 1, 0)
 				.setWarmupOfTotal(TimeTier.HALF_NORMAL, TimeTier.SLOW)
-				,Skill.TACTIC_DUCK_ROLL);
-		sta.addTactic(
+				,AttackBonus.ROLL);
+		sta.addAttack(
 				make("daring dive")
 				.setFluff("X` dives into Y`, leaving themselves open!")
 				.setRarity(1f)
@@ -890,7 +910,7 @@ public class WeaponAttackFactory {
 				.setDamage(DamageTier.LOW,DamageTier.WEAK,.5f)
 				.setMix(0, 1, 0)
 				.setWarmupOfTotal(TimeTier.HALF_FASTEST, TimeTier.FASTER)
-				,Skill.TACTIC_CHALLENGE);
+				,AttackBonus.CHALLENGE);
 		addStance(Archetype.ACRO_DAREDEVIL,sta, new AttackLevel() {
 			
 			@Override
@@ -900,7 +920,7 @@ public class WeaponAttackFactory {
 			}
 		});
 		sta = new Stance(Archetype.FISH_TALL,Skill.OPPORTUNIST);
-		sta.addTactic(
+		sta.addAttack(
 				make("bitch slap")//idk the proper name for disrespectful slapping
 				.setFluff("X` slaps Y`!")
 				.setRarity(1f)
@@ -908,8 +928,8 @@ public class WeaponAttackFactory {
 				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.1f)
 				.setMix(0, 1, 0)
 				.setWarmupOfTotal(TimeTier.HALF_FAST, TimeTier.NORMAL)
-				,Skill.TACTIC_CHALLENGE);
-		sta.addTactic(
+				,AttackBonus.CHALLENGE);
+		sta.addAttack(
 				make("bitch hand")
 				.setFluff("X` backhands Y` and leaves their army to it!")
 				.setRarity(3f)//worse and more common so they aren't always slapping
@@ -917,13 +937,13 @@ public class WeaponAttackFactory {
 				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.5f)
 				.setMix(0, 1, 0)
 				.setWarmupOfTotal(TimeTier.HALF_NORMAL, TimeTier.SLOW)
-				,Skill.TACTIC_SINGLE_OUT);
+				,AttackBonus.SINGLE_OUT);
 		addStance(Archetype.FISH_TALL,sta, new AttackLevel() {
 			
 			@Override
 			public int getEffectiveLevel(Person p) {
 				AttributeBox a = p.fetchAttributes();
-				return a.getEffectiveAttributeLevel(a.getDexterity());
+				return a.getEffectiveAttributeLevel(a.getStrength());
 			}
 		});
 		

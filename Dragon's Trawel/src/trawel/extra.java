@@ -1066,6 +1066,10 @@ public final class extra {
 	//attributes
 	public static final String ATT_TRUE = PRE_MAGENTA;
 	public static final String ATT_EFFECTIVE = TIMID_MAGENTA;
+	
+	//attack picking
+	public static final String ATK_BONUS = STAT_HEADER;
+	public static final String ATK_WOUND = ITEM_DESC_PROP;
 
 	public static String colorBasedAtOne(double number, String plus, String minus, String empty) {
 		String str = format2.format(number);

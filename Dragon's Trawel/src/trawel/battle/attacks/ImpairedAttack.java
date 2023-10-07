@@ -9,6 +9,7 @@ import trawel.battle.Combat;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.Attack.Wound;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
+import trawel.battle.attacks.WeaponAttackFactory.AttackBonus;
 import trawel.personal.Person;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.IHasSkills;
@@ -605,7 +606,7 @@ public class ImpairedAttack implements IAttack{
 						);
 			}
 			if (wound != null) {
-				extra.println("  "+this.wound.name + " - " + String.format(this.wound.desc,(Object[])Combat.woundNums(this,attacker,defender,null,wound)));
+				extra.println("  "+extra.ATK_WOUND+wound.name + extra.PRE_WHITE+ " - " + String.format(this.wound.desc,(Object[])Combat.woundNums(this,attacker,defender,null,wound)));
 			}
 		}
 
@@ -622,6 +623,6 @@ public class ImpairedAttack implements IAttack{
 	}
 	
 	public boolean hasBonusEffect() {
-		return  attack.getSkill_for() != null && attack.getSkill_for() != attack.getStance().getSkill();
+		return  attack.getRider() != null;
 	}
 }

@@ -4,6 +4,7 @@ import derg.StringResult;
 import trawel.extra;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
+import trawel.battle.attacks.WeaponAttackFactory.AttackBonus;
 import trawel.battle.attacks.WeaponAttackFactory.DamageTier;
 import trawel.personal.Person;
 import trawel.personal.classless.IHasSkills;
@@ -49,6 +50,8 @@ public class Attack implements IAttack{
 	 * note that this current system wouldn't be able to handle a rock and a magic rock in the same attack
 	 */
 	private boolean bypass;
+	
+	private AttackBonus rider;
 	
 	//constructor
 	/**
@@ -554,6 +557,7 @@ public class Attack implements IAttack{
 		a.soundStrength = soundStrength;
 		a.soundType = soundType;
 		a.skill_for = skill_for;
+		a.rider = rider;
 		return a;
 	}
 
@@ -566,15 +570,26 @@ public class Attack implements IAttack{
 	}
 
 	public Skill getSkill_for() {
+		/*USED TO
 		//secondary tactics in stances overwrite their skill_fors
 		if (skill_for != null) {
 			return skill_for;
-		}
+		}*/
 		return holdingStance.getSkill();
 	}
+	
+	public AttackBonus getRider() {
+		return rider;
+	}
+	
 	//fluent
 	public Attack setSkill_for(Skill skill_for) {
 		this.skill_for = skill_for;
+		return this;
+	}
+	
+	public Attack setRider(AttackBonus _rider) {
+		rider = _rider;
 		return this;
 	}
 	

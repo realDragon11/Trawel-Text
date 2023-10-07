@@ -1521,9 +1521,9 @@ public class Combat {
 			}
 		}
 		//END TURN TRIGGERS
-		if (atr.attack.getAttack().getSkill_for() != null) {
-			switch (atr.attack.getAttack().getSkill_for()) {
-			case TACTIC_CHALLENGE:
+		if (atr.attack.hasBonusEffect()) {
+			switch (atr.attack.getAttack().getRider()) {
+			case CHALLENGE:
 				//doesn't work on tactics
 				if (defender.isAttacking() && defender.getNextAttack().isTacticOnly()) {
 					if (!extra.getPrint() && !didDisplay) {
@@ -1779,18 +1779,18 @@ public class Combat {
 		attacker.setAttack(newAttack);
 		newAttack.setDefender(defender);
 		//note that attacks can be retargeted, so the following code might not run with the final defender
-		if (newAttack.getAttack().getSkill_for() != null) {
-			switch (newAttack.getAttack().getSkill_for()) {
+		if (newAttack.hasBonusEffect()) {
+			switch (newAttack.getAttack().getRider()) {
 				default://most won't have cases
-				case TACTIC_CHALLENGE://handled later to avoid faux 'race' conditions
+				case CHALLENGE://handled later to avoid faux 'race' conditions
 					break;
-				case TACTIC_DUCK_ROLL:
+				case ROLL:
 					attacker.addEffect(Effect.DUCKING);
 					if (!extra.getPrint()) {
 						extra.println(prettyHPPerson("[HP]"+attacker.getNameNoTitle()+" ducks!",extra.TIMID_MAGENTA, attacker));
 					}
 					break;
-				case TACTIC_SINGLE_OUT:
+				case SINGLE_OUT:
 					//always applies to the first target even if redirected, which will reduce player frustration
 					//and also is just easier to code
 					

@@ -13,6 +13,7 @@ import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.Stance;
 import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.battle.attacks.WeaponAttackFactory.AttackBonus;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.classless.Skill;
@@ -1038,7 +1039,8 @@ public class AIClass {
 							extra.print(j + " ");
 							a.display(2);
 							if (a.hasBonusEffect()) {
-								extra.println("  "+a.getAttack().getSkill_for().explainEffect());
+								AttackBonus ab = a.getAttack().getRider();
+								extra.println("  "+extra.ATK_BONUS+ab.label +extra.PRE_WHITE+": " + ab.desc);
 							}
 							j++;
 						}
@@ -1088,7 +1090,7 @@ public class AIClass {
 									@Override
 									public String title() {
 										//TODO: perhaps standardize display
-										return a.getName() +", delay of "+a.getSpeed()+": " +skill.explainEffect();
+										return a.getName() +", delay of "+a.getSpeed()+": " +a.getRider().desc;
 									}
 
 									@Override
