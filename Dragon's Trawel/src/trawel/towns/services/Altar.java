@@ -294,4 +294,39 @@ public class Altar extends Feature{
 		//TODO: blood
 	}
 	
+	@Override
+	public String getIntro() {
+		float rel = getRelation()*extra.randFloat();
+		if (rel < 2f) {
+			return null;// no response
+		}
+		//from below, add the highest message at the top and fallback downwards
+		if (rel > 12f) {
+			switch(force) {
+			case FOREST:
+				return "The heartwood chair creaks and the thorns turn aside, inviting you to sit.";
+			case SKY:
+				return "Thunder booms and rain falls around you, but you find yourself in the eye- untouched by the storm.";
+			}
+		}
+		if (rel > 8f) {
+			switch(force) {
+			case FOREST:
+				return "The brambles beat as if it were a living heart, pleased at your approach.";
+			case SKY:
+				return "A sudden but refreshing wind blows down on you as you inspect the altar.";
+			}
+		}
+		if (rel > 4f) {
+			switch(force) {
+			case FOREST:
+				return "The leaves bristle in the wind...";
+			case SKY:
+				return "The wind picks up as you approach the slab.";
+			}
+		}
+		//fallback if nothing is said
+		return "You feel a deep connection here.";
+	}
+	
 }

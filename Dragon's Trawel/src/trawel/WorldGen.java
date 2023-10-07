@@ -316,7 +316,11 @@ public class WorldGen {
 		arona.addFeature(new Champion(10));
 		arona.addFeature(new Champion(7));
 		arona.addFeature(new Store(4,11));
-		arona.addFeature(new Store("'kNew You'",10,7));//sneak a species store in the middle 'They Knew You, but not the New You.'
+		//sneak a species store in the middle 'They Knew You, but not the New You.'
+		arona.addFeature(new Store("'kNew You'",10,7)
+				.setIntro("'Welcome to kNew You, where they knew you but not the new you! We only take trade ins.'")
+				.setOutro("'If you are unsatisfied, come back and try out a new you!'")
+				);
 		arona.addFeature(new Store(3,11));
 		arona.tTags.add(TownTag.ARCANE);
 

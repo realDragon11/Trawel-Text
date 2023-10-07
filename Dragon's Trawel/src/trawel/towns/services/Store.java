@@ -49,7 +49,6 @@ public class Store extends Feature{
 	protected float aetherRate;
 	protected int invSize;
 	protected int itemMinLevel = -1, itemMaxLevel = -1;
-	protected String intro, outro;
 	
 	public static final int INVENTORY_SIZE = 5;
 	
@@ -563,13 +562,7 @@ public class Store extends Feature{
 	
 	@Override
 	public void go() {
-		if (intro != null && mainGame.displayFeatureFluff) {
-			extra.println(intro);
-		}
 		extra.menuGo(modernStoreFront());
-		if (outro != null && mainGame.displayFeatureFluff) {
-			extra.println(outro);
-		}
 	}
 	
 	@Override

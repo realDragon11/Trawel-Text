@@ -4,6 +4,7 @@ import java.util.List;
 
 import trawel.Networking;
 import trawel.extra;
+import trawel.mainGame;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
@@ -31,6 +32,7 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	protected String background_area = "main";
 	protected int tier;
 	protected Networking.Area area_type;
+	protected String intro, outro;
 	
 	protected abstract void go();
 	protected void goHeader() {
@@ -162,12 +164,33 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	 */
 	public void enter() {
 		goHeader();
+		String text = getIntro();
+		if (text != null && mainGame.displayFeatureFluff) {
+			extra.println(text);
+		}
 		if (owner == Player.player && moneyEarned > 0) {
 			extra.println("You take the " + moneyEarned + " in profits.");
 			Player.player.addGold(moneyEarned);
 			moneyEarned = 0;
 		}
 		go();
+		text = getOutro();
+		if (text != null && mainGame.displayFeatureFluff) {
+			extra.println(text);
+		}
+	}
+	
+	/**
+	 * can be overwritten to implement variable intros
+	 */
+	public String getIntro() {
+		return intro;
+	}
+	/**
+	 * can be overwritten to implement variable outros
+	 */
+	public String getOutro() {
+		return outro;
 	}
 	
 	public RemoveAgentFromFeatureEvent laterRemoveAgent(Agent a) {
