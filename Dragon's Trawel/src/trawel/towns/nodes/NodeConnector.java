@@ -251,6 +251,9 @@ public class NodeConnector implements Serializable {
 					break;//exit area since we got gated at start
 				}
 				setCurrentNode(getLastNode());//set to last node
+			}else {
+				//will only autosave if not having kickback stuff to avoid any edge cases that might occur
+				mainGame.checkAutosave();
 			}
 			enter(getCurrentNode());
 			if (gateKickBack == true && wasKicked) {

@@ -1768,17 +1768,21 @@ public class mainGame {
 		Player.isPlaying = true;
 		extra.mainThreadDataUpdate();
 		while(Player.isPlaying) {
-			if (doAutoSave && (new Date().getTime()-lastAutoSave.getTime() > 1000*60*2)) {
-				extra.println("Autosaving...");
-				WorldGen.plane.prepareSave();;
-				WorldGen.save("auto");
-				lastAutoSave = new Date();
-			}
+			checkAutosave();
 			Player.player.getLocation().atTown();
 			globalPassTime();
 		}
 		multiCanRun = false;
 		extra.println("You do not wake up.");
+	}
+	
+	public static void checkAutosave() {
+		if (doAutoSave && (new Date().getTime()-lastAutoSave.getTime() > 1000*60*2)) {
+			extra.println("Autosaving...");
+			WorldGen.plane.prepareSave();
+			WorldGen.save("auto");
+			lastAutoSave = new Date();
+		}
 	}
 
 	/**

@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
@@ -678,7 +679,7 @@ public class WorldGen {
 				){
 			 pws.write(Player.player.getPerson().getName()
 					 +", level " + Player.player.getPerson().getLevel()
-					 + ": " +Timestamp.from(Instant.now())
+					 + ": " +new Date().toString()
 					 +" "+mainGame.VERSION_STRING+"\0");
 			 ;
 			 pws.flush();
