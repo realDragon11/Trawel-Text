@@ -81,7 +81,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 	}
 	
 	public boolean equalQuals(Weapon w) {
-		return qualList.equals(w.qualList);//private bypassing lol
+		return qualList.equals(w.qualList);
 	}
 	
 	public enum WeaponType{
@@ -168,13 +168,6 @@ public class Weapon extends Item implements IEffectiveLevel {
 	public Weapon(int newLevel, WeaponType type) {
 		this(newLevel,MaterialFactory.randWeapMat(),type);
 	}
-	
-	/***
-	 * used for testing
-	 */
-	public Weapon(boolean useSquid) {
-		this(1,MaterialFactory.randWeapMat(),WeaponAttackFactory.randWeapType());
-	}
 
 	//instance methods
 	
@@ -190,7 +183,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 		case CLAWS_TEETH_GENERIC: return false;
 		case BRANCHES: return false;
 		case GENERIC_FISTS: return false;
-		case UNICORN_HORN: return false;//maybe make a drawbane for this
+		case UNICORN_HORN: return false;
 		case TALONS_GENERIC: return false;
 		case FISH_SPEAR: return true;
 		case FISH_ANCHOR: return true;
@@ -287,7 +280,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 	 * @return base cost (int)
 	 */
 	public int getBaseCost() {
-		return (int) (getMat().cost*weap.cost* getUnEffectiveLevel() * (1 + .1f *qualList.size()));
+		return (int) (getMat().cost*weap.cost*getUnEffectiveLevel() * (1 + .05f*qualTraitSum()));
 	}
 
 	
@@ -556,15 +549,6 @@ public class Weapon extends Item implements IEffectiveLevel {
 		this.enchant = new EnchantHit(true,getEnchantMult());
 		updateStats();
 	}
-
-	public static double getRarity(String str) {
-		switch (str) {
-		case "claymore": case " lance": case "shovel":
-			return (1/8.0)/3.0;
-		default:
-			return 1.0/8.0;
-		}
-	}
 	
 	public static Weapon genMidWeapon(int newLevel) {
 		return new Weapon(newLevel);
@@ -629,8 +613,6 @@ public class Weapon extends Item implements IEffectiveLevel {
 		super.updateStats();
 		refreshBattleScore();
 	}
-	
-	public static final String[] weaponTypes = new String[]{"longsword","broadsword","mace","spear","axe","rapier","dagger","claymore","lance","shovel"};
 	
 	public static void rarityMetrics() throws FileNotFoundException {
 		/*
