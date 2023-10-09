@@ -10,9 +10,24 @@ import trawel.personal.item.solid.variants.ArmorStyle;
  */
 public class Material{
 	public String name;
+	/**
+	 * 0f = disable
+	 * <br>
+	 * .3f = normal metals
+	 * <b5>
+	 * 1 - 1.5f = many magic or better metals
+	 * <br>
+	 * around 2f = magic inclined materials like gold and mythril
+	 * <br>
+	 * 3f = highest material we have currently
+	 */
 	public float baseEnchant;
 	public float baseResist, sharpResist, bluntResist, pierceResist, weight, cost, dexMod;
-	public float rarity, tier, sharpMult, bluntMult, pierceMult;
+	public float rarity, tier;
+	/**
+	 * should be between .1f and 3f
+	 */
+	public float sharpMult, bluntMult, pierceMult;
 	public Boolean armor, weapon;
 	public float fireVul, shockVul, freezeVul;//vulernability
 	public List<ArmorStyle> typeList = new ArrayList<ArmorStyle>();
@@ -58,7 +73,5 @@ public class Material{
 	/**
 	 * used for reverse lookup so we don't even have to store them as strings
 	 */
-	public transient int curNum;//not stored anyway, but marked transient
-
-	public Material() {}
+	public transient int curNum;//material singletons not stored anyway, but marked transient
 }

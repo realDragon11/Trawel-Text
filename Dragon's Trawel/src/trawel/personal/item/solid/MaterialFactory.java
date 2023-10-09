@@ -319,7 +319,7 @@ public class MaterialFactory {
 		misc.weapon = true;
 		misc.weight = 30;
 		misc.cost = 40;
-		misc.baseEnchant = 0;
+		misc.baseEnchant = .1f;
 		misc.baseResist = 9;
 		misc.sharpResist = 1;
 		misc.bluntResist = 1;
@@ -423,7 +423,7 @@ public class MaterialFactory {
 		misc.pierceResist = .2f;
 		misc.dexMod = .7f;
 		misc.sharpMult = .1f;
-		misc.bluntMult = 3;
+		misc.bluntMult = 2.7f;
 		misc.pierceMult = .1f;
 		misc.tier = 3;
 		misc.rarity = .5f;
@@ -656,9 +656,9 @@ public class MaterialFactory {
 		misc.bluntResist = 1.2f;
 		misc.pierceResist = .4f;
 		misc.dexMod = .5f;
-		misc.sharpMult = .2f;
-		misc.bluntMult = 3.5f;
-		misc.pierceMult = .2f;
+		misc.sharpMult = .3f;
+		misc.bluntMult = 3f;
+		misc.pierceMult = .3f;
 		misc.tier = 4;
 		misc.rarity = .1f;
 		misc.fireVul = .8f;
