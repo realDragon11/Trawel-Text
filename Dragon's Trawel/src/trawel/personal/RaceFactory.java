@@ -170,9 +170,15 @@ public class RaceFactory {
 	
 	public RaceFactory() {
 		Race misc;
+		/**
+		 * lore implication that a lot of the past empires were human ones
+		 * and they really resent the rulers of those fallen empires
+		 * so being compared to their past is degrading
+		 */
 		misc = new Race(RaceID.HUMAN);
 		misc.swears.add("thinskin");
 		misc.swears.add("dominator");
+		misc.swears.add("inquisitor");
 		misc.aimMod = 1.05;
 		misc.damMod = 1;
 		misc.dodgeMod = 1;
@@ -181,6 +187,8 @@ public class RaceFactory {
 		//+.1 total
 		misc.rarity = 2;
 		misc.insultList.add("Your skin is as thin as your brain!");
+		misc.insultList.add("All your empires fell, and so shall you!");
+		misc.insultList.add("The sins of your past are unforgivable!");
 		misc.baseMap = "human";
 		misc.raceMaps.add("0");
 		misc.raceMaps.add("1");
@@ -194,9 +202,14 @@ public class RaceFactory {
 		misc.raceClass = RaceClass.HUMAN_LIKE;
 		raceList.add(misc);
 		
+		/*lore implication being their tribes banded together to forge an empire
+		and then just ended up being tossed around by despots and empires as cannon fodder in their own wars
+		the orcs are respected for their physical strength but their ambition is insulted
+		*/
 		misc = new Race(RaceID.ORC);
 		misc.swears.add("greenskin");
 		misc.swears.add("blockhead");//idk what insults do people use that could be fantasy slurs
+		misc.swears.add("grunt");
 		misc.aimMod = .95;
 		misc.damMod = 1.10;
 		misc.dodgeMod = 1.05;
@@ -205,6 +218,8 @@ public class RaceFactory {
 		//+.1 total
 		misc.rarity = 1;
 		misc.insultList.add("They say 'as dumb as an orc' for a reason!");
+		misc.insultList.add("Your kind never delivered on those empires!");
+		misc.insultList.add("How does it feel to be living magefire fodder?!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
 		misc.racialType = Race.RaceType.PERSONABLE;
@@ -239,6 +254,10 @@ public class RaceFactory {
 		misc.raceClass = RaceClass.ANTHRO_REPTILE;
 		raceList.add(misc);
 		
+		/**
+		 * lore implication that high elves don't really do much despite their talk
+		 * and that leads to much derision
+		 */
 		misc = new Race(RaceID.HIGH_ELF);
 		misc.swears.add("pointy-ear");
 		misc.swears.add("pretentious elf");
@@ -249,8 +268,11 @@ public class RaceFactory {
 		misc.speedMod = 1.05;
 		//+.1 total
 		misc.rarity = .5;
-		misc.insultList.add("Have you heard of the 'high' elves?");
+		misc.insultList.add("Have you heard of the 'high' elves?");//Originally a TES joke that I don't understand
 		misc.insultList.add("What are you going to do, stab me with your ears?");
+		misc.insultList.add("Have you heard of the 'high' elves? I haven't!");
+		misc.insultList.add("Have you heard of the 'high' elves? You better stay away from the alchemists!");//drug
+		misc.insultList.add("What are you going to do, talk me to death?");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
 		misc.racialType = Race.RaceType.PERSONABLE;
@@ -262,6 +284,12 @@ public class RaceFactory {
 		misc.raceClass = RaceClass.ELF;
 		raceList.add(misc);
 		
+		/**
+		 * they're close to the standard 'tree loving elf' but a lot less tree loving
+		 * and more just have the magic to shape wood
+		 * most aren't druidic but their smaller settlements tend to just be treehouses,
+		 * so the threat of burning them down is very real to them
+		 */
 		misc = new Race(RaceID.TREE_ELF);
 		misc.swears.add("tree-hugger");
 		misc.swears.add("pointy-ear");
@@ -275,6 +303,9 @@ public class RaceFactory {
 		//+.1 total
 		misc.rarity = .5;
 		misc.insultList.add("Go, hug a tree!");
+		misc.insultList.add("Chop and burn!");
+		misc.insultList.add("I'll set fire to your people!");
+		//generic elf insult
 		misc.insultList.add("What are you going to do, stab me with your ears?");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
@@ -326,6 +357,7 @@ public class RaceFactory {
 		//+.1 total
 		misc.rarity = .25;
 		misc.insultList.add("I'll rip that shell right off!");
+		misc.insultList.add("Maybe you'll react to your death in a few days!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
 		misc.racialType = Race.RaceType.PERSONABLE;
@@ -380,6 +412,7 @@ public class RaceFactory {
 		//+.1 total
 		misc.rarity = .2;
 		misc.insultList.add("Clean up after your trail!");
+		misc.insultList.add("I bet you taste good with salt!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
 		misc.racialType = Race.RaceType.PERSONABLE;
@@ -391,8 +424,13 @@ public class RaceFactory {
 		misc.raceClass = RaceClass.ANTHRO_REPTILE;
 		raceList.add(misc);
 		
+		/**
+		 * people with exposed hearts and with semi-plant based flesh
+		 */
 		misc = new Race(RaceID.TENDERHEART);
 		misc.swears.add("exposed");
+		misc.swears.add("tenderized");
+		misc.swears.add("kindling");
 		misc.aimMod = 1;
 		misc.damMod = .8;
 		misc.dodgeMod = 1.15;
@@ -401,6 +439,7 @@ public class RaceFactory {
 		//+.1 total
 		misc.rarity = .2;
 		misc.insultList.add("Look, your heart's hanging out!");
+		misc.insultList.add("Time to tenderize that heart!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
 		misc.racialType = Race.RaceType.PERSONABLE;
@@ -443,6 +482,7 @@ public class RaceFactory {
 		//+.1 total
 		misc.rarity = .2;
 		misc.insultList.add("Oh good, I needed a firestarter!");
+		misc.insultList.add("I'll cook my dinner with your corpse!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
 		misc.racialType = Race.RaceType.PERSONABLE;
@@ -457,7 +497,7 @@ public class RaceFactory {
 		
 		misc = new Race(RaceID.FUGUE);
 		misc.swears.add("reclaimer");
-		misc.swears.add("sad and lost woman");
+		misc.swears.add("lost");
 		misc.aimMod = 1.025;
 		misc.damMod = 1.025;
 		misc.dodgeMod = 1.025;
@@ -466,6 +506,8 @@ public class RaceFactory {
 		//+.1 total
 		misc.rarity = .2;
 		misc.insultList.add("You won't be reclaiming this!");
+		misc.insultList.add("Empires fall, and you are all that remains!");
+		misc.insultList.add("I'll end your story right here!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
 		misc.racialType = Race.RaceType.PERSONABLE;
@@ -479,6 +521,8 @@ public class RaceFactory {
 		
 		misc = new Race(RaceID.FISHFOLK);
 		misc.swears.add("fish");
+		misc.swears.add("drudger");//actual fullblown racism
+		misc.swears.add("drowner");
 		misc.aimMod = 1.05;
 		misc.damMod = 1;
 		misc.dodgeMod = 1.05;
@@ -487,6 +531,7 @@ public class RaceFactory {
 		//+.1 total
 		misc.rarity = .7;
 		misc.insultList.add("Go, swim away!");
+		misc.insultList.add("The drudgers would have an excellent time with you!");
 		misc.baseMap = "mermaid";
 		misc.raceMaps.add("-1");
 		misc.racialType = Race.RaceType.PERSONABLE;
@@ -504,6 +549,7 @@ public class RaceFactory {
 		//////beasts
 		misc = new Race(RaceID.B_WOLF);
 		misc.swears.add("dog");
+		misc.swears.add("mutt");
 		misc.aimMod = 1.1;
 		misc.damMod = .9;
 		misc.dodgeMod = 1.3;
@@ -540,6 +586,8 @@ public class RaceFactory {
 		misc.tradeMod = 1;
 		misc.rarity = 1;
 		misc.insultList.add("Die, box!");
+		misc.insultList.add("Time to close your career!");
+		misc.insultList.add("Taste this!");
 		misc.baseMap = "mimic";
 		misc.raceMaps.add("0");
 		misc.raceMaps.add("1");
@@ -565,6 +613,7 @@ public class RaceFactory {
 		misc.tradeMod = 1;
 		misc.rarity = 1;
 		misc.insultList.add("Die, box!");
+		misc.insultList.add("Open up!");
 		misc.baseMap = "chest";
 		misc.raceMaps.add("0");
 		misc.raceMaps.add("1");
@@ -626,6 +675,8 @@ public class RaceFactory {
 		
 		misc = new Race(RaceID.B_ENT);
 		misc.swears.add("tree");
+		misc.swears.add("shrub");
+		misc.swears.add("timber");
 		misc.aimMod = 1;
 		misc.damMod = .9;
 		misc.dodgeMod = .4;
@@ -634,6 +685,8 @@ public class RaceFactory {
 		misc.tradeMod = 1;
 		misc.rarity = 1;
 		misc.insultList.add("Die, tree!");
+		misc.insultList.add("Chop and burn!");
+		misc.insultList.add("Timber!");
 		misc.baseMap = "ent";
 		misc.raceMaps.add("0");
 		misc.magicPower = 0;
@@ -658,6 +711,7 @@ public class RaceFactory {
 		misc.rarity = 1;
 		misc.insultList.add("Die, you bear!");
 		misc.insultList.add("Die, bear!");
+		misc.insultList.add("Die, beast!");
 		misc.baseMap = "bear";
 		misc.raceMaps.add("0");
 		misc.magicPower = 0;
@@ -732,6 +786,7 @@ public class RaceFactory {
 		misc.tradeMod = .9;
 		misc.rarity = 1;
 		misc.insultList.add("Die, meatsack!");
+		misc.insultList.add("You look gross!");
 		misc.baseMap = "flesh_golem";
 		misc.raceMaps.add("0");;
 		misc.magicPower = 0;
@@ -822,6 +877,7 @@ public class RaceFactory {
 		misc.rarity = 1;
 		misc.insultList.add("Die drudger!");
 		misc.insultList.add("Die pond scum!");
+		misc.insultList.add("Die mage fodder!");
 		misc.baseMap = "flesh_golem";
 		misc.raceMaps.add("0");
 		misc.magicPower = 0;
@@ -845,6 +901,7 @@ public class RaceFactory {
 		misc.tradeMod = .5;
 		misc.rarity = 1;
 		misc.insultList.add("Die drudger!");
+		misc.insultList.add("Fall to me, titan!");
 		misc.baseMap = "flesh_golem";
 		misc.raceMaps.add("0");
 		misc.magicPower = 0;
@@ -867,7 +924,8 @@ public class RaceFactory {
 		misc.hpMod = 1.1;
 		misc.speedMod = 1;
 		misc.rarity = 0;
-		misc.insultList.add("Die, you scum!");
+		misc.insultList.add("Die, you demon!");
+		misc.insultList.add("Die, demon!");
 		misc.baseMap = "flesh_golem";
 		misc.raceMaps.add("0");
 		misc.racialType = Race.RaceType.PERSONABLE;
