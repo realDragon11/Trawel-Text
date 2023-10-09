@@ -109,11 +109,13 @@ public class ImpairedAttack implements IAttack{
 			vals[4] = damageRoll(DamageType.FROST,attack.getFrost()*damMult*elementalDamMult);
 			vals[5] = damageRoll(DamageType.ELEC,attack.getElec()*damMult*elementalDamMult);
 		}else {//enchant hit weapon with no bypass
-			int totalDam = attack.getTotalDam();
+			//now uses the actual damage to scale, but without the physical damage mult
+			double totalDam = (sMult+bMult+pMult)*damMult;
 			Enchant enc = _weapon.getEnchant();
-			vals[3] = damageRoll(DamageType.IGNITE,enc.getFireMod()*totalDam*damMult*elementalDamMult);
-			vals[4] = damageRoll(DamageType.FROST,enc.getFreezeMod()*totalDam*damMult*elementalDamMult);
-			vals[5] = damageRoll(DamageType.ELEC,enc.getShockMod()*totalDam*damMult*elementalDamMult);
+			//dam mult included in totalDam already
+			vals[3] = damageRoll(DamageType.IGNITE,enc.getFireMod()*totalDam*elementalDamMult);
+			vals[4] = damageRoll(DamageType.FROST,enc.getFreezeMod()*totalDam*elementalDamMult);
+			vals[5] = damageRoll(DamageType.ELEC,enc.getShockMod()*totalDam*elementalDamMult);
 		}
 		
 		double counter = extra.getRand().nextDouble() * (vals[0] + vals[1] + vals[2] + vals[3] + vals[4] + vals[5]);

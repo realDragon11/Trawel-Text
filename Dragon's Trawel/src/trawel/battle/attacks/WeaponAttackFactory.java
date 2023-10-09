@@ -1189,12 +1189,12 @@ public class WeaponAttackFactory {
 		@Override
 		public String toString() {
 			java.text.DecimalFormat formata = extra.F_TWO_TRAILING;
-			return weaponname + "'s " + basename +": rng%"
+			return weaponname + "'s " + extra.cutPadLenFront(8, basename) +": rng%"
 					+ formata.format(rarity)
 					+" hit%" +formata.format(average_hit)
 					+" full%" +formata.format(average_full)
-					+" raw: d"+formata.format(average_damage)
-					+" _"+formata.format(average_time)
+					+" raw: d"+extra.cutPadLenFront(6, formata.format(average_damage))
+					+" _"+extra.cutPadLenFront(6,formata.format(average_time))
 					+" avg: "+formata.format(average_dps)
 					+ " contrib %"+ formata.format(total_percent_dps); 
 		}

@@ -488,7 +488,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 			extra.println(extra.STAT_HEADER+"Tested Equity DPI:");
 			extra.println(extra.ITEM_DESC_PROP+" Highest"+extra.PRE_WHITE+": "+extra.ITEM_WANT_LOWER+extra.F_WHOLE.format(scoreHighestContribution()/expectedAverage)+extra.PRE_WHITE+"% of perfect equity");
 			extra.println(extra.ITEM_DESC_PROP+" Lowest"+extra.PRE_WHITE+": "+extra.ITEM_WANT_HIGHER+extra.F_WHOLE.format(scoreLowestContribution()/expectedAverage)+extra.PRE_WHITE+"% of perfect equity");
-			extra.println(extra.STAT_HEADER+"Raw Untested Attacks"+extra.PRE_WHITE+":" + (isEnchantedHit() ? "(Enchant Hit not in Raw DPI)" : ""));
+			extra.println(extra.STAT_HEADER+"Raw Untested Attacks"+extra.PRE_WHITE+":");
 			WeaponAttackFactory.getStance(this.weap).display(this);
 			;break;
 		}

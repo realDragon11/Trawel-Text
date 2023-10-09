@@ -351,28 +351,39 @@ public class Attack implements IAttack{
 		}
 		
 	}
-	
+	/**
+	 * note this is of the attack in a vacuum
+	 */
 	public double getDPI() {
 		return getTotalDam()/getSpeed();
 	}
 	
 	public void display(Weapon w) {
 		float damMult = w.getUnEffectiveLevel();
-		int totalDam = getTotalDam();
-		float ignite = getIgnite();
-		float frost = 0;
-		float elec = 0;
+		//rounding errors can occur with the dam mults, but the raw values aren't achieved anyway so it should be insignificant
+		float sharp = getSharp()*damMult*w.getMat().sharpMult;
+		float blunt = getBlunt()*damMult*w.getMat().bluntMult;
+		float pierce = getPierce()*damMult*w.getMat().pierceMult;
+		float baseDam = (sharp+blunt+pierce);
+		float ignite = getIgnite()*damMult;
+		float frost = getFrost()*damMult;
+		float elec = getElec()*damMult;
 		if (w.isEnchantedHit()) {
-			ignite += w.getEnchant().getFireMod()*totalDam;
-			frost += w.getEnchant().getFreezeMod()*totalDam;
-			elec += w.getEnchant().getShockMod()*totalDam;
+			//damage multiplier factored in baseDam
+			ignite += w.getEnchant().getFireMod()*baseDam;
+			frost += w.getEnchant().getFreezeMod()*baseDam;
+			elec += w.getEnchant().getShockMod()*baseDam;
 		}
+		
+		
+		float totalDam = sharp+blunt+pierce+ignite+frost+elec;
+		
 		String p = extra.ITEM_DESC_PROP;
 		String g = extra.ITEM_WANT_HIGHER;
 		String b = extra.ITEM_WANT_LOWER;
 		extra.println(
 			" "+extra.STAT_HEADER+extra.cutPadLenFront(8,name)+extra.PRE_WHITE+"="
-			+p+" Raw DPI:" +g+extra.cutPadLenError(5, extra.F_TWO_TRAILING.format(getDPI()*damMult)) 
+			+p+" Raw DPI:" +g+extra.cutPadLenError(5, extra.F_TWO_TRAILING.format((totalDam/getSpeed()))) 
 			//+" Against Equity DPI: " + extra.F_WHOLE.format(dpi/expectedAverage)
 			+p+" Rarity:" +extra.ITEM_VALUE+ extra.cutPadLenError(5, extra.formatPerSubOne(holdingStance.getRarity(this)))
 			+p+" Base Accuracy:"+g+extra.cutPadLenError(5, extra.format(hitMult))
@@ -382,13 +393,13 @@ public class Attack implements IAttack{
 			);
 		extra.println(
 				extra.STAT_HEADER+"  Base Damage"+extra.PRE_WHITE+"="
-				+(getSharp() > 0 ? p+" Sharp: " +g+ extra.F_WHOLE.format(damMult*getSharp()*w.getMat().sharpMult) : "")
-				+(getBlunt() > 0 ? p+" Blunt: " +g+ extra.F_WHOLE.format(damMult*getBlunt()*w.getMat().bluntMult) : "")
-				+(getPierce() > 0 ? p+" Pierce: " +g+ extra.F_WHOLE.format(damMult*getPierce()*w.getMat().pierceMult) : "")
+				+(sharp > 0 ? p+" Sharp: " +g+ extra.F_WHOLE.format(sharp) : "")
+				+(blunt > 0 ? p+" Blunt: " +g+ extra.F_WHOLE.format(blunt) : "")
+				+(pierce > 0 ? p+" Pierce: " +g+ extra.F_WHOLE.format(pierce) : "")
 				
-				+(ignite > 0 ? p+" Ignite: " +g+ extra.F_WHOLE.format(damMult*ignite) : "")
-				+(frost > 0 ? p+" Frost: " +g+ extra.F_WHOLE.format(damMult*frost) : "")
-				+(elec > 0 ? p+" Elec: " +g+ extra.F_WHOLE.format(damMult*elec) : "")
+				+(ignite > 0 ? p+" Ignite: " +g+ extra.F_WHOLE.format(ignite) : "")
+				+(frost > 0 ? p+" Frost: " +g+ extra.F_WHOLE.format(frost) : "")
+				+(elec > 0 ? p+" Elec: " +g+ extra.F_WHOLE.format(elec) : "")
 				);
 		
 	}
@@ -501,7 +512,12 @@ public class Attack implements IAttack{
 	@Override
 	public int getTotalDam() {
 		// TODO add other damage types when they get added
-		return getSharp()+getBlunt()+getPierce()+getIgnite()+getFrost()+getElec();
+		return getSharp()+
+				getBlunt()+
+				getPierce()+
+				getIgnite()+
+				getFrost()+
+				getElec();
 	}
 	
 	public double getTotalDam(double sMult, double bMult, double pMult) {
