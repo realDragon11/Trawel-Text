@@ -1458,88 +1458,100 @@ public class mainGame {
 	 */
 	public static Combat CombatTwo(Person first_man,Person second_man, World w) {
 		Person holdPerson;
-		extra.println("Our first fighter is " + first_man.getName()  + "."); //+extra.choose("They hail from the","They come from the","They are from the","The place they call home is the") + " " + first_man.whereFrom() + ".");
-		extra.println("Our second fighter is " + second_man.getName()  + "."); //+extra.choose("They hail from the","They come from the","They are from the","The place they call home is the") + " " + second_man.whereFrom() + ".");
-		extra.println();
+		boolean hasPlayer = false;
+		assert !second_man.isPlayer();
 		if (first_man.isPlayer()) {
 			first_man.getBag().graphicalDisplay(-1,first_man);
 			second_man.getBag().graphicalDisplay(1,second_man);
 			Networking.setBattle(Networking.BattleType.NORMAL);
 			story.startFight(false);
+			extra.println("You are dueling " +second_man.getName()+".");
+			hasPlayer = true;
+		}else {
+			if (!extra.getPrint()) {
+				extra.println(first_man.getName()+" is dueling " +second_man.getName()+".");
+			}
 		}
-		Combat c = new Combat(first_man,second_man, w);//////
+		
+		Combat c = new Combat(first_man,second_man, w);
+		
 		if (c.getNonSummonSurvivors().contains(second_man)) {
 			holdPerson = second_man;
 			second_man = first_man;
 			first_man = holdPerson;
 		}
-		boolean hasPlayer = false;
-		if (first_man.isPlayer() || second_man.isPlayer()) {
-			Networking.setBattle(Networking.BattleType.NONE);
-			hasPlayer = true;
-
+		
+		if (hasPlayer) {
+			//stop combat music
+			Networking.setBattle(Networking.BattleType.NONE);			
 		}
 
 		first_man.addXp(second_man.getLevel());
-
-		if (!second_man.isPlayer()) {
-			extra.println(first_man.getName() +" goes to loot " + second_man.getName() +".");
-			if (first_man.isPlayer()) {
-				AIClass.playerLoot(second_man.getBag(), true);
-			}else {
-				AIClass.loot(second_man.getBag(), first_man.getBag(), true,first_man,true);
-			}
-		}
-
+		
 		if (second_man.isPlayer()) {
 			first_man.addPlayerKill();
 			Player.addXp(extra.zeroOut((int) (first_man.getLevel()*Math.floor((first_man.getMaxHp()-first_man.getHp())/(first_man.getMaxHp())))));
 			dieFight();
-		}
-
-
-		if (first_man.isPlayer()) {
-			Player.player.duel_wins++;
-			Networking.leaderboard("most_duel_wins", Player.player.duel_wins);
-			//only applies in true 1v1's
-			if (Player.player.duel_wins == 1) {
-				Player.player.addAchieve("dueling", "Dueler");
-			}
-			if (Player.player.duel_wins == 10) {
-				Player.player.addAchieve("dueling", "Duelist");
-			}
-			if (Player.player.duel_wins == 50) {
-				Player.player.addAchieve("dueling", "Veteran Duelist");
-			}
-			if (Player.player.duel_wins == 100) {
-				Player.player.addAchieve("dueling", "Master Duelist");
-			}
-			if (Player.player.duel_wins == 1000) {
-				Player.player.addAchieve("dueling", "Grandmaster Duelist");
-			}
-			second_man.addDeath();
-			if (first_man.isPlayer() && second_man.getBag().getRace().racialType == Race.RaceType.PERSONABLE) {
-				//don't cheat death against not-player killers
-				int deaths = second_man.getDeaths();
-				int pKills = second_man.getPlayerKills();
-				//max revive chance decreases the more they die, even if they have infinite kills on you, to reduce annoyance
-				if (
-						(deaths == 1 && extra.randFloat() > .97)//~3% chance if this is our only death
-						|| (pKills > 0 && deaths < 4 && extra.chanceIn(Math.min((4*deaths)+pKills,(pKills*2)+1), pKills+(5*deaths)))
-						//killing the player is effective
-						//we can at most get a (X-1)/x chance
-						//can cheat death a max of 3 times
-						) {
-					w.addDeathCheater(second_man);//dupes don't happen since in this case the dupe is instantly removed in the wander code
-					second_man.hTask = HostileTask.REVENGE;
-				}
-			}
-			story.winFight(false);
-		}
-		if (hasPlayer) {
-			Networking.setBattle(Networking.BattleType.NONE);
+			//clean up victor's graphics
 			Networking.clearSide(1);
+			
+			//player cannot be looted
+		}else{
+			//player didn't lose, if they were in fight
+			extra.println(first_man.getName() +" goes to loot " + second_man.getName() +".");
+			if (first_man.isPlayer()) {
+				AIClass.playerLoot(second_man.getBag(), true);
+				//clean up after looting
+				Networking.clearSide(1);
+			}else {
+				AIClass.loot(second_man.getBag(), first_man.getBag(), true,first_man,true);
+			}
+	
+			//micro optimization- the player didn't lose, and this is a duel
+			//so if this is true, first_man is the player
+			//this gets used a lot in the background so every bit helps
+			if (hasPlayer) {
+				Player.player.duel_wins++;
+				Networking.leaderboard("most_duel_wins", Player.player.duel_wins);
+				//only applies in true 1v1's
+				if (Player.player.duel_wins == 1) {
+					Player.player.addAchieve("dueling", "Dueler");
+				}
+				if (Player.player.duel_wins == 10) {
+					Player.player.addAchieve("dueling", "Duelist");
+				}
+				if (Player.player.duel_wins == 50) {
+					Player.player.addAchieve("dueling", "Veteran Duelist");
+				}
+				if (Player.player.duel_wins == 100) {
+					Player.player.addAchieve("dueling", "Master Duelist");
+				}
+				if (Player.player.duel_wins == 1000) {
+					Player.player.addAchieve("dueling", "Grandmaster Duelist");
+				}
+				//only player kill deaths are added since it will be assumed others will stick
+				second_man.addDeath();
+				if (second_man.getBag().getRace().racialType == Race.RaceType.PERSONABLE) {
+					//don't cheat death against not-player killers
+					int deaths = second_man.getDeaths();
+					int pKills = second_man.getPlayerKills();
+					//max revive chance decreases the more they die, even if they have infinite kills on you, to reduce annoyance
+					if (
+							(deaths == 1 && extra.randFloat() > .97)//~3% chance if this is our only death
+							|| (pKills > 0 && deaths < 4 && extra.chanceIn(Math.min((4*deaths)+pKills,(pKills*2)+1), pKills+(5*deaths)))
+							//killing the player is effective
+							//we can at most get a (X-1)/x chance
+							//can cheat death a max of 3 times
+							) {
+						w.addDeathCheater(second_man);//dupes don't happen since in this case the dupe is instantly removed in the wander code
+						second_man.hTask = HostileTask.REVENGE;
+					}
+				}
+				story.winFight(false);
+			}
 		}
+
+		//clean up effects in case they get reused
 		first_man.clearBattleEffects();
 		second_man.clearBattleEffects();
 
