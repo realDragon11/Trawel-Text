@@ -42,25 +42,25 @@ public class Armor extends Item implements IEffectiveLevel{
 		/**
 		 * fragile also comes with a base resist bonus
 		 */
-		FRAGILE("Fragile","Loses condition on taking attack damage to any body part, equal to half of %LHP lost."
+		FRAGILE("Fragile",.6f,.8f,"Loses condition on taking attack damage to any body part, equal to half of %LHP lost."
 				,"Even attacks that do not locally target the armor cause condition loss.",-2),
-		DEFLECTING("Deflecting","Provides immunity to the Penetrative and Pinpoint Weapon Quals on this slot."
+		DEFLECTING("Deflecting",1.1f,1.15f,"Provides immunity to the Penetrative and Pinpoint Weapon Quals on this slot."
 				,null,1),
-		DISPLACING("Displacing","Increases hostile miss threshold by +.01."
+		DISPLACING("Displacing",1.1f,1.15f,"Increases hostile miss threshold by +.01."
 				,"Base miss threshold is .05.",2),
-		STURDY("Sturdy","Takes half condition damage from all sources."
+		STURDY("Sturdy",1.1f,1.25f,"Takes half condition damage from all sources."
 				,null,2),
-		HEAVY("Heavy","Weighs +20% as much."
+		HEAVY("Heavy",.9f,.9f,"Weighs +20% as much."
 				,"Weight increase is relative to a normal armor of that type.",-1),
-		LIGHT("Light","Weighs -10% as much."
+		LIGHT("Light",1.05f,1.2f,"Weighs -10% as much."
 				,"Weight increase is relative to a normal armor of that type.",1),
-		PADDED("Padded","Has a 1/5th chance to resist each wound, one wound resisted per fight."
+		PADDED("Padded",1.2f,1.3f,"Has a 1/5th chance to resist each wound, one wound resisted per fight."
 				,"Stacks additively in chance, decreasing as wounds are resisted.",3),
-		REFINED("Refined","+10% condition at the start of each fight."
+		REFINED("Refined",1.2f,1.3f,"+10% condition at the start of each fight."
 				,"Condition above 100% degrades each action.",3),
-		BLOCKING("Blocking","Causes attacks to be fully blocked at +2% more percentage of armor mitigation."
+		BLOCKING("Blocking",1.1f,1.2f,"Causes attacks to be fully blocked at +2% more percentage of armor mitigation."
 				,"Applies globally, stacking on the base value of 40%.",2),
-		RELIABLE("Reliable","+5% minimum armor roll."
+		RELIABLE("Reliable",1.2f,1.3f,"+5% minimum armor roll."
 				,"Applies globally, stacking on base value of 5%.",2)
 		
 		;
@@ -70,11 +70,22 @@ public class Armor extends Item implements IEffectiveLevel{
 		 * can be any negative or positive number, or even zero
 		 */
 		private final int goodNegNeut;
-		ArmorQuality(String nam, String des, String _mechDesc, int _goodNegNeut){
+		/**
+		 * mFit is the mechanical value for the effectiveness
+		 * <br>
+		 * mVal is used to represent trade value and is often higher for positive qualities but near the same for negative ones
+		 * <br>
+		 * some qualities are considered 'convenient' in lore but that is not reflected in game, so the value is even higher,
+		 * such as sturdy and reliable
+		 */
+		private final float mFit, mVal;
+		ArmorQuality(String nam, float _mFit, float _mVal, String des, String _mechDesc, int _goodNegNeut){
 			name = nam;
 			desc = des;
 			mechDesc = _mechDesc;
 			goodNegNeut = _goodNegNeut;
+			mFit = _mFit;
+			mVal = _mVal;
 		}
 		
 		public String removeColor() {
@@ -466,18 +477,18 @@ public class Armor extends Item implements IEffectiveLevel{
 	}
 	
 	private int slotImpact() {
-		if (getSlot() > 1) {
-			if (getSlot() == 2) {
-				return 10;//chest
-			}else {
-				if (getSlot() == 3) {
-					return 7;//pants
-				}else {
-					return 4;//boots
-				}
-			}
+		switch (slot) {
+		case 0://head
+		case 1://gloves
+			return 3;
+		case 2://chest
+			return 10;
+		case 3://pants
+			return 7;
+		case 4:
+			return 4;
 		}
-		return 3;//head and gloves
+		throw new RuntimeException("Invalid slot for impact" + slot + " "+this.toString());
 	}
 	
 	/**
@@ -494,7 +505,11 @@ public class Armor extends Item implements IEffectiveLevel{
 	 * @return base cost (int)
 	 */
 	public int getBaseCost() {
-		return (int) (qualValueMult()*MaterialFactory.getMat(material).cost*ArmorStyle.fetch(style).costMult*slotImpact()*getUnEffectiveLevel());
+		float mult = MaterialFactory.getMat(material).cost*ArmorStyle.fetch(style).costMult*slotImpact()*getUnEffectiveLevel();
+		for (ArmorQuality q: quals) {
+			mult *= q.mVal;
+		}
+		return (int) (mult);
 	}
 	
 	public float getEnchantMult() {
@@ -724,37 +739,14 @@ public class Armor extends Item implements IEffectiveLevel{
 	}
 	
 	public float fitness() {
-		float mult = qualValueMult();
+		float mult = 1;
+		for (ArmorQuality q: quals) {
+			mult *= q.mFit;
+		}
 		if (isEnchanted()) {
 			mult *= enchantment.fitness();
 		}
 		return mult*(getBluntResist()+getPierceResist()+getSharpResist());
-	}
-	
-	public float qualValueMult() {
-		float mult = 1f;
-		for (ArmorQuality q: quals) {
-			switch (q) {
-			case DEFLECTING: case STURDY:
-			case RELIABLE: case BLOCKING:
-				mult *= 1.1f;
-				break;
-			case DISPLACING: case PADDED:
-			case REFINED:
-				mult *=1.2f;
-				break;
-			case FRAGILE:
-				mult *=.6f;//base resist is higher for it, for fitness, and for value it's fine to be off
-				break;
-			case LIGHT:
-				mult *=1.05f;
-				break;
-			case HEAVY:
-				mult *=.95f;
-				break;
-			}
-		}
-		return mult;
 	}
 
 	public boolean hasArmorQual(ArmorQuality qual) {
