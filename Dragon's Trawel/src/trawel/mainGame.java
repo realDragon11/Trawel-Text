@@ -75,14 +75,14 @@ public class mainGame {
 	public static final String VERSION_DATE = " updated Oct 9th 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
-			"b_8: {part 1/?} Added a wait option to Arenas and prevented giant time chunks by accident, made Arenas fight without the player and have the winners move on after enough training. Players always get a new fighter in their first round (so entirely for 1 round titles), but more rounds are done entirely naturally now.",
-			"b_8: {part 2/?} Updated Lot menu, standardized collecting earned money from built Features. Features can now have intro/outro text, which can be turned off as a display option.",
-			"b_8: {part 3/?} Created unique stances for Fish Anchor, Fish Spear TODO, which all used other weapon stances as placeholders since the weapon updates. Grazes have been renamed Negates and Graze is now used to indicate no rolled wound. Armor Quality value and fitness updated, which mostly matters for AI.",
-			"b_8: {part 4/?} Cleaned up Wound/Effect/Tactic text and code, added the Takedown tactic and new Skills.",
+			"b_8: {part 1/?} Added a wait option to Arenas and prevented giant time chunks by accident, made Arenas fight without the player and have the winners move on after enough training. Players always get a new fighter in their first round (so entirely for 1 round titles), but more rounds are done entirely naturally now, potentially drawing from survivors.",
+			"b_8: {part 2/?} Updated Lot menu, standardized collecting earned money from built Features. Features can now have intro/outro text, which can be turned off as a display option. Node Features now have autosave enabled while exploring them, and saves once again use a different date format.",
+			"b_8: {part 3/?} Created unique stances for Fish Anchor, Fish Spear TODO, which all used other weapon stances as placeholders since the weapon updates. Grazes have been renamed Negates and Graze is now used to indicate no rolled wound. Armor Quality value and fitness updated, which mostly matters for AI, as well as Weapon Quality price.",
+			"b_8: {part 4/?} Cleaned up Wound/Effect/Tactic text and code, added a few new Skills. Archetypes now grant more skills, as well as stats. Some new archetypes were added.",
 			"b_8: {part 5/?} More insults added to species, materials with extreme outlier elemental stats reigned in.",
 			
 			"b_7: {part 1/2} Nodes display inward/outward to indicate going deeper or closer to the entrance (in most cases, ultimately its merely a 'floor' counter).",
-			"b_7: {part 2/2} Updated from Java 8 to Java 17, and to Kryo serialization.",
+			"b_7: {part 2/2} Updated to Kryo serialization, Java 8 to Java 17 migration failed. ",
 			
 			"b_6: {part 1/5} Updated stat displays and item 'higher/lower is better' displays. Tutorial text separated from 'feature description' text.",
 			"b_6: {part 2/5} Added many new towns to the Eoano WorldGen, and fluffed up the lore and flavor of existing towns as well. Species store re-added to Arona. Most bosses are now non-unique in that you don't have only one option if you want their Perk. Ancient Queen boss added to new island.",
@@ -109,6 +109,7 @@ public class mainGame {
 			"b_2: {part 3/3} Some changes were made but not enough to have anything to show, for example summons should work, (which is a far cry from Trawel in 2019, where the concept of a 3 person fight was unthinkable) but there are no skills that summon any creatures yet.",
 			
 			"b_1: base attack code reworked in basically every way. currency divided. threading added (nothreads is an arg), time passing redone. Node exploration mostly same but had entire backend update. Locational damage exists but does little at the moment."
+			
 			,"End of current beta ingame changelog. Check the Github and Steam for prior updates and more detailed notes."
 	};
 	public static int changelogViewer = 0;
@@ -273,7 +274,7 @@ public class mainGame {
 						extra.println("In Trawel, you navigate the game world, and make choices, with numbered menu lists.");
 						extra.println("In Trawel proper (some subgames differ), there will never be an option presented that is greater than 9 or less than 1. Some newer menus have scrolling, but they will only ever show a max of 9 options at a time.");
 						extra.println("If you're playing from Steam, you can click these options, press a number key (numpad or number row), or even use a controller. If you're using the terminal, you'll have to input the number and then press enter.");
-						extra.println("Terminal Only: Currently, the terminal also lets you input 0 to attempt to leave the current menu, and 10 to attempt to leave up to 10 menus. This will only work if there is a 'pinned' back option, and that option isn't considered to lead in circles. Usually you'll end up at the town screen, but older menus might not have a pinned back out, some don't have backing out by design, and others wouldn't make sense to back out of. It will also 'break' the backing out if the state changes, for example after you finish looting, it won't back you out of where you're looting.");
+						extra.println("Terminal Only: Currently, the terminal also lets you input 0 to attempt to leave the current menu, and 10 to attempt to leave up to 10 menus. This will only work if there is a 'pinned' back option, and that option isn't considered to lead in circles. Usually you'll end up at the town screen, but older menus might not have a pinned back out, some don't have backing out by design, and others wouldn't make sense to back out of. It will also 'break' the backing out if the state changes, for example after you finish looting, it won't back you out of where you're looting unless you input it again.");
 						extra.println("Graphical Only: The graphical client has a few bonus features not immediately evident. You can press the scroll wheel to automatically scroll to the bottom. The 'Jump' option lets you have the game scroll, print new text without scrolling, or jump instantly on new text. 'Fancy' mode disables some rendering that might bug on certain hardware, and is generally less intensive. You can use the arrow keys to scroll, but more importantly, controllers have their 'dpads' rigged up with their 'a' and 'b' type buttons.");
 						extra.println("Tips: Menus in Trawel are increasingly being designed so that as many options as possible occupy the same number each time you enter them. In some menus, the options change so much that this isn't possible, or there is an edge case where it doesn't work. But the Player menu is very stable within a version, so you can navigate that without needing to read (or listen to) the contents.");
 						extra.println("Many older menus do not behave like this, and are slowly being converted.");
