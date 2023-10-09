@@ -765,6 +765,10 @@ public class Combat {
 				wasDead = true;//note, can move out if need be
 			}
 		}
+		if (defender.hasSkill(Skill.COUNTER)) {
+			defender.advanceTime(1);
+		}
+		
 		double dodgeBase = def.getDodge()*defender.getWoundDodgeCalc();
 		double hitBase = att.getHitMult();
 		
@@ -1123,10 +1127,6 @@ public class Combat {
 				System.out.println("Resolving long battle...");
 				battleIsLong = true;
 			}
-		}
-		
-		if (defender.hasSkill(Skill.COUNTER)) {
-			defender.advanceTime(2);
 		}
 		if (defender.hasEffect(Effect.FORGED)) {
 			defender.getBag().restoreArmor(0.1);

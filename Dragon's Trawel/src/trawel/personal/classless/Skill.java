@@ -14,7 +14,7 @@ public enum Skill{
 	    
 	    
 		BEER_LOVER("Beer Lover","Endless beer. Never have to go to a tavern again.",true,Type.FIGHTER,2,""),
-		COUNTER("Counter","Attack slightly sooner after you are attacked.",true,Type.FIGHTER,3,""),
+		
 		
 		TOWNSENSE("Connection Sense","Tell how many connections a town has.",false,Type.EXPLORER,1,""),
 		TIERSENSE("Tier Sense","Tell what tier a town belongs to.",false,Type.EXPLORER,1,""),
@@ -60,6 +60,9 @@ public enum Skill{
 				,Type.ATTACK_TYPE),
 		BLITZ("Blitz","You actions take 3 less instants to complete than expected."
 				,"Does not allow you to act sooner in order- but does change how much time passes when you do get to act."
+				,Type.SPEED),
+		COUNTER("Counter","Whenever an attack rolls to-hit on you, advance 1 instant."
+				,""
 				,Type.SPEED),
 		SPEEDDODGE("Speed Dodge","Attack 10 instants sooner after you dodge."
 				,"Applies to each dodge. Does not apply to misses."
@@ -185,6 +188,10 @@ public enum Skill{
 		TWINNED_TAKEDOWN("Twinned Takedown","Grants the Takedown effect on kill."
 				,"Takedown applies Knockout on your next impactful attack. It stacks in duration."
 				,Type.OFFENSE)
+		
+		/**
+		 * move tactics here to keep them in order
+		 */
 		
 		;
 	    private String name,desc, longDesc;

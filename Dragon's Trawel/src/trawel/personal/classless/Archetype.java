@@ -19,6 +19,14 @@ import trawel.personal.classless.Skill.Type;
 public enum Archetype implements IHasSkills{
 	//TODO: making archetypes have more skills and generally be more impactful across the board, might need to reduce how often you get them offered
 	//after the first 2 levels
+	
+	/**
+	 * Archetypes should typically grant 2 real skills and then possibly a stance/tactics or a third skill
+	 * they should also grant 15 stats
+	 */
+	
+	
+	
 	/**
 	 * somewhat inspired by dd1 enemy
 	 */
@@ -28,7 +36,8 @@ public enum Archetype implements IHasSkills{
 			,AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.CURSES,FeatType.POTIONS)
-			,EnumSet.of(Skill.TOXIC_BREWS)//TODO
+			,EnumSet.of(Skill.TOXIC_BREWS,Skill.P_BREWER,Skill.CURSE_MAGE)
+			,0,3,12
 			)
 	,GLADIATOR("Glitzy Gladiator"
 			,"Attention seeking but no-nonsense physical fighter. Fighting dirty is part of the show."
@@ -37,15 +46,17 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(AGroup.DIRTY, AGroup.CHARISMA)
 			,EnumSet.of(FeatType.TRICKS,FeatType.SPIRIT,FeatType.BATTLE)
 			//TODO: Skill.OPPORTUNIST maybe?
-			,EnumSet.of(Skill.DSTRIKE,Skill.TACTIC_DUCK_ROLL,Skill.TACTIC_SINGLE_OUT,Skill.TACTIC_CHALLENGE)
+			,EnumSet.of(Skill.SPUNCH,Skill.DSTRIKE,Skill.TACTIC_DUCK_ROLL,Skill.TACTIC_SINGLE_OUT,Skill.TACTIC_CHALLENGE)
+			,7,7,1
 			)
 	,ARMORMASTER("Armor Artisan"
 			,"A walking fortress, advancing steadily into the fray."
 			,null
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRECT_BATTLE,AGroup.CRAFT)
-			,EnumSet.of(FeatType.BATTLE,FeatType.SMITHS)//TODO needs better types
-			,EnumSet.of(Skill.ARMOR_TUNING,Skill.ARMORSPEED,Skill.TACTIC_CHALLENGE)
+			,EnumSet.of(FeatType.BATTLE,FeatType.SMITHS)
+			,EnumSet.of(Skill.ARMOR_TUNING,Skill.ARMORSPEED,Skill.ARMORHEART)
+			,15,0,0
 			)
 	/**
 	 * inspired by a lot of ttrpgs I used to talk about with some friends
@@ -56,7 +67,8 @@ public enum Archetype implements IHasSkills{
 			,AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT,AGroup.GRANTED_ARCANIST)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.POTIONS,FeatType.TRICKS,FeatType.SOCIAL)
-			,EnumSet.of(Skill.MAGE_FRUGAL,Skill.ARCANIST)
+			,EnumSet.of(Skill.MAGE_FRUGAL,Skill.P_BREWER,Skill.ARCANIST)
+			,0,2,13
 			)
 	,FISH_MONSOON("Monsoon Maker"
 			,"Calls up malicious magic that assails the land-people's domain."
@@ -65,6 +77,7 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(AGroup.MAGIC,AGroup.GRANTED_ARCANIST)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.CURSES)
 			,EnumSet.of(Skill.ARCANIST,Skill.ELEMENTALIST,Skill.M_CRYO,Skill.M_AERO,Skill.PLOT_ARMOR)
+			,0,0,15
 			)
 	,SEA_SAGE("Sea Sage"
 			,"Tempered by a still calm, they can call forth the Sea's wrath if provoked."
@@ -72,7 +85,8 @@ public enum Archetype implements IHasSkills{
 			,AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC,AGroup.GRANTED_ARCANIST)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.SPIRIT)
-			,EnumSet.of(Skill.DODGEREF,Skill.ARCANIST)
+			,EnumSet.of(Skill.DODGEREF,Skill.PRESS_ADV,Skill.ARCANIST)//TODO: PRESS_ADV is temp
+			,2,2,11
 			)
 	,FISH_TALL("Torrental Titan"
 			,"A raging force of the deep-sea bent on proving their conquest of land is inevitable."
@@ -81,6 +95,7 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(AGroup.DIRECT_BATTLE)
 			,EnumSet.of(FeatType.BATTLE)
 			,EnumSet.of(Skill.STERN_STUFF,Skill.RAW_GUTS,Skill.DSTRIKE,Skill.OPPORTUNIST)
+			,15,0,0
 			)
 	/**
 	 * reference to Litheness in dragon quest 9
@@ -93,6 +108,7 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(FeatType.BATTLE,FeatType.AGILITY,FeatType.SPIRIT)//not tricks
 			//doesn't have tactics, just random opportunities, to fit the theme
 			,EnumSet.of(Skill.BLITZ,Skill.DODGEREF,Skill.OPPORTUNIST)
+			,3,12,0
 			)
 	,PROMOTED("Promoted","They made it big.",null
 			,AType.ADDED
@@ -123,6 +139,24 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(AGroup.GRANTED_ARCANIST)//do not change or add to unless adding skill requirements to archetypes
 			,EnumSet.of(FeatType.ARCANE)
 			,EnumSet.of(Skill.ARCANIST_2),0,0,25//lot of clarity
+			)
+	,HIRED_HATCHET("Hired Hatchet",
+			"Trading lives is a glamorous business for some, but Hired Hatchets just need to get the job done."
+			,null
+			,AType.ENTRY
+			,EnumSet.of(AGroup.DIRTY,AGroup.DEXTERITY)
+			,EnumSet.of(FeatType.TRICKS,FeatType.AGILITY)
+			,EnumSet.of(Skill.TWINNED_TAKEDOWN,Skill.DSTRIKE,Skill.TACTIC_TAKEDOWN,Skill.TACTIC_DUCK_ROLL)//temp
+			,2,11,2
+			)
+	,FIGHTING_FURY("Fighting Fury"
+			,"Coherent rage and savagery set Furies apart from both civilized folk and enchanted monsters."
+			,null,
+			AType.ENTRY
+			,EnumSet.of(AGroup.DIRECT_BATTLE,AGroup.STRENGTH)
+			,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)
+			,EnumSet.of(Skill.BLOODTHIRSTY,Skill.BLITZ,Skill.COUNTER)
+			,12,3,0
 			)
 	;
 	
