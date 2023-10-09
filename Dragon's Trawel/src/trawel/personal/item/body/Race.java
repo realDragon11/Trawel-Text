@@ -201,4 +201,8 @@ public class Race extends Item{
 				;
 	}
 	
+	public boolean canBeRacistTo(Race r) {
+		return raceClass != r.raceClass;
+	}
+	
 }

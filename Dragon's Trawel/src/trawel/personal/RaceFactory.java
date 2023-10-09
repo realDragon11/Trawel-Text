@@ -88,12 +88,23 @@ public class RaceFactory {
 			this.map = map;
 		}
 	}
-	
+	/**
+	 * racial class used for racism comparisons now
+	 */
 	public enum RaceClass{
-		HUMAN_LIKE(LegacyType.HUMAN), ELF(LegacyType.ORC), ANTHRO_FUR(LegacyType.CAT),
-		ANTHRO_REPTILE(LegacyType.MERMAID), SKELETON(LegacyType.SKELETON),
-		OTHER(LegacyType.NONE),VARIES(LegacyType.VARIES), GOLEM(LegacyType.GOLEM),
-		WOLF(LegacyType.WOLF), BEAR(LegacyType.BEAR), UNDONE_BEAST(LegacyType.WOLF),
+		HUMAN_LIKE(LegacyType.HUMAN),
+		ELF(LegacyType.ORC),
+		ORC(LegacyType.ORC),
+		ANTHRO_FUR(LegacyType.CAT),
+		ANTHRO_REPTILE(LegacyType.MERMAID),
+		ANTHRO_EXOTIC(LegacyType.MERMAID),
+		SKELETON(LegacyType.SKELETON),
+		OTHER(LegacyType.NONE),
+		VARIES(LegacyType.VARIES),
+		GOLEM(LegacyType.GOLEM),
+		WOLF(LegacyType.WOLF),
+		BEAR(LegacyType.BEAR),
+		UNDONE_BEAST(LegacyType.WOLF),
 		DRUDGER(LegacyType.MERMAID)
 		,DEMON(LegacyType.GOLEM);
 		private LegacyType ltype;
@@ -228,7 +239,8 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(-10);
 		misc.maxPitch = audioSteps(0);
-		misc.raceClass = RaceClass.ELF;
+		misc.raceClass = RaceClass.ORC;
+		misc.archetype = Archetype.GLADIATOR;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.LIZARDFOLK);
@@ -413,6 +425,7 @@ public class RaceFactory {
 		misc.rarity = .2;
 		misc.insultList.add("Clean up after your trail!");
 		misc.insultList.add("I bet you taste good with salt!");
+		misc.insultList.add("Your herbs will make fine seasoning for you!");
 		misc.baseMap = "nada";
 		misc.raceMaps.add("-1");
 		misc.racialType = Race.RaceType.PERSONABLE;
@@ -421,7 +434,8 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(-10);
 		misc.maxPitch = audioSteps(0);
-		misc.raceClass = RaceClass.ANTHRO_REPTILE;
+		misc.raceClass = RaceClass.ANTHRO_EXOTIC;
+		misc.archetype = Archetype.VIRAGO;
 		raceList.add(misc);
 		
 		/**
@@ -448,7 +462,7 @@ public class RaceFactory {
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
-		misc.raceClass = RaceClass.ELF;
+		misc.raceClass = RaceClass.ANTHRO_EXOTIC;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.SKELETON_NON_BEASTLY);
@@ -484,15 +498,15 @@ public class RaceFactory {
 		misc.insultList.add("Oh good, I needed a firestarter!");
 		misc.insultList.add("I'll cook my dinner with your corpse!");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("-1");
+		misc.raceMaps.add("0");
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = false;
 		misc.voice = SoundBox.Voice.FEMALE_BASIC;
 		misc.minPitch = audioSteps(0);
 		misc.maxPitch = audioSteps(10);
-		misc.raceClass = RaceClass.ANTHRO_FUR;//doing this with -1 map and nada makes you glow yellow so that's good
-		misc.archetype = Archetype.HEDGE_MAGE;//temp?
+		misc.raceClass = RaceClass.ANTHRO_EXOTIC;
+		misc.archetype = Archetype.HEDGE_MAGE;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.FUGUE);
