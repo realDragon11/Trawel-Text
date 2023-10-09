@@ -77,7 +77,7 @@ public class mainGame {
 			//add to front, changeviewer cycles to older ones when used
 			"b_8: {part 1/5} Added a wait option to Arenas and prevented giant time chunks by accident, made Arenas fight without the player and have the winners move on after enough training. Players always get a new fighter in their first round (so entirely for 1 round titles), but more rounds are done entirely naturally now, potentially drawing from survivors.",
 			"b_8: {part 2/5} Updated Lot menu, standardized collecting earned money from built Features. Features can now have intro/outro text, which can be turned off as a display option. Node Features now have autosave enabled while exploring them, and saves once again use a different date format.",
-			"b_8: {part 3/5} Created unique stances for Fish Anchor, Fish Spear TODO, which all used other weapon stances as placeholders since the weapon updates. Grazes have been renamed Negates and Graze is now used to indicate no rolled wound. Armor Quality value and fitness updated, which mostly matters for AI, as well as Weapon Quality price.",
+			"b_8: {part 3/5} Created unique stances for Fish Anchor, Fish Spear, and Lance which all used other weapon stances as placeholders since the weapon updates. Two stances still need migration. Grazes have been renamed Negates and Graze is now used to indicate no rolled wound. Armor Quality value and fitness updated, which mostly matters for AI, as well as Weapon Quality price.",
 			"b_8: {part 4/5} Cleaned up Wound/Effect/Tactic text and code, added a few new Skills. Archetypes now grant more skills, as well as stats. Some new archetypes were added.",
 			"b_8: {part 5/5} More insults added to species, materials with extreme outlier elemental stats reigned in.",
 			

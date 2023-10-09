@@ -577,6 +577,7 @@ public class WeaponAttackFactory {
 		martialStance.addAttack(new Attack("charge",1.4,300.0,1,20,80,"X` charges forward with their horn!",2,"pierce"));
 		martialStance.finish();
 		stanceMap.put("unicorn horn", martialStance);*/
+		//this is intentionaly a copy
 		copyStanceTo(WeaponType.LANCE,WeaponType.UNICORN_HORN);
 
 		
