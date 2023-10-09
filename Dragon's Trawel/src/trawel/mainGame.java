@@ -71,7 +71,7 @@ import trawel.towns.services.Oracle;
 public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
-	public static final String VERSION_STRING = "v0.8.b__8";
+	public static final String VERSION_STRING = "v0.8.b_8";
 	public static final String VERSION_DATE = " updated Oct 9th 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
