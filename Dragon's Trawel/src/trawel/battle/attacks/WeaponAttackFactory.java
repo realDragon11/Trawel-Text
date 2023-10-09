@@ -410,8 +410,44 @@ public class WeaponAttackFactory {
 				);
 		addStance(WeaponType.CLAYMORE,sta);
 		
-		//DOLATER:
-		copyStanceTo(WeaponType.SPEAR,WeaponType.LANCE);
+		sta = new Stance(WeaponType.LANCE);
+		sta.addAttack(
+				make("charge")
+				.setFluff("X` charges at Y` with their Z`!")
+				.setRarity(3f)
+				.setAcc(2.15f)
+				.setDamage(DamageTier.HIGH,DamageTier.ASTOUNDING,.2f)
+				.setMix(1,3,30)
+				.setWarmupOfTotal(TimeTier.SLOWER,TimeTier.SLOWEST)
+				);
+		sta.addAttack(
+				make("skewer")
+				.setFluff("X` skewers Y` with their Z`!")
+				.setRarity(3f)
+				.setAcc(1f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.4f)
+				.setMix(2,1,30)
+				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOWER)
+				);
+		sta.addAttack(
+				make("thrust")
+				.setFluff("X` thrusts at Y` with their Z`!")
+				.setRarity(3f)
+				.setAcc(.9f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.2f)
+				.setMix(3,3,35)
+				.setWarmupOfTotal(TimeTier.HALF_FAST, TimeTier.NORMAL)
+				);
+		sta.addAttack(
+				make("smack")
+				.setFluff("X` smacks Y` with the side of their Z`!")
+				.setRarity(2f)
+				.setAcc(1f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.2f)
+				.setMix(0,1,0)
+				.setWarmupOfTotal(TimeTier.HALF_NORMAL,TimeTier.SLOW)
+				);
+		addStance(WeaponType.LANCE,sta);
 		/*
 		martialStance = new Stance();
 		martialStance.addAttack(new Attack("skewer",0.8,150.0,1,5,35,"X` skewers Y` with their Z`!",1,"pierce"));	
@@ -541,7 +577,7 @@ public class WeaponAttackFactory {
 		martialStance.addAttack(new Attack("charge",1.4,300.0,1,20,80,"X` charges forward with their horn!",2,"pierce"));
 		martialStance.finish();
 		stanceMap.put("unicorn horn", martialStance);*/
-		copyStanceTo(WeaponType.SPEAR,WeaponType.UNICORN_HORN);
+		copyStanceTo(WeaponType.LANCE,WeaponType.UNICORN_HORN);
 
 		
 		sta = new Stance(WeaponType.TALONS_GENERIC);

@@ -93,7 +93,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 		RAPIER("rapier","rapier",4f,3,.8f,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
 		DAGGER("dagger","dagger",1.8f,1,.8f,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
 		CLAYMORE("claymore","claymore",4f,5,.3f,EnumSet.of(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED)),
-		LANCE("spear","spear",4f,3,.2f,EnumSet.of(WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		LANCE("lance","lance",4f,3,.2f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
 		SHOVEL("shovel","shovel",2.2f,2,.1f,EnumSet.of(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,WeaponQual.CARRYTHROUGH)),
 		TEETH_GENERIC("teeth",null,0,0,0f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.PENETRATIVE,WeaponQual.DUELING,Weapon.WeaponQual.ACCURATE)),
 		REAVER_STANDING("clawed feet",null,0,0,0f),
