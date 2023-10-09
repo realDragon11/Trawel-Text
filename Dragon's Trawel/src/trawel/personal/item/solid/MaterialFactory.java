@@ -1057,7 +1057,7 @@ public class MaterialFactory {
 		for (int i = matList.size()-1;i>=0;--i) {
 			curMat = matList.get(i);
 			wWeightList[i] = curMat.weapon ? (float) curMat.rarity : 0f;
-			aWeightList[i] = curMat.weapon ? (float) curMat.rarity : 0f;
+			aWeightList[i] = curMat.armor ? (float) curMat.rarity : 0f;
 		}
 		weapMats = new WeightedTable(wWeightList);
 		armMats = new WeightedTable(aWeightList);
