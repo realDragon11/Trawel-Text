@@ -15,8 +15,10 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
+import trawel.AIClass;
 import trawel.Effect;
 import trawel.Networking;
+import trawel.Services;
 import trawel.Story;
 import trawel.WorldGen;
 import trawel.extra;
@@ -544,7 +546,7 @@ public class Player extends SuperPerson{
 		return pouch.get(slot);
 	}
 	public Item popPouch(int slot) {
-		return pouch.get(slot);
+		return pouch.remove(slot);
 	}
 	
 	/**
@@ -560,10 +562,6 @@ public class Player extends SuperPerson{
 	
 	public boolean canAddPouch() {
 		return pouch.size() < 3;
-	}
-	
-	public Item retconLastPouch() {
-		return pouch.remove(pouch.size()-1);
 	}
 	
 	public class PouchMenuItem extends MenuSelect{
@@ -606,6 +604,73 @@ public class Player extends SuperPerson{
 		}
 		return list;
 	}
+	
+	public List<PouchMenuItem> getPouchesAll(){
+		List<PouchMenuItem> list = new ArrayList<PouchMenuItem>();
+		for (int i = 0; i < pouch.size();i++) {
+			list.add(new PouchMenuItem(i));
+		}
+		return list;
+	}
+	
+	public boolean isInPouch(Item thinking) {
+		return pouch.contains(thinking);
+	}
+	
+	/**
+	 * when onlyDiscard == true, can be called safely without the player getting a chance to swap items
+	 * <br>
+	 * otherwise, they can swap all slots, this might work weirdly with looting otherwise, but might be able to do later
+	 * @param onlyDiscard
+	 */
+	public void pouchMenu(boolean onlyDiscard) {
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return extra.STAT_HEADER+"Pouch Size: "+extra.PRE_WHITE+pouch.size()+"/"+"3";
+					}});
+				for (Item it: pouch) {
+					if (!onlyDiscard) {
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Interact with "+it.getName();
+							}
+
+							@Override
+							public boolean go() {
+								Item newit = AIClass.askDoSwap(it, null, true);
+								int index = pouch.indexOf(it);
+								pouch.set(index,newit);//will set it to itself if they reject it
+								return false;
+							}});
+					}
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Melt "+it.getName();
+						}
+
+						@Override
+						public boolean go() {
+							pouch.remove(it);
+							Services.aetherifyItem(it,Player.bag,true);
+							return false;
+						}});
+				}
+				list.add(new MenuBack());
+				return list;
+			}});
+	}
+	
 	/**
 	 * note that this uses the player it's called on when it can, not just the global player
 	 */
@@ -767,35 +832,7 @@ public class Player extends SuperPerson{
 
 									@Override
 									public boolean go() {
-										//TODO: add item aetherification on the spot
-										extra.menuGo(new MenuGenerator() {
-
-											@Override
-											public List<MenuItem> gen() {
-												List<MenuItem> extList = new ArrayList<MenuItem>();
-												extList.add(new MenuLine() {
-
-													@Override
-													public String title() {
-														return "Pouch Size Limit: 3 Items";
-													}});
-												for (int i = 0; i < pouch.size();i++) {
-													final int slot = i;//love that this is truly final
-													extList.add(new MenuSelect() {
-														@Override
-														public String title() {
-															return "Use " +peekPouch(slot).getName();
-														}
-
-														@Override
-														public boolean go() {
-															swapPouch(slot);
-															return false;
-														}});
-												}
-												extList.add(new MenuBack());
-												return extList;
-											}});
+										pouchMenu(false);
 										return false;
 									}});
 								invList.add(new MenuSelect() {

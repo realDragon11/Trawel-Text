@@ -625,6 +625,8 @@ public class AIClass {
 	 * <br>
 	 * <br>
 	 * if they reject the item, it will return 'thinking'.
+	 * <br>
+	 * allowedNotGiveBack == true means that the function calling this must accept null and also items of different types
 	 */
 	public static Item askDoSwap(Item thinking, Store store, boolean allowedNotGiveBack) {
 		if (thinking instanceof Race) {
@@ -716,6 +718,13 @@ public class AIClass {
 						extra.inputContinue();
 						return false;
 					}});
+				
+				//hijack remaining pouch code if already in pouch
+				if (Player.player.isInPouch(thinking)) {
+					list.add(new MenuBack("Keep " + thinking.getName() + " in pouch."));
+					return list;
+				}
+				//end hijack of if already in pouch
 				if (finalAllowedNotGiveBack) {
 					if (Player.player.canAddPouch()) {
 						list.add(new MenuSelect() {
@@ -752,14 +761,25 @@ public class AIClass {
 								return Player.player.addPouch(current);
 							}});
 					}else {
-						if (Player.player.getPouchesAgainst(thinking).size() == 0) {
-							//FIXME: allow discarding other items if can't fit
-						}
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Manage Bag.";
+							}
+
+							@Override
+							public boolean go() {
+								Player.player.pouchMenu(true);
+								return false;
+							}});
 					}
-					
+					list.addAll(Player.player.getPouchesAgainst(thinking));
+					//list.addAll(Player.player.getPouchesAll());
+				}else {
+					//cannot use pouches if not of same type, so don't need to discard
+					list.addAll(Player.player.getPouchesAgainst(thinking));
 				}
-				//MAYBELATER: with shops, let you swap out any item, not just 'against' items
-				list.addAll(Player.player.getPouchesAgainst(thinking));
 				list.add(new MenuBack() {
 
 					@Override
