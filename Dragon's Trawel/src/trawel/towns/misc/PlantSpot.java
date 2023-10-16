@@ -208,6 +208,10 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 			Player.bag.addNewDrawBanePlayer(DrawBane.HONEY);
 			Player.bag.addNewDrawBanePlayer(DrawBane.WAX);
 			Player.bag.addSeed(Seed.SEED_BEE);
+			
+			extra.println("The bees sting!");
+			Player.player.getPerson().addEffect(Effect.BEES);
+			Networking.unlockAchievement("bees_hive");
 		break;
 		case SEED_BEE: Player.bag.addSeed(Seed.SEED_BEE);break;
 		case HARVESTED_BEE:Player.bag.addSeed(Seed.SEED_BEE); break;
@@ -267,7 +271,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 			Player.bag.addNewDrawBanePlayer(DrawBane.GRAVE_DIRT);
 			break;
 		case EMPTY:
-			extra.println("ERROR");
+			extra.println("EMPTY ERROR");
 			break;
 		}
 		contains = Seed.EMPTY;
@@ -304,7 +308,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 		case GROWN_FUNGUS: if (timer > 200) {
 			//fungus lets other plant grow if not taken for grave dirt
 			contains = extra.choose(Seed.SEED_GARLIC,Seed.SEED_TRUFFLE,Seed.SEED_PUMPKIN,Seed.SEED_APPLE);
-		}
+		}break;
 		
 		case HARVESTED_APPLE: if (timer >= 0) { contains = Seed.GROWN_APPLE;}break;
 		case HARVESTED_PUMPKIN: if (timer >= 0) { contains = Seed.GROWN_PUMPKIN;}break;
