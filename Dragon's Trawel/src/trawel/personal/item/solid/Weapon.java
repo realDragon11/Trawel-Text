@@ -331,7 +331,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 				for (int ta = 0; ta < battleTests;ta++) {
 					AttackReturn ret = Combat.handleTestAttack(holdAttack.impair(null,this,null)
 							,extra.getDumInvs().get(j).atLevel(level)
-							,Armor.armorEffectiveness);
+							);
 					dam+= ret.damage/ret.attack.getTime();
 					if (ret.type == ATK_ResultType.IMPACT) {
 						impactChance++;

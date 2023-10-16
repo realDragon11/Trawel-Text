@@ -29,7 +29,7 @@ import trawel.towns.World;
 import trawel.towns.services.Store;
 
 /**
- * @author Brian Malone
+ * @author dragon
  * 2/8/2018
  * The Class that makes the decisions for the Persons
  * entirely static
@@ -236,7 +236,7 @@ public class AIClass {
 			j = 0;
 			do {
 				damray[i]+= com.handleAttack(false, attacks.get(i), defender.getBag(), attacker.getBag()
-						,Armor.armorEffectiveness, attacker, defender).damage;
+						, attacker, defender).damage;
 				j++;
 			}while (j < rounds);
 			//we don't need to divide by rounds because

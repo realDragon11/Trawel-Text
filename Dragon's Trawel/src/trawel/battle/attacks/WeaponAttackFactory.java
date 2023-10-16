@@ -22,7 +22,6 @@ import trawel.personal.classless.AttributeBox;
 import trawel.personal.classless.Feat;
 import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Skill;
-import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponType;
@@ -1113,7 +1112,7 @@ public class WeaponAttackFactory {
 					for (int j = extra.getDumInvs().size()-1; j >=0;j--) {
 						AttackReturn ret = Combat.handleTestAttack(holdAttack.impair(null,w,null)
 								,extra.getDumInvs().get(j).atLevel(w.getLevel())
-								,Armor.armorEffectiveness);
+								);
 						damage += ret.damage;
 						if (ret.type == ATK_ResultType.IMPACT) {
 							hits++;

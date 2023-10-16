@@ -738,7 +738,7 @@ public class Combat {
 	/**
 	 * Redone, write new docs
 	 */
-	public AttackReturn handleAttack(boolean isReal, ImpairedAttack att, Inventory def,Inventory off, double armMod, Person attacker, Person defender) {
+	public AttackReturn handleAttack(boolean isReal, ImpairedAttack att, Inventory def,Inventory off, Person attacker, Person defender) {
 		String str = "";
 		AttackReturn ret;
 		
@@ -859,8 +859,8 @@ public class Combat {
 		return ret;
 	}
 	
-	public static AttackReturn handleTestAttack(ImpairedAttack att, Person p, double armMod) {
-		return Combat.testCombat.handleAttack(false,att,p.getBag(),null,armMod,null,p);	
+	public static AttackReturn handleTestAttack(ImpairedAttack att, Person p) {
+		return Combat.testCombat.handleAttack(false,att,p.getBag(),null,null,p);	
 		
 	}
 	
@@ -1155,7 +1155,7 @@ public class Combat {
 			}
 		}
 		ImpairedAttack attack = attacker.getNextAttack();
-		AttackReturn atr = handleAttack(true,attack,defender.getBag(),attacker.getBag(),Armor.armorEffectiveness,attacker,defender);
+		AttackReturn atr = handleAttack(true,attack,defender.getBag(),attacker.getBag(),attacker,defender);
 		int damageDone = atr.damage;
 		float percent = 0f;
 		if (damageDone > 0) {

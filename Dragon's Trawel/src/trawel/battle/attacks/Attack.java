@@ -55,7 +55,6 @@ public class Attack implements IAttack{
 	 * @param desc
 	 * @param fluffer
 	 * @param hitMult
-	 * @param type
 	 * @param intValues
 	 * @param warmup
 	 * @param cooldown
