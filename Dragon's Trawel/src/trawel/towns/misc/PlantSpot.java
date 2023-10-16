@@ -25,14 +25,14 @@ import trawel.time.TimeEvent;
 public class PlantSpot implements java.io.Serializable, CanPassTime{
 
 	private static final long serialVersionUID = 1L;
-	public String contains;
+	public Seed contains;
 	public double timer = 0;
 	public int level;
 	public PlantSpot(int tier) {
 		level = tier;
-		contains = "";
+		contains = Seed.EMPTY;
 	}
-	public PlantSpot(int tier,String starting) {
+	public PlantSpot(int tier,Seed starting) {
 		level = tier;
 		contains = starting;
 	}
@@ -49,7 +49,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 						return "Contains: "+contains;
 					}
 				});
-				if (contains.equals("")) {
+				if (contains == Seed.EMPTY) {
 					mList.add(new MenuSelect() {
 	
 						@Override
@@ -67,7 +67,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 				}else {
 					final MenuItem harvestFunction;
 					switch (contains) {
-					case "apple tree":
+					case GROWN_APPLE:
 						harvestFunction = new MenuSelect() {
 
 							@Override
@@ -83,17 +83,17 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 								timer-=20;
 								Player.bag.addNewDrawBanePlayer(DrawBane.APPLE);
 								if (extra.chanceIn(1,3)) {
-									Player.bag.addSeed(Seed.APPLE);
+									Player.bag.addSeed(Seed.SEED_APPLE);
 								}
 								if (timer <= 0) {
-									contains = "exhausted apple tree";
+									contains = Seed.HARVESTED_APPLE;
 								}
 								return false;
 							}
 							
 						};
 						break;
-					case "pumpkin patch":
+					case GROWN_PUMPKIN:
 						harvestFunction = new MenuSelect() {
 
 							@Override
@@ -109,17 +109,17 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 								timer-=35;
 								Player.bag.addNewDrawBanePlayer(DrawBane.PUMPKIN);
 								if (extra.chanceIn(1,3)) {
-									Player.bag.addSeed(Seed.PUMPKIN);
+									Player.bag.addSeed(Seed.SEED_PUMPKIN);
 								}
 								if (timer <= 0) {
-									contains = "empty pumpkin patch";
+									contains = Seed.HARVESTED_PUMPKIN;
 								}
 								return false;
 							}
 							
 						};
 						break;
-					case "bee hive":
+					case GROWN_BEE:
 						harvestFunction = new MenuSelect() {
 
 							@Override
@@ -129,7 +129,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 
 							@Override
 							public boolean go() {
-								timer=-20;
+								timer= -20;//flat
 								switch (extra.randRange(1,6)) {
 								case 1:
 									extra.println("The bees sting!");
@@ -150,11 +150,11 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 									Player.bag.addNewDrawBanePlayer(DrawBane.WAX);
 									break;
 								case 6:
-									Player.bag.addSeed(Seed.BEE);
+									Player.bag.addSeed(Seed.SEED_BEE);
 									Player.bag.addNewDrawBanePlayer(DrawBane.HONEY);
 									break;
 								}
-								contains = "angry bee hive";
+								contains = Seed.HARVESTED_BEE;
 								return false;
 							}
 							
@@ -189,29 +189,29 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 	
 	private void take() {
 		switch (contains) {
-		case "garlic": 
+		case GROWN_GARLIC: 
 			Player.bag.addNewDrawBanePlayer(DrawBane.GARLIC);
-			Player.bag.addSeed(Seed.GARLIC);
+			Player.bag.addSeed(Seed.SEED_GARLIC);
 			break;
-		case "apple tree": 
+		case GROWN_APPLE: 
 			Player.bag.addNewDrawBanePlayer(DrawBane.APPLE);
 			Player.bag.addNewDrawBanePlayer(DrawBane.APPLE);
 			Player.bag.addNewDrawBanePlayer(DrawBane.WOOD);
-			Player.bag.addSeed(Seed.APPLE);
+			Player.bag.addSeed(Seed.SEED_APPLE);
 		break;
-		case "exhausted apple tree":
+		case HARVESTED_APPLE:
 			Player.bag.addNewDrawBanePlayer(DrawBane.WOOD);
 			break;
-		case "garlic seed": Player.bag.addSeed(Seed.GARLIC);break;
-		case "apple seed": Player.bag.addSeed(Seed.APPLE);break;
-		case "bee hive": 
+		case SEED_GARLIC: Player.bag.addSeed(Seed.SEED_GARLIC);break;
+		case SEED_APPLE: Player.bag.addSeed(Seed.SEED_APPLE);break;
+		case GROWN_BEE: 
 			Player.bag.addNewDrawBanePlayer(DrawBane.HONEY);
 			Player.bag.addNewDrawBanePlayer(DrawBane.WAX);
-			Player.bag.addSeed(Seed.BEE);
+			Player.bag.addSeed(Seed.SEED_BEE);
 		break;
-		case "bee larva": Player.bag.addSeed(Seed.BEE);break;
-		case "angry bee hive":Player.bag.addSeed(Seed.BEE); break;
-		case "ent": 
+		case SEED_BEE: Player.bag.addSeed(Seed.SEED_BEE);break;
+		case HARVESTED_BEE:Player.bag.addSeed(Seed.SEED_BEE); break;
+		case GROWN_ENT: 
 			Networking.send("PlayDelay|sound_entmake|1|");
 			Combat c = Player.player.fightWith(RaceFactory.makeEnt(level));
 			if (c.playerWon() > 0) {
@@ -225,34 +225,37 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 				}
 			}
 		break;
-		case "ent sapling": Player.bag.addSeed(Seed.ENT);break;
-		case "pumpkin patch": 
+		case SEED_ENT: Player.bag.addSeed(Seed.SEED_ENT);break;
+		case GROWN_PUMPKIN: 
 			Player.bag.addNewDrawBanePlayer(DrawBane.PUMPKIN);
-			Player.bag.addSeed(Seed.PUMPKIN);
-			Player.bag.addSeed(Seed.PUMPKIN);
+			Player.bag.addSeed(Seed.SEED_PUMPKIN);
+			Player.bag.addSeed(Seed.SEED_PUMPKIN);
 		break;
-		case "empty pumpkin patch": 
-			Player.bag.addSeed(Seed.PUMPKIN);
+		case HARVESTED_PUMPKIN: 
+			Player.bag.addSeed(Seed.SEED_PUMPKIN);
 		break;
-		case "pumpkin seed": Player.bag.addSeed(Seed.PUMPKIN);break;
-		case "eggcorn": 
+		case SEED_PUMPKIN: Player.bag.addSeed(Seed.SEED_PUMPKIN);break;
+		case GROWN_EGGCORN: 
 			Player.bag.addNewDrawBanePlayer(DrawBane.EGGCORN);
-			Player.bag.addSeed(Seed.EGGCORN);
+			Player.bag.addSeed(Seed.SEED_EGGCORN);
 		break;
-		case "eggcorn seed": Player.bag.addSeed(Seed.EGGCORN);break;
-		case "truffle": 
+		case SEED_EGGCORN: Player.bag.addSeed(Seed.SEED_EGGCORN);break;
+		case GROWN_TRUFFLE: 
 			Player.bag.addNewDrawBanePlayer(DrawBane.TRUFFLE);
 		break;
-		case "truffle spores":;break;
-		case "fairy dust":
+		case SEED_TRUFFLE:
+			;break;
+		case SEED_FAE:
 			Player.bag.addNewDrawBanePlayer(DrawBane.GRAVE_DUST);//undead fairies?????
 			break;
-		case "unicorn horn":
+		case GROWN_FAE:
 			Player.bag.addNewDrawBanePlayer(DrawBane.UNICORN_HORN);
 			break;
-		default: case "":extra.println("ERROR");break;
+		case EMPTY:
+			extra.println("ERROR");
+			break;
 		}
-		contains = "";
+		contains = Seed.EMPTY;
 		
 	}
 
@@ -260,12 +263,12 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 		timer = 0;
 		Seed s = Player.bag.getSeed();
 		if (s != null) {
-		contains = s.toString().toLowerCase();
+			contains = s;
 		}else {
-			contains = "";
+			contains = Seed.EMPTY;
 		}
 		if (contains == null) {
-			contains = "";
+			contains = Seed.EMPTY;
 		}
 	}
 
@@ -273,18 +276,18 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 	public List<TimeEvent> passTime(double t, TimeContext tc) {
 		timer +=t;
 		switch (contains) {//ugh should probably convert to enums at some point
-		case "garlic seed": if (timer > 57) { contains = "garlic";timer = 0;}break;
-		case "apple seed": if (timer > 323) { contains = "apple tree";timer = 0;}break;
-		case "bee larva": if (timer > 98) { contains = "bee hive";timer = 0;}break;
-		case "ent sapling": if (timer > 630) { contains = "ent";timer = 0;}break;
-		case "pumpkin seed": if (timer > 60) { contains = "pumpkin patch";timer = 0;}break;
-		case "eggcorn seed": if (timer > 33) { contains = "eggcorn";timer = 0;}break;
-		case "truffle spores": if (timer > 60) { contains = "truffle";timer = 0;}break;
-		case "fairy dust": if (timer > 60) { contains = "unicorn horn";timer = 0;}break;
+		case SEED_GARLIC: if (timer > 57) { contains = Seed.GROWN_GARLIC;timer = 0;}break;
+		case SEED_APPLE: if (timer > 323) { contains = Seed.GROWN_APPLE;timer = 0;}break;
+		case SEED_BEE: if (timer > 98) { contains = Seed.GROWN_BEE;timer = 0;}break;
+		case SEED_ENT: if (timer > 630) { contains = Seed.GROWN_ENT;timer = 0;}break;
+		case SEED_PUMPKIN: if (timer > 60) { contains = Seed.GROWN_PUMPKIN;timer = 0;}break;
+		case SEED_EGGCORN: if (timer > 33) { contains = Seed.GROWN_EGGCORN;timer = 0;}break;
+		case SEED_TRUFFLE: if (timer > 60) { contains = Seed.GROWN_TRUFFLE;timer = 0;}break;
+		case SEED_FAE: if (timer > 60) { contains = Seed.GROWN_FAE;timer = 0;}break;
 		
-		case "exhausted apple tree": if (timer >= 0) { contains = "apple tree";}break;
-		case "empty pumpkin patch": if (timer >= 0) { contains = "pumpkin patch";}break;
-		case "angry bee hive": if (timer >= 0) { contains = "bee hive";}break;
+		case HARVESTED_APPLE: if (timer >= 0) { contains = Seed.GROWN_APPLE;}break;
+		case HARVESTED_PUMPKIN: if (timer >= 0) { contains = Seed.GROWN_PUMPKIN;}break;
+		case HARVESTED_BEE: if (timer >= 0) { contains = Seed.GROWN_BEE;}break;
 		}
 		return null;
 	}
@@ -294,7 +297,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 
 			@Override
 			public String title() {
-				return contains == "" ? "empty plant spot" : "section- " + contains;
+				return contains == Seed.EMPTY ? "empty plant spot" : "section- " + contains;
 			}
 
 			@Override

@@ -3,20 +3,45 @@ package trawel.personal.item;
 import trawel.extra;
 
 public enum Seed {
-	GARLIC("garlic seed"),
-	APPLE("apple seed"),
-	BEE("bee larva"),
-	ENT("ent sapling"),
-	PUMPKIN("pumpkin seed"),
-	EGGCORN("eggcorn seed"),
-	TRUFFLE("truffle spores");
+	EMPTY(""),
+	
+	SEED_GARLIC("garlic seed"),
+	GROWN_GARLIC("garlic"),
+	
+	SEED_APPLE("apple seed"),
+	GROWN_APPLE("apple tree"),
+	HARVESTED_APPLE("picked apple tree"),
+	
+	SEED_BEE("bee larva"),
+	GROWN_BEE("bee hive"),
+	HARVESTED_BEE("angry bee hive"),
+	
+	SEED_ENT("ent sapling"),
+	GROWN_ENT("ent"),
+	
+	SEED_PUMPKIN("pumpkin seed"),
+	GROWN_PUMPKIN("pumpkin patch"),
+	HARVESTED_PUMPKIN("empty pumpkin patch"),
+	
+	SEED_EGGCORN("eggcorn seed"),
+	GROWN_EGGCORN("eggcorn"),
+	
+	SEED_TRUFFLE("truffle spores"),
+	GROWN_TRUFFLE("truffle"),
+	
+	SEED_FAE("fairy dust"),
+	GROWN_FAE("unicorn horn"),
+	
+	SEED_FUNGUS("corpsebloom spores"),
+	GROWN_FUNGUS("corpsebloom")
+	;
 	
 	private String name;
 	Seed(String n){
 		name = n;
 	}
 	public static Seed randSeed() {
-		return extra.choose(GARLIC,APPLE,PUMPKIN,EGGCORN,TRUFFLE);
+		return extra.choose(SEED_GARLIC,SEED_APPLE,SEED_PUMPKIN,SEED_EGGCORN,SEED_TRUFFLE);
 	}
 	
 	@Override

@@ -15,6 +15,7 @@ import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceID;
+import trawel.personal.item.Seed;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
@@ -178,34 +179,34 @@ public class GenericNode implements NodeType {
 		case PLANT_SPOT:
 			PlantSpot pspot = ((PlantSpot)holder.getStorage(node));
 			if (pspot.timer > 40f) {
-				if (pspot.contains == "") {//if we have nothing
+				if (pspot.contains == Seed.EMPTY) {//if we have nothing
 					if (extra.chanceIn(2, 5)) {//add something
 						pspot.timer = 0;//reset timer
 						switch (NodeType.getTypeEnum(holder.getTypeNum(node))) {
 						case BOSS:
-							pspot.contains = "ent sapling";//virgin later?
+							pspot.contains = Seed.SEED_ENT;//virgin later?
 							break;
 						case CAVE:
-							pspot.contains = "truffle spores";
+							pspot.contains = Seed.SEED_TRUFFLE;
 							break;
 						case DUNGEON:
-							pspot.contains = "eggcorn seed";
+							pspot.contains = Seed.SEED_EGGCORN;
 							break;
 						case GRAVEYARD:
-							pspot.contains = "garlic seed";
+							pspot.contains = Seed.SEED_GARLIC;
 							break;
 						case GROVE:
 							if (extra.chanceIn(1,15)) {
-								pspot.contains = "ent sapling";
+								pspot.contains = Seed.SEED_ENT;
 								break;
 							}
 							if (extra.chanceIn(1,6)) {//remove plantspot instead to keep the grove in flux
 								emptyANode(holder,node);
 							}
-							pspot.contains = extra.choose("bee larva","apple seed","apple seed","pumpkin seed");
+							pspot.contains = extra.choose(Seed.SEED_BEE,Seed.SEED_APPLE,Seed.SEED_APPLE,Seed.SEED_PUMPKIN);
 							break;
 						case MINE:
-							pspot.contains = "truffle spores";
+							pspot.contains = Seed.SEED_TRUFFLE;
 							break;
 						}
 					}else {
@@ -394,8 +395,8 @@ public class GenericNode implements NodeType {
 		case LOCKDOOR:
 			return holder.getStorageFirstClass(node,String.class);
 		case PLANT_SPOT:
-			String contains = ((PlantSpot)holder.getStorage(node)).contains;
-			return contains == "" ? "Plant Spot" : contains ;
+			Seed contains = ((PlantSpot)holder.getStorage(node)).contains;
+			return contains == Seed.EMPTY ? "Plant Spot" : contains.toString();
 		case CASUAL_PERSON:
 			return holder.getStorageFirstPerson(node).getBag().getRace().renderName(false);
 		case RICH_GUARD:
@@ -694,11 +695,11 @@ public class GenericNode implements NodeType {
 	/**
 	 * use null for random starting, `""` for nothing
 	 */
-	public static void setPlantSpot(NodeConnector holder,int node, String starting) {
+	public static void setPlantSpot(NodeConnector holder,int node, Seed starting) {
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.PLANT_SPOT.ordinal());
 		if (starting == null) {
-			starting = extra.choose("apple tree","bee hive","eggcorn");
+			starting = extra.choose(Seed.GROWN_APPLE,Seed.GROWN_BEE,Seed.GROWN_EGGCORN);
 		}
 		holder.setStorage(node,new PlantSpot(holder.getLevel(node),starting));
 	}

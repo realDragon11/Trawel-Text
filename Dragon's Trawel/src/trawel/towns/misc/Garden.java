@@ -9,6 +9,7 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import trawel.Networking;
 import trawel.Networking.Area;
+import trawel.personal.item.Seed;
 import trawel.extra;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -17,27 +18,27 @@ import trawel.towns.Town;
 
 public class Garden extends Feature {
 	
-	private static String[] fills = new String[] {
-			"",
-			"apple seed",
-			"apple tree",
-			"garlic seed",
-			"garlic",
-			"pumpkin seed",
-			"pumpkin patch",
-			"eggcorn seed",
-			"eggcorn",
-			"bee larva",
-			"bee hive",
-			"truffle spores",
-			"truffle",
-			"exhausted apple tree",
-			"empty pumpkin patch",
-			"angry bee hive",
-			"ent sapling",
-			"ent",
-			"fairy dust",
-			"unicorn horn"
+	private static Seed[] fills = new Seed[] {
+			Seed.EMPTY,
+			Seed.SEED_APPLE,
+			Seed.GROWN_APPLE,
+			Seed.SEED_GARLIC,
+			Seed.GROWN_GARLIC,
+			Seed.SEED_PUMPKIN,
+			Seed.GROWN_PUMPKIN,
+			Seed.SEED_EGGCORN,
+			Seed.SEED_EGGCORN,
+			Seed.SEED_BEE,
+			Seed.GROWN_BEE,
+			Seed.SEED_TRUFFLE,
+			Seed.GROWN_TRUFFLE,
+			Seed.HARVESTED_APPLE,
+			Seed.HARVESTED_PUMPKIN,
+			Seed.HARVESTED_BEE,
+			Seed.SEED_ENT,
+			Seed.GROWN_ENT,
+			Seed.SEED_FAE,
+			Seed.GROWN_FAE
 			};
 	
 	public enum PlantFill{
@@ -174,7 +175,7 @@ public class Garden extends Feature {
 			roller = new WeightedTable(weights);
 		}
 		
-		public String roll() {
+		public Seed roll() {
 			return fills[roller.random(extra.getRand())];
 		}
 	}
@@ -233,7 +234,7 @@ public class Garden extends Feature {
 			reTimer += time;
 			if (reTimer > 120) {
 				for (PlantSpot p: plants) {
-					if (p.contains == "" && extra.chanceIn(1,3)) {
+					if (p.contains == Seed.EMPTY && extra.chanceIn(1,3)) {
 						p.contains = filler.roll();
 						p.timer = -(50+(100*extra.randFloat()));
 					}

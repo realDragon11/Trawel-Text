@@ -415,31 +415,31 @@ public class WitchHut extends Store implements QuestBoardLocation{
 							//can only make pumpkin with 2 'value', otherwise makes an apple
 							if (left > 0) {
 								Player.bag.addNewDrawBanePlayer(DrawBane.PUMPKIN);
-								Player.bag.addSeed(Seed.PUMPKIN);
+								Player.bag.addSeed(Seed.SEED_PUMPKIN);
 								left--;
 								break;
 							}
 						case 1:
 							Player.bag.addNewDrawBanePlayer(DrawBane.APPLE);
-							Player.bag.addSeed(Seed.APPLE);
+							Player.bag.addSeed(Seed.SEED_APPLE);
 							break;
 						case 2:
 							Player.bag.addNewDrawBanePlayer(DrawBane.GARLIC);
-							Player.bag.addSeed(Seed.GARLIC);
+							Player.bag.addSeed(Seed.SEED_GARLIC);
 							break;
 						case 3:
 							Player.bag.addNewDrawBanePlayer(DrawBane.EGGCORN);
-							Player.bag.addSeed(Seed.EGGCORN);
+							Player.bag.addSeed(Seed.SEED_EGGCORN);
 							break;
 						case 4:
 							Player.bag.addNewDrawBanePlayer(DrawBane.TRUFFLE);
-							Player.bag.addSeed(Seed.TRUFFLE);
+							Player.bag.addSeed(Seed.SEED_TRUFFLE);
 							break;
 						}
 					}else {
 						if (extra.chanceIn(1,4)) {//make a bee with honey
 							Player.bag.addNewDrawBanePlayer(DrawBane.HONEY);
-							Player.bag.addSeed(Seed.BEE);
+							Player.bag.addSeed(Seed.SEED_BEE);
 						}else {
 							//else, make meat
 							Player.bag.addNewDrawBanePlayer(DrawBane.MEAT);

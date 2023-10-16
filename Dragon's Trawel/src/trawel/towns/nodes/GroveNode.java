@@ -161,7 +161,7 @@ public class GroveNode implements NodeType{
 					place++;
 					check = big_circle[place%big_circle.length];
 				}
-				big_circle[place%big_circle.length] = new PlantSpot(1,"");
+				big_circle[place%big_circle.length] = new PlantSpot(1,Seed.EMPTY);
 			}
 			holder.setStorage(madeNode, big_circle);
 			break;
@@ -254,7 +254,7 @@ public class GroveNode implements NodeType{
 			p.getBag().forceDownGradeIf(Player.player.getPerson().getLevel());
 			AIClass.playerLoot(p.getBag(),true);
 			holder.findBehind(node, "body");
-			GenericNode.setPlantSpot(holder, node, "");//might made corpse fungus?
+			GenericNode.setPlantSpot(holder, node,Seed.SEED_FUNGUS);//make corpse fungus
 			return false;
 		case 5: //fairy circle
 			extra.println("You enter the fairy circle.");
@@ -405,9 +405,9 @@ public class GroveNode implements NodeType{
 				if (spots[i] != null) {
 					PlantSpot pspot = spots[i];
 					if (pspot.timer > 40f) {
-						if (pspot.contains == "") {//if we have nothing
+						if (pspot.contains == Seed.EMPTY) {//if we have nothing
 							if (extra.chanceIn(1, 5)) {//add something
-								pspot.contains = extra.choose("fairy dust","truffle spores");
+								pspot.contains = extra.choose(Seed.SEED_FAE,Seed.SEED_TRUFFLE);
 								pspot.timer = 0;
 							}else {
 								//delay
@@ -569,7 +569,7 @@ public class GroveNode implements NodeType{
 									extra.println("\"Would like your own tree?\"");
 									if (extra.yesNo()) {
 										extra.println("The dryad says to find a spot where a lumberjack has chopped down a tree and plant one there.");
-										Player.bag.addSeed(Seed.ENT);
+										Player.bag.addSeed(Seed.SEED_ENT);
 										holder.setStateNum(node,2);//can only get once, but can offer multiple times
 									}else {
 										holder.setStateNum(node,1);//set that they have it
@@ -831,7 +831,7 @@ public class GroveNode implements NodeType{
 				//return true if player dead, otherwise cleanup then fall through
 			}
 		}
-		String plantstart = null;//do not add
+		Seed plantstart = null;//do not add
 		switch (state%10) {//now just the starting digit
 		case 1://eat
 			if (state < 10) {//if not interrupted
@@ -846,7 +846,7 @@ public class GroveNode implements NodeType{
 			//all paths replace with new plant spot
 			if (extra.chanceIn(1,3)) {
 				extra.println("it tastes delicous!");
-				plantstart = "truffle spores";
+				plantstart = Seed.SEED_TRUFFLE;
 			}else {
 				if (extra.chanceIn(1,3)) {
 					extra.println("you start to feel lightheaded.... you pass out!");
@@ -855,12 +855,12 @@ public class GroveNode implements NodeType{
 							Player.loseGold(
 							holder.getLevel(node)*extra.randRange(3,5),true)
 						);
-					plantstart = "empty pumpkin patch";//TODO
+					plantstart = Seed.EMPTY;//TODO
 				}else {
 					extra.println("getting it down is very difficult... but you manage.");
 					int xpadd = Math.min(Player.player.getPerson().getLevel(),holder.getLevel(node));
 					Player.player.getPerson().addXp(xpadd);
-					plantstart = "";//add with nothing
+					plantstart = Seed.EMPTY;//add with nothing
 				}
 			}
 			break;
@@ -874,11 +874,11 @@ public class GroveNode implements NodeType{
 			worth = extra.randRange(worth/2,worth)+1;
 			extra.println("You sell the mushroom for " +World.currentMoneyDisplay(worth) + ".");
 			Player.player.addGold(worth);
-			plantstart = "";
+			plantstart = Seed.EMPTY;
 			break;
 		case 3://crush
 			//already did the fight
-			plantstart = "";
+			plantstart = Seed.EMPTY;
 			break;
 		}
 		
@@ -1041,15 +1041,15 @@ public class GroveNode implements NodeType{
 
 	}
 	private boolean beeHive(NodeConnector holder,int node) {
-		extra.print("You destroy the hive... ");
+		extra.print("You destroy the natural hive... ");
 		Player.player.getPerson().addEffect(Effect.BEES);//BEEEEEEEEEEEEEEEEEEEEEES
 		Networking.unlockAchievement("bees_hive");
 		extra.println("The BEEEEEES!!!! They're angry!");
-		GenericNode.setPlantSpot(holder, node, "bee larva");
+		GenericNode.setPlantSpot(holder, node,Seed.SEED_BEE);
 		
 		Player.bag.addNewDrawBanePlayer(DrawBane.HONEY);
 		Player.bag.addNewDrawBanePlayer(DrawBane.WAX);
-		Player.bag.addSeed(Seed.BEE);
+		Player.bag.addSeed(Seed.SEED_BEE);
 		return false;//could have them drive you out but that would be mean
 	}
 
