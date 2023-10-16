@@ -244,12 +244,27 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 			Player.bag.addNewDrawBanePlayer(DrawBane.TRUFFLE);
 		break;
 		case SEED_TRUFFLE:
+			if (extra.chanceIn(1,4)) {
+				Player.bag.addSeed(Seed.SEED_TRUFFLE);
+			}else {
+				extra.println("You are unable to gather the spores.");
+			}
 			;break;
 		case SEED_FAE:
 			Player.bag.addNewDrawBanePlayer(DrawBane.GRAVE_DUST);//undead fairies?????
 			break;
 		case GROWN_FAE:
 			Player.bag.addNewDrawBanePlayer(DrawBane.UNICORN_HORN);
+			break;
+		case SEED_FUNGUS:
+			if (extra.chanceIn(1,3)) {
+				Player.bag.addSeed(Seed.SEED_FUNGUS);
+			}else {
+				extra.println("You are unable to gather the spores.");
+			}
+			break;
+		case GROWN_FUNGUS:
+			Player.bag.addNewDrawBanePlayer(DrawBane.GRAVE_DIRT);
 			break;
 		case EMPTY:
 			extra.println("ERROR");
@@ -275,7 +290,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 	@Override
 	public List<TimeEvent> passTime(double t, TimeContext tc) {
 		timer +=t;
-		switch (contains) {//ugh should probably convert to enums at some point
+		switch (contains) {
 		case SEED_GARLIC: if (timer > 57) { contains = Seed.GROWN_GARLIC;timer = 0;}break;
 		case SEED_APPLE: if (timer > 323) { contains = Seed.GROWN_APPLE;timer = 0;}break;
 		case SEED_BEE: if (timer > 98) { contains = Seed.GROWN_BEE;timer = 0;}break;
@@ -284,6 +299,12 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 		case SEED_EGGCORN: if (timer > 33) { contains = Seed.GROWN_EGGCORN;timer = 0;}break;
 		case SEED_TRUFFLE: if (timer > 60) { contains = Seed.GROWN_TRUFFLE;timer = 0;}break;
 		case SEED_FAE: if (timer > 60) { contains = Seed.GROWN_FAE;timer = 0;}break;
+		case SEED_FUNGUS: if (timer > 50) { contains = Seed.GROWN_FUNGUS;timer = 0;}break;
+		
+		case GROWN_FUNGUS: if (timer > 200) {
+			//fungus lets other plant grow if not taken for grave dirt
+			contains = extra.choose(Seed.SEED_GARLIC,Seed.SEED_TRUFFLE,Seed.SEED_PUMPKIN,Seed.SEED_APPLE);
+		}
 		
 		case HARVESTED_APPLE: if (timer >= 0) { contains = Seed.GROWN_APPLE;}break;
 		case HARVESTED_PUMPKIN: if (timer >= 0) { contains = Seed.GROWN_PUMPKIN;}break;
