@@ -136,11 +136,10 @@ public enum ArmorStyle {
 		//Set<ArmorStyle> have = EnumSet.noneOf(ArmorStyle.class);
 		List<ArmorStyle> vals = Arrays.asList(ArmorStyle.values());
 		float[][] lists = new float[vals.size()][MaterialFactory.matList.size()];
-		for (Material m: MaterialFactory.matList) {
-			for (int i = 0; i < MaterialFactory.matList.size();i++) {
-				for (int j = 0; j < m.typeList.size();j++) {
-					lists[vals.indexOf(m.typeList.get(j))][i] += m.rarity;
-				}
+		for (int i = 0; i < MaterialFactory.matList.size();i++) {
+			Material m = MaterialFactory.matList.get(i);
+			for (int j = 0; j < m.typeList.size();j++) {
+				lists[vals.indexOf(m.typeList.get(j))][i] += m.rarity;
 			}
 		}
 		for (int i = 0; i < vals.size(); i++) {
