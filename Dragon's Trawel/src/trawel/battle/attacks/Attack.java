@@ -32,10 +32,6 @@ public class Attack implements IAttack{
 	private int soundStrength;
 	private String soundType;//shouldn't be a string
 	/**
-	 * TODO: this ended up not actually being used, and should get removed
-	 */
-	private AttackType type;
-	/**
 	 * most of the time, stored in stance instead, but tactics are different
 	 */
 	private Skill skill_for;
@@ -64,13 +60,12 @@ public class Attack implements IAttack{
 	 * @param warmup
 	 * @param cooldown
 	 */
-	public Attack(String name, String desc, StringResult fluffer, double hitMult, AttackType type, int[] intValues,
+	public Attack(String name, String desc, StringResult fluffer, double hitMult, int[] intValues,
 			double warmup, double cooldown, boolean _bypass) {
 		this.name = name;
 		this.desc = desc;
 		this.fluffer = fluffer;
 		this.hitMult = hitMult;
-		this.type = type;
 		this.intValues = intValues;
 		this.warmup = warmup;
 		this.cooldown = cooldown;
@@ -556,11 +551,6 @@ public class Attack implements IAttack{
 	}
 
 	@Override
-	public AttackType getType() {
-		return type;
-	}
-
-	@Override
 	public int valueSize() {
 		return intValues.length;
 	}
@@ -585,7 +575,7 @@ public class Attack implements IAttack{
 
 	//TODO: this will break in some circumstances
 	public Attack copy() {
-		Attack a = new Attack(name, desc, fluffer, hitMult, type, intValues, warmup,cooldown,bypass);
+		Attack a = new Attack(name, desc, fluffer, hitMult, intValues, warmup,cooldown,bypass);
 		a.soundStrength = soundStrength;
 		a.soundType = soundType;
 		a.skill_for = skill_for;

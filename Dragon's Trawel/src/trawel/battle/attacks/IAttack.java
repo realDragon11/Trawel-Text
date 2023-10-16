@@ -8,10 +8,6 @@ public interface IAttack {
 	
 	public String getName();
 	public String getDesc();
-	public AttackType getType();
-	public enum AttackType{
-		REAL_WEAPON, FAKE_WEAPON, SKILL
-	}
 	public int valueSize();
 	public String fluff(AttackReturn attret);
 	/**

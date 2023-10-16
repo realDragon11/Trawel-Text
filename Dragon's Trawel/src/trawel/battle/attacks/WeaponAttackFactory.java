@@ -15,7 +15,6 @@ import trawel.battle.Combat;
 import trawel.battle.Combat.ATK_ResultCode;
 import trawel.battle.Combat.ATK_ResultType;
 import trawel.battle.Combat.AttackReturn;
-import trawel.battle.attacks.IAttack.AttackType;
 import trawel.battle.attacks.Stance.AttackLevel;
 import trawel.personal.Person;
 import trawel.personal.classless.Archetype;
@@ -1421,7 +1420,7 @@ public class WeaponAttackFactory {
 			int[] arr = DamageTier.distribute(DamageTier.totalDamage(start, end, slant),sharpW,bluntW,pierceW,igniteW,frostW,elecW);
 			return new Attack(name, desc,
 					fluffer == null ? new SRInOrder(fluff) : fluffer,
-					hitmult, AttackType.REAL_WEAPON, arr,
+					hitmult, arr,
 					warmup, cooldown,magicbypass);
 		}
 		

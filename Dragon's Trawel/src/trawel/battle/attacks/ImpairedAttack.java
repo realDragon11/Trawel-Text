@@ -440,76 +440,35 @@ public class ImpairedAttack implements IAttack{
 	}
 	@Override
 	public int getSharp() {
-		switch (attack.getType()) {
-		case FAKE_WEAPON:
-		case REAL_WEAPON:
-		case SKILL:
-			return (int) (getPotencyMult()*IAttack.getSharpFromWeap(vals));
-		}
-		return 0;
+		return (int) (getPotencyMult()*IAttack.getSharpFromWeap(vals));
 	}
 	@Override
 	public int getBlunt() {
-		switch (attack.getType()) {
-		case FAKE_WEAPON:
-		case REAL_WEAPON:
-		case SKILL:
-			return (int) (getPotencyMult()*IAttack.getBluntFromWeap(vals));
-		}
-		return 0;
+		return (int) (getPotencyMult()*IAttack.getBluntFromWeap(vals));
 	}
 	@Override
 	public int getPierce() {
-		switch (attack.getType()) {
-		case FAKE_WEAPON:
-		case REAL_WEAPON:
-		case SKILL:
-			return (int) (getPotencyMult()*IAttack.getPierceFromWeap(vals));
-		}
-		return 0;
+		return (int) (getPotencyMult()*IAttack.getPierceFromWeap(vals));
 	}
 	
 	@Override
 	public int getIgnite() {
-		switch (attack.getType()) {
-		case FAKE_WEAPON:
-		case REAL_WEAPON:
-		case SKILL:
-			return (int) (getPotencyMult()*IAttack.getIgniteFromWeap(vals));
-		}
-		return 0;
+		return (int) (getPotencyMult()*IAttack.getIgniteFromWeap(vals));
 	}
 	
 	@Override
 	public int getFrost() {
-		switch (attack.getType()) {
-		case FAKE_WEAPON:
-		case REAL_WEAPON:
-		case SKILL:
-			return (int) (getPotencyMult()*IAttack.getFrostFromWeap(vals));
-		}
-		return 0;
+		return (int) (getPotencyMult()*IAttack.getFrostFromWeap(vals));
 	}
 	
 	@Override
 	public int getElec() {
-		switch (attack.getType()) {
-		case FAKE_WEAPON:
-		case REAL_WEAPON:
-		case SKILL:
-			return (int) (getPotencyMult()*IAttack.getElecFromWeap(vals));
-		}
-		return 0;
+		return (int) (getPotencyMult()*IAttack.getElecFromWeap(vals));
 	}
 	
 	@Override
 	public double getHitMult() {
 		return hitroll;
-	}
-	
-	@Override
-	public AttackType getType() {
-		return attack.getType();
 	}
 
 	@Override
