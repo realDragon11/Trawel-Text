@@ -268,7 +268,11 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 			}
 			break;
 		case GROWN_FUNGUS:
-			Player.bag.addNewDrawBanePlayer(DrawBane.GRAVE_DIRT);
+			if (extra.chanceIn(1,6)) {
+				Player.bag.addNewDrawBanePlayer(DrawBane.GRAVE_DUST);
+			}else {
+				Player.bag.addNewDrawBanePlayer(DrawBane.GRAVE_DIRT);
+			}
 			break;
 		case EMPTY:
 			extra.println("EMPTY ERROR");

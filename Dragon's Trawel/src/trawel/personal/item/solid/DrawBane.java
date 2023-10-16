@@ -29,14 +29,14 @@ public enum DrawBane {
 	MIMIC_GUTS("mimic guts","An alternative reward from a treasure chest. Brew it!",1,.75,true),
 	CLEANER("cloth","Discard to clean blood off of your equipment.",1,0,false),
 	APPLE("apple","Used to increase potion thickness, but might turn it into a stew instead. Edible.",1,.3,true),
-	WOOD("wood","A good building resource. Can be used to build potion thickness, but risks a botch.",1,.3,true),
+	WOOD("wood","A good building resource. Can be used to boost potion thickness, but risks a botch.",1,.3,true),
 	HONEY("honey","Edible and quite tasty.",2,.5,true),
 	WAX("wax","Used to increase potion thickness with little side effects... unless you add honey.",1,.5,true),
 	PUMPKIN("pumpkin","A hearty meal. Edible.",1,.6,true), 
 	BEATING_HEART("beating heart","Is it... still alive?!",4,1,false), 
 	EGGCORN("eggcorn","What is this plant? Edible?",1,.5,true),
 	TRUFFLE("truffle","A prized mushroom. Edible.",5,2,true), 
-	GOLD("gold chunk","A shiny metal of great value. Bring it to a Merchant's Guild!",8,10,false),
+	GOLD("gold chunk","An enchantable metal of great value. Bring it to a Merchant's Guild!",8,10,false),
 	UNICORN_HORN("unicorn horn","An impressive magic horn hacked from a horse that holds harmful intent at bay. Brew it!",6,3,true),
 	VIRGIN("virgin","Bound and gagged, tied and dejected. Their soul has been claimed by evil powers. There is no happy ending here.",8,.5,true),
 	UNDERLEVELED("underleveled","ERROR",0,0,false),
@@ -44,7 +44,7 @@ public enum DrawBane {
 	LIVING_FLAME("living flame","A fierce, fun-size fire that burns brightly without fuel. The perfect centerpiece to any forge!",4,3,true), 
 	GRAVE_DIRT("grave dirt","Dirt that's somewhat worse for wear after much mixing with mortality. Brew it!",1,.2,true),
 	TELESCOPE("telescope","A large telescope, fit for gazing into the sky over overlooking an area.",4,2,true),
-	SINEW("mystic sinew","Slightly possessed flesh.",1,.1,true),
+	SINEW("mystic sinew","Slightly possessed flesh. Brew it!",1,.1,true),
 	GRAVE_DUST("grave dust","The ashen remains of heavily necromantic bones. Not to be confused with grave dirt. Brew it!",3,.9,true);
 	
 	private String name, flavorText;

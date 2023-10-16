@@ -520,7 +520,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			actualPotion();
 			return true;
 		}
-		//note that 4 or more sinews would run a risk of becoming food
+		//note that 2 or more sinews would run a risk of becoming food
 		if (batWings > 0 && sinews > 0) {
 			Player.player.setFlask(new Potion(Effect.HASTE,batWings+sinews+filler));
 			actualPotion();
