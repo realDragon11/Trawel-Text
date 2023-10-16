@@ -914,7 +914,7 @@ public class Combat {
 			double earm = weight_arm*def.getElecMult(att.getSlot());
 			
 			//double guess = ((rawdam+weight_arm)/weight_arm)-1;
-			float def_roll = Math.max(.05f+(.05f*def.qualityCount(ArmorQuality.RELIABLE)),extra.hrandomFloat());
+			float def_roll = extra.lerp(.05f+(.05f*def.qualityCount(ArmorQuality.RELIABLE)),1f,extra.hrandomFloat());
 			float att_roll = extra.lerp(.7f,1f,extra.hrandomFloat());
 			double global_roll = (att_roll*rawdam)/(def_roll*weight_arm);
 			//if our random damage roll was less than 40% of the armor roll, negate
@@ -923,8 +923,9 @@ public class Combat {
 				damage = 0;
 				code = ATK_ResultCode.ARMOR;
 				type = ATK_ResultType.NO_IMPACT;
-			}else {//MAYBELATER: new goal: % reductions based on relativeness with a chance to negate entirely if much higher?
-				//up to half the damage if the damage roll was less than the total weighted armor (without roll)
+			}else {
+				//% reductions based on relativeness
+				//up to half the damage if the damage roll was less than the total weighted armor roll
 				double reductMult = damageCompMult(.5f,1f,1f,att_roll*rawdam,def_roll*weight_arm,1f,1.5f);
 				//each damage vector can be brought down to 20%, but this is cumulative so the armor has to be 4x higher
 				//to achieve that level of reduction
@@ -942,7 +943,6 @@ public class Combat {
 				int icomp = (int) (idam*reductMult*i_reduct);
 				int fcomp = (int) (fdam*reductMult*f_reduct);
 				int ecomp = (int) (edam*reductMult*e_reduct);
-				//DOLATER: not sure if this is done yet
 				
 				subDamage = new int[] {scomp,bcomp,pcomp,icomp,fcomp,ecomp};
 				for (int i = 0; i < subDamage.length; i++) {
@@ -972,8 +972,8 @@ public class Combat {
 		 * @param maxMult maximum multiplier
 		 * @param inDam damage
 		 * @param inArm armor
-		 * @param armor_threshold how many times armor must be higher than damage to reach minmult
 		 * @param weapon_threshold how many times weapon must be higher than armor to reach maxmult
+		 * @param armor_threshold how many times armor must be higher than damage to reach minmult
 		 */
 		private float damageCompMult(float minMult, float equalMult, float maxMult, double inDam, double inArm, float weapon_threshold, float armor_threshold) {
 			if (inDam >= inArm) {
@@ -1010,9 +1010,6 @@ public class Combat {
 		}
 		
 		public void putPlayerFeedback(AttackReturn atr) {
-			/*if (attack == null) {
-				extra.getPrint();
-			}*/
 			if (attack.getAttacker().isPlayer() && attack.getDefender() != null) {
 			Player.lastAttackStringer = atr.attack.getName()+": ";
 			Person def = attack.getDefender();
