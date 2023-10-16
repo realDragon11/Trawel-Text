@@ -27,6 +27,26 @@ public class Potion implements java.io.Serializable{
 				boolean personal = p.isPlayer();
 				boolean overwrite = false;
 				switch (effect) {
+				case GRAVE_ARMOR:
+					uncork(p,personal);
+					if (personal) {
+						extra.println("Your body turns dark and foggy as you are embraced by the cold dead earth!");
+					}else {
+						extra.println(p.getName() + " form shifts in a haze, covered in foggy dark soil!");
+					}
+					overwrite = true;
+					extra.println(" " +effect.getDisp());
+					extra.println("  " +Effect.PADDED.getDisp());
+					extra.println("  " +Effect.STERN_STUFF.getDisp());
+					break;
+				case STERN_STUFF:
+					uncork(p,personal);
+					if (personal) {
+						extra.println("You feel resolved to survive!");
+					}else {
+						extra.println(p.getName() + " steels themselves!");
+					}
+					break;
 				case CURSE:
 					uncork(p,personal);
 					extra.println(personal ? "You feel sick to your stomach..." : p.getName() + " looks like they're about to throw up!");
@@ -65,9 +85,9 @@ public class Potion implements java.io.Serializable{
 						extra.println(p.getName() + " surges forward, filled with purpose!");
 					}
 					overwrite = true;
-					extra.println(" " +effect.getName() + extra.PRE_WHITE+": " +effect.getDesc());
-					extra.println("  " +Effect.ADVANTAGE_STACK.getName() +extra.PRE_WHITE+ ": " +Effect.ADVANTAGE_STACK.getDesc());
-					extra.println("  " +Effect.BONUS_WEAP_ATTACK.getName() +extra.PRE_WHITE+ ": " +Effect.BONUS_WEAP_ATTACK.getDesc());
+					extra.println(" " +effect.getDisp());
+					extra.println("  " +Effect.ADVANTAGE_STACK.getDisp());
+					extra.println("  " +Effect.BONUS_WEAP_ATTACK.getDisp());
 					break;
 				case BLEED:
 					uncork(p,personal);
@@ -93,7 +113,7 @@ public class Potion implements java.io.Serializable{
 					break;
 				}
 				if (!overwrite) {
-					extra.println(" " +effect.getName() +extra.PRE_WHITE+ ": " +effect.getDesc());
+					extra.println(" " +effect.getDisp());
 				}
 				
 				

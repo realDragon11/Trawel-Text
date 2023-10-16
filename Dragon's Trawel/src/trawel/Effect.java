@@ -25,6 +25,7 @@ public enum Effect{
 	FORGED("Forged","+5% LHP at battle start. Every defense, restore a flat 10% of their armor before the attack, up to 100% quality.",false,false,2),
 	TELESCOPIC("Telescopic","Attacks longer than 100 instants gain +1% additive hit mult for every instant longer than 100. Applied when choosing attack.",false,false,2),
 	CLOTTER("Clotting","They are immune to bleed effects from wounds. Magic and dedicated effects still apply.",false,false,2),
+	GRAVE_ARMOR("Grave Armor","Adds 2 Padded Armor and Sterner Stuff.",false,false,4),
 	//other
 	
 	//mostly skills
@@ -46,7 +47,7 @@ public enum Effect{
 	BRISK("Brisk","Halves attack time, and increases hit mult based on amount of time before reduction, with attacks under 100 total instants getting a 1x-2x multiplier the closer they are to 0 instants. Only applies to one set of attacks.",false,false,2),
 	CHALLENGE_BACK("Temerity","Negates the next wound from a suffered Impactful attack, or adds +20% damage to the next attack choice, whichever comes first.",false,false,2),
 	PLANNED_TAKEDOWN("Takedown","Causes next impactful attack to inflict the Knockout Wound.",false,false,1),
-	//armor and maybe skills
+	//armor and maybe skills/potions
 	PADDED("Padded Armor","1/5th chance of negating a wound per stack, once per stack.",false,true,2),
 	
 	//unused
@@ -85,6 +86,10 @@ public enum Effect{
 	}
 	public boolean stacks() {
 		return stacks;
+	}
+	
+	public String getDisp() {
+		return getName() + extra.PRE_WHITE+": " +getDesc();
 	}
 	
 	public static Effect[] estimEffects = new Effect[] {HASTE,HEARTY};//random drug effects

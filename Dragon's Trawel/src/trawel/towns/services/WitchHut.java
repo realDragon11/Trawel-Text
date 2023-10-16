@@ -285,6 +285,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		int gravedusts = 0;
 		int gravedirts = 0;
 		int uhorns = 0;
+		int sinews = 0;
 		for (DrawBane d: reagents) {
 			switch (d) {
 			case BAT_WING:
@@ -350,11 +351,14 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			case UNICORN_HORN:
 				uhorns++;
 				break;
+			case SINEW:
+				sinews++;
+				break;
 			}
 		}
 		
 		
-		meats += virgins*3;
+		meats += (virgins*3)+(sinews/2);
 		bloods += meats;
 		int botch = woods;
 		int filler = apples + woods + waxs;
@@ -380,9 +384,10 @@ public class WitchHut extends Store implements QuestBoardLocation{
 				//player gets a fleshy friend now :D
 				getTown().getIsland().getWorld().addReoccuring(new Agent(fGolem,AgentGoal.SPOOKY));
 			}else {
-				Player.bag.addNewDrawBanePlayer(DrawBane.SINEW);
-				//you get sinew even if you lose. Note that the golem has a beating heart drawbane always
+				
 			}
+			Player.bag.addNewDrawBanePlayer(DrawBane.SINEW);
+			//you get sinew even if you lose. Note that the golem has a beating heart drawbane always
 			return true;
 		}
 		if (eons > 0) {
@@ -475,6 +480,11 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			actualPotion();
 			return true;
 		}
+		if (truffles > 0 && grave_subtance >= 1) {
+			Player.player.setFlask(new Potion(Effect.STERN_STUFF,truffles+grave_subtance+filler));
+			actualPotion();
+			return true;
+		}
 		//'stew chance', any potion with food as an ingredient that isn't above
 		//might turn into HEARTY even if it would be something else
 		if (food >= 1 && extra.chanceIn(food,20)) {
@@ -484,8 +494,14 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		}
 		
 		//section used for normal potions
+		if (lflames > 0 && gravedusts > 0) {
+			//note it requires DUST to start but can use all grave substances for amount, which includes 2*dirt
+			Player.player.setFlask(new Potion(Effect.GRAVE_ARMOR,lflames+grave_subtance+filler));
+			actualPotion();
+			return true;
+		}
 		if (bloods > 0 && grave_subtance >= 2) {
-			Player.player.setFlask(new Potion(Effect.CLOTTER,lflames+food+filler));
+			Player.player.setFlask(new Potion(Effect.CLOTTER,bloods+grave_subtance+filler));
 			actualPotion();
 			return true;
 		}
@@ -504,8 +520,9 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			actualPotion();
 			return true;
 		}
-		if (batWings > 0) {
-			Player.player.setFlask(new Potion(Effect.HASTE,batWings+filler));
+		//note that 4 or more sinews would run a risk of becoming food
+		if (batWings > 0 && sinews > 0) {
+			Player.player.setFlask(new Potion(Effect.HASTE,batWings+sinews+filler));
 			actualPotion();
 			return true;
 		}

@@ -44,7 +44,7 @@ public enum DrawBane {
 	LIVING_FLAME("living flame","A fierce, fun-size fire that burns brightly without fuel. The perfect centerpiece to any forge!",4,3,true), 
 	GRAVE_DIRT("grave dirt","Dirt that's somewhat worse for wear after much mixing with mortality. Brew it!",1,.2,true),
 	TELESCOPE("telescope","A large telescope, fit for gazing into the sky over overlooking an area.",4,2,true),
-	SINEW("mystic sinew","Slightly possessed flesh.",1,.1,false),//TODO: make potions for
+	SINEW("mystic sinew","Slightly possessed flesh.",1,.1,true),
 	GRAVE_DUST("grave dust","The ashen remains of heavily necromantic bones. Not to be confused with grave dirt. Brew it!",3,.9,true);
 	
 	private String name, flavorText;
