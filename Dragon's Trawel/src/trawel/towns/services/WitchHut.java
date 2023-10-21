@@ -480,7 +480,8 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			actualPotion();
 			return true;
 		}
-		if (truffles > 0 && grave_subtance >= 1) {
+		if (truffles > 0 && gravedirts >= 1) {
+			//note that it requires dirt not dust, to make it more distinct from grave armor
 			Player.player.setFlask(new Potion(Effect.STERN_STUFF,truffles+grave_subtance+filler));
 			actualPotion();
 			return true;
@@ -496,7 +497,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		//section used for normal potions
 		if (lflames > 0 && gravedusts > 0) {
 			//note it requires DUST to start but can use all grave substances for amount, which includes 2*dirt
-			Player.player.setFlask(new Potion(Effect.GRAVE_ARMOR,lflames+grave_subtance+filler));
+			Player.player.setFlask(new Potion(Effect.SIP_GRAVE_ARMOR,lflames+grave_subtance+filler));
 			actualPotion();
 			return true;
 		}
@@ -505,12 +506,12 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			actualPotion();
 			return true;
 		}
-		if (batWings > 0 && telescopes >0) {
+		if (batWings > 0 && telescopes > 0) {
 			Player.player.setFlask(new Potion(Effect.TELESCOPIC,batWings+telescopes+filler));
 			actualPotion();
 			return true;
 		}
-		if (mGuts > 0 && telescopes >0) {
+		if (mGuts > 0 && telescopes > 0) {
 			Player.player.setFlask(new Potion(Effect.R_AIM,telescopes+mGuts+filler));
 			actualPotion();
 			return true;

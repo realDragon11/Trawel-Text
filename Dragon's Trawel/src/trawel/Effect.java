@@ -24,8 +24,8 @@ public enum Effect{
 	B_MARY("Bloody Mary","Whenever attacked, add a stack of internal bleeding to themselves and their attacker. Attacker's bleeding heals them 2x the amount they bleed for.",false,false,0),
 	FORGED("Forged","+5% LHP at battle start. Every defense, restore a flat 10% of their armor before the attack, up to 100% quality.",false,false,2),
 	TELESCOPIC("Telescopic","Attacks longer than 100 instants gain +1% additive hit mult for every instant longer than 100. Applied when choosing attack.",false,false,2),
-	CLOTTER("Clotting","They are immune to bleed effects from wounds. Magic and dedicated effects still apply.",false,false,2),
-	GRAVE_ARMOR("Grave Armor","Adds 2 Padded Armor and Sterner Stuff.",false,false,4),
+	CLOTTER("Clotting","Immune to bleed effects from wounds. Magic and dedicated effects still apply.",false,false,2),
+	SIP_GRAVE_ARMOR("Grave Armor","Adds 2 Padded Armor and Sterner Stuff.",false,false,4),
 	//other
 	
 	//mostly skills

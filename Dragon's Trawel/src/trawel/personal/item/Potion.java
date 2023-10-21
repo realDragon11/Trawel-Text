@@ -27,7 +27,7 @@ public class Potion implements java.io.Serializable{
 				boolean personal = p.isPlayer();
 				boolean overwrite = false;
 				switch (effect) {
-				case GRAVE_ARMOR:
+				case SIP_GRAVE_ARMOR:
 					uncork(p,personal);
 					if (personal) {
 						extra.println("Your body turns dark and foggy as you are embraced by the cold dead earth!");
@@ -38,6 +38,10 @@ public class Potion implements java.io.Serializable{
 					extra.println(" " +effect.getDisp());
 					extra.println("  " +Effect.PADDED.getDisp());
 					extra.println("  " +Effect.STERN_STUFF.getDisp());
+					
+					p.removeEffectAll(Effect.SIP_GRAVE_ARMOR);
+					p.addEffectCount(Effect.PADDED,2);
+					p.addEffect(Effect.STERN_STUFF);
 					break;
 				case STERN_STUFF:
 					uncork(p,personal);
