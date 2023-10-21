@@ -12,6 +12,8 @@ public enum Perk implements IHasSkills{
 	RACIAL_SHIFTS("Flexible","Prone to changing its defense patterns.",EnumSet.of(Skill.RACIAL_SHIFTS)),
 	SKY_BLESS_1("Leaf on the Wind","Has a minor blessing from the sky, granting them paranatural speed.",EnumSet.of(Skill.SPEEDDODGE,Skill.BLITZ)),
 	SKY_BLESS_2("Growing Storm","Has a blessing from the sky, granting acute vision and senses that heal them when used.",EnumSet.of(Skill.DODGEREF,Skill.NIGHTVISION),0,4,1)
+	,FOREST_BLESS_1("Sappy Seeder","Has a minor blessing of the forest, hardening their skin and granting alchemy affinity.",EnumSet.of(Skill.TA_NAILS,Skill.P_BREWER))
+	,FOREST_BLESS_2("Heart of Regrowth","Has a blessing of the forest, integrating bark skin with their armor.",EnumSet.of(Skill.ARMORHEART,Skill.ARMOR_TUNING))
 	,CULT_LEADER_BLOOD("Cult Leader (Blood)","Chosen by the cult of blood.",EnumSet.of(Skill.BLOODTHIRSTY))//also used by npcs
 	,MINE_ALL_VEINS("Meticulous Miner","Known for their painstaking digging process.",EnumSet.of(Skill.NIGHTVISION))
 	,GRAVEYARD_SIGHT("Gravesight","Can see in the dark due to a lot of experience.",EnumSet.of(Skill.NIGHTVISION))

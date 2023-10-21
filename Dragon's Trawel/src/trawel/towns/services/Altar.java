@@ -224,17 +224,17 @@ public class Altar extends Feature{
 			case FOREST:
 				if (getReward() == 0 && getRelation() >= 5) {
 					giveReward();
-					Player.player.getPerson().setPerk(Perk.SKY_BLESS_1);
-					Player.player.addAchieve("altar_sky", "Forest's Chosen");
-					extra.println("You feel blessed.");
+					Player.player.getPerson().setPerk(Perk.FOREST_BLESS_1);
+					Player.player.addAchieve("altar_forest", "Forest's Chosen");
+					extra.println("Your skin tenses briefly. You feel blessed.");
 					specialInteraction = true;
 				}
 				
 				if (getReward() == 1 && getRelation() >= 14) {
 					giveReward();
-					Player.player.getPerson().setPerk(Perk.SKY_BLESS_2);
-					Player.player.addAchieve("altar_sky", "Forest's Avatar");
-					extra.println("You feel very blessed.");
+					Player.player.getPerson().setPerk(Perk.FOREST_BLESS_2);
+					Player.player.addAchieve("altar_forest", "Forest's Avatar");
+					extra.println("Your skin hardens before becoming supple once more. You feel very blessed.");
 					specialInteraction = true;
 				}
 				break;
@@ -243,7 +243,7 @@ public class Altar extends Feature{
 					giveReward();
 					Player.player.getPerson().setPerk(Perk.SKY_BLESS_1);
 					Player.player.addAchieve("altar_sky", "Sky's Chosen");
-					extra.println("You feel blessed.");
+					extra.println("The world seems to slow down around you for a brief moment. You feel blessed.");
 					specialInteraction = true;
 				}
 				
@@ -251,7 +251,7 @@ public class Altar extends Feature{
 					giveReward();
 					Player.player.getPerson().setPerk(Perk.SKY_BLESS_2);
 					Player.player.addAchieve("altar_sky", "Sky's Avatar");
-					extra.println("You feel very blessed.");
+					extra.println("Your vision swims before returning sharper than ever. You feel very blessed.");
 					specialInteraction = true;
 				}
 				break;
@@ -312,7 +312,7 @@ public class Altar extends Feature{
 		if (rel > 8f) {
 			switch(force) {
 			case FOREST:
-				return "The brambles beat as if it were a living heart, pleased at your approach.";
+				return "The brambles pulse as if it were a living heart, pleased at your approach.";
 			case SKY:
 				return "A sudden but refreshing wind blows down on you as you inspect the altar.";
 			}
