@@ -5,7 +5,7 @@ public enum Effect{
 	CURSE("Curse","Base HP is decreased by half.",true,false,-4),
 	BURNOUT("Burnout","Decreased skill.",false,true,-2),
 	CONFUSED_TARGET("Confused","Their next attack will have a random defender from any side.",false,false,-2),
-	FLUMMOXED("Flummoxed","Next queued attack will be .99x as accurate per stack.",false,true,-2),
+	FLUMMOXED("Flummoxed","Next queued attack will be around 1% less accurate per stack.",false,true,-2),
 	//normal wounds
 	BLEED("Bleed","Each stack causes them to take around .5% LHP damage after each action, but the amount of stacks are halved each time it applies.",false,true,-2),
 	MAJOR_BLEED("Hemorrhage","Causes Bleed stacks to not decay when they tick.",false,false,-3),

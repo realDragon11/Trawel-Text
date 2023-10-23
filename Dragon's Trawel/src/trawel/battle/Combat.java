@@ -1800,6 +1800,15 @@ public class Combat {
 		attacker.removeEffectAll(Effect.BRISK);
 		attacker.removeEffectAll(Effect.CHALLENGE_BACK);
 		
+		if (attacker.hasEffect(Effect.FLUMMOXED)) {
+			//double mult = Math.pow(.99f, attacker.effectCount(Effect.FLUMMOXED));//alternate form with different curve but uses math.* instead of just div
+			float mult = 1/(1+(attacker.effectCount(Effect.FLUMMOXED)/100f));
+			for (ImpairedAttack a: atts) {
+				a.multiplyHit(mult);
+			}
+			attacker.removeEffectAll(Effect.FLUMMOXED);
+		}
+		
 		newAttack = AIClass.chooseAttack(atts,this,attacker,defender);
 		attacker.setAttack(newAttack);
 		newAttack.setDefender(defender);
