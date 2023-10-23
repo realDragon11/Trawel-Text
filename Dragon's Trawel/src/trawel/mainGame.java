@@ -72,11 +72,12 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__9";
-	public static final String VERSION_DATE = " updated Oct 21st 2023";
+	public static final String VERSION_DATE = " updated Oct 23rd 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			"b_9: {part 1/?} Expanded Bag items can now be melted down into aether from player menu or if bag is full when looting.",
-			"b_9: {part 1/?} Plant Spots, Drawbanes, and Alchemy have recieved interconnected improvements, most notably a few new potion combos. Altars have also recieved Forest blessings.",
+			"b_9: {part 2/?} Plant Spots, Drawbanes, and Alchemy have recieved interconnected improvements, most notably a few new potion combos. Altars have also recieved Forest blessings.",
+			"b_9: {part 3/?} Adjusted Wounds, importantly adding more elemental wounds.",
 			
 			"b_8: {part 1/5} Added a wait option to Arenas and prevented giant time chunks by accident, made Arenas fight without the player and have the winners move on after enough training. Players always get a new fighter in their first round (so entirely for 1 round titles), but more rounds are done entirely naturally now, potentially drawing from survivors.",
 			"b_8: {part 2/5} Updated Lot menu, standardized collecting earned money from built Features. Features can now have intro/outro text, which can be turned off as a display option. Node Features now have autosave enabled while exploring them, and saves once again use a different date format.",
