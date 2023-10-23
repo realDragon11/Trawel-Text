@@ -433,9 +433,9 @@ public class Attack implements IAttack{
 		EMPTY("Grazed","No bonus.","The blow's a graze..."),
 		//normal wound start
 		HAMSTRUNG("Hamstrung","Delays the next attack by %1$d instants.","Their leg is hamstrung!"), 
-		BLINDED("Blinded","The next attack will be %1$d%% less accurate.","They can't see!"),
+		BLINDED("Blinded","The current attack will be %1$d%% less accurate, or the next attack half that if not attacking.","They can't see!"),
 		CONFUSED("Confused","Forces the opponent to retarget.","They look confused!"), 
-		DIZZY("Dizzy","Decreases their next attack's to-hit by %1$d%%","They look dizzy!"),
+		DIZZY("Dizzy","Decreases their current or next attack's to-hit by %1$d%%","They look dizzy!"),
 		SLICE("Slice","Your next attack will happen %1$d%% quicker and be %2$d%% more accurate.","They are sliced!"),
 		DICE("Dice","Your next attack will happen %1$d%% and %2$d instants sooner.","They are diced!"),
 		WINDED("Winded","The next attack will take %1$d instants longer.","The wind is knocked out of them!"),
@@ -452,14 +452,17 @@ public class Attack implements IAttack{
 		
 		//elemental
 		SCALDED("Scalded","Deals %1$d direct damage.","They are scalded by the flames!"),//TODO: more elemental wounds
+		BLACKENED("Blackened","Burn armor by %1$d%%.","Their armor burns!"),
 		SCREAMING("Screaming","Removes one attack choice.","They scream!"),
 		FROSTED("Frosted","The next attack will take %1$d%% longer on the current time, up to %2$d instants increase.","They are frozen over..."),
 		FROSTBITE("Frostbite","Deals %1$d direct damage.","Their flesh is frozen!"),
+		JOLTED("Jolted","The next action will take %2$d instants longer.","They are jolted!"),
+		SHIVERING("Shivering","The next queued action will be %1$d%% less accurate.","They shiver at the intense cold..."),
 		
 		//exotic
 		TEAR("Tear","Decreases dodge by %1$%d%%, stacking.","Their wing is torn!"), //see if need to add a '%'
 		MANGLED("Mangled","Halves the condition of the body part.","Their body is mangled!"),
-		BLOODY("Bloody","The next attack will be %1$d%% less accurate. Applies %2$d stacks of bleed, around %3$d damage per tick.","Blood wells around their eyes!"),
+		BLOODY("Bloody","The current attack will be %1$d%% less accurate, or the next half that. Applies %2$d stacks of bleed, around %3$d damage per tick.","Blood wells around their eyes!"),
 		
 		//perma 'condition loss' wounds
 		DEPOWER("Depower","Injury: Removes special abilities.","Depowered!"),

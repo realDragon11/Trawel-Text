@@ -1613,11 +1613,12 @@ public class Combat {
 			case FROSTED:
 				defender2.applyDiscount(-Math.min(50,defender2.getTime()*(nums[0]/100f)));
 				break;
-			case DIZZY: case BLINDED:
-				if (defender2.isAttacking()) {
-					defender2.getNextAttack().multiplyHit(1-(nums[0]/10f));
-				}
-				break;	
+			case JOLTED:
+				defender2.applyDiscount(-nums[0]);
+				break;
+			case BLACKENED:
+				defender2.getBag().burnArmor((nums[0]/100f),attack.getSlot());
+				break;
 			case MAJOR_BLEED:
 				defender2.addEffect(Effect.MAJOR_BLEED);//don't need to be clotted
 				case BLEED:
@@ -1652,9 +1653,23 @@ public class Combat {
 				if (!defender2.hasEffect(Effect.CLOTTER)) {
 					defender2.addEffectCount(Effect.BLEED,nums[1]);
 				}
+				//fall through
+			case BLINDED:
 				if (defender2.isAttacking()) {
-					defender2.getNextAttack().multiplyHit(1-(nums[0]/10f));
+					defender2.getNextAttack().multiplyHit(1-(nums[0]/100f));
+				}else {
+					defender2.addEffectCount(Effect.FLUMMOXED,nums[0]/2);
 				}
+				break;
+			case DIZZY:
+				if (defender2.isAttacking()) {
+					defender2.getNextAttack().multiplyHit(1-(nums[0]/100f));
+				}else {
+					defender2.addEffectCount(Effect.FLUMMOXED,nums[0]);
+				}
+				break;
+			case SHIVERING:
+				defender2.addEffectCount(Effect.FLUMMOXED,nums[0]);
 				break;
 			case MANGLED:
 				defender2.multBodyStatus(attack.getTargetSpot(), 1-(nums[0]/10f));
@@ -1714,13 +1729,19 @@ public class Combat {
 		case SCALDED: case FROSTBITE:
 			return new Integer[] {(int)attack.getTotalDam()/10};
 		case BLINDED:
-			return new Integer[] {50};//50% less accurate
+			return new Integer[] {40};//40% less accurate now or half that later
 		case HAMSTRUNG:
 			return new Integer[] {8};//-8 time units
 		case DIZZY:
-			return new Integer[] {25};//25% less accurate
+			return new Integer[] {25};//25% less accurate now or later
+		case SHIVERING:
+			return new Integer[] {40};//40% less accurate later
 		case FROSTED:
 			return new Integer[] {30,50};//takes 30% longer of current time, cap of +50
+		case JOLTED:
+			return new Integer[] {12};//12 instants longer
+		case BLACKENED:
+			return new Integer[] {7};//7% armor damage
 		case WINDED:
 			return new Integer[] {16};//-16 time units
 		case TRIPPED:
@@ -1742,7 +1763,7 @@ public class Combat {
 			return new Integer[] {50};//50% reduction in condition
 		case BLOODY://bleeds aren't synced, WET :(
 			int bstacks = bleedStackAmount(attacker, defender);//can take null attacker
-			return new Integer[] {50,bstacks,Math.round(bleedStackDam(defender, bstacks))};//bloody blind
+			return new Integer[] {40,bstacks,Math.round(bleedStackDam(defender, bstacks))};//bloody blind
 		}
 		return new Integer[0];
 	}

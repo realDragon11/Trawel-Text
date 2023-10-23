@@ -292,11 +292,14 @@ public class TargetFactory {
 		
 		fireWounds.add(Attack.Wound.SCALDED);
 		fireWounds.add(Attack.Wound.SCREAMING);
+		fireWounds.add(Attack.Wound.BLACKENED);
 		
 		shockWounds.add(Attack.Wound.SCREAMING);
+		shockWounds.add(Attack.Wound.JOLTED);
 		
 		freezeWounds.add(Attack.Wound.FROSTED);
 		freezeWounds.add(Attack.Wound.FROSTBITE);
+		freezeWounds.add(Attack.Wound.SHIVERING);
 		
 		Target t = new Target();
 		t.name = "head";
