@@ -631,7 +631,8 @@ public class WorldGen {
 		mikol.addFeature(new MerchantGuild("Central Tariff Offices"));
 		mikol.addFeature(new Store(12));
 		mikol.addFeature(new Appraiser("Shipment Inspectors"));
-		
+		mikol.tTags.add(TownTag.LAW);
+		mikol.tTags.add(TownTag.SERVICES);
 		mikol.setFirstPrinter(new PrintEvent(){
 			@Override
 			public void print() {
@@ -639,10 +640,20 @@ public class WorldGen {
 			}
 		});
 		
-		Town reah = new Town("Reah",14,opyo,new Point(13,13));
-		addConnection(xeyn,reah,ConnectType.ROAD,"TODO");
-		addConnection(mikol,reah,ConnectType.ROAD,"TODO");
-		reah.addFeature(new Store(14));
+		Town reahe = new Town("Reahe",14,opyo,new Point(13,13));
+		addConnection(xeyn,reahe,ConnectType.ROAD,"TODO");
+		addConnection(mikol,reahe,ConnectType.ROAD,"TODO");
+		Store reaheStore = new Store("Forgeheart Stall",14,6);
+		reahe.addFeature(reaheStore);
+		reahe.addFeature(new Blacksmith("Forgeheart's Smithy",14,reaheStore));
+		reahe.addFeature(new Store("Souvenir Stall",12,11));
+		reahe.addFeature(new Store("'Shoes 4 Yous' Stall",15,4));
+		reahe.addTravel();
+		reahe.addTravel();
+		reahe.tTags.add(TownTag.MERCHANT);
+		reahe.tTags.add(TownTag.TRAVEL);
+		
+		//fort somewhere
 		
 		
 		//TODO: need more islands
