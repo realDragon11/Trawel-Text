@@ -523,6 +523,9 @@ public class WorldGen {
 	public static Town greap() {
 		World w = new World(20,20,"Greap",-20f,127.5f);//
 		fallBackWorld = w;
+		
+		//slow down leveling rate due to leveling getting slower, also go back and forth
+		
 		Island apen = new Island("Apen",w);
 		plane.addWorld(w);
 		Town holik = new Town("Holik", 10, apen, new Point(10,18));
@@ -547,7 +550,7 @@ public class WorldGen {
 		yonuen.tTags.add(TownTag.CITY);
 		yonuen.tTags.add(TownTag.LAWLESS);
 		
-		Town unika = new Town("Unika",12, apen, new Point(6,17));
+		Town unika = new Town("Unika",11, apen, new Point(6,17));
 		addConnection(holik,unika,"road","ren road");
 		addConnection(yonuen,unika,"road","tenka road");
 		unika.addFeature(new Arena("'Lucky Break'",12,1,24,12,135));
@@ -561,7 +564,7 @@ public class WorldGen {
 		addConnection(unika,peana,"road","green road");
 		//trying to make a slight reference to death/hell metal music
 		peana.addFeature(new Inn("'Dirges for the Damned'",12,peana,null).setIntro("A bard is playing a loud and harsh magical lute.").setOutro("You leave before the music can grow on you."));
-		peana.addFeature(new Store("'Tyrant's Treasures'",10,11).setIntro("'Before you ask, most of this isn't from Hell. But some of it is, and a lot of treasure meant for Hell ends up here instead!'"));//oddity store
+		peana.addFeature(new Store("'Tyrant's Treasures'",11,11).setIntro("'Before you ask, most of this isn't from Hell. But some of it is, and a lot of treasure meant for Hell ends up here instead!'"));//oddity store
 		//peana.addFeature(new Arena("Deadsoul's Folly",10,1,24,12,135));
 		//peana.addFeature(new Appraiser("Peana Appraiser"));
 		peana.addFeature(new Mine("Staircase to Hell", peana,75,10,NodeFeature.Shape.ELEVATOR,BossType.GENERIC_DEMON_OVERLORD));
@@ -577,6 +580,7 @@ public class WorldGen {
 		Town inka = new Town("Inka",12, apen, new Point(7,14));
 		addConnection(unika,inka,"road","youn road");
 		addConnection(inka,peana,"road","era road");
+		inka.addFeature(new Docks("Ironclad Shipments",inka));
 		inka.addFeature(new Mine("First Striking Shaft", inka,60,8,NodeFeature.Shape.NONE,BossType.NONE));
 		inka.addFeature(new Mine("Motherload Mine", inka,30,14,NodeFeature.Shape.NONE,BossType.NONE));
 		inka.addFeature(new Mine("Deep Vein Dig", inka,80,12,NodeFeature.Shape.NONE,BossType.NONE));
@@ -599,12 +603,16 @@ public class WorldGen {
 		pipa.tTags.add(TownTag.DRUIDIC);
 		pipa.tTags.add(TownTag.HIDDEN);
 		
-		Town xeyn = new Town("Xeyn",12,opyo,new Point(10,14));
+		Town xeyn = new Town("Xeyn",13,opyo,new Point(11,14));
 		addConnection(inka,xeyn,ConnectType.SHIP,"TODO");
+		addConnection(peana,xeyn,ConnectType.SHIP,"TODO");
 		addConnection(pipa,xeyn,ConnectType.ROAD,"TODO");
+		xeyn.addFeature(new Docks("Ferrysteads",xeyn));
+		xeyn.addFeature(new Garden(xeyn,"Communal Gardens", 0, PlantFill.FOOD));
 		xeyn.addFeature(new Store("Foodstuffs and Tack",10,10));
-		xeyn.addFeature(new Forest("Horizon of Mouths",12));
-		xeyn.addFeature(new Store("Homegrown Meals",12,10));
+		xeyn.addFeature(new Forest("Horizon of Mouths",13));
+		xeyn.addFeature(new Store("Homegrown Meals",14,10));
+		xeyn.addFeature(new Inn("'The Softer Side'",12, xeyn, null));
 		xeyn.tTags.add(TownTag.FARMS);
 		xeyn.tTags.add(TownTag.LIVESTOCK);
 		xeyn.setFirstPrinter(new PrintEvent(){
@@ -613,6 +621,27 @@ public class WorldGen {
 				extra.println("Xeyn is a fairly idyllic farmstead- as long as you stay out of the forest. Those whose cattle venture there write them off as a loss, and the children of Xeyn will always remember the mouths, even when they grow too old to see them.");
 			}
 		});
+		
+		Town mikol = new Town("Mikol",13,opyo,new Point(10,11));
+		addConnection(pipa,mikol,ConnectType.ROAD,"TODO");
+		addConnection(xeyn,mikol,ConnectType.ROAD,"TODO");
+		mikol.addFeature(new Dungeon("Eerie Palace Portal",mikol,40,15, Shape.TOWER,BossType.OLD_QUEEN));
+		mikol.addFeature(new Garden(mikol,"Royal Gardens",0,PlantFill.FOOD));
+		mikol.addFeature(new HeroGuild("Solari Palace"));
+		mikol.addFeature(new MerchantGuild("Central Tariff Offices"));
+		mikol.addFeature(new Appraiser("Shipment Inspectors"));
+		
+		mikol.setFirstPrinter(new PrintEvent(){
+			@Override
+			public void print() {
+				extra.println("The Solari royals in Mikol are largely bureaucratic, having survived the ages via offering administrative services. Those in the dusk-soaked dimension a portal has opened to seem to be quite the opposite, preferring spears to pens.");
+			}
+		});
+		
+		Town reah = new Town("Reah",14,opyo,new Point(13,13));
+		addConnection(xeyn,reah,ConnectType.ROAD,"TODO");
+		addConnection(mikol,reah,ConnectType.ROAD,"TODO");
+		
 		
 		//TODO: need more islands
 		
