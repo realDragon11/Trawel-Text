@@ -32,6 +32,7 @@ import trawel.towns.Connection;
 import trawel.towns.Connection.ConnectType;
 import trawel.towns.Feature;
 import trawel.towns.Island;
+import trawel.towns.Island.IslandType;
 import trawel.towns.Plane;
 import trawel.towns.Town;
 import trawel.towns.World;
@@ -520,11 +521,11 @@ public class WorldGen {
 	Landmark in Sturt Creek, Australia
 	 */
 	public static Town greap() {
-		World w = new World(30,20,"Greap",-20f,127.5f);//
+		World w = new World(20,20,"Greap",-20f,127.5f);//
 		fallBackWorld = w;
 		Island apen = new Island("Apen",w);
 		plane.addWorld(w);
-		Town holik = new Town("Holik", 10, apen, new Point(2,3));
+		Town holik = new Town("Holik", 10, apen, new Point(10,18));
 		holik.addFeature(new Oracle("The Worldgreeter",9).setIntro("A greeter answers you, 'Welcome to Greap! If you're from Repa that is. The oracles don't come out much, but rest assured they watch over their flock, no matter if they're from Eoano, Greap, or elsewhere.'"));
 		holik.addFeature(new Doctor("'Universal Compassion'", holik));
 		holik.addTravel();
@@ -535,7 +536,7 @@ public class WorldGen {
 		holik.tTags.add(TownTag.RICH);
 		holik.tTags.add(TownTag.TRAVEL);
 		
-		Town yonuen = new Town("Yonuen",11, apen, new Point(4,3));
+		Town yonuen = new Town("Yonuen",11, apen, new Point(8,19));
 		addConnection(holik,yonuen,"road","bliz road");
 		yonuen.addFeature(new Store(9));
 		yonuen.addFeature(new Store(9));
@@ -546,7 +547,7 @@ public class WorldGen {
 		yonuen.tTags.add(TownTag.CITY);
 		yonuen.tTags.add(TownTag.LAWLESS);
 		
-		Town unika = new Town("Unika",12, apen, new Point(3,5));
+		Town unika = new Town("Unika",12, apen, new Point(6,17));
 		addConnection(holik,unika,"road","ren road");
 		addConnection(yonuen,unika,"road","tenka road");
 		unika.addFeature(new Arena("'Lucky Break'",12,1,24,12,135));
@@ -555,7 +556,7 @@ public class WorldGen {
 		unika.tTags.add(TownTag.SMALL_TOWN);
 		//unika.addFeature(new Inn("unika inn",10,unika,null));
 		
-		Town peana = new Town("Peana",12, apen, new Point(2,7));
+		Town peana = new Town("Peana",12, apen, new Point(9,16));
 		addConnection(holik,peana,"road","blue road");
 		addConnection(unika,peana,"road","green road");
 		//trying to make a slight reference to death/hell metal music
@@ -573,7 +574,7 @@ public class WorldGen {
 			}
 		});
 		
-		Town inka = new Town("Inka",12, apen, new Point(4,7));
+		Town inka = new Town("Inka",12, apen, new Point(7,14));
 		addConnection(unika,inka,"road","youn road");
 		addConnection(inka,peana,"road","era road");
 		inka.addFeature(new Mine("First Striking Shaft", inka,60,8,NodeFeature.Shape.NONE,BossType.NONE));
@@ -585,8 +586,11 @@ public class WorldGen {
 		inka.tTags.add(TownTag.CITY);
 		inka.tTags.add(TownTag.MINERALS);
 		
-		Town pipa = new Town("Pipa",13, apen, new Point(4,7));
-		addConnection(inka,pipa,"road","mystery road");
+		
+		Island opyo = new Island("Opyo", w, IslandType.ISLAND);
+		
+		Town pipa = new Town("Pipa",13, opyo, new Point(8,12));
+		addConnection(inka,pipa,ConnectType.SHIP,"Digger's Leave");
 		pipa.addFeature(new WitchHut("Oak Coven's Hut",pipa));
 		pipa.addFeature(new Grove("Deciduous Sprawl",pipa));
 		pipa.addFeature(new Altar("Thorny Throne",AltarForce.FOREST));
@@ -594,6 +598,21 @@ public class WorldGen {
 		pipa.tTags.add(TownTag.ALCHEMY);
 		pipa.tTags.add(TownTag.DRUIDIC);
 		pipa.tTags.add(TownTag.HIDDEN);
+		
+		Town xeyn = new Town("Xeyn",12,opyo,new Point(10,14));
+		addConnection(inka,xeyn,ConnectType.SHIP,"TODO");
+		addConnection(pipa,xeyn,ConnectType.ROAD,"TODO");
+		xeyn.addFeature(new Store("Foodstuffs and Tack",10,10));
+		xeyn.addFeature(new Forest("Horizon of Mouths",12));
+		xeyn.addFeature(new Store("Homegrown Meals",12,10));
+		xeyn.tTags.add(TownTag.FARMS);
+		xeyn.tTags.add(TownTag.LIVESTOCK);
+		xeyn.setFirstPrinter(new PrintEvent(){
+			@Override
+			public void print() {
+				extra.println("Xeyn is a fairly idyllic farmstead- as long as you stay out of the forest. Those whose cattle venture there write them off as a loss, and the children of Xeyn will always remember the mouths, even when they grow too old to see them.");
+			}
+		});
 		
 		//TODO: need more islands
 		
