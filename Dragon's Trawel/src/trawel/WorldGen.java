@@ -541,7 +541,7 @@ public class WorldGen {
 		
 		Town yonuen = new Town("Yonuen",11, apen, new Point(8,19));
 		addConnection(holik,yonuen,"road","bliz road");
-		yonuen.addFeature(new Store(9));
+		yonuen.addFeature(new Store(10));
 		yonuen.addFeature(new Store(9));
 		yonuen.addFeature(new Dungeon("Sky-Sundering Tower", yonuen, Shape.TOWER,BossType.FATESPINNER));
 		yonuen.addFeature(new RogueGuild("The Open Adventuring Guild").setIntro("Outside the Guild, there is an overly long manifesto full of errors about how the other hero guilds aren't willing to take the biggest adventures, but they are."));
@@ -627,20 +627,22 @@ public class WorldGen {
 		addConnection(xeyn,mikol,ConnectType.ROAD,"TODO");
 		mikol.addFeature(new Dungeon("Eerie Palace Portal",mikol,40,15, Shape.TOWER,BossType.OLD_QUEEN));
 		mikol.addFeature(new Garden(mikol,"Royal Gardens",0,PlantFill.FOOD));
-		mikol.addFeature(new HeroGuild("Solari Palace"));
+		mikol.addFeature(new HeroGuild("Empyphic Palace"));//empyphic - empyrean + seraphic
 		mikol.addFeature(new MerchantGuild("Central Tariff Offices"));
+		mikol.addFeature(new Store(12));
 		mikol.addFeature(new Appraiser("Shipment Inspectors"));
 		
 		mikol.setFirstPrinter(new PrintEvent(){
 			@Override
 			public void print() {
-				extra.println("The Solari royals in Mikol are largely bureaucratic, having survived the ages via offering administrative services. Those in the dusk-soaked dimension a portal has opened to seem to be quite the opposite, preferring spears to pens.");
+				extra.println("The Empyphic royals in Mikol are largely bureaucratic, having survived the ages via offering administrative services. Those in the dusk-soaked dimension a portal has opened to seem to be quite the opposite, preferring spears to pens.");
 			}
 		});
 		
 		Town reah = new Town("Reah",14,opyo,new Point(13,13));
 		addConnection(xeyn,reah,ConnectType.ROAD,"TODO");
 		addConnection(mikol,reah,ConnectType.ROAD,"TODO");
+		reah.addFeature(new Store(14));
 		
 		
 		//TODO: need more islands
