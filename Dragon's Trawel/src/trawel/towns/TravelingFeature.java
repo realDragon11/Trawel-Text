@@ -16,7 +16,10 @@ public class TravelingFeature extends Feature{
 	private static final long serialVersionUID = 1L;
 	public boolean hasSomething  = false;
 	private Feature feature;
-	private double timePassed = 30;
+	
+	private double timeLeft = 0;
+	private boolean regen = false;
+	
 	@Override
 	public void enter() {
 		this.feature.enter();
@@ -26,6 +29,7 @@ public class TravelingFeature extends Feature{
 	public TravelingFeature(Town town) {
 		this.town = town;
 		this.tier = town.getTier();
+		timeLeft = extra.randFloat()*24f;
 	}
 	
 	@Override
@@ -45,15 +49,29 @@ public class TravelingFeature extends Feature{
 
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		timePassed += time;
+		timeLeft -= time;
+		if (timeLeft < 0) {
+			if (regen) {
+				regenNow();
+			}else {
+				regenSetup();
+			}
+		}
 		if (hasSomething) {
 			feature.passTime(time, calling);
 		}
-		if (timePassed > extra.randRange(20,81)) {
-			timePassed = 0;
-			newFeature();
-		}
 		return null;
+	}
+	
+	public void regenNow() {
+		newFeature();
+		regen = false;
+		timeLeft = 24f+extra.randFloat()*48f;
+	}
+	
+	public void regenSetup() {
+		timeLeft = 2f+extra.randFloat()*24f;
+		regen = true;
 	}
 	
 	public void newFeature() {
