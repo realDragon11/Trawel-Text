@@ -210,7 +210,7 @@ public class MineNode implements NodeType{
 			Person p = RaceFactory.getDueler(holder.getLevel(madeNode));
 			String warName = extra.capFirst(randomLists.randomWarrior());
 			p.setTitle("the "+warName);
-			GenericNode.setSimpleDuelPerson(holder,madeNode, p,warName,"Approach " +p.getNameNoTitle() +".","Challenge the "+warName +"?");
+			GenericNode.setSimpleDuelPerson(holder,madeNode, p,warName,"Approach " +p.getNameNoTitle() +".","Challenge");
 		break;
 		case 2: 
 			holder.setStorage(madeNode, extra.choose("river","pond","lake","stream"));

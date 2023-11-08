@@ -126,7 +126,7 @@ public class GroveNode implements NodeType{
 			Person pd = RaceFactory.getDueler(holder.getLevel(madeNode));
 			String warName = extra.capFirst(randomLists.randomWarrior());
 			pd.setTitle("the "+warName);
-			GenericNode.setSimpleDuelPerson(holder,madeNode, pd,warName,"Approach " +pd.getNameNoTitle() +".","Challenge the "+warName +"?");
+			GenericNode.setSimpleDuelPerson(holder,madeNode, pd,warName,"Approach " +pd.getNameNoTitle() +".","Challenge");
 		break;
 		case 2: 
 			//made.name = extra.choose("river","pond","lake","stream","brook"); made.interactString = "wash yourself"

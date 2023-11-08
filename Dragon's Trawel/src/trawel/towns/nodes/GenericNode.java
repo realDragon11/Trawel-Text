@@ -424,9 +424,7 @@ public class GenericNode implements NodeType {
 	
 	private boolean basicDueler(NodeConnector holder,int node) {
 		Person p = holder.getStorageFirstPerson(node);
-		p.getBag().graphicalDisplay(1, p);
-		extra.println(extra.PRE_BATTLE+holder.getStorageAsArray(node)[3]);
-		if (extra.yesNo()) {
+		if (p.reallyFight(holder.getStorageAsArray(node)[3].toString())) {
 			Combat c = Player.player.fightWith(p);
 			if (c.playerWon() > 0) {
 				GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
@@ -436,7 +434,6 @@ public class GenericNode implements NodeType {
 				return false;//duelist doesn't kick you out
 			}
 		}
-		Networking.clearSide(1);//clear the display
 		return false;
 	}
 	

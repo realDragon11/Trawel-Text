@@ -1486,22 +1486,27 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public void displayStats() {
 		displayStats(true);
 	}
+	public void displayStatOverview(boolean showHp) {
+		extra.println(getName() +": LvL " + this.getLevel() +" " + this.getBag().getRace().renderName(false)+".");
+		if (showHp) {
+			extra.println(" "+getHp() +"/"+ tempMaxHp +extra.ITEM_DESC_PROP+ " HP.");
+		}
+		extra.println(" "
+		+extra.ITEM_WANT_HIGHER+extra.format(bag.getHealth()) + "x "+extra.ITEM_DESC_PROP+"hpm, "
+		+extra.ITEM_WANT_HIGHER+extra.format(bag.getAim()) + "x "+extra.ITEM_DESC_PROP+"aim, "
+		+extra.ITEM_WANT_HIGHER+extra.format(bag.getDam()) + "x "+extra.ITEM_DESC_PROP+"dam, "
+		+extra.ITEM_WANT_HIGHER+extra.format(bag.getSpeed()) + "x "+extra.ITEM_DESC_PROP+"spd, "
+		+extra.ITEM_WANT_HIGHER+extra.format(bag.getDodge()) + "x "+extra.ITEM_DESC_PROP+"dodge, "
+		+extra.ITEM_DESC_PROP+extra.CHAR_SHARP+"/"+extra.CHAR_PIERCE+"/"+extra.CHAR_BLUNT+
+		": "+extra.ITEM_WANT_HIGHER+extra.F_WHOLE.format(bag.getSharpResist())+"/"+extra.F_WHOLE.format(bag.getBluntResist())+"/"+extra.F_WHOLE.format(bag.getPierceResist())
+				);
+		extra.println(bag.quickInventory());
+	}
 	
 	public void displayStats(boolean inCombat) {
 		
 		if (inCombat) {
-			extra.println(getName() +": LvL " + this.getLevel() +" " + this.getBag().getRace().renderName(false)+".");
-			extra.println(" "+getHp() +"/"+ tempMaxHp +extra.ITEM_DESC_PROP+ " HP.");
-			extra.println(" "
-			+extra.ITEM_WANT_HIGHER+extra.format(bag.getHealth()) + "x "+extra.ITEM_DESC_PROP+"hpm, "
-			+extra.ITEM_WANT_HIGHER+extra.format(bag.getAim()) + "x "+extra.ITEM_DESC_PROP+"aim, "
-			+extra.ITEM_WANT_HIGHER+extra.format(bag.getDam()) + "x "+extra.ITEM_DESC_PROP+"dam, "
-			+extra.ITEM_WANT_HIGHER+extra.format(bag.getSpeed()) + "x "+extra.ITEM_DESC_PROP+"spd, "
-			+extra.ITEM_WANT_HIGHER+extra.format(bag.getDodge()) + "x "+extra.ITEM_DESC_PROP+"dodge, "
-			+extra.ITEM_DESC_PROP+extra.CHAR_SHARP+"/"+extra.CHAR_PIERCE+"/"+extra.CHAR_BLUNT+
-			": "+extra.ITEM_WANT_HIGHER+extra.F_WHOLE.format(bag.getSharpResist())+"/"+extra.F_WHOLE.format(bag.getBluntResist())+"/"+extra.F_WHOLE.format(bag.getPierceResist())
-					);
-			extra.println(bag.quickInventory());
+			displayStatOverview(true);
 		}else {
 			extra.println("This is " + this.getName() +". They are a level " + this.getLevel() +" " + this.getBag().getRace().renderName(false)+".");
 			extra.println("They have " + getBase_HP() + " LHP. Their health modifier is " + extra.format(bag.getHealth()) + "x. Their expected hp is "+getOOB_HP() +".");
@@ -2284,7 +2289,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 	public boolean reallyFight(String verb) {
 		graphicalFoe();
-		extra.println(verb+" " + getName() + " level " + getLevel() + "?");
+		extra.println(extra.PRE_BATTLE+verb+" " + getName() + " level " + getLevel() + "?");
 		int i = extra.menuGo(new MenuGenerator() {
 
 			@Override
@@ -2311,14 +2316,14 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 					@Override
 					public boolean go() {
 						//unsure which display would be best
-						Person.this.displayStats(false);
+						displayStatOverview(false);
 						return false;
 					}});
 				list.add(new MenuBack("Leave."));
-				return null;
+				return list;
 			}});
 		Networking.clearSide(1);
-		return i == 1;
+		return i == 0;
 	}
 	
 	public void graphicalFoe() {
