@@ -627,8 +627,7 @@ public class GenericNode implements NodeType {
 
 					@Override
 					public boolean go() {
-						extra.println("Really attack " +p.getName()+"?");
-						if (extra.yesNo()) {
+						if (p.reallyAttack()) {
 							setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_BATTLE+p.getName(),extra.PRE_BATTLE+p.getName() + " attacks you!");
 							return true;//out of menu
 						}
@@ -763,8 +762,7 @@ public class GenericNode implements NodeType {
 
 					@Override
 					public boolean go() {
-						extra.println("Really attack " +p.getName()+"?");
-						if (extra.yesNo()) {
+						if (p.reallyAttack()) {
 							RaceID r = p.getBag().getRaceID();
 							boolean racistToYou = (racist && r == Player.bag.getRaceID());
 							String name = extra.capFirst(r.name);
@@ -874,8 +872,7 @@ public class GenericNode implements NodeType {
 
 					@Override
 					public boolean go() {
-						extra.println("Really attack " +leader.getName()+"?");
-						if (extra.yesNo()) {
+						if (leader.reallyAttack()) {
 							holder.setStateNum(node,2);
 							holder.setForceGo(node,true);
 							return true;//out of menu

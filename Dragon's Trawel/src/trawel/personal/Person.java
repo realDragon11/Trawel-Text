@@ -2282,9 +2282,47 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public boolean reallyAttack() {
 		return reallyFight("Really attack");
 	}
-	public boolean reallyFight(String start) {
-		extra.println(start+" " + getName() + " level " + getLevel() + "?");
-		return extra.yesNo();
+	public boolean reallyFight(String verb) {
+		graphicalFoe();
+		extra.println(verb+" " + getName() + " level " + getLevel() + "?");
+		int i = extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Fight.";
+					}
+
+					@Override
+					public boolean go() {
+						return true;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Examine.";
+					}
+
+					@Override
+					public boolean go() {
+						//unsure which display would be best
+						Person.this.displayStats(false);
+						return false;
+					}});
+				list.add(new MenuBack("Leave."));
+				return null;
+			}});
+		Networking.clearSide(1);
+		return i == 1;
+	}
+	
+	public void graphicalFoe() {
+		bag.graphicalDisplay(1,this);
 	}
 
 }

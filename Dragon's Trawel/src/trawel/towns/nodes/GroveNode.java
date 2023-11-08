@@ -340,9 +340,8 @@ public class GroveNode implements NodeType{
 							@Override
 							public boolean go() {
 								extra.println("Before you can move, they speak up. "
-								+extra.TIMID_RED+"\"Hm, yes. Maybe you would be a fitting end to my story... or perhaps merely another part of it. But be warned, there is no going back.\""
-								+extra.PRE_BATTLE+" Really attack " +old.getName()+"?");
-								if (extra.yesNo()) {
+								+extra.TIMID_RED+"\"Hm, yes. Maybe you would be a fitting end to my story... or perhaps merely another part of it. But be warned, there is no going back.\"");
+								if (old.reallyAttack()) {
 									holder.setForceGo(node,true);
 									holder.setStateNum(node,1);
 									return true;
@@ -615,8 +614,7 @@ public class GroveNode implements NodeType{
 
 						@Override
 						public boolean go() {
-							extra.println(extra.PRE_BATTLE+"Really attack " + p.getName()+"?");
-							if (extra.yesNo()) {
+							if (p.reallyAttack()) {
 								if (peeps.size() == 1) {
 									Combat c = Player.player.fightWith(p);
 									if (c.playerWon() > 0) {
@@ -1012,8 +1010,7 @@ public class GroveNode implements NodeType{
 
 					@Override
 					public boolean go() {
-						extra.println(extra.PRE_BATTLE+" Really attack " +p.getName()+"?");
-						if (extra.yesNo()) {
+						if (p.reallyAttack()) {
 							GenericNode.setBasicRagePerson(holder, node, p,"Wary Shaman","The Shaman is ready for you!");
 							return true;
 						}

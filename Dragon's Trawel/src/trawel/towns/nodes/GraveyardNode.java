@@ -393,8 +393,7 @@ public class GraveyardNode implements NodeType{
 
 						@Override
 						public boolean go() {
-							extra.println("Really attack the Gravedigger?");
-							if (extra.yesNo()) {
+							if (p.reallyAttack()) {
 								holder.setStateNum(node, 11);
 								return true;
 							}
