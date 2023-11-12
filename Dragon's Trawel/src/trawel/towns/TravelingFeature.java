@@ -1,12 +1,15 @@
 package trawel.towns;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
+import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import derg.menus.ScrollMenuGenerator;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
@@ -117,8 +120,13 @@ public class TravelingFeature extends Store{
 			contents = TravelType.FIGHT;
 			name = "Event Fight";
 			area_type = Area.ARENA;
+			tier = Math.max(2,tier);
+			fighters.add(RaceFactory.getDueler(tier+1));
 			for (int i = extra.randRange(2,3);i>=0;i--) {
 				fighters.add(RaceFactory.getDueler(tier));
+			}
+			for (int i = extra.randRange(2,3);i>=0;i--) {
+				fighters.add(RaceFactory.getDueler(tier-1));
 			}
 			break;
 		case 3:
@@ -188,11 +196,51 @@ public class TravelingFeature extends Store{
 					}});
 				break;
 			case FIGHT:
+				ret = extra.menuGo(new ScrollMenuGenerator(fighters.size(),"last <>","next <>") {
+
+					@Override
+					public List<MenuItem> forSlot(int i) {
+						Person p = fighters.get(i);
+						return Collections.singletonList(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return p.getName() + " LvL "+p.getLevel();
+							}
+
+							@Override
+							public boolean go() {
+								if (p.reallyFight("Challenge")) {
+									Combat c = Player.player.fightWith(p);
+									if (c.playerWon() > 0) {
+										fighters.remove(i);
+									}else {
+										town.addOccupant(fighters.remove(i).getMakeAgent(AgentGoal.NONE));
+									}
+								}
+								return false;
+							}});
+					}
+
+					@Override
+					public List<MenuItem> header() {
+						return Collections.singletonList(new MenuLine() {
+
+							@Override
+							public String title() {
+								return "There are " + fighters.size() + " fighters hanging around.";
+							}});
+					}
+
+					@Override
+					public List<MenuItem> footer() {
+						return Collections.singletonList(new MenuBack("Leave."));
+					}});
 				break;
 			case ORACLE:
 				break;
 			case STALL:
-				extra.menuGo(modernStoreFront());
+				ret = extra.menuGo(modernStoreFront());
 				break;
 			}
 		}
