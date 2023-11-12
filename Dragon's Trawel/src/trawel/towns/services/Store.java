@@ -131,6 +131,10 @@ public class Store extends Feature{
 			}
 			generate(tier, type);
 		}
+		if (subtype == trawel.towns.TravelingFeature.class) {
+			type = 6;
+			this.generate(tier, type);
+		}
 	}
 	
 	@Override
@@ -532,20 +536,16 @@ public class Store extends Feature{
 		
 	}
 
-	private void restock() {
+	protected void restock() {
 		if (this.type == 8 || type == 9) {
-			for (int i = items.size()-1;i >= 0;i--) {
-				dbs.remove(i);
-			}
-			for (int i = INVENTORY_SIZE;i > 0;i-- ) {
+			dbs.clear();
+			for (int i = invSize;i >= 0;i--) {
 				addAnItem();
 			}
 			return;
 		}
-		for (int i = items.size()-1;i >= 0;i--) {
-			items.remove(i);
-		}
-		for (int i = INVENTORY_SIZE;i > 0;i-- ) {
+		items.clear();
+		for (int i = invSize;i >= 0;i--) {
 			addAnItem();
 		}
 		

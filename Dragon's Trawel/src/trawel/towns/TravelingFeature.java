@@ -10,7 +10,9 @@ import derg.menus.MenuSelect;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
+import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.item.Item;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.Networking.Area;
@@ -22,7 +24,7 @@ import trawel.towns.services.Inn;
 import trawel.towns.services.Oracle;
 import trawel.towns.services.Store;
 
-public class TravelingFeature extends Feature{
+public class TravelingFeature extends Store{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -31,6 +33,8 @@ public class TravelingFeature extends Feature{
 	
 	private int useCount = 0;
 	private TravelType contents = null;
+	private List<Person> fighters = new ArrayList<Person>();
+	protected int trueTier;
 	
 	protected enum TravelType{
 		CELEBRATION(extra.F_SERVICE,"Celebration"),
@@ -45,11 +49,10 @@ public class TravelingFeature extends Feature{
 		}
 	}
 	
-	protected int curTier;
-	
 	public TravelingFeature(Town town) {
+		super(town.getTier(),TravelingFeature.class);
 		this.town = town;
-		this.tier = town.getTier();
+		trueTier = town.getTier();
 		timeLeft = extra.randFloat()*24f;
 	}
 	
@@ -97,7 +100,9 @@ public class TravelingFeature extends Feature{
 		useCount = 0;
 		//switch statement with features that need to be added
 		//and also non-features
-		curTier = extra.zeroOut(tier+extra.randRange(1,5)-4)+1;
+		tier = extra.zeroOut(trueTier+extra.randRange(1,5)-4)+1;
+		fighters.clear();//don't add to world yet, could overflow
+		items.clear();//probably should make a better way later
 		switch(extra.randRange(0,8)) {
 		default:
 			contents = null;
@@ -112,11 +117,15 @@ public class TravelingFeature extends Feature{
 			contents = TravelType.FIGHT;
 			name = "Event Fight";
 			area_type = Area.ARENA;
+			for (int i = extra.randRange(2,3);i>=0;i--) {
+				fighters.add(RaceFactory.getDueler(tier));
+			}
 			break;
 		case 3:
 			contents = TravelType.STALL;
 			area_type = Area.SHOP;
-			name = "X Stall";
+			name = "Traveling Stall";
+			restock();
 			break;
 		case 4:
 			contents = TravelType.CELEBRATION;
@@ -126,7 +135,7 @@ public class TravelingFeature extends Feature{
 	}
 
 	@Override
-	protected void go() {
+	public void go() {
 		int ret = 0;
 		//while there is still a feature to go to
 		//note: if time passes too much at once could skip the feature not existing, which would be bad
@@ -168,7 +177,7 @@ public class TravelingFeature extends Feature{
 							public boolean go() {
 								Player.addTime(3);
 								mainGame.globalPassTime();
-								Combat c = mainGame.CombatTwo(RaceFactory.getDueler(curTier),RaceFactory.getDueler(curTier),town.getIsland().getWorld());
+								Combat c = mainGame.CombatTwo(RaceFactory.getDueler(tier),RaceFactory.getDueler(tier),town.getIsland().getWorld());
 								town.addOccupant(c.getNonSummonSurvivors().get(0).getMakeAgent(AgentGoal.NONE));
 								Player.addTime(3);
 								mainGame.globalPassTime();
@@ -183,6 +192,7 @@ public class TravelingFeature extends Feature{
 			case ORACLE:
 				break;
 			case STALL:
+				extra.menuGo(modernStoreFront());
 				break;
 			}
 		}
