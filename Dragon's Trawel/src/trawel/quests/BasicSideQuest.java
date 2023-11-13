@@ -90,7 +90,7 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public String getName() {
-					return q.giverName;
+					return ((BasicSideQuest)overQuest).giverName;
 				}
 
 				@Override
@@ -98,28 +98,25 @@ public class BasicSideQuest implements Quest{
 					Player.player.getPerson().addXp(1);
 					Player.player.addGold(1);
 					extra.println("Gained "+World.currentMoneyDisplay(1)+".");
-					q.giver.locationT.helpCommunity(1);
+					((BasicSideQuest)overQuest).giver.locationT.helpCommunity(1);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,.1f, 0);
-					q.complete();
+					((BasicSideQuest)overQuest).complete();
 					return false;
 				}};
 				q.giver.locationF = inn;
 				q.giver.locationT = loc;
 				q.giver.overQuest = q;
 			q.target = new QuestR() {
-
-				/**
-				 * 
-				 */
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public String getName() {
-					return q.targetName;
+					return ((BasicSideQuest)overQuest).targetName;
 				}
 
 				@Override
 				public boolean go() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					extra.println("You claim the " + q.targetName);
 					q.giver.locationF.addQR(q.giver);
 					q.desc = "Return the " + q.targetName + " to " + q.giverName + " at " + q.giver.locationF.getName() + " in " + q.giver.locationT.getName();
@@ -162,11 +159,13 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public String getName() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					return q.giverName;
 				}
 
 				@Override
 				public boolean go() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					int reward = Math.max(1,q.targetPerson.getLevel()/3);
 					Player.player.getPerson().addXp(reward);
 					Player.player.addGold(reward);
@@ -185,11 +184,13 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public String getName() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					return q.targetName;
 				}
 
 				@Override
 				public boolean go() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					extra.menuGo(new MenuGenerator() {
 
 						@Override
@@ -199,12 +200,11 @@ public class BasicSideQuest implements Quest{
 
 								@Override
 								public String title() {
-									return "Attack " + q.targetName;
+									return extra.PRE_BATTLE+"Attack " + q.targetName;
 								}
 
 								@Override
 								public boolean go() {
-									
 									Combat c = Player.player.fightWith(q.targetPerson);
 									if (c.playerWon() > 0) {
 										//Player.player.eaBox.exeKillLevel += 1;
@@ -261,11 +261,13 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public String getName() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					return q.giverName;
 				}
 
 				@Override
 				public boolean go() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,2,0);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
 					int reward = 2;
@@ -326,11 +328,13 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public String getName() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					return q.giverName;
 				}
 
 				@Override
 				public boolean go() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,.1f, 0);
 					Player.player.addMPoints(.2f);
 					
@@ -351,11 +355,13 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public String getName() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					return q.targetName;
 				}
 
 				@Override
 				public boolean go() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					extra.println("You claim the " + q.targetName);
 					q.giver.locationF.addQR(q.giver);
 					q.desc = "Return the " + q.targetName + " to " + q.giverName + " at " + q.giver.locationF.getName() + " in " + q.giver.locationT.getName();
@@ -392,11 +398,13 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public String getName() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					return q.giverName;
 				}
 
 				@Override
 				public boolean go() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,1,0);
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
 					Player.player.addMPoints(.2f);
@@ -442,11 +450,12 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public String getName() {
-					return q.giverName;
+					return ((BasicSideQuest)overQuest).giverName;
 				}
 
 				@Override
 				public boolean go() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					int reward = Math.min(1,q.giver.locationF.getLevel());
 					Player.player.addGold(reward);
 					extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
@@ -464,11 +473,13 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public String getName() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					return q.targetName;
 				}
 
 				@Override
 				public boolean go() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					extra.println("You claim the " + q.targetName);
 					q.giver.locationF.addQR(q.giver);
 					q.desc = "Return the " + q.targetName + " to " + q.giverName + " at " + q.giver.locationF.getName() + " in " + q.giver.locationT.getName();
@@ -511,11 +522,13 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public String getName() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					return q.giverName;
 				}
 
 				@Override
 				public boolean go() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					int reward = Math.max(1,q.targetPerson.getLevel()/3);
 					Player.player.getPerson().addXp(reward);
 					Player.player.addGold(reward);
@@ -534,11 +547,13 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public String getName() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					return q.targetName;
 				}
 
 				@Override
 				public boolean go() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					extra.menuGo(new MenuGenerator() {
 
 						@Override
@@ -614,11 +629,13 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public String getName() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					return q.giverName;
 				}
 
 				@Override
 				public boolean go() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					Player.player.getPerson().addXp(1);
 					q.complete();
 					//TODO: let construct
@@ -632,11 +649,13 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public String getName() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					return q.targetName;
 				}
 
 				@Override
 				public boolean go() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					extra.println("You assemble a whole " + q.targetName);
 					q.giver.locationF.addQR(q.giver);
 					q.desc = "Return the completed " + q.targetName + " to " + q.giverName;
@@ -665,11 +684,13 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public String getName() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					return q.giverName;
 				}
 
 				@Override
 				public boolean go() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					extra.println("You assemble a whole " + q.targetName);
 					q.complete();
 					Player.bag.addNewDrawBanePlayer(DrawBane.getByName(q.targetName));
@@ -683,12 +704,13 @@ public class BasicSideQuest implements Quest{
 
 				@Override
 				public String getName() {
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					return q.targetName;
 				}
 
 				@Override
 				public boolean go() {
-					
+					BasicSideQuest q = ((BasicSideQuest)overQuest);
 					q.giver.locationF.addQR(q.giver);
 					q.desc = "Return to " + q.giver.locationF.getName() + " to assemble the " + q.targetName;
 					this.cleanup();

@@ -2299,7 +2299,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 
 					@Override
 					public String title() {
-						return "Fight.";
+						return extra.PRE_BATTLE+"Fight.";
 					}
 
 					@Override
