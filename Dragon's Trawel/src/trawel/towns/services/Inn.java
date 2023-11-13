@@ -28,6 +28,7 @@ import trawel.quests.QuestBoardLocation;
 import trawel.quests.QuestR;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
+import trawel.towns.Calender;
 import trawel.towns.Feature;
 import trawel.towns.Town;
 import trawel.towns.World;
@@ -39,9 +40,11 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 	private static final long serialVersionUID = 1L;
 	private byte resident;
-	private double timePassed;
 	private int wins = 0;
+	
+	private double timePassed;
 	private double nextReset;
+	private double rentTime;
 	
 	private int beerCount;
 	private int beerCost;
@@ -78,6 +81,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 		timePassed = extra.randRange(1,30);
 		resident = (byte) extra.randRange(1,RES_COUNT);
 		nextReset = extra.randRange(4,30);
+		rentTime = 0;
 		tutorialText = "Inn";
 		this.owner = owner;
 		beerCount = extra.randRange(2,4);
@@ -175,19 +179,92 @@ public class Inn extends Feature implements QuestBoardLocation{
 						return false;
 					}
 				});
-				mList.add(new MenuSelect() {
+				if (rentTime > 0){
+					mList.add(new MenuSelect() {
 
-					@Override
-					public String title() {
-						return "bathe (" +getTown().getIsland().getWorld().moneyString(bathPrice())+")";
-					}
+						@Override
+						public String title() {
+							return "Your Room ("+extra.F_TWO_TRAILING.format(rentTime)+" hours left)";
+						}
 
-					@Override
-					public boolean go() {
-						bathe();
-						return false;
-					}
-				});
+						@Override
+						public boolean go() {
+							extra.menuGo(new MenuGenerator() {
+
+								@Override
+								public List<MenuItem> gen() {
+									List<MenuItem> list = new ArrayList<MenuItem>();
+									list.add(new MenuLine() {
+
+										@Override
+										public String title() {
+											return Calender.dateFull(town)+": ("+extra.F_TWO_TRAILING.format(rentTime)+" hours left)";
+										}});
+									if (rentTime > 1) {
+										list.add(new MenuSelect() {
+
+											@Override
+											public String title() {
+												return "Bathe (1 hour)";
+											}
+
+											@Override
+											public boolean go() {
+												Player.addTime(1);
+												mainGame.globalPassTime();
+												Player.player.getPerson().washAll();
+												return true;
+											}});
+									}
+									if (rentTime < 24) {
+										list.add(new MenuSelect() {
+
+											@Override
+											public String title() {
+												return "Wait " + extra.F_TWO_TRAILING.format(rentTime)+" hours.";
+											}
+
+											@Override
+											public boolean go() {
+												Player.addTime(rentTime+.1);
+												mainGame.globalPassTime();
+												return true;
+											}});
+									}else {
+										list.add(new MenuSelect() {
+
+											@Override
+											public String title() {
+												return "Wait 24 hours.";
+											}
+
+											@Override
+											public boolean go() {
+												Player.addTime(24);
+												mainGame.globalPassTime();
+												return false;
+											}});
+									}
+									list.add(new MenuBack());
+									return list;
+								}});
+							return false;
+						}});
+				}else {
+					mList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Rent a Room";
+						}
+
+						@Override
+						public boolean go() {
+							rent();
+							return false;
+						}
+					});
+				}
 				if (town.getPersonableOccupants().limit(2).count() >=2){
 				mList.add(new MenuSelect() {
 
@@ -240,6 +317,9 @@ public class Inn extends Feature implements QuestBoardLocation{
 		if (timePassed > nextReset) {
 			occupantDuel(playerWatching == this);
 			collectTimeStorage();
+		}
+		if (rentTime > 0) {
+			rentTime-=time;
 		}
 		return null;
 	}
@@ -451,20 +531,74 @@ public class Inn extends Feature implements QuestBoardLocation{
 		this.town = town;
 	}
 	
-	private int bathPrice() {
+	private int roomPrice() {
 		return (int) Math.ceil(2*getUnEffectiveLevel());
 	}
 	
-	private void bathe() {
-		if (Player.player.getGold() >= (bathPrice())) {
-			extra.println("Pay "+World.currentMoneyDisplay(bathPrice())+" for a bath?");
-			if (extra.yesNo()) {
-				Player.player.getPerson().washAll();
-				Player.player.addGold(-bathPrice());
-			}
-			}else {
-				extra.println("You can't afford that!");
-			}
+	private void rent() {
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				int perDay = roomPrice();
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return Player.player.getGoldDisp();
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "One Day: "+World.currentMoneyDisplay(perDay);
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.player.askBuyMoney(perDay, "one night")) {
+							rentTime+=24;
+							return true;
+						}
+						return false;
+					}
+				});
+				list.add(new MenuSelect() {//7/5 = 1.4
+
+					@Override
+					public String title() {
+						return "One Week: "+World.currentMoneyDisplay(perDay*5);
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.player.askBuyMoney(perDay*5, "seven days")){
+							rentTime+=168;
+							return true;
+						}
+						return false;
+					}
+				});
+				list.add(new MenuSelect() {//30/20 = 1.5
+
+					@Override
+					public String title() {
+						return "One Month: "+World.currentMoneyDisplay(perDay*20);
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.player.askBuyMoney(perDay*20, "30 days")) {
+							rentTime+=720;
+							return true;
+						}
+						return false;
+					}
+				});
+				list.add(new MenuBack("Cancel."));
+				return list;
+			}});
 	}
 
 	@Override

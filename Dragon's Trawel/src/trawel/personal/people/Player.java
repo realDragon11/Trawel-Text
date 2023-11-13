@@ -1743,4 +1743,18 @@ public class Player extends SuperPerson{
 		Networking.leaderboard("highest_world_currency", getGold(w));
 	}
 	
+	public boolean askBuyMoney(int money, String toBuy) {
+		int current = getGold();
+		if (current < money) {
+			extra.println("You need " + World.currentMoneyDisplay(money) + " buy you only have " + current+".");
+			return false;
+		}
+		extra.println("Pay "+ World.currentMoneyDisplay(money) +" of your " +current +" for " +toBuy+"?");
+		if (extra.yesNo()) {
+			loseGold(money);
+			return true;
+		}
+		return false;
+	}
+	
 }
