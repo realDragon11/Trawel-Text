@@ -540,7 +540,7 @@ public class WorldGen {
 		holik.tTags.add(TownTag.TRAVEL);
 		
 		Town yonuen = new Town("Yonuen",11, apen, new Point(8,19));
-		addConnection(holik,yonuen,"road","bliz road");
+		addConnection(holik,yonuen,ConnectType.ROAD,"bliz road");
 		yonuen.addFeature(new Store(10));
 		yonuen.addFeature(new Store(9));
 		yonuen.addFeature(new Dungeon("Sky-Sundering Tower", yonuen, Shape.TOWER,BossType.FATESPINNER));
@@ -551,8 +551,8 @@ public class WorldGen {
 		yonuen.tTags.add(TownTag.LAWLESS);
 		
 		Town unika = new Town("Unika",11, apen, new Point(6,17));
-		addConnection(holik,unika,"road","ren road");
-		addConnection(yonuen,unika,"road","tenka road");
+		addConnection(holik,unika,ConnectType.ROAD,"ren road");
+		addConnection(yonuen,unika,ConnectType.ROAD,"tenka road");
 		unika.addFeature(new Arena("'Lucky Break'",12,1,24,12,135));
 		unika.addFeature(new Grove("Unika's Backyard",unika));
 		unika.addFeature(new Champion(15));
@@ -560,8 +560,8 @@ public class WorldGen {
 		//unika.addFeature(new Inn("unika inn",10,unika,null));
 		
 		Town peana = new Town("Peana",12, apen, new Point(9,16));
-		addConnection(holik,peana,"road","blue road");
-		addConnection(unika,peana,"road","green road");
+		addConnection(holik,peana,ConnectType.ROAD,"blue road");
+		addConnection(unika,peana,ConnectType.ROAD,"green road");
 		//trying to make a slight reference to death/hell metal music
 		peana.addFeature(new Inn("'Dirges for the Damned'",12,peana,null).setIntro("A bard is playing a loud and harsh magical lute.").setOutro("You leave before the music can grow on you."));
 		peana.addFeature(new Store("'Tyrant's Treasures'",11,11).setIntro("'Before you ask, most of this isn't from Hell. But some of it is, and a lot of treasure meant for Hell ends up here instead!'"));//oddity store
@@ -578,8 +578,8 @@ public class WorldGen {
 		});
 		
 		Town inka = new Town("Inka",12, apen, new Point(7,14));
-		addConnection(unika,inka,"road","youn road");
-		addConnection(inka,peana,"road","era road");
+		addConnection(unika,inka,ConnectType.ROAD,"youn road");
+		addConnection(inka,peana,ConnectType.ROAD,"era road");
 		inka.addFeature(new Docks("Ironclad Shipments",inka));
 		inka.addFeature(new Mine("First Striking Shaft", inka,60,8,NodeFeature.Shape.NONE,BossType.NONE));
 		inka.addFeature(new Mine("Motherload Mine", inka,30,14,NodeFeature.Shape.NONE,BossType.NONE));
@@ -594,7 +594,7 @@ public class WorldGen {
 		Island opyo = new Island("Opyo", w, IslandType.ISLAND);
 		
 		Town pipa = new Town("Pipa",13, opyo, new Point(8,12));
-		addConnection(inka,pipa,ConnectType.SHIP,"Digger's Leave");
+		addConnection(inka,pipa,ConnectType.SHIP,"Digger's Leave Current");
 		pipa.addFeature(new WitchHut("Oak Coven's Hut",pipa));
 		pipa.addFeature(new Grove("Deciduous Sprawl",pipa));
 		pipa.addFeature(new Altar("Thorny Throne",AltarForce.FOREST));
@@ -604,9 +604,9 @@ public class WorldGen {
 		pipa.tTags.add(TownTag.HIDDEN);
 		
 		Town xeyn = new Town("Xeyn",13,opyo,new Point(11,14));
-		addConnection(inka,xeyn,ConnectType.SHIP,"TODO");
-		addConnection(peana,xeyn,ConnectType.SHIP,"TODO");
-		addConnection(pipa,xeyn,ConnectType.ROAD,"TODO");
+		addConnection(inka,xeyn,ConnectType.SHIP,"Picks to Plowshares Sealane");
+		addConnection(peana,xeyn,ConnectType.SHIP,"Hellsalts Shipments");
+		addConnection(pipa,xeyn,ConnectType.ROAD,"The Bread and Barley Path");
 		xeyn.addFeature(new Docks("Ferrysteads",xeyn));
 		xeyn.addFeature(new Garden(xeyn,"Communal Gardens", 0, PlantFill.FOOD));
 		xeyn.addFeature(new Store("Foodstuffs and Tack",10,10));
@@ -623,8 +623,8 @@ public class WorldGen {
 		});
 		
 		Town mikol = new Town("Mikol",13,opyo,new Point(10,11));
-		addConnection(pipa,mikol,ConnectType.ROAD,"TODO");
-		addConnection(xeyn,mikol,ConnectType.ROAD,"TODO");
+		addConnection(pipa,mikol,ConnectType.ROAD,"Twin Thrones Road");
+		addConnection(xeyn,mikol,ConnectType.ROAD,"Well Traveled Route");
 		mikol.addFeature(new Dungeon("Eerie Palace Portal",mikol,40,15, Shape.TOWER,BossType.OLD_QUEEN));
 		mikol.addFeature(new Garden(mikol,"Royal Gardens",0,PlantFill.FOOD));
 		mikol.addFeature(new HeroGuild("Empyphic Palace"));//empyphic - empyrean + seraphic
@@ -709,7 +709,9 @@ public class WorldGen {
 		t1.addConnection(connect);
 		t2.addConnection(connect);
 	}
-	
+	/**
+	 * @return hours
+	 */
 	public static double distanceBetweenTowns(Town t1,Town t2,ConnectType connectType) {
 		if (!t1.getIsland().getWorld().equals(t2.getIsland().getWorld())) {
 			return 100/teleTravelPerHour;
