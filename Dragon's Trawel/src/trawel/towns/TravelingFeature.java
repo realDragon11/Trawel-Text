@@ -253,9 +253,38 @@ public class TravelingFeature extends Store{
 					}});
 				break;
 			case ORACLE:
+				extra.menuGo(new MenuGenerator() {
+
+					@Override
+					public List<MenuItem> gen() {
+						List<MenuItem> list = new ArrayList<MenuItem>();
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Listen in on their ramblings.";
+							}
+
+							@Override
+							public boolean go() {
+								Player.addTime(1+extra.randFloat());
+								mainGame.globalPassTime();
+								Oracle.tip("");
+								return false;
+							}});
+						list.add(new MenuBack(){
+							@Override
+							public boolean go() {
+								exiting = true;
+								return true;
+							};
+						});
+						return list;
+					}});
 				break;
 			case STALL:
 				extra.menuGo(modernStoreFront());
+				exiting = true;
 				break;
 			}
 		}
