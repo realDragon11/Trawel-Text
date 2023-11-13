@@ -244,6 +244,21 @@ public class Inn extends Feature implements QuestBoardLocation{
 												mainGame.globalPassTime();
 												return false;
 											}});
+										if (rentTime > 72) {
+											list.add(new MenuSelect() {
+
+												@Override
+												public String title() {
+													return "Wait 3 days.";
+												}
+
+												@Override
+												public boolean go() {
+													Player.addTime(72);
+													mainGame.globalPassTime();
+													return false;
+												}});
+										}
 									}
 									list.add(new MenuBack());
 									return list;
