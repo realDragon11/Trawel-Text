@@ -247,6 +247,12 @@ public class StoryTutorial extends Story{
 				extra.println("A 'Lot' is a piece of owned, undeveloped land. You can pay both world currency and Aether to build something on that land.");
 				return;
 			}
+			
+			if (f instanceof TravelingFeature) {//must be above store, which it extends
+				extra.println("Some Towns have stalls for outsiders to set up. They might make a faux-arena, a store, an 'inn' that is just a couple of people with beer, or something else.");
+				return;
+			}
+			
 			if (f instanceof WitchHut) {//must be above store, which it extends
 				extra.println("Witch Huts let you brew potions with 'DrawBanes'. They also sell them, and host collection quests where you can find DrawBanes for yourself.");
 				return;
@@ -313,11 +319,6 @@ public class StoryTutorial extends Story{
 			}
 			
 			//TODO: appraiser
-			
-			if (f instanceof TravelingFeature) {
-				extra.println("Some Towns have stalls for outsiders to set up. They might make a faux-arena, a store, an 'inn' that is just a couple of people with beer, or something else.");
-				return;
-			}
 			
 			if (f instanceof Grove) {
 				if (!explainedNodes) {

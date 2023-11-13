@@ -38,6 +38,7 @@ public class TravelingFeature extends Store{
 	private TravelType contents = null;
 	private List<Person> fighters = new ArrayList<Person>();
 	protected int trueTier;
+	public static boolean exiting;//false by default
 	
 	protected enum TravelType{
 		CELEBRATION(extra.F_SERVICE,"Celebration"),
@@ -144,14 +145,13 @@ public class TravelingFeature extends Store{
 
 	@Override
 	public void go() {
-		int ret = 0;
 		//while there is still a feature to go to
 		//note: if time passes too much at once could skip the feature not existing, which would be bad
-		while (ret != 9 && !regen && contents != null) {
+		while (exiting == false && !regen && contents != null) {
 			//all menus must return every time
 			switch (contents) {
 			case CELEBRATION:
-				ret = extra.menuGo(new MenuGenerator() {
+				extra.menuGo(new MenuGenerator() {
 
 					@Override
 					public List<MenuItem> gen() {
@@ -189,14 +189,21 @@ public class TravelingFeature extends Store{
 								town.addOccupant(c.getNonSummonSurvivors().get(0).getMakeAgent(AgentGoal.NONE));
 								Player.addTime(3);
 								mainGame.globalPassTime();
+								regen = true;
 								return true;
 							}});
-						list.add(new MenuBack());
+						list.add(new MenuBack(){
+							@Override
+							public boolean go() {
+								exiting = true;
+								return true;
+							};
+						});
 						return list;
 					}});
 				break;
 			case FIGHT:
-				ret = extra.menuGo(new ScrollMenuGenerator(fighters.size(),"last <>","next <>") {
+				extra.menuGo(new ScrollMenuGenerator(fighters.size(),"last <>","next <>") {
 
 					@Override
 					public List<MenuItem> forSlot(int i) {
@@ -211,6 +218,8 @@ public class TravelingFeature extends Store{
 							@Override
 							public boolean go() {
 								if (p.reallyFight("Challenge")) {
+									Player.addTime(.5);
+									mainGame.globalPassTime();
 									Combat c = Player.player.fightWith(p);
 									if (c.playerWon() > 0) {
 										fighters.remove(i);
@@ -218,7 +227,7 @@ public class TravelingFeature extends Store{
 										town.addOccupant(fighters.remove(i).getMakeAgent(AgentGoal.NONE));
 									}
 								}
-								return false;
+								return true;//need to regen list in this case if a fighter is removed, but also if time passes
 							}});
 					}
 
@@ -234,16 +243,23 @@ public class TravelingFeature extends Store{
 
 					@Override
 					public List<MenuItem> footer() {
-						return Collections.singletonList(new MenuBack("Leave."));
+						return Collections.singletonList(new MenuBack("Leave.") {
+							@Override
+							public boolean go() {
+								exiting = true;
+								return true;
+							};
+						});
 					}});
 				break;
 			case ORACLE:
 				break;
 			case STALL:
-				ret = extra.menuGo(modernStoreFront());
+				extra.menuGo(modernStoreFront());
 				break;
 			}
 		}
+		exiting = false;
 		
 	}
 
