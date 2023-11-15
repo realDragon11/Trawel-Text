@@ -115,7 +115,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Enter Coven Common Room";
+						return "Enter Coven Common Room (Sidequests)";
 					}
 
 					@Override

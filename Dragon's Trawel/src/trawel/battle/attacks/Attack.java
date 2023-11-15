@@ -456,7 +456,7 @@ public class Attack implements IAttack{
 		SCREAMING("Screaming","Defender loses one attack choice on next action.","They scream!"),
 		FROSTED("Frosted","Defender's action takes %1$d%% longer on the current time, up to %2$d instants increase.","They are frozen over..."),
 		FROSTBITE("Frostbite","Deals %1$d direct damage.","Their flesh is frozen!"),
-		JOLTED("Jolted","Defender's action takes %2$d instants longer.","They are jolted!"),
+		JOLTED("Jolted","Defender's action takes %1$d instants longer.","They are jolted!"),
 		SHIVERING("Shivering","Applies %1$d%% compounding inaccuracy to the defender's next set of attacks.","They shiver at the intense cold..."),
 		
 		//exotic

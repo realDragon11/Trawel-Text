@@ -131,7 +131,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "beer ("+getTown().getIsland().getWorld().moneyString(beerCost)+")";
+						return "Buy Beer ("+beerCount+" for "+getTown().getIsland().getWorld().moneyString(beerCost)+")";
 					}
 
 					@Override
@@ -153,6 +153,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 						return false;
 					}
 				});
+				/*
 				mList.add(new MenuSelect() {
 
 					@Override
@@ -166,11 +167,12 @@ public class Inn extends Feature implements QuestBoardLocation{
 						return false;
 					}
 				});
+				*/
 				mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "backroom";
+						return "Backroom (Sidequests)";
 					}
 
 					@Override
@@ -285,7 +287,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "watch duel (" + extra.format(nextReset-timePassed+1) + " hours)";
+						return "Watch duel (" + extra.format(nextReset-timePassed+1) + " hours)";
 					}
 
 					@Override
@@ -299,7 +301,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 					}
 				});
 				}
-				mList.add(new MenuBack("leave"));
+				mList.add(new MenuBack("Leave"));
 				return mList;
 			}});
 	}
@@ -396,18 +398,18 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 	private String getResidentName() {
 		switch(resident) {
-		case 1: return "resident: A group of old fighters";
-		case 2: return "resident: A group of dancers";
-		case 3: return "resident: An oracle.";
+		case 1: return "Resident: A group of old fighters";
+		case 2: return "Resident: A group of dancers";
+		case 3: return "Resident: An oracle.";
 		default:
 			if (curAgent == null || !town.getPersonableOccupants().anyMatch(a -> a == curAgent)){
 				if (town.getPersonableOccupants().count() == 0) {
-					return "resident: Open Bar";
+					return "Resident: Open Bar";
 				}else {
 					newCurAgent();
 				}
 			}
-			return "resident: " + curAgent.getPerson().getName()+ " (" +curAgent.getPerson().getLevel() +")";	
+			return "Resident: " + curAgent.getPerson().getName()+ " (" +curAgent.getPerson().getLevel() +")";	
 		}
 	}
 	
@@ -432,12 +434,15 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public boolean go() {
-						Combat c = Player.player.fightWith(agent.getPerson());
-						if (c.playerWon() > 0) {
-							town.removeOccupant(agent);
-							newCurAgent();
+						if (agent.getPerson().reallyFight("Really duel")) {
+							Combat c = Player.player.fightWith(agent.getPerson());
+							if (c.playerWon() > 0) {
+								town.removeOccupant(agent);
+								newCurAgent();
+							}
+							return true;
 						}
-						return true;
+						return false;
 					}});
 				list.add(new MenuSelect() {
 
@@ -502,7 +507,28 @@ public class Inn extends Feature implements QuestBoardLocation{
 	
 	private void goOracle() {
 		extra.println("There's an oracle staying at the inn.");
-		new Oracle("inn",tier).go();
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Listen in on their ramblings.";
+					}
+
+					@Override
+					public boolean go() {
+						Player.addTime(1+extra.randFloat());
+						mainGame.globalPassTime();
+						Oracle.tip("");
+						return true;
+					}});
+				list.add(new MenuBack());
+				return list;
+			}});
 	}
 	
 	private void barFight() {
