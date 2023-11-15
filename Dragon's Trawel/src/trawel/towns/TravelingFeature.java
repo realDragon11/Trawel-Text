@@ -145,6 +145,7 @@ public class TravelingFeature extends Store{
 
 	@Override
 	public void go() {
+		exiting = false;
 		//while there is still a feature to go to
 		//note: if time passes too much at once could skip the feature not existing, which would be bad
 		while (exiting == false && !regen && contents != null) {
@@ -302,7 +303,6 @@ public class TravelingFeature extends Store{
 				break;
 			}
 		}
-		exiting = false;
 		
 	}
 
