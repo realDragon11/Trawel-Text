@@ -1746,7 +1746,7 @@ public class Player extends SuperPerson{
 	public boolean askBuyMoney(int money, String toBuy) {
 		int current = getGold();
 		if (current < money) {
-			extra.println("You need " + World.currentMoneyDisplay(money) + " buy you only have " + current+".");
+			extra.println("You need " + World.currentMoneyDisplay(money) + " but you only have " + current+".");
 			return false;
 		}
 		extra.println("Pay "+ World.currentMoneyDisplay(money) +" of your " +current +" for " +toBuy+"?");

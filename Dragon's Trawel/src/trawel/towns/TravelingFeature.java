@@ -166,7 +166,8 @@ public class TravelingFeature extends Store{
 							public boolean go() {
 								Player.addTime(.5f+extra.randFloat()*1f);
 								mainGame.globalPassTime();
-								if (extra.randRange(1, useCount+1) == 1) {
+								useCount++;
+								if (extra.randRange(1, useCount) == 1) {
 									extra.println("You find some beer laying around.");
 									Player.player.beer++;
 								}else{
@@ -189,7 +190,7 @@ public class TravelingFeature extends Store{
 								town.addOccupant(c.getNonSummonSurvivors().get(0).getMakeAgent(AgentGoal.NONE));
 								Player.addTime(3);
 								mainGame.globalPassTime();
-								regen = true;
+								regenSetup();
 								return true;
 							}});
 						list.add(new MenuBack(){
@@ -218,7 +219,7 @@ public class TravelingFeature extends Store{
 							@Override
 							public boolean go() {
 								if (p.reallyFight("Challenge")) {
-									Player.addTime(.5);
+									Player.addTime(1);
 									mainGame.globalPassTime();
 									Combat c = Player.player.fightWith(p);
 									if (c.playerWon() > 0) {
@@ -269,8 +270,21 @@ public class TravelingFeature extends Store{
 							public boolean go() {
 								Player.addTime(1+extra.randFloat());
 								mainGame.globalPassTime();
+								if (useCount > 2) {
+									if (extra.chanceIn(useCount,3+useCount)){
+										if (useCount > 5) {
+											regenSetup();
+											extra.println("The oracle packs up and heads off with extreme urgency.");
+										}else {
+											extra.println("The oracle watches you in silence.");
+										}
+										return true;
+									}
+								}
+								timeLeft+=1;//extend how long they stay, since they will be removed above by chance
 								Oracle.tip("");
-								return false;
+								useCount++;
+								return true;
 							}});
 						list.add(new MenuBack(){
 							@Override
