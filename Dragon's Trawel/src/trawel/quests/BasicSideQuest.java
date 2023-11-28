@@ -25,11 +25,11 @@ import trawel.towns.services.Inn;
 import trawel.towns.services.MerchantGuild;
 import trawel.towns.services.WitchHut;
 
-public class BasicSideQuest implements Quest{
+public abstract class BasicSideQuest implements Quest{
 
 	private static final long serialVersionUID = 1L;
 
-	public QuestR giver, target;
+	public List<QuestR> qRList = new ArrayList<QuestR>();
 	
 	public String giverName;
 	public String targetName;
@@ -57,7 +57,8 @@ public class BasicSideQuest implements Quest{
 	public void cleanup() {
 		giver.cleanup();
 		if (target != null) {
-		target.cleanup();}
+			target.cleanup();
+		}
 	}
 	
 	@Override

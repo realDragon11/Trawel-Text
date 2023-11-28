@@ -22,7 +22,8 @@ public class QRMenuItem extends MenuSelect {
 
 	@Override
 	public boolean go() {
-		return qr.go();
+		qr.go();
+		return false;
 	}
 
 }

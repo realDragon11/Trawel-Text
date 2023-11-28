@@ -12,6 +12,7 @@ public class Graveyard extends NodeFeature {
 		tutorialText = "Graveyard";
 		generate(40);
 		area_type = Area.GRAVEYARD;
+		tier = getTown().getTier();
 	}
 	
 	@Override
@@ -27,7 +28,7 @@ public class Graveyard extends NodeFeature {
 	@Override
 	protected void generate(int size) {
 		shape = Shape.NONE;
-		start = NodeType.NodeTypeNum.GRAVEYARD.singleton.getStart(this, size, getTown().getTier());//DOLATER: get actual level
+		start = NodeType.NodeTypeNum.GRAVEYARD.singleton.getStart(this, size,tier);
 	}
 
 }

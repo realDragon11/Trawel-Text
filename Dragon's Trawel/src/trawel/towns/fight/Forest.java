@@ -152,7 +152,7 @@ public class Forest extends ExploreFeature{
 		case 1:
 			extra.println("You eat the mushroom...");
 			switch(extra.randRange(1,3)) {
-			case 1: extra.println("The mushroom is delicous!");break;
+			case 1: extra.println("The mushroom is delicious!");break;
 			case 2: extra.println("Eating the mushroom is very difficult... but you manage.");
 			Player.player.getPerson().addXp(tier*2);break;
 			case 3: extra.println("You feel lightheaded.... you pass out!");

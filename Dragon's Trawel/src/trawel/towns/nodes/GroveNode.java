@@ -843,7 +843,7 @@ public class GroveNode implements NodeType{
 			}
 			//all paths replace with new plant spot
 			if (extra.chanceIn(1,3)) {
-				extra.println("it tastes delicous!");
+				extra.println("it tastes delicious!");
 				plantstart = Seed.SEED_TRUFFLE;
 			}else {
 				if (extra.chanceIn(1,3)) {

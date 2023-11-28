@@ -3,18 +3,31 @@ package trawel.quests;
 import java.io.Serializable;
 
 import trawel.towns.Feature;
-import trawel.towns.Town;
 
-public abstract class QuestR implements Serializable {
+public class QuestR implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	public abstract String getName();
 	
-	public abstract boolean go();
+	public final int QRID;
+	public final String name;
+	public final Quest overQuest;
+	public final Feature locationF;
 	
-	public Quest overQuest;
-	public Town locationT;
-	public Feature locationF;
+	public QuestR(int _QRID, String _name, Quest _overQuest, Feature _feature) {
+		QRID = _QRID;
+		name = _name;
+		overQuest = _overQuest;
+		locationF = _feature;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void go() {
+		overQuest.questReaction(QRID);
+	}
+	
 	public void cleanup() {
 		locationF.removeQR(this);
 	}

@@ -28,5 +28,7 @@ public interface Quest extends Serializable {
 	public List<String> triggers();
 
 	public List<QKey> getKeys();
+
+	public void questReaction(int QRID);
 	
 }
