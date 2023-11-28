@@ -21,7 +21,7 @@ public class CollectSideQuest extends BasicSideQuest {
 		CollectSideQuest q = new CollectSideQuest();
 		q.collect = collect;
 		q.targetName = collect.getName();
-		
+		q.resolveGive(generator);
 		q.qKeywords.add(QKey.COLLECT);
 		
 		switch (collect) {

@@ -23,6 +23,7 @@ public class KillSideQuest extends BasicSideQuest {
 		
 		KillSideQuest q = new KillSideQuest();
 		q.isMurder = isMurder;
+		q.resolveGive(generator);
 		q.qKeywords.add(QKey.KILL);
 		if (isMurder) {
 			q.qKeywords.add(QKey.EVIL);

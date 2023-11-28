@@ -83,18 +83,20 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	}
 	
 	public enum QRType{
-		NONE(new QKey[0]),
-		MOUNTAIN(new QKey[] {QKey.DEST_MOUNTAIN}),
-		FOREST(new QKey[] {QKey.DEST_WOODS}),
-		INN(new QKey[] {QKey.DEST_INN}),
-		SLUM(new QKey[] {QKey.DEST_SLUM}),
-		WHUT(new QKey[] {QKey.DEST_WHUT}),
-		MGUILD(new QKey[] {QKey.DEST_GUILD}),
-		RGUILD(new QKey[] {QKey.DEST_GUILD}),
-		HGUILD(new QKey[] {QKey.DEST_GUILD});
+		NONE(new QKey[0],null),
+		MOUNTAIN(new QKey[] {QKey.DEST_MOUNTAIN},null),
+		FOREST(new QKey[] {QKey.DEST_WOODS},null),
+		INN(new QKey[] {QKey.DEST_INN},QKey.GIVE_INN),
+		SLUM(new QKey[] {QKey.DEST_SLUM},QKey.GIVE_SLUM),
+		WHUT(new QKey[] {QKey.DEST_WHUT},QKey.GIVE_WHUT),
+		MGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_MGUILD),
+		RGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_RGUILD),
+		HGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_HGUILD);
 		public final QKey[] dests;
-		QRType(QKey[] _dests){
+		public final QKey give;
+		QRType(QKey[] _dests,QKey _give){
 			dests = _dests;
+			give = _give;
 		}
 	}
 

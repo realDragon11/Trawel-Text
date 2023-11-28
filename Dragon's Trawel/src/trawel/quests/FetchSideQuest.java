@@ -41,9 +41,9 @@ public class FetchSideQuest extends BasicSideQuest {
 			targetFeature = generator;//fallback set to same place
 		}
 		
+		q.resolveGive(generator);
 		q.qRList.add(new QuestR(0,q.targetName,q,targetFeature));
 		q.qRList.add(new QuestR(1,q.giverName,q,generator));
-		
 		q.resolveDest(targetFeature);
 		
 		q.name = q.giverName + "'s " + q.targetName;

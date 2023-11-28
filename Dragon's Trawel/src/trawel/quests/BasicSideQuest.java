@@ -90,6 +90,10 @@ public abstract class BasicSideQuest implements Quest{
 			qKeywords.add(qk);
 		}
 	}
+	
+	protected void resolveGive(Feature locationG) {
+		qKeywords.add(locationG.getQRType().give);
+	}
 
 	@Override
 	public String name() {

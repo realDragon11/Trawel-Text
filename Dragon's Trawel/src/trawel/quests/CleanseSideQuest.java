@@ -36,6 +36,7 @@ public class CleanseSideQuest extends BasicSideQuest {
 		
 		q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
 		
+		q.resolveGive(generator);
 		q.qKeywords.add(QKey.CLEANSE);
 		q.qKeywords.add(QKey.LAWFUL);
 		q.count = subtype.count;
