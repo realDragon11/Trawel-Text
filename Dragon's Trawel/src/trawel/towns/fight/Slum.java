@@ -123,8 +123,11 @@ public class Slum extends Store implements QuestBoardLocation{
 			sideQuests.remove(extra.randList(sideQuests));
 		}
 		switch (extra.randRange(1,5)) {
-		case 1: case 2:
+		case 1:
 			sideQuests.add(FetchSideQuest.generate(this,FetchType.CRIME));
+			break;
+		case 2:
+			sideQuests.add(FetchSideQuest.generate(this,FetchType.COMMUNITY));
 			break;
 		case 3:
 			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.BANDIT)));
