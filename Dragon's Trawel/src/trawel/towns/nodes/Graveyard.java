@@ -10,9 +10,9 @@ public class Graveyard extends NodeFeature {
 		this.name = name;
 		town = t;
 		tutorialText = "Graveyard";
-		generate(40);
 		area_type = Area.GRAVEYARD;
 		tier = getTown().getTier();
+		generate(40);
 	}
 	
 	@Override

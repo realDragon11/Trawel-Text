@@ -43,8 +43,9 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	
 	public List<Quest> sideQuests = new ArrayList<Quest>();
 	
-	public MerchantGuild(String name){
-		this.name = name;
+	public MerchantGuild(String _name, int _tier){
+		name = _name;
+		tier = _tier;
 		tutorialText = "Merchant's Guild";
 		timePassed = extra.randRange(1,30);
 		nextReset = extra.randRange(8,30);

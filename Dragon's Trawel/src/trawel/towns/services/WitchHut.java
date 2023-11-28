@@ -24,6 +24,7 @@ import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.quests.BasicSideQuest;
+import trawel.quests.CollectSideQuest;
 import trawel.quests.QBMenuItem;
 import trawel.quests.QRMenuItem;
 import trawel.quests.Quest;
@@ -646,10 +647,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		if (sideQuests.size() >= 3) {
 			sideQuests.remove(extra.randList(sideQuests));
 		}
-		BasicSideQuest bsq = BasicSideQuest.getWitchCollectQuestPersonal(this.getTown(), this, DrawBane.draw(DrawList.WITCH_STORE));
-		if (bsq != null) {
-		sideQuests.add(bsq);
-		}
+		sideQuests.add(CollectSideQuest.generate(this, DrawBane.draw(DrawList.WITCH_STORE)));
 	}
 	
 	@Override

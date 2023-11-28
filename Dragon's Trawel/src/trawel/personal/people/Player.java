@@ -390,23 +390,6 @@ public class Player extends SuperPerson{
 		
 	}
 	
-	/**
-	 * do not use if not needed
-	 * @param type
-	 * @param string
-	 * @return
-	 */
-	public BasicSideQuest anyQTrigger(TriggerType type, String string) {
-		for (Quest q: sideQuests) {
-			if (q instanceof BasicSideQuest) {
-				if (((BasicSideQuest) q).trigger == string) {
-					return ((BasicSideQuest) q);
-				}
-			}
-		}
-		return null;
-	}
-	
 	public List<String> allQTriggers() {
 		List<String> ts = new ArrayList<String>();
 		for (Quest q: sideQuests) {

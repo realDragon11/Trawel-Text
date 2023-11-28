@@ -61,8 +61,9 @@ public class QuestReactionFactory {
 
 							@Override
 							public boolean go() {
-								if (q.target != null && q.target.locationT != null) {
-									WorldGen.pathToTown(q.target.locationT);
+								Town t = q.nextLocation();
+								if (t != null) {
+									WorldGen.pathToTown(t);
 								}else {
 									extra.println("They cannot seem to say the instructions.");
 								}

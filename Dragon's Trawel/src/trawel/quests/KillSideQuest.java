@@ -103,7 +103,7 @@ public class KillSideQuest extends BasicSideQuest {
 	
 	@Override
 	public void take() {
-		qRList.get(0).enable();
+		setStage(0);
 		announceUpdate();
 	}
 

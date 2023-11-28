@@ -61,8 +61,8 @@ public class FetchSideQuest extends BasicSideQuest {
 		case 0:
 			extra.println("You claim the " + this.targetName);
 			this.desc = "Return the " + this.targetName + " to " + this.giverName + " at " + endFeature.getName() + " in " + endFeature.getTown().getName();
-			this.advanceStage();
-			this.announceUpdate();
+			advanceStage();
+			announceUpdate();
 			return;
 		case 1:
 			int reward;
@@ -102,7 +102,7 @@ public class FetchSideQuest extends BasicSideQuest {
 	
 	@Override
 	public void take() {
-		qRList.get(0).enable();
+		setStage(0);
 		announceUpdate();
 	}
 }

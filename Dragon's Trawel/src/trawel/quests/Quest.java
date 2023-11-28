@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import trawel.quests.QuestReactionFactory.QKey;
+import trawel.towns.Town;
 
 public interface Quest extends Serializable {
 
@@ -30,5 +31,7 @@ public interface Quest extends Serializable {
 	public List<QKey> getKeys();
 
 	public void questReaction(int QRID);
+
+	public Town nextLocation();
 	
 }

@@ -140,7 +140,7 @@ public class WorldGen {
 		addConnection(homa,unun,"road","barrier way");
 		unun.addFeature(new Docks("Trade Port",unun));
 		unun.addFeature(new Inn("Trailblazer's Tavern",2,unun,null));
-		unun.addFeature(new MerchantGuild("Eoano's Merchant Guild Headquarters"));
+		unun.addFeature(new MerchantGuild("Eoano's Merchant Guild Headquarters",2));
 		unun.addFeature(new Dungeon("Tower of Fate",unun,Dungeon.Shape.TOWER,BossType.FATESPINNER));
 		unun.addFeature(new Slum(unun,"The Ephemeral People's Quarter",true));
 		unun.addTravel();
@@ -461,7 +461,7 @@ public class WorldGen {
 			@Override
 			public Feature generate(Slum from) {
 				//MAYBELATER: make a custom anon merchant guild class that says "oh its you" and thanks you for paying to get it built
-				return new MerchantGuild("Better Futures Central Office").setIntro("'Welcome to Better Futures! We can assign a caseworker, if you'd like?'");
+				return new MerchantGuild("Better Futures Central Office",6).setIntro("'Welcome to Better Futures! We can assign a caseworker, if you'd like?'");
 			}
 		}).setIntro("'We don't have much work, but if you need food, you can always try to wring life from these barren lands.'"));
 		senal.addFeature(new Garden(senal,"Desolate Fields",.2f,PlantFill.BAD_HARVEST));
@@ -628,7 +628,7 @@ public class WorldGen {
 		mikol.addFeature(new Dungeon("Eerie Palace Portal",mikol,40,15, Shape.TOWER,BossType.OLD_QUEEN));
 		mikol.addFeature(new Garden(mikol,"Royal Gardens",0,PlantFill.FOOD));
 		mikol.addFeature(new HeroGuild("Empyphic Palace"));//empyphic - empyrean + seraphic
-		mikol.addFeature(new MerchantGuild("Central Tariff Offices"));
+		mikol.addFeature(new MerchantGuild("Central Tariff Offices",13));
 		mikol.addFeature(new Store(12));
 		mikol.addFeature(new Appraiser("Shipment Inspectors"));
 		mikol.tTags.add(TownTag.LAW);

@@ -30,7 +30,12 @@ public abstract class BasicSideQuest implements Quest{
 	private static final long serialVersionUID = 1L;
 
 	public List<QuestR> qRList = new ArrayList<QuestR>();
-	public int stage = 0;
+	/**
+	 * stage is used to determine which qR is active
+	 * <br>
+	 * otherwise it will be at -1
+	 */
+	public int stage = -1;
 	
 	public String giverName;
 	public String targetName;
@@ -140,6 +145,14 @@ public abstract class BasicSideQuest implements Quest{
 	@Override
 	public List<QKey> getKeys() {
 		return qKeywords;
+	}
+	
+	@Override
+	public Town nextLocation() {
+		if (stage == -1) {
+			return null;
+		}
+		return qRList.get(stage).locationF.getTown();
 	}
 }
 

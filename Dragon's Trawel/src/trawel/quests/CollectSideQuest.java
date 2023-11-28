@@ -83,7 +83,7 @@ public class CollectSideQuest extends BasicSideQuest {
 			q.count = 12;
 			break;
 		}
-		q.desc = "Collect " + q.count + q.targetName + " pieces";
+		q.desc = "Collect " + q.count +" "+ q.targetName + " pieces";
 		
 		if (generator instanceof WitchHut) {
 			q.giverName = generator.getName() + " (Personal Collection)";
