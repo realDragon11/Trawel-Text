@@ -80,243 +80,6 @@ public abstract class BasicSideQuest implements Quest{
 		Player.player.sideQuests.remove(this);
 	}
 	
-	public static BasicSideQuest getRandomSideQuest(Town loc,Inn inn) {
-		BasicSideQuest q = new BasicSideQuest();
-		q.qKeywords.add(QKey.GIVE_INN);
-		int i;
-		switch (extra.randRange(1,3)) {
-		case 1: //fetch quest
-			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
-			q.targetName = extra.choose("totem","heirloom","keepsake","letter","key");
-			q.qKeywords.add(QKey.FETCH);
-			q.giver = new QuestR() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public String getName() {
-					return ((BasicSideQuest)overQuest).giverName;
-				}
-
-				@Override
-				public boolean go() {
-					Player.player.getPerson().addXp(1);
-					Player.player.addGold(1);
-					extra.println("Gained "+World.currentMoneyDisplay(1)+".");
-					((BasicSideQuest)overQuest).giver.locationT.helpCommunity(1);
-					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,.1f, 0);
-					((BasicSideQuest)overQuest).complete();
-					return false;
-				}};
-				q.giver.locationF = inn;
-				q.giver.locationT = loc;
-				q.giver.overQuest = q;
-			q.target = new QuestR() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public String getName() {
-					return ((BasicSideQuest)overQuest).targetName;
-				}
-
-				@Override
-				public boolean go() {
-					BasicSideQuest q = ((BasicSideQuest)overQuest);
-					extra.println("You claim the " + q.targetName);
-					q.giver.locationF.addQR(q.giver);
-					q.desc = "Return the " + q.targetName + " to " + q.giverName + " at " + q.giver.locationF.getName() + " in " + q.giver.locationT.getName();
-					this.cleanup();
-					q.announceUpdate();
-					return false;
-				}
-				
-			};
-			i = 3; 
-			while (q.target.locationF == null) {
-			q.target.locationF = extra.randList(loc.getQuestLocationsInRange(i));
-			i++;
-			if (i > 10) {
-				return null;
-			}
-			}
-			q.resolveDest(q.target.locationF);
-			q.target.locationT = q.target.locationF.getTown();
-			if (q.target.locationT == null) {
-				return null;
-			}
-			q.target.overQuest = q;
-			//q.target.locationF.addQR(q.target);
-			q.name = q.giverName + "'s " + q.targetName;
-			q.desc = "Fetch " + q.targetName + " from " + q.target.locationF.getName() + " in " + q.target.locationT.getName() + " for " + q.giverName;
-			break;
-		case 2: //kill quest (murder/hero variants)
-			boolean murder = extra.choose(false,true);
-			q.qKeywords.add(QKey.KILL);
-			if (murder) {
-				q.qKeywords.add(QKey.EVIL);
-			}else {
-				q.qKeywords.add(QKey.LAWFUL);
-			}
-			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
-			q.giver = new QuestR() {
-
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public String getName() {
-					BasicSideQuest q = ((BasicSideQuest)overQuest);
-					return q.giverName;
-				}
-
-				@Override
-				public boolean go() {
-					BasicSideQuest q = ((BasicSideQuest)overQuest);
-					int reward = Math.max(1,q.targetPerson.getLevel()/3);
-					Player.player.getPerson().addXp(reward);
-					Player.player.addGold(reward);
-					extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
-					if (!murder) {
-						q.giver.locationT.helpCommunity(2);
-					}
-					q.complete();
-					return false;
-				}};
-				q.giver.locationF = inn;
-				q.giver.locationT = loc;
-				q.giver.overQuest = q;
-			q.target = new QuestR() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public String getName() {
-					BasicSideQuest q = ((BasicSideQuest)overQuest);
-					return q.targetName;
-				}
-
-				@Override
-				public boolean go() {
-					BasicSideQuest q = ((BasicSideQuest)overQuest);
-					extra.menuGo(new MenuGenerator() {
-
-						@Override
-						public List<MenuItem> gen() {
-							List<MenuItem> mList = new ArrayList<MenuItem>();
-							mList.add(new MenuSelect() {
-
-								@Override
-								public String title() {
-									return extra.PRE_BATTLE+"Attack " + q.targetName;
-								}
-
-								@Override
-								public boolean go() {
-									Combat c = Player.player.fightWith(q.targetPerson);
-									if (c.playerWon() > 0) {
-										//Player.player.eaBox.exeKillLevel += 1;
-										q.giver.locationF.addQR(q.giver);
-										q.desc = "Return to " + q.giverName + " at " + q.giver.locationF.getName() + " in " + q.giver.locationT.getName();
-										cleanup();
-										q.announceUpdate();
-									}
-									return true;
-								}});
-							return mList;
-						}});
-					
-					return false;
-				}
-				
-			};
-			i = 3; 
-			while (q.target.locationF == null) {
-			q.target.locationF = extra.randList(loc.getQuestLocationsInRange(i));
-			i++;
-			if (i > 10) {
-				return null;
-			}
-			}
-			q.resolveDest(q.target.locationF);
-			q.target.locationT = q.target.locationF.getTown();
-			if (q.target.locationT == null) {
-				return null;
-			}
-			if (murder == true) {
-				q.targetPerson = RaceFactory.getPeace(q.target.locationT.getTier());
-			}else {
-				q.targetPerson = RaceFactory.getMugger(q.target.locationT.getTier());
-			}
-			q.targetName = q.targetPerson.getName();
-			q.target.overQuest = q;
-			//q.target.locationF.addQR(q.target);
-			if (murder == true) {
-				q.name = "Murder " + q.targetName + " for " + q.giverName;
-				q.desc = "Murder " + q.targetName + " at " + q.target.locationF.getName() + " in " + q.target.locationT.getName() + " for " + q.giverName;
-			}else {
-				q.name = "Execute " + q.targetName + " for " + q.giverName;
-				q.desc = "Execute " + q.targetName + " at " + q.target.locationF.getName() + " in " + q.target.locationT.getName() + " for " + q.giverName;
-			}
-			break;
-		case 3: //cleanse quest
-			q.qKeywords.add(QKey.CLEANSE);
-			q.qKeywords.add(QKey.LAWFUL);
-			q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
-			q.giver = new QuestR() {
-
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public String getName() {
-					BasicSideQuest q = ((BasicSideQuest)overQuest);
-					return q.giverName;
-				}
-
-				@Override
-				public boolean go() {
-					BasicSideQuest q = ((BasicSideQuest)overQuest);
-					Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,2,0);
-					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
-					int reward = 2;
-					Player.player.getPerson().addXp(reward);
-					Player.player.addGold(reward);
-					extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
-					q.giver.locationT.helpCommunity(2);
-					q.complete();
-					return false;
-				}};
-				q.giver.locationF = inn;
-				q.giver.locationT = loc;
-				q.giver.overQuest = q;
-				switch (extra.randRange(1,4)) {
-				case 1:
-					q.targetName = "bears";
-					q.trigger = "bear";
-					q.count = 3;
-					break;
-				case 2:
-					q.targetName = "vampires";
-					q.trigger = "vampire";
-					q.count = 2;
-					q.qKeywords.add(QKey.GOOD);
-					break;
-				case 3:
-					q.targetName = "wolves";
-					q.trigger = "wolf";
-					q.count = 6;
-					break;
-				case 4:
-					q.targetName = "harpies";
-					q.trigger = "harpy";
-					q.count = 4;
-					break;
-				}
-			//q.target.locationF.addQR(q.target);
-				q.name = "Kill " + q.targetName + " for " + q.giverName ;
-				q.desc = "Kill " + q.count + " more " + q.targetName + " on the roads for " + q.giverName;
-			break;
-		
-		}
-		return q;
-	}
-	
 	public static BasicSideQuest getRandomMerchantQuest(Town loc,MerchantGuild mguild) {
 		BasicSideQuest q = new BasicSideQuest();
 		q.qKeywords.add(QKey.GIVE_MGUILD);
@@ -734,68 +497,6 @@ public abstract class BasicSideQuest implements Quest{
 			qKeywords.add(qk);
 		}
 	}
-	
-	public static final void drawBaneCollecter(DrawBane db, BasicSideQuest q) {
-		switch (db) {
-		case LIVING_FLAME:
-			q.count = 12;
-			q.qKeywords.add(QKey.FIRE_ALIGN);
-			break;
-		case TELESCOPE:
-			q.count = 8;
-			q.qKeywords.add(QKey.KNOW_ALIGN);
-			break;
-		case REPEL:
-			q.count = 4;
-			break;
-		case CEON_STONE:
-			q.count = 6;
-			break;
-		case PROTECTIVE_WARD:
-			q.count = 8;
-			break;
-		case SILVER:
-			q.count = 4;
-			break;
-		case GOLD:
-			q.count = 6;
-			break;
-		case UNICORN_HORN:
-			q.count = 8;
-			break;
-		case KNOW_FRAG:
-			q.count = 20;
-			q.qKeywords.add(QKey.KNOW_ALIGN);//can get this from turning in fragments, but not that many
-			break;
-		case PUMPKIN:
-			q.count = 3;
-			break;
-		case MEAT:
-			q.count = 2;
-			break;
-		case BAT_WING:
-			q.count = 2;
-			break;
-		case APPLE:
-			q.count = 2;
-			break;
-		case MIMIC_GUTS:
-			q.count = 3;
-			break;
-		case BLOOD:
-			q.count = 1;
-			break;
-		case WAX:
-			q.count = 2;
-			break;
-		case WOOD:
-			q.count = 2;
-			break;
-		case VIRGIN://lmao
-			q.count = 12;
-			break;
-		}
-	}
 
 	@Override
 	public String name() {
@@ -805,12 +506,6 @@ public abstract class BasicSideQuest implements Quest{
 	@Override
 	public String desc() {
 		return desc;
-	}
-
-	@Override
-	public void take() {
-		qRList.get(0).enable();
-		announceUpdate();
 	}
 
 	@Override
@@ -853,7 +548,7 @@ public abstract class BasicSideQuest implements Quest{
 
 	@Override
 	public List<String> triggers() {
-		return Collections.singletonList(trigger);
+		return Collections.singletonList(null);
 	}
 	
 	public static DrawBane attemptCollectAlign(QKey align,float odds,int amount) {
@@ -871,7 +566,7 @@ public abstract class BasicSideQuest implements Quest{
 							return DrawBane.getByName(str.substring(2));
 						}
 					}
-				}				
+				}
 			}
 		}
 		return null;

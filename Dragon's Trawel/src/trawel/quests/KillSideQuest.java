@@ -11,6 +11,7 @@ import trawel.quests.QuestReactionFactory.QKey;
 import trawel.towns.Feature;
 import trawel.towns.Town;
 import trawel.towns.World;
+import trawel.towns.services.MerchantGuild;
 
 public class KillSideQuest extends BasicSideQuest {
 	
@@ -88,6 +89,9 @@ public class KillSideQuest extends BasicSideQuest {
 				reward = Math.round(target.getLevel()/3);
 				endFeature.getTown().helpCommunity(2);
 			}
+			if (endFeature instanceof MerchantGuild) {
+				Player.player.addMPoints(.2);
+			}
 			Player.player.getPerson().addXp(reward);
 			Player.player.addGold(reward);
 			extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
@@ -95,6 +99,12 @@ public class KillSideQuest extends BasicSideQuest {
 			return;
 		}
 		throw new RuntimeException("Invalid QRID for kill quest");
+	}
+	
+	@Override
+	public void take() {
+		qRList.get(0).enable();
+		announceUpdate();
 	}
 
 }

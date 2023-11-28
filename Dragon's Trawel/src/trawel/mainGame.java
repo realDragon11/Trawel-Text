@@ -72,7 +72,7 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__9";
-	public static final String VERSION_DATE = " updated Nov 14th 2023";
+	public static final String VERSION_DATE = " updated Nov 28th 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			"b_9: {part 1/?} Expanded Bag items can now be melted down into aether from player menu or if bag is full when looting. 'Really Attack' prompts now give the option to examine the person's inventory.",

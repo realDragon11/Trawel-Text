@@ -15,11 +15,16 @@ import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.quests.BasicSideQuest;
+import trawel.quests.CleanseSideQuest;
+import trawel.quests.FetchSideQuest;
+import trawel.quests.KillSideQuest;
 import trawel.quests.QBMenuItem;
 import trawel.quests.QRMenuItem;
 import trawel.quests.Quest;
 import trawel.quests.QuestBoardLocation;
 import trawel.quests.QuestR;
+import trawel.quests.CleanseSideQuest.CleanseType;
+import trawel.quests.FetchSideQuest.FetchType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
@@ -270,9 +275,16 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 		if (sideQuests.size() >= 2) {
 			sideQuests.remove(extra.randList(sideQuests));
 		}
-		BasicSideQuest bsq = BasicSideQuest.getRandomMerchantQuest(this.town,this);
-		if (bsq != null) {
-		sideQuests.add(bsq);
+		switch (extra.randRange(1,3)) {
+		case 1:
+			sideQuests.add(FetchSideQuest.generate(this,FetchType.MERCHANT));
+			break;
+		case 2:
+			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.HARPY,CleanseType.BANDIT)));
+			break;
+		case 3:
+			sideQuests.add(KillSideQuest.generate(this,extra.randFloat() > .7f));//30% chance to be a murder quest
+			break;
 		}
 	}
 	

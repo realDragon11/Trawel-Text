@@ -6,8 +6,8 @@ import trawel.factions.Faction;
 import trawel.personal.people.Player;
 import trawel.quests.QuestReactionFactory.QKey;
 import trawel.towns.Feature;
-import trawel.towns.Town;
 import trawel.towns.World;
+import trawel.towns.services.MerchantGuild;
 
 public class CleanseSideQuest extends BasicSideQuest {
 	public CleanseType subtype;
@@ -18,7 +18,8 @@ public class CleanseSideQuest extends BasicSideQuest {
 		BEAR("bears","bear",3),
 		VAMPIRE("vampires","vampire",2),
 		WOLF("wolves","wolf",6),
-		HARPY("harpies","harpy",4);
+		HARPY("harpies","harpy",4),
+		BANDIT("bandits","bandit",3);
 		public final String fluff, trigger;
 		public final int count;
 		CleanseType(String _fluff, String _trigger, int _count){
@@ -29,8 +30,6 @@ public class CleanseSideQuest extends BasicSideQuest {
 	}
 	
 	public static CleanseSideQuest generate(Feature generator, CleanseType subtype) {
-		Town t = generator.getTown();
-		
 		CleanseSideQuest q = new CleanseSideQuest();
 		q.subtype = subtype;
 		q.targetName = subtype.fluff;
@@ -39,6 +38,7 @@ public class CleanseSideQuest extends BasicSideQuest {
 		
 		q.qKeywords.add(QKey.CLEANSE);
 		q.qKeywords.add(QKey.LAWFUL);
+		q.count = subtype.count;
 		
 		q.name = "Kill " + q.targetName + " for " + q.giverName ;
 		q.desc = "Kill " + q.count + " more " + q.targetName + " on the roads for " + q.giverName;
@@ -54,13 +54,13 @@ public class CleanseSideQuest extends BasicSideQuest {
 		if (!trigger.equals(subtype.trigger)) {
 			return;
 		}
-		count +=num;
-		if (count >= subtype.count) {
+		count -=num;
+		if (count <= 0) {
 			if (completed == false) {
 				Feature endFeature = qRList.get(0).locationF;
 				desc = "Return to " + giverName + " at " + endFeature.getName() + " in " + endFeature.getTown().getName();
-				qRList.get(0).enable();
-				this.announceUpdate();
+				setStage(0);
+				announceUpdate();
 				completed = true;
 			}
 		}else {
@@ -79,10 +79,20 @@ public class CleanseSideQuest extends BasicSideQuest {
 			Player.player.getPerson().addXp(reward);
 			Player.player.addGold(reward);
 			extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
-			endFeature.getTown().helpCommunity(2);
+			if (endFeature instanceof MerchantGuild) {
+				Player.player.addMPoints(.2);
+				endFeature.getTown().helpCommunity(1);
+			}else {
+				endFeature.getTown().helpCommunity(2);
+			}
 			complete();
 			return;
 		}
 		throw new RuntimeException("Invalid QRID for cleanse quest");
+	}
+	
+	@Override
+	public void take() {
+		announceUpdate();
 	}
 }

@@ -23,11 +23,16 @@ import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.quests.BasicSideQuest;
+import trawel.quests.CleanseSideQuest;
+import trawel.quests.FetchSideQuest;
+import trawel.quests.KillSideQuest;
 import trawel.quests.QBMenuItem;
 import trawel.quests.QRMenuItem;
 import trawel.quests.Quest;
 import trawel.quests.QuestBoardLocation;
 import trawel.quests.QuestR;
+import trawel.quests.CleanseSideQuest.CleanseType;
+import trawel.quests.FetchSideQuest.FetchType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
@@ -117,9 +122,16 @@ public class Slum extends Store implements QuestBoardLocation{
 		if (sideQuests.size() >= 2) {
 			sideQuests.remove(extra.randList(sideQuests));
 		}
-		BasicSideQuest bsq = BasicSideQuest.getRandomSideQuest(town,this);
-		if (bsq != null) {
-		sideQuests.add(bsq);
+		switch (extra.randRange(1,5)) {
+		case 1: case 2:
+			sideQuests.add(FetchSideQuest.generate(this,FetchType.CRIME));
+			break;
+		case 3:
+			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.BANDIT)));
+			break;
+		case 4: case 5:
+			sideQuests.add(KillSideQuest.generate(this,extra.randFloat() > .4f));//60% chance to be a murder quest
+			break;
 		}
 	}
 	

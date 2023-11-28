@@ -21,6 +21,11 @@ import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.quests.BasicSideQuest;
+import trawel.quests.CleanseSideQuest;
+import trawel.quests.CleanseSideQuest.CleanseType;
+import trawel.quests.FetchSideQuest;
+import trawel.quests.FetchSideQuest.FetchType;
+import trawel.quests.KillSideQuest;
 import trawel.quests.QBMenuItem;
 import trawel.quests.QRMenuItem;
 import trawel.quests.Quest;
@@ -114,9 +119,16 @@ public class Inn extends Feature implements QuestBoardLocation{
 		if (sideQuests.size() >= 3) {
 			sideQuests.remove(extra.randList(sideQuests));
 		}
-		BasicSideQuest bsq = BasicSideQuest.getRandomSideQuest(this.getTown(),this);
-		if (bsq != null) {
-		sideQuests.add(bsq);
+		switch (extra.randRange(1,3)) {
+		case 1:
+			sideQuests.add(FetchSideQuest.generate(this,FetchType.COMMUNITY));
+			break;
+		case 2:
+			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.BANDIT)));
+			break;
+		case 3:
+			sideQuests.add(KillSideQuest.generate(this,extra.randFloat() > .8f));//20% chance to be a murder quest
+			break;
 		}
 	}
 

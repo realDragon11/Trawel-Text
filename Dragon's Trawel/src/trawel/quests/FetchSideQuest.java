@@ -99,4 +99,10 @@ public class FetchSideQuest extends BasicSideQuest {
 		}
 		throw new RuntimeException("Invalid QRID for fetch quest");
 	}
+	
+	@Override
+	public void take() {
+		qRList.get(0).enable();
+		announceUpdate();
+	}
 }
