@@ -212,7 +212,7 @@ public class WorldGen {
 		addConnection(hemo,tanak,ConnectType.ROAD,"'Round the Mountain");
 		addConnection(beal,tanak,ConnectType.ROAD,"Wildering Plain");
 		tanak.addFeature(new Arena("The Gauntlet Cirque below Tanak",4,6,24*3,24*20,1));//lots of bouts
-		tanak.addFeature(new HeroGuild("Chantry of Boundless Heroism").setIntro("The building looks more like a church than a guild, but the heavy armor and lack of robes on the people here belie its true intent."));
+		tanak.addFeature(new HeroGuild("Chantry of Boundless Heroism",5).setIntro("The building looks more like a church than a guild, but the heavy armor and lack of robes on the people here belie its true intent."));
 		tanak.addFeature(new Store(5,6));
 		tanak.addFeature(new Inn("Cloud Comforts Inn",5,tanak,null).setIntro("'Welcome to Cloud Comforts, the Tavern at the top!'").setOutro("'Thank you for coming to Cloud Comforts, we hope you enjoy your stay in Tanak.'"));
 		tanak.addTravel();
@@ -340,7 +340,7 @@ public class WorldGen {
 		yena.addFeature(new Dungeon("Dungeon of Fame", yena,NodeFeature.Shape.RIGGED_DUNGEON,BossType.YORE));
 		yena.addTravel();
 		yena.addTravel();
-		yena.addFeature(new HeroGuild("Third Hero's Guild"));
+		yena.addFeature(new HeroGuild("Third Hero's Guild",6));
 		yena.addFeature(new Champion(6));
 		yena.tTags.add(TownTag.ADVENTURE);
 		yena.tTags.add(TownTag.HISTORY);
@@ -400,7 +400,7 @@ public class WorldGen {
 		addConnection(placka,tunka,"road","diamond road");
 		tunka.addFeature(new Graveyard("The Boneyard", tunka));
 		tunka.addFeature(new Store("'A Quick Find'",7,6).setIntro("'If you can't find anything you like, I'm sure I can put in a request with the Society.'").setOutro("'Bring back some good stuff for me, eh?''"));
-		tunka.addFeature(new RogueGuild("Society of Enterprising Nobles"));
+		tunka.addFeature(new RogueGuild("Society of Enterprising Nobles",8));
 		tunka.addFeature(new Slum(tunka,"Forgettables District",false).setOutro("As you leave, you notice a few hooded figures eyeing you from the rooftops."));
 		tunka.tTags.add(TownTag.LAWLESS);
 		tunka.tTags.add(TownTag.DISPARITY);
@@ -544,7 +544,7 @@ public class WorldGen {
 		yonuen.addFeature(new Store(10));
 		yonuen.addFeature(new Store(9));
 		yonuen.addFeature(new Dungeon("Sky-Sundering Tower", yonuen, Shape.TOWER,BossType.FATESPINNER));
-		yonuen.addFeature(new RogueGuild("The Open Adventuring Guild").setIntro("Outside the Guild, there is an overly long manifesto full of errors about how the other hero guilds aren't willing to take the biggest adventures, but they are."));
+		yonuen.addFeature(new RogueGuild("The Open Adventuring Guild",10).setIntro("Outside the Guild, there is an overly long manifesto full of errors about how the other hero guilds aren't willing to take the biggest adventures, but they are."));
 		yonuen.addTravel();
 		yonuen.tTags.add(TownTag.ADVENTURE);
 		yonuen.tTags.add(TownTag.CITY);
@@ -627,7 +627,7 @@ public class WorldGen {
 		addConnection(xeyn,mikol,ConnectType.ROAD,"Well Traveled Route");
 		mikol.addFeature(new Dungeon("Eerie Palace Portal",mikol,40,15, Shape.TOWER,BossType.OLD_QUEEN));
 		mikol.addFeature(new Garden(mikol,"Royal Gardens",0,PlantFill.FOOD));
-		mikol.addFeature(new HeroGuild("Empyphic Palace"));//empyphic - empyrean + seraphic
+		mikol.addFeature(new HeroGuild("Empyphic Palace",12));//empyphic - empyrean + seraphic
 		mikol.addFeature(new MerchantGuild("Central Tariff Offices",13));
 		mikol.addFeature(new Store(12));
 		mikol.addFeature(new Appraiser("Shipment Inspectors"));

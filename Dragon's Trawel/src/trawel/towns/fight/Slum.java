@@ -110,7 +110,7 @@ public class Slum extends Store implements QuestBoardLocation{
 	@Override
 	public void init() {
 		try {
-			while (sideQuests.size() < 2) {
+			while (sideQuests.size() < 3) {
 				generateSideQuest();
 			}
 			}catch (Exception e) {
@@ -119,7 +119,7 @@ public class Slum extends Store implements QuestBoardLocation{
 	}
 	
 	private void generateSideQuest() {
-		if (sideQuests.size() >= 2) {
+		if (sideQuests.size() >= 3) {
 			sideQuests.remove(extra.randList(sideQuests));
 		}
 		switch (extra.randRange(1,5)) {

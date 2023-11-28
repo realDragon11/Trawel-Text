@@ -34,10 +34,11 @@ public class FetchSideQuest extends BasicSideQuest {
 		q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
 		q.targetName = subtype.itemList.next();
 		q.qKeywords.add(QKey.FETCH);
+		q.subtype = subtype;
 		
 		Feature targetFeature = generator;//fallback set to same place
 		
-		for (int i = 1; i < 5;i++) {
+		for (int i = extra.randRange(3, 5); i >= 0;i--) {
 			targetFeature = extra.randList(t.getQuestLocationsInRange(i));
 			if (targetFeature != generator) {
 				break;

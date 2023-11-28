@@ -41,8 +41,9 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 	
 	private boolean canQuest = true;
 
-	public HeroGuild(String name){
-		this.name = name;
+	public HeroGuild(String _name, int _tier){
+		name = _name;
+		tier = _tier;
 		tutorialText = "Hero's Guild";
 		area_type = Area.MISC_SERVICE;
 		activityTimer = 24f+extra.randFloat()*24f;
@@ -208,7 +209,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 	@Override
 	public void init() {
 		try {
-			while (sideQuests.size() < 2) {
+			while (sideQuests.size() < 3) {
 				generateSideQuest();
 			}
 		}catch (Exception e) {
@@ -217,7 +218,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 	}
 	
 	private void generateSideQuest() {
-		if (sideQuests.size() >= 2) {
+		if (sideQuests.size() >= 3) {
 			sideQuests.remove(extra.randList(sideQuests));
 		}
 		switch (extra.randRange(1,3)) {

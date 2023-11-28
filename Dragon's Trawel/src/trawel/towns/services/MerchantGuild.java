@@ -264,7 +264,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	public void init() {
 		quarterMaster = RaceFactory.makeQuarterMaster(this.town.getTier());
 		try {
-			while (sideQuests.size() < 2) {
+			while (sideQuests.size() < 3) {
 				generateSideQuest();
 			}
 			}catch (Exception e) {
@@ -273,7 +273,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	}
 	
 	private void generateSideQuest() {
-		if (sideQuests.size() >= 2) {
+		if (sideQuests.size() >= 3) {
 			sideQuests.remove(extra.randList(sideQuests));
 		}
 		switch (extra.randRange(1,3)) {

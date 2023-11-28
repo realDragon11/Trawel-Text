@@ -37,7 +37,7 @@ public class KillSideQuest extends BasicSideQuest {
 		
 		Feature targetFeature = generator;//fallback set to same place
 		
-		for (int i = 1; i < 5;i++) {
+		for (int i = extra.randRange(3, 5); i >= 0;i--) {
 			targetFeature = extra.randList(t.getQuestLocationsInRange(i));
 			if (targetFeature != generator) {
 				break;
