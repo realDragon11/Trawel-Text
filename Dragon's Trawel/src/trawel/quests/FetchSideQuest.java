@@ -60,9 +60,8 @@ public class FetchSideQuest extends BasicSideQuest {
 		switch (QRID) {
 		case 0:
 			extra.println("You claim the " + this.targetName);
-			qRList.get(1).locationF.addQR(qRList.get(1));
 			this.desc = "Return the " + this.targetName + " to " + this.giverName + " at " + endFeature.getName() + " in " + endFeature.getTown().getName();
-			this.cleanup();
+			this.advanceStage();
 			this.announceUpdate();
 			return;
 		case 1:

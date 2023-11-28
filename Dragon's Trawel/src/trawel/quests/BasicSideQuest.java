@@ -34,25 +34,12 @@ public abstract class BasicSideQuest implements Quest{
 	
 	public String giverName;
 	public String targetName;
-	public Person targetPerson;
-	public int tier;
-	public int count;
-	public String trigger;
 	
 	public String name, desc;
 	
 	public List<QKey> qKeywords = new ArrayList<QKey>();
 	
 	public int reactionsLeft = 2;
-	
-	public boolean completed = false;
-	
-	public static String triggerText(TriggerType type) {
-		if (type == TriggerType.CLEANSE) {
-			return "db:";
-		}
-		return "";
-	}
 	
 	public void advanceStage() {
 		qRList.get(stage).cleanup();
@@ -822,14 +809,13 @@ public abstract class BasicSideQuest implements Quest{
 
 	@Override
 	public void take() {
-		if (target != null && target.locationF != null) {
-			target.locationF.addQR(target);
-		}
+		qRList.get(0).enable();
 		announceUpdate();
 	}
 
 	@Override
 	public void questTrigger(TriggerType type, String trigger, int num) {
+		//EMPTY
 		if (this.trigger != null) {
 			if (this.trigger.equals(trigger)) {
 				count-=num;

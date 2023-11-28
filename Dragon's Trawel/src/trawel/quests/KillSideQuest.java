@@ -67,9 +67,8 @@ public class KillSideQuest extends BasicSideQuest {
 			if (target.reallyAttack()) {
 				Combat c = Player.player.fightWith(target);
 				if (c.playerWon() > 0) {
-					endFeature.addQR(qRList.get(1));
 					desc = "Return to " + giverName + " at " + endFeature.getName() + " in " + endFeature.getTown().getName();
-					cleanup();
+					this.advanceStage();
 					announceUpdate();
 					if (isMurder) {
 						Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,0,1f);
