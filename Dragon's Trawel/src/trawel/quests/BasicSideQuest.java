@@ -30,6 +30,7 @@ public abstract class BasicSideQuest implements Quest{
 	private static final long serialVersionUID = 1L;
 
 	public List<QuestR> qRList = new ArrayList<QuestR>();
+	public int stage = 0;
 	
 	public String giverName;
 	public String targetName;
@@ -53,11 +54,26 @@ public abstract class BasicSideQuest implements Quest{
 		return "";
 	}
 	
+	public void advanceStage() {
+		qRList.get(stage).cleanup();
+		stage++;
+		qRList.get(stage).enable();
+	}
+	
+	public void setStage(int newstage) {
+		stage = newstage;
+		for (int i = 0; i < qRList.size();i++) {
+			QuestR current = qRList.get(i);
+			current.cleanup();//remove it either way to prevent dupes
+			if (i == stage) {
+				current.enable();
+			}
+		}
+	}
 	
 	public void cleanup() {
-		giver.cleanup();
-		if (target != null) {
-			target.cleanup();
+		for (int i = 0; i < qRList.size();i++) {
+			qRList.get(i).cleanup();
 		}
 	}
 	
@@ -726,7 +742,7 @@ public abstract class BasicSideQuest implements Quest{
 		return q;
 	}
 	
-	private void resolveDest(Feature locationF) {
+	protected void resolveDest(Feature locationF) {
 		for (QKey qk: locationF.getQRType().dests) {
 			qKeywords.add(qk);
 		}

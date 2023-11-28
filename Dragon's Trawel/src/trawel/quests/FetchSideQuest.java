@@ -47,6 +47,7 @@ public class FetchSideQuest extends BasicSideQuest {
 		q.qRList.add(new QuestR(0,q.targetName,q,targetFeature));
 		q.qRList.add(new QuestR(1,q.giverName,q,generator));
 		
+		q.resolveDest(targetFeature);
 		
 		q.name = q.giverName + "'s " + q.targetName;
 		q.desc = "Fetch " + q.targetName + " from " + targetFeature.getName() + " in " + targetFeature.getTown().getName() + " for " + q.giverName;
@@ -65,6 +66,7 @@ public class FetchSideQuest extends BasicSideQuest {
 			this.announceUpdate();
 			return;
 		case 1:
+			int reward;
 			switch (subtype) {
 			case COMMUNITY:
 				Player.player.getPerson().addXp(1);
@@ -73,15 +75,28 @@ public class FetchSideQuest extends BasicSideQuest {
 				endFeature.getTown().helpCommunity(1);
 				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,.1f, 0);
 				this.complete();
-				break;
+				return;
 			case CRIME:
-				break;
+				reward = Math.min(1,endFeature.getLevel());
+				Player.player.addGold(reward);
+				extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,0, .05f);
+				//doesn't help community
+				this.complete();
+				return;
 			case HERO:
 				break;
 			case MERCHANT:
-				break;
+				Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,.1f, 0);
+				Player.player.addMPoints(.2f);
+				Player.player.getPerson().addXp(1);
+				reward = Math.min(1,endFeature.getLevel()/3);
+				Player.player.addGold(reward);
+				extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+				endFeature.getTown().helpCommunity(1);
+				this.complete();
+				return;
 			}
-			return;
 		}
 		throw new RuntimeException("Invalid QRID for fetch quest");
 	}

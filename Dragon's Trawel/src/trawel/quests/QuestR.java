@@ -31,4 +31,8 @@ public class QuestR implements Serializable {
 	public void cleanup() {
 		locationF.removeQR(this);
 	}
+	
+	public void enable() {
+		locationF.addQR(this);
+	}
 }
