@@ -331,7 +331,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 				for (Quest q: sideQuests) {
 					mList.add(new QBMenuItem(q,inn));
 				}
-				for (QuestR qr: qrList) {
+				for (QuestR qr: Player.player.QRFor(Inn.this)) {
 					mList.add(new QRMenuItem(qr));
 				}
 				mList.add(new MenuBack());

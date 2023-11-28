@@ -26,9 +26,6 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	protected String tutorialText = null;
 	protected Town town;
 	protected int moneyEarned;
-	//TODO: figure out if EVERY feature really needs these lists
-	protected List<QuestR> qrList = new ArrayList<QuestR>();
-	protected List<QuestR> qrRemoveList = new ArrayList<QuestR>();
 	protected int background_variant = extra.randRange(1, 3);
 	protected String background_area = "main";
 	protected int tier;
@@ -99,27 +96,6 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 		QRType(QKey[] _dests){
 			dests = _dests;
 		}
-	}
-	
-	public void addQR(QuestR qr) {
-		qrList.add(qr);
-	}
-	
-	public void removeQR(QuestR qr) {
-		qrList.remove(qr);
-	}
-	
-	public void cueRemoveQR(QuestR qr) {
-		qrRemoveList.add(qr);
-	}
-	
-	public void flushQR() {
-		qrList.removeAll(qrRemoveList);
-		qrRemoveList.clear();
-	}
-	
-	public int qrSize() {
-		return qrList.size();
 	}
 
 	@Override

@@ -285,7 +285,6 @@ public class Slum extends Store implements QuestBoardLocation{
 	}
 	
 	private void backroom() {
-		Slum sl = this;
 		extra.menuGo(new MenuGenerator() {
 
 			@Override
@@ -293,15 +292,14 @@ public class Slum extends Store implements QuestBoardLocation{
 				List<MenuItem> mList = new ArrayList<MenuItem>();
 				
 				for (Quest q: sideQuests) {
-					mList.add(new QBMenuItem(q,sl));
+					mList.add(new QBMenuItem(q,Slum.this));
 				}
-				for (QuestR qr: qrList) {
+				for (QuestR qr: Player.player.QRFor(Slum.this)) {
 					mList.add(new QRMenuItem(qr));
 				}
 				mList.add(new MenuBack());
 				return mList;
 			}});
-		
 	}
 	
 	private void crime() {

@@ -12,6 +12,7 @@ public class QuestR implements Serializable {
 	public final String name;
 	public final Quest overQuest;
 	public final Feature locationF;
+	public boolean enabled;
 	
 	public QuestR(int _QRID, String _name, Quest _overQuest, Feature _feature) {
 		QRID = _QRID;
@@ -29,10 +30,10 @@ public class QuestR implements Serializable {
 	}
 	
 	public void cleanup() {
-		locationF.removeQR(this);
+		enabled = false;
 	}
 	
 	public void enable() {
-		locationF.addQR(this);
+		enabled = true;
 	}
 }

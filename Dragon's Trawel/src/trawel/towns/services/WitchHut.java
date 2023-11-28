@@ -634,7 +634,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 				for (Quest q: sideQuests) {
 					mList.add(new QBMenuItem(q,hut));
 				}
-				for (QuestR qr: qrList) {
+				for (QuestR qr: Player.player.QRFor(WitchHut.this)) {
 					mList.add(new QRMenuItem(qr));
 				}
 				mList.add(new MenuBack());

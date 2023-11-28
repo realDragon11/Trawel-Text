@@ -152,7 +152,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 								for (Quest q: sideQuests) {
 									mList.add(new QBMenuItem(q,MerchantGuild.this));
 								}
-								for (QuestR qr: qrList) {
+								for (QuestR qr: Player.player.QRFor(MerchantGuild.this)) {
 									mList.add(new QRMenuItem(qr));
 								}
 								mList.add(new MenuBack());

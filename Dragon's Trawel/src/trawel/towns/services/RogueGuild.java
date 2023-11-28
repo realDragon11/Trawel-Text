@@ -14,19 +14,36 @@ import trawel.factions.FBox;
 import trawel.factions.FBox.FSub;
 import trawel.factions.Faction;
 import trawel.personal.people.Player;
+import trawel.quests.CleanseSideQuest;
+import trawel.quests.FetchSideQuest;
+import trawel.quests.KillSideQuest;
+import trawel.quests.QBMenuItem;
+import trawel.quests.QRMenuItem;
+import trawel.quests.Quest;
+import trawel.quests.QuestBoardLocation;
+import trawel.quests.QuestR;
+import trawel.quests.CleanseSideQuest.CleanseType;
+import trawel.quests.FetchSideQuest.FetchType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.World;
 import trawel.towns.Feature.QRType;
 
-public class RogueGuild extends Feature {
+public class RogueGuild extends Feature implements QuestBoardLocation{
 	
 	private static final long serialVersionUID = 1L;
+	
+	private double activityTimer;
+	public List<Quest> sideQuests = new ArrayList<Quest>();
+	
+	private boolean canQuest = true;
+	
 	public RogueGuild(String name){
 		this.name = name;
 		tutorialText = "Rogue's Guild";
 		area_type = Area.MISC_SERVICE;
+		activityTimer = 24f+extra.randFloat()*24f;
 	}
 	
 	@Override
@@ -122,6 +139,32 @@ public class RogueGuild extends Feature {
 						return false;
 					}
 				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Job Board (Sidequests).";
+					}
+
+					@Override
+					public boolean go() {
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> list = new ArrayList<MenuItem>();
+								
+								for (Quest q: sideQuests) {
+									list.add(new QBMenuItem(q,RogueGuild.this));
+								}
+								for (QuestR qr: Player.player.QRFor(RogueGuild.this)) {
+									list.add(new QRMenuItem(qr));
+								}
+								list.add(new MenuBack());
+								return list;
+							}});
+						return false;
+					}});
 				mList.add(new MenuBack("leave"));
 				return mList;
 			}});
@@ -129,7 +172,13 @@ public class RogueGuild extends Feature {
 	
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		// TODO Auto-generated method stub
+		if (canQuest) {
+			activityTimer-=time;
+			if (activityTimer <= 0) {
+				activityTimer+=12f+(36f*extra.randFloat());
+				generateSideQuest();
+			}
+		}
 		return null;
 	}
 	
@@ -531,6 +580,36 @@ public class RogueGuild extends Feature {
 			return false;
 		}
 		
+	}
+	
+	@Override
+	public void init() {
+		try {
+			while (sideQuests.size() < 2) {
+				generateSideQuest();
+			}
+		}catch (Exception e) {
+			canQuest = false;
+		}
+	}
+	
+	private void generateSideQuest() {
+		if (sideQuests.size() >= 2) {
+			sideQuests.remove(extra.randList(sideQuests));
+		}
+		switch (extra.randRange(1,2)) {
+		case 1:
+			sideQuests.add(FetchSideQuest.generate(this,FetchType.CRIME));
+			break;
+		case 3:
+			sideQuests.add(KillSideQuest.generate(this,extra.randFloat() > .1f));//90% chance to be a murder quest
+			break;
+		}
+	}
+
+	@Override
+	public void removeSideQuest(Quest q) {
+		sideQuests.remove(q);
 	}
 
 }

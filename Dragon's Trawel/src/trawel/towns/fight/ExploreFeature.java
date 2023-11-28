@@ -19,6 +19,7 @@ import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Player;
 import trawel.quests.QRMenuItem;
+import trawel.quests.Quest;
 import trawel.quests.QuestR;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -72,7 +73,7 @@ public abstract class ExploreFeature extends Feature {
 						return false;
 					}
 				});
-				for (QuestR qr: qrList) {
+				for (QuestR qr: Player.player.QRFor(ExploreFeature.this)) {
 					list.add(new QRMenuItem(qr));
 				}
 				List<MenuItem> mList = extraMenu();

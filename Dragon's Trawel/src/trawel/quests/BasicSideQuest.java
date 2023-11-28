@@ -154,5 +154,16 @@ public abstract class BasicSideQuest implements Quest{
 		}
 		return qRList.get(stage).locationF.getTown();
 	}
+	
+	/**
+	 * note that this only works for naive basics that use stages
+	 */
+	@Override
+	public List<QuestR> getActiveQRs(){
+		if (stage == -1) {
+			return null;
+		}
+		return Collections.singletonList(qRList.get(stage));
+	}
 }
 

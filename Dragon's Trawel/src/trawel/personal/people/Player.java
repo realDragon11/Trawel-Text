@@ -48,6 +48,7 @@ import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.quests.BasicSideQuest;
 import trawel.quests.Quest;
+import trawel.quests.QuestR;
 import trawel.quests.Quest.TriggerType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -405,6 +406,21 @@ public class Player extends SuperPerson{
 			}
 		}
 		return false;
+	}
+	
+	public List<QuestR> QRFor(Feature feature) {
+		List<QuestR> list = new ArrayList<QuestR>();
+		for (Quest q: sideQuests) {
+			List<QuestR> adds = q.getActiveQRs();
+			if (adds != null) {
+				for (QuestR add: adds) {
+					if (add.locationF == feature) {
+						list.add(add);
+					}
+				}
+			}
+		}
+		return list;
 	}
 	
 	public void addKnowFrag() {

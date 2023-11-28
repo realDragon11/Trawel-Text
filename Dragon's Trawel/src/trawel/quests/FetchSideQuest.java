@@ -18,7 +18,7 @@ public class FetchSideQuest extends BasicSideQuest {
 	public static enum FetchType{
 		MERCHANT(new SRPlainRandom("supplies","goods","trade goods","documents")),
 		CRIME(new SRPlainRandom("'taxes'","spice","letter","sealed letter","key")),
-		HERO(new SRPlainRandom("sword of ultimate fate")),
+		HERO(new SRPlainRandom("monster reports","old war intel","silvered supplies")),
 		COMMUNITY(new SRPlainRandom("totem","heirloom","keepsake","letter","key"));
 		
 		public final StringResult itemList;
@@ -84,6 +84,12 @@ public class FetchSideQuest extends BasicSideQuest {
 				this.complete();
 				return;
 			case HERO:
+				Player.player.getPerson().addXp(1);
+				Player.player.addGold(1);
+				extra.println("Gained "+World.currentMoneyDisplay(1)+".");
+				endFeature.getTown().helpCommunity(1);
+				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,.2f, 0);
+				this.complete();
 				break;
 			case MERCHANT:
 				Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,.1f, 0);

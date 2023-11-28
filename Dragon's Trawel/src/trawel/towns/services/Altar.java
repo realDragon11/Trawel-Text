@@ -58,7 +58,7 @@ public class Altar extends Feature{
 						return false;
 					}
 				});
-				for (QuestR qr: qrList) {
+				for (QuestR qr: Player.player.QRFor(Altar.this)) {
 					mList.add(new QRMenuItem(qr));
 				}
 				mList.add(new MenuSelect() {

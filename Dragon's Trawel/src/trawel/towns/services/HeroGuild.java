@@ -13,22 +13,39 @@ import trawel.extra;
 import trawel.factions.FBox;
 import trawel.factions.FBox.FSub;
 import trawel.factions.Faction;
+import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
+import trawel.quests.CleanseSideQuest;
+import trawel.quests.FetchSideQuest;
+import trawel.quests.KillSideQuest;
+import trawel.quests.QBMenuItem;
+import trawel.quests.QRMenuItem;
+import trawel.quests.Quest;
+import trawel.quests.QuestBoardLocation;
+import trawel.quests.QuestR;
+import trawel.quests.CleanseSideQuest.CleanseType;
+import trawel.quests.FetchSideQuest.FetchType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.Feature.QRType;
+import trawel.towns.fight.Slum;
 
-public class HeroGuild extends Feature {
+public class HeroGuild extends Feature implements QuestBoardLocation{
 	
 	private static final long serialVersionUID = 1L;
-	public static float hSpentOnKno = 0f;
+	
+	private double activityTimer;
+	public List<Quest> sideQuests = new ArrayList<Quest>();
+	
+	private boolean canQuest = true;
 
 	public HeroGuild(String name){
 		this.name = name;
 		tutorialText = "Hero's Guild";
 		area_type = Area.MISC_SERVICE;
+		activityTimer = 24f+extra.randFloat()*24f;
 	}
 	
 	@Override
@@ -120,6 +137,32 @@ public class HeroGuild extends Feature {
 						return false;
 					}
 				});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Assignment Board (Sidequests).";
+					}
+
+					@Override
+					public boolean go() {
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> list = new ArrayList<MenuItem>();
+								
+								for (Quest q: sideQuests) {
+									list.add(new QBMenuItem(q,HeroGuild.this));
+								}
+								for (QuestR qr: Player.player.QRFor(HeroGuild.this)) {
+									list.add(new QRMenuItem(qr));
+								}
+								list.add(new MenuBack());
+								return list;
+							}});
+						return false;
+					}});
 				/*mList.add(new MenuSelect() {
 
 					@Override
@@ -152,8 +195,47 @@ public class HeroGuild extends Feature {
 	
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		// TODO Auto-generated method stub
+		if (canQuest) {
+			activityTimer-=time;
+			if (activityTimer <= 0) {
+				activityTimer+=12f+(36f*extra.randFloat());
+				generateSideQuest();
+			}
+		}
 		return null;//TODO monster bounty quests or something
+	}
+	
+	@Override
+	public void init() {
+		try {
+			while (sideQuests.size() < 2) {
+				generateSideQuest();
+			}
+		}catch (Exception e) {
+			canQuest = false;
+		}
+	}
+	
+	private void generateSideQuest() {
+		if (sideQuests.size() >= 2) {
+			sideQuests.remove(extra.randList(sideQuests));
+		}
+		switch (extra.randRange(1,3)) {
+		case 1:
+			sideQuests.add(FetchSideQuest.generate(this,FetchType.HERO));
+			break;
+		case 2:
+			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.VAMPIRE,CleanseType.BANDIT)));
+			break;
+		case 3:
+			sideQuests.add(KillSideQuest.generate(this,extra.randFloat() > .9f));//10% chance to be a murder quest
+			break;
+		}
+	}
+
+	@Override
+	public void removeSideQuest(Quest q) {
+		sideQuests.remove(q);
 	}
 
 }
