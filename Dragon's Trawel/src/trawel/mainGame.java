@@ -72,13 +72,15 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__9";
-	public static final String VERSION_DATE = " updated Nov 28th 2023";
+	public static final String VERSION_DATE = " updated Nov 29th 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			"b_9: {part 1/?} Expanded Bag items can now be melted down into aether from player menu or if bag is full when looting. 'Really Attack' prompts now give the option to examine the person's inventory.",
-			"b_9: {part 2/?} Plant Spots, Drawbanes, and Alchemy have recieved interconnected improvements, most notably a few new potion combos. Altars have also recieved Forest blessings. Traveling features now have special behavior, and you can rent rooms at inns.",
-			"b_9: {part 3/?} Adjusted Wounds, importantly adding more elemental wounds.",
-			"b_9: {part 4/?} Expanded Greap worldgen map.",
+			"b_9: {part 2/?} Plant Spots, Drawbanes, and Alchemy have recieved interconnected improvements, most notably a few new potion combos. Altars have also recieved Forest blessings. Traveling features now have special behavior, and you can rent rooms at Inns.",
+			"b_9: {part 3/?} Added the Enchanter Town Feature, which can enchant or improve enchatments on Weapons and Armor. It can also allow you to sell Aether for World Currency.",
+			"b_9: {part 4/?} Changed internal Sidquest code to better handle saving, tweaked quest generation behavior, added quests to the Rogue and Hero's guild, added new Quest Reaction(s).",
+			"b_9: {part 5/?} Adjusted Wounds, importantly adding more elemental wounds.",
+			"b_9: {part 6/?} Expanded Greap worldgen map.",
 			
 			"b_8: {part 1/5} Added a wait option to Arenas and prevented giant time chunks by accident, made Arenas fight without the player and have the winners move on after enough training. Players always get a new fighter in their first round (so entirely for 1 round titles), but more rounds are done entirely naturally now, potentially drawing from survivors.",
 			"b_8: {part 2/5} Updated Lot menu, standardized collecting earned money from built Features. Features can now have intro/outro text, which can be turned off as a display option. Node Features now have autosave enabled while exploring them, and saves once again use a different date format.",
