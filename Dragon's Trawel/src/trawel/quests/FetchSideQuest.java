@@ -16,14 +16,16 @@ public class FetchSideQuest extends BasicSideQuest {
 	public FetchType subtype;
 
 	public static enum FetchType{
-		MERCHANT(new SRPlainRandom("supplies","goods","trade goods","documents")),
-		CRIME(new SRPlainRandom("'taxes'","spice","letter","sealed letter","key")),
-		HERO(new SRPlainRandom("monster reports","old war intel","silvered supplies")),
-		COMMUNITY(new SRPlainRandom("totem","heirloom","keepsake","letter","key"));
+		MERCHANT(new SRPlainRandom("supplies","goods","trade goods","documents"),new QKey[] {}),
+		CRIME(new SRPlainRandom("'taxes'","spice","letter","sealed letter","key"),new QKey[] {QKey.EVIL}),
+		HERO(new SRPlainRandom("monster reports","old war intel","silvered supplies"),new QKey[] {QKey.GOOD}),
+		COMMUNITY(new SRPlainRandom("totem","heirloom","keepsake","letter","key"),new QKey[] {});
 		
 		public final StringResult itemList;
-		FetchType(StringResult _itemList){
+		public final QKey[] qAdds;
+		FetchType(StringResult _itemList, QKey[] _qAdds){
 			itemList = _itemList;
+			qAdds = _qAdds;
 		}
 	}
 	
@@ -34,6 +36,9 @@ public class FetchSideQuest extends BasicSideQuest {
 		q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
 		q.targetName = subtype.itemList.next();
 		q.qKeywords.add(QKey.FETCH);
+		for (QKey add: subtype.qAdds) {
+			q.qKeywords.add(add);
+		}
 		q.subtype = subtype;
 		
 		Feature targetFeature = extra.randList(t.getQuestLocationsInRange(5));

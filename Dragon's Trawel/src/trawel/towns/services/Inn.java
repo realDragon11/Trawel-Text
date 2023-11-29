@@ -121,6 +121,19 @@ public class Inn extends Feature implements QuestBoardLocation{
 		}
 		switch (extra.randRange(1,3)) {
 		case 1:
+			if (extra.randFloat() > .85f) {//15% for crime
+				sideQuests.add(FetchSideQuest.generate(this,FetchType.CRIME));
+				break;
+			}
+			if (extra.randFloat() > .95f) {//5% for heroism
+				sideQuests.add(FetchSideQuest.generate(this,FetchType.HERO));
+				break;
+			}
+			if (extra.randFloat() > .65f) {//35% for merchant
+				sideQuests.add(FetchSideQuest.generate(this,FetchType.MERCHANT));
+				break;
+			}
+			//otherwise, community quest
 			sideQuests.add(FetchSideQuest.generate(this,FetchType.COMMUNITY));
 			break;
 		case 2:

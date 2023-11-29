@@ -600,9 +600,13 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 		}
 		switch (extra.randRange(1,2)) {
 		case 1:
+			if (extra.randFloat() > .8f) {//20% chance for a merchant quest instead
+				sideQuests.add(FetchSideQuest.generate(this,FetchType.MERCHANT));
+				break;
+			}
 			sideQuests.add(FetchSideQuest.generate(this,FetchType.CRIME));
 			break;
-		case 3:
+		case 2:
 			sideQuests.add(KillSideQuest.generate(this,extra.randFloat() > .1f));//90% chance to be a murder quest
 			break;
 		}

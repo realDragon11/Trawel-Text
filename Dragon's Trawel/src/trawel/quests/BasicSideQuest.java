@@ -86,6 +86,7 @@ public abstract class BasicSideQuest implements Quest{
 	}
 	
 	protected void resolveDest(Feature locationF) {
+		qKeywords.add(QKey.NORMAL_DEST);
 		for (QKey qk: locationF.getQRType().dests) {
 			qKeywords.add(qk);
 		}

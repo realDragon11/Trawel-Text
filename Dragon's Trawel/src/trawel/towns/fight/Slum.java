@@ -124,9 +124,17 @@ public class Slum extends Store implements QuestBoardLocation{
 		}
 		switch (extra.randRange(1,5)) {
 		case 1:
+			if (extra.randFloat() > .90f) {//10% for merchant
+				sideQuests.add(FetchSideQuest.generate(this,FetchType.MERCHANT));
+				break;
+			}
 			sideQuests.add(FetchSideQuest.generate(this,FetchType.CRIME));
 			break;
 		case 2:
+			if (extra.randFloat() > .95f) {//5% for heroism
+				sideQuests.add(FetchSideQuest.generate(this,FetchType.HERO));
+				break;
+			}
 			sideQuests.add(FetchSideQuest.generate(this,FetchType.COMMUNITY));
 			break;
 		case 3:
