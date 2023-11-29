@@ -74,8 +74,7 @@ public class CleanseSideQuest extends BasicSideQuest {
 		Feature endFeature = qRList.get(0).locationF;
 		switch (QRID) {
 		case 0:
-			int reward = Math.min(Player.player.getPerson().getLevel(),endFeature.getLevel());//TODO: fix money value uneffective
-			Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,2,0);
+			int reward = Math.max(1,Math.round(3*Math.min(Player.player.getPerson().getUnEffectiveLevel(),endFeature.getUnEffectiveLevel())));
 			Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
 			Player.player.getPerson().addXp(reward);
 			Player.player.addGold(reward);

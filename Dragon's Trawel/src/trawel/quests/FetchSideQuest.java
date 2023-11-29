@@ -16,8 +16,8 @@ public class FetchSideQuest extends BasicSideQuest {
 	public FetchType subtype;
 
 	public static enum FetchType{
-		MERCHANT(new SRPlainRandom("supplies","goods","trade goods","documents"),new QKey[] {}),
-		CRIME(new SRPlainRandom("'taxes'","spice","letter","sealed letter","key"),new QKey[] {QKey.EVIL}),
+		MERCHANT(new SRPlainRandom("supplies","goods","trade goods","luxury goods","documents","shipment","spice"),new QKey[] {}),
+		CRIME(new SRPlainRandom("'taxes'","'spice'","letter","sealed letter","key"),new QKey[] {QKey.EVIL}),
 		HERO(new SRPlainRandom("monster reports","old war intel","silvered supplies"),new QKey[] {QKey.GOOD}),
 		COMMUNITY(new SRPlainRandom("totem","heirloom","keepsake","letter","key"),new QKey[] {});
 		
@@ -71,14 +71,15 @@ public class FetchSideQuest extends BasicSideQuest {
 			switch (subtype) {
 			case COMMUNITY:
 				Player.player.getPerson().addXp(1);
-				Player.player.addGold(1);
-				extra.println("Gained "+World.currentMoneyDisplay(1)+".");
-				endFeature.getTown().helpCommunity(1);
+				reward =  Math.max(1,(int)endFeature.getUnEffectiveLevel()/5);
+				Player.player.addGold(reward);
+				extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+				endFeature.getTown().helpCommunity(2);
 				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,.1f, 0);
 				this.complete();
 				return;
 			case CRIME:
-				reward = Math.min(1,endFeature.getLevel());
+				reward = Math.max(1,(int)endFeature.getUnEffectiveLevel());
 				Player.player.addGold(reward);
 				extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
 				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,0, .05f);
@@ -87,8 +88,9 @@ public class FetchSideQuest extends BasicSideQuest {
 				return;
 			case HERO:
 				Player.player.getPerson().addXp(1);
-				Player.player.addGold(1);
-				extra.println("Gained "+World.currentMoneyDisplay(1)+".");
+				reward =  Math.max(1,(int)endFeature.getUnEffectiveLevel()/3);
+				Player.player.addGold(reward);
+				extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
 				endFeature.getTown().helpCommunity(1);
 				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,.2f, 0);
 				this.complete();
@@ -97,7 +99,7 @@ public class FetchSideQuest extends BasicSideQuest {
 				Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,.1f, 0);
 				Player.player.addMPoints(.2f);
 				Player.player.getPerson().addXp(1);
-				reward = Math.min(1,endFeature.getLevel()/3);
+				reward =  Math.max(1,(int)endFeature.getUnEffectiveLevel());
 				Player.player.addGold(reward);
 				extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
 				endFeature.getTown().helpCommunity(1);

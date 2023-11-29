@@ -81,9 +81,9 @@ public class KillSideQuest extends BasicSideQuest {
 		case 1:
 			int reward;
 			if (isMurder) {
-				reward = Math.round(target.getLevel()/2);
+				reward = Math.round(target.getUnEffectiveLevel()*4);
 			}else {
-				reward = Math.round(target.getLevel()/3);
+				reward = Math.round(target.getUnEffectiveLevel()*2);
 				endFeature.getTown().helpCommunity(2);
 			}
 			if (endFeature instanceof MerchantGuild) {
