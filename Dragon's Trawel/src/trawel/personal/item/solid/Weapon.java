@@ -171,6 +171,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 
 	//instance methods
 	
+	@Override
 	public float getEnchantMult() {
 		return MaterialFactory.getMat(material).baseEnchant;
 	}
@@ -251,6 +252,11 @@ public class Weapon extends Item implements IEffectiveLevel {
 		return sum;
 	}
 	
+	@Override
+	public int getQualityTier() {
+		return qualTraitSum();
+	}
+	
 	
 	/**
 	 * Get the weight of the item
@@ -290,6 +296,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 	 * @param level (int)
 	 * @return changed enchantment? (boolean)
 	 */
+	@Override
 	public boolean improveEnchantChance(int level) {
 		if (getEnchantMult() == 0) {
 			return false;

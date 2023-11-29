@@ -19,25 +19,24 @@ import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.World;
 
-public class Blacksmith extends Feature {
+public class Enchanter extends Feature {
 	
 	private static final long serialVersionUID = 1L;
-	private double time = 10.;
 	private Store store;
 	
-	public Blacksmith(String name,int tier, Store s){
+	public Enchanter(String name,int tier, Store s){
 		this.name = name;
 		this.tier = tier;
 		this.store = s;
-		tutorialText = "Blacksmith";
+		tutorialText = "Enchanter";
 		area_type = Area.MISC_SERVICE;
 	}
 	
-	public Blacksmith(int tier, Store s){
+	public Enchanter(int tier, Store s){
 		this.tier = tier;
 		this.store = s;
-		name = store.getName() +" " + extra.choose("Smith","Blacksmith","Smithy","Forge");
-		tutorialText = "Blacksmith";
+		name = store.getName() +" " + extra.choose("Enchanter");
+		tutorialText = "Enchanter";
 		area_type = Area.MISC_SERVICE;
 	}
 	
@@ -59,34 +58,13 @@ public class Blacksmith extends Feature {
 					public String title() {
 						return "You have " + World.currentMoneyDisplay(Player.player.getGold()) + " and "+Player.bag.getAether()+ " aether.";
 					}});
-				int forgePrice = (int) Math.ceil(getUnEffectiveLevel());
+				double enchantMult = 1.5f*getUnEffectiveLevel();
+				int maxLevel = tier+1;
 				list.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "Forge +"+tier+" item for "+store.getName()+" (" + World.currentMoneyDisplay(forgePrice)+")";
-					}
-
-					@Override
-					public boolean go() {
-						if (Player.player.getGold() >= forgePrice) {
-							Player.player.loseGold(forgePrice);
-							Item i = store.addAnItem();
-							if (i == null) {
-								extra.println("An item has been forged and sent to " + store.getName() + "!");
-							}else {
-								extra.println(i.getName() + " was created and put on sale in " + store.getName()+"!");
-							}
-						}else {
-							extra.println("You can't afford that!");
-						}
-						return false;
-					}});
-				list.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "Improve any equipment up to +" + tier +" level.";
+						return "Enchant equipment up to +" + maxLevel +" level.";
 					}
 
 					@Override
@@ -101,31 +79,54 @@ public class Blacksmith extends Feature {
 						}else {
 							item = Player.bag.getHand();
 						}
-						if (item.getLevel() >= tier) {
-							extra.println("This item is too high in level to improve here!");
+						float enchantMult = item.getEnchantMult();
+						if (enchantMult == 0) {
+							extra.println("This item is not enchantable.");
 							return false;
 						}
-						int mcost = item.getMoneyValue();
-						int acost = (int) ((mcost * 100f)*(IEffectiveLevel.unclean(item.getLevel()+1)));
+						if (item.getLevel() >= maxLevel) {
+							extra.println("This item is too high in level to enchant here!");
+							return false;
+						}
+						//quality tier is typically 0 to 12
+						int quality = extra.clamp(item.getQualityTier(),3,7);
+						int mcost = Math.round(quality*(IEffectiveLevel.unclean(item.getLevel()+1)));
+						int acost = (int) ((quality * 100f)*(IEffectiveLevel.unclean(item.getLevel()+1)));
 						String costString = World.currentMoneyDisplay(mcost) + " and " +acost + " aether";
+						
+						//>=.5 enchant mult = 100% chance
+						int successRate = Math.min(100,(int)(enchantMult*200));
+						
 						if (Player.player.getGold() < mcost) {
 							if (Player.bag.getAether() < acost) {
-								extra.println("You can't afford to improve '"+item.getName()+"'. ("+costString+")");
+								extra.println("You can't afford to enchant '"+item.getName()+"'. ("+costString+")");
 							}else {
-								extra.println("You can't afford to pay the blacksmith to improve '"+item.getName()+"'. ("+costString+")");
+								extra.println("You can't afford to pay the enchanter to enchant '"+item.getName()+"'. ("+costString+")");
 							}
 							return false;
 						}
 						if (Player.bag.getAether() < acost) {
-							extra.println("You don't have enough aether to improve '"+item.getName()+"'. ("+costString+")");
+							extra.println("You don't have enough aether to enchant '"+item.getName()+"'. ("+costString+")");
 							return false;
 						}
-						extra.println("Improve your item to +" + (item.getLevel()+1) + " for "+costString+"?");
+						extra.println("Enchant your item with a "+successRate+"% success chance for "+costString+"? ("+World.currentMoneyString()+" will only be taken on success.)");
+						if (item.getEnchant() != null) {
+							extra.println(item.getName() +" is already enchanted, and the enchanter will still take their payment if a worse enchantment is rejected.");
+						}
 						if (extra.yesNo()) {
-							extra.println("Item improved.");
+							if (successRate < 100 && extra.chanceIn(successRate,100)) {
+								extra.println("The enchantment failed and your "+World.currentMoneyString()+" was returned. You lost "+acost+" aether.");
+								Player.bag.addAether(-acost);
+								return false;
+							}
+							boolean didChange = item.improveEnchantChance(item.getLevel());
+							if (didChange) {
+								extra.println("Item enchanted: " + item.getName());
+							}else {
+								extra.println("Item unchanged: " + item.getName());
+							}
 							Player.player.loseGold(mcost);
 							Player.bag.addAether(-acost);
-							item.levelUp();
 						}
 						return false;
 					}});
@@ -136,11 +137,6 @@ public class Blacksmith extends Feature {
 
 	@Override
 	public List<TimeEvent> passTime(double addtime, TimeContext calling) {
-		time -= addtime;
-		if (time <= 0) {
-			store.addAnItem();//TODO: should probably add in event?
-			time = 12+(extra.randFloat()*30);
-		}
 		return null;
 	}
 	

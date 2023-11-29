@@ -150,4 +150,22 @@ public abstract class Item implements java.io.Serializable{
 		}
 		return false;
 	}
+	
+	public float getEnchantMult() {
+		return 0;
+	}
+	
+	public int getQualityTier() {
+		return 5;
+	}
+	
+	/**
+	 * Swap out the current enchantment for a new one, if a better one is generated.
+	 * Returns if a better one was generated or not.
+	 * @param level (int)
+	 * @return changed enchantment? (boolean)
+	 */
+	public boolean improveEnchantChance(int level) {
+		return false;
+	}
 }

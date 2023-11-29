@@ -337,6 +337,11 @@ public class Armor extends Item implements IEffectiveLevel{
 		return sum;
 	}
 	
+	@Override
+	public int getQualityTier() {
+		return qualTraitSum();
+	}
+	
 
 	/**
 	 * gets the 'normal' armor level OOB
@@ -512,6 +517,7 @@ public class Armor extends Item implements IEffectiveLevel{
 		return (int) (mult);
 	}
 	
+	@Override
 	public float getEnchantMult() {
 		return ArmorStyle.fetch(style).enchantMult*MaterialFactory.getMat(material).baseEnchant;
 	}
@@ -530,6 +536,7 @@ public class Armor extends Item implements IEffectiveLevel{
 	 * @param level (int)
 	 * @return changed enchantment? (boolean)
 	 */
+	@Override
 	public boolean improveEnchantChance(int level) {
 		if (getEnchantMult() == 0) {
 			return false;
