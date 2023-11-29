@@ -91,7 +91,7 @@ public class Blacksmith extends Feature {
 
 					@Override
 					public boolean go() {
-						int in = askSlot();
+						int in = Player.player.askSlot();
 						if (in == 9) {
 							return false;
 						}
@@ -142,17 +142,6 @@ public class Blacksmith extends Feature {
 			time = 12+(extra.randFloat()*30);
 		}
 		return null;
-	}
-	
-	private static int askSlot() {
-		extra.println("1 head");
-		extra.println("2 arms");
-		extra.println("3 chest");
-		extra.println("4 legs");
-		extra.println("5 feet");
-		extra.println("6 weapon");
-		extra.println("9 cancel");
-		return extra.inInt(6,true,true);
 	}
 
 }

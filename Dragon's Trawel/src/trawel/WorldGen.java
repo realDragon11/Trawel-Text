@@ -61,6 +61,7 @@ import trawel.towns.services.Altar.AltarForce;
 import trawel.towns.services.Appraiser;
 import trawel.towns.services.Blacksmith;
 import trawel.towns.services.Doctor;
+import trawel.towns.services.Enchanter;
 import trawel.towns.services.HeroGuild;
 import trawel.towns.services.Inn;
 import trawel.towns.services.Library;
@@ -324,6 +325,7 @@ public class WorldGen {
 				.setOutro("'If you are unsatisfied, come back and try out a new you!'")
 				);
 		arona.addFeature(new Store(3,11));
+		arona.addFeature(new Enchanter("Aetheral Advantage",8));
 		arona.tTags.add(TownTag.ARCANE);
 
 		arona.setFirstPrinter(new PrintEvent(){
@@ -373,6 +375,7 @@ public class WorldGen {
 		erin.addFeature(new Inn("Scholar's Respite",5,erin,null));
 		erin.addFeature(new Library("Alex's Library",erin));
 		erin.addFeature(new Appraiser("Material Patent Offices").setIntro("'We only handle physical patents, if you have new spells or magicks, head to Alex's.'"));
+		erin.addFeature(new Enchanter("Enchantment Prototyping",6));
 		erin.tTags.add(TownTag.ARCANE);
 		erin.setFirstPrinter(new PrintEvent(){
 			@Override
@@ -648,6 +651,7 @@ public class WorldGen {
 		reahe.addFeature(new Blacksmith("Forgeheart's Smithy",14,reaheStore));
 		reahe.addFeature(new Store("Souvenir Stall",12,11));
 		reahe.addFeature(new Store("'Shoes 4 Yous' Stall",15,4));
+		reahe.addFeature(new Enchanter("'Custom Enchantments!'",14));
 		reahe.addTravel();
 		reahe.addTravel();
 		reahe.tTags.add(TownTag.MERCHANT);

@@ -61,7 +61,9 @@ public class Store extends Feature{
 		aetherRate = Player.NORMAL_AETHER_RATE;
 		if (extra.chanceIn(3,4)) {
 			//3 out of 4 chance to move at least somewhat towards a % deviated rate
-			aetherRate= extra.lerp(aetherRate,aetherRate*extra.choose(.8f,.7f,.4f,1.1f,1.2f),extra.randFloat());
+			aetherRate = extra.lerp(aetherRate,aetherRate*extra.choose(.8f,.7f,.4f,1.1f,1.2f),extra.randFloat());
+			//can't be better than pure rate
+			aetherRate = Math.min(aetherRate,Player.PURE_AETHER_RATE);
 		}
 		invSize = extra.randRange(4,6);
 		if (invSize < 5) {

@@ -1760,4 +1760,15 @@ public class Player extends SuperPerson{
 		return false;
 	}
 	
+	public int askSlot() {
+		extra.println("1 Head ("+Player.bag.getArmorSlot(0).getName()+")");
+		extra.println("2 Arms ("+Player.bag.getArmorSlot(1).getName()+")");
+		extra.println("3 Chest ("+Player.bag.getArmorSlot(2).getName()+")");
+		extra.println("4 Legs ("+Player.bag.getArmorSlot(3).getName()+")");
+		extra.println("5 Feet ("+Player.bag.getArmorSlot(4).getName()+")");
+		extra.println("6 Weapon ("+Player.bag.getHand().getName()+")");
+		extra.println("9 Cancel.");
+		return extra.inInt(6,true,true);
+	}
+	
 }

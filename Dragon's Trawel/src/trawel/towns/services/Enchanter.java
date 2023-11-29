@@ -22,22 +22,23 @@ import trawel.towns.World;
 public class Enchanter extends Feature {
 	
 	private static final long serialVersionUID = 1L;
-	private Store store;
+	/**
+	 * 0f = store normal rate
+	 * 1f = perfect pure rate
+	 */
+	private float aetherLerp;
+	/**
+	 * how much world currency per transaction
+	 */
+	private int sellAmount;
 	
-	public Enchanter(String name,int tier, Store s){
+	public Enchanter(String name,int tier){
 		this.name = name;
 		this.tier = tier;
-		this.store = s;
 		tutorialText = "Enchanter";
 		area_type = Area.MISC_SERVICE;
-	}
-	
-	public Enchanter(int tier, Store s){
-		this.tier = tier;
-		this.store = s;
-		name = store.getName() +" " + extra.choose("Enchanter");
-		tutorialText = "Enchanter";
-		area_type = Area.MISC_SERVICE;
+		aetherLerp = extra.randFloat()/3f;
+		sellAmount = extra.randRange(3, 6);
 	}
 	
 	@Override
@@ -58,7 +59,6 @@ public class Enchanter extends Feature {
 					public String title() {
 						return "You have " + World.currentMoneyDisplay(Player.player.getGold()) + " and "+Player.bag.getAether()+ " aether.";
 					}});
-				double enchantMult = 1.5f*getUnEffectiveLevel();
 				int maxLevel = tier+1;
 				list.add(new MenuSelect() {
 
@@ -69,7 +69,7 @@ public class Enchanter extends Feature {
 
 					@Override
 					public boolean go() {
-						int in = askSlot();
+						int in = Player.player.askSlot();
 						if (in == 9) {
 							return false;
 						}
@@ -109,7 +109,7 @@ public class Enchanter extends Feature {
 							extra.println("You don't have enough aether to enchant '"+item.getName()+"'. ("+costString+")");
 							return false;
 						}
-						extra.println("Enchant your item with a "+successRate+"% success chance for "+costString+"? ("+World.currentMoneyString()+" will only be taken on success.)");
+						extra.println("Enchant "+item.getName()+" with a "+successRate+"% success chance for "+costString+"? ("+World.currentMoneyString()+" will only be taken on success.)");
 						if (item.getEnchant() != null) {
 							extra.println(item.getName() +" is already enchanted, and the enchanter will still take their payment if a worse enchantment is rejected.");
 						}
@@ -122,11 +122,36 @@ public class Enchanter extends Feature {
 							boolean didChange = item.improveEnchantChance(item.getLevel());
 							if (didChange) {
 								extra.println("Item enchanted: " + item.getName());
+								item.display(2);
 							}else {
 								extra.println("Item unchanged: " + item.getName());
+								extra.println("The new enchantment was considered worse than the old one, so it was not completed.");
 							}
 							Player.player.loseGold(mcost);
 							Player.bag.addAether(-acost);
+						}
+						return false;
+					}});
+				float aetherRate = 1f/extra.lerp(Player.NORMAL_AETHER_RATE,Player.PURE_AETHER_RATE,aetherLerp);
+				//how much aether per 5 world currency
+				int perAether = Math.round(aetherRate*sellAmount);
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Sell Aether ("+perAether+" for "+World.currentMoneyDisplay(sellAmount)+")";
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.bag.getAether() < perAether) {
+							extra.println("You do not have enough aether to trade in. ("+Player.bag.getAether()+" of "+perAether+")");
+						}
+						extra.println("Sell "+ perAether+" of your "+ Player.bag.getAether()+" for " +World.currentMoneyDisplay(sellAmount)+"?");
+						if (extra.yesNo()) {
+							Player.bag.addAether(-perAether);
+							Player.bag.addGold(sellAmount);
+							extra.println("Gained " + World.currentMoneyDisplay(sellAmount)+".");
 						}
 						return false;
 					}});
@@ -138,17 +163,6 @@ public class Enchanter extends Feature {
 	@Override
 	public List<TimeEvent> passTime(double addtime, TimeContext calling) {
 		return null;
-	}
-	
-	private static int askSlot() {
-		extra.println("1 head");
-		extra.println("2 arms");
-		extra.println("3 chest");
-		extra.println("4 legs");
-		extra.println("5 feet");
-		extra.println("6 weapon");
-		extra.println("9 cancel");
-		return extra.inInt(6,true,true);
 	}
 
 }
