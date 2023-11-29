@@ -126,6 +126,7 @@ public class Blacksmith extends Feature {
 							Player.player.loseGold(mcost);
 							Player.bag.addAether(-acost);
 							item.levelUp();
+							item.display(1);
 						}
 						return false;
 					}});

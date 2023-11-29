@@ -122,7 +122,7 @@ public class Enchanter extends Feature {
 							boolean didChange = item.improveEnchantChance(item.getLevel());
 							if (didChange) {
 								extra.println("Item enchanted: " + item.getName());
-								item.display(2);
+								item.display(1);
 							}else {
 								extra.println("Item unchanged: " + item.getName());
 								extra.println("The new enchantment was considered worse than the old one, so it was not completed.");
