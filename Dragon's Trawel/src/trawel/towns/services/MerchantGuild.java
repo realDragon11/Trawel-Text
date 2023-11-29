@@ -281,7 +281,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 			sideQuests.add(FetchSideQuest.generate(this,FetchType.MERCHANT));
 			break;
 		case 2:
-			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.HARPY,CleanseType.BANDIT)));
+			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.HARPY,CleanseType.BANDIT,CleanseType.UNICORN)));
 			break;
 		case 3:
 			sideQuests.add(KillSideQuest.generate(this,extra.randFloat() > .7f));//30% chance to be a murder quest

@@ -15,17 +15,20 @@ public class CleanseSideQuest extends BasicSideQuest {
 	public boolean completed = false;
 
 	public static enum CleanseType{
-		BEAR("bears","bear",3),
-		VAMPIRE("vampires","vampire",2),
-		WOLF("wolves","wolf",6),
-		HARPY("harpies","harpy",4),
-		BANDIT("bandits","bandit",3);
+		BEAR("bears","bear",3,new QKey[] {QKey.LAWFUL}),
+		VAMPIRE("vampires","vampire",2,new QKey[] {QKey.GOOD}),
+		WOLF("wolves","wolf",6,new QKey[] {QKey.LAWFUL}),
+		HARPY("harpies","harpy",4,new QKey[] {}),
+		BANDIT("bandits","bandit",3,new QKey[] {QKey.LAWFUL,QKey.GOOD}),
+		UNICORN("unicorns","unicorn",1,new QKey[] {QKey.EVIL});
 		public final String fluff, trigger;
 		public final int count;
-		CleanseType(String _fluff, String _trigger, int _count){
+		public final QKey[] qAdds;
+		CleanseType(String _fluff, String _trigger, int _count, QKey[] _qAdds){
 			fluff = _fluff;
 			trigger = _trigger;
 			count = _count;
+			qAdds = _qAdds;
 		}
 	}
 	
@@ -38,7 +41,9 @@ public class CleanseSideQuest extends BasicSideQuest {
 		
 		q.resolveGive(generator);
 		q.qKeywords.add(QKey.CLEANSE);
-		q.qKeywords.add(QKey.LAWFUL);
+		for (QKey add: subtype.qAdds) {
+			q.qKeywords.add(add);
+		}
 		q.count = subtype.count;
 		
 		q.name = "Kill " + q.targetName + " for " + q.giverName ;
