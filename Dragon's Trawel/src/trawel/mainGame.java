@@ -76,9 +76,9 @@ public class mainGame {
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			"b_9: {part 1/?} Expanded Bag items can now be melted down into aether from player menu or if bag is full when looting. 'Really Attack' prompts now give the option to examine the person's inventory.",
-			"b_9: {part 2/?} Plant Spots, Drawbanes, and Alchemy have recieved interconnected improvements, most notably a few new potion combos. Altars have also recieved Forest blessings. Traveling features now have special behavior, and you can rent rooms at Inns.",
-			"b_9: {part 3/?} Added the Enchanter Town Feature, which can enchant or improve enchatments on Weapons and Armor. It can also allow you to sell Aether for World Currency.",
-			"b_9: {part 4/?} Changed internal Sidquest code to better handle saving, tweaked quest generation behavior, added quests to the Rogue and Hero's guild, added new Quest Reaction(s).",
+			"b_9: {part 2/?} Plant Spots, Drawbanes, and Alchemy have recieved interconnected improvements, most notably a few new potion combos. Altars have also received Forest blessings. Traveling features now have special behavior, and you can rent rooms at Inns.",
+			"b_9: {part 3/?} Added the Enchanter Town Feature, which can enchant or improve enchantments on Weapons and Armor. It can also allow you to sell Aether for World Currency.",
+			"b_9: {part 4/?} Changed internal Sidequest code to better handle saving, tweaked quest generation behavior, added quests to the Rogue and Hero's guild, added new Quest Reaction(s).",
 			"b_9: {part 5/?} Adjusted Wounds, importantly adding more elemental wounds.",
 			"b_9: {part 6/?} Expanded Greap worldgen map.",
 			
