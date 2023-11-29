@@ -24,13 +24,13 @@ import trawel.towns.World;
 public class QuestReactionFactory {
 
 	public enum QKey{//while saves don't update, can rearrange, otherwise no
-		FETCH, KILL, CLEANSE, 
+		FETCH, KILL, CLEANSE, COLLECT,
 		GOOD, EVIL,
 		LAWFUL, CHAOTIC,
 		NORMAL_DEST,
 		DEST_MOUNTAIN,DEST_WOODS,DEST_INN,DEST_SLUM, DEST_WHUT,DEST_GUILD,
 		GIVE_INN,GIVE_MGUILD,GIVE_SLUM, GIVE_FORT, GIVE_WHUT, GIVE_RGUILD, GIVE_HGUILD,
-		COLLECT, FIRE_ALIGN, KNOW_ALIGN//aligns used for collecting
+		FIRE_ALIGN, KNOW_ALIGN//aligns used for collecting
 	}
 	
 	public static List<QuestReaction> reactions = new ArrayList<QuestReaction>();
@@ -45,7 +45,7 @@ public class QuestReactionFactory {
 				
 			}}) );
 		*/
-		reactions.add(new QuestReaction(new QKey[] {QKey.NORMAL_DEST},new QKey[] {}, new QuestTriggerEvent() {
+		reactions.add(new QuestReaction(new QKey[] {QKey.NORMAL_DEST},new QKey[] {QKey.EVIL},new QKey[][] {}, new QuestTriggerEvent() {
 
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
@@ -61,7 +61,7 @@ public class QuestReactionFactory {
 
 							@Override
 							public String title() {
-								return "ask for directions";
+								return "Ask for directions.";
 							}
 
 							@Override
@@ -79,7 +79,7 @@ public class QuestReactionFactory {
 
 							@Override
 							public String title() {
-								return extra.PRE_BATTLE + "Attack them.";
+								return extra.PRE_BATTLE + "Attack them!";
 							}
 
 							@Override
@@ -94,13 +94,13 @@ public class QuestReactionFactory {
 								
 								return true;
 							}});
-						mList.add(new MenuBack("leave"));
+						mList.add(new MenuBack("Leave."));
 						return mList;
 					}});
 					Networking.clearSide(1);
 			}}) );
 		
-		reactions.add(new QuestReaction(new QKey[] {QKey.KILL},new QKey[] {}, new QuestTriggerEvent() {
+		reactions.add(new QuestReaction(new QKey[] {QKey.KILL},new QKey[] {},new QKey[][] {}, new QuestTriggerEvent() {
 
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
@@ -115,7 +115,7 @@ public class QuestReactionFactory {
 					bumperLocation.addOccupant(p.getMakeAgent(AgentGoal.NONE));
 				}
 			}}) );
-		reactions.add(new QuestReaction(new QKey[] {QKey.KILL,QKey.EVIL},new QKey[] {}, new QuestTriggerEvent() {
+		reactions.add(new QuestReaction(new QKey[] {QKey.KILL,QKey.EVIL},new QKey[] {},new QKey[][] {}, new QuestTriggerEvent() {
 
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
@@ -131,7 +131,9 @@ public class QuestReactionFactory {
 				}
 			}}) );
 		
-		reactions.add(new QuestReaction(new QKey[] {QKey.EVIL},new QKey[] {QKey.GIVE_INN,QKey.GIVE_RGUILD,QKey.GIVE_SLUM}, new QuestTriggerEvent() {
+		reactions.add(new QuestReaction(new QKey[] {QKey.EVIL},new QKey[] {QKey.LAWFUL},
+				new QKey[][] {new QKey[] {QKey.GIVE_INN,QKey.GIVE_RGUILD,QKey.GIVE_SLUM}
+						}, new QuestTriggerEvent() {
 
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
@@ -222,14 +224,19 @@ public class QuestReactionFactory {
 	}
 	
 	public class QuestReaction{
-		public List<QKey> mandates;
-		public List<QKey> needsOne;
+		public final List<QKey> mandates;
+		public final List<QKey> forbids;
+		public final List<List<QKey>> needsOne;
 		
 		public QuestTriggerEvent qte;
 		
-		public QuestReaction(QKey[] man,QKey[] ned,QuestTriggerEvent qet) {
-			mandates = Arrays.asList(man);
-			needsOne = Arrays.asList(ned);
+		public QuestReaction(QKey[] mandated,QKey[] forbidden,QKey[][] needOnes,QuestTriggerEvent qet) {
+			mandates = Arrays.asList(mandated);
+			forbids = Arrays.asList(forbidden);
+			needsOne = new ArrayList<List<QKey>>();
+			for (QKey[] arr: needOnes) {
+				needsOne.add(Arrays.asList(arr));
+			}
 			qte = qet;
 		}
 	}
@@ -253,14 +260,23 @@ public class QuestReactionFactory {
 			Player.player.roadGracePeriod = 0;//so it doesn't dip into far negatives
 			return false;
 		}
-		for (QuestReaction qr: reactions) {
-			if (qr.mandates.size() > 0) {
-				if (!side.qKeywords.containsAll(qr.mandates)) {
-					continue;
+		conditional: for (QuestReaction qr: reactions) {
+			for (QKey forbid: qr.forbids) {
+				if (side.qKeywords.contains(forbid)) {
+					continue conditional;
 				}
 			}
-			if (qr.needsOne.size() > 0 && Collections.disjoint(qr.needsOne,side.qKeywords)) {
-				continue;
+			if (qr.mandates.size() > 0) {
+				if (!side.qKeywords.containsAll(qr.mandates)) {
+					continue conditional;
+				}
+			}
+			if (qr.needsOne.size() > 0) {
+				for (int i = qr.needsOne.size()-1;i>=0;i--) {
+					if (Collections.disjoint(qr.needsOne.get(i),side.qKeywords)){
+						continue conditional;
+					}
+				}
 			}
 			side.reactionsLeft--;
 			qr.qte.trigger(side, t);
