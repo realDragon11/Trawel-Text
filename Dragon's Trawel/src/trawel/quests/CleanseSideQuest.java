@@ -49,6 +49,8 @@ public class CleanseSideQuest extends BasicSideQuest {
 		q.name = "Kill " + q.targetName + " for " + q.giverName ;
 		q.desc = "Kill " + q.count + " more " + q.targetName + " on the roads for " + q.giverName;
 		
+		q.qRList.add(new QuestR(0,q.giverName,q,generator));
+		
 		return q;
 	}
 	

@@ -94,6 +94,8 @@ public class CollectSideQuest extends BasicSideQuest {
 			q.name = "Gather " + q.targetName + " (Personal)";
 		}
 		
+		q.qRList.add(new QuestR(0,q.giverName,q,generator));
+		
 		return q;
 	}
 	
