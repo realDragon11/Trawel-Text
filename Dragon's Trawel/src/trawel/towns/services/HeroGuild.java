@@ -71,14 +71,14 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 					@Override
 					public String title() {
 						FSub sub = Player.player.getPerson().facRep.getFacRep(Faction.HEROIC);
-						return "current reputation: " + (sub == null ? "Unknown" : ""+extra.format2(sub.forFac-sub.againstFac));
+						return "Current Heroic Reputation: " + (sub == null ? "Unknown" : ""+extra.format2(sub.forFac-sub.againstFac));
 					}
 				});
 				mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "share stories";
+						return "Share stories. (Feat Fragments)";
 					}
 
 					@Override
@@ -114,7 +114,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "request rubies";
+						return "Request Rubies";
 					}
 
 					@Override
@@ -189,7 +189,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 						return false;
 					}
 				});*/
-				mList.add(new MenuBack("leave"));
+				mList.add(new MenuBack("Leave."));
 				return mList;
 			}});
 	}

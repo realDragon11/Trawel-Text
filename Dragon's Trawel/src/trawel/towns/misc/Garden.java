@@ -222,7 +222,7 @@ public class Garden extends Feature {
 				for (PlantSpot ps: plants) {
 					list.add(ps.getMenuForGarden());
 				}
-				list.add(new MenuBack("leave"));
+				list.add(new MenuBack("Leave."));
 				return list;
 			}
 		});

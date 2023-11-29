@@ -69,14 +69,14 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 					@Override
 					public String title() {
 						FSub sub = Player.player.getPerson().facRep.getFacRep(Faction.ROGUE);
-						return "current reputation: " + (sub == null ? "Unknown" : ""+extra.format2(sub.forFac-sub.againstFac));
+						return "Current Rogue Reputation: " + (sub == null ? "Unknown" : ""+extra.format2(sub.forFac-sub.againstFac));
 					}
 				});
 				mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "launder gems";
+						return "Launder Gems.";
 					}
 
 					@Override
@@ -89,7 +89,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "request sapphires";
+						return "Request Sapphires";
 					}
 
 					@Override
@@ -117,7 +117,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "donate a sapphire";
+						return "Donate a Sapphire.";
 					}
 
 					@Override
@@ -166,7 +166,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 							}});
 						return false;
 					}});
-				mList.add(new MenuBack("leave"));
+				mList.add(new MenuBack("Leave."));
 				return mList;
 			}});
 	}

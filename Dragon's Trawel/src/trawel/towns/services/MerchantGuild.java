@@ -138,7 +138,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 					@Override
 					public String title() {
-						return "Quest Board.";
+						return "Quest Board. (Sidequests)";
 					}
 
 					@Override

@@ -159,7 +159,7 @@ public class Slum extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Shop at '"+storename+"'";
+						return "Shop at '"+storename+"'.";
 					}
 
 					@Override
@@ -171,7 +171,7 @@ public class Slum extends Store implements QuestBoardLocation{
 					
 					@Override
 					public String title() {
-						return "Speak to Fixer (Sidequests)";
+						return "Speak to Fixer (Sidequests).";
 					}
 	
 					@Override
@@ -184,7 +184,7 @@ public class Slum extends Store implements QuestBoardLocation{
 					
 					@Override
 					public String title() {
-						return "Enter Backalleys (Crime)";
+						return "Enter Backalleys (Crime).";
 					}
 	
 					@Override
@@ -249,7 +249,7 @@ public class Slum extends Store implements QuestBoardLocation{
 						}
 					});
 				}
-				mList.add(new MenuBack("leave"));
+				mList.add(new MenuBack("Leave."));
 				return mList;
 			}});
 	}

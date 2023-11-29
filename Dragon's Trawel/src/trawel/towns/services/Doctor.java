@@ -49,7 +49,7 @@ public class Doctor extends Feature {
 
 					@Override
 					public String title() {
-						return "Diagnosis";
+						return "Get Diagnosis.";
 					}
 
 					@Override
@@ -85,7 +85,7 @@ public class Doctor extends Feature {
 						}
 						return false;
 					}});
-				list.add(new MenuBack("leave"));
+				list.add(new MenuBack("Leave"));
 				return list;
 			}});
 	}

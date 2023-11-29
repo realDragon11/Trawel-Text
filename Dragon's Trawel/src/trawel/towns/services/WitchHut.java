@@ -92,7 +92,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "brew a potion" + (reagents.size() > 0 ? "("+reagents.size()+"/6)" : "");
+						return "Brew a potion" + (reagents.size() > 0 ? "("+reagents.size()+"/6)" : "");
 					}
 
 					@Override
@@ -104,7 +104,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "shop for reagents at '"+storename+"'";
+						return "Shop for reagents at '"+storename+"'.";
 					}
 
 					@Override
@@ -116,7 +116,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Enter Coven Common Room (Sidequests)";
+						return "Enter Coven Common Room (Sidequests).";
 					}
 
 					@Override
@@ -128,7 +128,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Bottle Potion Runoff";
+						return "Bottle Potion Runoff.";
 					}
 
 					@Override
@@ -176,7 +176,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 							return false;
 						}});
 				}
-				list.add(new MenuBack("leave"));
+				list.add(new MenuBack("Leave."));
 				return list;
 			}});
 	}
@@ -203,7 +203,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 						@Override
 						public String title() {
-							return "add drawbane to pot ("+reagents.size()+"/6 already)";
+							return "Add drawbane to pot ("+reagents.size()+"/6 already)";
 						}
 
 						@Override
@@ -222,14 +222,14 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 						@Override
 						public String title() {
-							return "the pot is full (6/6)";
+							return "The pot is full (6/6)";
 						}});
 				}
 				list.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "attempt brew of " +listReagents();
+						return "Attempt brew of " +listReagents();
 					}
 
 					@Override
@@ -249,7 +249,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 					}});
 				
 				
-				list.add(new MenuBack("leave (reagents will remain in this pot)") {});
+				list.add(new MenuBack("Stop Brewing. (reagents will remain in this pot)") {});
 				return list;
 			}});
 	}

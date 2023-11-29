@@ -140,7 +140,7 @@ public class Arena extends Feature{
 				}
 				//will not display rematch if noone is there
 				
-				list.add(new MenuBack("Leave"));
+				list.add(new MenuBack("Leave."));
 				return list;
 			}});
 	}

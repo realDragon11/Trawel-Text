@@ -80,7 +80,7 @@ public abstract class ExploreFeature extends Feature {
 				if (mList != null) {
 					list.addAll(mList);
 				}
-				list.add(new MenuBack("Exit."));
+				list.add(new MenuBack("Leave."));
 				return list;
 			}
 			});

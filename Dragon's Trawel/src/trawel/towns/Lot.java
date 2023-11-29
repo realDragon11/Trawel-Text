@@ -291,7 +291,7 @@ public class Lot extends Feature {
 
 				@Override
 				public List<MenuItem> footer() {
-					return Collections.singletonList(new MenuBack("Leave"));
+					return Collections.singletonList(new MenuBack("Leave."));
 				}
 			});
 		}else {

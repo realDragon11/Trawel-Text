@@ -78,9 +78,7 @@ public class Champion  extends Feature{
 	
 	@Override
 	public void go() {
-		person.getBag().graphicalDisplay(1,person);
-		extra.println(extra.PRE_BATTLE+"Challenge " + person.getName() + "?");
-		if (extra.yesNo()) {
+		if (person.reallyFight("Really Challenge")) {
 			Combat c = Player.player.fightWith(person);
 			if (c.playerWon() > 0) {
 				extra.println("You defeat the champion!");
@@ -97,8 +95,6 @@ public class Champion  extends Feature{
 					tutorialText = "Champion";
 				}
 			}
-		}else {
-			Networking.clearSide(1);
 		}
 	}
 

@@ -92,7 +92,7 @@ public class Library extends Feature {
 
 						@Override
 						public String title() {
-							return "study general lore";
+							return "Study general lore. (Free Feat Pick)";
 						}
 
 						@Override
@@ -129,7 +129,7 @@ public class Library extends Feature {
 
 						@Override
 						public String title() {
-							return "study feat fragments (have: "+frag_count+")";
+							return "Study feat fragments (have: "+frag_count+")";
 						}
 
 						@Override
@@ -158,7 +158,7 @@ public class Library extends Feature {
 						
 					});
 				}
-				list.add(new MenuBack("leave"));
+				list.add(new MenuBack("Leave"));
 				return list;
 			}});
 	}

@@ -89,7 +89,7 @@ public class Altar extends Feature{
 						return false;
 					}
 				});
-				mList.add(new MenuBack("leave"));
+				mList.add(new MenuBack("Leave."));
 				return mList;
 			}
 			@Override

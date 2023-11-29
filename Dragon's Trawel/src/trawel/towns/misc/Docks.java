@@ -205,7 +205,7 @@ public class Docks extends Feature {
 
 						@Override
 						public String title() {
-							return "Travel to Far Flung Ports";
+							return "Travel to Far Flung Ports.";
 						}
 
 						@Override
@@ -264,7 +264,7 @@ public class Docks extends Feature {
 
 							@Override
 							public String title() {
-								return extra.PRE_BATTLE+"Defend Port";
+								return extra.PRE_BATTLE+"Defend Port!";
 							}
 
 							@Override
@@ -280,7 +280,7 @@ public class Docks extends Feature {
 
 							@Override
 							public String title() {
-								return extra.PRE_BATTLE+"Reclaim Port";
+								return extra.PRE_BATTLE+"Reclaim Port!";
 							}
 
 							@Override
@@ -306,7 +306,7 @@ public class Docks extends Feature {
 
 			@Override
 			public List<MenuItem> footer() {
-				return Collections.singletonList(new MenuBack());
+				return Collections.singletonList(new MenuBack("Leave."));
 			}});
 	}
 	
