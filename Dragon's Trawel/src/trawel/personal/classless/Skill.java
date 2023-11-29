@@ -31,7 +31,7 @@ public enum Skill{
 		
 		ELEMENTAL_MAGE("Elemental Mage","Unlock elemental magic spells.",false,Type.MAGE,2,""),
 		DEATH_MAGE("Death Mage","Unlock necromantic magic spells.",true,Type.MAGE,2,""),
-		ARMOR_MAGE("Armor Mage","Unlock armor repairing magic spells.",false,Type.MAGE,2,""),
+		
 		ILLUSION_MAGE("Illusion Mage","Unlocks the befuddle spell.",false,Type.MAGE,2,""),
 		
 		MAGE_POWER("Power Within","Replace one of your attacks with a spell and unlock your magic power.",false,Type.MAGE,3,""),//works with ai, bad choice tho
@@ -187,7 +187,10 @@ public enum Skill{
 				,Type.TACTIC_TYPE),
 		TWINNED_TAKEDOWN("Twinned Takedown","Grants the Takedown effect on kill."
 				,"Takedown applies Knockout on your next impactful attack. It stacks in duration."
-				,Type.OFFENSE)
+				,Type.OFFENSE),
+		ARMOR_MAGE("Armor Mage","Increases armor defenses based on Clarity."
+				,"Adds 1/60th of Clarity to each piece of armor's SBP."
+				,Type.DEFENSE),
 		
 		/**
 		 * move tactics here to keep them in order

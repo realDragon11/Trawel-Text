@@ -241,11 +241,16 @@ public class QuestReactionFactory {
 
 
 	public static boolean runMe(Town t) {
-		if (Player.player.sideQuests.size() == 0 || extra.chanceIn(2,3)) {
+		if (Player.player.sideQuests.size() == 0) {
+			return false;
+		}
+		if (extra.chanceIn(2,3+Player.player.roadGracePeriod)) {
+			Player.player.roadGracePeriod--;//can go into negatives but at -1 will be 100% chance to continue and get set to 0
 			return false;
 		}
 		BasicSideQuest side = extra.randList(Player.player.sideQuests).reactionQuest();
 		if (side == null) {
+			Player.player.roadGracePeriod = 0;//so it doesn't dip into far negatives
 			return false;
 		}
 		for (QuestReaction qr: reactions) {
@@ -260,8 +265,10 @@ public class QuestReactionFactory {
 			side.reactionsLeft--;
 			qr.qte.trigger(side, t);
 			Collections.shuffle(reactions);
+			Player.player.roadGracePeriod = 5;
 			return true;
 		}
+		Player.player.roadGracePeriod = 0;//so it doesn't dip into far negatives
 		return false;
 	}
 }

@@ -119,6 +119,10 @@ public class Player extends SuperPerson{
 	public int currentNode;
 	public Feature atFeature;
 	public boolean forceGoProtection;
+	/**
+	 * used by QuestReactionFactory to lessen the odds of back-to-back QuestReactions
+	 */
+	public int roadGracePeriod = 0;
 	
 	private TwinListMap<Serializable,String> achieveMap = new TwinListMap<Serializable,String>();
 	
