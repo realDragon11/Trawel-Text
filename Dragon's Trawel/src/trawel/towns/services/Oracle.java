@@ -71,11 +71,12 @@ public class Oracle extends Feature{ //extends feature later
 	
 	public static Path rescPath() {
 		if (mainGame.inEclipse) {
-			try {
+			return Paths.get("resc/resource");
+			/*try {
 				return Paths.get(Oracle.class.getResource(rescLocation()).toURI());
 			} catch (URISyntaxException e) {
 				throw new RuntimeException("invalid ide resc path");
-			}
+			}*/
 		}
 		//have to put these outside so I can access them sanely, jarinjar loader moment???
 		return Paths.get("resource/");
