@@ -1161,7 +1161,6 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomEntName());
 		w.setTitle("");
 		w.hTask = HostileTask.ANIMAL;
-		w.updateSkills();
 		w.finishGeneration();
 		return w;
 	}

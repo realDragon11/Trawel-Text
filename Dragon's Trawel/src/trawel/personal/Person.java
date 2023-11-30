@@ -577,7 +577,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 	
 	/**
-	 * sets a skillhas, naively adding it's own skills to the skillset and also deducing a feat point
+	 * sets a skillhas, naively adding it's own skills to the skillset and also deducting a feat point
 	 * <br>
 	 * use for adding skillhases in worldgen, because the character will just not level their feats until they are positive again
 	 * <br>
