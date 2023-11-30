@@ -1,7 +1,7 @@
 # Trawel-Text
-An open world text adventure rpg.
+An open world text adventure rpg built like you were playing it on a calcuator.
 
-Currently undergoing a massive rewrite in August 2023 to prepare for a new major version. Release of version 0.8 is expected September 9th at the earliest.
+Currently undergoing a massive rewrite in late 2023 to prepare for a new major version. Release of version 0.8 is expected relatively soon.
 
 If you are vision impaired and using a screenreader for this text, the following portions have inline links. You can find a compiled version at "[real.itch.io/trawel](https://real.itch.io/trawel)", but that might be out of date.      <br>  <br>
 
@@ -19,12 +19,10 @@ The code here will always be at or ahead of Steam's (even when there is a beta a
 
 
 
-LICENSE.md is under reconstruction following interactions with various negative individuals.
-
 This repository is unlikely to accept pull requests, but suggestions are welcome as [Issues](https://github.com/realDragon11/Trawel-Text/issues).  
 <br>
 
-Trawel text is [Source-available](https://en.wikipedia.org/wiki/Source-available_software), but not [Libre](https://en.wikipedia.org/w/index.php?title=Libre_software).
+Trawel Text is [Source-available](https://en.wikipedia.org/wiki/Source-available_software), but not [Libre](https://en.wikipedia.org/w/index.php?title=Libre_software). Effectively, it's proprietary but not closed-source. 
 
 You may not redistribute Trawel Text or its source code, (exempting parts not unique to Trawel Text) but may redistribute modifications to it- as long as they do not contain the source code.
 
