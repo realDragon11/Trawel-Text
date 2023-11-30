@@ -1078,7 +1078,7 @@ public class Combat {
 		if (attacker.isOnCooldown()) {
 			if (attacker.hasEffect(Effect.RECOVERING)) {//recovering doesn't stack, but there should only be one at a time
 				attacker.removeEffect(Effect.RECOVERING);
-				int recover_amount = IEffectiveLevel.cleanLHP(attacker.getLevel(), .05);
+				int recover_amount = IEffectiveLevel.cleanLHP(attacker.getLevel(), .1);
 				attacker.healHP(recover_amount);
 				if (!extra.getPrint()) {
 					extra.println(indent +attacker.getName() + " recovers "+ recover_amount +" HP.");
@@ -1748,7 +1748,7 @@ public class Combat {
 			return new Integer[] {20};//-20 time units
 		case KO: case BRAINED:
 			//this does fixed damage on defender because it needs to recover, plus that's part of it's gimmick of felling mighty foes
-			return new Integer[] {IEffectiveLevel.cleanLHP(defender.getLevel(),.05)};
+			return new Integer[] {IEffectiveLevel.cleanLHP(defender.getLevel(),.1)};
 		case I_BLEED://bleeds aren't synced, WET :(
 			return new Integer[] {2*bleedDam(attacker,defender),2*bleedDam(null,defender)};//can take null attacker
 		case I_BLEED_WEAK:
