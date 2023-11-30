@@ -767,7 +767,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		//HP calculations
 		tempMaxHp = getOOB_HP();
 		if (this.hasEffect(Effect.HEARTY) || this.hasEffect(Effect.FORGED)) {
-			hp+= IEffectiveLevel.cleanLHP(level, 0.05);
+			tempMaxHp+= IEffectiveLevel.cleanLHP(level, 0.05);
 		}
 		
 		hp = tempMaxHp;
