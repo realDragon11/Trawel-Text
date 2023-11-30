@@ -146,7 +146,7 @@ public enum Archetype implements IHasSkills{
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRTY,AGroup.DEXTERITY)
 			,EnumSet.of(FeatType.TRICKS,FeatType.AGILITY)
-			,EnumSet.of(Skill.TWINNED_TAKEDOWN,Skill.DSTRIKE,Skill.TACTIC_TAKEDOWN,Skill.TACTIC_DUCK_ROLL)//temp
+			,EnumSet.of(Skill.TWINNED_TAKEDOWN,Skill.DSTRIKE,Skill.DEADLY_AIM)//temp?
 			,2,11,2
 			)
 	,FIGHTING_FURY("Fighting Fury"

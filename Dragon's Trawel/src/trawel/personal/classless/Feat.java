@@ -78,6 +78,11 @@ public enum Feat implements IHasSkills{
 			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_AERO,Skill.SPUNCH),0,1,4
 			,EnumSet.of(Skill.ARCANIST),null
 			)
+	,GLUTTON("Glutton","They're greedy for more than just punishment.",""
+			,1f,null,EnumSet.of(FeatType.SPIRIT,FeatType.POTIONS)
+			,EnumSet.of(Skill.BEER_BELLY,Skill.RAW_GUTS,Skill.TA_NAILS),5,0,0
+			,null,null
+			)
 	;
 
 	private final String name, desc, getDesc;

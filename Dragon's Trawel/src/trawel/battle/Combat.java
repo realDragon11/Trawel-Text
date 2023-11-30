@@ -836,6 +836,19 @@ public class Combat {
 					if (canDisp) {ret.addNote("Weighted Bonus: " + weightBonus);}
 				}
 			}
+			
+			if (hitRoll > dodgeRoll*2) {
+				if (attacker.hasSkill(Skill.DEADLY_AIM)) {
+					int tenthTime = (int) (att.getTime()/10);
+					ret.damage += tenthTime;
+					ret.bonus += tenthTime;
+					if (canDisp) {
+						//TODO: should be visible outside of advanced combat display
+						ret.addNote("Deadly Bonus: " + tenthTime);
+					}
+				}
+			}
+			
 			if (defender.hasSkill(Skill.RAW_GUTS)) {
 				int maxGResist = IEffectiveLevel.cleanLHP(
 						Math.ceil(defender.getLevel() * defender.getConditionForPart(TargetFactory.TORSO_MAPPING))

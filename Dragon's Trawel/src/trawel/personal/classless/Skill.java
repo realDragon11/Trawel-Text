@@ -10,7 +10,7 @@ public enum Skill{
 	
 		UNIMPLEMENTED("Unimplemented","Skills after this point and before the next heading are old skills that haven't been updated."
 				,true,Type.INTERNAL_USE_ONLY,1,""),
-	    BEER_BELLY("Beer Belly bROken","Use two beers at once in battle!",true,Type.FIGHTER,1,"Gives you the beer health bonus twice- if you have two beers to drink."),
+	    
 	    
 	    
 		BEER_LOVER("Beer Lover","Endless beer. Never have to go to a tavern again.",true,Type.FIGHTER,2,""),
@@ -69,7 +69,7 @@ public enum Skill{
 				,Type.SPEED),
 		DODGEREF("Refreshing Dodge","Gain 1% of attacker's LHP every time you dodge."
 				,"Uncapped total HP gain, can exceed MHP. Attacker's LHP caps at 2 levels higher than your own. Does not apply to misses."
-				,Type.DEFENSE),
+				,Type.SPEED),
 		P_BREWER("Brewer","Your created potions can be sipped two more times before running out."
 				,"Stacks with normal filler ingredients."
 				,Type.CRAFT),
@@ -78,7 +78,7 @@ public enum Skill{
 				,Type.CRAFT),
 		CURSE_MAGE("Curse Whisperer","Those who kill them are cursed, and start battles with half base MHP until cured."
 				,"Cure at a Shaman or Doctor. Lasts between battles."
-				, Type.OTHER),
+				, Type.SOCIAL),
 		KILLHEAL("Vampiric Spirit","Gain 5% dead LHP on a kill."
 				,"Dead LHP caps at 2 levels higher than your own. 'Kill' means being the last person to attack the target before they die."
 				,Type.OFFENSE),
@@ -120,7 +120,7 @@ public enum Skill{
 				,Type.SPEED),
 		BLOODDRINKER("Blood Drinker","Those who attack you while bleeding give you HP equal to half their bleed damage."
 				,"Stacks with other sources of bleed healing. Not capped by your MHP."
-				,Type.DEFENSE),
+				,Type.SOCIAL),
 		NIGHTVISION("Nightvision","Lets you see objects in the dark."
 				,"Helps determine things in Graveyards."
 				, Type.OTHER),
@@ -163,7 +163,7 @@ public enum Skill{
 				,Type.ATTACK_TYPE, Skill.ARCANIST),
 		CONDEMN_SOUL("Condemner","Curses those they kill, forcing them start battles with half base MHP until cured."
 				,"Cure at a Shaman or Doctor. Lasts between battles."
-				, Type.OTHER),
+				, Type.SOCIAL),
 		NO_HOSTILE_CURSE("Indomitable Spirit","Immune to the CURSE status by hostile Persons."
 				,"Does not apply to self-inflicted curses or outside of battle."
 				,Type.SOCIAL),
@@ -191,6 +191,12 @@ public enum Skill{
 		ARMOR_MAGE("Armor Mage","Increases armor defenses based on Clarity."
 				,"Adds 1/60th of Clarity to each piece of armor's SBP."
 				,Type.DEFENSE),
+		BEER_BELLY("Beer Belly","Doubles LHP bonus for drinking beer."
+				,""
+				,Type.DEFENSE),
+		DEADLY_AIM("Deadly Aim","Hit Rolls more than double Dodge Rolls deal bonus damage."
+				,"Bonus damage is equal to 1/10th of the attack instants, and only applies to Impactful attacks."
+				,Type.OFFENSE)
 		
 		/**
 		 * move tactics here to keep them in order
@@ -211,8 +217,8 @@ public enum Skill{
 	    	CRAFT,
 	    	SOCIAL,
 	    	OTHER,
-	    	SPEED,//skills that tend to make you faster
-	    	DEFENSE,//skills that provide defensive benefits
+	    	SPEED,//skills that tend to make you faster or take advantage of agility
+	    	DEFENSE,//skills that provide direct defensive benefits
 	    	ATTACK_TYPE,//skills that grant a new attack type, generally there should only be 5 of these total
 	    	//grants a person a 'generic tactic' attack that they can get, with no secondary effects
 	    	//these tend to be granted from a source that also grants one ATTACK_TYPE skill, for generating random tactics

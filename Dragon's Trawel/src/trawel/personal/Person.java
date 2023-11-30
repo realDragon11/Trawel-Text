@@ -777,7 +777,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			if (isPlay) {
 				Networking.unlockAchievement("drink_beer");
 			}
-			hp+=IEffectiveLevel.cleanLHP(level, 0.05);
+			hp+=IEffectiveLevel.cleanLHP(level, hasSkill(Skill.BEER_BELLY) ? 0.10 : 0.05);
 			if (!isPlay) {
 				extra.println(getNameNoTitle()+" looks drunk!");
 			}
