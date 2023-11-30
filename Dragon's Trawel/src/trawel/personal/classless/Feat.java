@@ -83,6 +83,10 @@ public enum Feat implements IHasSkills{
 			,EnumSet.of(Skill.BEER_BELLY,Skill.RAW_GUTS,Skill.TA_NAILS),5,0,0
 			,null,null
 			)
+	,SHAMAN("Shaman","Is attuned to the primal forces of life.",""
+			,1f,null,EnumSet.of(FeatType.CURSES,FeatType.POTIONS)
+			,EnumSet.of(Skill.LIFE_MAGE,Skill.POTION_CHUGGER),0,3,12
+			,null,null)
 	;
 
 	private final String name, desc, getDesc;

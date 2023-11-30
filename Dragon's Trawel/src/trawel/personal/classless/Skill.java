@@ -26,7 +26,7 @@ public enum Skill{
 		ARENASENSE("Arena Sense","Tell if towns have at least one arena.",false,Type.EXPLORER,3,""),
 		
 		MAGE_TRAINING("Mage Training","Unlock your inner magic potential.",true,Type.MAGE,1,""),
-		LIFE_MAGE("Life Mage","+5% clarity as MHP.",true,Type.MAGE,1,""),//good for out of combat
+		
 		MONEY_MAGE("Money Mage","Generate money slowly.",false,Type.MAGE,1,""),//good for out of combat
 		
 		ELEMENTAL_MAGE("Elemental Mage","Unlock elemental magic spells.",false,Type.MAGE,2,""),
@@ -192,11 +192,17 @@ public enum Skill{
 				,"Adds 1/60th of Clarity to each piece of armor's SBP."
 				,Type.DEFENSE),
 		BEER_BELLY("Beer Belly","Doubles LHP bonus for drinking beer."
-				,""
+				,"From 5% to 10% increase, does not count as max HP."
 				,Type.DEFENSE),
 		DEADLY_AIM("Deadly Aim","Hit Rolls more than double Dodge Rolls deal bonus damage."
 				,"Bonus damage is equal to 1/10th of the attack instants, and only applies to Impactful attacks."
-				,Type.OFFENSE)
+				,Type.OFFENSE),
+		LIFE_MAGE("Life Mage","+5% Clarity as MHP."
+				,""
+				,Type.DEFENSE),
+		POTION_CHUGGER("Potion Chugger","Regenerates 10% LHP at the end of their second turn."
+				,"Applies through the Breathing Effect."
+				,Type.OTHER)
 		
 		/**
 		 * move tactics here to keep them in order

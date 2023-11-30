@@ -80,7 +80,8 @@ public class mainGame {
 			"b_9: {part 3/?} Added the Enchanter Town Feature, which can enchant or improve enchantments on Weapons and Armor. It can also allow you to sell Aether for World Currency.",
 			"b_9: {part 4/?} Changed internal Sidequest code to better handle saving, tweaked quest generation behavior, added quests to the Rogue and Hero's guild, and added new Quest Reaction(s).",
 			"b_9: {part 5/?} Adjusted Wounds, importantly adding more elemental wounds.",
-			"b_9: {part 6/?} Expanded Greap worldgen map.",
+			"b_9: {part 6/?} Added more Classless Skills and Feats: Beer Belly, Deadly Aim, Glutton, Life Mage, Shaman, Potion Chugger",
+			"b_9: {part 7/?} Expanded Greap worldgen map.",
 			
 			"b_8: {part 1/5} Added a wait option to Arenas and prevented giant time chunks by accident, made Arenas fight without the player and have the winners move on after enough training. Players always get a new fighter in their first round (so entirely for 1 round titles), but more rounds are done entirely naturally now, potentially drawing from survivors.",
 			"b_8: {part 2/5} Updated Lot menu, standardized collecting earned money from built Features. Features can now have intro/outro text, which can be turned off as a display option. Node Features now have autosave enabled while exploring them, and saves once again use a different date format.",

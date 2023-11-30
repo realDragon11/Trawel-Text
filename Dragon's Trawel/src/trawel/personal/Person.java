@@ -748,12 +748,19 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				sipped = superperson.doSip();
 			}
 		}
-		if (sipped == Effect.CURSE && hasSkill(Skill.TOXIC_BREWS)) {
-			extra.println("Their face contorts in power!");
-			for (int i = 0; i < 3;i++) {
-				addEffect(extra.randList(Effect.minorBuffEffects));
+		if (sipped != null) {
+			if (hasSkill(Skill.POTION_CHUGGER)) {
+				extra.println("A refreshing draft!");
+				addEffect(Effect.BREATHING);
+			}
+			if (sipped == Effect.CURSE && hasSkill(Skill.TOXIC_BREWS)) {
+				extra.println("Their face contorts in power!");
+				for (int i = 0; i < 3;i++) {
+					addEffect(extra.randList(Effect.minorBuffEffects));
+				}
 			}
 		}
+		
 		if (hasSkill(Skill.QUICK_START)) {
 			addEffect(Effect.ADVANTAGE_STACK);
 		}
