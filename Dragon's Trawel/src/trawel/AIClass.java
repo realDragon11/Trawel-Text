@@ -1025,6 +1025,21 @@ public class AIClass {
 				if (numb == 9) {
 					int j = 1;
 					switch (mainGame.attackDisplayStyle) {
+					case SIMPLIFIED:
+						if (combat.turns > 0) {
+							extra.println(" ");
+							extra.println(attacker.inlineHPColor()+"You are "+attacker.getNameNoTitle()+".");
+							extra.println(
+									combat.prettyHPIndex(Player.lastAttackStringer)
+									);
+						}
+						extra.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),extra.PRE_WHITE, defender)+": ");
+						for(ImpairedAttack a: attacks) {
+							extra.print(j + " ");
+							a.display(3);
+							j++;
+						}
+						break;
 					case CLASSIC:
 						if (combat.turns > 0) {
 							extra.println(" ");

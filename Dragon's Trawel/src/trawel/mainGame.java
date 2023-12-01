@@ -82,6 +82,7 @@ public class mainGame {
 			"b_9: {part 5/?} Adjusted Wounds, importantly adding more elemental wounds.",
 			"b_9: {part 6/?} Added more Classless Skills and Feats: Beer Belly, Deadly Aim, Glutton, Life Mage, Shaman, Potion Chugger",
 			"b_9: {part 7/?} Expanded Greap worldgen map.",
+			"b_9: {part 8/?} Added Simplified attack display style, moved attack notes from Combat Debug to its own option.",
 			
 			"b_8: {part 1/5} Added a wait option to Arenas and prevented giant time chunks by accident, made Arenas fight without the player and have the winners move on after enough training. Players always get a new fighter in their first round (so entirely for 1 round titles), but more rounds are done entirely naturally now, potentially drawing from survivors.",
 			"b_8: {part 2/5} Updated Lot menu, standardized collecting earned money from built Features. Features can now have intro/outro text, which can be turned off as a display option. Node Features now have autosave enabled while exploring them, and saves once again use a different date format.",
@@ -173,6 +174,7 @@ public class mainGame {
 
 	public enum DispAttack{
 		CLASSIC("Classic simple table, delay instead of cooldown and warmup"),
+		SIMPLIFIED("Displays only accuracy, delay, damage, and wounds."),
 		TWO_LINE1_WITH_KEY("Current version, hybrid table with per-cell labels instead of a header. Includes a key/legend."),
 		TWO_LINE1("Current version, hybrid table with per-cell labels instead of a header. Does not include key/legend");
 

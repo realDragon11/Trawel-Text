@@ -565,6 +565,19 @@ public class ImpairedAttack implements IAttack{
 					"=",
 					dam1,dam2,dam3,dam4//unsure if spacing messes up narrator
 					);
+			break;
+		case 3://simplified
+			extra.println(getName());
+			in = new int[3];
+			in[0] = 9;//hitchance, should be %9.99 >= x > 0.00 |
+			in[1] = 6;//instants, should be _999 >= x > 0
+			in[2] = 7;//5 damage digits
+			extra.specialPrint(in,
+					"  "+extra.CHAR_HITCHANCE + extra.format(getHitMult()),
+					extra.CHAR_INSTANTS + extra.formatInt(getWarmup()+getCooldown()),
+					extra.CHAR_DAMAGE + getTotalDam()
+					);
+			break;
 		}
 		Wound aWound = wound;
 		if (aWound == null) {

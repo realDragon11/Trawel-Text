@@ -254,6 +254,8 @@ public final class extra {
 	//also probably something better out there
 
 	//TODO: make some better global DRY damage code system
+	public static String CHAR_DAMAGE = "*";
+	
 	public static String CHAR_SHARP = "S";
 	public static String CHAR_BLUNT = "B";
 	public static String CHAR_PIERCE = "P";
@@ -307,6 +309,7 @@ public final class extra {
 	public static void charSwitchNone() {
 		CHAR_INSTANTS = "_";
 		CHAR_HITCHANCE = ">";
+		CHAR_DAMAGE = "*";
 		CHAR_SHARP = "S";
 		CHAR_BLUNT = "B";
 		CHAR_PIERCE = "P";
@@ -333,6 +336,7 @@ public final class extra {
 	public static void charSwitchVisual() {
 		CHAR_INSTANTS = "_";
 		CHAR_HITCHANCE = "%";
+		CHAR_DAMAGE = "*";
 		CHAR_SHARP = "S";
 		CHAR_BLUNT = "B";
 		CHAR_PIERCE = "P";
@@ -359,6 +363,7 @@ public final class extra {
 	public static void charSwitchNarrator() {
 		CHAR_INSTANTS = "t";
 		CHAR_HITCHANCE = "h";
+		CHAR_DAMAGE = "d";
 		CHAR_SHARP = "S";
 		CHAR_BLUNT = "B";
 		CHAR_PIERCE = "P";
@@ -387,6 +392,7 @@ public final class extra {
 		//https://www.amp-what.com/unicode/search/knife
 		CHAR_INSTANTS = "⧗";//🮚⌛⧗
 		CHAR_HITCHANCE = "🎯";//ʘ◎🎯◉⦿
+		CHAR_DAMAGE = "🕱";
 		CHAR_SHARP = "🟆";//✂⚔🔪🪒💇🗡️⸸⸷🞣🟆
 		CHAR_BLUNT = "●";//🔨⚒️🪨🛞●
 		CHAR_PIERCE = "▲";//⇫♆➳➹➴♂➴⚩➛▲
