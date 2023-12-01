@@ -1465,7 +1465,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	 */
 	public String getName() {
 		if (!mainGame.displayOwnName && isPlayer()) {
-			return "you";
+			return "YOU";
 		}
 		if (title == "" || title == null) {
 			return firstName;
@@ -1478,7 +1478,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	
 	public String getNameNoTitle() {
 		if (!mainGame.displayOwnName && isPlayer()) {
-			return "you";
+			return "YOU";
 		}
 		return firstName;
 	}
@@ -2193,7 +2193,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 
 	public String getTitle() {
 		if (!mainGame.displayOwnName && isPlayer()) {
-			return "you";
+			return "YOU";
 		}
 		return title;
 	}

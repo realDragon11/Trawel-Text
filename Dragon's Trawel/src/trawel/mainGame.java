@@ -72,7 +72,7 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__9";
-	public static final String VERSION_DATE = " updated Nov 30th 2023";
+	public static final String VERSION_DATE = " updated Dec 1st 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			"b_9: {part 1/?} Expanded Bag items can now be melted down into aether from player menu or if Bag is full when looting. 'Really Attack' prompts now give the option to examine the Person's inventory.",
@@ -163,6 +163,7 @@ public class mainGame {
 	public static boolean displayTargetSummary;
 	public static boolean displayNodeDeeper;
 	public static boolean displayFeatureFluff;
+	public static boolean combatFeedbackNotes;
 
 	private static boolean doAutoSave = true;
 	private static PrintStream logStream;
@@ -603,7 +604,7 @@ public class mainGame {
 
 							@Override
 							public String title() {
-								return "Own Name " + displayOwnName + " (If disabled, 'you' will be used whenever your character's name, title, or fullname would be used. This will not make sense, but might help clarity.)";
+								return "Own Name " + displayOwnName + " (If disabled, 'YOU' will be used whenever your character's name, title, or fullname would be used. This will not make sense, but might help clarity.)";
 							}
 
 							@Override
@@ -662,6 +663,20 @@ public class mainGame {
 							public boolean go() {
 								displayFeatureFluff = !displayFeatureFluff;
 								prefs.setProperty("featurefluff_text", displayFeatureFluff+"");
+								return false;
+							}
+						});
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Combat Notes " + combatFeedbackNotes + " (Displays more detailed breakdowns of special triggers after attacks.)";
+							}
+
+							@Override
+							public boolean go() {
+								combatFeedbackNotes = !combatFeedbackNotes;
+								prefs.setProperty("combatnotes_text", combatFeedbackNotes+"");
 								return false;
 							}
 						});
@@ -1414,6 +1429,7 @@ public class mainGame {
 			combatWaits = Boolean.parseBoolean(prefs.getProperty("combataction_wait","TRUE"));
 			displayTargetSummary = Boolean.parseBoolean(prefs.getProperty("targetsummary_text","TRUE"));
 			displayNodeDeeper = Boolean.parseBoolean(prefs.getProperty("nodedeeper_text","TRUE"));
+			combatFeedbackNotes = Boolean.parseBoolean(prefs.getProperty("combatnotes_text","TRUE"));
 
 			if (autoConnect) {
 				System.out.println("Please wait for the graphical to load...");

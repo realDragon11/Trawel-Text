@@ -837,7 +837,8 @@ public class Combat {
 				}
 			}
 			
-			if (hitRoll > dodgeRoll*2) {
+			//attacker can be null for dummy attacks?
+			if (attacker != null && hitRoll > dodgeRoll*2) {
 				if (attacker.hasSkill(Skill.DEADLY_AIM)) {
 					int tenthTime = (int) (att.getTime()/10);
 					ret.damage += tenthTime;
@@ -970,7 +971,7 @@ public class Combat {
 					}
 				}
 				
-				if (!extra.getPrint()) {
+				if (!extra.getPrint() && mainGame.advancedCombatDisplay) {
 					addNote("rawdam: " +rawdam +"("+sdam+"/"+bdam+"/"+pdam+ " " + idam+"/"+fdam+"/"+edam+")"
 				+ " rawarm: " + rawarm + "("+sarm+"/"+barm+"/"+parm+" " +iarm+"/"+farm+"/"+earm+")"
 							+ " weight_a: " + weight_arm + " groll: " + global_roll 
@@ -1014,12 +1015,18 @@ public class Combat {
 			if (notes == null) {
 				notes = str;
 			}else {
-				notes +="\n"+str;
+				notes +="\n "+str;
 			}
 		}
 		
 		public String getNotes() {
 			return notes;
+		}
+		
+		public void stringNotes() {
+			if (notes != null) {
+				stringer += "\n " + notes;
+			}
 		}
 		
 		public void putPlayerFeedback(AttackReturn atr) {
@@ -1388,12 +1395,20 @@ public class Combat {
 			}
 			break;
 		}
-
-		if (canWait && mainGame.delayWaits) {
-			Networking.waitIfConnected((long)delay*10);
+		
+		
+		if (!extra.getPrint()) {
+			extra.println("");
+			if (mainGame.combatFeedbackNotes) {
+				if (atr.getNotes() != null) {
+					extra.println(" "+atr.getNotes());
+				}
+			}
+			if (canWait && mainGame.delayWaits) {
+				Networking.waitIfConnected((long)delay*10);
+			}
 		}
 
-		extra.println("");
 
 		float hpRatio = ((float)defender.getHp())/(defender.getMaxHp());
 		//float hpRatio = ((float)p.getHp())/(p.getMaxHp());

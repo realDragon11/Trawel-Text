@@ -436,7 +436,7 @@ public class ImpairedAttack implements IAttack{
 	}
 	@Override
 	public String fluff(AttackReturn attret) {
-		return attack.fluff(attret) + (mainGame.advancedCombatDisplay ? attret.getNotes() : "");
+		return attack.fluff(attret);
 	}
 	@Override
 	public int getSharp() {
