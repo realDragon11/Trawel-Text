@@ -315,7 +315,7 @@ public class Docks extends Feature {
 		List<Town> openSet = new ArrayList<Town>();
 		Set<Town> closedSet = new HashSet<Town>();
 		
-		town.getConnects().stream().forEachOrdered(c -> openSet.add(c.otherTown(town)));
+		town.getConnects().stream().filter(c -> c.getType() == ConnectType.SHIP).forEachOrdered(c -> openSet.add(c.otherTown(town)));
 		//tList.addAll(openSet);
 		//we could add all adjacent towns to possible locations, but this makes seeing if we found any easier if
 		//we decide that we won't show close-flung ports
@@ -324,7 +324,7 @@ public class Docks extends Feature {
 		//int localSize = openSet.size();//this is why we don't just start from our town, we want to know if we actually
 		//found any non-far-flung ports to bother with
 		
-		while (openSet.size() > 0) {
+		while (!openSet.isEmpty()) {
 			Town cur = openSet.remove(0);
 			for (Connection c: cur.getConnects()) {
 				if (c.getType() != ConnectType.SHIP) {
