@@ -380,16 +380,23 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 		
 		@Override
 		public String title() {
-			return "Launder " +from.plural +" ("+from.getGem()+") to " + to.plural + "("+to.getGem()+")" + (Player.player.launderCredits == 0 ? " NO CREDIT" : "");
+			return "Launder "+from.unitSize + " " +from.plural +" ("+from.getGem()+") to " + to.unitSize + " " + to.plural + "("+to.getGem()+")" + (Player.player.launderCredits == 0 ? " NO CREDIT" : "");
 		}
 
 		@Override
 		public boolean go() {
-			//must be > 0 to click
-			extra.println("You trade a " + from.name + " for a " + to.name);
-			from.changeGem(-1);
-			to.changeGem(1);
-			Player.player.launderCredits--;
+			if (Player.player.launderCredits == 0) {
+				extra.println("You have no credits.");
+				return false;
+			}
+			if (from.getGem() >= from.unitSize) {
+				extra.println("You trade "+from.unitSize+" " + from.name + " for " + to.unitSize + to.name);
+				from.changeGem(-from.unitSize);
+				to.changeGem(to.unitSize);
+				Player.player.launderCredits--;
+			}else {
+				extra.println("You need " + (from.unitSize-from.getGem()) + " more " + from.plural+"!");
+			}
 			return false;
 		}
 

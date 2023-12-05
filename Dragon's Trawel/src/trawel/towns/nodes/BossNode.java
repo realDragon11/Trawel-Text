@@ -8,6 +8,7 @@ import trawel.extra;
 import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.battle.Combat.SkillCon;
+import trawel.factions.Faction;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
@@ -182,6 +183,7 @@ public class BossNode implements NodeType {
 					Networking.unlockAchievement("boss1");
 					setBossKilled(spinner.getName());
 					Player.player.addAchieve("fatespinner","Owner of Their Own Fate");
+					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1f, 0);
 					return false;
 				}
 			}else {
@@ -214,6 +216,7 @@ public class BossNode implements NodeType {
 				Player.unlockPerk(Perk.HELL_BARONESS_1);
 				setBossKilled(baron.getName());
 				Player.player.addAchieve("hell_baron","Hell Baroness");
+				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,2f, 0);
 				return false;
 			}else {
 				return true;//lost, kick out
@@ -236,6 +239,7 @@ public class BossNode implements NodeType {
 				Networking.unlockAchievement("boss3");
 				setBossKilled(yore.getName());
 				Player.player.addAchieve("yore","Story Slayer");
+				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,3f, 0);
 				return false;
 			}else {
 				return true;//lost, kick out
@@ -270,6 +274,7 @@ public class BossNode implements NodeType {
 				Networking.unlockAchievement("boss4");
 				setBossKilled(queen.getName());
 				Player.player.addAchieve("old_queen","Ancient Queen Slayer");
+				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,2f, 0);
 				return false;
 			}
 		}else {

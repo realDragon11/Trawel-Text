@@ -7,17 +7,31 @@ import trawel.extra;
 import trawel.personal.people.Player;
 
 public enum Gem {
-	EMERALD("emerald","emeralds","E")
-	,RUBY("ruby","rubies","R")
-	,SAPPHIRE("sapphire","sapphires","S")
-	,AMBER("amber","ambers","A")
+	/**
+	 * merchant, taken
+	 */
+	EMERALD("emerald","emeralds","E",2)
+	/**
+	 * hero, granted
+	 */
+	,RUBY("ruby","rubies","R",3)
+	/**
+	 * rogue, granted and taken
+	 */
+	,SAPPHIRE("sapphire","sapphires","S",3)
+	/**
+	 * hunter, granted
+	 */
+	,AMBER("amber","ambers","A",10)
 	;
 		
 	public final String name, plural, icon;
-	Gem(String _name, String _plural, String _icon){
+	public final int unitSize;
+	Gem(String _name, String _plural, String _icon, int _unitSize){
 		name = _name;
 		plural = _plural;
 		icon = _icon;
+		unitSize = _unitSize;
 	}
 	
 	public boolean knowsGem() {
