@@ -85,10 +85,10 @@ public class BossNode implements NodeType {
 			//p.liteRefreshClassless();//now unneeded
 			p.finishGeneration();
 			peeps.add(p);
-			p = RaceFactory.makeFellReaver(level-3);
+			p = RaceFactory.makeFellReaver(level-6);
 			p.setFlag(PersonFlag.IS_MOOK, true);
 			peeps.add(p);
-			p = (RaceFactory.makeFellReaver(level-3));
+			p = (RaceFactory.makeFellReaver(level-6));
 			p.setFlag(PersonFlag.IS_MOOK, true);
 			peeps.add(p);
 		break;
@@ -218,12 +218,6 @@ public class BossNode implements NodeType {
 			}else {
 				return true;//lost, kick out
 			}
-		//}else {
-		//	extra.println("Here lies the body of the hell baron...");
-		//	return false;
-		//}
-		
-		
 	}
 	
 	private boolean yore(NodeConnector holder,int node) {
