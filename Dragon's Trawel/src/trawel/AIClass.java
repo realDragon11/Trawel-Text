@@ -13,7 +13,6 @@ import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.Stance;
 import trawel.battle.attacks.WeaponAttackFactory;
-import trawel.battle.attacks.WeaponAttackFactory.AttackBonus;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.classless.Skill;

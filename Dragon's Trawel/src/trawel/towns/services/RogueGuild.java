@@ -7,28 +7,24 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
-import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.extra;
 import trawel.factions.FBox;
 import trawel.factions.FBox.FSub;
 import trawel.factions.Faction;
 import trawel.personal.people.Player;
-import trawel.quests.CleanseSideQuest;
 import trawel.quests.FetchSideQuest;
+import trawel.quests.FetchSideQuest.FetchType;
 import trawel.quests.KillSideQuest;
 import trawel.quests.QBMenuItem;
 import trawel.quests.QRMenuItem;
 import trawel.quests.Quest;
 import trawel.quests.QuestBoardLocation;
 import trawel.quests.QuestR;
-import trawel.quests.CleanseSideQuest.CleanseType;
-import trawel.quests.FetchSideQuest.FetchType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
 import trawel.towns.World;
-import trawel.towns.Feature.QRType;
 
 public class RogueGuild extends Feature implements QuestBoardLocation{
 	

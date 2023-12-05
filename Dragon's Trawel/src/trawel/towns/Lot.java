@@ -5,8 +5,8 @@ import java.util.List;
 
 import derg.menus.MenuBack;
 import derg.menus.MenuItem;
-import derg.menus.MenuSelect;
 import derg.menus.MenuLine;
+import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.Networking.Area;
 import trawel.extra;
@@ -17,8 +17,8 @@ import trawel.time.TimeEvent;
 import trawel.towns.fight.Arena;
 import trawel.towns.misc.Garden;
 import trawel.towns.misc.Garden.PlantFill;
-import trawel.towns.nodes.Mine;
 import trawel.towns.nodes.BossNode.BossType;
+import trawel.towns.nodes.Mine;
 import trawel.towns.nodes.NodeFeature.Shape;
 import trawel.towns.services.Inn;
 

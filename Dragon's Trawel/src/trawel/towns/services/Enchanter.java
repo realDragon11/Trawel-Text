@@ -8,7 +8,6 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
-import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.extra;
 import trawel.personal.classless.IEffectiveLevel;

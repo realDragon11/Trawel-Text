@@ -4,26 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import derg.menus.MenuGenerator;
-import derg.menus.MenuItem;
-import derg.menus.MenuSelect;
 import trawel.extra;
-import trawel.randomLists;
-import trawel.battle.Combat;
-import trawel.factions.Faction;
-import trawel.personal.Person;
-import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.quests.QuestReactionFactory.QKey;
 import trawel.towns.Feature;
 import trawel.towns.Town;
-import trawel.towns.World;
-import trawel.towns.fight.Slum;
-import trawel.towns.fort.FortHall;
-import trawel.towns.services.Inn;
-import trawel.towns.services.MerchantGuild;
-import trawel.towns.services.WitchHut;
 
 public abstract class BasicSideQuest implements Quest{
 

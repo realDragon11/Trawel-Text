@@ -1,5 +1,4 @@
 package trawel.towns;
-import java.util.ArrayList;
 import java.util.List;
 
 import trawel.Networking;
@@ -9,14 +8,12 @@ import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
-import trawel.quests.QuestR;
 import trawel.quests.QuestReactionFactory.QKey;
 import trawel.time.ContextLevel;
 import trawel.time.ContextType;
 import trawel.time.TContextOwner;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
-import trawel.towns.services.Store;
 
 public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	

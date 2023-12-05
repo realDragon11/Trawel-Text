@@ -3,9 +3,9 @@ package trawel.personal.item;
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.solid.Armor;
+import trawel.personal.item.solid.Armor.ArmorQuality;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
-import trawel.personal.item.solid.Armor.ArmorQuality;
 
 public class DummyInventory extends Inventory {
 	

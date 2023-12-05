@@ -29,7 +29,6 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Connection;
 import trawel.towns.Connection.ConnectClass;
-import trawel.towns.Connection.ConnectType;
 import trawel.towns.Feature;
 import trawel.towns.Town;
 import trawel.towns.World;

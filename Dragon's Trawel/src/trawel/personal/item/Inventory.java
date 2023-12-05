@@ -24,7 +24,6 @@ import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Armor.ArmorQuality;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Material;
-import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Player;

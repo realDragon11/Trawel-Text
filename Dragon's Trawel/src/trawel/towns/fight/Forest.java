@@ -1,18 +1,10 @@
 package trawel.towns.fight;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
-import derg.menus.MenuGenerator;
-import derg.menus.MenuItem;
-import derg.menus.MenuSelect;
-import trawel.AIClass;
-import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.extra;
-import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.factions.Faction;
 import trawel.personal.Person;
@@ -21,13 +13,7 @@ import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
-import trawel.quests.QRMenuItem;
-import trawel.quests.QuestR;
-import trawel.time.TimeContext;
-import trawel.time.TimeEvent;
-import trawel.towns.Feature;
 import trawel.towns.World;
-import trawel.towns.services.Oracle;
 
 public class Forest extends ExploreFeature{
 	

@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
+
 import save.KyroManager;
 import trawel.battle.Combat.SkillCon;
 import trawel.personal.DummyPerson;

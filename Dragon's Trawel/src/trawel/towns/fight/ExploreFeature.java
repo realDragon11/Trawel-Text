@@ -19,7 +19,6 @@ import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Player;
 import trawel.quests.QRMenuItem;
-import trawel.quests.Quest;
 import trawel.quests.QuestR;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;

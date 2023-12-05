@@ -1,22 +1,24 @@
 package save;
 
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.Serializer;
-import com.esotericsoftware.kryo.serializers.FieldSerializer;
-import com.esotericsoftware.kryo.io.Input;
-import com.esotericsoftware.kryo.io.Output;
-import de.javakaffee.kryoserializers.*;
-import trawel.extra;
-import trawel.personal.Person;
-import trawel.towns.Plane;
-import trawel.towns.World;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.EnumMap;
 import java.util.EnumSet;
 
 import org.objenesis.strategy.SerializingInstantiatorStrategy;
+
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.Serializer;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
+import com.esotericsoftware.kryo.serializers.FieldSerializer;
+
+import de.javakaffee.kryoserializers.EnumMapSerializer;
+import de.javakaffee.kryoserializers.EnumSetSerializer;
+import trawel.extra;
+import trawel.personal.Person;
+import trawel.towns.Plane;
+import trawel.towns.World;
 
 public class KyroManager {
 	

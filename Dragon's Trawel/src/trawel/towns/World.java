@@ -1,16 +1,12 @@
 package trawel.towns;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
 
-import trawel.PrintEvent;
 import trawel.WorldGen;
 import trawel.extra;
-import trawel.mainGame;
 import trawel.factions.HostileTask;
 import trawel.personal.Person;
 import trawel.personal.people.Agent;

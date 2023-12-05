@@ -1,7 +1,6 @@
 package trawel.towns.services;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
@@ -9,11 +8,9 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.AIClass;
-import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.Services;
 import trawel.extra;
-import trawel.mainGame;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceID;

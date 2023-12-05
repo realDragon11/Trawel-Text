@@ -2,7 +2,6 @@ package trawel.towns.services;
 
 import java.util.List;
 
-import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.extra;
 import trawel.personal.item.Inventory;
