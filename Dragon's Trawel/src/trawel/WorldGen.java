@@ -524,7 +524,7 @@ public class WorldGen {
 	Landmark in Sturt Creek, Australia
 	 */
 	public static Town greap() {
-		World w = new World(20,20,"Greap",-20f,127.5f);//
+		World w = new World(15,20,"Greap",-20f,127.5f);//
 		fallBackWorld = w;
 		
 		//slow down leveling rate due to leveling getting slower, also go back and forth
@@ -664,11 +664,10 @@ public class WorldGen {
 		addConnection(mikol,kelo,ConnectType.ROAD,"TODO");
 		addConnection(reahe,kelo,ConnectType.ROAD,"TODO");
 		
-		Town gopuo  = new Town("Gopuo",15,opyo,new Point(11,8));
+		Town gopuo = new Town("Gopuo",15,opyo,new Point(11,8));
 		addConnection(kelo,gopuo,ConnectType.ROAD,"TODO");
 		addConnection(mikol,gopuo,ConnectType.ROAD,"TODO");
 		gopuo.addFeature(new Docks("UpTODO", gopuo));
-		//gopuo.addFeature(new Inn("hangpreventer", 10, gopuo, null));
 		//ships up
 		
 		Island worea = new Island("Worea",w,IslandType.ISLAND);//island to the west of pipa
@@ -678,8 +677,62 @@ public class WorldGen {
 		addConnection(gopuo,lunek,ConnectType.SHIP,"TODO");
 		//triangle shipping lane
 		
+		Town eaqu = new Town("Eaqu",14,worea,new Point(2,10));
+		addConnection(lunek,eaqu,ConnectType.ROAD,"TODO");
 		
-		//TODO: need more islands
+		Town celen = new Town("Celen",15,worea,new Point (4,7));
+		//shipments up
+		addConnection(lunek,celen,ConnectType.ROAD,"TODO");
+		addConnection(lunek,celen,ConnectType.SHIP,"TODO");
+		addConnection(eaqu,celen,ConnectType.ROAD,"TODO");
+		
+		Island ityl = new Island("Ityl",w,IslandType.ISLAND);
+		
+		Town beola = new Town("Beola",15,ityl,new Point(8,6));
+		addConnection(gopuo,beola,ConnectType.SHIP,"TODO");
+		addConnection(celen,beola,ConnectType.SHIP,"TODO");
+		addConnection(lunek,beola,ConnectType.SHIP,"TODO");
+		
+		Town aerna = new Town("Aerna",15,ityl,new Point(12,5));
+		addConnection(beola,aerna,ConnectType.ROAD,"TODO");
+		addConnection(beola,aerna,ConnectType.SHIP,"TODO");
+		addConnection(gopuo,aerna,ConnectType.SHIP,"TODO");
+		
+		Town jenai = new Town("Jenai",15,ityl,new Point(10,4));
+		addConnection(beola,jenai,ConnectType.ROAD,"TODO");
+		addConnection(aerna,jenai,ConnectType.ROAD,"TODO");
+		
+		Town defal = new Town("Defal",16,ityl,new Point(8,2));
+		addConnection(jenai,defal,ConnectType.ROAD,"TODO");
+		
+		Town nowra = new Town("Nowra",16,ityl,new Point(14,3));
+		addConnection(aerna,nowra,ConnectType.ROAD,"TODO");
+		addConnection(jenai,nowra,ConnectType.ROAD,"TODO");
+		
+		//fort
+		Town fortKaol = new Town("Fort Kaol",6,ityl,(byte)15,(byte)3, null);
+		addConnection(nowra,fortKaol,ConnectType.ROAD,"TODO");
+		
+		Town jadua = new Town("Jadua",16,ityl,new Point(11,1));
+		addConnection(defal,jadua,ConnectType.ROAD,"TODO");
+		addConnection(nowra,jadua,ConnectType.ROAD,"TODO");
+		
+		Town ailak = new Town("Ailak",16,ityl,new Point(4,1));
+		addConnection(defal,ailak,ConnectType.ROAD,"TODO");
+		addConnection(jadua,ailak,ConnectType.TELE,"TODO");
+		
+		Island henak = new Island("Henak",w,IslandType.ISLAND);//has to be teleported to since rocks around it or something
+		
+		Town orean = new Town("Orean",17,henak,new Point(1,4));
+		addConnection(jadua,orean,ConnectType.TELE,"TODO");
+		addConnection(ailak,orean,ConnectType.TELE,"TODO");
+		
+		orean.tTags.add(TownTag.HIDDEN);
+		orean.setFirstPrinter(new PrintEvent() {
+			@Override
+			public void print() {
+				extra.println("Orean sits atop the rocky raised island of Henak, which is inaccessible by boat. Only nearby teleporters can reach it, which makes it isolated due to the rarity of them in Greap.");
+			}});
 		
 		return holik;
 	}
