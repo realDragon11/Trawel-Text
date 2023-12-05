@@ -22,7 +22,7 @@ public enum Gem {
 	/**
 	 * hunter, granted
 	 */
-	,AMBER("amber","ambers","A",10)
+	,AMBER("amber","amber","A",10)
 	;
 		
 	public final String name, plural, icon;

@@ -3,6 +3,7 @@ package trawel.quests;
 import trawel.extra;
 import trawel.randomLists;
 import trawel.factions.Faction;
+import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
 import trawel.quests.QuestReactionFactory.QKey;
 import trawel.towns.Feature;
@@ -81,17 +82,49 @@ public class CleanseSideQuest extends BasicSideQuest {
 		Feature endFeature = qRList.get(0).locationF;
 		switch (QRID) {
 		case 0:
-			int reward = Math.max(1,Math.round(3*Math.min(Player.player.getPerson().getUnEffectiveLevel(),endFeature.getUnEffectiveLevel())));
-			Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
-			Player.player.getPerson().addXp(reward);
-			Player.player.addGold(reward);
-			extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
-			if (endFeature instanceof MerchantGuild) {
-				Player.player.addMPoints(.2);
+			float mult = Math.min(Player.player.getPerson().getUnEffectiveLevel(),endFeature.getUnEffectiveLevel());
+			int reward = 0;
+			if (qKeywords.contains(QKey.LAWFUL)) {
+				//if lawful, the law likes it
+				if (qKeywords.contains(QKey.EVIL)) {
+					Player.player.getPerson().facRep.addFactionRep(Faction.LAW_EVIL,mult*0.05f,0);
+				}else {
+					Player.player.getPerson().facRep.addFactionRep(Faction.LAW_GOOD,mult*0.05f,0);
+					Player.player.getPerson().facRep.addFactionRep(Faction.LAW_EVIL,mult*0.05f,0);
+				}
+			}
+			
+			//who offered it
+			if (qKeywords.contains(QKey.GIVE_HUNT_GUILD)) {
+				if (!qKeywords.contains(QKey.EVIL)) {
+					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*0.05f,0);
+				}
+				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,mult*1f,0);
+				reward = Math.max(1,Math.round(2*mult));
 				endFeature.getTown().helpCommunity(1);
-			}else {
+				//also grants amber
+				int a_reward = Math.max(1,Math.round(1*mult));
+				Gem.AMBER.changeGem(a_reward);
+				extra.println("You gained " +a_reward+" amber.");
+			}
+			if (qKeywords.contains(QKey.GIVE_HGUILD)) {
+				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*1f,0);
+				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,mult*0.05f,0);
+				reward = Math.max(1,Math.round(3*mult));
 				endFeature.getTown().helpCommunity(2);
 			}
+			if (qKeywords.contains(QKey.GIVE_MGUILD)) {
+				if (!qKeywords.contains(QKey.EVIL)) {
+					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*0.05f,0);
+				}
+				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,mult*0.05f,0);
+				reward = Math.max(1,Math.round(4*mult));
+				endFeature.getTown().helpCommunity(1);
+				Player.player.addMPoints(.2);
+			}
+			Player.player.addGold(reward);
+			extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+			Player.player.getPerson().addXp(reward);
 			complete();
 			return;
 		}

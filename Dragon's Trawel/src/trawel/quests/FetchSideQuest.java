@@ -5,6 +5,7 @@ import derg.StringResult;
 import trawel.extra;
 import trawel.randomLists;
 import trawel.factions.Faction;
+import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
 import trawel.quests.QuestReactionFactory.QKey;
 import trawel.towns.Feature;
@@ -18,8 +19,9 @@ public class FetchSideQuest extends BasicSideQuest {
 	public static enum FetchType{
 		MERCHANT(new SRPlainRandom("supplies","goods","trade goods","luxury goods","documents","shipment","spice"),new QKey[] {}),
 		CRIME(new SRPlainRandom("'taxes'","'spice'","letter","sealed letter","key"),new QKey[] {QKey.EVIL}),
-		HERO(new SRPlainRandom("monster reports","old war intel","silvered supplies"),new QKey[] {QKey.GOOD}),
-		COMMUNITY(new SRPlainRandom("totem","heirloom","keepsake","letter","key"),new QKey[] {});
+		HERO(new SRPlainRandom("bandit reports","old war intel","silvered supplies"),new QKey[] {QKey.GOOD}),
+		COMMUNITY(new SRPlainRandom("totem","heirloom","keepsake","letter","key"),new QKey[] {}),
+		HUNTER(new SRPlainRandom("monster reports","silvered weapons","blessed wood"),new QKey[] {QKey.GOOD});
 		
 		public final StringResult itemList;
 		public final QKey[] qAdds;
@@ -82,6 +84,7 @@ public class FetchSideQuest extends BasicSideQuest {
 				reward = Math.max(1,(int)endFeature.getUnEffectiveLevel());
 				Player.player.addGold(reward);
 				extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+				Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,.4f,0);
 				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,0, .05f);
 				//doesn't help community
 				this.complete();
@@ -94,7 +97,7 @@ public class FetchSideQuest extends BasicSideQuest {
 				endFeature.getTown().helpCommunity(1);
 				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,.2f, 0);
 				this.complete();
-				break;
+				return;
 			case MERCHANT:
 				Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,.1f, 0);
 				Player.player.addMPoints(.2f);
@@ -103,6 +106,15 @@ public class FetchSideQuest extends BasicSideQuest {
 				Player.player.addGold(reward);
 				extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
 				endFeature.getTown().helpCommunity(1);
+				this.complete();
+				return;
+			case HUNTER:
+				Player.player.getPerson().addXp(1);
+				reward =  Math.max(1,(int)endFeature.getUnEffectiveLevel()/3);
+				Gem.AMBER.changeGem(reward);
+				extra.println("Gained "+reward+" amber.");
+				endFeature.getTown().helpCommunity(1);
+				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,.15f, 0);
 				this.complete();
 				return;
 			}

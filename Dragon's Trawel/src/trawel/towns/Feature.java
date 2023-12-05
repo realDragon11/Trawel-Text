@@ -88,7 +88,8 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 		WHUT(new QKey[] {QKey.DEST_WHUT},QKey.GIVE_WHUT),
 		MGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_MGUILD),
 		RGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_RGUILD),
-		HGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_HGUILD);
+		HGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_HGUILD),
+		HUNT_GUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_HUNT_GUILD);
 		public final QKey[] dests;
 		public final QKey give;
 		QRType(QKey[] _dests,QKey _give){
