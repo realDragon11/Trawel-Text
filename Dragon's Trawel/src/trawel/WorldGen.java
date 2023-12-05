@@ -660,72 +660,114 @@ public class WorldGen {
 		
 		//fort somewhere
 		
-		Town kelo = new Town("Kelo",14,opyo,new Point(13,10));
+		Town kelo = new Town("Kelo",14,opyo,new Point(13,10));//FIXME
 		addConnection(mikol,kelo,ConnectType.ROAD,"TODO");
 		addConnection(reahe,kelo,ConnectType.ROAD,"TODO");
 		
-		Town gopuo = new Town("Gopuo",15,opyo,new Point(11,8));
+		Town gopuo = new Town("Gopuo",15,opyo,new Point(11,8));//done?
 		addConnection(kelo,gopuo,ConnectType.ROAD,"TODO");
 		addConnection(mikol,gopuo,ConnectType.ROAD,"TODO");
-		gopuo.addFeature(new Docks("UpTODO", gopuo));
+		gopuo.addFeature(new Inn("Last Landing", 14, gopuo, null));
+		gopuo.addFeature(new Dungeon("Lighthouse",gopuo,40,15,Shape.TOWER,BossType.NONE));//TODO lighthouse
+		gopuo.addTravel();
+		gopuo.addTravel();
+		gopuo.addTravel();
+		gopuo.tTags.add(TownTag.TRAVEL);
 		//ships up
 		
 		Island worea = new Island("Worea",w,IslandType.ISLAND);//island to the west of pipa
+		//island is very unsettling
 		
-		Town lunek = new Town("Lunek",14, worea, new Point(6,9));
+		Town lunek = new Town("Lunek",14, worea, new Point(6,9));//almost done
 		addConnection(pipa,lunek,ConnectType.SHIP,"TODO");
 		addConnection(gopuo,lunek,ConnectType.SHIP,"TODO");
 		//triangle shipping lane
+		lunek.addFeature(new Docks("Harbor of Worries",lunek));
+		lunek.addFeature(new Garden(lunek, "'Spoiled Soil'", 1.0f, PlantFill.WITCH));
+		lunek.addFeature(new WitchHut("'Creepy Cauldron", lunek));
+		//TODO: add 'hunter's guild'
+		lunek.addFeature(new Arena("Hunter's Training-Ground",14,2,70d,30d,45));
+		lunek.tTags.add(TownTag.LAW);
+		//unsettling second
+		lunek.tTags.add(TownTag.UNSETTLING);
+		lunek.tTags.add(TownTag.ALCHEMY);
 		
-		Town eaqu = new Town("Eaqu",14,worea,new Point(2,10));
+		Town eaqu = new Town("Eaqu",14,worea,new Point(2,10));//FIXME
 		addConnection(lunek,eaqu,ConnectType.ROAD,"TODO");
+		eaqu.addFeature(new Graveyard("TODO", eaqu,15));
+		eaqu.addFeature(new Garden(eaqu,"Modest Harvest",.7f,PlantFill.FOOD));
+		eaqu.tTags.add(TownTag.SMALL_TOWN);
+		eaqu.tTags.add(TownTag.HIDDEN);
+		//unsettling last
+		eaqu.tTags.add(TownTag.UNSETTLING);
+		//small isolated town
 		
-		Town celen = new Town("Celen",15,worea,new Point (4,7));
+		Town celen = new Town("Celen",15,worea,new Point (4,7));//done?
 		//shipments up
 		addConnection(lunek,celen,ConnectType.ROAD,"TODO");
 		addConnection(lunek,celen,ConnectType.SHIP,"TODO");
 		addConnection(eaqu,celen,ConnectType.ROAD,"TODO");
+		celen.addFeature(new Inn("'Respite'",15, celen, null));
+		celen.addFeature(new Enchanter("'Malicious Magiks'",15));
+		celen.addFeature(new Grove("Wildering Weald",celen,40,15));
+		celen.addFeature(new Mountain("Perturbing Peaks", 16));
+		celen.addTravel();//one travel
+		
+		celen.tTags.add(TownTag.UNSETTLING);
+		celen.tTags.add(TownTag.VISTAS);
+		
 		
 		Island ityl = new Island("Ityl",w,IslandType.ISLAND);
 		
-		Town beola = new Town("Beola",15,ityl,new Point(8,6));
+		Town beola = new Town("Beola",15,ityl,new Point(8,6));//done
 		addConnection(gopuo,beola,ConnectType.SHIP,"TODO");
 		addConnection(celen,beola,ConnectType.SHIP,"TODO");
 		addConnection(lunek,beola,ConnectType.SHIP,"TODO");
+		beola.addFeature(new Docks("Central Landing",beola));
+		beola.addFeature(new Inn("Tavern on Main",16,beola,null));
+		beola.addFeature(new Inn("Helen's Inn",15,beola,null));
+		beola.addFeature(new Store(beola,15,6));//general store
+		beola.addFeature(new Store(beola,15,10));//food store
+		beola.addFeature(new Doctor("Beloan Clinic", beola));
+		beola.addFeature(new Library("'Publics'", beola));
+		//crammed full since it's a city
+		beola.tTags.add(TownTag.CITY);
+		beola.tTags.add(TownTag.TRAVEL);
 		
-		Town aerna = new Town("Aerna",15,ityl,new Point(12,5));
+		Town aerna = new Town("Aerna",15,ityl,new Point(12,5));//FIXME
 		addConnection(beola,aerna,ConnectType.ROAD,"TODO");
 		addConnection(beola,aerna,ConnectType.SHIP,"TODO");
 		addConnection(gopuo,aerna,ConnectType.SHIP,"TODO");
 		
-		Town jenai = new Town("Jenai",15,ityl,new Point(10,4));
+		Town jenai = new Town("Jenai",15,ityl,new Point(10,4));//FIXME
 		addConnection(beola,jenai,ConnectType.ROAD,"TODO");
 		addConnection(aerna,jenai,ConnectType.ROAD,"TODO");
 		
-		Town defal = new Town("Defal",16,ityl,new Point(8,2));
+		Town defal = new Town("Defal",16,ityl,new Point(8,2));//FIXME
 		addConnection(jenai,defal,ConnectType.ROAD,"TODO");
 		
-		Town nowra = new Town("Nowra",16,ityl,new Point(14,3));
+		Town nowra = new Town("Nowra",16,ityl,new Point(14,3));//FIXME
 		addConnection(aerna,nowra,ConnectType.ROAD,"TODO");
 		addConnection(jenai,nowra,ConnectType.ROAD,"TODO");
 		
 		//fort
-		Town fortKaol = new Town("Fort Kaol",6,ityl,(byte)15,(byte)3, null);
+		Town fortKaol = new Town("Fort Kaol",6,ityl,(byte)15,(byte)3, null);//FIXME
 		addConnection(nowra,fortKaol,ConnectType.ROAD,"TODO");
 		
-		Town jadua = new Town("Jadua",16,ityl,new Point(11,1));
+		Town jadua = new Town("Jadua",16,ityl,new Point(11,1));//FIXME
 		addConnection(defal,jadua,ConnectType.ROAD,"TODO");
 		addConnection(nowra,jadua,ConnectType.ROAD,"TODO");
 		
-		Town ailak = new Town("Ailak",16,ityl,new Point(4,1));
+		Town ailak = new Town("Ailak",16,ityl,new Point(4,1));//FIXME
 		addConnection(defal,ailak,ConnectType.ROAD,"TODO");
 		addConnection(jadua,ailak,ConnectType.TELE,"TODO");
 		
 		Island henak = new Island("Henak",w,IslandType.ISLAND);//has to be teleported to since rocks around it or something
 		
-		Town orean = new Town("Orean",17,henak,new Point(1,4));
+		Town orean = new Town("Orean",17,henak,new Point(1,4));//FIXME
 		addConnection(jadua,orean,ConnectType.TELE,"TODO");
 		addConnection(ailak,orean,ConnectType.TELE,"TODO");
+		//TODO: world teleporter
 		
 		orean.tTags.add(TownTag.HIDDEN);
 		orean.setFirstPrinter(new PrintEvent() {

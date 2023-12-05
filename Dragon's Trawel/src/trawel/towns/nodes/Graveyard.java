@@ -6,13 +6,17 @@ import trawel.towns.Town;
 public class Graveyard extends NodeFeature {
 
 	private static final long serialVersionUID = 1L;
-	public Graveyard(String name,Town t) {
+	public Graveyard(String name,Town t, int goalSize) {
 		this.name = name;
 		town = t;
 		tutorialText = "Graveyard";
 		area_type = Area.GRAVEYARD;
 		tier = getTown().getTier();
-		generate(40);
+		generate(goalSize);
+	}
+	
+	public Graveyard(String name,Town t) {
+		this(name,t,40);
 	}
 	
 	@Override
