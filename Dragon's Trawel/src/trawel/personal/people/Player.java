@@ -1615,14 +1615,14 @@ public class Player extends SuperPerson{
 														int ship = 0;
 														int tele = 0;
 														for (Connection c: t.getConnects()) {
-															switch (c.getType()) {
-															case ROAD:
+															switch (c.getType().type) {
+															case LAND:
 																road++;
 																break;
-															case SHIP:
+															case SEA:
 																ship++;
 																break;
-															case TELE:
+															case MAGIC:
 																tele++;
 																break;
 															}

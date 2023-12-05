@@ -34,6 +34,10 @@ public class Connection implements java.io.Serializable{
 		return WorldGen.distanceBetweenTowns(townA,townB,getType());
 	}
 	
+	public double getRawTime() {
+		return WorldGen.rawConnectTime(townA,townB,getType());
+	}
+	
 	public String getTimeDisp() {
 		return displayTime(getTime());
 	}
@@ -51,12 +55,33 @@ public class Connection implements java.io.Serializable{
 		return "~"+((int)Math.round(time/24)) + " days";
 	}
 	
+	public enum ConnectClass {
+		LAND, SEA, MAGIC
+	}
+	
 	public enum ConnectType {
-		ROAD("road"),SHIP("ship"),TELE("tele");
+		//all times are given in miles per hour, and there are 2 miles per cell accounted for later
+		PATH("path",ConnectClass.LAND,0,0,2.0),//slow walk at 2 miles per hour BETA
+		ROAD("road",ConnectClass.LAND,0,0,3.0),//walk at 3 miles per hour
+		CARV("caravan",ConnectClass.LAND,0.5,0,4.5),//TODO beta speed
+		SHIP("ship",ConnectClass.SEA,1.0,1.0,9.0),
+		TELE("tele",ConnectClass.MAGIC,3.0,0,4.0);
 
+		public final ConnectClass type;
 		private final String desc;
-		ConnectType(String name){
+		public final double startTime;
+		public final double endTime;
+		/**
+		 * cells per hour
+		 * (one cell is 2 miles)
+		 */
+		public final double perHourSpeed;
+		ConnectType(String name, ConnectClass _type, double _startTime, double _endTime, double _speed){
 			desc = name;
+			type = _type;
+			startTime = _startTime;
+			endTime = _endTime;
+			perHourSpeed = _speed/WorldGen.distanceScale;
 		}
 		public String desc() {
 			return desc;
@@ -208,8 +233,12 @@ public class Connection implements java.io.Serializable{
 	
 	public double baseTypeAppeal() {
 		switch (getType()) {
+		case PATH:
+			return .4;
 		case ROAD:
 			return 1;
+		case CARV:
+			return 1.05;
 		case SHIP:
 			return .6;
 		case TELE:

@@ -28,6 +28,7 @@ import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Connection;
+import trawel.towns.Connection.ConnectClass;
 import trawel.towns.Connection.ConnectType;
 import trawel.towns.Feature;
 import trawel.towns.Town;
@@ -164,7 +165,7 @@ public class Docks extends Feature {
 	@Override
 	public void go() {
 		List<Connection> connects = new ArrayList<Connection>();
-		town.getConnects().stream().filter(c -> c.getType() == ConnectType.SHIP).forEach(connects::add);
+		town.getConnects().stream().filter(c -> c.getType().type == ConnectClass.SEA).forEach(connects::add);
 		extra.menuGo(new ScrollMenuGenerator(connects.size(),"n/a","n/a") {
 
 			@Override
@@ -315,7 +316,7 @@ public class Docks extends Feature {
 		List<Town> openSet = new ArrayList<Town>();
 		Set<Town> closedSet = new HashSet<Town>();
 		
-		town.getConnects().stream().filter(c -> c.getType() == ConnectType.SHIP).forEachOrdered(c -> openSet.add(c.otherTown(town)));
+		town.getConnects().stream().filter(c -> c.getType().type == ConnectClass.SEA).forEachOrdered(c -> openSet.add(c.otherTown(town)));
 		//tList.addAll(openSet);
 		//we could add all adjacent towns to possible locations, but this makes seeing if we found any easier if
 		//we decide that we won't show close-flung ports
@@ -327,7 +328,7 @@ public class Docks extends Feature {
 		while (!openSet.isEmpty()) {
 			Town cur = openSet.remove(0);
 			for (Connection c: cur.getConnects()) {
-				if (c.getType() != ConnectType.SHIP) {
+				if (c.getType().type != ConnectClass.SEA) {
 					continue;//not our type
 				}
 				Town other = c.otherTown(cur);

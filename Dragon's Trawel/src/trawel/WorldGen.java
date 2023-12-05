@@ -82,9 +82,6 @@ public class WorldGen {
 	public static World fallBackWorld;
 	
 	public static final double distanceScale = 2;//average distance between towns is like 1-3 units
-	public static final double footTravelPerHour = 3/distanceScale;
-	public static final double shipTravelPerHour =  9/distanceScale;
-	public static final double teleTravelPerHour =  40/distanceScale;
 	public static final double milesInLata = 69;
 	public static final double milesInLonga = 54.6;
 	public static final float unitsInLata = (float) (milesInLata/distanceScale);
@@ -146,7 +143,7 @@ public class WorldGen {
 		unun.setLoreText("The port city of Unun is dominated by a large tower- the Tower of Fate. It's an ancient dungeon home to the mysterious Fatespinner, who seems to ignore the town. Below, on the ground, a prominent inn stands next to the interplanar merchant guild headquarters for this world.");
 		
 		Town tevar = new Town("Tevar",3,rona,new Point(4,5));
-		addConnection(tevar,unun,"road","blue road");
+		addConnection(tevar,unun,ConnectType.CARV,"blue road");
 		tevar.addFeature(new Store(2,6));
 		//tevar.addFeature(new Arena("Epino Arena",5,3,24*30,150,149));
 		//addConnection(homa,tevar,"road","red road");//now you must go through unun
@@ -159,7 +156,7 @@ public class WorldGen {
 		
 		Town hemo = new Town("Hemo",3,rona,new Point(6,6));
 		addConnection(hemo,tevar,ConnectType.ROAD,"purple road");
-		addConnection(hemo,unun,ConnectType.ROAD,"black valley");
+		addConnection(hemo,unun,ConnectType.CARV,"black valley");
 		addConnection(hemo,unun,"ship","neglected current");
 		Store s = new Store(3,6);
 		hemo.addFeature(s);
@@ -172,7 +169,7 @@ public class WorldGen {
 		hemo.setLoreText("Hemo is infamous for the clearing near a witch hut, said to be the only place on the island of Rona that can brew potions properly. Rumor has it the proximity to the forest of vicissitude would normally prevent any success, but a dark rite reversed the town's fortunes.");;
 		
 		Town beal = new Town("Beal",4,rona,(byte)2,(byte)7);
-		addConnection(tevar,beal,ConnectType.ROAD,"Deadlocked Desert");
+		addConnection(tevar,beal,ConnectType.CARV,"Deadlocked Desert");
 		beal.addFeature(new Store("Nomad's Market",4,10).setIntro("A well dressed man who looks different from the rest approaches you, 'Welcome to the market, the herders will trade with anyone, but their customs do not permit haggling. We have aether conversion services in the back.'"));
 		//put mountain in middle
 		beal.addFeature(new Mountain("Rolling Slopes", 3));
@@ -220,7 +217,7 @@ public class WorldGen {
 		haka.setLoreText("A giant mountain looms over Haka's colosseum- both are the largest on this island.");
 
 		Town fortMerida = new Town("Fort Merida",6, rona,(byte) 2,(byte)10, null);
-		addConnection(fortMerida,haka,"road","mountain pass");
+		addConnection(fortMerida,haka,ConnectType.PATH,"mountain pass");
 		fortMerida.addFeature(new WizardTower(6));
 		fortMerida.tTags.add(TownTag.HIDDEN);
 		fortMerida.setLoreText("While one of the most well-known forts in the recent years, Fort Merida leverages its annoying location as much as it can.");
@@ -244,7 +241,7 @@ public class WorldGen {
 		
 		Town revan = new Town("Revan",4,apa,new Point(3,1));
 		addConnection(revan,alhax,"ship","green passageway");
-		addConnection(revan,alhax,"road","the tops");
+		addConnection(revan,alhax,ConnectType.CARV,"the tops");
 		revan.addFeature(new Store(2,5));
 		revan.addFeature(new Store(2,1));
 		revan.addFeature(new Store(2,2));
@@ -343,8 +340,8 @@ public class WorldGen {
 		owal.setLoreText("Newer in the grand scheme of Eoano, Owal was formed to provide food for the now-unsuitable island of Epan south of it.");
 		
 		Town repa = new Town("Repa",10,teran,new Point(14,6));
-		addConnection(repa,tunka,ConnectType.ROAD,"right-over road");
-		addConnection(repa,owal,ConnectType.ROAD,"Former Glory Road");
+		addConnection(repa,tunka,ConnectType.CARV,"right-over road");
+		addConnection(repa,owal,ConnectType.CARV,"Former Glory Road");
 		//add connection to a new world area
 		erin.addFeature(new Mountain("Mountain Teleporter Brace",9).setIntro("The mountain thrums with arcane energy."));
 		repa.addTravel();
@@ -383,7 +380,7 @@ public class WorldGen {
 		senal.setLoreText("A few Eras ago, Senal was used as a trade route. But the island of Epan had its land salted, and civilization moved north, to Alhax. The mountain pass to Quen is oft alleged to be untraversable, only to be proven usable by desperate migrants seeking the Better Futures company here.");
 		
 		Town quen = new Town("Quen",9,epan,(byte)12,(byte)10);
-		addConnection(quen,senal,ConnectType.ROAD,"Derelict Pass");
+		addConnection(quen,senal,ConnectType.PATH,"Derelict Pass");
 		quen.addFeature(new Dungeon("Blasted Palace", quen,30,12, Shape.TOWER,BossType.OLD_QUEEN));
 		quen.addFeature(new Library("Empire Records Bookstore", quen).setIntro("'While all our books may be copies, they came straight from the source. Some of which are still cursed to never leave the Blasted Palace.'"));
 		quen.addFeature(new Dungeon("Crumbling Fort", quen,40,10, Shape.NONE, BossType.NONE));
@@ -439,7 +436,7 @@ public class WorldGen {
 		holik.tTags.add(TownTag.TRAVEL);
 		
 		Town yonuen = new Town("Yonuen",11, apen, new Point(8,19));
-		addConnection(holik,yonuen,ConnectType.ROAD,"bliz road");
+		addConnection(holik,yonuen,ConnectType.CARV,"bliz road");
 		yonuen.addFeature(new Store(10));
 		yonuen.addFeature(new Store(9));
 		yonuen.addFeature(new Dungeon("Sky-Sundering Tower", yonuen, Shape.TOWER,BossType.FATESPINNER));
@@ -459,7 +456,7 @@ public class WorldGen {
 		//unika.addFeature(new Inn("unika inn",10,unika,null));
 		
 		Town peana = new Town("Peana",12, apen, new Point(9,16));
-		addConnection(holik,peana,ConnectType.ROAD,"blue road");
+		addConnection(holik,peana,ConnectType.CARV,"blue road");
 		addConnection(unika,peana,ConnectType.ROAD,"green road");
 		//trying to make a slight reference to death/hell metal music
 		peana.addFeature(new Inn("'Dirges for the Damned'",12,peana,null).setIntro("A bard is playing a loud and harsh magical lute.").setOutro("You leave before the music can grow on you."));
@@ -473,7 +470,7 @@ public class WorldGen {
 		
 		Town inka = new Town("Inka",12, apen, new Point(7,14));
 		addConnection(unika,inka,ConnectType.ROAD,"youn road");
-		addConnection(inka,peana,ConnectType.ROAD,"era road");
+		addConnection(inka,peana,ConnectType.CARV,"era road");
 		inka.addFeature(new Docks("Ironclad Shipments",inka));
 		inka.addFeature(new Mine("First Striking Shaft", inka,60,8,NodeFeature.Shape.NONE,BossType.NONE));
 		inka.addFeature(new Mine("Motherload Mine", inka,30,14,NodeFeature.Shape.NONE,BossType.NONE));
@@ -512,8 +509,8 @@ public class WorldGen {
 		xeyn.setLoreText("Xeyn is a fairly idyllic farmstead- as long as you stay out of the forest. Those whose cattle venture there write them off as a loss, and the children of Xeyn will always remember the mouths, even when they grow too old to see them.");
 		
 		Town mikol = new Town("Mikol",13,opyo,new Point(10,11));
-		addConnection(pipa,mikol,ConnectType.ROAD,"Twin Thrones Road");
-		addConnection(xeyn,mikol,ConnectType.ROAD,"Well Traveled Route");
+		addConnection(pipa,mikol,ConnectType.CARV,"Twin Thrones Road");
+		addConnection(xeyn,mikol,ConnectType.CARV,"Well Traveled Route");
 		mikol.addFeature(new Dungeon("Eerie Palace Portal",mikol,40,15, Shape.TOWER,BossType.OLD_QUEEN));
 		mikol.addFeature(new Garden(mikol,"Royal Gardens",0,PlantFill.FOOD));
 		mikol.addFeature(new HeroGuild("Empyphic Palace",12));//empyphic - empyrean + seraphic
@@ -525,8 +522,8 @@ public class WorldGen {
 		mikol.setLoreText("The Empyphic royals in Mikol are largely bureaucratic, having survived the ages via offering administrative services. Those in the dusk-soaked dimension a portal has opened to seem to be quite the opposite, preferring spears to pens.");
 		
 		Town reahe = new Town("Reahe",14,opyo,new Point(14,13));
-		addConnection(xeyn,reahe,ConnectType.ROAD,"TODO");
-		addConnection(mikol,reahe,ConnectType.ROAD,"TODO");
+		addConnection(xeyn,reahe,ConnectType.CARV,"TODO");
+		addConnection(mikol,reahe,ConnectType.CARV,"TODO");
 		Store reaheStore = new Store("Forgeheart Stall",14,6);
 		reahe.addFeature(reaheStore);
 		reahe.addFeature(new Blacksmith("Forgeheart's Smithy",14,reaheStore));
@@ -544,7 +541,7 @@ public class WorldGen {
 		
 		Town gopuo = new Town("Gopuo",15,opyo,new Point(11,8));//done?
 		addConnection(kelo,gopuo,ConnectType.ROAD,"TODO");
-		addConnection(mikol,gopuo,ConnectType.ROAD,"TODO");
+		addConnection(mikol,gopuo,ConnectType.CARV,"TODO");
 		gopuo.addFeature(new Inn("Last Landing", 14, gopuo, null));
 		gopuo.addFeature(new Dungeon("Lost Lighthouse",gopuo,40,13,Shape.RIGGED_TOWER,BossType.YORE));
 		gopuo.addTravel();
@@ -572,7 +569,7 @@ public class WorldGen {
 		lunek.tTags.add(TownTag.ALCHEMY);
 		
 		Town eaqu = new Town("Eaqu",14,worea,new Point(2,10));//FIXME
-		addConnection(lunek,eaqu,ConnectType.ROAD,"TODO");
+		addConnection(lunek,eaqu,ConnectType.PATH,"TODO");
 		eaqu.addFeature(new Graveyard("Churchyard", eaqu,15));
 		eaqu.addFeature(new Garden(eaqu,"Modest Harvest",.7f,PlantFill.FOOD));
 		eaqu.tTags.add(TownTag.SMALL_TOWN);
@@ -585,7 +582,7 @@ public class WorldGen {
 		//shipments up
 		addConnection(lunek,celen,ConnectType.ROAD,"TODO");
 		addConnection(lunek,celen,ConnectType.SHIP,"TODO");
-		addConnection(eaqu,celen,ConnectType.ROAD,"TODO");
+		addConnection(eaqu,celen,ConnectType.PATH,"TODO");
 		celen.addFeature(new Inn("'Respite'",15, celen, null));
 		celen.addFeature(new Enchanter("'Malicious Magiks'",15));
 		celen.addFeature(new Grove("Wildering Weald",celen,40,15));
@@ -705,18 +702,19 @@ public class WorldGen {
 	 */
 	public static double distanceBetweenTowns(Town t1,Town t2,ConnectType connectType) {
 		if (!t1.getIsland().getWorld().equals(t2.getIsland().getWorld())) {
-			return 100/teleTravelPerHour;
+			return connectType.startTime+connectType.endTime+(100/connectType.perHourSpeed);
 		}
-		switch (connectType) {
-		case ROAD:
-			return pointDistance(t1,t2)/footTravelPerHour;
-		case SHIP:
-			return 1+pointDistance(t1,t2)/shipTravelPerHour;//ships have 1 hour of starting and ending time
-		case TELE:
-			return 3+(pointDistance(t1,t2)/teleTravelPerHour);//teleporters have 3 hours of rituals + a distance modifier on that
+		return connectType.startTime+connectType.endTime+(pointDistance(t1,t2)/connectType.perHourSpeed);
+	}
+	
+	/**
+	 * @return hours
+	 */
+	public static double rawConnectTime(Town t1,Town t2,ConnectType connectType) {
+		if (!t1.getIsland().getWorld().equals(t2.getIsland().getWorld())) {
+			return 100/connectType.perHourSpeed;
 		}
-		//fallback
-		return pointDistance(t1,t2);
+		return pointDistance(t1,t2)/connectType.perHourSpeed;
 	}
 	
 	public static double pointDistance(Point a, Point b) {

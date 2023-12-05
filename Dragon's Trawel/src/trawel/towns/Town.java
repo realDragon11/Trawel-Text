@@ -43,6 +43,7 @@ import trawel.time.ContextType;
 import trawel.time.TContextOwner;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
+import trawel.towns.Connection.ConnectClass;
 import trawel.towns.Connection.ConnectType;
 import trawel.towns.Feature.RemoveAgentFromFeatureEvent;
 import trawel.towns.events.TownFlavorFactory;
@@ -188,14 +189,14 @@ public class Town extends TContextOwner{
 		for (Connection c: connects) {
 			Town other = c.otherTown(this);
 			listMap.put(other, listMap.getOrDefault(other,0)+1);
-			switch (c.getType()) {
-			case ROAD:
+			switch (c.getType().type) {
+			case LAND:
 				hasRoads = true;
 				break;
-			case SHIP:
+			case SEA:
 				hasPort = true;
 				break;
-			case TELE:
+			case MAGIC:
 				hasTele = true;
 				break;
 			}
@@ -345,7 +346,7 @@ public class Town extends TContextOwner{
 
 						@Override
 						public boolean go() {
-							goConnects(ConnectType.ROAD);
+							goConnects(ConnectClass.LAND);
 							return true;
 						}});
 					if (Player.getTutorial()) {
@@ -367,7 +368,7 @@ public class Town extends TContextOwner{
 
 						@Override
 						public boolean go() {
-							goConnects(ConnectType.TELE);
+							goConnects(ConnectClass.MAGIC);
 							return true;
 						}});
 					if (Player.getTutorial()) {
@@ -395,7 +396,7 @@ public class Town extends TContextOwner{
 
 							@Override
 							public boolean go() {
-								goConnects(ConnectType.SHIP);
+								goConnects(ConnectClass.SEA);
 								return true;
 							}});
 						if (Player.getTutorial()) {
@@ -472,39 +473,7 @@ public class Town extends TContextOwner{
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> mList = new ArrayList<MenuItem>();
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "return to " + connects.get(0).otherTown(features.get(0).getTown()).getName();
-					}
-
-					@Override
-					public boolean go() {
-						assert connects.size() == 1;
-						Connection c = connects.get(0);
-						Town t = c.otherTown(features.get(0).getTown());
-						extra.println("You return to " + t.getName());
-						switch (c.getType()) {
-						case ROAD:
-							Networking.setArea(Area.ROADS);
-							break;
-						case SHIP:
-							Networking.setArea(Area.PORT);
-							break;
-						case TELE:
-							Networking.setArea(Area.TOWN);
-							break;
-						}
-						Player.addTime(c.getTime());
-						mainGame.globalPassTime();
-						if (c.getType() != ConnectType.TELE && extra.chanceIn(1,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
-							wanderForConnect(c);
-						}
-						Player.player.setLocation(t);
-						return true;
-					}
-				});
+				mList.add(getConnectMenu(connects.get(0)));
 				int i = 0;
 				int fSize = features.size();//testing this out instead of a foreach
 				while (i < fSize) {
@@ -580,39 +549,72 @@ public class Town extends TContextOwner{
 			public boolean go() {
 				Town t = c.otherTown(Town.this);
 				switch (c.getType()) {
-				case ROAD:
+				case ROAD: case CARV:
+					if (c.getType().startTime > 0) {
+						Player.addTime(c.getType().startTime);
+						mainGame.globalPassTime();
+					}
 					if (mainGame.displayTravelText) {
 						extra.print("You start to travel to " + t.getName()+"... ");
 					}
+					double wayMark = extra.randFloat()*c.getRawTime();
+					Player.addTime(wayMark);
+					mainGame.globalPassTime();
+					//will get interrupted at random time
 					if (extra.chanceIn(4,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
 						wander(3);
 					}
-					Player.addTime(c.getTime());
+					Player.addTime(c.getRawTime()-wayMark);
 					mainGame.globalPassTime();
 					if (mainGame.displayTravelText) {
 						extra.println("You arrive in " + t.getName()+".");
+					}
+					if (c.getType().endTime > 0) {
+						Player.addTime(c.getType().endTime);
+						mainGame.globalPassTime();
 					}
 					break;
 				case SHIP:
+					if (c.getType().startTime > 0) {
+						Player.addTime(c.getType().startTime);
+						mainGame.globalPassTime();
+					}
 					if (mainGame.displayTravelText) {
 						extra.print("You start to sail to " + t.getName() +"... ");
 					}
+					//will get interrupted at random time
+					double wayMarkS = extra.randFloat()*c.getRawTime();
+					Player.addTime(wayMarkS);
+					mainGame.globalPassTime();
 					if (extra.chanceIn(4,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
 						wanderShip(3);
 					}
-					Player.addTime(c.getTime());
+					Player.addTime(c.getRawTime()-wayMarkS);
 					mainGame.globalPassTime();
 					if (mainGame.displayTravelText) {
 						extra.println("You arrive in " + t.getName()+".");
 					}
+					if (c.getType().endTime > 0) {
+						Player.addTime(c.getType().endTime);
+						mainGame.globalPassTime();
+					}
 					break;
 				case TELE:
+					if (c.getType().startTime > 0) {
+						Player.addTime(c.getType().startTime);
+						mainGame.globalPassTime();
+					}
 					if (mainGame.displayTravelText) {
 						extra.println("You teleport to " + t.getName()+".");
 					}
 					Networking.sendStrong("PlayDelay|sound_teleport|1|");
-					Player.addTime(c.getTime());
+					Player.addTime(c.getRawTime());
 					mainGame.globalPassTime();
+					//no land teleport message
+					if (c.getType().endTime > 0) {
+						Player.addTime(c.getType().endTime);
+						mainGame.globalPassTime();
+					}
 					break;
 
 				}
@@ -625,15 +627,15 @@ public class Town extends TContextOwner{
 			}};
 	}
 	
-	private void goConnects(ConnectType type) {
+	private void goConnects(ConnectClass type) {
 		switch (type) {
-		case ROAD:
+		case LAND:
 			Networking.setArea(Area.ROADS);
 			break;
-		case SHIP:
+		case SEA:
 			Networking.setArea(Area.PORT);
 			break;
-		case TELE:
+		case MAGIC:
 			Networking.setArea(Area.MISC_SERVICE);
 			break;
 		}
@@ -643,12 +645,12 @@ public class Town extends TContextOwner{
 			public List<MenuItem> gen() {
 				List<MenuItem> list = new ArrayList<MenuItem>();
 				for (Connection c: connects) {
-					if (c.getType() == type){
+					if (c.getType().type == type){
 						list.add(getConnectMenu(c));
 					}
 				}
 				switch (type) {
-				case ROAD:
+				case LAND:
 					list.add(new MenuSelect() {
 
 						@Override
@@ -664,7 +666,7 @@ public class Town extends TContextOwner{
 							return false;
 						}});
 					break;
-				case SHIP:
+				case SEA:
 					list.add(new MenuSelect() {
 
 						@Override
@@ -957,16 +959,6 @@ public class Town extends TContextOwner{
 		return wanderShip(force ? 0 : 3);
 	}
 	
-	private boolean wanderForConnect(Connection c) {
-		switch (c.getType()) {
-		case ROAD:
-			return this.wander(3);
-		case SHIP:
-			return this.wanderShip(3);
-		}
-		return false;
-	}
-	
 	public ArrayList<Feature> getQuestLocationsInRange(int i){
 		ArrayList<Town> tList = new ArrayList<Town>();
 		ArrayList<Town> addList = new ArrayList<Town>();
@@ -974,7 +966,7 @@ public class Town extends TContextOwner{
 		for (int v = 0; v < i;v++) {
 			for (Town t: tList) {
 				for (Connection c: t.getConnects()) {
-					if (c.getType() == ConnectType.TELE) {
+					if (c.getType().type == ConnectClass.MAGIC) {
 						continue;
 					}
 					Town f = c.otherTown(t);
