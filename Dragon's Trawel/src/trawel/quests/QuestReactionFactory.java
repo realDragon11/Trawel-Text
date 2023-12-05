@@ -133,8 +133,10 @@ public class QuestReactionFactory {
 				}
 			}}) );
 		
-		reactions.add(new QuestReaction(new QKey[] {QKey.EVIL},new QKey[] {QKey.LAWFUL},
-				new QKey[][] {new QKey[] {QKey.GIVE_INN,QKey.GIVE_RGUILD,QKey.GIVE_SLUM}
+		reactions.add(new QuestReaction(new QKey[] {},new QKey[] {QKey.LAWFUL,QKey.GOOD},
+				new QKey[][] {
+						new QKey[] {QKey.GIVE_INN,QKey.GIVE_RGUILD,QKey.GIVE_SLUM},//public place
+						new QKey[] {QKey.FETCH}//only fetch quests
 						}, new QuestTriggerEvent() {
 
 			@Override
@@ -253,7 +255,7 @@ public class QuestReactionFactory {
 				extra.println(extra.PRE_BATTLE+intro+text);
 				
 				Combat c = Player.player.fightWith(p);
-				if (c.playerWon() >= 0) {
+				if (c.playerWon() > 0) {
 					Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
 				}else {
 					extra.println(p.getName() +" runs off the road.");
@@ -261,7 +263,7 @@ public class QuestReactionFactory {
 				}
 			}}) );
 		//vampire wants to stop you
-		reactions.add(new QuestReaction(new QKey[] {QKey.GIVE_MGUILD},new QKey[] {QKey.EVIL},new QKey[][] {new QKey[] {QKey.FETCH,QKey.CLEANSE,QKey.KILL}}, new QuestTriggerEvent() {
+		reactions.add(new QuestReaction(new QKey[] {QKey.GIVE_HUNT_GUILD},new QKey[] {QKey.EVIL},new QKey[][] {new QKey[] {QKey.FETCH,QKey.CLEANSE,QKey.KILL}}, new QuestTriggerEvent() {
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
 				Person p = RaceFactory.makeVampire(bumperLocation.getTier());
@@ -291,7 +293,7 @@ public class QuestReactionFactory {
 				extra.println(extra.PRE_BATTLE+intro+text);
 				
 				Combat c = Player.player.fightWith(p);
-				if (c.playerWon() >= 0) {
+				if (c.playerWon() > 0) {
 					Player.player.questTrigger(TriggerType.CLEANSE,"vampire", 1);
 				}else {
 					extra.println(p.getName() +" flies off.");
