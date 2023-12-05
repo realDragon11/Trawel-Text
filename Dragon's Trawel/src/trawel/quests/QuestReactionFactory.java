@@ -17,6 +17,8 @@ import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Agent.AgentGoal;
+import trawel.quests.Quest.TriggerType;
+import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
 import trawel.towns.Town;
 import trawel.towns.World;
@@ -218,6 +220,83 @@ public class QuestReactionFactory {
 						return list;
 					}});
 				Networking.clearSide(1);
+			}}) );
+		//only interrupt you doing possibly heroic things, they don't know the importance
+		//doesn't really care about objective, just wants to mess with you, so no kill quests
+		reactions.add(new QuestReaction(new QKey[] {QKey.GIVE_HGUILD},new QKey[] {},new QKey[][] {new QKey[] {QKey.FETCH,QKey.CLEANSE}}, new QuestTriggerEvent() {
+			@Override
+			public void trigger(BasicSideQuest q, Town bumperLocation) {
+				Person p = RaceFactory.getMugger(bumperLocation.getTier());
+				String intro, text;
+				switch (extra.randRange(1,3)) {
+				case 1: default:
+					intro = "A voice cries out: ";
+					break;
+				case 2:
+					intro = "A bandit scampers unto the road and proclaims: ";
+					break;
+				case 3:
+					intro = "A hooded figure unveils in the road and speaks: ";
+					break;
+				}
+				switch (extra.randRange(1,3)) {
+				case 1: default:
+					text = "\"We don't take kindly to wannabe heroes around here!\"";
+					break;
+				case 2:
+					text = "\"The Rogue's Guild sends its regards!\"";
+					break;
+				case 3:
+					text = "\"Law shall not prevail!\"";
+					break;
+				}
+				extra.println(extra.PRE_BATTLE+intro+text);
+				
+				Combat c = Player.player.fightWith(p);
+				if (c.playerWon() >= 0) {
+					Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
+				}else {
+					extra.println(p.getName() +" runs off the road.");
+					bumperLocation.addOccupant(p.getMakeAgent(AgentGoal.NONE));
+				}
+			}}) );
+		//vampire wants to stop you
+		reactions.add(new QuestReaction(new QKey[] {QKey.GIVE_MGUILD},new QKey[] {QKey.EVIL},new QKey[][] {new QKey[] {QKey.FETCH,QKey.CLEANSE,QKey.KILL}}, new QuestTriggerEvent() {
+			@Override
+			public void trigger(BasicSideQuest q, Town bumperLocation) {
+				Person p = RaceFactory.makeVampire(bumperLocation.getTier());
+				String intro, text;
+				switch (extra.randRange(1,3)) {
+				case 1: default:
+					intro = "A vampire emerges from the shadows and declares: ";
+					break;
+				case 2:
+					intro = "A swarm of bats descends and forms into a figure who shouts: ";
+					break;
+				case 3:
+					intro = "A hooded figure unveils in the road and speaks: ";
+					break;
+				}
+				switch (extra.randRange(1,3)) {
+				case 1: default:
+					text = "\"We don't take kindly to wannabe hunters around here!\"";
+					break;
+				case 2:
+					text = "\"The Night sends its regards!\"";
+					break;
+				case 3:
+					text = "\"Darkness shall prevail!\"";
+					break;
+				}
+				extra.println(extra.PRE_BATTLE+intro+text);
+				
+				Combat c = Player.player.fightWith(p);
+				if (c.playerWon() >= 0) {
+					Player.player.questTrigger(TriggerType.CLEANSE,"vampire", 1);
+				}else {
+					extra.println(p.getName() +" flies off.");
+					Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
+				}
 			}}) );
 		
 		Collections.shuffle(reactions);
