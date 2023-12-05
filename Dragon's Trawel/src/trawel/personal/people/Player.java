@@ -43,6 +43,7 @@ import trawel.personal.item.Seed;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Armor.ArmorQuality;
 import trawel.personal.item.solid.DrawBane;
+import trawel.personal.item.solid.Gem;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.people.Agent.AgentGoal;
@@ -85,7 +86,7 @@ public class Player extends SuperPerson{
 	public int merchantLevel = 1;
 	public Town lastTown = null;
 	private double merchantPoints = 0;
-	public int emeralds = 0, rubies = 0, sapphires = 0;
+	public EnumMap<Gem,Integer> gems = new EnumMap<>(Gem.class);
 	
 	private EnumMap<AltarForce,Integer> forceRewards = new EnumMap<>(AltarForce.class);
 	private EnumMap<AltarForce,Float> forceRelations = new EnumMap<>(AltarForce.class);
@@ -822,7 +823,7 @@ public class Player extends SuperPerson{
 									@Override
 									public boolean go() {
 										Player.player.getPerson().getBag().deepDisplay();
-										extra.println("You have " + emeralds + " emeralds, " + rubies +" rubies, and " + sapphires +" sapphires.");
+										extra.println("Current Gems: "+Gem.playerGems());
 										return false;
 									}});
 								invList.add(new MenuSelect() {

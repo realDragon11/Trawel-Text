@@ -13,6 +13,7 @@ import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
+import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.towns.World;
@@ -455,15 +456,15 @@ public class DungeonNode implements NodeType{
 			}else {
 				switch (extra.randRange(1,3)) {
 				case 1:
-					Player.player.emeralds++;
+					Gem.EMERALD.changeGem(1);
 					extra.println("You open the " + holder.getStorageFirstClass(node,String.class) + " and find an emerald!");
 					break;
 				case 2:
-					Player.player.rubies++;
+					Gem.RUBY.changeGem(1);
 					extra.println("You open the " + holder.getStorageFirstClass(node,String.class) + " and find a ruby!");
 					break;
 				case 3:
-					Player.player.sapphires++;
+					Gem.SAPPHIRE.changeGem(1);
 					extra.println("You open the " + holder.getStorageFirstClass(node,String.class) + " and find a sapphire!");
 					break;
 				}

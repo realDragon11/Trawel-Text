@@ -12,6 +12,7 @@ import trawel.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
+import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
 import trawel.quests.CleanseSideQuest;
 import trawel.quests.CleanseSideQuest.CleanseType;
@@ -98,27 +99,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 						}while (b != null);
 						return false;
 					}});
-				list.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						if (Player.player.emeralds == 0) {
-							return "Donate Emerald. (none)";
-						}
-						return "Donate Emerald. ("+Player.player.emeralds+")";
-					}
-
-					@Override
-					public boolean go() {
-						if (Player.player.emeralds > 0) {
-							Player.player.addMPoints(10);
-							extra.println("You donate an emerald.");
-							Player.player.emeralds--;
-						}else {
-							extra.println("You have no emeralds to donate.");
-						}
-						return false;
-					}});
+				
 				list.add(new MenuSelect() {
 
 					@Override
@@ -157,7 +138,27 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 							}});
 						return false;
 					}});
-				list.add(new MenuBack("leave"));
+				if (Gem.EMERALD.knowsGem() && Gem.EMERALD.getGem() > 0) {
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Donate Emerald. ("+Gem.EMERALD.getGem()+")";
+						}
+
+						@Override
+						public boolean go() {
+							if (Gem.EMERALD.getGem() > 0) {
+								Player.player.addMPoints(10);
+								extra.println("You donate an emerald.");
+								Gem.EMERALD.changeGem(-1);
+							}else {
+								extra.println("You have no emeralds to donate.");
+							}
+							return false;
+						}});
+				}
+				list.add(new MenuBack("Leave."));
 				return list;
 			}});
 	}

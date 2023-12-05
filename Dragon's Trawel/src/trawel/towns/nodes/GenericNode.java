@@ -17,6 +17,7 @@ import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceID;
 import trawel.personal.item.Seed;
 import trawel.personal.item.solid.DrawBane;
+import trawel.personal.item.solid.Gem;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
 import trawel.personal.people.Player;
@@ -545,16 +546,16 @@ public class GenericNode implements NodeType {
 			switch (matName) {
 			case "emerald":
 				subType = 1;
-				Player.player.emeralds++;
+				Gem.EMERALD.changeGem(1);
 				extra.println("You mine the vein and claim an "+m.color+"emerald!");
 				break;
 			case "ruby":
-				Player.player.rubies++;
+				Gem.RUBY.changeGem(1);
 				extra.println("You mine the vein and claim a "+m.color+"ruby!");
 				subType = 2;
 				break;
 			case "sapphire":
-				Player.player.sapphires++;
+				Gem.SAPPHIRE.changeGem(1);
 				extra.println("You mine the vein and claim a "+m.color+"sapphire!");
 				subType = 3;
 				break;

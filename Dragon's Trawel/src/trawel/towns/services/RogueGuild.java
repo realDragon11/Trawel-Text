@@ -1,5 +1,6 @@
 package trawel.towns.services;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import derg.menus.MenuBack;
@@ -7,11 +8,13 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import derg.menus.ScrollMenuGenerator;
 import trawel.Networking.Area;
 import trawel.extra;
 import trawel.factions.FBox;
 import trawel.factions.FBox.FSub;
 import trawel.factions.Faction;
+import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
 import trawel.quests.FetchSideQuest;
 import trawel.quests.FetchSideQuest.FetchType;
@@ -85,61 +88,6 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Request Sapphires";
-					}
-
-					@Override
-					public boolean go() {
-						while (true) {
-						int cost = 25;
-						float spenda = FBox.getSpendableFor(Player.player.getPerson().facRep.getFacRep(Faction.ROGUE));
-						extra.println("Request a sapphire? cost: " +cost + "/"+extra.format2(spenda));
-						if (extra.yesNo()) {
-							if (cost <= spenda) {
-								Player.player.factionSpent.addFactionRep(Faction.ROGUE,cost,0);
-								Player.player.sapphires++;
-							}else {
-								extra.println("You do not have enough spendable reputation.");
-								break;
-							}
-						}else {
-							break;
-						}
-						}
-						return false;
-					}
-				});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "Donate a Sapphire.";
-					}
-
-					@Override
-					public boolean go() {
-						while (true) {
-						int cost = 10;
-						extra.println("Donate a sapphire? You have " + Player.player.sapphires);
-						if (extra.yesNo()) {
-							if (Player.player.sapphires > 0) {
-								Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,cost,0);
-								Player.player.sapphires--;
-							}else {
-								extra.println("You do not have any sapphires.");
-								break;
-							}
-						}else {
-							break;
-						}
-						}
-						return false;
-					}
-				});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
 						return "Job Board (Sidequests).";
 					}
 
@@ -162,6 +110,63 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 							}});
 						return false;
 					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Request Sapphires";
+					}
+
+					@Override
+					public boolean go() {
+						while (true) {
+						int cost = 25;
+						float spenda = FBox.getSpendableFor(Player.player.getPerson().facRep.getFacRep(Faction.ROGUE));
+						extra.println("Request a sapphire? cost: " +cost + "/"+extra.format2(spenda));
+						if (extra.yesNo()) {
+							if (cost <= spenda) {
+								Player.player.factionSpent.addFactionRep(Faction.ROGUE,cost,0);
+								Gem.SAPPHIRE.changeGem(1);
+							}else {
+								extra.println("You do not have enough spendable reputation.");
+								break;
+							}
+						}else {
+							break;
+						}
+						}
+						return false;
+					}
+				});
+				if (Gem.SAPPHIRE.knowsGem() && Gem.SAPPHIRE.getGem() > 0) {
+					mList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Donate a Sapphire.";
+						}
+
+						@Override
+						public boolean go() {
+							while (true) {
+								int cost = 10;
+								extra.println("Donate a sapphire? You have " + Gem.SAPPHIRE.getGem());
+								if (extra.yesNo()) {
+									if (Gem.SAPPHIRE.getGem() > 0) {
+										Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,cost,0);
+										Gem.SAPPHIRE.changeGem(-1);
+									}else {
+										extra.println("You do not have any sapphires.");
+										break;
+									}
+								}else {
+									break;
+								}
+							}
+							return false;
+						}
+					});
+				}
 				mList.add(new MenuBack("Leave."));
 				return mList;
 			}});
@@ -204,7 +209,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "current gems: (ERS)" + Player.player.emeralds + " " + Player.player.rubies + " " + Player.player.sapphires;
+						return "Current Gems: " + Gem.playerGems();
 					}
 				});
 				mList.add(new MenuLine() {
@@ -269,13 +274,94 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 						return false;
 					}
 				});
-				for (GemType g1: GemType.values()) {
-					for (GemType g2: GemType.values()) {
-						if (g1 == g2) {
-							continue;
+				final List<Gem> known = Gem.knownGems();
+				if (known.size() < 2) {
+					mList.add(new MenuLine() {
+
+						@Override
+						public String title() {
+							return "Not enough Gems scouted.";
+						}});
+				}else {
+					mList.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Select Gems Target.";
 						}
-						mList.add(new LaunderGem(g1,g2));
-					}
+
+						@Override
+						public boolean go() {
+							
+							extra.menuGo(new ScrollMenuGenerator(known.size(),"last <> gems","next <> gems") {
+
+								@Override
+								public List<MenuItem> forSlot(int i) {
+									return Collections.singletonList(new MenuSelect() {
+										@Override
+										public String title() {
+											return known.get(i).plural;
+										}
+										@Override
+										public boolean go() {
+											List<Gem> others = new ArrayList<Gem>();
+											others.addAll(known);
+											others.remove(known.get(i));
+											extra.menuGo(new ScrollMenuGenerator(others.size(),"last <> gems","next <> gems") {
+
+												@Override
+												public List<MenuItem> forSlot(int i) {
+													return Collections.singletonList(new LaunderGem(known.get(i),others.get(i)));
+												}
+
+												@Override
+												public List<MenuItem> header() {
+													List<MenuItem> list = new ArrayList<MenuItem>();
+													list.add(new MenuLine() {
+														@Override
+														public String title() {
+															return "Credits: " + Player.player.launderCredits;
+														}});
+													list.add(new MenuLine() {
+														@Override
+														public String title() {
+															return "Current Gems: " + Gem.playerGems();
+														}});
+													return list;
+												}
+
+												@Override
+												public List<MenuItem> footer() {
+													return Collections.singletonList(new MenuBack());
+												}});
+											return false;
+										}}
+									);
+								}
+
+								@Override
+								public List<MenuItem> header() {
+									List<MenuItem> list = new ArrayList<MenuItem>();
+									list.add(new MenuLine() {
+										@Override
+										public String title() {
+											return "Credits: " + Player.player.launderCredits;
+										}});
+									list.add(new MenuLine() {
+										@Override
+										public String title() {
+											return "Current Gems: " + Gem.playerGems();
+										}});
+									return list;
+								}
+
+								@Override
+								public List<MenuItem> footer() {
+									return Collections.singletonList(new MenuBack());
+								}
+							});
+							return false;
+						}});
 				}
 				mList.add(new MenuBack());
 				return mList;
@@ -283,293 +369,33 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 		
 	}
 	
-	public void launderE() {
-		extra.menuGo(new MenuGenerator() {
-
-			@Override
-			public List<MenuItem> gen() {
-				List<MenuItem> mList = new ArrayList<MenuItem>();
-				mList.add(new MenuLine() {
-
-					@Override
-					public String title() {
-						return "current emeralds and credits: " + Player.player.emeralds + " " + Player.player.launderCredits;
-					}
-				});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "launder to a ruby";
-					}
-
-					@Override
-					public boolean go() {
-						if (Player.player.emeralds > 0 && Player.player.launderCredits > 0) {
-							Player.player.emeralds--;
-							Player.player.launderCredits--;
-							Player.player.rubies++;
-						}
-						return false;
-					}
-				});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "launder to a sapphire";
-					}
-
-					@Override
-					public boolean go() {
-						if (Player.player.emeralds > 0 && Player.player.launderCredits > 0) {
-							Player.player.emeralds--;
-							Player.player.launderCredits--;
-							Player.player.sapphires++;
-						}
-						return false;
-					}
-				});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "quickly sell an emerald (750 "+World.currentMoneyString()+")";
-					}
-
-					@Override
-					public boolean go() {
-						if (Player.player.emeralds > 0) {
-							Player.player.emeralds--;
-							Player.player.addGold(750);
-							Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
-						}
-						return false;
-					}
-				});
-				mList.add(new MenuBack());
-				return mList;
-			}});
-	}
-	
-	public void launderR() {
-		extra.menuGo(new MenuGenerator() {
-
-			@Override
-			public List<MenuItem> gen() {
-				List<MenuItem> mList = new ArrayList<MenuItem>();
-				mList.add(new MenuLine() {
-
-					@Override
-					public String title() {
-						return "current rubies and credits: " + Player.player.rubies + " " + Player.player.launderCredits;
-					}
-				});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "launder an emerald";
-					}
-
-					@Override
-					public boolean go() {
-						if (Player.player.rubies > 0 && Player.player.launderCredits > 0) {
-							Player.player.rubies--;
-							Player.player.launderCredits--;
-							Player.player.emeralds++;
-						}
-						return false;
-					}
-				});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "launder a sapphire";
-					}
-
-					@Override
-					public boolean go() {
-						if (Player.player.rubies > 0 && Player.player.launderCredits > 0) {
-							Player.player.rubies--;
-							Player.player.launderCredits--;
-							Player.player.sapphires++;
-						}
-						return false;
-					}
-				});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "quickly sell a ruby (750 "+World.currentMoneyString()+")";
-					}
-
-					@Override
-					public boolean go() {
-						if (Player.player.rubies > 0) {
-							Player.player.rubies--;
-							Player.player.addGold(750);
-							Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
-						}
-						return false;
-					}
-				});
-				mList.add(new MenuBack());
-				return mList;
-			}});
-	}
-	public void launderS() {
-		extra.menuGo(new MenuGenerator() {
-
-			@Override
-			public List<MenuItem> gen() {
-				List<MenuItem> mList = new ArrayList<MenuItem>();
-				mList.add(new MenuLine() {
-
-					@Override
-					public String title() {
-						return "current sapphires and credits: " + Player.player.sapphires + " " + Player.player.launderCredits;
-					}
-				});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "launder an emerald";
-					}
-
-					@Override
-					public boolean go() {
-						if (Player.player.sapphires > 0 && Player.player.launderCredits > 0) {
-							Player.player.sapphires--;
-							Player.player.launderCredits--;
-							Player.player.emeralds++;
-						}
-						return false;
-					}
-				});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "launder a ruby";
-					}
-
-					@Override
-					public boolean go() {
-						if (Player.player.sapphires > 0 && Player.player.launderCredits > 0) {
-							Player.player.sapphires--;
-							Player.player.launderCredits--;
-							Player.player.rubies++;
-						}
-						return false;
-					}
-				});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "quickly sell a sapphire (750 "+World.currentMoneyString()+")";
-					}
-
-					@Override
-					public boolean go() {
-						if (Player.player.sapphires > 0) {
-							Player.player.sapphires--;
-							Player.player.addGold(750);
-							Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
-						}
-						return false;
-					}
-				});
-				mList.add(new MenuBack());
-				return mList;
-			}});
-	}
-	
-	public enum GemType{
-		EMERALD("emerald","emeralds", new GemFunction() {
-
-			@Override
-			public int getGem() {
-				return Player.player.emeralds;
-			}
-
-			@Override
-			public void changeGem(int i) {
-				Player.player.emeralds+=i;
-			}})
-		,RUBY("ruby","rubies", new GemFunction() {
-
-			@Override
-			public int getGem() {
-				return Player.player.rubies;
-			}
-
-			@Override
-			public void changeGem(int i) {
-				Player.player.rubies+=i;
-			}})
-		,SAPPHIRE("sapphire","sapphires", new GemFunction() {
-
-			@Override
-			public int getGem() {
-				return Player.player.sapphires;
-			}
-
-			@Override
-			public void changeGem(int i) {
-				Player.player.sapphires+=i;
-			}});
-		
-		public final String name, plural;
-		public final GemFunction func;
-		GemType(String _name, String _plural, GemFunction _func){
-			name = _name;
-			plural = _plural;
-			func = _func;
-		}
-		
-		public void sellGem() {
-			extra.println();
-		}
-	}
-	
-	private interface GemFunction{
-		public int getGem();
-		public void changeGem(int i);
-		
-	}
-	
 	private class LaunderGem implements MenuItem{
 
-		public GemType from, to;
+		public Gem from, to;
 		
-		public LaunderGem(GemType _from, GemType _to) {
+		public LaunderGem(Gem _from, Gem _to) {
 			from = _from;
 			to = _to;
 		}
 		
 		@Override
 		public String title() {
-			return "Launder " +from.plural +" ("+from.func.getGem()+") to " + to.plural + "("+to.func.getGem()+")" + (Player.player.launderCredits == 0 ? " NO CREDIT" : "");
+			return "Launder " +from.plural +" ("+from.getGem()+") to " + to.plural + "("+to.getGem()+")" + (Player.player.launderCredits == 0 ? " NO CREDIT" : "");
 		}
 
 		@Override
 		public boolean go() {
 			//must be > 0 to click
 			extra.println("You trade a " + from.name + " for a " + to.name);
-			from.func.changeGem(-1);
-			to.func.changeGem(1);
+			from.changeGem(-1);
+			to.changeGem(1);
 			Player.player.launderCredits--;
 			return false;
 		}
 
 		@Override
 		public boolean canClick() {
-			return Player.player.launderCredits > 0 && from.func.getGem() > 0;
+			return Player.player.launderCredits > 0 && from.getGem() > 0;
 		}
 
 		@Override

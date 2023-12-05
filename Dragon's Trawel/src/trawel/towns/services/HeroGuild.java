@@ -13,6 +13,7 @@ import trawel.factions.FBox;
 import trawel.factions.FBox.FSub;
 import trawel.factions.Faction;
 import trawel.personal.item.solid.DrawBane;
+import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
 import trawel.quests.CleanseSideQuest;
 import trawel.quests.CleanseSideQuest.CleanseType;
@@ -110,7 +111,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Request Rubies";
+						return "Request Rubies.";
 					}
 
 					@Override
@@ -122,7 +123,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 						if (extra.yesNo()) {
 							if (cost <= spenda) {
 								Player.player.factionSpent.addFactionRep(Faction.HEROIC,cost,0);
-								Player.player.rubies++;
+								Gem.RUBY.changeGem(1);
 							}else {
 								extra.println("You do not have enough spendable reputation.");
 								break;
