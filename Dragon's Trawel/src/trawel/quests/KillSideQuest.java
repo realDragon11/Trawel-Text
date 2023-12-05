@@ -36,7 +36,7 @@ public class KillSideQuest extends BasicSideQuest {
 		q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();
 		q.targetName = q.target.getName();
 		
-		Feature targetFeature = extra.randList(t.getQuestLocationsInRange(extra.randRange(2,4)));
+		Feature targetFeature = ((QuestBoardLocation)generator).getQuestGoal(extra.randRange(2,4));
 		if (targetFeature == null) {
 			targetFeature = generator;//fallback set to same place
 		}

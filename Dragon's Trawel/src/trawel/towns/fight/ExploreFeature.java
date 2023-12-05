@@ -19,6 +19,7 @@ import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Player;
 import trawel.quests.QRMenuItem;
+import trawel.quests.QuestBoardLocation;
 import trawel.quests.QuestR;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -26,7 +27,7 @@ import trawel.towns.Feature;
 import trawel.towns.World;
 import trawel.towns.services.Oracle;
 
-public abstract class ExploreFeature extends Feature {
+public abstract class ExploreFeature extends Feature{
 
 	protected int explores = 0;
 	protected int exhaust = 0;

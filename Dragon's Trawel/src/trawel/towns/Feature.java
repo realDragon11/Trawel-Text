@@ -28,6 +28,14 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	protected int tier;
 	protected Networking.Area area_type;
 	protected String intro, outro;
+	/**
+	 * allows quests to go one layer deep in replaced features without stuff exploding
+	 * <br>
+	 * note that features that can't support QRs will still lead to dead end quests
+	 * <br>
+	 * if a feature is replaced with itself, that means it's no longer useable
+	 */
+	protected Feature replaced = null;
 	
 	protected abstract void go();
 	protected void goHeader() {
@@ -80,21 +88,23 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	}
 	
 	public enum QRType{
-		NONE(new QKey[0],null),
-		MOUNTAIN(new QKey[] {QKey.DEST_MOUNTAIN},null),
-		FOREST(new QKey[] {QKey.DEST_WOODS},null),
-		INN(new QKey[] {QKey.DEST_INN},QKey.GIVE_INN),
-		SLUM(new QKey[] {QKey.DEST_SLUM},QKey.GIVE_SLUM),
-		WHUT(new QKey[] {QKey.DEST_WHUT},QKey.GIVE_WHUT),
-		MGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_MGUILD),
-		RGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_RGUILD),
-		HGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_HGUILD),
-		HUNT_GUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_HUNT_GUILD);
+		NONE(new QKey[0],null,0f),
+		MOUNTAIN(new QKey[] {QKey.DEST_MOUNTAIN},null,1f),
+		FOREST(new QKey[] {QKey.DEST_WOODS},null,1f),
+		INN(new QKey[] {QKey.DEST_INN},QKey.GIVE_INN,1.5f),
+		SLUM(new QKey[] {QKey.DEST_SLUM},QKey.GIVE_SLUM,1.5f),
+		WHUT(new QKey[] {QKey.DEST_WHUT},QKey.GIVE_WHUT,1.1f),
+		MGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_MGUILD,1.1f),
+		RGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_RGUILD,1.1f),
+		HGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_HGUILD,1.1f),
+		HUNT_GUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_HUNT_GUILD,.7f);
 		public final QKey[] dests;
 		public final QKey give;
-		QRType(QKey[] _dests,QKey _give){
+		public final float targetMult;
+		QRType(QKey[] _dests,QKey _give, float _targetMult){
 			dests = _dests;
 			give = _give;
+			targetMult = _targetMult;
 		}
 	}
 
@@ -201,5 +211,13 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	}
 	public String nameOfType() {
 		return this.getClass().getTypeName();
+	}
+	
+	public Feature getReplaced() {
+		return replaced;
+	}
+	
+	public void setReplaced(Feature feature) {
+		replaced = feature;
 	}
 }

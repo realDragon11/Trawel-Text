@@ -752,6 +752,7 @@ public class Town extends TContextOwner{
 	public void laterRemove(Feature f) {
 		eventsModified = true;
 		timeScope.addEvent(new StructuralFeatureEvent(f,false));
+		f.setReplaced(f);
 	}
 	public void laterAdd(Feature f) {
 		eventsModified = true;
@@ -760,6 +761,8 @@ public class Town extends TContextOwner{
 	public void laterReplace(Feature replaceThis, Feature with) {
 		eventsModified = true;
 		timeScope.addEvent(new StructuralFeatureEvent(with,replaceThis));
+		with.setReplaced(replaceThis);
+		replaceThis.setReplaced(replaceThis);
 	}
 	
 	public class StructuralFeatureEvent extends TimeEvent{

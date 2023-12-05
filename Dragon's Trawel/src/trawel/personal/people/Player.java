@@ -418,7 +418,7 @@ public class Player extends SuperPerson{
 			List<QuestR> adds = q.getActiveQRs();
 			if (adds != null) {
 				for (QuestR add: adds) {
-					if (add.locationF == feature) {
+					if (add.locationF == feature || (feature.getReplaced() != null && add.locationF == feature.getReplaced())) {
 						list.add(add);
 					}
 				}
