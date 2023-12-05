@@ -400,11 +400,16 @@ public class Docks extends Feature {
 							return false;
 						}
 						//can either take naive time or use a*
-						
+						if (mainGame.displayTravelText) {
+							extra.print("You start the voyage to "+t.getName()+".");
+						}
 						Player.addTime(timeList.get(i));
 						mainGame.globalPassTime();
 						Player.player.setLocation(t);
 						town.dockWander(true);
+						if (mainGame.displayTravelText) {
+							extra.print("You arrive in "+t.getName()+".");
+						}
 						return true;
 					}});
 				return list;

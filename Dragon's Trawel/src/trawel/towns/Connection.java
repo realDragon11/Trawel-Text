@@ -63,11 +63,11 @@ public class Connection implements java.io.Serializable{
 		//all times are given in miles per hour, and there are 2 miles per cell accounted for later
 		
 		//DOLATER: find more reliable travel time sources to ballpark with gameplay
-		PATH("path",ConnectClass.LAND,0,0,1.3),//slow walk
-		ROAD("road",ConnectClass.LAND,0,0,2.2),//walk
-		CARV("caravan",ConnectClass.LAND,0.5,0,3.0),//caravan
-		SHIP("ship",ConnectClass.SEA,1.0,1.0,6.0),//normal ship?
-		TELE("tele",ConnectClass.MAGIC,3.0,0,40.0);
+		PATH("path",ConnectClass.LAND,0,0,1.5),//slow walk
+		ROAD("road",ConnectClass.LAND,0,0,2.5),//walk
+		CARV("caravan",ConnectClass.LAND,0.5,0,4.0),//caravan
+		SHIP("ship",ConnectClass.SEA,3.0,1.5,7.0),//normal ship?
+		TELE("tele",ConnectClass.MAGIC,4.0,0,40.0);
 
 		public final ConnectClass type;
 		private final String desc;

@@ -548,14 +548,17 @@ public class Town extends TContextOwner{
 			@Override
 			public boolean go() {
 				Town t = c.otherTown(Town.this);
-				switch (c.getType()) {
-				case ROAD: case CARV:
+				switch (c.getType().type) {
+				case LAND:
 					if (c.getType().startTime > 0) {
 						Player.addTime(c.getType().startTime);
 						mainGame.globalPassTime();
 					}
 					if (mainGame.displayTravelText) {
 						extra.print("You start to travel to " + t.getName()+"... ");
+						if (Networking.connected()) {
+							extra.println();//have to do this to make it show up since it only prints new lines
+						}
 					}
 					double wayMark = extra.randFloat()*c.getRawTime();
 					Player.addTime(wayMark);
@@ -574,13 +577,16 @@ public class Town extends TContextOwner{
 						mainGame.globalPassTime();
 					}
 					break;
-				case SHIP:
+				case SEA:
 					if (c.getType().startTime > 0) {
 						Player.addTime(c.getType().startTime);
 						mainGame.globalPassTime();
 					}
 					if (mainGame.displayTravelText) {
 						extra.print("You start to sail to " + t.getName() +"... ");
+						if (Networking.connected()) {
+							extra.println();//have to do this to make it show up since it only prints new lines
+						}
 					}
 					//will get interrupted at random time
 					double wayMarkS = extra.randFloat()*c.getRawTime();
@@ -599,7 +605,7 @@ public class Town extends TContextOwner{
 						mainGame.globalPassTime();
 					}
 					break;
-				case TELE:
+				case MAGIC:
 					if (c.getType().startTime > 0) {
 						Player.addTime(c.getType().startTime);
 						mainGame.globalPassTime();

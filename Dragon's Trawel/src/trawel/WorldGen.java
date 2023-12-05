@@ -6,27 +6,16 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
-
 import save.KyroManager;
 import trawel.battle.Combat.SkillCon;
-import trawel.factions.FBox.FSub;
 import trawel.personal.DummyPerson;
-import trawel.personal.Person;
 import trawel.personal.item.DummyInventory;
-import trawel.personal.item.solid.Armor;
-import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Player;
 import trawel.towns.Connection;
 import trawel.towns.Connection.ConnectType;
@@ -53,7 +42,6 @@ import trawel.towns.nodes.Dungeon;
 import trawel.towns.nodes.Graveyard;
 import trawel.towns.nodes.Grove;
 import trawel.towns.nodes.Mine;
-import trawel.towns.nodes.NodeConnector;
 import trawel.towns.nodes.NodeFeature;
 import trawel.towns.nodes.NodeFeature.Shape;
 import trawel.towns.services.Altar;
@@ -81,7 +69,8 @@ public class WorldGen {
 	 */
 	public static World fallBackWorld;
 	
-	public static final double distanceScale = 2;//average distance between towns is like 1-3 units
+	//average distance between towns is around 1-3 units
+	public static final double distanceScale = 10;//2;
 	public static final double milesInLata = 69;
 	public static final double milesInLonga = 54.6;
 	public static final float unitsInLata = (float) (milesInLata/distanceScale);
