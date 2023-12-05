@@ -57,7 +57,7 @@ public class FBox implements java.io.Serializable{
 	}
 	
 	public static void repCalc(Person manOne, Person manTwo) {
-		float iLevel = IEffectiveLevel.unEffective(manTwo.getEffectiveLevel());
+		float iLevel = manTwo.getUnEffectiveLevel();
 		switch (manTwo.hTask) {
 		case ANIMAL:
 			manOne.facRep.addFactionRep(Faction.HUNTER,iLevel/25.0f,0);

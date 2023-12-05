@@ -17,7 +17,7 @@ public class QRMenuItem extends MenuSelect {
 	}
 	@Override
 	public String title() {
-		return qr.getName();
+		return qr.getName() + "("+qr.overQuest.name()+")";
 	}
 
 	@Override

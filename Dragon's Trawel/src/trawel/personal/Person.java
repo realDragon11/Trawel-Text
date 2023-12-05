@@ -31,6 +31,7 @@ import trawel.battle.attacks.TargetFactory.TypeBody;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 import trawel.battle.attacks.TargetHolder;
 import trawel.factions.FBox;
+import trawel.factions.Faction;
 import trawel.factions.HostileTask;
 import trawel.personal.classless.Archetype;
 import trawel.personal.classless.Archetype.AType;
@@ -2334,6 +2335,16 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	
 	public void graphicalFoe() {
 		bag.graphicalDisplay(1,this);
+	}
+	
+	/**
+	 * uses uneffective level, use for npcs stuff
+	 * @param fac
+	 * @param multFor
+	 * @param multAgainst
+	 */
+	public void setFacLevel(Faction fac, float multFor, float multAgainst) {
+		facRep.addFactionRep(fac, multFor*getUnEffectiveLevel(), multAgainst*getUnEffectiveLevel());
 	}
 
 }

@@ -52,6 +52,7 @@ import trawel.towns.services.Blacksmith;
 import trawel.towns.services.Doctor;
 import trawel.towns.services.Enchanter;
 import trawel.towns.services.HeroGuild;
+import trawel.towns.services.HunterGuild;
 import trawel.towns.services.Inn;
 import trawel.towns.services.Library;
 import trawel.towns.services.MerchantGuild;
@@ -551,9 +552,10 @@ public class WorldGen {
 		lunek.addFeature(new Docks("Harbor of Worries",lunek));
 		lunek.addFeature(new Garden(lunek, "'Spoiled Soil'", 1.0f, PlantFill.WITCH));
 		lunek.addFeature(new WitchHut("'Creepy Cauldron", lunek));
-		//TODO: add 'hunter's guild'
-		lunek.addFeature(new Arena("Hunter's Training-Ground",14,2,70d,30d,45));
+		lunek.addFeature(new HunterGuild("Hall of Paranoia", 14));
+		lunek.addFeature(new Arena("'Hunter's Proving'",14,2,70d,30d,45));
 		lunek.tTags.add(TownTag.LAW);
+		lunek.tTags.add(TownTag.DETERMINED);
 		//unsettling second
 		lunek.tTags.add(TownTag.UNSETTLING);
 		lunek.tTags.add(TownTag.ALCHEMY);

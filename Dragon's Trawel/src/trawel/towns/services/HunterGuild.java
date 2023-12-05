@@ -48,7 +48,7 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 	
 	@Override
 	public QRType getQRType() {
-		return QRType.HGUILD;
+		return QRType.HUNT_GUILD;
 	}
 	
 	@Override

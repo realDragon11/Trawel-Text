@@ -1351,8 +1351,8 @@ public class RaceFactory {
 		}else {
 			w = new Person(level);
 		}
-		w.facRep.addFactionRep(Faction.ROGUE,extra.randRange(10,20)*level, 0);
-		w.facRep.addFactionRep(Faction.HEROIC,0, 10*level);
+		w.setFacLevel(Faction.ROGUE,extra.randRange(10,20)*level, 0);
+		w.setFacLevel(Faction.HEROIC,0, 10*level);
 		w.hTask = HostileTask.MUG;
 		if (extra.chanceIn(1,100)) {
 			w.getBag().addDrawBaneSilently(DrawBane.GOLD);
@@ -1377,7 +1377,7 @@ public class RaceFactory {
 	public static Person getDueler(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level,AIJob.DUELER);
-		w.facRep.addFactionRep(Faction.DUEL,extra.randRange(10,20)*level, 0);
+		w.setFacLevel(Faction.DUEL,extra.randRange(10,20)*level, 0);
 		w.hTask = HostileTask.DUEL;
 		addWealth(1, w);
 		extra.popPrintStack();
@@ -1497,7 +1497,7 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = new Person(level);
 		w.hTask = HostileTask.ANIMAL;
-		w.facRep.addFactionRep(Faction.FOREST, level*15,0);
+		w.setFacLevel(Faction.FOREST, level*15,0);
 		extra.popPrintStack();
 		w.finishGeneration();
 		return w;
@@ -1519,7 +1519,7 @@ public class RaceFactory {
 		Person w = new Person(level,AIJob.LUMBERJACK);
 		addWealth(1, w);
 		w.hTask = HostileTask.LUMBER;
-		w.facRep.addFactionRep(Faction.FOREST,0,100);
+		w.setFacLevel(Faction.FOREST,0,100);
 		extra.popPrintStack();
 		w.finishGeneration();
 		return w;
@@ -1530,7 +1530,7 @@ public class RaceFactory {
 		w.getBag().setLocalGold(10);
 		addWealth(5f, w);
 		w.hTask = HostileTask.RICH;
-		w.facRep.addFactionRep(Faction.MERCHANT,10*level,0);
+		w.setFacLevel(Faction.MERCHANT,10*level,0);
 		extra.popPrintStack();
 		w.finishGeneration();
 		return w;
@@ -1540,7 +1540,7 @@ public class RaceFactory {
 		Person w = new Person(level,AIJob.COLLECTOR);
 		addWealth(2f, w);
 		w.hTask = HostileTask.DUEL;
-		w.facRep.addFactionRep(Faction.MERCHANT,5*level,0);
+		w.setFacLevel(Faction.MERCHANT,5*level,0);
 		List<DrawBane> dbs = w.getBag().getDrawBanes();
 		dbs.add(DrawBane.draw(DrawList.COLLECTOR));
 		if (extra.chanceIn(2,3)) {
@@ -1560,7 +1560,7 @@ public class RaceFactory {
 		Person w = new Person(level);
 		addWealth(1.5f, w);
 		w.hTask = HostileTask.LAW_EVIL;
-		w.facRep.addFactionRep(Faction.HEROIC,5*level,0);
+		w.setFacLevel(Faction.HEROIC,5*level,0);
 		extra.popPrintStack();
 		w.finishGeneration();
 		return w;
@@ -1581,7 +1581,7 @@ public class RaceFactory {
 			}else {
 				list.add(DrawBane.GRAVE_DIRT);
 			}
-			w.facRep.addFactionRep(Faction.ROGUE,15*level, 0);
+			w.setFacLevel(Faction.ROGUE,15*level, 0);
 			rarityMult = 2;
 			addWealth(1.5f, w);
 		}else {
@@ -1589,21 +1589,21 @@ public class RaceFactory {
 			if (extra.chanceIn(1,2)) {
 				//higher cut of thief
 				w = new Person(level,AIJob.ROGUE);
-				w.facRep.addFactionRep(Faction.ROGUE,20*level, 0);
+				w.setFacLevel(Faction.ROGUE,20*level, 0);
 				rarityMult = 3;
 				addWealth(2f, w);
 			}else {//afraid of graveyard
 				w = new Person(level);
 				w.setPersonType(PersonType.COWARDLY);
 				w.addEffect(Effect.CURSE);
-				w.facRep.addFactionRep(Faction.ROGUE,10*level, 0);
+				w.setFacLevel(Faction.ROGUE,10*level, 0);
 				rarityMult = 1;
 				addWealth(0.5f, w);
 			}
 			list = w.getBag().getDrawBanes();
 		}
 		w.hTask = HostileTask.MUG;
-		w.facRep.addFactionRep(Faction.HEROIC,0, 10*level);
+		w.setFacLevel(Faction.HEROIC,0, 10*level);
 		if (extra.chanceIn(rarityMult,8)) {
 			if (extra.chanceIn(rarityMult,20)) {
 				list.add(DrawBane.GOLD);
@@ -1626,8 +1626,8 @@ public class RaceFactory {
 		list.add(DrawBane.GRAVE_DIRT);
 		if (extra.chanceIn(1,8)) {//can afford full protection
 			list.add(DrawBane.PROTECTIVE_WARD);
-			w.facRep.addFactionRep(Faction.HUNTER,level,0);
-			w.facRep.addFactionRep(Faction.MERCHANT,level,0);
+			w.setFacLevel(Faction.HUNTER,level,0);
+			w.setFacLevel(Faction.MERCHANT,level,0);
 			w.getBag().getHand().improveEnchantChance(level);//improve weapon enchant
 			w.setTitle(randomLists.randomCollectorName());
 			addWealth(3f, w);
@@ -1638,8 +1638,8 @@ public class RaceFactory {
 					list.add(DrawBane.GRAVE_DUST);
 					//combatative
 					w.addBlood(2);
-					w.facRep.addFactionRep(Faction.HUNTER,5*level,0);
-					w.facRep.addFactionRep(Faction.HEROIC,2*level,0);
+					w.setFacLevel(Faction.HUNTER,5*level,0);
+					w.setFacLevel(Faction.HEROIC,2*level,0);
 					w.getBag().getHand().transmuteWeapMat(MaterialFactory.getMat("silver"));
 					w.hTask = HostileTask.HUNT;
 					w.setTitle(randomLists.randomHunterTitle());
@@ -1664,9 +1664,9 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = new Person(level);
 		addWealth(1f, w);
-		w.facRep.addFactionRep(Faction.HUNTER,10*level,0);
-		w.facRep.addFactionRep(Faction.HEROIC,5*level,0);
-		w.facRep.addFactionRep(Faction.MERCHANT,level,0);
+		w.setFacLevel(Faction.HUNTER,10*level,0);
+		w.setFacLevel(Faction.HEROIC,5*level,0);
+		w.setFacLevel(Faction.MERCHANT,level,0);
 		w.hTask = HostileTask.HUNT;
 		w.setTitle(randomLists.randomHunterTitle());
 		List<DrawBane> list = w.getBag().getDrawBanes();
