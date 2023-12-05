@@ -18,6 +18,7 @@ import trawel.battle.Combat.SkillCon;
 import trawel.personal.DummyPerson;
 import trawel.personal.item.DummyInventory;
 import trawel.personal.people.Player;
+import trawel.quests.QuestBoardLocation;
 import trawel.towns.Connection;
 import trawel.towns.Connection.ConnectType;
 import trawel.towns.Feature;
@@ -644,6 +645,7 @@ public class WorldGen {
 	}
 	
 	public static void finishPlane(Plane p) {
+		p.reload();
 		for (World wor: p.worlds()) {
 			townFinal(wor);
 			try {
@@ -652,7 +654,6 @@ public class WorldGen {
 				mainGame.log("WorldGen Align Fail: " +e.getMessage());
 			}
 		}
-		p.reload();
 	}
 	
 	private static void townFinal(World w) {
@@ -661,6 +662,11 @@ public class WorldGen {
 				t.detectConnectTypes();
 				for (Feature f: t.getFeatures()) {
 					f.init();
+					if (f instanceof QuestBoardLocation) {
+						for (int j = 0; j < 3; j++) {
+							((QuestBoardLocation)f).generateSideQuest();
+						}
+					}
 				}
 				t.postFeatureSetup();
 				t.postInit();

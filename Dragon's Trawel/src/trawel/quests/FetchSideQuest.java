@@ -43,7 +43,7 @@ public class FetchSideQuest extends BasicSideQuest {
 		}
 		q.subtype = subtype;
 		
-		Feature targetFeature = ((QuestBoardLocation)generator).getQuestGoal(extra.randRange(3,5));
+		Feature targetFeature = ((QuestBoardLocation)generator).getQuestGoal();
 		if (targetFeature == null) {
 			targetFeature = generator;//fallback set to same place
 		}

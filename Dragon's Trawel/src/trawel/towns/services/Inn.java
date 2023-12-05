@@ -104,16 +104,11 @@ public class Inn extends Feature implements QuestBoardLocation{
 	
 	@Override
 	public void init() {
-		try {
-			while (sideQuests.size() < 3) {
-				generateSideQuest();
-			}
-			}catch (Exception e) {
-				canQuest = false;
-			}
+
 	}
 	
-	private void generateSideQuest() {
+	@Override
+	public void generateSideQuest() {
 		if (sideQuests.size() >= 3) {
 			sideQuests.remove(extra.randList(sideQuests));
 		}

@@ -577,13 +577,6 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	@Override
 	public void init() {
 		super.init();
-		try {
-			while (sideQuests.size() < 3) {
-				generateSideQuest();
-			}
-			}catch (Exception e) {
-				canQuest = false;
-			}
 	}
 	
 	@Override
@@ -642,7 +635,8 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		
 	}
 	
-	private void generateSideQuest() {
+	@Override
+	public void generateSideQuest() {
 		if (sideQuests.size() >= 3) {
 			sideQuests.remove(extra.randList(sideQuests));
 		}

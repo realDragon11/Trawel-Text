@@ -15,6 +15,8 @@ import trawel.towns.Connection.ConnectClass;
  * must be a feature as well
  */
 public interface QuestBoardLocation{
+	
+	public void generateSideQuest();
 	public void removeSideQuest(Quest q);
 	
 	/**
@@ -58,11 +60,12 @@ public interface QuestBoardLocation{
 	 * features can choose to use their own method to distribute the quest targets
 	 * <br>
 	 * note that the range might not be respected in such a case, it is merely a suggestion on a max
-	 * @param range
+	 * <br>
+	 * Feature implements it's own roller, so this would have to be called with super
 	 * @return
 	 */
-	public default Feature getQuestGoal(int range){
-		return extra.randList(getQuestLocationsInRange(range));
+	public default Feature getQuestGoal(){
+		return extra.randList(getQuestLocationsInRange(5));
 	}
 	
 	public Town getTown();
@@ -82,7 +85,7 @@ public interface QuestBoardLocation{
 			List<Town> openSet = new ArrayList<Town>();
 			List<Town> exploreList = new ArrayList<Town>();
 			List<Town> closedList = new ArrayList<Town>();
-			closedList.add(location.getTown());
+			exploreList.add(location.getTown());
 			float fallOff;
 			for (int v = 0; v < 5;v++) {
 				switch (v) {
@@ -100,6 +103,7 @@ public interface QuestBoardLocation{
 				exploreList.clear();
 				while (!openSet.isEmpty()) {
 					Town t = openSet.remove(openSet.size()-1);
+					closedList.add(t);
 					for (Connection c: t.getConnects()) {//could not explore on last step to save some time
 						if (c.getType().type == ConnectClass.MAGIC) {
 							continue;

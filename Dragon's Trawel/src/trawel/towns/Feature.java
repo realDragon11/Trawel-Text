@@ -8,6 +8,8 @@ import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
+import trawel.quests.QuestBoardLocation;
+import trawel.quests.QuestBoardLocation.FeatureRoller;
 import trawel.quests.QuestReactionFactory.QKey;
 import trawel.time.ContextLevel;
 import trawel.time.ContextType;
@@ -28,6 +30,11 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	protected int tier;
 	protected Networking.Area area_type;
 	protected String intro, outro;
+	
+	/**
+	 * only used if implements QuestBoardLocation interface
+	 */
+	protected transient FeatureRoller qbRoller;
 	/**
 	 * allows quests to go one layer deep in replaced features without stuff exploding
 	 * <br>
@@ -112,6 +119,9 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	public void reload() {
 		timeScope = new TimeContext(ContextType.UNBOUNDED,this);
 		timeSetup();
+		if (this instanceof QuestBoardLocation) {
+			qbRoller = new FeatureRoller((QuestBoardLocation)this);
+		}
 	}
 	public Town getTown() {
 		return town;
@@ -219,5 +229,15 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	
 	public void setReplaced(Feature feature) {
 		replaced = feature;
+	}
+	
+	/**
+	 * only used if QuestBoardLocation
+	 * @param range
+	 * @return
+	 */
+	public Feature getQuestGoal(int range){
+		assert this instanceof QuestBoardLocation;
+		return qbRoller.roll();
 	}
 }
