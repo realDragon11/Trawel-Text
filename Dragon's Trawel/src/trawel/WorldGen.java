@@ -123,12 +123,7 @@ public class WorldGen {
 		homa.addFeature(new Doctor("Melissa's Clinic",homa).setIntro("Melissa greets you, 'Don't get many customers not from the Arena, but if you've got something more exotic like a curse, I can fix that.'"));
 		w.setStartTown(homa);
 		homa.tTags.add(TownTag.SMALL_TOWN);
-		homa.setFirstPrinter(new PrintEvent(){
-			@Override
-			public void print() {
-				extra.println("Homa is a small quaint town, with a large maze-like forest. The perfect place to hide.");
-			}
-		});
+		homa.setLoreText("Homa is a small quaint town, with a large maze-like forest. The perfect place to hide.");
 		
 		Town unun = new Town("Unun",2,rona,new Point(5,4)){
 			@Override
@@ -148,12 +143,7 @@ public class WorldGen {
 		unun.tTags.add(TownTag.CITY);
 		unun.tTags.add(TownTag.ADVENTURE);
 		unun.tTags.add(TownTag.MERCHANT);
-		unun.setFirstPrinter(new PrintEvent(){
-			@Override
-			public void print() {
-				extra.println("The port city of Unun is dominated by a large tower- the Tower of Fate. It's an ancient dungeon home to the mysterious Fatespinner, who seems to ignore the town. Below, on the ground, a prominent inn stands next to the interplanar merchant guild headquarters for this world.");
-			}
-		});
+		unun.setLoreText("The port city of Unun is dominated by a large tower- the Tower of Fate. It's an ancient dungeon home to the mysterious Fatespinner, who seems to ignore the town. Below, on the ground, a prominent inn stands next to the interplanar merchant guild headquarters for this world.");
 		
 		Town tevar = new Town("Tevar",3,rona,new Point(4,5));
 		addConnection(tevar,unun,"road","blue road");
@@ -164,12 +154,7 @@ public class WorldGen {
 		tevar.addFeature(new Mine("Ole' Tevar Mine",tevar,null,NodeFeature.Shape.NONE));
 		tevar.tTags.add(TownTag.MINERALS);
 		tevar.tTags.add(TownTag.UNSETTLING);
-		tevar.setFirstPrinter(new PrintEvent(){
-			@Override
-			public void print() {
-				extra.println("Tevar has the most important mine on this island, said to have been dug by the ancient's own ancestors. The Forest of Vicissitude engulfs the town, and fell reavers often appear nearby.");
-			}
-		});
+		tevar.setLoreText("Tevar has the most important mine on this island, said to have been dug by the ancient's own ancestors. The Forest of Vicissitude engulfs the town, and fell reavers often appear nearby.");
 		
 		
 		Town hemo = new Town("Hemo",3,rona,new Point(6,6));
@@ -184,13 +169,7 @@ public class WorldGen {
 		hemo.addFeature(new WitchHut("Esoteric Ingredients",hemo));
 		hemo.tTags.add(TownTag.DRUIDIC);
 		hemo.tTags.add(TownTag.ALCHEMY);
-		hemo.setFirstPrinter(new PrintEvent(){
-			@Override
-			public void print() {
-				extra.println("Hemo is infamous for the clearing near a witch hut, said to be the only place on the island of Rona that can brew potions properly. Rumor has it the proximity to the forest of vicissitude would normally prevent any success, but a dark rite reversed the town's fortunes.");
-			}
-			
-		});
+		hemo.setLoreText("Hemo is infamous for the clearing near a witch hut, said to be the only place on the island of Rona that can brew potions properly. Rumor has it the proximity to the forest of vicissitude would normally prevent any success, but a dark rite reversed the town's fortunes.");;
 		
 		Town beal = new Town("Beal",4,rona,(byte)2,(byte)7);
 		addConnection(tevar,beal,ConnectType.ROAD,"Deadlocked Desert");
@@ -202,12 +181,7 @@ public class WorldGen {
 		beal.addTravel();
 		beal.tTags.add(TownTag.SMALL_TOWN);
 		beal.tTags.add(TownTag.LIVESTOCK);
-		beal.setFirstPrinter(new PrintEvent() {
-
-			@Override
-			public void print() {
-				extra.println("More an outpost for the nomadic people who rear their livestock nearby, Beal lies between a desert and a verdant plain, isolated from the nearby coastal town of Hemo by a wall of small but harsh mountains.");
-			}});
+		beal.setLoreText("More an outpost for the nomadic people who rear their livestock nearby, Beal lies between a desert and a verdant plain, isolated from the nearby coastal town of Hemo by a wall of small but harsh mountains.");
 		
 		Town tanak = new Town("Tanak",5,rona,new Point(4,9));
 		addConnection(hemo,tanak,ConnectType.ROAD,"'Round the Mountain");
@@ -221,12 +195,7 @@ public class WorldGen {
 		//tanak.addFeature(new Champion(8));
 		tanak.tTags.add(TownTag.CITY);
 		tanak.tTags.add(TownTag.ARCANE);
-		tanak.setFirstPrinter(new PrintEvent(){
-			@Override
-			public void print() {
-				extra.println("The city of the sky, Tanak, stands before you- a floating island looming over the terrain. Below lies a teleport station to arrive at the otherwise inaccessible location.");
-			}
-		});
+		tanak.setLoreText("The city of the sky, Tanak, stands before you- a floating island looming over the terrain. Below lies a teleport station to arrive at the otherwise inaccessible location.");
 		
 		Town lokan = new Town("Lokan",4,rona,new Point(5,10));
 		addConnection(lokan,tanak,"road","flat walk");
@@ -239,12 +208,7 @@ public class WorldGen {
 		lokan.addTravel();
 		lokan.tTags.add(TownTag.MYSTIC);
 		lokan.tTags.add(TownTag.SERVICES);
-		lokan.setFirstPrinter(new PrintEvent(){
-			@Override
-			public void print() {
-				extra.println("Lokan is an aberrant arrangement of minor services which cropped up around the oracles that settled here.");
-			}
-		});
+		lokan.setLoreText("Lokan is an aberrant arrangement of minor services which cropped up around the oracles that settled here.");
 		
 		Town haka = new Town("Haka",6,rona,new Point(1,10));
 		addConnection(lokan,haka,"road","diamond way");
@@ -253,25 +217,13 @@ public class WorldGen {
 		haka.addFeature(new Arena("Grand Colosseum (weekly tourny)",5,4,24*7,24*7,30));
 		haka.addFeature(new Mountain("Peerless Mountain",6));
 		haka.tTags.add(TownTag.VISTAS);
-		haka.setFirstPrinter(new PrintEvent(){
+		haka.setLoreText("A giant mountain looms over Haka's colosseum- both are the largest on this island.");
 
-			@Override
-			public void print() {
-				extra.println("A giant mountain looms over Haka's colosseum- both are the largest on this island.");
-				
-			}
-			
-		});
 		Town fortMerida = new Town("Fort Merida",6, rona,(byte) 2,(byte)10, null);
 		addConnection(fortMerida,haka,"road","mountain pass");
 		fortMerida.addFeature(new WizardTower(6));
 		fortMerida.tTags.add(TownTag.HIDDEN);
-		fortMerida.setFirstPrinter(new PrintEvent() {
-
-			@Override
-			public void print() {
-				extra.println("While one of the most well-known forts in the recent years, Fort Merida leverages its annoying location as much as it can.");
-			}});
+		fortMerida.setLoreText("While one of the most well-known forts in the recent years, Fort Merida leverages its annoying location as much as it can.");
 		
 		
 		Island apa = new Island("Apa",w);
@@ -288,12 +240,7 @@ public class WorldGen {
 		alhax.tTags.add(TownTag.RICH);
 		alhax.tTags.add(TownTag.CITY);
 		alhax.tTags.add(TownTag.LAW);
-		alhax.setFirstPrinter(new PrintEvent(){
-			@Override
-			public void print() {
-				extra.println("The port city of Alhax links the three islands of the world together. It's island, Apa, is home to many shops and stores. While the merchant's guild is in Unun, the true commerce center is here.");
-			}
-		});
+		alhax.setLoreText("The port city of Alhax links the three islands of the world together. It's island, Apa, is home to many shops and stores. While the merchant's guild is in Unun, the true commerce center is here.");
 		
 		Town revan = new Town("Revan",4,apa,new Point(3,1));
 		addConnection(revan,alhax,"ship","green passageway");
@@ -306,12 +253,7 @@ public class WorldGen {
 		addConnection(revan,tanak,"teleport","the red ritual");
 		revan.tTags.add(TownTag.MERCHANT);
 		revan.tTags.add(TownTag.DRUIDIC);
-		revan.setFirstPrinter(new PrintEvent(){
-			@Override
-			public void print() {
-				extra.println("The town of Revan is clustered around a great altar, which fell from the sky according to local lore.");
-			}
-		});
+		revan.setLoreText("The town of Revan is clustered around a great altar, which fell from the sky according to local lore.");
 		
 		Island pocket = new Island("Eureka",w,Island.IslandType.POCKET);
 		Town arona = new Town("Arona",10,pocket,new Point(1,1));
@@ -328,12 +270,7 @@ public class WorldGen {
 		arona.addFeature(new Enchanter("Aetheral Advantage",8));
 		arona.tTags.add(TownTag.ARCANE);
 
-		arona.setFirstPrinter(new PrintEvent(){
-			@Override
-			public void print() {
-				extra.println("The 'town' of Arona, held in a wizard's pocket dimension, employs powerful fighters as guards.");
-			}
-		});
+		arona.setLoreText("The 'town' of Arona, held in a wizard's pocket dimension, employs powerful fighters as guards.");
 		
 		Island teran = new Island("Teran",w);
 		Town yena = new Town("Yena",5,teran,new Point(8,2));
@@ -346,11 +283,7 @@ public class WorldGen {
 		yena.addFeature(new Champion(6));
 		yena.tTags.add(TownTag.ADVENTURE);
 		yena.tTags.add(TownTag.HISTORY);
-		yena.setFirstPrinter(new PrintEvent() {
-			@Override
-			public void print() {
-				extra.println("Yena's ancient Dungeon of Fame is the dwelling place of the primordial being, Yore. The Hero's Guild has long since given up on slaying them, and keeps vigil nearby.");
-			}});
+		yena.setLoreText("Yena's ancient Dungeon of Fame is the dwelling place of the primordial being, Yore. The Hero's Guild has long since given up on slaying them, and keeps vigil nearby.");
 		
 		Town denok = new Town("Denok",5,teran,new Point(12,1));
 		addConnection(denok,yena,"road","apple road");
@@ -361,12 +294,7 @@ public class WorldGen {
 		denok.addFeature(new Doctor("The Shaman's Hut",denok));
 		denok.addFeature(new Mine("Denok's Mine",denok,null,NodeFeature.Shape.NONE));
 		denok.tTags.add(TownTag.DRUIDIC);
-		denok.setFirstPrinter(new PrintEvent() {
-
-			@Override
-			public void print() {
-				extra.println("While Denok's forest may not be notable to most worldly people, this very fact is what let it grow into such a landmark to those with druidic inclinations. It is mostly unmarred by mortal attention, yet close enough to civilization to stand with them against the forces of darkness.");
-			}});
+		denok.setLoreText("While Denok's forest may not be notable to most worldly people, this very fact is what let it grow into such a landmark to those with druidic inclinations. It is mostly unmarred by mortal attention, yet close enough to civilization to stand with them against the forces of darkness.");
 		
 		Town erin = new Town("Erin",6,teran,new Point(10,4));
 		addConnection(erin,yena,"road","pear road");
@@ -377,12 +305,7 @@ public class WorldGen {
 		erin.addFeature(new Appraiser("Material Patent Offices").setIntro("'We only handle physical patents, if you have new spells or magicks, head to Alex's.'"));
 		erin.addFeature(new Enchanter("Enchantment Prototyping",6));
 		erin.tTags.add(TownTag.ARCANE);
-		erin.setFirstPrinter(new PrintEvent(){
-			@Override
-			public void print() {
-				extra.println("Erin has the largest library in this world, and scholars from all over gather in it to debate the newest theories.");
-			}
-		});
+		erin.setLoreText("Erin has the largest library in this world, and scholars from all over gather in it to debate the newest theories.");
 		
 		
 		Town placka = new Town("Placka",7,teran,new Point(13,3));
@@ -407,11 +330,7 @@ public class WorldGen {
 		tunka.addFeature(new Slum(tunka,"Forgettables District",false).setOutro("As you leave, you notice a few hooded figures eyeing you from the rooftops."));
 		tunka.tTags.add(TownTag.LAWLESS);
 		tunka.tTags.add(TownTag.DISPARITY);
-		tunka.setFirstPrinter(new PrintEvent() {
-			@Override
-			public void print() {
-				extra.println("Tunka is notable for being the only place in Eoano willing to maintain a full graveyard, and for its Rogue's Guild, which seem to take particular glee in robbing the downtrodden of what little they have left.");
-			}});
+		tunka.setLoreText("Tunka is notable for being the only place in Eoano willing to maintain a full graveyard, and for its Rogue's Guild, which seem to take particular glee in robbing the downtrodden of what little they have left.");
 		
 		Town owal = new Town("Owal",9,teran,(byte)13,(byte)7);
 		//connects added later
@@ -421,12 +340,7 @@ public class WorldGen {
 		owal.addFeature(new Garden(owal,"Overworked Fields",1.1f,PlantFill.FOOD));
 		owal.addTravel();
 		owal.tTags.add(TownTag.FARMS);//exports food south
-		owal.setFirstPrinter(new PrintEvent() {
-
-			@Override
-			public void print() {
-				extra.println("Newer in the grand scheme of Eoano, Owal was formed to provide food for the now-unsuitable island of Epan south of it.");
-			}});
+		owal.setLoreText("Newer in the grand scheme of Eoano, Owal was formed to provide food for the now-unsuitable island of Epan south of it.");
 		
 		Town repa = new Town("Repa",10,teran,new Point(14,6));
 		addConnection(repa,tunka,ConnectType.ROAD,"right-over road");
@@ -439,11 +353,7 @@ public class WorldGen {
 		repa.addTravel();
 		repa.addFeature(new Inn("Repa's Rest",8,erin,null));
 		repa.tTags.add(TownTag.TRAVEL);
-		repa.setFirstPrinter(new PrintEvent() {
-			@Override
-			public void print() {
-				extra.println("Repa's giant teleporter brace- once a normal mountain- looms over the ragtag tents here. It teleports to another world entirely, they say.");
-			}});
+		repa.setLoreText("Repa's giant teleporter brace- once a normal mountain- looms over the ragtag tents here. It teleports to another world entirely, they say.");
 		
 		Island epan = new Island("Epan",w);
 		//note: all should be barren
@@ -470,12 +380,7 @@ public class WorldGen {
 		senal.addFeature(new Garden(senal,"Desolate Fields",.2f,PlantFill.BAD_HARVEST));
 		senal.tTags.add(TownTag.BARREN);
 		senal.tTags.add(TownTag.DETERMINED);
-		senal.setFirstPrinter(new PrintEvent() {
-
-			@Override
-			public void print() {
-				extra.println("A few Eras ago, Senal was used as a trade route. But the island of Epan had its land salted, and civilization moved north, to Alhax. The mountain pass to Quen is oft alleged to be untraversable, only to be proven usable by desperate migrants seeking the Better Futures company here.");
-			}});
+		senal.setLoreText("A few Eras ago, Senal was used as a trade route. But the island of Epan had its land salted, and civilization moved north, to Alhax. The mountain pass to Quen is oft alleged to be untraversable, only to be proven usable by desperate migrants seeking the Better Futures company here.");
 		
 		Town quen = new Town("Quen",9,epan,(byte)12,(byte)10);
 		addConnection(quen,senal,ConnectType.ROAD,"Derelict Pass");
@@ -486,12 +391,7 @@ public class WorldGen {
 		quen.addFeature(new Grove("Dilapidated Hamlet", quen,100,8));
 		quen.tTags.add(TownTag.BARREN);
 		quen.tTags.add(TownTag.HISTORY);
-		quen.setFirstPrinter(new PrintEvent() {
-
-			@Override
-			public void print() {
-				extra.println("Quen was once the mighty city that all others aspired to. It first held that pedestal long before written history remains intact. But the countless wars over it eventually destroyed the island of Epan. And tyrants ceased caring over it a few Eras later.");
-			}});
+		quen.setLoreText("Quen was once the mighty city that all others aspired to. It first held that pedestal long before written history remains intact. But the countless wars over it eventually destroyed the island of Epan. And tyrants ceased caring over it a few Eras later.");
 		
 		Town visan = new Town("Visan",8,epan,(byte)13,(byte)8);
 		addConnection(visan,quen,ConnectType.ROAD,"Desolate Plains");
@@ -504,12 +404,7 @@ public class WorldGen {
 		visan.addTravel();
 		visan.tTags.add(TownTag.BARREN);
 		visan.tTags.add(TownTag.TRAVEL);
-		visan.setFirstPrinter(new PrintEvent() {
-
-			@Override
-			public void print() {
-				extra.println("Like the other towns on the island of Epan, Visan's land is barren. It's current use is as a staging point to break through the magic fog and allow teleporting from Rona to Teran through Epan, but most traders prefer to take the shipping route to the north.");
-			}});
+		visan.setLoreText("Like the other towns on the island of Epan, Visan's land is barren. It's current use is as a staging point to break through the magic fog and allow teleporting from Rona to Teran through Epan, but most traders prefer to take the shipping route to the north.");
 		
 		addConnection(repa,greap(),ConnectType.TELE,"world teleport (eonao-greap)");
 		
@@ -574,12 +469,7 @@ public class WorldGen {
 		peana.addFeature(new Mine("Staircase to Hell", peana,75,10,NodeFeature.Shape.ELEVATOR,BossType.GENERIC_DEMON_OVERLORD));
 		peana.tTags.add(TownTag.HELLISH);
 		
-		peana.setFirstPrinter(new PrintEvent(){
-			@Override
-			public void print() {
-				extra.println("Peana is the site of a large Mine with a singular purpose: to breach into hell. Those who completed this task have since long been lost to the ages- but their work remains, and a Throne of Hell was established there.");
-			}
-		});
+		peana.setLoreText("Peana is the site of a large Mine with a singular purpose: to breach into hell. Those who completed this task have since long been lost to the ages- but their work remains, and a Throne of Hell was established there.");
 		
 		Town inka = new Town("Inka",12, apen, new Point(7,14));
 		addConnection(unika,inka,ConnectType.ROAD,"youn road");
@@ -619,12 +509,7 @@ public class WorldGen {
 		xeyn.addFeature(new Inn("'The Softer Side'",12, xeyn, null));
 		xeyn.tTags.add(TownTag.FARMS);
 		xeyn.tTags.add(TownTag.LIVESTOCK);
-		xeyn.setFirstPrinter(new PrintEvent(){
-			@Override
-			public void print() {
-				extra.println("Xeyn is a fairly idyllic farmstead- as long as you stay out of the forest. Those whose cattle venture there write them off as a loss, and the children of Xeyn will always remember the mouths, even when they grow too old to see them.");
-			}
-		});
+		xeyn.setLoreText("Xeyn is a fairly idyllic farmstead- as long as you stay out of the forest. Those whose cattle venture there write them off as a loss, and the children of Xeyn will always remember the mouths, even when they grow too old to see them.");
 		
 		Town mikol = new Town("Mikol",13,opyo,new Point(10,11));
 		addConnection(pipa,mikol,ConnectType.ROAD,"Twin Thrones Road");
@@ -637,12 +522,7 @@ public class WorldGen {
 		mikol.addFeature(new Appraiser("Shipment Inspectors"));
 		mikol.tTags.add(TownTag.LAW);
 		mikol.tTags.add(TownTag.SERVICES);
-		mikol.setFirstPrinter(new PrintEvent(){
-			@Override
-			public void print() {
-				extra.println("The Empyphic royals in Mikol are largely bureaucratic, having survived the ages via offering administrative services. Those in the dusk-soaked dimension a portal has opened to seem to be quite the opposite, preferring spears to pens.");
-			}
-		});
+		mikol.setLoreText("The Empyphic royals in Mikol are largely bureaucratic, having survived the ages via offering administrative services. Those in the dusk-soaked dimension a portal has opened to seem to be quite the opposite, preferring spears to pens.");
 		
 		Town reahe = new Town("Reahe",14,opyo,new Point(14,13));
 		addConnection(xeyn,reahe,ConnectType.ROAD,"TODO");
@@ -658,8 +538,6 @@ public class WorldGen {
 		reahe.tTags.add(TownTag.MERCHANT);
 		reahe.tTags.add(TownTag.TRAVEL);
 		
-		//fort somewhere
-		
 		Town kelo = new Town("Kelo",14,opyo,new Point(13,10));//FIXME
 		addConnection(mikol,kelo,ConnectType.ROAD,"TODO");
 		addConnection(reahe,kelo,ConnectType.ROAD,"TODO");
@@ -668,12 +546,13 @@ public class WorldGen {
 		addConnection(kelo,gopuo,ConnectType.ROAD,"TODO");
 		addConnection(mikol,gopuo,ConnectType.ROAD,"TODO");
 		gopuo.addFeature(new Inn("Last Landing", 14, gopuo, null));
-		gopuo.addFeature(new Dungeon("Lighthouse",gopuo,40,13,Shape.RIGGED_TOWER,BossType.YORE));
+		gopuo.addFeature(new Dungeon("Lost Lighthouse",gopuo,40,13,Shape.RIGGED_TOWER,BossType.YORE));
 		gopuo.addTravel();
 		gopuo.addTravel();
 		gopuo.addTravel();
 		gopuo.tTags.add(TownTag.TRAVEL);
 		//ships up
+		
 		
 		Island worea = new Island("Worea",w,IslandType.ISLAND);//island to the west of pipa
 		//island is very unsettling
@@ -728,7 +607,7 @@ public class WorldGen {
 		beola.addFeature(new Inn("Helen's Inn",15,beola,null));
 		beola.addFeature(new Store(beola,15,6));//general store
 		beola.addFeature(new Store(beola,15,10));//food store
-		beola.addFeature(new Doctor("Beloan Clinic", beola));
+		beola.addFeature(new Doctor("Beolan Clinic", beola));
 		beola.addFeature(new Library("'Publics'", beola));
 		//crammed full since it's a city
 		beola.tTags.add(TownTag.CITY);
@@ -770,11 +649,7 @@ public class WorldGen {
 		//TODO: world teleporter
 		
 		orean.tTags.add(TownTag.HIDDEN);
-		orean.setFirstPrinter(new PrintEvent() {
-			@Override
-			public void print() {
-				extra.println("Orean sits atop the rocky raised island of Henak, which is inaccessible by boat. Only nearby teleporters can reach it, which makes it isolated due to the rarity of them in Greap.");
-			}});
+		orean.setLoreText("Orean sits atop the rocky raised island of Henak, which is inaccessible by boat. Only nearby teleporters can reach it, which makes it isolated due to the rarity of them in Greap.");
 		
 		return holik;
 	}
@@ -787,9 +662,7 @@ public class WorldGen {
 			}catch (Exception e) {
 				mainGame.log("WorldGen Align Fail: " +e.getMessage());
 			}
-			
 		}
-		
 		p.reload();
 	}
 	

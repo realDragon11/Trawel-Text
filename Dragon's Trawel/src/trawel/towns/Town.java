@@ -94,6 +94,7 @@ public class Town extends TContextOwner{
 	private float occupantDesire;
 	
 	private int community_helper = 0;
+	private String loreText;
 	
 	//private transient List<TimeEvent> events;
 	
@@ -152,14 +153,8 @@ public class Town extends TContextOwner{
 		}
 	}
 	
-	public void setGoPrinter(PrintEvent e) {
-		if (true) {
-			return;//DOLATER disabled for now
-		}
-		getIsland().getWorld().addPrintEvent("g"+this.name,e);
-	}
-	public void setFirstPrinter(PrintEvent e) {
-		getIsland().getWorld().addPrintEvent("n"+this.name,e);
+	public void setLoreText(String text) {
+		loreText = text;
 	}
 	
 	public void addPerson() {
@@ -303,9 +298,8 @@ public class Town extends TContextOwner{
 		World w = island.getWorld();
 		Player.updateWorld(w);
 		if (Player.player.lastTown != this) { 
-			if (visited < 2 && w.getAndPrint("n"+this.name)) {
-			}else {
-				w.getAndPrint("g"+this.name);
+			if (visited < 2 && mainGame.displayFlavorText && loreText != null) {
+				extra.println(loreText);
 			}
 		}
 		townProcess();//works because the menu generator below always backs out
@@ -1165,6 +1159,12 @@ public class Town extends TContextOwner{
 		//to dont: could make the hash smaller by storing it as codepoints instead of directly to int digits
 		//return getName()+hashCode();
 		return island.getName()+getName();
+	}
+	public boolean hasLore() {
+		return loreText != null;
+	}
+	public String getLore() {
+		return loreText;
 	}
 	
 }

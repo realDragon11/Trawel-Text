@@ -1544,12 +1544,14 @@ public class Player extends SuperPerson{
 
 													@Override
 													public String title() {
-														return "Lore";
+														return t.hasLore() ? "Lore" : "Stories";
 													}
 
 													@Override
 													public boolean go() {
-														 if (!w.getAndPrintLore(t.getName())) {
+														 if (t.hasLore()) {
+															 extra.println(t.getLore());
+														 }else {
 															 extra.println("There are no stories about " + t.getName()+".");
 														 }
 														return false;

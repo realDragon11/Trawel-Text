@@ -25,15 +25,12 @@ import trawel.time.TimeEvent;
 public class World extends TContextOwner{
 
 	private static final long serialVersionUID = 1L;
-	private ArrayList<Island> islands;
+	private List<Island> islands;
 	private int xSize;
 	private int ySize;
 	private Town startTown;
 	private String name;
 	
-	private transient Map<String,PrintEvent> printerMap;
-	private List<String> printerLabels;
-	private List<PrintEvent> printers;
 	private boolean visited = false;
 
 	/**
@@ -58,8 +55,6 @@ public class World extends TContextOwner{
 		this.minLonga = minLonga;
 		this.maxLonga = minLonga+x/WorldGen.unitsInLonga;
 		
-		printerLabels = new ArrayList<String>();
-		printers = new ArrayList<PrintEvent>();
 		moneyname = extra.choose(extra.choose("gold","silver","electrum")+" coins",_name + " notes", _name+" proof marks");
 	}
 	
@@ -263,10 +258,6 @@ public class World extends TContextOwner{
 	@Override
 	public void reload() {
 		debtLock = new ReentrantLock();
-		printerMap = new HashMap<String,PrintEvent>();
-		for (int i = printers.size()-1;i >=0;i--) {
-			printerMap.put(printerLabels.get(i), printers.get(i));
-		}
 		timeScope = new TimeContext(ContextType.GLOBAL,this,true);//world is lazy
 		timeSetup();
 		for(Island i: islands) {
@@ -326,46 +317,6 @@ public class World extends TContextOwner{
 	@Override
 	public ContextLevel contextLevel() {
 		return ContextLevel.WORLD;
-	}
-
-	public void addPrintEvent(String string, PrintEvent e) {
-		if (printerMap != null) {
-			printerMap.put(string, e);
-		}
-		printerLabels.add(string);
-		printers.add(e);
-	}
-
-	public boolean getAndPrint(String string) {
-		if (!mainGame.displayFlavorText && string.startsWith("n")) {
-			return false;
-		}
-		PrintEvent printer = printerMap.getOrDefault(string, null);
-		if (printer !=null) {
-			printer.print();
-			return true;
-		}
-		return false;
-	}
-	
-	/**
-	 * will attempt to print the "l" lore option, but will resort to the "n" new option if can't find an l option
-	 * <br>
-	 * ignores display prefs, only use from menus
-	 */
-	public boolean getAndPrintLore(String string) {
-		PrintEvent printer = printerMap.getOrDefault("l"+string, null);
-		if (printer !=null) {
-			printer.print();
-			return true;
-		}else {
-			printer = printerMap.getOrDefault("n"+string, null);
-			if (printer !=null) {
-				printer.print();
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public static String currentMoneyDisplay(int money) {
