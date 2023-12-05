@@ -967,29 +967,13 @@ public class WorldGen {
 		return Math.abs((cur.t.getLocationX()-dest.getLocationX())) + Math.abs((cur.t.getLocationY()-dest.getLocationY()));
 	}
 	
-	private static class EdgeConnection {
-		public final Connection connect;
-		public double gScore = Double.MAX_VALUE;
-		public double fScore = Double.MAX_VALUE;
-		public EdgeConnection from;
-		public EdgeConnection(Connection c, EdgeConnection _from) {
-			connect = c;
-			from = _from;
-			if (_from == null) {
-				gScore = c.getTime();
-			}else {
-				gScore = _from.gScore+c.getTime();
-			}
-		}
-	}
-	
 	private static class ScoreTown{
 		public final Town forTown;
-		public double gScore = Double.MAX_VALUE;
-		public double fScore = Double.MAX_VALUE;
+		public double score;
 		public ScoreTown from;
-		public ScoreTown(Town t) {
+		public ScoreTown(Town t, double _score) {
 			forTown = t;
+			score = _score;
 		}
 	}
 	
@@ -1004,18 +988,6 @@ public class WorldGen {
 				}
 				return false;
 			}};
-		Predicate<Connection> eitherCheck = new Predicate<Connection>() {
-			
-			@Override
-			public boolean test(Connection c) {
-				for (Town t: c.getTowns()) {
-					if (innCheck.test(t)) {
-						return true;
-					}
-				}
-				return false;
-			}
-		};
 		for (Island is: w.getIslands()) {
 			townLoop: for (Town t: is.getTowns()) {
 				if (innCheck.test(t)) {
@@ -1029,7 +1001,7 @@ public class WorldGen {
 				
 				
 				//find the cheapest connection between the town we're checking
-				ScoreTown start = new ScoreTown(t);
+				ScoreTown start = new ScoreTown(t,0);
 				for (Connection c: t.getConnects()) {
 					if (!c.isWorldConnection()) {
 						updateST(c.otherTown(t),start,c.getTime(), openSet, closedSet);
@@ -1047,19 +1019,19 @@ public class WorldGen {
 						Connection connect = null;
 						double bestTime = Double.MAX_VALUE;
 						for (Connection c: t.getConnects()) {
-							if (c.otherTown(current.forTown) == t && c.getTime() < bestTime) {
+							if (c.otherTown(t) == last.forTown && c.getTime() < bestTime) {
 								bestTime = c.getTime();
 								connect = c;
 							}
 						}
-						last.forTown.setConnectFlow(connect);//set
+						t.setConnectFlow(connect);//set
 						continue townLoop;//move onto next town
 					}
 					//if we still need to keep looking
 					for (Connection c: examine.forTown.getConnects()) {
 						Town other = c.otherTown(examine.forTown);
 						//add sts to sets and update any scores
-						updateST(other,examine,examine.fScore+c.getTime(),openSet,closedSet);
+						updateST(other,examine,examine.score+c.getTime(),openSet,closedSet);
 					}
 				}
 				assert t.getConnectFlow() != null;
@@ -1072,41 +1044,11 @@ public class WorldGen {
 		}
 	}
 	
-	private static void addToSets(Town t,List<EdgeConnection> openSet,List<EdgeConnection> closedSet,EdgeConnection from) {
-		for (Connection c: t.getConnects()) {
-			if (!hasConnection(c,openSet) && !hasConnection(c,closedSet)) {
-				Town a = c.getTowns()[0];
-				Town b = c.getTowns()[1];
-				if (a.getIsland().getWorld() != b.getIsland().getWorld()) {
-					continue;
-				}
-				openSet.add(new EdgeConnection(c,from));
-			}
-		}
-	}
-	
-	private static Stream<Connection> getAdjacent(Connection eFor){
-		//c -> c != eFor.connect
-		return Arrays.asList(eFor.getTowns()).stream().flatMap(t -> t.getConnects().stream()).filter(c -> c != eFor);
-	}
-	
-	private static EdgeConnection getLowestEdge(List<EdgeConnection> list) {
-		double lowestValue = Double.MAX_VALUE;
-		EdgeConnection best = null;
-		for(EdgeConnection e: list) {
-			if (e.fScore < lowestValue) {
-				best = e;
-				lowestValue = e.fScore;
-			}
-		}
-		return best;
-	}
-	
 	private static ScoreTown updateST(Town want,ScoreTown from, double score,List<ScoreTown> openSet, List<ScoreTown> closedSet) {
 		for (ScoreTown st: openSet) {
 			if (st.forTown == want) {
-				if (st.fScore > score) {
-					st.fScore = score;
+				if (st.score > score) {
+					st.score = score;
 					st.from = from;
 				}
 				return st;
@@ -1115,18 +1057,17 @@ public class WorldGen {
 		for (int i = 0; i < closedSet.size();i++) {
 			ScoreTown st = closedSet.get(i);
 			if (st.forTown == want) {
-				if (st.fScore > score) {
+				if (st.score > score) {//found a faster way to a town somehow???
 					closedSet.remove(i);
 					openSet.add(st);
-					st.fScore = score;
+					st.score = score;
 					st.from = from;
 				}
 				return st;
 			}
 		}
-		ScoreTown st = new ScoreTown(want);
+		ScoreTown st = new ScoreTown(want,score);
 		st.from = from;
-		st.fScore = score;
 		openSet.add(st);
 		return st;
 		
@@ -1136,35 +1077,12 @@ public class WorldGen {
 		double lowestValue = Double.MAX_VALUE;
 		ScoreTown best = null;
 		for(ScoreTown e: openSet) {
-			if (e.fScore < lowestValue) {
+			if (e.score < lowestValue) {
 				best = e;
-				lowestValue = e.fScore;
+				lowestValue = e.score;
 			}
 		}
 		openSet.remove(best);
 		return best;
-	}
-	
-	private static EdgeConnection getOrCreateConnection(Connection c, EdgeConnection from,List<EdgeConnection> openSet,List<EdgeConnection> closedSet) {
-		for (EdgeConnection e: openSet) {
-			if (e.connect == c) {
-				return e;
-			}
-		}
-		for (EdgeConnection e: closedSet) {
-			if (e.connect == c) {
-				return e;
-			}
-		}
-		return new EdgeConnection(c,from);
-	}
-	
-	private static boolean hasConnection(Connection c,List<EdgeConnection> set) {
-		for (EdgeConnection e: set) {
-			if (e.connect == c) {
-				return true;
-			}
-		}
-		return false;
 	}
 }

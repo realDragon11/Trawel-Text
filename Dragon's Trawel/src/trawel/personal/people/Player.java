@@ -1578,6 +1578,7 @@ public class Player extends SuperPerson{
 														extra.println("It has around " +t.getFeatures().size() + " things to do and around " + occString + " occupants.");
 														if (Player.player.getCheating()) {
 															extra.println("Goal Desire: " +t.occupantGoal()+ " Need: " +t.occupantNeed());
+															extra.println("Inn Connect Flow: " + (t.hasConnectFlow() ? t.getConnectFlow().getName() + " to " +t.getConnectFlow().otherTown(t).getName() : "none"));
 														}
 														if (!t.isFort() && t.openSlots() > 0) {
 															extra.println("There are " + t.openSlots() + " lots of land free.");
