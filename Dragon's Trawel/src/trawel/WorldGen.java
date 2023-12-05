@@ -528,6 +528,7 @@ public class WorldGen {
 		fallBackWorld = w;
 		
 		//slow down leveling rate due to leveling getting slower, also go back and forth
+		//greap has no non-world teleporters to prevent teleporting to the end now that you understand them
 		
 		Island apen = new Island("Apen",w);
 		plane.addWorld(w);
@@ -643,7 +644,7 @@ public class WorldGen {
 			}
 		});
 		
-		Town reahe = new Town("Reahe",14,opyo,new Point(13,13));
+		Town reahe = new Town("Reahe",14,opyo,new Point(14,13));
 		addConnection(xeyn,reahe,ConnectType.ROAD,"TODO");
 		addConnection(mikol,reahe,ConnectType.ROAD,"TODO");
 		Store reaheStore = new Store("Forgeheart Stall",14,6);
@@ -658,6 +659,24 @@ public class WorldGen {
 		reahe.tTags.add(TownTag.TRAVEL);
 		
 		//fort somewhere
+		
+		Town kelo = new Town("Kelo",14,opyo,new Point(13,10));
+		addConnection(mikol,kelo,ConnectType.ROAD,"TODO");
+		addConnection(reahe,kelo,ConnectType.ROAD,"TODO");
+		
+		Town gopuo  = new Town("Gopuo",15,opyo,new Point(11,8));
+		addConnection(kelo,gopuo,ConnectType.ROAD,"TODO");
+		addConnection(mikol,gopuo,ConnectType.ROAD,"TODO");
+		gopuo.addFeature(new Docks("UpTODO", gopuo));
+		//gopuo.addFeature(new Inn("hangpreventer", 10, gopuo, null));
+		//ships up
+		
+		Island worea = new Island("Worea",w,IslandType.ISLAND);//island to the west of pipa
+		
+		Town lunek = new Town("Lunek",14, worea, new Point(6,9));
+		addConnection(pipa,lunek,ConnectType.SHIP,"TODO");
+		addConnection(gopuo,lunek,ConnectType.SHIP,"TODO");
+		//triangle shipping lane
 		
 		
 		//TODO: need more islands
@@ -964,6 +983,16 @@ public class WorldGen {
 		}
 	}
 	
+	private static class ScoreTown{
+		public final Town forTown;
+		public double gScore = Double.MAX_VALUE;
+		public double fScore = Double.MAX_VALUE;
+		public ScoreTown from;
+		public ScoreTown(Town t) {
+			forTown = t;
+		}
+	}
+	
 	private static void alignConnectFlowsToInns(World w) {
 		Predicate<Town> innCheck = new Predicate<Town>() {
 			@Override
@@ -988,58 +1017,50 @@ public class WorldGen {
 			}
 		};
 		for (Island is: w.getIslands()) {
-			for (Town t: is.getTowns()) {
+			townLoop: for (Town t: is.getTowns()) {
 				if (innCheck.test(t)) {
 					continue;//has an inn already
 				}
 				//honestly should probably use hashing or something, idk
-				List<EdgeConnection> openSet = new ArrayList<EdgeConnection>();
+				List<ScoreTown> openSet = new ArrayList<ScoreTown>();
 				//closed set is things we looked at, so we don't repeatedly create edgeconnection holders
 				//and also to store our path
-				List<EdgeConnection> closedSet = new ArrayList<EdgeConnection>();
+				List<ScoreTown> closedSet = new ArrayList<ScoreTown>();
+				
+				
+				//find the cheapest connection between the town we're checking
+				ScoreTown start = new ScoreTown(t);
 				for (Connection c: t.getConnects()) {
 					if (!c.isWorldConnection()) {
-						EdgeConnection ec = new EdgeConnection(c,null);
-						ec.gScore = 0;
-						ec.fScore = c.getTime();
-						openSet.add(ec);
+						updateST(c.otherTown(t),start,c.getTime(), openSet, closedSet);
 					}
 				}
-				
-				while (openSet.size() > 0) {
-					EdgeConnection current = getLowestEdge(openSet);
-					if (eitherCheck.test(current.connect)) {
-						EdgeConnection last = null;
-						while (current != null) {
+				while (!openSet.isEmpty()) {
+					ScoreTown examine = popLowestST(openSet);
+					if (innCheck.test(examine.forTown)) {//if it has a goal in
+						ScoreTown last = examine;
+						ScoreTown current = last;
+						while (current != start) {
 							last = current;
 							current = current.from;
 						}
-						t.setConnectFlow(last.connect);
-						break;
-					}
-					openSet.remove(current);
-					closedSet.add(current);
-					current.fScore = current.gScore+current.connect.getTime();
-					Iterator<Connection> it =getAdjacent(current.connect).iterator();
-					while (it.hasNext()) {
-						Connection c = it.next();
-						EdgeConnection e = getOrCreateConnection(c,current,openSet,closedSet);
-						if (e.from == null) {
-							continue;//this connection is a base connection, ie a source
-						}
-						double gMaybe = current.fScore + c.getTime();
-						if (e.gScore < gMaybe) {
-							e.from = current;
-							e.gScore = gMaybe;
-							e.fScore = gMaybe + 0;//heuristic, we don't use one rn
-							if (!openSet.contains(e)) {
-								openSet.add(e);
-								//we don't care if this fails
-								closedSet.remove(e);
+						Connection connect = null;
+						double bestTime = Double.MAX_VALUE;
+						for (Connection c: t.getConnects()) {
+							if (c.otherTown(current.forTown) == t && c.getTime() < bestTime) {
+								bestTime = c.getTime();
+								connect = c;
 							}
 						}
+						last.forTown.setConnectFlow(connect);//set
+						continue townLoop;//move onto next town
 					}
-					
+					//if we still need to keep looking
+					for (Connection c: examine.forTown.getConnects()) {
+						Town other = c.otherTown(examine.forTown);
+						//add sts to sets and update any scores
+						updateST(other,examine,examine.fScore+c.getTime(),openSet,closedSet);
+					}
 				}
 				assert t.getConnectFlow() != null;
 				//that we're not looping back
@@ -1080,6 +1101,50 @@ public class WorldGen {
 		}
 		return best;
 	}
+	
+	private static ScoreTown updateST(Town want,ScoreTown from, double score,List<ScoreTown> openSet, List<ScoreTown> closedSet) {
+		for (ScoreTown st: openSet) {
+			if (st.forTown == want) {
+				if (st.fScore > score) {
+					st.fScore = score;
+					st.from = from;
+				}
+				return st;
+			}
+		}
+		for (int i = 0; i < closedSet.size();i++) {
+			ScoreTown st = closedSet.get(i);
+			if (st.forTown == want) {
+				if (st.fScore > score) {
+					closedSet.remove(i);
+					openSet.add(st);
+					st.fScore = score;
+					st.from = from;
+				}
+				return st;
+			}
+		}
+		ScoreTown st = new ScoreTown(want);
+		st.from = from;
+		st.fScore = score;
+		openSet.add(st);
+		return st;
+		
+	}
+	
+	private static ScoreTown popLowestST(List<ScoreTown> openSet) {
+		double lowestValue = Double.MAX_VALUE;
+		ScoreTown best = null;
+		for(ScoreTown e: openSet) {
+			if (e.fScore < lowestValue) {
+				best = e;
+				lowestValue = e.fScore;
+			}
+		}
+		openSet.remove(best);
+		return best;
+	}
+	
 	private static EdgeConnection getOrCreateConnection(Connection c, EdgeConnection from,List<EdgeConnection> openSet,List<EdgeConnection> closedSet) {
 		for (EdgeConnection e: openSet) {
 			if (e.connect == c) {
