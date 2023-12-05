@@ -22,7 +22,7 @@ public abstract class NodeFeature extends Feature {
 		/**
 		 * requires a bosstype of 3 to work properly, and DungeonNode
 		 */
-		RIGGED_DUNGEON;
+		RIGGED_DUNGEON, RIGGED_TOWER;
 	}
 	protected Shape shape;
 	

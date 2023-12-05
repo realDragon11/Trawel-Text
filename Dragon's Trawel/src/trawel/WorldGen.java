@@ -668,7 +668,7 @@ public class WorldGen {
 		addConnection(kelo,gopuo,ConnectType.ROAD,"TODO");
 		addConnection(mikol,gopuo,ConnectType.ROAD,"TODO");
 		gopuo.addFeature(new Inn("Last Landing", 14, gopuo, null));
-		gopuo.addFeature(new Dungeon("Lighthouse",gopuo,40,15,Shape.TOWER,BossType.NONE));//TODO lighthouse
+		gopuo.addFeature(new Dungeon("Lighthouse",gopuo,40,13,Shape.RIGGED_TOWER,BossType.YORE));
 		gopuo.addTravel();
 		gopuo.addTravel();
 		gopuo.addTravel();
@@ -694,7 +694,7 @@ public class WorldGen {
 		
 		Town eaqu = new Town("Eaqu",14,worea,new Point(2,10));//FIXME
 		addConnection(lunek,eaqu,ConnectType.ROAD,"TODO");
-		eaqu.addFeature(new Graveyard("TODO", eaqu,15));
+		eaqu.addFeature(new Graveyard("Churchyard", eaqu,15));
 		eaqu.addFeature(new Garden(eaqu,"Modest Harvest",.7f,PlantFill.FOOD));
 		eaqu.tTags.add(TownTag.SMALL_TOWN);
 		eaqu.tTags.add(TownTag.HIDDEN);
@@ -713,7 +713,7 @@ public class WorldGen {
 		celen.addFeature(new Mountain("Perturbing Peaks", 16));
 		celen.addTravel();//one travel
 		
-		celen.tTags.add(TownTag.UNSETTLING);
+		celen.tTags.add(TownTag.UNSETTLING);//most unsettling
 		celen.tTags.add(TownTag.VISTAS);
 		
 		

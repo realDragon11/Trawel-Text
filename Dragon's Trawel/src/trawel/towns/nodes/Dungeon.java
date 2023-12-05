@@ -64,6 +64,8 @@ public class Dungeon extends NodeFeature {
 			return "Rigged Dungeon";
 		case TOWER:
 			return "Tower Dungeon";
+		case RIGGED_TOWER:
+			return "Rigged Tower Dungeon";
 		}
 		return "Dungeon?";
 	}
@@ -376,7 +378,9 @@ public class Dungeon extends NodeFeature {
 			delve_helpers = new ArrayList<Agent>();
 			left_helpers = new ArrayList<String>();
 			break;
-		default:case RIGGED_DUNGEON: //unsure on rigged
+		default:
+			case RIGGED_DUNGEON: //unsure on rigged
+			case RIGGED_TOWER:
 			break;
 		}
 		start = NodeType.NodeTypeNum.DUNGEON.singleton.getStart(this, size, tier);

@@ -205,12 +205,12 @@ public class DungeonNode implements NodeType{
 			}
 			return start_node.complete(owner);
 		case RIGGED_DUNGEON:
-			int max_level = tier*2;
+			int max_level = tier+8;
 			int start_level = tier;
 			int path_length_weak = 10;
-			int weak_end_level = (int) (tier*1.5f);
+			int weak_end_level = tier+3;
 			int path_length_tough = 4;
-			int tough_end_level = tier*2;
+			int tough_end_level = tier+6;
 			int fight_room = NodeType.NodeTypeNum.BOSS.singleton.getNode(start_node, 0, 0, max_level);
 			Dungeon keeper = (Dungeon) owner;
 			keeper.setupBattleCons();
@@ -241,6 +241,64 @@ public class DungeonNode implements NodeType{
 					last_node = cur_node;
 				}
 			}
+			return start_node.complete(owner);
+		case RIGGED_TOWER:
+			int t_boss_level = tier+8;
+			int t_max_level = tier+6;
+			int t_fight_room = NodeType.NodeTypeNum.BOSS.singleton.getNode(start_node, 0, 0, t_boss_level);
+			Dungeon t_keeper = (Dungeon) owner;
+			t_keeper.setupBattleCons();
+			List<SubSkill> t_skillcon_list = new ArrayList<SubSkill>();
+			
+			t_skillcon_list.add(SubSkill.SCRYING);
+			t_skillcon_list.add(SubSkill.DEATH);
+			t_skillcon_list.add(SubSkill.ELEMENTAL);
+			Collections.shuffle(t_skillcon_list);//random order
+			
+			int t_areas = t_skillcon_list.size();
+			int t_floors = (size/(t_areas*2))+t_areas;//total number of actual 'floors', 2 rooms per floor
+			int t_area_size = t_floors/t_areas;//amount of 'floors' in each area, 3 areas * 2 rooms per floor
+			int t_cur_floor = 0;
+			int t_cur_level = tier;
+			
+			int t_cur_node1;
+			int t_cur_node2;
+			
+			int t_cur_node1new;
+			int t_cur_node2new;
+			int last_connector = t_fight_room;
+			for (int i = 0;i < t_areas;i++) {
+				t_cur_floor++;
+				t_cur_level = (int)extra.lerp(tier,t_max_level,((float)t_cur_floor)/t_floors);//set level
+				t_cur_node1 = getNode(start_node,last_connector,t_cur_floor,t_cur_level);
+				t_cur_node2 = getNode(start_node,last_connector,t_cur_floor,t_cur_level);
+				
+				start_node.setMutualConnect(t_cur_node1, last_connector);
+				start_node.setMutualConnect(t_cur_node2, last_connector);
+				
+				//start at j=1 since we need to make the first rooms work
+				for (int j = 1; j < t_area_size; j++) {
+					t_cur_floor++;
+					t_cur_level = (int)extra.lerp(tier,t_max_level,((float)t_cur_floor)/t_floors);//set level
+					t_cur_node1new = getNode(start_node,t_cur_node1,t_cur_floor,t_cur_level);
+					start_node.setMutualConnect(t_cur_node1, t_cur_node1new);
+					t_cur_node2new = getNode(start_node,t_cur_node2,t_cur_floor,t_cur_level);
+					start_node.setMutualConnect(t_cur_node2, t_cur_node2new);
+					
+					t_cur_node1 = t_cur_node1new;
+					t_cur_node2 = t_cur_node2new;
+				}
+				
+				//generate skillcon room
+				t_cur_floor++;//don't need to set level
+				int skillroom = getNode(start_node, 0, t_cur_floor, t_cur_level);
+				start_node.setEventNum(skillroom, 100);
+				t_keeper.registerBattleConWithNode(t_skillcon_list.remove(0),skillroom);
+				start_node.setMutualConnect(t_cur_node2, skillroom);
+				start_node.setMutualConnect(t_cur_node1, skillroom);
+				last_connector = skillroom;
+			}
+			
 			return start_node.complete(owner);
 		}
 		throw new RuntimeException("Invalid dungeon");
