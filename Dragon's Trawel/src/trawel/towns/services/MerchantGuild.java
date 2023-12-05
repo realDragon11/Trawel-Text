@@ -8,6 +8,8 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.Networking.Area;
+import trawel.factions.Faction;
+import trawel.factions.FBox.FSub;
 import trawel.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -71,8 +73,16 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 					@Override
 					public String title() {
-						return "Current Mechant Reputation: " + Player.player.merchantLevel+ ".";
+						return "Current Merchant Connections: " + Player.player.merchantLevel+ ".";
 					}});
+				list.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						FSub sub = Player.player.getPerson().facRep.getFacRep(Faction.MERCHANT);
+						return "Current Merchant Reputation: " + (sub == null ? "Unknown" : ""+extra.format2(sub.forFac-sub.againstFac));
+					}
+				});
 				list.add(new MenuSelect() {
 
 					@Override

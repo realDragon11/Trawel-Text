@@ -1700,6 +1700,20 @@ public class Player extends SuperPerson{
 															}
 															return false;
 														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "DEBUG: teleport";
+														}
+
+														@Override
+														public boolean go() {
+															Player.player.setLocation(t);
+															//catch up time globally so teleporting to another world is less wonky
+															mainGame.globalTimeCatchUp();
+															return false;
+														}});
 												}
 												list.add(new MenuBack());
 												return list;

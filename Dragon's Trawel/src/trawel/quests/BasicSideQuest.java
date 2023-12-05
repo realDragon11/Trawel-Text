@@ -59,6 +59,7 @@ public abstract class BasicSideQuest implements Quest{
 	public void fail() {
 		cleanup();
 		Player.player.sideQuests.remove(this);
+		extra.println("You abandoned "+name()+".");
 	}
 	
 	public void announceUpdate() {
@@ -69,6 +70,7 @@ public abstract class BasicSideQuest implements Quest{
 	public void complete() {
 		cleanup();
 		Player.player.sideQuests.remove(this);
+		extra.println("You completed "+name()+"!");
 	}
 	
 	protected void resolveDest(Feature locationF) {
