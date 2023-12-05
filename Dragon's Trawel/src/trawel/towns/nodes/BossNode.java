@@ -12,6 +12,7 @@ import trawel.factions.Faction;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.Perk;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
@@ -183,7 +184,7 @@ public class BossNode implements NodeType {
 					Networking.unlockAchievement("boss1");
 					setBossKilled(spinner.getName());
 					Player.player.addAchieve("fatespinner","Owner of Their Own Fate");
-					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1f, 0);
+					heroRep(holder,node,1f);
 					return false;
 				}
 			}else {
@@ -216,7 +217,7 @@ public class BossNode implements NodeType {
 				Player.unlockPerk(Perk.HELL_BARONESS_1);
 				setBossKilled(baron.getName());
 				Player.player.addAchieve("hell_baron","Hell Baroness");
-				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,2f, 0);
+				heroRep(holder,node,2f);
 				return false;
 			}else {
 				return true;//lost, kick out
@@ -239,7 +240,7 @@ public class BossNode implements NodeType {
 				Networking.unlockAchievement("boss3");
 				setBossKilled(yore.getName());
 				Player.player.addAchieve("yore","Story Slayer");
-				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,3f, 0);
+				heroRep(holder,node,3f);
 				return false;
 			}else {
 				return true;//lost, kick out
@@ -274,7 +275,7 @@ public class BossNode implements NodeType {
 				Networking.unlockAchievement("boss4");
 				setBossKilled(queen.getName());
 				Player.player.addAchieve("old_queen","Ancient Queen Slayer");
-				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,2f, 0);
+				heroRep(holder,node,2f);
 				return false;
 			}
 		}else {
@@ -340,6 +341,10 @@ public class BossNode implements NodeType {
 	
 	public static void setBossKilled(String bossname) {
 		Player.player.addGroupedAchieve("boss","Bosses",bossname);
+	}
+	
+	public static void heroRep(NodeConnector holder,int node,float mult) {
+		Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult* IEffectiveLevel.unEffective(holder.getLevel(node)), 0);
 	}
 
 }
