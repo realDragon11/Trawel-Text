@@ -72,7 +72,7 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__9";
-	public static final String VERSION_DATE = " updated Dec 1st 2023";
+	public static final String VERSION_DATE = " updated Dec 5th 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			"b_9: {part 1/?} Expanded Bag items can now be melted down into aether from player menu or if Bag is full when looting. 'Really Attack' prompts now give the option to examine the Person's inventory.",
@@ -81,7 +81,7 @@ public class mainGame {
 			"b_9: {part 4/?} Changed internal Sidequest code to better handle saving, tweaked quest generation behavior, added quests to the Rogue and Hero's guild, and added new Quest Reaction(s).",
 			"b_9: {part 5/?} Adjusted Wounds, importantly adding more elemental wounds.",
 			"b_9: {part 6/?} Added more Classless Skills and Feats: Beer Belly, Deadly Aim, Glutton, Life Mage, Shaman, Potion Chugger",
-			"b_9: {part 7/?} Expanded Greap worldgen map.",
+			"b_9: {part 7/?} Expanded Greap worldgen map, filling out some more towns and adding many town locations. Route types have been expanded to include caravans and lesser traveled paths, which have different travel speeds and NPC interests.",
 			"b_9: {part 8/?} Added Simplified attack display style, moved attack notes from Combat Debug to its own option.",
 			
 			"b_8: {part 1/5} Added a wait option to Arenas and prevented giant time chunks by accident, made Arenas fight without the player and have the winners move on after enough training. Players always get a new fighter in their first round (so entirely for 1 round titles), but more rounds are done entirely naturally now, potentially drawing from survivors.",
