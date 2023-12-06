@@ -124,6 +124,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 							if (cost <= spenda) {
 								Player.player.factionSpent.addFactionRep(Faction.HEROIC,cost,0);
 								Gem.RUBY.changeGem(1);
+								extra.println("Gained 1 ruby, new total: " + Gem.RUBY.getGem()+".");
 							}else {
 								extra.println("You do not have enough spendable reputation.");
 								break;

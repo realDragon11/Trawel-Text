@@ -154,7 +154,7 @@ public class Blacksmith extends Feature {
 							extra.println(item.getName() + " does not have any negative qualities!");
 							return false;
 						}
-						if (item.getLevel() >= tier) {
+						if (item.getLevel() > tier) {
 							extra.println(item.getName()+" is too high in level ("+item.getLevel()+") to temper here!");
 							return false;
 						}

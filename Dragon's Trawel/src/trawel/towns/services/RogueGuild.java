@@ -127,6 +127,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 							if (cost <= spenda) {
 								Player.player.factionSpent.addFactionRep(Faction.ROGUE,cost,0);
 								Gem.SAPPHIRE.changeGem(1);
+								extra.println("Gained 1 sapphire, new total: " + Gem.SAPPHIRE.getGem()+".");
 							}else {
 								extra.println("You do not have enough spendable reputation.");
 								break;
