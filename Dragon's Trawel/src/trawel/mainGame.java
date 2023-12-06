@@ -71,15 +71,15 @@ import trawel.towns.services.Oracle;
 public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
-	public static final String VERSION_STRING = "v0.8.b__9";
-	public static final String VERSION_DATE = " updated Dec 5th 2023";
+	public static final String VERSION_STRING = "v0.8.b_9";
+	public static final String VERSION_DATE = " updated Dec 6th 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
-			"b_9: {part 1/1} Expanded Bag items can now be melted down into aether from player menu or if Bag is full when looting. 'Really Attack' prompts now give the option to examine the Person's inventory.",
-			"b_9: {part 2/2} Plant Spots, Drawbanes, and Alchemy have recieved interconnected improvements, most notably a few new potion combos. Altars have also received Forest blessings. Traveling features now have special behavior, and you can rent rooms at Inns.",
+			"b_9: {part 1/1} Expanded Bag items can now be melted down into aether from player menu or if Bag is full when looting. 'Really Attack' prompts give the option to examine the Person's inventory.",
+			"b_9: {part 2/2} Plant Spots, Drawbanes, and Alchemy have recieved interconnected improvements, most notably a few extra potion combos. Altars now can have Forest blessings. Traveling features have new special behavior, and you can rent rooms at Inns.",
 			"b_9: {part 3/3} Added the Enchanter Town Feature, which can enchant or improve enchantments on Weapons and Armor. It can also allow you to sell Aether for World Currency. The Blacksmith can now temper armor to remove negative traits at the cost of Amber Gems.",
-			"b_9: {part 4/4} Changed internal Sidequest code to better handle saving, tweaked quest generation behavior, added quests to the Rogue, Hero, and new Hunter's guild. Added more Quest Reactions.",
-			"b_9: {part 5/5} Increased positive reputation gain from combat, decreased negative gain. Added Amber as the Hunter's gem.",
+			"b_9: {part 4/4} Changed internal Sidequest code to save properly, tweaked quest generation behavior, added quests to the Rogue, Hero, and new Hunter's guild. Added more Quest Reactions.",
+			"b_9: {part 5/5} Increased positive reputation gain from combat, decreased negative gain. Added Amber as the Hunter's gem, and updated world currency/gem costs and rewards.",
 			"b_9: {part 6/6} Adjusted Wounds, importantly adding more elemental wounds.",
 			"b_9: {part 7/7} Added more Classless Skills and Feats: Beer Belly, Deadly Aim, Glutton, Life Mage, Shaman, Potion Chugger",
 			"b_9: {part 8/8} Expanded Greap worldgen map, filling out some more towns and adding many town locations. Route types have been expanded to include caravans and lesser traveled paths, which have different travel speeds and NPC interests.",

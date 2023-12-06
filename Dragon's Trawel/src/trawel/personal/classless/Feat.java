@@ -26,7 +26,7 @@ public enum Feat implements IHasSkills{
 			,EnumSet.noneOf(Skill.class),15,15,15//should grant a decent amount of every stat
 			,null,null),
 	COMMON_TOUGH("Tough","They're tougher than they look. And they look tough.","",
-			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS,Skill.RAW_GUTS),15,0,0),
+			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS),20,5,5),
 	WITCHY("Witchy","Curses and potions are their forte.","",// Washy
 			1f,EnumSet.of(FeatType.POTIONS,FeatType.CURSES),null
 			,EnumSet.of(Skill.CURSE_MAGE,Skill.P_BREWER),0,5,10
