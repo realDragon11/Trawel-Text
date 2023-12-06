@@ -823,9 +823,24 @@ public class Player extends SuperPerson{
 									@Override
 									public boolean go() {
 										Player.player.getPerson().getBag().deepDisplay();
-										extra.println("Current Gems: "+Gem.playerGems());
 										return false;
 									}});
+								invList.add(new MenuSelect(){
+
+									@Override
+									public String title() {
+										return "Finances";
+									}
+
+									@Override
+									public boolean go() {
+										extra.println("Local: " +getPerson().getBag().getAether() + " aether, " + showGold()+".");
+										extra.println("Planar: " +allGoldDisp()+".");
+										extra.println("Gems: " +Gem.playerGems()+".");
+										return false;
+									}
+									
+								});
 								invList.add(new MenuSelect() {
 
 									@Override

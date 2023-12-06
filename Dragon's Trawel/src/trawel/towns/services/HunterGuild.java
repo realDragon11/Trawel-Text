@@ -82,8 +82,8 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 					public boolean go() {
 						while (true) {
 						int cost = 10;
-						float spenda = FBox.getSpendableFor(Player.player.getPerson().facRep.getFacRep(Faction.HUNTER));
-						extra.println("Buy 5 amber? cost: " +cost + " of "+extra.format2(spenda));
+						float spenda = FBox.getSpendableFor(Faction.HUNTER);
+						extra.println("Request 5 amber? cost: " +cost + " of "+extra.format2(spenda));
 						if (extra.yesNo()) {
 							if (cost <= spenda) {
 								Player.player.factionSpent.addFactionRep(Faction.HUNTER,cost,0);

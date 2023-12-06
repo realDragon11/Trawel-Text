@@ -121,7 +121,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 					public boolean go() {
 						while (true) {
 						int cost = 25;
-						float spenda = FBox.getSpendableFor(Player.player.getPerson().facRep.getFacRep(Faction.ROGUE));
+						float spenda = FBox.getSpendableFor(Faction.ROGUE);
 						extra.println("Request a sapphire? cost: " +cost + "/"+extra.format2(spenda));
 						if (extra.yesNo()) {
 							if (cost <= spenda) {
@@ -203,7 +203,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "current money: " + Player.showGold();
+						return "Current Money: " + Player.showGold();
 					}
 				});
 				mList.add(new MenuLine() {
@@ -217,7 +217,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "conversion credits: " + Player.player.launderCredits;
+						return "Conversion Credits: " + Player.player.launderCredits;
 					}
 				});
 				int cost = 20;
@@ -225,7 +225,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "buy a launder credit for "+cost+" " + World.currentMoneyString();
+						return "Buy a launder credit for "+cost+" " + World.currentMoneyString()+".";
 					}
 
 					@Override
@@ -253,15 +253,15 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "buy a launder credit for 2 rogue rep";
+						return "Request a launder credit for 2 Rogue Rep.";
 					}
 
 					@Override
 					public boolean go() {
 						while (true) {
 						int cost = 2;
-						float spenda = FBox.getSpendableFor(Player.player.getPerson().facRep.getFacRep(Faction.ROGUE));
-						extra.println("Buy a launder credit? cost: " +cost + "/"+extra.format2(spenda));
+						float spenda = FBox.getSpendableFor(Faction.ROGUE);
+						extra.println("Request a launder credit? cost: " +cost + "/"+extra.format2(spenda));
 						if (extra.yesNo()) {
 							if (cost <= spenda) {
 								Player.player.factionSpent.addFactionRep(Faction.ROGUE,cost,0);

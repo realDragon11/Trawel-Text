@@ -88,9 +88,9 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 						}else {
 							spentf = spent.forFac;
 						}*/
-						float spenda = FBox.getSpendableFor(Player.player.getPerson().facRep.getFacRep(Faction.HEROIC));
+						float spenda = FBox.getSpendableFor(Faction.HEROIC);
 						float cost = (float)Math.pow(((spentf/50f)+1)*10,1.1f);
-						extra.println("Buy a feat fragment? cost: " +extra.format2(cost) + " of "+extra.format2(spenda));
+						extra.println("Request a feat fragment? cost: " +extra.format2(cost) + " of "+extra.format2(spenda));
 						if (extra.yesNo()) {
 							if (cost <= spenda) {
 								Player.player.hSpentOnKno += cost;
@@ -118,8 +118,8 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 					public boolean go() {
 						while (true) {
 						int cost = 20;
-						float spenda = FBox.getSpendableFor(Player.player.getPerson().facRep.getFacRep(Faction.HEROIC));
-						extra.println("Buy a ruby? cost: " +cost + " of "+extra.format2(spenda));
+						float spenda = FBox.getSpendableFor(Faction.HEROIC);
+						extra.println("Request a ruby? cost: " +cost + " of "+extra.format2(spenda));
 						if (extra.yesNo()) {
 							if (cost <= spenda) {
 								Player.player.factionSpent.addFactionRep(Faction.HEROIC,cost,0);

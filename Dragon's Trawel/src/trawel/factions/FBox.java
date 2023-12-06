@@ -329,16 +329,21 @@ public class FBox implements java.io.Serializable{
 	}
 
 	public void display() {
+		String str = "";
 		for (FSub s: factions) {
-			extra.print(s.name.name + ": " + (int)(s.forFac - s.againstFac) + ",");
+			if (str != "") {
+				str += ", ";
+			}
+			str +=extra.ITEM_DESC_PROP+ (s.name.name + extra.ITEM_VALUE + ": " +extra.ITEM_VALUE+ extra.F_TWO_TRAILING.format(s.forFac - s.againstFac));
 		}
-		extra.println();
+		extra.println(str);
 	}
 	
-	public static float getSpendableFor(FSub sub) {
+	public static float getSpendableFor(Faction fac) {
+		FSub sub = Player.player.getPerson().facRep.getFacRep(fac);
 		if (sub == null) {return 0f;}
 		float total = sub.forFac-sub.againstFac;
-		FSub sub2 = Player.player.factionSpent.getFacRep(sub.name);
+		FSub sub2 = Player.player.factionSpent.getFacRep(fac);
 		if (sub2 == null) {
 			return total;
 		}

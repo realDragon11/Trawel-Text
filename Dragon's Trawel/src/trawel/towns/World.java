@@ -51,7 +51,7 @@ public class World extends TContextOwner{
 		this.minLonga = minLonga;
 		this.maxLonga = minLonga+x/WorldGen.unitsInLonga;
 		
-		moneyname = extra.choose(extra.choose("gold","silver","electrum")+" coins",_name + " notes", _name+" proof marks");
+		moneyname = extra.choose(extra.choose("gold ","silver ","electrum ")+_name+" coins",_name + " notes", _name+" proof marks");
 	}
 	
 	public void addIsland(Island t) {
