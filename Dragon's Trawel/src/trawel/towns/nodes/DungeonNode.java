@@ -12,6 +12,7 @@ import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
@@ -450,24 +451,25 @@ public class DungeonNode implements NodeType{
 		if (extra.yesNo()) {
 			holder.setStateNum(node,1);
 			if (extra.chanceIn(5,6)) {
-				int gold = extra.randRange(0,2)+(extra.randRange(1,3)*holder.getLevel(node));
+				int gold = IEffectiveLevel.cleanRangeReward(holder.getLevel(node), 5, .4f);
 				Player.player.addGold(gold);
 				extra.println("You open the " +holder.getStorageFirstClass(node,String.class) + " and find " + World.currentMoneyDisplay(gold) + ".");
 			}else {
+				int gemAmount = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),2.2f, .5f);
+				Gem gem = null;
 				switch (extra.randRange(1,3)) {
-				case 1:
-					Gem.EMERALD.changeGem(1);
-					extra.println("You open the " + holder.getStorageFirstClass(node,String.class) + " and find an emerald!");
+				case 1: default:
+					gem = Gem.EMERALD;
 					break;
 				case 2:
-					Gem.RUBY.changeGem(1);
-					extra.println("You open the " + holder.getStorageFirstClass(node,String.class) + " and find a ruby!");
+					gem = Gem.RUBY;
 					break;
 				case 3:
-					Gem.SAPPHIRE.changeGem(1);
-					extra.println("You open the " + holder.getStorageFirstClass(node,String.class) + " and find a sapphire!");
+					gem = Gem.SAPPHIRE;
 					break;
 				}
+				gem.changeGem(gemAmount);
+				extra.println("You open the " + holder.getStorageFirstClass(node,String.class) + " and find "+gemAmount+" "+(gemAmount == 0 ? gem.name : gem.plural)+"!");
 			}
 			Networking.clearSide(1);
 			return false;

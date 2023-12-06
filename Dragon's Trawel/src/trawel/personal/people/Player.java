@@ -107,7 +107,6 @@ public class Player extends SuperPerson{
 	public double townEventTimer = 10;
 	
 	public FBox factionSpent = new FBox();
-	public int launderCredits = 0;
 	public float hSpentOnKno = 0f;
 	
 	public Story storyHold;

@@ -13,6 +13,7 @@ import trawel.factions.FBox.FSub;
 import trawel.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
@@ -148,20 +149,22 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 							}});
 						return false;
 					}});
-				if (Gem.EMERALD.knowsGem() && Gem.EMERALD.getGem() > 0) {
+				int gemAmount = Math.round(1.5f*IEffectiveLevel.unclean(tier));
+				if (Gem.EMERALD.knowsGem() && Gem.EMERALD.getGem() >= gemAmount) {
 					list.add(new MenuSelect() {
 
 						@Override
 						public String title() {
-							return "Donate Emerald. ("+Gem.EMERALD.getGem()+")";
+							return "Donate "+gemAmount+" "+(gemAmount == 1 ? Gem.EMERALD.name : Gem.EMERALD.plural)+". (Have "+Gem.EMERALD.getGem()+")";
 						}
 
 						@Override
 						public boolean go() {
-							if (Gem.EMERALD.getGem() > 0) {
-								Player.player.addMPoints(10);
-								extra.println("You donate an emerald.");
-								Gem.EMERALD.changeGem(-1);
+							if (Gem.EMERALD.getGem() > gemAmount) {
+								//scales directly on amount, since the amount scales on eLevel
+								Player.player.addMPoints(10*gemAmount);
+								extra.println("You donate "+gemAmount+" "+(gemAmount == 1 ? Gem.EMERALD.name : Gem.EMERALD.plural)+".");
+								Gem.EMERALD.changeGem(-gemAmount);
 							}else {
 								extra.println("You have no emeralds to donate.");
 							}

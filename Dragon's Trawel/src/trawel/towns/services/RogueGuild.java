@@ -14,6 +14,7 @@ import trawel.extra;
 import trawel.factions.FBox;
 import trawel.factions.FBox.FSub;
 import trawel.factions.Faction;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
 import trawel.quests.FetchSideQuest;
@@ -37,6 +38,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 	public List<Quest> sideQuests = new ArrayList<Quest>();
 	
 	private boolean canQuest = true;
+	private int credits = 0;
 	
 	public RogueGuild(String _name, int _tier){
 		name = _name;
@@ -110,52 +112,53 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 							}});
 						return false;
 					}});
+				int gemAmount = Math.round(1.5f*IEffectiveLevel.unclean(tier));
 				mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "Request Sapphires";
+						return "Request Sapphires.";
 					}
 
 					@Override
 					public boolean go() {
 						while (true) {
-						int cost = 25;
-						float spenda = FBox.getSpendableFor(Faction.ROGUE);
-						extra.println("Request a sapphire? cost: " +cost + "/"+extra.format2(spenda));
-						if (extra.yesNo()) {
-							if (cost <= spenda) {
-								Player.player.factionSpent.addFactionRep(Faction.ROGUE,cost,0);
-								Gem.SAPPHIRE.changeGem(1);
-								extra.println("Gained 1 sapphire, new total: " + Gem.SAPPHIRE.getGem()+".");
+							int cost = 25*gemAmount;
+							float spenda = FBox.getSpendableFor(Faction.ROGUE);
+							extra.println("Request "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+"? cost: " +cost + "/"+extra.format2(spenda));
+							if (extra.yesNo()) {
+								if (cost <= spenda) {
+									Player.player.factionSpent.addFactionRep(Faction.ROGUE,cost,0);
+									Gem.SAPPHIRE.changeGem(gemAmount);
+									extra.println("Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+", new total: " + Gem.SAPPHIRE.getGem()+".");
+								}else {
+									extra.println("You do not have enough spendable reputation.");
+									break;
+								}
 							}else {
-								extra.println("You do not have enough spendable reputation.");
 								break;
 							}
-						}else {
-							break;
-						}
 						}
 						return false;
 					}
 				});
-				if (Gem.SAPPHIRE.knowsGem() && Gem.SAPPHIRE.getGem() > 0) {
+				if (Gem.SAPPHIRE.knowsGem() && Gem.SAPPHIRE.getGem() >= gemAmount) {
 					mList.add(new MenuSelect() {
 
 						@Override
 						public String title() {
-							return "Donate a Sapphire.";
+							return "Donate "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+". (Have "+Gem.SAPPHIRE.getGem()+")";
 						}
 
 						@Override
 						public boolean go() {
 							while (true) {
-								int cost = 10;
-								extra.println("Donate a sapphire? You have " + Gem.SAPPHIRE.getGem());
+								int reward = 8;
+								extra.println("Donate "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+"? You have " + Gem.SAPPHIRE.getGem());
 								if (extra.yesNo()) {
-									if (Gem.SAPPHIRE.getGem() > 0) {
-										Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,cost,0);
-										Gem.SAPPHIRE.changeGem(-1);
+									if (Gem.SAPPHIRE.getGem() >=gemAmount) {
+										Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,reward*gemAmount,0);
+										Gem.SAPPHIRE.changeGem(-gemAmount);
 									}else {
 										extra.println("You do not have any sapphires.");
 										break;
@@ -196,7 +199,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 					@Override
 					public String title() {
 						FSub sub = Player.player.getPerson().facRep.getFacRep(Faction.ROGUE);
-						return "current reputation: " + (sub == null ? "Unknown" : ""+extra.format2(sub.forFac-sub.againstFac));
+						return "Current Reputation: " + (sub == null ? "Unknown" : ""+extra.format2(sub.forFac-sub.againstFac));
 					}
 				});
 				mList.add(new MenuLine() {
@@ -217,10 +220,10 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Conversion Credits: " + Player.player.launderCredits;
+						return "Conversion Credits: " + credits;
 					}
 				});
-				int cost = 20;
+				int cost = Math.round(IEffectiveLevel.unclean(tier)*6);
 				mList.add(new MenuSelect() {
 
 					@Override
@@ -236,7 +239,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 						if (extra.yesNo()) {
 							if (cost <= Player.player.getGold()) {
 								Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
-								Player.player.launderCredits++;
+								credits++;
 								Player.player.addGold(-cost);
 							}else {
 								extra.println("You cannnot afford a credit.");
@@ -258,19 +261,19 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public boolean go() {
+						int cost = Math.round(IEffectiveLevel.unclean(tier)*6);
 						while (true) {
-						int cost = 2;
-						float spenda = FBox.getSpendableFor(Faction.ROGUE);
-						extra.println("Request a launder credit? cost: " +cost + "/"+extra.format2(spenda));
-						if (extra.yesNo()) {
-							if (cost <= spenda) {
-								Player.player.factionSpent.addFactionRep(Faction.ROGUE,cost,0);
-								Player.player.launderCredits++;
+							float spenda = FBox.getSpendableFor(Faction.ROGUE);
+							extra.println("Request a launder credit? cost: " +cost + " of "+extra.format2(spenda));
+							if (extra.yesNo()) {
+								if (cost <= spenda) {
+									Player.player.factionSpent.addFactionRep(Faction.ROGUE,cost,0);
+									credits++;
+								}
+							}else {
+								extra.println("You do not have enough spendable reputation.");
+								break;
 							}
-						}else {
-							extra.println("You do not have enough spendable reputation.");
-							break;
-						}
 						}
 						return false;
 					}
@@ -321,7 +324,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 													list.add(new MenuLine() {
 														@Override
 														public String title() {
-															return "Credits: " + Player.player.launderCredits;
+															return "Credits: " + credits;
 														}});
 													list.add(new MenuLine() {
 														@Override
@@ -346,7 +349,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 									list.add(new MenuLine() {
 										@Override
 										public String title() {
-											return "Credits: " + Player.player.launderCredits;
+											return "Credits: " + credits;
 										}});
 									list.add(new MenuLine() {
 										@Override
@@ -372,38 +375,41 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 	
 	private class LaunderGem implements MenuItem{
 
-		public Gem from, to;
+		private Gem from, to;
+		private final int fromInt, toInt;
 		
 		public LaunderGem(Gem _from, Gem _to) {
 			from = _from;
 			to = _to;
+			fromInt = Math.round(from.unitSize*IEffectiveLevel.unclean(tier));
+			toInt = Math.round(to.unitSize*IEffectiveLevel.unclean(tier));
 		}
 		
 		@Override
 		public String title() {
-			return "Launder "+from.unitSize + " " +from.plural +" ("+from.getGem()+") to " + to.unitSize + " " + to.plural + "("+to.getGem()+")" + (Player.player.launderCredits == 0 ? " NO CREDIT" : "");
+			return "Launder "+from.unitSize + " " +from.plural +" ("+from.getGem()+") to " + toInt + " " + to.plural + "("+to.getGem()+")" + (credits == 0 ? " NO CREDIT" : "");
 		}
 
 		@Override
 		public boolean go() {
-			if (Player.player.launderCredits == 0) {
+			if (credits == 0) {
 				extra.println("You have no credits.");
 				return false;
 			}
-			if (from.getGem() >= from.unitSize) {
-				extra.println("You trade "+from.unitSize+" " + from.name + " for " + to.unitSize + to.name);
-				from.changeGem(-from.unitSize);
-				to.changeGem(to.unitSize);
-				Player.player.launderCredits--;
+			if (from.getGem() >= fromInt) {
+				extra.println("You trade "+fromInt+" " + from.plural + " for " + toInt + to.plural+".");
+				from.changeGem(-fromInt);
+				to.changeGem(toInt);
+				credits--;
 			}else {
-				extra.println("You need " + (from.unitSize-from.getGem()) + " more " + from.plural+"!");
+				extra.println("You need " + (fromInt-from.getGem()) + " more " + from.plural+"!");
 			}
 			return false;
 		}
 
 		@Override
 		public boolean canClick() {
-			return Player.player.launderCredits > 0 && from.getGem() > 0;
+			return true;//credits > 0 && from.getGem() > 0;
 		}
 
 		@Override

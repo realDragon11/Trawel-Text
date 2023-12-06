@@ -15,6 +15,7 @@ import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceID;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.Seed;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Gem;
@@ -542,28 +543,27 @@ public class GenericNode implements NodeType {
 		Material m = MaterialFactory.getMat(matName);
 		if (holder.getStateNum(node) == 0) {
 			Networking.unlockAchievement("ore1");
-			int subType = 0;
+			int gemAmount = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),2.2f, .5f);
+			Gem gem = null;
 			switch (matName) {
 			case "emerald":
-				subType = 1;
-				Gem.EMERALD.changeGem(1);
-				extra.println("You mine the vein and claim an "+m.color+"emerald!");
+				gem = Gem.EMERALD;
 				break;
 			case "ruby":
-				Gem.RUBY.changeGem(1);
-				extra.println("You mine the vein and claim a "+m.color+"ruby!");
-				subType = 2;
+				gem = Gem.RUBY;
 				break;
 			case "sapphire":
-				Gem.SAPPHIRE.changeGem(1);
-				extra.println("You mine the vein and claim a "+m.color+"sapphire!");
-				subType = 3;
+				gem = Gem.SAPPHIRE;
 				break;
 			default:
-				int reward = extra.randRange(0,1)+m.veinReward;
+				int reward = IEffectiveLevel.cleanRangeReward(holder.getLevel(node), m.veinReward, .6f);
 				Player.player.addGold(reward);
 				extra.println("You mine the vein of "+ World.currentMoneyDisplay(reward)+ " worth of "+m.color+matName+".");
 				break;
+			}
+			if (gem != null) {
+				gem.changeGem(gemAmount);
+				extra.println("You mine the vein and claim "+gemAmount+" "+m.color+(gemAmount == 0 ? gem.name : gem.plural)+extra.PRE_WHITE+"!");
 			}
 			holder.setStateNum(node,1);
 			/*

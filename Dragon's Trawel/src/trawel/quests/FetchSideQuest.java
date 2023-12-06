@@ -4,7 +4,9 @@ import derg.SRPlainRandom;
 import derg.StringResult;
 import trawel.extra;
 import trawel.randomLists;
+import trawel.factions.FBox;
 import trawel.factions.Faction;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
 import trawel.quests.QuestReactionFactory.QKey;
@@ -70,52 +72,62 @@ public class FetchSideQuest extends BasicSideQuest {
 			return;
 		case 1:
 			int reward;
+			int atLevel = Math.min(Player.player.getPerson().getLevel(),endFeature.getLevel());
+			float mult = IEffectiveLevel.unclean(atLevel);
 			switch (subtype) {
 			case COMMUNITY:
-				Player.player.getPerson().addXp(1);
-				reward =  Math.max(1,(int)endFeature.getUnEffectiveLevel()/5);
+				reward = IEffectiveLevel.cleanRangeReward(atLevel,.5f, .5f);
 				Player.player.addGold(reward);
 				extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
-				endFeature.getTown().helpCommunity(2);
-				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,.1f, 0);
+				endFeature.getTown().helpCommunity(2);//helps community twice as much
+				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*FBox.bonusLiked, 0);
+				
 				this.complete();
+				Player.player.getPerson().addXp(atLevel);
 				return;
 			case CRIME:
-				reward = Math.max(1,(int)endFeature.getUnEffectiveLevel());
+				reward = IEffectiveLevel.cleanRangeReward(atLevel,1.8f,.3f);
 				Player.player.addGold(reward);
 				extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
-				Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,.4f,0);
-				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,0, .05f);
+				Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,mult*FBox.bonusDistant,0);
+				Player.player.getPerson().facRep.addFactionRep(Faction.LAW_GOOD,0,mult*FBox.againstNear);
+				Player.player.getPerson().facRep.addFactionRep(Faction.LAW_EVIL,0,mult*FBox.againstDistant);
 				//doesn't help community
+				
 				this.complete();
+				Player.player.getPerson().addXp(atLevel);
 				return;
 			case HERO:
-				Player.player.getPerson().addXp(1);
-				reward =  Math.max(1,(int)endFeature.getUnEffectiveLevel()/3);
+				reward = IEffectiveLevel.cleanRangeReward(atLevel,.8f,.7f);
 				Player.player.addGold(reward);
 				extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
 				endFeature.getTown().helpCommunity(1);
-				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,.2f, 0);
+				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*FBox.bonusFavored, 0);
+				
 				this.complete();
+				Player.player.getPerson().addXp(atLevel);
 				return;
 			case MERCHANT:
-				Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,.1f, 0);
-				Player.player.addMPoints(.2f);
-				Player.player.getPerson().addXp(1);
-				reward =  Math.max(1,(int)endFeature.getUnEffectiveLevel());
+				reward = IEffectiveLevel.cleanRangeReward(atLevel,1.3f,.7f);
 				Player.player.addGold(reward);
 				extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+				Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,mult*FBox.bonusLiked, 0);
+				Player.player.addMPoints(.2f);
 				endFeature.getTown().helpCommunity(1);
+				
 				this.complete();
+				Player.player.getPerson().addXp(atLevel);
 				return;
 			case HUNTER:
-				Player.player.getPerson().addXp(1);
-				reward =  Math.max(1,(int)endFeature.getUnEffectiveLevel()/3);
+				//gives amber instead
+				reward = IEffectiveLevel.cleanRangeReward(atLevel,1.5f,.7f);
 				Gem.AMBER.changeGem(reward);
 				extra.println("Gained "+reward+" amber.");
 				endFeature.getTown().helpCommunity(1);
-				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,.15f, 0);
+				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,mult*FBox.bonusLiked, 0);
+				
 				this.complete();
+				Player.player.getPerson().addXp(atLevel);
 				return;
 			}
 		}

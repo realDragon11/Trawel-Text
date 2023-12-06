@@ -3,6 +3,7 @@ package trawel.quests;
 import trawel.extra;
 import trawel.randomLists;
 import trawel.factions.Faction;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
 import trawel.quests.QuestReactionFactory.QKey;
@@ -82,7 +83,8 @@ public class CleanseSideQuest extends BasicSideQuest {
 		Feature endFeature = qRList.get(0).locationF;
 		switch (QRID) {
 		case 0:
-			float mult = Math.min(Player.player.getPerson().getUnEffectiveLevel(),endFeature.getUnEffectiveLevel());
+			int atLevel = Math.min(Player.player.getPerson().getLevel(),endFeature.getLevel());
+			float mult = IEffectiveLevel.unclean(atLevel);
 			int reward = 0;
 			if (qKeywords.contains(QKey.LAWFUL)) {
 				//if lawful, the law likes it
@@ -100,17 +102,17 @@ public class CleanseSideQuest extends BasicSideQuest {
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*0.05f,0);
 				}
 				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,mult*1f,0);
-				reward = Math.max(1,Math.round(2*mult));
+				reward = IEffectiveLevel.cleanRangeReward(atLevel,2f,.3f);
 				endFeature.getTown().helpCommunity(1);
 				//also grants amber
-				int a_reward = Math.max(1,Math.round(1*mult));
+				int a_reward = IEffectiveLevel.cleanRangeReward(atLevel,2.5f,.6f);
 				Gem.AMBER.changeGem(a_reward);
 				extra.println("You gained " +a_reward+" amber.");
 			}
 			if (qKeywords.contains(QKey.GIVE_HGUILD)) {
 				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*1f,0);
 				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,mult*0.05f,0);
-				reward = Math.max(1,Math.round(3*mult));
+				reward = IEffectiveLevel.cleanRangeReward(atLevel,3f,.6f);
 				endFeature.getTown().helpCommunity(2);
 			}
 			if (qKeywords.contains(QKey.GIVE_MGUILD)) {
@@ -118,14 +120,15 @@ public class CleanseSideQuest extends BasicSideQuest {
 					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*0.05f,0);
 				}
 				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,mult*0.05f,0);
-				reward = Math.max(1,Math.round(4*mult));
+				reward = IEffectiveLevel.cleanRangeReward(atLevel,4f,.7f);
 				endFeature.getTown().helpCommunity(1);
 				Player.player.addMPoints(.2);
 			}
 			Player.player.addGold(reward);
 			extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
-			Player.player.getPerson().addXp(reward);
+			
 			complete();
+			Player.player.getPerson().addXp(atLevel);//xp scales weirdly
 			return;
 		}
 		throw new RuntimeException("Invalid QRID for cleanse quest");

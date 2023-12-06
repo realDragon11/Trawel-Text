@@ -12,6 +12,7 @@ import trawel.extra;
 import trawel.factions.FBox;
 import trawel.factions.FBox.FSub;
 import trawel.factions.Faction;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
@@ -71,6 +72,7 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 						return "Current Hunter Reputation: " + (sub == null ? "Unknown" : ""+extra.format2(sub.forFac-sub.againstFac));
 					}
 				});
+				int gemAmount = Math.round(5f*IEffectiveLevel.unclean(tier));
 				mList.add(new MenuSelect() {
 
 					@Override
@@ -81,21 +83,21 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 					@Override
 					public boolean go() {
 						while (true) {
-						int cost = 10;
-						float spenda = FBox.getSpendableFor(Faction.HUNTER);
-						extra.println("Request 5 amber? cost: " +cost + " of "+extra.format2(spenda));
-						if (extra.yesNo()) {
-							if (cost <= spenda) {
-								Player.player.factionSpent.addFactionRep(Faction.HUNTER,cost,0);
-								Gem.AMBER.changeGem(5);
-								extra.println("Gained 5 amber, new total: " + Gem.AMBER.getGem()+".");
+							float cost = 10*gemAmount;//amount is scaled by level
+							float spenda = FBox.getSpendableFor(Faction.HUNTER);
+							extra.println("Request "+gemAmount+" "+(gemAmount == 1 ? Gem.AMBER.name : Gem.AMBER.plural)+"? cost: " +cost + " of "+extra.format2(spenda));
+							if (extra.yesNo()) {
+								if (cost <= spenda) {
+									Player.player.factionSpent.addFactionRep(Faction.HUNTER,cost,0);
+									Gem.AMBER.changeGem(gemAmount);
+									extra.println("Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.AMBER.name : Gem.AMBER.plural)+", new total: " + Gem.AMBER.getGem()+".");
+								}else {
+									extra.println("You do not have enough spendable reputation.");
+									break;
+								}
 							}else {
-								extra.println("You do not have enough spendable reputation.");
 								break;
 							}
-						}else {
-							break;
-						}
 						}
 						return false;
 					}

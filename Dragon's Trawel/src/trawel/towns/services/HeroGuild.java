@@ -12,6 +12,7 @@ import trawel.extra;
 import trawel.factions.FBox;
 import trawel.factions.FBox.FSub;
 import trawel.factions.Faction;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
@@ -107,6 +108,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 						return false;
 					}
 				});
+				int gemAmount = Math.round(1.5f*IEffectiveLevel.unclean(tier));
 				mList.add(new MenuSelect() {
 
 					@Override
@@ -117,14 +119,14 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 					@Override
 					public boolean go() {
 						while (true) {
-						int cost = 20;
+						int cost = 20*gemAmount;
 						float spenda = FBox.getSpendableFor(Faction.HEROIC);
-						extra.println("Request a ruby? cost: " +cost + " of "+extra.format2(spenda));
+						extra.println("Request "+gemAmount+" "+(gemAmount == 1 ? Gem.RUBY.name : Gem.RUBY.plural)+"? cost: " +cost + " of "+extra.format2(spenda));
 						if (extra.yesNo()) {
 							if (cost <= spenda) {
 								Player.player.factionSpent.addFactionRep(Faction.HEROIC,cost,0);
-								Gem.RUBY.changeGem(1);
-								extra.println("Gained 1 ruby, new total: " + Gem.RUBY.getGem()+".");
+								Gem.RUBY.changeGem(gemAmount);
+								extra.println("Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.RUBY.name : Gem.RUBY.plural)+", new total: " + Gem.RUBY.getGem()+".");
 							}else {
 								extra.println("You do not have enough spendable reputation.");
 								break;

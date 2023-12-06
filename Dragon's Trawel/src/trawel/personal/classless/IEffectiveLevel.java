@@ -1,5 +1,7 @@
 package trawel.personal.classless;
 
+import trawel.extra;
+
 public interface IEffectiveLevel {
 
 	public int getLevel();
@@ -34,5 +36,16 @@ public interface IEffectiveLevel {
 	public static double uncleanLHP(double in, double percent) {
 		//10f*((in+10))
 		return (in+10)*10f*percent;
+	}
+	
+	/**
+	 * 
+	 * @param level (1+)
+	 * @param amountMult the amount of intensity returned max per unLevel
+	 * @param lowPer the 'low roll' of the reward, ie .5f would equal 50% to 100% of amountMult uneffective
+	 * @return 
+	 */
+	public static int cleanRangeReward(int level, float amountMult, float lowPer) {
+		return Math.round(extra.lerp(1,amountMult*IEffectiveLevel.unclean(level),extra.lerp(lowPer,1,extra.randFloat())));
 	}
 }

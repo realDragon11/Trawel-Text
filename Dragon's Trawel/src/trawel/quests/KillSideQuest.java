@@ -3,9 +3,11 @@ package trawel.quests;
 import trawel.extra;
 import trawel.randomLists;
 import trawel.battle.Combat;
+import trawel.factions.FBox;
 import trawel.factions.Faction;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
 import trawel.quests.QuestReactionFactory.QKey;
 import trawel.towns.Feature;
@@ -68,12 +70,17 @@ public class KillSideQuest extends BasicSideQuest {
 					desc = "Return to " + giverName + " at " + endFeature.getName() + " in " + endFeature.getTown().getName();
 					this.advanceStage();
 					announceUpdate();
+					float mult = target.getUnEffectiveLevel();
 					if (isMurder) {
-						Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,0,1f);
-						Player.player.getPerson().facRep.addFactionRep(Faction.LAW_EVIL,.5f, 0);
+						Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,0,mult*FBox.againstNear);
+						Player.player.getPerson().facRep.addFactionRep(Faction.LAW_GOOD,0,mult*FBox.againstClose);
+						Player.player.getPerson().facRep.addFactionRep(Faction.LAW_EVIL,mult*FBox.bonusTiny, 0);
+						Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,mult*FBox.bonusTiny,0);
 					}else {
-						Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,.5f, 0);
-						Player.player.getPerson().facRep.addFactionRep(Faction.LAW_GOOD,.5f, 0);
+						Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*FBox.bonusDistant, 0);
+						Player.player.getPerson().facRep.addFactionRep(Faction.LAW_GOOD,mult*FBox.bonusLiked, 0);
+						Player.player.getPerson().facRep.addFactionRep(Faction.LAW_EVIL,mult*FBox.bonusFavored, 0);
+						Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0,mult*FBox.againstNear);
 					}
 				}
 			}
@@ -81,18 +88,19 @@ public class KillSideQuest extends BasicSideQuest {
 		case 1:
 			int reward;
 			if (isMurder) {
-				reward = Math.round(target.getUnEffectiveLevel()*4);
+				reward = IEffectiveLevel.cleanRangeReward(target.getLevel(),4f,.5f);
 			}else {
-				reward = Math.round(target.getUnEffectiveLevel()*2);
+				reward = IEffectiveLevel.cleanRangeReward(target.getLevel(),2f,.8f);
 				endFeature.getTown().helpCommunity(2);
 			}
-			if (endFeature instanceof MerchantGuild) {
+			if (qKeywords.contains(QKey.GIVE_MGUILD)) {
 				Player.player.addMPoints(.2);
 			}
-			Player.player.getPerson().addXp(reward);
 			Player.player.addGold(reward);
 			extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
+			
 			complete();
+			Player.player.getPerson().addXp(target.getLevel());
 			return;
 		}
 		throw new RuntimeException("Invalid QRID for kill quest");
