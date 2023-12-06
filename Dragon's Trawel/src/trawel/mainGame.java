@@ -1987,6 +1987,7 @@ public class mainGame {
 		story.onDeath();
 		extra.println(deathMessage);
 		story.onDeathPart2();
+		extra.endBackingSegment();
 	}
 
 	public static void dieMisc() {

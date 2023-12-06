@@ -368,6 +368,7 @@ public class AIClass {
 			for (DrawBane db: loot.getDrawBanes()) {
 				stash.addNewDrawBanePlayer(db);
 			}
+			extra.endBackingSegment();
 		}else {
 			//MAYBELATER drawbane taking ai
 		}
@@ -422,6 +423,7 @@ public class AIClass {
 	
 	public static void playerLoot(Inventory loot, boolean canAtomSmash) {
 		boolean normalLoot = loot.getRace().racialType == Race.RaceType.PERSONABLE;
+		extra.endBackingSegment();
 		if (Player.player.getPerson().getFlag(PersonFlag.AUTOLOOT)) {
 			//we can use canAtomSmash to decide to display the updates here or if they're managed by a greater
 			//looting function, as with mass battles
@@ -435,8 +437,6 @@ public class AIClass {
 			Networking.leaderboard("highest_aether", Player.bag.getAether());
 			return;
 		}
-		
-		extra.endBackingSegment();
 		
 		if (normalLoot && Player.getTutorial()) {
 			extra.println("You are now looting something! The first item presented will be the new item, the second, your current item, and finally, the difference will be shown. Some items may be autosold if all their visible stats are worse.");
