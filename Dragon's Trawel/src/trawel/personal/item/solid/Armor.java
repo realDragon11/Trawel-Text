@@ -342,6 +342,33 @@ public class Armor extends Item implements IEffectiveLevel{
 		return qualTraitSum();
 	}
 	
+	@Override
+	public boolean temperNegQuality() {
+		int worstAmount = 0;
+		ArmorQuality worstQual = null;
+		for (ArmorQuality q: quals) {
+			if (q.goodNegNeut < worstAmount) {
+				worstAmount = q.goodNegNeut;
+				worstQual = q;
+			}
+		}
+		if (worstAmount < 0) {
+			quals.remove(worstQual);
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean hasNegQuality() {
+		for (ArmorQuality q: quals) {
+			if (q.goodNegNeut < 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 
 	/**
 	 * gets the 'normal' armor level OOB

@@ -160,6 +160,18 @@ public abstract class Item implements java.io.Serializable{
 	}
 	
 	/**
+	 * remove a negative quality if one is present
+	 * @returntrue if was successful
+	 */
+	public boolean temperNegQuality() {
+		return false;
+	}
+	
+	public boolean hasNegQuality() {
+		return false;
+	}
+	
+	/**
 	 * Swap out the current enchantment for a new one, if a better one is generated.
 	 * Returns if a better one was generated or not.
 	 * @param level (int)

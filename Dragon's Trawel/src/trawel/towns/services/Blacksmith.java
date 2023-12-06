@@ -12,6 +12,8 @@ import trawel.Networking.Area;
 import trawel.extra;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.Item;
+import trawel.personal.item.solid.Armor;
+import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -125,6 +127,61 @@ public class Blacksmith extends Feature {
 							Player.player.loseGold(mcost);
 							Player.bag.addAether(-acost);
 							item.levelUp();
+							item.display(1);
+						}
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Temper any equipment up to +" + tier +" level.";
+					}
+
+					@Override
+					public boolean go() {
+						int in = Player.player.askSlot();
+						if (in == 9) {
+							return false;
+						}
+						Item item;
+						if (in <=5) {
+							item = Player.bag.getArmorSlot(in-1);
+						}else {
+							item = Player.bag.getHand();
+						}
+						if (!item.hasNegQuality()) {
+							extra.println(item.getName() + " does not have any negative qualities!");
+							return false;
+						}
+						if (item.getLevel() >= tier) {
+							extra.println(item.getName()+" is too high in level ("+item.getLevel()+") to temper here!");
+							return false;
+						}
+						int mcost = item.getMoneyValue();
+						int acost = Math.round((3f+item.getQualityTier())*(IEffectiveLevel.unclean(item.getLevel())));
+						String costString = World.currentMoneyDisplay(mcost) + " and " +acost + " amber";
+						if (Player.player.getGold() < mcost) {
+							if (Gem.AMBER.getGem() < acost) {
+								extra.println("You can't afford to temper '"+item.getName()+"'. ("+costString+")");
+							}else {
+								extra.println("You can't afford to pay the blacksmith to temper '"+item.getName()+"'. ("+costString+")");
+							}
+							return false;
+						}
+						if (Gem.AMBER.getGem() < acost) {
+							extra.println("You don't have enough amber to temper '"+item.getName()+"'. ("+costString+")");
+							return false;
+						}
+						extra.println("Improve your item to +" + (item.getLevel()+1) + " for "+costString+"?");
+						if (extra.yesNo()) {
+							if (!item.temperNegQuality()) {
+								extra.println("Tempering failed.");
+								return false;
+							}
+							extra.println("Item tempered.");
+							Player.player.loseGold(mcost);
+							Gem.AMBER.changeGem(-acost);
 							item.display(1);
 						}
 						return false;

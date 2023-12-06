@@ -60,7 +60,7 @@ public class Docks extends Feature {
 	public Docks(String name,Town t) {
 		town = t;
 		this.name = name;
-		tier = Math.min(2,1+t.getTier());//min level of 2, but tries to be one higher
+		tier = Math.max(2,1+t.getTier());//min level of 2, but tries to be one higher
 		old_defenders = new ArrayList<Person>();
 		old_attackers = new ArrayList<Person>();
 		area_type = Area.PORT;
@@ -400,14 +400,14 @@ public class Docks extends Feature {
 						}
 						//can either take naive time or use a*
 						if (mainGame.displayTravelText) {
-							extra.print("You start the voyage to "+t.getName()+".");
+							extra.println("You start the voyage to "+t.getName()+".");
 						}
 						Player.addTime(timeList.get(i));
 						mainGame.globalPassTime();
 						Player.player.setLocation(t);
 						town.dockWander(true);
 						if (mainGame.displayTravelText) {
-							extra.print("You arrive in "+t.getName()+".");
+							extra.println("You arrive in "+t.getName()+".");
 						}
 						return true;
 					}});
