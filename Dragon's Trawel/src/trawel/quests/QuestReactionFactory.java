@@ -47,7 +47,7 @@ public class QuestReactionFactory {
 				
 			}}) );
 		*/
-		reactions.add(new QuestReaction(new QKey[] {QKey.NORMAL_DEST},new QKey[] {QKey.EVIL},new QKey[][] {}, new QuestTriggerEvent() {
+		reactions.add(new QuestReaction(.5f,new QKey[] {QKey.NORMAL_DEST},new QKey[] {QKey.EVIL},new QKey[][] {}, new QuestTriggerEvent() {
 
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
@@ -102,7 +102,7 @@ public class QuestReactionFactory {
 					Networking.clearSide(1);
 			}}) );
 		
-		reactions.add(new QuestReaction(new QKey[] {QKey.KILL},new QKey[] {},new QKey[][] {}, new QuestTriggerEvent() {
+		reactions.add(new QuestReaction(2f,new QKey[] {QKey.KILL},new QKey[] {},new QKey[][] {}, new QuestTriggerEvent() {
 
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
@@ -117,7 +117,7 @@ public class QuestReactionFactory {
 					bumperLocation.addOccupant(p.getMakeAgent(AgentGoal.NONE));
 				}
 			}}) );
-		reactions.add(new QuestReaction(new QKey[] {QKey.KILL,QKey.EVIL},new QKey[] {},new QKey[][] {}, new QuestTriggerEvent() {
+		reactions.add(new QuestReaction(2f,new QKey[] {QKey.KILL,QKey.EVIL},new QKey[] {},new QKey[][] {}, new QuestTriggerEvent() {
 
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
@@ -133,7 +133,7 @@ public class QuestReactionFactory {
 				}
 			}}) );
 		
-		reactions.add(new QuestReaction(new QKey[] {},new QKey[] {QKey.LAWFUL,QKey.GOOD},
+		reactions.add(new QuestReaction(1f,new QKey[] {},new QKey[] {QKey.LAWFUL,QKey.GOOD},
 				new QKey[][] {
 						new QKey[] {QKey.GIVE_INN,QKey.GIVE_RGUILD,QKey.GIVE_SLUM},//public place
 						new QKey[] {QKey.FETCH}//only fetch quests
@@ -225,7 +225,7 @@ public class QuestReactionFactory {
 			}}) );
 		//only interrupt you doing possibly heroic things, they don't know the importance
 		//doesn't really care about objective, just wants to mess with you, so no kill quests
-		reactions.add(new QuestReaction(new QKey[] {QKey.GIVE_HGUILD},new QKey[] {},new QKey[][] {new QKey[] {QKey.FETCH,QKey.CLEANSE}}, new QuestTriggerEvent() {
+		reactions.add(new QuestReaction(1f,new QKey[] {QKey.GIVE_HGUILD},new QKey[] {},new QKey[][] {new QKey[] {QKey.FETCH,QKey.CLEANSE}}, new QuestTriggerEvent() {
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
 				Person p = RaceFactory.getMugger(bumperLocation.getTier());
@@ -263,7 +263,7 @@ public class QuestReactionFactory {
 				}
 			}}) );
 		//vampire wants to stop you
-		reactions.add(new QuestReaction(new QKey[] {QKey.GIVE_HUNT_GUILD},new QKey[] {QKey.EVIL},new QKey[][] {new QKey[] {QKey.FETCH,QKey.CLEANSE,QKey.KILL}}, new QuestTriggerEvent() {
+		reactions.add(new QuestReaction(2f,new QKey[] {QKey.GIVE_HUNT_GUILD},new QKey[] {QKey.EVIL},new QKey[][] {new QKey[] {QKey.FETCH,QKey.CLEANSE,QKey.KILL}}, new QuestTriggerEvent() {
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
 				Person p = RaceFactory.makeVampire(bumperLocation.getTier());
@@ -308,10 +308,12 @@ public class QuestReactionFactory {
 		public final List<QKey> mandates;
 		public final List<QKey> forbids;
 		public final List<List<QKey>> needsOne;
+		public final float weight;
 		
 		public QuestTriggerEvent qte;
 		
-		public QuestReaction(QKey[] mandated,QKey[] forbidden,QKey[][] needOnes,QuestTriggerEvent qet) {
+		public QuestReaction(float _weight, QKey[] mandated,QKey[] forbidden,QKey[][] needOnes,QuestTriggerEvent qet) {
+			weight = _weight;
 			mandates = Arrays.asList(mandated);
 			forbids = Arrays.asList(forbidden);
 			needsOne = new ArrayList<List<QKey>>();
@@ -332,40 +334,61 @@ public class QuestReactionFactory {
 		if (Player.player.sideQuests.size() == 0) {
 			return false;
 		}
-		if (extra.chanceIn(2,3+Player.player.roadGracePeriod)) {
-			Player.player.roadGracePeriod--;//can go into negatives but at -1 will be 100% chance to continue and get set to 0
+		if (Player.player.roadGracePeriod > 10 || extra.chanceIn(2,5+Player.player.roadGracePeriod)) {
+			Player.player.roadGracePeriod = Math.max(-2,Player.player.roadGracePeriod-1);//can only get to 2/3rds chance
 			return false;
 		}
-		BasicSideQuest side = extra.randList(Player.player.sideQuests).reactionQuest();
+		List <BasicSideQuest> sides = new ArrayList<BasicSideQuest>();
+		for (Quest bsq: Player.player.sideQuests) {
+			if (bsq.reactionQuest() != null) {
+				sides.add(bsq.reactionQuest());
+			}
+		}
+		if (sides.isEmpty()) {
+			return false;
+		}
+		BasicSideQuest side = extra.randList(sides);
 		if (side == null) {
-			Player.player.roadGracePeriod = 0;//so it doesn't dip into far negatives
 			return false;
 		}
+		List<QuestReaction> canReacts = new ArrayList<QuestReactionFactory.QuestReaction>();
+		float totalWeight = 0;
 		conditional: for (QuestReaction qr: reactions) {
 			for (QKey forbid: qr.forbids) {
-				if (side.qKeywords.contains(forbid)) {
+				if (side.getKeys().contains(forbid)) {
 					continue conditional;
 				}
 			}
 			if (qr.mandates.size() > 0) {
-				if (!side.qKeywords.containsAll(qr.mandates)) {
+				if (!side.getKeys().containsAll(qr.mandates)) {
 					continue conditional;
 				}
 			}
 			if (qr.needsOne.size() > 0) {
 				for (int i = qr.needsOne.size()-1;i>=0;i--) {
-					if (Collections.disjoint(qr.needsOne.get(i),side.qKeywords)){
+					if (Collections.disjoint(qr.needsOne.get(i),side.getKeys())){
 						continue conditional;
 					}
 				}
 			}
-			side.reactionsLeft--;
-			qr.qte.trigger(side, t);
-			Collections.shuffle(reactions);
-			Player.player.roadGracePeriod = 5;
-			return true;
+			canReacts.add(qr);
+			totalWeight += qr.weight;
 		}
-		Player.player.roadGracePeriod = 0;//so it doesn't dip into far negatives
-		return false;
+		if (canReacts.isEmpty()) {
+			return false;
+		}
+		totalWeight*= extra.randFloat();
+		int i = canReacts.size()-1;
+		for (; i >= 0; i--) {//stops at 0
+			totalWeight-=canReacts.size();
+			if (totalWeight <=0) {
+				break;
+			}
+		}
+		
+		side.reactionsLeft--;
+		canReacts.get(i).qte.trigger(side, t);
+		Player.player.roadGracePeriod = 12;
+		return true;
 	}
 }
