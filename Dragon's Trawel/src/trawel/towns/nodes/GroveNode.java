@@ -23,6 +23,7 @@ import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.Person.PersonType;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.Seed;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Weapon;
@@ -478,7 +479,9 @@ public class GroveNode implements NodeType{
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
 					}else {
-						extra.println(Player.loseGold(p.getLevel(), true));
+						extra.println(Player.loseGold(
+								IEffectiveLevel.cleanRangeReward(holder.getLevel(node),2f,.2f)
+								, true));
 						Player.placeAsOccupant(p);
 					}
 				}else {
@@ -498,12 +501,15 @@ public class GroveNode implements NodeType{
 							holder.findBehind(node,"tree");
 						}
 					}else {
-						int gold = extra.randRange(0,3)+ (holder.getLevel(node)*extra.randRange(1,3));
+						int gold = IEffectiveLevel.cleanRangeReward(holder.getLevel(node), 2f,.7f);
 						extra.println("They offer a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them. "+extra.PRE_BATTLE+"...But it looks like they might have more. Mug them?");
 						if (extra.yesNo()) {
 							p.getBag().addGold(gold);
+							if (extra.randFloat() > .3f) {//70% chance for more money
+								p.getBag().addGold(IEffectiveLevel.cleanRangeReward(holder.getLevel(node),1.5f,.8f));
+							}
 							p.hTask = HostileTask.PEACE;
-							Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,0,1);
+							Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,0,p.getUnEffectiveLevel());
 							Combat c = Player.player.fightWith(p);
 							if (c.playerWon() > 0) {
 							}else {
@@ -851,7 +857,8 @@ public class GroveNode implements NodeType{
 					extra.println("When you wake up, you notice someone went through your bags!");
 					extra.println(
 							Player.loseGold(
-							holder.getLevel(node)*extra.randRange(3,5),true)
+									IEffectiveLevel.cleanRangeReward(holder.getLevel(node), 3f, .2f)
+							,true)
 						);
 					plantstart = Seed.EMPTY;//TODO
 				}else {
@@ -863,13 +870,13 @@ public class GroveNode implements NodeType{
 			}
 			break;
 		case 2://sell
-			int worth = holder.getLevel(node);
+			int worth;
 			if (state < 10) {//if not interrupted is worth less
-				worth *= 3;
+				worth = 3;
 			}else {
-				worth *= 2;
+				worth = 2;
 			}
-			worth = extra.randRange(worth/2,worth)+1;
+			worth = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),worth,.2f);
 			extra.println("You sell the mushroom for " +World.currentMoneyDisplay(worth) + ".");
 			Player.player.addGold(worth);
 			plantstart = Seed.EMPTY;
@@ -906,12 +913,12 @@ public class GroveNode implements NodeType{
 				holder.setStateNum(node,1);
 				state = 1;
 			}else {
-				int worth = holder.getLevel(node);
+				int worth = 1;
 				boolean will_attack = extra.chanceIn(1,3);
 				if (will_attack) {
 					worth*=2;
 				}
-				worth = extra.randRange(worth/3,worth-1)+1;
+				worth = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),worth,.3f);;
 				extra.println("You find " +World.currentMoneyDisplay(worth) + " under the moss!");
 				Player.player.addGold(worth);
 				if (will_attack) {
@@ -966,7 +973,7 @@ public class GroveNode implements NodeType{
 	private boolean shaman(NodeConnector holder,int node) {
 		Person p = holder.getStorageFirstPerson(node);
 		p.getBag().graphicalDisplay(1,p);
-		int cost = holder.getLevel(node)*4;
+		int cost = (int) (IEffectiveLevel.unclean(holder.getLevel(node))*4);
 		extra.menuGo(new MenuGenerator() {
 
 			@Override

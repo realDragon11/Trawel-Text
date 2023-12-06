@@ -451,7 +451,7 @@ public class DungeonNode implements NodeType{
 		if (extra.yesNo()) {
 			holder.setStateNum(node,1);
 			if (extra.chanceIn(5,6)) {
-				int gold = IEffectiveLevel.cleanRangeReward(holder.getLevel(node), 5, .4f);
+				int gold = IEffectiveLevel.cleanRangeReward(holder.getLevel(node), 5f, .4f);
 				Player.player.addGold(gold);
 				extra.println("You open the " +holder.getStorageFirstClass(node,String.class) + " and find " + World.currentMoneyDisplay(gold) + ".");
 			}else {

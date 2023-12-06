@@ -344,7 +344,7 @@ public class BossNode implements NodeType {
 	}
 	
 	public static void heroRep(NodeConnector holder,int node,float mult) {
-		Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult* IEffectiveLevel.unEffective(holder.getLevel(node)), 0);
+		Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult* IEffectiveLevel.unclean(holder.getLevel(node)), 0);
 	}
 
 }

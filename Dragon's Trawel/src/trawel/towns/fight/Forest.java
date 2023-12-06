@@ -144,7 +144,9 @@ public class Forest extends ExploreFeature{
 			Player.player.getPerson().addXp(tier*2);break;
 			case 3: extra.println("You feel lightheaded.... you pass out!");
 			extra.println("When you wake up, you notice someone went through your bags!");
-			extra.println(Player.loseGold(tier*extra.randRange(5,10),true));
+			extra.println(Player.loseGold(
+					IEffectiveLevel.cleanRangeReward(tier,3f,.2f)
+					,true));
 			break;
 			}
 			if (Math.random() > .8) {
@@ -189,12 +191,12 @@ public class Forest extends ExploreFeature{
 				break;
 			}
 			if (c.playerWon() > 0) {
-				int gold = Math.round(extra.randRange(2f,3f)*getUnEffectiveLevel());
+				int gold = IEffectiveLevel.cleanRangeReward(tier,3f,.7f);
 				extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
 				Player.player.addGold(gold);
 			}
 			}else {
-				int gold = Math.round(extra.randRange(0f,2f)*getUnEffectiveLevel());
+				int gold = IEffectiveLevel.cleanRangeReward(tier,2f,.2f);
 				extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
 				Player.player.addGold(gold);
 			};break;
@@ -293,9 +295,9 @@ public class Forest extends ExploreFeature{
 				if (Math.random() < .3) {
 					extra.println("They scamper off...");
 				}else {
-					int gold = Math.round(extra.randRange(.5f,1.2f)*getUnEffectiveLevel());
+					int gold = IEffectiveLevel.cleanRangeReward(tier,2f,.7f);
 					extra.println("They give you a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them.");
-					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1,0);
+					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1*IEffectiveLevel.unclean(tier),0);
 					Player.player.addGold(gold);
 				}
 			}

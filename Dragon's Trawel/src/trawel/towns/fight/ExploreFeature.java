@@ -17,6 +17,7 @@ import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
 import trawel.quests.QRMenuItem;
 import trawel.quests.QuestBoardLocation;
@@ -267,12 +268,12 @@ public abstract class ExploreFeature extends Feature{
 		if (extra.yesNo()) {
 			Combat c = Player.player.fightWith(robber);
 			if (c.playerWon() > 0) {
-				int gold = Math.round(extra.randRange(.5f,2.5f)*getUnEffectiveLevel());
+				int gold = IEffectiveLevel.cleanRangeReward(tier,2.5f,.5f);
 				extra.println("They give you a reward of " +World.currentMoneyDisplay(gold) + " in thanks for saving them.");
 				Player.player.addGold(gold);
 			}else {
 				extra.println("They steal from your bags as well!");
-				int lose = Math.round(extra.randRange(2f,3f)*getUnEffectiveLevel());
+				int lose = IEffectiveLevel.cleanRangeReward(tier,3f,.6f);
 				extra.println(Player.loseGold(lose,true));
 			}
 		}else {
@@ -288,7 +289,7 @@ public abstract class ExploreFeature extends Feature{
 			
 		}else {
 			extra.println("They rummage through your bags!");
-			int lose = Math.round(extra.randRange(2f,3f)*getUnEffectiveLevel());
+			int lose = IEffectiveLevel.cleanRangeReward(tier,3f,.6f);
 			extra.println(Player.loseGold(lose,true));
 		}
 	}
@@ -304,14 +305,14 @@ public abstract class ExploreFeature extends Feature{
 					if (c.playerWon() == 1) {
 						extra.println("You wake up and examine the loot...");
 					}
-					int gold = Math.round(extra.randRange(2f,3f)*getUnEffectiveLevel());
+					int gold = IEffectiveLevel.cleanRangeReward(tier,3.5f,.6f);
 					extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
 					Player.player.addGold(gold);
 				}else {
 					extra.println(failText);
 				}
 			}else {
-				int gold = Math.round(extra.randRange(0f,2f)*getUnEffectiveLevel());
+				int gold = IEffectiveLevel.cleanRangeReward(tier,1.5f,.2f);
 				extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
 				Player.player.addGold(gold);
 			}

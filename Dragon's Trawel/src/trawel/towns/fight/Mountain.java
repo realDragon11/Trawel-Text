@@ -13,6 +13,7 @@ import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -205,8 +206,8 @@ public class Mountain extends ExploreFeature{
 	private void tollKeeper() {
 		extra.println(extra.PRE_BATTLE+"You see a toll road keeper. Mug them for their "+World.currentMoneyString()+"?");
 		Person toller = RaceFactory.getPeace(tier);
-		int want = Math.round((1f+(extra.randFloat()*2f)*getUnEffectiveLevel()) + extra.randRange(1,3));
-		toller.getBag().addLocalGoldIf(extra.randRange(0,3)+(want*extra.randRange(2,4)));
+		int want = IEffectiveLevel.cleanRangeReward(tier,3.5f,.8f);
+		toller.getBag().addLocalGoldIf(IEffectiveLevel.cleanRangeReward(tier,6f,.5f));
 		toller.getBag().graphicalDisplay(1, toller);
 		if (extra.yesNo()) {
 		

@@ -844,7 +844,7 @@ public class GenericNode implements NodeType {
 
 					@Override
 					public boolean go() {
-						if (Player.player.getGold() > leader.getBag().getGold()*4) {//you're so much richer than them that they see you as part of their bigotry
+						if (Player.player.getGold() > leader.getBag().getGold()*10) {//you're so much richer than them that they see you as part of their bigotry
 							String str = Oracle.tipString("racistPraise");
 							str = str.replaceAll(" an "," a ");
 							str = str.replaceAll("oracles","rich person");

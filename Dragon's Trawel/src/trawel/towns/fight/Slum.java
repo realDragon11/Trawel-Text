@@ -398,7 +398,7 @@ public class Slum extends Store implements QuestBoardLocation{
 							Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
 							if (c.playerWon() > 0) {
 								//crime rating go down
-								crimeRating-= IEffectiveLevel.unEffective(Player.player.getPerson().getEffectiveLevel());
+								crimeRating-= Player.player.getPerson().getUnEffectiveLevel();
 								//cap reduction on crime lord if they're still alive
 								capCrimeToLord();
 							}
@@ -442,8 +442,8 @@ public class Slum extends Store implements QuestBoardLocation{
 				extra.println("You kill the crime lord!");
 				wins++;
 				//reduce crime by 3x crimelord eLevel and 1x player eLevel, compared to only 1x player eLevel of mugger
-				crimeRating -= 3*IEffectiveLevel.unEffective(crimeLord.getPerson().getEffectiveLevel());
-				crimeRating -= IEffectiveLevel.unEffective(Player.player.getPerson().getEffectiveLevel());
+				crimeRating -= 3*crimeLord.getPerson().getUnEffectiveLevel();
+				crimeRating -= Player.player.getPerson().getUnEffectiveLevel();
 				crimeLord = null;
 			}else {
 				extra.println("The crime lord kills you.");
