@@ -379,7 +379,7 @@ public class QuestReactionFactory {
 		}
 		totalWeight*= extra.randFloat();
 		int i = canReacts.size()-1;
-		for (; i >= 0; i--) {//stops at 0
+		for (; i > 0; i--) {//stops at 0 either way
 			totalWeight-=canReacts.size();
 			if (totalWeight <=0) {
 				break;
