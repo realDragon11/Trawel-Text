@@ -9,6 +9,7 @@ import trawel.battle.Combat;
 import trawel.factions.Faction;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
@@ -234,7 +235,7 @@ public class Forest extends ExploreFeature{
 				//not a collector, but this is a dd1 quote ref
 				extra.println("They say a predator is often blind to its own peril- at least there won't be any more men hanged here soon.");
 				//bonus heroism
-				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC, (tier/5f),0);
+				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC, IEffectiveLevel.unclean(tier),0);
 			}else {
 				//terraria ref, unsure if references like this are a bit much
 				extra.println("You wake up elsewhere, striken with nightmares of claw, teeth, sinew, and bone. You feel an evil presence watching you...");
