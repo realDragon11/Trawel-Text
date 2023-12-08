@@ -1026,6 +1026,16 @@ public final class extra {
 	public static final String RESULT_NO_CHANGE_NONE = TIMID_GREY;
 	public static final String RESULT_GOOD = TIMID_GREEN;
 	public static final String RESULT_BAD = TIMID_RED;
+	/**
+	 * warn that this might be destructive
+	 */
+	public static final String RESULT_WARN = TIMID_MAGENTA;
+	/**
+	 * inform that nothing happened due to bad setup
+	 */
+	public static final String RESULT_ERROR = TIMID_RED;
+	public static final String RESULT_FAIL = TIMID_ORANGE;
+	public static final String RESULT_PASS = TIMID_GREEN;
 
 	public static final String COLOR_NEW = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f));
 	public static final String COLOR_SEEN = inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f));

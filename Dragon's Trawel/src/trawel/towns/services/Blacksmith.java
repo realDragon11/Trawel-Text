@@ -74,12 +74,12 @@ public class Blacksmith extends Feature {
 							Player.player.loseGold(forgePrice);
 							Item i = store.addAnItem();
 							if (i == null) {
-								extra.println("An item has been forged and sent to " + store.getName() + "!");
+								extra.println(extra.RESULT_PASS+"An item has been forged and sent to " + store.getName() + "!");
 							}else {
-								extra.println(i.getName() + " was created and put on sale in " + store.getName()+"!");
+								extra.println(i.getName() +extra.RESULT_PASS+ " was created and put on sale in " + store.getName()+"!");
 							}
 						}else {
-							extra.println("You can't afford that!");
+							extra.println(extra.RESULT_ERROR+"You can't afford that!");
 						}
 						return false;
 					}});
@@ -103,7 +103,7 @@ public class Blacksmith extends Feature {
 							item = Player.bag.getHand();
 						}
 						if (item.getLevel() >= tier) {
-							extra.println("This item is too high in level to improve here!");
+							extra.println(extra.RESULT_ERROR+"This item is too high in level to improve here!");
 							return false;
 						}
 						int mcost = item.getMoneyValue();
@@ -111,19 +111,19 @@ public class Blacksmith extends Feature {
 						String costString = World.currentMoneyDisplay(mcost) + " and " +acost + " aether";
 						if (Player.player.getGold() < mcost) {
 							if (Player.bag.getAether() < acost) {
-								extra.println("You can't afford to improve '"+item.getName()+"'. ("+costString+")");
+								extra.println(extra.RESULT_ERROR+"You can't afford to improve '"+item.getName()+"'. ("+costString+")");
 							}else {
-								extra.println("You can't afford to pay the blacksmith to improve '"+item.getName()+"'. ("+costString+")");
+								extra.println(extra.RESULT_ERROR+"You can't afford to pay the blacksmith to improve '"+item.getName()+"'. ("+costString+")");
 							}
 							return false;
 						}
 						if (Player.bag.getAether() < acost) {
-							extra.println("You don't have enough aether to improve '"+item.getName()+"'. ("+costString+")");
+							extra.println(extra.RESULT_ERROR+"You don't have enough aether to improve '"+item.getName()+"'. ("+costString+")");
 							return false;
 						}
 						extra.println("Improve your item to +" + (item.getLevel()+1) + " for "+costString+"?");
 						if (extra.yesNo()) {
-							extra.println("Item improved.");
+							extra.println(extra.RESULT_PASS+"Item improved.");
 							Player.player.loseGold(mcost);
 							Player.bag.addAether(-acost);
 							item.levelUp();
@@ -151,11 +151,11 @@ public class Blacksmith extends Feature {
 							item = Player.bag.getHand();
 						}
 						if (!item.hasNegQuality()) {
-							extra.println(item.getName() + " does not have any negative qualities!");
+							extra.println(item.getName() +extra.RESULT_ERROR+ " does not have any negative qualities!");
 							return false;
 						}
 						if (item.getLevel() > tier) {
-							extra.println(item.getName()+" is too high in level ("+item.getLevel()+") to temper here!");
+							extra.println(item.getName()+extra.RESULT_ERROR+" is too high in level ("+item.getLevel()+") to temper here!");
 							return false;
 						}
 						int mcost = item.getMoneyValue();
@@ -163,23 +163,23 @@ public class Blacksmith extends Feature {
 						String costString = World.currentMoneyDisplay(mcost) + " and " +acost + " amber";
 						if (Player.player.getGold() < mcost) {
 							if (Gem.AMBER.getGem() < acost) {
-								extra.println("You can't afford to temper '"+item.getName()+"'. ("+costString+")");
+								extra.println(extra.RESULT_ERROR+"You can't afford to temper '"+item.getName()+"'. ("+costString+")");
 							}else {
-								extra.println("You can't afford to pay the blacksmith to temper '"+item.getName()+"'. ("+costString+")");
+								extra.println(extra.RESULT_ERROR+"You can't afford to pay the blacksmith to temper '"+item.getName()+"'. ("+costString+")");
 							}
 							return false;
 						}
 						if (Gem.AMBER.getGem() < acost) {
-							extra.println("You don't have enough amber to temper '"+item.getName()+"'. ("+costString+")");
+							extra.println(extra.RESULT_ERROR+"You don't have enough amber to temper '"+item.getName()+"'. ("+costString+")");
 							return false;
 						}
 						extra.println("Improve your item to +" + (item.getLevel()+1) + " for "+costString+"?");
 						if (extra.yesNo()) {
 							if (!item.temperNegQuality()) {
-								extra.println("Tempering failed.");
+								extra.println(extra.RESULT_FAIL+"Tempering failed.");
 								return false;
 							}
-							extra.println("Item tempered.");
+							extra.println(extra.RESULT_PASS+"Item tempered.");
 							Player.player.loseGold(mcost);
 							Gem.AMBER.changeGem(-acost);
 							item.display(1);

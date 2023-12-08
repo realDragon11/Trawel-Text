@@ -194,7 +194,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return Player.player.getFlask() != null ? "You already have a potion, brewing one will replace it." :
+						return Player.player.getFlask() != null ? extra.RESULT_WARN+"You already have a potion, brewing one will replace it." :
 							reagents.size() == 0 ? "Time to get brewing!" : reagents.size() == 6 ? "The pot is almost boiling over!" : "The pot bubbles...";
 					}});
 				if (reagents.size() < 6) {
@@ -255,11 +255,11 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	
 	public boolean finishBrew() {
 		if (reagents.size() == 0) {
-			extra.println("There's nothing in the pot!");
+			extra.println(extra.RESULT_ERROR+"There's nothing in the pot!");
 			return false;
 		}
 		if (reagents.size() < 3) {
-			extra.println("You need at least 3 reagents to finish your brew!");
+			extra.println(extra.RESULT_ERROR+"You need at least 3 reagents to finish your brew!");
 			return false;
 		}
 		int batWings = 0;

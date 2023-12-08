@@ -287,7 +287,7 @@ public class Player extends SuperPerson{
 	public Effect doSip() {
 		if (flask != null) {
 			if (knowsFlask) {
-				extra.println("Take a sip of your "+flask.effect.getName()+" potion? ("+flask.sips+" left)");
+				extra.println("Take a sip of your "+flask.effect.getName()+extra.PRE_WHITE+" potion? ("+extra.ITEM_VALUE+ flask.sips+extra.PRE_WHITE+" left)");
 			}else {
 				extra.println("Take a sip of your potion? ("+flask.sips+" left)");
 			}

@@ -80,11 +80,11 @@ public class Enchanter extends Feature {
 						}
 						float enchantMult = item.getEnchantMult();
 						if (enchantMult == 0) {
-							extra.println("This item is not enchantable.");
+							extra.println(extra.RESULT_ERROR+"This item is not enchantable.");
 							return false;
 						}
 						if (item.getLevel() >= maxLevel) {
-							extra.println("This item is too high in level to enchant here!");
+							extra.println(extra.RESULT_ERROR+"This item is too high in level to enchant here!");
 							return false;
 						}
 						//quality tier is typically 0 to 12
@@ -98,33 +98,37 @@ public class Enchanter extends Feature {
 						
 						if (Player.player.getGold() < mcost) {
 							if (Player.bag.getAether() < acost) {
-								extra.println("You can't afford to enchant '"+item.getName()+"'. ("+costString+")");
+								extra.println(extra.RESULT_ERROR+"You can't afford to enchant '"+item.getName()+"'. ("+costString+")");
 							}else {
-								extra.println("You can't afford to pay the enchanter to enchant '"+item.getName()+"'. ("+costString+")");
+								extra.println(extra.RESULT_ERROR+"You can't afford to pay the enchanter to enchant '"+item.getName()+"'. ("+costString+")");
 							}
 							return false;
 						}
 						if (Player.bag.getAether() < acost) {
-							extra.println("You don't have enough aether to enchant '"+item.getName()+"'. ("+costString+")");
+							extra.println(extra.RESULT_ERROR+"You don't have enough aether to enchant '"+item.getName()+"'. ("+costString+")");
 							return false;
 						}
 						extra.println("Enchant "+item.getName()+" with a "+successRate+"% success chance for "+costString+"? ("+World.currentMoneyString()+" will only be taken on success.)");
+						boolean wasEnchanted = false;
 						if (item.getEnchant() != null) {
-							extra.println(item.getName() +" is already enchanted, and the enchanter will still take their payment if a worse enchantment is rejected.");
+							extra.println(item.getName()+extra.RESULT_WARN+" is already enchanted, and the enchanter will still take their payment if a worse enchantment is rejected.");
+							wasEnchanted = true;
 						}
 						if (extra.yesNo()) {
 							if (successRate < 100 && extra.chanceIn(successRate,100)) {
-								extra.println("The enchantment failed and your "+World.currentMoneyString()+" was returned. You lost "+acost+" aether.");
+								extra.println(extra.RESULT_FAIL+"The enchantment failed and your "+World.currentMoneyString()+" was returned. You lost "+acost+" aether.");
 								Player.bag.addAether(-acost);
 								return false;
 							}
 							boolean didChange = item.improveEnchantChance(item.getLevel());
 							if (didChange) {
-								extra.println("Item enchanted: " + item.getName());
+								extra.println(extra.RESULT_PASS+"Item enchanted: " + item.getName());
 								item.display(1);
 							}else {
-								extra.println("Item unchanged: " + item.getName());
-								extra.println("The new enchantment was considered worse than the old one, so it was not completed.");
+								extra.println(extra.RESULT_FAIL+"Item unchanged: " + item.getName());
+								if (wasEnchanted == true) {
+									extra.println("The new enchantment was considered worse than the old one, so it was not completed.");
+								}
 							}
 							Player.player.loseGold(mcost);
 							Player.bag.addAether(-acost);
