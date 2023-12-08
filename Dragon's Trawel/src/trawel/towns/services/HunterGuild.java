@@ -90,9 +90,9 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 								if (cost <= spenda) {
 									Player.player.factionSpent.addFactionRep(Faction.HUNTER,cost,0);
 									Gem.AMBER.changeGem(gemAmount);
-									extra.println("Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.AMBER.name : Gem.AMBER.plural)+", new total: " + Gem.AMBER.getGem()+".");
+									extra.println(extra.RESULT_PASS+"Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.AMBER.name : Gem.AMBER.plural)+", new total: " + Gem.AMBER.getGem()+".");
 								}else {
-									extra.println("You do not have enough spendable reputation.");
+									extra.println(extra.RESULT_ERROR+"You do not have enough spendable reputation.");
 									break;
 								}
 							}else {

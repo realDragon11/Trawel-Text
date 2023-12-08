@@ -169,7 +169,7 @@ public class Lot extends Feature {
 					//just money no aether
 					int money = getMCost(tier);
 					if (Player.bag.getGold() < money) {
-						extra.println("Not Enough "+World.currentMoneyString() + ", have only " +Player.bag.getGold()+".");
+						extra.println(extra.RESULT_ERROR+"Not Enough "+World.currentMoneyString() + ", have only " +Player.bag.getGold()+".");
 						return false;
 					}
 					extra.println("Build "+nameString +" for "+World.currentMoneyDisplay(money)+"?");
@@ -178,7 +178,7 @@ public class Lot extends Feature {
 				if (aCost != 0) {//just aether no money
 					int aether = getACost(tier);
 					if (Player.bag.getAether() < aether) {
-						extra.println("Not enough Aether, have only " + Player.bag.getAether()+".");
+						extra.println(extra.RESULT_ERROR+"Not enough Aether, have only " + Player.bag.getAether()+".");
 						return false;
 					}
 					extra.println("Build "+nameString +" for "+aether + " Aether?");

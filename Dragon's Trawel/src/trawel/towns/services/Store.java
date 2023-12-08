@@ -258,7 +258,7 @@ public class Store extends Feature{
 					dbs.remove(index);
 				}
 			}else {
-				extra.println("You cannot afford this item.");
+				extra.println(extra.RESULT_ERROR+"You cannot afford this item.");
 			}
 			return;
 		}

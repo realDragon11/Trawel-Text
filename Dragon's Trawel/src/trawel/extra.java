@@ -1034,7 +1034,15 @@ public final class extra {
 	 * inform that nothing happened due to bad setup
 	 */
 	public static final String RESULT_ERROR = TIMID_RED;
+	/**
+	 * when an action fails, usually due to chance, or had a negative outcome
+	 */
 	public static final String RESULT_FAIL = TIMID_ORANGE;
+	/**
+	 * that the action went through and had the intended outcome
+	 * <br>
+	 * usually used if it was chance based, or merely accumulating progress towards a true RESULT_GOOD
+	 */
 	public static final String RESULT_PASS = TIMID_GREEN;
 
 	public static final String COLOR_NEW = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f));

@@ -156,7 +156,7 @@ public class TravelingFeature extends Store{
 						list.add(new MenuSelect() {
 							@Override
 							public String title() {
-								return "Attempt to find Free Beer";
+								return "Attempt to find Free Beer.";
 							}
 
 							@Override
@@ -165,10 +165,10 @@ public class TravelingFeature extends Store{
 								mainGame.globalPassTime();
 								useCount++;
 								if (extra.randRange(1, useCount) == 1) {
-									extra.println("You find some beer laying around.");
+									extra.println(extra.RESULT_PASS+"You find some beer laying around.");
 									Player.player.beer++;
 								}else{
-									extra.println("Your efforts were in vain, you could not find any beer.");
+									extra.println(extra.RESULT_FAIL+"Your efforts were in vain, you could not find any beer.");
 								}
 								return true;
 							}});
@@ -271,7 +271,7 @@ public class TravelingFeature extends Store{
 									if (extra.chanceIn(useCount,3+useCount)){
 										if (useCount > 5) {
 											regenSetup();
-											extra.println("The oracle packs up and heads off with extreme urgency.");
+											extra.println(extra.RESULT_FAIL+"The oracle packs up and heads off with extreme urgency.");
 										}else {
 											extra.println("The oracle watches you in silence.");
 										}

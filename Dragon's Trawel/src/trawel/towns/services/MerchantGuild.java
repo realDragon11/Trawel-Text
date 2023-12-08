@@ -166,7 +166,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 								extra.println("You donate "+gemAmount+" "+(gemAmount == 1 ? Gem.EMERALD.name : Gem.EMERALD.plural)+".");
 								Gem.EMERALD.changeGem(-gemAmount);
 							}else {
-								extra.println("You have no emeralds to donate.");
+								extra.println(extra.RESULT_ERROR+"You have no emeralds to donate.");
 							}
 							return false;
 						}});
@@ -201,7 +201,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 					@Override
 					public boolean go() {
 						if (Player.player.getGold() < merchantBookPrice) {
-							extra.println("You can't afford that many books!");
+							extra.println(extra.RESULT_ERROR+"You can't afford that many books!");
 							return false;
 						}
 						extra.println("Buying lots of books might find you a feat fragment- buy?");
@@ -212,7 +212,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 								Player.player.merchantBookPasses++;
 								Player.bag.addNewDrawBanePlayer(DrawBane.KNOW_FRAG);
 							}else {
-								extra.println("There was nothing interesting in this batch.");
+								extra.println(extra.RESULT_FAIL+"There was nothing interesting in this batch.");
 							}
 						}
 						return false;
@@ -229,13 +229,14 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 					@Override
 					public boolean go() {
 						if (Player.player.getGold() < bShipmentCost) {
-							extra.println("You can't afford that many beers!");
+							extra.println(extra.RESULT_ERROR+"You can't afford that many beers!");
 							return false;
 						}
 						extra.println("Beer increases your starting HP in battle, one use per beer- buy 20 of them?");
 						if (extra.yesNo()) {
 							Player.player.addGold(-bShipmentCost);
 							Player.player.beer+=20;
+							extra.println(extra.RESULT_PASS+"You gain 20 beers.");
 						}
 						return false;
 					}

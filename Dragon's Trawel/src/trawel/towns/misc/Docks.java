@@ -503,7 +503,7 @@ public class Docks extends Feature {
 			}
 			return false;
 		}else {
-			extra.println("They don't think you capable of helping.");
+			extra.println(extra.RESULT_ERROR+"They don't think you capable of helping.");
 			return false;
 		}
 	}

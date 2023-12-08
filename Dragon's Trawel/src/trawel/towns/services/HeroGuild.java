@@ -98,7 +98,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 								Player.player.factionSpent.addFactionRep(Faction.HEROIC,cost,0);
 								Player.bag.addNewDrawBanePlayer(DrawBane.KNOW_FRAG);
 							}else {
-								extra.println("You do not have enough spendable reputation.");
+								extra.println(extra.RESULT_ERROR+"You do not have enough spendable reputation.");
 								break;
 							}
 						}else {
@@ -126,9 +126,9 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 							if (cost <= spenda) {
 								Player.player.factionSpent.addFactionRep(Faction.HEROIC,cost,0);
 								Gem.RUBY.changeGem(gemAmount);
-								extra.println("Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.RUBY.name : Gem.RUBY.plural)+", new total: " + Gem.RUBY.getGem()+".");
+								extra.println(extra.RESULT_PASS+"Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.RUBY.name : Gem.RUBY.plural)+", new total: " + Gem.RUBY.getGem()+".");
 							}else {
-								extra.println("You do not have enough spendable reputation.");
+								extra.println(extra.RESULT_ERROR+"You do not have enough spendable reputation.");
 								break;
 							}
 						}else {

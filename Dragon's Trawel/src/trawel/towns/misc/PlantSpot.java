@@ -132,12 +132,12 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 								timer= -20;//flat
 								switch (extra.randRange(1,6)) {
 								case 1:
-									extra.println("The bees sting!");
+									extra.println(extra.RESULT_BAD+"The bees sting!");
 									Player.player.getPerson().addEffect(Effect.BEES);
 									Networking.unlockAchievement("bees_hive");
 									break;
 								case 2:
-									extra.println("You escape unscathed but with wounded pride.");
+									extra.println(extra.RESULT_FAIL+"You escape unscathed but with wounded pride.");
 									break;
 								case 3:
 									Player.bag.addNewDrawBanePlayer(DrawBane.WAX);
@@ -251,7 +251,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 			if (extra.chanceIn(1,4)) {
 				Player.bag.addSeed(Seed.SEED_TRUFFLE);
 			}else {
-				extra.println("You are unable to gather the spores.");
+				extra.println(extra.RESULT_FAIL+"You are unable to gather the spores.");
 			}
 			;break;
 		case SEED_FAE:
@@ -264,7 +264,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 			if (extra.chanceIn(1,3)) {
 				Player.bag.addSeed(Seed.SEED_FUNGUS);
 			}else {
-				extra.println("You are unable to gather the spores.");
+				extra.println(extra.RESULT_FAIL+"You are unable to gather the spores.");
 			}
 			break;
 		case GROWN_FUNGUS:

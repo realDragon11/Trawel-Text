@@ -126,7 +126,7 @@ public class Altar extends Feature{
 			case BEATING_HEART:
 				if (force == AltarForce.SKY) {
 					addRelation(8);
-					extra.println("You spend hours upon hours preparing your great sacrifice, and stab the heart when the time is right. The very heavens seem to look down upon you with favor, and a storm brews... aether rains from the sky.");
+					extra.println(extra.RESULT_GOOD+"You spend hours upon hours preparing your great sacrifice, and stab the heart when the time is right. The very heavens seem to look down upon you with favor, and a storm brews... aether rains from the sky.");
 					Player.addTime(40);
 					Player.bag.addAether((int) ((getRelation()*100)+extra.randRange(4000,5000)));
 					specialInteraction = true;
@@ -134,7 +134,7 @@ public class Altar extends Feature{
 				}
 				if (force == AltarForce.FOREST) {
 					addRelation(10);
-					extra.println("You spend hours upon hours preparing your great sacrifice, and stab the heart when the time is right. Knowledge spills into your mind, and the Forest willingly gives its own flesh to record eldritch lore, in recognition of an equal trade- blood for blood, sap for sap.");
+					extra.println(extra.RESULT_GOOD+"You spend hours upon hours preparing your great sacrifice, and stab the heart when the time is right. Knowledge spills into your mind, and the Forest willingly gives its own flesh to record eldritch lore, in recognition of an equal trade- blood for blood, sap for sap.");
 					Player.addTime(40);
 					Player.player.getPerson().addXp(4);
 					Player.bag.addNewDrawBanePlayer(DrawBane.KNOW_FRAG);
@@ -171,7 +171,7 @@ public class Altar extends Feature{
 				extra.println("You offer a gift of the harvest.");
 				Player.addTime(.2);
 				if (force == AltarForce.FOREST) {
-					extra.println("The Forest gives you a seed, that you may continue the cycle of life.");
+					extra.println(extra.RESULT_GOOD+"The Forest gives you a seed, that you may continue the cycle of life.");
 					Player.bag.addSeed(Seed.randSeed());
 					specialInteraction = true;
 				}
@@ -183,7 +183,7 @@ public class Altar extends Feature{
 				break;
 			case VIRGIN:
 				addRelation(4);
-				extra.println("You spend hours preparing your great sacrifice, and stab the innocent when the time is right. The "+getForceName()+" gives a gift back... but the unspoken message that it would accept this gift for itself lingers in your mind.");
+				extra.println(extra.RESULT_GOOD+"You spend hours preparing your great sacrifice, and stab the innocent when the time is right. The "+getForceName()+" gives a gift back... but the unspoken message that it would accept this gift for itself lingers in your mind.");
 				Player.addTime(24);
 				Player.bag.addNewDrawBanePlayer(DrawBane.BEATING_HEART);
 				specialInteraction = true;
@@ -213,7 +213,7 @@ public class Altar extends Feature{
 			}
 			
 			if (accepted == false) {
-				Player.bag.giveBackDrawBane(inter, "The altar rejects your %.");
+				Player.bag.giveBackDrawBane(inter,extra.RESULT_ERROR+"The altar rejects your %.");
 				return;
 			}
 			
@@ -225,7 +225,7 @@ public class Altar extends Feature{
 					giveReward();
 					Player.player.getPerson().setPerk(Perk.FOREST_BLESS_1);
 					Player.player.addAchieve("altar_forest", "Forest's Chosen");
-					extra.println("Your skin tenses briefly. You feel blessed.");
+					extra.println(extra.RESULT_GOOD+"Your skin tenses briefly. You feel blessed.");
 					specialInteraction = true;
 				}
 				
@@ -233,7 +233,7 @@ public class Altar extends Feature{
 					giveReward();
 					Player.player.getPerson().setPerk(Perk.FOREST_BLESS_2);
 					Player.player.addAchieve("altar_forest", "Forest's Avatar");
-					extra.println("Your skin hardens before becoming supple once more. You feel very blessed.");
+					extra.println(extra.RESULT_GOOD+"Your skin hardens before becoming supple once more. You feel very blessed.");
 					specialInteraction = true;
 				}
 				break;
@@ -242,7 +242,7 @@ public class Altar extends Feature{
 					giveReward();
 					Player.player.getPerson().setPerk(Perk.SKY_BLESS_1);
 					Player.player.addAchieve("altar_sky", "Sky's Chosen");
-					extra.println("The world seems to slow down around you for a brief moment. You feel blessed.");
+					extra.println(extra.RESULT_GOOD+"The world seems to slow down around you for a brief moment. You feel blessed.");
 					specialInteraction = true;
 				}
 				
@@ -250,7 +250,7 @@ public class Altar extends Feature{
 					giveReward();
 					Player.player.getPerson().setPerk(Perk.SKY_BLESS_2);
 					Player.player.addAchieve("altar_sky", "Sky's Avatar");
-					extra.println("Your vision swims before returning sharper than ever. You feel very blessed.");
+					extra.println(extra.RESULT_GOOD+"Your vision swims before returning sharper than ever. You feel very blessed.");
 					specialInteraction = true;
 				}
 				break;
@@ -258,7 +258,7 @@ public class Altar extends Feature{
 			
 			
 			if (specialInteraction == false) {
-				extra.println("The gift disappears, but nothing else happens.");
+				extra.println(extra.RESULT_PASS+"The gift disappears, but nothing else happens.");
 			}
 		}
 	}

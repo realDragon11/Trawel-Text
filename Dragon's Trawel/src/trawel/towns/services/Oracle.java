@@ -198,7 +198,7 @@ public class Oracle extends Feature{ //extends feature later
 				}
 			}
 		}else {
-			extra.println("You can't afford that!");
+			extra.println(extra.RESULT_ERROR+"You can't afford that!");
 		}
 	}
 
@@ -222,7 +222,7 @@ public class Oracle extends Feature{ //extends feature later
 				}
 			}
 		}else {
-			extra.println("You can't afford that!");
+			extra.println(extra.RESULT_ERROR+"You can't afford that!");
 		}
 	}
 

@@ -130,9 +130,9 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 								if (cost <= spenda) {
 									Player.player.factionSpent.addFactionRep(Faction.ROGUE,cost,0);
 									Gem.SAPPHIRE.changeGem(gemAmount);
-									extra.println("Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+", new total: " + Gem.SAPPHIRE.getGem()+".");
+									extra.println(extra.RESULT_PASS+"Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+", new total: " + Gem.SAPPHIRE.getGem()+".");
 								}else {
-									extra.println("You do not have enough spendable reputation.");
+									extra.println(extra.RESULT_ERROR+"You do not have enough spendable reputation.");
 									break;
 								}
 							}else {
@@ -157,10 +157,12 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 								extra.println("Donate "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+"? You have " + Gem.SAPPHIRE.getGem());
 								if (extra.yesNo()) {
 									if (Gem.SAPPHIRE.getGem() >=gemAmount) {
-										Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,reward*gemAmount,0);
+										float gain = reward*gemAmount;
+										Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,gain,0);
 										Gem.SAPPHIRE.changeGem(-gemAmount);
+										extra.println(extra.RESULT_PASS+"You gained "+extra.F_TWO_TRAILING.format(gain) + " reputation.");
 									}else {
-										extra.println("You do not have any sapphires.");
+										extra.println(extra.RESULT_ERROR+"You do not have any sapphires.");
 										break;
 									}
 								}else {
@@ -241,8 +243,9 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 								Player.player.getPerson().facRep.addFactionRep(Faction.ROGUE,0.2f,0);
 								credits++;
 								Player.player.addGold(-cost);
+								extra.println(extra.RESULT_PASS+"You gain 1 credit.");
 							}else {
-								extra.println("You cannnot afford a credit.");
+								extra.println(extra.RESULT_ERROR+"You cannnot afford a credit.");
 								break;
 							}
 						}else {
@@ -269,9 +272,10 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 								if (cost <= spenda) {
 									Player.player.factionSpent.addFactionRep(Faction.ROGUE,cost,0);
 									credits++;
+									extra.println(extra.RESULT_PASS+"You gain 1 credit.");
 								}
 							}else {
-								extra.println("You do not have enough spendable reputation.");
+								extra.println(extra.RESULT_ERROR+"You do not have enough spendable reputation.");
 								break;
 							}
 						}
@@ -284,7 +288,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 						@Override
 						public String title() {
-							return "Not enough Gems scouted.";
+							return extra.RESULT_ERROR+"Not enough Gems scouted.";
 						}});
 				}else {
 					mList.add(new MenuSelect() {
@@ -393,16 +397,16 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 		@Override
 		public boolean go() {
 			if (credits == 0) {
-				extra.println("You have no credits.");
+				extra.println(extra.RESULT_ERROR+"You have no credits.");
 				return false;
 			}
 			if (from.getGem() >= fromInt) {
-				extra.println("You trade "+fromInt+" " + from.plural + " for " + toInt + to.plural+".");
+				extra.println(extra.RESULT_PASS+"You trade "+fromInt+" " + from.plural + " for " + toInt + to.plural+".");
 				from.changeGem(-fromInt);
 				to.changeGem(toInt);
 				credits--;
 			}else {
-				extra.println("You need " + (fromInt-from.getGem()) + " more " + from.plural+"!");
+				extra.println(extra.RESULT_ERROR+"You need " + (fromInt-from.getGem()) + " more " + from.plural+"!");
 			}
 			return false;
 		}
