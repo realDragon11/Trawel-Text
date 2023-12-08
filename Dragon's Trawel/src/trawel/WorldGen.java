@@ -335,7 +335,7 @@ public class WorldGen {
 		addConnection(repa,tunka,ConnectType.CARV,"right-over road");
 		addConnection(repa,owal,ConnectType.CARV,"Former Glory Road");
 		//add connection to a new world area
-		erin.addFeature(new Mountain("Mountain Teleporter Brace",9).setIntro("The mountain thrums with arcane energy."));
+		repa.addFeature(new Mountain("Mountain Teleporter Brace",9).setIntro("The mountain thrums with arcane energy."));
 		repa.addTravel();
 		repa.addTravel();
 		repa.addTravel();
