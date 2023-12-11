@@ -1,6 +1,6 @@
 package trawel.personal.item.solid;
 
-import java.util.EnumSet;
+import derg.ds.EnumSet;
 
 import trawel.Services;
 import trawel.extra;

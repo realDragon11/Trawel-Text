@@ -1,7 +1,7 @@
 package trawel;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
+import derg.ds.EnumSet;
 import java.util.List;
 
 import trawel.personal.Person;

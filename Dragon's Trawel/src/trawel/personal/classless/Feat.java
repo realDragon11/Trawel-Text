@@ -2,7 +2,7 @@ package trawel.personal.classless;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumSet;
+import derg.ds.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;

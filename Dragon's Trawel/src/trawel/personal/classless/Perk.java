@@ -1,6 +1,6 @@
 package trawel.personal.classless;
 
-import java.util.EnumSet;
+import derg.ds.EnumSet;
 import java.util.Set;
 import java.util.stream.Stream;
 

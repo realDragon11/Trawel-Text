@@ -1,7 +1,7 @@
 package trawel.personal.item.solid;
 
 import java.io.FileNotFoundException;
-import java.util.EnumSet;
+import derg.ds.EnumSet;
 import java.util.Set;
 
 import trawel.Services;
