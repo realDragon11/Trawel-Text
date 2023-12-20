@@ -2133,7 +2133,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			+": ("+extra.ATT_TRUE+getRawDexterity()+extra.PRE_WHITE+") "+extra.ATT_EFFECTIVE+getDexterity()
 				+extra.PRE_WHITE+ ", "+ extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(attMultDex())+"x"
 				,extra.ITEM_DESC_PROP+" Mobility"+extra.PRE_WHITE+": "+extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(getTotalAgiPen())+"x"+extra.PRE_WHITE+", "
-				+extra.ITEM_DESC_PROP+" Swiftness "+extra.PRE_WHITE+": "+extra.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(getAttributeAgiPen())+"x"
+				+extra.ITEM_DESC_PROP+" Swiftness"+extra.PRE_WHITE+": "+extra.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(getAttributeAgiPen())+"x"
 		,extra.ATT_TRUE+"Cla"+extra.PRE_WHITE+": " +extra.ATT_TRUE+ getClarity()
 			+extra.PRE_WHITE+", " +extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(attMultCla())+"x"
 				};

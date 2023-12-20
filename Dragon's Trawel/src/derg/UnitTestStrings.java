@@ -2,6 +2,7 @@ package derg;
 
 import trawel.extra;
 import trawel.mainGame;
+import trawel.towns.Calender;
 
 public class UnitTestStrings {
 
@@ -10,6 +11,16 @@ public class UnitTestStrings {
 		System.out.println("starting");
 		mainGame.unitTestSetup();
 		System.out.println("setup");
+		
+		Calender cal = new Calender();
+		float latlong = 40f;
+		for (double i = 21.1; i < 365; i++) {
+			double[] fl = cal.getSunTime(i, latlong, latlong);
+			System.out.println(Calender.getLocalTime(fl[0],latlong) +"|"+Calender.getLocalTime(fl[1],latlong) +"|"+Calender.getLocalTime(fl[2],latlong));
+			cal.timeCounter = i;
+			float[] fa = cal.getBackTime(latlong, latlong);
+			System.out.println("  Hour: "+(cal.timeCounter%24)+": "+fa[0] + "_"+fa[1]);
+		}
 		
 		
 		

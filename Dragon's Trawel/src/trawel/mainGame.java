@@ -422,7 +422,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Change display Chars ("+extra.current_display_style+")";
+						return "Change Display Chars ("+extra.current_display_style+")";
 					}
 
 					@Override
@@ -432,6 +432,12 @@ public class mainGame {
 							@Override
 							public List<MenuItem> gen() {
 								List<MenuItem> list = new ArrayList<MenuItem>();
+								list.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "Current Style: " + extra.current_display_style;
+									}});
 								list.add(new MenuLine() {
 
 									@Override
