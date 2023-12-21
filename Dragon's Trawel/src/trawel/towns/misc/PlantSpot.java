@@ -54,7 +54,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 	
 						@Override
 						public String title() {
-							return "plant";
+							return "Plant Seed.";
 						}
 	
 						@Override
@@ -72,7 +72,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 
 							@Override
 							public String title() {
-								return "harvest apple";
+								return "Harvest apple.";
 							}
 
 							@Override
@@ -98,7 +98,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 
 							@Override
 							public String title() {
-								return "harvest pumpkin";
+								return "Harvest pumpkin.";
 							}
 
 							@Override
@@ -124,7 +124,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 
 							@Override
 							public String title() {
-								return "attempt to harvest honey";
+								return "Attempt to harvest honey.";
 							}
 
 							@Override
@@ -168,7 +168,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 						
 						@Override
 						public String title() {
-							return "take" + (harvestFunction != null ? " all" : "");
+							return "Take" + (harvestFunction != null ? " All." : ".");
 						}
 	
 						@Override
@@ -326,7 +326,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 
 			@Override
 			public String title() {
-				return contains == Seed.EMPTY ? "empty plant spot" : "section- " + contains;
+				return contains == Seed.EMPTY ? "Empty Plant Spot" : "Section- " + contains;
 			}
 
 			@Override

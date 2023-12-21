@@ -195,7 +195,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 					@Override
 					public String title() {
-						return "buy a shipment of books ("+World.currentMoneyDisplay(merchantBookPrice)+")";
+						return "Buy a shipment of books. ("+World.currentMoneyDisplay(merchantBookPrice)+")";
 					}
 
 					@Override
@@ -223,7 +223,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 					@Override
 					public String title() {
-						return "buy a shipment of cheap beer ("+World.currentMoneyDisplay(bShipmentCost) +")";
+						return "Buy a shipment of cheap beer. ("+World.currentMoneyDisplay(bShipmentCost) +")";
 					}
 
 					@Override
@@ -241,18 +241,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 						return false;
 					}
 				});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "exit";
-					}
-
-					@Override
-					public boolean go() {
-						return true;
-					}
-				});
+				mList.add(new MenuBack());
 				return mList;
 			}});
 		
