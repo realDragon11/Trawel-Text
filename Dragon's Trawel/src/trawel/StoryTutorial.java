@@ -26,7 +26,9 @@ import trawel.towns.nodes.NodeFeature;
 import trawel.towns.services.Altar;
 import trawel.towns.services.Blacksmith;
 import trawel.towns.services.Doctor;
+import trawel.towns.services.Enchanter;
 import trawel.towns.services.HeroGuild;
+import trawel.towns.services.HunterGuild;
 import trawel.towns.services.Inn;
 import trawel.towns.services.Library;
 import trawel.towns.services.MerchantGuild;
@@ -49,6 +51,7 @@ public class StoryTutorial extends Story{
 	
 	private EnumSet<Perk> bossPerkTriggers = EnumSet.of(Perk.HELL_BARONESS_1,Perk.FATED,Perk.STORYTELLER,Perk.QUEENSLAYER);
 	private EnumSet<Perk> worldPerkTriggers = EnumSet.of(Perk.MINE_ALL_VEINS,Perk.CULT_LEADER_BLOOD);
+	private EnumSet<Perk> blessPerkTriggers = EnumSet.of(Perk.SKY_BLESS_1,Perk.SKY_BLESS_2,Perk.FOREST_BLESS_1,Perk.FOREST_BLESS_2);
 	
 	private List<Class<? extends Feature>> explained = new ArrayList<>();
 	
@@ -244,7 +247,7 @@ public class StoryTutorial extends Story{
 			explained.add(f.getClass());
 			
 			if (f instanceof Lot) {
-				extra.println("A 'Lot' is a piece of owned, undeveloped land. You can pay both world currency and Aether to build something on that land.");
+				extra.println("A 'Lot' is a piece of owned, undeveloped land. You can pay both Currency and Aether to build something on that land.");
 				return;
 			}
 			
@@ -262,7 +265,11 @@ public class StoryTutorial extends Story{
 				return;
 			}
 			if (f instanceof Store) {
-				extra.println("Stores will sell equipment. They'll want world currency, but will convert Aether into it at a worse rate if you don't have enough world currency. They will increase their markup if they think the item is too good for you, but gaining the favor of merchants will increase how 'good' they think you are. If an item is considerably marked up, they might refuse to show it at all.");
+				extra.println("Stores will sell equipment. They'll want Currency, but will convert Aether into it at a worse rate if you don't have enough Currency. They will increase their markup if they think the item is too good for you, but gaining the favor of merchants will increase how 'good' they think you are. If an item is considerably marked up, they might refuse to show it at all.");
+				return;
+			}
+			if (f instanceof Enchanter) {
+				extra.println("Enchanters let you attempt to enchant equipment, and convert Aether into Currency.");
 				return;
 			}
 			if (f instanceof Arena) {
@@ -277,13 +284,17 @@ public class StoryTutorial extends Story{
 				extra.println("Merchant Guilds have sidequests, a donation area to get Stores to give you better deals, and some 'buy in bulk' options. Their guild gem of choice is the Emerald.");
 				return;
 			}
+			if (f instanceof HunterGuild) {
+				extra.println("Hunter Guilds offer quests to further their goals of cleaning up bandits and monsters from the world. Their guild gem of choice is Amber.");
+				return;
+			}
 			if (f instanceof HeroGuild) {
-				extra.println("Hero Guilds will let you buy Knowledge Fragments with Heroic Reputation. Use these at libraries. Their guild gem of choice is the Ruby.");
-				return;//TODO: add heroic quests
+				extra.println("Hero Guilds will let you buy Knowledge Fragments with Heroic Reputation. Use these at libraries. They also offer heroic quests. Their guild gem of choice is the Ruby.");
+				return;
 			}
 			if (f instanceof RogueGuild) {
-				extra.println("Rogue Guilds will let you launder gems into different gems, for a fee. Their guild gem of choice is the Sapphire.");
-				return;//TODO: add lawless quests
+				extra.println("Rogue Guilds will let you launder gems into different gems, for a fee. They also offer mostly criminal quests. Their guild gem of choice is the Sapphire.");
+				return;
 			}
 			if (f instanceof Library) {
 				extra.println("At a Library, you can turn in any DrawBane Knowledge Fragments you hold to progress on a free Feat Point. If you have 2 or less Feat Picks, you can gain another for free, once per Library.");
@@ -331,7 +342,7 @@ public class StoryTutorial extends Story{
 				if (!explainedNodes) {
 					extra.println("This is a Node Exploration Feature, continue the main tutorial to learn more.");
 				}
-				extra.println("Mines have explorable sub-areas. The veins present often provide an ample source of world currency.");
+				extra.println("Mines have explorable sub-areas. The veins present often provide an ample source of Currency.");
 				return;
 			}
 			if (f instanceof Dungeon) {
@@ -371,7 +382,7 @@ public class StoryTutorial extends Story{
 				extra.println("You have leveled up! You can spend Feat Points in the Character menu through Feat Picks.");
 				break;
 			case 10:
-				extra.println("You're very high level! You can probably beat 80% of current Trawel content if you put your mind to it. If you're really ambitious, try to get to level 15.");
+				extra.println("You are starting to become a force to be reckoned with!");
 				break;
 			case 15:
 				extra.println("You're so high level you could slay a dragon! ...there are no dragons :(");
@@ -418,13 +429,30 @@ public class StoryTutorial extends Story{
 		}
 		if (worldPerkTriggers.remove(perk)) {
 			switch (perk) {
-			default: extra.println("You gained the " +perk.friendlyName() + " world perk!");
-			break;
+			case MINE_ALL_VEINS:
+				extra.println("You gained the " +perk.friendlyName() + " world perk for cleaning out "
+						+ (Player.player.atFeature != null ? Player.player.atFeature.getName() : "a mine")+"!");
+				break;
+			default:
+				extra.println("You gained the " +perk.friendlyName() + " world perk!");
+				break;
 			}
 			if (worldPerkTriggers.isEmpty()) {
 				extra.println("You've obtained all tracked world perks in this version of Trawel!");
 			}else {
 				extra.println("There are " +worldPerkTriggers.size() + " world perks left!");
+			}
+		}
+		if (blessPerkTriggers.remove(perk)) {
+			switch (perk) {
+			default:
+				extra.println("You gained the " +perk.friendlyName() + " blessing perk!");
+				break;
+			}
+			if (blessPerkTriggers.isEmpty()) {
+				extra.println("You've obtained all tracked blessing perks in this version of Trawel!");
+			}else {
+				extra.println("There are " +blessPerkTriggers.size() + " blessing perks left!");
 			}
 		}
 	}
