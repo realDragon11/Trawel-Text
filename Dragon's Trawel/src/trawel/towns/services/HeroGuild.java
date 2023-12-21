@@ -224,7 +224,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 			sideQuests.add(FetchSideQuest.generate(this,FetchType.COMMUNITY));
 			break;
 		case 3: case 4:
-			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.VAMPIRE,CleanseType.BANDIT)));
+			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.VAMPIRE,CleanseType.BANDIT,CleanseType.MONSTERS)));
 			break;
 		case 5:
 			sideQuests.add(KillSideQuest.generate(this,extra.randFloat() > .9f));//10% chance to be a murder quest

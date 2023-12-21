@@ -22,7 +22,14 @@ public class CleanseSideQuest extends BasicSideQuest {
 		WOLF("wolves","wolf",6,new QKey[] {QKey.LAWFUL}),
 		HARPY("harpies","harpy",4,new QKey[] {}),
 		BANDIT("bandits","bandit",4,new QKey[] {QKey.LAWFUL,QKey.GOOD}),
-		UNICORN("unicorns","unicorn",1,new QKey[] {QKey.EVIL});
+		UNICORN("unicorns","unicorn",1,new QKey[] {QKey.EVIL}),
+		/**
+		 * note that drudgers will not count dock drudgers
+		 */
+		DRUDGER("drudgers","drudger",5,new QKey[] {QKey.LAWFUL,QKey.GOOD}),
+		ANIMALS("animals","animal",12,new QKey[] {QKey.LAWFUL}),
+		MONSTERS("monsters","monster",10,new QKey[] {QKey.GOOD}),
+		;
 		public final String fluff, trigger;
 		public final int count;
 		public final QKey[] qAdds;

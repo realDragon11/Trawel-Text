@@ -279,6 +279,8 @@ public class BumperFactory {
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
 						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
+					}else {
+						Player.player.questTrigger(TriggerType.CLEANSE,"drudger", 1);
 					}
 					
 				}};

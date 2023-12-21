@@ -388,6 +388,21 @@ public class Player extends SuperPerson{
 		
 	}*/
 	public void questTrigger(TriggerType type, String string, int count) {
+		if (type == TriggerType.CLEANSE) {
+			switch (string) {
+			case "bat": case "bear": case "wolf":
+			case "unicorn"://unicorns aren't really self aware in this setting
+				questTrigger(TriggerType.CLEANSE,"animal",count);
+				break;
+			//covers self aware but largely unfriendly creatures
+			case "drudger": case "vampire": case "harpy":
+				questTrigger(TriggerType.CLEANSE,"animal",count);
+				break;
+			default:
+				//no matching bonus type (or is a bonus type itself)
+				break;
+			}
+		}
 		for (Quest q: sideQuests) {
 			q.questTrigger(type,string, count);
 		}

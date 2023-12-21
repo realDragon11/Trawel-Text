@@ -165,11 +165,11 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 			break;
 		case 2: case 3:
 			//special creature cleanse
-			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.VAMPIRE,CleanseType.VAMPIRE,CleanseType.VAMPIRE,CleanseType.HARPY,CleanseType.HARPY,CleanseType.UNICORN)));
+			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.VAMPIRE,CleanseType.VAMPIRE,CleanseType.VAMPIRE,CleanseType.HARPY,CleanseType.HARPY,CleanseType.UNICORN,CleanseType.MONSTERS)));
 			break;
 		case 4:
 			//more normal cleanse
-			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.VAMPIRE,CleanseType.BANDIT)));
+			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.VAMPIRE,CleanseType.BANDIT,CleanseType.ANIMALS,CleanseType.MONSTERS)));
 			break;
 		case 5:
 			sideQuests.add(KillSideQuest.generate(this,extra.randFloat() > .75f));//25% chance to be a murder quest

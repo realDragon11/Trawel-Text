@@ -130,7 +130,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 			sideQuests.add(FetchSideQuest.generate(this,FetchType.COMMUNITY));
 			break;
 		case 2:
-			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.BANDIT)));
+			sideQuests.add(CleanseSideQuest.generate(this,extra.choose(CleanseType.WOLF,CleanseType.BEAR,CleanseType.BANDIT,CleanseType.MONSTERS)));
 			break;
 		case 3:
 			sideQuests.add(KillSideQuest.generate(this,extra.randFloat() > .8f));//20% chance to be a murder quest
