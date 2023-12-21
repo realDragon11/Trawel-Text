@@ -161,7 +161,7 @@ public class QuestReactionFactory {
 							public boolean go() {
 								Combat c = Player.player.fightWith(p);
 								if (c.playerWon() > 0) {
-									
+									Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
 								}else {
 									extra.println("They run off laughing about the job.");
 									bumperLocation.addOccupant(p.getMakeAgent(AgentGoal.NONE));
@@ -187,7 +187,7 @@ public class QuestReactionFactory {
 									extra.println(extra.PRE_BATTLE+"They catch up, prepare to defend yourself!");
 									Combat c = Player.player.fightWith(p);
 									if (c.playerWon() > 0) {
-										
+										Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
 									}else {
 										extra.println("They run off laughing about the job.");
 										bumperLocation.addOccupant(p.getMakeAgent(AgentGoal.NONE));
@@ -208,7 +208,7 @@ public class QuestReactionFactory {
 									extra.println(extra.PRE_BATTLE+"They laugh that you can't afford them!");
 									Combat c = Player.player.fightWith(p);
 									if (c.playerWon() > 0) {
-										
+										Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
 									}else {
 										extra.println("They run off laughing about the job.");
 										bumperLocation.addOccupant(p.getMakeAgent(AgentGoal.NONE));

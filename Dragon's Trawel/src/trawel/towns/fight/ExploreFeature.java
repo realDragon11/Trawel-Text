@@ -22,6 +22,7 @@ import trawel.personal.people.Player;
 import trawel.quests.QRMenuItem;
 import trawel.quests.QuestBoardLocation;
 import trawel.quests.QuestR;
+import trawel.quests.Quest.TriggerType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
@@ -248,16 +249,18 @@ public abstract class ExploreFeature extends Feature{
 		extra.println("A"+optionalWolfQualifier+" wolf is poking over a dead corpse... and it looks like their equipment is intact!");
 		Person loot = RaceFactory.makeLootBody(getLevel());
 		loot.getBag().graphicalDisplay(1,loot);
-		extra.println(extra.PRE_BATTLE+"Fight the wolf for the body?");
-		if (!extra.yesNo()) {
+		Person wolf = RaceFactory.makeAlphaWolf(getLevel());
+		//extra.println(extra.PRE_BATTLE+"Fight the wolf for the body?");
+		if (!wolf.reallyAttack()) {
 			Networking.clearSide(1);
 			return;
 		}
-		Combat c = Player.player.fightWith(RaceFactory.makeAlphaWolf(getLevel()));
+		Combat c = Player.player.fightWith(wolf);
 		if (c.playerWon() < 0) {
 			extra.println("The wolf drags the body away.");
 			return;
 		}
+		Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 1);
 		AIClass.playerLoot(loot.getBag(),true);
 	}
 	
@@ -271,6 +274,7 @@ public abstract class ExploreFeature extends Feature{
 				int gold = IEffectiveLevel.cleanRangeReward(tier,2.5f,.5f);
 				extra.println("They give you a reward of " +World.currentMoneyDisplay(gold) + " in thanks for saving them.");
 				Player.player.addGold(gold);
+				Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
 			}else {
 				extra.println("They steal from your bags as well!");
 				int lose = IEffectiveLevel.cleanRangeReward(tier,3f,.6f);
@@ -286,7 +290,7 @@ public abstract class ExploreFeature extends Feature{
 		extra.println(extra.PRE_BATTLE+"You see a mugger charge at you! Prepare for battle!");
 		Combat c = Player.player.fightWith(RaceFactory.getMugger(getLevel()));
 		if (c.playerWon() > 0) {
-			
+			Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
 		}else {
 			extra.println("They rummage through your bags!");
 			int lose = IEffectiveLevel.cleanRangeReward(tier,3f,.6f);

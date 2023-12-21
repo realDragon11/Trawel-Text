@@ -26,6 +26,7 @@ import trawel.quests.CleanseSideQuest;
 import trawel.quests.CleanseSideQuest.CleanseType;
 import trawel.quests.FetchSideQuest;
 import trawel.quests.FetchSideQuest.FetchType;
+import trawel.quests.Quest.TriggerType;
 import trawel.quests.KillSideQuest;
 import trawel.quests.QBMenuItem;
 import trawel.quests.QRMenuItem;
@@ -397,6 +398,7 @@ public class Slum extends Store implements QuestBoardLocation{
 							mainGame.globalPassTime();
 							Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
 							if (c.playerWon() > 0) {
+								Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
 								//crime rating go down
 								crimeRating-= Player.player.getPerson().getUnEffectiveLevel();
 								//cap reduction on crime lord if they're still alive

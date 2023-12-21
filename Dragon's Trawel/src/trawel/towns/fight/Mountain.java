@@ -14,6 +14,7 @@ import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.IEffectiveLevel;
+import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -280,10 +281,13 @@ public class Mountain extends ExploreFeature{
 		extra.println(extra.PRE_BATTLE+"A vampire hunter is walking around. Mug them?");
 		Person hunter = RaceFactory.makeHunter(tier);
 		hunter.getBag().graphicalDisplay(1,hunter);
-		if (extra.yesNo()) {
+		if (hunter.reallyAttack()) {
 			Combat c = Player.player.fightWith(hunter);
 			if (c.playerWon() > 0) {
-				extra.println("One less thing for the vampires to worry about.");
+				
+				int amber = IEffectiveLevel.cleanRangeReward(tier,1.5f,.6f);
+				Gem.AMBER.changeGem(amber);
+				extra.println("One less thing for the vampires to worry about. You find "+amber+" amber.");
 			}else {
 				extra.println("They mutter something about vampire attacks.");
 			}

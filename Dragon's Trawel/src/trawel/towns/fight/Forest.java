@@ -13,6 +13,7 @@ import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
+import trawel.quests.Quest.TriggerType;
 import trawel.personal.people.Player;
 import trawel.towns.World;
 
@@ -290,7 +291,10 @@ public class Forest extends ExploreFeature{
 			extra.println("You move the tree off of them.");
 			if (Math.random() > .9) {
 				extra.println(extra.PRE_BATTLE+"Suddenly, they attack you!");
-				Player.player.fightWith(p);
+				Combat c = Player.player.fightWith(p);
+				if (c.playerWon() > 0) {
+					Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
+				}
 			}else {
 				if (Math.random() < .3) {
 					extra.println("They scamper off...");

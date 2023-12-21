@@ -18,6 +18,7 @@ import trawel.personal.RaceFactory.RaceID;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
+import trawel.quests.Quest.TriggerType;
 import trawel.time.TimeContext;
 import trawel.towns.nodes.NodeConnector.NodeFlag;
 import trawel.towns.services.Oracle;
@@ -297,6 +298,7 @@ public class GraveyardNode implements NodeType{
 			if (c.playerWon() > 0) {
 				GenericNode.setTotalDeadString(holder,node,"Bat Corpses","Examine dead Bats.","Some zombies seem to have taken a few bites.","Bat Bodies");
 				holder.setForceGo(node,false);
+				//swarm bats do not count as normal bats for cleansing
 			return false;
 			}else {
 				holder.setStorage(node,c.getNonSummonSurvivors());//our get storage first can read this or an array
@@ -493,6 +495,8 @@ public class GraveyardNode implements NodeType{
 		Combat c = Player.player.massFightWith(holder.getStorageFirstClass(node,List.class));
 		
 		if (c.playerWon() > 0) {
+			//must kill bats to fully kill vampire
+			Player.player.questTrigger(TriggerType.CLEANSE,"vampire", 1);
 			holder.setForceGo(node, false);
 			GenericNode.setTotalDeadString(holder, node,"Vampire Coffin","Examine motes of Grave Dust","There isn't enough here to gather.","coffin");
 			return false;
@@ -500,6 +504,7 @@ public class GraveyardNode implements NodeType{
 			if (extra.getNonAddOrFirst(c.getNonSummonSurvivors()).getFlag(PersonFlag.IS_MOOK)) {
 				//if the vampire is dead, the bats don't revive, otherwise they do
 				holder.setStorage(node,c.getNonSummonSurvivors());
+				//swarm bats do not count as normal bats for cleansing
 			}
 			return true;
 		}

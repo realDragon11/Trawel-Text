@@ -21,7 +21,7 @@ public class CleanseSideQuest extends BasicSideQuest {
 		VAMPIRE("vampires","vampire",2,new QKey[] {QKey.GOOD}),
 		WOLF("wolves","wolf",6,new QKey[] {QKey.LAWFUL}),
 		HARPY("harpies","harpy",4,new QKey[] {}),
-		BANDIT("bandits","bandit",3,new QKey[] {QKey.LAWFUL,QKey.GOOD}),
+		BANDIT("bandits","bandit",4,new QKey[] {QKey.LAWFUL,QKey.GOOD}),
 		UNICORN("unicorns","unicorn",1,new QKey[] {QKey.EVIL});
 		public final String fluff, trigger;
 		public final int count;
@@ -49,7 +49,7 @@ public class CleanseSideQuest extends BasicSideQuest {
 		q.count = subtype.count;
 		
 		q.name = "Kill " + q.targetName + " for " + q.giverName ;
-		q.desc = "Kill " + q.count + " more " + q.targetName + " on the roads for " + q.giverName;
+		q.desc = "Kill " + q.count + " more " + q.targetName + " for " + q.giverName;
 		
 		q.qRList.add(new QuestR(0,q.giverName,q,generator));
 		
@@ -74,7 +74,7 @@ public class CleanseSideQuest extends BasicSideQuest {
 				completed = true;
 			}
 		}else {
-			desc = "Kill " + count + " more " + targetName + " on the roads for " + giverName;
+			desc = "Kill " + count + " more " + targetName + " for " + giverName;
 		}
 	}
 	

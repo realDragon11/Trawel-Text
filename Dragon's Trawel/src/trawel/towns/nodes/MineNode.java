@@ -262,7 +262,7 @@ public class MineNode implements NodeType{
 		case 10:
 			Person mugger = RaceFactory.makeMuggerWithTitle(holder.getLevel(madeNode));
 			String mugName = mugger.getTitle();
-			GenericNode.setBasicRagePerson(holder,madeNode, mugger,mugName,extra.capFirst(mugName) + " attacks you!");
+			GenericNode.setBasicRagePerson(holder,madeNode, mugger,mugName,extra.capFirst(mugName) + " attacks you!","bandit");
 			break;
 		}
 	}
