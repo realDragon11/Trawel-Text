@@ -395,7 +395,7 @@ public class Player extends SuperPerson{
 				questTrigger(TriggerType.CLEANSE,"animal",count);
 				break;
 			//covers self aware but largely unfriendly creatures
-			case "drudger": case "vampire": case "harpy":
+			case "drudger": case "vampire": case "harpy": case "fell":
 				questTrigger(TriggerType.CLEANSE,"monster",count);
 				break;
 			default:

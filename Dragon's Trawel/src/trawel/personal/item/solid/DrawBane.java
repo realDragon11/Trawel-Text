@@ -45,8 +45,8 @@ public enum DrawBane {
 	GRAVE_DIRT("grave dirt","Dirt that's somewhat worse for wear after much mixing with mortality. Brew it!",1,.2,true),
 	TELESCOPE("telescope","A large telescope, fit for gazing into the sky over overlooking an area.",4,2,true),
 	SINEW("mystic sinew","Slightly possessed flesh. Brew it!",1,.1,true),
-	GRAVE_DUST("grave dust","The ashen remains of heavily necromantic bones. Not to be confused with grave dirt. Brew it!",3,.9,true);
-	
+	GRAVE_DUST("grave dust","The ashen remains of heavily necromantic bones. Not to be confused with grave dirt. Brew it!",3,.9,true),
+	DAYLIGHT("daylight","daytime",0,0,false);
 	private String name, flavorText;
 	private int value;
 	private double mVal;

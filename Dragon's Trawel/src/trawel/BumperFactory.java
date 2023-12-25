@@ -15,15 +15,15 @@ import trawel.quests.Quest.TriggerType;
 public class BumperFactory {
 	
 	public class Response{
-		DrawBane db;
-		double mag;
+		public final DrawBane db;
+		public final double mag;
 		public Response(DrawBane d, double mag) {
 			db = d;
 			this.mag = mag;
 		}
 	}
-	public static ArrayList<Bumper> bumperList = new ArrayList<Bumper>();
-	public static ArrayList<Bumper> shipList = new ArrayList<Bumper>();
+	public static List<Bumper> bumperList = new ArrayList<Bumper>();
+	public static List<Bumper> shipList = new ArrayList<Bumper>();
 	public BumperFactory(){
 		Bumper b = new Bumper() {
 
@@ -54,6 +54,11 @@ public class BumperFactory {
 						Combat c = Player.player.massFightWith(list);
 						if (c.playerWon() > 0) {
 							Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 3);
+						}else {
+							list = c.getNonSummonSurvivors();
+							if (list.size() < 3) {
+								Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 3-list.size());
+							}
 						}
 					}else {
 						Person p = RaceFactory.makeWolf(level);
@@ -101,10 +106,13 @@ public class BumperFactory {
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
 						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
+					}else {
+						Player.player.questTrigger(TriggerType.CLEANSE,"fell", 1);
 					}
 				}};
 			b.responses.add(new Response(DrawBane.MEAT,2));
 			b.responses.add(new Response(DrawBane.CEON_STONE,4));
+			b.responses.add(new Response(DrawBane.DAYLIGHT,-0.5f));
 			b.minAreaLevel = 4;
 			bumperList.add(b);
 		 b = new Bumper() {
@@ -115,7 +123,7 @@ public class BumperFactory {
 					
 					extra.println(extra.PRE_BATTLE+"An ent appears!");
 					Player.player.fightWith(p);
-					
+					//DOLATER: maybe have cleanse trigger?
 				}};
 			b.responses.add(new Response(DrawBane.ENT_CORE,5));
 			b.minAreaLevel = 3;
@@ -137,6 +145,7 @@ public class BumperFactory {
 			b.responses.add(new Response(DrawBane.BLOOD,3));
 			b.responses.add(new Response(DrawBane.GARLIC,-8));
 			b.responses.add(new Response(DrawBane.SILVER,-.5));
+			b.responses.add(new Response(DrawBane.DAYLIGHT,-2f));
 			b.minAreaLevel = 4;
 			bumperList.add(b);
 		 b = new Bumper() {
@@ -193,6 +202,7 @@ public class BumperFactory {
 			b.responses.add(new Response(DrawBane.MEAT,3));
 			b.responses.add(new Response(DrawBane.NOTHING,.5));
 			b.responses.add(new Response(DrawBane.REPEL,-8));
+			b.responses.add(new Response(DrawBane.DAYLIGHT,-1f));
 			bumperList.add(b);
 			
 			b = new Bumper() {
@@ -227,6 +237,11 @@ public class BumperFactory {
 						Combat c = Player.player.massFightWith(list);
 						if (c.playerWon() > 0) {
 							Player.player.questTrigger(TriggerType.CLEANSE,"harpy", count);
+						}else {
+							list = c.getNonSummonSurvivors();
+							if (list.size() < count) {
+								Player.player.questTrigger(TriggerType.CLEANSE,"harpy",count-list.size());
+							}
 						}
 					}else {
 						Person p = RaceFactory.makeHarpy(level);

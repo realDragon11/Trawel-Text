@@ -562,7 +562,7 @@ public class Town extends TContextOwner{
 					Player.addTime(wayMark);
 					mainGame.globalPassTime();
 					//will get interrupted at random time
-					if (extra.chanceIn(4,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
+					if (extra.chanceIn(4,5+(int)Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
 						wander(3);
 					}
 					Player.addTime(c.getRawTime()-wayMark);
@@ -590,7 +590,7 @@ public class Town extends TContextOwner{
 					double wayMarkS = extra.randFloat()*c.getRawTime();
 					Player.addTime(wayMarkS);
 					mainGame.globalPassTime();
-					if (extra.chanceIn(4,5+Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
+					if (extra.chanceIn(4,5+(int)Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
 						wanderShip(3);
 					}
 					Player.addTime(c.getRawTime()-wayMarkS);

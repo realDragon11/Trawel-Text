@@ -29,6 +29,8 @@ import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.quests.Quest.TriggerType;
+import trawel.towns.Calender;
+import trawel.towns.Town;
 import trawel.towns.World;
 
 /**
@@ -1016,8 +1018,8 @@ public class Inventory implements java.io.Serializable{
 	}
 
 
-	public int calculateDrawBaneFor(DrawBane d) {
-		int i = 0;
+	public double calculateDrawBaneFor(DrawBane d) {
+		float i = 0;
 		switch (d) {
 		case SILVER:
 			for (Armor a: getArmors()) {
@@ -1040,7 +1042,7 @@ public class Inventory implements java.io.Serializable{
 			}
 			break;
 		case BLOOD:
-			int sub = 0;
+			float sub = 0;
 			for (Armor a: getArmors()) {
 				sub+= a.getBloodCount();
 			}
@@ -1054,6 +1056,13 @@ public class Inventory implements java.io.Serializable{
 				return 5-owner.getLevel();
 			}
 			return 0;
+		case DAYLIGHT:
+			if (!owner.isPlayer()) {
+				return 0;//MAYBELATER: expensive calculation
+			}
+			Town town = Player.player.getLocation();
+			double[] p = Calender.lerpLocation(town);
+			return town.getIsland().getWorld().getCalender().sunlightAmount(p[0],p[1]);
 		}
 		
 		for (DrawBane db: dbs) {

@@ -231,6 +231,22 @@ public class Calender implements Serializable, CanPassTime {
 		}
 		return extra.lerpDepth((float)(moonRise),(float)(moonSet),(float) ((thour)),.25f)*maxLum;
 	}
+	
+	public double sunlightAmount(double lata, double longa) {
+		double hourOfDay = getLocalTime((timeCounter/24),longa);
+		double unwrappedHour = timeCounter/24;//is /24 since our formula itself is in days
+		double[] rns = this.getSunTime(timeCounter,lata,longa);
+		double sunRise = getLocalTime(rns[0],longa);
+		double sunSet = getLocalTime(rns[2],longa);
+		//double noon = getLocalTime(rns[1],longa);
+		double unwrappedNoon = rns[1];
+		if (hourOfDay < sunRise || hourOfDay > sunSet) {
+			return 0f;
+		}
+		//the further away from noon (up til sunrise/set) the closer to 0
+		//sunSet-sunRise gives day length
+		return extra.lerp(4d,0d,Math.abs(unwrappedNoon-unwrappedHour)/((sunSet-sunRise)/2f));
+	}
 
 	public static void timeTest() {
 		Calender test = new Calender();
