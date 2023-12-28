@@ -75,8 +75,8 @@ public class mainGame {
 	public static final String VERSION_DATE = " updated Dec 28th 2023";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
-			"b_10: {part 1/?} Added Drudger, Fell, Monster, and Animal Cleanse Quests. Most targets will award progress if encountered in Node Explorations as well, with some exceptions for mooks.",
-			"b_10: {part 2/?} Vampires and some other Bumpers will appear less during the daytime. Bandits will prefer money, not just valuable metals. Some fightable hunters now reward Amber when looted.",
+			"b_10: {part 1/?} Added Drudger, Fell, Monster, and Animal Cleanse Quests. Most targets will award progress if encountered in Node Explorations as well, with some exceptions for mooks. Some fightable hunters now reward Amber when looted.",
+			"b_10: {part 2/?} Vampires and some other Bumpers will appear less during the daytime. Bandits will prefer money, not just valuable metals. Removed most bumper level requirements, and updated wolf pack with player allies.",
 			"b_10: {part 3/?} Cleaned up various menus, especially when using color fail codes in the graphical. Updated tutorial's feature explanations and list of world perks.",
 			
 			"b_9: {part 1/1} Expanded Bag items can now be melted down into aether from player menu or if Bag is full when looting. 'Really Attack' prompts give the option to examine the Person's inventory.",
