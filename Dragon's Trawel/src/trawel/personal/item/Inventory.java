@@ -1063,6 +1063,8 @@ public class Inventory implements java.io.Serializable{
 			Town town = Player.player.getLocation();
 			double[] p = Calender.lerpLocation(town);
 			return town.getIsland().getWorld().getCalender().sunlightAmount(p[0],p[1]);
+		case MONEY:
+			return Math.min(5,getGold()/(15*owner.getUnEffectiveLevel()));
 		}
 		
 		for (DrawBane db: dbs) {

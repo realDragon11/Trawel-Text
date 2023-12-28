@@ -4,12 +4,14 @@ import java.util.List;
 
 import trawel.battle.Combat;
 import trawel.personal.Person;
+import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.quests.Quest.TriggerType;
+import trawel.towns.Town;
 
 
 public class BumperFactory {
@@ -29,51 +31,100 @@ public class BumperFactory {
 
 			@Override
 			public void activate(int level) {
-				int canLevelMax = RaceFactory.addAdjustLevel(level, 3);
-				int canLevel = RaceFactory.addAdjustLevel(level, 1);
-				if (level > 2 && canLevelMax >= 1 && extra.chanceIn(2,5)) {
-					List<Person> list = new ArrayList<Person>();
-					list.add(RaceFactory.makeAlphaWolf(level-1));
-					for (int i = 0;i < 3;i++) {
-						list.add(RaceFactory.makeWolf(canLevelMax));
+				//wolf pack now against a larger pack+alpha with variable allies
+				/**
+				 * allyList does not contain player so we can retainAll easier
+				 */
+				List<Person> allyList = new ArrayList<Person>();
+				List<Person> foeList = new ArrayList<Person>();
+				
+				List<Person> playerSide = new ArrayList<Person>();
+				playerSide.addAll(Player.player.getAllies());
+				String allyString;
+				String foeString;
+				int wolvesPresent;
+				switch (extra.randRange(0,2)) {
+				default:
+				case 0:
+					foeString = "A large pack of wolves ";
+					for (int i = 0;i < 4;i++) {
+						Person p = RaceFactory.makeWolf(level);
+						p.setFlag(PersonFlag.IS_MOOK,true);
+						foeList.addAll(p.getSelfOrAllies());
 					}
-
-					extra.println(extra.PRE_BATTLE+"A large pack of wolves ambush you!");
-					Combat c = Player.player.massFightWith(list);
-					if (c.playerWon() > 0) {
-						Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 4);
+					wolvesPresent = 4;
+					break;
+				case 1:
+					foeString = "A small but orderly ";
+					foeList.addAll(RaceFactory.makeAlphaWolf(level+4).getSelfOrAllies());
+					for (int i = 0;i < 2;i++) {
+						Person p = RaceFactory.makeWolf(level);
+						p.setFlag(PersonFlag.IS_MOOK,true);
+						foeList.addAll(p.getSelfOrAllies());
+					}
+					wolvesPresent = 3;
+					break;
+				case 2:
+					foeString = "Two alpha wolves ";
+					for (int i = 0;i < 2;i++) {
+						foeList.addAll(RaceFactory.makeAlphaWolf(level).getSelfOrAllies());
+					}
+					wolvesPresent = 2;
+					break;
+				}
+				switch (extra.randRange(0,1)) {
+				case 0:
+					allyString = "ambush you near a crashed merchant caravan, who fight alongside you.";
+					allyList.add(RaceFactory.makeQuarterMaster(level+3));
+					allyList.add(RaceFactory.makeRich(level-2));
+					break;
+				default:
+				case 1:
+					allyString = "attack you near a watchtower, which comes to your aid.";
+					allyList.add(RaceFactory.getLawman(level));
+					allyList.add(RaceFactory.getLawman(level));
+					break;
+				}
+				extra.println(extra.PRE_BATTLE+foeString+allyString);
+				List<List<Person>> listList = new ArrayList<List<Person>>();
+				playerSide.addAll(allyList);
+				listList.add(playerSide);
+				listList.add(foeList);
+				Combat combat = mainGame.HugeBattle(Player.getPlayerWorld(),listList);
+				if (combat.playerWon() > 0) {
+					Player.player.questTrigger(TriggerType.CLEANSE,"wolf", wolvesPresent);
+					List<Person> endList = combat.getAllSurvivors();
+					allyList.retainAll(endList);
+					Town t = Player.player.getLocation();
+					for (Person p: allyList) {
+						if (p.getFlag(PersonFlag.IS_MOOK) || p.getFlag(PersonFlag.IS_SUMMON)) {
+							continue;
+						}
+						//add added player side helpers to nearby town
+						t.addOccupant(p.getMakeAgent(AgentGoal.NONE));
 					}
 				}else {
-					if (canLevel >= 1) {
-						List<Person> list = new ArrayList<Person>();
-						for (int i = 0;i < 2;i++) {
-							list.add(RaceFactory.makeWolf(canLevel));
+					List<Person> endList = combat.getAllSurvivors();
+					foeList.retainAll(endList);
+					for (Person p: foeList) {
+						if (p.getFlag(PersonFlag.IS_SUMMON)) {
+							continue;
 						}
-	
-						extra.println(extra.PRE_BATTLE+"A pack of wolves descend upon you!");
-						Combat c = Player.player.massFightWith(list);
-						if (c.playerWon() > 0) {
-							Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 3);
-						}else {
-							list = c.getNonSummonSurvivors();
-							if (list.size() < 3) {
-								Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 3-list.size());
-							}
+						wolvesPresent--;
+						if (p.getFlag(PersonFlag.IS_MOOK)) {
+							continue;
 						}
-					}else {
-						Person p = RaceFactory.makeWolf(level);
-						extra.println(extra.PRE_BATTLE+"A wolf attacks you!");
-						Combat c = Player.player.fightWith(p);
-						if (c.playerWon() > 0) {
-							Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 1);
-						}
+						//spooky wolves
+						Player.player.getWorld().addReoccuring(p.getMakeAgent(AgentGoal.SPOOKY));
 					}
+					//wolvesPresent modified in world cleanup loop
+					Player.player.questTrigger(TriggerType.CLEANSE,"wolf", wolvesPresent);
 				}
 			}};
 			b.responses.add(new Response(DrawBane.MEAT,5));
 			b.responses.add(new Response(DrawBane.NOTHING,.5));
 			b.responses.add(new Response(DrawBane.REPEL,-8));
-			//b.minAreaLevel = 3;//replaced with solowoofs
+			b.minAreaLevel = 3;
 			bumperList.add(b);
 
 			b = new Bumper() {
@@ -113,7 +164,6 @@ public class BumperFactory {
 			b.responses.add(new Response(DrawBane.MEAT,2));
 			b.responses.add(new Response(DrawBane.CEON_STONE,4));
 			b.responses.add(new Response(DrawBane.DAYLIGHT,-0.5f));
-			b.minAreaLevel = 4;
 			bumperList.add(b);
 		 b = new Bumper() {
 				
@@ -126,7 +176,6 @@ public class BumperFactory {
 					//DOLATER: maybe have cleanse trigger?
 				}};
 			b.responses.add(new Response(DrawBane.ENT_CORE,5));
-			b.minAreaLevel = 3;
 			bumperList.add(b);
 		 b = new Bumper() {
 				
@@ -146,7 +195,6 @@ public class BumperFactory {
 			b.responses.add(new Response(DrawBane.GARLIC,-8));
 			b.responses.add(new Response(DrawBane.SILVER,-.5));
 			b.responses.add(new Response(DrawBane.DAYLIGHT,-2f));
-			b.minAreaLevel = 4;
 			bumperList.add(b);
 		 b = new Bumper() {
 				
@@ -165,6 +213,7 @@ public class BumperFactory {
 				}};
 			b.responses.add(new Response(DrawBane.SILVER,1));
 			b.responses.add(new Response(DrawBane.GOLD,2));
+			b.responses.add(new Response(DrawBane.MONEY,2));
 			bumperList.add(b);
 			b = new Bumper() {
 
@@ -184,7 +233,6 @@ public class BumperFactory {
 			b.responses.add(new Response(DrawBane.NOTHING,.5));
 			b.responses.add(new Response(DrawBane.HONEY,.7));
 			b.responses.add(new Response(DrawBane.REPEL,-8));
-			b.minAreaLevel = 2;
 			bumperList.add(b);
 			b = new Bumper() {
 
@@ -219,7 +267,6 @@ public class BumperFactory {
 					
 				}};
 			b.responses.add(new Response(DrawBane.VIRGIN,10));
-			b.minAreaLevel = 8;
 			bumperList.add(b);
 			
 			b = new Bumper() {
@@ -260,7 +307,6 @@ public class BumperFactory {
 			b.responses.add(new Response(DrawBane.SILVER,1.4));
 			b.responses.add(new Response(DrawBane.GOLD,1.4));
 			b.responses.add(new Response(DrawBane.REPEL,-1));
-			b.minAreaLevel = 6;
 			bumperList.add(b);
 			
 			//ships
@@ -282,6 +328,7 @@ public class BumperFactory {
 				}};
 			b.responses.add(new Response(DrawBane.SILVER,1));
 			b.responses.add(new Response(DrawBane.GOLD,2));
+			b.responses.add(new Response(DrawBane.MONEY,2));
 			shipList.add(b);
 			
 			b = new Bumper() {
@@ -300,6 +347,27 @@ public class BumperFactory {
 					
 				}};
 			b.responses.add(new Response(DrawBane.MEAT,3));
+			shipList.add(b);
+			
+			b = new Bumper() {
+				
+				@Override
+				public void activate(int level) {
+					Person p = RaceFactory.makeHarpy(level);
+					
+					extra.println(extra.PRE_BATTLE+"A harpy ambushes your ship from a nearby shipwreck!");
+					Combat c = Player.player.fightWith(p);
+					if (c.playerWon() < 0) {
+						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
+					}else {
+						Player.player.questTrigger(TriggerType.CLEANSE,"harpy", 1);
+					}
+					
+				}};
+			b.responses.add(new Response(DrawBane.MEAT,1.25));
+			b.responses.add(new Response(DrawBane.SILVER,1.4));
+			b.responses.add(new Response(DrawBane.GOLD,1.4));
+			b.responses.add(new Response(DrawBane.REPEL,-1));
 			shipList.add(b);
 			
 		
