@@ -520,7 +520,7 @@ public class Inventory implements java.io.Serializable{
 		Networking.sendStrong("RaceFlag|"+side+"|"+p.getRaceFlag().name()+"|");
 		Race r_race = getRace();
 		Networking.sendStrong("RaceInv|"+side+"|" +r_race.getLegacySprite()+"|"+r_race.getLegacyMap()+"|"+r_race.getLegacyNumber(raceMap)+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|1|");
-		if (!p.getScar().equals("")) {
+		if (p.getScar() != null) {
 			Networking.sendStrong("AddInv|"+side+"|" + p.getScar() +"|iron|0|" + p.bloodSeed + "|" + p.getBloodCount()+"|0|0|");
 		}
 		if (r_race.racialType == Race.RaceType.PERSONABLE) {

@@ -114,8 +114,11 @@ public class Combat {
 		defender = manOne;
 		setAttack(manTwo,manOne);
 		setAttack(manOne,manTwo);
-		extra.println("");
-		extra.println(extra.choose("Our two fighters square off...","They look tense.","It's time to fight.","They look ready to fight.","The battle has begun."));
+		if (!extra.getPrint()) {
+			extra.println("");
+			extra.println(extra.choose("Our two fighters square off...","They look tense.","It's time to fight.","They look ready to fight.","The battle has begun."));
+			
+		}
 		do {//combat loop
 			if (manOne.getTime() < manTwo.getTime()) {
 				attacker = manOne;
@@ -172,10 +175,10 @@ public class Combat {
 			}
 		}
 		killData(defender,attacker);
-		
-		extra.println(extra.choose("The dust settles...","The body drops to the floor.","Death has come.","The battle is over."));
-		extra.println(defender.getName() + extra.choose(" lies dead..."," walks the earth no more..."," has been slain."));
-		
+		if (!extra.getPrint()) {
+			extra.println(extra.choose("The dust settles...","The body drops to the floor.","Death has come.","The battle is over."));
+			extra.println(defender.getName() + extra.choose(" lies dead..."," walks the earth no more..."," has been slain."));
+		}
 		survivors = Collections.singletonList(attacker);
 		killed = Collections.singletonList(defender);
 		killList = killed;

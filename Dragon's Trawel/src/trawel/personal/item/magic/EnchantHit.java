@@ -13,6 +13,7 @@ public class EnchantHit extends Enchant {
 	private boolean isKeen;
 	private String colorSaved;
 
+	//TODO: move chooses to SRPLainRandoms
 	public EnchantHit(float powMod) {
 		fireMod = 0;
 		freezeMod = 0;

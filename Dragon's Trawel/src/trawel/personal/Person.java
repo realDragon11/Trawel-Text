@@ -145,7 +145,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	
 	//public Weapon backupWeapon = null;
 	
-	private String scar = "";
+	private int scar = -1;
 	
 	private float pitch = 0;
 	
@@ -1890,11 +1890,11 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 
 	public String getScar() {
-		return scar;
+		return RaceFactory.scarLookup(bag.getRaceID(),scar);
 	}
 
-	public void setScar(String b) {
-		scar = b;
+	public void setScar(int i) {
+		scar = i;
 	}
 	
 	public float getPitch() {//TODO: examine for what it does besides just set it base, probably missing rng

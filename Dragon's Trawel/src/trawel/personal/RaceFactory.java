@@ -1,5 +1,6 @@
 package trawel.personal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,8 @@ public class RaceFactory {
 	public static List<Race> raceList = new ArrayList<Race>();
 	public static Map<String,Race> raceMap = new HashMap<String,Race>();
 	private static Map<RaceID,PersonMaker> mookMakerIDMap = new EnumMap<RaceID,PersonMaker>(RaceID.class);
+	
+	private static EnumMap<RaceID,List<String>> scarMap = new EnumMap<RaceFactory.RaceID, List<String>>(RaceID.class);
 	
 	public static float audioSteps(int steps) {
 		/*if (steps < 0) {
@@ -180,6 +183,12 @@ public class RaceFactory {
 	}
 	
 	public RaceFactory() {
+		//FIXME: have a larger setup where it allocates ranges to added sprites and they're universal, not per race
+		//will have to include extra space inbetween each for forward compat, but because we're working with int size
+		//100 or even 1000 per is fairly reasonable to allocate
+		String[] scarArr = new String[]{"hscar_1","H_wound1","H_wound2","H_wound3","H_wound4","H_wound5","H_wound6","H_wound7","H_wound8","H_wound9","H_wound10","H_wound11"};
+		scarMap.put(RaceID.HUMAN, Arrays.asList(scarArr));
+		
 		Race misc;
 		/**
 		 * lore implication that a lot of the past empires were human ones
@@ -1169,7 +1178,7 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = new Person(level,true, Race.RaceType.PERSONABLE,null,Person.RaceFlag.UNDEAD,false);
 		addWealth(1f, w);
-		w.setScar(biteFor(w.getBag().getRace().raceID()));
+		//w.setScar(biteFor(w.getBag().getRace().raceID()));//TODO: readd bites as some larger 'added image' mechanism
 		w.getBag().addDrawBaneSilently(DrawBane.GRAVE_DUST);
 		if (extra.chanceIn(1,10)) {
 			w.getBag().addDrawBaneSilently(DrawBane.BLOOD);
@@ -1696,23 +1705,30 @@ public class RaceFactory {
 		return w;
 	}
 
-	public static String scarFor(RaceID race) {
+	public static int scarFor(RaceID race) {
 		switch (race) {
 		case HUMAN:
 			if (extra.chanceIn(1, 3)) {
-				return extra.choose("hscar_1","H_wound1","H_wound2","H_wound3","H_wound4","H_wound5","H_wound6","H_wound7","H_wound8","H_wound9","H_wound10","H_wound11");
+				return extra.randRange(0,scarMap.get(RaceID.HUMAN).size());
 			}
 			break;
 		}
-		return "";
+		return -1;
 	}
-	
+	//TODO: readd later
 	public static String biteFor(RaceID race) {
 		switch (race) {
 		case HUMAN:
 				return extra.choose("H_vampbite1","H_vampbite2","H_vampbite3","H_vampbite4","H_vampbite5");
 		}
 		return "";
+	}
+	
+	public static String scarLookup(RaceID race, int num) {
+		if (num < 0) {
+			return null;
+		}
+		return scarMap.get(race).get(num);
 	}
 
 	/**

@@ -22,7 +22,7 @@ public class randomLists {
 	//holding lists, internal
 	//initers
 	private static StringResult commonElements, rareElements, randMats = null, colorList, normalFirstNames, theTitles,
-			doerTitles, animals, wolfNames,bearNames,batNames, entNames, waterNames,
+			doerTitles, animals,plants, wolfNames,bearNames,batNames, entNames, waterNames,
 			fighterTypes,muggerTypes,collectTypes,theAlphaTitles,theLargeTitles, attackMisses, attackNegates, attackDodges
 			,hunterTitles,thingsToSlay,slayerTitleToSlay,dGuardTitles,oldTitles, colorListPrintable,
 			violateForestQuote
@@ -68,6 +68,8 @@ public class randomLists {
 		
 		//https://en.wikipedia.org/wiki/List_of_domesticated_animals
 		animals = new SRPlainRandom("fox","ox","bird","cat","dog","horse","wolf","bear","monkey","lizard","snake","goat","pig","sheep","cow","chicken","donkey","zebra","hog","duck","buffalo","camel","pigeon","goose","yak","llama","alpaca","ferret","dove","turkey","goldfish","shark","rabbit","canary","finch","mouse","mink","hedgehog","guppy","reindeer","ostrich","oryx","gazelle","ibex","hyena","serval","bobcat","caracal","cheetah","elephant","mongoose","genet","deer","parakeet","snail","bee","wasp","hornet","cockatoo","swan","cricket","quail","squid","carp","sparrow","swallow","swallow","robin","rat","squirrel","pheasant","eland","alligator","moose","elk","stoat","coypu","skunk","hamster","lovebird","rainbowfish","frog","axolotl");
+		plants = new SRPlainRandom("apple","tomato","potato","squash","bean","olive","pumpkin","coconut","eggcorn");
+		
 		powerAdj = new SRPlainRandom("undoubtable","impossible","endless","incredible","soaring","infinite","amazing","implausible","miraculous","astonishing","astounding","awesome","extraordinary","wondrous","bewildering","supernatural","great","considerable","extreme","abundant","prodigious");
 		powerAdjFront = new SRPlainRandom("undoubtedly","impossibly","endlessly","incredibly","infinitely","implausibly","miraculously","astonishingly","astoundingly","awesomely","wondrous","bewilderingly","supernaturaly","greatly","considerably","extremely","abundantly","prodigiously");
 		
@@ -164,11 +166,23 @@ public class randomLists {
 	}
 	
 	public static String randomLastName() {
-		return extra.choose(randomLists.randomTheTitle(),extra.choose(extra.capFirst(extra.choose(randomLists.randomElement())) + extra.capFirst(extra.choose(randomLists.randomDoer(),randomLists.randomDoer(),randomLists.randomLivingThing())),extra.capFirst(extra.choose(randomLists.randomElement(),randomLists.randomElement(),randomLists.randomLivingThing())) + extra.capFirst(extra.choose(randomLists.randomDoer()))));
+		switch (extra.randRange(0,1)) {
+		default: case 0:
+			return randomLists.randomTheTitle();
+		case 1:
+			switch (extra.randRange(0,2)) {
+			default: case 0:
+				return extra.capFirst(randomLists.randomElement()) + extra.capFirst(randomLists.randomDoer());
+			case 1:
+				return extra.capFirst(randomLists.randomElement()) + extra.capFirst(randomLists.randomLivingThing());
+			case 2:
+				return extra.capFirst(randomLists.randomLivingThing()) + extra.capFirst(randomLists.randomDoer());
+			}
+		}
 	}
 	
 	public static String randomPlant() {
-		return extra.choose("apple","tomato","potato","squash","bean","olive","pumpkin","coconut","eggcorn");
+		return plants.next();
 	}
 	
 	public static String randomLivingThing() {
@@ -248,7 +262,7 @@ public class randomLists {
 
 	public static String randomHunterTitle() {
 		if (extra.chanceIn(1,5)) {
-			return extra.choose(", "," the ")+ thingsToSlay.next() + " " +slayerTitleToSlay.next();
+			return (extra.randFloat() > 0.5f ? ", " : " the ")+ thingsToSlay.next() + " " +slayerTitleToSlay.next();
 		}
 		return hunterTitles.next();
 	}
