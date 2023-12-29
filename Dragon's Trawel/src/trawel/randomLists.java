@@ -81,7 +81,7 @@ public class randomLists {
 		theLargeTitles = new SRPlainRandom("towering","strong","tall","fearsome","mighty","looming");
 		attackMisses = new SRPlainRandom("They miss!","It's a miss!","It's not even close!");
 		attackDodges = new SRPlainRandom("The attack is dodged!","It's sidestepped!","A narrow miss!");
-		attackNegates = new SRPlainRandom("But it is ineffective...","The armor deflects the blow!","However, the attack fails to deal damage through the armor.");
+		attackNegates = new SRPlainRandom("It deflects off the armor!","The armor deflects the blow!","The attack is deflected!");
 		hunterTitles = new SRPlainRandom("the Hunter","the Slayer","the Tracker","the Trapper","the Exterminator",", Monster Hunter",", Seeker",", Exterminator for Hire");
 		thingsToSlay = new SRPlainRandom("Vampire","Vampire","Vampire","Wolf","Harpy","Drudger","Mimic","Reaver");
 		slayerTitleToSlay = new SRPlainRandom("Slayer","Hunter","Killer","Exterminator","Butcher","Decimator","Eradicator","Expunger");

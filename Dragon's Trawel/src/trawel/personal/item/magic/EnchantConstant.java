@@ -203,6 +203,12 @@ public class EnchantConstant extends Enchant {
 		return false;
 	}
 	
+	private static final float positiveGoldMult = .05f;
+	private static final float negativeGoldMult = .07f;
+	
+	private static final int positiveGoldMod = 8;
+	private static final int negativeGoldMod = 4;
+	
 	/**
 	 * An constant enchantment which effects the user's stats constantly.
 	 * @param powMod (double)
@@ -230,11 +236,7 @@ public class EnchantConstant extends Enchant {
 		if (magnitudeTwo > 0) {
 			magnitudeTwo = extra.clamp(magnitudeTwo,0.1f,2f);
 		}
-		float positiveGoldMult = .05f;
-		float negativeGoldMult = .07f;
 		
-		int positiveGoldMod = 8;
-		int negativeGoldMod = 4;
 		
 		int might;
 		String[] fluff = null;
