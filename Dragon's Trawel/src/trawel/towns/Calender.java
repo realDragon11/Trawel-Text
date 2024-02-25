@@ -269,7 +269,9 @@ public class Calender implements Serializable, CanPassTime {
 			//System.out.println(test.getLocalTime(test.timeCounter/24,longa) +": "+ test.getLocalTime(t[0],longa) + " " + test.getLocalTime(t[1],longa) +" "+ test.getLocalTime(t[2],longa));
 			
 			test.timeCounter+=.1f;
-			float[] b = test.getBackTime(42,-72);
+			//float[] b = test.getBackTime(42,-72);
+			double[] p = Calender.lerpLocation(Player.player.getLocation());
+			float[] b = Player.player.getWorld().getCalender().getBackTime(p[0],p[1]);
 			Networking.sendStrong("Backvariant|"+"forest1"+"|"+b[0]+"|"+b[1]+"|");
 			Networking.waitIfConnected(50L);
 		}

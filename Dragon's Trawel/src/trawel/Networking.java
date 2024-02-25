@@ -284,7 +284,7 @@ public class Networking {
 		if (!current_background.equals(area_type.backName)) {
 			current_background = area_type.backName;
 			Networking.sendStrong("Background|"+current_background+"|");
-			current_background_variant = "0";
+			current_background_variant = "1";
 		}
 		if (!songType.equals(area_type.musicName)) {
 			songType = area_type.musicName;
