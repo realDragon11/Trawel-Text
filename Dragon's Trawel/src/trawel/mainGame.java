@@ -1109,6 +1109,7 @@ public class mainGame {
 
 									@Override
 									public boolean go() {
+										forceSetup();
 										Calender.timeTest();
 										return true;
 									}});

@@ -4,6 +4,9 @@ import java.util.List;
 
 import trawel.Networking;
 import trawel.Networking.Area;
+import trawel.WorldGen;
+import trawel.personal.RaceFactory;
+import trawel.personal.people.Player;
 import trawel.extra;
 import trawel.time.CanPassTime;
 import trawel.time.TimeContext;
@@ -249,11 +252,15 @@ public class Calender implements Serializable, CanPassTime {
 	}
 
 	public static void timeTest() {
-		Calender test = new Calender();
+		Player.player = new Player(RaceFactory.makePlayerValid(false));
+		World w = WorldGen.eoano();
+		Player.updateWorld(w);
+		Player.player.setLocation(w.getStartTown());
+		Calender test = w.getCalender();;
 		//extra.println(sunsetRadius+"");
 		test.timeCounter = 24*12+24*28*3;
 		//int longa = -72;
-		Networking.setArea(Area.MOUNTAIN);
+		Networking.setArea(Area.FOREST);
 		for (int i = 0;i < 99999999;i++) {
 			//float[] back = test.getBackTime(30,longa);
 			//extra.println(back[0]+""+back[1]);
@@ -263,10 +270,10 @@ public class Calender implements Serializable, CanPassTime {
 			
 			test.timeCounter+=.1f;
 			float[] b = test.getBackTime(42,-72);
-			Networking.sendStrong("Backvariant|"+"mountain1"+"|"+b[0]+"|"+b[1]+"|");
+			Networking.sendStrong("Backvariant|"+"forest1"+"|"+b[0]+"|"+b[1]+"|");
 			Networking.waitIfConnected(50L);
 		}
-		
+		Player.player = null;
 	}
 
 	public static double[] lerpLocation(Town t) {

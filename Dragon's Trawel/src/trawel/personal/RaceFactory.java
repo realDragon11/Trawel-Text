@@ -1728,7 +1728,7 @@ public class RaceFactory {
 		switch (race) {
 		case HUMAN:
 			if (extra.chanceIn(1, 3)) {
-				return extra.randRange(0,scarMap.get(RaceID.HUMAN).size());
+				return extra.randRange(0,scarMap.get(RaceID.HUMAN).size()-1);
 			}
 			break;
 		}
