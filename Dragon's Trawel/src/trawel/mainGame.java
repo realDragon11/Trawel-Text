@@ -72,12 +72,14 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__10";
-	public static final String VERSION_DATE = " updated Dec 28th 2023";
+	public static final String VERSION_DATE = " updated Feb 25th 2024";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
-			"b_10: {part 1/?} Added Drudger, Fell, Monster, and Animal Cleanse Quests. Most targets will award progress if encountered in Node Explorations as well, with some exceptions for mooks. Some fightable hunters now reward Amber when looted.",
+			"b_10: {part 1/?} Added Drudger, Fell, Monster, and Animal Cleanse Quests. Almost all targets will award progress if encountered in Node Explorations or other features as well, with some exceptions for mooks. Some fightable hunters now reward Amber when looted.",
 			"b_10: {part 2/?} Vampires and some other Bumpers will appear less during the daytime. Bandits will prefer money, not just valuable metals. Removed most bumper level requirements, and updated wolf pack with player allies.",
 			"b_10: {part 3/?} Cleaned up various menus, especially when using color fail codes in the graphical. Updated tutorial's feature explanations and list of world perks.",
+			
+			"Prior Changelog notes were from 2023, press again to continue.",
 			
 			"b_9: {part 1/1} Expanded Bag items can now be melted down into aether from player menu or if Bag is full when looting. 'Really Attack' prompts give the option to examine the Person's inventory.",
 			"b_9: {part 2/2} Plant Spots, Drawbanes, and Alchemy have recieved interconnected improvements, most notably a few extra potion combos. Altars now can have Forest blessings. Traveling features have new special behavior, and you can rent rooms at Inns.",

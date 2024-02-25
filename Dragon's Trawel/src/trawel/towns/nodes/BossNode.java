@@ -16,6 +16,8 @@ import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.Perk;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
+import trawel.quests.CleanseSideQuest.CleanseType;
+import trawel.quests.Quest.TriggerType;
 import trawel.time.TimeContext;
 import trawel.towns.fort.SubSkill;
 
@@ -89,9 +91,11 @@ public class BossNode implements NodeType {
 			peeps.add(p);
 			p = RaceFactory.makeFellReaver(level-6);
 			p.setFlag(PersonFlag.IS_MOOK, true);
+			p.cleanseType = -1;
 			peeps.add(p);
 			p = (RaceFactory.makeFellReaver(level-6));
 			p.setFlag(PersonFlag.IS_MOOK, true);
+			p.cleanseType = -1;
 			peeps.add(p);
 		break;
 		case OLD_QUEEN:
@@ -137,6 +141,7 @@ public class BossNode implements NodeType {
 			public Person refill(int nodeLevel) {
 				Person p = (RaceFactory.makeMimic(extra.zeroOut(nodeLevel-3)+1));
 				p.setFlag(PersonFlag.IS_MOOK, true);
+				p.cleanseType = -1;
 				return p;
 			}});
 	}
@@ -147,6 +152,8 @@ public class BossNode implements NodeType {
 			public Person refill(int nodeLevel) {
 				Person p = RaceFactory.makeDGuard(extra.zeroOut(nodeLevel-5)+1);
 				p.setFlag(PersonFlag.IS_MOOK, true);
+				//just in case I add a cleanse type later
+				p.cleanseType = -1;
 				return p;
 			}});
 	}
@@ -240,6 +247,8 @@ public class BossNode implements NodeType {
 				Networking.unlockAchievement("boss3");
 				setBossKilled(yore.getName());
 				Player.player.addAchieve("yore","Story Slayer");
+				//awards cleanse only on total kill
+				Player.player.questTrigger(TriggerType.CLEANSE,CleanseType.FELL.trigger,2);
 				heroRep(holder,node,3f);
 				return false;
 			}else {
