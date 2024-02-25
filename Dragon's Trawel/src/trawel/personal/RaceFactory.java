@@ -29,6 +29,7 @@ import trawel.personal.item.solid.Weapon.WeaponType;
 import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
+import trawel.quests.CleanseSideQuest;
 
 public class RaceFactory {
 	public static List<Race> raceList = new ArrayList<Race>();
@@ -1080,6 +1081,7 @@ public class RaceFactory {
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomWolfName());
 		w.hTask = HostileTask.ANIMAL;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.WOLF.ordinal();
 		w.finishGeneration();
 		return w;
 	}
@@ -1095,6 +1097,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomWolfName());
 		w.setTitle(randomLists.randomAlphaName());
 		w.hTask = HostileTask.ANIMAL;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.WOLF.ordinal();
 		w.finishGeneration();
 		return w;
 	}
@@ -1115,6 +1118,7 @@ public class RaceFactory {
 		
 		extra.popPrintStack();
 		w.hTask = HostileTask.MONSTER;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.MONSTERS.ordinal();
 		w.finishGeneration();
 		return w;
 	}
@@ -1142,6 +1146,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomFirstName());
 		extra.popPrintStack();
 		w.hTask = HostileTask.MONSTER;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.FELL.ordinal();
 		w.finishGeneration();
 		return w;
 	}
@@ -1170,6 +1175,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomEntName());
 		w.setTitle("");
 		w.hTask = HostileTask.ANIMAL;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.ANIMALS.ordinal();
 		w.finishGeneration();
 		return w;
 	}
@@ -1189,6 +1195,7 @@ public class RaceFactory {
 		}
 		extra.popPrintStack();
 		w.hTask = HostileTask.MONSTER;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.VAMPIRE.ordinal();
 		w.finishGeneration();
 		return w;
 	}
@@ -1202,6 +1209,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomBearName());
 		w.setTitle("");
 		w.hTask = HostileTask.ANIMAL;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.BEAR.ordinal();
 		w.finishGeneration();
 		return w;
 	}
@@ -1218,6 +1226,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomBatName());
 		//w.setTitle("");
 		w.hTask = HostileTask.ANIMAL;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.ANIMALS.ordinal();
 		w.finishGeneration();
 		return w;
 	}
@@ -1232,6 +1241,7 @@ public class RaceFactory {
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomBatName());
 		w.hTask = HostileTask.ANIMAL;
+		//no cleanse type, is too small
 		w.finishGeneration();
 		return w;
 	}
@@ -1248,6 +1258,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomFirstName());
 		//w.targetOverride = TargetFactory.TargetType.HUMANOID;
 		w.hTask = HostileTask.MONSTER;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.MONSTERS.ordinal();
 		w.finishGeneration();
 		return w;
 	}
@@ -1260,6 +1271,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomFirstName());
 		extra.popPrintStack();
 		w.hTask = HostileTask.ANIMAL;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.UNICORN.ordinal();
 		w.finishGeneration();
 		return w;
 	}
@@ -1283,7 +1295,8 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomFirstName());
 		extra.popPrintStack();
 		w.hTask = HostileTask.MONSTER;
-		w.finishGeneration();;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.HARPY.ordinal();
+		w.finishGeneration();
 		return w;
 	}
 	
@@ -1304,6 +1317,7 @@ public class RaceFactory {
 		extra.popPrintStack();
 		w.setFirstName(randomLists.randomWaterName());
 		w.hTask = HostileTask.MONSTER;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.DRUDGER.ordinal();
 		w.finishGeneration();
 		return w;
 	}
@@ -1323,6 +1337,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomWaterName());
 		w.setTitle("the "+randomLists.randomLargeName());
 		w.hTask = HostileTask.MONSTER;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.DRUDGER.ordinal();
 		w.finishGeneration();
 		return w;
 	}
@@ -1347,6 +1362,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomWaterName());
 		w.setTitle("scion of "+randomLists.randomWaterName());
 		w.hTask = HostileTask.MONSTER;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.DRUDGER.ordinal();
 		w.finishGeneration();
 		return w;
 	}
@@ -1363,6 +1379,7 @@ public class RaceFactory {
 		w.setFacLevel(Faction.ROGUE,extra.randRange(10,20)*level, 0);
 		w.setFacLevel(Faction.HEROIC,0, 10*level);
 		w.hTask = HostileTask.MUG;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.BANDIT.ordinal();
 		if (extra.chanceIn(1,100)) {
 			w.getBag().addDrawBaneSilently(DrawBane.GOLD);
 			addWealth(2f, w);
@@ -1497,6 +1514,7 @@ public class RaceFactory {
 		w.setPerk(Perk.HELL_BARON_NPC);
 		extra.popPrintStack();
 		w.hTask = HostileTask.BOSS;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.MONSTERS.ordinal();
 		Agent a = new Agent(w,AgentGoal.OWN_SOMETHING);//should have an agent
 		w.finishGeneration();
 		return w;
@@ -1612,6 +1630,7 @@ public class RaceFactory {
 			list = w.getBag().getDrawBanes();
 		}
 		w.hTask = HostileTask.MUG;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.BANDIT.ordinal();
 		w.setFacLevel(Faction.HEROIC,0, 10*level);
 		if (extra.chanceIn(rarityMult,8)) {
 			if (extra.chanceIn(rarityMult,20)) {

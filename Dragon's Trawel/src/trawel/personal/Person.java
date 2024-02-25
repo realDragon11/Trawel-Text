@@ -55,6 +55,7 @@ import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
+import trawel.quests.CleanseSideQuest;
 
 /**
  * 
@@ -156,6 +157,12 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public FBox facRep = new FBox();
 	
 	public HostileTask hTask;
+	/**
+	 * used for cleanse quests, you can remove or change if you want to change if a person or creature counts,
+	 * ie a bandit changing to not bandit or vice versa, or just set it to -1 to make a creature not count entirely
+	 * (for mook reasons usually)
+	 */
+	public byte cleanseType = -1;
 	
 	private SuperPerson superperson;
 	

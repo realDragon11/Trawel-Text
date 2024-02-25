@@ -36,6 +36,8 @@ import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
+import trawel.quests.CleanseSideQuest;
+import trawel.quests.Quest.TriggerType;
 import trawel.towns.World;
 import trawel.towns.fort.SubSkill;
 /**
@@ -146,8 +148,7 @@ public class Combat {
 				}
 
 			}
-		}
-		while(manOne.isAlive() && manTwo.isAlive());
+		}while(manOne.isAlive() && manTwo.isAlive());
 
 		if (manOne.isAlive()) {
 			if (manTwo.isAlive()) {
@@ -182,6 +183,9 @@ public class Combat {
 		survivors = Collections.singletonList(attacker);
 		killed = Collections.singletonList(defender);
 		killList = killed;
+		if (attacker.isPlayer() && defender.cleanseType != -1) {
+			Player.player.questTrigger(TriggerType.CLEANSE,CleanseSideQuest.CleanseType.values()[defender.cleanseType].trigger, 1);
+		}
 	}
 	
 	public static class SkillCon {
@@ -378,7 +382,21 @@ public class Combat {
 		}
 	}
 	public Combat(World w,List<List<Person>> people) {
-		this(w,null,people);
+		this(w,null,people,(byte)0b0);
+	}
+	
+	public Combat(World w, List<SkillCon> cons,List<List<Person>> people) {
+		this(w,cons,people,(byte)0b0);
+	}
+	
+	/**
+	 * NOT CURRENTLY FUNCTIONAL
+	 */
+	public enum CombatFlag{
+		/**
+		 * removes processing for cleanse triggers
+		 */
+		NO_CLEANSE_TRIGGERS
 	}
 	
 	private List<Person> tempList;
@@ -393,12 +411,8 @@ public class Combat {
 		public Person lastAttacker = null;
 		public Person nextTarget = null;
 	}
-	/*
-	public Combat(World w,boolean typeErasure, List<List<SkillCon>> cons_lists,List<List<Person>> people) {
-		this(w,numberSkillConLists(cons_lists),people);
-	}*/
 	
-	public Combat(World w, List<SkillCon> cons,List<List<Person>> people) {
+	public Combat(World w, List<SkillCon> cons,List<List<Person>> people, byte combatFlags) {
 		inSides = people;
 		int size = people.size();
 		sides = size;
@@ -432,27 +446,7 @@ public class Combat {
 		}
 		
 		boolean playerIsInBattle = false;
-		/*
-		List<SkillCon> cons = new ArrayList<SkillCon>();
-		if (hall != null) {
-			int temp = hall.getSkillCount(SubSkill.DEATH);
-			if (temp > 0) {
-				cons.add(new SkillCon(new LSkill(SubSkill.DEATH,temp),50,50));
-			}
-			temp = hall.getSkillCount(SubSkill.ELEMENTAL);
-			if (temp > 0) {
-				cons.add(new SkillCon(new LSkill(SubSkill.DEATH,temp),100,100));
-			}
-			temp = hall.getTotalDefenceRating();
-			if (temp > 0) {
-				cons.add(new SkillCon(new LSkill(SubSkill.DEFENSE,temp),0,-1));
-			}
-			temp = hall.getSkillCount(SubSkill.SCRYING);
-			if (temp > 0) {
-				cons.add(new SkillCon(new LSkill(SubSkill.SCRYING,temp),100,500));
-			}
-		}
-		*/
+
 		for (List<Person> peoples: liveLists) {
 			for (Person p: peoples) {
 				if (p.isPlayer()) {
@@ -604,17 +598,24 @@ public class Combat {
 				break;
 			}
 		}
-		/*
-		for (List<Person> listoflist: inSides) {
-			for (Person p: listoflist) {
-				p.setFlag(PersonFlag.PLAYER_SIDE,false);
-			}
-		}*/
 		
 		survivors = tempList;
 		killed = killList;
 		
 		assert survivors.size() > 0;
+		
+		if (playerIsInBattle
+				&& !extra.getEnumByteFlag(CombatFlag.NO_CLEANSE_TRIGGERS.ordinal(),combatFlags)
+				&& Player.player.hasTrigger("cleanse")
+				) {
+			CleanseSideQuest.CleanseType[] vals = CleanseSideQuest.CleanseType.values();
+			for (Person p: killList) {
+				if (p.cleanseType != -1) {
+					//TODO: really scuffed how many data types the triggers is converted between
+					Player.player.questTrigger(TriggerType.CLEANSE,vals[p.cleanseType].trigger, 1);
+				}
+			}
+		}
 	}
 	
 	public Combat() {
