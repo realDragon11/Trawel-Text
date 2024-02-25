@@ -137,7 +137,7 @@ public class GroveNode implements NodeType{
 		case 3:
 			String mugname = randomLists.randomMuggerName();
 			Person mugger = RaceFactory.getMugger(holder.getLevel(madeNode));
-			GenericNode.setBasicRagePerson(holder, madeNode, mugger, mugname, "The " + mugname + " mugs you!","bandit");
+			GenericNode.setBasicRagePerson(holder, madeNode, mugger, mugname, "The " + mugname + " mugs you!");
 		break;
 		case 4:
 			int blevel = holder.getLevel(madeNode)-2;
@@ -925,7 +925,7 @@ public class GroveNode implements NodeType{
 				if (will_attack) {
 					GenericNode.setBasicRagePerson(holder, node,
 							RaceFactory.makeMuggerWithTitle(holder.getLevel(node))
-							,"Moss Thief","They still wanted what was under that moss!","bandit");
+							,"Moss Thief","They still wanted what was under that moss!");
 					return false;//reset for forcego
 				}
 				//continue
@@ -1019,7 +1019,7 @@ public class GroveNode implements NodeType{
 					@Override
 					public boolean go() {
 						if (p.reallyAttack()) {
-							GenericNode.setBasicRagePerson(holder, node, p,"Wary Shaman","The Shaman is ready for you!",null);
+							GenericNode.setBasicRagePerson(holder, node, p,"Wary Shaman","The Shaman is ready for you!");
 							return true;
 						}
 						return false;
@@ -1034,17 +1034,12 @@ public class GroveNode implements NodeType{
 		extra.println(extra.PRE_BATTLE+"The pack descends upon you!");
 		List<Person> list = holder.getStorageFirstClass(node,List.class);
 		Combat c = Player.player.massFightWith(list);
-		int aliveWs = list.size();
 		if (c.playerWon() > 0) {
 			holder.setForceGo(node,false);
 			GenericNode.setSimpleDeadRaceID(holder, node, list.get(0).getBag().getRaceID());
-			Player.player.questTrigger(TriggerType.CLEANSE,"wolf",aliveWs);
 			return false;
 		}else {
 			list = c.getNonSummonSurvivors();
-			if (list.size() < aliveWs) {
-				Player.player.questTrigger(TriggerType.CLEANSE,"wolf",aliveWs-list.size());
-			}
 			holder.setStorage(node,list);
 			return true;
 		}

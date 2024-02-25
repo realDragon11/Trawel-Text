@@ -973,7 +973,7 @@ public class Inventory implements java.io.Serializable{
 	
 	private void playerDiscardDrawBaneCleanup(DrawBane d) {
 		if (Player.player.hasTrigger("db:"+d.name())) {
-			Player.player.questTrigger(TriggerType.CLEANSE,"db:"+d.name(),15);
+			Player.player.questTrigger(TriggerType.COLLECT,"db:"+d.name(),15);
 		}
 		if (d == DrawBane.CLEANER) {
 			washAll();

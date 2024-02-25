@@ -65,13 +65,13 @@ public class CaveNode implements NodeType{
 			holder.setForceGo(madeNode,true);
 			break;
 		case 2:
-			GenericNode.setBasicRagePerson(holder,madeNode,RaceFactory.makeBear(holder.getLevel(madeNode)),"Sleeping Bear","The bear here mauls you!","bear");
+			GenericNode.setBasicRagePerson(holder,madeNode,RaceFactory.makeBear(holder.getLevel(madeNode)),"Sleeping Bear","The bear here mauls you!");
 			break;
 		case 3:
 			GenericNode.applyGenericVein(holder, madeNode, 1);
 			break;
 		case 4:
-			GenericNode.setBasicRagePerson(holder,madeNode,RaceFactory.makeBat(holder.getLevel(madeNode)),"Ceiling Bat","The bat swoops down to attack you!","bat");
+			GenericNode.setBasicRagePerson(holder,madeNode,RaceFactory.makeBat(holder.getLevel(madeNode)),"Ceiling Bat","The bat swoops down to attack you!");
 			break;
 		}
 	}

@@ -47,6 +47,7 @@ import trawel.personal.item.solid.Gem;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.people.Agent.AgentGoal;
+import trawel.quests.CleanseSideQuest.CleanseType;
 import trawel.quests.Quest;
 import trawel.quests.Quest.TriggerType;
 import trawel.quests.QuestR;
@@ -392,11 +393,11 @@ public class Player extends SuperPerson{
 			switch (string) {
 			case "bat": case "bear": case "wolf":
 			case "unicorn"://unicorns aren't really self aware in this setting
-				questTrigger(TriggerType.CLEANSE,"animal",count);
+				questTrigger(TriggerType.CLEANSE,CleanseType.ANIMALS.trigger,count);
 				break;
 			//covers self aware but largely unfriendly creatures
 			case "drudger": case "vampire": case "harpy": case "fell":
-				questTrigger(TriggerType.CLEANSE,"monster",count);
+				questTrigger(TriggerType.CLEANSE,CleanseType.MONSTERS.trigger,count);
 				break;
 			default:
 				//no matching bonus type (or is a bonus type itself)

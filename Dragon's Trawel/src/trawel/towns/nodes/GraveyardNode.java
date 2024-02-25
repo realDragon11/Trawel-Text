@@ -18,6 +18,7 @@ import trawel.personal.RaceFactory.RaceID;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
+import trawel.quests.CleanseSideQuest.CleanseType;
 import trawel.quests.Quest.TriggerType;
 import trawel.time.TimeContext;
 import trawel.towns.nodes.NodeConnector.NodeFlag;
@@ -144,16 +145,10 @@ public class GraveyardNode implements NodeType{
 				//vamp = base level, no bats
 			}
 			Person vamp = RaceFactory.makeVampire(level);
+			//vampire can't be fully killed normally so we handle it getting cleanse progress manually later
+			vamp.cleanseType = -1;
 			List<Person> vampBats = RaceFactory.wrapMakeGroupForLeader(vamp,
 					RaceFactory.getMakerForID(RaceID.B_SWARMBAT),spare, 1, 4);
-			/*new ArrayList<Person>();
-			vampBats.add(RaceFactory.makeVampire(holder.getLevel(madeNode)));
-			int vLevel = holder.getLevel(madeNode);
-			int bLevel = vLevel-1;
-			while (bLevel > 1) {
-				vampBats.add(RaceFactory.makeBat(bLevel));
-				bLevel/=2;
-			}*/
 			holder.setStorage(madeNode, vampBats);
 			holder.setStateNum(madeNode, STATE_SHADOW_FIGURE);
 			;break;
@@ -495,8 +490,8 @@ public class GraveyardNode implements NodeType{
 		Combat c = Player.player.massFightWith(holder.getStorageFirstClass(node,List.class));
 		
 		if (c.playerWon() > 0) {
-			//must kill bats to fully kill vampire
-			Player.player.questTrigger(TriggerType.CLEANSE,"vampire", 1);
+			//must kill bats to fully kill vampire, so we handle cleanse trigger manually
+			Player.player.questTrigger(TriggerType.CLEANSE,CleanseType.VAMPIRE.trigger, 1);
 			holder.setForceGo(node, false);
 			GenericNode.setTotalDeadString(holder, node,"Vampire Coffin","Examine motes of Grave Dust","There isn't enough here to gather.","coffin");
 			return false;

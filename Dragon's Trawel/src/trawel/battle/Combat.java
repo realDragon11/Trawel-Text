@@ -382,21 +382,7 @@ public class Combat {
 		}
 	}
 	public Combat(World w,List<List<Person>> people) {
-		this(w,null,people,(byte)0b0);
-	}
-	
-	public Combat(World w, List<SkillCon> cons,List<List<Person>> people) {
-		this(w,cons,people,(byte)0b0);
-	}
-	
-	/**
-	 * NOT CURRENTLY FUNCTIONAL
-	 */
-	public enum CombatFlag{
-		/**
-		 * removes processing for cleanse triggers
-		 */
-		NO_CLEANSE_TRIGGERS
+		this(w,null,people);
 	}
 	
 	private List<Person> tempList;
@@ -412,7 +398,7 @@ public class Combat {
 		public Person nextTarget = null;
 	}
 	
-	public Combat(World w, List<SkillCon> cons,List<List<Person>> people, byte combatFlags) {
+	public Combat(World w, List<SkillCon> cons,List<List<Person>> people) {
 		inSides = people;
 		int size = people.size();
 		sides = size;
@@ -604,10 +590,7 @@ public class Combat {
 		
 		assert survivors.size() > 0;
 		
-		if (playerIsInBattle
-				&& !extra.getEnumByteFlag(CombatFlag.NO_CLEANSE_TRIGGERS.ordinal(),combatFlags)
-				&& Player.player.hasTrigger("cleanse")
-				) {
+		if (playerIsInBattle && Player.player.hasTrigger("cleanse")) {
 			CleanseSideQuest.CleanseType[] vals = CleanseSideQuest.CleanseType.values();
 			for (Person p: killList) {
 				if (p.cleanseType != -1) {

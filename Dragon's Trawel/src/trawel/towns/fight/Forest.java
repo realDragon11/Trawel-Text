@@ -235,7 +235,6 @@ public class Forest extends ExploreFeature{
 			Person reaver = RaceFactory.makeFellReaver(tier);
 			Combat c = Player.player.fightWith(reaver);
 			if (c.playerWon() > 0) {
-				Player.player.questTrigger(TriggerType.CLEANSE,"fell", 1);
 				//not a collector, but this is a dd1 quote ref
 				extra.println("They say a predator is often blind to its own peril- at least there won't be any more men hanged here soon.");
 				//bonus heroism
@@ -294,7 +293,6 @@ public class Forest extends ExploreFeature{
 				extra.println(extra.PRE_BATTLE+"Suddenly, they attack you!");
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() > 0) {
-					Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
 				}
 			}else {
 				if (Math.random() < .3) {

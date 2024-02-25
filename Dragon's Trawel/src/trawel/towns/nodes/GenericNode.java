@@ -96,12 +96,12 @@ public class GenericNode implements NodeType {
 	 * <br>
 	 * pass null as cleanseID to not trigger any quests
 	 */
-	public static void setBasicRagePerson(NodeConnector holder,int node, Person p, String nodename,String attackString,String cleanseID) {
+	public static void setBasicRagePerson(NodeConnector holder,int node, Person p, String nodename,String attackString) {
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.BASIC_RAGE_PERSON.ordinal());
 		holder.setForceGo(node,true);
 		//should never see interactstring
-		holder.setStorage(node,new Object[] {p,nodename,attackString,cleanseID});
+		holder.setStorage(node,new Object[] {p,nodename,attackString});
 	}
 	
 	/**
@@ -421,10 +421,6 @@ public class GenericNode implements NodeType {
 		if (c.playerWon() > 0) {
 			GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
 			holder.setForceGo(node,false);
-			String cleanse = (String) holder.getStorageAsArray(node)[3];
-			if (cleanse != null) {
-				Player.player.questTrigger(TriggerType.CLEANSE,cleanse,1);
-			}
 			return false;
 		}else {
 			return true;
@@ -614,7 +610,7 @@ public class GenericNode implements NodeType {
 					public boolean go() {
 						if (extra.chanceIn(1,30)) {
 							extra.println(extra.PRE_BATTLE +"\"Enough of your games!\"");
-							setBasicRagePerson(holder, node, p, "A very angry "+extra.PRE_BATTLE+p.getName(),extra.PRE_BATTLE+p.getName() + " attacks you!",null);
+							setBasicRagePerson(holder, node, p, "A very angry "+extra.PRE_BATTLE+p.getName(),extra.PRE_BATTLE+p.getName() + " attacks you!");
 							return true;//out of menu
 						}
 						if (extra.chanceIn(1,3)) {
@@ -633,7 +629,7 @@ public class GenericNode implements NodeType {
 					@Override
 					public boolean go() {
 						if (p.reallyAttack()) {
-							setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_BATTLE+p.getName(),extra.PRE_BATTLE+p.getName() + " attacks you!",null);
+							setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_BATTLE+p.getName(),extra.PRE_BATTLE+p.getName() + " attacks you!");
 							return true;//out of menu
 						}
 						return false;
@@ -772,11 +768,11 @@ public class GenericNode implements NodeType {
 							boolean racistToYou = (racist && r == Player.bag.getRaceID());
 							String name = extra.capFirst(r.name);
 							if (racistToYou) {
-								setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_BATTLE +name,extra.PRE_BATTLE+"The racist "+name + " attacks you!",null);
+								setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_BATTLE +name,extra.PRE_BATTLE+"The racist "+name + " attacks you!");
 								return true;//out of menu, not area
 							}else {
 								if (p.isAngry()) {
-									setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_BATTLE +name,extra.PRE_BATTLE+"The "+name + " attacks you!",null);
+									setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_BATTLE +name,extra.PRE_BATTLE+"The "+name + " attacks you!");
 									return true;//out of menu, not area
 								}else {//will not hold it against you
 									Combat c = Player.player.fightWith(p);

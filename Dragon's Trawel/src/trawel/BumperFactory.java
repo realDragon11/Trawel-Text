@@ -92,7 +92,6 @@ public class BumperFactory {
 				listList.add(foeList);
 				Combat combat = mainGame.HugeBattle(Player.getPlayerWorld(),listList);
 				if (combat.playerWon() > 0) {
-					Player.player.questTrigger(TriggerType.CLEANSE,"wolf", wolvesPresent);
 					List<Person> endList = combat.getAllSurvivors();
 					allyList.retainAll(endList);
 					Town t = Player.player.getLocation();
@@ -117,8 +116,6 @@ public class BumperFactory {
 						//spooky wolves
 						Player.player.getWorld().addReoccuring(p.getMakeAgent(AgentGoal.SPOOKY));
 					}
-					//wolvesPresent modified in world cleanup loop
-					Player.player.questTrigger(TriggerType.CLEANSE,"wolf", wolvesPresent);
 				}
 			}};
 			b.responses.add(new Response(DrawBane.MEAT,5));
@@ -136,7 +133,6 @@ public class BumperFactory {
 					extra.println(extra.PRE_BATTLE+"A wolf attacks you!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
-						Player.player.questTrigger(TriggerType.CLEANSE,"wolf", 1);
 					}
 
 				}};
@@ -158,7 +154,6 @@ public class BumperFactory {
 					if (c.playerWon() < 0) {
 						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
 					}else {
-						Player.player.questTrigger(TriggerType.CLEANSE,"fell", 1);
 					}
 				}};
 			b.responses.add(new Response(DrawBane.MEAT,2));
@@ -188,7 +183,6 @@ public class BumperFactory {
 					if (c.playerWon() < 0) {
 						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
 					}else {
-						Player.player.questTrigger(TriggerType.CLEANSE,"vampire", 1);
 					}					
 				}};
 			b.responses.add(new Response(DrawBane.BLOOD,3));
@@ -207,7 +201,6 @@ public class BumperFactory {
 					if (c.playerWon() < 0) {
 						Player.player.getLocation().addOccupant(p.setOrMakeAgentGoal(AgentGoal.NONE));
 					}else {
-						Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
 					}
 					
 				}};
@@ -224,7 +217,6 @@ public class BumperFactory {
 					extra.println(extra.PRE_BATTLE+"A bear attacks you!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
-						Player.player.questTrigger(TriggerType.CLEANSE,"bear", 1);
 					}
 				}
 
@@ -243,7 +235,6 @@ public class BumperFactory {
 					extra.println(extra.PRE_BATTLE+"A bat attacks you!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
-						Player.player.questTrigger(TriggerType.CLEANSE,"bat", 1);
 					}
 					
 				}};
@@ -262,7 +253,6 @@ public class BumperFactory {
 					extra.println(extra.PRE_BATTLE+"A unicorn accosts you for holding the virgin captive!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
-						Player.player.questTrigger(TriggerType.CLEANSE,"unicorn", 1);
 					}
 					
 				}};
@@ -283,11 +273,9 @@ public class BumperFactory {
 						extra.println(extra.PRE_BATTLE+"A flock of harpies attack!");
 						Combat c = Player.player.massFightWith(list);
 						if (c.playerWon() > 0) {
-							Player.player.questTrigger(TriggerType.CLEANSE,"harpy", count);
 						}else {
 							list = c.getNonSummonSurvivors();
 							if (list.size() < count) {
-								Player.player.questTrigger(TriggerType.CLEANSE,"harpy",count-list.size());
 							}
 						}
 					}else {
@@ -295,7 +283,6 @@ public class BumperFactory {
 						extra.println(extra.PRE_BATTLE+"A harpy nestmother attacks!");
 						Combat c = Player.player.fightWith(p);
 						if (c.playerWon() > 0) {
-							Player.player.questTrigger(TriggerType.CLEANSE,"harpy", 1);
 						}else {
 							Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
 						}
@@ -322,7 +309,6 @@ public class BumperFactory {
 					if (c.playerWon() < 0) {
 						Player.player.getLocation().addOccupant(p.setOrMakeAgentGoal(AgentGoal.NONE));
 					}else {
-						Player.player.questTrigger(TriggerType.CLEANSE,"bandit", 1);
 					}
 					
 				}};
@@ -342,7 +328,6 @@ public class BumperFactory {
 					if (c.playerWon() < 0) {
 						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
 					}else {
-						Player.player.questTrigger(TriggerType.CLEANSE,"drudger", 1);
 					}
 					
 				}};
@@ -360,7 +345,6 @@ public class BumperFactory {
 					if (c.playerWon() < 0) {
 						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
 					}else {
-						Player.player.questTrigger(TriggerType.CLEANSE,"harpy", 1);
 					}
 					
 				}};
