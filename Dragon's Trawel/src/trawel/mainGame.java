@@ -78,6 +78,7 @@ public class mainGame {
 			"b_10: {part 1/?} Added Drudger, Fell, Monster, and Animal Cleanse Quests. Almost all targets will award progress if encountered in Node Explorations or other features as well, with some exceptions for mooks. Some fightable hunters now reward Amber when looted.",
 			"b_10: {part 2/?} Vampires and some other Bumpers will appear less during the daytime. Bandits will prefer money, not just valuable metals. Removed most bumper level requirements, and updated wolf pack with player allies.",
 			"b_10: {part 3/?} Cleaned up various menus, especially when using color fail codes in the graphical. Updated tutorial's feature explanations and list of world perks.",
+			"b_10: {part 4/?} At some point background time display stopped changing colors, it now works again.",
 			
 			"Prior Changelog notes were from 2023, press again to continue.",
 			
@@ -87,7 +88,7 @@ public class mainGame {
 			"b_9: {part 4/4} Changed internal Sidequest code to save properly, tweaked quest generation behavior, added quests to the Rogue, Hero, and new Hunter's guild. Added more Quest Reactions.",
 			"b_9: {part 5/5} Increased positive reputation gain from combat, decreased negative gain. Added Amber as the Hunter's gem, and updated world currency/gem costs and rewards.",
 			"b_9: {part 6/6} Adjusted Wounds, importantly adding more elemental wounds.",
-			"b_9: {part 7/7} Added more Classless Skills and Feats: Beer Belly, Deadly Aim, Glutton, Life Mage, Shaman, Potion Chugger",
+			"b_9: {part 7/7} Added more Classless Skills and Feats: Beer Belly, Deadly Aim, Glutton, Life Mage, Shaman, Potion Chugger.",
 			"b_9: {part 8/8} Expanded Greap worldgen map, filling out some more towns and adding many town locations. Route types have been expanded to include caravans and lesser traveled paths, which have different travel speeds and NPC interests.",
 			"b_9: {part 9/9} Added Simplified attack display style, moved attack notes from Combat Debug to its own option.",
 			
@@ -297,10 +298,10 @@ public class mainGame {
 						extra.println("In Trawel, you navigate the game world, and make choices, with numbered menu lists.");
 						extra.println("In Trawel proper (some subgames differ), there will never be an option presented that is greater than 9 or less than 1. Some newer menus have scrolling, but they will only ever show a max of 9 options at a time.");
 						extra.println("If you're playing from Steam, you can click these options, press a number key (numpad or number row), or even use a controller. If you're using the terminal, you'll have to input the number and then press enter.");
-						extra.println("Terminal Only: Currently, the terminal also lets you input 0 to attempt to leave the current menu, and 10 to attempt to leave up to 10 menus. This will only work if there is a 'pinned' back option, and that option isn't considered to lead in circles. Usually you'll end up at the town screen, but older menus might not have a pinned back out, some don't have backing out by design, and others wouldn't make sense to back out of. It will also 'break' the backing out if the state changes, for example after you finish looting, it won't back you out of where you're looting unless you input it again.");
-						extra.println("Graphical Only: The graphical client has a few bonus features not immediately evident. You can press the scroll wheel to automatically scroll to the bottom. The 'Jump' option lets you have the game scroll, print new text without scrolling, or jump instantly on new text. 'Fancy' mode disables some rendering that might bug on certain hardware, and is generally less intensive. You can use the arrow keys to scroll, but more importantly, controllers have their 'dpads' rigged up with their 'a' and 'b' type buttons.");
-						extra.println("Tips: Menus in Trawel are increasingly being designed so that as many options as possible occupy the same number each time you enter them. In some menus, the options change so much that this isn't possible, or there is an edge case where it doesn't work. But the Player menu is very stable within a version, so you can navigate that without needing to read (or listen to) the contents.");
-						extra.println("Many older menus do not behave like this, and are slowly being converted.");
+						extra.println("Terminal Only: The 'command prompt' also lets you input 0 to attempt to leave the current menu, and 10 to attempt to leave up to 10 menus. This will only work if there is a 'pinned' back option, and that option isn't considered to lead in circles. Usually you'll end up at the town screen, but older menus might not have a pinned back out, some don't have backing out by design, and others wouldn't make sense to back out of. It will also 'break' the backing out if the state changes, for example after you finish looting, it won't back you out of where you're looting unless you input it again.");
+						extra.println("Graphical Only: The graphical client has a few bonus features not immediately evident. You can press the scroll wheel to automatically scroll to the bottom. The 'Jump' option lets you have the game scroll, print new text without scrolling, or jump instantly on new text. 'Fancy' mode disables some rendering that might bug on certain hardware, and is generally less intensive. You can use the arrow keys to scroll and WASD/enter to input on keyboard. On controller, 'dpad' right/A will select the current option and 'dpad' left/B will select the last option. 'dpad' up and down change options.");
+						extra.println("Tips: Many modern menus in Trawel are designed so that as many options as possible occupy the same number each time you enter them. In some menus, the options change so much that this isn't possible, or there is an edge case where this rule can't apply. But the Player menu is very stable within each Trawel release, so you can navigate that without needing to read (or listen to) the contents.");
+						extra.println("Most older menus do not behave like this, and are slowly being converted.");
 						return false;
 					}});
 				mList.add(new MenuSelect() {
@@ -762,7 +763,7 @@ public class mainGame {
 
 									@Override
 									public String title() {
-										return "World Time is the time that passes in the game world. If this option is on, the game will attempt to show 6 hours every second as it catches up instead of catching up as fast as it can compute. Note that the game doesn't always catch up right away.";
+										return "World Time is the time that passes in the game world. If this option is on, the game will attempt to show 6 hours every second as it catches up instead of catching up as fast as it can compute. Note that the game doesn't always catch up right away. If more than 24 hours are passing, the amount of time shown per second will slowly increase until all time is shown.";
 									}});
 								list.add(new MenuSelect() {
 
@@ -882,59 +883,84 @@ public class mainGame {
 
 	private static void credits() {
 		extra.println("Made by 'dragon' of realDragon");
-		extra.println("With thanks to many different discords across different programming languages and engines.");
-		extra.println("Achievement icons can be found on game-icons.net, modified using their website. They are CC BY 3.0");
-		extra.println(extra.STAT_HEADER+"Game-Icons.net list:");
-		extra.println(
-				"    Lorc, http://lorcblog.blogspot.com\r\n"
-				+ "    Delapouite, https://delapouite.com\r\n"
-				+ "    John Colburn, http://ninmunanmu.com\r\n"
-				+ "    Felbrigg, http://blackdogofdoom.blogspot.co.uk\r\n"
-				+ "    John Redman, http://www.uniquedicetowers.com\r\n"
-				+ "    Carl Olsen, https://twitter.com/unstoppableCarl\r\n"
-				+ "    Sbed, http://opengameart.org/content/95-game-icons\r\n"
-				+ "    PriorBlue\r\n"
-				+ "    Willdabeast, http://wjbstories.blogspot.com\r\n"
-				+ "    Viscious Speed, http://viscious-speed.deviantart.com\r\n"
-				+ "    Lord Berandas, http://berandas.deviantart.com\r\n"
-				+ "    Irongamer, http://ecesisllc.wix.com/home\r\n"
-				+ "    HeavenlyDog, http://www.gnomosygoblins.blogspot.com\r\n"
-				+ "    Lucas\r\n"
-				+ "    Faithtoken, http://fungustoken.deviantart.com\r\n"
-				+ "    Skoll\r\n"
-				+ "    Andy Meneely, http://www.se.rit.edu/~andy/\r\n"
-				+ "    Cathelineau\r\n"
-				+ "    Kier Heyl\r\n"
-				+ "    Aussiesim\r\n"
-				+ "    Sparker, http://citizenparker.com\r\n"
-				+ "    Zeromancer\r\n"
-				+ "    Rihlsul\r\n"
-				+ "    Quoting\r\n"
-				+ "    Guard13007, https://guard13007.com\r\n"
-				+ "    DarkZaitzev, http://darkzaitzev.deviantart.com\r\n"
-				+ "    SpencerDub\r\n"
-				+ "    GeneralAce135\r\n"
-				+ "    Zajkonur\r\n"
-				+ "    Catsu\r\n"
-				+ "    Starseeker\r\n"
-				+ "    Pepijn Poolman\r\n"
-				+ "    Pierre Leducq\r\n"
-				+ "    Caro Asercion\r\n"
-				+ "");
+		extra.println();
+		
+		extra.println("Special thanks to many different communities across different programming languages and engines.");
+		extra.println();
+		
 		extra.println(extra.STAT_HEADER+"Music:");
 		extra.println(" manicInsomniac");
+		extra.println();
+		
+		extra.println(extra.STAT_HEADER+"Java Libraries:");
+		extra.println(" Esoteric Software's Kryo");
+		extra.println(" Yellowstone Games' SquidSquad family");
+		extra.println(" All dependencies of prior libraries");
+		extra.println();
+		
+		extra.println(extra.STAT_HEADER+"Graphical Libraries:");
+		extra.println(" JujuAdams' Scribble");
+		extra.println(" Alynne's Input");
+		extra.println(" Pixelated Pope's Retro Palette Swapper");
+		extra.println();
+		
 		extra.println(extra.STAT_HEADER+"Art:");
 		extra.println(extra.ITEM_DESC_PROP+" Character, armor, and Weapon Art:");
-		extra.println("  SmashCooper");
-		extra.println("  Duster");
-		extra.println("  Jacobs");
+		extra.println("  Most Character Art: SmashCooper");
+		extra.println("  Some Weapons: Duster");
+		extra.println("  Scars, Weapon Placeholders: Jacobs");
 		extra.println(extra.ITEM_DESC_PROP+" Background Art:");
 		extra.println("  Damrok");
 		extra.println(extra.ITEM_DESC_PROP+" Concept/Splash Art:");
-		extra.println("  he-who-might-not-want-to-be-named");
+		extra.println("  TamLinArt");
+		extra.println();
+		
 		extra.println(extra.STAT_HEADER+"Sounds:");
 		extra.println(" Stock Media provided by Soundrangers / FxProSound / SoundIdeasCom / PrankAudio / hdaudio / agcnf_media / sounddogs / AbloomAudio / Yurikud / SoundMorph => through Pond5");
 		extra.println(" Metal sounds by Bluezone");
+		extra.println(" Clicking sound: One of the many CC0 stapler sounds on FreeSound");
+		extra.println();
+		
+		extra.println(extra.STAT_HEADER+"Steam Assets:");
+		
+		extra.println("Achievement icons can be found on game-icons.net, modified using their website. They are CC BY 3.0");
+		extra.println(extra.ITEM_DESC_PROP+"Game-Icons.net list:");
+		extra.println(
+				"Lorc, http://lorcblog.blogspot.com; "
+				+ "Delapouite, https://delapouite.com; "
+				+ "John Colburn, http://ninmunanmu.com; "
+				+ "Felbrigg, http://blackdogofdoom.blogspot.co.uk; "
+				+ "John Redman, http://www.uniquedicetowers.com; "
+				+ "Carl Olsen, https://twitter.com/unstoppableCarl; "
+				+ "Sbed, http://opengameart.org/content/95-game-icons; "
+				+ "PriorBlue; "
+				+ "Willdabeast, http://wjbstories.blogspot.com; "
+				+ "Viscious Speed, http://viscious-speed.deviantart.com; "
+				+ "Lord Berandas, http://berandas.deviantart.com; "
+				+ "Irongamer, http://ecesisllc.wix.com/home; "
+				+ "HeavenlyDog, http://www.gnomosygoblins.blogspot.com; "
+				+ "Lucas; "
+				+ "Faithtoken, http://fungustoken.deviantart.com; "
+				+ "Skoll; "
+				+ "Andy Meneely, http://www.se.rit.edu/~andy/; "
+				+ "Cathelineau; "
+				+ "Kier Heyl; "
+				+ "Aussiesim; "
+				+ "Sparker, http://citizenparker.com; "
+				+ "Zeromancer; "
+				+ "Rihlsul; "
+				+ "Quoting; "
+				+ "Guard13007, https://guard13007.com; "
+				+ "DarkZaitzev, http://darkzaitzev.deviantart.com; "
+				+ "SpencerDub; "
+				+ "GeneralAce135; "
+				+ "Zajkonur; "
+				+ "Catsu; "
+				+ "Starseeker; "
+				+ "Pepijn Poolman; "
+				+ "Pierre Leducq; "
+				+ "Caro Asercion; "
+				+ "");
 	}
 
 	@SuppressWarnings("unused")
