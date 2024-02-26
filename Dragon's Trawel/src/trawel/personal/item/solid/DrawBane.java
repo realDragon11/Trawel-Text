@@ -148,8 +148,8 @@ public enum DrawBane {
 			weightList[i] = new WeightedTable(weight);
 			break;
 		case WITCH_STORE:
-			weight = new float[10];
-			list = new DrawBane[10];
+			weight = new float[12];
+			list = new DrawBane[12];
 			
 			weight[0] = 1f;
 			list[0] = MEAT;
@@ -170,7 +170,11 @@ public enum DrawBane {
 			weight[8] = .3f;
 			list[8] = VIRGIN;
 			weight[9] = 1f;
-			list[9] = MIMIC_GUTS;
+			list[9] = GRAVE_DUST;
+			weight[10] = .01f;
+			list[10] = BEATING_HEART;
+			weight[11] = .4f;
+			list[11] = SINEW;
 			
 			subLists[i] = list;
 			weightList[i] = new WeightedTable(weight);

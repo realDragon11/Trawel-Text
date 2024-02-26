@@ -82,6 +82,15 @@ public class CollectSideQuest extends BasicSideQuest {
 		case VIRGIN://lmao
 			q.count = 12;
 			break;
+		case GRAVE_DUST:
+			q.count = 7;
+			break;
+		case BEATING_HEART:
+			q.count = 14;
+			break;
+		case SINEW:
+			q.count = 3;
+			break;
 		}
 		q.desc = "Collect " + q.count +" "+ q.targetName + " pieces";
 		
