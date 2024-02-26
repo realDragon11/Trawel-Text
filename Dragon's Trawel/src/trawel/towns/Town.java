@@ -97,6 +97,8 @@ public class Town extends TContextOwner{
 	
 	//private transient List<TimeEvent> events;
 	
+	public transient double[] lerpLocation;
+	
 	private Town(String name) {
 		this.name = name;
 		connects = new ArrayList<Connection>();

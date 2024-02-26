@@ -861,7 +861,7 @@ public class GroveNode implements NodeType{
 									IEffectiveLevel.cleanRangeReward(holder.getLevel(node), 3f, .2f)
 							,true)
 						);
-					plantstart = Seed.EMPTY;//TODO
+					plantstart = Seed.EMPTY;
 				}else {
 					extra.println("getting it down is very difficult... but you manage.");
 					int xpadd = Math.min(Player.player.getPerson().getLevel(),holder.getLevel(node));
@@ -888,7 +888,8 @@ public class GroveNode implements NodeType{
 			break;
 		}
 		
-		if (plantstart != null) {//can accept nulls be we use null to indicate we don't want to plant
+		if (plantstart != null) {
+			//we use null to indicate we don't want to plant
 			//replace current contents
 			//this will clean up color data and any people that were still there
 			GenericNode.setPlantSpot(holder, node,plantstart);
