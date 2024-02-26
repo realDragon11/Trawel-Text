@@ -200,7 +200,7 @@ public enum Skill{
 		LIFE_MAGE("Life Mage","+5% Clarity as MHP."
 				,""
 				,Type.DEFENSE),
-		POTION_CHUGGER("Potion Chugger","Regenerates 10% LHP at the end of their second turn."
+		POTION_CHUGGER("Potion Chugger","Regenerates 10% LHP at the end of their second turn if drinking a potion."
 				,"Applies through the Breathing Effect."
 				,Type.OTHER)
 		

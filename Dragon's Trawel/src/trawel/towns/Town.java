@@ -926,8 +926,34 @@ public class Town extends TContextOwner{
 						}else {
 							extra.println("\"I fell, but they picked me back up! Now I stand beside life itself against you!\"");
 						}
-						p.setTitle(extra.choose(", ","the ") +extra.choose("Life ","Primal ")+extra.choose("Keeper","Defender","Servant","Judge"));
-						p.setPerk(Perk.NPC_PRIMAL_MOUNTAIN);//MAYBELATER: more primal types
+						String typeName = null;
+						switch (extra.randRange(0,5)) {
+						case 0: default:
+							p.setPerk(Perk.NPC_PRIMAL_MOUNTAIN);
+							typeName = extra.choose("Mountain","Peak","Hill");
+							break;
+						case 1:
+							p.setPerk(Perk.NPC_PRIMAL_FOREST);
+							typeName = extra.choose("Forest","Jungle","Woods","Bush");
+							break;
+						case 2:
+							p.setPerk(Perk.NPC_PRIMAL_BREEZE);
+							typeName = extra.choose("Breeze","Wind","Sky","Gale");
+							break;
+						case 3:
+							p.setPerk(Perk.NPC_PRIMAL_GROVE);
+							typeName = extra.choose("Grove","Copse","Thicket","Orchard");
+							break;
+						case 4:
+							p.setPerk(Perk.NPC_PRIMAL_WATER);
+							typeName = extra.choose("Spring","Geyser","Pond","River");
+							break;
+						case 5:
+							p.setPerk(Perk.NPC_PRIMAL_SEA);
+							typeName = extra.choose("Sea","Ocean","Brine","Tide");
+							break;
+						}
+						p.setTitle(extra.choose(", ","the ") +extra.choose("","Primal ")+typeName+extra.choose("Keeper","Defender","Servant","Judge","Warden"));
 						p.setPersonType(PersonType.LIFEKEEPER);
 						break;
 					}

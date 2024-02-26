@@ -23,8 +23,17 @@ public enum Perk implements IHasSkills{
 	,FATED("Fated","Has preternatural intuition.",EnumSet.of(Skill.OPENING_MOVE,Skill.SPEEDDODGE),0,0,10)
 	,STAND_TALL("Towering","They stand tall.",EnumSet.of(Skill.TA_NAILS),20,0,0)
 	,NPC_PRIMAL_MOUNTAIN("Oread","The primal forces within them embody the mountains, sullied not by mortal picks."
-			,EnumSet.of(Skill.LIFE_MAGE,Skill.TA_NAILS,Skill.RAW_GUTS,Skill.STERN_STUFF),20,0,10
-			)
+			,EnumSet.of(Skill.LIFE_MAGE,Skill.TA_NAILS,Skill.RAW_GUTS,Skill.STERN_STUFF),20,0,10)
+	,NPC_PRIMAL_FOREST("Dryad","The primal forces within them embody the wild forests, fierce and untamed."
+			,EnumSet.of(Skill.LIFE_MAGE,Skill.BLOODTHIRSTY,Skill.QUICK_START,Skill.REACTIVE_DODGE),10,10,10)
+	,NPC_PRIMAL_BREEZE("Aurae","The primal forces within them embody the gentle but chilling breezes."
+			,EnumSet.of(Skill.LIFE_MAGE,Skill.ELEMENTALIST,Skill.M_CRYO,Skill.DODGEREF),0,15,15)
+	,NPC_PRIMAL_GROVE("Alseide","The primal forces within them embody the deceptively dangerous groves."
+			,EnumSet.of(Skill.LIFE_MAGE,Skill.OPENING_MOVE,Skill.SPUNCH,Skill.MESMER_ARMOR),5,10,15)
+	,NPC_PRIMAL_WATER("Naiad","The primal forces within them embody the lifegiving fresh water."
+			,EnumSet.of(Skill.LIFE_MAGE,Skill.DODGEREF,Skill.BLOODTHIRSTY,Skill.ARMOR_TUNING),0,20,10)
+	,NPC_PRIMAL_SEA("Haliae","The primal forces within them embody the wrathful seas."
+			,EnumSet.of(Skill.LIFE_MAGE,Skill.SPUNCH,Skill.COUNTER,Skill.RAW_GUTS),15,5,10)
 	, YORE_NPC("Mythic","Is a living story.",EnumSet.of(Skill.PLOT_ARMOR,Skill.RAW_GUTS,Skill.NO_HOSTILE_CURSE),50,50,50)
 	,STORYTELLER("Storyteller","Has lived through an epic narrative.",EnumSet.of(Skill.PLOT_ARMOR,Skill.STERN_STUFF),0,0,5)
 	,ANCIENT("Ancient","Older than history.",EnumSet.of(Skill.NO_HOSTILE_CURSE),10,10,10)
