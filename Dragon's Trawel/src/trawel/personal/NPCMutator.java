@@ -1,8 +1,14 @@
 package trawel.personal;
 
+import java.util.List;
+
 import trawel.extra;
+import trawel.factions.HostileTask;
+import trawel.personal.Person.AIJob;
 import trawel.personal.Person.PersonType;
+import trawel.personal.RaceFactory.CultType;
 import trawel.personal.classless.Perk;
+import trawel.personal.item.solid.DrawBane;
 
 public class NPCMutator {
 	
@@ -62,5 +68,57 @@ public class NPCMutator {
 		p.setTitle(name_Primal(extra.choose("Sea","Ocean","Brine","Tide")));
 		p.setPersonType(PersonType.LIFEKEEPER);
 		return p;
+	}
+	
+	/**
+	 * can be used to promote people to blood cult leaders or in direct creation
+	 */
+	public static Person cultLeader_Blood(Person p, boolean addDraws) {
+		if (addDraws) {
+			List<DrawBane> list = p.getBag().getDrawBanes();
+			if (extra.chanceIn(1,3)) {
+				list.add(DrawBane.BEATING_HEART);
+			}else {
+				list.add(DrawBane.SINEW);
+			}
+			list.add(DrawBane.BLOOD);
+		}
+		p.setTitle(extra.choose("the Blood Queen","Chosen by The Blood","Blood Champion"));
+		p.setPerk(Perk.CULT_LEADER_BLOOD);
+		p.hTask = HostileTask.CULTIST;
+		return p;
+	}
+	
+	/**
+	 * can be used to make people culty or in direct creation
+	 */
+	public static Person cultist_Blood(Person p, boolean addDraws) {
+		if (addDraws) {
+			List<DrawBane> list = p.getBag().getDrawBanes();
+			if (extra.chanceIn(1,3)) {
+				list.add(DrawBane.SINEW);
+			}else {
+				list.add(DrawBane.BLOOD);
+			}
+		}
+		p.setTitle(extra.choose("Servant of Blood","the Bloodtender","","","Bloodguard"));
+		p.hTask = HostileTask.CULTIST;
+		return p;
+	}
+	
+	
+	public static Person cultist_Switch(Person p, CultType type, boolean addDraws) {
+		switch (type) {
+		case BLOOD:
+			return cultist_Blood(p,addDraws);
+		}
+		throw new RuntimeException("Invalid cult type for NPCMutator: " + type);
+	}
+	public static Person cultistLeader_Switch(Person p, CultType type, boolean addDraws) {
+		switch (type) {
+		case BLOOD:
+			return cultLeader_Blood(p,addDraws);
+		}
+		throw new RuntimeException("Invalid cult leader type for NPCMutator: " + type);
 	}
 }

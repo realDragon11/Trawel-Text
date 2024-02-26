@@ -114,7 +114,7 @@ public class FBox implements java.io.Serializable{
 		case GUARD_DUNGEON://Neutral dungeon
 			manOne.facRep.addFactionRep(Faction.HEROIC,iLevel*bonusFavored,0);
 			break;
-		case LAWLESS_NODE_GUARDS:
+		case LAWLESS_NODE_GUARDS: case CULTIST:
 			manOne.facRep.addFactionRep(Faction.HEROIC,iLevel*bonusFavored,0);
 			manOne.facRep.addFactionRep(Faction.LAW_EVIL,iLevel*bonusFavored,0);
 			manOne.facRep.addFactionRep(Faction.LAW_GOOD,iLevel*bonusFavored,0);
@@ -189,7 +189,7 @@ public class FBox implements java.io.Serializable{
 			switch (theirTask) {
 			case ANIMAL:
 				return -2;
-			case LAWLESS_NODE_GUARDS:
+			case LAWLESS_NODE_GUARDS: case CULTIST:
 				return -2;
 			case LAW_EVIL:
 				return 2;

@@ -1021,6 +1021,8 @@ public class RaceFactory {
 		return raceMap.get(id.name());
 	}
 	
+	//FIXME: at some point can probably remove the constant print stack altering code which is being run needlessly, would rather just not print in these cases in the first place
+	
 	public static Person makeLootBody(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level);
@@ -1420,42 +1422,24 @@ public class RaceFactory {
 	public static Person makeCultistLeader(int level, CultType ct) {
 		extra.offPrintStack();
 		Person w = null;
+		//unlike normal cultists, leaders have more specialized creation code
 		switch (ct) {
-		case BLOOD:
+		case BLOOD: default:
 			w = new Person(level,AIJob.KNIGHT);//blood for the blood queen
-			w.hTask = HostileTask.LAWLESS_NODE_GUARDS;
 			addWealth(1, w);
-			List<DrawBane> list = w.getBag().getDrawBanes();
-			if (extra.chanceIn(1,3)) {
-				list.add(DrawBane.BEATING_HEART);
-			}else {
-				list.add(DrawBane.SINEW);
-			}
-			list.add(DrawBane.BLOOD);
-			w.setTitle(extra.choose("the Blood Queen","Chosen by The Blood","Blood Champion"));
-			w.liteSetSkillHas(Perk.CULT_LEADER_BLOOD);
+			NPCMutator.cultLeader_Blood(w,true);
 			break;		
 		}
 		extra.popPrintStack();
 		w.finishGeneration();
 		return w;
 	}
+
 	public static Person makeCultist(int level, CultType ct) {
 		extra.offPrintStack();
 		Person w = new Person(level,AIJob.CULTIST_WORSHIPER);
 		//no money
-		w.hTask = HostileTask.LAWLESS_NODE_GUARDS;
-		switch (ct) {
-		case BLOOD:
-			List<DrawBane> list = w.getBag().getDrawBanes();
-			if (extra.chanceIn(1,3)) {
-				list.add(DrawBane.SINEW);
-			}else {
-				list.add(DrawBane.BLOOD);
-			}
-			w.setTitle(extra.choose("Servant of Blood","the Bloodtender","","","Bloodguard"));
-			break;		
-		}
+		NPCMutator.cultist_Switch(w,ct,true);
 		extra.popPrintStack();
 		w.finishGeneration();
 		return w;
