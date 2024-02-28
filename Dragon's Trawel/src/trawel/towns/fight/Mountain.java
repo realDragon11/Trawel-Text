@@ -170,23 +170,25 @@ public class Mountain extends ExploreFeature{
 		extra.println("9 Minimize the damage.");
 		switch (extra.inInt(2,true,true)) {
 		case 1:
-			if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getStrength(),7*getEffectiveLevel()) >=0) {
+			if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getStrength(),getAttributeChallengeMedium()) >=0) {
 				extra.println("You survive the rockslide.");
 				Player.addXp(Math.max(1,tier/3));
 			}else {
 				extra.println("They rocks crush you!");
 				mainGame.die("You pull yourself out from under the rocks, your armor is all dinged up.");
 				Player.player.getPerson().addEffect(Effect.DAMAGED);
+				Player.player.getPerson().addEffect(Effect.BURNOUT);
 			}
 			;break;
-		case 2: 
-			if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getStrength(),7*getEffectiveLevel()) >=0) {
+		case 2:
+			if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getDexterity(),getAttributeChallengeMedium()) >=0) {
 				extra.println("You survive the rockslide.");
 				Player.addXp(Math.max(1,tier/3));
 			}else {
 				extra.println("They rocks crush you!");
 				mainGame.die("You pull yourself out from under the rocks, your armor is all dinged up.");
 				Player.player.getPerson().addEffect(Effect.DAMAGED);
+				Player.player.getPerson().addEffect(Effect.BURNOUT);
 			}
 			;break;
 		case 3:

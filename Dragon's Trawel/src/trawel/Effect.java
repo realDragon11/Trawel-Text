@@ -4,7 +4,10 @@ public enum Effect{
 	//negative lasting status effects the player has to remove somewhere
 	//used as punishments/costs for events, or as skill tie ins
 	CURSE("Curse","Base HP is decreased by half.",true,false,-4),
-	BURNOUT("Burnout","Decreased skill.",true,false,-2),
+	/**
+	 * used on failed OOB rolls to make the player less likely to spam them while the consequence can't stack
+	 */
+	BURNOUT("Burnout","Half attributes in out of battle contested rolls.",true,false,-2),
 	DAMAGED("Damaged","Armor starts at 50% condition each battle.",true,false,-4),
 	BEES("BEEEES","Bees sting them occasionally, dealing random damage between 1 flat and 4% LHP.",true,false,-2),
 	//other

@@ -1904,10 +1904,15 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	/**
 	 * as contested roll, but with no target since it's intended to be usable out of battle
 	 * <br>
+	 * suffers from Burnout
+	 * <br>
 	 * typically, should use >= since engager wins ties
 	 */
 	public int contestedRoll(int mynum, int theirnum) {
 		int myroll = extra.randRange(0,mynum);
+		if (hasEffect(Effect.BURNOUT)) {
+			myroll/=2;
+		}
 		int theirroll = extra.randRange(0,theirnum);
 		return myroll-theirroll;
 	}

@@ -603,12 +603,16 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		p.setFlask(new Potion(extra.randList(randomPotion),5));
 	}
 	
-	public static final Effect[] randomPotion = new Effect[] {Effect.HEARTY,Effect.BEES,Effect.BEE_SHROUD,Effect.CURSE,Effect.FORGED,Effect.HASTE,Effect.CLOTTER,Effect.R_AIM,Effect.SUDDEN_START} ;
+	public static final Effect[] randomPotion = new Effect[] {
+			Effect.HEARTY,Effect.BEES,Effect.BEE_SHROUD,Effect.CURSE,Effect.FORGED,
+			Effect.HASTE,Effect.CLOTTER,Effect.R_AIM,Effect.SUDDEN_START
+		};
 	
 	public static final Effect[] randomQuestionablePotion = new Effect[] {
 			Effect.CURSE,Effect.CURSE,Effect.BEES,Effect.BLEED,Effect.MAJOR_BLEED,
 			Effect.HEARTY,Effect.BEE_SHROUD,Effect.FORGED,Effect.HASTE,
-			Effect.CLOTTER,Effect.R_AIM,Effect.SUDDEN_START};
+			Effect.CLOTTER,Effect.R_AIM,Effect.SUDDEN_START
+		};
 	
 	
 	public static void randomRefillsAtTown(Town t,int cost) {
