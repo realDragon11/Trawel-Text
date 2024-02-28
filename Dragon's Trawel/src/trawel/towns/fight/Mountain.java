@@ -165,13 +165,12 @@ public class Mountain extends ExploreFeature{
 	
 	private void rockSlide() {
 		extra.println("Some rocks start falling down the mountain!");
-		extra.println("1 Take it head on.");
-		extra.println("2 Attempt to dodge.");
+		extra.println("1 Take it head on. [Str]");
+		extra.println("2 Attempt to avoid the rocks. [Dex]");
 		extra.println("9 Minimize the damage.");
 		switch (extra.inInt(2,true,true)) {
 		case 1:
-			//MAYBELATER: find expected blunt resist
-			if (Player.bag.getBluntResist()*extra.randFloat() > 7 * getUnEffectiveLevel()) {
+			if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getStrength(),7*getEffectiveLevel()) >=0) {
 				extra.println("You survive the rockslide.");
 				Player.addXp(Math.max(1,tier/3));
 			}else {
@@ -181,9 +180,9 @@ public class Mountain extends ExploreFeature{
 			}
 			;break;
 		case 2: 
-			if (Player.bag.getDodge()*extra.randFloat() > .5f) {
+			if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getStrength(),7*getEffectiveLevel()) >=0) {
 				extra.println("You survive the rockslide.");
-				Player.addXp(1);
+				Player.addXp(Math.max(1,tier/3));
 			}else {
 				extra.println("They rocks crush you!");
 				mainGame.die("You pull yourself out from under the rocks, your armor is all dinged up.");

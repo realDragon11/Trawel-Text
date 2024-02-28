@@ -2183,6 +2183,17 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		return myroll-theirroll;
 	}
 	
+	/**
+	 * as contested roll, but with no target since it's intended to be usable out of battle
+	 * <br>
+	 * typically, should use >= since engager wins ties
+	 */
+	public int contestedRoll(int mynum, int theirnum) {
+		int myroll = extra.randRange(0,mynum);
+		int theirroll = extra.randRange(0,theirnum);
+		return myroll-theirroll;
+	}
+	
 	public String capacityDesc() {
 		float val = ((float)bag.getCapacity())/getStrength();
 		String frontCol;
