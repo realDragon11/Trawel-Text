@@ -67,16 +67,46 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 
 	private static final long serialVersionUID = 2L;
 
-	//inst vars
+	private SuperPerson superperson;
 	protected Inventory bag;
-	
-	private transient ImpairedAttack attackNext;
 	private int xp;
 	private short level;
+	private short featPoints;
+	
+	private short pKills = 0, deaths = 0;
+	public FBox facRep = new FBox();
+	
+	private AIJob job;
+	private PersonType personType;
+	public HostileTask hTask;
+	private String firstName,title;
+	private int scar = -1;
+	private float pitch = 0;
+	/**
+	 * used for cleanse quests, you can remove or change if you want to change if a person or creature counts,
+	 * ie a bandit changing to not bandit or vice versa, or just set it to -1 to make a creature not count entirely
+	 * (for mook reasons usually)
+	 */
+	public byte cleanseType = -1;
+
+	private EnumMap<Effect,Integer> effects;//hash set not permitted
+	
+	private TypeBody bodyType;
+	//bodystatus should be entirely internal, use own hp values and stuff to display externally
+	private transient TargetHolder bodystatus;
+	
+	private Set<Feat> featSet;
+	private Set<Perk> perkSet;
+	private Set<Archetype> archSet;
+	
+	//rebuilt from the above 3, lazyloaded
+	private transient AttributeBox atrBox;
+	private transient Set<Skill> skillSet;
+	
+	private transient ImpairedAttack attackNext;
 	private transient double speedFill;
 	private transient boolean isWarmingUp;
 	private transient int hp, tempMaxHp;
-	private PersonType personType;
 	
 	private short flags = 0b0;//used with bitmasking, starts empty
 	
@@ -125,51 +155,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		 */
 		,PLAYER_LOOT_ONLY
 	}
-	//DOLATER: add a Set<Culture> that holds cultures. This can be used for advanced bigorty, cultural norms, etc etc
-	//this might also be used to hold a place of origin
-	//cultures won't have to be all of one type, so there might be a weaker 'world' culture
-	//a 'town' culture, an 'island' culture, and then actually heavy cultures that aren't 'cultural groups'
-	
-	private String firstName,title;
-
-	private short featPoints;
-	
-	private EnumMap<Effect,Integer> effects;//hash set not permitted
-	//private RaceFlag rFlag;
-
-	//need to make either this or raceflag not a thing
-	//if removing this, raceflag needs to override
-	//if removing raceflag, idk
-	private TypeBody bodyType;
-	//bodystatus should be entirely internal, use own hp values and stuff to display externally
-	private transient TargetHolder bodystatus;
-	
-	//public Weapon backupWeapon = null;
-	
-	private int scar = -1;
-	
-	private float pitch = 0;
-	
-	private short pKills = 0, deaths = 0;
-	
-	private AIJob job;
-	
-	public FBox facRep = new FBox();
-	
-	public HostileTask hTask;
-	/**
-	 * used for cleanse quests, you can remove or change if you want to change if a person or creature counts,
-	 * ie a bandit changing to not bandit or vice versa, or just set it to -1 to make a creature not count entirely
-	 * (for mook reasons usually)
-	 */
-	public byte cleanseType = -1;
-	
-	private SuperPerson superperson;
 	
 	public enum RaceFlag {
 		NONE, CRACKS, UNDEAD;
 	}
-	
 	
 	public enum PersonType{
 		NO_SPEAK,
@@ -180,18 +169,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			PersonType.COWARDLY,PersonType.FEARLESS
 			);
 	
-	 //= EnumSet.noneOf(Skill.class);//new EnumSet<trawel.personal.classless.Skill>();
-	private Set<Feat> featSet;//new EnumSet<trawel.personal.classless.Skill>();
-	private Set<Perk> perkSet;
-	private Set<Archetype> archSet;
 	
-	//rebuilt from the above 3, lazyloaded
-	private transient AttributeBox atrBox;
-	private transient Set<Skill> skillSet;
 	
-	//private boolean isPlayer;
 	
-	//Constructor
+	//Constructors
 	protected Person(int level, boolean autolevel, Race.RaceType raceType, Material matType,RaceFlag raceFlag,boolean giveScar,AIJob job,Race race) {
 		featSet = EnumSet.noneOf(Feat.class);
 		perkSet = EnumSet.noneOf(Perk.class);
@@ -799,12 +780,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				extra.println(getNameNoTitle()+" looks drunk!");
 			}
 		}
-		/*
-		if (hasSkill(Skill.BEER_BELLY)) {
-			if (takeBeer()) {
-				hp+=level*5;
-			}
-		}*/
 		
 		boolean wentFast = false;
 		if (hasEffect(Effect.SUDDEN_START)) {
@@ -855,10 +830,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				extra.println("Your damaged equipment is pretty beat up!");
 			}
 		}
-		/*
-		if (this.hasEffect(Effect.B_MARY)) {
-			this.addEffect(Effect.BLEED);
-		}*/
 	}
 	
 
@@ -1120,8 +1091,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				list.add(new MenuBack("back"));
 				return list;
 			}});
-		//extra.println("Classless backend is implemented, but both choosing new feats/archetypes and the actual feats/archetypes/perks did not make it into this beta release. Instead get 'The Tough'.");
-		//setFeat(Feat.TOUGH_COMMON);
 	}
 	/**
 	 * will return false if can't get a feat
@@ -1258,206 +1227,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		
 	}
 
-	/*
-	private void eaSubMenu(EAType eat) {
-		extra.menuGo(new MenuGenerator() {
-
-			@Override
-			public List<MenuItem> gen() {
-				List<MenuItem> list2 = new ArrayList<MenuItem>();
-				if (Player.player.eArts.size() >= 2) {
-					list2.add(new MenuBack());
-					return list2;
-				}
-				for (EArt ear: EArt.values()) {
-					if (!Player.player.eArts.contains(ear) && ear.type.equals(eat)) {
-						list2.add(new MenuSelectTitled(ear.name) {
-
-							@Override
-							public boolean go() {
-								extra.menuGo(new MenuGenerator() {
-
-									@Override
-									public List<MenuItem> gen() {
-										List<MenuItem> list3 = new ArrayList<MenuItem>();
-										list3.add(new MenuLine(){
-
-											@Override
-											public String title() {
-												EArt earta = EArt.valueOf(nameT.toUpperCase());
-												return earta.name + ": " + earta.desc;
-											}});
-										list3.add(new MenuSelect() {
-
-											@Override
-											public String title() {
-												return "accept";
-											}
-
-											@Override
-											public boolean go() {
-												EArt earta = EArt.valueOf(nameT.toUpperCase());
-												Player.player.addEArt(earta);
-												return true;
-											}
-											
-										});
-										
-										list3.add(new MenuBack());
-										
-										return list3;
-									}});
-								return false;
-							}});
-					}
-				}
-				list2.add(new MenuBack());
-				return list2;
-			}});
-	}
-	private void csSubMenu() {
-		extra.menuGo(new MenuGenerator() {
-
-			@Override
-			public List<MenuItem> gen() {
-				List<MenuItem> list = new ArrayList<MenuItem>();
-				list.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "Armor Skills";
-					}
-
-					@Override
-					public boolean go() {
-						extra.menuGo(new MenuGenerator() {
-
-							@Override
-							public List<MenuItem> gen() {
-								List<MenuItem> list2 = new ArrayList<MenuItem>();
-								list2.add(new PlayerSkillpointsLine());
-								list2.add(new MenuSelect() {
-
-									@Override
-									public String title() {
-										return "Light Armor: " + Player.player.getPerson().lightArmorLevel;
-									}
-
-									@Override
-									public boolean go() {
-										extra.println("Light Armor skill will help you with armor pieces that already grant a benefit to dodge. It costs 1 skillpoint per level. Buy?");
-										if (extra.yesNo()) {
-										if (Player.player.getPerson().getSkillPoints() > 0) {
-											Player.player.getPerson().useSkillPoint();
-											Player.player.getPerson().lightArmorLevel++;
-										}}
-										return false;
-									}});
-								list2.add(new MenuSelect() {
-
-									@Override
-									public String title() {
-										return "Heavy Armor: " + Player.player.getPerson().heavyArmorLevel;
-									}
-
-									@Override
-									public boolean go() {
-										extra.println("Heavy Armor skill will help negate the dodge penalty of armors. It costs 1 skillpoint per level. Buy?");
-										if (extra.yesNo()) {
-										if (Player.player.getPerson().getSkillPoints() > 0) {
-											Player.player.getPerson().useSkillPoint();
-											Player.player.getPerson().heavyArmorLevel++;
-										}}
-										return false;
-									}});
-								list2.add(new MenuBack());
-								return list2;
-							}});
-						return false;
-					}});
-				list.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "Defense Skills";
-					}
-
-					@Override
-					public boolean go() {
-						extra.menuGo(new MenuGenerator() {
-
-							@Override
-							public List<MenuItem> gen() {
-								List<MenuItem> list2 = new ArrayList<MenuItem>();
-								list2.add(new PlayerSkillpointsLine());
-								list2.add(new MenuSelect() {
-
-									@Override
-									public String title() {
-										return "Endurance: " + Player.player.getPerson().edrLevel;
-									}
-
-									@Override
-									public boolean go() {
-										extra.println("Endurance grants you "+ENDURANCE_HP_BONUS+" base hp per stack. It costs 1 skillpoint per level. Buy?");
-										if (extra.yesNo()) {
-										if (Player.player.getPerson().getSkillPoints() > 0) {
-											Player.player.getPerson().useSkillPoint();
-											Player.player.getPerson().edrLevel++;
-										}}
-										return false;
-									}});
-								list2.add(new MenuBack());
-								return list2;
-							}});
-						return false;
-					}});
-				list.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "Utility Skills";
-					}
-
-					@Override
-					public boolean go() {
-						extra.menuGo(new MenuGenerator() {
-
-							@Override
-							public List<MenuItem> gen() {
-								List<MenuItem> list2 = new ArrayList<MenuItem>();
-								list2.add(new PlayerSkillpointsLine());
-								if (!Player.player.getPerson().hasSkill(Skill.EXPANDER)) {
-								list2.add(new MenuSelect() {
-
-									@Override
-									public String title() {
-										return "Shopping lvl 1";
-									}
-
-									@Override
-									public boolean go() {
-										extra.println("Adds +1 item in each store maximum. Buy?");
-										if (extra.yesNo()) {
-										if (Player.player.getPerson().getSkillPoints() > 0) {
-											Player.player.getPerson().useSkillPoint();
-											Player.player.getPerson().addSkill(Skill.EXPANDER);
-										}}
-										return false;
-									}});
-								}
-								list2.add(new MenuBack());
-								return list2;
-							}});
-						return false;
-					}});
-				list.add(new MenuBack());
-				return list;
-			}});
-	}
-		
-	*/
-
 	/**
 	 * Returns the stance that this person is currently using.
 	 * @return Stance (Stance)
@@ -1503,9 +1272,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		firstName = str;
 	}
 	
-	/**
-	 * Display this person's stats.
-	 */
 	public void displayStats() {
 		displayStats(true);
 	}
@@ -1549,14 +1315,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		
 		
 	}
-	
-	/**
-	 * Returns the reference to the Taunts instance this person uses.
-	 * @return (Taunts)
-	 */
-	//public Taunts getTaunts() {
-		//return brag;
-	//}
 	
 	public PersonType getPersonType() {
 		return personType;
@@ -1637,11 +1395,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		return healing;
 	}
 	
-	//yayyyy standardizedish flags
-	//will work on ints and longs as well if need more flags
-	//got the idea from the concept of enumset
-	//this just avoids the object overhead plus byte is 1/8th of a long
-	
 	public boolean getFlag(PersonFlag flag) {
 		return extra.getEnumShortFlag(flag.ordinal(), flags);
 		//return Byte.toUnsignedInt((byte) (flags & (1 << flag.ordinal()))) > 0;
@@ -1658,37 +1411,21 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 
 	public boolean isRacist() {
-		//unsure if best way, but I care more about memory storage than speed, so doesn't need to be fast rn
-		//return Byte.toUnsignedInt((byte) (flags & (1 << 0))) > 0;
 		return getFlag(PersonFlag.RACIST);
 	}
 	
 	public void setRacism(boolean bool) {
 		//at 0 index
-		/*
-		if (bool) {
-			flags |= (1 << 0);
-			return;
-		}
-		flags &= ~(1 << 0);*/
 		setFlag(PersonFlag.RACIST,bool);
 	}
 	
 	public boolean isAngry() {
 		return getFlag(PersonFlag.ANGRY);
-		//unsure if best way, but I care more about memory storage than speed, so doesn't need to be fast rn
-		//return Byte.toUnsignedInt((byte) (flags & (1 << 1))) > 0;
 	}
 	
 	public void setAngry(boolean bool) {
 		setFlag(PersonFlag.ANGRY,bool);
 		//at 1 index
-		/*
-		if (bool) {
-			flags |= (1 << 1);
-			return;
-		}
-		flags &= ~(1 << 1);*/
 	}
 
 	public void displayArmor() {
@@ -1706,22 +1443,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		extra.println(extra.ITEM_DESC_PROP+"Blunt: "+extra.ITEM_WANT_HIGHER+ blunt + "/" +bluntm);
 		extra.println(extra.ITEM_DESC_PROP+"Pierce: "+extra.ITEM_WANT_HIGHER+ pierce + "/" +piercem);
 	}
-
-	/*
-	public int getMageLevel() {
-		int base = this.isPlayer() ? Player.player.eaBox.getStatMAG() : mageLevel;
-		return extra.zeroOut(base+bag.getRace().magicPower+magePow-burnouts());
-	}
-
-	public int getDefenderLevel() {
-		int base = this.isPlayer() ? Player.player.eaBox.getStatDEF() : defenderLevel;
-		return extra.zeroOut(base+bag.getRace().defPower+defPow-burnouts());
-	}
-
-	public int getFighterLevel() {
-		int base = this.isPlayer() ? Player.player.eaBox.getStatATK() : fighterLevel;
-		return extra.zeroOut(base+fightPow-burnouts());
-	}*/
 	
 	public void removeEffectAll(Effect e) {
 		effects.put(e, 0);
@@ -1996,9 +1717,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 
 	public void addKillStuff() {
-		//if (this.isPlayer()) {
-			//Player.player.eaBox.exeKillLevel += .3;
-		//}
 		
 	}
 
