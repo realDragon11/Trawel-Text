@@ -9,6 +9,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.Networking.Area;
+import trawel.Effect;
 import trawel.extra;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.Item;
@@ -186,6 +187,28 @@ public class Blacksmith extends Feature {
 						}
 						return false;
 					}});
+				if (Player.player.getPerson().hasEffect(Effect.DAMAGED)) {
+					int repairCost = (int) Math.ceil(getUnEffectiveLevel());
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return "Repair Damaged Effect. ("+World.currentMoneyDisplay(repairCost)+")";
+						}
+
+						@Override
+						public boolean go() {
+							if (Player.player.getGold() >= repairCost) {
+								Player.player.loseGold(repairCost);
+								extra.println(extra.RESULT_PASS+" They tinker with your equipment.");
+								//next call displays the effect results
+								Player.player.getPerson().repairEffects();
+							}else {
+								extra.println(extra.RESULT_ERROR+"You can't afford that!");
+							}
+							return false;
+						}});
+				}
 				list.add(new MenuBack("Leave."));
 				return list;
 			}});

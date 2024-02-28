@@ -233,6 +233,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 												Player.addTime(1);
 												mainGame.globalPassTime();
 												Player.player.getPerson().washAll();
+												Player.player.getPerson().bathEffects();
 												return true;
 											}});
 									}
@@ -248,6 +249,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 											public boolean go() {
 												Player.addTime(rentTime+.1);
 												mainGame.globalPassTime();
+												Player.player.getPerson().restEffects();
 												return true;
 											}});
 									}else {

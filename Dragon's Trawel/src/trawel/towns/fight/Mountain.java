@@ -6,6 +6,7 @@ import com.github.yellowstonegames.core.WeightedTable;
 
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
+import trawel.Effect;
 import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.extra;
@@ -61,6 +62,7 @@ public class Mountain extends ExploreFeature{
 					@Override
 					public boolean go() {
 						Player.player.getPerson().washAll();
+						Player.player.getPerson().bathEffects();
 						extra.println("You wash the blood off of your armor.");
 						Player.bag.graphicalDisplay(-1,Player.player.getPerson());
 						return false;
@@ -163,9 +165,9 @@ public class Mountain extends ExploreFeature{
 	
 	private void rockSlide() {
 		extra.println("Some rocks start falling down the mountain!");
-		extra.println("1 duck and cover");
-		extra.println("2 dodge");
-		extra.println("9 do nothing");
+		extra.println("1 Take it head on.");
+		extra.println("2 Attempt to dodge.");
+		extra.println("9 Minimize the damage.");
 		switch (extra.inInt(2,true,true)) {
 		case 1:
 			//MAYBELATER: find expected blunt resist
@@ -174,7 +176,8 @@ public class Mountain extends ExploreFeature{
 				Player.addXp(Math.max(1,tier/3));
 			}else {
 				extra.println("They rocks crush you!");
-				mainGame.die("You pull yourself out from under the rocks.");
+				mainGame.die("You pull yourself out from under the rocks, your armor is all dinged up.");
+				Player.player.getPerson().addEffect(Effect.DAMAGED);
 			}
 			;break;
 		case 2: 
@@ -183,7 +186,8 @@ public class Mountain extends ExploreFeature{
 				Player.addXp(1);
 			}else {
 				extra.println("They rocks crush you!");
-				mainGame.die("You pull yourself out from under the rocks.");
+				mainGame.die("You pull yourself out from under the rocks, your armor is all dinged up.");
+				Player.player.getPerson().addEffect(Effect.DAMAGED);
 			}
 			;break;
 		case 3:

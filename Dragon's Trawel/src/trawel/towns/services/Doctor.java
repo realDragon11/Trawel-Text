@@ -7,6 +7,7 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import trawel.Networking.Area;
+import trawel.Effect;
 import trawel.extra;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -57,7 +58,7 @@ public class Doctor extends Feature {
 						Player.player.getPerson().displayEffects();
 						return false;
 					}});
-				//includes effects that already wore off, which simulates a 'checkup' mechanic vaguely
+				//TODO: includes effects which wore off which is bad now
 				int effectGuess = extra.clamp(Player.player.getPerson().effectsSize(), 3, 6);
 				int cost = Math.round(getUnEffectiveLevel()*(effectGuess/1.5f));
 				list.add(new MenuSelect() {
@@ -81,6 +82,7 @@ public class Doctor extends Feature {
 						}
 						if (extra.yesNo()) {
 							Player.player.addGold(-cost);
+							Player.player.getPerson().removeEffectAll(Effect.CURSE);
 							Player.player.getPerson().cureEffects();
 						}
 						return false;
@@ -97,7 +99,7 @@ public class Doctor extends Feature {
 			int price = (int) (2*getUnEffectiveLevel());
 			//must have been afflicted by at least one effect since last doctor visit/creation
 			town.getPersonableOccupants().filter(a -> a.getPerson().effectsSize() > 0 && a.canBuyMoneyAmount(price)).limit(3)
-			.forEach(a -> a.getPerson().cureEffects());
+			.forEach(a -> a.getPerson().clearEffects());//uses clear instead of cure because NPCs don't go to blacksmiths and it's better to reduce the size of effect maps on npcs
 			timecounter += extra.randRange(20,40);
 		}
 		return null;

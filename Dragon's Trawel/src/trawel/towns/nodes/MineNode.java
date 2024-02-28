@@ -258,7 +258,9 @@ public class MineNode implements NodeType{
 		switch(holder.getEventNum(node)) {
 		case 2:
 			extra.println("You wash yourself in the "+holder.getStorageFirstClass(node,String.class)+".");
-			Player.player.getPerson().washAll();break;
+			Player.player.getPerson().washAll();
+			Player.player.getPerson().bathEffects();
+			break;
 		case 1://duelist
 		case 3://vein
 		case 4://vein

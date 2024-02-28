@@ -1,9 +1,13 @@
 package trawel;
 
 public enum Effect{
-	//other
+	//negative lasting status effects the player has to remove somewhere
+	//used as punishments/costs for events, or as skill tie ins
 	CURSE("Curse","Base HP is decreased by half.",true,false,-4),
-	BURNOUT("Burnout","Decreased skill.",false,true,-2),
+	BURNOUT("Burnout","Decreased skill.",true,false,-2),
+	DAMAGED("Damaged","Armor starts at 50% condition each battle.",true,false,-4),
+	BEES("BEEEES","Bees sting them occasionally, dealing random damage between 1 flat and 4% LHP.",true,false,-2),
+	//other
 	CONFUSED_TARGET("Confused","Their next attack will have a random defender from any side.",false,false,-2),
 	FLUMMOXED("Flummoxed","Next queued attack will be around 1% less accurate per stack.",false,true,-2),
 	//normal wounds
@@ -23,7 +27,6 @@ public enum Effect{
 	HASTE("Haste","+5% speed stat.",false,false,2), 
 	HEARTY("Hearty","+5% LHP at battle start. Doesn't stack with Forged.",false,false,2), 
 	R_AIM("Reactive Aim","Upon taking attack damage, if currently attacking, their attack gains a percent bonus to hit roll equal to the percent of MHP they lost.",false,false,2),
-	BEES("BEEEES","Bees sting them occasionally, dealing random damage between 1 flat and 4% LHP.",true,false,-2),
 	BEE_SHROUD("Bee Shroud","1.1x dodge. When they dodge an attack or are missed, applies bees to their attacker.",false,false,2),
 	B_MARY("Bloody Mary","Whenever attacked, add a stack of internal bleeding to themselves and their attacker. Attacker's bleeding heals them 2x the amount they bleed for.",false,false,0),
 	FORGED("Forged","+5% LHP at battle start. Every defense, restore a flat 10% of their armor before the attack, up to 100% quality.",false,false,2),

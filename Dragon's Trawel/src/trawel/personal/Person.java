@@ -532,7 +532,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		archSet.add(a);
 		switch (a) {
 		case PROMOTED:
-			this.cureEffects();//cures effects, notably curse, which they just gained immunity to
+			this.clearEffects();//cures effects, notably curse, which they just gained immunity to
 			break;
 		}
 		updateSkills();//just update instantly now
@@ -750,6 +750,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (this.isPlayer()) {
 			sipped = Player.player.doSip();
 			isPlay = true;
+			if (hasEffect(Effect.CURSE)) {
+				extra.println("The curse saps the life out of you...");
+			}
 		}else {
 			if (superperson != null) {
 				sipped = superperson.doSip();
@@ -779,7 +782,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		}
 		
 		//HP calculations
-		tempMaxHp = getOOB_HP();
+		tempMaxHp = getOOB_HP();//curse indicator handled in first player check
 		if (this.hasEffect(Effect.HEARTY) || this.hasEffect(Effect.FORGED)) {
 			tempMaxHp+= IEffectiveLevel.cleanLHP(level, 0.05);
 		}
@@ -845,6 +848,12 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		}
 		if (hasSkill(Skill.ARMOR_TUNING)) {
 			bag.buffArmor(1.2f);
+		}
+		if (hasEffect(Effect.DAMAGED)) {
+			bag.buffArmor(.5f);
+			if (isPlay) {
+				extra.println("Your damaged equipment is pretty beat up!");
+			}
 		}
 		/*
 		if (this.hasEffect(Effect.B_MARY)) {
@@ -1718,8 +1727,67 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		effects.put(e, 0);
 	}
 	
-	public void cureEffects() {
+	/**
+	 * wipes all effects, use for entirely clean slate
+	 */
+	public void clearEffects() {
 		effects.clear();//will need to be more complex if there ever are positive longterm effects
+	}
+	
+	/**
+	 * use for doctor clearing certain effects like curse, burnout, and bees
+	 */
+	public void cureEffects() {
+		if (isPlayer()) {
+			if (hasEffect(Effect.CURSE)) {
+				extra.println(extra.RESULT_GOOD+"Your curse is lifted!");
+			}
+			if (hasEffect(Effect.BURNOUT)) {
+				extra.println(extra.RESULT_GOOD+"Your burnout is treated!");
+			}
+			if (hasEffect(Effect.BEES)) {
+				extra.println(extra.RESULT_GOOD+"Your bees are cured!");
+			}
+		}
+		removeEffectAll(Effect.CURSE);
+		removeEffectAll(Effect.BURNOUT);
+		removeEffectAll(Effect.BEES);
+	}
+	
+	/**
+	 * use for clearing effects that go away with a bath, like bees
+	 */
+	public void bathEffects() {
+		if (isPlayer()) {
+			if (hasEffect(Effect.BEES)) {
+				extra.println(extra.RESULT_GOOD+"A quick dip makes the bees stop following you.");
+			}
+		}
+		removeEffectAll(Effect.BEES);
+	}
+	
+	/**
+	 * used for clearing effects on rest, like burnout
+	 */
+	public void restEffects() {
+		if (isPlayer()) {
+			if (hasEffect(Effect.BURNOUT)) {
+				extra.println(extra.RESULT_GOOD+"You rest off the burnout.");
+			}
+		}
+		removeEffectAll(Effect.BURNOUT);
+	}
+	
+	/**
+	 * use for clearing effects that need to be repaired, like armor damage
+	 */
+	public void repairEffects() {
+		if (isPlayer()) {
+			if (hasEffect(Effect.DAMAGED)) {
+				extra.println(extra.RESULT_GOOD+"Your armor is repaired.");
+			}
+		}
+		removeEffectAll(Effect.DAMAGED);
 	}
 	
 	/**

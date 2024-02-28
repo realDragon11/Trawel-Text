@@ -249,6 +249,7 @@ public class GroveNode implements NodeType{
 		case 2: 
 			extra.println("You wash yourself in the "+holder.getStorageFirstClass(node, String.class)+".");
 			Player.player.getPerson().washAll();
+			Player.player.getPerson().bathEffects();
 			return false;
 		case 4:
 			extra.println("You find a "+holder.getStorageFirstClass(node,String.class)+"... With their equipment intact!");
@@ -1003,6 +1004,7 @@ public class GroveNode implements NodeType{
 						extra.println("Really pay?");
 						if (extra.yesNo()) {
 							Player.player.addGold(-cost);
+							Player.player.getPerson().removeEffectAll(Effect.CURSE);
 							Player.player.getPerson().cureEffects();
 							extra.println("You feel better.");
 							return false;

@@ -174,7 +174,7 @@ public class World extends TContextOwner{
 	
 	public void addDeathCheater(Person p) {
 		p.getBag().regenNullEquips(p.getLevel());
-		p.cureEffects();
+		p.clearEffects();
 		Agent sp = p.setOrMakeAgentGoal(AgentGoal.DEATHCHEAT);
 		reoccuring.add(sp);
 	}

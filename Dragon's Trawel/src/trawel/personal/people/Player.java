@@ -981,12 +981,24 @@ public class Player extends SuperPerson{
 
 					@Override
 					public String title() {
-						return "Raw Stats";
+						return "Raw Stats and Effects";
 					}
 
 					@Override
 					public boolean go() {
 						person.displayStats(false);
+						if (person.hasEffect(Effect.CURSE)) {
+							extra.println(extra.RESULT_BAD+"You are cursed.");
+						}
+						if (person.hasEffect(Effect.BURNOUT)) {
+							extra.println(extra.RESULT_BAD+"You are burned out.");
+						}
+						if (person.hasEffect(Effect.DAMAGED)) {
+							extra.println(extra.RESULT_BAD+"Your gear is damaged.");
+						}
+						if (person.hasEffect(Effect.BEES)) {
+							extra.println(extra.RESULT_BAD+"You are beset by bees.");
+						}
 						return false;
 					}});
 				list.add(new MenuSelect() {
