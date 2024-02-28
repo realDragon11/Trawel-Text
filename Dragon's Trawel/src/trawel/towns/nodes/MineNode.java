@@ -201,17 +201,12 @@ public class MineNode implements NodeType{
 	@Override
 	public void apply(NodeConnector holder,int madeNode) {
 		switch (holder.getEventNum(madeNode)) {
-		/*
-		case -3: made.name = "sapphire cluster"; made.interactString = "mine sapphires";break;
-		case -2: made.name = "ruby cluster"; made.interactString = "mine rubies";break;
-		case -1: made.name = "emerald cluster"; made.interactString = "mine emeralds";break;
-		case 0: made.name = ""; made.interactString = "";break;*/
 		case 1:
 			Person p = RaceFactory.getDueler(holder.getLevel(madeNode));
 			String warName = extra.capFirst(randomLists.randomWarrior());
 			p.setTitle("the "+warName);
 			GenericNode.setSimpleDuelPerson(holder,madeNode, p,warName,"Approach " +p.getNameNoTitle() +".","Challenge");
-		break;
+			break;
 		case 2: 
 			holder.setStorage(madeNode, extra.choose("river","pond","lake","stream"));
 			break;
@@ -223,26 +218,17 @@ public class MineNode implements NodeType{
 			break;
 		case 5:
 			GenericNode.applyLockDoor(holder, madeNode);
-			/*
-			holder.setStorage(madeNode,extra.choose("locked door","barricaded door","padlocked door"));
-			holder.setForceGo(madeNode, true);*/
 			break;
-		case 6:
+		case 6://crystals
 			String cColor = randomLists.randomPrintableColor();
 			holder.setStorage(madeNode, cColor);
-			//made.interactString = "examine crystals";
-			//made.storage1 = randomLists.randomColor();
-			//made.name = "weird " + (String)made.storage1 + " crystals";break;
 			break;
 		case 7://minecart
 			break;
-		case 8: 
+		case 8://ladder
 			holder.setForceGo(madeNode, true);
-			//made.name = "ladder"; made.interactString = "traverse ladder"; made.setForceGo(true)
-		break;
-		case 9: 
-			//made.name = "cultists"; made.interactString = "approach cultists";
-			//made.storage1 = RaceFactory.getCultist(made.level);
+			break;
+		case 9://cultists
 			int cultLevel = holder.getLevel(madeNode)+2;
 			int mookLevel = Math.max(1,cultLevel-4);
 			holder.setLevel(madeNode, cultLevel);
@@ -270,50 +256,16 @@ public class MineNode implements NodeType{
 	@Override
 	public boolean interact(NodeConnector holder,int node) {
 		switch(holder.getEventNum(node)) {
-		//case -3: saph1();break;
-		//case -2: rubies1();break;
-		//case -1: emeralds1();break;
-		//case 1: duelist();break;//generic now, should probably do enums by now tbh
 		case 2:
 			extra.println("You wash yourself in the "+holder.getStorageFirstClass(node,String.class)+".");
 			Player.player.getPerson().washAll();break;
-		//case 3: goldVein1();break;
-		//case 4: mugger1(); if (node.state == 0) {return true;};break;
-		case 5: /*
-			if (holder.isForceGo(node)) {
-				if (holder.parent.getOwner() == Player.player) {
-					extra.println("You find the keyhole and then unlock the "+holder.getStorageFirstClass(node,String.class)+".");
-					//holder.setForceGo(node, false);
-					holder.setStateNum(node,1);//unlocked once
-					//so they can change locks, check to make sure that there isn't an infinite loop on this still
-					holder.findBehind(node,"unlocked door");
-				}else {
-					if (holder.getStateNum(node) == 1) {
-						extra.println("You bash open the "+holder.getStorageFirstClass(node,String.class)+".");
-					}else {
-						extra.println("Looks like they changed the locks! You bash open the door.");
-					}
-					
-					holder.setStateNum(node,2);//broken open
-					holder.setForceGo(node, false);
-					holder.findBehind(node,"broken door");
-				}
-			}else {
-				if (holder.parent.getOwner() == Player.player) {
-					extra.println("You relock the door every time you go by it, but you know where the hole is now so that's easy.");
-				}else {
-					extra.println(
-							extra.choose(
-							"The door is broken."
-							,"The door is smashed to bits."
-							,"The metal on the door is hanging off the splinters."
-							,"The lock is intact. The rest of the door isn't."
-							)
-							);
-					holder.findBehind(node,"broken door");
-				}
-			};
-			break;*/
+		case 1://duelist
+		case 3://vein
+		case 4://vein
+		case 5://door
+		case 10://mugger
+			//handled by generic node code
+			break;
 		case 6: 
 			String cColor = holder.getStorageFirstClass(node,String.class);
 			extra.println("You examine the " + cColor+ " crystals. They are very pretty.");
@@ -350,7 +302,7 @@ public class MineNode implements NodeType{
 		int state = holder.getStateNum(node);
 		List<Person> cultists = null;
 		Person leader = null;
-		boolean partOfCult = Player.player.getPerson().hasPerk(Perk.CULT_LEADER_BLOOD);
+		boolean partOfCult = Player.player.getPerson().hasPerk(Perk.CULT_CHOSEN_BLOOD);
 		if (state != 3) {
 			cultists = holder.getStorageFirstClass(node,List.class);
 			leader = extra.getNonAddOrFirst(cultists);
@@ -398,7 +350,7 @@ public class MineNode implements NodeType{
 					list.add(new MenuSelect() {
 						@Override
 						public String title() {
-							return "Listen in on Blood Cult matters";
+							return "Listen in on Blood Cult matters.";
 						}
 
 						@Override
@@ -407,13 +359,13 @@ public class MineNode implements NodeType{
 							return false;
 						}});
 					list.add(attackCultMenu(holder,node));
-					boolean nowOfCult = Player.player.getPerson().hasPerk(Perk.CULT_LEADER_BLOOD);
+					boolean nowOfCult = Player.player.getPerson().hasPerk(Perk.CULT_CHOSEN_BLOOD);
 					if (!nowOfCult) {
 						list.add(new MenuSelect() {
 
 							@Override
 							public String title() {
-								return "Listen to Offer";
+								return "Listen to Offer.";
 							}
 
 							@Override
@@ -426,7 +378,7 @@ public class MineNode implements NodeType{
 									mainGame.die("You rise from the altar!");
 									extra.println("The cultists praise you as the second coming of flagjaij! You feel sick, but powerful.");
 									Player.player.getPerson().addEffect(Effect.CURSE);
-									Player.unlockPerk(Perk.CULT_LEADER_BLOOD);
+									Player.unlockPerk(Perk.CULT_CHOSEN_BLOOD);
 									Player.player.hasCult = true;
 									Networking.unlockAchievement("cult1");
 									holder.setStateNum(node,4);
@@ -442,7 +394,7 @@ public class MineNode implements NodeType{
 
 						@Override
 						public String title() {
-							return "Poke around the Altar";
+							return "Poke around the Altar.";
 						}
 
 						@Override
@@ -456,7 +408,7 @@ public class MineNode implements NodeType{
 
 						@Override
 						public String title() {
-							return "Examine the dead Cultists";
+							return "Examine the dead Cultists.";
 						}
 
 						@Override
@@ -471,7 +423,7 @@ public class MineNode implements NodeType{
 					list.add(new MenuSelect() {
 						@Override
 						public String title() {
-							return "Listen in on Blood Cult matters";
+							return "Listen in on Blood Cult matters.";
 						}
 
 						@Override
@@ -492,7 +444,7 @@ public class MineNode implements NodeType{
 					break;
 				}
 				//we can set force go and just back out, the node's state variable persists across local class lines
-				list.add(new MenuBack("leave the altar area"));
+				list.add(new MenuBack("Leave the altar area."));
 				return list;
 			}});
 		
@@ -504,15 +456,7 @@ public class MineNode implements NodeType{
 
 			@Override
 			public String title() {
-				/*
-				List<Person> cultists = holder.getStorageFirstClass(node,List.class);
-				Person leader = extra.getNonAddOrFirst(cultists);
-				if (cultists.size() > 1) {
-					return extra.PRE_RED + "Attack " + leader.getName() +" and their acolytes?";
-				}
-				return extra.PRE_RED + "Attack " + leader.getName() +"?";
-				*/
-				return "Destroy Cult";
+				return "Destroy Cult.";
 			}
 
 			@Override
@@ -541,7 +485,6 @@ public class MineNode implements NodeType{
 	@Override
 	public void passTime(NodeConnector holder,int node, double time, TimeContext calling) {
 		// empty
-		
 	}
 
 
@@ -581,7 +524,7 @@ public class MineNode implements NodeType{
 			return "Ladder";
 		case 9:
 			if (holder.getVisited(node) < 2) {//if not visited
-				return "Dark Chamber";
+				return "Dark Chamber";//TODO: more dark chambers
 			}
 			return "Blood Cult Sanctum";
 		}

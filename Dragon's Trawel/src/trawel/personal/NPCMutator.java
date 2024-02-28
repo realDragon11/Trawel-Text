@@ -83,8 +83,9 @@ public class NPCMutator {
 			}
 			list.add(DrawBane.BLOOD);
 		}
-		p.setTitle(extra.choose("the Blood Queen","Chosen by The Blood","Blood Champion"));
-		p.setPerk(Perk.CULT_LEADER_BLOOD);
+		p.setTitle(extra.choose("the Blood Queen",", Chosen by The Blood","the Blood Champion"));
+		p.setPerk(Perk.CULT_CHOSEN_BLOOD);
+		p.setPerk(Perk.CULT_LEADER);
 		p.hTask = HostileTask.CULTIST;
 		return p;
 	}
@@ -101,7 +102,7 @@ public class NPCMutator {
 				list.add(DrawBane.BLOOD);
 			}
 		}
-		p.setTitle(extra.choose("Servant of Blood","the Bloodtender","","","Bloodguard"));
+		p.setTitle(extra.choose(", Servant of Blood","the Bloodtender",", Sanguine Servant","the Crimson Cultist","the Bloodguard","the Bloody Believer","the Crimson Convert"));
 		p.hTask = HostileTask.CULTIST;
 		return p;
 	}

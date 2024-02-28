@@ -50,7 +50,7 @@ public class StoryTutorial extends Story{
 	private int battleFam;//0 none, 1 fought but didn't win, 2 won a fight
 	
 	private EnumSet<Perk> bossPerkTriggers = EnumSet.of(Perk.HELL_BARONESS_1,Perk.FATED,Perk.STORYTELLER,Perk.QUEENSLAYER);
-	private EnumSet<Perk> worldPerkTriggers = EnumSet.of(Perk.MINE_ALL_VEINS,Perk.CULT_LEADER_BLOOD);
+	private EnumSet<Perk> worldPerkTriggers = EnumSet.of(Perk.MINE_ALL_VEINS,Perk.CULT_CHOSEN_BLOOD);
 	private EnumSet<Perk> blessPerkTriggers = EnumSet.of(Perk.SKY_BLESS_1,Perk.SKY_BLESS_2,Perk.FOREST_BLESS_1,Perk.FOREST_BLESS_2);
 	
 	private List<Class<? extends Feature>> explained = new ArrayList<>();
