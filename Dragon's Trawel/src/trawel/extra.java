@@ -715,7 +715,7 @@ public final class extra {
 			}
 			j++;
 		}*/
-		extra.println();
+		extra.println(extra.PRE_WHITE);
 	}
 
 	public static String cutPadLenFront(int len, String str) {

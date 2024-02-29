@@ -520,11 +520,10 @@ public class ImpairedAttack implements IAttack{
 			in[4] = 10;
 			in[5] = 6+4;
 			if (attack.isBypass()) {
-				extra.println("ELEMENTAL");
-				extra.specialPrint(in,getName() ,extra.format(getHitMult()) , extra.format(getWarmup()+getCooldown())  ,""+ (getIgnite())  ,""+(getFrost())  ,  ""+(getElec()));
+				extra.specialPrint(in,"MAGIC: "+getName(),extra.format(getHitMult()),extra.format(getWarmup()+getCooldown()),extra.COLOR_IGNITE+(getIgnite()),extra.COLOR_FROST+(getFrost()),extra.COLOR_ELEC+(getElec()));
 				break;
 			}
-			extra.specialPrint(in,getName() ,extra.format(getHitMult()) , extra.format(getWarmup()+getCooldown())  ,""+ (getSharp())  ,""+(getBlunt())  ,  ""+(getPierce()));
+			extra.specialPrint(in,getName(),extra.format(getHitMult()),extra.format(getWarmup()+getCooldown()),extra.COLOR_SHARP+(getSharp()),extra.COLOR_BLUNT+(getBlunt()),extra.COLOR_PIERCE+(getPierce()));
 			break;
 		case 2://two line 1
 			extra.println(getName());
