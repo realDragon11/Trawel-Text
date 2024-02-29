@@ -165,8 +165,8 @@ public class Mountain extends ExploreFeature{
 	
 	private void rockSlide() {
 		extra.println("Some rocks start falling down the mountain!");
-		extra.println("1 Take it head on. [Str]");
-		extra.println("2 Attempt to avoid the rocks. [Dex]");
+		extra.println("1 Take it head on. (Str)");
+		extra.println("2 Attempt to avoid the rocks. (Dex)");
 		extra.println("9 Minimize the damage.");
 		switch (extra.inInt(2,true,true)) {
 		case 1:
