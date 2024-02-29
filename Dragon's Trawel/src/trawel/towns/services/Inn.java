@@ -199,11 +199,14 @@ public class Inn extends Feature implements QuestBoardLocation{
 						return false;
 					}
 				});
-				if (rentTime > 0){
+				if (rentTime > 0 || owner == Player.player){
 					mList.add(new MenuSelect() {
 
 						@Override
 						public String title() {
+							if (owner == Player.player) {
+								return "Your Room (Owned Inn)";
+							}
 							return "Your Room ("+extra.F_TWO_TRAILING.format(rentTime)+" hours left)";
 						}
 
@@ -218,9 +221,12 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 										@Override
 										public String title() {
+											if (owner == Player.player) {
+												return Calender.dateFull(town);
+											}
 											return Calender.dateFull(town)+": ("+extra.F_TWO_TRAILING.format(rentTime)+" hours left)";
 										}});
-									if (rentTime > 1) {
+									if (rentTime > 1 || owner == Player.player) {
 										list.add(new MenuSelect() {
 
 											@Override
@@ -237,7 +243,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 												return true;
 											}});
 									}
-									if (rentTime < 24) {
+									if (rentTime < 24 && owner != Player.player) {
 										list.add(new MenuSelect() {
 
 											@Override
@@ -266,7 +272,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 												mainGame.globalPassTime();
 												return false;
 											}});
-										if (rentTime > 72) {
+										if (rentTime > 72 || owner == Player.player) {
 											list.add(new MenuSelect() {
 
 												@Override
