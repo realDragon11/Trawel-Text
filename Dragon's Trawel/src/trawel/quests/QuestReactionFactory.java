@@ -177,12 +177,14 @@ public class QuestReactionFactory {
 							@Override
 							public boolean go() {
 								Person playp = Player.player.getPerson();
-								if (playp.contestedRoll(p,playp.getDexterity(),p.getDexterity()) >= 0) {
+								//counts as an out of battle roll so burnout applies and to avoid other triggers
+								if (playp.contestedRoll(playp.getDexterity(),p.getDexterity()) >= 0) {
 									extra.println("You run away!");
 									return true;
 								}else {
 									//adds a small handicap, note that these tend to get cleared AFTER battle so this should work
 									playp.addEffect(Effect.EXHAUSTED);
+									//doesn't need burnout because they are being fought
 									extra.println(extra.PRE_BATTLE+"They catch up, prepare to defend yourself!");
 									Combat c = Player.player.fightWith(p);
 									if (c.playerWon() > 0) {

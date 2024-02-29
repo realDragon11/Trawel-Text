@@ -7,9 +7,10 @@ public enum Effect{
 	/**
 	 * used on failed OOB rolls to make the player less likely to spam them while the consequence can't stack
 	 */
-	BURNOUT("Burnout","Half attributes in out of battle contested rolls.",true,false,-2),
+	BURNOUT("Burnout","Halves attributes in out of battle contested rolls.",true,false,-2),
 	DAMAGED("Damaged","Armor starts at 50% condition each battle.",true,false,-4),
 	BEES("BEEEES","Bees sting them occasionally, dealing random damage between 1 flat and 4% LHP.",true,false,-2),
+	TIRED("Tired","Halves dodge multiplier.",true,false,-3),
 	//other
 	CONFUSED_TARGET("Confused","Their next attack will have a random defender from any side.",false,false,-2),
 	FLUMMOXED("Flummoxed","Next queued attack will be around 1% less accurate per stack.",false,true,-2),

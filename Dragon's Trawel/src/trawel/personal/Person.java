@@ -1276,9 +1276,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		displayStats(true);
 	}
 	public void displayStatOverview(boolean showHp) {
-		extra.println(getName() +": LvL " + this.getLevel() +" " + this.getBag().getRace().renderName(false)+".");
+		extra.println(getName() +": "+extra.ITEM_DESC_PROP+"LvL " +extra.ITEM_WANT_HIGHER+ this.getLevel() +extra.PRE_WHITE+" " + this.getBag().getRace().renderName(false)+".");
 		if (showHp) {
-			extra.println(" "+getHp() +"/"+ tempMaxHp +extra.ITEM_DESC_PROP+ " HP.");
+			extra.println(" "+extra.ITEM_WANT_HIGHER+getHp()+extra.PRE_WHITE +"/"+ tempMaxHp +extra.ITEM_DESC_PROP+ " HP.");
 		}
 		extra.println(" "
 		+extra.ITEM_WANT_HIGHER+extra.format(bag.getHealth()) + "x "+extra.ITEM_DESC_PROP+"hpm, "
@@ -1297,12 +1297,12 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (inCombat) {
 			displayStatOverview(true);
 		}else {
-			extra.println("This is " + this.getName() +". They are a level " + this.getLevel() +" " + this.getBag().getRace().renderName(false)+".");
-			extra.println("They have " + getBase_HP() + " LHP. Their health modifier is " + extra.format(bag.getHealth()) + "x. Their expected hp is "+getOOB_HP() +".");
-			extra.println("They have " + extra.format(bag.getAim()) + "x aiming, " +  extra.format(bag.getDam()) + "x damage, and "+extra.format(bag.getSpeed()) + "x speed.");
-			extra.println("They have " + extra.format(bag.getDodge()) + "x dodging, " + extra.format(bag.getSharpResist()) + " sharp resistance, " +
-			extra.format(bag.getBluntResist()) + " blunt resistance, and "+ extra.format(bag.getPierceResist()) + " pierce resistance.");
-			extra.println("They have " + xp + "/" + level*level + " xp toward level " + (level+1) + ".");
+			extra.println("This is " + this.getName() +". They are a "+extra.ITEM_DESC_PROP+"level " + extra.ITEM_WANT_HIGHER+this.getLevel() +" "+extra.PRE_WHITE + this.getBag().getRace().renderName(false)+".");
+			extra.println("They have "+extra.ITEM_WANT_HIGHER+ getBase_HP() +extra.ITEM_DESC_PROP+ " LHP"+extra.PRE_WHITE+". Their health modifier is " +extra.ITEM_WANT_HIGHER+ extra.format(bag.getHealth()) +extra.PRE_WHITE+ "x. Their expected hp is "+extra.ITEM_DESC_PROP+ getOOB_HP() +extra.PRE_WHITE+".");
+			extra.println("They have "+extra.ITEM_WANT_HIGHER+ extra.format(bag.getAim()) + "x "+extra.ITEM_DESC_PROP+"aiming"+extra.PRE_WHITE+", " +extra.ITEM_WANT_HIGHER+extra.format(bag.getDam()) + "x "+extra.ITEM_DESC_PROP+"damage"+extra.PRE_WHITE+", and "+extra.ITEM_WANT_HIGHER+extra.format(bag.getSpeed()) + "x "+extra.ITEM_DESC_PROP+"speed.");
+			extra.println("They have " +extra.ITEM_WANT_HIGHER+ extra.format(bag.getDodge()) + "x "+extra.ITEM_DESC_PROP+"dodging"+extra.PRE_WHITE+", "+extra.ITEM_WANT_HIGHER + extra.format(bag.getSharpResist()) +extra.ITEM_DESC_PROP+" sharp resistance"+extra.PRE_WHITE+", " +
+					extra.ITEM_WANT_HIGHER+extra.format(bag.getBluntResist()) +extra.ITEM_DESC_PROP+ " blunt resistance"+extra.PRE_WHITE+", and "+ extra.ITEM_WANT_HIGHER+extra.format(bag.getPierceResist())+extra.ITEM_DESC_PROP+ " pierce resistance"+extra.PRE_WHITE+".");
+			extra.println("They have " +extra.ITEM_WANT_HIGHER+ xp +extra.PRE_WHITE+ "/" + level*level + extra.ITEM_DESC_PROP+" xp"+extra.PRE_WHITE+" toward "+extra.ITEM_DESC_PROP+"level "+extra.PRE_WHITE + (level+1) + ".");
 			if (this.getBag().getRace().racialType == Race.RaceType.PERSONABLE) {
 				extra.println("Their inventory includes " + bag.nameInventory());
 				if (hasSkill(Skill.BEER_LOVER)) {extra.println("They look drunk.");}
@@ -1466,12 +1466,16 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			if (hasEffect(Effect.BURNOUT)) {
 				extra.println(extra.RESULT_GOOD+"Your burnout is treated!");
 			}
+			if (hasEffect(Effect.TIRED)) {
+				extra.println(extra.RESULT_GOOD+"Your tiredness is treated!");
+			}
 			if (hasEffect(Effect.BEES)) {
 				extra.println(extra.RESULT_GOOD+"Your bees are cured!");
 			}
 		}
 		removeEffectAll(Effect.CURSE);
 		removeEffectAll(Effect.BURNOUT);
+		removeEffectAll(Effect.TIRED);
 		removeEffectAll(Effect.BEES);
 	}
 	
@@ -1488,15 +1492,19 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 	
 	/**
-	 * used for clearing effects on rest, like burnout
+	 * used for clearing effects on rest, like burnout and tired
 	 */
 	public void restEffects() {
 		if (isPlayer()) {
 			if (hasEffect(Effect.BURNOUT)) {
 				extra.println(extra.RESULT_GOOD+"You rest off the burnout.");
 			}
+			if (hasEffect(Effect.TIRED)) {
+				extra.println(extra.RESULT_GOOD+"You rest off your tiredness.");
+			}
 		}
 		removeEffectAll(Effect.BURNOUT);
+		removeEffectAll(Effect.TIRED);
 	}
 	
 	/**
@@ -1644,6 +1652,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (hasEffect(Effect.EXHAUSTED)) {
 			mult *=.5;
 		}
+		if (hasEffect(Effect.TIRED)) {
+			mult *=.5;
+		}
 		return mult*
 				(crippled == 0 ? 1 : Math.pow(.8,crippled))
 				*(torn == 0 ? 1 : Math.pow(.9,torn));
@@ -1743,7 +1754,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		case B_REAVER_TALL:
 			bag.getHand().transmuteWeapMat(MaterialFactory.getMat("flesh"));
 			bag.getHand().transmuteWeapType(WeaponType.REAVER_STANDING);
-			
 			break;
 		}
 	}
