@@ -256,13 +256,20 @@ public final class extra {
 	//TODO: make some better global DRY damage code system
 	public static String CHAR_DAMAGE = "*";
 	
-	public static String CHAR_SHARP = "S";
-	public static String CHAR_BLUNT = "B";
-	public static String CHAR_PIERCE = "P";
-	public static String CHAR_IGNITE = "I";
-	public static String CHAR_FROST = "F";
-	public static String CHAR_ELEC = "E";
-	public static String CHAR_DECAY = "D";
+	public static String COLOR_SHARP = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.4f));
+	public static String CHAR_SHARP = COLOR_SHARP+"S";
+	public static String COLOR_BLUNT = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.4f));
+	public static String CHAR_BLUNT = COLOR_BLUNT+"B";
+	public static String COLOR_PIERCE = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.4f));
+	public static String CHAR_PIERCE = COLOR_PIERCE+"P";
+	public static String COLOR_IGNITE = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.2f));
+	public static String CHAR_IGNITE = COLOR_IGNITE+"I";
+	public static String COLOR_FROST = inlineColor(extra.colorMix(Color.CYAN,Color.WHITE,.4f));
+	public static String CHAR_FROST = COLOR_FROST+"F";
+	public static String COLOR_ELEC = inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.4f));
+	public static String CHAR_ELEC = COLOR_ELEC+"E";
+	public static String COLOR_DECAY = inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.4f));
+	public static String CHAR_DECAY = COLOR_DECAY+"D";
 
 	public static String DISP_WEIGHT = "weight";
 	public static String DISP_AETHER = "aether";
@@ -303,20 +310,20 @@ public final class extra {
 	public static final String EXPLAIN_SIMPLE_CHARS_DAMAGE = stringBuilder;
 
 	public static String explainDam() {
-		return CHAR_SHARP+" sharp, " + CHAR_BLUNT + " blunt, " +CHAR_PIERCE +" pierce.";
+		return CHAR_SHARP+" sharp, " + CHAR_BLUNT + " blunt, " +CHAR_PIERCE +" pierce."+extra.PRE_WHITE;
 	}
 
 	public static void charSwitchNone() {
 		CHAR_INSTANTS = "_";
 		CHAR_HITCHANCE = ">";
 		CHAR_DAMAGE = "*";
-		CHAR_SHARP = "S";
-		CHAR_BLUNT = "B";
-		CHAR_PIERCE = "P";
-		CHAR_IGNITE = "I";
-		CHAR_FROST = "F";
-		CHAR_ELEC = "E";
-		CHAR_DECAY = "D";
+		CHAR_SHARP = COLOR_SHARP+"S";
+		CHAR_BLUNT = COLOR_BLUNT+"B";
+		CHAR_PIERCE = COLOR_PIERCE+"P";
+		CHAR_IGNITE = COLOR_IGNITE+"I";
+		CHAR_FROST = COLOR_FROST+"F";
+		CHAR_ELEC = COLOR_ELEC+"E";
+		CHAR_DECAY = COLOR_DECAY+"D";
 		DISP_WEIGHT = "weight";
 		DISP_AETHER = "aether";
 		DISP_AMP = "AMP";
@@ -337,13 +344,13 @@ public final class extra {
 		CHAR_INSTANTS = "_";
 		CHAR_HITCHANCE = "%";
 		CHAR_DAMAGE = "*";
-		CHAR_SHARP = "S";
-		CHAR_BLUNT = "B";
-		CHAR_PIERCE = "P";
-		CHAR_IGNITE = "I";
-		CHAR_FROST = "F";
-		CHAR_ELEC = "E";
-		CHAR_DECAY = "D";
+		CHAR_SHARP = COLOR_SHARP+"S";
+		CHAR_BLUNT = COLOR_BLUNT+"B";
+		CHAR_PIERCE = COLOR_PIERCE+"P";
+		CHAR_IGNITE = COLOR_IGNITE+"I";
+		CHAR_FROST = COLOR_FROST+"F";
+		CHAR_ELEC = COLOR_ELEC+"E";
+		CHAR_DECAY = COLOR_DECAY+"D";
 		DISP_WEIGHT = "weight";
 		DISP_AETHER = "aether";
 		DISP_AMP = "AMP";
@@ -364,9 +371,13 @@ public final class extra {
 		CHAR_INSTANTS = "t";
 		CHAR_HITCHANCE = "h";
 		CHAR_DAMAGE = "d";
-		CHAR_SHARP = "S";
-		CHAR_BLUNT = "B";
-		CHAR_PIERCE = "P";
+		CHAR_SHARP = COLOR_SHARP+"S";
+		CHAR_BLUNT = COLOR_BLUNT+"B";
+		CHAR_PIERCE = COLOR_PIERCE+"P";
+		CHAR_IGNITE = COLOR_IGNITE+"I";
+		CHAR_FROST = COLOR_FROST+"F";
+		CHAR_ELEC = COLOR_ELEC+"E";
+		CHAR_DECAY = COLOR_DECAY+"D";
 		DISP_WEIGHT = "w";
 		DISP_AETHER = "a";
 		DISP_AMP = "AMP";
@@ -376,10 +387,6 @@ public final class extra {
 		HP_I_HALF = "½";
 		HP_I_SOME = "¼";
 		HP_I_DEAD = "Ø";//make sure it says this sanely
-		CHAR_IGNITE = "I";
-		CHAR_FROST = "F";
-		CHAR_ELEC = "E";
-		CHAR_DECAY = "D";
 		DAM_I_NONE = "¼";
 		DAM_I_SOME = "½";
 		DAM_I_HEAVY = "¾";
@@ -393,13 +400,13 @@ public final class extra {
 		CHAR_INSTANTS = "⧗";//🮚⌛⧗
 		CHAR_HITCHANCE = "🎯";//ʘ◎🎯◉⦿
 		CHAR_DAMAGE = "🕱";
-		CHAR_SHARP = "🟆";//✂⚔🔪🪒💇🗡️⸸⸷🞣🟆
-		CHAR_BLUNT = "●";//🔨⚒️🪨🛞●
-		CHAR_PIERCE = "▲";//⇫♆➳➹➴♂➴⚩➛▲
-		CHAR_IGNITE = "🔥";
-		CHAR_FROST = "❄";//❄❄️❆🧊🥶
-		CHAR_ELEC = "🗲";//⚡🗲🌩
-		CHAR_DECAY = "🕱";//⛤🕱
+		CHAR_SHARP = COLOR_SHARP+"🟆";//✂⚔🔪🪒💇🗡️⸸⸷🞣🟆
+		CHAR_BLUNT = COLOR_BLUNT+"●";//🔨⚒️🪨🛞●
+		CHAR_PIERCE = COLOR_PIERCE+"▲";//⇫♆➳➹➴♂➴⚩➛▲
+		CHAR_IGNITE = COLOR_IGNITE+"🔥";
+		CHAR_FROST = COLOR_FROST+"❄";//❄❄️❆🧊🥶
+		CHAR_ELEC = COLOR_ELEC+"🗲";//⚡🗲🌩
+		CHAR_DECAY = COLOR_DECAY+"🕱";//⛤🕱
 		DISP_WEIGHT = "🏋";//🏋𐄷⚖
 		DISP_AETHER = "🜀";//🜀¤⚖ //currency, of a sort
 		DISP_AMP = "𝧧";//https://www.compart.com/en/unicode/search?q=movement#characters
@@ -653,33 +660,61 @@ public final class extra {
 		return ((Long.bitCount(getRand().nextLong()) - 32f + getRand().nextFloat() - getRand().nextFloat()) / 66f + 0.5f);
 	}
 
-	//FIXME: make it so it strips out the data and sends the right text to the graphical and terminal
+	/**
+	 * can only handle color codes and special printing options at start of string, and only one token per strs
+	 */
 	public static void specialPrint(int[] in,String...strs) {
+		for (int i = 0; i < strs.length;i++) {
+			String base = strs[i].trim();
+			if (!base.isEmpty() && base.charAt(0) == '[') {
+				print(base.substring(0,base.indexOf(']')+1));
+			}
+			String str = extra.stripPrint(strs[i]);
+			if (str.length() >= in[i]) {
+				print(str.substring(0,in[i]));
+			}else {
+				print(str);
+				for (int j = in[i]-str.length();j > 0;j--) {// > 0 because 0 is same length so we're good
+					print(" ");
+				}
+			}
+		}
+		/*for (int i = 0; i < strs.length;i++) {
+			String str = extra.stripPrint(strs[i]);
+			if (str.length() >= in[i]) {
+				print(str.substring(0,in[i]));
+			}else {
+				print(str);
+				for (int j = in[i]-str.length();j > 0;j--) {// > 0 because 0 is same length so we're good
+					print(" ");
+				}
+			}
+		}*/
+		/*
 		int j = 0;
 		while (j < in.length) {
 			while(!strs[j].isEmpty() && in[j] > 0) {
 				print(strs[j].substring(0, 1));
 				if (strs[j].length() > 1){
-					strs[j] = strs[j].substring(1,strs[j].length());}else {
-						strs[j] = "";
-					}
-
+					strs[j] = strs[j].substring(1,strs[j].length());
+				}else {
+					strs[j] = "";
+				}
 				in[j] -=1;
 			}
 			if (in[j] > 0 && j < in.length-1) {
 				while (in[j] > 0) {
 					if (strs[j].length() > 1){
-						strs[j] = strs[j].substring(1,strs[j].length());}else {
-							strs[j] = "";
-						}
+						strs[j] = strs[j].substring(1,strs[j].length());
+					}else {
+						strs[j] = "";
+					}
 					print(" ");
 					in[j] -=1;
 				}
 			}
-
-
 			j++;
-		}
+		}*/
 		extra.println();
 	}
 

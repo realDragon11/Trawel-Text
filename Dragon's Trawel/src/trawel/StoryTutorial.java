@@ -105,9 +105,9 @@ public class StoryTutorial extends Story{
 			extra.println("Delay on abilities is combined from a warmup and a cooldown. The first number is the warmup- how long until the attack goes through. The second number is the cooldown- how long after that until you can choose another attack.");
 			extra.println(
 					massFight ?
-							extra.CHAR_SHARP+extra.CHAR_BLUNT+extra.CHAR_PIERCE+" stands for sharp blunt pierce- the three main damage types. Your opponents also have sbp-based armor. Yeah, you got a mass fight for your first battle. Good luck."
+							extra.CHAR_SHARP+extra.CHAR_BLUNT+extra.CHAR_PIERCE+extra.PRE_WHITE+" stands for sharp blunt pierce- the three main damage types. Your opponents also have sbp-based armor. Yeah, you got a mass fight for your first battle. Good luck."
 							:
-								extra.CHAR_SHARP+extra.CHAR_BLUNT+extra.CHAR_PIERCE+" stands for sharp blunt pierce- the three main damage types. Your opponent also has sbp-based armor."
+								extra.CHAR_SHARP+extra.CHAR_BLUNT+extra.CHAR_PIERCE+extra.PRE_WHITE+" stands for sharp blunt pierce- the three main damage types. Your opponent also has sbp-based armor."
 					);
 			extra.println("Hitpoints only matter in combat- you steel yourself fully before each battle, restoring to your current maximum. Very few things can reduce this maximum, the most notable being the CURSE status effect.");
 			switch (mainGame.attackDisplayStyle) {
@@ -122,9 +122,9 @@ public class StoryTutorial extends Story{
 				extra.println("Instead of only table headers, each cell is labeled. "
 						+extra.CHAR_HITCHANCE+" is hitmult. "
 						+extra.CHAR_INSTANTS+" is 'instants' (warmup and cooldown time.) "
-						+ extra.CHAR_SHARP+" is sharp damage, "
-						+extra.CHAR_BLUNT+" is blunt damage, and "
-						+extra.CHAR_PIERCE+" is pierce damage.");
+						+ extra.CHAR_SHARP+extra.PRE_WHITE+" is sharp damage, "
+						+extra.CHAR_BLUNT+extra.PRE_WHITE+" is blunt damage, and "
+						+extra.CHAR_PIERCE+extra.PRE_WHITE+" is pierce damage.");
 				extra.println("There are more damage types, such as elemental, but those are beyond the scope of this tutorial.");
 				break;
 			case TWO_LINE1_WITH_KEY:
