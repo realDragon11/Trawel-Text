@@ -470,10 +470,10 @@ public class NodeConnector implements Serializable {
 				int fromFloor = getFloor(getCurrentNode());
 				int toFloor = getFloor(node);
 				if (toFloor < fromFloor) {
-					postText += " (Outward)";
+					postText += extra.PRE_WHITE+" (Outward)";
 				}else {
 					if (toFloor > fromFloor) {
-						postText += " (Inward)";
+						postText += extra.PRE_WHITE+ " (Inward)";
 					}
 				}
 			}
