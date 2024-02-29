@@ -72,13 +72,15 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__10";
-	public static final String VERSION_DATE = " updated Feb 25th 2024";
+	public static final String VERSION_DATE = " updated Feb 29th 2024";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
-			"b_10: {part 1/?} Added Drudger, Fell, Monster, and Animal Cleanse Quests. Almost all targets will award progress if encountered in Node Explorations or other features as well, with some exceptions for mooks. Some fightable hunters now reward Amber when looted.",
-			"b_10: {part 2/?} Vampires and some other Bumpers will appear less during the daytime. Bandits will prefer money, not just valuable metals. Removed most bumper level requirements, and updated wolf pack with player allies.",
-			"b_10: {part 3/?} Cleaned up various menus, especially when using color fail codes in the graphical. Updated tutorial's feature explanations and list of world perks.",
-			"b_10: {part 4/?} At some point background time display stopped changing colors, it now works again.",
+			"b_10: {part 1/?} Curse, Burnout, Damaged, and Bees are now punishment longer lasting effects. Burnout can be cured when resting, Bees can be cured by entering water. Everything except Damaged can be cured at Doctors- Damaged requires Blacksmith repairs. These effects will be used to give a downside to failing Attribute checks, so they're not just free rewards with no consequences.",
+			"b_10: {part 2/?} Added Drudger, Fell, Monster, and Animal Cleanse Quests. Almost all targets will award progress if encountered in Node Explorations or other features as well, with some exceptions for mooks. Some fightable hunters now reward Amber when looted. Witch Huts have more Collect targets.",
+			"b_10: {part 3/?} Vampires and some other Bumpers will appear less during the daytime. Bandits will prefer money, not just valuable metals. Removed most bumper level requirements, and updated wolf pack with player allies.",
+			"b_10: {part 4/?} There are more Primal Deathcheater types, and TODO more cult types.",
+			"b_10: {part 5/?} Cleaned up various menus, especially when using color fail codes in the graphical. Updated tutorial's feature explanations and list of world perks.",
+			"b_10: {part 6/?} Added indicator colors to damage in attack previews. At some point background time display stopped changing colors, it now works again.",
 			
 			"Prior Changelog notes were from 2023, press again to continue.",
 			
