@@ -1080,9 +1080,9 @@ public class GroveNode implements NodeType{
 			//thankfully the things below will auto take out of arrays
 			
 		case 11://mushroom, colored
-			return "Examine the " + holder.getStorageFirstClass(node, String.class) + " mushroom"+extra.PRE_WHITE+".";
+			return "Examine the " + holder.getStorageFirstClass(node, String.class) + " mushroom"+extra.COLOR_RESET+".";
 		case 12://moss, colored
-			return "Examine the " + holder.getStorageFirstClass(node, String.class) + " moss"+extra.PRE_WHITE+".";
+			return "Examine the " + holder.getStorageFirstClass(node, String.class) + " moss"+extra.COLOR_RESET+".";
 		case 14: //weapon stone
 			if (holder.getStateNum(node) == 0) {
 				Weapon w = holder.getStorageFirstClass(node, Weapon.class);
@@ -1115,9 +1115,9 @@ public class GroveNode implements NodeType{
 		case 9://dryad
 			return "Dryad's Tree";
 		case 11://mushroom, colored
-			return "A single " +holder.getStorageFirstClass(node, String.class) + extra.PRE_WHITE+" mushroom";
+			return "A single " +holder.getStorageFirstClass(node, String.class)+" mushroom"+extra.COLOR_RESET;
 		case 12://moss, colored
-			return "A single piece of " +holder.getStorageFirstClass(node, String.class) + extra.PRE_WHITE+" moss";
+			return "A single piece of " +holder.getStorageFirstClass(node, String.class)+" moss"+extra.COLOR_RESET;
 		case 14: //weapon stone
 			if (holder.getStateNum(node) == 0) {
 				Weapon w = holder.getStorageFirstClass(node, Weapon.class);

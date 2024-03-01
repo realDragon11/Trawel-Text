@@ -21,7 +21,7 @@ public class Appraiser extends Feature {
 	
 	@Override
 	public String getColor() {
-		return extra.F_SERVICE;
+		return extra.F_AUX_SERVICE;
 	}
 	
 	@Override

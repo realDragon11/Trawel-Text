@@ -268,7 +268,7 @@ public class ImpairedAttack implements IAttack{
 		}
 		
 		public String getExplain() {
-			return name + "("+getDisp()+extra.PRE_WHITE+"):" + desc;
+			return name + "("+getDisp()+extra.COLOR_RESET+"):" + desc;
 		}
 		
 		public String getDispFor(ImpairedAttack ia) {
@@ -289,7 +289,7 @@ public class ImpairedAttack implements IAttack{
 				return disp + " " +ia.getSharp();
 			}
 			return null;*/
-			return getDisp() + " " + getAmountFor(ia)+extra.PRE_WHITE;
+			return getDisp() + " " + getAmountFor(ia)+extra.COLOR_RESET;
 		}
 		
 		public int getAmountFor(ImpairedAttack ia) {

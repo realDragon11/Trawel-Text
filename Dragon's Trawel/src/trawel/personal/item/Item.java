@@ -73,24 +73,24 @@ public abstract class Item implements java.io.Serializable{
 	public String getLevelName() {
 		int val = (int) (255f * ((10f+level)/(20f+level)));
 		//int val = Math.min(255,140+(level*10));
-		return extra.inlineColor(new Color(val,val,val))+"+"+level+"[c_white]";
+		return extra.inlineColor(new Color(val,val,val))+"+"+level+extra.COLOR_RESET;
 	}
 	
 	public static String getModiferNameColored(int inlevel) {
 		switch (inlevel) {
-		case 0: return extra.inlineColor(new Color(60,60,60))+"broken[c_white]";
-		case 1: return extra.inlineColor(new Color(80,80,80))+"crude[c_white]";
-		case 2: return extra.inlineColor(new Color(140,140,140))+"shoddy[c_white]";
-		case 3: return extra.inlineColor(new Color(180,180,180))+"poor[c_white]";
-		case 4: return extra.inlineColor(new Color(220,220,220))+"subpar[c_white]";
+		case 0: return extra.inlineColor(new Color(60,60,60))+"broken"+extra.COLOR_RESET;
+		case 1: return extra.inlineColor(new Color(80,80,80))+"crude"+extra.COLOR_RESET;
+		case 2: return extra.inlineColor(new Color(140,140,140))+"shoddy"+extra.COLOR_RESET;
+		case 3: return extra.inlineColor(new Color(180,180,180))+"poor"+extra.COLOR_RESET;
+		case 4: return extra.inlineColor(new Color(220,220,220))+"subpar"+extra.COLOR_RESET;
 		case 5: return "[c_white]fine";//white
-		case 6: return (extra.inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f)))+"good[c_white]";//green
-		case 7: return (extra.inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f)))+"great[c_white]";//blue
-		case 8: return (extra.inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.5f)))+"amazing[c_white]";//purple
-		case 9: return (extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f)))+"heroic[c_white]";//orange
-		case 10: return (extra.inlineColor(extra.colorMix(Color.yellow,Color.WHITE,.5f)))+"masterwork[c_white]";//yellow
-		case 11: return (extra.PRE_RED)+"legendary[c_white]";//red
-		case 12: return extra.inlineColor(Color.RED)+"artifact[c_white]";//vibrant red
+		case 6: return (extra.inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f)))+"good"+extra.COLOR_RESET;//green
+		case 7: return (extra.inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f)))+"great"+extra.COLOR_RESET;//blue
+		case 8: return (extra.inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.5f)))+"amazing"+extra.COLOR_RESET;//purple
+		case 9: return (extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f)))+"heroic"+extra.COLOR_RESET;//orange
+		case 10: return (extra.inlineColor(extra.colorMix(Color.yellow,Color.WHITE,.5f)))+"masterwork"+extra.COLOR_RESET;//yellow
+		case 11: return (extra.PRE_RED)+"legendary"+extra.COLOR_RESET;//red
+		case 12: return extra.inlineColor(Color.RED)+"artifact"+extra.COLOR_RESET;//vibrant red
 		}
 		return "unknown";
 	}

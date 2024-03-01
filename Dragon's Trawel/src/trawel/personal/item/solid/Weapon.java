@@ -231,9 +231,9 @@ public class Weapon extends Item implements IEffectiveLevel {
 		String weapName = weap.getName();
 		Material mat = MaterialFactory.getMat(material);
 		if (enchant != null) {
-			return (enchant.getBeforeName() +mat.color+ mat.name + "[c_white] " +  weapName + enchant.getAfterName());
+			return (enchant.getBeforeName() +mat.color+ mat.name + extra.COLOR_RESET+ " " +  weapName + enchant.getAfterName());
 		}
-		return (mat.color+ mat.name  + "[c_white] " + weapName);		
+		return (mat.color+ mat.name  +extra.COLOR_RESET+ " " + weapName);		
 	}
 	
 	@Override

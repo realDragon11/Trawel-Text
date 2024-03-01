@@ -1028,6 +1028,7 @@ public final class extra {
 		return "[#"+Integer.toHexString(col.getRGB()).substring(2)+"]";
 	}
 
+	public static final String COLOR_RESET = "[]";
 	//NOTE: predefined color mixes inlined
 	public static final String PRE_WHITE = inlineColor(Color.WHITE);
 	public static final String PRE_RED = inlineColor(colorMix(Color.RED,Color.WHITE,.5f));
@@ -1085,6 +1086,9 @@ public final class extra {
 	public static final String COLOR_BEEN = inlineColor(colorMix(Color.BLUE,Color.WHITE,.5f));
 	public static final String COLOR_OWN = inlineColor(colorMix(Color.GREEN,Color.WHITE,.5f));
 	public static final String COLOR_REGROWN = inlineColor(colorMix(Color.MAGENTA,Color.WHITE,.8f));
+	
+	public static final String COLOR_UNDONE_TIMID = inlineColor(colorMix(Color.ORANGE,Color.WHITE,.7f));
+	public static final String COLOR_DONE_TIMID = inlineColor(colorMix(Color.BLUE,Color.WHITE,.7f));
 
 	public static final String VISIT_NEW = COLOR_NEW + "new! ";
 	public static final String VISIT_SEEN = COLOR_SEEN + "! ";

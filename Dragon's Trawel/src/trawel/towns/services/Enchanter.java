@@ -42,7 +42,7 @@ public class Enchanter extends Feature {
 	
 	@Override
 	public String getColor() {
-		return extra.F_AUX_SERVICE;
+		return extra.F_SERVICE_MAGIC;
 	}
 	
 	@Override

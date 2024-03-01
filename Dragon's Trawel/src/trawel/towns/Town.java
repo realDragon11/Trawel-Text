@@ -423,7 +423,7 @@ public class Town extends TContextOwner{
 
 						@Override
 						public String title() {
-							return "Buy Lot";
+							return extra.F_BUILDABLE+"Buy Lot";
 						}
 
 						@Override

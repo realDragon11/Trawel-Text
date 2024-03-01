@@ -409,9 +409,9 @@ public class NodeConnector implements Serializable {
 		
 		@Override
 		public String title() {
-			String visitColor = extra.PRE_WHITE;
+			String visitColor = extra.COLOR_DONE_TIMID;
 			if (getVisited(node) != 3) {
-				visitColor = extra.TIMID_GREY;//may be overridden by the node itself by just changing the color right back
+				visitColor = extra.COLOR_UNDONE_TIMID;//may be overridden by the node itself by just changing the color right back
 			}
 			return visitColor + getInteractString(node);
 		}
