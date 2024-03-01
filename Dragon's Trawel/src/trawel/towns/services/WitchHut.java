@@ -91,7 +91,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Brew a potion" + (reagents.size() > 0 ? "("+reagents.size()+"/6)" : "");
+						return extra.SERVICE_FREE+"Brew a potion" + (reagents.size() > 0 ? "("+reagents.size()+"/6)" : "");
 					}
 
 					@Override
@@ -103,7 +103,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Shop for reagents at '"+storename+"'.";
+						return extra.SERVICE_CURRENCY+"Shop for reagents at '"+storename+"'.";
 					}
 
 					@Override
@@ -115,7 +115,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Enter Coven Common Room (Sidequests).";
+						return extra.FSERVICE_QUEST+"Enter Coven Common Room (Sidequests).";
 					}
 
 					@Override
@@ -127,7 +127,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Bottle Potion Runoff.";
+						return extra.SERVICE_FREE+"Bottle Potion Runoff.";
 					}
 
 					@Override
@@ -150,7 +150,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 						@Override
 						public String title() {
-							return "Mix In Potion ("+town.getIsland().getWorld().moneyString(topUpPrice())+")";
+							return extra.SERVICE_CURRENCY+"Mix In Potion ("+town.getIsland().getWorld().moneyString(topUpPrice())+")";
 						}
 
 						@Override

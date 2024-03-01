@@ -437,20 +437,20 @@ public class NodeConnector implements Serializable {
 		public String title() {
 			String visitColor = extra.PRE_WHITE;
 			switch (getVisited(node)) {
-			case 0: visitColor = extra.VISIT_NEW;
-			setVisited(node,1);
-			if (NodeConnector.this.getFlag(node,NodeFlag.REGROWN)) {
-				visitColor = extra.VISIT_REGROWN;
-			}
-			;break;
-			case 1: visitColor = extra.VISIT_SEEN;break;
-			case 2: visitColor = extra.VISIT_BEEN;break;
-			case 3: 
-				visitColor = extra.VISIT_DONE;
-				if (containsOwnable(node)) {
-					visitColor = extra.VISIT_OWN;
+				case 0: visitColor = extra.VISIT_NEW;
+				setVisited(node,1);
+				if (NodeConnector.this.getFlag(node,NodeFlag.REGROWN)) {
+					visitColor = extra.VISIT_REGROWN;
 				}
-			break;
+				;break;
+				case 1: visitColor = extra.VISIT_SEEN; break;
+				case 2: visitColor = extra.VISIT_BEEN; break;
+				case 3:
+					visitColor = extra.VISIT_DONE;
+					if (containsOwnable(node)) {
+						visitColor = extra.VISIT_OWN;
+					}
+				break;
 			}
 			String postText = "";
 			if (isStair(node)) {
@@ -470,14 +470,14 @@ public class NodeConnector implements Serializable {
 				int fromFloor = getFloor(getCurrentNode());
 				int toFloor = getFloor(node);
 				if (toFloor < fromFloor) {
-					postText += extra.PRE_WHITE+" (Outward)";
+					postText += extra.COLOR_OPTION_B+" (Outward)";
 				}else {
 					if (toFloor > fromFloor) {
-						postText += extra.PRE_WHITE+ " (Inward)";
+						postText += extra.COLOR_OPTION_A+" (Inward)";
 					}
 				}
 			}
-			return (node == NodeConnector.getLastNode() ? extra.PRE_WHITE+"Back: " : "")+visitColor + getName(node) +postText;
+			return (node == NodeConnector.getLastNode() ? extra.PRE_WHITE+"Back: " : "")+visitColor + getName(node)+extra.PRE_WHITE+postText;
 		}
 
 		@Override

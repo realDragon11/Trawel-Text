@@ -91,7 +91,7 @@ public class Library extends Feature {
 
 						@Override
 						public String title() {
-							return "Study general lore. (Free Feat Pick)";
+							return extra.SERVICE_FREE+"Study general lore. (Free Feat Pick)";
 						}
 
 						@Override
@@ -128,7 +128,7 @@ public class Library extends Feature {
 
 						@Override
 						public String title() {
-							return "Study feat fragments (have: "+frag_count+")";
+							return extra.SERVICE_SPECIAL_PAYMENT+"Study feat fragments (have: "+frag_count+")";
 						}
 
 						@Override

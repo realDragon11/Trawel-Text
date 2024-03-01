@@ -91,7 +91,7 @@ public class FortHall extends FortFeature {
 		if (this.getOwner() != Player.player) {
 			final float levelMult = getUnEffectiveLevel();
 			int cost = (int) ((1000*levelMult)+(aetherBank*Player.NORMAL_AETHER_RATE));
-			extra.println("Buy this for fort for "+cost+" "+World.currentMoneyString()+"? (You have " + Player.player.getGold()+")");
+			extra.println(extra.SERVICE_CURRENCY+"Buy this for fort for "+cost+" "+World.currentMoneyString()+"? (You have " + Player.player.getGold()+")");
 			if (extra.yesNo()) {
 				if (Player.player.getGold() < cost) {
 					extra.println("You can't afford to buy this fort.");
@@ -124,7 +124,7 @@ public class FortHall extends FortFeature {
 
 						@Override
 						public String title() {
-							return "Buy a soldier ("+World.currentMoneyDisplay(getSoldierCost())+")";
+							return extra.SERVICE_CURRENCY+"Buy a soldier ("+World.currentMoneyDisplay(getSoldierCost())+")";
 						}
 
 						@Override
@@ -144,7 +144,7 @@ public class FortHall extends FortFeature {
 
 							@Override
 							public String title() {
-								return "Construction Menu";
+								return extra.SERVICE_CURRENCY+"Construction Menu";
 							}
 
 							@Override
@@ -159,7 +159,7 @@ public class FortHall extends FortFeature {
 
 							@Override
 							public String title() {
-								return "Collect Aether ("+aetherBank+")";
+								return extra.SERVICE_FREE+"Collect Aether ("+aetherBank+")";
 							}
 
 							@Override

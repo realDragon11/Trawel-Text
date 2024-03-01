@@ -77,7 +77,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Launder Gems.";
+						return extra.SERVICE_SPECIAL_PAYMENT+"Launder Gems.";
 					}
 
 					@Override
@@ -90,7 +90,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Job Board (Sidequests).";
+						return extra.FSERVICE_QUEST+"Job Board (Sidequests).";
 					}
 
 					@Override
@@ -117,7 +117,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Request Sapphires.";
+						return extra.SERVICE_SPECIAL_PAYMENT+"Request Sapphires.";
 					}
 
 					@Override
@@ -147,7 +147,7 @@ public class RogueGuild extends Feature implements QuestBoardLocation{
 
 						@Override
 						public String title() {
-							return "Donate "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+". (Have "+Gem.SAPPHIRE.getGem()+")";
+							return extra.SERVICE_SPECIAL_PAYMENT+"Donate "+gemAmount+" "+(gemAmount == 1 ? Gem.SAPPHIRE.name : Gem.SAPPHIRE.plural)+". (Have "+Gem.SAPPHIRE.getGem()+")";
 						}
 
 						@Override

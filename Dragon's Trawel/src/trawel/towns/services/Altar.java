@@ -79,7 +79,7 @@ public class Altar extends Feature{
 
 					@Override
 					public String title() {
-						return "Sacrifice something.";
+						return extra.SERVICE_SPECIAL_PAYMENT+"Sacrifice something.";
 					}
 
 					@Override

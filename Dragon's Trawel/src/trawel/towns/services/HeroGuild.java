@@ -76,7 +76,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Share stories. (Feat Fragments)";
+						return extra.SERVICE_SPECIAL_PAYMENT+"Share stories. (Feat Fragments)";
 					}
 
 					@Override
@@ -113,7 +113,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Request Rubies.";
+						return extra.SERVICE_SPECIAL_PAYMENT+"Request Rubies.";
 					}
 
 					@Override
@@ -142,7 +142,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Assignment Board (Sidequests).";
+						return extra.FSERVICE_QUEST+"Assignment Board (Sidequests).";
 					}
 
 					@Override

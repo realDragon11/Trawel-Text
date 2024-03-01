@@ -256,19 +256,19 @@ public final class extra {
 	//TODO: make some better global DRY damage code system
 	public static String CHAR_DAMAGE = "*";
 	
-	public static String COLOR_SHARP = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.4f));
+	public static String COLOR_SHARP = inlineColor(colorMix(Color.RED,Color.WHITE,.4f));
 	public static String CHAR_SHARP = COLOR_SHARP+"S";
-	public static String COLOR_BLUNT = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.4f));
+	public static String COLOR_BLUNT = inlineColor(colorMix(Color.BLUE,Color.WHITE,.4f));
 	public static String CHAR_BLUNT = COLOR_BLUNT+"B";
-	public static String COLOR_PIERCE = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.4f));
+	public static String COLOR_PIERCE = inlineColor(colorMix(Color.ORANGE,Color.WHITE,.4f));
 	public static String CHAR_PIERCE = COLOR_PIERCE+"P";
-	public static String COLOR_IGNITE = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.2f));
+	public static String COLOR_IGNITE = inlineColor(colorMix(Color.RED,Color.WHITE,.2f));
 	public static String CHAR_IGNITE = COLOR_IGNITE+"I";
-	public static String COLOR_FROST = inlineColor(extra.colorMix(Color.CYAN,Color.WHITE,.4f));
+	public static String COLOR_FROST = inlineColor(colorMix(Color.CYAN,Color.WHITE,.4f));
 	public static String CHAR_FROST = COLOR_FROST+"F";
-	public static String COLOR_ELEC = inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.4f));
+	public static String COLOR_ELEC = inlineColor(colorMix(Color.YELLOW,Color.WHITE,.4f));
 	public static String CHAR_ELEC = COLOR_ELEC+"E";
-	public static String COLOR_DECAY = inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.4f));
+	public static String COLOR_DECAY = inlineColor(colorMix(Color.MAGENTA,Color.WHITE,.4f));
 	public static String CHAR_DECAY = COLOR_DECAY+"D";
 
 	public static String DISP_WEIGHT = "weight";
@@ -1030,31 +1030,31 @@ public final class extra {
 
 	//NOTE: predefined color mixes inlined
 	public static final String PRE_WHITE = inlineColor(Color.WHITE);
-	public static final String PRE_RED = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.5f));
-	public static final String PRE_BATTLE = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.4f));
-	public static final String PRE_MAYBE_BATTLE = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.6f));
-	public static final String PRE_ORANGE = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f));
-	public static final String PRE_YELLOW = inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f));
-	public static final String PRE_BLUE = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f));
-	public static final String PRE_GREEN = inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f));
-	public static final String PRE_MAGENTA = inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.5f));
+	public static final String PRE_RED = inlineColor(colorMix(Color.RED,Color.WHITE,.5f));
+	public static final String PRE_BATTLE = inlineColor(colorMix(Color.RED,Color.WHITE,.4f));
+	public static final String PRE_MAYBE_BATTLE = inlineColor(colorMix(Color.RED,Color.WHITE,.6f));
+	public static final String PRE_ORANGE = inlineColor(colorMix(Color.ORANGE,Color.WHITE,.5f));
+	public static final String PRE_YELLOW = inlineColor(colorMix(Color.YELLOW,Color.WHITE,.5f));
+	public static final String PRE_BLUE = inlineColor(colorMix(Color.BLUE,Color.WHITE,.5f));
+	public static final String PRE_GREEN = inlineColor(colorMix(Color.GREEN,Color.WHITE,.5f));
+	public static final String PRE_MAGENTA = inlineColor(colorMix(Color.MAGENTA,Color.WHITE,.5f));
 
 	public static final String PRE_ROAD = PRE_GREEN;
 	public static final String PRE_SHIP = PRE_GREEN;
 	public static final String PRE_TELE = PRE_GREEN;
 
 	//timid colors that are slight, used for bad and good hinting
-	public static final String TIMID_GREEN = inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.7f));
-	public static final String TIMID_RED = inlineColor(extra.colorMix(Color.RED,Color.WHITE,.7f));
+	public static final String TIMID_GREEN = inlineColor(colorMix(Color.GREEN,Color.WHITE,.7f));
+	public static final String TIMID_RED = inlineColor(colorMix(Color.RED,Color.WHITE,.7f));
 	/** 
 	 * do not use for no change whatsoever, use white for that- this is a change that might be bad or good but is a net 0 to this stat
 	 */
-	public static final String TIMID_GREY = inlineColor(extra.colorMix(Color.BLACK,Color.WHITE,.95f));
+	public static final String TIMID_GREY = inlineColor(colorMix(Color.BLACK,Color.WHITE,.95f));
 
 	//not directly used yet
-	public static final String TIMID_BLUE = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.7f));
-	public static final String TIMID_MAGENTA = inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.8f));
-	public static final String TIMID_ORANGE = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.7f));
+	public static final String TIMID_BLUE = inlineColor(colorMix(Color.BLUE,Color.WHITE,.7f));
+	public static final String TIMID_MAGENTA = inlineColor(colorMix(Color.MAGENTA,Color.WHITE,.8f));
+	public static final String TIMID_ORANGE = inlineColor(colorMix(Color.ORANGE,Color.WHITE,.7f));
 
 	public static final String RESULT_NO_CHANGE_GOOD = TIMID_BLUE;
 	public static final String RESULT_NO_CHANGE_BAD = TIMID_ORANGE;
@@ -1080,11 +1080,11 @@ public final class extra {
 	 */
 	public static final String RESULT_PASS = TIMID_GREEN;
 
-	public static final String COLOR_NEW = inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f));
-	public static final String COLOR_SEEN = inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.5f));
-	public static final String COLOR_BEEN = inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f));
-	public static final String COLOR_OWN = inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f));
-	public static final String COLOR_REGROWN = inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.8f));
+	public static final String COLOR_NEW = inlineColor(colorMix(Color.ORANGE,Color.WHITE,.5f));
+	public static final String COLOR_SEEN = inlineColor(colorMix(Color.YELLOW,Color.WHITE,.5f));
+	public static final String COLOR_BEEN = inlineColor(colorMix(Color.BLUE,Color.WHITE,.5f));
+	public static final String COLOR_OWN = inlineColor(colorMix(Color.GREEN,Color.WHITE,.5f));
+	public static final String COLOR_REGROWN = inlineColor(colorMix(Color.MAGENTA,Color.WHITE,.8f));
 
 	public static final String VISIT_NEW = COLOR_NEW + "new! ";
 	public static final String VISIT_SEEN = COLOR_SEEN + "! ";
@@ -1096,14 +1096,13 @@ public final class extra {
 	/**
 	 * used for "it's a miss!" after the attack proper
 	 */
-	public static final String AFTER_ATTACK_MISS = extra.inlineColor(extra.colorMix(Color.YELLOW,Color.WHITE,.3f));
+	public static final String AFTER_ATTACK_MISS = inlineColor(colorMix(Color.YELLOW,Color.WHITE,.3f));
 	public static final String ATTACK_DAMAGED = PRE_ORANGE;
 	public static final String ATTACK_KILL = PRE_RED;
 	public static final String ATTACK_BLOCKED = PRE_BLUE;
-	public static final String AFTER_ATTACK_BLOCKED = extra.inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.3f));
+	public static final String AFTER_ATTACK_BLOCKED = inlineColor(colorMix(Color.BLUE,Color.WHITE,.3f));
 	public static final String ATTACK_MISS = PRE_YELLOW;
-	public static final String ATTACK_DAMAGED_WITH_ARMOR = 
-			extra.inlineColor(extra.colorMix(Color.orange,extra.colorMix(Color.BLUE,Color.WHITE,.3f),.9f));
+	public static final String ATTACK_DAMAGED_WITH_ARMOR = inlineColor(colorMix(Color.ORANGE,colorMix(Color.BLUE,Color.WHITE,.3f),.9f));
 
 	public static final String F_SPECIAL = PRE_MAGENTA;
 	public static final String F_SERVICE = PRE_BLUE;
@@ -1116,11 +1115,11 @@ public final class extra {
 	public static final String F_GUILD = PRE_YELLOW;
 
 	//item values
-	public static final String ITEM_WANT_HIGHER = inlineColor(extra.colorMix(Color.WHITE,extra.colorMix(Color.BLUE,Color.GREEN,.5f),.3f));
-	public static final String ITEM_WANT_LOWER = inlineColor(extra.colorMix(Color.WHITE,extra.colorMix(Color.YELLOW,Color.ORANGE,.5f),.3f));
+	public static final String ITEM_WANT_HIGHER = inlineColor(colorMix(Color.WHITE,colorMix(Color.BLUE,Color.GREEN,.5f),.3f));
+	public static final String ITEM_WANT_LOWER = inlineColor(colorMix(Color.WHITE,colorMix(Color.YELLOW,Color.ORANGE,.5f),.3f));
 	public static final String ITEM_DESC_PROP = TIMID_BLUE;
 	public static final String ITEM_VALUE = TIMID_MAGENTA;
-	public static final String STAT_HEADER = inlineColor(extra.colorMix(Color.WHITE,extra.colorMix(Color.BLUE,Color.MAGENTA,.5f),.6f));
+	public static final String STAT_HEADER = inlineColor(colorMix(Color.WHITE,colorMix(Color.BLUE,Color.MAGENTA,.5f),.6f));
 
 	//attributes
 	public static final String ATT_TRUE = PRE_MAGENTA;
@@ -1131,7 +1130,22 @@ public final class extra {
 	public static final String ATK_WOUND_NORMAL = ITEM_DESC_PROP;
 	public static final String ATK_WOUND_NEGATE = PRE_RED;
 	public static final String ATK_WOUND_GRAZE = TIMID_RED;
+	
+	//color option groups for equal but different options
+	public static final String COLOR_OPTION_A = inlineColor(colorMix(colorMix(Color.RED,Color.GREEN,.3f),Color.WHITE,.5f));
+	public static final String COLOR_OPTION_B = inlineColor(colorMix(colorMix(Color.RED,Color.BLUE,.3f),Color.WHITE,.5f));
+	public static final String COLOR_OPTION_C = inlineColor(colorMix(colorMix(Color.RED,Color.MAGENTA,.3f),Color.WHITE,.5f));
 
+	//feature service grouping
+	public static final String SERVICE_FREE = inlineColor(colorMix(colorMix(Color.PINK,Color.GREEN,.3f),Color.WHITE,.4f));
+	public static final String SERVICE_AETHER = inlineColor(colorMix(colorMix(Color.MAGENTA,Color.CYAN,.5f),Color.WHITE,.5f));
+	public static final String SERVICE_CURRENCY = inlineColor(colorMix(colorMix(Color.PINK,Color.MAGENTA,.3f),Color.WHITE,.4f));
+	public static final String SERVICE_BOTH_PAYMENT = inlineColor(colorMix(colorMix(Color.MAGENTA,Color.BLUE,.5f),Color.WHITE,.5f));
+	public static final String SERVICE_SPECIAL_PAYMENT = inlineColor(colorMix(colorMix(Color.PINK,Color.ORANGE,.3f),Color.WHITE,.4f));
+	
+	//shared common other feature behaviors
+	public static final String FSERVICE_QUEST = inlineColor(colorMix(colorMix(Color.ORANGE,Color.GREEN,.3f),Color.WHITE,.5f));
+	
 	public static String colorBasedAtOne(double number, String plus, String minus, String empty) {
 		String str = format2.format(number);
 		if (number < 1) {

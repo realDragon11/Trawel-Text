@@ -520,7 +520,7 @@ public class Town extends TContextOwner{
 		}
 		int cost = (int) (IEffectiveLevel.unclean(getTier())*150);
 		String moneyname = World.currentMoneyString();
-		extra.println("Buy a lot? "+ cost + " "+moneyname+". You have "
+		extra.println(extra.SERVICE_CURRENCY+"Buy a lot? "+ cost + " "+moneyname+". You have "
 		+ Player.showGold());
 		if (extra.yesNo()) {
 			if (Player.player.getGold()> cost) {

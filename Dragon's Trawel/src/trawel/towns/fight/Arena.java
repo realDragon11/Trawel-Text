@@ -110,7 +110,7 @@ public class Arena extends Feature{
 
 					@Override
 					public String title() {
-						return "Hang around for a day.";
+						return extra.SERVICE_FREE+"Hang around for a day.";
 					}
 
 					@Override

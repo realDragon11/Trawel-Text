@@ -156,7 +156,7 @@ public class TravelingFeature extends Store{
 						list.add(new MenuSelect() {
 							@Override
 							public String title() {
-								return "Attempt to find Free Beer.";
+								return extra.SERVICE_FREE+"Attempt to find Free Beer.";
 							}
 
 							@Override
@@ -260,7 +260,7 @@ public class TravelingFeature extends Store{
 
 							@Override
 							public String title() {
-								return "Listen in on their ramblings.";
+								return extra.SERVICE_FREE+"Listen in on their ramblings.";
 							}
 
 							@Override

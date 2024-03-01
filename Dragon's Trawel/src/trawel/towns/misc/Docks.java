@@ -205,7 +205,7 @@ public class Docks extends Feature {
 
 						@Override
 						public String title() {
-							return "Travel to Far Flung Ports.";
+							return extra.SERVICE_FREE+"Travel to Far Flung Ports.";
 						}
 
 						@Override

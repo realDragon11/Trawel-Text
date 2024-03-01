@@ -63,7 +63,7 @@ public class Enchanter extends Feature {
 
 					@Override
 					public String title() {
-						return "Enchant equipment up to +" + maxLevel +" level.";
+						return extra.SERVICE_BOTH_PAYMENT+"Enchant equipment up to +" + maxLevel +" level.";
 					}
 
 					@Override
@@ -142,7 +142,7 @@ public class Enchanter extends Feature {
 
 					@Override
 					public String title() {
-						return "Sell Aether ("+perAether+" for "+World.currentMoneyDisplay(sellAmount)+")";
+						return extra.SERVICE_AETHER+"Sell Aether ("+perAether+" for "+World.currentMoneyDisplay(sellAmount)+")";
 					}
 
 					@Override

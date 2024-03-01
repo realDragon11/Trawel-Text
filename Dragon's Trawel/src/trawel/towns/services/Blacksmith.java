@@ -66,7 +66,7 @@ public class Blacksmith extends Feature {
 
 					@Override
 					public String title() {
-						return "Forge +"+tier+" item for "+store.getName()+" (" + World.currentMoneyDisplay(forgePrice)+")";
+						return extra.SERVICE_CURRENCY+"Forge +"+tier+" item for "+store.getName()+" (" + World.currentMoneyDisplay(forgePrice)+")";
 					}
 
 					@Override
@@ -88,7 +88,7 @@ public class Blacksmith extends Feature {
 
 					@Override
 					public String title() {
-						return "Improve any equipment up to +" + tier +" level.";
+						return extra.SERVICE_BOTH_PAYMENT+"Improve any equipment up to +" + tier +" level.";
 					}
 
 					@Override
@@ -136,7 +136,7 @@ public class Blacksmith extends Feature {
 
 					@Override
 					public String title() {
-						return "Temper any equipment up to +" + tier +" level.";
+						return extra.SERVICE_SPECIAL_PAYMENT+"Temper any equipment up to +" + tier +" level.";
 					}
 
 					@Override
@@ -193,7 +193,7 @@ public class Blacksmith extends Feature {
 
 						@Override
 						public String title() {
-							return "Repair Damaged Effect. ("+World.currentMoneyDisplay(repairCost)+")";
+							return extra.SERVICE_CURRENCY+"Repair Damaged Effect. ("+World.currentMoneyDisplay(repairCost)+")";
 						}
 
 						@Override

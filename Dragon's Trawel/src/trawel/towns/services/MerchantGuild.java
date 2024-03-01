@@ -89,7 +89,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 					@Override
 					public String title() {
 						int dCount = Player.bag.getDrawBanes().size();
-						return "Donate Drawbanes. (" +(dCount == 0 ? "none)" : dCount+")" );
+						return extra.SERVICE_SPECIAL_PAYMENT+"Donate Drawbanes. (" +(dCount == 0 ? "none)" : dCount+")" );
 					}
 
 					@Override
@@ -115,7 +115,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 					@Override
 					public String title() {
-						return "Buy shipments with "+World.currentMoneyString()+".";
+						return extra.SERVICE_CURRENCY+"Buy shipments with "+World.currentMoneyString()+".";
 					}
 
 					@Override
@@ -127,7 +127,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 					@Override
 					public String title() {
-						return "Quest Board. (Sidequests)";
+						return extra.FSERVICE_QUEST+"Quest Board. (Sidequests)";
 					}
 
 					@Override
@@ -155,7 +155,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 						@Override
 						public String title() {
-							return "Donate "+gemAmount+" "+(gemAmount == 1 ? Gem.EMERALD.name : Gem.EMERALD.plural)+". (Have "+Gem.EMERALD.getGem()+")";
+							return extra.SERVICE_SPECIAL_PAYMENT+"Donate "+gemAmount+" "+(gemAmount == 1 ? Gem.EMERALD.name : Gem.EMERALD.plural)+". (Have "+Gem.EMERALD.getGem()+")";
 						}
 
 						@Override

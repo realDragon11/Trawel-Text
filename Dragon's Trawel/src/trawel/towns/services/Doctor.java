@@ -50,7 +50,7 @@ public class Doctor extends Feature {
 
 					@Override
 					public String title() {
-						return "Get Diagnosis.";
+						return extra.SERVICE_FREE+"Get Diagnosis.";
 					}
 
 					@Override
@@ -65,7 +65,7 @@ public class Doctor extends Feature {
 
 					@Override
 					public String title() {
-						return "Cure ("+World.currentMoneyDisplay(cost)+")";
+						return extra.SERVICE_CURRENCY+"Cure ("+World.currentMoneyDisplay(cost)+")";
 					}
 
 					@Override

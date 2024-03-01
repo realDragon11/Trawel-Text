@@ -149,7 +149,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Buy Beer ("+beerCount+" for "+getTown().getIsland().getWorld().moneyString(beerCost)+")";
+						return extra.SERVICE_CURRENCY+"Buy Beer ("+beerCount+" for "+getTown().getIsland().getWorld().moneyString(beerCost)+")";
 					}
 
 					@Override
@@ -190,7 +190,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Backroom (Sidequests)";
+						return extra.FSERVICE_QUEST+"Backroom (Sidequests)";
 					}
 
 					@Override
@@ -199,15 +199,17 @@ public class Inn extends Feature implements QuestBoardLocation{
 						return false;
 					}
 				});
-				if (rentTime > 0 || owner == Player.player){
+				boolean playerOwns = owner == Player.player;
+				if (rentTime > 0 || playerOwns){
 					mList.add(new MenuSelect() {
 
 						@Override
 						public String title() {
-							if (owner == Player.player) {
-								return "Your Room (Owned Inn)";
+							if (playerOwns) {
+								return extra.SERVICE_FREE+"Your Room (Owned Inn)";
 							}
-							return "Your Room ("+extra.F_TWO_TRAILING.format(rentTime)+" hours left)";
+							//special payment is the time you already bought
+							return extra.SERVICE_SPECIAL_PAYMENT+"Your Room ("+extra.F_TWO_TRAILING.format(rentTime)+" hours left)";
 						}
 
 						@Override
@@ -221,17 +223,17 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 										@Override
 										public String title() {
-											if (owner == Player.player) {
+											if (playerOwns) {
 												return Calender.dateFull(town);
 											}
 											return Calender.dateFull(town)+": ("+extra.F_TWO_TRAILING.format(rentTime)+" hours left)";
 										}});
-									if (rentTime > 1 || owner == Player.player) {
+									if (rentTime > 1 || playerOwns) {
 										list.add(new MenuSelect() {
 
 											@Override
 											public String title() {
-												return "Bathe (1 hour)";
+												return (playerOwns ? extra.SERVICE_FREE : extra.SERVICE_SPECIAL_PAYMENT)+"Bathe (1 hour)";
 											}
 
 											@Override
@@ -243,12 +245,12 @@ public class Inn extends Feature implements QuestBoardLocation{
 												return true;
 											}});
 									}
-									if (rentTime < 24 && owner != Player.player) {
+									if (rentTime < 24 && playerOwns) {
 										list.add(new MenuSelect() {
 
 											@Override
 											public String title() {
-												return "Wait " + extra.F_TWO_TRAILING.format(rentTime)+" hours.";
+												return (playerOwns ? extra.SERVICE_FREE : extra.SERVICE_SPECIAL_PAYMENT)+"Wait " + extra.F_TWO_TRAILING.format(rentTime)+" hours.";
 											}
 
 											@Override
@@ -263,7 +265,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 											@Override
 											public String title() {
-												return "Wait 24 hours.";
+												return (playerOwns ? extra.SERVICE_FREE : extra.SERVICE_SPECIAL_PAYMENT)+"Wait 24 hours.";
 											}
 
 											@Override
@@ -272,12 +274,12 @@ public class Inn extends Feature implements QuestBoardLocation{
 												mainGame.globalPassTime();
 												return false;
 											}});
-										if (rentTime > 72 || owner == Player.player) {
+										if (rentTime > 72 || playerOwns) {
 											list.add(new MenuSelect() {
 
 												@Override
 												public String title() {
-													return "Wait 3 days.";
+													return (playerOwns ? extra.SERVICE_FREE : extra.SERVICE_SPECIAL_PAYMENT)+"Wait 3 days.";
 												}
 
 												@Override
@@ -298,7 +300,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 						@Override
 						public String title() {
-							return "Rent a Room";
+							return extra.SERVICE_CURRENCY+"Rent a Room";
 						}
 
 						@Override
@@ -313,7 +315,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Watch duel (" + extra.format(nextReset-timePassed+1) + " hours)";
+						return extra.SERVICE_FREE+"Watch duel (" + extra.format(nextReset-timePassed+1) + " hours)";
 					}
 
 					@Override

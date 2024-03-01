@@ -244,21 +244,21 @@ public class Oracle extends Feature{ //extends feature later
 	
 	private void goDelphi() {
 		while (true) {
-		extra.println("1 buy an utterance ("+cheapUtterPrice()+" aether)");
-		extra.println("2 buy a premium utterance ("+(utterPrice())+" "+World.currentMoneyString()+")");
-		extra.println("3 sit around and wait for them to talk to you");
-		extra.println("4 leave");
-		switch (extra.inInt(4)) {
-		case 1: utterance();break;
-		case 2: utterance2();break;
-		case 3: 
-			extra.println("After enough waiting, the oracles start rambling.");
-			Player.addTime(extra.randFloat()*5);
-			mainGame.globalPassTime();
-			utterance0();
-			break;
-			case 4: return;
-		}
+			extra.println("1 "+extra.SERVICE_AETHER+"buy an utterance ("+cheapUtterPrice()+" aether)");
+			extra.println("2 "+extra.SERVICE_CURRENCY+"buy a premium utterance ("+(utterPrice())+" "+World.currentMoneyString()+")");
+			extra.println("3 "+extra.SERVICE_FREE+"sit around and wait for them to talk to you");
+			extra.println("9 leave");
+			switch (extra.inInt(4,true,true)) {
+				case 1: utterance();break;
+				case 2: utterance2();break;
+				case 3: 
+					extra.println("After enough waiting, the oracles start rambling.");
+					Player.addTime(extra.randFloat()*5);
+					mainGame.globalPassTime();
+					utterance0();
+					break;
+				default: return;
+			}
 		}
 	}
 	

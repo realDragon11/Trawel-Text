@@ -66,7 +66,7 @@ public class WizardTower extends FortFeature {
 
 					@Override
 					public String title() {
-						return "skills";
+						return extra.SERVICE_CURRENCY+"skills";
 					}
 
 					@Override

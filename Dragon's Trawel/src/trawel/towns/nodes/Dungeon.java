@@ -211,7 +211,7 @@ public class Dungeon extends NodeFeature {
 
 												@Override
 												public String title() {
-													return "Recruit";
+													return extra.SERVICE_CURRENCY+"Recruit";
 												}
 
 												@Override

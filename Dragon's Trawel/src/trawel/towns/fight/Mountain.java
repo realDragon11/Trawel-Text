@@ -56,7 +56,7 @@ public class Mountain extends ExploreFeature{
 
 					@Override
 					public String title() {
-						return "Visit hot springs.";
+						return extra.SERVICE_FREE+"Visit hot springs.";
 					}
 
 					@Override

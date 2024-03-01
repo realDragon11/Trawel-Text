@@ -271,7 +271,17 @@ public class Lot extends Feature {
 								public String title() {
 									int aether = type.getACost(tier);
 									int money = type.getMCost(tier);
-									return "Build "+type.nameString
+									String color = "";
+									if (aether == 0 && money == 0) {
+										color = extra.SERVICE_FREE;
+									}else {
+										if (aether == 0) {
+											color = extra.SERVICE_CURRENCY;
+										}else {
+											color = extra.SERVICE_BOTH_PAYMENT;
+										}
+									}
+									return "Build "+color+type.nameString+extra.PRE_WHITE
 											+ (aether > 0 ? " "+aether +" Aether" :"")
 											+ (money > 0 ? " "+World.currentMoneyDisplay(money) :"")
 											+".";

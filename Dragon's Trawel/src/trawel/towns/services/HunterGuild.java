@@ -77,7 +77,7 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Request Amber.";
+						return extra.SERVICE_SPECIAL_PAYMENT+"Request Amber.";
 					}
 
 					@Override
@@ -106,7 +106,7 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return "Assignment Board (Sidequests).";
+						return extra.FSERVICE_QUEST+"Assignment Board (Sidequests).";
 					}
 
 					@Override
