@@ -827,12 +827,11 @@ public class Combat {
 			//attacker can be null for dummy attacks?
 			if (attacker != null && hitRoll > dodgeRoll*2) {
 				if (attacker.hasSkill(Skill.DEADLY_AIM)) {
-					int tenthTime = (int) (att.getTime()/10);
-					ret.damage += tenthTime;
-					ret.bonus += tenthTime;
+					int deadlyBonus = (int)(ret.damage*1.5);
+					ret.damage += deadlyBonus;
+					ret.bonus += deadlyBonus;
 					if (canDisp) {
-						//TODO: should be visible outside of advanced combat display
-						ret.addNote("Deadly Bonus: " + tenthTime);
+						ret.addNote("Deadly Bonus: " + deadlyBonus);
 					}
 				}
 			}
