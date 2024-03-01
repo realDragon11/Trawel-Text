@@ -270,8 +270,8 @@ public class MineNode implements NodeType{
 			break;
 		case 6: 
 			String cColor = holder.getStorageFirstClass(node,String.class);
-			extra.println("You examine the " + cColor+ " crystals. They are very pretty.");
-			holder.findBehind(node,cColor+ " crystals");
+			extra.println("You examine the " + cColor+ " crystals"+extra.COLOR_RESET+". They are very pretty.");
+			holder.findBehind(node,cColor+ " crystals"+extra.COLOR_RESET);
 			break;
 		case 7: 
 			extra.println("You examine the iron minecart. It is on the tracks that travel throughout the mine.");
@@ -498,7 +498,7 @@ public class MineNode implements NodeType{
 		case 5:
 			return "Look at the " + holder.getStorageFirstClass(node,String.class)+".";
 		case 6:
-			return "Examine the " + holder.getStorageFirstClass(node,String.class) + " Crystals.";
+			return "Examine the " + holder.getStorageFirstClass(node,String.class) + " Crystals"+extra.COLOR_RESET+".";
 		case 7:
 			return "Study the Minecart.";
 		case 8:
@@ -519,7 +519,7 @@ public class MineNode implements NodeType{
 		case 2://cleaning water, locked door
 			return holder.getStorageFirstClass(node,String.class);
 		case 6:
-			return holder.getStorageFirstClass(node,String.class) + " Crystals";
+			return holder.getStorageFirstClass(node,String.class) + " Crystals"+extra.COLOR_RESET;
 		case 7:
 			return "Minecart";
 		case 8:

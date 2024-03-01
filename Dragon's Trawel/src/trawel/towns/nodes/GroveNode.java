@@ -128,16 +128,15 @@ public class GroveNode implements NodeType{
 			Person pd = RaceFactory.getDueler(holder.getLevel(madeNode));
 			String warName = extra.capFirst(randomLists.randomWarrior());
 			pd.setTitle("the "+warName);
-			GenericNode.setSimpleDuelPerson(holder,madeNode, pd,warName,"Approach " +pd.getNameNoTitle() +".","Challenge");
+			GenericNode.setSimpleDuelPerson(holder,madeNode, pd,warName,"Approach " +pd.getName() +".","Challenge");
 		break;
 		case 2: 
-			//made.name = extra.choose("river","pond","lake","stream","brook"); made.interactString = "wash yourself"
 			holder.setStorage(madeNode, extra.choose("river","pond","lake","stream","brook"));
 			;break;
 		case 3:
-			String mugname = randomLists.randomMuggerName();
-			Person mugger = RaceFactory.getMugger(holder.getLevel(madeNode));
-			GenericNode.setBasicRagePerson(holder, madeNode, mugger, mugname, "The " + mugname + " mugs you!");
+			Person mugger = RaceFactory.makeMuggerWithTitle(holder.getLevel(madeNode));
+			String mugName = mugger.getTitle();
+			GenericNode.setBasicRagePerson(holder,madeNode,mugger,mugName,extra.capFirst(mugName) + " attacks you!");
 		break;
 		case 4:
 			int blevel = holder.getLevel(madeNode)-2;

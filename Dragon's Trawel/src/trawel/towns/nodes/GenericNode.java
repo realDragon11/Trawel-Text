@@ -348,9 +348,10 @@ public class GenericNode implements NodeType {
 			String vmatName = holder.getStorageFirstClass(node,String.class);
 			Material vmat = MaterialFactory.getMat(vmatName);
 			if (mstate == 0) {
-				return "Mine the " + vmat.color +vmatName+".";
+				return "Mine the " + vmat.color +vmatName+extra.COLOR_RESET+".";
 			}
-			return "Examine the vein.";
+			//displays color even after mined
+			return "Examine the "+vmat.color+"vein"+extra.COLOR_RESET+".";
 		case DEAD_STRING_TOTAL:
 		case MISC_TEXT_WITH_REGEN:
 			return holder.getStorageAsArray(node)[1].toString();
@@ -392,9 +393,10 @@ public class GenericNode implements NodeType {
 			String vmatName = holder.getStorageFirstClass(node,String.class);
 			Material vmat = MaterialFactory.getMat(vmatName);
 			if (mstate == 0) {
-				return "Vein of " + vmat.color +vmatName;//needs to have the vein first so it can have the color applied to it
+				return "Vein of " + vmat.color +vmatName+extra.COLOR_RESET;//needs to have the vein first so it can have the color applied to it
 			}
-			return "Mined Vein";
+			//displays color even after mined
+			return "Mined "+vmat.color+"Vein"+extra.COLOR_RESET;
 		case COLLECTOR:
 			return holder.getStorageFirstPerson(node).getName();
 		case LOCKDOOR:
@@ -561,22 +563,19 @@ public class GenericNode implements NodeType {
 			default:
 				int reward = IEffectiveLevel.cleanRangeReward(holder.getLevel(node), m.veinReward, .6f);
 				Player.player.addGold(reward);
-				extra.println("You mine the vein of "+ World.currentMoneyDisplay(reward)+ " worth of "+m.color+matName+".");
+				extra.println("You mine the vein of "+ World.currentMoneyDisplay(reward)+ " worth of "+m.color+matName+extra.COLOR_RESET+".");
 				break;
 			}
 			if (gem != null) {
 				gem.changeGem(gemAmount);
-				extra.println("You mine the vein and claim "+gemAmount+" "+m.color+(gemAmount == 0 ? gem.name : gem.plural)+extra.PRE_WHITE+"!");
+				extra.println("You mine the vein and claim "+gemAmount+" "+m.color+(gemAmount == 0 ? gem.name : gem.plural)+extra.COLOR_RESET+"!");
 			}
 			holder.setStateNum(node,1);
-			/*
-			node.name = "empty "+node.storage1+" vein";
-			node.interactString = "examine empty "+node.storage1+" vein";*/
 			((Mine)holder.parent).removeVein();
-			holder.findBehind(node,"empty "+m.color+matName+"vein");//instant chance so they want to mine more
+			holder.findBehind(node,"empty "+m.color+matName+"vein"+extra.COLOR_RESET);//instant chance so they want to mine more
 		}else {
-			extra.println("The "+m.color+matName+" has already been mined.");
-			holder.findBehind(node,"empty "+m.color+matName+"vein");
+			extra.println("The "+m.color+matName+extra.COLOR_RESET+" has already been mined.");
+			holder.findBehind(node,"empty "+m.color+matName+"vein"+extra.COLOR_RESET);
 		}
 		return false;
 	}
