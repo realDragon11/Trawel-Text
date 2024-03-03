@@ -673,11 +673,11 @@ public class Combat {
 		if (dead.hasSkill(Skill.CURSE_MAGE)) {
 			if (killer.hasSkill(Skill.NO_HOSTILE_CURSE)) {
 				if (!extra.getPrint()) {
-					extra.println(dead.getName() + " curses the name of " +killer.getNameNoTitle()+", but they seem unaffected.");
+					extra.println(extra.RESULT_WARN+dead.getName() + " curses the name of " +killer.getNameNoTitle()+", but they seem unaffected.");
 				}
 			}else {
 				if (!extra.getPrint()) {
-					extra.println(dead.getName() + " curses the name of " +killer.getNameNoTitle()+"!");
+					extra.println(extra.RESULT_WARN+dead.getName() + " curses the name of " +killer.getNameNoTitle()+"!");
 				}
 				killer.addEffect(Effect.CURSE);
 			}
@@ -685,11 +685,11 @@ public class Combat {
 		if (killer.hasSkill(Skill.CONDEMN_SOUL)) {
 			if (dead.hasSkill(Skill.NO_HOSTILE_CURSE)) {
 				if (!extra.getPrint()) {
-					extra.println(killer.getName() + " condemns the soul of " +dead.getNameNoTitle()+", but they seem unaffected.");
+					extra.println(extra.RESULT_WARN+killer.getName() + " condemns the soul of " +dead.getNameNoTitle()+", but they seem unaffected.");
 				}
 			}else {
 				if (!extra.getPrint()) {
-					extra.println(killer.getName() + " condemns the soul of " +dead.getNameNoTitle()+"!");
+					extra.println(extra.RESULT_WARN+killer.getName() + " condemns the soul of " +dead.getNameNoTitle()+"!");
 				}
 				dead.addEffect(Effect.CURSE);
 			}
