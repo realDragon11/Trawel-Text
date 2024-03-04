@@ -19,6 +19,7 @@ import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.CultType;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.DrawBane;
@@ -328,7 +329,6 @@ public class MineNode implements NodeType{
 		 * 2 = all traps revealed
 		 * 3 = looted
 		 */
-		int state = holder.getStateNum(node);
 		String cType = "trapped chamber";
 		switch (lootArray[0]) {
 		case 0://strength
@@ -347,6 +347,7 @@ public class MineNode implements NodeType{
 			@Override
 			public List<MenuItem> gen() {
 				List<MenuItem> list = new ArrayList<MenuItem>();
+				int state = holder.getStateNum(node);
 				if (state == 3) {
 					list.add(new MenuLine() {
 
@@ -364,7 +365,14 @@ public class MineNode implements NodeType{
 
 						@Override
 						public boolean go() {
-							// TODO Auto-generated method stub
+							for (int i = 0; i < trapArray.length;i++) {
+								if (!handleTrap(holder,node,trapArray[i])){
+									extra.println("You failed at looting the "+chamberType+".");
+									return false;
+								}
+							}
+							holder.setStateNum(node,3);//set state which will get refreshed above
+							//TODO: do loot
 							return false;
 						}});
 					if (state < 2) {
@@ -389,7 +397,34 @@ public class MineNode implements NodeType{
 
 							@Override
 							public boolean go() {
-								// TODO Auto-generated method stub
+								int playerRoll = 0;
+								switch (lootArray[0]) {
+								case 0://strength
+									playerRoll = Player.player.getPerson().getStrength();
+									break;
+								case 1://dex
+									playerRoll = Player.player.getPerson().getDexterity();
+									break;
+								case 2://cla
+									playerRoll = Player.player.getPerson().getClarity();
+									break;
+								}
+								int level = holder.getLevel(node);
+								if (Player.player.getPerson().contestedRoll(playerRoll, IEffectiveLevel.attributeChallengeMedium(level)) >=0) {
+									//passed check, learns traps
+									for (int i = 0; i < trapArray.length;i++) {
+										if (trapArray[i][2] == 0) {//if trap is not revealed
+											trapArray[i][1] = 1;//reveal it
+											break;//stop revealing
+										}
+										if (i == trapArray.length-1) {//if the last trap is already revealed
+											holder.setStateNum(node,2);//set state which will get refreshed above
+										}
+									}
+								}else {
+									//failed, thrown into entirely random trap
+									boolean survived = handleTrap(holder,node,trapArray[extra.randRange(0,trapArray.length-1)]);
+								}
 								return false;
 							}});
 					}
@@ -400,11 +435,63 @@ public class MineNode implements NodeType{
 		return false;
 	}
 	
+	/**
+	 * will edit trapData array as a side effect
+	 * <br>
+	 * return true if survived
+	 * <br>
+	 * if failed inflicts punishment
+	 */
+	private boolean handleTrap(NodeConnector holder,int node, byte[] trapData) {
+		int level = holder.getLevel(node);
+		int playerRoll = 0;
+		switch (trapData[0]) {//type of trap
+		case 0://strength
+			playerRoll = Player.player.getPerson().getStrength();
+			break;
+		case 1://dex
+			playerRoll = Player.player.getPerson().getDexterity();
+			break;
+		case 2://cla
+			playerRoll = Player.player.getPerson().getClarity();
+			break;
+		}
+		if (trapData[2] != 0) {//if the player knows the trap in detail
+			playerRoll*=2;//double player roll
+		}
+		//after we encounter a trap, it is revealed either way
+		trapData[2] = 1;
+		
+		String[] trapFluff = mineTraps[trapData[0]][trapData[1]];//get the fluff with type and offset
+		if (Player.player.getPerson().contestedRoll(playerRoll, IEffectiveLevel.attributeChallengeMedium(level)) >=0) {
+			//passed check
+			extra.println(trapFluff[3]);
+			return true;
+		}else {
+			//failed check, suffer burnout
+			Player.player.getPerson().addEffect(Effect.BURNOUT);
+			extra.println(trapFluff[2]);
+			Effect punishment = trapFluff[1] == null ? null : Effect.valueOf(trapFluff[1]);
+			switch (punishment) {//type of trap punishment
+			default:
+				extra.println("Unknown trap punishment type!");
+				break;
+			case DAMAGED:
+				extra.println(extra.RESULT_FAIL+"Your equipment is damaged!");
+				break;
+			case TIRED:
+				extra.println(extra.RESULT_FAIL+"You are overcome with fatigue!");
+				break;
+			}
+			return false;
+		}
+	}
+	
 	private static final String[][][] mineTraps = new String[][][] {
 		//top level is attribute, then list of traps, then name, killfluff, survivefluff, revealfluff
 		//strength traps
 		new String[][] {
-				new String[] {"Falling Rocks","The rocks crush you from above!","You dodge falling rocks!","An overhead vent drops rocks down..."}
+				new String[] {"Falling Rocks",Effect.DAMAGED.name(),"Rocks crush you from above!","You dodge falling rocks!","An overhead vent drops rocks down..."}
 		}
 		
 	};

@@ -43,6 +43,27 @@ public interface IEffectiveLevel {
 	default int getAttributeChallengeHard() {
 		return 50+(15*getLevel());
 	}
+	
+	/**
+	 * 30 v 100 base, offstat scaling (+5)
+	 */
+	public static int attributeChallengeEasy(int level) {
+		return 30+(5*level);
+	}
+	
+	/**
+	 * 50 v 100 base, secondary stat scaling (+10)
+	 */
+	public static int attributeChallengeMedium(int level) {
+		return 50+(10*level);
+	}
+	
+	/**
+	 * 50 v 100 base, primary stat scaling (+15)
+	 */
+	public static int attributeChallengeHard(int level) {
+		return 50+(15*level);
+	}
 
 	public static float effective(int w_lvl) {
 		return w_lvl+10;
