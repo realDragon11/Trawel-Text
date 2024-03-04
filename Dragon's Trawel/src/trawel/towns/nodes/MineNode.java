@@ -347,65 +347,73 @@ public class MineNode implements NodeType{
 
 						@Override
 						public String title() {
-							return "You have looted this "+tChamberLookup(lootArray[0],lootArray[4])[0]+".";
+							return "You have looted this "+tChamberLookup(lootArray[0],lootArray[3])[0]+".";
 						}});
 				}else {
-					list.add(new MenuSelect() {
-
-						@Override
-						public String title() {
-							return extra.PRE_BATTLE+"Attempt to loot the "+tChamberLookup(lootArray[0],lootArray[3])[0]+".";
-						}
-
-						@Override
-						public boolean go() {
-							for (int i = 0; i < trapArray.length;i++) {
-								if (!handleTrap(holder,node,trapArray[i])){
-									extra.println("You failed at looting the "+tChamberLookup(lootArray[0],lootArray[3])[0]+".");
-									return false;
-								}
-							}
-							holder.setStateNum(node,3);//set state which will get refreshed above
-							//TODO: do loot
-							return false;
-						}});
-					if (state < 2) {
-						list.add(new MenuSelect() {
+					if (Player.player.getPerson().hasEffect(Effect.BURNOUT)) {
+						list.add(new MenuLine() {
 
 							@Override
 							public String title() {
-								return extra.PRE_MAYBE_BATTLE+"Attempt to discover traps by "+tChamberLookup(lootArray[0],lootArray[3])[1]+ ". "+ AttributeBox.getStatHintByIndex(lootArray[0]);
+								return extra.RESULT_ERROR+"You are too burnt out to take on this "+tChamberLookup(lootArray[0],lootArray[3])[0]+".";
+							}});
+					}else {
+						list.add(new MenuSelect() {
+	
+							@Override
+							public String title() {
+								return extra.PRE_BATTLE+"Attempt to loot the "+tChamberLookup(lootArray[0],lootArray[3])[0]+".";
 							}
-
+	
 							@Override
 							public boolean go() {
-								int playerRoll = Player.player.getPerson().getStatByIndex(lootArray[0]);
-								int level = holder.getLevel(node);
-								if (Player.player.getPerson().contestedRoll(playerRoll, IEffectiveLevel.attributeChallengeMedium(level)) >=0) {
-									//passed check, learns traps
-									for (int i = 0; i < trapArray.length;i++) {
-										if (trapArray[i][2] == 0) {//if trap is not revealed
-											trapArray[i][1] = 1;//reveal it
-											extra.println(trapLookup(trapArray[i][0],trapArray[i][1])[3] + " " + AttributeBox.getStatHintByIndex(trapArray[i][0]));//print reveal fluff
-											if (i == trapArray.length-1) {//if this is the last trap and it is revealed
+								for (int i = 0; i < trapArray.length;i++) {
+									if (!handleTrap(holder,node,trapArray[i])){
+										extra.println("You failed at looting the "+tChamberLookup(lootArray[0],lootArray[3])[0]+".");
+										return false;
+									}
+								}
+								holder.setStateNum(node,3);//set state which will get refreshed above
+								//TODO: do loot
+								return false;
+							}});
+						if (state < 2) {
+							list.add(new MenuSelect() {
+	
+								@Override
+								public String title() {
+									return extra.PRE_MAYBE_BATTLE+"Attempt to discover traps by "+tChamberLookup(lootArray[0],lootArray[3])[1]+ ". "+ AttributeBox.getStatHintByIndex(lootArray[0]);
+								}
+	
+								@Override
+								public boolean go() {
+									int playerRoll = Player.player.getPerson().getStatByIndex(lootArray[0]);
+									int level = holder.getLevel(node);
+									if (Player.player.getPerson().contestedRoll(playerRoll, IEffectiveLevel.attributeChallengeMedium(level)) >=0) {
+										//passed check, learns traps
+										for (int i = 0; i < trapArray.length;i++) {
+											if (trapArray[i][2] == 0) {//if trap is not revealed
+												trapArray[i][2] = 1;//reveal it
+												extra.println(trapLookup(trapArray[i][0],trapArray[i][1])[3] + " " + AttributeBox.getStatHintByIndex(trapArray[i][0]));//print reveal fluff
+												if (i == trapArray.length-1) {//if this is the last trap and it is revealed
+													holder.setStateNum(node,2);//set state which will get refreshed above
+													extra.println("You know all the traps here now!");
+												}
+												break;//stop revealing
+											}
+											if (i == trapArray.length-1) {//if the last trap is already revealed
 												holder.setStateNum(node,2);//set state which will get refreshed above
 												extra.println("You know all the traps here now!");
 											}
-											break;//stop revealing
 										}
-										if (i == trapArray.length-1) {//if the last trap is already revealed
-											holder.setStateNum(node,2);//set state which will get refreshed above
-											extra.println("You know all the traps here now!");
-										}
+									}else {
+										//failed, thrown into entirely random trap
+										boolean survived = handleTrap(holder,node,trapArray[extra.randRange(0,trapArray.length-1)]);
 									}
-								}else {
-									//failed, thrown into entirely random trap
-									boolean survived = handleTrap(holder,node,trapArray[extra.randRange(0,trapArray.length-1)]);
-								}
-								return false;
-							}});
+									return false;
+								}});
+						}
 					}
-					
 					for (int i = 0; i < trapArray.length;i++) {
 						if (trapArray[i][2] != 0) {//if trap is revealed
 							final int index = i;
@@ -433,7 +441,7 @@ public class MineNode implements NodeType{
 	private boolean handleTrap(NodeConnector holder,int node, byte[] trapData) {
 		int level = holder.getLevel(node);
 		int playerRoll = Player.player.getPerson().getStatByIndex(trapData[0]);
-		if (trapData[2] != 0) {//if the player knows the trap in detail
+		if (trapData[2] != 0) {//if the player knows the trap already
 			playerRoll*=2;//double player roll
 		}
 		//after we encounter a trap, it is revealed either way
