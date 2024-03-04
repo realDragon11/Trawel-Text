@@ -62,6 +62,8 @@ public class MineNode implements NodeType{
 				1f,
 				//mugger
 				1.5f,
+				//trapped chamber
+				99999f
 		});
 		hellMineRoller = new WeightedTable(new float[] {
 				//duelist
@@ -84,6 +86,8 @@ public class MineNode implements NodeType{
 				1f,
 				//mugger
 				2.5f,
+				//trapped chamber
+				0.1f
 		});
 		}
 	
@@ -99,7 +103,7 @@ public class MineNode implements NodeType{
 	
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
-		int idNum = extra.randRange(1,getNodeTypeForParentShape(holder));
+		int idNum = getNodeTypeForParentShape(holder);
 		int ret = holder.newNode(NodeType.NodeTypeNum.MINE.ordinal(),idNum,tier);
 		holder.setFloor(ret, guessDepth);
 		return ret;
@@ -256,7 +260,7 @@ public class MineNode implements NodeType{
 			break;
 		case 11://trapped treasure chamber
 			Object[] tchamberArray = new Object[2];
-			byte[] lootData = new byte[3];
+			byte[] lootData = new byte[4];
 			//0 = str, 1 = dex, 3 = cla
 			lootData[0] = (byte) extra.randRange(0,2);//attrib value of what type of chamber it is, used to scan for traps early
 			//if you fail to scan it throws you into a random trap and you discover that trap but must endure it
@@ -265,13 +269,15 @@ public class MineNode implements NodeType{
 			//if you pass you learn an unlearnt trap in order
 			lootData[1] = (byte) extra.randRange(0,1);//reward type
 			lootData[2] = 0;//reward subtype
+			lootData[3] = (byte) extra.randRange(Byte.MIN_VALUE,Byte.MAX_VALUE);//chamber type fluff offset
 			//reward amount scale is determined by number of traps, 2/3/4
 			int trapNumber = extra.randRange(2,4);
 			byte[][] trapArray = new byte[trapNumber][];
-			trapArray[0] = new byte[trapNumber];//each trap needs a byte attribute for stat type
-			trapArray[1] = new byte[trapNumber];//each trap uses a random offset value and modulos fluff from that
-			trapArray[2] = new byte[trapNumber];//each trap stores if it's revealed or not
+			//each trap needs a byte attribute for stat type
+			//each trap uses a random offset value and modulos fluff from that
+			//each trap stores if it's revealed or not
 			for (int i = 0; i < trapNumber;i++) {
+				trapArray[i] = new byte[3];
 				trapArray[i][0] = (byte) extra.randRange(0,2);//0 = str, 1 = dex, 3 = cla
 				trapArray[i][1] = (byte) extra.randRange(Byte.MIN_VALUE,Byte.MAX_VALUE);
 				trapArray[i][2] = 0;
@@ -330,19 +336,6 @@ public class MineNode implements NodeType{
 		 * 2 = all traps revealed
 		 * 3 = looted
 		 */
-		String cType = "Trapped Chamber";
-		switch (lootArray[0]) {
-		case 0://strength
-			cType = "Submerged Chamber";
-			break;
-		case 1://dex
-			cType = "Treasure Vault";
-			break;
-		case 2://cla
-			cType = "Magical Maze";
-			break;
-		}
-		final String chamberType = cType;//make it final
 		extra.menuGo(new MenuGenerator() {
 
 			@Override
@@ -354,21 +347,21 @@ public class MineNode implements NodeType{
 
 						@Override
 						public String title() {
-							return "You have looted this "+chamberType+".";
+							return "You have looted this "+tChamberLookup(lootArray[0],lootArray[4])[0]+".";
 						}});
 				}else {
 					list.add(new MenuSelect() {
 
 						@Override
 						public String title() {
-							return extra.PRE_BATTLE+"Attempt to loot the "+chamberType+".";
+							return extra.PRE_BATTLE+"Attempt to loot the "+tChamberLookup(lootArray[0],lootArray[3])[0]+".";
 						}
 
 						@Override
 						public boolean go() {
 							for (int i = 0; i < trapArray.length;i++) {
 								if (!handleTrap(holder,node,trapArray[i])){
-									extra.println("You failed at looting the "+chamberType+".");
+									extra.println("You failed at looting the "+tChamberLookup(lootArray[0],lootArray[3])[0]+".");
 									return false;
 								}
 							}
@@ -381,19 +374,7 @@ public class MineNode implements NodeType{
 
 							@Override
 							public String title() {
-								String trapDiscover = "";
-								switch (lootArray[0]) {
-								case 0://strength
-									trapDiscover = "swimming around. ";
-									break;
-								case 1://dex
-									trapDiscover = "opening control panels. ";
-									break;
-								case 2://cla
-									trapDiscover = "studying the magic. ";
-									break;
-								}
-								return extra.PRE_MAYBE_BATTLE+"Attempt to discover traps by "+trapDiscover+AttributeBox.getStatHintByIndex(lootArray[0]);
+								return extra.PRE_MAYBE_BATTLE+"Attempt to discover traps by "+tChamberLookup(lootArray[0],lootArray[3])[1]+ ". "+ AttributeBox.getStatHintByIndex(lootArray[0]);
 							}
 
 							@Override
@@ -405,11 +386,16 @@ public class MineNode implements NodeType{
 									for (int i = 0; i < trapArray.length;i++) {
 										if (trapArray[i][2] == 0) {//if trap is not revealed
 											trapArray[i][1] = 1;//reveal it
-											extra.println(mineTraps[trapArray[1][0]][trapArray[1][1]][3] + " " + AttributeBox.getStatHintByIndex(trapArray[1][0]));//print reveal fluff
+											extra.println(trapLookup(trapArray[i][0],trapArray[i][1])[3] + " " + AttributeBox.getStatHintByIndex(trapArray[i][0]));//print reveal fluff
+											if (i == trapArray.length-1) {//if this is the last trap and it is revealed
+												holder.setStateNum(node,2);//set state which will get refreshed above
+												extra.println("You know all the traps here now!");
+											}
 											break;//stop revealing
 										}
 										if (i == trapArray.length-1) {//if the last trap is already revealed
 											holder.setStateNum(node,2);//set state which will get refreshed above
+											extra.println("You know all the traps here now!");
 										}
 									}
 								}else {
@@ -422,10 +408,11 @@ public class MineNode implements NodeType{
 					
 					for (int i = 0; i < trapArray.length;i++) {
 						if (trapArray[i][2] != 0) {//if trap is revealed
+							final int index = i;
 							list.add(new MenuLine() {
 								@Override
 								public String title() {
-									return "Known Trap: "+mineTraps[trapArray[1][0]][trapArray[1][1]][0] + " " + AttributeBox.getStatHintByIndex(trapArray[1][0]);//print name fluff
+									return "Known Trap: "+trapLookup(trapArray[index][0],trapArray[index][1])[0] + " " + AttributeBox.getStatHintByIndex(trapArray[index][0]);//print name fluff
 								}});
 						}
 					}
@@ -452,7 +439,7 @@ public class MineNode implements NodeType{
 		//after we encounter a trap, it is revealed either way
 		trapData[2] = 1;
 		
-		String[] trapFluff = mineTraps[trapData[0]][trapData[1]];//get the fluff with type and offset
+		String[] trapFluff = trapLookup(trapData[0],trapData[1]);//get the fluff with type and offset
 		if (Player.player.getPerson().contestedRoll(playerRoll, IEffectiveLevel.attributeChallengeMedium(level)) >=0) {
 			//passed check
 			extra.println(trapFluff[3] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
@@ -477,13 +464,44 @@ public class MineNode implements NodeType{
 		}
 	}
 	
+	private static String[] tChamberLookup(byte stat, byte offset) {
+		return trapChamberType[stat][(Byte.toUnsignedInt(offset))%trapChamberType[stat].length];
+	}
+	
+	private static final String[][][] trapChamberType = new String[][][] {
+		//name, reveal description
+		
+		//strength chamber types
+		new String[][] {
+			new String[] {"Submerged Chamber","swimming around"}
+		},
+		new String[][] {
+			new String[] {"Treasure Vault","opening control panels"}
+		},
+		new String[][] {
+			new String[] {"Magical Maze","studying the magic"}
+		}
+	};
+	
+	private static String[] trapLookup(byte stat, byte offset) {
+		return mineTraps[stat][(Byte.toUnsignedInt(offset))%mineTraps[stat].length];
+	}
+	
 	private static final String[][][] mineTraps = new String[][][] {
 		//top level is attribute, then list of traps, then name, killfluff, survivefluff, revealfluff
 		//strength traps
 		new String[][] {
-				new String[] {"Falling Rocks",Effect.DAMAGED.name(),"Rocks crush you from above!","You dodge falling rocks!","An overhead vent drops rocks down..."}
-		}
-		
+				new String[] {"Falling Rocks",Effect.DAMAGED.name(),"Rocks crush you from above and force you to retreat!","You dodge falling rocks!","An overhead vent drops rocks down..."}
+				,new String[] {"Closing Walls",Effect.TIRED.name(),"The walls close in and force you to crawl out!","You force the closing walls open!","Hidden pistons force the wall to close on looters..."}
+		},
+		//dexterity traps
+		new String[][] {
+			new String[] {"Resetting Lock",Effect.TIRED.name(),"You struggle and fail to pick a lock!","You pick a lock...","An ornate lock bars progress, enchanted to reset..."}
+		},
+		//clarity traps
+		new String[][] {
+			new String[] {"Draining Sigil",Effect.TIRED.name(),"A burning sign saps your strength!","You resist a burning sigil!","A flame sigil steals the strength of looters to power itself..."}
+		},
 	};
 
 	/* for Ryou Misaki (nico)*/
@@ -706,6 +724,13 @@ public class MineNode implements NodeType{
 				return STR_SHADOW_ROOM_ACT;
 			}
 			return "Enter Sanctum.";
+		case 11:
+			if (hideContents(holder,node)) {//if not visited
+				return STR_SHADOW_ROOM_NAME;
+			}
+			Object[] trapChamberArray = holder.getStorageAsArray(node);
+			byte[] lootChamberArray = (byte[]) trapChamberArray[0];
+			return "Enter the " +tChamberLookup(lootChamberArray[0],lootChamberArray[3])[0]+".";
 		}
 		return null;
 	}
@@ -731,6 +756,13 @@ public class MineNode implements NodeType{
 				return STR_SHADOW_ROOM_NAME;//TODO: more dark chambers
 			}
 			return "Blood Cult Sanctum";
+		case 11:
+			if (hideContents(holder,node)) {//if not visited
+				return STR_SHADOW_ROOM_NAME;
+			}
+			Object[] trapChamberArray = holder.getStorageAsArray(node);
+			byte[] lootChamberArray = (byte[]) trapChamberArray[0];
+			return tChamberLookup(lootChamberArray[0],lootChamberArray[3])[0];
 		}
 		return null;
 	}
