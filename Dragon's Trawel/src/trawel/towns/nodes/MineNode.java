@@ -7,6 +7,7 @@ import com.github.yellowstonegames.core.WeightedTable;
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
+import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.Effect;
 import trawel.Networking;
@@ -252,19 +253,19 @@ public class MineNode implements NodeType{
 			GenericNode.setBasicRagePerson(holder,madeNode, mugger,mugName,extra.capFirst(mugName) + " attacks you!");
 			break;
 		case 11://trapped treasure chamber
-			Object[] tchamberArray = new Object[5];
+			Object[] tchamberArray = new Object[2];
+			byte[] lootData = new byte[3];
 			//0 = str, 1 = dex, 3 = cla
-			tchamberArray[0] = extra.randRange(0,2);//attrib value of what type of chamber it is, used to scan for traps early
+			lootData[0] = (byte) extra.randRange(0,2);//attrib value of what type of chamber it is, used to scan for traps early
 			//if you fail to scan it throws you into a random trap and you discover that trap but must endure it
 			//if you then fail to endure it you suffer the burnout + penalty
 			//either way the trap gets revealed which makes it easier in the future
-			//if you pass you learn all the traps
-			tchamberArray[1] = extra.randRange(0,1);//reward type
-			tchamberArray[2] = 0;//reward subtype
-			tchamberArray[3] = 0;//reward amount
-			byte[][] trapArray = new byte[3][];
-			tchamberArray[4] = trapArray;//fourth slot stores the traps
-			int trapNumber = 3;
+			//if you pass you learn an unlearnt trap in order
+			lootData[1] = (byte) extra.randRange(0,1);//reward type
+			lootData[2] = 0;//reward subtype
+			//reward amount scale is determined by number of traps, 2/3/4
+			int trapNumber = extra.randRange(2,4);
+			byte[][] trapArray = new byte[trapNumber][];
 			trapArray[0] = new byte[trapNumber];//each trap needs a byte attribute for stat type
 			trapArray[1] = new byte[trapNumber];//each trap uses a random offset value and modulos fluff from that
 			trapArray[2] = new byte[trapNumber];//each trap stores if it's revealed or not
@@ -273,6 +274,8 @@ public class MineNode implements NodeType{
 				trapArray[i][1] = (byte) extra.randRange(Byte.MIN_VALUE,Byte.MAX_VALUE);
 				trapArray[i][2] = 0;
 			}
+			tchamberArray[0] = lootData;
+			tchamberArray[1] = trapArray;
 			holder.setStorage(madeNode, tchamberArray);
 			break;
 		}
@@ -317,7 +320,8 @@ public class MineNode implements NodeType{
 	
 	private boolean trappedChamber(NodeConnector holder,int node) {
 		Object[] totalArray = holder.getStorageAsArray(node);
-		byte[] trapArray = (byte[]) totalArray[4];
+		byte[] lootArray = (byte[]) totalArray[0];
+		byte[][] trapArray = (byte[][]) totalArray[1];
 		/**
 		 * 0 = not yet interacted
 		 * 1 = interacted
@@ -325,9 +329,74 @@ public class MineNode implements NodeType{
 		 * 3 = looted
 		 */
 		int state = holder.getStateNum(node);
-		if (state < 3) {
-			extra.println("This chamber is trapped.");
+		String cType = "trapped chamber";
+		switch (lootArray[0]) {
+		case 0://strength
+			cType = "submerged chamber";
+			break;
+		case 1://dex
+			cType = "treasure vault";
+			break;
+		case 2://cla
+			cType = "magical maze";
+			break;
 		}
+		final String chamberType = cType;//make it final
+		extra.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				if (state == 3) {
+					list.add(new MenuLine() {
+
+						@Override
+						public String title() {
+							return "You have looted this "+chamberType+".";
+						}});
+				}else {
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return extra.PRE_BATTLE+"Attempt to loot the "+chamberType+".";
+						}
+
+						@Override
+						public boolean go() {
+							// TODO Auto-generated method stub
+							return false;
+						}});
+					if (state < 2) {
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								String trapDiscover = "";
+								switch (lootArray[0]) {
+								case 0://strength
+									trapDiscover = "swimming around. {Strength}";
+									break;
+								case 1://dex
+									trapDiscover = "opening control panels. {Dexterity}";
+									break;
+								case 2://cla
+									trapDiscover = "studying the magic. {Clarity}";
+									break;
+								}
+								return extra.PRE_MAYBE_BATTLE+"Attempt to discover traps by "+trapDiscover;
+							}
+
+							@Override
+							public boolean go() {
+								// TODO Auto-generated method stub
+								return false;
+							}});
+					}
+					
+				}
+				return list;
+			}});
 		return false;
 	}
 	
