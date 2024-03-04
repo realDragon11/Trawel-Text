@@ -19,6 +19,7 @@ import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.CultType;
 import trawel.personal.classless.Perk;
+import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -250,6 +251,30 @@ public class MineNode implements NodeType{
 			String mugName = mugger.getTitle();
 			GenericNode.setBasicRagePerson(holder,madeNode, mugger,mugName,extra.capFirst(mugName) + " attacks you!");
 			break;
+		case 11://trapped treasure chamber
+			Object[] tchamberArray = new Object[5];
+			//0 = str, 1 = dex, 3 = cla
+			tchamberArray[0] = extra.randRange(0,2);//attrib value of what type of chamber it is, used to scan for traps early
+			//if you fail to scan it throws you into a random trap and you discover that trap but must endure it
+			//if you then fail to endure it you suffer the burnout + penalty
+			//either way the trap gets revealed which makes it easier in the future
+			//if you pass you learn all the traps
+			tchamberArray[1] = extra.randRange(0,1);//reward type
+			tchamberArray[2] = 0;//reward subtype
+			tchamberArray[3] = 0;//reward amount
+			byte[][] trapArray = new byte[3][];
+			tchamberArray[4] = trapArray;//fourth slot stores the traps
+			int trapNumber = 3;
+			trapArray[0] = new byte[trapNumber];//each trap needs a byte attribute for stat type
+			trapArray[1] = new byte[trapNumber];//each trap uses a random offset value and modulos fluff from that
+			trapArray[2] = new byte[trapNumber];//each trap stores if it's revealed or not
+			for (int i = 0; i < trapNumber;i++) {
+				trapArray[i][0] = (byte) extra.randRange(0,2);//0 = str, 1 = dex, 3 = cla
+				trapArray[i][1] = (byte) extra.randRange(Byte.MIN_VALUE,Byte.MAX_VALUE);
+				trapArray[i][2] = 0;
+			}
+			holder.setStorage(madeNode, tchamberArray);
+			break;
 		}
 	}
 
@@ -283,10 +308,37 @@ public class MineNode implements NodeType{
 			holder.findBehind(node,"ladder");
 			break;
 		case 9: return cultists1(holder,node);
+		case 11:
+			return trappedChamber(holder,node);
 		}
 		Networking.clearSide(1);
 		return false;
 	}
+	
+	private boolean trappedChamber(NodeConnector holder,int node) {
+		Object[] totalArray = holder.getStorageAsArray(node);
+		byte[] trapArray = (byte[]) totalArray[4];
+		/**
+		 * 0 = not yet interacted
+		 * 1 = interacted
+		 * 2 = all traps revealed
+		 * 3 = looted
+		 */
+		int state = holder.getStateNum(node);
+		if (state < 3) {
+			extra.println("This chamber is trapped.");
+		}
+		return false;
+	}
+	
+	private static final String[][][] mineTraps = new String[][][] {
+		//top level is attribute, then list of traps, then name, killfluff, survivefluff, revealfluff
+		//strength traps
+		new String[][] {
+				new String[] {"Falling Rocks","The rocks crush you from above!","You dodge falling rocks!","An overhead vent drops rocks down..."}
+		}
+		
+	};
 
 	/* for Ryou Misaki (nico)*/
 	private boolean cultists1(NodeConnector holder,int node) {
@@ -504,14 +556,18 @@ public class MineNode implements NodeType{
 		case 8:
 			return "Climb Ladder!";
 		case 9:
-			if (holder.getVisited(node) < 2) {//if not visited
-				return "Enter?";
+			if (hideContents(holder,node)) {//if not visited
+				return STR_SHADOW_ROOM_ACT;
 			}
 			return "Enter Sanctum.";
 		}
 		return null;
 	}
 
+	private static final String 
+	STR_SHADOW_ROOM_ACT = "Enter Dark Chamber?",
+	STR_SHADOW_ROOM_NAME = "Dark Chamber"
+	; 
 
 	@Override
 	public String nodeName(NodeConnector holder, int node) {
@@ -525,12 +581,16 @@ public class MineNode implements NodeType{
 		case 8:
 			return "Ladder";
 		case 9:
-			if (holder.getVisited(node) < 2) {//if not visited
-				return "Dark Chamber";//TODO: more dark chambers
+			if (hideContents(holder,node)) {//if not visited
+				return STR_SHADOW_ROOM_NAME;//TODO: more dark chambers
 			}
 			return "Blood Cult Sanctum";
 		}
 		return null;
+	}
+	
+	private static boolean hideContents(NodeConnector holder, int node) {
+		return (holder.getVisited(node) < 2 && !Player.player.getPerson().hasSkill(Skill.NIGHTVISION));
 	}
 
 
