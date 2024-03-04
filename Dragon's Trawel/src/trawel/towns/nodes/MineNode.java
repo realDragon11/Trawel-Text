@@ -415,6 +415,7 @@ public class MineNode implements NodeType{
 									for (int i = 0; i < trapArray.length;i++) {
 										if (trapArray[i][2] == 0) {//if trap is not revealed
 											trapArray[i][1] = 1;//reveal it
+											extra.println(mineTraps[trapArray[1][0]][trapArray[1][1]][3]);//print reveal fluff
 											break;//stop revealing
 										}
 										if (i == trapArray.length-1) {//if the last trap is already revealed
@@ -430,6 +431,7 @@ public class MineNode implements NodeType{
 					}
 					
 				}
+				list.add(new MenuBack());
 				return list;
 			}});
 		return false;
@@ -445,15 +447,19 @@ public class MineNode implements NodeType{
 	private boolean handleTrap(NodeConnector holder,int node, byte[] trapData) {
 		int level = holder.getLevel(node);
 		int playerRoll = 0;
+		String trapHelp = "ERROR";
 		switch (trapData[0]) {//type of trap
 		case 0://strength
 			playerRoll = Player.player.getPerson().getStrength();
+			trapHelp = "{Strength}";
 			break;
 		case 1://dex
 			playerRoll = Player.player.getPerson().getDexterity();
+			trapHelp = "{Dexterity}";
 			break;
 		case 2://cla
 			playerRoll = Player.player.getPerson().getClarity();
+			trapHelp = "{Clarity}";
 			break;
 		}
 		if (trapData[2] != 0) {//if the player knows the trap in detail
