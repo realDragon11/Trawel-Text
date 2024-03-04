@@ -389,6 +389,8 @@ public class MineNode implements NodeType{
 								public boolean go() {
 									int playerRoll = Player.player.getPerson().getStatByIndex(lootArray[0]);
 									int level = holder.getLevel(node);
+									Player.addTime(.3);//examining time
+									mainGame.globalPassTime();
 									if (Player.player.getPerson().contestedRoll(playerRoll, IEffectiveLevel.attributeChallengeMedium(level)) >=0) {
 										//passed check, learns traps
 										for (int i = 0; i < trapArray.length;i++) {
@@ -449,10 +451,14 @@ public class MineNode implements NodeType{
 		
 		String[] trapFluff = trapLookup(trapData[0],trapData[1]);//get the fluff with type and offset
 		if (Player.player.getPerson().contestedRoll(playerRoll, IEffectiveLevel.attributeChallengeMedium(level)) >=0) {
+			Player.addTime(.5);//half an hour of passing time
+			mainGame.globalPassTime();
 			//passed check
 			extra.println(trapFluff[3] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
 			return true;
 		}else {
+			Player.addTime(1);//full hour of failing time
+			mainGame.globalPassTime();
 			//failed check, suffer burnout
 			Player.player.getPerson().addEffect(Effect.BURNOUT);
 			extra.println(trapFluff[2] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
@@ -504,7 +510,7 @@ public class MineNode implements NodeType{
 		},
 		//dexterity traps
 		new String[][] {
-			new String[] {"Resetting Lock",Effect.TIRED.name(),"You struggle and fail to pick a lock!","You pick a lock...","An ornate lock bars progress, enchanted to reset..."}
+			new String[] {"Grabbing Lock",Effect.TIRED.name(),"A lock clamps onto you and you struggle to escape!","You quickly pick a lock that clamped down over your body!","An ornate lock bars progress, enchanted to grab looters..."}
 		},
 		//clarity traps
 		new String[][] {
