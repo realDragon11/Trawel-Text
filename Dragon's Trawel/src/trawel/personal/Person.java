@@ -1856,6 +1856,18 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		return fetchAttributes().getDexterity();
 	}
 	
+	public int getStatByIndex(int index) {
+		switch (index) {
+		case 0:
+			return getStrength();
+		case 1:
+			return getDexterity();
+		case 2:
+			return getClarity();
+		}
+		throw new RuntimeException("invalid stat index: " + index);
+	}
+	
 	public float getAttributeAgiPen() {
 		//make sure to update capacity
 		if (atrBox == null) {

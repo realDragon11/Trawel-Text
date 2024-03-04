@@ -193,4 +193,16 @@ public class AttributeBox {
 	public String getDesc() {
 		return "dex: " +getDexterity() + " cap/str: "+capacity+"/"+getStrength();
 	}
+	
+	public static final String getStatHintByIndex(int index) {
+		switch (index) {
+		case 0:
+			return "{Strength}";
+		case 1:
+			return "{Dexterity}";
+		case 2:
+			return "{Clarity}";
+		}
+		throw new RuntimeException("invalid stat index: " + index);
+	}
 }

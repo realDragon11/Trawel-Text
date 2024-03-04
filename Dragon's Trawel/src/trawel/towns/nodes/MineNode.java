@@ -19,6 +19,7 @@ import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.CultType;
+import trawel.personal.classless.AttributeBox;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
@@ -325,20 +326,20 @@ public class MineNode implements NodeType{
 		byte[][] trapArray = (byte[][]) totalArray[1];
 		/**
 		 * 0 = not yet interacted
-		 * 1 = interacted
+		 * 1 = n/a
 		 * 2 = all traps revealed
 		 * 3 = looted
 		 */
-		String cType = "trapped chamber";
+		String cType = "Trapped Chamber";
 		switch (lootArray[0]) {
 		case 0://strength
-			cType = "submerged chamber";
+			cType = "Submerged Chamber";
 			break;
 		case 1://dex
-			cType = "treasure vault";
+			cType = "Treasure Vault";
 			break;
 		case 2://cla
-			cType = "magical maze";
+			cType = "Magical Maze";
 			break;
 		}
 		final String chamberType = cType;//make it final
@@ -383,39 +384,28 @@ public class MineNode implements NodeType{
 								String trapDiscover = "";
 								switch (lootArray[0]) {
 								case 0://strength
-									trapDiscover = "swimming around. {Strength}";
+									trapDiscover = "swimming around. ";
 									break;
 								case 1://dex
-									trapDiscover = "opening control panels. {Dexterity}";
+									trapDiscover = "opening control panels. ";
 									break;
 								case 2://cla
-									trapDiscover = "studying the magic. {Clarity}";
+									trapDiscover = "studying the magic. ";
 									break;
 								}
-								return extra.PRE_MAYBE_BATTLE+"Attempt to discover traps by "+trapDiscover;
+								return extra.PRE_MAYBE_BATTLE+"Attempt to discover traps by "+trapDiscover+AttributeBox.getStatHintByIndex(lootArray[0]);
 							}
 
 							@Override
 							public boolean go() {
-								int playerRoll = 0;
-								switch (lootArray[0]) {
-								case 0://strength
-									playerRoll = Player.player.getPerson().getStrength();
-									break;
-								case 1://dex
-									playerRoll = Player.player.getPerson().getDexterity();
-									break;
-								case 2://cla
-									playerRoll = Player.player.getPerson().getClarity();
-									break;
-								}
+								int playerRoll = Player.player.getPerson().getStatByIndex(lootArray[0]);
 								int level = holder.getLevel(node);
 								if (Player.player.getPerson().contestedRoll(playerRoll, IEffectiveLevel.attributeChallengeMedium(level)) >=0) {
 									//passed check, learns traps
 									for (int i = 0; i < trapArray.length;i++) {
 										if (trapArray[i][2] == 0) {//if trap is not revealed
 											trapArray[i][1] = 1;//reveal it
-											extra.println(mineTraps[trapArray[1][0]][trapArray[1][1]][3]);//print reveal fluff
+											extra.println(mineTraps[trapArray[1][0]][trapArray[1][1]][3] + " " + AttributeBox.getStatHintByIndex(trapArray[1][0]));//print reveal fluff
 											break;//stop revealing
 										}
 										if (i == trapArray.length-1) {//if the last trap is already revealed
@@ -430,7 +420,16 @@ public class MineNode implements NodeType{
 							}});
 					}
 					
-				}
+					for (int i = 0; i < trapArray.length;i++) {
+						if (trapArray[i][2] != 0) {//if trap is revealed
+							list.add(new MenuLine() {
+								@Override
+								public String title() {
+									return "Known Trap: "+mineTraps[trapArray[1][0]][trapArray[1][1]][0] + " " + AttributeBox.getStatHintByIndex(trapArray[1][0]);//print name fluff
+								}});
+						}
+					}
+				}//end if still lootable else
 				list.add(new MenuBack());
 				return list;
 			}});
@@ -446,22 +445,7 @@ public class MineNode implements NodeType{
 	 */
 	private boolean handleTrap(NodeConnector holder,int node, byte[] trapData) {
 		int level = holder.getLevel(node);
-		int playerRoll = 0;
-		String trapHelp = "ERROR";
-		switch (trapData[0]) {//type of trap
-		case 0://strength
-			playerRoll = Player.player.getPerson().getStrength();
-			trapHelp = "{Strength}";
-			break;
-		case 1://dex
-			playerRoll = Player.player.getPerson().getDexterity();
-			trapHelp = "{Dexterity}";
-			break;
-		case 2://cla
-			playerRoll = Player.player.getPerson().getClarity();
-			trapHelp = "{Clarity}";
-			break;
-		}
+		int playerRoll = Player.player.getPerson().getStatByIndex(trapData[0]);
 		if (trapData[2] != 0) {//if the player knows the trap in detail
 			playerRoll*=2;//double player roll
 		}
@@ -471,12 +455,12 @@ public class MineNode implements NodeType{
 		String[] trapFluff = mineTraps[trapData[0]][trapData[1]];//get the fluff with type and offset
 		if (Player.player.getPerson().contestedRoll(playerRoll, IEffectiveLevel.attributeChallengeMedium(level)) >=0) {
 			//passed check
-			extra.println(trapFluff[3]);
+			extra.println(trapFluff[3] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
 			return true;
 		}else {
 			//failed check, suffer burnout
 			Player.player.getPerson().addEffect(Effect.BURNOUT);
-			extra.println(trapFluff[2]);
+			extra.println(trapFluff[2] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
 			Effect punishment = trapFluff[1] == null ? null : Effect.valueOf(trapFluff[1]);
 			switch (punishment) {//type of trap punishment
 			default:
