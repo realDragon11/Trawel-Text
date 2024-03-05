@@ -922,7 +922,7 @@ public class GenericNode implements NodeType {
 		//if you pass you learn an unlearnt trap in order
 		lootData[1] = (byte) extra.randRange(0,1);//reward type
 		lootData[2] = 0;//reward subtype
-		lootData[3] = (byte) extra.randRange(Byte.MIN_VALUE,Byte.MAX_VALUE);//chamber type fluff offset
+		lootData[3] = (byte) extra.randRange(0,trapChamberType[lootData[0]].length-1);//chamber type fluff offset
 		//reward amount scale is determined by number of traps, 2/3/4
 		int trapNumber = extra.randRange(2,4);
 		byte[][] trapArray = new byte[trapNumber][];
@@ -932,7 +932,7 @@ public class GenericNode implements NodeType {
 		for (int i = 0; i < trapNumber;i++) {
 			trapArray[i] = new byte[3];
 			trapArray[i][0] = (byte) extra.randRange(0,2);//0 = str, 1 = dex, 3 = cla
-			trapArray[i][1] = (byte) extra.randRange(Byte.MIN_VALUE,Byte.MAX_VALUE);
+			trapArray[i][1] = (byte) extra.randRange(0,trapList[trapArray[i][0]].length-1);
 			trapArray[i][2] = 0;
 		}
 		tchamberArray[0] = lootData;
@@ -1128,9 +1128,10 @@ public class GenericNode implements NodeType {
 	}
 	
 	private static String[] tChamberLookup(byte stat, byte offset) {
-		return trapChamberType[stat][(Byte.toUnsignedInt(offset))%trapChamberType[stat].length];
+		return trapChamberType[stat][(offset)%trapChamberType[stat].length];
 	}
 	
+	//goes to 126 max types since uses only signed byte
 	private static final String[][][] trapChamberType = new String[][][] {
 		//name, reveal description
 		
@@ -1149,14 +1150,14 @@ public class GenericNode implements NodeType {
 	};
 	
 	private static String[] trapLookup(byte stat, byte offset) {
-		return mineTraps[stat][(Byte.toUnsignedInt(offset))%mineTraps[stat].length];
+		return trapList[stat][(offset)%trapList[stat].length];
 	}
 	
 	private enum TrapPunishment {
 		DAMAGE_KILL, FATIGUE, BEES, CURSE, CURSE_KILL
 	}
-	
-	private static final String[][][] mineTraps = new String[][][] {
+	//goes to 126 max types since uses only signed byte
+	private static final String[][][] trapList = new String[][][] {
 		//top level is attribute, then list of traps, then name, failureeffect, killfluff, survivefluff, revealfluff
 		//strength traps
 		new String[][] {
