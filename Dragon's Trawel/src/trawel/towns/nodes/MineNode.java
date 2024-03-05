@@ -26,6 +26,7 @@ import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
+import trawel.towns.World;
 import trawel.towns.nodes.BossNode.BossType;
 import trawel.towns.services.Oracle;
 
@@ -375,6 +376,23 @@ public class MineNode implements NodeType{
 								}
 								holder.setStateNum(node,3);//set state which will get refreshed above
 								//TODO: do loot
+								int level = holder.getLevel(node);
+								//multiplier based on level and trap amount
+								float lootMult = (trapArray.length/3)*IEffectiveLevel.unclean(level);
+								//at least some gold is awarded even for different vault types
+								int gold = IEffectiveLevel.cleanRangeReward(level,4*trapArray.length,.5f);
+								//xp scales differently than most things
+								Player.player.getPerson().addXp((int)Math.ceil((trapArray.length/3)*level));
+								
+								switch (lootArray[1]) {
+								case 0: default://gold heavy vault
+									extra.println(extra.RESULT_GOOD+"The vault is filled with money!");
+									//8-16 above and 20-40 here, so 28-56 before level scaling and drop off
+									gold += IEffectiveLevel.cleanRangeReward(level,10*trapArray.length,.8f);
+									break;
+								}
+								Player.player.addGold(gold);
+								extra.println(extra.RESULT_PASS+"You loot " + World.currentMoneyDisplay(gold)+"!");
 								return false;
 							}});
 						if (state < 2) {
@@ -396,16 +414,14 @@ public class MineNode implements NodeType{
 										for (int i = 0; i < trapArray.length;i++) {
 											if (trapArray[i][2] == 0) {//if trap is not revealed
 												trapArray[i][2] = 1;//reveal it
-												extra.println(trapLookup(trapArray[i][0],trapArray[i][1])[3] + " " + AttributeBox.getStatHintByIndex(trapArray[i][0]));//print reveal fluff
-												if (i == trapArray.length-1) {//if this is the last trap and it is revealed
-													holder.setStateNum(node,2);//set state which will get refreshed above
-													extra.println("You know all the traps here now!");
-												}
+												extra.println(extra.RESULT_PASS+tChamberLookup(lootArray[0],lootArray[3])[2] +": "+ trapLookup(trapArray[i][0],trapArray[i][1])[4] + " " + AttributeBox.getStatHintByIndex(trapArray[i][0]));//print reveal fluff
 												break;//stop revealing
 											}
 											if (i == trapArray.length-1) {//if the last trap is already revealed
 												holder.setStateNum(node,2);//set state which will get refreshed above
-												extra.println("You know all the traps here now!");
+												//this ensures they know there's no more traps, but to do so they have to successfully pass
+												//while already having all traps.
+												extra.println("You can find no more traps here!");
 											}
 										}
 									}else {
@@ -443,35 +459,49 @@ public class MineNode implements NodeType{
 	private boolean handleTrap(NodeConnector holder,int node, byte[] trapData) {
 		int level = holder.getLevel(node);
 		int playerRoll = Player.player.getPerson().getStatByIndex(trapData[0]);
+		int againstRoll = 0;
 		if (trapData[2] != 0) {//if the player knows the trap already
-			playerRoll*=2;//double player roll
+			againstRoll = IEffectiveLevel.attributeChallengeEasy(level);
+		}else {
+			//does not know about trap
+			againstRoll = 2*IEffectiveLevel.attributeChallengeHard(level);
 		}
 		//after we encounter a trap, it is revealed either way
 		trapData[2] = 1;
 		
 		String[] trapFluff = trapLookup(trapData[0],trapData[1]);//get the fluff with type and offset
-		if (Player.player.getPerson().contestedRoll(playerRoll, IEffectiveLevel.attributeChallengeMedium(level)) >=0) {
+		if (Player.player.getPerson().contestedRoll(playerRoll,againstRoll) >=0) {
 			Player.addTime(.5);//half an hour of passing time
 			mainGame.globalPassTime();
 			//passed check
-			extra.println(trapFluff[3] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
+			extra.println(extra.RESULT_NO_CHANGE_GOOD+trapFluff[3] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
 			return true;
 		}else {
 			Player.addTime(1);//full hour of failing time
 			mainGame.globalPassTime();
 			//failed check, suffer burnout
 			Player.player.getPerson().addEffect(Effect.BURNOUT);
-			extra.println(trapFluff[2] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
-			Effect punishment = trapFluff[1] == null ? null : Effect.valueOf(trapFluff[1]);
+			
+			TrapPunishment punishment = trapFluff[1] == null ? null : TrapPunishment.valueOf(trapFluff[1]);
 			switch (punishment) {//type of trap punishment
 			default:
+				extra.println(extra.RESULT_FAIL+trapFluff[2] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
 				extra.println("Unknown trap punishment type!");
 				break;
-			case DAMAGED:
+			case DAMAGE_KILL:
+				mainGame.die(extra.RESULT_FAIL+trapFluff[2] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
 				extra.println(extra.RESULT_FAIL+"Your equipment is damaged!");
+				Player.player.getPerson().addEffect(Effect.DAMAGED);
 				break;
-			case TIRED:
+			case FATIGUE:
+				extra.println(extra.RESULT_FAIL+trapFluff[2] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
 				extra.println(extra.RESULT_FAIL+"You are overcome with fatigue!");
+				Player.player.getPerson().addEffect(Effect.TIRED);
+				break;
+			case BEES:
+				extra.println(extra.RESULT_FAIL+trapFluff[2] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
+				extra.println(extra.RESULT_FAIL+"Bees pursue you!");
+				Player.player.getPerson().addEffect(Effect.BEES);
 				break;
 			}
 			return false;
@@ -487,13 +517,13 @@ public class MineNode implements NodeType{
 		
 		//strength chamber types
 		new String[][] {
-			new String[] {"Submerged Chamber","swimming around"}
+			new String[] {"Submerged Chamber","swimming around","You spot a trap underwater"}
 		},
 		new String[][] {
-			new String[] {"Treasure Vault","opening control panels"}
+			new String[] {"Treasure Vault","opening control panels","You find trap controls under a panel"}
 		},
 		new String[][] {
-			new String[] {"Magical Maze","studying the magic"}
+			new String[] {"Magical Maze","studying the magic","You realize a rule the maze must follow"}
 		}
 	};
 	
@@ -501,20 +531,26 @@ public class MineNode implements NodeType{
 		return mineTraps[stat][(Byte.toUnsignedInt(offset))%mineTraps[stat].length];
 	}
 	
+	private enum TrapPunishment {
+		DAMAGE_KILL, FATIGUE, BEES
+	}
+	
 	private static final String[][][] mineTraps = new String[][][] {
-		//top level is attribute, then list of traps, then name, killfluff, survivefluff, revealfluff
+		//top level is attribute, then list of traps, then name, failureeffect, killfluff, survivefluff, revealfluff
 		//strength traps
 		new String[][] {
-				new String[] {"Falling Rocks",Effect.DAMAGED.name(),"Rocks crush you from above and force you to retreat!","You dodge falling rocks!","An overhead vent drops rocks down..."}
-				,new String[] {"Closing Walls",Effect.TIRED.name(),"The walls close in and force you to crawl out!","You force the closing walls open!","Hidden pistons force the wall to close on looters..."}
+				new String[] {"Falling Rocks",TrapPunishment.DAMAGE_KILL.name(),"Rocks crush you from above and force you to retreat!","You dodge falling rocks!","An overhead vent drops rocks down..."}
+				,new String[] {"Closing Walls",TrapPunishment.FATIGUE.name(),"The walls close in and force you to crawl out!","You force the closing walls open!","Hidden pistons force the wall to close on looters..."}
 		},
 		//dexterity traps
 		new String[][] {
-			new String[] {"Grabbing Lock",Effect.TIRED.name(),"A lock clamps onto you and you struggle to escape!","You quickly pick a lock that clamped down over your body!","An ornate lock bars progress, enchanted to grab looters..."}
+			new String[] {"Grabbing Lock",TrapPunishment.FATIGUE.name(),"A lock clamps onto you and you struggle to escape!","You quickly pick a lock that clamped down over your body!","An ornate lock bars progress, enchanted to grab looters..."}
+			,new String[] {"Springshot Saws",TrapPunishment.DAMAGE_KILL.name(),"Saws fly out of nowhere and slice you up!","You weave between flying saws!","Resetting springs launch sawblades at looters..."}
 		},
 		//clarity traps
 		new String[][] {
-			new String[] {"Draining Sigil",Effect.TIRED.name(),"A burning sign saps your strength!","You resist a burning sigil!","A flame sigil steals the strength of looters to power itself..."}
+			new String[] {"Draining Sigil",TrapPunishment.FATIGUE.name(),"A burning sigil saps your strength!","You resist a burning sigil!","A flame sigil steals the strength of looters to power itself..."}
+			,new String[] {"Phantom Bees",TrapPunishment.BEES.name(),"Bees invade your mind and force you out!","You disbelieve the phantom bees before they become real!","Illusions trick the target into becoming a beacon for bees..."}
 		},
 	};
 
