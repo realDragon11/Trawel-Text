@@ -827,7 +827,7 @@ public class Combat {
 			//attacker can be null for dummy attacks?
 			if (attacker != null && hitRoll > dodgeRoll*2) {
 				if (attacker.hasSkill(Skill.DEADLY_AIM)) {
-					int deadlyBonus = (int)(ret.damage*1.5);
+					int deadlyBonus = (int)(ret.damage*0.5);
 					ret.damage += deadlyBonus;
 					ret.bonus += deadlyBonus;
 					if (canDisp) {
