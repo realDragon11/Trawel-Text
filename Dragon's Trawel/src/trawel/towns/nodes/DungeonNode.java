@@ -22,7 +22,7 @@ import trawel.towns.fort.SubSkill;
 
 public class DungeonNode implements NodeType{
 
-	private static final int EVENT_NUMBER =8;
+	private static final int EVENT_NUMBER =9;
 	
 	
 	private WeightedTable dungeonGuardRoller, dungeonLootRoller, dungeonNoneRoller;
@@ -38,11 +38,11 @@ public class DungeonNode implements NodeType{
 	 * 5/6: chest/mimic
 	 * 7/8: statue/living statue
 	 */
-	private static final byte[] LOOT_NUMBERS = new byte[] {5,6,7,8};
+	private static final byte[] LOOT_NUMBERS = new byte[] {5,6,7,8,9};
 	
 	public DungeonNode() {
 		dungeonGuardRoller = new WeightedTable(new float[] {1f,4f});
-		dungeonLootRoller = new WeightedTable(new float[] {3f,1f,1.5f,.5f});
+		dungeonLootRoller = new WeightedTable(new float[] {3f,1f,1.5f,.5f,.1f});
 		dungeonNoneRoller = new WeightedTable(new float[] {
 				0f,//1 ladder
 				2f,//2 single guard
@@ -52,6 +52,7 @@ public class DungeonNode implements NodeType{
 				.5f,//6 mimic
 				.1f,//7 statue
 				.5f,//8 living statue
+				.05f,//9 trapped treasure chamber
 		});
 	}
 	
@@ -365,6 +366,9 @@ public class DungeonNode implements NodeType{
 			}
 		case 7:
 			holder.setStorage(madeNode, RaceFactory.makeStatue(holder.getLevel(madeNode)));
+			break;
+		case 9://trapped treasure chamber
+			GenericNode.applyTrappedChamber(holder,madeNode);
 			break;
 		case 100://skillcon holder
 			break;

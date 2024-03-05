@@ -32,7 +32,7 @@ import trawel.towns.services.Oracle;
 
 public class MineNode implements NodeType{
 	
-	private static final int EVENT_NUMBER = 10;
+	private static final int EVENT_NUMBER = 11;
 	
 	/**
 	 * these are 0 indexed, and the actual event nums aren't
@@ -64,7 +64,7 @@ public class MineNode implements NodeType{
 				//mugger
 				1.5f,
 				//trapped chamber
-				99999f
+				0.5f
 		});
 		hellMineRoller = new WeightedTable(new float[] {
 				//duelist
@@ -260,32 +260,7 @@ public class MineNode implements NodeType{
 			GenericNode.setBasicRagePerson(holder,madeNode, mugger,mugName,extra.capFirst(mugName) + " attacks you!");
 			break;
 		case 11://trapped treasure chamber
-			Object[] tchamberArray = new Object[2];
-			byte[] lootData = new byte[4];
-			//0 = str, 1 = dex, 3 = cla
-			lootData[0] = (byte) extra.randRange(0,2);//attrib value of what type of chamber it is, used to scan for traps early
-			//if you fail to scan it throws you into a random trap and you discover that trap but must endure it
-			//if you then fail to endure it you suffer the burnout + penalty
-			//either way the trap gets revealed which makes it easier in the future
-			//if you pass you learn an unlearnt trap in order
-			lootData[1] = (byte) extra.randRange(0,1);//reward type
-			lootData[2] = 0;//reward subtype
-			lootData[3] = (byte) extra.randRange(Byte.MIN_VALUE,Byte.MAX_VALUE);//chamber type fluff offset
-			//reward amount scale is determined by number of traps, 2/3/4
-			int trapNumber = extra.randRange(2,4);
-			byte[][] trapArray = new byte[trapNumber][];
-			//each trap needs a byte attribute for stat type
-			//each trap uses a random offset value and modulos fluff from that
-			//each trap stores if it's revealed or not
-			for (int i = 0; i < trapNumber;i++) {
-				trapArray[i] = new byte[3];
-				trapArray[i][0] = (byte) extra.randRange(0,2);//0 = str, 1 = dex, 3 = cla
-				trapArray[i][1] = (byte) extra.randRange(Byte.MIN_VALUE,Byte.MAX_VALUE);
-				trapArray[i][2] = 0;
-			}
-			tchamberArray[0] = lootData;
-			tchamberArray[1] = trapArray;
-			holder.setStorage(madeNode, tchamberArray);
+			GenericNode.applyTrappedChamber(holder,madeNode);
 			break;
 		}
 	}
@@ -303,6 +278,7 @@ public class MineNode implements NodeType{
 		case 4://vein
 		case 5://door
 		case 10://mugger
+		case 11://trapped chamber
 			//handled by generic node code
 			break;
 		case 6: 
@@ -320,239 +296,11 @@ public class MineNode implements NodeType{
 			holder.findBehind(node,"ladder");
 			break;
 		case 9: return cultists1(holder,node);
-		case 11:
-			return trappedChamber(holder,node);
 		}
 		Networking.clearSide(1);
 		return false;
 	}
 	
-	private boolean trappedChamber(NodeConnector holder,int node) {
-		Object[] totalArray = holder.getStorageAsArray(node);
-		byte[] lootArray = (byte[]) totalArray[0];
-		byte[][] trapArray = (byte[][]) totalArray[1];
-		/**
-		 * 0 = not yet interacted
-		 * 1 = n/a
-		 * 2 = all traps revealed
-		 * 3 = looted
-		 */
-		extra.menuGo(new MenuGenerator() {
-
-			@Override
-			public List<MenuItem> gen() {
-				List<MenuItem> list = new ArrayList<MenuItem>();
-				int state = holder.getStateNum(node);
-				if (state == 3) {
-					list.add(new MenuLine() {
-
-						@Override
-						public String title() {
-							return "You have looted this "+tChamberLookup(lootArray[0],lootArray[3])[0]+".";
-						}});
-				}else {
-					if (Player.player.getPerson().hasEffect(Effect.BURNOUT)) {
-						list.add(new MenuLine() {
-
-							@Override
-							public String title() {
-								return extra.RESULT_ERROR+"You are too burnt out to take on this "+tChamberLookup(lootArray[0],lootArray[3])[0]+".";
-							}});
-					}else {
-						list.add(new MenuSelect() {
-	
-							@Override
-							public String title() {
-								return extra.PRE_BATTLE+"Attempt to loot the "+tChamberLookup(lootArray[0],lootArray[3])[0]+".";
-							}
-	
-							@Override
-							public boolean go() {
-								for (int i = 0; i < trapArray.length;i++) {
-									if (!handleTrap(holder,node,trapArray[i])){
-										extra.println("You failed at looting the "+tChamberLookup(lootArray[0],lootArray[3])[0]+".");
-										return false;
-									}
-								}
-								holder.setStateNum(node,3);//set state which will get refreshed above
-								//TODO: do loot
-								int level = holder.getLevel(node);
-								//multiplier based on level and trap amount
-								float lootMult = (trapArray.length/3)*IEffectiveLevel.unclean(level);
-								//at least some gold is awarded even for different vault types
-								int gold = IEffectiveLevel.cleanRangeReward(level,4*trapArray.length,.5f);
-								//xp scales differently than most things
-								Player.player.getPerson().addXp((int)Math.ceil((trapArray.length/3)*level));
-								
-								switch (lootArray[1]) {
-								case 0: default://gold heavy vault
-									extra.println(extra.RESULT_GOOD+"The vault is filled with money!");
-									//8-16 above and 20-40 here, so 28-56 before level scaling and drop off
-									gold += IEffectiveLevel.cleanRangeReward(level,10*trapArray.length,.8f);
-									break;
-								}
-								Player.player.addGold(gold);
-								extra.println(extra.RESULT_PASS+"You loot " + World.currentMoneyDisplay(gold)+"!");
-								return false;
-							}});
-						if (state < 2) {
-							list.add(new MenuSelect() {
-	
-								@Override
-								public String title() {
-									return extra.PRE_MAYBE_BATTLE+"Attempt to discover traps by "+tChamberLookup(lootArray[0],lootArray[3])[1]+ ". "+ AttributeBox.getStatHintByIndex(lootArray[0]);
-								}
-	
-								@Override
-								public boolean go() {
-									int playerRoll = Player.player.getPerson().getStatByIndex(lootArray[0]);
-									int level = holder.getLevel(node);
-									Player.addTime(.3);//examining time
-									mainGame.globalPassTime();
-									if (Player.player.getPerson().contestedRoll(playerRoll, IEffectiveLevel.attributeChallengeMedium(level)) >=0) {
-										//passed check, learns traps
-										for (int i = 0; i < trapArray.length;i++) {
-											if (trapArray[i][2] == 0) {//if trap is not revealed
-												trapArray[i][2] = 1;//reveal it
-												extra.println(extra.RESULT_PASS+tChamberLookup(lootArray[0],lootArray[3])[2] +": "+ trapLookup(trapArray[i][0],trapArray[i][1])[4] + " " + AttributeBox.getStatHintByIndex(trapArray[i][0]));//print reveal fluff
-												break;//stop revealing
-											}
-											if (i == trapArray.length-1) {//if the last trap is already revealed
-												holder.setStateNum(node,2);//set state which will get refreshed above
-												//this ensures they know there's no more traps, but to do so they have to successfully pass
-												//while already having all traps.
-												extra.println("You can find no more traps here!");
-											}
-										}
-									}else {
-										//failed, thrown into entirely random trap
-										boolean survived = handleTrap(holder,node,trapArray[extra.randRange(0,trapArray.length-1)]);
-									}
-									return false;
-								}});
-						}
-					}
-					for (int i = 0; i < trapArray.length;i++) {
-						if (trapArray[i][2] != 0) {//if trap is revealed
-							final int index = i;
-							list.add(new MenuLine() {
-								@Override
-								public String title() {
-									return "Known Trap: "+trapLookup(trapArray[index][0],trapArray[index][1])[0] + " " + AttributeBox.getStatHintByIndex(trapArray[index][0]);//print name fluff
-								}});
-						}
-					}
-				}//end if still lootable else
-				list.add(new MenuBack());
-				return list;
-			}});
-		return false;
-	}
-	
-	/**
-	 * will edit trapData array as a side effect
-	 * <br>
-	 * return true if survived
-	 * <br>
-	 * if failed inflicts punishment
-	 */
-	private boolean handleTrap(NodeConnector holder,int node, byte[] trapData) {
-		int level = holder.getLevel(node);
-		int playerRoll = Player.player.getPerson().getStatByIndex(trapData[0]);
-		int againstRoll = 0;
-		if (trapData[2] != 0) {//if the player knows the trap already
-			againstRoll = IEffectiveLevel.attributeChallengeEasy(level);
-		}else {
-			//does not know about trap
-			againstRoll = 2*IEffectiveLevel.attributeChallengeHard(level);
-		}
-		//after we encounter a trap, it is revealed either way
-		trapData[2] = 1;
-		
-		String[] trapFluff = trapLookup(trapData[0],trapData[1]);//get the fluff with type and offset
-		if (Player.player.getPerson().contestedRoll(playerRoll,againstRoll) >=0) {
-			Player.addTime(.5);//half an hour of passing time
-			mainGame.globalPassTime();
-			//passed check
-			extra.println(extra.RESULT_NO_CHANGE_GOOD+trapFluff[3] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
-			return true;
-		}else {
-			Player.addTime(1);//full hour of failing time
-			mainGame.globalPassTime();
-			//failed check, suffer burnout
-			Player.player.getPerson().addEffect(Effect.BURNOUT);
-			
-			TrapPunishment punishment = trapFluff[1] == null ? null : TrapPunishment.valueOf(trapFluff[1]);
-			switch (punishment) {//type of trap punishment
-			default:
-				extra.println(extra.RESULT_FAIL+trapFluff[2] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
-				extra.println("Unknown trap punishment type!");
-				break;
-			case DAMAGE_KILL:
-				mainGame.die(extra.RESULT_FAIL+trapFluff[2] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
-				extra.println(extra.RESULT_FAIL+"Your equipment is damaged!");
-				Player.player.getPerson().addEffect(Effect.DAMAGED);
-				break;
-			case FATIGUE:
-				extra.println(extra.RESULT_FAIL+trapFluff[2] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
-				extra.println(extra.RESULT_FAIL+"You are overcome with fatigue!");
-				Player.player.getPerson().addEffect(Effect.TIRED);
-				break;
-			case BEES:
-				extra.println(extra.RESULT_FAIL+trapFluff[2] + " " + AttributeBox.getStatHintByIndex(trapData[0]));
-				extra.println(extra.RESULT_FAIL+"Bees pursue you!");
-				Player.player.getPerson().addEffect(Effect.BEES);
-				break;
-			}
-			return false;
-		}
-	}
-	
-	private static String[] tChamberLookup(byte stat, byte offset) {
-		return trapChamberType[stat][(Byte.toUnsignedInt(offset))%trapChamberType[stat].length];
-	}
-	
-	private static final String[][][] trapChamberType = new String[][][] {
-		//name, reveal description
-		
-		//strength chamber types
-		new String[][] {
-			new String[] {"Submerged Chamber","swimming around","You spot a trap underwater"}
-		},
-		new String[][] {
-			new String[] {"Treasure Vault","opening control panels","You find trap controls under a panel"}
-		},
-		new String[][] {
-			new String[] {"Magical Maze","studying the magic","You realize a rule the maze must follow"}
-		}
-	};
-	
-	private static String[] trapLookup(byte stat, byte offset) {
-		return mineTraps[stat][(Byte.toUnsignedInt(offset))%mineTraps[stat].length];
-	}
-	
-	private enum TrapPunishment {
-		DAMAGE_KILL, FATIGUE, BEES
-	}
-	
-	private static final String[][][] mineTraps = new String[][][] {
-		//top level is attribute, then list of traps, then name, failureeffect, killfluff, survivefluff, revealfluff
-		//strength traps
-		new String[][] {
-				new String[] {"Falling Rocks",TrapPunishment.DAMAGE_KILL.name(),"Rocks crush you from above and force you to retreat!","You dodge falling rocks!","An overhead vent drops rocks down..."}
-				,new String[] {"Closing Walls",TrapPunishment.FATIGUE.name(),"The walls close in and force you to crawl out!","You force the closing walls open!","Hidden pistons force the wall to close on looters..."}
-		},
-		//dexterity traps
-		new String[][] {
-			new String[] {"Grabbing Lock",TrapPunishment.FATIGUE.name(),"A lock clamps onto you and you struggle to escape!","You quickly pick a lock that clamped down over your body!","An ornate lock bars progress, enchanted to grab looters..."}
-			,new String[] {"Springshot Saws",TrapPunishment.DAMAGE_KILL.name(),"Saws fly out of nowhere and slice you up!","You weave between flying saws!","Resetting springs launch sawblades at looters..."}
-		},
-		//clarity traps
-		new String[][] {
-			new String[] {"Draining Sigil",TrapPunishment.FATIGUE.name(),"A burning sigil saps your strength!","You resist a burning sigil!","A flame sigil steals the strength of looters to power itself..."}
-			,new String[] {"Phantom Bees",TrapPunishment.BEES.name(),"Bees invade your mind and force you out!","You disbelieve the phantom bees before they become real!","Illusions trick the target into becoming a beacon for bees..."}
-		},
-	};
 
 	/* for Ryou Misaki (nico)*/
 	private boolean cultists1(NodeConnector holder,int node) {
@@ -774,18 +522,11 @@ public class MineNode implements NodeType{
 				return STR_SHADOW_ROOM_ACT;
 			}
 			return "Enter Sanctum.";
-		case 11:
-			if (hideContents(holder,node)) {//if not visited
-				return STR_SHADOW_ROOM_NAME;
-			}
-			Object[] trapChamberArray = holder.getStorageAsArray(node);
-			byte[] lootChamberArray = (byte[]) trapChamberArray[0];
-			return "Enter the " +tChamberLookup(lootChamberArray[0],lootChamberArray[3])[0]+".";
 		}
 		return null;
 	}
 
-	private static final String 
+	public static final String 
 	STR_SHADOW_ROOM_ACT = "Enter Dark Chamber?",
 	STR_SHADOW_ROOM_NAME = "Dark Chamber"
 	; 
@@ -806,18 +547,11 @@ public class MineNode implements NodeType{
 				return STR_SHADOW_ROOM_NAME;//TODO: more dark chambers
 			}
 			return "Blood Cult Sanctum";
-		case 11:
-			if (hideContents(holder,node)) {//if not visited
-				return STR_SHADOW_ROOM_NAME;
-			}
-			Object[] trapChamberArray = holder.getStorageAsArray(node);
-			byte[] lootChamberArray = (byte[]) trapChamberArray[0];
-			return tChamberLookup(lootChamberArray[0],lootChamberArray[3])[0];
 		}
 		return null;
 	}
 	
-	private static boolean hideContents(NodeConnector holder, int node) {
+	public static boolean hideContents(NodeConnector holder, int node) {
 		return (holder.getVisited(node) < 2 && !Player.player.getPerson().hasSkill(Skill.NIGHTVISION));
 	}
 

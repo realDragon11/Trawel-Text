@@ -171,10 +171,10 @@ public class Mountain extends ExploreFeature{
 		switch (extra.inInt(2,true,true)) {
 		case 1:
 			if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getStrength(),getAttributeChallengeMedium()) >=0) {
-				extra.println("You survive the rockslide.");
+				extra.println(extra.RESULT_PASS+"You survive the rockslide.");
 				Player.addXp(Math.max(1,tier/3));
 			}else {
-				extra.println("They rocks crush you!");
+				extra.println(extra.RESULT_FAIL+"The rocks crush you!");
 				mainGame.die("You pull yourself out from under the rocks, your armor is all dinged up.");
 				Player.player.getPerson().addEffect(Effect.DAMAGED);
 				Player.player.getPerson().addEffect(Effect.BURNOUT);
@@ -182,17 +182,17 @@ public class Mountain extends ExploreFeature{
 			;break;
 		case 2:
 			if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getDexterity(),getAttributeChallengeMedium()) >=0) {
-				extra.println("You survive the rockslide.");
+				extra.println(extra.RESULT_PASS+"You survive the rockslide.");
 				Player.addXp(Math.max(1,tier/3));
 			}else {
-				extra.println("They rocks crush you!");
+				extra.println(extra.RESULT_FAIL+"The rocks crush you!");
 				mainGame.die("You pull yourself out from under the rocks, your armor is all dinged up.");
 				Player.player.getPerson().addEffect(Effect.DAMAGED);
 				Player.player.getPerson().addEffect(Effect.BURNOUT);
 			}
 			;break;
 		case 3:
-			extra.println("They rocks crush you!");
+			extra.println(extra.RESULT_FAIL+"They rocks crush you!");
 			mainGame.die("You pull yourself out from under the rocks.");
 		break;
 		
