@@ -78,18 +78,6 @@ public class GraveyardNode implements NodeType{
 			STR_SHADOW_OBJECT_ACT = "Approach Shadowy Object",
 			STR_SHADOW_OBJECT_NAME = "Shadowy Object"
 			;
-	/**
-	 * if should display 'shadowy figure' instead of it's normal text
-	 * <br>
-	 * NORMAL STATES SHOULD BE >=10 IN GRAVEYARD
-	 */
-	private static final int STATE_SHADOW_FIGURE = 0;
-	/**
-	 * if should display 'shadowy object' instead of it's normal text
-	 * <br>
-	 * NORMAL STATES SHOULD BE >=10 IN GRAVEYARD
-	 */
-	private static final int STATE_SHADOW_OBJECT = 1;
 	
 	//note that you can't use generic nodes if you want shadowy behavior
 	
@@ -99,11 +87,9 @@ public class GraveyardNode implements NodeType{
 		//case -1:made.name = extra.choose("stairs","ladder"); made.interactString = "traverse "+made.name;made.setForceGo(true);break;
 		case 1: 
 			holder.setStorage(madeNode, RaceFactory.makeGravedigger(holder.getLevel(madeNode)));
-			holder.setStateNum(madeNode, STATE_SHADOW_FIGURE);
 			break;
 		case 2:
 			holder.setStorage(madeNode, RaceFactory.makeGraverobber(holder.getLevel(madeNode)));
-			holder.setStateNum(madeNode, STATE_SHADOW_FIGURE);
 			break;
 		case 3: 
 			int startBLevel = holder.getLevel(madeNode);
@@ -127,7 +113,6 @@ public class GraveyardNode implements NodeType{
 			holder.setStorage(madeNode,RaceFactory.makeGroupOrDefault(startBLevel,3, 8,
 					RaceFactory.getMakerForID(RaceID.B_SWARMBAT), RaceFactory.getMakerForID(RaceID.B_BAT)));
 			holder.setForceGo(madeNode, true);
-			holder.setStateNum(madeNode,10);//smallest allowed state
 		;break;
 		case 4:
 			int level = holder.getLevel(madeNode)+1;
@@ -153,30 +138,35 @@ public class GraveyardNode implements NodeType{
 			List<Person> vampBats = RaceFactory.wrapMakeGroupForLeader(vamp,
 					RaceFactory.getMakerForID(RaceID.B_SWARMBAT),spare, 1, 4);
 			holder.setStorage(madeNode, vampBats);
-			holder.setStateNum(madeNode, STATE_SHADOW_FIGURE);
 			;break;
 		case 5:
 			//holder.setStorage(madeNode, RaceFactory.makeCollector(holder.getLevel(madeNode)));
 			GenericNode.applyCollector(holder, madeNode);
 			holder.setFlag(madeNode,NodeFlag.GENERIC_OVERRIDE,false);//we call it ourselves
-			holder.setStateNum(madeNode, STATE_SHADOW_FIGURE);
 			holder.setEventNum(madeNode, 5);//set event back from generic's, since we call it ourselves
 			break;
 		case 6://will set the state to the times it is seen until it will attack +10 after seen once
 			//will attack instantly if attempting to loot
 			holder.setFlag(madeNode,NodeFlag.SILENT_FORCEGO_POSSIBLE,true);
+			//fall through
 		case 7: //non hostile statue which will show but never attack
 			holder.setStorage(madeNode, RaceFactory.makeStatue(holder.getLevel(madeNode)));
-			holder.setStateNum(madeNode, STATE_SHADOW_FIGURE);
 			break;
 		}
 	}
 	
 	@Override
 	public boolean interact(NodeConnector holder, int node) {
-		if (holder.getStateNum(node) < 10 && Player.player.getPerson().hasSkill(Skill.NIGHTVISION)) {
-			//set new state on interact, in case of force go weirdness getting around the name
-			holder.setStateNum(node,10);
+		String str = interactStringHide(holder,node);
+		if (!holder.isForced() && str != null) {
+			extra.println(str+"?");
+			if (!extra.yesNo()) {
+				//unvisit
+				holder.setVisited(node,2);//only been at node
+				return false;
+			}
+			//set we know about
+			holder.setFlag(node,NodeFlag.UNIQUE_1,true);
 		}
 		switch(holder.getEventNum(node)) {
 		//case -1: Networking.sendStrong("PlayDelay|sound_footsteps|1|"); break;
@@ -194,7 +184,7 @@ public class GraveyardNode implements NodeType{
 	@Override
 	public String interactString(NodeConnector holder, int node) {
 		int state = holder.getStateNum(node);
-		String nightString = interactStringState(holder,node,state);
+		String nightString = interactStringHide(holder,node);
 		if (nightString != null) {
 			return nightString;
 		}
@@ -226,39 +216,55 @@ public class GraveyardNode implements NodeType{
 		return null;
 	}
 	
-	public String interactStringState(NodeConnector holder, int node, int state) {
-		/*if (Player.player.getPerson().hasSkill(Skill.NIGHTVISION)) {
-			holder.setStateNum(node,10);
-			return null;
-		}*/
-		if (state < 10) {
-			if (state == STATE_SHADOW_FIGURE) {
-				return STR_SHADOW_FIGURE_ACT;
-			}
-			if (state == STATE_SHADOW_OBJECT) {
-				return STR_SHADOW_OBJECT_ACT;
-			}
+	/**
+	 * 0 = do not hide
+	 * <br>
+	 * 1 = hide as person
+	 * <br>
+	 * 2 = hide as object
+	 */
+	private int hideContents(NodeConnector holder, int node) {
+		if (Player.player.getPerson().hasSkill(Skill.NIGHTVISION)) {
+			return 0;
 		}
-		return null;
+		if (holder.getFlag(node,NodeFlag.UNIQUE_1) == true) {
+			return 0;
+		}
+		int event = holder.getEventNum(node);
+		switch (event) {
+		case 3://bats
+			return 0;
+		case 1://gravedigger
+		case 2://graverobber
+		case 4://vampire
+		case 5://collector
+		case 6://attacking statue
+		case 7://normal statue
+			return 1;
+		}
+		return 0;
+	}
+	
+	public String interactStringHide(NodeConnector holder, int node) {
+		switch (hideContents(holder,node)) {
+		case 0: default:
+			return null;
+		case 1:
+			return STR_SHADOW_FIGURE_ACT;
+		case 2:
+			return STR_SHADOW_OBJECT_ACT;
+		}
 	}
 
 	@Override
 	public String nodeName(NodeConnector holder, int node) {
-		int state = holder.getStateNum(node);
-		if (state < 10) {
-			if (Player.player.getPerson().hasSkill(Skill.NIGHTVISION)) {
-				//set new state on sight
-				holder.setStateNum(node,10);
-				state = 10;
-			}else {
-				if (state == STATE_SHADOW_FIGURE) {
-					return STR_SHADOW_FIGURE_NAME;
-				}
-				if (state == STATE_SHADOW_OBJECT) {
-					return STR_SHADOW_OBJECT_NAME;
-				}
-			}
+		switch (hideContents(holder,node)) {
+		case 1:
+			return STR_SHADOW_FIGURE_NAME;
+		case 2:
+			return STR_SHADOW_OBJECT_NAME;
 		}
+		int state = holder.getStateNum(node);
 		switch(holder.getEventNum(node)) {
 		case 2:
 			return "A Graverobber";
@@ -307,12 +313,7 @@ public class GraveyardNode implements NodeType{
 
 	private boolean graveDigger(NodeConnector holder,int node) {
 		int state = holder.getStateNum(node);
-		String str = interactStringState(holder,node,state);
-		if (str != null) {
-			extra.println(str);
-			if (!extra.yesNo()) {
-				return false;
-			}
+		if (state == 0) {//first meeting, will play nightvision or not
 			holder.setStateNum(node,10);
 			state = 10;
 			extra.println("You come across a weary gravedigger, warding against undead during a break.");
@@ -428,12 +429,7 @@ public class GraveyardNode implements NodeType{
 	
 	private boolean graveRobber(NodeConnector holder,int node) {
 		int state = holder.getStateNum(node);
-		String str = interactStringState(holder,node,state);
-		if (str != null) {
-			extra.println(str);
-			if (!extra.yesNo()) {
-				return false;
-			}
+		if (state == 0) {//first meeting
 			holder.setStateNum(node,10);
 			state = 10;
 			extra.println("A Graverobber is poking around some headstones.");
@@ -479,12 +475,7 @@ public class GraveyardNode implements NodeType{
 
 	private boolean vampire1(NodeConnector holder,int node) {
 		int state = holder.getStateNum(node);
-		String str = interactStringState(holder,node,state);
-		if (str != null) {
-			extra.println(str);
-			if (!extra.yesNo()) {
-				return false;
-			}
+		if (state == 0) {
 			holder.setStateNum(node,10);
 			extra.println("A vampire eyes you from a perch on a tombstone.");
 			holder.setForceGo(node, true);
@@ -566,8 +557,7 @@ public class GraveyardNode implements NodeType{
 		}
 		
 		if (state != 31) {
-			String str = interactStringState(holder,node,STATE_SHADOW_FIGURE);
-			if (state > 20 || str == null) {//if has seen before or has nightvision
+			if (state > 20) {//if has seen before we don't mess with state
 				p.getBag().graphicalDisplay(1, p);
 				extra.println(statueLootAsk(p));
 				if (!extra.yesNo() && extra.chanceIn(3,4)) {//25% chance to attack instantly if ignored
@@ -575,10 +565,8 @@ public class GraveyardNode implements NodeType{
 					return false;
 				}
 			}else {
-				extra.println(str);
-				if (!extra.yesNo()) {
-					return false;
-				}
+				//the code to look at them will occur from interact, but only if not forced
+				
 				//seen, convert to the seen track, and mess up the timing to mess with
 				//them if they checked it due to the 'just move?'
 				if (state < 18) {//if wasn't close
@@ -623,15 +611,6 @@ public class GraveyardNode implements NodeType{
 	private boolean statueLoot(NodeConnector holder,int node) {
 		int state = holder.getStateNum(node);
 		Person p = holder.getStorageFirstPerson(node);
-		if (state < 11) {
-			String str = interactStringState(holder,node,state);
-			if (str != null) {
-				extra.println(str);//ask to approach
-				if (!extra.yesNo()) {
-					return false;
-				}
-			}
-		}
 		if (state == 13) {
 			extra.println("The " + p.getBag().getRace().renderName(false) + " statue has already been looted.");
 			holder.findBehind(node,"statue");
@@ -651,12 +630,7 @@ public class GraveyardNode implements NodeType{
 
 	private boolean collector(NodeConnector holder,int node) {
 		int state = holder.getStateNum(node);
-		String str = interactStringState(holder,node,state);
-		if (str != null) {
-			extra.println(str);
-			if (!extra.yesNo()) {
-				return false;
-			}
+		if (state == 0) {
 			holder.setStateNum(node,10);
 			extra.println("An antiquarian is navigating amongst old urns.");
 		}

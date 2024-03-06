@@ -21,18 +21,19 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.World;
 import trawel.towns.misc.PlantSpot;
+import trawel.towns.nodes.NodeType.NodeTypeNum;
 
 public class NodeConnector implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	public enum NodeFlag{//flag with up to 8 values
-		FORCEGO, STAIR,
+		FORCEGO, UNIQUE_1,
 		VISIT_BIT1, VISIT_BIT2
 		,GENERIC_OVERRIDE//allows nodes to use generic behavior without overriding their typenum
 		,SILENT_FORCEGO_POSSIBLE
 		,REGROWN
-		//7th flag
+		//7th flag??
 	}
 	
 	/**
@@ -567,15 +568,21 @@ public class NodeConnector implements Serializable {
 	}
 	
 	protected void setStair(int node) {
-		setFlag(node,NodeFlag.STAIR, true);
+		setFlag(node,NodeFlag.UNIQUE_1, true);
 	}
 
 	protected void setFloor(int node, int floor) {
 		dataContainer[node] = extra.setShortInLong(dataContainer[node], floor, 64-16);
 	}
 
+	/**
+	 * dungeon stairs use their unique bit
+	 */
 	public boolean isStair(int node) {
-		return getFlag(node,NodeFlag.STAIR);
+		if (NodeType.getTypeEnum(getTypeNum(node)) != NodeTypeNum.DUNGEON) {
+			return false;
+		}
+		return getFlag(node,NodeFlag.UNIQUE_1);
 	}
 
 	public int getFloor(int node) {
