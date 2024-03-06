@@ -239,11 +239,10 @@ public class GraveyardNode implements NodeType{
 		case 2://graverobber
 		case 4://vampire
 		case 5://collector
-		
+		case 6://attacking statue
 		case 7://normal statue
 			return 1;
-		case 6://attacking statue
-			return 2;
+			//return 2;
 		}
 		return 0;
 	}
