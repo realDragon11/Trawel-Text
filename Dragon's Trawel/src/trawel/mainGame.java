@@ -73,7 +73,7 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__10";
-	public static final String VERSION_DATE = " updated Mar 4th 2024";
+	public static final String VERSION_DATE = " updated Mar 6th 2024";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			"b_10: {part 1/?} Curse, Burnout, Damaged, and Bees are now punishment longer lasting effects. Burnout can be cured when resting, Bees can be cured by entering water. Everything except Damaged can be cured at Doctors- Damaged requires Blacksmith repairs. These effects will be used to give a downside to failing Attribute checks, so they're not just free rewards with no consequences.",
@@ -81,8 +81,9 @@ public class mainGame {
 			"b_10: {part 3/?} Added Drudger, Fell, Monster, and Animal Cleanse Quests. Almost all targets will award progress if encountered in Node Explorations or other features as well, with some exceptions for mooks. Some fightable hunters now reward Amber when looted. Witch Huts have more Collect targets.",
 			"b_10: {part 4/?} Vampires and some other Bumpers will appear less during the daytime. Bandits will prefer money, not just valuable metals. Removed most bumper level requirements, and updated wolf pack with player allies.",
 			"b_10: {part 5/?} There are more Primal Deathcheater types, and TODO more cult types.",
-			"b_10: {part 6/?} Updated tutorial's feature explanations and list of world perks. Mines now properly weight their contents.",
-			"b_10: {part 7/?} Graphical: Improved usage of color fail codes. Added indicator colors to damage in attack previews. At some point background time display stopped changing colors, it now works again. ",
+			"b_10: {part 6/?} The first Node in Features will not have forced combat, and the first two layers will have less free loot and less obstacle fights.",
+			"b_10: {part 7/?} log.txt has full stack trace. Updated tutorial's feature explanations and list of world perks. Mines now properly weight their contents. Graveyard's Nightvison behavior has been fixed.",
+			"b_10: {part 8/?} Graphical: Improved usage of color fail codes. Added indicator colors to damage in attack previews. At some point background time display stopped changing colors, it now works again. ",
 			
 			"Prior Changelog notes were from 2023, press again to continue.",
 			
