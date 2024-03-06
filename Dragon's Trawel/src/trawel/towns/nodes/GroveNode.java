@@ -38,7 +38,12 @@ public class GroveNode implements NodeType{
 
 	private static final int EVENT_NUMBER = 17;
 
-	private WeightedTable groveBasicRoller;
+	/**
+	 * EntryRoller is used in the first 2 layers of groves to avoid blocking off the entrance with a fight and low hanging fruit rewards
+	 */
+	private WeightedTable groveBasicRoller, groveEntryRoller;
+	
+	private int[] startRolls = new int[] {1,2,10,11};
 	
 	public GroveNode() {
 		groveBasicRoller = new WeightedTable(new float[] {
@@ -63,11 +68,46 @@ public class GroveNode implements NodeType{
 				1f,//shaman
 				1f//bee hive
 				});
+		groveEntryRoller = new WeightedTable(new float[] {
+				2f,//dueler
+				1f,//river
+				2f,//mugger
+				0f,//free loot body
+				1f,//fairy circle
+				//slot 6 next
+				1f,//old person
+				1f,//collector
+				2f,//fallen tree
+				1.5f,//dryad
+				//10 next
+				2f,//casual
+				1f,//mushroom
+				1f,//moss
+				1.5f,//rich and bodyguard
+				0f,//weapon stone
+				//15
+				0f,//wolves
+				1f,//shaman
+				1f//bee hive
+				});
 	}
 	
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
-		int ret = holder.newNode(NodeType.NodeTypeNum.GROVE.ordinal(),1+groveBasicRoller.random(extra.getRand()),tier);
+		int id = 1;
+		switch (guessDepth) {
+		case 0://start
+			//smaller list of things only the starting node can be
+			id = startRolls[extra.randRange(0,startRolls.length-1)];
+			break;
+		case 1: case 2://entry
+			id+=groveEntryRoller.random(extra.getRand());
+			break;
+		default:
+			id+=groveBasicRoller.random(extra.getRand());
+			break;
+		}
+		int ret = holder.newNode(NodeType.NodeTypeNum.GROVE.ordinal(),id,tier);
 		holder.setFloor(ret, guessDepth);
 		return ret;
 	}
@@ -135,7 +175,7 @@ public class GroveNode implements NodeType{
 			;break;
 		case 3:
 			Person mugger = RaceFactory.makeMuggerWithTitle(holder.getLevel(madeNode));
-			String mugName = mugger.getTitle();
+			String mugName = mugger.getTitle().substring(4);//remove "the "
 			GenericNode.setBasicRagePerson(holder,madeNode,mugger,mugName,extra.capFirst(mugName) + " attacks you!");
 		break;
 		case 4:

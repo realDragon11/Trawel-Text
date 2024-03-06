@@ -59,6 +59,9 @@ public class DungeonNode implements NodeType{
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
 		byte idNum = (byte) (dungeonNoneRoller.random(extra.getRand())+1);//1 is ladder
+		if (guessDepth == 0) {
+			idNum = 4;//starting node can only be a door
+		}
 		int ret = holder.newNode(NodeType.NodeTypeNum.DUNGEON.ordinal(),idNum,tier);
 		holder.setFloor(ret, guessDepth);
 		return ret;

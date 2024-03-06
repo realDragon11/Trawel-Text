@@ -39,7 +39,9 @@ public class MineNode implements NodeType{
 	 * <br>
 	 * so +1
 	 */
-	private WeightedTable noneMineRoller, hellMineRoller;
+	private WeightedTable noneMineRoller, hellMineRoller, entryMineRoller;
+	
+	private int[] startRolls = new int[] {1,2,6,7,8};
 	
 	public MineNode() {
 		noneMineRoller = new WeightedTable(new float[] {
@@ -90,9 +92,40 @@ public class MineNode implements NodeType{
 				//trapped chamber
 				0.1f
 		});
+		entryMineRoller = new WeightedTable(new float[] {
+				//duelist
+				1.5f,
+				//water
+				.3f,
+				//vein
+				.2f,
+				//rare possible vein
+				0f,
+				//door
+				.5f,
+				//crystals
+				.1f,
+				//minecart
+				.1f,
+				//ladder
+				.4f,
+				//cultists
+				1f,
+				//mugger
+				0f,
+				//trapped chamber
+				0.1f
+		});
 		}
 	
-	private int getNodeTypeForParentShape(NodeConnector holder) {
+	private int getNodeTypeForParentShape(NodeConnector holder,int guessDepth) {
+		switch (guessDepth) {
+		case 0://start
+			//smaller list of things only the starting node can be
+			return startRolls[extra.randRange(0,startRolls.length-1)];
+		case 1: case 2://entry
+			return 1+entryMineRoller.random(extra.getRand());
+		}
 		switch (holder.parent.getShape()) {
 		case ELEVATOR:
 			return 1+hellMineRoller.random(extra.getRand());
@@ -104,7 +137,7 @@ public class MineNode implements NodeType{
 	
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
-		int idNum = getNodeTypeForParentShape(holder);
+		int idNum = getNodeTypeForParentShape(holder,guessDepth);
 		int ret = holder.newNode(NodeType.NodeTypeNum.MINE.ordinal(),idNum,tier);
 		holder.setFloor(ret, guessDepth);
 		return ret;
@@ -256,7 +289,7 @@ public class MineNode implements NodeType{
 		break;
 		case 10:
 			Person mugger = RaceFactory.makeMuggerWithTitle(holder.getLevel(madeNode));
-			String mugName = mugger.getTitle();
+			String mugName = mugger.getTitle().substring(4);//remove "the "
 			GenericNode.setBasicRagePerson(holder,madeNode, mugger,mugName,extra.capFirst(mugName) + " attacks you!");
 			break;
 		case 11://trapped treasure chamber

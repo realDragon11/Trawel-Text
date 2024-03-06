@@ -30,6 +30,9 @@ public class GraveyardNode implements NodeType{
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
 		int idNum =extra.randRange(1,EVENT_NUMBER);
+		if (guessDepth == 0) {
+			idNum = 1;//for now, starting node will only be a gravedigger
+		}
 		int ret = holder.newNode(NodeType.NodeTypeNum.GRAVEYARD.ordinal(),idNum,tier);
 		holder.setFloor(ret, guessDepth);
 		return ret;
