@@ -389,7 +389,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 			if (!playerwatching) { extra.offPrintStack();}
 			//summons not allowed
 			assert sp1 != null;
-			assert sp2 != null;			
+			assert sp2 != null;
 			Combat c = mainGame.CombatTwo(sp1.getPerson(),sp2.getPerson(),town.getIsland().getWorld());
 			town.removeAllKilled(c.killed);
 			if (!playerwatching) {extra.popPrintStack();}

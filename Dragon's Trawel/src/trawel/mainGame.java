@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -1539,14 +1540,21 @@ public class mainGame {
 
 		logStream.close();
 	}
+	/*
+	 * really dumb how displaying a stack trace works
+	 * https://stackoverflow.com/questions/1069066/how-can-i-get-the-current-stack-trace-in-java#comment34163092_1069074
+	 */
 
 	private static void errorHandle(Exception e) {
-		mainGame.log(e.getMessage());
+		StackTraceElement[] trace = e.getStackTrace();
+		mainGame.log(e.toString());
+		for (int i = 0; i < trace.length; i++) {
+			mainGame.log("\t"+trace[i].toString());
+		}
 		System.out.println("Error Stacktrace:");
 		e.printStackTrace();
-		extra.println(extra.PRE_RED+"Trawel has encountered an exception. Please report to realDragon. More details can be found in log.txt.");
-		extra.println("PREVIEW, SEE ABOVE IN TEXT FOR FULL MESSAGE: "+ (e.getMessage() != null ? (e.getMessage()) :"null" + e.getStackTrace()));
-		extra.println((e.getMessage() != null ? (e.getMessage()) :"null" + e.getStackTrace()));
+		extra.println(extra.PRE_RED+"Trawel has encountered an exception. Please report to realDragon. More details can be found in log.txt and the terminal.");
+		extra.println("Error Preview: "+ e.toString());
 	}
 
 
