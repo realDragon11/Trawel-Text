@@ -148,6 +148,7 @@ public class GraveyardNode implements NodeType{
 		case 6://will set the state to the times it is seen until it will attack +10 after seen once
 			//will attack instantly if attempting to loot
 			holder.setFlag(madeNode,NodeFlag.SILENT_FORCEGO_POSSIBLE,true);
+			holder.setForceGo(madeNode, true);
 			//fall through
 		case 7: //non hostile statue which will show but never attack
 			holder.setStorage(madeNode, RaceFactory.makeStatue(holder.getLevel(madeNode)));
@@ -202,16 +203,16 @@ public class GraveyardNode implements NodeType{
 			Person attStatue = holder.getStorageFirstPerson(node);
 			String attName = extra.capFirst(attStatue.getBag().getRace().renderName(false));
 			if (state == 33) {//destroyed
-				return "Examine Destroyed " + attName + "Statue";
+				return "Examine Destroyed " + attName + " Statue";
 			}
-			return "Loot " +attName + "Statue";
+			return "Loot " +attName + " Statue";
 		case 7://non attacking statue
 			Person quietStatue = holder.getStorageFirstPerson(node);
 			String quietName = extra.capFirst(quietStatue.getBag().getRace().renderName(false));
 			if (state == 13) {//destroyed
-				return "Examine Looted " + quietName + "Statue";
+				return "Examine Looted " + quietName + " Statue";
 			}
-			return "Loot " +quietName + "Statue";
+			return "Loot " +quietName + " Statue";
 		}
 		return null;
 	}
@@ -238,9 +239,11 @@ public class GraveyardNode implements NodeType{
 		case 2://graverobber
 		case 4://vampire
 		case 5://collector
-		case 6://attacking statue
+		
 		case 7://normal statue
 			return 1;
+		case 6://attacking statue
+			return 2;
 		}
 		return 0;
 	}
@@ -278,17 +281,17 @@ public class GraveyardNode implements NodeType{
 			Person attStatue = holder.getStorageFirstPerson(node);
 			String attName = extra.capFirst(attStatue.getBag().getRace().renderName(false));
 			if (state == 33) {//destroyed
-				return "Destroyed " + attName + "Statue";
+				return "Destroyed " + attName + " Statue";
 			}
 			if (state > 30) {
-				return "Hostile " + attName + "Statue";
+				return "Hostile " + attName + " Statue";
 			}
 			return attName + " Statue";
 		case 7://non attacking statue
 			Person quietStatue = holder.getStorageFirstPerson(node);
 			String quietName = extra.capFirst(quietStatue.getBag().getRace().renderName(false));
 			if (state == 13) {//destroyed
-				return "Looted " + quietName + "Statue";
+				return "Looted " + quietName + " Statue";
 			}
 			return quietName + " Statue";
 		}
@@ -511,8 +514,9 @@ public class GraveyardNode implements NodeType{
 	 * state 31 is first fighting, state 32 is after visibly fighting, and state 33 is destroyed
 	 */
 	private boolean statue(NodeConnector holder,int node) {
-		int state = holder.getStateNum(node);
 		
+		int state = holder.getStateNum(node);
+		//extra.println("statue enter: " +state);
 		//can have nightvision and not have interacted yet, in which case we need special dialogue
 		//will silently forcego to count the timer
 		boolean forced = holder.isForced();
@@ -525,7 +529,6 @@ public class GraveyardNode implements NodeType{
 			}else {
 				state = extra.randRange(21,28);
 			}
-			
 		}else {
 			if (state < 30) {
 				if (forced) {
@@ -534,15 +537,13 @@ public class GraveyardNode implements NodeType{
 					}
 					state++;//will only add this way if forced, also can add if examined for real
 				}
-				
-				
 			}else {
 				//destroyed or attacking
 			}
-			
 		}
 		//leave if silently forced, so it's actually silent (aside from 'just move?')
 		if (forced && state != 31) {
+			holder.setStateNum(node,state);
 			return false;
 		}
 		
@@ -557,32 +558,26 @@ public class GraveyardNode implements NodeType{
 		}
 		
 		if (state != 31) {
-			if (state > 20) {//if has seen before we don't mess with state
-				p.getBag().graphicalDisplay(1, p);
-				extra.println(statueLootAsk(p));
-				if (!extra.yesNo() && extra.chanceIn(3,4)) {//25% chance to attack instantly if ignored
-					Networking.clearSide(1);
-					return false;
-				}
-			}else {
-				//the code to look at them will occur from interact, but only if not forced
-				
-				//seen, convert to the seen track, and mess up the timing to mess with
-				//them if they checked it due to the 'just move?'
+			//the code to look at them will occur from interact, but only if not forced
+			
+			//seen, convert to the seen track, and mess up the timing to mess with
+			//them if they checked it due to the 'just move?'
+			if (state < 20) {
 				if (state < 18) {//if wasn't close
 					state = extra.randRange(21,26);
 				}else {//if was close
 					state = extra.randRange(26, 28);
 				}
-				p.getBag().graphicalDisplay(1, p);
-				//they approached it, now we can ask to loot it for real
-				extra.println(statueLootAsk(p));
-				if (!extra.yesNo() && extra.chanceIn(3,4)) {//25% chance to attack instantly if ignored
-					Networking.clearSide(1);
-					return false;
-				}
 			}
 			
+			p.getBag().graphicalDisplay(1, p);
+			//they approached it, now we can ask to loot it for real
+			extra.println(statueLootAsk(p));
+			if (!extra.yesNo() && extra.chanceIn(3,4)) {//25% chance to attack instantly if ignored
+				Networking.clearSide(1);
+				holder.setStateNum(node,state);
+				return false;
+			}
 		}
 		
 		//if we get here, they want to loot it or it's attacking them
