@@ -174,7 +174,7 @@ public class GraveyardNode implements NodeType{
 	
 	@Override
 	public boolean interact(NodeConnector holder, int node) {
-		if (Player.player.getPerson().hasSkill(Skill.NIGHTVISION)) {
+		if (holder.getStateNum(node) < 10 && Player.player.getPerson().hasSkill(Skill.NIGHTVISION)) {
 			//set new state on interact, in case of force go weirdness getting around the name
 			holder.setStateNum(node,10);
 		}
