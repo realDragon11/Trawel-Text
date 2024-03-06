@@ -80,8 +80,8 @@ public class mainGame {
 			"b_10: {part 3/?} Added Drudger, Fell, Monster, and Animal Cleanse Quests. Almost all targets will award progress if encountered in Node Explorations or other features as well, with some exceptions for mooks. Some fightable hunters now reward Amber when looted. Witch Huts have more Collect targets.",
 			"b_10: {part 4/?} Vampires and some other Bumpers will appear less during the daytime. Bandits will prefer money, not just valuable metals. Removed most bumper level requirements, and updated wolf pack with player allies.",
 			"b_10: {part 5/?} There are more Primal Deathcheater types, and TODO more cult types.",
-			"b_10: {part 6/?} Cleaned up various menus, especially when using color in the graphical. Updated tutorial's feature explanations and list of world perks.",
-			"b_10: {part 7/?} Added indicator colors to damage in attack previews. At some point background time display stopped changing colors, it now works again. Mines now properly weight their contents.",
+			"b_10: {part 6/?} Updated tutorial's feature explanations and list of world perks. Mines now properly weight their contents.",
+			"b_10: {part 7/?} Graphical: Improved usage of color fail codes. Added indicator colors to damage in attack previews. At some point background time display stopped changing colors, it now works again. ",
 			
 			"Prior Changelog notes were from 2023, press again to continue.",
 			
@@ -417,13 +417,39 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return attackDisplayStyle +" Attack Display Style (Cycles through options) currently: " + attackDisplayStyle.desc();
+						return "Attack Display Style: " + attackDisplayStyle.name();
 					}
 
 					@Override
 					public boolean go() {
-						attackDisplayStyle = DispAttack.values()[(attackDisplayStyle.ordinal()+1)%DispAttack.values().length];
-						prefs.setProperty("attack_display",attackDisplayStyle.name());
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> list = new ArrayList<MenuItem>();
+								list.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "Currently: " + attackDisplayStyle.name();
+									}});
+								for (DispAttack da: DispAttack.values()) {
+									list.add(new MenuSelect() {
+										@Override
+										public String title() {
+											return da.name() + ": " + da.desc();
+										}
+
+										@Override
+										public boolean go() {
+											attackDisplayStyle = da;
+											prefs.setProperty("attack_display",attackDisplayStyle.name());
+											return true;
+										}});
+								}
+								list.add(new MenuBack("Cancel."));
+								return list;
+							}});
 						return false;
 					}});
 				mList.add(new MenuSelect() {
