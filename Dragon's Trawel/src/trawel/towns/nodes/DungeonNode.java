@@ -47,7 +47,7 @@ public class DungeonNode implements NodeType{
 				0f,//1 ladder
 				2f,//2 single guard
 				0f,//3 multi guard
-				.5f,//4 door
+				.1f,//4 door
 				.5f,//5 chest
 				.5f,//6 mimic
 				.1f,//7 statue
@@ -95,18 +95,18 @@ public class DungeonNode implements NodeType{
 	
 	@Override
 	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
-		NodeConnector start_node = new NodeConnector(owner);
+		NodeConnector holder = new NodeConnector(owner);
 		switch (owner.shape) {
-		case NONE: generate(start_node,0,size, tier);
-			return start_node.complete(owner);
+		case NONE: generate(holder,0,size, tier);
+			return holder.complete(owner);
 		case TOWER:
 			int curSize = 1;
 			List<List<Integer>> floors = new ArrayList<List<Integer>>();
 			List<Integer> curFloor;
 			int stair;
 			int curStair;
-			int start = getNode(start_node,0,0,tier);
-			start_node.setFloor(start,0);
+			int start = getNode(holder,0,0,tier);
+			holder.setFloor(start,0);
 			stair = start;
 			int levelUp = 0;
 			int floor = 0;
@@ -117,39 +117,39 @@ public class DungeonNode implements NodeType{
 			while (curSize < size) {
 				floor++;
 				lastNode = stair;
-				stair_level = start_node.getLevel(stair);
+				stair_level = holder.getLevel(stair);
 				if (++levelUp >= 3) {
 					levelUp =0;
 					++stair_level;
 				}
-				curStair = getNode(start_node,stair,0,stair_level);//stair as from is tentative
-				start_node.setStair(curStair);
-				start_node.setEventNum(curStair, 1);
+				curStair = getNode(holder,stair,floor,stair_level);//stair as from is tentative
+				holder.setStair(curStair);
+				holder.setEventNum(curStair, 1);
 				
-				stair_level = start_node.getLevel(curStair);
+				stair_level = holder.getLevel(curStair);
 				
 				curFloor = new ArrayList<Integer>();
 				for (int j = 0; j < 2;j++) {
 					for (int i = 0;i <2; i++) {
 						floor++;
-						curNode = getNode(start_node,0,0,stair_level);
-						start_node.setFloor(curNode, floor);
-						start_node.setMutualConnect(lastNode, curNode);
+						curNode = getNode(holder,0,floor,stair_level);
+						holder.setFloor(curNode, floor);
+						holder.setMutualConnect(lastNode, curNode);
 						//lastNode.reverseConnections();
 						lastNode = curNode;
 						curFloor.add(lastNode);
 						if (i == 1) {
-							start_node.setMutualConnect(lastNode, curStair);
+							holder.setMutualConnect(lastNode, curStair);
 						}
 						if (floors.size()%2==0) {//every other floor
 							//guard floor
 							if (extra.chanceIn(3,4)) {//linking nodes have a 3/4ths chance to become a guard of some sort
-								start_node.setEventNum(lastNode,GUARD_NUMBERS[dungeonGuardRoller.random(extra.getRand())]);
+								holder.setEventNum(lastNode,GUARD_NUMBERS[dungeonGuardRoller.random(extra.getRand())]);
 							}
 						}else {
 							if (extra.chanceIn(1,2)) {//linking nodes have a 50% chance to become a loot of some sort
 								//might not be a safe loot
-								start_node.setEventNum(lastNode,LOOT_NUMBERS[dungeonLootRoller.random(extra.getRand())]);
+								holder.setEventNum(lastNode,LOOT_NUMBERS[dungeonLootRoller.random(extra.getRand())]);
 							}
 						}
 						
@@ -166,15 +166,15 @@ public class DungeonNode implements NodeType{
 				//reverse order of stair connects
 				//stair.reverseConnections();
 				//curStair.setFloor(floor);
-				start_node.setFloor(curStair, floor);
+				holder.setFloor(curStair, floor);
 				
 				//move onto next floor
 				stair = curStair;
 			}
 			floor+=10;
-			int b = NodeType.NodeTypeNum.BOSS.singleton.getNode(start_node, 0, floor, stair_level+2);
-			start_node.setMutualConnect(b, stair);
-			start_node.setFloor(b, floor);
+			int b = NodeType.NodeTypeNum.BOSS.singleton.getNode(holder, 0, floor, stair_level+2);
+			holder.setMutualConnect(b, stair);
+			holder.setFloor(b, floor);
 			/*
 			stair.reverseConnections();
 			stair.getConnects().add(b);
@@ -182,7 +182,7 @@ public class DungeonNode implements NodeType{
 			*/
 			for (List<Integer> fl: floors) {
 				for (Integer f: fl) {
-					List<Integer> connects = start_node.getConnects(f);
+					List<Integer> connects = holder.getConnects(f);
 					int isize = connects.size()-1;
 					int[] pass = new int[isize+1];
 					for (int i = isize; i >=0 ;i--) {
@@ -194,7 +194,7 @@ public class DungeonNode implements NodeType{
 							if (cur == 256) {
 								continue;
 							}
-							int cur_num = start_node.getFloor(cur);
+							int cur_num = holder.getFloor(cur);
 							if (lowest > cur_num) {
 								low_loc = cur;
 								lowest = cur_num;
@@ -205,11 +205,11 @@ public class DungeonNode implements NodeType{
 						pass[i] = low_loc;
 						connects.set(erasespot, 256);
 					}
-					start_node.setConnects(f,pass);
+					holder.setConnects(f,pass);
 				}
 				
 			}
-			return start_node.complete(owner);
+			return holder.complete(owner);
 		case RIGGED_DUNGEON:
 			int max_level = tier+8;
 			int start_level = tier;
@@ -217,7 +217,7 @@ public class DungeonNode implements NodeType{
 			int weak_end_level = tier+3;
 			int path_length_tough = 4;
 			int tough_end_level = tier+6;
-			int fight_room = NodeType.NodeTypeNum.BOSS.singleton.getNode(start_node, 0, 0, max_level);
+			int fight_room = NodeType.NodeTypeNum.BOSS.singleton.getNode(holder, 0, 0, max_level);
 			Dungeon keeper = (Dungeon) owner;
 			keeper.setupBattleCons();
 			List<SubSkill> skillcon_list = new ArrayList<SubSkill>();
@@ -233,25 +233,25 @@ public class DungeonNode implements NodeType{
 				int this_end_level = tough ? tough_end_level : weak_end_level;
 				for (int i = 0; i < this_length;i++) {
 					//since i starts at 0, the first node in each will be equal floor to the arena, which is kinda cool
-					int cur_node = getNode(start_node,fight_room,i,(int)extra.lerp(start_level, this_end_level, ((float)(i))/this_length));
-					start_node.setMutualConnect(last_node, cur_node);
+					int cur_node = getNode(holder,fight_room,i,(int)extra.lerp(start_level, this_end_level, ((float)(i))/this_length));
+					holder.setMutualConnect(last_node, cur_node);
 					if (i == this_length-1) {//battlecon orb
-						start_node.setEventNum(cur_node, 100);
+						holder.setEventNum(cur_node, 100);
 						keeper.registerBattleConWithNode(skillcon_list.remove(0), cur_node);
 					}else {
 						if (i == this_length-2) {//improved guard post
-							start_node.setLevel(cur_node, start_node.getLevel(cur_node)+1);
-							start_node.setEventNum(cur_node, 2);
+							holder.setLevel(cur_node, holder.getLevel(cur_node)+1);
+							holder.setEventNum(cur_node, 2);
 						}
 					}
 					last_node = cur_node;
 				}
 			}
-			return start_node.complete(owner);
+			return holder.complete(owner);
 		case RIGGED_TOWER:
 			int t_boss_level = tier+8;
 			int t_max_level = tier+6;
-			int t_fight_room = NodeType.NodeTypeNum.BOSS.singleton.getNode(start_node, 0, 0, t_boss_level);
+			int t_fight_room = NodeType.NodeTypeNum.BOSS.singleton.getNode(holder, 0, 0, t_boss_level);
 			Dungeon t_keeper = (Dungeon) owner;
 			t_keeper.setupBattleCons();
 			List<SubSkill> t_skillcon_list = new ArrayList<SubSkill>();
@@ -276,20 +276,20 @@ public class DungeonNode implements NodeType{
 			for (int i = 0;i < t_areas;i++) {
 				t_cur_floor++;
 				t_cur_level = (int)extra.lerp(tier,t_max_level,((float)t_cur_floor)/t_floors);//set level
-				t_cur_node1 = getNode(start_node,last_connector,t_cur_floor,t_cur_level);
-				t_cur_node2 = getNode(start_node,last_connector,t_cur_floor,t_cur_level);
+				t_cur_node1 = getNode(holder,last_connector,t_cur_floor,t_cur_level);
+				t_cur_node2 = getNode(holder,last_connector,t_cur_floor,t_cur_level);
 				
-				start_node.setMutualConnect(t_cur_node1, last_connector);
-				start_node.setMutualConnect(t_cur_node2, last_connector);
+				holder.setMutualConnect(t_cur_node1, last_connector);
+				holder.setMutualConnect(t_cur_node2, last_connector);
 				
 				//start at j=1 since we need to make the first rooms work
 				for (int j = 1; j < t_area_size; j++) {
 					t_cur_floor++;
 					t_cur_level = (int)extra.lerp(tier,t_max_level,((float)t_cur_floor)/t_floors);//set level
-					t_cur_node1new = getNode(start_node,t_cur_node1,t_cur_floor,t_cur_level);
-					start_node.setMutualConnect(t_cur_node1, t_cur_node1new);
-					t_cur_node2new = getNode(start_node,t_cur_node2,t_cur_floor,t_cur_level);
-					start_node.setMutualConnect(t_cur_node2, t_cur_node2new);
+					t_cur_node1new = getNode(holder,t_cur_node1,t_cur_floor,t_cur_level);
+					holder.setMutualConnect(t_cur_node1, t_cur_node1new);
+					t_cur_node2new = getNode(holder,t_cur_node2,t_cur_floor,t_cur_level);
+					holder.setMutualConnect(t_cur_node2, t_cur_node2new);
 					
 					t_cur_node1 = t_cur_node1new;
 					t_cur_node2 = t_cur_node2new;
@@ -297,15 +297,15 @@ public class DungeonNode implements NodeType{
 				
 				//generate skillcon room
 				t_cur_floor++;//don't need to set level
-				int skillroom = getNode(start_node, 0, t_cur_floor, t_cur_level);
-				start_node.setEventNum(skillroom, 100);
+				int skillroom = getNode(holder, 0, t_cur_floor, t_cur_level);
+				holder.setEventNum(skillroom, 100);
 				t_keeper.registerBattleConWithNode(t_skillcon_list.remove(0),skillroom);
-				start_node.setMutualConnect(t_cur_node2, skillroom);
-				start_node.setMutualConnect(t_cur_node1, skillroom);
+				holder.setMutualConnect(t_cur_node2, skillroom);
+				holder.setMutualConnect(t_cur_node1, skillroom);
 				last_connector = skillroom;
 			}
 			
-			return start_node.complete(owner);
+			return holder.complete(owner);
 		}
 		throw new RuntimeException("Invalid dungeon");
 	}
