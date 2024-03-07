@@ -238,10 +238,12 @@ public class WitchHut extends Store implements QuestBoardLocation{
 							reagents.clear();
 							//to make it harder to figure out what you just made without trying it out or with a skill
 							//mess up the count of how many charges you have slightly
-							if (Player.player.getFlaskUses() < 3) {
-								Player.player.addFlaskUses((byte) extra.randRange(1,3));
-							}else {
-								Player.player.addFlaskUses((byte) extra.randRange(-1,4));
+							if (Player.player.hasFlask()) {
+								if (Player.player.getFlaskUses() < 3) {
+									Player.player.addFlaskUses((byte) extra.randRange(1,3));
+								}else {
+									Player.player.addFlaskUses((byte) extra.randRange(-1,4));
+								}
 							}
 						}
 						return ret;
