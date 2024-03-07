@@ -69,7 +69,7 @@ public class GraveyardNode implements NodeType{
 				//attacking statue
 				1f,//interesting to go by them
 				//non attacking statue
-				0f,
+				.5f,
 				//trapped chamber
 				0f
 		});

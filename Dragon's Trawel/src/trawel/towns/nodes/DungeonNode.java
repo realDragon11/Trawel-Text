@@ -42,7 +42,7 @@ public class DungeonNode implements NodeType{
 	
 	public DungeonNode() {
 		dungeonGuardRoller = new WeightedTable(new float[] {1f,4f});
-		dungeonLootRoller = new WeightedTable(new float[] {3f,1f,1.5f,.5f,.1f});
+		dungeonLootRoller = new WeightedTable(new float[] {3f,1f,1.5f,.5f,.3f});
 		dungeonNoneRoller = new WeightedTable(new float[] {
 				0f,//1 ladder
 				2f,//2 single guard
@@ -52,7 +52,7 @@ public class DungeonNode implements NodeType{
 				.5f,//6 mimic
 				.1f,//7 statue
 				.5f,//8 living statue
-				.05f,//9 trapped treasure chamber
+				.3f,//9 trapped treasure chamber
 		});
 	}
 	

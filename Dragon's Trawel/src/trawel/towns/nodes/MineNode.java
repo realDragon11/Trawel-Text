@@ -94,25 +94,25 @@ public class MineNode implements NodeType{
 		});
 		entryMineRoller = new WeightedTable(new float[] {
 				//duelist
-				1.5f,
+				2f,
 				//water
-				.3f,
+				.5f,
 				//vein
-				.2f,
+				.3f,
 				//rare possible vein
 				0f,
 				//door
 				.5f,
 				//crystals
-				.1f,
-				//minecart
-				.1f,
-				//ladder
-				.4f,
-				//cultists
 				1f,
+				//minecart
+				.5f,
+				//ladder
+				.5f,
+				//cultists
+				.5f,
 				//mugger
-				0f,
+				.4f,
 				//trapped chamber
 				0.1f
 		});
