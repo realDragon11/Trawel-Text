@@ -377,6 +377,7 @@ public class GenericNode implements NodeType {
 		case TRAPPED_CHAMBER:
 			if (NodeType.getTypeEnum(holder.getTypeNum(node)) == NodeTypeNum.MINE) {
 				//mine hides this type of node
+				//graveyard also hides it, but it handles displaying it itself
 				if (MineNode.hideContents(holder, node)) {
 					return MineNode.STR_SHADOW_ROOM_ACT;
 				}
@@ -940,7 +941,7 @@ public class GenericNode implements NodeType {
 		holder.setStorage(node, tchamberArray);
 	}
 
-	private static boolean trappedChamber(NodeConnector holder,int node) {
+	public static boolean trappedChamber(NodeConnector holder,int node) {
 		Object[] totalArray = holder.getStorageAsArray(node);
 		byte[] lootArray = (byte[]) totalArray[0];
 		byte[][] trapArray = (byte[][]) totalArray[1];
@@ -1178,16 +1179,16 @@ public class GenericNode implements NodeType {
 		},
 	};
 	
-	private static final String getTChamberName(NodeConnector holder, int node) {
+	public static final String getTChamberName(NodeConnector holder, int node) {
 		Object[] trapChamberArray = holder.getStorageAsArray(node);
 		byte[] lootChamberArray = (byte[]) trapChamberArray[0];
-		return "Enter the " +tChamberLookup(lootChamberArray[0],lootChamberArray[3])[0]+".";
+		return tChamberLookup(lootChamberArray[0],lootChamberArray[3])[0]+".";
 	}
 	
-	private static final String getTChamberInteract(NodeConnector holder, int node) {
+	public static final String getTChamberInteract(NodeConnector holder, int node) {
 		Object[] trapChamberArray = holder.getStorageAsArray(node);
 		byte[] lootChamberArray = (byte[]) trapChamberArray[0];
-		return tChamberLookup(lootChamberArray[0],lootChamberArray[3])[0];
+		return "Enter the " +tChamberLookup(lootChamberArray[0],lootChamberArray[3])[0];
 	}
 	
 	

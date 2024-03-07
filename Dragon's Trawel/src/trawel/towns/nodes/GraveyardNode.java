@@ -2,6 +2,8 @@ package trawel.towns.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.yellowstonegames.core.WeightedTable;
+
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
@@ -25,13 +27,67 @@ import trawel.towns.nodes.NodeConnector.NodeFlag;
 import trawel.towns.services.Oracle;
 
 public class GraveyardNode implements NodeType{
-	private static final int EVENT_NUMBER =7;
+	
+	private static final int EVENT_NUMBER = 8;
+	
+	/**
+	 * these are 0 indexed, and the actual event nums aren't
+	 * <br>
+	 * so +1
+	 */
+	private WeightedTable noneGraveyardRoller, entryGraveyardRoller;
+	public GraveyardNode() {
+		noneGraveyardRoller = new WeightedTable(new float[] {
+				//gravedigger
+				1f,
+				//graverobber
+				1f,
+				//bats
+				1f,
+				//vampire with bats
+				.5f,
+				//collector
+				.8f,
+				//attacking statue
+				1f,
+				//non attacking statue
+				.5f,
+				//trapped chamber
+				.5f
+		});
+		entryGraveyardRoller = new WeightedTable(new float[] {
+				//gravedigger
+				1f,
+				//graverobber
+				1f,
+				//bats
+				.3f,
+				//vampire with bats
+				.2f,
+				//collector
+				.5f,
+				//attacking statue
+				1f,//interesting to go by them
+				//non attacking statue
+				0f,
+				//trapped chamber
+				0f
+		});
+	}
 	
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
-		int idNum =extra.randRange(1,EVENT_NUMBER);
-		if (guessDepth == 0) {
+		int idNum;
+		switch (guessDepth) {
+		case 0://start
 			idNum = 1;//for now, starting node will only be a gravedigger
+			break;
+		case 1: case 2://entry
+			idNum = 1+entryGraveyardRoller.random(extra.getRand());
+			break;
+		default:
+			idNum = 1+noneGraveyardRoller.random(extra.getRand());
+			break;
 		}
 		int ret = holder.newNode(NodeType.NodeTypeNum.GRAVEYARD.ordinal(),idNum,tier);
 		holder.setFloor(ret, guessDepth);
@@ -84,7 +140,6 @@ public class GraveyardNode implements NodeType{
 	@Override
 	public void apply(NodeConnector holder,int madeNode) {
 		switch (holder.getEventNum(madeNode)) {
-		//case -1:made.name = extra.choose("stairs","ladder"); made.interactString = "traverse "+made.name;made.setForceGo(true);break;
 		case 1: 
 			holder.setStorage(madeNode, RaceFactory.makeGravedigger(holder.getLevel(madeNode)));
 			break;
@@ -140,7 +195,6 @@ public class GraveyardNode implements NodeType{
 			holder.setStorage(madeNode, vampBats);
 			;break;
 		case 5:
-			//holder.setStorage(madeNode, RaceFactory.makeCollector(holder.getLevel(madeNode)));
 			GenericNode.applyCollector(holder, madeNode);
 			holder.setFlag(madeNode,NodeFlag.GENERIC_OVERRIDE,false);//we call it ourselves
 			holder.setEventNum(madeNode, 5);//set event back from generic's, since we call it ourselves
@@ -152,6 +206,11 @@ public class GraveyardNode implements NodeType{
 			//fall through
 		case 7: //non hostile statue which will show but never attack
 			holder.setStorage(madeNode, RaceFactory.makeStatue(holder.getLevel(madeNode)));
+			break;
+		case 8://trapped chamber
+			GenericNode.applyTrappedChamber(holder, madeNode);
+			holder.setFlag(madeNode,NodeFlag.GENERIC_OVERRIDE,false);//we call it ourselves
+			holder.setEventNum(madeNode,8);//set event back from generic's, since we call it ourselves
 			break;
 		}
 	}
@@ -178,6 +237,7 @@ public class GraveyardNode implements NodeType{
 		case 5:	return collector(holder,node);
 		case 6: return statue(holder,node);
 		case 7: return statueLoot(holder,node);
+		case 8: return GenericNode.trappedChamber(holder, node);
 		}
 		return false;
 	}
@@ -213,6 +273,8 @@ public class GraveyardNode implements NodeType{
 				return "Examine Looted " + quietName + " Statue";
 			}
 			return "Loot " +quietName + " Statue";
+		case 8://trapped chamber
+			return GenericNode.getTChamberInteract(holder, node);
 		}
 		return null;
 	}
@@ -242,7 +304,8 @@ public class GraveyardNode implements NodeType{
 		case 6://attacking statue
 		case 7://normal statue
 			return 1;
-			//return 2;
+		case 8://trapped chamber
+			return 2;
 		}
 		return 0;
 	}
@@ -293,6 +356,8 @@ public class GraveyardNode implements NodeType{
 				return "Looted " + quietName + " Statue";
 			}
 			return quietName + " Statue";
+		case 8://trapped chamber
+			return "Crypt with " +GenericNode.getTChamberName(holder, node);
 		}
 		return null;
 	}
@@ -340,7 +405,7 @@ public class GraveyardNode implements NodeType{
 
 						@Override
 						public String title() {
-							return "Chat";
+							return "Chat.";
 						}
 
 						@Override
@@ -361,7 +426,7 @@ public class GraveyardNode implements NodeType{
 
 										@Override
 										public String title() {
-											return "Tips";
+											return "Tips.";
 										}
 
 										@Override
@@ -373,7 +438,7 @@ public class GraveyardNode implements NodeType{
 
 										@Override
 										public String title() {
-											return "This Graveyard";
+											return "This Graveyard.";
 										}
 
 										@Override
@@ -382,7 +447,7 @@ public class GraveyardNode implements NodeType{
 											//tODO: maybe nodefeature lore eventually
 											return false;
 										}});
-									list.add(new MenuBack("goodbye"));
+									list.add(new MenuBack("Say goodbye."));
 									return list;
 								}});
 							return false;
@@ -413,6 +478,7 @@ public class GraveyardNode implements NodeType{
 					extra.println("The Gravedigger attacks you!");
 				}
 			}else {
+				Networking.clearSide(1);
 				return false;
 			}
 			//Person p = holder.getStorageFirstPerson(node);
