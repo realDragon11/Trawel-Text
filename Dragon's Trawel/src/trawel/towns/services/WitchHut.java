@@ -44,6 +44,8 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	
 	private List<Quest> sideQuests = new ArrayList<Quest>();
 	
+	private static boolean actualPotionMade = false;
+	
 	public WitchHut(String _name, Town t) {
 		super(t.getTier(),WitchHut.class);
 		tier = t.getTier();
@@ -91,7 +93,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return extra.SERVICE_FREE+"Brew a potion" + (reagents.size() > 0 ? "("+reagents.size()+"/6)" : "");
+						return extra.SERVICE_FREE+"Brew a potion" + (reagents.size() > 0 ? " ("+reagents.size()+"/6)" : "");
 					}
 
 					@Override
@@ -233,12 +235,13 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public boolean go() {
+						actualPotionMade = false;
 						boolean ret = finishBrew();
 						if (ret) {
 							reagents.clear();
 							//to make it harder to figure out what you just made without trying it out or with a skill
 							//mess up the count of how many charges you have slightly
-							if (Player.player.hasFlask()) {
+							if (Player.player.hasFlask() && actualPotionMade) {
 								if (Player.player.getFlaskUses() < 3) {
 									Player.player.addFlaskUses((byte) extra.randRange(1,3));
 								}else {
@@ -556,6 +559,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		Networking.sendStrong("PlayDelay|sound_potiondone|1|");
 		Networking.unlockAchievement("brew1");
 		extra.println("You finish brewing your potion, and put it in your flask... now to test it out!");
+		actualPotionMade = true;
 	}
 	
 	public void transmute(DrawBane from, DrawBane into,int count) {

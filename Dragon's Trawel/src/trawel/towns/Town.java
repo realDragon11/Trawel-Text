@@ -917,10 +917,10 @@ public class Town extends TContextOwner{
 					case 0:
 						if (p.getPersonType() == PersonType.COWARDLY) {
 							extra.println("\"I was once weak and broken... no more! I will be better! I shall not break again!\"");
-							p.setTitle(extra.choose(" the Unbreakable"," the Unfettered"));
+							p.setTitle(extra.choose("the Unbreakable","the Unfettered"));
 						}else {
 							extra.println("\"You may have broken my body, but not my spirit!\"");
-							p.setTitle(extra.choose(" the Unbroken"," the Unfettered"));
+							p.setTitle(extra.choose("the Unbroken","the Unfettered"));
 						}
 						p.setFeat(Feat.UNBREAKABLE);
 						p.setPersonType(PersonType.DEATHCHEATED);
