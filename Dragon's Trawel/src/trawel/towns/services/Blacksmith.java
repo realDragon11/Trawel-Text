@@ -174,7 +174,7 @@ public class Blacksmith extends Feature {
 							extra.println(extra.RESULT_ERROR+"You don't have enough amber to temper '"+item.getName()+"'. ("+costString+")");
 							return false;
 						}
-						extra.println("Improve your item to +" + (item.getLevel()+1) + " for "+costString+"?");
+						extra.println("Temper your "+item.getName()+" for "+costString+"?");
 						if (extra.yesNo()) {
 							if (!item.temperNegQuality()) {
 								extra.println(extra.RESULT_FAIL+"Tempering failed.");
