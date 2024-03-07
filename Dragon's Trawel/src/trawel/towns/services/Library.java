@@ -143,8 +143,8 @@ public class Library extends Feature {
 							for (int i = dbs.size()-1;i >= 0;i--) {
 								if (dbs.get(i).equals(DrawBane.KNOW_FRAG)) {
 									Player.player.addKnowFrag();
+									dbs.remove(i);
 								}
-								dbs.remove(i);
 								got++;
 							}
 							extra.println("You are now " + Player.player.strKnowFrag());
