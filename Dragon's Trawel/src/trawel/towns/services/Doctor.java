@@ -74,15 +74,9 @@ public class Doctor extends Feature {
 							extra.println("Not enough "+World.currentMoneyString()+"!");
 							return false;
 						}
-						boolean any = Player.player.getPerson().displayEffects();
-						if (any) {
-							extra.println("Cure the above effects?");
-						}else {
-							extra.println("You have no effects to cure, pay for a check up?");
-						}
+						extra.println("Pay for a check up?");
 						if (extra.yesNo()) {
 							Player.player.addGold(-cost);
-							Player.player.getPerson().removeEffectAll(Effect.CURSE);
 							Player.player.getPerson().cureEffects();
 						}
 						return false;
