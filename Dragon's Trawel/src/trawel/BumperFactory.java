@@ -168,7 +168,6 @@ public class BumperFactory {
 					
 					extra.println(extra.PRE_BATTLE+"An ent appears!");
 					Player.player.fightWith(p);
-					//DOLATER: maybe have cleanse trigger?
 				}};
 			b.responses.add(new Response(DrawBane.ENT_CORE,5));
 			bumperList.add(b);

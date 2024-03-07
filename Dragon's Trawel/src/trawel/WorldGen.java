@@ -812,6 +812,30 @@ public class WorldGen {
 			e.printStackTrace();
 		}
 	}
+	public static void travelToTown(Town dest) {
+		
+		try {
+			Town curTown = Player.player.getLocation();
+			if (curTown == dest) {
+				extra.println("You are already in " + dest.getName()+".");
+				return;
+			}
+			List<Connection> connects = WorldGen.aStarTown(curTown,dest);
+			
+			int i = 0;
+			while (curTown != dest) {
+				Town nextTown = connects.get(i).otherTown(curTown);
+				curTown.goConnect(connects.get(i),2f);
+				if (Player.player.getLocation() != nextTown) {
+					throw new RuntimeException("didn't move to next town " + nextTown.getName() + " from " + curTown.getName() +": at " + Player.player.getLocation());
+				}
+				curTown = Player.player.getLocation();
+				i++;
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public static class PathTown {
 		public Town t;

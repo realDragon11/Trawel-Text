@@ -75,6 +75,7 @@ public class Player extends SuperPerson{
 	public static double passTime;
 	public static Inventory bag;
 	public static transient String lastAttackStringer;
+	public static boolean exitMenu = false;
 	public static boolean isPlaying = true;
 	public int duel_wins = 0;
 	public int deaths;
@@ -693,6 +694,7 @@ public class Player extends SuperPerson{
 	 * note that this uses the player it's called on when it can, not just the global player
 	 */
 	public void youMenu() {
+		exitMenu = false;
 		extra.menuGo(new MenuGenerator() {
 
 			@Override
@@ -891,11 +893,17 @@ public class Player extends SuperPerson{
 									public boolean go() {
 										extra.println("You take out your personal map of known towns.");
 										mapScrollMenu();
+										if (exitMenu) {
+											return true;
+										}
 										return false;
 									}});
 								invList.add(new MenuBack());
 								return invList;
 							}});
+						if (exitMenu) {
+							return true;
+						}
 						return false;
 					}});
 				list.add(new MenuSelect() {
@@ -1580,6 +1588,12 @@ public class Player extends SuperPerson{
 													@Override
 													public boolean go() {
 														WorldGen.pathToTown(t);
+														extra.println("Travel to " + t.getName()+"?");
+														if (extra.yesNo()) {
+															WorldGen.travelToTown(t);
+															exitMenu = true;
+															return true;
+														}
 														return false;
 													}});
 												list.add(new MenuSelect() {
@@ -1760,6 +1774,9 @@ public class Player extends SuperPerson{
 												list.add(new MenuBack());
 												return list;
 											}});
+										if (exitMenu) {
+											return true;
+										}
 										return false;
 									}
 									
@@ -1775,6 +1792,9 @@ public class Player extends SuperPerson{
 							public List<MenuItem> footer() {
 								return Collections.singletonList(new MenuBack());
 							}});
+						if (exitMenu) {
+							return true;
+						}
 						return false;
 					}});
 			}

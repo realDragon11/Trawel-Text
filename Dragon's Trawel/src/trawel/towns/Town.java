@@ -548,90 +548,94 @@ public class Town extends TContextOwner{
 
 			@Override
 			public boolean go() {
-				Town t = c.otherTown(Town.this);
-				switch (c.getType().type) {
-				case LAND:
-					if (c.getType().startTime > 0) {
-						Player.addTime(c.getType().startTime);
-						mainGame.globalPassTime();
-					}
-					if (mainGame.displayTravelText) {
-						extra.print("You start to travel to " + t.getName()+"... ");
-						if (Networking.connected()) {
-							extra.println();//have to do this to make it show up since it only prints new lines
-						}
-					}
-					double wayMark = extra.randFloat()*c.getRawTime();
-					Player.addTime(wayMark);
-					mainGame.globalPassTime();
-					//will get interrupted at random time
-					if (extra.chanceIn(4,5+(int)Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
-						wander(3);
-					}
-					Player.addTime(c.getRawTime()-wayMark);
-					mainGame.globalPassTime();
-					if (mainGame.displayTravelText) {
-						extra.println("You arrive in " + t.getName()+".");
-					}
-					if (c.getType().endTime > 0) {
-						Player.addTime(c.getType().endTime);
-						mainGame.globalPassTime();
-					}
-					break;
-				case SEA:
-					if (c.getType().startTime > 0) {
-						Player.addTime(c.getType().startTime);
-						mainGame.globalPassTime();
-					}
-					if (mainGame.displayTravelText) {
-						extra.print("You start to sail to " + t.getName() +"... ");
-						if (Networking.connected()) {
-							extra.println();//have to do this to make it show up since it only prints new lines
-						}
-					}
-					//will get interrupted at random time
-					double wayMarkS = extra.randFloat()*c.getRawTime();
-					Player.addTime(wayMarkS);
-					mainGame.globalPassTime();
-					if (extra.chanceIn(4,5+(int)Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
-						wanderShip(3);
-					}
-					Player.addTime(c.getRawTime()-wayMarkS);
-					mainGame.globalPassTime();
-					if (mainGame.displayTravelText) {
-						extra.println("You arrive in " + t.getName()+".");
-					}
-					if (c.getType().endTime > 0) {
-						Player.addTime(c.getType().endTime);
-						mainGame.globalPassTime();
-					}
-					break;
-				case MAGIC:
-					if (c.getType().startTime > 0) {
-						Player.addTime(c.getType().startTime);
-						mainGame.globalPassTime();
-					}
-					if (mainGame.displayTravelText) {
-						extra.println("You teleport to " + t.getName()+".");
-					}
-					Networking.sendStrong("PlayDelay|sound_teleport|1|");
-					Player.addTime(c.getRawTime());
-					mainGame.globalPassTime();
-					//no land teleport message
-					if (c.getType().endTime > 0) {
-						Player.addTime(c.getType().endTime);
-						mainGame.globalPassTime();
-					}
-					break;
-
-				}
-				Player.player.setLocation(t);
-				//need to pass time again since we might in a new world which would be behind
-				mainGame.globalTimeCatchUp();
-				//this is only really an issue in teleport shops, but other connections technically can do this
-				//so it's not bad to be robust. note that this doesn't work in docks or forts right now
+				goConnect(c,1);
 				return true;
 			}};
+	}
+	
+	public void goConnect(Connection c, double thresholdDiv) {
+		Town t = c.otherTown(Town.this);
+		switch (c.getType().type) {
+		case LAND:
+			if (c.getType().startTime > 0) {
+				Player.addTime(c.getType().startTime);
+				mainGame.globalPassTime();
+			}
+			if (mainGame.displayTravelText) {
+				extra.print("You start to travel to " + t.getName()+"... ");
+				if (Networking.connected()) {
+					extra.println();//have to do this to make it show up since it only prints new lines
+				}
+			}
+			double wayMark = extra.randFloat()*c.getRawTime();
+			Player.addTime(wayMark);
+			mainGame.globalPassTime();
+			//will get interrupted at random time
+			if (extra.chanceIn(4,5+(int)Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
+				wander(3/thresholdDiv);
+			}
+			Player.addTime(c.getRawTime()-wayMark);
+			mainGame.globalPassTime();
+			if (mainGame.displayTravelText) {
+				extra.println("You arrive in " + t.getName()+".");
+			}
+			if (c.getType().endTime > 0) {
+				Player.addTime(c.getType().endTime);
+				mainGame.globalPassTime();
+			}
+			break;
+		case SEA:
+			if (c.getType().startTime > 0) {
+				Player.addTime(c.getType().startTime);
+				mainGame.globalPassTime();
+			}
+			if (mainGame.displayTravelText) {
+				extra.print("You start to sail to " + t.getName() +"... ");
+				if (Networking.connected()) {
+					extra.println();//have to do this to make it show up since it only prints new lines
+				}
+			}
+			//will get interrupted at random time
+			double wayMarkS = extra.randFloat()*c.getRawTime();
+			Player.addTime(wayMarkS);
+			mainGame.globalPassTime();
+			if (extra.chanceIn(4,5+(int)Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
+				wanderShip(3/thresholdDiv);
+			}
+			Player.addTime(c.getRawTime()-wayMarkS);
+			mainGame.globalPassTime();
+			if (mainGame.displayTravelText) {
+				extra.println("You arrive in " + t.getName()+".");
+			}
+			if (c.getType().endTime > 0) {
+				Player.addTime(c.getType().endTime);
+				mainGame.globalPassTime();
+			}
+			break;
+		case MAGIC:
+			if (c.getType().startTime > 0) {
+				Player.addTime(c.getType().startTime);
+				mainGame.globalPassTime();
+			}
+			if (mainGame.displayTravelText) {
+				extra.println("You teleport to " + t.getName()+".");
+			}
+			Networking.sendStrong("PlayDelay|sound_teleport|1|");
+			Player.addTime(c.getRawTime());
+			mainGame.globalPassTime();
+			//no land teleport message
+			if (c.getType().endTime > 0) {
+				Player.addTime(c.getType().endTime);
+				mainGame.globalPassTime();
+			}
+			break;
+
+		}
+		Player.player.setLocation(t);
+		//need to pass time again since we might in a new world which would be behind
+		mainGame.globalTimeCatchUp();
+		//this is only really an issue in teleport shops, but other connections technically can do this
+		//so it's not bad to be robust. note that this doesn't work in docks or forts right now
 	}
 	
 	private void goConnects(ConnectClass type) {

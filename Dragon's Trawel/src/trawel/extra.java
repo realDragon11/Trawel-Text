@@ -49,6 +49,10 @@ public final class extra {
 	private static boolean debugPrint = false;
 	private static int debugChunk = 0;
 	private static int backingQueue = 0;
+	
+	public static void kickOut() {
+		backingQueue = 10;
+	}
 
 	public static final String IMPACT_TIP = "Impactful attacks are typically those that hit and deal damage without reliable forcing damage.";
 
