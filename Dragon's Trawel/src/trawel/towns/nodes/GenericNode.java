@@ -921,8 +921,19 @@ public class GenericNode implements NodeType {
 		//if you then fail to endure it you suffer the burnout + penalty
 		//either way the trap gets revealed which makes it easier in the future
 		//if you pass you learn an unlearnt trap in order
-		lootData[1] = (byte) extra.randRange(0,1);//reward type
-		lootData[2] = 0;//reward subtype
+		lootData[1] = (byte) extra.randRange(0,2);//reward type
+		//lootData[2] = 0;//reward subtype
+		switch (lootData[1]) {
+			default: case 0://money
+				lootData[2] = 0;
+				break;
+			case 1://guild cache
+				lootData[2] = (byte) extra.randRange(0,3);//merchant, hero, rogue, hunter
+				break;
+			case 2://aether well with side reward
+				lootData[2] = (byte) extra.randRange(0,6);//0 to 6 flavors and drawbanes
+				break;
+		}
 		lootData[3] = (byte) extra.randRange(0,trapChamberType[lootData[0]].length-1);//chamber type fluff offset
 		//reward amount scale is determined by number of traps, 2/3/4
 		int trapNumber = extra.randRange(2,4);
@@ -1003,6 +1014,102 @@ public class GenericNode implements NodeType {
 									extra.println(extra.RESULT_GOOD+"The vault is filled with money!");
 									//8-16 above and 20-40 here, so 28-56 before level scaling and drop off
 									gold += IEffectiveLevel.cleanRangeReward(level,10*trapArray.length,.8f);
+									break;
+								case 1://guild cache
+									int gemCount = 0;
+									String gType;
+									Gem gem;
+									List<DrawBane> bonusDrawBanes = null;
+									switch (lootArray[2]) {
+									default: case 0://merchant guild
+										gType = "Merchant";
+										//decent amount of money with low variability
+										gold += IEffectiveLevel.cleanRangeReward(level,3*trapArray.length,.8f);
+										gem = Gem.EMERALD;
+										break;
+									case 1://hero
+										gType = "Hero";
+										//okay amount of money with high variability
+										gold += IEffectiveLevel.cleanRangeReward(level,1.5f*trapArray.length,.3f);
+										gem = Gem.RUBY;
+										bonusDrawBanes = new ArrayList<DrawBane>();
+										//knowledge fragment
+										bonusDrawBanes.add(DrawBane.KNOW_FRAG);
+										break;
+									case 2://rogue
+										gType = "Rogue";
+										//large amount of money with very high variability
+										gold += IEffectiveLevel.cleanRangeReward(level,5*trapArray.length,.1f);
+										gem = Gem.SAPPHIRE;
+										bonusDrawBanes = new ArrayList<DrawBane>();
+										//'wealthy' drawbanes
+										bonusDrawBanes.add(extra.choose(DrawBane.GOLD,DrawBane.SILVER));
+										bonusDrawBanes.add(extra.choose(DrawBane.GOLD,DrawBane.SILVER));
+										break;
+									case 3://hunter
+										gType = "Hunter";
+										//low amount of money
+										gold += IEffectiveLevel.cleanRangeReward(level,trapArray.length/1.5f,.3f);
+										gem = Gem.AMBER;
+										//boosted gems
+										gemCount += IEffectiveLevel.cleanRangeReward(level,gem.unitSize*trapArray.length/2.0f,.8f);
+										break;
+									}
+									//+= since above can give more gems for some
+									gemCount += IEffectiveLevel.cleanRangeReward(level,gem.unitSize*trapArray.length/2.0f,.8f);
+									extra.println(extra.RESULT_GOOD+"The vault contains a "+gType + " guild cache!");
+									extra.println(extra.RESULT_PASS+"You find " + gemCount + " " + (gemCount == 1 ? gem.name : gem.plural)+"!");
+									gem.changeGem(gemCount);
+									if (bonusDrawBanes != null) {
+										for (int i = 0; i < bonusDrawBanes.size(); i++) {
+											Player.bag.addNewDrawBanePlayer(bonusDrawBanes.get(i));
+										}
+									}
+									break;
+								case 2://aether well with side reward
+									//base amount of aether, scale up to x2
+									int aetherAdd = IEffectiveLevel.cleanRangeReward(level,1000*trapArray.length,.8f);
+									String aetherFluff;
+									DrawBane drawAdd;
+									switch (lootArray[2]) {
+										default: case 0:
+											aetherFluff = "You find a massive pool of aether with a heart floating in it!";
+											drawAdd = DrawBane.BEATING_HEART;
+											break;
+										case 1:
+											aetherAdd*=2;//more aether looted
+											aetherFluff = "You find a telescope pointing up into a cloud of aether!";
+											drawAdd = DrawBane.TELESCOPE;
+											break;
+										case 2:
+											aetherAdd*=2;//more aether looted
+											aetherFluff = "You find a unicorn horn sealing a fountain of aether!";
+											drawAdd = DrawBane.UNICORN_HORN;
+											break;
+										case 3:
+											aetherAdd*=2;//more aether looted
+											aetherFluff = "You find an abandoned living flame forge fueled by aether!";
+											drawAdd = DrawBane.LIVING_FLAME;
+											break;
+										case 4:
+											aetherAdd*=2;//more aether looted
+											aetherFluff = "You find a ward which has collected a cloud of aether!";
+											drawAdd = DrawBane.PROTECTIVE_WARD;
+											break;
+										case 5:
+											aetherAdd*=1.5;//more aether looted
+											aetherFluff = "You find a decaying tree imbued with aether!";
+											drawAdd = DrawBane.ENT_CORE;
+											break;
+										case 6:
+											aetherAdd*=2;//more aether looted
+											aetherFluff = "You find a stone bursting with aether!";
+											drawAdd = DrawBane.CEON_STONE;
+											break;
+									}
+									extra.println(extra.RESULT_GOOD+aetherFluff+" +"+aetherAdd+ " Aether.");
+									Player.bag.addAether(aetherAdd);
+									Player.bag.addNewDrawBanePlayer(drawAdd);
 									break;
 								}
 								Player.player.addGold(gold);
