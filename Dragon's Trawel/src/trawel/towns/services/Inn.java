@@ -272,6 +272,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 											public boolean go() {
 												Player.addTime(24);
 												mainGame.globalPassTime();
+												Player.player.getPerson().restEffects();
 												return false;
 											}});
 										if (rentTime > 72 || playerOwns) {
@@ -286,6 +287,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 												public boolean go() {
 													Player.addTime(72);
 													mainGame.globalPassTime();
+													Player.player.getPerson().restEffects();
 													return false;
 												}});
 										}
