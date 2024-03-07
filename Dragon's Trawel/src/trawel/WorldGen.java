@@ -825,7 +825,7 @@ public class WorldGen {
 			int i = 0;
 			while (curTown != dest) {
 				Town nextTown = connects.get(i).otherTown(curTown);
-				curTown.goConnect(connects.get(i),2f);
+				curTown.goConnect(connects.get(i),1+extra.randFloat()+extra.randFloat()+extra.randFloat());
 				if (Player.player.getLocation() != nextTown) {
 					throw new RuntimeException("didn't move to next town " + nextTown.getName() + " from " + curTown.getName() +": at " + Player.player.getLocation());
 				}

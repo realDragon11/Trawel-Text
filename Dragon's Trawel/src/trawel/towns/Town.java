@@ -548,12 +548,12 @@ public class Town extends TContextOwner{
 
 			@Override
 			public boolean go() {
-				goConnect(c,1);
+				goConnect(c,1+extra.randFloat()+extra.randFloat()+extra.randFloat());
 				return true;
 			}};
 	}
 	
-	public void goConnect(Connection c, double thresholdDiv) {
+	public void goConnect(Connection c, double threshold) {
 		Town t = c.otherTown(Town.this);
 		switch (c.getType().type) {
 		case LAND:
@@ -572,7 +572,7 @@ public class Town extends TContextOwner{
 			mainGame.globalPassTime();
 			//will get interrupted at random time
 			if (extra.chanceIn(4,5+(int)Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
-				wander(3/thresholdDiv);
+				wander(threshold);
 			}
 			Player.addTime(c.getRawTime()-wayMark);
 			mainGame.globalPassTime();
@@ -600,7 +600,7 @@ public class Town extends TContextOwner{
 			Player.addTime(wayMarkS);
 			mainGame.globalPassTime();
 			if (extra.chanceIn(4,5+(int)Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
-				wanderShip(3/thresholdDiv);
+				wanderShip(threshold);
 			}
 			Player.addTime(c.getRawTime()-wayMarkS);
 			mainGame.globalPassTime();
@@ -671,7 +671,7 @@ public class Town extends TContextOwner{
 
 						@Override
 						public boolean go() {
-							if (!wander(.5)) {
+							if (!wander(1)) {
 								extra.println("Nothing interesting happens.");
 							}
 							return false;

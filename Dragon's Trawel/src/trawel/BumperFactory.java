@@ -55,7 +55,7 @@ public class BumperFactory {
 					wolvesPresent = 4;
 					break;
 				case 1:
-					foeString = "A small but orderly ";
+					foeString = "A small but orderly pack of wolves ";
 					foeList.addAll(RaceFactory.makeAlphaWolf(level+4).getSelfOrAllies());
 					for (int i = 0;i < 2;i++) {
 						Person p = RaceFactory.makeWolf(level);
@@ -118,8 +118,8 @@ public class BumperFactory {
 					}
 				}
 			}};
-			b.responses.add(new Response(DrawBane.MEAT,5));
-			b.responses.add(new Response(DrawBane.NOTHING,.5));
+			b.responses.add(new Response(DrawBane.MEAT,3));
+			b.responses.add(new Response(DrawBane.NOTHING,2));
 			b.responses.add(new Response(DrawBane.REPEL,-8));
 			b.minAreaLevel = 3;
 			bumperList.add(b);
@@ -136,8 +136,8 @@ public class BumperFactory {
 					}
 
 				}};
-		b.responses.add(new Response(DrawBane.MEAT,2));
-		b.responses.add(new Response(DrawBane.NOTHING,.3));
+		b.responses.add(new Response(DrawBane.MEAT,3));
+		b.responses.add(new Response(DrawBane.NOTHING,3));
 		b.responses.add(new Response(DrawBane.REPEL,-10));
 		
 		
@@ -169,7 +169,7 @@ public class BumperFactory {
 					extra.println(extra.PRE_BATTLE+"An ent appears!");
 					Player.player.fightWith(p);
 				}};
-			b.responses.add(new Response(DrawBane.ENT_CORE,5));
+			b.responses.add(new Response(DrawBane.ENT_CORE,6));
 			bumperList.add(b);
 		 b = new Bumper() {
 				
@@ -203,6 +203,7 @@ public class BumperFactory {
 					}
 					
 				}};
+			b.responses.add(new Response(DrawBane.NOTHING,1));
 			b.responses.add(new Response(DrawBane.SILVER,1));
 			b.responses.add(new Response(DrawBane.GOLD,2));
 			b.responses.add(new Response(DrawBane.MONEY,2));
@@ -220,9 +221,9 @@ public class BumperFactory {
 				}
 
 			};
-			b.responses.add(new Response(DrawBane.MEAT,4));
-			b.responses.add(new Response(DrawBane.NOTHING,.5));
-			b.responses.add(new Response(DrawBane.HONEY,.7));
+			b.responses.add(new Response(DrawBane.MEAT,3));
+			b.responses.add(new Response(DrawBane.NOTHING,3));
+			b.responses.add(new Response(DrawBane.HONEY,1));
 			b.responses.add(new Response(DrawBane.REPEL,-8));
 			bumperList.add(b);
 			b = new Bumper() {
@@ -238,7 +239,7 @@ public class BumperFactory {
 					
 				}};
 			b.responses.add(new Response(DrawBane.MEAT,3));
-			b.responses.add(new Response(DrawBane.NOTHING,.5));
+			b.responses.add(new Response(DrawBane.NOTHING,3));
 			b.responses.add(new Response(DrawBane.REPEL,-8));
 			b.responses.add(new Response(DrawBane.DAYLIGHT,-1f));
 			bumperList.add(b);
@@ -255,7 +256,7 @@ public class BumperFactory {
 					}
 					
 				}};
-			b.responses.add(new Response(DrawBane.VIRGIN,10));
+			b.responses.add(new Response(DrawBane.VIRGIN,6));
 			bumperList.add(b);
 			
 			b = new Bumper() {
@@ -311,6 +312,7 @@ public class BumperFactory {
 					}
 					
 				}};
+			b.responses.add(new Response(DrawBane.NOTHING,1));
 			b.responses.add(new Response(DrawBane.SILVER,1));
 			b.responses.add(new Response(DrawBane.GOLD,2));
 			b.responses.add(new Response(DrawBane.MONEY,2));
@@ -331,6 +333,7 @@ public class BumperFactory {
 					
 				}};
 			b.responses.add(new Response(DrawBane.MEAT,3));
+			b.responses.add(new Response(DrawBane.NOTHING,2.5));
 			shipList.add(b);
 			
 			b = new Bumper() {

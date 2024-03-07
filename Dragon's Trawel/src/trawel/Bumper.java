@@ -41,13 +41,13 @@ public abstract class Bumper {
 			if (level < b.minAreaLevel) {
 				continue;
 			}
-			d = b.calculate()*extra.hrandom();
+			d = b.calculate()*extra.randFloat();
 			if (d > highest) {
 				highest = d;
 				highestB = b;
 			}
 		}
-		if (d > threshold) {
+		if (highest > threshold) {
 			assert highestB != null;
 			highestB.activate(level);
 			return true;

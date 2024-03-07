@@ -1050,7 +1050,7 @@ public class Inventory implements java.io.Serializable{
 			i+=sub/20;
 			break;
 		case NOTHING:
-			return 3;
+			return 1;
 		case UNDERLEVELED:
 			if (owner.getLevel() < 5) {
 				return 5-owner.getLevel();
