@@ -126,9 +126,10 @@ public class Altar extends Feature{
 			case BEATING_HEART:
 				if (force == AltarForce.SKY) {
 					addRelation(8);
-					extra.println(extra.RESULT_GOOD+"You spend hours upon hours preparing your great sacrifice, and stab the heart when the time is right. The very heavens seem to look down upon you with favor, and a storm brews... aether rains from the sky.");
+					int aReward = (int) ((getRelation()*100)+extra.randRange(4000,5000));
+					extra.println(extra.RESULT_GOOD+"You spend hours upon hours preparing your great sacrifice, and stab the heart when the time is right. The very heavens seem to look down upon you with favor, and a storm brews... aether rains from the sky. +"+aReward + " aether.");
 					Player.addTime(40);
-					Player.bag.addAether((int) ((getRelation()*100)+extra.randRange(4000,5000)));
+					Player.bag.addAether(aReward);
 					specialInteraction = true;
 					break;
 				}

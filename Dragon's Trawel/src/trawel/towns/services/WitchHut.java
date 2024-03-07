@@ -379,6 +379,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			Person fGolem = RaceFactory.getFleshGolem(
 					(Player.player.getPerson().getLevel()+town.getTier())/2//near the player and town level
 					);
+			extra.println(extra.PRE_BATTLE+"The meat wraps around the heartwood and contorts into a humanoid shape... which then attacks you!");
 			Combat c = Player.player.fightWith(fGolem);
 			if (c.playerWon() < 0) {//if player lost
 				//player gets a fleshy friend now :D
