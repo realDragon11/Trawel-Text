@@ -194,7 +194,7 @@ public enum Skill{
 		BEER_BELLY("Beer Belly","Doubles LHP bonus for drinking beer."
 				,"From 5% to 10% increase, does not count as max HP."
 				,Type.DEFENSE),
-		DEADLY_AIM("Deadly Aim","Hit Rolls more than double Dodge Rolls deal 50% bonus damage."
+		DEADLY_AIM("Deadly Aim","Hit Rolls more than double Dodge Rolls deal 20% bonus damage."
 				,"Bonus damage only applies to Impactful attacks."
 				,Type.OFFENSE),
 		LIFE_MAGE("Life Mage","+5% Clarity as MHP."
