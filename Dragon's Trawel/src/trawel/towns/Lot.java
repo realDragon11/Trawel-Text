@@ -214,7 +214,9 @@ public class Lot extends Feature {
 		@Override
 		public default void doNow(Lot from) {
 			LotCreateFunction.super.doNow(from);
-			from.town.replaceFeature(from,makeFeature(from));
+			Feature f = makeFeature(from);
+			f.reload();//important to give it it's context
+			from.town.replaceFeature(from,f);
 		}
 		@Override
 		public default void doLater(Lot from) {
