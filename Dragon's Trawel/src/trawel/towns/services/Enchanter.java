@@ -147,20 +147,86 @@ public class Enchanter extends Feature {
 
 					@Override
 					public boolean go() {
-						if (Player.bag.getAether() < perAether) {
-							extra.println("You do not have enough aether to trade in. ("+Player.bag.getAether()+" of "+perAether+")");
-						}
-						extra.println("Sell "+ perAether+" of your "+ Player.bag.getAether()+" for " +World.currentMoneyDisplay(sellAmount)+"?");
-						if (extra.yesNo()) {
-							Player.bag.addAether(-perAether);
-							Player.bag.addGold(sellAmount);
-							extra.println("Gained " + World.currentMoneyDisplay(sellAmount)+".");
-						}
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> list = new ArrayList<MenuItem>();
+								list.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "You have " + World.currentMoneyDisplay(Player.player.getGold()) + " and "+Player.bag.getAether()+ " aether.";
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return (sellAmount) +" for " + (perAether) + " Aether.";
+									}
+
+									@Override
+									public boolean go() {
+										sellAether(1,perAether);
+										return false;
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return (sellAmount*10) +" for " + (perAether*10) + " Aether.";
+									}
+
+									@Override
+									public boolean go() {
+										sellAether(10,perAether);
+										return false;
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return (sellAmount*50) +" for " + (perAether*50) + " Aether.";
+									}
+
+									@Override
+									public boolean go() {
+										sellAether(50,perAether);
+										return false;
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return (sellAmount*500) +" for " + (perAether*500) + " Aether.";
+									}
+
+									@Override
+									public boolean go() {
+										sellAether(500,perAether);
+										return false;
+									}});
+								list.add(new MenuBack("Cancel."));
+								return list;
+							}});
 						return false;
 					}});
 				list.add(new MenuBack("Leave."));
 				return list;
 			}});
+	}
+	
+	private boolean sellAether(int amountMult, int perAether) {
+		int aether = amountMult*perAether;
+		int gold = sellAmount*amountMult;
+		if (Player.bag.getAether() < perAether) {
+			extra.println(extra.RESULT_FAIL+"You do not have enough aether to trade in. ("+Player.bag.getAether()+" of "+aether+")");
+			return false;
+		}
+		Player.bag.addAether(-aether);
+		Player.bag.addGold(gold);
+		extra.println("Gained " + World.currentMoneyDisplay(gold)+", sold "+aether +" Aether.");
+		return true;
 	}
 
 	@Override

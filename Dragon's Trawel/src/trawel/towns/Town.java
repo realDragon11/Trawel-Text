@@ -1035,7 +1035,6 @@ public class Town extends TContextOwner{
 							}else {
 								replaceFeature(sfe.replace,sfe.modify);
 							}
-							
 							sfe.modify.reload();//important to give it it's context
 						}else {
 							features.remove(sfe.modify);
