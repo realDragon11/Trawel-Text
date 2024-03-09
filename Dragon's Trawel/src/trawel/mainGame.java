@@ -72,19 +72,19 @@ import trawel.towns.services.Oracle;
 public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
-	public static final String VERSION_STRING = "v0.8.b__10";
+	public static final String VERSION_STRING = "v0.8.b_10";
 	public static final String VERSION_DATE = " updated Mar 9th 2024";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			"b_10: {part 1/9} You can travel through multiple towns at the same time by using the Compass from your Map, in your Inventory. This can result in multiple random encounters.",
-			"b_10: {part 2/9} Curse, Burnout, Damaged, and Bees are now punishment longer lasting effects. Burnout can be cured when resting, Bees can be cured by entering water. Everything except Damaged can be cured at Doctors- Damaged requires Blacksmith repairs. These effects will be used to give a downside to failing Attribute checks, so they're not just free rewards with no consequences.",
-			"b_10: {part 3/9} This punishment system can be seen in the 'Trapped Treasure Chambers' in Mines and Dungeons, which have their own small set of traps and mechanics for those that would seek to loot them.",
+			"b_10: {part 2/9} Curse, Tired, Damaged, and Bees are now punishment longer lasting effects. Tired can be cured when resting, Bees can be cured by entering water. Curse is still cured at Doctors, which heals everything but Damaged. Damaged requires Blacksmith repairs. These effects will be used to give a downside to failing Attribute checks, so they're not just free rewards with no consequences.",
+			"b_10: {part 3/9} This punishment system can be seen in the 'Trapped Treasure Chambers' in Mines and Dungeons, which have their own small set of traps and mechanics for those that would seek to loot them. Failing checks applies Burnout which prevents further ones until you rest or cure. Rolls that aren't prevented (such as mountain rocks) have their attributes halved.",
 			"b_10: {part 4/9} Aether is now used entirely for buying/selling equipment. Drawbanes still use World Currency. Enchanters no longer let you sell aether. This changes are meant to make each currency serve a purpose and let them be more common without dealing with exchanging balancing problems.",
 			"b_10: {part 5/9} Added Drudger, Fell, Monster, and Animal Cleanse Quests. Almost all targets will award progress if encountered in Node Explorations or other features as well, with some exceptions for mooks. Some fightable hunters now reward Amber when looted. Witch Huts have more Collect targets.",
 			"b_10: {part 6/9} Random encounter frequency was bugged, is now a lot more common. Vampires and some other Bumpers will appear less during the daytime. Bandits will prefer money, not just valuable metals. Removed most bumper level requirements, and updated wolf pack with player allies. There are more Primal Deathcheater types.",
 			"b_10: {part 7/9} The first Node in Features will not have forced combat, and the first two layers will have less free loot and less obstacle fights.",
 			"b_10: {part 8/9} log.txt has full stack trace. Updated tutorial's feature explanations and list of world perks. Mines now properly weight their contents. Graveyard's Nightvison behavior has been fixed. Connection failure message will only play once, after 10 seconds.",
-			"b_10: {part 9/9} Graphical: Improved usage of color fail codes. Added indicator colors to damage in attack previews. At some point background time display stopped changing colors, it now works again. ",
+			"b_10: {part 9/9} Some less prominent bugfixes can be found in the Steam patch notes and github commit history.",
 			
 			"Prior Changelog notes were from 2023, press again to continue.",
 			
@@ -272,7 +272,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Changelog, press multiple times to cycle";
+						return "Changelog";
 					}
 
 					@Override
