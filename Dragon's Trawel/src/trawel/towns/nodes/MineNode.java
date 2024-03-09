@@ -54,15 +54,15 @@ public class MineNode implements NodeType{
 				//rare possible vein
 				1f,
 				//door
-				.5f,
+				.3f,
 				//crystals
-				.5f,
+				.4f,
 				//minecart
-				.5f,
+				.3f,
 				//ladder
-				.5f,
+				.3f,
 				//cultists
-				1f,
+				0.75f,
 				//mugger
 				1.5f,
 				//trapped chamber
@@ -110,11 +110,11 @@ public class MineNode implements NodeType{
 				//ladder
 				.5f,
 				//cultists
-				.5f,
+				.3f,
 				//mugger
 				.4f,
 				//trapped chamber
-				0.1f
+				0.25f
 		});
 		}
 	
