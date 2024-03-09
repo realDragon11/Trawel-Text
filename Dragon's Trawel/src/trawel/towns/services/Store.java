@@ -253,10 +253,9 @@ public class Store extends Feature{
 				if (extra.yesNo()) {
 					DrawBane sellItem = bag.addNewDrawBanePlayer(db);
 					if (sellItem != null) {
-						Player.bag.addGold(sellItem.getValue()-buyGold);
-					}else {
-						Player.bag.addGold(-buyGold);
+						Services.sellItem(sellItem, bag);
 					}
+					Player.bag.addGold(-buyGold);
 					dbs.remove(index);
 				}
 			}else {
