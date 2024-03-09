@@ -464,6 +464,10 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 		return getTotalBuyPower(Player.NORMAL_AETHER_RATE);
 	}
 	
+	public void buyAetherAmountRateInt(int money,int aetherPer) {
+		getPerson().getBag().addAether(-money*aetherPer);
+	}
+	
 	public void buyMoneyAmountRateInt(int money,int aetherPer) {
 		int value = money;
 		int gold = getGold();

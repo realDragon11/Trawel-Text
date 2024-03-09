@@ -67,7 +67,7 @@ public enum Archetype implements IHasSkills{
 			,AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT,AGroup.GRANTED_ARCANIST)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.POTIONS,FeatType.TRICKS,FeatType.SOCIAL)
-			,EnumSet.of(Skill.MAGE_FRUGAL,Skill.P_BREWER,Skill.ARCANIST)
+			,EnumSet.of(Skill.LIFE_MAGE,Skill.P_BREWER,Skill.ARCANIST)
 			,0,2,13
 			)
 	,FISH_MONSOON("Monsoon Maker"

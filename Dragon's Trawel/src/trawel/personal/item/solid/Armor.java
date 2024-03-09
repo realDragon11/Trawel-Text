@@ -621,10 +621,7 @@ public class Armor extends Item implements IEffectiveLevel{
 			+ " "+extra.ITEM_DESC_PROP + extra.CHAR_PIERCE+extra.ITEM_WANT_HIGHER+extra.format(this.getPierceResist())
 			+ (Player.player.caresAboutCapacity() ? " "+extra.ITEM_DESC_PROP+extra.DISP_WEIGHT+": "+extra.ITEM_WANT_LOWER+getWeight() : "")
 			+ (Player.player.caresAboutAMP() ? " "+extra.ITEM_DESC_PROP+extra.DISP_AMP+": "+extra.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(getAgiPenMult())+"x" : "")
-			+(style == 1 ?
-					" "+extra.ITEM_DESC_PROP+extra.DISP_AETHER+": " +extra.ITEM_VALUE+ (int)(getAetherValue()*markup) :
-						extra.ITEM_DESC_PROP+" value: "+extra.ITEM_VALUE+extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup)))
-					);
+			+" "+extra.ITEM_DESC_PROP+extra.DISP_AETHER+": " +extra.ITEM_VALUE+ extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup)));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
@@ -653,7 +650,7 @@ public class Armor extends Item implements IEffectiveLevel{
 		case 20://for store overviews
 			extra.println(this.getName() + extra.ITEM_DESC_PROP+" sbp:" +extra.ITEM_WANT_HIGHER
 			+extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
-			+extra.ITEM_DESC_PROP + " value: " + extra.ITEM_VALUE+extra.F_WHOLE.format(Math.ceil(this.getMoneyValue()*markup)));
+			+" "+extra.ITEM_DESC_PROP+extra.DISP_AETHER+": " +extra.ITEM_VALUE+ extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup)));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
@@ -690,7 +687,7 @@ public class Armor extends Item implements IEffectiveLevel{
 				+ extra.ITEM_DESC_PROP+" "+extra.CHAR_SHARP + extra.F_WHOLE.format(this.getSharpResist())
 				+ extra.ITEM_DESC_PROP+" "+extra.CHAR_BLUNT + extra.F_WHOLE.format(this.getBluntResist())
 				+ extra.ITEM_DESC_PROP+" "+extra.CHAR_PIERCE + extra.F_WHOLE.format(this.getPierceResist())
-				+ extra.ITEM_DESC_PROP+" cost"+extra.PRE_WHITE+": " +extra.ITEM_VALUE+ extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
+				+ extra.ITEM_DESC_PROP+" cost"+extra.PRE_WHITE+": " +extra.ITEM_VALUE+extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
 				+ (canShow == 1 ?extra.TIMID_RED+" (raw deal)" : "");
 		}
 		String base = getBaseName();

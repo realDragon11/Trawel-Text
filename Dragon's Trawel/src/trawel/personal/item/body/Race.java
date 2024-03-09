@@ -197,7 +197,7 @@ public class Race extends Item{
 	@Override
 	public String storeString(double markup, int canShow) {
 		return this.getName() 
-				+ " cost: " +  extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
+				+ " cost: " +  extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
 				;
 	}
 	

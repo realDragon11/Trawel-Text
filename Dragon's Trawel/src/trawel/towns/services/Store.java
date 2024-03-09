@@ -49,19 +49,19 @@ public class Store extends Feature{
 	
 	public static final int INVENTORY_SIZE = 5;
 	
-	public static final float BASE_MARKUP = 1.5f;
+	public static final float BASE_MARKUP = 2.5f;
 
 	private Store() {
 		time = 0;
 		tutorialText = "Store";
 		markup= extra.lerp(BASE_MARKUP,BASE_MARKUP*extra.choose(.9f,.95f,1.2f,1.3f,1.5f),extra.randFloat());
 		aetherRate = Player.NORMAL_AETHER_RATE;
-		if (extra.chanceIn(3,4)) {
+		/*if (extra.chanceIn(3,4)) {
 			//3 out of 4 chance to move at least somewhat towards a % deviated rate
 			aetherRate = extra.lerp(aetherRate,aetherRate*extra.choose(.8f,.7f,.4f,1.1f,1.2f),extra.randFloat());
 			//can't be better than pure rate
 			aetherRate = Math.min(aetherRate,Player.PURE_AETHER_RATE);
-		}
+		}*/
 		invSize = extra.randRange(4,6);
 		if (invSize < 5) {
 			markup *= .95;
@@ -229,9 +229,9 @@ public class Store extends Feature{
 	 */
 	public int getDelta(Item selling, Item buying, SuperPerson p) {
 		//the gold the item you are exchanging it for is worth
-		int sellGold = selling != null ? extra.zeroOut(selling.getMoneyValue()) : 0;
-		double buyGold = Math.ceil(buying.getMoneyValue()*getScaledMarkup(p,buying));
-		double raw_delta = sellGold-buyGold;// > 0 = earning money, < 0 = spending money
+		int sellGold = selling != null ? extra.zeroOut(selling.getAetherValue()) : 0;
+		double buyGold = Math.ceil(buying.getAetherValue()*getScaledMarkup(p,buying));
+		double raw_delta = (sellGold-buyGold);// > 0 = earning money, < 0 = spending money
 		return (int) (raw_delta > 0 ? Math.floor(raw_delta) : Math.ceil(raw_delta));
 	}
 	
@@ -248,12 +248,14 @@ public class Store extends Feature{
 			}
 			DrawBane db = dbs.get(index);
 			int buyGold = (int) Math.ceil(db.getValue() * markup);
-			if (Player.player.getTotalBuyPower(aetherPerMoney(Player.player.getPerson())) >= buyGold) {
-				extra.println("Buy the "+ db.getName() + "? (" + buyGold + " "+World.currentMoneyString()+")");//TODO: explain aether conversion
+			if (Player.bag.getGold() >= buyGold) {
+				extra.println("Buy the "+ db.getName() + "? (" + World.currentMoneyDisplay(buyGold) + ")");//TODO: explain aether conversion
 				if (extra.yesNo()) {
 					DrawBane sellItem = bag.addNewDrawBanePlayer(db);
 					if (sellItem != null) {
-						Player.player.buyMoneyAmountRateInt(sellItem.getValue()-buyGold,aetherPerMoney(Player.player.getPerson()));
+						Player.bag.addGold(sellItem.getValue()-buyGold);
+					}else {
+						Player.bag.addGold(-buyGold);
 					}
 					dbs.remove(index);
 				}
@@ -434,18 +436,19 @@ public class Store extends Feature{
 
 					@Override
 					public String title() {
-						return "They will exchange "+aetherPerMoney(Player.player.getPerson()) + " aether for "
+						return 
+					/*"They will exchange "+aetherPerMoney(Player.player.getPerson()) + " aether for "
 					+ World.currentMoneyDisplay(1)
-					+" which is " +rateString(rateGuess(Player.NORMAL_AETHER_RATE,aetherRate,true)) + " rate."
-					+" Their prices seem " + priceRateString(rateGuess(BASE_MARKUP,markup,false)) +".";
+					+" which is " +rateString(rateGuess(Player.NORMAL_AETHER_RATE,aetherRate,true)) + " rate."*/
+					"Their prices seem " + priceRateString(rateGuess(BASE_MARKUP,markup,false)) +".";
 					}});
-				
+				/*
 				list.add(new MenuLine() {
 
 					@Override
 					public String title() {
 						return "You have a total of "+(Player.player.getGold() + (Player.bag.getAether()/aetherPerMoney(Player.player.getPerson()))) +" buying power.";
-					}});
+					}});*/
 				
 				if (type < 8) {//normal items
 					for (Item i: items) {
@@ -680,8 +683,8 @@ public class Store extends Feature{
 			//for some reason counter can be null, which shouldn't be allowed under current circumstances
 			//however future behavior will be fine with it, so allowing that now
 			int delta = getDelta(counter,i,a);
-			if (a.getTotalBuyPower()+delta < 0 && AIClass.compareItem(bag,i,p)) {
-				a.buyMoneyAmountRateInt(-delta,aetherPerMoney(p));
+			if (a.getPerson().getBag().getAether()+delta >= 0 && AIClass.compareItem(bag,i,p)) {
+				a.getPerson().getBag().addAether(delta);
 				items.remove(i);
 				items.add(bag.swapItem(i));
 			}

@@ -106,7 +106,7 @@ public enum Skill{
 		ARCANIST("Arcanist","Unlocks a magical swappable attack option."
 				,"Use the skill attack config creator in the skills menu to select a source to stance your attacks from."
 				,Type.ATTACK_TYPE),
-		MAGE_FRUGAL("Frugal Mage","Grants you a better deal of Aether to Currency conversions in shops, starting at +10%.",
+		MAGE_FRUGAL("Frugal Mage OLD","Grants you a better deal when trading with Aether in shops, starting at +10%.",
 				"For every 1 clarity past 100, get +1% more. No penalty for sub 100 clarity."
 				,Type.SOCIAL),
 		OPENING_MOVE("Opening Move","Grants two bonus weapon attack choices at the start of every battle.",

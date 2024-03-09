@@ -590,26 +590,21 @@ public class AIClass {
 			return next;
 		}
 		int delta = store.getDelta(swap,next,Player.player);
-		if (Player.player.getTotalBuyPower(store.aetherPerMoney(Player.player.getPerson()))+delta < 0) {
+		int playerValue = Player.bag.getAether();
+		if (playerValue+delta < 0) {
 			//should not occur, this is a failsafe
 			throw new RuntimeException("You can't afford this item!");
 		}
 		if (delta < 0) {
-			int beforeMoney = Player.player.getGold();
-			int beforeAether = Player.bag.getAether();
-			Player.player.buyMoneyAmountRateInt(-delta,store.aetherPerMoney(Player.player.getPerson()));
-			int moneyDelta = beforeMoney-Player.player.getGold();
-			int aetherDelta = beforeAether-Player.bag.getAether();
-			extra.println("You complete the trade."
-			+ (moneyDelta > 0 ? " Spent " +World.currentMoneyDisplay(moneyDelta) : "")
-			+ (moneyDelta > 0 && aetherDelta > 0 ? " and" : (aetherDelta > 0 ? " Spent" : ""))
-			+ (aetherDelta > 0 ? " " +aetherDelta +" aether" : "")
-			+ "."
+			Player.bag.addAether(delta);
+			int aetherDelta = -delta;
+			extra.println(extra.RESULT_PASS+"You complete the trade."
+			+ (aetherDelta > 0 ? " Spent " +aetherDelta +" aether." : "")
 			);
 		}else {
 			if (delta > 0) {//we sold something more expensive
-				Player.player.addGold(delta);
-				extra.println("You complete the trade, gaining " + World.currentMoneyDisplay(delta) +".");
+				Player.bag.addAether(delta);
+				extra.println("You complete the trade, gaining " + delta +" aether.");
 			}else {//equal value
 				extra.println("You complete the trade.");
 			}
@@ -648,8 +643,8 @@ public class AIClass {
 					extra.println("replacing your");
 					current.display(store,false,3);
 					displayChange(current,thinking,Player.player.getPerson(),store);
-					int buyPower = Player.player.getTotalBuyPower(store.aetherPerMoney(Player.player.getPerson()));
-					extra.println("Buy Value Needed: " +delta + "/"+buyPower);
+					int buyPower = Player.bag.getAether();//Player.player.getTotalBuyPower(store.aetherPerMoney(Player.player.getPerson()));
+					extra.println("Aether Needed: " +delta + "/"+buyPower);
 					if (buyPower < delta) {
 						canSwap = false;
 					}
@@ -850,14 +845,19 @@ public class AIClass {
 		extra.println(" ");
 		extra.println(extra.STAT_HEADER+"Difference"+extra.PRE_WHITE+": "+extra.ITEM_DESC_PROP+"L " +extra.softColorDelta0(toReplace.getLevel(),hasItem.getLevel()));
 		int costDiff = 0;
-		String costName = null;
-		if (s == null) {
+		String costName = "aether";
+		/*if (s == null) {
 			costName = "aether";
 			costDiff = toReplace.getAetherValue() - hasItem.getAetherValue();
 		}else {
 			costName = s.getTown().getIsland().getWorld().moneyString();
 			costDiff = s.getDelta(hasItem,toReplace,p.getSuper());//just crash if doesn't have super, shouldn't be shopping
 			//costDiff = (int) (Math.ceil(s.getMarkup()*toReplace.getMoneyValue()) - hasItem.getMoneyValue());//DOLATER match rounding across places
+		}*/
+		if (s == null) {
+			costDiff = toReplace.getAetherValue() - hasItem.getAetherValue();
+		}else {
+			costDiff = (int) (Math.ceil(s.getMarkup()*toReplace.getAetherValue()) - hasItem.getAetherValue());
 		}
 		
 		if (Armor.class.isInstance(hasItem)) {
@@ -931,16 +931,16 @@ public class AIClass {
 	 * @return
 	 */
 	public static String priceDiffDisp(int delta,String name, Store s) {
+		if (name == "aether") {
+			name = extra.DISP_AETHER;
+		}
 		if (s == null) {
-			if (name == "aether") {
-				name = extra.DISP_AETHER;
-			}
 			return extra.ITEM_VALUE+name+": " + (delta != 0 ? extra.colorBaseZeroTimid(delta) : "=");
 		}
-		if (delta < 0) {//costs less, might be gaining money
-			return extra.ITEM_VALUE + "requires " +  Math.abs(delta) + " buy value";
+		if (delta > 0) {//costs less, might be gaining money
+			return extra.ITEM_VALUE + "requires " +  Math.abs(delta) + " " +name;
 		}else {//costs more, losing money
-			return extra.ITEM_VALUE + "will return " +delta + " " + name;
+			return extra.ITEM_VALUE + "will return " +Math.abs(delta) + " " + name;
 		}
 	}
 	

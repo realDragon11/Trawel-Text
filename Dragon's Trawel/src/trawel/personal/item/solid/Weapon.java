@@ -448,9 +448,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 			+ "/" + extra.format(this.scoreAverage())
 			+"/"+extra.format(this.scoreWeight())
 			+ (Player.player.caresAboutCapacity() ? " "+extra.ITEM_DESC_PROP+extra.DISP_WEIGHT+extra.PRE_WHITE+": "+extra.ITEM_WANT_LOWER+getWeight() : "")
-			+(style == 1 ?
-					" "+extra.ITEM_DESC_PROP+extra.DISP_AETHER+": " +extra.ITEM_VALUE+ (int)(this.getAetherValue()*markup) :
-						extra.ITEM_DESC_PROP+" value: "+extra.ITEM_VALUE+ extra.F_WHOLE.format(Math.ceil(this.getMoneyValue()*markup)))
+			+" "+extra.ITEM_DESC_PROP+extra.DISP_AETHER+": " +extra.ITEM_VALUE+ extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
 			);
 			
 			if (this.isEnchantedConstant()) {
@@ -511,7 +509,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 			return this.getName() 
 					+ extra.ITEM_DESC_PROP+" ic/wa"+extra.PRE_WHITE+": " +extra.ITEM_WANT_HIGHER+extra.formatPerSubOne(this.scoreImpact())
 					+"/"+extra.format(this.scoreWeight())
-					+ extra.ITEM_DESC_PROP+ " cost"+extra.PRE_WHITE+": " + extra.ITEM_VALUE+ extra.F_WHOLE.format(Math.ceil(getMoneyValue()*markup))
+					+ extra.ITEM_DESC_PROP+ " cost"+extra.PRE_WHITE+": " + extra.ITEM_VALUE+extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
 						+ (canShow == 1 ? extra.TIMID_RED+" (raw deal)" : "");
 		}
 		String base = getBaseName();

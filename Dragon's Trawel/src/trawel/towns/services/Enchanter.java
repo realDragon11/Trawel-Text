@@ -135,6 +135,7 @@ public class Enchanter extends Feature {
 						}
 						return false;
 					}});
+				/*
 				float aetherRate = 1f/extra.lerp(Player.NORMAL_AETHER_RATE,Player.PURE_AETHER_RATE,aetherLerp);
 				//how much aether per 5 world currency
 				int perAether = Math.round(aetherRate*sellAmount);
@@ -210,7 +211,7 @@ public class Enchanter extends Feature {
 								return list;
 							}});
 						return false;
-					}});
+					}});*/
 				list.add(new MenuBack("Leave."));
 				return list;
 			}});
