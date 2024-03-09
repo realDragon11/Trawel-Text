@@ -880,7 +880,7 @@ public class Inventory implements java.io.Serializable{
 		return handleDrawBane(d,false,"replace");
 	}
 	
-	private DrawBane handleDrawBane(DrawBane d, boolean offering, String text) {
+	public DrawBane handleDrawBane(DrawBane d, boolean offering, String text) {
 		int oldSize = dbs.size();
 		if (d != null) {
 			extra.println("You found - " + d.getName() + ": " + d.getFlavor());
@@ -900,7 +900,7 @@ public class Inventory implements java.io.Serializable{
 
 					@Override
 					public String title() {
-						return extra.capFirst(text)+" " +b.getName() + ": " + b.getFlavor();
+						return extra.capFirst(text)+" " +b.getName() + " ("+b.getValue()+"): " + b.getFlavor();
 					}
 
 					@Override
@@ -952,7 +952,7 @@ public class Inventory implements java.io.Serializable{
 						@Override
 						public String title() {
 							return (offering ? extra.capFirst(text) : "Discard")
-									+" new " + d.getName()+".";
+									+" new " + d.getName()+" ("+d.getValue()+").";
 						}
 	
 						@Override
