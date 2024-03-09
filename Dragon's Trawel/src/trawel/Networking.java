@@ -118,7 +118,7 @@ public class Networking {
 		printlnTo(mainGame.headerText());
 	}
 
-	public static boolean connect(int port) {
+	public static boolean connect(int port, boolean printFail) {
 		try {
 			socket = new Socket("127.0.0.1", port);
 			gdxOut = socket.getOutputStream();
@@ -129,23 +129,29 @@ public class Networking {
 		    connected = true;
 		    System.out.println("Connected!");
 		    return true;
-			}catch(Exception e) {
+		}catch(Exception e) {
+			if (printFail) {
 				System.out.println("Connection failed.");
 			}
-			//e.printStackTrace();
-			return false;
+		}
+		return false;
 	}
 	
 	public static void autoConnect() {
 		//autoconnectSilence = true;
 		System.out.println("Connecting to localhost Graphical...");
+		int fails = 0;
 		while (true) {
 			try {
 				TimeUnit.MILLISECONDS.sleep(500L);
 			} catch (InterruptedException e) {
 			}
-			if (connect(6510)) {
+			if (connect(6510,false)) {
 				break;
+			}
+			fails++;
+			if (fails == 20) {
+				System.out.println("Connecting is taking longer than expected!");
 			}
 		}
 	}
