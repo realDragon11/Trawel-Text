@@ -16,6 +16,7 @@ import trawel.battle.Combat.SkillCon;
 import trawel.personal.Person;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
+import trawel.personal.people.Behavior;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.personal.people.behaviors.AbandonPostBehavior;
@@ -289,9 +290,16 @@ public class Dungeon extends NodeFeature {
 																							Player.player.addGold(-cost);
 																							Agent a = people.get(i);
 																							a.addGold(cost);//hehe
-																							a.onlyGoal(AgentGoal.DELVE_HELP);
 																							town.removeOccupant(a);
+																							a.onlyGoal(AgentGoal.DELVE_HELP);
+																							((AbandonPostBehavior)a.getCurrent()).town = town;
 																							delve_helpers.add(a);
+																							/*
+																							for (Behavior b: a.getBehaviors()) {
+																								if (b instanceof AbandonPostBehavior) {
+																									((AbandonPostBehavior) b).town = town;
+																								}
+																							}*/
 																							escapePartyMenu = true;
 																							return true;
 																						}

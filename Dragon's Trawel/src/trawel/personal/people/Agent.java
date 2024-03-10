@@ -90,6 +90,10 @@ public class Agent extends SuperPerson{
 		behaviors.remove(0);
 		return b;
 	}
+	
+	public Behavior getCurrent() {
+		return current;
+	}
 
 	@Override
 	public List<TimeEvent> passTime(double d, TimeContext calling) {
