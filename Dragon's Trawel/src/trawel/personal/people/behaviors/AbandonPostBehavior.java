@@ -14,7 +14,10 @@ public class AbandonPostBehavior extends Behavior{
 	@Override
 	public List<TimeEvent> action(Agent user) {
 		RemoveAgentFromFeatureEvent event = user.getLocation().laterRemoveAgentAnyFeature(user);
-		assert event != null;
+		if (event == null) {
+			System.err.println("abandon post event is null for user " + user.getPerson().getName()+ " in " + user.getLocation());
+			return null;
+		}
 		user.onlyGoal(AgentGoal.NONE);
 		return Collections.singletonList(event);
 	}

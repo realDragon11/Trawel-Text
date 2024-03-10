@@ -17,6 +17,7 @@ import trawel.personal.Person.PersonFlag;
 import trawel.personal.Person.PersonType;
 import trawel.personal.Person.RaceFlag;
 import trawel.personal.classless.Archetype;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.Perk;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.body.SoundBox;
@@ -1021,6 +1022,15 @@ public class RaceFactory {
 		return raceMap.get(id.name());
 	}
 	
+	private static final float
+		WEALTH_SMALL = 1f
+		,WEALTH_STANDARD = 2f
+		,WEALTH_WORKER = 3f
+		,WEALTH_WELL_OFF = 5f
+		,WEALTH_HIGH = 10f
+		,WEALTH_RICH = 20f;
+	;
+	
 	//FIXME: at some point can probably remove the constant print stack altering code which is being run needlessly, would rather just not print in these cases in the first place
 	
 	public static Person makeLootBody(int level) {
@@ -1051,7 +1061,7 @@ public class RaceFactory {
 	
 	public static Person makeOld(int level) {
 		Person p = new Person(level);
-		addWealth(2f, p);
+		addWealth(WEALTH_WELL_OFF,.5f, p);
 		p.setPersonType(PersonType.GRIZZLED);
 		p.setTitle(randomLists.randomOldTitle());
 		p.hTask = HostileTask.DUEL;
@@ -1065,7 +1075,7 @@ public class RaceFactory {
 	
 	public static Person makeQuarterMaster(int level) {
 		Person p = new Person(level,AIJob.KNIGHT);
-		addWealth(4f, p);
+		addWealth(WEALTH_WELL_OFF,.7f, p);
 		p.setPersonType(PersonType.GRIZZLED);
 		p.hTask = HostileTask.RICH;
 		p.liteSetSkillHas(Archetype.ARMORMASTER);//might already have
@@ -1107,7 +1117,7 @@ public class RaceFactory {
 	public static Person makeMimic(int level) {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_MIMIC_CLOSED, MaterialFactory.getMat("wood"), false);
-		addWealth(4f, w);
+		addWealth(WEALTH_HIGH,.3f, w);
 		w.setFlag(PersonFlag.HAS_WEALTH,true);//what's in the box? 'money'
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
 		w.getBag().swapArmorSlot(new Armor(level,0,MaterialFactory.getMat("flesh")),0);
@@ -1156,7 +1166,7 @@ public class RaceFactory {
 	public static Person getShaman(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level);
-		addWealth(2f, w);
+		addWealth(WEALTH_WORKER,.3f, w);
 		w.getBag().addDrawBaneSilently(DrawBane.PROTECTIVE_WARD);
 		extra.popPrintStack();
 		w.hTask = HostileTask.DUEL;
@@ -1185,7 +1195,7 @@ public class RaceFactory {
 	public static Person makeVampire(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level,true, Race.RaceType.PERSONABLE,null,Person.RaceFlag.UNDEAD,false);
-		addWealth(1f, w);
+		addWealth(WEALTH_WORKER,.3f, w);
 		//w.setScar(biteFor(w.getBag().getRace().raceID()));//TODO: readd bites as some larger 'added image' mechanism
 		w.getBag().addDrawBaneSilently(DrawBane.GRAVE_DUST);
 		if (extra.chanceIn(1,10)) {
@@ -1281,7 +1291,7 @@ public class RaceFactory {
 	public static Person makeHarpy(int level) {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_HARPY, MaterialFactory.getMat("hide"), false);
-		addWealth(1f, w);//has money
+		addWealth(WEALTH_STANDARD,.3f, w);//has money
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
 		w.setPersonType(PersonType.HARPY_GENERIC);
 		w.getBag().swapWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TALONS_GENERIC));
@@ -1346,7 +1356,7 @@ public class RaceFactory {
 	public static Person makeDrudgerMage(int level) {
 		extra.offPrintStack();
 		Person w = Person.animal(level, RaceID.B_DRUDGER_STOCK, MaterialFactory.getMat("fishscales"), false);
-		addWealth(0.5f, w);//has money
+		addWealth(WEALTH_SMALL,.5f, w);//has money
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
 		w.setPersonType(PersonType.DRUDGER_GENERIC);
 		w.liteSetSkillHas(Archetype.FISH_MONSOON);
@@ -1374,9 +1384,10 @@ public class RaceFactory {
 		Person w;
 		if (extra.chanceIn(1,4)) {
 			w = new Person(level,AIJob.ROGUE);
-			addWealth(1f, w);
+			addWealth(WEALTH_WELL_OFF,.3f, w);
 		}else {
 			w = new Person(level);
+			addWealth(WEALTH_STANDARD,.3f,w);
 		}
 		w.setFacLevel(Faction.ROGUE,extra.randRange(10,20)*level, 0);
 		w.setFacLevel(Faction.HEROIC,0, 10*level);
@@ -1384,11 +1395,11 @@ public class RaceFactory {
 		w.cleanseType = (byte)CleanseSideQuest.CleanseType.BANDIT.ordinal();
 		if (extra.chanceIn(1,100)) {
 			w.getBag().addDrawBaneSilently(DrawBane.GOLD);
-			addWealth(2f, w);
+			addWealth(WEALTH_WELL_OFF,.7f, w);
 		}
 		if (extra.chanceIn(1,50)) {
 			w.getBag().addDrawBaneSilently(DrawBane.SILVER);
-			addWealth(1f, w);
+			addWealth(WEALTH_STANDARD,.7f, w);
 		}
 		extra.popPrintStack();
 		w.finishGeneration();
@@ -1407,7 +1418,7 @@ public class RaceFactory {
 		Person w = new Person(level,AIJob.DUELER);
 		w.setFacLevel(Faction.DUEL,extra.randRange(10,20)*level, 0);
 		w.hTask = HostileTask.DUEL;
-		addWealth(1, w);
+		addWealth(WEALTH_STANDARD,.3f, w);
 		extra.popPrintStack();
 		w.finishGeneration();
 		return w;
@@ -1426,7 +1437,7 @@ public class RaceFactory {
 		switch (ct) {
 		case BLOOD: default:
 			w = new Person(level,AIJob.KNIGHT);//blood for the blood queen
-			addWealth(1, w);
+			addWealth(WEALTH_WELL_OFF,.6f, w);
 			NPCMutator.cultLeader_Blood(w,true);
 			break;		
 		}
@@ -1438,7 +1449,7 @@ public class RaceFactory {
 	public static Person makeCultist(int level, CultType ct) {
 		extra.offPrintStack();
 		Person w = new Person(level,AIJob.CULTIST_WORSHIPER);
-		//no money
+		addWealth(WEALTH_SMALL,.2f, w);
 		NPCMutator.cultist_Switch(w,ct,true);
 		extra.popPrintStack();
 		w.finishGeneration();
@@ -1448,7 +1459,7 @@ public class RaceFactory {
 	public static Person makeMaybeRacist(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level);
-		addWealth(1, w);
+		addWealth(WEALTH_STANDARD,.3f, w);
 		if (w.isRacist()) {
 			w.hTask = HostileTask.RACIST;
 		}else {
@@ -1466,7 +1477,7 @@ public class RaceFactory {
 	public static Person getRacist(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level);
-		addWealth(1, w);
+		addWealth(WEALTH_STANDARD,.3f, w);
 		w.hTask = HostileTask.RACIST;
 		w.setRacism(true);
 		extra.popPrintStack();
@@ -1476,7 +1487,7 @@ public class RaceFactory {
 	public static Person getPeace(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level);
-		addWealth(0.5f, w);
+		addWealth(WEALTH_STANDARD,.3f, w);
 		w.hTask = HostileTask.PEACE;
 		extra.popPrintStack();
 		w.finishGeneration();
@@ -1517,7 +1528,7 @@ public class RaceFactory {
 	public static Person makeDGuard(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level);
-		addWealth(1.5f, w);
+		addWealth(WEALTH_WORKER,.4f, w);
 		w.setTitle(randomLists.randomDGuardTitle());
 		w.hTask = HostileTask.GUARD_DUNGEON;
 		extra.popPrintStack();
@@ -1528,7 +1539,7 @@ public class RaceFactory {
 	public static Person getLumberjack(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level,AIJob.LUMBERJACK);
-		addWealth(1, w);
+		addWealth(WEALTH_WORKER,.5f, w);
 		w.hTask = HostileTask.LUMBER;
 		w.setFacLevel(Faction.FOREST,0,100);
 		extra.popPrintStack();
@@ -1539,7 +1550,7 @@ public class RaceFactory {
 		extra.offPrintStack();
 		Person w = new Person(level);
 		w.getBag().setLocalGold(10);
-		addWealth(5f, w);
+		addWealth(WEALTH_RICH,.6f, w);
 		w.hTask = HostileTask.RICH;
 		w.setFacLevel(Faction.MERCHANT,10*level,0);
 		extra.popPrintStack();
@@ -1549,7 +1560,7 @@ public class RaceFactory {
 	public static Person makeCollector(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level,AIJob.COLLECTOR);
-		addWealth(2f, w);
+		addWealth(WEALTH_HIGH,.5f, w);
 		w.hTask = HostileTask.DUEL;
 		w.setFacLevel(Faction.MERCHANT,5*level,0);
 		List<DrawBane> dbs = w.getBag().getDrawBanes();
@@ -1569,7 +1580,7 @@ public class RaceFactory {
 	public static Person getLawman(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level);
-		addWealth(1.5f, w);
+		addWealth(WEALTH_HIGH,.6f, w);
 		w.hTask = HostileTask.LAW_EVIL;
 		w.setFacLevel(Faction.HEROIC,5*level,0);
 		extra.popPrintStack();
@@ -1594,7 +1605,7 @@ public class RaceFactory {
 			}
 			w.setFacLevel(Faction.ROGUE,15*level, 0);
 			rarityMult = 2;
-			addWealth(1.5f, w);
+			addWealth(WEALTH_WORKER,.5f, w);
 		}else {
 			//more generic robber
 			if (extra.chanceIn(1,2)) {
@@ -1602,14 +1613,14 @@ public class RaceFactory {
 				w = new Person(level,AIJob.ROGUE);
 				w.setFacLevel(Faction.ROGUE,20*level, 0);
 				rarityMult = 3;
-				addWealth(2f, w);
+				addWealth(WEALTH_WELL_OFF,.5f, w);
 			}else {//afraid of graveyard
 				w = new Person(level);
 				w.setPersonType(PersonType.COWARDLY);
 				w.addEffect(Effect.CURSE);
 				w.setFacLevel(Faction.ROGUE,10*level, 0);
 				rarityMult = 1;
-				addWealth(0.5f, w);
+				addWealth(0.5f,.3f, w);
 			}
 			list = w.getBag().getDrawBanes();
 		}
@@ -1642,7 +1653,7 @@ public class RaceFactory {
 			w.setFacLevel(Faction.MERCHANT,level,0);
 			w.getBag().getHand().improveEnchantChance(level);//improve weapon enchant
 			w.setTitle(randomLists.randomCollectorName());
-			addWealth(3f, w);
+			addWealth(WEALTH_WELL_OFF,.5f, w);
 		}else {
 			if (extra.chanceIn(3,4)) {//undead tool for protection
 				if (extra.chanceIn(1,3)) {
@@ -1661,10 +1672,10 @@ public class RaceFactory {
 				if (extra.chanceIn(1,2)) {
 					list.add(DrawBane.GARLIC);//chance of more for either outcome
 				}
-				addWealth(1f, w);
+				addWealth(WEALTH_WORKER,.4f, w);
 			}else {
 				list.add(DrawBane.GRAVE_DIRT);//didn't get any, so just more grave dirt
-				addWealth(0.5f, w);
+				addWealth(WEALTH_STANDARD,.3f, w);
 			}
 		}
 		extra.popPrintStack();
@@ -1675,7 +1686,7 @@ public class RaceFactory {
 	public static Person makeHunter(int level) {
 		extra.offPrintStack();
 		Person w = new Person(level);
-		addWealth(1f, w);
+		addWealth(WEALTH_WORKER,.3f, w);
 		w.setFacLevel(Faction.HUNTER,10*level,0);
 		w.setFacLevel(Faction.HEROIC,5*level,0);
 		w.setFacLevel(Faction.MERCHANT,level,0);
@@ -1743,12 +1754,22 @@ public class RaceFactory {
 		}
 		return inLevel/(downSwing+1);
 	}
-	public static int addWealth(float mult, Person p) {
-		int gold = 0;
-		mult *= p.getUnEffectiveLevel();
-		if (mult > .5f) {
-			gold = extra.randRange(0,Math.round(mult));
+	
+	/**
+	 * if mag is sub 1f will roll that as a chance to give gold
+	 * <br>
+	 * reliable is as in cleanRangeReward
+	 * @param magnitude
+	 * @param reliable
+	 * @param p
+	 * @return gold given
+	 */
+	public static int addWealth(float magnitude, float reliable, Person p) {
+		//if <1 might not add it
+		if (magnitude < 1f || extra.randFloat() > magnitude) {
+			return 0;
 		}
+		int gold = IEffectiveLevel.cleanRangeReward(p.getLevel(),Math.max(1f,magnitude),reliable);
 		//the local gold will be rolled into a superperson when their location is set, if needed
 		p.getBag().setLocalGold(p.getBag().getLocalGold()+gold);
 		return gold;
