@@ -72,10 +72,12 @@ import trawel.towns.services.Oracle;
 public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
-	public static final String VERSION_STRING = "v0.8.b__11";
-	public static final String VERSION_DATE = " updated Mar 9th 2024";
+	public static final String VERSION_STRING = "v0.8.b_10h1";
+	public static final String VERSION_DATE = " updated Mar 10th 2024";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
+			"b_10 hotfix 1: increased world currency amount for most humanoid NPCs, attempted to fix dungeon party crash, fixed Inn rent waiting and let you rent more if you have less than 1 month left.",
+			
 			"b_10: {part 1/9} You can travel through multiple towns at the same time by using the Compass from your Map, in your Inventory. This can result in multiple random encounters.",
 			"b_10: {part 2/9} Curse, Tired, Damaged, and Bees are now punishment longer lasting effects. Tired can be cured when resting, Bees can be cured by entering water. Curse is still cured at Doctors, which heals everything but Damaged. Damaged requires Blacksmith repairs. These effects will be used to give a downside to failing Attribute checks, so they're not just free rewards with no consequences.",
 			"b_10: {part 3/9} This punishment system can be seen in the 'Trapped Treasure Chambers' in Mines and Dungeons, which have their own small set of traps and mechanics for those that would seek to loot them. Failing checks applies Burnout which prevents further ones until you rest or cure. Rolls that aren't prevented (such as mountain rocks) have their attributes halved.",

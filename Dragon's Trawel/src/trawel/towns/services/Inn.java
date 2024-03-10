@@ -242,10 +242,13 @@ public class Inn extends Feature implements QuestBoardLocation{
 												mainGame.globalPassTime();
 												Player.player.getPerson().washAll();
 												Player.player.getPerson().bathEffects();
-												return true;
+												if (rentTime <= 0) {
+													return true;
+												}
+												return false;
 											}});
 									}
-									if (rentTime < 24 && playerOwns) {
+									if (rentTime < 24 && !playerOwns) {
 										list.add(new MenuSelect() {
 
 											@Override
@@ -291,6 +294,21 @@ public class Inn extends Feature implements QuestBoardLocation{
 													return false;
 												}});
 										}
+									}
+									if (rentTime < 700 && !playerOwns) {//can rent for roughly two months tops
+										list.add(new MenuSelect() {
+
+											@Override
+											public String title() {
+												return "Rent more time.";
+											}
+
+											@Override
+											public boolean go() {
+												rent();
+												return false;
+											}});
+										
 									}
 									list.add(new MenuBack());
 									return list;
