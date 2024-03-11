@@ -323,10 +323,10 @@ public class Town extends TContextOwner{
 		Networking.setArea(Networking.Area.TOWN);
 		Networking.updateTime();
 		Networking.charUpdate();
-		if (isFort()) {
+		/*if (isFort()) {
 			doFort();
 			return;
-		}
+		}*/
 		if (mainGame.displayFlavorText && Player.player.townEventTimer <=0 && extra.chanceIn(2,3)) {
 			if (TownFlavorFactory.go(.5,this.getTier(),this)) {//TODO: look into town flavor again
 			Player.player.townEventTimer = extra.randRange(18,24*5);
@@ -418,7 +418,7 @@ public class Town extends TContextOwner{
 						mList.add(new MenuSelectFeature(f));
 					}
 				}
-				if (openSlots() > 0 ) {
+				if (openSlots() > 0 && !isFort()) {
 					mList.add(new MenuSelect() {
 
 						@Override
@@ -495,7 +495,7 @@ public class Town extends TContextOwner{
 					((MenuSelectNumber)mList.get(mList.size()-1)).number = i;
 					i++;
 				}
-				mList.add(new MenuSelect() {
+				mList.add(new MenuLast() {
 
 					@Override
 					public String title() {
