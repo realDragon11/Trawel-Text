@@ -19,6 +19,7 @@ import trawel.personal.RaceFactory;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race;
 import trawel.personal.people.Player;
+import trawel.personal.people.SuperPerson;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Feature;
@@ -97,9 +98,10 @@ public class FortHall extends FortFeature {
 					extra.println("You can't afford to buy this fort.");
 				}else {
 					Player.player.addGold(-cost);
-					for (Feature f: this.town.getFeatures()) {
+					this.setOwner(Player.player);//now cascades
+					/*for (Feature f: this.town.getFeatures()) {
 						f.setOwner(Player.player);
-					}
+					}*/
 					this.town.visited=3;
 					while (allies.size() < 5) {
 						allies.add(RaceFactory.getDueler(tier));
@@ -205,6 +207,9 @@ public class FortHall extends FortFeature {
 							if (Player.player.getGold() >= expensive) {
 								Player.player.addGold(-expensive);
 								town.laterAdd(new FortFoundation(3));
+								//town needs to catch up to added feature
+								Player.addTime(.5f);
+								mainGame.globalPassTime();
 							}else {
 								extra.println("You can't afford a new large foundation.");
 							}
@@ -225,6 +230,9 @@ public class FortHall extends FortFeature {
 							if (Player.player.getGold() >= medium) {
 								Player.player.addGold(-medium);
 								town.laterAdd(new FortFoundation(2));
+								//town needs to catch up to added feature
+								Player.addTime(.5f);
+								mainGame.globalPassTime();
 							}else {
 								extra.println("You can't afford a new medium foundation.");
 							}
@@ -245,6 +253,9 @@ public class FortHall extends FortFeature {
 							if (Player.player.getGold() >= cheap) {
 								Player.player.addGold(-cheap);
 								town.laterAdd(new FortFoundation(1));
+								//town needs to catch up to added feature
+								Player.addTime(.5f);
+								mainGame.globalPassTime();
 							}else {
 								extra.println("You can't afford a new small foundation.");
 							}

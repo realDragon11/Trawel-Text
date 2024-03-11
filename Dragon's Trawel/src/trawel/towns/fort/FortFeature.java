@@ -3,6 +3,7 @@ package trawel.towns.fort;
 import derg.menus.MenuLine;
 import trawel.extra;
 import trawel.personal.people.Player;
+import trawel.personal.people.SuperPerson;
 import trawel.towns.Feature;
 import trawel.towns.World;
 
@@ -54,5 +55,18 @@ public abstract class FortFeature extends Feature {
 			public String title() {
 				return "You have " +Player.showGold() + " and " + Player.bag.getAether() + " aether for " + Player.player.getTotalBuyPower() + " buying power.";
 			}};
+	}
+	
+	@Override
+	public SuperPerson getOwner() {
+		if (this instanceof FortHall) {
+			return super.getOwner();//dumb workaround
+		}
+		for (Feature f: town.getFeatures()) {
+			if (f instanceof FortHall) {
+				return f.getOwner();
+			}
+		}
+		throw new RuntimeException("Fort hall not found for "+this.getName() + " in " +town.getName());
 	}
 }

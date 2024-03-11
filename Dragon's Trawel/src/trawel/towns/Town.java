@@ -1026,6 +1026,11 @@ public class Town extends TContextOwner{
 			eventsModified = false;
 			for (int i = list.size()-1;i >=0;i--) {//backwards for removal reasons
 				TimeEvent e = list.get(i);
+				if (e == null) {
+					System.err.println("ERROR: time event was null!");
+					list.remove(i);
+					continue;
+				}
 				if (e.context.tier() <= contextLevel().tier()) {
 					if (e instanceof StructuralFeatureEvent) {
 						StructuralFeatureEvent sfe = (StructuralFeatureEvent)e;
