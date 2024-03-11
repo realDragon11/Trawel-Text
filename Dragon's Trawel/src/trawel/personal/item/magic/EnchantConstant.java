@@ -4,6 +4,7 @@ import com.github.yellowstonegames.core.WeightedTable;
 
 import derg.SRFrontBackedRandom;
 import trawel.extra;
+import trawel.mainGame;
 import trawel.randomLists;
 
 /**
@@ -594,7 +595,7 @@ public class EnchantConstant extends Enchant {
 		for (int i = 1; i < 6; i++) {
 			test = EnchantConstant.makeEnchant(i%1.2f, 50);
 			if (test == null) {
-				System.err.println("null enchant, not made");
+				mainGame.errLog("null enchant, not made");
 			}else {
 				System.out.println(test.getBeforeName() +"x" + test.getAfterName() + "]" + test.beforeName +"x"+test.afterName +"[" + test.enchantTypes);
 				test.display(0);

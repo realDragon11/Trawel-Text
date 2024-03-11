@@ -1026,7 +1026,7 @@ public class WorldGen {
 				//that we're not looping back
 				assert !t.getConnectFlow().otherTown(t).hasConnectFlow() || t.getConnectFlow().otherTown(t).getConnectFlow() != t.getConnectFlow();
 				if (mainGame.debug) {
-					System.err.println("Town Flow: " + t.getName() + ": " + t.getConnectFlow().getName() + " to " + t.getConnectFlow().otherTown(t).getName());
+					mainGame.errLog("Town Flow: " + t.getName() + ": " + t.getConnectFlow().getName() + " to " + t.getConnectFlow().otherTown(t).getName());
 				}
 			}
 		}

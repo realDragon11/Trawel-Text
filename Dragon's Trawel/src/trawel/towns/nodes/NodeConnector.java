@@ -331,7 +331,7 @@ public class NodeConnector implements Serializable {
 				mList.add(new NodeMenuInteract(node));
 				for (int n: getConnects(node)) {
 					if (n > size) {//not >= because we have a 0 node at 0
-						System.err.println("node too high: " +n +"/"+size);
+						mainGame.errLog("node too high: " +n +"/"+size + " in " + parent.getName());
 					}else {
 						mList.add(new NodeMenuItem(n));
 					}

@@ -72,10 +72,11 @@ import trawel.towns.services.Oracle;
 public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
-	public static final String VERSION_STRING = "v0.8.b_10h1";
-	public static final String VERSION_DATE = " updated Mar 10th 2024";
+	public static final String VERSION_STRING = "v0.8.b_10h2";
+	public static final String VERSION_DATE = " updated Mar 11th 2024";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
+			"b_10 hotfix 2: fixed fort menu crashes, improved timeevent error reporting.",
 			"b_10 hotfix 1: increased world currency amount for most humanoid NPCs, attempted to fix dungeon party crash, fixed Inn rent waiting and let you rent more if you have less than 1 month left.",
 			
 			"b_10: {part 1/9} You can travel through multiple towns at the same time by using the Compass from your Map, in your Inventory. This can result in multiple random encounters.",
@@ -1410,6 +1411,17 @@ public class mainGame {
 		if (extra.isMainThread()) {
 			logStream.println(str);
 			logStream.flush();
+		}
+	}
+	
+	public static void errLog(String str) {
+		str = "ERROR: "+str;
+		if (extra.isMainThread()) {
+			logStream.println(str);
+			logStream.flush();
+		}
+		if (!logStreamIsErr) {
+			System.err.println(str);
 		}
 	}
 

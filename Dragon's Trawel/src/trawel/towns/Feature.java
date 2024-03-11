@@ -130,7 +130,7 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 	@Override
 	public List<TimeEvent> consumeEvents(List<TimeEvent> list) {
 		if (list.size() > 0) {
-			System.err.println(list.toString());
+			mainGame.errLog(list.toString());
 		}
 		return list;
 	}

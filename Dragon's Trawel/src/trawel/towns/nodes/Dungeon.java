@@ -476,7 +476,7 @@ public class Dungeon extends NodeFeature {
 				if (a.isCurrentBehaviorClass(AbandonPostBehavior.class)) {
 					a.setActionTimeMin(2*24*7);//2 weeks on use
 				}else {
-					System.err.println(p.getName() + "'s current behavior isn't abandoning post for dungeon " + getName());
+					mainGame.errLog(p.getName() + "'s current behavior isn't abandoning post for dungeon " + getName());
 				}
 				agents.add(a);
 			}

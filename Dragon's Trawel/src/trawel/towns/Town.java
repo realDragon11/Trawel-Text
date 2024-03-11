@@ -1027,7 +1027,7 @@ public class Town extends TContextOwner{
 			for (int i = list.size()-1;i >=0;i--) {//backwards for removal reasons
 				TimeEvent e = list.get(i);
 				if (e == null) {
-					System.err.println("ERROR: time event was null!");
+					mainGame.errLog("time event was null in "+getName()+"!");
 					list.remove(i);
 					continue;
 				}
