@@ -66,9 +66,9 @@ public enum Archetype implements IHasSkills{
 			,"Grants basic arcane magic based on clarity."
 			,AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT,AGroup.GRANTED_ARCANIST)
-			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.POTIONS,FeatType.TRICKS,FeatType.SOCIAL)
-			,EnumSet.of(Skill.LIFE_MAGE,Skill.P_BREWER,Skill.ARCANIST)
-			,0,2,13
+			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE)
+			,EnumSet.of(Skill.LIFE_MAGE,Skill.ARCANIST)
+			,0,0,20//less skills, 5 bonus stats
 			)
 	,FISH_MONSOON("Monsoon Maker"
 			,"Calls up malicious magic that assails the land-people's domain."
@@ -138,7 +138,7 @@ public enum Archetype implements IHasSkills{
 			,AType.AFTER
 			,EnumSet.of(AGroup.GRANTED_ARCANIST)//do not change or add to unless adding skill requirements to archetypes
 			,EnumSet.of(FeatType.ARCANE)
-			,EnumSet.of(Skill.ARCANIST_2),0,0,25//lot of clarity
+			,EnumSet.of(Skill.ARCANIST_2,Skill.ELEMENTALIST),0,0,25//lot of clarity
 			)
 	,HIRED_HATCHET("Hired Hatchet",
 			"Trading lives is a glamorous business for some, but Hired Hatchets just need to get the job done."

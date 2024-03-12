@@ -61,21 +61,21 @@ public enum Feat implements IHasSkills{
 			)
 	//these three require arcanist, so they don't need to grant it, it is signaled where the stance is made
 	,FLAME_WARDEN("Flamewarden","Wields fire fiercly, fueling their defense."
-			,"Grants ignite-focused arcany that uses a blend of strength and clarity."
+			,"Grants ignite-focused arcany that use the higher of strength and clarity."
 			,.7f,null,null
-			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_PYRO,Skill.ARMORHEART),0,0,5
+			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_PYRO,Skill.ARMORHEART),5,0,5//more stats
 			,EnumSet.of(Skill.ARCANIST),null
 			)
 	,FROST_WARDEN("Frostwarden","Uses ice to bolster their armor."
-			,"Grants frost-focused arcany that uses a blend of strength and clarity."
+			,"Grants frost-focused arcany that use the higher of strength and clarity."
 			,.7f,null,null
-			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_CRYO,Skill.ARMOR_TUNING),1,0,4
+			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_CRYO,Skill.ARMOR_TUNING),5,0,5//more stats
 			,EnumSet.of(Skill.ARCANIST),null
 			)
 	,SHOCK_SAVANT("Shock-Savant","Shocks their foes with static constantly, increasing the damage wrought by their charges."
-			,"Grants elec-focused arcany that uses a blend of dexterity and clarity."
+			,"Grants elec-focused arcany that use the higher of dexterity and clarity."
 			,.7f,null,null
-			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_AERO,Skill.SPUNCH),0,1,4
+			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_AERO,Skill.SPUNCH),0,5,5//more stats
 			,EnumSet.of(Skill.ARCANIST),null
 			)
 	,GLUTTON("Glutton","They're greedy for more than just punishment.",""

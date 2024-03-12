@@ -690,19 +690,19 @@ public class WeaponAttackFactory {
 		//skill attack section
 		sta = new Stance(Archetype.HEDGE_MAGE,Skill.ARCANIST);
 		sta.addAttack(
-				make("sparks")
+				make("sparks")//well rounded but faster
 				.setFluff("X` conjures sparks at Y`!")
 				.setRarity(1f)
 				.setAcc(1.4f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.08f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.1f)
 				.setElementalMix(1, 0, 2)
-				.setWarmupOfTotal(TimeTier.SLOW, TimeTier.SLOWER)
+				.setWarmupOfTotal(TimeTier.FAST, TimeTier.NORMAL)
 				);
 		sta.addAttack(
-				make("candle")
+				make("candle")//damaging, burn
 				.setFluff("X` shoots a small gout of flame at Y`!")
 				.setRarity(1f)
-				.setAcc(1f)
+				.setAcc(1.1f)
 				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.8f)
 				.setElementalMix(1, 0, 0)
 				.setWarmupOfTotal(TimeTier.SLOW, TimeTier.SLOWER)
@@ -712,7 +712,7 @@ public class WeaponAttackFactory {
 				.setFluff("X` forces Y` to suffer through a deep chill!")
 				.setRarity(1f)
 				.setAcc(1.8f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.6f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.4f)
 				.setElementalMix(0, 1, 0)
 				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOW)
 				);
@@ -730,7 +730,7 @@ public class WeaponAttackFactory {
 				make("sudden squall")
 				.setFluff("X` quickly forces a squall to form around Y`!")
 				.setRarity(2f)
-				.setAcc(.7f)
+				.setAcc(.8f)
 				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.05f)
 				.setElementalMix(0, 2, 0)
 				.setWarmupOfTotal(TimeTier.FASTEST,TimeTier.FASTER)
@@ -739,7 +739,7 @@ public class WeaponAttackFactory {
 				make("brackish burst")
 				.setFluff("X` buffets Y` with cold salty water!")
 				.setRarity(2f)
-				.setAcc(0.9f)
+				.setAcc(1.0f)
 				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.2f)
 				.setMix(0,1,0)
 				.setElementalRider(.3f,0,1,0)
@@ -786,7 +786,7 @@ public class WeaponAttackFactory {
 				.setFluff("X` conjures a fireball and hurls it at Y`!")
 				.setRarity(1f)
 				.setAcc(2f)
-				.setDamage(DamageTier.HIGH,DamageTier.ASTOUNDING,.4f)
+				.setDamage(DamageTier.HIGH,DamageTier.ASTOUNDING,.6f)
 				.setElementalMix(1,0,0)
 				.setWarmupOfTotal(TimeTier.SLOWER, TimeTier.SLOWEST)
 				);
@@ -795,7 +795,7 @@ public class WeaponAttackFactory {
 				.setFluff("X` conjures sparks at Y`!")
 				.setRarity(1f)
 				.setAcc(1.4f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.2f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.5f)
 				.setElementalMix(2, 0, 3)
 				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOWER)
 				);
@@ -813,7 +813,7 @@ public class WeaponAttackFactory {
 			@Override
 			public int getEffectiveLevel(Person p) {
 				AttributeBox a = p.fetchAttributes();
-				return a.getEffectiveAttributeLevel((a.getClarity()+a.getStrength())/2);
+				return a.getEffectiveAttributeLevel(Math.max(a.getClarity(),a.getStrength()));
 			}
 		});
 		
@@ -825,13 +825,13 @@ public class WeaponAttackFactory {
 				.setAcc(2.2f)
 				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.6f)
 				.setElementalMix(0, 1, 0)
-				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOW)
+				.setWarmupOfTotal(TimeTier.FAST, TimeTier.NORMAL)
 				);
 		sta.addAttack(//powerful
 				make("frostbite")
-				.setFluff("X` quickly cools the air Y`, forcing them to endure the cold!")
+				.setFluff("X` quickly cools the air near Y`, forcing them to endure the cold!")
 				.setRarity(1f)
-				.setAcc(1.3f)
+				.setAcc(1.4f)
 				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.8f)
 				.setElementalMix(0, 1, 0)
 				.setWarmupOfTotal(TimeTier.FAST, TimeTier.SLOWER)
@@ -841,7 +841,7 @@ public class WeaponAttackFactory {
 				.setFluff("X` conjures a spear of ice and hurls it at Y`!")
 				.setRarity(.5f)
 				.setAcc(1.2f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.3f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.6f)
 				.setMix(0,1,6)
 				.setElementalRider(.3f,0,1,0)
 				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOWER)
@@ -854,14 +854,14 @@ public class WeaponAttackFactory {
 				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.1f)
 				.setMix(1,10,0)
 				.setElementalRider(.3f,0,1,0)
-				.setWarmupOfTotal(TimeTier.FASTER, TimeTier.NORMAL)
+				.setWarmupOfTotal(TimeTier.HALF_FAST, TimeTier.FAST)
 				);
 		addStance(Feat.FROST_WARDEN,sta, new AttackLevel() {
 			
 			@Override
 			public int getEffectiveLevel(Person p) {
 				AttributeBox a = p.fetchAttributes();
-				return a.getEffectiveAttributeLevel((a.getClarity()+a.getStrength())/2);
+				return a.getEffectiveAttributeLevel(Math.max(a.getClarity(),a.getStrength()));
 			}
 		});
 		
@@ -873,16 +873,16 @@ public class WeaponAttackFactory {
 				.setFluff("X` conjures sparks at Y`!")
 				.setRarity(1f)
 				.setAcc(1.2f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.45f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.6f)
 				.setElementalMix(1, 0, 3)//more shock inclined
-				.setWarmupOfTotal(TimeTier.SLOW, TimeTier.SLOWER)
+				.setWarmupOfTotal(TimeTier.FAST, TimeTier.NORMAL)
 				);
 		sta.addAttack(//very high accuracy
 				make("zap")
 				.setFluff("X` zaps Y` with ambient charge!")
 				.setRarity(1f)
 				.setAcc(4f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.6f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.4f)
 				.setElementalMix(0, 0, 1)
 				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOW)
 				);
@@ -900,7 +900,7 @@ public class WeaponAttackFactory {
 			@Override
 			public int getEffectiveLevel(Person p) {
 				AttributeBox a = p.fetchAttributes();
-				return a.getEffectiveAttributeLevel((a.getClarity()+a.getDexterity())/2);
+				return a.getEffectiveAttributeLevel(Math.max(a.getClarity(),a.getDexterity()));
 			}
 		});
 		
