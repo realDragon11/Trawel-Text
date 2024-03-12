@@ -268,7 +268,7 @@ public class GenericNode implements NodeType {
 			break;
 		case DUNGEON:
 			if (force || extra.chanceIn(1,3)) {
-				resetNode(holder,node,extra.choose(2,3));
+				resetNode(holder,node,2);
 				holder.globalTimer-=10;
 				return true;
 			}

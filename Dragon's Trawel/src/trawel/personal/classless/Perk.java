@@ -10,11 +10,11 @@ import trawel.personal.classless.Skill.Type;
 public enum Perk implements IHasSkills{
 	EMPTY("","",IHasSkills.emptySkillSet),
 	RACIAL_SHIFTS("Flexible","Prone to changing its defense patterns.",EnumSet.of(Skill.RACIAL_SHIFTS)),
-	SKY_BLESS_1("Leaf on the Wind","Has a minor blessing from the sky, granting them paranatural speed.",EnumSet.of(Skill.SPEEDDODGE,Skill.BLITZ)),
+	SKY_BLESS_1("Leaf on the Wind","Has a minor blessing from the sky, granting them paranatural speed.",EnumSet.of(Skill.SPEEDDODGE,Skill.BLITZ),0,4,1),
 	SKY_BLESS_2("Growing Storm","Has a blessing from the sky, granting acute vision and senses that heal them when used.",EnumSet.of(Skill.DODGEREF,Skill.NIGHTVISION),0,4,1)
-	,FOREST_BLESS_1("Sappy Seeder","Has a minor blessing of the forest, hardening their skin and granting alchemy affinity.",EnumSet.of(Skill.TA_NAILS,Skill.P_BREWER))
-	,FOREST_BLESS_2("Heart of Regrowth","Has a blessing of the forest, integrating bark skin with their armor.",EnumSet.of(Skill.ARMORHEART,Skill.ARMOR_TUNING))
-	,CULT_CHOSEN_BLOOD("Chosen (Blood)","Chosen by the cult of blood.",EnumSet.of(Skill.BLOODTHIRSTY))//also used by npc cultist
+	,FOREST_BLESS_1("Sappy Seeder","Has a minor blessing of the forest, hardening their skin and granting alchemy affinity.",EnumSet.of(Skill.TA_NAILS,Skill.P_BREWER),4,0,1)
+	,FOREST_BLESS_2("Heart of Regrowth","Has a blessing of the forest, integrating bark skin with their armor.",EnumSet.of(Skill.ARMORHEART,Skill.ARMOR_TUNING),4,0,1)
+	,CULT_CHOSEN_BLOOD("Chosen (Blood)","Chosen by the cult of blood.",EnumSet.of(Skill.BLOODTHIRSTY),1,1,3)//also used by npc cultist
 	,MINE_ALL_VEINS("Meticulous Miner","Known for their painstaking digging process.",EnumSet.of(Skill.NIGHTVISION))
 	,GRAVEYARD_SIGHT("Gravesight","Can see in the dark due to a lot of experience.",EnumSet.of(Skill.NIGHTVISION))
 	,HELL_BARONESS_1("Baroness of Hell (Peana's Throne)","Has fiendish powers.",EnumSet.of(Skill.CURSE_MAGE,Skill.TA_NAILS),5,0,5)
