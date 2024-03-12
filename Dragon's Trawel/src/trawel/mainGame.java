@@ -72,10 +72,11 @@ import trawel.towns.services.Oracle;
 public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
-	public static final String VERSION_STRING = "v0.8.b_10h2";
-	public static final String VERSION_DATE = " updated Mar 11th 2024";
+	public static final String VERSION_STRING = "v0.8.b_10h3";
+	public static final String VERSION_DATE = " updated Mar 12th 2024";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
+			"b_10 hotfix 3: pouch swap rejection crash, dryad refight crash, dungeon regrow wrong checkpoint type, more perks have attributes, buffed magic attacks and some related archetypes and feats.",
 			"b_10 hotfix 2: fixed fort menu crashes, improved timeevent error reporting.",
 			"b_10 hotfix 1: increased world currency amount for most humanoid NPCs, attempted to fix dungeon party crash, fixed Inn rent waiting and let you rent more if you have less than 1 month left.",
 			
