@@ -715,7 +715,13 @@ public class AIClass {
 				
 				//hijack remaining pouch code if already in pouch
 				if (Player.player.isInPouch(thinking)) {
-					list.add(new MenuBack("Keep " + thinking.getName() + " in pouch."));
+					list.add(new MenuBack("Keep " + thinking.getName() + " in pouch.") {
+						@Override
+						public boolean go() {
+							ret[0] = thinking;
+							return true;
+						}
+					});
 					return list;
 				}
 				//end hijack of if already in pouch

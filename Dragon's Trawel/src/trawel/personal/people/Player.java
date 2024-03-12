@@ -667,6 +667,10 @@ public class Player extends SuperPerson{
 							public boolean go() {
 								Item newit = AIClass.askDoSwap(it, null, true);
 								int index = pouch.indexOf(it);
+								if (newit == null) {
+									pouch.remove(index);
+									return false;
+								}
 								pouch.set(index,newit);//will set it to itself if they reject it
 								return false;
 							}});
