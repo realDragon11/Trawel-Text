@@ -78,7 +78,7 @@ public class GroveNode implements NodeType{
 				1f,//old person
 				1f,//collector
 				2f,//fallen tree
-				1.5f,//dryad
+				11.5f,//dryad
 				//10 next
 				2f,//casual
 				1f,//mushroom
@@ -702,7 +702,7 @@ public class GroveNode implements NodeType{
 				return true;//kick out
 			}
 			//force go fighting usually
-			boolean hasdryad = p.getFlag(PersonFlag.IS_MOOK);
+			boolean hasdryad = !p.getFlag(PersonFlag.IS_MOOK);
 			
 			if (peeps.size() == 1) {
 				extra.println(extra.PRE_BATTLE+ (hasdryad ? p.getName() + " protects their tree!" : "The trees move to avenge their caretaker!"));
@@ -710,6 +710,7 @@ public class GroveNode implements NodeType{
 				if (c.playerWon() > 0) {
 					holder.setForceGo(node,false);//clean up our force go
 					GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
+					return false;//leave
 				}else {
 					return true;//kick out
 				}
@@ -720,18 +721,12 @@ public class GroveNode implements NodeType{
 					holder.setForceGo(node,false);//clean up our force go
 					GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
 					//only one grave, which could be an ent at this point
+					return false;//leave
 				}else {
 					holder.setStorage(node, c.getNonSummonSurvivors());//set survivors
 					return true;//kick out
 				}
 			}
-			Combat c = Player.player.fightWith(p);
-			if (c.playerWon() > 0) {
-				
-				GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
-				return false;
-			}
-			return true;//kick out
 		}else {
 			Networking.clearSide(1);
 			return false;
