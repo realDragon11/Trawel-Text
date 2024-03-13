@@ -1456,7 +1456,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 	
 	/**
-	 * use for doctor clearing certain effects like curse, burnout, and bees
+	 * use for doctor clearing certain effects like curse and burnout
 	 */
 	public void cureEffects() {
 		if (isPlayer()) {
@@ -1466,17 +1466,19 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			if (hasEffect(Effect.BURNOUT)) {
 				extra.println(extra.RESULT_GOOD+"Your burnout is treated!");
 			}
+			/*
 			if (hasEffect(Effect.TIRED)) {
 				extra.println(extra.RESULT_GOOD+"Your tiredness is treated!");
 			}
 			if (hasEffect(Effect.BEES)) {
 				extra.println(extra.RESULT_GOOD+"Your bees are cured!");
-			}
+			}*/
 		}
 		removeEffectAll(Effect.CURSE);
 		removeEffectAll(Effect.BURNOUT);
+		/*
 		removeEffectAll(Effect.TIRED);
-		removeEffectAll(Effect.BEES);
+		removeEffectAll(Effect.BEES);*/
 	}
 	
 	/**

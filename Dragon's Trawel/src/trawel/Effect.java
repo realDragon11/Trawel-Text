@@ -3,14 +3,14 @@ package trawel;
 public enum Effect{
 	//negative lasting status effects the player has to remove somewhere
 	//used as punishments/costs for events, or as skill tie ins
-	CURSE("Curse","Base HP is decreased by half.",true,false,-4),
+	CURSE("Curse","Base HP is decreased by half. Cure at doctor.",true,false,-4),
 	/**
 	 * used on failed OOB rolls to make the player less likely to spam them while the consequence can't stack
 	 */
-	BURNOUT("Burnout","Halves attributes in out of battle contested rolls.",true,false,-2),
-	DAMAGED("Damaged","Armor starts at 50% condition each battle.",true,false,-4),
-	BEES("BEEEES","Bees sting them occasionally, dealing random damage between 1 flat and 4% LHP.",true,false,-2),
-	TIRED("Tired","Halves dodge multiplier.",true,false,-3),
+	BURNOUT("Burnout","Halves attributes in out of battle contested rolls. Cure at Doctor or rest off in Inn.",true,false,-2),
+	DAMAGED("Damaged","Armor starts at 50% condition each battle. Repair at Blacksmith.",true,false,-4),
+	BEES("BEEEES","Bees sting them occasionally, dealing random damage between 1 flat and 4% LHP. Wash off in water.",true,false,-2),
+	TIRED("Tired","Halves dodge multiplier. Rest off at Inn.",true,false,-3),
 	//other
 	CONFUSED_TARGET("Confused","Their next attack will have a random defender from any side.",false,false,-2),
 	FLUMMOXED("Flummoxed","Next queued attack will be around 1% less accurate per stack.",false,true,-2),
@@ -50,7 +50,7 @@ public enum Effect{
 	MAIMED("Maimed","Loses one weapon attack choice per attack. Doesn't stack with Disarmed.",false,false,-3),
 	CRIPPLED("Crippled","Dodge reduced to 80%. Stacks.",false,true,-3),
 	HIT_VITALS("Shattered","Takes double condition damage. When attacking a part with no condition, roll another wound.",false,false,-4),
-	BRAINED("Split Skull","Does not recover from further KO wounds.",false,false,-4),
+	BRAINED("Brained","Does not recover from further KO wounds.",false,false,-4),
 	//tactics
 	SINGLED_OUT("Singled Out","Those who attack this Person have a 2/3rds chance to attack them again afterwards.",false,false,-1),
 	DUCKING("Ducking","Gains +0.2 flat dodge roll (not mult), but will be exhausted after the next attack after this attack completes.",false,false,2),
