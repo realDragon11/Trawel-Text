@@ -19,6 +19,7 @@ import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
+import trawel.personal.people.Agent.AgentGoal;
 import trawel.quests.QRMenuItem;
 import trawel.quests.QuestBoardLocation;
 import trawel.quests.QuestR;
@@ -274,9 +275,8 @@ public abstract class ExploreFeature extends Feature{
 				extra.println("They give you a reward of " +World.currentMoneyDisplay(gold) + " in thanks for saving them.");
 				Player.player.addGold(gold);
 			}else {
-				extra.println("They steal from your bags as well!");
-				int lose = IEffectiveLevel.cleanRangeReward(tier,3f,.6f);
-				extra.println(Player.loseGold(lose,true));
+				Player.player.stealCurrencyLeveled(robber,0.5f);
+				Player.placeAsOccupant(robber);
 			}
 		}else {
 			extra.println("You walk away.");
@@ -286,12 +286,12 @@ public abstract class ExploreFeature extends Feature{
 	
 	protected void mugger_ambush() {
 		extra.println(extra.PRE_BATTLE+"You see a mugger charge at you! Prepare for battle!");
-		Combat c = Player.player.fightWith(RaceFactory.getMugger(getLevel()));
+		Person p = RaceFactory.getMugger(getLevel());
+		Combat c = Player.player.fightWith(p);
 		if (c.playerWon() > 0) {
 		}else {
-			extra.println("They rummage through your bags!");
-			int lose = IEffectiveLevel.cleanRangeReward(tier,3f,.6f);
-			extra.println(Player.loseGold(lose,true));
+			Player.player.stealCurrencyLeveled(p,0.5f);
+			Player.placeAsOccupant(p);
 		}
 	}
 	

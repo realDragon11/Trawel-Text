@@ -536,7 +536,7 @@ public class GraveyardNode implements NodeType{
 			GenericNode.setSimpleDeadRaceID(holder, node,p.getBag().getRaceID());
 			return false;
 		}else {
-			extra.println("You wake up later. " + Player.loseGold(p.getLevel()*3,true));
+			Player.player.stealCurrencyLeveled(p,1f);
 			return true;
 		}
 	}

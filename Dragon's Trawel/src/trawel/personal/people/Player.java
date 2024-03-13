@@ -31,6 +31,7 @@ import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.classless.Archetype;
 import trawel.personal.classless.Feat;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
@@ -491,6 +492,39 @@ public class Player extends SuperPerson{
 			return "They took all your " + World.currentMoneyString() +"! (lost "+lost+")";
 		}else {
 			return "Oh no, " +World.currentMoneyDisplay(lost) + " were stolen!";
+		}
+	}
+	
+	/**
+	 * @return true if anything was stolen
+	 */
+	public boolean stealCurrencyLeveled(Person stealer,float greedFactor) {
+		//MAYBELATER: could make this usable on all npcs
+		int amountGold = IEffectiveLevel.cleanRangeReward(stealer.getLevel(),greedFactor*10f,.5f);
+		int amountAether = IEffectiveLevel.cleanRangeReward(stealer.getLevel(),greedFactor*10_000f,.3f);
+		
+		//cleanrangereward won't return 0 so we don't have to worry about that
+		int lostGold = Player.player.loseGold(amountGold);
+		int lostAether = Player.player.loseAether(amountAether);
+		stealer.getBag().addGold(amountGold);
+		stealer.getBag().addAether(amountAether);
+		extra.println(extra.RESULT_WARN+stealer.getName() + " rifles through your bags...");
+		if (lostGold == -1) {
+			if (lostAether == -1) {
+				extra.println(extra.RESULT_NO_CHANGE_BAD+"They couldn't find anything they wanted to take!");
+				return false;
+			}else {
+				extra.println(extra.RESULT_BAD+"They stole " +lostAether+" Aether!");
+				return true;
+			}
+		}else {
+			if (lostAether == -1) {
+				extra.println(extra.RESULT_BAD+"They stole " + World.currentMoneyDisplay(lostGold)+"!");
+				return true;
+			}else {
+				extra.println(extra.RESULT_BAD+"They stole " + World.currentMoneyDisplay(lostGold)+" and "+lostAether+" Aether!");
+				return true;
+			}
 		}
 	}
 	

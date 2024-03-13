@@ -145,9 +145,7 @@ public class Forest extends ExploreFeature{
 			Player.player.getPerson().addXp(tier*2);break;
 			case 3: extra.println("You feel lightheaded.... you pass out!");
 			extra.println("When you wake up, you notice someone went through your bags!");
-			extra.println(Player.loseGold(
-					IEffectiveLevel.cleanRangeReward(tier,3f,.2f)
-					,true));
+			extra.println(Player.loseGold(IEffectiveLevel.cleanRangeReward(tier,10f,.2f),true));
 			break;
 			}
 			if (Math.random() > .8) {

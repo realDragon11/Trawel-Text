@@ -180,6 +180,7 @@ public class BumperFactory {
 					extra.println(extra.PRE_BATTLE+"A vampire jumps from the shadows!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
+						Player.player.stealCurrencyLeveled(p,1f);
 						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
 					}else {
 					}					
@@ -198,7 +199,8 @@ public class BumperFactory {
 					extra.println(extra.PRE_BATTLE+"A thief charges you!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
-						Player.player.getLocation().addOccupant(p.setOrMakeAgentGoal(AgentGoal.NONE));
+						Player.player.stealCurrencyLeveled(p,1f);
+						Player.placeAsOccupant(p);
 					}else {
 					}
 					
@@ -284,6 +286,7 @@ public class BumperFactory {
 						Combat c = Player.player.fightWith(p);
 						if (c.playerWon() > 0) {
 						}else {
+							Player.player.stealCurrencyLeveled(p,1f);
 							Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
 						}
 					}
@@ -307,7 +310,8 @@ public class BumperFactory {
 					extra.println(extra.PRE_BATTLE+"A pirate challenges you for your booty!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
-						Player.player.getLocation().addOccupant(p.setOrMakeAgentGoal(AgentGoal.NONE));
+						Player.player.stealCurrencyLeveled(p,1f);
+						Player.placeAsOccupant(p);
 					}else {
 					}
 					
@@ -327,6 +331,7 @@ public class BumperFactory {
 					extra.println(extra.PRE_BATTLE+"A drudger attacks your ship!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
+						Player.player.stealCurrencyLeveled(p,1f);
 						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
 					}else {
 					}
@@ -345,6 +350,7 @@ public class BumperFactory {
 					extra.println(extra.PRE_BATTLE+"A harpy ambushes your ship from a nearby shipwreck!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
+						Player.player.stealCurrencyLeveled(p,1f);
 						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
 					}else {
 					}

@@ -515,6 +515,20 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 		addGold(-lose);
 		return lose;
 	}
+	
+	public int loseAether(int i) {
+		if (i == 0) {
+			return 0;
+		}
+		int has = getPerson().getBag().getAether();
+		if (has == 0) {
+			return -1;
+		}
+		int lose = Math.min(has,i);
+		getPerson().getBag().addAether(-lose);
+		return lose;
+	}
+	
 	/*
 	 * does not remove their gold, just adds it to this one
 	 */

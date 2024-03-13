@@ -28,6 +28,7 @@ import trawel.personal.item.Seed;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Player;
+import trawel.personal.people.Agent.AgentGoal;
 import trawel.quests.Quest.TriggerType;
 import trawel.time.TimeContext;
 import trawel.towns.World;
@@ -520,9 +521,7 @@ public class GroveNode implements NodeType{
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
 					}else {
-						extra.println(Player.loseGold(
-								IEffectiveLevel.cleanRangeReward(holder.getLevel(node),2f,.2f)
-								, true));
+						Player.player.stealCurrencyLeveled(p,0.5f);
 						Player.placeAsOccupant(p);
 					}
 				}else {
@@ -891,10 +890,7 @@ public class GroveNode implements NodeType{
 				if (extra.chanceIn(1,3)) {
 					extra.println("you start to feel lightheaded.... you pass out!");
 					extra.println("When you wake up, you notice someone went through your bags!");
-					extra.println(
-							Player.loseGold(
-									IEffectiveLevel.cleanRangeReward(holder.getLevel(node), 3f, .2f)
-							,true)
+					extra.println(Player.loseGold(IEffectiveLevel.cleanRangeReward(holder.getLevel(node), 3f, .2f),true)
 						);
 					plantstart = Seed.EMPTY;
 				}else {
