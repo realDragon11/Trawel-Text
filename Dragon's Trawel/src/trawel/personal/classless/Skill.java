@@ -208,7 +208,10 @@ public enum Skill{
 				,Type.DEFENSE),
 		FEVER_STRIKE("Fever Strike","On attack, force a contested Clarity check to apply two stacks of Miasma. When targeting opponents already suffering from Miasma with physical attacks, deal +10% damage as Decay damage."
 				,"Miasma halves every time the suffering party completes a swing. Damage bonus applies on targeting, not on swing."
-				,Type.OFFENSE)
+				,Type.OFFENSE),
+		BIG_BAG("Big Bag","Gain 3 Drawbane slots, for a total of 8."
+				,""
+				,Type.CRAFT)
 		
 		/**
 		 * move tactics here to keep them in order

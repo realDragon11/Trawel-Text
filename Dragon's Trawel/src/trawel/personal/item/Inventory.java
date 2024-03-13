@@ -59,7 +59,6 @@ public class Inventory implements java.io.Serializable{
 	 */
 	private List<DrawBane> dbs = new ArrayList<DrawBane>();
 	private List<Seed> seeds = null;
-	public static final int dbMax = 4;
 	public Person owner;
 	
 	private transient EnumMap<ArmorQuality,Integer> qualityCount = null;
@@ -872,11 +871,28 @@ public class Inventory implements java.io.Serializable{
 		return dbs.contains(d);
 	}
 	
+	public int drawBaneCap() {
+		if (owner.hasSkill(Skill.BIG_BAG)) {
+			return 8;
+		}
+		return 4;
+	}
+	
 	public void addDrawBaneSilently(DrawBane d) {
 		dbs.add(d);
 	}
 	
 	public DrawBane addNewDrawBanePlayer(DrawBane d) {
+		switch (d) {
+		case KNOW_FRAG:
+			extra.println("You found a Feat Fragment!");
+			Player.player.currentKFrags++;
+			if (Player.player.currentKFrags >= Player.player.fragmentReq) {
+				extra.println("Bring your Feat Fragments to a library to gain a feat point!");
+			}
+			//consume fragment
+			return null;
+		}
 		return handleDrawBane(d,false,"replace");
 	}
 	
@@ -914,7 +930,7 @@ public class Inventory implements java.io.Serializable{
 			@Override
 			public List<MenuItem> header() {
 				List<MenuItem> list = new ArrayList<MenuItem>();
-				if (d != null && oldSize < dbMax) {//we have the new element already
+				if (d != null && oldSize < drawBaneCap()) {//we have the new element already
 					list.add(new MenuSelect() {
 
 						@Override

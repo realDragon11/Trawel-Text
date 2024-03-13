@@ -122,8 +122,9 @@ public class Library extends Feature {
 						
 					});
 				}*/
-				if (Player.bag.hasDrawBane(DrawBane.KNOW_FRAG)) {
-					int frag_count = (int) Player.bag.getDrawBanes().stream().filter(db -> db == DrawBane.KNOW_FRAG).count();
+				int frag_count = Player.player.currentKFrags;
+				if (frag_count > 0) {
+					//(int) Player.bag.getDrawBanes().stream().filter(db -> db == DrawBane.KNOW_FRAG).count();
 					list.add(new MenuSelect(){
 
 						@Override
@@ -133,11 +134,14 @@ public class Library extends Feature {
 
 						@Override
 						public boolean go() {
+							/*
 							extra.println("Study your " + frag_count+" fragment(s)? This will destroy them and get you closer to a free feat point."
 									+ " You are currently " + Player.player.strKnowFrag());
 							if (!extra.yesNo()){
 								return false;
 							}
+							*/
+							/*
 							List<DrawBane> dbs = Player.bag.getDrawBanes();
 							int got = 0;
 							for (int i = dbs.size()-1;i >= 0;i--) {
@@ -146,11 +150,16 @@ public class Library extends Feature {
 									dbs.remove(i);
 								}
 								got++;
+							}*/
+							extra.println("You study the "+frag_count+" scraps of knowledge you've accumulated.");
+							for (int i = 0; i < frag_count;i++) {
+								Player.player.addKnowFrag();
 							}
+							Player.player.currentKFrags = 0;
 							extra.println("You are now " + Player.player.strKnowFrag());
-							DrawBane gain = BasicSideQuest.attemptCollectAlign(QKey.KNOW_ALIGN,got*.5f,2*got);
+							DrawBane gain = BasicSideQuest.attemptCollectAlign(QKey.KNOW_ALIGN,frag_count*.5f,2*frag_count);
 							if (gain != null) {
-								extra.println("You find "+(2*got)+" " + gain.getName() + " pieces while studying!");
+								extra.println("You find "+(2*frag_count)+" " + gain.getName() + " pieces while studying!");
 							}
 							return false;
 						}

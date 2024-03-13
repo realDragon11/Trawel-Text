@@ -100,7 +100,7 @@ public class Player extends SuperPerson{
 	public short beer;
 
 	
-	public int knowledgeFragments = 0, fragmentReq = 5;
+	public int currentKFrags = 0, knowledgeFragments = 0, fragmentReq = 5;
 	
 	public List<Quest> sideQuests = new ArrayList<Quest>();
 	//public List<EArt> eArts = new ArrayList<EArt>();
@@ -892,6 +892,7 @@ public class Player extends SuperPerson{
 										extra.println("Local: " +getPerson().getBag().getAether() + " aether, " + showGold()+".");
 										extra.println("Planar: " +allGoldDisp()+".");
 										extra.println("Gems: " +Gem.playerGems()+".");
+										extra.println("Feat Fragments: " +Player.player.currentKFrags+"+"+Player.player.knowledgeFragments+"/"+Player.player.fragmentReq+".");
 										return false;
 									}
 									
