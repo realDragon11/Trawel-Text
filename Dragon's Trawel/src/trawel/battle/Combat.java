@@ -771,7 +771,8 @@ public class Combat {
 				hitRoll*=0.9;
 			}
 			if (isReal) {
-				attacker.removeEffect(Effect.MIASMA);//ticks here to avoid weird removal cases
+				//ticks here to avoid weird removal cases
+				attacker.setEffectCount(Effect.MIASMA,attacker.effectCount(Effect.MIASMA)/2);
 			}
 		}
 		if (isReal) {
@@ -786,18 +787,18 @@ public class Combat {
 			//skill code that applies on all attacks, not just hits
 			if (defender.hasSkill(Skill.FETID_FUMES)) {
 				//hit reduction applied above in all cases, not just real attacks
-				if (defender.contestedRoll(attacker,defender.getClarity(),attacker.getClarity()) >= 0){
+				if (defender.contestedRoll(attacker,defender.getClarity()/2,attacker.getClarity()) >= 0){
 					attacker.addEffect(Effect.MIASMA);
 					if (canDisp) {
-						preNotes = addPreNote(preNotes,"The fumes fester!");
+						preNotes = addPreNote(preNotes,"The fumes fester around "+attacker.getNameNoTitle()+"!");
 					}
 				}
 			}
 			if (attacker.hasSkill(Skill.FEVER_STRIKE)) {
 				if (attacker.contestedRoll(defender,attacker.getClarity(),defender.getClarity()) >= 0){
-					defender.addEffect(Effect.MIASMA);
+					defender.addEffectCount(Effect.MIASMA,2);
 					if (canDisp) {
-						preNotes = addPreNote(preNotes,"Sickness hangs in the air!");
+						preNotes = addPreNote(preNotes,"Sickness hangs in the air around "+defender.getNameNoTitle()+"!");
 					}
 				}
 			}

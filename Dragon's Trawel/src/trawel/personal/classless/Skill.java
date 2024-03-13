@@ -203,11 +203,11 @@ public enum Skill{
 		POTION_CHUGGER("Potion Chugger","Regenerates 10% LHP at the end of their second turn if drinking a potion."
 				,"Applies through the Breathing Effect."
 				,Type.OTHER),
-		FETID_FUMES("Fetid Fumes","When attacked, force a contested Clarity check to apply Miasma. Attackers already inflicted with Miasma suffer a -10% hit roll."
-				,"Miasma loses a stack every attack by the inflicted party."
+		FETID_FUMES("Fetid Fumes","When attacked, force a contested Clarity check at half your Clarity to apply Miasma. Attackers already inflicted with Miasma suffer a -10% hit roll."
+				,"Miasma halves every time the suffering party completes a swing."
 				,Type.DEFENSE),
-		FEVER_STRIKE("Fever Strike","On attack, force a contested Clarity check to apply Miasma. When targeting opponents already suffering from Miasma with physical attacks, deal +10% damage as Decay damage."
-				,"Miasma loses a stack every attack by the inflicted party. Damage bonus applies on targeting, not on swing."
+		FEVER_STRIKE("Fever Strike","On attack, force a contested Clarity check to apply two stacks of Miasma. When targeting opponents already suffering from Miasma with physical attacks, deal +10% damage as Decay damage."
+				,"Miasma halves every time the suffering party completes a swing. Damage bonus applies on targeting, not on swing."
 				,Type.OFFENSE)
 		
 		/**

@@ -125,7 +125,7 @@ public class ImpairedAttack implements IAttack{
 			if (attacker != null && defender != null && attacker.hasSkill(Skill.FEVER_STRIKE) && defender.hasEffect(Effect.MIASMA)) {
 				//decay damage bonus if defender has miasma
 				//goes off of the rolled values because it itself does not roll
-				vals[6] += (vals[0]+vals[1]+vals[2])*.2f;
+				vals[6] += (vals[0]+vals[1]+vals[2])*.1f;
 			}
 		}
 		//no decay wounds
