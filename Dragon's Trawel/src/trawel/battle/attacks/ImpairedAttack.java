@@ -124,7 +124,8 @@ public class ImpairedAttack implements IAttack{
 			}
 			if (attacker != null && defender != null && attacker.hasSkill(Skill.FEVER_STRIKE) && defender.hasEffect(Effect.MIASMA)) {
 				//decay damage bonus if defender has miasma
-				vals[6] += totalPhysDam*.2f;
+				//goes off of the rolled values because it itself does not roll
+				vals[6] += (vals[0]+vals[1]+vals[2])*.2f;
 			}
 		}
 		//no decay wounds
@@ -345,10 +346,11 @@ public class ImpairedAttack implements IAttack{
 		if (amount > 0) {
 			return DamageType.ELEC.getDispFor(att);
 		}
+		/* decay cannot be a normal added dam
 		amount = DamageType.DECAY.getAmountFor(att);
 		if (amount > 0) {
 			return DamageType.DECAY.getDispFor(att);
-		}
+		}*/
 		return null;
 	}
 	
@@ -493,7 +495,7 @@ public class ImpairedAttack implements IAttack{
 	
 	@Override
 	public int getDecay() {
-		return (int) (getPotencyMult()*IAttack.getElecFromWeap(vals));
+		return (int) (getPotencyMult()*IAttack.getDecayFromWeap(vals));
 	}
 	
 	@Override
@@ -521,7 +523,7 @@ public class ImpairedAttack implements IAttack{
 	@Override
 	public int getTotalDam() {
 		// TODO add other damage types when they get added
-		return getSharp()+getBlunt()+getPierce()+getIgnite()+getFrost()+getElec();
+		return getSharp()+getBlunt()+getPierce()+getIgnite()+getFrost()+getElec()+getDecay();
 	}
 	
 	public float multiplyHit(float mult) {
@@ -543,6 +545,7 @@ public class ImpairedAttack implements IAttack{
 		switch (style) {
 		case 0://not impaired style
 		case 1://classic
+			//MAYBELATER: this doesn't display bonus damage properly
 			in = new int[6];
 			in[0] = 8+12;
 			in[1] = 7;
@@ -558,7 +561,7 @@ public class ImpairedAttack implements IAttack{
 			break;
 		case 2://two line 1
 			extra.println(getName());
-			in = new int[9];
+			in = new int[10];
 			in[0] = 9;//hitchance, should be %9.99 >= x > 0.00 | 9 gives a 2 spot gap to the times
 			in[1] = 4;//instants, should be _999 >= x > 0 | 4 because we're okay with pressing up against the next one
 			in[2] = 1;//warmup/cooldown seperator
@@ -570,8 +573,9 @@ public class ImpairedAttack implements IAttack{
 			in[5] = 6;
 			in[6] = 6;
 			in[7] = 6;
-			in[8] = 0;//bonus
-			String dam1, dam2, dam3, dam4;
+			in[8] = 0;//bonus1
+			in[9] = 0;//bonus2
+			String dam1, dam2, dam3, dam4, dam5;
 			if (attack.isBypass()) {
 				dam1 = DamageType.IGNITE.getDispFor(this);
 				dam2 = DamageType.FROST.getDispFor(this);
@@ -588,11 +592,17 @@ public class ImpairedAttack implements IAttack{
 					dam4 = "";
 				}
 			}
+			if (getDecay() > 0) {
+				dam5 = DamageType.DECAY.getDispFor(this);
+				in[9] = 6;
+			}else {
+				dam5 = "";
+			}
 
 			extra.specialPrint(in,"  "+extra.CHAR_HITCHANCE + extra.format(getHitMult()),
 					extra.CHAR_INSTANTS +extra.formatInt(getWarmup())," ",extra.CHAR_INSTANTS+extra.formatInt(getCooldown()),
 					"=",
-					dam1,dam2,dam3,dam4//unsure if spacing messes up narrator
+					dam1,dam2,dam3,dam4,dam5//unsure if spacing messes up narrator
 					);
 			break;
 		case 3://simplified

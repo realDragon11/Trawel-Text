@@ -734,13 +734,14 @@ public class Combat {
 		boolean canDisp = isReal && !extra.getPrint();
 		
 		if (att.isTacticOnly()) {
-			ret= new AttackReturn(ATK_ResultCode.NOT_ATTACK,"",att);
+			ret= new AttackReturn(ATK_ResultCode.NOT_ATTACK,"",att,null);
 			if (canDisp) {
 				ret.stringer = att.fluff(ret);
 				ret.putPlayerFeedback(ret);
 			}
 			return ret;
 		}
+		String preNotes = null;
 		if (off == null) {
 			off = DummyInventory.dummyAttackInv;
 		}
@@ -787,16 +788,22 @@ public class Combat {
 				//hit reduction applied above in all cases, not just real attacks
 				if (defender.contestedRoll(attacker,defender.getClarity(),attacker.getClarity()) >= 0){
 					attacker.addEffect(Effect.MIASMA);
+					if (canDisp) {
+						preNotes = addPreNote(preNotes,"The fumes fester!");
+					}
 				}
 			}
 			if (attacker.hasSkill(Skill.FEVER_STRIKE)) {
 				if (attacker.contestedRoll(defender,attacker.getClarity(),defender.getClarity()) >= 0){
 					defender.addEffect(Effect.MIASMA);
+					if (canDisp) {
+						preNotes = addPreNote(preNotes,"Sickness hangs in the air!");
+					}
 				}
 			}
 		}
 		if (hitRoll <= defender.getMissCalc()) {
-			ret= new AttackReturn(ATK_ResultCode.MISS,"",att);
+			ret= new AttackReturn(ATK_ResultCode.MISS,"",att,preNotes);
 			if (canDisp) {
 				ret.stringer = att.fluff(ret);
 				ret.putPlayerFeedback(ret);
@@ -808,7 +815,7 @@ public class Combat {
 		}
 		//could move dodge rolls here, but would have to split advantage code
 		if (dodgeRoll > hitRoll){
-			ret= new AttackReturn(ATK_ResultCode.DODGE,"",att);
+			ret= new AttackReturn(ATK_ResultCode.DODGE,"",att,preNotes);
 			if (canDisp) {
 				ret.stringer = att.fluff(ret);
 				ret.putPlayerFeedback(ret);
@@ -819,7 +826,7 @@ public class Combat {
 			return ret;
 		}
 		
-		ret = new AttackReturn(att,def,str);
+		ret = new AttackReturn(att,def,str,preNotes);
 		if (canDisp && ret.code != ATK_ResultCode.NOT_ATTACK) {
 			Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getAttack().getSoundIntensity() + "|" +att.getAttack().getSoundType()+"|");
 			if (wasDead) {
@@ -879,9 +886,20 @@ public class Combat {
 		return ret;
 	}
 	
+	/**
+	 * only use before attack return is created, and must store the return in prenotes
+	 */
+	public static String addPreNote(String notes, String add) {
+		if (notes == null) {
+			notes = add;
+		}else {
+			notes +="\n "+add;
+		}
+		return notes;
+	}
+	
 	public static AttackReturn handleTestAttack(ImpairedAttack att, Person p) {
 		return Combat.testCombat.handleAttack(false,att,p.getBag(),null,null,p);	
-		
 	}
 	
 	public class AttackReturn {
@@ -893,11 +911,11 @@ public class Combat {
 		public ATK_ResultCode code;
 		public ATK_ResultType type;
 		private String notes;
-		public AttackReturn(ImpairedAttack att, Inventory def, String str) {
+		public AttackReturn(ImpairedAttack att, Inventory def, String str, String _notes) {
 			if (att.isTacticOnly()) {//doesn't have true attack components
 				stringer = str;
 				attack = att;
-				notes = null;
+				notes = _notes;
 				subDamage = new int[] {0,0,0,0,0,0};
 				damage = 0;
 				code = ATK_ResultCode.NOT_ATTACK;
@@ -910,6 +928,7 @@ public class Combat {
 			int idam = att.getIgnite();
 			int fdam = att.getFrost();
 			int edam = att.getElec();
+			int ddam = att.getDecay();
 			
 			double sarm = def.getSharp(att)*Armor.armorEffectiveness;
 			double barm = def.getBlunt(att)*Armor.armorEffectiveness;
@@ -920,7 +939,7 @@ public class Combat {
 			
 			stringer = str;
 			attack = att;
-			notes = null;
+			notes = _notes;
 			//MAYBELATER: can turn this into an array of damage types later if need be
 			double rawdam = bypass ? idam+fdam+edam : sdam+bdam+pdam;
 			double rawarm =sarm+barm+parm;
@@ -964,7 +983,10 @@ public class Combat {
 				int fcomp = (int) (fdam*reductMult*f_reduct);
 				int ecomp = (int) (edam*reductMult*e_reduct);
 				
-				subDamage = new int[] {scomp,bcomp,pcomp,icomp,fcomp,ecomp};
+				double d_reduct = damageCompMult(.2f,.9f,1f,ddam,weight_arm,2f,4f);
+				int dcomp = (int) (ddam*reductMult*d_reduct);
+				
+				subDamage = new int[] {scomp,bcomp,pcomp,icomp,fcomp,ecomp,dcomp};
 				for (int i = 0; i < subDamage.length; i++) {
 					damage += subDamage[i];
 				}
@@ -981,7 +1003,7 @@ public class Combat {
 					addNote("rawdam: " +rawdam +"("+sdam+"/"+bdam+"/"+pdam+ " " + idam+"/"+fdam+"/"+edam+")"
 				+ " rawarm: " + rawarm + "("+sarm+"/"+barm+"/"+parm+" " +iarm+"/"+farm+"/"+earm+")"
 							+ " weight_a: " + weight_arm + " groll: " + global_roll 
-							+ " comps: " +subDamage[0] +"/"+subDamage[1]+"/"+subDamage[2] + " " + subDamage[3] +"/"+subDamage[4]+"/"+subDamage[5]
+							+ " comps: " +subDamage[0] +"/"+subDamage[1]+"/"+subDamage[2] + " " + subDamage[3] +"/"+subDamage[4]+"/"+subDamage[5]+"/"+subDamage[6]
 							+ " reduct: " + reductMult + " ("+s_reduct+"/"+b_reduct+"/"+p_reduct+" " +i_reduct+"/"+f_reduct+"/"+e_reduct +")");
 				}
 			}
@@ -1002,14 +1024,14 @@ public class Combat {
 			return extra.lerp(equalMult,maxMult,extra.clamp((float)(inDam/(inArm/armor_threshold)),0f,1f));
 		}
 		
-		public AttackReturn(ATK_ResultCode rcode, String str, ImpairedAttack att) {
+		public AttackReturn(ATK_ResultCode rcode, String str, ImpairedAttack att, String _notes) {
 			type = ATK_ResultType.NO_IMPACT;
 			code = rcode;
 			damage = 0;
 			//null
 			stringer = str;
 			attack = att;
-			notes = null;
+			notes = _notes;
 		}
 		
 		public AttackReturn() {

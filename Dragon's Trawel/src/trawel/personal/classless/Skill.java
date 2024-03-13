@@ -206,7 +206,7 @@ public enum Skill{
 		FETID_FUMES("Fetid Fumes","When attacked, force a contested Clarity check to apply Miasma. Attackers already inflicted with Miasma suffer a -10% hit roll."
 				,"Miasma loses a stack every attack by the inflicted party."
 				,Type.DEFENSE),
-		FEVER_STRIKE("Fever Strike","On attack, force a contested Clarity check to apply Miasma. When targeting opponents already inflicted with Miasma with physical attacks, deal +10% damage as Decay damage."
+		FEVER_STRIKE("Fever Strike","On attack, force a contested Clarity check to apply Miasma. When targeting opponents already suffering from Miasma with physical attacks, deal +10% damage as Decay damage."
 				,"Miasma loses a stack every attack by the inflicted party. Damage bonus applies on targeting, not on swing."
 				,Type.OFFENSE)
 		
