@@ -72,10 +72,19 @@ import trawel.towns.services.Oracle;
 public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
-	public static final String VERSION_STRING = "v0.8.b_10h3";
-	public static final String VERSION_DATE = " updated Mar 12th 2024";
+	public static final String VERSION_STRING = "v0.8.b__11h";
+	public static final String VERSION_DATE = " updated Mar 13th 2024";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
+			
+			//discuss magic overall
+			"b_11: {part 1/?} TODO magic status stance TODO.",
+			//discuss skill changes
+			"b_11: {part 2/?} Curse inflicting skills have been replaced. Normal NPCs can no longer inflict curse, which should lessen doctor visits. The skill gaps have been replaced with the Miasma in-combat skills Fetid Fumes and Fever Strike.",
+			//discuss bugfixes
+			"b_11: {part 3/?} Strength no longer doubles up on physical damage bonus. Clarity now applies as an elemental damage multiplier.",
+			
+			
 			"b_10 hotfix 3: pouch swap rejection crash, dryad refight crash, dungeon regrow wrong checkpoint type, more perks have attributes, buffed magic attacks and some related archetypes and feats.",
 			"b_10 hotfix 2: fixed fort menu crashes, improved timeevent error reporting.",
 			"b_10 hotfix 1: increased world currency amount for most humanoid NPCs, attempted to fix dungeon party crash, fixed Inn rent waiting and let you rent more if you have less than 1 month left.",
