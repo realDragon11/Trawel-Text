@@ -765,14 +765,34 @@ public class Combat {
 		if (defender.hasEffect(Effect.DUCKING) || defender.hasEffect(Effect.ROLLING)) {
 			dodgeRoll+=0.2;
 		}
+		if (attacker != null && attacker.hasEffect(Effect.MIASMA)) {
+			if (defender.hasSkill(Skill.FETID_FUMES)) {
+				hitRoll*=0.9;
+			}
+			if (isReal) {
+				attacker.removeEffect(Effect.MIASMA);//ticks here to avoid weird removal cases
+			}
+		}
 		if (isReal) {
 			if (attacker.hasEffect(Effect.ADVANTAGE_STACK)) {
-				hitRoll*=1.2f;
+				hitRoll*=1.2;
 				attacker.removeEffect(Effect.ADVANTAGE_STACK);
 			}
 			if (defender.hasEffect(Effect.ADVANTAGE_STACK)) {
-				dodgeRoll*=1.2f;
+				dodgeRoll*=1.2;
 				defender.removeEffect(Effect.ADVANTAGE_STACK);
+			}
+			//skill code that applies on all attacks, not just hits
+			if (defender.hasSkill(Skill.FETID_FUMES)) {
+				//hit reduction applied above in all cases, not just real attacks
+				if (defender.contestedRoll(attacker,defender.getClarity(),attacker.getClarity()) >= 0){
+					attacker.addEffect(Effect.MIASMA);
+				}
+			}
+			if (attacker.hasSkill(Skill.FEVER_STRIKE)) {
+				if (attacker.contestedRoll(defender,attacker.getClarity(),defender.getClarity()) >= 0){
+					defender.addEffect(Effect.MIASMA);
+				}
 			}
 		}
 		if (hitRoll <= defender.getMissCalc()) {
@@ -800,7 +820,7 @@ public class Combat {
 		}
 		
 		ret = new AttackReturn(att,def,str);
-		if (canDisp && (ret.code != ATK_ResultCode.MISS) && ret.code != ATK_ResultCode.DODGE && ret.code != ATK_ResultCode.NOT_ATTACK) {
+		if (canDisp && ret.code != ATK_ResultCode.NOT_ATTACK) {
 			Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getAttack().getSoundIntensity() + "|" +att.getAttack().getSoundType()+"|");
 			if (wasDead) {
 				ret.addNote("Beating their corpse!");

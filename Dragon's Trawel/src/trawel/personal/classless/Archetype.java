@@ -31,12 +31,12 @@ public enum Archetype implements IHasSkills{
 	 * somewhat inspired by dd1 enemy
 	 */
 	VIRAGO("Venomous Virago"
-			,"An expert on toxic incantations, salves, potions, and the like. Adept in supplemental curse spellcasting."
+			,"An expert on toxic incantations, salves, potions, and the like."
 			,null
 			,AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.CURSES,FeatType.POTIONS)
-			,EnumSet.of(Skill.TOXIC_BREWS,Skill.P_BREWER,Skill.CURSE_MAGE)
+			,EnumSet.of(Skill.TOXIC_BREWS,Skill.P_BREWER,Skill.FEVER_STRIKE)
 			,0,3,12
 			)
 	,GLADIATOR("Glitzy Gladiator"
@@ -130,7 +130,7 @@ public enum Archetype implements IHasSkills{
 			,AType.RACIAL
 			,EnumSet.of(AGroup.MAGIC)
 			,EnumSet.of(FeatType.CURSES)
-			,EnumSet.of(Skill.RACIAL_SHIFTS,Skill.CONDEMN_SOUL)
+			,EnumSet.of(Skill.RACIAL_SHIFTS)
 			)
 	,ARCHMAGE("Archmage"//now an AFTER archetype
 			,"Weaving spells has become as easy as breathing."

@@ -59,6 +59,12 @@ public class ImpairedAttack implements IAttack{
 		double elementalDamMult = 1;
 		double physicalDamMult = 1;
 		
+		//attrib bonuses now always apply to each type
+		if (_attacker != null) {
+			physicalDamMult = _attacker.attMultStr();
+			elementalDamMult = _attacker.attMultCla();
+		}
+		
 		double effectiveLevel;
 		assert !(_weapon == null && _attacker == null);//only one can be null
 		double sMult = attack.getSharp()*t.sharp;
@@ -69,14 +75,11 @@ public class ImpairedAttack implements IAttack{
 		//boolean isAttackTest = defender == null;
 		
 		if (_weapon != null) {
-			w_lvl = _weapon.getLevel();//wow I was going crazy due to setting it to 10 here
+			w_lvl = _weapon.getLevel();
 			effectiveLevel = IEffectiveLevel.unEffective(IEffectiveLevel.effective(w_lvl));
 			sMult *= _weapon.getMat().sharpMult;
 			bMult *= _weapon.getMat().bluntMult;
 			pMult *= _weapon.getMat().pierceMult;
-			if (_attacker != null) {
-				physicalDamMult *= _attacker.attMultStr();
-			}
 		}else {
 			IHasSkills attSource = attack.getSkillSource();
 			if (_attacker != null && attSource != null) {
@@ -103,20 +106,28 @@ public class ImpairedAttack implements IAttack{
 		vals[0] = damageRoll(DamageType.SHARP,sMult*damMult*physicalDamMult);
 		vals[1] = damageRoll(DamageType.BLUNT,bMult*damMult*physicalDamMult);
 		vals[2] = damageRoll(DamageType.PIERCE,pMult*damMult*physicalDamMult);
-		if (attack.isBypass() || !(_weapon != null && _weapon.isEnchantedHit())) {
+		if (attack.isBypass()) {// || !(_weapon != null && _weapon.isEnchantedHit())
 			vals[3] = damageRoll(DamageType.IGNITE,attack.getIgnite()*damMult*elementalDamMult);
 			vals[4] = damageRoll(DamageType.FROST,attack.getFrost()*damMult*elementalDamMult);
 			vals[5] = damageRoll(DamageType.ELEC,attack.getElec()*damMult*elementalDamMult);
-		}else {//enchant hit weapon with no bypass
+		}else {
 			//now uses the actual damage to scale, but without the physical damage mult
-			double totalDam = (sMult+bMult+pMult)*damMult;
-			Enchant enc = _weapon.getEnchant();
-			//dam mult included in totalDam already
-			vals[3] = damageRoll(DamageType.IGNITE,enc.getFireMod()*totalDam*elementalDamMult);
-			vals[4] = damageRoll(DamageType.FROST,enc.getFreezeMod()*totalDam*elementalDamMult);
-			vals[5] = damageRoll(DamageType.ELEC,enc.getShockMod()*totalDam*elementalDamMult);
+			double totalPhysDam = (sMult+bMult+pMult)*damMult;
+			
+			//enchant hit weapon with no bypass
+			if (_weapon != null && _weapon.isEnchantedHit()) {
+				Enchant enc = _weapon.getEnchant();
+				//dam mult included in totalDam already
+				vals[3] = damageRoll(DamageType.IGNITE,enc.getFireMod()*totalPhysDam*elementalDamMult);
+				vals[4] = damageRoll(DamageType.FROST,enc.getFreezeMod()*totalPhysDam*elementalDamMult);
+				vals[5] = damageRoll(DamageType.ELEC,enc.getShockMod()*totalPhysDam*elementalDamMult);
+			}
+			if (attacker != null && defender != null && attacker.hasSkill(Skill.FEVER_STRIKE) && defender.hasEffect(Effect.MIASMA)) {
+				//decay damage bonus if defender has miasma
+				vals[6] += totalPhysDam*.2f;
+			}
 		}
-		
+		//no decay wounds
 		double counter = extra.getRand().nextDouble() * (vals[0] + vals[1] + vals[2] + vals[3] + vals[4] + vals[5]);
 		counter-=vals[0];
 		if (counter<=0) {
@@ -147,7 +158,7 @@ public class ImpairedAttack implements IAttack{
 			}
 		}
 		if (!alwaysWound && wound != Wound.NEGATED && extra.randRange(1,10) == 1) {
-			this.wound = null;//null is not different from grazing, grazing is a dedicated 'ineffective'
+			this.wound = null;//null is not different from grazing, negating is a dedicated 'ineffective'
 		}
 		
 		level = w_lvl;
@@ -297,7 +308,7 @@ public class ImpairedAttack implements IAttack{
 			case BLUNT:
 				return ia.getBlunt();
 			case DECAY:
-				break;
+				return ia.getDecay();
 			case ELEC:
 				return ia.getElec();
 			case FROST:
@@ -342,13 +353,28 @@ public class ImpairedAttack implements IAttack{
 	}
 	
 	private int damageRoll(DamageType dt, double max) {
+		if (attacker != null) {
+			max*= attacker.getBag().getDam();//DOLATER make physical damage mult seperate;
+			//already added above?
+			//max*= attacker.fetchAttributes().multStrength();//DOLATER see if working
+		}else {
+			if (weapon != null) {//if attacker is null, but there is still a weapon
+				if (weapon.getEnchant() != null) {
+					max*=weapon.getEnchant().getDamMod();//DOLATER make physical damage mult seperate
+				}	
+			}
+		}
+		return extra.randRange((int)(max*.7),(int)max);
+		//don't need switch, strength code was already handled elsewhere???
+		/*
 		switch (dt) {
 		case SHARP: case BLUNT: case PIERCE:
 			if (attacker != null) {
 				max*= attacker.getBag().getDam();//DOLATER make physical damage mult seperate;
-				max*= attacker.fetchAttributes().multStrength();//DOLATER see if working
+				//already added above?
+				//max*= attacker.fetchAttributes().multStrength();//DOLATER see if working
 			}else {
-				if (weapon != null) {
+				if (weapon != null) {//if attacker is null, but there is still a weapon
 					if (weapon.getEnchant() != null) {
 						max*=weapon.getEnchant().getDamMod();//DOLATER make physical damage mult seperate
 					}	
@@ -359,7 +385,7 @@ public class ImpairedAttack implements IAttack{
 			if (attacker != null) {
 				max*= attacker.getBag().getDam();//DOLATER make physical damage mult seperate;
 			}else {
-				if (weapon != null) {
+				if (weapon != null) {//if attacker is null, but there is still a weapon
 					if (weapon.getEnchant() != null) {
 						max*=weapon.getEnchant().getDamMod();//DOLATER make physical damage mult seperate
 					}	
@@ -368,7 +394,7 @@ public class ImpairedAttack implements IAttack{
 			return extra.randRange((int)(max*.7),(int)max);
 		default: 
 			return 0;
-		}
+		}*/
 	}
 	
 	/**
@@ -462,6 +488,11 @@ public class ImpairedAttack implements IAttack{
 	
 	@Override
 	public int getElec() {
+		return (int) (getPotencyMult()*IAttack.getElecFromWeap(vals));
+	}
+	
+	@Override
+	public int getDecay() {
 		return (int) (getPotencyMult()*IAttack.getElecFromWeap(vals));
 	}
 	

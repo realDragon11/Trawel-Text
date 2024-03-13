@@ -44,6 +44,7 @@ public enum Effect{
 	ADVANTAGE_STACK("Advantage","Their next to hit or dodge roll will gain a +20% bonus. Stacks.",false,true,2),
 	SUDDEN_START("Sudden Start","Applies Advantage and grants 2 Bonus Weapon Attacks at the start of battle.",false,false,2),
 	STERN_STUFF("Sterner Stuff","Chance to resist death once per battle.",false,false,3),
+	MIASMA("Miasma","Grants skill interactions to enemy Persons. Goes down one stack after every attack by the inflicted Person.",false,true,-1),
 	//condwounds
 	DEPOWERED("Depowered","Unable to use some special abilities.",false,false,-2),
 	MAIMED("Maimed","Loses one weapon attack choice per attack. Doesn't stack with Disarmed.",false,false,-3),

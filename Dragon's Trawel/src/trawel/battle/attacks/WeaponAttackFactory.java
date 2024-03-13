@@ -1219,7 +1219,7 @@ public class WeaponAttackFactory {
 		}
 		
 		public static int[] distribute(float damage, float sharpW, float bluntW, float pierceW, float igniteW, float frostW, float elecW) {
-			int[] arr = new int[6];
+			int[] arr = new int[7];
 			float total = sharpW+bluntW+pierceW+igniteW+frostW+elecW;
 			arr[0] = Math.round((sharpW/total)*damage);
 			arr[1] = Math.round((bluntW/total)*damage);
@@ -1227,6 +1227,7 @@ public class WeaponAttackFactory {
 			arr[3] = Math.round((igniteW/total)*damage);
 			arr[4] = Math.round((frostW/total)*damage);
 			arr[5] = Math.round((elecW/total)*damage);
+			arr[6] = 0;//decay damage, needed here
 			return arr;
 		}
 	}

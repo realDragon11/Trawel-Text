@@ -294,6 +294,10 @@ public class Attack implements IAttack{
 	public int getElec() {
 		return IAttack.getElecFromWeap(intValues);
 	}
+	@Override
+	public int getDecay() {
+		return IAttack.getDecayFromWeap(intValues);
+	}
 	/**
 	 * @return the desc (String)
 	 */

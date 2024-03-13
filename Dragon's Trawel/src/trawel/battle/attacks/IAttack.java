@@ -34,6 +34,10 @@ public interface IAttack {
 	 * @return 0 if not present or isn't elemental
 	 */
 	public int getElec();
+	/**
+	 * @return 0 if not present or isn't elemental
+	 */
+	public int getDecay();
 	
 	public double getWarmup();
 	public double getCooldown();
@@ -64,6 +68,9 @@ public interface IAttack {
 	}
 	public static int getElecFromWeap(int[] vals) {
 		return vals[5];
+	}
+	public static int getDecayFromWeap(int[] vals) {
+		return vals[6];
 	}
 
 	public int getTotalDam();

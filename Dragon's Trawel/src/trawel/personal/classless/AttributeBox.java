@@ -183,12 +183,13 @@ public class AttributeBox {
 		return .1f;
 	}
 	
+	/*
 	public float multStrength() {
 		if (strength <= 100) {
 			return extra.lerp(.5f,1f,Math.max(0,strength)/100f);
 		}
 		return 1f + (strength/1000f);//+.1f per 100
-	}
+	}*/
 	
 	public String getDesc() {
 		return "dex: " +getDexterity() + " cap/str: "+capacity+"/"+getStrength();

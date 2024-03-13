@@ -29,7 +29,7 @@ public enum Feat implements IHasSkills{
 			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS),20,5,5),
 	WITCHY("Witchy","Curses and potions are their forte.","",// Washy
 			1f,EnumSet.of(FeatType.POTIONS,FeatType.CURSES),null
-			,EnumSet.of(Skill.CURSE_MAGE,Skill.P_BREWER),0,5,10
+			,EnumSet.of(Skill.POTION_CHUGGER,Skill.FETID_FUMES),0,5,10
 			,null,null)
 	,HEMOVORE("Hemovore","Extracts life energy from fleeting mortality.","",
 			1f,EnumSet.of(FeatType.MYSTIC),EnumSet.of(FeatType.CURSES,FeatType.BATTLE,FeatType.POTIONS)
