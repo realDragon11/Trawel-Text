@@ -1041,6 +1041,32 @@ public class MaterialFactory {
 		misc.color = extra.inlineColor(new Color(105,113,128));
 		register(misc);
 		
+		misc = new Material();//used for testing
+		misc.name = "test";
+		misc.typeList.add(ArmorStyle.PLATE);
+		misc.armor = true;
+		misc.weapon = true;
+		misc.weight = 20;
+		misc.cost = 1;
+		misc.baseEnchant = 1f;
+		misc.baseResist = 1;
+		misc.sharpResist = 1;
+		misc.bluntResist = 1;
+		misc.pierceResist = 1;
+		misc.dexMod = .9f;
+		misc.sharpMult = 1;
+		misc.bluntMult = 1;
+		misc.pierceMult = 1;
+		misc.tier = 1;
+		misc.rarity = 0;
+		misc.fireVul = 1f;
+		misc.shockVul = 1f;
+		misc.freezeVul = 1f;
+		misc.palIndex = 0;
+		misc.soundType = "metal";
+		misc.color = extra.inlineColor(new Color(131,145,169));
+		register(misc);
+		
 		
 		
 		for (Material m: matList) {

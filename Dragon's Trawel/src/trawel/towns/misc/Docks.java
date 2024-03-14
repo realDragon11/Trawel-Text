@@ -22,6 +22,7 @@ import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.Archetype;
+import trawel.personal.classless.Perk;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
@@ -111,7 +112,7 @@ public class Docks extends Feature {
 								Person p = leader.getPerson();
 								//promote if was mook
 								if (p.getFlag(PersonFlag.IS_MOOK)) {
-									p.setArch(Archetype.PROMOTED);
+									p.setPerk(Perk.NPC_PROMOTED);
 									p.setFlag(PersonFlag.IS_MOOK, false);
 								}
 								
@@ -445,7 +446,7 @@ public class Docks extends Feature {
 		if (old_attackers.size() > 0) {
 			Person p = old_attackers.remove(0);
 			p.setFlag(PersonFlag.IS_MOOK, false);
-			p.setArch(Archetype.PROMOTED);
+			p.setPerk(Perk.NPC_PROMOTED);
 			return p.getSelfOrAllies();
 		}
 		if (extra.chanceIn(1,3)) {

@@ -84,8 +84,9 @@ public enum Feat implements IHasSkills{
 			,null,null
 			)
 	,SHAMAN("Shaman","Is attuned to the primal forces of life.",""
-			,1f,null,EnumSet.of(FeatType.CURSES,FeatType.POTIONS)
-			,EnumSet.of(Skill.LIFE_MAGE,Skill.POTION_CHUGGER),0,3,12
+			,1f,null,EnumSet.of(FeatType.CURSES)
+			//tons of clarity
+			,EnumSet.of(Skill.LIFE_MAGE),2,3,25
 			,null,null)
 	;
 

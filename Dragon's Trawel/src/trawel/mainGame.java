@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -47,6 +48,8 @@ import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.Archetype;
+import trawel.personal.classless.IHasSkills;
+import trawel.personal.classless.Skill;
 import trawel.personal.item.DummyInventory;
 import trawel.personal.item.Item;
 import trawel.personal.item.body.Race;
@@ -2190,7 +2193,7 @@ public class mainGame {
 	public static void weaponStatQuery() {
 		forceSetup();
 
-		List<Material> standardList = new ArrayList<Material>();
+		final List<Material> standardList = new ArrayList<Material>();
 		standardList.add(MaterialFactory.getMat("iron"));
 		standardList.add(MaterialFactory.getMat("steel"));
 		standardList.add(MaterialFactory.getMat("gold"));
@@ -2210,9 +2213,9 @@ public class mainGame {
 
 					@Override
 					public boolean go() {
-						WeaponAttackFactory.dispTestWeapon(1,WeaponType.values()[i],weaponMatTesterList);
-						WeaponAttackFactory.dispTestWeapon(10,WeaponType.values()[i],weaponMatTesterList);
-						WeaponAttackFactory.dispTestWeapon(100,WeaponType.values()[i],weaponMatTesterList);
+						WeaponAttackFactory.dispTestWeapon(1,WeaponType.values()[i],null,weaponMatTesterList);
+						WeaponAttackFactory.dispTestWeapon(10,WeaponType.values()[i],null,weaponMatTesterList);
+						WeaponAttackFactory.dispTestWeapon(100,WeaponType.values()[i],null,weaponMatTesterList);
 						return false;
 					}});
 				return list;
@@ -2228,56 +2231,143 @@ public class mainGame {
 				List<MenuItem> list = new ArrayList<MenuItem>();
 				list.add(new MenuBack("back"));
 				return list;
-			}};
-			List<Material> allWeapMats = new ArrayList<Material>();
-			MaterialFactory.matList.stream().filter(M->M.weapon).forEach(allWeapMats::add);
+			}
+		};
+		List<Material> allWeapMats = new ArrayList<Material>();
+		MaterialFactory.matList.stream().filter(M->M.weapon).forEach(allWeapMats::add);
 
-			MenuGenerator matMenu = new ScrollMenuGenerator(allWeapMats.size(),"previous <> materials", "next <> materials") {
+		MenuGenerator matMenu = new ScrollMenuGenerator(allWeapMats.size(),"previous <> materials", "next <> materials") {
 
-				@Override
-				public List<MenuItem> forSlot(int i) {
-					List<MenuItem> list= new ArrayList<MenuItem>();
-					list.add(new MenuSelect() {
+			@Override
+			public List<MenuItem> forSlot(int i) {
+				List<MenuItem> list= new ArrayList<MenuItem>();
+				list.add(new MenuSelect() {
 
-						@Override
-						public String title() {
-							return allWeapMats.get(i).name;
+					@Override
+					public String title() {
+						return allWeapMats.get(i).name;
+					}
+
+					@Override
+					public boolean go() {
+						weaponMatTesterList = Collections.singletonList(allWeapMats.get(i));
+						extra.menuGo(weapMenu);
+						return false;
+					}});
+				return list;
+			}
+
+			@Override
+			public List<MenuItem> header() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Standard Mats.";
+					}
+
+					@Override
+					public boolean go() {
+						weaponMatTesterList = standardList;
+						extra.menuGo(weapMenu);
+						return false;
+					}});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Magic.";
+					}
+
+					@Override
+					public boolean go() {
+						final List<Material> magicMatList = new ArrayList<Material>();
+						magicMatList.add(MaterialFactory.getMat("test"));
+						final List<Skill> overSkillList = new ArrayList<Skill>();
+						final Map<Skill,List<IHasSkills>> skillStances = WeaponAttackFactory.getMetricStances();
+						for (Skill s: skillStances.keySet()) {
+							overSkillList.add(s);
 						}
+						extra.menuGo(new ScrollMenuGenerator(overSkillList.size(),"previous <> skills", "next <> skills") {
 
-						@Override
-						public boolean go() {
-							weaponMatTesterList = Collections.singletonList(allWeapMats.get(i));
-							extra.menuGo(weapMenu);
-							return false;
-						}});
-					return list;
-				}
+							@Override
+							public List<MenuItem> forSlot(int i) {
 
-				@Override
-				public List<MenuItem> header() {
-					List<MenuItem> list = new ArrayList<MenuItem>();
-					list.add(new MenuSelect() {
+								List<MenuItem> list= new ArrayList<MenuItem>();
+								list.add(new MenuSelect() {
 
-						@Override
-						public String title() {
-							return "standard";
-						}
+									@Override
+									public String title() {
+										return overSkillList.get(i).getName();
+									}
 
-						@Override
-						public boolean go() {
-							weaponMatTesterList = standardList;
-							extra.menuGo(weapMenu);
-							return false;
-						}});
-					return list;
-				}
+									@Override
+									public boolean go() {
+										Skill skillChosen = overSkillList.get(i);
+										List<IHasSkills> sourceList = skillStances.get(skillChosen);
+										extra.menuGo(new ScrollMenuGenerator(sourceList.size(),"previous <> sources", "next <> sources") {
 
-				@Override
-				public List<MenuItem> footer() {
-					List<MenuItem> list = new ArrayList<MenuItem>();
-					list.add(new MenuBack("exit"));
-					return list;
-				}};
+											@Override
+											public List<MenuItem> forSlot(int i) {
+												List<MenuItem> list = new ArrayList<MenuItem>();
+												list.add(new MenuSelect() {
+
+													@Override
+													public String title() {
+														return sourceList.get(i).menuName();
+													}
+
+													@Override
+													public boolean go() {
+														WeaponAttackFactory.dispTestWeapon(1,WeaponType.NULL_WAND,sourceList.get(i),magicMatList);
+														WeaponAttackFactory.dispTestWeapon(10,WeaponType.NULL_WAND,sourceList.get(i),magicMatList);
+														WeaponAttackFactory.dispTestWeapon(100,WeaponType.NULL_WAND,sourceList.get(i),magicMatList);
+														return false;
+													}});
+												return list;
+											}
+
+											@Override
+											public List<MenuItem> header() {
+												return null;
+											}
+
+											@Override
+											public List<MenuItem> footer() {
+												List<MenuItem> list = new ArrayList<MenuItem>();
+												list.add(new MenuBack("back"));
+												return list;
+											}
+										});
+										return false;
+									}});
+								return list;
+							}
+							@Override
+							public List<MenuItem> header() {
+								return null;
+							}
+
+							@Override
+							public List<MenuItem> footer() {
+								List<MenuItem> list = new ArrayList<MenuItem>();
+								list.add(new MenuBack("back"));
+								return list;
+							}
+						});
+						return false;
+					}});
+				return list;
+			}
+
+			@Override
+			public List<MenuItem> footer() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuBack("exit"));
+				return list;
+			}
+		};
 		extra.menuGo(matMenu);
 	}
 

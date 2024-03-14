@@ -38,7 +38,8 @@ public enum Perk implements IHasSkills{
 	,STORYTELLER("Storyteller","Has lived through an epic narrative.",EnumSet.of(Skill.PLOT_ARMOR,Skill.STERN_STUFF),0,0,5)
 	,ANCIENT("Ancient","Older than history.",EnumSet.of(Skill.NO_HOSTILE_CURSE),10,10,10)
 	,QUEENSLAYER("Queenslayer","Committed an important regicide.",EnumSet.of(Skill.DSTRIKE,Skill.KILLHEAL),3,3,3)
-	,CULT_LEADER("Cult Leader","Leads a cult sect.",EnumSet.of(Skill.NO_HOSTILE_CURSE,Skill.PLOT_ARMOR),0,0,10);
+	,CULT_LEADER("Cult Leader","Leads a cult sect.",EnumSet.of(Skill.NO_HOSTILE_CURSE,Skill.PLOT_ARMOR),0,0,10)
+	,NPC_PROMOTED("Promoted","They made it big.",EnumSet.of(Skill.TA_NAILS,Skill.STERN_STUFF, Skill.PLOT_ARMOR,Skill.NO_HOSTILE_CURSE),5,5,5);
 	private final String name, desc;
 	private final Set<Skill> skills;
 	private final int strength, dexterity, clarity;

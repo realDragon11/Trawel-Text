@@ -492,6 +492,11 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	
 	public void setPerk(Perk p) {
 		perkSet.add(p);
+		switch (p) {
+		case NPC_PROMOTED:
+			this.clearEffects();//cures effects, notably curse, which they just gained immunity to
+			break;
+		}
 		updateSkills();//just update instantly now
 	}
 	public boolean hasPerk(Perk p) {
@@ -509,13 +514,8 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		}
 		updateSkills();//just update instantly now
 	}
-	public void setArch(Archetype a) {//did I actually misspell that
+	public void setArch(Archetype a) {
 		archSet.add(a);
-		switch (a) {
-		case PROMOTED:
-			this.clearEffects();//cures effects, notably curse, which they just gained immunity to
-			break;
-		}
 		updateSkills();//just update instantly now
 	}
 	

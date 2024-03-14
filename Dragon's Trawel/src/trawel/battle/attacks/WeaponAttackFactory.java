@@ -43,6 +43,14 @@ public class WeaponAttackFactory {
 		return WeaponType.values()[weapTypeTable.random(extra.getRand())];
 	}
 	
+	/**
+	 * metric testing only
+	 * @return
+	 */
+	public static Map<Skill,List<IHasSkills>> getMetricStances(){
+		return skillStances;
+	}
+	
 	public enum AttackBonus{
 		ROLL("Roll","Gain a temporary dodge bonus then an accuracy/speed bonus on the attack after, before having to recover."
 				,"On use: Enhances dodge roll by a flat +0.2 and makes the next attack half the duration and more accurate, at the cost of half dodge during the attack following the attack that benefits."
@@ -1083,13 +1091,20 @@ public class WeaponAttackFactory {
 		*/
 	}
 	
-	public static final void dispTestWeapon(int level,WeaponType t, List<Material> mats) {
+	public static final void dispTestWeapon(int level,WeaponType t,IHasSkills has, List<Material> mats) {
 		int tests = 1000;
 		int totalTests = tests*extra.getDumInvs().size();
 		
-		for (Attack a: WeaponAttackFactory.getStance(t).giveList()) {
-			a.display(0);
+		if (has != null) {
+			for (Attack a: WeaponAttackFactory.getStance(has).giveList()) {
+				a.display(0);
+			}
+		}else {
+			for (Attack a: WeaponAttackFactory.getStance(t).giveList()) {
+				a.display(0);
+			}
 		}
+		
 		
 		for (Material m: mats) {
 			List<AttackMetric> metrics = new ArrayList<AttackMetric>();
@@ -1097,15 +1112,16 @@ public class WeaponAttackFactory {
 			double totalDPS = 0;
 			Weapon w = new Weapon(level,m,t);
 			
+			Stance stance = has == null ? w.getMartialStance() : WeaponAttackFactory.getStance(has);
 			
 			int i = 0;
-			int size = w.getMartialStance().getAttackCount();
+			int size = stance.getAttackCount();
 			
 			while (i < size) {
 				double damage = 0;
 				double speed = 0;
 				Attack holdAttack;
-				holdAttack = w.getMartialStance().getAttack(i);
+				holdAttack = stance.getAttack(i);
 				double hits = 0;
 				double fullhits = 0;
 				for (int ta = 0; ta < tests;ta++) {
@@ -1130,7 +1146,7 @@ public class WeaponAttackFactory {
 				speed/=totalTests;
 				hits/=totalTests;
 				fullhits/=totalTests;
-				AttackMetric am = new AttackMetric(w.getNameNoTier(), holdAttack.getName(), w.getMartialStance().getWeight(i)
+				AttackMetric am = new AttackMetric(w.getNameNoTier(), holdAttack.getName(), stance.getWeight(i)
 						, hits,fullhits, damage, speed);
 				metrics.add(am);
 				totalDPS+=am.average_dps;
