@@ -3,7 +3,7 @@ package trawel.personal.classless;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import trawel.extra;
-import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.battle.attacks.AttackBonus;
 import trawel.personal.Person;
 
 public enum Skill{
@@ -171,19 +171,19 @@ public enum Skill{
 				,"test"
 				,Type.TACTIC_TYPE),
 		TACTIC_SINGLE_OUT("Tactic: Single Out","Grants access to the Single Out tactic at all times."
-				,WeaponAttackFactory.AttackBonus.SINGLE_OUT.desc
+				,AttackBonus.SINGLE_OUT.desc
 				,Type.TACTIC_TYPE),
 		TACTIC_DUCK_ROLL("Tactic: Duck 'n Roll","Grants access to the Roll tactic at all times."
-				,WeaponAttackFactory.AttackBonus.ROLL.desc
+				,AttackBonus.ROLL.desc
 				,Type.TACTIC_TYPE),
 		OPPORTUNIST("Opportunist","Grants a skill configuration to put active tactics in.",
 				""
 				,Type.ATTACK_TYPE),
 		TACTIC_CHALLENGE("Tactic: Challenge","Grants access to the Challenge tactic at all times."
-				,WeaponAttackFactory.AttackBonus.CHALLENGE.desc
+				,AttackBonus.CHALLENGE.desc
 				,Type.TACTIC_TYPE),
 		TACTIC_TAKEDOWN("Tactic: Planned Takedown","Grants access to the Takedown tactic at all times."
-				,WeaponAttackFactory.AttackBonus.TAKEDOWN.desc
+				,AttackBonus.TAKEDOWN.desc
 				,Type.TACTIC_TYPE),
 		TWINNED_TAKEDOWN("Twinned Takedown","Grants the Takedown effect on kill."
 				,"Takedown applies Knockout on your next impactful attack. It stacks in duration."

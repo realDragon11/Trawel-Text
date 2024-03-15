@@ -8,16 +8,15 @@ import java.util.regex.Pattern;
 import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.extra;
-import trawel.battle.attacks.Attack.Wound;
 import trawel.battle.attacks.ImpairedAttack.DamageType;
 
 public class TargetFactory {
 
 	private List<Target> targetList = new ArrayList<Target>();
 	private static TargetFactory handler;
-	public static List<Attack.Wound> fireWounds = new ArrayList<Attack.Wound>();
-	public static List<Attack.Wound> shockWounds = new ArrayList<Attack.Wound>();
-	public static List<Attack.Wound> freezeWounds = new ArrayList<Attack.Wound>();
+	public static List<Wound> fireWounds = new ArrayList<Wound>();
+	public static List<Wound> shockWounds = new ArrayList<Wound>();
+	public static List<Wound> freezeWounds = new ArrayList<Wound>();
 	
 	//public static Map<TargetType,List<Target>> targetTypeMap = new HashMap<TargetType,List<Target>>();
 	public static Map<TargetType,WeightedTable> targetTypeTable = new HashMap<TargetType,WeightedTable>();
@@ -290,16 +289,16 @@ public class TargetFactory {
 	public TargetFactory() {
 		handler = this;
 		
-		fireWounds.add(Attack.Wound.SCALDED);
-		fireWounds.add(Attack.Wound.SCREAMING);
-		fireWounds.add(Attack.Wound.BLACKENED);
+		fireWounds.add(Wound.SCALDED);
+		fireWounds.add(Wound.SCREAMING);
+		fireWounds.add(Wound.BLACKENED);
 		
-		shockWounds.add(Attack.Wound.SCREAMING);
-		shockWounds.add(Attack.Wound.JOLTED);
+		shockWounds.add(Wound.SCREAMING);
+		shockWounds.add(Wound.JOLTED);
 		
-		freezeWounds.add(Attack.Wound.FROSTED);
-		freezeWounds.add(Attack.Wound.FROSTBITE);
-		freezeWounds.add(Attack.Wound.SHIVERING);
+		freezeWounds.add(Wound.FROSTED);
+		freezeWounds.add(Wound.FROSTBITE);
+		freezeWounds.add(Wound.SHIVERING);
 		
 		Target t = new Target();
 		t.name = "head";

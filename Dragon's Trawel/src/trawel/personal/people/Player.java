@@ -25,7 +25,7 @@ import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
 import trawel.battle.Combat;
-import trawel.battle.attacks.Attack.Wound;
+import trawel.battle.attacks.Wound;
 import trawel.factions.FBox;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;

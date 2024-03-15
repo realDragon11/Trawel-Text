@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.extra;
-import trawel.battle.attacks.Attack.Wound;
 import trawel.battle.attacks.TargetFactory.TargetType;
 import trawel.battle.attacks.TargetFactory.TypeBody;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;

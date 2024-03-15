@@ -14,10 +14,10 @@ import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.randomLists;
-import trawel.battle.attacks.Attack.Wound;
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.TargetFactory;
 import trawel.battle.attacks.TargetFactory.BloodType;
+import trawel.battle.attacks.Wound;
 import trawel.factions.FBox;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
@@ -1609,6 +1609,11 @@ public class Combat {
 				handleTurn(defender, attacker,canWait,0);
 				//they suffer a cost penalty to their cooldown
 				defender.applyDiscount(-((cost*2)-discount));
+				break;
+			case CHAR:
+				if (atr.type == ATK_ResultType.IMPACT) {
+					defender.getBag().burnArmor(.05d);
+				}
 				break;
 			}
 		}
