@@ -949,9 +949,9 @@ public class Combat {
 			double p_weight = pdam/rawdam;
 			double weight_arm = bypass ? rawarm/3 : (s_weight*sarm)+(b_weight*barm)+(p_weight*parm);
 			
-			double iarm = weight_arm*def.getIgniteMult(att.getSlot());
-			double farm = weight_arm*def.getFrostMult(att.getSlot());
-			double earm = weight_arm*def.getElecMult(att.getSlot());
+			double iarm = weight_arm;//*def.getIgniteMult(att.getSlot());
+			double farm = weight_arm;//*def.getFrostMult(att.getSlot());
+			double earm = weight_arm;//*def.getElecMult(att.getSlot());
 			
 			//double guess = ((rawdam+weight_arm)/weight_arm)-1;
 			float def_roll = extra.lerp(.05f+(.05f*def.qualityCount(ArmorQuality.RELIABLE)),1f,extra.hrandomFloat());
@@ -1613,6 +1613,12 @@ public class Combat {
 			case CHAR:
 				if (atr.type == ATK_ResultType.IMPACT) {
 					defender.getBag().burnArmor(.05d);
+				}
+				break;
+			case GLACIATE:
+				if (atr.type == ATK_ResultType.IMPACT) {
+					defender.applyDiscount(-10);
+					defender.addEffectCount(Effect.FLUMMOXED,10);
 				}
 				break;
 			}

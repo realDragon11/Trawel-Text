@@ -673,37 +673,39 @@ public class WeaponAttackFactory {
 		addStance(WeaponType.FISH_SPEAR,sta);
 		
 		//skill attack section
+		//since skill attacks don't have weapons they should be a bit better since a good material is often 1x to 3x damage
 		sta = new Stance(Archetype.HEDGE_MAGE,Skill.ARCANIST);
 		sta.addAttack(
 				make("sparks")//best DPS, no bonus effect
-				//around .19 avg
+				//around .26
 				.setFluff("X` conjures sparks at Y`!")
 				.setRarity(1f)
 				.setAcc(1.5f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.7f)
-				.setElementalMix(1, 0, 2)
-				.setWarmupOfTotal(TimeTier.FAST, TimeTier.NORMAL)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.9f)
+				.setElementalMix(1,0,3)
+				.setWarmupOfTotal(TimeTier.FASTER, TimeTier.FAST)
 				);
 		sta.addAttack(
-				make("candle")//damaging, burns armor
-				//around .17 avg
+				make("candle")//damaging, burns armor bonus
+				//around .21
 				.setFluff("X` shoots a small gout of flame at Y`!")
 				.setRarity(1f)
 				.setAcc(1.1f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.8f)
+				.setDamage(DamageTier.HIGH,DamageTier.ASTOUNDING,.5f)
 				.setElementalMix(1, 0, 0)
 				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOW)
 				.setAttackBonus(AttackBonus.CHAR)
 				);
 		sta.addAttack(
-				make("chill")
-				//around
+				make("chill")//very accurate, slow bonus
+				//around .16
 				.setFluff("X` forces Y` to suffer through a deep chill!")
 				.setRarity(1f)
-				.setAcc(1.8f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.4f)
+				.setAcc(3f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.4f)
 				.setElementalMix(0, 1, 0)
 				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOW)
+				.setAttackBonus(AttackBonus.GLACIATE)
 				);
 		addStance(Archetype.HEDGE_MAGE,sta, new AttackLevel() {
 			

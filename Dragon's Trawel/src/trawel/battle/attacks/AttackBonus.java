@@ -15,10 +15,14 @@ public enum AttackBonus{
 			,"On use: Grants next impactful attack a bonus Knockout Wound infliction."
 			,"Stacks in duration.")
 	//FIXME: new status riders for some magic attacks
-	,CHAR("Char","Burn enemy armor by 5%"
+	,CHAR("Char","Burn hit enemy armor by 5%"
 			,"On impact: Burn enemy armor by 5%"
 			,"Applies after hit is resolved. Not localized."
-			);
+			)
+	,GLACIATE("Chill","Hit enemy takes 10 Instants longer and their next attack is 10% less accurate."
+			,"On impact: Add 10 instants to target's current action, their next attack is 10% less accurate."
+			,"Applies after hit is resolved.")
+	;
 	public final String label, desc, mech, deep;
 	AttackBonus(String _label, String _desc, String _mech, String _deep) {
 		label = _label;
