@@ -732,7 +732,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			sipped = Player.player.doSip();
 			isPlay = true;
 			if (hasEffect(Effect.CURSE)) {
-				extra.println("The curse saps the life out of you...");
+				extra.println(extra.RESULT_WARN+"The curse saps the life out of you...");
+			}
+			if (hasEffect(Effect.DAMAGED)) {
+				extra.println(extra.RESULT_WARN+"You're so tired you can barely move...");
 			}
 		}else {
 			if (superperson != null) {
@@ -827,9 +830,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (hasEffect(Effect.DAMAGED)) {
 			bag.buffArmor(.5f);
 			if (isPlay) {
-				extra.println("Your damaged equipment is pretty beat up!");
+				extra.println(extra.RESULT_WARN+"Your damaged equipment is pretty beat up!");
 			}
 		}
+		
 	}
 	
 

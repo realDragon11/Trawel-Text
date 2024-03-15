@@ -78,6 +78,8 @@ public class WorldGen {
 	public static final double milesInLonga = 54.6;
 	public static final float unitsInLata = (float) (milesInLata/distanceScale);
 	public static final float unitsInLonga = (float) (milesInLonga/distanceScale);
+
+	public static final int highestLevel = 15;
 	
 	
 	public static List<DummyPerson> initDummyInvs() {
