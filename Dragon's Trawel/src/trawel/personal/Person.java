@@ -891,16 +891,17 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			
 			boolean autod = autoLevelIf();
 			
+			level+=levels;
 			if (this.isPlayer()) {
 				Networking.send("PlayDelay|sound_magelevel|1|");
 				Networking.leaderboard("Highest Level",level);
 				
-				mainGame.story.levelUp(level+levels);
+				mainGame.story.levelUp(level);
 				Networking.unlockAchievement("level_any");
-				if (level < 5 && level+levels >= 5) {//requires starting level (of character) to be lower than 5
+				if (level-levels < 5 && level >= 5) {//requires starting level (of character) to be lower than 5
 					Networking.unlockAchievement("level5");
 				}
-				if (level < 10 && level+levels >= 10) {//requires starting level (of character) to be lower than 10
+				if (level-levels < 10 && level >= 10) {//requires starting level (of character) to be lower than 10
 					Networking.unlockAchievement("level10");
 				}
 				if (!autod) {
@@ -908,8 +909,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 					playerSkillMenu();
 				}
 			}
-			level+=levels;
-	}
+	}	
 	
 	public <E extends IHasSkills> ScrollMenuGenerator skillDispMenu(Set<E> set, String typeName,String typeNamePlural) {
 		List<IHasSkills> skillList = new ArrayList<IHasSkills>();
