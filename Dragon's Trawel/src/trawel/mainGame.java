@@ -1479,6 +1479,8 @@ public class mainGame {
 				}
 
 			}
+			
+			
 			new Networking();
 
 			prefs = new Properties();
@@ -1536,9 +1538,10 @@ public class mainGame {
 				System.out.println("Please wait for the graphical to load...");
 				Networking.handleAnyConnection(legacyConnect ? ConnectType.LEGACY : ConnectType.GDX);
 				extra.println("Trawel, Gameplay Version "+VERSION_STRING+VERSION_DATE);
-			}else {
-				Networking.handleAnyConnection(ConnectType.NONE);
 			}
+			/*else {
+				Networking.handleAnyConnection(ConnectType.NONE);
+			}*/
 		}catch(Exception e) {
 			System.out.println("There was an error when setting up Trawel.");
 			e.printStackTrace();

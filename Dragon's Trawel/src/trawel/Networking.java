@@ -31,7 +31,7 @@ public class Networking {
 	
 	private static boolean simpleTransmit = false;//DOLATER
 	
-	private static ConnectType type = ConnectType.NONE;
+	private static ConnectType type = ConnectType.LEGACY;//just do legacy by default to avoid issues
 	
 	public static OSNUM os;
 	
@@ -45,6 +45,11 @@ public class Networking {
 	
 	public enum ConnectType{
 		NONE, GDX, LEGACY, GDX_WITH_LEGACY
+	}
+	
+	public Networking() {
+		in = new Scanner(System.in);
+		out = new PrintWriter(System.out);
 	}
 	
 	public static void handleAnyConnection(ConnectType atype) {
@@ -62,8 +67,8 @@ public class Networking {
 		case LEGACY:
 			autoConnect();
 		case NONE:
-			in = new Scanner(System.in);
-			out = new PrintWriter(System.out);
+			//in = new Scanner(System.in);
+			//out = new PrintWriter(System.out);
 			break;
 		}
 	}
