@@ -386,7 +386,7 @@ public class mainGame {
 					public String title() {
 						return " ";
 					}});
-				mList.add(new MenuLast() {
+				mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {
