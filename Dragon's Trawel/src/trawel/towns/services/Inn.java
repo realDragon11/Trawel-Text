@@ -171,21 +171,6 @@ public class Inn extends Feature implements QuestBoardLocation{
 						return false;
 					}
 				});
-				/*
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "bard";
-					}
-
-					@Override
-					public boolean go() {
-						extra.println("Silence reigns.");
-						return false;
-					}
-				});
-				*/
 				mList.add(new MenuSelect() {
 
 					@Override
@@ -435,7 +420,8 @@ public class Inn extends Feature implements QuestBoardLocation{
 		case 2: goDancers();break;
 		case 3: goOracle();break;
 		default:
-			if (town.getPersonableOccupants().count() == 0){
+			checkCurAgent();
+			if (curAgent == null){
 				barFight();
 			}else {
 				goAgent(curAgent);
@@ -450,12 +436,9 @@ public class Inn extends Feature implements QuestBoardLocation{
 		case 2: return "Resident: A group of dancers";
 		case 3: return "Resident: An oracle.";
 		default:
-			if (curAgent == null || !town.getPersonableOccupants().anyMatch(a -> a == curAgent)){
-				if (town.getPersonableOccupants().count() == 0) {
-					return "Resident: Open Bar";
-				}else {
-					newCurAgent();
-				}
+			checkCurAgent();
+			if (curAgent == null) {
+				return "Resident: Open Bar";
 			}
 			return "Resident: " + curAgent.getPerson().getName()+ " (" +curAgent.getPerson().getLevel() +")";	
 		}
@@ -486,7 +469,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 							Combat c = Player.player.fightWith(agent.getPerson());
 							if (c.playerWon() > 0) {
 								town.removeOccupant(agent);
-								newCurAgent();
+								curAgent = null;
 							}
 							return true;
 						}
@@ -696,8 +679,20 @@ public class Inn extends Feature implements QuestBoardLocation{
 		sideQuests.remove(q);
 	}
 	
-	public void newCurAgent() {
-		curAgent = town.getRandPersonableOccupant();
+	public void checkCurAgent() {
+		//if there's anyone in the town we can use
+		if (!town.getPersonableOccupants().findAny().isPresent()) {
+			curAgent = null;
+			return;//can't have any agents, set null and exit
+		}
+		if (curAgent != null && !town.getPersonableOccupants().anyMatch(a -> a == curAgent)) {
+			//if our current agent isn't in town
+			curAgent = null;
+			//don't reset, we have a chance to replace them
+		}
+		if (curAgent == null) {
+			curAgent = town.getRandPersonableOccupant();//replace a null occupant
+		}
 	}
 	
 	@Override
