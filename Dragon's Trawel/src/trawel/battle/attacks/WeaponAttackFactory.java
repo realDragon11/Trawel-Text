@@ -677,17 +677,15 @@ public class WeaponAttackFactory {
 		sta = new Stance(Archetype.HEDGE_MAGE,Skill.ARCANIST);
 		sta.addAttack(
 				make("sparks")//best DPS, no bonus effect
-				//around .26
 				.setFluff("X` conjures sparks at Y`!")
 				.setRarity(1f)
 				.setAcc(1.5f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.9f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.8f)
 				.setElementalMix(1,0,3)
 				.setWarmupOfTotal(TimeTier.FASTER, TimeTier.FAST)
 				);
 		sta.addAttack(
 				make("candle")//damaging, burns armor bonus
-				//around .21
 				.setFluff("X` shoots a small gout of flame at Y`!")
 				.setRarity(1f)
 				.setAcc(1.1f)
@@ -698,11 +696,10 @@ public class WeaponAttackFactory {
 				);
 		sta.addAttack(
 				make("chill")//very accurate, slow bonus
-				//around .16
 				.setFluff("X` forces Y` to suffer through a deep chill!")
 				.setRarity(1f)
 				.setAcc(3f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.4f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.45f)
 				.setElementalMix(0, 1, 0)
 				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOW)
 				.setAttackBonus(AttackBonus.GLACIATE)
@@ -718,30 +715,31 @@ public class WeaponAttackFactory {
 		
 		sta = new Stance(Archetype.SEA_SAGE,Skill.ARCANIST);
 		sta.addAttack(
-				make("sudden squall")
+				make("sudden squall")//fastest, meh damage, low acc
 				.setFluff("X` quickly forces a squall to form around Y`!")
 				.setRarity(2f)
 				.setAcc(.8f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.05f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.1f)
 				.setElementalMix(0, 2, 0)
-				.setWarmupOfTotal(TimeTier.FASTEST,TimeTier.FASTER)
+				.setTime(TimeTier.FASTEST,.8f)
 				);
 		sta.addAttack(
-				make("brackish burst")
+				make("brackish burst")//accurate, fast, meh damage, partly physical, slow bonus
 				.setFluff("X` buffets Y` with cold salty water!")
 				.setRarity(2f)
-				.setAcc(1.0f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.2f)
+				.setAcc(2f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.05f)
 				.setMix(0,1,0)
 				.setElementalRider(.3f,0,1,0)
-				.setTime(TimeTier.FAST,.6f)
+				.setTime(TimeTier.FASTER,.6f)
+				.setAttackBonus(AttackBonus.GLACIATE)
 				);
 		sta.addAttack(
-				make("stormy swell")
+				make("stormy swell")//slow, amazing damage
 				.setFluff("X` conjures a localized coldfront, whips it into a storm, shocking and freezing Y`!")
 				.setRarity(.7f)
 				.setAcc(1.5f)
-				.setDamage(DamageTier.HIGH,DamageTier.ASTOUNDING,.5f)
+				.setDamage(DamageTier.HIGH,DamageTier.ASTOUNDING,1.1f)
 				.setElementalMix(0, 2, 3)
 				.setWarmupOfTotal(TimeTier.SLOW, TimeTier.SLOWEST)
 				);
@@ -760,7 +758,7 @@ public class WeaponAttackFactory {
 		//TODO: skill attack metric tester, fix needing to cast fist
 		sta = new Stance(WeaponType.NULL_WAND);
 		sta.addAttack(//too troublesome to track down this error rn, fix entirely in next release
-				make("fast")
+				make("fist")
 				.setFluff("X` casts fist on Y`!")
 				.setRarity(1f)
 				.setAcc(1f)
@@ -773,31 +771,33 @@ public class WeaponAttackFactory {
 		
 		sta = new Stance(Feat.FLAME_WARDEN,Skill.ARCANIST);//slow, powerful attacks
 		sta.addAttack(
-				make("fireball")
+				make("fireball")//very slow, insane damage, burn armor bonus
 				.setFluff("X` conjures a fireball and hurls it at Y`!")
 				.setRarity(1f)
 				.setAcc(2f)
-				.setDamage(DamageTier.HIGH,DamageTier.ASTOUNDING,.6f)
+				.setDamage(DamageTier.HIGH,DamageTier.ASTOUNDING,1.2f)
 				.setElementalMix(1,0,0)
 				.setWarmupOfTotal(TimeTier.SLOWER, TimeTier.SLOWEST)
+				.setAttackBonus(AttackBonus.CHAR)
 				);
 		sta.addAttack(
-				make("kindle")
+				make("kindle")//normal speed, highish damage
 				.setFluff("X` conjures sparks at Y`!")
 				.setRarity(1f)
 				.setAcc(1.4f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.5f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.9f)
 				.setElementalMix(2, 0, 3)
-				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOWER)
+				.setWarmupOfTotal(TimeTier.FAST, TimeTier.NORMAL)
 				);
 		sta.addAttack(
-				make("flame blast")
+				make("flame blast")//low acc, slower speed, high damage, damage armor bonus
 				.setFluff("X` shoots a gout of flame at Y`!")
 				.setRarity(1f)
 				.setAcc(.8f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.8f)
+				.setDamage(DamageTier.HIGH,DamageTier.ASTOUNDING,.45f)
 				.setElementalMix(1, 0, 0)
 				.setWarmupOfTotal(TimeTier.FASTER, TimeTier.SLOW)
+				.setAttackBonus(AttackBonus.CHAR)
 				);
 		addStance(Feat.FLAME_WARDEN,sta, new AttackLevel() {
 			
@@ -809,43 +809,45 @@ public class WeaponAttackFactory {
 		});
 		
 		sta = new Stance(Feat.FROST_WARDEN,Skill.ARCANIST);//mix of attacks, usually fairly accurate
-		sta.addAttack(//accurate
+		sta.addAttack(//accurate, low damage, fast, chill bonus
 				make("chill")
 				.setFluff("X` forces Y` to suffer through a deep chill!")
 				.setRarity(1f)
-				.setAcc(2.2f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.6f)
+				.setAcc(4f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.3f)
 				.setElementalMix(0, 1, 0)
-				.setWarmupOfTotal(TimeTier.FAST, TimeTier.NORMAL)
+				.setWarmupOfTotal(TimeTier.FASTER, TimeTier.FAST)
+				.setAttackBonus(AttackBonus.GLACIATE)
 				);
-		sta.addAttack(//powerful
+		sta.addAttack(//powerful, fast out slow cooldown, chill bonus
 				make("frostbite")
 				.setFluff("X` quickly cools the air near Y`, forcing them to endure the cold!")
 				.setRarity(1f)
-				.setAcc(1.4f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.8f)
+				.setAcc(1.5f)
+				.setDamage(DamageTier.HIGH,DamageTier.ASTOUNDING,.3f)
 				.setElementalMix(0, 1, 0)
 				.setWarmupOfTotal(TimeTier.FAST, TimeTier.SLOWER)
+				.setAttackBonus(AttackBonus.GLACIATE)
 				);
 		sta.addAttack(
-				make("icicle")
+				make("icicle")//physical, no chill bonus, highest damage, slowest
 				.setFluff("X` conjures a spear of ice and hurls it at Y`!")
 				.setRarity(.5f)
 				.setAcc(1.2f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.6f)
+				.setDamage(DamageTier.HIGH,DamageTier.ASTOUNDING,.9f)
 				.setMix(0,1,6)
 				.setElementalRider(.3f,0,1,0)
-				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOWER)
+				.setWarmupOfTotal(TimeTier.SLOW, TimeTier.SLOWEST)
 				);
 		sta.addAttack(
-				make("iceball")
+				make("iceball")//physical, no chill bonus, fast, lowest damage and acc
 				.setFluff("X` forms a ball of ice and shatters it on Y`!")
 				.setRarity(.5f)
 				.setAcc(1f)//lowest accuracy
-				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.1f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.05f)
 				.setMix(1,10,0)
 				.setElementalRider(.3f,0,1,0)
-				.setWarmupOfTotal(TimeTier.HALF_FAST, TimeTier.FAST)
+				.setWarmupOfTotal(TimeTier.HALF_FAST, TimeTier.FASTER)
 				);
 		addStance(Feat.FROST_WARDEN,sta, new AttackLevel() {
 			
@@ -859,30 +861,31 @@ public class WeaponAttackFactory {
 		//attacks are erratic, one is insanely accurate but slower and low damage, another is middling
 		//and a final one is insanely fast but below average accuracy and damage
 		sta = new Stance(Feat.SHOCK_SAVANT,Skill.ARCANIST);
-		sta.addAttack(//lower accuracy but higher damage than hedge mage version
+		sta.addAttack(//overall good stats, armor damage bonus
 				make("sparks")
 				.setFluff("X` conjures sparks at Y`!")
 				.setRarity(1f)
 				.setAcc(1.2f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.6f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.8f)
 				.setElementalMix(1, 0, 3)//more shock inclined
 				.setWarmupOfTotal(TimeTier.FAST, TimeTier.NORMAL)
+				.setAttackBonus(AttackBonus.CHAR)
 				);
-		sta.addAttack(//very high accuracy
+		sta.addAttack(//very high accuracy, slow but decent damage
 				make("zap")
 				.setFluff("X` zaps Y` with ambient charge!")
 				.setRarity(1f)
 				.setAcc(4f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.4f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.75f)
 				.setElementalMix(0, 0, 1)
 				.setWarmupOfTotal(TimeTier.NORMAL, TimeTier.SLOW)
 				);
-		sta.addAttack(//very fast
+		sta.addAttack(//very fast, inaccurate
 				make("bolt")
 				.setFluff("X` casts bolts of lightning around Y`!")
 				.setRarity(1f)
 				.setAcc(.8f)
-				.setDamage(DamageTier.LOW,DamageTier.WEAK,.1f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.10f)
 				.setElementalMix(0, 0, 1)
 				.setWarmupOfTotal(TimeTier.HALF_FASTEST, TimeTier.FASTEST)
 				);
@@ -932,8 +935,8 @@ public class WeaponAttackFactory {
 				make("rough tumble")//Minstrel DQ9
 				.setFluff("X` tumbles towards Y`, attempting to bodycheck them!")
 				.setRarity(1f)
-				.setAcc(1f)
-				.setDamage(DamageTier.LOW,DamageTier.WEAK,.5f)
+				.setAcc(1.4f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.4f)
 				.setMix(0, 1, 0)
 				.setWarmupOfTotal(TimeTier.HALF_NORMAL, TimeTier.SLOW)
 				,AttackBonus.ROLL);
@@ -942,7 +945,7 @@ public class WeaponAttackFactory {
 				.setFluff("X` dives into Y`, leaving themselves open!")
 				.setRarity(1f)
 				.setAcc(.8f)
-				.setDamage(DamageTier.LOW,DamageTier.WEAK,.5f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.5f)
 				.setMix(0, 1, 0)
 				.setWarmupOfTotal(TimeTier.HALF_FASTEST, TimeTier.FASTER)
 				,AttackBonus.CHALLENGE);
@@ -960,7 +963,7 @@ public class WeaponAttackFactory {
 				.setFluff("X` slaps Y`!")
 				.setRarity(1f)
 				.setAcc(1.5f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.1f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.HIGH,.2f)
 				.setMix(0, 1, 0)
 				.setWarmupOfTotal(TimeTier.HALF_FAST, TimeTier.NORMAL)
 				,AttackBonus.CHALLENGE);
@@ -969,7 +972,7 @@ public class WeaponAttackFactory {
 				.setFluff("X` backhands Y` and leaves their army to it!")
 				.setRarity(3f)//worse and more common so they aren't always slapping
 				.setAcc(1.2f)
-				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.5f)
+				.setDamage(DamageTier.AVERAGE,DamageTier.LOW,.4f)
 				.setMix(0, 1, 0)
 				.setWarmupOfTotal(TimeTier.HALF_NORMAL, TimeTier.SLOW)
 				,AttackBonus.SINGLE_OUT);
