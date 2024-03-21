@@ -61,47 +61,18 @@ public class AttributeBox {
 	 * can average out attributes if you want to use multiple
 	 * <br>
 	 * returns an effective level >=1, but likely > 10
+	 * <br>
+	 * min is also capped at half owner's effective level and max at owner's effective level +3, scaling by 15 past level
 	 */
 	public int getEffectiveAttributeLevel(int attributeAverage) {
-		int level = owner.getEffectiveLevel();
-		int aLevel = Math.round(attributeAverage/10f)+1;
-		int offset = aLevel-level;
-		int aOffset = Math.abs(offset);
-		int sign;
-		if (offset > 0) {
-			sign = 1;
-		}else {
-			if (offset == 0) {
-				return level;
-			}else {
-				sign = -1;
-			}
+		int levelAttrib = owner.getEffectiveLevel()*10;//110 at level 1
+		//attributeAverage 110+ at level 1 they already have 1 archetype
+		if (attributeAverage >= levelAttrib) {//attributes are higher or equal
+			//every 15 higher, +1 level on base, up to 3
+			return owner.getEffectiveLevel()+Math.min(3,(attributeAverage-levelAttrib)/15);
 		}
-		switch (aOffset) {
-		default:
-			return Math.max(1,level+(sign*4));//max is 4
-		case 3: case 4:
-			return Math.max(1, level+(sign*3));//3-4 is 3
-		case 2:
-			return Math.max(1, level+(sign*2));
-		case 1:
-			return Math.max(1, level+sign);
-		}
-		/*
-		if (aOffset >= 5) {
-			return Math.max(1, sign*4);//max is 4
-		}
-		if (aOffset >= 3) {
-			return Math.max(1, sign*3);//3-4 is 3
-		}
-		if (aOffset >= 2) {//could be ==
-			return Math.max(1, sign*2);//3-4 is 3
-		}
-		
-		if (aOffset >= 1) {//could be ==
-			return Math.max(1, sign*2);//3-4 is 3
-		}
-		return level;*/
+		//what level the attributes should be, down to half 
+		return Math.max(owner.getEffectiveLevel()/2,Math.round(attributeAverage/10f));
 	}
 	
 	//NOTE
