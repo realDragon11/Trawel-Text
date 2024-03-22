@@ -427,12 +427,33 @@ public class Mountain extends ExploreFeature{
 							return true;
 						}});
 				}
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return extra.PRE_MAYBE_BATTLE+"Attempt to flee."+AttributeBox.getStatHintByIndex(1);
+					}
+
+					@Override
+					public boolean go() {
+						if (Player.player.getPerson().contestedRoll(Player.player.getPerson().getDexterity(),leader.getDexterity()) >=0){
+							extra.println(extra.RESULT_PASS+"You escape!");
+							return true;
+						}else {
+							extra.println(extra.RESULT_FAIL+"They catch up and attack you while you're panting for breath!");
+							Player.player.getPerson().addEffect(Effect.EXHAUSTED);
+							//doesn't apply burnout since the consequence is the fight with exhausted
+							fight.test(false);
+							return true;
+						}
+					}}
+				);
 				if (!groupSmall) {//can only be chosen by larger cults
 					list.add(new MenuSelect() {
 
 						@Override
 						public String title() {
-							return extra.PRE_BATTLE+"Challenge the leader's divinity!";
+							return extra.PRE_BATTLE+"Challenge the leader's divinity!"+AttributeBox.getStatHintByIndex(2);
 						}
 
 						@Override
