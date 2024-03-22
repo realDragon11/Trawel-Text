@@ -14,7 +14,8 @@ public enum Perk implements IHasSkills{
 	SKY_BLESS_2("Growing Storm","Has a blessing from the sky, granting acute vision and senses that heal them when used.",EnumSet.of(Skill.DODGEREF,Skill.NIGHTVISION),0,4,1)
 	,FOREST_BLESS_1("Sappy Seeder","Has a minor blessing of the forest, hardening their skin and granting alchemy affinity.",EnumSet.of(Skill.TA_NAILS,Skill.P_BREWER),4,0,1)
 	,FOREST_BLESS_2("Heart of Regrowth","Has a blessing of the forest, integrating bark skin with their armor.",EnumSet.of(Skill.ARMORHEART,Skill.ARMOR_TUNING),4,0,1)
-	,CULT_CHOSEN_BLOOD("Chosen (Blood)","Chosen by the cult of blood.",EnumSet.of(Skill.BLOODTHIRSTY),1,1,3)//also used by npc cultist
+	,CULT_CHOSEN_BLOOD("Chosen (Blood)","Chosen by the cult of Blood.",EnumSet.of(Skill.BLOODTHIRSTY),1,1,3)//also used by npc cultist
+	,CULT_CHOSEN_SKY("Chosen (Sky)","Chosen by the cult of Sky.",EnumSet.of(Skill.BLITZ),0,3,2)//also used by npc cultist
 	,MINE_ALL_VEINS("Meticulous Miner","Known for their painstaking digging process.",EnumSet.of(Skill.NIGHTVISION))
 	,GRAVEYARD_SIGHT("Gravesight","Can see in the dark due to a lot of experience.",EnumSet.of(Skill.NIGHTVISION))
 	,HELL_BARONESS_1("Baroness of Hell (Peana's Throne)","Has fiendish powers.",EnumSet.of(Skill.TA_NAILS),5,0,5)
@@ -34,7 +35,7 @@ public enum Perk implements IHasSkills{
 			,EnumSet.of(Skill.LIFE_MAGE,Skill.DODGEREF,Skill.BLOODTHIRSTY,Skill.ARMOR_TUNING),0,20,10)
 	,NPC_PRIMAL_SEA("Haliae","The primal forces within them embody the wrathful seas."
 			,EnumSet.of(Skill.LIFE_MAGE,Skill.SPUNCH,Skill.COUNTER,Skill.RAW_GUTS),15,5,10)
-	, YORE_NPC("Mythic","Is a living story.",EnumSet.of(Skill.PLOT_ARMOR,Skill.RAW_GUTS,Skill.NO_HOSTILE_CURSE),50,50,50)
+	,YORE_NPC("Mythic","Is a living story.",EnumSet.of(Skill.PLOT_ARMOR,Skill.RAW_GUTS,Skill.NO_HOSTILE_CURSE),50,50,50)
 	,STORYTELLER("Storyteller","Has lived through an epic narrative.",EnumSet.of(Skill.PLOT_ARMOR,Skill.STERN_STUFF),0,0,5)
 	,ANCIENT("Ancient","Older than history.",EnumSet.of(Skill.NO_HOSTILE_CURSE),10,10,10)
 	,QUEENSLAYER("Queenslayer","Committed an important regicide.",EnumSet.of(Skill.DSTRIKE,Skill.KILLHEAL),3,3,3)

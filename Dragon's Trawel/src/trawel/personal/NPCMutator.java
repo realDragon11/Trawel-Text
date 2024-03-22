@@ -107,11 +107,48 @@ public class NPCMutator {
 		return p;
 	}
 	
+	/**
+	 * can be used to promote people to sky cult leaders or in direct creation
+	 */
+	public static Person cultLeader_Sky(Person p, boolean addDraws) {
+		if (addDraws) {
+			List<DrawBane> list = p.getBag().getDrawBanes();
+			if (extra.chanceIn(1,3)) {
+				list.add(DrawBane.LIVING_FLAME);
+			}else {
+				list.add(DrawBane.UNICORN_HORN);
+			}
+			list.add(DrawBane.TELESCOPE);
+		}
+		p.setTitle(extra.choose("the Sky Queen",", Chosen by The Sky","the Sky Champion"));
+		p.setPerk(Perk.CULT_CHOSEN_SKY);
+		p.setPerk(Perk.CULT_LEADER);
+		p.hTask = HostileTask.CULTIST;
+		return p;
+	}
+	
+	/**
+	 * can be used to make people culty or in direct creation
+	 */
+	public static Person cultist_Sky(Person p, boolean addDraws) {
+		if (addDraws) {
+			List<DrawBane> list = p.getBag().getDrawBanes();
+			if (extra.chanceIn(1,3)) {
+				list.add(DrawBane.BAT_WING);
+			}
+		}
+		p.setTitle(extra.choose(", Servant of Sky","the Skywatcher",", Sky Servant","the Cloud Cultist","the Cloudguard","the Beyond Believer","the Cosmos Convert"));
+		p.hTask = HostileTask.CULTIST;
+		return p;
+	}
+	
 	
 	public static Person cultist_Switch(Person p, CultType type, boolean addDraws) {
 		switch (type) {
 		case BLOOD:
 			return cultist_Blood(p,addDraws);
+		case SKY:
+			return cultist_Sky(p, addDraws);
 		}
 		throw new RuntimeException("Invalid cult type for NPCMutator: " + type);
 	}
@@ -119,6 +156,8 @@ public class NPCMutator {
 		switch (type) {
 		case BLOOD:
 			return cultLeader_Blood(p,addDraws);
+		case SKY:
+			return cultLeader_Sky(p, addDraws);
 		}
 		throw new RuntimeException("Invalid cult leader type for NPCMutator: " + type);
 	}

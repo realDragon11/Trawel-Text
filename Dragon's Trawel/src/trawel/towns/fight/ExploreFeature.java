@@ -38,6 +38,8 @@ public abstract class ExploreFeature extends Feature{
 	protected double regenRate = 24.0;
 	protected boolean exhausted = false;
 	
+	protected transient int tempLevel = -1;
+	
 	
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
@@ -117,6 +119,7 @@ public abstract class ExploreFeature extends Feature{
 		}
 		Player.addTime(.1 + (extra.randFloat()*.5));
 		mainGame.globalPassTime();
+		rollTempLevel();
 		subExplore(roll());
 	}
 	
@@ -143,6 +146,20 @@ public abstract class ExploreFeature extends Feature{
 	}
 	
 	/**
+	 * will provide a variable level that resets each explore
+	 */
+	protected int getTempLevel() {
+		return tempLevel;
+	}
+	
+	/**
+	 * call each explore to roll an encounter level
+	 */
+	protected void rollTempLevel() {
+		tempLevel = extra.randRange(Math.max(1,tier-1),tier+1);
+	}
+	
+	/**
 	 * 
 	 * @param restingOn
 	 * @param warning
@@ -152,7 +169,7 @@ public abstract class ExploreFeature extends Feature{
 	public static int oldFighter(String restingOn, String warning, Feature location) {
 		int[] ret = new int[] {0};
 		extra.println("You find an old fighter resting on "+restingOn+".");
-		Person old = RaceFactory.makeOld(location.getLevel()+4);
+		Person old = RaceFactory.makeOld(location.getLevel()+4);//doesn't use temp level
 		old.getBag().graphicalDisplay(1, old);
 		extra.menuGo(new MenuGenerator() {
 
@@ -248,9 +265,9 @@ public abstract class ExploreFeature extends Feature{
 			optionalWolfQualifier = " "+nameOfType();
 		}
 		extra.println("A"+optionalWolfQualifier+" wolf is poking over a dead corpse... and it looks like their equipment is intact!");
-		Person loot = RaceFactory.makeLootBody(getLevel());
+		Person loot = RaceFactory.makeLootBody(getTempLevel());
 		loot.getBag().graphicalDisplay(1,loot);
-		Person wolf = RaceFactory.makeAlphaWolf(getLevel());
+		Person wolf = RaceFactory.makeAlphaWolf(getTempLevel());
 		//extra.println(extra.PRE_BATTLE+"Fight the wolf for the body?");
 		if (!wolf.reallyAttack()) {
 			Networking.clearSide(1);
@@ -266,12 +283,12 @@ public abstract class ExploreFeature extends Feature{
 	
 	protected void mugger_other_person() {
 		extra.println(extra.PRE_BATTLE+"You see someone being robbed! Help?");
-		Person robber =  RaceFactory.getMugger(getLevel());
+		Person robber =  RaceFactory.getMugger(getTempLevel());
 		robber.getBag().graphicalDisplay(1, robber);
 		if (extra.yesNo()) {
 			Combat c = Player.player.fightWith(robber);
 			if (c.playerWon() > 0) {
-				int gold = IEffectiveLevel.cleanRangeReward(tier,2.5f,.5f);
+				int gold = IEffectiveLevel.cleanRangeReward(getTempLevel(),2.5f,.5f);
 				extra.println("They give you a reward of " +World.currentMoneyDisplay(gold) + " in thanks for saving them.");
 				Player.player.addGold(gold);
 			}else {
@@ -286,7 +303,7 @@ public abstract class ExploreFeature extends Feature{
 	
 	protected void mugger_ambush() {
 		extra.println(extra.PRE_BATTLE+"You see a mugger charge at you! Prepare for battle!");
-		Person p = RaceFactory.getMugger(getLevel());
+		Person p = RaceFactory.getMugger(getTempLevel());
 		Combat c = Player.player.fightWith(p);
 		if (c.playerWon() > 0) {
 		}else {
@@ -301,19 +318,19 @@ public abstract class ExploreFeature extends Feature{
 		if (result) {
 			if (Math.random() > .4) {
 				extra.println(extra.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");
-				Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
+				Combat c = Player.player.fightWith(RaceFactory.getMugger(getTempLevel()));
 				if (c.playerWon() > 0) {
 					if (c.playerWon() == 1) {
 						extra.println("You wake up and examine the loot...");
 					}
-					int gold = IEffectiveLevel.cleanRangeReward(tier,3.5f,.6f);
+					int gold = IEffectiveLevel.cleanRangeReward(getTempLevel(),3.5f,.6f);
 					extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
 					Player.player.addGold(gold);
 				}else {
 					extra.println(failText);
 				}
 			}else {
-				int gold = IEffectiveLevel.cleanRangeReward(tier,1.5f,.2f);
+				int gold = IEffectiveLevel.cleanRangeReward(getTempLevel(),1.5f,.2f);
 				extra.println("You pick up " + World.currentMoneyDisplay(gold) + "!");
 				Player.player.addGold(gold);
 			}

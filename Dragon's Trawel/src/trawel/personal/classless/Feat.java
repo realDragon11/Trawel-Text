@@ -81,7 +81,7 @@ public enum Feat implements IHasSkills{
 			)
 	,GLUTTON("Glutton","They're greedy for more than just punishment.",""
 			,1f,null,EnumSet.of(FeatType.SPIRIT,FeatType.POTIONS)
-			,EnumSet.of(Skill.BEER_BELLY,Skill.RAW_GUTS,Skill.TA_NAILS),5,0,0
+			,EnumSet.of(Skill.BEER_BELLY,Skill.RAW_GUTS,Skill.POTION_CHUGGER),5,0,0
 			,null,null
 			)
 	,SHAMAN("Shaman","Is attuned to the primal forces of life.",""
@@ -91,7 +91,7 @@ public enum Feat implements IHasSkills{
 			,null,null)
 	,HEAVYWEIGHT("Heavyweight","A wall of meat and muscle.",""
 			,1f,EnumSet.of(FeatType.BRAWN),null
-			//lots of strength
+			//lots of strength, 5 more than normal due to big bag
 			,EnumSet.of(Skill.BIG_BAG,Skill.BULK),20,0,0
 			,null,null)
 	;

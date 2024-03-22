@@ -181,7 +181,7 @@ public class RaceFactory {
 	}
 	
 	public enum CultType{
-		BLOOD;
+		BLOOD, SKY;
 	}
 	
 	public RaceFactory() {
@@ -1435,11 +1435,21 @@ public class RaceFactory {
 		Person w = null;
 		//unlike normal cultists, leaders have more specialized creation code
 		switch (ct) {
-		case BLOOD: default:
+		default:
+			 w = new Person(level,AIJob.CULTIST_WORSHIPER);
+			 addWealth(WEALTH_WELL_OFF,.6f, w);
+			 NPCMutator.cultistLeader_Switch(w,ct,true);
+			 break;
+		case BLOOD:
 			w = new Person(level,AIJob.KNIGHT);//blood for the blood queen
 			addWealth(WEALTH_WELL_OFF,.6f, w);
 			NPCMutator.cultLeader_Blood(w,true);
-			break;		
+			break;
+		case SKY:
+			w = new Person(level,AIJob.ROGUE);
+			addWealth(WEALTH_WELL_OFF,.6f, w);
+			NPCMutator.cultLeader_Sky(w,true);
+			break;
 		}
 		extra.popPrintStack();
 		w.finishGeneration();

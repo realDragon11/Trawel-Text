@@ -142,10 +142,10 @@ public class Forest extends ExploreFeature{
 			switch(extra.randRange(1,3)) {
 			case 1: extra.println("The mushroom is delicious!");break;
 			case 2: extra.println("Eating the mushroom is very difficult... but you manage.");
-			Player.player.getPerson().addXp(tier*2);break;
+			Player.player.getPerson().addXp(getTempLevel()*2);break;
 			case 3: extra.println("You feel lightheaded.... you pass out!");
 			extra.println("When you wake up, you notice someone went through your bags!");
-			extra.println(Player.loseGold(IEffectiveLevel.cleanRangeReward(tier,10f,.2f),true));
+			extra.println(Player.loseGold(IEffectiveLevel.cleanRangeReward(getTempLevel(),10f,.2f),true));
 			break;
 			}
 			if (Math.random() > .8) {
@@ -154,15 +154,15 @@ public class Forest extends ExploreFeature{
 				switch(extra.randRange(1,3)) {
 				case 1: 
 					extra.println("\"You dare violate the forest?!\"");
-					Player.player.fightWith(RaceFactory.getDryad(tier));
+					Player.player.fightWith(RaceFactory.getDryad(getTempLevel()));
 					break;
 				case 2:
 					extra.println("\"Hey, I wanted that!\"");
-					Player.player.fightWith(RaceFactory.getMugger(tier));
+					Player.player.fightWith(RaceFactory.makeCollector(getTempLevel()));
 					break;
 				case 3:
 					extra.println("\"You dirty plant-thief!\"");
-					Player.player.fightWith(RaceFactory.getMugger(tier));
+					Player.player.fightWith(RaceFactory.getLawman(getTempLevel()));
 					break;
 				}
 			
@@ -178,24 +178,24 @@ public class Forest extends ExploreFeature{
 			switch(extra.randRange(1,3)) {
 			default:
 				extra.println("\"You dare violate the forest?!\"");
-				c = Player.player.fightWith(RaceFactory.getDryad(tier));
+				c = Player.player.fightWith(RaceFactory.getDryad(getTempLevel()));
 				break;
 			case 2:
 				extra.println("\"Hey, I wanted that!\"");
-				c = Player.player.fightWith(RaceFactory.makeCollector(tier));
+				c = Player.player.fightWith(RaceFactory.makeCollector(getTempLevel()));
 				break;
 			case 3:
 				extra.println("\"You dirty plant-thief!\"");
-				c = Player.player.fightWith(RaceFactory.getLawman(tier));
+				c = Player.player.fightWith(RaceFactory.getLawman(getTempLevel()));
 				break;
 			}
 			if (c.playerWon() > 0) {
-				int gold = IEffectiveLevel.cleanRangeReward(tier,3f,.7f);
+				int gold = IEffectiveLevel.cleanRangeReward(getTempLevel(),3f,.7f);
 				extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
 				Player.player.addGold(gold);
 			}
 			}else {
-				int gold = IEffectiveLevel.cleanRangeReward(tier,2f,.2f);
+				int gold = IEffectiveLevel.cleanRangeReward(getTempLevel(),2f,.2f);
 				extra.println("You sell the mushroom for " +World.currentMoneyDisplay(gold) + ".");
 				Player.player.addGold(gold);
 			};break;
@@ -206,15 +206,15 @@ public class Forest extends ExploreFeature{
 			switch(extra.randRange(1,3)) {
 			case 1: 
 				extra.println("\"You dare violate the forest?!\"");
-				Player.player.fightWith(RaceFactory.getDryad(tier+1));
+				Player.player.fightWith(RaceFactory.getDryad(getTempLevel()+1));
 				break;
 			case 2:
 				extra.println("\"Hey, I wanted that!\"");
-				Player.player.fightWith(RaceFactory.makeCollector(tier+1));
+				Player.player.fightWith(RaceFactory.makeCollector(getTempLevel()+1));
 				break;
 			case 3:
 				extra.println("\"You dirty plant-crusher!\"");
-				Player.player.fightWith(RaceFactory.getLawman(tier+1));
+				Player.player.fightWith(RaceFactory.getLawman(getTempLevel()+1));
 				break;
 			}
 		}
@@ -230,13 +230,13 @@ public class Forest extends ExploreFeature{
 			break;
 		case 2:
 			extra.println(extra.PRE_BATTLE+ "Something fell and horrible steps out of the hanged man's shadow!");
-			Person reaver = RaceFactory.makeFellReaver(tier);
+			Person reaver = RaceFactory.makeFellReaver(getTempLevel());
 			Combat c = Player.player.fightWith(reaver);
 			if (c.playerWon() > 0) {
 				//not a collector, but this is a dd1 quote ref
 				extra.println("They say a predator is often blind to its own peril- at least there won't be any more men hanged here soon.");
 				//bonus heroism
-				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC, IEffectiveLevel.unclean(tier),0);
+				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC, IEffectiveLevel.unclean(getTempLevel()),0);
 			}else {
 				//terraria ref, unsure if references like this are a bit much
 				extra.println("You wake up elsewhere, striken with nightmares of claw, teeth, sinew, and bone. You feel an evil presence watching you...");
@@ -248,7 +248,7 @@ public class Forest extends ExploreFeature{
 	}
 	
 	private void dryad() {
-		Person robber = RaceFactory.getDryad(tier);
+		Person robber = RaceFactory.getDryad(getTempLevel());
 		robber.getBag().graphicalDisplay(1, robber);
 		while (true) {
 		extra.println("You come across a dryad tending to a tree.");
@@ -282,7 +282,7 @@ public class Forest extends ExploreFeature{
 	}}
 	
 	private void treeOnPerson() {
-		Person p = RaceFactory.getMugger(tier);
+		Person p = RaceFactory.getMugger(getTempLevel());
 		p.getBag().graphicalDisplay(1, p);
 		extra.println("You stumble upon a person stuck under a fallen tree. Help them?");
 		if (extra.yesNo()) {
@@ -296,9 +296,9 @@ public class Forest extends ExploreFeature{
 				if (Math.random() < .3) {
 					extra.println("They scamper off...");
 				}else {
-					int gold = IEffectiveLevel.cleanRangeReward(tier,2f,.7f);
+					int gold = IEffectiveLevel.cleanRangeReward(getTempLevel(),2f,.7f);
 					extra.println("They give you a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them.");
-					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1*IEffectiveLevel.unclean(tier),0);
+					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,1*IEffectiveLevel.unclean(getTempLevel()),0);
 					Player.player.addGold(gold);
 				}
 			}
@@ -349,7 +349,7 @@ public class Forest extends ExploreFeature{
 	}
 	
 	private void lumerbjackDryad() {
-		Person robber = RaceFactory.getLumberjack(tier);
+		Person robber = RaceFactory.getLumberjack(getTempLevel());
 		if (extra.chanceIn(1,3)) {//TODO: make this much rarer and use ingame holidays/months instead
 			LocalDateTime t = LocalDateTime.now();
 			switch (t.getMonth()) {//lmao alphabetically ordered months

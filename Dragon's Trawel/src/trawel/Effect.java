@@ -55,6 +55,9 @@ public enum Effect{
 	SINGLED_OUT("Singled Out","Those who attack this Person have a 2/3rds chance to attack them again afterwards.",false,false,-1),
 	DUCKING("Ducking","Gains +0.2 flat dodge roll (not mult), but will be exhausted after the next attack after this attack completes.",false,false,2),
 	ROLLING("Rolling","Gains +0.2 flat dodge roll (not mult), but will be exhausted after their attack completes.",false,false,1),
+	/**
+	 * used in tactics but also if tired or ambushed
+	 */
 	EXHAUSTED("Exhausted","Halves dodge mult until they next complete an attack cooldown.",false,false,-1),
 	BRISK("Brisk","Halves attack time, and increases hit mult based on amount of time before reduction, with attacks under 100 total instants getting a 1x-2x multiplier the closer they are to 0 instants. Only applies to one set of attacks.",false,false,2),
 	CHALLENGE_BACK("Temerity","Negates the next wound from a suffered Impactful attack, or adds +20% damage to the next attack choice, whichever comes first.",false,false,2),
