@@ -702,6 +702,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (this.hasSkill(Skill.LIFE_MAGE)) {
 			total+=this.getClarity()/20;
 		}
+		if (this.hasSkill(Skill.BULK)) {
+			total+=this.getStrength()/20;
+		}
 		total*=bag.getHealth();
 		if (this.hasEffect(Effect.CURSE)) {
 			if (hasSkill(Skill.TOXIC_BREWS)) {

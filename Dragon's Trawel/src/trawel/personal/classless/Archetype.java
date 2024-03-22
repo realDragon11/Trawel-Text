@@ -25,6 +25,10 @@ public enum Archetype implements IHasSkills{
 	 * they should also grant 15 stats
 	 */
 	
+	/**
+	 * try for 3 unlocks per archetype
+	 */
+	
 	
 	
 	/**
@@ -54,7 +58,7 @@ public enum Archetype implements IHasSkills{
 			,null
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRECT_BATTLE,AGroup.CRAFT)
-			,EnumSet.of(FeatType.BATTLE,FeatType.SMITHS)
+			,EnumSet.of(FeatType.BATTLE,FeatType.CRAFT,FeatType.BRAWN)
 			,EnumSet.of(Skill.ARMOR_TUNING,Skill.ARMORSPEED,Skill.ARMORHEART)
 			,15,0,0
 			)
@@ -65,8 +69,8 @@ public enum Archetype implements IHasSkills{
 			,"A perpetual novice, hedge mages aren't content to restrict themselves to one school."
 			,"Grants basic arcane magic based on clarity."
 			,AType.ENTRY
-			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT,AGroup.GRANTED_ARCANIST)
-			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE)
+			,EnumSet.of(AGroup.MAGIC,AGroup.GRANTED_ARCANIST)
+			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.SOCIAL)
 			,EnumSet.of(Skill.LIFE_MAGE,Skill.ARCANIST)
 			,0,0,20//less skills, 5 bonus stats
 			)
@@ -139,7 +143,7 @@ public enum Archetype implements IHasSkills{
 			,null
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRTY,AGroup.DEXTERITY)
-			,EnumSet.of(FeatType.TRICKS,FeatType.AGILITY)
+			,EnumSet.of(FeatType.TRICKS,FeatType.AGILITY,FeatType.BATTLE)
 			,EnumSet.of(Skill.TWINNED_TAKEDOWN,Skill.DSTRIKE,Skill.DEADLY_AIM)//temp?
 			,2,11,2
 			)
@@ -148,7 +152,7 @@ public enum Archetype implements IHasSkills{
 			,null,
 			AType.ENTRY
 			,EnumSet.of(AGroup.DIRECT_BATTLE,AGroup.STRENGTH)
-			,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)
+			,EnumSet.of(FeatType.BATTLE,FeatType.BRAWN,FeatType.SPIRIT)
 			,EnumSet.of(Skill.BLOODTHIRSTY,Skill.BLITZ,Skill.COUNTER)
 			,12,3,0
 			)

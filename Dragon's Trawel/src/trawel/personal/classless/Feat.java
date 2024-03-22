@@ -26,7 +26,8 @@ public enum Feat implements IHasSkills{
 			,EnumSet.noneOf(Skill.class),15,15,15//should grant a decent amount of every stat
 			,null,null),
 	COMMON_TOUGH("Tough","They're tougher than they look. And they look tough.","",
-			1f,FeatType.COMMON,EnumSet.of(Skill.TA_NAILS),20,5,5),
+			1f,null,EnumSet.of(FeatType.BRAWN,FeatType.BATTLE),EnumSet.of(Skill.TA_NAILS),20,5,5
+			,null,null),
 	WITCHY("Witchy","Curses and potions are their forte.","",// Washy
 			1f,EnumSet.of(FeatType.POTIONS,FeatType.CURSES),null
 			,EnumSet.of(Skill.POTION_CHUGGER,Skill.FETID_FUMES),0,5,10
@@ -36,7 +37,7 @@ public enum Feat implements IHasSkills{
 			,EnumSet.of(Skill.BLOODTHIRSTY,Skill.KILLHEAL,Skill.BLOODDRINKER),3,2,10
 			//needs at least one of the things it grants from some other source
 			,null,EnumSet.of(Skill.BLOODTHIRSTY,Skill.KILLHEAL,Skill.BLOODDRINKER))
-	,UNBREAKABLE("Unbreakable","Beaten, battered, bent, even broken- their spirit may be checked, but it can not be kept down."
+	,UNBREAKABLE("Unbreakable","They'll bounce back from anything."
 			,"",
 			1f,null,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)
 			,EnumSet.of(Skill.NO_HOSTILE_CURSE,Skill.STERN_STUFF),10,0,5
@@ -46,11 +47,11 @@ public enum Feat implements IHasSkills{
 			,EnumSet.of(Skill.SPUNCH),0,20,10
 			,null,null)
 	,ARMORPAINTER("Painter","They paint their armor with magical dyes.",""
-			,1f,EnumSet.of(FeatType.MYSTIC),EnumSet.of(FeatType.SMITHS,FeatType.TRICKS)
+			,1f,EnumSet.of(FeatType.MYSTIC),EnumSet.of(FeatType.CRAFT,FeatType.TRICKS)
 			,EnumSet.of(Skill.MESMER_ARMOR,Skill.ARMOR_MAGE),2,3,10
 			,null,null)
 	,AMBUSHER("Ambusher","They know how to start a fight.",""
-			,1f,null,EnumSet.of(FeatType.BATTLE,FeatType.TRICKS)
+			,1f,EnumSet.of(FeatType.TRICKS),EnumSet.of(FeatType.BATTLE,FeatType.AGILITY)
 			,EnumSet.of(Skill.OPENING_MOVE,Skill.QUICK_START),0,5,10
 			,null,null
 			)
@@ -84,9 +85,14 @@ public enum Feat implements IHasSkills{
 			,null,null
 			)
 	,SHAMAN("Shaman","Is attuned to the primal forces of life.",""
-			,1f,null,EnumSet.of(FeatType.CURSES)
+			,1f,EnumSet.of(FeatType.CURSES),null
 			//tons of clarity
 			,EnumSet.of(Skill.LIFE_MAGE),2,3,25
+			,null,null)
+	,HEAVYWEIGHT("Heavyweight","A wall of meat and muscle.",""
+			,1f,EnumSet.of(FeatType.BRAWN),null
+			//lots of strength
+			,EnumSet.of(Skill.BIG_BAG,Skill.BULK),20,0,0
 			,null,null)
 	;
 
@@ -129,7 +135,7 @@ public enum Feat implements IHasSkills{
 		MYSTIC,//should be granted if any of the following are granted:
 		ARCANE,CURSES
 		//end mystic sub classes
-		, POTIONS,TRICKS, SOCIAL, BATTLE, SPIRIT, SMITHS, AGILITY;
+		, POTIONS,TRICKS, SOCIAL, BATTLE, SPIRIT, CRAFT, AGILITY, BRAWN;
 	}
 	
 	@Override

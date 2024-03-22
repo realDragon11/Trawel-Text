@@ -211,7 +211,10 @@ public enum Skill{
 				,Type.OFFENSE),
 		BIG_BAG("Big Bag","Gain 3 Drawbane slots, for a total of 8."
 				,""
-				,Type.CRAFT)
+				,Type.CRAFT),
+		BULK("Bulk","+5% Strength as MHP."
+				,""
+				,Type.DEFENSE)
 		
 		/**
 		 * move tactics here to keep them in order
