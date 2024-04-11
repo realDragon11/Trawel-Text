@@ -554,7 +554,7 @@ public class MaterialFactory {
 		misc.typeList.add(ArmorStyle.PLATE);
 		misc.typeList.add(ArmorStyle.PLATE);
 		misc.typeList.add(ArmorStyle.MAIL);
-		misc.armor = true;
+		misc.armor = true;//was disabled but it was still generating?
 		misc.weapon = true;
 		misc.weight = 25;
 		misc.cost = 120;
