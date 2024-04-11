@@ -803,12 +803,14 @@ public class Combat {
 				}
 			}
 		}else {
-			//modifiers for testing attacks that don't consume stacks
-			if (attacker.hasEffect(Effect.ADVANTAGE_STACK)) {
-				hitRoll*=1.2;
-			}
-			if (defender.hasEffect(Effect.ADVANTAGE_STACK)) {
-				dodgeRoll*=1.2;
+			if (attacker != null) {
+				//modifiers for testing attacks that don't consume stacks
+				if (attacker.hasEffect(Effect.ADVANTAGE_STACK)) {
+					hitRoll*=1.2;
+				}
+				if (defender.hasEffect(Effect.ADVANTAGE_STACK)) {
+					dodgeRoll*=1.2;
+				}
 			}
 		}
 		if (hitRoll <= defender.getMissCalc()) {

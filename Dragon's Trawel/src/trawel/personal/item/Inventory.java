@@ -427,6 +427,7 @@ public class Inventory implements java.io.Serializable{
 	 * @return old weapon (Weapon)
 	 */
 	public Weapon swapWeapon(Weapon newWeap) {
+		assert newWeap != null;
 		Weapon tempWeap = hand;
 		hand = newWeap;
 		return tempWeap;
@@ -435,14 +436,11 @@ public class Inventory implements java.io.Serializable{
 	/**
 	 * does not print anything
 	 * <br>
-	 * can accept and return nulls
+	 * can accept nulls
 	 * @param newWeap
-	 * @return
 	 */
-	public Weapon setWeapon(Weapon newWeap) {
-		Weapon tempWeap = hand;
+	public void setWeapon(Weapon newWeap) {
 		hand = newWeap;
-		return tempWeap;
 	}
 
 
