@@ -740,6 +740,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			if (hasEffect(Effect.DAMAGED)) {
 				extra.println(extra.RESULT_WARN+"You're so tired you can barely move...");
 			}
+			if (hasEffect(Effect.WOUNDED)) {
+				extra.println(extra.RESULT_WARN+"Your bandages are barely holding on...");
+			}
 		}else {
 			if (superperson != null) {
 				sipped = superperson.doSip();
@@ -1472,6 +1475,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			}
 			if (hasEffect(Effect.BURNOUT)) {
 				extra.println(extra.RESULT_GOOD+"Your burnout is treated!");
+			}
+			if (hasEffect(Effect.WOUNDED)) {
+				extra.println(extra.RESULT_GOOD+"Your wounds are mended!");
 			}
 			/*
 			if (hasEffect(Effect.TIRED)) {

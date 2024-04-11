@@ -802,6 +802,14 @@ public class Combat {
 					}
 				}
 			}
+		}else {
+			//modifiers for testing attacks that don't consume stacks
+			if (attacker.hasEffect(Effect.ADVANTAGE_STACK)) {
+				hitRoll*=1.2;
+			}
+			if (defender.hasEffect(Effect.ADVANTAGE_STACK)) {
+				dodgeRoll*=1.2;
+			}
 		}
 		if (hitRoll <= defender.getMissCalc()) {
 			ret= new AttackReturn(ATK_ResultCode.MISS,"",att,preNotes);
@@ -1212,9 +1220,7 @@ public class Combat {
 				Networking.send("PlayDelayPitch|"+SoundBox.getSound(defender.getBag().getRace().voice,SoundBox.Type.GRUNT) + "|4|"+ defender.getPitch()+"|");
 			}
 			//blood
-			
 			if (defender.getBlood() == BloodType.NORMAL) {
-				
 				attacker.getBag().getHand().addBlood(percent*5);
 				defender.getBag().getArmorSlot(attacker.getNextAttack().getSlot()).addBlood(percent*2f);
 				defender.addBlood(percent*1f);
@@ -1307,6 +1313,10 @@ public class Combat {
 			if (attacker.hasSkill(Skill.NPC_BURN_ARMOR) && !attacker.hasEffect(Effect.DEPOWERED)) {
 				//always burns at least 5% before diminishing
 				defender.getBag().burnArmor(Math.max(0.05f,(percent*2)),atr.attack.getSlot());
+			}
+			//wounded OOB punishment effect
+			if (defender.hasEffect(Effect.WOUNDED)) {
+				woundstr += inflictWound(attacker,defender,atr,Wound.BLEED);
 			}
 			//only processes on an impactful attack, to be consistent with wounds (plus make code easier)
 			List<Wound> wounds = defender.processBodyStatus();

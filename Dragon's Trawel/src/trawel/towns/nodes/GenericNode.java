@@ -1213,6 +1213,11 @@ public class GenericNode implements NodeType {
 				extra.println(extra.RESULT_FAIL+"Your equipment is damaged!");
 				Player.player.getPerson().addEffect(Effect.DAMAGED);
 				break;
+			case WOUND_KILL:
+				mainGame.die("You revive outside the trapped chamber.");
+				extra.println(extra.RESULT_FAIL+"Your body is broken!");
+				Player.player.getPerson().addEffect(Effect.WOUNDED);
+				break;
 			case FATIGUE:
 				extra.println(extra.RESULT_FAIL+"You are overcome with fatigue!");
 				Player.player.getPerson().addEffect(Effect.TIRED);
@@ -1262,14 +1267,14 @@ public class GenericNode implements NodeType {
 	}
 	
 	private enum TrapPunishment {
-		DAMAGE_KILL, FATIGUE, BEES, CURSE, CURSE_KILL
+		DAMAGE_KILL, FATIGUE, BEES, CURSE, CURSE_KILL, WOUND_KILL
 	}
 	//goes to 126 max types since uses only signed byte
 	private static final String[][][] trapList = new String[][][] {
 		//top level is attribute, then list of traps, then name, failureeffect, killfluff, survivefluff, revealfluff
 		//strength traps
 		new String[][] {
-				new String[] {"Falling Rocks",TrapPunishment.DAMAGE_KILL.name(),"Rocks crush you from above and force you to retreat!","You dodge falling rocks!","An overhead vent drops rocks down..."}
+				new String[] {"Falling Rocks",TrapPunishment.DAMAGE_KILL.name(),"Rocks crush you from above!","You dodge falling rocks!","An overhead vent drops rocks down..."}
 				,new String[] {"Closing Walls",TrapPunishment.FATIGUE.name(),"The walls close in and force you to crawl out!","You force the closing walls open!","Hidden pistons force the wall to close on looters..."}
 				,new String[] {"Phantom Hands",TrapPunishment.FATIGUE.name(),"Hands erupt from the floor, grab you, then slowly drag you out!","You break free of hands erupting from the floor!","Solid ghost hands burst from the floor to ensnare looters..."}
 				,new String[] {"Weighted Door",TrapPunishment.FATIGUE.name(),"You fail to open a very heavy door.","You lift a very heavy door open!","A weighted door has an assist mechanism..."}
@@ -1277,7 +1282,7 @@ public class GenericNode implements NodeType {
 		//dexterity traps
 		new String[][] {
 			new String[] {"Grabbing Lock",TrapPunishment.FATIGUE.name(),"A lock clamps onto you and you struggle to escape!","You quickly pick a lock that clamped down over your body!","An ornate lock bars progress, enchanted to grab looters..."}
-			,new String[] {"Springshot Saws",TrapPunishment.DAMAGE_KILL.name(),"Saws fly out of nowhere and slice you up!","You weave between flying saws!","Resetting springs launch sawblades at looters..."}
+			,new String[] {"Springshot Saws",TrapPunishment.WOUND_KILL.name(),"Saws fly out of nowhere and slice you up!","You weave between flying saws!","Resetting springs launch sawblades at looters..."}
 			,new String[] {"Honeyed Darts",TrapPunishment.BEES.name(),"Countless small darts sink into your flesh and soon bees appear!","You pluck an onslaught of small darts from your body before the poison can take hold!","A wall of darts inject bee attracting poison..."}
 			,new String[] {"Fireball Spit",TrapPunishment.DAMAGE_KILL.name(),"A sudden fireball knocks you over!","You dodge a statue's spit fireball!","A statue shoots a fireball from its mouth..."}
 		},
@@ -1286,7 +1291,7 @@ public class GenericNode implements NodeType {
 			new String[] {"Draining Sigil",TrapPunishment.FATIGUE.name(),"A burning sigil saps your strength!","You resist a burning sigil!","A flame sigil steals the strength of looters to power itself..."}
 			,new String[] {"Phantom Bees",TrapPunishment.BEES.name(),"Bees invade your mind and force you out!","You disbelieve the phantom bees before they become real!","Illusions trick the target into becoming a beacon for bees..."}
 			,new String[] {"Deadly Banshee",TrapPunishment.CURSE_KILL.name(),"A waifishly wail pierces your soul and cuts through your mind!","You endure the wail of a banshee!","A captive banshee is used for their shrieks..."}
-			,new String[] {"Shuffling Floor",TrapPunishment.DAMAGE_KILL.name(),"The floor gives way and you are impaled on spikes!","You dance around the shifting trap floors unto stable ground!","Trap doors shift around and lock in a pattern..."}
+			,new String[] {"Shuffling Floor",TrapPunishment.WOUND_KILL.name(),"The floor gives way and you are impaled on spikes!","You dance around the shifting trap floors unto stable ground!","Trap doors shift around and lock in a pattern..."}
 			,new String[] {"Maddening Mirror",TrapPunishment.CURSE.name(),"A mirror reflects your worst fears over your body and you faint!","You stare down a magic mirror!","A mirror is enchanted with fear magic..."}
 		},
 	};

@@ -1034,11 +1034,14 @@ public class Player extends SuperPerson{
 					@Override
 					public boolean go() {
 						person.displayStats(false);
+						if (person.hasEffect(Effect.BURNOUT)) {
+							extra.println(extra.RESULT_BAD+"You are burned out.");
+						}
 						if (person.hasEffect(Effect.CURSE)) {
 							extra.println(extra.RESULT_BAD+"You are cursed.");
 						}
-						if (person.hasEffect(Effect.BURNOUT)) {
-							extra.println(extra.RESULT_BAD+"You are burned out.");
+						if (person.hasEffect(Effect.WOUNDED)) {
+							extra.println(extra.RESULT_BAD+"You are badly wounded.");
 						}
 						if (person.hasEffect(Effect.DAMAGED)) {
 							extra.println(extra.RESULT_BAD+"Your gear is damaged.");
