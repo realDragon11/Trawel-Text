@@ -79,7 +79,7 @@ public class GroveNode implements NodeType{
 				1f,//old person
 				1f,//collector
 				2f,//fallen tree
-				11.5f,//dryad
+				1.5f,//dryad
 				//10 next
 				2f,//casual
 				1f,//mushroom
