@@ -485,7 +485,7 @@ public class MaterialFactory {
 		misc.weight = 15;
 		misc.cost = 80;
 		misc.baseEnchant = 2f;
-		misc.baseResist = 15;
+		misc.baseResist = 14;
 		misc.sharpResist = 1;
 		misc.bluntResist = 1;
 		misc.pierceResist = 1;
@@ -525,11 +525,11 @@ public class MaterialFactory {
 		misc.weapon = true;
 		misc.weight = 1;
 		misc.cost = 120;
-		misc.baseEnchant = 1.5f;
-		misc.baseResist = 20;
-		misc.sharpResist = 1.1f;
+		misc.baseEnchant = 1f;
+		misc.baseResist = 16;
+		misc.sharpResist = 1.2f;
 		misc.bluntResist = .8f;
-		misc.pierceResist = 1.1f;
+		misc.pierceResist = 1.2f;
 		misc.dexMod = 1;
 		misc.sharpMult = 3;
 		misc.bluntMult = .1f;
@@ -554,12 +554,12 @@ public class MaterialFactory {
 		misc.typeList.add(ArmorStyle.PLATE);
 		misc.typeList.add(ArmorStyle.PLATE);
 		misc.typeList.add(ArmorStyle.MAIL);
-		misc.armor = false;
+		misc.armor = true;
 		misc.weapon = true;
 		misc.weight = 25;
 		misc.cost = 120;
 		misc.baseEnchant = 0;
-		misc.baseResist = 12;
+		misc.baseResist = 16;
 		misc.sharpResist = 1;
 		misc.bluntResist = 1;
 		misc.pierceResist = 1;
@@ -653,7 +653,7 @@ public class MaterialFactory {
 		misc.baseEnchant = 3;
 		misc.baseResist = 10;
 		misc.sharpResist = .3f;
-		misc.bluntResist = 1.2f;
+		misc.bluntResist = 1.3f;
 		misc.pierceResist = .4f;
 		misc.dexMod = .5f;
 		misc.sharpMult = .3f;
