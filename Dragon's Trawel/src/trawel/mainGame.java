@@ -76,7 +76,7 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__11";
-	public static final String VERSION_DATE = " updated Apr 11th 2024";
+	public static final String VERSION_DATE = " updated May 19th 2024";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			
@@ -89,7 +89,7 @@ public class mainGame {
 			//discuss attribute changes
 			"b_11: {part 4/?} Strength no longer doubles up on physical damage bonus. Clarity now applies as an elemental damage multiplier.",
 			//discuss new exploration content
-			"b_11: {part 5/?} Sky Cult added to Mountains.",
+			"b_11: {part 5/?} Sky Cult added to Mountains. Locked Doors now require an attribute contest to open, and on failure you have Burnout applied.",
 			
 			"b_10 hotfix 3: pouch swap rejection crash, dryad refight crash, dungeon regrow wrong checkpoint type, more perks have attributes, buffed magic attacks and some related archetypes and feats.",
 			"b_10 hotfix 2: fixed fort menu crashes, improved timeevent error reporting.",

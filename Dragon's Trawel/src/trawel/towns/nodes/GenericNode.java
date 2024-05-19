@@ -677,14 +677,9 @@ public class GenericNode implements NodeType {
 				holder.findBehind(node,"unlocked door");
 			}else {
 				final String name = holder.getStorageFirstClass(node,String.class);
-				if (holder.getStateNum(node) == 0){
-					extra.println("The "+name+" is locked.");
-				}else {
-					//assume 1 since still forcego
+				if (holder.getStateNum(node) == 1){//if you owned this prior
 					extra.println("Looks like they changed the locks!");
-				}
-				if (Player.player.getPerson().hasEffect(Effect.BURNOUT)) {
-					
+					holder.setStateNum(node,0);//set back to locked so it doesn't say this again on this node
 				}
 				//only applies burnout on fail to prevent further attempts, no other penalty
 				extra.menuGo(new MenuGenerator() {
@@ -710,7 +705,7 @@ public class GenericNode implements NodeType {
 
 								@Override
 								public String title() {
-									return "Break down the "+name+". "+AttributeBox.getStatHintByIndex(0);
+									return extra.RESULT_WARN+"Break down the "+name+". "+AttributeBox.getStatHintByIndex(0);
 								}
 
 								@Override
@@ -719,7 +714,7 @@ public class GenericNode implements NodeType {
 										Player.player.getPerson().getStrength(), IEffectiveLevel.attributeChallengeEasy(holder.getLevel(node)))
 										>=0){
 										//broke down door
-										extra.println("You bash open the "+name+".");
+										extra.println(extra.RESULT_PASS+"You bash open the "+name+".");
 										holder.setStateNum(node,2);//broken open
 										holder.setForceGo(node, false);
 										String newName = "Broken " +name;
@@ -728,7 +723,7 @@ public class GenericNode implements NodeType {
 									}else {
 										//failed
 										Player.player.getPerson().addEffect(Effect.BURNOUT);
-										extra.println("You fail to bash open the "+name+".");
+										extra.println(extra.RESULT_FAIL+"You fail to bash open the "+name+".");
 									}
 									return true;
 								}});
@@ -736,7 +731,7 @@ public class GenericNode implements NodeType {
 
 								@Override
 								public String title() {
-									return "Lockpick the "+name+". "+AttributeBox.getStatHintByIndex(1);
+									return extra.RESULT_WARN+"Lockpick the "+name+". "+AttributeBox.getStatHintByIndex(1);
 								}
 
 								@Override
@@ -744,9 +739,9 @@ public class GenericNode implements NodeType {
 									if (Player.player.getPerson().contestedRoll(
 										Player.player.getPerson().getDexterity(), IEffectiveLevel.attributeChallengeEasy(holder.getLevel(node)))
 										>=0){
-										//broke down door
-										extra.println("You pick open the "+name+".");
-										holder.setStateNum(node,2);//broken open
+										//lockpicked door
+										extra.println(extra.RESULT_PASS+"You pick open the "+name+".");
+										holder.setStateNum(node,3);//picked
 										holder.setForceGo(node, false);
 										String newName = "Picked " +name;
 										holder.findBehind(node,newName);
@@ -754,7 +749,7 @@ public class GenericNode implements NodeType {
 									}else {
 										//failed
 										Player.player.getPerson().addEffect(Effect.BURNOUT);
-										extra.println("You fail to bash open the "+name+".");
+										extra.println(extra.RESULT_FAIL+"You fail to lockpick the "+name+".");
 									}
 									return true;
 								}});
@@ -763,6 +758,7 @@ public class GenericNode implements NodeType {
 						return list;
 					}});
 				if (holder.getStateNum(node) <= 1) {//if still locked
+					extra.println(extra.RESULT_ERROR+"The door forces you to turn around.");
 					NodeConnector.setKickGate();
 					return false;
 				}
@@ -775,18 +771,26 @@ public class GenericNode implements NodeType {
 			}else {
 				switch (holder.getStateNum(node)) {
 				case 2://broken
+					extra.println(
+							extra.choose(
+							"The door is broken."
+							,"The door is smashed to bits."
+							,"The metal on the door is hanging off the splinters."
+							,"The lock is intact. The rest of the door isn't."
+							)
+							);
 					break;
 				case 3://lockpicked
+					extra.println(
+							extra.choose(
+							"The lock has been picked."
+							,"The lock here has been tampered with."
+							,"The tumblers have been stuck together, rendering the lock useless."
+							,"The lock is intact- but only externally."
+							)
+							);
 					break;
 				}
-				extra.println(
-						extra.choose(
-						"The door is broken."
-						,"The door is smashed to bits."
-						,"The metal on the door is hanging off the splinters."
-						,"The lock is intact. The rest of the door isn't."
-						)
-						);
 				holder.findBehind(node,holder.getStorageFirstClass(node,String.class));
 			}
 		};
