@@ -156,7 +156,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 			if (extra.chanceIn(2, 3)) {
 				enchant = EnchantConstant.makeEnchant(getEnchantMult(),getBaseCost());
 			}else {
-				enchant = new EnchantHit(getEnchantMult());
+				enchant = new EnchantHit(getEnchantMult(),false);
 			}
 		}
 		
@@ -550,8 +550,13 @@ public class Weapon extends Item implements IEffectiveLevel {
 		updateStats();
 	}
 
-	public void forceEnchantHit(int i) {
-		this.enchant = new EnchantHit(true,getEnchantMult());
+	public void forceEnchantHit() {
+		enchant = new EnchantHit(getEnchantMult(),false);
+		updateStats();
+	}
+	
+	public void forceEnchantHitElemental() {
+		enchant = new EnchantHit(getEnchantMult(),true);
 		updateStats();
 	}
 	

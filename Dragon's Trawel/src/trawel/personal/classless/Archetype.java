@@ -156,6 +156,15 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(Skill.BLOODTHIRSTY,Skill.BLITZ,Skill.COUNTER)
 			,12,3,0
 			)
+	,RUNEBLADE("Rune Blade"
+			,"TODO"
+			,null,
+			AType.AFTER_SPECIAL_ONLY//special only so npcs don't get RUNESMITH which they can't use
+			,EnumSet.of(AGroup.CRAFT)
+			,EnumSet.of(FeatType.CRAFT,FeatType.MYSTIC,FeatType.BRAWN)
+			,EnumSet.of(Skill.RUNESMITH)//todo two more
+			,5,0,10
+			)
 	;
 	
 	private final String name, desc, stanceDesc;
@@ -195,7 +204,8 @@ public enum Archetype implements IHasSkills{
 		RACIAL,//race archetypes
 		ENTRY,//can appear as first archetype choice, also later on
 		AFTER,//can't appear as first choice, but can appear after first choice
-		ADDED//similar to perk, but mostly for npcs
+		ADDED,//similar to perk, but mostly for npcs
+		AFTER_SPECIAL_ONLY//as with after, but cannot appear in selections for NPCs
 	}
 	
 	public enum AGroup{
@@ -210,15 +220,23 @@ public enum Archetype implements IHasSkills{
 	}
 	private static final Set<Archetype> ENTRY_LIST = EnumSet.noneOf(Archetype.class);
 	private static final Set<Archetype> AFTER_LIST = EnumSet.noneOf(Archetype.class);
+	private static final Set<Archetype> AFTER_LIST_PLAYER = EnumSet.noneOf(Archetype.class);
 	static {
 		for (Archetype a: Archetype.values()) {
-			if (a.type == AType.ENTRY) {
+			switch (a.type) {
+			case ENTRY:
 				ENTRY_LIST.add(a);
+			case AFTER:
 				AFTER_LIST.add(a);
-			}else {
-				if (a.type == AType.AFTER) {
-					AFTER_LIST.add(a);
-				}
+			case AFTER_SPECIAL_ONLY:
+				//used only for player
+				AFTER_LIST_PLAYER.add(a);
+				break;//end fallthrough
+				
+			//not put in base lists
+			case ADDED:
+			case RACIAL:
+				break;
 			}
 		}
 	}
@@ -292,10 +310,11 @@ public enum Archetype implements IHasSkills{
 	 * <br>
 	 * only makes sense when 'more like this' is one archetype, if you have more pick a random one
 	 */
-	public static List<Archetype> getAfter(int desiredAmount, Archetype has, Set<Archetype> extendedHas) {
+	public static List<Archetype> getAfter(Person p,int desiredAmount, Archetype has, Set<Archetype> extendedHas) {
 		List<Archetype> list = new ArrayList<Archetype>();
 		List<Archetype> options = new ArrayList<Archetype>();
-		for (Archetype a: AFTER_LIST) {
+		
+		for (Archetype a: (p.isPlayer() ? AFTER_LIST_PLAYER : AFTER_LIST)) {
 			if (!extendedHas.contains(a)) {
 				if (!Collections.disjoint(has.groups,a.groups)) {//if we have at least one thing in common
 					options.add(a);
@@ -387,7 +406,7 @@ public enum Archetype implements IHasSkills{
 			List<Archetype> newList = getFirst(2,restrictSet);//first moved up so that it doesn't get blocked by friends of friends basically
 			list.addAll(newList);
 			restrictSet.addAll(newList);
-			list.addAll(getAfter(2,pAs.iterator().next(),restrictSet));
+			list.addAll(getAfter(person,2,pAs.iterator().next(),restrictSet));
 			//fall through and fill the rest with normal feats
 		}
 		/*int baseArch = list.size();
@@ -460,7 +479,8 @@ public enum Archetype implements IHasSkills{
 		extra.println("Please choose a second Archetype to go with "+starting.friendlyName()+".");
 		List<Archetype> alist = new ArrayList<Archetype>();
 		
-		AFTER_LIST.stream().filter(a -> a.doesAfterWith(starting)).forEach(alist::add);
+		//use player list
+		AFTER_LIST_PLAYER.stream().filter(a -> a.doesAfterWith(starting)).forEach(alist::add);
 		ENTRY_LIST.stream().filter(a -> !alist.contains(a)).forEach(alist::add);
 		alist.remove(starting);
 		//int start_points = person.getFeatPoints();

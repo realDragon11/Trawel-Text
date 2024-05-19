@@ -214,7 +214,10 @@ public enum Skill{
 				,Type.CRAFT),
 		BULK("Bulk","+5% Strength as MHP."
 				,""
-				,Type.DEFENSE)
+				,Type.DEFENSE),
+		RUNESMITH("Runesmith","Allows applying Runes at Enchanters. On-Hit enchantments are 1.3x as effective."
+				,""
+				,Type.CRAFT)
 		
 		/**
 		 * move tactics here to keep them in order

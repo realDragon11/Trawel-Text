@@ -11,7 +11,10 @@ import derg.menus.MenuSelect;
 import trawel.Networking.Area;
 import trawel.extra;
 import trawel.personal.classless.IEffectiveLevel;
+import trawel.personal.classless.Skill;
 import trawel.personal.item.Item;
+import trawel.personal.item.magic.EnchantHit;
+import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -80,11 +83,11 @@ public class Enchanter extends Feature {
 						}
 						float enchantMult = item.getEnchantMult();
 						if (enchantMult == 0) {
-							extra.println(extra.RESULT_ERROR+"This item is not enchantable.");
+							extra.println(extra.RESULT_ERROR+"This item is not enchantable. ("+item.getName()+")");
 							return false;
 						}
 						if (item.getLevel() >= maxLevel) {
-							extra.println(extra.RESULT_ERROR+"This item is too high in level to enchant here!");
+							extra.println(extra.RESULT_ERROR+"This item is too high in level to enchant here! ("+item.getName()+")");
 							return false;
 						}
 						//quality tier is typically 0 to 12
@@ -135,6 +138,61 @@ public class Enchanter extends Feature {
 						}
 						return false;
 					}});
+				if (Player.player.getPerson().hasSkill(Skill.RUNESMITH)) {
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return extra.SERVICE_BOTH_PAYMENT+"Apply On-Hit Runes up to +" + maxLevel +" level.";
+						}
+
+						@Override
+						public boolean go() {
+							Weapon item = Player.bag.getHand();
+							float enchantMult = item.getEnchantMult();
+							if (enchantMult == 0) {
+								extra.println(extra.RESULT_ERROR+"This item is not enchantable and thus cannot be runed. ("+item.getName()+")");
+								return false;
+							}
+							if (item.getLevel() >= maxLevel) {
+								extra.println(extra.RESULT_ERROR+"This item is too high in level to rune here! ("+item.getName()+")");
+								return false;
+							}
+							//quality tier is typically 0 to 12
+							int quality = extra.clamp(item.getQualityTier(),3,7);
+							int mcost = Math.round(quality*(IEffectiveLevel.unclean(item.getLevel()+1)));
+							int acost = (int) ((quality * 100f)*(IEffectiveLevel.unclean(item.getLevel()+1)));
+							String costString = World.currentMoneyDisplay(mcost) + " and " +acost + " aether";
+							
+							//rune onhit enchanting can't fail as long as enchantMult > 0
+							
+							if (Player.player.getGold() < mcost) {
+								if (Player.bag.getAether() < acost) {
+									extra.println(extra.RESULT_ERROR+"You can't afford to rune '"+item.getName()+"'. ("+costString+")");
+								}else {
+									extra.println(extra.RESULT_ERROR+"You can't afford to pay the enchanter to rune '"+item.getName()+"'. ("+costString+")");
+								}
+								return false;
+							}
+							if (Player.bag.getAether() < acost) {
+								extra.println(extra.RESULT_ERROR+"You don't have enough aether to enchant '"+item.getName()+"'. ("+costString+")");
+								return false;
+							}
+							extra.println("Apply Runes to "+item.getName()+" for "+costString+"?");
+							if (item.getEnchant() != null) {
+								extra.println(item.getName()+extra.RESULT_WARN+" is already enchanted, and the new enchantment will replace the old one.");
+							}
+							if (extra.yesNo()) {
+								//forces new enchantment in case they want a different type
+								item.forceEnchantHitElemental();
+								extra.println(extra.RESULT_PASS+"Item enchanted: " + item.getName());
+								item.display(1);
+								Player.player.loseGold(mcost);
+								Player.bag.addAether(-acost);
+							}
+							return false;
+						}});
+				}
 				/*
 				float aetherRate = 1f/extra.lerp(Player.NORMAL_AETHER_RATE,Player.PURE_AETHER_RATE,aetherLerp);
 				//how much aether per 5 world currency

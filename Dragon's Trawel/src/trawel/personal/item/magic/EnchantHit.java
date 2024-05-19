@@ -14,11 +14,11 @@ public class EnchantHit extends Enchant {
 	private String colorSaved;
 
 	//TODO: move chooses to SRPLainRandoms
-	public EnchantHit(float powMod) {
+	public EnchantHit(float powMod, boolean forceElemental) {
 		fireMod = 0;
 		freezeMod = 0;
 		shockMod = 0;
-		if (extra.chanceIn(1, 3)) {
+		if (!forceElemental && extra.chanceIn(1, 3)) {
 			isKeen = true;
 			enchantstyle = 0;
 			name = extra.choose("keen","honed","whetted");

@@ -116,9 +116,10 @@ public class ImpairedAttack implements IAttack{
 			if (_weapon != null && _weapon.isEnchantedHit()) {
 				Enchant enc = _weapon.getEnchant();
 				//dam mult included in totalDam already
-				vals[3] = damageRoll(DamageType.IGNITE,enc.getFireMod()*totalPhysDam*elementalDamMult);
-				vals[4] = damageRoll(DamageType.FROST,enc.getFreezeMod()*totalPhysDam*elementalDamMult);
-				vals[5] = damageRoll(DamageType.ELEC,enc.getShockMod()*totalPhysDam*elementalDamMult);
+				double onhitMult = elementalDamMult * (_attacker != null && _attacker.hasSkill(Skill.RUNESMITH) ? 1.3d : 1d);
+				vals[3] = damageRoll(DamageType.IGNITE,enc.getFireMod()*totalPhysDam*onhitMult);
+				vals[4] = damageRoll(DamageType.FROST,enc.getFreezeMod()*totalPhysDam*onhitMult);
+				vals[5] = damageRoll(DamageType.ELEC,enc.getShockMod()*totalPhysDam*onhitMult);
 			}
 			if (attacker != null && defender != null && attacker.hasSkill(Skill.FEVER_STRIKE) && defender.hasEffect(Effect.MIASMA)) {
 				//decay damage bonus if defender has miasma
