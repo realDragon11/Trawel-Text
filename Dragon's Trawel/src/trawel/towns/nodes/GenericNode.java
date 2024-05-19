@@ -665,7 +665,7 @@ public class GenericNode implements NodeType {
 	public static void applyLockDoor(NodeConnector holder,int node) {
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.LOCKDOOR.ordinal());
-		holder.setStorage(node,extra.choose("locked door","barricaded door","padlocked door"));
+		holder.setStorage(node,extra.choose("Locked Door","Barricaded Door","Padlocked Door"));
 		holder.setForceGo(node, true);
 	}
 	
@@ -676,29 +676,109 @@ public class GenericNode implements NodeType {
 				holder.setStateNum(node,1);//unlocked once
 				holder.findBehind(node,"unlocked door");
 			}else {
-				String name = holder.getStorageFirstClass(node,String.class);
+				final String name = holder.getStorageFirstClass(node,String.class);
 				if (holder.getStateNum(node) == 0){
 					extra.println("The "+name+" is locked.");
 				}else {
+					//assume 1 since still forcego
 					extra.println("Looks like they changed the locks!");
 				}
-				extra.println("Break down the "+name+"?");
-				if (!extra.yesNo()) {
+				if (Player.player.getPerson().hasEffect(Effect.BURNOUT)) {
+					
+				}
+				//only applies burnout on fail to prevent further attempts, no other penalty
+				extra.menuGo(new MenuGenerator() {
+
+					@Override
+					public List<MenuItem> gen() {
+						List<MenuItem> list = new ArrayList<MenuItem>();
+						list.add(new MenuLine() {
+
+							@Override
+							public String title() {
+								return "Your way is blocked by the "+name+".";
+							}});
+						if (Player.player.getPerson().hasEffect(Effect.BURNOUT)) {
+							list.add(new MenuLine() {
+
+								@Override
+								public String title() {
+									return extra.RESULT_ERROR+"You are too burnt out to find a way to open the "+name+".";
+								}});
+						}else {
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return "Break down the "+name+". "+AttributeBox.getStatHintByIndex(0);
+								}
+
+								@Override
+								public boolean go() {
+									if (Player.player.getPerson().contestedRoll(
+										Player.player.getPerson().getStrength(), IEffectiveLevel.attributeChallengeEasy(holder.getLevel(node)))
+										>=0){
+										//broke down door
+										extra.println("You bash open the "+name+".");
+										holder.setStateNum(node,2);//broken open
+										holder.setForceGo(node, false);
+										String newName = "Broken " +name;
+										holder.findBehind(node,newName);
+										holder.setStorage(node,newName);
+									}else {
+										//failed
+										Player.player.getPerson().addEffect(Effect.BURNOUT);
+										extra.println("You fail to bash open the "+name+".");
+									}
+									return true;
+								}});
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return "Lockpick the "+name+". "+AttributeBox.getStatHintByIndex(1);
+								}
+
+								@Override
+								public boolean go() {
+									if (Player.player.getPerson().contestedRoll(
+										Player.player.getPerson().getDexterity(), IEffectiveLevel.attributeChallengeEasy(holder.getLevel(node)))
+										>=0){
+										//broke down door
+										extra.println("You pick open the "+name+".");
+										holder.setStateNum(node,2);//broken open
+										holder.setForceGo(node, false);
+										String newName = "Picked " +name;
+										holder.findBehind(node,newName);
+										holder.setStorage(node,newName);
+									}else {
+										//failed
+										Player.player.getPerson().addEffect(Effect.BURNOUT);
+										extra.println("You fail to bash open the "+name+".");
+									}
+									return true;
+								}});
+						}
+						list.add(new MenuBack());
+						return list;
+					}});
+				if (holder.getStateNum(node) <= 1) {//if still locked
 					NodeConnector.setKickGate();
 					return false;
 				}
-				extra.println("You bash open the "+name+".");
-				
-				holder.setStateNum(node,2);//broken open
-				holder.setForceGo(node, false);
-				name = "broken " +name;
-				holder.findBehind(node,name);
-				holder.setStorage(node,name);
+				//door has been resolved but handling code is above
+				return false;
 			}
 		}else {
 			if (holder.parent.getOwner() == Player.player) {
 				extra.println("You relock the door every time you go by it, but you know where the hole is now so that's easy.");
 			}else {
+				switch (holder.getStateNum(node)) {
+				case 2://broken
+					break;
+				case 3://lockpicked
+					break;
+				}
 				extra.println(
 						extra.choose(
 						"The door is broken."
@@ -707,7 +787,7 @@ public class GenericNode implements NodeType {
 						,"The lock is intact. The rest of the door isn't."
 						)
 						);
-				holder.findBehind(node,"broken door");
+				holder.findBehind(node,holder.getStorageFirstClass(node,String.class));
 			}
 		};
 		return false;
