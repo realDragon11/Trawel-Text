@@ -707,16 +707,11 @@ public class Combat {
 				extra.println(killer.getName() + " heals " + restore+" from the kill!");
 			}
 		}
-		if (killer.hasSkill(Skill.PRESS_ADV)) {
+		if (killer.hasSkill(Skill.NO_QUARTER)) {
+			killer.addEffect(Effect.PLANNED_TAKEDOWN);
 			killer.addEffectCount(Effect.ADVANTAGE_STACK,2);
 			if (!extra.getPrint()) {
-				extra.println(killer.getName() + " presses the advantage!");
-			}
-		}
-		if (killer.hasSkill(Skill.TWINNED_TAKEDOWN)) {
-			killer.addEffect(Effect.PLANNED_TAKEDOWN);
-			if (!extra.getPrint()) {
-				extra.println(killer.getName() + " plans a twin takedown!");
+				extra.println(killer.getName() + " will give no quarter!");
 			}
 		}
 		FBox.repCalc(killer,dead);
@@ -863,6 +858,7 @@ public class Combat {
 			}
 			
 			//attacker can be null for dummy attacks?
+			//on crits
 			if (attacker != null && hitRoll > dodgeRoll*2) {
 				if (attacker.hasSkill(Skill.DEADLY_AIM)) {
 					int deadlyBonus = (int)(ret.damage*0.2);
@@ -870,6 +866,12 @@ public class Combat {
 					ret.bonus += deadlyBonus;
 					if (canDisp) {
 						ret.addNote("Deadly Bonus: " + deadlyBonus);
+					}
+				}
+				if (attacker.hasSkill(Skill.PRESS_ADV)) {
+					attacker.addEffect(Effect.ADVANTAGE_STACK);
+					if (canDisp) {
+						ret.addNote("Pressing the advantage!");
 					}
 				}
 			}

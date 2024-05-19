@@ -112,11 +112,11 @@ public enum Skill{
 		OPENING_MOVE("Opening Move","Grants two bonus weapon attack choices at the start of every battle.",
 				"You can have a max of 5 weapon attack choices at a time, stacks will only be consumed if they add attacks."
 				,Type.OFFENSE),
-		QUICK_START("Quick Start","Grants a stack of Advantage at the start of every battle, confering a 20% to one hit or dodge roll."
+		QUICK_START("Quick Start","Grants a stack of Advantage at the start of every battle, confering a +20% to one hit or dodge roll."
 				,"Applies to only one attack, and is consumed on use, but stacks with other sources of Advantage."
 				,Type.SPEED),
-		PRESS_ADV("Press the Advantage","Grants two stacks of Advantage after each kill."
-				,"Advantage applies a +20% bonus to the first hit/dodge roll this Person makes, one stack per attack."
+		PRESS_ADV("Press the Advantage","On Crit: Gain one stack of advantage."
+				,"Crits are Impactful attacks with Hit Rolls more than double Dodge Rolls. Advantage applies a +20% bonus to the first hit/dodge roll this Person makes, one stack per attack."
 				,Type.SPEED),
 		BLOODDRINKER("Blood Drinker","Those who attack you while bleeding give you HP equal to half their bleed damage."
 				,"Stacks with other sources of bleed healing. Not capped by your MHP."
@@ -185,8 +185,8 @@ public enum Skill{
 		TACTIC_TAKEDOWN("Tactic: Planned Takedown","Grants access to the Takedown tactic at all times."
 				,AttackBonus.TAKEDOWN.desc
 				,Type.TACTIC_TYPE),
-		TWINNED_TAKEDOWN("Twinned Takedown","Grants the Takedown effect on kill."
-				,"Takedown applies Knockout on your next impactful attack. It stacks in duration."
+		NO_QUARTER("No Quarter","Grants the Takedown effect and two stacks of Advantage on kill."
+				,"Takedown applies Knockout on your next impactful attack. It stacks in duration. Advantage applies a +20% bonus to the first hit/dodge roll this Person makes, one stack per attack."
 				,Type.OFFENSE),
 		ARMOR_MAGE("Armor Mage","Increases armor defenses based on Clarity."
 				,"Adds 1/60th of Clarity to each piece of armor's SBP."
@@ -194,8 +194,8 @@ public enum Skill{
 		BEER_BELLY("Beer Belly","Doubles LHP bonus for drinking beer."
 				,"From 5% to 10% increase, does not count as max HP."
 				,Type.DEFENSE),
-		DEADLY_AIM("Deadly Aim","Hit Rolls more than double Dodge Rolls deal 20% bonus damage."
-				,"Bonus damage only applies to Impactful attacks."
+		DEADLY_AIM("Deadly Aim","On Crit: Deal 20% bonus damage."
+				,"Crits are Impactful attacks with Hit Rolls more than double Dodge Rolls."
 				,Type.OFFENSE),
 		LIFE_MAGE("Life Mage","+5% Clarity as MHP."
 				,""

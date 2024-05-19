@@ -11,7 +11,7 @@ public enum Perk implements IHasSkills{
 	EMPTY("","",IHasSkills.emptySkillSet),
 	RACIAL_SHIFTS("Flexible","Prone to changing its defense patterns.",EnumSet.of(Skill.RACIAL_SHIFTS)),
 	SKY_BLESS_1("Leaf on the Wind","Has a minor blessing from the sky, granting them paranatural speed.",EnumSet.of(Skill.SPEEDDODGE,Skill.BLITZ),0,4,1),
-	SKY_BLESS_2("Growing Storm","Has a blessing from the sky, granting acute vision and senses that heal them when used.",EnumSet.of(Skill.DODGEREF,Skill.NIGHTVISION),0,4,1)
+	SKY_BLESS_2("Growing Storm","Has a blessing from the sky, granting them improved reaction time.",EnumSet.of(Skill.PRESS_ADV,Skill.REACTIVE_DODGE),0,4,1)
 	,FOREST_BLESS_1("Sappy Seeder","Has a minor blessing of the forest, hardening their skin and granting alchemy affinity.",EnumSet.of(Skill.TA_NAILS,Skill.P_BREWER),4,0,1)
 	,FOREST_BLESS_2("Heart of Regrowth","Has a blessing of the forest, integrating bark skin with their armor.",EnumSet.of(Skill.ARMORHEART,Skill.ARMOR_TUNING),4,0,1)
 	,CULT_CHOSEN_BLOOD("Chosen (Blood)","Chosen by the cult of Blood.",EnumSet.of(Skill.BLOODTHIRSTY),1,1,3)//also used by npc cultist
@@ -20,7 +20,7 @@ public enum Perk implements IHasSkills{
 	,GRAVEYARD_SIGHT("Gravesight","Can see in the dark due to a lot of experience.",EnumSet.of(Skill.NIGHTVISION))
 	,HELL_BARONESS_1("Baroness of Hell (Peana's Throne)","Has fiendish powers.",EnumSet.of(Skill.TA_NAILS),5,0,5)
 	,HELL_BARON_NPC("Baron of Hell","Has fiendish powers.",EnumSet.of(Skill.NPC_BURN_ARMOR,Skill.RAW_GUTS,Skill.TA_NAILS,Skill.SPUNCH,Skill.KILLHEAL,Skill.CONDEMN_SOUL,Skill.NO_HOSTILE_CURSE),50,0,20)
-	,FATESPINNER_NPC("Fated","Has preternatural intuition.",EnumSet.of(Skill.OPENING_MOVE,Skill.PRESS_ADV,Skill.SPEEDDODGE,Skill.MESMER_ARMOR,Skill.PLOT_ARMOR,Skill.NO_HOSTILE_CURSE),10,10,40)
+	,FATESPINNER_NPC("Fated","Has preternatural intuition.",EnumSet.of(Skill.OPENING_MOVE,Skill.NO_QUARTER,Skill.SPEEDDODGE,Skill.MESMER_ARMOR,Skill.PLOT_ARMOR,Skill.NO_HOSTILE_CURSE),10,10,40)
 	,FATED("Fated","Has preternatural intuition.",EnumSet.of(Skill.OPENING_MOVE,Skill.SPEEDDODGE),0,0,10)
 	,STAND_TALL("Towering","They stand tall.",EnumSet.of(Skill.TA_NAILS),20,0,0)
 	,NPC_PRIMAL_MOUNTAIN("Oread","The primal forces within them embody the mountains, sullied not by mortal picks."

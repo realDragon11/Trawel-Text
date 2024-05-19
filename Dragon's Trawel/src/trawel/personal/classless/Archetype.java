@@ -89,7 +89,7 @@ public enum Archetype implements IHasSkills{
 			,AType.ENTRY
 			,EnumSet.of(AGroup.MAGIC,AGroup.GRANTED_ARCANIST)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.SPIRIT)
-			,EnumSet.of(Skill.DODGEREF,Skill.PRESS_ADV,Skill.ARCANIST)//TODO: PRESS_ADV is temp
+			,EnumSet.of(Skill.DODGEREF,Skill.PRESS_ADV,Skill.ARCANIST)//press adv now simulates flow
 			,2,2,11
 			)
 	,FISH_TALL("Torrental Titan"
@@ -144,7 +144,7 @@ public enum Archetype implements IHasSkills{
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRTY,AGroup.DEXTERITY)
 			,EnumSet.of(FeatType.TRICKS,FeatType.AGILITY,FeatType.BATTLE)
-			,EnumSet.of(Skill.TWINNED_TAKEDOWN,Skill.DSTRIKE,Skill.DEADLY_AIM)//temp?
+			,EnumSet.of(Skill.NO_QUARTER,Skill.DSTRIKE,Skill.DEADLY_AIM)
 			,2,11,2
 			)
 	,FIGHTING_FURY("Fighting Fury"

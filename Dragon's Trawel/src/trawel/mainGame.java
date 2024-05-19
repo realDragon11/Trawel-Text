@@ -82,14 +82,19 @@ public class mainGame {
 			
 			//discuss magic overall
 			"b_11: {part 1/?} TODO magic status stance TODO.",
+			//discuss material changes
+			"b_11: {part 2/?} High end materials generally had their stats lowered and were given tradeoffs amongst each other.",
 			//discuss skill changes
-			"b_11: {part 2/?} Curse inflicting skills have been replaced. Normal NPCs can no longer inflict curse, which should lessen doctor visits. The skill gaps have been replaced with the Miasma in-combat skills Fetid Fumes and Fever Strike. Doctors no longer cure Tired and Bees, but the Wounded punishment effect was added in some places where the Damaged effect was used prior.",
+			"b_11: {part ?/?} Curse inflicting skills have been replaced. Normal NPCs can no longer inflict curse, which should lessen doctor visits. The skill gaps have been replaced with the Miasma in-combat skills Fetid Fumes and Fever Strike. Doctors no longer cure Tired and Bees, but the Wounded punishment effect was added in some places where the Damaged effect was used prior.",
+			"b_11: {part ?/?} Press Advantage and Twinned Takedown have been combined into No Quarter. Misc New Skills: Bulk, Press Advantage; Misc New Feats: Heavyweight.",
 			//discuss drawbane bag changes
-			"b_11: {part 3/?} Increased drawbane inventory size to 5 base and added Big Bag skill which increases it to 8. Feat Fragments no longer take up space.",
+			"b_11: {part ?/?} Increased drawbane inventory size to 5 base and added Big Bag skill which increases it to 8. Feat Fragments no longer take up space.",
 			//discuss attribute changes
-			"b_11: {part 4/?} Strength no longer doubles up on physical damage bonus. Clarity now applies as an elemental damage multiplier.",
+			"b_11: {part ?/?} Strength no longer doubles up on physical damage bonus. Clarity now applies as an elemental damage multiplier.",
 			//discuss new exploration content
-			"b_11: {part 5/?} Sky Cult added to Mountains. Locked Doors now require an attribute contest to open, and on failure you have Burnout applied.",
+			"b_11: {part ?/?} Sky Cult added to Mountains. Locked Doors now require an attribute contest to open, and on failure you have Burnout applied.",
+			"b_11: {part ?/?} Some bumpers now steal currency from you on loss against them.",
+			
 			
 			"b_10 hotfix 3: pouch swap rejection crash, dryad refight crash, dungeon regrow wrong checkpoint type, more perks have attributes, buffed magic attacks and some related archetypes and feats.",
 			"b_10 hotfix 2: fixed fort menu crashes, improved timeevent error reporting.",
