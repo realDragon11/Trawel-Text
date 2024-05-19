@@ -3,6 +3,7 @@ package trawel.personal.item.magic;
 import java.awt.Color;
 
 import trawel.extra;
+import trawel.randomLists;
 
 public class EnchantHit extends Enchant {
 
@@ -13,7 +14,6 @@ public class EnchantHit extends Enchant {
 	private boolean isKeen;
 	private String colorSaved;
 
-	//TODO: move chooses to SRPLainRandoms
 	public EnchantHit(float powMod, boolean forceElemental) {
 		fireMod = 0;
 		freezeMod = 0;
@@ -21,22 +21,22 @@ public class EnchantHit extends Enchant {
 		if (!forceElemental && extra.chanceIn(1, 3)) {
 			isKeen = true;
 			enchantstyle = 0;
-			name = extra.choose("keen","honed","whetted");
+			name = randomLists.enchantHitKeen();
 			colorSaved = extra.inlineColor(extra.colorMix(Color.PINK,Color.LIGHT_GRAY,.5f));
 		}else {
 			switch (extra.randRange(1,3)) {
 			case 1: fireMod = extra.randFloat()*powMod/2;
-			name = extra.choose("fire","flame","burning","blazing","heat","charring","the inferno","combustion","conflagration","embers","pyres","scorching","searing","ignition","kindling","flames");
+			name = randomLists.enchantHitIgnite();
 			enchantstyle = 3;
 			colorSaved = extra.inlineColor(extra.colorMix(Color.RED,Color.LIGHT_GRAY,.5f));
 			break;
 			case 2: shockMod = extra.randFloat()*powMod/2;
-			name = extra.choose("shock","lightning","shocking","sparks","thundering","zapping");
+			name = randomLists.enchantHitElec();
 			enchantstyle = 2;
 			colorSaved = extra.inlineColor(extra.colorMix(Color.YELLOW,Color.LIGHT_GRAY,.5f));
 			break;
 			case 3: freezeMod = extra.randFloat()*powMod/2;
-			name = extra.choose("freeze","frost","chilling","rime","freezing","hoarfrost","ice");
+			name = randomLists.enchantHitFrost();
 			enchantstyle = 1;
 			colorSaved = extra.inlineColor(extra.colorMix(Color.BLUE,Color.LIGHT_GRAY,.5f));
 			break;
@@ -50,7 +50,7 @@ public class EnchantHit extends Enchant {
 		goldMult = 1+(freezeMod+shockMod+fireMod+(isKeen ? .3f : 0))/2;
 	}
 	
-	public EnchantHit(boolean b,double powMod) {//testing only
+	public EnchantHit(boolean b) {//testing only
 		fireMod = 0;
 		freezeMod = 0;
 		shockMod = 0;
@@ -75,8 +75,8 @@ public class EnchantHit extends Enchant {
 		String str = null;
 		for (int j = 0; j < 3;j++) {
 		switch (j) {
-		case 0:	d = getFireMod(); str = colorSaved+"fire";break;
-		case 1:	d = getShockMod(); str = colorSaved+"shock";break;
+		case 0:	d = getFireMod(); str = colorSaved+"ignite";break;
+		case 1:	d = getShockMod(); str = colorSaved+"elec";break;
 		case 2:	d = getFreezeMod(); str = colorSaved+"frost";break;
 		}
 		if (d != 0) {
