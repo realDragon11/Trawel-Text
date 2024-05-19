@@ -30,6 +30,7 @@ import trawel.personal.item.DummyInventory;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race.RaceType;
 import trawel.personal.item.body.SoundBox;
+import trawel.personal.item.magic.EnchantHit;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Armor.ArmorQuality;
 import trawel.personal.item.solid.Weapon;
@@ -874,6 +875,29 @@ public class Combat {
 						ret.addNote("Pressing the advantage!");
 					}
 				}
+				if (attacker.hasSkill(Skill.RUNIC_BLAST) && attacker.getBag().getHand().isEnchantedHit()) {
+					EnchantHit rune = (EnchantHit) attacker.getBag().getHand().getEnchant();
+					//only picks one
+					Wound runeWound = null;
+					if (rune.getFireMod() > 0) {//if ignite enchanted
+						runeWound =  extra.randList(TargetFactory.fireWounds);
+					}else {
+						if (rune.getFreezeMod() > 0) {//if frost enchanted
+							runeWound =  extra.randList(TargetFactory.freezeWounds);
+						}else {
+							if (rune.getShockMod() > 0) {//if elec enchanted
+								runeWound =  extra.randList(TargetFactory.shockWounds);
+							}//else fails
+						}
+					}
+					if (runeWound != null) {
+						if (canDisp) {
+							ret.addNote("Runic Blast!");
+						}
+						ret.addAppliedWoundText(inflictWound(attacker,defender,ret,runeWound));
+					}
+					
+				}
 			}
 			
 			if (defender.hasSkill(Skill.RAW_GUTS)) {
@@ -924,7 +948,9 @@ public class Combat {
 		public ATK_ResultCode code;
 		public ATK_ResultType type;
 		private String notes;
+		private String woundStr;
 		public AttackReturn(ImpairedAttack att, Inventory def, String str, String _notes) {
+			woundStr = "";
 			if (att.isTacticOnly()) {//doesn't have true attack components
 				stringer = str;
 				attack = att;
@@ -1045,6 +1071,7 @@ public class Combat {
 			stringer = str;
 			attack = att;
 			notes = _notes;
+			woundStr = "";
 		}
 		
 		public AttackReturn() {
@@ -1103,6 +1130,13 @@ public class Combat {
 		}
 		public boolean hasWound() {
 			return attack != null && attack.getWound() != null;
+		}
+		
+		public void addAppliedWoundText(String str) {
+			woundStr+=str;
+		}
+		public String getWoundString() {
+			return woundStr;
 		}
 	}
 	
@@ -1241,7 +1275,7 @@ public class Combat {
 				//if this was an impactful attack, and the cond left is nearly 0
 				if (atr.type == ATK_ResultType.IMPACT && defender.getBodyStatus(attack.getTargetSpot()) < .01) {
 					//roll a bonus wound
-					inflictWound(attacker, defender, atr,defender.getAnyWoundForTargetSpot(attack.getTargetSpot()));
+					atr.addAppliedWoundText(inflictWound(attacker, defender, atr,defender.getAnyWoundForTargetSpot(attack.getTargetSpot())));
 				}
 			}
 			defender.addBodyStatus(atr.attack.getTargetSpot(),-condDamage);
@@ -1264,7 +1298,6 @@ public class Combat {
 		}
 			
 		//Wounds can now be inflicted even if not dealing damage
-		String woundstr = "";
 		boolean forceKilled = false;
 		boolean doForceKill = false;
 		if (atr.type == ATK_ResultType.IMPACT) {
@@ -1273,16 +1306,16 @@ public class Combat {
 			}
 			if (atr.hasWound()) {
 				if (defender.hasEffect(Effect.CHALLENGE_BACK)) {
-					woundstr = " They stand strong with temerity!";
+					atr.addAppliedWoundText(" They stand strong with temerity!");
 					defender.removeEffectAll(Effect.CHALLENGE_BACK);
 				}else {
 					if (atr.code == ATK_ResultCode.ARMOR) {
-						woundstr = " The armor deflects the wound.";
+						atr.addAppliedWoundText(" The armor deflects the wound.");
 					}else {
 						if (((defender.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 ))) {
-							woundstr = " They shrug off the blow!";
+							atr.addAppliedWoundText(" They shrug off the blow!");
 						}else {
-							woundstr = inflictWound(attacker,defender,atr,attack.getWound());
+							atr.addAppliedWoundText(inflictWound(attacker,defender,atr,attack.getWound()));
 							if (attack.getWound() != Wound.NEGATED) {
 								if (attack.getWeapon() != null && attack.getWeapon().hasQual(Weapon.WeaponQual.DESTRUCTIVE)) {
 									defender.getBag().damageArmor(percent/3f, attack.getSlot());
@@ -1295,7 +1328,7 @@ public class Combat {
 			if (attacker.hasEffect(Effect.PLANNED_TAKEDOWN)) {
 				attacker.removeEffect(Effect.PLANNED_TAKEDOWN);
 				//knockout
-				woundstr += inflictWound(attacker,defender,atr,Wound.KO);
+				atr.addAppliedWoundText(inflictWound(attacker,defender,atr,Wound.KO));
 			}
 			if (atr.code == ATK_ResultCode.KILL) {//if force kill
 				//might not actually be final death, but this is fine to say
@@ -1320,13 +1353,13 @@ public class Combat {
 			}
 			//wounded OOB punishment effect
 			if (defender.hasEffect(Effect.WOUNDED)) {
-				woundstr += inflictWound(attacker,defender,atr,Wound.BLEED);
+				atr.addAppliedWoundText(inflictWound(attacker,defender,atr,Wound.BLEED));
 			}
 			//only processes on an impactful attack, to be consistent with wounds (plus make code easier)
 			List<Wound> wounds = defender.processBodyStatus();
 			if (wounds != null) {
 				for (Wound wo: wounds) {
-					woundstr += inflictWound(attacker,defender,atr,wo);
+					atr.addAppliedWoundText(inflictWound(attacker,defender,atr,wo));
 				}
 			}
 		}else {//no impact
@@ -1354,7 +1387,7 @@ public class Combat {
 						if (!extra.getPrint()) {
 							extra.print(
 									prettyHPColors(atr.stringer+"[C] {"+prettyHPDamage(percent)+damageDone+" damage[C]}"
-										+woundstr+" But they're made of sterner stuff!"
+										+atr.getWoundString()+" But they're made of sterner stuff!"
 									, extra.ATTACK_DAMAGED, attacker, defender));
 							didDisplay = true;
 						}
@@ -1363,13 +1396,14 @@ public class Combat {
 				if (!didDisplay && !extra.getPrint()) {
 					extra.print(
 							prettyHPColors(atr.stringer+"[C] {"+prettyHPDamage(percent)+damageDone+" damage[C]}"
-							+woundstr,extra.ATTACK_KILL, attacker, defender));
+							+atr.getWoundString(),extra.ATTACK_KILL, attacker, defender));
 					didDisplay = true;
 				}
 			}else {
 				if (!extra.getPrint()) {
 					boolean armorDamage = atr.code == ATK_ResultCode.ARMOR;
-					extra.print(prettyHPColors(atr.stringer+" {"+prettyHPDamage(percent)+damageDone+" damage[C]}"+woundstr
+					extra.print(prettyHPColors(atr.stringer+" {"+prettyHPDamage(percent)+damageDone+" damage[C]}"
+							+atr.getWoundString()
 							+ (armorDamage ? " The armor curbs the blow!": "")
 							,
 							armorDamage ? extra.ATTACK_DAMAGED_WITH_ARMOR : extra.ATTACK_DAMAGED
@@ -1383,13 +1417,13 @@ public class Combat {
 		switch (atr.code) {
 		case NOT_ATTACK:
 			if (!extra.getPrint() && !didDisplay) {
-				extra.print(prettyHPColors(atr.stringer +woundstr,extra.TIMID_MAGENTA, attacker, defender));
+				extra.print(prettyHPColors(atr.stringer +atr.getWoundString(),extra.TIMID_MAGENTA, attacker, defender));
 			}
 			
 			break;
 		case DODGE: case MISS:
 			if (!extra.getPrint() && !didDisplay) {
-				extra.print(prettyHPColors(atr.stringer +woundstr,extra.ATTACK_MISS, attacker, defender));
+				extra.print(prettyHPColors(atr.stringer +atr.getWoundString(),extra.ATTACK_MISS, attacker, defender));
 				Networking.sendStrong("PlayMiss|" + "todo" + "|");
 				extra.print(" "+extra.AFTER_ATTACK_MISS+randomLists.attackMissFluff(atr.code)+extra.ATTACK_MISS);
 			}
@@ -1424,7 +1458,7 @@ public class Combat {
 			break;
 		case ARMOR:
 			if (!extra.getPrint() && !didDisplay) {
-				extra.print(prettyHPColors(atr.stringer +woundstr,extra.ATTACK_BLOCKED, attacker, defender));
+				extra.print(prettyHPColors(atr.stringer +atr.getWoundString(),extra.ATTACK_BLOCKED, attacker, defender));
 				extra.print(extra.AFTER_ATTACK_BLOCKED+" "+randomLists.attackNegateFluff()+extra.ATTACK_BLOCKED);
 			}
 			if (defender.hasSkill(Skill.ARMORHEART) && defender.getHp() < defender.getMaxHp()) {
@@ -1770,7 +1804,7 @@ public class Combat {
 				break;
 			 case BRAINED:
 				 defender2.addEffect(Effect.BRAINED);
-				 inflictWound(attacker2,defender2,retu,Wound.KO);
+				 retu.addAppliedWoundText(inflictWound(attacker2,defender2,retu,Wound.KO));
 				 break;
 			case NEGATED://no effect
 				break;

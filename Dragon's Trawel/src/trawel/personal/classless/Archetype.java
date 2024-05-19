@@ -162,7 +162,7 @@ public enum Archetype implements IHasSkills{
 			AType.AFTER_SPECIAL_ONLY//special only so npcs don't get RUNESMITH which they can't use
 			,EnumSet.of(AGroup.CRAFT)
 			,EnumSet.of(FeatType.CRAFT,FeatType.MYSTIC,FeatType.BRAWN)
-			,EnumSet.of(Skill.RUNESMITH)//todo two more
+			,EnumSet.of(Skill.RUNESMITH,Skill.RUNIC_BLAST)//todo two more
 			,5,0,10
 			)
 	;

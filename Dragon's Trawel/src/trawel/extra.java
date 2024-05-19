@@ -55,7 +55,8 @@ public final class extra {
 	}
 
 	public static final String IMPACT_TIP = "Impactful attacks are typically those that hit and deal damage without reliable forcing damage.";
-
+	public static final String ADV_TIP = "Advantage applies a +20% bonus to the first hit/dodge roll this Person makes, one stack per attack.";
+	public static final String CRIT_TIP = "Crits are Impactful attacks with Hit Rolls more than double Dodge Rolls.";
 
 	private static final ThreadLocal<EnhancedRandom> localRands = new ThreadLocal<EnhancedRandom>() {
 		@Override protected EnhancedRandom initialValue() {

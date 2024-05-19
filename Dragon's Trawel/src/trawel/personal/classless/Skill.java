@@ -112,11 +112,11 @@ public enum Skill{
 		OPENING_MOVE("Opening Move","Grants two bonus weapon attack choices at the start of every battle.",
 				"You can have a max of 5 weapon attack choices at a time, stacks will only be consumed if they add attacks."
 				,Type.OFFENSE),
-		QUICK_START("Quick Start","Grants a stack of Advantage at the start of every battle, confering a +20% to one hit or dodge roll."
-				,"Applies to only one attack, and is consumed on use, but stacks with other sources of Advantage."
+		QUICK_START("Quick Start","Grants a stack of Advantage at the start of every battle."
+				,extra.ADV_TIP
 				,Type.SPEED),
 		PRESS_ADV("Press the Advantage","On Crit: Gain one stack of advantage."
-				,"Crits are Impactful attacks with Hit Rolls more than double Dodge Rolls. Advantage applies a +20% bonus to the first hit/dodge roll this Person makes, one stack per attack."
+				,extra.CRIT_TIP+" "+extra.ADV_TIP
 				,Type.SPEED),
 		BLOODDRINKER("Blood Drinker","Those who attack you while bleeding give you HP equal to half their bleed damage."
 				,"Stacks with other sources of bleed healing. Not capped by your MHP."
@@ -156,7 +156,7 @@ public enum Skill{
 				,"Instant kill attacks that wouldn't deal enough damage to kill you otherwise do not roll, but still leave you at 1 HP.",
 				Type.DEFENSE),
 		REACTIVE_DODGE("Reactive Dodge","Grants one stack of Advantage after each dodge."
-				,"Does not apply to misses. Advantage applies a +20% bonus to the first hit/dodge roll this Person makes, one stack per attack."
+				,"Does not apply to misses. "+extra.ADV_TIP
 				,Type.SPEED),
 		ARCANIST_2("Multi-Magical","Grants another Arcanist skill attack configuration."
 				,""
@@ -186,7 +186,7 @@ public enum Skill{
 				,AttackBonus.TAKEDOWN.desc
 				,Type.TACTIC_TYPE),
 		NO_QUARTER("No Quarter","Grants the Takedown effect and two stacks of Advantage on kill."
-				,"Takedown applies Knockout on your next impactful attack. It stacks in duration. Advantage applies a +20% bonus to the first hit/dodge roll this Person makes, one stack per attack."
+				,"Takedown applies Knockout on your next impactful attack. It stacks in duration. "+extra.ADV_TIP
 				,Type.OFFENSE),
 		ARMOR_MAGE("Armor Mage","Increases armor defenses based on Clarity."
 				,"Adds 1/60th of Clarity to each piece of armor's SBP."
@@ -195,7 +195,7 @@ public enum Skill{
 				,"From 5% to 10% increase, does not count as max HP."
 				,Type.DEFENSE),
 		DEADLY_AIM("Deadly Aim","On Crit: Deal 20% bonus damage."
-				,"Crits are Impactful attacks with Hit Rolls more than double Dodge Rolls."
+				,extra.CRIT_TIP
 				,Type.OFFENSE),
 		LIFE_MAGE("Life Mage","+5% Clarity as MHP."
 				,""
@@ -217,6 +217,9 @@ public enum Skill{
 				,Type.DEFENSE),
 		RUNESMITH("Runesmith","Allows applying Runes at Enchanters. On-Hit enchantments are 1.3x as effective."
 				,""
+				,Type.CRAFT),
+		RUNIC_BLAST("Runic Blast","On Crit: Apply a wound of the elemental on-hit enchantment."
+				,"Does not apply if used weapon doesn't have an element on-hit enchantment. "+extra.CRIT_TIP
 				,Type.CRAFT)
 		
 		/**
