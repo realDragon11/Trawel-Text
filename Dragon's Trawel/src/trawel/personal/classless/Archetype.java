@@ -157,13 +157,14 @@ public enum Archetype implements IHasSkills{
 			,12,3,0
 			)
 	,RUNEBLADE("Rune Blade"
-			,"TODO"
+			,"Enchanting is a fickle art, but a Rune Blade hammers the elements into their weapons nonetheless."
 			,null,
-			AType.AFTER_SPECIAL_ONLY//special only so npcs don't get RUNESMITH which they can't use
+			AType.AFTER_SPECIAL_ONLY//special only so npcs don't get rune abilities which would only work if they were forced to have enchanthits
 			,EnumSet.of(AGroup.CRAFT)
-			,EnumSet.of(FeatType.CRAFT,FeatType.MYSTIC,FeatType.BRAWN)
-			,EnumSet.of(Skill.RUNESMITH,Skill.RUNIC_BLAST)//todo two more
-			,5,0,10
+			//less feattypes and skills due to being a special added
+			,EnumSet.of(FeatType.CRAFT,FeatType.MYSTIC)
+			,EnumSet.of(Skill.RUNESMITH,Skill.RUNIC_BLAST)//only two but former gives OOC benefit as well
+			,7,0,13//stats slightly better, 20 instead of 15
 			)
 	;
 	
