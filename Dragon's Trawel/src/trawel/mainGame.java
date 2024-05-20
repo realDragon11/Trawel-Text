@@ -76,7 +76,7 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__11";
-	public static final String VERSION_DATE = " updated May 19th 2024";
+	public static final String VERSION_DATE = " updated May 20th 2024";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			
@@ -86,7 +86,7 @@ public class mainGame {
 			"b_11: {part 2/?} High end materials generally had their stats lowered and were given tradeoffs amongst each other.",
 			//discuss skill changes
 			"b_11: {part ?/?} Curse inflicting skills have been replaced. Normal NPCs can no longer inflict curse, which should lessen doctor visits. The skill gaps have been replaced with the Miasma in-combat skills Fetid Fumes and Fever Strike. Doctors no longer cure Tired and Bees, but the Wounded punishment effect was added in some places where the Damaged effect was used prior.",
-			"b_11: {part ?/?} Press Advantage and Twinned Takedown have been combined into No Quarter. Misc New Skills: Bulk, Press Advantage, Runesmith, Runic Blast; Misc New Feats: Heavyweight; Misc New Archetypes: Rune Blade.",
+			"b_11: {part ?/?} Press Advantage and Twinned Takedown have been combined into No Quarter. Misc New Skills: Bulk, Press Advantage, Runesmith, Runic Blast, Open Vein; Misc New Feats: Heavyweight; Misc New Archetypes: Rune Blade, Cut Throat.",
 			//discuss drawbane bag changes
 			"b_11: {part ?/?} Increased drawbane inventory size to 5 base and added Big Bag skill which increases it to 8. Feat Fragments no longer take up space.",
 			//discuss attribute changes

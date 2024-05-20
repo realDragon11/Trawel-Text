@@ -222,7 +222,7 @@ public enum Skill{
 		RUNIC_BLAST("Runic Blast","On Impactful Crit: Apply a wound of the elemental on-hit enchantment."
 				,"Does not apply if used weapon doesn't have an element on-hit enchantment. "+extra.CRIT_TIP
 				,Type.CRAFT),
-		OPEN_WOUND("Open Wound","On Impactful Crit: Apply "+Effect.MAJOR_BLEED.getName()+", preventing "+Effect.BLEED.getName() +" stacks from healing."
+		OPEN_VEIN("Open Vein","On Impactful Crit: Apply "+Effect.MAJOR_BLEED.getName()+", preventing "+Effect.BLEED.getName() +" stacks from healing."
 				,extra.CRIT_TIP
 				,Type.OFFENSE)
 		

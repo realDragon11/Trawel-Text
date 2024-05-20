@@ -898,7 +898,7 @@ public class Combat {
 						ret.addBonusWound(runeWound);
 					}	
 				}
-				if (ret.type == ATK_ResultType.IMPACT && attacker.hasSkill(Skill.OPEN_WOUND)) {
+				if (ret.type == ATK_ResultType.IMPACT && attacker.hasSkill(Skill.OPEN_VEIN)) {
 					if (isReal) {//if not a dummy attack
 						defender.addEffect(Effect.MAJOR_BLEED);//add no bleed recovery
 					}

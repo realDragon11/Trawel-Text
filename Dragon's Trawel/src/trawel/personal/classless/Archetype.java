@@ -145,7 +145,7 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(AGroup.DIRTY,AGroup.DEXTERITY)
 			,EnumSet.of(FeatType.TRICKS,FeatType.AGILITY,FeatType.BATTLE)
 			,EnumSet.of(Skill.NO_QUARTER,Skill.DSTRIKE,Skill.DEADLY_AIM)
-			,2,11,2
+			,2,10,3
 			)
 	,FIGHTING_FURY("Fighting Fury"
 			,"Coherent rage and savagery set Furies apart from both civilized folk and enchanted monsters."
@@ -165,6 +165,16 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(FeatType.CRAFT,FeatType.MYSTIC)
 			,EnumSet.of(Skill.RUNESMITH,Skill.RUNIC_BLAST)//only two but former gives OOC benefit as well
 			,7,0,13//stats slightly better, 20 instead of 15
+			)
+	,CUT_THROAT("Cut Throat",
+			"Why get blood on your hands when you can get blood on your knife instead?"
+			,null
+			,AType.ENTRY
+			,EnumSet.of(AGroup.DIRECT_BATTLE,AGroup.DEXTERITY)
+			//probably needs another type?
+			,EnumSet.of(FeatType.AGILITY,FeatType.BATTLE)
+			,EnumSet.of(Skill.OPEN_VEIN,Skill.DEADLY_AIM,Skill.QUICK_START)
+			,3,12,0
 			)
 	;
 	
