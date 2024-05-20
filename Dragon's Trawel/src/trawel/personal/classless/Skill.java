@@ -2,6 +2,7 @@ package trawel.personal.classless;
 
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
+import trawel.Effect;
 import trawel.extra;
 import trawel.battle.attacks.AttackBonus;
 import trawel.personal.Person;
@@ -218,9 +219,12 @@ public enum Skill{
 		RUNESMITH("Runesmith","Allows applying Runes at Enchanters. On-Hit enchantments are 1.3x as effective."
 				,""
 				,Type.CRAFT),
-		RUNIC_BLAST("Runic Blast","On Crit: Apply a wound of the elemental on-hit enchantment."
+		RUNIC_BLAST("Runic Blast","On Impactful Crit: Apply a wound of the elemental on-hit enchantment."
 				,"Does not apply if used weapon doesn't have an element on-hit enchantment. "+extra.CRIT_TIP
-				,Type.CRAFT)
+				,Type.CRAFT),
+		OPEN_WOUND("Open Wound","On Impactful Crit: Apply "+Effect.MAJOR_BLEED.getName()+", preventing "+Effect.BLEED.getName() +" stacks from healing."
+				,extra.CRIT_TIP
+				,Type.OFFENSE)
 		
 		/**
 		 * move tactics here to keep them in order
