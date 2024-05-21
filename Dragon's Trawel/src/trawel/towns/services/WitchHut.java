@@ -495,7 +495,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		//'stew chance', any potion with food as an ingredient that isn't above
 		//might turn into HEARTY even if it would be something else
 		if (food >= 1 && extra.chanceIn(food,20)) {
-			Player.player.setFlask(new Potion(Effect.HEARTY,total+food+foodless_filler));
+			Player.player.setFlask(new Potion(Effect.HEARTY,(total+food+foodless_filler) * (Player.hasSkill(Skill.CHEF) ? 2 : 1)));
 			actualPotion();
 			return true;
 		}
@@ -537,7 +537,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		//final chance for a normal stew
 		//if not all reagents are food, chance of failure, unless the ones that are food are the 'heavier' foods
 		if (food > 0 && extra.chanceIn(food,total)) {
-			Player.player.setFlask(new Potion(Effect.HEARTY,total+food+foodless_filler));
+			Player.player.setFlask(new Potion(Effect.HEARTY,(total+food+foodless_filler) * (Player.hasSkill(Skill.CHEF) ? 2 : 1)));
 			actualPotion();
 			return true;
 		}

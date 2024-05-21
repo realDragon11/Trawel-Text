@@ -65,7 +65,7 @@ public enum Effect{
 	CHALLENGE_BACK("Temerity","Negates the next wound from a suffered Impactful attack, or adds +20% damage to the next attack choice, whichever comes first.",false,false,2),
 	PLANNED_TAKEDOWN("Takedown","Causes next impactful attack to inflict the Knockout Wound.",false,false,1),
 	//armor and maybe skills/potions
-	PADDED("Padded Armor","1/5th chance of negating a wound per stack, once per stack.",false,true,2),
+	PADDED("Padded","1/5th chance of negating a wound per stack, once per stack.",false,true,2),
 	
 	//unused
 	ARMOR_BLOCKS("Blocking Armor","Increases block threshold by +2% per stack.",false,true,2),

@@ -175,6 +175,16 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(Skill.OPEN_VEIN,Skill.DEADLY_AIM,Skill.QUICK_START)
 			,3,12,0
 			)
+	,CHEF_ARCH("Comestible Critic",
+			"Always bring snacks to battle."
+			,null
+			,AType.ENTRY
+			,EnumSet.of(AGroup.CRAFT)
+			,EnumSet.of(FeatType.CRAFT,FeatType.POTIONS,FeatType.SOCIAL)
+			//gets 4 skills because all are generally lower impact
+			,EnumSet.of(Skill.CHEF,Skill.BIG_BAG,Skill.BULK,Skill.P_BREWER)
+			,10,1,4
+			)
 	;
 	
 	private final String name, desc, stanceDesc;

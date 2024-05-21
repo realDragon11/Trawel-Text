@@ -233,7 +233,10 @@ public enum Skill{
 				,Type.DEFENSE),
 		SALVAGE("Salvage","On Impactful Crit: Boost your armor by +12% flat."
 				,extra.CRIT_TIP+" "+extra.ARMOR_TIP
-				,Type.DEFENSE)
+				,Type.DEFENSE),
+		CHEF("Chef","Crafted Hearty Potions have double sips. Sipping Hearty applies one Padded stack."
+				,extra.PADDED_TIP
+				,Type.CRAFT)
 		
 		/**
 		 * move tactics here to keep them in order

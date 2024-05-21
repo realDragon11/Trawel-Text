@@ -7,6 +7,7 @@ import derg.StringResult;
 import trawel.Effect;
 import trawel.extra;
 import trawel.personal.Person;
+import trawel.personal.classless.Skill;
 
 public class Potion implements java.io.Serializable{
 
@@ -79,6 +80,12 @@ public class Potion implements java.io.Serializable{
 						extra.println("That was tasty, you feel full and hearty!");
 					}else {
 						extra.println(p.getName() + " gains some extra pep in their step!");
+					}
+					if (p.hasSkill(Skill.CHEF)) {
+						overwrite = true;
+						extra.println(" " +effect.getDisp());
+						extra.println("  " +Effect.PADDED.getDisp());
+						p.addEffect(Effect.PADDED);
 					}
 					break;
 				case SUDDEN_START:

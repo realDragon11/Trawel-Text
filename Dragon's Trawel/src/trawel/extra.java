@@ -59,6 +59,7 @@ public final class extra {
 	public static final String CRIT_TIP = "Crits are Impactful attacks with Hit Rolls more than double Dodge Rolls.";
 	public static final String ARMOR_TIP = "Armor above 100% degrades half of how much it's above 100% whenever you complete an action.";
 	public static final String PARRY_TIP = "Parry grants a compounding 1.2x dodge roll to one attack.";
+	public static final String PADDED_TIP = "Padded has" +Effect.PADDED.getDesc();
 
 	private static final ThreadLocal<EnhancedRandom> localRands = new ThreadLocal<EnhancedRandom>() {
 		@Override protected EnhancedRandom initialValue() {
