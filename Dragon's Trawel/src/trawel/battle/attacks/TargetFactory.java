@@ -679,7 +679,7 @@ public class TargetFactory {
 		t = new Target();
 		t.name = "head";
 		set_as_head(t);
-		t.condWound = Wound.SCALDED;
+		t.condWound = Wound.GLOW;
 		t.type = TargetType.UNDEAD_H;
 		add_head_Knockout(t, 1);
 		t.finish();
@@ -700,7 +700,7 @@ public class TargetFactory {
 		t = new Target();
 		t.name = "chest";
 		set_as_torso(t);
-		t.condWound = Wound.SCALDED;
+		t.condWound = Wound.SHINE;
 		t.type = TargetType.UNDEAD_H;
 		addChestGeneric(t, 1);
 		t.finish();
@@ -709,7 +709,7 @@ public class TargetFactory {
 		t.name = "arm";
 		t.variants = new String[] {"right {}","left {}"};
 		set_as_arm(t);
-		t.condWound = Wound.SCREAMING;
+		t.condWound = Wound.GLOW;
 		t.type = TargetType.UNDEAD_H;
 		addArm_LimbWounds(t, Wound.NEGATED, 1, .1f);
 		t.finish();
@@ -718,7 +718,7 @@ public class TargetFactory {
 		t.name = "leg";
 		t.variants = new String[] {"right {}","left {}"};
 		set_as_leg(t);
-		t.condWound = Wound.SCREAMING;
+		t.condWound = Wound.GLOW;
 		t.type = TargetType.UNDEAD_H;
 		addLeg_LimbWounds(t,Wound.NEGATED, 1, .1f);
 		t.finish();
@@ -727,7 +727,7 @@ public class TargetFactory {
 		t.name = "eye";
 		t.variants = new String[] {"right []","left []"};
 		set_as_eye(t);
-		t.condWound = Wound.SCREAMING;
+		t.condWound = Wound.GLOW;
 		t.type = TargetType.UNDEAD_H;
 		addEyeBlinds(t,1);
 		t.finish();
@@ -735,7 +735,7 @@ public class TargetFactory {
 		t = new Target();
 		t.name = "guts";
 		set_as_guts(t);
-		t.condWound = Wound.SCALDED;
+		t.condWound = Wound.SHINE;
 		t.type = TargetType.UNDEAD_H;
 		addGutsGeneric(t, 1);
 		t.finish();

@@ -164,18 +164,18 @@ public class ImpairedAttack implements IAttack{
 		level = w_lvl;
 		if (_attacker != null) {
 			if (wound == null && _attacker.hasSkill(Skill.ELEMENTALIST)){
-				switch (extra.randRange(0, 3)) {//0 is a hard fail, 1-3 depends on if they have the subskills
-				case 1:
+				switch (extra.randRange(1, 10)) {//10 is a hard fail, 1-9 depends on if they have the subskills
+				case 1: case 2: case 3:
 					if(_attacker.hasSkill(Skill.M_PYRO)) {
 						wound = extra.randList(TargetFactory.fireWounds);
 					} 
 					break;
-				case 2:
+				case 4: case 5: case 6:
 					if(_attacker.hasSkill(Skill.M_CRYO)) {
 						wound = extra.randList(TargetFactory.freezeWounds);
 					} 
 					break;
-				case 3:
+				case 7: case 8: case 9:
 					if(_attacker.hasSkill(Skill.M_AERO)) {
 						wound = extra.randList(TargetFactory.shockWounds);
 					} 

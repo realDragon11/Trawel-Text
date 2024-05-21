@@ -804,7 +804,7 @@ public class WeaponAttackFactory {
 			@Override
 			public int getEffectiveLevel(Person p) {
 				AttributeBox a = p.fetchAttributes();
-				return a.getEffectiveAttributeLevel(Math.max(a.getClarity(),a.getStrength()));
+				return a.getEffectiveAttributeLevel(a.getClarity());
 			}
 		});
 		

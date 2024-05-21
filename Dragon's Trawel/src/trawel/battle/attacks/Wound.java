@@ -48,7 +48,10 @@ public enum Wound{//TODO: make sure the reworked wounds are fully in
 	MAIMED("Maim","Injury: Removes one attack choice each attack. Doesn't stack with Disarmed.","Maimed!"),
 	CRIPPLED("Cripple","Injury: Set to 80% of dodge mult. Stacks.","Crippled!"),
 	HIT_VITALS("Shatter","Injury: Takes double condition damage, and parts with low condition cause another wound to be inflicted.","Shattered!"),//the unholy matrimony of dd1 and weaverdice wounds
-	BRAINED("Brain","Injury: KO wounds no longer heal. Also inflicts KO at %1$d.","Split skull!")
+	BRAINED("Brain","Injury: KO wounds no longer heal. Also inflicts KO at %1$d.","Split skull!"),
+	//undead condwounds which are less perma
+	SHINE("Shine","Deals %1$d direct damage and burn defender's armor by %2$d%%.","Their body shines with holy flame!"),
+	GLOW("Glow","Applies %1$d%% compounding inaccuracy to the defender's next set of attacks and burn armor by %2$d%%.","Their body glows with holy light!")
 	;
 	//done line
 	public String name, desc, active;

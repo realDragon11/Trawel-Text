@@ -750,7 +750,7 @@ public class Combat {
 			}
 		}
 		if (defender.hasSkill(Skill.COUNTER)) {
-			defender.advanceTime(1);
+			defender.applyDiscount(2);
 		}
 		
 		double dodgeBase = def.getDodge()*defender.getWoundDodgeCalc();
@@ -1774,20 +1774,24 @@ public class Combat {
 				attacker2.advanceTime(nums[1]);
 				attacker2.addEffect(Effect.DICE);
 				break;
-			case HACK: case TAT:case CRUSHED:
 			case SCALDED: case FROSTBITE:
+				elemBonusEffects(attacker2,defender2,retu);
+			case HACK: case TAT:case CRUSHED:
 				defender2.takeDamage(nums[0]);
 				break;
 			case HAMSTRUNG: case WINDED: case TRIPPED:
 				defender2.advanceTime(-nums[0]);
 				break;
 			case FROSTED:
+				elemBonusEffects(attacker2,defender2,retu);
 				defender2.applyDiscount(-Math.min(50,defender2.getTime()*(nums[0]/100f)));
 				break;
 			case JOLTED:
+				elemBonusEffects(attacker2,defender2,retu);
 				defender2.applyDiscount(-nums[0]);
 				break;
 			case BLACKENED:
+				elemBonusEffects(attacker2,defender2,retu);
 				defender2.getBag().burnArmor((nums[0]/100f),attack.getSlot());
 				break;
 			case MAJOR_BLEED:
@@ -1797,7 +1801,9 @@ public class Combat {
 					defender2.addEffectCount(Effect.BLEED,nums[0]);
 				}
 				break;
-			case DISARMED: case SCREAMING:
+			case SCREAMING:
+				elemBonusEffects(attacker2,defender2,retu);
+			case DISARMED: 
 				defender2.addEffect(Effect.DISARMED);
 				break;
 			case KO:
@@ -1840,6 +1846,7 @@ public class Combat {
 				}
 				break;
 			case SHIVERING:
+				elemBonusEffects(attacker2,defender2,retu);
 				defender2.addEffectCount(Effect.FLUMMOXED,nums[0]);
 				break;
 			case MANGLED:
@@ -1862,10 +1869,39 @@ public class Combat {
 				 //don't need to apply text since on Brained, so we can skip adding it anywhere and just do the effects
 				 inflictWound(attacker2,defender2,retu,Wound.KO);
 				 break;
+			 case SHINE:
+				 defender2.takeDamage(nums[0]);
+				 defender2.getBag().burnArmor((nums[1]/100f),attack.getSlot());
+				 break;
+			 case GLOW:
+				 defender2.addEffectCount(Effect.FLUMMOXED,nums[0]);
+				 defender2.getBag().burnArmor((nums[1]/100f),attack.getSlot());
+				 break;
 			case NEGATED://no effect
 				break;
 			}
 			return (" " +w.active);
+	}
+	
+	/**
+	 * used by the elementalist series of boosts on inflicting an elemental wound
+	 * adds string as notes
+	 */
+	private void elemBonusEffects(Person attacker2, Person defender2, AttackReturn retu) {
+		if (attacker2.hasSkill(Skill.ELEMENTALIST)) {//only check if has elementalist to save on checks
+			if (attacker2.hasSkill(Skill.M_PYRO_BOOST)) {
+				attacker2.addEffect(Effect.PARRY);
+				retu.addNote("Ignite Parry!");
+			}
+			if (attacker2.hasSkill(Skill.M_CYRO_BOOST)) {
+				attacker2.getBag().buffArmorAdd(.1d);
+				retu.addNote("Frost armor!");
+			}
+			if (attacker2.hasSkill(Skill.M_AERO_BOOST)) {
+				defender2.applyDiscount(-4);
+				retu.addNote("Elec shock!");
+			}
+		}
 	}
 	
 	//had to convert from double to Double to Integer
@@ -1889,7 +1925,7 @@ public class Combat {
 			 return new Integer[] {10,10};//10% faster, 10 time units faster
 		case HACK:
 			if (result == null) {
-				return new Integer[] {(int)attack.getTotalDam()/10};
+				return new Integer[] {attack.getTotalDam()/10};
 			}
 			return new Integer[] {result.damage/10};
 		case TAT:
@@ -1899,7 +1935,7 @@ public class Combat {
 			return new Integer[] {(int)(result.subDamage[2] *extra.clamp(attack.getHitMult(),.5f,3f)/3f)};
 		case CRUSHED:
 		case SCALDED: case FROSTBITE:
-			return new Integer[] {(int)attack.getTotalDam()/10};
+			return new Integer[] {attack.getTotalDam()/10};
 		case BLINDED:
 			return new Integer[] {40};//40% less accurate now or half that later
 		case HAMSTRUNG:
@@ -1936,6 +1972,10 @@ public class Combat {
 		case BLOODY://bleeds aren't synced, WET :(
 			int bstacks = bleedStackAmount(attacker, defender);//can take null attacker
 			return new Integer[] {40,bstacks,Math.round(bleedStackDam(defender, bstacks))};//bloody blind
+		case SHINE:
+			return new Integer[] {attack.getTotalDam()/10,10};//10% bonus damage, 10% armor damage
+		case GLOW:
+			return new Integer[] {40,10};//40% less accurate later, 10% armor damage
 		}
 		return new Integer[0];
 	}

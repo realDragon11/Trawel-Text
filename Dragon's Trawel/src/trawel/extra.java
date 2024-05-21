@@ -60,6 +60,7 @@ public final class extra {
 	public static final String ARMOR_TIP = "Armor above 100% degrades half of how much it's above 100% whenever you complete an action.";
 	public static final String PARRY_TIP = "Parry grants a compounding 1.2x dodge roll to one attack.";
 	public static final String PADDED_TIP = "Padded has" +Effect.PADDED.getDesc();
+	public static final String ELEMBOOST_TIP = "Activates on any elemental wound inflicted, any number of times an attack.";
 
 	private static final ThreadLocal<EnhancedRandom> localRands = new ThreadLocal<EnhancedRandom>() {
 		@Override protected EnhancedRandom initialValue() {

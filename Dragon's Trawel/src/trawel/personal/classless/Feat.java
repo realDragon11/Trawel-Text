@@ -61,24 +61,24 @@ public enum Feat implements IHasSkills{
 			,EnumSet.of(Skill.REACTIVE_DODGE,Skill.SPEEDDODGE),0,15,0
 			,null,null
 			)
-	//these three require arcanist, so they don't need to grant it, it is signaled where the stance is made
+	//these three require arcanist (and elementalist), so they don't need to grant it, it is signaled where the stance is made
 	,FLAME_WARDEN("Flamewarden","Wields fire fiercly, fueling their defense."
-			,"Grants ignite-focused arcany that use the higher of strength and clarity."
-			,.7f,null,null
-			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_PYRO,Skill.ARMORHEART),5,0,5//more stats
-			,EnumSet.of(Skill.ARCANIST),null
+			,"Grants ignite-focused arcany that use clarity."
+			,1f,null,null
+			,EnumSet.of(Skill.M_PYRO,Skill.M_PYRO_BOOST,Skill.COUNTER),2,2,6//more stats
+			,EnumSet.of(Skill.ARCANIST,Skill.ELEMENTALIST),null
 			)
 	,FROST_WARDEN("Frostwarden","Uses ice to bolster their armor."
 			,"Grants frost-focused arcany that use the higher of strength and clarity."
-			,.7f,null,null
-			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_CRYO,Skill.ARMOR_TUNING),5,0,5//more stats
-			,EnumSet.of(Skill.ARCANIST),null
+			,1f,null,null
+			,EnumSet.of(Skill.M_CRYO,Skill.M_CYRO_BOOST,Skill.ARMOR_TUNING),5,0,5//more stats
+			,EnumSet.of(Skill.ARCANIST,Skill.ELEMENTALIST),null
 			)
 	,SHOCK_SAVANT("Shocksavant","Shocks their foes with static constantly, increasing the damage wrought by their charges."
 			,"Grants elec-focused arcany that use the higher of dexterity and clarity."
-			,.7f,null,null
-			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_AERO,Skill.SPUNCH),0,5,5//more stats
-			,EnumSet.of(Skill.ARCANIST),null
+			,1f,null,null
+			,EnumSet.of(Skill.M_AERO,Skill.M_AERO_BOOST,Skill.SPUNCH),0,5,5//more stats
+			,EnumSet.of(Skill.ARCANIST,Skill.ELEMENTALIST),null
 			)
 	,GLUTTON("Glutton","They're greedy for more than just punishment.",""
 			,1f,null,EnumSet.of(FeatType.SPIRIT,FeatType.POTIONS)

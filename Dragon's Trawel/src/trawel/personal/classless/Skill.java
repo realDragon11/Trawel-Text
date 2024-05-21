@@ -62,7 +62,7 @@ public enum Skill{
 		BLITZ("Blitz","Actions take 3 less instants to complete than expected."
 				,"Does not allow you to act sooner in order- but does change how much time passes when you do get to act."
 				,Type.SPEED),
-		COUNTER("Counter","When Attacked: Advance 1 instant."
+		COUNTER("Counter","When Attacked: Advance 2 instants."
 				,"Attacks are when to-hit is rolled on you."
 				,Type.SPEED),
 		SPEEDDODGE("Speed Dodge","On Dodge: Attack 10 instants sooner."
@@ -138,20 +138,38 @@ public enum Skill{
 		/**
 		 * NOTE: do not grant without ELEMENTALIST
 		 */
-		M_PYRO("Pyromantic","25% chance to convert 'Grazed' into a random Ignite wound on any attack."
-				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 75%."
+		M_PYRO("Pyromantic","30% chance to convert 'Grazed' into a random Ignite wound on any attack."
+				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 90%."
 				,Type.OFFENSE),
 		/**
 		 * NOTE: do not grant without ELEMENTALIST
 		 */
-		M_CRYO("Cryomantic","25% chance to convert 'Grazed' into a random Frost wound on any attack."
-				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 75%."
+		M_CRYO("Cryomantic","30% chance to convert 'Grazed' into a random Frost wound on any attack."
+				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 90%."
 				,Type.OFFENSE),
 		/**
 		 * NOTE: do not grant without ELEMENTALIST
 		 */
-		M_AERO("Aeromantic","25% chance to convert 'Grazed' into a random Elec wound on any attack."
-				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 75%."
+		M_AERO("Aeromantic","30% chance to convert 'Grazed' into a random Elec wound on any attack."
+				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 90%."
+				,Type.OFFENSE),
+		/**
+		 * NOTE: do not grant without ELEMENTALIST
+		 */
+		M_PYRO_BOOST("Ingite Boost","On Elemental Wound: Gain Parry."
+				,extra.ELEMBOOST_TIP + " " + extra.PARRY_TIP
+				,Type.DEFENSE),
+		/**
+		 * NOTE: do not grant without ELEMENTALIST
+		 */
+		M_CYRO_BOOST("Frost Boost","On Elemental Wound: Boost armor by +10% flat."
+				,extra.ELEMBOOST_TIP + " " +extra.ARMOR_TIP
+				,Type.DEFENSE),
+		/**
+		 * NOTE: do not grant without ELEMENTALIST
+		 */
+		M_AERO_BOOST("Elec Boost","On Elemental Wound: Add 4 instants to target's action."
+				,extra.ELEMBOOST_TIP
 				,Type.OFFENSE),
 		STERN_STUFF("Sterner Stuff","On Death: Once, roll a contested Strength check vs attacker's highest attribute to survive at 1 HP."
 				,"Instant kill attacks that wouldn't deal enough damage to kill otherwise skip the roll, but still leave them at 1 HP.",
