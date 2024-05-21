@@ -100,6 +100,11 @@ public enum Feat implements IHasSkills{
 			,EnumSet.of(Skill.AGGRESS_PARRY,Skill.BLITZ),0,15,0
 			,null,null
 			)
+	,COCOONED("Cocooned","The best defense is a growing defense.",""
+			,1f,EnumSet.of(FeatType.CRAFT),null
+			,EnumSet.of(Skill.SALVAGE,Skill.LIVING_ARMOR),10,5,0
+			,null,null
+			)
 	;
 
 	private final String name, desc, getDesc;
