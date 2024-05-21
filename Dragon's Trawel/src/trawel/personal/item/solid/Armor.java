@@ -483,6 +483,10 @@ public class Armor extends Item implements IEffectiveLevel{
 		condition *=d;
 	}
 	
+	public void buffAdd(double d) {
+		condition +=d;
+	}
+	
 	/**
 	 * half multiplier above 100%
 	 */

@@ -44,7 +44,7 @@ public enum Archetype implements IHasSkills{
 			,0,3,12
 			)
 	,GLADIATOR("Glitzy Gladiator"
-			,"Attention seeking but no-nonsense physical fighter. Fighting dirty is part of the show."
+			,"Really glory hogs know that fighting dirty is part of the show."
 			,null
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRTY, AGroup.CHARISMA)
@@ -143,7 +143,7 @@ public enum Archetype implements IHasSkills{
 			,null
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRTY,AGroup.DEXTERITY)
-			,EnumSet.of(FeatType.TRICKS,FeatType.AGILITY,FeatType.BATTLE)
+			,EnumSet.of(FeatType.TRICKS,FeatType.FINESSE,FeatType.BATTLE)
 			,EnumSet.of(Skill.NO_QUARTER,Skill.DSTRIKE,Skill.DEADLY_AIM)
 			,2,10,3
 			)
@@ -153,7 +153,7 @@ public enum Archetype implements IHasSkills{
 			AType.ENTRY
 			,EnumSet.of(AGroup.DIRECT_BATTLE,AGroup.STRENGTH)
 			,EnumSet.of(FeatType.BATTLE,FeatType.BRAWN,FeatType.SPIRIT)
-			,EnumSet.of(Skill.BLOODTHIRSTY,Skill.BLITZ,Skill.COUNTER)
+			,EnumSet.of(Skill.BLOODTHIRSTY,Skill.BULK,Skill.COUNTER)
 			,12,3,0
 			)
 	,RUNEBLADE("Rune Blade"
@@ -171,8 +171,7 @@ public enum Archetype implements IHasSkills{
 			,null
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRECT_BATTLE,AGroup.DEXTERITY)
-			//probably needs another type?
-			,EnumSet.of(FeatType.AGILITY,FeatType.BATTLE)
+			,EnumSet.of(FeatType.AGILITY,FeatType.BATTLE,FeatType.FINESSE)
 			,EnumSet.of(Skill.OPEN_VEIN,Skill.DEADLY_AIM,Skill.QUICK_START)
 			,3,12,0
 			)

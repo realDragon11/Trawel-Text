@@ -820,6 +820,13 @@ public class Combat {
 			}
 			return ret;
 		}
+		//parry is applied
+		if (defender.hasEffect(Effect.PARRY)) {
+			//since we check to see if we have parry first, we can afford to do a more expensive POW calc to compound it
+			dodgeRoll *= Math.pow(1.2d,defender.effectCount(Effect.PARRY));
+		}
+		
+		
 		//could move dodge rolls here, but would have to split advantage code
 		if (dodgeRoll > hitRoll){
 			ret= new AttackReturn(ATK_ResultCode.DODGE,"",att,preNotes);
@@ -875,6 +882,14 @@ public class Combat {
 						ret.addNote("Pressing the advantage!");
 					}
 				}
+				if (isReal && attacker.hasSkill(Skill.AGGRESS_PARRY)) {//if not real, don't apply stack
+					attacker.addEffect(Effect.PARRY);
+					if (canDisp) {
+						ret.addNote("Parry setup!");
+					}
+				}
+				//impactful only below
+				
 				if (ret.type == ATK_ResultType.IMPACT && attacker.hasSkill(Skill.RUNIC_BLAST)
 						&& attacker.getBag().getHand().isEnchantedHit()) {
 					EnchantHit rune = (EnchantHit) attacker.getBag().getHand().getEnchant();
@@ -898,10 +913,8 @@ public class Combat {
 						ret.addBonusWound(runeWound);
 					}	
 				}
-				if (ret.type == ATK_ResultType.IMPACT && attacker.hasSkill(Skill.OPEN_VEIN)) {
-					if (isReal) {//if not a dummy attack
-						defender.addEffect(Effect.MAJOR_BLEED);//add no bleed recovery
-					}
+				if (isReal && ret.type == ATK_ResultType.IMPACT && attacker.hasSkill(Skill.OPEN_VEIN)) {//if not real, don't apply stack
+					defender.addEffect(Effect.MAJOR_BLEED);//add no bleed recovery
 				}
 			}
 			
@@ -1478,7 +1491,11 @@ public class Combat {
 			}
 			if (defender.hasSkill(Skill.ARMORSPEED)) {
 				defender.applyDiscount(10);
-				extra.print(" They advance closer to the action...");
+				extra.print(" They advance closer to the action.");
+			}
+			if (defender.hasSkill(Skill.LIVING_ARMOR)) {
+				defender.getBag().buffArmorAdd(.1d);
+				extra.print(" Their armor reacts to the blow.");
 			}
 			break;
 		}
@@ -1497,7 +1514,7 @@ public class Combat {
 		}
 
 
-		float hpRatio = ((float)defender.getHp())/(defender.getMaxHp());
+		
 		//float hpRatio = ((float)p.getHp())/(p.getMaxHp());
 		//extra.println(p.getHp() + p.getMaxHp() +" " + hpRatio);
 		/*if (!extra.getPrint()) {//should save computions in non player battles
@@ -1534,6 +1551,7 @@ public class Combat {
 			}
 		}*/
 		if (defender.hasSkill(Skill.RACIAL_SHIFTS)) {
+			float hpRatio = ((float)defender.getHp())/(defender.getMaxHp());
 			RaceID rid = defender.getBag().getRaceID();
 			switch (rid) {
 			case B_MIMIC_CLOSED:
@@ -1605,6 +1623,11 @@ public class Combat {
 				extra.println(indent+"The bees sting "+attacker.getName()+" for "+bee_damage+"!");
 			}
 			attacker.takeDamage(bee_damage);
+		}
+		
+		//clear once per defense abilities
+		if (defender.hasEffect(Effect.PARRY)) {
+			defender.removeEffectAll(Effect.PARRY);
 		}
 		
 		

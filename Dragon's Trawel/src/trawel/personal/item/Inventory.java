@@ -797,9 +797,15 @@ public class Inventory implements java.io.Serializable{
 		}
 	}
 	
-	public void buffArmor(float f) {
+	public void buffArmor(double f) {
 		for (int i = 0; i < 5; i++) {
 			armorSlots[i].buff(f);
+		}
+	}
+	
+	public void buffArmorAdd(double f) {
+		for (int i = 0; i < 5; i++) {
+			armorSlots[i].buffAdd(f);
 		}
 	}
 	

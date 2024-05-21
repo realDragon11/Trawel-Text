@@ -26,7 +26,8 @@ public enum Feat implements IHasSkills{
 			,EnumSet.noneOf(Skill.class),15,15,15//should grant a decent amount of every stat
 			,null,null),
 	COMMON_TOUGH("Tough","They're tougher than they look. And they look tough.","",
-			1f,null,EnumSet.of(FeatType.BRAWN,FeatType.BATTLE),EnumSet.of(Skill.TA_NAILS),20,5,5
+			1f,null,EnumSet.of(FeatType.BRAWN,FeatType.BATTLE),
+			EnumSet.of(Skill.TA_NAILS),20,5,5
 			,null,null),
 	WITCHY("Witchy","Curses and potions are their forte.","",// Washy
 			1f,EnumSet.of(FeatType.POTIONS,FeatType.CURSES),null
@@ -51,7 +52,7 @@ public enum Feat implements IHasSkills{
 			,EnumSet.of(Skill.MESMER_ARMOR,Skill.ARMOR_MAGE),2,3,10
 			,null,null)
 	,AMBUSHER("Ambusher","They know how to start a fight.",""
-			,1f,EnumSet.of(FeatType.TRICKS),EnumSet.of(FeatType.BATTLE,FeatType.AGILITY)
+			,1f,EnumSet.of(FeatType.TRICKS),EnumSet.of(FeatType.BATTLE,FeatType.FINESSE)
 			,EnumSet.of(Skill.OPENING_MOVE,Skill.QUICK_START),0,5,10
 			,null,null
 			)
@@ -73,7 +74,7 @@ public enum Feat implements IHasSkills{
 			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_CRYO,Skill.ARMOR_TUNING),5,0,5//more stats
 			,EnumSet.of(Skill.ARCANIST),null
 			)
-	,SHOCK_SAVANT("Shock-Savant","Shocks their foes with static constantly, increasing the damage wrought by their charges."
+	,SHOCK_SAVANT("Shocksavant","Shocks their foes with static constantly, increasing the damage wrought by their charges."
 			,"Grants elec-focused arcany that use the higher of dexterity and clarity."
 			,.7f,null,null
 			,EnumSet.of(Skill.ELEMENTALIST,Skill.M_AERO,Skill.SPUNCH),0,5,5//more stats
@@ -94,6 +95,11 @@ public enum Feat implements IHasSkills{
 			//lots of strength, 5 more than normal due to big bag
 			,EnumSet.of(Skill.BIG_BAG,Skill.BULK),20,0,0
 			,null,null)
+	,SWIFT("Swift","A wall of steel enhances the best of footwork.",""
+			,1f,EnumSet.of(FeatType.FINESSE,FeatType.AGILITY),null
+			,EnumSet.of(Skill.AGGRESS_PARRY,Skill.BLITZ),0,15,0
+			,null,null
+			)
 	;
 
 	private final String name, desc, getDesc;
@@ -135,7 +141,8 @@ public enum Feat implements IHasSkills{
 		MYSTIC,//should be granted if any of the following are granted: (can also be granted alone, for example runes is Mystic + Craft)
 		ARCANE,CURSES
 		//end mystic sub classes
-		, POTIONS,TRICKS, SOCIAL, BATTLE, SPIRIT, CRAFT, AGILITY, BRAWN;
+		, POTIONS,TRICKS, SOCIAL, BATTLE, SPIRIT, CRAFT,
+		AGILITY, BRAWN, FINESSE;
 	}
 	
 	@Override

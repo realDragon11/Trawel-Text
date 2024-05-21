@@ -93,7 +93,7 @@ public enum Skill{
 				,"Cannot bring you above your MHP."
 				,Type.OFFENSE),
 		ARMOR_TUNING("Armor Tuning","Your armor is 20% stronger at the start of every battle."
-				,"Armor above 100% degrades half of how much it's above 100% whenever you complete an action."
+				,extra.ARMOR_TIP
 				,Type.DEFENSE),
 		ARMORSPEED("Glancing Blow","Attack 10 instants sooner after your armor blocks an attack."
 				,"Applies once per attack."
@@ -116,7 +116,7 @@ public enum Skill{
 		QUICK_START("Quick Start","Grants a stack of Advantage at the start of every battle."
 				,extra.ADV_TIP
 				,Type.SPEED),
-		PRESS_ADV("Press the Advantage","On Crit: Gain one stack of advantage."
+		PRESS_ADV("Press the Advantage","On Any Crit: Gain one stack of advantage."
 				,extra.CRIT_TIP+" "+extra.ADV_TIP
 				,Type.SPEED),
 		BLOODDRINKER("Blood Drinker","Those who attack you while bleeding give you HP equal to half their bleed damage."
@@ -224,7 +224,13 @@ public enum Skill{
 				,Type.CRAFT),
 		OPEN_VEIN("Open Vein","On Impactful Crit: Apply "+Effect.MAJOR_BLEED.getName()+", preventing "+Effect.BLEED.getName() +" stacks from healing."
 				,extra.CRIT_TIP
-				,Type.OFFENSE)
+				,Type.OFFENSE),
+		AGGRESS_PARRY("Aggress Parry","On Any Crit: Grants Parry."
+				,extra.CRIT_TIP+" "+extra.PARRY_TIP
+				,Type.DEFENSE),
+		LIVING_ARMOR("Living Armor","On Armor Block: Buff your armor by +10% flat. This can restore armor."
+				,extra.ARMOR_TIP
+				,Type.DEFENSE)
 		
 		/**
 		 * move tactics here to keep them in order
