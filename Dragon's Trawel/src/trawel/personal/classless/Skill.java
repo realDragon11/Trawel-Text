@@ -50,7 +50,7 @@ public enum Skill{
 		RACIAL_SHIFTS("Flexible","Prone to changing its defense patterns."
 				,"Changes stances in combat, changing its target types, and possibly its attacks."
 				,Type.FEATURE),
-		TA_NAILS("Tough as Nails","Grants a 20% chance to negate incoming wounds."
+		TA_NAILS("Tough as Nails","20% chance to negate incoming wounds."
 				,"Can apply to any wound inflicted on them, preventing it from processing entirely.",
 				Type.DEFENSE),
 		RAW_GUTS("Raw Guts","Resist damage up to 3% LHP, by Torso condition."
@@ -59,49 +59,49 @@ public enum Skill{
 		KUNG_FU("Unarmed Attacks","Gain martial arts attacks."
 				,"Adds one attack option per turn, which is based on strength and dexterity, TODO."//TODO
 				,Type.ATTACK_TYPE),
-		BLITZ("Blitz","You actions take 3 less instants to complete than expected."
+		BLITZ("Blitz","Actions take 3 less instants to complete than expected."
 				,"Does not allow you to act sooner in order- but does change how much time passes when you do get to act."
 				,Type.SPEED),
-		COUNTER("Counter","Whenever an attack rolls to-hit on you, advance 1 instant."
-				,""
+		COUNTER("Counter","When Attacked: Advance 1 instant."
+				,"Attacks are when to-hit is rolled on you."
 				,Type.SPEED),
-		SPEEDDODGE("Speed Dodge","Attack 10 instants sooner after you dodge."
+		SPEEDDODGE("Speed Dodge","On Dodge: Attack 10 instants sooner."
 				,"Applies to each dodge. Does not apply to misses."
 				,Type.SPEED),
-		DODGEREF("Refreshing Dodge","Gain 1% of attacker's LHP every time you dodge."
+		DODGEREF("Refreshing Dodge","On Dodge: Gain 1% of attacker's LHP."
 				,"Uncapped total HP gain, can exceed MHP. Attacker's LHP caps at 2 levels higher than your own. Does not apply to misses."
 				,Type.SPEED),
-		P_BREWER("Brewer","Your created potions can be sipped two more times before running out."
+		P_BREWER("Brewer","Created potions can be sipped two more times before running out."
 				,"Stacks with normal filler ingredients."
 				,Type.CRAFT),
-		TOXIC_BREWS("Toxic Brews","When drinking a cursed potion, gain up to 3 random minor positive potion effects. Curse reduces MHP by 20% instead of 50%. Your created potions can be sipped one more time."
+		TOXIC_BREWS("Toxic Brews","When drinking a cursed potion, gain up to 3 random minor positive potion effects. Curse reduces MHP by 20% instead of 50%. Created potions can be sipped one more time."
 				,"Stacks with normal filler ingredients."
 				,Type.CRAFT),
-		CURSE_MAGE("Curse Whisperer","Those who kill them are cursed, and start battles with half base MHP until cured."
-				,"Cure at a Shaman or Doctor. Lasts between battles."
+		CURSE_MAGE("Curse Whisperer","On Death: Curse Killer."
+				,"Curse halves HP. Cure at a Shaman or Doctor. Lasts between battles."
 				, Type.SOCIAL),
-		KILLHEAL("Vampiric Spirit","Gain 5% dead LHP on a kill."
+		KILLHEAL("Vampiric Spirit","On Kill: Gain 5% of dead's LHP."
 				,"Dead LHP caps at 2 levels higher than your own. 'Kill' means being the last person to attack the target before they die."
 				,Type.OFFENSE),
-		SPUNCH("Sucker Punch","Your impactful attacks slow down your target's next action by 2% of their total time."
+		SPUNCH("Sucker Punch","On Impact: Slow down target's next action by 2% of their total time."
 				,extra.IMPACT_TIP
 				,Type.OFFENSE),
-		DSTRIKE("Decisive Strike","Instantly kill anyone you damage by more than 70% of their MHP in one blow."
+		DSTRIKE("Decisive Strike","On Impact: Instantly kill target you damage by more than 70% of their MHP in one blow."
 				,"Max HP is closely aligned to how much HP they start with, but can go higher. Must be part of an 'Impactful' action."
 				,Type.OFFENSE),
-		BLOODTHIRSTY("Bloodthirsty","Heal HP equal to the lower of 1% your LHP and their LHP every time you make an impactful attack."
+		BLOODTHIRSTY("Bloodthirsty","On Impact: Heal HP equal to the lower of 1% attacker's LHP and defender's LHP."
 				,"Cannot bring you above your MHP."
 				,Type.OFFENSE),
-		ARMOR_TUNING("Armor Tuning","Your armor is 20% stronger at the start of every battle."
+		ARMOR_TUNING("Armor Tuning","Armor is 20% stronger at the start of every battle."
 				,extra.ARMOR_TIP
 				,Type.DEFENSE),
-		ARMORSPEED("Glancing Blow","Attack 10 instants sooner after your armor blocks an attack."
+		ARMORSPEED("Glancing Blow","On Armor Block: Attack 10 instants sooner."
 				,"Applies once per attack."
 				,Type.DEFENSE),//defense not speed, speed is more 'fast in mobility'
-		ARMORHEART("Armor Heart","Gain 2% of attacker's LHP every time your armor blocks an attack."
+		ARMORHEART("Armor Heart","On Armor Block: Gain 2% of attacker's LHP."
 				,"Caps at your MHP. Attacker's LHP caps at 4 levels higher than your own. Applies once per attack."
 				,Type.DEFENSE),
-		MESMER_ARMOR("Mesmer Armor","When attacked for no Impact, Roll a contested Clarity vs their highest attribute to confuse them."
+		MESMER_ARMOR("Mesmer Armor","When attacked for no Impact, Roll a contested Clarity vs highest attribute to confuse the attacker."
 				,"Attacks with no impact typically are dodged, miss, or are blocked by armor. Confuse makes the target's next attack capable of friendly fire."
 				,Type.DEFENSE),
 		ARCANIST("Arcanist","Unlocks a magical swappable attack option."
@@ -119,14 +119,14 @@ public enum Skill{
 		PRESS_ADV("Press the Advantage","On Any Crit: Gain one stack of advantage."
 				,extra.CRIT_TIP+" "+extra.ADV_TIP
 				,Type.SPEED),
-		BLOODDRINKER("Blood Drinker","Those who attack you while bleeding give you HP equal to half their bleed damage."
+		BLOODDRINKER("Blood Drinker","When Attacked: Gain HP equal to half attacker's bleed damage tick that attack."
 				,"Stacks with other sources of bleed healing. Not capped by your MHP."
 				,Type.SOCIAL),
-		NIGHTVISION("Nightvision","Lets you see objects in the dark."
+		NIGHTVISION("Nightvision","Can see in the dark."
 				,"Helps determine things in Graveyards."
 				, Type.OTHER),
 		//can be depowered
-		NPC_BURN_ARMOR("Flaming Strikes","Burns armor with every Impactful attack."
+		NPC_BURN_ARMOR("Flaming Strikes","On Impact: Burn armor."
 				,"Attacks damage armor twice as much as percent HP damage."
 				,Type.FEATURE),
 		PLOT_ARMOR("Plot Armor","Confused targets have a reduced chance to attack this Person."
@@ -153,17 +153,17 @@ public enum Skill{
 		M_AERO("Aeromantic","25% chance to convert 'Grazed' into a random Elec wound on any attack."
 				,"Applies before choosing attack. Stacks with other Elementalist subskills, up to 75%."
 				,Type.OFFENSE),
-		STERN_STUFF("Sterner Stuff","The first time each battle you would die, roll a contested Strength check vs their highest attribute to survive at 1 HP."
-				,"Instant kill attacks that wouldn't deal enough damage to kill you otherwise do not roll, but still leave you at 1 HP.",
+		STERN_STUFF("Sterner Stuff","On Death: Once, roll a contested Strength check vs attacker's highest attribute to survive at 1 HP."
+				,"Instant kill attacks that wouldn't deal enough damage to kill otherwise skip the roll, but still leave them at 1 HP.",
 				Type.DEFENSE),
-		REACTIVE_DODGE("Reactive Dodge","Grants one stack of Advantage after each dodge."
+		REACTIVE_DODGE("Reactive Dodge","On Dodge: Gain. one stack of Advantage."
 				,"Does not apply to misses. "+extra.ADV_TIP
 				,Type.SPEED),
 		ARCANIST_2("Multi-Magical","Grants another Arcanist skill attack configuration."
 				,""
 				,Type.ATTACK_TYPE, Skill.ARCANIST),
-		CONDEMN_SOUL("Condemner","Curses those they kill, forcing them start battles with half base MHP until cured."
-				,"Cure at a Shaman or Doctor. Lasts between battles."
+		CONDEMN_SOUL("Condemner","On Kill: Apply Curse."
+				,"Curse halves HP. Cure at a Shaman or Doctor. Lasts between battles."
 				, Type.SOCIAL),
 		NO_HOSTILE_CURSE("Indomitable Spirit","Immune to the CURSE status by hostile Persons."
 				,"Does not apply to self-inflicted curses or outside of battle."
@@ -186,7 +186,7 @@ public enum Skill{
 		TACTIC_TAKEDOWN("Tactic: Planned Takedown","Grants access to the Takedown tactic at all times."
 				,AttackBonus.TAKEDOWN.desc
 				,Type.TACTIC_TYPE),
-		NO_QUARTER("No Quarter","Grants the Takedown effect and two stacks of Advantage on kill."
+		NO_QUARTER("No Quarter","On Kill: Gain Takedown effect and two stacks of Advantage."
 				,"Takedown applies Knockout on your next impactful attack. It stacks in duration. "+extra.ADV_TIP
 				,Type.OFFENSE),
 		ARMOR_MAGE("Armor Mage","Increases armor defenses based on Clarity."
@@ -195,19 +195,19 @@ public enum Skill{
 		BEER_BELLY("Beer Belly","Doubles LHP bonus for drinking beer."
 				,"From 5% to 10% increase, does not count as max HP."
 				,Type.DEFENSE),
-		DEADLY_AIM("Deadly Aim","On Crit: Deal 20% bonus damage."
+		DEADLY_AIM("Deadly Aim","On Any Crit: Deal 20% bonus damage."
 				,extra.CRIT_TIP
 				,Type.OFFENSE),
 		LIFE_MAGE("Life Mage","+5% Clarity as MHP."
 				,""
 				,Type.DEFENSE),
-		POTION_CHUGGER("Potion Chugger","Regenerates 10% LHP at the end of their second turn if drinking a potion."
+		POTION_CHUGGER("Potion Chugger","After Potion Drink: Regenerates 10% LHP at the end of second turn."
 				,"Applies through the Breathing Effect."
 				,Type.OTHER),
-		FETID_FUMES("Fetid Fumes","When attacked, force a contested Clarity check at half your Clarity to apply Miasma. Attackers already inflicted with Miasma suffer a -10% hit roll."
+		FETID_FUMES("Fetid Fumes","When Attacked: Force a contested Clarity check at half Clarity to apply Miasma. Attackers already inflicted with Miasma suffer a -10% hit roll."
 				,"Miasma halves every time the suffering party completes a swing."
 				,Type.DEFENSE),
-		FEVER_STRIKE("Fever Strike","On attack, force a contested Clarity check to apply two stacks of Miasma. When targeting opponents already suffering from Miasma with physical attacks, deal +10% damage as Decay damage."
+		FEVER_STRIKE("Fever Strike","On Attack: Force a contested Clarity check to apply two stacks of Miasma. When targeting opponents already suffering from Miasma with physical attacks, deal +10% damage as Decay damage."
 				,"Miasma halves every time the suffering party completes a swing. Damage bonus applies on targeting, not on swing."
 				,Type.OFFENSE),
 		BIG_BAG("Big Bag","Gain 3 Drawbane slots, for a total of 8."
@@ -219,17 +219,20 @@ public enum Skill{
 		RUNESMITH("Runesmith","Allows applying Runes at Enchanters. On-Hit enchantments are 1.3x as effective."
 				,""
 				,Type.CRAFT),
-		RUNIC_BLAST("Runic Blast","On Impactful Crit: Apply a wound of the elemental on-hit enchantment."
+		RUNIC_BLAST("Runic Blast","On Impact Crit: Apply a wound of the elemental on-hit enchantment."
 				,"Does not apply if used weapon doesn't have an element on-hit enchantment. "+extra.CRIT_TIP
 				,Type.CRAFT),
-		OPEN_VEIN("Open Vein","On Impactful Crit: Apply "+Effect.MAJOR_BLEED.getName()+", preventing "+Effect.BLEED.getName() +" stacks from healing."
+		OPEN_VEIN("Open Vein","On Impact Crit: Apply "+Effect.MAJOR_BLEED.getName()+", preventing "+Effect.BLEED.getName() +" stacks from healing."
 				,extra.CRIT_TIP
 				,Type.OFFENSE),
 		AGGRESS_PARRY("Aggress Parry","On Any Crit: Grants Parry."
 				,extra.CRIT_TIP+" "+extra.PARRY_TIP
 				,Type.DEFENSE),
-		LIVING_ARMOR("Living Armor","On Armor Block: Buff your armor by +10% flat. This can restore armor."
+		LIVING_ARMOR("Living Armor","On Armor Block: Boost your armor by +8% flat."
 				,extra.ARMOR_TIP
+				,Type.DEFENSE),
+		SALVAGE("Salvage","On Impactful Crit: Boost your armor by +12% flat."
+				,extra.CRIT_TIP+" "+extra.ARMOR_TIP
 				,Type.DEFENSE)
 		
 		/**

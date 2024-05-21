@@ -137,11 +137,19 @@ public enum Feat implements IHasSkills{
 	}
 	
 	public enum FeatType{
+		//can always be taken
 		COMMON,
+		//catch all strict battle stuff?
+		BATTLE,
+		//magic section
 		MYSTIC,//should be granted if any of the following are granted: (can also be granted alone, for example runes is Mystic + Craft)
-		ARCANE,CURSES
+		ARCANE,CURSES,
 		//end mystic sub classes
-		, POTIONS,TRICKS, SOCIAL, BATTLE, SPIRIT, CRAFT,
+		//item focused
+		POTIONS,CRAFT,
+		//styles
+		TRICKS, SOCIAL, SPIRIT,
+		//movement/dodge, strength, offensive dex
 		AGILITY, BRAWN, FINESSE;
 	}
 	

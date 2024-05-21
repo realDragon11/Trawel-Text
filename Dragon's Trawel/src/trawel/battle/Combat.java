@@ -876,20 +876,6 @@ public class Combat {
 						ret.addNote("Deadly Bonus: " + deadlyBonus);
 					}
 				}
-				if (isReal && attacker.hasSkill(Skill.PRESS_ADV)) {//if not real, don't apply stack
-					attacker.addEffect(Effect.ADVANTAGE_STACK);
-					if (canDisp) {
-						ret.addNote("Pressing the advantage!");
-					}
-				}
-				if (isReal && attacker.hasSkill(Skill.AGGRESS_PARRY)) {//if not real, don't apply stack
-					attacker.addEffect(Effect.PARRY);
-					if (canDisp) {
-						ret.addNote("Parry setup!");
-					}
-				}
-				//impactful only below
-				
 				if (ret.type == ATK_ResultType.IMPACT && attacker.hasSkill(Skill.RUNIC_BLAST)
 						&& attacker.getBag().getHand().isEnchantedHit()) {
 					EnchantHit rune = (EnchantHit) attacker.getBag().getHand().getEnchant();
@@ -913,9 +899,34 @@ public class Combat {
 						ret.addBonusWound(runeWound);
 					}	
 				}
-				if (isReal && ret.type == ATK_ResultType.IMPACT && attacker.hasSkill(Skill.OPEN_VEIN)) {//if not real, don't apply stack
-					defender.addEffect(Effect.MAJOR_BLEED);//add no bleed recovery
+				//real only stack applying below
+				if (isReal) {
+					if (attacker.hasSkill(Skill.PRESS_ADV)) {
+						attacker.addEffect(Effect.ADVANTAGE_STACK);
+						if (canDisp) {
+							ret.addNote("Pressing the advantage!");
+						}
+					}
+					if (attacker.hasSkill(Skill.AGGRESS_PARRY)) {
+						attacker.addEffect(Effect.PARRY);
+						if (canDisp) {
+							ret.addNote("Parry setup!");
+						}
+					}
+					if (ret.type == ATK_ResultType.IMPACT && attacker.hasSkill(Skill.OPEN_VEIN)) {
+						defender.addEffect(Effect.MAJOR_BLEED);//add no bleed recovery
+						if (canDisp) {
+							ret.addNote("Opened vein!");
+						}
+					}
+					if (ret.type == ATK_ResultType.IMPACT && attacker.hasSkill(Skill.SALVAGE)) {
+						defender.getBag().buffArmorAdd(0.12d);
+						if (canDisp) {
+							ret.addNote("Salvaged armor!");
+						}
+					}
 				}
+				
 			}
 			
 			if (defender.hasSkill(Skill.RAW_GUTS)) {
@@ -1494,7 +1505,7 @@ public class Combat {
 				extra.print(" They advance closer to the action.");
 			}
 			if (defender.hasSkill(Skill.LIVING_ARMOR)) {
-				defender.getBag().buffArmorAdd(.1d);
+				defender.getBag().buffArmorAdd(.08d);
 				extra.print(" Their armor reacts to the blow.");
 			}
 			break;
