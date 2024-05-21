@@ -84,7 +84,7 @@ public class Potion implements java.io.Serializable{
 					if (p.hasSkill(Skill.CHEF)) {
 						overwrite = true;
 						extra.println(" " +effect.getDisp());
-						extra.println("  " +Effect.PADDED.getDisp());
+						extra.println(" " +Effect.PADDED.getDisp());
 						p.addEffect(Effect.PADDED);
 					}
 					break;

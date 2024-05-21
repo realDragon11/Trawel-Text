@@ -867,7 +867,7 @@ public class Combat {
 			
 			//attacker can be null for dummy attacks?
 			//on crits
-			if (attacker != null && hitRoll > dodgeRoll*2) {
+			if (attacker != null && hitRoll > dodgeRoll*3) {
 				if (attacker.hasSkill(Skill.DEADLY_AIM)) {
 					int deadlyBonus = (int)(ret.damage*0.2);
 					ret.damage += deadlyBonus;
@@ -914,9 +914,20 @@ public class Combat {
 						}
 					}
 					if (ret.type == ATK_ResultType.IMPACT && attacker.hasSkill(Skill.OPEN_VEIN)) {
-						defender.addEffect(Effect.MAJOR_BLEED);//add no bleed recovery
-						if (canDisp) {
-							ret.addNote("Opened vein!");
+						if (defender.hasEffect(Effect.MAJOR_BLEED)) {
+							int bStacks = bleedStackAmount(attacker, defender);
+							if (defender.hasEffect(Effect.CLOTTER)) {
+								bStacks = 0;//clotter makes applied stacks 0 to show something is weird
+							}
+							defender.addEffectCount(Effect.BLEED,bStacks);
+							if (canDisp) {
+								ret.addNote("Cut vein: " +bStacks + " stacks!");
+							}
+						}else {
+							defender.addEffect(Effect.MAJOR_BLEED);//add no bleed recovery
+							if (canDisp) {
+								ret.addNote("Opened vein!");
+							}
 						}
 					}
 					if (ret.type == ATK_ResultType.IMPACT && attacker.hasSkill(Skill.SALVAGE)) {
