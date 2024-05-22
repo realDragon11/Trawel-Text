@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
@@ -77,89 +78,103 @@ public class mainGame {
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__11";
 	public static final String VERSION_DATE = " updated May 22nd 2024";
-	public static final String[] changelog = new String[] {
+	public static final String[][] changelog = new String[][] {
 			//add to front, changeviewer cycles to older ones when used
-			
+			{
+			"b_11",
 			//discuss magic overall
-			"b_11: {part 1/?} TODO magic status stance TODO.",
+			"TODO magic status stance TODO.",
 			//discuss material changes
-			"b_11: {part 2/?} High end materials generally had their stats lowered and were given tradeoffs amongst each other.",
+			"High end materials generally had their stats lowered and were given tradeoffs amongst each other.",
 			//discuss skill changes
-			"b_11: {part ?/?} Curse inflicting skills have been replaced. Normal NPCs can no longer inflict curse, which should lessen doctor visits. Doctors no longer cure Tired and Bees, but the Wounded punishment effect was added in some places where the Damaged effect was used prior.",
-			"b_11: {part ?/?} Misc New Skills: Fetid Fumes, Fever Strike, No Quarter, Bulk, Big Bag, Press Advantage, Runesmith, Runic Blast, Open Vein, Living Armor, Aggress Parry, Salvage, Chef, Ignite Boost, Frost Boost, Elec Boost; Misc New Feats: Heavyweight, Swift, Cocooned; Misc New Archetypes: Rune Blade, Cut Throat, Comestible Critic.",
+			"Curse inflicting skills have been replaced. Normal NPCs can no longer inflict curse, which should lessen doctor visits. Doctors no longer cure Tired and Bees, but the Wounded punishment effect was added in some places where the Damaged effect was used prior.",
+			"Misc New Skills: Fetid Fumes, Fever Strike, No Quarter, Bulk, Big Bag, Press Advantage, Runesmith, Runic Blast, Open Vein, Living Armor, Aggress Parry, Salvage, Chef, Ignite Boost, Frost Boost, Elec Boost; Misc New Feats: Heavyweight, Swift, Cocooned; Misc New Archetypes: Rune Blade, Cut Throat, Comestible Critic.",
 			//discuss drawbane bag changes
-			"b_11: {part ?/?} Increased drawbane inventory size to 5 base and the Big Bag skill increases it to 8. Feat Fragments no longer take up space.",
+			"Increased drawbane inventory size to 5 base and the Big Bag skill increases it to 8. Feat Fragments no longer take up space.",
 			//discuss attribute changes
-			"b_11: {part ?/?} Strength no longer doubles up on physical damage bonus. Clarity now applies as an elemental damage multiplier.",
+			"Strength no longer doubles up on physical damage bonus. Clarity now applies as an elemental damage multiplier.",
 			//discuss new exploration content
-			"b_11: {part ?/?} Sky Cult added to Mountains. Locked Doors now require an attribute contest to open, and on failure you have Burnout applied.",
-			"b_11: {part ?/?} Some bumpers now steal currency from you on loss against them. Gems have been tweaked in rarity, Rubies are also granted as a gift for killing bosses in nodes.",
-			
-			
-			"b_10 hotfix 3: pouch swap rejection crash, dryad refight crash, dungeon regrow wrong checkpoint type, more perks have attributes, buffed magic attacks and some related archetypes and feats.",
-			"b_10 hotfix 2: fixed fort menu crashes, improved timeevent error reporting.",
-			"b_10 hotfix 1: increased world currency amount for most humanoid NPCs, attempted to fix dungeon party crash, fixed Inn rent waiting and let you rent more if you have less than 1 month left.",
-			
-			"b_10: {part 1/9} You can travel through multiple towns at the same time by using the Compass from your Map, in your Inventory. This can result in multiple random encounters.",
-			"b_10: {part 2/9} Curse, Tired, Damaged, and Bees are now punishment longer lasting effects. Tired can be cured when resting, Bees can be cured by entering water. Curse is still cured at Doctors, which heals everything but Damaged. Damaged requires Blacksmith repairs. These effects will be used to give a downside to failing Attribute checks, so they're not just free rewards with no consequences.",
-			"b_10: {part 3/9} This punishment system can be seen in the 'Trapped Treasure Chambers' in Mines and Dungeons, which have their own small set of traps and mechanics for those that would seek to loot them. Failing checks applies Burnout which prevents further ones until you rest or cure. Rolls that aren't prevented (such as mountain rocks) have their attributes halved.",
-			"b_10: {part 4/9} Aether is now used entirely for buying/selling equipment. Drawbanes still use World Currency. Enchanters no longer let you sell aether. This changes are meant to make each currency serve a purpose and let them be more common without dealing with exchanging balancing problems.",
-			"b_10: {part 5/9} Added Drudger, Fell, Monster, and Animal Cleanse Quests. Almost all targets will award progress if encountered in Node Explorations or other features as well, with some exceptions for mooks. Some fightable hunters now reward Amber when looted. Witch Huts have more Collect targets.",
-			"b_10: {part 6/9} Random encounter frequency was bugged, is now a lot more common. Vampires and some other Bumpers will appear less during the daytime. Bandits will prefer money, not just valuable metals. Removed most bumper level requirements, and updated wolf pack with player allies. There are more Primal Deathcheater types.",
-			"b_10: {part 7/9} The first Node in Features will not have forced combat, and the first two layers will have less free loot and less obstacle fights.",
-			"b_10: {part 8/9} log.txt has full stack trace. Updated tutorial's feature explanations and list of world perks. Mines now properly weight their contents. Graveyard's Nightvison behavior has been fixed. Connection failure message will only play once, after 10 seconds.",
-			"b_10: {part 9/9} Some less prominent bugfixes can be found in the Steam patch notes and github commit history.",
-			
-			"Prior Changelog notes were from 2023, press again to continue.",
-			
-			"b_9: {part 1/1} Expanded Bag items can now be melted down into aether from player menu or if Bag is full when looting. 'Really Attack' prompts give the option to examine the Person's inventory.",
-			"b_9: {part 2/2} Plant Spots, Drawbanes, and Alchemy have recieved interconnected improvements, most notably a few extra potion combos. Altars now can have Forest blessings. Traveling features have new special behavior, and you can rent rooms at Inns.",
-			"b_9: {part 3/3} Added the Enchanter Town Feature, which can enchant or improve enchantments on Weapons and Armor. It can also allow you to sell Aether for World Currency. The Blacksmith can now temper armor to remove negative traits at the cost of Amber Gems.",
-			"b_9: {part 4/4} Changed internal Sidequest code to save properly, tweaked quest generation behavior, added quests to the Rogue, Hero, and new Hunter's guild. Added more Quest Reactions.",
-			"b_9: {part 5/5} Increased positive reputation gain from combat, decreased negative gain. Added Amber as the Hunter's gem, and updated world currency/gem costs and rewards.",
-			"b_9: {part 6/6} Adjusted Wounds, importantly adding more elemental wounds.",
-			"b_9: {part 7/7} Added more Classless Skills and Feats: Beer Belly, Deadly Aim, Glutton, Life Mage, Shaman, Potion Chugger.",
-			"b_9: {part 8/8} Expanded Greap worldgen map, filling out some more towns and adding many town locations. Route types have been expanded to include caravans and lesser traveled paths, which have different travel speeds and NPC interests.",
-			"b_9: {part 9/9} Added Simplified attack display style, moved attack notes from Combat Debug to its own option.",
-			
-			"b_8: {part 1/5} Added a wait option to Arenas and prevented giant time chunks by accident, made Arenas fight without the player and have the winners move on after enough training. Players always get a new fighter in their first round (so entirely for 1 round titles), but more rounds are done entirely naturally now, potentially drawing from survivors.",
-			"b_8: {part 2/5} Updated Lot menu, standardized collecting earned money from built Features. Features can now have intro/outro text, which can be turned off as a display option. Node Features now have autosave enabled while exploring them, and saves once again use a different date format.",
-			"b_8: {part 3/5} Created unique stances for Fish Anchor, Fish Spear, and Lance which all used other weapon stances as placeholders since the weapon updates. Two stances still need migration. Grazes have been renamed Negates and Graze is now used to indicate no rolled wound. Armor Quality value and fitness updated, which mostly matters for AI, as well as Weapon Quality price.",
-			"b_8: {part 4/5} Cleaned up Wound/Effect/Tactic text and code, added a few new Skills. Archetypes now grant more skills, as well as stats. Some new archetypes were added.",
-			"b_8: {part 5/5} More insults added to species, materials with extreme outlier elemental stats reigned in.",
-			
-			"b_7: {part 1/2} Nodes display inward/outward to indicate going deeper or closer to the entrance (in most cases, ultimately its merely a 'floor' counter).",
-			"b_7: {part 2/2} Updated to Kryo serialization, Java 8 to Java 17 migration failed. ",
-			
-			"b_6: {part 1/5} Updated stat displays and item 'higher/lower is better' displays. Tutorial text separated from 'feature description' text.",
-			"b_6: {part 2/5} Added many new towns to the Eoano WorldGen, and fluffed up the lore and flavor of existing towns as well. Species store re-added to Arona. Most bosses are now non-unique in that you don't have only one option if you want their Perk. Ancient Queen boss added to new island.",
-			"b_6: {part 3/5} Cleaned up Greap WorldGen, although it is still not a complete world.",
-			"b_6: {part 4/5} Some Features got larger improvements as part of the WorldGen updates: Districts now can house sub-stores. Gardens now start filled, and refill over time, and their changes in growth speed are more distinct for worldgen gardens. Several node features had changes to what nodes are likely to generate in them, and also their levels, which now display as a range when viewing from the town. Added Forest Altar, making altars now be dedicated to different primal forces.",
-			"b_6: {part 5/5} Some titles were changed, others were added. Steam version gained several new leaderboards and achievements.",
-			
-			"b_5: {part 1/4} You can now recruit adventurers in certain dungeons. All other dungeons had their mass battles removed. In 'dangerous' dungeons, these adventurers will assist you in the 'high security' checkpoints, and against the boss. Currently this is just the Tower of Fate and the Fatespinner. They will get a share of the loot, and if higher level than you, might get first pick. They will not be interested in joining you if they are 2 or more levels higher. They will not revive on death, and will leave if you do not visit the dungeon for a while. Fighting with them will make them take longer to leave than just visiting will.",
-			"b_5: {part 2/4} Passive population migration has been fixed and tweaked, now if you play close attention you might be able to see persons moving from town to town. They have a slight preference to move towards towns with Inns, but also to not overcrowd a town past what its features can support.",
-			"b_5: {part 3/4} All Features and Nodes now have updated behavior to update the background in the legacy graphical, and often fall back to different art now, since not all of it was made. (Same as the treatment armor, people, and weapons got). The 'examine closely' for weapons has been improved, and armor qualities also appear in world again, with slightly different functionalities.",
-			"b_5: {part 4/4} Necks and Heads best damage mult is 2.5x damage instead of 3x, reducing the 'neck meta' of AI's absurd alpha strikes.",
-			
-			"b_4: {part 1/4} Added 'back out' option to terminal (graphical will get it when it gets other updates). Added a few new display options, check the reduced indicator menu again, and also various 'realtime waiting' options. Added 'tactics' which are persistent action options in combat that don't deal damage (requires skills), and also some skill stances which apply a tactic effect and also a normal attack.",
-			"b_4: {part 2/4} Changed up condition wounds a fair bit, turning them into an injury system to constrast the typically short-lived nature of normal wounds in combat. Getting brained or shattered can hurt quite a bit. A boss, 'Yore' was also added to the Dungeon of Fate, with a new battle condition-based dungeon mechanic. Baron of Hell also got a demon bodytype, and cloth was turned into patchwork, linen, and cotton.",
-			"b_4: {part 3/4} Added a 'pouch/bag' feature to store equipment, currently works quite well outside of making room for things you're not currently comparing. You menu reforged into 'Player' menu, which can save in Nodes now. Includes character-exclusive settings like autolevel, autoloot, and autobattle.",
-			"b_4: {part 4/4} Enchanced compass into a full map, with directions to any visited town (and always Unun), and also town flavor in that menu, in addition to population and feature counts, timezone, etc. Display current time in hours and minutes in town menu. Society Titles have been expanded.",
-			
-			"b_3: {part 1/3} Tutorial mostly moved from 'feature text' to 'story'. Added saveable display options. Known issues: combat town Features need another cleanup with the new currency, mass battles have some balancing issues if they have an un-even number of fighters.",
-			"b_3: {part 2/3} Subtle changes to battle conditions. Effective level added, so level 2 is only a flat +10% better, not 2x better, which each further level being another +10% (level 3 is 1.3x mult, because level 1 is 1.1x). Stat tweaks on most species, some non-'personable' creatures now have barks and can loot money.",
-			"b_3: {part 3/3} Many town Feature mechanics had small tweaks, Brewing being the most visible in regards to how DrawBanes are talked about, and once again Merchant Guild prices, Fort Hall prices, and the more one-off Doctor prices. 'Highest Contribution' battlescore stat got split into the more sensible 'highest and lowest % deviation from average', which can show the extremes in attack balance a weapon has, for example a gold weapon being good at slapping but nothing else.",
-			
-			"b_2: {part 1/3} Attack backend changes became frontend changes for weapons, which now have different stat displays. This also made armor and dodging actual things again, before their average stats were a bit too low, now the forumlas have been re-tested and remade. 'classless' system (essentially multiclassing but with many multis) has born fruit, you can now use the replacement system, although it still has a long ways to go.",
-			"b_2: {part 2/3} If you want to pick your own Archetype to start with, use slowstart, otherwise it will pick a random one. Note that some require additional setup of their magic attacks. Nodes areas and ports also received complete overhauls, and much of the update development time was spent making Trawel run again after breaking nodes to improve them. Various small features, including witch huts, slums, and world generation also got less major updates and fixes.",
-			"b_2: {part 3/3} Some changes were made but not enough to have anything to show, for example summons should work, (which is a far cry from Trawel in 2019, where the concept of a 3 person fight was unthinkable) but there are no skills that summon any creatures yet.",
-			
-			"b_1: base attack code reworked in basically every way. currency divided. threading added (nothreads is an arg), time passing redone. Node exploration mostly same but had entire backend update. Locational damage exists but does little at the moment."
-			
-			,"End of current beta ingame changelog. Check the Github and Steam for prior updates and more detailed notes."
+			"Sky Cult added to Mountains. Locked Doors now require an attribute contest to open, and on failure you have Burnout applied.",
+			"Some bumpers now steal currency from you on loss against them. Gems have been tweaked in rarity, Rubies are also granted as a gift for killing bosses in nodes.",
+			},
+			{
+			"b_10 hotfixes",
+			"pouch swap rejection crash, dryad refight crash, dungeon regrow wrong checkpoint type, more perks have attributes, buffed magic attacks and some related archetypes and feats.",
+			"fixed fort menu crashes, improved timeevent error reporting.",
+			"increased world currency amount for most humanoid NPCs, attempted to fix dungeon party crash, fixed Inn rent waiting and let you rent more if you have less than 1 month left.",
+			},
+			{
+			"b_10",
+			"You can travel through multiple towns at the same time by using the Compass from your Map, in your Inventory. This can result in multiple random encounters.",
+			"Curse, Tired, Damaged, and Bees are now punishment longer lasting effects. Tired can be cured when resting, Bees can be cured by entering water. Curse is still cured at Doctors, which heals everything but Damaged. Damaged requires Blacksmith repairs. These effects will be used to give a downside to failing Attribute checks, so they're not just free rewards with no consequences.",
+			"This punishment system can be seen in the 'Trapped Treasure Chambers' in Mines and Dungeons, which have their own small set of traps and mechanics for those that would seek to loot them. Failing checks applies Burnout which prevents further ones until you rest or cure. Rolls that aren't prevented (such as mountain rocks) have their attributes halved.",
+			"Aether is now used entirely for buying/selling equipment. Drawbanes still use World Currency. Enchanters no longer let you sell aether. This changes are meant to make each currency serve a purpose and let them be more common without dealing with exchanging balancing problems.",
+			"Added Drudger, Fell, Monster, and Animal Cleanse Quests. Almost all targets will award progress if encountered in Node Explorations or other features as well, with some exceptions for mooks. Some fightable hunters now reward Amber when looted. Witch Huts have more Collect targets.",
+			"Random encounter frequency was bugged, is now a lot more common. Vampires and some other Bumpers will appear less during the daytime. Bandits will prefer money, not just valuable metals. Removed most bumper level requirements, and updated wolf pack with player allies. There are more Primal Deathcheater types.",
+			"The first Node in Features will not have forced combat, and the first two layers will have less free loot and less obstacle fights.",
+			"log.txt has full stack trace. Updated tutorial's feature explanations and list of world perks. Mines now properly weight their contents. Graveyard's Nightvison behavior has been fixed. Connection failure message will only play once, after 10 seconds.",
+			"Some less prominent bugfixes can be found in the Steam patch notes and github commit history.",
+			},
+			{
+			"b_9",
+			"Expanded Bag items can now be melted down into aether from player menu or if Bag is full when looting. 'Really Attack' prompts give the option to examine the Person's inventory.",
+			"Plant Spots, Drawbanes, and Alchemy have recieved interconnected improvements, most notably a few extra potion combos. Altars now can have Forest blessings. Traveling features have new special behavior, and you can rent rooms at Inns.",
+			"Added the Enchanter Town Feature, which can enchant or improve enchantments on Weapons and Armor. It can also allow you to sell Aether for World Currency. The Blacksmith can now temper armor to remove negative traits at the cost of Amber Gems.",
+			"Changed internal Sidequest code to save properly, tweaked quest generation behavior, added quests to the Rogue, Hero, and new Hunter's guild. Added more Quest Reactions.",
+			"Increased positive reputation gain from combat, decreased negative gain. Added Amber as the Hunter's gem, and updated world currency/gem costs and rewards.",
+			"Adjusted Wounds, importantly adding more elemental wounds.",
+			"Added more Classless Skills and Feats: Beer Belly, Deadly Aim, Glutton, Life Mage, Shaman, Potion Chugger.",
+			"Expanded Greap worldgen map, filling out some more towns and adding many town locations. Route types have been expanded to include caravans and lesser traveled paths, which have different travel speeds and NPC interests.",
+			"Added Simplified attack display style, moved attack notes from Combat Debug to its own option.",
+			},
+			{"b_8",
+			"Added a wait option to Arenas and prevented giant time chunks by accident, made Arenas fight without the player and have the winners move on after enough training. Players always get a new fighter in their first round (so entirely for 1 round titles), but more rounds are done entirely naturally now, potentially drawing from survivors.",
+			"Updated Lot menu, standardized collecting earned money from built Features. Features can now have intro/outro text, which can be turned off as a display option. Node Features now have autosave enabled while exploring them, and saves once again use a different date format.",
+			"Created unique stances for Fish Anchor, Fish Spear, and Lance which all used other weapon stances as placeholders since the weapon updates. Two stances still need migration. Grazes have been renamed Negates and Graze is now used to indicate no rolled wound. Armor Quality value and fitness updated, which mostly matters for AI, as well as Weapon Quality price.",
+			"Cleaned up Wound/Effect/Tactic text and code, added a few new Skills. Archetypes now grant more skills, as well as stats. Some new archetypes were added.",
+			"More insults added to species, materials with extreme outlier elemental stats reigned in.",
+			},
+			{"b_7",
+			"Nodes display inward/outward to indicate going deeper or closer to the entrance (in most cases, ultimately its merely a 'floor' counter).",
+			"Updated to Kryo serialization, Java 8 to Java 17 migration failed. ",
+			},
+			{"b_6",
+			"Updated stat displays and item 'higher/lower is better' displays. Tutorial text separated from 'feature description' text.",
+			"Added many new towns to the Eoano WorldGen, and fluffed up the lore and flavor of existing towns as well. Species store re-added to Arona. Most bosses are now non-unique in that you don't have only one option if you want their Perk. Ancient Queen boss added to new island.",
+			"Cleaned up Greap WorldGen, although it is still not a complete world.",
+			"Some Features got larger improvements as part of the WorldGen updates: Districts now can house sub-stores. Gardens now start filled, and refill over time, and their changes in growth speed are more distinct for worldgen gardens. Several node features had changes to what nodes are likely to generate in them, and also their levels, which now display as a range when viewing from the town. Added Forest Altar, making altars now be dedicated to different primal forces.",
+			"Some titles were changed, others were added. Steam version gained several new leaderboards and achievements.",
+			},
+			{"b_5",
+			"You can now recruit adventurers in certain dungeons. All other dungeons had their mass battles removed. In 'dangerous' dungeons, these adventurers will assist you in the 'high security' checkpoints, and against the boss. Currently this is just the Tower of Fate and the Fatespinner. They will get a share of the loot, and if higher level than you, might get first pick. They will not be interested in joining you if they are 2 or more levels higher. They will not revive on death, and will leave if you do not visit the dungeon for a while. Fighting with them will make them take longer to leave than just visiting will.",
+			"Passive population migration has been fixed and tweaked, now if you play close attention you might be able to see persons moving from town to town. They have a slight preference to move towards towns with Inns, but also to not overcrowd a town past what its features can support.",
+			"All Features and Nodes now have updated behavior to update the background in the legacy graphical, and often fall back to different art now, since not all of it was made. (Same as the treatment armor, people, and weapons got). The 'examine closely' for weapons has been improved, and armor qualities also appear in world again, with slightly different functionalities.",
+			"Necks and Heads best damage mult is 2.5x damage instead of 3x, reducing the 'neck meta' of AI's absurd alpha strikes.",
+			},
+			{"b_4",
+			"Added 'back out' option to terminal (graphical will get it when it gets other updates). Added a few new display options, check the reduced indicator menu again, and also various 'realtime waiting' options. Added 'tactics' which are persistent action options in combat that don't deal damage (requires skills), and also some skill stances which apply a tactic effect and also a normal attack.",
+			"Changed up condition wounds a fair bit, turning them into an injury system to constrast the typically short-lived nature of normal wounds in combat. Getting brained or shattered can hurt quite a bit. A boss, 'Yore' was also added to the Dungeon of Fate, with a new battle condition-based dungeon mechanic. Baron of Hell also got a demon bodytype, and cloth was turned into patchwork, linen, and cotton.",
+			"Added a 'pouch/bag' feature to store equipment, currently works quite well outside of making room for things you're not currently comparing. You menu reforged into 'Player' menu, which can save in Nodes now. Includes character-exclusive settings like autolevel, autoloot, and autobattle.",
+			"Enchanced compass into a full map, with directions to any visited town (and always Unun), and also town flavor in that menu, in addition to population and feature counts, timezone, etc. Display current time in hours and minutes in town menu. Society Titles have been expanded.",
+			},
+			{"b_3",
+			"Tutorial mostly moved from 'feature text' to 'story'. Added saveable display options. Known issues: combat town Features need another cleanup with the new currency, mass battles have some balancing issues if they have an un-even number of fighters.",
+			"Subtle changes to battle conditions. Effective level added, so level 2 is only a flat +10% better, not 2x better, which each further level being another +10% (level 3 is 1.3x mult, because level 1 is 1.1x). Stat tweaks on most species, some non-'personable' creatures now have barks and can loot money.",
+			"Many town Feature mechanics had small tweaks, Brewing being the most visible in regards to how DrawBanes are talked about, and once again Merchant Guild prices, Fort Hall prices, and the more one-off Doctor prices. 'Highest Contribution' battlescore stat got split into the more sensible 'highest and lowest % deviation from average', which can show the extremes in attack balance a weapon has, for example a gold weapon being good at slapping but nothing else.",
+			},
+			{"b_2",
+			"Attack backend changes became frontend changes for weapons, which now have different stat displays. This also made armor and dodging actual things again, before their average stats were a bit too low, now the forumlas have been re-tested and remade. 'classless' system (essentially multiclassing but with many multis) has born fruit, you can now use the replacement system, although it still has a long ways to go.",
+			"If you want to pick your own Archetype to start with, use slowstart, otherwise it will pick a random one. Note that some require additional setup of their magic attacks. Nodes areas and ports also received complete overhauls, and much of the update development time was spent making Trawel run again after breaking nodes to improve them. Various small features, including witch huts, slums, and world generation also got less major updates and fixes.",
+			"Some changes were made but not enough to have anything to show, for example summons should work, (which is a far cry from Trawel in 2019, where the concept of a 3 person fight was unthinkable) but there are no skills that summon any creatures yet.",
+			},
+			{"b_1",
+			"base attack code reworked in basically every way. currency divided. threading added (nothreads is an arg), time passing redone. Node exploration mostly same but had entire backend update. Locational damage exists but does little at the moment."
+			},
+			{"Notes",
+			"End of current beta ingame changelog. Check the Github and Steam for prior updates and more detailed notes."}
 	};
-	public static int changelogViewer = 0;
+	public static int changelogViewerIndex = 1;
+	public static int changelogViewerVersion = 0;
 
 	public static Scanner scanner = new Scanner(System.in);
 
@@ -301,12 +316,34 @@ public class mainGame {
 
 					@Override
 					public boolean go() {
-						do {
-							extra.println(changelog[changelogViewer++]);
-							changelogViewer%=changelog.length;
-							extra.println("1 more");
-							extra.println("9 back");
-						}while(extra.inInt(1,true, true) == 1);
+						changelog: do {
+							extra.println(changelog[changelogViewerVersion][0]
+									+ " part "+changelogViewerIndex+"/"+(changelog[changelogViewerVersion].length-1) +": "
+									+ changelog[changelogViewerVersion][changelogViewerIndex]);
+							//log = log.replace("@", "{part "+(1+changelogViewerIndex)+"/"+changelog[changelogViewerVersion].length+"}");
+							
+							extra.println("1 "+(changelogViewerIndex == changelog[changelogViewerVersion].length-1 ? "Next." : "More."));
+							extra.println("2 Next update.");
+							extra.println("9 Back.");
+							switch (extra.inInt(2,true, true)) {
+							case 1:
+								changelogViewerIndex++;
+								if (changelogViewerIndex >= changelog[changelogViewerVersion].length) {
+									changelogViewerIndex = 1;
+									changelogViewerVersion++;
+									changelogViewerVersion%=changelog.length;
+								}
+								break;
+							case 2:
+								changelogViewerIndex = 1;
+								changelogViewerVersion++;
+								changelogViewerVersion%=changelog.length;
+								break;
+							default: case 9:
+								break changelog;
+									
+							}
+						}while(true);
 						
 						return false;
 					}});
@@ -1163,6 +1200,18 @@ public class mainGame {
 										adventure1(true,false,false,false);
 										return true;
 									}});
+								mList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Weapon Stat Query";
+									}
+
+									@Override
+									public boolean go() {
+										weaponStatQuery();
+										return true;
+									}});
 								mList.add(new MenuLine() {
 
 									@Override
@@ -1195,6 +1244,7 @@ public class mainGame {
 										Calender.timeTest();
 										return true;
 									}});
+								/*
 								mList.add(new MenuSelect() {
 
 									@Override
@@ -1206,19 +1256,8 @@ public class mainGame {
 									public boolean go() {
 										scrollTest();
 										return true;
-									}});
-								mList.add(new MenuSelect() {
-
-									@Override
-									public String title() {
-										return "Weapon Stat Query";
-									}
-
-									@Override
-									public boolean go() {
-										weaponStatQuery();
-										return true;
-									}});
+									}});*/
+								
 								/*
 								mList.add(new MenuLine() {
 
