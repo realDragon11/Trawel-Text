@@ -462,19 +462,20 @@ public class DungeonNode implements NodeType{
 				Player.player.addGold(gold);
 				extra.println("You open the " +holder.getStorageFirstClass(node,String.class) + " and find " + World.currentMoneyDisplay(gold) + ".");
 			}else {
-				int gemAmount = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),2.2f, .5f);
+				
 				Gem gem = null;
-				switch (extra.randRange(1,3)) {
-				case 1: default:
+				switch (extra.randRange(1,4)) {
+				case 1: 
 					gem = Gem.EMERALD;
 					break;
-				case 2:
+				case 2: case 4: default://2x as likely due to being the hero gem
 					gem = Gem.RUBY;
 					break;
 				case 3:
 					gem = Gem.SAPPHIRE;
 					break;
 				}
+				int gemAmount = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),gem.unitSize*1.8f, .5f);
 				gem.changeGem(gemAmount);
 				extra.println("You open the " + holder.getStorageFirstClass(node,String.class) + " and find "+gemAmount+" "+(gemAmount == 0 ? gem.name : gem.plural)+"!");
 			}

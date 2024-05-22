@@ -15,6 +15,7 @@ import trawel.personal.RaceFactory;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.Perk;
 import trawel.personal.item.solid.DrawBane;
+import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
 import trawel.quests.CleanseSideQuest.CleanseType;
 import trawel.quests.Quest.TriggerType;
@@ -192,6 +193,7 @@ public class BossNode implements NodeType {
 					setBossKilled(spinner.getName());
 					Player.player.addAchieve("fatespinner","Owner of Their Own Fate");
 					heroRep(holder,node,1f);
+					addRubyPayout(holder, node, 1f);
 					return false;
 				}
 			}else {
@@ -225,6 +227,7 @@ public class BossNode implements NodeType {
 				setBossKilled(baron.getName());
 				Player.player.addAchieve("hell_baron","Hell Baroness");
 				heroRep(holder,node,2f);
+				addRubyPayout(holder, node, 1f);
 				return false;
 			}else {
 				return true;//lost, kick out
@@ -250,6 +253,7 @@ public class BossNode implements NodeType {
 				//awards cleanse only on total kill
 				Player.player.questTrigger(TriggerType.CLEANSE,CleanseType.FELL.trigger,2);
 				heroRep(holder,node,3f);
+				addRubyPayout(holder, node, 1.5f);//bonus rubies due to infamy
 				return false;
 			}else {
 				return true;//lost, kick out
@@ -275,7 +279,7 @@ public class BossNode implements NodeType {
 				//player must survive battle for it to stick
 				extra.println("It would seem your associates were able to finish the battle but not kill of the Queen for good.");
 				//this is the list that is already stored
-				refillFatespinnerList(queens,survs,holder.getLevel(node));
+				refillOldQueenList(queens,survs,holder.getLevel(node));
 				return true;
 			}else {
 				holder.setForceGo(node,false);
@@ -285,6 +289,7 @@ public class BossNode implements NodeType {
 				setBossKilled(queen.getName());
 				Player.player.addAchieve("old_queen","Ancient Queen Slayer");
 				heroRep(holder,node,2f);
+				addRubyPayout(holder, node, 1f);
 				return false;
 			}
 		}else {
@@ -298,7 +303,7 @@ public class BossNode implements NodeType {
 				extra.println("The Queen's defenses have proven steadfast. Perhaps this is how she has survived so long.");
 			}
 			//this is the list that is already stored
-			refillFatespinnerList(queens,survs,holder.getLevel(node));
+			refillOldQueenList(queens,survs,holder.getLevel(node));
 			return true;//lost, kick out
 		}
 	}
@@ -354,6 +359,10 @@ public class BossNode implements NodeType {
 	
 	public static void heroRep(NodeConnector holder,int node,float mult) {
 		Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult* IEffectiveLevel.unclean(holder.getLevel(node)), 0);
+	}
+	
+	public static void addRubyPayout(NodeConnector holder,int node,float mult) {
+		holder.addRubyPayout(Math.round(mult*Gem.RUBY.unitSize*IEffectiveLevel.unclean(holder.getLevel(node))));
 	}
 
 }

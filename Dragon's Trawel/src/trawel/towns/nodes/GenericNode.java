@@ -523,7 +523,7 @@ public class GenericNode implements NodeType {
 		String mineral = null;
 		if (maxValueTier > 0) {
 			if (extra.chanceIn(1, 6)) {
-				mineral = extra.choose("emerald","ruby","sapphire");
+				mineral = extra.choose("emerald","emerald","ruby","sapphire");//more likely to apply emerald
 			}else {
 				switch (maxValueTier) {
 				case 1:
@@ -562,7 +562,7 @@ public class GenericNode implements NodeType {
 	protected static void applyGenericGemVein(NodeConnector holder,int node) {
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.VEIN_MINERAL.ordinal());
-		holder.setStorage(node, new Object[]{extra.choose("emerald","ruby","sapphire")});
+		holder.setStorage(node, new Object[]{extra.choose("emerald","emerald","ruby","sapphire")});//more likely to apply emerald
 	}
 	
 	private boolean genericVein(NodeConnector holder,int node) {
@@ -570,7 +570,7 @@ public class GenericNode implements NodeType {
 		Material m = MaterialFactory.getMat(matName);
 		if (holder.getStateNum(node) == 0) {
 			Networking.unlockAchievement("ore1");
-			int gemAmount = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),2.2f, .5f);
+			
 			Gem gem = null;
 			switch (matName) {
 			case "emerald":
@@ -589,6 +589,7 @@ public class GenericNode implements NodeType {
 				break;
 			}
 			if (gem != null) {
+				int gemAmount = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),gem.unitSize*1.8f, .5f);
 				gem.changeGem(gemAmount);
 				extra.println("You mine the vein and claim "+gemAmount+" "+m.color+(gemAmount == 0 ? gem.name : gem.plural)+extra.COLOR_RESET+"!");
 			}
