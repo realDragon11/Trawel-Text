@@ -16,6 +16,7 @@ import trawel.mainGame;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.DrawBane;
+import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -88,6 +89,8 @@ public class NodeConnector implements Serializable {
 	
 	private static boolean isForceGoIng = false;
 	private static boolean gateKickBack = false;
+	
+	private int rubyPayout = 0;
 	
 	protected NodeConnector(NodeFeature haver) {
 		parent = haver;
@@ -263,6 +266,13 @@ public class NodeConnector implements Serializable {
 		}
 		setLastNode(0);
 		setCurrentNode(0);
+		//leaving, apply ruby payout if present
+		if (Player.isPlaying && rubyPayout > 0) {
+			//only apply if the player is playing to avoid telling them stuff when they've quit to menu
+			Gem.RUBY.changeGem(rubyPayout);
+			extra.println(extra.RESULT_GOOD+"You are met outside "+parent.getName() + " by a Hero's Guild member who awards you "+rubyPayout+" Rubies for your efforts!");
+			rubyPayout = 0;
+		}
 	}
 	public void enter(int node) {
 		//generic nodes still have their base typenum, they just have an override flag
@@ -698,6 +708,7 @@ public class NodeConnector implements Serializable {
 			return isOwnable(o);
 		}
 	}
+	
 	private boolean isOwnable(Object o) {
 		if (o instanceof PlantSpot) {
 			return true;
@@ -708,7 +719,6 @@ public class NodeConnector implements Serializable {
 	public World getWorld() {
 		return parent.getTown().getIsland().getWorld();
 	}
-
 
 	public void addVein() {
 		assert parent != null;
@@ -721,39 +731,39 @@ public class NodeConnector implements Serializable {
 		return isForceGoIng;
 	}
 
-
 	public static int getLastNode() {
 		return Player.player.lastNode;
 	}
-
 
 	public static void setLastNode(int lastNode) {
 		Player.player.lastNode = lastNode;
 	}
 
-
 	protected static int getCurrentNode() {
 		return Player.player.currentNode;
 	}
-
 
 	protected static void setCurrentNode(int currentNode) {
 		Player.player.currentNode = currentNode;
 	}
 
-
 	protected static boolean isForceGoProtection() {
 		return Player.player.forceGoProtection;
 	}
-
 
 	protected static void setForceGoProtection(boolean forceGoProtection) {
 		Player.player.forceGoProtection = forceGoProtection;
 	}
 
-
 	public static void setKickGate() {
 		gateKickBack = true;
+	}
+	
+	/**
+	 * used to have a hero's guild rep give them Rubies on leaving the dungeon. Should mostly be used for bosses
+	 */
+	public void addRubyPayout(int amount) {
+		rubyPayout+=amount;
 	}
 	
 }
