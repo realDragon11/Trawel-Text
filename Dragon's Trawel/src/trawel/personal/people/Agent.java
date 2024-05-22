@@ -4,14 +4,19 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import trawel.Effect;
 import trawel.extra;
 import trawel.personal.Person;
+import trawel.personal.classless.Skill;
+import trawel.personal.item.Potion;
+import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.behaviors.AbandonPostBehavior;
 import trawel.personal.people.behaviors.WanderEndless;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Town;
 import trawel.towns.World;
+import trawel.towns.services.WitchHut;
 
 /**
  * @author dragon
@@ -49,6 +54,7 @@ public class Agent extends SuperPerson{
 		moneys = new ArrayList<Integer>();
 		moneymappings = new ArrayList<World>();
 		onlyGoal(AgentGoal.NONE);
+		p.skillTriggers();
 	}
 	
 	public Agent(Person p, AgentGoal goal) {
@@ -59,6 +65,7 @@ public class Agent extends SuperPerson{
 		moneys = new ArrayList<Integer>();
 		moneymappings = new ArrayList<World>();
 		onlyGoal(goal);
+		p.skillTriggers();
 	}
 
 	@Override

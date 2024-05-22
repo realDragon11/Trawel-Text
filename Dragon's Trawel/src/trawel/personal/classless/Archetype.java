@@ -37,9 +37,10 @@ public enum Archetype implements IHasSkills{
 	VIRAGO("Venomous Virago"
 			,"An expert on toxic incantations, salves, potions, and the like."
 			,null
-			,AType.ENTRY
+			,AType.AFTER_PERSONABLE_ONLY//after because toxic brews
 			,EnumSet.of(AGroup.MAGIC,AGroup.CRAFT)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.CURSES,FeatType.POTIONS)
+			//npcs can get potions
 			,EnumSet.of(Skill.TOXIC_BREWS,Skill.P_BREWER,Skill.FEVER_STRIKE)
 			,0,3,12
 			)
@@ -68,7 +69,7 @@ public enum Archetype implements IHasSkills{
 	,HEDGE_MAGE("Hedge Mage"
 			,"A perpetual novice, hedge mages aren't content to restrict themselves to one school."
 			,"Grants basic arcane magic based on clarity."
-			,AType.ENTRY
+			,AType.ENTRY_PERSONABLE_ONLY
 			,EnumSet.of(AGroup.MAGIC,AGroup.GRANTED_ARCANIST)
 			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.SOCIAL)
 			,EnumSet.of(Skill.LIFE_MAGE,Skill.ARCANIST)
@@ -133,7 +134,7 @@ public enum Archetype implements IHasSkills{
 	,ARCHMAGE("Archmage"//now an AFTER archetype
 			,"Weaving spells has become as easy as breathing."
 			,"Grants no spells, but gives another arcany config slot."
-			,AType.AFTER
+			,AType.AFTER//not personable in the case that they get arcany through less-study methods
 			,EnumSet.of(AGroup.GRANTED_ARCANIST)//do not change or add to unless adding skill requirements to archetypes
 			,EnumSet.of(FeatType.ARCANE)
 			,EnumSet.of(Skill.ARCANIST_2,Skill.ELEMENTALIST),0,0,25//lot of clarity
@@ -159,7 +160,7 @@ public enum Archetype implements IHasSkills{
 	,RUNEBLADE("Rune Blade"
 			,"Enchanting is a fickle art, but a Rune Blade hammers the elements into their weapons nonetheless."
 			,null,
-			AType.AFTER_SPECIAL_ONLY//special only so npcs don't get rune abilities which would only work if they were forced to have enchanthits
+			AType.ENTRY_PERSONABLE_ONLY//special only so npcs don't get rune abilities which would only work if they were forced to have enchanthits
 			,EnumSet.of(AGroup.CRAFT)
 			//less feattypes and skills due to being a special added
 			,EnumSet.of(FeatType.CRAFT,FeatType.MYSTIC)
@@ -178,7 +179,7 @@ public enum Archetype implements IHasSkills{
 	,CHEF_ARCH("Comestible Critic",
 			"Always bring snacks to battle."
 			,null
-			,AType.ENTRY
+			,AType.ENTRY_PERSONABLE_ONLY
 			,EnumSet.of(AGroup.CRAFT)
 			,EnumSet.of(FeatType.CRAFT,FeatType.POTIONS,FeatType.SOCIAL)
 			//gets 4 skills because all are generally lower impact
@@ -225,7 +226,9 @@ public enum Archetype implements IHasSkills{
 		ENTRY,//can appear as first archetype choice, also later on
 		AFTER,//can't appear as first choice, but can appear after first choice
 		ADDED,//similar to perk, but mostly for npcs
-		AFTER_SPECIAL_ONLY//as with after, but cannot appear in selections for NPCs
+		//these two can only appear on personable NPCs, ie those who could get potions and equipment from towns
+		ENTRY_PERSONABLE_ONLY,
+		AFTER_PERSONABLE_ONLY
 	}
 	
 	public enum AGroup{
@@ -240,17 +243,20 @@ public enum Archetype implements IHasSkills{
 	}
 	private static final Set<Archetype> ENTRY_LIST = EnumSet.noneOf(Archetype.class);
 	private static final Set<Archetype> AFTER_LIST = EnumSet.noneOf(Archetype.class);
-	private static final Set<Archetype> AFTER_LIST_PLAYER = EnumSet.noneOf(Archetype.class);
+	private static final Set<Archetype> ENTRY_LIST_PERSONABLE = EnumSet.noneOf(Archetype.class);
+	private static final Set<Archetype> AFTER_LIST_PERSONABLE = EnumSet.noneOf(Archetype.class);
 	static {
 		for (Archetype a: Archetype.values()) {
 			switch (a.type) {
 			case ENTRY:
 				ENTRY_LIST.add(a);
+			case ENTRY_PERSONABLE_ONLY:
+				ENTRY_LIST_PERSONABLE.add(a);
 			case AFTER:
 				AFTER_LIST.add(a);
-			case AFTER_SPECIAL_ONLY:
+			case AFTER_PERSONABLE_ONLY:
 				//used only for player
-				AFTER_LIST_PLAYER.add(a);
+				AFTER_LIST_PERSONABLE.add(a);
 				break;//end fallthrough
 				
 			//not put in base lists
@@ -300,10 +306,10 @@ public enum Archetype implements IHasSkills{
 	/**
 	 * used for the first set of archetypes, but also the 'not like the ones you have' in the set after
 	 */
-	public static List<Archetype> getFirst(int desiredAmount, Set<Archetype> has) {
+	public static List<Archetype> getFirst(Person p,int desiredAmount, Set<Archetype> has) {
 		List<Archetype> list = new ArrayList<Archetype>();
 		List<Archetype> options = new ArrayList<Archetype>();
-		for (Archetype a: ENTRY_LIST) {
+		for (Archetype a: (p.isPersonable() ? ENTRY_LIST_PERSONABLE : ENTRY_LIST)) {
 			if (!has.contains(a)) {
 				options.add(a);
 			}
@@ -334,7 +340,7 @@ public enum Archetype implements IHasSkills{
 		List<Archetype> list = new ArrayList<Archetype>();
 		List<Archetype> options = new ArrayList<Archetype>();
 		
-		for (Archetype a: (p.isPlayer() ? AFTER_LIST_PLAYER : AFTER_LIST)) {
+		for (Archetype a: (p.isPersonable() ? AFTER_LIST_PERSONABLE : AFTER_LIST)) {
 			if (!extendedHas.contains(a)) {
 				if (!Collections.disjoint(has.groups,a.groups)) {//if we have at least one thing in common
 					options.add(a);
@@ -395,8 +401,8 @@ public enum Archetype implements IHasSkills{
 	public String menuName() {
 		switch (type) {
 		default:
-		case AFTER:
-		case ENTRY:
+		case AFTER: case AFTER_PERSONABLE_ONLY:
+		case ENTRY: case ENTRY_PERSONABLE_ONLY:
 			return friendlyName();
 		case ADDED:
 			return friendlyName() + " (Added Only)";
@@ -416,14 +422,14 @@ public enum Archetype implements IHasSkills{
 		Set<Archetype> pAs = person.getArchSet();
 		int nonRacialAs = (int) pAs.stream().filter(a -> a.type != AType.RACIAL).count();
 		if (nonRacialAs == 0) {
-			list.addAll(getFirst(6,pAs));//current game never actually has this matter because the player gets it randomly chosen, or they get to pick it from the entire list
+			list.addAll(getFirst(person,6,pAs));//current game never actually has this matter because the player gets it randomly chosen, or they get to pick it from the entire list
 			return list;
 		}
 		
 		//now tries to get you to have 2 + floor(level/5) archetypes
 		if (nonRacialAs < 2+Math.floor(person.getLevel()/5)) {
 			Set<Archetype> restrictSet = EnumSet.copyOf(pAs);
-			List<Archetype> newList = getFirst(2,restrictSet);//first moved up so that it doesn't get blocked by friends of friends basically
+			List<Archetype> newList = getFirst(person,2,restrictSet);//first moved up so that it doesn't get blocked by friends of friends basically
 			list.addAll(newList);
 			restrictSet.addAll(newList);
 			list.addAll(getAfter(person,2,pAs.iterator().next(),restrictSet));
@@ -452,7 +458,7 @@ public enum Archetype implements IHasSkills{
 			allowSet.addAll(a.getFeatTypes());
 		}
 		if (list.size() < 8) {
-			list.addAll(Feat.randFeat(8-list.size(),allowSet,fset,person.fetchSkills())); 
+			list.addAll(Feat.randFeat(person,8-list.size(),allowSet,fset,person.fetchSkills())); 
 		}
 		
 		return list;
@@ -470,7 +476,7 @@ public enum Archetype implements IHasSkills{
 	public static void menuChooseFirstArchetype(Person person) {
 		extra.println("Please choose a starting Archetype.");
 		List<Archetype> alist = new ArrayList<Archetype>();
-		alist.addAll(ENTRY_LIST);
+		alist.addAll(ENTRY_LIST_PERSONABLE);
 		//int start_points = person.getFeatPoints();
 		extra.menuGo(new ScrollMenuGenerator(alist.size(),"previous <> Archetypes","next <> Archetypes") {
 			
@@ -500,8 +506,8 @@ public enum Archetype implements IHasSkills{
 		List<Archetype> alist = new ArrayList<Archetype>();
 		
 		//use player list
-		AFTER_LIST_PLAYER.stream().filter(a -> a.doesAfterWith(starting)).forEach(alist::add);
-		ENTRY_LIST.stream().filter(a -> !alist.contains(a)).forEach(alist::add);
+		AFTER_LIST_PERSONABLE.stream().filter(a -> a.doesAfterWith(starting)).forEach(alist::add);
+		ENTRY_LIST_PERSONABLE.stream().filter(a -> !alist.contains(a)).forEach(alist::add);
 		alist.remove(starting);
 		//int start_points = person.getFeatPoints();
 		extra.menuGo(new ScrollMenuGenerator(alist.size(),"previous <> Archetypes","next <> Archetypes") {

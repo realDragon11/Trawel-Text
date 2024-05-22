@@ -43,12 +43,14 @@ import trawel.personal.classless.Perk;
 import trawel.personal.classless.Skill;
 import trawel.personal.classless.Skill.Type;
 import trawel.personal.item.Inventory;
+import trawel.personal.item.Potion;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.body.Race.RaceType;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.Armor.ArmorQuality;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
+import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponType;
 import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Agent;
@@ -56,6 +58,7 @@ import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.quests.CleanseSideQuest;
+import trawel.towns.services.WitchHut;
 
 /**
  * 
@@ -415,6 +418,41 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			updateSkills();
 		}
 	}
+	
+	/**
+	 * triggers skills that do OOC stuff, since the NPCs don't have the brains to go to the right places
+	 * and it would take more processing power on the locations
+	 * <br>
+	 * currently checks only after feat pick or agent creation to avoid increasing processing power too much
+	 * <br>
+	 * Feat pick doesn't apply if the character is marked as the player.
+	 * Doesn't apply in factory gen because feat pick will trigger this code anyway.
+	 * Special clause for random player gen also calls this code directly, since it uses different leveling code in the first place.
+	 */
+	public void skillTriggers() {
+		//none of below work if not personable
+		if (!isPersonable()) {
+			return;
+		}
+		//if they don't have a flask, check potion skills
+		if (getSuper() != null && !superperson.hasFlask()) {
+			if (hasSkill(Skill.TOXIC_BREWS)) {
+				superperson.setFlask(new Potion(Effect.CURSE,4));
+			}else {
+				if (hasSkill(Skill.P_BREWER)) {
+					superperson.setFlask(new Potion(extra.randList(WitchHut.randomPotion),3));
+				}
+			}
+		}
+		if (hasSkill(Skill.RUNESMITH)) {
+			Weapon hand = getBag().getHand();
+			if (!hand.isEnchantedHit() && hand.getEnchantMult() > 0) {
+				//attempt to force an elemental enchant
+				hand.forceEnchantHitElemental();
+			}
+		}
+	}
+	
 	/**
 	 * attempts to decide all the character's remaining feat points, if they are set to autolevel
 	 * <br>
@@ -451,6 +489,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 					superperson.fillSkillConfigs();
 				}
 			}
+		}
+		if (autoLeveled && !isPlayer()) {
+			skillTriggers();
 		}
 		return autoLeveled;
 	}
@@ -1343,15 +1384,18 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 	
 	public boolean takeBeer() {
-		if (hasSkill(Skill.BEER_LOVER)) {
-			return true;
+		if (isPlayer()) {
+			if (Player.player.beer > 0) {
+				Player.player.beer--;
+				return true;
+			}
+			return false;
+		}else {
+			if (hasSkill(Skill.BEER_BELLY) || hasSkill(Skill.BEER_LOVER)) {
+				return true;
+			}
+			return false;
 		}
-		
-		if (isPlayer() && Player.player.beer > 0) {
-			Player.player.beer--;
-			return true;
-		}
-		return false;
 	}
 
 	public void displayXp() {

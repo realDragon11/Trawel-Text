@@ -76,7 +76,7 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__11";
-	public static final String VERSION_DATE = " updated May 21st 2024";
+	public static final String VERSION_DATE = " updated May 22nd 2024";
 	public static final String[] changelog = new String[] {
 			//add to front, changeviewer cycles to older ones when used
 			
@@ -85,15 +85,15 @@ public class mainGame {
 			//discuss material changes
 			"b_11: {part 2/?} High end materials generally had their stats lowered and were given tradeoffs amongst each other.",
 			//discuss skill changes
-			"b_11: {part ?/?} Curse inflicting skills have been replaced. Normal NPCs can no longer inflict curse, which should lessen doctor visits. The skill gaps have been replaced with the Miasma in-combat skills Fetid Fumes and Fever Strike. Doctors no longer cure Tired and Bees, but the Wounded punishment effect was added in some places where the Damaged effect was used prior.",
-			"b_11: {part ?/?} Misc New Skills: No Quarter, Bulk, Press Advantage, Runesmith, Runic Blast, Open Vein, Living Armor, Aggress Parry, Salvage, Chef, Ignite Boost, Frost Boost, Elec Boost; Misc New Feats: Heavyweight, Swift, Cocooned; Misc New Archetypes: Rune Blade, Cut Throat, Comestible Critic.",
+			"b_11: {part ?/?} Curse inflicting skills have been replaced. Normal NPCs can no longer inflict curse, which should lessen doctor visits. Doctors no longer cure Tired and Bees, but the Wounded punishment effect was added in some places where the Damaged effect was used prior.",
+			"b_11: {part ?/?} Misc New Skills: Fetid Fumes, Fever Strike, No Quarter, Bulk, Big Bag, Press Advantage, Runesmith, Runic Blast, Open Vein, Living Armor, Aggress Parry, Salvage, Chef, Ignite Boost, Frost Boost, Elec Boost; Misc New Feats: Heavyweight, Swift, Cocooned; Misc New Archetypes: Rune Blade, Cut Throat, Comestible Critic.",
 			//discuss drawbane bag changes
-			"b_11: {part ?/?} Increased drawbane inventory size to 5 base and added Big Bag skill which increases it to 8. Feat Fragments no longer take up space.",
+			"b_11: {part ?/?} Increased drawbane inventory size to 5 base and the Big Bag skill increases it to 8. Feat Fragments no longer take up space.",
 			//discuss attribute changes
 			"b_11: {part ?/?} Strength no longer doubles up on physical damage bonus. Clarity now applies as an elemental damage multiplier.",
 			//discuss new exploration content
 			"b_11: {part ?/?} Sky Cult added to Mountains. Locked Doors now require an attribute contest to open, and on failure you have Burnout applied.",
-			"b_11: {part ?/?} Some bumpers now steal currency from you on loss against them.",
+			"b_11: {part ?/?} Some bumpers now steal currency from you on loss against them. Gems have been tweaked in rarity, Rubies are also granted as a gift for killing bosses in nodes.",
 			
 			
 			"b_10 hotfix 3: pouch swap rejection crash, dryad refight crash, dungeon regrow wrong checkpoint type, more perks have attributes, buffed magic attacks and some related archetypes and feats.",
@@ -2070,6 +2070,7 @@ public class mainGame {
 			//now they get to pick a second one, because slowstart doesn't care about racial sterotypes
 			Archetype.menuChooseSecondArchetype(manOne);
 		}
+		player.getPerson().skillTriggers();//apply skill triggers mostly for starting gear
 		player.setLocation(world.getStartTown());//also sets the player world
 		if (cheaty) {
 			Player.player.setCheating();

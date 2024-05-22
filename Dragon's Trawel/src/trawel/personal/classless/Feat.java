@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import trawel.extra;
 import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.personal.Person;
 import trawel.personal.classless.Skill.Type;
 
 public enum Feat implements IHasSkills{
@@ -22,86 +23,85 @@ public enum Feat implements IHasSkills{
 	
 	
 	NOT_PICKY("Conditioning","Grants attributes and 2 additional feat picks.","Picks don't give you more feats, just more times to choose."
-			,1f,EnumSet.of(FeatType.COMMON),null
+			,false,1f,EnumSet.of(FeatType.COMMON),null
 			,EnumSet.noneOf(Skill.class),15,15,15//should grant a decent amount of every stat
 			,null,null),
-	COMMON_TOUGH("Tough","They're tougher than they look. And they look tough.","",
-			1f,null,EnumSet.of(FeatType.BRAWN,FeatType.BATTLE),
+	COMMON_TOUGH("Tough","They're tougher than they look. And they look tough.",""
+			,false,1f,null,EnumSet.of(FeatType.BRAWN,FeatType.BATTLE),
 			EnumSet.of(Skill.TA_NAILS),20,5,5
 			,null,null),
-	WITCHY("Witchy","Curses and potions are their forte.","",// Washy
-			1f,EnumSet.of(FeatType.POTIONS,FeatType.CURSES),null
+	WITCHY("Witchy","Curses and potions are their forte.",""// Washy
+			,true,1f,EnumSet.of(FeatType.POTIONS,FeatType.CURSES),null
 			,EnumSet.of(Skill.POTION_CHUGGER,Skill.FETID_FUMES),0,5,10
 			,null,null)
-	,HEMOVORE("Hemovore","Extracts life energy from fleeting mortality.","",
-			1f,EnumSet.of(FeatType.MYSTIC),EnumSet.of(FeatType.CURSES,FeatType.BATTLE,FeatType.POTIONS)
+	,HEMOVORE("Hemovore","Extracts life energy from fleeting mortality.",""
+			,false,1f,EnumSet.of(FeatType.MYSTIC),EnumSet.of(FeatType.CURSES,FeatType.BATTLE,FeatType.POTIONS)
 			,EnumSet.of(Skill.BLOODTHIRSTY,Skill.KILLHEAL,Skill.BLOODDRINKER),3,2,10
 			//needs at least one of the things it grants from some other source
 			,null,EnumSet.of(Skill.BLOODTHIRSTY,Skill.KILLHEAL,Skill.BLOODDRINKER))
-	,UNBREAKABLE("Unbreakable","They'll bounce back from anything."
-			,"",
-			1f,null,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)
+	,UNBREAKABLE("Unbreakable","They'll bounce back from anything.",""
+			,false,1f,null,EnumSet.of(FeatType.BATTLE,FeatType.SPIRIT)
 			,EnumSet.of(Skill.NO_HOSTILE_CURSE,Skill.STERN_STUFF),10,0,5
 			,null,null)
 	,UNDERHANDED("Underhanded","They'll do anything and everything to win.",""
-			,1f,EnumSet.of(FeatType.TRICKS),null
+			,false,1f,EnumSet.of(FeatType.TRICKS),null
 			,EnumSet.of(Skill.SPUNCH),0,20,10
 			,null,null)
 	,ARMORPAINTER("Painter","They paint their armor with magical dyes.",""
-			,1f,EnumSet.of(FeatType.MYSTIC),EnumSet.of(FeatType.CRAFT,FeatType.TRICKS)
+			,false,1f,EnumSet.of(FeatType.MYSTIC),EnumSet.of(FeatType.CRAFT,FeatType.TRICKS)
 			,EnumSet.of(Skill.MESMER_ARMOR,Skill.ARMOR_MAGE),2,3,10
 			,null,null)
 	,AMBUSHER("Ambusher","They know how to start a fight.",""
-			,1f,EnumSet.of(FeatType.TRICKS),EnumSet.of(FeatType.BATTLE,FeatType.FINESSE)
+			,false,1f,EnumSet.of(FeatType.TRICKS),EnumSet.of(FeatType.BATTLE,FeatType.FINESSE)
 			,EnumSet.of(Skill.OPENING_MOVE,Skill.QUICK_START),0,5,10
 			,null,null
 			)
 	,ACROBAT("Acrobat","To them, a battle is a playful dance, just with higher stakes.",""
-			,1f,EnumSet.of(FeatType.AGILITY),EnumSet.of(FeatType.TRICKS,FeatType.SPIRIT)
+			,false,1f,EnumSet.of(FeatType.AGILITY),EnumSet.of(FeatType.TRICKS,FeatType.SPIRIT)
 			,EnumSet.of(Skill.REACTIVE_DODGE,Skill.SPEEDDODGE),0,15,0
 			,null,null
 			)
 	//these three require arcanist (and elementalist), so they don't need to grant it, it is signaled where the stance is made
 	,FLAME_WARDEN("Flamewarden","Wields fire fiercly, fueling their defense."
 			,"Grants ignite-focused arcany that use clarity."
-			,1f,null,null
+			,false,1f,null,null
 			,EnumSet.of(Skill.M_PYRO,Skill.M_PYRO_BOOST,Skill.COUNTER),2,2,6//more stats
 			,EnumSet.of(Skill.ARCANIST,Skill.ELEMENTALIST),null
 			)
 	,FROST_WARDEN("Frostwarden","Uses ice to bolster their armor."
 			,"Grants frost-focused arcany that use the higher of strength and clarity."
-			,1f,null,null
+			,false,1f,null,null
 			,EnumSet.of(Skill.M_CRYO,Skill.M_CYRO_BOOST,Skill.ARMOR_TUNING),5,0,5//more stats
 			,EnumSet.of(Skill.ARCANIST,Skill.ELEMENTALIST),null
 			)
 	,SHOCK_SAVANT("Shocksavant","Shocks their foes with static constantly, increasing the damage wrought by their charges."
 			,"Grants elec-focused arcany that use the higher of dexterity and clarity."
-			,1f,null,null
+			,false,1f,null,null
 			,EnumSet.of(Skill.M_AERO,Skill.M_AERO_BOOST,Skill.SPUNCH),0,5,5//more stats
 			,EnumSet.of(Skill.ARCANIST,Skill.ELEMENTALIST),null
 			)
 	,GLUTTON("Glutton","They're greedy for more than just punishment.",""
-			,1f,null,EnumSet.of(FeatType.SPIRIT,FeatType.POTIONS)
+			,true,1f,null,EnumSet.of(FeatType.SPIRIT,FeatType.POTIONS)
 			,EnumSet.of(Skill.BEER_BELLY,Skill.RAW_GUTS,Skill.POTION_CHUGGER),5,0,0
 			,null,null
 			)
 	,SHAMAN("Shaman","Is attuned to the primal forces of life.",""
-			,1f,EnumSet.of(FeatType.CURSES),null
+			,false,1f,EnumSet.of(FeatType.CURSES),null
 			//tons of clarity
 			,EnumSet.of(Skill.LIFE_MAGE),2,3,25
 			,null,null)
 	,HEAVYWEIGHT("Heavyweight","A wall of meat and muscle.",""
-			,1f,EnumSet.of(FeatType.BRAWN),null
+			,true,1f,EnumSet.of(FeatType.BRAWN),null
 			//lots of strength, 5 more than normal due to big bag
 			,EnumSet.of(Skill.BIG_BAG,Skill.BULK),20,0,0
 			,null,null)
 	,SWIFT("Swift","A wall of steel enhances the best of footwork.",""
-			,1f,EnumSet.of(FeatType.FINESSE,FeatType.AGILITY),null
+			,false,1f,EnumSet.of(FeatType.FINESSE,FeatType.AGILITY),null
 			,EnumSet.of(Skill.AGGRESS_PARRY,Skill.BLITZ),0,15,0
 			,null,null
 			)
 	,COCOONED("Cocooned","The best defense is a growing defense.",""
-			,1f,EnumSet.of(FeatType.CRAFT),null
+			,false,1f,EnumSet.of(FeatType.CRAFT),null
 			,EnumSet.of(Skill.SALVAGE,Skill.LIVING_ARMOR),10,5,0
 			,null,null
 			)
@@ -109,6 +109,7 @@ public enum Feat implements IHasSkills{
 
 	private final String name, desc, getDesc;
 	private final Set<Skill> skills;
+	private final boolean personableOnly;
 	/**
 	 * can set to 0 to make feat not spawn, or set FeatType to null
 	 */
@@ -116,13 +117,14 @@ public enum Feat implements IHasSkills{
 	public final Set<FeatType> typesAll, typesAny;
 	public final Set<Skill> needsAll, needsOne;
 	private final int strength, dexterity, clarity;
-	Feat(String _name, String _desc, String _getDesc,float _rarity,Set<FeatType> _typesAll,Set<FeatType> _typesAny,Set<Skill> skillset
+	Feat(String _name, String _desc, String _getDesc,boolean _personableOnly, float _rarity,Set<FeatType> _typesAll,Set<FeatType> _typesAny,Set<Skill> skillset
 			,int stre, int dext, int cla
 			,Set<Skill> needsAllOf, Set<Skill> needsOneOf){
 		name = _name;
 		desc = _desc;
 		getDesc = _getDesc;
 		skills = skillset;
+		personableOnly = _personableOnly;
 		rarity = _rarity;
 		typesAny = _typesAny;
 		typesAll = _typesAll;
@@ -134,7 +136,7 @@ public enum Feat implements IHasSkills{
 	}
 	
 	Feat(String _name, String _desc, String _getDesc,float _rarity,FeatType _type ,Set<Skill> skillset,int stre, int dext, int cla){
-		this(_name,_desc,_getDesc,_rarity,null,EnumSet.of(_type),skillset,stre,dext,cla,null,null);
+		this(_name,_desc,_getDesc,false,_rarity,null,EnumSet.of(_type),skillset,stre,dext,cla,null,null);
 	}
 	
 	Feat(String _name, String _desc, String _getDesc,float _rarity,FeatType _type ,Set<Skill> skillset){
@@ -163,6 +165,18 @@ public enum Feat implements IHasSkills{
 		return skills.stream();
 	}
 	
+	private static final Set<Feat> FEAT_LIST = EnumSet.noneOf(Feat.class);
+	private static final Set<Feat> FEAT_LIST_PERSONABLE = EnumSet.noneOf(Feat.class);
+	static {
+		for (Feat f: Feat.values()) {
+			if (f.personableOnly) {
+				FEAT_LIST_PERSONABLE.add(f);
+			}else {
+				FEAT_LIST.add(f);
+			}
+		}
+	}
+	
 	/**
 	 * returns a feat from the allowed type sets, that doesn't include the has set
 	 * <br>
@@ -171,11 +185,11 @@ public enum Feat implements IHasSkills{
 	 * @param has
 	 * @return
 	 */
-	public static List<Feat> randFeat(int amount, Set<FeatType> set,Set<Feat> has,Set<Skill> hasSkills) {
+	public static List<Feat> randFeat(Person p,int amount, Set<FeatType> set,Set<Feat> has,Set<Skill> hasSkills) {
 		List<Feat> copyList = new ArrayList<Feat>();
 		List<Float> weightList = new ArrayList<Float>();
 		double totalRarity = 0;
-		for (Feat f: Feat.values()){
+		for (Feat f: (p.isPersonable() ? FEAT_LIST_PERSONABLE : FEAT_LIST )){
 			if (f.rarity > 0 &&
 					!has.contains(f)&&
 					(f.typesAll == null || set.containsAll(f.typesAll))&&
