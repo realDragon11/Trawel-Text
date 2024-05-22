@@ -2067,7 +2067,7 @@ public class mainGame {
 			player.fillSkillConfigs();//fill any skill configs
 		}else {
 			Archetype.menuChooseFirstArchetype(manOne);
-			//now they get to pick a second one, because slowstart doesn't care about racial sterotypes
+			//now they get to pick a second one, because slowstart doesn't care about racial stereotypes
 			Archetype.menuChooseSecondArchetype(manOne);
 		}
 		player.getPerson().skillTriggers();//apply skill triggers mostly for starting gear

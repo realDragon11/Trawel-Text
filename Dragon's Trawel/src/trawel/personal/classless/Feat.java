@@ -165,15 +165,14 @@ public enum Feat implements IHasSkills{
 		return skills.stream();
 	}
 	
-	private static final Set<Feat> FEAT_LIST = EnumSet.noneOf(Feat.class);
-	private static final Set<Feat> FEAT_LIST_PERSONABLE = EnumSet.noneOf(Feat.class);
+	protected static final Set<Feat> FEAT_LIST = EnumSet.noneOf(Feat.class);
+	protected static final Set<Feat> FEAT_LIST_PERSONABLE = EnumSet.noneOf(Feat.class);
 	static {
 		for (Feat f: Feat.values()) {
-			if (f.personableOnly) {
-				FEAT_LIST_PERSONABLE.add(f);
-			}else {
+			if (!f.personableOnly) {
 				FEAT_LIST.add(f);
 			}
+			FEAT_LIST_PERSONABLE.add(f);
 		}
 	}
 	
@@ -190,15 +189,7 @@ public enum Feat implements IHasSkills{
 		List<Float> weightList = new ArrayList<Float>();
 		double totalRarity = 0;
 		for (Feat f: (p.isPersonable() ? FEAT_LIST_PERSONABLE : FEAT_LIST )){
-			if (f.rarity > 0 &&
-					!has.contains(f)&&
-					(f.typesAll == null || set.containsAll(f.typesAll))&&
-					(f.typesAny == null || !Collections.disjoint(f.typesAny, set))&&
-					(f.needsAll == null || hasSkills.containsAll(f.needsAll)) &&
-					(f.needsOne == null || !Collections.disjoint(f.needsOne, hasSkills))//either disjoint or streams
-				) {
-				//allll the predicate code time
-				//we don't use real predicates...yet
+			if (f.featValid(set, has, hasSkills)) {
 				copyList.add(f);
 				int common = IHasSkills.inCommon(hasSkills,f.skills);
 				float rarity = f.rarity;
@@ -233,6 +224,17 @@ public enum Feat implements IHasSkills{
 			totalRarity -= weightList.remove(i);
 		}
 		return retList;
+	}
+	
+	public boolean featValid(Set<FeatType> set,Set<Feat> has,Set<Skill> hasSkills) {
+		return 
+				(rarity > 0 &&
+						!has.contains(this)&&
+						(typesAll == null || set.containsAll(typesAll))&&
+						(typesAny == null || !Collections.disjoint(typesAny, set))&&
+						(needsAll == null || hasSkills.containsAll(needsAll)) &&
+						(needsOne == null || !Collections.disjoint(needsOne, hasSkills))//either disjoint or streams
+					);
 	}
 
 	@Override

@@ -501,16 +501,22 @@ public enum Archetype implements IHasSkills{
 	}
 	
 	public static void menuChooseSecondArchetype(Person person) {
+		person.updateSkills();
 		Archetype starting = person.getArchSet().stream().findAny().get();
-		extra.println("Please choose a second Archetype to go with "+starting.friendlyName()+".");
-		List<Archetype> alist = new ArrayList<Archetype>();
+		extra.println("Please choose a second Unlock to go with "+starting.friendlyName()+".");
+		List<IHasSkills> alist = new ArrayList<IHasSkills>();
 		
 		//use player list
 		AFTER_LIST_PERSONABLE.stream().filter(a -> a.doesAfterWith(starting)).forEach(alist::add);
 		ENTRY_LIST_PERSONABLE.stream().filter(a -> !alist.contains(a)).forEach(alist::add);
+		
+		Set<FeatType> allowSet = EnumSet.of(FeatType.COMMON);
+		allowSet.addAll(starting.getFeatTypes());
+		Feat.FEAT_LIST_PERSONABLE.stream().filter(f -> f.featValid(allowSet,EnumSet.noneOf(Feat.class),person.fetchSkills())).forEach(alist::add);
+		
 		alist.remove(starting);
 		//int start_points = person.getFeatPoints();
-		extra.menuGo(new ScrollMenuGenerator(alist.size(),"previous <> Archetypes","next <> Archetypes") {
+		extra.menuGo(new ScrollMenuGenerator(alist.size(),"previous <> Unlocks","next <> Unlocks") {
 			
 			@Override
 			public List<MenuItem> header() {
@@ -530,6 +536,7 @@ public enum Archetype implements IHasSkills{
 				return null;
 			}
 		});
+		person.updateSkills();
 	}
 
 	public AType getType() {
