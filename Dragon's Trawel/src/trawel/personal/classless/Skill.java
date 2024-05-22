@@ -223,10 +223,10 @@ public enum Skill{
 				,"Applies through the Breathing Effect."
 				,Type.OTHER),
 		FETID_FUMES("Fetid Fumes","When Attacked: Force a contested Clarity check at half Clarity to apply Miasma. Attackers already inflicted with Miasma suffer a -10% hit roll."
-				,"Miasma halves every time the suffering party completes a swing."
+				,extra.MIASMA_TIP
 				,Type.DEFENSE),
 		FEVER_STRIKE("Fever Strike","On Attack: Force a contested Clarity check to apply two stacks of Miasma. When targeting opponents already suffering from Miasma with physical attacks, deal +10% damage as Decay damage."
-				,"Miasma halves every time the suffering party completes a swing. Damage bonus applies on targeting, not on swing."
+				,extra.MIASMA_TIP+" Damage bonus applies on targeting, not on swing."
 				,Type.OFFENSE),
 		BIG_BAG("Big Bag","Gain 3 Drawbane slots, for a total of 8."
 				,""
