@@ -514,7 +514,7 @@ public class GenericNode implements NodeType {
 	 * <br>
 	 * 2 tier is from tin to silver with a chance of iron to moonsilver
 	 * <br>
-	 * 3 tier is from tin to gold with a chance of tin to adamantine
+	 * 3 tier is from tin to gold with a chance of silver to adamantine
 	 */
 	protected static void applyGenericVein(NodeConnector holder,int node, int maxValueTier) {
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
@@ -562,6 +562,7 @@ public class GenericNode implements NodeType {
 	protected static void applyGenericGemVein(NodeConnector holder,int node) {
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.VEIN_MINERAL.ordinal());
+		holder.addVein();
 		holder.setStorage(node, new Object[]{extra.choose("emerald","emerald","ruby","sapphire")});//more likely to apply emerald
 	}
 	
