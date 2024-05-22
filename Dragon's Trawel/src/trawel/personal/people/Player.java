@@ -1062,7 +1062,7 @@ public class Player extends SuperPerson{
 					public boolean go() {
 						extra.println("Really quit? Your progress might not be saved.");
 						if (extra.yesNo()) {
-							Player.isPlaying  = false;
+							Player.isPlaying = false;
 							return true;
 						}
 						return false;
@@ -1620,15 +1620,20 @@ public class Player extends SuperPerson{
 													public String title() {
 														return t.getName()+": tier " +t.getTier();
 													}});
+												boolean blockTravel = Player.player.atFeature != null;
 												list.add(new MenuSelect() {
 
 													@Override
 													public String title() {
-														return "Compass";
+														return "Compass" + (blockTravel ? " (Blocked)" : "");
 													}
 
 													@Override
 													public boolean go() {
+														if (blockTravel) {
+															extra.println("You cannot currently travel with the Compass.");
+															return true;
+														}
 														WorldGen.pathToTown(t);
 														extra.println("Travel to " + t.getName()+"?");
 														if (extra.yesNo()) {

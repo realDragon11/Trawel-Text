@@ -14,6 +14,7 @@ import trawel.extra;
 import trawel.mainGame;
 import trawel.battle.Combat.SkillCon;
 import trawel.personal.Person;
+import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Behavior;
@@ -40,6 +41,7 @@ public class Dungeon extends NodeFeature {
 	private List<Agent> delve_helpers;
 	private List<String> left_helpers;
 	private int helper_cap = 3;
+	private int rubyPayout = 0;
 	private transient boolean escapePartyMenu;
 	
 	public Dungeon(String name,Town t,Shape s,BossType bossType) {
@@ -124,6 +126,10 @@ public class Dungeon extends NodeFeature {
 						@Override
 						public boolean go() {
 							start.start();
+							if (!Player.isPlaying) {
+								//if the player quit the game, force leave this menu
+								return true;
+							}
 							return false;
 						}});
 					list.add(new MenuSelect() {
@@ -376,6 +382,13 @@ public class Dungeon extends NodeFeature {
 		}else {
 			start.start();
 		}
+		//leaving, apply ruby payout if present
+		if (Player.isPlaying && rubyPayout > 0) {
+			//only apply if the player is playing to avoid telling them stuff when they've quit to menu
+			Gem.RUBY.changeGem(rubyPayout);
+			extra.println(extra.RESULT_GOOD+"You are met outside "+getName() + " by a Hero's Guild member who awards you "+rubyPayout+" Rubies for your efforts!");
+			rubyPayout = 0;
+		}
 	}
 	
 	@Override
@@ -495,6 +508,13 @@ public class Dungeon extends NodeFeature {
 	@Override
 	public String sizeDesc() {
 		return super.sizeDesc() + (hasHelpers() ? " A: "+delve_helpers.size() : "");
+	}
+	
+	/**
+	 * used to have a hero's guild rep give them Rubies on leaving the dungeon. Should mostly be used for bosses
+	 */
+	public void addRubyPayout(int amount) {
+		rubyPayout+=amount;
 	}
 
 }
