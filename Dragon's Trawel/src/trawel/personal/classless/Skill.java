@@ -171,10 +171,10 @@ public enum Skill{
 		M_AERO_BOOST("Elec Boost","On Elemental Wound: Add 4 instants to target's action."
 				,extra.ELEMBOOST_TIP
 				,Type.OFFENSE),
-		STERN_STUFF("Sterner Stuff","On Death: Once, roll a contested Strength check vs attacker's highest attribute to survive at 1 HP."
+		STERN_STUFF("Sterner Stuff","On Death: Once per battle, roll a contested Strength check vs attacker's highest attribute to survive at 1 HP."
 				,"Instant kill attacks that wouldn't deal enough damage to kill otherwise skip the roll, but still leave them at 1 HP.",
 				Type.DEFENSE),
-		REACTIVE_DODGE("Reactive Dodge","On Dodge: Gain. one stack of Advantage."
+		REACTIVE_DODGE("Reactive Dodge","On Dodge: Gain one stack of Advantage."
 				,"Does not apply to misses. "+extra.ADV_TIP
 				,Type.SPEED),
 		ARCANIST_2("Multi-Magical","Grants another Arcanist skill attack configuration."

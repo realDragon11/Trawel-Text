@@ -1298,7 +1298,7 @@ public class RaceFactory {
 		Person w = Person.animal(level, RaceID.B_DRUDGER_TITAN, MaterialFactory.getMat("fishscales"), false);
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
 		w.setPersonType(PersonType.DRUDGER_GENERIC);
-		w.cleanSetSkillHas(Perk.STAND_TALL);//added to their 'fish tall' so they have some base strength, since archetypes don't add stats normally
+		w.cleanSetSkillHas(Perk.STAND_TALL);//added to their 'fish tall' so they have some base strength
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","iron")),WeaponType.FISH_ANCHOR));
 		w.getBag().swapArmorSlot(new Armor(level,(byte)2,MaterialFactory.getMat("rusty iron"),null),2);
 		w.getBag().addDrawBaneSilently(DrawBane.MEAT);
