@@ -39,11 +39,11 @@ public class Weapon extends Item implements IEffectiveLevel {
 	private WeaponType weap;
 	private int material;
 	private int kills;
-	private float bsIpt = -1, bsAvg, bsWgt;//these don't need to update for internal weapons
+	private float bsBst, bsWgt;//these don't need to update for internal weapons
 	/**
 	 * packed int
 	 * <br>
-	 * 1st byte = average, unused
+	 * 1st byte = impact chance 0-100
 	 * 2nd byte = highest
 	 * 3rd byte = lowest
 	 */
@@ -331,6 +331,8 @@ public class Weapon extends Item implements IEffectiveLevel {
 		int size = stance.getAttackCount();
 		double[] contributions = new double[size];//used for determining highest contribution
 		int testSize = extra.getDumInvs().size();
+		double highest = 0;
+		double lowest = Double.MAX_VALUE;
 		for (int i = size-1;i >=0;i--) {
 			Attack holdAttack = stance.getAttack(i);
 			double dam = 0;
@@ -348,18 +350,11 @@ public class Weapon extends Item implements IEffectiveLevel {
 			contributions[i] += dam;
 			total += dam;
 			weighted += dam*stance.getWeight(i);
-		}
-		//double average = 0;
-		double highest = 0;
-		double lowest = 1;//100%
-		for (int h = size-1; h >= 0 ;h--) {
-			double normed = contributions[h]/total;
-			//average += normed;
-			if (highest < normed) {
-				highest = normed;
+			if (highest < dam) {
+				highest = dam;
 			}
-			if (lowest > normed) {
-				lowest = normed;
+			if (lowest > dam) {
+				lowest = dam;
 			}
 		}
 		
@@ -370,12 +365,14 @@ public class Weapon extends Item implements IEffectiveLevel {
 		//so we put the effective level in now to make it higher
 		//TODO: unsure if the natural allowed damage increase will be enough to signal a weapon as better to a player/AI
 		//int conAssembler = extra.setNthByteInInt(0b0, (int)(average*(100)), 0);
-		int conAssembler = extra.setNthByteInInt(0b0, (int)(highest*(100)), 1);
-		conAssembler = extra.setNthByteInInt(conAssembler, (int)(lowest*(100)), 2);
+		int conAssembler = extra.setNthByteInInt(0b0,(int)(impactChance*(100d/totalTests)), 0);
+		conAssembler = extra.setNthByteInInt(conAssembler, (int)(highest*(100/total)), 1);
+		conAssembler = extra.setNthByteInInt(conAssembler, (int)(lowest*(100/total)), 2);
 		
 		this.bsCon = conAssembler;//(float) (high*level);
-		this.bsAvg = (float)((levelAdjust*total)/totalTests);//(float) (average*level);
-		this.bsIpt = impactChance/(float)totalTests;
+		//this.bsAvg = (float)((levelAdjust*total)/totalTests);//(float) (average*level);
+		//this.bsIpt = impactChance/(float)totalTests;
+		this.bsBst = (float) (levelAdjust*highest)/subTests;
 		this.bsWgt = (float) ((levelAdjust*weighted)/subTests);
 	}
 	
@@ -398,7 +395,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 	 * 0-100
 	 */
 	public int scoreHighestContribution() {
-		if (bsIpt == -1) {
+		if (bsCon == 0) {
 			refreshBattleScore();
 		}
 		return extra.intGetNthByteFromInt(bsCon, 1);
@@ -407,30 +404,30 @@ public class Weapon extends Item implements IEffectiveLevel {
 	 * 0-100
 	 */
 	public int scoreLowestContribution() {
-		if (bsIpt == -1) {
+		if (bsCon == 0) {
 			refreshBattleScore();
 		}
 		return extra.intGetNthByteFromInt(bsCon, 2);
 	}
 	
 	public double scoreImpact() {
-		if (bsIpt == -1) {
+		if (bsCon == 0) {
 			refreshBattleScore();
 		}
-		return this.bsIpt;
+		return (extra.intGetNthByteFromInt(bsCon, 0))/100d;
 	}
 	
 	public double scoreWeight() {
-		if (bsIpt == -1) {
+		if (bsCon == 0) {
 			refreshBattleScore();
 		}
 		return this.bsWgt;
 	}
-	public double scoreAverage() {
-		if (bsIpt == -1) {
+	public double scoreBest() {
+		if (bsCon == 0) {
 			refreshBattleScore();
 		}
-		return this.bsAvg;
+		return this.bsBst;
 	}
 
 	@Override
@@ -442,10 +439,10 @@ public class Weapon extends Item implements IEffectiveLevel {
 		case 1://used for comparing and in stores
 		case 3:
 			extra.println(this.getName()
-			+ extra.ITEM_DESC_PROP+" ic/ad/wa"+extra.PRE_WHITE+": "
+			+ extra.ITEM_DESC_PROP+" ic/bd/wa"+extra.PRE_WHITE+": "
 			+extra.ITEM_WANT_HIGHER
 			+ extra.formatPerSubOne(this.scoreImpact())
-			+ "/" + extra.format(this.scoreAverage())
+			+ "/" + extra.format(this.scoreBest())
 			+"/"+extra.format(this.scoreWeight())
 			+ (Player.player.caresAboutCapacity() ? " "+extra.ITEM_DESC_PROP+extra.DISP_WEIGHT+extra.PRE_WHITE+": "+extra.ITEM_WANT_LOWER+getWeight() : "")
 			+" "+extra.ITEM_DESC_PROP+extra.DISP_AETHER+": " +extra.ITEM_VALUE+ extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
@@ -470,7 +467,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 			extra.println(getName() +":");
 			extra.println(extra.STAT_HEADER+"Tested Stats:");
 			extra.println(extra.ITEM_DESC_PROP+" Impact Chance (ic)"+extra.PRE_WHITE+": "+extra.ITEM_WANT_HIGHER+ extra.formatPerSubOne(scoreImpact()));
-			extra.println(extra.ITEM_DESC_PROP+" Rarity Independent DPI (ad)"+extra.PRE_WHITE+": "+extra.ITEM_WANT_HIGHER + extra.format(scoreAverage()));
+			extra.println(extra.ITEM_DESC_PROP+" Best DPI (bd)"+extra.PRE_WHITE+": "+extra.ITEM_WANT_HIGHER + extra.format(scoreBest()));
 			extra.println(extra.ITEM_DESC_PROP+" Weighted DPI (wa)"+extra.PRE_WHITE+": "+extra.ITEM_WANT_HIGHER + extra.format(scoreWeight()));
 			extra.println(extra.STAT_HEADER+"Value and Usage:");
 			extra.println(extra.ITEM_DESC_PROP+" Aether"+extra.PRE_WHITE+": "+extra.ITEM_VALUE + (int)(getAetherValue()*markup));

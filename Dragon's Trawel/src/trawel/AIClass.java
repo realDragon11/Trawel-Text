@@ -897,15 +897,15 @@ public class AIClass {
 				Weapon hasWeap = (Weapon)hasItem;
 				Weapon toWeap = (Weapon)toReplace;
 				if (Player.getTutorial()) {
-					extra.println("ic = impact chance, ad = average damage, wa = weighted average damage");
+					extra.println("ic = impact chance, bd = best damage, wa = weighted average damage");
 				}
 				boolean isQDiff = !toWeap.equalQuals(hasWeap);
 				int qualDiff = isQDiff ? toWeap.numQual()-hasWeap.numQual() : 0;
 				
-				extra.println(" "+extra.ITEM_DESC_PROP+" ic/ad/wa: " 
+				extra.println(" "+extra.ITEM_DESC_PROP+" ic/bd/wa: " 
 				+ (extra.softColorDelta2Elide(toWeap.scoreImpact(),hasWeap.scoreImpact()))
 				+ extra.PRE_WHITE+"/"
-				+ (extra.hardColorDelta2Elide(toWeap.scoreAverage(),hasWeap.scoreAverage()))
+				+ (extra.hardColorDelta2Elide(toWeap.scoreBest(),hasWeap.scoreBest()))
 				+ extra.PRE_WHITE+"/"
 				+ (extra.hardColorDelta2Elide(toWeap.scoreWeight(),hasWeap.scoreWeight()))
 				//if the qualities are the same, 'q=', if neither has any, do not display
