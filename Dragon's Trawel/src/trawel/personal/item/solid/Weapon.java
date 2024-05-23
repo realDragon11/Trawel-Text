@@ -39,15 +39,16 @@ public class Weapon extends Item implements IEffectiveLevel {
 	private WeaponType weap;
 	private int material;
 	private int kills;
-	private float bsBst, bsWgt;//these don't need to update for internal weapons
 	/**
 	 * packed int
 	 * <br>
 	 * 1st byte = impact chance 0-100
-	 * 2nd byte = highest
-	 * 3rd byte = lowest
+	 * 2nd + 3rd bytes = short for best damage
+	 * 4th + 5th bytes = short for weighted average damage
+	 * 6th byte = highest
+	 * 7th byte = lowest
 	 */
-	private int bsCon = 0;
+	private long bsCon = 0;
 	//is lazy inited again
 	
 	private Set<WeaponQual> qualList = EnumSet.noneOf(WeaponQual.class);
@@ -324,17 +325,17 @@ public class Weapon extends Item implements IEffectiveLevel {
 	}
 	
 	private void refreshBattleScore() {
-		int impactChance = 0;
+		double impactChance = 0;
 		double total = 0;
 		double weighted = 0;
 		Stance stance = this.getMartialStance();
-		int size = stance.getAttackCount();
-		double[] contributions = new double[size];//used for determining highest contribution
+		//double[] contributions = new double[size];//used for determining highest contribution
 		int testSize = extra.getDumInvs().size();
 		double highest = 0;
 		double lowest = Double.MAX_VALUE;
-		for (int i = size-1;i >=0;i--) {
+		for (int i = stance.getAttackCount()-1;i >=0;i--) {
 			Attack holdAttack = stance.getAttack(i);
+			float weight = stance.getWeight(i);
 			double dam = 0;
 			for (int j = testSize-1; j >=0;j--) {
 				for (int ta = 0; ta < battleTests;ta++) {
@@ -343,13 +344,13 @@ public class Weapon extends Item implements IEffectiveLevel {
 							);
 					dam+= ret.damage/ret.attack.getTime();
 					if (ret.type == ATK_ResultType.IMPACT) {
-						impactChance++;
+						impactChance+=weight;
 					}
 				}
 			}
-			contributions[i] += dam;
+			//contributions[i] += dam;
 			total += dam;
-			weighted += dam*stance.getWeight(i);
+			weighted += dam*weight;
 			if (highest < dam) {
 				highest = dam;
 			}
@@ -359,21 +360,22 @@ public class Weapon extends Item implements IEffectiveLevel {
 		}
 		
 		int subTests = battleTests*testSize;
-		int totalTests = size*subTests;
+		//int totalTests = size*subTests;//don't need sub tests anymore because impact chance is weighted
 		double levelAdjust = IEffectiveLevel.unEffective(IEffectiveLevel.effective(level));//DOLATER: test
 		//the above battlescore assumes equal armor
 		//so we put the effective level in now to make it higher
 		//TODO: unsure if the natural allowed damage increase will be enough to signal a weapon as better to a player/AI
-		//int conAssembler = extra.setNthByteInInt(0b0, (int)(average*(100)), 0);
-		int conAssembler = extra.setNthByteInInt(0b0,(int)(impactChance*(100d/totalTests)), 0);
-		conAssembler = extra.setNthByteInInt(conAssembler, (int)(highest*(100/total)), 1);
-		conAssembler = extra.setNthByteInInt(conAssembler, (int)(lowest*(100/total)), 2);
+		//create long and set impact chance
+		long conAssembler = extra.setNthByteInInt(0b0,(int)((impactChance*100d)/subTests), 0);
+		//below two will explode if contain more than a short can hold, but that will be a VERY large level
+		//set best damage
+		conAssembler = extra.setShortInLong(conAssembler, (int)((levelAdjust*highest*100d)/(subTests)),8);
+		//set weighted damage
+		conAssembler = extra.setShortInLong(conAssembler, (int)((levelAdjust*weighted*100d)/(subTests)),24);
+		conAssembler = extra.setByteInLong(conAssembler, (int)(highest*(100d/total)), 40);
+		conAssembler = extra.setByteInLong(conAssembler, (int)(lowest*(100d/total)), 48);
 		
-		this.bsCon = conAssembler;//(float) (high*level);
-		//this.bsAvg = (float)((levelAdjust*total)/totalTests);//(float) (average*level);
-		//this.bsIpt = impactChance/(float)totalTests;
-		this.bsBst = (float) (levelAdjust*highest)/subTests;
-		this.bsWgt = (float) ((levelAdjust*weighted)/subTests);
+		this.bsCon = conAssembler;
 	}
 	
 	public static int battleTests = 10;//now how many times each attack gets tested on each armor set 3 to 5 to 10
@@ -398,7 +400,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 		if (bsCon == 0) {
 			refreshBattleScore();
 		}
-		return extra.intGetNthByteFromInt(bsCon, 1);
+		return extra.extractByteFromLong(bsCon, 40);
 	}
 	/**
 	 * 0-100
@@ -407,27 +409,27 @@ public class Weapon extends Item implements IEffectiveLevel {
 		if (bsCon == 0) {
 			refreshBattleScore();
 		}
-		return extra.intGetNthByteFromInt(bsCon, 2);
+		return extra.extractByteFromLong(bsCon, 48);
 	}
 	
 	public double scoreImpact() {
 		if (bsCon == 0) {
 			refreshBattleScore();
 		}
-		return (extra.intGetNthByteFromInt(bsCon, 0))/100d;
+		return extra.extractByteFromLong(bsCon, 0)/100d;
 	}
 	
 	public double scoreWeight() {
 		if (bsCon == 0) {
 			refreshBattleScore();
 		}
-		return this.bsWgt;
+		return extra.extractShortFromLong(bsCon,24)/100d;
 	}
 	public double scoreBest() {
 		if (bsCon == 0) {
 			refreshBattleScore();
 		}
-		return this.bsBst;
+		return extra.extractShortFromLong(bsCon,8)/100d;
 	}
 
 	@Override

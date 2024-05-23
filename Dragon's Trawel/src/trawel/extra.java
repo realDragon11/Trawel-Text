@@ -1550,6 +1550,18 @@ public final class extra {
 		//final long mask = (1L << 16) - 1L;
 		return (int) ((l >>> number_of_short*16) & ((1L << 16) - 1L));
 	}
+	
+	/**
+	 * returns it as a NUMBER in an int. (0 indexed)
+	 * <br>
+	 * effectively reads the short as unsigned
+	 * <br>
+	 * @param offset - in bits
+	 */
+	public static int extractShortFromLong(final long l, final int offset)
+	{
+		return (int) ((l >>> offset) & ((1L << 16) - 1L));
+	}
 
 	/**
 	 * must be non empty
