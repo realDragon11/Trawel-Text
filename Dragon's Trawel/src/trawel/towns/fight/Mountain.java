@@ -468,6 +468,8 @@ public class Mountain extends ExploreFeature{
 								if (c.playerWon() > 0) {
 									extra.println(extra.RESULT_GOOD+"The remaining cultist members declare you the new chosen one!");
 									Player.unlockPerk(Perk.CULT_CHOSEN_SKY);
+									Player.player.hasCult = true;
+									Networking.unlockAchievement("cult1");
 									return true;
 								}else {
 									extra.println(extra.RESULT_BAD+"The sky curses you for your hubris!");
