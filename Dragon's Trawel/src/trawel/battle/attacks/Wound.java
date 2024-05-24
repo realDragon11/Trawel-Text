@@ -11,28 +11,35 @@ public enum Wound{//TODO: make sure the reworked wounds are fully in
 	NEGATED("Negated","No effect, resists.","Negated..."),
 	EMPTY("Grazed","No bonus.","The blow's a graze..."),
 	//normal wound start
-	HAMSTRUNG("Hamstrung","Delays the defender's next attack by %1$d instants.","Their leg is hamstrung!"), 
-	BLINDED("Blind","Inflicts %1$d%% inaccuracy on the current attack, or half that to the next set of attack choices as compounding inaccuracy.","They can't see!"),
-	CONFUSED("Confuse","Forces the defender to retarget.","They look confused!"), 
-	DIZZY("Dizzy","Inflicts %1$d%% inaccuracy to the defender's current action, or compounding inaccuracy to the next set of attacks.","They look dizzy!"),
-	SLICE("Slice","Attacker's next action will happen %1$d%% quicker and be %2$d%% more accurate.","They are sliced!"),
-	DICE("Dice","Attacker's next action will happen %1$d%% and %2$d instants sooner.","They are diced!"),
-	WINDED("Wind","Defender's action will take %1$d instants longer.","The wind is knocked out of them!"),
+	//sharp primary, bleed and bonus damage- hp race damage type
 	BLEED("Cut","Applies %1$d stacks of bleed, around %2$d damage per tick.","They bleed..."),
 	MAJOR_BLEED("Lacerate","Applies %1$d stacks of bleed, around %2$d damage per tick, and prevents bleed from healing.","An artery is cut!"),
-	I_BLEED("Fracture","Applies a stacking %2$d bleed, expected %1$d for this stack against this attacker.","Their insides get crushed!"),
-	I_BLEED_WEAK("Trauma","Applies a stacking %2$d bleed, expected %1$d for this stack against this attacker.","Their insides get smashed."),
-	DISARMED("Disarm","Defender loses one attack choice on next action.","Their attack is put off-kilter!"),		
-	TRIPPED("Trip","Defender's action will take %1$d instants longer.","They are tripped!"),
-	KO("Knockout","Deals %1$d direct damage, but defender heals after their next attack.","It's a knockout!"),
+	SLICE("Slice","Attacker's next action will happen %1$d%% quicker and be %2$d%% more accurate.","They are sliced!"),
+	DICE("Dice","Attacker's next action will happen %1$d%% and %2$d instants sooner.","They are diced!"),
 	HACK("Hack","Deals up to %1$d direct damage based on unblocked damage to defender.","It's a wicked hack!"),
-	TAT("Puncture","Deals up to %1$d direct damage, based on final pierce damage to defender and to-hit.","The blow goes right through them!"),
+	//pierce primary, impair and destroy defensive resources
+	HAMSTRUNG("Hamstrung","Delays the defender's next attack by %1$d instants, and applies %2$d -10%% dodge Shaky stacks.","Their leg is hamstrung!"), 
+	DISARMED("Disarm","Defender loses one attack choice and suffers %1$d%% compounding inaccuracy on next attack.","Their attack is put off-kilter!"),
+	BLINDED("Blind","Inflicts %1$d%% inaccuracy on the current attack, or half that to the next set of attack choices as compounding inaccuracy.","They can't see!"),
+	PUNCTURED("Puncture","Damages armor up to %1$d%%, based on double MHP percent of dealt damage.","The blow punctures through the armor!"),
+	//blunt, mix of wounds but damage type tends to be resisted less
+	WINDED("Wind","Defender's action will take %1$d instants longer.","The wind is knocked out of them!"),
+	CONFUSED("Confuse","Forces the defender to retarget.","They look confused!"), 
+	DIZZY("Dizzy","Inflicts %1$d%% inaccuracy to the defender's current action, or compounding inaccuracy to the next set of attacks.","They look dizzy!"),
+	TRIPPED("Trip","Defender's action will take %1$d instants longer, and applies %2$d -10%% dodge Shaky stacks.","They are tripped!"),
 	CRUSHED("Crush","Deals %1$d direct damage.","They are crushed!"),
+	KO("Knockout","Deals %1$d direct damage, but defender heals after their next attack.","It's a knockout!"),
+	BLEED_BLUNT("Trauma","Applies %1$d stacks of bleed, around %2$d damage per tick.","Their insides get smashed."),
+	MAJOR_BLEED_BLUNT("Fracture","Applies %1$d stacks of bleed, around %2$d damage per tick, and prevents bleed from healing.","Their insides get crushed!"),
+	//soft decap'd wounds, used mostly as weird condwounds
+	I_BLEED("Fracture","Applies a stacking %2$d bleed, expected %1$d for this stack against this attacker.","Their insides get crushed!"),
+	TAT("OLD Puncture","Deals up to %1$d direct damage, based on final pierce damage to defender and to-hit.","The blow goes right through them!"),
+	
 	
 	//elemental
 	SCALDED("Scald","Deals %1$d direct damage.","They are scalded by the flames!"),//TODO: more elemental wounds
 	BLACKENED("Blacken","Burns defender's armor by %1$d%%.","Their armor burns!"),
-	SCREAMING("Scream","Defender loses one attack choice on next action.","They scream!"),
+	SCREAMING("Scream","Defender loses one attack choice and suffers %1$d%% compounding inaccuracy on next attack.","They scream!"),
 	FROSTED("Frost","Defender's action takes %1$d%% longer on the current time, up to %2$d instants increase.","They are frozen over..."),
 	FROSTBITE("Frostbite","Deals %1$d direct damage.","Their flesh is frozen!"),
 	JOLTED("Jolt","Defender's action takes %1$d instants longer.","They are jolted!"),

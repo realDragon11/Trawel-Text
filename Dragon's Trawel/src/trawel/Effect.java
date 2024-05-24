@@ -19,15 +19,14 @@ public enum Effect{
 	BLEED("Bleed","Each stack causes them to take around .5% LHP damage after each action, but the amount of stacks are halved each time it applies.",false,true,-2),
 	MAJOR_BLEED("Hemorrhage","Causes Bleed stacks to not decay when they tick.",false,false,-3),
 	DISARMED("Disarmed","Their next turn will get one less weapon attack choice. Doesn't stack.",false,false,-2),
-	/**
-	 * used for knockout and some skills
-	 */
+	/** wound, also used for knockout and some skills */
 	BREATHING("Breathing","Will regain 5% LHP as healing next turn. Stacks, but only one applies per turn.",false,true,1),
 	RECOVERING("Recovering","Will regain 5% LHP as healing at the end of this turn.",false,false,1),
 	I_BLEED("Internal Bleeding","Takes 2% LHP damage after each of their actions, or less if their target is more than 2 levels lower than them, per action. Stacks.",false,true,-3),
-	TORN("Torn","Decreases dodge by 10% compounding per stack.",false,true,-2), 
+	TORN("Torn","Decreases dodge by 10% compounding per stack.",false,true,-3), 
 	SLICE("Slicing","Their next attack is 10% faster and accurate.",false,false,2),
 	DICE("Dicing","Their next attack is 10% faster and also 10 time units quicker.",false,false,2),
+	SHAKY("Shaky","Decreases dodge by 10% compounding per stack. Stacks halve after every attack they complete.",false,true,-2), 
 	//potions
 	HASTE("Haste","+5% speed stat.",false,false,2), 
 	HEARTY("Hearty","+5% LHP at battle start. Doesn't stack with Forged.",false,false,2), 

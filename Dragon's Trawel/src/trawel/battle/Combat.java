@@ -1771,7 +1771,7 @@ public class Combat {
 				attacker2.addEffect(Effect.SLICE);
 				break;
 			case DICE:
-				attacker2.advanceTime(nums[1]);
+				attacker2.applyDiscount(nums[1]);
 				attacker2.addEffect(Effect.DICE);
 				break;
 			case SCALDED: case FROSTBITE:
@@ -1779,8 +1779,10 @@ public class Combat {
 			case HACK: case TAT:case CRUSHED:
 				defender2.takeDamage(nums[0]);
 				break;
-			case HAMSTRUNG: case WINDED: case TRIPPED:
-				defender2.advanceTime(-nums[0]);
+			case HAMSTRUNG: case TRIPPED:
+				defender2.addEffectCount(Effect.SHAKY, nums[1]);
+			case WINDED:
+				defender2.applyDiscount(-nums[0]);
 				break;
 			case FROSTED:
 				elemBonusEffects(attacker2,defender2,retu);
@@ -1794,9 +1796,9 @@ public class Combat {
 				elemBonusEffects(attacker2,defender2,retu);
 				defender2.getBag().burnArmor((nums[0]/100f),attack.getSlot());
 				break;
-			case MAJOR_BLEED:
+			case MAJOR_BLEED: case MAJOR_BLEED_BLUNT:
 				defender2.addEffect(Effect.MAJOR_BLEED);//don't need to be clotted
-				case BLEED:
+				case BLEED: case BLEED_BLUNT:
 				if (!defender2.hasEffect(Effect.CLOTTER)) {
 					defender2.addEffectCount(Effect.BLEED,nums[0]);
 				}
@@ -1805,6 +1807,7 @@ public class Combat {
 				elemBonusEffects(attacker2,defender2,retu);
 			case DISARMED: 
 				defender2.addEffect(Effect.DISARMED);
+				defender2.addEffectCount(Effect.FLUMMOXED,nums[0]);
 				break;
 			case KO:
 				defender2.takeDamage(nums[0]);
@@ -1815,11 +1818,6 @@ public class Combat {
 			case I_BLEED:
 				if (!defender2.hasEffect(Effect.CLOTTER)) {
 					defender2.addEffect(Effect.I_BLEED);
-					defender2.addEffect(Effect.I_BLEED);
-				}
-				break;
-			case I_BLEED_WEAK:
-				if (!defender2.hasEffect(Effect.CLOTTER)) {
 					defender2.addEffect(Effect.I_BLEED);
 				}
 				break;
@@ -1864,19 +1862,22 @@ public class Combat {
 			case HIT_VITALS:
 				defender2.addEffect(Effect.HIT_VITALS);
 				break;
-			 case BRAINED:
-				 defender2.addEffect(Effect.BRAINED);
-				 //don't need to apply text since on Brained, so we can skip adding it anywhere and just do the effects
-				 inflictWound(attacker2,defender2,retu,Wound.KO);
-				 break;
-			 case SHINE:
-				 defender2.takeDamage(nums[0]);
-				 defender2.getBag().burnArmor((nums[1]/100f),attack.getSlot());
-				 break;
-			 case GLOW:
-				 defender2.addEffectCount(Effect.FLUMMOXED,nums[0]);
-				 defender2.getBag().burnArmor((nums[1]/100f),attack.getSlot());
-				 break;
+			case BRAINED:
+				defender2.addEffect(Effect.BRAINED);
+				//don't need to apply text since on Brained, so we can skip adding it anywhere and just do the effects
+				inflictWound(attacker2,defender2,retu,Wound.KO);
+				break;
+			case SHINE:
+				defender2.takeDamage(nums[0]);
+				defender2.getBag().burnArmor((nums[1]/100f),attack.getSlot());
+				break;
+			case GLOW:
+				defender2.addEffectCount(Effect.FLUMMOXED,nums[0]);
+				defender2.getBag().burnArmor((nums[1]/100f),attack.getSlot());
+				break;
+			case PUNCTURED:
+				defender2.getBag().damageArmor((nums[0]/100f),attack.getSlot());
+				break;
 			case NEGATED://no effect
 				break;
 			}
@@ -1915,7 +1916,7 @@ public class Combat {
 	 */
 	public static Integer[] woundNums(ImpairedAttack attack, Person attacker, Person defender, AttackReturn result, Wound w) {
 		switch (w) {
-		case CONFUSED: case SCREAMING: case NEGATED: case DISARMED: case DEPOWER: case MAIMED: case CRIPPLED:
+		case CONFUSED: case NEGATED: case DEPOWER: case MAIMED: case CRIPPLED:
 		case HIT_VITALS:
 			//nothing
 			return new Integer[0];
@@ -1937,9 +1938,9 @@ public class Combat {
 		case SCALDED: case FROSTBITE:
 			return new Integer[] {attack.getTotalDam()/10};
 		case BLINDED:
-			return new Integer[] {40};//40% less accurate now or half that later
-		case HAMSTRUNG:
-			return new Integer[] {8};//-8 time units
+			return new Integer[] {50};//50% less accurate now or half that later
+		case DISARMED: case SCREAMING:
+			return new Integer[] {20};//20% less accurate later and -1 choice
 		case DIZZY:
 			return new Integer[] {25};//25% less accurate now or later
 		case SHIVERING:
@@ -1947,22 +1948,24 @@ public class Combat {
 		case FROSTED:
 			return new Integer[] {30,50};//takes 30% longer of current time, cap of +50
 		case JOLTED:
-			return new Integer[] {12};//12 instants longer
+			return new Integer[] {20};//20 instants longer
 		case BLACKENED:
-			return new Integer[] {7};//7% armor damage
+			return new Integer[] {10};//10% armor damage
 		case WINDED:
-			return new Integer[] {16};//-16 time units
-		case TRIPPED:
 			return new Integer[] {20};//-20 time units
+		case HAMSTRUNG:
+			return new Integer[] {10,2};//-10 time units, 2 shaky stacks
+		case TRIPPED:
+			return new Integer[] {16,1};//-16 time units, 1 shaky stack
 		case KO: case BRAINED:
 			//this does fixed damage on defender because it needs to recover, plus that's part of it's gimmick of felling mighty foes
 			return new Integer[] {IEffectiveLevel.cleanLHP(defender.getLevel(),.1)};
 		case I_BLEED://bleeds aren't synced, WET :(
 			return new Integer[] {2*bleedDam(attacker,defender),2*bleedDam(null,defender)};//can take null attacker
-		case I_BLEED_WEAK:
-			return new Integer[] {bleedDam(attacker,defender),bleedDam(null,defender)};//can take null attacker
-		case MAJOR_BLEED:
-		case BLEED:
+		//case I_BLEED_WEAK:
+			//return new Integer[] {bleedDam(attacker,defender),bleedDam(null,defender)};//can take null attacker
+		case MAJOR_BLEED: case MAJOR_BLEED_BLUNT:
+		case BLEED: case BLEED_BLUNT:
 			int stacks = bleedStackAmount(attacker, defender);//can take null attacker
 			return new Integer[] {stacks,Math.round(bleedStackDam(defender, stacks))};
 		case TEAR://WET
@@ -1976,6 +1979,11 @@ public class Combat {
 			return new Integer[] {attack.getTotalDam()/10,10};//10% bonus damage, 10% armor damage
 		case GLOW:
 			return new Integer[] {40,10};//40% less accurate later, 10% armor damage
+		case PUNCTURED://*100 so it can be turned into a % later and we don't have decimal issues
+			if (result == null) {
+				return new Integer[] {(attack.getTotalDam()*100)/defender.getMaxHp()};
+			}
+			return new Integer[] {(result.damage*100)/defender.getMaxHp()};
 		}
 		return new Integer[0];
 	}
