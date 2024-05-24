@@ -1794,8 +1794,8 @@ public class Player extends SuperPerson{
 																	}
 																}
 															}
-															
 															for (int j = 0; j < w.getYSize(); j++) {
+																extra.print(" ");//print a space to avoid causing issues in the graphical
 																for (int i = 0; i < map.length; i++) {
 																	extra.print(""+map[i][j]);
 																}
