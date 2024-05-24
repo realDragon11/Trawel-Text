@@ -346,7 +346,7 @@ public class MineNode implements NodeType{
 		 * 5 = wary (was angry, now is peaceful)
 		 * 6 = force attack (so you can attack wary without them instantly forgiving you)
 		 *   turns back into normal attack if you die
-		 * 7 = wary but don't want to talk anymore, reverts to 6 if you come back
+		 * 7 = wary but don't want to talk anymore, reverts to 5 if you come back
 		 */
 		int state = holder.getStateNum(node);
 		List<Person> cultists = null;
@@ -369,6 +369,7 @@ public class MineNode implements NodeType{
 				state = 3;
 				holder.setStateNum(node,3);
 				holder.setStorage(node,null);
+				holder.setForceGo(node,false);
 				return false;
 			}else {
 				extra.println("They desecrate your corpse.");
@@ -383,8 +384,8 @@ public class MineNode implements NodeType{
 			holder.setStateNum(node,2);
 		}
 		if (state == 7) {
-			state = 1;
-			holder.setStateNum(node,6);
+			state = 5;
+			holder.setStateNum(node,5);
 		}
 		
 		extra.menuGo(new MenuGenerator() {
