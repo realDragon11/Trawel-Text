@@ -33,7 +33,7 @@ public enum Wound{//TODO: make sure the reworked wounds are fully in
 	MAJOR_BLEED_BLUNT("Fracture","Applies %1$d stacks of bleed, around %2$d damage per tick, and prevents bleed from healing.","Their insides get crushed!"),
 	//soft decap'd wounds, used mostly as weird condwounds
 	I_BLEED("Fracture","Applies a stacking %2$d bleed, expected %1$d for this stack against this attacker.","Their insides get crushed!"),
-	TAT("OLD Puncture","Deals up to %1$d direct damage, based on final pierce damage to defender and to-hit.","The blow goes right through them!"),
+	TAT("OLD Through and Through","Deals up to %1$d direct damage, based on final pierce damage to defender and to-hit.","The blow goes right through them!"),
 	
 	
 	//elemental
