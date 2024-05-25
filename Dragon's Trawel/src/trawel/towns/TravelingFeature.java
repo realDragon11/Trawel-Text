@@ -279,7 +279,7 @@ public class TravelingFeature extends Store{
 									}
 								}
 								timeLeft+=1;//extend how long they stay, since they will be removed above by chance
-								Oracle.tip("");
+								extra.println("\""+Oracle.tipRandomOracle(town.getName())+"\"");
 								useCount++;
 								return true;
 							}});

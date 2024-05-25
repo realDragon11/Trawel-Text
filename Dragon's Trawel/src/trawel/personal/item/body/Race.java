@@ -144,6 +144,15 @@ public class Race extends Item{
 	public String randomSwear() {
 		return extra.randList(swears);
 	}
+	
+	public List<String> badNameList(){
+		List<String> list = new ArrayList<String>();
+		list.addAll(swears);
+		list.add(raceID().name);
+		list.add(raceID().name);
+		return list;
+	}
+	
 	public int randomRaceMap() {
 		//return Integer.parseInt(extra.randList(raceMaps));//DOLATER check to see if the conversion worked
 		return extra.getRand().nextInt();//is moduluo'd for now

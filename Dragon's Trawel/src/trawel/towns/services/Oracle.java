@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 import trawel.Networking;
 import trawel.Networking.Area;
@@ -59,6 +60,24 @@ public class Oracle extends Feature{ //extends feature later
 	
 	public static String tipString(String mask) {
 		return extra.randList(tips.get(mask));
+	}
+	
+	public static String tipStringExt(String mask,String aAn, String self, String selves, String selvian, String town, List<String> otherList) {
+		String tip = extra.randList(tips.get(mask))
+				.replaceAll(Pattern.quote("<a>"), aAn)
+				.replaceAll(Pattern.quote("<self>"), self)
+				.replaceAll(Pattern.quote("<selves>"),selves)
+				.replaceAll(Pattern.quote("<selvian>"),selvian)
+				.replaceAll(Pattern.quote("<town>"), town)
+				;
+		while (tip.contains("<other>")) {
+			tip = tip.replaceFirst(Pattern.quote("<other>"),extra.randList(otherList));
+		}
+		return tip;
+	}
+	
+	public static String tipRandomOracle(String town) {
+		return tipStringExt("","an","oracle","oracles","oracle",town,Collections.singletonList("not-oracle"));
 	}
 	
 	public static String rescLocation() {
@@ -158,7 +177,7 @@ public class Oracle extends Feature{ //extends feature later
 	}
 	
 	public void utterance0() {
-		tip("");
+		extra.println("\""+tipRandomOracle(town.getName())+"\"");
 		visits++;
 		Networking.unlockAchievement("oracle1");
 		//has different titles if you just listen in
@@ -184,7 +203,7 @@ public class Oracle extends Feature{ //extends feature later
 			extra.println("Pay "+ cheapUtterPrice() +" aether for an utterance?");
 			if (extra.yesNo()) {
 				Player.bag.addAether(-cheapUtterPrice());
-				tip("");
+				extra.println("\""+tipRandomOracle(town.getName())+"\"");
 				visits++;
 				Networking.unlockAchievement("oracle1");
 				if (visits == 5) {

@@ -1,6 +1,8 @@
 package trawel.towns.nodes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import derg.menus.MenuBack;
@@ -836,17 +838,14 @@ public class GenericNode implements NodeType {
 						if (racist) {
 							RaceID r = p.getBag().getRaceID();
 							if (r == Player.bag.getRaceID()) {
-								String str = Oracle.tipString("racistPraise");
-								str = str.replaceAll("oracles",r.namePlural);
-								str = str.replaceAll("oracle",r.namePlural);
-								extra.println("\"" +extra.capFirst(str)+"\"");
+								extra.println("\"" +extra.capFirst(
+										Oracle.tipStringExt("racistPraise", "a",r.name,r.namePlural,r.adjective, holder.parent.getTown().getName(),Player.bag.getRace().badNameList())
+										)+"\"");
 							}else {
 								if (extra.chanceIn(4,5)) {
-									String str = Oracle.tipString(extra.choose("racistShun","racistPraise"));
-									str = str.replaceAll("not-oracle",Player.bag.getRace().randomSwear());
-									str = str.replaceAll("oracles",r.namePlural);
-									str = str.replaceAll("oracle",r.namePlural);
-									extra.println("\"" +extra.capFirst(str)+"\"");	
+									extra.println("\"" +extra.capFirst(
+											Oracle.tipStringExt(extra.choose("racistShun","racistPraise"), "a",r.name,r.namePlural,r.adjective,holder.parent.getTown().getName(),Player.bag.getRace().badNameList())
+											+"\""));	
 								}else {
 									extra.println("\"" + Player.bag.getRace().randomInsult() +"\"");
 								}
@@ -855,7 +854,7 @@ public class GenericNode implements NodeType {
 							if (p.isAngry()) {
 								extra.println("They seem really mad about everything.");
 							}else {
-								extra.println("They seem nice, but have nothing of substance to talk about.");
+								extra.println("\""+Oracle.tipString("equality")+"\"");
 							}
 						}
 						return false;
@@ -954,19 +953,15 @@ public class GenericNode implements NodeType {
 
 					@Override
 					public boolean go() {
+						List<String> poorNames = Arrays.asList(new String[] {"serf","peasant","peon","menial","slave","servant","barbarian","pleb","commoner","poor"});
 						if (Player.player.getGold() > leader.getBag().getGold()*10) {//you're so much richer than them that they see you as part of their bigotry
-							String str = Oracle.tipString("racistPraise");
-							str = str.replaceAll(" an "," a ");
-							str = str.replaceAll("oracles","rich person");
-							str = str.replaceAll("oracle","rich people");
-							extra.println("\"" +extra.capFirst(str)+"\"");
+							extra.println("\"" +extra.capFirst(
+									Oracle.tipStringExt("racistPraise", "a","merchant","merchants","merchant", holder.parent.getTown().getName(),poorNames)
+									)+"\"");
 						}else {
-							String str = Oracle.tipString(extra.choose("racistShun","racistPraise"));
-							str = str.replaceAll(" an "," a ");
-							str = str.replaceAll("not-oracle","poor person");
-							str = str.replaceAll("oracles","rich people");
-							str = str.replaceAll("oracle","rich person");
-							extra.println("\"" +extra.capFirst(str)+"\"");	
+							extra.println("\"" +extra.capFirst(
+									Oracle.tipStringExt(extra.choose("racistShun","racistPraise"), "a","merchant","merchants","merchant",holder.parent.getTown().getName(),poorNames)
+									)+"\"");
 						};
 						return false;
 					}

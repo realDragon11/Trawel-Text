@@ -735,7 +735,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		speedFill-=t;
 	}
 	
-	public static final int ENDURANCE_HP_BONUS = 6;
 	public static final int SKILLPOINT_HP_BONUS = 5;
 	
 	public int getOOB_HP() {

@@ -555,7 +555,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 					public boolean go() {
 						Player.addTime(1+extra.randFloat());
 						mainGame.globalPassTime();
-						Oracle.tip("");
+						extra.println("\""+Oracle.tipRandomOracle(town.getName())+"\"");
 						return true;
 					}});
 				list.add(new MenuBack());

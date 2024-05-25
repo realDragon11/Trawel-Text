@@ -1,32 +1,26 @@
-If someone is wearing a lot of chainmail, use piercing attacks.
+If someone is wearing a lot of chainmail, avoid sharp attacks.
 Adamantine is worthless with blunt weapons.
 Watch negative enchantments closely. You can afford not being able to dodge, but not not being able to hit.
 Speed is a very good positive enchantment, and a very bad negative one.
 Try to quickly get higher level equipment- find it in dungeons and the like if the merchants refuse to sell you it.
-Leveling up increases your hp, and unused skillpoints also provide a small bonus.
+Leveling up increases your MHP, and unused featpoints also provide a small bonus.
 Gold items are good blunt weapons and blunt-resisting armor, but worthless at nearly everything else.
 Fabric materials like silk and cloth are better for dodging and enchanting.
 Start in lower level areas in terms of combat, shop in higher level areas if you can afford it.
-Try to see if you can find the beast in the forests, it's good luck.
+Some forests are protected by animal spirits, who recruit honorary dryads.
 Watch out for falling trees in the forest!
-Tournaments can have different ranks. Later on the fights might be harder.
+Some arenas have larger tournaments. Later matches will have fighters geared up with the loot from their previous fights!
 Watch yourself, this world is very dangerous. You only get to live once, right?
 Shops will restock in due time.
 Try to fight fighters around your level. Preferably a little bit lower, to be on the safe side- you only life once, after all!
-Your equipment matters just as much as your level. Give it the attention it deserves!
+Your equipment matters just as much as your level. Give them the attention they deserve!
 Missing a lot? Check your equipment for botched aim enchants- or even curses!
-There are three main attributes: sharp, blunt, and pierce. Both weapons and armor have them.
-Maces don't have much to do besides blunt. They suck versus gold armor.
-Swords tend to be very versatile weapons.
+There are three main damage types: sharp, blunt, and pierce. Both weapons and armor have them.
 Confused, lost in life? See an oracle.
-Getting beer will increase your hp... until you run out.
-Need some money while you're getting off your feet? Check out a forest or mountain for aether floating around, the magic storms tend to leave small amounts behind!
+Getting beer will increase your starting HP... until you run out.
+Need some money while you're getting off your feet? Try helping out with errands at quest boards.
 Explore the world to find new arenas to fight in- or, if that's not your thing, for the money to buy land. Everyone likes land, right?
-Make sure to keep moving between towns, finding fighters around your level!
-Dexterity is how good an armor is with dodging.
-Unused skillpoints will be added to your hp! But it's better to spend them.
-Where you attack plays a role in which armor is used against you. Don't expect to punch through someone's steel helm, try attacking their arms instead!
-There are four hidden armor stats: dexterity, flammability, and two types of conductivity.
-Fire damage damages armor, making it worse at deflecting blows that fight.
-Shock damage damages flesh, bypassing the normal armor attributes.
-Freeze damage slows you down, delaying your next attack.
+Make sure to keep moving between towns, and challenge yourself with stronger opponents!
+Unused featpoints will be added to your MHP! But it's better to spend them.
+Where you attack plays a role in which armor is used against you. Don't expect to punch through someone's steel helm, try attacking their cloth-covered arms instead!
+I have the scars of a hundred battles. But I have the resolve of a thousand more.
