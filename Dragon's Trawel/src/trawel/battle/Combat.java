@@ -1379,7 +1379,10 @@ public class Combat {
 			if (atr.code == ATK_ResultCode.KILL) {//if force kill
 				//might not actually be final death, but this is fine to say
 				doForceKill = true;
-				extra.println(attacker.getName() + " executes " + defender.getName() +"!");
+				if (!extra.getPrint()) {
+					atr.addNote("Execute!");
+				}
+				//extra.println(attacker.getName() + " executes " + defender.getName() +"!");
 				if (atr.damage < defender.getHp()) {//if they won't be able to kill them
 					defender.forceKill();
 					forceKilled = true;
@@ -1390,7 +1393,8 @@ public class Combat {
 				int blood_heal = attacker.healHP(
 						IEffectiveLevel.cleanLHP(Math.min(defender.getLevel(),attacker.getLevel()),.01));
 				if (!extra.getPrint()) {
-					extra.println(attacker.getName()+ " heals " + blood_heal + " from their bloodthirst!");
+					atr.addNote("Bloodthirst Heal: "+blood_heal);
+					//extra.println(attacker.getName()+ " heals " + blood_heal + " from their bloodthirst!");
 				}
 			}
 			if (attacker.hasSkill(Skill.NPC_BURN_ARMOR) && !attacker.hasEffect(Effect.DEPOWERED)) {
@@ -1420,7 +1424,8 @@ public class Combat {
 				if (defender.contestedRoll(attacker,defender.getClarity(),attacker.getHighestAttribute()) >= 0){
 					attacker.addEffect(Effect.CONFUSED_TARGET);
 					if (!extra.getPrint()) {
-						extra.println(indent+defender.getName()+ "'s illusory armor mesmerizes "+attacker.getName() +"...");
+						atr.addNote("Mesmer Armor!");
+						//extra.println(indent+defender.getName()+ "'s illusory armor mesmerizes "+attacker.getName() +"...");
 					}
 				}
 			}
@@ -1483,16 +1488,19 @@ public class Combat {
 			if (atr.code == ATK_ResultCode.DODGE) {
 				if (defender.hasSkill(Skill.SPEEDDODGE)) {
 					defender.applyDiscount(10);
-					extra.print(" They dodge closer to the action!");
+					atr.addNote("Speed Dodge!");
+					//extra.print(" They dodge closer to the action!");
 				}
 				if (defender.hasSkill(Skill.DODGEREF)) {
 					int dodgeHeal = IEffectiveLevel.cleanLHP(Math.min(defender.getLevel()+2,attacker.getLevel()),.01);
 					defender.addHp(dodgeHeal);
-					extra.print(" Refreshing Dodge heals " + dodgeHeal +"!");
+					atr.addNote("Refreshing Dodge: "+dodgeHeal);
+					//extra.print(" Refreshing Dodge heals " + dodgeHeal +"!");
 				}
 				if (defender.hasSkill(Skill.REACTIVE_DODGE)) {
 					defender.addEffect(Effect.ADVANTAGE_STACK);
-					extra.print(" They dance to a better position!");
+					atr.addNote("Reactive Dodge!");
+					//extra.print(" They dance to a better position!");
 				}
 			}
 			
@@ -1517,15 +1525,18 @@ public class Combat {
 			if (defender.hasSkill(Skill.ARMORHEART) && defender.getHp() < defender.getMaxHp()) {
 				int armorHeal = IEffectiveLevel.cleanLHP(Math.min(defender.getLevel()+4,attacker.getLevel()),.02);
 				defender.healHP(armorHeal);
-				extra.print(" Armor Heart heals " + armorHeal +"!");
+				atr.addNote("Armor Heart: "+armorHeal);
+				//extra.print(" Armor Heart heals " + armorHeal +"!");
 			}
 			if (defender.hasSkill(Skill.ARMORSPEED)) {
 				defender.applyDiscount(10);
-				extra.print(" They advance closer to the action.");
+				atr.addNote("Glancing Blow!");
+				//extra.print(" They advance closer to the action.");
 			}
 			if (defender.hasSkill(Skill.LIVING_ARMOR)) {
 				defender.getBag().buffArmorAdd(.08d);
-				extra.print(" Their armor reacts to the blow.");
+				atr.addNote("Living Armor!");
+				//extra.print(" Their armor reacts to the blow.");
 			}
 			break;
 		}
