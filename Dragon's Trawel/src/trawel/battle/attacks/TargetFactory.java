@@ -125,6 +125,7 @@ public class TargetFactory {
 		//t.addWound(DamageType.SHARP, Wound.WINDED, weightMult*.5f);
 		t.addWound(DamageType.SHARP, Wound.SLICE, weightMult*.5f);
 		t.addWound(DamageType.SHARP, Wound.DICE, weightMult*.5f);
+		t.addWound(DamageType.SHARP, Wound.FLAYED, weightMult);
 		t.addWound(DamageType.BLUNT, Wound.WINDED, weightMult*2f);
 		t.addWound(DamageType.BLUNT, Wound.KO, weightMult*.2f);
 		//t.addWound(DamageType.PIERCE, Wound.TAT, weightMult);//TODO: pierce impair wound
@@ -136,6 +137,7 @@ public class TargetFactory {
 		t.addWound(DamageType.SHARP, Wound.SLICE, weightMult*.5f);
 		t.addWound(DamageType.SHARP, Wound.DICE, weightMult*.5f);
 		t.addWound(DamageType.SHARP, Wound.HACK, weightMult);
+		t.addWound(DamageType.SHARP, Wound.FLAYED, weightMult*.5f);
 		t.addWound(DamageType.BLUNT, Wound.WINDED, weightMult*2f);
 		t.addWound(DamageType.BLUNT, Wound.CRUSHED, weightMult);
 		t.addWound(DamageType.PIERCE, Wound.WINDED, weightMult);
@@ -153,6 +155,7 @@ public class TargetFactory {
 		t.addWound(DamageType.SHARP, Wound.SLICE, weightMult*.4f);
 		t.addWound(DamageType.SHARP, Wound.DICE, weightMult*.4f);
 		t.addWound(DamageType.SHARP, Wound.HACK, weightMult*2f);
+		t.addWound(DamageType.SHARP, Wound.FLAYED, weightMult*2f);
 		t.addWound(DamageType.BLUNT, Wound.WINDED, weightMult);
 		t.addWound(DamageType.BLUNT, Wound.CRUSHED, weightMult*2f);
 		//t.addWound(DamageType.PIERCE, Wound.TAT, weightMult*2f);
@@ -444,7 +447,7 @@ public class TargetFactory {
 		t.slot = 2;
 		t.type = TargetType.OPEN_MIMIC;
 		addMimicLid(t, 3, 2, 1);
-		t.mappingNumber = 1;
+		t.mappingNumber = TORSO_MAPPING;
 		t.finish();
 		
 		
@@ -473,7 +476,7 @@ public class TargetFactory {
 		t.slot = 2;
 		t.type = TargetType.MIMIC;
 		addMimicLid(t, 1, 2, 1);
-		t.mappingNumber = 1;
+		t.mappingNumber = TORSO_MAPPING;
 		t.condWound = Wound.CRIPPLED;
 		t.finish();
 		
@@ -487,7 +490,7 @@ public class TargetFactory {
 		t.slot = 0;
 		t.type = TargetType.OPEN_MIMIC;
 		addForcedMajorBleed(t, 1);
-		t.mappingNumber = 3;
+		t.mappingNumber = 1;
 		t.condWound = Wound.I_BLEED;
 		t.finish();
 		
