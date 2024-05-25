@@ -54,7 +54,7 @@ public enum Skill{
 				,"Can apply to any wound inflicted on them, preventing it from processing entirely.",
 				Type.DEFENSE),
 		RAW_GUTS("Raw Guts","Resist damage up to 3% LHP, by Torso condition."
-				,"Can only resist up to half the base damage of an attack. Only applies to hit attacks. Amount is random."
+				,"Can only resist up to half the base damage of an attack. Only applies to hit attacks."
 				,Type.DEFENSE),
 		KUNG_FU("Unarmed Attacks","Gain martial arts attacks."
 				,"Adds one attack option per turn, which is based on strength and dexterity, TODO."//TODO

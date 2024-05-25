@@ -945,11 +945,11 @@ public class Combat {
 			}
 			
 			if (defender.hasSkill(Skill.RAW_GUTS)) {
-				int maxGResist = IEffectiveLevel.cleanLHP(
+				int gResist = IEffectiveLevel.cleanLHP(
 						Math.ceil(defender.getLevel() * defender.getConditionForPart(TargetFactory.TORSO_MAPPING))
 						,.03);
 				int gResisted = ret.damage;
-				ret.damage = Math.max(ret.damage/2,ret.damage-extra.randRange(0,maxGResist));
+				ret.damage = Math.max(ret.damage/2,ret.damage-gResist);
 				gResisted = gResisted-ret.damage;
 				if (canDisp) {ret.addNote("Raw Guts Resisted: " + gResisted);}
 			}
