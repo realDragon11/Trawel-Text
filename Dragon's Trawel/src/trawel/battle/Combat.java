@@ -1754,7 +1754,7 @@ public class Combat {
 			return defender.getMaxHp()/20;//5%
 		}
 		//5% adjusted by level proportion, from 1% to 10%
-		return Math.round(2 * extra.clamp(attacker.getEffectiveLevel()/defender.getEffectiveLevel(),.2f,2f));
+		return Math.round(5 * extra.clamp(attacker.getEffectiveLevel()/defender.getEffectiveLevel(),.2f,2f));
 		//return Math.round(10 * extra.clamp(attacker.getEffectiveLevel()/defender.getEffectiveLevel(),.2f,2f));
 	}
 	
