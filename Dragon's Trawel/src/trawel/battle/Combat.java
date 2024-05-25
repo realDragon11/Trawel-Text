@@ -1350,7 +1350,7 @@ public class Combat {
 				defender.advanceTime(atr.attack.getTime()/50f);
 			}
 			if (atr.hasWound()) {
-				if (defender.hasEffect(Effect.CHALLENGE_BACK)) {
+				if (!atr.attack.getWound().bypass && defender.hasEffect(Effect.CHALLENGE_BACK)) {
 					atr.addNote("Graze: Temerity");
 					defender.removeEffectAll(Effect.CHALLENGE_BACK);
 				}else {
@@ -1358,7 +1358,7 @@ public class Combat {
 					/*if (atr.code == ATK_ResultCode.ARMOR) {
 						woundStr+=(" The armor deflects the wound.");
 					}else {*/
-						if (((defender.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 ))) {
+						if (!atr.attack.getWound().bypass && ((defender.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 ))) {
 							atr.addNote("Graze: Tough as Nails");
 						}else {
 							inflictWound(attacker,defender,atr,attack.getWound());
@@ -1779,7 +1779,7 @@ public class Combat {
 				return;//fails safely now
 			}
 			assert defender2 != null;
-			if (defender2.hasEffect(Effect.PADDED) && w != Wound.PUNCTURED && extra.chanceIn(defender2.effectCount(Effect.PADDED),5)) {
+			if (!w.bypass && defender2.hasEffect(Effect.PADDED) && extra.chanceIn(defender2.effectCount(Effect.PADDED),5)) {
 				defender2.removeEffect(Effect.PADDED);
 				retu.addNote("Graze: Padded");
 				return;
@@ -1837,6 +1837,14 @@ public class Combat {
 				if (!defender2.hasEffect(Effect.CLOTTER)) {
 					defender2.addEffectCount(Effect.BLEED,nums[0]);
 				}
+				break;
+			case FLAYED:
+				if (!defender2.hasEffect(Effect.CLOTTER)) {
+					defender2.addEffectCount(Effect.BLEED,nums[0]);
+				}
+				int fdam = defender2.effectCount(Effect.BLEED);
+				defender2.takeDamage(fdam);
+				retu.bonus+=fdam;
 				break;
 			case SCREAMING:
 				elemBonusEffects(attacker2,defender2,retu);
@@ -1978,15 +1986,15 @@ public class Combat {
 			return new Integer[] {2};//2 shaky stacks, confused status
 		case HACK:
 			if (result == null) {
-				return new Integer[] {attack.getTotalDam()/5};
+				return new Integer[] {attack.getTotalDam()/4};
 			}
-			return new Integer[] {result.damage/5};
+			return new Integer[] {result.damage/4};
 		case CRUSHED:
-			return new Integer[] {attack.getTotalDam()/10};
+			return new Integer[] {attack.getTotalDam()/8};
 		case SCALDED:
-			return new Integer[] {attack.getTotalDam()/15,Math.min(10,(attack.getTotalDam()*50)/defender.getMaxHp())};//.5% armor burn per MHP threatened, max 10%
+			return new Integer[] {attack.getTotalDam()/10,Math.min(10,(attack.getTotalDam()*50)/defender.getMaxHp())};//.5% armor burn per MHP threatened, max 10%
 		case FROSTBITE:
-			return new Integer[] {attack.getTotalDam()/15,2};//2 shaky stacks
+			return new Integer[] {attack.getTotalDam()/10,2};//2 shaky stacks
 		case BLINDED:
 			return new Integer[] {50};//50% less accurate now or half that later
 		case SCREAMING:
@@ -2014,7 +2022,7 @@ public class Combat {
 		case KO: case BRAINED:
 			//this does fixed damage on defender because it needs to recover, plus that's part of it's gimmick of felling mighty foes
 			return new Integer[] {IEffectiveLevel.cleanLHP(defender.getLevel(),.1)};
-		case I_BLEED://bleeds aren't synced, WET :(
+		case I_BLEED:
 			return new Integer[] {2*bleedDam(attacker,defender),2*bleedDam(null,defender)};//can take null attacker
 		case MAJOR_BLEED: case MAJOR_BLEED_BLUNT:
 		case BLEED: case BLEED_BLUNT:
@@ -2024,12 +2032,15 @@ public class Combat {
 			return new Integer[] {10};// %, multiplicative dodge mult penalty
 		case MANGLED:
 			return new Integer[] {50};//50% reduction in condition
-		case BLOODY://bleeds aren't synced, WET :(
-			int bstacks = bleedStackAmount(attacker, defender);//can take null attacker
-			return new Integer[] {40,bstacks};//bloody blind
-		case SHINE:
+		case BLOODY:
+			int bstacks = bleedStackAmount(attacker, defender)/2;//can take null attacker
+			return new Integer[] {50,bstacks};//bloody blind
+		case FLAYED:
+			int fbstacks = bleedStackAmount(attacker, defender)/2;//can take null attacker
+			return new Integer[] {fbstacks,fbstacks+defender.effectCount(Effect.BLEED)};//damage based on bleed, just projected
+		case SHINE://undead condwound
 			return new Integer[] {attack.getTotalDam()/10,10};//10% bonus damage, 10% armor damage
-		case GLOW:
+		case GLOW://undead condwound
 			return new Integer[] {40,10};//40% less accurate later, 10% armor damage
 		case PUNCTURED://*100 so it can be turned into a % later and we don't have decimal issues, also ignores and removes one padded
 			//1% armor damage per end result of damage, max 15%, plus ignore/damage padding
