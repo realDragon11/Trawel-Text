@@ -89,7 +89,7 @@ public class StoryTutorial extends Story{
 			extra.println("...");
 		}
 		if (disp) {
-			extra.println("Show the full tutorial?");
+			extra.println("Show the combat tutorial?");
 			disp = extra.yesNo();
 		}else {
 			if (offerCombatTutorial()) {
@@ -117,24 +117,22 @@ public class StoryTutorial extends Story{
 				extra.println("Classic mode doesn't show you cooldown and warmup- just the combined delay.");
 				break;
 			case TWO_LINE1: 
-				extra.println("You have modern display on (at least, the current modern for this verison),"
-						+" and will see attacks in a hybrid table/label format.");
+				extra.println("You have modern display on, and will see attacks in a hybrid table/label format.");
 				extra.println("Instead of only table headers, each cell is labeled. "
 						+extra.CHAR_HITCHANCE+" is hitmult. "
 						+extra.CHAR_INSTANTS+" is 'instants' (warmup and cooldown time.) "
-						+ extra.CHAR_SHARP+extra.PRE_WHITE+" is sharp damage, "
+						+extra.CHAR_SHARP+extra.PRE_WHITE+" is sharp damage, "
 						+extra.CHAR_BLUNT+extra.PRE_WHITE+" is blunt damage, and "
 						+extra.CHAR_PIERCE+extra.PRE_WHITE+" is pierce damage.");
 				extra.println("There are more damage types, such as elemental, but those are beyond the scope of this tutorial.");
 				break;
 			case TWO_LINE1_WITH_KEY:
-				extra.println("You have modern display on with a key/legend (at least, the current modern for this verison),"
-						+" and will see attacks in a hybrid table/label format.");
+				extra.println("You have modern display on with a key/legend, and will see attacks in a hybrid table/label format.");
 				extra.println("This display style will provide instructions on how to read the table at the top of each instance.");
 				break;
 			}
 			extra.println("Displayed hit mult isn't a flat percent to hit- when the attack happens, it is a multiplier on your 'hit roll'- just like the enemies' dodge. Whoever rolls the higher number wins. Thus, if your total hit mult equals their total dodge, you have a 50% chance to hit. Most enemies will have a dodge multiplier of less than one.");
-			extra.println("Attacks might also come with wounds, which have special effects. Good luck!");
+			extra.println("Attacks often come with wounds, which have special effects. Good luck!");
 			battleFam = 1;
 		}
 		combats++;
@@ -144,19 +142,14 @@ public class StoryTutorial extends Story{
 	public void winFight(boolean massFight) {
 		battleFam =2;
 		wins++;
-		if (step == "gotoinn1") {
-			return;
+		if (step == "gotoarena2") {
+			extra.println("Congratulations on the arena victory! Next you should visit a Store to find better equipment.");
+			step = "gotostore1";
 		}
 		if (step == "anyfight1") {
-			extra.print("Congratulations! You killed something.");
+			extra.print("Congratulations on the victory. There's a lot of Combat to be had in Trawel, and it can be found it many places, both inside and outside of Towns.");
+			extra.println(" Next you should ingest questionable substances at an Inn. Compass, in the Player Menu under 'Player->Inventory->Map', can take you to 'Homa', the town you started in. 'Unun' is just a few hours walk from there, and it has an Inn.");
 			step = "gotoinn1";
-		}
-		if (step == "gotoarena1") {
-			extra.print("Well, looks like you managed to kill something without having gone to an arena. Arenas are fairly easy, but as you've learned, there's a lot of Combat to be had in Trawel!");
-			step = "gotoinn1";
-		}
-		if (step == "gotoinn1") {
-			extra.println(" Next you should ingest questionable substances at an inn. Compass (which is basically mapquest), in the Player Menu under 'Player->Inventory->Map', can take you to 'Homa', the town you started in. 'Unun' is just a few hours walk from there, and it has an inn.");
 		}
 	}
 
@@ -179,6 +172,10 @@ public class StoryTutorial extends Story{
 						doReminder = true;
 					}
 				}
+			}else {
+				if (extra.chanceIn(1,levelReminders+wins+deaths+combats)) {
+					doReminder = true;
+				}
 			}
 			if (!doReminder) {
 				extra.println("Rest in pieces.");
@@ -194,6 +191,10 @@ public class StoryTutorial extends Story{
 	
 	@Override
 	public void onDeathPart2() {
+		if (step == "gotoarena2") {
+			extra.println("While you may have lost that fight, you can come back for revenge! Visit a Store to find better equipment, and we'll continue.");
+			step = "gotostore1";
+		}
 		if (step == "anyfight1") {
 			extra.println("You should keep trying to win a fight.");
 		}
@@ -212,15 +213,23 @@ public class StoryTutorial extends Story{
 				break;
 			}
 			extra.println("It looks like there's a fight about to take place here. You could wait to participate in it. Winner gets the loser's stuff, apparently.");
-			step = "anyfight1";
+			step = "gotoarena2";
 			return;//we will explain arenas again if they re-enter
+		case "gotostore1":
+			if (!(f instanceof Store)) {
+				break;
+			}
+			extra.println("Some stores sell equipment for Aether, which you mostly find by melting down other equipment you loot in the wild. Others sell DrawBanes for Currency. Stores are just one way to get equipment, but they can be more reliable than relying only on what you loot.");
+			extra.println("You should gear up in an equipment shop and then win a fight to continue!");
+			step = "anyfight1";
+			return;//we will explain stores directly if they re-enter
 		case "gotoinn1":
 			if (!(f instanceof Inn)) {
 				break;
 			}
-			extra.println("The inn has 'beer' (you hope its actually beer) which can raise your HP for as many fights as you buy beer for... but somewhat more importantly, random side quests.");
+			extra.println("The Inn has 'beer' (you hope it's actually beer) which can raise your HP for as many fights as you buy beer for... but somewhat more importantly, random side quests.");
 			extra.println("Browse the backrooms, and see if any quests suit your fancy. In general, its much more fun to explore, but sidequests can help you if you're having trouble justifying going into the scary wider world.");
-			extra.println("Merchant Guilds, Witch Huts, Slums, and a few other locations can also provide similar sidequests- and even more can be quest locations, like mountains and forests.");
+			extra.println("Guilds, Witch Huts, Districts, and a few other locations can also provide similar sidequests- and even more can be quest locations, like Mountains and Forests.");
 			extra.println("There are also areas meant for sub-exploration, such as Groves, Mines, Dungeons, and Graveyards. The Tower of Fate in Unun and the Staircase to Hell in another world entirely also have bosses. Try to enter one such feature next.");
 			step = "gotonode1";
 			return;//we will explain inns again if they re-enter
@@ -235,10 +244,13 @@ public class StoryTutorial extends Story{
 			+extra.COLOR_BEEN+" {"+extra.VISIT_BEEN + "} been,"+extra.PRE_WHITE
 			+extra.COLOR_OWN+" {" +extra.VISIT_DONE + "} done, "+extra.PRE_WHITE
 			+extra.COLOR_OWN+" {"+extra.VISIT_OWN + "} owned, "+extra.PRE_WHITE+ "(usually used to indicate you've done an action that will change with time), "
-			+extra.PRE_WHITE+" and "+extra.COLOR_REGROWN+"{"+extra.VISIT_REGROWN+ "}regrown,"+extra.PRE_WHITE+" which means that they got replaced since you last visited them.");
+			+extra.PRE_WHITE+" and "+extra.COLOR_REGROWN+"{"+extra.VISIT_REGROWN+ "} regrown,"+extra.PRE_WHITE+" which means that they got replaced since you last visited them.");
 			extra.println("The order of nodes presented is often erratic, but the last node you were in will be marked by '(back)'. Some areas will also place nodes that are 'deeper' or 'higher' on the top. One such instance is the Tower of Fate in Unun, which loops back in on itself, but picking the highest choice will always take to up the tower until you reach the top floor.");
 			extra.println("While interacting, you might find yourself in a sub-menu, otherwise you can always leave the area by selecting the last option.");
-			extra.println("You have completed the tutorial section of this story. The game continues on as an open world, up to around level "+WorldGen.highestLevel+". Those bosses mentioned earlier and some other world events will be tracked by this tutorial- but there's no main quest in this version of Trawel, so good luck.");
+			extra.println(" ");
+			extra.println("You have completed the tutorial section of this story. The game continues on as an open world, up to around level "+WorldGen.highestLevel+".");
+			extra.println("There is no more direct guidance to be had, but "+bossPerkTriggers.size() + " boss perks, "+worldPerkTriggers.size() + " world perks, and " + blessPerkTriggers.size() + " blessing perks are tracked by this story.");
+			extra.println("Happy Traweling!");
 			step = "end";
 			return;//we explain the subtypes differently if they re-enter
 		default: break;
@@ -265,15 +277,15 @@ public class StoryTutorial extends Story{
 				return;
 			}
 			if (f instanceof Store) {
-				extra.println("Stores will sell equipment. They'll want Currency, but will convert Aether into it at a worse rate if you don't have enough Currency. They will increase their markup if they think the item is too good for you, but gaining the favor of merchants will increase how 'good' they think you are. If an item is considerably marked up, they might refuse to show it at all.");
+				extra.println("Stores will sell equipment or other items. For equipment, they'll want Aether. For other items, they'll want Currency. You can increase what items they're willing to sell you by doing favors for Merchant Guilds, if not you might see stock hidden in the back.");
 				return;
 			}
 			if (f instanceof Enchanter) {
-				extra.println("Enchanters let you attempt to enchant equipment, and convert Aether into Currency.");
+				extra.println("Enchanters let you attempt to enchant equipment.");
 				return;
 			}
 			if (f instanceof Arena) {
-				extra.println("Arenas let you wait to fight- which could take a while in-game waiting wise, and also rematch against anyone you've lost to that is still hanging out in the arena.");
+				extra.println("Arenas let you wait to fight- which could take a while in-game waiting wise, and also match against former victors.");
 				return;
 			}
 			if (f instanceof Docks) {
@@ -289,7 +301,7 @@ public class StoryTutorial extends Story{
 				return;
 			}
 			if (f instanceof HeroGuild) {
-				extra.println("Hero Guilds will let you buy Knowledge Fragments with Heroic Reputation. Use these at libraries. They also offer heroic quests. Their guild gem of choice is the Ruby.");
+				extra.println("Hero Guilds will let you buy Feat Fragments with Heroic Reputation. Use these at libraries. They also offer heroic quests. Their guild gem of choice is the Ruby.");
 				return;
 			}
 			if (f instanceof RogueGuild) {
@@ -297,7 +309,7 @@ public class StoryTutorial extends Story{
 				return;
 			}
 			if (f instanceof Library) {
-				extra.println("At a Library, you can turn in any DrawBane Knowledge Fragments you hold to progress on a free Feat Point. If you have 2 or less Feat Picks, you can gain another for free, once per Library.");
+				extra.println("At a Library, you can turn in any Feat Fragments you hold to progress on a free Feat Point. If you have 2 or less Feat Picks, you can gain another for free, once per Library.");
 				return;
 			}
 			if (f instanceof Oracle) {
@@ -313,7 +325,7 @@ public class StoryTutorial extends Story{
 				return;
 			}
 			if (f instanceof Garden) {
-				extra.println("Gardens hold multiple plant spots to plant in.");
+				extra.println("Gardens hold multiple plant spots to plant in. Plants grow over time.");
 				return;
 			}
 			if (f instanceof Blacksmith) {
@@ -380,6 +392,9 @@ public class StoryTutorial extends Story{
 			switch(lastKnownLevel) {
 			case 1:
 				extra.println("You have leveled up! You can spend Feat Points in the Character menu through Feat Picks.");
+				break;
+			case 5:
+				extra.println("Every five levels, you have the opportunity to start selecting a new Archetype. Selecting a Feat will delay this choice to the next pick.");
 				break;
 			case 10:
 				extra.println("You are starting to become a force to be reckoned with!");
