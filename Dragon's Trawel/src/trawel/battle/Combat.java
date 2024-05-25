@@ -1351,29 +1351,30 @@ public class Combat {
 			}
 			if (atr.hasWound()) {
 				if (defender.hasEffect(Effect.CHALLENGE_BACK)) {
-					woundStr+=(" They stand strong with temerity!");
+					atr.addNote("Graze: Temerity");
 					defender.removeEffectAll(Effect.CHALLENGE_BACK);
 				}else {
-					if (atr.code == ATK_ResultCode.ARMOR) {
+					//result can't both be impact and armor???
+					/*if (atr.code == ATK_ResultCode.ARMOR) {
 						woundStr+=(" The armor deflects the wound.");
-					}else {
+					}else {*/
 						if (((defender.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 ))) {
-							woundStr+=(" They shrug off the blow!");
+							atr.addNote("Graze: Tough as Nails");
 						}else {
-							woundStr+=(inflictWound(attacker,defender,atr,attack.getWound()));
+							inflictWound(attacker,defender,atr,attack.getWound());
 							if (attack.getWound() != Wound.NEGATED) {
 								if (attack.getWeapon() != null && attack.getWeapon().hasQual(Weapon.WeaponQual.DESTRUCTIVE)) {
 									defender.getBag().damageArmor(percent/3f, attack.getSlot());
 								}
 							}
 						}
-					}
+					//}
 				}
 			}
 			if (attacker.hasEffect(Effect.PLANNED_TAKEDOWN)) {
 				attacker.removeEffect(Effect.PLANNED_TAKEDOWN);
 				//knockout
-				woundStr+=(inflictWound(attacker,defender,atr,Wound.KO));
+				inflictWound(attacker,defender,atr,Wound.KO);
 			}
 			if (atr.code == ATK_ResultCode.KILL) {//if force kill
 				//might not actually be final death, but this is fine to say
@@ -1398,20 +1399,20 @@ public class Combat {
 			}
 			//wounded OOB punishment effect
 			if (defender.hasEffect(Effect.WOUNDED)) {
-				woundStr+=(inflictWound(attacker,defender,atr,Wound.BLEED));
+				inflictWound(attacker,defender,atr,Wound.BLEED);
 			}
 			//only processes on an impactful attack, to be consistent with wounds (plus make code easier)
 			List<Wound> wounds = defender.processBodyStatus();
 			if (wounds != null) {
 				for (Wound wo: wounds) {
-					woundStr+=(inflictWound(attacker,defender,atr,wo));
+					inflictWound(attacker,defender,atr,wo);
 				}
 			}
 			
 			//bonus wounds applied by skills and such
 			if (atr.addWounds != null) {
 				for (Wound wo: atr.addWounds) {
-					woundStr+=(inflictWound(attacker,defender,atr,wo));
+					inflictWound(attacker,defender,atr,wo);
 				}
 			}
 		}else {//no impact
@@ -1758,16 +1759,17 @@ public class Combat {
 		return Math.round(10 * extra.clamp(attacker.getEffectiveLevel()/defender.getEffectiveLevel(),.2f,2f));
 	}
 	
-	private String inflictWound(Person attacker2, Person defender2, AttackReturn retu, Wound w) {
+	private void inflictWound(Person attacker2, Person defender2, AttackReturn retu, Wound w) {
 			ImpairedAttack attack = attacker2.getNextAttack();
 			Integer[] nums = woundNums(attack,attacker2,defender2,retu,w);
 			if (w == null) {
-				return "";//fails safely now
+				return;//fails safely now
 			}
 			assert defender2 != null;
 			if (defender2.hasEffect(Effect.PADDED) && w != Wound.PUNCTURED && extra.chanceIn(defender2.effectCount(Effect.PADDED),5)) {
 				defender2.removeEffect(Effect.PADDED);
-				return " The padding mitigates the wound!";
+				retu.addNote("Graze: Padded");
+				return;
 			}
 			switch (w) {
 			case CONFUSED:
@@ -1915,7 +1917,8 @@ public class Combat {
 			case NEGATED://no effect
 				break;
 			}
-			return (" " +w.active);
+			retu.addNote("Wound: "+w.name);
+			return;
 	}
 	
 	/**
