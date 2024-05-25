@@ -1141,6 +1141,7 @@ public final class extra {
 	//attack picking
 	public static final String ATK_BONUS = STAT_HEADER;
 	public static final String ATK_WOUND_NORMAL = ITEM_DESC_PROP;
+	public static final String ATK_WOUND_INJURY = ITEM_DESC_PROP;
 	public static final String ATK_WOUND_NEGATE = PRE_RED;
 	public static final String ATK_WOUND_GRAZE = TIMID_RED;
 	

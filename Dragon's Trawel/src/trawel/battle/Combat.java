@@ -1350,25 +1350,11 @@ public class Combat {
 				defender.advanceTime(atr.attack.getTime()/50f);
 			}
 			if (atr.hasWound()) {
-				if (!atr.attack.getWound().bypass && defender.hasEffect(Effect.CHALLENGE_BACK)) {
-					atr.addNote("Graze: Temerity");
-					defender.removeEffectAll(Effect.CHALLENGE_BACK);
-				}else {
-					//result can't both be impact and armor???
-					/*if (atr.code == ATK_ResultCode.ARMOR) {
-						woundStr+=(" The armor deflects the wound.");
-					}else {*/
-						if (!atr.attack.getWound().bypass && ((defender.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 ))) {
-							atr.addNote("Graze: Tough as Nails");
-						}else {
-							inflictWound(attacker,defender,atr,attack.getWound());
-							if (attack.getWound() != Wound.NEGATED) {
-								if (attack.getWeapon() != null && attack.getWeapon().hasQual(Weapon.WeaponQual.DESTRUCTIVE)) {
-									defender.getBag().damageArmor(percent/3f, attack.getSlot());
-								}
-							}
-						}
-					//}
+				boolean applied = inflictWound(attacker,defender,atr,attack.getWound());
+				if (applied) {
+					if (attack.getWeapon() != null && attack.getWeapon().hasQual(Weapon.WeaponQual.DESTRUCTIVE)) {
+						defender.getBag().damageArmor(percent/3f, attack.getSlot());
+					}
 				}
 			}
 			if (attacker.hasEffect(Effect.PLANNED_TAKEDOWN)) {
@@ -1772,17 +1758,33 @@ public class Combat {
 		//return Math.round(10 * extra.clamp(attacker.getEffectiveLevel()/defender.getEffectiveLevel(),.2f,2f));
 	}
 	
-	private void inflictWound(Person attacker2, Person defender2, AttackReturn retu, Wound w) {
+	private boolean inflictWound(Person attacker2, Person defender2, AttackReturn retu, Wound w) {
 			ImpairedAttack attack = attacker2.getNextAttack();
 			Integer[] nums = woundNums(attack,attacker2,defender2,retu,w);
 			if (w == null) {
-				return;//fails safely now
+				return false;//fails safely now
 			}
 			assert defender2 != null;
-			if (!w.bypass && defender2.hasEffect(Effect.PADDED) && extra.chanceIn(defender2.effectCount(Effect.PADDED),5)) {
-				defender2.removeEffect(Effect.PADDED);
-				retu.addNote("Graze: Padded");
-				return;
+			if (!w.bypass) {
+				if ((defender2.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 )) {
+					retu.addNote("Negate: "+extra.ATK_WOUND_NEGATE+"Tough as Nails "+w.name+extra.PRE_WHITE);
+					return false;
+				}
+				if (defender2.hasEffect(Effect.PADDED) && extra.chanceIn(defender2.effectCount(Effect.PADDED),5)) {
+					defender2.removeEffect(Effect.PADDED);
+					retu.addNote("Negate: "+extra.ATK_WOUND_NEGATE+"Padded "+w.name+extra.PRE_WHITE);
+					return false;
+				}
+				if (defender2.hasEffect(Effect.CHALLENGE_BACK)) {
+					retu.addNote("Negate: "+extra.ATK_WOUND_NEGATE+"Temerity "+w.name+extra.PRE_WHITE);
+					defender2.removeEffectAll(Effect.CHALLENGE_BACK);
+					return false;
+				}
+			}
+			
+			String desc = null;//null means don't bother adding
+			if (!extra.getPrint()) {//only really need to care if play can see
+				desc = ((w.injury ? "Injury: ":"Wound: ")+w.getColor()+w.name+extra.PRE_WHITE);
 			}
 			switch (w) {
 			case CONFUSED:
@@ -1803,16 +1805,28 @@ public class Combat {
 				defender2.takeDamage(nums[0]);
 				retu.bonus+=nums[0];
 				defender2.getBag().burnArmor((nums[1]/100f),attack.getSlot());
+				
+				if (desc != null) {
+					desc += "; "+nums[0] + " damage, "+nums[1]+"% burn";
+				}
 				break;
 			case FROSTBITE:
 				elemBonusEffects(attacker2,defender2,retu);
 				defender2.takeDamage(nums[0]);
 				retu.bonus+=nums[0];
 				defender2.addEffectCount(Effect.SHAKY, nums[1]);
+				
+				if (desc != null) {
+					desc += "; "+nums[0] + " damage";
+				}
 				break;
 			case HACK: case CRUSHED:
 				defender2.takeDamage(nums[0]);
 				retu.bonus+=nums[0];
+				
+				if (desc != null) {
+					desc += "; "+nums[0] + " damage";
+				}
 				break;
 			case HAMSTRUNG: case TRIPPED:
 				defender2.addEffectCount(Effect.SHAKY, nums[1]);
@@ -1830,21 +1844,33 @@ public class Combat {
 			case BLACKENED:
 				elemBonusEffects(attacker2,defender2,retu);
 				defender2.getBag().burnArmor((nums[0]/100f),attack.getSlot());
+				if (desc != null) {
+					desc += "; "+nums[0] + "% burn";
+				}
 				break;
 			case MAJOR_BLEED: case MAJOR_BLEED_BLUNT:
 				defender2.addEffect(Effect.MAJOR_BLEED);//don't need to be clotted
 				case BLEED: case BLEED_BLUNT:
 				if (!defender2.hasEffect(Effect.CLOTTER)) {
 					defender2.addEffectCount(Effect.BLEED,nums[0]);
+					if (desc != null) {
+						desc += "; "+nums[0] + " bleeds";
+					}
 				}
 				break;
 			case FLAYED:
 				if (!defender2.hasEffect(Effect.CLOTTER)) {
 					defender2.addEffectCount(Effect.BLEED,nums[0]);
+					if (desc != null) {
+						desc += "; "+nums[0] + " bleeds";
+					}
 				}
 				int fdam = defender2.effectCount(Effect.BLEED);
 				defender2.takeDamage(fdam);
 				retu.bonus+=fdam;
+				if (desc != null) {
+					desc += "; "+fdam + " damage";
+				}
 				break;
 			case SCREAMING:
 				elemBonusEffects(attacker2,defender2,retu);
@@ -1858,6 +1884,9 @@ public class Combat {
 			case KO:
 				defender2.takeDamage(nums[0]);
 				retu.bonus+=nums[0];
+				if (desc != null) {
+					desc += "; "+nums[0] + " damage";
+				}
 				if (!defender2.hasEffect(Effect.BRAINED)) {
 					defender2.addEffect(Effect.BREATHING);
 				}
@@ -1874,6 +1903,9 @@ public class Combat {
 			case BLOODY:
 				if (!defender2.hasEffect(Effect.CLOTTER)) {
 					defender2.addEffectCount(Effect.BLEED,nums[1]);
+					if (desc != null) {
+						desc += "; "+nums[1] + " bleeds";
+					}
 				}
 				//fall through
 			case BLINDED:
@@ -1919,10 +1951,16 @@ public class Combat {
 				defender2.takeDamage(nums[0]);
 				retu.bonus+=nums[0];
 				defender2.getBag().burnArmor((nums[1]/100f),attack.getSlot());
+				if (desc != null) {
+					desc += "; "+nums[0] + " damage, "+nums[1]+"% burn";
+				}
 				break;
 			case GLOW:
 				defender2.addEffectCount(Effect.FLUMMOXED,nums[0]);
 				defender2.getBag().burnArmor((nums[1]/100f),attack.getSlot());
+				if (desc != null) {
+					desc += "; "+nums[1]+"% burn";
+				}
 				break;
 			case PUNCTURED:
 				defender2.removeEffect(Effect.PADDED);
@@ -1936,10 +1974,16 @@ public class Combat {
 				defender2.addEffectCount(Effect.SHAKY,nums[0]);
 				break;
 			case NEGATED://no effect
-				break;
+			case EMPTY:
+				if (desc != null) {
+					retu.addNote(desc);
+				}
+				return false;
 			}
-			retu.addNote("Wound: "+w.name);
-			return;
+			if (desc != null) {
+				retu.addNote(desc);
+			}
+			return true;
 	}
 	
 	/**
