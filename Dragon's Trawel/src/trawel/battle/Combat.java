@@ -1635,7 +1635,7 @@ public class Combat {
 		float bleed = 0;
 		if (attacker.hasEffect(Effect.BLEED)) {
 			int baseBleeds = attacker.effectCount(Effect.BLEED);
-			bleed+= bleedStackDam(defender,baseBleeds);
+			bleed+= baseBleeds;
 			if (!attacker.hasEffect(Effect.MAJOR_BLEED)) {
 				attacker.setEffectCount(Effect.BLEED,(int) Math.ceil(baseBleeds/2f));
 			}
@@ -1765,9 +1765,11 @@ public class Combat {
 	 */
 	public static int bleedStackAmount(Person attacker,Person defender) {
 		if (attacker == null) {
-			return 10;
+			return defender.getMaxHp()/20;//5%
 		}
-		return Math.round(10 * extra.clamp(attacker.getEffectiveLevel()/defender.getEffectiveLevel(),.2f,2f));
+		//5% adjusted by level proportion, from 1% to 10%
+		return Math.round(2 * extra.clamp(attacker.getEffectiveLevel()/defender.getEffectiveLevel(),.2f,2f));
+		//return Math.round(10 * extra.clamp(attacker.getEffectiveLevel()/defender.getEffectiveLevel(),.2f,2f));
 	}
 	
 	private void inflictWound(Person attacker2, Person defender2, AttackReturn retu, Wound w) {
@@ -2017,14 +2019,14 @@ public class Combat {
 		case MAJOR_BLEED: case MAJOR_BLEED_BLUNT:
 		case BLEED: case BLEED_BLUNT:
 			int stacks = bleedStackAmount(attacker, defender);//can take null attacker
-			return new Integer[] {stacks,Math.round(bleedStackDam(defender, stacks))};
+			return new Integer[] {stacks};
 		case TEAR://WET
 			return new Integer[] {10};// %, multiplicative dodge mult penalty
 		case MANGLED:
 			return new Integer[] {50};//50% reduction in condition
 		case BLOODY://bleeds aren't synced, WET :(
 			int bstacks = bleedStackAmount(attacker, defender);//can take null attacker
-			return new Integer[] {40,bstacks,Math.round(bleedStackDam(defender, bstacks))};//bloody blind
+			return new Integer[] {40,bstacks};//bloody blind
 		case SHINE:
 			return new Integer[] {attack.getTotalDam()/10,10};//10% bonus damage, 10% armor damage
 		case GLOW:

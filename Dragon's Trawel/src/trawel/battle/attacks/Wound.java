@@ -12,11 +12,12 @@ public enum Wound{//TODO: make sure the reworked wounds are fully in
 	EMPTY("Grazed","No bonus.","The blow's a graze..."),
 	//normal wound start
 	//sharp primary, bleed and bonus damage- hp race damage type
-	BLEED("Cut","Applies %1$d stacks of bleed, around %2$d damage per tick.","They bleed..."),
-	MAJOR_BLEED("Lacerate","Applies %1$d stacks of bleed, around %2$d damage per tick, and prevents bleed from healing.","An artery is cut!"),
+	BLEED("Cut","Applies %1$d stacks of bleed.","They bleed..."),
+	MAJOR_BLEED("Lacerate","Applies %1$d stacks of bleed and prevents bleed from healing.","An artery is cut!"),
 	SLICE("Slice","Attacker's next action will happen %1$d%% quicker and be %1$d%% more accurate. Also grants one stack of Advantage.","They are sliced!"),
 	DICE("Dice","Attacker's next action will happen %1$d%% quicker and be %1$d%% more accurate, as well as %2$d instants sooner.","They are diced!"),
 	HACK("Hack","Deals up to %1$d direct damage based on unblocked damage to defender.","It's a wicked hack!"),
+	FLAY("Flay","Deals bonus damage equal to bleed stacks, expected %1$d.","They are flayed!"),
 	//pierce primary, impair and destroy defensive resources
 	HAMSTRUNG("Hamstrung","Delays the defender's next attack by %1$d instants, and applies %2$d -10%% dodge Shaky stacks.","Their leg is hamstrung!"), 
 	DISARMED("Disarm","Defender loses one attack choice and suffers %1$d%% compounding inaccuracy on next attack.","Their attack is put off-kilter!"),
@@ -30,8 +31,8 @@ public enum Wound{//TODO: make sure the reworked wounds are fully in
 	TRIPPED("Trip","Defender's action will take %1$d instants longer, and applies %2$d -10%% dodge Shaky stacks.","They are tripped!"),
 	CRUSHED("Crush","Deals %1$d direct damage.","They are crushed!"),
 	KO("Knockout","Deals %1$d direct damage, but defender heals after their next attack.","It's a knockout!"),
-	BLEED_BLUNT("Trauma","Applies %1$d stacks of bleed, around %2$d damage per tick.","Their insides get smashed."),
-	MAJOR_BLEED_BLUNT("Fracture","Applies %1$d stacks of bleed, around %2$d damage per tick, and prevents bleed from healing.","Their insides get crushed!"),
+	BLEED_BLUNT("Trauma","Applies %1$d stacks of bleed.","Their insides get smashed."),
+	MAJOR_BLEED_BLUNT("Fracture","Applies %1$d stacks of bleed and prevents bleed from healing.","Their insides get crushed!"),
 	//soft decap'd wounds, used mostly as weird condwounds
 	I_BLEED("Fracture","Applies a stacking %2$d bleed, expected %1$d for this stack against this attacker.","Their insides get crushed!"),
 	
@@ -47,7 +48,7 @@ public enum Wound{//TODO: make sure the reworked wounds are fully in
 	//exotic
 	TEAR("Tear","Decreases defender's dodge by %1$%d%%, stacking.","Their wing is torn!"), //see if need to add a '%'
 	MANGLED("Mangle","Halves the condition of the targeted body part.","Their body is mangled!"),
-	BLOODY("Bloody","The current attack will be %1$d%% less accurate, or the next set half that compounding. Applies %2$d stacks of bleed, around %3$d damage per tick.","Blood wells around their eyes!"),
+	BLOODY("Bloody","The current attack will be %1$d%% less accurate, or the next set half that compounding. Applies %2$d stacks of bleed.","Blood wells around their eyes!"),
 	
 	//perma 'condition loss' wounds
 	DEPOWER("Depower","Injury: Removes special abilities.","Depowered!"),

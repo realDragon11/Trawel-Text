@@ -107,6 +107,7 @@ public class Potion implements java.io.Serializable{
 					}else {
 						extra.println(p.getName() + "'s skin starts bleeding...");
 					}
+					p.addEffectCount(Effect.BLEED,p.getMaxHp()/10);//10% of MHP (plus one)
 					break;
 				case MAJOR_BLEED:
 					uncork(p,personal);
@@ -115,7 +116,7 @@ public class Potion implements java.io.Serializable{
 					}else {
 						extra.println(p.getName() + " is suddenly covered with intense lacerations!");
 					}
-					p.addEffect(Effect.BLEED);//also need to inflict normal bleed
+					p.addEffectCount(Effect.BLEED,p.getMaxHp()/5);//20% of MHP
 					break;
 				default:
 					uncork(p,personal);
