@@ -39,18 +39,15 @@ public class Armor extends Item implements IEffectiveLevel{
 	private EnumSet<ArmorQuality> quals = EnumSet.noneOf(ArmorQuality.class);
 	
 	public enum ArmorQuality {
-		/**
-		 * fragile also comes with a base resist bonus
-		 */
-		FRAGILE("Fragile",.6f,.8f,"Loses condition on taking attack damage to any body part, equal to half of %LHP lost."
-				,"Even attacks that do not locally target the armor cause condition loss.",-2),
+		FRAGILE("Fragile",.9f,.9f,"Takes double condition damage from all sources."
+				,null,-2),
 		DEFLECTING("Deflecting",1.1f,1.15f,"Provides immunity to the Penetrative and Pinpoint Weapon Quals on this slot."
 				,null,1),
 		DISPLACING("Displacing",1.1f,1.15f,"Increases hostile miss threshold by +.01."
 				,"Base miss threshold is .05.",2),
 		STURDY("Sturdy",1.1f,1.25f,"Takes half condition damage from all sources."
 				,null,2),
-		HEAVY("Heavy",.9f,.9f,"Weighs +20% as much."
+		HEAVY("Heavy",.9f,1f,"Weighs +20% as much."
 				,"Weight increase is relative to a normal armor of that type.",-1),
 		LIGHT("Light",1.05f,1.2f,"Weighs -10% as much."
 				,"Weight increase is relative to a normal armor of that type.",1),
@@ -236,6 +233,7 @@ public class Armor extends Item implements IEffectiveLevel{
 		case GEM:
 			if (!quals.contains(ArmorQuality.STURDY) && extra.chanceIn(2,3)) {
 				quals.add(ArmorQuality.FRAGILE);
+				quals.add(ArmorQuality.REFINED);
 			}
 			if (extra.chanceIn(1,3)) {
 				quals.add(ArmorQuality.DISPLACING);//can't stack, but fails without issue
@@ -408,7 +406,6 @@ public class Armor extends Item implements IEffectiveLevel{
 		return IEffectiveLevel.unEffective(getEffectiveLevel())*
 				1.5f*ArmorStyle.fetch(style).totalMult
 				*MaterialFactory.getMat(material).baseResist
-				*(quals.contains(ArmorQuality.FRAGILE) ? 1.5f : 1)
 				;
 		/*
 		switch (slot) {
@@ -455,7 +452,7 @@ public class Armor extends Item implements IEffectiveLevel{
 	 * damage, but times by firemod first
 	 */
 	public void burn(double d) {
-		damage(d*getFireMod());
+		damage(d);//*getFireMod()
 	}
 	
 	/**
@@ -472,6 +469,9 @@ public class Armor extends Item implements IEffectiveLevel{
 		assert d >= 0;
 		if (hasArmorQual(ArmorQuality.STURDY)) {
 			d*=.5;
+		}
+		if (hasArmorQual(ArmorQuality.FRAGILE)) {
+			d*=2;
 		}
 		condition = Math.max(.05, condition-(condition*extra.clamp(d,0,.7)));
 	}
@@ -755,11 +755,12 @@ public class Armor extends Item implements IEffectiveLevel{
 		return quals;
 	}
 	
+	/*
 	public void armorQualDam(float hpPercent) {
 		if (quals.contains(ArmorQuality.FRAGILE)) {
 			damage(hpPercent*.5f);
 		}
-	}
+	}*/
 
 	@Override
 	public boolean canAetherLoot() {

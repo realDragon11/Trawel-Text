@@ -126,8 +126,8 @@ public enum Skill{
 				,"Helps determine things in Graveyards."
 				, Type.OTHER),
 		//can be depowered
-		NPC_BURN_ARMOR("Flaming Strikes","On Impact: Burn armor."
-				,"Attacks damage armor twice as much as percent HP damage."
+		NPC_BURN_ARMOR("Flaming Strikes","On Impact: Burn armor by 10%."
+				,""
 				,Type.FEATURE),
 		PLOT_ARMOR("Plot Armor","Confused targets have a reduced chance to attack this Person."
 				,"Does not apply Confusion on its own."

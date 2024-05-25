@@ -1298,7 +1298,7 @@ public class Combat {
 		if (damageDone > 0) {
 			percent = damageDone/(float)defender.getMaxHp();
 			//armor quality handling
-			defender.getBag().armorQualDam(percent);
+			//defender.getBag().armorQualDam(percent);
 			if (extra.chanceIn((int)(percent*100) + (defender.getHp() <= 0 ? 10 : 0), 120)) {
 				Networking.send("PlayDelayPitch|"+SoundBox.getSound(defender.getBag().getRace().voice,SoundBox.Type.GRUNT) + "|4|"+ defender.getPitch()+"|");
 			}
@@ -1398,8 +1398,8 @@ public class Combat {
 				}
 			}
 			if (attacker.hasSkill(Skill.NPC_BURN_ARMOR) && !attacker.hasEffect(Effect.DEPOWERED)) {
-				//always burns at least 5% before diminishing
-				defender.getBag().burnArmor(Math.max(0.05f,(percent*2)),atr.attack.getSlot());
+				//always burns 10% per attack
+				defender.getBag().burnArmor(.1f,atr.attack.getSlot());
 			}
 			//wounded OOB punishment effect
 			if (defender.hasEffect(Effect.WOUNDED)) {
