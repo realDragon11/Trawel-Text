@@ -855,7 +855,7 @@ public class Combat {
 		if (ret.type == ATK_ResultType.IMPACT) {//normal damage and killing
 			if (att.hasWeaponQual(WeaponQual.REFINED)) {
 				ret.damage += eHalfLevel;
-				ret.bonus += eHalfLevel;
+				//ret.bonus += eHalfLevel;
 				if (canDisp) {ret.addNote("Refined Bonus: " + eHalfLevel);}
 			}
 			if (att.hasWeaponQual(Weapon.WeaponQual.WEIGHTED)) {
@@ -864,7 +864,7 @@ public class Combat {
 					//TODO: check this
 					ret.damage = (int) Math.round(ret.damage*Math.log10(5+(20-(att.getHitMult()*10))));
 					weightBonus = ret.damage-weightBonus;
-					ret.bonus += weightBonus;
+					//ret.bonus += weightBonus;
 					if (canDisp) {ret.addNote("Weighted Bonus: " + weightBonus);}
 				}
 			}
@@ -875,7 +875,7 @@ public class Combat {
 				if (attacker.hasSkill(Skill.DEADLY_AIM)) {
 					int deadlyBonus = (int)(ret.damage*0.2);
 					ret.damage += deadlyBonus;
-					ret.bonus += deadlyBonus;
+					//ret.bonus += deadlyBonus;
 					if (canDisp) {
 						ret.addNote("Deadly Bonus: " + deadlyBonus);
 					}
@@ -956,7 +956,7 @@ public class Combat {
 		}
 		if (att.hasWeaponQual(WeaponQual.RELIABLE) && ret.damage < eHalfLevel) 
 		{
-			ret.bonus = eHalfLevel-ret.damage;
+			//ret.bonus = eHalfLevel-ret.damage;
 			ret.damage = eHalfLevel;
 			if (canDisp) {ret.addNote("Reliable Damage: "+eHalfLevel);}
 		}
@@ -987,6 +987,9 @@ public class Combat {
 		public int damage;
 		public int[] subDamage;
 		public String stringer;
+		/**
+		 * added to wound effects to help display
+		 */
 		public int bonus = 0;
 		public ImpairedAttack attack;
 		public ATK_ResultCode code;
@@ -1290,7 +1293,7 @@ public class Combat {
 		}
 		ImpairedAttack attack = attacker.getNextAttack();
 		AttackReturn atr = handleAttack(true,attack,defender.getBag(),attacker.getBag(),attacker,defender);
-		int damageDone = atr.damage;
+		int damageDone = atr.damage+atr.bonus;
 		float percent = 0f;
 		if (damageDone > 0) {
 			percent = damageDone/(float)defender.getMaxHp();
@@ -1376,7 +1379,7 @@ public class Combat {
 				//might not actually be final death, but this is fine to say
 				doForceKill = true;
 				extra.println(attacker.getName() + " executes " + defender.getName() +"!");
-				if (damageDone < defender.getHp()) {//if they won't be able to kill them
+				if (atr.damage < defender.getHp()) {//if they won't be able to kill them
 					defender.forceKill();
 					forceKilled = true;
 				}
@@ -1423,7 +1426,7 @@ public class Combat {
 		}
 		boolean didDisplay = false;
 		if (damageDone > 0 || doForceKill) {
-			defender.takeDamage(Math.max(1,damageDone));
+			defender.takeDamage(Math.max(1,atr.damage));//bonus has already been dealt
 			if (!defender.isAlive()) {
 				if (defender.hasEffect(Effect.STERN_STUFF)) {
 					defender.removeEffectAll(Effect.STERN_STUFF);
@@ -1783,15 +1786,18 @@ public class Combat {
 			case SCALDED:
 				elemBonusEffects(attacker2,defender2,retu);
 				defender2.takeDamage(nums[0]);
+				retu.bonus+=nums[0];
 				defender2.getBag().burnArmor((nums[1]/100f),attack.getSlot());
 				break;
 			case FROSTBITE:
 				elemBonusEffects(attacker2,defender2,retu);
 				defender2.takeDamage(nums[0]);
+				retu.bonus+=nums[0];
 				defender2.addEffectCount(Effect.SHAKY, nums[1]);
 				break;
 			case HACK: case CRUSHED:
 				defender2.takeDamage(nums[0]);
+				retu.bonus+=nums[0];
 				break;
 			case HAMSTRUNG: case TRIPPED:
 				defender2.addEffectCount(Effect.SHAKY, nums[1]);
@@ -1828,6 +1834,7 @@ public class Combat {
 				break;
 			case KO:
 				defender2.takeDamage(nums[0]);
+				retu.bonus+=nums[0];
 				if (!defender2.hasEffect(Effect.BRAINED)) {
 					defender2.addEffect(Effect.BREATHING);
 				}
@@ -1887,6 +1894,7 @@ public class Combat {
 				break;
 			case SHINE:
 				defender2.takeDamage(nums[0]);
+				retu.bonus+=nums[0];
 				defender2.getBag().burnArmor((nums[1]/100f),attack.getSlot());
 				break;
 			case GLOW:
