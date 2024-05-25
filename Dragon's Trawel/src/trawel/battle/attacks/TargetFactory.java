@@ -31,7 +31,8 @@ public class TargetFactory {
 		t.addWound(DamageType.SHARP, Wound.DICE, weightMult*.5f);
 		t.addWound(DamageType.SHARP, Wound.SLICE, weightMult*.5f);
 		t.addWound(DamageType.PIERCE, Wound.HAMSTRUNG, weightMult);
-		t.addWound(DamageType.PIERCE, Wound.PUNCTURED, weightMult);
+		t.addWound(DamageType.PIERCE, Wound.PUNCTURED, weightMult*.5f);
+		t.addWound(DamageType.PIERCE, Wound.RUPTURED, weightMult*.5f);
 		t.addWound(DamageType.BLUNT, Wound.TRIPPED, weightMult);
 		t.addWound(DamageType.BLUNT, Wound.HAMSTRUNG, weightMult*.5f);
 		//t.addWound(DamageType.PIERCE, Wound.TAT, .1f);
@@ -41,7 +42,8 @@ public class TargetFactory {
 		t.addWound(DamageType.SHARP, Wound.DICE, weightMult*.5f);
 		t.addWound(DamageType.SHARP, Wound.SLICE, weightMult*.5f);
 		t.addWound(DamageType.PIERCE, Wound.DISARMED, weightMult);
-		t.addWound(DamageType.PIERCE, Wound.PUNCTURED, weightMult);
+		t.addWound(DamageType.PIERCE, Wound.PUNCTURED, weightMult*.5f);
+		t.addWound(DamageType.PIERCE, Wound.RUPTURED, weightMult*.5f);
 		t.addWound(DamageType.BLUNT, Wound.DISARMED, weightMult);
 		//t.addWound(DamageType.PIERCE, Wound.DISARMED, weightMult*.4f);
 		//t.addWound(DamageType.PIERCE, Wound.TAT, weightMult*.2f);
@@ -116,7 +118,7 @@ public class TargetFactory {
 		t.addWound(DamageType.BLUNT, Wound.DIZZY, weightMult);
 		t.addWound(DamageType.PIERCE, Wound.BLINDED, weightMult);
 		t.addWound(DamageType.PIERCE, Wound.CONFUSED, weightMult*.5f);
-		t.addWound(DamageType.PIERCE, Wound.PUNCTURED, weightMult*.5f);
+		t.addWound(DamageType.PIERCE, Wound.RUPTURED, weightMult*.5f);
 	}
 	
 	private void add_neck_Winded(Target t, float weightMult) {
@@ -137,7 +139,8 @@ public class TargetFactory {
 		t.addWound(DamageType.BLUNT, Wound.WINDED, weightMult*2f);
 		t.addWound(DamageType.BLUNT, Wound.CRUSHED, weightMult);
 		t.addWound(DamageType.PIERCE, Wound.WINDED, weightMult);
-		t.addWound(DamageType.PIERCE, Wound.PUNCTURED, weightMult*2f);
+		t.addWound(DamageType.PIERCE, Wound.PUNCTURED, weightMult*1.5f);
+		t.addWound(DamageType.PIERCE, Wound.RUPTURED, weightMult*1.5f);
 	}
 	
 	private void addHandGeneric(Target t, float weightMult) {
@@ -154,7 +157,7 @@ public class TargetFactory {
 		t.addWound(DamageType.BLUNT, Wound.CRUSHED, weightMult*2f);
 		//t.addWound(DamageType.PIERCE, Wound.TAT, weightMult*2f);
 		t.addWound(DamageType.PIERCE, Wound.PUNCTURED, weightMult);
-		t.addWound(DamageType.PIERCE, Wound.WINDED, weightMult);
+		t.addWound(DamageType.PIERCE, Wound.RUPTURED, weightMult);
 	}
 	
 	private void addMimicLid(Target t, float grazeMult, float windedMult, float crushedMult) {
@@ -299,6 +302,7 @@ public class TargetFactory {
 		
 		shockWounds.add(Wound.SCREAMING);
 		shockWounds.add(Wound.JOLTED);
+		shockWounds.add(Wound.STATIC);
 		
 		freezeWounds.add(Wound.FROSTED);
 		freezeWounds.add(Wound.FROSTBITE);
@@ -490,8 +494,7 @@ public class TargetFactory {
 		
 		
 		//quad
-		
-		
+
 		t = new Target();
 		t.name = "head";
 		set_as_head(t);
@@ -566,7 +569,6 @@ public class TargetFactory {
 		
 		
 		//statue
-		
 		
 		t = new Target();
 		t.name = "head";
@@ -778,7 +780,7 @@ public class TargetFactory {
 		t.rarity = 1.5;
 		t.slot = 1;
 		t.type = TargetType.FLY;
-		addWingTears(t,1);
+		addWingTears(t,1f);
 		t.mappingNumber = 2;
 		t.condWound = Wound.CRIPPLED;
 		t.finish();
@@ -791,9 +793,7 @@ public class TargetFactory {
 		t.type = TargetType.FLY;
 		addMinorBleed(t,.5f);
 		addWingTears(t,.3f);
-		t.addWound(DamageType.SHARP, Wound.DICE,1f);
-		t.addWound(DamageType.BLUNT, Wound.WINDED,1f);
-		t.addWound(DamageType.PIERCE, Wound.WINDED,1f);
+		addMangled_Wounds(t,.5f);
 		t.finish();
 		
 		t = new Target();
@@ -832,7 +832,7 @@ public class TargetFactory {
 		
 		t = new Target();
 		t.name = "skull";
-		t.rarity = 0;//no chance, only passthrough
+		t.rarity = 0;//no chance, only passthrough for the two horns
 		t.condWound = Wound.DEPOWER;
 		t.type = TargetType.DEMON;
 		//mostly unused

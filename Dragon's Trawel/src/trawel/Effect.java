@@ -24,9 +24,9 @@ public enum Effect{
 	RECOVERING("Recovering","Will regain 5% LHP as healing at the end of this turn.",false,false,1),
 	I_BLEED("Internal Bleeding","Takes 2% LHP damage after each of their actions, or less if their target is more than 2 levels lower than them, per action. Stacks.",false,true,-3),
 	TORN("Torn","Decreases dodge by 10% compounding per stack.",false,true,-3), 
-	SLICE("Slicing","Their next attack is 10% faster and accurate.",false,false,2),
-	DICE("Dicing","Their next attack is 10% faster and also 10 time units quicker.",false,false,2),
-	SHAKY("Shaky","Decreases dodge by 10% compounding per stack. Stacks halve after every attack they complete.",false,true,-2), 
+	SLICE("Slicing and Dicing","Their next attack is 10% faster and accurate.",false,false,2),
+	//DICE("Dicing","Their next attack is 10% faster and also 10 time units quicker.",false,false,2),
+	SHAKY("Shaky","Decreases dodge by 10% compounding per stack. Halves every time the suffering Person completes a swing.",false,true,-2), 
 	//potions
 	HASTE("Haste","+5% speed stat.",false,false,2), 
 	HEARTY("Hearty","+5% LHP at battle start. Doesn't stack with Forged.",false,false,2), 

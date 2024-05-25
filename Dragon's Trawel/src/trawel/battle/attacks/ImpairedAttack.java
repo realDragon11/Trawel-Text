@@ -188,9 +188,9 @@ public class ImpairedAttack implements IAttack{
 				hitMult*=1.1;//WET
 				speedMult*=.9;
 			}
-			if (_attacker.hasEffect(Effect.DICE)) {
+			/*if (_attacker.hasEffect(Effect.DICE)) {
 				speedMult*=.9;//WET
-			}
+			}*/
 			hitMult *= _attacker.attMultDex()*_attacker.getBag().getAim();
 		}
 		cooldown = (attack.getCooldown()*speedMult)+speedModDown;

@@ -772,6 +772,10 @@ public class Combat {
 			}
 		}
 		if (isReal) {
+			if (attacker.hasEffect(Effect.SHAKY)) {
+				//halve shaky stacks on swing
+				attacker.setEffectCount(Effect.SHAKY,attacker.effectCount(Effect.SHAKY)/2);
+			}
 			if (attacker.hasEffect(Effect.ADVANTAGE_STACK)) {
 				hitRoll*=1.2;
 				attacker.removeEffect(Effect.ADVANTAGE_STACK);
@@ -1758,25 +1762,35 @@ public class Combat {
 				return "";//fails safely now
 			}
 			assert defender2 != null;
-			if (defender2.hasEffect(Effect.PADDED) && extra.chanceIn(defender2.effectCount(Effect.PADDED),5)) {
+			if (defender2.hasEffect(Effect.PADDED) && w != Wound.PUNCTURED && extra.chanceIn(defender2.effectCount(Effect.PADDED),5)) {
 				defender2.removeEffect(Effect.PADDED);
 				return " The padding mitigates the wound!";
 			}
 			switch (w) {
 			case CONFUSED:
 				attacker2.addEffect(Effect.CONFUSED_TARGET);
+				defender2.addEffectCount(Effect.SHAKY, nums[0]);
 				//newTarget = true;
 				break;
 			case SLICE:
 				attacker2.addEffect(Effect.SLICE);
+				attacker2.addEffect(Effect.ADVANTAGE_STACK);
 				break;
 			case DICE:
 				attacker2.applyDiscount(nums[1]);
-				attacker2.addEffect(Effect.DICE);
+				attacker2.addEffect(Effect.SLICE);
 				break;
-			case SCALDED: case FROSTBITE:
+			case SCALDED:
 				elemBonusEffects(attacker2,defender2,retu);
-			case HACK: case TAT:case CRUSHED:
+				defender2.takeDamage(nums[0]);
+				defender2.getBag().burnArmor((nums[1]/100f),attack.getSlot());
+				break;
+			case FROSTBITE:
+				elemBonusEffects(attacker2,defender2,retu);
+				defender2.takeDamage(nums[0]);
+				defender2.addEffectCount(Effect.SHAKY, nums[1]);
+				break;
+			case HACK: case CRUSHED:
 				defender2.takeDamage(nums[0]);
 				break;
 			case HAMSTRUNG: case TRIPPED:
@@ -1805,6 +1819,9 @@ public class Combat {
 				break;
 			case SCREAMING:
 				elemBonusEffects(attacker2,defender2,retu);
+				defender2.addEffect(Effect.DISARMED);
+				defender2.addEffectCount(Effect.SHAKY,nums[0]);
+				break;
 			case DISARMED: 
 				defender2.addEffect(Effect.DISARMED);
 				defender2.addEffectCount(Effect.FLUMMOXED,nums[0]);
@@ -1846,6 +1863,7 @@ public class Combat {
 			case SHIVERING:
 				elemBonusEffects(attacker2,defender2,retu);
 				defender2.addEffectCount(Effect.FLUMMOXED,nums[0]);
+				defender2.addEffectCount(Effect.SHAKY, nums[1]);
 				break;
 			case MANGLED:
 				defender2.multBodyStatus(attack.getTargetSpot(), 1-(nums[0]/10f));
@@ -1876,7 +1894,15 @@ public class Combat {
 				defender2.getBag().burnArmor((nums[1]/100f),attack.getSlot());
 				break;
 			case PUNCTURED:
+				defender2.removeEffect(Effect.PADDED);
+			case RUPTURED:
 				defender2.getBag().damageArmor((nums[0]/100f),attack.getSlot());
+				break;
+			case STATIC:
+				elemBonusEffects(attacker2,defender2,retu);
+				defender2.removeEffectAll(Effect.ADVANTAGE_STACK);
+				defender2.removeEffectAll(Effect.BONUS_WEAP_ATTACK);
+				defender2.addEffectCount(Effect.SHAKY,nums[0]);
 				break;
 			case NEGATED://no effect
 				break;
@@ -1916,41 +1942,45 @@ public class Combat {
 	 */
 	public static Integer[] woundNums(ImpairedAttack attack, Person attacker, Person defender, AttackReturn result, Wound w) {
 		switch (w) {
-		case CONFUSED: case NEGATED: case DEPOWER: case MAIMED: case CRIPPLED:
-		case HIT_VITALS:
+		case NEGATED:
+		case DEPOWER: case MAIMED: case CRIPPLED: case HIT_VITALS:
 			//nothing
 			return new Integer[0];
 		case SLICE:
-			return new Integer[] {10,10};//10% faster, 10% more accurate
-		 case DICE:
-			 return new Integer[] {10,10};//10% faster, 10 time units faster
+			return new Integer[] {10};//10% faster, 10% more accurate, 1 advantage stack
+		case DICE:
+			return new Integer[] {10,10};//10% faster, 10% more accurate, 10 time units faster
+		case CONFUSED:
+			return new Integer[] {2};//2 shaky stacks, confused status
 		case HACK:
 			if (result == null) {
-				return new Integer[] {attack.getTotalDam()/10};
+				return new Integer[] {attack.getTotalDam()/5};
 			}
-			return new Integer[] {result.damage/10};
-		case TAT:
-			if (result == null) {
-				return new Integer[] {(int)(attack.getPierce()*extra.clamp(attack.getHitMult(),.5f,3f)/3f)};//this is 'up to'
-			}
-			return new Integer[] {(int)(result.subDamage[2] *extra.clamp(attack.getHitMult(),.5f,3f)/3f)};
+			return new Integer[] {result.damage/5};
 		case CRUSHED:
-		case SCALDED: case FROSTBITE:
 			return new Integer[] {attack.getTotalDam()/10};
+		case SCALDED:
+			return new Integer[] {attack.getTotalDam()/15,Math.min(10,(attack.getTotalDam()*50)/defender.getMaxHp())};//.5% armor burn per MHP threatened, max 10%
+		case FROSTBITE:
+			return new Integer[] {attack.getTotalDam()/15,2};//2 shaky stacks
 		case BLINDED:
 			return new Integer[] {50};//50% less accurate now or half that later
-		case DISARMED: case SCREAMING:
+		case SCREAMING:
+			return new Integer[] {1};//-1 choice and 2 shaky stacks
+		case DISARMED:
 			return new Integer[] {20};//20% less accurate later and -1 choice
 		case DIZZY:
-			return new Integer[] {25};//25% less accurate now or later
+			return new Integer[] {30};//30% less accurate now or later
 		case SHIVERING:
-			return new Integer[] {40};//40% less accurate later
+			return new Integer[] {20,2};//20% less accurate later, 2 shaky stacks
 		case FROSTED:
 			return new Integer[] {30,50};//takes 30% longer of current time, cap of +50
 		case JOLTED:
-			return new Integer[] {20};//20 instants longer
+			return new Integer[] {20};//-20 time units
+		case STATIC:
+			return new Integer[] {2};//2 shaky stacks
 		case BLACKENED:
-			return new Integer[] {10};//10% armor damage
+			return new Integer[] {Math.min(20,(attack.getTotalDam()*100)/defender.getMaxHp())};//1% armor burn per MHP threatened, max 20%
 		case WINDED:
 			return new Integer[] {20};//-20 time units
 		case HAMSTRUNG:
@@ -1962,8 +1992,6 @@ public class Combat {
 			return new Integer[] {IEffectiveLevel.cleanLHP(defender.getLevel(),.1)};
 		case I_BLEED://bleeds aren't synced, WET :(
 			return new Integer[] {2*bleedDam(attacker,defender),2*bleedDam(null,defender)};//can take null attacker
-		//case I_BLEED_WEAK:
-			//return new Integer[] {bleedDam(attacker,defender),bleedDam(null,defender)};//can take null attacker
 		case MAJOR_BLEED: case MAJOR_BLEED_BLUNT:
 		case BLEED: case BLEED_BLUNT:
 			int stacks = bleedStackAmount(attacker, defender);//can take null attacker
@@ -1979,11 +2007,14 @@ public class Combat {
 			return new Integer[] {attack.getTotalDam()/10,10};//10% bonus damage, 10% armor damage
 		case GLOW:
 			return new Integer[] {40,10};//40% less accurate later, 10% armor damage
-		case PUNCTURED://*100 so it can be turned into a % later and we don't have decimal issues
+		case PUNCTURED://*100 so it can be turned into a % later and we don't have decimal issues, also ignores and removes one padded
+			//1% armor damage per end result of damage, max 15%, plus ignore/damage padding
 			if (result == null) {
-				return new Integer[] {(attack.getTotalDam()*100)/defender.getMaxHp()};
+				return new Integer[] {Math.min(15,(attack.getTotalDam()*100*2)/defender.getMaxHp())};
 			}
-			return new Integer[] {(result.damage*100)/defender.getMaxHp()};
+			return new Integer[] {Math.min(10,(result.damage*100*2)/defender.getMaxHp())};
+		case RUPTURED://1% armor damage per MHP threatened, max 20%
+			return new Integer[] {Math.min(20,(attack.getTotalDam()*150)/defender.getMaxHp())};
 		}
 		return new Integer[0];
 	}

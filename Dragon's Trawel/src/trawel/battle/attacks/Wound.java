@@ -14,17 +14,18 @@ public enum Wound{//TODO: make sure the reworked wounds are fully in
 	//sharp primary, bleed and bonus damage- hp race damage type
 	BLEED("Cut","Applies %1$d stacks of bleed, around %2$d damage per tick.","They bleed..."),
 	MAJOR_BLEED("Lacerate","Applies %1$d stacks of bleed, around %2$d damage per tick, and prevents bleed from healing.","An artery is cut!"),
-	SLICE("Slice","Attacker's next action will happen %1$d%% quicker and be %2$d%% more accurate.","They are sliced!"),
-	DICE("Dice","Attacker's next action will happen %1$d%% and %2$d instants sooner.","They are diced!"),
+	SLICE("Slice","Attacker's next action will happen %1$d%% quicker and be %1$d%% more accurate. Also grants one stack of Advantage.","They are sliced!"),
+	DICE("Dice","Attacker's next action will happen %1$d%% quicker and be %1$d%% more accurate, as well as %2$d instants sooner.","They are diced!"),
 	HACK("Hack","Deals up to %1$d direct damage based on unblocked damage to defender.","It's a wicked hack!"),
 	//pierce primary, impair and destroy defensive resources
 	HAMSTRUNG("Hamstrung","Delays the defender's next attack by %1$d instants, and applies %2$d -10%% dodge Shaky stacks.","Their leg is hamstrung!"), 
 	DISARMED("Disarm","Defender loses one attack choice and suffers %1$d%% compounding inaccuracy on next attack.","Their attack is put off-kilter!"),
 	BLINDED("Blind","Inflicts %1$d%% inaccuracy on the current attack, or half that to the next set of attack choices as compounding inaccuracy.","They can't see!"),
-	PUNCTURED("Puncture","Damages armor up to %1$d%%, based on double MHP percent of dealt damage.","The blow punctures through the armor!"),
+	PUNCTURED("Puncture","Damages armor up to %1$d%%, based on double MHP percent of dealt damage. Ignores Padded and removes one stack.","The blow punctures through the armor!"),
+	RUPTURED("Rupture","Damages armor by %1$d%%.","The blow ruptures the armor!"),
 	//blunt, mix of wounds but damage type tends to be resisted less
 	WINDED("Wind","Defender's action will take %1$d instants longer.","The wind is knocked out of them!"),
-	CONFUSED("Confuse","Forces the defender to retarget.","They look confused!"), 
+	CONFUSED("Confuse","Forces the defender to retarget, and applies %1$d -10%% dodge Shaky stacks.","They look confused!"), 
 	DIZZY("Dizzy","Inflicts %1$d%% inaccuracy to the defender's current action, or compounding inaccuracy to the next set of attacks.","They look dizzy!"),
 	TRIPPED("Trip","Defender's action will take %1$d instants longer, and applies %2$d -10%% dodge Shaky stacks.","They are tripped!"),
 	CRUSHED("Crush","Deals %1$d direct damage.","They are crushed!"),
@@ -33,18 +34,16 @@ public enum Wound{//TODO: make sure the reworked wounds are fully in
 	MAJOR_BLEED_BLUNT("Fracture","Applies %1$d stacks of bleed, around %2$d damage per tick, and prevents bleed from healing.","Their insides get crushed!"),
 	//soft decap'd wounds, used mostly as weird condwounds
 	I_BLEED("Fracture","Applies a stacking %2$d bleed, expected %1$d for this stack against this attacker.","Their insides get crushed!"),
-	TAT("OLD Through and Through","Deals up to %1$d direct damage, based on final pierce damage to defender and to-hit.","The blow goes right through them!"),
-	
 	
 	//elemental
-	SCALDED("Scald","Deals %1$d direct damage.","They are scalded by the flames!"),//TODO: more elemental wounds
+	SCALDED("Scald","Deals %1$d direct damage and burns defender's armor by %2$d%%.","They are scalded by the flames!"),//TODO: more elemental wounds
 	BLACKENED("Blacken","Burns defender's armor by %1$d%%.","Their armor burns!"),
-	SCREAMING("Scream","Defender loses one attack choice and suffers %1$d%% compounding inaccuracy on next attack.","They scream!"),
+	SCREAMING("Scream","Defender loses one attack choice and applies %1$d -10%% dodge Shaky stacks.","They scream!"),
 	FROSTED("Frost","Defender's action takes %1$d%% longer on the current time, up to %2$d instants increase.","They are frozen over..."),
-	FROSTBITE("Frostbite","Deals %1$d direct damage.","Their flesh is frozen!"),
+	FROSTBITE("Frostbite","Deals %1$d direct damage and applies %2$d -10%% dodge Shaky stacks.","Their flesh is frozen!"),
 	JOLTED("Jolt","Defender's action takes %1$d instants longer.","They are jolted!"),
-	SHIVERING("Shiver","Applies %1$d%% compounding inaccuracy to the defender's next set of attacks.","They shiver at the intense cold..."),
-	
+	SHIVERING("Shiver","Applies %1$d%% compounding inaccuracy to the defender's next set of attacks, and applies %2$d -10%% dodge Shaky stacks.","They shiver at the intense cold..."),
+	STATIC("Static","Removes all stacks of Advantage and Bonus Weapon Attacks, and applies %1$d -10%% dodge Shaky stacks.","The static dazes them..."),
 	//exotic
 	TEAR("Tear","Decreases defender's dodge by %1$%d%%, stacking.","Their wing is torn!"), //see if need to add a '%'
 	MANGLED("Mangle","Halves the condition of the targeted body part.","Their body is mangled!"),
