@@ -328,9 +328,8 @@ public class Weapon extends Item implements IEffectiveLevel {
 		double impactChance = 0;
 		double total = 0;
 		double weighted = 0;
-		Stance stance = this.getMartialStance();
-		//double[] contributions = new double[size];//used for determining highest contribution
-		int testSize = extra.getDumInvs().size();
+		final Stance stance = this.getMartialStance();
+		final int testSize = extra.getDumInvs().size();
 		double highest = 0;
 		double lowest = Double.MAX_VALUE;
 		for (int i = stance.getAttackCount()-1;i >=0;i--) {
@@ -348,7 +347,6 @@ public class Weapon extends Item implements IEffectiveLevel {
 					}
 				}
 			}
-			//contributions[i] += dam;
 			total += dam;
 			weighted += dam*weight;
 			if (highest < dam) {
@@ -359,19 +357,14 @@ public class Weapon extends Item implements IEffectiveLevel {
 			}
 		}
 		
-		int subTests = battleTests*testSize;
-		//int totalTests = size*subTests;//don't need sub tests anymore because impact chance is weighted
-		double levelAdjust = IEffectiveLevel.unEffective(IEffectiveLevel.effective(level));//DOLATER: test
-		//the above battlescore assumes equal armor
-		//so we put the effective level in now to make it higher
-		//TODO: unsure if the natural allowed damage increase will be enough to signal a weapon as better to a player/AI
+		final int subTests = battleTests*testSize;
 		//create long and set impact chance
 		long conAssembler = extra.setNthByteInInt(0b0,(int)((impactChance*100d)/subTests), 0);
 		//below two will explode if contain more than a short can hold, but that will be a VERY large level
 		//set best damage
-		conAssembler = extra.setShortInLong(conAssembler, (int)((levelAdjust*highest*100d)/(subTests)),8);
+		conAssembler = extra.setShortInLong(conAssembler, (int)((highest*100d)/(subTests)),8);
 		//set weighted damage
-		conAssembler = extra.setShortInLong(conAssembler, (int)((levelAdjust*weighted*100d)/(subTests)),24);
+		conAssembler = extra.setShortInLong(conAssembler, (int)((weighted*100d)/(subTests)),24);
 		conAssembler = extra.setByteInLong(conAssembler, (int)(highest*(100d/total)), 40);
 		conAssembler = extra.setByteInLong(conAssembler, (int)(lowest*(100d/total)), 48);
 		
