@@ -83,6 +83,8 @@ public class mainGame {
 		{"b_11",
 			//discuss magic overall
 			"TODO magic status stance TODO.",
+			//discuss wound changes
+			"Most wounds now inflict more damage and penalties, getting a large overhaul. Sharp wounds focus on damage or attacking quickly, Pierce wounds focus on impairing them, and Blunt/Ignite/Frost/Shock wounds have a mix. The chances of rolling each type of wound have also been adjusted to lean into this.",
 			//discuss material changes
 			"High end materials generally had their stats lowered and were given tradeoffs amongst each other.",
 			//discuss curse changes

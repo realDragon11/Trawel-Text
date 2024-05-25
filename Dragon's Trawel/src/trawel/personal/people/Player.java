@@ -1200,8 +1200,7 @@ public class Player extends SuperPerson{
 													extra.println("Aether is a magical substance infused into many objects to increase their potency. When infused into items, it can be freed with a basic spell all Personable creatures are capable of.");
 													extra.println("When infused in people or animals, it cannot be freed this way, however, it does build up.");
 													extra.println("In both these cases, this results in a level. Improving items is an arduous process, but even a bat can level up by fighting other creatures. The conflict itself also generates some aether from the souls of the participants, but the bulk of the aether comes from creatures being slain.");
-													extra.println("Aether is a universal currency, however it is not particularly easy to transfer outside of breaking things down and conflict, so stores use 'World Currency' as their preferred trade item.");
-													extra.println("Most stores that sell items will permit paying in Aether, but the rates at which they convert Aether to their currencies vary, and many places use this as a chance to take advantage of customers.");
+													extra.println("Aether is a universal currency, however it is not particularly easy to transfer outside of breaking things down and conflict, so stores not trading in Aether-infused items use 'World Currency' as their preferred trade item.");
 													extra.println("World Currency, as the name implies, is only good for the world that it's issued in. Other worlds will not accept it, and while many are valuable for their materials, this is never worth the effort of selling compared to how much time it would take to find a buyer.");
 													extra.println("World Currencies are also needed to buy land and forts. Both Aether and World Currencies are needed to build on land, but forts often have better connections once the initial hurdle of obtaining the deed is passed.");
 													return false;
@@ -1230,7 +1229,7 @@ public class Player extends SuperPerson{
 
 												@Override
 												public boolean go() {
-													extra.println("Armors are items, and thus have a value, although most of the time you will melt them into Aether.");
+													extra.println("Armors are Aether-infused items meant to block blows.");
 													extra.println("The main three properties of an Armor are how well it defends against physical damage types. This is a result of it's effective level, material, and style.");
 													extra.println("Armors also influence your agility multiplier penalty, have a weight which can weigh you down if you can't fit all your used equipment in your capacity, and have elemental damage multipliers.");
 													extra.println("Unlike weapons, armors have positive (Quality), negative (Flaw), and neutral (trait) traits.");
@@ -1252,9 +1251,9 @@ public class Player extends SuperPerson{
 
 												@Override
 												public boolean go() {
-													extra.println("Weapons are items, and thus have a value, although most of the time you will melt them into Aether.");
+													extra.println("Weapons are Aether-infused items meant to inflict harm on other Persons and creatures.");
 													extra.println("The main importance of weapons are for their attacks- every weapon type has a set, and the final numbers are determined by it's effective level and material.");
-													extra.println("Weapons also tend to have weapon qualities. This glossary does not include a list of all weapon attacks, but you can browse them in a format that tests their effectiveness from one of the main menu tests.");
+													extra.println("Weapons also tend to have weapon qualities, which are positive traits. This glossary does not include a list of all weapon attacks, but you can browse them in a format that tests their effectiveness from one of the main menu tests.");
 													extra.println(" ");
 													extra.println(extra.STAT_HEADER+"Would you like to see a list of weapon qualities?");
 													if (extra.yesNo()) {
@@ -1293,7 +1292,7 @@ public class Player extends SuperPerson{
 
 												@Override
 												public boolean go() {
-													extra.println("Archetypes are a skill source, and uniquely unlock Feat Types that you can pick Feats from when you level up. Some archetypes also require similar archetypes to be obtained before they can be picked.");
+													extra.println("Archetypes are a skill source, and uniquely unlock Feat Types that you can pick Feats from when you level up. They also grant attributes. Some archetypes also require similar archetypes to be obtained before they can be picked.");
 													extra.println("The game encourages you to have 2 + 1 for every 5 levels archetypes, but you are only required to unlock one before you can start picking Feats instead.");
 													extra.println(" ");
 													extra.println(extra.STAT_HEADER+"Would you like to see a list of archetypes?");
@@ -1331,7 +1330,7 @@ public class Player extends SuperPerson{
 
 												@Override
 												public boolean go() {
-													extra.println("Feats are a skill source, meaning they grant skills, might grant a skill config action to use, and attributes. Unlike other skill sources, feats tend to give 5 , 15, or 30 attribute points if they give a normal amount of skills.");
+													extra.println("Feats are a skill source, meaning they grant skills, might grant a skill config action to use, and attributes. Feats tend to give attributes based on how many skills they grant 5 for 3 skills, 15 for two skills, or 30 for one skill.");
 													extra.println("All level up skill sources that aren't Archetypes are Feats.");
 													extra.println(" ");
 													extra.println(extra.STAT_HEADER+"Would you like to see a list of feats?");
@@ -1370,7 +1369,8 @@ public class Player extends SuperPerson{
 												@Override
 												public boolean go() {
 													extra.println("Perks are a skill source, granting skills and attributes.");
-													extra.println("Unlike Feats and Archetypes, you get Perks from doing stuff, like killing bosses, instead of by leveling up.");
+													extra.println("Unlike Feats and Archetypes, you get Perks from fulfilling specific conditions, like killing bosses or making offerings at altars, instead of by leveling up.");
+													extra.println("Most of the perks displayed below are only for NPCs.");
 													extra.println(" ");
 													extra.println(extra.STAT_HEADER+"Would you like to see a list of perks?");
 													if (!extra.yesNo()) {
@@ -1410,9 +1410,9 @@ public class Player extends SuperPerson{
 													extra.println("Wounds are ailments caused by an attack. They can be further divided into two categories: normal wounds and condition wounds.");
 													extra.println("Normal wounds have a 90% chance to occur on all attacks, and are chosen based on the attack's damage types and the body part that is being attacked.");
 													extra.println("Keen weapons always roll wounds on their attacks, bypassing the normal 10% chance of a 'Grazed'. This does not change the result of a 'Negated', which is a wound signifying an attack that hits but isn't very effective outside of the damage.");
-													extra.println("Rolled wounds typically have instant or short-term effects. They also can be inflicted through skills.");
+													extra.println("Rolled wounds typically have instant or short-term effects. They also can be inflicted through skills. The main exception to this is wounds involving Bleed.");
 													extra.println("Condition wounds occur automatically when a body part reaches 50% 'condition'. They tend to be long lasting effects that highlight the downward spiral of combat.");
-													extra.println("There is no actual difference between these wounds mechanically, this is just a classification to help you understand how they are used. Condition wounds are also often called Injuries.");
+													extra.println("There are several ways to negate inflicted wounds, but Condition wounds ignore these affects. Condition wounds are also often called Injuries.");
 													extra.println(" ");
 													extra.println(extra.STAT_HEADER+"Would you like to see a list of wounds? Values will not display if they vary.");
 													if (extra.yesNo()) {
@@ -1437,7 +1437,7 @@ public class Player extends SuperPerson{
 												public boolean go() {
 													extra.println("Effects are temporary status effects. They are all counters, although many have that counter limited to 1.");
 													extra.println("Effects don't store any information in themselves other how many a Person has.");
-													extra.println("Some effects persist after battle, and through death, which means they need to be cured at a Doctor or by a Shaman.");
+													extra.println("Some effects persist after battle, and through death, which means they need to be resolved- Doctors, Shamans, Blacksmiths, water sources, and Inns can heal different types.");
 													extra.println(" ");
 													extra.println(extra.STAT_HEADER+"Would you like to see a list of Effects?");
 													if (extra.yesNo()) {
@@ -1459,12 +1459,12 @@ public class Player extends SuperPerson{
 													extra.println("DrawBanes are minor inventory items. Many can be used as potion reagents, some can be used to build for features, and they can be sold or donated to merchants.");
 													extra.println("DrawBanes, true to their name, can also attract or repel random encounters. For example, meat attracts wolves and bears, gold attracts thieves, some magic items attract fell reavers, and virgins attract unicorns.");
 													extra.println("You can discard DrawBanes from your inventory using the Player menu, which you might want to do to stop getting accosted by animals.");
-													extra.println("You also have a limited amount of space to store them. Note that some drawbanes will also be attracted to other aspects of your character, such as vampires attacking you if you're soaked in blood.");
+													extra.println("You also have a limited amount of space to store them. Note that some bumpers will also be attracted to other aspects of your character, such as vampires attacking you if you're soaked in blood.");
 													extra.println(" ");
 													extra.println(extra.STAT_HEADER+"Would you like to see a list of DrawBanes?");
 													if (extra.yesNo()) {
 														for (DrawBane d: DrawBane.values()) {
-															extra.println(extra.TIMID_MAGENTA+d.getName()+extra.PRE_WHITE+":" + d.getFlavor()
+															extra.println(extra.TIMID_MAGENTA+d.getName()+extra.PRE_WHITE+": " + d.getFlavor()
 															+ extra.ITEM_DESC_PROP+" Brewable: "+extra.TIMID_MAGENTA+ d.getCanBrew()
 															+ extra.ITEM_DESC_PROP+" Value: "+extra.ITEM_VALUE+ d.getValue()
 															+ extra.ITEM_DESC_PROP+ " Merchant Value: "+extra.ITEM_VALUE + extra.F_TWO_TRAILING.format(d.getMValue()));
@@ -1484,7 +1484,7 @@ public class Player extends SuperPerson{
 													extra.println("Seeds can be planted in Plant Spots, either in Node Exploration town Features, or Garden town Features. They will then grow as time passes. Some seeds grow into items that can be harvested, while others can only be taken.");
 													extra.println("Seeds have a limited inventory space, but are quite rare, so it is a bit harder to reach that cap. They can't be used for anything else, but often can be used to grow DrawBanes.");
 													extra.println(" ");
-													extra.println(extra.STAT_HEADER+"Would you like to see a list of Seeds?");
+													extra.println(extra.STAT_HEADER+"Would you like to see a list of plant states?");
 													if (extra.yesNo()) {
 														for (Seed d: Seed.values()) {
 															extra.println(d.toString());
