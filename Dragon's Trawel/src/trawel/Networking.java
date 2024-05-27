@@ -190,7 +190,8 @@ public class Networking {
 		case LEGACY:
 			if (netOut != null) {
 				//Networking.printlocalln(str);
-				netOut.println(str.replaceAll(Pattern.quote("% s")," percent s").replaceAll(Pattern.quote("% S")," percent S"));
+				netOut.println(str);
+				//netOut.println(str.replaceAll(Pattern.quote("% s")," percent s").replaceAll(Pattern.quote("% S")," percent S"));
 				netOut.flush();
 			}
 			break;
@@ -489,6 +490,18 @@ public class Networking {
 	public static void leaderboard(String string, int stat) {
 		if (!Player.player.getCheating()) {
 			Networking.sendStrong("Leaderboard|"+string+"|" + stat+ "|");
+		}
+	}
+	
+	public static void statAdd(String stat,int amount) {
+		if (!Player.player.getCheating()) {
+			sendStrong("StatUp|"+stat+"|"+amount+"|");
+		}
+	}
+	
+	public static void statAddUpload(String stat,String leaderboard, int amount) {
+		if (!Player.player.getCheating()) {
+			sendStrong("StatUpload|"+stat+"|"+amount+"|"+leaderboard+"|");
 		}
 	}
 	

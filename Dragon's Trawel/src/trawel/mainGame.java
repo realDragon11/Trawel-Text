@@ -2139,7 +2139,8 @@ public class mainGame {
 		}
 	}
 	public static void die(String deathMessage) {
-		Networking.sendStrong("StatUp|deaths|1|");
+		Networking.statAddUpload("deaths","total_deaths",1);
+		//Networking.sendStrong("StatUp|deaths|1|");
 		Networking.leaderboard("most_deaths",++Player.player.deaths);
 		story.onDeath();
 		extra.println(deathMessage);
