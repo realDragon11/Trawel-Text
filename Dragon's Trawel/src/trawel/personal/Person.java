@@ -941,6 +941,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			if (this.isPlayer()) {
 				Networking.send("PlayDelay|sound_magelevel|1|");
 				Networking.leaderboard("Highest Level",level);
+				Networking.statAddUpload("levels","total_levels",levels);
 				
 				mainGame.story.levelUp(level);
 				Networking.unlockAchievement("level_any");

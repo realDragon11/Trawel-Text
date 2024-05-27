@@ -1701,6 +1701,7 @@ public class mainGame {
 			if (hasPlayer) {
 				Player.player.duel_wins++;
 				Networking.leaderboard("most_duel_wins", Player.player.duel_wins);
+				Networking.statAddUpload("duel_wins","total_duel_wins",1);
 				//only applies in true 1v1's
 				if (Player.player.duel_wins == 1) {
 					Player.player.addAchieve("dueling", "Dueler");
