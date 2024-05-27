@@ -71,7 +71,7 @@ public class SoundBox {
 			switch (t) {
 			case GRUNT:
 			case SWING:
-				return "sound_harpy"+ extra.randRange(1, 5);
+				return "sound_uncanny_scream"+ extra.randRange(1, 5);
 			default:
 				return null;
 			
