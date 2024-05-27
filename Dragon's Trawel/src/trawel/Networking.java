@@ -190,7 +190,7 @@ public class Networking {
 		case LEGACY:
 			if (netOut != null) {
 				//Networking.printlocalln(str);
-				netOut.println(str.replaceAll(Pattern.quote("% s"),"%  s"));
+				netOut.println(str.replaceAll(Pattern.quote("% s")," percent s").replaceAll(Pattern.quote("% S")," percent S"));
 				netOut.flush();
 			}
 			break;
