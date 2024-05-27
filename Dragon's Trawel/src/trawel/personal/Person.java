@@ -1336,7 +1336,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		+extra.ITEM_WANT_HIGHER+extra.format(bag.getDam()) + "x "+extra.ITEM_DESC_PROP+"dam, "
 		+extra.ITEM_WANT_HIGHER+extra.format(bag.getSpeed()) + "x "+extra.ITEM_DESC_PROP+"spd, "
 		+extra.ITEM_WANT_HIGHER+extra.format(bag.getDodge()) + "x "+extra.ITEM_DESC_PROP+"dodge, "
-		+extra.ITEM_DESC_PROP+extra.CHAR_SHARP+"/"+extra.CHAR_PIERCE+"/"+extra.CHAR_BLUNT+
+		+extra.ITEM_DESC_PROP+extra.CHAR_SHARP+"/"+extra.CHAR_BLUNT+"/"+extra.CHAR_PIERCE+
 		": "+extra.ITEM_WANT_HIGHER+extra.F_WHOLE.format(bag.getSharpResist())+"/"+extra.F_WHOLE.format(bag.getBluntResist())+"/"+extra.F_WHOLE.format(bag.getPierceResist())
 				);
 		extra.println(bag.quickInventory());
