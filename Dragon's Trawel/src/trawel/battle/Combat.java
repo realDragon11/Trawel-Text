@@ -742,7 +742,7 @@ public class Combat {
 			off = DummyInventory.dummyAttackInv;
 		}
 		if (canDisp) {
-			if (extra.chanceIn(1, 5)) {
+			if (extra.chanceIn(1, 4)) {
 				Networking.send("PlayDelayPitch|"+SoundBox.getSound(off.getRace().voice,SoundBox.Type.SWING) + "|1|" +attacker.getPitch() +"|");
 			}
 			if (!defender.isAlive()) {
@@ -1299,7 +1299,7 @@ public class Combat {
 			percent = damageDone/(float)defender.getMaxHp();
 			//armor quality handling
 			//defender.getBag().armorQualDam(percent);
-			if (extra.chanceIn((int)(percent*100) + (defender.getHp() <= 0 ? 10 : 0), 120)) {
+			if (extra.chanceIn((int)(percent*140) + (defender.getHp() <= 0 ? 20 : 0), 120)) {
 				Networking.send("PlayDelayPitch|"+SoundBox.getSound(defender.getBag().getRace().voice,SoundBox.Type.GRUNT) + "|4|"+ defender.getPitch()+"|");
 			}
 			//blood

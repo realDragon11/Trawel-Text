@@ -252,7 +252,7 @@ public enum Skill{
 		SALVAGE("Salvage","On Impactful Crit: Boost your armor by +12% flat."
 				,extra.CRIT_TIP+" "+extra.ARMOR_TIP
 				,Type.DEFENSE),
-		CHEF("Chef","Crafted Hearty Potions have double sips. Sipping Hearty applies one Padded stack."
+		CHEF("Chef","Crafted "+Effect.HEARTY.getName()+" Potions have double sips. Sipping "+Effect.HEARTY.getName()+" applies one "+Effect.PADDED.getName()+" stack."
 				,extra.PADDED_TIP
 				,Type.CRAFT)
 		

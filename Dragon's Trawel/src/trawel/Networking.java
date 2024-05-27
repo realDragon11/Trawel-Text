@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import trawel.personal.people.Player;
 import trawel.towns.Calender;
@@ -188,7 +189,8 @@ public class Networking {
 			break;
 		case LEGACY:
 			if (netOut != null) {
-				netOut.println(str);
+				//Networking.printlocalln(str);
+				netOut.println(str.replaceAll(Pattern.quote("%"),""));
 				netOut.flush();
 			}
 			break;

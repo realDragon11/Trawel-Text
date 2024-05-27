@@ -83,18 +83,18 @@ public enum Effect{
 	}
 	public String getName() {
 		if (goodNegNeut == 1) {
-			return extra.TIMID_GREEN+name;
+			return extra.TIMID_GREEN+name+extra.COLOR_RESET;
 		}
 		if (goodNegNeut == -1) {
-			return extra.TIMID_RED+name;
+			return extra.TIMID_RED+name+extra.COLOR_RESET;
 		}
 		if (goodNegNeut < 0) {
-			return extra.PRE_RED+name;
+			return extra.PRE_RED+name+extra.COLOR_RESET;
 		}
 		if (goodNegNeut > 0) {
-			return extra.PRE_GREEN+name;
+			return extra.PRE_GREEN+name+extra.COLOR_RESET;
 		}
-		return extra.TIMID_MAGENTA+name;
+		return extra.TIMID_MAGENTA+name+extra.COLOR_RESET;
 	}
 	public String getDesc() {return desc;}
 	public boolean lasts() {

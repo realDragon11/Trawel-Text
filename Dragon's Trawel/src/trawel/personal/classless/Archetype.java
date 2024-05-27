@@ -45,7 +45,7 @@ public enum Archetype implements IHasSkills{
 			,0,3,12
 			)
 	,GLADIATOR("Glitzy Gladiator"
-			,"Really glory hogs know that fighting dirty is part of the show."
+			,"Real glory hogs know that fighting dirty is part of the show."
 			,null
 			,AType.ENTRY
 			,EnumSet.of(AGroup.DIRTY, AGroup.CHARISMA)
