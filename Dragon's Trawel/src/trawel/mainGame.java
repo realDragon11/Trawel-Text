@@ -77,16 +77,16 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__11";
-	public static final String VERSION_DATE = " updated May 25th 2024";
+	public static final String VERSION_DATE = " updated May 26th 2024";
 	public static final String[][] changelog = new String[][] {
 		//add to front, changeviewer cycles to older ones when used
 		{"b_11",
 			//discuss magic overall
-			"TODO magic status stance TODO.",
+			"Magic skill stances have all been buffed to around iron tier damage. Some of the attacks have also had bonus effects added. In the future, more bonus effects might be added, or their damage further buffed, depending on the direction magic stances go in, but this should make them playable for now.",
 			//discuss wound changes
-			"Most wounds now inflict more damage and penalties, getting a large overhaul. Sharp wounds focus on damage or attacking quickly, Pierce wounds focus on impairing them, and Blunt/Ignite/Frost/Shock wounds have a mix. The chances of rolling each type of wound have also been adjusted to lean into this.",
+			"Most wounds now inflict more damage and penalties, getting a large overhaul. Sharp wounds focus on damage or attacking quickly, Pierce wounds focus on impairing your target, and Blunt/Ignite/Frost/Shock wounds have a mix. The chances of rolling each type of wound have also been adjusted to lean into this.",
 			//discuss material changes
-			"High end materials generally had their stats lowered and were given tradeoffs amongst each other.",
+			"High end materials had their stats lowered and were given tradeoffs. Mythril has lower defense stats but remains all around solid and enchantable. Adamantine lose some enchant chance and resist, especially blunt resist. Sunsteel was brought up to adamantine levels, but remains unenchantable. Solar Gold gained some more blunt resist.",
 			//discuss curse changes
 			"Curse inflicting skills have been replaced. Normal NPCs can no longer inflict curse, which should lessen doctor visits. Doctors no longer cure Tired and Bees, but the Wounded punishment effect was added in some places where the Damaged effect was used prior.",
 			//discuss new skillstuff
