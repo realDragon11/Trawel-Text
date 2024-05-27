@@ -243,7 +243,7 @@ public class RaceFactory {
 		misc.insultList.add("Your kind never delivered on those empires!");
 		misc.insultList.add("How does it feel to be living magefire fodder?!");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("-1");
+		misc.raceMaps.add("0");
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -267,7 +267,7 @@ public class RaceFactory {
 		misc.rarity = 1;
 		misc.insultList.add("What do you want, lizard?");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("-1");
+		misc.raceMaps.add("0");
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -297,7 +297,7 @@ public class RaceFactory {
 		misc.insultList.add("Have you heard of the 'high' elves? You better stay away from the alchemists!");//drug
 		misc.insultList.add("What are you going to do, talk me to death?");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("-1");
+		misc.raceMaps.add("0");
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -331,7 +331,7 @@ public class RaceFactory {
 		//generic elf insult
 		misc.insultList.add("What are you going to do, stab me with your ears?");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("-1");
+		misc.raceMaps.add("0");
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -357,6 +357,7 @@ public class RaceFactory {
 		//needs cat maps for now
 		misc.baseMap = "cat";
 		misc.raceMaps.add("0");
+		misc.raceMaps.add("1");
 		misc.raceMaps.add("2");
 		misc.raceMaps.add("3");
 		misc.raceMaps.add("4");
@@ -382,7 +383,7 @@ public class RaceFactory {
 		misc.insultList.add("I'll rip that shell right off!");
 		misc.insultList.add("Maybe you'll react to your death in a few days!");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("-1");
+		misc.raceMaps.add("0");
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -411,6 +412,7 @@ public class RaceFactory {
 		misc.insultList.add("Curiosity isn't all that's gonna kill you, cat!");
 		misc.baseMap = "cat";
 		misc.raceMaps.add("0");
+		misc.raceMaps.add("1");
 		misc.raceMaps.add("2");
 		misc.raceMaps.add("3");
 		misc.raceMaps.add("4");
@@ -438,7 +440,7 @@ public class RaceFactory {
 		misc.insultList.add("I bet you taste good with salt!");
 		misc.insultList.add("Your herbs will make fine seasoning for you!");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("-1");
+		misc.raceMaps.add("0");
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -466,7 +468,7 @@ public class RaceFactory {
 		misc.insultList.add("Look, your heart's hanging out!");
 		misc.insultList.add("Time to tenderize that heart!");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("-1");
+		misc.raceMaps.add("0");
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -487,7 +489,7 @@ public class RaceFactory {
 		misc.rarity = .4;
 		misc.insultList.add("Rattle your bones somewhere else!");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("-1");
+		misc.raceMaps.add("0");
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = false;
@@ -534,7 +536,7 @@ public class RaceFactory {
 		misc.insultList.add("Empires fall, and you are all that remains!");
 		misc.insultList.add("I'll end your story right here!");
 		misc.baseMap = "nada";
-		misc.raceMaps.add("-1");
+		misc.raceMaps.add("0");
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
@@ -558,7 +560,7 @@ public class RaceFactory {
 		misc.insultList.add("Go, swim away!");
 		misc.insultList.add("The drudgers would have an excellent time with you!");
 		misc.baseMap = "mermaid";
-		misc.raceMaps.add("-1");
+		misc.raceMaps.add("0");
 		misc.racialType = Race.RaceType.PERSONABLE;
 		misc.targetType = TargetFactory.TargetType.HUMANOID;
 		misc.emitsBlood = true;
