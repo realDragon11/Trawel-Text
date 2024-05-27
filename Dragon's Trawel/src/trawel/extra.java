@@ -467,12 +467,15 @@ public final class extra {
 			int ini = Networking.nextInt();
 			while(ini != 1 && ini != 9) {
 				if (ini == 0) {
+					Networking.sendStrong("Entry|Finish|");
 					return false;
 				}
 				if (ini == 10) {
 					backingQueue = 10;
+					Networking.sendStrong("Entry|Finish|");
 					return false;
 				}
+				Networking.sendStrong("Entry|Reset|");
 				extra.println("Please type 1 or 9.");
 				extra.println("1 yes");
 				extra.println("9 no");
@@ -483,6 +486,7 @@ public final class extra {
 				}
 
 			}
+			Networking.sendStrong("Entry|Finish|");
 			extra.linebreak();
 			trawel.threads.BlockTaskManager.halt();
 			return ini == 1;
@@ -531,6 +535,7 @@ public final class extra {
 		if (backingQueue > 0) {
 			if (canBack) {
 				backingQueue--;
+				Networking.sendStrong("Entry|Finish|");
 				return 9;
 			}else {
 				backingQueue = 0;
@@ -553,6 +558,7 @@ public final class extra {
 				break;
 			}
 			if (ini != -2) {//silent loading
+				Networking.sendStrong("Entry|Reset|");
 				extra.println("Please type a number from 1 to " + max + "." + (alwaysNine ? " (or 9)" : ""));
 			}
 			ini = Networking.nextInt();
@@ -566,6 +572,7 @@ public final class extra {
 				throw new RuntimeException("input stream ended");
 			}
 		}
+		Networking.sendStrong("Entry|Finish|");
 		trawel.threads.BlockTaskManager.halt();
 		extra.linebreak();
 		return ini;
