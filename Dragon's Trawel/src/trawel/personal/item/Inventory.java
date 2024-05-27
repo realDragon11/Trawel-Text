@@ -1110,7 +1110,7 @@ public class Inventory implements java.io.Serializable{
 		}else {
 			in = extra.inInt(seeds.size());
 		}
-		if (in == seeds.size()+1) {
+		if (in >= seeds.size()+1) {
 			return null;
 		}
 		return seeds.remove(in-1);
