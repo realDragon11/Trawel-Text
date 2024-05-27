@@ -8,8 +8,9 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
 
+import trawel.battle.attacks.ImpairedAttack;
+import trawel.personal.item.Inventory;
 import trawel.personal.people.Player;
 import trawel.towns.Calender;
 
@@ -505,5 +506,10 @@ public class Networking {
 		}
 	}
 	
+	public static void playHitConnect(ImpairedAttack att, Inventory def, boolean boostSound, boolean deflectSound) {
+		Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"
+				+extra.clamp(att.getAttack().getSoundIntensity() + (boostSound ? extra.randRange(0,1) : 0)+ (deflectSound ? -extra.randRange(0,1) : 0),0,2)
+				+"|" +att.getAttack().getSoundType()+"|");
+	}
 	
 }

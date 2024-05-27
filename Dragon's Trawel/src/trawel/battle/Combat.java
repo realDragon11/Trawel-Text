@@ -846,7 +846,9 @@ public class Combat {
 		
 		ret = new AttackReturn(att,def,str,preNotes);
 		if (canDisp && ret.code != ATK_ResultCode.NOT_ATTACK) {
-			Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getAttack().getSoundIntensity() + "|" +att.getAttack().getSoundType()+"|");
+			//Networking.send("PlayHit|" +def.getSoundType(att.getSlot()) + "|"+att.getAttack().getSoundIntensity() + "|" +att.getAttack().getSoundType()+"|");
+			//possibly play louder if crit roll, possibly play softer if armor deflect
+			Networking.playHitConnect(att,def,hitRoll > dodgeRoll*3, ret.code == ATK_ResultCode.ARMOR);
 			if (wasDead) {
 				ret.addNote("Beating their corpse!");
 			}
@@ -1299,7 +1301,7 @@ public class Combat {
 			percent = damageDone/(float)defender.getMaxHp();
 			//armor quality handling
 			//defender.getBag().armorQualDam(percent);
-			if (extra.chanceIn((int)(percent*140) + (defender.getHp() <= 0 ? 20 : 0), 120)) {
+			if (!extra.getPrint() && extra.chanceIn((int)(percent*140) + (defender.getHp() <= 0 ? 20 : 0), 120)) {
 				Networking.send("PlayDelayPitch|"+SoundBox.getSound(defender.getBag().getRace().voice,SoundBox.Type.GRUNT) + "|4|"+ defender.getPitch()+"|");
 			}
 			//blood

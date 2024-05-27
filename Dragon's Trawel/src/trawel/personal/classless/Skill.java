@@ -340,7 +340,7 @@ public enum Skill{
 		}
 
 		public String explain() {
-			return name + ": " + desc+ (longDesc != "" ? " ("+longDesc+")" : "");
+			return extra.ITEM_VALUE+ name+extra.COLOR_RESET + ": " + desc+ (longDesc != "" ? " ("+longDesc+")" : "");
 		}
 		
 		public MenuItem getMenuView() {
@@ -348,7 +348,7 @@ public enum Skill{
 
 				@Override
 				public String title() {
-					return " " + name + ": " + desc+ (longDesc != "" ? " ("+longDesc+")" : "");
+					return " " + extra.ITEM_VALUE+name+extra.COLOR_RESET + ": " + desc+ (longDesc != "" ? " ("+longDesc+")" : "");
 				}};
 			
 		}
