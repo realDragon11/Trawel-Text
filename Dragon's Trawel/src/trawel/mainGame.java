@@ -1995,11 +1995,11 @@ public class mainGame {
 				largeTimePassing = true;
 				extra.println("Passing "+extra.F_WHOLE.format(Player.peekTime())+" hours.");
 			}
-			double passAmount = .5;
+			double passAmount = 1;
 			while (Player.peekTime() > 0) {
 				globalPassTimeUpTo(passAmount);
 				if (largeTimePassing) {
-					passAmount+=.005;
+					passAmount+=.01;
 				}
 				/*
 				if (Player.player.atFeature != null) {
