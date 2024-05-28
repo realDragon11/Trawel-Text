@@ -1009,7 +1009,7 @@ public class mainGame {
 		extra.println();
 		
 		extra.println(extra.STAT_HEADER+"Sounds:");
-		extra.println(" Stock Media provided by Soundrangers / FxProSound / SoundIdeasCom / PrankAudio / hdaudio / agcnf_media / sounddogs / AbloomAudio / Yurikud / SoundMorph => through Pond5");
+		extra.println(" Stock Media provided by Soundrangers / FxProSound / SoundIdeasCom / PrankAudio / hdaudio / agcnf_media / sounddogs / AbloomAudio / Yurikud / SoundMorph / partnersinrhyme => through Pond5");
 		extra.println(" Metal sounds by Bluezone");
 		extra.println(" Clicking sound: One of the many CC0 stapler sounds on FreeSound");
 		extra.println();

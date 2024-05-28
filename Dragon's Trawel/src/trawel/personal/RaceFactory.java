@@ -849,7 +849,7 @@ public class RaceFactory {
 		misc.racialType = Race.RaceType.BEAST;
 		misc.targetType = TargetFactory.TargetType.QUAD;
 		misc.emitsBlood = true;
-		misc.voice = SoundBox.Voice.WOLF;
+		misc.voice = SoundBox.Voice.HORSE;
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
 		misc.raceClass = RaceClass.UNDONE_BEAST;

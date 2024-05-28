@@ -5,7 +5,7 @@ import trawel.extra;
 public class SoundBox {
 	
 	public enum Voice{
-		FEMALE_BASIC, BEAR, WOLF, F_GOLEM, ENT, NONE, BAT, HARPY, MONSTER1;
+		FEMALE_BASIC, BEAR, WOLF, F_GOLEM, ENT, NONE, BAT, HARPY, MONSTER1, HORSE;
 	}
 	public enum Type{
 		SWING, GRUNT;
@@ -74,7 +74,6 @@ public class SoundBox {
 				return "sound_uncanny_scream"+ extra.randRange(1, 5);
 			default:
 				return null;
-			
 			}
 		case MONSTER1:
 			switch (t) {
@@ -82,6 +81,14 @@ public class SoundBox {
 				return "sound_monster_hiss"+ extra.randRange(1, 2);
 			case SWING:
 				return "sound_monster_hiss_attack";
+			default:
+				return null;
+			}
+		case HORSE:
+			switch (t) {
+			case GRUNT:
+			case SWING:
+				return "sound_horse"+ extra.randRange(1, 3);
 			default:
 				return null;
 			}
