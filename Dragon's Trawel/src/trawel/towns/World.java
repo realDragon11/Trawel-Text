@@ -184,11 +184,15 @@ public class World extends TContextOwner{
 	}
 	
 	/**
-	 * removes all occurrences of this person in death cheaters
+	 * removes all occurrences of this person in reoccuring
 	 * @param p
 	 */
 	public void removeReoccuringSuperPerson(Agent p) {
 		reoccuring.removeIf(Predicate.isEqual(p));
+	}
+	
+	public boolean hasReoccuring(Agent sp) {
+		return reoccuring.contains(sp);
 	}
 	
 	public void deathCheaterToChar(Agent p) {

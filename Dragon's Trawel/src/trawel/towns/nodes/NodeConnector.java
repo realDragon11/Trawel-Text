@@ -2,6 +2,7 @@ package trawel.towns.nodes;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import derg.menus.MenuGenerator;
@@ -219,6 +220,22 @@ public class NodeConnector implements Serializable {
 		assert node2 != 0;
 		addConnect(node1,node2);
 		addConnect(node2,node1);
+	}
+	
+	/**
+	 * sets them in a random order to prevent it LOOKing lopsided consistently
+	 */
+	protected void shuffleConnects(int node) {
+		assert node != 0;
+		List<Integer> connects = getConnects(node);
+		Collections.shuffle(connects);
+		long sub = 0b0;//do this to avoid varargs nonsense
+		for (int i = 0; i < connects.size();i++) {
+			//I think I have to do this so it doesn't delete info
+			assert connects.get(i) <= size;
+			sub = extra.setNthByteInLong(sub,connects.get(i),i);
+		}
+		connections[node] = sub;
 	}
 	
 	public String getName(int node) {

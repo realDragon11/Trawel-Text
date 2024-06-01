@@ -46,7 +46,8 @@ public interface NodeType{
 		CAVE(new CaveNode()),
 		MINE(new MineNode()),
 		DUNGEON(new DungeonNode()),
-		GRAVEYARD(new GraveyardNode());
+		GRAVEYARD(new GraveyardNode()),
+		BEACH(new BeachNode());
 		
 		public final NodeType singleton;
 		NodeTypeNum(NodeType create){

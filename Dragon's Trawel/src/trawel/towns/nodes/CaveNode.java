@@ -10,7 +10,7 @@ public class CaveNode implements NodeType{
 	
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
-		int idNum =extra.randRange(1,EVENT_NUMBER);
+		int idNum =extra.randRange(2,EVENT_NUMBER);
 		int ret = holder.newNode(NodeType.NodeTypeNum.CAVE.ordinal(),idNum,tier);
 		holder.setFloor(ret, guessDepth);
 		return ret;

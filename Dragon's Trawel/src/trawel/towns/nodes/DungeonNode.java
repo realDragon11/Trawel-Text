@@ -307,7 +307,7 @@ public class DungeonNode implements NodeType{
 			
 			return holder.complete(owner);
 		}
-		throw new RuntimeException("Invalid dungeon");
+		throw new RuntimeException("Invalid Dungeon: "+owner.getName());
 	}
 	
 	@Override

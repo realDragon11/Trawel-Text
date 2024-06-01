@@ -38,7 +38,7 @@ public class Agent extends SuperPerson{
 	private byte flags = 0b0;
 	
 	public enum AgentGoal {
-		NONE, DEATHCHEAT, SPOOKY, OWN_SOMETHING, DELVE_HELP
+		NONE, DEATHCHEAT, SPOOKY, OWN_SOMETHING, DELVE_HELP, WORLD_ENCOUNTER
 	}
 	
 	public enum AgentFlag{

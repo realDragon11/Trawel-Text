@@ -237,7 +237,7 @@ public class MineNode implements NodeType{
 			
 			return start.complete(owner);
 		}
-		throw new RuntimeException("Invalid mine");
+		throw new RuntimeException("Invalid Mine: "+owner.getName());
 	}
 	
 	@Override
