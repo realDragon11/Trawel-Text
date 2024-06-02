@@ -202,7 +202,7 @@ public class GenericNode implements NodeType {
 							pspot.contains = Seed.SEED_TRUFFLE;
 							break;
 						case DUNGEON:
-							pspot.contains = Seed.SEED_EGGCORN;
+							pspot.contains = Seed.SEED_FUNGUS;
 							break;
 						case GRAVEYARD:
 							pspot.contains = Seed.SEED_GARLIC;
@@ -219,6 +219,9 @@ public class GenericNode implements NodeType {
 							break;
 						case MINE:
 							pspot.contains = Seed.SEED_TRUFFLE;
+							break;
+						case BEACH:
+							pspot.contains = Seed.SEED_EGGCORN;
 							break;
 						}
 					}else {
@@ -291,6 +294,14 @@ public class GenericNode implements NodeType {
 				//veins can grow, but not regrow
 				resetNode(holder,node,extra.choose(1,1,3,3,3,4,6,7,8,9));
 				holder.globalTimer-=20;
+				return true;
+			}
+			break;
+		case BEACH:
+			if (force || extra.chanceIn(1,3)) {
+				//only has one thing to regrow into for now
+				resetNode(holder,node,extra.choose(2));
+				holder.globalTimer-=12;
 				return true;
 			}
 			break;
@@ -597,7 +608,8 @@ public class GenericNode implements NodeType {
 				extra.println("You mine the vein and claim "+gemAmount+" "+m.color+(gemAmount == 0 ? gem.name : gem.plural)+extra.COLOR_RESET+"!");
 			}
 			holder.setStateNum(node,1);
-			((Mine)holder.parent).removeVein();
+			holder.removeVein();
+			
 			holder.findBehind(node,"empty "+m.color+matName+"vein"+extra.COLOR_RESET);//instant chance so they want to mine more
 		}else {
 			extra.println("The "+m.color+matName+extra.COLOR_RESET+" has already been mined.");

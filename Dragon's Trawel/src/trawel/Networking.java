@@ -330,6 +330,10 @@ public class Networking {
 		Networking.sendStrong("Backvariant|"+current_background+current_background_variant+"|"+b[0]+"|"+b[1]+"|");
 	}
 	
+	public static boolean backgroundMatchesArea(Area area_type) {
+		return current_background.equals(area_type.backName);
+	}
+	
 	public static void waitIfConnected(long d) {
 		if (connected) {
 			try {

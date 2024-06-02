@@ -318,8 +318,19 @@ public class NodeConnector implements Serializable {
 			Networking.setArea(Area.FOREST);
 			break;
 		case MINE:
+			if (!Networking.backgroundMatchesArea(Area.MINE)) {
+				Networking.addMultiLight(80,471);
+				Networking.addMultiLight(486,360);
+				Networking.addMultiLight(1012,353);
+			}
 			Networking.setArea(Area.MINE);
 			break;
+		case BEACH:
+			Networking.setArea(Area.BEACH);
+			break;
+		}
+		if (!Networking.backgroundMatchesArea(Area.MINE)) {
+			Networking.clearLights();
 		}
 		Player.addTime(.1);
 		mainGame.globalPassTime();
@@ -741,6 +752,13 @@ public class NodeConnector implements Serializable {
 		assert parent != null;
 		if (parent instanceof Mine) {
 			((Mine)parent).addVein();
+		}
+	}
+	
+	public void removeVein() {
+		assert parent != null;
+		if (parent instanceof Mine) {
+			((Mine)parent).removeVein();
 		}
 	}
 	

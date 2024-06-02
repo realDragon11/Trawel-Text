@@ -51,7 +51,7 @@ public class Mine extends NodeFeature {
 	
 	@Override
 	public void go() {
-		//FIXME: lights will persist
+		//node will handle re-applying them if background changes within it, still need to clear in case
 		Networking.addMultiLight(80,471);
 		Networking.addMultiLight(486,360);
 		Networking.addMultiLight(1012,353);
