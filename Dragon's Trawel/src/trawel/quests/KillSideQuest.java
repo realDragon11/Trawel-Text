@@ -29,10 +29,10 @@ public class KillSideQuest extends BasicSideQuest {
 		q.qKeywords.add(QKey.KILL);
 		if (isMurder) {
 			q.qKeywords.add(QKey.EVIL);
-			q.target = RaceFactory.getPeace(generator.getLevel());
+			q.target = RaceFactory.makePeace(generator.getLevel());
 		}else {
 			q.qKeywords.add(QKey.LAWFUL);
-			q.target = RaceFactory.getMugger(generator.getLevel());
+			q.target = RaceFactory.makeMugger(generator.getLevel());
 		}
 		
 		q.giverName = randomLists.randomFirstName() + " " +  randomLists.randomLastName();

@@ -51,7 +51,7 @@ public class QuestReactionFactory {
 
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
-				Person p = RaceFactory.getPeace(bumperLocation.getTier());
+				Person p = RaceFactory.makePeace(bumperLocation.getTier());
 				extra.println("A traveler greets you and notices your quest ("+q.name() +") and asks if you want directions.");
 				p.getBag().graphicalDisplay(1, p);
 				extra.menuGo(new MenuGenerator() {
@@ -121,7 +121,7 @@ public class QuestReactionFactory {
 
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
-				Person p = RaceFactory.getLawman(bumperLocation.getTier());
+				Person p = RaceFactory.makeLawman(bumperLocation.getTier());
 				extra.println(extra.PRE_BATTLE +p.getName() + " attacks you for traveling to murder " + q.targetName +"!");
 				
 				Combat c = Player.player.fightWith(p);
@@ -141,7 +141,7 @@ public class QuestReactionFactory {
 
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
-				Person p = RaceFactory.makeMuggerWithTitle(bumperLocation.getTier());
+				Person p = RaceFactory.makeMugger(bumperLocation.getTier());
 				extra.println("A figure approaches you and claims that they'll take the reward for "+q.name+", which they overheard!");
 				p.getBag().graphicalDisplay(1,p);
 				int payOffCost = Math.round(p.getUnEffectiveLevel()*3);
@@ -227,7 +227,7 @@ public class QuestReactionFactory {
 		reactions.add(new QuestReaction(1f,new QKey[] {QKey.GIVE_HGUILD},new QKey[] {},new QKey[][] {new QKey[] {QKey.FETCH,QKey.CLEANSE}}, new QuestTriggerEvent() {
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
-				Person p = RaceFactory.getMugger(bumperLocation.getTier());
+				Person p = RaceFactory.makeMugger(bumperLocation.getTier());
 				String intro, text;
 				switch (extra.randRange(1,3)) {
 				case 1: default:

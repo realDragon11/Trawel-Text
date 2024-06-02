@@ -154,7 +154,7 @@ public class Forest extends ExploreFeature{
 				switch(extra.randRange(1,3)) {
 				case 1: 
 					extra.println("\"You dare violate the forest?!\"");
-					Player.player.fightWith(RaceFactory.getDryad(getTempLevel()));
+					Player.player.fightWith(RaceFactory.makeDryad(getTempLevel()));
 					break;
 				case 2:
 					extra.println("\"Hey, I wanted that!\"");
@@ -162,7 +162,7 @@ public class Forest extends ExploreFeature{
 					break;
 				case 3:
 					extra.println("\"You dirty plant-thief!\"");
-					Player.player.fightWith(RaceFactory.getLawman(getTempLevel()));
+					Player.player.fightWith(RaceFactory.makeLawman(getTempLevel()));
 					break;
 				}
 			
@@ -178,7 +178,7 @@ public class Forest extends ExploreFeature{
 			switch(extra.randRange(1,3)) {
 			default:
 				extra.println("\"You dare violate the forest?!\"");
-				c = Player.player.fightWith(RaceFactory.getDryad(getTempLevel()));
+				c = Player.player.fightWith(RaceFactory.makeDryad(getTempLevel()));
 				break;
 			case 2:
 				extra.println("\"Hey, I wanted that!\"");
@@ -186,7 +186,7 @@ public class Forest extends ExploreFeature{
 				break;
 			case 3:
 				extra.println("\"You dirty plant-thief!\"");
-				c = Player.player.fightWith(RaceFactory.getLawman(getTempLevel()));
+				c = Player.player.fightWith(RaceFactory.makeLawman(getTempLevel()));
 				break;
 			}
 			if (c.playerWon() > 0) {
@@ -206,7 +206,7 @@ public class Forest extends ExploreFeature{
 			switch(extra.randRange(1,3)) {
 			case 1: 
 				extra.println("\"You dare violate the forest?!\"");
-				Player.player.fightWith(RaceFactory.getDryad(getTempLevel()+1));
+				Player.player.fightWith(RaceFactory.makeDryad(getTempLevel()+1));
 				break;
 			case 2:
 				extra.println("\"Hey, I wanted that!\"");
@@ -214,7 +214,7 @@ public class Forest extends ExploreFeature{
 				break;
 			case 3:
 				extra.println("\"You dirty plant-crusher!\"");
-				Player.player.fightWith(RaceFactory.getLawman(getTempLevel()+1));
+				Player.player.fightWith(RaceFactory.makeLawman(getTempLevel()+1));
 				break;
 			}
 		}
@@ -248,7 +248,7 @@ public class Forest extends ExploreFeature{
 	}
 	
 	private void dryad() {
-		Person robber = RaceFactory.getDryad(getTempLevel());
+		Person robber = RaceFactory.makeDryad(getTempLevel());
 		robber.getBag().graphicalDisplay(1, robber);
 		while (true) {
 		extra.println("You come across a dryad tending to a tree.");
@@ -282,7 +282,7 @@ public class Forest extends ExploreFeature{
 	}}
 	
 	private void treeOnPerson() {
-		Person p = RaceFactory.getMugger(getTempLevel());
+		Person p = RaceFactory.makeMugger(getTempLevel());
 		p.getBag().graphicalDisplay(1, p);
 		extra.println("You stumble upon a person stuck under a fallen tree. Help them?");
 		if (extra.yesNo()) {
@@ -349,7 +349,7 @@ public class Forest extends ExploreFeature{
 	}
 	
 	private void lumerbjackDryad() {
-		Person robber = RaceFactory.getLumberjack(getTempLevel());
+		Person robber = RaceFactory.makeLumberjack(getTempLevel());
 		if (extra.chanceIn(1,3)) {//TODO: make this much rarer and use ingame holidays/months instead
 			LocalDateTime t = LocalDateTime.now();
 			switch (t.getMonth()) {//lmao alphabetically ordered months

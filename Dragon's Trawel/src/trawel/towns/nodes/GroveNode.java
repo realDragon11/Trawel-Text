@@ -175,7 +175,7 @@ public class GroveNode implements NodeType{
 			holder.setStorage(madeNode, extra.choose("river","pond","lake","stream","brook"));
 			;break;
 		case 3:
-			Person mugger = RaceFactory.makeMuggerWithTitle(holder.getLevel(madeNode));
+			Person mugger = RaceFactory.makeMugger(holder.getLevel(madeNode));
 			String mugName = mugger.getTitle().substring(4);//remove "the "
 			GenericNode.setBasicRagePerson(holder,madeNode,mugger,mugName,extra.capFirst(mugName) + " attacks you!");
 		break;
@@ -228,7 +228,7 @@ public class GroveNode implements NodeType{
 			case 3:
 				//many ents
 				if (dlevel > 3) {
-					entslist.add(RaceFactory.getDryad(dlevel-1));
+					entslist.add(RaceFactory.makeDryad(dlevel-1));
 					entslist.add(RaceFactory.makeEnt(testLevel));
 					entslist.add(RaceFactory.makeEnt(testLevel));
 					entslist.add(RaceFactory.makeEnt(testLevel));
@@ -237,13 +237,13 @@ public class GroveNode implements NodeType{
 			case 2:
 				testLevel = RaceFactory.addAdjustLevel(dlevel,1);
 				if (dlevel > 1) {
-					entslist.add(RaceFactory.getDryad(testLevel));
+					entslist.add(RaceFactory.makeDryad(testLevel));
 					entslist.add(RaceFactory.makeEnt(testLevel));
 					break;
 				}//if we can't afford to make any ents, only add dryad
 			case 0:
 			case 1://only dryad
-				entslist.add(RaceFactory.getDryad(dlevel));
+				entslist.add(RaceFactory.makeDryad(dlevel));
 				break;
 			}
 			holder.setStorage(madeNode, entslist);
@@ -274,7 +274,7 @@ public class GroveNode implements NodeType{
 			holder.setStorage(madeNode,wolves);
 		;break;
 		case 16:
-			holder.setStorage(madeNode, RaceFactory.getShaman(holder.getLevel(madeNode)));
+			holder.setStorage(madeNode, RaceFactory.makeShaman(holder.getLevel(madeNode)));
 			break;
 		case 17://bee hive, turns into plant spot
 			break;
@@ -829,7 +829,7 @@ public class GroveNode implements NodeType{
 			Person p;
 			if (startstate == 0) {//we chose an action this interaction, set stuff up
 				//make sure not to overwrite our color name!
-				p = RaceFactory.getDryad(holder.getLevel(node));
+				p = RaceFactory.makeDryad(holder.getLevel(node));
 				String str = holder.getStorageFirstClass(node,String.class);
 				holder.setStorage(node, new Object[] {str,p});
 				extra.println(extra.PRE_BATTLE+randomLists.randomViolateForestQuote());
@@ -852,7 +852,7 @@ public class GroveNode implements NodeType{
 			if (state > 30 && state < 40) {//thief
 				if (startstate == 0) {//we chose an action this interaction, set stuff up
 					//make sure not to overwrite our color name!
-					p = RaceFactory.makeMuggerWithTitle(holder.getLevel(node));
+					p = RaceFactory.makeMugger(holder.getLevel(node));
 					String str = holder.getStorageFirstClass(node,String.class);
 					holder.setStorage(node, new Object[] {str,p});
 					extra.println( extra.PRE_BATTLE+"\"That looked expensive!\"");
@@ -956,7 +956,7 @@ public class GroveNode implements NodeType{
 				Player.player.addGold(worth);
 				if (will_attack) {
 					GenericNode.setBasicRagePerson(holder, node,
-							RaceFactory.makeMuggerWithTitle(holder.getLevel(node))
+							RaceFactory.makeMugger(holder.getLevel(node))
 							,"Moss Thief","They still wanted what was under that moss!");
 					return false;//reset for forcego
 				}

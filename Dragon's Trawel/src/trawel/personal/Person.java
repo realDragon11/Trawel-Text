@@ -314,7 +314,12 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				new WeaponType[] {
 						WeaponType.RAPIER,WeaponType.DAGGER,WeaponType.SPEAR,WeaponType.MACE,WeaponType.SHOVEL
 					}
-		), 
+		),
+		THUG(new ArmorStyle[] {ArmorStyle.SEWN,ArmorStyle.PLATE,ArmorStyle.MAIL,ArmorStyle.MAIL},
+				new WeaponType[] {
+						WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.AXE,WeaponType.MACE,WeaponType.SHOVEL
+					}
+		),
 		LUMBERJACK(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},new WeaponType[] {WeaponType.AXE}), 
 		GRAVER(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},new WeaponType[] {WeaponType.SHOVEL})
 		, CULTIST_WORSHIPER(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN}
@@ -334,6 +339,13 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		,DUELIST_ONLY(new ArmorStyle[] {ArmorStyle.SEWN,ArmorStyle.FABRIC},
 				new WeaponType[] {
 						WeaponType.RAPIER
+					}),
+		PIRATE(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN,ArmorStyle.SEWN,ArmorStyle.SEWN},
+				new WeaponType[] {
+						//main thematic weapons
+						WeaponType.SPEAR,WeaponType.SHOVEL,
+						//other weapons
+						WeaponType.RAPIER,WeaponType.AXE,WeaponType.MACE
 					})
 		;
 		

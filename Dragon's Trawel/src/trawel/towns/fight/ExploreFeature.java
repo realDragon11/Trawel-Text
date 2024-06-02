@@ -283,7 +283,7 @@ public abstract class ExploreFeature extends Feature{
 	
 	protected void mugger_other_person() {
 		extra.println(extra.PRE_BATTLE+"You see someone being robbed! Help?");
-		Person robber =  RaceFactory.getMugger(getTempLevel());
+		Person robber =  RaceFactory.makeMugger(getTempLevel());
 		robber.getBag().graphicalDisplay(1, robber);
 		if (extra.yesNo()) {
 			Combat c = Player.player.fightWith(robber);
@@ -303,7 +303,7 @@ public abstract class ExploreFeature extends Feature{
 	
 	protected void mugger_ambush() {
 		extra.println(extra.PRE_BATTLE+"You see a mugger charge at you! Prepare for battle!");
-		Person p = RaceFactory.getMugger(getTempLevel());
+		Person p = RaceFactory.makeMugger(getTempLevel());
 		Combat c = Player.player.fightWith(p);
 		if (c.playerWon() > 0) {
 		}else {
@@ -318,7 +318,7 @@ public abstract class ExploreFeature extends Feature{
 		if (result) {
 			if (Math.random() > .4) {
 				extra.println(extra.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");
-				Combat c = Player.player.fightWith(RaceFactory.getMugger(getTempLevel()));
+				Combat c = Player.player.fightWith(RaceFactory.makeMugger(getTempLevel()));
 				if (c.playerWon() > 0) {
 					if (c.playerWon() == 1) {
 						extra.println("You wake up and examine the loot...");

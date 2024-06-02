@@ -224,7 +224,7 @@ public class Mountain extends ExploreFeature{
 	
 	private void tollKeeper() {
 		extra.println(extra.PRE_BATTLE+"You see a toll road keeper. Mug them for their "+World.currentMoneyString()+"?");
-		Person toller = RaceFactory.getPeace(getTempLevel());
+		Person toller = RaceFactory.makePeace(getTempLevel());
 		int want = IEffectiveLevel.cleanRangeReward(getTempLevel(),3.5f,.8f);
 		toller.getBag().addLocalGoldIf(IEffectiveLevel.cleanRangeReward(getTempLevel(),6f,.5f));
 		toller.getBag().graphicalDisplay(1, toller);
@@ -274,7 +274,7 @@ public class Mountain extends ExploreFeature{
 		if (result) {
 			if (Math.random() > .5) {
 				extra.println(extra.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");
-				Combat c = Player.player.fightWith(RaceFactory.getMugger(getTempLevel()));
+				Combat c = Player.player.fightWith(RaceFactory.makeMugger(getTempLevel()));
 				if (c.playerWon() > 0) {
 					int aether = Math.round((IEffectiveLevel.unclean(getTempLevel())*extra.randRange(200f,400f)));
 					extra.println("You pick up " + aether + " aether!");

@@ -288,7 +288,7 @@ public class MineNode implements NodeType{
 			holder.setStorage(madeNode, cultPeeps);
 		break;
 		case 10:
-			Person mugger = RaceFactory.makeMuggerWithTitle(holder.getLevel(madeNode));
+			Person mugger = RaceFactory.makeMugger(holder.getLevel(madeNode));
 			String mugName = mugger.getTitle().substring(4);//remove "the "
 			GenericNode.setBasicRagePerson(holder,madeNode, mugger,mugName,extra.capFirst(mugName) + " attacks you!");
 			break;

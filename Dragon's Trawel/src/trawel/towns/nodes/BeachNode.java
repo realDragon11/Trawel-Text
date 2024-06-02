@@ -51,8 +51,18 @@ public class BeachNode implements NodeType {
 	@Override
 	public void apply(NodeConnector holder, int node) {
 		switch (holder.getEventNum(node)) {
-		case 1://skeleton pirate that must be put to rest to continue, beta
-			Person skelePerson = RaceFactory.makeDemonOverlord(holder.getLevel(node));
+		case 1://beach dungeon blocker
+			Person skelePerson; 
+			int gateType = extra.randRange(1,3);
+			switch (gateType) {
+				default: case 0:
+					//skeleton pirate
+					skelePerson = RaceFactory.makeSkeletonPirate(holder.getLevel(node));
+					break;
+				case 1://hidden map
+					skelePerson = RaceFactory.makeCollector(holder.getLevel(node));
+					break;
+			}
 			Agent skeleAgent = skelePerson.getMakeAgent(AgentGoal.WORLD_ENCOUNTER);
 			holder.parent.getTown().getIsland().getWorld().addReoccuring(skeleAgent);
 			GateNodeBehavior behavior = new GateNodeBehavior(skeleAgent,holder.parent);

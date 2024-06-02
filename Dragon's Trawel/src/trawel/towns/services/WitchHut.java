@@ -381,7 +381,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		}
 		//section used for transmutation
 		if ((ents > 0 && meats >= 2) || (eons > 0 && virgins > 0)) {//kinda even more horrifying now
-			Person fGolem = RaceFactory.getFleshGolem(
+			Person fGolem = RaceFactory.makeFleshGolem(
 					(Player.player.getPerson().getLevel()+town.getTier())/2//near the player and town level
 					);
 			extra.println(extra.PRE_BATTLE+"The meat wraps around the heartwood and contorts into a humanoid shape... which then attacks you!");

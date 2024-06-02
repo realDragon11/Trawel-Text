@@ -396,7 +396,7 @@ public class Slum extends Store implements QuestBoardLocation{
 							extra.println("You wait around and find a mugger.");
 							Player.addTime(2);
 							mainGame.globalPassTime();
-							Combat c = Player.player.fightWith(RaceFactory.getMugger(tier));
+							Combat c = Player.player.fightWith(RaceFactory.makeMugger(tier));
 							if (c.playerWon() > 0) {
 								//crime rating go down
 								crimeRating-= Player.player.getPerson().getUnEffectiveLevel();
@@ -419,7 +419,7 @@ public class Slum extends Store implements QuestBoardLocation{
 						extra.println("You wait around and find someone to rob.");
 						Player.addTime(1);
 						mainGame.globalPassTime();
-						Combat c = Player.player.fightWith(RaceFactory.getPeace(tier));
+						Combat c = Player.player.fightWith(RaceFactory.makePeace(tier));
 						if (c.playerWon() > 0) {
 							//crime rating go up
 							crimeRating+=1;

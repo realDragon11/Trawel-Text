@@ -58,7 +58,7 @@ public class BossNode implements NodeType {
 		case NONE:
 			throw new RuntimeException("trying to make none boss in "+holder.parent.getName());
 		case FATESPINNER:
-			p = RaceFactory.getBoss(level);
+			p = RaceFactory.makeBoss(level);
 			p.setFlag(PersonFlag.PLAYER_LOOT_ONLY,true);
 			p.cleanSetSkillHas(Perk.FATESPINNER_NPC);
 			p.setTitle(", the Fatespinner");
@@ -81,7 +81,7 @@ public class BossNode implements NodeType {
 		break;
 		case YORE:
 			level = Math.max(6,level);
-			p = RaceFactory.getBoss(level);
+			p = RaceFactory.makeBoss(level);
 			p.cleanSetSkillHas(Perk.YORE_NPC);
 			p.setFirstName("Yore");
 			p.setTitle("");
@@ -100,7 +100,7 @@ public class BossNode implements NodeType {
 			peeps.add(p);
 		break;
 		case OLD_QUEEN:
-			p = RaceFactory.getBoss(level);
+			p = RaceFactory.makeBoss(level);
 			p.setFlag(PersonFlag.PLAYER_LOOT_ONLY,true);
 			p.cleanSetSkillHas(Perk.ANCIENT);
 			p.setTitle(", the Empress");

@@ -81,8 +81,8 @@ public class BumperFactory {
 				default:
 				case 1:
 					allyString = "attack you near a watchtower, which comes to your aid.";
-					allyList.add(RaceFactory.getLawman(level));
-					allyList.add(RaceFactory.getLawman(level));
+					allyList.add(RaceFactory.makeLawman(level));
+					allyList.add(RaceFactory.makeLawman(level));
 					break;
 				}
 				extra.println(extra.PRE_BATTLE+foeString+allyString);
@@ -194,7 +194,7 @@ public class BumperFactory {
 				
 				@Override
 				public void activate(int level) {
-					Person p = RaceFactory.getMugger(level);
+					Person p = RaceFactory.makeMugger(level);
 					
 					extra.println(extra.PRE_BATTLE+"A thief charges you!");
 					Combat c = Player.player.fightWith(p);
@@ -305,7 +305,7 @@ public class BumperFactory {
 				
 				@Override
 				public void activate(int level) {
-					Person p = RaceFactory.getMugger(level);
+					Person p = RaceFactory.makeMugger(level);
 					
 					extra.println(extra.PRE_BATTLE+"A pirate challenges you for your booty!");
 					Combat c = Player.player.fightWith(p);

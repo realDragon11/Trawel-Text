@@ -304,7 +304,7 @@ public class FortHall extends FortFeature {
 			List<Person> people = new ArrayList<Person>();
 			
 			while (people.size() < Math.max(4, allies.size())) {
-				people.add(RaceFactory.getMugger(tier));
+				people.add(RaceFactory.makeMugger(tier));
 			}
 			defenseFight(people);
 		}

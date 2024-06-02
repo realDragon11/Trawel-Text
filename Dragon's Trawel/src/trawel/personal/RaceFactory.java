@@ -17,6 +17,7 @@ import trawel.personal.Person.PersonFlag;
 import trawel.personal.Person.PersonType;
 import trawel.personal.Person.RaceFlag;
 import trawel.personal.classless.Archetype;
+import trawel.personal.classless.Feat;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.Perk;
 import trawel.personal.item.body.Race;
@@ -1188,7 +1189,7 @@ public class RaceFactory {
 		return w;
 	}
 
-	public static Person getShaman(int level) {
+	public static Person makeShaman(int level) {
 		Person w = new Person(level);
 		addWealth(WEALTH_WORKER,.3f, w);
 		w.getBag().addDrawBaneSilently(DrawBane.PROTECTIVE_WARD);
@@ -1271,7 +1272,7 @@ public class RaceFactory {
 		return w;
 	}
 	
-	public static Person getFleshGolem(int level) {
+	public static Person makeFleshGolem(int level) {
 		Person w = Person.animal(level, RaceID.B_FLESH_GOLEM, MaterialFactory.getMat("hide"), false);
 		//uses hide because it always turns into re-occuring on player loss so we don't need to worry about it being rare and vanishing after a win
 		//cannot get wealth
@@ -1380,35 +1381,70 @@ public class RaceFactory {
 		return w;
 	}
 	
-	public static Person getMugger(int level) {
+	public static Person makeMugger(int level) {
+		int findMult;
 		Person w;
-		if (extra.chanceIn(1,4)) {
-			w = new Person(level,AIJob.ROGUE);
-			addWealth(WEALTH_WELL_OFF,.3f, w);
-			w.setFacLevel(Faction.ROGUE,20, 0);
-		}else {
-			w = new Person(level);
-			addWealth(WEALTH_STANDARD,.3f,w);
-			w.setFacLevel(Faction.ROGUE,10, 0);
+		switch (extra.randRange(1,4)) {
+			case 1: default://desperate random guy
+				w = new Person(level);
+				addWealth(WEALTH_SMALL,.3f,w);
+				w.setFacLevel(Faction.ROGUE,10, 0);
+				w.setFacLevel(Faction.HEROIC,0, 5);
+				w.setTitle("the " + extra.capFirst(randomLists.randomDrifterName()));
+				findMult = 1;//low chance
+				break;
+			case 2://thief rogue, lesser
+				w = new Person(level,AIJob.ROGUE);
+				addWealth(WEALTH_STANDARD,.3f, w);
+				w.setFacLevel(Faction.ROGUE,15, 0);
+				w.setFacLevel(Faction.HEROIC,0, 10);
+				w.liteSetSkillHas(Archetype.CUT_THROAT);
+				w.setTitle("the " + extra.capFirst(randomLists.randomThiefName()));
+				findMult = 3;
+				break;
+			case 3://thug mugger, lesser
+				w = new Person(level,AIJob.THUG);
+				addWealth(WEALTH_STANDARD,.3f, w);
+				w.setFacLevel(Faction.ROGUE,20, 0);
+				w.setFacLevel(Faction.HEROIC,0, 10);
+				w.liteSetSkillHas(Archetype.HIRED_HATCHET);
+				w.setTitle("the " + extra.capFirst(randomLists.randomThugName()));
+				findMult = 2;
+				break;
+			case 4://thief rogue, greater
+				w = new Person(level,AIJob.ROGUE);
+				addWealth(WEALTH_WELL_OFF,.4f, w);
+				w.setFacLevel(Faction.ROGUE,20, 0);
+				w.setFacLevel(Faction.HEROIC,0, 15);
+				w.liteSetSkillHas(Archetype.CUT_THROAT);
+				w.cleanSetSkillHas(Feat.UNDERHANDED);//free feat
+				w.setTitle("the " + extra.capFirst(randomLists.randomThiefName()));
+				findMult = 10;
+				break;
+			case 5://thug mugger, greater
+				w = new Person(level,AIJob.THUG);
+				addWealth(WEALTH_WELL_OFF,.4f, w);
+				w.setFacLevel(Faction.ROGUE,20, 0);
+				w.setFacLevel(Faction.HEROIC,0, 15);
+				w.liteSetSkillHas(Archetype.HIRED_HATCHET);
+				w.cleanSetSkillHas(Feat.COMMON_TOUGH);//free feat
+				w.setTitle("the " + extra.capFirst(randomLists.randomThugName()));
+				findMult = 5;
+				break;
 		}
-		w.setFacLevel(Faction.HEROIC,0, 10);
 		w.hTask = HostileTask.MUG;
 		w.cleanseType = (byte)CleanseSideQuest.CleanseType.BANDIT.ordinal();
-		if (extra.chanceIn(1,100)) {
+		
+		//lucky finds chances
+		if (extra.chanceIn(findMult,100)) {
 			w.getBag().addDrawBaneSilently(DrawBane.GOLD);
 			addWealth(WEALTH_WELL_OFF,.7f, w);
 		}
-		if (extra.chanceIn(1,50)) {
+		if (extra.chanceIn(findMult,50)) {
 			w.getBag().addDrawBaneSilently(DrawBane.SILVER);
 			addWealth(WEALTH_STANDARD,.7f, w);
 		}
 		w.finishGeneration();
-		return w;
-	}
-	
-	public static Person makeMuggerWithTitle(int level) {
-		Person w = getMugger(level);
-		w.setTitle("the " + extra.capFirst(randomLists.randomMuggerName()));
 		return w;
 	}
 	
@@ -1476,7 +1512,7 @@ public class RaceFactory {
 		return w;
 	}
 	
-	public static Person getRacist(int level) {
+	public static Person makeRacist(int level) {
 		Person w = new Person(level);
 		addWealth(WEALTH_STANDARD,.3f, w);
 		w.hTask = HostileTask.RACIST;
@@ -1484,14 +1520,14 @@ public class RaceFactory {
 		w.finishGeneration();
 		return w;
 	}
-	public static Person getPeace(int level) {
+	public static Person makePeace(int level) {
 		Person w = new Person(level);
 		addWealth(WEALTH_STANDARD,.3f, w);
 		w.hTask = HostileTask.PEACE;
 		w.finishGeneration();
 		return w;
 	}
-	public static Person getBoss(int level) {
+	public static Person makeBoss(int level) {
 		Person w = new Person(level);
 		w.hTask = HostileTask.BOSS;
 		Agent a = new Agent(w,AgentGoal.OWN_SOMETHING);//should have an agent
@@ -1509,7 +1545,7 @@ public class RaceFactory {
 		return w;
 	}
 	
-	public static Person getDryad(int level) {
+	public static Person makeDryad(int level) {
 		Person w = new Person(level);
 		w.hTask = HostileTask.ANIMAL;
 		w.setFacLevel(Faction.FOREST,15,0);
@@ -1526,7 +1562,7 @@ public class RaceFactory {
 		return w;
 	}
 	
-	public static Person getLumberjack(int level) {
+	public static Person makeLumberjack(int level) {
 		Person w = new Person(level,AIJob.LUMBERJACK);
 		addWealth(WEALTH_WORKER,.5f, w);
 		w.hTask = HostileTask.LUMBER;
@@ -1552,17 +1588,19 @@ public class RaceFactory {
 		dbs.add(DrawBane.draw(DrawList.COLLECTOR));
 		if (extra.chanceIn(2,3)) {
 			dbs.add(DrawBane.draw(DrawList.COLLECTOR));
+			w.addFeatPoint();//free feat point for having more loot
 		}
 		if (extra.chanceIn(2,4)) {
 			dbs.add(DrawBane.draw(DrawList.COLLECTOR));
+			w.addFeatPoint();//free feat point for having more loot
 		}
 		w.setTitle(randomLists.randomCollectorName());
 		w.finishGeneration();
 		return w;
 	}
 	
-	public static Person getLawman(int level) {
-		Person w = new Person(level);
+	public static Person makeLawman(int level) {
+		Person w = new Person(level,AIJob.KNIGHT);
 		addWealth(WEALTH_HIGH,.6f, w);
 		w.hTask = HostileTask.LAW_EVIL;
 		w.setFacLevel(Faction.HEROIC,5,0);
@@ -1591,7 +1629,7 @@ public class RaceFactory {
 			//more generic robber
 			if (extra.chanceIn(1,2)) {
 				//higher cut of thief
-				w = new Person(level,AIJob.ROGUE);
+				w = new Person(level,extra.chanceIn(1,3) ? AIJob.THUG : AIJob.ROGUE);
 				w.setFacLevel(Faction.ROGUE,20, 0);
 				rarityMult = 3;
 				addWealth(WEALTH_WELL_OFF,.5f, w);
@@ -1635,10 +1673,9 @@ public class RaceFactory {
 			addWealth(WEALTH_WELL_OFF,.5f, w);
 		}else {
 			if (extra.chanceIn(3,4)) {//undead tool for protection
-				if (extra.chanceIn(1,3)) {
+				if (extra.chanceIn(1,3)) {//combatative hunter
 					list.add(DrawBane.SILVER);
 					list.add(DrawBane.GRAVE_DUST);
-					//combatative
 					w.addBlood(2);
 					w.setFacLevel(Faction.HUNTER,15,0);
 					w.setFacLevel(Faction.HEROIC,10,0);
@@ -1646,6 +1683,7 @@ public class RaceFactory {
 					w.hTask = HostileTask.HUNT;
 					w.setTitle(randomLists.randomHunterTitle());
 				}else {
+					//normal protected graverobber
 					list.add(DrawBane.GARLIC);
 				}
 				if (extra.chanceIn(1,2)) {
@@ -1671,26 +1709,36 @@ public class RaceFactory {
 		w.setTitle(randomLists.randomHunterTitle());
 		List<DrawBane> list = w.getBag().getDrawBanes();
 		switch (extra.getRand().nextInt(6)) {
-		case 0: case 1:
+		case 0: case 1://geared hunter
 			list.add(DrawBane.SILVER);
 			list.add(DrawBane.GARLIC);
 			w.getBag().getHand().transmuteWeapMat(MaterialFactory.getMat("silver"));
 			break;
-		case 2: case 3:
+		case 2: case 3://repel hunter
 			list.add(DrawBane.REPEL);
 			break;
-		case 4:
+		case 4://seasoned hunter
 			w.addBlood(3);
 			w.getBag().getHand().transmuteWeapMat(MaterialFactory.getMat("silver"));
 			w.cleanSetSkillHas(Perk.GRAVEYARD_SIGHT);
 			list.add(DrawBane.SILVER);
 			list.add(DrawBane.GRAVE_DUST);
 			break;
-		case 5:
+		case 5://rich hunter
 			list.add(DrawBane.PROTECTIVE_WARD);
 			w.getBag().getHand().improveEnchantChance(level);
 			break;
 		}
+		w.finishGeneration();
+		return w;
+	}
+	
+	public static Person makeSkeletonPirate(int level) {
+		Person w = new Person(level,true, Race.RaceType.PERSONABLE,null,RaceFlag.NONE,false,AIJob.PIRATE,RaceFactory.getRace(RaceID.SKELETON_NON_BEASTLY));
+		w.getBag().addDrawBaneSilently(DrawBane.GRAVE_DUST);
+		w.setPerk(Perk.GRAVEYARD_SIGHT);
+		w.hTask = HostileTask.GUARD_DUNGEON;
+		w.setTitle(randomLists.randomPirateName());
 		w.finishGeneration();
 		return w;
 	}
