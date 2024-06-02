@@ -62,13 +62,16 @@ public class BeachNode implements NodeType {
 	@Override
 	public int generate(NodeConnector holder, int from, int sizeLeft, int tier) {
 		int floor = from == 0 ? 0 : holder.getFloor(from)+1;
-		int start = getNode(holder,from,floor,tier);
+		int node = getNode(holder,from,floor,tier);
 		sizeLeft--;
-		if (sizeLeft <= 0) {//if we don't have much left to do anything, return
-			return start;
+		if (sizeLeft < 2) {//if we don't have much left to do anything, return
+			return node;
 		}
-		//TODO: generate more none-ness
-		return start;
+		int routeA = generate(holder,from,(sizeLeft/2) + (extra.chanceIn(1,3) ? 1 : 0),tier + (extra.chanceIn(1,10) ? 1 : 0));
+		int routeB = generate(holder,from,(sizeLeft/2) + (extra.chanceIn(1,3) ? 1 : 0),tier + (extra.chanceIn(1,10) ? 1 : 0));
+		holder.setMutualConnect(node, routeA);
+		holder.setMutualConnect(node, routeB);
+		return node;
 	}
 	
 	@Override
@@ -81,7 +84,7 @@ public class BeachNode implements NodeType {
 				int branchAmount = extra.randRange(4,5);
 				int branchSize = Math.max(8,size/branchAmount);
 				int dungeonsLeft = 2;//minimum two dungeons
-				int cavesLeft = 3;//minimum two caves
+				int cavesLeft = 3;//minimum three caves
 				int entry = getNode(start,0,0,tier);
 				for (int branch = 0; branch < branchAmount;branch++) {
 					int headNode = getNode(start,entry,1,tier);
@@ -169,7 +172,13 @@ public class BeachNode implements NodeType {
 
 	@Override
 	public String nodeName(NodeConnector holder, int node) {
-		// TODO Auto-generated method stub
+		switch (holder.getEventNum(node)) {
+		case 0://skeleton pirate blocker
+			Object[] doorStorage = holder.getStorageAsArray(node);
+			return holder.parent.getTown().getIsland().getWorld().hasReoccuring(holder.getStorageFirstClass(node,Agent.class))
+					? "Skeleton Barrier" : "Skeleton Door";
+		
+		}
 		return null;
 	}
 	
@@ -181,7 +190,41 @@ public class BeachNode implements NodeType {
 	
 	@Override
 	public boolean interact(NodeConnector holder, int node) {
-		// TODO Auto-generated method stub
+		switch (holder.getEventNum(node)) {
+		case 0:
+			Object[] doorStorage = holder.getStorageAsArray(node);
+			if (doorStorage[0] == null) {//already been opened
+				switch ((int)doorStorage[1]) {
+					case 0:
+						extra.println("The bone barrier is open to you.");
+						break;
+				}
+				return false;
+			}else {
+				Agent skeleAgent = (Agent) doorStorage[0];
+				String skeleName = skeleAgent.getPerson().getName();
+				if (holder.parent.getTown().getIsland().getWorld().hasReoccuring(skeleAgent)) {
+					//still has
+					switch ((int)doorStorage[1]) {
+					case 0:
+						extra.println("A bone barrier blocks the path. You hear a chittering deep within... Slay "+skeleName+" to prove your worth!");
+						break;
+					}
+					return false;
+				}else {
+					//gives way
+					switch ((int)doorStorage[1]) {
+					case 0:
+						extra.println("The bone barrier makes way in response to your victory against "+skeleName+".");
+						break;
+					}
+					doorStorage[0] = null;
+					holder.setStorage(node,doorStorage);
+					return false;
+				}
+			}
+			//all paths return by this point so return would be unreachable
+		}
 		return false;
 	}
 
