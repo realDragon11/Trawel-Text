@@ -178,6 +178,17 @@ public class Race extends Item{
 		return raceClass.getLegacy().getMap(offset);
 	}
 	
+	public String getWasddSprite() {
+		return raceClass.getWasdd().getSpriteName(raceID());
+	}
+	
+	public String getWasddMap() {
+		return raceClass.getWasdd().getMapName(raceID());
+	}
+	
+	public int getWasddNumber(int offset) {
+		return raceClass.getWasdd().getMap(offset);
+	}
 	
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException{
 		throw new RuntimeException("can't save races");

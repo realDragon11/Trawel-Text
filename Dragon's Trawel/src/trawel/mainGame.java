@@ -218,6 +218,7 @@ public class mainGame {
 	public static boolean displayNodeDeeper;
 	public static boolean displayFeatureFluff;
 	public static boolean combatFeedbackNotes;
+	public static GraphicStyle graphicStyle;
 
 	private static boolean doAutoSave = true;
 	private static PrintStream logStream;
@@ -239,13 +240,23 @@ public class mainGame {
 		public String desc() {
 			return desc;
 		}
-
 	}
-
 	public static DispAttack dispAttackLookup(String str) {
 		for (DispAttack da: DispAttack.values()) {
 			if (da.name().equals(str)) {
 				return da;
+			}
+		}
+		return null;
+	}
+	
+	public enum GraphicStyle{
+		LEGACY, WASDD;
+	}
+	public static GraphicStyle graphicStyleLookup(String str) {
+		for (GraphicStyle gs: GraphicStyle.values()) {
+			if (gs.name().equals(str)) {
+				return gs;
 			}
 		}
 		return null;
@@ -789,6 +800,19 @@ public class mainGame {
 								return false;
 							}
 						});
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return advancedCombatDisplay +" Debug Combat Display (HP per attack, attack result notes)";
+							}
+
+							@Override
+							public boolean go() {
+								advancedCombatDisplay = !advancedCombatDisplay;
+								prefs.setProperty("debug_attacks",advancedCombatDisplay+"");
+								return false;
+							}});
 						extra.menuGo(new ScrollMenuGenerator(list.size(), "last <> options", "next <> options") {
 							@Override
 							public List<MenuItem> forSlot(int i) {
@@ -810,13 +834,40 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return advancedCombatDisplay +" Debug Combat Display (HP per attack, attack result notes)";
+						return "Graphic Style: "+graphicStyle;
 					}
 
 					@Override
 					public boolean go() {
-						advancedCombatDisplay = !advancedCombatDisplay;
-						prefs.setProperty("debug_attacks",advancedCombatDisplay+"");
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> list = new ArrayList<MenuItem>();
+								list.add(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "Currently: " + graphicStyle.name();
+									}});
+								for (GraphicStyle gs: GraphicStyle.values()) {
+									list.add(new MenuSelect() {
+										@Override
+										public String title() {
+											//DOLATER: describe
+											return gs.name() + ": " + gs.name();
+										}
+
+										@Override
+										public boolean go() {
+											graphicStyle = gs;
+											prefs.setProperty("graphic_style",graphicStyle.name());
+											return true;
+										}});
+								}
+								list.add(new MenuBack("Cancel."));
+								return list;
+							}});
 						return false;
 					}});
 				mList.add(new MenuSelect() {
@@ -1580,6 +1631,7 @@ public class mainGame {
 			displayTargetSummary = Boolean.parseBoolean(prefs.getProperty("targetsummary_text","TRUE"));
 			displayNodeDeeper = Boolean.parseBoolean(prefs.getProperty("nodedeeper_text","TRUE"));
 			combatFeedbackNotes = Boolean.parseBoolean(prefs.getProperty("combatnotes_text","TRUE"));
+			graphicStyle = graphicStyleLookup(prefs.getProperty("graphic_style",GraphicStyle.WASDD.name()));
 
 			if (autoConnect) {
 				System.out.println("Please wait for the graphical to load...");

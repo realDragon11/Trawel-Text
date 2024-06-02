@@ -13,6 +13,7 @@ import derg.menus.ScrollMenuGenerator;
 import trawel.Effect;
 import trawel.Networking;
 import trawel.extra;
+import trawel.mainGame;
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.Stance;
 import trawel.personal.Person;
@@ -513,47 +514,56 @@ public class Inventory implements java.io.Serializable{
 	/**
 	 * legacy, use a converter later to decide if to use this function or a new system based on starting args
 	 */
-	public void graphicalDisplay(int side, Person p) { 
-		Networking.sendStrong("RaceFlag|"+side+"|"+p.getRaceFlag().name()+"|");
+	public void graphicalDisplay(int side, Person p) {
 		Race r_race = getRace();
-		Networking.sendStrong("RaceInv|"+side+"|" +r_race.getLegacySprite()+"|"+r_race.getLegacyMap()+"|"+r_race.getLegacyNumber(raceMap)+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|1|");
-		if (p.getScar() != null) {
-			Networking.sendStrong("AddInv|"+side+"|" + p.getScar() +"|iron|0|" + p.bloodSeed + "|" + p.getBloodCount()+"|0|0|");
-		}
-		if (r_race.racialType == Race.RaceType.PERSONABLE) {
-			for (Armor a: armorSlots) {
-				if (a == null || a.getStyle() == ArmorStyle.BODY) {
-					continue;
-				}
-				int slot = a.getArmorType();
-				String str = "AddInv|"+side+"|" +a.getStyle().legacyName[slot] +"|"+a.getBaseMap()+"|"+a.getMat().palIndex+"|"+a.bloodSeed + "|" + a.getBloodCount() + "|" +(a.getEnchant() != null ? a.getEnchant().enchantstyle :0 )+"|";
-				switch (slot) {
-				case 0:str+= "-6|";break; //head
-				case 1:str+= "-3|";break; //arms
-				case 2:str+= "-5|";break; //chest
-				case 3:str+= "-1|";break; //legs
-				case 4:str+= "-2|";break; //feet
-				}
-
-				Networking.sendStrong(str);
+		switch (mainGame.graphicStyle) {
+		case LEGACY:
+			Networking.sendStrong("RaceFlag|"+side+"|"+p.getRaceFlag().name()+"|");
+			Networking.sendStrong("RaceInv|"+side+"|" +r_race.getLegacySprite()+"|"+r_race.getLegacyMap()+"|"+r_race.getLegacyNumber(raceMap)+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|1|");
+			if (p.getScar() != null) {
+				Networking.sendStrong("AddInv|"+side+"|" + p.getScar() +"|iron|0|" + p.bloodSeed + "|" + p.getBloodCount()+"|0|0|");
 			}
-			if (p.hasSkill(Skill.SHIELD)) {
-				Networking.sendStrong("AddInv|"+side+"|shield|iron|"+hand.getMat().palIndex+"|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-7|");
+			if (r_race.racialType == Race.RaceType.PERSONABLE) {
+				for (Armor a: armorSlots) {
+					if (a == null || a.getStyle() == ArmorStyle.BODY) {
+						continue;
+					}
+					int slot = a.getArmorType();
+					String str = "AddInv|"+side+"|" +a.getStyle().legacyName[slot] +"|"+a.getBaseMap()+"|"+a.getMat().palIndex+"|"+a.bloodSeed + "|" + a.getBloodCount() + "|" +(a.getEnchant() != null ? a.getEnchant().enchantstyle :0 )+"|";
+					switch (slot) {
+					case 0:str+= "-6|";break; //head
+					case 1:str+= "-3|";break; //arms
+					case 2:str+= "-5|";break; //chest
+					case 3:str+= "-1|";break; //legs
+					case 4:str+= "-2|";break; //feet
+					}
+
+					Networking.sendStrong(str);
+				}
+				if (p.hasSkill(Skill.SHIELD)) {
+					Networking.sendStrong("AddInv|"+side+"|shield|iron|"+hand.getMat().palIndex+"|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-7|");
+				}else {
+					if (p.hasSkill(Skill.PARRY)) {
+						Networking.sendStrong("AddInv|"+side+"|parry|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount()+ "|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+ "|-4|");
+					}
+				}
+				if (hand != null) {
+					Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|2|");
+				}
 			}else {
-				if (p.hasSkill(Skill.PARRY)) {
-					Networking.sendStrong("AddInv|"+side+"|parry|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount()+ "|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+ "|-4|");
+				if (p.getBag().getRace().raceID() == RaceID.B_WOLF) {
+					Networking.sendStrong("AddInv|"+side+"|" +"wolf_teeth" +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-9|");
 				}
 			}
-			if (hand != null) {
-				Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|2|");
-			}
-		}else {
-			if (p.getBag().getRace().raceID() == RaceID.B_WOLF) {
-				Networking.sendStrong("AddInv|"+side+"|" +"wolf_teeth" +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-9|");
-
-			}
+			Networking.sendStrong("ClearInv|"+side+"|");
+			break;
+		case WASDD:
+			Networking.sendStrong("RaceFlag|"+side+"|"+p.getRaceFlag().name()+"|");
+			Networking.sendStrong("RaceInv|"+side+"|" +r_race.getWasddSprite()+"|"+r_race.getWasddMap()+"|"+r_race.getWasddNumber(raceMap)+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|1|");
+			Networking.sendStrong("ClearInv|"+side+"|");
+			break;
 		}
-		Networking.sendStrong("ClearInv|"+side+"|");
+
 	}
 	
 

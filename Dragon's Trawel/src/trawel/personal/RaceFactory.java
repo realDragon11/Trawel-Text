@@ -97,28 +97,32 @@ public class RaceFactory {
 	 * racial class used for racism comparisons now
 	 */
 	public enum RaceClass{
-		HUMAN_LIKE(LegacyType.HUMAN),
-		ELF(LegacyType.ORC),
-		ORC(LegacyType.ORC),
-		ANTHRO_FUR(LegacyType.CAT),
-		ANTHRO_REPTILE(LegacyType.MERMAID),
-		ANTHRO_EXOTIC(LegacyType.MERMAID),
-		SKELETON(LegacyType.SKELETON),
-		OTHER(LegacyType.NONE),
-		VARIES(LegacyType.VARIES),
-		GOLEM(LegacyType.GOLEM),
-		WOLF(LegacyType.WOLF),
-		BEAR(LegacyType.BEAR),
-		UNDONE_BEAST(LegacyType.WOLF),
-		DRUDGER(LegacyType.MERMAID)
-		,DEMON(LegacyType.GOLEM);
-		private LegacyType ltype;
-		RaceClass(LegacyType _ltype) {
+		HUMAN_LIKE(LegacyType.HUMAN,WasddType.HUMAN),
+		ELF(LegacyType.ORC,WasddType.HUMAN),
+		ORC(LegacyType.ORC,WasddType.HUMAN),
+		ANTHRO_FUR(LegacyType.CAT,WasddType.CAT),
+		ANTHRO_REPTILE(LegacyType.MERMAID,WasddType.CAT),
+		ANTHRO_EXOTIC(LegacyType.MERMAID,WasddType.CAT),
+		SKELETON(LegacyType.SKELETON,WasddType.CAT),
+		OTHER(LegacyType.NONE,WasddType.CAT),
+		VARIES(LegacyType.VARIES,WasddType.CAT),
+		GOLEM(LegacyType.GOLEM,WasddType.HUMAN),
+		WOLF(LegacyType.WOLF,WasddType.CAT),
+		BEAR(LegacyType.BEAR,WasddType.CAT),
+		UNDONE_BEAST(LegacyType.WOLF,WasddType.HUMAN),
+		DRUDGER(LegacyType.MERMAID,WasddType.HUMAN)
+		,DEMON(LegacyType.GOLEM,WasddType.HUMAN);
+		private final LegacyType ltype;
+		private final WasddType wtype;
+		RaceClass(LegacyType _ltype, WasddType _wtype) {
 			ltype = _ltype;
+			wtype = _wtype;
 		}
-		
 		public LegacyType getLegacy() {
 			return ltype;
+		}
+		public WasddType getWasdd() {
+			return wtype;
 		}
 	}
 	public enum LegacyType{
@@ -150,7 +154,6 @@ public class RaceFactory {
 			case B_MIMIC_CLOSED: case B_REAVER_TALL:
 				return "hiding_mimic";
 			}
-			
 			return null;
 		}
 		public String getMapName(RaceID id) {
@@ -177,7 +180,46 @@ public class RaceFactory {
 			}
 			return mapname;
 		}
-		
+	}
+	
+	public enum WasddType {
+		HUMAN("human",0,"human"),
+		CAT("cat",0,"cat");
+		private final String spritename;
+		private final String mapname;
+		/**
+		 * is used to modulo, and is zero indexed how many maps there are
+		 */
+		private final int maps;
+		private WasddType(String spritename, int maps, String mapname) {
+			this.spritename = spritename;
+			this.maps = maps;
+			this.mapname = mapname;
+		}
+		public int getMap(int offset) {
+			if (maps == 0) {
+				return 0;
+			}
+			return offset%maps;
+		}
+		public String friendlyName() {
+			if (spritename != null) {
+				return spritename;
+			}
+			return mapname;
+		}
+		public String getSpriteName(RaceID id) {
+			if (spritename != null) {
+				return "base_person_"+spritename;
+			}
+			return "";
+		}
+		public String getMapName(RaceID id) {
+			if (mapname != null) {
+				return mapname;
+			}
+			return "";
+		}
 	}
 	
 	public enum CultType{
