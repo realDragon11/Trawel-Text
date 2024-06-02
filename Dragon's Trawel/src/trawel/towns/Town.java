@@ -574,7 +574,7 @@ public class Town extends TContextOwner{
 			mainGame.globalPassTime();
 			//will get interrupted at random time
 			if (extra.chanceIn(4,5+(int)Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
-				wander(threshold);
+				wander(threshold,0);
 			}
 			Player.addTime(c.getRawTime()-wayMark);
 			mainGame.globalPassTime();
@@ -602,7 +602,7 @@ public class Town extends TContextOwner{
 			Player.addTime(wayMarkS);
 			mainGame.globalPassTime();
 			if (extra.chanceIn(4,5+(int)Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
-				wanderShip(threshold);
+				wander(threshold,1);
 			}
 			Player.addTime(c.getRawTime()-wayMarkS);
 			mainGame.globalPassTime();
@@ -673,7 +673,7 @@ public class Town extends TContextOwner{
 
 						@Override
 						public boolean go() {
-							if (!wander(1)) {
+							if (!wander(1,0)) {
 								extra.println("Nothing interesting happens.");
 							}
 							return false;
@@ -689,7 +689,7 @@ public class Town extends TContextOwner{
 
 						@Override
 						public boolean go() {
-							if (!wanderShip(1)) {
+							if (!wander(1,1)) {
 								extra.println("Nothing interesting happens.");
 							}
 							return false;
@@ -880,26 +880,30 @@ public class Town extends TContextOwner{
 		this.features.add(new TravelingFeature(this));
 	}
 	
-	public boolean wander(double threshold) {
+	public boolean wander(double threshold, int type) {
 		World world = island.getWorld();
 	
+		//encounter tick progress
 		world.addEncounterTick(1);
 		
 		//Quest bumpers
-		if (QuestReactionFactory.runMe(this)) {
+		//only appears on land
+		if (type == 0 && QuestReactionFactory.runMe(this)) {
+			//bonus progress for triggering quest reactions
+			world.addEncounterTick(1);
 			return true;
 		}
 		
-		if (Bumper.go(threshold,tier,0,this)) {
+		if (Bumper.go(threshold,tier,type,this)) {
 			return true;
 		}
-		
-		
 		
 		//deathcheater appear
-		if (extra.chanceIn(1,3)) {
+		//only appears on land
+		if (type == 0 && world.getEncounterTick() > 3 && extra.chanceIn(1,3)) {
 			Agent sp = world.getDeathCheater();
 			if (sp != null) {
+				world.resetEncounterTick();
 				world.removeReoccuringSuperPerson(sp);
 				Person p = sp.getPerson();
 				int pLevel = Player.player.getPerson().getLevel();
@@ -955,10 +959,12 @@ public class Town extends TContextOwner{
 			}
 		}
 		//spooky appear
-		if (extra.chanceIn(1,10)) {
+		//only appears on land
+		if (type == 0 && world.getEncounterTick() > 5 && extra.chanceIn(1,5)) {
 			Agent sp = world.getStalker();
 			//does not level up automatically
 			if (sp != null) {
+				world.resetEncounterTick();
 				extra.println(extra.PRE_BATTLE + sp.getPerson().getName() + " appears to haunt you!");
 				Combat c = Player.player.fightWith(sp.getPerson());
 				if (c.playerWon() > 0) {
@@ -968,8 +974,9 @@ public class Town extends TContextOwner{
 			}
 		}
 		//world encounter, also needs ticker
-		if (world.getEncounterTick() > 10 && extra.chanceIn(1,10)) {
-			world.resetEncounterTick();
+		//can appear over water
+		if (world.getEncounterTick() > 10 && extra.chanceIn(1,3)) {
+			world.resetEncounterTick();//reset always as is highest world encounter
 			Agent sp = island.getWorld().getWorldEncounter(Player.player.getPerson().getLevel()+1);
 			//does not level up automatically
 			if (sp != null) {
@@ -995,18 +1002,14 @@ public class Town extends TContextOwner{
 		//didn't activate anything
 		return false;
 	}
-	
-	private boolean wanderShip(double d) {
-		//Networking.setArea(Area.PORT);
-		return Bumper.go(d,tier,1,this);
-	}
+
 	/**
 	 * use force to indicate that you should always have a wander if possible, ie if far flung traveling
 	 * <br>
 	 * or sailingly aimlessly
 	 */
 	public boolean dockWander(boolean force) {
-		return wanderShip(force ? 0 : 3);
+		return wander(force ? 0 : 3,1);
 	}
 	
 	public ArrayList<Feature> getQuestLocationsInRange(int i){
