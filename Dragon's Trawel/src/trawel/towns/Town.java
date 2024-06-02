@@ -970,7 +970,7 @@ public class Town extends TContextOwner{
 		//world encounter, also needs ticker
 		if (world.getEncounterTick() > 10 && extra.chanceIn(1,10)) {
 			world.resetEncounterTick();
-			Agent sp = island.getWorld().getWorldEncounter();
+			Agent sp = island.getWorld().getWorldEncounter(Player.player.getPerson().getLevel()+1);
 			//does not level up automatically
 			if (sp != null) {
 				Behavior behavior = sp.getCurrent();

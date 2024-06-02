@@ -224,9 +224,9 @@ public class World extends TContextOwner{
 		return extra.randList(list);
 	}
 	
-	public Agent getWorldEncounter() {
+	public Agent getWorldEncounter(int maxLevel) {
 		List<Agent> list = new ArrayList<Agent>();
-		reoccuring.stream().filter(p -> p.hasGoal(AgentGoal.WORLD_ENCOUNTER)).forEach(list::add);
+		reoccuring.stream().filter(p -> p.hasGoal(AgentGoal.WORLD_ENCOUNTER) && p.getPerson().getLevel() <= maxLevel).forEach(list::add);
 		if (list.size() == 0) {
 			return null;
 		}

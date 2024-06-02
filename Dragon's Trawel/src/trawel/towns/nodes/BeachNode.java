@@ -22,10 +22,12 @@ public class BeachNode implements NodeType {
 		beachBasicRoller = new WeightedTable(new float[] {
 				//skeleton pirate blocker
 				0f
+				,1f//placeholder
 		});
 		beachEntryRoller = new WeightedTable(new float[] {
 				//skeleton pirate blocker
 				0f
+				,1f//placeholder
 		});
 	}
 	
