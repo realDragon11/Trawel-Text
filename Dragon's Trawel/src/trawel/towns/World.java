@@ -36,6 +36,7 @@ public class World extends TContextOwner{
 	private Calender calender = new Calender();
 	private float minLata, maxLata, minLonga, maxLonga;
 	private String moneyname;
+	private int encounterTick = 0;
 	
 	private transient ReentrantLock debtLock;
 	
@@ -222,6 +223,15 @@ public class World extends TContextOwner{
 		}
 		return extra.randList(list);
 	}
+	
+	public Agent getWorldEncounter() {
+		List<Agent> list = new ArrayList<Agent>();
+		reoccuring.stream().filter(p -> p.hasGoal(AgentGoal.WORLD_ENCOUNTER)).forEach(list::add);
+		if (list.size() == 0) {
+			return null;
+		}
+		return extra.randList(list);
+	}
 
 	public Calender getCalender() {
 		return calender;
@@ -345,6 +355,18 @@ public class World extends TContextOwner{
 
 	public String getName() {
 		return name;
+	}
+
+	public int getEncounterTick() {
+		return encounterTick;
+	}
+
+	public void resetEncounterTick() {
+		encounterTick = 0;
+	}
+	
+	public void addEncounterTick(int add) {
+		encounterTick+=add;
 	}
 
 }

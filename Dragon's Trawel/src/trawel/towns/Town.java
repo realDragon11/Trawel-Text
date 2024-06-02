@@ -35,8 +35,10 @@ import trawel.personal.item.body.Race;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
+import trawel.personal.people.Behavior;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
+import trawel.personal.people.behaviors.GateNodeBehavior;
 import trawel.quests.QuestReactionFactory;
 import trawel.time.ContextLevel;
 import trawel.time.ContextType;
@@ -879,83 +881,119 @@ public class Town extends TContextOwner{
 	}
 	
 	public boolean wander(double threshold) {
-			//Quest bumpers
-			if (QuestReactionFactory.runMe(this)) {
+		World world = island.getWorld();
+	
+		world.addEncounterTick(1);
+		
+		//Quest bumpers
+		if (QuestReactionFactory.runMe(this)) {
+			return true;
+		}
+		
+		if (Bumper.go(threshold,tier,0,this)) {
+			return true;
+		}
+		
+		
+		
+		//deathcheater appear
+		if (extra.chanceIn(1,3)) {
+			Agent sp = world.getDeathCheater();
+			if (sp != null) {
+				world.removeReoccuringSuperPerson(sp);
+				Person p = sp.getPerson();
+				int pLevel = Player.player.getPerson().getLevel();
+				if (p.getLevel() < pLevel) {
+					extra.offPrintStack();
+					p.forceLevelUp(pLevel);
+					AIClass.loot(p.getBag(), new Inventory(pLevel, Race.RaceType.PERSONABLE, null, null, null), false,p,false);
+					extra.popPrintStack();
+				}
+				int part1 = extra.randRange(0, 1);
+				switch (part1) {
+				case 0:
+					extra.print(extra.PRE_BATTLE+p.getName() +" charges you out of nowhere! They're back for more, and this time they're not fighting fair! ");
+					p.setSkillHas(Feat.AMBUSHER);
+					break;
+				case 1:
+					extra.print(extra.PRE_BATTLE+p.getName() +" charges you, screaming bloody murder! Their thirst for blood has not yet been satiated! ");
+					p.setSkillHas(Feat.HEMOVORE);
+					break;
+				default:
+					extra.print(extra.PRE_BATTLE+p.getName() + " is back!");
+					break;
+				}
+				switch (extra.randRange(0, 1)) {
+				case 0:
+					if (p.getPersonType() == PersonType.COWARDLY) {
+						extra.println("\"I was once weak and broken... no more! I will be better! I shall not break again!\"");
+						p.setTitle(extra.choose("the Unbreakable","the Unfettered"));
+					}else {
+						extra.println("\"You may have broken my body, but not my spirit!\"");
+						p.setTitle(extra.choose("the Unbroken","the Unfettered"));
+					}
+					p.setFeat(Feat.UNBREAKABLE);
+					p.setPersonType(PersonType.DEATHCHEATED);
+					break;
+				case 1:
+					if (part1 == 1) {
+						extra.println("\"Primal forces demand I take back what you took from me!\"");
+					}else {
+						extra.println("\"I fell, but they picked me back up! Now I stand beside life itself against you!\"");
+					}
+					NPCMutator.primal_Random(p);
+					break;
+				}
+				Combat c = Player.player.fightWith(p);
+				if (c.playerWon() > 0) {
+					//this.island.getWorld().removeDeathCheater(p);
+					//removed earlier, might get re-added in the combat above, which is fine
+				}else {
+					this.island.getWorld().deathCheaterToChar(sp);
+				}
 				return true;
 			}
-			
-			boolean went = Bumper.go(threshold,tier,0,this);
-			
-			if (!went && extra.chanceIn(1,3)) {
-				Agent sp = island.getWorld().getDeathCheater();
-				if (sp != null) {
-					island.getWorld().removeReoccuringSuperPerson(sp);
-					Person p = sp.getPerson();
-					went = true;
-					int pLevel = Player.player.getPerson().getLevel();
-					if (p.getLevel() < pLevel) {
-						extra.offPrintStack();
-						p.forceLevelUp(pLevel);
-						AIClass.loot(p.getBag(), new Inventory(pLevel, Race.RaceType.PERSONABLE, null, null, null), false,p,false);
-						extra.popPrintStack();
-					}
-					int part1 = extra.randRange(0, 1);
-					switch (part1) {
-					case 0:
-						extra.print(extra.PRE_BATTLE+p.getName() +" charges you out of nowhere! They're back for more, and this time they're not fighting fair! ");
-						p.setSkillHas(Feat.AMBUSHER);
-						break;
-					case 1:
-						extra.print(extra.PRE_BATTLE+p.getName() +" charges you, screaming bloody murder! Their thirst for blood has not yet been satiated! ");
-						p.setSkillHas(Feat.HEMOVORE);
-						break;
-					default:
-						extra.print(extra.PRE_BATTLE+p.getName() + " is back!");
-						break;
-					}
-					switch (extra.randRange(0, 1)) {
-					case 0:
-						if (p.getPersonType() == PersonType.COWARDLY) {
-							extra.println("\"I was once weak and broken... no more! I will be better! I shall not break again!\"");
-							p.setTitle(extra.choose("the Unbreakable","the Unfettered"));
-						}else {
-							extra.println("\"You may have broken my body, but not my spirit!\"");
-							p.setTitle(extra.choose("the Unbroken","the Unfettered"));
-						}
-						p.setFeat(Feat.UNBREAKABLE);
-						p.setPersonType(PersonType.DEATHCHEATED);
-						break;
-					case 1:
-						if (part1 == 1) {
-							extra.println("\"Primal forces demand I take back what you took from me!\"");
-						}else {
-							extra.println("\"I fell, but they picked me back up! Now I stand beside life itself against you!\"");
-						}
-						NPCMutator.primal_Random(p);
-						break;
-					}
-					Combat c = Player.player.fightWith(p);
-					if (c.playerWon() > 0) {
-						//this.island.getWorld().removeDeathCheater(p);
-						//removed earlier, might get re-added in the combat above, which is fine
-					}else {
-						this.island.getWorld().deathCheaterToChar(sp);
-					}
-				}
+		}
+		//spooky appear
+		if (extra.chanceIn(1,10)) {
+			Agent sp = world.getStalker();
+			//does not level up automatically
+			if (sp != null) {
+				extra.println(extra.PRE_BATTLE + sp.getPerson().getName() + " appears to haunt you!");
+				Combat c = Player.player.fightWith(sp.getPerson());
+				if (c.playerWon() > 0) {
+					world.removeReoccuringSuperPerson(sp);
+				}//must be slain to get it to go away
+				return true;
 			}
-			if (!went && extra.chanceIn(1,10)) {
-				Agent sp = island.getWorld().getStalker();
-				//does not level up automatically
-				if (sp != null) {
-					extra.println(extra.PRE_BATTLE + sp.getPerson().getName() + " appears to haunt you!");
-					went = true;
+		}
+		//world encounter, also needs ticker
+		if (world.getEncounterTick() > 10 && extra.chanceIn(1,10)) {
+			world.resetEncounterTick();
+			Agent sp = island.getWorld().getWorldEncounter();
+			//does not level up automatically
+			if (sp != null) {
+				Behavior behavior = sp.getCurrent();
+				if (behavior == null) {
+					//weird error?
+					throw new RuntimeException(sp.getPerson().getName() + " has a null behavior in a world encounter!");
+				}
+				if (behavior instanceof GateNodeBehavior) {
+					GateNodeBehavior GNB = (GateNodeBehavior) behavior;
+					extra.println(extra.PRE_BATTLE + sp.getPerson().getName() + " appears to challenge you!");
 					Combat c = Player.player.fightWith(sp.getPerson());
 					if (c.playerWon() > 0) {
 						island.getWorld().removeReoccuringSuperPerson(sp);
-					}//must be slain to get it to go away
+						sp.removeGoal(AgentGoal.WORLD_ENCOUNTER);
+						sp.skipCurrent();//clear the behavior from them, it still exists for the location, just not them
+						extra.println(GNB.location.getName() + " in " + GNB.location.getTown().getName() + " has a new secret for you...");
+					}//must be slain to complete challenge
 				}
+				return true;
 			}
-			return went;
+		}
+		//didn't activate anything
+		return false;
 	}
 	
 	private boolean wanderShip(double d) {

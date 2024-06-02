@@ -143,6 +143,7 @@ public class BeachNode implements NodeType {
 							}
 							break;
 						case 2://small dungeon
+							//TODO: dungeon should have a large reward somewhere in it?
 							subHead = getNode(start, headNode, start.getFloor(headNode)+1, tier+1);
 							//set to skeleton pirate blocker on dungeon
 							start.setEventNum(subHead,1);

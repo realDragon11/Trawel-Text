@@ -246,5 +246,9 @@ public class Agent extends SuperPerson{
 		}
 		super.setLocation(location);
 	}
+
+	public void skipCurrent() {
+		current = null;
+	}
 	
 }
