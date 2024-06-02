@@ -31,6 +31,7 @@ public enum ArmorStyle {
 	public boolean[] bannedSlots = new boolean[] {false,false,false,false,false};
 	public WeightedTable matTable;
 	public String[] legacyName;
+	public String wasddName;
 	
 	//FIXME: if not using global pallete swapping, also needs ids
 	ArmorStyle(){
@@ -57,6 +58,7 @@ public enum ArmorStyle {
 		PLATE.genner[3] = new NameStyleNum("plate greaves");
 		PLATE.genner[4] = new NameStyleNum("plate boots");
 		PLATE.legacyName = new String[] {"plackan_helm","plackan_gauntlets","plackan_chestplate","plackan_greaves","plackan_boots"};
+		PLATE.wasddName = "halfplate";
 		
 		MAIL.sharpMult = 1.5f;
 		MAIL.bluntMult = 1f;
@@ -72,6 +74,7 @@ public enum ArmorStyle {
 		MAIL.genner[3] = new NameStyleNum("mail skirt");
 		MAIL.genner[4] = new NameStyleNum("mail boots");
 		MAIL.legacyName = new String[] {"mail_hood","mail_gloves","mail_shirt","mail_pants","mail_boots"};
+		MAIL.wasddName = "halfplate";
 		
 		FABRIC.sharpMult = 1f;
 		FABRIC.bluntMult = 1f;
@@ -87,6 +90,7 @@ public enum ArmorStyle {
 		FABRIC.genner[3] = new NameStyleNum("trousers");
 		FABRIC.genner[4] = new NameStyleNum("shoes");
 		FABRIC.legacyName = new String[] {"homan_hat","homan_gloves","homan_tunic","homan_pants","homan_boots"};
+		FABRIC.wasddName = "halfplate";
 		
 		//https://en.wikipedia.org/wiki/Gambeson
 		SEWN.sharpMult = 1f;
@@ -103,6 +107,7 @@ public enum ArmorStyle {
 		SEWN.genner[3] = new NameStyleNum("pants");//???
 		SEWN.genner[4] = new NameStyleNum("boots");//???
 		SEWN.legacyName = new String[] {"homan_hat","homan_gloves","homan_tunic","homan_pants","homan_boots"};
+		SEWN.wasddName = "halfplate";
 		
 		GEM.sharpMult = 1.2f;
 		GEM.bluntMult = .8f;
@@ -118,6 +123,7 @@ public enum ArmorStyle {
 		GEM.genner[3] = new NameStyleNum("gemgreaves");
 		GEM.genner[4] = new NameStyleNum("gemboots");
 		GEM.legacyName = new String[] {"tevaran_helmet","tevaran_bracers","tevaran_breastplate","tevaran_pants","tevaran_boots"};
+		GEM.wasddName = "halfplate";
 		
 		BODY.sharpMult = 1f;
 		BODY.bluntMult = 1f;
@@ -132,6 +138,7 @@ public enum ArmorStyle {
 		BODY.genner[2] = new NameStyleNum("body");
 		BODY.genner[3] = new NameStyleNum("legs");
 		BODY.genner[4] = new NameStyleNum("feet");
+		BODY.wasddName = "halfplate";
 
 		//Set<ArmorStyle> have = EnumSet.noneOf(ArmorStyle.class);
 		List<ArmorStyle> vals = Arrays.asList(ArmorStyle.values());

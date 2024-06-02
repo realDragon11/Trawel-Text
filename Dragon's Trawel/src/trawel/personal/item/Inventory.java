@@ -519,9 +519,9 @@ public class Inventory implements java.io.Serializable{
 		switch (mainGame.graphicStyle) {
 		case LEGACY:
 			Networking.sendStrong("RaceFlag|"+side+"|"+p.getRaceFlag().name()+"|");
-			Networking.sendStrong("RaceInv|"+side+"|" +r_race.getLegacySprite()+"|"+r_race.getLegacyMap()+"|"+r_race.getLegacyNumber(raceMap)+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|1|");
+			Networking.sendStrong("RaceInv|"+side+"|" +r_race.getLegacySprite()+"|"+r_race.getLegacyMap()+"|"+r_race.getLegacyNumber(raceMap)+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|1|body|");
 			if (p.getScar() != null) {
-				Networking.sendStrong("AddInv|"+side+"|" + p.getScar() +"|iron|0|" + p.bloodSeed + "|" + p.getBloodCount()+"|0|0|");
+				Networking.sendStrong("AddInv|"+side+"|" + p.getScar() +"|iron|0|" + p.bloodSeed + "|" + p.getBloodCount()+"|0|0|body|");
 			}
 			if (r_race.racialType == Race.RaceType.PERSONABLE) {
 				for (Armor a: armorSlots) {
@@ -531,35 +531,75 @@ public class Inventory implements java.io.Serializable{
 					int slot = a.getArmorType();
 					String str = "AddInv|"+side+"|" +a.getStyle().legacyName[slot] +"|"+a.getBaseMap()+"|"+a.getMat().palIndex+"|"+a.bloodSeed + "|" + a.getBloodCount() + "|" +(a.getEnchant() != null ? a.getEnchant().enchantstyle :0 )+"|";
 					switch (slot) {
-					case 0:str+= "-6|";break; //head
-					case 1:str+= "-3|";break; //arms
-					case 2:str+= "-5|";break; //chest
-					case 3:str+= "-1|";break; //legs
-					case 4:str+= "-2|";break; //feet
+					case 0:str+= "-6|head|";break; //head
+					case 1:str+= "-3|arms|";break; //arms
+					case 2:str+= "-5|chest|";break; //chest
+					case 3:str+= "-1|legs|";break; //legs
+					case 4:str+= "-2|feet|";break; //feet
 					}
 
 					Networking.sendStrong(str);
 				}
-				if (p.hasSkill(Skill.SHIELD)) {
-					Networking.sendStrong("AddInv|"+side+"|shield|iron|"+hand.getMat().palIndex+"|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-7|");
-				}else {
-					if (p.hasSkill(Skill.PARRY)) {
-						Networking.sendStrong("AddInv|"+side+"|parry|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount()+ "|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+ "|-4|");
-					}
-				}
 				if (hand != null) {
-					Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|2|");
+					Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|2|hand|");
 				}
 			}else {
 				if (p.getBag().getRace().raceID() == RaceID.B_WOLF) {
-					Networking.sendStrong("AddInv|"+side+"|" +"wolf_teeth" +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-9|");
+					Networking.sendStrong("AddInv|"+side+"|" +"wolf_teeth" +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-9|body|");
 				}
 			}
 			Networking.sendStrong("ClearInv|"+side+"|");
 			break;
 		case WASDD:
 			Networking.sendStrong("RaceFlag|"+side+"|"+p.getRaceFlag().name()+"|");
-			Networking.sendStrong("RaceInv|"+side+"|" +r_race.getWasddSprite()+"|"+r_race.getWasddMap()+"|"+r_race.getWasddNumber(raceMap)+"|"+p.getRaceFlag().name()+ "|"+p.bloodSeed + "|" + p.getBloodCount() + "|1|");
+			Networking.addGraphicalRace(side,r_race.getWasddSprite(),r_race.getWasddMap(),r_race.getWasddNumber(raceMap),p.getRaceFlag().name(), p.bloodSeed, p.getBloodCount(),1,"body");
+			
+			if (r_race.racialType == Race.RaceType.PERSONABLE) {
+				for (Armor a: armorSlots) {
+					if (a == null || a.getStyle() == ArmorStyle.BODY) {
+						continue;
+					}
+					int slot = a.getArmorType();
+					switch (slot) {
+					case 0://head
+							Networking.addGraphicalInv(side,
+									"armor_"+a.getStyle().wasddName+"_helm",
+									a.getBaseMap(),a.getMat().palIndex, a.bloodSeed, a.getBloodCount(), (a.getEnchant() != null ? a.getEnchant().enchantstyle :0 ),
+									-6, "head");
+							break;
+					case 1://arms
+					Networking.addGraphicalInv(side,
+							"armor_"+a.getStyle().wasddName+"_rightarm",
+							a.getBaseMap(),a.getMat().palIndex, a.bloodSeed, a.getBloodCount(), (a.getEnchant() != null ? a.getEnchant().enchantstyle :0 ),
+							-3, "arms");
+					Networking.addGraphicalInv(side,
+							"armor_"+a.getStyle().wasddName+"_leftarm",
+							a.getBaseMap(),a.getMat().palIndex, a.bloodSeed, a.getBloodCount(), (a.getEnchant() != null ? a.getEnchant().enchantstyle :0 ),
+							-3, "arms");break; 
+					case 2://chest
+						Networking.addGraphicalInv(side,
+								"armor_"+a.getStyle().wasddName+"_chest",
+								a.getBaseMap(),a.getMat().palIndex, a.bloodSeed, a.getBloodCount(), (a.getEnchant() != null ? a.getEnchant().enchantstyle :0 ),
+								-3, "chest");
+						break;
+					case 3://legs
+						Networking.addGraphicalInv(side,
+								"armor_"+a.getStyle().wasddName+"_legs",
+								a.getBaseMap(),a.getMat().palIndex, a.bloodSeed, a.getBloodCount(), (a.getEnchant() != null ? a.getEnchant().enchantstyle :0 ),
+								-1, "legs");
+						break;
+					case 4://feet
+						Networking.addGraphicalInv(side,
+								"armor_"+a.getStyle().wasddName+"_boots",
+								a.getBaseMap(),a.getMat().palIndex, a.bloodSeed, a.getBloodCount(), (a.getEnchant() != null ? a.getEnchant().enchantstyle :0 ),
+								-2, "feet");
+					}
+				}
+				if (hand != null) {
+					Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|2|hand|");
+				}
+			}
+			//commit changes
 			Networking.sendStrong("ClearInv|"+side+"|");
 			break;
 		}

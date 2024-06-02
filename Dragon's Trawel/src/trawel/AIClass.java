@@ -290,11 +290,11 @@ public class AIClass {
 						Networking.charUpdate();
 						String depth = null;
 						switch (i) {
-						case 0:depth= "-6|";break; //head
-						case 1:depth= "-3|";break; //arms
-						case 2:depth= "-5|";break; //chest
-						case 3:depth= "-1|";break; //legs
-						case 4:depth= "-2|";break; //feet
+						case 0:depth= "head|";break; //head
+						case 1:depth= "arms|";break; //arms
+						case 2:depth= "chest|";break; //chest
+						case 3:depth= "legs|";break; //legs
+						case 4:depth= "feet|";break; //feet
 						}
 						Networking.send("RemoveInv|1|" + depth);
 						Networking.waitIfConnected(200L);
@@ -308,11 +308,11 @@ public class AIClass {
 						Networking.charUpdate();
 						String depth = null;
 						switch (i) {
-						case 0:depth= "-6|";break; //head
-						case 1:depth= "-3|";break; //arms
-						case 2:depth= "-5|";break; //chest
-						case 3:depth= "-1|";break; //legs
-						case 4:depth= "-2|";break; //feet
+						case 0:depth= "head|";break; //head
+						case 1:depth= "arms|";break; //arms
+						case 2:depth= "chest|";break; //chest
+						case 3:depth= "legs|";break; //legs
+						case 4:depth= "feet|";break; //feet
 						}
 						Networking.send("RemoveInv|1|" + depth);
 						//no wait time
@@ -323,7 +323,7 @@ public class AIClass {
 			}
 			if (compareItem(stash.getHand(),loot.getHand(),p)) {
 				if (graphicalDisplay) {
-					Networking.send("RemoveInv|1|2|");
+					Networking.send("RemoveInv|1|hand|");
 					Networking.waitIfConnected(200L);
 				}
 				if (display) {
@@ -339,7 +339,7 @@ public class AIClass {
 				p.resetCapacity();
 			}else {
 				if (graphicalDisplay) {
-					Networking.send("RemoveInv|1|2|");
+					Networking.send("RemoveInv|1|hand|");
 					//no wait
 				}
 				if (aetherStuff) {
@@ -469,11 +469,11 @@ public class AIClass {
 					Networking.charUpdate();
 					String depth = null;
 					switch (a.getSlot()) {
-					case 0:depth= "-6|";break; //head
-					case 1:depth= "-3|";break; //arms
-					case 2:depth= "-5|";break; //chest
-					case 3:depth= "-1|";break; //legs
-					case 4:depth= "-2|";break; //feet
+					case 0:depth= "head|";break; //head
+					case 1:depth= "arms|";break; //arms
+					case 2:depth= "chest|";break; //chest
+					case 3:depth= "legs|";break; //legs
+					case 4:depth= "feet|";break; //feet
 					}
 					Networking.send("RemoveInv|1|" + depth);
 				}
@@ -496,7 +496,7 @@ public class AIClass {
 				}
 			}
 			
-			Networking.send("RemoveInv|1|2|");
+			Networking.send("RemoveInv|1|hand|");
 		}else {
 			if (canAtomSmash) {
 				for (int slot = 0; slot < 5; slot++) {

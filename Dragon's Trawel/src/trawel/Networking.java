@@ -517,4 +517,12 @@ public class Networking {
 				+"|" +att.getAttack().getSoundType()+"|");
 	}
 	
+	public static void addGraphicalInv(int side,String spriteName,String mapName,int mapIndex,int bloodSeed,double bloodCount,int enchantStyle, int depth, String clearLayer) {
+		sendStrong("AddInv|"+side+"|" +spriteName +"|"+mapName+"|"+mapIndex+"|"+bloodSeed + "|" + bloodCount + "|" +enchantStyle+"|"+depth+"|"+clearLayer+"|");
+	}
+	
+	public static void addGraphicalRace(int side,String spriteName,String mapName,int mapIndex,String raceFlag,int bloodSeed,double bloodCount, int depth, String clearLayer) {
+		sendStrong("RaceInv|"+side+"|" +spriteName +"|"+mapName+"|"+mapIndex+"|"+raceFlag+"|"+bloodSeed + "|" + bloodCount+"|"+depth+"|"+clearLayer+"|");
+	}
+	
 }
