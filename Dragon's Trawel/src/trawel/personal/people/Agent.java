@@ -38,7 +38,12 @@ public class Agent extends SuperPerson{
 	private byte flags = 0b0;
 	
 	public enum AgentGoal {
-		NONE, DEATHCHEAT, SPOOKY, OWN_SOMETHING, DELVE_HELP, WORLD_ENCOUNTER
+		NONE, DEATHCHEAT, SPOOKY, OWN_SOMETHING, DELVE_HELP, 
+		/**
+		 * can only be assigned at char gen, dictates that the player can randomly encounter and kill them,
+		 * at which point they lose this goal and enter the normal system (if the deathcheat)
+		 */
+		WORLD_ENCOUNTER
 	}
 	
 	public enum AgentFlag{
@@ -106,6 +111,9 @@ public class Agent extends SuperPerson{
 	public List<TimeEvent> passTime(double d, TimeContext calling) {
 		if (current == null) {
 			return null;
+		}
+		if (current.getTimeTo() == Double.NaN) {
+			return null;//special value that means it can't advance
 		}
 		//will need to look at connections and features
 		//a* pathing?
@@ -209,6 +217,9 @@ public class Agent extends SuperPerson{
 	 */
 	public boolean setActionTimeMin(double time) {
 		if (current == null) {
+			return false;
+		}
+		if (current.getTimeTo() == Double.NaN) {
 			return false;
 		}
 		if (current.getTimeTo() < time) {

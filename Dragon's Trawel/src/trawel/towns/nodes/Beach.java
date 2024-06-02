@@ -11,19 +11,13 @@ import trawel.towns.nodes.BossNode.BossType;
 public class Beach extends NodeFeature {
 
 	private static final long serialVersionUID = 1L;
-	private int veinsLeft = 0;
 	private int size;
 	private BossType bossType;
-	private int totalMined = 0;
 	
-	public Beach(String name,Town t, SuperPerson _owner,Shape s) {
-		this(name,t,50,t.getTier(),s,BossType.NONE);
-		owner = _owner;
-	}
 	public Beach(String _name,Town t,int _size, int _tier, Shape s, BossType _bossType) {
 		background_area = "beach";
 		tutorialText = "Beach";
-		area_type = Area.MOUNTAIN;
+		area_type = Area.BEACH;
 		name = _name;
 		town = t;
 		tier = _tier;
@@ -67,9 +61,4 @@ public class Beach extends NodeFeature {
 	protected BossType bossType() {
 		return bossType;
 	}
-	@Override
-	public String sizeDesc() {
-		return super.sizeDesc() + " V: " +veinsLeft;
-	}
-
 }

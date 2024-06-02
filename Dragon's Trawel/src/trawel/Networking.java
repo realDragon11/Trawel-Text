@@ -262,25 +262,30 @@ public class Networking {
 	}
 	
 	public enum Area{
-		TOWN("main","forest","town"),
-		ARENA("arena","forest","arena"),
-		CHAMPION("champ","mountain","champion"),
-		FOREST("forest","forest","grove"),
-		MINE("mine","mine","mine"),
-		CAVE("mine","mine","grove"),
-		MOUNTAIN("mountain","mountain","mountain"),
+		ROADS("main","forest","grove"),
 		PORT("mountain","forest","town"),
-		SLUM("dungeon","mine","store"),
+		TOWN("main","forest","town"),
+		
 		LOT("shop","forest","lot"),
 		GARDEN("shop","forest","garden"),
 		SHOP("shop","mine","store"),
 		ALTAR("mountain","mountain","altar"),
 		MISC_SERVICE("shop","forest","store"),
 		ORACLE("mountain","forest","oracle"),
+		INN("inn","forest","inn"),
+		SLUM("dungeon","mine","store"),
+		
+		ARENA("arena","forest","arena"),
+		CHAMPION("champ","mountain","champion"),
+		
+		FOREST("forest","forest","grove"),
+		MOUNTAIN("mountain","mountain","mountain"),
+		
+		MINE("mine","mine","mine"),
+		CAVE("mine","mine","grove"),
 		DUNGEON("dungeon","mine","dungeon"),
 		GRAVEYARD("dungeon","forest","dungeon"),
-		INN("inn","forest","inn"),
-		ROADS("main","forest","grove")
+		BEACH("mountain","mountain","mountain")
 		;
 		public final String musicName, backName, discordImageSmall;
 		Area(String _musicName, String _backName,String _imageSmall) {

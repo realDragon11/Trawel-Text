@@ -8,8 +8,8 @@ import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
+import trawel.personal.people.behaviors.GateNodeBehavior;
 import trawel.time.TimeContext;
-import trawel.towns.nodes.NodeFeature.Shape;
 
 public class BeachNode implements NodeType {
 	
@@ -53,8 +53,10 @@ public class BeachNode implements NodeType {
 			Person skelePerson = RaceFactory.makeDemonOverlord(holder.getLevel(node));
 			Agent skeleAgent = skelePerson.getMakeAgent(AgentGoal.WORLD_ENCOUNTER);
 			holder.parent.getTown().getIsland().getWorld().addReoccuring(skeleAgent);
+			GateNodeBehavior behavior = new GateNodeBehavior(skeleAgent,holder.parent);
+			skeleAgent.enqueueBehavior(behavior);
 			holder.setForceGo(node,true);
-			holder.setStorage(node,skeleAgent);
+			holder.setStorage(node,behavior);
 			break;
 		}
 	}
@@ -174,17 +176,17 @@ public class BeachNode implements NodeType {
 	public String nodeName(NodeConnector holder, int node) {
 		switch (holder.getEventNum(node)) {
 		case 0://skeleton pirate blocker
-			Object[] doorStorage = holder.getStorageAsArray(node);
-			return holder.parent.getTown().getIsland().getWorld().hasReoccuring(holder.getStorageFirstClass(node,Agent.class))
-					? "Skeleton Barrier" : "Skeleton Door";
-		
+			return holder.getStorageFirstClass(node,GateNodeBehavior.class).getNodeName();		
 		}
 		return null;
 	}
 	
 	@Override
 	public String interactString(NodeConnector holder, int node) {
-		// TODO Auto-generated method stub
+		switch (holder.getEventNum(node)) {
+		case 0://skeleton pirate blocker
+			return holder.getStorageFirstClass(node,GateNodeBehavior.class).getInteractText();		
+		}
 		return null;
 	}
 	
@@ -192,34 +194,19 @@ public class BeachNode implements NodeType {
 	public boolean interact(NodeConnector holder, int node) {
 		switch (holder.getEventNum(node)) {
 		case 0:
-			Object[] doorStorage = holder.getStorageAsArray(node);
-			if (doorStorage[0] == null) {//already been opened
-				switch ((int)doorStorage[1]) {
-					case 0:
-						extra.println("The bone barrier is open to you.");
-						break;
-				}
+			GateNodeBehavior gnb = holder.getStorageFirstClass(node,GateNodeBehavior.class);
+			if (gnb.opened) {//already been opened
+				extra.println(gnb.getOpenedText());
 				return false;
 			}else {
-				Agent skeleAgent = (Agent) doorStorage[0];
-				String skeleName = skeleAgent.getPerson().getName();
-				if (holder.parent.getTown().getIsland().getWorld().hasReoccuring(skeleAgent)) {
-					//still has
-					switch ((int)doorStorage[1]) {
-					case 0:
-						extra.println("A bone barrier blocks the path. You hear a chittering deep within... Slay "+skeleName+" to prove your worth!");
-						break;
-					}
+				if (gnb.checkOpened()) {
+					//opening!
+					extra.println(gnb.getOpeningText());
 					return false;
 				}else {
-					//gives way
-					switch ((int)doorStorage[1]) {
-					case 0:
-						extra.println("The bone barrier makes way in response to your victory against "+skeleName+".");
-						break;
-					}
-					doorStorage[0] = null;
-					holder.setStorage(node,doorStorage);
+					//still locked
+					extra.println(gnb.getLockedInteract());
+					NodeConnector.setKickGate();//gate kick back
 					return false;
 				}
 			}
@@ -230,8 +217,7 @@ public class BeachNode implements NodeType {
 
 	@Override
 	public DrawBane[] dbFinds() {
-		// TODO Auto-generated method stub
-		return null;
+		return new DrawBane[] {DrawBane.WOOD,DrawBane.TELESCOPE,DrawBane.KNOW_FRAG};
 	}
 
 	@Override
