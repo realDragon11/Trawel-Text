@@ -64,6 +64,7 @@ import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Player;
 import trawel.quests.QuestReactionFactory;
 import trawel.towns.Calender;
+import trawel.towns.Town;
 import trawel.towns.World;
 import trawel.towns.events.TownFlavorFactory;
 import trawel.towns.services.Oracle;
@@ -1167,7 +1168,7 @@ public class mainGame {
 
 					@Override
 					public boolean go() {
-						adventure1(false,false,false,false);
+						adventure1(false,false,false,false,false);
 						return true;
 					}});
 				mList.add(new MenuSelect() {
@@ -1179,7 +1180,7 @@ public class mainGame {
 
 					@Override
 					public boolean go() {
-						adventure1(false,true,true,true);
+						adventure1(false,true,true,true,false);
 						return true;
 					}});
 				mList.add(new MenuSelect() {
@@ -1248,7 +1249,20 @@ public class mainGame {
 
 									@Override
 									public boolean go() {
-										adventure1(true,false,false,false);
+										adventure1(true,false,false,false,false);
+										return true;
+									}});
+								mList.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Debug Trawel";
+									}
+
+									@Override
+									public boolean go() {
+										adventure1(true,false,false,false,true);
+										
 										return true;
 									}});
 								mList.add(new MenuSelect() {
@@ -2086,7 +2100,7 @@ public class mainGame {
 	}
 
 
-	public static void adventure1(boolean cheaty, boolean displayFight, boolean rerolls, boolean advancedDisplay){
+	public static void adventure1(boolean cheaty, boolean displayFight, boolean rerolls, boolean advancedDisplay, boolean debug){
 		baseSetup1();
 		if (!finalSetup1) {
 			randomLists.init();
@@ -2167,9 +2181,24 @@ public class mainGame {
 		if (cheaty) {
 			Player.player.setCheating();
 			story = new StoryNone();
-			//player.getPerson().addXp(9999);
-			Player.player.addGold(1000);
-			Player.bag.addAether(100000);
+			if (debug) {
+				Player.player.getPerson().setFlag(PersonFlag.AUTOBATTLE,true);
+				Player.player.getPerson().setFlag(PersonFlag.AUTOLOOT,true);
+				Player.player.getPerson().setFlag(PersonFlag.AUTOLEVEL,true);
+				Player.player.getPerson().addXp(99999);
+				Weapon w = Player.player.getPerson().getBag().getHand();
+				for (int i = 0; i < 50;i++) {
+					w.levelUp();
+				}
+				for (World wo: WorldGen.plane.worlds()) {
+					wo.setVisited();
+					Player.player.addGold(999999, wo);
+				}
+				for (Town t: WorldGen.plane.getTowns()) {
+					t.visited = Math.max(2,t.visited);
+				}
+				Player.player.getPerson().getBag().addAether(999999);
+			}
 		}
 		story.storyStart();
 		player.storyHold = story;

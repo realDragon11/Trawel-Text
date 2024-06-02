@@ -177,7 +177,7 @@ public class GroveNode implements NodeType{
 		case 3:
 			Person mugger = RaceFactory.makeMugger(holder.getLevel(madeNode));
 			String mugName = mugger.getTitle().substring(4);//remove "the "
-			GenericNode.setBasicRagePerson(holder,madeNode,mugger,mugName,extra.capFirst(mugName) + " attacks you!");
+			GenericNode.setBasicRagePerson(holder,madeNode,mugger,mugName,"The "+extra.capFirst(mugName) + " attacks you!");
 		break;
 		case 4:
 			int blevel = holder.getLevel(madeNode)-2;

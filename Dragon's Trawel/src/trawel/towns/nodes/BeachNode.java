@@ -21,13 +21,15 @@ public class BeachNode implements NodeType {
 	public BeachNode() {
 		beachBasicRoller = new WeightedTable(new float[] {
 				//skeleton pirate blocker
-				0f
-				,1f//placeholder
+				0f,
+				//pirate rager
+				1f
 		});
 		beachEntryRoller = new WeightedTable(new float[] {
 				//skeleton pirate blocker
-				0f
-				,1f//placeholder
+				0f,
+				//pirate rager
+				1f
 		});
 	}
 	
@@ -52,23 +54,19 @@ public class BeachNode implements NodeType {
 	public void apply(NodeConnector holder, int node) {
 		switch (holder.getEventNum(node)) {
 		case 1://beach dungeon blocker
-			Person skelePerson; 
-			int gateType = extra.randRange(1,3);
-			switch (gateType) {
-				default: case 0:
-					//skeleton pirate
-					skelePerson = RaceFactory.makeSkeletonPirate(holder.getLevel(node));
-					break;
-				case 1://hidden map
-					skelePerson = RaceFactory.makeCollector(holder.getLevel(node));
-					break;
-			}
+			int gateType = extra.randRange(0,1);
+			Person skelePerson = RaceFactory.makeGateNodeBlocker(holder.getLevel(node),gateType);
 			Agent skeleAgent = skelePerson.getMakeAgent(AgentGoal.WORLD_ENCOUNTER);
 			holder.parent.getTown().getIsland().getWorld().addReoccuring(skeleAgent);
 			GateNodeBehavior behavior = new GateNodeBehavior(skeleAgent,holder.parent);
 			skeleAgent.enqueueBehavior(behavior);
 			holder.setForceGo(node,true);
 			holder.setStorage(node,behavior);
+			break;
+		case 2://pirate rager
+			Person pirate = RaceFactory.makePirate(holder.getLevel(node));
+			String mugName = pirate.getTitle().substring(4);//remove "the "
+			GenericNode.setBasicRagePerson(holder,node,pirate,mugName,"The "+extra.capFirst(mugName) + " attacks you!");
 			break;
 		}
 	}
@@ -81,8 +79,8 @@ public class BeachNode implements NodeType {
 		if (sizeLeft < 2) {//if we don't have much left to do anything, return
 			return node;
 		}
-		int routeA = generate(holder,from,(sizeLeft/2) + (extra.chanceIn(1,3) ? 1 : 0),tier + (extra.chanceIn(1,10) ? 1 : 0));
-		int routeB = generate(holder,from,(sizeLeft/2) + (extra.chanceIn(1,3) ? 1 : 0),tier + (extra.chanceIn(1,10) ? 1 : 0));
+		int routeA = generate(holder,node,(sizeLeft/2) + (extra.chanceIn(1,3) ? 1 : 0),tier + (extra.chanceIn(1,10) ? 1 : 0));
+		int routeB = generate(holder,node,(sizeLeft/2) + (extra.chanceIn(1,3) ? 1 : 0),tier + (extra.chanceIn(1,10) ? 1 : 0));
 		holder.setMutualConnect(node, routeA);
 		holder.setMutualConnect(node, routeB);
 		return node;
@@ -94,8 +92,8 @@ public class BeachNode implements NodeType {
 		start.parent = owner;
 		switch (owner.getShape()) {
 			case TREASURE_BEACH://minimum rec'd size of 32, is probably more volatile than usual nodefeatures
-				//split into 4-5 main quadrants, min 3 each
-				int branchAmount = extra.randRange(4,5);
+				//split into 3-4 main quadrants, min 3 each
+				int branchAmount = extra.randRange(3,4);
 				int branchSize = Math.max(8,size/branchAmount);
 				int dungeonsLeft = 2;//minimum two dungeons
 				int cavesLeft = 3;//minimum three caves
@@ -115,14 +113,14 @@ public class BeachNode implements NodeType {
 						if (subNum > 0) {
 							//if we roll a dungeon, or if we won't meet quota without one forced per branch remaining
 							//first branch is immune to minimum if 3 or less, since 3-0 = 3, but can still roll naturally
-							if (extra.chanceIn(1,20) || (dungeonYet == false && dungeonsLeft > 3-branch)) {
+							if (extra.chanceIn(1,20) || (dungeonYet == false && dungeonsLeft >= 3-branch)) {
 								dungeonYet = true;
 								dungeonsLeft--;
 								subType = 2;
 							}else {
 								//dungeon takes priority over cave
 								//if we roll a cave, or haven't met quota yet
-								if (extra.chanceIn(1,10) || (caveYet == false && cavesLeft > 3-branch)) {
+								if (extra.chanceIn(1,10) || (caveYet == false && cavesLeft >= 3-branch)) {
 									caveYet = true;
 									cavesLeft--;
 									subType = 1;
@@ -161,6 +159,7 @@ public class BeachNode implements NodeType {
 							start.setEventNum(subHead,1);
 							int dungeonNodes = NodeType.NodeTypeNum.DUNGEON.singleton.generate(start,subHead,subSize,tier+1);
 							start.setMutualConnect(subHead,dungeonNodes);
+							start.setMutualConnect(headNode,subHead);
 							break;
 						}
 						//we decided what branch we want to use fully, subtract out budget
@@ -188,7 +187,7 @@ public class BeachNode implements NodeType {
 	@Override
 	public String nodeName(NodeConnector holder, int node) {
 		switch (holder.getEventNum(node)) {
-		case 0://skeleton pirate blocker
+		case 1://skeleton pirate blocker
 			return holder.getStorageFirstClass(node,GateNodeBehavior.class).getNodeName();		
 		}
 		return null;
@@ -197,7 +196,7 @@ public class BeachNode implements NodeType {
 	@Override
 	public String interactString(NodeConnector holder, int node) {
 		switch (holder.getEventNum(node)) {
-		case 0://skeleton pirate blocker
+		case 1://skeleton pirate blocker
 			return holder.getStorageFirstClass(node,GateNodeBehavior.class).getInteractText();		
 		}
 		return null;
@@ -206,7 +205,7 @@ public class BeachNode implements NodeType {
 	@Override
 	public boolean interact(NodeConnector holder, int node) {
 		switch (holder.getEventNum(node)) {
-		case 0:
+		case 1:
 			GateNodeBehavior gnb = holder.getStorageFirstClass(node,GateNodeBehavior.class);
 			if (gnb.opened) {//already been opened
 				extra.println(gnb.getOpenedText());
@@ -218,7 +217,7 @@ public class BeachNode implements NodeType {
 					return false;
 				}else {
 					//still locked
-					extra.println(gnb.getLockedInteract());
+					extra.println(gnb.getLockedText());
 					NodeConnector.setKickGate();//gate kick back
 					return false;
 				}

@@ -40,6 +40,8 @@ public class GateNodeBehavior extends Behavior {
 		switch (type) {
 		case 0:
 			return "This Bone Barrier is open for you, forming a path.";
+		case 1:
+			return "This Hidden Stairwell has been dug up, paving the way forward.";
 		}
 		return "ERROR";
 	}
@@ -47,6 +49,8 @@ public class GateNodeBehavior extends Behavior {
 		switch (type) {
 		case 0:
 			return "The Bone Barrier makes way in response to your victory against "+getName()+" .";
+		case 1:
+			return "You find a Hidden Stairwell digging up a spot marked a map "+getName() +" had.";
 		}
 		return "ERROR";
 	}
@@ -54,6 +58,8 @@ public class GateNodeBehavior extends Behavior {
 		switch (type) {
 		case 0:
 			return "A Bone Barrier blocks the path forward. You hear a subtle chittering deep within: Slay "+getName()+" to prove your worth...";
+		case 1:
+			return "There is an area covered with potholes. You hear a faint whisper from below the earth: Slay "+getName()+" for the map...";
 		}
 		return "ERROR";
 	}
@@ -62,6 +68,8 @@ public class GateNodeBehavior extends Behavior {
 		switch (type) {
 		case 0:
 			return "Bone Path";
+		case 1:
+			return "Hidden Stairwell";
 		}
 		return "ERROR";
 	}
@@ -69,6 +77,8 @@ public class GateNodeBehavior extends Behavior {
 		switch (type) {
 		case 0:
 			return "Bone Barrier";
+		case 1:
+			return "Pothole Clearing";
 		}
 		return "ERROR";
 	}
@@ -77,6 +87,8 @@ public class GateNodeBehavior extends Behavior {
 		switch (type) {
 		case 0:
 			return "Examine Bone Path.";
+		case 1:
+			return "Examine Hidden Stairwell.";
 		}
 		return "ERROR";
 	}
@@ -85,6 +97,8 @@ public class GateNodeBehavior extends Behavior {
 		switch (type) {
 		case 0:
 			return "Test Bone Barrier.";
+		case 1:
+			return "Test Pothole Clearing.";
 		}
 		return "ERROR";
 	}

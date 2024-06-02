@@ -39,6 +39,7 @@ import trawel.towns.fort.WizardTower;
 import trawel.towns.misc.Docks;
 import trawel.towns.misc.Garden;
 import trawel.towns.misc.Garden.PlantFill;
+import trawel.towns.nodes.Beach;
 import trawel.towns.nodes.BossNode.BossType;
 import trawel.towns.nodes.Dungeon;
 import trawel.towns.nodes.Graveyard;
@@ -326,6 +327,7 @@ public class WorldGen {
 		Town owal = new Town("Owal",9,teran,(byte)13,(byte)7);
 		//connects added later
 		owal.addFeature(new Docks("The Great Bay", owal));
+		owal.addFeature(new Beach("Shipwreck Shore", owal,40,9,Shape.TREASURE_BEACH, null));
 		owal.addFeature(new Store("Edible Exports",8,10));
 		owal.addFeature(new Store(owal,"Equipment Imports",10,6,3));//general store with reduced size
 		owal.addFeature(new Garden(owal,"Overworked Fields",1.1f,PlantFill.FOOD));

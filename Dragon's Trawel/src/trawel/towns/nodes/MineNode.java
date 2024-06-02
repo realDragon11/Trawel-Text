@@ -290,7 +290,7 @@ public class MineNode implements NodeType{
 		case 10:
 			Person mugger = RaceFactory.makeMugger(holder.getLevel(madeNode));
 			String mugName = mugger.getTitle().substring(4);//remove "the "
-			GenericNode.setBasicRagePerson(holder,madeNode, mugger,mugName,extra.capFirst(mugName) + " attacks you!");
+			GenericNode.setBasicRagePerson(holder,madeNode, mugger,mugName,"The "+extra.capFirst(mugName) + " attacks you!");
 			break;
 		case 11://trapped treasure chamber
 			GenericNode.applyTrappedChamber(holder,madeNode);

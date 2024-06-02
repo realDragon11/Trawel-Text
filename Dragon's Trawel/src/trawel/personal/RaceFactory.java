@@ -1735,12 +1735,34 @@ public class RaceFactory {
 	
 	public static Person makeSkeletonPirate(int level) {
 		Person w = new Person(level,true, Race.RaceType.PERSONABLE,null,RaceFlag.NONE,false,AIJob.PIRATE,RaceFactory.getRace(RaceID.SKELETON_NON_BEASTLY));
+		addWealth(WEALTH_WELL_OFF,.4f, w);
 		w.getBag().addDrawBaneSilently(DrawBane.GRAVE_DUST);
 		w.setPerk(Perk.GRAVEYARD_SIGHT);
 		w.hTask = HostileTask.GUARD_DUNGEON;
-		w.setTitle(randomLists.randomPirateName());
+		w.setTitle("the " + extra.capFirst(randomLists.randomPirateName()));
 		w.finishGeneration();
 		return w;
+	}
+	
+	public static Person makePirate(int level) {
+		Person w = new Person(level,AIJob.PIRATE);
+		addWealth(WEALTH_STANDARD,.3f, w);
+		w.setFacLevel(Faction.ROGUE,15, 0);
+		w.setFacLevel(Faction.HEROIC,0, 10);
+		w.hTask = HostileTask.MUG;
+		w.setTitle("the " + extra.capFirst(randomLists.randomPirateName()));
+		w.finishGeneration();
+		return w;
+	}
+	
+	public static Person makeGateNodeBlocker(int level,int num) {
+		switch (num) {
+		case 0:
+			return makeSkeletonPirate(level);
+		case 1:
+			return makeCollector(level);
+		}
+		throw new RuntimeException("Invalid GateNodeBlocker num: "+num);
 	}
 
 	public static int scarFor(RaceID race) {

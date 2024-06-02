@@ -305,7 +305,7 @@ public class BumperFactory {
 				
 				@Override
 				public void activate(int level) {
-					Person p = RaceFactory.makeMugger(level);
+					Person p = RaceFactory.makePirate(level);
 					
 					extra.println(extra.PRE_BATTLE+"A pirate challenges you for your booty!");
 					Combat c = Player.player.fightWith(p);
