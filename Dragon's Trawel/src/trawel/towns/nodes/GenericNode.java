@@ -769,6 +769,32 @@ public class GenericNode implements NodeType {
 									}
 									return true;
 								}});
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return extra.RESULT_WARN+"Cast Knock on the "+name+". "+AttributeBox.getStatHintByIndex(2);
+								}
+
+								@Override
+								public boolean go() {
+									if (Player.player.getPerson().contestedRoll(
+										Player.player.getPerson().getClarity(), IEffectiveLevel.attributeChallengeEasy(holder.getLevel(node)))
+										>=0){
+										//lockpicked door
+										extra.println(extra.RESULT_PASS+"You open the "+name+" with a Knock cantrip.");
+										holder.setStateNum(node,4);//opened
+										holder.setForceGo(node, false);
+										String newName = "Opened " +name;
+										holder.findBehind(node,newName);
+										holder.setStorage(node,newName);
+									}else {
+										//failed
+										Player.player.getPerson().addEffect(Effect.BURNOUT);
+										extra.println(extra.RESULT_FAIL+"Your Knock cantrip on the "+name+" fizzles.");
+									}
+									return true;
+								}});
 						}
 						list.add(new MenuBack());
 						return list;
@@ -803,6 +829,16 @@ public class GenericNode implements NodeType {
 							,"The lock here has been tampered with."
 							,"The tumblers have been stuck together, rendering the lock useless."
 							,"The lock is intact- but only externally."
+							)
+							);
+					break;
+				case 4://opened with knock
+					extra.println(
+							extra.choose(
+							"The lock has been opened with a cantrip."
+							,"The lock here has been enchanted open."
+							,"The tumblers magically slide back to open, rendering the lock useless."
+							,"The lock is intact- but not functional."
 							)
 							);
 					break;

@@ -220,9 +220,11 @@ public class BeachNode implements NodeType {
 				default: case 0:
 					return "Locked " + holder.getStorageFirstClass(node, String.class);
 				case 1:
-					return "Picked " + holder.getStorageFirstClass(node, String.class);
-				case 2:
 					return "Smashed " + holder.getStorageFirstClass(node, String.class);
+				case 2:
+					return "Picked " + holder.getStorageFirstClass(node, String.class);
+				case 3:
+					return "Opened " + holder.getStorageFirstClass(node, String.class);
 			}
 		}
 		return null;
@@ -317,7 +319,7 @@ public class BeachNode implements NodeType {
 										>=0){
 										//broke down door
 										extra.println(extra.RESULT_PASS+"You smash open the "+chestname+".");
-										holder.setStateNum(node,2);//broken open
+										holder.setStateNum(node,1);//broken open
 										beachChestLoot(holder.getLevel(node));
 										holder.findBehind(node,chestname);
 									}else {
@@ -342,7 +344,7 @@ public class BeachNode implements NodeType {
 										>=0){
 										//lockpicked door
 										extra.println(extra.RESULT_PASS+"You pick open the "+chestname+".");
-										holder.setStateNum(node,1);//picked open
+										holder.setStateNum(node,2);//picked open
 										beachChestLoot(holder.getLevel(node));
 										holder.findBehind(node,chestname);
 									}else {
@@ -353,17 +355,46 @@ public class BeachNode implements NodeType {
 									}
 									return true;
 								}});
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return extra.RESULT_WARN+"Cast Knock on the "+chestname+". "+AttributeBox.getStatHintByIndex(2);
+								}
+
+								@Override
+								public boolean go() {
+									if (Player.player.getPerson().contestedRoll(
+										Player.player.getPerson().getClarity(), IEffectiveLevel.attributeChallengeMedium(holder.getLevel(node)))
+										>=0){
+										//lockpicked door
+										extra.println(extra.RESULT_PASS+"You open the "+chestname+" with a Knock cantrip.");
+										holder.setStateNum(node,3);//opened
+										beachChestLoot(holder.getLevel(node));
+										holder.findBehind(node,chestname);
+									}else {
+										//failed
+										Player.player.getPerson().addEffect(Effect.BURNOUT);
+										extra.println(extra.RESULT_FAIL+"Your Knock cantrip on the "+chestname+" fizzles.");
+										holder.findBehind(node,chestname);
+									}
+									return true;
+								}});
 						}
 						list.add(new MenuBack());
 						return list;
 					}});
 				return;
 			case 1:
-				extra.println("This chest has already been picked and looted.");
+				extra.println("This chest has already been smashed and looted.");
 				holder.findBehind(node,chestname);
 				return;
 			case 2:
-				extra.println("This chest has already been smashed and looted.");
+				extra.println("This chest has already been picked and looted.");
+				holder.findBehind(node,chestname);
+				return;
+			case 3:
+				extra.println("This chest has already been opened and looted.");
 				holder.findBehind(node,chestname);
 				return;
 		}
