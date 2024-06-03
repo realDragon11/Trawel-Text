@@ -233,7 +233,7 @@ public class BeachNode implements NodeType {
 		switch (holder.getEventNum(node)) {
 		case 1://skeleton pirate blocker
 			return holder.getStorageFirstClass(node,GateNodeBehavior.class).getInteractText();
-		case 2:
+		case 3:
 			return (holder.getStateNum(node) == 0 ? "Open " : "Examine ") + holder.getStorageFirstClass(node, String.class);
 		}
 		return null;
