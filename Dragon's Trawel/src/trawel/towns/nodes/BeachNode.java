@@ -1,15 +1,34 @@
 package trawel.towns.nodes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.github.yellowstonegames.core.WeightedTable;
 
+import derg.menus.MenuBack;
+import derg.menus.MenuGenerator;
+import derg.menus.MenuItem;
+import derg.menus.MenuLine;
+import derg.menus.MenuSelect;
+import trawel.AIClass;
+import trawel.Effect;
 import trawel.extra;
+import trawel.randomLists;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
+import trawel.personal.classless.AttributeBox;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.DrawBane;
+import trawel.personal.item.solid.Gem;
+import trawel.personal.item.solid.MaterialFactory;
+import trawel.personal.item.solid.Weapon;
+import trawel.personal.item.solid.Weapon.WeaponType;
 import trawel.personal.people.Agent;
+import trawel.personal.people.Player;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.behaviors.GateNodeBehavior;
 import trawel.time.TimeContext;
+import trawel.towns.World;
 
 public class BeachNode implements NodeType {
 	
@@ -23,12 +42,16 @@ public class BeachNode implements NodeType {
 				//skeleton pirate blocker
 				0f,
 				//pirate rager
+				1f,
+				//ashore locked chest
 				1f
 		});
 		beachEntryRoller = new WeightedTable(new float[] {
 				//skeleton pirate blocker
 				0f,
 				//pirate rager
+				1f,
+				//ashore locked chest
 				1f
 		});
 	}
@@ -67,6 +90,9 @@ public class BeachNode implements NodeType {
 			Person pirate = RaceFactory.makePirate(holder.getLevel(node));
 			String mugName = pirate.getTitle().substring(4);//remove "the "
 			GenericNode.setBasicRagePerson(holder,node,pirate,mugName,"The "+extra.capFirst(mugName) + " attacks you!");
+			break;
+		case 3://ashore locked chest
+			holder.setStorage(node,randomLists.randomChestAdjective() + "Chest");
 			break;
 		}
 	}
@@ -188,7 +214,16 @@ public class BeachNode implements NodeType {
 	public String nodeName(NodeConnector holder, int node) {
 		switch (holder.getEventNum(node)) {
 		case 1://skeleton pirate blocker
-			return holder.getStorageFirstClass(node,GateNodeBehavior.class).getNodeName();		
+			return holder.getStorageFirstClass(node,GateNodeBehavior.class).getNodeName();
+		case 3:
+			switch (holder.getStateNum(node)) {
+				default: case 0:
+					return "Locked " + holder.getStorageFirstClass(node, String.class);
+				case 1:
+					return "Picked " + holder.getStorageFirstClass(node, String.class);
+				case 2:
+					return "Smashed " + holder.getStorageFirstClass(node, String.class);
+			}
 		}
 		return null;
 	}
@@ -197,7 +232,9 @@ public class BeachNode implements NodeType {
 	public String interactString(NodeConnector holder, int node) {
 		switch (holder.getEventNum(node)) {
 		case 1://skeleton pirate blocker
-			return holder.getStorageFirstClass(node,GateNodeBehavior.class).getInteractText();		
+			return holder.getStorageFirstClass(node,GateNodeBehavior.class).getInteractText();
+		case 2:
+			return (holder.getStateNum(node) == 0 ? "Open " : "Examine ") + holder.getStorageFirstClass(node, String.class);
 		}
 		return null;
 	}
@@ -223,6 +260,10 @@ public class BeachNode implements NodeType {
 				}
 			}
 			//all paths return by this point so return would be unreachable
+		//2 rager pirate
+		case 3://ashore locked chest
+			ashoreLockedChest(holder, node);
+			return false;
 		}
 		return false;
 	}
@@ -235,7 +276,128 @@ public class BeachNode implements NodeType {
 	@Override
 	public void passTime(NodeConnector holder, int node, double time, TimeContext calling) {
 		// TODO Auto-generated method stub
+	}
+	
+	
+	private void ashoreLockedChest(NodeConnector holder, int node) {
+		String chestname = holder.getStorageFirstClass(node, String.class);
+		switch (holder.getStateNum(node)) {
+			default: case 0:
+				//only applies burnout on fail to prevent further attempts, no other penalty
+				extra.menuGo(new MenuGenerator() {
 
+					@Override
+					public List<MenuItem> gen() {
+						List<MenuItem> list = new ArrayList<MenuItem>();
+						list.add(new MenuLine() {
+
+							@Override
+							public String title() {
+								return "There is a locked "+chestname+" here.";
+							}});
+						if (Player.player.getPerson().hasEffect(Effect.BURNOUT)) {
+							list.add(new MenuLine() {
+
+								@Override
+								public String title() {
+									return extra.RESULT_ERROR+"You are too burnt out to find a way to open the "+chestname+".";
+								}});
+						}else {
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return extra.RESULT_WARN+"Smash open the "+chestname+". "+AttributeBox.getStatHintByIndex(0);
+								}
+
+								@Override
+								public boolean go() {
+									if (Player.player.getPerson().contestedRoll(
+										Player.player.getPerson().getStrength(), IEffectiveLevel.attributeChallengeMedium(holder.getLevel(node)))
+										>=0){
+										//broke down door
+										extra.println(extra.RESULT_PASS+"You smash open the "+chestname+".");
+										holder.setStateNum(node,2);//broken open
+										beachChestLoot(holder.getLevel(node));
+										holder.findBehind(node,chestname);
+									}else {
+										//failed
+										Player.player.getPerson().addEffect(Effect.BURNOUT);
+										extra.println(extra.RESULT_FAIL+"You fail to bash open the "+chestname+".");
+										holder.findBehind(node,chestname);
+									}
+									return true;
+								}});
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return extra.RESULT_WARN+"Lockpick the "+chestname+". "+AttributeBox.getStatHintByIndex(1);
+								}
+
+								@Override
+								public boolean go() {
+									if (Player.player.getPerson().contestedRoll(
+										Player.player.getPerson().getDexterity(), IEffectiveLevel.attributeChallengeMedium(holder.getLevel(node)))
+										>=0){
+										//lockpicked door
+										extra.println(extra.RESULT_PASS+"You pick open the "+chestname+".");
+										holder.setStateNum(node,1);//picked open
+										beachChestLoot(holder.getLevel(node));
+										holder.findBehind(node,chestname);
+									}else {
+										//failed
+										Player.player.getPerson().addEffect(Effect.BURNOUT);
+										extra.println(extra.RESULT_FAIL+"You fail to lockpick the "+chestname+".");
+										holder.findBehind(node,chestname);
+									}
+									return true;
+								}});
+						}
+						list.add(new MenuBack());
+						return list;
+					}});
+				return;
+			case 1:
+				extra.println("This chest has already been picked and looted.");
+				holder.findBehind(node,chestname);
+				return;
+			case 2:
+				extra.println("This chest has already been smashed and looted.");
+				holder.findBehind(node,chestname);
+				return;
+		}
+	}
+	
+	private void beachChestLoot(int level) {
+		switch (extra.randRange(0,3)) {
+			default: case 0: case 1://basic loot
+				int moneyReward = IEffectiveLevel.cleanRangeReward(level,RaceFactory.WEALTH_WELL_OFF,.7f);
+				int aetherReward = IEffectiveLevel.cleanRangeReward(level,500,.5f);
+				Player.bag.addAether(aetherReward);
+				Player.player.addGold(moneyReward);
+				extra.println(extra.RESULT_GOOD+"Inside the chest you find "+World.currentMoneyDisplay(moneyReward) + " and "+aetherReward + " Aether!");
+				return;
+			case 2://hunter stash
+				//silver weapon
+				Weapon silvered = new Weapon(level,MaterialFactory.getMat("silver"),extra.choose(WeaponType.MACE,WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.SPEAR));
+				//amber
+				int amberAmount = IEffectiveLevel.cleanRangeReward(level,Gem.AMBER.unitSize*2.2f, .5f);
+				Gem.AMBER.changeGem(amberAmount);
+				extra.println("You find a Hunter's cache with " + amberAmount + " Amber and a "+silvered.getName()+"!");
+				AIClass.findItem(silvered, Player.player.getPerson());
+				return;
+			case 3://misc gem stash
+				int emeraldAmount = IEffectiveLevel.cleanRangeReward(level,Gem.EMERALD.unitSize*1.2f, .5f);
+				int rubyAmount = IEffectiveLevel.cleanRangeReward(level,Gem.RUBY.unitSize*1.2f, .5f);
+				//higher amount because skill based action
+				int sapphireAmount = IEffectiveLevel.cleanRangeReward(level,Gem.SAPPHIRE.unitSize*1.8f, .5f);
+				Gem.EMERALD.changeGem(emeraldAmount);
+				Gem.RUBY.changeGem(rubyAmount);
+				Gem.SAPPHIRE.changeGem(sapphireAmount);
+				extra.println("You find a Gem cache with " + emeraldAmount + " Emeralds, "+rubyAmount + " Rubies, and " + sapphireAmount + " Sapphires!");
+				return;
+		}
 	}
 
 }

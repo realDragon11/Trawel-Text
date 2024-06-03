@@ -25,7 +25,7 @@ public class randomLists {
 			doerTitles, animals,plants, wolfNames,bearNames,batNames, entNames, waterNames,
 			fighterTypes,drifterTypes,thiefTypes,thugTypes,pirateTypes,collectTypes,theAlphaTitles,theLargeTitles, attackMisses, attackNegates, attackDodges
 			,hunterTitles,thingsToSlay,slayerTitleToSlay,dGuardTitles,oldTitles, colorListPrintable,
-			violateForestQuote
+			violateForestQuote, chestAdjectives
 			;
 	/**
 	 * following have fallbacks if not loaded, and you can avoid filling them in for test purposes
@@ -101,6 +101,7 @@ public class randomLists {
 		attackNegates = new SRPlainRandom("It deflects off the armor!","The armor deflects the blow!","The attack is deflected!");
 		
 		violateForestQuote = new SRPlainRandom("You dare violate the forest?!","That was holy to the primal forces!","You have committed and unspeakable transgression!","The natural order has been perverted!");
+		chestAdjectives = new SRPlainRandom("Vibrant ","Old ","Dull ","Simple ","Carved ","");
 	}
 	
 	//our lazyloaded lists
@@ -294,6 +295,10 @@ public class randomLists {
 
 	public static String randomOldTitle() {
 		return oldTitles.next();
+	}
+	
+	public static String randomChestAdjective() {
+		return chestAdjectives.next();
 	}
 
 	public static String randomViolateForestQuote() {

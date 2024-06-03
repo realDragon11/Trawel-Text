@@ -9,6 +9,7 @@ import trawel.AIClass;
 import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
+import trawel.randomLists;
 import trawel.battle.Combat;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -319,7 +320,7 @@ public class DungeonNode implements NodeType{
 			break;
 		case 5: case 6:
 			Person mimic = RaceFactory.makeMimic(holder.getLevel(madeNode));
-			holder.setStorage(madeNode, new Object[] {extra.choose("Old ","Vibrant ","Simple ","") + "Chest",mimic});
+			holder.setStorage(madeNode, new Object[] {randomLists.randomChestAdjective() + "Chest",mimic});
 			break;
 		case 2:
 			holder.setForceGo(madeNode, true);

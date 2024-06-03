@@ -1163,7 +1163,7 @@ public class AIClass {
 	}
 
 	/**
-	 * find an item you can't sell, player only
+	 * find a single item, player only
 	 */
 	public static void findItem(Item found, Person person) {
 		//Item current = person.getBag().itemCounterpart(found);

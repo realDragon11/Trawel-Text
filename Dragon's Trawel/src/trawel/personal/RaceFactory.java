@@ -1067,7 +1067,7 @@ public class RaceFactory {
 		return raceMap.get(id.name());
 	}
 	
-	private static final float
+	public static final float
 		WEALTH_SMALL = 1f
 		,WEALTH_STANDARD = 2f
 		,WEALTH_WORKER = 3f
