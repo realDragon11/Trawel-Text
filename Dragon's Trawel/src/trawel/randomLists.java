@@ -14,7 +14,7 @@ import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
 
 /**
- * @author Brian Malone
+ * @author dragon
  * 2/8/2018
  * Some random lists that are used elsewhere, put here for cleanliness.
  */

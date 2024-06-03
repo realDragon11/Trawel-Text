@@ -1,6 +1,6 @@
 package trawel.personal.item.magic;
 /**
- * @author Brian Malone
+ * @author dragon
  * 2/5/2018
  * Enchantments are mostly just a passthrough class:
  * There was a plan to add constant and on-hit enchantments, but

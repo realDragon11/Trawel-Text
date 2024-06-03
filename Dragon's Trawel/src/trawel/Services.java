@@ -11,7 +11,7 @@ import trawel.towns.World;
 
 /**
  * 
- * @author Brian Malone
+ * @author dragon
  * Before 2/11/2018
  * The shop services, ie how gold can be spent.
  */

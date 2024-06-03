@@ -78,9 +78,17 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__12";
-	public static final String VERSION_DATE = " updated May 27th 2024";
+	public static final String VERSION_DATE = " updated June 3rd 2024";
 	public static final String[][] changelog = new String[][] {
 		//add to front, changeviewer cycles to older ones when used
+		{"b_12",
+			//discuss beach
+			"Beach added as a new Node Feature.",
+			//discuss people creation changes
+			"Muggers now have two primary classes- Thieves and Thugs. More types of NPCs can spawn with free bonus Feats or Archetypes, but more loot.",
+			//discuss graphical changes
+			"Added a second art set to the Graphical, along with some new sounds for unicorns."
+		},
 		{"b_11",
 			//discuss magic overall
 			"Magic skill stances have all been buffed to around iron tier damage. Some of the attacks have also had bonus effects added. In the future, more bonus effects might be added, or their damage further buffed, depending on the direction magic stances go in, but this should make them playable for now.",
