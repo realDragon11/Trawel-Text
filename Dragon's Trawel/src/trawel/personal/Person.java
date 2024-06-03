@@ -946,10 +946,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				BarkManager.getBoast(this, false);
 			}
 			addFeatPoint(levels);
-			
+			level+=levels;//place before so the archetype amount works properly for autoleveling
 			boolean autod = autoLevelIf();
 			
-			level+=levels;
 			if (this.isPlayer()) {
 				Networking.send("PlayDelay|sound_magelevel|1|");
 				Networking.leaderboard("Highest Level",level);
