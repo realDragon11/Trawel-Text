@@ -644,6 +644,7 @@ public class RaceFactory {
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
 		misc.raceClass = RaceClass.WOLF;
+		misc.archetype = Archetype.ANIMAL_WOLF_PACK;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_MIMIC_OPEN);
@@ -670,7 +671,7 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.OPEN_MIMIC;
 		misc.emitsBlood = true;
 		misc.raceClass = RaceClass.VARIES;
-		misc.archetype = Archetype.MIMIC;
+		misc.archetype = Archetype.ANIMAL_MIMIC;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_MIMIC_CLOSED);
@@ -696,7 +697,7 @@ public class RaceFactory {
 		misc.targetType = TargetFactory.TargetType.MIMIC;
 		misc.emitsBlood = false;
 		misc.raceClass = RaceClass.VARIES;
-		misc.archetype = Archetype.MIMIC;
+		misc.archetype = Archetype.ANIMAL_MIMIC;
 		raceList.add(misc);
 		
 		
@@ -793,6 +794,7 @@ public class RaceFactory {
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
 		misc.raceClass = RaceClass.BEAR;
+		misc.archetype = Archetype.ANIMAL_BEAR_STRONG;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_BAT);
@@ -820,6 +822,7 @@ public class RaceFactory {
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
 		misc.raceClass = RaceClass.UNDONE_BEAST;
+		misc.archetype = Archetype.ANIMAL_BAT;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_SWARMBAT);//1/4th level power is the goal for this worth
@@ -844,6 +847,7 @@ public class RaceFactory {
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
 		misc.raceClass = RaceClass.UNDONE_BEAST;
+		misc.archetype = Archetype.ANIMAL_BAT;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_FLESH_GOLEM);
@@ -896,7 +900,7 @@ public class RaceFactory {
 		misc.minPitch = audioSteps(-5);
 		misc.maxPitch = audioSteps(5);
 		misc.raceClass = RaceClass.UNDONE_BEAST;
-		misc.archetype = Archetype.HEDGE_MAGE;
+		misc.archetype = Archetype.ANIMAL_UNICORN;
 		raceList.add(misc);
 		
 		misc = new Race(RaceID.B_HARPY);
@@ -1179,6 +1183,7 @@ public class RaceFactory {
 	public static Person makeFellReaver(int level) {
 		Person w = Person.animal(level, RaceID.B_REAVER_TALL, MaterialFactory.getMat("hide"), false);//DOLATER change flesh type
 		w.setFlag(PersonFlag.HAS_WEALTH,true);//unsure if would care
+		w.setFlag(PersonFlag.CAN_LEARN,true);
 		w.setPersonType(PersonType.FELL_MONSTER);
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("flesh"),WeaponType.REAVER_STANDING));
 		w.setPerk(Perk.RACIAL_SHIFTS);
@@ -1275,7 +1280,8 @@ public class RaceFactory {
 	public static Person makeFleshGolem(int level) {
 		Person w = Person.animal(level, RaceID.B_FLESH_GOLEM, MaterialFactory.getMat("hide"), false);
 		//uses hide because it always turns into re-occuring on player loss so we don't need to worry about it being rare and vanishing after a win
-		//cannot get wealth
+		//cannot get wealth, but can learn new archtypes
+		w.setFlag(PersonFlag.CAN_LEARN,true);
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.GENERIC_FISTS));
 		w.getBag().addDrawBaneSilently(DrawBane.BEATING_HEART);
 		w.getBag().addDrawBaneSilently(DrawBane.SINEW);
@@ -1294,6 +1300,7 @@ public class RaceFactory {
 		w.setFirstName(randomLists.randomFirstName());
 		w.hTask = HostileTask.ANIMAL;
 		w.cleanseType = (byte)CleanseSideQuest.CleanseType.UNICORN.ordinal();
+		w.setArch(Archetype.HEDGE_MAGE);//also get ability to cast spells
 		w.finishGeneration();
 		return w;
 	}
@@ -1302,6 +1309,7 @@ public class RaceFactory {
 		Person w = Person.animal(level, RaceID.B_HARPY, MaterialFactory.getMat("hide"), false);
 		addWealth(WEALTH_STANDARD,.3f, w);//has money
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
+		w.setFlag(PersonFlag.CAN_LEARN,true);
 		w.setPersonType(PersonType.HARPY_GENERIC);
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TALONS_GENERIC));
 		if (extra.chanceIn(1,6)) {
@@ -1324,6 +1332,7 @@ public class RaceFactory {
 		Person w = Person.animal(level, RaceID.B_DRUDGER_STOCK, MaterialFactory.getMat("fishscales"), false);
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat(extra.choose("rusty iron","rusty iron","iron")),WeaponType.FISH_SPEAR));
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
+		w.setFlag(PersonFlag.CAN_LEARN,true);
 		w.setPersonType(PersonType.DRUDGER_GENERIC);
 		for (byte i=0;i<5;i++) {
 			if (extra.chanceIn(1,8)) {
@@ -1361,6 +1370,7 @@ public class RaceFactory {
 		Person w = Person.animal(level, RaceID.B_DRUDGER_STOCK, MaterialFactory.getMat("fishscales"), false);
 		addWealth(WEALTH_SMALL,.5f, w);//has money
 		w.setFlag(PersonFlag.HAS_WEALTH,true);
+		w.setFlag(PersonFlag.CAN_LEARN,true);
 		w.setPersonType(PersonType.DRUDGER_GENERIC);
 		w.liteSetSkillHas(Archetype.FISH_MONSOON);
 		Agent a = new Agent(w);//is assigned in the agent code, required for archetype skill configs

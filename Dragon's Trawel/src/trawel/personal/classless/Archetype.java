@@ -13,6 +13,7 @@ import trawel.extra;
 import trawel.battle.attacks.WeaponAttackFactory;
 import trawel.personal.Person;
 import trawel.personal.Person.FeatArchMenuPick;
+import trawel.personal.Person.PersonFlag;
 import trawel.personal.classless.Feat.FeatType;
 import trawel.personal.classless.Skill.Type;
 
@@ -98,7 +99,7 @@ public enum Archetype implements IHasSkills{
 			,"Grants disrespectful attacks that scale on strength."
 			,AType.RACIAL
 			,EnumSet.of(AGroup.DIRECT_BATTLE)
-			,EnumSet.of(FeatType.BATTLE)
+			,EnumSet.of(FeatType.BATTLE,FeatType.BRAWN,FeatType.SPIRIT)
 			,EnumSet.of(Skill.STERN_STUFF,Skill.RAW_GUTS,Skill.DSTRIKE,Skill.OPPORTUNIST)
 			,15,0,0
 			)
@@ -115,12 +116,12 @@ public enum Archetype implements IHasSkills{
 			,EnumSet.of(Skill.BLITZ,Skill.DODGEREF,Skill.OPPORTUNIST)
 			,3,12,0
 			)
-	,MIMIC("Mimic"
+	,ANIMAL_MIMIC("Mimic"
 			,"TODO"
 			,null
 			,AType.RACIAL
 			,EnumSet.of(AGroup.CRAFT)
-			,EnumSet.of(FeatType.TRICKS)
+			,EnumSet.of(FeatType.TRICKS,FeatType.BATTLE)
 			,EnumSet.of(Skill.RACIAL_SHIFTS)
 			)
 	,FELL_REAVER("Fell Reaver"
@@ -185,6 +186,43 @@ public enum Archetype implements IHasSkills{
 			//gets 4 skills because all are generally lower impact
 			,EnumSet.of(Skill.CHEF,Skill.BIG_BAG,Skill.BULK,Skill.P_BREWER)
 			,10,1,4
+			)
+	//racial archetypes to allow thematic FeatType selection, don't count as feat point consumers
+	,ANIMAL_BEAR_STRONG("Strong Beast"
+			,"A strong animal."
+			,null
+			,AType.RACIAL
+			,EnumSet.of(AGroup.DIRECT_BATTLE)
+			,EnumSet.of(FeatType.BRAWN,FeatType.BATTLE,FeatType.SPIRIT)
+			,EnumSet.of(Skill.RAW_GUTS,Skill.BULK)
+			,30,0,0
+			)
+	,ANIMAL_WOLF_PACK("Pack Hunter"
+			,"A social hunter."
+			,null
+			,AType.RACIAL
+			,EnumSet.of(AGroup.DIRECT_BATTLE)
+			,EnumSet.of(FeatType.AGILITY,FeatType.TRICKS,FeatType.BATTLE)
+			,EnumSet.of(Skill.SPUNCH)
+			,5,20,5
+			)
+	,ANIMAL_BAT("Night Hunter"
+			,"A night hunter."
+			,null
+			,AType.RACIAL
+			,EnumSet.of(AGroup.DIRECT_BATTLE)
+			,EnumSet.of(FeatType.AGILITY,FeatType.FINESSE)
+			,EnumSet.of(Skill.SPEEDDODGE)
+			,0,20,0
+			)
+	,ANIMAL_UNICORN("Magic Horse"
+			,"A magic horse."
+			,null
+			,AType.RACIAL
+			,EnumSet.of(AGroup.DIRECT_BATTLE)
+			,EnumSet.of(FeatType.MYSTIC,FeatType.ARCANE,FeatType.SPIRIT)
+			,EnumSet.of(Skill.PLOT_ARMOR,Skill.BULK,Skill.LIFE_MAGE)
+			,10,0,30
 			)
 	;
 	
@@ -427,7 +465,8 @@ public enum Archetype implements IHasSkills{
 		}
 		
 		//now tries to get you to have 2 + floor(level/5) archetypes
-		if (nonRacialAs < 2+Math.floor(person.getLevel()/5)) {
+		//can't learn any if canlearn flag is not set
+		if (person.getFlag(PersonFlag.CAN_LEARN) && nonRacialAs < 2+Math.floor(person.getLevel()/5)) {
 			Set<Archetype> restrictSet = EnumSet.copyOf(pAs);
 			List<Archetype> newList = getFirst(person,2,restrictSet);//first moved up so that it doesn't get blocked by friends of friends basically
 			list.addAll(newList);

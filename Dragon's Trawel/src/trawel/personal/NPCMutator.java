@@ -5,6 +5,7 @@ import java.util.List;
 import trawel.extra;
 import trawel.factions.HostileTask;
 import trawel.personal.Person.AIJob;
+import trawel.personal.Person.PersonFlag;
 import trawel.personal.Person.PersonType;
 import trawel.personal.RaceFactory.CultType;
 import trawel.personal.classless.Perk;
@@ -160,5 +161,15 @@ public class NPCMutator {
 			return cultLeader_Sky(p, addDraws);
 		}
 		throw new RuntimeException("Invalid cult leader type for NPCMutator: " + type);
+	}
+	
+	public static Person mutateMiniboss(Person p,boolean addDraws) {
+		p.setFlag(PersonFlag.IS_MOOK,false);
+		if (addDraws) {
+			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
+		}
+		p.setPerk(Perk.NPC_PROMOTED);
+		p.hTask = HostileTask.BOSS;
+		return p;
 	}
 }

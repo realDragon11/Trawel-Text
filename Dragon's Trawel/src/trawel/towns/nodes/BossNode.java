@@ -10,6 +10,7 @@ import trawel.battle.Combat;
 import trawel.battle.Combat.SkillCon;
 import trawel.factions.Faction;
 import trawel.factions.HostileTask;
+import trawel.personal.NPCMutator;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
@@ -144,9 +145,8 @@ public class BossNode implements NodeType {
 					nodeInteract = "Claim the true Treasure.";
 					break;
 			}
+			NPCMutator.mutateMiniboss(p,true);
 			p.setOrMakeAgentGoal(AgentGoal.OWN_SOMETHING);
-			p.hTask = HostileTask.BOSS;
-			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
 			peeps.add(p);
 			holder.setStorage(madeNode,new Object[] {nodeName,nodeInteract,peeps});
 			break;
