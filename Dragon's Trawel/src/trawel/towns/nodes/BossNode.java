@@ -144,6 +144,12 @@ public class BossNode implements NodeType {
 					nodeName = "Empty Treasure Vault";
 					nodeInteract = "Claim the true Treasure.";
 					break;
+				case 2://alpha harpy blocker
+					p = RaceFactory.makeAlphaHarpy(level);
+					p.setTitle(", Harpy Matriarch");
+					nodeName = "Tended Harpy Nest";
+					nodeInteract = "Get your own Shinies.";
+					break;
 			}
 			NPCMutator.mutateMiniboss(p,true,true);
 			p.setOrMakeAgentGoal(AgentGoal.OWN_SOMETHING);

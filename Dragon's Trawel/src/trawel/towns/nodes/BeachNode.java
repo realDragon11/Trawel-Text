@@ -77,11 +77,11 @@ public class BeachNode implements NodeType {
 	public void apply(NodeConnector holder, int node) {
 		switch (holder.getEventNum(node)) {
 		case 1://beach dungeon blocker
-			int gateType = extra.randRange(0,1);
+			int gateType = extra.randRange(0,2);
 			Person skelePerson = RaceFactory.makeGateNodeBlocker(holder.getLevel(node),gateType);
 			Agent skeleAgent = skelePerson.getMakeAgent(AgentGoal.WORLD_ENCOUNTER);
 			holder.parent.getTown().getIsland().getWorld().addReoccuring(skeleAgent);
-			GateNodeBehavior behavior = new GateNodeBehavior(skeleAgent,holder.parent);
+			GateNodeBehavior behavior = new GateNodeBehavior(skeleAgent,holder.parent,gateType);
 			skeleAgent.enqueueBehavior(behavior);
 			holder.setForceGo(node,true);
 			holder.setStorage(node,behavior);
@@ -171,6 +171,7 @@ public class BeachNode implements NodeType {
 							for (int i = 1; i < subSize;i++) {
 								int caveNext = NodeType.NodeTypeNum.CAVE.singleton.getNode(start,caveLast,++caveFloor, tempTier);
 								start.setMutualConnect(caveLast, caveNext);
+								start.reverseConnections(caveLast);
 								caveLast = caveNext;
 								//tier levels up much more often in caves
 								if (extra.chanceIn(1,3)) {
@@ -183,6 +184,8 @@ public class BeachNode implements NodeType {
 							subHead = getNode(start, headNode, start.getFloor(headNode)+1,dTier);
 							//set to gate blocker on dungeon
 							start.setEventNum(subHead,1);
+							//connect subbranch entry node with branch entry node
+							start.setMutualConnect(headNode,subHead);
 							int nodeLast = subHead;
 							for (int i = 0; i < subSize;i++) {
 								if (i%2==0) {
@@ -190,16 +193,17 @@ public class BeachNode implements NodeType {
 								}
 								int newDNode = NodeType.NodeTypeNum.DUNGEON.singleton.getNode(start,nodeLast,start.getFloor(nodeLast)+1, dTier);
 								start.setMutualConnect(nodeLast,newDNode);
+								start.reverseConnections(nodeLast);
 								nodeLast = newDNode;
 							}
 							//add miniboss at end of each dungeon
 							dTier++;
 							int bossDNode = NodeType.NodeTypeNum.BOSS.singleton.getNode(start,nodeLast,start.getFloor(nodeLast)+1, dTier);
 							start.setMutualConnect(nodeLast,bossDNode);
+							start.reverseConnections(nodeLast);
 							//state is set to the node that contains the blocker, which is read by the boss generator to try to determine the boss type
 							start.setStateNum(bossDNode,subHead);
-							//connect subbranch entry node with branch entry node
-							start.setMutualConnect(headNode,subHead);
+							
 							break;
 						}
 						//we decided what branch we want to use fully, subtract out budget

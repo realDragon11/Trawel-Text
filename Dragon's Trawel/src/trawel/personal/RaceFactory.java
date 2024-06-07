@@ -1804,6 +1804,8 @@ public class RaceFactory {
 			return makeSkeletonPirate(level);
 		case 1:
 			return makeCollector(level);
+		case 2:
+			return makeAlphaHarpy(level);
 		}
 		throw new RuntimeException("Invalid GateNodeBlocker num: "+num);
 	}

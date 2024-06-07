@@ -42,6 +42,8 @@ public class GateNodeBehavior extends Behavior {
 			return "This Bone Barrier is open for you, forming a path.";
 		case 1:
 			return "This Hidden Stairwell has been dug up, paving the way forward.";
+		case 2:
+			return "This Abandoned Harpy Nest has had a door revealed and opened, allowing you to advance.";
 		}
 		return "ERROR";
 	}
@@ -51,6 +53,8 @@ public class GateNodeBehavior extends Behavior {
 			return "The Bone Barrier makes way in response to your victory against "+getName()+" .";
 		case 1:
 			return "You find a Hidden Stairwell digging up a spot marked a map "+getName() +" had.";
+		case 2:
+			return "You find and open a Secret Door using instructions on "+getName() +"'s key.";
 		}
 		return "ERROR";
 	}
@@ -60,6 +64,8 @@ public class GateNodeBehavior extends Behavior {
 			return "A Bone Barrier blocks the path forward. You hear a subtle chittering deep within: Slay "+getName()+" to prove your worth...";
 		case 1:
 			return "There is an area covered with potholes. You hear a faint whisper from below the earth: Slay "+getName()+" for the map...";
+		case 2:
+			return "There is an abandoned Harpy Nest here. You hear a quiet chirping from the nest: Slay "+getName()+" for a key...";
 		}
 		return "ERROR";
 	}
@@ -70,6 +76,8 @@ public class GateNodeBehavior extends Behavior {
 			return "Bone Path";
 		case 1:
 			return "Hidden Stairwell";
+		case 2:
+			return "Nested Secret Door";
 		}
 		return "ERROR";
 	}
@@ -79,6 +87,8 @@ public class GateNodeBehavior extends Behavior {
 			return "Bone Barrier";
 		case 1:
 			return "Pothole Clearing";
+		case 2:
+			return "Abandoned Harpy Nest";
 		}
 		return "ERROR";
 	}
@@ -89,6 +99,8 @@ public class GateNodeBehavior extends Behavior {
 			return "Examine Bone Path.";
 		case 1:
 			return "Examine Hidden Stairwell.";
+		case 2:
+			return "Examine Abandoned Harpy Nest.";
 		}
 		return "ERROR";
 	}
@@ -99,8 +111,38 @@ public class GateNodeBehavior extends Behavior {
 			return "Test Bone Barrier.";
 		case 1:
 			return "Test Pothole Clearing.";
+		case 2:
+			return "Test Abandoned Harpy Nest.";
 		}
 		return "ERROR";
+	}
+	
+	public void printChallengeAgent() {
+		extra.print(extra.PRE_BATTLE);
+		switch (type) {
+			default:
+				extra.println(owner.getPerson().getName() + " appears to challenge you!");break;
+			case 0:
+				extra.println(owner.getPerson().getName() + " tests if you are worthy of the booty!");break;
+			case 1:
+				extra.println(owner.getPerson().getName() + " has come to collect treasure!");break;
+			case 2:
+				extra.println(owner.getPerson().getName() + " wants your shinies for their nest!");break;
+		}
+	}
+	
+	public void printSlayAgent() {
+		extra.print(location.getName() + " in " + location.getTown().getName() + " has a new secret for you: ");
+		switch (type) {
+			default:
+				extra.println("ERROR");break;
+			case 0:
+				extra.println("A Bone Barrier will now open for you.");break;
+			case 1:
+				extra.println("This map will reveal which hole to dig up.");break;
+			case 2:
+				extra.println("This key will show a secret door in a harpy nest.");break;
+		}
 	}
 	
 	public boolean checkOpened() {

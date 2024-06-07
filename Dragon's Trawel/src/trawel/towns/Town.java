@@ -983,13 +983,13 @@ public class Town extends TContextOwner{
 				}
 				if (behavior instanceof GateNodeBehavior) {
 					GateNodeBehavior GNB = (GateNodeBehavior) behavior;
-					extra.println(extra.PRE_BATTLE + sp.getPerson().getName() + " appears to challenge you!");
+					GNB.printChallengeAgent();
 					Combat c = Player.player.fightWith(sp.getPerson());
 					if (c.playerWon() > 0) {
 						island.getWorld().removeReoccuringSuperPerson(sp);
 						sp.removeGoal(AgentGoal.WORLD_ENCOUNTER);
 						sp.skipCurrent();//clear the behavior from them, it still exists for the location, just not them
-						extra.println(GNB.location.getName() + " in " + GNB.location.getTown().getName() + " has a new secret for you...");
+						GNB.printSlayAgent();
 					}//must be slain to complete challenge
 					else {
 						//save some time on the next trigger if lost
