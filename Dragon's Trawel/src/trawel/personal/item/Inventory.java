@@ -1,9 +1,11 @@
 package trawel.personal.item;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import derg.menus.MenuBack;
 import derg.menus.MenuItem;
@@ -136,6 +138,13 @@ public class Inventory implements java.io.Serializable{
 	 */
 	public Armor getArmorSlot(int slot) {
 		return armorSlots[slot];
+	}
+	
+	public Stream<Item> getSolids(){
+		Stream<Item> nullCheck = Stream.concat(Arrays.stream(armorSlots),Stream.of(hand));
+		//for some inane reason it refuses to cast to just a stream and tries to make it a combo of IEffectiveLevel, but ONLY
+		//if I try to return it after filtering WITHOUT storing it in a variable first
+		return nullCheck.filter(a -> a != null);
 	}
 	
 	public Iterable<Armor> getArmors(){

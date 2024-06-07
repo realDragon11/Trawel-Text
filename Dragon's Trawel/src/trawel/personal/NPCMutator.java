@@ -163,13 +163,29 @@ public class NPCMutator {
 		throw new RuntimeException("Invalid cult leader type for NPCMutator: " + type);
 	}
 	
-	public static Person mutateMiniboss(Person p,boolean addDraws) {
+	public static Person mutateImproveGear(Person p,int amount) {
+		p.bag.getSolids().forEach(item -> {
+			item.temperNegQuality(amount);
+			item.improvePosQuality(amount);
+		});
+		return p;
+	}
+	
+	/**
+	 * actual bosses should use their own RaceFactory methods, using other mutators as needed
+	 */
+	public static Person mutateMiniboss(Person p,boolean addDraws,boolean improveEquips) {
 		p.setFlag(PersonFlag.IS_MOOK,false);
 		if (addDraws) {
 			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
+		}
+		if (improveEquips) {
+			mutateImproveGear(p,1);
 		}
 		p.setPerk(Perk.NPC_PROMOTED);
 		p.hTask = HostileTask.BOSS;
 		return p;
 	}
+	
+
 }

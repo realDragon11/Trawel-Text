@@ -145,7 +145,7 @@ public class BossNode implements NodeType {
 					nodeInteract = "Claim the true Treasure.";
 					break;
 			}
-			NPCMutator.mutateMiniboss(p,true);
+			NPCMutator.mutateMiniboss(p,true,true);
 			p.setOrMakeAgentGoal(AgentGoal.OWN_SOMETHING);
 			peeps.add(p);
 			holder.setStorage(madeNode,new Object[] {nodeName,nodeInteract,peeps});

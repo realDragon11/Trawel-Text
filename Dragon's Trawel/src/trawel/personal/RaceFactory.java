@@ -1109,7 +1109,6 @@ public class RaceFactory {
 		if (extra.chanceIn(1,8)) {
 			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
 		}
-		p.liteSetSkillHas(Archetype.ARMORMASTER);//might already have
 		p.finishGeneration();
 		return p;
 	}
@@ -1119,7 +1118,6 @@ public class RaceFactory {
 		addWealth(WEALTH_WELL_OFF,.7f, p);
 		p.setPersonType(PersonType.GRIZZLED);
 		p.hTask = HostileTask.RICH;
-		p.liteSetSkillHas(Archetype.ARMORMASTER);//might already have
 		p.finishGeneration();
 		return p;
 	}
@@ -1408,7 +1406,7 @@ public class RaceFactory {
 				addWealth(WEALTH_STANDARD,.3f, w);
 				w.setFacLevel(Faction.ROGUE,15, 0);
 				w.setFacLevel(Faction.HEROIC,0, 10);
-				w.liteSetSkillHas(Archetype.CUT_THROAT);
+				//w.liteSetSkillHas(Archetype.CUT_THROAT);
 				w.setTitle("the " + extra.capFirst(randomLists.randomThiefName()));
 				findMult = 3;
 				break;
@@ -1417,7 +1415,7 @@ public class RaceFactory {
 				addWealth(WEALTH_STANDARD,.3f, w);
 				w.setFacLevel(Faction.ROGUE,20, 0);
 				w.setFacLevel(Faction.HEROIC,0, 10);
-				w.liteSetSkillHas(Archetype.HIRED_HATCHET);
+				//w.liteSetSkillHas(Archetype.HIRED_HATCHET);
 				w.setTitle("the " + extra.capFirst(randomLists.randomThugName()));
 				findMult = 2;
 				break;
@@ -1426,7 +1424,7 @@ public class RaceFactory {
 				addWealth(WEALTH_WELL_OFF,.4f, w);
 				w.setFacLevel(Faction.ROGUE,20, 0);
 				w.setFacLevel(Faction.HEROIC,0, 15);
-				w.liteSetSkillHas(Archetype.CUT_THROAT);
+				//w.liteSetSkillHas(Archetype.CUT_THROAT);
 				w.cleanSetSkillHas(Feat.UNDERHANDED);//free feat
 				w.setTitle("the " + extra.capFirst(randomLists.randomThiefName()));
 				findMult = 10;
@@ -1436,7 +1434,7 @@ public class RaceFactory {
 				addWealth(WEALTH_WELL_OFF,.4f, w);
 				w.setFacLevel(Faction.ROGUE,20, 0);
 				w.setFacLevel(Faction.HEROIC,0, 15);
-				w.liteSetSkillHas(Archetype.HIRED_HATCHET);
+				//w.liteSetSkillHas(Archetype.HIRED_HATCHET);
 				w.cleanSetSkillHas(Feat.COMMON_TOUGH);//free feat
 				w.setTitle("the " + extra.capFirst(randomLists.randomThugName()));
 				findMult = 5;
@@ -1540,6 +1538,8 @@ public class RaceFactory {
 	public static Person makeBoss(int level) {
 		Person w = new Person(level);
 		w.hTask = HostileTask.BOSS;
+		w.addFeatPoint();//bonus feat point to use on whatever
+		NPCMutator.mutateImproveGear(w,2);
 		Agent a = new Agent(w,AgentGoal.OWN_SOMETHING);//should have an agent
 		return w;
 	}
@@ -1549,6 +1549,8 @@ public class RaceFactory {
 		w.getBag().addDrawBaneSilently(DrawBane.VIRGIN);
 		w.setPerk(Perk.HELL_BARON_NPC);
 		w.hTask = HostileTask.BOSS;
+		w.addFeatPoint();//bonus feat point to use on whatever
+		NPCMutator.mutateImproveGear(w,1);//less gear improvement than other bosses
 		w.cleanseType = (byte)CleanseSideQuest.CleanseType.MONSTERS.ordinal();
 		Agent a = new Agent(w,AgentGoal.OWN_SOMETHING);//should have an agent
 		w.finishGeneration();

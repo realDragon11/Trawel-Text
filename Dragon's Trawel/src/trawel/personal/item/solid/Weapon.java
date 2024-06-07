@@ -18,6 +18,7 @@ import trawel.personal.item.Item;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.magic.EnchantConstant;
 import trawel.personal.item.magic.EnchantHit;
+import trawel.personal.item.solid.Armor.ArmorQuality;
 import trawel.personal.people.Player;
 
 /**
@@ -151,7 +152,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 		weap = weapon;
 		kills = 0;
 		
-		addQuals(weap.qList);
+		addQuals(weap.qList,3);
 		//random chance, partially based on enchantment power, to enchant the weapon
 		if (getEnchantMult() > extra.randFloat()*3f) {
 			if (extra.chanceIn(2, 3)) {
@@ -576,13 +577,20 @@ public class Weapon extends Item implements IEffectiveLevel {
 		return arr[0];*/
 	}
 	
-	private int addQuals(Set<WeaponQual> quals) {
+	/**
+	 * will only try a max of 5 times
+	 * @param quals
+	 * @param maxAdded
+	 * @return
+	 */
+	private int addQuals(Set<WeaponQual> quals, int maxAdded) {
 		if (quals.isEmpty()) {
 			return 0;
 		}
 		int added = 0;
+		//will only try a max of 5 times
 		for (int i = 0; i < 5;i++) {
-			if (added >= 3) {
+			if (added >= maxAdded) {
 				return added;
 			}
 			WeaponQual wq = extra.randCollection(quals);
@@ -592,6 +600,33 @@ public class Weapon extends Item implements IEffectiveLevel {
 			}
 		}
 		return added;
+	}
+	
+	@Override
+	public int temperNegQuality(int amount) {
+		int removed = 0;
+		for (int i = 0; i < amount; i++) {
+			int worstAmount = 0;
+			WeaponQual worstQual = null;
+			for (WeaponQual q: qualList) {
+				if (q.goodNegNeut < worstAmount) {
+					worstAmount = q.goodNegNeut;
+					worstQual = q;
+				}
+			}
+			if (worstAmount < 0) {
+				qualList.remove(worstQual);
+				removed++;
+			}else {
+				return removed;
+			}
+		}
+		return removed;
+	}
+	
+	@Override
+	public int improvePosQuality(int amount) {
+		return addQuals(weap.qList,amount);
 	}
 	
 

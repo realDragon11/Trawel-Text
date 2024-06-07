@@ -1,6 +1,7 @@
 package trawel.personal.item.solid;
 
 import java.util.EnumSet;
+import java.util.Set;
 
 import trawel.Services;
 import trawel.extra;
@@ -9,6 +10,7 @@ import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.magic.EnchantConstant;
+import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Player;
 
@@ -341,20 +343,25 @@ public class Armor extends Item implements IEffectiveLevel{
 	}
 	
 	@Override
-	public boolean temperNegQuality() {
-		int worstAmount = 0;
-		ArmorQuality worstQual = null;
-		for (ArmorQuality q: quals) {
-			if (q.goodNegNeut < worstAmount) {
-				worstAmount = q.goodNegNeut;
-				worstQual = q;
+	public int temperNegQuality(int amount) {
+		int removed = 0;
+		for (int i = 0; i < amount; i++) {
+			int worstAmount = 0;
+			ArmorQuality worstQual = null;
+			for (ArmorQuality q: quals) {
+				if (q.goodNegNeut < worstAmount) {
+					worstAmount = q.goodNegNeut;
+					worstQual = q;
+				}
+			}
+			if (worstAmount < 0) {
+				quals.remove(worstQual);
+				removed++;
+			}else {
+				return removed;
 			}
 		}
-		if (worstAmount < 0) {
-			quals.remove(worstQual);
-			return true;
-		}
-		return false;
+		return removed;
 	}
 	
 	@Override
@@ -365,6 +372,27 @@ public class Armor extends Item implements IEffectiveLevel{
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public int improvePosQuality(int amount) {
+		ArmorStyle style = getStyle();
+		if (style.addBonusQuals.isEmpty()) {
+			return 0;
+		}
+		int added = 0;
+		//will only try a max of 5 times
+		for (int i = 0; i < 5;i++) {
+			if (added >= amount) {
+				return added;
+			}
+			ArmorQuality q = extra.randCollection(style.addBonusQuals);
+			if (!quals.contains(q)) {
+				quals.add(q);
+				added++;
+			}
+		}
+		return added;
 	}
 	
 

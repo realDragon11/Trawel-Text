@@ -161,14 +161,22 @@ public abstract class Item implements java.io.Serializable{
 	
 	/**
 	 * remove a negative quality if one is present
-	 * @returntrue if was successful
+	 * @return how many were removed
 	 */
-	public boolean temperNegQuality() {
-		return false;
+	public int temperNegQuality(int amount) {
+		return 0;
 	}
 	
 	public boolean hasNegQuality() {
 		return false;
+	}
+	
+	/**
+	 * attempt to add a positive quality based on type (weapon type and armor style)
+	 * @return how many positive were added
+	 */
+	public int improvePosQuality(int amount) {
+		return 0;
 	}
 	
 	/**

@@ -304,56 +304,69 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	
 
 	public enum AIJob{
-		KNIGHT(new ArmorStyle[] {ArmorStyle.PLATE,ArmorStyle.PLATE,ArmorStyle.MAIL},
-				new WeaponType[] {
-					WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.MACE,WeaponType.AXE,WeaponType.LANCE
-					,WeaponType.CLAYMORE
-				}
-		),
-		ROGUE(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},
-				new WeaponType[] {
-						WeaponType.RAPIER,WeaponType.DAGGER,WeaponType.SPEAR,WeaponType.MACE,WeaponType.SHOVEL
-					}
-		),
-		THUG(new ArmorStyle[] {ArmorStyle.SEWN,ArmorStyle.PLATE,ArmorStyle.MAIL,ArmorStyle.MAIL},
-				new WeaponType[] {
-						WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.AXE,WeaponType.MACE,WeaponType.SHOVEL
-					}
-		),
-		LUMBERJACK(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},new WeaponType[] {WeaponType.AXE}), 
-		GRAVER(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},new WeaponType[] {WeaponType.SHOVEL})
-		, CULTIST_WORSHIPER(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN}
-				,new WeaponType[] {
-						WeaponType.DAGGER,WeaponType.SHOVEL,WeaponType.SPEAR,WeaponType.MACE//tools of the trade
-				})
-		,COLLECTOR(new ArmorStyle[] {ArmorStyle.GEM,ArmorStyle.PLATE},
-				new WeaponType[] {
-						WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.MACE,WeaponType.AXE,WeaponType.SPEAR
-						,WeaponType.SHOVEL,WeaponType.RAPIER
-					}
+		KNIGHT(
+				new ArmorStyle[] {ArmorStyle.PLATE,ArmorStyle.PLATE,ArmorStyle.MAIL},
+				new WeaponType[] {WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.MACE,WeaponType.AXE,WeaponType.LANCE,WeaponType.CLAYMORE},
+				new Archetype[] {Archetype.ARMORMASTER}
+		)
+		,ROGUE(
+				new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},
+				new WeaponType[] {WeaponType.RAPIER,WeaponType.DAGGER,WeaponType.SPEAR,WeaponType.MACE,WeaponType.SHOVEL},
+				new Archetype[] {Archetype.CUT_THROAT}
+		)
+		,THUG(
+				new ArmorStyle[] {ArmorStyle.SEWN,ArmorStyle.PLATE,ArmorStyle.MAIL,ArmorStyle.MAIL},
+				new WeaponType[] {WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.AXE,WeaponType.MACE,WeaponType.SHOVEL},
+				new Archetype[] {Archetype.HIRED_HATCHET}
+		)
+		,LUMBERJACK(
+				new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},
+				new WeaponType[] {WeaponType.AXE},
+				new Archetype[] {Archetype.FIGHTING_FURY,Archetype.HIRED_HATCHET}
 				)
-		,DUELER(new ArmorStyle[] {ArmorStyle.PLATE,ArmorStyle.PLATE,ArmorStyle.PLATE,ArmorStyle.SEWN},
-				new WeaponType[] {
-						WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.MACE,WeaponType.AXE,WeaponType.SPEAR
-					})
-		,DUELIST_ONLY(new ArmorStyle[] {ArmorStyle.SEWN,ArmorStyle.FABRIC},
-				new WeaponType[] {
-						WeaponType.RAPIER
-					}),
-		PIRATE(new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN,ArmorStyle.SEWN,ArmorStyle.SEWN},
+		,GRAVER(
+				new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},
+				new WeaponType[] {WeaponType.SHOVEL},
+				new Archetype[] {}
+				)
+		,CULTIST_WORSHIPER(
+				new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN},
+				new WeaponType[] {WeaponType.DAGGER,WeaponType.SHOVEL,WeaponType.SPEAR,WeaponType.MACE},//tools of the trade
+				new Archetype[] {})
+		,COLLECTOR(
+				new ArmorStyle[] {ArmorStyle.GEM,ArmorStyle.PLATE},
+				new WeaponType[] {WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.MACE,WeaponType.AXE,WeaponType.SPEAR,WeaponType.SHOVEL,WeaponType.RAPIER},
+				new Archetype[] {Archetype.RUNEBLADE,Archetype.RUNEBLADE}
+				)
+		,DUELER(
+				new ArmorStyle[] {ArmorStyle.PLATE,ArmorStyle.PLATE,ArmorStyle.PLATE,ArmorStyle.SEWN},
+				new WeaponType[] {WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.MACE,WeaponType.AXE,WeaponType.SPEAR},
+				new Archetype[] {Archetype.ARMORMASTER,Archetype.GLADIATOR}
+		)
+		,DUELIST_ONLY(
+				new ArmorStyle[] {ArmorStyle.SEWN,ArmorStyle.FABRIC},
+				new WeaponType[] {WeaponType.RAPIER},
+				new Archetype[] {Archetype.CUT_THROAT,Archetype.GLADIATOR}
+		)
+		,PIRATE(
+				new ArmorStyle[] {ArmorStyle.FABRIC,ArmorStyle.SEWN,ArmorStyle.SEWN,ArmorStyle.SEWN},
 				new WeaponType[] {
 						//main thematic weapons
 						WeaponType.SPEAR,WeaponType.SHOVEL,
 						//other weapons
 						WeaponType.RAPIER,WeaponType.AXE,WeaponType.MACE
-					})
+					},
+				new Archetype[] {Archetype.HIRED_HATCHET,Archetype.CUT_THROAT}
+		)
 		;
 		
 		public ArmorStyle[] amatType;
 		public WeaponType[] weapType;
-		AIJob(ArmorStyle[] amatType, WeaponType[] weapType) {
+		public Archetype[] archType;
+		AIJob(ArmorStyle[] amatType, WeaponType[] weapType, Archetype[] archType) {
 			this.amatType = amatType;
 			this.weapType = weapType;
+			this.archType = archType;
 		}
 		public WeaponType randWeap() {
 			return extra.randList(weapType);
@@ -426,9 +439,31 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	 * autolevel if that is set, and update skills no matter what (ie, if autolevel didn't happen, still update)
 	 */
 	public void finishGeneration() {
-		if (!autoLevelIf()) {
+		//if requires a skill update: mask with an OR each time
+		boolean requiresUpdate = false;
+		requiresUpdate |= grantAIJobArchetype();
+		requiresUpdate |= !autoLevelIf();
+		if (requiresUpdate) {
 			updateSkills();
 		}
+	}
+	
+	private boolean grantAIJobArchetype() {
+		if (!getFlag(PersonFlag.AUTOLEVEL) || getFeatPoints() <= 0) {
+			return false;
+		}
+		if (job == null || job.archType.length == 0) {
+			return false;
+		}
+		Archetype add = extra.randList(job.archType);
+		if (getArchSet().contains(add)) {
+			//will only attempt to grant one, if already has, will just continue with gen
+			return false;
+		}
+		setArch(add);
+		//consume feat point
+		useFeatPoint();
+		return true;
 	}
 	
 	/**
@@ -471,36 +506,25 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	 * if returned false, didn't update list
 	 */
 	public boolean autoLevelIf() {
+		if (!getFlag(PersonFlag.AUTOLEVEL)) {
+			return false;
+		}
 		boolean autoLeveled = false;
-		if (featPoints > 0 && getFlag(PersonFlag.AUTOLEVEL)) {
-			if (featPoints == 1) {//only one
-				IHasSkills gain = pickFeatRandom();
-				if (isPlayer()) {
-					extra.println(gain.getOwnText());
-				}
-				updateSkills();
-				autoLeveled = true;
-				if (superperson != null) {
-					superperson.fillSkillConfigs();
-				}
-			}else {
-				while (featPoints > 0) {//autoleveling doesn't consume picks
-					IHasSkills gain = pickFeatRandom();
-					if (gain == null) 
-					{
-						break;
-					}
-					if (isPlayer()) {
-						extra.println(gain.getOwnText());
-					}
-					skillSet.addAll(gain.giveSet());//doesn't compute them fully, just enough to understand requirements
-				}
-				updateSkills();
-				autoLeveled = true;
-				if (superperson != null) {
-					superperson.fillSkillConfigs();
-				}
+		while (featPoints > 0) {//autoleveling doesn't consume picks
+			IHasSkills gain = pickFeatRandom();
+			if (gain == null) 
+			{
+				break;
 			}
+			if (isPlayer()) {
+				extra.println(gain.getOwnText());
+			}
+			skillSet.addAll(gain.giveSet());//doesn't compute them fully, just enough to understand requirements
+		}
+		updateSkills();
+		autoLeveled = true;
+		if (superperson != null) {
+			superperson.fillSkillConfigs();
 		}
 		if (autoLeveled && !isPlayer()) {
 			skillTriggers();

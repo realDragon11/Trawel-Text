@@ -176,7 +176,7 @@ public class Blacksmith extends Feature {
 						}
 						extra.println("Temper your "+item.getName()+" for "+costString+"?");
 						if (extra.yesNo()) {
-							if (!item.temperNegQuality()) {
+							if (item.temperNegQuality(1) == 0) {
 								extra.println(extra.RESULT_FAIL+"Tempering failed.");
 								return false;
 							}
