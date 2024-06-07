@@ -156,7 +156,8 @@ public class BossNode implements NodeType {
 		//we don't need to put the list back since we have a ref to it
 	}
 	
-	private void setGenericCorpse(NodeConnector holder,int node, Person body) {
+	private void setGenericCorpse(NodeConnector holder,int node, Person body, NodeTypeNum typeNum) {
+		holder.setTypeNum(node,typeNum.ordinal());
 		GenericNode.setSimpleDeadPerson(holder, node, body);
 	}
 	
@@ -227,7 +228,7 @@ public class BossNode implements NodeType {
 					return true;
 				}else {
 					holder.setForceGo(node,false);
-					setGenericCorpse(holder,node, spinner);
+					setGenericCorpse(holder,node,spinner,NodeTypeNum.DUNGEON);
 					Player.unlockPerk(Perk.FATED);
 					Networking.unlockAchievement("boss1");
 					setBossKilled(spinner.getName());
@@ -261,7 +262,7 @@ public class BossNode implements NodeType {
 			if (c.playerWon() > 0) {
 				holder.setForceGo(node,false);
 				Person baron = list.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();
-				setGenericCorpse(holder,node, baron);
+				setGenericCorpse(holder,node,baron,NodeTypeNum.MINE);
 				Networking.unlockAchievement("boss2");
 				Player.unlockPerk(Perk.HELL_BARONESS_1);
 				setBossKilled(baron.getName());
@@ -285,7 +286,7 @@ public class BossNode implements NodeType {
 			if (c.playerWon() > 0) {
 				holder.setForceGo(node,false);
 				Person yore = list.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();//throw if can't find
-				setGenericCorpse(holder,node, yore);
+				setGenericCorpse(holder,node,yore,NodeTypeNum.DUNGEON);
 				Player.unlockPerk(Perk.STORYTELLER);
 				Networking.unlockAchievement("boss3");
 				setBossKilled(yore.getName());
@@ -323,7 +324,7 @@ public class BossNode implements NodeType {
 				return true;
 			}else {
 				holder.setForceGo(node,false);
-				setGenericCorpse(holder,node, queen);
+				setGenericCorpse(holder,node,queen,NodeTypeNum.DUNGEON);
 				Player.unlockPerk(Perk.QUEENSLAYER);
 				Networking.unlockAchievement("boss4");
 				setBossKilled(queen.getName());
@@ -355,7 +356,7 @@ public class BossNode implements NodeType {
 		if (c.playerWon() > 0) {
 			holder.setForceGo(node,false);
 			Person miniboss = list.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();
-			setGenericCorpse(holder,node, miniboss);
+			setGenericCorpse(holder,node,miniboss,NodeTypeNum.DUNGEON);
 			//no achievement for now
 			setMiniBossKilled(miniboss.getName());
 			//less payout

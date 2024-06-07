@@ -707,7 +707,6 @@ public class GroveNode implements NodeType{
 				extra.println(extra.PRE_BATTLE+ (hasdryad ? p.getName() + " protects their tree!" : "The trees move to avenge their caretaker!"));
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() > 0) {
-					holder.setForceGo(node,false);//clean up our force go
 					GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
 					return false;//leave
 				}else {
@@ -1068,7 +1067,6 @@ public class GroveNode implements NodeType{
 		List<Person> list = holder.getStorageFirstClass(node,List.class);
 		Combat c = Player.player.massFightWith(list);
 		if (c.playerWon() > 0) {
-			holder.setForceGo(node,false);
 			GenericNode.setSimpleDeadRaceID(holder, node, list.get(0).getBag().getRaceID());
 			return false;
 		}else {

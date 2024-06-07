@@ -53,23 +53,27 @@ public class GenericNode implements NodeType {
 	}
 	
 	public static void setSimpleDuelPerson(NodeConnector holder,int node,Person p, String nodename, String interactstring,String wantDuel) {
+		morphSetup(holder,node);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.BASIC_DUEL_PERSON.ordinal());
 		holder.setStorage(node, new Object[]{p,nodename,interactstring,wantDuel});
 	}
 	
 	public static void setSimpleDeadString(NodeConnector holder,int node, String bodyname) {
+		morphSetup(holder,node);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.DEAD_STRING_SIMPLE.ordinal());
 		holder.setStorage(node, bodyname);
 	}
 	public static void setSimpleDeadPerson(NodeConnector holder,int node, Person body) {
+		morphSetup(holder,node);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.DEAD_PERSON.ordinal());
 		holder.setStorage(node, body);
 	}
 	
 	public static void setSimpleDeadRaceID(NodeConnector holder,int node, RaceID raceid) {
+		morphSetup(holder,node);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.DEAD_RACE_INDEX.ordinal());
 		holder.setStorage(node, new Integer(raceid.ordinal()));
@@ -85,12 +89,14 @@ public class GenericNode implements NodeType {
 	 * @param findbody (can be null for no finding)
 	 */
 	public static void setTotalDeadString(NodeConnector holder,int node,String nodename,String interactstring,String interactresult,String findbody) {
+		morphSetup(holder,node);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.DEAD_STRING_TOTAL.ordinal());
 		holder.setStorage(node, new Object[] {nodename,interactstring,interactresult,findbody});
 	}
 	
 	public static void setMiscText(NodeConnector holder,int node,String nodename,String interactstring,String interactresult,String findText) {
+		morphSetup(holder,node);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.MISC_TEXT_WITH_REGEN.ordinal());
 		holder.setStorage(node, new Object[] {nodename,interactstring,interactresult,findText});
@@ -102,6 +108,7 @@ public class GenericNode implements NodeType {
 	 * pass null as cleanseID to not trigger any quests
 	 */
 	public static void setBasicRagePerson(NodeConnector holder,int node, Person p, String nodename,String attackString) {
+		morphSetup(holder,node);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.BASIC_RAGE_PERSON.ordinal());
 		holder.setForceGo(node,true);
@@ -115,12 +122,14 @@ public class GenericNode implements NodeType {
 	 * if not racist they're really nice
 	 */
 	public static void setBasicCasual(NodeConnector holder,int node, Person p) {
+		morphSetup(holder,node);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.CASUAL_PERSON.ordinal());
 		holder.setStorage(node, p);
 	}
 	
 	public static void setBasicRichAndGuard(NodeConnector holder,int node) {
+		morphSetup(holder,node);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.RICH_GUARD.ordinal());
 		List<Person> list = new ArrayList<Person>();
@@ -320,6 +329,11 @@ public class GenericNode implements NodeType {
 		NodeType.getTypeEnum(holder.getTypeNum(node)).singleton.apply(holder, node);
 	}
 	
+	/**
+	 * Node has no content, can be used for regrowth
+	 * @param holder
+	 * @param node
+	 */
 	protected static void emptyANode(NodeConnector holder, int node) {
 		holder.setEventNum(node,Generic.EMPTY_FOR_REGROW.ordinal());
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
@@ -328,6 +342,24 @@ public class GenericNode implements NodeType {
 		holder.setStateNum(node,0);
 		holder.setVisited(node,0);//flush
 		holder.setFlag(node, NodeFlag.REGROWN,true);
+	}
+	
+	/**
+	 * cleans up remaining state/flags before morphing a node. Isn't a valid end state, call one of the other functions afterwards to apply the correct node
+	 * @param holder
+	 * @param node
+	 */
+	protected static void morphSetup(NodeConnector holder, int node) {
+		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,false);//will probably be changed after
+		holder.setFlag(node,NodeFlag.SILENT_FORCEGO_POSSIBLE,false);
+		holder.setFlag(node,NodeFlag.FORCEGO,false);
+		holder.setStateNum(node,0);
+		//keep visited the same
+		holder.setFlag(node, NodeFlag.REGROWN,false);
+		//holder.setFlag(node, NodeFlag.UNIQUE_1,false);//unsure how to handle this
+		
+		//clear storage to free space
+		holder.setStorage(node,null);
 	}
 
 	@Override
@@ -457,7 +489,6 @@ public class GenericNode implements NodeType {
 		Combat c = Player.player.fightWith(p);
 		if (c.playerWon() > 0) {
 			GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
-			holder.setForceGo(node,false);
 			return false;
 		}else {
 			return true;
@@ -470,7 +501,6 @@ public class GenericNode implements NodeType {
 			Combat c = Player.player.fightWith(p);
 			if (c.playerWon() > 0) {
 				GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
-				holder.setForceGo(node,false);
 				return false;
 			}else {
 				return false;//duelist doesn't kick you out
@@ -530,6 +560,7 @@ public class GenericNode implements NodeType {
 	 * 3 tier is from tin to gold with a chance of silver to adamantine
 	 */
 	protected static void applyGenericVein(NodeConnector holder,int node, int maxValueTier) {
+		morphSetup(holder,node);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.VEIN_MINERAL.ordinal());
 		holder.addVein();//gem veins count now
@@ -573,6 +604,7 @@ public class GenericNode implements NodeType {
 	}
 	
 	protected static void applyGenericGemVein(NodeConnector holder,int node) {
+		morphSetup(holder,node);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.VEIN_MINERAL.ordinal());
 		holder.addVein();
@@ -619,6 +651,7 @@ public class GenericNode implements NodeType {
 	}
 	
 	public static void applyCollector(NodeConnector holder,int node) {
+		morphSetup(holder,node);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.COLLECTOR.ordinal());
 		holder.setStorage(node, RaceFactory.makeCollector(holder.getLevel(node)));
@@ -679,6 +712,7 @@ public class GenericNode implements NodeType {
 	}
 	
 	public static void applyLockDoor(NodeConnector holder,int node) {
+		morphSetup(holder,node);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.LOCKDOOR.ordinal());
 		holder.setStorage(node,extra.choose("Locked Door","Barricaded Door","Padlocked Door"));
@@ -853,6 +887,7 @@ public class GenericNode implements NodeType {
 	 * use null for random starting, `""` for nothing
 	 */
 	public static void setPlantSpot(NodeConnector holder,int node, Seed starting) {
+		morphSetup(holder,node);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.PLANT_SPOT.ordinal());
 		if (starting == null) {
@@ -964,7 +999,6 @@ public class GenericNode implements NodeType {
 			}
 			Combat c = Player.player.massFightWith(peeps);
 			if (c.playerWon() > 0) {
-				holder.setForceGo(node,false);//clean up any force go
 				//leader might be the guard now, we don't care
 				GenericNode.setSimpleDeadRaceID(holder, node, leader.getBag().getRaceID());
 				return false;
@@ -1039,6 +1073,7 @@ public class GenericNode implements NodeType {
 	}
 	
 	public static void applyTrappedChamber(NodeConnector holder,int node) {
+		morphSetup(holder,node);
 		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE,true);
 		holder.setEventNum(node,Generic.TRAPPED_CHAMBER.ordinal());
 		

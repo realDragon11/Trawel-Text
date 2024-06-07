@@ -388,7 +388,6 @@ public class DungeonNode implements NodeType{
 			Person guard = holder.getStorageFirstPerson(node);
 			Combat gc = Player.player.fightWith(guard);
 			if (gc.playerWon() > 0) {
-				holder.setForceGo(node,false);
 				GenericNode.setSimpleDeadRaceID(holder, node, guard.getBag().getRaceID());
 				return false;
 			}else {
@@ -404,7 +403,6 @@ public class DungeonNode implements NodeType{
 			Combat bgc = mainGame.HugeBattle(holder.getWorld(), people);
 			String wasname = holder.getStorageFirstClass(node,String.class);
 			if (bgc.playerWon() > 0) {
-				holder.setForceGo(node,false);
 				GenericNode.setTotalDeadString(holder, node,"Wrecked " +wasname,"Examine Bodies","They are slowly rotting.", "pile of corpses");
 				holder.parent.retainAliveFighters(bgc.getNonSummonSurvivors());
 				return false;
@@ -499,7 +497,6 @@ public class DungeonNode implements NodeType{
 			extra.println(extra.PRE_BATTLE+"The mimic attacks you!");
 			Combat c = Player.player.fightWith(p);
 			if (c.playerWon() > 0) {
-				holder.setForceGo(node, false);
 				GenericNode.setSimpleDeadRaceID(holder, node,p.getBag().getRaceID());
 				return false;
 			}else {
@@ -534,7 +531,6 @@ public class DungeonNode implements NodeType{
 		
 		Combat c = Player.player.fightWith(p);
 		if (c.playerWon() > 0) {
-			holder.setForceGo(node,false);
 			GenericNode.setSimpleDeadString(holder, node, "Living Statue");
 			return false;
 		}else {

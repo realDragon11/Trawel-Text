@@ -368,7 +368,6 @@ public class GraveyardNode implements NodeType{
 			Combat c = Player.player.massFightWith(list);
 			if (c.playerWon() > 0) {
 				GenericNode.setTotalDeadString(holder,node,"Bat Corpses","Examine dead Bats.","Some zombies seem to have taken a few bites.","Bat Bodies");
-				holder.setForceGo(node,false);
 				//swarm bats do not count as normal bats for cleansing
 			return false;
 			}else {
@@ -484,7 +483,6 @@ public class GraveyardNode implements NodeType{
 			//Person p = holder.getStorageFirstPerson(node);
 			Combat c = Player.player.fightWith(p);
 			if (c.playerWon() > 0) {
-				holder.setForceGo(node,false);
 				GenericNode.setSimpleDeadPerson(holder, node,p);
 				return false;
 			}else {
@@ -554,7 +552,6 @@ public class GraveyardNode implements NodeType{
 		if (c.playerWon() > 0) {
 			//must kill bats to fully kill vampire, so we handle cleanse trigger manually
 			Player.player.questTrigger(TriggerType.CLEANSE,CleanseType.VAMPIRE.trigger, 1);
-			holder.setForceGo(node, false);
 			GenericNode.setTotalDeadString(holder, node,"Vampire Coffin","Examine motes of Grave Dust","There isn't enough here to gather.","coffin");
 			return false;
 		}else {
