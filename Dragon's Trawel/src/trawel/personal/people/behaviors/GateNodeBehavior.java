@@ -125,7 +125,7 @@ public class GateNodeBehavior extends Behavior {
 
 	@Override
 	public List<TimeEvent> action(Agent user) {
-		return null;
+		throw new RuntimeException(user.getPerson().getName() + " activated their gate note behavior!" + this.toString());
 	}
 
 }

@@ -262,6 +262,9 @@ public class World extends TContextOwner{
 		for (Island t: islands) {
 			timeScope.localEvents(t.contextTime(time, calling));
 		}
+		for (Agent a: reoccuring) {
+			a.passTime(time, calling);
+		}
 		return null;
 	}
 	

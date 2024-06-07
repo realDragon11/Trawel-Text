@@ -38,6 +38,7 @@ public class DungeonNode implements NodeType{
 	/*
 	 * 5/6: chest/mimic
 	 * 7/8: statue/living statue
+	 * 9: trapped treasure chamber
 	 */
 	private static final byte[] LOOT_NUMBERS = new byte[] {5,6,7,8,9};
 	

@@ -9,6 +9,7 @@ import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.battle.Combat.SkillCon;
 import trawel.factions.Faction;
+import trawel.factions.HostileTask;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
@@ -17,6 +18,8 @@ import trawel.personal.classless.Perk;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
+import trawel.personal.people.Agent.AgentGoal;
+import trawel.personal.people.behaviors.GateNodeBehavior;
 import trawel.quests.CleanseSideQuest.CleanseType;
 import trawel.quests.Quest.TriggerType;
 import trawel.time.TimeContext;
@@ -31,6 +34,7 @@ public class BossNode implements NodeType {
 		holder.setTypeNum(node,NodeType.NodeTypeNum.BOSS.ordinal());
 		holder.setLevel(node, tier);
 		holder.setStorage(node,new Object[] {"",new ArrayList<Person>()});
+		holder.setFloor(node,guessDepth);
 		return node;
 	}
 	
@@ -45,7 +49,7 @@ public class BossNode implements NodeType {
 	}
 	
 	public enum BossType{
-		NONE,FATESPINNER,GENERIC_DEMON_OVERLORD,YORE,OLD_QUEEN
+		NONE,FATESPINNER,GENERIC_DEMON_OVERLORD,YORE,OLD_QUEEN,VARIABLE_GATE_BOSS
 	}
 	
 	@Override
@@ -109,6 +113,42 @@ public class BossNode implements NodeType {
 			p.finishGeneration();
 			peeps.add(p);
 			refillOldQueenList(peeps,null,level);
+			break;
+		case VARIABLE_GATE_BOSS:
+			//attempt to read the state of the note as a node itself, since the gate blocker will likely be applied first and thus rolled
+			//if we fail to read or read zero send a warning message
+			int blockerNode = -2;
+			int gateType = -2;
+			try {
+				blockerNode = holder.getStateNum(madeNode);
+				GateNodeBehavior GNB = holder.getStorageFirstClass(blockerNode,GateNodeBehavior.class);
+				gateType = GNB.type;
+			}catch (Exception e) {
+				throw new RuntimeException("Failed Variable Boss Fetch in node "+madeNode + " with gate blocker " + blockerNode + " in " + holder.parent.getName());
+			}
+			String nodeName;
+			String nodeInteract;
+			switch (gateType) {
+				default://fail to read
+					throw new RuntimeException("Invalid Variable Boss Type in node "+madeNode + " with gate blocker " + blockerNode + " in " + holder.parent.getName());
+				case 0://skeleton pirate blocker
+					p = RaceFactory.makeSkeletonPirate(level);
+					p.setTitle(", Pirate Captain");
+					nodeName = "Captain's Wheel";
+					nodeInteract = "Challenge the Captain.";
+					break;
+				case 1://map collector blocker
+					p = RaceFactory.makeCollector(level);
+					p.setTitle(", Treasure Keeper");
+					nodeName = "Empty Treasure Vault";
+					nodeInteract = "Claim the true Treasure.";
+					break;
+			}
+			p.setOrMakeAgentGoal(AgentGoal.OWN_SOMETHING);
+			p.hTask = HostileTask.BOSS;
+			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
+			peeps.add(p);
+			holder.setStorage(madeNode,new Object[] {nodeName,nodeInteract,peeps});
 			break;
 		default:
 			throw new RuntimeException("invalid boss " +holder.getEventNum(madeNode) + " in " + holder.parent.getName() + " in " + holder.parent.getTown().getName());
@@ -307,6 +347,25 @@ public class BossNode implements NodeType {
 			return true;//lost, kick out
 		}
 	}
+	
+	private boolean variableBlockerBoss(NodeConnector holder,int node) {
+		List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
+		extra.println(extra.PRE_BATTLE+"You attack "+list.get(0).getName()+"!");
+		Combat c = Player.player.massFightWith(list);
+		if (c.playerWon() > 0) {
+			holder.setForceGo(node,false);
+			Person miniboss = list.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();
+			setGenericCorpse(holder,node, miniboss);
+			//no achievement for now
+			setMiniBossKilled(miniboss.getName());
+			//less payout
+			heroRep(holder,node,.5f);
+			addRubyPayout(holder, node,.5f);
+			return false;
+		}else {
+			return true;//lost, kick out
+		}
+	}
 
 	@Override
 	public boolean interact(NodeConnector holder,int node) {
@@ -315,6 +374,7 @@ public class BossNode implements NodeType {
 		case GENERIC_DEMON_OVERLORD: return hellbaron(holder,node);
 		case YORE: return yore(holder,node);
 		case OLD_QUEEN: return oldQueen(holder,node);
+		case VARIABLE_GATE_BOSS: return variableBlockerBoss(holder, node);
 		}
 		throw new RuntimeException("Invalid boss");
 	}
@@ -334,10 +394,12 @@ public class BossNode implements NodeType {
 	@Override
 	public String interactString(NodeConnector holder, int node) {
 		switch (BossType.values()[holder.getEventNum(node)]) {
-		case FATESPINNER: return extra.PRE_BATTLE+"reject Fate";
-		case GENERIC_DEMON_OVERLORD: return extra.PRE_BATTLE+"become the Baroness";
-		case YORE: return extra.PRE_BATTLE+"stall a Story";
-		case OLD_QUEEN: return extra.PRE_BATTLE+"oust an Empress";
+		case FATESPINNER: return extra.PRE_BATTLE+"Reject Fate.";
+		case GENERIC_DEMON_OVERLORD: return extra.PRE_BATTLE+"Become the Baroness.";
+		case YORE: return extra.PRE_BATTLE+"Stall a Story.";
+		case OLD_QUEEN: return extra.PRE_BATTLE+"Oust an Empress.";
+		case VARIABLE_GATE_BOSS:
+			return extra.PRE_BATTLE+holder.getStorageAsArray(node)[1];//get interact string in second spot
 		}
 		throw new RuntimeException("Invalid boss");
 	}
@@ -349,12 +411,18 @@ public class BossNode implements NodeType {
 		case GENERIC_DEMON_OVERLORD: return "A Minor Throne of Hell";
 		case YORE: return "A Rigged Arena";
 		case OLD_QUEEN: return "Prehistoric Throne";
+		case VARIABLE_GATE_BOSS:
+			return extra.PRE_BATTLE+holder.getStorageAsArray(node)[0];//get name string in first spot
 		}
 		throw new RuntimeException("Invalid boss");
 	}
 	
 	public static void setBossKilled(String bossname) {
 		Player.player.addGroupedAchieve("boss","Bosses",bossname);
+	}
+	
+	public static void setMiniBossKilled(String bossname) {
+		Player.player.addGroupedAchieve("miniboss","Mini Bosses",bossname);
 	}
 	
 	public static void heroRep(NodeConnector holder,int node,float mult) {

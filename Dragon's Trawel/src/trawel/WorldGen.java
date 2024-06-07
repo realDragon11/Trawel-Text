@@ -327,7 +327,7 @@ public class WorldGen {
 		Town owal = new Town("Owal",9,teran,(byte)13,(byte)7);
 		//connects added later
 		owal.addFeature(new Docks("The Great Bay", owal));
-		owal.addFeature(new Beach("Shipwreck Shore", owal,40,9,Shape.TREASURE_BEACH, null));
+		owal.addFeature(new Beach("Shipwreck Shore", owal,40,9,Shape.TREASURE_BEACH,BossType.VARIABLE_GATE_BOSS));
 		owal.addFeature(new Store("Edible Exports",8,10));
 		owal.addFeature(new Store(owal,"Equipment Imports",10,6,3));//general store with reduced size
 		owal.addFeature(new Garden(owal,"Overworked Fields",1.1f,PlantFill.FOOD));

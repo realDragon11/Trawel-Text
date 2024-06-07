@@ -890,11 +890,7 @@ public class Town extends TContextOwner{
 		//only appears on land
 		if (type == 0 && QuestReactionFactory.runMe(this)) {
 			//bonus progress for triggering quest reactions
-			world.addEncounterTick(1);
-			return true;
-		}
-		
-		if (Bumper.go(threshold,tier,type,this)) {
+			world.addEncounterTick(2);
 			return true;
 		}
 		
@@ -975,7 +971,7 @@ public class Town extends TContextOwner{
 		}
 		//world encounter, also needs ticker
 		//can appear over water
-		if (world.getEncounterTick() > 10 && extra.chanceIn(1,3)) {
+		if (world.getEncounterTick() > 8 && extra.chanceIn(1,3)) {
 			world.resetEncounterTick();//reset always as is highest world encounter
 			Agent sp = island.getWorld().getWorldEncounter(Player.player.getPerson().getLevel()+1);
 			//does not level up automatically
@@ -995,10 +991,22 @@ public class Town extends TContextOwner{
 						sp.skipCurrent();//clear the behavior from them, it still exists for the location, just not them
 						extra.println(GNB.location.getName() + " in " + GNB.location.getTown().getName() + " has a new secret for you...");
 					}//must be slain to complete challenge
+					else {
+						//save some time on the next trigger if lost
+						world.addEncounterTick(3);
+					}
 				}
 				return true;
+			}else {
+				extra.println("no reoccuring world encounters");
 			}
 		}
+		
+		//normal bumpers
+		if (Bumper.go(threshold,tier,type,this)) {
+			return true;
+		}
+		
 		//didn't activate anything
 		return false;
 	}

@@ -110,7 +110,11 @@ public class Agent extends SuperPerson{
 	@Override
 	public List<TimeEvent> passTime(double d, TimeContext calling) {
 		if (current == null) {
-			return null;
+			if (behaviors.isEmpty()) {
+				return null;
+			}else {
+				current = popBehave();
+			}
 		}
 		if (current.getTimeTo() == Double.NaN) {
 			return null;//special value that means it can't advance

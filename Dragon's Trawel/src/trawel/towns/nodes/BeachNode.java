@@ -179,12 +179,26 @@ public class BeachNode implements NodeType {
 							}
 							break;
 						case 2://small dungeon
-							//TODO: dungeon should have a large reward somewhere in it?
-							subHead = getNode(start, headNode, start.getFloor(headNode)+1, tier+1);
-							//set to skeleton pirate blocker on dungeon
+							int dTier = tier+1;
+							subHead = getNode(start, headNode, start.getFloor(headNode)+1,dTier);
+							//set to gate blocker on dungeon
 							start.setEventNum(subHead,1);
-							int dungeonNodes = NodeType.NodeTypeNum.DUNGEON.singleton.generate(start,subHead,subSize,tier+1);
-							start.setMutualConnect(subHead,dungeonNodes);
+							int nodeLast = subHead;
+							for (int i = 0; i < subSize;i++) {
+								if (i%2==0) {
+									dTier++;//go up a tier every other node
+								}
+								int newDNode = NodeType.NodeTypeNum.DUNGEON.singleton.getNode(start,nodeLast,start.getFloor(nodeLast)+1, dTier);
+								start.setMutualConnect(nodeLast,newDNode);
+								nodeLast = newDNode;
+							}
+							//add miniboss at end of each dungeon
+							dTier++;
+							int bossDNode = NodeType.NodeTypeNum.BOSS.singleton.getNode(start,nodeLast,start.getFloor(nodeLast)+1, dTier);
+							start.setMutualConnect(nodeLast,bossDNode);
+							//state is set to the node that contains the blocker, which is read by the boss generator to try to determine the boss type
+							start.setStateNum(bossDNode,subHead);
+							//connect subbranch entry node with branch entry node
 							start.setMutualConnect(headNode,subHead);
 							break;
 						}
