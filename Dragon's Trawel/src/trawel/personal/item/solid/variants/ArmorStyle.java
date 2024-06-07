@@ -117,7 +117,7 @@ public enum ArmorStyle {
 		SEWN.genner[4] = new NameStyleNum("boots");//???
 		SEWN.legacyName = new String[] {"homan_hat","homan_gloves","homan_tunic","homan_pants","homan_boots"};
 		SEWN.wasddName = "halfplate";
-		FABRIC.addBonusQuals = EnumSet.of(ArmorQuality.PADDED,ArmorQuality.REFINED);
+		SEWN.addBonusQuals = EnumSet.of(ArmorQuality.PADDED,ArmorQuality.REFINED);
 		
 		GEM.sharpMult = 1.2f;
 		GEM.bluntMult = .8f;
@@ -134,7 +134,7 @@ public enum ArmorStyle {
 		GEM.genner[4] = new NameStyleNum("gemboots");
 		GEM.legacyName = new String[] {"tevaran_helmet","tevaran_bracers","tevaran_breastplate","tevaran_pants","tevaran_boots"};
 		GEM.wasddName = "halfplate";
-		FABRIC.addBonusQuals = EnumSet.of(ArmorQuality.DISPLACING,ArmorQuality.REFINED);
+		GEM.addBonusQuals = EnumSet.of(ArmorQuality.DISPLACING,ArmorQuality.REFINED);
 		
 		BODY.sharpMult = 1f;
 		BODY.bluntMult = 1f;
