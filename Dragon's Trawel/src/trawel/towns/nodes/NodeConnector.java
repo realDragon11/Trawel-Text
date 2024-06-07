@@ -533,8 +533,9 @@ public class NodeConnector implements Serializable {
 	public void reverseConnections(int node) {
 		List<Integer> connects = getConnects(node);
 		int[] replace = new int[connects.size()];
+		int j = 0;
 		for (int i = replace.length-1;i >=0; i--) {
-			replace[i] = connects.get(i);
+			replace[j++] = connects.get(i);
 		}
 		setConnects(node,replace);
 	}
