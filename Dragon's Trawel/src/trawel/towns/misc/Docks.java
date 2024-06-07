@@ -113,6 +113,7 @@ public class Docks extends Feature {
 								//promote if was mook
 								if (p.getFlag(PersonFlag.IS_MOOK)) {
 									p.setPerk(Perk.NPC_PROMOTED);
+									p.clearEffects();//cure effects like curse
 									p.setFlag(PersonFlag.IS_MOOK, false);
 								}
 								

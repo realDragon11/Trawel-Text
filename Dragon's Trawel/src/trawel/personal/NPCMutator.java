@@ -183,6 +183,7 @@ public class NPCMutator {
 			mutateImproveGear(p,1);
 		}
 		p.setPerk(Perk.NPC_PROMOTED);
+		p.clearEffects();//cure effects like curse
 		p.hTask = HostileTask.BOSS;
 		return p;
 	}

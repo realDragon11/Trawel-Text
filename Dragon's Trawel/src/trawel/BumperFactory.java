@@ -268,7 +268,7 @@ public class BumperFactory {
 					List<Person> list = new ArrayList<Person>();
 					int count = extra.randRange(2, 4);
 					int addLevel = RaceFactory.addAdjustLevel(level, count-1);
-					if (addLevel > 0) {
+					if (addLevel > 0 && extra.chanceIn(2,3)) {
 						for (int i = 0;i < count;i++) {
 							list.add(RaceFactory.makeHarpy(addLevel));
 						}
@@ -276,12 +276,11 @@ public class BumperFactory {
 						Combat c = Player.player.massFightWith(list);
 						if (c.playerWon() > 0) {
 						}else {
-							list = c.getNonSummonSurvivors();
-							if (list.size() < count) {
-							}
+							//the first lucky non summon survivor gets it
+							Player.player.stealCurrencyLeveled(c.getNonSummonSurvivors().get(0),1f);
 						}
 					}else {
-						Person p = RaceFactory.makeHarpy(level);
+						Person p = RaceFactory.makeAlphaHarpy(level);
 						extra.println(extra.PRE_BATTLE+"A harpy nestmother attacks!");
 						Combat c = Player.player.fightWith(p);
 						if (c.playerWon() > 0) {
@@ -350,11 +349,30 @@ public class BumperFactory {
 					extra.println(extra.PRE_BATTLE+"A harpy ambushes your ship from a nearby shipwreck!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
+						Player.player.stealCurrencyLeveled(p,.6f);
+						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
+					}else {
+					}
+				}};
+			b.responses.add(new Response(DrawBane.MEAT,1.25));
+			b.responses.add(new Response(DrawBane.SILVER,1.4));
+			b.responses.add(new Response(DrawBane.GOLD,1.4));
+			b.responses.add(new Response(DrawBane.REPEL,-1));
+			shipList.add(b);
+			
+			b = new Bumper() {
+				
+				@Override
+				public void activate(int level) {
+					Person p = RaceFactory.makeAlphaHarpy(level);
+					
+					extra.println(extra.PRE_BATTLE+"A harpy nestmother ambushes your ship from a nearby shipwreck!");
+					Combat c = Player.player.fightWith(p);
+					if (c.playerWon() < 0) {
 						Player.player.stealCurrencyLeveled(p,1f);
 						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
 					}else {
 					}
-					
 				}};
 			b.responses.add(new Response(DrawBane.MEAT,1.25));
 			b.responses.add(new Response(DrawBane.SILVER,1.4));

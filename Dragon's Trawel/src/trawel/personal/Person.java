@@ -569,11 +569,6 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	
 	public void setPerk(Perk p) {
 		perkSet.add(p);
-		switch (p) {
-		case NPC_PROMOTED:
-			this.clearEffects();//cures effects, notably curse, which they just gained immunity to
-			break;
-		}
 		updateSkills();//just update instantly now
 	}
 	public boolean hasPerk(Perk p) {

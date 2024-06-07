@@ -1107,7 +1107,11 @@ public class RaceFactory {
 		p.setTitle(randomLists.randomOldTitle());
 		p.hTask = HostileTask.DUEL;
 		if (extra.chanceIn(1,8)) {
-			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
+			//stronger, better loot and tougher
+			p.cleanSetSkillHas(Perk.NPC_PROMOTED);//immune to instadeath and cheese
+			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);//the bonus reward
+			p.addFeatPoint();//extra feat point to get more skills
+			NPCMutator.mutateImproveGear(p,1);//better equipment both to use and loot
 		}
 		p.finishGeneration();
 		return p;
@@ -1125,7 +1129,7 @@ public class RaceFactory {
 	public static Person makeWolf(int level) {
 		Person w = Person.animal(level, RaceID.B_WOLF, MaterialFactory.getMat("hide"), false);
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
-		if (extra.chanceIn(1,5)) {
+		if (extra.chanceIn(2,5)) {
 			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		}
 		w.setFirstName(randomLists.randomWolfName());
@@ -1138,9 +1142,8 @@ public class RaceFactory {
 	public static Person makeAlphaWolf(int level) {
 		Person w = Person.animal(level, RaceID.B_WOLF, MaterialFactory.getMat("hide"), false);
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
-		if (extra.chanceIn(4,5)) {
-			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
-		}
+		w.cleanSetSkillHas(Perk.NPC_PROMOTED);//immune to instadeath and cheese
+		w.getBag().addDrawBaneSilently(DrawBane.MEAT);
 		w.setFirstName(randomLists.randomWolfName());
 		w.setTitle(randomLists.randomAlphaName());
 		w.hTask = HostileTask.ANIMAL;
@@ -1156,10 +1159,8 @@ public class RaceFactory {
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TEETH_GENERIC));
 		w.getBag().swapArmorSlot(new Armor(level,0,MaterialFactory.getMat("flesh")),0);
 		//w.getBag().swapRace(RaceFactory.getRace("hiding-mimic"));
-		w.setPerk(Perk.RACIAL_SHIFTS);
-		if (extra.chanceIn(1,3)) {
-			w.getBag().addDrawBaneSilently(DrawBane.MIMIC_GUTS);
-		}
+		w.cleanSetSkillHas(Perk.RACIAL_SHIFTS);
+		w.getBag().addDrawBaneSilently(DrawBane.MIMIC_GUTS);
 		w.setFirstName(randomLists.randomFirstName());
 		w.hTask = HostileTask.MONSTER;
 		w.cleanseType = (byte)CleanseSideQuest.CleanseType.MONSTERS.ordinal();
@@ -1170,9 +1171,7 @@ public class RaceFactory {
 	public static Person makeStatue(int level) {
 		Person w = new Person(level,true, Race.RaceType.PERSONABLE,null,Person.RaceFlag.CRACKS,false);
 		//currently doesn't need the HAS_WEALTH flag, if that would ever come up, because is personable
-		if (extra.chanceIn(1,2)) {
-			w.getBag().addDrawBaneSilently(DrawBane.CEON_STONE);
-		}
+		w.getBag().addDrawBaneSilently(DrawBane.CEON_STONE);
 		w.hTask = HostileTask.MONSTER;
 		w.finishGeneration();
 		return w;
@@ -1184,7 +1183,7 @@ public class RaceFactory {
 		w.setFlag(PersonFlag.CAN_LEARN,true);
 		w.setPersonType(PersonType.FELL_MONSTER);
 		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("flesh"),WeaponType.REAVER_STANDING));
-		w.setPerk(Perk.RACIAL_SHIFTS);
+		w.cleanSetSkillHas(Perk.RACIAL_SHIFTS);
 		w.setFirstName(randomLists.randomFirstName());
 		w.hTask = HostileTask.MONSTER;
 		w.cleanseType = (byte)CleanseSideQuest.CleanseType.FELL.ordinal();
@@ -1317,6 +1316,30 @@ public class RaceFactory {
 			w.getBag().addDrawBaneSilently(DrawBane.GOLD);
 		}
 		if (extra.chanceIn(1,20)) {
+			w.getBag().addDrawBaneSilently(DrawBane.SILVER);
+		}
+		w.setFirstName(randomLists.randomFirstName());
+		w.hTask = HostileTask.MONSTER;
+		w.cleanseType = (byte)CleanseSideQuest.CleanseType.HARPY.ordinal();
+		w.finishGeneration();
+		return w;
+	}
+	
+	public static Person makeAlphaHarpy(int level) {
+		Person w = Person.animal(level, RaceID.B_HARPY, MaterialFactory.getMat("hide"), false);
+		addWealth(WEALTH_STANDARD,.5f, w);//has money
+		w.setFlag(PersonFlag.HAS_WEALTH,true);
+		w.setFlag(PersonFlag.CAN_LEARN,true);
+		w.setPersonType(PersonType.HARPY_GENERIC);
+		w.getBag().setWeapon(new Weapon(level,MaterialFactory.getMat("bone"),WeaponType.TALONS_GENERIC));
+		w.liteSetSkillHas(Perk.NPC_PROMOTED);
+		if (extra.chanceIn(1,4)) {
+			w.getBag().addDrawBaneSilently(DrawBane.MEAT);
+		}
+		if (extra.chanceIn(1,5)) {
+			w.getBag().addDrawBaneSilently(DrawBane.GOLD);
+			w.addFeatPoint();//bonus feat for having gold
+		}else {
 			w.getBag().addDrawBaneSilently(DrawBane.SILVER);
 		}
 		w.setFirstName(randomLists.randomFirstName());
@@ -1547,7 +1570,7 @@ public class RaceFactory {
 	public static Person makeDemonOverlord(int level) {
 		Person w = new Person(level,true, Race.RaceType.PERSONABLE,null,RaceFlag.NONE,false,AIJob.KNIGHT,RaceFactory.getRace(RaceID.MAJOR_DEMON));
 		w.getBag().addDrawBaneSilently(DrawBane.VIRGIN);
-		w.setPerk(Perk.HELL_BARON_NPC);
+		w.cleanSetSkillHas(Perk.HELL_BARON_NPC);
 		w.hTask = HostileTask.BOSS;
 		w.addFeatPoint();//bonus feat point to use on whatever
 		NPCMutator.mutateImproveGear(w,1);//less gear improvement than other bosses
@@ -1628,7 +1651,7 @@ public class RaceFactory {
 			//comes here often
 			w = new Person(level,AIJob.GRAVER);
 			list = w.getBag().getDrawBanes();
-			w.cleanSetSkillHas(Perk.GRAVEYARD_SIGHT);//clean, doesn't count as a point
+			w.cleanSetSkillHas(Perk.GRAVEYARD_SIGHT);
 			if (extra.chanceIn(1,3)) {
 				list.add(DrawBane.SILVER);
 			}else {
@@ -1672,7 +1695,7 @@ public class RaceFactory {
 	
 	public static Person makeGravedigger(int level) {
 		Person w = new Person(level,AIJob.GRAVER);
-		w.cleanSetSkillHas(Perk.GRAVEYARD_SIGHT);//clean, doesn't count as a point
+		w.cleanSetSkillHas(Perk.GRAVEYARD_SIGHT);
 		w.hTask = HostileTask.PEACE;
 		List<DrawBane> list = w.getBag().getDrawBanes();
 		list.add(DrawBane.GRAVE_DIRT);
@@ -1692,6 +1715,7 @@ public class RaceFactory {
 					w.setFacLevel(Faction.HUNTER,15,0);
 					w.setFacLevel(Faction.HEROIC,10,0);
 					w.getBag().getHand().transmuteWeapMat(MaterialFactory.getMat("silver"));
+					w.addFeatPoint();
 					w.hTask = HostileTask.HUNT;
 					w.setTitle(randomLists.randomHunterTitle());
 				}else {
@@ -1733,6 +1757,7 @@ public class RaceFactory {
 			w.addBlood(3);
 			w.getBag().getHand().transmuteWeapMat(MaterialFactory.getMat("silver"));
 			w.cleanSetSkillHas(Perk.GRAVEYARD_SIGHT);
+			w.addFeatPoint();
 			list.add(DrawBane.SILVER);
 			list.add(DrawBane.GRAVE_DUST);
 			break;
@@ -1749,8 +1774,11 @@ public class RaceFactory {
 		Person w = new Person(level,true, Race.RaceType.PERSONABLE,null,RaceFlag.NONE,false,AIJob.PIRATE,RaceFactory.getRace(RaceID.SKELETON_NON_BEASTLY));
 		addWealth(WEALTH_WELL_OFF,.4f, w);
 		w.getBag().addDrawBaneSilently(DrawBane.GRAVE_DUST);
-		w.setPerk(Perk.GRAVEYARD_SIGHT);
+		w.cleanSetSkillHas(Perk.GRAVEYARD_SIGHT);
 		w.hTask = HostileTask.GUARD_DUNGEON;
+		if (extra.chanceIn(1,30)) {//MUCH higher chance of gold than normal, but no chance of silver
+			w.bag.addDrawBaneSilently(DrawBane.GOLD);
+		}
 		w.setTitle("the " + extra.capFirst(randomLists.randomPirateName()));
 		w.finishGeneration();
 		return w;
@@ -1762,6 +1790,9 @@ public class RaceFactory {
 		w.setFacLevel(Faction.ROGUE,15, 0);
 		w.setFacLevel(Faction.HEROIC,0, 10);
 		w.hTask = HostileTask.MUG;
+		if (extra.chanceIn(1,40)) {//higher chance of gold than normal, but no chance of silver
+			w.bag.addDrawBaneSilently(DrawBane.GOLD);
+		}
 		w.setTitle("the " + extra.capFirst(randomLists.randomPirateName()));
 		w.finishGeneration();
 		return w;
