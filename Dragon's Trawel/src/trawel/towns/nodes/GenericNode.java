@@ -897,6 +897,15 @@ public class GenericNode implements NodeType {
 	}
 	
 	public static boolean goCasualPerson(NodeConnector holder,int node) {
+		final String fluff;
+		switch (NodeType.getTypeEnum(holder.getTypeNum(node))) {
+			default:
+				fluff = " is wandering around.";
+				break;
+			case BEACH:
+				fluff = " is combing the beach.";
+				break;
+		}
 		Person p = holder.getStorageFirstPerson(node);
 		p.getBag().graphicalDisplay(1, p);
 		boolean racist = p.isRacist();
@@ -907,7 +916,7 @@ public class GenericNode implements NodeType {
 				list.add(new MenuLine() {
 					@Override
 					public String title() {
-						return p.getName() + " is wandering around.";
+						return p.getName() + fluff;
 					}});
 				list.add(new MenuSelect() {
 

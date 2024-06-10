@@ -265,7 +265,7 @@ public class randomLists {
 		}
 	}
 	
-	public static String extraTitleFormat(String title) {
+	public static String extractTitleFormat(String title) {
 		if (title.endsWith(" ")) {
 			return title.substring(0,title.length()-1);
 		}

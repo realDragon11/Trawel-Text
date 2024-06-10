@@ -46,7 +46,11 @@ public class BeachNode implements NodeType {
 				//ashore locked chest
 				1f,
 				//variable fluff landmark, static state
-				.2f
+				.2f,
+				//bottle, not implemented yet
+				0f,
+				//beachcomber (generic casual with bonus drawbane)
+				1f
 		});
 		beachEntryRoller = new WeightedTable(new float[] {
 				//skeleton pirate blocker
@@ -56,7 +60,11 @@ public class BeachNode implements NodeType {
 				//ashore locked chest
 				.5f,
 				//variable fluff landmark, static state
-				1.5f
+				1.5f,
+				//bottle, not implemented yet
+				0f,
+				//beachcomber (generic casual with bonus drawbane)
+				1f
 		});
 	}
 	
@@ -92,7 +100,7 @@ public class BeachNode implements NodeType {
 			break;
 		case 2://pirate rager
 			Person pirate = RaceFactory.makePirate(holder.getLevel(node));
-			String mugName = randomLists.extraTitleFormat(pirate.getTitle());
+			String mugName = randomLists.extractTitleFormat(pirate.getTitle());
 			GenericNode.setBasicRagePerson(holder,node,pirate,mugName,"The "+extra.capFirst(mugName) + " attacks you!");
 			break;
 		case 3://ashore locked chest
@@ -118,6 +126,24 @@ public class BeachNode implements NodeType {
 			}
 			break;
 		case 5://bottle with variable results (statenum determines reward, if any)
+			break;
+		case 6://beachcomber
+			//https://en.wikipedia.org/wiki/Beachcombing
+			Person beachcomber = RaceFactory.makeMaybeRacist(holder.getLevel(node));
+			//DOLATER: more beachcomber names
+			beachcomber.setTitle(randomLists.randomTitleFormat(extra.choose("Beachcomber")));
+			//beachcomber drawbane as reward for interacting/fluff that they found
+			if (extra.chanceIn(1,3)) {//rare finds
+				if (extra.chanceIn(1,5)) {//rarest finds
+					beachcomber.getBag().addDrawBaneSilently(extra.choose(DrawBane.CEON_STONE,DrawBane.ENT_CORE,DrawBane.GOLD,DrawBane.PROTECTIVE_WARD));
+				}else {//rare find
+					beachcomber.getBag().addDrawBaneSilently(extra.choose(DrawBane.TELESCOPE,DrawBane.UNICORN_HORN,DrawBane.SILVER,DrawBane.REPEL));
+				}
+			}else {//normal find (just wood for now)
+				beachcomber.getBag().addDrawBaneSilently(DrawBane.WOOD);
+			}
+			
+			GenericNode.setBasicCasual(holder, node,beachcomber);
 			break;
 		}
 	}
