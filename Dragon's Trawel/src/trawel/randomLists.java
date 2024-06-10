@@ -254,6 +254,17 @@ public class randomLists {
 		return drifterTypes.next();
 	}
 	
+	public static String randomTitleFormat(String title) {
+		switch (extra.randRange(0,2)) {
+		default: case 0:
+			return "the " + extra.capFirst(title);
+		case 1:
+			return ", " + extra.capFirst(title);
+		case 2:
+			return extra.capFirst(title) + " ";
+		}
+	}
+	
 	public static String randomCollectorName() {
 		return collectTypes.next();
 	}

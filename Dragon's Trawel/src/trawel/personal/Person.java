@@ -1339,6 +1339,9 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (title.startsWith(",")) {
 			return firstName+title;
 		}
+		if (title.endsWith(" ")) {
+			return title + firstName;
+		}
 		return firstName + " " + title;
 	}
 	
