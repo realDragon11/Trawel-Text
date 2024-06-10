@@ -259,10 +259,17 @@ public class randomLists {
 		default: case 0:
 			return "the " + extra.capFirst(title);
 		case 1:
-			return ", " + extra.capFirst(title);
+			return ", the " + extra.capFirst(title);
 		case 2:
 			return extra.capFirst(title) + " ";
 		}
+	}
+	
+	public static String extraTitleFormat(String title) {
+		if (title.endsWith(" ")) {
+			return title.substring(0,title.length()-1);
+		}
+		return title.substring(title.indexOf("the ")+4);
 	}
 	
 	public static String randomCollectorName() {

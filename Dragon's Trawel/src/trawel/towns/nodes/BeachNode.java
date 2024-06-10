@@ -92,7 +92,7 @@ public class BeachNode implements NodeType {
 			break;
 		case 2://pirate rager
 			Person pirate = RaceFactory.makePirate(holder.getLevel(node));
-			String mugName = pirate.getTitle().substring(4);//remove "the "
+			String mugName = randomLists.extraTitleFormat(pirate.getTitle());
 			GenericNode.setBasicRagePerson(holder,node,pirate,mugName,"The "+extra.capFirst(mugName) + " attacks you!");
 			break;
 		case 3://ashore locked chest

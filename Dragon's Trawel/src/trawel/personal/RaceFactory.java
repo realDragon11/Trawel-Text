@@ -1421,7 +1421,7 @@ public class RaceFactory {
 				addWealth(WEALTH_SMALL,.3f,w);
 				w.setFacLevel(Faction.ROGUE,10, 0);
 				w.setFacLevel(Faction.HEROIC,0, 5);
-				w.setTitle("the " + extra.capFirst(randomLists.randomDrifterName()));
+				w.setTitle(randomLists.randomTitleFormat(randomLists.randomDrifterName()));
 				findMult = 1;//low chance
 				break;
 			case 2://thief rogue, lesser
@@ -1430,7 +1430,7 @@ public class RaceFactory {
 				w.setFacLevel(Faction.ROGUE,15, 0);
 				w.setFacLevel(Faction.HEROIC,0, 10);
 				//w.liteSetSkillHas(Archetype.CUT_THROAT);
-				w.setTitle("the " + extra.capFirst(randomLists.randomThiefName()));
+				w.setTitle(randomLists.randomTitleFormat(randomLists.randomThiefName()));
 				findMult = 3;
 				break;
 			case 3://thug mugger, lesser
@@ -1439,7 +1439,7 @@ public class RaceFactory {
 				w.setFacLevel(Faction.ROGUE,20, 0);
 				w.setFacLevel(Faction.HEROIC,0, 10);
 				//w.liteSetSkillHas(Archetype.HIRED_HATCHET);
-				w.setTitle("the " + extra.capFirst(randomLists.randomThugName()));
+				w.setTitle(randomLists.randomTitleFormat(randomLists.randomThugName()));
 				findMult = 2;
 				break;
 			case 4://thief rogue, greater
@@ -1449,7 +1449,7 @@ public class RaceFactory {
 				w.setFacLevel(Faction.HEROIC,0, 15);
 				//w.liteSetSkillHas(Archetype.CUT_THROAT);
 				w.cleanSetSkillHas(Feat.UNDERHANDED);//free feat
-				w.setTitle("the " + extra.capFirst(randomLists.randomThiefName()));
+				w.setTitle(randomLists.randomTitleFormat(randomLists.randomThiefName()));
 				findMult = 10;
 				break;
 			case 5://thug mugger, greater
@@ -1459,7 +1459,7 @@ public class RaceFactory {
 				w.setFacLevel(Faction.HEROIC,0, 15);
 				//w.liteSetSkillHas(Archetype.HIRED_HATCHET);
 				w.cleanSetSkillHas(Feat.COMMON_TOUGH);//free feat
-				w.setTitle("the " + extra.capFirst(randomLists.randomThugName()));
+				w.setTitle(randomLists.randomTitleFormat(randomLists.randomThugName()));
 				findMult = 5;
 				break;
 		}
@@ -1486,12 +1486,6 @@ public class RaceFactory {
 		w.hTask = HostileTask.DUEL;
 		addWealth(WEALTH_STANDARD,.3f, w);
 		w.finishGeneration();
-		return w;
-	}
-	
-	public static Person makeDuelerWithTitle(int level) {
-		Person w = getDueler(level);
-		w.setTitle("the " + extra.capFirst(randomLists.randomWarrior()));
 		return w;
 	}
 	
@@ -1779,7 +1773,7 @@ public class RaceFactory {
 		if (extra.chanceIn(1,30)) {//MUCH higher chance of gold than normal, but no chance of silver
 			w.bag.addDrawBaneSilently(DrawBane.GOLD);
 		}
-		w.setTitle("the " + extra.capFirst(randomLists.randomPirateName()));
+		w.setTitle(randomLists.randomTitleFormat(randomLists.randomPirateName()));
 		w.finishGeneration();
 		return w;
 	}
@@ -1793,7 +1787,7 @@ public class RaceFactory {
 		if (extra.chanceIn(1,40)) {//higher chance of gold than normal, but no chance of silver
 			w.bag.addDrawBaneSilently(DrawBane.GOLD);
 		}
-		w.setTitle("the " + extra.capFirst(randomLists.randomPirateName()));
+		w.setTitle(randomLists.randomTitleFormat(randomLists.randomPirateName()));
 		w.finishGeneration();
 		return w;
 	}

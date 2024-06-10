@@ -246,7 +246,7 @@ public class MineNode implements NodeType{
 		case 1:
 			Person p = RaceFactory.getDueler(holder.getLevel(madeNode));
 			String warName = extra.capFirst(randomLists.randomWarrior());
-			p.setTitle("the "+warName);
+			p.setTitle(randomLists.randomTitleFormat(warName));
 			GenericNode.setSimpleDuelPerson(holder,madeNode, p,warName,"Approach " +p.getNameNoTitle() +".","Challenge");
 			break;
 		case 2: 
@@ -289,7 +289,7 @@ public class MineNode implements NodeType{
 		break;
 		case 10:
 			Person mugger = RaceFactory.makeMugger(holder.getLevel(madeNode));
-			String mugName = mugger.getTitle().substring(4);//remove "the "
+			String mugName = randomLists.extraTitleFormat(mugger.getTitle());
 			GenericNode.setBasicRagePerson(holder,madeNode, mugger,mugName,"The "+extra.capFirst(mugName) + " attacks you!");
 			break;
 		case 11://trapped treasure chamber
