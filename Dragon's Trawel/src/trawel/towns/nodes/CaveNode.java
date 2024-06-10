@@ -100,7 +100,7 @@ public class CaveNode implements NodeType{
 	public String interactString(NodeConnector holder, int node) {
 		switch(holder.getEventNum(node)) {
 		case 1:
-			return "examine entryway";
+			return "Examine entryway.";
 		}
 		return null;
 	}
@@ -109,7 +109,7 @@ public class CaveNode implements NodeType{
 	public String nodeName(NodeConnector holder, int node) {
 		switch(holder.getEventNum(node)) {
 		case 1:
-			return "cave entrance";
+			return "Cave Entrance";
 		}
 		return null;
 	}

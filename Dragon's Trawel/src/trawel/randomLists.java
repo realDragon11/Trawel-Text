@@ -40,24 +40,24 @@ public class randomLists {
 		colorList = new SRPlainRandom("green","blue","yellow","purple","red","orange","white","black","grey","cyan","silver","maroon","rose","chestnut","vermilion","russet","scarlet","rust","auburn","mahogany","pumpkin","chocolate","copper","bronze","sepia","ochre","brown","cinnamon","tan","orange","peach","goldenrod","amber","saffron","ecru","gold","pearl","buff","flax","brass","lemon","cream","beige","olive","ivory","lime","chartreuse","emerald","jade","aquamarine","turquoise","teal","aqua","cerulean","charcoal","azure","cobalt","lavender","periwinkle","amethyst","violet","indigo","heliotrope","liliac","plum","fuchsia","mauve","puce","crimson","pink","cardinal","carmine");
 		//TODO:
 		colorListPrintable = new SRPlainRandom(
-			extra.PRE_GREEN+"green",extra.PRE_BLUE+"blue",extra.PRE_YELLOW+"yellow",extra.PRE_MAGENTA+"purple"
-			,extra.PRE_RED+"red",extra.PRE_ORANGE+"orange",extra.PRE_WHITE+"white",extra.TIMID_GREY+"black"
-			,extra.TIMID_GREY+"grey",extra.PRE_BLUE+"cyan",extra.PRE_BLUE+"silver",extra.PRE_ORANGE+"maroon"
-			,extra.PRE_RED+"rose",extra.PRE_ORANGE+"chestnut",extra.TIMID_RED+"vermilion",extra.TIMID_RED+"russet"
-			,extra.PRE_RED+"scarlet",extra.PRE_ORANGE+"rust",extra.PRE_ORANGE+"auburn"
-			,extra.TIMID_RED+"mahogany",extra.PRE_ORANGE+"pumpkin",extra.PRE_ORANGE+"chocolate"
-			,extra.PRE_ORANGE+"copper",extra.PRE_ORANGE+"bronze",extra.TIMID_GREY+"sepia",extra.TIMID_RED+"ochre"
-			,extra.PRE_ORANGE+"brown",extra.PRE_ORANGE+"cinnamon",extra.PRE_ORANGE+"tan",extra.PRE_ORANGE+"orange"
-			,extra.PRE_YELLOW+"peach",extra.PRE_YELLOW+"goldenrod",extra.PRE_YELLOW+"amber","saffron"
-			,"ecru",extra.PRE_YELLOW+"gold",extra.PRE_WHITE+"pearl","buff","flax",extra.PRE_ORANGE+"brass"
-			,extra.PRE_YELLOW+"lemon",extra.PRE_YELLOW+"cream",extra.PRE_ORANGE+"beige",extra.PRE_ORANGE+"olive"
-			,extra.PRE_WHITE+"ivory",extra.PRE_GREEN+"lime","chartreuse",extra.PRE_GREEN+"emerald",extra.PRE_GREEN+"jade"
-			,extra.TIMID_GREEN+"aquamarine",extra.TIMID_BLUE+"turquoise",extra.PRE_BLUE+"teal",extra.PRE_BLUE+"aqua"
-			,extra.PRE_BLUE+"cerulean",extra.TIMID_GREY+"charcoal",extra.PRE_BLUE+"azure",extra.PRE_BLUE+"cobalt"
-			,extra.TIMID_MAGENTA+"lavender","periwinkle",extra.PRE_MAGENTA+"amethyst",extra.PRE_MAGENTA+"violet"
-			,extra.TIMID_BLUE+"indigo",extra.PRE_MAGENTA+"heliotrope",extra.TIMID_MAGENTA+"liliac",extra.TIMID_MAGENTA+"plum"
-			,extra.PRE_MAGENTA+"fuchsia",extra.PRE_MAGENTA+"mauve",extra.PRE_MAGENTA+"puce"
-			,extra.PRE_RED+"crimson",extra.TIMID_MAGENTA+"pink",extra.TIMID_RED+"cardinal",extra.TIMID_RED+"carmine");;
+			extra.PRE_GREEN+"Green",extra.PRE_BLUE+"Blue",extra.PRE_YELLOW+"Yellow",extra.PRE_MAGENTA+"Purple"
+			,extra.PRE_RED+"Red",extra.PRE_ORANGE+"Orange",extra.PRE_WHITE+"White",extra.TIMID_GREY+"Black"
+			,extra.TIMID_GREY+"Grey",extra.PRE_BLUE+"cyan",extra.PRE_BLUE+"Silver",extra.PRE_ORANGE+"Maroon"
+			,extra.PRE_RED+"Rose",extra.PRE_ORANGE+"Chestnut",extra.TIMID_RED+"Vermilion",extra.TIMID_RED+"Russet"
+			,extra.PRE_RED+"Scarlet",extra.PRE_ORANGE+"Rust",extra.PRE_ORANGE+"Auburn"
+			,extra.TIMID_RED+"Mahogany",extra.PRE_ORANGE+"Pumpkin",extra.PRE_ORANGE+"Chocolate"
+			,extra.PRE_ORANGE+"Copper",extra.PRE_ORANGE+"Bronze",extra.TIMID_GREY+"Sepia",extra.TIMID_RED+"ochre"
+			,extra.PRE_ORANGE+"Brown",extra.PRE_ORANGE+"Cinnamon",extra.PRE_ORANGE+"Tan",extra.PRE_ORANGE+"orange"
+			,extra.PRE_YELLOW+"Peach",extra.PRE_YELLOW+"Goldenrod",extra.PRE_YELLOW+"Amber","Saffron"
+			,"Ecru",extra.PRE_YELLOW+"Gold",extra.PRE_WHITE+"Pearl","Buff","Flax",extra.PRE_ORANGE+"Brass"
+			,extra.PRE_YELLOW+"Lemon",extra.PRE_YELLOW+"Cream",extra.PRE_ORANGE+"Beige",extra.PRE_ORANGE+"Olive"
+			,extra.PRE_WHITE+"Ivory",extra.PRE_GREEN+"Lime","Chartreuse",extra.PRE_GREEN+"Emerald",extra.PRE_GREEN+"Jade"
+			,extra.TIMID_GREEN+"Aquamarine",extra.TIMID_BLUE+"Turquoise",extra.PRE_BLUE+"Teal",extra.PRE_BLUE+"Aqua"
+			,extra.PRE_BLUE+"Cerulean",extra.TIMID_GREY+"Charcoal",extra.PRE_BLUE+"Azure",extra.PRE_BLUE+"Cobalt"
+			,extra.TIMID_MAGENTA+"Lavender","Periwinkle",extra.PRE_MAGENTA+"Amethyst",extra.PRE_MAGENTA+"Violet"
+			,extra.TIMID_BLUE+"Indigo",extra.PRE_MAGENTA+"Heliotrope",extra.TIMID_MAGENTA+"Liliac",extra.TIMID_MAGENTA+"Plum"
+			,extra.PRE_MAGENTA+"Fuchsia",extra.PRE_MAGENTA+"Mauve",extra.PRE_MAGENTA+"Puce"
+			,extra.PRE_RED+"Crimson",extra.TIMID_MAGENTA+"Pink",extra.TIMID_RED+"Cardinal",extra.TIMID_RED+"Carmine");
 		//https://www.ssa.gov/oact/babynames/decades/century.html - manually screened and inputed for 'normal' sounding names	
 		normalFirstNames = new SRPlainRandom("Fred","Dave","Brian","Thomas","Alex","Bob","Susy","Cindy","Jessica","Jamie","James","Mary","John","Jennifier","Robert","Linda","Barbara","Susan","Margaret","Sarah","Karen","Nancy","Betty","Lisa","Michael","William","David","Richard","Joeseph","Charles","Christopher","Daniel","Matthew","Anthony","Donald","Mark","Paul","Steven","Andrew","George","Kevin","Edward","Timothy","Jason","Jeffrey","Ryan","Gary","Jacob","Nicholas","Eric","Stephen","Jonathan","Larry","Justin","Scott","Frank","Brandon","Sandra","Ashley","Kimberly","Donna","Carol","Michelle","Emily","Amanda","Helen","Melissa","Stephanie","Laura","Rebecca","Sharon","Cynthisa","Kathleen","Amy","Shirly","Anna","Angela","Ruth","Brenda","Nicole","Katherine","Benjamin","Samuel","Patrick","Jack","Dennis","Jerry","Tyler","Aaron","Henry","Jose","Peter","Adam","Zachary","Nathan","Walter","Harold","Kyle","Carl","Arthur","Roger","Keith","Jeremy","Catherine","Christine","Samantha","Debra","Janet","Rachel","Carolyn","Emma","Maria","Heather","Diane","Julie","Joyce","Evelyn","Joan","Christina","Kelly","Victoria","Lauren","Martha","Judith","Cheryl","Megan","Andrea","Ann","Terry","Lawrence","Sean","Christian","Albert","Joe","Ethan","Austin","Jesse","Willie","Billy","Bryan","Bruce","Jordan","Ralph","Roy","Noah","Dylan","Eugene","Wayne","Alan","Jaun","Louis","Russell","Gabriel","Randy","Philip","Alice","Jean","Doris","Kathryn","Hannah","Oliva","Gloria","Marie","Teresa","Sara","Janice","Julia","Grace","Judy","Theresa","Rose","Denise","Marilyn","Amber","Madison","Danielle","Brittany","Diana","Abigail","Jane","Harry","Vincent","Bobby","Johnny","Logan","Natalie","Lori","Tiffany","Alexis","Kayla");
 		
