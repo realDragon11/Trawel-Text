@@ -33,7 +33,7 @@ import trawel.towns.World;
 public class BeachNode implements NodeType {
 	
 	/**
-	 * EntryRoller is used in the first 2 layers of beaches to avoid blocking off the entrance with a fight and low hanging fruit rewards
+	 * EntryRoller is used in the first layer (and entrance) of beaches to avoid blocking off the entrance with a fight and low hanging fruit rewards
 	 */
 	private WeightedTable beachBasicRoller, beachEntryRoller;
 	
@@ -44,15 +44,19 @@ public class BeachNode implements NodeType {
 				//pirate rager
 				1f,
 				//ashore locked chest
-				1f
+				1f,
+				//variable fluff landmark, static state
+				.2f
 		});
 		beachEntryRoller = new WeightedTable(new float[] {
 				//skeleton pirate blocker
 				0f,
 				//pirate rager
-				1f,
+				0f,
 				//ashore locked chest
-				1f
+				.5f,
+				//variable fluff landmark, static state
+				1.5f
 		});
 	}
 	
@@ -61,7 +65,7 @@ public class BeachNode implements NodeType {
 		int id = 1;//since first content node is 1 id, and we add from there, including adding 0
 		switch (guessDepth) {
 		case 0://start
-		case 1: case 2://entry
+		case 1://entry
 			id+=beachEntryRoller.random(extra.getRand());
 			break;
 		default:
@@ -93,6 +97,27 @@ public class BeachNode implements NodeType {
 			break;
 		case 3://ashore locked chest
 			holder.setStorage(node,randomLists.randomChestAdjective() + "Chest");
+			break;
+		case 4://variable fluff landmark, static state
+			int fluffType = extra.randRange(0,2);
+			holder.setStateNum(node,fluffType);
+			switch (fluffType) {
+				case 0://sea glass
+					//https://en.wikipedia.org/wiki/Sea_glass
+					//sea glass tends to certain kinds of colors, but we just use our printable list so that can be updated easier
+					holder.setStorage(node,randomLists.randomPrintableColor());
+					break;
+				case 1://beach rock
+					//https://en.wikipedia.org/wiki/Beachrock
+					holder.setStorage(node,extra.choose("Shelled ","Petrified ","Smoothed ","Tall "+"Wide ")+extra.choose("Beachrock","Sea Stack","Crag","Ridge","Bluff"));
+					break;
+				case 2://patch of rocky sand/gravel
+					//https://en.wikipedia.org/wiki/Shingle_beach
+					holder.setStorage(node,extra.choose("Gravel ","Pebble ","Shingle ","Rocky ")+extra.choose("Patch","Strip"));
+					break;
+			}
+			break;
+		case 5://bottle with variable results (statenum determines reward, if any)
 			break;
 		}
 	}
@@ -231,8 +256,9 @@ public class BeachNode implements NodeType {
 	@Override
 	public String nodeName(NodeConnector holder, int node) {
 		switch (holder.getEventNum(node)) {
-		case 1://skeleton pirate blocker
+		case 1://gatenode blocker
 			return holder.getStorageFirstClass(node,GateNodeBehavior.class).getNodeName();
+		//2 pirate rager, generic
 		case 3:
 			switch (holder.getStateNum(node)) {
 				default: case 0:
@@ -244,6 +270,14 @@ public class BeachNode implements NodeType {
 				case 3:
 					return "Opened " + holder.getStorageFirstClass(node, String.class);
 			}
+		case 4:
+			switch (holder.getStateNum(node)) {
+				default: case 0://sea glass
+					return holder.getStorage(node) +extra.COLOR_RESET+" Sea Glass";
+				case 1://beach rock
+				case 2://gravel patch
+					return ""+holder.getStorage(node);
+			}
 		}
 		return null;
 	}
@@ -251,10 +285,20 @@ public class BeachNode implements NodeType {
 	@Override
 	public String interactString(NodeConnector holder, int node) {
 		switch (holder.getEventNum(node)) {
-		case 1://skeleton pirate blocker
+		case 1://gatenode blocker
 			return holder.getStorageFirstClass(node,GateNodeBehavior.class).getInteractText();
-		case 3:
+		//2 pirate rager, generic
+		case 3://ashore chest
 			return (holder.getStateNum(node) == 0 ? "Open " : "Examine ") + holder.getStorageFirstClass(node, String.class);
+		case 4://variable fluff landmark, static state
+			switch (holder.getStateNum(node)) {
+			default: case 0://sea glass
+				return "Examine sea glass.";
+			case 1://beach rock
+				return "Examine rocks.";
+			case 2://gravel patch
+				return "Examine sand.";
+		}
 		}
 		return null;
 	}
@@ -262,7 +306,7 @@ public class BeachNode implements NodeType {
 	@Override
 	public boolean interact(NodeConnector holder, int node) {
 		switch (holder.getEventNum(node)) {
-		case 1:
+		case 1://gatenode blocker
 			GateNodeBehavior gnb = holder.getStorageFirstClass(node,GateNodeBehavior.class);
 			if (gnb.opened) {//already been opened
 				extra.println(gnb.getOpenedText());
@@ -280,10 +324,24 @@ public class BeachNode implements NodeType {
 				}
 			}
 			//all paths return by this point so return would be unreachable
-		//2 rager pirate
+		//2 rager pirate, generic
 		case 3://ashore locked chest
 			ashoreLockedChest(holder, node);
 			return false;
+		case 4://variable fluff landmark, static state
+			switch (holder.getStateNum(node)) {
+			default: case 0://sea glass
+				extra.println("The glass here has been weathered by the ocean waves.");
+				break;
+			case 1://beach rock
+				extra.println("There is a large rock sticking out of the sand here.");
+				break;
+			case 2://gravel patch
+				extra.println("The ground here is more rocky than the softer sand around it.");
+				break;
+			}
+			return false;
+		
 		}
 		return false;
 	}
