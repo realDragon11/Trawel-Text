@@ -21,21 +21,21 @@ import de.javakaffee.kryoserializers.EnumMapSerializer;
 import de.javakaffee.kryoserializers.EnumSetSerializer;
 import trawel.extra;
 import trawel.personal.Person;
+import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.Weapon;
 import trawel.towns.Plane;
 import trawel.towns.Town;
 import trawel.towns.World;
 
-public class KyroManager {
+public class SaveManager {
 	
 	public static Kryo trawelKryo;
 	public static Fury fury;
-
-	public static final void trawelRegister() {
+	
+	public static final void trawelRegisterKyro() {
 		/**
 		 * https://github.com/magro/kryo-serializers/tree/master
 		 */
-		/*
 		trawelKryo = new Kryo(){
 
 		    @Override
@@ -52,9 +52,12 @@ public class KyroManager {
 		trawelKryo.setRegistrationRequired(false);
 		trawelKryo.register(derg.TwinListMap.class, new FieldSerializer<derg.TwinListMap>(trawelKryo, derg.TwinListMap.class));
 		trawelKryo.setReferences(true);
-		trawelKryo.setInstantiatorStrategy(new SerializingInstantiatorStrategy());*/
+		trawelKryo.setInstantiatorStrategy(new SerializingInstantiatorStrategy());
 		
 		//trawelKryo.setAutoReset(true);
+	}
+
+	public static final void trawelRegisterFury() {
 		LoggerFactory.disableLogging();
 		fury = Fury.builder().withLanguage(Language.JAVA)
 				.withRefTracking(true)
@@ -62,18 +65,7 @@ public class KyroManager {
 		        .build();
 	}
 	
-	public static final void savePlane(Plane plane, FileOutputStream file) {
-		Output out = new Output(file);
-		trawelKryo.writeObject(out, plane);
-		out.flush();
-		//trawelKryo.reset();
-	}
-	
 	public static final void savePlaneFury(Plane plane,FileOutputStream file) {
-		/*Plane p = (Plane) fury.deserialize(fury.serialize(plane));
-		for (Town t: p.getTowns()) {
-			extra.println(t.getName());
-		}*/
 		Output out = new Output(file);
 		fury.serialize(out,plane);
 		out.flush();
@@ -90,7 +82,14 @@ public class KyroManager {
 		return p;
 	}
 	
-	public static final Plane readPlane(FileInputStream file) {
+	public static final void savePlaneKyro(Plane plane, FileOutputStream file) {
+		Output out = new Output(file);
+		trawelKryo.writeObject(out, plane);
+		out.flush();
+		//trawelKryo.reset();
+	}
+	
+	public static final Plane readPlaneKyro(FileInputStream file) {
 		Input in = new Input(file);
 		Plane p = trawelKryo.readObject(in,Plane.class);
 		Person per = p.getPlayer().getPerson();

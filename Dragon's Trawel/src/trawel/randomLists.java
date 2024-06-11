@@ -42,7 +42,7 @@ public class randomLists {
 		colorListPrintable = new SRPlainRandom(
 			extra.PRE_GREEN+"Green",extra.PRE_BLUE+"Blue",extra.PRE_YELLOW+"Yellow",extra.PRE_MAGENTA+"Purple"
 			,extra.PRE_RED+"Red",extra.PRE_ORANGE+"Orange",extra.PRE_WHITE+"White",extra.TIMID_GREY+"Black"
-			,extra.TIMID_GREY+"Grey",extra.PRE_BLUE+"cyan",extra.PRE_BLUE+"Silver",extra.PRE_ORANGE+"Maroon"
+			,extra.TIMID_GREY+"Grey",extra.PRE_BLUE+"Cyan",extra.PRE_BLUE+"Silver",extra.PRE_ORANGE+"Maroon"
 			,extra.PRE_RED+"Rose",extra.PRE_ORANGE+"Chestnut",extra.TIMID_RED+"Vermilion",extra.TIMID_RED+"Russet"
 			,extra.PRE_RED+"Scarlet",extra.PRE_ORANGE+"Rust",extra.PRE_ORANGE+"Auburn"
 			,extra.TIMID_RED+"Mahogany",extra.PRE_ORANGE+"Pumpkin",extra.PRE_ORANGE+"Chocolate"

@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
-import save.KyroManager;
+import save.SaveManager;
 import trawel.battle.Combat.SkillCon;
 import trawel.personal.DummyPerson;
 import trawel.personal.item.DummyInventory;
@@ -737,7 +737,7 @@ public class WorldGen {
 					 +" "+mainGame.VERSION_STRING+"\0");
 			 ;
 			 pws.flush();
-			 KyroManager.savePlaneFury(plane,fos);
+			 SaveManager.savePlaneFury(plane,fos);
 		     extra.println("Saved!");
 		     File f = new File("trawel"+str+".save");
 		     extra.println("Slot "+str + ": "+f.length() + " bytes.");
@@ -777,7 +777,7 @@ public class WorldGen {
 		int len;
 		try (FileInputStream fos = new FileInputStream("trawel"+str+".save");){
 			while (fos.read() != '\0');
-			plane = KyroManager.readPlaneFury(fos);
+			plane = SaveManager.readPlaneFury(fos);
 			Player.player = plane.getPlayer();
 			Player.bag = Player.player.getPerson().getBag();
 			Player.player.skillUpdate();

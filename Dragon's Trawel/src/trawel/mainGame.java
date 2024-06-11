@@ -24,7 +24,7 @@ import derg.menus.MenuLast;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
-import save.KyroManager;
+import save.SaveManager;
 import scimech.combat.MechCombat;
 import scimech.handlers.SaveHandler;
 import scimech.mech.Mech;
@@ -1136,7 +1136,7 @@ public class mainGame {
 			//WorldGen.initDummyInvs();
 			story = new StoryNone();
 			DummyInventory.dummyAttackInv = new DummyInventory();
-			KyroManager.trawelRegister();
+			SaveManager.trawelRegisterFury();
 			basicSetup1 = true;
 		}
 	}
