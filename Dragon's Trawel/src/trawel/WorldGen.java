@@ -737,7 +737,7 @@ public class WorldGen {
 					 +" "+mainGame.VERSION_STRING+"\0");
 			 ;
 			 pws.flush();
-			 KyroManager.savePlane(plane,fos);
+			 KyroManager.savePlaneFury(plane,fos);
 		     extra.println("Saved!");
 		     File f = new File("trawel"+str+".save");
 		     extra.println("Slot "+str + ": "+f.length() + " bytes.");
@@ -777,7 +777,7 @@ public class WorldGen {
 		int len;
 		try (FileInputStream fos = new FileInputStream("trawel"+str+".save");){
 			while (fos.read() != '\0');
-			plane = KyroManager.readPlane(fos);
+			plane = KyroManager.readPlaneFury(fos);
 			Player.player = plane.getPlayer();
 			Player.bag = Player.player.getPerson().getBag();
 			Player.player.skillUpdate();
