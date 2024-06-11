@@ -129,21 +129,7 @@ public class BeachNode implements NodeType {
 			break;
 		case 6://beachcomber
 			//https://en.wikipedia.org/wiki/Beachcombing
-			Person beachcomber = RaceFactory.makeMaybeRacist(holder.getLevel(node));
-			//DOLATER: more beachcomber names
-			beachcomber.setTitle(randomLists.randomTitleFormat(extra.choose("Beachcomber")));
-			//beachcomber drawbane as reward for interacting/fluff that they found
-			if (extra.chanceIn(1,3)) {//rare finds
-				if (extra.chanceIn(1,5)) {//rarest finds
-					beachcomber.getBag().addDrawBaneSilently(extra.choose(DrawBane.CEON_STONE,DrawBane.ENT_CORE,DrawBane.GOLD,DrawBane.PROTECTIVE_WARD));
-				}else {//rare find
-					beachcomber.getBag().addDrawBaneSilently(extra.choose(DrawBane.TELESCOPE,DrawBane.UNICORN_HORN,DrawBane.SILVER,DrawBane.REPEL));
-				}
-			}else {//normal find (just wood for now)
-				beachcomber.getBag().addDrawBaneSilently(DrawBane.WOOD);
-			}
-			
-			GenericNode.setBasicCasual(holder, node,beachcomber);
+			GenericNode.setBasicCasual(holder,node,RaceFactory.makeBeachcomber(holder.getLevel(node)));
 			break;
 		}
 	}

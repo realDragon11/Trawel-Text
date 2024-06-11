@@ -1537,6 +1537,47 @@ public class RaceFactory {
 		return w;
 	}
 	
+	public static Person makeBeachcomber(int level) {
+		Person w = new Person(level);
+		addWealth(WEALTH_STANDARD,.3f, w);
+		if (w.isRacist()) {
+			w.hTask = HostileTask.RACIST;
+		}else {
+			if (w.isAngry()) {
+				w.hTask = HostileTask.DUEL;
+			}else {
+				if (extra.chanceIn(1,2)) {
+					w.hTask = HostileTask.PEACE;
+				}else {//50% chance to change to other type instead so rewards are more accessible on kill
+					if (extra.chanceIn(1,2)) {
+						//turn racist
+						w.setRacism(true);
+						w.hTask = HostileTask.RACIST;
+					}else {
+						//turn angry
+						w.setAngry(true);
+						w.hTask = HostileTask.DUEL;
+					}
+				}
+			}
+		}
+		w.setTitle(randomLists.randomTitleFormat(extra.choose("Beachcomber","Scavenger","Scrounger","Gatherer","Rummager","Hoarder","Searcher")));
+		//beachcomber drawbane as reward for interacting/fluff that they found
+		if (extra.chanceIn(2,5)) {//rare finds
+			if (extra.chanceIn(1,5)) {//rarest finds
+				w.getBag().addDrawBaneSilently(extra.choose(DrawBane.CEON_STONE,DrawBane.ENT_CORE,DrawBane.GOLD,DrawBane.PROTECTIVE_WARD));
+				w.addFeatPoint();//free feat point
+			}else {//rare find
+				w.getBag().addDrawBaneSilently(extra.choose(DrawBane.TELESCOPE,DrawBane.UNICORN_HORN,DrawBane.SILVER,DrawBane.REPEL));
+			}
+		}else {//normal find (just wood for now)
+			w.getBag().addDrawBaneSilently(DrawBane.WOOD);
+			w.useFeatPoint();//less feat points
+		}
+		w.finishGeneration();
+		return w;
+	}
+	
 	public static Person makeRacist(int level) {
 		Person w = new Person(level);
 		addWealth(WEALTH_STANDARD,.3f, w);

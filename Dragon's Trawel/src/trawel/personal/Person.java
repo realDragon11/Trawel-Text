@@ -262,7 +262,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 			this.scar = RaceFactory.scarFor(tRace.raceID());
 		}
 		
-		if (extra.chanceIn(1,5)) {
+		if (extra.chanceIn(2,5)) {
 			this.setRacism(true);
 			if (extra.chanceIn(4,5)) {
 				this.setAngry(true);
