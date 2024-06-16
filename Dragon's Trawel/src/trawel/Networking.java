@@ -11,6 +11,8 @@ import java.util.concurrent.TimeUnit;
 
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.personal.item.Inventory;
+import trawel.personal.item.body.Race;
+import trawel.personal.item.body.Race.RaceType;
 import trawel.personal.people.Player;
 import trawel.towns.Calender;
 
@@ -525,8 +527,14 @@ public class Networking {
 		sendStrong("AddInv|"+side+"|" +spriteName +"|"+mapName+"|"+mapIndex+"|"+bloodSeed + "|" + bloodCount + "|" +enchantStyle+"|"+depth+"|"+clearLayer+"|");
 	}
 	
-	public static void addGraphicalRace(int side,String spriteName,String mapName,int mapIndex,String raceFlag,int bloodSeed,double bloodCount, int depth, String clearLayer) {
-		sendStrong("RaceInv|"+side+"|" +spriteName +"|"+mapName+"|"+mapIndex+"|"+raceFlag+"|"+bloodSeed + "|" + bloodCount+"|"+depth+"|"+clearLayer+"|");
+	public static void addGraphicalRace(int side,Race race,int mapIndex,String raceFlag,int bloodSeed,double bloodCount, String clearLayer) {
+		String spriteName = race.getWasddSprite();
+		String mapName = race.getWasddMap();
+		sendStrong("RaceInv|"+side+"|" +spriteName +"_base|"+mapName+"|"+mapIndex+"|"+raceFlag+"|"+bloodSeed + "|" + bloodCount+"|1|"+clearLayer+"|");
+		if (race.racialType.equals(RaceType.PERSONABLE)) {
+			sendStrong("RaceInv|"+side+"|" +spriteName +"_righthand|"+mapName+"|"+mapIndex+"|"+raceFlag+"|"+bloodSeed + "|" + bloodCount+"|-7|"+clearLayer+"|");
+			sendStrong("RaceInv|"+side+"|" +spriteName +"_lefthand|" +mapName+"|"+mapIndex+"|"+raceFlag+"|"+bloodSeed + "|" + bloodCount+"|-7|"+clearLayer+"|");
+		}
 	}
 	
 }

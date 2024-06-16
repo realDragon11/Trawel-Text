@@ -211,7 +211,7 @@ public class RaceFactory {
 		}
 		public String getSpriteName(RaceID id) {
 			if (spritename != null) {
-				return "person_"+spritename+"_base";
+				return "person_"+spritename;
 			}
 			return "";
 		}

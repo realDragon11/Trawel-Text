@@ -5,6 +5,8 @@ import java.util.Set;
 
 import trawel.Services;
 import trawel.extra;
+import trawel.mainGame;
+import trawel.mainGame.GraphicStyle;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;
@@ -735,18 +737,24 @@ public class Armor extends Item implements IEffectiveLevel{
 		return MaterialFactory.getMat(material).name;
 	}
 
-	public String getBaseMap() {
-		switch (getStyle()) {
-		case BODY:
-			return "";
-		case FABRIC:
-		case SEWN:
-			return "cloth";
-		case GEM:
-			return "crystal";
-		case MAIL:
-		case PLATE:
-			return "iron";
+	public String getBaseMap(GraphicStyle style) {
+		switch (style) {
+		case LEGACY:
+			switch (getStyle()) {
+			case BODY:
+				return "";
+			case FABRIC:
+			case SEWN:
+				return "cloth";
+			case GEM:
+				return "crystal";
+			case MAIL:
+			case PLATE:
+				return "iron";
+			}
+			return null;
+		case WASDD:
+			return "wasdd";
 		}
 		return null;
 	}
