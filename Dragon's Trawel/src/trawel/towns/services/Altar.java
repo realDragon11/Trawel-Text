@@ -121,7 +121,7 @@ public class Altar extends Feature{
 		DrawBane inter = Player.bag.playerOfferDrawBane("sacrifice");
 		boolean specialInteraction = false;
 		boolean accepted = true;
-		if (inter != null && !inter.equals(DrawBane.NOTHING)) {
+		if (inter != null && !inter.equals(DrawBane.EV_NOTHING)) {
 			switch (inter) {
 			case BEATING_HEART:
 				if (force == AltarForce.SKY) {

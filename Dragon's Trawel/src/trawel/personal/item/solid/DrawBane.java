@@ -12,13 +12,10 @@ public enum DrawBane {
 	//5 = decent value, silver
 	//6 = rare magical (unicorn horn)
 	//8 = expensive (gold/virgin)
-	
-	TEST("test","test",0,0,false),
 	GARLIC("garlic","Used to repel vampires. Edible.",1,.3,true),
 	SILVER("silver","A shiny metal of decent value. Alchemists have given up trying to transmute other metals into gold.",5,2,true),
 	MEAT("meat","A cut of meat. Slightly edible.",1,.5,true),
 	CEON_STONE("eon stone","A cracked stone with infinite choices- all are terrible. Useful for transmutation.",4,1,true),
-	NOTHING("nothing","Empty slot.",0,0,false),
 	PROTECTIVE_WARD("protective ward","Used to ward off monsters and other maladies when out and about.",6,8,false),
 	ENT_CORE("ent heartwood","The central core of a living tree. Brew it!",4,2,true),
 	BLOOD("blood","A vial of blood. Brew it!",1,.1,true),
@@ -27,7 +24,7 @@ public enum DrawBane {
 	BAT_WING("bat wing","A flappy appendage torn from a bat. Brew it!",1,.4,true),
 	//mimic guts not edible
 	MIMIC_GUTS("mimic guts","An alternative reward from a treasure chest. Brew it!",1,.75,true),
-	CLEANER("cloth","Discard to clean blood off of your equipment.",1,0,false),
+	CLOTH("cloth","Hides Wealth. Discard to clean blood off of your equipment.",1,0,false),
 	APPLE("apple","Used to increase potion thickness, but might turn it into a stew instead. Edible.",1,.3,true),
 	WOOD("wood","A good building resource. Can be used to boost potion thickness, but risks a botch.",1,.3,true),
 	HONEY("honey","Edible and quite tasty.",2,.5,true),
@@ -39,7 +36,6 @@ public enum DrawBane {
 	GOLD("gold chunk","An enchantable metal of great value. Bring it to a Merchant's Guild!",8,10,false),
 	UNICORN_HORN("unicorn horn","An impressive magic horn hacked from a horse that holds harmful intent at bay. Brew it!",6,3,true),
 	VIRGIN("virgin","Bound and gagged, tied and dejected. Their soul has been claimed by evil powers. There is no happy ending here.",8,.5,true),
-	UNDERLEVELED("underleveled","ERROR",0,0,false),
 	KNOW_FRAG("feat fragment","Aetheric wisdom partially bound to a scrap of paper. Bring it to a library to study and absorb for feat point progress!",2,1,false),
 	LIVING_FLAME("living flame","A fierce, fun-size fire that burns brightly without fuel. The perfect centerpiece to any forge!",4,3,true), 
 	GRAVE_DIRT("grave dirt","Dirt that's somewhat worse for wear after much mixing with mortality. Brew it!",1,.2,true),
@@ -47,8 +43,11 @@ public enum DrawBane {
 	SINEW("mystic sinew","Slightly possessed flesh. Brew it!",1,.1,true),
 	GRAVE_DUST("grave dust","The ashen remains of heavily necromantic bones. Not to be confused with grave dirt. Brew it!",3,.9,true),
 	//for draws and banes, not items
-	DAYLIGHT("daylight","daytime",0,0,false),
-	MONEY("money","money",0,0,false);
+	EV_NOTHING("nothing","Empty slot.",0,0,false),
+	EV_DAYLIGHT("daylight","daytime",0,0,false),
+	EV_WEALTH("money","money",0,0,false),
+	EV_BLOOD("bloody","blood",0,0,false)
+	;
 	private String name, flavorText;
 	private int value;
 	private double mVal;
@@ -134,7 +133,7 @@ public enum DrawBane {
 			weight[3] = 4f;
 			list[3] = REPEL;
 			weight[4] = 2f;
-			list[4] = CLEANER;
+			list[4] = CLOTH;
 			weight[5] = .7f;
 			list[5] = SILVER;
 			weight[6] = .5f;

@@ -309,10 +309,13 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 		case SEED_FAE: if (timer > 60) { contains = Seed.GROWN_FAE;timer = 0;}break;
 		case SEED_FUNGUS: if (timer > 50) { contains = Seed.GROWN_FUNGUS;timer = 0;}break;
 		
-		case GROWN_FUNGUS: if (timer > 200) {
-			//fungus lets other plant grow if not taken for grave dirt
-			contains = extra.choose(Seed.SEED_GARLIC,Seed.SEED_TRUFFLE,Seed.SEED_PUMPKIN,Seed.SEED_APPLE);
-		}break;
+		case GROWN_FUNGUS:
+			if (timer > 200) {
+				//fungus lets other plant grow if not taken for grave dirt
+				contains = extra.choose(Seed.SEED_GARLIC,Seed.SEED_TRUFFLE,Seed.SEED_PUMPKIN,Seed.SEED_APPLE);
+				timer = 0;
+			}
+		break;
 		
 		case HARVESTED_APPLE: if (timer >= 0) { contains = Seed.GROWN_APPLE;}break;
 		case HARVESTED_PUMPKIN: if (timer >= 0) { contains = Seed.GROWN_PUMPKIN;}break;

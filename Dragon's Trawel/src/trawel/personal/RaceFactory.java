@@ -1570,8 +1570,8 @@ public class RaceFactory {
 			}else {//rare find
 				w.getBag().addDrawBaneSilently(extra.choose(DrawBane.TELESCOPE,DrawBane.UNICORN_HORN,DrawBane.SILVER,DrawBane.REPEL));
 			}
-		}else {//normal find (just wood for now)
-			w.getBag().addDrawBaneSilently(DrawBane.WOOD);
+		}else {//normal find (likely wood)
+			w.getBag().addDrawBaneSilently(extra.choose(DrawBane.WOOD,DrawBane.WOOD,DrawBane.WOOD,DrawBane.CLOTH));
 			w.useFeatPoint();//less feat points
 		}
 		w.finishGeneration();

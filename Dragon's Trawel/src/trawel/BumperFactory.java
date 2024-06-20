@@ -119,7 +119,7 @@ public class BumperFactory {
 				}
 			}};
 			b.responses.add(new Response(DrawBane.MEAT,3));
-			b.responses.add(new Response(DrawBane.NOTHING,2));
+			b.responses.add(new Response(DrawBane.EV_NOTHING,2));
 			b.responses.add(new Response(DrawBane.REPEL,-8));
 			b.minAreaLevel = 3;
 			bumperList.add(b);
@@ -137,7 +137,7 @@ public class BumperFactory {
 
 				}};
 		b.responses.add(new Response(DrawBane.MEAT,3));
-		b.responses.add(new Response(DrawBane.NOTHING,3));
+		b.responses.add(new Response(DrawBane.EV_NOTHING,3));
 		b.responses.add(new Response(DrawBane.REPEL,-10));
 		
 		
@@ -158,7 +158,7 @@ public class BumperFactory {
 				}};
 			b.responses.add(new Response(DrawBane.MEAT,2));
 			b.responses.add(new Response(DrawBane.CEON_STONE,4));
-			b.responses.add(new Response(DrawBane.DAYLIGHT,-0.5f));
+			b.responses.add(new Response(DrawBane.EV_DAYLIGHT,-0.5f));
 			bumperList.add(b);
 		 b = new Bumper() {
 				
@@ -185,10 +185,10 @@ public class BumperFactory {
 					}else {
 					}					
 				}};
-			b.responses.add(new Response(DrawBane.BLOOD,3));
+			b.responses.add(new Response(DrawBane.EV_BLOOD,3));
 			b.responses.add(new Response(DrawBane.GARLIC,-8));
 			b.responses.add(new Response(DrawBane.SILVER,-.5));
-			b.responses.add(new Response(DrawBane.DAYLIGHT,-2f));
+			b.responses.add(new Response(DrawBane.EV_DAYLIGHT,-3f));
 			bumperList.add(b);
 		 b = new Bumper() {
 				
@@ -205,10 +205,10 @@ public class BumperFactory {
 					}
 					
 				}};
-			b.responses.add(new Response(DrawBane.NOTHING,1));
+			b.responses.add(new Response(DrawBane.EV_NOTHING,1));
 			b.responses.add(new Response(DrawBane.SILVER,1));
 			b.responses.add(new Response(DrawBane.GOLD,2));
-			b.responses.add(new Response(DrawBane.MONEY,2));
+			b.responses.add(new Response(DrawBane.EV_WEALTH,2));
 			bumperList.add(b);
 			b = new Bumper() {
 
@@ -224,7 +224,7 @@ public class BumperFactory {
 
 			};
 			b.responses.add(new Response(DrawBane.MEAT,3));
-			b.responses.add(new Response(DrawBane.NOTHING,3));
+			b.responses.add(new Response(DrawBane.EV_NOTHING,3));
 			b.responses.add(new Response(DrawBane.HONEY,1));
 			b.responses.add(new Response(DrawBane.REPEL,-8));
 			bumperList.add(b);
@@ -241,9 +241,9 @@ public class BumperFactory {
 					
 				}};
 			b.responses.add(new Response(DrawBane.MEAT,3));
-			b.responses.add(new Response(DrawBane.NOTHING,3));
+			b.responses.add(new Response(DrawBane.EV_NOTHING,3));
 			b.responses.add(new Response(DrawBane.REPEL,-8));
-			b.responses.add(new Response(DrawBane.DAYLIGHT,-1f));
+			b.responses.add(new Response(DrawBane.EV_DAYLIGHT,-1f));
 			bumperList.add(b);
 			
 			b = new Bumper() {
@@ -315,10 +315,10 @@ public class BumperFactory {
 					}
 					
 				}};
-			b.responses.add(new Response(DrawBane.NOTHING,1));
+			b.responses.add(new Response(DrawBane.EV_NOTHING,1));
 			b.responses.add(new Response(DrawBane.SILVER,1));
 			b.responses.add(new Response(DrawBane.GOLD,2));
-			b.responses.add(new Response(DrawBane.MONEY,2));
+			b.responses.add(new Response(DrawBane.EV_WEALTH,2));
 			shipList.add(b);
 			
 			b = new Bumper() {
@@ -337,7 +337,7 @@ public class BumperFactory {
 					
 				}};
 			b.responses.add(new Response(DrawBane.MEAT,3));
-			b.responses.add(new Response(DrawBane.NOTHING,2.5));
+			b.responses.add(new Response(DrawBane.EV_NOTHING,2.5));
 			shipList.add(b);
 			
 			b = new Bumper() {

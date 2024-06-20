@@ -1064,7 +1064,7 @@ public class Inventory implements java.io.Serializable{
 		if (Player.player.hasTrigger("db:"+d.name())) {
 			Player.player.questTrigger(TriggerType.COLLECT,"db:"+d.name(),15);
 		}
-		if (d == DrawBane.CLEANER) {
+		if (d == DrawBane.CLOTH) {
 			washAll();
 		}
 	}
@@ -1130,30 +1130,38 @@ public class Inventory implements java.io.Serializable{
 				i++;
 			}
 			break;
-		case BLOOD:
+		case EV_BLOOD:
 			float sub = 0;
+			//bloodcount is max 16 per, 5 + 1 + 1; 0 to 96
 			for (Armor a: getArmors()) {
-				sub+= a.getBloodCount();
+				sub += a.getBloodCount();//max 16 per armor
 			}
-			sub+= hand.getBloodCount();
-			i+=sub/20;
+			sub += owner.getBloodCount();
+			sub += hand.getBloodCount();
+			i += sub/16;//max is 5, so will be maxed out with 1 less item fully bloody
+			for (DrawBane db: dbs) {
+				if (db.equals(DrawBane.BLOOD)) {//blood also counts
+					i++;
+				}
+			}
 			break;
-		case NOTHING:
+		case EV_NOTHING:
 			return 1;
-		case UNDERLEVELED:
-			if (owner.getLevel() < 5) {
-				return 5-owner.getLevel();
-			}
-			return 0;
-		case DAYLIGHT:
+		case EV_DAYLIGHT:
 			if (!owner.isPlayer()) {
 				return 0;//MAYBELATER: expensive calculation
 			}
 			Town town = Player.player.getLocation();
 			double[] p = Calender.lerpLocation(town);
 			return town.getIsland().getWorld().getCalender().sunlightAmount(p[0],p[1]);
-		case MONEY:
-			return Math.min(5,getGold()/(15*owner.getUnEffectiveLevel()));
+		case EV_WEALTH:
+			i += getGold()/(15*owner.getUnEffectiveLevel());
+			for (DrawBane db: dbs) {
+				if (db.equals(DrawBane.CLOTH)) {
+					i--;//cloth hides wealth
+				}
+			}
+			break;
 		}
 		
 		for (DrawBane db: dbs) {
@@ -1161,7 +1169,7 @@ public class Inventory implements java.io.Serializable{
 				i++;
 			}
 		}
-		return i;
+		return extra.clamp(i,0,5);
 		
 	}
 
