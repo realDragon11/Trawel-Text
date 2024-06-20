@@ -5,6 +5,7 @@ import derg.menus.MenuLine;
 import trawel.Effect;
 import trawel.extra;
 import trawel.battle.attacks.AttackBonus;
+import trawel.helper.StringTip;
 import trawel.personal.Person;
 
 public enum Skill{
@@ -84,7 +85,7 @@ public enum Skill{
 				,"Dead LHP caps at 2 levels higher than your own. 'Kill' means being the last person to attack the target before they die."
 				,Type.OFFENSE),
 		SPUNCH("Sucker Punch","On Impact: Slow down target's next action by 2% of their total time."
-				,extra.IMPACT_TIP
+				,StringTip.IMPACT_TIP
 				,Type.OFFENSE),
 		DSTRIKE("Decisive Strike","On Impact: Instantly kill target you damage by more than 70% of their MHP in one blow."
 				,"Max HP is closely aligned to how much HP they start with, but can go higher. Must be part of an 'Impactful' action."
@@ -93,7 +94,7 @@ public enum Skill{
 				,"Cannot bring you above your MHP."
 				,Type.OFFENSE),
 		ARMOR_TUNING("Armor Tuning","Armor is 20% stronger at the start of every battle."
-				,extra.ARMOR_TIP
+				,StringTip.ARMOR_TIP
 				,Type.DEFENSE),
 		ARMORSPEED("Glancing Blow","On Armor Block: Attack 10 instants sooner."
 				,"Applies once per attack."
@@ -114,10 +115,10 @@ public enum Skill{
 				"You can have a max of 5 weapon attack choices at a time, stacks will only be consumed if they add attacks."
 				,Type.OFFENSE),
 		QUICK_START("Quick Start","Grants a stack of Advantage at the start of every battle."
-				,extra.ADV_TIP
+				,StringTip.ADV_TIP
 				,Type.SPEED),
 		PRESS_ADV("Press the Advantage","On Any Crit: Gain one stack of advantage."
-				,extra.CRIT_TIP+" "+extra.ADV_TIP
+				,StringTip.CRIT_TIP+" "+StringTip.ADV_TIP
 				,Type.SPEED),
 		BLOODDRINKER("Blood Drinker","When Attacked: Gain HP equal to half attacker's bleed damage tick that attack."
 				,"Stacks with other sources of bleed healing. Not capped by your MHP."
@@ -157,25 +158,25 @@ public enum Skill{
 		 * NOTE: do not grant without ELEMENTALIST
 		 */
 		M_PYRO_BOOST("Ingite Boost","On Elemental Wound: Gain Parry."
-				,extra.ELEMBOOST_TIP + " " + extra.PARRY_TIP
+				,StringTip.ELEMBOOST_TIP + " " + StringTip.PARRY_TIP
 				,Type.DEFENSE),
 		/**
 		 * NOTE: do not grant without ELEMENTALIST
 		 */
 		M_CYRO_BOOST("Frost Boost","On Elemental Wound: Boost armor by +10% flat."
-				,extra.ELEMBOOST_TIP + " " +extra.ARMOR_TIP
+				,StringTip.ELEMBOOST_TIP + " " +StringTip.ARMOR_TIP
 				,Type.DEFENSE),
 		/**
 		 * NOTE: do not grant without ELEMENTALIST
 		 */
 		M_AERO_BOOST("Elec Boost","On Elemental Wound: Add 4 instants to target's action."
-				,extra.ELEMBOOST_TIP
+				,StringTip.ELEMBOOST_TIP
 				,Type.OFFENSE),
 		STERN_STUFF("Sterner Stuff","On Death: Once per battle, roll a contested Strength check vs attacker's highest attribute to survive at 1 HP."
 				,"Instant kill attacks that wouldn't deal enough damage to kill otherwise skip the roll, but still leave them at 1 HP.",
 				Type.DEFENSE),
 		REACTIVE_DODGE("Reactive Dodge","On Dodge: Gain one stack of Advantage."
-				,"Does not apply to misses. "+extra.ADV_TIP
+				,"Does not apply to misses. "+StringTip.ADV_TIP
 				,Type.SPEED),
 		ARCANIST_2("Multi-Magical","Grants another Arcanist skill attack configuration."
 				,""
@@ -205,7 +206,7 @@ public enum Skill{
 				,AttackBonus.TAKEDOWN.desc
 				,Type.TACTIC_TYPE),
 		NO_QUARTER("No Quarter","On Kill: Gain Takedown effect and two stacks of Advantage."
-				,"Takedown applies Knockout on your next impactful attack. It stacks in duration. "+extra.ADV_TIP
+				,"Takedown applies Knockout on your next impactful attack. It stacks in duration. "+StringTip.ADV_TIP
 				,Type.OFFENSE),
 		ARMOR_MAGE("Armor Mage","Increases armor defenses based on Clarity."
 				,"Adds 1/60th of Clarity to each piece of armor's SBP."
@@ -214,7 +215,7 @@ public enum Skill{
 				,"From 5% to 10% increase, does not count as max HP."
 				,Type.DEFENSE),
 		DEADLY_AIM("Deadly Aim","On Any Crit: Deal 20% bonus damage."
-				,extra.CRIT_TIP
+				,StringTip.CRIT_TIP
 				,Type.OFFENSE),
 		LIFE_MAGE("Life Mage","+5% Clarity as MHP."
 				,""
@@ -223,10 +224,10 @@ public enum Skill{
 				,"Applies through the Breathing Effect."
 				,Type.OTHER),
 		FETID_FUMES("Fetid Fumes","When Attacked: Force a contested Clarity check at half Clarity to apply Miasma. Attackers already inflicted with Miasma suffer a -10% hit roll."
-				,extra.MIASMA_TIP
+				,StringTip.MIASMA_TIP
 				,Type.DEFENSE),
 		FEVER_STRIKE("Fever Strike","On Attack: Force a contested Clarity check to apply two stacks of Miasma. When targeting opponents already suffering from Miasma with physical attacks, deal +10% damage as Decay damage."
-				,extra.MIASMA_TIP+" Damage bonus applies on targeting, not on swing."
+				,StringTip.MIASMA_TIP+" Damage bonus applies on targeting, not on swing."
 				,Type.OFFENSE),
 		BIG_BAG("Big Bag","Gain 3 Drawbane slots, for a total of 8."
 				,""
@@ -238,22 +239,22 @@ public enum Skill{
 				,""
 				,Type.CRAFT),
 		RUNIC_BLAST("Runic Blast","On Impact Crit: Apply a wound of the elemental on-hit enchantment."
-				,"Does not apply if used weapon doesn't have an element on-hit enchantment. "+extra.CRIT_TIP
+				,"Does not apply if used weapon doesn't have an element on-hit enchantment. "+StringTip.CRIT_TIP
 				,Type.CRAFT),
 		OPEN_VEIN("Open Vein","On Impact Crit: Apply "+Effect.MAJOR_BLEED.getName()+", preventing "+Effect.BLEED.getName() +" stacks from healing. Apply "+Effect.BLEED.getName()+" if already "+Effect.MAJOR_BLEED.getName()
-				,extra.CRIT_TIP
+				,StringTip.CRIT_TIP
 				,Type.OFFENSE),
 		AGGRESS_PARRY("Aggress Parry","On Any Crit: Grants Parry."
-				,extra.CRIT_TIP+" "+extra.PARRY_TIP
+				,StringTip.CRIT_TIP+" "+StringTip.PARRY_TIP
 				,Type.DEFENSE),
 		LIVING_ARMOR("Living Armor","On Armor Block: Boost your armor by +8% flat."
-				,extra.ARMOR_TIP
+				,StringTip.ARMOR_TIP
 				,Type.DEFENSE),
 		SALVAGE("Salvage","On Impactful Crit: Boost your armor by +12% flat."
-				,extra.CRIT_TIP+" "+extra.ARMOR_TIP
+				,StringTip.CRIT_TIP+" "+StringTip.ARMOR_TIP
 				,Type.DEFENSE),
 		CHEF("Chef","Crafted "+Effect.HEARTY.getName()+" Potions have double sips. Sipping "+Effect.HEARTY.getName()+" applies one "+Effect.PADDED.getName()+" stack."
-				,extra.PADDED_TIP
+				,StringTip.PADDED_TIP
 				,Type.CRAFT)
 		
 		/**
