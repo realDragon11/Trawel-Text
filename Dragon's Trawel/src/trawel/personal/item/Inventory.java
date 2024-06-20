@@ -574,32 +574,32 @@ public class Inventory implements java.io.Serializable{
 							Networking.addGraphicalInv(side,
 									"armor_"+a.getStyle().wasddName+"_helm",
 									a.getBaseMap(GraphicStyle.WASDD),a.getMat().palIndex, a.bloodSeed, a.getBloodCount(), (a.getEnchant() != null ? a.getEnchant().enchantstyle :0 ),
-									-5, "head");
+									-6, "head");
 							break;
 					case 1://arms
 					Networking.addGraphicalInv(side,
 							"armor_"+a.getStyle().wasddName+"_rightarm",
 							a.getBaseMap(GraphicStyle.WASDD),a.getMat().palIndex, a.bloodSeed, a.getBloodCount(), (a.getEnchant() != null ? a.getEnchant().enchantstyle :0 ),
-							-4, "arms");
+							-3, "arms");
 					Networking.addGraphicalInv(side,
 							"armor_"+a.getStyle().wasddName+"_leftarm",
 							a.getBaseMap(GraphicStyle.WASDD),a.getMat().palIndex, a.bloodSeed, a.getBloodCount(), (a.getEnchant() != null ? a.getEnchant().enchantstyle :0 ),
-							-4, "arms");
+							-5, "arms");
 						//gloves
 						Networking.addGraphicalInv(side,
 								"armor_"+a.getStyle().wasddName+"_rightglove",
 								a.getBaseMap(GraphicStyle.WASDD),a.getMat().palIndex, a.bloodSeed, a.getBloodCount(), (a.getEnchant() != null ? a.getEnchant().enchantstyle :0 ),
-								-8, "arms");
+								-9, "arms");
 						Networking.addGraphicalInv(side,
 								"armor_"+a.getStyle().wasddName+"_leftglove",
 								a.getBaseMap(GraphicStyle.WASDD),a.getMat().palIndex, a.bloodSeed, a.getBloodCount(), (a.getEnchant() != null ? a.getEnchant().enchantstyle :0 ),
-								-8, "arms");
+								-9, "arms");
 						break;
 					case 2://chest
 						Networking.addGraphicalInv(side,
 								"armor_"+a.getStyle().wasddName+"_chest",
 								a.getBaseMap(GraphicStyle.WASDD),a.getMat().palIndex, a.bloodSeed, a.getBloodCount(), (a.getEnchant() != null ? a.getEnchant().enchantstyle :0 ),
-								-3, "chest");
+								-4, "chest");
 						break;
 					case 3://legs
 						Networking.addGraphicalInv(side,
@@ -615,7 +615,7 @@ public class Inventory implements java.io.Serializable{
 					}
 				}
 				if (hand != null) {
-					Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-6|hand|");
+					Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-7|hand|");
 				}
 			}
 			//commit changes
