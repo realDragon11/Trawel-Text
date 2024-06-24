@@ -550,8 +550,8 @@ public class Inventory implements java.io.Serializable{
 
 					Networking.sendStrong(str);
 				}
-				if (hand != null) {
-					Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|2|hand|");
+				if (hand != null && hand.getWeaponType().getLegacy() != null) {
+					Networking.sendStrong("AddInv|"+side+"|" +hand.getWeaponType().getLegacy() +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|2|hand|");
 				}
 			}else {
 				if (p.getBag().getRace().raceID() == RaceID.B_WOLF) {
@@ -614,8 +614,11 @@ public class Inventory implements java.io.Serializable{
 								-2, "feet");
 					}
 				}
-				if (hand != null) {
-					Networking.sendStrong("AddInv|"+side+"|" +hand.getBaseName().replace(' ','_') +"|iron|"+hand.getMat().palIndex+ "|" + hand.bloodSeed + "|" + hand.getBloodCount() +"|" +(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 )+"|-7|hand|");
+				if (hand != null && hand.getWeaponType().getWasdd() != null) {
+					Networking.addGraphicalInv(side,
+							"weapon_"+hand.getWeaponType().getWasdd(),
+							"wasdd",hand.getMat().palIndex,hand.bloodSeed,hand.getBloodCount(),
+							(hand.getEnchant() != null ? hand.getEnchant().enchantstyle :0 ),-7,"hand");
 				}
 			}
 			//commit changes

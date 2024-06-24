@@ -87,42 +87,44 @@ public class Weapon extends Item implements IEffectiveLevel {
 	}
 	
 	public enum WeaponType{
-		LONGSWORD("longsword","longsword",3f,2,1f,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		BROADSWORD("broadsword","broadsword",3.5f,3,1f,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		MACE("mace","mace",3f,2,1f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,WeaponQual.CARRYTHROUGH)),
-		SPEAR("spear","spear",2.5f,2,1f,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		AXE("axe","small_axe",2.5f,2,1f,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		RAPIER("rapier","rapier",4f,3,.8f,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		DAGGER("dagger","dagger",1.8f,1,.8f,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		CLAYMORE("claymore","claymore",4f,5,.3f,EnumSet.of(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED)),
-		LANCE("lance","lance",4f,3,.2f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		SHOVEL("shovel","shovel",2.2f,2,.1f,EnumSet.of(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,WeaponQual.CARRYTHROUGH)),
-		TEETH_GENERIC("teeth",null,0,0,0f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.PENETRATIVE,WeaponQual.DUELING,Weapon.WeaponQual.ACCURATE)),
-		REAVER_STANDING("clawed feet",null,0,0,0f),
-		CLAWS_TEETH_GENERIC("teeth and claws",null,0,0,0f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
-		BRANCHES("branches",null,0,0,0f),
-		GENERIC_FISTS("fists",null,0,0,0f),
-		UNICORN_HORN("horn",null,0,0,0f,EnumSet.of(WeaponQual.PENETRATIVE,WeaponQual.PINPOINT)),
-		TALONS_GENERIC("talons",null,0,0,0f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.PENETRATIVE,WeaponQual.PINPOINT,Weapon.WeaponQual.ACCURATE,WeaponQual.CARRYTHROUGH)),
-		FISH_SPEAR("fishing bill","spear",.5f,1,0f,EnumSet.of(WeaponQual.ACCURATE,WeaponQual.PENETRATIVE,WeaponQual.PINPOINT,WeaponQual.DUELING)),//bill is a type of hook polearm and 'hook spear' doesn't quite sound right. I think bills are probably a bit too curved tho?
-		FISH_ANCHOR("barnacled anchor","claymore",1f,5,0f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,WeaponQual.CARRYTHROUGH)),
-		NULL_WAND("WAND",null,0,0,0f)
+		LONGSWORD("longsword","longsword","broadsword",3f,2,1f,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		BROADSWORD("broadsword","broadsword","broadsword",3.5f,3,1f,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		MACE("mace","mace","hatchet",3f,2,1f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,WeaponQual.CARRYTHROUGH)),
+		SPEAR("spear","spear","hatchet",2.5f,2,1f,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		AXE("axe","small_axe","hatchet",2.5f,2,1f,EnumSet.of(WeaponQual.RELIABLE,WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		RAPIER("rapier","rapier","broadsword",4f,3,.8f,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.DUELING,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		DAGGER("dagger","dagger","broadsword",1.8f,1,.8f,EnumSet.of(WeaponQual.PINPOINT,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		CLAYMORE("claymore","claymore","broadsword",4f,5,.3f,EnumSet.of(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED)),
+		LANCE("lance","lance","hatchet",4f,3,.2f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.PENETRATIVE,Weapon.WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		SHOVEL("shovel","shovel","hatchet",2.2f,2,.1f,EnumSet.of(WeaponQual.WEIGHTED,Weapon.WeaponQual.REFINED,WeaponQual.CARRYTHROUGH)),
+		TEETH_GENERIC("teeth",null,null,0,0,0f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.PENETRATIVE,WeaponQual.DUELING,Weapon.WeaponQual.ACCURATE)),
+		REAVER_STANDING("clawed feet",null,null,0,0,0f),
+		CLAWS_TEETH_GENERIC("teeth and claws",null,null,0,0,0f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.REFINED,Weapon.WeaponQual.ACCURATE)),
+		BRANCHES("branches",null,null,0,0,0f),
+		GENERIC_FISTS("fists",null,null,0,0,0f),
+		UNICORN_HORN("horn",null,null,0,0,0f,EnumSet.of(WeaponQual.PENETRATIVE,WeaponQual.PINPOINT)),
+		TALONS_GENERIC("talons",null,null,0,0,0f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.PENETRATIVE,WeaponQual.PINPOINT,Weapon.WeaponQual.ACCURATE,WeaponQual.CARRYTHROUGH)),
+		FISH_SPEAR("fishing bill","spear","hatchet",.5f,1,0f,EnumSet.of(WeaponQual.ACCURATE,WeaponQual.PENETRATIVE,WeaponQual.PINPOINT,WeaponQual.DUELING)),//bill is a type of hook polearm and 'hook spear' doesn't quite sound right. I think bills are probably a bit too curved tho?
+		FISH_ANCHOR("barnacled anchor","claymore","broadsword",1f,5,0f,EnumSet.of(WeaponQual.DESTRUCTIVE,WeaponQual.WEIGHTED,WeaponQual.CARRYTHROUGH)),
+		NULL_WAND("WAND",null,null,0,0,0f)
 		;
 		
-		private final String name, legacysprite;
+		private final String name, legacysprite, wasddsprite;
 		private final float cost, weight, rarity;
 		private final Set<WeaponQual> qList;
-		WeaponType(String _name, String _legacysprite, float _cost, float _weight, float _rarity, Set<WeaponQual> _list) {
+		WeaponType(String _name, String _legacysprite, String _wasddsprite, float _cost, float _weight, float _rarity, Set<WeaponQual> _list) {
 			name = _name;
 			legacysprite = _legacysprite;
+			wasddsprite = _wasddsprite;
 			cost = _cost;
 			weight = _weight;
 			qList = _list;
 			rarity = _rarity;
 		}
-		WeaponType(String _name, String _legacysprite, float _cost, float _weight, float _rarity) {
+		WeaponType(String _name, String _legacysprite, String _wasddsprite, float _cost, float _weight, float _rarity) {
 			name = _name;
 			legacysprite = _legacysprite;
+			wasddsprite = _wasddsprite;
 			cost = _cost;
 			weight = _weight;
 			qList = EnumSet.noneOf(WeaponQual.class);
@@ -134,6 +136,9 @@ public class Weapon extends Item implements IEffectiveLevel {
 		}
 		public String getLegacy() {
 			return legacysprite;
+		}
+		public String getWasdd() {
+			return wasddsprite;
 		}
 		public float getRarity() {
 			return rarity;
@@ -172,6 +177,10 @@ public class Weapon extends Item implements IEffectiveLevel {
 	}
 
 	//instance methods
+	
+	public WeaponType getWeaponType() {
+		return weap;
+	}
 	
 	@Override
 	public float getEnchantMult() {
