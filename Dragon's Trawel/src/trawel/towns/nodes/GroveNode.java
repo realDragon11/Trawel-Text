@@ -1015,7 +1015,8 @@ public class GroveNode implements NodeType{
 
 					@Override
 					public String title() {
-						return "\""+Oracle.tipString("shaman")+"\"";
+						return "\""+Oracle.tipStringExt("shaman","a","Shaman","Shamans","Shamanic",holder.parent.getTown().getName(),
+								Collections.singletonList("Spirit"))+"\"";
 					}});
 				list.add(new MenuSelect() {
 

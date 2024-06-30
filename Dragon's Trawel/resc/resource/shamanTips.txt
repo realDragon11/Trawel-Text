@@ -1,6 +1,6 @@
-Shaman says what shaman says!
-Shaman says what spirit says!
-Spirit says what shaman says!
+<self> says what <self> says!
+<self> says what <other> says!
+<other> says what <self> says!
 Let me cure you.
 These healing materials don't come cheap, you know!
 I don't care what they say, mint and salmon roe were perfectly good materials for that potion!

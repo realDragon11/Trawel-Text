@@ -1,6 +1,7 @@
 package trawel.towns.nodes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.github.yellowstonegames.core.WeightedTable;
@@ -29,6 +30,7 @@ import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.behaviors.GateNodeBehavior;
 import trawel.time.TimeContext;
 import trawel.towns.World;
+import trawel.towns.services.Oracle;
 
 public class BeachNode implements NodeType {
 	
@@ -47,8 +49,8 @@ public class BeachNode implements NodeType {
 				1f,
 				//variable fluff landmark, static state
 				.2f,
-				//bottle, not implemented yet
-				0f,
+				//message in a bottle
+				1f,
 				//beachcomber (generic casual with bonus drawbane)
 				1f
 		});
@@ -61,8 +63,8 @@ public class BeachNode implements NodeType {
 				.5f,
 				//variable fluff landmark, static state
 				1.5f,
-				//bottle, not implemented yet
-				0f,
+				//message in a bottle
+				1f,
 				//beachcomber (generic casual with bonus drawbane)
 				1f
 		});
@@ -126,6 +128,7 @@ public class BeachNode implements NodeType {
 			}
 			break;
 		case 5://bottle with variable results (statenum determines reward, if any)
+			holder.setStateNum(node,extra.choose(0,1,1));
 			break;
 		case 6://beachcomber
 			//https://en.wikipedia.org/wiki/Beachcombing
@@ -353,7 +356,22 @@ public class BeachNode implements NodeType {
 				break;
 			}
 			return false;
-		
+		case 5://consumable message in a bottle
+			int messageReward = 0;
+			switch (holder.getStateNum(node)) {
+			case 0:
+				extra.println("The bottle is empty.");
+				break;
+			case 1:
+				messageReward = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),RaceFactory.WEALTH_WORKER,.5f);
+				extra.println("Inside the bottle there is a message and "+World.currentMoneyDisplay(messageReward)+": \""
+						+Oracle.tipStringExt("lootWhaler","a","Whaler","Whalers","Whaler",holder.parent.getTown().getName(),
+								Arrays.asList(new String[] {"Whales","Sea Serpents","Ghost Ships"}))+"\"");
+				Player.bag.addNewDrawBanePlayer(extra.choose(DrawBane.LIVING_FLAME,DrawBane.TELESCOPE,DrawBane.GOLD));
+				break;
+			}
+			GenericNode.setMiscText(holder, node,"Broken Bottle","Examine broken glass.","There was a message in a bottle here, but not anymore.","broken glass");
+			return false;
 		}
 		return false;
 	}
