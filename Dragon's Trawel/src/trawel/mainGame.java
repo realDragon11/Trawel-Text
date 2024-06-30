@@ -78,16 +78,18 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__12";
-	public static final String VERSION_DATE = " updated June 3rd 2024";
+	public static final String VERSION_DATE = " updated June 30th 2024";
 	public static final String[][] changelog = new String[][] {
 		//add to front, changeviewer cycles to older ones when used
 		{"b_12",
 			//discuss beach
-			"Beach added as a new Node Feature.",
+			"Beach added as a new Node Feature. The Beach contains a wide area broken into branches which contain Caves, gated Dungeons, and deeper Beaches. Clarity can be used to open Doors and Chests in Node Features, rounding out the attributes.",
+			//discuss drawbane changes
+			"The draw and bane effects of DrawBanes are capped at 5 total. Cloth hides wealth, blood requires more blood to trigger, and you can view blood, wealth, and daylight meters from the Inventory Player menu.",
 			//discuss people creation changes
-			"Muggers now have two primary classes- Thieves and Thugs. More types of NPCs can spawn with free bonus Feats or Archetypes, but more loot.",
+			"More types of NPCs can spawn with free bonus Feats or Archetypes, but more loot. AI Jobs (classes) now have preferred starting Archetypes, which makes them tend towards certain builds. Muggers now have two primary classes- Thieves and Thugs. Creatures can no longer learn new Archetypes after generation, restricting their Feat gain.",
 			//discuss graphical changes
-			"Added a second art set to the Graphical, along with some new sounds for unicorns."
+			"Added a second art set to the Graphical, along with some new sounds for unicorns. This new art set is planned to fully replace the current one in time, and has been changed to the default."
 		},
 		{"b_11",
 			//discuss magic overall
