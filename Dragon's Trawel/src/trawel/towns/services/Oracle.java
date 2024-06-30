@@ -35,7 +35,7 @@ public class Oracle extends Feature{ //extends feature later
 	//witness hell: https://stackoverflow.com/a/6247181
 	public static String[] tipLocs = new String[] {
 			"utter","cult","equality","gravedigger","old","racistPraise","racistShun","shaman"
-			,"messageWhaler"};
+			,"lootWhaler"};
 	public static List<String> tipLocsList = Arrays.asList(tipLocs);
 	
 	public Oracle(String string, int level) {
@@ -79,7 +79,7 @@ public class Oracle extends Feature{ //extends feature later
 	}
 	
 	public static String tipRandomOracle(String town) {
-		return tipStringExt("","an","oracle","oracles","oracle",town,Collections.singletonList("not-oracle"));
+		return tipStringExt("","an","Oracle","Oracles","Oracle",town,Collections.singletonList("not-Oracle"));
 	}
 	
 	public static String rescLocation() {
@@ -117,7 +117,7 @@ public class Oracle extends Feature{ //extends feature later
 		}
 	}*/
 	public void loadTipInJar(String mask) {
-		try (Scanner fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+mask+"Tips.txt"))){
+		try (Scanner fileInput = new Scanner (Oracle.class.getResourceAsStream(rescLocation()+mask+".tips"))){
 			List<String> list = new ArrayList<String>();
 			List<String> all = tips.get("");
 			while (fileInput.hasNextLine()) {
@@ -139,7 +139,7 @@ public class Oracle extends Feature{ //extends feature later
 				list.add(line);
 				all.add(line);
 			}
-			String mask = loc.getName().replace("Tips.txt","");
+			String mask = loc.getName().replace(".tips","");
 			assert tipLocsList.contains(mask);//so I don't forget when making a new mask in ide
 			tips.put(mask, list);
 		} catch (FileNotFoundException e) {
@@ -161,7 +161,7 @@ public class Oracle extends Feature{ //extends feature later
 
 				@Override
 				public boolean accept(File arg0, String arg1) {
-					if (arg1.contains("Tips.txt")) {
+					if (arg1.contains(".tips")) {
 						return true;
 					}
 					return false;

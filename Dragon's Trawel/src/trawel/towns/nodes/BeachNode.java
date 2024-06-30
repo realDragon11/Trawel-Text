@@ -293,6 +293,8 @@ public class BeachNode implements NodeType {
 				case 2://gravel patch
 					return ""+holder.getStorage(node);
 			}
+		case 5:
+			return "Bottle";
 		}
 		return null;
 	}
@@ -313,7 +315,9 @@ public class BeachNode implements NodeType {
 				return "Examine rocks.";
 			case 2://gravel patch
 				return "Examine sand.";
-		}
+			}
+		case 5:
+			return "Uncork bottled message.";
 		}
 		return null;
 	}
