@@ -2,6 +2,7 @@ package trawel.personal.people.behaviors;
 
 import java.util.List;
 
+import trawel.Networking;
 import trawel.extra;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
@@ -153,6 +154,7 @@ public class GateNodeBehavior extends Behavior {
 		}else {
 			//open up
 			opened = true;
+			Networking.unlockAchievement("clearway1");
 			return true;
 		}
 	}

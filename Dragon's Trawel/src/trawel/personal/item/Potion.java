@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import derg.SRPlainRandom;
 import derg.StringResult;
 import trawel.Effect;
+import trawel.Networking;
 import trawel.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill;
@@ -62,6 +63,9 @@ public class Potion implements java.io.Serializable{
 				case BEES:
 					if (personal) {
 						extra.println("You uncork your potion, but it was filled with BEEEEEEEEEEES!!!");
+						if (p.isPlayer()) {
+							Networking.unlockAchievement("bees_hive");
+						}
 					}else {
 						extra.println(p.getName() + " uncorks their potion, but only angry bees pour out!");
 					}
