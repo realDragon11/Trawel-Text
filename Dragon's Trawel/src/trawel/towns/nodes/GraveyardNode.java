@@ -28,8 +28,6 @@ import trawel.towns.services.Oracle;
 
 public class GraveyardNode implements NodeType{
 	
-	private static final int EVENT_NUMBER = 8;
-	
 	/**
 	 * these are 0 indexed, and the actual event nums aren't
 	 * <br>
@@ -38,41 +36,46 @@ public class GraveyardNode implements NodeType{
 	private WeightedTable noneGraveyardRoller, entryGraveyardRoller;
 	public GraveyardNode() {
 		noneGraveyardRoller = new WeightedTable(new float[] {
-				//gravedigger
+				//1: gravedigger
 				1f,
-				//graverobber
+				//2: graverobber
 				1f,
-				//bats
+				//3: bats
 				1f,
-				//vampire with bats
+				//4: vampire with bats
 				.5f,
-				//collector
+				//5: collector
 				.8f,
-				//attacking statue
+				//6: attacking statue
 				1f,
-				//non attacking statue
+				//7: non attacking statue
 				.5f,
-				//trapped chamber
+				//8: trapped chamber
 				.5f
 		});
 		entryGraveyardRoller = new WeightedTable(new float[] {
-				//gravedigger
+				//1: gravedigger
 				1f,
-				//graverobber
+				//2: graverobber
 				1f,
-				//bats
+				//3: bats
 				.3f,
-				//vampire with bats
+				//4: vampire with bats
 				.2f,
-				//collector
+				//5: collector
 				.5f,
-				//attacking statue
+				//6: attacking statue
 				1f,//interesting to go by them
-				//non attacking statue
+				//7: non attacking statue
 				.5f,
-				//trapped chamber
+				//8: trapped chamber
 				0f
 		});
+	}
+	
+	@Override
+	public int rollRegrow() {
+		throw new RuntimeException("graveyard node can't be rolled for regrowth");
 	}
 	
 	@Override

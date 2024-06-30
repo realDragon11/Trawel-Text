@@ -38,6 +38,8 @@ public interface NodeType{
 	
 	String nodeName(NodeConnector holder,int node);
 	
+	int rollRegrow();
+	
 	public static int GENERIC_CUTOFF = Byte.SIZE-50;
 	public enum NodeTypeNum{
 		GENERIC(new GenericNode()),

@@ -23,10 +23,7 @@ import trawel.towns.fort.SubSkill;
 
 public class DungeonNode implements NodeType{
 
-	private static final int EVENT_NUMBER =9;
-	
-	
-	private WeightedTable dungeonGuardRoller, dungeonLootRoller, dungeonNoneRoller;
+	private WeightedTable dungeonGuardRoller, dungeonLootRoller, dungeonNoneRoller, dungeonRegrowRoller;
 	
 	/*
 	 * FOR MULTIFIGHT DUNGEONS ONLY
@@ -56,6 +53,22 @@ public class DungeonNode implements NodeType{
 				.5f,//8 living statue
 				.3f,//9 trapped treasure chamber
 		});
+		dungeonRegrowRoller = new WeightedTable(new float[] {
+				0f,//1 ladder
+				3f,//2 single guard
+				0f,//3 multi guard
+				0f,//4 door
+				0f,//5 chest
+				.5f,//6 mimic
+				0f,//7 statue
+				0f,//8 living statue
+				0f,//9 trapped treasure chamber
+		});
+	}
+	
+	@Override
+	public int rollRegrow() {
+		return 1+dungeonRegrowRoller.random(extra.getRand());
 	}
 	
 	@Override
@@ -462,7 +475,6 @@ public class DungeonNode implements NodeType{
 				Player.player.addGold(gold);
 				extra.println("You open the " +holder.getStorageFirstClass(node,String.class) + " and find " + World.currentMoneyDisplay(gold) + ".");
 			}else {
-				
 				Gem gem = null;
 				switch (extra.randRange(1,4)) {
 				case 1: 

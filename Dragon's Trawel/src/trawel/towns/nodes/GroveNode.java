@@ -37,60 +37,76 @@ import trawel.towns.services.Oracle;
 
 public class GroveNode implements NodeType{
 
-	private static final int EVENT_NUMBER = 17;
-
 	/**
 	 * EntryRoller is used in the first 2 layers of groves to avoid blocking off the entrance with a fight and low hanging fruit rewards
 	 */
-	private WeightedTable groveBasicRoller, groveEntryRoller;
+	private WeightedTable groveBasicRoller, groveEntryRoller, groveRegrowRoller;
 	
 	private int[] startRolls = new int[] {1,2,10,11};
 	
 	public GroveNode() {
 		groveBasicRoller = new WeightedTable(new float[] {
-				2f,//dueler
-				1f,//river
-				2f,//mugger
-				1f,//free loot body
-				1f,//fairy circle
-				//slot 6 next
-				1f,//old person
-				1f,//collector
-				2f,//fallen tree TODO: refalls on things?
-				1.5f,//dryad
-				//10 next
-				2f,//casual
-				1f,//mushroom
-				1f,//moss
-				1.5f,//rich and bodyguard
-				.5f,//weapon stone
-				//15
-				2f,//wolves
-				1f,//shaman
-				1f//bee hive
+				2f,//1: dueler
+				1f,//2: river
+				2f,//3: mugger
+				1f,//4: free loot body
+				1f,//5: fairy circle
+				1f,//6: old person
+				1f,//7: collector
+				2f,//8: fallen tree TODO: refalls on things?
+				1.5f,//9: dryad
+				2f,//10: casual
+				1f,//11: mushroom
+				1f,//12: moss
+				1.5f,//13: rich and bodyguard
+				.5f,//14: weapon stone
+				2f,//15: wolves
+				1f,//16: shaman
+				1f//17: bee hive
 				});
 		groveEntryRoller = new WeightedTable(new float[] {
-				2f,//dueler
-				1f,//river
-				2f,//mugger
-				0f,//free loot body
-				1f,//fairy circle
-				//slot 6 next
-				1f,//old person
-				1f,//collector
-				2f,//fallen tree
-				1.5f,//dryad
-				//10 next
-				2f,//casual
-				1f,//mushroom
-				1f,//moss
-				1.5f,//rich and bodyguard
-				0f,//weapon stone
-				//15
-				0f,//wolves
-				1f,//shaman
-				1f//bee hive
+				2f,//1: dueler
+				1f,//2: river
+				2f,//3: mugger
+				0f,//4: free loot body
+				1f,//5: fairy circle
+				1f,//6: old person
+				1f,//7: collector
+				2f,//8: fallen tree
+				1.5f,//9: dryad
+				2f,//10: casual
+				1f,//11: mushroom
+				1f,//12: moss
+				1.5f,//13: rich and bodyguard
+				0f,//14: weapon stone
+				0f,//15: wolves
+				1f,//16: shaman
+				1f//17: bee hive
 				});
+		groveRegrowRoller = new WeightedTable(new float[] {
+				1f,//1: dueler
+				0f,//2: river
+				1f,//3: mugger
+				.1f,//4: free loot body
+				0f,//5: fairy circle
+				.3f,//6: old person
+				.5f,//7: collector
+				0f,//8: fallen tree
+				.5f,//9: dryad
+				1f,//10: casual
+				.5f,//11: mushroom
+				.0f,//12: moss, currently can't regrow so disabled
+				.5f,//13: rich and bodyguard
+				.1f,//14: weapon stone
+				.5f,//15: wolves
+				.2f,//16: shaman
+				1f//17: bee hive
+				});
+	}
+	
+	@Override
+	public int rollRegrow() {
+		return 1+groveRegrowRoller.random(extra.getRand());
 	}
 	
 	@Override

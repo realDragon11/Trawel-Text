@@ -275,25 +275,24 @@ public class GenericNode implements NodeType {
 		switch (NodeType.getTypeEnum(holder.getTypeNum(node))) {
 		case CAVE:
 			if (force || extra.chanceIn(1,3)) {
-				resetNode(holder,node,extra.choose(2,3,4));
+				resetNode(holder,node,NodeType.NodeTypeNum.CAVE.singleton.rollRegrow());
 				holder.globalTimer-=10;
 				return true;
 			}
 			break;
 		case DUNGEON:
 			if (force || extra.chanceIn(1,3)) {
-				resetNode(holder,node,2);
+				resetNode(holder,node,NodeType.NodeTypeNum.DUNGEON.singleton.rollRegrow());
 				holder.globalTimer-=10;
 				return true;
 			}
 			break;
-		case GRAVEYARD:
-			//can't easily, lifeless + shadowy stuff
+		case GRAVEYARD://can't easily, lifeless + shadowy stuff
 			return false;
 		case GROVE:
 			if (force || extra.chanceIn(2,3)) {
 				//groves are meant to be living, so this only rolls stuff that can likely regrow (or turn into a plant spot)
-				resetNode(holder,node,extra.choose(1,3,4,6,7,9,10,11,12,13,16));
+				resetNode(holder,node,NodeType.NodeTypeNum.GROVE.singleton.rollRegrow());
 				holder.globalTimer-=8;
 				return true;
 			}
@@ -301,15 +300,15 @@ public class GenericNode implements NodeType {
 		case MINE:
 			if (force || extra.chanceIn(1,3)) {
 				//veins can grow, but not regrow
-				resetNode(holder,node,extra.choose(1,1,3,3,3,4,6,7,8,9));
+				resetNode(holder,node,NodeType.NodeTypeNum.MINE.singleton.rollRegrow());
 				holder.globalTimer-=20;
 				return true;
 			}
 			break;
 		case BEACH:
 			if (force || extra.chanceIn(1,3)) {
-				//only has one thing to regrow into for now
-				resetNode(holder,node,extra.choose(2));
+				//avoids rolling things that can't regrow
+				resetNode(holder,node,NodeType.NodeTypeNum.BEACH.singleton.rollRegrow());
 				holder.globalTimer-=12;
 				return true;
 			}
@@ -1480,7 +1479,10 @@ public class GenericNode implements NodeType {
 		byte[] lootChamberArray = (byte[]) trapChamberArray[0];
 		return "Enter the " +tChamberLookup(lootChamberArray[0],lootChamberArray[3])[0];
 	}
-	
-	
+
+	@Override
+	public int rollRegrow() {
+		throw new RuntimeException("generic node can't be rolled for regrowth");
+	}
 
 }

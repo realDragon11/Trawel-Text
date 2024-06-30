@@ -29,6 +29,11 @@ import trawel.towns.fort.SubSkill;
 public class BossNode implements NodeType {
 	
 	@Override
+	public int rollRegrow() {
+		throw new RuntimeException("bossnode node can't be rolled for regrowth");
+	}
+	
+	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier){
 		int node = holder.newNode();
 		holder.setEventNum(node,holder.parent.bossType().ordinal());

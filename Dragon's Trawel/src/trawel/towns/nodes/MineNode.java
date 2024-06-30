@@ -32,91 +32,119 @@ import trawel.towns.services.Oracle;
 
 public class MineNode implements NodeType{
 	
-	private static final int EVENT_NUMBER = 11;
-	
 	/**
 	 * these are 0 indexed, and the actual event nums aren't
 	 * <br>
 	 * so +1
 	 */
-	private WeightedTable noneMineRoller, hellMineRoller, entryMineRoller;
+	private WeightedTable noneMineRoller, hellMineRoller, entryMineRoller, mineRegrowRoller;
 	
 	private int[] startRolls = new int[] {1,2,6,7,8};
 	
 	public MineNode() {
 		noneMineRoller = new WeightedTable(new float[] {
-				//duelist
+				//1: duelist
 				1f,
-				//water
+				//2: water
 				.7f,
-				//vein
+				//3: vein
 				1.5f,
-				//rare possible vein
+				//4: rare possible vein
 				1f,
-				//door
+				//5: door
 				.3f,
-				//crystals
+				//6: crystals
 				.4f,
-				//minecart
+				//7: minecart
 				.3f,
-				//ladder
+				//8: ladder
 				.3f,
-				//cultists
+				//9: cultists
 				0.75f,
-				//mugger
+				//10: mugger
 				1.5f,
-				//trapped chamber
+				//11: trapped chamber
 				0.5f
 		});
 		hellMineRoller = new WeightedTable(new float[] {
-				//duelist
+				//1: duelist
 				1.5f,
-				//water
+				//2: water
 				.3f,
-				//vein
+				//3: vein
 				1f,
-				//rare possible vein
+				//4: rare possible vein
 				1f,
-				//door
+				//5: door
 				.5f,
-				//crystals
+				//6: crystals
 				.1f,
-				//minecart
+				//7: minecart
 				.1f,
-				//ladder
+				//8: ladder
 				.4f,
-				//cultists
+				//9: cultists
 				1f,
-				//mugger
+				//10: mugger
 				2.5f,
-				//trapped chamber
+				//11: trapped chamber
 				0.1f
 		});
 		entryMineRoller = new WeightedTable(new float[] {
-				//duelist
+				//1: duelist
 				2f,
-				//water
+				//2: water
 				.5f,
-				//vein
+				//3: vein
 				.3f,
-				//rare possible vein
+				//4: rare possible vein
 				0f,
-				//door
+				//5: door
 				.5f,
-				//crystals
+				//6: crystals
 				1f,
-				//minecart
+				//7: minecart
 				.5f,
-				//ladder
+				//8: ladder
 				.5f,
-				//cultists
+				//9: cultists
 				.3f,
-				//mugger
+				//10: mugger
 				.4f,
-				//trapped chamber
+				//11: trapped chamber
 				0.25f
 		});
-		}
+		//mostly ends up in veins over time with other things regrowing, but also some other stuff indicative of the earth being tapped dry
+		mineRegrowRoller = new WeightedTable(new float[] {
+				//1: duelist
+				3f,
+				//2: water
+				.2f,
+				//3: vein
+				1f,
+				//4: rare possible vein
+				.2f,
+				//5: door
+				0f,
+				//6: crystals
+				0f,
+				//7: minecart
+				.2f,
+				//8: ladder
+				.2f,
+				//9: cultists
+				0f,
+				//10: mugger
+				3f,
+				//11: trapped chamber
+				0f
+		});
+	}
+	
+	@Override
+	public int rollRegrow() {
+		return 1+mineRegrowRoller.random(extra.getRand());
+	}
 	
 	private int getNodeTypeForParentShape(NodeConnector holder,int guessDepth) {
 		switch (guessDepth) {

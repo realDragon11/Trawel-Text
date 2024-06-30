@@ -1,4 +1,6 @@
 package trawel.towns.nodes;
+import com.github.yellowstonegames.core.WeightedTable;
+
 import trawel.extra;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.solid.DrawBane;
@@ -6,11 +8,59 @@ import trawel.time.TimeContext;
 
 public class CaveNode implements NodeType{
 	
-	private static final int EVENT_NUMBER =4;
+	private WeightedTable caveBasicRoller, caveEntryRoller, caveRegrowRoller;
+	
+	public CaveNode() {
+		caveBasicRoller = new WeightedTable(new float[] {
+				//1: entryway
+				0f,
+				//2: rage bear
+				1f,
+				//3: vein
+				1f,
+				//4: rage bat
+				1f
+		});
+		caveEntryRoller = new WeightedTable(new float[] {
+				//1: entryway
+				0f,
+				//2: rage bear
+				0f,
+				//3: vein
+				1f,
+				//4: rage bat
+				0f
+		});
+		caveRegrowRoller = new WeightedTable(new float[] {
+				//1: entryway
+				0f,
+				//2: rage bear
+				1f,
+				//3: vein
+				1f,
+				//4: rage bat
+				1f
+		});
+	}
+	
+	@Override
+	public int rollRegrow() {
+		return 1+caveRegrowRoller.random(extra.getRand());
+	}
 	
 	@Override
 	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier) {
-		int idNum =extra.randRange(2,EVENT_NUMBER);
+		int idNum = 1;//start at 1
+		switch (guessDepth) {
+		case 0://start
+		case 1://entry
+			idNum+=caveEntryRoller.random(extra.getRand());
+			break;
+		default:
+			idNum+=caveBasicRoller.random(extra.getRand());
+			break;
+		}
+		
 		int ret = holder.newNode(NodeType.NodeTypeNum.CAVE.ordinal(),idNum,tier);
 		holder.setFloor(ret, guessDepth);
 		return ret;

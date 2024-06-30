@@ -37,37 +37,57 @@ public class BeachNode implements NodeType {
 	/**
 	 * EntryRoller is used in the first layer (and entrance) of beaches to avoid blocking off the entrance with a fight and low hanging fruit rewards
 	 */
-	private WeightedTable beachBasicRoller, beachEntryRoller;
+	private WeightedTable beachBasicRoller, beachEntryRoller, beachRegrowRoller;
 	
 	public BeachNode() {
 		beachBasicRoller = new WeightedTable(new float[] {
-				//skeleton pirate blocker
+				//1: skeleton pirate blocker
 				0f,
-				//pirate rager
+				//2: pirate rager
 				1f,
-				//ashore locked chest
+				//3: ashore locked chest
 				1f,
-				//variable fluff landmark, static state
+				//4: variable fluff landmark, static state
 				.2f,
-				//message in a bottle
+				//5: message in a bottle
 				1f,
-				//beachcomber (generic casual with bonus drawbane)
+				//6: beachcomber (generic casual with bonus drawbane)
 				1f
 		});
 		beachEntryRoller = new WeightedTable(new float[] {
-				//skeleton pirate blocker
+				//1: skeleton pirate blocker
 				0f,
-				//pirate rager
+				//2: pirate rager
 				0f,
-				//ashore locked chest
+				//3: ashore locked chest
 				.5f,
-				//variable fluff landmark, static state
+				//4: variable fluff landmark, static state
 				1.5f,
-				//message in a bottle
+				//5: message in a bottle
 				1f,
-				//beachcomber (generic casual with bonus drawbane)
+				//6: beachcomber (generic casual with bonus drawbane)
 				1f
 		});
+		//beach regrowth avoids placing things that can't regrow
+		beachRegrowRoller = new WeightedTable(new float[] {
+				//1: skeleton pirate blocker
+				0f,
+				//2: pirate rager
+				1f,
+				//3: ashore locked chest
+				.5f,
+				//4: variable fluff landmark, static state
+				0f,
+				//5: message in a bottle
+				1f,
+				//6: beachcomber (generic casual with bonus drawbane)
+				1f
+		});
+	}
+	
+	@Override
+	public int rollRegrow() {
+		return 1+beachRegrowRoller.random(extra.getRand());
 	}
 	
 	@Override
