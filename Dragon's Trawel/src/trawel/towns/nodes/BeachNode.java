@@ -449,9 +449,10 @@ public class BeachNode implements NodeType {
 										>=0){
 										//broke down door
 										extra.println(extra.RESULT_PASS+"You smash open the "+chestname+".");
-										holder.setStateNum(node,1);//broken open
+										holder.setStateNum(node,1);//broken open, unused now
 										beachChestLoot(holder.getLevel(node));
 										holder.findBehind(node,chestname);
+										GenericNode.setMiscText(holder, node,"Smashed "+chestname,"Examine "+chestname+".","This chest has already been smashed and looted.",chestname);
 									}else {
 										//failed
 										Player.player.getPerson().addEffect(Effect.BURNOUT);
@@ -474,9 +475,10 @@ public class BeachNode implements NodeType {
 										>=0){
 										//lockpicked door
 										extra.println(extra.RESULT_PASS+"You pick open the "+chestname+".");
-										holder.setStateNum(node,2);//picked open
+										holder.setStateNum(node,2);//picked open, unused now
 										beachChestLoot(holder.getLevel(node));
 										holder.findBehind(node,chestname);
+										GenericNode.setMiscText(holder, node,"Picked "+chestname,"Examine "+chestname+".","This chest has already been picked and looted.",chestname);
 									}else {
 										//failed
 										Player.player.getPerson().addEffect(Effect.BURNOUT);
@@ -499,9 +501,10 @@ public class BeachNode implements NodeType {
 										>=0){
 										//lockpicked door
 										extra.println(extra.RESULT_PASS+"You open the "+chestname+" with a Knock cantrip.");
-										holder.setStateNum(node,3);//opened
+										holder.setStateNum(node,3);//opened, unused now
 										beachChestLoot(holder.getLevel(node));
 										holder.findBehind(node,chestname);
+										GenericNode.setMiscText(holder, node,"Opened "+chestname,"Examine "+chestname+".","This chest has already been opened and looted.",chestname);
 									}else {
 										//failed
 										Player.player.getPerson().addEffect(Effect.BURNOUT);
@@ -524,6 +527,7 @@ public class BeachNode implements NodeType {
 				holder.findBehind(node,chestname);
 				return;
 			case 3:
+				extra.println();
 				extra.println("This chest has already been opened and looted.");
 				holder.findBehind(node,chestname);
 				return;
