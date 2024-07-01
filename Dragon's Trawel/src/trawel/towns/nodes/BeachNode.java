@@ -148,7 +148,7 @@ public class BeachNode implements NodeType {
 			}
 			break;
 		case 5://bottle with variable results (statenum determines reward, if any)
-			holder.setStateNum(node,extra.choose(0,1,1));
+			holder.setStateNum(node,extra.choose(0,1,2,2,2));
 			break;
 		case 6://beachcomber
 			//https://en.wikipedia.org/wiki/Beachcombing
@@ -386,12 +386,34 @@ public class BeachNode implements NodeType {
 			case 0:
 				extra.println("The bottle is empty.");
 				break;
-			case 1:
+			case 1://whaler loot
 				messageReward = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),RaceFactory.WEALTH_WORKER,.5f);
 				extra.println("Inside the bottle there is a message and "+World.currentMoneyDisplay(messageReward)+": \""
 						+Oracle.tipStringExt("lootWhaler","a","Whaler","Whalers","Whaler",holder.parent.getTown().getName(),
 								Arrays.asList(new String[] {"Whales","Sea Serpents","Ghost Ships"}))+"\"");
 				Player.bag.addNewDrawBanePlayer(extra.choose(DrawBane.LIVING_FLAME,DrawBane.TELESCOPE,DrawBane.GOLD));
+				break;
+			case 2://civ letter loot
+				messageReward = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),RaceFactory.WEALTH_STANDARD,.5f);
+				DrawBane loot = extra.choose(DrawBane.CLOTH,DrawBane.BLOOD,DrawBane.REPEL);
+				String lootName;
+				switch (loot){
+					case CLOTH:
+						lootName = "Cloth";
+						break;
+					case BLOOD:
+						lootName = "Blood";
+						break;
+					case REPEL:
+						lootName = "Repel";
+						break;
+					default:
+						throw new RuntimeException("invalid letter loot for message in a bottle");
+				}
+				extra.println("Inside the bottle there is a message and "+World.currentMoneyDisplay(messageReward)+": \""
+						+Oracle.tipStringExt("lootLetter"+lootName,"a","Lover","Lovers","Lover",holder.parent.getTown().getName(),
+								Arrays.asList(new String[] {"Rival","Fraud","Poser"}))+"\"");
+				Player.bag.addNewDrawBanePlayer(loot);
 				break;
 			}
 			GenericNode.setMiscText(holder, node,"Broken Bottle","Examine broken glass.","There was a message in a bottle here, but not anymore.","broken glass");
