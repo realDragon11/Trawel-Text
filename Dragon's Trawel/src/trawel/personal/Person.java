@@ -1395,9 +1395,24 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				attributeDescLongPrint();
 			}
 		}
+	}
+	/**
+	 * prints using System.out.println because could be done in a different thread
+	 */
+	public void debugCombatStats() {
+		String str = (getHp() > 0 ? "Alive "+getHp()+": " : "Dead: ");
+		str+=getName()+ ", Level "+getLevel() + " " +getBag().getRace().renderName(false)+";";
+		for (Skill s: skillSet) {
+			str += s.getName()+", ";
+		}
 		
-		
-		
+		for (Armor a: bag.getArmors()) {
+			str+= a.getName()+", ";
+		}
+		str += bag.getHand().getName()+";";
+		str += getBase_HP() + " LHP, " +extra.format(bag.getHealth())+ "xhp, "+extra.format(bag.getAim()) + "xaim, "+extra.format(bag.getDam()) + "xdam, "+extra.format(bag.getSpeed())+"xspd, " +extra.format(bag.getDodge())+"xdge;";
+		str += extra.format(bag.getSharpResist())+" "+extra.format(bag.getBluntResist())+" "+extra.format(bag.getPierceResist())+ " sbp";
+		System.out.println(str);
 	}
 	
 	public PersonType getPersonType() {

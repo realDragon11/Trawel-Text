@@ -1265,6 +1265,13 @@ public class Combat {
 			if (!battleIsLong) {
 				System.out.println("Resolving long battle...");
 				battleIsLong = true;
+				if (mainGame.debug) {
+					for (Person p: completeList) {
+						//killList is null in 1v1's, where everyone must be alive
+						//System.out.println((killList != null && killList.contains(p)) ? "Dead: " : "Alive: ");
+						p.debugCombatStats();
+					}
+				}
 			}
 		}
 		if (defender.hasEffect(Effect.FORGED)) {

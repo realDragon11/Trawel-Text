@@ -1271,8 +1271,9 @@ public class mainGame {
 
 									@Override
 									public boolean go() {
+										debug = true;
 										adventure1(true,false,false,false,true);
-										
+										debug = false;
 										return true;
 									}});
 								mList.add(new MenuSelect() {
