@@ -1206,12 +1206,17 @@ public class Player extends SuperPerson{
 
 										@Override
 										public String title() {
-											return "Queue One Year";
+											return "Fastpass One Year";
 										}
 
 										@Override
 										public boolean go() {
-											Player.addTime(365*24);
+											for (int i = 365*24; i >=0;i-=98) {
+												//pass in 4 day chunks so that code that triggers once per update happens normally
+												//as well as letting the threading code help a bit
+												Player.addTime(98);
+												mainGame.globalPassTime();
+											}
 											return true;
 										}});
 									hackList.add(new MenuSelect() {

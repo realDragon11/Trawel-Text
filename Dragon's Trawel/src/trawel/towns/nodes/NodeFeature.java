@@ -15,7 +15,7 @@ public abstract class NodeFeature extends Feature {
 
 	protected NodeConnector start;
 	protected double findTime = 0;
-	protected boolean spreadTime = false;
+	//protected boolean spreadTime = false;
 	
 	public enum Shape{
 		NONE, TOWER, ELEVATOR,
@@ -33,9 +33,9 @@ public abstract class NodeFeature extends Feature {
 	
 	@Override
 	public List<TimeEvent> passTime(double time, TimeContext calling) {
-		if (spreadTime) {
+		//if (spreadTime) {
 			start.spreadTime(time, calling);
-		}
+		//}
 		findTime += time;
 		return timeScope.pop(this);
 	}
