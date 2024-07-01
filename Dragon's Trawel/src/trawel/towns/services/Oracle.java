@@ -35,7 +35,7 @@ public class Oracle extends Feature{ //extends feature later
 	//witness hell: https://stackoverflow.com/a/6247181
 	public static String[] tipLocs = new String[] {
 			"utter","cult","equality","gravedigger","old","racistPraise","racistShun","shaman"
-			,"lootWhaler"};
+			,"lootWhaler","racistAttack"};
 	public static List<String> tipLocsList = Arrays.asList(tipLocs);
 	
 	public Oracle(String string, int level) {

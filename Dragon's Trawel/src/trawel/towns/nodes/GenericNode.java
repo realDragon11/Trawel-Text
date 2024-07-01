@@ -463,7 +463,7 @@ public class GenericNode implements NodeType {
 			Seed contains = ((PlantSpot)holder.getStorage(node)).contains;
 			return contains == Seed.EMPTY ? "Plant Spot" : contains.toString();
 		case CASUAL_PERSON:
-			return holder.getStorageFirstPerson(node).getBag().getRace().renderName(false);
+			return (holder.getStateNum(node) >=10 ? "An angry " :"")+holder.getStorageFirstPerson(node).getBag().getRace().renderName(false);
 		case RICH_GUARD:
 			List<Person> rplist = holder.getStorageFirstClass(node,List.class);
 			Person rich = extra.getNonAddOrFirst(rplist);
@@ -896,6 +896,7 @@ public class GenericNode implements NodeType {
 	}
 	
 	public static boolean goCasualPerson(NodeConnector holder,int node) {
+		final Boolean[] returnHolder = new Boolean[] {false};
 		final String fluff;
 		switch (NodeType.getTypeEnum(holder.getTypeNum(node))) {
 			default:
@@ -905,9 +906,35 @@ public class GenericNode implements NodeType {
 				fluff = " is combing the beach.";
 				break;
 		}
-		Person p = holder.getStorageFirstPerson(node);
+		final Person p = holder.getStorageFirstPerson(node);
 		p.getBag().graphicalDisplay(1, p);
 		boolean racist = p.isRacist();
+		final RaceID r = p.getBag().getRaceID();
+		final String name = extra.capFirst(r.name);
+		if (racist && holder.getStateNum(node) >= 10) {//pissed off but can recover
+			if (r == Player.bag.getRaceID()) {
+				//racist won't attack person of same race first
+				//calm down a tad, stop force go-ing
+				holder.setStateNum(node,9);
+				holder.setForceGo(node,false);
+				//this 'shady figure' was you before species store
+				extra.println("The "+name+" pulls you aside and tells you to watch for shady figures around here.");
+			}else {
+				//racist is committing hate crimes, continue to basic rager code
+				//do rant
+				extra.println("\"" +extra.capFirst(
+						Oracle.tipStringExt("racistAttack", "a",r.name,r.namePlural,r.adjective,holder.parent.getTown().getName(),Player.bag.getRace().badNameList())
+						+"\""));
+				extra.println(extra.PRE_BATTLE+"The racist "+name+" attacks you!");
+				Combat c = Player.player.fightWith(p);
+				if (c.playerWon() > 0) {
+					GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
+					return false;
+				}else {
+					return true;
+				}
+			}
+		}
 		extra.menuGo(new MenuGenerator() {
 			@Override
 			public List<MenuItem> gen() {
@@ -921,29 +948,63 @@ public class GenericNode implements NodeType {
 
 					@Override
 					public String title() {
-						return "Attempt to talk to them.";
+						return "Attempt to talk to the "+name+".";
 					}
 
 					@Override
 					public boolean go() {
+						int anger = holder.getStateNum(node);
 						if (racist) {
-							RaceID r = p.getBag().getRaceID();
 							if (r == Player.bag.getRaceID()) {
+								//meeting a player to be racist with calms them down
+								holder.setStateNum(node,Math.max(0,--anger));
 								extra.println("\"" +extra.capFirst(
 										Oracle.tipStringExt("racistPraise", "a",r.name,r.namePlural,r.adjective, holder.parent.getTown().getName(),Player.bag.getRace().badNameList())
 										)+"\"");
 							}else {
-								if (extra.chanceIn(4,5)) {
+								//if not same species and angry is at least 2, X in 6 chance to try to assault/murder the player
+								//do before processing other triggers so that we can play the attack line instead of the other ones
+								if (anger >= 2 && extra.chanceIn(holder.getStateNum(node),6)) {
+									//attack line is handled by code after forcego 
+									/*
 									extra.println("\"" +extra.capFirst(
-											Oracle.tipStringExt(extra.choose("racistShun","racistPraise"), "a",r.name,r.namePlural,r.adjective,holder.parent.getTown().getName(),Player.bag.getRace().badNameList())
-											+"\""));	
+											Oracle.tipStringExt("racistAttack", "a",r.name,r.namePlural,r.adjective,holder.parent.getTown().getName(),Player.bag.getRace().badNameList())
+											+"\""));
+									*/
+									//setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_BATTLE +name,extra.PRE_BATTLE+"The racist "+name + " attacks you!");
+									holder.setForceGo(node,true);//set force go
+									holder.setStateNum(node,20);//set full anger
+									return true;//out of menu, not area
+								}
+								if (extra.chanceIn(4,5)) {//40% chance to do generic Tips
+									if (extra.chanceIn(1,3)) {//33% chance to play up self and calm down a bit
+										holder.setStateNum(node,Math.max(0,--anger));
+										extra.println("\"" +extra.capFirst(
+												Oracle.tipStringExt("racistPraise", "a",r.name,r.namePlural,r.adjective, holder.parent.getTown().getName(),Player.bag.getRace().badNameList())
+												)+"\"");
+									}else {//66% chance to do wide insult and get angrier
+										holder.setStateNum(node,++anger);
+										extra.println("\"" +extra.capFirst(
+												Oracle.tipStringExt("racistShun", "a",r.name,r.namePlural,r.adjective,holder.parent.getTown().getName(),Player.bag.getRace().badNameList())
+												+"\""));
+									}
 								}else {
+									//20% chance to do racially charged insult and get angrier
+									holder.setStateNum(node,++anger);
 									extra.println("\"" + Player.bag.getRace().randomInsult() +"\"");
 								}
 							}
 						}else {
 							if (p.isAngry()) {
 								extra.println("They seem really mad about everything.");
+								//always gets angry
+								holder.setStateNum(node,++anger);
+								//doesn't have initial gate so could happen right away, but lower starting chance
+								if (extra.chanceIn(anger,8)) {
+									//set into fighter forever
+									setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_BATTLE +name,extra.PRE_BATTLE+"The "+name + " attacks you!");
+									return true;//out of menu, not area
+								}
 							}else {
 								extra.println("\""+Oracle.tipString("equality")+"\"");
 							}
@@ -962,24 +1023,31 @@ public class GenericNode implements NodeType {
 					public boolean go() {
 						if (p.reallyAttack()) {
 							RaceID r = p.getBag().getRaceID();
-							boolean racistToYou = (racist && r == Player.bag.getRaceID());
-							String name = extra.capFirst(r.name);
-							if (racistToYou) {
-								setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_BATTLE +name,extra.PRE_BATTLE+"The racist "+name + " attacks you!");
-								return true;//out of menu, not area
-							}else {
-								if (p.isAngry()) {
-									setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_BATTLE +name,extra.PRE_BATTLE+"The "+name + " attacks you!");
-									return true;//out of menu, not area
-								}else {//will not hold it against you
-									Combat c = Player.player.fightWith(p);
-									if (c.playerWon() > 0) {
-										setSimpleDeadRaceID(holder, node, r);
-									}
-									return true;//out of menu, not area
+							if (racist) {
+								holder.setForceGo(node,true);//set force go
+								holder.setStateNum(node,20);//set full anger
+								//setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_BATTLE +name,extra.PRE_BATTLE+"The "+name + " attacks you!");
+								//set immediate fight in case they're same race and it would fail the normal way
+								//also means that it doesn't play the racistAttack tip, which makes contextual sense since the player is striking first
+								Combat c = Player.player.fightWith(p);
+								if (c.playerWon() > 0) {
+									GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
+									returnHolder[0] = false;
+								}else {
+									returnHolder[0] = true;//indicate to kick out of area
 								}
+								return true;//out of menu, not area
 							}
-							
+							if (p.isAngry()) {
+								setBasicRagePerson(holder, node, p, "An angry "+extra.PRE_BATTLE +name,extra.PRE_BATTLE+"The "+name + " attacks you!");
+								return true;//out of menu, not area
+							}else {//will not hold it against you
+								Combat c = Player.player.fightWith(p);
+								if (c.playerWon() > 0) {
+									setSimpleDeadRaceID(holder, node, r);
+								}
+								return true;//out of menu, not area
+							}
 						}
 						return false;
 					}});
@@ -987,7 +1055,7 @@ public class GenericNode implements NodeType {
 				return list;
 			}});
 		Networking.clearSide(1);
-		return false;
+		return returnHolder[0];
 	}
 	
 	public static boolean goRichGuard(NodeConnector holder,int node) {
