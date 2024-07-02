@@ -544,6 +544,9 @@ public class NodeConnector implements Serializable {
 				NodeType.getTypeEnum(getTypeNum(i)).singleton.passTime(this, i, time, calling);
 			}
 		}
+		//cap of 48 hours stored afterwards- larger chunks of time can still use this resource multiple times, but it doesn't stockpile up
+		//so after the player interacts with it a lot at once actual time needs to pass
+		globalTimer = Math.min(48,globalTimer);
 	}
 	
 	public List<TimeEvent> timeEvent(double time, TimeContext calling){

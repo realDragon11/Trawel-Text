@@ -660,7 +660,6 @@ public class GroveNode implements NodeType{
 								if (extra.yesNo()) {
 									Player.bag.addSeed(Seed.randSeed());
 									holder.globalTimer-=6;
-									holder.globalTimer/=2;
 									//minus 6 (the time needed) and then div by 2 to avoid a large timer making it happen instantly forever
 								}
 							}
