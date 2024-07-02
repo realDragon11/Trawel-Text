@@ -3,6 +3,7 @@ package trawel.quests;
 import java.util.Collections;
 import java.util.List;
 
+import trawel.Networking;
 import trawel.extra;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
@@ -142,6 +143,7 @@ public class CollectSideQuest extends BasicSideQuest {
 		case 0:
 			extra.println("You assemble a whole " + targetName);
 			Player.bag.addNewDrawBanePlayer(collect);
+			Networking.unlockAchievement("collectquest1");
 			complete();
 			return;
 		}

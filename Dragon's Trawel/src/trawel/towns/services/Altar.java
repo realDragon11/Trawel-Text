@@ -6,6 +6,7 @@ import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
+import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.extra;
 import trawel.mainGame;
@@ -224,6 +225,7 @@ public class Altar extends Feature{
 			case FOREST:
 				if (getReward() == 0 && getRelation() >= 5) {
 					giveReward();
+					Networking.unlockAchievement("bless1");
 					Player.player.getPerson().setPerk(Perk.FOREST_BLESS_1);
 					Player.player.addAchieve("altar_forest", "Forest's Chosen");
 					extra.println(extra.RESULT_GOOD+"Your skin tenses briefly. You feel blessed.");
@@ -232,6 +234,7 @@ public class Altar extends Feature{
 				
 				if (getReward() == 1 && getRelation() >= 14) {
 					giveReward();
+					Networking.unlockAchievement("bless2");
 					Player.player.getPerson().setPerk(Perk.FOREST_BLESS_2);
 					Player.player.addAchieve("altar_forest", "Forest's Avatar");
 					extra.println(extra.RESULT_GOOD+"Your skin hardens before becoming supple once more. You feel very blessed.");
@@ -241,6 +244,7 @@ public class Altar extends Feature{
 			case SKY:
 				if (getReward() == 0 && getRelation() >= 5) {
 					giveReward();
+					Networking.unlockAchievement("bless1");
 					Player.player.getPerson().setPerk(Perk.SKY_BLESS_1);
 					Player.player.addAchieve("altar_sky", "Sky's Chosen");
 					extra.println(extra.RESULT_GOOD+"The world seems to slow down around you for a brief moment. You feel blessed.");
@@ -249,6 +253,7 @@ public class Altar extends Feature{
 				
 				if (getReward() == 1 && getRelation() >= 14) {
 					giveReward();
+					Networking.unlockAchievement("bless2");
 					Player.player.getPerson().setPerk(Perk.SKY_BLESS_2);
 					Player.player.addAchieve("altar_sky", "Sky's Avatar");
 					extra.println(extra.RESULT_GOOD+"Your vision swims before returning sharper than ever. You feel very blessed.");

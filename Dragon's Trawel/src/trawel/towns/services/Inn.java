@@ -8,6 +8,7 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import trawel.Networking;
 import trawel.Networking.Area;
 import trawel.extra;
 import trawel.mainGame;
@@ -227,6 +228,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 												mainGame.globalPassTime();
 												Player.player.getPerson().washAll();
 												Player.player.getPerson().bathEffects();
+												Networking.unlockAchievement("tavern1");
 												if (rentTime <= 0) {
 													return true;
 												}
@@ -246,6 +248,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 												Player.addTime(rentTime+.1);
 												mainGame.globalPassTime();
 												Player.player.getPerson().restEffects();
+												Networking.unlockAchievement("tavern1");
 												return true;
 											}});
 									}else {
@@ -261,6 +264,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 												Player.addTime(24);
 												mainGame.globalPassTime();
 												Player.player.getPerson().restEffects();
+												Networking.unlockAchievement("tavern1");
 												return false;
 											}});
 										if (rentTime > 72 || playerOwns) {
@@ -276,6 +280,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 													Player.addTime(72);
 													mainGame.globalPassTime();
 													Player.player.getPerson().restEffects();
+													Networking.unlockAchievement("tavern1");
 													return false;
 												}});
 										}
@@ -518,6 +523,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 				Player.player.beer += beerCount;
 				Player.player.addGold(beerCost);
 				extra.println("You buy " +beerCount+" mugs worth. (New total "+Player.player.beer+")");
+				Networking.unlockAchievement("tavern1");
 			}
 		}else {
 			extra.println("You can't afford that! ("+World.currentMoneyDisplay(beerCost)+")");
@@ -555,6 +561,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 					public boolean go() {
 						Player.addTime(1+extra.randFloat());
 						mainGame.globalPassTime();
+						Networking.unlockAchievement("oracle1");
 						extra.println("\""+Oracle.tipRandomOracle(town.getName())+"\"");
 						return true;
 					}});

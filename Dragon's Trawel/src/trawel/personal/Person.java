@@ -1564,12 +1564,15 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (isPlayer()) {
 			if (hasEffect(Effect.CURSE)) {
 				extra.println(extra.RESULT_GOOD+"Your curse is lifted!");
+				Networking.unlockAchievement("recover1");
 			}
 			if (hasEffect(Effect.BURNOUT)) {
 				extra.println(extra.RESULT_GOOD+"Your burnout is treated!");
+				Networking.unlockAchievement("recover1");
 			}
 			if (hasEffect(Effect.WOUNDED)) {
 				extra.println(extra.RESULT_GOOD+"Your wounds are mended!");
+				Networking.unlockAchievement("recover1");
 			}
 			/*
 			if (hasEffect(Effect.TIRED)) {
@@ -1593,6 +1596,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (isPlayer()) {
 			if (hasEffect(Effect.BEES)) {
 				extra.println(extra.RESULT_GOOD+"A quick dip makes the bees stop following you.");
+				Networking.unlockAchievement("recover1");
 			}
 		}
 		removeEffectAll(Effect.BEES);
@@ -1605,9 +1609,11 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (isPlayer()) {
 			if (hasEffect(Effect.BURNOUT)) {
 				extra.println(extra.RESULT_GOOD+"You rest off the burnout.");
+				Networking.unlockAchievement("recover1");
 			}
 			if (hasEffect(Effect.TIRED)) {
 				extra.println(extra.RESULT_GOOD+"You rest off your tiredness.");
+				Networking.unlockAchievement("recover1");
 			}
 		}
 		removeEffectAll(Effect.BURNOUT);
@@ -1621,6 +1627,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		if (isPlayer()) {
 			if (hasEffect(Effect.DAMAGED)) {
 				extra.println(extra.RESULT_GOOD+"Your armor is repaired.");
+				Networking.unlockAchievement("recover1");
 			}
 		}
 		removeEffectAll(Effect.DAMAGED);

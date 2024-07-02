@@ -10,6 +10,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.AIClass;
+import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.battle.Combat;
@@ -97,6 +98,7 @@ public class FortHall extends FortFeature {
 				if (Player.player.getGold() < cost) {
 					extra.println("You can't afford to buy this fort.");
 				}else {
+					Networking.unlockAchievement("fort1");
 					Player.player.addGold(-cost);
 					this.setOwner(Player.player);//now cascades
 					/*for (Feature f: this.town.getFeatures()) {

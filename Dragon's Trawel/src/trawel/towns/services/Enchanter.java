@@ -9,6 +9,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.Networking.Area;
+import trawel.Networking;
 import trawel.extra;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.Skill;
@@ -127,6 +128,7 @@ public class Enchanter extends Feature {
 							if (didChange) {
 								extra.println(extra.RESULT_PASS+"Item enchanted: " + item.getName());
 								item.display(1);
+								Networking.unlockAchievement("enchant1");
 							}else {
 								extra.println(extra.RESULT_FAIL+"Item unchanged: " + item.getName());
 								if (wasEnchanted == true) {
@@ -189,6 +191,7 @@ public class Enchanter extends Feature {
 								item.display(1);
 								Player.player.loseGold(mcost);
 								Player.bag.addAether(-acost);
+								Networking.unlockAchievement("enchant1");
 							}
 							return false;
 						}});

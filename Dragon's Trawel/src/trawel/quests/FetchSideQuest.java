@@ -2,6 +2,7 @@ package trawel.quests;
 
 import derg.SRPlainRandom;
 import derg.StringResult;
+import trawel.Networking;
 import trawel.extra;
 import trawel.randomLists;
 import trawel.factions.FBox;
@@ -82,6 +83,7 @@ public class FetchSideQuest extends BasicSideQuest {
 				endFeature.getTown().helpCommunity(2);//helps community twice as much
 				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*FBox.bonusLiked, 0);
 				
+				Networking.unlockAchievement("collectquest1");
 				this.complete();
 				Player.player.getPerson().addXp(atLevel);
 				return;
@@ -94,6 +96,7 @@ public class FetchSideQuest extends BasicSideQuest {
 				Player.player.getPerson().facRep.addFactionRep(Faction.LAW_EVIL,0,mult*FBox.againstDistant);
 				//doesn't help community
 				
+				Networking.unlockAchievement("collectquest1");
 				this.complete();
 				Player.player.getPerson().addXp(atLevel);
 				return;
@@ -104,6 +107,7 @@ public class FetchSideQuest extends BasicSideQuest {
 				endFeature.getTown().helpCommunity(1);
 				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*FBox.bonusFavored, 0);
 				
+				Networking.unlockAchievement("collectquest1");
 				this.complete();
 				Player.player.getPerson().addXp(atLevel);
 				return;
@@ -115,6 +119,7 @@ public class FetchSideQuest extends BasicSideQuest {
 				Player.player.addMPoints(.2f);
 				endFeature.getTown().helpCommunity(1);
 				
+				Networking.unlockAchievement("collectquest1");
 				this.complete();
 				Player.player.getPerson().addXp(atLevel);
 				return;
@@ -126,6 +131,7 @@ public class FetchSideQuest extends BasicSideQuest {
 				endFeature.getTown().helpCommunity(1);
 				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,mult*FBox.bonusLiked, 0);
 				
+				Networking.unlockAchievement("collectquest1");
 				this.complete();
 				Player.player.getPerson().addXp(atLevel);
 				return;

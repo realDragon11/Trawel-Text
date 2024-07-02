@@ -10,6 +10,7 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.Networking.Area;
 import trawel.Effect;
+import trawel.Networking;
 import trawel.extra;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.Item;
@@ -129,6 +130,7 @@ public class Blacksmith extends Feature {
 							Player.bag.addAether(-acost);
 							item.levelUp();
 							item.display(1);
+							Networking.unlockAchievement("smith1");
 						}
 						return false;
 					}});
@@ -184,6 +186,7 @@ public class Blacksmith extends Feature {
 							Player.player.loseGold(mcost);
 							Gem.AMBER.changeGem(-acost);
 							item.display(1);
+							Networking.unlockAchievement("smith1");
 						}
 						return false;
 					}});

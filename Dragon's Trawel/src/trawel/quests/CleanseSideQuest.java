@@ -1,5 +1,6 @@
 package trawel.quests;
 
+import trawel.Networking;
 import trawel.extra;
 import trawel.randomLists;
 import trawel.factions.Faction;
@@ -135,6 +136,7 @@ public class CleanseSideQuest extends BasicSideQuest {
 			Player.player.addGold(reward);
 			extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
 			
+			Networking.unlockAchievement("huntquest1");
 			complete();
 			Player.player.getPerson().addXp(atLevel);//xp scales weirdly
 			return;

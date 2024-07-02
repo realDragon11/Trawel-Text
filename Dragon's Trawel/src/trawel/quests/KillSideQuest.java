@@ -1,5 +1,6 @@
 package trawel.quests;
 
+import trawel.Networking;
 import trawel.extra;
 import trawel.randomLists;
 import trawel.battle.Combat;
@@ -99,6 +100,7 @@ public class KillSideQuest extends BasicSideQuest {
 			Player.player.addGold(reward);
 			extra.println("Gained "+World.currentMoneyDisplay(reward)+".");
 			
+			Networking.unlockAchievement("huntquest1");
 			complete();
 			Player.player.getPerson().addXp(target.getLevel());
 			return;

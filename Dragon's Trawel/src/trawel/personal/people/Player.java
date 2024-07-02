@@ -160,6 +160,10 @@ public class Player extends SuperPerson{
 	 */
 	public static void updateWorld(World world) {
 		if (world != player.getWorld()) {
+			//if new world, and had a previous world, set achievement
+			if (!world.hasVisited() && Player.player.world != null) {
+				Networking.unlockAchievement("worldtravel1");
+			}
 			Player.player.world = world;
 			world.setVisited();
 			extra.mainThreadDataUpdate();
@@ -450,6 +454,7 @@ public class Player extends SuperPerson{
 			Player.player.getPerson().addFeatPoint();
 			fragmentReq+=2;
 			extra.println("Your knowledge has gained you a feat point!");
+			Networking.unlockAchievement("learned1");
 		}
 	}
 	

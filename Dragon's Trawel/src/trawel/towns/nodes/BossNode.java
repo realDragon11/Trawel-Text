@@ -393,6 +393,7 @@ public class BossNode{
 	}
 	
 	public static void setMiniBossKilled(String bossname) {
+		Networking.unlockAchievement("miniboss1");
 		Player.player.addGroupedAchieve("miniboss","Mini Bosses",bossname);
 	}
 	

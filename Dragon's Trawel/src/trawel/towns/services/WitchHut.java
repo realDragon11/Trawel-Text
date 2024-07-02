@@ -381,6 +381,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 		}
 		//section used for transmutation
 		if ((ents > 0 && meats >= 2) || (eons > 0 && virgins > 0)) {//kinda even more horrifying now
+			transmuteMisc();
 			Person fGolem = RaceFactory.makeFleshGolem(
 					(Player.player.getPerson().getLevel()+town.getTier())/2//near the player and town level
 					);
@@ -418,6 +419,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 				return true;
 			}
 			if (food >= 2) {
+				transmuteMisc();
 				extra.println("The food morphs!");
 				for (int left = food-1; left >= 0 ; left--) {
 					if (extra.chanceIn(3,4)) {//make a seeded plant
@@ -563,10 +565,16 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	}
 	
 	public void transmute(DrawBane from, DrawBane into,int count) {
+		transmuteMisc();
 		extra.println("You manage to turn the "+from.getName()+" into " + (count > 1 ? count + " " : "") + into.getName()+"!");
 	}
 	public void transmute(String from, DrawBane into,int count) {
+		transmuteMisc();
 		extra.println("You manage to turn the "+from+" into " + (count > 1 ? count + " " : "") + into.getName()+"!");
+	}
+	
+	public void transmuteMisc() {
+		Networking.unlockAchievement("transmute1");
 	}
 	
 	public String listReagents() {

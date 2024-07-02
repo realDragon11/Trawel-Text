@@ -231,7 +231,8 @@ public class Oracle extends Feature{ //extends feature later
 				tip("utter");
 				int oldVisits = visits;
 				visits+=5;
-				Networking.unlockAchievement("oracle1");
+				//doesn't count as an utterance since it is more coherent
+				//Networking.unlockAchievement("oracle1");
 				if (oldVisits < 5 && visits >= 5) {
 					Player.player.addAchieve(this, this.getName() + " vistor");
 				}

@@ -11,6 +11,7 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.Networking.Area;
+import trawel.Networking;
 import trawel.extra;
 import trawel.mainGame;
 import trawel.battle.Combat;
@@ -279,6 +280,7 @@ public class TravelingFeature extends Store{
 									}
 								}
 								timeLeft+=1;//extend how long they stay, since they will be removed above by chance
+								Networking.unlockAchievement("oracle1");
 								extra.println("\""+Oracle.tipRandomOracle(town.getName())+"\"");
 								useCount++;
 								return true;
