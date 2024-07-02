@@ -294,12 +294,6 @@ public class NodeConnector implements Serializable {
 	public void enter(int node) {
 		//generic nodes still have their base typenum, they just have an override flag
 		switch (NodeType.getTypeEnum(getTypeNum(node))) {
-		case BOSS:
-			//Networking.setArea(Area.CHAMPION);
-			//do not change area
-			//Networking.updateTime();//time gets updated in a tiny bit
-			//and unlike the others we don't care to update the background if needed
-			break;
 		case CAVE:
 			Networking.setArea(Area.CAVE);
 			Networking.unlockAchievement("cave1");

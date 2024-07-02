@@ -51,7 +51,7 @@ public class GateNodeBehavior extends Behavior {
 	public String getOpeningText() {
 		switch (type) {
 		case 0:
-			return "The Bone Barrier makes way in response to your victory against "+getName()+" .";
+			return "The Bone Barrier makes way in response to your victory against "+getName()+".";
 		case 1:
 			return "You find a Hidden Stairwell digging up a spot marked a map "+getName() +" had.";
 		case 2:

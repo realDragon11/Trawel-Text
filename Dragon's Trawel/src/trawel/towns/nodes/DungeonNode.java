@@ -39,6 +39,8 @@ public class DungeonNode implements NodeType{
 	 */
 	private static final byte[] LOOT_NUMBERS = new byte[] {5,6,7,8,9};
 	
+	public static final int BOSS_FATESPINNER = 10, BOSS_OLDQUEEN = 11, BOSS_YORE = 12, BOSS_VARIABLE = 13;
+	
 	public DungeonNode() {
 		dungeonGuardRoller = new WeightedTable(new float[] {1f,4f});
 		dungeonLootRoller = new WeightedTable(new float[] {3f,1f,1.5f,.5f,.3f});
@@ -52,6 +54,10 @@ public class DungeonNode implements NodeType{
 				.1f,//7 statue
 				.5f,//8 living statue
 				.3f,//9 trapped treasure chamber
+				0f,//10 BOSS: fatespinner
+				0f,//11 BOSS: old queen
+				0f,//12 BOSS: yore
+				0f,//13 MINIBOSS: variable gate reward
 		});
 		dungeonRegrowRoller = new WeightedTable(new float[] {
 				0f,//1 ladder
@@ -63,6 +69,10 @@ public class DungeonNode implements NodeType{
 				0f,//7 statue
 				0f,//8 living statue
 				0f,//9 trapped treasure chamber
+				0f,//10 BOSS: fatespinner
+				0f,//11 BOSS: old queen
+				0f,//12 BOSS: yore
+				0f,//13 MINIBOSS: variable gate reward
 		});
 	}
 	
@@ -187,9 +197,19 @@ public class DungeonNode implements NodeType{
 				stair = curStair;
 			}
 			floor+=10;
-			int b = NodeType.NodeTypeNum.BOSS.singleton.getNode(holder, 0, floor, stair_level+2);
+			int b = getNode(holder, 0, floor, stair_level+2);
 			holder.setMutualConnect(b, stair);
 			holder.setFloor(b, floor);
+			switch (holder.parent.bossType()) {
+			case FATESPINNER:
+				holder.setEventNum(b, BOSS_FATESPINNER);
+				break;
+			case OLD_QUEEN:
+				holder.setEventNum(b, BOSS_OLDQUEEN);
+				break;
+			default:
+				throw new RuntimeException("Invalid boss type for tower: "+holder.parent.getName());
+			}
 			/*
 			stair.reverseConnections();
 			stair.getConnects().add(b);
@@ -232,7 +252,14 @@ public class DungeonNode implements NodeType{
 			int weak_end_level = tier+3;
 			int path_length_tough = 4;
 			int tough_end_level = tier+6;
-			int fight_room = NodeType.NodeTypeNum.BOSS.singleton.getNode(holder, 0, 0, max_level);
+			int fight_room = getNode(holder, 0, 0, max_level);
+			switch (holder.parent.bossType()) {
+			case YORE:
+				holder.setEventNum(fight_room, BOSS_YORE);
+				break;
+			default:
+				throw new RuntimeException("Invalid boss type for rigged dungeon: "+holder.parent.getName());
+			}
 			Dungeon keeper = (Dungeon) owner;
 			keeper.setupBattleCons();
 			List<SubSkill> skillcon_list = new ArrayList<SubSkill>();
@@ -266,7 +293,14 @@ public class DungeonNode implements NodeType{
 		case RIGGED_TOWER:
 			int t_boss_level = tier+8;
 			int t_max_level = tier+6;
-			int t_fight_room = NodeType.NodeTypeNum.BOSS.singleton.getNode(holder, 0, 0, t_boss_level);
+			int t_fight_room = getNode(holder, 0, 0, t_boss_level);
+			switch (holder.parent.bossType()) {
+			case YORE:
+				holder.setEventNum(t_fight_room, BOSS_YORE);
+				break;
+			default:
+				throw new RuntimeException("Invalid boss type for rigged tower: "+holder.parent.getName());
+			}
 			Dungeon t_keeper = (Dungeon) owner;
 			t_keeper.setupBattleCons();
 			List<SubSkill> t_skillcon_list = new ArrayList<SubSkill>();
@@ -387,6 +421,22 @@ public class DungeonNode implements NodeType{
 			break;
 		case 9://trapped treasure chamber
 			GenericNode.applyTrappedChamber(holder,madeNode);
+			break;
+		case 10://fatespinner
+			holder.setStorage(madeNode,new Object[] {BossNode.BossType.FATESPINNER});
+			GenericNode.applyBoss(holder, madeNode);
+			break;
+		case 11://old queen
+			holder.setStorage(madeNode,new Object[] {BossNode.BossType.OLD_QUEEN});
+			GenericNode.applyBoss(holder, madeNode);
+			break;
+		case 12://yore
+			holder.setStorage(madeNode,new Object[] {BossNode.BossType.YORE});
+			GenericNode.applyBoss(holder, madeNode);
+			break;
+		case 13://variable gate reward
+			holder.setStorage(madeNode,new Object[] {BossNode.BossType.VARIABLE_GATE_BOSS,holder.getStateNum(madeNode)});
+			GenericNode.applyBoss(holder, madeNode);
 			break;
 		case 100://skillcon holder
 			break;

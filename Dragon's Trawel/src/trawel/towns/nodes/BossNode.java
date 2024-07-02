@@ -25,46 +25,29 @@ import trawel.quests.CleanseSideQuest.CleanseType;
 import trawel.quests.Quest.TriggerType;
 import trawel.time.TimeContext;
 import trawel.towns.fort.SubSkill;
+import trawel.towns.nodes.GenericNode.Generic;
 
-public class BossNode implements NodeType {
-	
-	@Override
-	public int rollRegrow() {
-		throw new RuntimeException("bossnode node can't be rolled for regrowth");
-	}
-	
-	@Override
-	public int getNode(NodeConnector holder, int owner, int guessDepth, int tier){
-		int node = holder.newNode();
-		holder.setEventNum(node,holder.parent.bossType().ordinal());
-		holder.setTypeNum(node,NodeType.NodeTypeNum.BOSS.ordinal());
-		holder.setLevel(node, tier);
-		holder.setStorage(node,new Object[] {"",new ArrayList<Person>()});
-		holder.setFloor(node,guessDepth);
-		return node;
-	}
-	
-	@Override
-	public NodeConnector getStart(NodeFeature owner, int size, int tier) {
-		return null;//should not be used
-	}
-	
-	@Override
-	public int generate(NodeConnector holder, int from, int sizeLeft, int tier) {
-		return -1;
-	}
+public class BossNode{
 	
 	public enum BossType{
-		NONE,FATESPINNER,GENERIC_DEMON_OVERLORD,YORE,OLD_QUEEN,VARIABLE_GATE_BOSS
+		NONE
+		,FATESPINNER
+		,GENERIC_DEMON_OVERLORD
+		,YORE
+		,OLD_QUEEN
+		,VARIABLE_GATE_BOSS
+		;
 	}
 	
-	@Override
-	public void apply(NodeConnector holder, int madeNode) {
+	public static void applyBoss(NodeConnector holder, int node) {
+		Object[] loadData = holder.getStorageAsArray(node);
+		BossType bType = (BossType) loadData[0];
 		Person p;
-		List<Person> peeps = holder.getStorageFirstClass(madeNode, List.class);//any list, since type erasure
-		//we don't need to put the list back since we have a ref to it
-		int level = holder.getLevel(madeNode);
-		switch (BossType.values()[holder.getEventNum(madeNode)]) {
+		List<Person> peeps = new ArrayList<Person>();
+		//filled in later
+		holder.setStorage(node,new Object[] {bType.ordinal(),peeps});
+		int level = holder.getLevel(node);
+		switch (bType) {
 		case NONE:
 			throw new RuntimeException("trying to make none boss in "+holder.parent.getName());
 		case FATESPINNER:
@@ -74,7 +57,6 @@ public class BossNode implements NodeType {
 			p.setTitle(", the Fatespinner");
 			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
 			p.getBag().addDrawBaneSilently(DrawBane.TELESCOPE);
-			//p.liteRefreshClassless();//now unneeded
 			p.finishGeneration();
 			peeps.add(p);
 			refillFatespinnerList(peeps,null,level);	
@@ -85,7 +67,6 @@ public class BossNode implements NodeType {
 			p.setTitle(", Baron of Hell");
 			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
 			p.getBag().addDrawBaneSilently(DrawBane.LIVING_FLAME);
-			//p.liteRefreshClassless();//now unneeded
 			p.finishGeneration();
 			peeps.add(p);
 		break;
@@ -97,7 +78,6 @@ public class BossNode implements NodeType {
 			p.setTitle("");
 			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
 			p.getBag().addDrawBaneSilently(DrawBane.KNOW_FRAG);
-			//p.liteRefreshClassless();//now unneeded
 			p.finishGeneration();
 			peeps.add(p);
 			p = RaceFactory.makeFellReaver(level-6);
@@ -126,17 +106,18 @@ public class BossNode implements NodeType {
 			int blockerNode = -2;
 			int gateType = -2;
 			try {
-				blockerNode = holder.getStateNum(madeNode);
+				//stored in second slot of load data now
+				blockerNode = (int)loadData[1];
 				GateNodeBehavior GNB = holder.getStorageFirstClass(blockerNode,GateNodeBehavior.class);
 				gateType = GNB.type;
 			}catch (Exception e) {
-				throw new RuntimeException("Failed Variable Boss Fetch in node "+madeNode + " with gate blocker " + blockerNode + " in " + holder.parent.getName());
+				throw new RuntimeException("Failed Variable Boss Fetch in node "+node + " with gate blocker " + blockerNode + " in " + holder.parent.getName());
 			}
 			String nodeName;
 			String nodeInteract;
 			switch (gateType) {
 				default://fail to read
-					throw new RuntimeException("Invalid Variable Boss Type in node "+madeNode + " with gate blocker " + blockerNode + " in " + holder.parent.getName());
+					throw new RuntimeException("Invalid Variable Boss Type in node "+node + " with gate blocker " + blockerNode + " in " + holder.parent.getName());
 				case 0://skeleton pirate blocker
 					p = RaceFactory.makeSkeletonPirate(level);
 					p.setTitle(", Pirate Captain");
@@ -159,17 +140,12 @@ public class BossNode implements NodeType {
 			NPCMutator.mutateMiniboss(p,true,true);
 			p.setOrMakeAgentGoal(AgentGoal.OWN_SOMETHING);
 			peeps.add(p);
-			holder.setStorage(madeNode,new Object[] {nodeName,nodeInteract,peeps});
+			//change storage
+			holder.setStorage(node,new Object[] {bType.ordinal(),nodeName,nodeInteract,peeps});
 			break;
 		default:
-			throw new RuntimeException("invalid boss " +holder.getEventNum(madeNode) + " in " + holder.parent.getName() + " in " + holder.parent.getTown().getName());
+			throw new RuntimeException("invalid boss " +holder.getEventNum(node) + " in " + holder.parent.getName() + " in " + holder.parent.getTown().getName());
 		}
-		//we don't need to put the list back since we have a ref to it
-	}
-	
-	private void setGenericCorpse(NodeConnector holder,int node, Person body, NodeTypeNum typeNum) {
-		holder.setTypeNum(node,typeNum.ordinal());
-		GenericNode.setSimpleDeadPerson(holder, node, body);
 	}
 	
 	private static interface MookRefiller {
@@ -179,7 +155,7 @@ public class BossNode implements NodeType {
 	/**
 	 * if peeps is the list that is already stored, you will not need to re-store it
 	 */
-	private void refillList(List<Person> peeps, List<Person> keep, int size, int nodeLevel, MookRefiller filler) {
+	private static void refillList(List<Person> peeps, List<Person> keep, int size, int nodeLevel, MookRefiller filler) {
 		if (keep != null) {
 			peeps.removeIf(p -> p.getFlag(PersonFlag.IS_MOOK) && !keep.contains(p));
 		}
@@ -188,7 +164,7 @@ public class BossNode implements NodeType {
 		}
 	}
 	
-	private void refillFatespinnerList(List<Person> peeps, List<Person> keep, int nodeLevel) {
+	private static void refillFatespinnerList(List<Person> peeps, List<Person> keep, int nodeLevel) {
 		refillList(peeps,keep,4,nodeLevel,new MookRefiller() {
 			@Override
 			public Person refill(int nodeLevel) {
@@ -199,7 +175,7 @@ public class BossNode implements NodeType {
 			}});
 	}
 	
-	private void refillOldQueenList(List<Person> peeps, List<Person> keep, int nodeLevel) {
+	private static void refillOldQueenList(List<Person> peeps, List<Person> keep, int nodeLevel) {
 		refillList(peeps,keep,5,nodeLevel,new MookRefiller() {
 			@Override
 			public Person refill(int nodeLevel) {
@@ -212,107 +188,105 @@ public class BossNode implements NodeType {
 	}
 	
 	
-	private boolean fatespinner(NodeConnector holder,int node) {
-		//if (holder.getEventNum(node) == 0) {
-			extra.println(extra.PRE_BATTLE+"You challenge the Fatespinner!");
-			List<Person> fated = (List<Person>) holder.getStorageFirstClass(node,List.class);
-			List<Person> playerSide = holder.parent.getHelpFighters();
-			playerSide.addAll(Player.player.getAllies());
-			List<List<Person>> people = new ArrayList<List<Person>>();
-			people.add(playerSide);
-			people.add(fated);
-			//fatespinner can scry
-			List<SkillCon> cons = Collections.singletonList(new SkillCon(SubSkill.SCRYING,50,1));
-			Combat c = mainGame.HugeBattle(holder.getWorld(), cons, people, true);
-			
-			Person spinner = fated.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();//throw if can't find
-			
-			List<Person> survs = c.getNonSummonSurvivors();
-			holder.parent.retainAliveFighters(survs);
-			if (c.playerWon() > 0) {
-				if (c.playerWon() < 2) {
-					//player must survive battle for it to stick
-					extra.println("Fate will not allow this... It seems like this Fatespinner's thread winds on.");
-					extra.println("You wake up at the base of the tower, a storm passing by overhead.");
-					//this is the list that is already stored
-					refillFatespinnerList(fated,survs,holder.getLevel(node));
-					return true;
-				}else {
-					holder.setForceGo(node,false);
-					setGenericCorpse(holder,node,spinner,NodeTypeNum.DUNGEON);
-					Player.unlockPerk(Perk.FATED);
-					Networking.unlockAchievement("boss1");
-					setBossKilled(spinner.getName());
-					Player.player.addAchieve("fatespinner","Owner of Their Own Fate");
-					heroRep(holder,node,1f);
-					addRubyPayout(holder, node, 1f);
-					return false;
-				}
-			}else {
-				//now they need to be killed all at once, could also sort out the adds if dead
-				if (survs.size() != fated.size()) {
-					if (!survs.contains(spinner)) {
-						extra.println("The Spinner's Fate is not so easily changed. You have the sinking feeling you haven't seen the last of them.");
-					}else {
-						extra.println("The Spinner admires good help. The mimics slain are likely already replaced.");
-					}
-				}else {
-					extra.println("The Spinner cannot weave you fate, but it seems they are still in control of their own.");
-				}
+	private static boolean fatespinner(NodeConnector holder,int node) {
+		extra.println(extra.PRE_BATTLE+"You challenge the Fatespinner!");
+		List<Person> fated = (List<Person>) holder.getStorageFirstClass(node,List.class);
+		List<Person> playerSide = holder.parent.getHelpFighters();
+		playerSide.addAll(Player.player.getAllies());
+		List<List<Person>> people = new ArrayList<List<Person>>();
+		people.add(playerSide);
+		people.add(fated);
+		//fatespinner can scry
+		List<SkillCon> cons = Collections.singletonList(new SkillCon(SubSkill.SCRYING,50,1));
+		Combat c = mainGame.HugeBattle(holder.getWorld(), cons, people, true);
+		
+		Person spinner = fated.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();//throw if can't find
+		
+		List<Person> survs = c.getNonSummonSurvivors();
+		holder.parent.retainAliveFighters(survs);
+		if (c.playerWon() > 0) {
+			if (c.playerWon() < 2) {
+				//player must survive battle for it to stick
+				extra.println("Fate will not allow this... It seems like this Fatespinner's thread winds on.");
+				extra.println("You wake up at the base of the tower, a storm passing by overhead.");
 				//this is the list that is already stored
 				refillFatespinnerList(fated,survs,holder.getLevel(node));
-				return true;//lost, kick out
-			}
-	}
-	
-	private boolean hellbaron(NodeConnector holder,int node) {
-		//if (node.state == 0) {
-			extra.println(extra.PRE_BATTLE+"You challenge the Hell Baron!");
-			List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
-			Combat c = Player.player.massFightWith(list);
-			if (c.playerWon() > 0) {
+				return true;
+			}else {
 				holder.setForceGo(node,false);
-				Person baron = list.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();
-				setGenericCorpse(holder,node,baron,NodeTypeNum.MINE);
-				Networking.unlockAchievement("boss2");
-				Player.unlockPerk(Perk.HELL_BARONESS_1);
-				setBossKilled(baron.getName());
-				Player.player.addAchieve("hell_baron","Hell Baroness");
-				heroRep(holder,node,2f);
+				GenericNode.setSimpleDeadPerson(holder, node, spinner);
+				Player.unlockPerk(Perk.FATED);
+				Networking.unlockAchievement("boss1");
+				setBossKilled(spinner.getName());
+				Player.player.addAchieve("fatespinner","Owner of Their Own Fate");
+				heroRep(holder,node,1f);
 				addRubyPayout(holder, node, 1f);
 				return false;
-			}else {
-				return true;//lost, kick out
 			}
+		}else {
+			//now they need to be killed all at once, could also sort out the adds if dead
+			if (survs.size() != fated.size()) {
+				if (!survs.contains(spinner)) {
+					extra.println("The Spinner's Fate is not so easily changed. You have the sinking feeling you haven't seen the last of them.");
+				}else {
+					extra.println("The Spinner admires good help. The mimics slain are likely already replaced.");
+				}
+			}else {
+				extra.println("The Spinner cannot weave you fate, but it seems they are still in control of their own.");
+			}
+			//this is the list that is already stored
+			refillFatespinnerList(fated,survs,holder.getLevel(node));
+			return true;//lost, kick out
+		}
 	}
 	
-	private boolean yore(NodeConnector holder,int node) {
-			extra.println(extra.PRE_BATTLE+"You challenge a legend!");
-			List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
-			List<List<Person>> battleList = new ArrayList<List<Person>>();
-			battleList.add(Player.player.getAllies());
-			battleList.add(list);
-			List<SkillCon> cons = ((Dungeon)(holder.parent)).getBattleCons();
-			Combat c = mainGame.HugeBattle(holder.getWorld(), cons,battleList, true);
-			if (c.playerWon() > 0) {
-				holder.setForceGo(node,false);
-				Person yore = list.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();//throw if can't find
-				setGenericCorpse(holder,node,yore,NodeTypeNum.DUNGEON);
-				Player.unlockPerk(Perk.STORYTELLER);
-				Networking.unlockAchievement("boss3");
-				setBossKilled(yore.getName());
-				Player.player.addAchieve("yore","Story Slayer");
-				//awards cleanse only on total kill
-				Player.player.questTrigger(TriggerType.CLEANSE,CleanseType.FELL.trigger,2);
-				heroRep(holder,node,3f);
-				addRubyPayout(holder, node, 1.5f);//bonus rubies due to infamy
-				return false;
-			}else {
-				return true;//lost, kick out
-			}
+	private static boolean hellbaron(NodeConnector holder,int node) {
+		extra.println(extra.PRE_BATTLE+"You challenge the Hell Baron!");
+		List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
+		Combat c = Player.player.massFightWith(list);
+		if (c.playerWon() > 0) {
+			holder.setForceGo(node,false);
+			Person baron = list.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();
+			GenericNode.setSimpleDeadPerson(holder, node, baron);
+			Networking.unlockAchievement("boss2");
+			Player.unlockPerk(Perk.HELL_BARONESS_1);
+			setBossKilled(baron.getName());
+			Player.player.addAchieve("hell_baron","Hell Baroness");
+			heroRep(holder,node,2f);
+			addRubyPayout(holder, node, 1f);
+			return false;
+		}else {
+			return true;//lost, kick out
+		}
 	}
 	
-	private boolean oldQueen(NodeConnector holder,int node) {
+	private static boolean yore(NodeConnector holder,int node) {
+		extra.println(extra.PRE_BATTLE+"You challenge a legend!");
+		List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
+		List<List<Person>> battleList = new ArrayList<List<Person>>();
+		battleList.add(Player.player.getAllies());
+		battleList.add(list);
+		List<SkillCon> cons = ((Dungeon)(holder.parent)).getBattleCons();
+		Combat c = mainGame.HugeBattle(holder.getWorld(), cons,battleList, true);
+		if (c.playerWon() > 0) {
+			holder.setForceGo(node,false);
+			Person yore = list.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();//throw if can't find
+			GenericNode.setSimpleDeadPerson(holder, node, yore);
+			Player.unlockPerk(Perk.STORYTELLER);
+			Networking.unlockAchievement("boss3");
+			setBossKilled(yore.getName());
+			Player.player.addAchieve("yore","Story Slayer");
+			//awards cleanse only on total kill
+			Player.player.questTrigger(TriggerType.CLEANSE,CleanseType.FELL.trigger,2);
+			heroRep(holder,node,3f);
+			addRubyPayout(holder, node, 1.5f);//bonus rubies due to infamy
+			return false;
+		}else {
+			return true;//lost, kick out
+		}
+	}
+	
+	private static boolean oldQueen(NodeConnector holder,int node) {
 		extra.println(extra.PRE_BATTLE+"You challenge the Ancient Queen!");
 		List<Person> queens = (List<Person>) holder.getStorageFirstClass(node,List.class);
 		List<Person> playerSide = holder.parent.getHelpFighters();
@@ -335,7 +309,7 @@ public class BossNode implements NodeType {
 				return true;
 			}else {
 				holder.setForceGo(node,false);
-				setGenericCorpse(holder,node,queen,NodeTypeNum.DUNGEON);
+				GenericNode.setSimpleDeadPerson(holder, node, queen);
 				Player.unlockPerk(Perk.QUEENSLAYER);
 				Networking.unlockAchievement("boss4");
 				setBossKilled(queen.getName());
@@ -360,14 +334,14 @@ public class BossNode implements NodeType {
 		}
 	}
 	
-	private boolean variableBlockerBoss(NodeConnector holder,int node) {
+	private static boolean variableBlockerBoss(NodeConnector holder,int node) {
 		List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
 		extra.println(extra.PRE_BATTLE+"You attack "+list.get(0).getName()+"!");
 		Combat c = Player.player.massFightWith(list);
 		if (c.playerWon() > 0) {
 			holder.setForceGo(node,false);
 			Person miniboss = list.stream().filter(p->!p.getFlag(PersonFlag.IS_MOOK)).findAny().get();
-			setGenericCorpse(holder,node,miniboss,NodeTypeNum.DUNGEON);
+			GenericNode.setSimpleDeadPerson(holder, node, miniboss);
 			//no achievement for now
 			setMiniBossKilled(miniboss.getName());
 			//less payout
@@ -379,9 +353,8 @@ public class BossNode implements NodeType {
 		}
 	}
 
-	@Override
-	public boolean interact(NodeConnector holder,int node) {
-		switch (BossType.values()[holder.getEventNum(node)]) {
+	public static boolean interact(NodeConnector holder,int node) {
+		switch (BossType.values()[(int)holder.getStorageAsArray(node)[0]]) {
 		case FATESPINNER: return fatespinner(holder,node);
 		case GENERIC_DEMON_OVERLORD: return hellbaron(holder,node);
 		case YORE: return yore(holder,node);
@@ -390,41 +363,27 @@ public class BossNode implements NodeType {
 		}
 		throw new RuntimeException("Invalid boss");
 	}
-	
-	public static DrawBane[] dblist = new DrawBane[] {DrawBane.VIRGIN};//welp
-	
-	@Override
-	public DrawBane[] dbFinds() {
-		//bosses can be present through generics, should honestly stop using boss nodes at this point
-		return dblist;
-	}
 
-	@Override
-	public void passTime(NodeConnector holder, int node, double time, TimeContext calling) {
-	}
-
-	@Override
-	public String interactString(NodeConnector holder, int node) {
-		switch (BossType.values()[holder.getEventNum(node)]) {
+	public static String interactString(NodeConnector holder, int node) {
+		switch (BossType.values()[(int)holder.getStorageAsArray(node)[0]]) {
 		case FATESPINNER: return extra.PRE_BATTLE+"Reject Fate.";
 		case GENERIC_DEMON_OVERLORD: return extra.PRE_BATTLE+"Become the Baroness.";
 		case YORE: return extra.PRE_BATTLE+"Stall a Story.";
 		case OLD_QUEEN: return extra.PRE_BATTLE+"Oust an Empress.";
 		case VARIABLE_GATE_BOSS:
-			return extra.PRE_BATTLE+holder.getStorageAsArray(node)[1];//get interact string in second spot
+			return extra.PRE_BATTLE+holder.getStorageAsArray(node)[2];//get interact string in third spot
 		}
 		throw new RuntimeException("Invalid boss");
 	}
 
-	@Override
-	public String nodeName(NodeConnector holder, int node) {
-		switch (BossType.values()[holder.getEventNum(node)]) {
+	public static String nodeName(NodeConnector holder, int node) {
+		switch (BossType.values()[(int)holder.getStorageAsArray(node)[0]]) {
 		case FATESPINNER: return "Fatespinner's Observatory";
 		case GENERIC_DEMON_OVERLORD: return "A Minor Throne of Hell";
 		case YORE: return "A Rigged Arena";
 		case OLD_QUEEN: return "Prehistoric Throne";
 		case VARIABLE_GATE_BOSS:
-			return extra.PRE_BATTLE+holder.getStorageAsArray(node)[0];//get name string in first spot
+			return extra.PRE_BATTLE+holder.getStorageAsArray(node)[1];//get name string in second spot
 		}
 		throw new RuntimeException("Invalid boss");
 	}

@@ -43,7 +43,6 @@ public interface NodeType{
 	public static int GENERIC_CUTOFF = Byte.SIZE-50;
 	public enum NodeTypeNum{
 		GENERIC(new GenericNode()),
-		BOSS(new BossNode()),
 		GROVE(new GroveNode()),
 		CAVE(new CaveNode()),
 		MINE(new MineNode()),

@@ -21,6 +21,7 @@ import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceID;
 import trawel.personal.classless.AttributeBox;
 import trawel.personal.classless.IEffectiveLevel;
+import trawel.personal.classless.Perk;
 import trawel.personal.item.Seed;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Gem;
@@ -30,13 +31,15 @@ import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.towns.World;
 import trawel.towns.misc.PlantSpot;
+import trawel.towns.nodes.BossNode.BossType;
 import trawel.towns.nodes.NodeConnector.NodeFlag;
 import trawel.towns.services.Oracle;
 
 public class GenericNode implements NodeType {
 
 	public enum Generic{
-		DEAD_PERSON, DEAD_STRING_SIMPLE
+		DEAD_PERSON
+		,DEAD_STRING_SIMPLE
 		,DEAD_STRING_TOTAL
 		,DEAD_RACE_INDEX
 		,BASIC_RAGE_PERSON
@@ -44,12 +47,13 @@ public class GenericNode implements NodeType {
 		,VEIN_MINERAL
 		,COLLECTOR
 		,LOCKDOOR
-		,PLANT_SPOT,
-		CASUAL_PERSON
+		,PLANT_SPOT
+		,CASUAL_PERSON
 		,RICH_GUARD
 		,EMPTY_FOR_REGROW
-		,MISC_TEXT_WITH_REGEN,
-		TRAPPED_CHAMBER
+		,MISC_TEXT_WITH_REGEN
+		,TRAPPED_CHAMBER
+		,BOSS
 	}
 	
 	public static void setSimpleDuelPerson(NodeConnector holder,int node,Person p, String nodename, String interactstring,String wantDuel) {
@@ -185,6 +189,8 @@ public class GenericNode implements NodeType {
 			return false;
 		case TRAPPED_CHAMBER:
 			return trappedChamber(holder, node);
+		case BOSS:
+			return BossNode.interact(holder, node);
 		}
 		return false;
 	}
@@ -204,9 +210,6 @@ public class GenericNode implements NodeType {
 					if (extra.chanceIn(2, 5)) {//add something
 						pspot.timer = 0;//reset timer
 						switch (NodeType.getTypeEnum(holder.getTypeNum(node))) {
-						case BOSS:
-							pspot.contains = Seed.SEED_ENT;//virgin later?
-							break;
 						case CAVE:
 							pspot.contains = Seed.SEED_TRUFFLE;
 							break;
@@ -427,6 +430,8 @@ public class GenericNode implements NodeType {
 				}
 			}
 			return getTChamberInteract(holder, node);
+		case BOSS:
+			return BossNode.interactString(holder, node);
 		}
 		return null;
 	}
@@ -478,6 +483,8 @@ public class GenericNode implements NodeType {
 				}
 			}
 			return getTChamberName(holder, node);
+		case BOSS:
+			return BossNode.nodeName(holder, node);
 		}
 		return null;
 	}
@@ -1546,6 +1553,20 @@ public class GenericNode implements NodeType {
 		Object[] trapChamberArray = holder.getStorageAsArray(node);
 		byte[] lootChamberArray = (byte[]) trapChamberArray[0];
 		return "Enter the " +tChamberLookup(lootChamberArray[0],lootChamberArray[3])[0];
+	}
+	
+	/**
+	 * unlike other generic applies, this doesn't wipe all data, since some bosses use StateNum to determine setup
+	 * <br>
+	 * needs data in storage to determine which boss to apply
+	 */
+	public static final void applyBoss(NodeConnector holder, int node) {
+		holder.setForceGo(node,false);//safety measure
+		holder.setFlag(node,NodeFlag.SILENT_FORCEGO_POSSIBLE,false);//safety measure
+		holder.setFlag(node,NodeFlag.GENERIC_OVERRIDE, true);
+		holder.setEventNum(node,Generic.BOSS.ordinal());
+		BossNode.applyBoss(holder, node);
+		
 	}
 
 	@Override

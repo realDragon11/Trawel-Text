@@ -39,6 +39,8 @@ public class MineNode implements NodeType{
 	 */
 	private WeightedTable noneMineRoller, hellMineRoller, entryMineRoller, mineRegrowRoller;
 	
+	public static final int BOSS_HELLBARON = 12;
+	
 	private int[] startRolls = new int[] {1,2,6,7,8};
 	
 	public MineNode() {
@@ -64,7 +66,9 @@ public class MineNode implements NodeType{
 				//10: mugger
 				1.5f,
 				//11: trapped chamber
-				0.5f
+				0.5f,
+				//12: hell baron
+				0f
 		});
 		hellMineRoller = new WeightedTable(new float[] {
 				//1: duelist
@@ -88,7 +92,9 @@ public class MineNode implements NodeType{
 				//10: mugger
 				2.5f,
 				//11: trapped chamber
-				0.1f
+				0.1f,
+				//12: hell baron
+				0f
 		});
 		entryMineRoller = new WeightedTable(new float[] {
 				//1: duelist
@@ -112,7 +118,9 @@ public class MineNode implements NodeType{
 				//10: mugger
 				.4f,
 				//11: trapped chamber
-				0.25f
+				0.25f,
+				//12: hell baron
+				0f
 		});
 		//mostly ends up in veins over time with other things regrowing, but also some other stuff indicative of the earth being tapped dry
 		mineRegrowRoller = new WeightedTable(new float[] {
@@ -137,6 +145,8 @@ public class MineNode implements NodeType{
 				//10: mugger
 				3f,
 				//11: trapped chamber
+				0f,
+				//12: hell baron
 				0f
 		});
 	}
@@ -258,7 +268,8 @@ public class MineNode implements NodeType{
 			}
 			if (owner.bossType() != BossType.NONE) {
 				currentLevel = Math.max(currentLevel+2, 3+(tier+(size/10)));
-				newNode = NodeType.NodeTypeNum.BOSS.singleton.getNode(start, lastNode,size+2,currentLevel);
+				newNode = getNode(start, lastNode,size+2,currentLevel);
+				start.setEventNum(newNode,BOSS_HELLBARON);
 				start.setMutualConnect(newNode, lastNode);
 				start.setFloor(newNode,size+2);
 			}
@@ -322,6 +333,10 @@ public class MineNode implements NodeType{
 			break;
 		case 11://trapped treasure chamber
 			GenericNode.applyTrappedChamber(holder,madeNode);
+			break;
+		case 12://hell baron
+			holder.setStorage(madeNode,new Object[] {BossNode.BossType.GENERIC_DEMON_OVERLORD});
+			GenericNode.applyBoss(holder, madeNode);
 			break;
 		}
 	}

@@ -258,11 +258,12 @@ public class BeachNode implements NodeType {
 							}
 							//add miniboss at end of each dungeon
 							dTier++;
-							int bossDNode = NodeType.NodeTypeNum.BOSS.singleton.getNode(start,nodeLast,start.getFloor(nodeLast)+1, dTier);
+							int bossDNode = NodeType.NodeTypeNum.DUNGEON.singleton.getNode(start,nodeLast,start.getFloor(nodeLast)+1, dTier);
 							start.setMutualConnect(nodeLast,bossDNode);
 							start.reverseConnections(nodeLast);
 							//state is set to the node that contains the blocker, which is read by the boss generator to try to determine the boss type
 							start.setStateNum(bossDNode,subHead);
+							start.setEventNum(bossDNode,DungeonNode.BOSS_VARIABLE);
 							
 							break;
 						}
