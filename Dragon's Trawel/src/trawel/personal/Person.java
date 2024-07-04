@@ -1359,6 +1359,18 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	public void displayStats() {
 		displayStats(true);
 	}
+	
+	public void displayCombatQuickSummary() {
+		extra.println(getName() +": "+extra.ITEM_DESC_PROP+"LvL " +extra.ITEM_WANT_HIGHER+ this.getLevel() +extra.PRE_WHITE+" " + this.getBag().getRace().renderName(false)+".");
+		extra.println(" "
+				+extra.ITEM_WANT_HIGHER+getHp()+extra.PRE_WHITE +"/"+ tempMaxHp +extra.ITEM_DESC_PROP+ " HP, "
+				+extra.ITEM_WANT_HIGHER+extra.format(bag.getDodge()) + "x "+extra.ITEM_DESC_PROP+"dodge, "
+				+extra.ITEM_DESC_PROP+extra.CHAR_SHARP+"/"+extra.CHAR_BLUNT+"/"+extra.CHAR_PIERCE+
+				": "+extra.ITEM_WANT_HIGHER+extra.F_WHOLE.format(bag.getSharpResist())+"/"+extra.F_WHOLE.format(bag.getBluntResist())+"/"+extra.F_WHOLE.format(bag.getPierceResist())
+				);
+		extra.println(bag.quickInventory());
+	}
+	
 	public void displayStatOverview(boolean showHp) {
 		extra.println(getName() +": "+extra.ITEM_DESC_PROP+"LvL " +extra.ITEM_WANT_HIGHER+ this.getLevel() +extra.PRE_WHITE+" " + this.getBag().getRace().renderName(false)+".");
 		if (showHp) {
@@ -1898,6 +1910,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				extra.println(attributes[i]);
 			}
 		}
+	}
+	
+	public void printBodyStatus(boolean includePassthrough) {
+		bodystatus.combat_display(includePassthrough);
 	}
 	
 	public void multBodyStatus(int spot, double mult) {

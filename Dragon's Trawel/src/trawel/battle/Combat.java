@@ -99,13 +99,13 @@ public class Combat {
 		boolean playerIsInBattle;//= attacker.isPlayer() || defender.isPlayer();
 		if (manOne.isPlayer()) {
 			if (mainGame.displayTargetSummary) {
-				manTwo.displayStats(true);
+				manTwo.displayCombatQuickSummary();
 			}
 			playerIsInBattle = true;
 		}else {
 			if (manTwo.isPlayer()) {
 				if (mainGame.displayTargetSummary) {
-					manOne.displayStats(true);
+					manOne.displayCombatQuickSummary();
 				}
 				playerIsInBattle = true;
 			}else {
@@ -450,7 +450,7 @@ public class Combat {
 			Person otherperson = getDefenderFor(p);
 			if (p.isPlayer()) {
 				if (mainGame.displayTargetSummary) {
-					otherperson.displayStats(true);
+					otherperson.displayCombatQuickSummary();
 				}
 				p.getBag().graphicalDisplay(-1,p);
 				otherperson.getBag().graphicalDisplay(1,otherperson);

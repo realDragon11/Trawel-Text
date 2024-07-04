@@ -149,6 +149,42 @@ public class TargetHolder {
 		return plan.randTarget(config);
 	}
 	
+	public void combat_display(boolean includePassthrough) {
+		List<Integer> seen = new ArrayList<Integer>();
+		for (TargetReturn b: plan.rootTargetReturns()) {
+			combat_printSPOT(includePassthrough,b.spot,1);
+			if (seen.contains(b.spot)) {
+				extra.println("    ...");
+			}else {
+				seen.add(b.spot);
+				List<TargetReturn> children = plan.getDirectChildren(b.spot);
+				if (children.size() > 0) {
+					combat_printLAYER(includePassthrough,children,2);
+				}
+			}
+		}
+	}
+	
+	private void combat_printLAYER(boolean includePassthrough, List<TargetReturn> layer, int num) {
+		for (TargetReturn tr: layer) {
+			List<TargetReturn> children = plan.getDirectChildren(tr.spot);
+			combat_printSPOT(includePassthrough,tr.spot,num);
+			if (children.size() > 0 && num < 20) {
+				combat_printLAYER(includePassthrough,children,num+2);
+			}
+		}
+	}
+	private void combat_printSPOT(boolean includePassthrough, int spot, int buffer) {
+		TargetReturn tr = plan.getTargetReturn(spot);
+		if (!includePassthrough && tr.tar.passthrough) {
+			return;//do not print
+		}
+		//DOLATER: stripped version does not express linked parts very well
+		extra.println(extra.spaceBuffer(buffer)+
+				getPartName(spot) + ": " + (tr.tar.passthrough ? "p" : extra.format2.format(getStatus(spot)))
+				);
+	}
+	
 	public void debug_print(boolean full) {
 		if (full) {
 			List<Integer> seen = new ArrayList<Integer>();

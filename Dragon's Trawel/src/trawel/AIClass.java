@@ -5,6 +5,7 @@ import java.util.List;
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
+import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.mainGame.DispAttack;
@@ -1083,14 +1084,109 @@ public class AIClass {
 						break;
 					}
 					if (tactics.size() > 0) {
-						extra.println(j++ + " tactics");
+						extra.println(j++ + " Tactics.");
 					}
-					extra.println("9 full examine");
+					extra.println("9 Examine.");
 					numb = extra.inInt(j,true,false);
 				}else {
 					numb = -numb;//restore attack choice
 				}
 				if (numb == 9) {
+					extra.menuGo(new MenuGenerator() {
+
+						@Override
+						public List<MenuItem> gen() {
+							List<MenuItem> list = new ArrayList<MenuItem>();
+							list.add(new MenuLine() {
+
+								@Override
+								public String title() {
+									return attacker.getName() + " targeting " + defender.getName()+".";
+								}});
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return "Your HP, Armor, and Effects.";
+								}
+
+								@Override
+								public boolean go() {
+									extra.println(extra.STAT_HEADER+attacker.getName()+": ");
+									attacker.displayHp();
+									attacker.displayArmor();
+									attacker.displayEffects();
+									return false;
+								}});
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return "Your body Condition.";
+								}
+
+								@Override
+								public boolean go() {
+									extra.println(extra.STAT_HEADER+attacker.getName()+": ");
+									if (mainGame.debug) {
+										attacker.debug_print_status(0);
+									}
+									attacker.printBodyStatus(false);
+									return false;
+								}});
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return "Target HP, Armor, and Effects.";
+								}
+
+								@Override
+								public boolean go() {
+									extra.println(extra.STAT_HEADER+defender.getName()+": ");
+									defender.displayHp();
+									defender.displayArmor();
+									defender.displayEffects();
+									return false;
+								}});
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return "Target body Condition.";
+								}
+
+								@Override
+								public boolean go() {
+									extra.println(extra.STAT_HEADER+defender.getName()+": ");
+									if (mainGame.debug) {
+										defender.debug_print_status(0);
+									}
+									defender.printBodyStatus(false);
+									return false;
+								}});
+							list.add(new MenuSelect() {
+
+								@Override
+								public String title() {
+									return "Target Stats, Attributes, and Skills.";
+								}
+
+								@Override
+								public boolean go() {
+									defender.displayStatOverview(true);
+									String[] attributes = defender.attributeDesc();
+									for (int i = 0;i < attributes.length;i++) {
+										extra.println(attributes[i]);
+									}
+									defender.displaySkills();
+									return false;
+								}});
+							list.add(new MenuBack("Return to attacking."));
+							return list;
+						}
+					});
+					/*
 					extra.print("You have ");
 					attacker.displayHp();
 					attacker.displayEffects();
@@ -1109,12 +1205,14 @@ public class AIClass {
 					numb = extra.inInt(attacks.size(),true,false);
 					if (numb != 9) {
 						numb = -numb;//store attack choice
-					}
+					}*/
+					//repeat attacks
+					numb = 9;
 				}else {
 					if (numb > attacks.size()) {//if past the list, which is already one behind, go to tactics screen
 						assert tactics.size() > 0;
 						ImpairedAttack[] tacticPick = new ImpairedAttack[1];
-						extra.menuGo(new ScrollMenuGenerator(tactics.size(),"last <> tactics","next <> tactics") {
+						extra.menuGo(new ScrollMenuGenerator(tactics.size(),"Last <> Tactics.","Next <> Tactics.") {
 
 							@Override
 							public List<MenuItem> forSlot(int i) {
