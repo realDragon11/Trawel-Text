@@ -78,7 +78,7 @@ public class mainGame {
 
 	//b__X is in development, b_X is the actual release of that version
 	public static final String VERSION_STRING = "v0.8.b__12";
-	public static final String VERSION_DATE = " updated July 2nd 2024";
+	public static final String VERSION_DATE = " updated July 4th 2024";
 	public static final String[][] changelog = new String[][] {
 		//add to front, changeviewer cycles to older ones when used
 		{"b_12",
@@ -238,18 +238,15 @@ public class mainGame {
 	private static File prefFile;
 
 	public enum DispAttack{
-		CLASSIC("Classic simple table, delay instead of cooldown and warmup"),
-		SIMPLIFIED("Displays only accuracy, delay, damage, and wounds."),
-		TWO_LINE1_WITH_KEY("Current version, hybrid table with per-cell labels instead of a header. Includes a key/legend."),
-		TWO_LINE1("Current version, hybrid table with per-cell labels instead of a header. Does not include key/legend");
+		CLASSIC("Classic","Classic small table, delay instead of cooldown and warmup"),
+		SIMPLIFIED("Simple","Displays only accuracy, delay, damage, and wounds."),
+		TWO_LINE1_WITH_KEY("Doubled-Key","Current version, hybrid table with per-cell labels instead of a header. Includes a key/legend."),
+		TWO_LINE1("Doubled","Current version, hybrid table with per-cell labels instead of a header. Does not include key/legend");
 
-		private String desc;
-		DispAttack(String _desc){
+		public final String name, desc;
+		DispAttack(String _name, String _desc){
+			name = _name;
 			desc = _desc;
-		}
-
-		public String desc() {
-			return desc;
 		}
 	}
 	public static DispAttack dispAttackLookup(String str) {
@@ -262,7 +259,14 @@ public class mainGame {
 	}
 	
 	public enum GraphicStyle{
-		LEGACY, WASDD;
+		LEGACY("Legacy","Angled perspective 2019-2024."),
+		WASDD("Modern A","Flat perspective 2024+.");
+		
+		public final String name, desc;
+		GraphicStyle(String _name, String _desc){
+			name = _name;
+			desc = _desc;
+		}
 	}
 	public static GraphicStyle graphicStyleLookup(String str) {
 		for (GraphicStyle gs: GraphicStyle.values()) {
@@ -427,19 +431,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "GitHub (opens in browser)";
-					}
-
-					@Override
-					public boolean go() {
-						openWebpage("https://github.com/realDragon11/Trawel-Text");
-						return false;
-					}});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "Advanced Options";
+						return "External";
 					}
 
 					@Override
@@ -503,7 +495,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Attack Display Style: " + attackDisplayStyle.name();
+						return "Attack Display Style: " + attackDisplayStyle.name+".";
 					}
 
 					@Override
@@ -517,13 +509,13 @@ public class mainGame {
 
 									@Override
 									public String title() {
-										return "Currently: " + attackDisplayStyle.name();
+										return "Currently: " + attackDisplayStyle.name+".";
 									}});
 								for (DispAttack da: DispAttack.values()) {
 									list.add(new MenuSelect() {
 										@Override
 										public String title() {
-											return da.name() + ": " + da.desc();
+											return da.name + ": " + da.desc;
 										}
 
 										@Override
@@ -845,7 +837,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Graphic Style: "+graphicStyle;
+						return "Graphic Style: "+graphicStyle.name;
 					}
 
 					@Override
@@ -859,14 +851,13 @@ public class mainGame {
 
 									@Override
 									public String title() {
-										return "Currently: " + graphicStyle.name();
+										return "Currently: " + graphicStyle.name;
 									}});
 								for (GraphicStyle gs: GraphicStyle.values()) {
 									list.add(new MenuSelect() {
 										@Override
 										public String title() {
-											//DOLATER: describe
-											return gs.name() + ": " + gs.name();
+											return gs.name + ": " + gs.desc;
 										}
 
 										@Override
@@ -994,7 +985,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Quick Reconnect";
+						return "Quick Reconnect.";
 					}
 
 					@Override
@@ -1013,7 +1004,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Full Reconnect";
+						return "Full Reconnect.";
 					}
 
 					@Override
@@ -1029,6 +1020,36 @@ public class mainGame {
 						extra.println("Test Connection!");
 						return true;
 					}});
+				mList.add(new MenuLine() {
+
+					@Override
+					public String title() {
+						return "External Links:";
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "GitHub (opens in browser)";
+					}
+
+					@Override
+					public boolean go() {
+						openWebpage("https://github.com/realDragon11/Trawel-Text");
+						return false;
+					}});
+				mList.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Steam Discussions (opens in browser)";
+					}
+
+					@Override
+					public boolean go() {
+						openWebpage("https://steamcommunity.com/app/992240/discussions/");
+						return false;
+					}});
 				mList.add(new MenuBack());
 				return mList;
 			}
@@ -1037,7 +1058,7 @@ public class mainGame {
 
 
 	private static void credits() {
-		extra.println("Made by 'dragon' of realDragon");
+		extra.println("Made by 'dragon' of realDragon.");
 		extra.println();
 		
 		extra.println("Special thanks to many different communities across different programming languages and engines.");
@@ -1048,8 +1069,9 @@ public class mainGame {
 		extra.println();
 		
 		extra.println(extra.STAT_HEADER+"Java Libraries:");
-		extra.println(" Esoteric Software's Kryo");
 		extra.println(" Yellowstone Games' SquidSquad family");
+		extra.println(" Apache's Fury");
+		extra.println(" Esoteric Software's Kryo");
 		extra.println(" All dependencies of prior libraries");
 		extra.println();
 		
@@ -1059,11 +1081,13 @@ public class mainGame {
 		extra.println(" Pixelated Pope's Retro Palette Swapper");
 		extra.println();
 		
-		extra.println(extra.STAT_HEADER+"Art:");
-		extra.println(extra.ITEM_DESC_PROP+" Character, armor, and Weapon Art:");
-		extra.println("  Most Character Art: SmashCooper");
+		extra.println(extra.STAT_HEADER+"Legacy Art:");
+		extra.println("  Most Character and Armor Art: SmashCooper");
 		extra.println("  Some Weapons: Duster");
 		extra.println("  Scars, Weapon Placeholders: Jacobs");
+		extra.println(extra.STAT_HEADER+"Modern A:");
+		extra.println("  Art: Wasdd");
+		extra.println(extra.STAT_HEADER+"Other Art:");
 		extra.println(extra.ITEM_DESC_PROP+" Background Art:");
 		extra.println("  Damrok");
 		extra.println(extra.ITEM_DESC_PROP+" Concept/Splash Art:");
@@ -1129,8 +1153,6 @@ public class mainGame {
 			new StyleFactory();
 			ArmorStyle.init();
 			new Oracle().load();
-			//new TauntsFactory();
-			//new BookFactory();
 			new BumperFactory();
 			new WeaponAttackFactory();
 			new TownFlavorFactory();
@@ -1173,7 +1195,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Trawel Quickstart (base game, recommended)";
+						return "Trawel Quickstart. (base game, recommended)";
 					}
 
 					@Override
@@ -1185,7 +1207,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Trawel Slowstart (base game, rerolling character creator)";
+						return "Trawel Slowstart. (base game, character creator)";
 					}
 
 					@Override
@@ -1197,50 +1219,69 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "rTrawel (experimental jrpg, prototype, nongraphical)";
+						return "Sidegames.";
 					}
 
 					@Override
 					public boolean go() {
-						rtrawel.TestRunner.run();
-						return true;
+						extra.menuGo(new MenuGenerator() {
+
+							@Override
+							public List<MenuItem> gen() {
+								List<MenuItem> list = new ArrayList<MenuItem>();
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "rTrawel. (experimental JRPG, prototype, nongraphical)";
+									}
+
+									@Override
+									public boolean go() {
+										rtrawel.TestRunner.run();
+										return true;
+									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "SciMechs (experimental mech game, prototype, nongraphical)";
+									}
+
+									@Override
+									public boolean go() {
+										SaveHandler.clean();
+										while (true) {
+											extra.println("Choose your mechs");
+											List<Mech> mechs = mechsForSide(true);
+											extra.println("Save mechs?");
+											if (extra.yesNo()) {
+												SaveHandler.clean();
+												SaveHandler.imprintMechs(mechs);
+												SaveHandler.save();
+											}
+											extra.println("Choose their mechs");
+											mechs.addAll(mechsForSide(false));
+
+											MechCombat mc = new MechCombat(mechs);
+											mc.go();
+
+											extra.println(mc.activeMechs.get(0).playerControlled == true ? "You win!" : "You lose!"+ "\n Would you like the quit?");
+											if (extra.yesNo()) {
+												return true;
+											}
+										}
+									}});
+								list.add(new MenuBack("Back to Main Menu."));
+								return list;
+							}});
+						return false;
 					}});
 				mList.add(new MenuSelect() {
 
 					@Override
 					public String title() {
-						return "SciMechs (experimental mech game, prototype, nongraphical)";
-					}
-
-					@Override
-					public boolean go() {
-						SaveHandler.clean();
-						while (true) {
-							extra.println("Choose your mechs");
-							List<Mech> mechs = mechsForSide(true);
-							extra.println("Save mechs?");
-							if (extra.yesNo()) {
-								SaveHandler.clean();
-								SaveHandler.imprintMechs(mechs);
-								SaveHandler.save();
-							}
-							extra.println("Choose their mechs");
-							mechs.addAll(mechsForSide(false));
-
-							MechCombat mc = new MechCombat(mechs);
-							mc.go();
-
-							extra.println(mc.activeMechs.get(0).playerControlled == true ? "You win!" : "You lose!"+ "\n Would you like the quit?");
-							if (extra.yesNo()) {
-								return true;
-							}
-						}
-					}});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "various tests";
+						return "Extras.";
 					}
 
 					@Override
@@ -1250,11 +1291,16 @@ public class mainGame {
 							@Override
 							public List<MenuItem> gen() {
 								List<MenuItem> mList = new ArrayList<MenuItem>();
+								mList.add(new MenuLine() {
+									@Override
+									public String title() {
+										return "Play Modifiers:";
+									}});
 								mList.add(new MenuSelect() {
 
 									@Override
 									public String title() {
-										return "Cheat Trawel";
+										return "Cheat Trawel.";
 									}
 
 									@Override
@@ -1266,7 +1312,7 @@ public class mainGame {
 
 									@Override
 									public String title() {
-										return "Debug Trawel";
+										return "Debug Trawel.";
 									}
 
 									@Override
@@ -1276,11 +1322,16 @@ public class mainGame {
 										debug = false;
 										return true;
 									}});
+								mList.add(new MenuLine() {
+									@Override
+									public String title() {
+										return "Queries and Tests:";
+									}});
 								mList.add(new MenuSelect() {
 
 									@Override
 									public String title() {
-										return "Weapon Stat Query";
+										return "Weapon Stats.";
 									}
 
 									@Override
@@ -1289,17 +1340,15 @@ public class mainGame {
 										return true;
 									}});
 								mList.add(new MenuLine() {
-
 									@Override
 									public String title() {
 										return "Graphical Tests:";
-									}}
-										);
+									}});
 								mList.add(new MenuSelect() {
 
 									@Override
 									public String title() {
-										return "Model Mode";
+										return "Model Mode.";
 									}
 
 									@Override
@@ -1311,7 +1360,7 @@ public class mainGame {
 
 									@Override
 									public String title() {
-										return "Time Test";
+										return "Time Test.";
 									}
 
 									@Override
@@ -1320,76 +1369,7 @@ public class mainGame {
 										Calender.timeTest();
 										return true;
 									}});
-								/*
-								mList.add(new MenuSelect() {
-
-									@Override
-									public String title() {
-										return "Scroll Menu Test";
-									}
-
-									@Override
-									public boolean go() {
-										scrollTest();
-										return true;
-									}});*/
-								
-								/*
-								mList.add(new MenuLine() {
-
-									@Override
-									public String title() {
-										return "Backend Tests:";
-									}}
-								);
-
-								mList.add(new MenuSelect() {
-
-									@Override
-									public String title() {
-										return "Weapon Power Metrics (creates csv)";
-									}
-
-									@Override
-									public boolean go() {
-										baseSetup1();
-										try {
-											WeaponAttackFactory.weaponMetrics();
-										} catch (FileNotFoundException e) {
-											e.printStackTrace();
-										}
-										return true;
-									}});
-								mList.add(new MenuSelect() {
-
-									@Override
-									public String title() {
-										return "Weapon Rarity Metrics (creates csv)";
-									}
-
-									@Override
-									public boolean go() {
-										baseSetup1();
-										try {
-											Weapon.duoRarityMetrics();
-										} catch (FileNotFoundException e) {
-											e.printStackTrace();
-										}
-										return true;
-									}});
-								mList.add(new MenuSelect() {
-
-									@Override
-									public String title() {
-										return "Save Test";
-									}
-
-									@Override
-									public boolean go() {
-										saveTest();
-										return true;
-									}});*/
-								mList.add(new MenuBack("Back to Main Menu"));
+								mList.add(new MenuBack("Back to Main Menu."));
 								return mList;
 							}
 						});
@@ -1663,9 +1643,6 @@ public class mainGame {
 				Networking.handleAnyConnection(legacyConnect ? ConnectType.LEGACY : ConnectType.GDX);
 				extra.println("Trawel, Gameplay Version "+VERSION_STRING+VERSION_DATE);
 			}
-			/*else {
-				Networking.handleAnyConnection(ConnectType.NONE);
-			}*/
 		}catch(Exception e) {
 			System.out.println("There was an error when setting up Trawel.");
 			e.printStackTrace();
@@ -1696,11 +1673,11 @@ public class mainGame {
 
 		logStream.close();
 	}
+	
 	/*
 	 * really dumb how displaying a stack trace works
 	 * https://stackoverflow.com/questions/1069066/how-can-i-get-the-current-stack-trace-in-java#comment34163092_1069074
 	 */
-
 	private static void errorHandle(Exception e) {
 		StackTraceElement[] trace = e.getStackTrace();
 		mainGame.log(e.toString());
