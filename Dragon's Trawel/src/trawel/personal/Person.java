@@ -1368,7 +1368,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				+extra.ITEM_DESC_PROP+extra.CHAR_SHARP+"/"+extra.CHAR_BLUNT+"/"+extra.CHAR_PIERCE+
 				": "+extra.ITEM_WANT_HIGHER+extra.F_WHOLE.format(bag.getSharpResist())+"/"+extra.F_WHOLE.format(bag.getBluntResist())+"/"+extra.F_WHOLE.format(bag.getPierceResist())
 				);
-		extra.println(bag.quickInventory());
+		extra.println(" "+bag.quickInventory());
 	}
 	
 	public void displayStatOverview(boolean showHp) {
