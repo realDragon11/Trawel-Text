@@ -498,7 +498,7 @@ public class DungeonNode implements NodeType{
 					extra.println("You smash the orb of power, and a vision of an arena flashes in your mind.");
 					break;
 				}
-				
+				BossNode.addRubyPayout(holder, node,.5f);
 			}else {
 				extra.println("The orb is broken into jagged fragments.");
 				holder.findBehind(node,"broken orb");
@@ -521,23 +521,28 @@ public class DungeonNode implements NodeType{
 		if (extra.yesNo()) {
 			holder.setStateNum(node,1);
 			if (extra.chanceIn(5,6)) {
-				int gold = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),10f, .2f);
+				int gold = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),RaceFactory.WEALTH_HIGH, .2f);
 				Player.player.addGold(gold);
 				extra.println("You open the " +holder.getStorageFirstClass(node,String.class) + " and find " + World.currentMoneyDisplay(gold) + ".");
 			}else {
 				Gem gem = null;
+				boolean themed = false;
 				switch (extra.randRange(1,4)) {
 				case 1: 
 					gem = Gem.EMERALD;
+					themed = true;
 					break;
-				case 2: case 4: default://2x as likely due to being the hero gem
+				case 2: default:
 					gem = Gem.RUBY;
 					break;
 				case 3:
 					gem = Gem.SAPPHIRE;
 					break;
+				case 4:
+					gem = Gem.AMBER;
+					break;
 				}
-				int gemAmount = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),gem.unitSize*1.8f, .5f);
+				int gemAmount = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),gem.reward(1.5f, themed), .5f);
 				gem.changeGem(gemAmount);
 				extra.println("You open the " + holder.getStorageFirstClass(node,String.class) + " and find "+gemAmount+" "+(gemAmount == 0 ? gem.name : gem.plural)+"!");
 			}

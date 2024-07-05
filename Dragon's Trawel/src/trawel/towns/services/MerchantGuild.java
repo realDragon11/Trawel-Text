@@ -17,10 +17,12 @@ import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
+import trawel.quests.BasicSideQuest;
 import trawel.quests.CleanseSideQuest;
 import trawel.quests.CleanseSideQuest.CleanseType;
 import trawel.quests.FetchSideQuest;
 import trawel.quests.FetchSideQuest.FetchType;
+import trawel.quests.QuestReactionFactory.QKey;
 import trawel.quests.KillSideQuest;
 import trawel.quests.QBMenuItem;
 import trawel.quests.QRMenuItem;
@@ -104,6 +106,11 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 							b = Player.bag.playerOfferDrawBane("donate");
 							if (b != null && b != DrawBane.EV_NOTHING) {
 								Player.player.addMPoints(b.getMValue());
+								//chance
+								DrawBane gain = BasicSideQuest.attemptCollectAlign(QKey.TRADE_ALIGN,(float)b.getMValue()/3f,1);
+								if (gain != null) {
+									extra.println("You get "+1+" " + gain.getName() + " pieces while trading!");
+								}
 							}else {
 								b = null;
 							}
@@ -165,6 +172,10 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 								Player.player.addMPoints(10*gemAmount);
 								extra.println("You donate "+gemAmount+" "+(gemAmount == 1 ? Gem.EMERALD.name : Gem.EMERALD.plural)+".");
 								Gem.EMERALD.changeGem(-gemAmount);
+								DrawBane gain = BasicSideQuest.attemptCollectAlign(QKey.TRADE_ALIGN,1f,1);
+								if (gain != null) {
+									extra.println("You get "+1+" " + gain.getName() + " pieces while trading!");
+								}
 							}else {
 								extra.println(extra.RESULT_ERROR+"You have no emeralds to donate.");
 							}

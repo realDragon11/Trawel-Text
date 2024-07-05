@@ -303,7 +303,7 @@ public class Mountain extends ExploreFeature{
 			Combat c = Player.player.fightWith(hunter);
 			if (c.playerWon() > 0) {
 				
-				int amber = IEffectiveLevel.cleanRangeReward(getTempLevel(),1.5f,.6f);
+				int amber = IEffectiveLevel.cleanRangeReward(getTempLevel(),Gem.AMBER.reward(1f,false),.6f);
 				Gem.AMBER.changeGem(amber);
 				extra.println("One less thing for the vampires to worry about. You find "+amber+" amber.");
 			}else {

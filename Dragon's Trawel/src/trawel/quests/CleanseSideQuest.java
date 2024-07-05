@@ -3,6 +3,7 @@ package trawel.quests;
 import trawel.Networking;
 import trawel.extra;
 import trawel.randomLists;
+import trawel.factions.FBox;
 import trawel.factions.Faction;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.solid.Gem;
@@ -98,40 +99,51 @@ public class CleanseSideQuest extends BasicSideQuest {
 			if (qKeywords.contains(QKey.LAWFUL)) {
 				//if lawful, the law likes it
 				if (qKeywords.contains(QKey.EVIL)) {
-					Player.player.getPerson().facRep.addFactionRep(Faction.LAW_EVIL,mult*0.05f,0);
+					Player.player.getPerson().facRep.addFactionRep(Faction.LAW_EVIL,mult*FBox.bonusLiked,0);
 				}else {
-					Player.player.getPerson().facRep.addFactionRep(Faction.LAW_GOOD,mult*0.05f,0);
-					Player.player.getPerson().facRep.addFactionRep(Faction.LAW_EVIL,mult*0.05f,0);
+					Player.player.getPerson().facRep.addFactionRep(Faction.LAW_GOOD,mult*FBox.bonusLiked,0);
+					Player.player.getPerson().facRep.addFactionRep(Faction.LAW_EVIL,mult*FBox.bonusLiked,0);
 				}
 			}
 			
 			//who offered it
-			if (qKeywords.contains(QKey.GIVE_HUNT_GUILD)) {
+			if (qKeywords.contains(QKey.GIVE_HUNT_GUILD)) {//hunter source
 				if (!qKeywords.contains(QKey.EVIL)) {
-					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*0.05f,0);
+					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*FBox.bonusLiked,0);
 				}
-				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,mult*1f,0);
+				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,mult*FBox.bonusFavored,0);
 				reward = IEffectiveLevel.cleanRangeReward(atLevel,2f,.3f);
 				endFeature.getTown().helpCommunity(1);
 				//also grants amber
-				int a_reward = IEffectiveLevel.cleanRangeReward(atLevel,2.5f,.6f);
+				int a_reward = IEffectiveLevel.cleanRangeReward(atLevel,Gem.AMBER.reward(2f,true),.6f);
 				Gem.AMBER.changeGem(a_reward);
 				extra.println("You gained " +a_reward+" amber.");
 			}
-			if (qKeywords.contains(QKey.GIVE_HGUILD)) {
-				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*1f,0);
-				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,mult*0.05f,0);
+			if (qKeywords.contains(QKey.GIVE_HERO_GUILD)) {//hero source
+				Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*FBox.bonusFavored,0);
+				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,mult*FBox.bonusLiked,0);
 				reward = IEffectiveLevel.cleanRangeReward(atLevel,3f,.6f);
 				endFeature.getTown().helpCommunity(2);
 			}
-			if (qKeywords.contains(QKey.GIVE_MGUILD)) {
+			if (qKeywords.contains(QKey.GIVE_MERCHANT_GUILD)) {//merchant source
+				Player.player.getPerson().facRep.addFactionRep(Faction.MERCHANT,mult*FBox.bonusFavored,0);
 				if (!qKeywords.contains(QKey.EVIL)) {
-					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*0.05f,0);
+					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*FBox.bonusLiked,0);
 				}
-				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,mult*0.05f,0);
+				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,mult*FBox.bonusLiked,0);
 				reward = IEffectiveLevel.cleanRangeReward(atLevel,4f,.7f);
 				endFeature.getTown().helpCommunity(1);
 				Player.player.addMPoints(.2);
+			}
+			if (qKeywords.contains(QKey.GIVE_INN) || qKeywords.contains(QKey.GIVE_SLUM)) {//community given
+				//more reputation
+				if (!qKeywords.contains(QKey.EVIL)) {
+					Player.player.getPerson().facRep.addFactionRep(Faction.HEROIC,mult*FBox.bonusLiked,0);
+				}
+				Player.player.getPerson().facRep.addFactionRep(Faction.HUNTER,mult*FBox.bonusLiked,0);
+				//much more community help but less normal rewards
+				endFeature.getTown().helpCommunity(4);
+				reward = IEffectiveLevel.cleanRangeReward(atLevel,1f,.6f);
 			}
 			Player.player.addGold(reward);
 			extra.println("Gained "+World.currentMoneyDisplay(reward)+".");

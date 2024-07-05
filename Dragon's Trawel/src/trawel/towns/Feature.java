@@ -100,10 +100,10 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 		FOREST(new QKey[] {QKey.DEST_WOODS},null,1f),
 		INN(new QKey[] {QKey.DEST_INN},QKey.GIVE_INN,1.5f),
 		SLUM(new QKey[] {QKey.DEST_SLUM},QKey.GIVE_SLUM,1.5f),
-		WHUT(new QKey[] {QKey.DEST_WHUT},QKey.GIVE_WHUT,1.1f),
-		MGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_MGUILD,1.1f),
-		RGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_RGUILD,1.1f),
-		HGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_HGUILD,1.1f),
+		WHUT(new QKey[] {QKey.DEST_WITCH_HUT},QKey.GIVE_WITCH_HUT,1.1f),
+		MGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_MERCHANT_GUILD,1.1f),
+		RGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_ROGUE_GUILD,1.1f),
+		HGUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_HERO_GUILD,1.1f),
 		HUNT_GUILD(new QKey[] {QKey.DEST_GUILD},QKey.GIVE_HUNT_GUILD,.7f);
 		public final QKey[] dests;
 		public final QKey give;

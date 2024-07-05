@@ -30,9 +30,9 @@ public class QuestReactionFactory {
 		GOOD, EVIL,
 		LAWFUL, CHAOTIC,
 		NORMAL_DEST,
-		DEST_MOUNTAIN,DEST_WOODS,DEST_INN,DEST_SLUM, DEST_WHUT,DEST_GUILD,
-		GIVE_INN,GIVE_MGUILD,GIVE_SLUM, GIVE_FORT, GIVE_WHUT, GIVE_RGUILD, GIVE_HGUILD,GIVE_HUNT_GUILD,
-		FIRE_ALIGN, KNOW_ALIGN//aligns used for collecting
+		DEST_MOUNTAIN,DEST_WOODS,DEST_INN,DEST_SLUM, DEST_WITCH_HUT,DEST_GUILD,
+		GIVE_INN,GIVE_MERCHANT_GUILD,GIVE_SLUM, GIVE_FORT, GIVE_WITCH_HUT, GIVE_ROGUE_GUILD, GIVE_HERO_GUILD,GIVE_HUNT_GUILD,
+		KNOW_ALIGN, TRADE_ALIGN, BREW_ALIGN, TRANSMUTE_ALIGN//aligns used for collecting
 	}
 	
 	public static List<QuestReaction> reactions = new ArrayList<QuestReaction>();
@@ -135,7 +135,7 @@ public class QuestReactionFactory {
 		
 		reactions.add(new QuestReaction(1f,new QKey[] {},new QKey[] {QKey.LAWFUL,QKey.GOOD},
 				new QKey[][] {
-						new QKey[] {QKey.GIVE_INN,QKey.GIVE_RGUILD,QKey.GIVE_SLUM},//public place
+						new QKey[] {QKey.GIVE_INN,QKey.GIVE_ROGUE_GUILD,QKey.GIVE_SLUM},//public place
 						new QKey[] {QKey.FETCH}//only fetch quests
 						}, new QuestTriggerEvent() {
 
@@ -224,7 +224,7 @@ public class QuestReactionFactory {
 			}}) );
 		//only interrupt you doing possibly heroic things, they don't know the importance
 		//doesn't really care about objective, just wants to mess with you, so no kill quests
-		reactions.add(new QuestReaction(1f,new QKey[] {QKey.GIVE_HGUILD},new QKey[] {},new QKey[][] {new QKey[] {QKey.FETCH,QKey.CLEANSE}}, new QuestTriggerEvent() {
+		reactions.add(new QuestReaction(1f,new QKey[] {QKey.GIVE_HERO_GUILD},new QKey[] {},new QKey[][] {new QKey[] {QKey.FETCH,QKey.CLEANSE}}, new QuestTriggerEvent() {
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
 				Person p = RaceFactory.makeMugger(bumperLocation.getTier());

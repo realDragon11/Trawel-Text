@@ -46,7 +46,7 @@ public class BeachNode implements NodeType {
 				//2: pirate rager
 				1f,
 				//3: ashore locked chest
-				1f,
+				.8f,
 				//4: variable fluff landmark, static state
 				.2f,
 				//5: message in a bottle
@@ -60,7 +60,7 @@ public class BeachNode implements NodeType {
 				//2: pirate rager
 				0f,
 				//3: ashore locked chest
-				.5f,
+				.4f,
 				//4: variable fluff landmark, static state
 				1.5f,
 				//5: message in a bottle
@@ -560,8 +560,8 @@ public class BeachNode implements NodeType {
 	private void beachChestLoot(int level) {
 		switch (extra.randRange(0,3)) {
 			default: case 0: case 1://basic loot
-				int moneyReward = IEffectiveLevel.cleanRangeReward(level,RaceFactory.WEALTH_WELL_OFF,.7f);
-				int aetherReward = IEffectiveLevel.cleanRangeReward(level,500,.5f);
+				int moneyReward = IEffectiveLevel.cleanRangeReward(level,RaceFactory.WEALTH_HIGH,.7f);
+				int aetherReward = IEffectiveLevel.cleanRangeReward(level,1000,.5f);
 				Player.bag.addAether(aetherReward);
 				Player.player.addGold(moneyReward);
 				extra.println(extra.RESULT_GOOD+"Inside the chest you find "+World.currentMoneyDisplay(moneyReward) + " and "+aetherReward + " Aether!");
@@ -570,16 +570,16 @@ public class BeachNode implements NodeType {
 				//silver weapon
 				Weapon silvered = new Weapon(level,MaterialFactory.getMat("silver"),extra.choose(WeaponType.MACE,WeaponType.LONGSWORD,WeaponType.BROADSWORD,WeaponType.SPEAR));
 				//amber
-				int amberAmount = IEffectiveLevel.cleanRangeReward(level,Gem.AMBER.unitSize*2.2f, .5f);
+				int amberAmount = IEffectiveLevel.cleanRangeReward(level,Gem.AMBER.reward(2f,false), .5f);
 				Gem.AMBER.changeGem(amberAmount);
 				extra.println("You find a Hunter's cache with " + amberAmount + " Amber and a "+silvered.getName()+"!");
 				AIClass.findItem(silvered, Player.player.getPerson());
 				return;
 			case 3://misc gem stash
-				int emeraldAmount = IEffectiveLevel.cleanRangeReward(level,Gem.EMERALD.unitSize*1.2f, .5f);
-				int rubyAmount = IEffectiveLevel.cleanRangeReward(level,Gem.RUBY.unitSize*1.2f, .5f);
+				int emeraldAmount = IEffectiveLevel.cleanRangeReward(level,Gem.EMERALD.reward(1f,false), .5f);
+				int rubyAmount = IEffectiveLevel.cleanRangeReward(level,Gem.RUBY.reward(1f,false), .5f);
 				//higher amount because skill based action
-				int sapphireAmount = IEffectiveLevel.cleanRangeReward(level,Gem.SAPPHIRE.unitSize*1.8f, .5f);
+				int sapphireAmount = IEffectiveLevel.cleanRangeReward(level,Gem.SAPPHIRE.reward(1f,true), .5f);
 				Gem.EMERALD.changeGem(emeraldAmount);
 				Gem.RUBY.changeGem(rubyAmount);
 				Gem.SAPPHIRE.changeGem(sapphireAmount);

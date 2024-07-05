@@ -28,29 +28,43 @@ public class CollectSideQuest extends BasicSideQuest {
 		switch (collect) {
 		case LIVING_FLAME:
 			q.count = 12;
-			q.qKeywords.add(QKey.FIRE_ALIGN);
+			q.qKeywords.add(QKey.TRADE_ALIGN);
 			break;
 		case TELESCOPE:
 			q.count = 8;
 			q.qKeywords.add(QKey.KNOW_ALIGN);
+			q.qKeywords.add(QKey.TRADE_ALIGN);
 			break;
 		case REPEL:
 			q.count = 4;
+			q.qKeywords.add(QKey.TRADE_ALIGN);
 			break;
 		case CEON_STONE:
 			q.count = 6;
+			q.qKeywords.add(QKey.KNOW_ALIGN);
+			q.qKeywords.add(QKey.TRADE_ALIGN);
+			q.qKeywords.add(QKey.TRANSMUTE_ALIGN);
 			break;
 		case PROTECTIVE_WARD:
 			q.count = 8;
+			q.qKeywords.add(QKey.KNOW_ALIGN);
+			q.qKeywords.add(QKey.TRANSMUTE_ALIGN);
 			break;
 		case SILVER:
 			q.count = 4;
+			q.qKeywords.add(QKey.TRADE_ALIGN);
+			q.qKeywords.add(QKey.TRANSMUTE_ALIGN);
 			break;
 		case GOLD:
 			q.count = 6;
+			q.qKeywords.add(QKey.TRADE_ALIGN);
+			q.qKeywords.add(QKey.TRANSMUTE_ALIGN);
 			break;
 		case UNICORN_HORN:
 			q.count = 8;
+			q.qKeywords.add(QKey.KNOW_ALIGN);
+			q.qKeywords.add(QKey.TRADE_ALIGN);
+			q.qKeywords.add(QKey.TRANSMUTE_ALIGN);
 			break;
 		case KNOW_FRAG:
 			q.count = 20;
@@ -58,39 +72,54 @@ public class CollectSideQuest extends BasicSideQuest {
 			break;
 		case PUMPKIN:
 			q.count = 3;
+			q.qKeywords.add(QKey.BREW_ALIGN);
 			break;
 		case MEAT:
 			q.count = 2;
+			q.qKeywords.add(QKey.BREW_ALIGN);
 			break;
 		case BAT_WING:
 			q.count = 2;
+			q.qKeywords.add(QKey.BREW_ALIGN);
 			break;
 		case APPLE:
 			q.count = 2;
+			q.qKeywords.add(QKey.BREW_ALIGN);
 			break;
 		case MIMIC_GUTS:
 			q.count = 3;
+			q.qKeywords.add(QKey.BREW_ALIGN);
 			break;
 		case BLOOD:
 			q.count = 1;
+			q.qKeywords.add(QKey.BREW_ALIGN);
 			break;
 		case WAX:
 			q.count = 2;
+			q.qKeywords.add(QKey.BREW_ALIGN);
 			break;
 		case WOOD:
 			q.count = 2;
+			q.qKeywords.add(QKey.TRADE_ALIGN);
 			break;
-		case VIRGIN://lmao
+		case VIRGIN://assembled
 			q.count = 12;
+			q.qKeywords.add(QKey.TRANSMUTE_ALIGN);
 			break;
 		case GRAVE_DUST:
 			q.count = 7;
+			q.qKeywords.add(QKey.KNOW_ALIGN);
+			q.qKeywords.add(QKey.BREW_ALIGN);
 			break;
 		case BEATING_HEART:
 			q.count = 14;
+			q.qKeywords.add(QKey.KNOW_ALIGN);
+			q.qKeywords.add(QKey.BREW_ALIGN);
 			break;
 		case SINEW:
 			q.count = 3;
+			q.qKeywords.add(QKey.KNOW_ALIGN);
+			q.qKeywords.add(QKey.BREW_ALIGN);
 			break;
 		}
 		q.desc = "Collect " + q.count +" "+ q.targetName + " pieces";

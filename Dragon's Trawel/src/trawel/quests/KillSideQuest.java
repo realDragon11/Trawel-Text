@@ -9,6 +9,7 @@ import trawel.factions.Faction;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.classless.IEffectiveLevel;
+import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
 import trawel.quests.QuestReactionFactory.QKey;
 import trawel.towns.Feature;
@@ -87,15 +88,31 @@ public class KillSideQuest extends BasicSideQuest {
 			}
 			return;
 		case 1:
+			float rewardMult = 2f;
 			int reward;
-			if (isMurder) {
-				reward = IEffectiveLevel.cleanRangeReward(target.getLevel(),4f,.5f);
-			}else {
-				reward = IEffectiveLevel.cleanRangeReward(target.getLevel(),2f,.8f);
-				endFeature.getTown().helpCommunity(2);
+			if (qKeywords.contains(QKey.GIVE_HUNT_GUILD)) {//hunter guild
+				int amber = IEffectiveLevel.cleanRangeReward(target.getLevel(),Gem.AMBER.reward(.5f,true),.7f);
+				Gem.AMBER.changeGem(amber);
+				extra.println("Gained "+amber+" amber.");
 			}
-			if (qKeywords.contains(QKey.GIVE_MGUILD)) {
+			if (qKeywords.contains(QKey.GIVE_ROGUE_GUILD)) {//rogue guild
+				//more money only
+				rewardMult *=2f;
+			}
+			if (qKeywords.contains(QKey.GIVE_MERCHANT_GUILD)) {//merchant
 				Player.player.addMPoints(.2);
+				rewardMult *=1.5f;
+			}
+			//community source
+			if (qKeywords.contains(QKey.GIVE_INN) || qKeywords.contains(QKey.GIVE_HERO_GUILD) || qKeywords.contains(QKey.GIVE_SLUM)) {
+				//still counts as some help, even if murder, or slightly more if not
+				endFeature.getTown().helpCommunity(1);
+			}
+			if (isMurder) {
+				reward = IEffectiveLevel.cleanRangeReward(target.getLevel(),rewardMult*2f,.5f);
+			}else {
+				reward = IEffectiveLevel.cleanRangeReward(target.getLevel(),rewardMult,.8f);
+				endFeature.getTown().helpCommunity(2);
 			}
 			Player.player.addGold(reward);
 			extra.println("Gained "+World.currentMoneyDisplay(reward)+".");

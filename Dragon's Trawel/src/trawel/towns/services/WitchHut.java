@@ -23,12 +23,14 @@ import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
+import trawel.quests.BasicSideQuest;
 import trawel.quests.CollectSideQuest;
 import trawel.quests.QBMenuItem;
 import trawel.quests.QRMenuItem;
 import trawel.quests.Quest;
 import trawel.quests.QuestBoardLocation;
 import trawel.quests.QuestR;
+import trawel.quests.QuestReactionFactory.QKey;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Town;
@@ -560,6 +562,12 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	public void actualPotion() {
 		Networking.sendStrong("PlayDelay|sound_potiondone|1|");
 		Networking.unlockAchievement("brew1");
+		//small chance on brewing an actual potion to collect brew aligned collect quest items
+		//will indicate it was an actual brew, but, probably doesn't matter as much
+		DrawBane gain = BasicSideQuest.attemptCollectAlign(QKey.BREW_ALIGN,.1f,1);
+		if (gain != null) {
+			extra.println("You find "+1+" " + gain.getName() + " pieces while brewing!");
+		}
 		extra.println("You finish brewing your potion, and put it in your flask... now to test it out!");
 		actualPotionMade = true;
 	}
@@ -575,6 +583,11 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	
 	public void transmuteMisc() {
 		Networking.unlockAchievement("transmute1");
+		//higher chance since transmutations are harder to activate
+		DrawBane gain = BasicSideQuest.attemptCollectAlign(QKey.TRANSMUTE_ALIGN,.3f,1);
+		if (gain != null) {
+			extra.println("You find "+1+" " + gain.getName() + " pieces while brewing!");
+		}
 	}
 	
 	public String listReagents() {

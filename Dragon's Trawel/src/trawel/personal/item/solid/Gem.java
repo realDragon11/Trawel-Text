@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.extra;
+import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
 
 public enum Gem {
@@ -42,6 +43,23 @@ public enum Gem {
 	}
 	public void changeGem(int i) {
 		Player.player.gems.put(this, Player.player.gems.getOrDefault(this,0)+i);
+	}
+	
+	/**
+	 * themed is the bonus for the gem being of the type that goes with the reward
+	 * <br>
+	 * Emerald = trade actions, wealth creation from finding things
+	 * <br>
+	 * Ruby = slaying strong enemies, bosses, completing exploration tasks
+	 * <br>
+	 * Sapphire = completing attribute contests
+	 * <br>
+	 * Amber = completing kill and cleanse quests
+	 * <br>
+	 * meant to go into IEffectiveLevel.cleanRangeReward
+	 */
+	public float reward(float mult, boolean themed) {
+		return unitSize*mult*(themed ? 1.8f : 1.2f);
 	}
 	
 	private static String playerStringTogether() {

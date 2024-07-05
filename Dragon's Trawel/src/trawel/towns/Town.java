@@ -1183,7 +1183,7 @@ public class Town extends TContextOwner{
 	 * <br>
 	 * most misc side quests: +1
 	 * <br>
-	 * 'helpful' cleanse/execute quests: +2
+	 * 'helpful' cleanse/execute quests: +2 (+1 if for community directly)
 	 * <br>
 	 * slum reforming: +20
 	 * <br>

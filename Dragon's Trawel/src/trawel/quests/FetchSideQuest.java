@@ -125,7 +125,7 @@ public class FetchSideQuest extends BasicSideQuest {
 				return;
 			case HUNTER:
 				//gives amber instead
-				reward = IEffectiveLevel.cleanRangeReward(atLevel,1.5f,.7f);
+				reward = IEffectiveLevel.cleanRangeReward(atLevel,Gem.AMBER.reward(1f,true),.7f);
 				Gem.AMBER.changeGem(reward);
 				extra.println("Gained "+reward+" amber.");
 				endFeature.getTown().helpCommunity(1);

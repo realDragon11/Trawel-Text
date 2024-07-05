@@ -624,9 +624,11 @@ public class GenericNode implements NodeType {
 			Networking.unlockAchievement("ore1");
 			
 			Gem gem = null;
+			boolean themed = false;
 			switch (matName) {
 			case "emerald":
 				gem = Gem.EMERALD;
+				themed = true;
 				break;
 			case "ruby":
 				gem = Gem.RUBY;
@@ -641,7 +643,7 @@ public class GenericNode implements NodeType {
 				break;
 			}
 			if (gem != null) {
-				int gemAmount = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),gem.unitSize*1.8f, .5f);
+				int gemAmount = IEffectiveLevel.cleanRangeReward(holder.getLevel(node),gem.reward(1.5f, themed), .5f);
 				gem.changeGem(gemAmount);
 				extra.println("You mine the vein and claim "+gemAmount+" "+m.color+(gemAmount == 0 ? gem.name : gem.plural)+extra.COLOR_RESET+"!");
 			}
@@ -1266,6 +1268,7 @@ public class GenericNode implements NodeType {
 									int gemCount = 0;
 									String gType;
 									Gem gem;
+									boolean themed = false;
 									List<DrawBane> bonusDrawBanes = null;
 									switch (lootArray[2]) {
 									default: case 0://merchant guild
@@ -1292,6 +1295,7 @@ public class GenericNode implements NodeType {
 										//'wealthy' drawbanes
 										bonusDrawBanes.add(extra.choose(DrawBane.GOLD,DrawBane.SILVER));
 										bonusDrawBanes.add(extra.choose(DrawBane.GOLD,DrawBane.SILVER));
+										themed = true;
 										break;
 									case 3://hunter
 										gType = "Hunter";
@@ -1299,11 +1303,11 @@ public class GenericNode implements NodeType {
 										gold += IEffectiveLevel.cleanRangeReward(level,trapArray.length/1.5f,.3f);
 										gem = Gem.AMBER;
 										//boosted gems
-										gemCount += IEffectiveLevel.cleanRangeReward(level,gem.unitSize*trapArray.length/2.0f,.8f);
+										gemCount += IEffectiveLevel.cleanRangeReward(level,gem.reward(trapArray.length/2.0f, themed),.8f);
 										break;
 									}
 									//+= since above can give more gems for some
-									gemCount += IEffectiveLevel.cleanRangeReward(level,gem.unitSize*trapArray.length/2.0f,.8f);
+									gemCount += IEffectiveLevel.cleanRangeReward(level,gem.reward(trapArray.length/2.0f, themed),.8f);
 									extra.println(extra.RESULT_GOOD+"The vault contains a "+gType + " guild cache!");
 									extra.println(extra.RESULT_PASS+"You find " + gemCount + " " + (gemCount == 1 ? gem.name : gem.plural)+"!");
 									gem.changeGem(gemCount);
