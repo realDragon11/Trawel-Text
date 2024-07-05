@@ -80,7 +80,6 @@ public class Town extends TContextOwner{
 	private List<Connection> connects;
 	private List<Feature> features;
 	private List<Agent> occupants;
-	private double defenseTimer = 0;
 	public List<TownTag> tTags = new ArrayList<TownTag>();
 	public int visited = 0;
 	public int background_variant = 1;
@@ -97,6 +96,8 @@ public class Town extends TContextOwner{
 	
 	private int community_helper = 0;
 	private String loreText;
+	
+	private List<List<SkillCon>> skillCons;
 	
 	//private transient List<TimeEvent> events;
 	
@@ -1130,8 +1131,20 @@ public class Town extends TContextOwner{
 		return visitColor + getName() + " {Level: "+getTier()+"}"+dirString;
 	}
 	public List<SkillCon> getPassiveSkillCons(int forside) {
-		//passive skill cons, overridden
-		return Collections.emptyList();
+		if (skillCons == null) {
+			return Collections.emptyList();
+		}
+		return skillCons.get(forside);
+	}
+	public void addSkillCon(SkillCon skillcon) {
+		int forside = skillcon.sideSource;
+		if (skillCons == null) {
+			skillCons = new ArrayList<List<SkillCon>>();
+		}
+		while (skillCons.size() <= forside) {
+			skillCons.add(new ArrayList<Combat.SkillCon>());
+		}
+		skillCons.get(forside).add(skillcon);
 	}
 	public boolean hasConnectFlow() {
 		return connectFlow != -1;

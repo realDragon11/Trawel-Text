@@ -63,7 +63,7 @@ public abstract class NodeFeature extends Feature {
 	public void reload() {
 		super.reload();
 		if (mainGame.debug) {
-			System.out.println(start.getSize() +" size of " + this.getName());
+			System.out.println(start.getSize() +" size; LvL "+start.lowestLevel+"-" +start.highestLevel+"; " + this.getName() + " ("+this.nameOfType()+") in "+getTown().getName());
 		}
 	}
 

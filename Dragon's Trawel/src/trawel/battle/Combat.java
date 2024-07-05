@@ -227,7 +227,7 @@ public class Combat {
 				base = null;
 				break;
 			case SCRYING:
-				base = SkillBase.SCRY_OR_WATCH;
+				base = SkillBase.SCRY;
 				timer = 100;
 				resetTime = 250;
 				break;
@@ -235,7 +235,7 @@ public class Combat {
 				base = null;
 				break;
 			case WATCH://cheaper to get, first time happens sooner but doesn't repeat as much
-				base = SkillBase.SCRY_OR_WATCH;
+				base = SkillBase.WATCH;
 				timer = 50;
 				resetTime = 1000;
 				break;
@@ -255,7 +255,7 @@ public class Combat {
 	}
 	
 	public enum SkillBase{
-		FIREBALLS, WITHER, SCRY_OR_WATCH, BLOCKADE, FATED
+		FIREBALLS, WITHER, SCRY, WATCH, BLOCKADE, FATED
 	}
 	
 	public static List<SkillCon> numberSkillConLists(List<List<SkillCon>> cons){
@@ -328,9 +328,14 @@ public class Combat {
 						}
 					}
 					break;
-				case SCRY_OR_WATCH:
+				case SCRY:
+				case WATCH:
 					if (!extra.getPrint()) {
-						extra.println("A path is seen!");
+						if (sk.base == SkillBase.SCRY) {
+							extra.println("A path is seen!");
+						}else {
+							extra.println("A plan is scouted!");
+						}
 					}
 					float timeDiscount;
 					if (sk.power > 50) {
@@ -374,7 +379,7 @@ public class Combat {
 						if (!extra.getPrint()) {
 							extra.println("It looks like fate is on " + p.getNameNoTitle()+"'s side!");
 						}
-						p.advanceTime(fateTime);
+						p.applyDiscount(fateTime);
 						p.addEffect(Effect.ADVANTAGE_STACK);//stack of advantage
 					}
 				}

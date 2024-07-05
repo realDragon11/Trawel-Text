@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import save.SaveManager;
+import trawel.battle.Combat.SkillBase;
 import trawel.battle.Combat.SkillCon;
 import trawel.personal.DummyPerson;
 import trawel.personal.item.DummyInventory;
@@ -115,17 +116,14 @@ public class WorldGen {
 		homa.addFeature(new Doctor("Melissa's Clinic",homa).setIntro("Melissa greets you, 'Don't get many customers not from the Arena, but if you've got something more exotic like a curse, I can fix that.'"));
 		w.setStartTown(homa);
 		homa.tTags.add(TownTag.SMALL_TOWN);
+		homa.tTags.add(TownTag.HIDDEN);
 		homa.setLoreText("Homa is a small quaint town, with a large maze-like forest. The perfect place to hide.");
 		
-		Town unun = new Town("Unun",2,rona,new Point(5,4)){
-			@Override
-			public List<SkillCon> getPassiveSkillCons(int i){
-				List<SkillCon> list = new ArrayList<SkillCon>();
-				list.add(new SkillCon(SubSkill.FATE,20, i));
-				return list;
-			}
-		};
-		addConnection(homa,unun,"road","barrier way");
+		Town unun = new Town("Unun",2,rona,new Point(5,4));
+		//both sides get fated bonuses
+		unun.addSkillCon(new SkillCon(SubSkill.FATE,20,0));
+		unun.addSkillCon(new SkillCon(SubSkill.FATE,20,1));
+		addConnection(homa,unun,ConnectType.PATH,"Through the Tangle");
 		unun.addFeature(new Docks("Trade Port",unun));
 		unun.addFeature(new Inn("Trailblazer's Tavern",2,unun,null));
 		unun.addFeature(new MerchantGuild("Eoano's Merchant Guild Headquarters",2));
@@ -221,8 +219,11 @@ public class WorldGen {
 		Island apa = new Island("Apa",w);
 		Town alhax = new Town("Alhax",2,apa,new Point(5,2));
 		//alhax.addFeature(new Arena("yenona arena",2,5,24*7,3,37));
-		addConnection(alhax,unun,"ship","yellow passageway");
+		addConnection(alhax,unun,ConnectType.SHIP,"The Tradeway");
 		alhax.addFeature(new Docks("Central Shiphub",alhax));
+		alhax.addSkillCon(new SkillCon(SubSkill.DEFENSE,40,0));
+		alhax.addSkillCon(new SkillCon(SubSkill.WATCH,50,0));
+		alhax.addFeature(new Beach("Tossed Goods",alhax,20,2,Shape.NONE,BossType.NONE));
 		alhax.addFeature(new Inn("Lockbox Pub",3,alhax,null).setIntro("'Welcome to Lockbox! All rooms have a safe, and the key is different from your room key.'"));
 		alhax.addFeature(new Store("'A Cut Above'",4,5));//high level weapon store
 		alhax.addFeature(new Store("'Some of Everything'",3,6).setIntro("'We might not have what you want, but I'm certain we have something you'll need.'"));
@@ -292,7 +293,7 @@ public class WorldGen {
 		addConnection(erin,yena,"road","pear road");
 		addConnection(erin,denok,"road","orange road");
 		erin.addFeature(new Arena("Grandstander's Stands (daily bout)",5,1,24,12,39));
-		erin.addFeature(new Inn("Scholar's Respite",5,erin,null));
+		erin.addFeature(new Inn("Scholar's Respite",6,erin,null));
 		erin.addFeature(new Library("Alex's Library",erin));
 		erin.addFeature(new Appraiser("Material Patent Offices").setIntro("'We only handle physical patents, if you have new spells or magicks, head to Alex's.'"));
 		erin.addFeature(new Enchanter("Enchantment Prototyping",6));
@@ -301,22 +302,22 @@ public class WorldGen {
 		
 		
 		Town placka = new Town("Placka",7,teran,new Point(13,3));
-		addConnection(erin,placka,ConnectType.PATH,"peach road");
-		addConnection(denok,placka,ConnectType.PATH,"pineapple road");
+		addConnection(erin,placka,ConnectType.PATH,"Lost Notes Path");
+		addConnection(denok,placka,ConnectType.ROAD,"Reminiscence Road");
 		addConnection(yena,placka,ConnectType.SHIP,"Forgotten Waters");
-		placka.addFeature(new Docks("The Old Docks",placka));
-		placka.addFeature(new Beach("", placka,20,7,Shape.NONE,BossType.NONE));
+		placka.addFeature(new Docks("The Old Docks",placka).setIntro("The winds coming in from over the sea howl away..."));
+		placka.addFeature(new Beach("Crying Cove", placka,30,6,Shape.NONE,BossType.NONE).setOutro("You feel like something was trying to say goodbye..."));
 		placka.addFeature(new Dungeon("The Dungeon of Woe",placka,NodeFeature.Shape.NONE,BossType.NONE).setOutro("You feel like something was trying to say goodbye..."));
 		placka.addTravel();
 		placka.addTravel();
 		placka.tTags.add(TownTag.ADVENTURE);
-		placka.tTags.add(TownTag.HISTORY);//a nameless name, an unrecorded history
+		placka.tTags.add(TownTag.HISTORY);//an unrecorded history that begs to be remembered
 		//no lore on purpose
 		
 		Town tunka = new Town("Tunka",8,teran,new Point(12,5));
 		addConnection(erin,tunka,"road","left-over road");
 		addConnection(placka,tunka,"road","diamond road");
-		tunka.addFeature(new Graveyard("The Boneyard", tunka));
+		tunka.addFeature(new Graveyard("The Boneyard", tunka,40));
 		tunka.addFeature(new Store("'A Quick Find'",7,6).setIntro("'If you can't find anything you like, I'm sure I can put in a request with the Society.'").setOutro("'Bring back some good stuff for me, eh?''"));
 		tunka.addFeature(new RogueGuild("Society of Enterprising Nobles",8));
 		tunka.addFeature(new Slum(tunka,"Forgettables District",false).setOutro("As you leave, you notice a few hooded figures eyeing you from the rooftops."));
@@ -327,7 +328,8 @@ public class WorldGen {
 		Town owal = new Town("Owal",9,teran,(byte)13,(byte)7);
 		//connects added later
 		owal.addFeature(new Docks("The Great Bay", owal));
-		owal.addFeature(new Beach("Shipwreck Shore", owal,40,9,Shape.TREASURE_BEACH,BossType.VARIABLE_GATE_BOSS));
+		owal.addSkillCon(new SkillCon(SubSkill.DEFENSE,20,0));
+		owal.addFeature(new Beach("Below the Docks",owal,16,9,Shape.NONE,BossType.NONE));
 		owal.addFeature(new Store("Edible Exports",8,10));
 		owal.addFeature(new Store(owal,"Equipment Imports",10,6,3));//general store with reduced size
 		owal.addFeature(new Garden(owal,"Overworked Fields",1.1f,PlantFill.FOOD));
@@ -346,6 +348,7 @@ public class WorldGen {
 		repa.addTravel();
 		repa.addFeature(new Inn("Repa's Rest",8,erin,null));
 		repa.tTags.add(TownTag.TRAVEL);
+		repa.tTags.add(TownTag.MYSTIC);
 		repa.setLoreText("Repa's giant teleporter brace- once a normal mountain- looms over the ragtag tents here. It teleports to another world entirely, they say.");
 		
 		Island epan = new Island("Epan",w);
@@ -393,7 +396,9 @@ public class WorldGen {
 		addConnection(visan,owal,ConnectType.SHIP,"Forgotten Shipping Lane");
 		visan.addFeature(new Doctor("Foglung Cure Center", visan).setIntro("As you enter, the doctor enters a coughing fit before responding, 'Don't worry, Foglung is curable, if you catch it soon enough. Check in every few weeks, or else you'll end up like me- stuck sleeping with a magic breathing aid.'"));
 		visan.addFeature(new Champion(10));
-		visan.addFeature(new Store(7,6).setIntro("'Do you have any news about the monthly shipment route? Over the last year the lateness has added up to weeks!'"));
+		visan.addFeature(new Store(7,6).setIntro("'Do you have any news about the monthly shipment route? Over the last year the delays have added up to weeks!'"));
+		//lower level so the player starts encountering the node blockers earlier
+		visan.addFeature(new Beach("Shipwreck Shore",visan,40,7,Shape.TREASURE_BEACH,BossType.VARIABLE_GATE_BOSS));
 		visan.addTravel();
 		visan.tTags.add(TownTag.BARREN);
 		visan.tTags.add(TownTag.TRAVEL);
@@ -443,8 +448,8 @@ public class WorldGen {
 		yonuen.tTags.add(TownTag.LAWLESS);
 		
 		Town unika = new Town("Unika",11, apen, new Point(6,17));
-		addConnection(holik,unika,ConnectType.ROAD,"ren road");
-		addConnection(yonuen,unika,ConnectType.ROAD,"tenka road");
+		addConnection(holik,unika,ConnectType.PATH,"Humble Path");
+		addConnection(yonuen,unika,ConnectType.PATH,"Little Overlook");
 		unika.addFeature(new Arena("'Lucky Break'",12,1,24,12,135));
 		unika.addFeature(new Grove("Unika's Backyard",unika));
 		unika.addFeature(new Champion(15));
@@ -452,8 +457,8 @@ public class WorldGen {
 		//unika.addFeature(new Inn("unika inn",10,unika,null));
 		
 		Town peana = new Town("Peana",12, apen, new Point(9,16));
-		addConnection(holik,peana,ConnectType.CARV,"blue road");
-		addConnection(unika,peana,ConnectType.ROAD,"green road");
+		addConnection(holik,peana,ConnectType.CARV,"Rapture and Abyss");
+		addConnection(unika,peana,ConnectType.PATH,"Safe Souls");
 		//trying to make a slight reference to death/hell metal music
 		peana.addFeature(new Inn("'Dirges for the Damned'",12,peana,null).setIntro("A bard is playing a loud and harsh magical lute.").setOutro("You leave before the music can grow on you."));
 		peana.addFeature(new Store("'Tyrant's Treasures'",11,11).setIntro("'Before you ask, most of this isn't from Hell. But some of it is, and a lot of treasure meant for Hell ends up here instead!'"));//oddity store
@@ -461,13 +466,14 @@ public class WorldGen {
 		//peana.addFeature(new Appraiser("Peana Appraiser"));
 		peana.addFeature(new Mine("Staircase to Hell", peana,75,10,NodeFeature.Shape.ELEVATOR,BossType.GENERIC_DEMON_OVERLORD));
 		peana.tTags.add(TownTag.HELLISH);
-		
 		peana.setLoreText("Peana is the site of a large Mine with a singular purpose: to breach into hell. Those who completed this task have since long been lost to the ages- but their work remains, and a Throne of Hell was established there.");
 		
 		Town inka = new Town("Inka",12, apen, new Point(7,14));
-		addConnection(unika,inka,ConnectType.ROAD,"youn road");
-		addConnection(inka,peana,ConnectType.CARV,"era road");
+		addConnection(unika,inka,ConnectType.PATH,"Drilling Prospects");
+		addConnection(peana,inka,ConnectType.CARV,"Shafts And Folly");
 		inka.addFeature(new Docks("Ironclad Shipments",inka));
+		inka.addSkillCon(new SkillCon(SubSkill.DEFENSE,80,0));
+		inka.addSkillCon(new SkillCon(SubSkill.WATCH,20,0));
 		inka.addFeature(new Mine("First Striking Shaft", inka,60,8,NodeFeature.Shape.NONE,BossType.NONE));
 		inka.addFeature(new Mine("Motherload Mine", inka,30,14,NodeFeature.Shape.NONE,BossType.NONE));
 		inka.addFeature(new Mine("Deep Vein Dig", inka,80,12,NodeFeature.Shape.NONE,BossType.NONE));
@@ -537,13 +543,15 @@ public class WorldGen {
 		
 		Town gopuo = new Town("Gopuo",15,opyo,new Point(11,8));//done?
 		addConnection(kelo,gopuo,ConnectType.ROAD,"TODO");
-		addConnection(mikol,gopuo,ConnectType.CARV,"TODO");
+		addConnection(mikol,gopuo,ConnectType.PATH,"Light by Foot");
+		addConnection(mikol,gopuo,ConnectType.CARV,"Luminous Caravan Company");
 		gopuo.addFeature(new Inn("Last Landing", 14, gopuo, null));
 		gopuo.addFeature(new Dungeon("Lost Lighthouse",gopuo,40,13,Shape.RIGGED_TOWER,BossType.YORE));
 		gopuo.addTravel();
 		gopuo.addTravel();
 		gopuo.addTravel();
 		gopuo.tTags.add(TownTag.TRAVEL);
+		gopuo.setLoreText("While the infamous Gopuo lighthouse has long since been abandoned, powerful magicks keep it lit, although the colors and usefulness of this vary from season to season.");
 		//ships up
 		
 		
@@ -551,11 +559,13 @@ public class WorldGen {
 		//island is very unsettling
 		
 		Town lunek = new Town("Lunek",14, worea, new Point(6,9));//almost done
-		addConnection(pipa,lunek,ConnectType.SHIP,"TODO");
-		addConnection(gopuo,lunek,ConnectType.SHIP,"TODO");
+		addConnection(pipa,lunek,ConnectType.SHIP,"Silvered Current");
+		addConnection(gopuo,lunek,ConnectType.SHIP,"Sun of Madness");
 		//triangle shipping lane
 		lunek.addFeature(new Docks("Harbor of Worries",lunek));
-		lunek.addFeature(new Garden(lunek, "'Spoiled Soil'", 1.0f, PlantFill.WITCH));
+		lunek.addSkillCon(new SkillCon(SubSkill.DEFENSE,20,0));
+		lunek.addSkillCon(new SkillCon(SubSkill.WATCH,80,0));
+		lunek.addFeature(new Garden(lunek,"'Spoiled Soil'", 1.0f, PlantFill.WITCH));
 		lunek.addFeature(new WitchHut("'Creepy Cauldron", lunek));
 		lunek.addFeature(new HunterGuild("Hall of Paranoia", 14));
 		lunek.addFeature(new Arena("'Hunter's Proving'",14,2,70d,30d,45));
@@ -593,10 +603,12 @@ public class WorldGen {
 		Island ityl = new Island("Ityl",w,IslandType.ISLAND);
 		
 		Town beola = new Town("Beola",15,ityl,new Point(8,6));//done
-		addConnection(gopuo,beola,ConnectType.SHIP,"TODO");
+		addConnection(gopuo,beola,ConnectType.SHIP,"Mirrored Lights");
 		addConnection(celen,beola,ConnectType.SHIP,"TODO");
 		addConnection(lunek,beola,ConnectType.SHIP,"TODO");
 		beola.addFeature(new Docks("Central Landing",beola));
+		beola.addSkillCon(new SkillCon(SubSkill.DEFENSE,40,0));
+		beola.addSkillCon(new SkillCon(SubSkill.WATCH,40,0));
 		beola.addFeature(new Inn("Tavern on Main",16,beola,null));
 		beola.addFeature(new Inn("Helen's Inn",15,beola,null));
 		beola.addFeature(new Store(beola,15,6));//general store
@@ -611,6 +623,7 @@ public class WorldGen {
 		addConnection(beola,aerna,ConnectType.ROAD,"TODO");
 		addConnection(beola,aerna,ConnectType.SHIP,"TODO");
 		addConnection(gopuo,aerna,ConnectType.SHIP,"TODO");
+		aerna.addFeature(new Beach("TODO Aerna Beach", aerna,30,15,Shape.NONE,BossType.NONE));
 		
 		Town jenai = new Town("Jenai",15,ityl,new Point(10,4));//FIXME
 		addConnection(beola,jenai,ConnectType.ROAD,"TODO");
@@ -641,6 +654,12 @@ public class WorldGen {
 		addConnection(jadua,orean,ConnectType.TELE,"TODO");
 		addConnection(ailak,orean,ConnectType.TELE,"TODO");
 		//TODO: world teleporter
+		//bigger one on top to once again give the feeling of blocking off
+		//weaker one to start getting unlocked sooner
+		orean.addFeature(new Beach("Rocky Outcrop",orean,50,15,Shape.TREASURE_BEACH,BossType.VARIABLE_GATE_BOSS));
+		//stronger but smaller one since end of world
+		orean.addFeature(new Beach("Hidden Estuary",orean,18,17,Shape.TREASURE_BEACH,BossType.VARIABLE_GATE_BOSS));
+		//put further services below
 		
 		orean.tTags.add(TownTag.HIDDEN);
 		orean.setLoreText("Orean sits atop the rocky raised island of Henak, which is inaccessible by boat. Only nearby teleporters can reach it, which makes it isolated due to the rarity of them in Greap.");

@@ -220,7 +220,7 @@ public abstract class Feature extends TContextOwner implements IEffectiveLevel{
 		return .5f;
 	}
 	public String nameOfType() {
-		return this.getClass().getTypeName();
+		return getTutorialText();
 	}
 	
 	public Feature getReplaced() {
