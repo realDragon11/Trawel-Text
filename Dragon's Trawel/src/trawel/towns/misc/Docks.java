@@ -33,6 +33,7 @@ import trawel.towns.Connection.ConnectClass;
 import trawel.towns.Feature;
 import trawel.towns.Town;
 import trawel.towns.World;
+import trawel.towns.events.TownFlavorFactory;
 
 public class Docks extends Feature {
 	
@@ -183,60 +184,22 @@ public class Docks extends Feature {
 						}});
 				}
 				
-				//on top so it's consistent
-				list.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return extra.PRE_MAYBE_BATTLE+"Sail Aimlessly";
-					}
-
-					@Override
-					public boolean go() {
-						if (!town.dockWander(false)) {
-							extra.println("Nothing interesting happens.");
-						}
-						return false;
-					}});
-				
-				ScrollMenuGenerator gen = farConnectsMenu();
-				
-				if (gen != null) {
-					if (townOwned) {
-					list.add(new MenuSelect() {
-
-						@Override
-						public String title() {
-							return extra.SERVICE_FREE+"Travel to Far Flung Ports.";
-						}
-
-						@Override
-						public boolean go() {
-							extra.menuGo(gen);
-							if (Player.player.getLocation() != town) {
-								return true;//if we moved
-							}
-							return false;
-						}});
-					}else {
-						list.add(new MenuLine() {
-
-							@Override
-							public String title() {
-								return "The docks are Blockaded, and you cannot take a long route.";
-							}});
-					}//annoying that this will make the first option not far flung, but meh
-				}
-				
 				//variable defenses
 				if (fightCooldownTimer > 0) {
 					if (townOwned) {
 						//no need to defend
-						list.add(new MenuLine() {
+						list.add(new MenuSelect() {
 
 							@Override
 							public String title() {
-								return "The Docks are currently clear of invaders.";
+								return extra.SERVICE_FREE+"Admire Port.";
+							}
+
+							@Override
+							public boolean go() {
+								extra.println("The Docks are currently clear of invaders, so you gaze out over the town.");
+								TownFlavorFactory.go(.1f,town);
+								return false;
 							}});
 					}else {
 						//can't defend yet
@@ -295,6 +258,41 @@ public class Docks extends Feature {
 							}});
 					}
 				}
+				
+				ScrollMenuGenerator gen = farConnectsMenu();
+				
+				if (gen != null) {
+					if (townOwned) {
+					list.add(new MenuSelect() {
+
+						@Override
+						public String title() {
+							return extra.SERVICE_FREE+"Travel to Far Flung Ports.";
+						}
+
+						@Override
+						public boolean go() {
+							extra.menuGo(gen);
+							if (Player.player.getLocation() != town) {
+								return true;//if we moved
+							}
+							return false;
+						}});
+					}else {
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return extra.RESULT_WARN+"Travel Blocked.";
+							}
+
+							@Override
+							public boolean go() {
+								extra.println("The docks are Blockaded, and you cannot take a long route.");
+								return false;
+							}});
+					}//annoying that this will make the first option not far flung, but meh
+				}
 				return list;
 			}
 
@@ -308,7 +306,26 @@ public class Docks extends Feature {
 
 			@Override
 			public List<MenuItem> footer() {
-				return Collections.singletonList(new MenuBack("Leave."));
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return extra.PRE_MAYBE_BATTLE+"Sail Aimlessly";
+					}
+
+					@Override
+					public boolean go() {
+						if (!town.dockWander(false)) {
+							//attempt a flavor event
+							if (!TownFlavorFactory.go(.2f,town)) {
+								extra.println("Nothing interesting happens.");
+							}
+						}
+						return false;
+					}});
+				list.add(new MenuBack("Leave."));
+				return list;
 			}});
 	}
 	

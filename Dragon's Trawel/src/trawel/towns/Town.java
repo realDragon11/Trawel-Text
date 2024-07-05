@@ -325,13 +325,9 @@ public class Town extends TContextOwner{
 		Networking.setArea(Networking.Area.TOWN);
 		Networking.updateTime();
 		Networking.charUpdate();
-		/*if (isFort()) {
-			doFort();
-			return;
-		}*/
 		if (mainGame.displayFlavorText && Player.player.townEventTimer <=0 && extra.chanceIn(2,3)) {
-			if (TownFlavorFactory.go(.5,this.getTier(),this)) {//TODO: look into town flavor again
-			Player.player.townEventTimer = extra.randRange(18,24*5);
+			if (TownFlavorFactory.go(.5,this)) {
+				Player.player.townEventTimer = extra.randRange(18,24*5);
 			}
 		}
 		extra.menuGo(new MenuGenerator() {
@@ -673,8 +669,12 @@ public class Town extends TContextOwner{
 
 						@Override
 						public boolean go() {
+							//attempt a bumper event
 							if (!wander(1,0)) {
-								extra.println("Nothing interesting happens.");
+								//attempt a flavor event
+								if (!TownFlavorFactory.go(.2f,Town.this)) {
+									extra.println("Nothing interesting happens.");
+								}
 							}
 							return false;
 						}});
@@ -689,8 +689,12 @@ public class Town extends TContextOwner{
 
 						@Override
 						public boolean go() {
+							//attempt a bumper event
 							if (!wander(1,1)) {
-								extra.println("Nothing interesting happens.");
+								//attempt a flavor event
+								if (!TownFlavorFactory.go(.2f,Town.this)) {
+									extra.println("Nothing interesting happens.");
+								}
 							}
 							return false;
 						}});
@@ -998,7 +1002,7 @@ public class Town extends TContextOwner{
 				}
 				return true;
 			}else {
-				extra.println("no reoccuring world encounters");
+				//extra.println("no reoccuring world encounters");
 			}
 		}
 		
