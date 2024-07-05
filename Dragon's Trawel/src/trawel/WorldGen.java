@@ -194,7 +194,7 @@ public class WorldGen {
 		addConnection(lokan,hemo,"ship","two way current");
 		lokan.addFeature(new Library("Records of Value", lokan));
 		lokan.addFeature(new Oracle("Appraiser of Fortune",3));
-		lokan.addFeature(new Appraiser("Appraiser of Steel").setIntro("A clerk raises their head to greet you, 'This place is mostly for sentimental reasons, my mentors have spread their teachings well. We can take over your gear, but I doubt we'll find anything new.'"));
+		lokan.addFeature(new Appraiser("Appraiser of Steel").setIntro("A clerk raises their head to greet you, 'This place is mostly for sentimental reasons, my mentors have spread their teachings well. We can look over your gear, but I doubt we'll find anything new.'"));
 		lokan.addFeature(new Doctor("Appraiser of Wellness",lokan));
 		lokan.addTravel();
 		lokan.addTravel();
@@ -301,14 +301,14 @@ public class WorldGen {
 		
 		
 		Town placka = new Town("Placka",7,teran,new Point(13,3));
-		addConnection(erin,placka,"road","peach road");
-		addConnection(placka,denok,"road","pineapple road");
-		addConnection(yena,placka,"ship","the yellow sea");
+		addConnection(erin,placka,ConnectType.PATH,"peach road");
+		addConnection(denok,placka,ConnectType.PATH,"pineapple road");
+		addConnection(yena,placka,ConnectType.SHIP,"Forgotten Waters");
 		placka.addFeature(new Docks("The Old Docks",placka));
-		placka.addTravel();
-		placka.addTravel();
-		placka.addFeature(new Champion(9));
+		placka.addFeature(new Beach("", placka,20,7,Shape.NONE,BossType.NONE));
 		placka.addFeature(new Dungeon("The Dungeon of Woe",placka,NodeFeature.Shape.NONE,BossType.NONE).setOutro("You feel like something was trying to say goodbye..."));
+		placka.addTravel();
+		placka.addTravel();
 		placka.tTags.add(TownTag.ADVENTURE);
 		placka.tTags.add(TownTag.HISTORY);//a nameless name, an unrecorded history
 		//no lore on purpose

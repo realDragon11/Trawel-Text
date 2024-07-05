@@ -165,8 +165,28 @@ public class BeachNode implements NodeType {
 		if (sizeLeft < 2) {//if we don't have much left to do anything, return
 			return node;
 		}
-		int routeA = generate(holder,node,(sizeLeft/2) + (extra.chanceIn(1,3) ? 1 : 0),tier + (extra.chanceIn(1,10) ? 1 : 0));
-		int routeB = generate(holder,node,(sizeLeft/2) + (extra.chanceIn(1,3) ? 1 : 0),tier + (extra.chanceIn(1,10) ? 1 : 0));
+		int nextTier;
+		int guessLevel = holder.parent.getLevel() + (floor/2);//expected level up every 2 since beaches are meant to be broad over being deep
+		if (tier < (guessLevel-2)) {
+			//if more than 2 behind, always tier up
+			nextTier = tier+1;
+		}else {
+			if (tier > guessLevel +1) {
+				//if more than 1 ahead, never tier up
+				nextTier = tier;
+			}else {
+				if (tier < guessLevel) {
+					//if behind, 66% chance to tier up
+					nextTier = tier + (extra.chanceIn(2,3) ? 1 : 0);
+				}else {
+					//if on par or ahead, 20% chance to tier up
+					nextTier = tier + (extra.chanceIn(1,5) ? 1 : 0);
+				}
+			}
+		}
+		
+		int routeA = generate(holder,node,(sizeLeft/2) + (extra.chanceIn(1,3) ? 1 : 0),nextTier);
+		int routeB = generate(holder,node,(sizeLeft/2) + (extra.chanceIn(1,3) ? 1 : 0),nextTier);
 		holder.setMutualConnect(node, routeA);
 		holder.setMutualConnect(node, routeB);
 		return node;
@@ -284,6 +304,13 @@ public class BeachNode implements NodeType {
 				//shuffle branches after since each of them will get different chances of stuff
 				start.shuffleConnects(entry);
 				
+				return start.complete(owner);
+			case NONE:
+				int noneNode = getNode(start, 0, 0, tier);
+				int fourthSize = Math.max(3,size/4);
+				for (int i = 0; i < 4;i++) {
+					start.setMutualConnect(noneNode, generate(start, noneNode, fourthSize, tier));
+				}
 				return start.complete(owner);
 		}
 		throw new RuntimeException("Invalid Beach: "+owner.getName());
