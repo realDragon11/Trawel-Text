@@ -226,6 +226,7 @@ public class mainGame {
 	public static boolean delayWaits;
 	public static boolean combatWaits;
 	public static boolean displayTargetSummary;
+	public static boolean extendedTargetSummary;
 	public static boolean displayNodeDeeper;
 	public static boolean displayFeatureFluff;
 	public static boolean combatFeedbackNotes;
@@ -675,7 +676,7 @@ public class mainGame {
 
 							@Override
 							public String title() {
-								return "Flavor Text " + displayFlavorText + " (Covers random town flavor, 'first arrival' flavor, and random taunting/boasting)";
+								return "Flavor Text: " + displayFlavorText + " (If disabled, town fluff events, flavor text on first arrival, and random taunting will not be displayed.)";
 							}
 
 							@Override
@@ -688,7 +689,7 @@ public class mainGame {
 
 							@Override
 							public String title() {
-								return "Travel Text " + displayTravelText+ " (covers 'You start to travel to X' and the arrival message.)";
+								return "Travel Text: " + displayTravelText+ " (If disabled, text to indicate movement has started and finished will not be displayed.)";
 							}
 
 							@Override
@@ -701,7 +702,7 @@ public class mainGame {
 
 							@Override
 							public String title() {
-								return "Locational Text " + displayLocationalText + " (covers 'You are in X' and date.)";
+								return "Locational Text: " + displayLocationalText + " (If disabled, current town and date will not be displayed.)";
 							}
 
 							@Override
@@ -714,7 +715,7 @@ public class mainGame {
 
 							@Override
 							public String title() {
-								return "Feature Text " + displayFeatureText + " (Diplays type of town Feature after its name.)";
+								return "Feature Text: " + displayFeatureText + " (If disabled, won't display type of town Feature after its name.)";
 							}
 
 							@Override
@@ -727,7 +728,7 @@ public class mainGame {
 
 							@Override
 							public String title() {
-								return "Own Name " + displayOwnName + " (If disabled, 'YOU' will be used whenever your character's name, title, or fullname would be used. This will not make sense, but might help clarity.)";
+								return "Own Name: " + displayOwnName + " (If disabled, 'YOU' will be used whenever your character's name, title, or fullname would be used. This will not make sense, but might help clarity.)";
 							}
 
 							@Override
@@ -740,7 +741,7 @@ public class mainGame {
 
 							@Override
 							public String title() {
-								return "Other Combat Text " + displayOtherCombat + " (If disabled, no text will be displayed on Person turns that do not include you as an attacker or defender. Does not disable Combat Conditions text, and does disable death messages.)";
+								return "Other Combat Text: " + displayOtherCombat + " (If disabled, no text will be displayed on Person turns that do not include you as an attacker or defender. Does not disable Combat Conditions text, and does disable death messages.)";
 							}
 
 							@Override
@@ -753,7 +754,7 @@ public class mainGame {
 
 							@Override
 							public String title() {
-								return "Target Summary " + displayTargetSummary + " (If disabled, will not print target's stats in 1v1s or before attacking in mass battles.)";
+								return "Show Target Summary: " + displayTargetSummary + " (If disabled, will not print target's defenses in 1v1s or before attacking in mass battles.)";
 							}
 
 							@Override
@@ -766,7 +767,20 @@ public class mainGame {
 
 							@Override
 							public String title() {
-								return "Node Deeper " + displayNodeDeeper + " (Inward and Outward in Node Features.)";
+								return "Extended Target Summary: " + extendedTargetSummary + " (If enabled, will show full stats whenever displaying target summary.)";
+							}
+
+							@Override
+							public boolean go() {
+								extendedTargetSummary = !extendedTargetSummary;
+								prefs.setProperty("targetsummary_extended", extendedTargetSummary+"");
+								return false;
+							}});
+						list.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Node Deeper: " + displayNodeDeeper + " (If enabled, Inward and Outward in Node Features.)";
 							}
 
 							@Override
@@ -779,7 +793,7 @@ public class mainGame {
 
 							@Override
 							public String title() {
-								return "Feature Fluff " + displayFeatureFluff + " (Such as entering and exiting stores with sayings.)";
+								return "Feature Fluff: " + displayFeatureFluff + " (If enabled, print fluff text when entering/exiting features with flavor.)";
 							}
 
 							@Override
@@ -793,7 +807,7 @@ public class mainGame {
 
 							@Override
 							public String title() {
-								return "Combat Notes " + combatFeedbackNotes + " (Displays more detailed breakdowns of special triggers after attacks.)";
+								return "Combat Notes: " + combatFeedbackNotes + " (If disabled, doesn't display more detailed breakdowns of special triggers after attacks.)";
 							}
 
 							@Override
@@ -807,7 +821,7 @@ public class mainGame {
 
 							@Override
 							public String title() {
-								return advancedCombatDisplay +" Debug Combat Display (HP per attack, attack result notes)";
+								return "Debug Combat Display: "+advancedCombatDisplay +"  (If enabled, prints verbose debug messages in combat.)";
 							}
 
 							@Override
@@ -1634,6 +1648,7 @@ public class mainGame {
 			delayWaits = Boolean.parseBoolean(prefs.getProperty("combattime_wait","FALSE"));//probably will perform poorly in mass battles
 			combatWaits = Boolean.parseBoolean(prefs.getProperty("combataction_wait","TRUE"));
 			displayTargetSummary = Boolean.parseBoolean(prefs.getProperty("targetsummary_text","TRUE"));
+			extendedTargetSummary = Boolean.parseBoolean(prefs.getProperty("targetsummary_extended","FALSE"));
 			displayNodeDeeper = Boolean.parseBoolean(prefs.getProperty("nodedeeper_text","TRUE"));
 			combatFeedbackNotes = Boolean.parseBoolean(prefs.getProperty("combatnotes_text","TRUE"));
 			graphicStyle = graphicStyleLookup(prefs.getProperty("graphic_style",GraphicStyle.WASDD.name()));

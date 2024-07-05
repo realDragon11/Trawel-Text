@@ -1361,6 +1361,10 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 	
 	public void displayCombatQuickSummary() {
+		if (mainGame.extendedTargetSummary) {
+			displayStatOverview(true);
+			return;
+		}
 		extra.println(getName() +": "+extra.ITEM_DESC_PROP+"LvL " +extra.ITEM_WANT_HIGHER+ this.getLevel() +extra.PRE_WHITE+" " + this.getBag().getRace().renderName(false)+".");
 		extra.println(" "
 				+extra.ITEM_WANT_HIGHER+getHp()+extra.PRE_WHITE +"/"+ tempMaxHp +extra.ITEM_DESC_PROP+ " HP, "

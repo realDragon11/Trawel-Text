@@ -1128,7 +1128,7 @@ public class AIClass {
 								@Override
 								public boolean go() {
 									extra.println(extra.STAT_HEADER+attacker.getName()+": ");
-									if (mainGame.debug) {
+									if (mainGame.advancedCombatDisplay) {
 										attacker.debug_print_status(0);
 									}
 									attacker.printBodyStatus(false);
@@ -1159,7 +1159,7 @@ public class AIClass {
 								@Override
 								public boolean go() {
 									extra.println(extra.STAT_HEADER+defender.getName()+": ");
-									if (mainGame.debug) {
+									if (mainGame.advancedCombatDisplay) {
 										defender.debug_print_status(0);
 									}
 									defender.printBodyStatus(false);

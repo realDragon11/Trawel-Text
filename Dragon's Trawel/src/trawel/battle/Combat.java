@@ -551,7 +551,9 @@ public class Combat {
 					}
 				}
 				if (quickest.isPlayer()) {
-					otherperson.displayStats(true);
+					if (mainGame.displayTargetSummary) {
+						otherperson.displayCombatQuickSummary();
+					}
 					quickest.getBag().graphicalDisplay(-1,quickest);
 					otherperson.getBag().graphicalDisplay(1,otherperson);
 				}else {
