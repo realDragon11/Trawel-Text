@@ -31,7 +31,7 @@ public enum Wound{//TODO: make sure the reworked wounds are fully in
 			,false,false,"Their attack is put off-kilter!"),
 	BLINDED("Blind","Inflicts %1$d%% inaccuracy on the current attack, or half that to the next set of attack choices as compounding inaccuracy."
 			,false,false,"They can't see!"),
-	PUNCTURED("Puncture","Damages armor up to %1$d%%, based on double MHP percent of dealt damage. Ignores Grazing and removes one stack."
+	PUNCTURED("Puncture","Damages armor up to %1$d%%, based on double MHP percent of dealt damage. Ignores Negation and removes one Padded stack."
 			,true,false,"The blow punctures through the armor!"),
 	RUPTURED("Rupture","Damages armor by %1$d%%."
 			,false,false,"The blow ruptures the armor!"),
