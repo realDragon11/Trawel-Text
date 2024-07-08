@@ -233,9 +233,10 @@ public class WorldGen {
 		alhax.tTags.add(TownTag.RICH);
 		alhax.tTags.add(TownTag.CITY);
 		alhax.tTags.add(TownTag.LAW);
-		alhax.setLoreText("The port city of Alhax links the three islands of the world together. It's island, Apa, is home to many shops and stores. While the merchant's guild is in Unun, the true commerce center is here.");
+		alhax.setLoreText("The port city of Alhax links the three northern islands of Eoano together. It's island, Apa, is home to many shops and stores. While the merchant's guild is in Unun, the true commerce center is here.");
 		
 		Town revan = new Town("Revan",4,apa,new Point(3,1));
+		addConnection(revan,unun,"ship","new passageway");
 		addConnection(revan,alhax,"ship","green passageway");
 		addConnection(revan,alhax,ConnectType.CARV,"the tops");
 		revan.addFeature(new Store(2,5));
@@ -246,7 +247,7 @@ public class WorldGen {
 		addConnection(revan,tanak,"teleport","the red ritual");
 		revan.tTags.add(TownTag.MERCHANT);
 		revan.tTags.add(TownTag.DRUIDIC);
-		revan.setLoreText("The town of Revan is clustered around a great altar, which fell from the sky according to local lore.");
+		revan.setLoreText("The town of Revan is clustered around a great altar, which fell from the sky according to local lore. It also benefits from trade due to proximity to Alhax.");
 		
 		Island pocket = new Island("Eureka",w,Island.IslandType.POCKET);
 		Town arona = new Town("Arona",10,pocket,new Point(1,1));
