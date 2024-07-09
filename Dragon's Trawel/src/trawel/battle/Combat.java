@@ -21,6 +21,7 @@ import trawel.battle.targets.TargetFactory;
 import trawel.battle.targets.TargetFactory.BloodType;
 import trawel.factions.FBox;
 import trawel.factions.HostileTask;
+import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
@@ -2258,16 +2259,16 @@ public class Combat {
 		String res;
 		switch ((int)Math.ceil((damagePerOfMax*100)/25)) {
 		case 0:
-			res = extra.DAM_I_NONE;
+			res = TrawelChar.DAM_I_NONE;
 			break;
 		case 1: 
-			res = extra.DAM_I_SOME;
+			res = TrawelChar.DAM_I_SOME;
 			break;
 		case 2:
-			res = extra.DAM_I_HEAVY;
+			res = TrawelChar.DAM_I_HEAVY;
 			break;
 		default: 
-			res = extra.DAM_I_KILL;
+			res = TrawelChar.DAM_I_KILL;
 			break;
 		}
 		return TrawelColor.inlineColor(TrawelColor.colorMix(Color.white, Color.red,extra.clamp(damagePerOfMax,0,1f)))+ Print.padIf(res);

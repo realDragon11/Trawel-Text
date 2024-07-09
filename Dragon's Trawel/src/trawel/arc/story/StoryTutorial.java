@@ -9,8 +9,8 @@ import trawel.core.Networking;
 import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.core.mainGame;
+import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.Archetype;
 import trawel.personal.classless.Feat;
@@ -113,9 +113,9 @@ public class StoryTutorial extends Story{
 			Print.println("Delay on abilities is combined from a warmup and a cooldown. The first number is the warmup- how long until the attack goes through. The second number is the cooldown- how long after that until you can choose another attack.");
 			Print.println(
 					massFight ?
-							extra.CHAR_SHARP+extra.CHAR_BLUNT+extra.CHAR_PIERCE+TrawelColor.PRE_WHITE+" stands for sharp blunt pierce- the three main damage types. Your opponents also have sbp-based armor. Yeah, you got a mass fight for your first battle. Good luck."
+							TrawelChar.CHAR_SHARP+TrawelChar.CHAR_BLUNT+TrawelChar.CHAR_PIERCE+TrawelColor.PRE_WHITE+" stands for sharp blunt pierce- the three main damage types. Your opponents also have sbp-based armor. Yeah, you got a mass fight for your first battle. Good luck."
 							:
-								extra.CHAR_SHARP+extra.CHAR_BLUNT+extra.CHAR_PIERCE+TrawelColor.PRE_WHITE+" stands for sharp blunt pierce- the three main damage types. Your opponent also has sbp-based armor."
+								TrawelChar.CHAR_SHARP+TrawelChar.CHAR_BLUNT+TrawelChar.CHAR_PIERCE+TrawelColor.PRE_WHITE+" stands for sharp blunt pierce- the three main damage types. Your opponent also has sbp-based armor."
 					);
 			Print.println("Hitpoints only matter in combat- you steel yourself fully before each battle, restoring to your current maximum. Very few things can reduce this maximum, the most notable being the CURSE status effect.");
 			switch (mainGame.attackDisplayStyle) {
@@ -127,11 +127,11 @@ public class StoryTutorial extends Story{
 			case TWO_LINE1: 
 				Print.println("You have modern display on, and will see attacks in a hybrid table/label format.");
 				Print.println("Instead of only table headers, each cell is labeled. "
-						+extra.CHAR_HITCHANCE+" is hitmult. "
-						+extra.CHAR_INSTANTS+" is 'instants' (warmup and cooldown time.) "
-						+extra.CHAR_SHARP+TrawelColor.PRE_WHITE+" is sharp damage, "
-						+extra.CHAR_BLUNT+TrawelColor.PRE_WHITE+" is blunt damage, and "
-						+extra.CHAR_PIERCE+TrawelColor.PRE_WHITE+" is pierce damage.");
+						+TrawelChar.CHAR_HITMULT+" is hitmult. "
+						+TrawelChar.CHAR_INSTANTS+" is 'instants' (warmup and cooldown time.) "
+						+TrawelChar.CHAR_SHARP+TrawelColor.PRE_WHITE+" is sharp damage, "
+						+TrawelChar.CHAR_BLUNT+TrawelColor.PRE_WHITE+" is blunt damage, and "
+						+TrawelChar.CHAR_PIERCE+TrawelColor.PRE_WHITE+" is pierce damage.");
 				Print.println("There are more damage types, such as elemental, but those are beyond the scope of this tutorial.");
 				break;
 			case TWO_LINE1_WITH_KEY:

@@ -9,6 +9,7 @@ import trawel.battle.targets.TargetFactory;
 import trawel.battle.targets.TargetFactory.TypeBody.TargetReturn;
 import trawel.core.Print;
 import trawel.core.Rand;
+import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Effect;
@@ -245,22 +246,22 @@ public class ImpairedAttack implements IAttack{
 	
 	public enum DamageType{
 		SHARP("S","sharp","slashing, slicing, and cutting",
-				()-> (extra.CHAR_SHARP)
+				()-> (TrawelChar.CHAR_SHARP)
 				),
 		BLUNT("B","blunt","bashing, slamming, and crushing",
-				()-> (extra.CHAR_BLUNT)
+				()-> (TrawelChar.CHAR_BLUNT)
 				),
 		PIERCE("P","pierce","puncturing, piercing, and skewering",
-				()-> (extra.CHAR_PIERCE)
+				()-> (TrawelChar.CHAR_PIERCE)
 				),
 		IGNITE("I","ignite","set aflame, fire, burning",
-				()-> (extra.CHAR_IGNITE)),
+				()-> (TrawelChar.CHAR_IGNITE)),
 		FROST("F","frost","chilled, frozen, frostbite",
-				()-> (extra.CHAR_FROST)),
+				()-> (TrawelChar.CHAR_FROST)),
 		ELEC("E","elec","zapped, shocked, electrocuted",
-				()-> (extra.CHAR_ELEC)),
+				()-> (TrawelChar.CHAR_ELEC)),
 		DECAY("D","decay","withered, aged, decayed",
-				()-> (extra.CHAR_DECAY));
+				()-> (TrawelChar.CHAR_DECAY));
 		private final String disp;
 		private final String name, desc;
 		private final Supplier<String> getCode;
@@ -603,8 +604,8 @@ public class ImpairedAttack implements IAttack{
 				dam5 = "";
 			}
 
-			Print.specialPrint(in,"  "+extra.CHAR_HITCHANCE + Print.format(getHitMult()),
-					extra.CHAR_INSTANTS +Print.formatInt(getWarmup())," ",extra.CHAR_INSTANTS+Print.formatInt(getCooldown()),
+			Print.specialPrint(in,"  "+TrawelChar.CHAR_HITMULT + Print.format(getHitMult()),
+					TrawelChar.CHAR_INSTANTS +Print.formatInt(getWarmup())," ",TrawelChar.CHAR_INSTANTS+Print.formatInt(getCooldown()),
 					"=",
 					dam1,dam2,dam3,dam4,dam5//unsure if spacing messes up narrator
 					);
@@ -616,9 +617,9 @@ public class ImpairedAttack implements IAttack{
 			in[1] = 6;//instants, should be _999 >= x > 0
 			in[2] = 7;//5 damage digits
 			Print.specialPrint(in,
-					"  "+extra.CHAR_HITCHANCE + Print.format(getHitMult()),
-					extra.CHAR_INSTANTS + Print.formatInt(getWarmup()+getCooldown()),
-					extra.CHAR_DAMAGE + getTotalDam()
+					"  "+TrawelChar.CHAR_HITMULT + Print.format(getHitMult()),
+					TrawelChar.CHAR_INSTANTS + Print.formatInt(getWarmup()+getCooldown()),
+					TrawelChar.CHAR_DAMAGE + getTotalDam()
 					);
 			break;
 		}

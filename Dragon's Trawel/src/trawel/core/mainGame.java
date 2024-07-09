@@ -30,8 +30,8 @@ import trawel.battle.targets.TargetFactory;
 import trawel.core.Networking.ConnectType;
 import trawel.battle.attacks.StyleFactory;
 import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
-import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
@@ -372,7 +372,7 @@ public class mainGame {
 
 					@Override
 					public String title() {
-						return "Change Display Chars ("+extra.current_display_style+")";
+						return "Change Display Chars ("+TrawelChar.current_display_style+")";
 					}
 
 					@Override
@@ -386,14 +386,14 @@ public class mainGame {
 
 									@Override
 									public String title() {
-										return "Current Style: " + extra.current_display_style;
+										return "Current Style: " + TrawelChar.current_display_style;
 									}});
 								list.add(new MenuLine() {
 
 									@Override
 									public String title() {
-										return "Accuracy Hit: " +extra.CHAR_HITCHANCE
-												+ " Time Instants: " + extra.CHAR_INSTANTS;
+										return "Accuracy Hit: " +TrawelChar.CHAR_HITMULT
+												+ " Time Instants: " + TrawelChar.CHAR_INSTANTS;
 									}});
 								list.add(new MenuLine() {
 
@@ -410,30 +410,30 @@ public class mainGame {
 
 									@Override
 									public String title() {
-										return "Weight: " +extra.DISP_WEIGHT
-												+ " Aether: " + extra.DISP_AETHER
-												+ " Restiction Agility Multiplier Penalty: " +extra.DISP_AMP
-												+ " Qualities: " + extra.DISP_QUALS;
+										return "Weight: " +TrawelChar.DISP_WEIGHT
+												+ " Aether: " + TrawelChar.DISP_AETHER
+												+ " Restiction Agility Multiplier Penalty: " +TrawelChar.DISP_AMP
+												+ " Qualities: " + TrawelChar.DISP_QUALS;
 									}});
 								list.add(new MenuLine() {
 
 									@Override
 									public String title() {
-										return "more than 75% HP: " +extra.HP_I_FULL
-												+ "; more than 50% HP: " + extra.HP_I_MOSTLY
-												+ "; more than 25% HP: " +extra.HP_I_HALF
-												+ "; more than 0% HP: " + extra.HP_I_SOME
-												+ "; dead: " + extra.HP_I_DEAD
+										return "more than 75% HP: " +TrawelChar.HP_I_FULL
+												+ "; more than 50% HP: " + TrawelChar.HP_I_MOSTLY
+												+ "; more than 25% HP: " +TrawelChar.HP_I_HALF
+												+ "; more than 0% HP: " + TrawelChar.HP_I_SOME
+												+ "; dead: " + TrawelChar.HP_I_DEAD
 												;
 									}});
 								list.add(new MenuLine() {
 
 									@Override
 									public String title() {
-										return ">= 75% damage: " +extra.DAM_I_KILL
-												+ "; >= 50% damage: " + extra.DAM_I_HEAVY
-												+ "; >= 25% damage: " +extra.DAM_I_SOME
-												+ "; <25% damage: " + extra.DAM_I_NONE;
+										return ">= 75% damage: " +TrawelChar.DAM_I_KILL
+												+ "; >= 50% damage: " + TrawelChar.DAM_I_HEAVY
+												+ "; >= 25% damage: " +TrawelChar.DAM_I_SOME
+												+ "; <25% damage: " + TrawelChar.DAM_I_NONE;
 
 									}});
 								list.add(new MenuSelect() {
@@ -445,7 +445,7 @@ public class mainGame {
 
 									@Override
 									public boolean go() {
-										extra.charSwitchVisual();
+										TrawelChar.charSwitchVisual();
 										prefs.setProperty("char_style","visual");
 										return false;
 									}});
@@ -458,7 +458,7 @@ public class mainGame {
 
 									@Override
 									public boolean go() {
-										extra.charSwitchNarrator();
+										TrawelChar.charSwitchNarrator();
 										prefs.setProperty("char_style","narrator");
 										return false;
 									}});
@@ -471,7 +471,7 @@ public class mainGame {
 
 									@Override
 									public boolean go() {
-										extra.charSwitchEmote();
+										TrawelChar.charSwitchEmote();
 										prefs.setProperty("char_style","emote");
 										return false;
 									}});
@@ -484,7 +484,7 @@ public class mainGame {
 
 									@Override
 									public boolean go() {
-										extra.charSwitchNone();
+										TrawelChar.charSwitchNone();
 										prefs.setProperty("char_style","none");
 										return false;
 									}});
@@ -1335,16 +1335,16 @@ public class mainGame {
 
 			switch (charStyle) {
 			case "visual":
-				extra.charSwitchVisual();
+				TrawelChar.charSwitchVisual();
 				break;
 			case "narrator":
-				extra.charSwitchNarrator();
+				TrawelChar.charSwitchNarrator();
 				break;
 			case "emote":
-				extra.charSwitchEmote();
+				TrawelChar.charSwitchEmote();
 				break;
 			case "none":
-				extra.charSwitchNone();
+				TrawelChar.charSwitchNone();
 				break;
 			}
 			advancedCombatDisplay = Boolean.parseBoolean(prefs.getProperty("debug_attacks","FALSE"));

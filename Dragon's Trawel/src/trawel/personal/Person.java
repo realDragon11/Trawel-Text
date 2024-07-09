@@ -34,6 +34,7 @@ import trawel.battle.attacks.Wound;
 import trawel.factions.FBox;
 import trawel.factions.Faction;
 import trawel.factions.HostileTask;
+import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
@@ -1373,7 +1374,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		Print.println(" "
 				+TrawelColor.ITEM_WANT_HIGHER+getHp()+TrawelColor.PRE_WHITE +"/"+ tempMaxHp +TrawelColor.ITEM_DESC_PROP+ " HP, "
 				+TrawelColor.ITEM_WANT_HIGHER+Print.format(bag.getDodge()) + "x "+TrawelColor.ITEM_DESC_PROP+"dodge, "
-				+TrawelColor.ITEM_DESC_PROP+extra.CHAR_SHARP+"/"+extra.CHAR_BLUNT+"/"+extra.CHAR_PIERCE+
+				+TrawelColor.ITEM_DESC_PROP+TrawelChar.CHAR_SHARP+"/"+TrawelChar.CHAR_BLUNT+"/"+TrawelChar.CHAR_PIERCE+
 				": "+TrawelColor.ITEM_WANT_HIGHER+Print.F_WHOLE.format(bag.getSharpResist())+"/"+Print.F_WHOLE.format(bag.getBluntResist())+"/"+Print.F_WHOLE.format(bag.getPierceResist())
 				);
 		//tbh is uneeded since the quick summary displays hp/dodge/SBP which are the important things
@@ -1391,7 +1392,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		+TrawelColor.ITEM_WANT_HIGHER+Print.format(bag.getDam()) + "x "+TrawelColor.ITEM_DESC_PROP+"dam, "
 		+TrawelColor.ITEM_WANT_HIGHER+Print.format(bag.getSpeed()) + "x "+TrawelColor.ITEM_DESC_PROP+"spd, "
 		+TrawelColor.ITEM_WANT_HIGHER+Print.format(bag.getDodge()) + "x "+TrawelColor.ITEM_DESC_PROP+"dodge, "
-		+TrawelColor.ITEM_DESC_PROP+extra.CHAR_SHARP+"/"+extra.CHAR_BLUNT+"/"+extra.CHAR_PIERCE+
+		+TrawelColor.ITEM_DESC_PROP+TrawelChar.CHAR_SHARP+"/"+TrawelChar.CHAR_BLUNT+"/"+TrawelChar.CHAR_PIERCE+
 		": "+TrawelColor.ITEM_WANT_HIGHER+Print.F_WHOLE.format(bag.getSharpResist())+"/"+Print.F_WHOLE.format(bag.getBluntResist())+"/"+Print.F_WHOLE.format(bag.getPierceResist())
 				);
 		Print.println(bag.quickInventory());
@@ -2098,7 +2099,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		new String[]{
 				TrawelColor.ITEM_DESC_PROP+"LvL: "+TrawelColor.PRE_WHITE+getLevel()+", "+xpString()+" xp"
 				,
-				TrawelColor.ITEM_DESC_PROP+extra.DISP_WEIGHT+TrawelColor.PRE_WHITE+"/"+TrawelColor.ATT_TRUE+"Str"+TrawelColor.PRE_WHITE+": "
+				TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_WEIGHT+TrawelColor.PRE_WHITE+"/"+TrawelColor.ATT_TRUE+"Str"+TrawelColor.PRE_WHITE+": "
 						+TrawelColor.ITEM_WANT_LOWER + bag.getCapacity() +TrawelColor.PRE_WHITE+ "/"+TrawelColor.ATT_TRUE+getStrength()
 							+TrawelColor.PRE_WHITE+ ", "+ TrawelColor.ITEM_WANT_HIGHER+Print.F_TWO_TRAILING.format(attMultStr())+"x"
 			,"("+TrawelColor.ATT_TRUE+"Base"+TrawelColor.PRE_WHITE+") "+TrawelColor.ATT_EFFECTIVE+"Dex"+TrawelColor.PRE_WHITE
@@ -2135,7 +2136,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				+TrawelColor.ITEM_WANT_HIGHER+ Print.F_TWO_TRAILING.format(getTotalAgiPen())+"x"+TrawelColor.PRE_WHITE+", "
 				+TrawelColor.ITEM_DESC_PROP+"Applied to Dex: "+TrawelColor.ITEM_WANT_HIGHER+Print.F_TWO_TRAILING.format(getAgiPenAgainstDex()) 
 				+ "x"+TrawelColor.ITEM_DESC_PROP+" of Encumbrance "+TrawelColor.ITEM_WANT_HIGHER+Print.F_TWO_TRAILING.format(atrBox.getCapAgiPen())
-				+ "x"+TrawelColor.ITEM_DESC_PROP+" and Restriction "+extra.DISP_AMP+" "+TrawelColor.ITEM_WANT_HIGHER+Print.F_TWO_TRAILING.format(bag.getAgiPen()) +"x"
+				+ "x"+TrawelColor.ITEM_DESC_PROP+" and Restriction "+TrawelChar.DISP_AMP+" "+TrawelColor.ITEM_WANT_HIGHER+Print.F_TWO_TRAILING.format(bag.getAgiPen()) +"x"
 				+TrawelColor.PRE_WHITE+";"+TrawelColor.ITEM_DESC_PROP+" Swiftness Multiplier: "+TrawelColor.ITEM_WANT_HIGHER+Print.F_TWO_TRAILING.format(getAttributeAgiPen())+"x");
 		//cla section
 		Print.println(TrawelColor.STAT_HEADER+"Clarity"+TrawelColor.PRE_WHITE+": "+TrawelColor.ATT_TRUE+getClarity());
@@ -2224,19 +2225,19 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		String res;
 		switch (Math.max(0,(int)Math.ceil((per*100)/25))) {
 		case 0:
-			res = extra.HP_I_DEAD;
+			res = TrawelChar.HP_I_DEAD;
 			break;
 		case 1: 
-			res = extra.HP_I_SOME;
+			res = TrawelChar.HP_I_SOME;
 			break;
 		case 2: 
-			res = extra.HP_I_HALF;
+			res = TrawelChar.HP_I_HALF;
 			break;
 		case 3: 
-			res = extra.HP_I_MOSTLY;
+			res = TrawelChar.HP_I_MOSTLY;
 			break;
 		default: 
-			res = extra.HP_I_FULL;
+			res = TrawelChar.HP_I_FULL;
 			break;
 		}
 		int tval = extra.clamp((int)(extra.lerp(125,256,per)),100,255);

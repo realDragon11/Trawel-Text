@@ -13,6 +13,7 @@ import trawel.battle.attacks.Stance;
 import trawel.battle.attacks.WeaponAttackFactory;
 import trawel.core.Print;
 import trawel.core.Rand;
+import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.Services;
 import trawel.helper.methods.extra;
@@ -454,8 +455,8 @@ public class Weapon extends Item implements IEffectiveLevel {
 			+ Print.formatPerSubOne(this.scoreImpact())
 			+ "/" + Print.format(this.scoreBest())
 			+"/"+Print.format(this.scoreWeight())
-			+ (Player.player.caresAboutCapacity() ? " "+TrawelColor.ITEM_DESC_PROP+extra.DISP_WEIGHT+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_LOWER+getWeight() : "")
-			+" "+TrawelColor.ITEM_DESC_PROP+extra.DISP_AETHER+": " +TrawelColor.ITEM_VALUE+ Print.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
+			+ (Player.player.caresAboutCapacity() ? " "+TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_WEIGHT+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_LOWER+getWeight() : "")
+			+" "+TrawelColor.ITEM_DESC_PROP+TrawelChar.DISP_AETHER+": " +TrawelColor.ITEM_VALUE+ Print.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
 			);
 			
 			if (this.isEnchantedConstant()) {

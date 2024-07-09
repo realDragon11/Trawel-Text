@@ -19,9 +19,9 @@ import trawel.core.Print;
 import trawel.core.Rand;
 import trawel.core.mainGame;
 import trawel.core.mainGame.DispAttack;
+import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.Services;
-import trawel.helper.methods.extra;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Inventory;
@@ -881,18 +881,18 @@ public class AIClass {
 				Print.println("SBP = sharp, blunt, pierce");
 			}
 			Print.println(" "+
-			TrawelColor.ITEM_DESC_PROP+extra.CHAR_SHARP
+			TrawelColor.ITEM_DESC_PROP+TrawelChar.CHAR_SHARP
 			+" "+TrawelColor.hardColorDelta1Elide(toArm.getSharpResist(),hasArm.getSharpResist())
 			+ TrawelColor.PRE_WHITE+" / "
-			+ TrawelColor.ITEM_DESC_PROP+extra.CHAR_BLUNT
+			+ TrawelColor.ITEM_DESC_PROP+TrawelChar.CHAR_BLUNT
 			+" "+TrawelColor.hardColorDelta1Elide(toArm.getBluntResist(),hasArm.getBluntResist())
 			+ TrawelColor.PRE_WHITE+" / "
-			+ TrawelColor.ITEM_DESC_PROP+extra.CHAR_PIERCE
+			+ TrawelColor.ITEM_DESC_PROP+TrawelChar.CHAR_PIERCE
 			+" "+TrawelColor.hardColorDelta1Elide(toArm.getPierceResist(),hasArm.getPierceResist())
 			//weight is an int anyway
-			+ (Player.player.caresAboutCapacity() ? TrawelColor.ITEM_DESC_PROP+ " "+extra.DISP_WEIGHT+": "+TrawelColor.softColorDelta0Reversed(toArm.getWeight(),hasArm.getWeight()) : "")
+			+ (Player.player.caresAboutCapacity() ? TrawelColor.ITEM_DESC_PROP+ " "+TrawelChar.DISP_WEIGHT+": "+TrawelColor.softColorDelta0Reversed(toArm.getWeight(),hasArm.getWeight()) : "")
 			//amp is not, but we want it to display hard anyway
-			+ (Player.player.caresAboutAMP() ? TrawelColor.ITEM_DESC_PROP+ " "+extra.DISP_AMP+": "+ TrawelColor.hardColorDelta2(toArm.getAgiPenMult(),hasArm.getAgiPenMult()) : "")
+			+ (Player.player.caresAboutAMP() ? TrawelColor.ITEM_DESC_PROP+ " "+TrawelChar.DISP_AMP+": "+ TrawelColor.hardColorDelta2(toArm.getAgiPenMult(),hasArm.getAgiPenMult()) : "")
 			+ " " + priceDiffDisp(costDiff,costName,s)
 			);
 			if (hasItem.getEnchant() != null || toReplace.getEnchant() != null) {
@@ -918,9 +918,9 @@ public class AIClass {
 				+ (TrawelColor.hardColorDelta2Elide(toWeap.scoreWeight(),hasWeap.scoreWeight()))
 				//if the qualities are the same, 'q=', if neither has any, do not display
 				+TrawelColor.ITEM_DESC_PROP
-				+ (isQDiff ? " "+extra.DISP_QUALS+" "
-				+ TrawelColor.colorBaseZeroTimid(qualDiff) : (toWeap.numQual() > 0 ? (" "+extra.DISP_QUALS+" =") : ""))
-				+ (Player.player.caresAboutCapacity() ? TrawelColor.ITEM_DESC_PROP+" "+extra.DISP_WEIGHT+": "+TrawelColor.softColorDelta0Reversed(toWeap.getWeight(),hasWeap.getWeight()) : "")
+				+ (isQDiff ? " "+TrawelChar.DISP_QUALS+" "
+				+ TrawelColor.colorBaseZeroTimid(qualDiff) : (toWeap.numQual() > 0 ? (" "+TrawelChar.DISP_QUALS+" =") : ""))
+				+ (Player.player.caresAboutCapacity() ? TrawelColor.ITEM_DESC_PROP+" "+TrawelChar.DISP_WEIGHT+": "+TrawelColor.softColorDelta0Reversed(toWeap.getWeight(),hasWeap.getWeight()) : "")
 				+ " " + priceDiffDisp(costDiff,costName,s)
 				);
 				if (((Weapon)hasItem).getEnchant() != null || ((Weapon)toReplace).getEnchant()!= null) {
@@ -946,7 +946,7 @@ public class AIClass {
 	 */
 	public static String priceDiffDisp(int delta,String name, Store s) {
 		if (name == "aether") {
-			name = extra.DISP_AETHER;
+			name = TrawelChar.DISP_AETHER;
 		}
 		if (s == null) {
 			return TrawelColor.ITEM_VALUE+name+": " + (delta != 0 ? TrawelColor.colorBaseZeroTimid(delta) : "=");
@@ -1078,7 +1078,7 @@ public class AIClass {
 									);
 						}
 						if (mainGame.attackDisplayStyle == DispAttack.TWO_LINE1_WITH_KEY) {
-							Print.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),TrawelColor.PRE_WHITE, defender)+": " + extra.CHAR_HITCHANCE + " hitmult; " +extra.CHAR_INSTANTS+" warmup cooldown; "+
+							Print.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),TrawelColor.PRE_WHITE, defender)+": " + TrawelChar.CHAR_HITMULT + " hitmult; " +TrawelChar.CHAR_INSTANTS+" warmup cooldown; "+
 									ImpairedAttack.EXPLAIN_DAMAGE_TYPES());
 						}else {
 							Print.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),TrawelColor.PRE_WHITE, defender)+": ");
