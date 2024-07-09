@@ -1519,6 +1519,7 @@ public class mainGame {
 		}
 		player.getPerson().skillTriggers();//apply skill triggers mostly for starting gear
 		player.setLocation(world.getStartTown());//also sets the player world
+		player.addGold(10);//give 10 gold to start to deal with death punishments mostly
 		if (cheaty) {
 			Player.player.setCheating();
 			player.setStory(new StoryNone());

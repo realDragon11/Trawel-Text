@@ -142,9 +142,9 @@ public class WorldGen {
 		addConnection(hemo,tevar,ConnectType.ROAD,"purple road");
 		addConnection(hemo,unun,ConnectType.CARV,"black valley");
 		addConnection(hemo,unun,"ship","neglected current");
-		Store s = new Store(3,6);
-		hemo.addFeature(s);
-		hemo.addFeature(new Blacksmith(3,s));
+		Store store = new Store(3,6);
+		hemo.addFeature(store);
+		hemo.addFeature(new Blacksmith(3,store));
 		hemo.addFeature(new Grove("The Odd Grove",hemo,12,3));
 		hemo.addFeature(new Garden(hemo,"Communal Garden",1.1f,PlantFill.WITCH).setIntro("A sign reads, 'Please replant any materials you harvest here.'"));
 		hemo.addFeature(new WitchHut("Esoteric Ingredients",hemo));
@@ -262,10 +262,11 @@ public class WorldGen {
 		addConnection(revan,yena,"ship","blue sea");
 		addConnection(alhax,yena,"ship","blue sea");
 		yena.addFeature(new Dungeon("Dungeon of Fame", yena,NodeFeature.Shape.RIGGED_DUNGEON,BossType.YORE));
-		yena.addTravel();
-		yena.addTravel();
 		yena.addFeature(new HeroGuild("Third Hero's Guild",6));
+		yena.addFeature(new Arena("Grandstander's Stands (daily bout)",5,1,24,12,39));
 		yena.addFeature(new Champion(6));
+		yena.addTravel();
+		yena.addTravel();
 		yena.tTags.add(TownTag.ADVENTURE);
 		yena.tTags.add(TownTag.HISTORY);
 		yena.setLoreText("Yena's ancient Dungeon of Fame is the dwelling place of the primordial being, Yore. The Hero's Guild has long since given up on slaying them, and keeps vigil nearby.");
@@ -284,11 +285,14 @@ public class WorldGen {
 		Town erin = new Town("Erin",6,teran,new Point(10,4));
 		addConnection(erin,yena,"road","pear road");
 		addConnection(erin,denok,"road","orange road");
-		erin.addFeature(new Arena("Grandstander's Stands (daily bout)",5,1,24,12,39));
 		erin.addFeature(new Inn("Scholar's Respite",6,erin,null));
 		erin.addFeature(new Library("Alex's Library",erin));
 		erin.addFeature(new Appraiser("Material Patent Offices").setIntro("'We only handle physical patents, if you have new spells or magicks, head to Alex's.'"));
 		erin.addFeature(new Enchanter("Enchantment Prototyping",6));
+		store = new Store("'Recycled Gear'",6,6);
+		erin.addFeature(store);
+		//scraps failed ideas to turn into normal gear, playing into the invention aspect of the town
+		erin.addFeature(new Blacksmith("'The Pitch Cremator'",6,store));
 		erin.tTags.add(TownTag.ARCANE);
 		erin.setLoreText("Erin has the largest library in this world, and scholars from all over gather in it to debate the newest theories.");
 		
@@ -310,7 +314,7 @@ public class WorldGen {
 		addConnection(erin,tunka,"road","left-over road");
 		addConnection(placka,tunka,"road","diamond road");
 		tunka.addFeature(new Graveyard("The Boneyard", tunka,40));
-		tunka.addFeature(new Store("'A Quick Find'",7,6).setIntro("'If you can't find anything you like, I'm sure I can put in a request with the Society.'").setOutro("'Bring back some good stuff for me, eh?''"));
+		tunka.addFeature(new Store("'A Quick Find'",8,6).setIntro("'If you can't find anything you like, I'm sure I can put in a request with the Society.'").setOutro("'Bring back some good stuff for me, eh?''"));
 		tunka.addFeature(new RogueGuild("Society of Enterprising Nobles",8));
 		tunka.addFeature(new Slum(tunka,"Forgettables District",false).setOutro("As you leave, you notice a few hooded figures eyeing you from the rooftops."));
 		tunka.tTags.add(TownTag.LAWLESS);
@@ -430,10 +434,13 @@ public class WorldGen {
 		
 		Town yonuen = new Town("Yonuen",11, apen, new Point(8,19));
 		addConnection(holik,yonuen,ConnectType.CARV,"bliz road");
-		yonuen.addFeature(new Store(10));
+		Store store = new Store("'Sturdy Gear-'",10,6);
+		store.setOutro("'Check out our Blacksmith if you need repairs.'");
+		yonuen.addFeature(store);
+		yonuen.addFeature(new Blacksmith("'-Heavy Hands'",10,store).setIntro("'While the Guild in town may not agree, keep your hands heavy- and out of other's pockets.'"));
 		yonuen.addFeature(new Store(9));
 		yonuen.addFeature(new Dungeon("Sky-Sundering Tower", yonuen, Shape.TOWER,BossType.FATESPINNER));
-		yonuen.addFeature(new RogueGuild("The Open Adventuring Guild",10).setIntro("Outside the Guild, there is an overly long manifesto full of errors about how the other hero guilds aren't willing to take the biggest adventures, but they are."));
+		yonuen.addFeature(new RogueGuild("The Open Adventuring Guild",10).setIntro("Outside the Guild, there is an overly long manifesto full of errors about how the other hero guilds aren't willing to take on the biggest adventures, but they are."));
 		yonuen.addTravel();
 		yonuen.tTags.add(TownTag.ADVENTURE);
 		yonuen.tTags.add(TownTag.CITY);
