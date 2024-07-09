@@ -1,5 +1,6 @@
 package tests;
 
+import derg.ds.Chomp;
 import trawel.core.mainGame;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
@@ -80,9 +81,9 @@ public class UnitAssertions {
 				+" on then off"+pad(extra.setByteInLong(extra.setByteInLong(l,0b11111111,16),0b00000000,16)));*/
 		for (int i = 0;i < 64;i+=8) {
 			System.out.println("at " +i);
-			long off = extra.setByteInLong(l,0b000000000,i);
-			long parton = extra.setByteInLong(l,0b010101010,i);
-			long thenoff = extra.setByteInLong(parton,0b000000000,i);
+			long off = Chomp.setByteInLong(l,0b000000000,i);
+			long parton = Chomp.setByteInLong(l,0b010101010,i);
+			long thenoff = Chomp.setByteInLong(parton,0b000000000,i);
 			System.out.println("long : " +l
 					+"\n off: "+ pad(off)
 					+"\n part on: "+ pad(parton)

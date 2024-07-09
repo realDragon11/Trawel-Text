@@ -1,5 +1,6 @@
 package trawel.personal.item.solid.variants;
 
+import derg.ds.Chomp;
 import trawel.helper.methods.extra;
 
 public abstract class SimpleStyleNum implements StyleNum {
@@ -23,7 +24,7 @@ public abstract class SimpleStyleNum implements StyleNum {
 	
 	@Override
 	public int generate() {
-		int store = extra.emptyInt;
+		int store = Chomp.emptyInt;
 		for (int i = 0;i < 4;i++) {
 			store |= extra.getRand().nextInt(maxes[i]) << 8;//DOLATER: make sure this actually works
 		}

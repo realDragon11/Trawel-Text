@@ -2,6 +2,7 @@ package trawel.personal.item.magic;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
+import derg.ds.Chomp;
 import derg.strings.random.SRFrontBackedRandom;
 import trawel.core.mainGame;
 import trawel.helper.constants.TrawelColor;
@@ -20,12 +21,12 @@ public class EnchantConstant extends Enchant {
 	 * actually two bytes, the first is used to indicate the name 'might' fluff ordinal
 	 * the second is the actual fluff ordinal
 	 */
-	private int beforeName = extra.emptyInt;
+	private int beforeName = Chomp.emptyInt;
 	/**
 	 * actually two bytes, the first is used to indicate the name 'might' fluff ordinal
 	 * the second is the actual fluff ordinal
 	 */
-	private int afterName = extra.emptyInt;
+	private int afterName = Chomp.emptyInt;
 	// beforeName armor afterName
 	private float goldMult = 1;
 	private int goldMod = 0;
@@ -39,7 +40,7 @@ public class EnchantConstant extends Enchant {
 	 * bits 1-3 = turned into int determining type of enchant (max 8 possible with this enchant type)
 	 * if all bits are 0 (more importantly, 1-3), then this slot isn't used.
 	 */
-	private byte enchantTypes = extra.emptyByte;
+	private byte enchantTypes = Chomp.emptyByte;
 	
 	private static WeightedTable enchantChances;
 	private static float[][] floatMultList;
@@ -253,7 +254,7 @@ public class EnchantConstant extends Enchant {
 				might = randomLists.powerMightyAdj(true).getNumByte();
 				might |= 1 << 7;//sets that we're mighty, note that mighty is limited to 2^7 options due to this
 			}else {
-				might = extra.emptyInt;
+				might = Chomp.emptyInt;
 			}
 			subType = (byte) extra.randRange(0, 4);
 			enchantTypes = (byte) (internalNibbleConverter(off1,subType) << 4);
@@ -312,7 +313,7 @@ public class EnchantConstant extends Enchant {
 				might = randomLists.powerMightyAdj(false).getNumByte();
 				might |= 1 << 7;//sets that we're mighty, note that mighty is limited to 2^7 options due to this
 			}else {
-				might = extra.emptyInt;
+				might = Chomp.emptyInt;
 			}
 			subType = (byte) extra.randRange(0, 4);
 			enchantTypes = (byte) (enchantTypes | internalNibbleConverter(off2, subType));//FIXME
@@ -591,7 +592,7 @@ public class EnchantConstant extends Enchant {
 		}
 		byte testb = 1<<1;
 		System.out.println("push test: " + Integer.toBinaryString(testb) + " and " + Integer.toBinaryString(testb | (1 << 7)));
-		System.out.println("empties: " + Integer.toBinaryString(extra.emptyInt) + " " + Integer.toBinaryString(extra.emptyByte));
+		System.out.println("empties: " + Integer.toBinaryString(Chomp.emptyInt) + " " + Integer.toBinaryString(Chomp.emptyByte));
 		
 		for (int i = 1; i < 6; i++) {
 			test = EnchantConstant.makeEnchant(i%1.2f, 50);

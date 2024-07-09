@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import derg.ds.Chomp;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLast;
@@ -114,14 +115,14 @@ public class NodeConnector implements Serializable {
 	public int newNode(int typeNum, int eventNum,int level) {
 		size++;
 		connections[size] = 0b0;//can't set yet
-		dataContainer[size] =  extra.setShortInLong
-				(extra.setNthByteInLong(
-				extra.setNthByteInLong(0b0, typeNum, 3)
+		dataContainer[size] =  Chomp.setShortInLong
+				(Chomp.setNthByteInLong(
+				Chomp.setNthByteInLong(0b0, typeNum, 3)
 				,eventNum,1)
 				,level,32);
-		assert extra.intGetNthByteFromLong(dataContainer[size], 1) == eventNum;
-		assert extra.intGetNthByteFromLong(dataContainer[size], 3) == typeNum;
-		assert extra.intGetNthShortFromLong(dataContainer[size], 2) == level;
+		assert Chomp.intGetNthByteFromLong(dataContainer[size], 1) == eventNum;
+		assert Chomp.intGetNthByteFromLong(dataContainer[size], 3) == typeNum;
+		assert Chomp.intGetNthShortFromLong(dataContainer[size], 2) == level;
 		assert getFlag(size,NodeFlag.GENERIC_OVERRIDE) == false;
 		storage[size] = null;//new Object[2];//for now we just assume we need to, can trim later compiletime
 		return size;
@@ -137,48 +138,48 @@ public class NodeConnector implements Serializable {
 	}
 	
 	public boolean getFlag(int node,NodeFlag f) {
-		return extra.getEnumByteFlag(f.ordinal(), extra.extractByteFromLong(dataContainer[node], 0));
+		return Chomp.getEnumByteFlag(f.ordinal(), Chomp.extractByteFromLong(dataContainer[node], 0));
 	}
 	
 	public void setFlag(int node,NodeFlag f, boolean bool) {
 		final long temp = dataContainer[node];
-		final byte sub = extra.extractByteFromLong(temp,0);//note weird sign stuff
-		dataContainer[node] = extra.setByteInLong(temp,extra.setEnumByteFlag(f.ordinal(), sub, bool), 0);
+		final byte sub = Chomp.extractByteFromLong(temp,0);//note weird sign stuff
+		dataContainer[node] = Chomp.setByteInLong(temp,Chomp.setEnumByteFlag(f.ordinal(), sub, bool), 0);
 	}
 	
 	public int getEventNum(int node) {
-		return extra.intGetNthByteFromLong(dataContainer[node],1);
+		return Chomp.intGetNthByteFromLong(dataContainer[node],1);
 	}
 	public int getStateNum(int node) {
-		return extra.intGetNthByteFromLong(dataContainer[node],2);
+		return Chomp.intGetNthByteFromLong(dataContainer[node],2);
 	}
 	public int getTypeNum(int node) {
-		return extra.intGetNthByteFromLong(dataContainer[node],3);
+		return Chomp.intGetNthByteFromLong(dataContainer[node],3);
 	}
 	
 	public void setEventNum(int node, int num) {
-		dataContainer[node] = extra.setByteInLong(dataContainer[node],num, 8);
+		dataContainer[node] = Chomp.setByteInLong(dataContainer[node],num, 8);
 	}
 	public void setStateNum(int node, int num) {
-		dataContainer[node] = extra.setByteInLong(dataContainer[node],num, 16);
+		dataContainer[node] = Chomp.setByteInLong(dataContainer[node],num, 16);
 	}
 	public void setTypeNum(int node, int num) {
-		dataContainer[node] = extra.setByteInLong(dataContainer[node],num, 24);
+		dataContainer[node] = Chomp.setByteInLong(dataContainer[node],num, 24);
 	}
 	
 	public int getLevel(int node) {
-		return extra.intGetNthShortFromLong(dataContainer[node], 2);//3rd, is zero indexed
+		return Chomp.intGetNthShortFromLong(dataContainer[node], 2);//3rd, is zero indexed
 	}
 	
 	public void setLevel(int node,int tier) {
-		dataContainer[node] = extra.setShortInLong(dataContainer[node], tier, 32);
+		dataContainer[node] = Chomp.setShortInLong(dataContainer[node], tier, 32);
 	}
 	
 	public List<Integer> getConnects(int node) {
 		long sub = connections[node];
 		List<Integer> list = new ArrayList<Integer>();
 		for (int i = 0; i < 8;i++) {
-			int ret = extra.intGetNthByteFromLong(sub,i);
+			int ret = Chomp.intGetNthByteFromLong(sub,i);
 			assert ret >= 0;
 			if (ret > 0) {
 				list.add(ret);
@@ -193,7 +194,7 @@ public class NodeConnector implements Serializable {
 		for (int i = 0; i < places.length;i++) {
 			//I think I have to do this so it doesn't delete info
 			assert places[i] <= size;
-			sub = extra.setNthByteInLong(sub,places[i],i);
+			sub = Chomp.setNthByteInLong(sub,places[i],i);
 		}
 		connections[node] = sub;
 	}
@@ -203,11 +204,11 @@ public class NodeConnector implements Serializable {
 		assert tonode != 0;
 		long sub = connections[node];
 		for (int i = 0; i < 8;i++) {
-			int ret = extra.intGetNthByteFromLong(sub,i);
+			int ret = Chomp.intGetNthByteFromLong(sub,i);
 			assert ret >= 0;
 			assert ret <= 255;
 			if (ret == 0) {
-				connections[node] = extra.setNthByteInLong(sub,tonode,i);
+				connections[node] = Chomp.setNthByteInLong(sub,tonode,i);
 				return;
 			}
 		}
@@ -235,7 +236,7 @@ public class NodeConnector implements Serializable {
 		for (int i = 0; i < connects.size();i++) {
 			//I think I have to do this so it doesn't delete info
 			assert connects.get(i) <= size;
-			sub = extra.setNthByteInLong(sub,connects.get(i),i);
+			sub = Chomp.setNthByteInLong(sub,connects.get(i),i);
 		}
 		connections[node] = sub;
 	}
@@ -608,7 +609,7 @@ public class NodeConnector implements Serializable {
 	}
 
 	protected void setFloor(int node, int floor) {
-		dataContainer[node] = extra.setShortInLong(dataContainer[node], floor, 64-16);
+		dataContainer[node] = Chomp.setShortInLong(dataContainer[node], floor, 64-16);
 	}
 
 	/**
@@ -622,7 +623,7 @@ public class NodeConnector implements Serializable {
 	}
 
 	public int getFloor(int node) {
-		return extra.intGetNthShortFromLong(dataContainer[node],3);//the last short
+		return Chomp.intGetNthShortFromLong(dataContainer[node],3);//the last short
 	}
 	
 	public boolean isDeepest(int node) {

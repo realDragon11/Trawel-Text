@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import derg.ds.Chomp;
 import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;
@@ -79,11 +80,11 @@ public class Agent extends SuperPerson{
 	}
 	
 	public void setFlag(AgentFlag flag, boolean bool) {
-		flags = extra.setEnumByteFlag(flag.ordinal(), flags, bool);
+		flags = Chomp.setEnumByteFlag(flag.ordinal(), flags, bool);
 	}
 	
 	public boolean getFlag(AgentFlag flag) {
-		return extra.getEnumByteFlag(flag.ordinal(), flags);
+		return Chomp.getEnumByteFlag(flag.ordinal(), flags);
 	}
 
 	public List<Behavior> getBehaviors() {

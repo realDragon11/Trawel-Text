@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import derg.ds.Chomp;
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
@@ -1515,12 +1516,12 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 	}
 	
 	public boolean getFlag(PersonFlag flag) {
-		return extra.getEnumShortFlag(flag.ordinal(), flags);
+		return Chomp.getEnumShortFlag(flag.ordinal(), flags);
 		//return Byte.toUnsignedInt((byte) (flags & (1 << flag.ordinal()))) > 0;
 	}
 	
 	public void setFlag(PersonFlag flag, boolean bool) {
-		flags = extra.setEnumShortFlag(flag.ordinal(), flags, bool);
+		flags = Chomp.setEnumShortFlag(flag.ordinal(), flags, bool);
 		/*
 		if (bool) {
 			flags |= (1 << flag.ordinal());

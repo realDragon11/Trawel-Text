@@ -2,6 +2,7 @@ package trawel.towns.features.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import derg.ds.Chomp;
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
@@ -23,7 +24,7 @@ public class Library extends Feature {
 	private static final long serialVersionUID = 1L;
 	//TODO: make these have some real meaning and not just be bad flavor
 	//private ArrayList<Book> books = new ArrayList<Book>();
-	private byte libFlags = extra.emptyByte;
+	private byte libFlags = Chomp.emptyByte;
 	
 	public Library(String _name, Town _town) {
 		start();
@@ -37,11 +38,11 @@ public class Library extends Feature {
 	}
 	
 	public boolean getLibFlag(LibraryFlag flag) {
-		return extra.getEnumByteFlag(flag.ordinal(),libFlags);
+		return Chomp.getEnumByteFlag(flag.ordinal(),libFlags);
 	}
 	
 	public void setLibFlag(LibraryFlag flag, boolean bool) {
-		libFlags = extra.setEnumByteFlag(flag.ordinal(),libFlags,bool);
+		libFlags = Chomp.setEnumByteFlag(flag.ordinal(),libFlags,bool);
 	}
 	
 	@Override

@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.EnumSet;
 import java.util.Set;
 
+import derg.ds.Chomp;
 import trawel.battle.Combat;
 import trawel.battle.Combat.ATK_ResultType;
 import trawel.battle.Combat.AttackReturn;
@@ -370,14 +371,14 @@ public class Weapon extends Item implements IEffectiveLevel {
 		
 		final int subTests = battleTests*testSize;
 		//create long and set impact chance
-		long conAssembler = extra.setNthByteInInt(0b0,(int)((impactChance*100d)/subTests), 0);
+		long conAssembler = Chomp.setNthByteInInt(0b0,(int)((impactChance*100d)/subTests), 0);
 		//below two will explode if contain more than a short can hold, but that will be a VERY large level
 		//set best damage
-		conAssembler = extra.setShortInLong(conAssembler, (int)((highest*100d)/(subTests)),8);
+		conAssembler = Chomp.setShortInLong(conAssembler, (int)((highest*100d)/(subTests)),8);
 		//set weighted damage
-		conAssembler = extra.setShortInLong(conAssembler, (int)((weighted*100d)/(subTests)),24);
-		conAssembler = extra.setByteInLong(conAssembler, (int)(highest*(100d/total)), 40);
-		conAssembler = extra.setByteInLong(conAssembler, (int)(lowest*(100d/total)), 48);
+		conAssembler = Chomp.setShortInLong(conAssembler, (int)((weighted*100d)/(subTests)),24);
+		conAssembler = Chomp.setByteInLong(conAssembler, (int)(highest*(100d/total)), 40);
+		conAssembler = Chomp.setByteInLong(conAssembler, (int)(lowest*(100d/total)), 48);
 		
 		this.bsCon = conAssembler;
 	}
@@ -404,7 +405,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 		if (bsCon == 0) {
 			refreshBattleScore();
 		}
-		return extra.extractByteFromLong(bsCon, 40);
+		return Chomp.extractByteFromLong(bsCon, 40);
 	}
 	/**
 	 * 0-100
@@ -413,27 +414,27 @@ public class Weapon extends Item implements IEffectiveLevel {
 		if (bsCon == 0) {
 			refreshBattleScore();
 		}
-		return extra.extractByteFromLong(bsCon, 48);
+		return Chomp.extractByteFromLong(bsCon, 48);
 	}
 	
 	public double scoreImpact() {
 		if (bsCon == 0) {
 			refreshBattleScore();
 		}
-		return extra.extractByteFromLong(bsCon, 0)/100d;
+		return Chomp.extractByteFromLong(bsCon, 0)/100d;
 	}
 	
 	public double scoreWeight() {
 		if (bsCon == 0) {
 			refreshBattleScore();
 		}
-		return extra.extractShortFromLong(bsCon,24)/100d;
+		return Chomp.extractShortFromLong(bsCon,24)/100d;
 	}
 	public double scoreBest() {
 		if (bsCon == 0) {
 			refreshBattleScore();
 		}
-		return extra.extractShortFromLong(bsCon,8)/100d;
+		return Chomp.extractShortFromLong(bsCon,8)/100d;
 	}
 
 	@Override
