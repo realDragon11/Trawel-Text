@@ -462,7 +462,7 @@ public enum Archetype implements IHasSkills{
 		List<IHasSkills> list = new ArrayList<IHasSkills>();
 		Set<Archetype> pAs = person.getArchSet();
 		int nonRacialAs = (int) pAs.stream().filter(a -> a.type != AType.RACIAL).count();
-		if (nonRacialAs == 0) {
+		if (person.getFlag(PersonFlag.CAN_LEARN) && nonRacialAs == 0) {
 			list.addAll(getFirst(person,6,pAs));//current game never actually has this matter because the player gets it randomly chosen, or they get to pick it from the entire list
 			return list;
 		}
