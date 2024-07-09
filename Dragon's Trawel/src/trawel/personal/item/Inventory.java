@@ -393,16 +393,16 @@ public class Inventory implements java.io.Serializable{
 		String tempStr = "a";
 		int i = 0;
 		while (i < 5) {
-			tempStr += " "+ armorSlots[i].getName() + ",\n";
+			tempStr += " "+ armorSlots[i].getName() + ",";
 			i++;
 		}
 		if (owner.getSuper()!= null) {
-				return tempStr + ( hand.canDisplay() ? " and a " + hand.getName() : "") + "\n as well as " 
+				return tempStr + ( hand.canDisplay() ? " and a " + hand.getName()+"," : "") + " as well as " 
 						+ 
 						owner.getSuper().getGoldDisp()
 						+".";
 		}
-		return tempStr + " and a " + hand.getName() + "\n as well as " 
+		return tempStr + " and a " + hand.getName() + " as well as " 
 		+ 
 		World.currentMoneyDisplay(money)
 		+".";
