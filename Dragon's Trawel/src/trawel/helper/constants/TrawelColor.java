@@ -62,6 +62,7 @@ public class TrawelColor {
 	 * usually used if it was chance based, or merely accumulating progress towards a true RESULT_GOOD
 	 */
 	public static final String RESULT_PASS = TIMID_GREEN;
+	
 	public static final String COLOR_NEW = TrawelColor.inlineColor(TrawelColor.colorMix(Color.ORANGE,Color.WHITE,.5f));
 	public static final String COLOR_SEEN = TrawelColor.inlineColor(TrawelColor.colorMix(Color.YELLOW,Color.WHITE,.5f));
 	public static final String COLOR_BEEN = TrawelColor.inlineColor(TrawelColor.colorMix(Color.BLUE,Color.WHITE,.5f));
@@ -69,12 +70,14 @@ public class TrawelColor {
 	public static final String COLOR_REGROWN = TrawelColor.inlineColor(TrawelColor.colorMix(Color.MAGENTA,Color.WHITE,.8f));
 	public static final String COLOR_UNDONE_TIMID = TrawelColor.inlineColor(TrawelColor.colorMix(Color.ORANGE,Color.WHITE,.7f));
 	public static final String COLOR_DONE_TIMID = TrawelColor.inlineColor(TrawelColor.colorMix(Color.BLUE,Color.WHITE,.7f));
+	
 	public static final String VISIT_NEW = COLOR_NEW + "new! ";
 	public static final String VISIT_SEEN = COLOR_SEEN + "! ";
 	public static final String VISIT_BEEN = COLOR_BEEN;
 	public static final String VISIT_OWN = COLOR_OWN + "(owned) ";
 	public static final String VISIT_DONE = COLOR_OWN;
 	public static final String VISIT_REGROWN = TIMID_MAGENTA + "new? ";
+	
 	/**
 	 * used for "it's a miss!" after the attack proper
 	 */
@@ -85,6 +88,7 @@ public class TrawelColor {
 	public static final String AFTER_ATTACK_BLOCKED = TrawelColor.inlineColor(TrawelColor.colorMix(Color.BLUE,Color.WHITE,.3f));
 	public static final String ATTACK_MISS = PRE_YELLOW;
 	public static final String ATTACK_DAMAGED_WITH_ARMOR = TrawelColor.inlineColor(TrawelColor.colorMix(Color.ORANGE,TrawelColor.colorMix(Color.BLUE,Color.WHITE,.3f),.9f));
+	
 	public static final String F_SPECIAL = PRE_MAGENTA;
 	public static final String F_SERVICE = PRE_BLUE;
 	public static final String F_AUX_SERVICE = TIMID_BLUE;
@@ -94,25 +98,31 @@ public class TrawelColor {
 	public static final String F_FORT = TIMID_GREY;
 	public static final String F_BUILDABLE = PRE_ORANGE;
 	public static final String F_GUILD = PRE_YELLOW;
+	
 	//item values
 	public static final String ITEM_WANT_HIGHER = TrawelColor.inlineColor(TrawelColor.colorMix(Color.WHITE,TrawelColor.colorMix(Color.BLUE,Color.GREEN,.5f),.3f));
 	public static final String ITEM_WANT_LOWER = TrawelColor.inlineColor(TrawelColor.colorMix(Color.WHITE,TrawelColor.colorMix(Color.YELLOW,Color.ORANGE,.5f),.3f));
 	public static final String ITEM_DESC_PROP = TIMID_BLUE;
 	public static final String ITEM_VALUE = TIMID_MAGENTA;
+	
 	public static final String STAT_HEADER = TrawelColor.inlineColor(TrawelColor.colorMix(Color.WHITE,TrawelColor.colorMix(Color.BLUE,Color.MAGENTA,.5f),.6f));
+	
 	//attributes
 	public static final String ATT_TRUE = PRE_MAGENTA;
 	public static final String ATT_EFFECTIVE = TIMID_MAGENTA;
+	
 	//attack picking
 	public static final String ATK_BONUS = STAT_HEADER;
 	public static final String ATK_WOUND_NORMAL = ITEM_DESC_PROP;
 	public static final String ATK_WOUND_INJURY = ITEM_DESC_PROP;
 	public static final String ATK_WOUND_NEGATE = PRE_RED;
 	public static final String ATK_WOUND_GRAZE = TIMID_RED;
+	
 	//color option groups for equal but different options
 	public static final String COLOR_OPTION_A = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.RED,Color.GREEN,.3f),Color.WHITE,.5f));
 	public static final String COLOR_OPTION_B = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.RED,Color.BLUE,.3f),Color.WHITE,.5f));
 	public static final String COLOR_OPTION_C = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.RED,Color.MAGENTA,.3f),Color.WHITE,.5f));
+	
 	//feature service grouping
 	public static final String SERVICE_FREE = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.PINK,Color.GREEN,.3f),Color.WHITE,.4f));
 	public static final String SERVICE_AETHER = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.MAGENTA,Color.CYAN,.5f),Color.WHITE,.5f));
@@ -121,6 +131,7 @@ public class TrawelColor {
 	public static final String SERVICE_SPECIAL_PAYMENT = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.PINK,Color.ORANGE,.3f),Color.WHITE,.4f));
 	//shared common other feature behaviors
 	public static final String FSERVICE_QUEST = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.ORANGE,Color.GREEN,.3f),Color.WHITE,.5f));
+	
 	public static final Color colorMix(Color c1, Color c2, float f) {
 		return new Color((int) extra.lerp(c1.getRed(),c2.getRed(), f),(int) extra.lerp(c1.getGreen(),c2.getGreen(), f),(int) extra.lerp(c1.getBlue(),c2.getBlue(), f));
 	}
