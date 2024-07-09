@@ -962,71 +962,12 @@ public class Player extends SuperPerson{
 
 									@Override
 									public String title() {
-										return "State";
+										return "Raw Stats";
 									}
 
 									@Override
 									public boolean go() {
-										switch ((int)Math.round(getPerson().getBag().calculateDrawBaneFor(DrawBane.EV_DAYLIGHT))) {
-										case 0:
-											Print.println("It is very dark outside.");
-											break;
-										case 1:
-											Print.println("It is dark outside.");
-											break;
-										case 2:
-											Print.println("It is twilight outside.");
-											break;
-										case 3:
-											Print.println("It is dim outside.");
-											break;
-										case 4:
-											Print.println("It is light outside.");
-											break;
-										case 5:
-											Print.println("It is bright outside.");
-											break;
-										}
-										switch ((int)Math.round(getPerson().getBag().calculateDrawBaneFor(DrawBane.EV_WEALTH))) {
-										case 0:
-											Print.println("You do not look worth robbing.");
-											break;
-										case 1:
-											Print.println("You look like a poor crime target.");
-											break;
-										case 2:
-											Print.println("You look like you might have some meager wealth to take.");
-											break;
-										case 3:
-											Print.println("You look like a potential crime target.");
-											break;
-										case 4:
-											Print.println("You look like a good crime target.");
-											break;
-										case 5:
-											Print.println("You look like you have more money than you know what to do with.");
-											break;
-										}
-										switch ((int)Math.round(getPerson().getBag().calculateDrawBaneFor(DrawBane.EV_BLOOD))) {
-										case 0:
-											Print.println("You have next to no blood on your person.");
-											break;
-										case 1:
-											Print.println("You have very little blood on your person.");
-											break;
-										case 2:
-											Print.println("You have a small amount of blood on your person.");
-											break;
-										case 3:
-											Print.println("You have some blood on your person.");
-											break;
-										case 4:
-											Print.println("You have a fair bit of blood on your person.");
-											break;
-										case 5:
-											Print.println("You smell strongly of blood.");
-											break;
-										}
+										person.displayStats(false);
 										return false;
 									}});
 								invList.add(new MenuBack());
@@ -1120,26 +1061,88 @@ public class Player extends SuperPerson{
 
 					@Override
 					public String title() {
-						return "Raw Stats and Effects";
+						return "Status";
 					}
 
 					@Override
 					public boolean go() {
-						person.displayStats(false);
 						if (person.hasEffect(Effect.BURNOUT)) {
-							Print.println(TrawelColor.RESULT_BAD+"You are burned out.");
+							Print.println(TrawelColor.RESULT_BAD+"You are burned out. Cure at Doctor or rest off in Inn.");
 						}
 						if (person.hasEffect(Effect.CURSE)) {
-							Print.println(TrawelColor.RESULT_BAD+"You are cursed.");
+							Print.println(TrawelColor.RESULT_BAD+"You are cursed. Cure at Doctor.");
+						}
+						if (person.hasEffect(Effect.TIRED)) {
+							Print.println(TrawelColor.RESULT_BAD+"You are tired. Rest off at Inn.");
 						}
 						if (person.hasEffect(Effect.WOUNDED)) {
-							Print.println(TrawelColor.RESULT_BAD+"You are badly wounded.");
+							Print.println(TrawelColor.RESULT_BAD+"You are badly wounded. Cure at Doctor.");
 						}
 						if (person.hasEffect(Effect.DAMAGED)) {
-							Print.println(TrawelColor.RESULT_BAD+"Your gear is damaged.");
+							Print.println(TrawelColor.RESULT_BAD+"Your gear is damaged. Repair at Blacksmith.");
 						}
 						if (person.hasEffect(Effect.BEES)) {
-							Print.println(TrawelColor.RESULT_BAD+"You are beset by bees.");
+							Print.println(TrawelColor.RESULT_BAD+"You are beset by bees. Wash off in water.");
+						}
+						switch ((int)Math.round(getPerson().getBag().calculateDrawBaneFor(DrawBane.EV_DAYLIGHT))) {
+						case 0:
+							Print.println("It is very dark outside.");
+							break;
+						case 1:
+							Print.println("It is dark outside.");
+							break;
+						case 2:
+							Print.println("It is twilight outside.");
+							break;
+						case 3:
+							Print.println("It is dim outside.");
+							break;
+						case 4:
+							Print.println("It is light outside.");
+							break;
+						case 5:
+							Print.println("It is bright outside.");
+							break;
+						}
+						switch ((int)Math.round(getPerson().getBag().calculateDrawBaneFor(DrawBane.EV_WEALTH))) {
+						case 0:
+							Print.println("You do not look worth robbing.");
+							break;
+						case 1:
+							Print.println("You look like a poor crime target.");
+							break;
+						case 2:
+							Print.println("You look like you might have some meager wealth to take.");
+							break;
+						case 3:
+							Print.println("You look like a potential crime target.");
+							break;
+						case 4:
+							Print.println("You look like a good crime target.");
+							break;
+						case 5:
+							Print.println("You look like you have more money than you know what to do with.");
+							break;
+						}
+						switch ((int)Math.round(getPerson().getBag().calculateDrawBaneFor(DrawBane.EV_BLOOD))) {
+						case 0:
+							Print.println("You have next to no blood on your person.");
+							break;
+						case 1:
+							Print.println("You have very little blood on your person.");
+							break;
+						case 2:
+							Print.println("You have a small amount of blood on your person.");
+							break;
+						case 3:
+							Print.println("You have some blood on your person.");
+							break;
+						case 4:
+							Print.println("You have a fair bit of blood on your person.");
+							break;
+						case 5:
+							Print.println("You smell strongly of blood.");
+							break;
 						}
 						return false;
 					}});

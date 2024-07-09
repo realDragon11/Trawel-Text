@@ -167,7 +167,7 @@ public class StoryTutorial extends Story{
 		deaths++;
 		switch (deaths) {
 		case 1:
-			Print.println("Welcome to your first death! You continue as normal. If you're in an exploration area, you likely got kicked out of it, otherwise not much changed... except maybe the thing that killed you leveled up.");
+			Print.println("Welcome to your first death! In Trawel, dying is very temporary. If you're in an exploration area, you likely got kicked out of it. On Death, you suffer a random Punishment Effect, which makes you worse in battle until you resolve. Check the Status Player Menu option for your current Punishments and how to fix them. Enemies can't loot you, but they can gain XP and level up from you demise!");
 			Networking.unlockAchievement("die1");
 		;break;
 		default:

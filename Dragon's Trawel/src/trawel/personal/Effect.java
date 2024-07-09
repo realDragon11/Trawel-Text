@@ -5,7 +5,7 @@ import trawel.helper.constants.TrawelColor;
 public enum Effect{
 	//negative lasting status effects the player has to remove somewhere
 	//used as punishments/costs for events, or as skill tie ins
-	CURSE("Curse","Base HP is decreased by half. Cure at doctor.",true,false,-4),
+	CURSE("Curse","Base HP is decreased by half. Cure at Doctor.",true,false,-4),
 	/**
 	 * used on failed OOB rolls to make the player less likely to spam them while the consequence can't stack
 	 */
