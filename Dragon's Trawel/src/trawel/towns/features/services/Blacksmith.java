@@ -206,7 +206,7 @@ public class Blacksmith extends Feature {
 						public boolean go() {
 							if (Player.player.getGold() >= repairCost) {
 								Player.player.loseGold(repairCost);
-								Print.println(TrawelColor.RESULT_PASS+" They tinker with your equipment.");
+								Print.println(TrawelColor.RESULT_PASS+"They tinker with your equipment.");
 								//next call displays the effect results
 								Player.player.getPerson().repairEffects();
 							}else {
