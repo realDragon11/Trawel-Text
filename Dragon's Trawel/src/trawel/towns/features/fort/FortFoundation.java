@@ -12,6 +12,12 @@ import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
+import trawel.towns.features.fort.elements.LaborType;
+import trawel.towns.features.fort.elements.Laborer;
+import trawel.towns.features.fort.features.Forge;
+import trawel.towns.features.fort.features.Hunter;
+import trawel.towns.features.fort.features.Watchtower;
+import trawel.towns.features.fort.features.WizardTower;
 
 public class FortFoundation extends FortFeature {
 

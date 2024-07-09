@@ -7,10 +7,10 @@ import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.helper.methods.extra;
 import trawel.quests.types.Quest;
-import trawel.towns.Connection;
-import trawel.towns.Feature;
-import trawel.towns.Town;
-import trawel.towns.Connection.ConnectClass;
+import trawel.towns.contexts.Town;
+import trawel.towns.data.Connection;
+import trawel.towns.data.Connection.ConnectClass;
+import trawel.towns.features.Feature;
 
 /**
  * must be a feature as well

@@ -3,9 +3,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import trawel.Networking;
 import trawel.battle.Combat;
 import trawel.battle.Combat.SkillCon;
+import trawel.core.Networking;
 import trawel.factions.Faction;
 import trawel.helper.methods.extra;
 import trawel.personal.NPCMutator;
@@ -21,7 +21,7 @@ import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.behaviors.GateNodeBehavior;
 import trawel.quests.types.CleanseSideQuest.CleanseType;
 import trawel.quests.types.Quest.TriggerType;
-import trawel.towns.features.fort.SubSkill;
+import trawel.towns.features.fort.elements.SubSkill;
 
 public class BossNode{
 	

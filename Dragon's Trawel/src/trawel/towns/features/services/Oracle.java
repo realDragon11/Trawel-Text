@@ -14,16 +14,16 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import trawel.Networking;
-import trawel.Networking.Area;
+import trawel.core.Networking;
+import trawel.core.mainGame;
+import trawel.core.Networking.Area;
 import trawel.helper.methods.extra;
-import trawel.mainGame;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.time.TrawelTime;
-import trawel.towns.Feature;
-import trawel.towns.World;
+import trawel.towns.contexts.World;
+import trawel.towns.features.Feature;
 
 public class Oracle extends Feature{ //extends feature later
 

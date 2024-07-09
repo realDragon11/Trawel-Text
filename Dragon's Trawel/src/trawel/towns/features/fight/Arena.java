@@ -7,8 +7,8 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
-import trawel.Networking.Area;
 import trawel.battle.Combat;
+import trawel.core.Networking.Area;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -18,9 +18,9 @@ import trawel.personal.people.SuperPerson;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.time.TrawelTime;
-import trawel.towns.Calender;
-import trawel.towns.Feature;
-import trawel.towns.World;
+import trawel.towns.contexts.World;
+import trawel.towns.data.Calender;
+import trawel.towns.features.Feature;
 
 public class Arena extends Feature{
 

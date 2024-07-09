@@ -9,14 +9,14 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import trawel.Networking;
-import trawel.Networking.BattleType;
-import trawel.mainGame;
 import trawel.arc.misc.Deaths;
 import trawel.battle.attacks.ImpairedAttack;
-import trawel.battle.attacks.TargetFactory;
-import trawel.battle.attacks.TargetFactory.BloodType;
+import trawel.core.Networking;
+import trawel.core.mainGame;
+import trawel.core.Networking.BattleType;
 import trawel.battle.attacks.Wound;
+import trawel.battle.targets.TargetFactory;
+import trawel.battle.targets.TargetFactory.BloodType;
 import trawel.factions.FBox;
 import trawel.factions.HostileTask;
 import trawel.helper.methods.extra;
@@ -45,8 +45,8 @@ import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.quests.types.CleanseSideQuest;
 import trawel.quests.types.Quest.TriggerType;
-import trawel.towns.World;
-import trawel.towns.features.fort.SubSkill;
+import trawel.towns.contexts.World;
+import trawel.towns.features.fort.elements.SubSkill;
 /**
  * A combat holds some of the more battle-focused commands.
  * @author dragon

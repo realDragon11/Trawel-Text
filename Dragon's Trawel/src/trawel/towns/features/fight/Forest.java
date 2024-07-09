@@ -3,8 +3,8 @@ import java.time.LocalDateTime;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
-import trawel.Networking.Area;
 import trawel.battle.Combat;
+import trawel.core.Networking.Area;
 import trawel.factions.Faction;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
@@ -14,8 +14,8 @@ import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.quests.types.Quest.TriggerType;
+import trawel.towns.contexts.World;
 import trawel.personal.people.Player;
-import trawel.towns.World;
 
 public class Forest extends ExploreFeature{
 	

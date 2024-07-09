@@ -7,8 +7,8 @@ import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Behavior;
 import trawel.time.TimeEvent;
-import trawel.towns.Feature.RemoveAgentFromFeatureEvent;
-import trawel.towns.Town;
+import trawel.towns.contexts.Town;
+import trawel.towns.features.Feature.RemoveAgentFromFeatureEvent;
 
 public class AbandonPostBehavior extends Behavior{
 	

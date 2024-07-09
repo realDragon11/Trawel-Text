@@ -9,9 +9,8 @@ import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
-import trawel.Networking;
-import trawel.WorldGen;
 import trawel.battle.Combat;
+import trawel.core.Networking;
 import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;
@@ -20,10 +19,11 @@ import trawel.personal.people.Agent.AgentGoal;
 import trawel.quests.types.BasicSideQuest;
 import trawel.quests.types.Quest;
 import trawel.quests.types.Quest.TriggerType;
+import trawel.towns.contexts.Town;
+import trawel.towns.contexts.World;
+import trawel.towns.data.WorldGen;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Player;
-import trawel.towns.Town;
-import trawel.towns.World;
 
 public class QuestReactionFactory {
 

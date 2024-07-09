@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import derg.SRGapShuffle;
-import derg.SRInOrder;
-import derg.SRPlainRandom;
-import derg.StringNum;
-import derg.StringResult;
+import derg.strings.fluffer.StringNum;
+import derg.strings.fluffer.StringResult;
+import derg.strings.random.SRGapShuffle;
+import derg.strings.random.SRInOrder;
+import derg.strings.random.SRPlainRandom;
 import trawel.battle.Combat.ATK_ResultCode;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;

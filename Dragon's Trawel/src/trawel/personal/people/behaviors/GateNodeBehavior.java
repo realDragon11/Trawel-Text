@@ -2,7 +2,7 @@ package trawel.personal.people.behaviors;
 
 import java.util.List;
 
-import trawel.Networking;
+import trawel.core.Networking;
 import trawel.helper.methods.extra;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;

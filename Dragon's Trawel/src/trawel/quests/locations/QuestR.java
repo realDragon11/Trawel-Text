@@ -3,7 +3,7 @@ package trawel.quests.locations;
 import java.io.Serializable;
 
 import trawel.quests.types.Quest;
-import trawel.towns.Feature;
+import trawel.towns.features.Feature;
 
 public class QuestR implements Serializable {
 

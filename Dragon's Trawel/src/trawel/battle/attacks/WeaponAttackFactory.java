@@ -8,8 +8,8 @@ import java.util.Map;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
-import derg.SRInOrder;
-import derg.StringResult;
+import derg.strings.fluffer.StringResult;
+import derg.strings.random.SRInOrder;
 import trawel.battle.Combat;
 import trawel.battle.Combat.ATK_ResultCode;
 import trawel.battle.Combat.ATK_ResultType;

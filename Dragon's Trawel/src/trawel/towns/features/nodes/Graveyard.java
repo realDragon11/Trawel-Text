@@ -1,7 +1,7 @@
 package trawel.towns.features.nodes;
-import trawel.Networking.Area;
+import trawel.core.Networking.Area;
 import trawel.helper.methods.extra;
-import trawel.towns.Town;
+import trawel.towns.contexts.Town;
 
 public class Graveyard extends NodeFeature {
 

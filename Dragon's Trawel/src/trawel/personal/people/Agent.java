@@ -14,8 +14,8 @@ import trawel.personal.people.behaviors.AbandonPostBehavior;
 import trawel.personal.people.behaviors.WanderEndless;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
-import trawel.towns.Town;
-import trawel.towns.World;
+import trawel.towns.contexts.Town;
+import trawel.towns.contexts.World;
 import trawel.towns.features.services.WitchHut;
 
 /**

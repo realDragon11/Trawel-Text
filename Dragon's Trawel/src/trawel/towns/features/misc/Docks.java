@@ -11,12 +11,11 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
-import trawel.Networking;
-import trawel.Networking.Area;
-import trawel.WorldGen;
-import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.battle.Combat.SkillCon;
+import trawel.core.Networking;
+import trawel.core.mainGame;
+import trawel.core.Networking.Area;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
@@ -29,12 +28,13 @@ import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.time.TrawelTime;
-import trawel.towns.Connection;
-import trawel.towns.Connection.ConnectClass;
-import trawel.towns.Feature;
-import trawel.towns.Town;
-import trawel.towns.World;
-import trawel.towns.events.TownFlavorFactory;
+import trawel.towns.contexts.Town;
+import trawel.towns.contexts.World;
+import trawel.towns.data.Connection;
+import trawel.towns.data.TownFlavorFactory;
+import trawel.towns.data.WorldGen;
+import trawel.towns.data.Connection.ConnectClass;
+import trawel.towns.features.Feature;
 
 public class Docks extends Feature {
 	

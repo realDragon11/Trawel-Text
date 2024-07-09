@@ -29,7 +29,7 @@ import trawel.personal.people.Player;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.behaviors.GateNodeBehavior;
 import trawel.time.TimeContext;
-import trawel.towns.World;
+import trawel.towns.contexts.World;
 import trawel.towns.features.services.Oracle;
 
 public class BeachNode implements NodeType {

@@ -1,11 +1,11 @@
 package trawel.towns.features.nodes;
-import trawel.Networking;
-import trawel.Networking.Area;
+import trawel.core.Networking;
+import trawel.core.Networking.Area;
 import trawel.helper.methods.extra;
 import trawel.personal.classless.Perk;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
-import trawel.towns.Town;
+import trawel.towns.contexts.Town;
 import trawel.towns.features.nodes.BossNode.BossType;
 
 public class Mine extends NodeFeature {

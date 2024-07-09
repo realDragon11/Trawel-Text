@@ -7,13 +7,14 @@ import com.github.yellowstonegames.core.WeightedTable;
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
-import trawel.Networking.Area;
+import trawel.core.Networking.Area;
 import trawel.helper.methods.extra;
 import trawel.personal.item.Seed;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
-import trawel.towns.Feature;
-import trawel.towns.Town;
+import trawel.towns.contexts.Town;
+import trawel.towns.features.Feature;
+import trawel.towns.features.elements.PlantSpot;
 
 public class Garden extends Feature {
 	

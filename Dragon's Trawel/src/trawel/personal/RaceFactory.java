@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import trawel.battle.attacks.TargetFactory;
+import trawel.battle.targets.TargetFactory;
 import trawel.factions.Faction;
 import trawel.factions.HostileTask;
 import trawel.helper.methods.extra;

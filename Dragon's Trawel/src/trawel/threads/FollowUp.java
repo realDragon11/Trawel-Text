@@ -7,7 +7,7 @@ import java.util.concurrent.TimeoutException;
 
 import trawel.helper.methods.extra;
 import trawel.helper.methods.extra.ThreadData;
-import trawel.towns.World;
+import trawel.towns.contexts.World;
 
 public class FollowUp {
 

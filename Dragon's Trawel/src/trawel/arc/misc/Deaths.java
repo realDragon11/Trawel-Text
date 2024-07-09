@@ -1,7 +1,7 @@
 package trawel.arc.misc;
 
-import trawel.Networking;
-import trawel.mainGame;
+import trawel.core.Networking;
+import trawel.core.mainGame;
 import trawel.helper.methods.extra;
 import trawel.personal.people.Player;
 

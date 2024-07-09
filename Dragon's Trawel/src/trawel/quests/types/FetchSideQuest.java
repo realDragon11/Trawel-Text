@@ -1,8 +1,8 @@
 package trawel.quests.types;
 
-import derg.SRPlainRandom;
-import derg.StringResult;
-import trawel.Networking;
+import derg.strings.fluffer.StringResult;
+import derg.strings.random.SRPlainRandom;
+import trawel.core.Networking;
 import trawel.factions.FBox;
 import trawel.factions.Faction;
 import trawel.helper.methods.extra;
@@ -14,9 +14,9 @@ import trawel.quests.events.QuestReactionFactory;
 import trawel.quests.events.QuestReactionFactory.QKey;
 import trawel.quests.locations.QuestBoardLocation;
 import trawel.quests.locations.QuestR;
-import trawel.towns.Feature;
-import trawel.towns.Town;
-import trawel.towns.World;
+import trawel.towns.contexts.Town;
+import trawel.towns.contexts.World;
+import trawel.towns.features.Feature;
 
 public class FetchSideQuest extends BasicSideQuest {
 	

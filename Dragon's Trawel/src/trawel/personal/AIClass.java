@@ -8,14 +8,14 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
-import trawel.mainGame.DispAttack;
-import trawel.Networking;
-import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.Stance;
 import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.core.Networking;
+import trawel.core.mainGame;
+import trawel.core.mainGame.DispAttack;
 import trawel.helper.methods.Services;
 import trawel.helper.methods.extra;
 import trawel.personal.Person.PersonFlag;
@@ -28,7 +28,7 @@ import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Player;
-import trawel.towns.World;
+import trawel.towns.contexts.World;
 import trawel.towns.features.services.Store;
 
 /**

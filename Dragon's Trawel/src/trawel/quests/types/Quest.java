@@ -6,7 +6,7 @@ import java.util.List;
 import trawel.quests.events.QuestReactionFactory;
 import trawel.quests.events.QuestReactionFactory.QKey;
 import trawel.quests.locations.QuestR;
-import trawel.towns.Town;
+import trawel.towns.contexts.Town;
 
 public interface Quest extends Serializable {
 

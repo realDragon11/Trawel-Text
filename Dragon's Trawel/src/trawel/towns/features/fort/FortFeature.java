@@ -4,8 +4,12 @@ import derg.menus.MenuLine;
 import trawel.helper.methods.extra;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
-import trawel.towns.Feature;
-import trawel.towns.World;
+import trawel.towns.contexts.World;
+import trawel.towns.features.Feature;
+import trawel.towns.features.fort.elements.LSkill;
+import trawel.towns.features.fort.elements.Laborer;
+import trawel.towns.features.fort.elements.SubSkill;
+import trawel.towns.features.fort.features.FortHall;
 
 public abstract class FortFeature extends Feature {
 

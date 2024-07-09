@@ -13,21 +13,21 @@ import java.util.stream.Stream;
 import com.github.tommyettinger.random.EnhancedRandom;
 import com.github.tommyettinger.random.WhiskerRandom;
 
-import derg.UnitAssertions;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuGeneratorPaged;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
-import trawel.Networking;
-import trawel.WorldGen;
-import trawel.mainGame;
+import tests.UnitAssertions;
+import trawel.core.Networking;
+import trawel.core.mainGame;
 import trawel.personal.DummyPerson;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.people.Player;
-import trawel.towns.World;
+import trawel.towns.contexts.World;
+import trawel.towns.data.WorldGen;
 
 public final class extra {
 	/**

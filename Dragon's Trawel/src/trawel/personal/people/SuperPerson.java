@@ -22,8 +22,8 @@ import trawel.personal.classless.SkillAttackConf;
 import trawel.personal.item.Potion;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.time.CanPassTime;
-import trawel.towns.Town;
-import trawel.towns.World;
+import trawel.towns.contexts.Town;
+import trawel.towns.contexts.World;
 
 public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 

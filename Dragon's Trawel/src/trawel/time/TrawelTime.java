@@ -1,10 +1,10 @@
 package trawel.time;
 
-import trawel.Networking;
-import trawel.WorldGen;
-import trawel.mainGame;
+import trawel.core.Networking;
+import trawel.core.mainGame;
 import trawel.helper.methods.extra;
 import trawel.personal.people.Player;
+import trawel.towns.data.WorldGen;
 
 public class TrawelTime {
 

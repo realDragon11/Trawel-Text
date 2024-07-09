@@ -3,10 +3,10 @@ package trawel.personal.item.solid;
 import java.util.EnumSet;
 import java.util.Set;
 
-import trawel.mainGame;
+import trawel.core.mainGame;
+import trawel.core.mainGame.GraphicStyle;
 import trawel.helper.methods.Services;
 import trawel.helper.methods.extra;
-import trawel.mainGame.GraphicStyle;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;

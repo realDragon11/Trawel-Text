@@ -10,10 +10,10 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLast;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
-import trawel.Networking;
-import trawel.Networking.Area;
+import trawel.core.Networking;
+import trawel.core.mainGame;
+import trawel.core.Networking.Area;
 import trawel.helper.methods.extra;
-import trawel.mainGame;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.solid.DrawBane;
@@ -22,8 +22,8 @@ import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.time.TrawelTime;
-import trawel.towns.World;
-import trawel.towns.features.misc.PlantSpot;
+import trawel.towns.contexts.World;
+import trawel.towns.features.elements.PlantSpot;
 import trawel.towns.features.nodes.NodeType.NodeTypeNum;
 
 public class NodeConnector implements Serializable {

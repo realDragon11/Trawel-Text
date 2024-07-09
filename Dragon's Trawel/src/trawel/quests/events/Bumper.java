@@ -7,7 +7,7 @@ import trawel.helper.methods.extra;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
-import trawel.towns.Town;
+import trawel.towns.contexts.Town;
 
 public abstract class Bumper {
 	

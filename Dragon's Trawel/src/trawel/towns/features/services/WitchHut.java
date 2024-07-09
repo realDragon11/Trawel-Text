@@ -7,9 +7,9 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
-import trawel.Networking;
-import trawel.Networking.Area;
 import trawel.battle.Combat;
+import trawel.core.Networking;
+import trawel.core.Networking.Area;
 import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;
@@ -33,7 +33,7 @@ import trawel.quests.types.CollectSideQuest;
 import trawel.quests.types.Quest;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
-import trawel.towns.Town;
+import trawel.towns.contexts.Town;
 
 public class WitchHut extends Store implements QuestBoardLocation{
 	

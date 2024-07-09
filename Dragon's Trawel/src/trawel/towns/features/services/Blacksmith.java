@@ -8,9 +8,9 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
-import trawel.Networking.Area;
+import trawel.core.Networking;
+import trawel.core.Networking.Area;
 import trawel.helper.methods.extra;
-import trawel.Networking;
 import trawel.personal.Effect;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.Item;
@@ -19,8 +19,8 @@ import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
-import trawel.towns.Feature;
-import trawel.towns.World;
+import trawel.towns.contexts.World;
+import trawel.towns.features.Feature;
 
 public class Blacksmith extends Feature {
 	

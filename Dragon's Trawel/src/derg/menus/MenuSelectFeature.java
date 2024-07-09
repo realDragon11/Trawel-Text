@@ -1,9 +1,9 @@
 package derg.menus;
 
-import trawel.mainGame;
+import trawel.core.mainGame;
 import trawel.helper.methods.extra;
 import trawel.personal.people.Player;
-import trawel.towns.Feature;
+import trawel.towns.features.Feature;
 
 public class MenuSelectFeature implements MenuItem {
 	

@@ -10,9 +10,9 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
-import trawel.Networking;
-import trawel.mainGame;
 import trawel.battle.Combat;
+import trawel.core.Networking;
+import trawel.core.mainGame;
 import trawel.helper.methods.extra;
 import trawel.personal.AIClass;
 import trawel.personal.Person;
@@ -27,8 +27,8 @@ import trawel.quests.types.Quest.TriggerType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.time.TrawelTime;
-import trawel.towns.Feature;
-import trawel.towns.World;
+import trawel.towns.contexts.World;
+import trawel.towns.features.Feature;
 import trawel.towns.features.services.Oracle;
 
 public abstract class ExploreFeature extends Feature{

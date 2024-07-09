@@ -7,7 +7,7 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
-import trawel.Networking.Area;
+import trawel.core.Networking.Area;
 import trawel.helper.methods.Services;
 import trawel.helper.methods.extra;
 import trawel.personal.AIClass;
@@ -28,9 +28,9 @@ import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
-import trawel.towns.Feature;
-import trawel.towns.Town;
-import trawel.towns.World;
+import trawel.towns.contexts.Town;
+import trawel.towns.contexts.World;
+import trawel.towns.features.Feature;
 import trawel.towns.features.fight.Slum;
 
 public class Store extends Feature{
@@ -130,7 +130,7 @@ public class Store extends Feature{
 			}
 			generate(tier, type);
 		}
-		if (subtype == trawel.towns.TravelingFeature.class) {
+		if (subtype == trawel.towns.features.misc.TravelingFeature.class) {
 			type = 6;
 			this.generate(tier, type);
 		}

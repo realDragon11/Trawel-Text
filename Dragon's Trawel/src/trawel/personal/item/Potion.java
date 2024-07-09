@@ -2,9 +2,9 @@ package trawel.personal.item;
 
 import java.util.regex.Pattern;
 
-import derg.SRPlainRandom;
-import derg.StringResult;
-import trawel.Networking;
+import derg.strings.fluffer.StringResult;
+import derg.strings.random.SRPlainRandom;
+import trawel.core.Networking;
 import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;

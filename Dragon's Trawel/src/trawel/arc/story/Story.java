@@ -2,7 +2,7 @@ package trawel.arc.story;
 
 import trawel.personal.Person;
 import trawel.personal.classless.Perk;
-import trawel.towns.Feature;
+import trawel.towns.features.Feature;
 
 public abstract class Story implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;

@@ -6,8 +6,8 @@ import trawel.helper.methods.extra;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Behavior;
 import trawel.time.TimeEvent;
-import trawel.towns.Connection;
-import trawel.towns.Town;
+import trawel.towns.contexts.Town;
+import trawel.towns.data.Connection;
 
 public class WanderEndless extends Behavior{
 		

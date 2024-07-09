@@ -10,8 +10,8 @@ import trawel.personal.people.Player;
 import trawel.quests.events.QuestReactionFactory;
 import trawel.quests.events.QuestReactionFactory.QKey;
 import trawel.quests.locations.QuestR;
-import trawel.towns.Feature;
-import trawel.towns.Town;
+import trawel.towns.contexts.Town;
+import trawel.towns.features.Feature;
 
 public abstract class BasicSideQuest implements Quest{
 

@@ -1,9 +1,10 @@
 package trawel.battle.attacks;
 
-import derg.StringResult;
+import derg.strings.fluffer.StringResult;
 import trawel.battle.Combat.AttackReturn;
-import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
 import trawel.battle.attacks.WeaponAttackFactory.DamageTier;
+import trawel.battle.targets.TargetFactory;
+import trawel.battle.targets.TargetFactory.TypeBody.TargetReturn;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.IHasSkills;

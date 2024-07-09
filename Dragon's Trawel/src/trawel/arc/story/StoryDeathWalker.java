@@ -1,11 +1,11 @@
 package trawel.arc.story;
 
-import trawel.Networking;
+import trawel.core.Networking;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.people.Player;
-import trawel.towns.Feature;
-import trawel.towns.Feature.QRType;
+import trawel.towns.features.Feature;
+import trawel.towns.features.Feature.QRType;
 
 public class StoryDeathWalker extends Story{
 

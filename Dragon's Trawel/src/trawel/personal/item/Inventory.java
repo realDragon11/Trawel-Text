@@ -12,12 +12,12 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
-import trawel.Networking;
-import trawel.mainGame;
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.Stance;
+import trawel.core.Networking;
+import trawel.core.mainGame;
+import trawel.core.mainGame.GraphicStyle;
 import trawel.helper.methods.extra;
-import trawel.mainGame.GraphicStyle;
 import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -33,9 +33,9 @@ import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.quests.types.Quest.TriggerType;
-import trawel.towns.Calender;
-import trawel.towns.Town;
-import trawel.towns.World;
+import trawel.towns.contexts.Town;
+import trawel.towns.contexts.World;
+import trawel.towns.data.Calender;
 
 /**
  * 

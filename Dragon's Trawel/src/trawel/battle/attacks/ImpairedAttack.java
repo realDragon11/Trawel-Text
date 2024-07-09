@@ -4,7 +4,9 @@ import java.util.function.Supplier;
 
 import trawel.battle.Combat;
 import trawel.battle.Combat.AttackReturn;
-import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
+import trawel.battle.targets.Target;
+import trawel.battle.targets.TargetFactory;
+import trawel.battle.targets.TargetFactory.TypeBody.TargetReturn;
 import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;

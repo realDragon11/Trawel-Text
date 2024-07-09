@@ -7,7 +7,7 @@ import trawel.personal.item.magic.EnchantConstant;
 import trawel.personal.item.solid.Armor;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Weapon;
-import trawel.towns.World;
+import trawel.towns.contexts.World;
 
 /**
  * 

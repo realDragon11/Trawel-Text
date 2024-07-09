@@ -9,9 +9,9 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
-import trawel.Networking.Area;
-import trawel.mainGame;
 import trawel.battle.Combat.SkillCon;
+import trawel.core.mainGame;
+import trawel.core.Networking.Area;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.item.solid.Gem;
@@ -24,10 +24,10 @@ import trawel.personal.people.behaviors.AbandonPostBehavior;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.time.TrawelTime;
-import trawel.towns.Feature;
-import trawel.towns.Town;
-import trawel.towns.World;
-import trawel.towns.features.fort.SubSkill;
+import trawel.towns.contexts.Town;
+import trawel.towns.contexts.World;
+import trawel.towns.features.Feature;
+import trawel.towns.features.fort.elements.SubSkill;
 import trawel.towns.features.nodes.BossNode.BossType;
 
 public class Dungeon extends NodeFeature {

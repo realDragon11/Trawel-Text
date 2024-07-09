@@ -1,12 +1,12 @@
 package trawel.towns.features.services;
 import java.util.List;
 
-import trawel.Networking.Area;
+import trawel.core.Networking.Area;
 import trawel.helper.methods.extra;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
-import trawel.towns.Feature;
+import trawel.towns.features.Feature;
 
 public class Appraiser extends Feature {
 

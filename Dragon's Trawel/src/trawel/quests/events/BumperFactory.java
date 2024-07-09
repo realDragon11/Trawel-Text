@@ -11,8 +11,8 @@ import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.quests.types.Quest.TriggerType;
+import trawel.towns.contexts.Town;
 import trawel.personal.people.Player;
-import trawel.towns.Town;
 
 
 public class BumperFactory {

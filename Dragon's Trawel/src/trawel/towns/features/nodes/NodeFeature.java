@@ -2,13 +2,13 @@ package trawel.towns.features.nodes;
 
 import java.util.List;
 
-import trawel.mainGame;
+import trawel.core.mainGame;
 import trawel.personal.Person;
 import trawel.personal.people.Player;
 import trawel.quests.types.Quest.TriggerType;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
-import trawel.towns.Feature;
+import trawel.towns.features.Feature;
 import trawel.towns.features.nodes.BossNode.BossType;
 
 public abstract class NodeFeature extends Feature {

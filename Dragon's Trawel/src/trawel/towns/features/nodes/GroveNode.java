@@ -11,8 +11,8 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
-import trawel.Networking;
 import trawel.battle.Combat;
+import trawel.core.Networking;
 import trawel.factions.Faction;
 import trawel.factions.HostileTask;
 import trawel.helper.methods.extra;
@@ -29,8 +29,8 @@ import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
-import trawel.towns.World;
-import trawel.towns.features.misc.PlantSpot;
+import trawel.towns.contexts.World;
+import trawel.towns.features.elements.PlantSpot;
 import trawel.towns.features.services.Oracle;
 
 public class GroveNode implements NodeType{

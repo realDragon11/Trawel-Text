@@ -2,8 +2,8 @@ package trawel.personal.item.magic;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
-import derg.SRFrontBackedRandom;
-import trawel.mainGame;
+import derg.strings.random.SRFrontBackedRandom;
+import trawel.core.mainGame;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 

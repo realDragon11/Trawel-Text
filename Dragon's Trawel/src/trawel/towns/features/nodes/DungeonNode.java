@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
-import trawel.Networking;
 import trawel.battle.Combat;
+import trawel.core.Networking;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 import trawel.personal.AIClass;
@@ -17,8 +17,8 @@ import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Gem;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
-import trawel.towns.World;
-import trawel.towns.features.fort.SubSkill;
+import trawel.towns.contexts.World;
+import trawel.towns.features.fort.elements.SubSkill;
 
 public class DungeonNode implements NodeType{
 

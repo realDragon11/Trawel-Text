@@ -122,10 +122,10 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	}
 	
 	public static void setup() {
-		if (trawel.mainGame.permaNoThreads) {
+		if (trawel.core.mainGame.permaNoThreads) {
 			return;
 		}
-		trawel.mainGame.noThreads = false;
+		trawel.core.mainGame.noThreads = false;
 		
 		handler = new BlockTaskManager();
 		handler.prestartCoreThread();
@@ -137,10 +137,10 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	 * should only ever be called on the main thread
 	 */
 	public static void start() {
-		if (trawel.mainGame.noThreads) {
+		if (trawel.core.mainGame.noThreads) {
 			return;
 		}
-		if (!trawel.mainGame.multiCanRun) {
+		if (!trawel.core.mainGame.multiCanRun) {
 			return;
 		}
 		
@@ -152,7 +152,7 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 					handler.resume();
 					//handler.notifyAll();//if any threads still exist we're screwed TODO
 					handler.completedTasks.set(0);
-					handler.lastNewTasks = trawel.WorldGen.plane.passiveTasks(handler);
+					handler.lastNewTasks = trawel.towns.data.WorldGen.plane.passiveTasks(handler);
 					handler.pauseLock.unlock();
 				}
 			}else {
@@ -184,10 +184,10 @@ public class BlockTaskManager extends ThreadPoolExecutor {
 	 * should only ever be called on the main thread
 	 */
 	public static void halt() {
-		if (trawel.mainGame.noThreads) {
+		if (trawel.core.mainGame.noThreads) {
 			return;
 		}
-		if (!trawel.mainGame.multiCanRun) {
+		if (!trawel.core.mainGame.multiCanRun) {
 			return;
 		}
 		handler.pause();

@@ -6,7 +6,7 @@ import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
-import trawel.Networking.Area;
+import trawel.core.Networking.Area;
 import trawel.helper.methods.extra;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
@@ -14,8 +14,8 @@ import trawel.quests.events.QuestReactionFactory.QKey;
 import trawel.quests.types.BasicSideQuest;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
-import trawel.towns.Feature;
-import trawel.towns.Town;
+import trawel.towns.contexts.Town;
+import trawel.towns.features.Feature;
 
 public class Library extends Feature {
 
