@@ -16,6 +16,8 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.arc.story.Story;
+import trawel.arc.story.StoryNone;
+import trawel.arc.story.StoryTutorial;
 import trawel.battle.Combat;
 import trawel.battle.attacks.Wound;
 import trawel.core.Input;
@@ -25,6 +27,7 @@ import trawel.core.Rand;
 import trawel.core.SaveManager;
 import trawel.core.mainGame;
 import trawel.factions.FBox;
+import trawel.helper.constants.TrawelChar;
 import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.Services;
 import trawel.helper.methods.randomLists;
@@ -858,6 +861,73 @@ public class Player extends SuperPerson{
 											}});
 										return false;
 									}});
+								list.add(new MenuSelect() {
+
+									@Override
+									public String title() {
+										return "Game Options.";
+									}
+
+									@Override
+									public boolean go() {
+										Input.menuGo(new MenuGenerator() {
+											
+											@Override
+											public List<MenuItem> gen() {
+												List<MenuItem> list = new ArrayList<MenuItem>();
+												list.add(new MenuSelect() {
+
+													@Override
+													public String title() {
+														return "Disable Story.";
+													}
+
+													@Override
+													public boolean go() {
+														Print.println(TrawelColor.RESULT_WARN+"Disabling story is permanent. Continue?");
+														if (Input.yesNo()) {
+															setStory(new StoryNone());
+														}
+														return false;
+													}});
+												list.add(new MenuSelect() {
+
+													@Override
+													public String title() {
+														return "Force Story Tutorial.";
+													}
+
+													@Override
+													public boolean go() {
+														Print.println(TrawelColor.RESULT_WARN+"Forcing Story Tutorial won't include any progress already achieved, and getting all triggers might be impossible. Continue?");
+														if (Input.yesNo()) {
+															setStory(new StoryTutorial());
+														}
+														return false;
+													}});
+												if (!getCheating()) {
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Enable Cheats.";
+														}
+
+														@Override
+														public boolean go() {
+															Print.println(TrawelColor.RESULT_WARN+"Cheat mode cannot be disabled one enabled, and disables achievements and leaderboards. Continue?");
+															if (Input.yesNo()) {
+																setCheating();
+															}
+															return false;
+														}});
+												}
+												list.add(new MenuBack());
+												return list;
+											}
+										});
+										return false;
+									}});
 								list.add(new MenuBack());
 								return list;
 							}});
@@ -1181,39 +1251,315 @@ public class Player extends SuperPerson{
 
 										@Override
 										public String title() {
-											return "Fast Powerlevel";
+											return "View Manual.";
 										}
 
 										@Override
 										public boolean go() {
-											//where we're going, level choices are no longer things...
-											person.setFlag(PersonFlag.AUTOLEVEL, true);
-											person.addXp(99999);
-											Weapon w = person.getBag().getHand();
-											for (int i = 0; i < 50;i++) {
-												w.levelUp();
-											}
-											return true;
+											viewManual();
+											return false;
 										}});
 									hackList.add(new MenuSelect() {
 
 										@Override
 										public String title() {
-											return "XP and Money";
+											return "Add XP.";
 										}
 
 										@Override
 										public boolean go() {
-											person.addXp(9999);
-											person.getBag().addAether(999999);
-											person.getBag().addGold(999999);
-											return true;
+											Input.menuGo(new MenuGenerator() {
+												
+												@Override
+												public List<MenuItem> gen() {
+													List<MenuItem> list = new ArrayList<MenuItem>();
+													list.add(new MenuLine() {
+
+														@Override
+														public String title() {
+															return person.xpDisplay();
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "XP: +1";
+														}
+
+														@Override
+														public boolean go() {
+															person.addXp(1);
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "XP: +10";
+														}
+
+														@Override
+														public boolean go() {
+															person.addXp(10);
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "XP: +9999";
+														}
+
+														@Override
+														public boolean go() {
+															person.addXp(9999);
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "XP: Infinite Auto";
+														}
+
+														@Override
+														public boolean go() {
+															//where we're going, level choices are no longer things...
+															person.setFlag(PersonFlag.AUTOLEVEL, true);
+															person.addXp(99999);
+															Weapon w = person.getBag().getHand();
+															for (int i = 0; i < 50;i++) {
+																w.levelUp();
+															}
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "XP: Next Level";
+														}
+
+														@Override
+														public boolean go() {
+															person.addXp(person.xpToNext());
+															return false;
+														}});
+													list.add(new MenuBack());
+													return list;
+												}
+											});
+											return false;
 										}});
 									hackList.add(new MenuSelect() {
 
 										@Override
 										public String title() {
-											return "Reveal All Towns";
+											return "Add Aether.";
+										}
+
+										@Override
+										public boolean go() {
+											Input.menuGo(new MenuGenerator() {
+												
+												@Override
+												public List<MenuItem> gen() {
+													List<MenuItem> list = new ArrayList<MenuItem>();
+													list.add(new MenuLine() {
+
+														@Override
+														public String title() {
+															return "Have: "+person.getBag().getAether()+" "+TrawelChar.DISP_AETHER+".";
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Aether: +100";
+														}
+
+														@Override
+														public boolean go() {
+															person.getBag().addAether(100);
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Aether: +1,000";
+														}
+
+														@Override
+														public boolean go() {
+															person.getBag().addAether(1000);
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Aether: +100,000";
+														}
+
+														@Override
+														public boolean go() {
+															person.getBag().addAether(100_000);
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Aether: +1 Million";
+														}
+
+														@Override
+														public boolean go() {
+															person.getBag().addAether(1_000_000);
+															return false;
+														}});
+													list.add(new MenuBack());
+													return list;
+												}
+											});
+											return false;
+										}});
+									hackList.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "World Currency.";
+										}
+
+										@Override
+										public boolean go() {
+											Input.menuGo(new MenuGenerator() {
+												
+												@Override
+												public List<MenuItem> gen() {
+													List<MenuItem> list = new ArrayList<MenuItem>();
+													list.add(new MenuLine() {
+
+														@Override
+														public String title() {
+															return allGoldDisp();
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Local ("+World.currentMoneyString()+"): +10";
+														}
+
+														@Override
+														public boolean go() {
+															person.getBag().addGold(10);
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Local ("+World.currentMoneyString()+"): +100";
+														}
+
+														@Override
+														public boolean go() {
+															person.getBag().addGold(100);
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Local ("+World.currentMoneyString()+"): +1,000";
+														}
+
+														@Override
+														public boolean go() {
+															person.getBag().addGold(100);
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Local ("+World.currentMoneyString()+"): +1 Million";
+														}
+
+														@Override
+														public boolean go() {
+															person.getBag().addGold(1_000_000);
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "All: +10";
+														}
+
+														@Override
+														public boolean go() {
+															for (World w: WorldGen.plane.worlds()) {
+																addGold(10, w);
+															}
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "All: +100";
+														}
+
+														@Override
+														public boolean go() {
+															for (World w: WorldGen.plane.worlds()) {
+																addGold(100, w);
+															}
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "All: +1,000";
+														}
+
+														@Override
+														public boolean go() {
+															for (World w: WorldGen.plane.worlds()) {
+																addGold(1000, w);
+															}
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "All: +1 Million";
+														}
+
+														@Override
+														public boolean go() {
+															for (World w: WorldGen.plane.worlds()) {
+																addGold(1_000_000, w);
+															}
+															return false;
+														}});
+													list.add(new MenuBack());
+													return list;
+												}
+											});
+											return false;
+										}});
+									hackList.add(new MenuSelect() {
+
+										@Override
+										public String title() {
+											return "Reveal All Towns.";
 										}
 
 										@Override
@@ -1230,33 +1576,155 @@ public class Player extends SuperPerson{
 
 										@Override
 										public String title() {
-											return "Fastpass One Year";
+											return "Advance Time.";
 										}
 
 										@Override
 										public boolean go() {
-											for (int i = 365*24; i >=0;i-=98) {
-												//pass in 4 day chunks so that code that triggers once per update happens normally
-												//as well as letting the threading code help a bit
-												Player.addTime(98);
-												TrawelTime.globalPassTime();
-											}
-											return true;
+											Input.menuGo(new MenuGenerator() {
+												
+												@Override
+												public List<MenuItem> gen() {
+													List<MenuItem> list = new ArrayList<MenuItem>();
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Fastpass One Month.";
+														}
+
+														@Override
+														public boolean go() {
+															for (int i = 31*24; i >=0;i-=24) {
+																Player.addTime(24);
+																TrawelTime.globalPassTime();
+															}
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Fastpass One Year.";
+														}
+
+														@Override
+														public boolean go() {
+															for (int i = 365*24; i >=0;i-=98) {
+																//pass in 4 day chunks so that code that triggers once per update happens normally
+																//as well as letting the threading code help a bit
+																Player.addTime(98);
+																TrawelTime.globalPassTime();
+															}
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Fastpass 100 Years.";
+														}
+
+														@Override
+														public boolean go() {
+															for (int i = 100*365*24; i >=0;i-=98) {
+																Player.addTime(98);
+																TrawelTime.globalPassTime();
+															}
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Queue One Month.";
+														}
+
+														@Override
+														public boolean go() {
+															if (!Input.yesNo()){
+																return false;
+															}
+															Player.addTime(30*24);
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Queue One Year.";
+														}
+
+														@Override
+														public boolean go() {
+															if (!Input.yesNo()){
+																return false;
+															}
+															Player.addTime(365*24);
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Queue One Hundred Years";
+														}
+
+														@Override
+														public boolean go() {
+															if (!Input.yesNo()){
+																return false;
+															}
+															Player.addTime(100*365*24);
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Resolve Queue.";
+														}
+
+														@Override
+														public boolean go() {
+															if (!Input.yesNo()){
+																return false;
+															}
+															TrawelTime.globalPassTime();
+															return false;
+														}});
+													list.add(new MenuSelect() {
+
+														@Override
+														public String title() {
+															return "Clear Queue.";
+														}
+
+														@Override
+														public boolean go() {
+															if (!Input.yesNo()){
+																return false;
+															}
+															passTime = 0;
+															return false;
+														}});
+													list.add(new MenuBack());
+													return list;
+												}
+											});
+											return false;
 										}});
 									hackList.add(new MenuSelect() {
 
 										@Override
 										public String title() {
-											return "Queue One Hundred Years";
+											return "Toggle Debug, Currently "+mainGame.debug;
 										}
 
 										@Override
 										public boolean go() {
-											if (!Input.yesNo()){
-												return false;
-											}
-											Player.addTime(100*365*24);
-											return true;
+											mainGame.debug = !mainGame.debug;
+											return false;
 										}});
 									hackList.add(new MenuBack());
 									return hackList;
@@ -1273,390 +1741,7 @@ public class Player extends SuperPerson{
 
 						@Override
 						public boolean go() {
-							Input.menuGo(new MenuGenerator() {
-
-								@Override
-								public List<MenuItem> gen() {
-									List<MenuItem> list = new ArrayList<MenuItem>();
-									list.add(new MenuSelect() {
-
-										@Override
-										public String title() {
-											return "Glossarys";
-										}
-
-										@Override
-										public boolean go() {
-											List<MenuItem> slist = new ArrayList<MenuItem>();
-											slist.add(new MenuSelect() {
-
-												@Override
-												public String title() {
-													return "Aether and Currency";
-												}
-
-												@Override
-												public boolean go() {
-													Print.println("Aether is a magical substance infused into many objects to increase their potency. When infused into items, it can be freed with a basic spell all Personable creatures are capable of.");
-													Print.println("When infused in people or animals, it cannot be freed this way, however, it does build up.");
-													Print.println("In both these cases, this results in a level. Improving items is an arduous process, but even a bat can level up by fighting other creatures. The conflict itself also generates some aether from the souls of the participants, but the bulk of the aether comes from creatures being slain.");
-													Print.println("Aether is a universal currency, however it is not particularly easy to transfer outside of breaking things down and conflict, so stores not trading in Aether-infused items use 'World Currency' as their preferred trade item.");
-													Print.println("World Currency, as the name implies, is only good for the world that it's issued in. Other worlds will not accept it, and while many are valuable for their materials, this is never worth the effort of selling compared to how much time it would take to find a buyer.");
-													Print.println("World Currencies are also needed to buy land and forts. Both Aether and World Currencies are needed to build on land, but forts often have better connections once the initial hurdle of obtaining the deed is passed.");
-													return false;
-												}});
-											slist.add(new MenuSelect() {
-
-												@Override
-												public String title() {
-													return "Level, Feat Points, Feat Picks";
-												}
-
-												@Override
-												public boolean go() {
-													Print.println("Every Person in Trawel has a level. This starts at 1 and goes up. They also have an Effective Level, which is usually 10+ their actual level. This effective level is used so that a level 2 person isn't twice as good as a level 1 person- often effectiveness (damage, armor, etc) is multiplied by effective level divided by 10.");
-													Print.println("Every time any Person levels up, they gain a Feat Point. As a player, you can use this in your character screen, if you have a Feat Pick. You get one Feat Pick per level up. Each Feat Point can buy one Feat or Archetype, from a list of up to 8 options. If you don't like your choices, you can choose to delay spending a point.");
-													Print.println("When you use a Pick, you actually get to keep choosing until you run out of Points or reject a choice. When you choose, the options are generated on the fly, however, with the exception of the 'discourage repeat skills' mechanic if you get a Perk, delaying will not change the odds or actual pool of choices you have.");
-													Print.println("Thus, waiting does let you save your Picks if you want to have more chances to reroll, but this is minor and will not change the potential outcomes on it's own. You will usually want to pick as soon as you can. There are also ways to get extra picks, such as libraries.");
-													return false;
-												}});
-											slist.add(new MenuSelect() {
-
-												@Override
-												public String title() {
-													return "Armor";
-												}
-
-												@Override
-												public boolean go() {
-													Print.println("Armors are Aether-infused items meant to block blows.");
-													Print.println("The main three properties of an Armor are how well it defends against physical damage types. This is a result of it's effective level, material, and style.");
-													Print.println("Armors also influence your agility multiplier penalty, have a weight which can weigh you down if you can't fit all your used equipment in your capacity, and have elemental damage multipliers.");
-													Print.println("Unlike weapons, armors have positive (Quality), negative (Flaw), and neutral (trait) traits.");
-													Print.println(" ");
-													Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of armor traits?");
-													if (Input.yesNo()) {
-														for (ArmorQuality q: Armor.ArmorQuality.values()) {
-															Print.println(q.addText() + (q.mechDesc != null ? " ("+q.mechDesc+")" : ""));
-														}
-													}
-													return false;
-												}});
-											slist.add(new MenuSelect() {
-
-												@Override
-												public String title() {
-													return "Weapons";
-												}
-
-												@Override
-												public boolean go() {
-													Print.println("Weapons are Aether-infused items meant to inflict harm on other Persons and creatures.");
-													Print.println("The main importance of weapons are for their attacks- every weapon type has a set, and the final numbers are determined by it's effective level and material.");
-													Print.println("Weapons also tend to have weapon qualities, which are positive traits. This glossary does not include a list of all weapon attacks, but you can browse them in a format that tests their effectiveness from one of the main menu tests.");
-													Print.println(" ");
-													Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of weapon qualities?");
-													if (Input.yesNo()) {
-														for (WeaponQual q: WeaponQual.values()) {
-															Print.println(TrawelColor.ITEM_WANT_HIGHER+q.name +TrawelColor.PRE_WHITE+": " + q.desc);
-														}
-													}
-													return false;
-												}});
-											slist.add(new MenuSelect() {
-
-												@Override
-												public String title() {
-													return "Skills";
-												}
-
-												@Override
-												public boolean go() {
-													Print.println("Skills are abilities, typically conditional, that add things that your character can do. Most of them apply automatically, some give you more options, and others must be set up.");
-													Print.println("There are a lot of skills, but having a skill is a binary state- if you get it from another skill source, you still 'only' have it once. Simply put, skills don't stack with themselves.");
-													Print.println(" ");
-													Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of skills?");
-													if (Input.yesNo()) {
-														for (Skill s: Skill.values()) {
-															Print.println(s.explain());
-														}
-													}
-													return false;
-												}});
-											slist.add(new MenuSelect() {
-
-												@Override
-												public String title() {
-													return "Archetypes";
-												}
-
-												@Override
-												public boolean go() {
-													Print.println("Archetypes are a skill source, and uniquely unlock Feat Types that you can pick Feats from when you level up. They also grant attributes. Some archetypes also require similar archetypes to be obtained before they can be picked.");
-													Print.println("The game encourages you to have 2 + 1 for every 5 levels archetypes, but you are only required to unlock one before you can start picking Feats instead.");
-													Print.println(" ");
-													Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of archetypes?");
-													List<MenuItem> alist = new ArrayList<MenuItem>();
-													if (!Input.yesNo()) {
-														return false;
-													}
-													for (Archetype a: Archetype.values()) {
-														alist.addAll(IHasSkills.dispMenuItem(a));
-													}
-													Input.menuGo(new ScrollMenuGenerator(alist.size(), "previous <> archetypes", "next <> archetypes") {
-
-														@Override
-														public List<MenuItem> forSlot(int i) {
-															return Collections.singletonList(alist.get(i));
-														}
-
-														@Override
-														public List<MenuItem> header() {
-															return null;
-														}
-
-														@Override
-														public List<MenuItem> footer() {
-															return Collections.singletonList(new MenuBack());
-														}});
-													return false;
-												}});
-											slist.add(new MenuSelect() {
-
-												@Override
-												public String title() {
-													return "Feats";
-												}
-
-												@Override
-												public boolean go() {
-													Print.println("Feats are a skill source, meaning they grant skills, might grant a skill config action to use, and attributes. Feats tend to give attributes based on how many skills they grant 5 for 3 skills, 15 for two skills, or 30 for one skill.");
-													Print.println("All level up skill sources that aren't Archetypes are Feats.");
-													Print.println(" ");
-													Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of feats?");
-													if (!Input.yesNo()) {
-														return false;
-													}
-													List<MenuItem> alist = new ArrayList<MenuItem>();
-													for (Feat a: Feat.values()) {
-														alist.addAll(IHasSkills.dispMenuItem(a));
-													}
-													Input.menuGo(new ScrollMenuGenerator(alist.size(), "previous <> feats", "next <> feats") {
-
-														@Override
-														public List<MenuItem> forSlot(int i) {
-															return Collections.singletonList(alist.get(i));
-														}
-
-														@Override
-														public List<MenuItem> header() {
-															return null;
-														}
-
-														@Override
-														public List<MenuItem> footer() {
-															return Collections.singletonList(new MenuBack());
-														}});
-													return false;
-												}});
-											slist.add(new MenuSelect() {
-
-												@Override
-												public String title() {
-													return "Perks";
-												}
-
-												@Override
-												public boolean go() {
-													Print.println("Perks are a skill source, granting skills and attributes.");
-													Print.println("Unlike Feats and Archetypes, you get Perks from fulfilling specific conditions, like killing bosses or making offerings at altars, instead of by leveling up.");
-													Print.println("Most of the perks displayed below are only for NPCs.");
-													Print.println(" ");
-													Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of perks?");
-													if (!Input.yesNo()) {
-														return false;
-													}
-													List<MenuItem> alist = new ArrayList<MenuItem>();
-													for (Perk a: Perk.values()) {
-														alist.addAll(IHasSkills.dispMenuItem(a));
-													}
-													Input.menuGo(new ScrollMenuGenerator(alist.size(), "previous <> perks", "next <> perks") {
-
-														@Override
-														public List<MenuItem> forSlot(int i) {
-															return Collections.singletonList(alist.get(i));
-														}
-
-														@Override
-														public List<MenuItem> header() {
-															return null;
-														}
-
-														@Override
-														public List<MenuItem> footer() {
-															return Collections.singletonList(new MenuBack());
-														}});
-													return false;
-												}});
-											slist.add(new MenuSelect() {
-
-												@Override
-												public String title() {
-													return "Wounds";
-												}
-
-												@Override
-												public boolean go() {
-													Print.println("Wounds are ailments caused by an attack. They can be further divided into two categories: normal wounds and condition wounds.");
-													Print.println("Normal wounds have a 90% chance to occur on all attacks, and are chosen based on the attack's damage types and the body part that is being attacked.");
-													Print.println("Keen weapons always roll wounds on their attacks, bypassing the normal 10% chance of a 'Grazed'. This does not change the result of a 'Negated', which is a wound signifying an attack that hits but isn't very effective outside of the damage.");
-													Print.println("Rolled wounds typically have instant or short-term effects. They also can be inflicted through skills. The main exception to this is wounds involving Bleed.");
-													Print.println("Condition wounds occur automatically when a body part reaches 50% 'condition'. They tend to be long lasting effects that highlight the downward spiral of combat.");
-													Print.println("There are several ways to negate inflicted wounds, but Condition wounds ignore these affects. Condition wounds are also often called Injuries.");
-													Print.println(" ");
-													Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of wounds? Values will not display if they vary.");
-													if (Input.yesNo()) {
-														for (Wound w: Wound.values()) {
-															try {
-																Print.println(TrawelColor.TIMID_RED+w.name + TrawelColor.PRE_WHITE+ " - " + String.format(w.desc,(Object[])Combat.woundNums(null,null,null,null,w)) + " ("+w.active+")");
-															}catch (Exception e) {
-																Print.println(TrawelColor.TIMID_RED+w.name + TrawelColor.PRE_WHITE+ ": " + w.desc + " ("+w.active+")");
-															}
-														}
-													}
-													return false;
-												}});
-											slist.add(new MenuSelect() {
-
-												@Override
-												public String title() {
-													return "Effects";
-												}
-
-												@Override
-												public boolean go() {
-													Print.println("Effects are temporary status effects. They are all counters, although many have that counter limited to 1.");
-													Print.println("Effects don't store any information in themselves other how many a Person has.");
-													Print.println("Some effects persist after battle, and through death, which means they need to be resolved- Doctors, Shamans, Blacksmiths, water sources, and Inns can heal different types.");
-													Print.println(" ");
-													Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of Effects?");
-													if (Input.yesNo()) {
-														for (Effect e: Effect.values()) {
-															Print.println(e.getName()+TrawelColor.PRE_WHITE + ": " + e.getDesc() + " Persists: " + e.lasts() + " Stacks: " +e.stacks());
-														}
-													}
-													return false;
-												}});
-											slist.add(new MenuSelect() {
-
-												@Override
-												public String title() {
-													return "DrawBanes";
-												}
-
-												@Override
-												public boolean go() {
-													Print.println("DrawBanes are minor inventory items. Many can be used as potion reagents, some can be used to build for features, and they can be sold or donated to merchants.");
-													Print.println("DrawBanes, true to their name, can also attract or repel random encounters. For example, meat attracts wolves and bears, gold attracts thieves, some magic items attract fell reavers, and virgins attract unicorns.");
-													Print.println("You can discard DrawBanes from your inventory using the Player menu, which you might want to do to stop getting accosted by animals.");
-													Print.println("You also have a limited amount of space to store them. Note that some bumpers will also be attracted to other aspects of your character, such as vampires attacking you if you're soaked in blood.");
-													Print.println(" ");
-													Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of DrawBanes?");
-													if (Input.yesNo()) {
-														for (DrawBane d: DrawBane.values()) {
-															Print.println(TrawelColor.TIMID_MAGENTA+d.getName()+TrawelColor.PRE_WHITE+": " + d.getFlavor()
-															+ TrawelColor.ITEM_DESC_PROP+" Brewable: "+TrawelColor.TIMID_MAGENTA+ d.getCanBrew()
-															+ TrawelColor.ITEM_DESC_PROP+" Value: "+TrawelColor.ITEM_VALUE+ d.getValue()
-															+ TrawelColor.ITEM_DESC_PROP+ " Merchant Value: "+TrawelColor.ITEM_VALUE + Print.F_TWO_TRAILING.format(d.getMValue()));
-														}
-													}
-													return false;
-												}});
-											slist.add(new MenuSelect() {
-
-												@Override
-												public String title() {
-													return "Seeds";
-												}
-
-												@Override
-												public boolean go() {
-													Print.println("Seeds can be planted in Plant Spots, either in Node Exploration town Features, or Garden town Features. They will then grow as time passes. Some seeds grow into items that can be harvested, while others can only be taken.");
-													Print.println("Seeds have a limited inventory space, but are quite rare, so it is a bit harder to reach that cap. They can't be used for anything else, but often can be used to grow DrawBanes.");
-													Print.println(" ");
-													Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of plant states?");
-													if (Input.yesNo()) {
-														for (Seed d: Seed.values()) {
-															Print.println(d.toString());
-														}
-													}
-													return false;
-												}});
-											Input.menuGo(new ScrollMenuGenerator(slist.size(), "previous <> terms", "next <> terms"){
-
-												@Override
-												public List<MenuItem> forSlot(int i) {
-													return Collections.singletonList(slist.get(i));
-												}
-
-												@Override
-												public List<MenuItem> header() {
-													return Collections.singletonList(new MenuLine() {
-
-														@Override
-														public String title() {
-															return "Some terms include a total list of all their contents. These are typically quite long, and may include internal information that does not show up otherwise.";
-														}});
-												}
-
-												@Override
-												public List<MenuItem> footer() {
-													return Collections.singletonList(new MenuBack());
-												}
-												
-											});
-											return false;
-										}
-									});
-									list.add(new MenuSelect() {
-
-										@Override
-										public String title() {
-											return "Infodump Tutorial (partly outdated)";
-										}
-
-										@Override
-										public boolean go() {
-											Print.println("Thanks for playing Trawel! Here's a few tips about learning how to play:");
-											Print.println("All of Trawel proper, and most of the side games, only require inputing a number between 1 and 9.");
-											Print.println();
-											Print.println("There are a few games in Trawel, but the one simply called 'Trawel' has the following advice:");
-											Print.println("Always be on the lookout for better gear than you currently have. Your power level is largely determined by how powerful your gear is- not just it's level.");
-											Print.println("There are three primary attack and defense types, sharp, blunt, and pierce.");
-											Print.println("Sharp is edged and cutting. Swords are good at it, and chainmail is good at defending from it. Some materials are softer, like Gold, and thus bad at it.");
-											Print.println("Blunt is heavy and crushing. Maces are good at it, and gold is good at defending from it- and also dealing it.");
-											Print.println("Pierce is pointy and puncturing. Spears are good at it, and metals are better at defending from it.");
-											Print.println("If you're feeling tactical, you can read your opponent's equipment to try to determine which type they are weak to.");
-											Print.println("As you play the game, you'll get a grasp of the strengths and weaknesses of varying materials and weapons. It's part of the fun of the game!");
-											Print.println("Attacks have a delay amount (further broken down into warmup/cooldown) and a hitchance, along with damage types.");
-											Print.println("Delay is how long it takes for the attack to happen- it can be thought of how 'slow' the attack is, so lower is better. Warmup is the period before you act, and Cooldown is the period after- but you can't choose another action until both elapse.");
-											Print.println("Hitchance is the opposite- higher is more accurate. However, it is not a percent chance to hit, as it does not account for the opponent's dodge, which can change over time.");
-											Print.println("Enchantments can be both good and bad, so keep an eye out for gear that has low stats but boosts overall stats a high amount- or gear that makes you much weaker!");
-											Print.println("When looting equipment, you are shown the new item, then your current item, and then the stat changes between the two- plus for stat increases, minus for stat decreases. The difference will not show stats that remain the same.");
-											Print.println("Value can be a good rough indicator of quality, but it does not account for the actual effectiveness of the item, just the rarity and tier.");
-											Print.println("For example, gold (a soft metal) sharp/piercing weapons are expensive but ineffective.");
-											Print.println("When in combat, you will be given 3 (by default, skills and circumstance may change this) random attacks ('opportunities') to use your weapon.");
-											Print.println("Pay close attention to hit, warmup/cooldown, and sbp (sharp, blunt, pierce) damage.");
-											Print.println("More simply: Higher is better, except in the case of delay (warmup and cooldown).");
-											Print.println("Leveling Terms: WELVL is weapon effective level this starts at 10 and goes up from the Crude tier. LHP is Leveled HP. This is 100 at level 0, and goes up by 10 every level.");
-											Print.println("Bleed lists a % of LHP. It also caps out at two levels higher than your own, like many other leveled mechanics.");
-											Print.println("Well, you made it through bootcamp. Have fun!");
-											Print.println("-realDragon");
-											return false;
-										}});
-									list.add(new MenuBack());
-									return list;
-								}});
+							viewManual();
 							return false;
 						}});
 					};
@@ -1665,6 +1750,393 @@ public class Player extends SuperPerson{
 				return list;
 			}});
 		
+	}
+	
+	private void viewManual() {
+		Input.menuGo(new MenuGenerator() {
+
+			@Override
+			public List<MenuItem> gen() {
+				List<MenuItem> list = new ArrayList<MenuItem>();
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Glossarys";
+					}
+
+					@Override
+					public boolean go() {
+						List<MenuItem> slist = new ArrayList<MenuItem>();
+						slist.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Aether and Currency";
+							}
+
+							@Override
+							public boolean go() {
+								Print.println("Aether is a magical substance infused into many objects to increase their potency. When infused into items, it can be freed with a basic spell all Personable creatures are capable of.");
+								Print.println("When infused in people or animals, it cannot be freed this way, however, it does build up.");
+								Print.println("In both these cases, this results in a level. Improving items is an arduous process, but even a bat can level up by fighting other creatures. The conflict itself also generates some aether from the souls of the participants, but the bulk of the aether comes from creatures being slain.");
+								Print.println("Aether is a universal currency, however it is not particularly easy to transfer outside of breaking things down and conflict, so stores not trading in Aether-infused items use 'World Currency' as their preferred trade item.");
+								Print.println("World Currency, as the name implies, is only good for the world that it's issued in. Other worlds will not accept it, and while many are valuable for their materials, this is never worth the effort of selling compared to how much time it would take to find a buyer.");
+								Print.println("World Currencies are also needed to buy land and forts. Both Aether and World Currencies are needed to build on land, but forts often have better connections once the initial hurdle of obtaining the deed is passed.");
+								return false;
+							}});
+						slist.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Level, Feat Points, Feat Picks";
+							}
+
+							@Override
+							public boolean go() {
+								Print.println("Every Person in Trawel has a level. This starts at 1 and goes up. They also have an Effective Level, which is usually 10+ their actual level. This effective level is used so that a level 2 person isn't twice as good as a level 1 person- often effectiveness (damage, armor, etc) is multiplied by effective level divided by 10.");
+								Print.println("Every time any Person levels up, they gain a Feat Point. As a player, you can use this in your character screen, if you have a Feat Pick. You get one Feat Pick per level up. Each Feat Point can buy one Feat or Archetype, from a list of up to 8 options. If you don't like your choices, you can choose to delay spending a point.");
+								Print.println("When you use a Pick, you actually get to keep choosing until you run out of Points or reject a choice. When you choose, the options are generated on the fly, however, with the exception of the 'discourage repeat skills' mechanic if you get a Perk, delaying will not change the odds or actual pool of choices you have.");
+								Print.println("Thus, waiting does let you save your Picks if you want to have more chances to reroll, but this is minor and will not change the potential outcomes on it's own. You will usually want to pick as soon as you can. There are also ways to get extra picks, such as libraries.");
+								return false;
+							}});
+						slist.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Armor";
+							}
+
+							@Override
+							public boolean go() {
+								Print.println("Armors are Aether-infused items meant to block blows.");
+								Print.println("The main three properties of an Armor are how well it defends against physical damage types. This is a result of it's effective level, material, and style.");
+								Print.println("Armors also influence your agility multiplier penalty, have a weight which can weigh you down if you can't fit all your used equipment in your capacity, and have elemental damage multipliers.");
+								Print.println("Unlike weapons, armors have positive (Quality), negative (Flaw), and neutral (trait) traits.");
+								Print.println(" ");
+								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of armor traits?");
+								if (Input.yesNo()) {
+									for (ArmorQuality q: Armor.ArmorQuality.values()) {
+										Print.println(q.addText() + (q.mechDesc != null ? " ("+q.mechDesc+")" : ""));
+									}
+								}
+								return false;
+							}});
+						slist.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Weapons";
+							}
+
+							@Override
+							public boolean go() {
+								Print.println("Weapons are Aether-infused items meant to inflict harm on other Persons and creatures.");
+								Print.println("The main importance of weapons are for their attacks- every weapon type has a set, and the final numbers are determined by it's effective level and material.");
+								Print.println("Weapons also tend to have weapon qualities, which are positive traits. This glossary does not include a list of all weapon attacks, but you can browse them in a format that tests their effectiveness from one of the main menu tests.");
+								Print.println(" ");
+								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of weapon qualities?");
+								if (Input.yesNo()) {
+									for (WeaponQual q: WeaponQual.values()) {
+										Print.println(TrawelColor.ITEM_WANT_HIGHER+q.name +TrawelColor.PRE_WHITE+": " + q.desc);
+									}
+								}
+								return false;
+							}});
+						slist.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Skills";
+							}
+
+							@Override
+							public boolean go() {
+								Print.println("Skills are abilities, typically conditional, that add things that your character can do. Most of them apply automatically, some give you more options, and others must be set up.");
+								Print.println("There are a lot of skills, but having a skill is a binary state- if you get it from another skill source, you still 'only' have it once. Simply put, skills don't stack with themselves.");
+								Print.println(" ");
+								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of skills?");
+								if (Input.yesNo()) {
+									for (Skill s: Skill.values()) {
+										Print.println(s.explain());
+									}
+								}
+								return false;
+							}});
+						slist.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Archetypes";
+							}
+
+							@Override
+							public boolean go() {
+								Print.println("Archetypes are a skill source, and uniquely unlock Feat Types that you can pick Feats from when you level up. They also grant attributes. Some archetypes also require similar archetypes to be obtained before they can be picked.");
+								Print.println("The game encourages you to have 2 + 1 for every 5 levels archetypes, but you are only required to unlock one before you can start picking Feats instead.");
+								Print.println(" ");
+								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of archetypes?");
+								List<MenuItem> alist = new ArrayList<MenuItem>();
+								if (!Input.yesNo()) {
+									return false;
+								}
+								for (Archetype a: Archetype.values()) {
+									alist.addAll(IHasSkills.dispMenuItem(a));
+								}
+								Input.menuGo(new ScrollMenuGenerator(alist.size(), "previous <> archetypes", "next <> archetypes") {
+
+									@Override
+									public List<MenuItem> forSlot(int i) {
+										return Collections.singletonList(alist.get(i));
+									}
+
+									@Override
+									public List<MenuItem> header() {
+										return null;
+									}
+
+									@Override
+									public List<MenuItem> footer() {
+										return Collections.singletonList(new MenuBack());
+									}});
+								return false;
+							}});
+						slist.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Feats";
+							}
+
+							@Override
+							public boolean go() {
+								Print.println("Feats are a skill source, meaning they grant skills, might grant a skill config action to use, and attributes. Feats tend to give attributes based on how many skills they grant 5 for 3 skills, 15 for two skills, or 30 for one skill.");
+								Print.println("All level up skill sources that aren't Archetypes are Feats.");
+								Print.println(" ");
+								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of feats?");
+								if (!Input.yesNo()) {
+									return false;
+								}
+								List<MenuItem> alist = new ArrayList<MenuItem>();
+								for (Feat a: Feat.values()) {
+									alist.addAll(IHasSkills.dispMenuItem(a));
+								}
+								Input.menuGo(new ScrollMenuGenerator(alist.size(), "previous <> feats", "next <> feats") {
+
+									@Override
+									public List<MenuItem> forSlot(int i) {
+										return Collections.singletonList(alist.get(i));
+									}
+
+									@Override
+									public List<MenuItem> header() {
+										return null;
+									}
+
+									@Override
+									public List<MenuItem> footer() {
+										return Collections.singletonList(new MenuBack());
+									}});
+								return false;
+							}});
+						slist.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Perks";
+							}
+
+							@Override
+							public boolean go() {
+								Print.println("Perks are a skill source, granting skills and attributes.");
+								Print.println("Unlike Feats and Archetypes, you get Perks from fulfilling specific conditions, like killing bosses or making offerings at altars, instead of by leveling up.");
+								Print.println("Most of the perks displayed below are only for NPCs.");
+								Print.println(" ");
+								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of perks?");
+								if (!Input.yesNo()) {
+									return false;
+								}
+								List<MenuItem> alist = new ArrayList<MenuItem>();
+								for (Perk a: Perk.values()) {
+									alist.addAll(IHasSkills.dispMenuItem(a));
+								}
+								Input.menuGo(new ScrollMenuGenerator(alist.size(), "previous <> perks", "next <> perks") {
+
+									@Override
+									public List<MenuItem> forSlot(int i) {
+										return Collections.singletonList(alist.get(i));
+									}
+
+									@Override
+									public List<MenuItem> header() {
+										return null;
+									}
+
+									@Override
+									public List<MenuItem> footer() {
+										return Collections.singletonList(new MenuBack());
+									}});
+								return false;
+							}});
+						slist.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Wounds";
+							}
+
+							@Override
+							public boolean go() {
+								Print.println("Wounds are ailments caused by an attack. They can be further divided into two categories: normal wounds and condition wounds.");
+								Print.println("Normal wounds have a 90% chance to occur on all attacks, and are chosen based on the attack's damage types and the body part that is being attacked.");
+								Print.println("Keen weapons always roll wounds on their attacks, bypassing the normal 10% chance of a 'Grazed'. This does not change the result of a 'Negated', which is a wound signifying an attack that hits but isn't very effective outside of the damage.");
+								Print.println("Rolled wounds typically have instant or short-term effects. They also can be inflicted through skills. The main exception to this is wounds involving Bleed.");
+								Print.println("Condition wounds occur automatically when a body part reaches 50% 'condition'. They tend to be long lasting effects that highlight the downward spiral of combat.");
+								Print.println("There are several ways to negate inflicted wounds, but Condition wounds ignore these affects. Condition wounds are also often called Injuries.");
+								Print.println(" ");
+								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of wounds? Values will not display if they vary.");
+								if (Input.yesNo()) {
+									for (Wound w: Wound.values()) {
+										try {
+											Print.println(TrawelColor.TIMID_RED+w.name + TrawelColor.PRE_WHITE+ " - " + String.format(w.desc,(Object[])Combat.woundNums(null,null,null,null,w)) + " ("+w.active+")");
+										}catch (Exception e) {
+											Print.println(TrawelColor.TIMID_RED+w.name + TrawelColor.PRE_WHITE+ ": " + w.desc + " ("+w.active+")");
+										}
+									}
+								}
+								return false;
+							}});
+						slist.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Effects";
+							}
+
+							@Override
+							public boolean go() {
+								Print.println("Effects are temporary status effects. They are all counters, although many have that counter limited to 1.");
+								Print.println("Effects don't store any information in themselves other how many a Person has.");
+								Print.println("Some effects persist after battle, and through death, which means they need to be resolved- Doctors, Shamans, Blacksmiths, water sources, and Inns can heal different types.");
+								Print.println(" ");
+								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of Effects?");
+								if (Input.yesNo()) {
+									for (Effect e: Effect.values()) {
+										Print.println(e.getName()+TrawelColor.PRE_WHITE + ": " + e.getDesc() + " Persists: " + e.lasts() + " Stacks: " +e.stacks());
+									}
+								}
+								return false;
+							}});
+						slist.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "DrawBanes";
+							}
+
+							@Override
+							public boolean go() {
+								Print.println("DrawBanes are minor inventory items. Many can be used as potion reagents, some can be used to build for features, and they can be sold or donated to merchants.");
+								Print.println("DrawBanes, true to their name, can also attract or repel random encounters. For example, meat attracts wolves and bears, gold attracts thieves, some magic items attract fell reavers, and virgins attract unicorns.");
+								Print.println("You can discard DrawBanes from your inventory using the Player menu, which you might want to do to stop getting accosted by animals.");
+								Print.println("You also have a limited amount of space to store them. Note that some bumpers will also be attracted to other aspects of your character, such as vampires attacking you if you're soaked in blood.");
+								Print.println(" ");
+								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of DrawBanes?");
+								if (Input.yesNo()) {
+									for (DrawBane d: DrawBane.values()) {
+										Print.println(TrawelColor.TIMID_MAGENTA+d.getName()+TrawelColor.PRE_WHITE+": " + d.getFlavor()
+										+ TrawelColor.ITEM_DESC_PROP+" Brewable: "+TrawelColor.TIMID_MAGENTA+ d.getCanBrew()
+										+ TrawelColor.ITEM_DESC_PROP+" Value: "+TrawelColor.ITEM_VALUE+ d.getValue()
+										+ TrawelColor.ITEM_DESC_PROP+ " Merchant Value: "+TrawelColor.ITEM_VALUE + Print.F_TWO_TRAILING.format(d.getMValue()));
+									}
+								}
+								return false;
+							}});
+						slist.add(new MenuSelect() {
+
+							@Override
+							public String title() {
+								return "Seeds";
+							}
+
+							@Override
+							public boolean go() {
+								Print.println("Seeds can be planted in Plant Spots, either in Node Exploration town Features, or Garden town Features. They will then grow as time passes. Some seeds grow into items that can be harvested, while others can only be taken.");
+								Print.println("Seeds have a limited inventory space, but are quite rare, so it is a bit harder to reach that cap. They can't be used for anything else, but often can be used to grow DrawBanes.");
+								Print.println(" ");
+								Print.println(TrawelColor.STAT_HEADER+"Would you like to see a list of plant states?");
+								if (Input.yesNo()) {
+									for (Seed d: Seed.values()) {
+										Print.println(d.toString());
+									}
+								}
+								return false;
+							}});
+						Input.menuGo(new ScrollMenuGenerator(slist.size(), "previous <> terms", "next <> terms"){
+
+							@Override
+							public List<MenuItem> forSlot(int i) {
+								return Collections.singletonList(slist.get(i));
+							}
+
+							@Override
+							public List<MenuItem> header() {
+								return Collections.singletonList(new MenuLine() {
+
+									@Override
+									public String title() {
+										return "Some terms include a total list of all their contents. These are typically quite long, and may include internal information that does not show up otherwise.";
+									}});
+							}
+
+							@Override
+							public List<MenuItem> footer() {
+								return Collections.singletonList(new MenuBack());
+							}
+							
+						});
+						return false;
+					}
+				});
+				list.add(new MenuSelect() {
+
+					@Override
+					public String title() {
+						return "Infodump Tutorial (partly outdated)";
+					}
+
+					@Override
+					public boolean go() {
+						Print.println("Thanks for playing Trawel! Here's a few tips about learning how to play:");
+						Print.println("All of Trawel proper, and most of the side games, only require inputing a number between 1 and 9.");
+						Print.println();
+						Print.println("There are a few games in Trawel, but the one simply called 'Trawel' has the following advice:");
+						Print.println("Always be on the lookout for better gear than you currently have. Your power level is largely determined by how powerful your gear is- not just it's level.");
+						Print.println("There are three primary attack and defense types, sharp, blunt, and pierce.");
+						Print.println("Sharp is edged and cutting. Swords are good at it, and chainmail is good at defending from it. Some materials are softer, like Gold, and thus bad at it.");
+						Print.println("Blunt is heavy and crushing. Maces are good at it, and gold is good at defending from it- and also dealing it.");
+						Print.println("Pierce is pointy and puncturing. Spears are good at it, and metals are better at defending from it.");
+						Print.println("If you're feeling tactical, you can read your opponent's equipment to try to determine which type they are weak to.");
+						Print.println("As you play the game, you'll get a grasp of the strengths and weaknesses of varying materials and weapons. It's part of the fun of the game!");
+						Print.println("Attacks have a delay amount (further broken down into warmup/cooldown) and a hitchance, along with damage types.");
+						Print.println("Delay is how long it takes for the attack to happen- it can be thought of how 'slow' the attack is, so lower is better. Warmup is the period before you act, and Cooldown is the period after- but you can't choose another action until both elapse.");
+						Print.println("Hitchance is the opposite- higher is more accurate. However, it is not a percent chance to hit, as it does not account for the opponent's dodge, which can change over time.");
+						Print.println("Enchantments can be both good and bad, so keep an eye out for gear that has low stats but boosts overall stats a high amount- or gear that makes you much weaker!");
+						Print.println("When looting equipment, you are shown the new item, then your current item, and then the stat changes between the two- plus for stat increases, minus for stat decreases. The difference will not show stats that remain the same.");
+						Print.println("Value can be a good rough indicator of quality, but it does not account for the actual effectiveness of the item, just the rarity and tier.");
+						Print.println("For example, gold (a soft metal) sharp/piercing weapons are expensive but ineffective.");
+						Print.println("When in combat, you will be given 3 (by default, skills and circumstance may change this) random attacks ('opportunities') to use your weapon.");
+						Print.println("Pay close attention to hit, warmup/cooldown, and sbp (sharp, blunt, pierce) damage.");
+						Print.println("More simply: Higher is better, except in the case of delay (warmup and cooldown).");
+						Print.println("Leveling Terms: WELVL is weapon effective level this starts at 10 and goes up from the Crude tier. LHP is Leveled HP. This is 100 at level 0, and goes up by 10 every level.");
+						Print.println("Bleed lists a % of LHP. It also caps out at two levels higher than your own, like many other leveled mechanics.");
+						Print.println("Well, you made it through bootcamp. Have fun!");
+						Print.println("-realDragon");
+						return false;
+					}});
+				list.add(new MenuBack());
+				return list;
+			}});
 	}
 	
 	private void mapScrollMenu() {

@@ -1468,12 +1468,22 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 		}
 	}
 
-	public void displayXp() {
-		Print.println(this.getName() + " has " + xp + "/" + level*level + " xp toward level " + (level+1) + ".");
+	/**
+	 * includes name and next level
+	 */
+	public String xpDisplay() {
+		return this.getName() + " has " + xp + "/" + level*level + " xp toward level " + (level+1) + ".";
 	}
 	
+	/**
+	 * @return "{xp}/{nextlevel xp}"
+	 */
 	public String xpString() {
 		return xp + "/" + level*level;
+	}
+	
+	public int xpToNext() {
+		return (level*level)-xp;
 	}
 
 	public int getMaxHp() {
