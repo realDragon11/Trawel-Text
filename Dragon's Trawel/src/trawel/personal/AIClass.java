@@ -16,6 +16,7 @@ import trawel.battle.attacks.WeaponAttackFactory;
 import trawel.core.Networking;
 import trawel.core.mainGame;
 import trawel.core.mainGame.DispAttack;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.Services;
 import trawel.helper.methods.extra;
 import trawel.personal.Person.PersonFlag;
@@ -602,7 +603,7 @@ public class AIClass {
 		if (delta < 0) {
 			Player.bag.addAether(delta);
 			int aetherDelta = -delta;
-			extra.println(extra.RESULT_PASS+"You complete the trade."
+			extra.println(TrawelColor.RESULT_PASS+"You complete the trade."
 			+ (aetherDelta > 0 ? " Spent " +aetherDelta +" aether." : "")
 			);
 		}else {
@@ -853,7 +854,7 @@ public class AIClass {
 	public static void displayChange(Item hasItem, Item toReplace, Person p, Store s) {
 		//p is used to display absolute stat changes instead of just raw stats like the non-diff
 		extra.println(" ");
-		extra.println(extra.STAT_HEADER+"Difference"+extra.PRE_WHITE+": "+extra.ITEM_DESC_PROP+"L " +extra.softColorDelta0(toReplace.getLevel(),hasItem.getLevel()));
+		extra.println(TrawelColor.STAT_HEADER+"Difference"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_DESC_PROP+"L " +TrawelColor.softColorDelta0(toReplace.getLevel(),hasItem.getLevel()));
 		int costDiff = 0;
 		String costName = "aether";
 		/*if (s == null) {
@@ -877,18 +878,18 @@ public class AIClass {
 				extra.println("SBP = sharp, blunt, pierce");
 			}
 			extra.println(" "+
-			extra.ITEM_DESC_PROP+extra.CHAR_SHARP
-			+" "+extra.hardColorDelta1Elide(toArm.getSharpResist(),hasArm.getSharpResist())
-			+ extra.PRE_WHITE+" / "
-			+ extra.ITEM_DESC_PROP+extra.CHAR_BLUNT
-			+" "+extra.hardColorDelta1Elide(toArm.getBluntResist(),hasArm.getBluntResist())
-			+ extra.PRE_WHITE+" / "
-			+ extra.ITEM_DESC_PROP+extra.CHAR_PIERCE
-			+" "+extra.hardColorDelta1Elide(toArm.getPierceResist(),hasArm.getPierceResist())
+			TrawelColor.ITEM_DESC_PROP+extra.CHAR_SHARP
+			+" "+TrawelColor.hardColorDelta1Elide(toArm.getSharpResist(),hasArm.getSharpResist())
+			+ TrawelColor.PRE_WHITE+" / "
+			+ TrawelColor.ITEM_DESC_PROP+extra.CHAR_BLUNT
+			+" "+TrawelColor.hardColorDelta1Elide(toArm.getBluntResist(),hasArm.getBluntResist())
+			+ TrawelColor.PRE_WHITE+" / "
+			+ TrawelColor.ITEM_DESC_PROP+extra.CHAR_PIERCE
+			+" "+TrawelColor.hardColorDelta1Elide(toArm.getPierceResist(),hasArm.getPierceResist())
 			//weight is an int anyway
-			+ (Player.player.caresAboutCapacity() ? extra.ITEM_DESC_PROP+ " "+extra.DISP_WEIGHT+": "+extra.softColorDelta0Reversed(toArm.getWeight(),hasArm.getWeight()) : "")
+			+ (Player.player.caresAboutCapacity() ? TrawelColor.ITEM_DESC_PROP+ " "+extra.DISP_WEIGHT+": "+TrawelColor.softColorDelta0Reversed(toArm.getWeight(),hasArm.getWeight()) : "")
 			//amp is not, but we want it to display hard anyway
-			+ (Player.player.caresAboutAMP() ? extra.ITEM_DESC_PROP+ " "+extra.DISP_AMP+": "+ extra.hardColorDelta2(toArm.getAgiPenMult(),hasArm.getAgiPenMult()) : "")
+			+ (Player.player.caresAboutAMP() ? TrawelColor.ITEM_DESC_PROP+ " "+extra.DISP_AMP+": "+ TrawelColor.hardColorDelta2(toArm.getAgiPenMult(),hasArm.getAgiPenMult()) : "")
 			+ " " + priceDiffDisp(costDiff,costName,s)
 			);
 			if (hasItem.getEnchant() != null || toReplace.getEnchant() != null) {
@@ -906,17 +907,17 @@ public class AIClass {
 				boolean isQDiff = !toWeap.equalQuals(hasWeap);
 				int qualDiff = isQDiff ? toWeap.numQual()-hasWeap.numQual() : 0;
 				
-				extra.println(" "+extra.ITEM_DESC_PROP+" ic/bd/wa: " 
-				+ (extra.softColorDelta2Elide(toWeap.scoreImpact(),hasWeap.scoreImpact()))
-				+ extra.PRE_WHITE+"/"
-				+ (extra.hardColorDelta2Elide(toWeap.scoreBest(),hasWeap.scoreBest()))
-				+ extra.PRE_WHITE+"/"
-				+ (extra.hardColorDelta2Elide(toWeap.scoreWeight(),hasWeap.scoreWeight()))
+				extra.println(" "+TrawelColor.ITEM_DESC_PROP+" ic/bd/wa: " 
+				+ (TrawelColor.softColorDelta2Elide(toWeap.scoreImpact(),hasWeap.scoreImpact()))
+				+ TrawelColor.PRE_WHITE+"/"
+				+ (TrawelColor.hardColorDelta2Elide(toWeap.scoreBest(),hasWeap.scoreBest()))
+				+ TrawelColor.PRE_WHITE+"/"
+				+ (TrawelColor.hardColorDelta2Elide(toWeap.scoreWeight(),hasWeap.scoreWeight()))
 				//if the qualities are the same, 'q=', if neither has any, do not display
-				+extra.ITEM_DESC_PROP
+				+TrawelColor.ITEM_DESC_PROP
 				+ (isQDiff ? " "+extra.DISP_QUALS+" "
-				+ extra.colorBaseZeroTimid(qualDiff) : (toWeap.numQual() > 0 ? (" "+extra.DISP_QUALS+" =") : ""))
-				+ (Player.player.caresAboutCapacity() ? extra.ITEM_DESC_PROP+" "+extra.DISP_WEIGHT+": "+extra.softColorDelta0Reversed(toWeap.getWeight(),hasWeap.getWeight()) : "")
+				+ TrawelColor.colorBaseZeroTimid(qualDiff) : (toWeap.numQual() > 0 ? (" "+extra.DISP_QUALS+" =") : ""))
+				+ (Player.player.caresAboutCapacity() ? TrawelColor.ITEM_DESC_PROP+" "+extra.DISP_WEIGHT+": "+TrawelColor.softColorDelta0Reversed(toWeap.getWeight(),hasWeap.getWeight()) : "")
 				+ " " + priceDiffDisp(costDiff,costName,s)
 				);
 				if (((Weapon)hasItem).getEnchant() != null || ((Weapon)toReplace).getEnchant()!= null) {
@@ -945,12 +946,12 @@ public class AIClass {
 			name = extra.DISP_AETHER;
 		}
 		if (s == null) {
-			return extra.ITEM_VALUE+name+": " + (delta != 0 ? extra.colorBaseZeroTimid(delta) : "=");
+			return TrawelColor.ITEM_VALUE+name+": " + (delta != 0 ? TrawelColor.colorBaseZeroTimid(delta) : "=");
 		}
 		if (delta > 0) {//costs less, might be gaining money
-			return extra.ITEM_VALUE + "requires " +  Math.abs(delta) + " " +name;
+			return TrawelColor.ITEM_VALUE + "requires " +  Math.abs(delta) + " " +name;
 		}else {//costs more, losing money
-			return extra.ITEM_VALUE + "will return " +Math.abs(delta) + " " + name;
+			return TrawelColor.ITEM_VALUE + "will return " +Math.abs(delta) + " " + name;
 		}
 	}
 	
@@ -966,7 +967,7 @@ public class AIClass {
 			enchantDiff(0,toReplace.getShockMod(),"shock");
 			enchantDiff(0,toReplace.getFreezeMod(),"frost");
 			if (toReplace.isKeen()) {
-				extra.println(extra.PRE_GREEN+" +Keen");
+				extra.println(TrawelColor.PRE_GREEN+" +Keen");
 			}
 		}else {
 			if (toReplace == null) {
@@ -979,7 +980,7 @@ public class AIClass {
 				enchantDiff(hasItem.getShockMod(),0,"shock");
 				enchantDiff(hasItem.getFreezeMod(),0,"frost");
 				if (hasItem.isKeen()) {
-					extra.println(extra.PRE_RED+" -Keen");
+					extra.println(TrawelColor.PRE_RED+" -Keen");
 				}
 			}else {
 				enchantDiff(hasItem.getAimMod(),toReplace.getAimMod(),"aim");
@@ -993,11 +994,11 @@ public class AIClass {
 				//enchantDiff(hasItem,toReplace,"aim");
 				if (hasItem.isKeen()) {
 					if (!toReplace.isKeen()) {
-						extra.println(extra.PRE_RED+" -Keen");
+						extra.println(TrawelColor.PRE_RED+" -Keen");
 					}
 				}else {
 					if (toReplace.isKeen()) {
-						extra.println(extra.PRE_GREEN+" +Keen");
+						extra.println(TrawelColor.PRE_GREEN+" +Keen");
 					}
 				}
 			}
@@ -1007,7 +1008,7 @@ public class AIClass {
 	
 	private static void enchantDiff(float has, float get, String name) {
 		if (has-get != 0) {
-			extra.println(" " +extra.hardColorDelta2(get,has) + " " + name + " mult");
+			extra.println(" " +TrawelColor.hardColorDelta2(get,has) + " " + name + " mult");
 		}
 	}
 	
@@ -1042,7 +1043,7 @@ public class AIClass {
 									combat.prettyHPIndex(Player.lastAttackStringer)
 									);
 						}
-						extra.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),extra.PRE_WHITE, defender)+": ");
+						extra.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),TrawelColor.PRE_WHITE, defender)+": ");
 						for(ImpairedAttack a: attacks) {
 							extra.print(j + " ");
 							a.display(3);
@@ -1074,10 +1075,10 @@ public class AIClass {
 									);
 						}
 						if (mainGame.attackDisplayStyle == DispAttack.TWO_LINE1_WITH_KEY) {
-							extra.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),extra.PRE_WHITE, defender)+": " + extra.CHAR_HITCHANCE + " hitmult; " +extra.CHAR_INSTANTS+" warmup cooldown; "+
+							extra.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),TrawelColor.PRE_WHITE, defender)+": " + extra.CHAR_HITCHANCE + " hitmult; " +extra.CHAR_INSTANTS+" warmup cooldown; "+
 									ImpairedAttack.EXPLAIN_DAMAGE_TYPES());
 						}else {
-							extra.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),extra.PRE_WHITE, defender)+": ");
+							extra.println("Attacks on "+combat.prettyHPPerson("[HP]"+defender.getName(),TrawelColor.PRE_WHITE, defender)+": ");
 						}
 						for(ImpairedAttack a: attacks) {
 							extra.print(j + " ");
@@ -1115,7 +1116,7 @@ public class AIClass {
 
 								@Override
 								public boolean go() {
-									extra.println(extra.STAT_HEADER+attacker.getName()+": ");
+									extra.println(TrawelColor.STAT_HEADER+attacker.getName()+": ");
 									attacker.displayHp();
 									attacker.displayArmor();
 									attacker.displayEffects();
@@ -1130,7 +1131,7 @@ public class AIClass {
 
 								@Override
 								public boolean go() {
-									extra.println(extra.STAT_HEADER+attacker.getName()+": ");
+									extra.println(TrawelColor.STAT_HEADER+attacker.getName()+": ");
 									if (mainGame.advancedCombatDisplay) {
 										attacker.debug_print_status(0);
 									}
@@ -1146,7 +1147,7 @@ public class AIClass {
 
 								@Override
 								public boolean go() {
-									extra.println(extra.STAT_HEADER+defender.getName()+": ");
+									extra.println(TrawelColor.STAT_HEADER+defender.getName()+": ");
 									defender.displayHp();
 									defender.displayArmor();
 									defender.displayEffects();
@@ -1161,7 +1162,7 @@ public class AIClass {
 
 								@Override
 								public boolean go() {
-									extra.println(extra.STAT_HEADER+defender.getName()+": ");
+									extra.println(TrawelColor.STAT_HEADER+defender.getName()+": ");
 									if (mainGame.advancedCombatDisplay) {
 										defender.debug_print_status(0);
 									}

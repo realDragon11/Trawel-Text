@@ -8,6 +8,7 @@ import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import trawel.core.Networking.Area;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.item.Seed;
 import trawel.time.TimeContext;
@@ -210,7 +211,7 @@ public class Garden extends Feature {
 	
 	@Override
 	public String getColor() {
-		return extra.F_SERVICE;
+		return TrawelColor.F_SERVICE;
 	}
 
 	@Override

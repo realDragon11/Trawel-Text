@@ -13,6 +13,7 @@ import derg.menus.ScrollMenuGenerator;
 import trawel.battle.Combat;
 import trawel.core.Networking;
 import trawel.core.Networking.Area;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -39,10 +40,10 @@ public class TravelingFeature extends Store{
 	public static boolean exiting;//false by default
 	
 	protected enum TravelType{
-		CELEBRATION(extra.F_SERVICE,"Celebration"),
-		FIGHT(extra.F_COMBAT,"Fight"),
-		ORACLE(extra.F_SPECIAL,"Oracle"),
-		STALL(extra.F_SERVICE,"Store");
+		CELEBRATION(TrawelColor.F_SERVICE,"Celebration"),
+		FIGHT(TrawelColor.F_COMBAT,"Fight"),
+		ORACLE(TrawelColor.F_SPECIAL,"Oracle"),
+		STALL(TrawelColor.F_SERVICE,"Store");
 		
 		public final String color, name;
 		TravelType(String _color, String _name){
@@ -60,7 +61,7 @@ public class TravelingFeature extends Store{
 	
 	@Override
 	public String getColor() {
-		return (contents != null ? contents.color : extra.F_SPECIAL);
+		return (contents != null ? contents.color : TrawelColor.F_SPECIAL);
 	}
 	
 	@Override
@@ -158,7 +159,7 @@ public class TravelingFeature extends Store{
 						list.add(new MenuSelect() {
 							@Override
 							public String title() {
-								return extra.SERVICE_FREE+"Attempt to find Free Beer.";
+								return TrawelColor.SERVICE_FREE+"Attempt to find Free Beer.";
 							}
 
 							@Override
@@ -167,10 +168,10 @@ public class TravelingFeature extends Store{
 								TrawelTime.globalPassTime();
 								useCount++;
 								if (extra.randRange(1, useCount) == 1) {
-									extra.println(extra.RESULT_PASS+"You find some beer laying around.");
+									extra.println(TrawelColor.RESULT_PASS+"You find some beer laying around.");
 									Player.player.beer++;
 								}else{
-									extra.println(extra.RESULT_FAIL+"Your efforts were in vain, you could not find any beer.");
+									extra.println(TrawelColor.RESULT_FAIL+"Your efforts were in vain, you could not find any beer.");
 								}
 								return true;
 							}});
@@ -262,7 +263,7 @@ public class TravelingFeature extends Store{
 
 							@Override
 							public String title() {
-								return extra.SERVICE_FREE+"Listen in on their ramblings.";
+								return TrawelColor.SERVICE_FREE+"Listen in on their ramblings.";
 							}
 
 							@Override
@@ -273,7 +274,7 @@ public class TravelingFeature extends Store{
 									if (extra.chanceIn(useCount,3+useCount)){
 										if (useCount > 5) {
 											regenSetup();
-											extra.println(extra.RESULT_FAIL+"The oracle packs up and heads off with extreme urgency.");
+											extra.println(TrawelColor.RESULT_FAIL+"The oracle packs up and heads off with extreme urgency.");
 										}else {
 											extra.println("The oracle watches you in silence.");
 										}

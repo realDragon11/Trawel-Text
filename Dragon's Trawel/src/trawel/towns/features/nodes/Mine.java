@@ -1,7 +1,7 @@
 package trawel.towns.features.nodes;
 import trawel.core.Networking;
 import trawel.core.Networking.Area;
-import trawel.helper.methods.extra;
+import trawel.helper.constants.TrawelColor;
 import trawel.personal.classless.Perk;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
@@ -46,7 +46,7 @@ public class Mine extends NodeFeature {
 	
 	@Override
 	public String getColor() {
-		return extra.F_NODE;
+		return TrawelColor.F_NODE;
 	}
 	
 	@Override

@@ -11,6 +11,7 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.battle.Combat;
 import trawel.core.Networking;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.AIClass;
 import trawel.personal.Person;
@@ -366,7 +367,7 @@ public class GraveyardNode implements NodeType{
 	}
 	
 	private boolean packOfBats(NodeConnector holder,int node) {
-			extra.println(extra.PRE_BATTLE+"The bats descend upon you!");
+			extra.println(TrawelColor.PRE_BATTLE+"The bats descend upon you!");
 			List<Person> list = holder.getStorageFirstClass(node, List.class);
 			Combat c = Player.player.massFightWith(list);
 			if (c.playerWon() > 0) {
@@ -458,7 +459,7 @@ public class GraveyardNode implements NodeType{
 
 						@Override
 						public String title() {
-							return extra.PRE_BATTLE+"Mug Them.";
+							return TrawelColor.PRE_BATTLE+"Mug Them.";
 						}
 
 						@Override
@@ -508,14 +509,14 @@ public class GraveyardNode implements NodeType{
 		if (state == 10) {//might be fine with
 			int react = p.facRep.getReactionAgainst(p,Player.player.getPerson());
 			if (react > 0) {
-				extra.println("The Graverobber nods to you, but doesn't want to be disturbed. "+extra.PRE_BATTLE+"Disturb them?");
+				extra.println("The Graverobber nods to you, but doesn't want to be disturbed. "+TrawelColor.PRE_BATTLE+"Disturb them?");
 				if (!extra.yesNo()) {
 					Networking.clearSide(1);
 					return false;
 				}
 			}else {
 				if (react == 0) {
-					extra.println("The Graverobber tells you to leave. "+extra.PRE_BATTLE+"Attack them?");
+					extra.println("The Graverobber tells you to leave. "+TrawelColor.PRE_BATTLE+"Attack them?");
 					if (!extra.yesNo()) {
 						Networking.clearSide(1);
 						return false;
@@ -524,9 +525,9 @@ public class GraveyardNode implements NodeType{
 			}
 			//we didn't leave while we still could, friend
 			holder.setStateNum(node,11);
-			extra.println(extra.PRE_BATTLE+"\"Should have left it alone, friend!\"");
+			extra.println(TrawelColor.PRE_BATTLE+"\"Should have left it alone, friend!\"");
 		}else {
-			extra.println(extra.PRE_BATTLE+"The Graverobber attacks you!");
+			extra.println(TrawelColor.PRE_BATTLE+"The Graverobber attacks you!");
 		}
 		//if we got here, we're fighting
 		//it doesn't forcego, however
@@ -549,7 +550,7 @@ public class GraveyardNode implements NodeType{
 			extra.println("A vampire eyes you from a perch on a tombstone.");
 			holder.setForceGo(node, true);
 		}
-		extra.println(extra.PRE_BATTLE+"Shouldn't have come to this graveyard, mortal!");
+		extra.println(TrawelColor.PRE_BATTLE+"Shouldn't have come to this graveyard, mortal!");
 		Combat c = Player.player.massFightWith(holder.getStorageFirstClass(node,List.class));
 		
 		if (c.playerWon() > 0) {
@@ -649,9 +650,9 @@ public class GraveyardNode implements NodeType{
 		//it might also be displayed, but in that case the combat will clean it up for us
 		
 		if (state <= 31) {//first fight
-			extra.println(extra.PRE_BATTLE+"The statue springs to life and attacks you!");
+			extra.println(TrawelColor.PRE_BATTLE+"The statue springs to life and attacks you!");
 		}else {
-			extra.println(extra.PRE_BATTLE+"The statue attacks you!");
+			extra.println(TrawelColor.PRE_BATTLE+"The statue attacks you!");
 		}
 		Combat c = Player.player.fightWith(p);
 		if (c.playerWon() > 0) {

@@ -6,6 +6,7 @@ import java.util.List;
 
 import trawel.core.Networking;
 import trawel.core.mainGame;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.Archetype;
@@ -109,9 +110,9 @@ public class StoryTutorial extends Story{
 			extra.println("Delay on abilities is combined from a warmup and a cooldown. The first number is the warmup- how long until the attack goes through. The second number is the cooldown- how long after that until you can choose another attack.");
 			extra.println(
 					massFight ?
-							extra.CHAR_SHARP+extra.CHAR_BLUNT+extra.CHAR_PIERCE+extra.PRE_WHITE+" stands for sharp blunt pierce- the three main damage types. Your opponents also have sbp-based armor. Yeah, you got a mass fight for your first battle. Good luck."
+							extra.CHAR_SHARP+extra.CHAR_BLUNT+extra.CHAR_PIERCE+TrawelColor.PRE_WHITE+" stands for sharp blunt pierce- the three main damage types. Your opponents also have sbp-based armor. Yeah, you got a mass fight for your first battle. Good luck."
 							:
-								extra.CHAR_SHARP+extra.CHAR_BLUNT+extra.CHAR_PIERCE+extra.PRE_WHITE+" stands for sharp blunt pierce- the three main damage types. Your opponent also has sbp-based armor."
+								extra.CHAR_SHARP+extra.CHAR_BLUNT+extra.CHAR_PIERCE+TrawelColor.PRE_WHITE+" stands for sharp blunt pierce- the three main damage types. Your opponent also has sbp-based armor."
 					);
 			extra.println("Hitpoints only matter in combat- you steel yourself fully before each battle, restoring to your current maximum. Very few things can reduce this maximum, the most notable being the CURSE status effect.");
 			switch (mainGame.attackDisplayStyle) {
@@ -125,9 +126,9 @@ public class StoryTutorial extends Story{
 				extra.println("Instead of only table headers, each cell is labeled. "
 						+extra.CHAR_HITCHANCE+" is hitmult. "
 						+extra.CHAR_INSTANTS+" is 'instants' (warmup and cooldown time.) "
-						+extra.CHAR_SHARP+extra.PRE_WHITE+" is sharp damage, "
-						+extra.CHAR_BLUNT+extra.PRE_WHITE+" is blunt damage, and "
-						+extra.CHAR_PIERCE+extra.PRE_WHITE+" is pierce damage.");
+						+extra.CHAR_SHARP+TrawelColor.PRE_WHITE+" is sharp damage, "
+						+extra.CHAR_BLUNT+TrawelColor.PRE_WHITE+" is blunt damage, and "
+						+extra.CHAR_PIERCE+TrawelColor.PRE_WHITE+" is pierce damage.");
 				extra.println("There are more damage types, such as elemental, but those are beyond the scope of this tutorial.");
 				break;
 			case TWO_LINE1_WITH_KEY:
@@ -243,12 +244,12 @@ public class StoryTutorial extends Story{
 			}
 			extra.println("These areas have a variable number of nodes, seen below. Each node has a link to other nodes, and the ability to 'interact' with it. Nodes can be "
 					
-			+extra.COLOR_NEW+"{"+extra.VISIT_NEW+"} unseen,"+extra.PRE_WHITE
-			+extra.COLOR_SEEN+" {"+extra.VISIT_SEEN+"} seen,"+extra.PRE_WHITE
-			+extra.COLOR_BEEN+" {"+extra.VISIT_BEEN + "} been,"+extra.PRE_WHITE
-			+extra.COLOR_OWN+" {" +extra.VISIT_DONE + "} done, "+extra.PRE_WHITE
-			+extra.COLOR_OWN+" {"+extra.VISIT_OWN + "} owned, "+extra.PRE_WHITE+ "(usually used to indicate you've done an action that will change with time), "
-			+extra.PRE_WHITE+" and "+extra.COLOR_REGROWN+"{"+extra.VISIT_REGROWN+ "} regrown,"+extra.PRE_WHITE+" which means that they got replaced since you last visited them.");
+			+TrawelColor.COLOR_NEW+"{"+TrawelColor.VISIT_NEW+"} unseen,"+TrawelColor.PRE_WHITE
+			+TrawelColor.COLOR_SEEN+" {"+TrawelColor.VISIT_SEEN+"} seen,"+TrawelColor.PRE_WHITE
+			+TrawelColor.COLOR_BEEN+" {"+TrawelColor.VISIT_BEEN + "} been,"+TrawelColor.PRE_WHITE
+			+TrawelColor.COLOR_OWN+" {" +TrawelColor.VISIT_DONE + "} done, "+TrawelColor.PRE_WHITE
+			+TrawelColor.COLOR_OWN+" {"+TrawelColor.VISIT_OWN + "} owned, "+TrawelColor.PRE_WHITE+ "(usually used to indicate you've done an action that will change with time), "
+			+TrawelColor.PRE_WHITE+" and "+TrawelColor.COLOR_REGROWN+"{"+TrawelColor.VISIT_REGROWN+ "} regrown,"+TrawelColor.PRE_WHITE+" which means that they got replaced since you last visited them.");
 			extra.println("The order of nodes presented is often erratic, but the last node you were in will be marked by '(back)'. Some areas will also place nodes that are 'deeper' or 'higher' on the top. One such instance is the Tower of Fate in Unun, which loops back in on itself, but picking the highest choice will always take to up the tower until you reach the top floor.");
 			extra.println("While interacting, you might find yourself in a sub-menu, otherwise you can always leave the area by selecting the last option.");
 			extra.println(" ");

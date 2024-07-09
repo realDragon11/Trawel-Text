@@ -16,6 +16,7 @@ import trawel.battle.Combat.SkillCon;
 import trawel.core.Networking;
 import trawel.core.mainGame;
 import trawel.core.Networking.Area;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
@@ -82,7 +83,7 @@ public class Docks extends Feature {
 	
 	@Override
 	public String getColor() {
-		return extra.PRE_SHIP;
+		return TrawelColor.PRE_SHIP;
 	}
 
 	@Override
@@ -193,7 +194,7 @@ public class Docks extends Feature {
 
 							@Override
 							public String title() {
-								return extra.SERVICE_FREE+"Admire Port.";
+								return TrawelColor.SERVICE_FREE+"Admire Port.";
 							}
 
 							@Override
@@ -208,7 +209,7 @@ public class Docks extends Feature {
 
 							@Override
 							public String title() {
-								return extra.PRE_BATTLE
+								return TrawelColor.PRE_BATTLE
 										+"Wait and then Take Back Port ("
 										+extra.F_TWO_TRAILING.format(fightCooldownTimer+1)+" hours)";
 							}
@@ -230,7 +231,7 @@ public class Docks extends Feature {
 
 							@Override
 							public String title() {
-								return extra.PRE_BATTLE+"Defend Port!";
+								return TrawelColor.PRE_BATTLE+"Defend Port!";
 							}
 
 							@Override
@@ -246,7 +247,7 @@ public class Docks extends Feature {
 
 							@Override
 							public String title() {
-								return extra.PRE_BATTLE+"Reclaim Port!";
+								return TrawelColor.PRE_BATTLE+"Reclaim Port!";
 							}
 
 							@Override
@@ -268,7 +269,7 @@ public class Docks extends Feature {
 
 						@Override
 						public String title() {
-							return extra.SERVICE_FREE+"Travel to Far Flung Ports.";
+							return TrawelColor.SERVICE_FREE+"Travel to Far Flung Ports.";
 						}
 
 						@Override
@@ -284,7 +285,7 @@ public class Docks extends Feature {
 
 							@Override
 							public String title() {
-								return extra.RESULT_WARN+"Travel Blocked.";
+								return TrawelColor.RESULT_WARN+"Travel Blocked.";
 							}
 
 							@Override
@@ -312,7 +313,7 @@ public class Docks extends Feature {
 
 					@Override
 					public String title() {
-						return extra.PRE_MAYBE_BATTLE+"Sail Aimlessly";
+						return TrawelColor.PRE_MAYBE_BATTLE+"Sail Aimlessly";
 					}
 
 					@Override
@@ -408,7 +409,7 @@ public class Docks extends Feature {
 
 					@Override
 					public String title() {
-						return t.displayLine(Docks.this.town) + " ("+(t.getTier() > Player.player.getPerson().getLevel() ? ""+extra.TIMID_RED+"Out of Scope" : Connection.displayTime(timeList.get(i))) + ")";
+						return t.displayLine(Docks.this.town) + " ("+(t.getTier() > Player.player.getPerson().getLevel() ? ""+TrawelColor.TIMID_RED+"Out of Scope" : Connection.displayTime(timeList.get(i))) + ")";
 					}
 
 					@Override
@@ -499,9 +500,9 @@ public class Docks extends Feature {
 			Player.addTime(3);//3 hour battle
 			if (townOwned) {
 				if (oldOwned == townOwned) {
-					extra.println(extra.RESULT_NO_CHANGE_GOOD+"The docks are safe.");
+					extra.println(TrawelColor.RESULT_NO_CHANGE_GOOD+"The docks are safe.");
 				}else {
-					extra.println(extra.RESULT_GOOD+"You took back the docks!");
+					extra.println(TrawelColor.RESULT_GOOD+"You took back the docks!");
 				}
 				if (c.playerWon() > 1) {//you must survive to get paid
 					Networking.unlockAchievement("docks_survive");
@@ -512,18 +513,18 @@ public class Docks extends Feature {
 				}
 			}else {
 				if (!oldOwned) {
-					extra.println(extra.RESULT_NO_CHANGE_BAD+"The docks remain under drudger control...");
+					extra.println(TrawelColor.RESULT_NO_CHANGE_BAD+"The docks remain under drudger control...");
 				}else {
 					if (leader != null) {
-						extra.println(extra.RESULT_BAD+leader.getPerson().getName() +"'s drudger army takes over the docks!");
+						extra.println(TrawelColor.RESULT_BAD+leader.getPerson().getName() +"'s drudger army takes over the docks!");
 					}else {
-						extra.println(extra.RESULT_BAD+"The docks are overrun by the drudger force.");
+						extra.println(TrawelColor.RESULT_BAD+"The docks are overrun by the drudger force.");
 					}
 				}
 			}
 			return false;
 		}else {
-			extra.println(extra.RESULT_ERROR+"They don't think you capable of helping.");
+			extra.println(TrawelColor.RESULT_ERROR+"They don't think you capable of helping.");
 			return false;
 		}
 	}

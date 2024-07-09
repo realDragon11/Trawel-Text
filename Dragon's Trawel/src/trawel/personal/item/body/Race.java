@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.battle.targets.TargetFactory;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceClass;
@@ -88,22 +89,22 @@ public class Race extends Item{
 	}
 	@Override
 	public void display(int style, float markup) {
-		extra.println(extra.STAT_HEADER+renderName(false));
+		extra.println(TrawelColor.STAT_HEADER+renderName(false));
 		extra.println(internalName.name +", "+internalName.namePlural + ", " +internalName.adjective );
 		extra.println("Type: " + racialType);
 		extra.println("Legacy Sprite: " + raceClass.getLegacy().friendlyName());
-		extra.println(extra.ITEM_DESC_PROP+"Blood: " + (emitsBlood ? extra.PRE_RED+"yes" : extra.PRE_WHITE +"no"));
+		extra.println(TrawelColor.ITEM_DESC_PROP+"Blood: " + (emitsBlood ? TrawelColor.PRE_RED+"yes" : TrawelColor.PRE_WHITE +"no"));
 		extra.println("Rarity: " + extra.F_TWO_TRAILING.format(rarity));
-		extra.println(extra.ITEM_DESC_PROP+"Aiming: " +extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(aimMod));
-		extra.println(extra.ITEM_DESC_PROP+"Health: " +extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(hpMod));
-		extra.println(extra.ITEM_DESC_PROP+"Dodge: " +extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(dodgeMod));
-		extra.println(extra.ITEM_DESC_PROP+"Damage: " +extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(damMod));
-		extra.println(extra.ITEM_DESC_PROP+"Speed: " +extra.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(speedMod));
+		extra.println(TrawelColor.ITEM_DESC_PROP+"Aiming: " +TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(aimMod));
+		extra.println(TrawelColor.ITEM_DESC_PROP+"Health: " +TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(hpMod));
+		extra.println(TrawelColor.ITEM_DESC_PROP+"Dodge: " +TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(dodgeMod));
+		extra.println(TrawelColor.ITEM_DESC_PROP+"Damage: " +TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(damMod));
+		extra.println(TrawelColor.ITEM_DESC_PROP+"Speed: " +TrawelColor.ITEM_WANT_HIGHER+ extra.F_TWO_TRAILING.format(speedMod));
 		if (archetype != null) {
-			extra.println(extra.ITEM_DESC_PROP+"Sterotype: " + archetype.friendlyName());
+			extra.println(TrawelColor.ITEM_DESC_PROP+"Sterotype: " + archetype.friendlyName());
 		}
 		//the funnier sounding the 'better'
-		extra.println(extra.ITEM_DESC_PROP+"Pitches: " +extra.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(minPitch)+ " " +extra.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(maxPitch));
+		extra.println(TrawelColor.ITEM_DESC_PROP+"Pitches: " +TrawelColor.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(minPitch)+ " " +TrawelColor.ITEM_WANT_HIGHER+extra.F_TWO_TRAILING.format(maxPitch));
 		String slurs = null;
 		for (String str: swears) {
 			if (slurs == null) {

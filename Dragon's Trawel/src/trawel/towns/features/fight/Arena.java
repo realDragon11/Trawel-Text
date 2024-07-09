@@ -9,6 +9,7 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.battle.Combat;
 import trawel.core.Networking.Area;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -46,7 +47,7 @@ public class Arena extends Feature{
 	
 	@Override
 	public String getColor() {
-		return extra.F_COMBAT;
+		return TrawelColor.F_COMBAT;
 	}
 	
 	public Arena(String name,int tier,int rounds, double interval, double timeLeft,int timesDone) {
@@ -77,7 +78,7 @@ public class Arena extends Feature{
 
 						@Override
 						public String title() {
-							return extra.PRE_BATTLE+"Participate in the " + getRewardTitle() + " tournament in " + extra.format(getTimeLeft()) + " hours.";
+							return TrawelColor.PRE_BATTLE+"Participate in the " + getRewardTitle() + " tournament in " + extra.format(getTimeLeft()) + " hours.";
 						}
 
 						@Override
@@ -110,7 +111,7 @@ public class Arena extends Feature{
 
 					@Override
 					public String title() {
-						return extra.SERVICE_FREE+"Hang around for a day.";
+						return TrawelColor.SERVICE_FREE+"Hang around for a day.";
 					}
 
 					@Override
@@ -127,7 +128,7 @@ public class Arena extends Feature{
 
 						@Override
 						public String title() {
-							return extra.PRE_BATTLE+"Fight with " + rematcher.getName() +", Level " +rematcher.getLevel()+".";
+							return TrawelColor.PRE_BATTLE+"Fight with " + rematcher.getName() +", Level " +rematcher.getLevel()+".";
 						}
 
 						@Override

@@ -13,6 +13,7 @@ import derg.menus.MenuSelect;
 import trawel.core.Networking;
 import trawel.core.mainGame;
 import trawel.core.Networking.Area;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill;
@@ -288,7 +289,7 @@ public class NodeConnector implements Serializable {
 		if (Player.isPlaying && rubyPayout > 0) {
 			//only apply if the player is playing to avoid telling them stuff when they've quit to menu
 			Gem.RUBY.changeGem(rubyPayout);
-			extra.println(extra.RESULT_GOOD+"You are met outside "+parent.getName() + " by a Hero's Guild member who awards you "+rubyPayout+" Rubies for your efforts!");
+			extra.println(TrawelColor.RESULT_GOOD+"You are met outside "+parent.getName() + " by a Hero's Guild member who awards you "+rubyPayout+" Rubies for your efforts!");
 			rubyPayout = 0;
 		}
 	}
@@ -371,7 +372,7 @@ public class NodeConnector implements Serializable {
 
 					@Override
 					public String title() {
-						return extra.TIMID_RED + "exit " + parent.getName();
+						return TrawelColor.TIMID_RED + "exit " + parent.getName();
 					}
 
 					@Override
@@ -408,12 +409,12 @@ public class NodeConnector implements Serializable {
 		
 		@Override
 		public String title() {
-			String visitColor = extra.PRE_WHITE;
+			String visitColor = TrawelColor.PRE_WHITE;
 			switch (getVisited(node)) {
-			case 0: visitColor = extra.VISIT_NEW; setVisited(node,2);break;
-			case 1: visitColor = extra.VISIT_SEEN; setVisited(node,2);break;
-			case 2: visitColor = extra.VISIT_BEEN;break;
-			case 3: visitColor = extra.VISIT_DONE;break;
+			case 0: visitColor = TrawelColor.VISIT_NEW; setVisited(node,2);break;
+			case 1: visitColor = TrawelColor.VISIT_SEEN; setVisited(node,2);break;
+			case 2: visitColor = TrawelColor.VISIT_BEEN;break;
+			case 3: visitColor = TrawelColor.VISIT_DONE;break;
 			}
 			return visitColor + getName(node);
 		}
@@ -441,9 +442,9 @@ public class NodeConnector implements Serializable {
 		
 		@Override
 		public String title() {
-			String visitColor = extra.COLOR_DONE_TIMID;
+			String visitColor = TrawelColor.COLOR_DONE_TIMID;
 			if (getVisited(node) != 3) {
-				visitColor = extra.COLOR_UNDONE_TIMID;//may be overridden by the node itself by just changing the color right back
+				visitColor = TrawelColor.COLOR_UNDONE_TIMID;//may be overridden by the node itself by just changing the color right back
 			}
 			return visitColor + getInteractString(node);
 		}
@@ -467,20 +468,20 @@ public class NodeConnector implements Serializable {
 		
 		@Override
 		public String title() {
-			String visitColor = extra.PRE_WHITE;
+			String visitColor = TrawelColor.PRE_WHITE;
 			switch (getVisited(node)) {
-				case 0: visitColor = extra.VISIT_NEW;
+				case 0: visitColor = TrawelColor.VISIT_NEW;
 				setVisited(node,1);
 				if (NodeConnector.this.getFlag(node,NodeFlag.REGROWN)) {
-					visitColor = extra.VISIT_REGROWN;
+					visitColor = TrawelColor.VISIT_REGROWN;
 				}
 				;break;
-				case 1: visitColor = extra.VISIT_SEEN; break;
-				case 2: visitColor = extra.VISIT_BEEN; break;
+				case 1: visitColor = TrawelColor.VISIT_SEEN; break;
+				case 2: visitColor = TrawelColor.VISIT_BEEN; break;
 				case 3:
-					visitColor = extra.VISIT_DONE;
+					visitColor = TrawelColor.VISIT_DONE;
 					if (containsOwnable(node)) {
-						visitColor = extra.VISIT_OWN;
+						visitColor = TrawelColor.VISIT_OWN;
 					}
 				break;
 			}
@@ -502,14 +503,14 @@ public class NodeConnector implements Serializable {
 				int fromFloor = getFloor(getCurrentNode());
 				int toFloor = getFloor(node);
 				if (toFloor < fromFloor) {
-					postText += extra.COLOR_OPTION_B+" (Outward)";
+					postText += TrawelColor.COLOR_OPTION_B+" (Outward)";
 				}else {
 					if (toFloor > fromFloor) {
-						postText += extra.COLOR_OPTION_A+" (Inward)";
+						postText += TrawelColor.COLOR_OPTION_A+" (Inward)";
 					}
 				}
 			}
-			return (node == NodeConnector.getLastNode() ? extra.PRE_WHITE+"Back: " : "")+visitColor + getName(node)+extra.PRE_WHITE+postText;
+			return (node == NodeConnector.getLastNode() ? TrawelColor.PRE_WHITE+"Back: " : "")+visitColor + getName(node)+TrawelColor.PRE_WHITE+postText;
 		}
 
 		@Override

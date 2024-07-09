@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 import trawel.core.Networking;
 import trawel.core.mainGame;
 import trawel.core.Networking.Area;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -54,7 +55,7 @@ public class Oracle extends Feature{ //extends feature later
 	
 	@Override
 	public String getColor() {
-		return extra.F_SPECIAL;
+		return TrawelColor.F_SPECIAL;
 	}
 
 	public static void tip(String mask) {
@@ -220,7 +221,7 @@ public class Oracle extends Feature{ //extends feature later
 				}
 			}
 		}else {
-			extra.println(extra.RESULT_ERROR+"You can't afford that!");
+			extra.println(TrawelColor.RESULT_ERROR+"You can't afford that!");
 		}
 	}
 
@@ -245,7 +246,7 @@ public class Oracle extends Feature{ //extends feature later
 				}
 			}
 		}else {
-			extra.println(extra.RESULT_ERROR+"You can't afford that!");
+			extra.println(TrawelColor.RESULT_ERROR+"You can't afford that!");
 		}
 	}
 
@@ -267,9 +268,9 @@ public class Oracle extends Feature{ //extends feature later
 	
 	private void goDelphi() {
 		while (true) {
-			extra.println("1 "+extra.SERVICE_AETHER+"buy an utterance ("+cheapUtterPrice()+" aether)");
-			extra.println("2 "+extra.SERVICE_CURRENCY+"buy a premium utterance ("+(utterPrice())+" "+World.currentMoneyString()+")");
-			extra.println("3 "+extra.SERVICE_FREE+"sit around and wait for them to talk to you");
+			extra.println("1 "+TrawelColor.SERVICE_AETHER+"buy an utterance ("+cheapUtterPrice()+" aether)");
+			extra.println("2 "+TrawelColor.SERVICE_CURRENCY+"buy a premium utterance ("+(utterPrice())+" "+World.currentMoneyString()+")");
+			extra.println("3 "+TrawelColor.SERVICE_FREE+"sit around and wait for them to talk to you");
 			extra.println("9 leave");
 			switch (extra.inInt(4,true,true)) {
 				case 1: utterance();break;

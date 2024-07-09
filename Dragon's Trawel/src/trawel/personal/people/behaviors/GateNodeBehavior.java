@@ -3,6 +3,7 @@ package trawel.personal.people.behaviors;
 import java.util.List;
 
 import trawel.core.Networking;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
@@ -119,7 +120,7 @@ public class GateNodeBehavior extends Behavior {
 	}
 	
 	public void printChallengeAgent() {
-		extra.print(extra.PRE_BATTLE);
+		extra.print(TrawelColor.PRE_BATTLE);
 		switch (type) {
 			default:
 				extra.println(owner.getPerson().getName() + " appears to challenge you!");break;

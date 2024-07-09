@@ -7,6 +7,7 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import trawel.core.Networking.Area;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
@@ -45,7 +46,7 @@ public class Library extends Feature {
 	
 	@Override
 	public String getColor() {
-		return extra.F_AUX_SERVICE;
+		return TrawelColor.F_AUX_SERVICE;
 	}
 
 	@Override
@@ -91,7 +92,7 @@ public class Library extends Feature {
 
 						@Override
 						public String title() {
-							return extra.SERVICE_FREE+"Study general lore. (Free Feat Pick)";
+							return TrawelColor.SERVICE_FREE+"Study general lore. (Free Feat Pick)";
 						}
 
 						@Override
@@ -129,7 +130,7 @@ public class Library extends Feature {
 
 						@Override
 						public String title() {
-							return extra.SERVICE_SPECIAL_PAYMENT+"Study feat fragments (have: "+frag_count+")";
+							return TrawelColor.SERVICE_SPECIAL_PAYMENT+"Study feat fragments (have: "+frag_count+")";
 						}
 
 						@Override

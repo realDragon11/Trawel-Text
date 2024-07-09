@@ -7,6 +7,7 @@ import trawel.battle.Combat;
 import trawel.battle.Combat.SkillCon;
 import trawel.core.Networking;
 import trawel.factions.Faction;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.NPCMutator;
 import trawel.personal.Person;
@@ -185,7 +186,7 @@ public class BossNode{
 	
 	
 	private static boolean fatespinner(NodeConnector holder,int node) {
-		extra.println(extra.PRE_BATTLE+"You challenge the Fatespinner!");
+		extra.println(TrawelColor.PRE_BATTLE+"You challenge the Fatespinner!");
 		List<Person> fated = (List<Person>) holder.getStorageFirstClass(node,List.class);
 		List<Person> playerSide = holder.parent.getHelpFighters();
 		playerSide.addAll(Player.player.getAllies());
@@ -237,7 +238,7 @@ public class BossNode{
 	}
 	
 	private static boolean hellbaron(NodeConnector holder,int node) {
-		extra.println(extra.PRE_BATTLE+"You challenge the Hell Baron!");
+		extra.println(TrawelColor.PRE_BATTLE+"You challenge the Hell Baron!");
 		List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
 		Combat c = Player.player.massFightWith(list);
 		if (c.playerWon() > 0) {
@@ -257,7 +258,7 @@ public class BossNode{
 	}
 	
 	private static boolean yore(NodeConnector holder,int node) {
-		extra.println(extra.PRE_BATTLE+"You challenge a legend!");
+		extra.println(TrawelColor.PRE_BATTLE+"You challenge a legend!");
 		List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
 		List<List<Person>> battleList = new ArrayList<List<Person>>();
 		battleList.add(Player.player.getAllies());
@@ -283,7 +284,7 @@ public class BossNode{
 	}
 	
 	private static boolean oldQueen(NodeConnector holder,int node) {
-		extra.println(extra.PRE_BATTLE+"You challenge the Ancient Queen!");
+		extra.println(TrawelColor.PRE_BATTLE+"You challenge the Ancient Queen!");
 		List<Person> queens = (List<Person>) holder.getStorageFirstClass(node,List.class);
 		List<Person> playerSide = holder.parent.getHelpFighters();
 		playerSide.addAll(Player.player.getAllies());
@@ -332,7 +333,7 @@ public class BossNode{
 	
 	private static boolean variableBlockerBoss(NodeConnector holder,int node) {
 		List<Person> list = (List<Person>) holder.getStorageFirstClass(node,List.class);
-		extra.println(extra.PRE_BATTLE+"You attack "+list.get(0).getName()+"!");
+		extra.println(TrawelColor.PRE_BATTLE+"You attack "+list.get(0).getName()+"!");
 		Combat c = Player.player.massFightWith(list);
 		if (c.playerWon() > 0) {
 			holder.setForceGo(node,false);
@@ -362,12 +363,12 @@ public class BossNode{
 
 	public static String interactString(NodeConnector holder, int node) {
 		switch (BossType.values()[(int)holder.getStorageAsArray(node)[0]]) {
-		case FATESPINNER: return extra.PRE_BATTLE+"Reject Fate.";
-		case GENERIC_DEMON_OVERLORD: return extra.PRE_BATTLE+"Become the Baroness.";
-		case YORE: return extra.PRE_BATTLE+"Stall a Story.";
-		case OLD_QUEEN: return extra.PRE_BATTLE+"Oust an Empress.";
+		case FATESPINNER: return TrawelColor.PRE_BATTLE+"Reject Fate.";
+		case GENERIC_DEMON_OVERLORD: return TrawelColor.PRE_BATTLE+"Become the Baroness.";
+		case YORE: return TrawelColor.PRE_BATTLE+"Stall a Story.";
+		case OLD_QUEEN: return TrawelColor.PRE_BATTLE+"Oust an Empress.";
 		case VARIABLE_GATE_BOSS:
-			return extra.PRE_BATTLE+holder.getStorageAsArray(node)[2];//get interact string in third spot
+			return TrawelColor.PRE_BATTLE+holder.getStorageAsArray(node)[2];//get interact string in third spot
 		}
 		throw new RuntimeException("Invalid boss");
 	}
@@ -379,7 +380,7 @@ public class BossNode{
 		case YORE: return "A Rigged Arena";
 		case OLD_QUEEN: return "Prehistoric Throne";
 		case VARIABLE_GATE_BOSS:
-			return extra.PRE_BATTLE+holder.getStorageAsArray(node)[1];//get name string in second spot
+			return TrawelColor.PRE_BATTLE+holder.getStorageAsArray(node)[1];//get name string in second spot
 		}
 		throw new RuntimeException("Invalid boss");
 	}

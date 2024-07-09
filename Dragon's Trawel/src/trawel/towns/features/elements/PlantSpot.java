@@ -10,6 +10,7 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.battle.Combat;
 import trawel.core.Networking;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;
@@ -132,12 +133,12 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 								timer= -20;//flat
 								switch (extra.randRange(1,6)) {
 								case 1:
-									extra.println(extra.RESULT_BAD+"The bees sting!");
+									extra.println(TrawelColor.RESULT_BAD+"The bees sting!");
 									Player.player.getPerson().addEffect(Effect.BEES);
 									Networking.unlockAchievement("bees_hive");
 									break;
 								case 2:
-									extra.println(extra.RESULT_FAIL+"You escape unscathed but with wounded pride.");
+									extra.println(TrawelColor.RESULT_FAIL+"You escape unscathed but with wounded pride.");
 									break;
 								case 3:
 									Player.bag.addNewDrawBanePlayer(DrawBane.WAX);
@@ -251,7 +252,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 			if (extra.chanceIn(1,4)) {
 				Player.bag.addSeed(Seed.SEED_TRUFFLE);
 			}else {
-				extra.println(extra.RESULT_FAIL+"You are unable to gather the spores.");
+				extra.println(TrawelColor.RESULT_FAIL+"You are unable to gather the spores.");
 			}
 			;break;
 		case SEED_FAE:
@@ -264,7 +265,7 @@ public class PlantSpot implements java.io.Serializable, CanPassTime{
 			if (extra.chanceIn(1,3)) {
 				Player.bag.addSeed(Seed.SEED_FUNGUS);
 			}else {
-				extra.println(extra.RESULT_FAIL+"You are unable to gather the spores.");
+				extra.println(TrawelColor.RESULT_FAIL+"You are unable to gather the spores.");
 			}
 			break;
 		case GROWN_FUNGUS:

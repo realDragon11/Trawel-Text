@@ -30,6 +30,7 @@ import trawel.battle.targets.TargetFactory;
 import trawel.core.Networking.ConnectType;
 import trawel.battle.attacks.StyleFactory;
 import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 import trawel.personal.Person;
@@ -840,7 +841,7 @@ public class mainGame {
 					@Override
 					public boolean go() {
 						if (autoConnect) {
-							extra.println(extra.PRE_ORANGE+"This option will break your connection! Really continue?");
+							extra.println(TrawelColor.PRE_ORANGE+"This option will break your connection! Really continue?");
 							if (!extra.yesNo()) {
 								return false;
 							}
@@ -859,7 +860,7 @@ public class mainGame {
 					@Override
 					public boolean go() {
 						if (autoConnect) {
-							extra.println(extra.PRE_ORANGE+"This option will break your connection! Really continue?");
+							extra.println(TrawelColor.PRE_ORANGE+"This option will break your connection! Really continue?");
 							if (!extra.yesNo()) {
 								return false;
 							}
@@ -913,46 +914,46 @@ public class mainGame {
 		extra.println("Special thanks to many different communities across different programming languages and engines.");
 		extra.println();
 		
-		extra.println(extra.STAT_HEADER+"Music:");
+		extra.println(TrawelColor.STAT_HEADER+"Music:");
 		extra.println(" manicInsomniac");
 		extra.println();
 		
-		extra.println(extra.STAT_HEADER+"Java Libraries:");
+		extra.println(TrawelColor.STAT_HEADER+"Java Libraries:");
 		extra.println(" Yellowstone Games' SquidSquad family");
 		extra.println(" Apache's Fury");
 		extra.println(" Esoteric Software's Kryo");
 		extra.println(" All dependencies of prior libraries");
 		extra.println();
 		
-		extra.println(extra.STAT_HEADER+"Graphical Libraries:");
+		extra.println(TrawelColor.STAT_HEADER+"Graphical Libraries:");
 		extra.println(" JujuAdams' Scribble");
 		extra.println(" Alynne's Input");
 		extra.println(" Pixelated Pope's Retro Palette Swapper");
 		extra.println();
 		
-		extra.println(extra.STAT_HEADER+"Legacy Art:");
+		extra.println(TrawelColor.STAT_HEADER+"Legacy Art:");
 		extra.println("  Most Character and Armor Art: SmashCooper");
 		extra.println("  Some Weapons: Duster");
 		extra.println("  Scars, Weapon Placeholders: Jacobs");
-		extra.println(extra.STAT_HEADER+"Modern A:");
+		extra.println(TrawelColor.STAT_HEADER+"Modern A:");
 		extra.println("  Art: Wasdd");
-		extra.println(extra.STAT_HEADER+"Other Art:");
-		extra.println(extra.ITEM_DESC_PROP+" Background Art:");
+		extra.println(TrawelColor.STAT_HEADER+"Other Art:");
+		extra.println(TrawelColor.ITEM_DESC_PROP+" Background Art:");
 		extra.println("  Damrok");
-		extra.println(extra.ITEM_DESC_PROP+" Concept/Splash Art:");
+		extra.println(TrawelColor.ITEM_DESC_PROP+" Concept/Splash Art:");
 		extra.println("  TamLinArt");
 		extra.println();
 		
-		extra.println(extra.STAT_HEADER+"Sounds:");
+		extra.println(TrawelColor.STAT_HEADER+"Sounds:");
 		extra.println(" Stock Media provided by Soundrangers / FxProSound / SoundIdeasCom / PrankAudio / hdaudio / agcnf_media / sounddogs / AbloomAudio / Yurikud / SoundMorph / partnersinrhyme => through Pond5");
 		extra.println(" Metal sounds by Bluezone");
 		extra.println(" Clicking sound: One of the many CC0 stapler sounds on FreeSound");
 		extra.println();
 		
-		extra.println(extra.STAT_HEADER+"Steam Assets:");
+		extra.println(TrawelColor.STAT_HEADER+"Steam Assets:");
 		
 		extra.println("Achievement icons can be found on game-icons.net, modified using their website. They are CC BY 3.0");
-		extra.println(extra.ITEM_DESC_PROP+"Game-Icons.net list:");
+		extra.println(TrawelColor.ITEM_DESC_PROP+"Game-Icons.net list:");
 		extra.println(
 				"Lorc, http://lorcblog.blogspot.com; "
 				+ "Delapouite, https://delapouite.com; "
@@ -1412,7 +1413,7 @@ public class mainGame {
 		}
 		System.out.println("Error Stacktrace:");
 		e.printStackTrace();
-		extra.println(extra.PRE_RED+"Trawel has encountered an exception. Please report to realDragon. More details can be found in log.txt and the terminal.");
+		extra.println(TrawelColor.PRE_RED+"Trawel has encountered an exception. Please report to realDragon. More details can be found in log.txt and the terminal.");
 		extra.println("Error Preview: "+ e.toString());
 	}
 

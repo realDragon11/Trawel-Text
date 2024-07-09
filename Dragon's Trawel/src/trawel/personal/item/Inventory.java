@@ -17,6 +17,7 @@ import trawel.battle.attacks.Stance;
 import trawel.core.Networking;
 import trawel.core.mainGame;
 import trawel.core.mainGame.GraphicStyle;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;
@@ -506,9 +507,9 @@ public class Inventory implements java.io.Serializable{
 			extra.println("Local Currency: "+ owner.getSuper().getGoldDisp() +". All: " + owner.getSuper().allGoldDisp()+".");
 			if (owner.getSuper().hasFlask()) {
 				if (owner.getSuper().knowsPotion()) {
-					extra.println(owner.getSuper().peekFlask().getName()+extra.PRE_WHITE+" potion with " +extra.ITEM_WANT_HIGHER+ owner.getSuper().getFlaskUses() +extra.PRE_WHITE+ " uses left.");
+					extra.println(owner.getSuper().peekFlask().getName()+TrawelColor.PRE_WHITE+" potion with " +TrawelColor.ITEM_WANT_HIGHER+ owner.getSuper().getFlaskUses() +TrawelColor.PRE_WHITE+ " uses left.");
 				}else {
-					extra.println("Potion with " +extra.ITEM_WANT_HIGHER+ owner.getSuper().getFlaskUses() +extra.PRE_WHITE+ " uses left.");
+					extra.println("Potion with " +TrawelColor.ITEM_WANT_HIGHER+ owner.getSuper().getFlaskUses() +TrawelColor.PRE_WHITE+ " uses left.");
 				}
 			}
 		}else {

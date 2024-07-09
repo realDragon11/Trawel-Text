@@ -7,6 +7,7 @@ import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.people.Player;
@@ -38,7 +39,7 @@ public class FortFoundation extends FortFeature {
 	
 	@Override
 	public String getColor() {
-		return extra.F_BUILDABLE;
+		return TrawelColor.F_BUILDABLE;
 	}
 	
 	@Override

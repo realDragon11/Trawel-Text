@@ -8,6 +8,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.core.Networking.Area;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.Services;
 import trawel.helper.methods.extra;
 import trawel.personal.AIClass;
@@ -138,7 +139,7 @@ public class Store extends Feature{
 	
 	@Override
 	public String getColor() {
-		return extra.F_SERVICE;
+		return TrawelColor.F_SERVICE;
 	}
 	
 	public int getType() {
@@ -259,7 +260,7 @@ public class Store extends Feature{
 					dbs.remove(index);
 				}
 			}else {
-				extra.println(extra.RESULT_ERROR+"You cannot afford this item.");
+				extra.println(TrawelColor.RESULT_ERROR+"You cannot afford this item.");
 			}
 			return;
 		}

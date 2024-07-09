@@ -1,6 +1,6 @@
 package trawel.personal;
 
-import trawel.helper.methods.extra;
+import trawel.helper.constants.TrawelColor;
 
 public enum Effect{
 	//negative lasting status effects the player has to remove somewhere
@@ -85,18 +85,18 @@ public enum Effect{
 	}
 	public String getName() {
 		if (goodNegNeut == 1) {
-			return extra.TIMID_GREEN+name+extra.COLOR_RESET;
+			return TrawelColor.TIMID_GREEN+name+TrawelColor.COLOR_RESET;
 		}
 		if (goodNegNeut == -1) {
-			return extra.TIMID_RED+name+extra.COLOR_RESET;
+			return TrawelColor.TIMID_RED+name+TrawelColor.COLOR_RESET;
 		}
 		if (goodNegNeut < 0) {
-			return extra.PRE_RED+name+extra.COLOR_RESET;
+			return TrawelColor.PRE_RED+name+TrawelColor.COLOR_RESET;
 		}
 		if (goodNegNeut > 0) {
-			return extra.PRE_GREEN+name+extra.COLOR_RESET;
+			return TrawelColor.PRE_GREEN+name+TrawelColor.COLOR_RESET;
 		}
-		return extra.TIMID_MAGENTA+name+extra.COLOR_RESET;
+		return TrawelColor.TIMID_MAGENTA+name+TrawelColor.COLOR_RESET;
 	}
 	public String getDesc() {return desc;}
 	public boolean lasts() {
@@ -107,7 +107,7 @@ public enum Effect{
 	}
 	
 	public String getDisp() {
-		return getName() + extra.PRE_WHITE+": " +getDesc();
+		return getName() + TrawelColor.PRE_WHITE+": " +getDesc();
 	}
 	
 	public static Effect[] estimEffects = new Effect[] {HASTE,HEARTY};//random drug effects

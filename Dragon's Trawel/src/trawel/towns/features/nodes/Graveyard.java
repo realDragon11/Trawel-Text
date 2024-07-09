@@ -1,6 +1,6 @@
 package trawel.towns.features.nodes;
 import trawel.core.Networking.Area;
-import trawel.helper.methods.extra;
+import trawel.helper.constants.TrawelColor;
 import trawel.towns.contexts.Town;
 
 public class Graveyard extends NodeFeature {
@@ -21,7 +21,7 @@ public class Graveyard extends NodeFeature {
 	
 	@Override
 	public String getColor() {
-		return extra.F_NODE;
+		return TrawelColor.F_NODE;
 	}
 	
 	@Override

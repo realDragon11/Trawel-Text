@@ -4,6 +4,7 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.classless.Skill.Type;
 
@@ -85,12 +86,12 @@ public enum Perk implements IHasSkills{
 	
 	@Override
 	public String getOwnText() {
-		return extra.ITEM_VALUE+ name +extra.PRE_WHITE + ": "+desc;
+		return TrawelColor.ITEM_VALUE+ name +TrawelColor.PRE_WHITE + ": "+desc;
 	}
 	
 	@Override
 	public String getBriefText() {
-		return extra.ITEM_VALUE+ name +extra.PRE_WHITE + ": "+desc;
+		return TrawelColor.ITEM_VALUE+ name +TrawelColor.PRE_WHITE + ": "+desc;
 	}
 	
 	@Override

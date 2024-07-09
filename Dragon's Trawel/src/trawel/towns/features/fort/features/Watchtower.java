@@ -3,6 +3,7 @@ package trawel.towns.features.fort.features;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -40,7 +41,7 @@ public class Watchtower extends FortFeature {
 	
 	@Override
 	public String getColor() {
-		return extra.F_FORT;
+		return TrawelColor.F_FORT;
 	}
 	@Override
 	public int getSize() {

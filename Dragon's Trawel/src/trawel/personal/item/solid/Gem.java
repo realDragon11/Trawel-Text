@@ -3,7 +3,7 @@ package trawel.personal.item.solid;
 import java.util.ArrayList;
 import java.util.List;
 
-import trawel.helper.methods.extra;
+import trawel.helper.constants.TrawelColor;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
 
@@ -87,9 +87,9 @@ public enum Gem {
 				continue;//doesn't have, continue
 			}
 			if (ret != "") {
-				ret +=extra.PRE_WHITE+", ";
+				ret +=TrawelColor.PRE_WHITE+", ";
 			}
-			ret += extra.ITEM_DESC_PROP+g.icon +": "+ extra.ITEM_VALUE+g.getGem();
+			ret += TrawelColor.ITEM_DESC_PROP+g.icon +": "+ TrawelColor.ITEM_VALUE+g.getGem();
 		}
 		if (ret == "") {
 			return "none";

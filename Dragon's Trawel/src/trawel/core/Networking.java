@@ -10,6 +10,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import trawel.battle.attacks.ImpairedAttack;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race;
@@ -19,7 +20,7 @@ import trawel.towns.data.Calender;
 
 public class Networking {
 
-	public static final String AGGRO = extra.inlineColor(extra.colorMix(Color.RED, Color.WHITE, 0.5f));//not sure if pre red comes first so
+	public static final String AGGRO = TrawelColor.inlineColor(TrawelColor.colorMix(Color.RED, Color.WHITE, 0.5f));//not sure if pre red comes first so
 	
 	//public static InputStream in;
 	public static Socket socket;
@@ -374,9 +375,9 @@ public class Networking {
 	}
 	
 	public static void addMultiLight(int x,int y) {
-		Networking.addLight(extra.colorMix(Color.RED, Color.WHITE,0.6f) ,extra.colorMix(Color.RED, Color.WHITE,0.4f), x,y, 200, 300, 1);
-		Networking.addLight(extra.colorMix(Color.RED, Color.WHITE,0.8f) ,extra.colorMix(Color.RED, Color.WHITE,0.6f), x,y, 100, 200, 2);
-		Networking.addLight(extra.colorMix(Color.RED, Color.WHITE,0.3f) ,extra.colorMix(Color.RED, Color.WHITE,0.2f), x,y, 50, 100, 1);
+		Networking.addLight(TrawelColor.colorMix(Color.RED, Color.WHITE,0.6f) ,TrawelColor.colorMix(Color.RED, Color.WHITE,0.4f), x,y, 200, 300, 1);
+		Networking.addLight(TrawelColor.colorMix(Color.RED, Color.WHITE,0.8f) ,TrawelColor.colorMix(Color.RED, Color.WHITE,0.6f), x,y, 100, 200, 2);
+		Networking.addLight(TrawelColor.colorMix(Color.RED, Color.WHITE,0.3f) ,TrawelColor.colorMix(Color.RED, Color.WHITE,0.2f), x,y, 50, 100, 1);
 	}
 	
 	public static void clearLights() {

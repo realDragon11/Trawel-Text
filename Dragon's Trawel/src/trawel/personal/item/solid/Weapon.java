@@ -10,6 +10,7 @@ import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.Stance;
 import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.Services;
 import trawel.helper.methods.extra;
 import trawel.personal.classless.IEffectiveLevel;
@@ -242,9 +243,9 @@ public class Weapon extends Item implements IEffectiveLevel {
 		String weapName = weap.getName();
 		Material mat = MaterialFactory.getMat(material);
 		if (enchant != null) {
-			return (enchant.getBeforeName() +mat.color+ mat.name + extra.COLOR_RESET+ " " +  weapName + enchant.getAfterName());
+			return (enchant.getBeforeName() +mat.color+ mat.name + TrawelColor.COLOR_RESET+ " " +  weapName + enchant.getAfterName());
 		}
-		return (mat.color+ mat.name  +extra.COLOR_RESET+ " " + weapName);		
+		return (mat.color+ mat.name  +TrawelColor.COLOR_RESET+ " " + weapName);		
 	}
 	
 	@Override
@@ -444,13 +445,13 @@ public class Weapon extends Item implements IEffectiveLevel {
 		case 1://used for comparing and in stores
 		case 3:
 			extra.println(this.getName()
-			+ extra.ITEM_DESC_PROP+" ic/bd/wa"+extra.PRE_WHITE+": "
-			+extra.ITEM_WANT_HIGHER
+			+ TrawelColor.ITEM_DESC_PROP+" ic/bd/wa"+TrawelColor.PRE_WHITE+": "
+			+TrawelColor.ITEM_WANT_HIGHER
 			+ extra.formatPerSubOne(this.scoreImpact())
 			+ "/" + extra.format(this.scoreBest())
 			+"/"+extra.format(this.scoreWeight())
-			+ (Player.player.caresAboutCapacity() ? " "+extra.ITEM_DESC_PROP+extra.DISP_WEIGHT+extra.PRE_WHITE+": "+extra.ITEM_WANT_LOWER+getWeight() : "")
-			+" "+extra.ITEM_DESC_PROP+extra.DISP_AETHER+": " +extra.ITEM_VALUE+ extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
+			+ (Player.player.caresAboutCapacity() ? " "+TrawelColor.ITEM_DESC_PROP+extra.DISP_WEIGHT+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_LOWER+getWeight() : "")
+			+" "+TrawelColor.ITEM_DESC_PROP+extra.DISP_AETHER+": " +TrawelColor.ITEM_VALUE+ extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
 			);
 			
 			if (this.isEnchantedConstant()) {
@@ -460,7 +461,7 @@ public class Weapon extends Item implements IEffectiveLevel {
 				this.getEnchant().display(1);
 			}
 			for (WeaponQual wq: qualList) {
-				extra.println(" " +extra.TIMID_GREEN+wq.name +extra.PRE_WHITE+": "+wq.desc);
+				extra.println(" " +TrawelColor.TIMID_GREEN+wq.name +TrawelColor.PRE_WHITE+": "+wq.desc);
 			}
 			;break;
 		case 4:
@@ -470,32 +471,32 @@ public class Weapon extends Item implements IEffectiveLevel {
 			//by dividing it later we implicitly mult it by 100x to get it to display as a whole number
 			float expectedAverage = (1f/getMartialStance().getAttackCount());
 			extra.println(getName() +":");
-			extra.println(extra.STAT_HEADER+"Tested Stats:");
-			extra.println(extra.ITEM_DESC_PROP+" Impact Chance (ic)"+extra.PRE_WHITE+": "+extra.ITEM_WANT_HIGHER+ extra.formatPerSubOne(scoreImpact()));
-			extra.println(extra.ITEM_DESC_PROP+" Best DPI (bd)"+extra.PRE_WHITE+": "+extra.ITEM_WANT_HIGHER + extra.format(scoreBest()));
-			extra.println(extra.ITEM_DESC_PROP+" Weighted DPI (wa)"+extra.PRE_WHITE+": "+extra.ITEM_WANT_HIGHER + extra.format(scoreWeight()));
-			extra.println(extra.STAT_HEADER+"Value and Usage:");
-			extra.println(extra.ITEM_DESC_PROP+" Aether"+extra.PRE_WHITE+": "+extra.ITEM_VALUE + (int)(getAetherValue()*markup));
-			extra.println(extra.ITEM_DESC_PROP+" Infused kills"+extra.PRE_WHITE+": " +getKills());
+			extra.println(TrawelColor.STAT_HEADER+"Tested Stats:");
+			extra.println(TrawelColor.ITEM_DESC_PROP+" Impact Chance (ic)"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER+ extra.formatPerSubOne(scoreImpact()));
+			extra.println(TrawelColor.ITEM_DESC_PROP+" Best DPI (bd)"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER + extra.format(scoreBest()));
+			extra.println(TrawelColor.ITEM_DESC_PROP+" Weighted DPI (wa)"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER + extra.format(scoreWeight()));
+			extra.println(TrawelColor.STAT_HEADER+"Value and Usage:");
+			extra.println(TrawelColor.ITEM_DESC_PROP+" Aether"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_VALUE + (int)(getAetherValue()*markup));
+			extra.println(TrawelColor.ITEM_DESC_PROP+" Infused kills"+TrawelColor.PRE_WHITE+": " +getKills());
 			
 			if (isEnchantedConstant()) {
-				extra.println(extra.STAT_HEADER+"Constant Enchantment:");
+				extra.println(TrawelColor.STAT_HEADER+"Constant Enchantment:");
 				getEnchant().display(2);
 			}
 			if (isEnchantedHit()) {
-				extra.println(extra.STAT_HEADER+"On-Hit Enchantment:");
+				extra.println(TrawelColor.STAT_HEADER+"On-Hit Enchantment:");
 				getEnchant().display(2);
 			}
 			if (qualList.size() > 0) {
-				extra.println(extra.STAT_HEADER+"Qualities:");
+				extra.println(TrawelColor.STAT_HEADER+"Qualities:");
 				for (WeaponQual wq: qualList) {
-					extra.println(" " +extra.TIMID_GREEN+wq.name +extra.PRE_WHITE+": "+wq.desc);
+					extra.println(" " +TrawelColor.TIMID_GREEN+wq.name +TrawelColor.PRE_WHITE+": "+wq.desc);
 				}
 			}
-			extra.println(extra.STAT_HEADER+"Tested Equity DPI:");
-			extra.println(extra.ITEM_DESC_PROP+" Highest"+extra.PRE_WHITE+": "+extra.ITEM_WANT_LOWER+extra.F_WHOLE.format(scoreHighestContribution()/expectedAverage)+extra.PRE_WHITE+"% of perfect equity");
-			extra.println(extra.ITEM_DESC_PROP+" Lowest"+extra.PRE_WHITE+": "+extra.ITEM_WANT_HIGHER+extra.F_WHOLE.format(scoreLowestContribution()/expectedAverage)+extra.PRE_WHITE+"% of perfect equity");
-			extra.println(extra.STAT_HEADER+"Raw Untested Attacks"+extra.PRE_WHITE+":");
+			extra.println(TrawelColor.STAT_HEADER+"Tested Equity DPI:");
+			extra.println(TrawelColor.ITEM_DESC_PROP+" Highest"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_LOWER+extra.F_WHOLE.format(scoreHighestContribution()/expectedAverage)+TrawelColor.PRE_WHITE+"% of perfect equity");
+			extra.println(TrawelColor.ITEM_DESC_PROP+" Lowest"+TrawelColor.PRE_WHITE+": "+TrawelColor.ITEM_WANT_HIGHER+extra.F_WHOLE.format(scoreLowestContribution()/expectedAverage)+TrawelColor.PRE_WHITE+"% of perfect equity");
+			extra.println(TrawelColor.STAT_HEADER+"Raw Untested Attacks"+TrawelColor.PRE_WHITE+":");
 			WeaponAttackFactory.getStance(this.weap).display(this);
 			;break;
 		}
@@ -509,13 +510,13 @@ public class Weapon extends Item implements IEffectiveLevel {
 	public String storeString(double markup, int canShow) {//for stores brief overview
 		if (canShow > 0) {
 			return this.getName() 
-					+ extra.ITEM_DESC_PROP+" ic/wa"+extra.PRE_WHITE+": " +extra.ITEM_WANT_HIGHER+extra.formatPerSubOne(this.scoreImpact())
+					+ TrawelColor.ITEM_DESC_PROP+" ic/wa"+TrawelColor.PRE_WHITE+": " +TrawelColor.ITEM_WANT_HIGHER+extra.formatPerSubOne(this.scoreImpact())
 					+"/"+extra.format(this.scoreWeight())
-					+ extra.ITEM_DESC_PROP+ " cost"+extra.PRE_WHITE+": " + extra.ITEM_VALUE+extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
-						+ (canShow == 1 ? extra.TIMID_RED+" (raw deal)" : "");
+					+ TrawelColor.ITEM_DESC_PROP+ " cost"+TrawelColor.PRE_WHITE+": " + TrawelColor.ITEM_VALUE+extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
+						+ (canShow == 1 ? TrawelColor.TIMID_RED+" (raw deal)" : "");
 		}
 		String base = getBaseName();
-		return extra.TIMID_GREY+"  They refuse to show you something you think " + extra.pluralIsA(base) + " "+base+".";
+		return TrawelColor.TIMID_GREY+"  They refuse to show you something you think " + extra.pluralIsA(base) + " "+base+".";
 	}
 
 	@Override

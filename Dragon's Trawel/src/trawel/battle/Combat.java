@@ -19,6 +19,7 @@ import trawel.battle.targets.TargetFactory;
 import trawel.battle.targets.TargetFactory.BloodType;
 import trawel.factions.FBox;
 import trawel.factions.HostileTask;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 import trawel.personal.AIClass;
@@ -687,11 +688,11 @@ public class Combat {
 		if (dead.hasSkill(Skill.CURSE_MAGE)) {
 			if (killer.hasSkill(Skill.NO_HOSTILE_CURSE)) {
 				if (!extra.getPrint()) {
-					extra.println(extra.RESULT_WARN+dead.getName() + " curses the name of " +killer.getNameNoTitle()+", but they seem unaffected.");
+					extra.println(TrawelColor.RESULT_WARN+dead.getName() + " curses the name of " +killer.getNameNoTitle()+", but they seem unaffected.");
 				}
 			}else {
 				if (!extra.getPrint()) {
-					extra.println(extra.RESULT_WARN+dead.getName() + " curses the name of " +killer.getNameNoTitle()+"!");
+					extra.println(TrawelColor.RESULT_WARN+dead.getName() + " curses the name of " +killer.getNameNoTitle()+"!");
 				}
 				killer.addEffect(Effect.CURSE);
 			}
@@ -699,11 +700,11 @@ public class Combat {
 		if (killer.hasSkill(Skill.CONDEMN_SOUL)) {
 			if (dead.hasSkill(Skill.NO_HOSTILE_CURSE)) {
 				if (!extra.getPrint()) {
-					extra.println(extra.RESULT_WARN+killer.getName() + " condemns the soul of " +dead.getNameNoTitle()+", but they seem unaffected.");
+					extra.println(TrawelColor.RESULT_WARN+killer.getName() + " condemns the soul of " +dead.getNameNoTitle()+", but they seem unaffected.");
 				}
 			}else {
 				if (!extra.getPrint()) {
-					extra.println(extra.RESULT_WARN+killer.getName() + " condemns the soul of " +dead.getNameNoTitle()+"!");
+					extra.println(TrawelColor.RESULT_WARN+killer.getName() + " condemns the soul of " +dead.getNameNoTitle()+"!");
 				}
 				dead.addEffect(Effect.CURSE);
 			}
@@ -1164,21 +1165,21 @@ public class Combat {
 			int index = completeList.indexOf(def);
 				switch (code) {
 				case ARMOR:
-					Player.lastAttackStringer += extra.ATTACK_BLOCKED+"You hit "+
+					Player.lastAttackStringer += TrawelColor.ATTACK_BLOCKED+"You hit "+
 					"[HPT"+index+"]"+def.getName() + 
-					extra.AFTER_ATTACK_BLOCKED+" but their armor held!"
+					TrawelColor.AFTER_ATTACK_BLOCKED+" but their armor held!"
 					+
-					(damage > 0 ? extra.ATTACK_DAMAGED_WITH_ARMOR+" and dealt " + damage+" damage!" : "");
+					(damage > 0 ? TrawelColor.ATTACK_DAMAGED_WITH_ARMOR+" and dealt " + damage+" damage!" : "");
 					break;
 				case DAMAGE: case KILL:
-					Player.lastAttackStringer += extra.ATTACK_DAMAGED+"You hit "+
-					"[HPT"+index+"]"+def.getName() + extra.ATTACK_DAMAGED+
+					Player.lastAttackStringer += TrawelColor.ATTACK_DAMAGED+"You hit "+
+					"[HPT"+index+"]"+def.getName() + TrawelColor.ATTACK_DAMAGED+
 					" dealing "+prettyHPDamage(attack.getTotalDam(),attack.getDefender())+ damage+" damage!";
 					break;
 				case DODGE:
 				case MISS:
-					Player.lastAttackStringer += extra.AFTER_ATTACK_MISS+"You missed "+
-					"[HPT"+index+"]"+def.getName() + extra.ATTACK_MISS+
+					Player.lastAttackStringer += TrawelColor.AFTER_ATTACK_MISS+"You missed "+
+					"[HPT"+index+"]"+def.getName() + TrawelColor.ATTACK_MISS+
 					(damage > 0 ? " but dealt " + damage+" damage!" : "!");
 					break;
 				case NOT_ATTACK:
@@ -1454,7 +1455,7 @@ public class Combat {
 							extra.print(
 									prettyHPColors(atr.stringer+"[C] {"+prettyHPDamage(percent)+damageDone+" damage[C]}"
 										+woundStr+" But they're made of sterner stuff!"
-									, extra.ATTACK_DAMAGED, attacker, defender));
+									, TrawelColor.ATTACK_DAMAGED, attacker, defender));
 							didDisplay = true;
 						}
 					}
@@ -1462,7 +1463,7 @@ public class Combat {
 				if (!didDisplay && !extra.getPrint()) {
 					extra.print(
 							prettyHPColors(atr.stringer+"[C] {"+prettyHPDamage(percent)+damageDone+" damage[C]}"
-							+woundStr,extra.ATTACK_KILL, attacker, defender));
+							+woundStr,TrawelColor.ATTACK_KILL, attacker, defender));
 					didDisplay = true;
 				}
 			}else {
@@ -1472,7 +1473,7 @@ public class Combat {
 							+woundStr
 							+ (armorDamage ? " The armor curbs the blow!": "")
 							,
-							armorDamage ? extra.ATTACK_DAMAGED_WITH_ARMOR : extra.ATTACK_DAMAGED
+							armorDamage ? TrawelColor.ATTACK_DAMAGED_WITH_ARMOR : TrawelColor.ATTACK_DAMAGED
 							,attacker,defender));
 					didDisplay = true;
 				}
@@ -1483,15 +1484,15 @@ public class Combat {
 		switch (atr.code) {
 		case NOT_ATTACK:
 			if (!extra.getPrint() && !didDisplay) {
-				extra.print(prettyHPColors(atr.stringer +woundStr,extra.TIMID_MAGENTA, attacker, defender));
+				extra.print(prettyHPColors(atr.stringer +woundStr,TrawelColor.TIMID_MAGENTA, attacker, defender));
 			}
 			
 			break;
 		case DODGE: case MISS:
 			if (!extra.getPrint() && !didDisplay) {
-				extra.print(prettyHPColors(atr.stringer +woundStr,extra.ATTACK_MISS, attacker, defender));
+				extra.print(prettyHPColors(atr.stringer +woundStr,TrawelColor.ATTACK_MISS, attacker, defender));
 				Networking.sendStrong("PlayMiss|" + "todo" + "|");
-				extra.print(" "+extra.AFTER_ATTACK_MISS+randomLists.attackMissFluff(atr.code)+extra.ATTACK_MISS);
+				extra.print(" "+TrawelColor.AFTER_ATTACK_MISS+randomLists.attackMissFluff(atr.code)+TrawelColor.ATTACK_MISS);
 			}
 			if (atr.code == ATK_ResultCode.DODGE) {
 				if (defender.hasSkill(Skill.SPEEDDODGE)) {
@@ -1515,20 +1516,20 @@ public class Combat {
 			if (defender.hasEffect(Effect.BEE_SHROUD)) {
 				if (attacker.hasEffect(Effect.BEES)) {
 					if (!extra.getPrint()) {
-						extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.2f))+" The bees buzz back!");
+						extra.println(TrawelColor.inlineColor(TrawelColor.colorMix(Color.PINK,Color.WHITE,.2f))+" The bees buzz back!");
 					}
 				}else {
 					attacker.addEffect(Effect.BEES);
 					if (!extra.getPrint()) {
-						extra.println(extra.inlineColor(extra.colorMix(Color.PINK,Color.WHITE,.2f))+" The bees swarm "+attacker.getName()+"!");
+						extra.println(TrawelColor.inlineColor(TrawelColor.colorMix(Color.PINK,Color.WHITE,.2f))+" The bees swarm "+attacker.getName()+"!");
 					}
 				}
 			}
 			break;
 		case ARMOR:
 			if (!extra.getPrint() && !didDisplay) {
-				extra.print(prettyHPColors(atr.stringer +woundStr,extra.ATTACK_BLOCKED, attacker, defender));
-				extra.print(extra.AFTER_ATTACK_BLOCKED+" "+randomLists.attackNegateFluff()+extra.ATTACK_BLOCKED);
+				extra.print(prettyHPColors(atr.stringer +woundStr,TrawelColor.ATTACK_BLOCKED, attacker, defender));
+				extra.print(TrawelColor.AFTER_ATTACK_BLOCKED+" "+randomLists.attackNegateFluff()+TrawelColor.ATTACK_BLOCKED);
 			}
 			if (defender.hasSkill(Skill.ARMORHEART) && defender.getHp() < defender.getMaxHp()) {
 				int armorHeal = IEffectiveLevel.cleanLHP(Math.min(defender.getLevel()+4,attacker.getLevel()),.02);
@@ -1789,16 +1790,16 @@ public class Combat {
 			assert defender2 != null;
 			if (!w.bypass) {
 				if ((defender2.hasSkill(Skill.TA_NAILS) && extra.randRange(1,5) == 1 )) {
-					retu.addNote("Negate: "+extra.ATK_WOUND_NEGATE+"Tough as Nails "+w.name+extra.PRE_WHITE);
+					retu.addNote("Negate: "+TrawelColor.ATK_WOUND_NEGATE+"Tough as Nails "+w.name+TrawelColor.PRE_WHITE);
 					return false;
 				}
 				if (defender2.hasEffect(Effect.PADDED) && extra.chanceIn(defender2.effectCount(Effect.PADDED),5)) {
 					defender2.removeEffect(Effect.PADDED);
-					retu.addNote("Negate: "+extra.ATK_WOUND_NEGATE+"Padded "+w.name+extra.PRE_WHITE);
+					retu.addNote("Negate: "+TrawelColor.ATK_WOUND_NEGATE+"Padded "+w.name+TrawelColor.PRE_WHITE);
 					return false;
 				}
 				if (defender2.hasEffect(Effect.CHALLENGE_BACK)) {
-					retu.addNote("Negate: "+extra.ATK_WOUND_NEGATE+"Temerity "+w.name+extra.PRE_WHITE);
+					retu.addNote("Negate: "+TrawelColor.ATK_WOUND_NEGATE+"Temerity "+w.name+TrawelColor.PRE_WHITE);
 					defender2.removeEffectAll(Effect.CHALLENGE_BACK);
 					return false;
 				}
@@ -1806,7 +1807,7 @@ public class Combat {
 			
 			String desc = null;//null means don't bother adding
 			if (!extra.getPrint()) {//only really need to care if play can see
-				desc = ((w.injury ? "Injury: ":"Wound: ")+w.getColor()+w.name+extra.PRE_WHITE);
+				desc = ((w.injury ? "Injury: ":"Wound: ")+w.getColor()+w.name+TrawelColor.PRE_WHITE);
 			}
 			switch (w) {
 			case CONFUSED:
@@ -2173,7 +2174,7 @@ public class Combat {
 				case ROLL:
 					attacker.addEffect(Effect.DUCKING);
 					if (!extra.getPrint()) {
-						extra.println(prettyHPPerson("[HP]"+attacker.getNameNoTitle()+" ducks!",extra.TIMID_MAGENTA, attacker));
+						extra.println(prettyHPPerson("[HP]"+attacker.getNameNoTitle()+" ducks!",TrawelColor.TIMID_MAGENTA, attacker));
 					}
 					break;
 				case SINGLE_OUT:
@@ -2267,7 +2268,7 @@ public class Combat {
 			res = extra.DAM_I_KILL;
 			break;
 		}
-		return extra.inlineColor(extra.colorMix(Color.white, Color.red,extra.clamp(damagePerOfMax,0,1f)))+ extra.padIf(res);
+		return TrawelColor.inlineColor(TrawelColor.colorMix(Color.white, Color.red,extra.clamp(damagePerOfMax,0,1f)))+ extra.padIf(res);
 	}
 	public static String prettyHPDamage(float damage, Person defender) {
 		return prettyHPDamage(damage/defender.getMaxHp());

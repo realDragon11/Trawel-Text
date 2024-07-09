@@ -5,6 +5,7 @@ import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.WeaponAttackFactory.DamageTier;
 import trawel.battle.targets.TargetFactory;
 import trawel.battle.targets.TargetFactory.TypeBody.TargetReturn;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.IHasSkills;
@@ -376,21 +377,21 @@ public class Attack implements IAttack{
 		
 		float totalDam = sharp+blunt+pierce+ignite+frost+elec;
 		
-		String p = extra.ITEM_DESC_PROP;
-		String g = extra.ITEM_WANT_HIGHER;
-		String b = extra.ITEM_WANT_LOWER;
+		String p = TrawelColor.ITEM_DESC_PROP;
+		String g = TrawelColor.ITEM_WANT_HIGHER;
+		String b = TrawelColor.ITEM_WANT_LOWER;
 		extra.println(
-			" "+extra.STAT_HEADER+extra.cutPadLenFront(8,name)+extra.PRE_WHITE+"="
+			" "+TrawelColor.STAT_HEADER+extra.cutPadLenFront(8,name)+TrawelColor.PRE_WHITE+"="
 			+p+" Raw DPI:" +g+extra.cutPadLenError(5, extra.F_TWO_TRAILING.format((totalDam/getSpeed()))) 
 			//+" Against Equity DPI: " + extra.F_WHOLE.format(dpi/expectedAverage)
-			+p+" Rarity:" +extra.ITEM_VALUE+ extra.cutPadLenError(5, extra.formatPerSubOne(holdingStance.getRarity(this)))
+			+p+" Rarity:" +TrawelColor.ITEM_VALUE+ extra.cutPadLenError(5, extra.formatPerSubOne(holdingStance.getRarity(this)))
 			+p+" Base Accuracy:"+g+extra.cutPadLenError(5, extra.format(hitMult))
 			+p+" Warmup:"+b +extra.cutPadLenError(3, extra.F_WHOLE.format(warmup))
 			+p+" Cooldown:"+b + extra.cutPadLenError(3, extra.F_WHOLE.format(cooldown))
 			+p+" Total Delay:"+b + extra.cutPadLenError(4, extra.F_WHOLE.format(warmup+cooldown))
 			);
 		extra.println(
-				extra.STAT_HEADER+"  Base Damage"+extra.PRE_WHITE+"="
+				TrawelColor.STAT_HEADER+"  Base Damage"+TrawelColor.PRE_WHITE+"="
 				+(sharp > 0 ? p+" Sharp: " +g+ extra.F_WHOLE.format(sharp) : "")
 				+(blunt > 0 ? p+" Blunt: " +g+ extra.F_WHOLE.format(blunt) : "")
 				+(pierce > 0 ? p+" Pierce: " +g+ extra.F_WHOLE.format(pierce) : "")

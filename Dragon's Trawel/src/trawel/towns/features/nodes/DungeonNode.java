@@ -7,6 +7,7 @@ import com.github.yellowstonegames.core.WeightedTable;
 
 import trawel.battle.Combat;
 import trawel.core.Networking;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 import trawel.personal.AIClass;
@@ -560,7 +561,7 @@ public class DungeonNode implements NodeType{
 		p.getBag().graphicalDisplay(1,p);
 		extra.println("Really open the " + holder.getStorageFirstClass(node,String.class) + "?");
 		if (extra.yesNo()) {
-			extra.println(extra.PRE_BATTLE+"The mimic attacks you!");
+			extra.println(TrawelColor.PRE_BATTLE+"The mimic attacks you!");
 			Combat c = Player.player.fightWith(p);
 			if (c.playerWon() > 0) {
 				GenericNode.setSimpleDeadRaceID(holder, node,p.getBag().getRaceID());
@@ -586,7 +587,7 @@ public class DungeonNode implements NodeType{
 				Networking.clearSide(1);
 				return false;
 			}
-			extra.println(extra.PRE_BATTLE+"The statue springs to life and attacks you!");
+			extra.println(TrawelColor.PRE_BATTLE+"The statue springs to life and attacks you!");
 		}
 		if (state == 0) {
 			holder.setStateNum(node,1);

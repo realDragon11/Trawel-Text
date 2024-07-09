@@ -12,6 +12,7 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.Feat.FeatType;
@@ -53,13 +54,13 @@ public interface IHasSkills {
 			@Override
 			public String title() {
 				if (has instanceof Feat) {
-					return extra.ITEM_DESC_PROP+"Feat: " +has.getOwnText();
+					return TrawelColor.ITEM_DESC_PROP+"Feat: " +has.getOwnText();
 				}
 				if (has instanceof Archetype) {
-					return extra.ITEM_DESC_PROP+"Archetype: " +has.getOwnText();
+					return TrawelColor.ITEM_DESC_PROP+"Archetype: " +has.getOwnText();
 				}
 				if (has instanceof Perk) {
-					return extra.ITEM_DESC_PROP+"Perk: " +has.getOwnText();
+					return TrawelColor.ITEM_DESC_PROP+"Perk: " +has.getOwnText();
 				}
 				return has.getOwnText();
 			}});
@@ -67,13 +68,13 @@ public interface IHasSkills {
 
 			@Override
 			public String title() {
-				return  extra.ITEM_DESC_PROP+" Strength: "+extra.ITEM_WANT_HIGHER + has.getStrength()+
-						extra.ITEM_DESC_PROP+" Dexterity: "+extra.ITEM_WANT_HIGHER+ has.getDexterity()+
-						extra.ITEM_DESC_PROP+ " Clarity: " +extra.ITEM_WANT_HIGHER+ has.getClarity();
+				return  TrawelColor.ITEM_DESC_PROP+" Strength: "+TrawelColor.ITEM_WANT_HIGHER + has.getStrength()+
+						TrawelColor.ITEM_DESC_PROP+" Dexterity: "+TrawelColor.ITEM_WANT_HIGHER+ has.getDexterity()+
+						TrawelColor.ITEM_DESC_PROP+ " Clarity: " +TrawelColor.ITEM_WANT_HIGHER+ has.getClarity();
 			}});
 		if (has instanceof Archetype) {
 			Archetype arch = (Archetype)has;
-			String str = extra.STAT_HEADER+" Unlocks:"+extra.ITEM_DESC_PROP;
+			String str = TrawelColor.STAT_HEADER+" Unlocks:"+TrawelColor.ITEM_DESC_PROP;
 			for (FeatType ft: arch.getFeatTypes()) {
 				str += " "+ft;
 			}
@@ -91,7 +92,7 @@ public interface IHasSkills {
 
 				@Override
 				public String title() {
-					return extra.ITEM_DESC_PROP+" Stance: "+extra.PRE_WHITE+stanceDesc;
+					return TrawelColor.ITEM_DESC_PROP+" Stance: "+TrawelColor.PRE_WHITE+stanceDesc;
 				}});
 		}
 		//MAYBELATER: will display this even if there aren't any skills granted
@@ -99,7 +100,7 @@ public interface IHasSkills {
 
 			@Override
 			public String title() {
-				return extra.STAT_HEADER+"Skills:";
+				return TrawelColor.STAT_HEADER+"Skills:";
 			}});
 		has.collectSkills().forEach(skill -> list.add(skill.getMenuViewForPerson(person)));
 		return list;

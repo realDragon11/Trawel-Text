@@ -11,6 +11,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import trawel.battle.Combat;
 import trawel.core.Networking;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;
@@ -83,7 +84,7 @@ public class QuestReactionFactory {
 
 							@Override
 							public String title() {
-								return extra.PRE_BATTLE + "Attack them!";
+								return TrawelColor.PRE_BATTLE + "Attack them!";
 							}
 
 							@Override
@@ -109,7 +110,7 @@ public class QuestReactionFactory {
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
 				Person p = RaceFactory.getDueler(bumperLocation.getTier());
-				extra.println(extra.PRE_BATTLE +p.getName() + " appears, claiming that they were hired to defend " + q.targetName +"!");
+				extra.println(TrawelColor.PRE_BATTLE +p.getName() + " appears, claiming that they were hired to defend " + q.targetName +"!");
 				
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() >= 0) {
@@ -124,7 +125,7 @@ public class QuestReactionFactory {
 			@Override
 			public void trigger(BasicSideQuest q, Town bumperLocation) {
 				Person p = RaceFactory.makeLawman(bumperLocation.getTier());
-				extra.println(extra.PRE_BATTLE +p.getName() + " attacks you for traveling to murder " + q.targetName +"!");
+				extra.println(TrawelColor.PRE_BATTLE +p.getName() + " attacks you for traveling to murder " + q.targetName +"!");
 				
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() >= 0) {
@@ -156,7 +157,7 @@ public class QuestReactionFactory {
 
 							@Override
 							public String title() {
-								return extra.PRE_BATTLE+"Defend yourself!";
+								return TrawelColor.PRE_BATTLE+"Defend yourself!";
 							}
 
 							@Override
@@ -173,7 +174,7 @@ public class QuestReactionFactory {
 
 							@Override
 							public String title() {
-								return extra.PRE_MAYBE_BATTLE+"Attempt to flee...";
+								return TrawelColor.PRE_MAYBE_BATTLE+"Attempt to flee...";
 							}
 
 							@Override
@@ -187,7 +188,7 @@ public class QuestReactionFactory {
 									//adds a small handicap, note that these tend to get cleared AFTER battle so this should work
 									playp.addEffect(Effect.EXHAUSTED);
 									//doesn't need burnout because they are being fought
-									extra.println(extra.PRE_BATTLE+"They catch up, prepare to defend yourself!");
+									extra.println(TrawelColor.PRE_BATTLE+"They catch up, prepare to defend yourself!");
 									Combat c = Player.player.fightWith(p);
 									if (c.playerWon() > 0) {
 									}else {
@@ -207,7 +208,7 @@ public class QuestReactionFactory {
 							@Override
 							public boolean go() {
 								if (Player.player.getGold() < payOffCost) {
-									extra.println(extra.PRE_BATTLE+"They laugh that you can't afford them!");
+									extra.println(TrawelColor.PRE_BATTLE+"They laugh that you can't afford them!");
 									Combat c = Player.player.fightWith(p);
 									if (c.playerWon() > 0) {
 									}else {
@@ -253,7 +254,7 @@ public class QuestReactionFactory {
 					text = "\"Law shall not prevail!\"";
 					break;
 				}
-				extra.println(extra.PRE_BATTLE+intro+text);
+				extra.println(TrawelColor.PRE_BATTLE+intro+text);
 				
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() > 0) {
@@ -290,7 +291,7 @@ public class QuestReactionFactory {
 					text = "\"Darkness shall prevail!\"";
 					break;
 				}
-				extra.println(extra.PRE_BATTLE+intro+text);
+				extra.println(TrawelColor.PRE_BATTLE+intro+text);
 				
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() > 0) {

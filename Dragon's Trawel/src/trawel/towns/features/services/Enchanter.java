@@ -10,6 +10,7 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import trawel.core.Networking;
 import trawel.core.Networking.Area;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.Skill;
@@ -46,7 +47,7 @@ public class Enchanter extends Feature {
 	
 	@Override
 	public String getColor() {
-		return extra.F_SERVICE_MAGIC;
+		return TrawelColor.F_SERVICE_MAGIC;
 	}
 	
 	@Override
@@ -67,7 +68,7 @@ public class Enchanter extends Feature {
 
 					@Override
 					public String title() {
-						return extra.SERVICE_BOTH_PAYMENT+"Enchant equipment up to +" + maxLevel +" level.";
+						return TrawelColor.SERVICE_BOTH_PAYMENT+"Enchant equipment up to +" + maxLevel +" level.";
 					}
 
 					@Override
@@ -84,11 +85,11 @@ public class Enchanter extends Feature {
 						}
 						float enchantMult = item.getEnchantMult();
 						if (enchantMult == 0) {
-							extra.println(extra.RESULT_ERROR+"This item is not enchantable. ("+item.getName()+")");
+							extra.println(TrawelColor.RESULT_ERROR+"This item is not enchantable. ("+item.getName()+")");
 							return false;
 						}
 						if (item.getLevel() >= maxLevel) {
-							extra.println(extra.RESULT_ERROR+"This item is too high in level to enchant here! ("+item.getName()+")");
+							extra.println(TrawelColor.RESULT_ERROR+"This item is too high in level to enchant here! ("+item.getName()+")");
 							return false;
 						}
 						//quality tier is typically 0 to 12
@@ -102,35 +103,35 @@ public class Enchanter extends Feature {
 						
 						if (Player.player.getGold() < mcost) {
 							if (Player.bag.getAether() < acost) {
-								extra.println(extra.RESULT_ERROR+"You can't afford to enchant '"+item.getName()+"'. ("+costString+")");
+								extra.println(TrawelColor.RESULT_ERROR+"You can't afford to enchant '"+item.getName()+"'. ("+costString+")");
 							}else {
-								extra.println(extra.RESULT_ERROR+"You can't afford to pay the enchanter to enchant '"+item.getName()+"'. ("+costString+")");
+								extra.println(TrawelColor.RESULT_ERROR+"You can't afford to pay the enchanter to enchant '"+item.getName()+"'. ("+costString+")");
 							}
 							return false;
 						}
 						if (Player.bag.getAether() < acost) {
-							extra.println(extra.RESULT_ERROR+"You don't have enough aether to enchant '"+item.getName()+"'. ("+costString+")");
+							extra.println(TrawelColor.RESULT_ERROR+"You don't have enough aether to enchant '"+item.getName()+"'. ("+costString+")");
 							return false;
 						}
 						extra.println("Enchant "+item.getName()+" with a "+successRate+"% success chance for "+costString+"? ("+World.currentMoneyString()+" will only be taken on success.)");
 						boolean wasEnchanted = false;
 						if (item.getEnchant() != null) {
-							extra.println(item.getName()+extra.RESULT_WARN+" is already enchanted, and the enchanter will still take their payment if a worse enchantment is rejected.");
+							extra.println(item.getName()+TrawelColor.RESULT_WARN+" is already enchanted, and the enchanter will still take their payment if a worse enchantment is rejected.");
 							wasEnchanted = true;
 						}
 						if (extra.yesNo()) {
 							if (successRate < 100 && extra.chanceIn(successRate,100)) {
-								extra.println(extra.RESULT_FAIL+"The enchantment failed and your "+World.currentMoneyString()+" was returned. You lost "+acost+" aether.");
+								extra.println(TrawelColor.RESULT_FAIL+"The enchantment failed and your "+World.currentMoneyString()+" was returned. You lost "+acost+" aether.");
 								Player.bag.addAether(-acost);
 								return false;
 							}
 							boolean didChange = item.improveEnchantChance(item.getLevel());
 							if (didChange) {
-								extra.println(extra.RESULT_PASS+"Item enchanted: " + item.getName());
+								extra.println(TrawelColor.RESULT_PASS+"Item enchanted: " + item.getName());
 								item.display(1);
 								Networking.unlockAchievement("enchant1");
 							}else {
-								extra.println(extra.RESULT_FAIL+"Item unchanged: " + item.getName());
+								extra.println(TrawelColor.RESULT_FAIL+"Item unchanged: " + item.getName());
 								if (wasEnchanted == true) {
 									extra.println("The new enchantment was considered worse than the old one, so it was not completed.");
 								}
@@ -145,7 +146,7 @@ public class Enchanter extends Feature {
 
 						@Override
 						public String title() {
-							return extra.SERVICE_BOTH_PAYMENT+"Apply On-Hit Runes up to +" + maxLevel +" level.";
+							return TrawelColor.SERVICE_BOTH_PAYMENT+"Apply On-Hit Runes up to +" + maxLevel +" level.";
 						}
 
 						@Override
@@ -153,11 +154,11 @@ public class Enchanter extends Feature {
 							Weapon item = Player.bag.getHand();
 							float enchantMult = item.getEnchantMult();
 							if (enchantMult == 0) {
-								extra.println(extra.RESULT_ERROR+"This item is not enchantable and thus cannot be runed. ("+item.getName()+")");
+								extra.println(TrawelColor.RESULT_ERROR+"This item is not enchantable and thus cannot be runed. ("+item.getName()+")");
 								return false;
 							}
 							if (item.getLevel() >= maxLevel) {
-								extra.println(extra.RESULT_ERROR+"This item is too high in level to rune here! ("+item.getName()+")");
+								extra.println(TrawelColor.RESULT_ERROR+"This item is too high in level to rune here! ("+item.getName()+")");
 								return false;
 							}
 							//quality tier is typically 0 to 12
@@ -170,24 +171,24 @@ public class Enchanter extends Feature {
 							
 							if (Player.player.getGold() < mcost) {
 								if (Player.bag.getAether() < acost) {
-									extra.println(extra.RESULT_ERROR+"You can't afford to rune '"+item.getName()+"'. ("+costString+")");
+									extra.println(TrawelColor.RESULT_ERROR+"You can't afford to rune '"+item.getName()+"'. ("+costString+")");
 								}else {
-									extra.println(extra.RESULT_ERROR+"You can't afford to pay the enchanter to rune '"+item.getName()+"'. ("+costString+")");
+									extra.println(TrawelColor.RESULT_ERROR+"You can't afford to pay the enchanter to rune '"+item.getName()+"'. ("+costString+")");
 								}
 								return false;
 							}
 							if (Player.bag.getAether() < acost) {
-								extra.println(extra.RESULT_ERROR+"You don't have enough aether to enchant '"+item.getName()+"'. ("+costString+")");
+								extra.println(TrawelColor.RESULT_ERROR+"You don't have enough aether to enchant '"+item.getName()+"'. ("+costString+")");
 								return false;
 							}
 							extra.println("Apply Runes to "+item.getName()+" for "+costString+"?");
 							if (item.getEnchant() != null) {
-								extra.println(item.getName()+extra.RESULT_WARN+" is already enchanted, and the new enchantment will replace the old one.");
+								extra.println(item.getName()+TrawelColor.RESULT_WARN+" is already enchanted, and the new enchantment will replace the old one.");
 							}
 							if (extra.yesNo()) {
 								//forces new enchantment in case they want a different type
 								item.forceEnchantHitElemental();
-								extra.println(extra.RESULT_PASS+"Item enchanted: " + item.getName());
+								extra.println(TrawelColor.RESULT_PASS+"Item enchanted: " + item.getName());
 								item.display(1);
 								Player.player.loseGold(mcost);
 								Player.bag.addAether(-acost);
@@ -282,7 +283,7 @@ public class Enchanter extends Feature {
 		int aether = amountMult*perAether;
 		int gold = sellAmount*amountMult;
 		if (Player.bag.getAether() < perAether) {
-			extra.println(extra.RESULT_FAIL+"You do not have enough aether to trade in. ("+Player.bag.getAether()+" of "+aether+")");
+			extra.println(TrawelColor.RESULT_FAIL+"You do not have enough aether to trade in. ("+Player.bag.getAether()+" of "+aether+")");
 			return false;
 		}
 		Player.bag.addAether(-aether);

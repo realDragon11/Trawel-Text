@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import derg.menus.MenuItem;
 import derg.menus.ScrollMenuGenerator;
 import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.Person.FeatArchMenuPick;
@@ -325,12 +326,12 @@ public enum Archetype implements IHasSkills{
 	
 	@Override
 	public String getOwnText() {
-		return extra.ITEM_VALUE+ name +extra.PRE_WHITE+ ": "+desc;
+		return TrawelColor.ITEM_VALUE+ name +TrawelColor.PRE_WHITE+ ": "+desc;
 	}
 	
 	@Override
 	public String getBriefText() {
-		return extra.ITEM_VALUE+ name +extra.PRE_WHITE + ": "+desc;
+		return TrawelColor.ITEM_VALUE+ name +TrawelColor.PRE_WHITE + ": "+desc;
 	}
 	
 	@Override

@@ -13,6 +13,7 @@ import derg.menus.MenuSelect;
 import trawel.battle.Combat;
 import trawel.core.Networking;
 import trawel.core.mainGame;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.AIClass;
 import trawel.personal.Person;
@@ -99,7 +100,7 @@ public abstract class ExploreFeature extends Feature{
 
 	@Override
 	public String getColor() {
-		return extra.F_COMBAT;
+		return TrawelColor.F_COMBAT;
 	}
 	
 	public void explore(){
@@ -236,7 +237,7 @@ public abstract class ExploreFeature extends Feature{
 
 					@Override
 					public String title() {
-						return extra.PRE_BATTLE+"Attack!";
+						return TrawelColor.PRE_BATTLE+"Attack!";
 					}
 
 					@Override
@@ -283,7 +284,7 @@ public abstract class ExploreFeature extends Feature{
 	}
 	
 	protected void mugger_other_person() {
-		extra.println(extra.PRE_BATTLE+"You see someone being robbed! Help?");
+		extra.println(TrawelColor.PRE_BATTLE+"You see someone being robbed! Help?");
 		Person robber =  RaceFactory.makeMugger(getTempLevel());
 		robber.getBag().graphicalDisplay(1, robber);
 		if (extra.yesNo()) {
@@ -303,7 +304,7 @@ public abstract class ExploreFeature extends Feature{
 	}
 	
 	protected void mugger_ambush() {
-		extra.println(extra.PRE_BATTLE+"You see a mugger charge at you! Prepare for battle!");
+		extra.println(TrawelColor.PRE_BATTLE+"You see a mugger charge at you! Prepare for battle!");
 		Person p = RaceFactory.makeMugger(getTempLevel());
 		Combat c = Player.player.fightWith(p);
 		if (c.playerWon() > 0) {
@@ -318,7 +319,7 @@ public abstract class ExploreFeature extends Feature{
 		Boolean result = extra.yesNo();
 		if (result) {
 			if (Math.random() > .4) {
-				extra.println(extra.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");
+				extra.println(TrawelColor.PRE_BATTLE+"A fighter runs up and calls you a thief before launching into battle!");
 				Combat c = Player.player.fightWith(RaceFactory.makeMugger(getTempLevel()));
 				if (c.playerWon() > 0) {
 					if (c.playerWon() == 1) {

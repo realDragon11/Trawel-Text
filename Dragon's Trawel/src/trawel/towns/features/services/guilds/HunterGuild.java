@@ -10,6 +10,7 @@ import derg.menus.MenuSelect;
 import trawel.core.Networking.Area;
 import trawel.factions.FBox;
 import trawel.factions.FBox.FSub;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.factions.Faction;
 import trawel.personal.classless.IEffectiveLevel;
@@ -54,7 +55,7 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 	
 	@Override
 	public String getColor() {
-		return extra.F_GUILD;
+		return TrawelColor.F_GUILD;
 	}
 	
 	@Override
@@ -77,7 +78,7 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return extra.SERVICE_SPECIAL_PAYMENT+"Request Amber.";
+						return TrawelColor.SERVICE_SPECIAL_PAYMENT+"Request Amber.";
 					}
 
 					@Override
@@ -90,9 +91,9 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 								if (cost <= spenda) {
 									Player.player.factionSpent.addFactionRep(Faction.HUNTER,cost,0);
 									Gem.AMBER.changeGem(gemAmount);
-									extra.println(extra.RESULT_PASS+"Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.AMBER.name : Gem.AMBER.plural)+", new total: " + Gem.AMBER.getGem()+".");
+									extra.println(TrawelColor.RESULT_PASS+"Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.AMBER.name : Gem.AMBER.plural)+", new total: " + Gem.AMBER.getGem()+".");
 								}else {
-									extra.println(extra.RESULT_ERROR+"You do not have enough spendable reputation.");
+									extra.println(TrawelColor.RESULT_ERROR+"You do not have enough spendable reputation.");
 									break;
 								}
 							}else {
@@ -106,7 +107,7 @@ public class HunterGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return extra.FSERVICE_QUEST+"Assignment Board (Sidequests).";
+						return TrawelColor.FSERVICE_QUEST+"Assignment Board (Sidequests).";
 					}
 
 					@Override

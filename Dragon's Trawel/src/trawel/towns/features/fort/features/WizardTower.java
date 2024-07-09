@@ -8,6 +8,7 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuSelect;
 import derg.menus.MenuSelectNumber;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -35,7 +36,7 @@ public class WizardTower extends FortFeature {
 	
 	@Override
 	public String getColor() {
-		return extra.F_FORT;
+		return TrawelColor.F_FORT;
 	}
 	
 	@Override
@@ -70,7 +71,7 @@ public class WizardTower extends FortFeature {
 
 					@Override
 					public String title() {
-						return extra.SERVICE_CURRENCY+"skills";
+						return TrawelColor.SERVICE_CURRENCY+"skills";
 					}
 
 					@Override

@@ -6,6 +6,7 @@ import java.util.List;
 import trawel.battle.Combat;
 import trawel.core.Networking;
 import trawel.core.Networking.Area;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -72,7 +73,7 @@ public class Champion  extends Feature{
 	
 	@Override
 	public String getColor() {
-		return extra.F_COMBAT;
+		return TrawelColor.F_COMBAT;
 	}
 	
 	@Override

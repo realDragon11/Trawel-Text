@@ -12,6 +12,7 @@ import derg.menus.MenuSelect;
 import trawel.battle.Combat;
 import trawel.battle.Combat.SkillCon;
 import trawel.core.Networking;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.AIClass;
 import trawel.personal.Person;
@@ -60,7 +61,7 @@ public class FortHall extends FortFeature {
 	
 	@Override
 	public String getColor() {
-		return extra.F_SERVICE;
+		return TrawelColor.F_SERVICE;
 	}
 
 	@Override
@@ -99,7 +100,7 @@ public class FortHall extends FortFeature {
 		if (this.getOwner() != Player.player) {
 			final float levelMult = getUnEffectiveLevel();
 			int cost = (int) ((1000*levelMult)+(aetherBank*Player.NORMAL_AETHER_RATE));
-			extra.println(extra.SERVICE_CURRENCY+"Buy this for fort for "+cost+" "+World.currentMoneyString()+"? (You have " + Player.player.getGold()+")");
+			extra.println(TrawelColor.SERVICE_CURRENCY+"Buy this for fort for "+cost+" "+World.currentMoneyString()+"? (You have " + Player.player.getGold()+")");
 			if (extra.yesNo()) {
 				if (Player.player.getGold() < cost) {
 					extra.println("You can't afford to buy this fort.");
@@ -134,7 +135,7 @@ public class FortHall extends FortFeature {
 
 						@Override
 						public String title() {
-							return extra.SERVICE_CURRENCY+"Buy a soldier ("+World.currentMoneyDisplay(getSoldierCost())+")";
+							return TrawelColor.SERVICE_CURRENCY+"Buy a soldier ("+World.currentMoneyDisplay(getSoldierCost())+")";
 						}
 
 						@Override
@@ -154,7 +155,7 @@ public class FortHall extends FortFeature {
 
 							@Override
 							public String title() {
-								return extra.SERVICE_CURRENCY+"Construction Menu";
+								return TrawelColor.SERVICE_CURRENCY+"Construction Menu";
 							}
 
 							@Override
@@ -169,7 +170,7 @@ public class FortHall extends FortFeature {
 
 							@Override
 							public String title() {
-								return extra.SERVICE_FREE+"Collect Aether ("+aetherBank+")";
+								return TrawelColor.SERVICE_FREE+"Collect Aether ("+aetherBank+")";
 							}
 
 							@Override

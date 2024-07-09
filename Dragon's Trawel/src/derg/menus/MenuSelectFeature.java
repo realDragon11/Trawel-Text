@@ -1,7 +1,7 @@
 package derg.menus;
 
 import trawel.core.mainGame;
-import trawel.helper.methods.extra;
+import trawel.helper.constants.TrawelColor;
 import trawel.personal.people.Player;
 import trawel.towns.features.Feature;
 
@@ -13,7 +13,7 @@ public class MenuSelectFeature implements MenuItem {
 	public String title() {
 		String tut = feature.getTutorialText();
 		return feature.getColor()+feature.getTitle()
-		+ (tut != null && mainGame.displayFeatureText ? extra.TIMID_MAGENTA+" ("+tut+")" : "")
+		+ (tut != null && mainGame.displayFeatureText ? TrawelColor.TIMID_MAGENTA+" ("+tut+")" : "")
 		;
 	}
 	

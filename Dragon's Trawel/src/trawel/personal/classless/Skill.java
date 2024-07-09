@@ -4,6 +4,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import trawel.battle.attacks.AttackBonus;
 import trawel.helper.constants.StringTip;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;
@@ -341,7 +342,7 @@ public enum Skill{
 		}
 
 		public String explain() {
-			return extra.ITEM_VALUE+ name+extra.COLOR_RESET + ": " + desc+ (longDesc != "" ? " ("+longDesc+")" : "");
+			return TrawelColor.ITEM_VALUE+ name+TrawelColor.COLOR_RESET + ": " + desc+ (longDesc != "" ? " ("+longDesc+")" : "");
 		}
 		
 		public MenuItem getMenuView() {
@@ -349,7 +350,7 @@ public enum Skill{
 
 				@Override
 				public String title() {
-					return " " + extra.ITEM_VALUE+name+extra.COLOR_RESET + ": " + desc+ (longDesc != "" ? " ("+longDesc+")" : "");
+					return " " + TrawelColor.ITEM_VALUE+name+TrawelColor.COLOR_RESET + ": " + desc+ (longDesc != "" ? " ("+longDesc+")" : "");
 				}};
 			
 		}
@@ -362,7 +363,7 @@ public enum Skill{
 
 				@Override
 				public String title() {
-					return " " + (p.hasSkill(Skill.this) ?extra.TIMID_RED+"HAVE: " : "") + extra.ITEM_VALUE+ name+extra.PRE_WHITE + ": " + desc+ (longDesc != "" ? " ("+longDesc+")" : "");
+					return " " + (p.hasSkill(Skill.this) ?TrawelColor.TIMID_RED+"HAVE: " : "") + TrawelColor.ITEM_VALUE+ name+TrawelColor.PRE_WHITE + ": " + desc+ (longDesc != "" ? " ("+longDesc+")" : "");
 				}};
 			
 		}

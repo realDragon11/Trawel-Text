@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.item.solid.variants.ArmorStyle;
 
@@ -67,7 +68,7 @@ public class MaterialFactory {
 		misc.shimmer = .05f;
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
-		misc.color = extra.inlineColor(Color.LIGHT_GRAY);
+		misc.color = TrawelColor.inlineColor(Color.LIGHT_GRAY);
 		register(misc);
 		
 		misc = new Material();
@@ -96,7 +97,7 @@ public class MaterialFactory {
 		misc.freezeVul = .2f;
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
-		misc.color = extra.inlineColor(Color.WHITE);
+		misc.color = TrawelColor.inlineColor(Color.WHITE);
 		register(misc);
 		
 		
@@ -125,7 +126,7 @@ public class MaterialFactory {
 		misc.freezeVul = .3f;//not as effective alone
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
-		misc.color = extra.inlineColor(Color.WHITE);
+		misc.color = TrawelColor.inlineColor(Color.WHITE);
 		register(misc);
 		
 		//https://en.wikipedia.org/wiki/Linen
@@ -155,7 +156,7 @@ public class MaterialFactory {
 		misc.freezeVul = 1f;//apparently kinda conductive
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
-		misc.color = extra.inlineColor(Color.WHITE);
+		misc.color = TrawelColor.inlineColor(Color.WHITE);
 		register(misc);
 		
 		misc = new Material();
@@ -187,7 +188,7 @@ public class MaterialFactory {
 		misc.shimmer = .05f;
 		misc.palIndex = 1;
 		misc.soundType = "flesh";
-		misc.color = extra.inlineColor(extra.colorMix(Color.red,Color.white,.4f));
+		misc.color = TrawelColor.inlineColor(TrawelColor.colorMix(Color.red,Color.white,.4f));
 		register(misc);
 		
 		/*TODO readd leather
@@ -243,7 +244,7 @@ public class MaterialFactory {
 		misc.sturdy = .3f;
 		misc.palIndex = 0;
 		misc.soundType = "metal";
-		misc.color = extra.inlineColor(new Color(131,145,169));
+		misc.color = TrawelColor.inlineColor(new Color(131,145,169));
 		misc.veinReward = 2;
 		register(misc);
 		
@@ -274,7 +275,7 @@ public class MaterialFactory {
 		misc.sturdy = .3f;
 		misc.palIndex = 1;
 		misc.soundType = "metal";
-		misc.color = extra.inlineColor(new Color(169,94,60));
+		misc.color = TrawelColor.inlineColor(new Color(169,94,60));
 		misc.veinReward = 1;
 		register(misc);
 		
@@ -305,7 +306,7 @@ public class MaterialFactory {
 		misc.sturdy = .3f;
 		misc.palIndex = 2;
 		misc.soundType = "metal";
-		misc.color = extra.inlineColor(new Color(198,198,198));
+		misc.color = TrawelColor.inlineColor(new Color(198,198,198));
 		misc.veinReward = 1;
 		register(misc);
 		
@@ -337,7 +338,7 @@ public class MaterialFactory {
 		misc.sturdy = .4f;
 		misc.palIndex = 3;
 		misc.soundType = "metal";
-		misc.color = extra.inlineColor(new Color(169,94,60));
+		misc.color = TrawelColor.inlineColor(new Color(169,94,60));
 		register(misc);
 		
 		misc = new Material();
@@ -368,7 +369,7 @@ public class MaterialFactory {
 		misc.sturdy = .5f;
 		misc.palIndex = 4;
 		misc.soundType = "metal";
-		misc.color = extra.inlineColor(new Color(204,204,204));
+		misc.color = TrawelColor.inlineColor(new Color(204,204,204));
 		register(misc);
 		
 		misc = new Material();
@@ -401,7 +402,7 @@ public class MaterialFactory {
 		misc.palIndex = 5;
 		misc.soundType = "metal";
 		misc.moneyMultTradeMult = .8f;
-		misc.color = extra.inlineColor(new Color(236,236,236));
+		misc.color = TrawelColor.inlineColor(new Color(236,236,236));
 		misc.veinReward = 4;
 		register(misc);
 		
@@ -435,7 +436,7 @@ public class MaterialFactory {
 		misc.palIndex = 6;
 		misc.soundType = "metal";
 		misc.moneyMultTradeMult = .6f;
-		misc.color = extra.inlineColor(new Color(203,185,83));
+		misc.color = TrawelColor.inlineColor(new Color(203,185,83));
 		misc.veinReward = 6;
 		register(misc);
 		
@@ -469,7 +470,7 @@ public class MaterialFactory {
 		misc.palIndex = 7;
 		misc.soundType = "metal";
 		misc.moneyMultTradeMult = .7f;
-		misc.color = extra.inlineColor(new Color(236,236,236));
+		misc.color = TrawelColor.inlineColor(new Color(236,236,236));
 		misc.veinReward = 8;
 		register(misc);
 		
@@ -503,7 +504,7 @@ public class MaterialFactory {
 		misc.palIndex = 9;
 		misc.soundType = "metal";
 		misc.veinReward = 10;
-		misc.color = extra.inlineColor(new Color(151,131,169));
+		misc.color = TrawelColor.inlineColor(new Color(151,131,169));
 		register(misc);
 		
 		misc = new Material();
@@ -544,7 +545,7 @@ public class MaterialFactory {
 		misc.palIndex = 10;
 		misc.soundType = "metal";
 		misc.veinReward = 12;
-		misc.color = extra.inlineColor(new Color(160,182,255));
+		misc.color = TrawelColor.inlineColor(new Color(160,182,255));
 		register(misc);
 		
 		misc = new Material();
@@ -576,7 +577,7 @@ public class MaterialFactory {
 		misc.sturdy = .5f;
 		misc.palIndex = 11;
 		misc.soundType = "metal";
-		misc.color = extra.inlineColor(new Color(249,255,160));
+		misc.color = TrawelColor.inlineColor(new Color(249,255,160));
 		register(misc);
 		
 		misc = new Material();
@@ -603,7 +604,7 @@ public class MaterialFactory {
 		misc.shimmer = .1f;//midrange
 		misc.palIndex = 10;
 		misc.soundType = "flesh";
-		misc.color = extra.inlineColor(Color.BLUE);
+		misc.color = TrawelColor.inlineColor(Color.BLUE);
 		register(misc);
 		
 		misc = new Material();
@@ -636,7 +637,7 @@ public class MaterialFactory {
 		misc.palIndex = 13;
 		misc.soundType = "metal";
 		misc.veinReward = 8;
-		misc.color = extra.inlineColor(new Color(255,255,255));
+		misc.color = TrawelColor.inlineColor(new Color(255,255,255));
 		register(misc);
 		
 		misc = new Material();
@@ -668,7 +669,7 @@ public class MaterialFactory {
 		misc.sturdy = .2f;
 		misc.palIndex = 12;
 		misc.soundType = "metal";
-		misc.color = extra.inlineColor(new Color(255,210,73));
+		misc.color = TrawelColor.inlineColor(new Color(255,210,73));
 		register(misc);
 		
 		
@@ -699,7 +700,7 @@ public class MaterialFactory {
 		misc.shimmer = .5f;
 		misc.palIndex = 0;
 		misc.soundType = "crystal";
-		misc.color = extra.inlineColor(new Color(210,227,255));
+		misc.color = TrawelColor.inlineColor(new Color(210,227,255));
 		register(misc);
 		
 		misc = new Material();//yeah these crystal stats will be totally inaccurate DOLATER
@@ -729,7 +730,7 @@ public class MaterialFactory {
 		misc.shimmer = .5f;
 		misc.palIndex = 1;
 		misc.soundType = "crystal";
-		misc.color = extra.inlineColor(new Color(210,255,216));
+		misc.color = TrawelColor.inlineColor(new Color(210,255,216));
 		register(misc);
 		
 		misc = new Material();
@@ -759,7 +760,7 @@ public class MaterialFactory {
 		misc.shimmer = .5f;
 		misc.palIndex = 2;
 		misc.soundType = "crystal";
-		misc.color = extra.inlineColor(new Color(237,163,175));
+		misc.color = TrawelColor.inlineColor(new Color(237,163,175));
 		register(misc);
 		
 		misc = new Material();
@@ -789,7 +790,7 @@ public class MaterialFactory {
 		misc.shimmer = .5f;
 		misc.palIndex = 3;
 		misc.soundType = "crystal";
-		misc.color = extra.inlineColor(new Color(158,184,228));
+		misc.color = TrawelColor.inlineColor(new Color(158,184,228));
 		register(misc);
 		
 		misc = new Material();
@@ -818,7 +819,7 @@ public class MaterialFactory {
 		misc.freezeVul = 2;
 		misc.shimmer = .5f;
 		misc.palIndex = 4;
-		misc.color = extra.inlineColor(new Color(229,238,255));
+		misc.color = TrawelColor.inlineColor(new Color(229,238,255));
 		misc.soundType = "crystal";
 		register(misc);
 		
@@ -849,7 +850,7 @@ public class MaterialFactory {
 		misc.shimmer = .5f;
 		misc.palIndex = 5;
 		misc.soundType = "crystal";
-		misc.color = extra.inlineColor(new Color(255,226,210));
+		misc.color = TrawelColor.inlineColor(new Color(255,226,210));
 		register(misc);
 		
 		misc = new Material();
@@ -879,7 +880,7 @@ public class MaterialFactory {
 		misc.shimmer = .5f;
 		misc.palIndex = 6;
 		misc.soundType = "crystal";
-		misc.color = extra.inlineColor(new Color(224,166,225));
+		misc.color = TrawelColor.inlineColor(new Color(224,166,225));
 		register(misc);
 		
 		
@@ -907,7 +908,7 @@ public class MaterialFactory {
 		misc.freezeVul = 1.2f;
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
-		misc.color = extra.inlineColor(new Color(212,89,107));
+		misc.color = TrawelColor.inlineColor(new Color(212,89,107));
 		register(misc);
 		
 		misc = new Material();
@@ -934,7 +935,7 @@ public class MaterialFactory {
 		misc.sturdy = 1f;//always sturdy
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
-		misc.color = extra.inlineColor(new Color(212,89,107));
+		misc.color = TrawelColor.inlineColor(new Color(212,89,107));
 		register(misc);
 		
 		misc = new Material();
@@ -961,7 +962,7 @@ public class MaterialFactory {
 		misc.shimmer = .2f;//chance of shimmer on scales
 		misc.palIndex = 0;
 		misc.soundType = "flesh";
-		misc.color = extra.inlineColor(new Color(212,89,107));
+		misc.color = TrawelColor.inlineColor(new Color(212,89,107));
 		register(misc);
 		
 		misc = new Material();
@@ -1012,7 +1013,7 @@ public class MaterialFactory {
 		misc.freezeVul = .5f;
 		misc.palIndex = 8;
 		misc.soundType = "wood";
-		misc.color = extra.inlineColor(new Color(131,94,35));
+		misc.color = TrawelColor.inlineColor(new Color(131,94,35));
 		register(misc);
 		
 		misc = new Material();//used for drudgers right now
@@ -1038,7 +1039,7 @@ public class MaterialFactory {
 		misc.freezeVul = 1.5f;
 		misc.palIndex = 0;
 		misc.soundType = "metal";
-		misc.color = extra.inlineColor(new Color(105,113,128));
+		misc.color = TrawelColor.inlineColor(new Color(105,113,128));
 		register(misc);
 		
 		misc = new Material();//used for testing
@@ -1064,7 +1065,7 @@ public class MaterialFactory {
 		misc.freezeVul = 1f;
 		misc.palIndex = 0;
 		misc.soundType = "metal";
-		misc.color = extra.inlineColor(new Color(131,145,169));
+		misc.color = TrawelColor.inlineColor(new Color(131,145,169));
 		register(misc);
 		
 		

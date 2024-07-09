@@ -2,6 +2,7 @@ package trawel.personal.item;
 
 import java.awt.Color;
 
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.solid.Material;
@@ -73,24 +74,24 @@ public abstract class Item implements java.io.Serializable{
 	public String getLevelName() {
 		int val = (int) (255f * ((10f+level)/(20f+level)));
 		//int val = Math.min(255,140+(level*10));
-		return extra.inlineColor(new Color(val,val,val))+"+"+level+extra.COLOR_RESET;
+		return TrawelColor.inlineColor(new Color(val,val,val))+"+"+level+TrawelColor.COLOR_RESET;
 	}
 	
 	public static String getModiferNameColored(int inlevel) {
 		switch (inlevel) {
-		case 0: return extra.inlineColor(new Color(60,60,60))+"broken"+extra.COLOR_RESET;
-		case 1: return extra.inlineColor(new Color(80,80,80))+"crude"+extra.COLOR_RESET;
-		case 2: return extra.inlineColor(new Color(140,140,140))+"shoddy"+extra.COLOR_RESET;
-		case 3: return extra.inlineColor(new Color(180,180,180))+"poor"+extra.COLOR_RESET;
-		case 4: return extra.inlineColor(new Color(220,220,220))+"subpar"+extra.COLOR_RESET;
+		case 0: return TrawelColor.inlineColor(new Color(60,60,60))+"broken"+TrawelColor.COLOR_RESET;
+		case 1: return TrawelColor.inlineColor(new Color(80,80,80))+"crude"+TrawelColor.COLOR_RESET;
+		case 2: return TrawelColor.inlineColor(new Color(140,140,140))+"shoddy"+TrawelColor.COLOR_RESET;
+		case 3: return TrawelColor.inlineColor(new Color(180,180,180))+"poor"+TrawelColor.COLOR_RESET;
+		case 4: return TrawelColor.inlineColor(new Color(220,220,220))+"subpar"+TrawelColor.COLOR_RESET;
 		case 5: return "[c_white]fine";//white
-		case 6: return (extra.inlineColor(extra.colorMix(Color.GREEN,Color.WHITE,.5f)))+"good"+extra.COLOR_RESET;//green
-		case 7: return (extra.inlineColor(extra.colorMix(Color.BLUE,Color.WHITE,.5f)))+"great"+extra.COLOR_RESET;//blue
-		case 8: return (extra.inlineColor(extra.colorMix(Color.MAGENTA,Color.WHITE,.5f)))+"amazing"+extra.COLOR_RESET;//purple
-		case 9: return (extra.inlineColor(extra.colorMix(Color.ORANGE,Color.WHITE,.5f)))+"heroic"+extra.COLOR_RESET;//orange
-		case 10: return (extra.inlineColor(extra.colorMix(Color.yellow,Color.WHITE,.5f)))+"masterwork"+extra.COLOR_RESET;//yellow
-		case 11: return (extra.PRE_RED)+"legendary"+extra.COLOR_RESET;//red
-		case 12: return extra.inlineColor(Color.RED)+"artifact"+extra.COLOR_RESET;//vibrant red
+		case 6: return (TrawelColor.inlineColor(TrawelColor.colorMix(Color.GREEN,Color.WHITE,.5f)))+"good"+TrawelColor.COLOR_RESET;//green
+		case 7: return (TrawelColor.inlineColor(TrawelColor.colorMix(Color.BLUE,Color.WHITE,.5f)))+"great"+TrawelColor.COLOR_RESET;//blue
+		case 8: return (TrawelColor.inlineColor(TrawelColor.colorMix(Color.MAGENTA,Color.WHITE,.5f)))+"amazing"+TrawelColor.COLOR_RESET;//purple
+		case 9: return (TrawelColor.inlineColor(TrawelColor.colorMix(Color.ORANGE,Color.WHITE,.5f)))+"heroic"+TrawelColor.COLOR_RESET;//orange
+		case 10: return (TrawelColor.inlineColor(TrawelColor.colorMix(Color.yellow,Color.WHITE,.5f)))+"masterwork"+TrawelColor.COLOR_RESET;//yellow
+		case 11: return (TrawelColor.PRE_RED)+"legendary"+TrawelColor.COLOR_RESET;//red
+		case 12: return TrawelColor.inlineColor(Color.RED)+"artifact"+TrawelColor.COLOR_RESET;//vibrant red
 		}
 		return "unknown";
 	}

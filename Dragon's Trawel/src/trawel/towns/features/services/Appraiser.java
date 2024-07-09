@@ -2,6 +2,7 @@ package trawel.towns.features.services;
 import java.util.List;
 
 import trawel.core.Networking.Area;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
@@ -21,7 +22,7 @@ public class Appraiser extends Feature {
 	
 	@Override
 	public String getColor() {
-		return extra.F_AUX_SERVICE;
+		return TrawelColor.F_AUX_SERVICE;
 	}
 	
 	@Override

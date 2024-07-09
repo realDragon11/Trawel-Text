@@ -10,6 +10,7 @@ import derg.menus.MenuSelect;
 import trawel.core.Networking.Area;
 import trawel.factions.FBox;
 import trawel.factions.FBox.FSub;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.factions.Faction;
 import trawel.personal.classless.IEffectiveLevel;
@@ -54,7 +55,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 	
 	@Override
 	public String getColor() {
-		return extra.F_GUILD;
+		return TrawelColor.F_GUILD;
 	}
 	
 	@Override
@@ -76,7 +77,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return extra.SERVICE_SPECIAL_PAYMENT+"Share stories. (Feat Fragments)";
+						return TrawelColor.SERVICE_SPECIAL_PAYMENT+"Share stories. (Feat Fragments)";
 					}
 
 					@Override
@@ -98,7 +99,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 								Player.player.factionSpent.addFactionRep(Faction.HEROIC,cost,0);
 								Player.bag.addNewDrawBanePlayer(DrawBane.KNOW_FRAG);
 							}else {
-								extra.println(extra.RESULT_ERROR+"You do not have enough spendable reputation.");
+								extra.println(TrawelColor.RESULT_ERROR+"You do not have enough spendable reputation.");
 								break;
 							}
 						}else {
@@ -113,7 +114,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return extra.SERVICE_SPECIAL_PAYMENT+"Request Rubies.";
+						return TrawelColor.SERVICE_SPECIAL_PAYMENT+"Request Rubies.";
 					}
 
 					@Override
@@ -126,9 +127,9 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 							if (cost <= spenda) {
 								Player.player.factionSpent.addFactionRep(Faction.HEROIC,cost,0);
 								Gem.RUBY.changeGem(gemAmount);
-								extra.println(extra.RESULT_PASS+"Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.RUBY.name : Gem.RUBY.plural)+", new total: " + Gem.RUBY.getGem()+".");
+								extra.println(TrawelColor.RESULT_PASS+"Gained "+gemAmount+" "+(gemAmount == 1 ? Gem.RUBY.name : Gem.RUBY.plural)+", new total: " + Gem.RUBY.getGem()+".");
 							}else {
-								extra.println(extra.RESULT_ERROR+"You do not have enough spendable reputation.");
+								extra.println(TrawelColor.RESULT_ERROR+"You do not have enough spendable reputation.");
 								break;
 							}
 						}else {
@@ -142,7 +143,7 @@ public class HeroGuild extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return extra.FSERVICE_QUEST+"Assignment Board (Sidequests).";
+						return TrawelColor.FSERVICE_QUEST+"Assignment Board (Sidequests).";
 					}
 
 					@Override

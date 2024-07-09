@@ -2,7 +2,7 @@ package trawel.towns.features.outdated;
 
 import java.util.List;
 
-import trawel.helper.methods.extra;
+import trawel.helper.constants.TrawelColor;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.features.Feature;
@@ -18,7 +18,7 @@ public class Well extends Feature{
 	
 	@Override
 	public String getColor() {
-		return extra.PRE_TELE;//lol
+		return TrawelColor.PRE_TELE;//lol
 	}
 
 	@Override

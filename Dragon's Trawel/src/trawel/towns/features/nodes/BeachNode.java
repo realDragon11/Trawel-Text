@@ -11,6 +11,7 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 import trawel.personal.AIClass;
@@ -336,7 +337,7 @@ public class BeachNode implements NodeType {
 		case 4:
 			switch (holder.getStateNum(node)) {
 				default: case 0://sea glass
-					return holder.getStorage(node) +extra.COLOR_RESET+" Sea Glass";
+					return holder.getStorage(node) +TrawelColor.COLOR_RESET+" Sea Glass";
 				case 1://beach rock
 				case 2://gravel patch
 					return ""+holder.getStorage(node);
@@ -482,14 +483,14 @@ public class BeachNode implements NodeType {
 
 								@Override
 								public String title() {
-									return extra.RESULT_ERROR+"You are too burnt out to find a way to open the "+chestname+".";
+									return TrawelColor.RESULT_ERROR+"You are too burnt out to find a way to open the "+chestname+".";
 								}});
 						}else {
 							list.add(new MenuSelect() {
 
 								@Override
 								public String title() {
-									return extra.RESULT_WARN+"Smash open the "+chestname+". "+AttributeBox.getStatHintByIndex(0);
+									return TrawelColor.RESULT_WARN+"Smash open the "+chestname+". "+AttributeBox.getStatHintByIndex(0);
 								}
 
 								@Override
@@ -498,7 +499,7 @@ public class BeachNode implements NodeType {
 										Player.player.getPerson().getStrength(), IEffectiveLevel.attributeChallengeMedium(holder.getLevel(node)))
 										>=0){
 										//broke down door
-										extra.println(extra.RESULT_PASS+"You smash open the "+chestname+".");
+										extra.println(TrawelColor.RESULT_PASS+"You smash open the "+chestname+".");
 										holder.setStateNum(node,1);//broken open, unused now
 										beachChestLoot(holder.getLevel(node));
 										holder.findBehind(node,chestname);
@@ -506,7 +507,7 @@ public class BeachNode implements NodeType {
 									}else {
 										//failed
 										Player.player.getPerson().addEffect(Effect.BURNOUT);
-										extra.println(extra.RESULT_FAIL+"You fail to bash open the "+chestname+".");
+										extra.println(TrawelColor.RESULT_FAIL+"You fail to bash open the "+chestname+".");
 										holder.findBehind(node,chestname);
 									}
 									return true;
@@ -515,7 +516,7 @@ public class BeachNode implements NodeType {
 
 								@Override
 								public String title() {
-									return extra.RESULT_WARN+"Lockpick the "+chestname+". "+AttributeBox.getStatHintByIndex(1);
+									return TrawelColor.RESULT_WARN+"Lockpick the "+chestname+". "+AttributeBox.getStatHintByIndex(1);
 								}
 
 								@Override
@@ -524,7 +525,7 @@ public class BeachNode implements NodeType {
 										Player.player.getPerson().getDexterity(), IEffectiveLevel.attributeChallengeMedium(holder.getLevel(node)))
 										>=0){
 										//lockpicked door
-										extra.println(extra.RESULT_PASS+"You pick open the "+chestname+".");
+										extra.println(TrawelColor.RESULT_PASS+"You pick open the "+chestname+".");
 										holder.setStateNum(node,2);//picked open, unused now
 										beachChestLoot(holder.getLevel(node));
 										holder.findBehind(node,chestname);
@@ -532,7 +533,7 @@ public class BeachNode implements NodeType {
 									}else {
 										//failed
 										Player.player.getPerson().addEffect(Effect.BURNOUT);
-										extra.println(extra.RESULT_FAIL+"You fail to lockpick the "+chestname+".");
+										extra.println(TrawelColor.RESULT_FAIL+"You fail to lockpick the "+chestname+".");
 										holder.findBehind(node,chestname);
 									}
 									return true;
@@ -541,7 +542,7 @@ public class BeachNode implements NodeType {
 
 								@Override
 								public String title() {
-									return extra.RESULT_WARN+"Cast Knock on the "+chestname+". "+AttributeBox.getStatHintByIndex(2);
+									return TrawelColor.RESULT_WARN+"Cast Knock on the "+chestname+". "+AttributeBox.getStatHintByIndex(2);
 								}
 
 								@Override
@@ -550,7 +551,7 @@ public class BeachNode implements NodeType {
 										Player.player.getPerson().getClarity(), IEffectiveLevel.attributeChallengeMedium(holder.getLevel(node)))
 										>=0){
 										//lockpicked door
-										extra.println(extra.RESULT_PASS+"You open the "+chestname+" with a Knock cantrip.");
+										extra.println(TrawelColor.RESULT_PASS+"You open the "+chestname+" with a Knock cantrip.");
 										holder.setStateNum(node,3);//opened, unused now
 										beachChestLoot(holder.getLevel(node));
 										holder.findBehind(node,chestname);
@@ -558,7 +559,7 @@ public class BeachNode implements NodeType {
 									}else {
 										//failed
 										Player.player.getPerson().addEffect(Effect.BURNOUT);
-										extra.println(extra.RESULT_FAIL+"Your Knock cantrip on the "+chestname+" fizzles.");
+										extra.println(TrawelColor.RESULT_FAIL+"Your Knock cantrip on the "+chestname+" fizzles.");
 										holder.findBehind(node,chestname);
 									}
 									return true;
@@ -591,7 +592,7 @@ public class BeachNode implements NodeType {
 				int aetherReward = IEffectiveLevel.cleanRangeReward(level,1000,.5f);
 				Player.bag.addAether(aetherReward);
 				Player.player.addGold(moneyReward);
-				extra.println(extra.RESULT_GOOD+"Inside the chest you find "+World.currentMoneyDisplay(moneyReward) + " and "+aetherReward + " Aether!");
+				extra.println(TrawelColor.RESULT_GOOD+"Inside the chest you find "+World.currentMoneyDisplay(moneyReward) + " and "+aetherReward + " Aether!");
 				return;
 			case 2://hunter stash
 				//silver weapon

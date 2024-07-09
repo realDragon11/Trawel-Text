@@ -12,6 +12,7 @@ import trawel.battle.Combat;
 import trawel.core.Networking;
 import trawel.core.Networking.Area;
 import trawel.factions.HostileTask;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;
@@ -104,7 +105,7 @@ public class Slum extends Store implements QuestBoardLocation{
 	
 	@Override
 	public String getColor() {
-		return extra.F_NODE;//unsure
+		return TrawelColor.F_NODE;//unsure
 	}
 	
 	@Override
@@ -154,7 +155,7 @@ public class Slum extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return extra.SERVICE_CURRENCY+"Shop at '"+storename+"'.";
+						return TrawelColor.SERVICE_CURRENCY+"Shop at '"+storename+"'.";
 					}
 
 					@Override
@@ -166,7 +167,7 @@ public class Slum extends Store implements QuestBoardLocation{
 					
 					@Override
 					public String title() {
-						return extra.FSERVICE_QUEST+"Speak to Fixer (Sidequests).";
+						return TrawelColor.FSERVICE_QUEST+"Speak to Fixer (Sidequests).";
 					}
 	
 					@Override
@@ -179,7 +180,7 @@ public class Slum extends Store implements QuestBoardLocation{
 					
 					@Override
 					public String title() {
-						return extra.SERVICE_FREE+"Enter Backalleys (Crime).";
+						return TrawelColor.SERVICE_FREE+"Enter Backalleys (Crime).";
 					}
 	
 					@Override
@@ -193,7 +194,7 @@ public class Slum extends Store implements QuestBoardLocation{
 						
 						@Override
 						public String title() {
-							return extra.PRE_BATTLE +"Attack Crime Lord!";
+							return TrawelColor.PRE_BATTLE +"Attack Crime Lord!";
 						}
 		
 						@Override
@@ -210,7 +211,7 @@ public class Slum extends Store implements QuestBoardLocation{
 						
 						@Override
 						public String title() {
-							return extra.SERVICE_CURRENCY+"Pay to reform district ("+World.currentMoneyDisplay(removecost)+")";
+							return TrawelColor.SERVICE_CURRENCY+"Pay to reform district ("+World.currentMoneyDisplay(removecost)+")";
 						}
 		
 						@Override
@@ -388,7 +389,7 @@ public class Slum extends Store implements QuestBoardLocation{
 	
 						@Override
 						public String title() {
-							return extra.PRE_BATTLE +"Go vigilante.";
+							return TrawelColor.PRE_BATTLE +"Go vigilante.";
 						}
 	
 						@Override
@@ -411,7 +412,7 @@ public class Slum extends Store implements QuestBoardLocation{
 					
 					@Override
 					public String title() {
-						return extra.PRE_BATTLE +"Mug someone.";
+						return TrawelColor.PRE_BATTLE +"Mug someone.";
 					}
 
 					@Override
@@ -436,7 +437,7 @@ public class Slum extends Store implements QuestBoardLocation{
 	
 	private void killCrime() {
 		Person p = crimeLord.getPerson();
-		extra.println(extra.PRE_BATTLE +"Attack " + p.getName() + "?");
+		extra.println(TrawelColor.PRE_BATTLE +"Attack " + p.getName() + "?");
 		if (extra.yesNo()) {
 			Combat c = Player.player.fightWith(p);
 			if (c.playerWon() > 0) {

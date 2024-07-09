@@ -7,6 +7,7 @@ import trawel.battle.Combat.AttackReturn;
 import trawel.battle.targets.Target;
 import trawel.battle.targets.TargetFactory;
 import trawel.battle.targets.TargetFactory.TypeBody.TargetReturn;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;
@@ -281,7 +282,7 @@ public class ImpairedAttack implements IAttack{
 		}
 		
 		public String getExplain() {
-			return name + "("+getDisp()+extra.COLOR_RESET+"):" + desc;
+			return name + "("+getDisp()+TrawelColor.COLOR_RESET+"):" + desc;
 		}
 		
 		public String getDispFor(ImpairedAttack ia) {
@@ -302,7 +303,7 @@ public class ImpairedAttack implements IAttack{
 				return disp + " " +ia.getSharp();
 			}
 			return null;*/
-			return getDisp() + " " + getAmountFor(ia)+extra.COLOR_RESET;
+			return getDisp() + " " + getAmountFor(ia)+TrawelColor.COLOR_RESET;
 		}
 		
 		public int getAmountFor(ImpairedAttack ia) {
@@ -329,7 +330,7 @@ public class ImpairedAttack implements IAttack{
 	public static String EXPLAIN_DAMAGE_TYPES() {
 		String str = "";
 		for (DamageType t: DamageType.values()) {
-			str += t.getDisp() + " " + t.getName()+extra.PRE_WHITE+ ", ";
+			str += t.getDisp() + " " + t.getName()+TrawelColor.PRE_WHITE+ ", ";
 		}
 		return str;
 	}
@@ -555,10 +556,10 @@ public class ImpairedAttack implements IAttack{
 			in[4] = 10;
 			in[5] = 6+4;
 			if (attack.isBypass()) {
-				extra.specialPrint(in,"MAGIC: "+getName(),extra.format(getHitMult()),extra.format(getWarmup()+getCooldown()),extra.COLOR_IGNITE+(getIgnite()),extra.COLOR_FROST+(getFrost()),extra.COLOR_ELEC+(getElec()));
+				extra.specialPrint(in,"MAGIC: "+getName(),extra.format(getHitMult()),extra.format(getWarmup()+getCooldown()),TrawelColor.COLOR_IGNITE+(getIgnite()),TrawelColor.COLOR_FROST+(getFrost()),TrawelColor.COLOR_ELEC+(getElec()));
 				break;
 			}
-			extra.specialPrint(in,getName(),extra.format(getHitMult()),extra.format(getWarmup()+getCooldown()),extra.COLOR_SHARP+(getSharp()),extra.COLOR_BLUNT+(getBlunt()),extra.COLOR_PIERCE+(getPierce()));
+			extra.specialPrint(in,getName(),extra.format(getHitMult()),extra.format(getWarmup()+getCooldown()),TrawelColor.COLOR_SHARP+(getSharp()),TrawelColor.COLOR_BLUNT+(getBlunt()),TrawelColor.COLOR_PIERCE+(getPierce()));
 			break;
 		case 2://two line 1
 			extra.println(getName());
@@ -623,10 +624,10 @@ public class ImpairedAttack implements IAttack{
 		if (aWound == null) {
 			aWound = Wound.EMPTY;
 		}
-		extra.println("  "+aWound.getColor()+aWound.name + extra.PRE_WHITE+ " - " + String.format(aWound.desc,(Object[])Combat.woundNums(this,attacker,defender,null,aWound)));
+		extra.println("  "+aWound.getColor()+aWound.name + TrawelColor.PRE_WHITE+ " - " + String.format(aWound.desc,(Object[])Combat.woundNums(this,attacker,defender,null,aWound)));
 		if (hasBonusEffect()) {
 			AttackBonus ab = getAttack().getRider();
-			extra.println("  "+extra.ATK_BONUS+ab.label +extra.PRE_WHITE+": " + ab.desc);
+			extra.println("  "+TrawelColor.ATK_BONUS+ab.label +TrawelColor.PRE_WHITE+": " + ab.desc);
 		}
 	}
 

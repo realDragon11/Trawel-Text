@@ -5,6 +5,7 @@ import java.util.Set;
 
 import trawel.core.mainGame;
 import trawel.core.mainGame.GraphicStyle;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.Services;
 import trawel.helper.methods.extra;
 import trawel.personal.classless.IEffectiveLevel;
@@ -91,24 +92,24 @@ public class Armor extends Item implements IEffectiveLevel{
 		
 		public String removeColor() {
 			if (goodNegNeut == 0) {
-				return extra.TIMID_GREY+"Trait: ";
+				return TrawelColor.TIMID_GREY+"Trait: ";
 			}
 			if (goodNegNeut < 0) {
-				return extra.TIMID_GREEN+"Flaw: ";
+				return TrawelColor.TIMID_GREEN+"Flaw: ";
 			}
 			//if (goodNegNeut > 0) {
-				return extra.TIMID_RED+"Qual: ";
+				return TrawelColor.TIMID_RED+"Qual: ";
 			//}
 		}
 		public String addColor() {
 			if (goodNegNeut == 0) {
-				return extra.TIMID_GREY+"Trait: ";
+				return TrawelColor.TIMID_GREY+"Trait: ";
 			}
 			if (goodNegNeut < 0) {
-				return extra.TIMID_RED+"Flaw: ";
+				return TrawelColor.TIMID_RED+"Flaw: ";
 			}
 			//if (goodNegNeut > 0) {
-				return extra.TIMID_GREEN+"Qual: ";
+				return TrawelColor.TIMID_GREEN+"Qual: ";
 			//}
 		}
 		
@@ -318,9 +319,9 @@ public class Armor extends Item implements IEffectiveLevel{
 		Material mat = getMat();
 		if (enchantment != null){
 			EnchantConstant enchant = (EnchantConstant)enchantment; 
-			return (enchant.getBeforeName() +mat.color + mat.name+extra.COLOR_RESET + " " + getBaseName() + enchant.getAfterName());
+			return (enchant.getBeforeName() +mat.color + mat.name+TrawelColor.COLOR_RESET + " " + getBaseName() + enchant.getAfterName());
 		}
-		return (mat.color + mat.name+extra.COLOR_RESET  + " " +  getBaseName());
+		return (mat.color + mat.name+TrawelColor.COLOR_RESET  + " " +  getBaseName());
 	}
 	
 	@Override
@@ -650,12 +651,12 @@ public class Armor extends Item implements IEffectiveLevel{
 		case 3:
 			extra.println(this.getName() + ":");
 			extra.println(
-			" " +extra.ITEM_DESC_PROP+ extra.CHAR_SHARP+extra.ITEM_WANT_HIGHER+extra.format(this.getSharpResist())
-			+ " "+extra.ITEM_DESC_PROP + extra.CHAR_BLUNT+extra.ITEM_WANT_HIGHER+extra.format(this.getBluntResist())
-			+ " "+extra.ITEM_DESC_PROP + extra.CHAR_PIERCE+extra.ITEM_WANT_HIGHER+extra.format(this.getPierceResist())
-			+ (Player.player.caresAboutCapacity() ? " "+extra.ITEM_DESC_PROP+extra.DISP_WEIGHT+": "+extra.ITEM_WANT_LOWER+getWeight() : "")
-			+ (Player.player.caresAboutAMP() ? " "+extra.ITEM_DESC_PROP+extra.DISP_AMP+": "+extra.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(getAgiPenMult())+"x" : "")
-			+" "+extra.ITEM_DESC_PROP+extra.DISP_AETHER+": " +extra.ITEM_VALUE+ extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup)));
+			" " +TrawelColor.ITEM_DESC_PROP+ extra.CHAR_SHARP+TrawelColor.ITEM_WANT_HIGHER+extra.format(this.getSharpResist())
+			+ " "+TrawelColor.ITEM_DESC_PROP + extra.CHAR_BLUNT+TrawelColor.ITEM_WANT_HIGHER+extra.format(this.getBluntResist())
+			+ " "+TrawelColor.ITEM_DESC_PROP + extra.CHAR_PIERCE+TrawelColor.ITEM_WANT_HIGHER+extra.format(this.getPierceResist())
+			+ (Player.player.caresAboutCapacity() ? " "+TrawelColor.ITEM_DESC_PROP+extra.DISP_WEIGHT+": "+TrawelColor.ITEM_WANT_LOWER+getWeight() : "")
+			+ (Player.player.caresAboutAMP() ? " "+TrawelColor.ITEM_DESC_PROP+extra.DISP_AMP+": "+TrawelColor.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(getAgiPenMult())+"x" : "")
+			+" "+TrawelColor.ITEM_DESC_PROP+extra.DISP_AETHER+": " +TrawelColor.ITEM_VALUE+ extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup)));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
@@ -667,24 +668,24 @@ public class Armor extends Item implements IEffectiveLevel{
 		case 2://full examine
 			extra.println(
 			this.getName()
-			+ " " + extra.ITEM_DESC_PROP+extra.CHAR_SHARP+extra.ITEM_WANT_HIGHER+extra.format(this.getSharpResist())
-			+ " " + extra.ITEM_DESC_PROP+extra.CHAR_BLUNT+extra.ITEM_WANT_HIGHER+extra.format(this.getBluntResist())
-			+ " " + extra.ITEM_DESC_PROP+extra.CHAR_PIERCE+extra.ITEM_WANT_HIGHER+extra.format(this.getPierceResist())
-			+ " "+extra.ITEM_DESC_PROP+extra.DISP_WEIGHT+": "+extra.ITEM_WANT_LOWER+getWeight()
-			+ " "+extra.DISP_AMP+": "+extra.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(getAgiPenMult())+"x"
-			+extra.ITEM_DESC_PROP+ " ignite mult: "+extra.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(getFireMod())+"x"
-			+extra.ITEM_DESC_PROP+ " frost mult: "+extra.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(getFreezeMod())+"x"
-			+extra.ITEM_DESC_PROP+ " elec mult: "+extra.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(getShockMod())+"x"
-			+extra.ITEM_DESC_PROP+ " aether: " +extra.ITEM_VALUE+ (int)(this.getAetherValue()*markup));
+			+ " " + TrawelColor.ITEM_DESC_PROP+extra.CHAR_SHARP+TrawelColor.ITEM_WANT_HIGHER+extra.format(this.getSharpResist())
+			+ " " + TrawelColor.ITEM_DESC_PROP+extra.CHAR_BLUNT+TrawelColor.ITEM_WANT_HIGHER+extra.format(this.getBluntResist())
+			+ " " + TrawelColor.ITEM_DESC_PROP+extra.CHAR_PIERCE+TrawelColor.ITEM_WANT_HIGHER+extra.format(this.getPierceResist())
+			+ " "+TrawelColor.ITEM_DESC_PROP+extra.DISP_WEIGHT+": "+TrawelColor.ITEM_WANT_LOWER+getWeight()
+			+ " "+extra.DISP_AMP+": "+TrawelColor.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(getAgiPenMult())+"x"
+			+TrawelColor.ITEM_DESC_PROP+ " ignite mult: "+TrawelColor.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(getFireMod())+"x"
+			+TrawelColor.ITEM_DESC_PROP+ " frost mult: "+TrawelColor.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(getFreezeMod())+"x"
+			+TrawelColor.ITEM_DESC_PROP+ " elec mult: "+TrawelColor.ITEM_WANT_LOWER+ extra.F_TWO_TRAILING.format(getShockMod())+"x"
+			+TrawelColor.ITEM_DESC_PROP+ " aether: " +TrawelColor.ITEM_VALUE+ (int)(this.getAetherValue()*markup));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
 			printQuals();
 			;break;
 		case 20://for store overviews
-			extra.println(this.getName() + extra.ITEM_DESC_PROP+" sbp:" +extra.ITEM_WANT_HIGHER
+			extra.println(this.getName() + TrawelColor.ITEM_DESC_PROP+" sbp:" +TrawelColor.ITEM_WANT_HIGHER
 			+extra.format(this.getSharpResist()) + " " + extra.format(this.getBluntResist()) + " " + extra.format(this.getPierceResist())
-			+" "+extra.ITEM_DESC_PROP+extra.DISP_AETHER+": " +extra.ITEM_VALUE+ extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup)));
+			+" "+TrawelColor.ITEM_DESC_PROP+extra.DISP_AETHER+": " +TrawelColor.ITEM_VALUE+ extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup)));
 			if (this.getEnchant() != null) {
 				this.getEnchant().display(1);
 			}
@@ -718,14 +719,14 @@ public class Armor extends Item implements IEffectiveLevel{
 	public String storeString(double markup, int canShow) {
 		if (canShow > 0) {
 			return this.getName() 
-				+ extra.ITEM_DESC_PROP+" "+extra.CHAR_SHARP + extra.F_WHOLE.format(this.getSharpResist())
-				+ extra.ITEM_DESC_PROP+" "+extra.CHAR_BLUNT + extra.F_WHOLE.format(this.getBluntResist())
-				+ extra.ITEM_DESC_PROP+" "+extra.CHAR_PIERCE + extra.F_WHOLE.format(this.getPierceResist())
-				+ extra.ITEM_DESC_PROP+" cost"+extra.PRE_WHITE+": " +extra.ITEM_VALUE+extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
-				+ (canShow == 1 ?extra.TIMID_RED+" (raw deal)" : "");
+				+ TrawelColor.ITEM_DESC_PROP+" "+extra.CHAR_SHARP + extra.F_WHOLE.format(this.getSharpResist())
+				+ TrawelColor.ITEM_DESC_PROP+" "+extra.CHAR_BLUNT + extra.F_WHOLE.format(this.getBluntResist())
+				+ TrawelColor.ITEM_DESC_PROP+" "+extra.CHAR_PIERCE + extra.F_WHOLE.format(this.getPierceResist())
+				+ TrawelColor.ITEM_DESC_PROP+" cost"+TrawelColor.PRE_WHITE+": " +TrawelColor.ITEM_VALUE+extra.F_WHOLE.format(Math.ceil(getAetherValue()*markup))
+				+ (canShow == 1 ?TrawelColor.TIMID_RED+" (raw deal)" : "");
 		}
 		String base = getBaseName();
-		return extra.TIMID_GREY+"  They refuse to show you something you think " + extra.pluralIsA(base) + " "+base+".";
+		return TrawelColor.TIMID_GREY+"  They refuse to show you something you think " + extra.pluralIsA(base) + " "+base+".";
 	}
 	
 	@Override

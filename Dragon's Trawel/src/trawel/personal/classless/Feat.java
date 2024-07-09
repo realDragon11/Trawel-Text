@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill.Type;
@@ -252,12 +253,12 @@ public enum Feat implements IHasSkills{
 	@Override
 	public String getOwnText() {
 		//MAYBELATER: the non stance getDescs might need support again
-		return extra.ITEM_VALUE+ name +extra.PRE_WHITE + ": "+desc;
+		return TrawelColor.ITEM_VALUE+ name +TrawelColor.PRE_WHITE + ": "+desc;
 	}
 	
 	@Override
 	public String getBriefText() {
-		return extra.ITEM_VALUE+ name +extra.PRE_WHITE + ": "+desc;
+		return TrawelColor.ITEM_VALUE+ name +TrawelColor.PRE_WHITE + ": "+desc;
 	}
 	
 	@Override

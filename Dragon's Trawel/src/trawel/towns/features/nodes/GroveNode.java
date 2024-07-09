@@ -15,6 +15,7 @@ import trawel.battle.Combat;
 import trawel.core.Networking;
 import trawel.factions.Faction;
 import trawel.factions.HostileTask;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 import trawel.personal.AIClass;
@@ -391,13 +392,13 @@ public class GroveNode implements NodeType{
 
 							@Override
 							public String title() {
-								return extra.PRE_BATTLE+"End a Long Career";
+								return TrawelColor.PRE_BATTLE+"End a Long Career";
 							}
 
 							@Override
 							public boolean go() {
 								extra.println("Before you can move, they speak up. "
-								+extra.TIMID_RED+"\"Hm, yes. Maybe you would be a fitting end to my story... or perhaps merely another part of it. But be warned, there is no going back.\"");
+								+TrawelColor.TIMID_RED+"\"Hm, yes. Maybe you would be a fitting end to my story... or perhaps merely another part of it. But be warned, there is no going back.\"");
 								if (old.reallyAttack()) {
 									holder.setForceGo(node,true);
 									holder.setStateNum(node,1);
@@ -410,7 +411,7 @@ public class GroveNode implements NodeType{
 					}
 				});
 			}else {//can combat forcego
-				extra.println(extra.TIMID_RED+old.getNameNoTitle()+" has had enough. One way or the other.");
+				extra.println(TrawelColor.TIMID_RED+old.getNameNoTitle()+" has had enough. One way or the other.");
 				Combat oldc = Player.player.fightWith(old);
 				if (oldc.playerWon() > 0) {
 					GenericNode.setSimpleDeadPerson(holder, node, old);//gets their own corpse
@@ -530,7 +531,7 @@ public class GroveNode implements NodeType{
 				extra.println("You move the tree off of them.");
 				holder.setStateNum(node,1);
 				if (extra.randFloat() > .9f) {
-					extra.println(extra.PRE_BATTLE+"Suddenly, they attack you!");
+					extra.println(TrawelColor.PRE_BATTLE+"Suddenly, they attack you!");
 					p.hTask = HostileTask.MUG;
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
@@ -542,7 +543,7 @@ public class GroveNode implements NodeType{
 					if (extra.randFloat() < .3f) {
 						p.hTask = HostileTask.PEACE;
 						p.setPersonType(PersonType.COWARDLY);
-						extra.println("They scamper off... "+extra.PRE_BATTLE+"Attack them?");
+						extra.println("They scamper off... "+TrawelColor.PRE_BATTLE+"Attack them?");
 						if (extra.yesNo()) {
 							Combat c = Player.player.fightWith(p);
 							if (c.playerWon() > 0) {
@@ -556,7 +557,7 @@ public class GroveNode implements NodeType{
 						}
 					}else {
 						int gold = IEffectiveLevel.cleanRangeReward(holder.getLevel(node), 2f,.7f);
-						extra.println("They offer a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them. "+extra.PRE_BATTLE+"...But it looks like they might have more. Mug them?");
+						extra.println("They offer a reward of " + World.currentMoneyDisplay(gold) + " in thanks for saving them. "+TrawelColor.PRE_BATTLE+"...But it looks like they might have more. Mug them?");
 						if (extra.yesNo()) {
 							p.getBag().addGold(gold);
 							if (extra.randFloat() > .3f) {//70% chance for more money
@@ -668,7 +669,7 @@ public class GroveNode implements NodeType{
 
 						@Override
 						public String title() {
-							return extra.PRE_BATTLE+"Attack them.";
+							return TrawelColor.PRE_BATTLE+"Attack them.";
 						}
 
 						@Override
@@ -685,7 +686,7 @@ public class GroveNode implements NodeType{
 										return true;
 									}
 								}else {
-									extra.println(extra.PRE_BATTLE+ "It looks like their tree has other friends!");
+									extra.println(TrawelColor.PRE_BATTLE+ "It looks like their tree has other friends!");
 									Combat c = Player.player.massFightWith(peeps);
 									if (c.playerWon() > 0) {
 										GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
@@ -717,7 +718,7 @@ public class GroveNode implements NodeType{
 			boolean hasdryad = !p.getFlag(PersonFlag.IS_MOOK);
 			
 			if (peeps.size() == 1) {
-				extra.println(extra.PRE_BATTLE+ (hasdryad ? p.getName() + " protects their tree!" : "The trees move to avenge their caretaker!"));
+				extra.println(TrawelColor.PRE_BATTLE+ (hasdryad ? p.getName() + " protects their tree!" : "The trees move to avenge their caretaker!"));
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() > 0) {
 					GenericNode.setSimpleDeadRaceID(holder, node, p.getBag().getRaceID());
@@ -726,7 +727,7 @@ public class GroveNode implements NodeType{
 					return true;//kick out
 				}
 			}else {
-				extra.println(extra.PRE_BATTLE+ (hasdryad ? p.getName() + " protects their tree, and their tree has friends!" : "The trees move to avenge their caretaker!"));
+				extra.println(TrawelColor.PRE_BATTLE+ (hasdryad ? p.getName() + " protects their tree, and their tree has friends!" : "The trees move to avenge their caretaker!"));
 				Combat c = Player.player.massFightWith(peeps);
 				if (c.playerWon() > 0) {
 					holder.setForceGo(node,false);//clean up our force go
@@ -782,7 +783,7 @@ public class GroveNode implements NodeType{
 
 						@Override
 						public String title() {
-							return extra.PRE_BATTLE+"Crush.";
+							return TrawelColor.PRE_BATTLE+"Crush.";
 						}
 
 						@Override
@@ -844,7 +845,7 @@ public class GroveNode implements NodeType{
 				p = RaceFactory.makeDryad(holder.getLevel(node));
 				String str = holder.getStorageFirstClass(node,String.class);
 				holder.setStorage(node, new Object[] {str,p});
-				extra.println(extra.PRE_BATTLE+randomLists.randomViolateForestQuote());
+				extra.println(TrawelColor.PRE_BATTLE+randomLists.randomViolateForestQuote());
 			}else {
 				p = holder.getStorageFirstPerson(node);
 			}
@@ -867,7 +868,7 @@ public class GroveNode implements NodeType{
 					p = RaceFactory.makeMugger(holder.getLevel(node));
 					String str = holder.getStorageFirstClass(node,String.class);
 					holder.setStorage(node, new Object[] {str,p});
-					extra.println( extra.PRE_BATTLE+"\"That looked expensive!\"");
+					extra.println( TrawelColor.PRE_BATTLE+"\"That looked expensive!\"");
 				}else {
 					p = holder.getStorageFirstPerson(node);
 				}
@@ -1059,7 +1060,7 @@ public class GroveNode implements NodeType{
 
 					@Override
 					public String title() {
-						return extra.PRE_BATTLE+"Attack";
+						return TrawelColor.PRE_BATTLE+"Attack";
 					}
 
 					@Override
@@ -1077,7 +1078,7 @@ public class GroveNode implements NodeType{
 	}
 	
 	private boolean packOfWolves(NodeConnector holder,int node) {
-		extra.println(extra.PRE_BATTLE+"The pack descends upon you!");
+		extra.println(TrawelColor.PRE_BATTLE+"The pack descends upon you!");
 		List<Person> list = holder.getStorageFirstClass(node,List.class);
 		Combat c = Player.player.massFightWith(list);
 		if (c.playerWon() > 0) {
@@ -1122,9 +1123,9 @@ public class GroveNode implements NodeType{
 			//thankfully the things below will auto take out of arrays
 			
 		case 11://mushroom, colored
-			return "Examine the " + holder.getStorageFirstClass(node, String.class) + " mushroom"+extra.COLOR_RESET+".";
+			return "Examine the " + holder.getStorageFirstClass(node, String.class) + " mushroom"+TrawelColor.COLOR_RESET+".";
 		case 12://moss, colored
-			return "Examine the " + holder.getStorageFirstClass(node, String.class) + " moss"+extra.COLOR_RESET+".";
+			return "Examine the " + holder.getStorageFirstClass(node, String.class) + " moss"+TrawelColor.COLOR_RESET+".";
 		case 14: //weapon stone
 			if (holder.getStateNum(node) == 0) {
 				Weapon w = holder.getStorageFirstClass(node, Weapon.class);
@@ -1157,9 +1158,9 @@ public class GroveNode implements NodeType{
 		case 9://dryad
 			return "Dryad's Tree";
 		case 11://mushroom, colored
-			return "A single " +holder.getStorageFirstClass(node, String.class)+" mushroom"+extra.COLOR_RESET;
+			return "A single " +holder.getStorageFirstClass(node, String.class)+" mushroom"+TrawelColor.COLOR_RESET;
 		case 12://moss, colored
-			return "A single piece of " +holder.getStorageFirstClass(node, String.class)+" moss"+extra.COLOR_RESET;
+			return "A single piece of " +holder.getStorageFirstClass(node, String.class)+" moss"+TrawelColor.COLOR_RESET;
 		case 14: //weapon stone
 			if (holder.getStateNum(node) == 0) {
 				Weapon w = holder.getStorageFirstClass(node, Weapon.class);

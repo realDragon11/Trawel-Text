@@ -10,6 +10,7 @@ import derg.strings.random.SRGapShuffle;
 import derg.strings.random.SRInOrder;
 import derg.strings.random.SRPlainRandom;
 import trawel.battle.Combat.ATK_ResultCode;
+import trawel.helper.constants.TrawelColor;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
 
@@ -40,24 +41,24 @@ public class randomLists {
 		colorList = new SRPlainRandom("green","blue","yellow","purple","red","orange","white","black","grey","cyan","silver","maroon","rose","chestnut","vermilion","russet","scarlet","rust","auburn","mahogany","pumpkin","chocolate","copper","bronze","sepia","ochre","brown","cinnamon","tan","orange","peach","goldenrod","amber","saffron","ecru","gold","pearl","buff","flax","brass","lemon","cream","beige","olive","ivory","lime","chartreuse","emerald","jade","aquamarine","turquoise","teal","aqua","cerulean","charcoal","azure","cobalt","lavender","periwinkle","amethyst","violet","indigo","heliotrope","liliac","plum","fuchsia","mauve","puce","crimson","pink","cardinal","carmine");
 		//TODO:
 		colorListPrintable = new SRPlainRandom(
-			extra.PRE_GREEN+"Green",extra.PRE_BLUE+"Blue",extra.PRE_YELLOW+"Yellow",extra.PRE_MAGENTA+"Purple"
-			,extra.PRE_RED+"Red",extra.PRE_ORANGE+"Orange",extra.PRE_WHITE+"White",extra.TIMID_GREY+"Black"
-			,extra.TIMID_GREY+"Grey",extra.PRE_BLUE+"Cyan",extra.PRE_BLUE+"Silver",extra.PRE_ORANGE+"Maroon"
-			,extra.PRE_RED+"Rose",extra.PRE_ORANGE+"Chestnut",extra.TIMID_RED+"Vermilion",extra.TIMID_RED+"Russet"
-			,extra.PRE_RED+"Scarlet",extra.PRE_ORANGE+"Rust",extra.PRE_ORANGE+"Auburn"
-			,extra.TIMID_RED+"Mahogany",extra.PRE_ORANGE+"Pumpkin",extra.PRE_ORANGE+"Chocolate"
-			,extra.PRE_ORANGE+"Copper",extra.PRE_ORANGE+"Bronze",extra.TIMID_GREY+"Sepia",extra.TIMID_RED+"ochre"
-			,extra.PRE_ORANGE+"Brown",extra.PRE_ORANGE+"Cinnamon",extra.PRE_ORANGE+"Tan",extra.PRE_ORANGE+"orange"
-			,extra.PRE_YELLOW+"Peach",extra.PRE_YELLOW+"Goldenrod",extra.PRE_YELLOW+"Amber","Saffron"
-			,"Ecru",extra.PRE_YELLOW+"Gold",extra.PRE_WHITE+"Pearl","Buff","Flax",extra.PRE_ORANGE+"Brass"
-			,extra.PRE_YELLOW+"Lemon",extra.PRE_YELLOW+"Cream",extra.PRE_ORANGE+"Beige",extra.PRE_ORANGE+"Olive"
-			,extra.PRE_WHITE+"Ivory",extra.PRE_GREEN+"Lime","Chartreuse",extra.PRE_GREEN+"Emerald",extra.PRE_GREEN+"Jade"
-			,extra.TIMID_GREEN+"Aquamarine",extra.TIMID_BLUE+"Turquoise",extra.PRE_BLUE+"Teal",extra.PRE_BLUE+"Aqua"
-			,extra.PRE_BLUE+"Cerulean",extra.TIMID_GREY+"Charcoal",extra.PRE_BLUE+"Azure",extra.PRE_BLUE+"Cobalt"
-			,extra.TIMID_MAGENTA+"Lavender","Periwinkle",extra.PRE_MAGENTA+"Amethyst",extra.PRE_MAGENTA+"Violet"
-			,extra.TIMID_BLUE+"Indigo",extra.PRE_MAGENTA+"Heliotrope",extra.TIMID_MAGENTA+"Liliac",extra.TIMID_MAGENTA+"Plum"
-			,extra.PRE_MAGENTA+"Fuchsia",extra.PRE_MAGENTA+"Mauve",extra.PRE_MAGENTA+"Puce"
-			,extra.PRE_RED+"Crimson",extra.TIMID_MAGENTA+"Pink",extra.TIMID_RED+"Cardinal",extra.TIMID_RED+"Carmine");
+			TrawelColor.PRE_GREEN+"Green",TrawelColor.PRE_BLUE+"Blue",TrawelColor.PRE_YELLOW+"Yellow",TrawelColor.PRE_MAGENTA+"Purple"
+			,TrawelColor.PRE_RED+"Red",TrawelColor.PRE_ORANGE+"Orange",TrawelColor.PRE_WHITE+"White",TrawelColor.TIMID_GREY+"Black"
+			,TrawelColor.TIMID_GREY+"Grey",TrawelColor.PRE_BLUE+"Cyan",TrawelColor.PRE_BLUE+"Silver",TrawelColor.PRE_ORANGE+"Maroon"
+			,TrawelColor.PRE_RED+"Rose",TrawelColor.PRE_ORANGE+"Chestnut",TrawelColor.TIMID_RED+"Vermilion",TrawelColor.TIMID_RED+"Russet"
+			,TrawelColor.PRE_RED+"Scarlet",TrawelColor.PRE_ORANGE+"Rust",TrawelColor.PRE_ORANGE+"Auburn"
+			,TrawelColor.TIMID_RED+"Mahogany",TrawelColor.PRE_ORANGE+"Pumpkin",TrawelColor.PRE_ORANGE+"Chocolate"
+			,TrawelColor.PRE_ORANGE+"Copper",TrawelColor.PRE_ORANGE+"Bronze",TrawelColor.TIMID_GREY+"Sepia",TrawelColor.TIMID_RED+"ochre"
+			,TrawelColor.PRE_ORANGE+"Brown",TrawelColor.PRE_ORANGE+"Cinnamon",TrawelColor.PRE_ORANGE+"Tan",TrawelColor.PRE_ORANGE+"orange"
+			,TrawelColor.PRE_YELLOW+"Peach",TrawelColor.PRE_YELLOW+"Goldenrod",TrawelColor.PRE_YELLOW+"Amber","Saffron"
+			,"Ecru",TrawelColor.PRE_YELLOW+"Gold",TrawelColor.PRE_WHITE+"Pearl","Buff","Flax",TrawelColor.PRE_ORANGE+"Brass"
+			,TrawelColor.PRE_YELLOW+"Lemon",TrawelColor.PRE_YELLOW+"Cream",TrawelColor.PRE_ORANGE+"Beige",TrawelColor.PRE_ORANGE+"Olive"
+			,TrawelColor.PRE_WHITE+"Ivory",TrawelColor.PRE_GREEN+"Lime","Chartreuse",TrawelColor.PRE_GREEN+"Emerald",TrawelColor.PRE_GREEN+"Jade"
+			,TrawelColor.TIMID_GREEN+"Aquamarine",TrawelColor.TIMID_BLUE+"Turquoise",TrawelColor.PRE_BLUE+"Teal",TrawelColor.PRE_BLUE+"Aqua"
+			,TrawelColor.PRE_BLUE+"Cerulean",TrawelColor.TIMID_GREY+"Charcoal",TrawelColor.PRE_BLUE+"Azure",TrawelColor.PRE_BLUE+"Cobalt"
+			,TrawelColor.TIMID_MAGENTA+"Lavender","Periwinkle",TrawelColor.PRE_MAGENTA+"Amethyst",TrawelColor.PRE_MAGENTA+"Violet"
+			,TrawelColor.TIMID_BLUE+"Indigo",TrawelColor.PRE_MAGENTA+"Heliotrope",TrawelColor.TIMID_MAGENTA+"Liliac",TrawelColor.TIMID_MAGENTA+"Plum"
+			,TrawelColor.PRE_MAGENTA+"Fuchsia",TrawelColor.PRE_MAGENTA+"Mauve",TrawelColor.PRE_MAGENTA+"Puce"
+			,TrawelColor.PRE_RED+"Crimson",TrawelColor.TIMID_MAGENTA+"Pink",TrawelColor.TIMID_RED+"Cardinal",TrawelColor.TIMID_RED+"Carmine");
 		//https://www.ssa.gov/oact/babynames/decades/century.html - manually screened and inputed for 'normal' sounding names	
 		normalFirstNames = new SRPlainRandom("Fred","Dave","Brian","Thomas","Alex","Bob","Susy","Cindy","Jessica","Jamie","James","Mary","John","Jennifier","Robert","Linda","Barbara","Susan","Margaret","Sarah","Karen","Nancy","Betty","Lisa","Michael","William","David","Richard","Joeseph","Charles","Christopher","Daniel","Matthew","Anthony","Donald","Mark","Paul","Steven","Andrew","George","Kevin","Edward","Timothy","Jason","Jeffrey","Ryan","Gary","Jacob","Nicholas","Eric","Stephen","Jonathan","Larry","Justin","Scott","Frank","Brandon","Sandra","Ashley","Kimberly","Donna","Carol","Michelle","Emily","Amanda","Helen","Melissa","Stephanie","Laura","Rebecca","Sharon","Cynthisa","Kathleen","Amy","Shirly","Anna","Angela","Ruth","Brenda","Nicole","Katherine","Benjamin","Samuel","Patrick","Jack","Dennis","Jerry","Tyler","Aaron","Henry","Jose","Peter","Adam","Zachary","Nathan","Walter","Harold","Kyle","Carl","Arthur","Roger","Keith","Jeremy","Catherine","Christine","Samantha","Debra","Janet","Rachel","Carolyn","Emma","Maria","Heather","Diane","Julie","Joyce","Evelyn","Joan","Christina","Kelly","Victoria","Lauren","Martha","Judith","Cheryl","Megan","Andrea","Ann","Terry","Lawrence","Sean","Christian","Albert","Joe","Ethan","Austin","Jesse","Willie","Billy","Bryan","Bruce","Jordan","Ralph","Roy","Noah","Dylan","Eugene","Wayne","Alan","Jaun","Louis","Russell","Gabriel","Randy","Philip","Alice","Jean","Doris","Kathryn","Hannah","Oliva","Gloria","Marie","Teresa","Sara","Janice","Julia","Grace","Judy","Theresa","Rose","Denise","Marilyn","Amber","Madison","Danielle","Brittany","Diana","Abigail","Jane","Harry","Vincent","Bobby","Johnny","Logan","Natalie","Lori","Tiffany","Alexis","Kayla");
 		

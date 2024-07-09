@@ -3,6 +3,7 @@ package trawel.towns.features.outdated;
 import java.util.List;
 
 import trawel.core.Networking.Area;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.item.Inventory;
 import trawel.personal.people.Player;
@@ -26,7 +27,7 @@ public class Gambler extends Feature{
 	
 	@Override
 	public String getColor() {
-		return extra.F_SERVICE;
+		return TrawelColor.F_SERVICE;
 	}
 	
 	@Override

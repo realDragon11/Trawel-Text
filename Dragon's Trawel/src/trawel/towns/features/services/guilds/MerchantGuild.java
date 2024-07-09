@@ -10,6 +10,7 @@ import derg.menus.MenuSelect;
 import trawel.core.Networking.Area;
 import trawel.factions.Faction;
 import trawel.factions.FBox.FSub;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -62,7 +63,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 	
 	@Override
 	public String getColor() {
-		return extra.F_GUILD;
+		return TrawelColor.F_GUILD;
 	}
 	
 	@Override
@@ -91,7 +92,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 					@Override
 					public String title() {
 						int dCount = Player.bag.getDrawBanes().size();
-						return extra.SERVICE_SPECIAL_PAYMENT+"Donate Drawbanes. (" +(dCount == 0 ? "none)" : dCount+")" );
+						return TrawelColor.SERVICE_SPECIAL_PAYMENT+"Donate Drawbanes. (" +(dCount == 0 ? "none)" : dCount+")" );
 					}
 
 					@Override
@@ -122,7 +123,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 					@Override
 					public String title() {
-						return extra.SERVICE_CURRENCY+"Buy shipments with "+World.currentMoneyString()+".";
+						return TrawelColor.SERVICE_CURRENCY+"Buy shipments with "+World.currentMoneyString()+".";
 					}
 
 					@Override
@@ -134,7 +135,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 					@Override
 					public String title() {
-						return extra.FSERVICE_QUEST+"Quest Board. (Sidequests)";
+						return TrawelColor.FSERVICE_QUEST+"Quest Board. (Sidequests)";
 					}
 
 					@Override
@@ -162,7 +163,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 
 						@Override
 						public String title() {
-							return extra.SERVICE_SPECIAL_PAYMENT+"Donate "+gemAmount+" "+(gemAmount == 1 ? Gem.EMERALD.name : Gem.EMERALD.plural)+". (Have "+Gem.EMERALD.getGem()+")";
+							return TrawelColor.SERVICE_SPECIAL_PAYMENT+"Donate "+gemAmount+" "+(gemAmount == 1 ? Gem.EMERALD.name : Gem.EMERALD.plural)+". (Have "+Gem.EMERALD.getGem()+")";
 						}
 
 						@Override
@@ -177,7 +178,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 									extra.println("You get "+1+" " + gain.getName() + " pieces while trading!");
 								}
 							}else {
-								extra.println(extra.RESULT_ERROR+"You have no emeralds to donate.");
+								extra.println(TrawelColor.RESULT_ERROR+"You have no emeralds to donate.");
 							}
 							return false;
 						}});
@@ -212,7 +213,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 					@Override
 					public boolean go() {
 						if (Player.player.getGold() < merchantBookPrice) {
-							extra.println(extra.RESULT_ERROR+"You can't afford that many books!");
+							extra.println(TrawelColor.RESULT_ERROR+"You can't afford that many books!");
 							return false;
 						}
 						extra.println("Buying lots of books might find you a feat fragment- buy?");
@@ -223,7 +224,7 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 								Player.player.merchantBookPasses++;
 								Player.bag.addNewDrawBanePlayer(DrawBane.KNOW_FRAG);
 							}else {
-								extra.println(extra.RESULT_FAIL+"There was nothing interesting in this batch.");
+								extra.println(TrawelColor.RESULT_FAIL+"There was nothing interesting in this batch.");
 							}
 						}
 						return false;
@@ -240,14 +241,14 @@ public class MerchantGuild extends Feature implements QuestBoardLocation {
 					@Override
 					public boolean go() {
 						if (Player.player.getGold() < bShipmentCost) {
-							extra.println(extra.RESULT_ERROR+"You can't afford that many beers!");
+							extra.println(TrawelColor.RESULT_ERROR+"You can't afford that many beers!");
 							return false;
 						}
 						extra.println("Beer increases your starting HP in battle, one use per beer- buy 20 of them?");
 						if (extra.yesNo()) {
 							Player.player.addGold(-bShipmentCost);
 							Player.player.beer+=20;
-							extra.println(extra.RESULT_PASS+"You gain 20 beers.");
+							extra.println(TrawelColor.RESULT_PASS+"You gain 20 beers.");
 						}
 						return false;
 					}

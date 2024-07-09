@@ -1,4 +1,5 @@
 package trawel.towns.data;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.classless.Skill;
 import trawel.personal.people.Player;
@@ -100,12 +101,12 @@ public class Connection implements java.io.Serializable{
 	 */
 	public void display(int style,Town town1) {
 		Town ot = otherTown(town1);
-		String visitColor = extra.PRE_WHITE;
+		String visitColor = TrawelColor.PRE_WHITE;
 		switch (ot.visited) {
-		case 0: visitColor = extra.VISIT_NEW; ot.visited = 1;break;
-		case 1: visitColor = extra.VISIT_SEEN;break;
-		case 2: visitColor = extra.VISIT_BEEN;break;
-		case 3: visitColor = extra.VISIT_OWN;break;
+		case 0: visitColor = TrawelColor.VISIT_NEW; ot.visited = 1;break;
+		case 1: visitColor = TrawelColor.VISIT_SEEN;break;
+		case 2: visitColor = TrawelColor.VISIT_BEEN;break;
+		case 3: visitColor = TrawelColor.VISIT_OWN;break;
 		}
 		extra.println(visitColor + getName() + " to " + ot.getName() + " {Tier: "+ot.getTier()+"} ("+dir(town1,ot)+")");
 		if (Player.hasSkill(Skill.TOWNSENSE)) {
@@ -152,12 +153,12 @@ public class Connection implements java.io.Serializable{
 	 */
 	public String displayLine(Town from) {
 		Town ot = otherTown(from);
-		String visitColor = extra.PRE_WHITE;
+		String visitColor = TrawelColor.PRE_WHITE;
 		switch (ot.visited) {
-		case 0: visitColor = extra.VISIT_NEW; ot.visited = 1;break;
-		case 1: visitColor = extra.VISIT_SEEN;break;
-		case 2: visitColor = extra.VISIT_BEEN;break;
-		case 3: visitColor = extra.VISIT_OWN;break;
+		case 0: visitColor = TrawelColor.VISIT_NEW; ot.visited = 1;break;
+		case 1: visitColor = TrawelColor.VISIT_SEEN;break;
+		case 2: visitColor = TrawelColor.VISIT_BEEN;break;
+		case 3: visitColor = TrawelColor.VISIT_OWN;break;
 		}
 		return visitColor +getName() + " to " + ot.getName()
 		+ " {Level: "+ot.getTier()+"} ("+dir(from,ot)+", "+getTimeDisp()+")"

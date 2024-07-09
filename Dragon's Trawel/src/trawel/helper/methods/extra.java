@@ -1,7 +1,6 @@
 package trawel.helper.methods;
 
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,6 +21,7 @@ import derg.menus.ScrollMenuGenerator;
 import tests.UnitAssertions;
 import trawel.core.Networking;
 import trawel.core.mainGame;
+import trawel.helper.constants.TrawelColor;
 import trawel.personal.DummyPerson;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
@@ -259,20 +259,13 @@ public final class extra {
 	//TODO: make some better global DRY damage code system
 	public static String CHAR_DAMAGE = "*";
 	
-	public static String COLOR_SHARP = inlineColor(colorMix(Color.RED,Color.WHITE,.4f));
-	public static String CHAR_SHARP = COLOR_SHARP+"S";
-	public static String COLOR_BLUNT = inlineColor(colorMix(Color.BLUE,Color.WHITE,.4f));
-	public static String CHAR_BLUNT = COLOR_BLUNT+"B";
-	public static String COLOR_PIERCE = inlineColor(colorMix(Color.ORANGE,Color.WHITE,.4f));
-	public static String CHAR_PIERCE = COLOR_PIERCE+"P";
-	public static String COLOR_IGNITE = inlineColor(colorMix(Color.RED,Color.WHITE,.2f));
-	public static String CHAR_IGNITE = COLOR_IGNITE+"I";
-	public static String COLOR_FROST = inlineColor(colorMix(Color.CYAN,Color.WHITE,.4f));
-	public static String CHAR_FROST = COLOR_FROST+"F";
-	public static String COLOR_ELEC = inlineColor(colorMix(Color.YELLOW,Color.WHITE,.4f));
-	public static String CHAR_ELEC = COLOR_ELEC+"E";
-	public static String COLOR_DECAY = inlineColor(colorMix(Color.MAGENTA,Color.WHITE,.4f));
-	public static String CHAR_DECAY = COLOR_DECAY+"D";
+	public static String CHAR_SHARP = TrawelColor.COLOR_SHARP+"S";
+	public static String CHAR_BLUNT = TrawelColor.COLOR_BLUNT+"B";
+	public static String CHAR_PIERCE = TrawelColor.COLOR_PIERCE+"P";
+	public static String CHAR_IGNITE = TrawelColor.COLOR_IGNITE+"I";
+	public static String CHAR_FROST = TrawelColor.COLOR_FROST+"F";
+	public static String CHAR_ELEC = TrawelColor.COLOR_ELEC+"E";
+	public static String CHAR_DECAY = TrawelColor.COLOR_DECAY+"D";
 
 	public static String DISP_WEIGHT = "weight";
 	public static String DISP_AETHER = "aether";
@@ -313,20 +306,20 @@ public final class extra {
 	public static final String EXPLAIN_SIMPLE_CHARS_DAMAGE = stringBuilder;
 
 	public static String explainDam() {
-		return CHAR_SHARP+" sharp, " + CHAR_BLUNT + " blunt, " +CHAR_PIERCE +" pierce."+extra.PRE_WHITE;
+		return CHAR_SHARP+" sharp, " + CHAR_BLUNT + " blunt, " +CHAR_PIERCE +" pierce."+TrawelColor.PRE_WHITE;
 	}
 
 	public static void charSwitchNone() {
 		CHAR_INSTANTS = "_";
 		CHAR_HITCHANCE = ">";
 		CHAR_DAMAGE = "*";
-		CHAR_SHARP = COLOR_SHARP+"S";
-		CHAR_BLUNT = COLOR_BLUNT+"B";
-		CHAR_PIERCE = COLOR_PIERCE+"P";
-		CHAR_IGNITE = COLOR_IGNITE+"I";
-		CHAR_FROST = COLOR_FROST+"F";
-		CHAR_ELEC = COLOR_ELEC+"E";
-		CHAR_DECAY = COLOR_DECAY+"D";
+		CHAR_SHARP = TrawelColor.COLOR_SHARP+"S";
+		CHAR_BLUNT = TrawelColor.COLOR_BLUNT+"B";
+		CHAR_PIERCE = TrawelColor.COLOR_PIERCE+"P";
+		CHAR_IGNITE = TrawelColor.COLOR_IGNITE+"I";
+		CHAR_FROST = TrawelColor.COLOR_FROST+"F";
+		CHAR_ELEC = TrawelColor.COLOR_ELEC+"E";
+		CHAR_DECAY = TrawelColor.COLOR_DECAY+"D";
 		DISP_WEIGHT = "weight";
 		DISP_AETHER = "aether";
 		DISP_AMP = "AMP";
@@ -347,13 +340,13 @@ public final class extra {
 		CHAR_INSTANTS = "_";
 		CHAR_HITCHANCE = "%";
 		CHAR_DAMAGE = "*";
-		CHAR_SHARP = COLOR_SHARP+"S";
-		CHAR_BLUNT = COLOR_BLUNT+"B";
-		CHAR_PIERCE = COLOR_PIERCE+"P";
-		CHAR_IGNITE = COLOR_IGNITE+"I";
-		CHAR_FROST = COLOR_FROST+"F";
-		CHAR_ELEC = COLOR_ELEC+"E";
-		CHAR_DECAY = COLOR_DECAY+"D";
+		CHAR_SHARP = TrawelColor.COLOR_SHARP+"S";
+		CHAR_BLUNT = TrawelColor.COLOR_BLUNT+"B";
+		CHAR_PIERCE = TrawelColor.COLOR_PIERCE+"P";
+		CHAR_IGNITE = TrawelColor.COLOR_IGNITE+"I";
+		CHAR_FROST = TrawelColor.COLOR_FROST+"F";
+		CHAR_ELEC = TrawelColor.COLOR_ELEC+"E";
+		CHAR_DECAY = TrawelColor.COLOR_DECAY+"D";
 		DISP_WEIGHT = "weight";
 		DISP_AETHER = "aether";
 		DISP_AMP = "AMP";
@@ -374,13 +367,13 @@ public final class extra {
 		CHAR_INSTANTS = "t";
 		CHAR_HITCHANCE = "h";
 		CHAR_DAMAGE = "d";
-		CHAR_SHARP = COLOR_SHARP+"S";
-		CHAR_BLUNT = COLOR_BLUNT+"B";
-		CHAR_PIERCE = COLOR_PIERCE+"P";
-		CHAR_IGNITE = COLOR_IGNITE+"I";
-		CHAR_FROST = COLOR_FROST+"F";
-		CHAR_ELEC = COLOR_ELEC+"E";
-		CHAR_DECAY = COLOR_DECAY+"D";
+		CHAR_SHARP = TrawelColor.COLOR_SHARP+"S";
+		CHAR_BLUNT = TrawelColor.COLOR_BLUNT+"B";
+		CHAR_PIERCE = TrawelColor.COLOR_PIERCE+"P";
+		CHAR_IGNITE = TrawelColor.COLOR_IGNITE+"I";
+		CHAR_FROST = TrawelColor.COLOR_FROST+"F";
+		CHAR_ELEC = TrawelColor.COLOR_ELEC+"E";
+		CHAR_DECAY = TrawelColor.COLOR_DECAY+"D";
 		DISP_WEIGHT = "w";
 		DISP_AETHER = "a";
 		DISP_AMP = "AMP";
@@ -403,13 +396,13 @@ public final class extra {
 		CHAR_INSTANTS = "⧗";//🮚⌛⧗
 		CHAR_HITCHANCE = "🎯";//ʘ◎🎯◉⦿
 		CHAR_DAMAGE = "🕱";
-		CHAR_SHARP = COLOR_SHARP+"🟆";//✂⚔🔪🪒💇🗡️⸸⸷🞣🟆
-		CHAR_BLUNT = COLOR_BLUNT+"●";//🔨⚒️🪨🛞●
-		CHAR_PIERCE = COLOR_PIERCE+"▲";//⇫♆➳➹➴♂➴⚩➛▲
-		CHAR_IGNITE = COLOR_IGNITE+"🔥";
-		CHAR_FROST = COLOR_FROST+"❄";//❄❄️❆🧊🥶
-		CHAR_ELEC = COLOR_ELEC+"🗲";//⚡🗲🌩
-		CHAR_DECAY = COLOR_DECAY+"🕱";//⛤🕱
+		CHAR_SHARP = TrawelColor.COLOR_SHARP+"🟆";//✂⚔🔪🪒💇🗡️⸸⸷🞣🟆
+		CHAR_BLUNT = TrawelColor.COLOR_BLUNT+"●";//🔨⚒️🪨🛞●
+		CHAR_PIERCE = TrawelColor.COLOR_PIERCE+"▲";//⇫♆➳➹➴♂➴⚩➛▲
+		CHAR_IGNITE = TrawelColor.COLOR_IGNITE+"🔥";
+		CHAR_FROST = TrawelColor.COLOR_FROST+"❄";//❄❄️❆🧊🥶
+		CHAR_ELEC = TrawelColor.COLOR_ELEC+"🗲";//⚡🗲🌩
+		CHAR_DECAY = TrawelColor.COLOR_DECAY+"🕱";//⛤🕱
 		DISP_WEIGHT = "🏋";//🏋𐄷⚖
 		DISP_AETHER = "🜀";//🜀¤⚖ //currency, of a sort
 		DISP_AMP = "𝧧";//https://www.compart.com/en/unicode/search?q=movement#characters
@@ -725,7 +718,7 @@ public final class extra {
 			}
 			j++;
 		}*/
-		extra.println(extra.PRE_WHITE);
+		extra.println(TrawelColor.PRE_WHITE);
 	}
 
 	public static String cutPadLenFront(int len, String str) {
@@ -1030,263 +1023,9 @@ public final class extra {
 		return (a * (1.0 - f)) + (b * f);
 	}
 
-	public static final Color colorMix(Color c1, Color c2, float f) {
-		return new Color((int) extra.lerp(c1.getRed(),c2.getRed(), f),(int) extra.lerp(c1.getGreen(),c2.getGreen(), f),(int) extra.lerp(c1.getBlue(),c2.getBlue(), f));
-	}
-
-	public static final String inlineColor(Color col) {
-		return "[#"+Integer.toHexString(col.getRGB()).substring(2)+"]";
-	}
-
-	public static final String COLOR_RESET = "[]";
-	//NOTE: predefined color mixes inlined
-	public static final String PRE_WHITE = inlineColor(Color.WHITE);
-	public static final String PRE_RED = inlineColor(colorMix(Color.RED,Color.WHITE,.5f));
-	public static final String PRE_BATTLE = inlineColor(colorMix(Color.RED,Color.WHITE,.4f));
-	public static final String PRE_MAYBE_BATTLE = inlineColor(colorMix(Color.RED,Color.WHITE,.6f));
-	public static final String PRE_ORANGE = inlineColor(colorMix(Color.ORANGE,Color.WHITE,.5f));
-	public static final String PRE_YELLOW = inlineColor(colorMix(Color.YELLOW,Color.WHITE,.5f));
-	public static final String PRE_BLUE = inlineColor(colorMix(Color.BLUE,Color.WHITE,.5f));
-	public static final String PRE_GREEN = inlineColor(colorMix(Color.GREEN,Color.WHITE,.5f));
-	public static final String PRE_MAGENTA = inlineColor(colorMix(Color.MAGENTA,Color.WHITE,.5f));
-
-	public static final String PRE_ROAD = PRE_GREEN;
-	public static final String PRE_SHIP = PRE_GREEN;
-	public static final String PRE_TELE = PRE_GREEN;
-
-	//timid colors that are slight, used for bad and good hinting
-	public static final String TIMID_GREEN = inlineColor(colorMix(Color.GREEN,Color.WHITE,.7f));
-	public static final String TIMID_RED = inlineColor(colorMix(Color.RED,Color.WHITE,.7f));
-	/** 
-	 * do not use for no change whatsoever, use white for that- this is a change that might be bad or good but is a net 0 to this stat
-	 */
-	public static final String TIMID_GREY = inlineColor(colorMix(Color.BLACK,Color.WHITE,.95f));
-
-	//not directly used yet
-	public static final String TIMID_BLUE = inlineColor(colorMix(Color.BLUE,Color.WHITE,.7f));
-	public static final String TIMID_MAGENTA = inlineColor(colorMix(Color.MAGENTA,Color.WHITE,.8f));
-	public static final String TIMID_ORANGE = inlineColor(colorMix(Color.ORANGE,Color.WHITE,.7f));
-
-	public static final String RESULT_NO_CHANGE_GOOD = TIMID_BLUE;
-	public static final String RESULT_NO_CHANGE_BAD = TIMID_ORANGE;
-	public static final String RESULT_NO_CHANGE_NONE = TIMID_GREY;
-	public static final String RESULT_GOOD = TIMID_GREEN;
-	public static final String RESULT_BAD = TIMID_RED;
-	/**
-	 * warn that this might be destructive
-	 */
-	public static final String RESULT_WARN = TIMID_MAGENTA;
-	/**
-	 * inform that nothing happened due to bad setup
-	 */
-	public static final String RESULT_ERROR = TIMID_RED;
-	/**
-	 * when an action fails, usually due to chance, or had a negative outcome
-	 */
-	public static final String RESULT_FAIL = TIMID_ORANGE;
-	/**
-	 * that the action went through and had the intended outcome
-	 * <br>
-	 * usually used if it was chance based, or merely accumulating progress towards a true RESULT_GOOD
-	 */
-	public static final String RESULT_PASS = TIMID_GREEN;
-
-	public static final String COLOR_NEW = inlineColor(colorMix(Color.ORANGE,Color.WHITE,.5f));
-	public static final String COLOR_SEEN = inlineColor(colorMix(Color.YELLOW,Color.WHITE,.5f));
-	public static final String COLOR_BEEN = inlineColor(colorMix(Color.BLUE,Color.WHITE,.5f));
-	public static final String COLOR_OWN = inlineColor(colorMix(Color.GREEN,Color.WHITE,.5f));
-	public static final String COLOR_REGROWN = inlineColor(colorMix(Color.MAGENTA,Color.WHITE,.8f));
-	
-	public static final String COLOR_UNDONE_TIMID = inlineColor(colorMix(Color.ORANGE,Color.WHITE,.7f));
-	public static final String COLOR_DONE_TIMID = inlineColor(colorMix(Color.BLUE,Color.WHITE,.7f));
-
-	public static final String VISIT_NEW = COLOR_NEW + "new! ";
-	public static final String VISIT_SEEN = COLOR_SEEN + "! ";
-	public static final String VISIT_BEEN = COLOR_BEEN;
-	public static final String VISIT_OWN = COLOR_OWN + "(owned) ";
-	public static final String VISIT_DONE = COLOR_OWN;
-	public static final String VISIT_REGROWN = TIMID_MAGENTA + "new? ";
-
-	/**
-	 * used for "it's a miss!" after the attack proper
-	 */
-	public static final String AFTER_ATTACK_MISS = inlineColor(colorMix(Color.YELLOW,Color.WHITE,.3f));
-	public static final String ATTACK_DAMAGED = PRE_ORANGE;
-	public static final String ATTACK_KILL = PRE_RED;
-	public static final String ATTACK_BLOCKED = PRE_BLUE;
-	public static final String AFTER_ATTACK_BLOCKED = inlineColor(colorMix(Color.BLUE,Color.WHITE,.3f));
-	public static final String ATTACK_MISS = PRE_YELLOW;
-	public static final String ATTACK_DAMAGED_WITH_ARMOR = inlineColor(colorMix(Color.ORANGE,colorMix(Color.BLUE,Color.WHITE,.3f),.9f));
-
-	public static final String F_SPECIAL = PRE_MAGENTA;
-	public static final String F_SERVICE = PRE_BLUE;
-	public static final String F_AUX_SERVICE = TIMID_BLUE;
-	public static final String F_SERVICE_MAGIC = TIMID_MAGENTA;
-	public static final String F_COMBAT = PRE_RED;
-	public static final String F_NODE = TIMID_RED;
-	public static final String F_FORT = TIMID_GREY;
-	public static final String F_BUILDABLE = PRE_ORANGE;
-	public static final String F_GUILD = PRE_YELLOW;
-
-	//item values
-	public static final String ITEM_WANT_HIGHER = inlineColor(colorMix(Color.WHITE,colorMix(Color.BLUE,Color.GREEN,.5f),.3f));
-	public static final String ITEM_WANT_LOWER = inlineColor(colorMix(Color.WHITE,colorMix(Color.YELLOW,Color.ORANGE,.5f),.3f));
-	public static final String ITEM_DESC_PROP = TIMID_BLUE;
-	public static final String ITEM_VALUE = TIMID_MAGENTA;
-	public static final String STAT_HEADER = inlineColor(colorMix(Color.WHITE,colorMix(Color.BLUE,Color.MAGENTA,.5f),.6f));
-
-	//attributes
-	public static final String ATT_TRUE = PRE_MAGENTA;
-	public static final String ATT_EFFECTIVE = TIMID_MAGENTA;
-	
-	//attack picking
-	public static final String ATK_BONUS = STAT_HEADER;
-	public static final String ATK_WOUND_NORMAL = ITEM_DESC_PROP;
-	public static final String ATK_WOUND_INJURY = ITEM_DESC_PROP;
-	public static final String ATK_WOUND_NEGATE = PRE_RED;
-	public static final String ATK_WOUND_GRAZE = TIMID_RED;
-	
-	//color option groups for equal but different options
-	public static final String COLOR_OPTION_A = inlineColor(colorMix(colorMix(Color.RED,Color.GREEN,.3f),Color.WHITE,.5f));
-	public static final String COLOR_OPTION_B = inlineColor(colorMix(colorMix(Color.RED,Color.BLUE,.3f),Color.WHITE,.5f));
-	public static final String COLOR_OPTION_C = inlineColor(colorMix(colorMix(Color.RED,Color.MAGENTA,.3f),Color.WHITE,.5f));
-
-	//feature service grouping
-	public static final String SERVICE_FREE = inlineColor(colorMix(colorMix(Color.PINK,Color.GREEN,.3f),Color.WHITE,.4f));
-	public static final String SERVICE_AETHER = inlineColor(colorMix(colorMix(Color.MAGENTA,Color.CYAN,.5f),Color.WHITE,.5f));
-	public static final String SERVICE_CURRENCY = inlineColor(colorMix(colorMix(Color.PINK,Color.MAGENTA,.3f),Color.WHITE,.4f));
-	public static final String SERVICE_BOTH_PAYMENT = inlineColor(colorMix(colorMix(Color.MAGENTA,Color.BLUE,.5f),Color.WHITE,.5f));
-	public static final String SERVICE_SPECIAL_PAYMENT = inlineColor(colorMix(colorMix(Color.PINK,Color.ORANGE,.3f),Color.WHITE,.4f));
-	
-	//shared common other feature behaviors
-	public static final String FSERVICE_QUEST = inlineColor(colorMix(colorMix(Color.ORANGE,Color.GREEN,.3f),Color.WHITE,.5f));
-	
-	public static String colorBasedAtOne(double number, String plus, String minus, String empty) {
-		String str = format2.format(number);
-		if (number < 1) {
-			return minus+str;
-		}
-		if (number > 1) {
-			return plus+str;
-		}
-		return empty+str;
-	}
-
 	public static String formatPerSubOne(double percent) {
 		String str = F_TWO_TRAILING.format(percent);
 		return "%"+str.substring(1);
-	}
-
-	/**
-	 * used to indicate that < 0 might be bad, > 0 might be good, and that =0 is not the same, but not bad or good
-	 * caller should display = instead of a number if they are TRULY equal, higher up in the chain
-	 * @param i
-	 * @return green +1 OR red -1 OR grey ~ with no zero
-	 */
-	public static String colorBaseZeroTimid(int i) {
-		if (i > 0) {
-			return extra.TIMID_GREEN+"+"+i;
-		}
-		if (i < 0) {
-			return extra.TIMID_RED+i;
-		}
-		return extra.TIMID_GREY+"~";
-	}
-
-	/**
-	 * 
-	 * @param to the number moving into, is green if better
-	 * @param was the old number, is red if better
-	 * @return +/-/= green/red/white 0.00
-	 */
-	public static final String hardColorDelta2(double to, double was) {
-		if (to > was) {
-			return extra.PRE_GREEN+"+"+format2.format(to-was);
-		}
-		if (to == was) {
-			return extra.PRE_WHITE+"=0.00";
-		}
-		return extra.PRE_RED+"-"+format2.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
-	}
-	/**
-	 * this variant will display a white = is equal, and nothing else
-	 */
-	public static final String hardColorDelta2Elide(double to, double was) {
-		if (to > was) {
-			return extra.PRE_GREEN+"+"+format2.format(to-was);
-		}
-		if (to == was) {
-			return extra.PRE_WHITE+"=";
-		}
-		return extra.PRE_RED+"-"+format2.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
-	}
-
-	/**
-	 * 
-	 * @param to the number moving into, is green if better
-	 * @param was the old number, is red if better
-	 * @return +/-/= green/red/white 0.0
-	 */
-	public static final String hardColorDelta1(double to, double was) {
-		if (to > was) {
-			return extra.PRE_GREEN+"+"+format1.format(to-was);
-		}
-		if (to == was) {
-			return extra.PRE_WHITE+"=0.0";
-		}
-		return extra.PRE_RED+"-"+format1.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
-	}
-	/**
-	 * this variant will display a white = if equal, and nothing else
-	 */
-	public static final String hardColorDelta1Elide(double to, double was) {
-		if (to > was) {
-			return extra.PRE_GREEN+"+"+format1.format(to-was);
-		}
-		if (to == was) {
-			return extra.PRE_WHITE+"=";
-		}
-		return extra.PRE_RED+"-"+format1.format(was-to);//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
-	}
-	/**
-	 * integer,
-	 * @param to the number moving into, is green if better
-	 * @param was the old number, is red if better
-	 * @return +/-/= timid green/timid red/white 0
-	 */
-	public static final String softColorDelta0(double to, double was) {
-		if (to > was) {
-			return extra.TIMID_GREEN+"+"+(int)(to-was);//round towards 0
-		}
-		if (to == was) {
-			return extra.PRE_WHITE+"=";
-		}//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
-		return extra.TIMID_RED +"-"+(int)(was-to);//round towards 0 because we add - ourselves
-	}
-
-	public static final String softColorDelta2Elide(double to, double was) {
-		if (to > was) {
-			return extra.TIMID_GREEN+"+"+format2.format(to-was);
-		}
-		if (to == was) {
-			return extra.PRE_WHITE+"=";
-		}
-		return extra.TIMID_RED+"-"+format2.format(was-to);
-	}
-	/**
-	 * integer, Reversed from normal, so positive is bad and negative is good
-	 * @param to the number moving into, is green if better
-	 * @param was the old number, is red if better
-	 * @return +/-/= timid red/timid green/white 0
-	 */
-	public static final String softColorDelta0Reversed(double to, double was) {
-		if (to > was) {
-			return extra.TIMID_RED+"+"+(int)(to-was);//round towards 0
-		}
-		if (to == was) {
-			return extra.PRE_WHITE+"=";
-		}//reverse order so it's positive so we can add - ourselves, in case it rounds to 0
-		return extra.TIMID_GREEN +"-"+(int)(was-to);//round towards 0 because we add - ourselves
 	}
 
 	/**

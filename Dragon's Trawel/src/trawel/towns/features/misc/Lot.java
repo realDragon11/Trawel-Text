@@ -9,6 +9,7 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.core.Networking.Area;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
@@ -55,7 +56,7 @@ public class Lot extends Feature {
 	
 	@Override
 	public String getColor() {
-		return extra.F_BUILDABLE;
+		return TrawelColor.F_BUILDABLE;
 	}
 	
 	private enum LotType{
@@ -171,7 +172,7 @@ public class Lot extends Feature {
 					//just money no aether
 					int money = getMCost(tier);
 					if (Player.bag.getGold() < money) {
-						extra.println(extra.RESULT_ERROR+"Not Enough "+World.currentMoneyString() + ", have only " +Player.bag.getGold()+".");
+						extra.println(TrawelColor.RESULT_ERROR+"Not Enough "+World.currentMoneyString() + ", have only " +Player.bag.getGold()+".");
 						return false;
 					}
 					extra.println("Build "+nameString +" for "+World.currentMoneyDisplay(money)+"?");
@@ -180,7 +181,7 @@ public class Lot extends Feature {
 				if (aCost != 0) {//just aether no money
 					int aether = getACost(tier);
 					if (Player.bag.getAether() < aether) {
-						extra.println(extra.RESULT_ERROR+"Not enough Aether, have only " + Player.bag.getAether()+".");
+						extra.println(TrawelColor.RESULT_ERROR+"Not enough Aether, have only " + Player.bag.getAether()+".");
 						return false;
 					}
 					extra.println("Build "+nameString +" for "+aether + " Aether?");
@@ -277,15 +278,15 @@ public class Lot extends Feature {
 									int money = type.getMCost(tier);
 									String color = "";
 									if (aether == 0 && money == 0) {
-										color = extra.SERVICE_FREE;
+										color = TrawelColor.SERVICE_FREE;
 									}else {
 										if (aether == 0) {
-											color = extra.SERVICE_CURRENCY;
+											color = TrawelColor.SERVICE_CURRENCY;
 										}else {
-											color = extra.SERVICE_BOTH_PAYMENT;
+											color = TrawelColor.SERVICE_BOTH_PAYMENT;
 										}
 									}
-									return "Build "+color+type.nameString+extra.PRE_WHITE
+									return "Build "+color+type.nameString+TrawelColor.PRE_WHITE
 											+ (aether > 0 ? " "+aether +" Aether" :"")
 											+ (money > 0 ? " "+World.currentMoneyDisplay(money) :"")
 											+".";

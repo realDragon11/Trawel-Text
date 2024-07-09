@@ -12,6 +12,7 @@ import derg.menus.ScrollMenuGenerator;
 import trawel.battle.Combat.SkillCon;
 import trawel.core.mainGame;
 import trawel.core.Networking.Area;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.item.solid.Gem;
@@ -78,7 +79,7 @@ public class Dungeon extends NodeFeature {
 	
 	@Override
 	public String getColor() {
-		return extra.F_NODE;
+		return TrawelColor.F_NODE;
 	}
 	
 	@Override
@@ -206,7 +207,7 @@ public class Dungeon extends NodeFeature {
 
 																@Override
 																public boolean go() {
-																	extra.println(extra.PRE_RED+"Really dismiss " + per.getName() + " ("+per.getLevel()+")?");
+																	extra.println(TrawelColor.PRE_RED+"Really dismiss " + per.getName() + " ("+per.getLevel()+")?");
 																	if (extra.yesNo()) {
 																		sper.onlyGoal(AgentGoal.NONE);
 																		town.addOccupant(sper);
@@ -226,7 +227,7 @@ public class Dungeon extends NodeFeature {
 
 												@Override
 												public String title() {
-													return extra.SERVICE_CURRENCY+"Recruit";
+													return TrawelColor.SERVICE_CURRENCY+"Recruit";
 												}
 
 												@Override

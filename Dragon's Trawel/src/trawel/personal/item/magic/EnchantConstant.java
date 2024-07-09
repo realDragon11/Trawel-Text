@@ -4,6 +4,7 @@ import com.github.yellowstonegames.core.WeightedTable;
 
 import derg.strings.random.SRFrontBackedRandom;
 import trawel.core.mainGame;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 
@@ -562,7 +563,7 @@ public class EnchantConstant extends Enchant {
 			case 4:	d = getDodgeMod(); str = "dodge";break;
 			}
 			if (d != 1) {
-				extra.println("  " +extra.colorBasedAtOne(d,extra.TIMID_GREEN,extra.TIMID_RED,extra.PRE_WHITE) + "x " + str);
+				extra.println("  " +TrawelColor.colorBasedAtOne(d,TrawelColor.TIMID_GREEN,TrawelColor.TIMID_RED,TrawelColor.PRE_WHITE) + "x " + str);
 			}
 		
 		}

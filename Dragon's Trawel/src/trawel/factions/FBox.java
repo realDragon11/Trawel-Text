@@ -3,6 +3,7 @@ package trawel.factions;
 import java.util.ArrayList;
 import java.util.List;
 
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.IEffectiveLevel;
@@ -334,7 +335,7 @@ public class FBox implements java.io.Serializable{
 			if (str != "") {
 				str += ", ";
 			}
-			str +=extra.ITEM_DESC_PROP+ (s.name.name + extra.ITEM_VALUE + ": " +extra.ITEM_VALUE+ extra.F_TWO_TRAILING.format(s.forFac - s.againstFac));
+			str +=TrawelColor.ITEM_DESC_PROP+ (s.name.name + TrawelColor.ITEM_VALUE + ": " +TrawelColor.ITEM_VALUE+ extra.F_TWO_TRAILING.format(s.forFac - s.againstFac));
 		}
 		extra.println(str);
 	}

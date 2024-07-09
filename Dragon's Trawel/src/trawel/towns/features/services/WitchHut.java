@@ -10,6 +10,7 @@ import derg.menus.MenuSelect;
 import trawel.battle.Combat;
 import trawel.core.Networking;
 import trawel.core.Networking.Area;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;
@@ -78,7 +79,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	
 	@Override
 	public String getColor() {
-		return extra.F_SERVICE_MAGIC;
+		return TrawelColor.F_SERVICE_MAGIC;
 	}
 	
 	@Override
@@ -95,7 +96,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return extra.SERVICE_FREE+"Brew a potion" + (reagents.size() > 0 ? " ("+reagents.size()+"/6)" : "");
+						return TrawelColor.SERVICE_FREE+"Brew a potion" + (reagents.size() > 0 ? " ("+reagents.size()+"/6)" : "");
 					}
 
 					@Override
@@ -107,7 +108,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return extra.SERVICE_CURRENCY+"Shop for reagents at '"+storename+"'.";
+						return TrawelColor.SERVICE_CURRENCY+"Shop for reagents at '"+storename+"'.";
 					}
 
 					@Override
@@ -119,7 +120,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return extra.FSERVICE_QUEST+"Enter Coven Common Room (Sidequests).";
+						return TrawelColor.FSERVICE_QUEST+"Enter Coven Common Room (Sidequests).";
 					}
 
 					@Override
@@ -131,7 +132,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return extra.SERVICE_FREE+"Bottle Potion Runoff.";
+						return TrawelColor.SERVICE_FREE+"Bottle Potion Runoff.";
 					}
 
 					@Override
@@ -154,7 +155,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 						@Override
 						public String title() {
-							return extra.SERVICE_CURRENCY+"Mix In Potion ("+town.getIsland().getWorld().moneyString(topUpPrice())+")";
+							return TrawelColor.SERVICE_CURRENCY+"Mix In Potion ("+town.getIsland().getWorld().moneyString(topUpPrice())+")";
 						}
 
 						@Override
@@ -198,7 +199,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return Player.player.getFlask() != null ? extra.RESULT_WARN+"You already have a potion, brewing one will replace it." :
+						return Player.player.getFlask() != null ? TrawelColor.RESULT_WARN+"You already have a potion, brewing one will replace it." :
 							reagents.size() == 0 ? "Time to get brewing!" : reagents.size() == 6 ? "The pot is almost boiling over!" : "The pot bubbles...";
 					}});
 				if (reagents.size() < 6) {
@@ -262,11 +263,11 @@ public class WitchHut extends Store implements QuestBoardLocation{
 	
 	public boolean finishBrew() {
 		if (reagents.size() == 0) {
-			extra.println(extra.RESULT_ERROR+"There's nothing in the pot!");
+			extra.println(TrawelColor.RESULT_ERROR+"There's nothing in the pot!");
 			return false;
 		}
 		if (reagents.size() < 3) {
-			extra.println(extra.RESULT_ERROR+"You need at least 3 reagents to finish your brew!");
+			extra.println(TrawelColor.RESULT_ERROR+"You need at least 3 reagents to finish your brew!");
 			return false;
 		}
 		int batWings = 0;
@@ -387,7 +388,7 @@ public class WitchHut extends Store implements QuestBoardLocation{
 			Person fGolem = RaceFactory.makeFleshGolem(
 					(Player.player.getPerson().getLevel()+town.getTier())/2//near the player and town level
 					);
-			extra.println(extra.PRE_BATTLE+"The meat wraps around the heartwood and contorts into a humanoid shape... which then attacks you!");
+			extra.println(TrawelColor.PRE_BATTLE+"The meat wraps around the heartwood and contorts into a humanoid shape... which then attacks you!");
 			Combat c = Player.player.fightWith(fGolem);
 			if (c.playerWon() < 0) {//if player lost
 				//player gets a fleshy friend now :D

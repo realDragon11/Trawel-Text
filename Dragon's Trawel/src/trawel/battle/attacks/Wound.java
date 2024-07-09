@@ -1,6 +1,6 @@
 package trawel.battle.attacks;
 
-import trawel.helper.methods.extra;
+import trawel.helper.constants.TrawelColor;
 
 //.0f = float/double with no decimal places. Weird that it can't auto convert, but oh well
 //UPDATE welp can't make them look nicer so just made them all ints anyways
@@ -117,14 +117,14 @@ public enum Wound{//TODO: make sure the reworked wounds are fully in
 	public String getColor() {
 		switch (this) {
 		case NEGATED:
-			return extra.ATK_WOUND_NEGATE;
+			return TrawelColor.ATK_WOUND_NEGATE;
 		case EMPTY:
-			return extra.ATK_WOUND_GRAZE;
+			return TrawelColor.ATK_WOUND_GRAZE;
 		default:
 			if (injury) {
-				return extra.ATK_WOUND_INJURY;
+				return TrawelColor.ATK_WOUND_INJURY;
 			}
-			return extra.ATK_WOUND_NORMAL;
+			return TrawelColor.ATK_WOUND_NORMAL;
 		}
 	}
 

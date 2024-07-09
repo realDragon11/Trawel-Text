@@ -12,6 +12,7 @@ import trawel.battle.BarkManager;
 import trawel.battle.Combat;
 import trawel.core.Networking;
 import trawel.core.Networking.Area;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -100,7 +101,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 	
 	@Override
 	public String getColor() {
-		return extra.F_SERVICE;
+		return TrawelColor.F_SERVICE;
 	}
 	
 	@Override
@@ -150,7 +151,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return extra.SERVICE_CURRENCY+"Buy Beer ("+beerCount+" for "+getTown().getIsland().getWorld().moneyString(beerCost)+")";
+						return TrawelColor.SERVICE_CURRENCY+"Buy Beer ("+beerCount+" for "+getTown().getIsland().getWorld().moneyString(beerCost)+")";
 					}
 
 					@Override
@@ -176,7 +177,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return extra.FSERVICE_QUEST+"Backroom (Sidequests)";
+						return TrawelColor.FSERVICE_QUEST+"Backroom (Sidequests)";
 					}
 
 					@Override
@@ -192,10 +193,10 @@ public class Inn extends Feature implements QuestBoardLocation{
 						@Override
 						public String title() {
 							if (playerOwns) {
-								return extra.SERVICE_FREE+"Your Room (Owned Inn)";
+								return TrawelColor.SERVICE_FREE+"Your Room (Owned Inn)";
 							}
 							//special payment is the time you already bought
-							return extra.SERVICE_SPECIAL_PAYMENT+"Your Room ("+extra.F_TWO_TRAILING.format(rentTime)+" hours left)";
+							return TrawelColor.SERVICE_SPECIAL_PAYMENT+"Your Room ("+extra.F_TWO_TRAILING.format(rentTime)+" hours left)";
 						}
 
 						@Override
@@ -219,7 +220,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 											@Override
 											public String title() {
-												return (playerOwns ? extra.SERVICE_FREE : extra.SERVICE_SPECIAL_PAYMENT)+"Bathe (1 hour)";
+												return (playerOwns ? TrawelColor.SERVICE_FREE : TrawelColor.SERVICE_SPECIAL_PAYMENT)+"Bathe (1 hour)";
 											}
 
 											@Override
@@ -240,7 +241,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 											@Override
 											public String title() {
-												return (playerOwns ? extra.SERVICE_FREE : extra.SERVICE_SPECIAL_PAYMENT)+"Wait " + extra.F_TWO_TRAILING.format(rentTime)+" hours.";
+												return (playerOwns ? TrawelColor.SERVICE_FREE : TrawelColor.SERVICE_SPECIAL_PAYMENT)+"Wait " + extra.F_TWO_TRAILING.format(rentTime)+" hours.";
 											}
 
 											@Override
@@ -256,7 +257,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 											@Override
 											public String title() {
-												return (playerOwns ? extra.SERVICE_FREE : extra.SERVICE_SPECIAL_PAYMENT)+"Wait 24 hours.";
+												return (playerOwns ? TrawelColor.SERVICE_FREE : TrawelColor.SERVICE_SPECIAL_PAYMENT)+"Wait 24 hours.";
 											}
 
 											@Override
@@ -272,7 +273,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 												@Override
 												public String title() {
-													return (playerOwns ? extra.SERVICE_FREE : extra.SERVICE_SPECIAL_PAYMENT)+"Wait 3 days.";
+													return (playerOwns ? TrawelColor.SERVICE_FREE : TrawelColor.SERVICE_SPECIAL_PAYMENT)+"Wait 3 days.";
 												}
 
 												@Override
@@ -310,7 +311,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 						@Override
 						public String title() {
-							return extra.SERVICE_CURRENCY+"Rent a Room";
+							return TrawelColor.SERVICE_CURRENCY+"Rent a Room";
 						}
 
 						@Override
@@ -325,7 +326,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return extra.SERVICE_FREE+"Watch duel (" + extra.format(nextReset-timePassed+1) + " hours)";
+						return TrawelColor.SERVICE_FREE+"Watch duel (" + extra.format(nextReset-timePassed+1) + " hours)";
 					}
 
 					@Override
@@ -465,7 +466,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 
 					@Override
 					public String title() {
-						return extra.PRE_BATTLE+"Fight";
+						return TrawelColor.PRE_BATTLE+"Fight";
 					}
 
 					@Override
@@ -575,7 +576,7 @@ public class Inn extends Feature implements QuestBoardLocation{
 			extra.println("You try to start a barfight, but get knocked out easily.");
 			return;
 		}
-		extra.println(extra.PRE_BATTLE+"There is no resident, but there is room for a barfight... start one?");
+		extra.println(TrawelColor.PRE_BATTLE+"There is no resident, but there is room for a barfight... start one?");
 		if (extra.yesNo()) {
 			List<List<Person>> list = new ArrayList<List<Person>>();
 			list.add(Player.player.getAllies());

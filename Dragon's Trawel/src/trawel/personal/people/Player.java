@@ -22,6 +22,7 @@ import trawel.core.Networking;
 import trawel.core.SaveManager;
 import trawel.core.mainGame;
 import trawel.factions.FBox;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.Services;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
@@ -306,7 +307,7 @@ public class Player extends SuperPerson{
 	public Effect doSip() {
 		if (flask != null) {
 			if (knowsFlask) {
-				extra.println("Take a sip of your "+flask.effect.getName()+extra.PRE_WHITE+" potion? ("+extra.ITEM_VALUE+ flask.sips+extra.PRE_WHITE+" left)");
+				extra.println("Take a sip of your "+flask.effect.getName()+TrawelColor.PRE_WHITE+" potion? ("+TrawelColor.ITEM_VALUE+ flask.sips+TrawelColor.PRE_WHITE+" left)");
 			}else {
 				extra.println("Take a sip of your potion? ("+flask.sips+" left)");
 			}
@@ -525,21 +526,21 @@ public class Player extends SuperPerson{
 		int lostAether = Player.player.loseAether(amountAether);
 		stealer.getBag().addGold(amountGold);
 		stealer.getBag().addAether(amountAether);
-		extra.println(extra.RESULT_WARN+stealer.getName() + " rifles through your bags...");
+		extra.println(TrawelColor.RESULT_WARN+stealer.getName() + " rifles through your bags...");
 		if (lostGold == -1) {
 			if (lostAether == -1) {
-				extra.println(extra.RESULT_NO_CHANGE_BAD+"They couldn't find anything they wanted to take!");
+				extra.println(TrawelColor.RESULT_NO_CHANGE_BAD+"They couldn't find anything they wanted to take!");
 				return false;
 			}else {
-				extra.println(extra.RESULT_BAD+"They stole " +lostAether+" Aether!");
+				extra.println(TrawelColor.RESULT_BAD+"They stole " +lostAether+" Aether!");
 				return true;
 			}
 		}else {
 			if (lostAether == -1) {
-				extra.println(extra.RESULT_BAD+"They stole " + World.currentMoneyDisplay(lostGold)+"!");
+				extra.println(TrawelColor.RESULT_BAD+"They stole " + World.currentMoneyDisplay(lostGold)+"!");
 				return true;
 			}else {
-				extra.println(extra.RESULT_BAD+"They stole " + World.currentMoneyDisplay(lostGold)+" and "+lostAether+" Aether!");
+				extra.println(TrawelColor.RESULT_BAD+"They stole " + World.currentMoneyDisplay(lostGold)+" and "+lostAether+" Aether!");
 				return true;
 			}
 		}
@@ -703,7 +704,7 @@ public class Player extends SuperPerson{
 
 					@Override
 					public String title() {
-						return extra.STAT_HEADER+"Pouch Size: "+extra.PRE_WHITE+pouch.size()+"/"+"3";
+						return TrawelColor.STAT_HEADER+"Pouch Size: "+TrawelColor.PRE_WHITE+pouch.size()+"/"+"3";
 					}});
 				for (Item it: pouch) {
 					if (!onlyDiscard) {
@@ -1098,7 +1099,7 @@ public class Player extends SuperPerson{
 					@Override
 					public boolean go() {
 						extra.println("Really save?");
-						extra.println(extra.PRE_ORANGE+"SAVES ARE NOT COMPATIBLE ACROSS VERSIONS");
+						extra.println(TrawelColor.PRE_ORANGE+"SAVES ARE NOT COMPATIBLE ACROSS VERSIONS");
 						if (extra.yesNo()) {
 							extra.println("Save to which slot?");
 							for (int i = 1; i < 9;i++) {
@@ -1123,19 +1124,19 @@ public class Player extends SuperPerson{
 					public boolean go() {
 						person.displayStats(false);
 						if (person.hasEffect(Effect.BURNOUT)) {
-							extra.println(extra.RESULT_BAD+"You are burned out.");
+							extra.println(TrawelColor.RESULT_BAD+"You are burned out.");
 						}
 						if (person.hasEffect(Effect.CURSE)) {
-							extra.println(extra.RESULT_BAD+"You are cursed.");
+							extra.println(TrawelColor.RESULT_BAD+"You are cursed.");
 						}
 						if (person.hasEffect(Effect.WOUNDED)) {
-							extra.println(extra.RESULT_BAD+"You are badly wounded.");
+							extra.println(TrawelColor.RESULT_BAD+"You are badly wounded.");
 						}
 						if (person.hasEffect(Effect.DAMAGED)) {
-							extra.println(extra.RESULT_BAD+"Your gear is damaged.");
+							extra.println(TrawelColor.RESULT_BAD+"Your gear is damaged.");
 						}
 						if (person.hasEffect(Effect.BEES)) {
-							extra.println(extra.RESULT_BAD+"You are beset by bees.");
+							extra.println(TrawelColor.RESULT_BAD+"You are beset by bees.");
 						}
 						return false;
 					}});
@@ -1327,7 +1328,7 @@ public class Player extends SuperPerson{
 													extra.println("Armors also influence your agility multiplier penalty, have a weight which can weigh you down if you can't fit all your used equipment in your capacity, and have elemental damage multipliers.");
 													extra.println("Unlike weapons, armors have positive (Quality), negative (Flaw), and neutral (trait) traits.");
 													extra.println(" ");
-													extra.println(extra.STAT_HEADER+"Would you like to see a list of armor traits?");
+													extra.println(TrawelColor.STAT_HEADER+"Would you like to see a list of armor traits?");
 													if (extra.yesNo()) {
 														for (ArmorQuality q: Armor.ArmorQuality.values()) {
 															extra.println(q.addText() + (q.mechDesc != null ? " ("+q.mechDesc+")" : ""));
@@ -1348,10 +1349,10 @@ public class Player extends SuperPerson{
 													extra.println("The main importance of weapons are for their attacks- every weapon type has a set, and the final numbers are determined by it's effective level and material.");
 													extra.println("Weapons also tend to have weapon qualities, which are positive traits. This glossary does not include a list of all weapon attacks, but you can browse them in a format that tests their effectiveness from one of the main menu tests.");
 													extra.println(" ");
-													extra.println(extra.STAT_HEADER+"Would you like to see a list of weapon qualities?");
+													extra.println(TrawelColor.STAT_HEADER+"Would you like to see a list of weapon qualities?");
 													if (extra.yesNo()) {
 														for (WeaponQual q: WeaponQual.values()) {
-															extra.println(extra.ITEM_WANT_HIGHER+q.name +extra.PRE_WHITE+": " + q.desc);
+															extra.println(TrawelColor.ITEM_WANT_HIGHER+q.name +TrawelColor.PRE_WHITE+": " + q.desc);
 														}
 													}
 													return false;
@@ -1368,7 +1369,7 @@ public class Player extends SuperPerson{
 													extra.println("Skills are abilities, typically conditional, that add things that your character can do. Most of them apply automatically, some give you more options, and others must be set up.");
 													extra.println("There are a lot of skills, but having a skill is a binary state- if you get it from another skill source, you still 'only' have it once. Simply put, skills don't stack with themselves.");
 													extra.println(" ");
-													extra.println(extra.STAT_HEADER+"Would you like to see a list of skills?");
+													extra.println(TrawelColor.STAT_HEADER+"Would you like to see a list of skills?");
 													if (extra.yesNo()) {
 														for (Skill s: Skill.values()) {
 															extra.println(s.explain());
@@ -1388,7 +1389,7 @@ public class Player extends SuperPerson{
 													extra.println("Archetypes are a skill source, and uniquely unlock Feat Types that you can pick Feats from when you level up. They also grant attributes. Some archetypes also require similar archetypes to be obtained before they can be picked.");
 													extra.println("The game encourages you to have 2 + 1 for every 5 levels archetypes, but you are only required to unlock one before you can start picking Feats instead.");
 													extra.println(" ");
-													extra.println(extra.STAT_HEADER+"Would you like to see a list of archetypes?");
+													extra.println(TrawelColor.STAT_HEADER+"Would you like to see a list of archetypes?");
 													List<MenuItem> alist = new ArrayList<MenuItem>();
 													if (!extra.yesNo()) {
 														return false;
@@ -1426,7 +1427,7 @@ public class Player extends SuperPerson{
 													extra.println("Feats are a skill source, meaning they grant skills, might grant a skill config action to use, and attributes. Feats tend to give attributes based on how many skills they grant 5 for 3 skills, 15 for two skills, or 30 for one skill.");
 													extra.println("All level up skill sources that aren't Archetypes are Feats.");
 													extra.println(" ");
-													extra.println(extra.STAT_HEADER+"Would you like to see a list of feats?");
+													extra.println(TrawelColor.STAT_HEADER+"Would you like to see a list of feats?");
 													if (!extra.yesNo()) {
 														return false;
 													}
@@ -1465,7 +1466,7 @@ public class Player extends SuperPerson{
 													extra.println("Unlike Feats and Archetypes, you get Perks from fulfilling specific conditions, like killing bosses or making offerings at altars, instead of by leveling up.");
 													extra.println("Most of the perks displayed below are only for NPCs.");
 													extra.println(" ");
-													extra.println(extra.STAT_HEADER+"Would you like to see a list of perks?");
+													extra.println(TrawelColor.STAT_HEADER+"Would you like to see a list of perks?");
 													if (!extra.yesNo()) {
 														return false;
 													}
@@ -1507,13 +1508,13 @@ public class Player extends SuperPerson{
 													extra.println("Condition wounds occur automatically when a body part reaches 50% 'condition'. They tend to be long lasting effects that highlight the downward spiral of combat.");
 													extra.println("There are several ways to negate inflicted wounds, but Condition wounds ignore these affects. Condition wounds are also often called Injuries.");
 													extra.println(" ");
-													extra.println(extra.STAT_HEADER+"Would you like to see a list of wounds? Values will not display if they vary.");
+													extra.println(TrawelColor.STAT_HEADER+"Would you like to see a list of wounds? Values will not display if they vary.");
 													if (extra.yesNo()) {
 														for (Wound w: Wound.values()) {
 															try {
-																extra.println(extra.TIMID_RED+w.name + extra.PRE_WHITE+ " - " + String.format(w.desc,(Object[])Combat.woundNums(null,null,null,null,w)) + " ("+w.active+")");
+																extra.println(TrawelColor.TIMID_RED+w.name + TrawelColor.PRE_WHITE+ " - " + String.format(w.desc,(Object[])Combat.woundNums(null,null,null,null,w)) + " ("+w.active+")");
 															}catch (Exception e) {
-																extra.println(extra.TIMID_RED+w.name + extra.PRE_WHITE+ ": " + w.desc + " ("+w.active+")");
+																extra.println(TrawelColor.TIMID_RED+w.name + TrawelColor.PRE_WHITE+ ": " + w.desc + " ("+w.active+")");
 															}
 														}
 													}
@@ -1532,10 +1533,10 @@ public class Player extends SuperPerson{
 													extra.println("Effects don't store any information in themselves other how many a Person has.");
 													extra.println("Some effects persist after battle, and through death, which means they need to be resolved- Doctors, Shamans, Blacksmiths, water sources, and Inns can heal different types.");
 													extra.println(" ");
-													extra.println(extra.STAT_HEADER+"Would you like to see a list of Effects?");
+													extra.println(TrawelColor.STAT_HEADER+"Would you like to see a list of Effects?");
 													if (extra.yesNo()) {
 														for (Effect e: Effect.values()) {
-															extra.println(e.getName()+extra.PRE_WHITE + ": " + e.getDesc() + " Persists: " + e.lasts() + " Stacks: " +e.stacks());
+															extra.println(e.getName()+TrawelColor.PRE_WHITE + ": " + e.getDesc() + " Persists: " + e.lasts() + " Stacks: " +e.stacks());
 														}
 													}
 													return false;
@@ -1554,13 +1555,13 @@ public class Player extends SuperPerson{
 													extra.println("You can discard DrawBanes from your inventory using the Player menu, which you might want to do to stop getting accosted by animals.");
 													extra.println("You also have a limited amount of space to store them. Note that some bumpers will also be attracted to other aspects of your character, such as vampires attacking you if you're soaked in blood.");
 													extra.println(" ");
-													extra.println(extra.STAT_HEADER+"Would you like to see a list of DrawBanes?");
+													extra.println(TrawelColor.STAT_HEADER+"Would you like to see a list of DrawBanes?");
 													if (extra.yesNo()) {
 														for (DrawBane d: DrawBane.values()) {
-															extra.println(extra.TIMID_MAGENTA+d.getName()+extra.PRE_WHITE+": " + d.getFlavor()
-															+ extra.ITEM_DESC_PROP+" Brewable: "+extra.TIMID_MAGENTA+ d.getCanBrew()
-															+ extra.ITEM_DESC_PROP+" Value: "+extra.ITEM_VALUE+ d.getValue()
-															+ extra.ITEM_DESC_PROP+ " Merchant Value: "+extra.ITEM_VALUE + extra.F_TWO_TRAILING.format(d.getMValue()));
+															extra.println(TrawelColor.TIMID_MAGENTA+d.getName()+TrawelColor.PRE_WHITE+": " + d.getFlavor()
+															+ TrawelColor.ITEM_DESC_PROP+" Brewable: "+TrawelColor.TIMID_MAGENTA+ d.getCanBrew()
+															+ TrawelColor.ITEM_DESC_PROP+" Value: "+TrawelColor.ITEM_VALUE+ d.getValue()
+															+ TrawelColor.ITEM_DESC_PROP+ " Merchant Value: "+TrawelColor.ITEM_VALUE + extra.F_TWO_TRAILING.format(d.getMValue()));
 														}
 													}
 													return false;
@@ -1577,7 +1578,7 @@ public class Player extends SuperPerson{
 													extra.println("Seeds can be planted in Plant Spots, either in Node Exploration town Features, or Garden town Features. They will then grow as time passes. Some seeds grow into items that can be harvested, while others can only be taken.");
 													extra.println("Seeds have a limited inventory space, but are quite rare, so it is a bit harder to reach that cap. They can't be used for anything else, but often can be used to grow DrawBanes.");
 													extra.println(" ");
-													extra.println(extra.STAT_HEADER+"Would you like to see a list of plant states?");
+													extra.println(TrawelColor.STAT_HEADER+"Would you like to see a list of plant states?");
 													if (extra.yesNo()) {
 														for (Seed d: Seed.values()) {
 															extra.println(d.toString());
@@ -1766,12 +1767,12 @@ public class Player extends SuperPerson{
 																+ (t.isFort() ? "fort" : "town") + " located "+isle.getLocDesc()+" the "+isle.getTypeName()+" of " +isle.getName()+", which has "+isle.getTowns().size()+" regions in it."
 																);
 														float per = t.getAllOccupants().size()/t.occupantGoal();
-														String occString = t.getAllOccupants().size()+extra.PRE_WHITE;
+														String occString = t.getAllOccupants().size()+TrawelColor.PRE_WHITE;
 														if (per < 1f) {
-															occString = extra.inlineColor(extra.colorMix(extra.colorMix(Color.BLACK,Color.WHITE,.8f),Color.WHITE,per))+occString;
+															occString = TrawelColor.inlineColor(TrawelColor.colorMix(TrawelColor.colorMix(Color.BLACK,Color.WHITE,.8f),Color.WHITE,per))+occString;
 														}else {
 															//per > 1 so we don't need to subtract 1 and then add one for the first term of the mix
-															occString = extra.inlineColor(extra.colorMix(Color.WHITE,Color.RED,(per)/(per+10f)))+occString;
+															occString = TrawelColor.inlineColor(TrawelColor.colorMix(Color.WHITE,Color.RED,(per)/(per+10f)))+occString;
 														}
 														extra.println("It has around " +t.getFeatures().size() + " things to do and around " + occString + " occupants.");
 														if (Player.player.getCheating()) {
@@ -1830,7 +1831,7 @@ public class Player extends SuperPerson{
 																break;
 															}
 														}
-														extra.println(extra.STAT_HEADER+"Connections:");
+														extra.println(TrawelColor.STAT_HEADER+"Connections:");
 														if (road > 0) {
 															extra.println(" Has " + road + " land routes.");
 														}

@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trawel.battle.Combat;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
@@ -86,7 +87,7 @@ public class BumperFactory {
 					allyList.add(RaceFactory.makeLawman(level));
 					break;
 				}
-				extra.println(extra.PRE_BATTLE+foeString+allyString);
+				extra.println(TrawelColor.PRE_BATTLE+foeString+allyString);
 				List<List<Person>> listList = new ArrayList<List<Person>>();
 				playerSide.addAll(allyList);
 				listList.add(playerSide);
@@ -131,7 +132,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeWolf(level);
 
-					extra.println(extra.PRE_BATTLE+"A wolf attacks you!");
+					extra.println(TrawelColor.PRE_BATTLE+"A wolf attacks you!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
 					}
@@ -150,7 +151,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeFellReaver(level);
 					
-					extra.println(extra.PRE_BATTLE+"A fell reaver appears!");
+					extra.println(TrawelColor.PRE_BATTLE+"A fell reaver appears!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
 						Player.player.getWorld().addReoccuring(new Agent(p,AgentGoal.SPOOKY));
@@ -167,7 +168,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeEnt(level);
 					
-					extra.println(extra.PRE_BATTLE+"An ent appears!");
+					extra.println(TrawelColor.PRE_BATTLE+"An ent appears!");
 					Player.player.fightWith(p);
 				}};
 			b.responses.add(new Response(DrawBane.ENT_CORE,6));
@@ -178,7 +179,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeVampire(level);
 					
-					extra.println(extra.PRE_BATTLE+"A vampire jumps from the shadows!");
+					extra.println(TrawelColor.PRE_BATTLE+"A vampire jumps from the shadows!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
 						Player.player.stealCurrencyLeveled(p,1f);
@@ -197,7 +198,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeMugger(level);
 					
-					extra.println(extra.PRE_BATTLE+"A thief charges you!");
+					extra.println(TrawelColor.PRE_BATTLE+"A thief charges you!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
 						Player.player.stealCurrencyLeveled(p,1f);
@@ -217,7 +218,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeBear(level);
 					
-					extra.println(extra.PRE_BATTLE+"A bear attacks you!");
+					extra.println(TrawelColor.PRE_BATTLE+"A bear attacks you!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
 					}
@@ -235,7 +236,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeBat(level);
 					
-					extra.println(extra.PRE_BATTLE+"A bat attacks you!");
+					extra.println(TrawelColor.PRE_BATTLE+"A bat attacks you!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
 					}
@@ -253,7 +254,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeUnicorn(level);
 					
-					extra.println(extra.PRE_BATTLE+"A unicorn accosts you for holding the virgin captive!");
+					extra.println(TrawelColor.PRE_BATTLE+"A unicorn accosts you for holding the virgin captive!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() > 0) {
 					}
@@ -273,7 +274,7 @@ public class BumperFactory {
 						for (int i = 0;i < count;i++) {
 							list.add(RaceFactory.makeHarpy(addLevel));
 						}
-						extra.println(extra.PRE_BATTLE+"A flock of harpies attack!");
+						extra.println(TrawelColor.PRE_BATTLE+"A flock of harpies attack!");
 						Combat c = Player.player.massFightWith(list);
 						if (c.playerWon() > 0) {
 						}else {
@@ -282,7 +283,7 @@ public class BumperFactory {
 						}
 					}else {
 						Person p = RaceFactory.makeAlphaHarpy(level);
-						extra.println(extra.PRE_BATTLE+"A harpy nestmother attacks!");
+						extra.println(TrawelColor.PRE_BATTLE+"A harpy nestmother attacks!");
 						Combat c = Player.player.fightWith(p);
 						if (c.playerWon() > 0) {
 						}else {
@@ -307,7 +308,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makePirate(level);
 					
-					extra.println(extra.PRE_BATTLE+"A pirate challenges you for your booty!");
+					extra.println(TrawelColor.PRE_BATTLE+"A pirate challenges you for your booty!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
 						Player.player.stealCurrencyLeveled(p,1f);
@@ -328,7 +329,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeDrudgerStock(level);
 					
-					extra.println(extra.PRE_BATTLE+"A drudger attacks your ship!");
+					extra.println(TrawelColor.PRE_BATTLE+"A drudger attacks your ship!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
 						Player.player.stealCurrencyLeveled(p,1f);
@@ -347,7 +348,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeHarpy(level);
 					
-					extra.println(extra.PRE_BATTLE+"A harpy ambushes your ship from a nearby shipwreck!");
+					extra.println(TrawelColor.PRE_BATTLE+"A harpy ambushes your ship from a nearby shipwreck!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
 						Player.player.stealCurrencyLeveled(p,.6f);
@@ -367,7 +368,7 @@ public class BumperFactory {
 				public void activate(int level) {
 					Person p = RaceFactory.makeAlphaHarpy(level);
 					
-					extra.println(extra.PRE_BATTLE+"A harpy nestmother ambushes your ship from a nearby shipwreck!");
+					extra.println(TrawelColor.PRE_BATTLE+"A harpy nestmother ambushes your ship from a nearby shipwreck!");
 					Combat c = Player.player.fightWith(p);
 					if (c.playerWon() < 0) {
 						Player.player.stealCurrencyLeveled(p,1f);

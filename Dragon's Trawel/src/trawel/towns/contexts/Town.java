@@ -19,6 +19,7 @@ import trawel.battle.Combat.SkillCon;
 import trawel.core.Networking;
 import trawel.core.mainGame;
 import trawel.core.Networking.Area;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 import trawel.personal.AIClass;
@@ -314,12 +315,12 @@ public class Town extends TContextOwner{
 		}
 		townProcess();//works because the menu generator below always backs out
 		Player.player.lastTown = this;
-		String visitColor = extra.PRE_WHITE;
+		String visitColor = TrawelColor.PRE_WHITE;
 		switch (visited) {
-		case 0: visitColor = extra.VISIT_NEW;break;
-		case 1: visitColor = extra.VISIT_SEEN;break;
-		case 2: visitColor = extra.VISIT_BEEN;break;
-		case 3: visitColor = extra.VISIT_DONE;break;
+		case 0: visitColor = TrawelColor.VISIT_NEW;break;
+		case 1: visitColor = TrawelColor.VISIT_SEEN;break;
+		case 2: visitColor = TrawelColor.VISIT_BEEN;break;
+		case 3: visitColor = TrawelColor.VISIT_DONE;break;
 		}
 		if (visited < 2) {
 			visited = 2;
@@ -346,7 +347,7 @@ public class Town extends TContextOwner{
 
 						@Override
 						public String title() {
-							return extra.PRE_ROAD+"Roads";
+							return TrawelColor.PRE_ROAD+"Roads";
 						}
 
 						@Override
@@ -368,7 +369,7 @@ public class Town extends TContextOwner{
 
 						@Override
 						public String title() {
-							return extra.PRE_TELE+"Teleport Shop";
+							return TrawelColor.PRE_TELE+"Teleport Shop";
 						}
 
 						@Override
@@ -396,7 +397,7 @@ public class Town extends TContextOwner{
 
 							@Override
 							public String title() {
-								return extra.PRE_SHIP+"Shipyard";
+								return TrawelColor.PRE_SHIP+"Shipyard";
 							}
 
 							@Override
@@ -427,7 +428,7 @@ public class Town extends TContextOwner{
 
 						@Override
 						public String title() {
-							return extra.F_BUILDABLE+"Buy Lot";
+							return TrawelColor.F_BUILDABLE+"Buy Lot";
 						}
 
 						@Override
@@ -524,7 +525,7 @@ public class Town extends TContextOwner{
 		}
 		int cost = (int) (IEffectiveLevel.unclean(getTier())*150);
 		String moneyname = World.currentMoneyString();
-		extra.println(extra.SERVICE_CURRENCY+"Buy a lot? "+ cost + " "+moneyname+". You have "
+		extra.println(TrawelColor.SERVICE_CURRENCY+"Buy a lot? "+ cost + " "+moneyname+". You have "
 		+ Player.showGold());
 		if (extra.yesNo()) {
 			if (Player.player.getGold()> cost) {
@@ -670,7 +671,7 @@ public class Town extends TContextOwner{
 
 						@Override
 						public String title() {
-							return extra.PRE_MAYBE_BATTLE+"Wander Around";
+							return TrawelColor.PRE_MAYBE_BATTLE+"Wander Around";
 						}
 
 						@Override
@@ -690,7 +691,7 @@ public class Town extends TContextOwner{
 
 						@Override
 						public String title() {
-							return extra.PRE_MAYBE_BATTLE+"Sail Aimlessly";
+							return TrawelColor.PRE_MAYBE_BATTLE+"Sail Aimlessly";
 						}
 
 						@Override
@@ -922,15 +923,15 @@ public class Town extends TContextOwner{
 				int part1 = extra.randRange(0, 1);
 				switch (part1) {
 				case 0:
-					extra.print(extra.PRE_BATTLE+p.getName() +" charges you out of nowhere! They're back for more, and this time they're not fighting fair! ");
+					extra.print(TrawelColor.PRE_BATTLE+p.getName() +" charges you out of nowhere! They're back for more, and this time they're not fighting fair! ");
 					p.setSkillHas(Feat.AMBUSHER);
 					break;
 				case 1:
-					extra.print(extra.PRE_BATTLE+p.getName() +" charges you, screaming bloody murder! Their thirst for blood has not yet been satiated! ");
+					extra.print(TrawelColor.PRE_BATTLE+p.getName() +" charges you, screaming bloody murder! Their thirst for blood has not yet been satiated! ");
 					p.setSkillHas(Feat.HEMOVORE);
 					break;
 				default:
-					extra.print(extra.PRE_BATTLE+p.getName() + " is back!");
+					extra.print(TrawelColor.PRE_BATTLE+p.getName() + " is back!");
 					break;
 				}
 				switch (extra.randRange(0, 1)) {
@@ -971,7 +972,7 @@ public class Town extends TContextOwner{
 			//does not level up automatically
 			if (sp != null) {
 				world.resetEncounterTick();
-				extra.println(extra.PRE_BATTLE + sp.getPerson().getName() + " appears to haunt you!");
+				extra.println(TrawelColor.PRE_BATTLE + sp.getPerson().getName() + " appears to haunt you!");
 				Combat c = Player.player.fightWith(sp.getPerson());
 				if (c.playerWon() > 0) {
 					world.removeReoccuringSuperPerson(sp);
@@ -1122,12 +1123,12 @@ public class Town extends TContextOwner{
 	 * a watered down connection
 	 */
 	public String displayLine(Town from) {
-		String visitColor = extra.PRE_WHITE;
+		String visitColor = TrawelColor.PRE_WHITE;
 		switch (visited) {
-		case 0: visitColor = extra.VISIT_NEW;break;
-		case 1: visitColor = extra.VISIT_SEEN;break;
-		case 2: visitColor = extra.VISIT_BEEN;break;
-		case 3: visitColor = extra.VISIT_OWN;break;
+		case 0: visitColor = TrawelColor.VISIT_NEW;break;
+		case 1: visitColor = TrawelColor.VISIT_SEEN;break;
+		case 2: visitColor = TrawelColor.VISIT_BEEN;break;
+		case 3: visitColor = TrawelColor.VISIT_OWN;break;
 		}
 		String dirString = "";
 		if (from != null) {

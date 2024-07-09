@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import derg.strings.fluffer.StringResult;
 import derg.strings.random.SRPlainRandom;
 import trawel.core.Networking;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Effect;
 import trawel.personal.Person;
@@ -124,8 +125,8 @@ public class Potion implements java.io.Serializable{
 					break;
 				default:
 					uncork(p,personal);
-					extra.println(personal ? "Your potion applied the " + effect.getName() +extra.PRE_WHITE+ " effect to you!"
-							: "The potion applied the " +effect.getName() +extra.PRE_WHITE+ " effect to "+p.getName()+"!");
+					extra.println(personal ? "Your potion applied the " + effect.getName() +TrawelColor.PRE_WHITE+ " effect to you!"
+							: "The potion applied the " +effect.getName() +TrawelColor.PRE_WHITE+ " effect to "+p.getName()+"!");
 					break;
 				}
 				if (!overwrite) {

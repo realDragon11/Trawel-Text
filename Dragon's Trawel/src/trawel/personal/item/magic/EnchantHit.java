@@ -2,6 +2,7 @@ package trawel.personal.item.magic;
 
 import java.awt.Color;
 
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 
@@ -22,23 +23,23 @@ public class EnchantHit extends Enchant {
 			isKeen = true;
 			enchantstyle = 0;
 			name = randomLists.enchantHitKeen();
-			colorSaved = extra.inlineColor(extra.colorMix(Color.PINK,Color.LIGHT_GRAY,.5f));
+			colorSaved = TrawelColor.inlineColor(TrawelColor.colorMix(Color.PINK,Color.LIGHT_GRAY,.5f));
 		}else {
 			switch (extra.randRange(1,3)) {
 			case 1: fireMod = extra.randFloat()*powMod/2;
 			name = randomLists.enchantHitIgnite();
 			enchantstyle = 3;
-			colorSaved = extra.inlineColor(extra.colorMix(Color.RED,Color.LIGHT_GRAY,.5f));
+			colorSaved = TrawelColor.inlineColor(TrawelColor.colorMix(Color.RED,Color.LIGHT_GRAY,.5f));
 			break;
 			case 2: shockMod = extra.randFloat()*powMod/2;
 			name = randomLists.enchantHitElec();
 			enchantstyle = 2;
-			colorSaved = extra.inlineColor(extra.colorMix(Color.YELLOW,Color.LIGHT_GRAY,.5f));
+			colorSaved = TrawelColor.inlineColor(TrawelColor.colorMix(Color.YELLOW,Color.LIGHT_GRAY,.5f));
 			break;
 			case 3: freezeMod = extra.randFloat()*powMod/2;
 			name = randomLists.enchantHitFrost();
 			enchantstyle = 1;
-			colorSaved = extra.inlineColor(extra.colorMix(Color.BLUE,Color.LIGHT_GRAY,.5f));
+			colorSaved = TrawelColor.inlineColor(TrawelColor.colorMix(Color.BLUE,Color.LIGHT_GRAY,.5f));
 			break;
 			}
 		}
@@ -58,7 +59,7 @@ public class EnchantHit extends Enchant {
 		goldMult = 1;
 		name = " testing";
 		enchantstyle = 1;
-		colorSaved = extra.inlineColor(extra.colorMix(Color.MAGENTA,Color.LIGHT_GRAY,.5f));
+		colorSaved = TrawelColor.inlineColor(TrawelColor.colorMix(Color.MAGENTA,Color.LIGHT_GRAY,.5f));
 	}
 
 	@Override
@@ -69,7 +70,7 @@ public class EnchantHit extends Enchant {
 	@Override
 	public void display(int i) {
 		if (isKeen) {
-			extra.println(extra.ITEM_WANT_HIGHER+" Keen");
+			extra.println(TrawelColor.ITEM_WANT_HIGHER+" Keen");
 		}
 		double d = 0;
 		String str = null;
@@ -80,7 +81,7 @@ public class EnchantHit extends Enchant {
 		case 2:	d = getFreezeMod(); str = colorSaved+"frost";break;
 		}
 		if (d != 0) {
-			extra.println("  "+extra.ITEM_WANT_HIGHER +extra.format(d) + "x " + str);
+			extra.println("  "+TrawelColor.ITEM_WANT_HIGHER +extra.format(d) + "x " + str);
 		}
 		
 		}

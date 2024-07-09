@@ -6,6 +6,7 @@ import com.github.yellowstonegames.core.WeightedTable;
 import trawel.battle.Combat;
 import trawel.core.Networking.Area;
 import trawel.factions.Faction;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
@@ -150,7 +151,7 @@ public class Forest extends ExploreFeature{
 			}
 			if (Math.random() > .8) {
 				extra.println("As you eat the mushroom, you hear a voice cry out:");
-				extra.print(extra.PRE_BATTLE);
+				extra.print(TrawelColor.PRE_BATTLE);
 				switch(extra.randRange(1,3)) {
 				case 1: 
 					extra.println("\"You dare violate the forest?!\"");
@@ -173,7 +174,7 @@ public class Forest extends ExploreFeature{
 			extra.println("You pick up the mushroom to sell it.");
 			if (Math.random() > .3) {
 			extra.println("You hear someone cry out from behind you!");
-			extra.print(extra.PRE_BATTLE);
+			extra.print(TrawelColor.PRE_BATTLE);
 			Combat c;
 			switch(extra.randRange(1,3)) {
 			default:
@@ -202,7 +203,7 @@ public class Forest extends ExploreFeature{
 		case 3:
 			extra.println("You crush the mushroom under your heel.");
 			extra.println("You hear someone cry out from behind you!");
-			extra.print(extra.PRE_BATTLE);
+			extra.print(TrawelColor.PRE_BATTLE);
 			switch(extra.randRange(1,3)) {
 			case 1: 
 				extra.println("\"You dare violate the forest?!\"");
@@ -229,7 +230,7 @@ public class Forest extends ExploreFeature{
 		case 1: extra.println("There's something off about the corpse... You feel like you need to leave, so you do.");
 			break;
 		case 2:
-			extra.println(extra.PRE_BATTLE+ "Something fell and horrible steps out of the hanged man's shadow!");
+			extra.println(TrawelColor.PRE_BATTLE+ "Something fell and horrible steps out of the hanged man's shadow!");
 			Person reaver = RaceFactory.makeFellReaver(getTempLevel());
 			Combat c = Player.player.fightWith(reaver);
 			if (c.playerWon() > 0) {
@@ -253,7 +254,7 @@ public class Forest extends ExploreFeature{
 		while (true) {
 		extra.println("You come across a dryad tending to a tree.");
 		extra.println("1 Leave");//DOLATER: fix menu
-		extra.println(extra.PRE_BATTLE+"2 Attack them.");
+		extra.println(TrawelColor.PRE_BATTLE+"2 Attack them.");
 		extra.println("3 Chat with them");
 		switch (extra.inInt(3)) {
 		default: case 1: extra.println("You leave the dryad alone");return;
@@ -288,7 +289,7 @@ public class Forest extends ExploreFeature{
 		if (extra.yesNo()) {
 			extra.println("You move the tree off of them.");
 			if (Math.random() > .9) {
-				extra.println(extra.PRE_BATTLE+"Suddenly, they attack you!");
+				extra.println(TrawelColor.PRE_BATTLE+"Suddenly, they attack you!");
 				Combat c = Player.player.fightWith(p);
 				if (c.playerWon() > 0) {
 				}
@@ -356,22 +357,22 @@ public class Forest extends ExploreFeature{
 			//enums are ordinal ordered, why does eclipse do this
 			case APRIL:
 				//idk how to describe medieval april fools day
-				extra.println(extra.PRE_BATTLE+"A person is chopping down tree covered in mud! Attack them?");
+				extra.println(TrawelColor.PRE_BATTLE+"A person is chopping down tree covered in mud! Attack them?");
 				break;
 			case AUGUST:
 				//trawel v0.8 haha
-				extra.println(extra.PRE_BATTLE+"A person is chopping down a tree with the symbols 'v.8' carved into it! Attack them?");
+				extra.println(TrawelColor.PRE_BATTLE+"A person is chopping down a tree with the symbols 'v.8' carved into it! Attack them?");
 				break;
 			case DECEMBER:
 				//t.getDayOfMonth() > 14 && t.getDayOfMonth() < 25
-				extra.println(extra.PRE_BATTLE+"A person is chopping down a christmas tree! Attack them?");
+				extra.println(TrawelColor.PRE_BATTLE+"A person is chopping down a christmas tree! Attack them?");
 				break;
 			case FEBRUARY:
 				//valentines day
-				extra.println(extra.PRE_BATTLE+"A lumberjack is chopping down a tree with many hearts and initials carved into it! Attack them?");
+				extra.println(TrawelColor.PRE_BATTLE+"A lumberjack is chopping down a tree with many hearts and initials carved into it! Attack them?");
 				break;
 			case JANUARY:
-				extra.println(extra.PRE_BATTLE+"A wannabe lumberjack has resolved to cut down more trees this year! Attack them?");
+				extra.println(TrawelColor.PRE_BATTLE+"A wannabe lumberjack has resolved to cut down more trees this year! Attack them?");
 				break;
 			case JULY:
 				//canada's independence day isn't pog enough to celebrate, so we celebrate
@@ -381,16 +382,16 @@ public class Forest extends ExploreFeature{
 			case JUNE:
 				//Emancipation Day, D day
 				robber.setRacism(true);//assigned racist at tree
-				extra.println(extra.PRE_BATTLE+"A racist is chopping down a tree. Attack them?");
+				extra.println(TrawelColor.PRE_BATTLE+"A racist is chopping down a tree. Attack them?");
 				break;
 			case MARCH:
 				//daylight savings, trawel doesn't have that lmao
 				//trawel has perfect years, but ironically it DOES have different rise and set times
-				extra.println(extra.PRE_BATTLE+"A lumberjack is chopping down a tree, apparently they need more paper for calender... clocks? You feel kinda bad, should you attack them?");
+				extra.println(TrawelColor.PRE_BATTLE+"A lumberjack is chopping down a tree, apparently they need more paper for calender... clocks? You feel kinda bad, should you attack them?");
 				break;
 			case MAY:
 				//lot of war days, cinco de mayo included
-				extra.println(extra.PRE_BATTLE+"A lumberjack is chopping down a tree planted over a grave! Attack them?");
+				extra.println(TrawelColor.PRE_BATTLE+"A lumberjack is chopping down a tree planted over a grave! Attack them?");
 				//lumberjacks truly have no chill in Trawel
 				break;
 			case NOVEMBER:
@@ -398,19 +399,19 @@ public class Forest extends ExploreFeature{
 				//https://www.holidayinsights.com/moreholidays/november/small-business-saturday.htm
 				//https://en.wikipedia.org/wiki/Lumber_Cartel
 				//https://en.wikipedia.org/wiki/Timber_mafia
-				extra.println(extra.PRE_BATTLE+"An agent of the timber mafia is trying to strongarm someone into the lumber cartel! Attack them?");
+				extra.println(TrawelColor.PRE_BATTLE+"An agent of the timber mafia is trying to strongarm someone into the lumber cartel! Attack them?");
 				break;
 			case OCTOBER:
 				//movie
-				extra.println(extra.PRE_BATTLE+"A person is chopping down a christmas tree?! Attack them?");
+				extra.println(TrawelColor.PRE_BATTLE+"A person is chopping down a christmas tree?! Attack them?");
 				break;
 			case SEPTEMBER:
 				//american enough to choose labor day in september, not american enough to choose 9/11 as my sad holiday over june and may's
-				extra.println(extra.PRE_BATTLE+"A strikebreaker lumberjack is chopping down a tree without a permit! Attack them?");
+				extra.println(TrawelColor.PRE_BATTLE+"A strikebreaker lumberjack is chopping down a tree without a permit! Attack them?");
 				break;	
 			}
 		}else {
-			extra.println(extra.PRE_BATTLE+"A lumberjack is chopping down a tree! Attack them?");
+			extra.println(TrawelColor.PRE_BATTLE+"A lumberjack is chopping down a tree! Attack them?");
 		}
 		
 		robber.getBag().graphicalDisplay(1, robber);
@@ -420,7 +421,7 @@ public class Forest extends ExploreFeature{
 			robber.getBag().addDrawBaneSilently(DrawBane.WOOD);
 		}
 		
-		extra.print(extra.PRE_BATTLE);
+		extra.print(TrawelColor.PRE_BATTLE);
 		if (extra.yesNo()) {
 			Combat c = Player.player.fightWith(robber);
 			//quest need not be started normally

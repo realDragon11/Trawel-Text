@@ -12,6 +12,7 @@ import derg.menus.MenuSelect;
 import trawel.arc.misc.Deaths;
 import trawel.battle.Combat;
 import trawel.core.Networking;
+import trawel.helper.constants.TrawelColor;
 import trawel.helper.methods.extra;
 import trawel.helper.methods.randomLists;
 import trawel.personal.Effect;
@@ -359,8 +360,8 @@ public class MineNode implements NodeType{
 			break;
 		case 6: 
 			String cColor = holder.getStorageFirstClass(node,String.class);
-			extra.println("You examine the " + cColor+ " crystals"+extra.COLOR_RESET+". They are very pretty.");
-			holder.findBehind(node,cColor+ " crystals"+extra.COLOR_RESET);
+			extra.println("You examine the " + cColor+ " crystals"+TrawelColor.COLOR_RESET+". They are very pretty.");
+			holder.findBehind(node,cColor+ " crystals"+TrawelColor.COLOR_RESET);
 			break;
 		case 7: 
 			extra.println("You examine the iron minecart. It is on the tracks that travel throughout the mine.");
@@ -557,9 +558,9 @@ public class MineNode implements NodeType{
 				List<Person> cultists = holder.getStorageFirstClass(node,List.class);
 				Person leader = extra.getNonAddOrFirst(cultists);
 				if (cultists.size() > 1) {
-					extra.println(extra.PRE_BATTLE + "Attack " + leader.getName() +" and their "+(cultists.size()-1)+" devout acolytes?");
+					extra.println(TrawelColor.PRE_BATTLE + "Attack " + leader.getName() +" and their "+(cultists.size()-1)+" devout acolytes?");
 				}else {
-					extra.println(extra.PRE_BATTLE + "Attack " + leader.getName() +"?");
+					extra.println(TrawelColor.PRE_BATTLE + "Attack " + leader.getName() +"?");
 				}
 				if (extra.yesNo()) {
 					holder.setStateNum(node,6);//angy cultists are very madge
@@ -589,7 +590,7 @@ public class MineNode implements NodeType{
 		case 5:
 			return "Look at the " + holder.getStorageFirstClass(node,String.class)+".";
 		case 6:
-			return "Examine the " + holder.getStorageFirstClass(node,String.class) + " Crystals"+extra.COLOR_RESET+".";
+			return "Examine the " + holder.getStorageFirstClass(node,String.class) + " Crystals"+TrawelColor.COLOR_RESET+".";
 		case 7:
 			return "Study the Minecart.";
 		case 8:
@@ -614,7 +615,7 @@ public class MineNode implements NodeType{
 		case 2://cleaning water, locked door
 			return holder.getStorageFirstClass(node,String.class);
 		case 6:
-			return holder.getStorageFirstClass(node,String.class) + " Crystals"+extra.COLOR_RESET;
+			return holder.getStorageFirstClass(node,String.class) + " Crystals"+TrawelColor.COLOR_RESET;
 		case 7:
 			return "Minecart";
 		case 8:
