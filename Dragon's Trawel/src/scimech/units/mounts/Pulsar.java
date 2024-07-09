@@ -8,7 +8,7 @@ import scimech.combat.Target;
 import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Mount;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class Pulsar extends Mount {
 

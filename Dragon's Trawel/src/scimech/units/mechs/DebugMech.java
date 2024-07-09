@@ -14,7 +14,7 @@ import scimech.units.mounts.Blunderbuss;
 import scimech.units.systems.FusionReactor;
 import scimech.units.systems.MiniReactor;
 import scimech.units.systems.Plating;
-import trawel.randomLists;
+import trawel.helper.methods.randomLists;
 
 public class DebugMech extends Mech {
 	

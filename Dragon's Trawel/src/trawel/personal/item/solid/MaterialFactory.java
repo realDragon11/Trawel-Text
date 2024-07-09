@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 import trawel.personal.item.solid.variants.ArmorStyle;
 
 public class MaterialFactory {

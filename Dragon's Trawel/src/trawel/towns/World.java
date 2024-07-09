@@ -6,8 +6,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
 
 import trawel.WorldGen;
-import trawel.extra;
 import trawel.factions.HostileTask;
+import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;

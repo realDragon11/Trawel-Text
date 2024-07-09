@@ -3,7 +3,7 @@ package sin;
 import java.util.ArrayList;
 import java.util.List;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class SinRelation {
 

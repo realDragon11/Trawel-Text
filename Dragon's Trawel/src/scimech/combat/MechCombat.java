@@ -8,7 +8,7 @@ import scimech.mech.Fixture;
 import scimech.mech.Mech;
 import scimech.mech.Mount;
 import scimech.people.Trait;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class MechCombat {
 

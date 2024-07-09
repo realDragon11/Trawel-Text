@@ -15,7 +15,7 @@ import scimech.units.fixtures.ZeusRifle;
 import scimech.units.mounts.Broadside;
 import scimech.units.mounts.Pulsar;
 import scimech.units.systems.FusionReactor;
-import trawel.randomLists;
+import trawel.helper.methods.randomLists;
 
 public class Dynamo extends Mech {
 	

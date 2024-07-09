@@ -11,7 +11,7 @@ import rtrawel.unit.RCore;
 import rtrawel.unit.RPlayer;
 import rtrawel.unit.RUnit;
 import rtrawel.village.Village;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class Party {
 

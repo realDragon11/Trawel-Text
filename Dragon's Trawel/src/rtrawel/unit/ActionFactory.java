@@ -6,7 +6,7 @@ import java.util.List;
 
 import rtrawel.items.Weapon;
 import rtrawel.items.Weapon.WeaponType;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class ActionFactory {
 	private static HashMap<String,Action> data = new HashMap<String, Action>();

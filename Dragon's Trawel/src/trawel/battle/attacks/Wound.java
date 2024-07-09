@@ -1,6 +1,6 @@
 package trawel.battle.attacks;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 //.0f = float/double with no decimal places. Weird that it can't auto convert, but oh well
 //UPDATE welp can't make them look nicer so just made them all ints anyways

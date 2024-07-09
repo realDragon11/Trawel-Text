@@ -9,18 +9,18 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.Networking.Area;
-import trawel.extra;
+import trawel.helper.methods.extra;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
-import trawel.towns.fight.Arena;
-import trawel.towns.misc.Garden;
-import trawel.towns.misc.Garden.PlantFill;
-import trawel.towns.nodes.BossNode.BossType;
-import trawel.towns.nodes.Mine;
-import trawel.towns.nodes.NodeFeature.Shape;
-import trawel.towns.services.Inn;
+import trawel.towns.features.fight.Arena;
+import trawel.towns.features.misc.Garden;
+import trawel.towns.features.misc.Garden.PlantFill;
+import trawel.towns.features.nodes.BossNode.BossType;
+import trawel.towns.features.nodes.Mine;
+import trawel.towns.features.nodes.NodeFeature.Shape;
+import trawel.towns.features.services.Inn;
 
 public class Lot extends Feature {
 

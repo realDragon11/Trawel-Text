@@ -12,7 +12,7 @@ import rtrawel.jobs.Job;
 import rtrawel.jobs.JobFactory;
 import rtrawel.unit.RCore;
 import rtrawel.unit.RPlayer;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class ReJober implements Content {
 

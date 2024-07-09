@@ -7,7 +7,7 @@ import java.util.List;
 import rtrawel.unit.RMonster;
 import rtrawel.unit.RUnit;
 import rtrawel.unit.TargetGroup;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class Battle {
 

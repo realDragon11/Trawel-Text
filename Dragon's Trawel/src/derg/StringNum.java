@@ -1,6 +1,6 @@
 package derg;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 /**
  * used for StringResults that let you faux-'seed' them, (get a number of the results and then use that to get a result later)

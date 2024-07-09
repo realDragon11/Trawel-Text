@@ -12,17 +12,17 @@ import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
 import trawel.Networking.Area;
 import trawel.Networking;
-import trawel.extra;
-import trawel.mainGame;
 import trawel.battle.Combat;
+import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Player;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
-import trawel.towns.services.Oracle;
-import trawel.towns.services.Store;
+import trawel.time.TrawelTime;
+import trawel.towns.features.services.Oracle;
+import trawel.towns.features.services.Store;
 
 public class TravelingFeature extends Store{
 
@@ -163,7 +163,7 @@ public class TravelingFeature extends Store{
 							@Override
 							public boolean go() {
 								Player.addTime(.5f+extra.randFloat()*1f);
-								mainGame.globalPassTime();
+								TrawelTime.globalPassTime();
 								useCount++;
 								if (extra.randRange(1, useCount) == 1) {
 									extra.println(extra.RESULT_PASS+"You find some beer laying around.");
@@ -183,11 +183,11 @@ public class TravelingFeature extends Store{
 							@Override
 							public boolean go() {
 								Player.addTime(3);
-								mainGame.globalPassTime();
-								Combat c = mainGame.CombatTwo(RaceFactory.getDueler(tier),RaceFactory.getDueler(tier),town.getIsland().getWorld());
+								TrawelTime.globalPassTime();
+								Combat c = Combat.CombatTwo(RaceFactory.getDueler(tier),RaceFactory.getDueler(tier),town.getIsland().getWorld());
 								town.addOccupant(c.getNonSummonSurvivors().get(0).getMakeAgent(AgentGoal.NONE));
 								Player.addTime(3);
-								mainGame.globalPassTime();
+								TrawelTime.globalPassTime();
 								regenSetup();
 								return true;
 							}});
@@ -218,7 +218,7 @@ public class TravelingFeature extends Store{
 							public boolean go() {
 								if (p.reallyFight("Challenge")) {
 									Player.addTime(1);
-									mainGame.globalPassTime();
+									TrawelTime.globalPassTime();
 									Combat c = Player.player.fightWith(p);
 									if (c.playerWon() > 0) {
 										fighters.remove(i);
@@ -267,7 +267,7 @@ public class TravelingFeature extends Store{
 							@Override
 							public boolean go() {
 								Player.addTime(1+extra.randFloat());
-								mainGame.globalPassTime();
+								TrawelTime.globalPassTime();
 								if (useCount > 2) {
 									if (extra.chanceIn(useCount,3+useCount)){
 										if (useCount > 5) {

@@ -4,7 +4,7 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 import trawel.personal.classless.Skill.Type;
 
 public enum Perk implements IHasSkills{

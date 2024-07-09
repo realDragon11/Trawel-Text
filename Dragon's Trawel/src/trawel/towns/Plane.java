@@ -2,7 +2,7 @@ package trawel.towns;
 import java.util.ArrayList;
 import java.util.List;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 import trawel.personal.people.Player;
 import trawel.threads.BlockTaskManager;
 import trawel.threads.FollowUp.FollowType;

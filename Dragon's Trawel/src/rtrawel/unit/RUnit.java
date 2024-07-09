@@ -5,7 +5,7 @@ import java.util.List;
 
 import rtrawel.battle.Battle;
 import rtrawel.items.Weapon;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public abstract class RUnit {
 	

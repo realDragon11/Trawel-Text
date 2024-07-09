@@ -9,8 +9,8 @@ import java.util.stream.Stream;
 
 import derg.menus.MenuItem;
 import derg.menus.ScrollMenuGenerator;
-import trawel.extra;
 import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.Person.FeatArchMenuPick;
 import trawel.personal.Person.PersonFlag;

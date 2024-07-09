@@ -2,11 +2,11 @@ package trawel.battle.attacks;
 
 import java.util.function.Supplier;
 
-import trawel.Effect;
-import trawel.extra;
 import trawel.battle.Combat;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
+import trawel.helper.methods.extra;
+import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.classless.IHasSkills;

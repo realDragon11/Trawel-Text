@@ -8,7 +8,7 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import scimech.handlers.Savable;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public abstract class Fixture extends MechPart implements TurnSubscriber, Savable{
 	

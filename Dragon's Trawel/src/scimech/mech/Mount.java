@@ -22,7 +22,7 @@ import scimech.mech.Fixture.MenuFixture;
 import scimech.mech.Mech.MenuMechTarget;
 import scimech.people.Trait;
 import scimech.people.TraitKeeper;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public abstract class Mount extends MechPart implements TurnSubscriber, Target, Savable{
 

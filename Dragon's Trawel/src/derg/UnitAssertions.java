@@ -1,8 +1,8 @@
 package derg;
 
 import trawel.WorldGen;
-import trawel.extra;
 import trawel.mainGame;
+import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.RaceFactory;
 import trawel.personal.item.magic.EnchantConstant;

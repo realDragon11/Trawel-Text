@@ -6,7 +6,7 @@ import java.util.List;
 import rtrawel.battle.Party;
 import rtrawel.items.Item;
 import rtrawel.unit.RCore;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class Shop implements Content{
 	

@@ -19,7 +19,7 @@ import rtrawel.jobs.PathFactory;
 import rtrawel.jobs.PathWithLevel;
 import rtrawel.jobs.Progression;
 import rtrawel.unit.Action.TargetType;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class RPlayer extends RUnit {
 

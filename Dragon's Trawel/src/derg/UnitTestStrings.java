@@ -1,7 +1,7 @@
 package derg;
 
-import trawel.extra;
 import trawel.mainGame;
+import trawel.helper.methods.extra;
 import trawel.towns.Calender;
 
 public class UnitTestStrings {

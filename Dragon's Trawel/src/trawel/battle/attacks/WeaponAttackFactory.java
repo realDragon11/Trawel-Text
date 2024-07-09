@@ -10,12 +10,12 @@ import com.github.yellowstonegames.core.WeightedTable;
 
 import derg.SRInOrder;
 import derg.StringResult;
-import trawel.extra;
 import trawel.battle.Combat;
 import trawel.battle.Combat.ATK_ResultCode;
 import trawel.battle.Combat.ATK_ResultType;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.Stance.AttackLevel;
+import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.Archetype;
 import trawel.personal.classless.AttributeBox;

@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
-import trawel.extra;
 import trawel.battle.attacks.WeaponAttackFactory.AttackMaker;
+import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Skill;

@@ -1,6 +1,6 @@
 package rtrawel.story;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class MainStory implements Story {
 

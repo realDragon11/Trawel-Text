@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class StyleFactory {
 

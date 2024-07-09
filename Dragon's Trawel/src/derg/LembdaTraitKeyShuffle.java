@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 
 public class LembdaTraitKeyShuffle implements CanLembdaUpdate{

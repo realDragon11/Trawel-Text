@@ -2,8 +2,8 @@ package trawel.personal;
 
 import java.util.List;
 
-import trawel.extra;
 import trawel.factions.HostileTask;
+import trawel.helper.methods.extra;
 import trawel.personal.Person.AIJob;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.Person.PersonType;

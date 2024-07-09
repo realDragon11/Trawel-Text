@@ -10,7 +10,7 @@ import scimech.mech.Corpo;
 import scimech.mech.Fixture;
 import scimech.mech.Mech;
 import scimech.mech.TurnSubscriber;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class Clash extends Fixture{
 

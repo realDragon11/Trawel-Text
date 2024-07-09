@@ -1,6 +1,6 @@
 package trawel.personal.item;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public enum Seed {
 	EMPTY(""),

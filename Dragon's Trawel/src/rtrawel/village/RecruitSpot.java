@@ -6,7 +6,7 @@ import java.util.List;
 import rtrawel.EventFlag;
 import rtrawel.battle.Party;
 import rtrawel.unit.RPlayer;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class RecruitSpot implements Content{
 

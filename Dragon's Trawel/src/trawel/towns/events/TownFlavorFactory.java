@@ -2,8 +2,8 @@ package trawel.towns.events;
 import java.util.ArrayList;
 import java.util.List;
 
-import trawel.extra;
 import trawel.factions.FBox.FSub;
+import trawel.helper.methods.extra;
 import trawel.factions.Faction;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;

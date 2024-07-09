@@ -10,11 +10,10 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
-import trawel.Effect;
-import trawel.extra;
-import trawel.mainGame;
 import trawel.battle.Combat;
 import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.helper.methods.extra;
+import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Skill;
@@ -557,9 +556,9 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 			List<List<Person>> listlist = new ArrayList<List<Person>>();
 			listlist.add(getAllies());
 			listlist.add(Collections.singletonList(p));
-			return mainGame.HugeBattle(getWorld(), listlist);
+			return Combat.HugeBattle(getWorld(), listlist);
 		}
-		return mainGame.CombatTwo(getPerson(),p,getWorld());
+		return Combat.CombatTwo(getPerson(),p,getWorld());
 	}
 	
 	public Combat fightWith(SuperPerson p) {
@@ -567,20 +566,20 @@ public abstract class SuperPerson implements java.io.Serializable, CanPassTime{
 			List<List<Person>> listlist = new ArrayList<List<Person>>();
 			listlist.add(getAllies());
 			listlist.add(p.getAllies());
-			return mainGame.HugeBattle(getWorld(), listlist);
+			return Combat.HugeBattle(getWorld(), listlist);
 		}
-		return mainGame.CombatTwo(getPerson(),p.getPerson(),getWorld());
+		return Combat.CombatTwo(getPerson(),p.getPerson(),getWorld());
 	}
 	
 	public Combat massFightWith(List<Person> others) {
 		//right now this person can't have allies
 		if (others.size() == 1) {
-			return mainGame.CombatTwo(getPerson(),others.get(0),getWorld());
+			return Combat.CombatTwo(getPerson(),others.get(0),getWorld());
 		}
 		List<List<Person>> listlist = new ArrayList<List<Person>>();
 		listlist.add(Collections.singletonList(getPerson()));
 		listlist.add(others);
-		return mainGame.HugeBattle(getWorld(), listlist);
+		return Combat.HugeBattle(getWorld(), listlist);
 	}
 	
 	public World getWorld() {

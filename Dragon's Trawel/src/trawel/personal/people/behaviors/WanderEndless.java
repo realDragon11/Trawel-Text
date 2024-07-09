@@ -2,7 +2,7 @@ package trawel.personal.people.behaviors;
 import java.util.ArrayList;
 import java.util.List;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Behavior;
 import trawel.time.TimeEvent;

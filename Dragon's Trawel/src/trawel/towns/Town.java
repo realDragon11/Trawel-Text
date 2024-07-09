@@ -14,15 +14,14 @@ import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.MenuSelectFeature;
 import derg.menus.MenuSelectNumber;
-import trawel.AIClass;
-import trawel.Bumper;
 import trawel.Networking;
 import trawel.Networking.Area;
-import trawel.extra;
 import trawel.mainGame;
-import trawel.randomLists;
 import trawel.battle.Combat;
 import trawel.battle.Combat.SkillCon;
+import trawel.helper.methods.extra;
+import trawel.helper.methods.randomLists;
+import trawel.personal.AIClass;
 import trawel.personal.NPCMutator;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonType;
@@ -39,19 +38,21 @@ import trawel.personal.people.Behavior;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
 import trawel.personal.people.behaviors.GateNodeBehavior;
-import trawel.quests.QuestReactionFactory;
+import trawel.quests.events.Bumper;
+import trawel.quests.events.QuestReactionFactory;
 import trawel.time.ContextLevel;
 import trawel.time.ContextType;
 import trawel.time.TContextOwner;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
+import trawel.time.TrawelTime;
 import trawel.towns.Connection.ConnectClass;
 import trawel.towns.Feature.RemoveAgentFromFeatureEvent;
 import trawel.towns.events.TownFlavorFactory;
 import trawel.towns.events.TownTag;
-import trawel.towns.fort.FortFeature;
-import trawel.towns.fort.FortHall;
-import trawel.towns.misc.Docks;
+import trawel.towns.features.fort.FortFeature;
+import trawel.towns.features.fort.FortHall;
+import trawel.towns.features.misc.Docks;
 
 /**
  * 
@@ -558,7 +559,7 @@ public class Town extends TContextOwner{
 		case LAND:
 			if (c.getType().startTime > 0) {
 				Player.addTime(c.getType().startTime);
-				mainGame.globalPassTime();
+				TrawelTime.globalPassTime();
 			}
 			if (mainGame.displayTravelText) {
 				extra.print("You start to travel to " + t.getName()+"... ");
@@ -568,25 +569,25 @@ public class Town extends TContextOwner{
 			}
 			double wayMark = extra.randFloat()*c.getRawTime();
 			Player.addTime(wayMark);
-			mainGame.globalPassTime();
+			TrawelTime.globalPassTime();
 			//will get interrupted at random time
 			if (extra.chanceIn(4,5+(int)Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
 				wander(threshold,0);
 			}
 			Player.addTime(c.getRawTime()-wayMark);
-			mainGame.globalPassTime();
+			TrawelTime.globalPassTime();
 			if (mainGame.displayTravelText) {
 				extra.println("You arrive in " + t.getName()+".");
 			}
 			if (c.getType().endTime > 0) {
 				Player.addTime(c.getType().endTime);
-				mainGame.globalPassTime();
+				TrawelTime.globalPassTime();
 			}
 			break;
 		case SEA:
 			if (c.getType().startTime > 0) {
 				Player.addTime(c.getType().startTime);
-				mainGame.globalPassTime();
+				TrawelTime.globalPassTime();
 			}
 			if (mainGame.displayTravelText) {
 				extra.print("You start to sail to " + t.getName() +"... ");
@@ -597,42 +598,42 @@ public class Town extends TContextOwner{
 			//will get interrupted at random time
 			double wayMarkS = extra.randFloat()*c.getRawTime();
 			Player.addTime(wayMarkS);
-			mainGame.globalPassTime();
+			TrawelTime.globalPassTime();
 			if (extra.chanceIn(4,5+(int)Player.player.getPerson().getBag().calculateDrawBaneFor(DrawBane.PROTECTIVE_WARD))) {
 				wander(threshold,1);
 			}
 			Player.addTime(c.getRawTime()-wayMarkS);
-			mainGame.globalPassTime();
+			TrawelTime.globalPassTime();
 			if (mainGame.displayTravelText) {
 				extra.println("You arrive in " + t.getName()+".");
 			}
 			if (c.getType().endTime > 0) {
 				Player.addTime(c.getType().endTime);
-				mainGame.globalPassTime();
+				TrawelTime.globalPassTime();
 			}
 			break;
 		case MAGIC:
 			if (c.getType().startTime > 0) {
 				Player.addTime(c.getType().startTime);
-				mainGame.globalPassTime();
+				TrawelTime.globalPassTime();
 			}
 			if (mainGame.displayTravelText) {
 				extra.println("You teleport to " + t.getName()+".");
 			}
 			Networking.sendStrong("PlayDelay|sound_teleport|1|");
 			Player.addTime(c.getRawTime());
-			mainGame.globalPassTime();
+			TrawelTime.globalPassTime();
 			//no land teleport message
 			if (c.getType().endTime > 0) {
 				Player.addTime(c.getType().endTime);
-				mainGame.globalPassTime();
+				TrawelTime.globalPassTime();
 			}
 			break;
 
 		}
 		Player.player.setLocation(t);
 		//need to pass time again since we might in a new world which would be behind
-		mainGame.globalTimeCatchUp();
+		TrawelTime.globalTimeCatchUp();
 		//this is only really an issue in teleport shops, but other connections technically can do this
 		//so it's not bad to be robust. note that this doesn't work in docks or forts right now
 	}

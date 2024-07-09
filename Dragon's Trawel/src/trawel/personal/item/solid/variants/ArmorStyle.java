@@ -8,8 +8,8 @@ import java.util.Set;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
-import trawel.extra;
 import trawel.personal.item.solid.Armor.ArmorQuality;
+import trawel.helper.methods.extra;
 import trawel.personal.item.solid.Material;
 import trawel.personal.item.solid.MaterialFactory;
 

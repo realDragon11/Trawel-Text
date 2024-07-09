@@ -5,7 +5,7 @@ import java.util.List;
 import rtrawel.battle.Party;
 import rtrawel.unit.RCore;
 import rtrawel.unit.RUnit;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class Church implements Content {
 

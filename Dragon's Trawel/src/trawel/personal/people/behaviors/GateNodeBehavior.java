@@ -3,12 +3,12 @@ package trawel.personal.people.behaviors;
 import java.util.List;
 
 import trawel.Networking;
-import trawel.extra;
+import trawel.helper.methods.extra;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
 import trawel.personal.people.Behavior;
 import trawel.time.TimeEvent;
-import trawel.towns.nodes.NodeFeature;
+import trawel.towns.features.nodes.NodeFeature;
 
 public class GateNodeBehavior extends Behavior {
 

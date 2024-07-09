@@ -1,6 +1,6 @@
 package trawel.personal.classless;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 import trawel.personal.Person;
 
 public class AttributeBox {

@@ -8,7 +8,7 @@ import rtrawel.unit.RPlayer;
 import rtrawel.unit.RUnit;
 import rtrawel.village.Village;
 import rtrawel.village.VillageFactory;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class TestRunner {
 	

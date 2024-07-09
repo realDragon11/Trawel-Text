@@ -4,14 +4,14 @@ import java.io.FileNotFoundException;
 import java.util.EnumSet;
 import java.util.Set;
 
-import trawel.Services;
-import trawel.extra;
 import trawel.battle.Combat;
 import trawel.battle.Combat.ATK_ResultType;
 import trawel.battle.Combat.AttackReturn;
 import trawel.battle.attacks.Attack;
 import trawel.battle.attacks.Stance;
 import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.helper.methods.Services;
+import trawel.helper.methods.extra;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.Item;

@@ -10,6 +10,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import trawel.battle.attacks.ImpairedAttack;
+import trawel.helper.methods.extra;
 import trawel.personal.item.Inventory;
 import trawel.personal.item.body.Race;
 import trawel.personal.item.body.Race.RaceType;

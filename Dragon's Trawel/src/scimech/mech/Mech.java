@@ -25,7 +25,7 @@ import scimech.mech.Systems.MenuSystem;
 import scimech.people.Pilot;
 import scimech.people.Trait;
 import scimech.people.TraitKeeper;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public abstract class Mech extends MechPart implements TurnSubscriber, Target, Savable{
 

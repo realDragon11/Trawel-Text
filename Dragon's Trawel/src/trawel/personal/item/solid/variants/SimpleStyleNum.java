@@ -1,6 +1,6 @@
 package trawel.personal.item.solid.variants;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public abstract class SimpleStyleNum implements StyleNum {
 

@@ -5,8 +5,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import trawel.extra;
 import trawel.battle.attacks.TargetFactory;
+import trawel.helper.methods.extra;
 import trawel.personal.RaceFactory;
 import trawel.personal.RaceFactory.RaceClass;
 import trawel.personal.RaceFactory.RaceID;

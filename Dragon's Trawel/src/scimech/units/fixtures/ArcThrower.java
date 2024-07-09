@@ -10,7 +10,7 @@ import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Fixture;
 import scimech.mech.TurnSubscriber;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class ArcThrower extends Fixture {
 

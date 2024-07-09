@@ -13,7 +13,7 @@ import scimech.units.fixtures.Mortar;
 import scimech.units.mounts.Blunderbuss;
 import scimech.units.systems.AblativeArmor;
 import scimech.units.systems.MiniReactor;
-import trawel.randomLists;
+import trawel.helper.methods.randomLists;
 
 public class Packrat extends Mech {
 

@@ -14,7 +14,7 @@ import scimech.units.systems.CoolantRod;
 import scimech.units.systems.FusionReactor;
 import scimech.units.systems.Plating;
 import scimech.units.systems.Ramjet;
-import trawel.randomLists;
+import trawel.helper.methods.randomLists;
 
 public class Pirate extends Mech {
 

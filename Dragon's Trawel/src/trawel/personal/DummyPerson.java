@@ -1,6 +1,5 @@
 package trawel.personal;
 
-import trawel.Effect;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.DummyInventory;
 

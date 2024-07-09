@@ -3,7 +3,7 @@ package derg;
 import java.util.Arrays;
 import java.util.List;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class SRPlainRandom extends StringNum {
 

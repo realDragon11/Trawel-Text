@@ -11,7 +11,7 @@ import scimech.units.fixtures.Clash;
 import scimech.units.mounts.Hoof;
 import scimech.units.systems.RacerFrame;
 import scimech.units.systems.UnshieldedCycleReactor;
-import trawel.randomLists;
+import trawel.helper.methods.randomLists;
 
 public class Seabiscuit extends Mech {
 

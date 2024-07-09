@@ -1,7 +1,7 @@
 package scimech.people;
 
-import trawel.extra;
-import trawel.randomLists;
+import trawel.helper.methods.extra;
+import trawel.helper.methods.randomLists;
 
 public class Pilot {
 

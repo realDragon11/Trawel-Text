@@ -2,10 +2,10 @@ package trawel.personal.classless;
 
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
-import trawel.Effect;
-import trawel.extra;
 import trawel.battle.attacks.AttackBonus;
-import trawel.helper.StringTip;
+import trawel.helper.constants.StringTip;
+import trawel.helper.methods.extra;
+import trawel.personal.Effect;
 import trawel.personal.Person;
 
 public enum Skill{

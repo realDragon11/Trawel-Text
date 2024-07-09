@@ -2,11 +2,11 @@ package trawel.personal.item;
 
 import java.awt.Color;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 import trawel.personal.item.magic.Enchant;
 import trawel.personal.item.solid.Material;
 import trawel.personal.people.Player;
-import trawel.towns.services.Store;
+import trawel.towns.features.services.Store;
 
 /**
  * 

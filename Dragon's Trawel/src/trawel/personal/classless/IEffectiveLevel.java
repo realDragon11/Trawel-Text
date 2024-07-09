@@ -1,6 +1,6 @@
 package trawel.personal.classless;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public interface IEffectiveLevel {
 

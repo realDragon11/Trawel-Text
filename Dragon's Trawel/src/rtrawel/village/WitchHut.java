@@ -5,7 +5,7 @@ import java.util.List;
 
 import rtrawel.EventFlag;
 import rtrawel.battle.Party;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class WitchHut implements Content {
 	

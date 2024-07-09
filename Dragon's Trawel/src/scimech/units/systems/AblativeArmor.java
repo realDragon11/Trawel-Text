@@ -8,7 +8,7 @@ import scimech.handlers.Savable;
 import scimech.mech.Corpo;
 import scimech.mech.Systems;
 import scimech.mech.TurnSubscriber;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class AblativeArmor extends Systems {
 

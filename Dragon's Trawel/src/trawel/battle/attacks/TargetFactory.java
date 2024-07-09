@@ -7,8 +7,8 @@ import java.util.regex.Pattern;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
-import trawel.extra;
 import trawel.battle.attacks.ImpairedAttack.DamageType;
+import trawel.helper.methods.extra;
 
 public class TargetFactory {
 

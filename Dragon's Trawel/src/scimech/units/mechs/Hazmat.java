@@ -18,7 +18,7 @@ import scimech.units.mounts.Pulsar;
 import scimech.units.systems.FusionReactor;
 import scimech.units.systems.InternalRepair;
 import scimech.units.systems.MiniReactor;
-import trawel.randomLists;
+import trawel.helper.methods.randomLists;
 
 public class Hazmat extends Mech {
 	

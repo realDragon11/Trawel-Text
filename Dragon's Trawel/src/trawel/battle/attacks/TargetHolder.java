@@ -3,10 +3,10 @@ package trawel.battle.attacks;
 import java.util.ArrayList;
 import java.util.List;
 
-import trawel.extra;
 import trawel.battle.attacks.TargetFactory.TargetType;
 import trawel.battle.attacks.TargetFactory.TypeBody;
 import trawel.battle.attacks.TargetFactory.TypeBody.TargetReturn;
+import trawel.helper.methods.extra;
 
 public class TargetHolder {
 	/**

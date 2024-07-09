@@ -13,7 +13,7 @@ import scimech.units.fixtures.LightAutocannon;
 import scimech.units.mounts.Blunderbuss;
 import scimech.units.mounts.Broadside;
 import scimech.units.systems.FusionReactor;
-import trawel.randomLists;
+import trawel.helper.methods.randomLists;
 
 public class Swashbuckler extends Mech {
 

@@ -2,7 +2,7 @@ package trawel.personal.item.solid;
 
 import com.github.yellowstonegames.core.WeightedTable;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public enum DrawBane {
 	//values:

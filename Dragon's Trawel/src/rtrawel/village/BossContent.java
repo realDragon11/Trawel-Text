@@ -1,7 +1,7 @@
 package rtrawel.village;
 
 import rtrawel.battle.Fight;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class BossContent implements Content{
 

@@ -2,23 +2,27 @@ package trawel.battle;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import trawel.AIClass;
-import trawel.Effect;
 import trawel.Networking;
-import trawel.extra;
+import trawel.Networking.BattleType;
 import trawel.mainGame;
-import trawel.randomLists;
+import trawel.arc.misc.Deaths;
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.TargetFactory;
 import trawel.battle.attacks.TargetFactory.BloodType;
 import trawel.battle.attacks.Wound;
 import trawel.factions.FBox;
+import trawel.factions.HostileTask;
+import trawel.helper.methods.extra;
+import trawel.helper.methods.randomLists;
+import trawel.personal.AIClass;
+import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.Person.PersonType;
@@ -28,6 +32,8 @@ import trawel.personal.classless.Skill;
 import trawel.personal.classless.SkillAttackConf;
 import trawel.personal.item.DummyInventory;
 import trawel.personal.item.Inventory;
+import trawel.personal.item.Item;
+import trawel.personal.item.body.Race;
 import trawel.personal.item.body.Race.RaceType;
 import trawel.personal.item.body.SoundBox;
 import trawel.personal.item.magic.EnchantHit;
@@ -37,10 +43,10 @@ import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
-import trawel.quests.CleanseSideQuest;
-import trawel.quests.Quest.TriggerType;
+import trawel.quests.types.CleanseSideQuest;
+import trawel.quests.types.Quest.TriggerType;
 import trawel.towns.World;
-import trawel.towns.fort.SubSkill;
+import trawel.towns.features.fort.SubSkill;
 /**
  * A combat holds some of the more battle-focused commands.
  * @author dragon
@@ -444,7 +450,7 @@ public class Combat {
 				if (p.isPlayer()) {
 					Networking.setBattle(Networking.BattleType.NORMAL);
 					playerIsInBattle = true;
-					mainGame.story.startFight(true);
+					Player.player.getStory().startFight(true);
 				}
 				p.battleSetup();
 				tempList.add(p);
@@ -2288,7 +2294,7 @@ public class Combat {
 				.replaceAll(quotedHP,person.inlineHPColor())
 				.replaceAll(quotedDefaultColor, normalColor);
 	}
-
+	
 	public static boolean hasNonNullBag(List<Person> people) {
 		for (Person p: people) {
 			Inventory bag = p.getBag();
@@ -2305,5 +2311,327 @@ public class Combat {
 		return true;
 	}
 	
+	/**
+	 * should only call in the wild if you want a duel with no adds or summons
+	 * @return combat
+	 */
+	public static Combat CombatTwo(Person first_man,Person second_man, World w) {
+		Person holdPerson;
+		boolean hasPlayer = false;
+		assert !second_man.isPlayer();
+		if (first_man.isPlayer()) {
+			first_man.getBag().graphicalDisplay(-1,first_man);
+			second_man.getBag().graphicalDisplay(1,second_man);
+			Networking.setBattle(Networking.BattleType.NORMAL);
+			Player.player.getStory().startFight(false);
+			extra.println("You are dueling " +second_man.getName()+".");
+			hasPlayer = true;
+		}else {
+			if (!extra.getPrint()) {
+				extra.println(first_man.getName()+" is dueling " +second_man.getName()+".");
+			}
+		}
 		
+		Combat c = new Combat(first_man,second_man, w);
+		
+		if (c.getNonSummonSurvivors().contains(second_man)) {
+			holdPerson = second_man;
+			second_man = first_man;
+			first_man = holdPerson;
+		}
+		
+		if (hasPlayer) {
+			//stop combat music
+			Networking.setBattle(Networking.BattleType.NONE);			
+		}
+	
+		first_man.addXp(second_man.getLevel());
+		
+		if (second_man.isPlayer()) {
+			first_man.addPlayerKill();
+			Player.addXp(extra.zeroOut((int) (first_man.getLevel()*Math.floor((first_man.getMaxHp()-first_man.getHp())/(first_man.getMaxHp())))));
+			Deaths.dieFight();
+			//clean up victor's graphics
+			Networking.clearSide(1);
+			
+			//player cannot be looted
+		}else{
+			//player didn't lose, if they were in fight
+			extra.println(first_man.getName() +" goes to loot " + second_man.getName() +".");
+			if (first_man.isPlayer()) {
+				AIClass.playerLoot(second_man.getBag(), true);
+				//clean up after looting
+				Networking.clearSide(1);
+			}else {
+				AIClass.loot(second_man.getBag(), first_man.getBag(), true,first_man,true);
+			}
+	
+			//micro optimization- the player didn't lose, and this is a duel
+			//so if this is true, first_man is the player
+			//this gets used a lot in the background so every bit helps
+			if (hasPlayer) {
+				Player.player.duel_wins++;
+				Networking.leaderboard("most_duel_wins", Player.player.duel_wins);
+				Networking.statAddUpload("duel_wins","total_duel_wins",1);
+				//only applies in true 1v1's
+				if (Player.player.duel_wins == 1) {
+					Player.player.addAchieve("dueling", "Dueler");
+				}
+				if (Player.player.duel_wins == 10) {
+					Player.player.addAchieve("dueling", "Duelist");
+				}
+				if (Player.player.duel_wins == 50) {
+					Player.player.addAchieve("dueling", "Veteran Duelist");
+				}
+				if (Player.player.duel_wins == 100) {
+					Player.player.addAchieve("dueling", "Master Duelist");
+				}
+				if (Player.player.duel_wins == 1000) {
+					Player.player.addAchieve("dueling", "Grandmaster Duelist");
+				}
+				//only player kill deaths are added since it will be assumed others will stick
+				second_man.addDeath();
+				if (second_man.getBag().getRace().racialType == Race.RaceType.PERSONABLE) {
+					//don't cheat death against not-player killers
+					int deaths = second_man.getDeaths();
+					int pKills = second_man.getPlayerKills();
+					//max revive chance decreases the more they die, even if they have infinite kills on you, to reduce annoyance
+					if (
+							(deaths == 1 && extra.randFloat() > .97)//~3% chance if this is our only death
+							|| (pKills > 0 && deaths < 4 && extra.chanceIn(Math.min((4*deaths)+pKills,(pKills*2)+1), pKills+(5*deaths)))
+							//killing the player is effective
+							//we can at most get a (X-1)/x chance
+							//can cheat death a max of 3 times
+							) {
+						w.addDeathCheater(second_man);//dupes don't happen since in this case the dupe is instantly removed in the wander code
+						second_man.hTask = HostileTask.REVENGE;
+					}
+				}
+				Player.player.getStory().winFight(false);
+			}
+		}
+	
+		//clean up effects in case they get reused
+		first_man.clearBattleEffects();
+		second_man.clearBattleEffects();
+	
+		return c;
+	}
+	
+	public static Combat HugeBattle(World w, List<List<Person>> people){
+		return Combat.HugeBattle(w,null,people,true);
+	}
+
+	public static Combat HugeBattle(World w,List<SkillCon> cons, List<List<Person>> people, boolean canLoot){
+		Combat battle = new Combat(w,cons,people);
+		Comparator<Person> levelSorter = new Comparator<Person>(){//sort in descending order
+			@Override
+			public int compare(Person arg0, Person arg1) {
+				if (arg0.getLevel() == arg1.getLevel()) {
+					//there can only be one player, multiplayer would need a bigger re-write
+					//player wins ties
+					if (arg0.isPlayer()) {
+						return 1;
+					}
+					if (arg1.isPlayer()) {
+						return -1;
+					}
+					return 0;
+				}
+				if (arg0.getLevel() < arg1.getLevel()) {
+					return -1;
+				}
+				return 1;
+			}
+	
+		};
+		List<Person> lives = battle.getAllSurvivors();
+		battle.killed.sort(levelSorter);
+		lives.sort(levelSorter);
+	
+	
+		int killLevelTotal = 0;
+		int winSide = -1;
+		int[] xpTotalList = new int[people.size()];
+		int[] xpDeadList = new int[people.size()];
+		int[] xpAverage = new int[people.size()];
+		int xpHighestKill = battle.killed.get(0).getLevel();
+		int xpHighestAverage = 0;//excludes winning side
+		int xpSideHigh = -1;
+		int xpLowestAverage = Integer.MAX_VALUE;//excludes winning side
+		int xpSideLow = -1;
+	
+		for (int i = people.size()-1;i >=0;i--) {
+			xpTotalList[i] = 0;
+			xpDeadList[i] = 0;
+			if (people.get(i).contains(lives.get(0))) {
+				winSide = i;
+			}
+			for (Person p: people.get(i)) {
+				int lvl = p.getLevel();
+				if (battle.killed.contains(p)) {
+					xpDeadList[i]+=lvl;
+				}
+				xpTotalList[i]=lvl;
+			}
+			xpAverage[i] = xpTotalList[i]/people.get(i).size();
+			if (i != winSide) {
+				if (xpAverage[i] <= xpLowestAverage) {
+					xpLowestAverage = xpAverage[i];
+					xpSideLow = i;
+				}
+				if (xpAverage[i] >= xpHighestAverage) {
+					xpHighestAverage = xpAverage[i];
+					xpSideHigh = i;
+				}
+				//we use >= and <= so that if they're all the same it will pick the last one for both, so we can compare xpSideHigh == xpSideLow for that
+			}
+		}
+	
+		assert winSide >= 0;
+		assert xpSideHigh >= 0;
+		assert xpSideLow >= 0;
+	
+	
+		int xpReward = xpHighestKill;//by default it's just the highest level of the killed list
+		boolean bypassLevelCap = false;
+		boolean playerIsLooting = false;
+		
+		if (people.size() == 2) {//if a XvX battle
+			assert xpSideHigh == xpSideLow;
+			if (people.get(winSide).size() == 1) {// if it was a 1vX
+				xpReward = xpDeadList[xpSideHigh];
+				if (xpAverage[winSide]-1 < xpHighestAverage) {//if it was a 1vX where average level of X side was at least winside level minus one
+					bypassLevelCap = true;
+					//the solo winner gets xp equal to total dead level instead of just the best one
+					//because the 1vX was roughly fair
+					//otherwise, still capped at their level to avoid kicking a bunch of level 1 wolves being good
+				}
+			}
+		}
+	
+		//NOTE: player does not get first pick unless they were highest level, they do win ties
+		lives = battle.getNonSummonSurvivors();//summons count for xp but not loot
+		for (Person surv: lives){
+			surv.clearBattleEffects();
+			int subReward = xpReward;
+			if (!bypassLevelCap && subReward > surv.getLevel()) {
+				subReward = surv.getLevel();
+			}
+			boolean isPlayer = surv.isPlayer();
+			if (isPlayer) {
+				Networking.setBattle(Networking.BattleType.NONE);
+				AIClass.playerStashOldItems();
+				playerIsLooting = true;
+			}
+			surv.addXp(subReward);
+			if (canLoot) {
+				for (Person kill: battle.killed) {
+					if (kill.isPlayer()) {
+						continue;//skip
+					}
+					if (kill.getFlag(PersonFlag.PLAYER_LOOT_ONLY) && !isPlayer) {
+						continue;//skip
+					}
+					if (isPlayer) {//if the surv examining this kill is the player
+						kill.getBag().graphicalDisplay(1,kill);
+						AIClass.playerLoot(kill.getBag(), false);
+						Networking.clearSide(1);
+					}else {
+						AIClass.loot(kill.getBag(),surv.getBag(),false,surv,true);
+					}
+				}
+				if (isPlayer && Player.player.getPerson().getFlag(PersonFlag.AUTOLOOT)) {
+					AIClass.playerDispLootChanges();
+				}
+			}
+	
+		}
+	
+		int gold = 0;
+		int aether = 0;
+		Item isell = null;
+		for (Person kill: battle.killed) {
+			kill.clearBattleEffects();
+			if (kill.isPlayer()) {
+				Networking.setBattle(Networking.BattleType.NONE);
+				Networking.clearSide(1);
+				Deaths.dieFight();
+				continue;
+			}
+			if (kill.getFlag(PersonFlag.PLAYER_LOOT_ONLY) && !playerIsLooting) {
+				continue;//skip
+			}
+			gold += kill.getBag().getGold();
+			aether += kill.getBag().getAether();
+			for (int i = 0;i<5;i++) {
+				isell = kill.getBag().getArmorSlot(i);
+				if (isell.canAetherLoot()) {
+					aether +=isell.getAetherValue();
+				}
+			}
+			isell = kill.getBag().getHand();
+			if (isell.canAetherLoot()) {
+				aether +=isell.getAetherValue();
+			}
+			//DOLATER: none of these people have their aether, money or items taken because it is assumed they won't be used again
+		}
+	
+		if (canLoot){
+			if (lives.size() > 1) {
+				List<Person> moneyLootList = new ArrayList<Person>();
+				for (Person p: lives) {
+					if (p.isPersonable() || p.getFlag(PersonFlag.HAS_WEALTH)) {
+						moneyLootList.add(p);
+					}
+				}
+				int giveGold = moneyLootList.size() > 0 ? gold/moneyLootList.size() : 0;
+				int giveAether = aether/lives.size();
+				if (!extra.getPrint()) {
+					if (giveGold > 0) {
+						extra.println("The remaining " +World.currentMoneyDisplay(gold) +" is divvied up, "+giveGold +" each.");
+					}
+					if (giveAether > 0) {
+						extra.println("The remaining " + aether +" aether is divvied up, "+giveAether +" each.");
+					}
+				}
+				
+				for (Person surv: lives){
+					if (giveGold > 0 && (surv.isPersonable() || surv.getFlag(PersonFlag.HAS_WEALTH))) {
+						surv.getBag().addGold(giveGold);
+					}
+					if (giveAether > 0) {
+						surv.getBag().addAether(giveAether);
+					}
+					if (surv.isPlayer()) {
+						Networking.setBattle(Networking.BattleType.NONE);
+						Networking.clearSide(1);
+						Player.player.getStory().winFight(true);
+					}
+				}
+			}else {
+				if (lives.size() > 0) {
+					Person looter = lives.get(0);
+					if (gold > 0 && (looter.isPersonable() || looter.getFlag(PersonFlag.HAS_WEALTH))) {
+						extra.println(looter.getName() + " claims the remaining " +World.currentMoneyDisplay(gold) +".");
+						looter.getBag().addGold(gold);
+					}
+					if (aether > 0) {
+						extra.println(looter.getName() + " claims the remaining " +aether +" aether.");
+						looter.getBag().addAether(aether);
+					}
+	
+					if (looter.isPlayer()) {
+						Networking.setBattle(Networking.BattleType.NONE);
+						Networking.clearSide(1);
+						Player.player.getStory().winFight(true);
+					}
+				}
+				//MAYBELATER: all that loot will get atom smashed for now
+			}
+		}
+	
+		battle.endaether = aether + (100 *gold);
+		return battle;
+	}
 }

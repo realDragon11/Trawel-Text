@@ -22,7 +22,7 @@ import rtrawel.jobs.PathFactory;
 import rtrawel.unit.RUnit.FightingStance;
 import rtrawel.unit.RUnit.RaceType;
 import rtrawel.village.RecipeFactory;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class RCore {
 

@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import trawel.extra;
 import trawel.battle.attacks.WeaponAttackFactory;
+import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill.Type;
 

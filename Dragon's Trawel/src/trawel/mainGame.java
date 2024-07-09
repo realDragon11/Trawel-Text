@@ -6,45 +6,33 @@ import java.io.FileWriter;
 import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
-import java.util.regex.Pattern;
-
 import derg.menus.MenuBack;
 import derg.menus.MenuGenerator;
-import derg.menus.MenuGeneratorPaged;
 import derg.menus.MenuItem;
-import derg.menus.MenuLast;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
-import save.SaveManager;
-import scimech.combat.MechCombat;
+import trawel.save.SaveManager;
 import scimech.handlers.SaveHandler;
-import scimech.mech.Mech;
-import scimech.people.Pilot;
-import scimech.units.mechs.DebugMech;
-import scimech.units.mechs.Dynamo;
-import scimech.units.mechs.Hazmat;
-import scimech.units.mechs.Musketeer;
-import scimech.units.mechs.Packrat;
-import scimech.units.mechs.Pirate;
-import scimech.units.mechs.Pyro;
-import scimech.units.mechs.Swashbuckler;
+import scimech.handlers.SciRunner;
 import trawel.Networking.ConnectType;
+import trawel.arc.misc.Changelog;
+import trawel.arc.story.Story;
+import trawel.arc.story.StoryNone;
+import trawel.arc.story.StoryTutorial;
 import trawel.battle.Combat;
-import trawel.battle.Combat.SkillCon;
 import trawel.battle.attacks.ImpairedAttack.DamageType;
 import trawel.battle.attacks.StyleFactory;
 import trawel.battle.attacks.TargetFactory;
 import trawel.battle.attacks.WeaponAttackFactory;
-import trawel.factions.HostileTask;
+import trawel.helper.methods.extra;
+import trawel.helper.methods.randomLists;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.RaceFactory;
@@ -52,8 +40,6 @@ import trawel.personal.classless.Archetype;
 import trawel.personal.classless.IHasSkills;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.DummyInventory;
-import trawel.personal.item.Item;
-import trawel.personal.item.body.Race;
 import trawel.personal.item.magic.EnchantConstant;
 import trawel.personal.item.solid.DrawBane;
 import trawel.personal.item.solid.Material;
@@ -62,12 +48,14 @@ import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponType;
 import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Player;
-import trawel.quests.QuestReactionFactory;
+import trawel.quests.events.BumperFactory;
+import trawel.quests.events.QuestReactionFactory;
+import trawel.time.TrawelTime;
 import trawel.towns.Calender;
 import trawel.towns.Town;
 import trawel.towns.World;
 import trawel.towns.events.TownFlavorFactory;
-import trawel.towns.services.Oracle;
+import trawel.towns.features.services.Oracle;
 /**
  * 
  * @author dragon
@@ -75,118 +63,6 @@ import trawel.towns.services.Oracle;
  * Entry point for compiled game.
  */
 public class mainGame {
-
-	//b__X is in development, b_X is the actual release of that version
-	public static final String VERSION_STRING = "v0.8.b__12";
-	public static final String VERSION_DATE = " updated July 4th 2024";
-	public static final String[][] changelog = new String[][] {
-		//add to front, changeviewer cycles to older ones when used
-		{"b_12",
-			//discuss beach and regrowing
-			"Beach added as a new Node Feature. The Beach contains a wide area broken into branches which contain Caves, gated Dungeons, and deeper Beaches. Clarity can be used to open Doors and Chests in Node Features, rounding out the attributes. Node regrowth has been patched and adjusted in Node Exploration features.",
-			//discuss drawbane changes
-			"The draw and bane effects of DrawBanes are capped at 5 total. Cloth hides wealth, blood requires more blood to trigger, and you can view blood, wealth, and daylight meters from the State subsection of the Inventory Player menu.",
-			//discuss people creation changes
-			"More types of NPCs can spawn with free bonus Feats or Archetypes, but more loot. AI Jobs (classes) now have preferred starting Archetypes, which makes them tend towards certain builds. Muggers now have two primary classes- Thieves and Thugs. Creatures can no longer learn new Archetypes after generation, restricting their Feat gain.",
-			//discuss graphical changes
-			"Added a second art set to the Graphical, along with some new sounds for unicorns. This new art set is planned to fully replace the current one in time, and has been changed to the default."
-		},
-		{"b_11",
-			//discuss magic overall
-			"Magic skill stances have all been buffed to around iron tier damage. Some of the attacks have also had bonus effects added. In the future, more bonus effects might be added, or their damage further buffed, depending on the direction magic stances go in, but this should make them playable for now.",
-			//discuss wound changes
-			"Most wounds now inflict more damage and penalties, getting a large overhaul. Sharp wounds focus on damage or attacking quickly, Pierce wounds focus on impairing your target, and Blunt/Ignite/Frost/Shock wounds have a mix. The chances of rolling each type of wound have also been adjusted to lean into this.",
-			//discuss material changes
-			"High end materials had their stats lowered and were given tradeoffs. Mythril has lower defense stats but remains all around solid and enchantable. Adamantine lose some enchant chance and resist, especially blunt resist. Sunsteel was brought up to adamantine levels, but remains unenchantable. Solar Gold gained some more blunt resist.",
-			//discuss curse changes
-			"Curse inflicting skills have been replaced. Normal NPCs can no longer inflict curse, which should lessen doctor visits. Doctors no longer cure Tired and Bees, but the Wounded punishment effect was added in some places where the Damaged effect was used prior.",
-			//discuss new skillstuff
-			"Slowstart now allows selecting Feats, not just Archetypes. Misc New Skills: Fetid Fumes, Fever Strike, No Quarter, Bulk, Big Bag, Press Advantage, Runesmith, Runic Blast, Open Vein, Living Armor, Aggress Parry, Salvage, Chef, Ignite Boost, Frost Boost, Elec Boost; Misc New Feats: Heavyweight, Swift, Cocooned; Misc New Archetypes: Rune Blade, Cut Throat, Comestible Critic.",
-			//discuss drawbane bag changes
-			"Increased drawbane inventory size to 5 base and the Big Bag skill increases it to 8. Feat Fragments no longer take up space.",
-			//discuss attribute changes
-			"Strength no longer doubles up on physical damage bonus. Clarity now applies as an elemental damage multiplier.",
-			//discuss new exploration content
-			"Sky Cult added to Mountains. Locked Doors now require an attribute contest to open, and on failure you have Burnout applied.",
-			"Some bumpers now steal currency from you on loss against them. Gems have been tweaked in rarity, Rubies are also granted as a gift for killing bosses in nodes.",
-		},
-		{"b_10 hotfixes",
-			"pouch swap rejection crash, dryad refight crash, dungeon regrow wrong checkpoint type, more perks have attributes, buffed magic attacks and some related archetypes and feats.",
-			"fixed fort menu crashes, improved timeevent error reporting.",
-			"increased world currency amount for most humanoid NPCs, attempted to fix dungeon party crash, fixed Inn rent waiting and let you rent more if you have less than 1 month left.",
-		},
-		{"b_10",
-			"You can travel through multiple towns at the same time by using the Compass from your Map, in your Inventory. This can result in multiple random encounters.",
-			"Curse, Tired, Damaged, and Bees are now punishment longer lasting effects. Tired can be cured when resting, Bees can be cured by entering water. Curse is still cured at Doctors, which heals everything but Damaged. Damaged requires Blacksmith repairs. These effects will be used to give a downside to failing Attribute checks, so they're not just free rewards with no consequences.",
-			"This punishment system can be seen in the 'Trapped Treasure Chambers' in Mines and Dungeons, which have their own small set of traps and mechanics for those that would seek to loot them. Failing checks applies Burnout which prevents further ones until you rest or cure. Rolls that aren't prevented (such as mountain rocks) have their attributes halved.",
-			"Aether is now used entirely for buying/selling equipment. Drawbanes still use World Currency. Enchanters no longer let you sell aether. This changes are meant to make each currency serve a purpose and let them be more common without dealing with exchanging balancing problems.",
-			"Added Drudger, Fell, Monster, and Animal Cleanse Quests. Almost all targets will award progress if encountered in Node Explorations or other features as well, with some exceptions for mooks. Some fightable hunters now reward Amber when looted. Witch Huts have more Collect targets.",
-			"Random encounter frequency was bugged, is now a lot more common. Vampires and some other Bumpers will appear less during the daytime. Bandits will prefer money, not just valuable metals. Removed most bumper level requirements, and updated wolf pack with player allies. There are more Primal Deathcheater types.",
-			"The first Node in Features will not have forced combat, and the first two layers will have less free loot and less obstacle fights.",
-			"log.txt has full stack trace. Updated tutorial's feature explanations and list of world perks. Mines now properly weight their contents. Graveyard's Nightvison behavior has been fixed. Connection failure message will only play once, after 10 seconds.",
-			"Some less prominent bugfixes can be found in the Steam patch notes and github commit history.",
-		},
-		{"b_9",
-			"Expanded Bag items can now be melted down into aether from player menu or if Bag is full when looting. 'Really Attack' prompts give the option to examine the Person's inventory.",
-			"Plant Spots, Drawbanes, and Alchemy have recieved interconnected improvements, most notably a few extra potion combos. Altars now can have Forest blessings. Traveling features have new special behavior, and you can rent rooms at Inns.",
-			"Added the Enchanter Town Feature, which can enchant or improve enchantments on Weapons and Armor. It can also allow you to sell Aether for World Currency. The Blacksmith can now temper armor to remove negative traits at the cost of Amber Gems.",
-			"Changed internal Sidequest code to save properly, tweaked quest generation behavior, added quests to the Rogue, Hero, and new Hunter's guild. Added more Quest Reactions.",
-			"Increased positive reputation gain from combat, decreased negative gain. Added Amber as the Hunter's gem, and updated world currency/gem costs and rewards.",
-			"Adjusted Wounds, importantly adding more elemental wounds.",
-			"Added more Classless Skills and Feats: Beer Belly, Deadly Aim, Glutton, Life Mage, Shaman, Potion Chugger.",
-			"Expanded Greap worldgen map, filling out some more towns and adding many town locations. Route types have been expanded to include caravans and lesser traveled paths, which have different travel speeds and NPC interests.",
-			"Added Simplified attack display style, moved attack notes from Combat Debug to its own option.",
-		},
-		{"b_8",
-			"Added a wait option to Arenas and prevented giant time chunks by accident, made Arenas fight without the player and have the winners move on after enough training. Players always get a new fighter in their first round (so entirely for 1 round titles), but more rounds are done entirely naturally now, potentially drawing from survivors.",
-			"Updated Lot menu, standardized collecting earned money from built Features. Features can now have intro/outro text, which can be turned off as a display option. Node Features now have autosave enabled while exploring them, and saves once again use a different date format.",
-			"Created unique stances for Fish Anchor, Fish Spear, and Lance which all used other weapon stances as placeholders since the weapon updates. Two stances still need migration. Grazes have been renamed Negates and Graze is now used to indicate no rolled wound. Armor Quality value and fitness updated, which mostly matters for AI, as well as Weapon Quality price.",
-			"Cleaned up Wound/Effect/Tactic text and code, added a few new Skills. Archetypes now grant more skills, as well as stats. Some new archetypes were added.",
-			"More insults added to species, materials with extreme outlier elemental stats reigned in.",
-		},
-		{"b_7",
-			"Nodes display inward/outward to indicate going deeper or closer to the entrance (in most cases, ultimately its merely a 'floor' counter).",
-			"Updated to Kryo serialization, Java 8 to Java 17 migration failed. ",
-		},
-		{"b_6",
-			"Updated stat displays and item 'higher/lower is better' displays. Tutorial text separated from 'feature description' text.",
-			"Added many new towns to the Eoano WorldGen, and fluffed up the lore and flavor of existing towns as well. Species store re-added to Arona. Most bosses are now non-unique in that you don't have only one option if you want their Perk. Ancient Queen boss added to new island.",
-			"Cleaned up Greap WorldGen, although it is still not a complete world.",
-			"Some Features got larger improvements as part of the WorldGen updates: Districts now can house sub-stores. Gardens now start filled, and refill over time, and their changes in growth speed are more distinct for worldgen gardens. Several node features had changes to what nodes are likely to generate in them, and also their levels, which now display as a range when viewing from the town. Added Forest Altar, making altars now be dedicated to different primal forces.",
-			"Some titles were changed, others were added. Steam version gained several new leaderboards and achievements.",
-		},
-		{"b_5",
-			"You can now recruit adventurers in certain dungeons. All other dungeons had their mass battles removed. In 'dangerous' dungeons, these adventurers will assist you in the 'high security' checkpoints, and against the boss. Currently this is just the Tower of Fate and the Fatespinner. They will get a share of the loot, and if higher level than you, might get first pick. They will not be interested in joining you if they are 2 or more levels higher. They will not revive on death, and will leave if you do not visit the dungeon for a while. Fighting with them will make them take longer to leave than just visiting will.",
-			"Passive population migration has been fixed and tweaked, now if you play close attention you might be able to see persons moving from town to town. They have a slight preference to move towards towns with Inns, but also to not overcrowd a town past what its features can support.",
-			"All Features and Nodes now have updated behavior to update the background in the legacy graphical, and often fall back to different art now, since not all of it was made. (Same as the treatment armor, people, and weapons got). The 'examine closely' for weapons has been improved, and armor qualities also appear in world again, with slightly different functionalities.",
-			"Necks and Heads best damage mult is 2.5x damage instead of 3x, reducing the 'neck meta' of AI's absurd alpha strikes.",
-		},
-		{"b_4",
-			"Added 'back out' option to terminal (graphical will get it when it gets other updates). Added a few new display options, check the reduced indicator menu again, and also various 'realtime waiting' options. Added 'tactics' which are persistent action options in combat that don't deal damage (requires skills), and also some skill stances which apply a tactic effect and also a normal attack.",
-			"Changed up condition wounds a fair bit, turning them into an injury system to constrast the typically short-lived nature of normal wounds in combat. Getting brained or shattered can hurt quite a bit. A boss, 'Yore' was also added to the Dungeon of Fate, with a new battle condition-based dungeon mechanic. Baron of Hell also got a demon bodytype, and cloth was turned into patchwork, linen, and cotton.",
-			"Added a 'pouch/bag' feature to store equipment, currently works quite well outside of making room for things you're not currently comparing. You menu reforged into 'Player' menu, which can save in Nodes now. Includes character-exclusive settings like autolevel, autoloot, and autobattle.",
-			"Enchanced compass into a full map, with directions to any visited town (and always Unun), and also town flavor in that menu, in addition to population and feature counts, timezone, etc. Display current time in hours and minutes in town menu. Society Titles have been expanded.",
-		},
-		{"b_3",
-			"Tutorial mostly moved from 'feature text' to 'story'. Added saveable display options. Known issues: combat town Features need another cleanup with the new currency, mass battles have some balancing issues if they have an un-even number of fighters.",
-			"Subtle changes to battle conditions. Effective level added, so level 2 is only a flat +10% better, not 2x better, which each further level being another +10% (level 3 is 1.3x mult, because level 1 is 1.1x). Stat tweaks on most species, some non-'personable' creatures now have barks and can loot money.",
-			"Many town Feature mechanics had small tweaks, Brewing being the most visible in regards to how DrawBanes are talked about, and once again Merchant Guild prices, Fort Hall prices, and the more one-off Doctor prices. 'Highest Contribution' battlescore stat got split into the more sensible 'highest and lowest % deviation from average', which can show the extremes in attack balance a weapon has, for example a gold weapon being good at slapping but nothing else.",
-		},
-		{"b_2",
-			"Attack backend changes became frontend changes for weapons, which now have different stat displays. This also made armor and dodging actual things again, before their average stats were a bit too low, now the forumlas have been re-tested and remade. 'classless' system (essentially multiclassing but with many multis) has born fruit, you can now use the replacement system, although it still has a long ways to go.",
-			"If you want to pick your own Archetype to start with, use slowstart, otherwise it will pick a random one. Note that some require additional setup of their magic attacks. Nodes areas and ports also received complete overhauls, and much of the update development time was spent making Trawel run again after breaking nodes to improve them. Various small features, including witch huts, slums, and world generation also got less major updates and fixes.",
-			"Some changes were made but not enough to have anything to show, for example summons should work, (which is a far cry from Trawel in 2019, where the concept of a 3 person fight was unthinkable) but there are no skills that summon any creatures yet.",
-		},
-		{"b_1",
-			"base attack code reworked in basically every way. currency divided. threading added (nothreads is an arg), time passing redone. Node exploration mostly same but had entire backend update. Locational damage exists but does little at the moment."
-		},
-		{"Notes",
-			"End of current beta ingame changelog. Check the Github and Steam for prior updates and more detailed notes."
-		}
-	};
-	public static int changelogViewerIndex = 1;
-	public static int changelogViewerVersion = 0;
-
 	public static Scanner scanner = new Scanner(System.in);
 
 	public static boolean debug = false;
@@ -200,8 +76,6 @@ public class mainGame {
 	public static boolean headless = false;
 
 	public static boolean GUIInput = true;
-
-	public static Story story = null;
 
 	public static Date lastAutoSave = new Date();
 
@@ -317,11 +191,11 @@ public class mainGame {
 						forceSetup();
 						Networking.clearSides();
 						for (int i = 1; i < 9; i++) {
-							extra.println(i+" slot: "+WorldGen.checkNameInFile(""+i));
+							extra.println(i+" slot: "+SaveManager.checkNameInFile(""+i));
 						}
-						extra.println("9 autosave: "+WorldGen.checkNameInFile("auto"));
+						extra.println("9 autosave: "+SaveManager.checkNameInFile("auto"));
 						int in = extra.inInt(9);
-						WorldGen.load(in == 9 ? "auto" : in+"");
+						SaveManager.load(in == 9 ? "auto" : in+"");
 						boolean runit;
 						try {
 							Player.player.getPerson();
@@ -334,46 +208,7 @@ public class mainGame {
 						}
 						return false;
 					}});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "Changelog";
-					}
-
-					@Override
-					public boolean go() {
-						changelog: do {
-							extra.println(changelog[changelogViewerVersion][0]
-									+ " part "+changelogViewerIndex+"/"+(changelog[changelogViewerVersion].length-1) +": "
-									+ changelog[changelogViewerVersion][changelogViewerIndex]);
-							//log = log.replace("@", "{part "+(1+changelogViewerIndex)+"/"+changelog[changelogViewerVersion].length+"}");
-							
-							extra.println("1 "+(changelogViewerIndex == changelog[changelogViewerVersion].length-1 ? "Next." : "More."));
-							extra.println("2 Next update.");
-							extra.println("9 Back.");
-							switch (extra.inInt(2,true, true)) {
-							case 1:
-								changelogViewerIndex++;
-								if (changelogViewerIndex >= changelog[changelogViewerVersion].length) {
-									changelogViewerIndex = 1;
-									changelogViewerVersion++;
-									changelogViewerVersion%=changelog.length;
-								}
-								break;
-							case 2:
-								changelogViewerIndex = 1;
-								changelogViewerVersion++;
-								changelogViewerVersion%=changelog.length;
-								break;
-							default: case 9:
-								break changelog;
-									
-							}
-						}while(true);
-						
-						return false;
-					}});
+				mList.add(Changelog.getMenu());
 				mList.add(new MenuLine() {
 
 					@Override
@@ -1172,7 +1007,6 @@ public class mainGame {
 			new TownFlavorFactory();
 			new QuestReactionFactory();
 			//WorldGen.initDummyInvs();
-			story = new StoryNone();
 			DummyInventory.dummyAttackInv = new DummyInventory();
 			SaveManager.trawelRegisterFury();
 			basicSetup1 = true;
@@ -1266,21 +1100,7 @@ public class mainGame {
 									public boolean go() {
 										SaveHandler.clean();
 										while (true) {
-											extra.println("Choose your mechs");
-											List<Mech> mechs = mechsForSide(true);
-											extra.println("Save mechs?");
-											if (extra.yesNo()) {
-												SaveHandler.clean();
-												SaveHandler.imprintMechs(mechs);
-												SaveHandler.save();
-											}
-											extra.println("Choose their mechs");
-											mechs.addAll(mechsForSide(false));
-
-											MechCombat mc = new MechCombat(mechs);
-											mc.go();
-
-											extra.println(mc.activeMechs.get(0).playerControlled == true ? "You win!" : "You lose!"+ "\n Would you like the quit?");
+											extra.println(SciRunner.playProto() ? "You win!" : "You lose!"+ "\n Would you like the quit?");
 											if (extra.yesNo()) {
 												return true;
 											}
@@ -1395,122 +1215,14 @@ public class mainGame {
 		});
 	}
 
-	private static List<Mech> curMechs;
-
-
-	private static List<Mech> mechsForSide(boolean side){
-		extra.menuGoPaged(new MenuGeneratorPaged(){
-
-			@Override
-			public List<MenuItem> gen() {
-				List<MenuItem> mList = new ArrayList<MenuItem>();
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "load mechs (??? complexity)";
-					}
-
-					@Override
-					public boolean go() {
-						curMechs = SaveHandler.exportMechs();
-						for (Mech m: curMechs) {
-							m.playerControlled = side;
-							m.swapPilot(new Pilot());
-						}
-						return true;
-					}});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "debug mechs (70x2 complexity)";
-					}
-
-					@Override
-					public boolean go() {
-						curMechs = debugMechs(side);
-						return true;
-					}});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "three musketeers (80x3 complexity)";
-					}
-
-					@Override
-					public boolean go() {
-						curMechs = threeMusketeers(side);
-						return true;
-					}});
-
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "pirate squad (80x3 complexity)";
-					}
-
-					@Override
-					public boolean go() {
-						curMechs = pirateSquad(side);
-						return true;
-					}});
-				mList.add(new MenuSelect() {
-
-					@Override
-					public String title() {
-						return "science squad (120x3 complexity)";
-					}
-
-					@Override
-					public boolean go() {
-						curMechs = scienceSquad(side);
-						return true;
-					}});
-				return mList;
-			}});
-
-		return curMechs;
-	}
-
-	private static List<Mech> debugMechs(boolean side){
-		List<Mech> mechs = new ArrayList<Mech>();
-		mechs.add(new DebugMech(side));
-		mechs.add(new DebugMech(side));
-		return mechs;
-	}
-
-	private static List<Mech> threeMusketeers(boolean side){
-		List<Mech> mechs = new ArrayList<Mech>();
-		mechs.add(new Musketeer(side));
-		mechs.add(new Musketeer(side));
-		mechs.add(new Musketeer(side));
-		return mechs;
-	}
-
-	private static List<Mech> pirateSquad(boolean side){
-		List<Mech> mechs = new ArrayList<Mech>();
-		mechs.add(new Swashbuckler(side));
-		mechs.add(new Packrat(side));
-		mechs.add(new Pirate(side));
-		return mechs;
-	}
-
-	private static List<Mech> scienceSquad(boolean side){
-		List<Mech> mechs = new ArrayList<Mech>();
-		mechs.add(new Dynamo(side));
-		mechs.add(new Pyro(side));
-		mechs.add(new Hazmat(side));
-		return mechs;
-	}
+	
 
 	private static void modelMode() {
 		forceSetup();
-		Person manOne;
-		manOne = RaceFactory.makeOld(2);//new Person(starting_level,false,Race.RaceType.HUMANOID,null);
-		new Player(manOne);
+		Person model;
+		model = RaceFactory.makeOld(2);//new Person(starting_level,false,Race.RaceType.HUMANOID,null);
+		Player player = new Player();
+		player.setPerson(model);
 		Player.bag.swapWeapon(new Weapon(1,WeaponType.AXE));
 		//Player.bag.getHand().forceEnchantHit(0);
 		/*
@@ -1519,14 +1231,14 @@ public class mainGame {
 			 player.bag.swapArmorSlot(new Armor(1,2,MaterialFactory.getMat("emerald")),2);
 			 player.bag.swapArmorSlot(new Armor(1,3,MaterialFactory.getMat("emerald")),3);
 			 player.bag.swapArmorSlot(new Armor(1,4,MaterialFactory.getMat("emerald")),4);*/
-		manOne.setPlayer();
+		model.setPlayer();
 		Networking.charUpdate();
 		extra.yesNo();
 
 	}
 
 	public static String headerText() {
-		return ("Dragon's Trawel "+VERSION_STRING+VERSION_DATE)+"\r\n"+
+		return ("Dragon's Trawel "+Changelog.VERSION_STRING+Changelog.VERSION_DATE)+"\r\n"+
 			(
 			        " ___________  ___  _    _ _____ _     \r\n" + 
 					"|_   _| ___ \\/ _ \\| |  | |  ___| |    \r\n" + 
@@ -1597,7 +1309,6 @@ public class mainGame {
 
 			}
 			
-			
 			new Networking();
 
 			prefs = new Properties();
@@ -1656,7 +1367,7 @@ public class mainGame {
 			if (autoConnect) {
 				System.out.println("Please wait for the graphical to load...");
 				Networking.handleAnyConnection(legacyConnect ? ConnectType.LEGACY : ConnectType.GDX);
-				extra.println("Trawel, Gameplay Version "+VERSION_STRING+VERSION_DATE);
+				extra.println("Trawel, Gameplay Version "+Changelog.VERSION_STRING+Changelog.VERSION_DATE);
 			}
 		}catch(Exception e) {
 			System.out.println("There was an error when setting up Trawel.");
@@ -1705,334 +1416,6 @@ public class mainGame {
 		extra.println("Error Preview: "+ e.toString());
 	}
 
-
-	//instance methods
-
-
-	/**
-	 * should only call in the wild if you want a duel with no adds or summons
-	 * @return combat
-	 */
-	public static Combat CombatTwo(Person first_man,Person second_man, World w) {
-		Person holdPerson;
-		boolean hasPlayer = false;
-		assert !second_man.isPlayer();
-		if (first_man.isPlayer()) {
-			first_man.getBag().graphicalDisplay(-1,first_man);
-			second_man.getBag().graphicalDisplay(1,second_man);
-			Networking.setBattle(Networking.BattleType.NORMAL);
-			story.startFight(false);
-			extra.println("You are dueling " +second_man.getName()+".");
-			hasPlayer = true;
-		}else {
-			if (!extra.getPrint()) {
-				extra.println(first_man.getName()+" is dueling " +second_man.getName()+".");
-			}
-		}
-		
-		Combat c = new Combat(first_man,second_man, w);
-		
-		if (c.getNonSummonSurvivors().contains(second_man)) {
-			holdPerson = second_man;
-			second_man = first_man;
-			first_man = holdPerson;
-		}
-		
-		if (hasPlayer) {
-			//stop combat music
-			Networking.setBattle(Networking.BattleType.NONE);			
-		}
-
-		first_man.addXp(second_man.getLevel());
-		
-		if (second_man.isPlayer()) {
-			first_man.addPlayerKill();
-			Player.addXp(extra.zeroOut((int) (first_man.getLevel()*Math.floor((first_man.getMaxHp()-first_man.getHp())/(first_man.getMaxHp())))));
-			dieFight();
-			//clean up victor's graphics
-			Networking.clearSide(1);
-			
-			//player cannot be looted
-		}else{
-			//player didn't lose, if they were in fight
-			extra.println(first_man.getName() +" goes to loot " + second_man.getName() +".");
-			if (first_man.isPlayer()) {
-				AIClass.playerLoot(second_man.getBag(), true);
-				//clean up after looting
-				Networking.clearSide(1);
-			}else {
-				AIClass.loot(second_man.getBag(), first_man.getBag(), true,first_man,true);
-			}
-	
-			//micro optimization- the player didn't lose, and this is a duel
-			//so if this is true, first_man is the player
-			//this gets used a lot in the background so every bit helps
-			if (hasPlayer) {
-				Player.player.duel_wins++;
-				Networking.leaderboard("most_duel_wins", Player.player.duel_wins);
-				Networking.statAddUpload("duel_wins","total_duel_wins",1);
-				//only applies in true 1v1's
-				if (Player.player.duel_wins == 1) {
-					Player.player.addAchieve("dueling", "Dueler");
-				}
-				if (Player.player.duel_wins == 10) {
-					Player.player.addAchieve("dueling", "Duelist");
-				}
-				if (Player.player.duel_wins == 50) {
-					Player.player.addAchieve("dueling", "Veteran Duelist");
-				}
-				if (Player.player.duel_wins == 100) {
-					Player.player.addAchieve("dueling", "Master Duelist");
-				}
-				if (Player.player.duel_wins == 1000) {
-					Player.player.addAchieve("dueling", "Grandmaster Duelist");
-				}
-				//only player kill deaths are added since it will be assumed others will stick
-				second_man.addDeath();
-				if (second_man.getBag().getRace().racialType == Race.RaceType.PERSONABLE) {
-					//don't cheat death against not-player killers
-					int deaths = second_man.getDeaths();
-					int pKills = second_man.getPlayerKills();
-					//max revive chance decreases the more they die, even if they have infinite kills on you, to reduce annoyance
-					if (
-							(deaths == 1 && extra.randFloat() > .97)//~3% chance if this is our only death
-							|| (pKills > 0 && deaths < 4 && extra.chanceIn(Math.min((4*deaths)+pKills,(pKills*2)+1), pKills+(5*deaths)))
-							//killing the player is effective
-							//we can at most get a (X-1)/x chance
-							//can cheat death a max of 3 times
-							) {
-						w.addDeathCheater(second_man);//dupes don't happen since in this case the dupe is instantly removed in the wander code
-						second_man.hTask = HostileTask.REVENGE;
-					}
-				}
-				story.winFight(false);
-			}
-		}
-
-		//clean up effects in case they get reused
-		first_man.clearBattleEffects();
-		second_man.clearBattleEffects();
-
-		return c;
-	}
-
-	public static Combat HugeBattle(World w, List<List<Person>> people){
-		return HugeBattle(w,null,people,true);
-	}
-
-	public static Combat HugeBattle(World w,List<SkillCon> cons, List<List<Person>> people, boolean canLoot){
-		Combat battle = new Combat(w,cons,people);
-		Comparator<Person> levelSorter = new Comparator<Person>(){//sort in descending order
-			@Override
-			public int compare(Person arg0, Person arg1) {
-				if (arg0.getLevel() == arg1.getLevel()) {
-					//there can only be one player, multiplayer would need a bigger re-write
-					//player wins ties
-					if (arg0.isPlayer()) {
-						return 1;
-					}
-					if (arg1.isPlayer()) {
-						return -1;
-					}
-					return 0;
-				}
-				if (arg0.getLevel() < arg1.getLevel()) {
-					return -1;
-				}
-				return 1;
-			}
-
-		};
-		List<Person> lives = battle.getAllSurvivors();
-		battle.killed.sort(levelSorter);
-		lives.sort(levelSorter);
-
-
-		int killLevelTotal = 0;
-		int winSide = -1;
-		int[] xpTotalList = new int[people.size()];
-		int[] xpDeadList = new int[people.size()];
-		int[] xpAverage = new int[people.size()];
-		int xpHighestKill = battle.killed.get(0).getLevel();
-		int xpHighestAverage = 0;//excludes winning side
-		int xpSideHigh = -1;
-		int xpLowestAverage = Integer.MAX_VALUE;//excludes winning side
-		int xpSideLow = -1;
-
-		for (int i = people.size()-1;i >=0;i--) {
-			xpTotalList[i] = 0;
-			xpDeadList[i] = 0;
-			if (people.get(i).contains(lives.get(0))) {
-				winSide = i;
-			}
-			for (Person p: people.get(i)) {
-				int lvl = p.getLevel();
-				if (battle.killed.contains(p)) {
-					xpDeadList[i]+=lvl;
-				}
-				xpTotalList[i]=lvl;
-			}
-			xpAverage[i] = xpTotalList[i]/people.get(i).size();
-			if (i != winSide) {
-				if (xpAverage[i] <= xpLowestAverage) {
-					xpLowestAverage = xpAverage[i];
-					xpSideLow = i;
-				}
-				if (xpAverage[i] >= xpHighestAverage) {
-					xpHighestAverage = xpAverage[i];
-					xpSideHigh = i;
-				}
-				//we use >= and <= so that if they're all the same it will pick the last one for both, so we can compare xpSideHigh == xpSideLow for that
-			}
-		}
-
-		assert winSide >= 0;
-		assert xpSideHigh >= 0;
-		assert xpSideLow >= 0;
-
-
-		int xpReward = xpHighestKill;//by default it's just the highest level of the killed list
-		boolean bypassLevelCap = false;
-		boolean playerIsLooting = false;
-		
-		if (people.size() == 2) {//if a XvX battle
-			assert xpSideHigh == xpSideLow;
-			if (people.get(winSide).size() == 1) {// if it was a 1vX
-				xpReward = xpDeadList[xpSideHigh];
-				if (xpAverage[winSide]-1 < xpHighestAverage) {//if it was a 1vX where average level of X side was at least winside level minus one
-					bypassLevelCap = true;
-					//the solo winner gets xp equal to total dead level instead of just the best one
-					//because the 1vX was roughly fair
-					//otherwise, still capped at their level to avoid kicking a bunch of level 1 wolves being good
-				}
-			}
-		}
-
-		//NOTE: player does not get first pick unless they were highest level, they do win ties
-		lives = battle.getNonSummonSurvivors();//summons count for xp but not loot
-		for (Person surv: lives){
-			surv.clearBattleEffects();
-			int subReward = xpReward;
-			if (!bypassLevelCap && subReward > surv.getLevel()) {
-				subReward = surv.getLevel();
-			}
-			boolean isPlayer = surv.isPlayer();
-			if (isPlayer) {
-				Networking.setBattle(Networking.BattleType.NONE);
-				AIClass.playerStashOldItems();
-				playerIsLooting = true;
-			}
-			surv.addXp(subReward);
-			if (canLoot) {
-				for (Person kill: battle.killed) {
-					if (kill.isPlayer()) {
-						continue;//skip
-					}
-					if (kill.getFlag(PersonFlag.PLAYER_LOOT_ONLY) && !isPlayer) {
-						continue;//skip
-					}
-					if (isPlayer) {//if the surv examining this kill is the player
-						kill.getBag().graphicalDisplay(1,kill);
-						AIClass.playerLoot(kill.getBag(), false);
-						Networking.clearSide(1);
-					}else {
-						AIClass.loot(kill.getBag(),surv.getBag(),false,surv,true);
-					}
-				}
-				if (isPlayer && Player.player.getPerson().getFlag(PersonFlag.AUTOLOOT)) {
-					AIClass.playerDispLootChanges();
-				}
-			}
-
-		}
-
-		int gold = 0;
-		int aether = 0;
-		Item isell = null;
-		for (Person kill: battle.killed) {
-			kill.clearBattleEffects();
-			if (kill.isPlayer()) {
-				Networking.setBattle(Networking.BattleType.NONE);
-				Networking.clearSide(1);
-				dieFight();
-				continue;
-			}
-			if (kill.getFlag(PersonFlag.PLAYER_LOOT_ONLY) && !playerIsLooting) {
-				continue;//skip
-			}
-			gold += kill.getBag().getGold();
-			aether += kill.getBag().getAether();
-			for (int i = 0;i<5;i++) {
-				isell = kill.getBag().getArmorSlot(i);
-				if (isell.canAetherLoot()) {
-					aether +=isell.getAetherValue();
-				}
-			}
-			isell = kill.getBag().getHand();
-			if (isell.canAetherLoot()) {
-				aether +=isell.getAetherValue();
-			}
-			//DOLATER: none of these people have their aether, money or items taken because it is assumed they won't be used again
-		}
-
-		if (canLoot){
-			if (lives.size() > 1) {
-				List<Person> moneyLootList = new ArrayList<Person>();
-				for (Person p: lives) {
-					if (p.isPersonable() || p.getFlag(PersonFlag.HAS_WEALTH)) {
-						moneyLootList.add(p);
-					}
-				}
-				int giveGold = moneyLootList.size() > 0 ? gold/moneyLootList.size() : 0;
-				int giveAether = aether/lives.size();
-				if (!extra.getPrint()) {
-					if (giveGold > 0) {
-						extra.println("The remaining " +World.currentMoneyDisplay(gold) +" is divvied up, "+giveGold +" each.");
-					}
-					if (giveAether > 0) {
-						extra.println("The remaining " + aether +" aether is divvied up, "+giveAether +" each.");
-					}
-				}
-				
-				for (Person surv: lives){
-					if (giveGold > 0 && (surv.isPersonable() || surv.getFlag(PersonFlag.HAS_WEALTH))) {
-						surv.getBag().addGold(giveGold);
-					}
-					if (giveAether > 0) {
-						surv.getBag().addAether(giveAether);
-					}
-					if (surv.isPlayer()) {
-						Networking.setBattle(Networking.BattleType.NONE);
-						Networking.clearSide(1);
-						mainGame.story.winFight(true);
-					}
-				}
-			}else {
-				if (lives.size() > 0) {
-					Person looter = lives.get(0);
-					if (gold > 0 && (looter.isPersonable() || looter.getFlag(PersonFlag.HAS_WEALTH))) {
-						extra.println(looter.getName() + " claims the remaining " +World.currentMoneyDisplay(gold) +".");
-						looter.getBag().addGold(gold);
-					}
-					if (aether > 0) {
-						extra.println(looter.getName() + " claims the remaining " +aether +" aether.");
-						looter.getBag().addAether(aether);
-					}
-
-					if (looter.isPlayer()) {
-						Networking.setBattle(Networking.BattleType.NONE);
-						Networking.clearSide(1);
-						mainGame.story.winFight(true);
-					}
-				}
-				//MAYBELATER: all that loot will get atom smashed for now
-			}
-		}
-
-		battle.endaether = aether + (100 *gold);
-		return battle;
-	}
-
 	public static void adventureBody() {
 		lastAutoSave = new Date();
 		Player.isPlaying = true;
@@ -2040,7 +1423,7 @@ public class mainGame {
 		while(Player.isPlaying) {
 			checkAutosave();
 			Player.player.getLocation().atTown();
-			globalPassTime();
+			TrawelTime.globalPassTime();
 		}
 		multiCanRun = false;
 		extra.println("You do not wake up.");
@@ -2050,58 +1433,10 @@ public class mainGame {
 		if (doAutoSave && (new Date().getTime()-lastAutoSave.getTime() > 1000*60*2)) {
 			extra.println("Autosaving...");
 			WorldGen.plane.prepareSave();
-			WorldGen.save("auto");
+			SaveManager.save("auto");
 			lastAutoSave = new Date();
 		}
 	}
-
-	/**
-	 * note that some events, like the player generating gold, ignore normal restrictions
-	 */
-	public static void globalPassTime() {
-		if (showLargeTimePassing && Networking.connected()) {
-			boolean largeTimePassing = false;
-			if (Player.peekTime() > 24) {
-				largeTimePassing = true;
-				extra.println("Passing "+extra.F_WHOLE.format(Player.peekTime())+" hours.");
-			}
-			double passAmount = 1;
-			while (Player.peekTime() > 0) {
-				globalPassTimeUpTo(passAmount);
-				if (largeTimePassing) {
-					passAmount+=.01;
-				}
-				/*
-				if (Player.player.atFeature != null) {
-					Networking.updateTime();
-					Player.player.atFeature.sendBackVariant();
-				}else {
-					Player.player.getLocation().sendBackVariant();
-				}*/
-				Networking.updateTime();
-				Networking.waitIfConnected(84);//1 second should be around 6 hours
-			}
-		}else {
-			if (Player.peekTime() > 0) {
-				globalTimeCatchUp();
-				Networking.updateTime();
-			}
-		}
-
-	}
-
-	public static void globalTimeCatchUp() {
-		double time = Player.popTime();
-		WorldGen.plane.advanceTime(time);
-	}
-
-	public static void globalPassTimeUpTo(double limit) {
-		double time = Player.takeTime(limit);
-		if (time > 0) {
-			WorldGen.plane.advanceTime(time);
-		}
-	}
-
 
 	public static void adventure1(boolean cheaty, boolean displayFight, boolean rerolls, boolean advancedDisplay, boolean debug){
 		baseSetup1();
@@ -2111,22 +1446,23 @@ public class mainGame {
 		}
 		Networking.richDesc("Character Select");
 		World world = null;//WorldGen.eoano();
+		Player player = new Player();
 		if (cheaty || rerolls) {
 			if (cheaty) {
-				story = new StoryNone();
+				player.setStory(new StoryNone());
 			}else {
 				extra.println("Skip tutorial?");
 				if (extra.yesNo()) {
-					story = new StoryNone();
+					player.setStory(new StoryNone());
 				}else {
-					story = new StoryTutorial();
+					player.setStory(new StoryTutorial());
 				}
 			}
 		}else {
-			story = new StoryTutorial();
+			player.setStory(new StoryTutorial());
 		}
 		Person manOne = null, manTwo;
-		Player player;
+		
 		//
 		while (manOne == null) {
 			if (world == null) {
@@ -2140,9 +1476,9 @@ public class mainGame {
 			if (!displayFight) {
 				extra.changePrint(true);
 			}
-			Combat c = CombatTwo(manOne,manTwo,null);
+			Combat c = Combat.CombatTwo(manOne,manTwo,null);
 			manOne = c.getNonSummonSurvivors().get(0);
-			story.setPerson(c.killed.get(0), 0);
+			player.getStory().setPerson(c.killed.get(0), 0);
 			//story.setPerson(manTwo, 0);
 			if (!displayFight) {
 				extra.changePrint(false);
@@ -2161,7 +1497,7 @@ public class mainGame {
 			Networking.clearSides();
 		}
 		Networking.clearSides();
-		player = new Player(manOne);
+		player.setPerson(manOne);
 		manOne.setPlayer();
 		//Networking.send("Visual|Race|" + manOne.getBag().getRace().name+  "|");
 		Networking.charUpdate();
@@ -2183,7 +1519,7 @@ public class mainGame {
 		player.setLocation(world.getStartTown());//also sets the player world
 		if (cheaty) {
 			Player.player.setCheating();
-			story = new StoryNone();
+			player.setStory(new StoryNone());
 			if (debug) {
 				Player.player.getPerson().setFlag(PersonFlag.AUTOBATTLE,true);
 				Player.player.getPerson().setFlag(PersonFlag.AUTOLOOT,true);
@@ -2203,8 +1539,7 @@ public class mainGame {
 				Player.player.getPerson().getBag().addAether(999999);
 			}
 		}
-		story.storyStart();
-		player.storyHold = story;
+		player.getStory().storyStart();
 
 		WorldGen.plane.setPlayer(player);
 
@@ -2223,28 +1558,6 @@ public class mainGame {
 			e.printStackTrace();
 		}
 	}
-	public static void die(String deathMessage) {
-		Networking.statAddUpload("deaths","total_deaths",1);
-		//Networking.sendStrong("StatUp|deaths|1|");
-		Networking.leaderboard("most_deaths",++Player.player.deaths);
-		story.onDeath();
-		extra.println(deathMessage);
-		story.onDeathPart2();
-		extra.endBackingSegment();
-	}
-
-	public static void dieMisc() {
-		die(extra.choose("You rise from death...","You return to life.","You walk again!","You rise from the grave!","Death releases its hold on you."));
-	}
-	
-	public static void dieFight() {
-		if (extra.chanceIn(1,3)) {
-			dieMisc();
-			return;
-		}
-		die(extra.choose("You revive after the battle.","You right your repaired body.","You stand after your corpse pulls itself together."));
-	}
-
 	public static void scrollTest() {
 		extra.menuGo(new ScrollMenuGenerator(30, "back <> more","forward (<> left)") {
 
@@ -2507,6 +1820,5 @@ public class mainGame {
 		};
 		extra.menuGo(matMenu);
 	}
-
 
 }

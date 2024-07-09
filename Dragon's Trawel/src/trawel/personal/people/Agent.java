@@ -4,8 +4,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import trawel.Effect;
-import trawel.extra;
+import trawel.helper.methods.extra;
+import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill;
 import trawel.personal.item.Potion;
@@ -16,7 +16,7 @@ import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
 import trawel.towns.Town;
 import trawel.towns.World;
-import trawel.towns.services.WitchHut;
+import trawel.towns.features.services.WitchHut;
 
 /**
  * @author dragon

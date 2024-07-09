@@ -3,9 +3,9 @@ package trawel.personal.item.magic;
 import com.github.yellowstonegames.core.WeightedTable;
 
 import derg.SRFrontBackedRandom;
-import trawel.extra;
 import trawel.mainGame;
-import trawel.randomLists;
+import trawel.helper.methods.extra;
+import trawel.helper.methods.randomLists;
 
 /**
  * A constant enchantment is one that is always active- it applies to the character's base stats.

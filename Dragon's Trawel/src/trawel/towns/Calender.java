@@ -4,10 +4,10 @@ import java.util.List;
 
 import trawel.Networking;
 import trawel.Networking.Area;
+import trawel.helper.methods.extra;
 import trawel.WorldGen;
 import trawel.personal.RaceFactory;
 import trawel.personal.people.Player;
-import trawel.extra;
 import trawel.time.CanPassTime;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
@@ -252,7 +252,8 @@ public class Calender implements Serializable, CanPassTime {
 	}
 
 	public static void timeTest() {
-		Player.player = new Player(RaceFactory.makePlayerValid(false));
+		Player.player = new Player();
+		Player.player.setPerson(RaceFactory.makePlayerValid(false));
 		World w = WorldGen.eoano();
 		Player.updateWorld(w);
 		Player.player.setLocation(w.getStartTown());

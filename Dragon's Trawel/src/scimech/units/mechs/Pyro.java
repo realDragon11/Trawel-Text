@@ -16,7 +16,7 @@ import scimech.units.mounts.Blunderbuss;
 import scimech.units.mounts.Foil;
 import scimech.units.systems.FrostAegis;
 import scimech.units.systems.FusionReactor;
-import trawel.randomLists;
+import trawel.helper.methods.randomLists;
 
 public class Pyro extends Mech {
 	

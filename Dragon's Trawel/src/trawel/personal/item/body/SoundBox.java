@@ -1,6 +1,6 @@
 package trawel.personal.item.body;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class SoundBox {
 	

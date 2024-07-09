@@ -4,9 +4,9 @@ import java.util.regex.Pattern;
 
 import derg.SRPlainRandom;
 import derg.StringResult;
-import trawel.Effect;
 import trawel.Networking;
-import trawel.extra;
+import trawel.helper.methods.extra;
+import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.classless.Skill;
 

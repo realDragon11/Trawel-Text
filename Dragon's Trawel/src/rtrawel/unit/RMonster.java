@@ -6,7 +6,7 @@ import java.util.List;
 import rtrawel.battle.Party;
 import rtrawel.items.Weapon;
 import rtrawel.items.WeaponFactory;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class RMonster extends RUnit {
 	

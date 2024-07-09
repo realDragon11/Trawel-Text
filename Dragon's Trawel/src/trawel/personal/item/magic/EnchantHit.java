@@ -2,8 +2,8 @@ package trawel.personal.item.magic;
 
 import java.awt.Color;
 
-import trawel.extra;
-import trawel.randomLists;
+import trawel.helper.methods.extra;
+import trawel.helper.methods.randomLists;
 
 public class EnchantHit extends Enchant {
 

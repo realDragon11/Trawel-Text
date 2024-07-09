@@ -3,7 +3,7 @@ package trawel.factions;
 import java.util.ArrayList;
 import java.util.List;
 
-import trawel.extra;
+import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.IEffectiveLevel;
 import trawel.personal.people.Player;

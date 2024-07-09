@@ -17,8 +17,8 @@ import rtrawel.unit.RMonster;
 import rtrawel.unit.RPlayer;
 import rtrawel.unit.RUnit;
 import rtrawel.unit.RUnit.RaceType;
+import trawel.helper.methods.extra;
 import rtrawel.unit.TargetGroup;
-import trawel.extra;
 
 public class Menu implements Content {
 

@@ -15,18 +15,18 @@ import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
-import trawel.AIClass;
-import trawel.Effect;
 import trawel.Networking;
-import trawel.Services;
-import trawel.Story;
 import trawel.WorldGen;
-import trawel.extra;
 import trawel.mainGame;
-import trawel.randomLists;
+import trawel.arc.story.Story;
 import trawel.battle.Combat;
 import trawel.battle.attacks.Wound;
 import trawel.factions.FBox;
+import trawel.helper.methods.Services;
+import trawel.helper.methods.extra;
+import trawel.helper.methods.randomLists;
+import trawel.personal.AIClass;
+import trawel.personal.Effect;
 import trawel.personal.Person;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.classless.Archetype;
@@ -48,20 +48,22 @@ import trawel.personal.item.solid.Gem;
 import trawel.personal.item.solid.Weapon;
 import trawel.personal.item.solid.Weapon.WeaponQual;
 import trawel.personal.people.Agent.AgentGoal;
-import trawel.quests.CleanseSideQuest.CleanseType;
-import trawel.quests.Quest;
-import trawel.quests.Quest.TriggerType;
-import trawel.quests.QuestR;
+import trawel.quests.locations.QuestR;
+import trawel.quests.types.Quest;
+import trawel.quests.types.CleanseSideQuest.CleanseType;
+import trawel.quests.types.Quest.TriggerType;
+import trawel.save.SaveManager;
 import trawel.time.TimeContext;
 import trawel.time.TimeEvent;
+import trawel.time.TrawelTime;
 import trawel.towns.Calender;
 import trawel.towns.Connection;
 import trawel.towns.Feature;
 import trawel.towns.Island;
 import trawel.towns.Town;
 import trawel.towns.World;
-import trawel.towns.misc.Docks;
-import trawel.towns.services.Altar.AltarForce;
+import trawel.towns.features.misc.Docks;
+import trawel.towns.features.services.Altar.AltarForce;
 
 public class Player extends SuperPerson{
 
@@ -112,7 +114,7 @@ public class Player extends SuperPerson{
 	public FBox factionSpent = new FBox();
 	public float hSpentOnKno = 0f;
 	
-	public Story storyHold;
+	private Story story;
 	
 	private boolean caresAboutCapacity = true, caresAboutAMP = true;
 	
@@ -128,17 +130,19 @@ public class Player extends SuperPerson{
 	
 	private TwinListMap<Serializable,String> achieveMap = new TwinListMap<Serializable,String>();
 	
-	public Player(Person p) {
-		person = p;
+	public Player() {
 		flask = null;
 		isAlive = true;
 		player = this;
-		bag = p.getBag();
 		passTime = 0;
 		animalName = randomLists.randomAnimal();
 		moneys = new ArrayList<Integer>();
 		moneymappings = new ArrayList<World>();
-		
+	}
+	
+	public void setPerson(Person p) {
+		person = p;
+		bag = p.getBag();
 		p.setSuper(this);
 	}
 	@Override
@@ -168,6 +172,14 @@ public class Player extends SuperPerson{
 			world.setVisited();
 			extra.mainThreadDataUpdate();
 		}
+	}
+	
+	public Story getStory() {
+		return story;
+	}
+	
+	public void setStory(Story _story) {
+		story = _story;
 	}
 	
 	@Override
@@ -590,7 +602,7 @@ public class Player extends SuperPerson{
 		this.caresAboutAMP = caresAboutAMP;
 	}
 	public static void unlockPerk(Perk perk) {
-		Player.player.storyHold.perkTrigger(perk);
+		Player.player.story.perkTrigger(perk);
 		Player.player.getPerson().setPerk(perk);
 	}
 	
@@ -1090,12 +1102,12 @@ public class Player extends SuperPerson{
 						if (extra.yesNo()) {
 							extra.println("Save to which slot?");
 							for (int i = 1; i < 9;i++) {
-								extra.println(i+ " slot:"+WorldGen.checkNameInFile(""+i));
+								extra.println(i+ " slot:"+SaveManager.checkNameInFile(""+i));
 							}
 							int in = extra.inInt(8);
 							extra.println("Saving...");
 							WorldGen.plane.prepareSave();
-							WorldGen.save(in+"");
+							SaveManager.save(in+"");
 							
 						}
 						return false;
@@ -1220,7 +1232,7 @@ public class Player extends SuperPerson{
 												//pass in 4 day chunks so that code that triggers once per update happens normally
 												//as well as letting the threading code help a bit
 												Player.addTime(98);
-												mainGame.globalPassTime();
+												TrawelTime.globalPassTime();
 											}
 											return true;
 										}});
@@ -1895,7 +1907,7 @@ public class Player extends SuperPerson{
 														public boolean go() {
 															Player.player.setLocation(t);
 															//catch up time globally so teleporting to another world is less wonky
-															mainGame.globalTimeCatchUp();
+															TrawelTime.globalTimeCatchUp();
 															return false;
 														}});
 												}

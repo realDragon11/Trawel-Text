@@ -15,11 +15,8 @@ import derg.menus.MenuLast;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
 import derg.menus.ScrollMenuGenerator;
-import trawel.Effect;
 import trawel.Networking;
-import trawel.extra;
 import trawel.mainGame;
-import trawel.randomLists;
 import trawel.battle.BarkManager;
 import trawel.battle.attacks.ImpairedAttack;
 import trawel.battle.attacks.ImpairedAttack.DamageType;
@@ -33,6 +30,8 @@ import trawel.battle.attacks.Wound;
 import trawel.factions.FBox;
 import trawel.factions.Faction;
 import trawel.factions.HostileTask;
+import trawel.helper.methods.extra;
+import trawel.helper.methods.randomLists;
 import trawel.personal.classless.Archetype;
 import trawel.personal.classless.Archetype.AType;
 import trawel.personal.classless.AttributeBox;
@@ -55,10 +54,10 @@ import trawel.personal.item.solid.Weapon.WeaponType;
 import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
+import trawel.quests.types.CleanseSideQuest;
 import trawel.personal.people.Player;
 import trawel.personal.people.SuperPerson;
-import trawel.quests.CleanseSideQuest;
-import trawel.towns.services.WitchHut;
+import trawel.towns.features.services.WitchHut;
 
 /**
  * 
@@ -973,7 +972,7 @@ public class Person implements java.io.Serializable, IEffectiveLevel{
 				Networking.leaderboard("Highest Level",level);
 				Networking.statAddUpload("levels","total_levels",levels);
 				
-				mainGame.story.levelUp(level);
+				Player.player.getStory().levelUp(level);
 				Networking.unlockAchievement("level_any");
 				if (level-levels < 5 && level >= 5) {//requires starting level (of character) to be lower than 5
 					Networking.unlockAchievement("level5");

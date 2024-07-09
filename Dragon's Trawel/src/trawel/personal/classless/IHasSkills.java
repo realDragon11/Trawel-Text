@@ -12,7 +12,7 @@ import derg.menus.MenuGenerator;
 import derg.menus.MenuItem;
 import derg.menus.MenuLine;
 import derg.menus.MenuSelect;
-import trawel.extra;
+import trawel.helper.methods.extra;
 import trawel.personal.Person;
 import trawel.personal.classless.Feat.FeatType;
 

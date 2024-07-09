@@ -5,7 +5,7 @@ import java.util.List;
 
 import rtrawel.battle.Fight;
 import rtrawel.battle.Party;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class Village {
 

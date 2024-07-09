@@ -6,12 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import trawel.Effect;
-import trawel.extra;
-import trawel.randomLists;
 import trawel.battle.attacks.TargetFactory;
 import trawel.factions.Faction;
 import trawel.factions.HostileTask;
+import trawel.helper.methods.extra;
+import trawel.helper.methods.randomLists;
 import trawel.personal.Person.AIJob;
 import trawel.personal.Person.PersonFlag;
 import trawel.personal.Person.PersonType;
@@ -31,7 +30,7 @@ import trawel.personal.item.solid.Weapon.WeaponType;
 import trawel.personal.item.solid.variants.ArmorStyle;
 import trawel.personal.people.Agent;
 import trawel.personal.people.Agent.AgentGoal;
-import trawel.quests.CleanseSideQuest;
+import trawel.quests.types.CleanseSideQuest;
 
 public class RaceFactory {
 	public static List<Race> raceList = new ArrayList<Race>();

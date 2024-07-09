@@ -1,25 +1,17 @@
 package trawel;
 import java.awt.Point;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
-import save.SaveManager;
 import trawel.battle.Combat.SkillBase;
 import trawel.battle.Combat.SkillCon;
+import trawel.helper.methods.extra;
 import trawel.personal.DummyPerson;
 import trawel.personal.item.DummyInventory;
 import trawel.personal.people.Player;
-import trawel.quests.QuestBoardLocation;
+import trawel.quests.locations.QuestBoardLocation;
 import trawel.towns.Connection;
 import trawel.towns.Connection.ConnectType;
 import trawel.towns.Feature;
@@ -29,43 +21,42 @@ import trawel.towns.Plane;
 import trawel.towns.Town;
 import trawel.towns.World;
 import trawel.towns.events.TownTag;
-import trawel.towns.fight.Arena;
-import trawel.towns.fight.Champion;
-import trawel.towns.fight.Forest;
-import trawel.towns.fight.Mountain;
-import trawel.towns.fight.Slum;
-import trawel.towns.fight.Slum.ReplaceFeatureInterface;
-import trawel.towns.fort.SubSkill;
-import trawel.towns.fort.WizardTower;
-import trawel.towns.misc.Docks;
-import trawel.towns.misc.Garden;
-import trawel.towns.misc.Garden.PlantFill;
-import trawel.towns.nodes.Beach;
-import trawel.towns.nodes.BossNode.BossType;
-import trawel.towns.nodes.Dungeon;
-import trawel.towns.nodes.Graveyard;
-import trawel.towns.nodes.Grove;
-import trawel.towns.nodes.Mine;
-import trawel.towns.nodes.NodeFeature;
-import trawel.towns.nodes.NodeFeature.Shape;
-import trawel.towns.services.Altar;
-import trawel.towns.services.Altar.AltarForce;
-import trawel.towns.services.Appraiser;
-import trawel.towns.services.Blacksmith;
-import trawel.towns.services.Doctor;
-import trawel.towns.services.Enchanter;
-import trawel.towns.services.HeroGuild;
-import trawel.towns.services.HunterGuild;
-import trawel.towns.services.Inn;
-import trawel.towns.services.Library;
-import trawel.towns.services.MerchantGuild;
-import trawel.towns.services.Oracle;
-import trawel.towns.services.RogueGuild;
-import trawel.towns.services.Store;
-import trawel.towns.services.WitchHut;
+import trawel.towns.features.fight.Arena;
+import trawel.towns.features.fight.Champion;
+import trawel.towns.features.fight.Forest;
+import trawel.towns.features.fight.Mountain;
+import trawel.towns.features.fight.Slum;
+import trawel.towns.features.fight.Slum.ReplaceFeatureInterface;
+import trawel.towns.features.fort.SubSkill;
+import trawel.towns.features.fort.WizardTower;
+import trawel.towns.features.misc.Docks;
+import trawel.towns.features.misc.Garden;
+import trawel.towns.features.misc.Garden.PlantFill;
+import trawel.towns.features.nodes.Beach;
+import trawel.towns.features.nodes.BossNode.BossType;
+import trawel.towns.features.nodes.Dungeon;
+import trawel.towns.features.nodes.Graveyard;
+import trawel.towns.features.nodes.Grove;
+import trawel.towns.features.nodes.Mine;
+import trawel.towns.features.nodes.NodeFeature;
+import trawel.towns.features.nodes.NodeFeature.Shape;
+import trawel.towns.features.services.Altar;
+import trawel.towns.features.services.Altar.AltarForce;
+import trawel.towns.features.services.Appraiser;
+import trawel.towns.features.services.Blacksmith;
+import trawel.towns.features.services.Doctor;
+import trawel.towns.features.services.Enchanter;
+import trawel.towns.features.services.HeroGuild;
+import trawel.towns.features.services.HunterGuild;
+import trawel.towns.features.services.Inn;
+import trawel.towns.features.services.Library;
+import trawel.towns.features.services.MerchantGuild;
+import trawel.towns.features.services.Oracle;
+import trawel.towns.features.services.RogueGuild;
+import trawel.towns.features.services.Store;
+import trawel.towns.features.services.WitchHut;
 
 public class WorldGen {
-
 	
 	public static Plane plane;
 	
@@ -746,75 +737,6 @@ public class WorldGen {
 		return Math.sqrt(Math.pow(a.getLocationX()-b.getLocationX(),2)+Math.pow(a.getLocationY()-b.getLocationY(),2));		
 	}
 	
-	public static void save(String str) {
-		plane.prepareSave();
-		try (FileOutputStream fos = new FileOutputStream("trawel"+str+".save");
-				PrintWriter pws =new PrintWriter(fos);
-				){
-			 pws.write(Player.player.getPerson().getName()
-					 +", level " + Player.player.getPerson().getLevel()
-					 + ": " +new Date().toString()
-					 +" "+mainGame.VERSION_STRING+"\0");
-			 ;
-			 pws.flush();
-			 SaveManager.savePlaneFury(plane,fos);
-		     extra.println("Saved!");
-		     File f = new File("trawel"+str+".save");
-		     extra.println("Slot "+str + ": "+f.length() + " bytes.");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public static String checkNameInFile(String str) {
-		String ret = "";
-		try (FileReader fr = new FileReader("trawel"+str+".save"); BufferedReader br = new BufferedReader(fr);){
-			ArrayList<Integer> values = new ArrayList<Integer>();
-			while (true) {
-				int red = br.read();
-				if (red == 0) {
-					break;
-				}
-				if (red == -1) {
-					extra.println("Invaild file.");
-					break;
-				}
-				values.add(red);
-			}
-			for (int i = 0; i < values.size();i++) {
-				ret+=(char)(int)values.get(i);
-			}
-			 br.close();
-			 fr.close();
-		} catch (Exception e) {
-			ret = "n/a";
-		}
-		return ret;
-	}
-
-
-	public static void load(String str) {
-		int len;
-		try (FileInputStream fos = new FileInputStream("trawel"+str+".save");){
-			while (fos.read() != '\0');
-			plane = SaveManager.readPlaneFury(fos);
-			Player.player = plane.getPlayer();
-			Player.bag = Player.player.getPerson().getBag();
-			Player.player.skillUpdate();
-			Player.passTime = 0;
-			mainGame.story = Player.player.storyHold;
-			extra.getThreadData().world = Player.player.getWorld();
-			fos.close();
-			plane.reload();
-		} catch (IOException e) {
-			if (!mainGame.logStreamIsErr) {
-				e.printStackTrace();
-			}
-			extra.println("Invalid load. Either no save file was found or it was outdated.");
-		}
-
-	}
-
 	public static void pathToTown(Town dest) {
 		
 		try {

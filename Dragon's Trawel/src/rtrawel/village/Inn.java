@@ -2,7 +2,7 @@ package rtrawel.village;
 
 import rtrawel.battle.Party;
 import rtrawel.unit.RUnit;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class Inn implements Content {
 

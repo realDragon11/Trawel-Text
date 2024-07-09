@@ -10,7 +10,7 @@ import derg.menus.MenuSelect;
 import scimech.combat.ResistMap;
 import scimech.combat.Target;
 import scimech.handlers.Savable;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public abstract class Systems extends MechPart implements TurnSubscriber, Savable{
 

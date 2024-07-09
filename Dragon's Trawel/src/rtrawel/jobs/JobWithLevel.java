@@ -2,7 +2,7 @@ package rtrawel.jobs;
 
 import rtrawel.TestRunner;
 import rtrawel.unit.RPlayer;
-import trawel.extra;
+import trawel.helper.methods.extra;
 
 public class JobWithLevel implements java.io.Serializable {
 
