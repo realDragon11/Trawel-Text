@@ -578,7 +578,8 @@ public class Combat {
 					}
 				}
 				setAttack(quickest,otherperson);
-				if (otherperson != defender && (atr.code == ATK_ResultCode.MISS || atr.code == ATK_ResultCode.DODGE)
+				//now applies to all missed/dodged attacks //otherperson != defender && 
+				if ((atr.code == ATK_ResultCode.MISS || atr.code == ATK_ResultCode.DODGE)
 						&& quickest.getBag().getHand().hasQual(WeaponQual.CARRYTHROUGH)) 
 				{
 					quickest.applyDiscount(quickest.getTime()*.2f);//20% time discount

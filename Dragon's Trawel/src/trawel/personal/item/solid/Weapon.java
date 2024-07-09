@@ -61,22 +61,34 @@ public class Weapon extends Item implements IEffectiveLevel {
 	private Set<WeaponQual> qualList = EnumSet.noneOf(WeaponQual.class);
 	
 	public enum WeaponQual{
-		DESTRUCTIVE("Destructive","On Damage and Wound: Damages local armor by 1/3rd of total percent HP dealt.",2),
-		PENETRATIVE("Penetrative","Attack: The locally attacked armor counts for 3/5ths as much.",2),
-		PINPOINT("Pinpoint","Attack: Armor not in slots you are attacking counts for 2/3rds as much.",2),
-		RELIABLE("Reliable","On Armor Reduction/Block: Minimum damage equal to 1/2th WELVL. If blocked, does not become Impactful.",2), 
-		DUELING("Dueling","Attack: In large fights, attack the same opponent repeatedly.",1),
-		WEIGHTED("Weighted","On Damage: Less accurate attacks deal more damage.",1),
-		REFINED("Refined","On Damage: Deals bonus damage equal to 1/2th WELVL.",3),
-		ACCURATE("Accurate","Attack: Flat +%.10 accuracy bonus to attacks after all modifiers.",2),
-		CARRYTHROUGH("Carrythrough","On Miss/Dodge: Your next attack on a different opponent is 20% quicker.",2),
+		DESTRUCTIVE("Destructive","On Damage and Wound: Damages local armor by 1/3rd of total percent HP dealt.",1.1f,1.1f,2),
+		PENETRATIVE("Penetrative","Attack: The locally attacked armor counts for 3/5ths as much.",1f,1.1f,2),
+		PINPOINT("Pinpoint","Attack: Armor not in slots you are attacking counts for 2/3rds as much.",1f,1.1f,2),
+		RELIABLE("Reliable","On Armor Reduction/Block: Minimum damage equal to 1/2th WELVL. If blocked, does not become Impactful.",1f,1.2f,2), 
+		DUELING("Dueling","Attack: In large fights, attack the same opponent repeatedly.",1f,1f,1),
+		WEIGHTED("Weighted","On Damage: Less accurate attacks deal more damage.",1f,1.1f,1),
+		REFINED("Refined","On Damage: Deals bonus damage equal to 1/2th WELVL.",1f,1.2f,3),
+		ACCURATE("Accurate","Attack: Flat +%.10 accuracy bonus to attacks after all modifiers.",1f,1.2f,2),
+		CARRYTHROUGH("Carrythrough","On Miss/Dodge: Your next attack is 20% quicker.",1.1f,1.1f,2),
 		;
 		public final String name, desc;
 		public final int goodNegNeut;
-		WeaponQual(String name,String desc,int _goodNegNeut) {
+		/**
+		 * mFit is the mechanical value for the effectiveness. It should be left at 1f for qualities that have effects reflected through damage,
+		 * because the fitness function includes that in the battlescore. This includes direct accuracy boosts.
+		 * <br>
+		 * mVal is used to represent trade value and is often higher for positive qualities but near the same for negative ones
+		 * <br>
+		 * some qualities are considered 'convenient' in lore but that is not reflected in game, so the value is even higher,
+		 * such as sturdy and reliable
+		 */
+		private final float mFit, mVal;
+		WeaponQual(String name,String desc,float _mFit, float _mVal,int _goodNegNeut) {
 			this.name = name;
 			this.desc = desc;
 			goodNegNeut = _goodNegNeut;
+			mFit = _mFit;
+			mVal = _mVal;
 		}
 	}
 	
@@ -421,24 +433,24 @@ public class Weapon extends Item implements IEffectiveLevel {
 		return Chomp.extractByteFromLong(bsCon, 48);
 	}
 	
-	public double scoreImpact() {
+	public float scoreImpact() {
 		if (bsCon == 0) {
 			refreshBattleScore();
 		}
-		return Chomp.extractByteFromLong(bsCon, 0)/100d;
+		return Chomp.extractByteFromLong(bsCon, 0)/100f;
 	}
 	
-	public double scoreWeight() {
+	public float scoreWeight() {
 		if (bsCon == 0) {
 			refreshBattleScore();
 		}
-		return Chomp.extractShortFromLong(bsCon,24)/100d;
+		return Chomp.extractShortFromLong(bsCon,24)/100f;
 	}
-	public double scoreBest() {
+	public float scoreBest() {
 		if (bsCon == 0) {
 			refreshBattleScore();
 		}
-		return Chomp.extractShortFromLong(bsCon,8)/100d;
+		return Chomp.extractShortFromLong(bsCon,8)/100f;
 	}
 
 	@Override
@@ -794,6 +806,19 @@ public class Weapon extends Item implements IEffectiveLevel {
 
 	public boolean canDisplay() {
 		return weap != WeaponType.NULL_WAND;
+	}
+	
+	public float fitness() {
+		float mult = 1;
+		for (WeaponQual q: qualList) {
+			mult *= q.mFit;
+		}
+		if (isEnchantedConstant()) {//to hit enchantments have their bonuses reflected in increased damage
+			mult *= getEnchant().fitness();
+		}
+		//use best score and weighted score combined, because some abilities (extra attacks) make it lean more towards best
+		//and they get 3 attacks to start as well
+		return mult*(scoreWeight()+scoreBest());
 	}
 
 	

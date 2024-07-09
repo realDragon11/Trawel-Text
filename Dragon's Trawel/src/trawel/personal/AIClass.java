@@ -577,7 +577,7 @@ public class AIClass {
 			if (!p.getFlag(PersonFlag.SMART_COMPARE)) {
 				return (toReplace.getAetherValue()>hasItem.getAetherValue());
 			}
-			if (((Weapon)(toReplace)).scoreWeight() > ((Weapon)(hasItem)).scoreWeight()){
+			if (((Weapon)(toReplace)).fitness() > ((Weapon)(hasItem)).fitness()){
 				return true;	
 			}
 			return false;
